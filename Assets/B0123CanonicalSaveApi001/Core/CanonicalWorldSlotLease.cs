@@ -4,118 +4,109 @@ using System.IO;
 
 namespace B01.CanonicalWorldApi001
 {
-    // W22 / #688 #700 #710: concrete process- and OS-exclusive lifetime lease.
-    // NOT a replacement for B01-62 #669 atomic payload/revision storage.
-    // One real OWNER-AUTHORIZED slot path must eventually be shared with #712.
+    // V4: one already-held B01-62 #669 slot.lease is THE ONLY OS owner.
+    // NO separate .owner file and NO standalone public TryAcquire.
+    // Only the private, owner-approved session bridge can adopt the REAL slot.
     public sealed class CanonicalWorldSlotLease
     {
-        private static readonly object RegistryLock=new object();
-        // Strong references intentionally escrow quarantined leases until process
-        // termination, even after a MonoBehaviour or gateway is collected.
-        private static readonly Dictionary<string,CanonicalWorldSlotLease> Registry=
+        private static readonly object Sync=new object();
+        private static readonly Dictionary<string,CanonicalWorldSlotLease> Active=
             new Dictionary<string,CanonicalWorldSlotLease>(StringComparer.OrdinalIgnoreCase);
-        private readonly string key;
-        private FileStream? stream;
+        private readonly string identity;
+        private readonly Func<bool> liveSource;
+        private readonly Func<bool> closeSource;
         private bool bound, released;
-
         public long RunId {get;}
         public Guid SlotId {get;}
-        public string Identity => key;
+        public string Identity=>identity;
+
+        private CanonicalWorldSlotLease(string dir,long run,Guid slot,
+            Func<bool> live,Func<bool> release)
+        {
+            identity=dir;RunId=run;SlotId=slot;
+            liveSource=live;closeSource=release;
+        }
+        private bool IsRealSlotAlive()
+        {
+            try{return liveSource();}
+            catch{return false;}
+        }
         internal bool Live
         {
             get
             {
-                lock(RegistryLock)
-                    return bound&&!released&&stream!=null&&
-                        Registry.TryGetValue(key,out CanonicalWorldSlotLease? current)&&
-                        ReferenceEquals(current,this);
+                lock(Sync)
+                    return bound&&!released&&IsRealSlotAlive()&&
+                        Active.TryGetValue(identity,out CanonicalWorldSlotLease? x)&&
+                        ReferenceEquals(x,this);
             }
         }
-
-        private CanonicalWorldSlotLease(string key,long runId,Guid slot,FileStream stream)
-        {
-            this.key=key;RunId=runId;SlotId=slot;this.stream=stream;
-        }
-        private static void RejectReparse(string path)
-        {
-            if((File.GetAttributes(path)&FileAttributes.ReparsePoint)!=0)
-                throw new IOException("Foreign link in authority path");
-        }
-        public static bool TryAcquire(string privateRoot,long runId,Guid slot,
+        // Must be called ONLY AFTER the actual unchanged #669 SingleFileSaveSlot
+        // has acquired the one exclusive FileStream(FileShare.None) slot.lease.
+        // The owner session hides the raw slot; callers cannot dispose early.
+        internal static bool TryAdoptRealSlot(string trustedSlotDirectory,long run,
+            Guid slot,Func<bool> genuineOwnerLive,Func<bool> releaseRealOwner,
             out CanonicalWorldSlotLease? lease)
         {
             lease=null;
-            if(string.IsNullOrWhiteSpace(privateRoot)||runId<=0||slot==Guid.Empty)
+            if(run<=0||slot==Guid.Empty||
+                string.IsNullOrWhiteSpace(trustedSlotDirectory)||
+                genuineOwnerLive==null||releaseRealOwner==null)
                 return false;
             try
             {
-                string root=Path.GetFullPath(privateRoot);
-                if(!Directory.Exists(root))return false; // caller owns trusted private root
-                RejectReparse(root);
-                string directory=Path.Combine(root,"b0123_canonical_world_authority");
-                Directory.CreateDirectory(directory);
-                RejectReparse(directory);
-                string key=Path.Combine(directory,"run_"+runId.ToString(
-                    System.Globalization.CultureInfo.InvariantCulture)+
-                    "_slot_"+slot.ToString("N")+".owner");
-                lock(RegistryLock)
+                string key=Path.GetFullPath(trustedSlotDirectory);
+                if(!Path.IsPathFullyQualified(key))return false;
+                lock(Sync)
                 {
-                    if(Registry.ContainsKey(key))return false;
-                    if(File.Exists(key))RejectReparse(key);
-                    FileStream file=new FileStream(key,FileMode.OpenOrCreate,
-                        FileAccess.ReadWrite,FileShare.None);
-                    try
-                    {
-                        RejectReparse(key);
-                        var owner=new CanonicalWorldSlotLease(key,runId,slot,file);
-                        Registry.Add(key,owner);
-                        lease=owner;
-                        return true;
-                    }
-                    catch
-                    {
-                        file.Dispose();
-                        throw;
-                    }
+                    if(Active.ContainsKey(key))return false;
+                    bool real=false;
+                    try{real=genuineOwnerLive();}catch{return false;}
+                    if(!real)return false;
+                    var token=new CanonicalWorldSlotLease(key,run,slot,
+                        genuineOwnerLive,releaseRealOwner);
+                    Active.Add(key,token);
+                    lease=token;
+                    return true;
                 }
             }
-            catch(IOException){return false;}
-            catch(UnauthorizedAccessException){return false;}
             catch(ArgumentException){return false;}
+            catch(IOException){return false;}
         }
         internal void BindOnce()
         {
-            lock(RegistryLock)
+            lock(Sync)
             {
-                if(bound||released||stream==null||
-                   !Registry.TryGetValue(key,out CanonicalWorldSlotLease? current)||
-                   !ReferenceEquals(current,this))
-                    throw new InvalidOperationException("World authority already bound or lost");
+                if(bound||released||!IsRealSlotAlive()||
+                    !Active.TryGetValue(identity,out CanonicalWorldSlotLease? active)||
+                    !ReferenceEquals(active,this))
+                    throw new InvalidOperationException("canonical authority unavailable");
                 bound=true;
             }
         }
-        // Before BindOnce NO GameObjects may have been created by gateway.
-        public bool TryCancelUnbound()
+        // Safe only BEFORE gateway creation and BEFORE any physical allocation.
+        internal bool TryCancelUnbound()
         {
-            lock(RegistryLock)
+            lock(Sync)
             {
-                if(bound||released||stream==null)return false;
-                try{stream.Dispose();}catch{return false;}
-                stream=null;released=true;
-                Registry.Remove(key);
-                return true;
+                if(bound||released||!IsRealSlotAlive())return false;
+                bool success=false;
+                try{success=closeSource();}catch{return false;}
+                if(!success)return false;
+                released=true;Active.Remove(identity);return true;
             }
         }
-        // Only the canonical gateway can close its bound authority. There is NO
-        // public Dispose that a caller or Unity OnDestroy can invoke unsafely.
+        // No public Dispose. Gateway invokes this ONLY AFTER actual owner proof
+        // all published AND partially staged physical objects are destroyed.
         internal bool ReleaseVerified()
         {
-            lock(RegistryLock)
+            lock(Sync)
             {
-                if(!bound||released||stream==null)return false;
-                try{stream.Dispose();}catch{return false;}
-                stream=null;released=true;Registry.Remove(key);
-                return true;
+                if(!bound||released||!IsRealSlotAlive())return false;
+                bool success=false;
+                try{success=closeSource();}catch{return false;}
+                if(!success)return false;
+                released=true;Active.Remove(identity);return true;
             }
         }
     }
