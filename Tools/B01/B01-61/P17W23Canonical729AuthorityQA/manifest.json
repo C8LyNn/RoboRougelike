@@ -1,0 +1,12 @@
+{
+  "package_id": "B01-61-P17W23-729-669-ONE-AUTHORITY-NEGATIVE-QA",
+  "exact_selected_owner_pr": 729,
+  "exact_owner_sha": "b8ca29c7707cd6b4338d0b9772d74dee676d49d2",
+  "source_669_sha": "d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121",
+  "original_git_blobs": 6,
+  "only_new_QA_paths": 6,
+  "source_test_cases_per_os": 6,
+  "posture": "negative witness is release RED",
+  "native_unity": "NOT_RUN",
+  "merge": false
+}
