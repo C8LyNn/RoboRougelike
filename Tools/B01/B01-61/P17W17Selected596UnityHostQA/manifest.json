@@ -1,0 +1,22 @@
+{
+  "id": "B01-61-P17W17-SELECTED596-ACTUAL-UNITY-MONOBEHAVIOUR-SLOT-AUTHORITY-QA",
+  "producer_sole": "596",
+  "selected_immutable_sha": "efb2b06eafedab5469b57f163152d96aca3c5915",
+  "alternative_hold_pr": 604,
+  "excluded_producer_sha": "1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a",
+  "source_core_blob": "1f9e883c38101f214e4335867faa731f7ae67689",
+  "source_unity_blob": "4bac6f327c9b93ae98dd2061c0ca8ea2100aab42",
+  "frozen_save_556": "33094f154c7b91119b36d58aab285e6e83c5de57",
+  "frozen_game_510": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "pinned_original_blobs": 5,
+  "qa_only_added_files": 7,
+  "processes_per_os": 8,
+  "expected_new_source_red": "second real original MonoBehaviour host can load newer detached world while previous remains active; previous stale host Save promotes old state at generation+2",
+  "engine": "SYNTHETIC_MANAGED_UNITYENGINE_ONLY",
+  "native_PhysX": "NOT_RUN",
+  "canonical_game_510_private_import": "HOLD",
+  "full_atomic_disk_save": "NOT_PROVEN",
+  "G2": "HOLD",
+  "CodexAck": false,
+  "merge": false
+}
