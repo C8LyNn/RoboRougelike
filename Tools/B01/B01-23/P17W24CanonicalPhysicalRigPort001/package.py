@@ -45,7 +45,7 @@ def guard():
         raise ValueError("Missing three authored Unity tests")
 def entry(name):
     x=zipfile.ZipInfo(name,(1980,1,1,0,0,0))
-    x.compress_type=zipfile.ZIP_STORED;x.external_attr=0o100644<<16
+    x.compress_type=zipfile.ZIP_STORED;x.external_attr=0o100644<<16;x.create_system=3; x.flag_bits=0
     return x
 def build():
     guard();data={x:source(x) for x in files()}
