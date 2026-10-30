@@ -1,0 +1,41 @@
+name: B01-13 W21 Rebuild Choice Interactive UX Source
+on:
+  push:
+    paths: ['Research/B01-13/P17S/**', '.github/workflows/b01-13-p17w21-rebuild-choice.yml']
+  pull_request:
+    paths: ['Research/B01-13/P17S/**', '.github/workflows/b01-13-p17w21-rebuild-choice.yml']
+  workflow_dispatch:
+jobs:
+  source-and-playable:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+        node: ['20', '22']
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify W21 original source Git blob/bytes/SHA256
+        run: python Research/B01-13/P17S/verify_package.py
+      - name: Execute actual Node original source model and UI simulator tests
+        run: node --test Research/B01-13/P17S/test_rebuild_choice.mjs
+      - name: Generate standalone interactive HTML outside Git worktree
+        shell: pwsh
+        run: |
+          $file = Join-Path $env:RUNNER_TEMP 'b01-13-w21-rebuild-choice.html'
+          node Research/B01-13/P17S/rebuild_choice.mjs --output $file
+          if ($LASTEXITCODE -ne 0 -or -not (Test-Path $file)) { throw 'HTML_NOT_PRODUCED' }
+          Write-Output "REBUILD_CHOICE_HTML_SHA256=$((Get-FileHash -Algorithm SHA256 $file).Hash.ToLowerInvariant())"
+      - name: Upload physically generated offline HTML
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-13-W21-REBUILDCHOICE-${{ matrix.os }}-Node${{ matrix.node }}
+          path: ${{ runner.temp }}/b01-13-w21-rebuild-choice.html
+          if-no-files-found: error
+          retention-days: 14
