@@ -1,0 +1,33 @@
+# B01-23 / PASS 17 WAVE 22 — Canonical World API V3, mandatory real slot lifetime fencing
+
+**Producer:** B01-23. **Package** `B01-23-CANONICAL-WORLD-API-001 v3.0.0`. NEW separately versioned descendant of original selected frozen [#691 @ 809f82575c638e1b4d2806b5f417bddab6c0871a](https://github.com/C8LyNn/RoboRougelike/pull/691), selected original V1 #681@eed2e39636edfd8b8db754c426db452164cbf9d7. Rival #682 and #695 ALT_HOLD — no copying/combined install; frozen original #510/#556/#596/#642/#647/#681/#691 and chosen host #690 source untouched. No automatic merge, Codex ACK, or game release.
+
+## Security correction #688 / #700 / #710: two live owner worlds
+
+Original #691 had correct tracked stage cleanup for #685 but lacked any owner session-exclusive lock in its public `CanonicalWorldGateway`. Independent B01-61 original source [#700](https://github.com/C8LyNn/RoboRougelike/pull/700) and [#710](https://github.com/C8LyNn/RoboRougelike/pull/710) proved two concurrently active gateways for same original #556 Light g10 could stage physically distinct mock worlds, and older gateway preview was accepted after new g11 commit.
+
+V3 **removes the unfenced 3-argument gateway constructor**: the real gateway requires a specifically acquired concrete `CanonicalWorldSlotLease`. This own sealed Unity-compatible pure C#9 authority uses **real OS FileStream(FileShare.None)** plus strong static process-local escrow keyed by **positive run ID + non-empty slot GUID + absolute private-root path**; duplicated same-slot gateway or cross-CLR process refused before stage. The lease token can only `BindOnce` to one gateway. Once bound it has NO public Dispose; active authority is retained while any partial/private or published world may remain. `TryCloseAfterPhysicalRetirement(Func<bool> allOwnedRootsDestroyed)` stops new mutations FIRST, deactivates/retires current published world, requires trusted physical proof of **all** published + partial Unity roots actually destroyed, and only then releases OS lock. If the callback returns false/throws, teardown fails or a foreign thread tries to release: fail closed and retain OS authority until proof or process termination. Static registry retains ownership even if Unity destroys the host MonoBehaviour. Valid different run or slot cannot steal exact owned identity.
+
+Restore/preview enforce real lease before callback/stage and again before physical activation and Commit. Before preview, read original authority checkpoint and verify **exact current published generation + selected source SHA256 fingerprint**, quarantine on mismatch or failed read (old owner after external checkpoint advanced cannot preview g10). Only original frozen #556 binary, original W06 Light ID 2310001 + Heavy ID 2310002 consumed bits, pre/post state and #685 tracked cleanup. Legitimate shutdown requires real physical owner providing truthful destruction callback; no implicit finalizer or partial `HasWorld=false` release.
+
+## Test commands (SOURCE, not native Unity)
+
+`dotnet run --project Tools/B01/B01-23/P17W20CanonicalSaveApi001/CanonicalApiSourceTests.csproj -c Release`
+
+`python -m unittest discover -s Tools/B01/B01-23/P17W20CanonicalSaveApi001 -p test_package.py -v`
+
+`python Tools/B01/B01-23/P17W20CanonicalSaveApi001/package.py build --archive dist/B0123CanonicalAuthorityV3_Original.zip`
+
+.NET8 strict C#9 compiles the ACTUAL original frozen #556 `DetachedSnapshotContract.cs` + W06 `DebrisImpulseCore.cs` and the NEW owner gateway + real new OS authority; genuine **FileShare.None** same CLR and separate child CLR process; duplicate token binding, wrong run, stale original disk generation+hash preview, abnormal/quarantined HasWorld=false, cleanup false/throw retaining original OS lock, proof-verified release and cross-process takeover, wrong thread rejection, restored Light/Heavy identities, old transaction tests. Native Unity/PhysX NOT_RUN.
+
+Original deterministic Git ZIP contains only owner new line source files + manifest and pins selected SHA #691, #681, #647 and actual frozen #556/W06 blob bytes. New source+meta 1 GUID, total 5 API unique GUID/1 asmdef. Physical scratch stage+rollback must protect foreign EMPTY directories, symlinks, dirty original bytes, old owner. Never stage into game scenes by automatic CI.
+
+## Important unresolved integration / threat boundary
+
+**This V3 is an executable security contract and owner-source real OS lease, NOT yet an actual private frozen #510 `Rig[]/AtomicDockLedger` Unity adapter.** Real #510 has no authorized public access to its private physics/ledger internals; do NOT reflect/private-field hack or edit its frozen sources. B01-23/20 must create a separate owner-approved new concrete Unity layer with real main-thread AI/GUI/physics quiescence, original socket/pivot/body identity capture, offstage private R2 ledger, verifiable deferred GameObject destruction and dual-world publication rollback. Such a Unity layer needs independent G0 and native G1.
+
+**B01-62 #669 and corrected #712** own the actual full original #556 Save payload+revision OS durability and an independent long-lived lock. The current V3 `.owner` is **not yet the same file/authority object as #712's physical `.lease`**. Importing both as independent complete authorities risks inconsistent admission/order and must stay **HOLD** until B01-62 produces a **single explicitly shared slot/path ownership bridge** with original cross-process root-run-GUID consistency, real entire-file+checkpoint one-envelope commits, one physical retirement callback, and independently verified lost durable ACK/#707 partial-stage cleanup. Do not claim #712 is already integrated in V3. B01-62 #709 optional trusted independently stored watermark only prevents external rollback if the attacker cannot restore it; SHA256 cannot authenticate malicious valid older source. Real hardware power-failure fsync and external restores not certified.
+
+Receivers: **B01-61/41** independently retest actual V3 original #710/#688 two-owner cross-CLR process and original #707 quorum/partial rig, #629/#637 ID/replay/rollback; **B01-40/62** formal exact Git ZIP byte/GUID/Unity serialized YAML and safe scratch G0, no co-install with losing alternates; **B01-60** user opt-in #667/#711 native Unity6000.3.14f1 real NUnit XML + Editor.log or **G1_NOT_RUN**; **B01-00** eventual Codex source offer after gates.
+
+Stages: IMPLEMENTED=YES; TESTED=CI_PENDING; QA_ACCEPTED=NO; READY_FOR_INTEGRATOR=NO; INTEGRATED=NO; RELEASED=NO. Source G0=PENDING, native G1=NOT_RUN, canonical full SaveLoad=HOLD, G2=HOLD, Codex ACK=NONE; integrator feedback=NOT_MEASURED.
