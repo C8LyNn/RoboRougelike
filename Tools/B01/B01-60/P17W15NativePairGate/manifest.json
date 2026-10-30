@@ -1,0 +1,35 @@
+{
+  "package_id": "B01-60-P17W15-REAL-NATIVE-PAIR-GATE",
+  "version": "4.0.0",
+  "owner": "B01-60",
+  "issue": 571,
+  "selected_gameplay": {
+    "pr": 510,
+    "sha": "d94400d95d13db7f27e1533df05c9292d5380431"
+  },
+  "selected_save_contract": {
+    "pr": 556,
+    "sha": "33094f154c7b91119b36d58aab285e6e83c5de57"
+  },
+  "baseline_qa": {
+    "pr": 567,
+    "sha": "4303e62b0339c6cdc828478a06b6e2c9c79e6e13",
+    "runner_git_blob": "919d8db76eb38d55e5b900f44692e23806f6900b"
+  },
+  "scope": [
+    "Tools/B01/B01-60/P17W12NativeSecureV2QA/runner.py",
+    "Tools/B01/B01-60/P17W15NativePairGate/README.md",
+    "Tools/B01/B01-60/P17W15NativePairGate/test_native_pair_gate.py",
+    "Tools/B01/B01-60/P17W15NativePairGate/manifest.json",
+    ".github/workflows/b01-60-p17w15-native-dual-suite-gate.yml"
+  ],
+  "bug": "native runner called two Unity Editor commands but previous original main only validated last PlayMode suite and could set G1 PASS when original EditMode failed",
+  "fix": "require genuine 6000.3.14f1 Editor.log and exact original NUnit test-case identities PER EACH EditMode/PlayMode suite and both result map keys before G1",
+  "test_kind": "REAL_FROZEN_PYTHON_MAIN_WITH_EXPLICITLY_SYNTHETIC_EDITOR_STUBS_AND_XML_NOT_UNITY",
+  "native_unity": "NOT_RUN_ON_CURRENT_HOST",
+  "save_host_bridge": "HOLD",
+  "G2": "HOLD",
+  "codex_ack": false,
+  "merged": false,
+  "rollback": "only W15 own QA paths/version; all producer/frozen prior receiver refs untouched"
+}
