@@ -22,14 +22,15 @@ W07 = "5dc838f3342083ebc78bbf8704053b996dac4a8a"
 W07_BLOB = "e65ca6134e0730c1a91a7f98cc1da286f6ff08f6"
 OLD_BLOB = "a7a2c69c80d43bf027f2b00896df72f892fa1a17"
 CORE = "Research/B01-25/P17/HAZARDPULSE001/PulseCore.cs"
+R2_CORE = "Research/B01-25/P17/HAZARDPULSE001R2/PulseCore.cs"
 W07_RUNNER = "Tools/B01/B01-60/P17W07/HazardPulseBoundaryQA/Program.cs"
 CI = ".github/workflows/b01-60-p17w09-hazard-phase-rework.yml"
 QA = "Tools/B01/B01-60/P17W09/HazardPhaseReworkGate/"
 OWN = {QA + f for f in (
     "BoundaryMatrix.cs", "Matrix.csproj", "FrozenW07.csproj",
     "retarget.py", "README.md", "manifest.json")} | {CI}
-ALLOWED_OWNER = ("Research/B01-25/P17/HAZARDPULSE001/",)
-ALLOWED_WORKFLOW = ".github/workflows/b01-25-w06-hazardpulse.yml"
+ALLOWED_OWNER = ("Research/B01-25/P17/HAZARDPULSE001R2/",)
+ALLOWED_WORKFLOW = ".github/workflows/b01-25-w09-hazardpulse-r2.yml"
 
 def git(*params: str) -> bytes:
     return subprocess.check_output(["git", "-C", str(ROOT), *params],
@@ -86,8 +87,11 @@ def main():
         fail_unless(bool(diff) and all(
             f.startswith(ALLOWED_OWNER) or f==ALLOWED_WORKFLOW for f in diff),
             "UNTRUSTED_CANDIDATE_SCOPE: "+repr(diff))
-        fail_unless(oid(cand,CORE)!=OLD_BLOB, "CANDIDATE_HAS_OLD_BUGGY_SOURCE_BLOB")
-    source = git("show", source_sha + ":" + CORE)
+        fail_unless(oid(cand,R2_CORE)!=OLD_BLOB, "CANDIDATE_HAS_OLD_BUGGY_SOURCE_BLOB")
+        # R1 remains immutable, and the revision must really be in the new versioned R2 path.
+        fail_unless(oid(cand,CORE)==OLD_BLOB, "CANDIDATE_MUTATED_FROZEN_R1")
+    source_path = R2_CORE if candidate else CORE
+    source = git("show", source_sha + ":" + source_path)
     # Generated files are deliberately ephemeral, solely in the B01-60 test directory.
     # No permanent source copy of B01-25 or W07 test is committed.
     (HERE/"GeneratedPulseCore.cs").write_bytes(source)
@@ -97,7 +101,8 @@ def main():
             "source_sha":source_sha,
             "original_sha":OLD,
             "original_blob":OLD_BLOB,
-            "source_blob":oid(source_sha,CORE),
+            "source_blob":oid(source_sha,source_path),
+            "source_path":source_path,
             "original_producer_git_files":len(producer_original),
             "frozen_w07_test_sha":W07,
             "frozen_w07_program_blob":W07_BLOB,
