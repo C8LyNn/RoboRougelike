@@ -1,0 +1,60 @@
+{
+  "package": "B01-25-SINKPLATE001",
+  "version": 1,
+  "metersPerCell": 1,
+  "description": "separate 6m collapsible central plate, 6m permanent bypass north, two terminal landing grounds",
+  "plate": {
+    "center": [
+      0,
+      0
+    ],
+    "size": [
+      6,
+      3
+    ],
+    "topY": 0,
+    "loweredY": -3
+  },
+  "safeBypass": {
+    "center": [
+      0,
+      4
+    ],
+    "size": [
+      6,
+      2
+    ],
+    "topY": 0
+  },
+  "westApproach": {
+    "center": [
+      -7,
+      0
+    ],
+    "size": [
+      8,
+      10
+    ]
+  },
+  "eastExit": {
+    "center": [
+      7,
+      0
+    ],
+    "size": [
+      8,
+      10
+    ]
+  },
+  "massKg": {
+    "light": 1.5,
+    "heavy": 12,
+    "threshold": 4
+  },
+  "seconds": {
+    "lightWarning": 0.8,
+    "heavyWarning": 0.35,
+    "dropped": 1.2,
+    "recovery": 0.4
+  }
+}
