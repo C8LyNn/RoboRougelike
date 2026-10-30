@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+ <PropertyGroup>
+  <TargetFramework>net8.0</TargetFramework><OutputType>Exe</OutputType>
+  <LangVersion>9.0</LangVersion><Nullable>enable</Nullable>
+  <TreatWarningsAsErrors>true</TreatWarningsAsErrors><EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+ </PropertyGroup>
+ <ItemGroup>
+ <Compile Include="Original/SingleFileSaveSlot.cs"/>
+ <Compile Include="Original/DetachedSnapshotContract.cs"/>
+ <Compile Include="Original/DebrisImpulseCore.cs"/>
+ <Compile Include="Original/SecureRigSpec.cs"/>
+ <Compile Include="ExternalReceiptFence.cs"/>
+ <Compile Include="Program.cs"/>
+ </ItemGroup>
+</Project>
