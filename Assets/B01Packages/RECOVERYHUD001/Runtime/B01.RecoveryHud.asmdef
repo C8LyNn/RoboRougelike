@@ -1,0 +1,16 @@
+{
+  "name": "B01.RecoveryHud",
+  "rootNamespace": "B01.RecoveryHud",
+  "references": [
+    "UnityEngine.UI"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
