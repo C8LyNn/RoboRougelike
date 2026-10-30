@@ -170,6 +170,9 @@ def decide(data: dict, changes: list[dict], base: str, head: str) -> dict:
             full = True
             reasons.append("MISSING_TARGET_MODULE_TEST_INVENTORY:" + module)
             continue
+        if not rec["has_runtime"] and not rec["assembly_names"]:
+            full = True
+            reasons.append("MISSING_TARGET_MODULE_TEST_INVENTORY:" + module)
         if not rec["has_runtime"]:
             full = True
             reasons.append("MODULE_RUNTIME_ASMDEF_MISSING:" + module)
