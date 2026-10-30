@@ -1,0 +1,53 @@
+name: B01-61 W10 - exact-source W09 public Reattach API negative QA
+on:
+  push:
+    branches: [qa/b01-61-p17w10-public-reattach-api-contract]
+  pull_request:
+    paths:
+      - "Tools/B01/B01-61/P17W10PublicReattachApiQA/**"
+      - "Assets/B0161PublicReattachQA/**"
+      - ".github/workflows/b01-61-p17w10-public-reattach-api.yml"
+  workflow_dispatch:
+jobs:
+  exact-original-safety-negative:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Exercise actual source pins, mutation fixtures and denied release contract
+        shell: bash
+        run: |
+          set +e
+          python Tools/B01/B01-61/P17W10PublicReattachApiQA/check.py --mode unit > w10-unit.log 2>&1
+          u=$?
+          cat w10-unit.log
+          python Tools/B01/B01-61/P17W10PublicReattachApiQA/check.py --mode evidence > w10-evidence.log 2>&1
+          e=$?
+          cat w10-evidence.log
+          python Tools/B01/B01-61/P17W10PublicReattachApiQA/check.py --mode release > w10-release.log 2>&1
+          g=$?
+          cat w10-release.log
+          printf 'UNIT_EXIT=%s EVIDENCE_EXIT=%s RELEASE_GATE_EXIT=%s NATIVE_UNITY=NOT_RUN\\n' "$u" "$e" "$g" | tee w10-status.txt
+          # Detection-suite SUCCESS is deliberately distinct from release readiness.
+          if [ "$u" != 0 ] || [ "$e" != 0 ] || [ "$g" != 3 ]; then
+            echo "QA_INFRA_OR_OBSERVATION_FAILURE"
+            exit 1
+          fi
+          echo "SOURCE_QA_EVIDENCE_PASS RELEASE_G0_HOLD"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b01-61-w10-public-api-negative-${{ matrix.os }}
+          path: |
+            w10-unit.log
+            w10-evidence.log
+            w10-release.log
+            w10-status.txt

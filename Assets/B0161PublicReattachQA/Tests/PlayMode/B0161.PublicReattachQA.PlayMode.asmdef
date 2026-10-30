@@ -1,0 +1,25 @@
+{
+  "name": "B0161.PublicReattachQA.PlayMode",
+  "rootNamespace": "B01.CodeXRegressionQA.PublicReattach",
+  "references": [
+    "B0123.DockHardening.Runtime",
+    "B0123.DebrisPlayground.Runtime",
+    "B0123.ReattachClearance.Runtime"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false,
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}
