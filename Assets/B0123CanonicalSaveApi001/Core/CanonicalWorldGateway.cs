@@ -62,6 +62,8 @@ namespace B01.CanonicalWorldApi001
         private readonly ICanonicalMutationGate gate;
         private readonly ICanonicalRigFactory factory;
         private readonly ICanonicalCommitPort durable;
+        private readonly CanonicalWorldSlotLease ownerLease;
+        private string publishedHash="";
         private ICanonicalStagedWorld? active;
         private RunSnapshot? accepted;
         private bool busy, quarantined;
@@ -69,12 +71,57 @@ namespace B01.CanonicalWorldApi001
         public bool HasWorld => active != null;
         public long Generation => accepted?.Generation ?? 0;
 
+        // No unfenced three-argument gateway constructor survives V3.
+        // A real OS FileShare.None slot lease must be held BEFORE any stage.
         public CanonicalWorldGateway(ICanonicalMutationGate gate,
-            ICanonicalRigFactory factory, ICanonicalCommitPort durable)
+            ICanonicalRigFactory factory, ICanonicalCommitPort durable,
+            CanonicalWorldSlotLease ownerLease)
         {
             this.gate=gate??throw new ArgumentNullException(nameof(gate));
             this.factory=factory??throw new ArgumentNullException(nameof(factory));
             this.durable=durable??throw new ArgumentNullException(nameof(durable));
+            this.ownerLease=ownerLease??throw new ArgumentNullException(nameof(ownerLease));
+            this.ownerLease.BindOnce(); // cannot share one physical lease across gateways
+        }
+        private bool HasAuthority => ownerLease.Live;
+        private bool CheckPublishedCheckpoint()
+        {
+            try
+            {
+                if(accepted==null||!HasAuthority||
+                    !durable.Read(accepted.RunId,out long onDisk,out string digest)||
+                    onDisk!=accepted.Generation||
+                    !string.Equals(digest,publishedHash,StringComparison.Ordinal))
+                {
+                    quarantined=true;return false;
+                }
+                return true;
+            }
+            catch{quarantined=true;return false;}
+        }
+        // Only a verified physical-world owner may release its own OS slot.
+        // In particular HasWorld=false after FAILED Prepare does NOT mean safe:
+        // a private partially constructed rig may remain alive. Keep OS lease
+        // escrowed until callback certifies ALL published + partial roots gone.
+        public bool TryCloseAfterPhysicalRetirement(Func<bool> allOwnedRootsDestroyed)
+        {
+            if(busy||allOwnedRootsDestroyed==null||
+                Thread.CurrentThread.ManagedThreadId!=mainThread||!HasAuthority)
+                return false;
+            busy=true;quarantined=true;
+            try
+            {
+                if(active!=null)
+                {
+                    active.Deactivate();
+                    active.Retire();
+                    active=null;accepted=null;
+                }
+                if(!allOwnedRootsDestroyed())return false;
+                return ownerLease.ReleaseVerified();
+            }
+            catch{return false;}
+            finally{busy=false;}
         }
         private bool Idle()
         {
@@ -102,16 +149,17 @@ namespace B01.CanonicalWorldApi001
         public bool TryCapturePreview(out byte[] bytes)
         {
             bytes=null!;
-            if(busy||quarantined||active==null||accepted==null)return false;
+            if(busy||quarantined||active==null||accepted==null||!HasAuthority)return false;
             // Acquire the transaction guard BEFORE calling any user-provided
             // quiescence callback; that callback may re-enter Save or Load.
             busy=true;
             try
             {
-                if(!Idle())return false;
+                if(!Idle()||!CheckPublishedCheckpoint())return false;
                 RunSnapshot now=active.Capture();
                 if(!SnapshotRules.Valid(now)||now.RunId!=accepted.RunId||
-                   now.Generation!=accepted.Generation||!Idle())return false;
+                   now.Generation!=accepted.Generation||!Idle()||
+                   !HasAuthority||!CheckPublishedCheckpoint())return false;
                 bytes=SnapshotCodec.Encode(now);return true;
             }
             catch{return false;}
@@ -120,6 +168,7 @@ namespace B01.CanonicalWorldApi001
         public CanonicalGateResult TryRestore(byte[] bytes,long expectedRun,long minimumGeneration)
         {
             if(quarantined)return CanonicalGateResult.RollbackQuarantine;
+            if(!HasAuthority){quarantined=true;return CanonicalGateResult.RollbackQuarantine;}
             if(busy)return CanonicalGateResult.HostBusy;
             // P0: the quiescence gate can synchronously re-enter this API.
             // Set busy BEFORE the first gate callback (which lives below).
@@ -136,10 +185,13 @@ namespace B01.CanonicalWorldApi001
                     // The first quiescence check must be INSIDE the busy lease.
                     // Check before decoding, reading disk or staging new physics.
                     if(!Idle()){result=CanonicalGateResult.HostBusy;break;}
+                    if(!HasAuthority){quarantined=true;
+                        result=CanonicalGateResult.RollbackQuarantine;break;}
                     if(!ColdRestore.TryStage(bytes,out ColdRestore? cold)||cold==null)
                     {result=CanonicalGateResult.InvalidSnapshot;break;}
                     RunSnapshot snap=cold.Snapshot;
-                    if(expectedRun<=0||snap.RunId!=expectedRun)
+                    if(expectedRun<=0||snap.RunId!=expectedRun||
+                       expectedRun!=ownerLease.RunId)
                     {result=CanonicalGateResult.WrongRun;break;}
                     if(minimumGeneration<=0||snap.Generation<minimumGeneration||
                        (accepted!=null&&snap.Generation<=accepted.Generation))
@@ -170,10 +222,14 @@ namespace B01.CanonicalWorldApi001
                     if(!Equivalent(staged.Capture(),snap))
                         throw new InvalidOperationException("Private ledger/physics preflight mismatch");
                     if(!Idle()){result=CanonicalGateResult.HostBusy;break;}
+                    if(!HasAuthority){quarantined=true;
+                        result=CanonicalGateResult.RollbackQuarantine;break;}
                     if(prior!=null){touchedPrior=true;prior.Deactivate();}
                     touchedNew=true;staged.Activate();
                     if(!Equivalent(staged.Capture(),snap))
                         throw new InvalidOperationException("Private ledger/physics post-activation mismatch");
+                    if(!HasAuthority){quarantined=true;
+                        result=CanonicalGateResult.RollbackQuarantine;break;}
                     if(!replay)
                     {
                         uncertainDurableCommit=true; // BEFORE any external write
@@ -188,7 +244,10 @@ namespace B01.CanonicalWorldApi001
                         quarantined=true;result=CanonicalGateResult.RollbackQuarantine;
                         break;
                     }
-                    active=staged;accepted=snap;staged=null;published=true;
+                    if(!HasAuthority){quarantined=true;
+                        result=CanonicalGateResult.RollbackQuarantine;break;}
+                    active=staged;accepted=snap;publishedHash=fp;
+                    staged=null;published=true;
                     uncertainDurableCommit=false;
                     result=CanonicalGateResult.Accepted;
                     if(prior!=null)
