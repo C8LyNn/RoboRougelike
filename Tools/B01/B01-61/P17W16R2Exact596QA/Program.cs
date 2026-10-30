@@ -177,7 +177,7 @@ static class W16 {
   int count=0;
   Check(h.TryLoad(Binary(5,false,true),RUN,1,()=>++count==1)==WorldSwapVerdict.HostBusy&&count==2,
     "host becomes busy mid-stage, source denies publication");
-  Check(h.Generation==4&&old.Active&&!old.Retired&&object.ReferenceEquals(old,f.Last)&&
+  Check(h.Generation==4&&old.Active&&!old.Retired&&f.Last.Retired&&!f.Last.Active&&
     h.IsConsumed(0,2310001)&&!h.IsConsumed(1,2310002),
     "no partial original physics/ledger swap on rejected input");
   denied+=4;
