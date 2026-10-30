@@ -26,7 +26,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Execute original Python source and 123 original cases including W12 runner OS and attempt tampering
+      - name: Execute original Python source and 172 original cases including W13 source-only handoff and G1/G2 ACK hard blockers
         run: python -m unittest discover -s Tools/B01/B01-00/W09/RECEIPT-LATCH-001 -p "test_*.py" -v
       - name: Run original CLI on safe HOLD example
         run: python Tools/B01/B01-00/W09/RECEIPT-LATCH-001/receipt_latch.py Tools/B01/B01-00/W09/RECEIPT-LATCH-001/example_hold.json
@@ -34,3 +34,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: python Tools/B01/B01-00/W09/RECEIPT-LATCH-001/github_live.py Tools/B01/B01-00/W09/RECEIPT-LATCH-001/example_hold.json --require-source-objects
+      - name: Execute W13 actual source-only OFFERED receipt without fake G1/G2 ACK
+        run: python Tools/B01/B01-00/W09/RECEIPT-LATCH-001/offer_protocol.py Tools/B01/B01-00/W09/RECEIPT-LATCH-001/offer_secure_v2_source_only.json --require-structural-offer
