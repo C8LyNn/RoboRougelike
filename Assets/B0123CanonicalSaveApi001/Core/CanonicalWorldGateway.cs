@@ -29,12 +29,24 @@ namespace B01.CanonicalWorldApi001
         void Deactivate();
         void Retire();
     }
+    public interface ICanonicalStageOwnership
+    {
+        // The factory MUST return this ownable staging handle BEFORE creating
+        // any Unity GameObject, Rigidbody, or private R2 ledger object.
+        // PrepareInactive may then throw, but this handle continues to own
+        // every partly constructed physical root, not just the final world.
+        ICanonicalStagedWorld PrepareInactive();
+        // Must CLEAN UP and VERIFY that no owned active/retired/deferred object
+        // can be resurrected. false or exception -> permanent quarantine.
+        bool CleanupUnpublishedAndVerifyDestroyed();
+    }
     public interface ICanonicalRigFactory
     {
         // The original #556 ColdRestore plan contains genuine frozen W06 ledger.
-        // Future owner-approved #510 port must create its own PRIVATE R2 ledger,
-        // not expose the frozen one or use reflection.
-        ICanonicalStagedWorld BuildInactive(RunSnapshot snapshot, ColdRestore ledgerPlan);
+        // BeginOwnedStage must only create an empty tracked staging handle:
+        // NO physical objects may be allocated before returning it.
+        ICanonicalStageOwnership BeginOwnedStage(RunSnapshot snapshot,
+            ColdRestore ledgerPlan);
     }
     public interface ICanonicalCommitPort
     {
@@ -112,6 +124,7 @@ namespace B01.CanonicalWorldApi001
             // P0: the quiescence gate can synchronously re-enter this API.
             // Set busy BEFORE the first gate callback (which lives below).
             busy=true;
+            ICanonicalStageOwnership? ownedStage=null;
             ICanonicalStagedWorld? staged=null, prior=active;
             bool touchedPrior=false,touchedNew=false,published=false;
             bool uncertainDurableCommit=false;
@@ -146,7 +159,13 @@ namespace B01.CanonicalWorldApi001
                         {result=CanonicalGateResult.InvalidSnapshot;break;}
                     }
                     if(result==CanonicalGateResult.InvalidSnapshot)break;
-                    staged=factory.BuildInactive(snap,cold);
+                    // The owner is returned BEFORE partial construction begins.
+                    // If PrepareInactive throws after allocating even one child
+                    // GameObject, finally still has an explicit cleanup handle.
+                    ownedStage=factory.BeginOwnedStage(snap,cold);
+                    if(ownedStage==null)
+                        throw new InvalidOperationException("No tracked staging owner");
+                    staged=ownedStage.PrepareInactive();
                     if(staged==null)throw new InvalidOperationException("Empty world stage");
                     if(!Equivalent(staged.Capture(),snap))
                         throw new InvalidOperationException("Private ledger/physics preflight mismatch");
@@ -194,6 +213,18 @@ namespace B01.CanonicalWorldApi001
                     {
                         try{if(touchedNew)staged.Deactivate();}catch{safe=false;}
                         try{staged.Retire();}catch{safe=false;}
+                    }
+                    // Even if PrepareInactive threw before returning staged,
+                    // the separate owned handle MUST retire every partly built
+                    // root and prove its physical destruction/quiescence.
+                    if(ownedStage!=null)
+                    {
+                        try
+                        {
+                            if(!ownedStage.CleanupUnpublishedAndVerifyDestroyed())
+                                safe=false;
+                        }
+                        catch{safe=false;}
                     }
                     if(touchedPrior&&prior!=null)
                     {

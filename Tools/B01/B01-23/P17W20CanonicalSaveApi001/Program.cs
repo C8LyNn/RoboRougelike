@@ -77,19 +77,50 @@ internal static class Tests
     {
         public World? Last;
         public bool FailStage,FailActivate,WrongAfterActivate;
+        public bool FailPrepareAfterAllocation,FailStageCleanup;
         public int Stages;
-        public ICanonicalStagedWorld BuildInactive(RunSnapshot snap,ColdRestore privateLedgerPlan)
+        public ICanonicalStageOwnership BeginOwnedStage(RunSnapshot snap,ColdRestore privateLedgerPlan)
         {
+            // No allocated physical world before the tracked handle exists.
             Stages++;
-            if(FailStage)throw new IOException("stage");
-            for(int i=0;i<FrozenPartCatalog.Slots;i++)
+            return new OwnedStage(this,snap,privateLedgerPlan);
+        }
+        sealed class OwnedStage : ICanonicalStageOwnership
+        {
+            readonly Factory factory;
+            readonly RunSnapshot snap;
+            readonly ColdRestore ledger;
+            World? ownedWorld;
+            public OwnedStage(Factory factory,RunSnapshot snap,ColdRestore ledger)
+            {this.factory=factory;this.snap=snap;this.ledger=ledger;}
+            public ICanonicalStagedWorld PrepareInactive()
             {
-                PersistedPart part=snap.Parts[i];
-                if(privateLedgerPlan.ContainsConsumedId(i,part.Id)!=part.Consumed)
-                    throw new InvalidDataException("original frozen W06 ledger mismatch");
+                if(factory.FailStage)throw new IOException("stage before allocations");
+                for(int i=0;i<FrozenPartCatalog.Slots;i++)
+                {
+                    PersistedPart part=snap.Parts[i];
+                    if(ledger.ContainsConsumedId(i,part.Id)!=part.Consumed)
+                        throw new InvalidDataException("original frozen W06 ledger mismatch");
+                }
+                ownedWorld=new World(snap){FailActivate=factory.FailActivate,
+                    WrongAfterActivate=factory.WrongAfterActivate};
+                factory.Last=ownedWorld;
+                if(factory.FailPrepareAfterAllocation)
+                {
+                    // #685: prepublication world lives but Prepare throws before
+                    // the coordinator receives a physical-world pointer.
+                    ownedWorld.Active=true;
+                    throw new IOException("Prepare failed AFTER allocating private rig");
+                }
+                return ownedWorld;
             }
-            Last=new World(snap){FailActivate=FailActivate,WrongAfterActivate=WrongAfterActivate};
-            return Last;
+            public bool CleanupUnpublishedAndVerifyDestroyed()
+            {
+                if(ownedWorld==null)return true;
+                if(factory.FailStageCleanup)throw new IOException("private world cleanup failed");
+                if(!ownedWorld.Retired){ownedWorld.Deactivate();ownedWorld.Retire();}
+                return ownedWorld.Retired&&!ownedWorld.Active;
+            }
         }
     }
     sealed class Disk : ICanonicalCommitPort
@@ -269,6 +300,33 @@ internal static class Tests
             return a.TryRestore(b,7,1)==CanonicalGateResult.Accepted&&
                 d.Read(7,out long gen,out _)&&gen==7&&f.Stages==1;
         }));
+        Check("W21 #685 prepare fails AFTER physical world allocated, tracked cleanup succeeds",()=>
+            Every((g,f,d,a)=>{
+                if(a.TryRestore(Save(true,false,10),7,1)!=CanonicalGateResult.Accepted)
+                    return false;
+                World? original=f.Last;
+                f.FailPrepareAfterAllocation=true;
+                var outcome=a.TryRestore(Save(false,true,11),7,1);
+                return outcome==CanonicalGateResult.HostException&&!a.Quarantined&&
+                    original!=null&&original.Active&&a.Generation==10&&
+                    f.Last!=null&&f.Last.Retired&&!f.Last.Active&&
+                    a.TryCapturePreview(out _)&&d.Read(7,out long gen,out _)&&gen==10;
+            }));
+        Check("W21 #685 prepare+Deactivate/Retire cleanup FAILS => sticky quarantine",()=>
+            Every((g,f,d,a)=>{
+                if(a.TryRestore(Save(true,false,10),7,1)!=CanonicalGateResult.Accepted)
+                    return false;
+                World? original=f.Last;
+                f.FailPrepareAfterAllocation=true;f.FailStageCleanup=true;
+                var outcome=a.TryRestore(Save(false,true,11),7,1);
+                return outcome==CanonicalGateResult.RollbackQuarantine&&a.Quarantined&&
+                    original!=null&&original.Active&&
+                    f.Last!=null&&f.Last.Active&&!f.Last.Retired&&
+                    a.Generation==10&&!a.TryCapturePreview(out _)&&
+                    a.TryRestore(Save(false,true,11),7,1)==
+                        CanonicalGateResult.RollbackQuarantine&&
+                    d.Read(7,out long gen,out _)&&gen==10;
+            }));
         Check("physical factory fails staging before prior world mutated",()=>Every((g,f,d,a)=>{
             if(a.TryRestore(Save(true,false,10),7,1)!=CanonicalGateResult.Accepted)return false;
             World? old=f.Last;f.FailStage=true;
