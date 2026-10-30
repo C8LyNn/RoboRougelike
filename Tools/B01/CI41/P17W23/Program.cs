@@ -192,7 +192,7 @@ internal static class Program
         // Exact independent-owner adversarial transition: both are live,
         // but storage exposes an independent public Dispose not bound to V3.
         store.Dispose();
-        Check(gateway.AuthorityActive&&gateway.HasWorld&&factory.Last.Active,
+        Check(gateway.AuthorityActive&&gateway.HasWorld&&factory.Last!=null&&factory.Last.Active,
               "V3 world still LIVE after independent storage .lease is released");
         RunPair(slotDir,Path.Combine(root,"after"),false);
         Check(gateway.AuthorityActive&&factory.Last!=null&&factory.Last.Active&&
