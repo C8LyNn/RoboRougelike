@@ -1,0 +1,52 @@
+name: B01-60 P17 W12 SOURCE PREFLIGHT for native Unity #510 receiver (real Unity NOT_RUN)
+on:
+  push:
+    branches: [qa/b01-60-p17w12-native-physx-receiver-510]
+    paths:
+      - 'Tools/B01/B01-60/P17W12NativeSecureV2QA/**'
+      - '.github/workflows/b01-60-p17w12-native-unity-readiness.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-60/P17W12NativeSecureV2QA/**'
+      - '.github/workflows/b01-60-p17w12-native-unity-readiness.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  physical-native-receiver-source-preflight:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch exactly the selected producer #510 and frozen V2/W06 Git objects
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin d94400d95d13db7f27e1533df05c9292d5380431
+          git fetch --no-tags origin 33a32b8bd9ab40467ab1a17b5684926a37dbd4d3
+          git fetch --no-tags origin cb2b3a76e84266e2730fffc4ab048c1039f0652f
+      - name: Build exact-original portable Unity 6000.3.14f1 project and verify 10 adversarial negatives (NOT native)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W12NativeSecureV2QA/runner.py --mode preflight 2>&1 | tee b01-60-w12-source-preflight.log
+          cp b01-60-w12-source-preflight.log qa-w12-v2-native-evidence/source-preflight.log
+      - name: Publish original Unity importable test project ZIP plus exact-source receipt and NOT_RUN declaration
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-60-w12-exact-510-native-receiver-NOT_RUN-${{ matrix.os }}
+          path: |
+            qa-w12-v2-native-evidence/
+            b01-60-w12-source-preflight.log
+          retention-days: 21
+          if-no-files-found: warn
