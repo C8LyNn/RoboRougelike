@@ -1,0 +1,89 @@
+name: B01-60 P17W15 prove BOTH Unity EditMode + PlayMode required (source-only QA G1 NOT_RUN)
+on:
+  push:
+    branches: [qa/b01-60-p17w15-native-dual-suite-atomic-gate-r4]
+    paths:
+      - 'Tools/B01/B01-60/P17W12NativeSecureV2QA/runner.py'
+      - 'Tools/B01/B01-60/P17W15NativePairGate/**'
+      - '.github/workflows/b01-60-p17w15-native-dual-suite-gate.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-60/P17W12NativeSecureV2QA/runner.py'
+      - 'Tools/B01/B01-60/P17W15NativePairGate/**'
+      - '.github/workflows/b01-60-p17w15-native-dual-suite-gate.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-original-W14-dual-suite-false-green-to-W15-fail-closed:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch immutable selected gameplay, frozen original native QA and original Save contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin d94400d95d13db7f27e1533df05c9292d5380431
+          git fetch --no-tags origin 33094f154c7b91119b36d58aab285e6e83c5de57
+          git fetch --no-tags origin 4303e62b0339c6cdc828478a06b6e2c9c79e6e13
+          git fetch --no-tags origin ed0234d8a3b1b3bc85f3d0a07bbe44b065c96508
+          git fetch --no-tags origin 5778023163d8b51d23abfebaa17119e21bd5e131
+          git fetch --no-tags origin 33a32b8bd9ab40467ab1a17b5684926a37dbd4d3
+          git fetch --no-tags origin cb2b3a76e84266e2730fffc4ab048c1039f0652f
+      - name: Execute actual original frozen W14 main false-G1 from six broken EditMode suites and new W15 safe validation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W15NativePairGate/test_native_pair_gate.py 2>&1 | tee b01-60-w15-dual-suite-qa.log
+          cp b01-60-w15-dual-suite-qa.log qa-w15-independent-native-pair-proof/stdout.log
+      - name: Regression previous W14 original XML case identity and corrupt log guards (not native)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W14NativeResultProof/test_native_result_gate.py 2>&1 | tee b01-60-w15-previous-result-parser-regression.log
+          cp b01-60-w15-previous-result-parser-regression.log qa-w15-independent-native-pair-proof/parser-regression.log
+      - name: Regression previous W13 original actual empty foreign directory failure and safe rollback
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W13NativeRollbackQA/audit.py 2>&1 | tee b01-60-w15-safe-rollback.log
+          cp b01-60-w15-safe-rollback.log qa-w15-independent-native-pair-proof/rollback-regression.log
+      - name: Same existing native #532 runner; missing editor exit 3, no real NUnit XML or Editor.log
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          python Tools/B01/B01-60/P17W12NativeSecureV2QA/runner.py --mode native --unity /B01/NO_ACTIVATED_UNITY_6000.3.14f1 --out qa-w15-unlicensed-source 2>&1 | tee b01-60-w15-real-native-NOT_RUN.log
+          native_exit="${PIPESTATUS[0]}"
+          set -e
+          if [ "$native_exit" -ne 3 ]; then echo "B01_60_W15_EXPECTED_NATIVE_NOT_RUN_EXIT_3_GOT=$native_exit"; exit 1; fi
+          grep -F 'B01_60_W12_NATIVE_NOT_RUN: authorized Unity executable missing' b01-60-w15-real-native-NOT_RUN.log
+          test ! -e qa-w15-unlicensed-source/EditMode.xml
+          test ! -e qa-w15-unlicensed-source/PlayMode.xml
+          test ! -e qa-w15-unlicensed-source/EditMode-Editor.log
+          test ! -e qa-w15-unlicensed-source/PlayMode-Editor.log
+          echo 'B01_60_W15_ACTUAL_NATIVE_EDIT_PLAY_G1_NOT_RUN_NO_XML_NO_EDITORLOG'
+          cp b01-60-w15-real-native-NOT_RUN.log qa-w15-independent-native-pair-proof/native-NOT_RUN.log
+      - name: Archive source-only and synthetic stub receipts (never Unity native)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-60-w15-native-dual-suite-sourceQA-NOT_NATIVE-${{ matrix.os }}
+          path: |
+            qa-w15-independent-native-pair-proof/
+            b01-60-w15-dual-suite-qa.log
+            b01-60-w15-previous-result-parser-regression.log
+            b01-60-w15-safe-rollback.log
+            b01-60-w15-real-native-NOT_RUN.log
+          retention-days: 21
+          if-no-files-found: warn
