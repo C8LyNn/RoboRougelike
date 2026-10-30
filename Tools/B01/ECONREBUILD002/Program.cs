@@ -105,6 +105,17 @@ static class Program
         Yes(first.TryAuthorizeResume(q,out why),"current owner snapshot authorized");
         Yes(!second.TryFinishChallenge("win-1",false,out why)&&
             why=="NOT_AUTHENTICATED_VICTORY","loss cannot advance");
+        // An authoritative later shop repricing must NOT mutate a previously paid quote.
+        var quoted=State(first);
+        var revised=quoted.Copy();
+        revised.Parts.Single(x=>x.Id==B).Purchase=130;
+        revised.Parts.Single(x=>x.Id==B).PaidQuote=90;
+        revised.Generation++;
+        Yes(disk.TryPublish(Owner,Run,quoted.Generation,revised,out why)==PublishResultV2.Committed,
+            "atomic host repricing "+why);
+        var repriced=State(second);
+        Yes(repriced.Pending.Single(x=>x.PartId==B).Charged==70&&repriced.Scrap==930,
+            "accepted quote frozen despite current price change");
         Yes(first.TryFinishChallenge("win-1",true,out why),"authenticated victory "+why);
         var won=State(second);
         Yes(won.Wins==1&&won.AppliedVictoryIds.SequenceEqual(new[]{"win-1"})&&
