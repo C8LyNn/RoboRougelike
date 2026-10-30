@@ -1,0 +1,87 @@
+name: B01-50 W21 CONTACTPRESSURE001 real production CSharp source and adapter
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-50/CONTACTPRESSURE001/**'
+      - '.github/workflows/b01-50-w21-contactpressure.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-original-csharp:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Validate exact nine original Git blobs and Unity GUID exclusivity
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p ci-evidence
+          ROOT=Tools/B01/B01-50/CONTACTPRESSURE001
+          count=0
+          while IFS=$'\t' read -r expected path; do
+            test -n "$expected" || continue
+            actual=$(git hash-object --no-filters "$path")
+            test "$expected" = "$actual" || { echo "OWN_GIT_BLOB_MISMATCH $path"; exit 1; }
+            count=$((count+1))
+            echo "ORIGINAL_SOURCE_BLOB_PASS $path"
+          done < "$ROOT/MANIFEST-GIT-BLOBS.tsv"
+          test "$count" -eq 9 || { echo "MANIFEST_WRONG_COUNT $count"; exit 1; }
+          python - <<'PY' | tee ci-evidence/guid_gate.txt
+          from pathlib import Path
+          import re
+          r=Path("Tools/B01/B01-50/CONTACTPRESSURE001")
+          guids=[]
+          for p in ("Core/ContactPressureMeter.cs","Unity/B0150OptionalContactPressureProbe.cs"):
+              meta=Path(str(r/p)+".meta")
+              assert (r/p).is_file() and meta.is_file(),p
+              s=meta.read_text()
+              assert "fileFormatVersion: 2" in s and "MonoImporter:" in s
+              m=re.search(r"^guid: ([0-9a-f]{32})$",s,re.M)
+              assert m,p
+              guids.append(m.group(1))
+          assert len(set(guids))==2
+          checked=0
+          for m in Path("Assets").rglob("*.meta"):
+              checked+=1
+              s=m.read_text(errors="replace")
+              for guid in guids:
+                  assert "guid: "+guid not in s,"GUID collision: "+str(m)
+          print("CONTACTPRESSURE_GUID_PASS 2/2; canonical Assets meta checked:",checked)
+          PY
+      - name: Execute actual ORIGINAL production CSharp core and Unity-facing adapter (surrogate surface)
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet --version | tee ci-evidence/dotnet_version.txt
+          dotnet run --project Tools/B01/B01-50/CONTACTPRESSURE001/tests/CONTACTPRESSURE.Tests.csproj --configuration Release -- --receipt ci-evidence/contactpressure_actual_source_tests.json 2>&1 | tee ci-evidence/contactpressure_actual_source_tests.log
+          python - <<'PY'
+          import json
+          p="ci-evidence/contactpressure_actual_source_tests.json"
+          r=json.load(open(p))
+          assert r["total"]==32 and r["passed"]==32 and r["failed"]==0,r
+          assert r["productionCoreExecuted"] and r["productionUnityAdapterExecutedWithExplicitSurrogate"]
+          assert r["unityApi"]=="SURROGATE_NOT_NATIVE_UNITY"
+          assert r["unityG1"]=="NOT_RUN" and r["physx"]=="NOT_RUN" and r["fpsGpu"]=="NOT_MEASURED"
+          print("CONTACTPRESSURE_EXACT_ORIGINAL_CSHARP_PASS 32/32; UNITY_NOT_RUN")
+          PY
+          git rev-parse HEAD > ci-evidence/exact_source_head.txt
+          sha256sum Tools/B01/B01-50/CONTACTPRESSURE001/Core/ContactPressureMeter.cs Tools/B01/B01-50/CONTACTPRESSURE001/Unity/B0150OptionalContactPressureProbe.cs > ci-evidence/production_sha256.txt
+      - name: Preserve original per-case .NET 8 compilation logs and JSON receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-50-W21-CONTACTPRESSURE-${{ matrix.os }}-${{ github.run_id }}
+          path: ci-evidence/
+          retention-days: 14
+          if-no-files-found: warn
