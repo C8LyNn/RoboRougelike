@@ -1,0 +1,23 @@
+name: B01-23 W25 independent real original #787 R3 Save path QA
+on:
+  push:
+    branches: [b01-23/p17w25-independent-787-strict-path-qa-r1]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-23/P17W25Independent787StrictPathQA001/**'
+      - '.github/workflows/b01-23-p17w25-independent-787-strict-path.yml'
+jobs:
+  independent:
+    strategy:
+      fail-fast: false
+      matrix: {os: [windows-2025, ubuntu-24.04]}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - run: dotnet run --project Tools/B01/B01-23/P17W25Independent787StrictPathQA001/Original787DirectQA.csproj -c Release
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - run: python -m unittest discover -s Tools/B01/B01-23/P17W25Independent787StrictPathQA001 -p test_provenance.py -v
