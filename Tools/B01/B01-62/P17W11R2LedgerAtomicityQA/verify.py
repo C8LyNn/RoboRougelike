@@ -88,6 +88,8 @@ def check(src):
         raise Drift("FROZEN_LEDGER_SEMANTICS_DRIFT")
     if not all(t in src["v2"] for t in ("public bool Reattach(int index) => DockGate().Reattach(index)", "private bool CommitDock(int index)")):
         raise Drift("V2_ROUTE_CONTRACT_DRIFT")
+    if any(token in r2+v2 for token in ("HasConsumedId", "TryReserveRearm", "RollbackDock", "UndoDock")):
+        raise Drift("NEW_TRANSACTION_IMPLEMENTATION_NEEDS_INDEPENDENT_REVIEW")
     r2shape=order_guard(src["r2"],"Reattach")
     v2shape=order_guard(src["v2"],"CommitDock")
     if "namespace B01.DebrisRepulse001" not in src["shim"]:
