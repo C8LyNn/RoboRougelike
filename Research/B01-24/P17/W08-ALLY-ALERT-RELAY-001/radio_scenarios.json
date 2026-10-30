@@ -1,0 +1,607 @@
+{
+  "schema": "B01-24-ALLY-ALERT-RELAY-001-v1",
+  "codexOriginalR3Blob": "66cd1ee734b129117b3753d1205469a0496cb673",
+  "provisionalPolicy": true,
+  "notes": "Host verified player visibility, no target acquisition from unconfirmed reports; all XZ points are source-supplied.",
+  "scenarios": [
+    {
+      "id": "scout-to-gunner",
+      "members": [
+        {
+          "id": 10,
+          "role": "Scout",
+          "xz": [
+            0,
+            0
+          ]
+        },
+        {
+          "id": 20,
+          "role": "Gunner",
+          "xz": [
+            15,
+            0
+          ]
+        }
+      ],
+      "steps": [
+        {
+          "tick": 0,
+          "members": [
+            {
+              "id": 10,
+              "role": "Scout",
+              "xz": [
+                0,
+                0
+              ],
+              "alive": true,
+              "visible": true,
+              "tx": true,
+              "rx": true
+            },
+            {
+              "id": 20,
+              "role": "Gunner",
+              "xz": [
+                15,
+                0
+              ],
+              "alive": true,
+              "visible": false,
+              "tx": true,
+              "rx": true
+            }
+          ],
+          "messages": [
+            {
+              "id": 11,
+              "sender": 10,
+              "tick": 0,
+              "point": [
+                12,
+                4
+              ]
+            }
+          ]
+        },
+        {
+          "tick": 1,
+          "members": [
+            {
+              "id": 10,
+              "role": "Scout",
+              "xz": [
+                0,
+                0
+              ],
+              "alive": true,
+              "visible": false,
+              "tx": true,
+              "rx": true
+            },
+            {
+              "id": 20,
+              "role": "Gunner",
+              "xz": [
+                15,
+                0
+              ],
+              "alive": true,
+              "visible": false,
+              "tx": true,
+              "rx": true
+            }
+          ],
+          "messages": []
+        },
+        {
+          "tick": 2,
+          "members": [
+            {
+              "id": 10,
+              "role": "Scout",
+              "xz": [
+                0,
+                0
+              ],
+              "alive": true,
+              "visible": false,
+              "tx": true,
+              "rx": true
+            },
+            {
+              "id": 20,
+              "role": "Gunner",
+              "xz": [
+                15,
+                0
+              ],
+              "alive": true,
+              "visible": false,
+              "tx": true,
+              "rx": true
+            }
+          ],
+          "messages": []
+        },
+        {
+          "tick": 5,
+          "members": [
+            {
+              "id": 10,
+              "role": "Scout",
+              "xz": [
+                0,
+                0
+              ],
+              "alive": true,
+              "visible": false,
+              "tx": true,
+              "rx": true
+            },
+            {
+              "id": 20,
+              "role": "Gunner",
+              "xz": [
+                15,
+                0
+              ],
+              "alive": true,
+              "visible": false,
+              "tx": true,
+              "rx": true
+            }
+          ],
+          "messages": []
+        },
+        {
+          "tick": 12,
+          "members": [
+            {
+              "id": 10,
+              "role": "Scout",
+              "xz": [
+                0,
+                0
+              ],
+              "alive": true,
+              "visible": false,
+              "tx": true,
+              "rx": true
+            },
+            {
+              "id": 20,
+              "role": "Gunner",
+              "xz": [
+                15,
+                0
+              ],
+              "alive": true,
+              "visible": false,
+              "tx": true,
+              "rx": true
+            }
+          ],
+          "messages": []
+        }
+      ]
+    },
+    {
+      "id": "receiver-jammed-at-arrival",
+      "members": [
+        {
+          "id": 10,
+          "role": "Scout",
+          "xz": [
+            0,
+            0
+          ]
+        },
+        {
+          "id": 20,
+          "role": "Gunner",
+          "xz": [
+            15,
+            0
+          ]
+        }
+      ],
+      "steps": [
+        {
+          "tick": 0,
+          "members": [
+            {
+              "id": 10,
+              "role": "Scout",
+              "xz": [
+                0,
+                0
+              ],
+              "alive": true,
+              "visible": true,
+              "tx": true,
+              "rx": true
+            },
+            {
+              "id": 20,
+              "role": "Gunner",
+              "xz": [
+                15,
+                0
+              ],
+              "alive": true,
+              "visible": false,
+              "tx": true,
+              "rx": true
+            }
+          ],
+          "messages": [
+            {
+              "id": 21,
+              "sender": 10,
+              "tick": 0,
+              "point": [
+                12,
+                4
+              ]
+            }
+          ]
+        },
+        {
+          "tick": 1,
+          "members": [
+            {
+              "id": 10,
+              "role": "Scout",
+              "xz": [
+                0,
+                0
+              ],
+              "alive": true,
+              "visible": false,
+              "tx": true,
+              "rx": true
+            },
+            {
+              "id": 20,
+              "role": "Gunner",
+              "xz": [
+                15,
+                0
+              ],
+              "alive": true,
+              "visible": false,
+              "tx": true,
+              "rx": true
+            }
+          ],
+          "messages": []
+        },
+        {
+          "tick": 2,
+          "members": [
+            {
+              "id": 10,
+              "role": "Scout",
+              "xz": [
+                0,
+                0
+              ],
+              "alive": true,
+              "visible": false,
+              "tx": true,
+              "rx": true
+            },
+            {
+              "id": 20,
+              "role": "Gunner",
+              "xz": [
+                15,
+                0
+              ],
+              "alive": true,
+              "visible": false,
+              "tx": true,
+              "rx": false
+            }
+          ],
+          "messages": []
+        },
+        {
+          "tick": 3,
+          "members": [
+            {
+              "id": 10,
+              "role": "Scout",
+              "xz": [
+                0,
+                0
+              ],
+              "alive": true,
+              "visible": false,
+              "tx": true,
+              "rx": true
+            },
+            {
+              "id": 20,
+              "role": "Gunner",
+              "xz": [
+                15,
+                0
+              ],
+              "alive": true,
+              "visible": false,
+              "tx": true,
+              "rx": true
+            }
+          ],
+          "messages": []
+        },
+        {
+          "tick": 4,
+          "members": [
+            {
+              "id": 10,
+              "role": "Scout",
+              "xz": [
+                0,
+                0
+              ],
+              "alive": true,
+              "visible": true,
+              "tx": true,
+              "rx": true
+            },
+            {
+              "id": 20,
+              "role": "Gunner",
+              "xz": [
+                15,
+                0
+              ],
+              "alive": true,
+              "visible": false,
+              "tx": true,
+              "rx": true
+            }
+          ],
+          "messages": [
+            {
+              "id": 22,
+              "sender": 10,
+              "tick": 4,
+              "point": [
+                12,
+                4
+              ]
+            }
+          ]
+        },
+        {
+          "tick": 6,
+          "members": [
+            {
+              "id": 10,
+              "role": "Scout",
+              "xz": [
+                0,
+                0
+              ],
+              "alive": true,
+              "visible": false,
+              "tx": true,
+              "rx": true
+            },
+            {
+              "id": 20,
+              "role": "Gunner",
+              "xz": [
+                15,
+                0
+              ],
+              "alive": true,
+              "visible": false,
+              "tx": true,
+              "rx": true
+            }
+          ],
+          "messages": []
+        }
+      ]
+    },
+    {
+      "id": "new-sighting-replaces-old",
+      "members": [
+        {
+          "id": 10,
+          "role": "Scout",
+          "xz": [
+            0,
+            0
+          ]
+        },
+        {
+          "id": 20,
+          "role": "Gunner",
+          "xz": [
+            15,
+            0
+          ]
+        }
+      ],
+      "steps": [
+        {
+          "tick": 0,
+          "members": [
+            {
+              "id": 10,
+              "role": "Scout",
+              "xz": [
+                0,
+                0
+              ],
+              "alive": true,
+              "visible": true,
+              "tx": true,
+              "rx": true
+            },
+            {
+              "id": 20,
+              "role": "Gunner",
+              "xz": [
+                15,
+                0
+              ],
+              "alive": true,
+              "visible": false,
+              "tx": true,
+              "rx": true
+            }
+          ],
+          "messages": [
+            {
+              "id": 31,
+              "sender": 10,
+              "tick": 0,
+              "point": [
+                12,
+                4
+              ]
+            }
+          ]
+        },
+        {
+          "tick": 2,
+          "members": [
+            {
+              "id": 10,
+              "role": "Scout",
+              "xz": [
+                0,
+                0
+              ],
+              "alive": true,
+              "visible": false,
+              "tx": true,
+              "rx": true
+            },
+            {
+              "id": 20,
+              "role": "Gunner",
+              "xz": [
+                15,
+                0
+              ],
+              "alive": true,
+              "visible": false,
+              "tx": true,
+              "rx": true
+            }
+          ],
+          "messages": []
+        },
+        {
+          "tick": 3,
+          "members": [
+            {
+              "id": 10,
+              "role": "Scout",
+              "xz": [
+                0,
+                0
+              ],
+              "alive": true,
+              "visible": true,
+              "tx": true,
+              "rx": true
+            },
+            {
+              "id": 20,
+              "role": "Gunner",
+              "xz": [
+                15,
+                0
+              ],
+              "alive": true,
+              "visible": false,
+              "tx": true,
+              "rx": true
+            }
+          ],
+          "messages": [
+            {
+              "id": 32,
+              "sender": 10,
+              "tick": 3,
+              "point": [
+                -6,
+                7
+              ]
+            }
+          ]
+        },
+        {
+          "tick": 5,
+          "members": [
+            {
+              "id": 10,
+              "role": "Scout",
+              "xz": [
+                0,
+                0
+              ],
+              "alive": true,
+              "visible": false,
+              "tx": true,
+              "rx": true
+            },
+            {
+              "id": 20,
+              "role": "Gunner",
+              "xz": [
+                15,
+                0
+              ],
+              "alive": true,
+              "visible": false,
+              "tx": true,
+              "rx": true
+            }
+          ],
+          "messages": []
+        },
+        {
+          "tick": 15,
+          "members": [
+            {
+              "id": 10,
+              "role": "Scout",
+              "xz": [
+                0,
+                0
+              ],
+              "alive": true,
+              "visible": false,
+              "tx": true,
+              "rx": true
+            },
+            {
+              "id": 20,
+              "role": "Gunner",
+              "xz": [
+                15,
+                0
+              ],
+              "alive": true,
+              "visible": false,
+              "tx": true,
+              "rx": true
+            }
+          ],
+          "messages": []
+        }
+      ]
+    }
+  ]
+}
