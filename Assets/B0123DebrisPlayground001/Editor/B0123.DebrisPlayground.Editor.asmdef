@@ -1,0 +1,19 @@
+{
+  "name": "B0123.DebrisPlayground.Editor",
+  "rootNamespace": "B01.DebrisPlayground001",
+  "references": [
+    "B0123.DebrisPlayground.Runtime",
+    "B0123.DebrisRepulse.Runtime"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
