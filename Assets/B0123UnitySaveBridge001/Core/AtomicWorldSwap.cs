@@ -61,7 +61,9 @@ namespace B01.UnitySaveBridge001
                 RunSnapshot snap=current.Capture();
                 if(!SnapshotRules.Valid(snap)||snap.RunId!=expectedRun||
                    snap.Generation!=currentCold.Snapshot.Generation)return false;
-                if(!Consistent(snap,currentCold.Snapshot))return false;
+                // Motion legitimately changes detached world poses/velocities after Load.
+                // Only immutable identity, authority and detached/consumed coupling must match.
+                if(!SameIdentityAndLedger(snap,currentCold.Snapshot))return false;
                 byte[] pending=SnapshotCodec.Encode(snap);
                 if(!Idle(hostIdle))return false;
                 bytes=pending;
@@ -152,6 +154,20 @@ namespace B01.UnitySaveBridge001
             }
         }
 
+        private static bool SameIdentityAndLedger(RunSnapshot a,RunSnapshot b)
+        {
+            if(!SnapshotRules.Valid(a)||!SnapshotRules.Valid(b)||
+               a.RunId!=b.RunId||a.Generation!=b.Generation)return false;
+            for(int i=0;i<FrozenPartCatalog.Slots;i++)
+            {
+                PersistedPart x=a.Parts[i], y=b.Parts[i];
+                if(x.Id!=y.Id||x.OwnerId!=y.OwnerId||x.ParentId!=y.ParentId||
+                   x.AssetGuid!=y.AssetGuid||x.SocketGuid!=y.SocketGuid||
+                   x.State!=y.State||x.Consumed!=y.Consumed||
+                   x.Kinematic!=y.Kinematic||!Close(x.MassKg,y.MassKg))return false;
+            }
+            return true;
+        }
         // Strict identity/state equivalence (Unity float roundtrips allowed 1e-4);
         // checks original W06 consumed bit, parents, mass and all physical axes.
         public static bool Consistent(RunSnapshot a,RunSnapshot b)
