@@ -1,0 +1,81 @@
+name: B01-41 W25 exact #773 candidate raw public Store casefold original OS witness
+on:
+  push:
+    branches: [ci/b01-41-p17w25-773-canonical-casefold-real-os]
+    paths:
+      - 'Tools/B01/CI41/P17W25/**'
+      - '.github/workflows/b01-41-p17w25-773-casefold-os-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-original-candidate773:
+    name: Original #773 raw physical path and 26 external CLR (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: 18 independent anti-mock original source controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
+          "$PY" -m unittest discover -s Tools/B01/CI41/P17W25/ -p test_source_guard.py -v 2>&1 | tee "ci41-w25-python-${{ runner.os }}.txt"
+          grep -q 'Ran 18 tests' "ci41-w25-python-${{ runner.os }}.txt"
+          grep -q 'OK' "ci41-w25-python-${{ runner.os }}.txt"
+      - name: Stage only exact immutable original #669 legacy client negative
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121
+          mkdir -p Tools/B01/CI41/P17W25/.original
+          git show d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121:Tools/B01/B01-62/P17W20SingleFileSaveSlot/SingleFileSaveSlot.cs > Tools/B01/CI41/P17W25/.original/SingleFileSaveSlotV1.cs
+          test "$(git hash-object Tools/B01/CI41/P17W25/.original/SingleFileSaveSlotV1.cs)" = db7745635164d9eb6b10f3246538700158130b7b
+      - name: Guard seven only-new CI41 paths and exact producer #773 Git SHA blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
+          "$PY" Tools/B01/CI41/P17W25/source_guard.py "ci41-w25-git-${{ runner.os }}.json"
+          "$PY" -c 'import json,sys;x=json.load(open(sys.argv[1]));assert x["status"]=="SELECTED_ORIGINAL_SHA_AND_TEST_SCOPE_PASS" and x["selected_source"]["sha"]=="3aaaec4027ee246fbfb6f209179f0e9507363473" and len(x["added_owned_paths"])==7 and x["expected_real_pair_races_each_os"]==13 and x["G1"]=="NOT_RUN";print("CI41_W25_EXACT_773_7_OWN_PATHS_PROVEN")' "ci41-w25-git-${{ runner.os }}.json"
+      - name: Compile exact producer #773 and original frozen #729 #556 W06 CSharp9
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build Tools/B01/CI41/P17W25/Original773CasefoldOSQA.csproj -c Release --warnaserror 2>&1 | tee "ci41-w25-build-${{ runner.os }}.txt"
+          grep -q 'Build succeeded' "ci41-w25-build-${{ runner.os }}.txt"
+      - name: ACTUAL exact #773 raw Store casefold OS negative and 26 child CLR regression
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run -c Release --no-build --project Tools/B01/CI41/P17W25/Original773CasefoldOSQA.csproj 2>&1 | tee "ci41-w25-real-${{ runner.os }}.txt"
+          grep -q 'CI41_W25_CANDIDATE_773_SELECTED_LINEAGE_ORIGINAL_OS_QA_PASS assertions=' "ci41-w25-real-${{ runner.os }}.txt"
+          grep -q 'barrier_pairs=13 child_processes=26' "ci41-w25-real-${{ runner.os }}.txt"
+          grep -q 'CI41_W25_REAL_OS_SOURCE_ONLY_PRODUCT_CASEFOLD_RED_UNITY_G1_NOT_RUN_G2_HOLD' "ci41-w25-real-${{ runner.os }}.txt"
+          if [ "$RUNNER_OS" = Linux ]; then
+            grep -q 'CI41_W25_773_LINUX_RAW_PUBLIC_CASE_ALIAS_P0_REPRODUCED_PRODUCT_RED' "ci41-w25-real-${{ runner.os }}.txt"
+          else
+            grep -q 'CI41_W25_773_WINDOWS_CASE_INSENSITIVE_COLD_REOPEN_OK' "ci41-w25-real-${{ runner.os }}.txt"
+          fi
+      - name: Preserve original source/P0 logs NOT Unity native evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CI41-W25-ORIGINAL-773-CASEFOLD-PRODUCT-RED-NOT-UNITY-${{ runner.os }}
+          path: |
+            ci41-w25-python-${{ runner.os }}.txt
+            ci41-w25-git-${{ runner.os }}.json
+            ci41-w25-build-${{ runner.os }}.txt
+            ci41-w25-real-${{ runner.os }}.txt
+          retention-days: 14
+          if-no-files-found: warn
