@@ -24,7 +24,7 @@
     "Assets/B0125SafeRoute001/Runtime.meta": "55119b8ad1543bff2a8dc2386c8c5251b2466d3f",
     "Assets/B0125SafeRoute001/Runtime/B0125.SafeRoute.Runtime.asmdef": "42f2a00b10fcbb6bc744fcdf0055d6de8086b77a",
     "Assets/B0125SafeRoute001/Runtime/B0125.SafeRoute.Runtime.asmdef.meta": "943ce2dcbf6253c5c6b27c50a411cdcdb452af7a",
-    "Assets/B0125SafeRoute001/Runtime/SafeRouteCore.cs": "a3d4c5974c2c68af084a0fdb04d83afe036cbc51",
+    "Assets/B0125SafeRoute001/Runtime/SafeRouteCore.cs": "943f4447987ef6172f503cab6d56f4c0bf58b4c9",
     "Assets/B0125SafeRoute001/Runtime/SafeRouteCore.cs.meta": "d4ad2af34e17f5a22d9964d514942c7d798f29dd",
     "Assets/B0125SafeRoute001/Runtime/SafeRouteExample.cs": "27e3ca8e96957e1de91c5fedb462e10cfb3580bb",
     "Assets/B0125SafeRoute001/Runtime/SafeRouteExample.cs.meta": "7d613221f92233a1172f04692f005d5808ae615c",
@@ -38,7 +38,7 @@
     "Assets/B0125SafeRoute001/Tests/PlayMode/SafeRouteNativePlayModeTests.cs.meta": "dcf257ebd2fb80fceb5fe5b115bd7c846400871d",
     "Research/B01-25/P17/SAFEROUTE001/.gitignore": "6943b188d80a5efce450393ae612928f653e0876",
     "Research/B01-25/P17/SAFEROUTE001/Program.cs": "13cfe18b53df7c159d9a40331823c3887d864613",
-    "Research/B01-25/P17/SAFEROUTE001/SafeRouteCore.cs": "a3d4c5974c2c68af084a0fdb04d83afe036cbc51",
+    "Research/B01-25/P17/SAFEROUTE001/SafeRouteCore.cs": "943f4447987ef6172f503cab6d56f4c0bf58b4c9",
     "Research/B01-25/P17/SAFEROUTE001/SafeRouteExample.cs": "27e3ca8e96957e1de91c5fedb462e10cfb3580bb",
     "Research/B01-25/P17/SAFEROUTE001/SafeRouteRuntime.csproj": "ca5156550bbd90a0ec1ae5e4f536e2cc997bec4f",
     "Research/B01-25/P17/SAFEROUTE001/SafeRouteTests.csproj": "be07c16058c40ec19812dac2e1fec5a877b9b33c",
@@ -54,5 +54,6 @@
   "released": false,
   "g2": "HOLD",
   "limits": "Native PhysX collision/clearance NOT_RUN; BFS route clearance conservative but not full compound vehicle collision path; staging cannot claim canonical game integration",
-  "rollback": "Only original 21 Unity source/meta files installed to disposable clean Unity checkout, refusal existing paths/symlinks; unlink ONLY newly staged own files, no directory deletions or frozen source edits."
+  "rollback": "Only original 21 Unity source/meta files installed to disposable clean Unity checkout, refusal existing paths/symlinks; unlink ONLY newly staged own files, no directory deletions or frozen source edits.",
+  "sourceFix": "Original net8.0 test compile CS8765 under Nullable enable: corrected Equals(object?) override in exact same research+Unity core; first failing CI never claimed product PASS"
 }

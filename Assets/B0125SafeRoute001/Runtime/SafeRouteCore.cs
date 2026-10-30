@@ -8,7 +8,7 @@ namespace B01.LevelChallenges.SafeRoute
         public readonly int X,Z;
         public GridCell(int x,int z){X=x;Z=z;}
         public bool Equals(GridCell other)=>X==other.X&&Z==other.Z;
-        public override bool Equals(object obj)=>obj is GridCell c&&Equals(c);
+        public override bool Equals(object? obj)=>obj is GridCell c&&Equals(c);
         public override int GetHashCode()=>unchecked((X*397)^Z);
         public override string ToString()=>X+","+Z;
     }
