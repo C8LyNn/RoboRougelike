@@ -1,0 +1,24 @@
+name: B01-00 P17 W06 independent dispatch tool
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-00/W06/DISPATCH-001/**'
+      - '.github/workflows/b01-00-dispatch-w06.yml'
+  workflow_dispatch:
+
+jobs:
+  dispatch:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Original source 22 unit tests
+        run: python -m unittest discover -s Tools/B01/B01-00/W06/DISPATCH-001 -p "test_*.py" -v
+      - name: Produce deterministic example plan
+        run: python Tools/B01/B01-00/W06/DISPATCH-001/dispatch.py --snapshot Tools/B01/B01-00/W06/DISPATCH-001/snapshot_wave06.example.json --claims-dir temp-b01-00-claims plan
