@@ -1,0 +1,58 @@
+name: B01-61 W11 original R2 atomic V2+W06 ledger green retest (Unity NOT_RUN)
+on:
+  push:
+    branches: [qa/b01-61-p17w11-v2-atomic-r2-current]
+    paths:
+      - 'Tools/B01/B01-61/P17W11AtomicR2Acceptance/**'
+      - '.github/workflows/b01-61-p17w11-v2-atomic-r2-green.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-61/P17W11AtomicR2Acceptance/**'
+      - '.github/workflows/b01-61-p17w11-v2-atomic-r2-green.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-R2-host-original-W06-ledger-atomic-regression:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Exact immutable R2 Git source pins, original W06 and QA-only scope
+        shell: bash
+        run: |
+          set -o pipefail
+          python Tools/B01/B01-61/P17W11AtomicR2Acceptance/verify_source.py 2>&1 | tee b01-61-r2-provenance.log
+      - name: Compile actual original R2 CSharp9 Unity host and original W06 ledger with QA-only Unity API stub
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet build Tools/B01/B01-61/P17W11AtomicR2Acceptance/OriginalR2AtomicHostQA.csproj -c Release --warnaserror 2>&1 | tee b01-61-r2-build.log
+      - name: Execute all three original public APIs, original ledger and transactional failures
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet run --no-build -c Release --project Tools/B01/B01-61/P17W11AtomicR2Acceptance/OriginalR2AtomicHostQA.csproj 2>&1 | tee b01-61-r2-atomic-source.log
+      - name: Preserve original results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-61-r2-original-host-${{ matrix.os }}
+          path: |
+            b01-61-r2-provenance.log
+            b01-61-r2-build.log
+            b01-61-r2-atomic-source.log
+          if-no-files-found: warn
+          retention-days: 21
