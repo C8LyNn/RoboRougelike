@@ -37,7 +37,10 @@ jobs:
         run: |
           test "$(git rev-parse HEAD:Assets/B01Packages/ECONREBUILD001/Runtime/RebuildQueueService.cs)" = "cac95b28647528a7a46cb818c6d78037dc3e80a2"
           test "$(git rev-parse HEAD:Tools/B01/ECONREBUILD001/tests/UnityJsonShim.cs)" = "2189c750566d692361702268580a93d3b660536f"
-          git diff --exit-code HEAD^ HEAD -- Assets/B01Packages/ECONREBUILD001 Tools/B01/ECONREBUILD001
+          if ! git cat-file -e 12572117a3dce369257feabc57021cde58023369^{commit} 2>/dev/null; then
+            git fetch --no-tags --depth=1 origin 12572117a3dce369257feabc57021cde58023369
+          fi
+          git diff --exit-code 12572117a3dce369257feabc57021cde58023369 HEAD -- Assets/B01Packages/ECONREBUILD001 Tools/B01/ECONREBUILD001
           python3 - <<'PY'
           import json, subprocess
           p = 'Tools/B01/ECONREBUILD002/manifest.json'
@@ -46,7 +49,7 @@ jobs:
           for path, sha in m['verified_blob_sha1'].items():
               actual = subprocess.check_output(['git','rev-parse','HEAD:'+path], text=True).strip()
               assert actual == sha, (path,actual,sha)
-          paths = set(subprocess.check_output(['git','diff','--name-only','HEAD^','HEAD'], text=True).splitlines())
+          paths = set(subprocess.check_output(['git','diff','--name-only',m['source_parent_commit'],'HEAD'], text=True).splitlines())
           assert paths == set(m['owned_paths']), (sorted(paths),sorted(m['owned_paths']))
           assert m['native_unity'] == 'NOT_RUN' and m['release_gate'] == 'HOLD'
           print('PASS MANIFEST exact original V2 owned blobs and 11 scoped paths')
