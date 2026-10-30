@@ -44,7 +44,7 @@ internal static class Program
         Test("negative hit count invalid",()=>DockClearancePolicy.Evaluate(true,true,1,3,-1,64,.005,Empty)==DockVerdict.InvalidInput);
         Test("hit mismatch invalid",()=>Check(returned:1)==DockVerdict.InvalidInput);
         Test("hit count > capacity invalid",()=>Check(returned:65,capacity:64)==DockVerdict.InvalidInput);
-        Test("null contacts invalid",()=>DockClearancePolicy.Evaluate(true,true,1,3,0,64,.005,null)==DockVerdict.InvalidInput);
+        Test("null contacts invalid",()=>DockClearancePolicy.Evaluate(true,true,1,3,0,64,.005,null!)==DockVerdict.InvalidInput);
         Test("capacity full fails closed",()=>{
             var hits=new List<ContactObservation>();
             for(int i=0;i<64;i++)hits.Add(Own);
