@@ -5,7 +5,7 @@
   "owner": "B01-00",
   "producer_agent": "B01-00",
   "issue": 731,
-  "purpose": "W24 LIVE GitHub 15 PR HEADs + 11 exact real Actions + 5 approved owner policies. Keep historical selected #749 and ALT #753/#741. Exact original #749 public-store fork #767 PRODUCT P0 RED and #773 new producer source repair candidate NOT_SELECTED. Independent #758/#768 and #766 source-only QA greens scoped, full game G0/Unity G1 HOLD; 80 new W24 tests (W23 846 + W24 80 =926). W25 urgent P0 dispatch ready.",
+  "purpose": "W24 LIVE GitHub 13 PR HEADs + 9 exact real Actions + 5 approved owner policies. Keep historical selected #749 and ALT #753/#741. Exact original #749 public-store fork #767 PRODUCT P0 RED and #773 new producer source repair candidate NOT_SELECTED. Independent #758/#768 and #766 source-only QA greens scoped, full game G0/Unity G1 HOLD; 80 new W24 tests (W23 846 + W24 80 =926). W25 urgent P0 dispatch ready.",
   "source_base_branch": "main",
   "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
   "source_branch": "b01-00/p17w09-receipt-latch-001",
@@ -893,7 +893,7 @@
       "note": "Read exact final Actions both OS including authentic live read-only GitHub before claiming PASS"
     },
     {
-      "name": "W24 final original source 926 cases each OS with LIVE 15 PRs+11 Actions and new #767 P0/source #773 correction",
+      "name": "W24 final original source 926 cases each OS with LIVE 13 PRs+9 Actions and new #767 P0/source #773 correction",
       "status": "NOT_RUN",
       "total": 926,
       "platforms": [
@@ -1410,8 +1410,8 @@
         "source": "INDEPENDENT_5_EACH_OS_GEN4_TO5_GREEN_SCOPE_ONLY",
         "formal_fixture_g0": "NEW_750_PENDING_NOT_732"
       },
-      "live_prs": 15,
-      "live_original_actions": 11,
+      "live_prs": 13,
+      "live_original_actions": 9,
       "source_unit_cases_added_w24": 80,
       "cumulative_original_source_cases_each_os": 926,
       "negative_749_public_store_p0": {
