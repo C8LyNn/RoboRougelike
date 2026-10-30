@@ -1,0 +1,30 @@
+{
+  "package": "B01-11-RESTORE-PREVIEW-001/R1",
+  "files": [
+    {
+      "path": "Research/B01-11/P17/W20-RESTORE-PREVIEW-001/restore_preview.js",
+      "bytes": 6583,
+      "sha256": "bc32fb12c2994e98a8629570bc4271ca29e936950ec1cd8fa390e23da4e352e3"
+    },
+    {
+      "path": "Research/B01-11/P17/W20-RESTORE-PREVIEW-001/test_restore_preview.cjs",
+      "bytes": 10316,
+      "sha256": "e14f31328e564d56b955197b9a5d5ea1d10ae5f1cb572e28e6444a677284088c"
+    },
+    {
+      "path": "Research/B01-11/P17/W20-RESTORE-PREVIEW-001/index.html",
+      "bytes": 5443,
+      "sha256": "debdce3a689eed45bc47b46a10afae46b02dffb671f6b7b9d5931ffefd97195b"
+    },
+    {
+      "path": "Research/B01-11/P17/W20-RESTORE-PREVIEW-001/README.md",
+      "bytes": 3361,
+      "sha256": "ba7795e7a005a01a1f1f32bc0e68849ff34604042a07b4cf82feefdfc1d7e75e"
+    },
+    {
+      "path": ".github/workflows/b01-11-p17w20-restore-preview-001.yml",
+      "bytes": 716,
+      "sha256": "400c2829b3713bd54e3d337ae75736523b2ee48d2086e2ec54744577817dc7c4"
+    }
+  ]
+}
