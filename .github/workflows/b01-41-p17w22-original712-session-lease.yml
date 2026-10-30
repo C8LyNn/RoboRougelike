@@ -1,0 +1,87 @@
+name: B01-41 W22 original #712 #707 physical OS crossprocess session lease escrow QA
+on:
+  push:
+    branches: [ci/b01-41-p17w22-712-independent-session-leases]
+    paths:
+      - 'Tools/B01/CI41/P17W22/**'
+      - '.github/workflows/b01-41-p17w22-original712-session-lease.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  actual-selected-r2-lease:
+    name: Original #712 + #691 + #669 true two-process orphan escrow (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Run 18 independent malicious security source-control checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
+          "$PY" -m unittest discover -s Tools/B01/CI41/P17W22/ -p test_source_guard.py -v 2>&1 | tee "ci41-w22-python-${{ runner.os }}.txt"
+          grep -q 'Ran 18 tests' "ci41-w22-python-${{ runner.os }}.txt"
+          grep -q 'OK' "ci41-w22-python-${{ runner.os }}.txt"
+      - name: Stage EXACT original owner Git commits and SHA blobs into isolated CI41 .source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin \
+            809f82575c638e1b4d2806b5f417bddab6c0871a \
+            d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121 \
+            33094f154c7b91119b36d58aab285e6e83c5de57 \
+            d94400d95d13db7f27e1533df05c9292d5380431 \
+            cc7f73541517a18f4479bb155534bd4832d9985e
+          mkdir -p Tools/B01/CI41/P17W22/.source
+          git show 809f82575c638e1b4d2806b5f417bddab6c0871a:Assets/B0123CanonicalSaveApi001/Core/CanonicalWorldGateway.cs > Tools/B01/CI41/P17W22/.source/CanonicalWorldGatewayV2.cs
+          git show d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121:Tools/B01/B01-62/P17W20SingleFileSaveSlot/SingleFileSaveSlot.cs > Tools/B01/CI41/P17W22/.source/SingleFileSaveSlot.cs
+          git show 33094f154c7b91119b36d58aab285e6e83c5de57:Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs > Tools/B01/CI41/P17W22/.source/DetachedSnapshotContract.cs
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs > Tools/B01/CI41/P17W22/.source/DebrisImpulseCore.cs
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs > Tools/B01/CI41/P17W22/.source/SecureRigSpec.cs
+      - name: Independently require exact-original Git source authority and 7 new owned QA paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
+          "$PY" Tools/B01/CI41/P17W22/source_guard.py --output "ci41-w22-original-receipt-${{ runner.os }}.json"
+          "$PY" -c 'import json,sys;x=json.load(open(sys.argv[1]));assert x["status"]=="EXACT_SOURCE_GIT_SCOPE_PASS" and len(x["new_exclusive_ci41_paths"])==7 and x["native_unity"]=="NOT_RUN" and x["expected_child_CLR"]==20 and x["g2"]=="HOLD";print("CI41_W22_ALL_ORIGINAL_GIT_SHAS_AND_SEVEN_NEW_PATHS_VERIFIED")' "ci41-w22-original-receipt-${{ runner.os }}.json"
+      - name: Strictly compile actual original selected R2 #712 with genuine #691 #669 #556 W06 CSharp9
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build Tools/B01/CI41/P17W22/Original712SessionLeaseQA.csproj -c Release --warnaserror 2>&1 | tee "ci41-w22-build-${{ runner.os }}.txt"
+          grep -q 'Build succeeded' "ci41-w22-build-${{ runner.os }}.txt"
+      - name: EXECUTE 10 true competing two-process OS lease races plus #707 partial-world rollback
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --no-build -c Release --project Tools/B01/CI41/P17W22/Original712SessionLeaseQA.csproj 2>&1 | tee "ci41-w22-os-${{ runner.os }}.txt"
+          grep -q 'CI41_W22_ORIGINAL_712_707_SECURITY_REGRESSION_PASS asserts=' "ci41-w22-os-${{ runner.os }}.txt"
+          grep -q 'real_os_pairs=10 child_clr_processes=20' "ci41-w22-os-${{ runner.os }}.txt"
+          grep -q 'CI41_W22_UNPUBLISHED_ORPHAN_QUARANTINE_HOLDS_REAL_669_OS_LEASE' "ci41-w22-os-${{ runner.os }}.txt"
+          grep -q 'CI41_W22_FALSE_THROW_RETIRE_PROOFS_REFUSED_AND_COLD_556_IDS_RESTORED' "ci41-w22-os-${{ runner.os }}.txt"
+          grep -q 'CI41_W22_SOURCE_ONLY_OWNER_PROOF_CALLBACK_NOT_NATIVE_RIG_ATTESTATION' "ci41-w22-os-${{ runner.os }}.txt"
+          grep -q 'CI41_W22_LIVE_CANONICAL_510_G1_NOT_RUN_G2_HOLD' "ci41-w22-os-${{ runner.os }}.txt"
+      - name: Save original exact source and physical OS process receipts; NOT native Unity
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CI41-W22-ORIGINAL-712-707-OS-ESCROW-NOT-UNITY-${{ runner.os }}
+          path: |
+            ci41-w22-python-${{ runner.os }}.txt
+            ci41-w22-original-receipt-${{ runner.os }}.json
+            ci41-w22-build-${{ runner.os }}.txt
+            ci41-w22-os-${{ runner.os }}.txt
+          retention-days: 14
+          if-no-files-found: warn

@@ -1,0 +1,61 @@
+{
+  "package": "CI41-712-707-LEASE-ESCROW-001",
+  "version": "R1",
+  "owner": "B01-41",
+  "hq": 713,
+  "base_source": {
+    "pr": 712,
+    "sha": "bd8905ad549a7b26854b671be971f7d781308311"
+  },
+  "selected_api": {
+    "pr": 691,
+    "sha": "809f82575c638e1b4d2806b5f417bddab6c0871a",
+    "ancestor": 681
+  },
+  "selected_storage": {
+    "pr": 669,
+    "sha": "d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121"
+  },
+  "r5_new": {
+    "pr": 690,
+    "sha": "cc7f73541517a18f4479bb155534bd4832d9985e",
+    "coinstalled": false
+  },
+  "prior_697": "P0_RED_FROZEN",
+  "excluded_alt": [
+    682,
+    695,
+    693,
+    652
+  ],
+  "own_paths": [
+    "Tools/B01/CI41/P17W22/Original712SessionLeaseQA.csproj",
+    "Tools/B01/CI41/P17W22/Program.cs",
+    "Tools/B01/CI41/P17W22/source_guard.py",
+    "Tools/B01/CI41/P17W22/test_source_guard.py",
+    "Tools/B01/CI41/P17W22/README.md",
+    "Tools/B01/CI41/P17W22/MANIFEST.json",
+    ".github/workflows/b01-41-p17w22-original712-session-lease.yml"
+  ],
+  "planned": {
+    "real_os_pair_races_each_os": 10,
+    "true_child_clr_each_os": 20,
+    "independent_python_security_tests_each_os": 18,
+    "real_file_share_none": true,
+    "actual_unity": false
+  },
+  "six_statuses": {
+    "IMPLEMENTED": true,
+    "TESTED": "PENDING_REAL_CI",
+    "QA_ACCEPTED": false,
+    "READY_FOR_INTEGRATOR": false,
+    "INTEGRATED": false,
+    "RELEASED": false
+  },
+  "g0": "SEPARATE_NEW_R2_G0_PENDING",
+  "g1": "NOT_RUN",
+  "live_private_510": "NOT_IMPLEMENTED",
+  "g2": "HOLD",
+  "codex_ack": false,
+  "rollback": "unmerged Draft only, seven new CI41 paths, uniquely created test-owned temporary scratch; never touch user persistent save"
+}
