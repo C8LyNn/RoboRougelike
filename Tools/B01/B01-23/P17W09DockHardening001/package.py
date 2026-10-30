@@ -89,7 +89,7 @@ def original_scope():
         ASSET + "/Runtime/HardenedDockDemo.cs",
         ASSET + "/Editor/HardenedDockInstaller.cs",
         ASSET + "/Tests/PlayMode/W09ProtectedDockPlayModeTests.cs",
-        OWN + "Program.cs", OWN + "DockSourceTests.csproj",
+        OWN + "Program.cs", OWN + "HardenedSourceTests.csproj",
         OWN + "package.py", OWN + "test_package.py", CI,
     ):
         if required not in files:
