@@ -1,4 +1,6 @@
 import copy
+import hashlib
+import re
 import io
 import json
 import pathlib
@@ -109,6 +111,38 @@ class PhysicalSourceTests(unittest.TestCase):
             target=p/"in"/PREVIEWS[0]
             target.write_bytes(target.read_bytes().replace(b"\n",b"\r\n"))
             with self.assertRaises(SourceError):read_previews(p/"in")
+
+    @staticmethod
+    def original_digest(forced_price_delta=0, swap_first_two=False):
+        # Independently reconstruct C# canonical UTF-16 length-prefix text from
+        # immutable source #411, not from a replica data fixture.
+        original = json.loads((ROOT/"Research/B01-22/P17/EQUIPMENT-KITS-001/catalog.json").read_text(encoding="utf-8"))
+        fields = ["b1d4e341d846c9397e236809a1d7e4c4fff9c935",len(original["kits"])]
+        for k_index, kit in enumerate(original["kits"]):
+            rows=list(kit["parts"])
+            if swap_first_two and k_index == 0: rows[0],rows[1]=rows[1],rows[0]
+            fields += [kit["id"],len(rows)]
+            for p_index, p in enumerate(rows):
+                unit = original["weapon_prices"][p["weapon"]] if p["kind"] == "Gun" else original["part_prices"][p["kind"]]
+                if k_index == 0 and p_index == 0: unit += forced_price_delta
+                fields += [p["kind"],p.get("weapon",""),p["count"],unit]
+        def token(field):
+            value=str(field)
+            return str(len(value.encode("utf-16-le"))//2)+":"+value
+        return hashlib.sha256("".join(token(x) for x in fields).encode("utf-8")).hexdigest()
+
+    def test_17_real_original_catalog_matches_compiled_digest(self):
+        csharp=(ROOT/"Assets/B01KitReadiness001/KitReadinessPlanner.cs").read_text(encoding="utf-8")
+        m=re.search(r'ApprovedRecipeDigest\s*=\s*"([0-9a-f]{64})"',csharp)
+        self.assertIsNotNone(m)
+        self.assertEqual(self.original_digest(),m.group(1))
+        self.assertEqual(m.group(1),"6f121fe4207aaca2f30dfede9e79700d3af0dbec5349c87c1709c174dd4096eb")
+
+    def test_18_coherently_forged_real_price_changes_digest(self):
+        self.assertNotEqual(self.original_digest(forced_price_delta=7),self.original_digest())
+
+    def test_19_same_physical_parts_reordered_changes_digest(self):
+        self.assertNotEqual(self.original_digest(swap_first_two=True),self.original_digest())
 
     def test_15_receipt_rejects_unexpected_member_byte(self):
         files=dict(self.files);files[ASSETS[1]]=files[ASSETS[1]]+b"changed"
