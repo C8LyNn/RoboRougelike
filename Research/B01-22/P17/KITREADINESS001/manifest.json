@@ -1,8 +1,8 @@
 {
   "package_id": "B01-22-KITREADINESS-001",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "owner": "B01-22",
-  "product": "Original Unity C# atomic virtual equipment-stock readiness plus real user-supplied JSON CLI",
+  "product": "Immutable-source C#9 kit stock readiness, real user-input CLI and exact full-batch physical-part procurement forecast",
   "source_sha": "b1d4e341d846c9397e236809a1d7e4c4fff9c935",
   "source_pr": 411,
   "source_catalog_git_blob": "372b3bc74553ea459e89be38378f4429090e00a2",
@@ -29,14 +29,15 @@
     "Research/B01-22/P17/KITREADINESS001/scenarios/starter-cache.json": "dde1761de2d3fe7e23bf1b3199dbbcdc4c7abddb",
     "Research/B01-22/P17/KITREADINESS001/scenarios/siege-cache.json": "d65b72aeac81cdc7a6d3ed5cfb673b494ec5b6d5",
     "Research/B01-22/P17/KITREADINESS001/scenarios/shared-gyro.json": "441a59f81a542e13b068d7f86e7b0c1e57829b18",
-    "Research/B01-22/P17/KITREADINESS001/pack_readiness.py": "b022243ba7cfe675876099175340ae7e4badb555",
+    "Research/B01-22/P17/KITREADINESS001/pack_readiness.py": "eddd71474a32e9d607d9fb897942532ef31b073e",
     "Research/B01-22/P17/KITREADINESS001/test_pack_readiness.py": "069839de7d69c2f4baaff1ad8f0db4da6c7c4cb8",
-    "Research/B01-22/P17/KITREADINESS001/README.md": "b4e0a9e8040422d28e1a43cb696f91a9751e6d28",
-    ".github/workflows/b01-22-p17w08-kitreadiness.yml": "c113011c0acad58d928ff1945fbd6673fe75d9b3",
-    "Research/B01-22/P17/KITREADINESS001/ReadinessCli.cs": "280d3c4445e1ce3630594e07932da3f6b7742c1b",
-    "Research/B01-22/P17/KITREADINESS001/ReadinessCli.csproj": "663abf4a89892924be8b2d8142a23cdc3c7ed2bf",
-    "Research/B01-22/P17/KITREADINESS001/test_cli_readiness.py": "13eb129818bb2298a63586ba911c4a9641fd770c",
-    "Research/B01-22/P17/KITREADINESS001/scenarios/user-request-example.json": "6200854efbf3e9be1f163a3065be62fe2ac18ae9"
+    "Research/B01-22/P17/KITREADINESS001/README.md": "a09f0626660a28c58ad4353ef3ffa7b173c6cbf0",
+    ".github/workflows/b01-22-p17w08-kitreadiness.yml": "a66fd1ff5f575ed373b01becde76fb4cd14a3e6c",
+    "Research/B01-22/P17/KITREADINESS001/ReadinessCli.cs": "1eeaf4742a36c106d3ea0d046c9b64d8af63a341",
+    "Research/B01-22/P17/KITREADINESS001/ReadinessCli.csproj": "90772a5649e27f4afc99d39c68f4651a99b83448",
+    "Research/B01-22/P17/KITREADINESS001/test_cli_readiness.py": "2703f008c76154149ec17648d64dfac02605885b",
+    "Research/B01-22/P17/KITREADINESS001/scenarios/user-request-example.json": "6200854efbf3e9be1f163a3065be62fe2ac18ae9",
+    "Research/B01-22/P17/KITREADINESS001/KitProcurementForecast.cs": "f153999a62fd4488f89b831ab2532e051ac3f01f"
   },
   "test_commands": [
     "dotnet run --project Research/B01-22/P17/KITREADINESS001/KitReadinessTests.csproj --configuration Release -- --out readiness-previews",
@@ -52,13 +53,13 @@
     "scenarios": 4,
     "unity_source_members": 3,
     "unity_guid_metas": 2,
-    "git_blob_checks": 16,
-    "python_cli_blackbox_tests": 17
+    "git_blob_checks": 17,
+    "python_cli_blackbox_tests": 23
   },
-  "producer_qa": "PENDING_FINAL_HEAD_CI",
+  "producer_qa": "NOT_RUN_ON_NEW_HEAD",
   "independent_qa": "PENDING",
   "native_unity": "NOT_RUN",
-  "handoff": "B01-40 G0 then B01-60 independent source and Unity G1 if licensed; B01-00 only CODEX INBOX #79",
+  "handoff": "B01-40 verify 17 original source Git pins, unchanged Unity three-member ZIP, 4 regenerated preview SHA and safe rollback; B01-60 independently rerun 53 C#9+23 real CLI+19 Python and Unity G1 if licensed; B01-00 controls #79",
   "rollback": "Close Draft, discard owned branch; CLI --rollback only for unchanged isolated stage; manual Unity import into empty disposable Assets/B01KitReadiness001 folder only",
   "test_fix": "W08: C#9 test harness disables implicit .NET global usings after actual initial C#9 RED in GitHub Actions",
   "cross_os_preview_parity": "REQUIRES_SHA256_SAME_FOR_EACH_OF_3_JSONS",
@@ -92,5 +93,14 @@
     "receipt": "receipt.json",
     "rollback": "fail-closed for modified/foreign files"
   },
-  "final_w10_safety": "Reject symlinked output parent directory/reparse point, game-path output, same input-output, and preexisting file. No wallet/garage/Assets writes."
+  "final_w10_safety": "Reject symlinked output parent directory/reparse point, game-path output, same input-output, and preexisting file. No wallet/garage/Assets writes.",
+  "batch_shortfall": {
+    "scope": "ALL requested kits; aggregate each kind and weapon subtype",
+    "reference_only": true,
+    "never_purchase": true,
+    "never_mutate_stock": true,
+    "does_not_use_blocked_virtual_reservations": true,
+    "source_path": "Research/B01-22/P17/KITREADINESS001/KitProcurementForecast.cs",
+    "example": "two EK01 + one EK01 owned = 5 missing physical parts, 110 reference Scrap"
+  }
 }
