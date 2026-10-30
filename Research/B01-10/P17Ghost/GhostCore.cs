@@ -165,6 +165,15 @@ namespace RoboRougelike.B0110.TrainingGhost
             Check(!run.Completed || (run.ElapsedSeconds > 0
                 && run.CheckpointSeconds.Length == run.RequiredCheckpoints),
                 "Completed run needs EVERY configured checkpoint and duration");
+            // W14 R8: a recorded failure with all gates reached must not be
+            // promoted into a personal best or a ghost simply by toggling
+            // Completed while leaving its authoritative terminal reason Failed.
+            // The real CHL host remains the authority; this only rejects
+            // internally contradictory source records, not forged host proof.
+            Check(string.Equals(run.EndReason,
+                    run.Completed ? "Completed" : "Failed",
+                    StringComparison.Ordinal),
+                "Completion flag disagrees with terminal event reason");
         }
 
         // Never reward equal elapsed time or accept a practice failure as a personal record.
