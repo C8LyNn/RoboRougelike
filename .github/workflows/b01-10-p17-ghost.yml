@@ -1,4 +1,4 @@
-name: B01-10 W12 Original Training Ghost CSharp
+name: B01-10 W13 Original Training Ghost CSharp
 on:
   push:
     branches: [design/b01-10-p17w06-training-ghost]
@@ -30,12 +30,12 @@ jobs:
         run: |
           set -euo pipefail
           dotnet build Research/B01-10/P17Ghost/Ghost.Runner.csproj --configuration Release --nologo --warnaserror
-      - name: Actually execute 109 original CSharp positive/adverse tests + 100 synthetic traces
+      - name: Actually execute 122 original CSharp positive/adverse tests + 100 synthetic traces
         shell: bash
         run: |
           set -euo pipefail
           dotnet run --project Research/B01-10/P17Ghost/Ghost.Runner.csproj --configuration Release --no-build -- --test | tee "$RUNNER_TEMP/ghost-tests.log"
-          grep -F "B01-10 GHOST REAL_CSHARP 109 PASS / 0 FAIL" "$RUNNER_TEMP/ghost-tests.log"
+          grep -F "B01-10 GHOST REAL_CSHARP 122 PASS / 0 FAIL" "$RUNNER_TEMP/ghost-tests.log"
       - name: Run original executable two-rig demo JSON
         shell: bash
         run: |
@@ -63,8 +63,8 @@ jobs:
           B01_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
         run: |
           set -euo pipefail
-          python Research/B01-10/P17Ghost/pack_ghost.py pack --sha "$B01_SOURCE_SHA" --zip "$RUNNER_TEMP/B01-10_GHOST001_R6_UNITY_SOURCE.zip" --report "$RUNNER_TEMP/ghost-zip-pack.json"
-          python Research/B01-10/P17Ghost/pack_ghost.py verify --sha "$B01_SOURCE_SHA" --zip "$RUNNER_TEMP/B01-10_GHOST001_R6_UNITY_SOURCE.zip" --report "$RUNNER_TEMP/ghost-zip-verify.json"
+          python Research/B01-10/P17Ghost/pack_ghost.py pack --sha "$B01_SOURCE_SHA" --zip "$RUNNER_TEMP/B01-10_GHOST001_R7_UNITY_SOURCE.zip" --report "$RUNNER_TEMP/ghost-zip-pack.json"
+          python Research/B01-10/P17Ghost/pack_ghost.py verify --sha "$B01_SOURCE_SHA" --zip "$RUNNER_TEMP/B01-10_GHOST001_R7_UNITY_SOURCE.zip" --report "$RUNNER_TEMP/ghost-zip-verify.json"
           python Research/B01-10/P17Ghost/pack_ghost.py negatives --sha "$B01_SOURCE_SHA" --zip "$RUNNER_TEMP/unused-negatives.zip" --report "$RUNNER_TEMP/ghost-zip-negatives.json"
           grep -F '"pass": true' "$RUNNER_TEMP/ghost-zip-negatives.json"
       - name: Upload real source-CSharp logs and two-rig synthetic demo
@@ -76,7 +76,7 @@ jobs:
             ${{ runner.temp }}/ghost-tests.log
             ${{ runner.temp }}/ghost-synthetic-demo.json
             ${{ runner.temp }}/ghost-negative.log
-            ${{ runner.temp }}/B01-10_GHOST001_R6_UNITY_SOURCE.zip
+            ${{ runner.temp }}/B01-10_GHOST001_R7_UNITY_SOURCE.zip
             ${{ runner.temp }}/ghost-zip-pack.json
             ${{ runner.temp }}/ghost-zip-verify.json
             ${{ runner.temp }}/ghost-zip-negatives.json
