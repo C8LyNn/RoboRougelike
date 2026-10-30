@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "packageId": "B01-25-MAGNETLANE-W17-SCENARIOS",
+  "immutableEngineSha": "c9663a8c50599bdb0f8954c42737d8e0d8afcaec",
+  "config": {
+    "warning": 0.6,
+    "active": 2.4,
+    "safe": 1,
+    "force": 60,
+    "halfX": 3,
+    "halfZ": 1.5
+  },
+  "safeBypassZ": 4,
+  "masses": {
+    "light": 1.5,
+    "heavy": 12
+  },
+  "scenarios": [
+    {
+      "id": "ML17_A01_FAST_CENTER",
+      "warmupSteps": 6,
+      "warmupDt": 0.1,
+      "dt": 0.1,
+      "from": [
+        -7,
+        0
+      ],
+      "to": [
+        7,
+        0
+      ],
+      "forceSign": "POSITIVE"
+    },
+    {
+      "id": "ML17_A02_NORTH_BYPASS",
+      "warmupSteps": 6,
+      "warmupDt": 0.1,
+      "dt": 0.1,
+      "from": [
+        -7,
+        4
+      ],
+      "to": [
+        7,
+        4
+      ],
+      "forceSign": "ZERO"
+    },
+    {
+      "id": "ML17_A03_EDGE_FALLOFF",
+      "warmupSteps": 6,
+      "warmupDt": 0.1,
+      "dt": 0.1,
+      "from": [
+        0,
+        0.75
+      ],
+      "to": [
+        0,
+        1.5
+      ],
+      "forceSign": "POSITIVE"
+    },
+    {
+      "id": "ML17_A04_REVERSED_POLARITY",
+      "warmupSteps": 46,
+      "warmupDt": 0.1,
+      "dt": 0.1,
+      "from": [
+        -7,
+        0
+      ],
+      "to": [
+        7,
+        0
+      ],
+      "forceSign": "NEGATIVE"
+    },
+    {
+      "id": "ML17_A05_WARNING_TO_ACTIVE",
+      "warmupSteps": 11,
+      "warmupDt": 0.05,
+      "dt": 0.1,
+      "from": [
+        -7,
+        0
+      ],
+      "to": [
+        7,
+        0
+      ],
+      "forceSign": "POSITIVE"
+    },
+    {
+      "id": "ML17_A06_SOUTH_OUT_OF_FIELD",
+      "warmupSteps": 6,
+      "warmupDt": 0.1,
+      "dt": 0.1,
+      "from": [
+        -7,
+        -2.75
+      ],
+      "to": [
+        7,
+        -2.75
+      ],
+      "forceSign": "ZERO"
+    },
+    {
+      "id": "ML17_A07_BACKWARD_TRAVERSE",
+      "warmupSteps": 6,
+      "warmupDt": 0.1,
+      "dt": 0.1,
+      "from": [
+        7,
+        0
+      ],
+      "to": [
+        -7,
+        0
+      ],
+      "forceSign": "POSITIVE"
+    }
+  ]
+}
