@@ -4,7 +4,7 @@ import hashlib,json,pathlib,sys
 ROOT=pathlib.Path(__file__).resolve().parents[3]
 def main():
  m=json.loads(pathlib.Path(__file__).with_name('manifest.json').read_text(encoding='utf8'))
- assert m['package']=='B01-13-APPROVED-GARAGE-HUMAN-STUDY-001/R1'
+ assert m['package']=='B01-13-APPROVED-GARAGE-HUMAN-STUDY-001/R2'
  assert m['policy']=='OWNER_APPROVED_2026_10_30_ISSUE_731'
  assert len(m['files'])==6
  for name, expected in sorted(m['files'].items()):
