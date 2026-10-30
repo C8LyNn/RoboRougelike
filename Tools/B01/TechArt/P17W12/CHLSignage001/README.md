@@ -1,0 +1,25 @@
+# B01-30 — PASS17/WAVE12 — CHL003 ORIGINAL CHECKPOINT/FINISH 3D SIGNAGE
+
+**One new reusable original Tech Art feature inside B01-20's CHL-003 approved stream:** two genuinely sculpted/typographic overhead 3D signs, CHECKPOINT and FINISH. They are actual original source-locked Blender→FBX mesh assets with useful in-world legibility, not another yaw clearance visualization or competing CHL/reattach source. NO Runtime/GameObject/collider/scene is modified.
+
+## Immutable B01-20 source and physical alignment
+
+Original CHL owner Draft #285 exact HEAD c7b2a234a286089383503da41883d624fe650551, original Git blob of Assets/RoboRougelikeChallenges/CHL003/Demo/CHL003DemoBootstrap.cs: 9308ceb9eab89d1ab483b560ff3ed58fa6d2d32e. Source SHA and the following real original C# values are tested before Blender: checkpoint/finish gate BoxCollider trigger width 3.70m; two existing visually rendered post centers x±1.97m, y1.3m and original height2.6m (top y2.6m); side post colliders intentionally disabled by CHL owner; four existing CP gates and one FINISH gate. Existing B01-20 source and original scene remain untouched, no new checkpoint scoring or source state.
+
+Each optional sign is a ***non-collider visual overlay*** that matches the two original source-post centers at x±1.97m. The visual headline is entirely ABOVE existing post top y2.6m; x-aligned short brackets, dark metallic overhead crossbar, actual converted-to-mesh 3D typography from the built-in Blender font (font file itself not exported), two geometric border lights and four chevron 3D elements. CHECKPOINT uses teal-green accent; FINISH uses orange-gold. There are 11 genuine mesh objects per asset. The decorative accents may not be treated as Unity light emitters without authoring additional URP material/shader work.
+
+Source component position contract: the FBX model origin is world gate ground zero. To overlay an original gate at Z = CP z or FINISH z, use transform POSITION = (0,0,gateZ) and no additional scale. The generated Unity CHL gate root is at world (0,2.25,z); if parenting under that gate, compensate local Y by -2.25m. There is no automatic scene placement, B01-20 must explicitly opt in. Existing original post visuals remain, so import **only** one sign variant overlay for each gate. Do not add collisions or replace invisible scoring BoxCollider or CHL owner source.
+
+## Real execution & file outputs
+
+Actual Blender source generator makes two independent binary .fbx, two editable .blend files and two actual 960x720 .png Blender preview screenshots. It checks original UTF-8 C# Git blob, 3.70m and ±1.97m anchors, real converted glyph vertices/polygons, material class and each actual 3D mesh lower bound above original post top. It executes one original C# source SHA corruption negative, and two physically moved original mesh geometry negatives per variant (overhead intrusion, bracket drift).
+
+A separate new Blender process reimports each genuine FBX and checks exact 22 actual mesh objects, two genuine text glyph polygon meshes, their widths and materials, source anchor positions and no visual geometry below existing post top. It executes two genuine imported mesh negative mutations per asset (offset bracket and lowered glyph mesh). True FBX material and geometry checks use original actual vertex positions; no source-only mock.
+
+Actual deterministic .unitypackage builds from those exact SHA-locked two FBXs plus one RECEIVE_README.txt: 3 unique stable .meta GUIDs, 9 TAR paths (asset/asset.meta/pathname), 5 actual corrupt original TAR/input cases detected. Windows2025 independently downloads raw original files and rebuilds the .unitypackage byte for byte identical to Ubuntu24.04. Format proof only: native Unity ModelImporter, URP visuals/legibility in game, and import/Prefab/GameObject hierarchy have NOT been executed in a licensed Unity6 project.
+
+## Receiver, no conflict, rollback
+
+Download original physical GitHub Actions artifact from the exact-HEAD CI, inspect original 2 FBX/2 BLEND/2 PNG plus UnityPackage and 3 machine receipts. B01-40 independent formal source/art G0: source HEAD+blob, real fonts converted to mesh, file SHA256, stable GUID/path exclusion, no foreign changes, rollback. B01-60 licensed native Unity6 URP inspection: import the actual UnityPackage into a disposable test project, check readable CHECKPOINT/FINISH text from z-negative approach, original sign anchor placement, visual top clearance and artifact materials, report G1 native PASS or RED only if genuinely executed. B01-20 alone authorizes any optional display in CHL003, and B01-00 owns any Codex queue/ACK. This packet is NOT a new CHL source/gameplay package, not Secure Reattach #510 or #511/#494, and not a built-in Unity collider.
+
+Rollback: remove only Assets/B0130CHL003GateSigns001 from the isolated receiving Unity project after verifying no external references; remove only build/B01-30/W12/** locally; Git contains only own Tools/B01/TechArt/P17W12/CHLSignage001/** and own CI workflow. DO NOT merge or alter canonical game/owner source. No CodeX offer, claim, ACK or integration is implied.
