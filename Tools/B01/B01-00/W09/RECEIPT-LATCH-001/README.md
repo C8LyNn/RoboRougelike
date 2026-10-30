@@ -1,4 +1,4 @@
-# B01-00 RECEIPT-LATCH-001 v1.5.0 / PASS17 W14
+# B01-00 RECEIPT-LATCH-001 v1.6.0 / PASS17 W15
 
 Offline Python 3.11 standard-library executable for B01-00 coordinating multi-agent package receipts. `receipt_latch.py` validates offline snapshot consistency; `github_live.py` now checks a bounded subset of original GitHub PR, Actions workflow, job and step metadata online. Neither can authenticate the independence or authorization of a B01-40/B01-60 review, Codex ACK or merge. Source-ready is a **candidate for external review**, never formal G0, G1, Codex ACK or integration.
 
@@ -90,3 +90,20 @@ The new **53 original W14 unittest cases** reject wrong #510, two simultaneously
 **Remaining source and native gates:** actual #510 source-only G0 previously accepted and offered in #79, **not Codex ACK**; #511/#494 held. Actual canonical Save/Load of detached/consumed IDs is NOT_IMPLEMENTED; original #510 rollback deletes foreign empty dirs and must NEVER be used on an occupied receiver; B01-40/62 safe wrappers require explicit integration decision; Unity native G1 Edit/Play/PhysX remains NOT_RUN where legal activation is unavailable; canonical host migration NOT_DONE; G2 HOLD. This gate must not be treated as an engine/native test or as a B01-23 owner selection.
 
 **Install/rollback:** copy only owner-controlled standalone Python tool in a separate checkout and run on a local receipt; discard its unmerged directory and disposable output on rollback. Never delete frozen #510, original ZIP, QA evidence, Codex Inbox, game Assets or an occupied receiver. Receiver B01-23 selects exactly one versioned Save contract, B01-61 tests its **original exact SHA**, B01-40/62 approve source/migration/rollback, B01-60 native G1, B01-00 checks source-only queue and prevents fake ACK.
+
+## WAVE 15: corrected source selection receipt #556 with strict host boundary
+
+W14's `save_contract_w14_hold.json` and its original tests remain **historical, not a current selection instruction**: B01-23 subsequently froze **ONE corrected Save contract #556** at exactly `33094f154c7b91119b36d58aab285e6e83c5de57`, retaining gameplay #510 at `d94400d95d13db7f27e1533df05c9292d5380431`. The old #544/#549 R1 and competing #554 remain alternative HOLD; #549 and #544 original vulnerable source RED witnesses remain true historical evidence, **not** a claim of RED on corrected #556.
+
+A new explicitly versioned mode in the **existing** `save_admission.py` uses `audit_selected_v2()` and the grounded `save_contract_w15_selected.json`. It checks the exact selected SHA, source-only physical G0 [B01-40 #560](https://github.com/C8LyNn/RoboRougelike/pull/560) SHA `1a218df9e287a8a254b7d84c228c962ab232b9b5` with **17-member ZIP SHA256 `20c3c17c252f084014e9766010ab4651770a41f73ce534fc2aa7fd2edc697060`**, and independent exact-original-C# source tests [B01-61 #563](https://github.com/C8LyNn/RoboRougelike/pull/563) SHA `42aa590a2f6b08e33886027ea452ef3392a2f2c0`, plus separate [#570](https://github.com/C8LyNn/RoboRougelike/pull/570) SHA `413bee4c232145be4cdf5745088fe1538a5f421b`, **closed but unmerged**, not a staged alternative.
+
+```sh
+python Tools/B01/B01-00/W09/RECEIPT-LATCH-001/save_admission.py --selected-v2 Tools/B01/B01-00/W09/RECEIPT-LATCH-001/save_contract_w15_selected.json
+python -m unittest discover -s Tools/B01/B01-00/W09/RECEIPT-LATCH-001 -p "test_*.py" -v
+```
+
+The current source-only receipt can be internally consistent, **but its verdict is necessarily `SOURCE_G0_RECORDED_HOST_GATE_HOLD`**. Existing #556 only serializes/stages *logical* immutable snapshots and original W06 rehydration in an isolated source test; a real atomic Unity host adapter into frozen #510 private rig/ledger/Transform/Rigidbody is not implemented. No authorized public hydration hook exists in the frozen #510 adapter. Forbid reflection/private access, partial physical commits, false native G1, fictitious Codex ACK, old destructive rollback, or reuse of these source G0 results as full host acceptance. **Any real host adapter needs a NEW owner-versioned source with B01-23/62/40/61/60 review, never edits to frozen #510 or #556.** Do not run unsafe original #510 rollback against a shared workspace; B01-40/#536 and B01-60/#542 wrappers remain isolated disposable scratch tests.
+
+The original W15 `test_save_selected_v2.py` adds **62** positive and adversarial regression cases (total 287 W09–W15). A missing or wrong SHA, forged QA/G0 ZIP, historical alternatives, false G1/SaveLive, fake migration, ACK or merge fails closed. **Limitations:** the CLI validates a declared JSON receipt **offline**, does not authenticate GitHub identity, actual source ZIP bytes, Codex actor or Unity host. Actual original GitHub source and QA were inspected separately by the coordinator. The `source_g0_recorded` label is a *recorded claim*, not an independent review conducted by this program. No new source-only offer is posted to #79 by this CLI and it has no network calls.
+
+**Rollback**: discard only the unmerged coordinator Python tool and disposable local reports; leave frozen #510, #556, B01-40/61 evidence, Codex Inbox, and all production assets intact. No branch merge/release. The B01-00 tool remains pending its own independent B01-40/B01-60 code review even if producer tests pass.
