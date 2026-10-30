@@ -1,0 +1,74 @@
+name: B01-61 W24 exact selected 749 original source real OS cold ACK regression
+on:
+  push:
+    branches: [qa/b01-61-p17w24-selected749-cold-lease-ack-regression]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-61/P17W24Selected749IndependentQA/**'
+      - '.github/workflows/b01-61-w24-749-original-regression.yml'
+permissions:
+  contents: read
+jobs:
+  independent-original-749:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Source original selected 729 + original 669 legacy + frozen 556 W06 510 using exact Git SHA
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir=Tools/B01/B01-61/P17W24Selected749IndependentQA/.original
+          mkdir -p "$dir"
+          git fetch --no-tags origin b8ca29c7707cd6b4338d0b9772d74dee676d49d2 d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121 33094f154c7b91119b36d58aab285e6e83c5de57 d94400d95d13db7f27e1533df05c9292d5380431
+          git show b8ca29c7707cd6b4338d0b9772d74dee676d49d2:Assets/B0123CanonicalSaveApi001/Core/CanonicalWorldGateway.cs > "$dir/CanonicalWorldGatewayV3.cs"
+          git show b8ca29c7707cd6b4338d0b9772d74dee676d49d2:Assets/B0123CanonicalSaveApi001/Core/CanonicalWorldSlotLease.cs > "$dir/CanonicalWorldSlotLease.cs"
+          git show d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121:Tools/B01/B01-62/P17W20SingleFileSaveSlot/SingleFileSaveSlot.cs > "$dir/SingleFileSaveSlotV1.cs"
+          git show 33094f154c7b91119b36d58aab285e6e83c5de57:Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs > "$dir/DetachedSnapshotContract.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs > "$dir/DebrisImpulseCore.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs > "$dir/SecureRigSpec.cs"
+          test "$(git rev-parse HEAD:Tools/B01/B01-62/P17W23OneAuthorityV3/CanonicalSlotSessionV3.cs)" = 9d86581626c8657b6662cb281f7621fa43343fb3
+          test "$(git rev-parse HEAD:Tools/B01/B01-62/P17W23OneAuthorityV3/CanonicalSingleAuthorityStoreV3.cs)" = f8fab0b35147a23ae31bcb4a0cf91590d0896d97
+          test "$(git hash-object "$dir/CanonicalWorldGatewayV3.cs")" = 21733278b6ab0669fccb6d085e0b6cf242792de2
+          test "$(git hash-object "$dir/CanonicalWorldSlotLease.cs")" = a9331dd620336d8c42165d134dc8a5e05ed51873
+          test "$(git hash-object "$dir/SingleFileSaveSlotV1.cs")" = db7745635164d9eb6b10f3246538700158130b7b
+          test "$(git hash-object "$dir/DetachedSnapshotContract.cs")" = b52e511c370f5fca56c74029050844dc8cbb7f9a
+          test "$(git hash-object "$dir/DebrisImpulseCore.cs")" = fa1aa5e531927cbe73cf5fdfe161b4a981316db5
+          test "$(git hash-object "$dir/SecureRigSpec.cs")" = b680ed0ec969ac23203fa55eab7b90f8daa86e43
+      - name: Build unchanged selected 749 physical full Save and original chosen 729 plus original frozen codecs strict CSharp9
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build Tools/B01/B01-61/P17W24Selected749IndependentQA/Original749IndependentQA.csproj -c Release --nologo 2>&1 | tee build.log
+      - name: Execute original 749 owner/cold/physical ACK/corruption/reentry and child CLR
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet Tools/B01/B01-61/P17W24Selected749IndependentQA/bin/Release/net8.0/Original749IndependentQA.dll 2>&1 | tee qa_release.log
+          grep -Fx 'TOTAL 12 PASS 12 FAIL 0' qa_release.log
+          grep -Fx 'SOURCE_RELEASE_GATE=GREEN_SCOPE_ONLY_FROZEN_PRIVATE_510_HOLD' qa_release.log
+      - name: Validate exact owner 749 8 source Git blob pins and 5 added-only QA paths with original stdout
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-61/P17W24Selected749IndependentQA/receipt.py --log qa_release.log --out dist/b0161-w24-749-independent.json
+      - name: Preserve actual source results and immutable provenance receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b0161-w24-original749-${{ matrix.os }}
+          path: |
+            build.log
+            qa_release.log
+            dist/b0161-w24-749-independent.json
+          if-no-files-found: warn

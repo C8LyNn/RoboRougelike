@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+<PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><LangVersion>9.0</LangVersion><Nullable>enable</Nullable><TreatWarningsAsErrors>true</TreatWarningsAsErrors><EnableDefaultCompileItems>false</EnableDefaultCompileItems></PropertyGroup>
+<ItemGroup>
+<Compile Include="../../B01-62/P17W23OneAuthorityV3/CanonicalSingleAuthorityStoreV3.cs"/>
+<Compile Include="../../B01-62/P17W23OneAuthorityV3/CanonicalSlotSessionV3.cs"/>
+<Compile Include=".original/CanonicalWorldGatewayV3.cs"/>
+<Compile Include=".original/CanonicalWorldSlotLease.cs"/>
+<Compile Include=".original/SingleFileSaveSlotV1.cs"/>
+<Compile Include=".original/DetachedSnapshotContract.cs"/>
+<Compile Include=".original/DebrisImpulseCore.cs"/>
+<Compile Include=".original/SecureRigSpec.cs"/>
+<Compile Include="Program.cs"/>
+</ItemGroup></Project>
