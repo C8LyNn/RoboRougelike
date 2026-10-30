@@ -1,0 +1,53 @@
+name: B01-50 PLAYERFOOTPRINT001 Source QA
+on:
+  push:
+    branches: [perf/b01-50-p17-w13-playerfootprint001]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-50/PLAYERFOOTPRINT001/**'
+      - '.github/workflows/b01-50-playerfootprint001.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  zip-security-source-qa:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.11'
+      - name: Verify exact original Git source blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          while IFS=$'\t' read -r expected path; do
+            test -n "$expected" || continue
+            actual=$(git hash-object --no-filters "$path")
+            test "$actual" = "$expected" || { echo "BLOB_MISMATCH $path expected=$expected actual=$actual"; exit 1; }
+            echo "GIT_BLOB_OK $path $actual"
+          done < Tools/B01/B01-50/PLAYERFOOTPRINT001/MANIFEST-GIT-BLOBS.tsv
+      - name: Execute 27 positive and adversarial source tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          python --version | tee evidence/python-version.txt
+          python -m unittest discover -s Tools/B01/B01-50/PLAYERFOOTPRINT001/tests -v 2>&1 | tee evidence/tests.log
+          git rev-parse HEAD > evidence/tested-commit.txt
+          sha256sum Tools/B01/B01-50/PLAYERFOOTPRINT001/playerfootprint.py Tools/B01/B01-50/PLAYERFOOTPRINT001/tests/test_playerfootprint.py > evidence/source-sha256.txt
+      - name: Upload genuine source tests and provenance (NO player build)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: B01-50-PLAYERFOOTPRINT001-${{ matrix.os }}-${{ github.run_id }}
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 14
