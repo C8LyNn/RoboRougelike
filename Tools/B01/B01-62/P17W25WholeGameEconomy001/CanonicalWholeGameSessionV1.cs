@@ -206,9 +206,15 @@ namespace B01.CanonicalWholeGameAdapter001
             frozen556=Array.Empty<byte>();economic=null;
             if(closed||Quarantined||store==null||restoring||!gateway.HasWorld||
                !gateway.TryCapturePreview(out frozen556))return false;
-            if(store.Read(out long g,out byte[] stored,out var econ)!=
+            // Moving Rigidbody transforms/velocity legitimately differ from the
+            // last durable checkpoint at the SAME generation. The genuine #729
+            // gateway already authenticates the published disk checkpoint; do
+            // NOT compare the live physics preview bytes to frozen disk bytes.
+            if(store.Read(out long g,out _,out var econ)!=
                 WholeGameResult.Accepted||econ==null||g!=gateway.Generation||
-                !stored.SequenceEqual(frozen556))
+                !ColdRestore.TryStage(frozen556,out ColdRestore? live)||
+                live==null||live.Snapshot.RunId!=runId||
+                live.Snapshot.Generation!=g)
             {quarantined=true;return false;}
             economic=econ.Copy();return true;
         }
