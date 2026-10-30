@@ -1,0 +1,65 @@
+name: B01-41 P17 W15 selected frozen Save Git lineage closure firewall
+on:
+  push:
+    branches: ['ci/b01-41-p17w15-save-lineage-fence']
+    paths:
+      - 'Tools/B01/CI41/P17W15/**'
+      - '.github/workflows/b01-41-p17w15-save-lineage.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  lineage:
+    name: Actual frozen #510-to-#556 original Git closure and 24 negative tests (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Check own Python source/test immutable Git blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git hash-object Tools/B01/CI41/P17W15/lineage_fence.py)" = '96aa8fbd6f545cea9296e299f8749d50d4119b61'
+          test "$(git hash-object Tools/B01/CI41/P17W15/test_lineage_fence.py)" = '3539118857c0052dabfc8e040bdb8121e047aa5e'
+          echo 'CI41_SELECTED_SAVE_LINEAGE_ORIGINAL_TEST_BLOBS_PASS'
+      - name: Execute 24 real disposable Git history, GUID, asmdef and alternative ownership negatives
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
+          "$PY" -m unittest discover -s 'Tools/B01/CI41/P17W15/' -p test_lineage_fence.py -v 2>&1 | tee "Tools/B01/CI41/P17W15/tests-${{ runner.os }}.txt"
+          grep -q 'Ran 24 tests' "Tools/B01/CI41/P17W15/tests-${{ runner.os }}.txt"
+          grep -q 'REAL_GIT_SELECTED_510_556_LINEAGE_PASS_BUT_UNITY_HOST_HOLD' "Tools/B01/CI41/P17W15/tests-${{ runner.os }}.txt"
+      - name: Read ONLY all three immutable original producer Git commit objects
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin +refs/pull/510/head:refs/remotes/origin/ci41-ro510 +refs/pull/549/head:refs/remotes/origin/ci41-ro549 +refs/pull/556/head:refs/remotes/origin/ci41-ro556
+          test "$(git rev-parse refs/remotes/origin/ci41-ro510)" = 'd94400d95d13db7f27e1533df05c9292d5380431'
+          test "$(git rev-parse refs/remotes/origin/ci41-ro549)" = '6da2c523e03766cd5a6deaed0cb3cccf8765354b'
+          test "$(git rev-parse refs/remotes/origin/ci41-ro556)" = '33094f154c7b91119b36d58aab285e6e83c5de57'
+          echo 'THREE_ORIGINAL_PRODUCER_HEADS_EXACTLY_PINNED_PASS'
+      - name: Verify real original #510-to-#556 net source-only Git tree and GUID closure without staging
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
+          "$PY" 'Tools/B01/CI41/P17W15/lineage_fence.py' --repo . --output "Tools/B01/CI41/P17W15/original-source-${{ runner.os }}.json"
+          "$PY" -c 'import json,sys; x=json.load(open(sys.argv[1])); assert x["status"]=="IMMUTABLE_SOURCE_LINEAGE_PASS" and x["added_source_count"]==16 and x["new_save_guid_count"]==4 and x["original_gameplay_bytes_unmodified"] is True and x["unity_host_bridge"]=="UNVERIFIED_HOLD" and x["native_unity_g1"]=="NOT_RUN" and x["release_gate"]=="HOLD" and x["codex_ack"] is False; print("ORIGINAL_SELECTED_SAVE_556_LINEAGE_AND_UNITY_GUIDS_PASS_BUT_HOST_G2_HOLD")' "Tools/B01/CI41/P17W15/original-source-${{ runner.os }}.json"
+      - name: Archive source-only original Git SHA receipt and adversarial test stdout
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CI41-W15-SELECTED-SAVE-LINEAGE-${{ runner.os }}
+          path: |
+            Tools/B01/CI41/P17W15/original-source-${{ runner.os }}.json
+            Tools/B01/CI41/P17W15/tests-${{ runner.os }}.txt
+          retention-days: 14
+          if-no-files-found: warn
