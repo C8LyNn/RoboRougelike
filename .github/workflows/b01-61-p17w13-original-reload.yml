@@ -1,0 +1,60 @@
+name: B01-61 W13 original #510 real CSharp host reload loss and W06 ledger (native Unity NOT_RUN)
+on:
+  push:
+    branches: [qa/b01-61-p17w13-original-v2-reload-state]
+    paths:
+      - 'Tools/B01/B01-61/P17W13OriginalReloadQA/**'
+      - '.github/workflows/b01-61-p17w13-original-reload.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-61/P17W13OriginalReloadQA/**'
+      - '.github/workflows/b01-61-p17w13-original-reload.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-frozen-510-host-save-loss:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Exact immutable original source SHA and QA-only scope
+        shell: bash
+        run: |
+          set -o pipefail
+          python Tools/B01/B01-61/P17W13OriginalReloadQA/source_guard.py 2>&1 | tee b01-61-w13-source-pin.log
+      - name: Compile unchanged original #510 and W06 CSharp9 MonoBehaviour under explicit synthetic Unity API
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet build Tools/B01/B01-61/P17W13OriginalReloadQA/OriginalV2ReloadQA.csproj -c Release --warnaserror 2>&1 | tee b01-61-w13-build.log
+      - name: Execute real original host state-lifetime and JSON observation tests
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet run --no-build -c Release --project Tools/B01/B01-61/P17W13OriginalReloadQA/OriginalV2ReloadQA.csproj 2>&1 | tee b01-61-w13-original-state.log
+          grep -q 'SAVE_REHYDRATION_RELEASE_GATE_RED' b01-61-w13-original-state.log
+          grep -q 'NATIVE_UNITY=NOT_RUN' b01-61-w13-original-state.log
+      - name: Retain exact original stdout
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-61-w13-original-reload-${{ matrix.os }}
+          path: |
+            b01-61-w13-source-pin.log
+            b01-61-w13-build.log
+            b01-61-w13-original-state.log
+          if-no-files-found: warn
+          retention-days: 21
