@@ -1,0 +1,55 @@
+name: B01-23 P17 W07 Dependency Bridge
+on:
+  push:
+    branches: ['b01-23/p17-w07-dependency-bridge-r1']
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-23/P17W07DependencyBridge/**'
+      - '.github/workflows/b01-23-p17w07-dependency-bridge.yml'
+  workflow_dispatch:
+jobs:
+  source-zip:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Fetch pinned original sources, not current Codex
+        shell: bash
+        run: |
+          git fetch --no-tags origin refs/pull/375/head refs/pull/383/head
+          git cat-file -e '5666a39eabd4cea91b2b605a9eb99ea2f1e226e8^{commit}'
+          git cat-file -e '203a0805251ed28293888e43f2d49f0df63767c6^{commit}'
+      - name: Original source physical archive and target preflight
+        shell: bash
+        run: |
+          set -euo pipefail
+          P=Tools/B01/B01-23/P17W07DependencyBridge/pack_deps.py
+          mkdir -p bridge-results
+          python "$P" build --zip bridge-results/original-P17-dependencies.zip | tee bridge-results/build.log
+          python "$P" verify --zip bridge-results/original-P17-dependencies.zip | tee bridge-results/verify.log
+          python "$P" preflight --zip bridge-results/original-P17-dependencies.zip --receipt bridge-results/source-preflight.json | tee bridge-results/preflight.log
+          python -m unittest discover -s Tools/B01/B01-23/P17W07DependencyBridge -p 'test_pack_deps.py' -v 2>&1 | tee bridge-results/tests.log
+          python -c "import hashlib,pathlib; p=pathlib.Path('bridge-results/original-P17-dependencies.zip'); print('ORIGINAL_ZIP_SHA256='+hashlib.sha256(p.read_bytes()).hexdigest()+' BYTES='+str(p.stat().st_size))" | tee bridge-results/hash.log
+      - name: Compile exact original P17 C# and verify three actual JSON rigs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-23/P17W07DependencyBridge/run_source_smoke.py bridge-results/original-P17-dependencies.zip | tee bridge-results/csharp-original.log
+      - name: Upload physical ZIP and raw receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b0123-original-p17-depbridge-${{ matrix.os }}
+          path: bridge-results/
+          if-no-files-found: warn
