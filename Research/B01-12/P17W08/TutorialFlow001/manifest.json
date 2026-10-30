@@ -1,0 +1,29 @@
+{
+  "package_id": "B01-12-TUTORIALFLOW-001",
+  "version": "R1",
+  "owner": "B01-12 Interactive UX Prototypes",
+  "scope": "Research/B01-12/P17W08/TutorialFlow001/**",
+  "files": {
+    "tutorial_engine.js": {
+      "bytes": 6085,
+      "sha256": "128b9123629bffed2fe83b6a84017eca93e4bcc6c15aa93f8a9fae8cf83a168b"
+    },
+    "tutorial.html": {
+      "bytes": 7362,
+      "sha256": "e44e1c5b8947a2f13333953e339970bfffed997c1efd8fdfb5c7431765808051"
+    },
+    "test_engine.cjs": {
+      "bytes": 8959,
+      "sha256": "6fa3b492f69aa246f5f973603e5356af514da55fd982b8320f026d46aadc832a"
+    },
+    "test_browser.py": {
+      "bytes": 5475,
+      "sha256": "fa597def21a6051259fb7269cf116ca78a5d3fb1e8b302037c9c6c951ff0edf7"
+    }
+  },
+  "native_unity": "NOT_RUN",
+  "integrated": false,
+  "codex_ack": "NONE",
+  "rollback": "close isolated Draft PR / remove its Research folder, no save migrations",
+  "dependencies": "Node 22; Python3 + playwright + /usr/bin/chromium; offline browser"
+}
