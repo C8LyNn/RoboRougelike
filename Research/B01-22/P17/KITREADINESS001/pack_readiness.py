@@ -190,17 +190,37 @@ def stage(dest, preview_dir, source_check=True):
     return receipt
 
 
+def owned_rollback_snapshot(dest):
+    # Reconstruct complete direct-child state every time. A foreign EMPTY
+    # directory is a foreign owner even though it contributes zero file bytes.
+    no_symlink(dest)
+    if not dest.is_dir():
+        raise SourceError("REFUSE_ROLLBACK_FOREIGN_STATE")
+    children=list(dest.iterdir())
+    if {p.name for p in children} != FILES or \
+       any(not p.is_file() or p.is_symlink() for p in children):
+        raise SourceError("REFUSE_ROLLBACK_FOREIGN_STATE")
+    # Hashing alone would be insufficient if the producer changed one byte.
+    # Save real bytes so we can compare all seven files after receipt parsing.
+    return {name:(dest/name).read_bytes() for name in sorted(FILES)}
+
+
 def rollback(dest):
     dest=pathlib.Path(dest)
-    no_symlink(dest)
-    if not dest.is_dir() or {x.name for x in dest.iterdir()} != FILES or \
-       any(not x.is_file() or x.is_symlink() for x in dest.iterdir()):
-        raise SourceError("REFUSE_ROLLBACK_FOREIGN_STATE")
+    before=owned_rollback_snapshot(dest)
     previews=read_previews(dest)
     zipped=(dest/"kitreadiness-unity.zip").read_bytes()
     receipt=json.loads((dest/"receipt.json").read_text(encoding="utf-8"))
     verify_receipt(zipped,physical_unity_files(),previews,receipt)
-    for name in FILES:(dest/name).unlink()
+    # Recheck after all validation callbacks and source read operations, not
+    # merely before them. The previous version unlinked its files first and
+    # discovered a newly added foreign empty directory only at rmdir().
+    # This guards a changing receiver state during preflight. Exclusive
+    # receiver ownership is still required during the final deletion phase.
+    if owned_rollback_snapshot(dest) != before:
+        raise SourceError("REFUSE_ROLLBACK_CHANGED_AFTER_VERIFY")
+    for name in sorted(FILES):
+        (dest/name).unlink()
     dest.rmdir()
     return "ROLLED_BACK_PREVIEW_ONLY"
 

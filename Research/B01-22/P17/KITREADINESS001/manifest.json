@@ -1,6 +1,6 @@
 {
   "package_id": "B01-22-KITREADINESS-001",
-  "version": "1.3.2-RED",
+  "version": "1.3.2",
   "owner": "B01-22",
   "product": "Unity-compatible validated kit planner plus Research-only full-stock procurement and exact bounded priority order advisor",
   "source_sha": "b1d4e341d846c9397e236809a1d7e4c4fff9c935",
@@ -29,9 +29,9 @@
     "Research/B01-22/P17/KITREADINESS001/scenarios/starter-cache.json": "dde1761de2d3fe7e23bf1b3199dbbcdc4c7abddb",
     "Research/B01-22/P17/KITREADINESS001/scenarios/siege-cache.json": "d65b72aeac81cdc7a6d3ed5cfb673b494ec5b6d5",
     "Research/B01-22/P17/KITREADINESS001/scenarios/shared-gyro.json": "441a59f81a542e13b068d7f86e7b0c1e57829b18",
-    "Research/B01-22/P17/KITREADINESS001/pack_readiness.py": "72c7327252f8ad089bb35f7158546d6b371125d8",
+    "Research/B01-22/P17/KITREADINESS001/pack_readiness.py": "2d6718b81d0f359ba6153d6078628aa387256dcd",
     "Research/B01-22/P17/KITREADINESS001/test_pack_readiness.py": "1cc26abdbbffb718ffc55832702ebe100e5771ba",
-    "Research/B01-22/P17/KITREADINESS001/README.md": "0e878ded4578af75c2528173adfdd81e115c396f",
+    "Research/B01-22/P17/KITREADINESS001/README.md": "f5b3b7b45423e284e0a64a753130fa4056924fa3",
     ".github/workflows/b01-22-p17w08-kitreadiness.yml": "f7e78a48ed8808f602d4c03834be70a1267095e7",
     "Research/B01-22/P17/KITREADINESS001/ReadinessCli.cs": "c53bf577ec7ae849897027e87f2e70bde369d642",
     "Research/B01-22/P17/KITREADINESS001/ReadinessCli.csproj": "c5bfe35121382394824265c56986d5db66c5693b",
@@ -59,7 +59,7 @@
     "git_blob_checks": 19,
     "python_cli_blackbox_tests": 31
   },
-  "producer_qa": "PENDING_EXACT_HEAD_CI",
+  "producer_qa": "PENDING_EXACT_SHA_CI",
   "independent_qa": "PENDING",
   "native_unity": "NOT_RUN",
   "handoff": "B01-40 independent exact SHA G0 check all 19 physical working tree blobs + 3 Unity source members and rollback foreign empty directory; B01-60 rerun 53/31/25 source tests; native Unity NOT_RUN unless real host. No Codex or Secure Reattach edits.",
@@ -137,11 +137,16 @@
   },
   "rollback_w14": {
     "issue": "post-preflight foreign empty directory and post-verification mutated receipt cause non-atomic deletion",
-    "red_expected": true,
+    "red_expected": false,
     "tests": [
       "26",
       "27"
     ],
-    "risk": "Own receipt/ZIP/JSON destroyed before rmdir fails, foreign directory survives"
+    "risk": "Own receipt/ZIP/JSON destroyed before rmdir fails, foreign directory survives",
+    "result": "FIX_CANDIDATE_PENDING_EXACT_HEAD_CI",
+    "tests_executed_original": 27,
+    "mechanism": "full direct-child seven-file byte snapshot before and after receipt/source verification, fail closed before any unlink",
+    "limits": "Not safe for hostile concurrent writers during final unlink; single exclusive receiver ownership required",
+    "scope": "B01-22 staging only; #510 unaffected"
   }
 }
