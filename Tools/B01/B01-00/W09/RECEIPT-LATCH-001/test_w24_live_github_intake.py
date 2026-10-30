@@ -22,7 +22,9 @@ def fixture():
            else "#749 and #732 ACCEPTED_SOURCE_ONLY" if n==755
            else "#749 SOURCE_RELEASE_GATE=GREEN_SCOPE_ONLY_FROZEN_PRIVATE_510_HOLD 24/24" if n==758
            else "#750 SOURCE 10/10, native NOT_RUN" if n==766
-           else "#749 honest crash 16 PASS" if n==768 else "signed")}
+           else "#749 honest crash 16 PASS" if n==768
+           else "#749 SOURCE SECURITY P0 RED TWO physical Save files" if n==767
+           else "#749 foreign canonical store RED→GREEN" if n==773 else "signed")}
     runs={str(run):{"id":run,"head_sha":gate.PR_PINS[pr],
                   "status":"completed","conclusion":"success"}
           for run,pr in gate.ACTION_RUN_PINS.items()}
@@ -199,6 +201,30 @@ class W24LiveIntakeUnitTests(unittest.TestCase):
         self.deny(lambda x: x['pulls']['768'].update(body='no crash test'))
     def test_reject_source_missing_766_cold_qa(self):
         self.deny(lambda x: x['pulls']['766'].update(body='no fixture test'))
+
+
+    def test_original_749_raw_store_fork_product_red(self):
+        v=gate.validate(fixture())
+        self.assertEqual(v["selected_749_raw_store_product_security"],
+                         "P0_RED_INDEPENDENT_ORIGINAL_767")
+        self.assertFalse(v["ready_for_install"])
+    def test_fix_candidate_773_not_selected(self):
+        v=gate.validate(fixture())
+        self.assertEqual(v["selected_save_bridge"],749)
+        self.assertEqual(v["r2_773_unselected_correction_candidate"],
+                         "PRODUCER_GREEN_SCOPE_ONLY_INDEPENDENT_G0_PENDING")
+    def test_reject_767_source_changed(self):
+        self.deny(lambda x:x["pulls"]["767"]["head"].update(sha="0"*40))
+    def test_reject_773_source_changed(self):
+        self.deny(lambda x:x["pulls"]["773"]["head"].update(sha="0"*40))
+    def test_reject_767_ci_wrong_head(self):
+        self.deny(lambda x:x["runs"]["41137846205"].update(head_sha="0"*40))
+    def test_reject_773_ci_failed(self):
+        self.deny(lambda x:x["runs"]["41138550902"].update(conclusion="failure"))
+    def test_reject_767_negative_missing(self):
+        self.deny(lambda x:x["pulls"]["767"].update(body="not a fork"))
+    def test_reject_773_fix_claim_missing(self):
+        self.deny(lambda x:x["pulls"]["773"].update(body="not a fix"))
 
 class W24LiveCLI(unittest.TestCase):
     def test_cli_snapshot_returns_source_hold(self):
