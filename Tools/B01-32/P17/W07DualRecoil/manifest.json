@@ -1,0 +1,31 @@
+{
+  "package_id": "B01-32-DUAL-RECOIL-ANIM-001",
+  "version": "1.0.0",
+  "wave": "PASS17/WAVE07",
+  "owner": "B01-32 Animation & VFX",
+  "core": "C#9 deterministic two-lane closed-form spring visual recoil",
+  "original_unity": "two dynamic 3D meshes, MeshFilter + MeshRenderer, no physics colliders",
+  "owned_paths": [
+    "Tools/B01-32/P17/W07DualRecoil/**",
+    ".github/workflows/b01-32-p17w07-dual-recoil.yml"
+  ],
+  "import_namespace": "Assets/B0132DualRecoil/**",
+  "native_unity": "NOT_RUN",
+  "actual_game_integration": false,
+  "receiver": [
+    "B01-40 independent binary/GUID/path",
+    "B01-60 licensed native Unity 6000.3.14f1 URP",
+    "B01-00 dispatch to Codex if accepted"
+  ],
+  "api": [
+    "PlayLeftShot(float visualIntensity=1)",
+    "PlayRightShot(float visualIntensity=1)",
+    "SetVisualsEnabled(bool)"
+  ],
+  "rollback": "delete only newly imported Assets/B0132DualRecoil + root sibling .meta and any future Codex adapter",
+  "dependencies": [],
+  "conflicts": [
+    "WPN physical projectiles and ammo are out of scope",
+    "Codex game source strictly read-only"
+  ]
+}
