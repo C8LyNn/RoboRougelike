@@ -1,0 +1,25 @@
+# CI41-NATIVE-SAVE-NEGATIVE-G1-001/R1 — PASS17 WAVE17
+
+Owner B01-41 | Dispatch https://github.com/C8LyNn/RoboRougelike/issues/608 | Single-owner policy https://github.com/C8LyNn/RoboRougelike/issues/276
+
+## REAL deliverable: four NEW importable Unity PlayMode negative regression tests
+Target **conditionally** B01-23's original complete Unity demo producer #604 at EXACT immutable source SHA `1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a`. This does NOT select #604 ahead of #596 `efb2b06eafedab5469b57f163152d96aca3c5915` nor supersede B01-23/62 source choice. Own QA branch is additive **stacked on #604**, and Draft PR must base on producer branch so only 10 new CI41-owned files are in the PR diff. Historical/game source #510 `d94400d95d13db7f27e1533df05c9292d5380431`, Save #556 `33094f154c7b91119b36d58aab285e6e83c5de57`, and original #604 code blobs remain byte-identical. No Codex/main/develop writes, no merge.
+
+Original producer #604 has 5 authored (not executed!) Unity PlayMode tests. This QA-only package adds **four unique, genuinely new** authored Unity/NUnit `[UnityTest]` cases referencing the real original #604 `IsolatedTwinRigSaveHost` and `FileCheckpointFence` via an independent `B0141.SaveBridge.NativeQA` assembly:
+
+1. `CorruptPersistentFence_QuarantinesFreshHostBeforePhysicalPublication` — original OS watermark 88 bytes, corrupt actual on-disk fence after a physical two-body load, new Unity GameObject host must quarantine before publication (zero staged Rigidbody, sticky quarantine) while original prior world remains.
+2. `StaleGenerationOnFreshHost_DeniedWithoutPublishingNewRigidbodies` — separate Unity host uses same original slot; lower generation returns StaleGeneration without bodies, then original exact bytes at committed generation cold-replay correctly and rehydrate consumed Light/Heavy IDs. This is same Unity process, not a true OS-process restart.
+3. `ForeignRunSameFence_DeniedWithPriorWorldAndConsumedIdsIntact` — same physical disk slot, different run ID, same generation, denied with no partial physics world; previous Light/Heavy consumed bits unchanged.
+4. `InvalidSlotName_RejectsTraversalAndNeverEnablesPersistentFence` — original public Unity host denies `../`, slashes/backslashes, forbidden dot, 33-character name and empty name. Only own unique ASCII slot accepted; checks actual on-disk fence creation and consumed IDs.
+
+All tests use unique `CI41W17_` per-test GUID slot names, own output fence only, and destroy own test GameObjects. These are actual **UnityEngine Rigidbody + real MonoBehaviour** source-authored NUnit PlayMode tests, *NOT* faked test results; no source-only CI or fake Unity test can certify them G1. Native execution must be B01-60's existing licensed Unity 6000.3.14f1 test system #532/#567/#581/#601, collect named NUnit XML and real Editor.log, with authoritative source SHA and scoped .meta GUIDs. Until actual engine execution: four NEW native cases NOT_RUN, original five native cases NOT_RUN.
+
+## Source-only CI validation (NOT G1)
+`native_suite_guard.py` is an executable *independent readiness* validator: compares exact frozen immutable original #604 Git blobs and 510/556 ancestry against stacked own HEAD, requires exactly 10 exclusively new CI41-owned files and no original producer mutation, validates four unique new Unity GUIDs against original source assets, independent TestAssembly `.asmdef` dependency graph, actual source `[UnityTest]` four case bodies with required concrete negative assertions and cleanup, and checks no duplicate methods with original five native tests.
+`test_native_suite_guard.py` tests this validator with 22 positive/adversarial cases per Windows2025 and Ubuntu24.04 GitHub Actions. This source-only check is useful before Unity handoff; it is NOT Unity compilation or PlayMode PASS. Gate report `source_readiness=SOURCE_CHECK_PASS`, `real_unity_playmode=NOT_RUN`, `source_g0_for_bridge=NOT_GRANTED_BY_B01_41`, `canonical_510_save=HOLD`, `G2=HOLD`.
+
+## Reproduce source-only
+Checkout THIS QA branch with full Git history. Execute `python Tools/B01/CI41/P17W17/native_suite_guard.py --repo . --output readiness.json` and `python -m unittest discover -s Tools/B01/CI41/P17W17 -p test_native_suite_guard.py -v`. The original immutable upstream #604 blobs are fetched read-only via Git commit ancestry. No physical source ZIP packing or rollbacks on the actual game.
+
+## Gate, recipient and rollback
+Formal adapter selection #604 vs #596 and exact new SHA independent B01-61 regression QA is B01-23/62 and B01-61's job. B01-40/62 must accept a single source ZIP and safe scratch migration; B01-60 runs real licensed native cases or records NOT_RUN. Original #510 private Rig[]/AtomicDockLedger cannot be hydrated without owner-authorized new interface, so LIVE_CANONICAL_SAVELOAD HOLD despite our new real Unity test code. B01-00 controls Codex handoff/ACK. All 10 paths are additive CI41-owned test + workflow + docs, no in-place producer source changes. Rollback = leave Draft unmerged/remove only newly added B0141/CI41 W17 files, never delete foreign folders or use #510/#532 unsafe rollback. NO MERGE / NO CODEX ACK / NO G2.
