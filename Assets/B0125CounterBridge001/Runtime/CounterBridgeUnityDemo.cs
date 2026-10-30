@@ -44,7 +44,7 @@ namespace B0125.CounterBridge
         private static Vector3 Spawn()=>new Vector3(0,1.3f,-7.5f);
         private void Awake()
         {
-            model=new CounterBridgeController(new CounterBridgeConfig(1.5,3,250,45,90,18));
+            model=new CounterBridgeController(new CounterBridgeConfig(1.5,3,250,500,600,18));
             Floor("SOUTH APPROACH actual BoxCollider",new Vector3(0,-.25f,-6),
                 new Vector3(6,.5f,6),Color.gray);
             Floor("NORTH EXIT actual BoxCollider",new Vector3(0,-.25f,6),

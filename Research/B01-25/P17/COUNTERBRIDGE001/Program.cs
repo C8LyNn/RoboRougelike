@@ -9,7 +9,7 @@ public static class OriginalCounterBridgeSourceTests
 {
     static readonly List<string> Passed=new();
     static int negatives;
-    static CounterBridgeConfig Config()=>new CounterBridgeConfig(1.5,3,250,45,90,18);
+    static CounterBridgeConfig Config()=>new CounterBridgeConfig(1.5,3,250,500,600,18);
     static CounterBridgeController Bridge()=>new CounterBridgeController(Config());
     static BridgeSample Input(double dt=.02,double x=0,double z=2,double mass=12,
         bool contact=true,bool paused=false,bool alive=true)

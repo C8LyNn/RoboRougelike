@@ -34,7 +34,7 @@
     "Assets/B0125CounterBridge001/Runtime/B0125.CounterBridge.Runtime.asmdef.meta": "acb65d54c4c0290c784cacae9e8104a5b694cdf8",
     "Assets/B0125CounterBridge001/Runtime/CounterBridgeCore.cs": "812cbc112b5697947ea41c8a630ea208071f0b9f",
     "Assets/B0125CounterBridge001/Runtime/CounterBridgeCore.cs.meta": "4a27b6743348da6c378f31c514b2cb70d005fc43",
-    "Assets/B0125CounterBridge001/Runtime/CounterBridgeUnityDemo.cs": "afc05c9994994c40efa7e808daae386bfbfe17a4",
+    "Assets/B0125CounterBridge001/Runtime/CounterBridgeUnityDemo.cs": "998c520cd9dc163a8fd51f396741b898f6530a27",
     "Assets/B0125CounterBridge001/Runtime/CounterBridgeUnityDemo.cs.meta": "5069f118a7a0e290ca9e48f2e9430ee9617a03a3",
     "Assets/B0125CounterBridge001/Tests.meta": "01d266ce0b1210557150124a3a98c033ab34ca96",
     "Assets/B0125CounterBridge001/Tests/PlayMode.meta": "4cd4762a52f26ad0540f73722de098534da6e537",
@@ -46,10 +46,11 @@
     "Research/B01-25/P17/COUNTERBRIDGE001/CounterBridgeCore.cs": "812cbc112b5697947ea41c8a630ea208071f0b9f",
     "Research/B01-25/P17/COUNTERBRIDGE001/CounterBridgeRuntime.csproj": "48cac2a3b4614fa5d8ec4363df1340ca1b5ac5fc",
     "Research/B01-25/P17/COUNTERBRIDGE001/CounterBridgeTests.csproj": "6685910777732aad19e50a0df62d41a79e6073bf",
-    "Research/B01-25/P17/COUNTERBRIDGE001/Program.cs": "01e3cb97ec635576741c0943ec34a0d232b03ca4",
+    "Research/B01-25/P17/COUNTERBRIDGE001/Program.cs": "322850a4fe0084449618dc61fc0b86f922957082",
     "Tools/B01/B01-25/P17W19CounterBridge/check.py": "97a3398234e8d1cf7b709e8673197d0aefd54ecc",
-    "Tools/B01/B01-25/P17W19CounterBridge/README.md": "5638431636b83df09bb1e77360c55bdd5855faf0"
+    "Tools/B01/B01-25/P17W19CounterBridge/README.md": "b0a82bad2fa0e0036ba9e64e190176d00849dfd4"
   },
   "rollback": "ONLY new owner paths on disposable branch; never remove foreign empty dirs, occupied paths, symlinks, protected game or frozen #510/#556/#596",
-  "limitations": "Native Unity6/PhysX NOT_RUN; center ray support approximation, original autonomous .unity scene generated on editor, not committed"
+  "limitations": "Native Unity6/PhysX NOT_RUN; center ray support approximation, original autonomous .unity scene generated on editor, not committed",
+  "reboundTuning": "500 Nm/rad return spring, 600 Nm*s/rad damping, inertia 250 kg*m2; original source tests require recovery after vehicle departs"
 }
