@@ -148,17 +148,9 @@ namespace B01.CanonicalRigPortW24
                     body.mass=(float)p.MassKg;body.useGravity=false;
                     body.isKinematic=p.Kinematic;
                     body.linearDamping=0;body.angularDamping=0;
-                    var originalLedger=new AtomicDockLedger();
-                    if(p.Consumed)
-                    {
-                        Vector3d zero=new Vector3d(0,0,0);
-                        if(!originalLedger.TryDetach(p.Id,zero,zero,zero,p.MassKg,
-                            0,0,out Vector3d impulse)||impulse.MagnitudeSquared!=0||
-                           !originalLedger.Contains(p.Id)||originalLedger.Count!=1)
-                            throw new InvalidOperationException("Private original #510 atomic dock ledger cannot be hydrated");
-                    }
-                    else if(originalLedger.Count!=0)
-                        throw new InvalidOperationException("Attached part has consumed ID");
+                    if(!CanonicalRigLedgerHydratorW24.TryHydrate(p,i,ledger,
+                        out AtomicDockLedger originalLedger))
+                        throw new InvalidOperationException("Original #510 ledger and frozen #556/W06 bits reject hydration");
                     rigs[i]=new Rig(root,part,body,originalLedger,p);
                 }
                 world=new PhysicalWorld(port,planned,rigs);
