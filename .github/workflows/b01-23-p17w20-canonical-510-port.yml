@@ -1,0 +1,25 @@
+name: B01-23 W20 canonical 510 owner port isolated source
+on:
+  push:
+    branches: ['b01-23/p17w20-canonical510-owner-port-001']
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-23/P17W20Canonical510Port001/**'
+      - '.github/workflows/b01-23-p17w20-canonical-510-port.yml'
+jobs:
+  original-source-port:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile executable ORIGINAL selected #556 and new canonical port
+        run: dotnet run --project Tools/B01/B01-23/P17W20Canonical510Port001/CanonicalPortTests.csproj -c Release
