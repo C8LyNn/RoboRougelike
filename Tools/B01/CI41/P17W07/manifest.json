@@ -1,0 +1,57 @@
+{
+  "package_id": "CI41-UPMLOCK-001",
+  "version": "1.0.0",
+  "producer": "B01-41",
+  "cycle": "PASS17_WAVE07",
+  "branch": "ci/b01-41-p17w07-upm-lock-consistency",
+  "origin_main": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "paths": [
+    "Tools/B01/CI41/P17W07/upm_lock_gate.py",
+    "Tools/B01/CI41/P17W07/test_upm_lock_gate.py",
+    "Tools/B01/CI41/P17W07/README.md",
+    "Tools/B01/CI41/P17W07/manifest.json",
+    ".github/workflows/b01-41-p17w07-upm-lock.yml"
+  ],
+  "source_git_blobs": {
+    "Tools/B01/CI41/P17W07/upm_lock_gate.py": "a29c9fc1c1f745063b79e1ead31cf79a1dd4cb4d",
+    "Tools/B01/CI41/P17W07/test_upm_lock_gate.py": "f8d0373dcca0434dc458ca7937b1313b275bb637"
+  },
+  "original_project_git_blobs": {
+    "Packages/manifest.json": "d1dacf230ed7e1e148062d0441ec430a867ae0a7",
+    "Packages/packages-lock.json": "6b8a670c36a9a9a821d9f1e7f78bfe3272274fbc",
+    "ProjectSettings/ProjectVersion.txt": "88b74ddff7374ebb3d54bab5fd066fc78f20ad07"
+  },
+  "expected_original": {
+    "unity": "6000.3.14f1",
+    "manifest_direct": 45,
+    "resolved_locked": 57,
+    "transitive_only": 12,
+    "transitive_requested_vs_resolved_version_warnings": 15
+  },
+  "original_tests": {
+    "per_os": 26,
+    "OS": [
+      "ubuntu-24.04",
+      "windows-2025"
+    ],
+    "git_init_commit_subprocess": true,
+    "actual_original_repo_git_object_scan": true
+  },
+  "statuses": {
+    "producer_source": "PENDING_FINAL_EXACT_HEAD_ACTIONS",
+    "B01_40_G0": "PENDING",
+    "B01_60_61_QA": "PENDING",
+    "unity_resolver": "NOT_RUN",
+    "unity_native_compilation": "NOT_RUN",
+    "G1": "NOT_RUN",
+    "Codex_ACK": "PENDING",
+    "integrated": false,
+    "merged": false
+  },
+  "rollback": "Leave isolated Draft unmerged or remove only five own paths; no game or lockfile mutation",
+  "limitations": [
+    "Source lock graph and declared depth only, not Unity actual resolver/install",
+    "Higher transitive resolved version vs dependency request is normal and warned",
+    "Non-registry/builtin origins require independent authorization/review"
+  ]
+}
