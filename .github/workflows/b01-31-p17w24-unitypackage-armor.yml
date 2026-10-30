@@ -1,0 +1,91 @@
+name: B01-31 P17W24 Actual Unitypackage ARMOR 3STATE native-asset + managed-state source QA
+on:
+  push:
+    branches: [art/b01-31-p17w24-armor-unitypackage-visual-prefab]
+    paths:
+      - 'Assets/B01_31/**'
+      - 'Assets/B01_31.meta'
+      - 'Tools/B01-31/P17/W24ArmorUnityPackage001/**'
+      - '.github/workflows/b01-31-p17w24-unitypackage-armor.yml'
+  pull_request:
+    paths:
+      - 'Assets/B01_31/**'
+      - 'Assets/B01_31.meta'
+      - 'Tools/B01-31/P17/W24ArmorUnityPackage001/**'
+      - '.github/workflows/b01-31-p17w24-unitypackage-armor.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-immutable-W23-OBJ-physical-Unitypackage:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Download actual original W23 physical OBJ artifact not copy or rebuild
+        uses: actions/download-artifact@v4
+        with:
+          name: B0131-P17W23-REAL-GLTF-EXACT-3ARMOR-OBJ-MTL-NATIVE-IMPORT-SOURCE
+          repository: C8LyNn/RoboRougelike
+          run-id: 41132293604
+          github-token: ${{ github.token }}
+          path: original-W23
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile actual W24 Unity MonoBehaviour against explicitly SYNTHETIC UnityEngine stub
+        run: dotnet run --configuration Release --project Tools/B01-31/P17/W24ArmorUnityPackage001/Harness/VisualManagedHarness.csproj
+      - name: Real physical Unitypackage with three original SHA-pinned W23 OBJ and native CSharp+GUIDs
+        run: |
+          python Tools/B01-31/P17/W24ArmorUnityPackage001/build_unitypackage.py --repo . --original original-W23 --output build/W24
+          python Tools/B01-31/P17/W24ArmorUnityPackage001/verify_unitypackage.py --repo . --original original-W23 --output build/W24
+      - name: Re-author exact physical original Unity tar/gzip all GUIDs and machine receipt then check every byte SHA
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd build && find . -type f -print0 | sort -z | xargs -0 sha256sum) >/tmp/one.sha
+          python Tools/B01-31/P17/W24ArmorUnityPackage001/build_unitypackage.py --repo . --original original-W23 --output build/W24
+          python Tools/B01-31/P17/W24ArmorUnityPackage001/verify_unitypackage.py --repo . --original original-W23 --output build/W24
+          (cd build && find . -type f -print0 | sort -z | xargs -0 sha256sum) >/tmp/two.sha
+          cmp /tmp/one.sha /tmp/two.sha
+          echo "B0131_W24_REAL_UNITYPACKAGE_EXACT_13_GUID_SOURCE_SHA_PARITY_PASS"
+      - name: Publish actual original Unity .unitypackage and exact physical receipt (NOT Unity G1)
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0131-P17W24-ACTUAL-UNITYPACKAGE-3STATE-ARMOR-VISUAL-ONLY
+          path: build/W24/
+          retention-days: 30
+          if-no-files-found: error
+  independent-Windows-original-Unitypackage-and-CSharp-managed-QA:
+    needs: original-immutable-W23-OBJ-physical-Unitypackage
+    runs-on: windows-2022
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Independently read original immutable W23 physical armor source
+        uses: actions/download-artifact@v4
+        with:
+          name: B0131-P17W23-REAL-GLTF-EXACT-3ARMOR-OBJ-MTL-NATIVE-IMPORT-SOURCE
+          repository: C8LyNn/RoboRougelike
+          run-id: 41132293604
+          github-token: ${{ github.token }}
+          path: original-W23
+      - name: Download ACTUAL Ubuntu-created Unitypackage; NO Unity run and NO rebuild on Windows
+        uses: actions/download-artifact@v4
+        with:
+          name: B0131-P17W24-ACTUAL-UNITYPACKAGE-3STATE-ARMOR-VISUAL-ONLY
+          path: original-ubuntu-Unitypackage
+      - name: Independently parse physical asset.meta pathname asset tar.gz and original OBJ identity
+        run: python Tools/B01-31/P17/W24ArmorUnityPackage001/verify_unitypackage.py --repo . --original original-W23 --output original-ubuntu-Unitypackage
+      - name: Independently compile ACTUAL CSharp visual only source against synthetic UnityEngine managed stub
+        run: dotnet run --configuration Release --project Tools/B01-31/P17/W24ArmorUnityPackage001/Harness/VisualManagedHarness.csproj
