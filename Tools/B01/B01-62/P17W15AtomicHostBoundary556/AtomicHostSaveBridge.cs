@@ -90,6 +90,7 @@ namespace B01.SaveHostBoundary556
         {
             if(string.IsNullOrWhiteSpace(path) || operation || quarantined)return false;
             string temp="";
+            bool retained=false;
             try
             {
                 string full=Path.GetFullPath(path);
@@ -97,6 +98,8 @@ namespace B01.SaveHostBoundary556
                 if(!Directory.Exists(dir) || File.Exists(full) || Directory.Exists(full))
                     return false;
                 if(!TryCapture(out byte[] bytes))return false;
+                // Hold this boundary for the entire physical disk operation.
+                operation=true;retained=true;
                 temp=full+"."+Guid.NewGuid().ToString("N")+".atomic-tmp";
                 using(var fs=new FileStream(temp,FileMode.CreateNew,FileAccess.Write,FileShare.None))
                 {
@@ -110,6 +113,7 @@ namespace B01.SaveHostBoundary556
             catch{return false;}
             finally
             {
+                if(retained)operation=false;
                 if(temp.Length>0)
                 {
                     try {if(File.Exists(temp))File.Delete(temp);}
