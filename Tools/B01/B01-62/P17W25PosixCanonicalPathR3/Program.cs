@@ -526,7 +526,11 @@ internal static class IndependentOriginalGate
                    CanonicalGateResult.Accepted||
                    !restart.Read(Run,out var g,out var hash)||
                    g!=1||hash!=Session.SourceHash(Snapshot(1,true,false))||
-                   Directory.Exists(variant))return false;
+                   // Windows file names are case-insensitive: after the real
+                   // canonical store exists, Directory.Exists(variant) is
+                   // TRUE for that SAME physical directory. Only POSIX can
+                   // have an ACTUAL second physical folder to reject.
+                   (!OperatingSystem.IsWindows()&&Directory.Exists(variant)))return false;
                 Console.WriteLine(
                   "W25_R3_WINDOWS_LINUX_EXACT_CASE_ONE_CANONICAL_SAVE=SOURCE_GREEN");
                 return true;
