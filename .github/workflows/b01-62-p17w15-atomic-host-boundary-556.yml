@@ -1,0 +1,70 @@
+name: B01-62 W15 original #556 plus #510 atomic host bridge 196 disk and rollback tests
+on:
+  push:
+    branches: [qa/b01-62-p17w15-atomic-host-boundary-556]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W15AtomicHostBoundary556/**'
+      - '.github/workflows/b01-62-p17w15-atomic-host-boundary-556.yml'
+permissions:
+  contents: read
+jobs:
+  tests:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    name: Frozen #556 W06 R2 source Save/Load and #536 rollback (${{ matrix.os }})
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Verify selected frozen source SHAs and real original Git blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir=Tools/B01/B01-62/P17W15AtomicHostBoundary556
+          git fetch --no-tags origin 33094f154c7b91119b36d58aab285e6e83c5de57 d94400d95d13db7f27e1533df05c9292d5380431 77d75d73467d236f6e3404caa58271ffec9d45cb
+          mkdir -p "$dir/.source" "$dir/.output"
+          git cat-file -e 33094f154c7b91119b36d58aab285e6e83c5de57^{commit}
+          git cat-file -e d94400d95d13db7f27e1533df05c9292d5380431^{commit}
+          git show 33094f154c7b91119b36d58aab285e6e83c5de57:Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs > "$dir/.source/DetachedSnapshotContract.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123SecureReattachV2/Runtime/AtomicDockLedger.cs > "$dir/.source/AtomicDockLedger.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs > "$dir/.source/DebrisImpulseCore.cs"
+          test "$(git hash-object "$dir/.source/DetachedSnapshotContract.cs")" = b52e511c370f5fca56c74029050844dc8cbb7f9a
+          test "$(git hash-object "$dir/.source/AtomicDockLedger.cs")" = b6a4d04b0c6407c8c84451b4d599d96fe0e4d1a9
+          test "$(git hash-object "$dir/.source/DebrisImpulseCore.cs")" = fa1aa5e531927cbe73cf5fdfe161b4a981316db5
+          git show 77d75d73467d236f6e3404caa58271ffec9d45cb:Tools/B01/B01-40/P17W13RollbackPreservation/receiver.py > "$dir/.source/receiver536.py"
+          git worktree add --detach "$dir/.producer510" d94400d95d13db7f27e1533df05c9292d5380431
+          test "$(git -C "$dir/.producer510" rev-parse HEAD)" = d94400d95d13db7f27e1533df05c9292d5380431
+          echo "ORIGINAL_FROZEN_556_510_W06_BLOBS_PINNED" | tee "$dir/.output/source-pins.log"
+      - name: Compile real original selected #556 plus #510 ledger and execute 196 cold disk and host fault tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir=Tools/B01/B01-62/P17W15AtomicHostBoundary556
+          dotnet run --project "$dir/HostBridge556.csproj" --configuration Release --verbosity minimal 2>&1 | tee "$dir/.output/atomic-host-tests.log"
+          grep -q 'B01_62_W15_ATOMIC_BOUNDARY_TOTAL 196 PASS 196 FAIL 0' "$dir/.output/atomic-host-tests.log"
+          grep -q 'ORIGINAL_556_AND_510_R2_AND_W06_EXECUTED' "$dir/.output/atomic-host-tests.log"
+      - name: Rerun exact accepted #536 rollback on genuine selected #510 ZIP in disposable scratch
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir=Tools/B01/B01-62/P17W15AtomicHostBoundary556
+          python "$dir/.source/receiver536.py" --producer "$dir/.producer510" --out "$dir/.output/rollback" 2>&1 | tee "$dir/.output/safe-receiver.log"
+          grep -q '^ACTUAL_FROZEN_510_ROLLBACK_RED' "$dir/.output/safe-receiver.log"
+          grep -q '^VERSIONED_B0140_WRAPPER_GREEN' "$dir/.output/safe-receiver.log"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-62-w15-hostbridge-${{ matrix.os }}
+          path: Tools/B01/B01-62/P17W15AtomicHostBoundary556/.output/
+          include-hidden-files: true
+          if-no-files-found: error
