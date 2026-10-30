@@ -1,0 +1,83 @@
+{
+  "package_id": "B01-31-CABLE-SNAP-VFX-001",
+  "version": "P17-W14-R1",
+  "owner": "B01-31 — CONCEPT ART & VISUAL EXPLORATION",
+  "mission_issue": 552,
+  "concept": "Three original phases of snapped electrical umbilical cable on detachable robot modules; original cable halves visibly disconnected, timeline cosmetic only",
+  "scope_guard": [
+    "No canonical Assets/** edits",
+    "No Codex R3/MOV/CHL/PARTSIZE or previous B01-31/#545/#524/#520 modifications",
+    "No B01-23 or B01-62 Save/Load contract source or #510",
+    "No B01-40 rollback/migration code or Unity physics integration"
+  ],
+  "distinct_from": [
+    "#432 Repair Weld joins/welds parts; W14 depicts severance and discharging connector without an attach action",
+    "#520 Thermal Vent makes hot/coolant plumes; W14 draws clearly two torn cable halves and crackling short-circuit",
+    "#505 Safety Dock diagnostics shows denied APIs; W14 conveys physical cable disconnection without security semantics",
+    "#340 damage decal is persistent part surface condition; W14 is transient cable severance motion",
+    "#372 Salvage Beacon is recovery locator; W14 is no reward/pickup beacon"
+  ],
+  "base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "source_paths": [
+    "Tools/B01-31/P17/W14CableSnapVfx001/**",
+    ".github/workflows/b01-31-p17w14-cable-snap-vfx.yml"
+  ],
+  "outputs": {
+    "original_png_sprites": 36,
+    "transparent_rgba_size": [
+      192,
+      192
+    ],
+    "phases": [
+      "fracture",
+      "discharge",
+      "cooldown"
+    ],
+    "frames_per_phase": 12,
+    "frame_duration_ms": 80,
+    "per_phase_duration_ms": 960,
+    "actual_animated_gif_previews": 3,
+    "real_storyboards": [
+      "ALL_PHASES_DARK_12_FRAME_STORYBOARD.png",
+      "ALL_PHASES_LIGHT_12_FRAME_STORYBOARD.png"
+    ],
+    "unity_sprite_zip": "B0131-CableSnap-UnitySpriteImport.zip",
+    "unity_import_namespace": "Assets/B0131CableSnapVfx/",
+    "zip_members": 77,
+    "deterministic_unique_meta_guids": 41,
+    "unity_animator": "NOT IMPLEMENTED",
+    "unity_gameplay_hook": "NOT IMPLEMENTED"
+  },
+  "tests": [
+    "Actual source PNG decoding of 36 physically rendered 192x192 RGBA sprites, genuinely distinct 12 frames per original state",
+    "Actual GIF encoding and independent 12x80ms frame readback of each original phase",
+    "Actual 2 dark/light 2304x716 3x12 board PNGs",
+    "Actual 77-entry ZIP CRC, bytes matching sprites exactly, unique 41 deterministic folder/sprite GUIDs",
+    "Six invalid phase/time negative generator controls, plus receiver corrupted PNG/ZIP hash detection",
+    "Independent receiver checks actual broken cable half geometry pixel occupancy, phase order and never claims safe reattach",
+    "Original generator full output repeated twice with byte-identical SHA across all sprites/gifs/boards/ZIP/receipt",
+    "Windows independent receiver downloads actual Ubuntu original files and does not rerun producer"
+  ],
+  "safety": {
+    "only_selected_gameplay": "Secure V2 #510@d94400d95d13db7f27e1533df05c9292d5380431 (frozen, not imported)",
+    "save_load": "B01-23/62 #544/#549 only, #550 RED; no claims by B01-31",
+    "migration_rollback": "B01-40/62 #536/#542 only; no claims by B01-31",
+    "unity_physx": "B01-60 #532 licensing requires native Editor/PhysX, NOT_RUN here",
+    "status": "SOURCE ART not actual runtime or native G1",
+    "warning": "Non-authoritative cosmetic sprite-only assets; must never be used to approve detached part, reattachment, ID restore, Save/Load or physics",
+    "native_unity": "NOT_RUN",
+    "B01_40_formal_G0": "PENDING",
+    "B01_60_formal_G1": "NOT_RUN",
+    "G2": "HOLD",
+    "codex_ack": false,
+    "integrated": false
+  },
+  "rollback": "Own branch delete own five source files and unique workflow. Later authorized disposable Unity receiver remove only new Assets/B0131CableSnapVfx/ plus sibling .meta, never existing/foreign empty directories or #510/W06/Codex source.",
+  "receivers": [
+    "B01-40 physical ZIP/GUID/path/rollback G0",
+    "B01-60 true licensed Unity 6000.3.14f1 URP Sprite import/per-frame alpha/GPU/human evaluation G1",
+    "B01-12 optional event-semantic UI coordination after actual authoritative detach trigger approved",
+    "B01-23/B01-62: NO CHANGE to chosen Save/Load contract; API untouched",
+    "B01-00 discretionary #79 routing after independent gates"
+  ]
+}
