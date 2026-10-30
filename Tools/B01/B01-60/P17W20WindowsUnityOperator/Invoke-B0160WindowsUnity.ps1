@@ -15,7 +15,7 @@ $receipt=@{package="B01-60-P17W20-WINDOWS-LOCAL-UNITY";mode="PREFLIGHT";
   editor_sha256="";operator_consent=$false;result="NOT_RUN";
   start_utc=(Get-Date).ToUniversalTime().ToString("o")}
 function Need([bool]$ok,[string]$reason) {if(-not $ok){throw "B0160_W20_FAIL_CLOSED: $reason"}}
-function Git([string[]]$a) {
+function Invoke-LocalGit([string[]]$a) {
  $v=@(& git @a 2>&1)
  Need ($LASTEXITCODE -eq 0) "Local Git source/integrity operation failed"
  return ($v -join [Environment]::NewLine).Trim()
@@ -50,15 +50,15 @@ try {
  $py=@(& python --version 2>&1)
  Need ($LASTEXITCODE -eq 0 -and ($py -join " ") -match '^Python 3\.') "Python 3 required"
  $repo=(Resolve-Path -LiteralPath $RepoPath -ErrorAction Stop).Path
- $top=Git @("-C",$repo,"rev-parse","--show-toplevel")
+ $top=Invoke-LocalGit @("-C",$repo,"rev-parse","--show-toplevel")
  Need ([IO.Path]::GetFullPath($top).TrimEnd('\') -ieq [IO.Path]::GetFullPath($repo).TrimEnd('\')) "RepoPath must be Git root"
- $SourceSha=Git @("-C",$repo,"rev-parse","HEAD")
+ $SourceSha=Invoke-LocalGit @("-C",$repo,"rev-parse","HEAD")
  $receipt.source_sha=$SourceSha
  Need ($SourceSha -match '^[0-9a-f]{40}$') "Missing exact HEAD SHA"
  $me="Tools/B01/B01-60/P17W20WindowsUnityOperator/Invoke-B0160WindowsUnity.ps1"
  Need ([IO.Path]::GetFullPath((Join-Path $repo $me)) -ieq [IO.Path]::GetFullPath($PSCommandPath)) "Run this Git-tracked W20 script only"
- $localBlob=Git @("-C",$repo,"hash-object","--",$me)
- $committedBlob=Git @("-C",$repo,"rev-parse","HEAD:$me")
+ $localBlob=Invoke-LocalGit @("-C",$repo,"hash-object","--",$me)
+ $committedBlob=Invoke-LocalGit @("-C",$repo,"rev-parse","HEAD:$me")
  Need ($localBlob -eq $committedBlob) "Local operator script modified since Git HEAD"
  foreach($f in @("Tools/B01/B01-60/P17W20WindowsUnityOperator/base_native.py",
                  "Tools/B01/B01-60/P17W12NativeSecureV2QA/runner.py")) {
@@ -78,7 +78,7 @@ try {
  Write-Host "B0160_W20_NEW_DISPOSABLE_SCRATCH=$scratch"
  $cl=@(& git -c core.hooksPath=NUL clone --no-hardlinks --no-checkout -- $repo $co 2>&1)
  Need ($LASTEXITCODE -eq 0) "Local-only clone failed; NO NETWORK FETCH attempted"
- $null=Git @("-C",$co,"-c","core.hooksPath=NUL","checkout","--detach",$SourceSha)
+ $null=Invoke-LocalGit @("-C",$co,"-c","core.hooksPath=NUL","checkout","--detach",$SourceSha)
  Need ((Git @("-C",$co,"rev-parse","HEAD")) -eq $SourceSha) "Detached checkout SHA incorrect"
  $prj=Get-Content -LiteralPath (Join-Path $co "ProjectSettings/ProjectVersion.txt") -Raw
  Need ($prj -match '(?m)^m_EditorVersion: 6000\.3\.14f1\s*$') "Wrong project Unity version"
