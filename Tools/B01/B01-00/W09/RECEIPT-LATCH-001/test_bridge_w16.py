@@ -27,10 +27,11 @@ class BridgeW16Gate(unittest.TestCase):
         with self.assertRaisesRegex(AdmissionError, reason):
             audit_bridge_wave16(d)
 
-    def test_real_unselected_producers_hold(self):
+    def test_selected_lineage_with_unaccepted_correction_hold(self):
         out = audit_bridge_wave16(fixture())
         self.assertEqual(out["verdict"], "HOLD_NO_SELECTED_REPAIRED_BRIDGE")
-        self.assertIsNone(out["selected_source"])
+        self.assertEqual(out["selected_source"], 587)
+        self.assertEqual(out["selected_correction_pr"], 596)
         self.assertFalse(out["merge_authorized"])
 
     def test_585_red_is_exact_original_head(self):
@@ -41,7 +42,7 @@ class BridgeW16Gate(unittest.TestCase):
     def test_587_qa_not_same_sha_or_blob(self):
         out = audit_bridge_wave16(fixture())
         self.assertEqual(out["source_statuses"]["587"],
-                         "HOLD_CHANGED_CORE_NEW_EXACT_SHA_QA_REQUIRED")
+                         "HOLD_CURRENT_EXACT_SOURCE_SECURITY_RED")
 
     def test_producer_ci_green_does_not_cure_585_red(self):
         self.assertEqual(fixture()["candidates"][0]["producer_ci"], "PASS_SOURCE_ONLY")
@@ -66,20 +67,15 @@ class BridgeW16Gate(unittest.TestCase):
         d = fixture()
         d["owner_selection"].update(state="SELECTED_ONE", pr=587,
                                     sha=d["candidates"][1]["sha"],
-                                    decision_url="https://github.com/C8LyNn/RoboRougelike/issues/589#issuecomment-99999999")
+                                    decision_url="https://github.com/C8LyNn/RoboRougelike/pull/596")
         r = audit_bridge_wave16(d)
         self.assertEqual(r["selected_source"], 587)
         self.assertEqual(r["source_g0"], "HOLD")
         self.assertEqual(r["verdict"], "HOLD_NO_SELECTED_REPAIRED_BRIDGE")
 
-    def test_select_585_owner_still_red(self):
-        d = fixture()
-        d["owner_selection"].update(state="SELECTED_ONE", pr=585,
-                                    sha=d["candidates"][0]["sha"],
-                                    decision_url="https://github.com/C8LyNn/RoboRougelike/issues/589#issuecomment-99999999")
-        r = audit_bridge_wave16(d)
-        self.assertEqual(r["source_statuses"]["585"], "HOLD_CURRENT_EXACT_SOURCE_SECURITY_RED")
-        self.assertEqual(r["source_g0"], "HOLD")
+    def test_old_585_cannot_be_formally_selected(self):
+        self.blocked(lambda d: d["owner_selection"].update(
+            pr=585, sha=d["candidates"][0]["sha"]), "owner-selected")
 
     def test_schema_downgrade(self):
         self.blocked(lambda d: d.update(schema="b01-w15-selected-save-host-gate-v1"),
@@ -151,6 +147,44 @@ class BridgeW16Gate(unittest.TestCase):
         self.blocked(lambda d: d["candidates"][0]["independent_qa"].update(
             verdict="RELEASE_PASS"), "independent QA")
 
+    def test_exact_590_real_current_source_red(self):
+        q = fixture()["fresh_exact_587_qa"]
+        self.assertEqual(q["tested_core_blob"], fixture()["candidates"][1]["core_blob_sha"])
+        self.assertEqual(q["qa_sha"], "c28565639bef834e64c092ce142c449acdfb7ae5")
+        self.assertEqual(len(q["defects"]), 2)
+
+    def test_exact_590_red_cannot_be_relabelled_green(self):
+        self.blocked(lambda d: d["fresh_exact_587_qa"].update(verdict="GREEN"),
+                     "current exact")
+
+    def test_exact_590_core_sha_tamper(self):
+        self.blocked(lambda d: d["fresh_exact_587_qa"].update(tested_core_blob="f"*40),
+                     "current exact")
+
+    def test_exact_590_tested_commit_tamper(self):
+        self.blocked(lambda d: d["fresh_exact_587_qa"].update(tested_commit="f"*40),
+                     "current exact")
+
+    def test_exact_590_quarantine_verdict_bug_cannot_be_removed(self):
+        self.blocked(lambda d: d["fresh_exact_587_qa"].update(
+            defects=["SAME_GENERATION_WORLD_FORK"]), "current exact")
+
+    def test_revision_596_must_remain_unaccepted(self):
+        self.blocked(lambda d: d["owner_correction"].update(source_g0="ACCEPTED"),
+                     "unapproved")
+
+    def test_revision_596_unmerged(self):
+        self.blocked(lambda d: d["owner_correction"].update(merged=True),
+                     "unapproved")
+
+    def test_revision_596_not_green_without_new_qa(self):
+        self.blocked(lambda d: d["owner_correction"].update(state="SOURCE_PASS"),
+                     "unapproved")
+
+    def test_revision_596_observed_head_is_snapshot_only(self):
+        self.blocked(lambda d: d["owner_correction"].update(
+            observed_unfrozen_head="f"*40), "unapproved")
+
     def test_port_577_red_not_relabelled_587(self):
         self.blocked(lambda d: d["noncanonical_qa"].update(tested_port_pr=587),
                      "port RED")
@@ -174,28 +208,28 @@ class BridgeW16Gate(unittest.TestCase):
                      "only B01-23")
 
     def test_undecided_with_spoofed_SHA(self):
-        self.blocked(lambda d: d["owner_selection"].update(sha="f"*40),
+        self.blocked(lambda d: d["owner_selection"].update(state="UNDECIDED",sha="f"*40),
                      "undecided")
 
     def test_undecided_with_spoofed_pr(self):
-        self.blocked(lambda d: d["owner_selection"].update(pr=587),
+        self.blocked(lambda d: d["owner_selection"].update(state="UNDECIDED",pr=587),
                      "undecided")
 
     def test_selected_without_real_decision_link(self):
         self.blocked(lambda d: d["owner_selection"].update(
             state="SELECTED_ONE",pr=587,sha=d["candidates"][1]["sha"],
-            decision_url=None), "decision")
+            decision_url=None), "owner-selected")
 
     def test_selected_with_wrong_sha(self):
         self.blocked(lambda d: d["owner_selection"].update(
             state="SELECTED_ONE",pr=587,sha="f"*40,
             decision_url="https://github.com/C8LyNn/RoboRougelike/issues/589#issuecomment-99999"),
-            "decision")
+            "owner-selected")
 
     def test_selected_with_wrong_domain(self):
         self.blocked(lambda d: d["owner_selection"].update(
             state="SELECTED_ONE",pr=587,sha=d["candidates"][1]["sha"],
-            decision_url="https://evil.invalid/issues/589#issuecomment-99999"), "decision")
+            decision_url="https://evil.invalid/issues/589#issuecomment-99999"), "owner-selected")
 
     def test_false_unity_g1(self):
         self.blocked(lambda d: d["release_gates"].update(unity_g1="PASS"),
