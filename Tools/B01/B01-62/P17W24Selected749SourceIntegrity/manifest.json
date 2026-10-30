@@ -1,0 +1,27 @@
+{
+  "package": "B01-62-P17W24-SELECTED749-MULTIPATH-AND-ECONOMY-QA-001",
+  "owner": "B01-62",
+  "base_selected_749": "8634e71dfcf633323073fe584a6c0884f1ca5d23",
+  "parent_api_729": "b8ca29c7707cd6b4338d0b9772d74dee676d49d2",
+  "frozen_snapshot_556": "33094f154c7b91119b36d58aab285e6e83c5de57",
+  "frozen_game_510": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "host_R5_690": "cc7f73541517a18f4479bb155534bd4832d9985e",
+  "alternate_753": "743e36478ae8cf99e8429af1a8209da9d7ca64de",
+  "alternate_741": "75f1631f9a36ce51b0f8edc0c7857e924cdf78ec",
+  "single_selected_749": true,
+  "source_security_gate": "EXPECTED_RED_IF_PUBLIC_STORE_CAN_FORK_SAME_RUN_SLOT_EPOCH_UNDER_ONE_OS_OWNER",
+  "economy_wire": "ORIGINAL_556_HAS_NO_APPROVED_ECONOMY_STATE_HOLD",
+  "native_unity": "NOT_RUN",
+  "formal_g0": "HOLD_UNTIL_PRODUCER_FIX_AND_B01_40",
+  "codex_ack": false,
+  "integrated": false,
+  "released": false,
+  "changed_paths": [
+    "Tools/B01/B01-62/P17W24Selected749SourceIntegrity/Program.cs",
+    "Tools/B01/B01-62/P17W24Selected749SourceIntegrity/OriginalSelected749W24QA.csproj",
+    "Tools/B01/B01-62/P17W24Selected749SourceIntegrity/source_guard.py",
+    "Tools/B01/B01-62/P17W24Selected749SourceIntegrity/README.md",
+    "Tools/B01/B01-62/P17W24Selected749SourceIntegrity/manifest.json",
+    ".github/workflows/b01-62-p17w24-selected-749-original-negative.yml"
+  ]
+}
