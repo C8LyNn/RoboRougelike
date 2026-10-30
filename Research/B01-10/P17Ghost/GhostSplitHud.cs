@@ -96,12 +96,7 @@ namespace RoboRougelike.B0110.TrainingGhost
                           + summary.TotalDeltaSeconds.ToString("0.00") + "s vs reference"
                         : "No full-course comparison (attempt incomplete)");
                 GUI.Label(new Rect(bounds.x + 12, bounds.y + 116, width - 24, 24),
-                    !summary.Completed ? "Retry: no finish segment measured"
-                    : summary.BiggestLossIsFinishSegment
-                        ? "Focus: finish after gate " + coach.RequiredGates
-                    : summary.BiggestLossGate == 0
-                        ? "No significant loss (finish included)"
-                        : "Focus: gate " + summary.BiggestLossGate);
+                    GhostPracticeFocus.Text(summary, coach.RequiredGates));
             }
         }
     }
