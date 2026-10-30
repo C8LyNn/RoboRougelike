@@ -84,10 +84,18 @@ static class R2Tests
     sealed class Retire:IConfirmedPhysicalRetirement
     {
         public bool Allowed=true,Throws;
+        public Factory? Factory;
         public bool RetireAllWorldsAndVerifyDestroyed()
         {
             if(Throws)throw new IOException("retirement failed");
-            return Allowed;
+            if(!Allowed)return false;
+            // This is a declared managed test-double world. Do not fake
+            // a positive retirement receipt while the model is still active.
+            World? world=Factory?.Last;
+            if(world==null)return true;
+            world.Deactivate();
+            world.Retire();
+            return world.Retired&&!world.Active;
         }
     }
     static bool InDir(Func<string,bool> f)
@@ -103,7 +111,11 @@ static class R2Tests
         }
     }
     static ExclusiveCanonicalSession Open(string path,long run,Guid slot,Disk disk,Retire proof)
-        =>new ExclusiveCanonicalSession(path,run,slot,new Gate(),new Factory(),disk,proof);
+    {
+        var factory=new Factory();
+        proof.Factory=factory;
+        return new ExclusiveCanonicalSession(path,run,slot,new Gate(),factory,disk,proof);
+    }
     static int Main()
     {
         Check("W21 same exact run/slot second OS owner denied while live",()=>InDir(path=>{
