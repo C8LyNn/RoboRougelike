@@ -13,6 +13,7 @@ namespace B01.Performance.VisualPool.UnityAdapter
         [SerializeField, Range(0.01f, 60f)] private float displayLifetimeSeconds = 1.5f;
 
         private OptionalVisualLeasePool<GameObject> pool;
+        private ParticleSystem[][] cachedParticles;
 
         public int ActiveVisuals => pool == null ? 0 : pool.ActiveCount;
         public int PrewarmedVisuals => pool == null ? 0 : pool.Registered;
@@ -39,15 +40,27 @@ namespace B01.Performance.VisualPool.UnityAdapter
                 Debug.LogError("VISUALPOOL-001: refusing prefab with physics, custom MonoBehaviour or sound. Only dispensable visuals.", this);
                 return;
             }
+            // A ParticleSystem can itself be collision/trigger-driven without
+            // GameObject Collider components. Reject such prefabs too.
+            foreach (ParticleSystem particle in purelyDecorativePrefab.GetComponentsInChildren<ParticleSystem>(true))
+            {
+                if (particle.collision.enabled || particle.trigger.enabled)
+                {
+                    Debug.LogError("VISUALPOOL-001: particle collision/trigger modules are not safe for cosmetic pooling.", this);
+                    return;
+                }
+            }
             int count = Mathf.Clamp(prewarmedInstances, 1, 256);
             pool = new OptionalVisualLeasePool<GameObject>(count);
+            cachedParticles = new ParticleSystem[count][];
             for (int i = 0; i < count; i++)
             {
                 // Instantiation occurs only during prewarm, not on the visual burst.
                 GameObject instance = Instantiate(purelyDecorativePrefab, transform);
                 instance.name = "B0150 optional pooled visual " + i;
                 instance.SetActive(false);
-                pool.Register(instance);
+                int slot = pool.Register(instance);
+                cachedParticles[slot] = instance.GetComponentsInChildren<ParticleSystem>(true);
             }
         }
 
@@ -67,7 +80,8 @@ namespace B01.Performance.VisualPool.UnityAdapter
                 visual.SetActive(true);
                 // ParticleSystem visuals must restart on each reuse; never control
                 // collision, triggers or any gameplay scripts.
-                ParticleSystem[] particles = visual.GetComponentsInChildren<ParticleSystem>(true);
+                // Cached in Awake: NO repeated component-array allocations per burst.
+                ParticleSystem[] particles = cachedParticles[lease.Slot];
                 foreach (ParticleSystem particle in particles)
                 {
                     particle.Clear(true);
