@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   original-codex-asset-tree-g0:
-    name: Exact original Codex 1024 .meta source audit / ${{ matrix.os }}
+    name: Exact original Codex 1023 .meta source audit / ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
