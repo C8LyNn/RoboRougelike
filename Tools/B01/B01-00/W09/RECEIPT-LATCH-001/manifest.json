@@ -1,15 +1,15 @@
 {
   "schema_version": "b01-package-v1",
   "package_id": "B01-00-RECEIPT-LATCH-001",
-  "revision": "2.1.0",
+  "revision": "2.2.0",
   "owner": "B01-00",
   "producer_agent": "B01-00",
-  "issue": 668,
-  "purpose": "W20 B01-00 owner-selected R4 #647, #652 ALT_HOLD; independent W19 partial GREEN vs W20 original source #670 component-only destroy orphan-world P0 RED; independently B01-40 physical #672 PASS but formal R4 G0 HOLD; canonical #666 owner-approved development, B01-60 local Windows #667 user-operated Unity G1 NOT_RUN, owner economy provisional, no Codex",
+  "issue": 687,
+  "purpose": "W21 B01-00 independent original source-backed actionable cross-subsystem DAG: one R4 #647 -> R5 #690, one #681 API base -> V2 #691, storage #669 external-valid rollback trust #680, native #684 user operator, real #510 private adapter absent, independent source QA non-transferable and codex unavailable",
   "source_base_branch": "main",
   "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
   "source_branch": "b01-00/p17w09-receipt-latch-001",
-  "source_sha_before_manifest": "9a66abd8f28ec624365cfda2059bb817ce98a95b",
+  "source_sha_before_manifest": "5a5551f8af3c28f1f9a3a63e89645f2d46e4299d",
   "code_scope": [
     "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/**",
     ".github/workflows/b01-00-w09-receipt-latch.yml"
@@ -79,8 +79,8 @@
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/README.md",
-      "sha256": "0fcead86750f5af1a797ae043479aaa11070c69d4854d004a79294f4a75a89c0",
-      "bytes": 45228
+      "sha256": "7b273565c55067e0c93c1f5d245f9a0a83aba2a6bb3515524ac8b7b701dc0ba5",
+      "bytes": 49679
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/RED-GREEN.md",
@@ -109,8 +109,8 @@
     },
     {
       "path": ".github/workflows/b01-00-w09-receipt-latch.yml",
-      "sha256": "80e5b2f0979459976d0e0a024b36c5a9ec2358b5d32555f674836e8c878c5caa",
-      "bytes": 3300
+      "sha256": "55f9e641e4908f43b366abe5e692395acba34ab6ad7466a9062356da446cee0e",
+      "bytes": 3490
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/save_admission.py",
@@ -236,6 +236,26 @@
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/W20-R4-647-OWNER-API-UNITY-HOLD.md",
       "sha256": "007db99e760c3af91c142c80e083021bf7756f24881bb7fc56426eb72a20e878",
       "bytes": 9522
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/w21_handoff_dag.py",
+      "sha256": "768dc4ba76bdda7d747f109d12892cc1c3c879b161a6425804cf6e6fb2a884a6",
+      "bytes": 8529
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/w21_handoff_sources.json",
+      "sha256": "b6bbdc15e846a917c4b01c6d59dce2b1966c629b969730ab4b290aa2848c7a38",
+      "bytes": 4814
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/test_w21_handoff_dag.py",
+      "sha256": "50fc2d1423e661d39c6709e03e41cccc37c31166069709150b10239c706caebe",
+      "bytes": 8451
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/W21-CROSS-SUBSYSTEM-DEPENDENCY-HANDOFF.md",
+      "sha256": "39ff1dfd12db23802d758255140c06cbf5bf22bd38920e99954de24fd2134a13",
+      "bytes": 9703
     }
   ],
   "producer_tests": [
@@ -642,13 +662,50 @@
       "name": "W20 final manifest HEAD",
       "status": "NOT_RUN",
       "note": "Verify original GitHub Actions exact HEAD logs and add PR/HQ comment"
+    },
+    {
+      "name": "W20 exact final original 623 original cases each OS",
+      "status": "PASS",
+      "total": 623,
+      "passed": 623,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "cccc1f6990a65bd29ae90633a1eafe1106a0310b",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41116145952"
+    },
+    {
+      "name": "W21 premanifest actual source DAG 45 new original cases combined 668",
+      "status": "PASS",
+      "total": 668,
+      "passed": 668,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "71fe756481eb3c4c223f7c126c4f7f8022790a78",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41122508287",
+      "note": "Real raw Windows & Ubuntu job logs original source after DAG/workflow code, before README/evidence/manifest"
+    },
+    {
+      "name": "W21 exact final manifest HEAD",
+      "status": "NOT_RUN",
+      "total": 668,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "note": "Postcommit exact final-HEAD must be independently tested; add actual evidence in PR/HQ comment without self-invalidating SHA"
     }
   ],
   "qa_b01_40": "PENDING_REVIEW_OF_B01_00_TOOL",
   "qa_b01_60": "PENDING_REVIEW_OF_B01_00_TOOL",
   "native_unity_editmode": "NOT_RUN",
   "native_unity_playmode": "NOT_RUN",
-  "g0": "OWNER_SELECTED_R4_647_ORIGINAL_PHYSICAL_TRANSPORT_672_GREEN_BUT_W20_SOURCE_HOST_COMPONENT_ONLY_DESTROY_P0_RED_FORMAL_G0_HOLD",
+  "g0": "W21_R5_690_NEW_INDEPENDENT_SOURCE_G0_PENDING_AND_API_691_G0_PENDING_AND_STORAGE_669_TRUST_BOUNDARY_RED",
   "g1": "NOT_RUN",
   "g2": "HOLD",
   "codex_sent": true,
@@ -690,7 +747,12 @@
     "W20 #670 earlier Ubuntu managed UnityEngine source RED 17 assertions; exact QA head run initially FAILED harness SHA-parent guard BEFORE C# compile, do not assert native or independent final cross-OS reproduction",
     "W20 #666 authorization permits separate B01-23/20/62 canonical live API development but NO frozen source edit or game integration; #667 local Windows Unity runner requires real user-operator execution and no remote access",
     "W20 economy one free per unique victory epoch is TEMP playtest hypothesis, no source gameplay implementation or human/price results claimed",
-    "W20 user says Codex out of quota, no source-only offer/ACK nor measured integration time"
+    "W20 user says Codex out of quota, no source-only offer/ACK nor measured integration time",
+    "W21 selected API #681 explicit B01-23 owner freeze, loser #682 ALT_HOLD; #685 historical #682 private world orphan P0 and separate #688 owner-selected #681 unfenced cross-process slot RED are DIFFERENT negative witnesses; V2 #691 must independently close both",
+    "W21 R5 #690 owner producer source/ZIP CI GREEN both systems but independent public #670 component-only Destroy release QA and formal new R5 G0 pending; cannot inherit older #647 transport G0",
+    "W21 B01-62 store #669 source OS-file one-writer tests do not authenticate external valid prior epoch rollback/fork #680; require independent trusted anchor or precise threat-model exclusion",
+    "W21 local runner #684/689 source PowerShell tests are NOT owner PC Unity 6000.3.14f1 execution; Editor.log/NUnit missing native G1 NOT_RUN",
+    "W21 dependency handoff evaluator is B01-00-only source tool: no actual frozen #510 private ledger, canonical adapter, hardware, Codex or gameplay integration; SOURCE consistency not external authentication"
   ],
   "rollback": "Remove disposable directory and noncanonical output files; do not delete other agents' frozen receipt records",
   "codex_offer_url": "https://github.com/C8LyNn/RoboRougelike/issues/79#issuecomment-6526629723",
@@ -706,7 +768,7 @@
     ],
     "physical_zip_sha256": "d4ddfa3528ef0416aefffca72d884000f3b0c9959fb8dff53096487ef95c9387"
   },
-  "save_load": "OWNER_APPROVED_NEW_CANONICAL_510_API_666_BUT_B0100_NOT_IMPLEMENTER_AND_GAME_SAVELOAD_HOLD",
+  "save_load": "NEW_CANONICAL_GATEWAY_V2_PRODUCER_SOURCE_GREEN_ONLY_NOT_PRIVATE_510_GAME_ADAPTER",
   "safe_rollback_receiver": "SCRATCH_ONLY / ORIGINAL_510_ROLLBACK_FORBIDDEN",
   "canonical_migration": "NOT_DONE",
   "save_contract_choice": {
@@ -888,5 +950,58 @@
     "codex_ack": "NONE",
     "g2": "HOLD",
     "feedback": "NOT_MEASURED"
+  },
+  "w21": {
+    "owner_r4": {
+      "winner_pr": 647,
+      "sha": "09c1809b73324a6d31c13e5d0143de62ac1e3ca6",
+      "loser_pr": 652,
+      "loser": "ALT_HOLD"
+    },
+    "owner_api": {
+      "winner_pr": 681,
+      "sha": "eed2e39636edfd8b8db754c426db452164cbf9d7",
+      "loser_pr": 682,
+      "loser": "ALT_HOLD"
+    },
+    "r5_host": {
+      "pr": 690,
+      "sha": "cc7f73541517a18f4479bb155534bd4832d9985e",
+      "producer_ci": "SOURCE_SUCCESS_BOTH_OS",
+      "source_zip_sha256": "a37e942d6a0cc5236570edaf7cba49384a84d0553f88fb29988a855d692a1496",
+      "source_zip_bytes": 129088,
+      "source_zip_entries": 27,
+      "independent_exact_sha_security": "PENDING",
+      "formal_new_g0": "PENDING"
+    },
+    "api_v2": {
+      "pr": 691,
+      "sha": "809f82575c638e1b4d2806b5f417bddab6c0871a",
+      "producer_ci": "SOURCE_SUCCESS_BOTH_OS",
+      "zip_sha256": "90198e6429d912a40e4e2df3935281627282f14799c4f34479439af150f5bccd",
+      "zip_bytes": 61736,
+      "zip_entries": 15,
+      "independent_685_new_sha": "PENDING",
+      "independent_688_same_slot": "PENDING_NEW_OWNER_LEASE",
+      "formal_new_g0": "PENDING"
+    },
+    "store": {
+      "pr": 669,
+      "sha": "d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121",
+      "source_trust_680": "EXTERNALLY_VALID_PRIOR_EPOCH_AND_SAME_GEN_DIFFERENT_LEDGER_RED",
+      "new_owner_trusted_anchor": "NOT_IMPLEMENTED"
+    },
+    "native_local": {
+      "pr": 684,
+      "sha": "c75cb6e52a0de11f27b570c34e08d32082af421f",
+      "manual_user_execution": "NOT_RUN",
+      "actual_unity_physx": "NOT_RUN"
+    },
+    "canonical_private_510_adapter": "NOT_IMPLEMENTED",
+    "codex_ack": "NONE",
+    "measured_external_integration": "NOT_MEASURED",
+    "integrated": false,
+    "merged": false,
+    "g2": "HOLD"
   }
 }
