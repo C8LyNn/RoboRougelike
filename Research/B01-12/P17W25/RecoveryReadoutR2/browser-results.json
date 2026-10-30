@@ -1,0 +1,454 @@
+{
+  "pass": 112,
+  "fail": 0,
+  "tests": [
+    {
+      "case": "320: scenarios count",
+      "status": "PASS"
+    },
+    {
+      "case": "320: first selected",
+      "status": "PASS"
+    },
+    {
+      "case": "320: normal route",
+      "status": "PASS"
+    },
+    {
+      "case": "320: normal no obstacle",
+      "status": "PASS"
+    },
+    {
+      "case": "320: initial parts",
+      "status": "PASS"
+    },
+    {
+      "case": "320: real screen no overflow",
+      "status": "PASS"
+    },
+    {
+      "case": "320: loaner route",
+      "status": "PASS"
+    },
+    {
+      "case": "320: loaner explicit",
+      "status": "PASS"
+    },
+    {
+      "case": "320: loaner pressed",
+      "status": "PASS"
+    },
+    {
+      "case": "320: prior unpressed",
+      "status": "PASS"
+    },
+    {
+      "case": "320: pending reason",
+      "status": "PASS"
+    },
+    {
+      "case": "320: victory verified label",
+      "status": "PASS"
+    },
+    {
+      "case": "320: free availability",
+      "status": "PASS"
+    },
+    {
+      "case": "320: unverified win does not claim authentication",
+      "status": "PASS"
+    },
+    {
+      "case": "320: ECON authority warning",
+      "status": "PASS"
+    },
+    {
+      "case": "320: quote not falsely approved",
+      "status": "PASS"
+    },
+    {
+      "case": "320: json visible",
+      "status": "PASS"
+    },
+    {
+      "case": "320: exact projected route",
+      "status": "PASS"
+    },
+    {
+      "case": "320: json no mutation handles",
+      "status": "PASS"
+    },
+    {
+      "case": "320: export hidden",
+      "status": "PASS"
+    },
+    {
+      "case": "320: core dead route",
+      "status": "PASS"
+    },
+    {
+      "case": "320: core dead no victory",
+      "status": "PASS"
+    },
+    {
+      "case": "320: exhausted route",
+      "status": "PASS"
+    },
+    {
+      "case": "320: no challenge route",
+      "status": "PASS"
+    },
+    {
+      "case": "320: keyboard first route",
+      "status": "PASS"
+    },
+    {
+      "case": "320: 320 width unclipped",
+      "status": "PASS"
+    },
+    {
+      "case": "320: aria live present",
+      "status": "PASS"
+    },
+    {
+      "case": "320: no page exceptions",
+      "status": "PASS"
+    },
+    {
+      "case": "768: scenarios count",
+      "status": "PASS"
+    },
+    {
+      "case": "768: first selected",
+      "status": "PASS"
+    },
+    {
+      "case": "768: normal route",
+      "status": "PASS"
+    },
+    {
+      "case": "768: normal no obstacle",
+      "status": "PASS"
+    },
+    {
+      "case": "768: initial parts",
+      "status": "PASS"
+    },
+    {
+      "case": "768: real screen no overflow",
+      "status": "PASS"
+    },
+    {
+      "case": "768: loaner route",
+      "status": "PASS"
+    },
+    {
+      "case": "768: loaner explicit",
+      "status": "PASS"
+    },
+    {
+      "case": "768: loaner pressed",
+      "status": "PASS"
+    },
+    {
+      "case": "768: prior unpressed",
+      "status": "PASS"
+    },
+    {
+      "case": "768: pending reason",
+      "status": "PASS"
+    },
+    {
+      "case": "768: victory verified label",
+      "status": "PASS"
+    },
+    {
+      "case": "768: free availability",
+      "status": "PASS"
+    },
+    {
+      "case": "768: unverified win does not claim authentication",
+      "status": "PASS"
+    },
+    {
+      "case": "768: ECON authority warning",
+      "status": "PASS"
+    },
+    {
+      "case": "768: quote not falsely approved",
+      "status": "PASS"
+    },
+    {
+      "case": "768: json visible",
+      "status": "PASS"
+    },
+    {
+      "case": "768: exact projected route",
+      "status": "PASS"
+    },
+    {
+      "case": "768: json no mutation handles",
+      "status": "PASS"
+    },
+    {
+      "case": "768: export hidden",
+      "status": "PASS"
+    },
+    {
+      "case": "768: core dead route",
+      "status": "PASS"
+    },
+    {
+      "case": "768: core dead no victory",
+      "status": "PASS"
+    },
+    {
+      "case": "768: exhausted route",
+      "status": "PASS"
+    },
+    {
+      "case": "768: no challenge route",
+      "status": "PASS"
+    },
+    {
+      "case": "768: keyboard first route",
+      "status": "PASS"
+    },
+    {
+      "case": "768: 320 width unclipped",
+      "status": "PASS"
+    },
+    {
+      "case": "768: aria live present",
+      "status": "PASS"
+    },
+    {
+      "case": "768: no page exceptions",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: scenarios count",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: first selected",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: normal route",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: normal no obstacle",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: initial parts",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: real screen no overflow",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: loaner route",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: loaner explicit",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: loaner pressed",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: prior unpressed",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: pending reason",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: victory verified label",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: free availability",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: unverified win does not claim authentication",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: ECON authority warning",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: quote not falsely approved",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: json visible",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: exact projected route",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: json no mutation handles",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: export hidden",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: core dead route",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: core dead no victory",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: exhausted route",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: no challenge route",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: keyboard first route",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: 320 width unclipped",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: aria live present",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: no page exceptions",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: scenarios count",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: first selected",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: normal route",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: normal no obstacle",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: initial parts",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: real screen no overflow",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: loaner route",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: loaner explicit",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: loaner pressed",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: prior unpressed",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: pending reason",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: victory verified label",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: free availability",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: unverified win does not claim authentication",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: ECON authority warning",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: quote not falsely approved",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: json visible",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: exact projected route",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: json no mutation handles",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: export hidden",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: core dead route",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: core dead no victory",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: exhausted route",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: no challenge route",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: keyboard first route",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: 320 width unclipped",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: aria live present",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: no page exceptions",
+      "status": "PASS"
+    }
+  ]
+}
