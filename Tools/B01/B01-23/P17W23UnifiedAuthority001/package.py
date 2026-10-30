@@ -25,7 +25,7 @@ def entries():
         raise ValueError("standalone .owner bypass remains")
     program=src(OWNER_PATH+"CanonicalUnifiedSlotSession.cs").decode()
     for x in ["SingleFileSaveSlot.TryOpenExisting","TryAdoptRealSlot",
-              "TryCloseAfterPhysicalRetirement","!HasWorld","slot.lease"]:
+              "TryCloseAfterPhysicalRetirement","if(gateway==null)","slot.lease"]:
         if x not in program:raise ValueError("missing unified boundary "+x)
     original_meta=src(PFX+"/Core/CanonicalWorldSlotLease.cs.meta").decode()
     if "guid: b0123220000000000000000000000001" not in original_meta:
