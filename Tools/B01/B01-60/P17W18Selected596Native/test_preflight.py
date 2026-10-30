@@ -41,7 +41,7 @@ def main():
    receipt={"original_game_sha":m.GAME,"only_save_sha":m.SAVE,
             "only_adapter_sha":m.ONLY,"case":case,"private_product":product,
             "engine":"NOT_RUN","integration":"NONE"}
-   archive=old.zip_data(files,receipt)
+   archive=m.source_archive(old,files,case)
    staged=root/("clean-"+str(len(samples)))
    old.stage(archive,files,staged)
    yes(m.validate_project_source(staged,files,old),"clean project refused")
@@ -71,7 +71,7 @@ def main():
   )
   for i,(label,name,action) in enumerate(checks):
    project=root/("red-"+str(i))
-   archive=old.zip_data(base,{"engine":"NOT_RUN","kind":"adversarial"} )
+   archive=m.source_archive(old,base,"adversarial-only")
    old.stage(archive,base,project)
    place=project/name
    if action=="overwrite":place.write_bytes(b"source integrity changed after Unity import\n")
