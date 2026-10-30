@@ -36,10 +36,8 @@ def main(out):
  if set(git("diff","--name-only",BASE,"HEAD").splitlines())!=expected:
   raise AssertionError("NEW_ONLY_SOURCE_OWNERSHIP_MISMATCH")
  store=(root/"WholeGameEconomySlotV1.cs").read_text()
- if "StringComparison.OrdinalIgnoreCase" in store or
-    "slot.lease" in store.replace("No second writer, lease, world lock, journal, sidecar",""):
-  # source comment may mention original .lease in negative notes, prefer exact code search
-  if "StringComparison.OrdinalIgnoreCase" in store:raise AssertionError("CASE_ALIAS_NOT_FIXED")
+ if "StringComparison.OrdinalIgnoreCase" in store:
+  raise AssertionError("CASE_ALIAS_NOT_FIXED")
  for key in ("File.Move(staging,authoritative,true)","FileOptions.WriteThrough",
   "file.Flush(true)","ApprovedEconomyPolicyV6.Valid","ColdRestore.TryStage",
   "CanonicalWorldSlotLease","slot.canonical-game-v1","save.envelope",
