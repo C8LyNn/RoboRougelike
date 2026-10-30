@@ -1,0 +1,52 @@
+name: B01-61 W25 exact original #773 case-sensitive raw public store regression
+on:
+  push:
+    branches: [qa/b01-61-p17w25-exact773-case-sensitive-path-regression]
+permissions:
+  contents: read
+jobs:
+  original773-public-store-path-qa:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Exact current owner #773 SHA and QA-only scope
+        shell: bash
+        run: |
+          set -o pipefail
+          python Tools/B01/B01-61/P17W25Selected773PathAuthorityQA/source_guard.py 2>&1 | tee b0161-w25-source-pins.log
+      - name: Compile unchanged original #773 public CSharp9 store and frozen #556/W06
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet build Tools/B01/B01-61/P17W25Selected773PathAuthorityQA/Original773PathAuthorityQA.csproj -c Release --warnaserror 2>&1 | tee b0161-w25-build.log
+      - name: Execute true original OS paths and cold original binary W06 fork
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet run --no-build -c Release --project Tools/B01/B01-61/P17W25Selected773PathAuthorityQA/Original773PathAuthorityQA.csproj 2>&1 | tee b0161-w25-source-test.log
+          grep -q 'W25_773_B0161_ORIGINAL_REAL_SOURCE_CASES PASS=3 FAIL=0' b0161-w25-source-test.log
+          if [ "$RUNNER_OS" = Linux ]; then
+            grep -q 'W25_EXACT_773_LINUX_CASE_ALIAS_P0_RED=TWO_DISTINCT_DURABLE_G1_LIGHT_HEAVY_ENVELOPES' b0161-w25-source-test.log
+            grep -q 'W25_773_RAW_STORE_SECURITY_GATE=RELEASE_RED_CASE_SENSITIVE_ALIAS' b0161-w25-source-test.log
+          fi
+      - name: Preserve exact original binary source and log (not native Unity test)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-61-w25-exact773-casealias-${{ matrix.os }}
+          path: |
+            b0161-w25-source-pins.log
+            b0161-w25-build.log
+            b0161-w25-source-test.log
+          if-no-files-found: warn
+          retention-days: 21
