@@ -1012,6 +1012,111 @@ internal static class Program
             a.Clear();gate.GateNumber=8;
             Check(a.LastGate==null);Equal(b.LastGate.GateNumber,1);
         });
+        Test("158 quarter-speed visual repeat samples one-eighth reference second",()=>{
+            var c=new GhostSplitCoach(Run());
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
+            c.EndTrial(true,10f);
+            Check(Math.Abs(c.RecommendedLoop.PoseAt(.5d,.25f).X-4.125f)<1e-5f);
+        });
+        Test("159 half-speed visual repeat samples one-quarter reference second",()=>{
+            var c=new GhostSplitCoach(Run());
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
+            c.EndTrial(true,10f);
+            Check(Math.Abs(c.RecommendedLoop.PoseAt(.5d,.5f).X-4.25f)<1e-5f);
+        });
+        Test("160 old 1x signature and new explicit 1x agree",()=>{
+            var c=new GhostSplitCoach(Run());
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
+            c.EndTrial(true,10f);
+            Equal(c.RecommendedLoop.PoseAt(.5d).X,c.RecommendedLoop.PoseAt(.5d,1f).X);
+        });
+        Test("161 double visual rate advances ghost by double time",()=>{
+            var c=new GhostSplitCoach(Run());
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
+            c.EndTrial(true,10f);
+            Check(Math.Abs(c.RecommendedLoop.PoseAt(.25d,2f).X-4.5f)<1e-5f);
+        });
+        Test("162 double rate wraps exactly at half real second",()=>{
+            var c=new GhostSplitCoach(Run());
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
+            c.EndTrial(true,10f);
+            Equal(c.RecommendedLoop.PoseAt(.5d,2f).X,4f);
+        });
+        Test("163 quarter rate wraps at four visual seconds",()=>{
+            var c=new GhostSplitCoach(Run());
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
+            c.EndTrial(true,10f);
+            Equal(c.RecommendedLoop.PoseAt(4d,.25f).X,4f);
+        });
+        Test("164 quarter rate preserves end-of-segment source pose before wrap",()=>{
+            var c=new GhostSplitCoach(Run());
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
+            c.EndTrial(true,10f);
+            Check(Math.Abs(c.RecommendedLoop.PoseAt(3d,.25f).X-4.75f)<1e-5f);
+        });
+        Test("165 intermediate 1.25x controls visual source pose",()=>{
+            var c=new GhostSplitCoach(Run());
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
+            c.EndTrial(true,10f);
+            Check(Math.Abs(c.RecommendedLoop.PoseAt(.4d,1.25f).X-4.5f)<1e-5f);
+        });
+        Test("166 slowed middle gate samples only its reference interval",()=>{
+            var c=new GhostSplitCoach(Run());
+            c.AcceptValidatedGate(0,1f);c.AcceptValidatedGate(1,3.5f);
+            c.AcceptValidatedGate(2,4.5f);c.AcceptValidatedGate(3,5.5f);
+            c.EndTrial(true,6.5f);
+            var loop=c.RecommendedLoop;
+            Equal(loop.GateNumber,2);Equal(loop.StartSeconds,1f);
+            Check(Math.Abs(loop.PoseAt(1d,.5f).X-1.5f)<1e-5f);
+        });
+        Test("167 slowed gate one starts from reference t zero",()=>{
+            var c=new GhostSplitCoach(Run());
+            c.AcceptValidatedGate(0,1.5f);c.AcceptValidatedGate(1,2.5f);
+            c.AcceptValidatedGate(2,3.5f);c.AcceptValidatedGate(3,4.5f);
+            c.EndTrial(true,5.5f);
+            var loop=c.RecommendedLoop;
+            Equal(loop.GateNumber,1);Equal(loop.StartSeconds,0f);
+            Check(Math.Abs(loop.PoseAt(.75d,.5f).X-.375f)<1e-5f);
+        });
+        Test("168 zero or negative speed never pauses gameplay or creates fake sample",()=>{
+            var c=new GhostSplitCoach(Run());
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
+            c.EndTrial(true,10f);
+            var loop=c.RecommendedLoop;
+            Check(Reject(()=>loop.PoseAt(.5d,0f)));
+            Check(Reject(()=>loop.PoseAt(.5d,-1f)));
+            Equal(loop.PoseAt(0).X,4f);
+        });
+        Test("169 speed below quarter or above double rejected before seek",()=>{
+            var c=new GhostSplitCoach(Run());
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
+            c.EndTrial(true,10f);
+            var loop=c.RecommendedLoop;
+            Check(Reject(()=>loop.PoseAt(.5d,.24f)));
+            Check(Reject(()=>loop.PoseAt(.5d,2.01f)));
+            Equal(loop.PoseAt(.5d).X,4.5f);
+        });
+        Test("170 NaN and both infinite visual speeds rejected",()=>{
+            var c=new GhostSplitCoach(Run());
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
+            c.EndTrial(true,10f);
+            var loop=c.RecommendedLoop;
+            Check(Reject(()=>loop.PoseAt(.5d,float.NaN)));
+            Check(Reject(()=>loop.PoseAt(.5d,float.PositiveInfinity)));
+            Check(Reject(()=>loop.PoseAt(.5d,float.NegativeInfinity)));
+        });
+        Test("171 sped visual seek still validates clock and clones pose",()=>{
+            var c=new GhostSplitCoach(Run());
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
+            c.EndTrial(true,10f);
+            var loop=c.RecommendedLoop;
+            Check(Reject(()=>loop.PoseAt(double.NaN,2f)));
+            Check(Reject(()=>loop.PoseAt(-1d,.5f)));
+            Check(Reject(()=>loop.PoseAt(86401d,.25f)));
+            var mutable=loop.PoseAt(.25d,2f);
+            mutable.X=1000;
+            Check(Math.Abs(loop.PoseAt(.25d,2f).X-4.5f)<1e-5f);
+        });
         Console.WriteLine("B01-10 GHOST REAL_CSHARP "+passed+" PASS / "+failed+
           " FAIL | 100 seeded synthetic motion traces | UNITY=NOT_RUN");
         return failed==0?0:1;
