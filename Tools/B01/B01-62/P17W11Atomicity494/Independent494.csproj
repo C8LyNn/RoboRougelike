@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework>
+    <LangVersion>9.0</LangVersion><Nullable>disable</Nullable>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include=".stage/DebrisRigPlayground.cs"/>
+    <Compile Include=".stage/RigDemoDefinition.cs"/>
+    <Compile Include=".stage/DebrisImpulseCore.cs"/>
+    <Compile Include=".stage/DebrisRepulsionEmitter.cs"/>
+    <Compile Include=".stage/UnityBoundaryShim.cs"/>
+    <Compile Include="Independent494Runner.cs"/>
+  </ItemGroup>
+</Project>
