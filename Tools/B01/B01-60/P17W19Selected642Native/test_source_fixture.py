@@ -51,7 +51,7 @@ def main():
    must(m.validate_project_source(p,files,old),
         "selected source project preflight rejected own exact Git bytes")
    must((p/m.QA_PROBE).is_file() and
-        (p/m.QA_PROBE+".meta").is_file(),
+        (p/(m.QA_PROBE+".meta")).is_file(),
         "own QA-only checkpoint clean-private guard not physically staged")
    old.rollback(archive,files,p)
    must(not p.exists(),"unsafe physical selected project rollback")
