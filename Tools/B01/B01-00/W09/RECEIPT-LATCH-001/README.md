@@ -1,4 +1,4 @@
-# B01-00 RECEIPT-LATCH-001 v1.3.0 / PASS17 W12
+# B01-00 RECEIPT-LATCH-001 v1.4.0 / PASS17 W13
 
 Offline Python 3.11 standard-library executable for B01-00 coordinating multi-agent package receipts. `receipt_latch.py` validates offline snapshot consistency; `github_live.py` now checks a bounded subset of original GitHub PR, Actions workflow, job and step metadata online. Neither can authenticate the independence or authorization of a B01-40/B01-60 review, Codex ACK or merge. Source-ready is a **candidate for external review**, never formal G0, G1, Codex ACK or integration.
 
@@ -56,3 +56,20 @@ The live fixture remains actual [Draft PR #427](https://github.com/C8LyNn/RoboRo
 The suite grows to **123 original Python tests** (W09 44 + W10 32 + W11 25 + W12 22), run on Windows 2025 and Ubuntu 24.04. Real adversarial [RED](https://github.com/C8LyNn/RoboRougelike/actions/runs/41072839179) and corrected [GREEN](https://github.com/C8LyNn/RoboRougelike/actions/runs/41073097313) results are recorded under `TEST_EVIDENCE/W12-RUNNER-RED-GREEN.md`. Exact final manifest-HEAD CI should be checked separately after final commit. **No Unity Editor or PhysX tests were executed by this source-only Python utility.**
 
 The GitHub API metadata is a stronger source-evidence prerequisite, **not an authenticated role endorsement or independent QA**. B01-40/B01-60 still decide whether original test logs/source match and may HOLD. The tool itself reports `decision=HOLD` for the example with QA PENDING, never fabricates `OFFERED`, `CODEX_CLAIMED` or `INTEGRATED`. There are no writes outside its own optional output report and no GitHub or Unity mutations. Rollback consists of deleting only the isolated checkout and disposable reports.
+
+## W13 source-only Codex offer protocol — separate from G1/G2
+
+New original Python stdlib `offer_protocol.py` and real static offer `offer_secure_v2_source_only.json` record ONE source-only inbox offer, *not* source acceptance logic for Unity or a Codex ACK. It provides a **fail-closed declarative audit** of the cross-agent handoff state: exact single source SHA/PR, original physical archive SHA256+entry count, independent B01-40 source-only G0 reviewer SHA/PR, separate B01-61 transaction-source QA SHA/PR, canonical Codex Inbox issue #79 comment identifier, explicit alternative PR holds and eight release constraints.
+
+```sh
+python Tools/B01/B01-00/W09/RECEIPT-LATCH-001/offer_protocol.py Tools/B01/B01-00/W09/RECEIPT-LATCH-001/offer_secure_v2_source_only.json --require-structural-offer
+python -m unittest discover -s Tools/B01/B01-00/W09/RECEIPT-LATCH-001 -p "test_*.py" -v
+```
+
+Actual package selected: **B01-23-SECURE-REATTACH-V2 v2.0.0** [#510](https://github.com/C8LyNn/RoboRougelike/pull/510) immutable original SHA `d94400d95d13db7f27e1533df05c9292d5380431`; 35-member 99,666-byte source ZIP `d4ddfa3528ef0416aefffca72d884000f3b0c9959fb8dff53096487ef95c9387`. B01-40 independently accepted source-only [#521](https://github.com/C8LyNn/RoboRougelike/pull/521) and B01-61 source regression [#517](https://github.com/C8LyNn/RoboRougelike/pull/517), **not** native Unity. [Exactly one W13 source-only offer](https://github.com/C8LyNn/RoboRougelike/issues/79#issuecomment-6526629723) was posted to CODEX INBOX after those G0/source QA results; #511 and #494 alternatives still HOLD. Any ACK requires an *explicit real Codex reply*. Neither comment creation nor this CLI proves Codex claimed scope.
+
+**Physical rollback warning:** selected original #510 `package.py rollback` may delete *foreign empty subdirectories* because it verifies files before `shutil.rmtree`. Until separate B01-40/62 original negative and safe-receiver confirmation, **never run original rollback on shared/occupied game workspace**; do not let the source offer become installation permission. Save/Load consumed/detached ID contract remains HOLD, true Unity Editor/PhysX G1 NOT_RUN, canonical Codex scene migration NOT_DONE, G2 HOLD, NOT INTEGRATED and NO MERGE. This v1 protocol requires precisely those eight HOLD states: promoting native, Save/Load, rollback, migration, G2, ACK, integration or merge without a distinct independently reviewed new state format fails the CLI.
+
+**Security boundary:** `offer_protocol.py` uses no network and only checks internal shape/consistency of supplied JSON. `source_only_offer_record_consistent=true` explicitly **does not authenticate** any GitHub comment, person, review text, artifact bytes or actual ACK. The original B01-00 GitHub live verifier validates *producer source CI metadata* separately; neither replaces B01-40/60/61/62 independent approvals.
+
+**Rollback of this coordinator tool only:** discard the unmerged B01-00-owned Python directory and disposable CLI reports. Do not remove the actual frozen #510 producer source, selected original ZIP, receiver review/QA evidence or Codex Inbox immutable record. Receiver: B01-40 for source and rollback, B01-61 for transaction QA, B01-62 for ID persistence, B01-60 for actual licensed Unity PhysX, and B01-00 for ledger inventory/offer, with Codex as read-only offer recipient.
