@@ -1,0 +1,52 @@
+name: B01-12 HUDSAFE-001 source QA
+on:
+  pull_request:
+    paths:
+      - 'Research/B01-12/P17W12/HudSafe001/**'
+      - '.github/workflows/b01-12-hudsafe.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-and-browser:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install exact Playwright and Chromium
+        run: |
+          python -m pip install playwright==1.55.0
+          python -m playwright install --with-deps chromium
+      - name: Original Node and real Chromium
+        working-directory: Research/B01-12/P17W12/HudSafe001
+        run: |
+          node test_engine.cjs
+          python test_browser.py
+      - name: Deliberately corrupted source must fail closed
+        run: |
+          set -eu
+          cp -a Research/B01-12/P17W12/HudSafe001 /tmp/b01-hudsafe-corrupt
+          printf x >> /tmp/b01-hudsafe-corrupt/ui.js
+          set +e
+          (cd /tmp/b01-hudsafe-corrupt && node test_engine.cjs) > /tmp/node-negative.log 2>&1
+          ec_node=$?
+          (cd /tmp/b01-hudsafe-corrupt && python test_browser.py) > /tmp/browser-negative.log 2>&1
+          ec_browser=$?
+          set -e
+          cat /tmp/node-negative.log /tmp/browser-negative.log
+          test "$ec_node" -eq 2
+          test "$ec_browser" -eq 2
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b01-12-hudsafe-evidence
+          path: |
+            Research/B01-12/P17W12/HudSafe001/node-results.json
+            Research/B01-12/P17W12/HudSafe001/browser-results.json
+            Research/B01-12/P17W12/HudSafe001/evidence-1280x720.png
+          if-no-files-found: warn
