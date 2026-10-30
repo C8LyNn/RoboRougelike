@@ -1,4 +1,4 @@
-name: B01-22 P17 W10 KITREADINESS-001 physical source plus real user-input C# CLI
+name: B01-22 P17 W11 KITREADINESS-001 real full-batch supply shortfall and CLI
 on:
   pull_request:
     paths:
@@ -31,7 +31,7 @@ jobs:
         run: dotnet run --project Research/B01-22/P17/KITREADINESS001/KitReadinessTests.csproj --configuration Release -- --out readiness-previews
       - name: Compile actual user-input C#9 preview CLI (no game runtime)
         run: dotnet build Research/B01-22/P17/KITREADINESS001/ReadinessCli.csproj --configuration Release
-      - name: Execute original user-input CLI black-box positives and negatives
+      - name: Execute original CLI plus consolidated procurement black-box tests
         run: python -m unittest discover -s Research/B01-22/P17/KITREADINESS001 -p test_cli_readiness.py -v
       - name: Reproduce sample user-input CLI preview with no wallet writes
         run: dotnet Research/B01-22/P17/KITREADINESS001/bin/Release/net8.0/ReadinessCli.dll --input Research/B01-22/P17/KITREADINESS001/scenarios/user-request-example.json --out readiness-previews/user-preview.json
@@ -42,7 +42,7 @@ jobs:
       - name: Upload original source ZIP, receipts and actual scenario decisions
         uses: actions/upload-artifact@v4
         with:
-          name: b01-22-w10-kitreadiness-${{ matrix.os }}
+          name: b01-22-w11-kitreadiness-${{ matrix.os }}
           path: readiness-artifact/
           if-no-files-found: error
           retention-days: 14

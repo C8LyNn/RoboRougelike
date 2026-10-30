@@ -140,6 +140,72 @@ class UserSuppliedReadinessCliTests(unittest.TestCase):
             self.assertEqual(cp.returncode,2,cp.stderr)
             self.assertFalse(protected.exists())
 
+    def test_18_real_procurement_batch_shortfall_not_double_counted(self):
+        code, _, stderr, data, _ = self.run_case(self.sample)
+        self.assertEqual(code,0,stderr)
+        obj=json.loads(data)
+        f=obj["procurement"]
+        self.assertEqual(f["TotalRequestedKits"],2)
+        self.assertEqual((f["TotalRequiredPieces"],f["TotalCoveredPieces"],
+                          f["TotalMissingPieces"]),(10,5,5))
+        self.assertEqual(f["TotalReferenceMissingScrap"],110)
+        self.assertFalse(f["AllRequestedKitsPossibleFromCurrentStock"])
+        wheel=next(x for x in f["Lines"] if x["Kind"]=="Wheel")
+        self.assertEqual((wheel["Required"],wheel["Covered"],wheel["Missing"]),(4,2,2))
+
+    def test_19_three_totals_equal_sum_of_each_physical_deficit_line(self):
+        forecast=json.loads(self.run_case(self.sample)[3])["procurement"]
+        lines=forecast["Lines"]
+        self.assertEqual(forecast["TotalRequiredPieces"],sum(x["Required"] for x in lines))
+        self.assertEqual(forecast["TotalCoveredPieces"],sum(x["Covered"] for x in lines))
+        self.assertEqual(forecast["TotalMissingPieces"],sum(x["Missing"] for x in lines))
+        self.assertEqual(forecast["TotalReferenceMissingScrap"],
+                         sum(x["Missing"]*x["UnitReferenceScrap"] for x in lines))
+
+    def test_20_empty_stock_two_ek01_needs_10_pieces_reference_220(self):
+        payload=copy.deepcopy(self.sample)
+        payload["owned_parts"]=[]
+        forecast=json.loads(self.run_case(payload)[3])["procurement"]
+        self.assertEqual((forecast["TotalRequiredPieces"],forecast["TotalMissingPieces"],
+                          forecast["TotalReferenceMissingScrap"]),(10,10,220))
+
+    def test_21_zero_requests_is_empty_forecast(self):
+        payload=copy.deepcopy(self.sample)
+        payload["requests"]=[]
+        forecast=json.loads(self.run_case(payload)[3])["procurement"]
+        self.assertEqual(forecast["TotalRequestedKits"],0)
+        self.assertEqual(forecast["Lines"],[])
+        self.assertEqual(forecast["TotalReferenceMissingScrap"],0)
+        self.assertTrue(forecast["AllRequestedKitsPossibleFromCurrentStock"])
+
+    def test_22_full_stock_for_both_kits_is_no_missing_parts(self):
+        payload=copy.deepcopy(self.sample)
+        for line in payload["owned_parts"]:
+            line["count"] *= 2
+        full=json.loads(self.run_case(payload)[3])
+        self.assertEqual(full["result"]["ReadyCount"],2)
+        self.assertEqual(full["procurement"]["TotalMissingPieces"],0)
+        self.assertEqual(full["procurement"]["TotalReferenceMissingScrap"],0)
+        self.assertTrue(full["procurement"]["AllRequestedKitsPossibleFromCurrentStock"])
+
+    def test_23_procurement_is_order_independent_while_virtual_reservations_are_ordered(self):
+        payload=copy.deepcopy(self.sample)
+        payload["requests"]=["EK01","EK08","EK02"]
+        payload["owned_parts"] += [
+            {"kind":"CrawlerTrack","count":2},
+            {"kind":"Gun","weapon":"RocketLauncher","count":1},
+            {"kind":"Gun","weapon":"Heavy","count":1},
+            {"kind":"DirectionalShield","count":1}
+        ]
+        a=json.loads(self.run_case(payload)[3])
+        payload["requests"]=list(reversed(payload["requests"]))
+        b=json.loads(self.run_case(payload)[3])
+        self.assertEqual(a["procurement"],b["procurement"])
+        self.assertEqual(a["procurement"]["TotalMissingPieces"],1)
+        self.assertEqual(a["procurement"]["TotalReferenceMissingScrap"],30)
+        self.assertNotEqual([x["Id"] for x in a["result"]["Requests"]],
+                            [x["Id"] for x in b["result"]["Requests"]])
+
     def test_16_too_many_requests_fail_closed(self):
         payload=copy.deepcopy(self.sample);payload["requests"]=["EK01"]*101
         self.assert_rejected(payload)

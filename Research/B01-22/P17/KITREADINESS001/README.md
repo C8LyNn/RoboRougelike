@@ -80,3 +80,33 @@ Original cross-platform CI compiles and executes this production C#9 CLI, runs 1
 This is **revision 1.1.0 of existing open producer Draft #461**, not an additional package or independent QA acceptance. Supersedes previous candidate 1.0.1 for a future receiver. Native Unity Editor/PlayMode is still `NOT_RUN`; B01-40 G0/B01-60 independent QA pending.
 
 W10 source-safety hardening: output path verification also rejects any symlink/reparse-point *parent directory*, so lexical location guards cannot be bypassed via a link into Unity project paths. New original CLI process negative test asserts the isolated `Assets/B01KitReadiness001/` folder remains unmodified even if directly selected as output. Exact candidate must rerun both CI OS.
+
+## PASS17 WAVE11 — v1.2.0: consolidated batch equipment shortfall (actual C#9)
+
+The new **`procurement`** field in the real `ReadinessCli` JSON output
+summarizes *all* requested EK01–EK10 recipes at once. It aggregates every
+physical part kind + Gun weapon variant across repeated and overlapping kits,
+covers required quantities from the user's stock **exactly once**, and returns
+per-line `Required`, `Owned`, `Covered`, `Missing`, original reference
+unit Scrap, missing Scrap quote, plus total required/covered/missing physical
+pieces and total reference Scrap for the entire requested batch.
+
+This **differs materially** from earlier per-request `READY/BLOCKED`
+simulation: a failed/blocked request does not reserve virtual parts, but
+the procurement forecast still counts the materials needed to eventually
+assemble **every requested kit** without double-charging overlapping stock.
+Thus two EK01 requests with one EK01's parts owned require exactly another
+5 pieces, totaling **110 reference Scrap**, not repeated or compounded
+single-request shortfalls. Reordering requests may change atomic build
+priority but never changes batch procurement totals.
+
+Implementation is original C#9 `Research/.../KitProcurementForecast.cs`,
+compiled and executed through the existing real user-input CLI; it invokes
+the *existing* source-validated `KitReadinessPlanner.Preview` before
+forecasting. **Research-only: no new Unity asset, no gameplay or wallet write,
+no checkout/cart, no purchasable order or price authority.**
+Six extra black-box process tests execute real C# and check empty/full stock,
+duplicated kits, line aggregation, totals, and order invariance. Keep original
+three-file Unity source ZIP unchanged; four generated JSON previews and
+receipt reflect the updated CLI user-preview output. Native Unity
+Editor/PlayMode = NOT_RUN, pending independent B01-40/B01-60.

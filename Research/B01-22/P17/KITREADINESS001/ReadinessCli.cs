@@ -102,9 +102,13 @@ internal static class ReadinessCli
             }).ToArray();
             // Main game planner validates ALL 154 immutable #411 semantic
             // BOM/price fields AND rejects malformed, duplicate or alien stock.
+            KitRecipe[] recipes = LoadApprovedRecipes(approvedCatalogJson);
             ReadinessPlan result = KitReadinessPlanner.Preview(
-                KitReadinessPlanner.SourceSha, LoadApprovedRecipes(approvedCatalogJson),
-                owned, ids);
+                KitReadinessPlanner.SourceSha, recipes, owned, ids);
+            // Forecast addresses the full requested batch (including kits
+            // currently blocked), not only accepted atomic virtual reservations.
+            ProcurementForecast procurement = KitProcurementForecast.Calculate(
+                KitReadinessPlanner.SourceSha, recipes, owned, ids);
             return JsonSerializer.Serialize(new
             {
                 schema = "b01-kitreadiness-preview-v1",
@@ -112,7 +116,8 @@ internal static class ReadinessCli
                 reference_only = true,
                 modifies_game = false,
                 request_count = ids.Length,
-                result
+                result,
+                procurement
             }, OutputOptions).Replace("\r\n", "\n") + "\n";
         }
     }
