@@ -5,11 +5,11 @@
   "owner": "B01-00",
   "producer_agent": "B01-00",
   "issue": 731,
-  "purpose": "W24 B01-00 original LIVE read-only GitHub PR/issue/Actions intake (not only synthetic model), sole owner selected #749 @ 8634e71 and #753/#741 ALT_HOLD, #755 source transport accepted but full G0/G1 HOLD, owner five approved game/economy policies, one authoritative physical .owner and no raw #669 .lease writer, W25 dispatch draft",
+  "purpose": "W24 B01-00 LIVE GitHub read-only 11 current PRs and 7 exact original source Action runs + owner 5 approved policies. Independent source #749 direct QA #758 source GREEN and real crash QA #768 source GREEN, R5 fixture #750 independent #766 source GREEN. Selected only #749 physical .owner, #753/#741 ALT_HOLD. Physical Unity/private frozen #510 and economy atomic journal NOT IMPLEMENTED; G0 source-only and G1 NOT_RUN. Prepare W25 conditional dispatch.",
   "source_base_branch": "main",
   "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
   "source_branch": "b01-00/p17w09-receipt-latch-001",
-  "source_sha_before_manifest": "ee6fa388fff176f9da161dfc5da63c8bba30156d",
+  "source_sha_before_manifest": "2aa167dfd30ec405544168ba5c52d25c2f2d18eb",
   "code_scope": [
     "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/**",
     ".github/workflows/b01-00-w09-receipt-latch.yml"
@@ -79,8 +79,8 @@
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/README.md",
-      "sha256": "b6453134b848ff624d9d8624dbbd715b770087b5c4f8300b73703add1fa6e1b7",
-      "bytes": 61877
+      "sha256": "e8f2cb123340162d51a956e4574db58509f8a8cd6a781faaf329cc6bfff4e9f9",
+      "bytes": 63689
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/RED-GREEN.md",
@@ -109,8 +109,8 @@
     },
     {
       "path": ".github/workflows/b01-00-w09-receipt-latch.yml",
-      "sha256": "216822e5e1df225f3e682f1dcaead21e949b2f5ca0f259f0f42221c78ec5e4b2",
-      "bytes": 4168
+      "sha256": "d57e9a694cf976815b21b655d0bf0d2610d3ac6a316c2358cd693c55da045cb8",
+      "bytes": 4171
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/save_admission.py",
@@ -299,18 +299,18 @@
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/w24_live_github_intake.py",
-      "sha256": "b04b2aaa935cc281b584254e879bee7725aba4291af308142cf357769017cf84",
-      "bytes": 9031
+      "sha256": "dd2a31722becb130ca227b20667ffe1bbefa9e2917aa9905afbd83f02c873fa0",
+      "bytes": 10060
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/test_w24_live_github_intake.py",
-      "sha256": "9dbee052becf0ea8bc44ddcf1c1340fa195ee6f803adb139b5edd4f107704e01",
-      "bytes": 12790
+      "sha256": "8d25a50749f0ebf10925850f88e6279a31bce69c1d712a4a17bfe6f1ce542744",
+      "bytes": 14347
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/W24-OWNER-SELECTED-749-LIVE-SOURCE-INTAKE.md",
-      "sha256": "deabb358acc46b6ab6b9e7787f1451bde4d4b3b756d94ea8ab59bd3a85ce292b",
-      "bytes": 11260
+      "sha256": "75469c8c05bb59318d09e35a7281615136929059ec1a0c102c2f5a0d4e07c155",
+      "bytes": 14724
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/W25-NEXT-WAVE-DISPATCH-DRAFT.md",
@@ -870,6 +870,27 @@
         "ubuntu-24.04"
       ],
       "note": "Final exact SHA source/ACTUAL GitHub live job stdout to be read and reported postcommit; no promotion from old SHA"
+    },
+    {
+      "name": "W24 expanded 72 new live GitHub source/QA unit tests, cumulative 918 each OS premanifest",
+      "status": "NOT_RUN",
+      "total": 918,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "2aa167dfd30ec405544168ba5c52d25c2f2d18eb",
+      "note": "Requires post-source CI original job stdout; compares 11 real PRs + 7 actual success Action runs and approved 731 policy; no product G0/G1"
+    },
+    {
+      "name": "W24 expanded final SHA after manifest",
+      "status": "NOT_RUN",
+      "total": 918,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "note": "Read exact final Actions both OS including authentic live read-only GitHub before claiming PASS"
     }
   ],
   "qa_b01_40": "PENDING_REVIEW_OF_B01_00_TOOL",
@@ -940,7 +961,8 @@
     "W24 selected #749 exact owner and B01-40 #755 independent original source transport G0 accepted SOURCE_ONLY, competing #753/#741 ALT_HOLD, no mixing physical .owner and legacy raw #669 .lease",
     "W24 #750 owner R5 fixture source green differs from #732 fixture inspected in #755 exact G0; do NOT inherit #755 formal original G0 to different #750 head",
     "W24 owner's five gameplay/economy/Save policies are APPROVED design requirements and anti-tamper adversarial whole-root rollback OUT OF SCOPE, but actual one-source atomic victory/loaner/wallet journal, true CanDeploy and Unity game private adapter remain unverified",
-    "W24 original read-only live gate returns source-intake HOLD even with PR/CI source green and does not grant G1, actual Codex ACK, merge or full integrated gameplay Save"
+    "W24 original read-only live gate returns source-intake HOLD even with PR/CI source green and does not grant G1, actual Codex ACK, merge or full integrated gameplay Save",
+    "W24 expanded live GitHub intake exact-current PRs 11 and actual original Actions 7 with independent B01-61 #758 #749 source security, B01-62 #768 honest crash, B01-61 #766 R5 #750 fixture source QA; all SOURCE_SCOPE_GREEN, not real game full G0 nor native Unity G1"
   ],
   "rollback": "Remove disposable directory and noncanonical output files; do not delete other agents' frozen receipt records",
   "codex_offer_url": "https://github.com/C8LyNn/RoboRougelike/issues/79#issuecomment-6526629723",
@@ -1354,6 +1376,33 @@
     "measured_external_integrator_feedback": "NOT_MEASURED",
     "merged": false,
     "next_wave_file": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/W25-NEXT-WAVE-DISPATCH-DRAFT.md",
-    "read_only_live_actual_ci": "PENDING_POSTMANIFEST_SHA"
+    "read_only_live_actual_ci": "PENDING_POSTMANIFEST_SHA",
+    "source_evidence_update": {
+      "qa_749": {
+        "pr": 758,
+        "sha": "1034127a994c4453127d5906bb3c49d05fb59975",
+        "run": 41137466367,
+        "source": "INDEPENDENT_12_EACH_OS_GREEN_SCOPE_ONLY",
+        "full_g0": "HOLD"
+      },
+      "crash_749": {
+        "pr": 768,
+        "sha": "34bf47a6953800226872029e42ce0535d464f322",
+        "run": 41138019965,
+        "source": "ORIGINAL_16_EACH_OS_CRASH_ACK_CORRUPT_COLD_SOURCE_GREEN",
+        "native": "NOT_RUN"
+      },
+      "cold_fixture_750": {
+        "pr": 766,
+        "sha": "f376f729fcbba916089d3f38853f952afc675abe",
+        "run": 41137933943,
+        "source": "INDEPENDENT_5_EACH_OS_GEN4_TO5_GREEN_SCOPE_ONLY",
+        "formal_fixture_g0": "NEW_750_PENDING_NOT_732"
+      },
+      "live_prs": 11,
+      "live_original_actions": 7,
+      "source_unit_cases_added_w24": 72,
+      "cumulative_original_source_cases_each_os": 918
+    }
   }
 }
