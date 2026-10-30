@@ -116,10 +116,11 @@ def aabb_lower_gap(first,second):
 def compare_pair(first,second):
     bvh_a,bounds_a,ta=first
     bvh_b,bounds_b,tb=second
-    # broad phase only permits avoiding a narrow-phase operation when boxes are
-    # strictly separated. For every potentially contacting pair use ACTUAL BVH.
+    # Invoke the ACTUAL triangle BVH on *every* pair, even when the broad
+    # phase says separated. The AABB gap is only an extra conservative metric,
+    # never a substitute for executing the 726 narrow-phase calls.
     gap=aabb_lower_gap(bounds_a,bounds_b)
-    overlapping=[] if gap>1e-8 else bvh_a.overlap(bvh_b)
+    overlapping=bvh_a.overlap(bvh_b)
     return len(overlapping),gap
 
 def prove_negative_collision(pivots,groups):
