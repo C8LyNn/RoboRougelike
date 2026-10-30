@@ -1,14 +1,14 @@
 {
   "schema": "b01-package-v1",
   "package_id": "B01-11-P17-UXHAPTIC-001",
-  "version": "R2",
+  "version": "R3",
   "owner": "B01-11 — UX RESEARCH & COMPETITIVE ANALYSIS",
-  "wave": "PASS17 WAVE17",
-  "issue": "https://github.com/C8LyNn/RoboRougelike/issues/608",
+  "wave": "PASS17 WAVE18",
+  "issue": "https://github.com/C8LyNn/RoboRougelike/issues/632",
   "branch": "research/b01-11-p17-w16-uxhaptic-001",
   "base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
-  "source_commit": "fc9046c022d1a0512b2858f43bc82cee41fef11a",
-  "docs_commit": "339d0e0e47ae45382fe41c1473ed075faf778ba5",
+  "source_commit": "3875a32a9c1fac5feba98d06ecede99196de926f",
+  "docs_commit": "372b63716d3244050fb4b60a573f825aa24d6e6f",
   "scope": [
     "Research/B01-11/P17/W16-UXHAPTIC-001/**",
     ".github/workflows/b01-11-uxhaptic-w16.yml"
@@ -16,100 +16,109 @@
   "files": [
     {
       "path": "Research/B01-11/P17/W16-UXHAPTIC-001/Runtime/HapticGate.cs",
-      "bytes": 7291,
-      "git_blob_sha1": "4d8dfc4093e14f0b5240a42ddfd48709d997003a",
-      "sha256": "9e9bfb9f8d19f2b16abf9731ced1612ccfb100d4bb881ce03d0387735d687985"
+      "sha256": "a7417183e5ee289835a16c51566492206fce638b0fe2a25ca65b8f553bdbe87f",
+      "bytes": 8086,
+      "git_blob_sha1": "b9b6a97b8610a784c63f1ad758f2bb85bdee6466"
     },
     {
       "path": "Research/B01-11/P17/W16-UXHAPTIC-001/Tests/Program.cs",
-      "bytes": 22913,
-      "git_blob_sha1": "8058b7b9fe90766f9f26898d23202d7d3434b5f5",
-      "sha256": "bd92dee65f4c66a97f5e8622adfb531b286ce01bc78f2e717e707e4b30559503"
+      "sha256": "5255b92b1eff31ee72e63b5c90ada104628cab20fd22a45a2623eed8dd5e3ba8",
+      "bytes": 28993,
+      "git_blob_sha1": "6e3e299936da6eca03cb0fe4696c2ebfd23eeb18"
     },
     {
       "path": "Research/B01-11/P17/W16-UXHAPTIC-001/Tests/UXHapticTests.csproj",
+      "sha256": "fadcbf9abdcd76b7a310f58f5c03d5aebfaec58217dc77d4e923e2508be65ec3",
       "bytes": 395,
-      "git_blob_sha1": "5e0c44225dc907f53cc38b459c74dceacdc4ee24",
-      "sha256": "fadcbf9abdcd76b7a310f58f5c03d5aebfaec58217dc77d4e923e2508be65ec3"
+      "git_blob_sha1": "5e0c44225dc907f53cc38b459c74dceacdc4ee24"
     },
     {
       "path": ".github/workflows/b01-11-uxhaptic-w16.yml",
+      "sha256": "a48d804c672c68e8bd66f338bae68f81bd50480759ea37c323a8352a94bc4f45",
       "bytes": 874,
-      "git_blob_sha1": "0b9c28a40a11a20d095549f85f8f1355eb304d62",
-      "sha256": "a48d804c672c68e8bd66f338bae68f81bd50480759ea37c323a8352a94bc4f45"
+      "git_blob_sha1": "0b9c28a40a11a20d095549f85f8f1355eb304d62"
     },
     {
       "path": "Research/B01-11/P17/W16-UXHAPTIC-001/README.md",
-      "bytes": 6017,
-      "git_blob_sha1": "8c3b282dea0260d1da8568a9397f6d00e83729d4",
-      "sha256": "4a97300a7c7674a262f90e9b2bc137a830ed7ea8f90f34cddc461cd7148f656c"
+      "sha256": "dc9af982a7ae54765e1dcfd18c4384d2c4e1b4b112fd1180d6ff0886b8bc94ce",
+      "bytes": 8503,
+      "git_blob_sha1": "49882c1e6b77d965aca91bb988f2444a68d4a34d"
     },
     {
       "path": "Research/B01-11/P17/W16-UXHAPTIC-001/TEST_PLAN.md",
-      "bytes": 3636,
-      "git_blob_sha1": "536738ab7912a2209c9096d561df3c6c811bb34b",
-      "sha256": "14f7c88944a259a8c1f02801ddcfea90fbed0e672113318d007fe80ca88ea308"
+      "sha256": "2ea07773b231c332c427a087648d311c69dacba02ecb072ebc92ab686a037c91",
+      "bytes": 5325,
+      "git_blob_sha1": "2e530956e6b4095b0468a858e09f6af42770afc7"
     },
     {
       "path": "Research/B01-11/P17/W16-UXHAPTIC-001/QA_RECEIVER.md",
-      "bytes": 3054,
-      "git_blob_sha1": "7d799c7a1c42ccb9eca368850cccb70be1636594",
-      "sha256": "e52427d6ae201da53dd7466fa05a806837c1e82773db350da8e7e5393165707c"
+      "sha256": "00479c3e04a828cbde094e4fcca3b7f2ff4835a23c1e148a9cdfd200dab616b7",
+      "bytes": 4764,
+      "git_blob_sha1": "d2b9489a79a6be37318c6a01864c2218e51f763b"
     },
     {
       "path": "Research/B01-11/P17/W16-UXHAPTIC-001/INSTALL_FOR_CODEX.md",
-      "bytes": 3394,
-      "git_blob_sha1": "89f4674458bad3437b5c1c4562a7bb3414f392db",
-      "sha256": "ae1858b1fa8dbbce5e50230240894311f8e467e425892a90dedd2c3893bd0613"
+      "sha256": "e328b732b15f2c09b745ddd9a20cd37441b9e631fbef0c54b75c0b6fcec8c28c",
+      "bytes": 4738,
+      "git_blob_sha1": "6570a5ca25dd2f9dcbf2e9eb0a8ea21cd36fed67"
     },
     {
       "path": "Research/B01-11/P17/W16-UXHAPTIC-001/EVIDENCE/W16_RED_GREEN.md",
+      "sha256": "e4f8e3f52dcddc27a6ec8ca9dc3f3ae01d1b54b42158353063a853d3342e6c29",
       "bytes": 2304,
-      "git_blob_sha1": "26b11782bfbb2b638796e15ad22ea07aae6a16ca",
-      "sha256": "e4f8e3f52dcddc27a6ec8ca9dc3f3ae01d1b54b42158353063a853d3342e6c29"
+      "git_blob_sha1": "26b11782bfbb2b638796e15ad22ea07aae6a16ca"
     },
     {
       "path": "Research/B01-11/P17/W16-UXHAPTIC-001/EVIDENCE/W17_RUN_TRANSITION_RED_GREEN.md",
+      "sha256": "1398dfb5bd948bc8ef6909e2365bd9d5fd698ea14bdbed51290f7e590daacfdc",
       "bytes": 1923,
-      "git_blob_sha1": "6468dc1544f1d05523e507d2039526fdbd10f602",
-      "sha256": "1398dfb5bd948bc8ef6909e2365bd9d5fd698ea14bdbed51290f7e590daacfdc"
+      "git_blob_sha1": "6468dc1544f1d05523e507d2039526fdbd10f602"
+    },
+    {
+      "path": "Research/B01-11/P17/W16-UXHAPTIC-001/EVIDENCE/W18_PAUSE_STOP_RED_GREEN.md",
+      "sha256": "9fd0fd5667e92b9c10204585eff721ff4edfc72014c5867184890f29de9c596e",
+      "bytes": 2541,
+      "git_blob_sha1": "88da31551e1e877768ab3baff195dfc0b0625622"
     }
   ],
   "tests": [
     {
-      "phase": "R1_FINAL",
-      "os": "Ubuntu + Windows",
-      "passed_per_os": 114,
+      "phase": "W17_R2_EXACT_SHA",
+      "os": "Ubuntu+Windows",
+      "passed_per_os": 126,
       "failed_per_os": 0,
-      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41097917157"
+      "head": "fa6defe701818e79fec447b95fc94efc1cc76cd1",
+      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41101261126"
     },
     {
-      "phase": "W17_TEST_FIRST_RED",
-      "os": "Ubuntu + Windows",
-      "status": "AWAIT_LOG",
-      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41100770919",
-      "head": "eacbbb35a440edb83405919ffd34a7f11b3fc9bb"
+      "phase": "W18_RED_OLD_PRODUCTION_SOURCE_NEW_TESTS",
+      "os": "Ubuntu+Windows",
+      "passed_per_os": 126,
+      "failed_per_os": 18,
+      "head": "604443a9c42557633d41519d50c13a5815553d68",
+      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41104581405"
     },
     {
-      "phase": "W17_SOURCE_GREEN",
-      "os": "Ubuntu + Windows",
-      "status": "AWAIT_LOG",
-      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41100849650",
-      "head": "fc9046c022d1a0512b2858f43bc82cee41fef11a"
+      "phase": "W18_GREEN_NEW_PRODUCTION_SOURCE",
+      "os": "Ubuntu+Windows",
+      "passed_per_os": 144,
+      "failed_per_os": 0,
+      "head": "3875a32a9c1fac5feba98d06ecede99196de926f",
+      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41104661493"
     },
     {
-      "phase": "UNITY_NATIVE",
+      "phase": "UNITY_NATIVE_G1",
       "status": "NOT_RUN"
     }
   ],
-  "producer_source": "R2_CHANGE_COMMITTED_W17_ORIGINAL_CI_PENDING",
+  "producer_source": "R3_REAL_SOURCE_GREEN_144_PER_OS_FINAL_PACKAGE_CI_PENDING",
   "source_g0": "EXTERNAL_PENDING",
   "independent_qa": "EXTERNAL_PENDING",
   "unity_g1": "NOT_RUN",
   "codex": "NOT_OFFERED_ACK_PENDING_NOT_INTEGRATED",
   "g2": "HOLD",
   "no_merge": true,
-  "limits": "Source contract now emits mandatory stopExistingMotors flag from StartNewRun() if outgoing run motor pulse remains active; future Unity driver must actually issue physical motor-stop and recompile. Not a native hardware pass.",
-  "rollback": "Historical R1 immutable 82cc7518b12ab530a3a819af0ffe9072c88c9675. Discard own R2 research changes or revert only current producer branch; frozen Secure #510 and Save #556 unaffected.",
-  "note": "10 owned payloads SHA256/UTF8 exact size/Git blob pinned, manifest excludes itself. W17 source CI must be checked on final package SHA; queued is not PASS."
+  "limits": "Real compiled C# haptic command decision gate, not physical vibration. W18 R3 SetPaused(bool) returns stop-hardware obligation and suppresses pulses without changing enabled preference; host owns motor stop. No native Unity G1.",
+  "rollback": "R2 previously validated immutable fa6defe701818e79fec447b95fc94efc1cc76cd1; discard this isolated Research R3 and workflow; protected #510/#556/#596 untouched.",
+  "note": "11 source/test/docs/evidence/workflow payloads pinned by SHA-256, UTF8 byte count and original Git blob SHA1. Manifest self-hash excluded to avoid circular digest. Final exact R3 package HEAD CI must run separately."
 }
