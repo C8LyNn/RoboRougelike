@@ -1,0 +1,70 @@
+name: B01-61 W25 independent exact #772 original frozen 510 rig ledger + GUID source QA
+on:
+  push:
+    branches: [qa/b01-61-p17w25-772-original-rig-ledger-g0]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-61/P17W25Physical772IndependentQA/**'
+      - '.github/workflows/b01-61-w25-772-original-rig-ledger.yml'
+permissions:
+  contents: read
+jobs:
+  original-772-ledger-physical-source:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 16
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Rehydrate exact original frozen 510 556 W06 and pinned new 772 physical owner from Git
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir=Tools/B01/B01-61/P17W25Physical772IndependentQA/.original
+          mkdir -p "$dir"
+          git fetch --no-tags origin ce46a5e0cc5d26df6c4ece723e8efe20d70fc4b1 33094f154c7b91119b36d58aab285e6e83c5de57 d94400d95d13db7f27e1533df05c9292d5380431
+          git show 33094f154c7b91119b36d58aab285e6e83c5de57:Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs > "$dir/DetachedSnapshotContract.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs > "$dir/DebrisImpulseCore.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123SecureReattachV2/Runtime/AtomicDockLedger.cs > "$dir/AtomicDockLedger.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs > "$dir/SecureRigSpec.cs"
+          test "$(git hash-object "$dir/DetachedSnapshotContract.cs")" = b52e511c370f5fca56c74029050844dc8cbb7f9a
+          test "$(git hash-object "$dir/DebrisImpulseCore.cs")" = fa1aa5e531927cbe73cf5fdfe161b4a981316db5
+          test "$(git hash-object "$dir/SecureRigSpec.cs")" = b680ed0ec969ac23203fa55eab7b90f8daa86e43
+          test "$(git hash-object "$dir/AtomicDockLedger.cs")" = b6a4d04b0c6407c8c84451b4d599d96fe0e4d1a9
+          test "$(git rev-parse HEAD:Assets/B0123CanonicalRigPortW24/Runtime/CanonicalPhysicalRigPortW24.cs)" = 2a9ac87d3028d5c5a51915a27c8d2f49aa363f85
+          test "$(git rev-parse HEAD:Assets/B0123CanonicalRigPortW24/Runtime/CanonicalRigLedgerHydratorW24.cs)" = eb21cb12605e94d17dc7decdf040c9009ca0aafe
+      - name: Compile original 772 hydrator plus true frozen #510 AtomicDockLedger and #556 W06 CSharp9
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build Tools/B01/B01-61/P17W25Physical772IndependentQA/Original772IndependentQA.csproj -c Release --nologo 2>&1 | tee build.log
+      - name: Execute direct immutable original 510 556 ledger ID/rollback negative physical-source checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet Tools/B01/B01-61/P17W25Physical772IndependentQA/bin/Release/net8.0/Original772IndependentQA.dll 2>&1 | tee qa_source.log
+          grep -Fx 'TOTAL 13 PASS 13 FAIL 0' qa_source.log
+          grep -Fx 'UNITY_PHYSICS_G1=NOT_RUN ORIGINAL_FROZEN_PRIVATE_RIG_NOT_CONNECTED GAME_SAVELOAD_HOLD' qa_source.log
+      - name: Verify 9 unique original 772 Unity GUIDs, asmdefs and source proof real stdout
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-61/P17W25Physical772IndependentQA/source_guard.py --log qa_source.log --out dist/b0161-w25-772-independent-source.json
+      - name: Preserve original CSharp stdout compiler and asset GUID receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b0161-w25-original772-${{ matrix.os }}
+          path: |
+            build.log
+            qa_source.log
+            dist/b0161-w25-772-independent-source.json
+          if-no-files-found: warn
