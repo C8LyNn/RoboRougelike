@@ -1,0 +1,81 @@
+{
+  "package_id": "B01-62-SINGLE-SLOT-HOST-LEASE-001",
+  "version": "1.0.0-SOURCE-ONLY-EXPERIMENT",
+  "role": "B01-62",
+  "wave": "PASS17_WAVE18",
+  "historical_original": {
+    "only_selected_bridge_pr": 596,
+    "sha": "efb2b06eafedab5469b57f163152d96aca3c5915",
+    "core_git_blob": "1f9e883c38101f214e4335867faa731f7ae67689",
+    "source_red": "ORIGINAL_596_MULTI_HOST_SHARED_SLOT_STALE_WORLD_RESTORED_AT_HIGHER_GENERATION_REPRODUCED"
+  },
+  "alt_hold": {
+    "pr": 604,
+    "sha": "1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a",
+    "never_import": true
+  },
+  "frozen": {
+    "gameplay_510": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "save_556": "33094f154c7b91119b36d58aab285e6e83c5de57",
+    "save_git_blob": "b52e511c370f5fca56c74029050844dc8cbb7f9a",
+    "w06_git_blob": "fa1aa5e531927cbe73cf5fdfe161b4a981316db5",
+    "spec_git_blob": "b680ed0ec969ac23203fa55eab7b90f8daa86e43"
+  },
+  "own_files": [
+    {
+      "path": "Tools/B01/B01-62/P17W18SingleSlotLease/SingleSlotLease.cs",
+      "git_blob": "488055b32ac2d117e5b2ac2806dd93613c2996d2"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W18SingleSlotLease/Program.cs",
+      "git_blob": "bbc75f2f6c244d70fabb6a9230ac91428ef34785"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W18SingleSlotLease/SingleSlotLease.csproj",
+      "git_blob": "8a5a1bbea6da8d5062277403b7b12cd3ff8f756a"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W18SingleSlotLease/README.md",
+      "git_blob": "05180255b8e08b9d253a580fe9ecfd294838cd7a"
+    },
+    {
+      "path": ".github/workflows/b01-62-p17w18-single-slot-lease.yml",
+      "git_blob": "00056167a39b31f1411ff013eb8d78f9ef5ad899"
+    }
+  ],
+  "source_tests": {
+    "expected_per_os": 35,
+    "platforms": [
+      "Windows 2025",
+      "Ubuntu 24.04"
+    ],
+    "real_child_process_lock": true,
+    "real_file_checkpoint_cas_unmodified": true,
+    "original_source_red_reproduction": true
+  },
+  "previous_acceptance": {
+    "qa_pr": 630,
+    "sha": "c3702f7557eb1fffb0bead8b12a1dbd96bed4dda",
+    "workflow_run": 41102202608,
+    "real_executed_pass_across_platforms": 152,
+    "original_inner_zip_sha256": "005ac910ca9476203bc3ff1748d9198d45835abad21d97e12ad6c1bfe50484e9",
+    "physical_source_g0_b0162": "ACCEPTED_SOURCE_ONLY"
+  },
+  "gates": {
+    "new_experiment_b01_23_approval": "PENDING",
+    "new_experiment_physical_unity_package": "NOT_PRODUCED",
+    "new_experiment_independent_b0161_qa": "PENDING",
+    "b0140_formal_original_596_g0": "PENDING",
+    "native_unity": "NOT_RUN",
+    "game_live_save": "HOLD",
+    "integrated": false,
+    "released": false,
+    "codex_ack": "NONE"
+  },
+  "warnings": [
+    "This source-only wrapper is not installed into Unity and does not change original #596.",
+    "The original #596 source RED test PASS is NOT #596 release-green.",
+    "OS file lock is cooperative, no defense against direct bypass of original #596 host.",
+    "Canonical Unity main-thread rig teardown and private #510 ledger API unavailable; no proof multi-file power-loss durability."
+  ]
+}
