@@ -51,5 +51,16 @@
     "root_manifest_collision": "must preserve separately",
     "formal_b01_40": "PENDING",
     "native_unity": "NOT_RUN"
-  }
+  },
+  "legacy_669_negative": {
+    "original_blob": "db7745635164d9eb6b10f3246538700158130b7b",
+    "old_marker": "slot.owner",
+    "new_marker": "slot.canonical-v3",
+    "old_direct_open": "MUST_REJECT",
+    "old_save_migration": "MUST_HOLD_NO_AUTO_REWRITE",
+    "raw_legacy_coinstall": "REJECT",
+    "alternative_competing_r3": 749,
+    "sole_bridge_selection": "PENDING_B01-23_B01-00"
+  },
+  "tests": "CI_PENDING_CURRENT_FINAL_SHA"
 }
