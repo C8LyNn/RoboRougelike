@@ -11,6 +11,7 @@ import json
 import os
 from pathlib import PurePosixPath,Path
 import re
+import struct
 import sys
 import urllib.request
 import urllib.error
@@ -64,7 +65,30 @@ def zip_files(raw,outer=False):
     with z:
         infos=z.infolist()
         check(0<len(infos)<=MAX_MEMBERS,"BAD_ZIP_MEMBER_COUNT")
+        # Critical cross-OS ZIP path safety: Python zipfile normalizes raw
+        # backslash names to "/" on Windows while constructing ZipInfo.
+        # Inspect ORIGINAL local and central directory header bytes first.
+        central=z.start_dir
         for item in infos:
+            check(central>=0 and raw[central:central+4]==b"PK\\x01\\x02",
+                  "INVALID_RAW_CENTRAL_DIRECTORY")
+            check(central+46<=len(raw),"TRUNCATED_RAW_CENTRAL_HEADER")
+            name_len,extra_len,comment_len=struct.unpack_from("<HHH",raw,central+28)
+            central_end=central+46+name_len+extra_len+comment_len
+            check(central_end<=len(raw) and name_len>0,"TRUNCATED_RAW_CENTRAL_NAME")
+            central_name=raw[central+46:central+46+name_len]
+            central=central_end
+            offset=item.header_offset
+            check(offset>=0 and raw[offset:offset+4]==b"PK\\x03\\x04",
+                  "INVALID_RAW_LOCAL_HEADER")
+            check(offset+30<=len(raw),"TRUNCATED_RAW_LOCAL_HEADER")
+            local_name_len,local_extra_len=struct.unpack_from("<HH",raw,offset+26)
+            check(offset+30+local_name_len+local_extra_len<=len(raw) and local_name_len>0,
+                  "TRUNCATED_RAW_LOCAL_NAME")
+            local_name=raw[offset+30:offset+30+local_name_len]
+            check(b"\\" not in central_name and b"\\" not in local_name,
+                  "UNSAFE_ZIP_MEMBER_RAW_BACKSLASH")
+            check(central_name==local_name,"CENTRAL_LOCAL_FILENAME_MISMATCH")
             p=item.filename
             check(p and not item.is_dir() and not p.startswith("/") and
                   "\\" not in p and "\x00" not in p and
