@@ -1,0 +1,18 @@
+{
+  "name": "B0125.SinkPlate.R2.Editor",
+  "rootNamespace": "B0125.SinkPlate.R2.Editor",
+  "references": [
+    "B0125.SinkPlate.R2.Runtime"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

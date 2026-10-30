@@ -1,0 +1,85 @@
+name: B01-25 W13 SINKPLATE R2 original CSharp9 and physical Unity SOURCE QA
+on:
+  push:
+    branches: [research/b01-25-p17w13-sinkplate001-r2]
+    paths:
+      - 'Research/B01-25/P17/SINKPLATE001R2/**'
+      - 'Assets/B0125SinkPlateR2/**'
+      - 'Assets/B0125SinkPlateR2.meta'
+      - 'Tools/B01/B01-25/P17W13SinkPlateR2/**'
+      - '.github/workflows/b01-25-w13-sinkplate-r2.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    env:
+      SRC: Research/B01-25/P17/SINKPLATE001R2
+      OUT: Tools/B01/B01-25/P17W13SinkPlateR2/.output
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile actual CSharp9 netstandard2.1 source warnings-as-errors
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$SRC/.output" "$OUT"
+          dotnet build "$SRC/SinkPlateRuntime.csproj" -c Release -p:LangVersion=9.0 -warnaserror
+      - name: Execute real CSharp9 plate timing and malicious input regression suite
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --project "$SRC/SinkPlateTests.csproj" -c Release -- "$SRC/.output/gameplay.json" 2>&1 | tee "$OUT/gameplay-$RUNNER_OS.log"
+      - name: Execute original source GUID asmdef Git manifest ZIP and negative/rollback suite
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-25/P17W13SinkPlateR2/check.py --out "$OUT/receipt.json" 2>&1 | tee "$OUT/source-$RUNNER_OS.log"
+      - name: Save actual raw source evidence and original inner ZIP
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-25-sinkplate-r2-${{ matrix.os }}
+          path: |
+            Research/B01-25/P17/SINKPLATE001R2/.output/gameplay.json
+            Tools/B01/B01-25/P17W13SinkPlateR2/.output/**
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 21
+  cross-os-original-zip-parity:
+    needs: original-source
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: b01-25-sinkplate-r2-*
+          path: artifacts
+      - name: Compare real original Windows and Ubuntu inner Unity SOURCE ZIP bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          U="$(find artifacts/b01-25-sinkplate-r2-ubuntu-latest -type f -name 'receipt.zip' | head -n1)"
+          W="$(find artifacts/b01-25-sinkplate-r2-windows-latest -type f -name 'receipt.zip' | head -n1)"
+          test -s "$U" && test -s "$W"
+          sha256sum "$U" "$W"
+          cmp "$U" "$W"
+          python - "$U" <<'PY'
+          import sys,zipfile,json
+          with zipfile.ZipFile(sys.argv[1]) as z:
+              assert len(z.infolist())==22
+              assert all(i.create_system==3 for i in z.infolist())
+              obj=json.loads(z.read("PACKAGE_MANIFEST.json"))
+              assert obj["unityNative"]=="NOT_RUN" and len(obj["files"])==21 and not obj["codexAck"]
+          print("SINKPLATE_ORIGINAL_SOURCE_CROSS_OS_BYTE_PARITY_PASS")
+          PY
