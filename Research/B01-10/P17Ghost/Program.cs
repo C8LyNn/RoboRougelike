@@ -561,6 +561,39 @@ internal static class Program
             Check(!s.BiggestLossIsFinishSegment);
             Equal(s.BiggestLossSeconds,.5f);
         });
+        Test("97 aborted before any gate never claims full-course speedup",()=>{
+            var c=new GhostSplitCoach(Run());
+            var s=c.EndTrial(false,.5f);
+            Check(!s.Completed&&!s.HasFullCourseComparison);
+            Equal(s.TotalDeltaSeconds,0f);
+            Equal(s.TrialSeconds,.5f);
+            Equal(s.ReferenceSeconds,5f);
+        });
+        Test("98 aborted after valid gates preserves partial losses but no finish delta",()=>{
+            var c=new GhostSplitCoach(Run());
+            c.AcceptValidatedGate(0,1.5f);
+            c.AcceptValidatedGate(1,2.5f);
+            var s=c.EndTrial(false,3f);
+            Check(!s.HasFullCourseComparison);
+            Equal(s.TotalDeltaSeconds,0f);
+            Equal(s.BiggestLossGate,1);
+            Equal(s.BiggestLossSeconds,.5f);
+            Equal(s.FinishSegmentSeconds,0f);
+        });
+        Test("99 completed exact reference enables full-course comparison",()=>{
+            var c=new GhostSplitCoach(Run());
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
+            var s=c.EndTrial(true,5f);
+            Check(s.HasFullCourseComparison);
+            Equal(s.TotalDeltaSeconds,0f);
+        });
+        Test("100 completed late finish exposes actual positive full-course delta",()=>{
+            var c=new GhostSplitCoach(Run());
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
+            var s=c.EndTrial(true,10f);
+            Check(s.HasFullCourseComparison&&s.Completed);
+            Equal(s.TotalDeltaSeconds,5f);
+        });
         Console.WriteLine("B01-10 GHOST REAL_CSHARP "+passed+" PASS / "+failed+
           " FAIL | 100 seeded synthetic motion traces | UNITY=NOT_RUN");
         return failed==0?0:1;
