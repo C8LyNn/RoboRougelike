@@ -1,0 +1,57 @@
+{
+  "package_id": "B01-62-P17W15-ATOMIC-HOST-PORT",
+  "version": "1.0.0",
+  "owner": "B01-62",
+  "selected_source": {
+    "pr": 556,
+    "sha": "33094f154c7b91119b36d58aab285e6e83c5de57",
+    "schema": "B01-23-DETACHED-SAVE-CONTRACT-001 v2.0.0",
+    "blob": "b52e511c370f5fca56c74029050844dc8cbb7f9a"
+  },
+  "selected_game": {
+    "pr": 510,
+    "sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "blob_atomic_ledger": "b6a4d04b0c6407c8c84451b4d599d96fe0e4d1a9",
+    "blob_W06": "fa1aa5e531927cbe73cf5fdfe161b4a981316db5"
+  },
+  "hold_alternatives": {
+    "save": [
+      544,
+      549,
+      554
+    ],
+    "game": [
+      494,
+      511
+    ]
+  },
+  "paths": [
+    "Tools/B01/B01-62/P17W15AtomicHostBridge/FrozenSaveHostBridge.cs",
+    "Tools/B01/B01-62/P17W15AtomicHostBridge/Program.cs",
+    "Tools/B01/B01-62/P17W15AtomicHostBridge/OriginalHostBridgeQA.csproj",
+    "Tools/B01/B01-62/P17W15AtomicHostBridge/source_guard.py",
+    "Tools/B01/B01-62/P17W15AtomicHostBridge/README.md",
+    "Tools/B01/B01-62/P17W15AtomicHostBridge/manifest.json",
+    ".github/workflows/b01-62-p17w15-atomic-host.yml"
+  ],
+  "receipt_explanation": "SOURCE_ONLY CLR + fake host. NOT real Unity, no #510 live private ledger hydration.",
+  "guard_conditions": [
+    "quiescent source and before publication",
+    "live ledger IDs match snapshot and rehydrated stage",
+    "one source schema #556",
+    "run identity",
+    "monotonic generation",
+    "isolated stage",
+    "single world-token publication",
+    "rollback whole world or quarantine",
+    "deny reentry"
+  ],
+  "migration": "NONE. Receiver B01-40 #536 owns restricted physical staging and rollback. #542 is native QA only.",
+  "g0": "NEW_BRIDGE_PENDING_INDEPENDENT",
+  "g1": "NOT_RUN",
+  "g2": "HOLD",
+  "code_ack": false,
+  "integrated": false,
+  "merged": false,
+  "rollback": "Close isolated Draft PR and delete own new QA files only. Do not mutate immutable producer or live saves."
+}
