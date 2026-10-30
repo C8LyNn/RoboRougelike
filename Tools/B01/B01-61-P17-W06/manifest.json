@@ -20,7 +20,7 @@
     "Tools/B01/B01-61-P17-W06/bracing_codex_preflight.py": "f8131561ebe66777f3510b5f23b8a3d1513d3884",
     "Tools/B01/B01-61-P17-W06/test_bracing_codex_preflight.py": "89578dd123652abb7d4eee2d23670def1965ddb0",
     "Tools/B01/B01-61-P17-W06/README.md": "5425b7b7e4e89c0de4b1499fe3e085e20c87bdba",
-    ".github/workflows/b01-61-p17w06-bracing-codex-preflight.yml": "67442ad6f4fdf656bd3ecd480c9ccfcef43496c4"
+    ".github/workflows/b01-61-p17w06-bracing-codex-preflight.yml": "6ed34c5dfef9c0a5a14b8c0a6ac346ceab076aa1"
   },
   "validation": {
     "expected_original_package_meta": 6,
