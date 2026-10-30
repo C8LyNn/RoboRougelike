@@ -1,0 +1,44 @@
+{
+  "schema": "B01-50-W14-PINNED-PLAYER-RECEIPT-001",
+  "historical_source": "Codex #310 historical Windows x64 ZIP",
+  "drive_file_id": "1D8tCALdstlIYEivxFXdunrRHdALNBzN9",
+  "archive_name": "RoboRougelike_CX_Windows_x64.zip",
+  "archive_sha256": "a4e1054e09066bb6cd27d3985994ac1a66bcc85caf7ff202af8f59e340bdf442",
+  "archive_bytes": 39623366,
+  "zip_total_entries_including_directories": 214,
+  "zip_non_directory_entries": 211,
+  "uncompressed_file_bytes": 103666052,
+  "source_pr": 540,
+  "source_commit": "d7278f224faecb2aa694bcb93139ef338171e885",
+  "source_git_blob": "f8acb5a17d1721aade5d78eb8a8ae33f7db8477d",
+  "original_full_json_sha256": "59143ef02b0f011e85815761a82e2b7dc31d09e4a278a39e9674e68615ebfc0a",
+  "original_full_json_bytes": 45590,
+  "original_inspector_exit_code": 0,
+  "largest_files": [
+    {
+      "path": "UnityPlayer.dll",
+      "bytes": 36340136
+    },
+    {
+      "path": "MonoBleedingEdge/EmbedRuntime/mono-2.0-bdwgc.dll",
+      "bytes": 7828904
+    },
+    {
+      "path": "RoboRougelike_Data/globalgamemanagers.assets.resS",
+      "bytes": 6174944
+    },
+    {
+      "path": "RoboRougelike_Data/Resources/unity default resources",
+      "bytes": 5923140
+    },
+    {
+      "path": "D3D12/D3D12Core.dll",
+      "bytes": 4725304
+    }
+  ],
+  "source_claimed_sha_only_by_Codex": "aa7a917f177a9b1f07203868fb7d1d871eb3ee46",
+  "native_unity_editor_executed": false,
+  "player_process_executed": false,
+  "runtime_fps_or_memory_measured": false,
+  "limits": "historical binary footprint provenance only; not native Unity runtime, PhysX, game performance or current build acceptance"
+}
