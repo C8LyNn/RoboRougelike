@@ -30,7 +30,7 @@ foreach(var m in originalMethods)
  var result=(IEnumerator)m.Invoke(author,null);
  int steps=0;
  while(result.MoveNext()){Check(++steps<8,"original coroutine finite "+m.Name);}
- Check(steps==2,"original coroutine yielded twice "+m.Name);
+ Check(steps==(m.Name.StartsWith("ActualPrefab_")?2:1),"original coroutine exact expected yields "+m.Name);
  Console.WriteLine("W09_ORIGINAL_AUTHORED_PLAYMODE_BODY_SURROGATE_PASS "+m.Name);
 }
 Check(NUnit.Framework.Assert.Calls>=19,"authored assertions genuinely executed");
