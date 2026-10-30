@@ -1,0 +1,83 @@
+name: B01-31 P17W23 Real W22 Armor GLB to Unity-Compatible OBJ MTL Source QA
+on:
+  push:
+    branches: [art/b01-31-p17w23-unity-native-obj-mtl-armor-bridge]
+    paths:
+      - 'Tools/B01-31/P17/W23ArmorObjImportBridge001/**'
+      - '.github/workflows/b01-31-p17w23-armor-obj-unity-source.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01-31/P17/W23ArmorObjImportBridge001/**'
+      - '.github/workflows/b01-31-p17w23-armor-obj-unity-source.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  actual-original-W22-GLB-to-OBJ-native-importer-source:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Download ACTUAL immutable original W22 GLB three-state artifact+receipt
+        uses: actions/download-artifact@v4
+        with:
+          name: B0131-P17W22-ORIGINAL-ARMOR-1x2x2-OK-DAMAGED-DESTROYED-3GLB2
+          repository: C8LyNn/RoboRougelike
+          run-id: 41129782579
+          github-token: ${{ github.token }}
+          path: original-W22
+      - name: Install original independent physical RGB concept image codec
+        run: python -m pip install --disable-pip-version-check "Pillow==11.3.0"
+      - name: Verify source compiler for real original OBJ producer and standalone receiver
+        run: python -m compileall -q Tools/B01-31/P17/W23ArmorObjImportBridge001
+      - name: Export REAL 3 source-exact native OBJ/MTL + ISO/front visual concepts
+        run: |
+          python Tools/B01-31/P17/W23ArmorObjImportBridge001/build_obj.py --original original-W22/B0131W22 --output build/B0131W23
+          python Tools/B01-31/P17/W23ArmorObjImportBridge001/verify_obj.py --original original-W22/B0131W22 --output build/B0131W23
+      - name: Full original eight member physical OBJ MTL PNG JSON receipt and ZIP double author SHA match
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd build && find . -type f -print0 | sort -z | xargs -0 sha256sum) >/tmp/export_one_sha256
+          python Tools/B01-31/P17/W23ArmorObjImportBridge001/build_obj.py --original original-W22/B0131W22 --output build/B0131W23
+          python Tools/B01-31/P17/W23ArmorObjImportBridge001/verify_obj.py --original original-W22/B0131W22 --output build/B0131W23
+          (cd build && find . -type f -print0 | sort -z | xargs -0 sha256sum) >/tmp/export_two_sha256
+          cmp /tmp/export_one_sha256 /tmp/export_two_sha256
+          echo "B0131_W23_REAL_OBJ_SOURCE_EXACT_SHA_PARITY_PASS"
+      - name: Publish actual author original Unity-compatible 3 OBJ models plus true real source geometry reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0131-P17W23-REAL-GLTF-EXACT-3ARMOR-OBJ-MTL-NATIVE-IMPORT-SOURCE
+          path: build/
+          retention-days: 30
+          if-no-files-found: error
+  Windows-readonly-independent-source-exact-OBJ-check:
+    needs: actual-original-W22-GLB-to-OBJ-native-importer-source
+    runs-on: windows-2022
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Independently download exact immutable three W22 original GLB+receipt
+        uses: actions/download-artifact@v4
+        with:
+          name: B0131-P17W22-ORIGINAL-ARMOR-1x2x2-OK-DAMAGED-DESTROYED-3GLB2
+          repository: C8LyNn/RoboRougelike
+          run-id: 41129782579
+          github-token: ${{ github.token }}
+          path: original-W22
+      - name: Download actual original Ubuntu-authored W23 OBJ MTL model data without running generator
+        uses: actions/download-artifact@v4
+        with:
+          name: B0131-P17W23-REAL-GLTF-EXACT-3ARMOR-OBJ-MTL-NATIVE-IMPORT-SOURCE
+          path: real-ubuntu-export
+      - name: Install only independently decoded PNG pixel reader
+        run: python -m pip install --disable-pip-version-check "Pillow==11.3.0"
+      - name: Verify every real OBJ vertex normal material and index against W22 source FLOAT32 on Windows
+        run: python Tools/B01-31/P17/W23ArmorObjImportBridge001/verify_obj.py --original original-W22/B0131W22 --output real-ubuntu-export/B0131W23
