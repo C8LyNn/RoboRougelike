@@ -1,0 +1,85 @@
+name: B01-62 original PR421 debris ledger save and reload independent QA
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W08DebrisLedgerSaveQA/**'
+      - '.github/workflows/b01-62-p17w08-debris-ledger-save.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-debris-ledger:
+    runs-on: ${{ matrix.os }}
+    name: PR421 original unmodified C# ledger save QA (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2025, ubuntu-24.04]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Fetch EXACT source producer commit and prepare original unchanged C#9 core
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin cb2b3a76e84266e2730fffc4ab048c1039f0652f
+          python Tools/B01/B01-62/P17W08DebrisLedgerSaveQA/prepare.py \
+            --repo . --out "$RUNNER_TEMP/b0162-original-debris-ledger"
+      - name: Compile original source with warnings as errors
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build "$RUNNER_TEMP/b0162-original-debris-ledger/DebrisLedgerSaveQA.csproj" \
+            -c Release -warnaserror
+      - name: Test real disk receipt, prior duplicate after fresh instance, zero-impulse replay
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --no-build \
+            --project "$RUNNER_TEMP/b0162-original-debris-ledger/DebrisLedgerSaveQA.csproj" \
+            -c Release -- --sandbox "$RUNNER_TEMP/b0162-new-save-fixture" \
+            | tee "$RUNNER_TEMP/qa.log"
+          grep -q '^EXPECTED_MISSING_GAME_PERSISTENCE_REPRODUCED=YES$' "$RUNNER_TEMP/qa.log"
+          grep -q '^B01_62_ORIGINAL_DEBRIS_LEDGER_SAVE_QA=PASS checks=28 NATIVE_NOT_RUN$' "$RUNNER_TEMP/qa.log"
+      - name: Collect exact physical output (never actual user save)
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p Tools/B01/B01-62/P17W08DebrisLedgerSaveQA/output
+          cp "$RUNNER_TEMP/b0162-new-save-fixture/receipt.json" \
+            Tools/B01/B01-62/P17W08DebrisLedgerSaveQA/output/receipt.json
+          cp "$RUNNER_TEMP/b0162-new-save-fixture/qa-result.json" \
+            Tools/B01/B01-62/P17W08DebrisLedgerSaveQA/output/qa-result.json
+          cp "$RUNNER_TEMP/qa.log" \
+            Tools/B01/B01-62/P17W08DebrisLedgerSaveQA/output/qa.log
+          echo "B01_62_ORIGINAL_DEBRIS_SAVE_DISK_RECEIPT=PASS"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-62-pr421-ledger-save-${{ matrix.os }}
+          path: Tools/B01/B01-62/P17W08DebrisLedgerSaveQA/output/
+          if-no-files-found: error
+          retention-days: 14
+  exact-physical-receipt-parity:
+    needs: original-debris-ledger
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: b01-62-pr421-ledger-save-windows-2025
+          path: received/windows
+      - uses: actions/download-artifact@v4
+        with:
+          name: b01-62-pr421-ledger-save-ubuntu-24.04
+          path: received/ubuntu
+      - shell: bash
+        run: |
+          set -euo pipefail
+          cmp received/windows/receipt.json received/ubuntu/receipt.json
+          cmp received/windows/qa-result.json received/ubuntu/qa-result.json
+          sha256sum received/windows/receipt.json received/windows/qa-result.json
+          echo "B01_62_ORIGINAL_DEBRIS_LEDGER_RECEIPT_CROSS_OS_BYTE_PARITY=PASS"
