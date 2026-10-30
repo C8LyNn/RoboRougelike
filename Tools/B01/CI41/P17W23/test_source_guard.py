@@ -31,7 +31,7 @@ class GuardTests(unittest.TestCase):
  def test_10_deny_no_store_dispose_bypass(self):
     self.deny("store.Dispose();","/* missing independent storage release */")
  def test_11_deny_no_live_v3_world_assertion(self):
-    self.deny("gateway.AuthorityActive&&factory.Last.Active","true")
+    self.deny("gateway.AuthorityActive&&factory.Last!=null&&factory.Last.Active","true")
  def test_12_deny_no_two_process_barrier(self):
     self.deny('File.WriteAllText(start,"GO")','Thread.Sleep(1)')
  def test_13_deny_no_two_real_external_clr(self):
