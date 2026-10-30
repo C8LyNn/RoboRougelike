@@ -9,10 +9,10 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Input/DebrisRigPlayground.cs" />
-    <Compile Include="Input/RigDemoDefinition.cs" />
-    <Compile Include="Input/DebrisImpulseCore.cs" />
-    <Compile Include="Input/UnityShim.cs" />
+    <Compile Include="SourceSnapshot/Input/DebrisRigPlayground.cs" />
+    <Compile Include="SourceSnapshot/Input/RigDemoDefinition.cs" />
+    <Compile Include="SourceSnapshot/Input/DebrisImpulseCore.cs" />
+    <Compile Include="SourceSnapshot/Input/UnityShim.cs" />
     <Compile Include="LedgerAdapter.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
