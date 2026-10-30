@@ -13,8 +13,18 @@
   "assertions_per_os": 18,
   "expected": "FENCED_STALE_EXPORT_GREEN_AND_DURABLE_COMMIT_ACK_EXCEPTION_SOURCE_RED",
   "source_git_pins": 5,
-  "qa_only_paths": 6,
+  "qa_only_paths": 9,
   "unity_physx": "NOT_RUN",
   "game_live_save_load": "HOLD",
-  "merge": false
+  "merge": false,
+  "test_suites": [
+    "actual_original_core_real_disk_ack_fault",
+    "actual_original_Unity_MonoBehaviour_managed_engine_OnDisable_lease_physical_coexistence"
+  ],
+  "unity_engine_boundary": "SYNTHETIC_MANAGED_API_NOT_NATIVE_UNITY",
+  "new_lifecycle_release_red": "OnDisable releases slot FileShare.None while disabled MonoBehaviour GameObject+Rigidbody children remain active; second host publishes different world; four bodies live concurrently",
+  "independent_release_gates": [
+    "ambiguous_disk_commit_ack",
+    "component_disable_lease_release_without_physics_deactivation"
+  ]
 }
