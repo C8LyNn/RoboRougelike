@@ -326,7 +326,9 @@ def r5_new_meta_identity_test(roots,safe,assets):
             "R5_NEW_LEASE_SOURCE_NOT_AUTHOR_GIT_BYTES")
     full=git(roots["selected"],"ls-tree","-r","--name-only","HEAD",PREFIX+"/").decode().splitlines()
     require(p in full and p+".meta" in full,"R5_PROVENANCE_TREE_MISSING")
-    prior={}
+    # git ls-tree -r PREFIX/ excludes PREFIX.meta at package root.
+    # Count the actual original root .meta alongside all nested originals.
+    prior={PREFIX+".meta":git(roots["frozen_r4"],"show","HEAD:"+PREFIX+".meta")}
     for a in old:
         if a.endswith(".meta") or a==PREFIX+".meta":
             prior[a]=git(roots["frozen_r4"],"show","HEAD:"+a)
