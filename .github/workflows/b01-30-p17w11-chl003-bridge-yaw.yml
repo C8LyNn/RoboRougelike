@@ -1,0 +1,130 @@
+name: B01-30 W11 original CHL003 3D bridge yaw light heavy visual
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/b01-30-p17w11-chl003-bridge-yaw.yml'
+      - 'Tools/B01/TechArt/P17W11/CHLBridgeYaw001/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-chl003-real-3d:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify immutable CHL003 original owner HEAD and exact source C# Git blob
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin refs/pull/285/head
+          test "$(git rev-parse FETCH_HEAD)" = "c7b2a234a286089383503da41883d624fe650551"
+          mkdir -p build/B01-30/W11/source
+          git show "FETCH_HEAD:Assets/RoboRougelikeChallenges/CHL003/Demo/CHL003DemoBootstrap.cs" > build/B01-30/W11/source/CHL003DemoBootstrap.cs
+          python3 - <<'PY'
+          import hashlib
+          from pathlib import Path
+          p=Path("build/B01-30/W11/source/CHL003DemoBootstrap.cs")
+          b=p.read_bytes()
+          gitsha=hashlib.sha1(b"blob "+str(len(b)).encode()+b"\0"+b).hexdigest()
+          assert gitsha=="9308ceb9eab89d1ab483b560ff3ed58fa6d2d32e",gitsha
+          print("B0130_W11_ORIGINAL_CHL003_SOURCE_GIT_BLOB_AND_HEAD_PIN_PASS")
+          PY
+      - name: Install actual Blender and native image/render libraries
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy xvfb libegl1 libegl-mesa0 libgl1-mesa-dri libosmesa6
+          python3 -m py_compile Tools/B01/TechArt/P17W11/CHLBridgeYaw001/*.py
+      - name: Generate ORIGINAL 4 physical Blender/FBX/PNG CHL003 Light/Heavy bridge yaw meshes
+        shell: bash
+        run: |
+          set -euo pipefail
+          xvfb-run -a -s '-screen 0 1280x1024x24' \
+            blender --background --factory-startup --python-exit-code 1 \
+            --python Tools/B01/TechArt/P17W11/CHLBridgeYaw001/generate_bridge_yaw.py -- \
+            --original build/B01-30/W11/source/CHL003DemoBootstrap.cs \
+            --out build/B01-30/W11/producer
+      - name: FRESH Blender import ACTUAL 4 FBX, 40 original render meshes, 4 vertex negatives
+        shell: bash
+        run: |
+          set -euo pipefail
+          blender --background --factory-startup --python-exit-code 1 \
+            --python Tools/B01/TechArt/P17W11/CHLBridgeYaw001/reimport_bridge_yaw.py -- \
+            --source build/B01-30/W11/producer --out build/B01-30/W11/receiver
+      - name: Physical 12 original binary files sha and classification verification
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib,json,struct
+          from pathlib import Path
+          p=Path("build/B01-30/W11/producer")
+          src=json.loads((p/"original-chl003-bridge-yaw-3d-receipt.json").read_text())
+          receipt=json.loads(Path("build/B01-30/W11/receiver/original-chl003-fbx-fresh-reimport-receipt.json").read_text())
+          assert len(src["pose_results"])==4 and src["real_FBX"]==4 and src["real_BLEND"]==4 and src["real_PNG"]==4
+          assert receipt["physical_scene_mesh_total"]==40
+          assert receipt["real_reimport_width_verifications"]==4
+          assert receipt["real_mutated_wheel_position_cases"]==4
+          assert len([x for x in src["pose_results"] if not x["source_policy_pass"]])==1
+          for item in src["pose_results"]:
+              for kind in ("fbx","blend","png"):
+                  meta=item["files"][kind];raw=(p/meta["name"]).read_bytes()
+                  assert len(raw)==meta["bytes"] and hashlib.sha256(raw).hexdigest()==meta["sha256"]
+                  if kind=="fbx":assert raw.startswith(b"Kaydara FBX Binary  \x00\x1a\x00")
+                  if kind=="png":
+                      assert raw[:8]==b'\x89PNG\r\n\x1a\n'
+                      assert struct.unpack(">II",raw[16:24])==(960,720)
+          print("B0130_W11_ORIGINAL_CHL003_12_REAL_BINARY_ASSETS_SHA256_PASS")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-30-W11-CHL003-SOURCE-LOCKED-BRIDGE-YAW-3D
+          path: |
+            build/B01-30/W11/producer/*.fbx
+            build/B01-30/W11/producer/*.blend
+            build/B01-30/W11/producer/*.png
+            build/B01-30/W11/producer/*.json
+            build/B01-30/W11/receiver/*.json
+          if-no-files-found: error
+          retention-days: 30
+  windows-independent-original-physical-file-receiver:
+    needs: [original-chl003-real-3d]
+    runs-on: windows-2025
+    defaults:
+      run:
+        shell: bash
+    timeout-minutes: 7
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: B01-30-W11-CHL003-SOURCE-LOCKED-BRIDGE-YAW-3D
+          path: build/B01-30/W11
+      - name: Check original 12 binary 3D files exact SHA and four source yaw decisions
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import json,hashlib,struct
+          root=Path("build/B01-30/W11")
+          reports=list(root.rglob("original-chl003-bridge-yaw-3d-receipt.json"))
+          assert len(reports)==1
+          a=json.loads(reports[0].read_text())
+          assert len(a["pose_results"])==4 and sum(c["vehicle_meshes"] for c in a["pose_results"])==20
+          actual={(c["rig"],c["yaw_degrees"]):c["source_policy_pass"] for c in a["pose_results"]}
+          assert actual=={("HEAVY",0.0):True,("HEAVY",8.0):True,("HEAVY",12.0):False,("LIGHT",30.0):True}
+          for row in a["pose_results"]:
+              for kind in ("fbx","blend","png"):
+                  f=row["files"][kind];files=list(root.rglob(f["name"]))
+                  assert len(files)==1
+                  data=files[0].read_bytes()
+                  assert len(data)==f["bytes"] and hashlib.sha256(data).hexdigest()==f["sha256"]
+                  if kind=="fbx":assert data.startswith(b"Kaydara FBX Binary  \x00\x1a\x00")
+                  if kind=="png":assert data[:8]==b'\x89PNG\r\n\x1a\n'
+          print("B0130_W11_WINDOWS_ORIGINAL_12_3D_ASSETS_SHA_AND_LIGHT_HEAVY_YAW_CATEGORIES_PASS")
+          PY

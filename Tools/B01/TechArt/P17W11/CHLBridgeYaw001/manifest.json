@@ -1,0 +1,47 @@
+{
+  "package_id": "B01-30-CHL003-BRIDGE-YAW-3D-001",
+  "revision": "R1",
+  "owner": "B01-30 TECHART",
+  "authorized_stream": "CHL-003 R1 by B01-20",
+  "source": {
+    "pr": 285,
+    "head": "c7b2a234a286089383503da41883d624fe650551",
+    "path": "Assets/RoboRougelikeChallenges/CHL003/Demo/CHL003DemoBootstrap.cs",
+    "git_blob": "9308ceb9eab89d1ab483b560ff3ed58fa6d2d32e"
+  },
+  "cases": {
+    "HEAVY_0": "PASS",
+    "HEAVY_8": "PASS",
+    "HEAVY_12": "FAIL",
+    "LIGHT_30": "PASS"
+  },
+  "required_outputs": {
+    "real_FBX": 4,
+    "real_EDITABLE_BLEND": 4,
+    "real_RENDERED_PNG": 4,
+    "all_real_scene_meshes": 40,
+    "real_vehicle_meshes": 20,
+    "source_mutants": 1,
+    "actual_yaw_mutants": 4,
+    "fresh_fbx_wheel_mutants": 4,
+    "windows_original_binary_sha_tests": 12
+  },
+  "own_paths": [
+    "Tools/B01/TechArt/P17W11/CHLBridgeYaw001/**",
+    ".github/workflows/b01-30-p17w11-chl003-bridge-yaw.yml"
+  ],
+  "gates": {
+    "producer": "PENDING_ACTUAL_CI",
+    "independent_B01_40": "PENDING",
+    "independent_B01_60_Unity_G1": "NOT_RUN",
+    "Codex_ACK": "NONE",
+    "merged": false
+  },
+  "receivers": [
+    "B01-20 original CHL gameplay owner",
+    "B01-40 physical asset G0",
+    "B01-60 licensed actual Unity inspector",
+    "B01-00 Codex queue"
+  ],
+  "rollback": "remove isolated W11 outputs only, never source CHL003 or Codex Assets"
+}
