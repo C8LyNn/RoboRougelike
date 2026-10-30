@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+ <PropertyGroup>
+  <OutputType>Exe</OutputType>
+  <TargetFramework>net8.0</TargetFramework>
+  <LangVersion>9.0</LangVersion>
+  <Nullable>disable</Nullable>
+  <ImplicitUsings>disable</ImplicitUsings>
+  <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+ </PropertyGroup>
+ <ItemGroup>
+  <Compile Include="Program.cs" />
+  <Compile Include="SyntheticUnityBoundary.cs" />
+  <Compile Include="../../../../Assets/B0123SecureReattachV2/Runtime/SecureDebrisPlaygroundV2.cs" Link="ExactFrozen510OriginalHost.cs" />
+  <Compile Include="../../../../Assets/B0123SecureReattachV2/Runtime/SecureDockPolicy.cs" Link="ExactFrozen510Policy.cs" />
+  <Compile Include="../../../../Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs" Link="ExactFrozen510Rig.cs" />
+  <Compile Include="../../../../Assets/B0123SecureReattachV2/Runtime/AtomicDockLedger.cs" Link="ExactFrozen510AtomicLedger.cs" />
+  <Compile Include="../../../../Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs" Link="ExactOriginalW06ConsumedLedger.cs" />
+ </ItemGroup>
+</Project>
