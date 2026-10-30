@@ -138,7 +138,7 @@ internal static class Program
         R1RunCheckpointStorage.TestPath=null;
         var explicitPath=Flag(args,"-rrl-run-save-qa-path");
         Check(R1RunCheckpointStorage.PathName==explicitPath &&
-              explicitPath==protectedSlot,
+              Path.GetFullPath(explicitPath).Equals(Path.GetFullPath(protectedSlot),Paths),
               "U01 original batch override may explicitly select protected slot");
         Check(!ReceiverAllows(R1RunCheckpointStorage.PathName),
               "U02 receiver refuses unsafe batch override");
