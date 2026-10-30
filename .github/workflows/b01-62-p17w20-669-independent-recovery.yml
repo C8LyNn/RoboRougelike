@@ -51,4 +51,5 @@ jobs:
         with:
           name: b0162-w20-original669-rollback-${{ matrix.os }}
           path: Tools/B01/B01-62/P17W20SlotSave669QA/.output/
+          include-hidden-files: true
           if-no-files-found: error
