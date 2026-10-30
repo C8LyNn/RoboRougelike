@@ -134,7 +134,7 @@ const js=[
 .replace("__FN_checkState__",checkState.toString())
 .replace("__FN_act__",act.toString())
 .replace("const DATA=", "const DATA="); // original functions rely on PACKAGE,CADENCES,VEHICLES,requireValid; declared below
-const embedded=js.replace("const DATA="+JSON.stringify({PACKAGE,CADENCES,VEHICLES}).replace(/</g,"\\u003c")+";","const DATA="+JSON.stringify({PACKAGE,CADENCES,VEHICLES}).replace(/</g,"\\u003c")+";const PACKAGE=DATA.PACKAGE,CADENCES=DATA.CADENCES,VEHICLES=DATA.VEHICLES;"const requireValid="+requireValid.toString()+";");
+const embedded=js.replace("const DATA="+JSON.stringify({PACKAGE,CADENCES,VEHICLES}).replace(/</g,"\\u003c")+";","const DATA="+JSON.stringify({PACKAGE,CADENCES,VEHICLES}).replace(/</g,"\\u003c")+";const PACKAGE=DATA.PACKAGE,CADENCES=DATA.CADENCES,VEHICLES=DATA.VEHICLES;const requireValid="+requireValid.toString()+";");
 const escapeHtml=x=>String(x).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 export function render(){
  const hash=crypto.createHash('sha256').update(embedded).digest('base64');
