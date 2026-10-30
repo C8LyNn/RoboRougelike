@@ -26,6 +26,21 @@ namespace B01.UnitySaveBridge001
         IPreparedWorld Prepare(RunSnapshot snapshot);
     }
 
+
+    // Stable, path-safe identity function shared by actual Unity MonoBehaviour and
+    // executed source tests. GUIDs and positive run IDs cannot inject directories.
+    public static class CheckpointSlotPath
+    {
+        public static string ForRun(string persistentRoot,long run,Guid slot)
+        {
+            if(string.IsNullOrWhiteSpace(persistentRoot)||run<=0||slot==Guid.Empty)
+                throw new ArgumentException("Run and owned slot must be valid");
+            return System.IO.Path.Combine(persistentRoot,"b0123_isolated_save_slots",
+                "run_"+run.ToString(System.Globalization.CultureInfo.InvariantCulture)+
+                "_slot_"+slot.ToString("N")+".checkpoint");
+        }
+    }
+
     public interface ICheckpointStore
     {
         bool Read(long run,out long generation,out string hash);
@@ -108,6 +123,8 @@ namespace B01.UnitySaveBridge001
         private readonly IWorldFactory factory;
         private readonly ICheckpointStore checkpoint;
         private long saveGeneration;
+        private long publishedGeneration;
+        private string publishedHash="";
         private IPreparedWorld? current;
         private ColdRestore? currentCold;
         private bool busy, quarantined, cleanupPending;
@@ -154,7 +171,13 @@ namespace B01.UnitySaveBridge001
                 // Motion legitimately changes detached world poses/velocities after Load.
                 // Only immutable identity, authority and detached/consumed coupling must match.
                 if(!SameIdentityAndLedger(snap,currentCold.Snapshot))return false;
-                if(!checkpoint.Read(expectedRun,out long durable,out string _))return false;
+                if(!checkpoint.Read(expectedRun,out long durable,out string diskHash))
+                    return false;
+                // W18: never mint a newer checkpoint from a physical world
+                // invalidated by another owner advancing this durable slot.
+                if(durable!=publishedGeneration||diskHash!=publishedHash||
+                   currentCold.Snapshot.Generation!=publishedGeneration)
+                    return false;
                 long newest=Math.Max(Math.Max(currentCold.Snapshot.Generation,saveGeneration),durable);
                 if(newest==long.MaxValue)return false;
                 long next=newest+1;
@@ -226,6 +249,8 @@ namespace B01.UnitySaveBridge001
                         quarantined=true;verdict=WorldSwapVerdict.RollbackQuarantine;break;
                     }
                     current=candidate;currentCold=ready;
+                    publishedGeneration=snap.Generation;
+                    publishedHash=fingerprint;
                     saveGeneration=Math.Max(saveGeneration,snap.Generation);
                     candidate=null;published=true;
                     verdict=WorldSwapVerdict.Accepted;
