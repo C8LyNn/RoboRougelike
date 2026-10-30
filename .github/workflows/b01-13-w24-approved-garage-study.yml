@@ -1,0 +1,70 @@
+name: B01-13 W24 Approved Garage Human Study Source and Real Chromium
+on:
+  push:
+    paths: ['Research/B01-13/P17V/**', '.github/workflows/b01-13-w24-approved-garage-study.yml']
+  pull_request:
+    paths: ['Research/B01-13/P17V/**', '.github/workflows/b01-13-w24-approved-garage-study.yml']
+  workflow_dispatch:
+jobs:
+  source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+        node: ['20', '22']
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Physical original blob and bytes provenance
+        run: python Research/B01-13/P17V/verify_package.py
+      - name: Execute 44 original real Node model and CLI tests
+        run: node --test Research/B01-13/P17V/test_study.mjs
+      - name: Generate real offline browser HTML in temporary output
+        shell: pwsh
+        run: |
+          $file = Join-Path $env:RUNNER_TEMP 'b01-13-w24-approved-garage-study.html'
+          node Research/B01-13/P17V/study.mjs --output $file
+          if ($LASTEXITCODE -ne 0 -or -not (Test-Path $file)) { throw 'STUDY_HTML_MISSING' }
+          Write-Output "W24_HTML_SHA256=$((Get-FileHash -Algorithm SHA256 $file).Hash.ToLowerInvariant())"
+      - name: Upload original executable offline study
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-13-W24-APPROVED-STUDY-${{ matrix.os }}-Node${{ matrix.node }}
+          path: ${{ runner.temp }}/b01-13-w24-approved-garage-study.html
+          if-no-files-found: error
+          retention-days: 14
+  chromium-browser:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify own code provenance and original logic
+        run: |
+          python Research/B01-13/P17V/verify_package.py
+          node --test Research/B01-13/P17V/test_study.mjs
+      - name: Install real Chromium browser automation
+        run: |
+          python -m pip install playwright==1.55.0
+          python -m playwright install --with-deps chromium
+      - name: Generate original browser fixture outside checkout
+        run: node Research/B01-13/P17V/study.mjs --output "$RUNNER_TEMP/b01-13-w24-browser.html"
+      - name: Execute actual real Chromium consent answers CSV JSON and delete UI
+        run: python Research/B01-13/P17V/browser_test.py "$RUNNER_TEMP/b01-13-w24-browser.html"
+      - name: Upload real executable browser fixture
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-13-W24-REAL-CHROMIUM-TEST-HTML
+          path: ${{ runner.temp }}/b01-13-w24-browser.html
+          if-no-files-found: error
+          retention-days: 14
