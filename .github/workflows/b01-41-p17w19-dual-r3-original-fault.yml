@@ -50,7 +50,7 @@ jobs:
           if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
           for c in A B; do
             "$PY" Tools/B01/CI41/P17W19/stage_original.py --candidate "$c" --dest "ci41-w19-stage/$c" | tee "ci41-w19-git-$c-${{ runner.os }}.json"
-            "$PY" -c 'import json,sys;x=json.load(open(sys.argv[1])); assert x["stage"]=="EXACT_ORIGINAL_GIT_BLOBS_ONLY" and x["selected_r3"]=="NONE_OWNER_DECISION_PENDING" and x["no_mixed_assets"] and len(x["source_files"])==4 and x["unity_g1"]=="NOT_RUN" and x["release_gate"]=="HOLD";print("EXACT_R3_ORIGINAL_BLOBS_ISOLATED")' "ci41-w19-git-$c-${{ runner.os }}.json"
+            "$PY" -c 'import json,sys;x=json.load(open(sys.argv[1])); assert x["stage"]=="EXACT_ORIGINAL_GIT_BLOBS_ONLY" and x["selected_r3"]=="NONE_OWNER_DECISION_PENDING" and x["no_mixed_assets"] and len(x["source_files"])==5 and x["unity_g1"]=="NOT_RUN" and x["release_gate"]=="HOLD";print("EXACT_R3_ORIGINAL_BLOBS_ISOLATED")' "ci41-w19-git-$c-${{ runner.os }}.json"
             # Never reuse build DLL between R3A / R3B despite common project name.
             rm -rf Tools/B01/CI41/P17W19/obj Tools/B01/CI41/P17W19/bin
             dotnet build Tools/B01/CI41/P17W19/R3OriginalFaultQA.csproj -c Release --warnaserror "-p:OriginalRoot=../../../../ci41-w19-stage/$c" 2>&1 | tee "ci41-w19-build-$c-${{ runner.os }}.txt"
