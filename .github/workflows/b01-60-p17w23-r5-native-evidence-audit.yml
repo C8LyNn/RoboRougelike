@@ -1,0 +1,50 @@
+name: B01-60 W23 independent R5 native receipt audit (SYNTHETIC, UNITY NOT_RUN)
+on:
+  push:
+    branches: [qa/b01-60-p17w23-r5-native-evidence-audit-r1]
+    paths:
+      - 'Tools/B01/B01-60/P17W23R5NativeEvidenceAudit/**'
+      - '.github/workflows/b01-60-p17w23-r5-native-evidence-audit.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-60/P17W23R5NativeEvidenceAudit/**'
+      - '.github/workflows/b01-60-p17w23-r5-native-evidence-audit.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  strict-r5-original-evidence:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2025, ubuntu-24.04]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Exact #718 base SHA, five added-only W23 files, immutable original #718 runner
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=481bfb1cf2804d94fb49d7e6a57134e96c535b86
+          git merge-base --is-ancestor "$BASE" HEAD
+          git diff --name-status "$BASE" HEAD > changed.txt
+          awk '$1!="A" { print; exit 1 }' changed.txt
+          test "$(wc -l < changed.txt)" -eq 5
+          test "$(git rev-parse HEAD:Tools/B01/B01-60/P17W22R5PartialNative/r5_native.py)" = 40ca11d886fc567a5a79f6abfeabdf2b37f4c36e
+          test "$(git rev-parse HEAD:Tools/B01/B01-60/P17W22R5PartialNative/Invoke-B0160W22R5.ps1)" = fcaccf40f4f0036d32cb2d88a73668a3a2c5d83c
+          echo 'W23_FROZEN_R5_718_OPERATOR_UNMODIFIED_5_ADDED_ONLY'
+      - name: Python syntax and 20 SYNTHETIC adversarial native evidence cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile Tools/B01/B01-60/P17W23R5NativeEvidenceAudit/audit.py Tools/B01/B01-60/P17W23R5NativeEvidenceAudit/test_audit.py
+          python -m unittest discover -s Tools/B01/B01-60/P17W23R5NativeEvidenceAudit -p test_audit.py -v 2>&1 | tee w23-r5-synthetic.log
+          grep -F 'Ran 20 tests' w23-r5-synthetic.log
+          grep -F 'OK' w23-r5-synthetic.log
+          echo 'W23_R5_SYNTHETIC_RECEIPT_CHECKS_PASS_NATIVE_UNITY_NOT_RUN'
