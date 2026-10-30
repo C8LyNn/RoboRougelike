@@ -37,11 +37,30 @@
     "Contract does not identify target per mark; scout Started creates timed flag before full window completes; Codex must define target/interrupt semantics",
     "Producer CI source tests not equivalent to Codex integration"
   ],
-  "g0": "INDEPENDENT_TEST_PENDING",
+  "g0": "B01_60_INDEPENDENT_SOURCE_CSHARP_QA_PASS",
   "g1": "NATIVE_UNITY_NOT_RUN",
   "g2": "HOLD",
   "codex_ack": "PENDING",
   "integrated": false,
   "no_merge": true,
-  "rollback": "Delete only this QA folder and its own dedicated workflow; do not alter B01-24 producer #429, Assets/R3, main/develop or Codex."
+  "rollback": "Delete only this QA folder and its own dedicated workflow; do not alter B01-24 producer #429, Assets/R3, main/develop or Codex.",
+  "actual_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41037951233",
+  "tested_code_sha": "3246f436fa9d14d17484cc7e01de0ebdcc389703",
+  "original_source_immutable_sha": "4d13f76e6c0c08033e305900daf61c0a7267a725",
+  "real_test_receipts": {
+    "windows": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41037951233/artifacts/12969011219",
+    "ubuntu": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41037951233/artifacts/12969310821",
+    "source_sha1_7_of_7": "PASS",
+    "direct_CSharp9_compilation": "PASS_WARNASERROR",
+    "test_groups": "6_PASS_0_FAIL_PER_OS",
+    "actual_CSharp9_Tick_invocations_per_OS": 61440,
+    "fuzz_started": 18489,
+    "fuzz_active": 5780,
+    "fuzz_ended": 18445,
+    "fuzz_idle": 18726,
+    "invalid_atomic_twin_inputs": 11,
+    "repeated_invalid_rejected_stateful_ticks": 250,
+    "trace_sha256": "7ed0496e72abb40cfb6ace9a4e605d2bde5a98d5ca79b260815497bceb8da7dc",
+    "both_OS": "SUCCESS"
+  }
 }
