@@ -30,7 +30,7 @@ namespace B01.SecureSaveHost001
     {
         private readonly IIsolatedRigFactory factory;
         private readonly Func<bool> hostIdle;
-        private IIsolatedRigWorld current;
+        private IIsolatedRigWorld? current;
         private bool busy;
         private bool quarantine;
         private readonly long runId;
@@ -73,7 +73,7 @@ namespace B01.SecureSaveHost001
                 RunSnapshot captured = current.Capture(runId, generation);
                 if (!SnapshotRules.Valid(captured)) return RestoreVerdict.InvalidSnapshot;
                 byte[] candidate = SnapshotCodec.Encode(captured);
-                if (!ColdRestore.TryStage(candidate, out ColdRestore plan) || plan == null)
+                if (!ColdRestore.TryStage(candidate, out ColdRestore? plan) || plan == null)
                     return RestoreVerdict.InvalidSnapshot;
                 if (!Equivalent(captured, plan.Snapshot)) return RestoreVerdict.InvalidSnapshot;
                 idle = CheckIdle();
@@ -90,7 +90,7 @@ namespace B01.SecureSaveHost001
             if (quarantine) return RestoreVerdict.Quarantine;
             if (busy) return RestoreVerdict.TransactionBusy;
             busy = true;
-            IIsolatedRigWorld staged = null;
+            IIsolatedRigWorld? staged = null;
             bool committed = false;
             try
             {
@@ -98,7 +98,7 @@ namespace B01.SecureSaveHost001
                 if (idle != RestoreVerdict.Accepted) return idle;
                 // Exact #556 parser and cold original W06 rehydration; ZERO changes
                 // to existing world until all validation and staging finishes.
-                if (!ColdRestore.TryStage(bytes, out ColdRestore plan) || plan == null)
+                if (!ColdRestore.TryStage(bytes, out ColdRestore? plan) || plan == null)
                     return RestoreVerdict.InvalidSnapshot;
                 RunSnapshot snapshot = plan.Snapshot;
                 if (snapshot.RunId != runId) return RestoreVerdict.WrongRun;
@@ -118,7 +118,7 @@ namespace B01.SecureSaveHost001
 
                 idle = CheckIdle();
                 if (idle != RestoreVerdict.Accepted) return idle;
-                IIsolatedRigWorld old = current;
+                IIsolatedRigWorld? old = current;
                 // With no async yield between operations, the host performs one
                 // synchronous exclusive visibility / authoritative pointer swap.
                 // Never destroy the old world before the new world is active.
@@ -136,7 +136,7 @@ namespace B01.SecureSaveHost001
                     // Compensate without writing any old ID/pose/parent/ledger.
                     // If compensation itself fails, permanently quarantine.
                     bool repaired = true;
-                    try { staged.SetVisible(false); } catch { repaired = false; }
+                    try { staged?.SetVisible(false); } catch { repaired = false; }
                     try { if (old != null) old.SetVisible(true); } catch { repaired = false; }
                     if (!repaired) quarantine = true;
                     return RestoreVerdict.Quarantine;

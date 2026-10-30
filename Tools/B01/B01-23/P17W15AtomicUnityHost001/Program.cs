@@ -11,19 +11,17 @@ internal sealed class FakeWorld : IIsolatedRigWorld
     public RunSnapshot Snapshot;
     public bool IsVisible {get;private set;}
     public bool IsBusy {get;set;}
-    public bool FailHide, FailShow, FailDispose, FailCapture, Disposed;
-    public Action OnVisible;
+    public bool FailHide, FailShow, FailDispose, Disposed;
     public FakeWorld(RunSnapshot snap){Snapshot=snap;}
     public RunSnapshot Capture(long run,long gen)
     {
-        if(FailCapture)throw new IOException("forced physical Capture exception");
         return new RunSnapshot(run,gen,Snapshot.Parts);
     }
     public void SetVisible(bool visible)
     {
         if(visible&&FailShow)throw new InvalidOperationException("failed activation");
         if(!visible&&FailHide)throw new InvalidOperationException("failed deactivation");
-        IsVisible=visible;OnVisible?.Invoke();
+        IsVisible=visible;
     }
     public void Dispose(){if(FailDispose)throw new IOException("failed cleanup");Disposed=true;IsVisible=false;}
 }
@@ -34,8 +32,7 @@ internal sealed class FakeFactory : IIsolatedRigFactory
     public bool AlterId;
     public bool MakeVisible;
     public bool FailNextShow;
-    public bool FailNextDispose;
-    public Action DuringBuild;
+    public Action? DuringBuild;
     public IIsolatedRigWorld Build(ColdRestore plan)
     {
         DuringBuild?.Invoke();
@@ -49,7 +46,7 @@ internal sealed class FakeFactory : IIsolatedRigFactory
                 p.LinearVelocity,p.AngularVelocity,p.MassKg);
         }
         var world=new FakeWorld(new RunSnapshot(plan.Snapshot.RunId,plan.Snapshot.Generation,parts));
-        world.FailShow=FailNextShow;world.FailDispose=FailNextDispose;Worlds.Add(world);
+        world.FailShow=FailNextShow;Worlds.Add(world);
         if(MakeVisible)world.SetVisible(true);
         return world;
     }
@@ -82,8 +79,8 @@ internal static class Program
         Assert(h.TryLoad(Save(a,b,1),1)==RestoreVerdict.Accepted,"cold first load "+a+b);
         Assert(h.HasWorld&&factory.Worlds[0].IsVisible,"first world active "+a+b);
         Assert(h.TrySave(out byte[] bytes)==RestoreVerdict.Accepted,"physical state saved "+a+b);
-        Assert(ColdRestore.TryStage(bytes,out ColdRestore cold)&&cold!=null,"original #556 W06 ledger recreated "+a+b);
-        Assert(cold.ContainsConsumedId(0,2310001)==a && cold.ContainsConsumedId(1,2310002)==b,"detached consumed stable IDs "+a+b);
+        Assert(ColdRestore.TryStage(bytes,out ColdRestore? cold)&&cold!=null,"original #556 W06 ledger recreated "+a+b);
+        Assert(cold!.ContainsConsumedId(0,2310001)==a && cold!.ContainsConsumedId(1,2310002)==b,"detached consumed stable IDs "+a+b);
         var restart=Host(new FakeFactory());
         Assert(restart.TryLoad(bytes,1)==RestoreVerdict.Accepted,"new process/host restart cold loads "+a+b);
         Assert(restart.TrySave(out byte[] again)==RestoreVerdict.Accepted,"cold round-trip save "+a+b);
@@ -98,7 +95,7 @@ internal static class Program
         Assert(h.TryLoad(Save(false,true,5),1)==RestoreVerdict.Accepted,"whole world switched to new state");
         Assert(!prev.IsVisible&&prev.Disposed,"old world disposed only after successful new activation");
         Assert(h.TrySave(out byte[] saved)==RestoreVerdict.Accepted,"new world save success");
-        Assert(ColdRestore.TryStage(saved,out ColdRestore now)&&now.ContainsConsumedId(1,2310002)&&!now.ContainsConsumedId(0,2310001),
+        Assert(ColdRestore.TryStage(saved,out ColdRestore? now)&&now!.ContainsConsumedId(1,2310002)&&!now!.ContainsConsumedId(0,2310001),
             "consumed original W06 ledger follows only new world");
         var active=f.Worlds[1];
         var corrupt=(byte[])Save(true,true,6).Clone();corrupt[100]^=1;
