@@ -1,0 +1,23 @@
+{
+  "name": "B0125.SweepOrb.R2.PlayModeTests",
+  "rootNamespace": "B0125.SweepOrb.R2.Tests",
+  "references": [
+    "B0125.SweepOrb.R2.Runtime"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

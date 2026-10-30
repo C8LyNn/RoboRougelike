@@ -1,0 +1,14 @@
+{
+  "name": "B0125.SweepOrb.R2.Runtime",
+  "rootNamespace": "B0125.SweepOrb.R2",
+  "references": [],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
