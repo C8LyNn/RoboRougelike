@@ -1,0 +1,77 @@
+name: B01-41 W23 ORIGINAL #729 V3 and #669 dual physical owner source security witness
+on:
+  push:
+    branches: [ci/b01-41-p17w23-v3-669-dual-authority-witness]
+    paths:
+      - 'Tools/B01/CI41/P17W23/**'
+      - '.github/workflows/b01-41-p17w23-v3-669-two-lease-witness.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  actual-original-v3-storage-dual-lease:
+    name: Exact #729 + #669 and 16 actual CLR process witnesses (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Independently execute 18 hostile no-mock source test controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
+          "$PY" -m unittest discover -s Tools/B01/CI41/P17W23/ -p test_source_guard.py -v 2>&1 | tee "ci41-w23-python-${{ runner.os }}.txt"
+          grep -q 'Ran 18 tests' "ci41-w23-python-${{ runner.os }}.txt"
+          grep -q 'OK' "ci41-w23-python-${{ runner.os }}.txt"
+      - name: Read only exact original producer #669 immutable Git blob into disposable own QA directory
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121
+          mkdir -p Tools/B01/CI41/P17W23/.source
+          git show d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121:Tools/B01/B01-62/P17W20SingleFileSaveSlot/SingleFileSaveSlot.cs > Tools/B01/CI41/P17W23/.source/SingleFileSaveSlot.cs
+          test "$(git hash-object Tools/B01/CI41/P17W23/.source/SingleFileSaveSlot.cs)" = db7745635164d9eb6b10f3246538700158130b7b
+      - name: Original selected exact owner V3 Git blobs unchanged, seven CI41 paths only
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
+          "$PY" Tools/B01/CI41/P17W23/source_guard.py "ci41-w23-git-${{ runner.os }}.json"
+          "$PY" -c 'import sys,json;x=json.load(open(sys.argv[1]));assert x["status"]=="ORIGINAL_SHA_SCOPE_PASS" and len(x["own_added_files"])==7 and x["real_unity_g1"]=="NOT_RUN" and x["real_true_clr_pairs_each_os"]==8 and x["expected_witness"]=="TWO_INDEPENDENT_OWNER_LEASES_PRODUCT_HOLD";print("CI41_W23_EXACT_ORIGINAL_SHA_AND_SEVEN_OWN_PATHS_PASS")' "ci41-w23-git-${{ runner.os }}.json"
+      - name: Strict CSharp9 actual original V3 lease and physical original checkpoint/store direct compile
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build Tools/B01/CI41/P17W23/OriginalV3StorageAuthorityQA.csproj -c Release --warnaserror 2>&1 | tee "ci41-w23-build-${{ runner.os }}.txt"
+          grep -q 'Build succeeded' "ci41-w23-build-${{ runner.os }}.txt"
+      - name: EXECUTE 4 actual source dual-owner scenarios 8 barrier pairs 16 independent child CLR
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run -c Release --no-build --project Tools/B01/CI41/P17W23/OriginalV3StorageAuthorityQA.csproj 2>&1 | tee "ci41-w23-os-${{ runner.os }}.txt"
+          grep -q 'CI41_W23_ORIGINAL_V3_729_AND_669_TWO_PHYSICAL_LOCKS_RELEASE_RED cases=4 pairs=8 child_processes=16 assertions=' "ci41-w23-os-${{ runner.os }}.txt"
+          grep -q 'CI41_W23_ACTUAL_V3_LIVE_LIGHT_G10_AFTER_ORIGINAL_STORAGE_HEAVY_G1_REPRODUCED' "ci41-w23-os-${{ runner.os }}.txt"
+          grep -q 'CI41_W23_SOURCE_QA_WITNESS_PASS_PRODUCT_SAVELOAD_HOLD_NO_ONE_BRIDGE' "ci41-w23-os-${{ runner.os }}.txt"
+          grep -q 'CI41_W23_NATIVE_UNITY_G1_NOT_RUN_R5_G0_SEPARATE_G2_HOLD' "ci41-w23-os-${{ runner.os }}.txt"
+      - name: Archive exact original source witness only (expected security RED, NOT game release)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CI41-W23-ORIGINAL-V3-669-TWO-LEASE-RED-NOT-UNITY-${{ runner.os }}
+          path: |
+            ci41-w23-python-${{ runner.os }}.txt
+            ci41-w23-git-${{ runner.os }}.json
+            ci41-w23-build-${{ runner.os }}.txt
+            ci41-w23-os-${{ runner.os }}.txt
+          retention-days: 14
+          if-no-files-found: warn
