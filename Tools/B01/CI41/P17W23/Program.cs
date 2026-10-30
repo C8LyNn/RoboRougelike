@@ -195,8 +195,9 @@ internal static class Program
         Check(gateway.AuthorityActive&&gateway.HasWorld&&factory.Last!=null&&factory.Last.Active,
               "V3 world still LIVE after independent storage .lease is released");
         RunPair(slotDir,Path.Combine(root,"after"),false);
+        byte[] oldSnapshot=Array.Empty<byte>();
         Check(gateway.AuthorityActive&&factory.Last!=null&&factory.Last.Active&&
-              gateway.TryCapturePreview(out byte[] oldSnapshot),
+              gateway.TryCapturePreview(out oldSnapshot),
               "original V3 active Light g10 still exports while foreign #669 Heavy g1 exists");
         CheckIds(oldSnapshot,10,true,false);
         Check(SingleFileSaveSlot.TryOpenExisting(slotDir,Run,Slot,out var cold)==SlotStatus.Accepted
