@@ -62,3 +62,11 @@ R1 design-model ordering incorrectly allowed damage created at the end of WIN X 
 6. Actual Unity G1 must prove Light/Heavy, two service instances, 0HP required vs optional, dead Core, missing challenge, loaner WON/LOST and no double award, pending after same vs next WIN, price1, 65%, genuine authorized wallet order. Human sessions remain 0; policy APPROVED is not implementation QA ACCEPTED.
 
 Original source model now has 145 deterministic cases and 15 synthetic fixtures; exact SHA Windows+Ubuntu source CI to be verified. Receivers B01-22/20/13/00, independent G0 B01-40, native G1 B01-60.
+
+## W25/R6: B01-22 V6 quote contract and native blockers
+
+Proposed common whole-Scrap 65 percent: purchase>=1, quote=MIN((purchase*65+50)/100,purchase-1), arithmetic long. Results price1=0 PAID not FREE, price5=3, price15=10, price30=20, price100=65. Requires explicit B01-22/00 owner ACK, then a NEW author-owned V6 version; do not overwrite frozen sources.
+
+Independent B01-10 compiles exact original V6 C# from #764 Git blob under .NET8/C#9 Windows and Ubuntu. Expected negative is source P1 1->1 (does not meet stricter owner requirement); positive original source stage test is first WIN unlocks one free ticket, second DISTINCT WIN only completes previously booked ticket. Independent source negative also proves zero-wallet first one-shot loaner winner may still leave essential gun 0HP with loaner spent, requiring a genuine owner-side source recovery fix. None are native Unity G1 or a real trusted combat receipt. Never count detector GREEN as original V6 implementation accepted.
+
+Preserve same physical ID after repair; no double free, no cross-run-loaner revival, real source CAS under ONE selected .owner Save, collision-safe rounding, external attacker anti-tamper out-of-scope. Source Python160 cases and 17 invented scenarios. B01-22 must implement fixes in new version, B01-00 decide whether one common rule is approved, B01-61/41/40 independently verify actual original source, B01-60 run real Unity G1 if owner-operated. No release, no merge.
