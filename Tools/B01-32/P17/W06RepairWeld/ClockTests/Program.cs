@@ -64,5 +64,5 @@ core.SetProgress(.83f);core.Tick(.24f);Capture("weld_late",core);
 core.Finish();Capture("cool_start",core);
 core.Tick(.30f);Capture("cool_mid",core);
 core.Tick(.36f);Capture("cool_end",core);
-if(args.Length>0){Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(args[0]))!);File.WriteAllText(args[0],JsonSerializer.Serialize(captures,new JsonSerializerOptions{WriteIndented=true}));}
+if(args.Length>0){Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(args[0]))!);File.WriteAllText(args[0],JsonSerializer.Serialize(captures,new JsonSerializerOptions{WriteIndented=true,IncludeFields=true}));}
 Console.WriteLine("REPAIR_WELD_ORIGINAL_CSHARP_PASS "+checks+"/"+checks+" 2048 seeded original core vectors x4 steps x8 sparks");
