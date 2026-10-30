@@ -286,6 +286,7 @@ def run_plan(plan: dict, *, cadence: str = "per_win",
         sum(is_free for _, _, is_free in reserved.values())
         if permanently_blocked_model else 0)
     return {"cadence": cadence, "bootstrap": bootstrap, "priority": priority,
+            "quote_rounding": p["quote_rounding"],
             "reward_timing": reward_timing,
             "modeled_stranded_pending_count": stranded_tickets,
             "modeled_stranded_paid_scrap": stranded_paid_scrap,
