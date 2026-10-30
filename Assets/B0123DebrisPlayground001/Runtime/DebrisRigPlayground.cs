@@ -100,6 +100,10 @@ namespace B01.DebrisPlayground001
         {
             Rig rig = RequireRig(index);
             if (!rig.Detached) return false;
+            // W10 v2: THIS public API is the mandatory physical dock boundary.
+            // It cannot be bypassed by W07 GUI, W08 safe adapter, W09 UI, or external scripts.
+            // No body, parent, emitter or ID mutation on denial.
+            if (!ValidatePhysicalReattach(rig)) return false;
             rig.Body.linearVelocity = Vector3.zero;
             rig.Body.angularVelocity = Vector3.zero;
             rig.Body.isKinematic = true;
@@ -110,6 +114,82 @@ namespace B01.DebrisPlayground001
                 throw new System.InvalidOperationException("Missing detach ID at reattach");
             return true;
         }
+
+        // W10 non-optional guard, in W07-owned runtime assembly: NO circular
+        // asmdef dependency on newer W08/W09 callers and NO public guard delegate.
+        private const int DockQueryCapacity = 64;
+        private const float DockMaxReachMeters = 3f;
+        private const float DockMaxPenetrationMeters = 0.005f;
+        private readonly Collider[] dockQuery = new Collider[DockQueryCapacity];
+
+        private bool ValidatePhysicalReattach(Rig rig)
+        {
+            if (rig == null || rig.Root == null || rig.Part == null ||
+                rig.Body == null || rig.Emitter == null || !rig.Detached ||
+                !rig.Part.activeInHierarchy || rig.Body.isKinematic)
+                return false;
+            var box = rig.Part.GetComponent<BoxCollider>();
+            if (box == null || !box.enabled || box.isTrigger)
+                return false;
+            Transform owner = rig.Root.transform;
+            Transform part = rig.Part.transform;
+            Vector3 target = owner.TransformPoint(rig.LocalMountPosition);
+            Quaternion rotation = owner.rotation;
+            Vector3 scale = part.lossyScale;
+            if (!Finite(target) || !Finite(scale) ||
+                Mathf.Abs(scale.x) <= 0f || Mathf.Abs(scale.y) <= 0f ||
+                Mathf.Abs(scale.z) <= 0f ||
+                !Finite(box.size) || !Finite(box.center))
+                return false;
+            Vector3 half = Vector3.Scale(box.size,
+                new Vector3(Mathf.Abs(scale.x), Mathf.Abs(scale.y), Mathf.Abs(scale.z))) * 0.5f;
+            if (!Finite(half) || half.x <= 0f || half.y <= 0f || half.z <= 0f)
+                return false;
+            Vector3 center = target + rotation * Vector3.Scale(box.center, scale);
+            if (!Finite(center) || !Finite(part.position))
+                return false;
+            float reach = Vector3.Distance(part.position, target);
+            if (float.IsNaN(reach) || float.IsInfinity(reach) ||
+                reach > DockMaxReachMeters)
+                return false;
+
+            // ALL physics layers and triggers included in the finite buffer.
+            // We ignore known triggers in the narrowphase, but saturation is RED.
+            // Never trust W08's user-editable layer mask for the public entrypoint.
+            Physics.SyncTransforms();
+            int count = Physics.OverlapBoxNonAlloc(center, half, dockQuery,
+                rotation, ~0, QueryTriggerInteraction.Collide);
+            if (count < 0 || count >= DockQueryCapacity)
+                return false;
+            for (int i = 0; i < count; i++)
+            {
+                Collider other = dockQuery[i];
+                if (other == null) return false;
+                if (other == box || other.attachedRigidbody == rig.Body ||
+                    other.isTrigger)
+                    continue;
+                bool supported = other is BoxCollider || other is SphereCollider ||
+                                 other is CapsuleCollider ||
+                                 (other is MeshCollider mesh && mesh.convex);
+                if (!other.enabled || !supported)
+                    return false;
+                Vector3 direction;
+                float depth;
+                bool overlapping = Physics.ComputePenetration(box, target, rotation,
+                    other, other.transform.position, other.transform.rotation,
+                    out direction, out depth);
+                if (!Finite(direction) || float.IsNaN(depth) ||
+                    float.IsInfinity(depth) || depth < 0f)
+                    return false;
+                if (overlapping && depth > DockMaxPenetrationMeters)
+                    return false;
+            }
+            return true;
+        }
+
+        private static bool Finite(Vector3 p) =>
+            !float.IsNaN(p.x) && !float.IsNaN(p.y) && !float.IsNaN(p.z) &&
+            !float.IsInfinity(p.x) && !float.IsInfinity(p.y) && !float.IsInfinity(p.z);
 
         public void ResetDemo()
         {

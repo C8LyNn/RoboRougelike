@@ -1,0 +1,72 @@
+name: B01-23 W10 Public Reattach API Mandatory Collision Guard RED GREEN
+on:
+  push:
+    branches: ['b01-23/p17-w10-public-reattach-guard-r2']
+  pull_request:
+    paths:
+      - 'Assets/B0123DebrisPlayground001/Runtime/DebrisRigPlayground.cs'
+      - 'Assets/B0123DockHardening001/Tests/PlayMode/W10PublicDockGuardPlayModeTests.cs'
+      - 'Assets/B0123DockHardening001/Tests/PlayMode/W10PublicDockGuardPlayModeTests.cs.meta'
+      - 'Tools/B01/B01-23/P17W10PublicDockGuardR2/**'
+      - '.github/workflows/b01-23-p17w10-reattach-public-api-guard.yml'
+  workflow_dispatch:
+jobs:
+  original-w07-red-to-w10-green:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Pin exactly original frozen chain, identity and 1-file revision scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor 763748f1be0c61356fb4462144640bb359364226 HEAD
+          git fetch --no-tags origin refs/pull/439/head
+          test "$(git rev-parse cdcaea750fda1a9d7db6018e34970f4b9f206427:Assets/B0123DebrisPlayground001/Runtime/DebrisRigPlayground.cs)" = e4e31c32cb5abda2fef987efa4b45fd61e828312
+          test "$(git rev-parse 763748f1be0c61356fb4462144640bb359364226:Assets/B0123DebrisPlayground001/Runtime/DebrisRigPlayground.cs)" = e4e31c32cb5abda2fef987efa4b45fd61e828312
+      - name: RED: compile actual unchanged frozen W07 production public API and require security assertion failure
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p Tools/B01/B01-23/P17W10PublicDockGuardR2/Input w10-real-receipts
+          git show cdcaea750fda1a9d7db6018e34970f4b9f206427:Assets/B0123DebrisPlayground001/Runtime/DebrisRigPlayground.cs > Tools/B01/B01-23/P17W10PublicDockGuardR2/Input/DebrisRigPlayground.cs
+          git show cdcaea750fda1a9d7db6018e34970f4b9f206427:Assets/B0123DebrisPlayground001/Runtime/RigDemoDefinition.cs > Tools/B01/B01-23/P17W10PublicDockGuardR2/Input/RigDemoDefinition.cs
+          if dotnet run -c Release --project Tools/B01/B01-23/P17W10PublicDockGuardR2/OriginalPublicApi.csproj > w10-real-receipts/old-frozen-red.log 2>&1; then
+            echo 'FALSE_GREEN: original known-vulnerable source accepted' >&2
+            exit 1
+          fi
+          grep -q 'SOURCE_SECURITY_RED public direct Reattach rejects real penetrated obstacle 0' w10-real-receipts/old-frozen-red.log
+          echo 'FROZEN_ORIGINAL_W07_SECURITY_RED_CONFIRMED'
+      - name: GREEN: compile and execute revised genuine original game API against negative physics call-path
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp Assets/B0123DebrisPlayground001/Runtime/DebrisRigPlayground.cs Tools/B01/B01-23/P17W10PublicDockGuardR2/Input/DebrisRigPlayground.cs
+          dotnet run -c Release --project Tools/B01/B01-23/P17W10PublicDockGuardR2/OriginalPublicApi.csproj | tee w10-real-receipts/revised-security-green.log
+          grep -q 'ORIGINAL_PUBLIC_API_SECURITY_ASSERTIONS_PASS=' w10-real-receipts/revised-security-green.log
+          grep -q 'PHYSICS_API_STUB_NOT_NATIVE G1=NOT_RUN' w10-real-receipts/revised-security-green.log
+      - name: Exact Git original Unity source ZIP and adversarial safe staging / rollback
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-23/P17W10PublicDockGuardR2/package.py w10-real-receipts/original-public-guard-v2.zip w10-real-receipts/manifest.json | tee w10-real-receipts/archive.log
+          python Tools/B01/B01-23/P17W10PublicDockGuardR2/test_package.py w10-real-receipts/original-public-guard-v2.zip | tee w10-real-receipts/physical-qa.log
+      - name: Publish original physical evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b0123-w10-public-reattach-${{ matrix.os }}
+          path: w10-real-receipts/
+          if-no-files-found: warn
