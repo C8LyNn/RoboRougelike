@@ -32,6 +32,28 @@ jobs:
         shell: bash
         run: |
           dotnet run --no-build -c Release --project Research/B01-24/P17/W07-NOISE-INVESTIGATION-001/InvestigationCI.csproj | tee b01-24-W07-noise-source-receipt.txt
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run 16 original filesystem and deterministic source-pinned import ZIP negative tests
+        shell: bash
+        run: |
+          python -m unittest discover -s Research/B01-24/P17/W07-NOISE-INVESTIGATION-001/Tools -p "test_receiver.py" -v 2>&1 | tee b01-24-W07-receiver-tests.txt
+      - name: Build ACTUAL receiver Unity source import ZIP and exact SHA256 JSON receipt
+        shell: bash
+        run: |
+          python Research/B01-24/P17/W07-NOISE-INVESTIGATION-001/Tools/build_receiver.py --repo . --out b01-24-W07-source-zip | tee b01-24-W07-source-zip-receipt.txt
+      - name: Archive physically created Codex receiver ZIP (no native Unity execution)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-24-W07-unity-source-zip-${{ matrix.os }}
+          path: |
+            b01-24-W07-source-zip/*
+            b01-24-W07-receiver-tests.txt
+            b01-24-W07-source-zip-receipt.txt
+          retention-days: 21
+          if-no-files-found: warn
       - name: Archive source execution receipts (Unity native NOT_RUN)
         if: always()
         uses: actions/upload-artifact@v4
