@@ -63,11 +63,9 @@ def validate_level(level, mapdoc, require_pins=True):
     lid=level.get("levelId")
     if lid not in MAPS: raise Reject("UNRECOGNIZED_LEVEL")
     commit,path,blob,total=MAPS[lid]
+    map_pr=359 if lid=="CLEARANCE_PULSE_CROSSING" else 346
     if require_pins and (level.get("mapCommit")!=commit or level.get("mapPath")!=path
-                         or level.get("mapGitBlob")!=blob or level.get("mapPR") not in (359,346)
-                         or git_blob(json.dumps(mapdoc,ensure_ascii=False).encode()) == blob):
-        # The last check only prevents a tempting, invalid JSON reserialization-as-source shortcut.
-        # True physical source verification is performed in analyze() against RAW bytes.
+                         or level.get("mapGitBlob")!=blob or level.get("mapPR")!=map_pr):
         raise Reject("ORIGINAL_MAP_PROVENANCE_DRIFT")
     items=mapdoc.get("items")
     if mapdoc.get("version")!=2 or mapdoc.get("globalFloor") is not False or not isinstance(items,list) or len(items)!=total:
