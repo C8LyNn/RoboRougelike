@@ -237,7 +237,7 @@ internal static class Program
             QuarantineAndReentrant();
             SameGenerationPhysicalReplacement();
             Check(sourceRed==1 && refusals==6 && rolledBack==10 &&
-                  quarantine==1 && success==12,
+                  quarantine==1 && success==15,
                   "all original new bridge rollback, ID and same-gen cases were executed");
             Console.WriteLine("ORIGINAL_NEW_ATOMIC_WORLD_SWAP_QA_EXECUTION_PASS asserts="+assertions+
                 " success_cases="+success+" rejection_cases="+refusals+
