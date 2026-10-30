@@ -1,0 +1,55 @@
+name: B01-62 W25 one V7 producer binary section + frozen #556 world Save
+on:
+  push:
+    branches: [feature/b01-62-p17w25-one-file-full-game-economy-v7-section-v2]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W25WholeGameEconomyV7/**'
+      - '.github/workflows/b01-62-w25-whole-game-econ-v7.yml'
+permissions:
+  contents: read
+jobs:
+  original-780-section-and-556-world-one-save:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Load DIRECT exact original B01-22 #780 V7 producer policy and binary section
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin b4df10a7ad7e6c758f8331013f6b216b3a3689a3
+          mkdir -p Tools/B01/B01-62/P17W25WholeGameEconomyV7/.source b0162-w25-v7-game-evidence
+          git show b4df10a7ad7e6c758f8331013f6b216b3a3689a3:Assets/B01Packages/ECONAPPROVED007/Runtime/ApprovedEconomyPolicyV7.cs > Tools/B01/B01-62/P17W25WholeGameEconomyV7/.source/ApprovedEconomyPolicyV7.cs
+          git show b4df10a7ad7e6c758f8331013f6b216b3a3689a3:Assets/B01Packages/ECONAPPROVED007/Runtime/CanonicalEconomySectionV7.cs > Tools/B01/B01-62/P17W25WholeGameEconomyV7/.source/CanonicalEconomySectionV7.cs
+          python Tools/B01/B01-62/P17W25WholeGameEconomyV7/source_guard.py b0162-w25-v7-game-evidence/original-producer-blobs.json | tee b0162-w25-v7-game-evidence/source-guard.log
+          grep -q 'W25_V7_ORIGINAL_780_TWO_SOURCE_BLOBS_AND_729_556_FROZEN=PASS' b0162-w25-v7-game-evidence/source-guard.log
+      - name: Real OS one owner original #729 gateway whole-game+genuine V7 economy section and fault injection
+        run: |
+          set -euo pipefail
+          dotnet run --project Tools/B01/B01-62/P17W25WholeGameEconomyV7/WholeGameEconomyV7QA.csproj -c Release --verbosity quiet | tee b0162-w25-v7-game-evidence/whole-game-v7-os.log
+          grep -q 'W25_V7_CANONICAL_729_GATEWAY_ONE_FILE_WORLD_AND_WALLET=PASS' b0162-w25-v7-game-evidence/whole-game-v7-os.log
+          grep -q 'W25_V7_CANONICAL_LIVE_PHYSICS_PREVIEW_AFTER_MOVEMENT=PASS' b0162-w25-v7-game-evidence/whole-game-v7-os.log
+          grep -q 'W25_V7_CANONICAL_SAME_GENERATION_WALLET_FORK_REJECTED=PASS' b0162-w25-v7-game-evidence/whole-game-v7-os.log
+          grep -q 'W25_780_ORIGINAL_V7_BINARY_ECON_SECTION_ROUNDTRIP_CORRUPT_APPEND_DENY=PASS' b0162-w25-v7-game-evidence/whole-game-v7-os.log
+          grep -q 'W25_780_V7_STRICT_FLOOR_PRICE_1_5_15_30_AND_ZERO_PAID_NOT_FREE=PASS' b0162-w25-v7-game-evidence/whole-game-v7-os.log
+          grep -q 'W25_V7_GAME_ECON_AFTER_ATOMIC_RENAME_LOST_ACK_COLD_BOTH=PASS' b0162-w25-v7-game-evidence/whole-game-v7-os.log
+          grep -q 'W25_V7_GAME_ECON_ONE_ENVELOPE_SOURCE_TOTAL 7 PASS 7 FAIL 0' b0162-w25-v7-game-evidence/whole-game-v7-os.log
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b0162-w25-full-game-v7-${{ matrix.os }}
+          path: b0162-w25-v7-game-evidence/*
+          if-no-files-found: error
