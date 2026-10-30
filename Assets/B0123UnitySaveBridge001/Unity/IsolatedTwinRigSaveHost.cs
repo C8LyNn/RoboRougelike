@@ -20,12 +20,23 @@ namespace B01.UnitySaveBridge001
         public long Generation => coordinator==null?0:coordinator.Generation;
         public bool IsConsumed(int slot,long id) =>
             coordinator!=null&&coordinator.IsConsumed(slot,id);
-        private bool CanOperate()
+        private bool CanOperate() => coordinator!=null&&!coordinator.Busy&&PhysicalIdle();
+        // The coordinator intentionally holds Busy through both idle checks:
+        // checking coordinator.Busy from THIS callback would self-deadlock.
+        private bool PhysicalIdle()
         {
-            if(!isActiveAndEnabled||coordinator==null||coordinator.Busy||
-               coordinator.Quarantined)return false;
-            // This host is not permitted to share a scene root with an old controller.
-            return GetComponent<SecureDebrisPlaygroundV2>()==null;
+            if(!isActiveAndEnabled||coordinator==null||coordinator.Quarantined)
+                return false;
+            // No mixed V2/W07 controllers in the same isolated Unity scene.
+            foreach(var component in FindObjectsByType<MonoBehaviour>(
+                FindObjectsInactive.Include,FindObjectsSortMode.None))
+            {
+                if(component==null||component==this)continue;
+                string type=component.GetType().Name;
+                if(type=="SecureDebrisPlaygroundV2"||type=="DebrisRigPlayground")
+                    return false;
+            }
+            return true;
         }
         private void Awake(){coordinator=new AtomicWorldSwap(this);}
         private void Start()
@@ -36,12 +47,12 @@ namespace B01.UnitySaveBridge001
         public bool TrySaveBytes(out byte[] bytes)
         {
             bytes=null;
-            return CanOperate()&&coordinator.TrySave(runId,CanOperate,out bytes);
+            return CanOperate()&&coordinator.TrySave(runId,PhysicalIdle,out bytes);
         }
         public bool TryRestoreBytes(byte[] bytes,long expectedRun,long minGeneration)
         {
             LastRestoreVerdict=CanOperate()
-                ? coordinator.TryLoad(bytes,expectedRun,minGeneration,CanOperate)
+                ? coordinator.TryLoad(bytes,expectedRun,minGeneration,PhysicalIdle)
                 : WorldSwapVerdict.HostBusy;
             if(LastRestoreVerdict==WorldSwapVerdict.Accepted)runId=expectedRun;
             if(coordinator!=null&&coordinator.Quarantined)
@@ -114,11 +125,18 @@ namespace B01.UnitySaveBridge001
                         part.transform.rotation=new Quaternion((float)p.Qx,(float)p.Qy,
                             (float)p.Qz,(float)p.Qw);
                         part.transform.localScale=new Vector3((float)spec.PartWidth,.65f,.65f);
+                        part.SetActive(false); // staged body never becomes live before publication
                         Rigidbody body=part.AddComponent<Rigidbody>();
                         body.mass=(float)p.MassKg;
                         body.isKinematic=p.Kinematic;
                         body.useGravity=false;
                         body.constraints=RigidbodyConstraints.FreezeRotation;
+                        // Initial inactive-state consistency check needs saved velocities.
+                        if(!body.isKinematic)
+                        {
+                            body.linearVelocity=V(p.LinearVelocity);
+                            body.angularVelocity=V(p.AngularVelocity);
+                        }
                         world.parts[i]=part;world.bodies[i]=body;
                         var ledger=new DebrisImpulseLedger();
                         if(p.Consumed)
