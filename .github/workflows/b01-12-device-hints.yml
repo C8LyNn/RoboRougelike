@@ -1,0 +1,62 @@
+name: B01-12 DEVICE-HINTS-001 source QA
+on:
+  pull_request:
+    paths:
+      - 'Research/B01-12/P17W15/DeviceHints001/**'
+      - '.github/workflows/b01-12-device-hints.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test-original-source:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install real Chromium / Playwright
+        run: |
+          python -m pip install playwright==1.55.0
+          python -m playwright install --with-deps chromium
+      - name: Run real source and browser QA
+        env:
+          CI: 'true'
+        working-directory: Research/B01-12/P17W15/DeviceHints001
+        run: |
+          node test_engine.cjs
+          python test_browser.py
+      - name: Require corruption fail-closed in disposable copy
+        env:
+          CI: 'true'
+        shell: bash
+        run: |
+          set -eu
+          d="$(mktemp -d)"
+          trap 'rm -rf "$d"' EXIT
+          cp Research/B01-12/P17W15/DeviceHints001/{device_hints.html,test_engine.cjs,test_browser.py,manifest.json} "$d"/
+          printf 'X' >> "$d/device_hints.html"
+          set +e
+          (cd "$d" && node test_engine.cjs) >"$d/node-negative.log" 2>&1
+          n=$?
+          (cd "$d" && python test_browser.py) >"$d/browser-negative.log" 2>&1
+          b=$?
+          set -e
+          cat "$d/node-negative.log" "$d/browser-negative.log"
+          test "$n" -eq 2
+          test "$b" -eq 2
+          grep -q 'FAIL_CLOSED device_hints.html' "$d/node-negative.log"
+          grep -q 'FAIL_CLOSED device_hints.html' "$d/browser-negative.log"
+      - name: Upload executed evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-12-device-hints-evidence
+          path: |
+            Research/B01-12/P17W15/DeviceHints001/node-results.json
+            Research/B01-12/P17W15/DeviceHints001/browser-results.json
+            Research/B01-12/P17W15/DeviceHints001/evidence-1280x720.png
+          if-no-files-found: warn

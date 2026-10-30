@@ -1,0 +1,19 @@
+{
+  "package": "B01-12-DEVICE-HINTS-001",
+  "version": "R1",
+  "owner": "B01-12",
+  "files": {
+    "device_hints.html": {
+      "bytes": 9251,
+      "sha256": "de7e5762e88242beb541691b951083a00e9b479fb786fe5c3372e6fc90cca131"
+    },
+    "test_engine.cjs": {
+      "bytes": 8749,
+      "sha256": "2977dcdac37dafef7867f4ce0701eac39d4cabe44d1346c8ec2e1e97d01eaead"
+    },
+    "test_browser.py": {
+      "bytes": 3906,
+      "sha256": "95f59fd883076cbd42ec4cf679d94e4c7ead047edc4fc27481a2496553f5518f"
+    }
+  }
+}

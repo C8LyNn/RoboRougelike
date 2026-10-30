@@ -1,0 +1,247 @@
+{
+  "total": 60,
+  "pass": 60,
+  "fail": 0,
+  "cases": [
+    {
+      "name": "initial valid",
+      "status": "PASS"
+    },
+    {
+      "name": "default KM",
+      "status": "PASS"
+    },
+    {
+      "name": "default combat",
+      "status": "PASS"
+    },
+    {
+      "name": "initial hints 5",
+      "status": "PASS"
+    },
+    {
+      "name": "initial fire LPM",
+      "status": "PASS"
+    },
+    {
+      "name": "ignore kb noise",
+      "status": "PASS"
+    },
+    {
+      "name": "ignore pad drift",
+      "status": "PASS"
+    },
+    {
+      "name": "same group no-op",
+      "status": "PASS"
+    },
+    {
+      "name": "one gamepad signal arms",
+      "status": "PASS"
+    },
+    {
+      "name": "zero ms bounce rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "49 ms bounce rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "50 ms accepted",
+      "status": "PASS"
+    },
+    {
+      "name": "650 ms accepted",
+      "status": "PASS"
+    },
+    {
+      "name": "651 ms resets pending",
+      "status": "PASS"
+    },
+    {
+      "name": "elapsed signal requires rearm",
+      "status": "PASS"
+    },
+    {
+      "name": "candidate interrupted by active",
+      "status": "PASS"
+    },
+    {
+      "name": "context change cancels candidate",
+      "status": "PASS"
+    },
+    {
+      "name": "garage hints 5",
+      "status": "PASS"
+    },
+    {
+      "name": "garage R",
+      "status": "PASS"
+    },
+    {
+      "name": "unknown context rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "unchanged context rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid extra context field",
+      "status": "PASS"
+    },
+    {
+      "name": "bad time zero",
+      "status": "PASS"
+    },
+    {
+      "name": "bad time negative",
+      "status": "PASS"
+    },
+    {
+      "name": "bad time fractional",
+      "status": "PASS"
+    },
+    {
+      "name": "bad time huge",
+      "status": "PASS"
+    },
+    {
+      "name": "bad time NaN",
+      "status": "PASS"
+    },
+    {
+      "name": "bad signal device",
+      "status": "PASS"
+    },
+    {
+      "name": "bad signal intent",
+      "status": "PASS"
+    },
+    {
+      "name": "bad signal extras",
+      "status": "PASS"
+    },
+    {
+      "name": "null event",
+      "status": "PASS"
+    },
+    {
+      "name": "unknown event type",
+      "status": "PASS"
+    },
+    {
+      "name": "unknown reset extra",
+      "status": "PASS"
+    },
+    {
+      "name": "old state rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid pending count rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid pending device equal active",
+      "status": "PASS"
+    },
+    {
+      "name": "state extra field rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "state future pending rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "state prototype reject",
+      "status": "PASS"
+    },
+    {
+      "name": "freeze old states immutable",
+      "status": "PASS"
+    },
+    {
+      "name": "pad selected",
+      "status": "PASS"
+    },
+    {
+      "name": "pad revision 1",
+      "status": "PASS"
+    },
+    {
+      "name": "pad glyph RT",
+      "status": "PASS"
+    },
+    {
+      "name": "within cooldown rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "at +849 cooldown rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "at +850 start alternate",
+      "status": "PASS"
+    },
+    {
+      "name": "back to KB on 2nd signal",
+      "status": "PASS"
+    },
+    {
+      "name": "pad noise no revision",
+      "status": "PASS"
+    },
+    {
+      "name": "noise no clock change",
+      "status": "PASS"
+    },
+    {
+      "name": "advance clears stale pending",
+      "status": "PASS"
+    },
+    {
+      "name": "advance exact 650 pending kept",
+      "status": "PASS"
+    },
+    {
+      "name": "reset clears pending",
+      "status": "PASS"
+    },
+    {
+      "name": "reset returns valid state",
+      "status": "PASS"
+    },
+    {
+      "name": "no mutation on rejection",
+      "status": "PASS"
+    },
+    {
+      "name": "deterministic replay",
+      "status": "PASS"
+    },
+    {
+      "name": "serializable state",
+      "status": "PASS"
+    },
+    {
+      "name": "validate NaN clock reject",
+      "status": "PASS"
+    },
+    {
+      "name": "validate change in future reject",
+      "status": "PASS"
+    },
+    {
+      "name": "validate unknown context reject",
+      "status": "PASS"
+    },
+    {
+      "name": "validate unknown active reject",
+      "status": "PASS"
+    }
+  ]
+}
