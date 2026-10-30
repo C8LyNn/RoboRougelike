@@ -164,6 +164,21 @@ def guid_and_asm(files, w06, receiver, main):
             "refgraph":{k:v["references"] for k,v in assembly.items()},
             "receiver_preflight": ["immutable-W06","read-only-Codex-R3-#383","main"],
             "current_live_codex_workspace_scanned":False}
+def scan_readonly_receiver_sources(repo, label):
+    """Inspect actual tracked Unity receivers without writing in their Git checkouts."""
+    checked=0
+    for p in tree_paths(repo):
+        if p.startswith(OLD_ROOTS) or p.startswith(ALTERNATIVE_ROOTS):
+            raise GateFailure(label+" has frozen competing Unity asset path "+p)
+        if p.endswith((".cs",".unity",".prefab",".asset")):
+            checked += 1
+            data=read_git(repo,p).decode("utf-8",errors="replace")
+            if re.search(r"\b(?:DebrisRigPlayground|DebrisSafeReattachGate|HardenedDockDemo)\b",data):
+                raise GateFailure(label+" includes legacy W07/W08/W09 source type "+p)
+            if any(guid in data for guid in LEGACY_GUids.values()):
+                raise GateFailure(label+" serialized legacy script GUID "+p)
+    return checked
+
 def source_security(files):
     root = files[UNITY_ROOT + "/Runtime/SecureDebrisPlaygroundV2.cs"].decode()
     ledger = files[UNITY_ROOT + "/Runtime/AtomicDockLedger.cs"].decode()
@@ -337,6 +352,7 @@ def main():
         archive,producer_log=package(producer,Path(t)/"selected-r2.zip")
         files,mf=archive_check(archive,producer)
         meta=guid_and_asm(files,w06,codex,main)
+        meta["reviewed_readonly_receiver_assets"]={"codex_R3_files":scan_readonly_receiver_sources(codex,"Codex R3"),"main_files":scan_readonly_receiver_sources(main,"main")}
         security=source_security(files)
         guids={re.search(r"(?m)^guid:\s*([0-9a-f]{32})",d.decode()).group(1)
                for p,d in files.items() if p.endswith(".meta")}
