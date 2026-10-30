@@ -19,7 +19,7 @@ namespace B01KitGallery001
     }
     public static class KitGalleryRules
     {
-        public const string SourceSha = "0d212a706c1e633b773d2e03b7b40c28bb63521b";
+        public const string SourceSha = "b1d4e341d846c9397e236809a1d7e4c4fff9c935";
         public static int Validate(KitCatalog d)
         {
             if (d == null || d.schema != "b01-22-unity-gallery-v1" ||
@@ -77,7 +77,7 @@ namespace B01KitGallery001
         public const string AssetPath = "Assets/B01KitGallery001/Data/KitGallery.json";
         private KitCatalog catalog;
         private string error, search = "";
-        private int selected;
+        private int selected, compared = 7;
         private Vector2 scroll;
 
         [MenuItem("B01/Equipment/Kit Gallery (Read Only)")]
@@ -99,6 +99,7 @@ namespace B01KitGallery001
                 KitGalleryRules.Validate(loaded);
                 catalog = loaded;
                 selected = 0;
+                compared = 7;
             } catch (Exception exception) { error = exception.Message; }
             Repaint();
         }
@@ -113,7 +114,9 @@ namespace B01KitGallery001
             for (int i = 0; i < catalog.offers.Length; i++) {
                 KitOffer offer = catalog.offers[i];
                 if (!KitGalleryRules.Matches(offer, search)) continue;
-                if (GUILayout.Button(offer.id + " | " + offer.title + " | " + offer.price_scrap + " scrap")) selected = i;
+                GUILayout.Label(offer.id + " | " + offer.title + " | " + offer.price_scrap + " scrap", EditorStyles.boldLabel);
+                if (GUILayout.Button("Set LEFT: " + offer.id)) selected = i;
+                if (GUILayout.Button("Set RIGHT: " + offer.id)) compared = i;
             }
             EditorGUILayout.EndScrollView();
             KitOffer active = catalog.offers[selected];
@@ -126,6 +129,27 @@ namespace B01KitGallery001
                   (line.count * line.unit_scrap) + " scrap");
             if (GUILayout.Button("Copy part list (TSV)"))
                 EditorGUIUtility.systemCopyBuffer = KitGalleryRules.ToTsv(active);
+            GUILayout.Label("Side-by-side reference comparison", EditorStyles.boldLabel);
+            if (selected == compared) {
+                EditorGUILayout.HelpBox("Select two different kits for a comparison.", MessageType.Info);
+            } else {
+                try {
+                    KitComparison difference = KitComparisonRules.Compare(
+                        catalog.offers[selected], catalog.offers[compared]);
+                    EditorGUILayout.LabelField(difference.leftId + " → " + difference.rightId);
+                    EditorGUILayout.LabelField("Reference scrap: " + difference.leftScrap +
+                        " → " + difference.rightScrap + " (delta " + difference.deltaScrap + ")");
+                    EditorGUILayout.LabelField("Physical pieces: " + difference.leftPieces +
+                        " → " + difference.rightPieces + " (delta " + difference.deltaPieces + ")");
+                    foreach (var row in difference.parts)
+                        EditorGUILayout.LabelField(row.key + ": " + row.leftCount +
+                            " → " + row.rightCount + " (" + row.deltaCount + ")");
+                    if (GUILayout.Button("Copy COMPARISON (TSV)"))
+                        EditorGUIUtility.systemCopyBuffer = KitComparisonRules.ToTsv(difference);
+                } catch (Exception errorCompare) {
+                    EditorGUILayout.HelpBox("Comparison refused: " + errorCompare.Message, MessageType.Error);
+                }
+            }
             EditorGUILayout.LabelField("Pinned source SHA: " + catalog.source_sha);
         }
     }

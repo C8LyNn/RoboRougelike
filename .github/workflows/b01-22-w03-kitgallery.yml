@@ -1,4 +1,4 @@
-name: B01-22 W03 Unity Editor Kit Gallery original-source QA
+name: B01-22 W06 Unity Editor Kit Comparison R2 original-source QA
 on:
   pull_request:
     paths:
@@ -7,7 +7,7 @@ on:
       - 'Tools/B01/B01-22/KITGALLERY001/**'
       - '.github/workflows/b01-22-w03-kitgallery.yml'
   push:
-    branches: ['b01-22/p17w03-kitgallery-001']
+    branches: ['b01-22/p17w06-kitcompare-001']
 permissions:
   contents: read
 jobs:
@@ -26,5 +26,5 @@ jobs:
           dotnet-version: '8.0.x'
       - run: dotnet run --project Tools/B01/B01-22/KITGALLERY001/GalleryCompile.csproj --configuration Release
       - run: python -m unittest discover -s Tools/B01/B01-22/KITGALLERY001 -p test_gallery.py -v
-      - run: git fetch --no-tags --depth=1 origin 0d212a706c1e633b773d2e03b7b40c28bb63521b
+      - run: git fetch --no-tags --depth=1 origin b1d4e341d846c9397e236809a1d7e4c4fff9c935
       - run: python Tools/B01/B01-22/KITGALLERY001/verify_gallery.py

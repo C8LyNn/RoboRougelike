@@ -2,12 +2,12 @@ import hashlib,json,re,subprocess
 from pathlib import Path
 from test_gallery import transform
 ROOT=Path(__file__).resolve().parents[4]
-REF="0d212a706c1e633b773d2e03b7b40c28bb63521b"
+REF="b1d4e341d846c9397e236809a1d7e4c4fff9c935"
 P="Research/B01-22/P17/EQUIPMENT-KITS-001/catalog.json"
 def verify_manifest():
     manifest = json.loads((Path(__file__).parent/"manifest.json").read_text(encoding="utf8"))
     rows = manifest.get("git_blob_hashes", [])
-    if len(rows) != 15:
+    if len(rows) != 17:
         raise SystemExit("FAIL: incomplete Git blob manifest")
     names = set()
     for row in rows:
