@@ -1,0 +1,31 @@
+{
+  "package": "B01-11-RECOVERYHUD001/R2",
+  "parent_commit": "d1a41d60cd74eefa96915f0c450ce36e70737efd",
+  "files": [
+    {
+      "path": ".github/workflows/b01-11-p17w25-recovery-quote-r2.yml",
+      "bytes": 1613,
+      "sha256": "65cd3e8ccbf086d519e326fd3d2143e425ce5a272dadf9d2f3c6f0c9db288672"
+    },
+    {
+      "path": "Tools/B01/B01-11/P17W25RecoveryQuoteGuardR2/Program.cs",
+      "bytes": 5714,
+      "sha256": "bcf5edd50706565d970f1f7a65028ca518466f980becbf4fb3f1692c56297eed"
+    },
+    {
+      "path": "Tools/B01/B01-11/P17W25RecoveryQuoteGuardR2/QuoteGuard.Tests.csproj",
+      "bytes": 589,
+      "sha256": "0f73f41f31fe826eec6b9ea1e8a7c2192928540dc5f6b1f80f21f10d324ccb73"
+    },
+    {
+      "path": "Tools/B01/B01-11/P17W25RecoveryQuoteGuardR2/README.md",
+      "bytes": 4414,
+      "sha256": "e233eb1c2e56431b8bb791810b6a086373fda2fa59ac5c1487d863d50d681d60"
+    },
+    {
+      "path": "Tools/B01/B01-11/P17W25RecoveryQuoteGuardR2/test_r1_red.py",
+      "bytes": 3284,
+      "sha256": "6e089d24ae32cb4a6bb4b0ed4ebf8c8df37fc76c137b2fb8fe0393a10733c473"
+    }
+  ]
+}
