@@ -1,0 +1,136 @@
+name: B01-30 W13 genuine CHL003 animated gate motion FBX and 3 real frames
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/b01-30-p17w13-chl003-gate-motion.yml'
+      - 'Tools/B01/TechArt/P17W13/CHLGateMotion001/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  real-keyframed-original-chl-gate-beacon:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Pin actual B01-20 original source HEAD, body and non-collider marker contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin refs/pull/285/head
+          test "$(git rev-parse FETCH_HEAD)" = "c7b2a234a286089383503da41883d624fe650551"
+          mkdir -p build/B01-30/W13/source
+          git show "FETCH_HEAD:Assets/RoboRougelikeChallenges/CHL003/Demo/CHL003DemoBootstrap.cs" \
+            > build/B01-30/W13/source/CHL003DemoBootstrap.cs
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          raw=Path("build/B01-30/W13/source/CHL003DemoBootstrap.cs").read_bytes()
+          sha=hashlib.sha1(b"blob "+str(len(raw)).encode()+b"\0"+raw).hexdigest()
+          assert sha=="9308ceb9eab89d1ab483b560ff3ed58fa6d2d32e",sha
+          print("B0130_W13_EXACT_IMMUTABLE_B0120_CHL_HEAD_BLOB_PASS")
+          PY
+      - name: Install real Blender, Python and Xvfb for original rendered keyframes
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy xvfb libegl1 libegl-mesa0 libgl1-mesa-dri libosmesa6
+          python3 -m py_compile Tools/B01/TechArt/P17W13/CHLGateMotion001/*.py
+      - name: Actually author mechanical keyed original mesh and three real 3D PNG frames
+        shell: bash
+        run: |
+          set -euo pipefail
+          xvfb-run -a -s '-screen 0 1280x1024x24' \
+            blender --background --factory-startup --python-exit-code 1 \
+              --python Tools/B01/TechArt/P17W13/CHLGateMotion001/create_animated_gate.py -- \
+              --source build/B01-30/W13/source/CHL003DemoBootstrap.cs \
+              --out build/B01-30/W13/producer
+      - name: Independently import real FBX with Blender and verify actual three keyframed 3D vertex positions
+        shell: bash
+        run: |
+          set -euo pipefail
+          blender --background --factory-startup --python-exit-code 1 \
+            --python Tools/B01/TechArt/P17W13/CHLGateMotion001/verify_real_animated_fbx.py -- \
+            --source build/B01-30/W13/producer \
+            --out build/B01-30/W13/receiver
+      - name: Inspect physically created original FBX, BLEND and PNG binary headers, bytes and animation receipts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,hashlib,struct
+          from pathlib import Path
+          r=Path("build/B01-30/W13")
+          a=json.loads((r/"producer/original-chl003-gate-animated-3d-receipt.json").read_text())
+          b=json.loads((r/"receiver/real-source-fbx-animation-reimport-qa.json").read_text())
+          assert b["real_fbx_rotates_and_returns"] and b["actual_imported_animation_removed_negative"]=="REJECTED"
+          assert b["actual_reimport_mesh_nodes"]==6
+          assert a["real_3d_static_meshes"]==5 and a["real_animated_3d_meshes"]==1
+          assert len(a["actual_animation_frames"])==3 and len(a["real_rendered_png_frames"])==3
+          items=[(a["real_binary_FBX"],"fbx"),(a["real_editable_BLEND"],"blend")]
+          items += [(x,"png") for x in a["real_rendered_png_frames"]]
+          for v,kind in items:
+            f=r/"producer"/v["file"];data=f.read_bytes()
+            assert len(data)==v["bytes"] and hashlib.sha256(data).hexdigest()==v["sha256"]
+            if kind=="fbx":assert data.startswith(b"Kaydara FBX Binary  \x00\x1a\x00")
+            if kind=="png":
+              assert data[:8]==b'\x89PNG\r\n\x1a\n'
+              assert struct.unpack(">II",data[16:24])==(960,720)
+          print("B0130_W13_SOURCE_5_REAL_3D_ARTIFACTS_6_MESHES_3_MOTION_FRAMES_AND_NEGATIVES_PASS",a["real_binary_FBX"]["sha256"])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-30-W13-REAL-CHL003-KEYFRAMED-GATE-FBX-RENDERS
+          path: |
+            build/B01-30/W13/producer/*.fbx
+            build/B01-30/W13/producer/*.blend
+            build/B01-30/W13/producer/*.png
+            build/B01-30/W13/producer/*.json
+            build/B01-30/W13/receiver/*.json
+          if-no-files-found: error
+          retention-days: 30
+  windows-original-real-animated-binary-hashes:
+    needs: [real-keyframed-original-chl-gate-beacon]
+    runs-on: windows-2025
+    timeout-minutes: 8
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: B01-30-W13-REAL-CHL003-KEYFRAMED-GATE-FBX-RENDERS
+          path: build/B01-30/W13
+      - name: Verify actual original FBX/BLEND/render bytes and original 3 frame rotation/return
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib,json,struct
+          root=Path("build/B01-30/W13")
+          files=list(root.rglob("original-chl003-gate-animated-3d-receipt.json"))
+          assert len(files)==1
+          a=json.loads(files[0].read_text())
+          bfiles=list(root.rglob("real-source-fbx-animation-reimport-qa.json"))
+          assert len(bfiles)==1
+          b=json.loads(bfiles[0].read_text())
+          assert b["real_fbx_rotates_and_returns"] and len(b["actual_reimport_frames"])==3
+          states=b["actual_reimport_frames"]
+          assert states[1]["max_y"]>states[0]["max_y"]+.35
+          assert abs(states[2]["max_y"]-states[0]["max_y"])<.03
+          for f in [a["real_binary_FBX"],a["real_editable_BLEND"]]+a["real_rendered_png_frames"]:
+            matches=list(root.rglob(f["file"]))
+            assert len(matches)==1
+            data=matches[0].read_bytes()
+            assert len(data)==f["bytes"] and hashlib.sha256(data).hexdigest()==f["sha256"]
+            if f["file"].endswith(".fbx"):assert data.startswith(b"Kaydara FBX Binary  \x00\x1a\x00")
+            if f["file"].endswith(".png"):
+              assert data[:8]==b'\x89PNG\r\n\x1a\n'
+              assert struct.unpack(">II",data[16:24])==(960,720)
+          print("B0130_W13_WINDOWS_REAL_ANIMATED_FBX_BLEND_THREE_PNG_SHA_AND_IMPORTED_MOTION_PASS")
+          PY
