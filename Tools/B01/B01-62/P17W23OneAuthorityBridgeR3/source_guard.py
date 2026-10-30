@@ -34,9 +34,9 @@ def main(repo,out,receipt):
  adapter=(base/"CanonicalSessionR3.cs").read_text()
  if "OpenExclusiveLease" in storage or 'private const string Lease = "slot.lease"' in storage or "ownerLease.Dispose()" in storage:
   raise RuntimeError("COMPETING_B01_669_LEASE_SURVIVES")
- if 'private const string Marker = "slot.canonical-v3"' not in storage or
-    'B0162_SINGLE_ENVELOPE_V3_OWNER' not in storage or
-    'private const string Marker = "slot.owner"' in storage:
+ if ('private const string Marker = "slot.canonical-v3"' not in storage or
+     'B0162_SINGLE_ENVELOPE_V3_OWNER' not in storage or
+     'private const string Marker = "slot.owner"' in storage):
   raise RuntimeError("COMPETING_B01_669_LEASE_SURVIVES")
  if "new CanonicalWorldGateway(gate,factory,this,physicalOwner)" not in adapter:
   raise RuntimeError("NO_SELECTED_V3_GATEWAY_BINDING")
