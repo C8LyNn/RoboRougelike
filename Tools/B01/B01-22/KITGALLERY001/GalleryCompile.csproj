@@ -11,5 +11,6 @@
   <Compile Include="UnityEditorStubs.cs" />
   <Compile Include="OriginalEditorSourceTests.cs" />
   <Compile Include="../../../../Assets/B01KitGallery001/Editor/KitGalleryWindow.cs" />
+  <Compile Include="../../../../Assets/B01KitGallery001/Editor/KitComparisonRules.cs" />
  </ItemGroup>
 </Project>
