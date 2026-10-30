@@ -1,0 +1,95 @@
+name: B01-25 W21 AIRLOCK original dual-door source physical QA
+on:
+  push:
+    branches: [research/b01-25-p17w21-airlock001-r1]
+    paths:
+      - 'Assets/B0125Airlock001/**'
+      - 'Assets/B0125Airlock001.meta'
+      - 'Research/B01-25/P17/AIRLOCK001/**'
+      - 'Tools/B01/B01-25/P17W21Airlock/**'
+      - '.github/workflows/b01-25-w21-airlock.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    env:
+      SRC: Research/B01-25/P17/AIRLOCK001
+      OUT: Tools/B01/B01-25/P17W21Airlock/.output
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile real original CSharp9 netstandard2.1 source with warnings errors
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$SRC/.output" "$OUT"
+          dotnet build "$SRC/AirlockRuntime.csproj" -c Release -p:LangVersion=9.0 -warnaserror
+      - name: Run original full-cycle interlock collision and emergency regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --project "$SRC/AirlockTests.csproj" -c Release -- "$SRC/.output/results.json" 2>&1 | tee "$OUT/behavior-$RUNNER_OS.log"
+      - name: Original Git byte manifest and reversible physical ZIP stage rollback
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-25/P17W21Airlock/check.py --out "$OUT/receipt.json" 2>&1 | tee "$OUT/qa-$RUNNER_OS.log"
+      - name: Assert actual ZIP and original machine-readable receipts exist
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s "$OUT/receipt.zip"
+          test -s "$OUT/receipt.json"
+          test -s "$SRC/.output/results.json"
+          sha256sum "$OUT/receipt.zip"
+      - name: Upload actual original source artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-25-airlock-w21-${{ matrix.os }}
+          path: |
+            Research/B01-25/P17/AIRLOCK001/.output/results.json
+            Tools/B01/B01-25/P17W21Airlock/.output/**
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 21
+  independent-physical-source-zip-parity:
+    needs: original-source
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: b01-25-airlock-w21-*
+          path: evidence
+      - name: Compare downloaded physical original-source ZIP bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          A="$(find evidence/b01-25-airlock-w21-ubuntu-latest -name receipt.zip | head -n1)"
+          B="$(find evidence/b01-25-airlock-w21-windows-latest -name receipt.zip | head -n1)"
+          test -n "$A" && test -n "$B"
+          test -s "$A" && test -s "$B"
+          sha256sum "$A" "$B"
+          cmp "$A" "$B"
+          python - "$A" <<'PY'
+          import json,sys,zipfile
+          with zipfile.ZipFile(sys.argv[1]) as z:
+              names=z.namelist()
+              assert len(names)==20 and len(set(names))==20
+              assert all(x.create_system==3 for x in z.infolist())
+              m=json.loads(z.read("PACKAGE_MANIFEST.json"))
+              assert len(m["files"])==19 and m["nativeUnity"]=="NOT_RUN"
+          print("AIRLOCK_ORIGINAL_UNITY_SOURCE_ZIP_PARITY_PASS")
+          PY
