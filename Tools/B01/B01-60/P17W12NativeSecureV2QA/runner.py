@@ -85,11 +85,13 @@ def named_sources():
 def extra_test_assets():
  play=(HERE/"IndependentSecureV2PlayMode.cs").read_bytes()
  edit=(HERE/"IndependentSecureV2EditMode.cs").read_bytes()
- require(play.count("[TestCase(")>=12 and "Physics.SyncTransforms()" in play and
-         "body.linearVelocity" in play and "AssertUnchanged" in play and
-         "TryReattach" in play and "ClearForNewRun" in play and
-         "quarantine" in play,"invalid original independent PhysX test source")
- require(edit.count("[Test]")>=2 and b"AtomicDockLedger" in edit,
+ play_text=play.decode("utf-8")
+ edit_text=edit.decode("utf-8")
+ require(play_text.count("[TestCase(")>=12 and "Physics.SyncTransforms()" in play_text and
+         "body.linearVelocity" in play_text and "AssertUnchanged" in play_text and
+         "TryReattach" in play_text and "ClearForNewRun" in play_text and
+         "quarantine" in play_text,"invalid original independent PhysX test source")
+ require(edit_text.count("[Test]")>=2 and "AtomicDockLedger" in edit_text,
          "missing Unity EditMode fixture")
  playasm={
   "name":"B0160.SecureV2.NativeQA.PlayMode",
