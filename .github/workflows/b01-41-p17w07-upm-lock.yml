@@ -26,7 +26,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git hash-object Tools/B01/CI41/P17W07/upm_lock_gate.py)" = '46fdb217b99e31bbfaf9bcca739ed999fd9a2dac'
+          test "$(git hash-object Tools/B01/CI41/P17W07/upm_lock_gate.py)" = 'a29c9fc1c1f745063b79e1ead31cf79a1dd4cb4d'
           test "$(git hash-object Tools/B01/CI41/P17W07/test_upm_lock_gate.py)" = 'f8d0373dcca0434dc458ca7937b1313b275bb637'
           echo 'CI41_UPM_SOURCE_AND_TESTS_PINNED'
       - name: Execute original physical Git source and fail-closed regression tests
