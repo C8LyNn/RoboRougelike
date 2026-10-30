@@ -1,6 +1,6 @@
 {
   "packageId": "B01-10-GHOST-001",
-  "version": "2.0.1-P17W08-WORKFLOW_REPAIR_PHYSICAL_ZIP",
+  "version": "3.0.0-P17W09-PRACTICE_SPLIT_COACH",
   "role": "B01-10 GAME DESIGN & BALANCE",
   "scope": "OPT_IN_CHL_TRAINING_GHOST",
   "sourceBranch": "design/b01-10-p17w06-training-ghost",
@@ -14,7 +14,7 @@
     "B01-00 HQ",
     "Codex after ACK only"
   ],
-  "status": "SOURCE_CSHARP_62_OF_62_PASS_WIN_UBUNTU_AT_PRELIMINARY_HEAD / FINAL_EXACT_SHA_CI_REQUIRED / PHYSICAL_SOURCE_ZIP_PASS / G0_QA_PENDING / UNITY_NOT_RUN / CODEX_ACK_PENDING",
+  "status": "ORIGINAL_COACH_AND_HUD_SOURCE_AUTHORED / 82_CSHARP_TESTS_NOT_RUN_AT_NEW_HEAD / INDEPENDENT_G0_QA_PENDING / NATIVE_UNITY_NOT_RUN / CODEX_ACK_PENDING",
   "originality": "First independent CHL practice ghost: 3D pose recording, 0.1s sampling, shortest-arc yaw replay, four-gate split comparison, two-rig personal best, no game state writes. Not an encounter editor, RUNSCORE post-run score, official CHL timer, economics or shared Physics patch.",
   "changedPaths": [
     "Research/B01-10/P17Ghost/**",
@@ -29,6 +29,14 @@
       "gitBlob": "41dd8fe2443ddc2a2ac87b922c25bd6c341d5566",
       "chars": 5245
     },
+    "GhostSplitCoach.cs": {
+      "gitBlob": "6db432e7be05847e2bb294f6503d8710df81fc0b",
+      "chars": 7517
+    },
+    "GhostSplitHud.cs": {
+      "gitBlob": "41f4e067f704a9814b4de8240010f1db3abbfe90",
+      "chars": 4227
+    },
     "GhostCore.cs.meta": {
       "gitBlob": "7c730f4002b69b4b4501f04b9eeb6aaf23af0371",
       "chars": 240
@@ -37,35 +45,43 @@
       "gitBlob": "f4190a8badf10e98950cd59a140e8d6d742d72e3",
       "chars": 240
     },
+    "GhostSplitCoach.cs.meta": {
+      "gitBlob": "0770e380a87eba56cdf64f7dc8094c711c6445bd",
+      "chars": 240
+    },
+    "GhostSplitHud.cs.meta": {
+      "gitBlob": "41bc10a4c0fd400cc3704da8964b752fa8d4eaab",
+      "chars": 240
+    },
     "B01TrainingGhost.meta": {
       "gitBlob": "8c40264e679ae446d67c4fb79387e3f06df7431a",
       "chars": 169
     },
     "Program.cs": {
-      "gitBlob": "1c04f259b62c70cbfb9c335ad0ea3cc44197e64e",
-      "chars": 16846
+      "gitBlob": "39b9355a271a53b394a013f37306ce1ee02599e0",
+      "chars": 22759
     },
     "Ghost.Runner.csproj": {
       "gitBlob": "bd9a53d96794ec1b1d34c3729ba0e985a30dc28c",
       "chars": 345
     },
     "README.md": {
-      "gitBlob": "47e70891f8c9adb5640153b6f483bd93ff607720",
-      "chars": 16774
+      "gitBlob": "3fa4a73d6b4a10b94b317cc60b5751a740f6fedd",
+      "chars": 21206
     }
   },
   "workflow": {
     "path": ".github/workflows/b01-10-p17-ghost.yml",
-    "gitBlob": "96206a8414772c587f90bf7d87cebd6af817ef42"
+    "gitBlob": "8d95c4bf480a2a79872db61586ff2e3b0c181ef3"
   },
   "tests": {
     "tool": "dotnet 8.0 CSharp original source and test runner",
-    "namedCases": 62,
+    "namedCases": 82,
     "syntheticRandomizedTraces": 100,
-    "workflowRun": "41045933045 SUCCESS (pre-manifest-final head); final exact-head CI must be checked separately",
-    "windows": "PASS 62/62 at 41045933045 preliminary SHA a20fd6e8; requires final HEAD CI",
-    "ubuntu": "PASS 62/62 at 41045933045 preliminary SHA a20fd6e8; requires final HEAD CI",
-    "actualDemoJson": "PASS from original CLI Windows+Ubuntu at 41045933045",
+    "workflowRun": "PENDING final W09 exact head",
+    "windows": "W09 exact SHA NOT_RUN until new CI completes; W08 62/62 PASS is historical only",
+    "ubuntu": "W09 exact SHA NOT_RUN until new CI completes; W08 62/62 PASS is historical only",
+    "actualDemoJson": "W09 NOT_RUN at current head",
     "nativeUnity": "NOT_RUN",
     "UnityEditMode": "NOT_RUN",
     "UnityPlayMode": "NOT_RUN",
@@ -101,7 +117,7 @@
     "independentAcceptance": "PENDING",
     "CODEX_ACK": "PENDING"
   },
-  "qualityPatch": "W07 fixes O(N)-per-render-source frame revalidation: original GhostPlayback clones + validates once on Bind and searches frames O(log N) per Seek, while public direct GhostMath.At still validates every untrusted input. Adds authored Unity URP transparent arrow Mesh, no Collider/Rigidbody, real fixed .meta GUID for two scripts and folder; hosted native Unity not run",
+  "qualityPatch": "New deterministic online per-gate segment pace and worst-loss report, zero reward/physics writes, safe replay retry, native OnGUI display. Source-only NOT Unity-tested.",
   "sourceCodeGhostBlob": "376389273fe6263ac8a2d0b0741bb7a8fe9ae298",
   "fixtureDisclaimer": "The --demo Light and Heavy pose tracks are deterministic synthetic data, not actual Rigidbody/PhysX runs, manual play, or true native CHL-003 checkpoints.",
   "exactNativeStatus": "NO UNITY EDIT / NO UNITY PLAY / NO PHYSX / NO GAME INTEGRATION",
@@ -113,16 +129,23 @@
       "GhostCore.cs",
       "GhostCore.cs.meta",
       "GhostVisualProxy.cs",
-      "GhostVisualProxy.cs.meta"
+      "GhostVisualProxy.cs.meta",
+      "GhostSplitCoach.cs",
+      "GhostSplitCoach.cs.meta",
+      "GhostSplitHud.cs",
+      "GhostSplitHud.cs.meta"
     ],
     "GUIDS": {
       "B01TrainingGhost.meta": "8d7f2b090c0d4ef3ab2436c855d0b104",
       "GhostCore.cs.meta": "74f1111e2e76821101d5ee4b43683a33",
-      "GhostVisualProxy.cs.meta": "8e613294fbd6ad5dff7a0b23a5aa96e0"
+      "GhostVisualProxy.cs.meta": "8e613294fbd6ad5dff7a0b23a5aa96e0",
+      "GhostSplitCoach.cs.meta": "7cf6f79b815d4778ab69d561811a6001",
+      "GhostSplitHud.cs.meta": "407311dc82d84a41baf4fe8f1ae028a6"
     },
     "needsLicensedUnityImport": true,
     "nonColliderGhost": true,
-    "physicsOwner": "CHL003 B01-20"
+    "physicsOwner": "CHL003 B01-20",
+    "coachHostContract": "Actual B01-20 CHL controller alone validates actor/gate, actual physics time. Coach only observes and displays authorized accepted gate callbacks."
   },
   "actualNativeStatus": "NATIVE_EDIT_NOT_RUN / NATIVE_PLAY_NOT_RUN / RENDER_NOT_RUN / PHYSX_ZERO_COLLIDER_NOT_VERIFIED",
   "originalGameCodeTouched": false,
@@ -134,8 +157,8 @@
     ],
     "originalRunnerGreen": "41045933045 SUCCESS Windows2025+Ubuntu24.04",
     "producerCSharpActual": "62/62 PASS each OS; 100 synthetic seeded motion traces each; demo JSON PASS; invalid CLI exit2 PASS",
-    "zipSHA256": "957acd46fd2de5bf6fe0844af1308f6e8c96a6dfe549b59165754088e29a9683",
-    "zipTestHead": "a20fd6e8b74d6c98181fdf48bc2341c4783b9b00 PRELIMINARY, FINAL SHA requires new ZIP hash",
+    "zipSHA256": "0f796db7d7014be1c4a23da7c7af7188824caab271dbef1205154c3ede4ed526",
+    "zipTestHead": "e2af0bc5e23958c24846ae4015fdf5e18b2c3004 (historical W08 version, not W09)",
     "members": 10,
     "sourceFileCount": 2,
     "unityMetaCount": 3,
@@ -163,5 +186,21 @@
       "actual Codex claim"
     ]
   },
-  "exactFinalHeadMustPassWorkflow": true
+  "exactFinalHeadMustPassWorkflow": true,
+  "W09": {
+    "feature": "original opt-in per-gate benchmark practice coach & Unity OnGUI split display",
+    "portableSource": "GhostSplitCoach.cs",
+    "unityVisualSource": "GhostSplitHud.cs",
+    "caseRange": "63-82 inclusive, 20 new original compiled CSharp tests",
+    "sourceBlobCoach": "6db432e7be05847e2bb294f6503d8710df81fc0b",
+    "sourceBlobHud": "41f4e067f704a9814b4de8240010f1db3abbfe90",
+    "unmodifiedGhostBaseRuntimeBlob": "0eea61a784d59484f34968deeb4cd0c35bffeb4e",
+    "sourcePackBuilderGitBlob": "30212ba57b8f82e65ec1842ae92382560ae25241",
+    "physicalZipMembers": 14,
+    "unitySources": 4,
+    "unityMetas": 5,
+    "nativeUnity": "NOT_RUN",
+    "previousGreen": "e2af0bc5e23958c24846ae4015fdf5e18b2c3004 / 62 PASS Windows+Ubuntu / ZIP10; not proof of W09 changes",
+    "physicalZipSHA": "PENDING_FINAL_EXACT_HEAD_CI"
+  }
 }
