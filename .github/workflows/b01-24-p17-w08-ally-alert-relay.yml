@@ -1,0 +1,42 @@
+name: B01-24 PASS17 W08 — original R3 ally radio alert relay real CSharp9 source
+on:
+  push:
+    branches: [research/b01-24-p17-w08-ally-alert-relay]
+    paths:
+      - 'Research/B01-24/P17/W08-ALLY-ALERT-RELAY-001/**'
+      - '.github/workflows/b01-24-p17-w08-ally-alert-relay.yml'
+  pull_request:
+    paths:
+      - 'Research/B01-24/P17/W08-ALLY-ALERT-RELAY-001/**'
+      - '.github/workflows/b01-24-p17-w08-ally-alert-relay.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-squad-radio:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2025, ubuntu-24.04]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile REAL original CSharp9 squad relay and unchanged Codex R3 source
+        shell: bash
+        run: dotnet build Research/B01-24/P17/W08-ALLY-ALERT-RELAY-001/AllyAlertRelayCI.csproj -c Release --warnaserror
+      - name: Execute original R3 radio latency TTL jamming and replay negative regressions
+        shell: bash
+        run: |
+          dotnet run --no-build -c Release --project Research/B01-24/P17/W08-ALLY-ALERT-RELAY-001/AllyAlertRelayCI.csproj | tee b01-24-w08-radio-run.txt
+      - name: Archive actual source runtime logs native Unity NOT_RUN
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-24-w08-real-radio-source-${{ matrix.os }}
+          path: b01-24-w08-radio-run.txt
+          retention-days: 21
+          if-no-files-found: warn
