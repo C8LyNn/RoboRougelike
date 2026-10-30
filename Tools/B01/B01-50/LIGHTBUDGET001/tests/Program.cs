@@ -180,7 +180,7 @@ internal static class Program
         Run("positive infinity distance rejected", () =>
             AssertReject(new CosmeticLightBudget(1), new[] { C(0, squaredDistance: float.PositiveInfinity) }, 1));
         Run("distance over cap rejected", () =>
-            AssertReject(new CosmeticLightBudget(1), new[] { C(0, squaredDistance: 100000001f) }, 1));
+            AssertReject(new CosmeticLightBudget(1), new[] { C(0, squaredDistance: 100001000f) }, 1));
         Run("negative hysteresis rejected", () =>
             AssertReject(new CosmeticLightBudget(1), new[] { C(0) }, 1, -1));
         Run("nan hysteresis rejected", () =>
