@@ -15,7 +15,10 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 SOURCES = (
     "GhostCore.cs", "GhostVisualProxy.cs",
-    "GhostCore.cs.meta", "GhostVisualProxy.cs.meta", "B01TrainingGhost.meta",
+    "GhostSplitCoach.cs", "GhostSplitHud.cs",
+    "GhostCore.cs.meta", "GhostVisualProxy.cs.meta",
+    "GhostSplitCoach.cs.meta", "GhostSplitHud.cs.meta",
+    "B01TrainingGhost.meta",
     "Program.cs", "Ghost.Runner.csproj", "README.md",
 )
 FOLDER = "UnityInstall/Assets/B01TrainingGhost.meta"
@@ -26,6 +29,8 @@ GUIDS = {
     "B01TrainingGhost.meta": "8d7f2b090c0d4ef3ab2436c855d0b104",
     "GhostCore.cs.meta": "74f1111e2e76821101d5ee4b43683a33",
     "GhostVisualProxy.cs.meta": "8e613294fbd6ad5dff7a0b23a5aa96e0",
+    "GhostSplitCoach.cs.meta": "7cf6f79b815d4778ab69d561811a6001",
+    "GhostSplitHud.cs.meta": "407311dc82d84a41baf4fe8f1ae028a6",
 }
 
 def sha256(data):
@@ -51,7 +56,7 @@ def source_files():
     require(manifest.get("originalGameCodeTouched") is False,
             "Producer manifest claims canonical game modification")
     require(set(manifest["codeFiles"]) == set(SOURCES),
-            "Manifest must pin exactly the eight original source files")
+            "Manifest must pin exactly the twelve original source files")
     require(manifest.get("importLayout", {}).get("GUIDS") == GUIDS,
             "Manifest GUID contract mismatch")
     found = {}
@@ -87,7 +92,7 @@ def expected_members(sha):
             output = EVIDENCE + name
         members[output] = original[name]
     members[EVIDENCE + "MANIFEST.json"] = manifest
-    require(len(members) == 9, "Source bundle expected 9 physical members")
+    require(len(members) == 13, "Source bundle expected 13 physical members")
     entries = [
         {"path": name, "bytes": len(blob), "sha256": sha256(blob)}
         for name, blob in sorted(members.items())
@@ -108,7 +113,7 @@ def expected_members(sha):
     members[RECEIPT] = (
         json.dumps(receipt, sort_keys=True, separators=(",", ":")) + "\n"
     ).encode("utf-8")
-    require(len(members) == 10, "Final ZIP must contain ten exact members")
+    require(len(members) == 14, "Final ZIP must contain fourteen exact members")
     return members
 
 def write_zip(path, members):
@@ -125,7 +130,7 @@ def verify_zip(path, members, sha):
     require(path.is_file(), "Missing physical ZIP file")
     with zipfile.ZipFile(path, "r") as z:
         names = z.namelist()
-        require(len(names) == 10 and len(set(names)) == 10,
+        require(len(names) == 14 and len(set(names)) == 14,
                 "Missing/duplicated physical ZIP member")
         require(sorted(names) == sorted(members), "Injected/missing file")
         for name in names:
@@ -150,7 +155,7 @@ def verify_zip(path, members, sha):
         require(receipt["integrated"] is False,
                 "False game integration receipt")
         entries = receipt["source_members"]
-        require(len(entries) == 9, "Receipt has wrong count")
+        require(len(entries) == 13, "Receipt has wrong count")
         for row in entries:
             blob = z.read(row["path"])
             require(row["bytes"] == len(blob) and
@@ -211,8 +216,8 @@ def main():
     if args.mode in ("pack", "verify"):
         digest = verify_zip(target, expected, args.sha)
         outcome = {"pass": True, "mode": args.mode, "sha": args.sha,
-                   "inner_zip_sha256": digest, "members": 10,
-                   "importable_csharp": 2, "unity_meta": 3,
+                   "inner_zip_sha256": digest, "members": 14,
+                   "importable_csharp": 4, "unity_meta": 5,
                    "native_unity": "NOT_RUN", "codex_ack": "PENDING"}
     else:
         rejected = negatives(expected, args.sha)
