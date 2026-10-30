@@ -82,8 +82,44 @@ namespace B01.UnitySaveBridge001
             if(slotOwnerLease==null&&!HasWorld&&
                !string.IsNullOrEmpty(checkpointPath))AcquireSlot();
         }
-        private void OnDisable(){/* keep slot lifetime owner while a world survives */}
-        private void OnDestroy(){ReleaseSlot();}
+        private void OnDisable(){/* owner still owns its original live physics world */}
+        // Component-only Destroy is NOT destruction of owned child GameObjects.
+        // Transfer the OS lease to an independent custodian, quarantine the
+        // physics roots immediately and release ownership only AFTER Unity
+        // physically destroys all previously owned roots at end of frame.
+        private void OnDestroy()
+        {
+            FileStream lease=slotOwnerLease;
+            slotOwnerLease=null;
+            if(lease==null)return;
+            var owned=new System.Collections.Generic.List<GameObject>();
+            try
+            {
+                // This scene contains ONLY roots created by THIS host's TwinWorld.
+                // Never recurse into unrelated receiver objects or other scripts.
+                foreach(Transform child in gameObject.GetComponentsInChildren<Transform>(true))
+                {
+                    if(child.parent==transform &&
+                       child.gameObject.name=="B01-23 W15 ISOLATED COLD SAVE WORLD")
+                        owned.Add(child.gameObject);
+                }
+                // All physically owned Rigidbody roots must stop simulation BEFORE
+                // an external owner can attempt to reacquire the checkpoint slot.
+                foreach(GameObject world in owned)world.SetActive(false);
+                foreach(GameObject world in owned)
+                {
+                    if(Application.isPlaying)UnityEngine.Object.Destroy(world);
+                    else UnityEngine.Object.DestroyImmediate(world);
+                }
+                HostWorldLeaseRetirement.HoldUntilAllRootsGone(lease,owned.ToArray());
+            }
+            catch
+            {
+                // A failed quiesce/retire MUST NEVER release the same-slot lease.
+                // Keep a static process-local owner quarantine until process exit.
+                HostWorldLeaseRetirement.FailClosed(lease);
+            }
+        }
 
         // Explicit isolated durable slot selection: unlike historical #596,
         // a new run NEVER silently reuses another run's global checkpoint path.
@@ -285,6 +321,72 @@ namespace B01.UnitySaveBridge001
                 else UnityEngine.Object.DestroyImmediate(container);
                 container=null;
             }
+        }
+    }
+}
+
+namespace B01.UnitySaveBridge001
+{
+    // This custodian is NOT part of the canonical #510 game. It survives
+    // Destroy(IsolatedTwinRigSaveHost) as a separate transient GameObject,
+    // owns the physical OS handle, and never frees it while owned roots remain.
+    public sealed class HostWorldLeaseRetirement : UnityEngine.MonoBehaviour
+    {
+        private System.IO.FileStream lease;
+        private UnityEngine.GameObject[] roots;
+        private static readonly System.Collections.Generic.List<System.IO.FileStream>
+            quarantinedLeases=new System.Collections.Generic.List<System.IO.FileStream>();
+        public static void FailClosed(System.IO.FileStream handle)
+        {
+            if(handle!=null)quarantinedLeases.Add(handle);
+        }
+        public static void HoldUntilAllRootsGone(System.IO.FileStream handle,
+            UnityEngine.GameObject[] ownedRoots)
+        {
+            if(handle==null)return;
+            if(ownedRoots==null||ownedRoots.Length==0)
+            {
+                handle.Dispose();
+                return;
+            }
+            try
+            {
+                UnityEngine.GameObject sentinel=new UnityEngine.GameObject(
+                    "B01-23 W21 HOST WORLD LEASE ESCROW");
+                // The host root may be destroyed this very frame. Standalone
+                // custodian is intentionally outside it and survives scene unload.
+                UnityEngine.Object.DontDestroyOnLoad(sentinel);
+                var guard=sentinel.AddComponent<HostWorldLeaseRetirement>();
+                guard.lease=handle;
+                guard.roots=ownedRoots;
+            }
+            catch
+            {
+                FailClosed(handle);
+                throw;
+            }
+        }
+        private void LateUpdate()
+        {
+            if(lease==null)return;
+            foreach(var root in roots)
+                if(root!=null)return; // UnityEngine.Object fake-null AFTER Destroy
+            System.IO.FileStream done=lease;
+            lease=null;
+            try{done.Dispose();}
+            catch{FailClosed(done);}
+            UnityEngine.Object.Destroy(gameObject);
+        }
+        private void OnDestroy()
+        {
+            if(lease==null)return;
+            // If the custodian itself disappears before the physics hierarchy,
+            // preserve the OS exclusion instead of creating duplicate authority.
+            foreach(var root in roots)
+                if(root!=null){FailClosed(lease);lease=null;return;}
+            try{lease.Dispose();}
+            catch{FailClosed(lease);}
+            finally{lease=null;}
         }
     }
 }

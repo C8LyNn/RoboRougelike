@@ -166,5 +166,35 @@ namespace B01.UnitySaveBridge001.Tests
                 if(competing!=null)Object.Destroy(competing);
             }
         }
+
+        [UnityTest]
+        public IEnumerator DestroyOnlyHostComponent_StopsPhysicsBeforeLeaseHandoff()
+        {
+            System.Guid slot=System.Guid.NewGuid();
+            var aRoot=new GameObject("R5 standalone component owner");
+            var bRoot=new GameObject("R5 rejected contender");
+            try
+            {
+                var a=aRoot.AddComponent<IsolatedTwinRigSaveHost>();
+                Assert.IsTrue(a.TrySelectPersistentRunSlot(91,slot));
+                Assert.IsTrue(a.TryRestoreBytes(
+                    IsolatedTwinRigSaveHost.MakeFixture(91,10,true,false),91,10));
+                Assert.AreEqual(2,aRoot.GetComponentsInChildren<Rigidbody>(true).Length);
+                var b=bRoot.AddComponent<IsolatedTwinRigSaveHost>();
+                Assert.IsFalse(b.TrySelectPersistentRunSlot(91,slot));
+                UnityEngine.Object.Destroy(a); // ONLY component, old root survives
+                yield return null; // scheduled old physics world deletion + escrow
+                Assert.AreEqual(0,aRoot.GetComponentsInChildren<Rigidbody>(true).Length);
+                Assert.IsTrue(b.TrySelectPersistentRunSlot(91,slot));
+                Assert.IsTrue(b.TryRestoreBytes(
+                    IsolatedTwinRigSaveHost.MakeFixture(91,11,false,true),91,11));
+                Assert.IsTrue(b.IsConsumed(1,2310002));
+            }
+            finally
+            {
+                UnityEngine.Object.Destroy(aRoot);
+                UnityEngine.Object.Destroy(bRoot);
+            }
+        }
     }
 }
