@@ -14,8 +14,8 @@
       "bytes": 4658
     },
     "UnityPackage/Runtime/MotionStallOverlay.cs": {
-      "sha256": "ae23c4a90dd60b12df06f25083bf15b1b5e5faec7b5d7052e624696dd1b045b5",
-      "bytes": 3778
+      "sha256": "3856c1eed878148745ab09e5f054577e063a664a993ddd35a44e323093657e49",
+      "bytes": 3785
     },
     "UnityPackage/Runtime/MotionStallLedger.cs.meta": {
       "sha256": "4ec4facaa682c9452a71c498af79113799ee1e5ca94a7231005607a9b15425d7",
@@ -71,7 +71,8 @@
     "producer_ci": "AWAITING",
     "independent_b01_40_b01_60": "PENDING",
     "native_unity_editmode_playmode": "NOT_RUN",
-    "human_participants": 0
+    "human_participants": 0,
+    "first_red": "CI #41065586871: C# CS0649 inspector field initialization; explicitly initialized and re-pinned; final exact-head CI required"
   },
   "rollback": "Leave Draft unmerged; discard isolated branch and any authorized test scene prefab/import directory. Frozen B01-13 previous packages unchanged."
 }
