@@ -1,0 +1,47 @@
+name: B01-62 P17W10 Public Reattach API Route Source QA
+on:
+  push:
+    branches:
+      - qa/b01-62-p17w10-public-reattach-api-route
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W10PublicRouteGate/**'
+      - '.github/workflows/b01-62-p17w10-reattach-public-api.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  independent-source-qa:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout B01-62 QA-only branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch exact immutable producer commits
+        shell: bash
+        run: |
+          git fetch --no-tags origin cdcaea750fda1a9d7db6018e34970f4b9f206427
+          git fetch --no-tags origin 99dfbd25d471f9983f9472b12d3725f4c002f7e9
+          git fetch --no-tags origin 763748f1be0c61356fb4462144640bb359364226
+      - name: 21 adversarial scanner controls
+        run: python -m unittest discover -s Tools/B01/B01-62/P17W10PublicRouteGate -p test_route_gate.py -v
+      - name: Real original Git source route proof (HOLD expected)
+        shell: bash
+        run: |
+          python -c "from pathlib import Path; Path('qa-receipt').mkdir(exist_ok=True)"
+          python Tools/B01/B01-62/P17W10PublicRouteGate/route_gate.py --repo . --output qa-receipt/receipt.json
+      - name: Upload original-source receipt (not native Unity)
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-62-w10-original-route-${{ matrix.os }}
+          path: qa-receipt/receipt.json
+          if-no-files-found: error
