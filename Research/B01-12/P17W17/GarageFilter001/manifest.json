@@ -1,0 +1,39 @@
+{
+  "package_id": "B01-12-GARAGE-FILTER-001",
+  "version": "R1",
+  "wave": "PASS17 W17",
+  "owner": "B01-12",
+  "scope": "Research/B01-12/P17W17/GarageFilter001/",
+  "sources": {
+    "catalog.js": {
+      "sha256": "a2f7c7233609114e7ed55c609ed26fb6a2cddc69b95b0d806813c17e90f4c1a5",
+      "bytes": 2037,
+      "git_blob_sha1": "c0dffa93ed0fcec8339b7e4baf14fce77d66ce75"
+    },
+    "filter_engine.js": {
+      "sha256": "2b820988831f32a8669392aebcc8077333eae91d90e24fbf9e4b1f7c7ba3d5a9",
+      "bytes": 5111,
+      "git_blob_sha1": "816eec3f3e7b0aac741c3da659d34a666e984de4"
+    },
+    "ui.js": {
+      "sha256": "93336e026e553ffead6752133a9958a3cc77d8abb995ffc4eb8dd9cb858ab781",
+      "bytes": 2758,
+      "git_blob_sha1": "42768e7e67276ab0d2b494e6b718d79ee9ec810f"
+    },
+    "demo.html": {
+      "sha256": "2054bbebeaf18528d65bbf624b331fb62cd5b31b524241efc7dde148f9b1c9b8",
+      "bytes": 5139,
+      "git_blob_sha1": "f0df485473850d32bb7c82bfaa9471c0b0ab745b"
+    },
+    "test_engine.cjs": {
+      "sha256": "c555cea3aca6fa4bc75d062ff838cac5c438ac4a07aefaabd8aba9e14a73a21b",
+      "bytes": 6336,
+      "git_blob_sha1": "1e01d618f87b35b14c8ddd013f03c793d2935ebe"
+    },
+    "test_browser.py": {
+      "sha256": "bbe73bd9601b5f0b01da700ebf04660444380a6eeb34151f4caa177f94430621",
+      "bytes": 6139,
+      "git_blob_sha1": "d85a3a950ad9e0f536d18803d750314bc27acfb5"
+    }
+  }
+}

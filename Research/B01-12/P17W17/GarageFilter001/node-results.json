@@ -1,0 +1,261 @@
+{
+  "package": "B01-12-GARAGE-FILTER-001/R1",
+  "runner": "node",
+  "pass": 63,
+  "total": 63,
+  "exit": 0,
+  "checks": [
+    {
+      "name": "all 12 demonstrator records",
+      "pass": true
+    },
+    {
+      "name": "catalog immutability source",
+      "pass": true
+    },
+    {
+      "name": "query immutable catalog",
+      "pass": true
+    },
+    {
+      "name": "pl diacritic folding",
+      "pass": true
+    },
+    {
+      "name": "quoted phrase filter",
+      "pass": true
+    },
+    {
+      "name": "word AND matching",
+      "pass": true
+    },
+    {
+      "name": "type weapon",
+      "pass": true
+    },
+    {
+      "name": "type drive",
+      "pass": true
+    },
+    {
+      "name": "type utility",
+      "pass": true
+    },
+    {
+      "name": "tag armor",
+      "pass": true
+    },
+    {
+      "name": "tag repair",
+      "pass": true
+    },
+    {
+      "name": "owned yes",
+      "pass": true
+    },
+    {
+      "name": "owned no",
+      "pass": true
+    },
+    {
+      "name": "fit light includes both",
+      "pass": true
+    },
+    {
+      "name": "fit heavy includes both",
+      "pass": true
+    },
+    {
+      "name": "fit both exactly",
+      "pass": true
+    },
+    {
+      "name": "mass <=20",
+      "pass": true
+    },
+    {
+      "name": "cost >=200",
+      "pass": true
+    },
+    {
+      "name": "cost =35",
+      "pass": true
+    },
+    {
+      "name": "energy>=60",
+      "pass": true
+    },
+    {
+      "name": "slots=1",
+      "pass": true
+    },
+    {
+      "name": "mixed filter",
+      "pass": true
+    },
+    {
+      "name": "sort by cost",
+      "pass": true
+    },
+    {
+      "name": "sort by descending cost",
+      "pass": true
+    },
+    {
+      "name": "sort by mass",
+      "pass": true
+    },
+    {
+      "name": "sort by descending energy",
+      "pass": true
+    },
+    {
+      "name": "facets sum to count",
+      "pass": true
+    },
+    {
+      "name": "export id contract",
+      "pass": true
+    },
+    {
+      "name": "export invalid result refuses",
+      "pass": true
+    },
+    {
+      "name": "catalog duplicate IDs fail",
+      "pass": true
+    },
+    {
+      "name": "catalog foreign type fail",
+      "pass": true
+    },
+    {
+      "name": "catalog malicious name fail",
+      "pass": true
+    },
+    {
+      "name": "catalog negative cost fail",
+      "pass": true
+    },
+    {
+      "name": "catalog invalid tags fail",
+      "pass": true
+    },
+    {
+      "name": "catalog duplicate tag fail",
+      "pass": true
+    },
+    {
+      "name": "catalog zero records fail",
+      "pass": true
+    },
+    {
+      "name": "unknown field",
+      "pass": true
+    },
+    {
+      "name": "invalid type",
+      "pass": true
+    },
+    {
+      "name": "invalid tag",
+      "pass": true
+    },
+    {
+      "name": "invalid fit",
+      "pass": true
+    },
+    {
+      "name": "invalid owner",
+      "pass": true
+    },
+    {
+      "name": "invalid sort",
+      "pass": true
+    },
+    {
+      "name": "duplicate type",
+      "pass": true
+    },
+    {
+      "name": "duplicate sorting",
+      "pass": true
+    },
+    {
+      "name": "duplicate numeric bound",
+      "pass": true
+    },
+    {
+      "name": "negative mass",
+      "pass": true
+    },
+    {
+      "name": "decimal mass",
+      "pass": true
+    },
+    {
+      "name": "overflow mass",
+      "pass": true
+    },
+    {
+      "name": "unclosed quote",
+      "pass": true
+    },
+    {
+      "name": "script markup",
+      "pass": true
+    },
+    {
+      "name": "tab control",
+      "pass": true
+    },
+    {
+      "name": "slash",
+      "pass": true
+    },
+    {
+      "name": "empty assignment",
+      "pass": true
+    },
+    {
+      "name": "illegal comparison",
+      "pass": true
+    },
+    {
+      "name": "SQL-ish",
+      "pass": true
+    },
+    {
+      "name": "non-string",
+      "pass": true
+    },
+    {
+      "name": "many chars",
+      "pass": true
+    },
+    {
+      "name": "too many tokens",
+      "pass": true
+    },
+    {
+      "name": "deterministic result replay",
+      "pass": true
+    },
+    {
+      "name": "no matches valid",
+      "pass": true
+    },
+    {
+      "name": "source not changed by result mutation",
+      "pass": true
+    },
+    {
+      "name": "sort stable for equal metric",
+      "pass": true
+    },
+    {
+      "name": "bounded token count",
+      "pass": true
+    }
+  ]
+}
