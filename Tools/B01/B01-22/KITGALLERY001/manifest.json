@@ -34,13 +34,15 @@
     "Tools/B01/B01-22/KITGALLERY001/verify_gallery.py",
     "Assets/B01KitGallery001/Editor/KitComparisonRules.cs",
     "Assets/B01KitGallery001/Editor/KitComparisonRules.cs.meta",
+    "Tools/B01/B01-22/KITGALLERY001/pack_gallery.py",
+    "Tools/B01/B01-22/KITGALLERY001/test_pack_gallery.py",
     "Tools/B01/B01-22/KITGALLERY001/manifest.json"
   ],
   "note": "No edits to canonical Codex game or W16 frozen economy",
   "git_blob_hashes": [
     {
       "path": ".github/workflows/b01-22-w03-kitgallery.yml",
-      "git_blob_sha1": "c04583afcfd3594b41e91a602991571fe10e0657"
+      "git_blob_sha1": "7cc07932a4f0df5a37e5c866df323deef686c810"
     },
     {
       "path": "Assets/B01KitGallery001.meta",
@@ -80,7 +82,7 @@
     },
     {
       "path": "Tools/B01/B01-22/KITGALLERY001/README.md",
-      "git_blob_sha1": "73f6d0ba488d00d9250d4f676d7b2a5b2973fbe2"
+      "git_blob_sha1": "99a5e6b6bc0dfcd9848a4d7858ee7536793b4378"
     },
     {
       "path": "Tools/B01/B01-22/KITGALLERY001/UnityEditorStubs.cs",
@@ -96,7 +98,7 @@
     },
     {
       "path": "Tools/B01/B01-22/KITGALLERY001/verify_gallery.py",
-      "git_blob_sha1": "afec720035cd6c0d1bba3092ad182a7902d48558"
+      "git_blob_sha1": "8cfd657ce6338f98510b89f41631647f7ba3d820"
     },
     {
       "path": "Assets/B01KitGallery001/Editor/KitComparisonRules.cs",
@@ -105,19 +107,35 @@
     {
       "path": "Assets/B01KitGallery001/Editor/KitComparisonRules.cs.meta",
       "git_blob_sha1": "90e0a274249d2420617e3aa8a11234e08869cafe"
+    },
+    {
+      "path": "Tools/B01/B01-22/KITGALLERY001/pack_gallery.py",
+      "git_blob_sha1": "c7f4b2a19a71bfcd3bd8a2fc431ff4004e7e8757"
+    },
+    {
+      "path": "Tools/B01/B01-22/KITGALLERY001/test_pack_gallery.py",
+      "git_blob_sha1": "235dff35a25a8802c817b361a6bb096472821469"
     }
   ],
   "tests": [
     {
-      "name": "Exact Unity editor C# source compiled with test-only Unity APIs, 35 positive/negative checks",
+      "name": "35 original Editor C# cases on both OS",
       "status": "NOT_RUN"
     },
     {
-      "name": "Exact #411 original catalog, 15 Python cases, 6 stable .meta GUIDs, 17 original Git SHA blobs",
+      "name": "15 Python catalog source cases",
       "status": "NOT_RUN"
     },
     {
-      "name": "Native Unity Editor comparison GUI + PlayMode",
+      "name": "15 actual physical ZIP and rollback tests",
+      "status": "NOT_RUN"
+    },
+    {
+      "name": "19 exact Git blob hashes and 6 unique Unity GUIDs",
+      "status": "NOT_RUN"
+    },
+    {
+      "name": "native Unity Editor GUI/PlayMode",
       "status": "NOT_RUN"
     }
   ],
@@ -127,5 +145,11 @@
   "codex_gameplay_sha": "203a0805251ed28293888e43f2d49f0df63767c6",
   "game_integration": "NOT_PERFORMED",
   "codex_ack": "PENDING",
-  "install_blocker": "Use only after B01-40 G0, B01-60 independent QA and HQ; stacked on #390; source pinned exact #411"
+  "install_blocker": "Use only after B01-40 G0, B01-60 independent QA and HQ; stacked on #390; source pinned exact #411",
+  "physical_receiver": {
+    "members": 9,
+    "zip": "kitcompare-unity.zip",
+    "receipt": "receipt.json",
+    "data_only": true
+  }
 }
