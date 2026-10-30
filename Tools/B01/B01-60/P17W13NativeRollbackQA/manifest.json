@@ -1,0 +1,32 @@
+{
+  "package_id": "B01-60-P17W13-NATIVE-RECEIVER-ROLLBACK-R2",
+  "owner": "B01-60",
+  "version": "2.0.0",
+  "owner_original": {
+    "pr": 510,
+    "sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "source_modified": false
+  },
+  "baseline_original_W12_QA": {
+    "pr": 532,
+    "sha": "5778023163d8b51d23abfebaa17119e21bd5e131",
+    "runner_git_blob": "df944c854ab134b578a2b98d451f055717a16668",
+    "baseline_rollback_foreign_empty_dir": "EXPECTED_RED"
+  },
+  "own_changed_only": [
+    "Tools/B01/B01-60/P17W12NativeSecureV2QA/runner.py",
+    "Tools/B01/B01-60/P17W13NativeRollbackQA/audit.py",
+    "Tools/B01/B01-60/P17W13NativeRollbackQA/README.md",
+    "Tools/B01/B01-60/P17W13NativeRollbackQA/manifest.json",
+    ".github/workflows/b01-60-p17w13-native-rollback-audit.yml"
+  ],
+  "test_mode": "REAL_PYTHON_FILESYSTEM_ROLLBACK_NO_UNITY",
+  "fix": "refuse unexpected/missing directories even when empty before any recursive deletion of staged project",
+  "native_unity_6000_3_14f1": "NOT_RUN",
+  "native_Edit_Play_PhysX": "NOT_RUN",
+  "codex_ack": false,
+  "integrated": false,
+  "merge": false,
+  "host": "Unity binary and activated host unavailable",
+  "rollback": "revert only changed B01-60-owned runner in the NEW QA branch and remove four new W13 test/CI files; original #532 unchanged"
+}
