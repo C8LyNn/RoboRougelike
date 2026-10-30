@@ -46,4 +46,4 @@ prior.update(re.findall(r'^guid:\s*([0-9a-f]{32})$',Path('Assets/B01Packages/ECO
 assert len(prior)==4 and not (prior & set(new_guids))
 asm=json.loads(Path('Assets/B01Packages/ECONREBUILD003/Runtime/B01.EconRebuildV3.asmdef').read_text())
 assert asm['noEngineReferences'] is True and asm['name']=='B01.EconRebuildV3'
-print('PASS EXACT GIT W21 12 additive paths, 10 pinned original blobs, 4 unique new GUIDs, 0 old GUID collisions; SOURCE_G0_NOT_INDEPENDENT')
+print(f"PASS EXACT GIT W21 {len(m['owned_paths'])} additive paths, {len(m['blobs'])} original pinned blobs, 4 new GUIDs, 0 old GUID collisions; SOURCE_G0_NOT_INDEPENDENT")
