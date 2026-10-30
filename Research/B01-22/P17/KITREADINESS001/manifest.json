@@ -1,0 +1,55 @@
+{
+  "package_id": "B01-22-KITREADINESS-001",
+  "version": "1.0.0",
+  "owner": "B01-22",
+  "product": "One-kit-at-a-time virtual stock readiness preview, atomic no-partial-reservation",
+  "source_sha": "b1d4e341d846c9397e236809a1d7e4c4fff9c935",
+  "source_pr": 411,
+  "source_catalog_git_blob": "372b3bc74553ea459e89be38378f4429090e00a2",
+  "codex_gameplay_sha": "203a0805251ed28293888e43f2d49f0df63767c6",
+  "parent_source_pr": 411,
+  "own_paths": [
+    "Assets/B01KitReadiness001.meta",
+    "Assets/B01KitReadiness001/**",
+    "Research/B01-22/P17/KITREADINESS001/**",
+    ".github/workflows/b01-22-p17w08-kitreadiness.yml"
+  ],
+  "constraints": [
+    "No mutation of author #411 or original Codex game",
+    "NO buying, wallet, garage, mounting, saving or game-run reward",
+    "All reservations are private in-memory preview only",
+    "No legacy ECON/LEGENDARY/CHL/PARTSIZE changes"
+  ],
+  "git_blobs": {
+    "Assets/B01KitReadiness001.meta": "f8a586a4a4d4d03550c8997e100e969d71f68e38",
+    "Assets/B01KitReadiness001/KitReadinessPlanner.cs": "3fd162806f452f29dc930cf2d85cafc9eb981974",
+    "Assets/B01KitReadiness001/KitReadinessPlanner.cs.meta": "11ec4e91ce05d4c10fa250f1314f0c03a269118b",
+    "Research/B01-22/P17/KITREADINESS001/OriginalReadinessSourceTests.cs": "a0a98c3aa48fe8870b186019e50dcbe75af14d63",
+    "Research/B01-22/P17/KITREADINESS001/KitReadinessTests.csproj": "36f592dd0a789c6e619eb449fd37e3b5c941995d",
+    "Research/B01-22/P17/KITREADINESS001/scenarios/starter-cache.json": "dde1761de2d3fe7e23bf1b3199dbbcdc4c7abddb",
+    "Research/B01-22/P17/KITREADINESS001/scenarios/siege-cache.json": "d65b72aeac81cdc7a6d3ed5cfb673b494ec5b6d5",
+    "Research/B01-22/P17/KITREADINESS001/scenarios/shared-gyro.json": "441a59f81a542e13b068d7f86e7b0c1e57829b18",
+    "Research/B01-22/P17/KITREADINESS001/pack_readiness.py": "b34e82160ecf6396d59bb075794198b368f21397",
+    "Research/B01-22/P17/KITREADINESS001/test_pack_readiness.py": "ee92df61a9d33f07f9933247369457ed2eabb417",
+    "Research/B01-22/P17/KITREADINESS001/README.md": "433ca522156231653d56329aa7f1858c14d2175c",
+    ".github/workflows/b01-22-p17w08-kitreadiness.yml": "5f12420404a954547aefd6b35a9894eed79b21a1"
+  },
+  "test_commands": [
+    "dotnet run --project Research/B01-22/P17/KITREADINESS001/KitReadinessTests.csproj --configuration Release -- --out readiness-previews",
+    "python -m unittest discover -s Research/B01-22/P17/KITREADINESS001/ -p test_pack_readiness.py -v",
+    "python Research/B01-22/P17/KITREADINESS001/pack_readiness.py --stage readiness-artifact --previews readiness-previews"
+  ],
+  "expected": {
+    "original_csharp_assertions": 49,
+    "python_physical_tests": 15,
+    "scenarios": 3,
+    "unity_source_members": 3,
+    "unity_guid_metas": 2,
+    "git_blob_checks": 12
+  },
+  "producer_qa": "NOT_RUN",
+  "independent_qa": "PENDING",
+  "native_unity": "NOT_RUN",
+  "handoff": "B01-40 G0 then B01-60 independent source and Unity G1 if licensed; B01-00 only CODEX INBOX #79",
+  "rollback": "Close Draft, discard owned branch; CLI --rollback only for unchanged isolated stage; manual Unity import into empty disposable Assets/B01KitReadiness001 folder only"
+}
