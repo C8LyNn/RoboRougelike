@@ -1,0 +1,58 @@
+name: B01-61 W11 execute original V2 host + original W06 ledger transaction RED (Unity NOT_RUN)
+on:
+  push:
+    branches: [qa/b01-61-p17w11-real-v2-ledger-atomicity]
+    paths:
+      - 'Tools/B01/B01-61/P17W11RealV2LedgerAtomicity/**'
+      - '.github/workflows/b01-61-p17w11-real-v2-ledger-atomicity.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-61/P17W11RealV2LedgerAtomicity/**'
+      - '.github/workflows/b01-61-p17w11-real-v2-ledger-atomicity.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-CSharp-host-original-ledger-failure-atomicity:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Exact frozen original W06/V2 blob pins, self-only source scope
+        shell: bash
+        run: |
+          set -o pipefail
+          python Tools/B01/B01-61/P17W11RealV2LedgerAtomicity/verify_source.py 2>&1 | tee b01-61-w11-pins.log
+      - name: Compile original V2 Unity MonoBehaviour and ORIGINAL W06 ledger against explicit QA-only stub
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet build Tools/B01/B01-61/P17W11RealV2LedgerAtomicity/OriginalHostLedgerQA.csproj -c Release --warnaserror 2>&1 | tee b01-61-w11-build.log
+      - name: Execute original V2 real host transaction and actual W06 ledger missing-ID repro
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet run --no-build -c Release --project Tools/B01/B01-61/P17W11RealV2LedgerAtomicity/OriginalHostLedgerQA.csproj 2>&1 | tee b01-61-w11-transaction.log
+      - name: Preserve original stdout even when evidence fails
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-61-w11-real-host-ledger-${{ matrix.os }}
+          path: |
+            b01-61-w11-pins.log
+            b01-61-w11-build.log
+            b01-61-w11-transaction.log
+          if-no-files-found: warn
+          retention-days: 21
