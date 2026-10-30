@@ -1,0 +1,89 @@
+{
+  "packageId": "B01-25-HAZARDPULSE-001",
+  "version": 1,
+  "gridMeters": 4,
+  "levels": [
+    {
+      "levelId": "CLEARANCE_PULSE_CROSSING",
+      "mapPR": 359,
+      "mapCommit": "ad52a604ffa4f143d98e607049d6f79e0c7e580f",
+      "mapPath": "Research/B01-25/P17/CLEARANCELADDER001/arena.json",
+      "mapGitBlob": "53eb696950121465befea2855eda4d7268750016",
+      "zones": [
+        {
+          "id": "CLEARANCE_LEFT",
+          "cell": [
+            7,
+            8
+          ],
+          "world": [
+            28,
+            32
+          ],
+          "radius": 1.35,
+          "warning": 1,
+          "active": 2,
+          "recovery": 3,
+          "offset": 0
+        },
+        {
+          "id": "CLEARANCE_RIGHT",
+          "cell": [
+            9,
+            8
+          ],
+          "world": [
+            36,
+            32
+          ],
+          "radius": 1.35,
+          "warning": 1,
+          "active": 2,
+          "recovery": 3,
+          "offset": 3
+        }
+      ]
+    },
+    {
+      "levelId": "SLALOM_PULSE_CROSSING",
+      "mapPR": 346,
+      "mapCommit": "f565e250659692541d672cdab108c4cfb8cfdd31",
+      "mapPath": "Research/B01-25/P17/SLALOM001/arena.json",
+      "mapGitBlob": "013f5fe2058e76233f580a439e8402c0fe09f124",
+      "zones": [
+        {
+          "id": "SLALOM_LEFT",
+          "cell": [
+            5,
+            8
+          ],
+          "world": [
+            20,
+            32
+          ],
+          "radius": 1.35,
+          "warning": 1,
+          "active": 2,
+          "recovery": 3,
+          "offset": 0
+        },
+        {
+          "id": "SLALOM_RIGHT",
+          "cell": [
+            9,
+            8
+          ],
+          "world": [
+            36,
+            32
+          ],
+          "radius": 1.35,
+          "warning": 1,
+          "active": 2,
+          "recovery": 3,
+          "offset": 3
+        }
+      ]
+    }
+  ]
+}

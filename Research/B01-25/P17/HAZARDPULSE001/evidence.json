@@ -1,0 +1,80 @@
+{
+  "packageId": "B01-25-HAZARDPULSE-001",
+  "version": "R1",
+  "realEvidence": [
+    {
+      "runId": 41029766045,
+      "conclusion": "FAIL",
+      "reason": "Actual original C# test harness mistakenly called PhaseAt on config rather than controller; corrected without weakening test."
+    },
+    {
+      "runId": 41029907433,
+      "conclusion": "FAIL",
+      "reason": "Real gameplay defect: floating-point inclusive zone edge rejected at world coordinate +1.35m; radius tolerance fixed in PulseCore.cs"
+    },
+    {
+      "runId": 41030053845,
+      "conclusion": "SUCCESS",
+      "windows": {
+        "job": 123977374172,
+        "checks": "51/51",
+        "negatives": 17,
+        "sourceMapHashes": "PASS",
+        "csharp9netstandard21": "PASS",
+        "artifactId": 12964973542
+      },
+      "ubuntu": {
+        "job": 123977374491,
+        "checks": "51/51",
+        "negatives": 17,
+        "sourceMapHashes": "PASS",
+        "csharp9netstandard21": "PASS",
+        "artifactId": 12965042464
+      },
+      "note": "Read original job stdout each OS: zero ##[error], 51 actual named PASS lines, 17 negative; CI source compiler real C#9 netstandard2.1 before runtime and exact Git map blobs."
+    }
+  ],
+  "sourceFileBlobs": {
+    "PulseCore.cs": "a7a2c69c80d43bf027f2b00896df72f892fa1a17",
+    "Program.cs": "6c41dc23d66d004d2c514ef91bad7b4e55a67d9d",
+    "profiles.json": "c0b03adee398ed12fa535c85ca2506d090d40cca",
+    "HazardPulse.csproj": "e392417029ceb7a804b7cae84c66b71fb1806b9b",
+    "PulseUnityCompat.csproj": "924e9c9fb5850a32ff715f0eac8629fbb6fc177a",
+    ".gitignore": "6943b188d80a5efce450393ae612928f653e0876",
+    "README.md": "30a20be6a537e84def08f1cb1075a4a3fc630bd3",
+    ".github/workflows/b01-25-w06-hazardpulse.yml": "23fdaa41bc3a89ca83704d6ebaf0633b8e8fddd2"
+  },
+  "testedOriginalBehavior": [
+    "Warning safe prior to active",
+    "Active emits exactly one DamagePulse per activation",
+    "Active continue and reentry within cycle cannot duplicate damage",
+    "Next activation cycle re-arms request once",
+    "Recovery safe",
+    "Paused clock frozen and paused contact does not emit damage",
+    "Resume from pause can trigger one pulse",
+    "Dead and outside active zone are never exposed",
+    "Boundary inclusive with numeric tolerance (bug fixed)",
+    "Outside boundary rejects",
+    "Deterministic fixed substeps .25/.125",
+    "Authoring staggered alternate safe lane",
+    "Four real centers on original ground-only no item center collision",
+    "Actual source BFS spawn-to-Finish possible",
+    "Faulty inputs fail closed before clock mutation"
+  ],
+  "notRun": [
+    "actual Unity 6000.3.14f1 Editor C# import/assembly",
+    "Unity GameObject hazards/prefab/collision/PhysX",
+    "real player/world position and enemy logic",
+    "real damage/health/armor integration",
+    "actual Light+Heavy play sessions",
+    "Windows Unity Player manual GUI",
+    "B01-40/B01-60 independent QA",
+    "Codex handoff ACK/integration"
+  ],
+  "claims": {
+    "nativeUnityPass": false,
+    "gameIntegration": false,
+    "independentQA": false,
+    "merge": false
+  }
+}

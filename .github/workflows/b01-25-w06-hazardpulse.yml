@@ -1,0 +1,63 @@
+name: B01-25 W06 HAZARDPULSE original CSharp9 gameplay (NOT Unity)
+on:
+  push:
+    branches: [research/b01-25-p17w06-hazardpulse001]
+    paths:
+      - 'Research/B01-25/P17/HAZARDPULSE001/**'
+      - '.github/workflows/b01-25-w06-hazardpulse.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  genuine-hazard-source-gameplay:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    timeout-minutes: 12
+    env:
+      SRC: Research/B01-25/P17/HAZARDPULSE001
+      CLEARANCE_COMMIT: ad52a604ffa4f143d98e607049d6f79e0c7e580f
+      CLEARANCE_BLOB: 53eb696950121465befea2855eda4d7268750016
+      SLALOM_COMMIT: f565e250659692541d672cdab108c4cfb8cfdd31
+      SLALOM_BLOB: 013f5fe2058e76233f580a439e8402c0fe09f124
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Source-frozen original authored map inputs and immutable Git blob verification
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$SRC/.output"
+          git fetch --no-tags origin "$CLEARANCE_COMMIT" "$SLALOM_COMMIT"
+          git show "${CLEARANCE_COMMIT}:Research/B01-25/P17/CLEARANCELADDER001/arena.json" > "$SRC/.output/clearance.json"
+          git show "${SLALOM_COMMIT}:Research/B01-25/P17/SLALOM001/arena.json" > "$SRC/.output/slalom.json"
+          test "$(git hash-object "$SRC/.output/clearance.json")" = "$CLEARANCE_BLOB"
+          test "$(git hash-object "$SRC/.output/slalom.json")" = "$SLALOM_BLOB"
+          echo "ORIGINAL_TWO_MAP_BLOBS_PASS"
+      - name: Compile ACTUAL game-rule source using Unity compatible CSharp9 netstandard2.1
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build "$SRC/PulseUnityCompat.csproj" --configuration Release -p:LangVersion=9.0 -warnaserror
+          echo "UNITY_LANGUAGE_API_CEILING_COMPILE_PASS (NOT UNITY EDITOR)"
+      - name: Actually run original CSharp hazard gameplay including adversarial and source map scenarios
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --project "$SRC/HazardPulse.csproj" --configuration Release -- "$SRC/profiles.json" "$SRC/.output/clearance.json" "$SRC/.output/slalom.json" "$SRC/.output/receipt.json" 2>&1 | tee "$SRC/.output/execution-${RUNNER_OS}.log"
+          test -s "$SRC/.output/receipt.json"
+      - name: Archive original stdout plus machine-readable physical run receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-25-hazardpulse001-${{ matrix.os }}
+          path: |
+            Research/B01-25/P17/HAZARDPULSE001/.output/receipt.json
+            Research/B01-25/P17/HAZARDPULSE001/.output/execution-*.log
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 21
