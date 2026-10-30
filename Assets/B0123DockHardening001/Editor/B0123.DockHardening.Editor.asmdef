@@ -1,0 +1,20 @@
+{
+  "name": "B0123.DockHardening.Editor",
+  "rootNamespace": "B01.DockHardening001",
+  "references": [
+    "B0123.DockHardening.Runtime",
+    "B0123.DebrisPlayground.Runtime",
+    "B0123.ReattachClearance.Runtime"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
