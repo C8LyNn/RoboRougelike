@@ -76,10 +76,10 @@ def build(output):
         assets[folder+".meta"]=folder_meta(folder)
     for fname in ["WeldVisualCore.cs","B0132RepairWeldVfx.cs"]:
         path=f"{ROOT}/Runtime/{fname}"
-        assets[path]=(SRC/"Runtime"/fname).read_bytes()
+        assets[path]=(SRC/"Runtime"/fname).read_bytes().replace(b"\r\n",b"\n")
         assets[path+".meta"]=mono_meta(path)
     test=f"{ROOT}/Tests/PlayMode/RepairWeldPlayModeTests.cs"
-    assets[test]=(SRC/"Tests/RepairWeldPlayModeTests.cs").read_bytes()
+    assets[test]=(SRC/"Tests/RepairWeldPlayModeTests.cs").read_bytes().replace(b"\r\n",b"\n")
     assets[test+".meta"]=mono_meta(test)
     runtime=f"{ROOT}/Runtime/B0132.RepairWeld.Runtime.asmdef"
     tests=f"{ROOT}/Tests/PlayMode/B0132.RepairWeld.PlayModeTests.asmdef"
