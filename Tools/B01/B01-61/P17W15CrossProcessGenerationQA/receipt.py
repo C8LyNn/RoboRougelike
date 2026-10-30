@@ -50,7 +50,7 @@ def receipt(log_path,bridge_log,bridge_dir):
         "PASS HOST_rollback_failure_permanently_quarantines",
         "SELECTED_556_SOURCE_ONLY=TRUE ORIGINAL_OFFICIAL_BRIDGE_CORE=EXECUTED",
         "OFFICIAL_BRIDGE_POST_ACTIVATION_DIVERGENCE=SOURCE_RED",
-        "UNITY_NATIVE_PHYSX=NOT_RUN LIVE_CANONICAL_510_RESTORE=NOT_IMPLEMENTED",
+        "UNITY_G1_NOT_RUN LIVE_510_PRIVATE_LEDGER_INTEGRATION=NOT_IMPLEMENTED",
     ):
         if required not in bridge_text:
             raise ValueError("missing real bridge source test evidence: "+required)
