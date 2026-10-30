@@ -16,8 +16,7 @@ IMMUTABLE={
 }
 def git(*args):
  return subprocess.check_output(["git",*args],stderr=subprocess.PIPE).decode("utf-8").strip()
-def blob(payload):
- data=payload.encode("utf-8")
+def blob(data):
  return hashlib.sha1(b"blob "+str(len(data)).encode()+b"\0"+data).hexdigest()
 def verify(out):
  if out.exists() or not out.parent.is_dir():raise ValueError("REFUSE_EXISTING_EVIDENCE_RECEIVER")
@@ -33,7 +32,7 @@ def verify(out):
   actual=git("rev-parse","HEAD:"+path)
   frozen=git("rev-parse",SELECTED+":"+path)
   if actual!=expected_blob or actual!=frozen:raise AssertionError("CHANGED_ORIGINAL_"+path)
-  raw=git("show","HEAD:"+path)
+  raw=subprocess.check_output(["git","show","HEAD:"+path])
   if blob(raw)!=expected_blob:raise AssertionError("ORIGINAL_BYTES_MISMATCH_"+path)
   values[path]=expected_blob
  store=git("show","HEAD:Tools/B01/B01-62/P17W23OneAuthorityV3/CanonicalSingleAuthorityStoreV3.cs")
