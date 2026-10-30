@@ -1,0 +1,59 @@
+name: B01-61 W23 original R3 741 independent raw #669 migration exclusion
+on:
+  push:
+    branches: [qa/b01-61-p17w23-r3-741-v2-marker-exclusion-qa]
+permissions:
+  contents: read
+jobs:
+  actual-original-741-selected-729-plus-legacy-669:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Source exact selected original V3 / legacy 669 and frozen immutable blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          d="Tools/B01/B01-61/P17W23Bridge741MarkerFixQA/.source"
+          mkdir -p "$d"
+          git fetch --no-tags origin b8ca29c7707cd6b4338d0b9772d74dee676d49d2 d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121 33094f154c7b91119b36d58aab285e6e83c5de57 d94400d95d13db7f27e1533df05c9292d5380431
+          git show b8ca29c7707cd6b4338d0b9772d74dee676d49d2:Assets/B0123CanonicalSaveApi001/Core/CanonicalWorldGateway.cs > "$d/CanonicalWorldGatewayV3.cs"
+          git show b8ca29c7707cd6b4338d0b9772d74dee676d49d2:Assets/B0123CanonicalSaveApi001/Core/CanonicalWorldSlotLease.cs > "$d/CanonicalWorldSlotLease.cs"
+          git show d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121:Tools/B01/B01-62/P17W20SingleFileSaveSlot/SingleFileSaveSlot.cs > "$d/Original669SingleFileSaveSlot.cs"
+          git show 33094f154c7b91119b36d58aab285e6e83c5de57:Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs > "$d/DetachedSnapshotContract.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs > "$d/DebrisImpulseCore.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs > "$d/SecureRigSpec.cs"
+          python Tools/B01/B01-61/P17W23Bridge741MarkerFixQA/source_guard.py 2>&1 | tee b0161-w23-r3-pins.log
+      - name: Build untouched actual original selected R3 V3 legacy 669 CSharp9
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet build Tools/B01/B01-61/P17W23Bridge741MarkerFixQA/Independent741MigrationQA.csproj -c Release --warnaserror 2>&1 | tee b0161-w23-r3-build.log
+      - name: Real legacy child CLR bypass and R3 source owner controls
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet run --no-build -c Release --project Tools/B01/B01-61/P17W23Bridge741MarkerFixQA/Independent741MigrationQA.csproj 2>&1 | tee b0161-w23-r3-run.log
+          grep -q 'B0161_W23_NEW_R3_741_SOURCE_CASES PASS=4 FAIL=0' b0161-w23-r3-run.log
+          grep -q 'W23_741_NEW_MARKER_REJECTS_ORIGINAL_RAW_669_GREEN=DENIED_NO_WRITE' b0161-w23-r3-run.log
+          grep -q 'W23_741_CHILD_ORIGINAL_RAW_669_REJECTS_CANONICAL_V3_MARKER' b0161-w23-r3-run.log
+          grep -q 'B0161_W23_INTEGRATION_DISPOSITION=R3_SOURCE_GREEN_LEGACY_RAW_669_MARKER_REJECTED_TESTED_SCOPE' b0161-w23-r3-run.log
+      - name: Raw source stdout, NOT Unity Editor NUnit tests
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b0161-w23-r3-741-migration-${{ matrix.os }}
+          path: |
+            b0161-w23-r3-pins.log
+            b0161-w23-r3-build.log
+            b0161-w23-r3-run.log
+          if-no-files-found: warn

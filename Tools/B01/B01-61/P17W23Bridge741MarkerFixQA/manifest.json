@@ -1,0 +1,11 @@
+{
+  "package_id": "B01-61-P17W23-741-R3-MARKER-LEGACY-EXCLUSION-QA",
+  "producer_new_sha": "75f1631f9a36ce51b0f8edc0c7857e924cdf78ec",
+  "predecessor_source_with_red": "c86e388c519465177552f50e30128f158994c1f4",
+  "new_storage_blob": "52400444d32f7baadb1f8ae439e7ce7dd9e29665",
+  "original_source_sha_pins": 8,
+  "new_qa_only_paths": 6,
+  "negative_legacy_669_client": "expected WrongOwner",
+  "native_unity": "NOT_RUN",
+  "merge": false
+}
