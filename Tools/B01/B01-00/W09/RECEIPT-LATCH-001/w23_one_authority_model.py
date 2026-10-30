@@ -117,6 +117,13 @@ class OneAuthorityModel:
   if not partial:self.live=True
   return True
 
+ def publish(self,actor):
+  self._owns(actor)
+  need(self.partial and self.live and not self.quarantine,
+       "publish only fully staged owned world")
+  self.partial=False
+  return True
+
  def cleanup(self,actor,retired):
   self._owns(actor)
   if retired is not True:
