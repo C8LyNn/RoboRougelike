@@ -8,11 +8,11 @@ using RoboRougelike.B01.Economy.CoreGuardV5;
 // Reuse the original frozen W22 disk owner and physical part fixture classes.
 sealed class W23Probe : ICanonicalCoreAndEncounterProbeV5
 {
-    public string CoreId=Test.B,Owner,Run;
-    public long GenerationOffset;
-    public bool Functional=true,CanDeploy=true,Next=true,Fail;
+    public string CoreId=Test.B,Owner=null,Run=null;
+    public long GenerationOffset=0;
+    public bool Functional=true,CanDeploy=true,Next=true,Fail=false;
     public string[] Blockers=Array.Empty<string>();
-    public Action<OwnerRebuildStateV3> During;
+    public Action<OwnerRebuildStateV3> During=null;
     public bool TryObserve(OwnerRebuildStateV3 s,out CanonicalCoreAndEncounterV5 e,out string why)
     {
         During?.Invoke(s);
