@@ -37,7 +37,7 @@ def main(repo,out,receipt):
  "native_g1":"NOT_RUN","g0_release":"HOLD_UNCERTAIN_COMMIT","code_x_ack":False}
  buf=(json.dumps(result,sort_keys=True,indent=2)+"\n").encode()
  rc.write_bytes(buf)
- print("B0162_W19_SELECTED_R3_642_ORIGINAL_GIT_BLOBS=4/4")
+ print("B0162_W19_SELECTED_R4_647_ORIGINAL_GIT_BLOBS=4/4")
  print("B0162_W19_SOURCE_RECEIPT_SHA256="+hashlib.sha256(buf).hexdigest())
 if __name__=="__main__":
  p=argparse.ArgumentParser()
