@@ -1,0 +1,62 @@
+name: B01-61 P17W16 selected 587 original-source transaction acceptance gate
+on:
+  push:
+    branches: [qa/b01-61-p17w16-selected587-transaction-acceptance-gate]
+  pull_request:
+    paths:
+      - "Tools/B01/B01-61/P17W16SelectedHostQA/**"
+      - ".github/workflows/b01-61-p17w16-selected587-atomicity.yml"
+jobs:
+  verify-original-source:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Verify original selected producer, W06/#510/#556 byte pins and QA-only scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-61/P17W16SelectedHostQA/source_guard.py 2>&1 | tee b0161-w16-source.log
+      - name: Build actual exact original #587 core with #556/W06/#510
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build Tools/B01/B01-61/P17W16SelectedHostQA/SelectedOriginalHostQA.csproj -c Release --warnaserror 2>&1 | tee b0161-w16-build.log
+      - name: Execute deterministic fresh-world Save file, activation, generation and failed-rollback QA
+        shell: bash
+        run: |
+          set +e
+          p=Tools/B01/B01-61/P17W16SelectedHostQA/SelectedOriginalHostQA.csproj
+          dotnet run --no-build --project "$p" -c Release -- --evidence > b0161-w16-evidence.log 2>&1
+          evidence=$?
+          cat b0161-w16-evidence.log
+          dotnet run --no-build --project "$p" -c Release -- --release > b0161-w16-release.log 2>&1
+          release=$?
+          cat b0161-w16-release.log
+          printf 'EVIDENCE_EXIT=%s RELEASE_EXIT=%s UNITY_NATIVE=NOT_RUN\n' "$evidence" "$release" | tee b0161-w16-gate.txt
+          test "$evidence" = 0 && test "$release" = 3 || exit 1
+          grep -q B0161_W16_SELECTED_587_ORIGINAL_SOURCE_QA_PASS b0161-w16-evidence.log || exit 1
+          grep -q SELECTED_587_RELEASE_HOLD b0161-w16-release.log || exit 1
+          echo "SOURCE_NEGATIVE_QA_PASS RELEASE_HOLD"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b0161-w16-original-source-${{ matrix.os }}
+          path: |
+            b0161-w16-source.log
+            b0161-w16-build.log
+            b0161-w16-evidence.log
+            b0161-w16-release.log
+            b0161-w16-gate.txt
+          if-no-files-found: warn

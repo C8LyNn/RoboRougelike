@@ -1,0 +1,12 @@
+{
+  "package": "B01-61-P17W16-SELECTED-587-TRANSACTION-ACCEPTANCE-QA-001",
+  "version": "1.0.0",
+  "selected_w15_adapter_sha": "ad7904eca571c742257551fa8103f266fcb9b752",
+  "selected_unchanged_schema": "33094f154c7b91119b36d58aab285e6e83c5de57",
+  "unchanged_game": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "source_only": true,
+  "original_producer_blob": "16a7d7043a2ecb59a41bbfb063170235872fd7fc",
+  "native_g1": "NOT_RUN",
+  "source_release": "HOLD",
+  "merge": false
+}
