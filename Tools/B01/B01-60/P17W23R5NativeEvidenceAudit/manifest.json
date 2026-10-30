@@ -1,0 +1,52 @@
+{
+  "package_id": "B01-60-P17W23-R5-NATIVE-EVIDENCE-AUDIT-R1",
+  "version": "1.0.0",
+  "owner": "B01-60",
+  "hq_issue": 731,
+  "manual_operator_auth": 667,
+  "frozen_parent": {
+    "pr": 718,
+    "head": "481bfb1cf2804d94fb49d7e6a57134e96c535b86"
+  },
+  "selected_host": {
+    "pr": 690,
+    "head": "cc7f73541517a18f4479bb155534bd4832d9985e"
+  },
+  "frozen_live_game": {
+    "pr": 510,
+    "head": "d94400d95d13db7f27e1533df05c9292d5380431"
+  },
+  "schema": {
+    "pr": 556,
+    "head": "33094f154c7b91119b36d58aab285e6e83c5de57"
+  },
+  "canonical_api_v3": {
+    "pr": 729,
+    "head": "b8ca29c7707cd6b4338d0b9772d74dee676d49d2",
+    "native": "NOT_RUN"
+  },
+  "storage_R2": {
+    "pr": 712,
+    "head": "bd8905ad549a7b26854b671be971f7d781308311",
+    "native": "NOT_RUN"
+  },
+  "scope": "read-only audit of original R5 six-case PARTIAL native evidence only; not native launcher",
+  "self_signed": false,
+  "operator_manual_opt_in_required": true,
+  "source_only_ci": true,
+  "native_R5": "NOT_RUN",
+  "full_R5": "HOLD_COLDRESTART_4_VS_5",
+  "canonical_world_save": "HOLD_SINGLE_OWNER_BRIDGE_PENDING",
+  "source_G0": "R5_699_SOURCE_TRANSPORT_ONLY",
+  "G2": "HOLD",
+  "integrator_feedback": "NOT_MEASURED",
+  "files": [
+    "Tools/B01/B01-60/P17W23R5NativeEvidenceAudit/audit.py",
+    "Tools/B01/B01-60/P17W23R5NativeEvidenceAudit/test_audit.py",
+    "Tools/B01/B01-60/P17W23R5NativeEvidenceAudit/README.md",
+    "Tools/B01/B01-60/P17W23R5NativeEvidenceAudit/manifest.json",
+    ".github/workflows/b01-60-p17w23-r5-native-evidence-audit.yml"
+  ],
+  "rollback": "Discard new W23 own files/branch only; do not touch predecessor, original source, foreign scratch",
+  "authorization": "No merge or protected push"
+}
