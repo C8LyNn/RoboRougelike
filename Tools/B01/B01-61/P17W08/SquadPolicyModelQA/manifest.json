@@ -1,0 +1,26 @@
+{
+  "package_id": "B01-61-SQUAD-PRESSURE-VARIABLE-POLICY-QA-001",
+  "version": "1.0.0",
+  "wave": "PASS17-W08",
+  "role": "B01-61 independent QA",
+  "producer": "B01-24",
+  "original_pr": 429,
+  "original_sha": "4d13f76e6c0c08033e305900daf61c0a7267a725",
+  "source_pins": {
+    "Research/B01-24/P17/W06-SQUAD-PRESSURE-001/SquadPressure.cs": "3402fe61153e307ba164340956afd76aec6e8603",
+    "Assets/R3/R3EnemyArchetype.cs": "66cd1ee734b129117b3753d1205469a0496cb673"
+  },
+  "owned_paths": [
+    "Tools/B01/B01-61/P17W08/SquadPolicyModelQA/Program.cs",
+    "Tools/B01/B01-61/P17W08/SquadPolicyModelQA/ModelQA.csproj",
+    "Tools/B01/B01-61/P17W08/SquadPolicyModelQA/source_gate.py",
+    "Tools/B01/B01-61/P17W08/SquadPolicyModelQA/README.md",
+    "Tools/B01/B01-61/P17W08/SquadPolicyModelQA/manifest.json",
+    ".github/workflows/b01-61-p17w08-squad-policy-model-qa.yml"
+  ],
+  "test_plan": "96 distinct non-default legal policies x 512 ticks = 49,152 source/oracle comparisons, defensive copy, malformed policies, atomic invalid tick",
+  "native_unity": "NOT_RUN",
+  "source_qa": "PENDING_CI",
+  "codex_ack": "PENDING",
+  "rollback": "Close unmerged Draft PR and delete only QA branch; original B01-24 #429 SHA remains unchanged"
+}
