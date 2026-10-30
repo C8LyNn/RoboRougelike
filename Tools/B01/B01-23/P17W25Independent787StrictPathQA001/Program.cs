@@ -79,29 +79,31 @@ internal static class Original787IndependentQA
             Directory.CreateDirectory(Path.GetDirectoryName(path)!);
             var state=CanonicalSingleAuthorityStoreV3R3.TryCreateNew(
                 path,Run,Slot,owner,out var store);
-            if(state!=SlotStatus.Accepted||store==null)return false;
+            if(state!=SlotStatus.Accepted||store==null){Console.WriteLine("R3 first TryCreateNew="+state);return false;}
             byte[] bytes=Actual556();
-            if(store.TryCommit(0,bytes)!=SlotStatus.Accepted||
-               store.TryRead(out long generation,out byte[] payload)!=SlotStatus.Accepted||
-               generation!=1||!payload.AsSpan().SequenceEqual(bytes))return false;
+            var commit=store.TryCommit(0,bytes);
+            var read=store.TryRead(out long generation,out byte[] payload);
+            if(commit!=SlotStatus.Accepted||read!=SlotStatus.Accepted||generation!=1||!payload.AsSpan().SequenceEqual(bytes))
+            {Console.WriteLine("R3 commit="+commit+" read="+read+" gen="+generation+" equal="+payload.AsSpan().SequenceEqual(bytes));return false;}
             bool noSecond=CanonicalSingleAuthorityStoreV3R3.TryOpenExisting(
                 path,Run,Slot,owner,out var duplicate)==SlotStatus.Busy&&duplicate==null;
             store.Dispose();
             bool afterDispose=CanonicalSingleAuthorityStoreV3R3.TryOpenExisting(
                 path,Run,Slot,owner,out duplicate)==SlotStatus.Busy&&duplicate==null;
-            if(!owner.TryCancelUnbound())return false;
+            if(!owner.TryCancelUnbound()){Console.WriteLine("R3 original owner cancelled=false");return false;}
             if(!Open(root,out var next)||next==null)return false;
             try
             {
-                if(CanonicalSingleAuthorityStoreV3R3.TryOpenExisting(
-                    path,Run,Slot,next,out var cold)!=SlotStatus.Accepted||
-                    cold==null)return false;
+                var newState=CanonicalSingleAuthorityStoreV3R3.TryOpenExisting(
+                    path,Run,Slot,next,out var cold);
+                if(newState!=SlotStatus.Accepted||cold==null){Console.WriteLine("R3 cold TryOpenExisting="+newState);return false;}
                 bool correct=cold.TryRead(out long old,out byte[] recovered)==SlotStatus.Accepted&&
                     old==1&&recovered.AsSpan().SequenceEqual(bytes)&&
                     ColdRestore.TryStage(recovered,out ColdRestore? parsed)&&parsed!=null&&
                     parsed.ContainsConsumedId(0,2310001)&&
                     !parsed.ContainsConsumedId(1,2310002);
                 cold.Dispose();
+                Console.WriteLine("R3 cold read correct="+correct+" same-store="+noSecond+" after-Dispose="+afterDispose);
                 return correct&&noSecond&&afterDispose&&
                     !File.Exists(Path.Combine(path,"slot.lease"));
             }
