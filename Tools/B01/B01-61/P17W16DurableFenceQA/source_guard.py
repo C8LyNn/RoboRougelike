@@ -30,7 +30,7 @@ def main():
   check(git("rev-parse","HEAD:"+path)==blob,"UNAUTHORIZED_PRODUCER_SOURCE_CHANGE "+path)
   check(git("hash-object",path)==blob,"ORIGINAL_WORKTREE_DRIFT "+path)
  core=(ROOT/PINS[0][0]).read_text()
- check("snapshot.Generation<=currentCold.Snapshot.Generation" in core,
+ check("ready.Snapshot.Generation<=currentCold.Snapshot.Generation" in core,
        "NEW_VERSION_DIFF_EQUALGEN_POLICY_RETEST")
  check("return quarantined?WorldSwapVerdict.RollbackQuarantine:verdict;" in core,
        "NEW_VERSION_DIFF_QUARANTINE_POLICY_RETEST")
