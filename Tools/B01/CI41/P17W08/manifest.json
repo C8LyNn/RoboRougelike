@@ -1,0 +1,47 @@
+{
+  "package": "CI41-TESTIMPACT-001",
+  "version": "1.0.0",
+  "cycle": "PASS17_WAVE08",
+  "producer": "B01-41 CI/CD & TEST AUTOMATION",
+  "branch": "ci/b01-41-p17w08-test-impact-plan",
+  "base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "paths": [
+    "Tools/B01/CI41/P17W08/test_impact_plan.py",
+    "Tools/B01/CI41/P17W08/test_test_impact_plan.py",
+    "Tools/B01/CI41/P17W08/README.md",
+    "Tools/B01/CI41/P17W08/manifest.json",
+    ".github/workflows/b01-41-p17w08-test-impact.yml"
+  ],
+  "source_git_blobs": {
+    "Tools/B01/CI41/P17W08/test_impact_plan.py": "463edd27d74d7dc0b178a2d651ff57a95c0ce89e",
+    "Tools/B01/CI41/P17W08/test_test_impact_plan.py": "740f731ea3d18e53c252cdb5cf434360069b592e"
+  },
+  "actual_original_repo_test_inventory": {
+    "MOV_modules": 9,
+    "MOV_test_cs": 29,
+    "central_editor_test_cs": 33
+  },
+  "actual_producer_test_plan": {
+    "regression_tests_per_os": 24,
+    "systems": [
+      "ubuntu-24.04",
+      "windows-2025"
+    ],
+    "real_git_objects_and_subprocesses": true,
+    "actual_original_repo_source_inventory": true,
+    "unity_native_editor": "NOT_RUN"
+  },
+  "fixed_initial_failure": "Added MISSING_TARGET_MODULE_TEST_INVENTORY reason for a real newly introduced MOV without test assemblies; test_14 then passes",
+  "policy": "Targeted precheck never grants G1. Global/cross-module/unknown/test-assembly changes force full Unity test suite. No native game tests executed.",
+  "receiver": [
+    "B01-40",
+    "B01-60",
+    "B01-61"
+  ],
+  "independent_QA": "PENDING",
+  "codex_ACK": "PENDING",
+  "integrated": false,
+  "merged": false,
+  "rollback": "Leave isolated Draft unmerged; no canonical gameplay or save data alterations",
+  "notes": "Actual game source inventory is a read-only report; test selection is a separate executable change planner based on two actual Git commit SHAs"
+}
