@@ -1,0 +1,67 @@
+{
+  "package_id": "B01-60-P17W08-DEBRIS-IMPULSE-INDEPENDENT-QA",
+  "version": "1.0.0",
+  "qa_owner": "B01-60",
+  "original_producer": {
+    "id": "B01-23-DEBRIS-REPULSE-001",
+    "pr": 421,
+    "source_sha": "cb2b3a76e84266e2730fffc4ab048c1039f0652f",
+    "core_blob": "fa1aa5e531927cbe73cf5fdfe161b4a981316db5",
+    "original_unity_emitter_blob": "2b3a8465c550bd49a5c98be5a8064a4ce0947f4b",
+    "asmdef_blob": "25a49dc836b62d791c0bf40c214c1c6cf09a9fea"
+  },
+  "ownership": {
+    "new_qa_only_paths": [
+      "Tools/B01/B01-60/P17W08/DebrisImpulseQA/Program.cs",
+      "Tools/B01/B01-60/P17W08/DebrisImpulseQA/IndependentQA.csproj",
+      "Tools/B01/B01-60/P17W08/DebrisImpulseQA/verify_frozen.py",
+      "Tools/B01/B01-60/P17W08/DebrisImpulseQA/manifest.json",
+      "Tools/B01/B01-60/P17W08/DebrisImpulseQA/README.md",
+      ".github/workflows/b01-60-p17w08-debris-impulse-qa.yml"
+    ],
+    "producer_changed": false,
+    "codex_changed": false,
+    "merge": false
+  },
+  "tests": {
+    "direct_source_compilation": "CSharp9 .NET8 --warnaserror original producer DebrisImpulseCore.cs",
+    "original_13_git_members": "exact frozen producer source equality",
+    "analytic_50000_cases": "independent mass*clamp(target-radialVelocity, 0, addedCap) math",
+    "metamorphic": "translation, 90deg rotation of owner/part/velocity/impulse, deterministic quantized digest",
+    "idempotence": "50k duplicated stable IDs, >390 repeated rearm/dispose",
+    "invalid_data": "2000 malformed numeric events then identical ID successful",
+    "coincident_fallback": "64 real ID/position fallback calls and eight distinct directions",
+    "lifecycle": "zero-impulse burns ID until reattach, new-run reset",
+    "boundaries": "extreme finite coordinates, mass, speed and force cap"
+  },
+  "g0": "B01_60_INDEPENDENT_DIRECT_ORIGINAL_CSHARP_SOURCE_QA_PASS",
+  "g1": "NATIVE_UNITY_NOT_RUN",
+  "g2": "HOLD",
+  "actual_physics": "NOT_RUN",
+  "codex_ack": "PENDING",
+  "integrated": false,
+  "limitations": [
+    "Original code only, no physical Unity Rigidbody engine",
+    "Original author 33 core and B01-61 #443 emitter tests are distinct existing coverage",
+    "No detached game rig, runtime prefab import, real collider/PhysX, human play",
+    "B01-40 physical package/GUID/asmdef gate separate"
+  ],
+  "rollback": "Delete only six QA-owned files on this branch. Original Assets/B0123DebrisRepulse001/** remain unchanged.",
+  "verification": {
+    "test_logic_exact_sha": "15ba847231d68598bf3a2ecf47c47c1de4fc63dc",
+    "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41045871841",
+    "win_artifact": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41045871841/artifacts/12971494182",
+    "ubuntu_artifact": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41045871841/artifacts/12971613739",
+    "both_OS": "SUCCESS",
+    "groups_per_OS": "5 PASS 0 FAIL",
+    "original_git_source_members": "13/13 unchanged",
+    "actual_cases": 50000,
+    "nonzero": 26979,
+    "zero": 23021,
+    "duplicate_rejected": 50000,
+    "invalid_rejected": 2000,
+    "rearms": 394,
+    "trace_sha256": "5b33f65e80cf471370008380ab78e47f1c81be0e465ac4b889f92ca6b7e4c571",
+    "native_g1": "NOT_RUN"
+  }
+}

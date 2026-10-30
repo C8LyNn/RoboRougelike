@@ -1,0 +1,61 @@
+name: B01-60 P17 W08 independent original debris impulse 50k CSharp QA (UNITY NOT_RUN)
+on:
+  push:
+    branches: [qa/b01-60-p17w08-debris-core-invariant]
+    paths:
+      - 'Tools/B01/B01-60/P17W08/DebrisImpulseQA/**'
+      - '.github/workflows/b01-60-p17w08-debris-impulse-qa.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-60/P17W08/DebrisImpulseQA/**'
+      - '.github/workflows/b01-60-p17w08-debris-impulse-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  actual-original-core-metamorphic:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch immutable original author #421 source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin cb2b3a76e84266e2730fffc4ab048c1039f0652f
+          mkdir -p qa-w08-receipts
+      - name: Independently verify exact original frozen 13 source payloads and QA-only six path isolation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W08/DebrisImpulseQA/verify_frozen.py | tee qa-w08-receipts/frozen-source.json
+      - name: Compile unchanged original Unity CSharp9 math directly with independent reference oracle
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build Tools/B01/B01-60/P17W08/DebrisImpulseQA/IndependentQA.csproj -c Release --warnaserror | tee qa-w08-receipts/direct-original-csharp-build.txt
+      - name: Execute 50k real original CSharp detach decisions, 2k invalid recoveries, rotation, translation, one shot
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run -c Release --no-build --project Tools/B01/B01-60/P17W08/DebrisImpulseQA/IndependentQA.csproj | tee qa-w08-receipts/original-debris-independent.txt
+      - name: Preserve actual source-and-CSharp-only evidence, even on RED
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-60-w08-debris-independent-${{ matrix.os }}
+          path: qa-w08-receipts/
+          if-no-files-found: warn
+          retention-days: 21
