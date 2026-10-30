@@ -1,0 +1,52 @@
+name: B01-61 W21 exact original R5 #690 physical owner retirement independent
+on:
+  push:
+    branches: [qa/b01-61-p17w21-r5-690-independent-owner-retirement]
+permissions:
+  contents: read
+jobs:
+  actual-original-r5-component-destroy-lifetime:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Verify source R5 exact original and 7 own-only paths
+        shell: bash
+        run: |
+          set -o pipefail
+          python Tools/B01/B01-61/P17W21R5OwnerLifecycleQA/source_guard.py 2>&1 | tee b0161-r5-pins.log
+      - name: Compile unchanged original R5 Unity host and frozen real #556/W06
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet build Tools/B01/B01-61/P17W21R5OwnerLifecycleQA/OriginalR5HostQA.csproj -c Release --warnaserror 2>&1 | tee b0161-r5-build.log
+      - name: Component-only Destroy, deferred engine cleanup, owner authority + real OS lock
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet run --no-build -c Release --project Tools/B01/B01-61/P17W21R5OwnerLifecycleQA/OriginalR5HostQA.csproj 2>&1 | tee b0161-r5-execution.log
+          grep -q 'W21_R5_690_COMPONENT_ONLY_ONDESTROY_PENDING_CHILDREN_LEASE_HELD_GREEN=PASS' b0161-r5-execution.log
+          grep -q 'W21_R5_690_NO_ORPHAN_WORLD_AFTER_TAKEOVER_GREEN=PASS' b0161-r5-execution.log
+          grep -q 'W21_R5_690_FAILED_CLEANUP_FAIL_CLOSED_LEASE_GREEN=PASS' b0161-r5-execution.log
+          grep -q 'W21_R5_690_COMPONENT_DESTROY_SOURCE_P0_670=NO_REPRODUCTION' b0161-r5-execution.log
+          grep -q 'R5_SOURCE_GATE=GREEN_TESTED_SCOPE_ONLY' b0161-r5-execution.log
+      - name: Preserve actual original source stdout / not native Unity XML
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-61-w21-r5-owner-retirement-${{ matrix.os }}
+          path: |
+            b0161-r5-pins.log
+            b0161-r5-build.log
+            b0161-r5-execution.log
+          if-no-files-found: warn
+          retention-days: 21
