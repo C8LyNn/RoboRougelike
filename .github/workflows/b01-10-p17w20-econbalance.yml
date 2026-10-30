@@ -1,0 +1,101 @@
+name: B01-10 P17W20 ECONBAL Original Source Model
+on:
+  push:
+    branches: [design/b01-10-p17w20-econbal-001]
+    paths:
+      - 'Research/B01-10/P17/W20_ECONBAL_001/**'
+      - '.github/workflows/b01-10-p17w20-econbalance.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'Research/B01-10/P17/W20_ECONBAL_001/**'
+      - '.github/workflows/b01-10-p17w20-econbalance.yml'
+permissions:
+  contents: read
+jobs:
+  original-economy-model:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Pin original source bytes SHA256, base and scope
+        shell: bash
+        env:
+          B01_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib,json,os,pathlib,subprocess
+          root=pathlib.Path('Research/B01-10/P17/W20_ECONBAL_001')
+          doc=json.loads((root/'manifest.json').read_text(encoding='utf-8'))
+          assert doc['packageId']=='B01-10-ECONBAL-001'
+          assert len(doc['originalSourceFiles'])==5
+          for name,pin in doc['originalSourceFiles'].items():
+              path=pathlib.Path(name)
+              assert path.is_file() and not path.is_symlink()
+              raw=path.read_bytes()
+              assert len(raw)==pin['bytes'],name
+              assert hashlib.sha256(raw).hexdigest()==pin['sha256'],name
+          head=os.environ['B01_SOURCE_SHA']
+          assert len(head)==40
+          files=subprocess.check_output(['git','diff','--name-only',
+              doc['mainBaseSha'],head],text=True).splitlines()
+          assert sorted(files)==sorted(doc['exactScope']),files
+          assert len(files)==7,files
+          print('B01-10 ECONBAL MANIFEST_SOURCE_PINS '+str(len(doc['originalSourceFiles']))
+                +' PASS; GIT_SCOPE '+str(len(files))+' PASS; SHA '+head)
+          PY
+      - name: Execute actual original Python source balance and negative tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s Research/B01-10/P17/W20_ECONBAL_001 -p test_rebuild_balance.py -v > "$RUNNER_TEMP/econbal-tests.log" 2>&1
+          cat "$RUNNER_TEMP/econbal-tests.log"
+          grep -F 'Ran 45 tests' "$RUNNER_TEMP/econbal-tests.log"
+          grep -Fx 'OK' "$RUNNER_TEMP/econbal-tests.log"
+      - name: Actually analyze six independent scenario inputs and 200 seeded synthetic runs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Research/B01-10/P17/W20_ECONBAL_001/rebuild_balance.py --scenarios Research/B01-10/P17/W20_ECONBAL_001/scenarios.json > "$RUNNER_TEMP/econbal-scenarios.json"
+          python Research/B01-10/P17/W20_ECONBAL_001/rebuild_balance.py --stress > "$RUNNER_TEMP/econbal-synthetic.json"
+          python - "$RUNNER_TEMP/econbal-scenarios.json" "$RUNNER_TEMP/econbal-synthetic.json" <<'PY'
+          import json,sys
+          report=json.load(open(sys.argv[1],encoding='utf8'))
+          cases=report['cases']
+          assert len(cases)==6
+          h=cases['twelve_victories_two_destroyed']['bootstrap_epoch_zero']
+          assert (h['per_win']['free'],h['per_win']['paid'],
+                  h['per_win']['charged_scrap'])==(12,12,840)
+          assert (h['per_run']['free'],h['per_run']['paid'],
+                  h['per_run']['charged_scrap'])==(1,23,1610)
+          assert h['delta_scrap_per_run_minus_per_win']==770
+          n=cases['twelve_victories_two_destroyed']['no_bootstrap_epoch_zero']
+          assert n['per_win']['charged_scrap']==910
+          stress=json.load(open(sys.argv[2],encoding='utf8'))
+          assert stress['episodes']==200
+          assert stress['attempts_each']==12
+          assert 'SYNTHETIC_ONLY' in stress['notice']
+          assert len(stress['aggregate'])==2
+          print('B01-10 ECONBAL ACTUAL_SCENARIO_EXECUTION 6/6 PASS '
+                '| BOOTSTRAP 2/2 PASS | SYNTHETIC_FIXED_SEED_EPISODES 200 PASS '
+                '| HUMAN_PLAYTEST NOT_RUN | UNITY NOT_RUN')
+          PY
+      - name: Upload original source test logs and clearly synthetic balance evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-10-econbal-original-${{ matrix.os }}-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/econbal-tests.log
+            ${{ runner.temp }}/econbal-scenarios.json
+            ${{ runner.temp }}/econbal-synthetic.json
+          retention-days: 14
+          if-no-files-found: warn
