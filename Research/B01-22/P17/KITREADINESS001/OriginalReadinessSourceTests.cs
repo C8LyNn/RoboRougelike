@@ -175,8 +175,8 @@ internal static class OriginalReadinessSourceTests
                 foreach(string file in new[]{"starter-cache.json","siege-cache.json","shared-gyro.json"})
                     Scenario(file,c,args[1]);
             }
-            Console.WriteLine("PASS_TOTAL "+passes+"/48");
-            return passes==48?0:2;
+            Console.WriteLine("PASS_TOTAL "+passes+"/49");
+            return passes==49?0:2;
         }
         catch(Exception e) {Console.Error.WriteLine(e.ToString());return 2;}
     }
