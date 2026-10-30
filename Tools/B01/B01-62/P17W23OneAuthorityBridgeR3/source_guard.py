@@ -27,10 +27,16 @@ def main(repo,out,receipt):
   if name in PIN:ready[name]=raw
  dest.mkdir()
  for name,raw in ready.items():(dest/name).write_bytes(raw)
+ (dest/"Original669SingleFileSaveSlot.cs").write_bytes(
+   git(repo,"show",HISTORY["original_669"][0]+":"+HISTORY["original_669"][1]))
  base=Path("Tools/B01/B01-62/P17W23OneAuthorityBridgeR3")
  storage=(base/"SingleAuthoritySaveSlotR3.cs").read_text()
  adapter=(base/"CanonicalSessionR3.cs").read_text()
  if "OpenExclusiveLease" in storage or 'private const string Lease = "slot.lease"' in storage or "ownerLease.Dispose()" in storage:
+  raise RuntimeError("COMPETING_B01_669_LEASE_SURVIVES")
+ if 'private const string Marker = "slot.canonical-v3"' not in storage or
+    'B0162_SINGLE_ENVELOPE_V3_OWNER' not in storage or
+    'private const string Marker = "slot.owner"' in storage:
   raise RuntimeError("COMPETING_B01_669_LEASE_SURVIVES")
  if "new CanonicalWorldGateway(gate,factory,this,physicalOwner)" not in adapter:
   raise RuntimeError("NO_SELECTED_V3_GATEWAY_BINDING")
