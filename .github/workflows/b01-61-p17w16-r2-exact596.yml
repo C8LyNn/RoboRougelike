@@ -1,0 +1,56 @@
+name: B01-61 W16 original selected #596 R2 independent source acceptance
+on:
+  push:
+    branches: [qa/b01-61-p17w16-r2-596-exact-green-acceptance]
+  pull_request:
+    paths:
+      - "Tools/B01/B01-61/P17W16R2Exact596QA/**"
+      - ".github/workflows/b01-61-p17w16-r2-exact596.yml"
+jobs:
+  exact-original-r2:
+    runs-on: ${{ matrix.os }}
+    strategy: {fail-fast: false, matrix: {os: [ubuntu-24.04, windows-2025]}}
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Original source blobs and owned QA scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-61/P17W16R2Exact596QA/source_guard.py 2>&1 | tee w16-pin.log
+      - name: Original R2 and frozen #556 source strict compilation
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build Tools/B01/B01-61/P17W16R2Exact596QA/Original596R2SourceQA.csproj -c Release --warnaserror 2>&1 | tee w16-build.log
+      - name: Real disk SaveLoad and checkpoint, generation, rollback and exact original source release gate
+        shell: bash
+        run: |
+          set +e
+          p=Tools/B01/B01-61/P17W16R2Exact596QA/Original596R2SourceQA.csproj
+          dotnet run --no-build --project "$p" -c Release -- --source > w16-source.log 2>&1
+          evidence=$?
+          cat w16-source.log
+          dotnet run --no-build --project "$p" -c Release -- --release > w16-release.log 2>&1
+          release=$?
+          cat w16-release.log
+          printf 'SOURCE_EXIT=%s CANONICAL_RELEASE_EXIT=%s UNITY_NATIVE=NOT_RUN\n' "$evidence" "$release" | tee w16-gate.txt
+          test "$evidence" = 0 && test "$release" = 3 || exit 1
+          grep -q B0161_W16_EXACT_596_R2_SOURCE_QA_GREEN w16-source.log || exit 1
+          grep -q B0161_W16_CANONICAL_RELEASE_HOLD w16-release.log || exit 1
+          echo "R2_ORIGINAL_SOURCE_QA_ACCEPTANCE_GREEN_CANONICAL_HOLD"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b01-61-w16-r2-original-${{ matrix.os }}
+          path: |
+            w16-pin.log
+            w16-build.log
+            w16-source.log
+            w16-release.log
+            w16-gate.txt
+          if-no-files-found: warn

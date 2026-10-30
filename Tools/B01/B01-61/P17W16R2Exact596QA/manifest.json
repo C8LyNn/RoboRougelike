@@ -1,0 +1,12 @@
+{
+  "package": "B01-61-P17W16-EXACT596-R2-ORIGINAL-SOURCE-QA",
+  "version": "1.0.0",
+  "tested_exact_new_sha": "efb2b06eafedab5469b57f163152d96aca3c5915",
+  "original_core_blob": "1f9e883c38101f214e4335867faa731f7ae67689",
+  "selected_save_556": "33094f154c7b91119b36d58aab285e6e83c5de57",
+  "frozen_game_510": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "files_qa_only": 6,
+  "unity_native": "NOT_RUN",
+  "canonical_save": "HOLD",
+  "merge": false
+}
