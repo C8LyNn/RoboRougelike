@@ -38,7 +38,8 @@ internal static class Program
     private sealed class W : IPreparedWorld
     {
         public RunSnapshot Data;
-        public bool Active,Destroyed, FailActivate,FailDeactivate,FailRetire;
+        public bool Active,Destroyed,FailActivate,FailRetire;
+        public bool FailDeactivate=false;
         public bool MutateOnActivate,ThrowOnCaptureAfterActivate;
         public int ActivationCount;
         public W(RunSnapshot p){Data=p;}
@@ -67,7 +68,8 @@ internal static class Program
     private sealed class F : IWorldFactory
     {
         public W? Last;
-        public bool FailFactory, FailActivate,FailRetire,MutateAfterActivate,ThrowAfterActivate;
+        public bool FailActivate,FailRetire,MutateAfterActivate;
+        public bool FailFactory=false,ThrowAfterActivate=false;
         public Action? DuringPrepare;
         public IPreparedWorld Prepare(RunSnapshot s)
         {
