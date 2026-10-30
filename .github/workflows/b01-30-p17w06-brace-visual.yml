@@ -1,0 +1,101 @@
+name: B01-30 P17W06 original source-locked bracing 3D visual GLB fixtures
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/b01-30-p17w06-brace-visual.yml'
+      - 'Tools/B01/TechArt/P17W06/P17BracingVis001/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-P17-geometry-production-and-real-Blender-receiver:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Fetch exact immutable original B01-23 3-rig source, not main fallbacks
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin refs/pull/375/head
+          test "$(git rev-parse FETCH_HEAD)" = "5666a39eabd4cea91b2b605a9eb99ea2f1e226e8"
+          mkdir -p build/B01-30/P17W06/BraceVis001/source
+          for name in P17_Flanker_Reinforced.json P17_Bulwark_Reinforced.json P17_Skirmisher_Reinforced.json P17_StructuralBracingKits.json; do
+            git show "FETCH_HEAD:Assets/PARTSIZE001/Bracing/P17/$name" \
+              > "build/B01-30/P17W06/BraceVis001/source/$name"
+          done
+          python3 Tools/B01/TechArt/P17W06/P17BracingVis001/source_contract.py \
+            --source build/B01-30/P17W06/BraceVis001/source
+      - name: Run source-level Python negative mutations before any Blender model authoring
+        run: |
+          set -euo pipefail
+          python3 -m py_compile Tools/B01/TechArt/P17W06/P17BracingVis001/*.py
+          python3 Tools/B01/TechArt/P17W06/P17BracingVis001/test_source_contract.py \
+            --source build/B01-30/P17W06/BraceVis001/source
+      - name: Install genuine Blender 4 for actual mesh generation and GLB reimport/render
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy python3-pil xvfb libegl1 libegl-mesa0 libgl1-mesa-dri libosmesa6
+          blender --version | head -n 2
+      - name: Generate three physically real ORIGINAL-SOURCE GLBs and Blender scene files
+        run: |
+          set -euo pipefail
+          blender --background --python-exit-code 1 \
+            --python Tools/B01/TechArt/P17W06/P17BracingVis001/export_visual_rigs.py \
+            -- --source build/B01-30/P17W06/BraceVis001/source \
+               --out build/B01-30/P17W06/BraceVis001/export
+      - name: Independent clean Blender process imports binary GLBs, checks 43 world positions, renders 6 actual PNGs
+        run: |
+          set -euo pipefail
+          xvfb-run -a -s '-screen 0 1280x1024x24' blender --background --python-exit-code 1 \
+            --python Tools/B01/TechArt/P17W06/P17BracingVis001/receive_glb_and_render.py \
+            -- --source build/B01-30/P17W06/BraceVis001/source \
+               --export build/B01-30/P17W06/BraceVis001/export \
+               --out build/B01-30/P17W06/BraceVis001/receiver
+      - name: Assert physical binary count, exact receipt, and render evidence without self attestations
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib,json,struct
+          from pathlib import Path
+          base=Path("build/B01-30/P17W06/BraceVis001")
+          exports=json.loads((base/"export/source-export-receipt.json").read_text())
+          result=json.loads((base/"receiver/actual-glb-receiver-qa.json").read_text())
+          assert result["result"]=="ACTUAL_GLBS_REIMPORTED_AND_6_PNG_RENDERED_PASS"
+          assert result["imported_parts_total"]==43
+          assert result["source_braces_highlighted"]==5
+          assert exports["source_validation"]["source_predicted_mitigation_pairs"]==6
+          assert len(exports["exports"])==3 and len(result["actual_blender_3d_proofs"])==3
+          assert len(list((base/"export").glob("*.glb")))==3
+          assert len(list((base/"export").glob("*.blend")))==3
+          assert len(list((base/"receiver").glob("*.png")))==6
+          for item in exports["exports"]:
+              for key in ("glb","blend"):
+                  file=base/"export"/item[key]
+                  assert file.is_file()
+                  assert len(file.read_bytes())==item[key+"_bytes"]
+                  assert hashlib.sha256(file.read_bytes()).hexdigest()==item[key+"_sha256"]
+          for item in result["actual_blender_3d_proofs"]:
+              for png in item["rendered_png"]:
+                  data=(base/"receiver"/png["file"]).read_bytes()
+                  assert data[:8]==b'\x89PNG\r\n\x1a\n'
+                  assert tuple(struct.unpack(">II",data[16:24]))==(960,720)
+                  assert len(data)==png["bytes"] and len(data)>16000
+                  assert hashlib.sha256(data).hexdigest()==png["sha256"]
+          print("B01_30_P17_3_GLB_3_BLEND_6_REAL_PNG_ALL_43_PARTS_AND_5_BRACES_GATE_PASS")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-30-P17W06-BRACEVIS001-3-GLB-3-BLEND-6-PNG
+          path: |
+            build/B01-30/P17W06/BraceVis001/export/*.glb
+            build/B01-30/P17W06/BraceVis001/export/*.blend
+            build/B01-30/P17W06/BraceVis001/export/source-export-receipt.json
+            build/B01-30/P17W06/BraceVis001/receiver/*.png
+            build/B01-30/P17W06/BraceVis001/receiver/actual-glb-receiver-qa.json
+          if-no-files-found: error
+          retention-days: 30
