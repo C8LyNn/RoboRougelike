@@ -32,8 +32,9 @@ R4={
  "independent_security":None,"independent_receiver":None,
  "lease_lifecycle":"ONDISABLE_RELEASE_SOURCE_RISK_NOT_NATIVE_PROVEN"}
 }
-OWNER={"authority":"B01-23","decision":"PENDING_FINAL_EXCLUSIVE_R4",
-       "winner_pr":None,"loser_pr":None,"comment_url":None}
+OWNER={"authority":"B01-23","decision":"ONE_FROZEN_R4_SOURCE_ONLY",
+       "winner_pr":647,"loser_pr":652,
+       "comment_url":"https://github.com/C8LyNn/RoboRougelike/pull/647"}
 API={"issue":666,"authority":"OWNER_APPROVED_NEW_VERSIONED_IMPLEMENTATION",
      "source_pr":None,"source_sha":None,"implemented":False,
      "independent_qa":"NOT_RUN","captured_private_rig_ledger":False,
@@ -52,7 +53,7 @@ ECON={"issue":668,"policy":"PROVISIONAL_PER_UNIQUE_VICTORY_EPOCH",
       "stale_restore_replay_denied":"NOT_IMPLEMENTED",
       "source252":"FROZEN","unit_price":"TUNABLE_UNDECIDED",
       "player_balancing_trials":0,"human_preference_measured":False}
-GATES={"selected_r4_g0":"PENDING_OWNER_CHOICE",
+GATES={"selected_r4_g0":"PENDING_FORMAL_B01_40",
        "new_r4_native_g1":"NOT_RUN","canonical_game_save":"HOLD",
        "codex_available":False,"codex_offer":"BLOCKED","codex_ack":"NONE",
        "g2":"HOLD","merged":False,"integrated":False,"released":False}
@@ -84,21 +85,23 @@ def check(d):
         seen.add(pr)
         req(row.get("source")==R4[pr],"R4 original SHA/package/QA scope mismatch")
         req(row.get("owner")=="B01-23" and row.get("parent")=="r3_642"
-            and row.get("admission")=="UNSELECTED_ORIGIN_ONLY",
+            and row.get("admission")==(
+              "SELECTED_SOURCE_QA_ONLY" if pr==647 else "ALT_HOLD"),
             "R4 candidacy cannot become a release")
         req(row.get("original_pr_url")==
             f"https://github.com/C8LyNn/RoboRougelike/pull/{pr}","R4 PR URL")
         req(row.get("tested_source_only") is True,"not producer source evidence")
-        req(row.get("independent_formal_g0")=="PENDING","G0 needs new owner+receiver")
+        req(row.get("independent_formal_g0")==(
+            "PENDING" if pr==647 else "ALT_HOLD"),"G0 needs owner + receiver")
         req(row.get("native_unity")=="NOT_RUN","native never auto passes")
     req(seen==set(R4),"both R4 original records required")
     return {"schema":SCHEMA,
-     "verdict":"HOLD_R4_EXCLUSIVE_OWNER_DECISION_AND_NATIVE_API",
-     "r4_final_pr":None,"r4_final_sha":None,
+     "verdict":"HOLD_SELECTED_647_FORMAL_G0_AND_NATIVE_API",
+     "r4_final_pr":647,"r4_final_sha":R4[647]["sha"],
      "r4_candidates":[647,652],"alternative_mixing_forbidden":True,
      "r4_647_independent_source_qa":"GREEN_ONLY_FOR_ORIGINAL_647",
      "r4_652_lease_lifecycle":"SOURCE_RISK_NOT_EXACT_INDEPENDENT_QA",
-     "formal_selected_r4_g0":"PENDING","native_unity_g1":"NOT_RUN",
+     "formal_selected_r4_g0":"PENDING_B01_40","native_unity_g1":"NOT_RUN",
      "canonical_api":"AUTHORIZED_TO_DEVELOP_NOT_IMPLEMENTED",
      "canonical_game_save":"HOLD","codex_ack":"NONE",
      "codex_offer":"BLOCKED","g2":"HOLD",
