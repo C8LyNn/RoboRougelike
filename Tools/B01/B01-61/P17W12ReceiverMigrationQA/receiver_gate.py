@@ -9,6 +9,8 @@ import argparse
 import contextlib
 import hashlib
 import importlib.util
+import io
+import zipfile
 import json
 import pathlib
 import re
@@ -81,6 +83,7 @@ def scan_receiver(root):
     require(assets.is_dir() and not assets.is_symlink(),"RECEIVER_ASSETS_NOT_PRESENT")
     violations=[]
     scanned=0
+    seen_guids={}
     for path in sorted(assets.rglob("*")):
         rel=path.relative_to(root).as_posix()
         if path.is_symlink():
@@ -88,13 +91,21 @@ def scan_receiver(root):
             continue
         if not path.is_file():continue
         suffix=path.suffix.lower()
-        if suffix not in UNITY_EXT|{".cs"}:continue
+        if suffix not in UNITY_EXT|{".cs",".meta"}:continue
         scanned+=1
         try:txt=path.read_text(encoding="utf-8")
         except UnicodeDecodeError:
             violations.append(rel+":NON_UTF8_UNINSPECTED")
             continue
-        if suffix in UNITY_EXT:
+        if suffix==".meta":
+            for found in re.findall(r"(?mi)^guid:\s*([0-9a-f]{32})\s*$",txt):
+                key=found.lower()
+                if key in seen_guids:
+                    violations.append(rel+":DUPLICATE_UNITY_GUID_WITH_"+seen_guids[key])
+                else:seen_guids[key]=rel
+                if key in LEGACY_GUIDS:
+                    violations.append(rel+":LEGACY_COMPONENT_META_"+LEGACY_GUIDS[key].split()[0])
+        elif suffix in UNITY_EXT:
             for guid,label in LEGACY_GUIDS.items():
                 if re.search(r"(?i)\bguid:\s*"+guid+r"\b",txt):
                     violations.append(rel+":LEGACY_GUID_"+label.split()[0])
@@ -111,11 +122,24 @@ def scan_receiver(root):
     return {"inspected_files":scanned,"violations":violations,
             "status":"PASS_SOURCE_SCAN_ONLY" if not violations else "HOLD_LEGACY_REACHABLE"}
 
+def verify_staged_selected_bytes(root,archive):
+    """Require EXACT actual frozen producer bytes, not a similarly named #511 alternative."""
+    root=pathlib.Path(root)
+    with zipfile.ZipFile(io.BytesIO(archive)) as z:
+        data={n:z.read(n) for n in z.namelist()}
+    conflicts=[]
+    for name,original in data.items():
+        path=root/name
+        if path.is_symlink() or not path.is_file() or path.read_bytes()!=original:
+            conflicts.append(name)
+    return conflicts
+
 def stage_and_scan(module,raw,receiver_dir):
     target=pathlib.Path(receiver_dir)
     require(not target.exists(),"REFUSE_OVERWRITE_RECEIVER_PATH")
     module.stage(raw,target)
     result=scan_receiver(target)
+    result["selected_source_byte_conflicts"]=verify_staged_selected_bytes(target,raw)
     return target,result
 
 def report():
@@ -123,7 +147,7 @@ def report():
         raw,manifest=archive_attestation(producer)
         with tempfile.TemporaryDirectory(prefix="b0161_w12_receiver_") as parent:
             target,scan=stage_and_scan(producer,raw,pathlib.Path(parent)/"selected_only")
-            require(not scan["violations"] and scan["inspected_files"]>0,
+            require(not scan["violations"] and not scan["selected_source_byte_conflicts"] and scan["inspected_files"]>0,
                     "SELECTED_SOURCE_CONTAINS_UNEXPECTED_LEGACY")
             producer.rollback(raw,target)
             require(not target.exists(),"SELECTED_STAGE_ROLLBACK_LEFTOVER")
@@ -144,10 +168,13 @@ def main():
     receipt=report()
     if args.receiver:
         receiver=scan_receiver(args.receiver)
+        with frozen_producer() as producer:
+            data,_=archive_attestation(producer)
+        receiver["selected_source_byte_conflicts"]=verify_staged_selected_bytes(args.receiver,data)
         receipt["actual_codex_receiver"]=receiver
         # A read-only scan cannot prove ownership, ACK, Unity native, or integration.
     print(json.dumps(receipt,sort_keys=True))
-    if args.receiver and receipt["actual_codex_receiver"]["violations"]:
+    if args.receiver and (receipt["actual_codex_receiver"]["violations"] or receipt["actual_codex_receiver"]["selected_source_byte_conflicts"]):
         print("RECEIVER_SOURCE_MIGRATION_HOLD_LEGACY",flush=True)
         raise SystemExit(3)
     if args.release:
