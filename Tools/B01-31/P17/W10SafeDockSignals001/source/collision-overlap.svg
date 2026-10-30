@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+<title>Dock blocked by physical overlap; diagnostic only</title>
+<g stroke-linejoin="round" stroke-linecap="round">
+<path d="M90 18h76l72 72v76l-72 72H90l-72-72V90Z" fill="#531E29" stroke="#F8787D" stroke-width="11"/>
+<rect x="53" y="85" width="102" height="89" rx="11" fill="#161F2E" stroke="#FFE2D9" stroke-width="10" transform="rotate(-12 104 130)"/>
+<rect x="108" y="74" width="101" height="91" rx="11" fill="#263849" stroke="#F8787D" stroke-width="10" transform="rotate(12 159 120)"/>
+<path d="M100 105l62 60m0-60l-62 60" stroke="#FFE2D9" stroke-width="16"/>
+<circle cx="128" cy="200" r="7" fill="#F8787D"/>
+</g></svg>

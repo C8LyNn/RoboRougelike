@@ -1,0 +1,48 @@
+name: B01-31 P17 W10 original Safe Dock diagnostic icons physical PNG+Unity sprite ZIP
+on:
+  push:
+    branches: [art/b01-31-p17w10-safe-dock-diagnostics]
+    paths:
+      - 'Tools/B01-31/P17/W10SafeDockSignals001/**'
+      - '.github/workflows/b01-31-p17w10-safe-dock-diagnostics.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01-31/P17/W10SafeDockSignals001/**'
+      - '.github/workflows/b01-31-p17w10-safe-dock-diagnostics.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-art-physical-export:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned independent source-vector and image rendering libraries
+        run: python -m pip install --disable-pip-version-check "CairoSVG==2.8.2" "Pillow==11.3.0"
+      - name: Actually author-raster four vector icons into twelve PNG sprites two boards and original Unity ZIP
+        run: python Tools/B01-31/P17/W10SafeDockSignals001/build_signals.py --output build/B01-31/P17W10/SafeDockSignal001
+      - name: Verify actual physical bytes, tamper coverage, and deterministic rerender
+        shell: bash
+        run: |
+          set -euo pipefail
+          F=build/B01-31/P17W10/SafeDockSignal001
+          (cd "$F" && find . -type f -print0 | sort -z | xargs -0 sha256sum) > /tmp/original-before.sha256
+          test "$(find "$F/preview" -maxdepth 1 -type f -name '*.png' | wc -l)" -eq 12
+          test "$(find "$F" -maxdepth 1 -type f -name '*.png' | wc -l)" -eq 2
+          test -s "$F/B0131-SafeDockSignals-UnityImport.zip"
+          test -s "$F/receipt.json"
+          python Tools/B01-31/P17/W10SafeDockSignals001/build_signals.py --output "$F"
+          (cd "$F" && find . -type f -print0 | sort -z | xargs -0 sha256sum) > /tmp/original-after.sha256
+          cmp /tmp/original-before.sha256 /tmp/original-after.sha256
+          echo "SAFE_DOCK_ORIGINAL_ART_DETERMINISM_PASS all actual PNGs ZIP and receipt exactly byte-identical"
+      - name: Upload actual original graphic source-derived art, Unity import and machine SHA receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0131-P17W10-SAFE-DOCK-ORIGINAL-SVG-PNG-UNITY-SPRITES
+          path: build/B01-31/P17W10/SafeDockSignal001/
+          retention-days: 30
+          if-no-files-found: error

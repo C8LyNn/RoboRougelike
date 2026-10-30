@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+<title>Collision query capacity exhausted; safety must fail closed</title>
+<g stroke-linejoin="round" stroke-linecap="round">
+<path d="M45 18h166l27 27v166l-27 27H45l-27-27V45Z" fill="#203B46" stroke="#64D7EC" stroke-width="11"/>
+<rect x="48" y="47" width="160" height="162" rx="12" fill="#101F2C" stroke="#D4FAFF" stroke-width="8"/>
+<path d="M64 78h128M64 112h128M64 146h128" stroke="#64D7EC" stroke-width="7" stroke-dasharray="17 12"/>
+<circle cx="78" cy="177" r="8" fill="#D4FAFF"/><circle cx="110" cy="177" r="8" fill="#D4FAFF"/><circle cx="142" cy="177" r="8" fill="#D4FAFF"/>
+<rect x="165" y="165" width="57" height="57" rx="9" fill="#172430" stroke="#FFCD7A" stroke-width="8"/>
+<path d="M193 176v24" stroke="#FFCD7A" stroke-width="9"/><circle cx="193" cy="209" r="4" fill="#FFCD7A"/>
+</g></svg>
