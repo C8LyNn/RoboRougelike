@@ -88,7 +88,7 @@ jobs:
                   f=root/"producer"/entry[kind]["file"];data=f.read_bytes()
                   assert len(data)==entry[kind]["bytes"]
                   assert hashlib.sha256(data).hexdigest()==entry[kind]["sha256"]
-                  if kind=="fbx":assert data[:22]==b"Kaydara FBX Binary  \x00\x1a\x00"
+                  if kind=="fbx":assert data.startswith(b"Kaydara FBX Binary  \x00\x1a\x00")
                   if kind=="png":
                       assert data[:8]==b'\x89PNG\r\n\x1a\n'
                       assert tuple(struct.unpack(">II",data[16:24]))==(960,720)
