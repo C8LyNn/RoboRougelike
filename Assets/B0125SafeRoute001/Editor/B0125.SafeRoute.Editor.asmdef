@@ -1,0 +1,18 @@
+{
+  "name": "B0125.SafeRoute.Editor",
+  "rootNamespace": "B0125.SafeRoute",
+  "references": [
+    "B0125.SafeRoute.Runtime"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

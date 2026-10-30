@@ -1,0 +1,14 @@
+{
+  "name": "B0125.SafeRoute.Runtime",
+  "rootNamespace": "B0125.SafeRoute",
+  "references": [],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
