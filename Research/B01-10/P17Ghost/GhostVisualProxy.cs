@@ -143,8 +143,8 @@ namespace RoboRougelike.B0110.TrainingGhost
                 return;
             float width = Mathf.Min(390f, Mathf.Max(240f, Screen.width - 20f));
             float x = Mathf.Max(10f, Screen.width - width - 10f);
-            float y = Mathf.Max(10f, Screen.height - 125f);
-            GUI.Box(new Rect(x, y, width, 115f),
+            float y = Mathf.Max(10f, Screen.height - 155f);
+            GUI.Box(new Rect(x, y, width, 145f),
                 "CHL VISUAL DRILL / " + drill.Label + " (no physics)");
             GUI.Label(new Rect(x + 10f, y + 22f, width - 20f, 20f),
                 "Visual segment: " + practiceTransport.ReferencePositionSeconds.ToString("0.00")
@@ -179,6 +179,17 @@ namespace RoboRougelike.B0110.TrainingGhost
                 practiceTransport.SetSpeed(1f);
             if (GUI.Button(new Rect(x + 40f + 3f * button, y + 78f, button, 24f), "2x"))
                 practiceTransport.SetSpeed(2f);
+
+            // Opt-in one-shot study: keep the actual final pose on screen
+            // until Play or Restart. Loop is the backwards-compatible default.
+            bool hold = practiceTransport.RepeatMode
+                == GhostPracticeRepeatMode.StopAtEnd;
+            if (GUI.Button(new Rect(x + 10f, y + 109f, width - 20f, 25f),
+                hold ? "Repeat: Stop at end (click to loop)"
+                     : "Repeat: Loop (click to stop at end)"))
+                practiceTransport.SetRepeatMode(hold
+                    ? GhostPracticeRepeatMode.Loop
+                    : GhostPracticeRepeatMode.StopAtEnd);
         }
 
         private void EnsureVisual()
