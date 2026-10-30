@@ -41,6 +41,10 @@ OWN.add(".github/workflows/b01-60-p17w14-native-xml-case-gate.yml")
 OWN|={"Tools/B01/B01-60/P17W15NativePairGate/"+n for n in
      ("test_native_pair_gate.py","README.md","manifest.json")}
 OWN.add(".github/workflows/b01-60-p17w15-native-dual-suite-gate.yml")
+# W16 QA-only: reject native PASS if Unity import mutates selected owner or adds code.
+OWN|={"Tools/B01/B01-60/P17W16NativeSourceIntegrity/"+n for n in
+     ("test_source_integrity.py","README.md","manifest.json")}
+OWN.add(".github/workflows/b01-60-p17w16-native-source-integrity.yml")
 PREFIXES=("Assets/B0123DebrisRepulse001","Assets/B0123SecureReattachV2")
 NATIVE="Assets/B0160SecureV2NativeQA"
 PROJECT_EXTRA=("Packages/manifest.json","Packages/packages-lock.json",
@@ -281,6 +285,53 @@ def rollback(data,items,root):
  # Fail-closed scan completes BEFORE the first destructive operation.
  shutil.rmtree(root)
  require(not root.exists(),"rollback did not remove QA project")
+def require_native_source_integrity(project, selected):
+ # W16: Source-locked inputs must stay byte-identical after EACH real Unity
+ # Editor suite, rather than trusting the original preflight ZIP alone.
+ # Unity-generated Library/Temp/Logs caches are deliberately out of scope.
+ require(project.is_dir() and not project.is_symlink(),
+         "NATIVE_SOURCE_CHANGED: selected disposable project missing/symlink")
+ expected_assets={p:raw for p,raw in selected.items() if p.startswith("Assets/")}
+ require(expected_assets,"NATIVE_SOURCE_CHANGED: empty selected Assets contract")
+ expected_dirs={"Assets"}
+ for p in expected_assets:
+  parent=PurePosixPath(p).parent
+  while str(parent)!=".":
+   expected_dirs.add(str(parent))
+   parent=parent.parent
+ observed_assets={}
+ observed_dirs={"Assets"}
+ assets=project/"Assets"
+ require(assets.is_dir() and not assets.is_symlink(),
+         "NATIVE_SOURCE_CHANGED: Assets root missing/symlink")
+ for entry in assets.rglob("*"):
+  require(not entry.is_symlink(),
+          "NATIVE_SOURCE_CHANGED: symlink introduced by Unity import: "+str(entry))
+  rel=entry.relative_to(project).as_posix()
+  if entry.is_dir():
+   observed_dirs.add(rel)
+  elif entry.is_file():
+   observed_assets[rel]=entry.read_bytes()
+  else:
+   raise AssertionError("NATIVE_SOURCE_CHANGED: special Assets node "+rel)
+ require(set(observed_assets)==set(expected_assets),
+         "NATIVE_SOURCE_CHANGED: missing/injected Assets: "+
+         repr(sorted(set(observed_assets)^set(expected_assets))))
+ require(observed_dirs==expected_dirs,
+         "NATIVE_SOURCE_CHANGED: foreign/missing Assets directory: "+
+         repr(sorted(observed_dirs^expected_dirs)))
+ for path,raw in expected_assets.items():
+  require(observed_assets[path]==raw,
+          "NATIVE_SOURCE_CHANGED: selected Unity source byte drift "+path)
+ # These original project dependency/version inputs are also frozen.
+ for path in PROJECT_EXTRA:
+  if path in selected:
+   check=project/path
+   require(check.is_file() and not check.is_symlink() and
+           check.read_bytes()==selected[path],
+           "NATIVE_SOURCE_CHANGED: selected project metadata drift "+path)
+ return len(expected_assets)
+
 def expected_independent_native_cases(platform):
  # Test identities from the existing frozen #532 independent Unity NUnit source,
  # not merely a potentially forged summary 'passed=14' counter.
@@ -410,6 +461,9 @@ def main():
      print("B01_60_W12_NATIVE_FAILED_OR_ACTIVATION_BLOCKED",platform,
            "returncode",started.returncode,"xml_exists",xml.exists())
      return 4
+    # W16: verify original gameplay W06/#510 and QA fixture bytes are still
+    # exact after Unity import; no foreign Assets code or metadata rewrite.
+    require_native_source_integrity(project,combined)
     # W15: BOTH native suites must have their own valid original Editor.log
     # and all exact independent NUnit cases; never trust only the last suite.
     require_editor_version_log(log)

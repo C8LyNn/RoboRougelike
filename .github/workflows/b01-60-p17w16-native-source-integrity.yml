@@ -1,0 +1,95 @@
+name: B01-60 P17W16 real source provenance after mock Unity import (G1 NOT_RUN)
+on:
+  push:
+    branches: [qa/b01-60-p17w16-native-source-provenance-gate-r5]
+    paths:
+      - 'Tools/B01/B01-60/P17W12NativeSecureV2QA/runner.py'
+      - 'Tools/B01/B01-60/P17W15NativePairGate/test_native_pair_gate.py'
+      - 'Tools/B01/B01-60/P17W16NativeSourceIntegrity/**'
+      - '.github/workflows/b01-60-p17w16-native-source-integrity.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-60/P17W12NativeSecureV2QA/runner.py'
+      - 'Tools/B01/B01-60/P17W15NativePairGate/test_native_pair_gate.py'
+      - 'Tools/B01/B01-60/P17W16NativeSourceIntegrity/**'
+      - '.github/workflows/b01-60-p17w16-native-source-integrity.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-frozen-W15-real-source-mutations-red-versus-new-source-guard-green:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Pin selected game Save and prior immutable B01-60 QA source objects
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin d94400d95d13db7f27e1533df05c9292d5380431
+          git fetch --no-tags origin 33094f154c7b91119b36d58aab285e6e83c5de57
+          git fetch --no-tags origin 95843dc3c5f1d899091749cf7208bf43858abc6a
+          git fetch --no-tags origin 4303e62b0339c6cdc828478a06b6e2c9c79e6e13
+          git fetch --no-tags origin ed0234d8a3b1b3bc85f3d0a07bbe44b065c96508
+          git fetch --no-tags origin 5778023163d8b51d23abfebaa17119e21bd5e131
+          git fetch --no-tags origin 33a32b8bd9ab40467ab1a17b5684926a37dbd4d3
+          git fetch --no-tags origin cb2b3a76e84266e2730fffc4ab048c1039f0652f
+      - name: Actually execute original immutable W15 native main with 8 physical source/file/folder mutations (subprocess SYNTHETIC, not Unity)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W16NativeSourceIntegrity/test_source_integrity.py 2>&1 | tee b01-60-w16-source-integrity.log
+          cp b01-60-w16-source-integrity.log qa-w16-native-source-integrity-evidence/stdout.log
+      - name: Regression previous exact W15 native dual-suite result gate (still synthetic non-Unity)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W15NativePairGate/test_native_pair_gate.py 2>&1 | tee b01-60-w16-previous-pair-gate.log
+          cp b01-60-w16-previous-pair-gate.log qa-w16-native-source-integrity-evidence/previous-pair-gate.log
+      - name: Regression W14 exact case fullnames and W13 safe physical scratch rollback
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W14NativeResultProof/test_native_result_gate.py 2>&1 | tee b01-60-w16-old-xml.log
+          cp b01-60-w16-old-xml.log qa-w16-native-source-integrity-evidence/old-xml.log
+          python Tools/B01/B01-60/P17W13NativeRollbackQA/audit.py 2>&1 | tee b01-60-w16-safe-rollback.log
+          cp b01-60-w16-safe-rollback.log qa-w16-native-source-integrity-evidence/safe-rollback.log
+      - name: Run unchanged native source packaging preflight, and verify impossible Editor exit 3 + NO real native artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          python Tools/B01/B01-60/P17W12NativeSecureV2QA/runner.py --mode native --unity /B01/NO_LICENSED_UNITY_6000.3.14f1 --out qa-w16-source-only-NOT_RUN 2>&1 | tee b01-60-w16-native-NOT_RUN.log
+          exit_native="${PIPESTATUS[0]}"
+          set -e
+          if [ "$exit_native" -ne 3 ]; then echo "B01_60_W16_EXPECTED_EXIT3_GOT=$exit_native"; exit 1; fi
+          grep -F 'B01_60_W12_NATIVE_NOT_RUN: authorized Unity executable missing' b01-60-w16-native-NOT_RUN.log
+          test ! -e qa-w16-source-only-NOT_RUN/EditMode.xml
+          test ! -e qa-w16-source-only-NOT_RUN/PlayMode.xml
+          test ! -e qa-w16-source-only-NOT_RUN/EditMode-Editor.log
+          test ! -e qa-w16-source-only-NOT_RUN/PlayMode-Editor.log
+          echo 'B01_60_W16_REAL_NATIVE_UNITY_G1_NOT_RUN_NO_ORIGINAL_XML_NO_EDITORLOG'
+          cp b01-60-w16-native-NOT_RUN.log qa-w16-native-source-integrity-evidence/native-NOT_RUN.log
+      - name: Archive exact original-source receipt and declared non-native negative controls
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-60-w16-real-source-integrity-NOT_NATIVE-${{ matrix.os }}
+          path: |
+            qa-w16-native-source-integrity-evidence/
+            b01-60-w16-source-integrity.log
+            b01-60-w16-previous-pair-gate.log
+            b01-60-w16-old-xml.log
+            b01-60-w16-safe-rollback.log
+            b01-60-w16-native-NOT_RUN.log
+          retention-days: 21
+          if-no-files-found: warn

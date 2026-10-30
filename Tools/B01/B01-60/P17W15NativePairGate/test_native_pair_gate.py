@@ -46,22 +46,53 @@ def synthetic_xml(path,mod,platform,scenario):
  ET.ElementTree(root).write(path,encoding="utf-8",xml_declaration=True)
 def run_real_main_with_subprocess_stub(mod,path,scenario):
  """Only SOURCE control flow is real, subprocess is NOT Unity and is labeled stub."""
- out=path/(("old-" if mod.__name__=="frozen_original_W14" else "new-")+scenario)
+ out=path/(("old-" if mod.__name__.startswith("frozen_original_") else "new-")+scenario)
  unity=path/"SYNTHETIC_NOT_UNITY_EXECUTABLE"
  unity.touch()
  # Override pure staging to avoid copying source; source-control logic is executed
  # unmodified, and the original XML parser + Editor.log validation are real.
- mod.named_sources=lambda:{"Assets/STUB-ONLY":b"this is never a real game source"}
+ mod.named_sources=lambda:{
+  "Assets/STUB-ONLY":b"this is never a real game source",
+  "Packages/manifest.json":b"source test manifest",
+  "Packages/packages-lock.json":b"source test packages lock",
+  "ProjectSettings/ProjectVersion.txt":b"m_EditorVersion: 6000.3.14f1\\n",
+ }
  mod.extra_test_assets=lambda:{}
  mod.guid_check=lambda items:0
  mod.zip_data=lambda items,receipt:b"SYNTHETIC_QA_NOT_REAL_UNITY_ZIP"
  mod.verify=lambda archive,items:None
  mod.negatives=lambda archive,items:10
- mod.stage=lambda archive,items,root:root.mkdir(parents=False)
+ def isolated_fake_staging(archive,items,root):
+  root.mkdir(parents=False)
+  for p,raw in items.items():
+   dest=root/p
+   dest.parent.mkdir(parents=True,exist_ok=True)
+   dest.write_bytes(raw)
+ mod.stage=isolated_fake_staging
  def stub_process(command,**kwargs):
   platform=command[command.index("-testPlatform")+1]
   xml=Path(command[command.index("-testResults")+1])
   log=Path(command[command.index("-logFile")+1])
+  # W16 source-integrity regression: this is a physical mutation of a
+  # disposable TEST-only staged directory, never of real Unity/producer code.
+  if platform=="EditMode" and scenario.startswith("source_"):
+   project=Path(command[command.index("-projectPath")+1])
+   fixture=project/"Assets/STUB-ONLY"
+   if scenario=="source_modified":fixture.write_bytes(b"TAMPERED SOURCE AFTER IMPORT")
+   elif scenario=="source_removed":fixture.unlink()
+   elif scenario=="source_new_code":
+    (project/"Assets/Unowned.cs").write_text("// injected")
+   elif scenario=="source_new_empty":
+    (project/"Assets/UnownedEmpty").mkdir()
+   elif scenario=="source_new_asmdef":
+    (project/"Assets/Foreign.asmdef").write_text("{}")
+   elif scenario=="source_manifest_modified":
+    (project/"Packages/manifest.json").write_text("mutated after import")
+   elif scenario=="source_version_modified":
+    (project/"ProjectSettings/ProjectVersion.txt").write_text("6000.0.0f1")
+   elif scenario=="source_meta_added":
+    (project/"Assets/Injected.cs.meta").write_text("guid: 99999999999999999999999999999999")
+   else:raise AssertionError("unknown W16 synthetic source mutation "+scenario)
   synthetic_xml(xml,mod,platform,scenario)
   if platform=="PlayMode" or scenario not in ("edit_missing_log",):
    if platform=="EditMode" and scenario=="edit_wrong_editor":
