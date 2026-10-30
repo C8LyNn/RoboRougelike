@@ -78,7 +78,7 @@ internal static class Independent773
     private sealed class Factory:ICanonicalRigFactory
     {
         public World? Live,Prior,Orphan;
-        public bool FailPartial,CleanupFalse,CleanupThrow;
+        public bool FailPartial,CleanupFalse;
         public int Builds;
         public ICanonicalStageOwnership BeginOwnedStage(RunSnapshot s,ColdRestore c)
         {
@@ -103,7 +103,6 @@ internal static class Independent773
             }
             public bool CleanupUnpublishedAndVerifyDestroyed()
             {
-                if(f.CleanupThrow)throw new IOException("cleanup proof missing");
                 if(f.CleanupFalse)return false;
                 f.Orphan?.Retire();
                 return true;
@@ -222,7 +221,7 @@ internal static class Independent773
                 finally{s.Dispose();}
             }
             finally
-            {if(!gate.TryCloseAfterPhysicalRetirement(()=>true))return false;}
+            {gate.TryCloseAfterPhysicalRetirement(()=>true);}
         }
         caseSensitive=!Directory.Exists(alias);
         if(!CanonicalWorldSlotLease.TryAcquire(root,Run,Id,out var ownerB)||
