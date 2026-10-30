@@ -1,0 +1,25 @@
+# B01-61 / PASS17 WAVE25 — independent exact #773 selected-#749 successor QA (NOT owner-selection)
+
+**HQ:** [#731](https://github.com/C8LyNn/RoboRougelike/issues/731). Single former selected #749 `8634e71dfcf633323073fe584a6c0884f1ca5d23` has independently confirmed [#767](https://github.com/C8LyNn/RoboRougelike/pull/767) raw public Store API allows multiple path Save forks. Proposed one-lineage fix [#773](https://github.com/C8LyNn/RoboRougelike/pull/773), pinned exact HEAD `3aaaec4027ee246fbfb6f209179f0e9507363473` (B01-62); **NOT selected pending independent review**; #753/#741 ALT_HOLD, never co-install.
+
+## New independent security source finding to physically test
+
+New production `CanonicalSingleAuthorityStoreV3R2.OwnerMatches` constructs an exact canonical path but compares `Path.GetFullPath(expected)` and `Path.GetFullPath(directory)` via **`StringComparison.OrdinalIgnoreCase` on EVERY OS**. On a case-sensitive Linux filesystem, `.../run_61925_slot_GUID` and `.../RUN_61925_slot_GUID` are different real directories but case-insensitive compare says equal. A NEW legitimate physical V3 `.owner` lifetime can open the second raw Store when the earlier owner has retired, and produce a DIFFERENT valid frozen #556 generation 1 and consumed W06 ledger without altering the canonical first envelope. This is raw public-store bypass, NOT proof the selected Session path is presently exploitable by ordinary game clients. The previous #749 issue fixed full-path sibling but code's Windows-style comparison may leave distinct on-disk aliases. **Source release stays HOLD if real Linux duplicate physical files are observed.** On standard case-insensitive Windows volume, aliases resolve to the same directory; raw TryCreateNew should reject the existing directory.
+
+## Genuine original executable tests
+
+This B01-61 independent, added-only package directly compiles *unchanged original* #773 Store+Session source, selected #729 V3 Gateway+`CanonicalWorldSlotLease`, frozen original #556 codec, original W06 and #510 specs, C#9/.NET8 strict warnings-as-errors. Actual OS `FileStream(FileShare.None)`, binary Save, same-directory rename and authentic separate CLR processes are executed. Test-owned `ICanonicalRigFactory` is synthetic: no native Unity/PhysX. New C# original assertion cases per OS (9):
+- Four original Light/Heavy frozen #556/W06 stable consumed ID bitmasks.
+- Raw legitimate canonical Store, sibling FOREIGN path rejected, per-owner object duplicate denied even after Dispose and independent child OS process blocked while physical root lease held; other CLR allowed only after verified retirement.
+- New selected descendant Session real g1 Light→g2 Heavy binary and cold exact g2 replay; equal-generation ledger fork refused before private staging.
+- Partial owned-stage orphan Cleanup FALSE sticky Quarantine and Dispose may NOT release old .owner while synthetic physical root active; re-open only after explicit verified retirement.
+- Original atomic physical File.Move success then injected lost ACK sticky quarantine; fresh cold owner restores original frozen committed g1.
+- **NEW direct original raw public #773 CASEFOLD witness**: genuine original first .owner commits canonical frozen Light g1, proves retirement; subsequent genuine original .owner same RunId/Guid (different lifetime) opens uppercase directory alias using public fixed Store API, attempts Heavy g1 under that path. On POSIX case-sensitive disk expect TWO distinct true full binary `save.envelope` files and different original W06 consumed IDs; on Windows alias same directory and second CreateNew returns WrongOwner.
+
+Original source blob pins:
+- Proposed #773 `CanonicalSingleAuthorityStoreV3R2.cs` Git blob `3689238a16d706eda1bf4905cba8029cd2fe77aa` and `CanonicalSlotSessionV3R2.cs` `b3841132fbfc05da5708af4047f7db141a4abe91`
+- Immutable selected #729 gateway `21733278b6ab0669fccb6d085e0b6cf242792de2`, authority `a9331dd620336d8c42165d134dc8a5e05ed51873`
+- Frozen original #556 `b52e511c370f5fca56c74029050844dc8cbb7f9a`, W06 `fa1aa5e531927cbe73cf5fdfe161b4a981316db5`, original #510 spec `b680ed0ec969ac23203fa55eab7b90f8daa86e43`
+- #749 old originals remain unchanged at exact parent SHA; #753/#741 source not compiled, imported, staged, or selected.
+
+**Security principle:** a negative witness PASS means product remains RED, even if CI reports test pass. Do not recommend #773 as sole canonical successor unless defect absent in independent tested source or author publishes NEW versioned correction and re-QA. B01-62/B01-23 own product fixes; B01-00 owns canonical decision. B01-40 owns exact new source/GUID/migration G0, B01-41 independent concurrency, B01-60 native Unity G1 operator. W25 approved honest corruption/crash policy excludes sophisticated attacker valid envelope, but NO waiver of one canonical disk path and original correct ABI. Full real game #772 adapter not installed/connected to #773; G1=NOT_RUN, G0 full combined HOLD, G2 HOLD, Codex ACK NONE. No merge or edits to frozen/producer/Unity worktree or user PC.
