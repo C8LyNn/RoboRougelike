@@ -1,0 +1,59 @@
+name: B01-61 W20 original R4 647 genuine OS process checkpoint and rollback QA
+on:
+  push:
+    branches: [qa/b01-61-p17w19-r4-647-commit-recovery-process-cas]
+  pull_request:
+    paths:
+      - "Tools/B01/B01-61/W20Selected647ProcessQA/**"
+      - ".github/workflows/b01-61-w20-r4-647-process-transaction.yml"
+jobs:
+  original-R4-647:
+    runs-on: ${{ matrix.os }}
+    strategy: {fail-fast: false, matrix: {os: [ubuntu-24.04, windows-2025]}}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Exact original owner R4 Git source/QA scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-61/W20Selected647ProcessQA/source_guard.py 2>&1 | tee r4-source-pins.log
+      - name: Real original R4 C#9 compile, no source mutation
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build Tools/B01/B01-61/W20Selected647ProcessQA/OriginalR4IndependentQA.csproj -c Release --warnaserror 2>&1 | tee r4-build.log
+      - name: Execute real concurrent processes, ACK-loss, rollback, consumed IDs
+        shell: bash
+        run: |
+          set +e
+          proj=Tools/B01/B01-61/W20Selected647ProcessQA/OriginalR4IndependentQA.csproj
+          dotnet run --no-build --project "$proj" -c Release -- --evidence > r4-executed.log 2>&1
+          evidence=$?
+          cat r4-executed.log
+          dotnet run --no-build --project "$proj" -c Release -- --release > r4-release.log 2>&1
+          release=$?
+          cat r4-release.log
+          printf 'SOURCE_EXIT=%s RELEASE_EXIT=%s NATIVE_G1_NOT_RUN\n' "$evidence" "$release" | tee r4-verdict.txt
+          test "$evidence" = 0 && test "$release" = 3 || exit 1
+          grep -q B0161_W20_R4_647_ORIGINAL_SOURCE_SECURITY_GREEN r4-executed.log || exit 1
+          grep -q W20_R4_647_LOST_DURABLE_ACK_QUARANTINE_GREEN r4-executed.log || exit 1
+          grep -q W20_R4_647_POSTCOMMIT_CAPTURE_EXCEPTION_QUARANTINE_GREEN r4-executed.log || exit 1
+          grep -q W20_R4_647_LIVE_GAME_RELEASE_HOLD r4-release.log || exit 1
+          echo "R4_SOURCE_ONLY_GREEN_LIVE_RELEASE_HOLD"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b0161-w20-r4-647-${{ matrix.os }}
+          path: |
+            r4-source-pins.log
+            r4-build.log
+            r4-executed.log
+            r4-release.log
+            r4-verdict.txt
+          if-no-files-found: warn
