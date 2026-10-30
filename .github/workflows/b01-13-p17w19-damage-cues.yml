@@ -29,13 +29,13 @@ jobs:
       - name: Produce physical self-contained playable HTML
         shell: pwsh
         run: |
-          $out = Join-Path (Get-Location).Path 'damage-cue-tutorial.html'
+          $out = Join-Path $env:RUNNER_TEMP 'b01-13-w19-playable.html'
           node Research/B01-13/P17Q/damage_cues.mjs --output $out
           if ($LASTEXITCODE -ne 0 -or -not (Test-Path $out)) { throw 'PLAYABLE_HTML_GENERATION_FAILED' }
       - name: Upload exact source generated playable UX demo
         uses: actions/upload-artifact@v4
         with:
           name: B01-13-W19-Playable-${{ matrix.os }}-Node${{ matrix.node }}
-          path: damage-cue-tutorial.html
+          path: ${{ runner.temp }}/b01-13-w19-playable.html
           if-no-files-found: error
           retention-days: 14
