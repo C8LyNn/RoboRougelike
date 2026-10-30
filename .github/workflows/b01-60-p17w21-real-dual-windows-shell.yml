@@ -1,0 +1,84 @@
+name: B01-60 W21 original #684 REAL PowerShell5.1+7 source-only security (Unity G1 NOT_RUN)
+on:
+  push:
+    branches: [qa/b01-60-p17w21-dual-windows-shell-local-native-gate-r1]
+    paths:
+      - 'Tools/B01/B01-60/P17W21DualShellQA/**'
+      - '.github/workflows/b01-60-p17w21-real-dual-windows-shell.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-60/P17W21DualShellQA/**'
+      - '.github/workflows/b01-60-p17w21-real-dual-windows-shell.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-source-and-hardened-original-case-pins:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Restore selected original Git frozen owner history and exact source QA lineage
+        shell: bash
+        run: |
+          set -euo pipefail
+          for sha in d94400d95d13db7f27e1533df05c9292d5380431 cb2b3a76e84266e2730fffc4ab048c1039f0652f 33a32b8bd9ab40467ab1a17b5684926a37dbd4d3 c75cb6e52a0de11f27b570c34e08d32082af421f; do
+            git fetch --no-tags origin "$sha"
+          done
+      - name: Actual original #510 Unity authored 2+14 source pins and exact five own W21 paths, 8 adverse source security checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W21DualShellQA/test_source_integrity.py 2>&1 | tee B0160-W21-original-source-safe.log
+          grep -F 'B01_60_W21_DUAL_WINDOWS_SHELL_ADVERSARIAL_8_8_SOURCE_MUTATIONS_DENIED' B0160-W21-original-source-safe.log
+          grep -F 'B01_60_W21_UNITY6000_3_14f1_G1_NOT_RUN_CANONICAL_SAVE_HOLD' B0160-W21-original-source-safe.log
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0160-W21-ORIGINAL-SOURCE-ONLY-NOT-UNITY-${{ matrix.os }}
+          path: B0160-W21-original-source-safe.log
+          retention-days: 21
+  real-Windows-shell-source-negatives:
+    strategy:
+      fail-fast: false
+      matrix:
+        shell: [WindowsPowerShell51, PowerShell7]
+    runs-on: windows-2025
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Actual Windows shell source/physical disposable proof + modified W20 operator denial and missing Unity exit3
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Stop'
+          $temp=Join-Path $env:RUNNER_TEMP ("W21-source-temp-"+[Guid]::NewGuid().ToString("N"))
+          $proof=Join-Path $env:RUNNER_TEMP ("W21-evidence-"+[Guid]::NewGuid().ToString("N"))
+          New-Item -Path $temp -ItemType Directory | Out-Null
+          New-Item -Path $proof -ItemType Directory | Out-Null
+          $tool=Join-Path $env:GITHUB_WORKSPACE "Tools/B01/B01-60/P17W21DualShellQA/test_windows_shells.ps1"
+          & pwsh -NoProfile -File $tool -Shell ${{ matrix.shell }} -Repo $env:GITHUB_WORKSPACE -TempParent $temp -ProofParent $proof *>&1 | Tee-Object -FilePath ("B0160-W21-"+'${{ matrix.shell }}'+"-real-Windows.log")
+          if($LASTEXITCODE -ne 0) { throw "Real Windows ${{ matrix.shell }} source security tests failed: $LASTEXITCODE" }
+          $marker="B01_60_W21_${{ matrix.shell }}_REAL_WINDOWS_FOUR_SOURCE_GATES_PASS_NATIVE_G1_NOT_RUN"
+          if(!(Select-String -Path ("B0160-W21-"+'${{ matrix.shell }}'+"-real-Windows.log") -Pattern $marker -Quiet)){throw "Missing real Windows shell pass marker"}
+          Write-Host "B0160_W21_ACTUAL_WINDOWS_SHELL_PASS=${{ matrix.shell }}; REAL_EDITOR=NOT_RUN"
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0160-W21-REAL-WINDOWS-${{ matrix.shell }}-SOURCES-NOT-UNITY
+          path: B0160-W21-${{ matrix.shell }}-real-Windows.log
+          retention-days: 21
+          if-no-files-found: warn
