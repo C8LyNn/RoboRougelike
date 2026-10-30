@@ -11,7 +11,7 @@ const tmp=fn=>{const d=fs.mkdtempSync(path.join(os.tmpdir(),'b01-13-w24-study-')
 const yes=c=>({caseId:c.id,status:'ANSWER',answers:truth(c),elapsedMs:200});
 const skip=c=>({caseId:c.id,status:'SKIP',answers:null,elapsedMs:50});
 
-test('package unique, explicit exact owner approved policy',()=>{assert.equal(PACKAGE,'B01-13-APPROVED-GARAGE-HUMAN-STUDY-001/R1');assert.equal(POLICY,'OWNER_APPROVED_2026_10_30_ISSUE_731')});
+test('package unique, explicit exact owner approved policy',()=>{assert.equal(PACKAGE,'B01-13-APPROVED-GARAGE-HUMAN-STUDY-001/R2');assert.equal(POLICY,'OWNER_APPROVED_2026_10_30_ISSUE_731')});
 test('exact 8 independent original objective stimuli',()=>{assert.equal(CASES.length,8);assert.equal(new Set(CASES.map(x=>x.id)).size,8);assert.deepEqual(CATEGORIES,['deploy','loaner','quote','complete','free'])});
 test('each original case has only intended approved fields and stable enums',()=>{for(const c of CASES){assert.ok(['LIGHT','HEAVY'].includes(c.vehicle));assert.ok(['UNIQUE_WIN','REPLAY_WIN','LOSS','NONE'].includes(c.event));for(const k of ['coreAlive','next','functional','loanerSpent','pendingEarlier'])assert.equal(typeof c[k],'boolean');assert.ok([100,200].includes(c.purchase));assert.ok(c.description.length>30)}});
 test('normal deploy allowed for functional robot despite optional 0HP',()=>{assert.equal(truth(CASES[0]).deploy,'YES');assert.equal(truth(CASES[5]).deploy,'YES')});
@@ -55,3 +55,9 @@ test('output physically inside Git tree refused',()=>tmp(dir=>{fs.mkdirSync(path
 test('output path must be absolute',()=>assert.throws(()=>emit('study.html'),/ABSOLUTE_OUTPUT/));
 test('actual spawned Node CLI creates file and grounded JSON receipt',()=>tmp(dir=>{const file=path.join(dir,'study.html');const cmd=spawnSync(process.execPath,[fileURLToPath(new URL('./study.mjs',import.meta.url)),'--output',file],{encoding:'utf8'});assert.equal(cmd.status,0,cmd.stderr);assert.equal(JSON.parse(cmd.stdout).nativeUnity,'NOT_RUN');assert.match(fs.readFileSync(file,'utf8'),/id="quiz"/)}));
 test('actual spawned CLI rejects invalid invocation without partial writes',()=>tmp(dir=>{const f=path.join(dir,'x.html');const cmd=spawnSync(process.execPath,[fileURLToPath(new URL('./study.mjs',import.meta.url)),'--native-unity',f],{encoding:'utf8'});assert.equal(cmd.status,2);assert.match(cmd.stderr,/ARGS/);assert.ok(!fs.existsSync(f))}));
+
+// W25 original accessibility bug regressions — exact original W24 branch lacks focus handoff.
+test('focusable task, consent, summary headings exist for programmatic screen-reader focus',()=>{const h=render();for(const x of ['id="step" tabindex="-1"','id="welcome-title" tabindex="-1"','id="finish-title" tabindex="-1"'])assert.ok(h.includes(x),x)});
+test('begin and every next task explicitly focus the new heading',()=>{assert.match(CONTROLLER,/started=performance\.now\(\);step\.focus\(\)/);assert.match(CONTROLLER,/screen\.classList\.remove\('hidden'\)[\s\S]*?draw\(\)/)});
+test('finish screen transfers focus away from hidden form onto visible summary',()=>{assert.match(CONTROLLER,/by\('finish-title'\)\.focus\(\)/)});
+test('erase or stop returns focus to visible consent and privacy heading',()=>{assert.match(CONTROLLER,/by\('welcome-title'\)\.focus\(\)/)});
