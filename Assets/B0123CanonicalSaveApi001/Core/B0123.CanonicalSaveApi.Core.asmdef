@@ -1,0 +1,14 @@
+{
+  "name": "B0123.CanonicalSaveApi.Core",
+  "rootNamespace": "B01.CanonicalWorldApi001",
+  "references": ["B0123.DetachedSaveContract.Runtime"],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": true
+}
