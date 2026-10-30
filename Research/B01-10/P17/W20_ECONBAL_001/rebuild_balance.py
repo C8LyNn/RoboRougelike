@@ -17,6 +17,7 @@ CADENCES = ("per_win", "per_run")
 PRIORITIES = ("critical_first", "input_order")
 REWARD_TIMINGS = ("after_reservation", "before_reservation")
 APPROVED_PAID_QUOTE_PERCENT = 65
+QUOTE_ROUNDINGS = ("floor", "nearest_half_up_clamped")
 APPROVED_POLICY_ID = "B01-P17-W24-OWNER-APPROVED-DESIGN-ORACLE"
 
 
@@ -47,9 +48,14 @@ def validate(plan: dict) -> dict:
     percent = _number(plan.get("paid_quote_percent"), "paid_quote_percent", 1)
     if percent >= 100:
         raise InvalidScenario("discounted rebuild must cost less than purchase")
-    quote = purchase * percent // 100
-    # A positive purchase of 1 Scrap necessarily rounds the approved 65%
-    # quote down to 0. Zero-cost PAID reservations still count as PAID, not
+    rounding = plan.get("quote_rounding", "floor")
+    if rounding not in QUOTE_ROUNDINGS:
+        raise InvalidScenario("unsupported paid-quote rounding")
+    raw = purchase * percent
+    quote = (raw // 100 if rounding == "floor" else
+             min((raw + 50) // 100, purchase - 1))
+    # A positive purchase of 1 Scrap necessarily clamps the approved 65%
+    # quote to 0. Zero-cost PAID reservations still count as PAID, not
     # as an additional free-victory quota; preserve both distinct ledgers.
     if not 0 <= quote < purchase:
         raise InvalidScenario("rounded paid quote outside valid range")
@@ -98,6 +104,7 @@ def validate(plan: dict) -> dict:
                            core_alive_after, challenge_after))
     return {"initial_scrap": initial, "purchase_price": purchase,
             "paid_quote_percent": percent, "quote": quote,
+            "quote_rounding": rounding,
             "steps": tuple(normalized)}
 
 
@@ -332,6 +339,10 @@ def run_approved_plan(plan: dict, *,
     parsed = validate(plan)
     approved = dict(plan)
     approved["paid_quote_percent"] = APPROVED_PAID_QUOTE_PERCENT
+    # Preserve V6 (#764) half-up values 5->3,15->10,30->20,100->65.
+    # Fix the strict-cheaper P=1 boundary: nearest(0.65)=1 -> clamp to 0.
+    # This is a proposed inter-owner resolution, not a merged V6 change.
+    approved["quote_rounding"] = "nearest_half_up_clamped"
     out = run_plan(approved, cadence="per_win", bootstrap=False,
                    priority="critical_first", enforce_deploy_gate=True,
                    loaner_challenges=1, reward_timing=reward_timing)
@@ -340,7 +351,10 @@ def run_approved_plan(plan: dict, *,
     out["approved_one_free_per_verified_win_assumed"] = True
     out["approved_loaner_weaker_asset"] = "DESIGN_CONTRACT_ONLY_NOT_SPAWNED"
     out["source_quote_overridden_from"] = parsed["paid_quote_percent"]
-    out["quote_floor_formula"] = "purchase_price*65//100"
+    out["quote_policy_proposal"] = (
+        "B01-10_PROPOSED_V6_HALF_UP_CLAMP_MAX_PURCHASE_MINUS_1")
+    out["quote_formula"] = (
+        "min((purchase_price*65+50)//100, purchase_price-1)" )
     out["live_reward_settlement"] = "OWNER_IMPLEMENTATION_UNVERIFIED"
     # A fully approved temporary loaner is NOT sufficient if it wins but no
     # damaged essential component had any accepted reservation BEFORE that
