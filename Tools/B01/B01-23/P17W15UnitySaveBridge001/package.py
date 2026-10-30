@@ -49,7 +49,7 @@ def scope():
         "checkpoint.Commit(" not in core or
         "bool commitAttempted=false" not in core or
         "if(commitAttempted)" not in core or
-        "OnDisable(){/* keep slot lifetime owner" not in unity or
+        "OnDisable(){/* owner still owns its original live physics world" not in unity or
         "if(expectedRun!=runId" not in unity or
         "HostWorldLeaseRetirement.HoldUntilAllRootsGone" not in unity or
         "HostWorldLeaseRetirement.FailClosed" not in unity or
