@@ -591,24 +591,17 @@ def audit_final_w17(payload):
     choice = doc(r.get("owner_choice"), "owner_choice")
     if choice.get("owner") != "B01-23":
         raise AdmissionError("coordinator cannot claim B01-23 owner decision")
+    # W17 B01-23 original explicit owner freeze: ONLY #596. The #604
+    # B01-40/#62 receiver intake currently conflicts with this owner lock.
+    # A model-generated note or other role's selection never overrides #23.
     state = choice.get("state")
-    if state == "PENDING":
-        if (choice.get("selected_pr") is not None
-                or choice.get("loser_pr") is not None
-                or choice.get("decision_url") is not None):
-            raise AdmissionError("pending owner choice cannot imply selection")
-    elif state == "ONE_FROZEN":
-        n = choice.get("selected_pr")
-        if (n not in W17_CANDIDATES
-                or choice.get("loser_pr") != ({596, 604} - {n}).pop()
-                or not isinstance(choice.get("decision_url"), str)
-                or not re.fullmatch(
-                    r"https://github\.com/C8LyNn/RoboRougelike/"
-                    r"(?:issues|pull)/[1-9][0-9]*#issuecomment-[1-9][0-9]*",
-                    choice["decision_url"])):
-            raise AdmissionError("one explicit owner-frozen SHA/decision required")
-    else:
-        raise AdmissionError("invalid exclusive owner selection state")
+    if (state != "ONE_FROZEN"
+            or choice.get("selected_pr") != 596
+            or choice.get("loser_pr") != 604
+            or choice.get("decision_url") !=
+                "https://github.com/C8LyNn/RoboRougelike/pull/596#issuecomment-6529388456"):
+        raise AdmissionError("B01-23 sole frozen #596 owner decision; #604 ALT_HOLD")
+
     scope = doc(r.get("receiver"), "receiver")
     if set(scope) != set(W17_NATIVE_HOLDS):
         raise AdmissionError("missing physical, native or canonical release gate")
@@ -634,7 +627,7 @@ def audit_final_w17(payload):
         "g2": "HOLD",
         "source_claims_authenticated_online": False,
         "authorized_offer": False, "installed": False, "merged": False,
-        "verdict": "HOLD_ONE_OWNER_VERSION_AND_PHYSICAL_G0",
+        "verdict": "HOLD_SELECTED_596_PENDING_PHYSICAL_G0",
     }
 
 
