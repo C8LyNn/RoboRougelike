@@ -14,6 +14,7 @@ PINS={
  "Assets/B0123DebrisRepulse001/Runtime/DebrisRepulsionEmitter.cs":(W06,"2b3a8465c550bd49a5c98be5a8064a4ce0947f4b"),
 }
 OWN_PREFIX=("Tools/B01/B01-61/P17W11PublicR2LedgerAtomicityQA/","Assets/B0161W11DockAtomicityQA/")
+OWN_ROOT_META="Assets/B0161W11DockAtomicityQA.meta"
 OWN_WORKFLOW=".github/workflows/b01-61-p17w11-r2-ledger-atomicity.yml"
 def git(*args):
     return subprocess.check_output(["git",*args],stderr=subprocess.PIPE)
@@ -29,7 +30,7 @@ def run():
         if now!=pin:raise ValueError("SOURCE_EDIT_PROHIBITED "+path+" "+now)
     changes=git("diff","--name-only",BASE,"HEAD").decode().splitlines()
     if not changes:raise ValueError("NO_QA_DELTA")
-    if any(not (f.startswith(OWN_PREFIX) or f==OWN_WORKFLOW) for f in changes):
+    if any(not (f.startswith(OWN_PREFIX) or f==OWN_ROOT_META or f==OWN_WORKFLOW) for f in changes):
         raise ValueError("OUTSIDE_QA_SCOPE "+str(changes))
     print("SOURCE_GIT_BLOBS=4/4 PASS EXACT_W10_SHA="+BASE)
     print("QA_ONLY_FILES="+str(len(changes))+" PASS")
