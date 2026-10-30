@@ -1,0 +1,27 @@
+name: B01-13 P17 W15 recovery timeline original-source
+on:
+  push:
+    paths: ['Research/B01-13/P17M/**', '.github/workflows/b01-13-p17w15-recovery-timeline.yml']
+  pull_request:
+    paths: ['Research/B01-13/P17M/**', '.github/workflows/b01-13-p17w15-recovery-timeline.yml']
+  workflow_dispatch:
+jobs:
+  source:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+        node: ['20', '22']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify original Git blobs and SHA256
+        run: python Research/B01-13/P17M/verify_package.py
+      - name: Execute source positive and adversarial cases
+        run: node --test Research/B01-13/P17M/test_recovery_timeline.mjs
