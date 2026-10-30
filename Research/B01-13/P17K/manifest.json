@@ -1,0 +1,29 @@
+{
+  "id": "B01-13-SAVE-VISUAL-PAIRS-001/R1",
+  "selected_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "owner": "B01-13",
+  "wave": 13,
+  "base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "files": {
+    "Research/B01-13/P17K/save_visual_pairs.mjs": {
+      "git_blob_sha1": "94c621f54fffd7e1325700b88b441652755c0feb",
+      "bytes": 5675
+    },
+    "Research/B01-13/P17K/test_save_visual_pairs.mjs": {
+      "git_blob_sha1": "4a2a69280a014ae20058accef7d30d4617ba8867",
+      "bytes": 6581
+    },
+    "Research/B01-13/P17K/README.md": {
+      "git_blob_sha1": "af0d2ab36348e49b0b2430041cbc3a16908433a5",
+      "bytes": 3553
+    },
+    "Research/B01-13/P17K/verify_package.py": {
+      "git_blob_sha1": "dfeda652bdf919d2c207ce0e252fb2238a86beff",
+      "bytes": 836
+    },
+    ".github/workflows/b01-13-w13-save-visual-pairs.yml": {
+      "git_blob_sha1": "5669537b17f4b41320b572ec347b9dc20c7e6eb5",
+      "bytes": 929
+    }
+  }
+}
