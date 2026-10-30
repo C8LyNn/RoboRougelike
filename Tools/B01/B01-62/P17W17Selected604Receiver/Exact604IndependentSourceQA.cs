@@ -57,7 +57,8 @@ internal static class Exact604IndependentSourceQA
     private sealed class Factory : IWorldFactory
     {
         public World? Last;
-        public bool WrongAfterActivation,FailActivate,FailRetire;
+        public bool WrongAfterActivation,FailRetire;
+        public bool FailActivate=false;
         public Action? DuringPrepare,AfterActivation;
         public IPreparedWorld Prepare(RunSnapshot snap)
         {
