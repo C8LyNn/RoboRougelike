@@ -80,5 +80,37 @@ namespace B0125.SafeRoute.Tests
             Assert.IsTrue(demo.Audit.AllReachable);
             Object.Destroy(host);
         }
+        [UnityTest]
+        public IEnumerator W24ActualPlayerTeleportReplansFromPhysicalPosition()
+        {
+            var host=new GameObject("R2 actual moving origin");
+            var demo=host.AddComponent<SafeRouteUnityDemo>();
+            yield return new WaitForFixedUpdate();
+            var first=demo.CurrentPlan;
+            Assert.IsTrue(first.Reachable);
+            var next=first.Cells[1];
+            demo.TeleportTo(next);
+            yield return new WaitForFixedUpdate();
+            Assert.AreEqual(next,demo.RouteOrigin);
+            Assert.IsTrue(demo.CurrentPlan.Reachable);
+            Assert.IsTrue(demo.CurrentRouteFromPlayer);
+            Assert.LessOrEqual(demo.CurrentPlan.Cells.Length,first.Cells.Length);
+            Object.Destroy(host);
+        }
+        [UnityTest]
+        public IEnumerator W24TeleportOutsideMapNeverProvidesStaleRoute()
+        {
+            var host=new GameObject("R2 out of map must fail closed");
+            var demo=host.AddComponent<SafeRouteUnityDemo>();
+            yield return new WaitForFixedUpdate();
+            // This is intentionally impossible to navigate; not a player spawn.
+            demo.Player.position=new Vector3(-200,1.2f,-200);
+            demo.Player.transform.position=demo.Player.position;
+            Physics.SyncTransforms();
+            yield return new WaitForFixedUpdate();
+            Assert.IsFalse(demo.CurrentPlan.Reachable);
+            Assert.IsFalse(demo.CurrentRouteFromPlayer);
+            Object.Destroy(host);
+        }
     }
 }

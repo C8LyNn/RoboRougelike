@@ -26,6 +26,11 @@ namespace B0125.SafeRoute
         private bool heavy,gateDesiredOpen,hazardActive,paused,physicalGateClear;
         private Vector2 drive;
         private int respawns;
+        private GridCell routeOrigin;
+        private bool hasRouteOrigin;
+        public GridCell RouteOrigin=>routeOrigin;
+        public bool CurrentRouteFromPlayer=>current!=null&&current.Reachable&&
+            current.Cells.Length>0&&current.Cells[0].Equals(routeOrigin);
         public Rigidbody Player=>player;
         public SafeRoutePlan CurrentPlan=>current;
         public RouteAudit Audit=>audit;
@@ -41,6 +46,14 @@ namespace B0125.SafeRoute
         {
             return new Vector3((p.X-level.Width/2)*CellSize,y,
                 (p.Z-level.Height/2)*CellSize);
+        }
+        // Inverse of Center(): exact Unity world-to-cell mapping. A player
+        // physically exiting the bounded level yields a fail-closed no-route.
+        private GridCell ActualPlayerCell()
+        {
+            Vector3 pos=player.position;
+            return new GridCell(Mathf.RoundToInt(pos.x/CellSize)+level.Width/2,
+                Mathf.RoundToInt(pos.z/CellSize)+level.Height/2);
         }
         private GameObject Slab(string name,Vector3 center,Vector3 size,Color color)
         {
@@ -131,7 +144,7 @@ namespace B0125.SafeRoute
         public void Restart()
         {
             if(player==null||level==null)return;
-            paused=false;drive=Vector2.zero;respawns=0;
+            paused=false;drive=Vector2.zero;respawns=0;hasRouteOrigin=false;
             gateDesiredOpen=false;physicalGateClear=false;hazardActive=true;
             player.isKinematic=false;
             foreach(var gate in gates)
@@ -195,12 +208,20 @@ namespace B0125.SafeRoute
                 player.linearVelocity=Vector3.zero;
                 TeleportTo(level.Start);
             }
+            // Fix W23 R1 bug: route was always from design SPAWN even when
+            // Light/Heavy had traversed the level. Update only on cell change.
+            if(!hasRouteOrigin||!ActualPlayerCell().Equals(routeOrigin))
+                Replan();
         }
         public void Replan()
         {
             if(level==null)return;
             int radius=heavy?1:0;
-            current=SafeRoutePlanner.Find(level,radius,
+            // Replan from the real physical player's position, including after
+            // teleport or entering a previously unseen map cell.
+            routeOrigin=ActualPlayerCell();
+            hasRouteOrigin=true;
+            current=SafeRoutePlanner.FindFrom(level,routeOrigin,radius,
                 new RouteConditions(physicalGateClear,hazardActive));
             foreach(var old in routeMarkers)
                 if(old!=null)Destroy(old);
@@ -228,8 +249,10 @@ namespace B0125.SafeRoute
                 foreach(var collider in hit)
                 {
                     if(obstacles.Contains(collider))return false;
-                    if(!physicalGateClear&&
-                       gates.Exists(g=>g.GetComponent<Collider>()==collider))
+                    // Authoritative physical obstruction check: an actually
+                    // overlapping gate collider blocks even if a script state
+                    // previously marked all gates raised.
+                    if(gates.Exists(g=>g.GetComponent<Collider>()==collider))
                         return false;
                 }
             }
@@ -243,6 +266,7 @@ namespace B0125.SafeRoute
             GUILayout.Label("Gate physical clear "+physicalGateClear+
                 " | hazard active "+hazardActive);
             GUILayout.Label("SAFE ALL EIGHT STATES: "+audit.AllReachable);
+            GUILayout.Label("Live origin cell: "+routeOrigin+" | guided: "+CurrentRouteFromPlayer);
             GUILayout.Label("Witness nodes: "+(current==null?0:current.Cells.Length)+
                 " | wall colliders: "+WallCount+" | respawns: "+respawns);
             if(GUILayout.Button("Switch Light / Heavy"))SetHeavy(!heavy);
