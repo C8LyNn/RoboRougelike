@@ -241,11 +241,13 @@ def unity_selected_source_scratch(r,safe,guid,r5assets):
          "ORIGINAL_732_PLUS_V3_729_63_SOURCES_39_GUIDS_DRIFT")
     # Selected R5 #732 and canonical V3 have identically named independent
     # root zip manifests. Never flatten old owner archives together.
-    with zipfile.ZipFile(io.BytesIO(v3raw)) as a:
-        need("PACKAGE_MANIFEST.json" in a.namelist() and
-             a.read("PACKAGE_MANIFEST.json")!=
-             src(r["r5fix"],"Tools/B01/B01-23/P17W23R5ColdRestartFixture001/README.md"),
-             "SELECTED_MANIFEST_COLLISION_GUARD")
+    selected_host=module(r["r5fix"],R5PKG,"b0140_r5_732_genuine_manifest_collision")
+    r5raw=selected_host.build();selected_host.verify(r5raw)
+    with zipfile.ZipFile(io.BytesIO(v3raw)) as a, zipfile.ZipFile(io.BytesIO(r5raw)) as b:
+        shared=set(a.namelist()) & set(b.namelist())
+        need(shared=={"PACKAGE_MANIFEST.json"} and
+             a.read("PACKAGE_MANIFEST.json")!=b.read("PACKAGE_MANIFEST.json"),
+             "SELECTED_749_V3_R5_732_FLAT_MANIFEST_COLLISION_NOT_DENIED")
     with tempfile.TemporaryDirectory(prefix="b0140-w23-749-plus-732-unity-") as td:
         root=Path(td);host=root/"foreign_user_Unity"
         (host/"Assets/USER_EMPTY").mkdir(parents=True)
