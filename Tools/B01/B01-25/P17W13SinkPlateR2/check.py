@@ -19,13 +19,13 @@ def guids():
     names=assets()
     assert len(names)==21
     meta=[n for n in names if n.endswith(".meta")]
-    assert len(meta)==14
+    assert len(meta)==13
     known=[]
     for n in meta:
         x=re.search(r"(?m)^guid:\s*([0-9a-f]{32})$",txt(n))
         assert x,n
         known.append(x.group(1))
-    assert len(set(known))==14
+    assert len(set(known))==13
     for file in (ROOT/"Assets").rglob("*.meta"):
         if file.relative_to(ROOT).as_posix() in meta:continue
         m=re.search(rb"(?m)^guid:\s*([0-9a-f]{32})$",file.read_bytes())
@@ -94,7 +94,7 @@ def rollback(src):
         dest=pathlib.Path(temp)
         with zipfile.ZipFile(src) as z:
             names=z.namelist()
-            assert len(names)==22 and len(set(names))==20
+            assert len(names)==22 and len(set(names))==22
             assert all(i.create_system==3 for i in z.infolist())
             for n in names:
                 safe_name(n)
