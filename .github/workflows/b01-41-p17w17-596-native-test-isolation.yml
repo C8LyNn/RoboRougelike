@@ -1,0 +1,67 @@
+name: B01-41 P17 W17 selected #596 original FileCheckpointStore native test isolation witness
+on:
+  push:
+    branches: ['ci/b01-41-p17w17-596-native-test-isolation']
+    paths:
+      - 'Tools/B01/CI41/P17W17/**'
+      - '.github/workflows/b01-41-p17w17-596-native-test-isolation.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  actual-original-source-test-fixture-isolation:
+    name: Original #596 persistent native-test-slot collision, source-only (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Original 596/556/510 immutable ancestry, host native case run ID and ownership receipt
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
+          "$PY" Tools/B01/CI41/P17W17/source_guard.py --repo . --output "ci41-w17-selected596-${{ runner.os }}.json"
+          "$PY" -c 'import json,sys;x=json.load(open(sys.argv[1]));assert x["selected_authoritative_adapter"]=="#596" and x["native_test_run_ids"]==[9,31,41] and x["native_unity_g1"]=="NOT_RUN" and x["release_gate"]=="HOLD" and x["alternative_604"]=="ALT_HOLD_NOT_INSTALLED";print("ORIGINAL_596_NATIVE_TEST_SHARED_GLOBAL_SLOT_SOURCE_GUARD_PASS")' "ci41-w17-selected596-${{ runner.os }}.json"
+      - name: Execute 12 independent original native source/hardcoded fixture adversarial controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
+          "$PY" -m unittest discover -s Tools/B01/CI41/P17W17 -p test_source_guard.py -v 2>&1 | tee "ci41-w17-guard-${{ runner.os }}.txt"
+          grep -q 'Ran 12 tests' "ci41-w17-guard-${{ runner.os }}.txt"
+          grep -q 'ORIGINAL_596_UNITY_PLAYMODE_SHARED_GLOBAL_FILE_SOURCE_RISK_REPRODUCED' "ci41-w17-guard-${{ runner.os }}.txt"
+      - name: Compile ORIGINAL frozen #596 CSharp source and original #556/W06/#510 (not synthetic checkpoint)
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build Tools/B01/CI41/P17W17/Original596NativeIsolationQA.csproj -c Release --warnaserror 2>&1 | tee "ci41-w17-build-${{ runner.os }}.txt"
+      - name: Execute actual original #596 FileCheckpointStore on unique disposable physical OS filesystem
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run -c Release --no-build --project Tools/B01/CI41/P17W17/Original596NativeIsolationQA.csproj 2>&1 | tee "ci41-w17-original596-${{ runner.os }}.txt"
+          grep -q 'ORIGINAL_SELECTED_596_NATIVE_PLAYMODE_SHARED_CHECKPOINT_ISOLATION_RED_REPRODUCED asserts=17' "ci41-w17-original596-${{ runner.os }}.txt"
+          grep -q 'NATIVE_UNITY_G1_NOT_RUN_SOURCE_PROCESS_ONLY' "ci41-w17-original596-${{ runner.os }}.txt"
+          grep -q 'SINGLE_FIXED_CHECKPOINT_FILENAME_ACROSS_4_ORIGINAL_PLAYMODE_CASES_RELEASE_HOLD' "ci41-w17-original596-${{ runner.os }}.txt"
+      - name: Preserve source isolation RED and independent true OS test proof (G1 remains NOT_RUN)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CI41-W17-596-NATIVE-ISOLATION-${{ runner.os }}
+          path: |
+            ci41-w17-selected596-${{ runner.os }}.json
+            ci41-w17-guard-${{ runner.os }}.txt
+            ci41-w17-build-${{ runner.os }}.txt
+            ci41-w17-original596-${{ runner.os }}.txt
+          retention-days: 14
+          if-no-files-found: warn
