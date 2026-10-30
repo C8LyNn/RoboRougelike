@@ -1,4 +1,4 @@
-# B01-00 RECEIPT-LATCH-001 v1.7.1 / PASS17 W16
+# B01-00 RECEIPT-LATCH-001 v1.8.0 / PASS17 W17
 
 Offline Python 3.11 standard-library executable for B01-00 coordinating multi-agent package receipts. `receipt_latch.py` validates offline snapshot consistency; `github_live.py` now checks a bounded subset of original GitHub PR, Actions workflow, job and step metadata online. Neither can authenticate the independence or authorization of a B01-40/B01-60 review, Codex ACK or merge. Source-ready is a **candidate for external review**, never formal G0, G1, Codex ACK or integration.
 
@@ -139,3 +139,19 @@ Independent B01-61 [**#590 at QA HEAD `c28565639bef834e64c092ce142c449acdfb7ae5`
 Original previous [#588](https://github.com/C8LyNn/RoboRougelike/pull/588) remains true **historical QA against older #587 core**, but the now-current separate #590 verifies two P0 security REDs against *exact* #587 HEAD; therefore final coordinator status is `#585=HOLD_CURRENT_EXACT_SOURCE_SECURITY_RED`, `#587=HOLD_CURRENT_EXACT_SOURCE_SECURITY_RED`, **#596 R2 SOURCE_QA_PENDING / SOURCE_G0_HOLD**. The modified CLI `--bridge-w16` validates the new #590 result and rejects a fake green or early #596 source receipt. Source/producer compilation or physical transport [B01-40 #594](https://github.com/C8LyNn/RoboRougelike/pull/594) success does not cure these independent release REDs; B01-40 issued physical intake **FORMAL HOLD**, not approved bridge G0.
 
 No new #79 OFFERED, ACK or merge; native Unity PhysX/EditMode/PlayMode NOT_RUN absent activated Editor, full canonical #510 private ledger hydration NOT_IMPLEMENTED, G2 HOLD. Only one selected *lineage* (#587), while a safely corrected/reviewed selected *version* is still pending. The coordinator tool does **not** authenticate GitHub actors by reading its own JSON; original GitHub PR/CI was checked separately.
+
+## W17 corrected single Unity Save/Load host selection (source-only gate)
+
+Issue [#608](https://github.com/C8LyNn/RoboRougelike/issues/608) requires B01-23 to select EXACTLY ONE corrected R2 original SHA, and B01-40 to independently accept that exact physical artifact before a source-only Codex offer. Historical immutable #510/#556, old #585/#587, original QA #572/#582/#588/#590, source owns remain unchanged. **The earlier W16 #596 provisional source SHA in `bridge_w16_hold.json` is HISTORICAL ONLY and must never be mistaken for the current #596 exact candidate.** New separately versioned `--final-w17` mode explicitly supersedes it for the current final-version queue.
+
+Current ORIGINAL producer sources: [#596](https://github.com/C8LyNn/RoboRougelike/pull/596) `efb2b06eafedab5469b57f163152d96aca3c5915` with independent [#607](https://github.com/C8LyNn/RoboRougelike/pull/607) 82/82 source assertions per OS on exact producer SHA; [#604](https://github.com/C8LyNn/RoboRougelike/pull/604) `1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a` producer 127/127 source+archive tests per OS; independent [#603](https://github.com/C8LyNn/RoboRougelike/pull/603) 52/52 tests per OS only of original unchanged core/fence Git blobs on earlier producer commit, **NOT full latest HEAD host**. Original author inner ZIPs are different (23 members and 27 members) and both independently have literal SHA256 pinned in `bridge_w17_final_pending.json`. Four authored source paths **overlap**, so no blending or parallel install.
+
+```sh
+python Tools/B01/B01-00/W09/RECEIPT-LATCH-001/save_admission.py --final-w17 Tools/B01/B01-00/W09/RECEIPT-LATCH-001/bridge_w17_final_pending.json
+python Tools/B01/B01-00/W09/RECEIPT-LATCH-001/save_admission.py --final-w17 Tools/B01/B01-00/W09/RECEIPT-LATCH-001/bridge_w17_final_pending.json --require-accepted-source
+python -m unittest discover -s Tools/B01/B01-00/W09/RECEIPT-LATCH-001 -p "test_*.py" -v
+```
+
+The first command returns 0 only for structurally consistent **HOLD**, while strict release flag returns **exit 3**; evidence forgery/invalid JSON returns exit 2. New original `test_final_w17.py` adds **53 executable independent positive/negative policy tests** (total 406 historical suite). It rejects false exclusive B01-23 owner choice, fake full #604 QA, wrong Git/ZIP SHA, mixed two R2 cores, early physical G0, fake native PhysX, fake Codex ACK, unsafe old #510 rollback, premature source offer and overwriting original evidence. The code **cannot authenticate GitHub authors, verify physical ZIP in this offline mode or itself perform Unity/native QA**. Refer to `TEST_EVIDENCE/W17-ONE-FINAL-R2-CHOICE-HOLD.md` for exact source receipts, overlap list, and **minimal NEW owner-approved live #510 private Rig/AtomicDockLedger main-thread API request** (design, NOT implemented).
+
+**Receivers:** B01-23 one final immutable SHA and loser ALT_HOLD; B01-61 exact selected independent source QA; B01-40/62 formal physical G0 scratch migration + source GUID/ZIP integrity; B01-60 licensed native Unity or NOT_RUN; B01-00 only governance and authorized #79 source offer after G0. Original #510/#556 and Codex-owned runtime NEVER edited. Current state `OWNER_VERSION_PENDING / PHYSICAL_G0_HOLD / G1_NOT_RUN / REAL_510_HOST_SAVE_HOLD / G2_HOLD / ACK_NONE / NO_MERGE`.
