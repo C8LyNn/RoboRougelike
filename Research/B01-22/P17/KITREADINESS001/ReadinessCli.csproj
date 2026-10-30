@@ -12,5 +12,6 @@
     <Compile Include="../../../../Assets/B01KitReadiness001/KitReadinessPlanner.cs"/>
     <Compile Include="ReadinessCli.cs"/>
     <Compile Include="KitProcurementForecast.cs"/>
+    <Compile Include="KitBuildOrderAdvisor.cs"/>
   </ItemGroup>
 </Project>

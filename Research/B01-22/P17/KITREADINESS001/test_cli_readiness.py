@@ -209,6 +209,88 @@ class UserSuppliedReadinessCliTests(unittest.TestCase):
         self.assertNotEqual([x["Id"] for x in a["result"]["Requests"]],
                             [x["Id"] for x in b["result"]["Requests"]])
 
+    def priority_case(self):
+        return json.loads((SRC/"scenarios/order-priority.json").read_text(encoding="utf-8"))
+
+    def test_24_exact_advisor_finds_two_ready_after_one_ready(self):
+        payload=self.priority_case()
+        code,stdout,stderr,data,unchanged=self.run_case(payload)
+        self.assertEqual(code,0,stderr)
+        self.assertTrue(unchanged)
+        actual=json.loads(data)
+        self.assertEqual(actual["result"]["ReadyCount"],1)
+        advice=actual["buildOrder"]
+        self.assertEqual(advice["Status"],"EXACT_EVALUATED")
+        self.assertEqual((advice["OriginalReadyCount"],advice["SuggestedReadyCount"]),(1,2))
+        self.assertTrue(advice["Improved"])
+        self.assertEqual(advice["ExactSearchRequestLimit"],6)
+        self.assertEqual(sorted(advice["SuggestedRequests"]),sorted(payload["requests"]))
+        self.assertEqual(advice["OrdersEvaluated"],6)
+
+    def test_25_replaying_suggested_order_with_original_csharp_yields_two_ready(self):
+        payload=self.priority_case()
+        suggestion=json.loads(self.run_case(payload)[3])["buildOrder"]
+        payload["requests"]=suggestion["SuggestedRequests"]
+        result=json.loads(self.run_case(payload)[3])
+        self.assertEqual(result["result"]["ReadyCount"],2)
+        self.assertEqual(result["procurement"]["TotalMissingPieces"],4)
+        self.assertEqual(result["buildOrder"]["SuggestedReadyCount"],2)
+
+    def test_26_repeated_identical_requests_collapse_to_one_unique_order(self):
+        result=json.loads(self.run_case(self.sample)[3])["buildOrder"]
+        self.assertEqual(result["Status"],"EXACT_EVALUATED")
+        self.assertEqual(result["OrdersEvaluated"],1)
+        self.assertEqual(result["OriginalReadyCount"],1)
+        self.assertEqual(result["SuggestedReadyCount"],1)
+        self.assertFalse(result["Improved"])
+        self.assertEqual(result["SuggestedRequests"],["EK01","EK01"])
+
+    def test_27_over_bounded_limit_cannot_claim_optimum(self):
+        payload=copy.deepcopy(self.sample)
+        payload["requests"]=["EK01"]*7
+        response=json.loads(self.run_case(payload)[3])
+        advice=response["buildOrder"]
+        self.assertEqual(advice["Status"],"NOT_EVALUATED_REQUEST_LIMIT")
+        self.assertEqual(advice["OrdersEvaluated"],0)
+        self.assertFalse(advice["Improved"])
+        self.assertEqual(advice["SuggestedRequests"],payload["requests"])
+        self.assertEqual(advice["SuggestedReadyCount"],response["result"]["ReadyCount"])
+
+    def test_28_zero_requests_exact_trivial_advice(self):
+        payload=copy.deepcopy(self.sample);payload["requests"]=[]
+        advice=json.loads(self.run_case(payload)[3])["buildOrder"]
+        self.assertEqual(advice["Status"],"EXACT_EVALUATED")
+        self.assertEqual(advice["OrdersEvaluated"],1)
+        self.assertEqual(advice["SuggestedRequests"],[])
+        self.assertEqual(advice["SuggestedReadyCount"],0)
+
+    def test_29_all_requested_kits_buildable_remain_original_tie(self):
+        payload=copy.deepcopy(self.sample)
+        for part in payload["owned_parts"]: part["count"]*=2
+        advice=json.loads(self.run_case(payload)[3])["buildOrder"]
+        self.assertEqual(advice["SuggestedReadyCount"],2)
+        self.assertFalse(advice["Improved"])
+        self.assertEqual(advice["SuggestedRequests"],payload["requests"])
+
+    def test_30_priority_output_deterministic_and_nonmutating(self):
+        payload=self.priority_case()
+        first=self.run_case(payload)
+        second=self.run_case(payload)
+        self.assertEqual(first[0],0)
+        self.assertEqual(first[3],second[3])
+        self.assertTrue(first[4] and second[4])
+
+    def test_31_six_repeated_requests_deduplicate_and_never_mutate_stock(self):
+        payload=copy.deepcopy(self.sample)
+        payload["requests"]=["EK01"]*6
+        result=json.loads(self.run_case(payload)[3])
+        advice=result["buildOrder"]
+        self.assertEqual(advice["Status"],"EXACT_EVALUATED")
+        self.assertEqual(advice["OrdersEvaluated"],1)
+        self.assertEqual(advice["SuggestedReadyCount"],1)
+        self.assertEqual(advice["SuggestedRequests"],payload["requests"])
+        self.assertEqual(result["procurement"]["TotalMissingPieces"],25)
+
     def test_16_too_many_requests_fail_closed(self):
         payload=copy.deepcopy(self.sample);payload["requests"]=["EK01"]*101
         self.assert_rejected(payload)

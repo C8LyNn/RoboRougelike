@@ -21,7 +21,7 @@ ASSETS = tuple(sorted((
     "Assets/B01KitReadiness001/KitReadinessPlanner.cs.meta",
 )))
 PREVIEWS = ("starter-cache-preview.json", "siege-cache-preview.json",
-            "shared-gyro-preview.json", "user-preview.json")
+            "shared-gyro-preview.json", "user-preview.json", "priority-preview.json")
 FILES = frozenset(("kitreadiness-unity.zip", "receipt.json", *PREVIEWS))
 
 
@@ -45,7 +45,7 @@ def validate_sources():
        manifest["source_sha"] != SOURCE_SHA:
         raise SourceError("WRONG_MANIFEST")
     rows = manifest["git_blobs"]
-    if len(rows) != 17 or len(set(rows)) != 17:
+    if len(rows) != 19 or len(set(rows)) != 19:
         raise SourceError("BAD_MANIFEST_MEMBER_COUNT")
     for name, expected in rows.items():
         if not (name.startswith("Assets/B01KitReadiness001") or
@@ -121,7 +121,7 @@ def read_previews(path):
            len(parsed["result"]["Requests"]) < 1:
             raise SourceError("INVALID_PREVIEW_SOURCE:"+name)
         previews[name]=data
-    if len(set(previews)) != 4:
+    if len(set(previews)) != 5:
         raise SourceError("MISSING_PREVIEW_VARIANTS")
     return previews
 
@@ -198,7 +198,7 @@ def main():
         if args.stage:
             if not args.previews:raise SourceError("PREVIEW_INPUT_REQUIRED")
             rec=stage(args.stage,args.previews)
-            print(json.dumps({"result":"B01_22_W11_PHYSICAL_SOURCE_PASS","receipt":rec},sort_keys=True))
+            print(json.dumps({"result":"B01_22_W12_PHYSICAL_SOURCE_PASS","receipt":rec},sort_keys=True))
         else:
             print(rollback(args.rollback))
     except (SourceError, OSError, ValueError, KeyError, subprocess.CalledProcessError) as e:

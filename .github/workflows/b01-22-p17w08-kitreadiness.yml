@@ -1,4 +1,4 @@
-name: B01-22 P17 W11 KITREADINESS-001 real full-batch supply shortfall and CLI
+name: B01-22 P17 W12 KITREADINESS-001 actual bounded optimal assembly order
 on:
   pull_request:
     paths:
@@ -35,6 +35,8 @@ jobs:
         run: python -m unittest discover -s Research/B01-22/P17/KITREADINESS001 -p test_cli_readiness.py -v
       - name: Reproduce sample user-input CLI preview with no wallet writes
         run: dotnet Research/B01-22/P17/KITREADINESS001/bin/Release/net8.0/ReadinessCli.dll --input Research/B01-22/P17/KITREADINESS001/scenarios/user-request-example.json --out readiness-previews/user-preview.json
+      - name: Actually execute priority conflict fixture using original C# planner
+        run: dotnet Research/B01-22/P17/KITREADINESS001/bin/Release/net8.0/ReadinessCli.dll --input Research/B01-22/P17/KITREADINESS001/scenarios/order-priority.json --out readiness-previews/priority-preview.json
       - name: Run physical ZIP SHA receipt forged-input and rollback negatives
         run: python -m unittest discover -s Research/B01-22/P17/KITREADINESS001 -p test_pack_readiness.py -v
       - name: Stage verified original Unity C# and 3 C# scenario previews
@@ -42,7 +44,7 @@ jobs:
       - name: Upload original source ZIP, receipts and actual scenario decisions
         uses: actions/upload-artifact@v4
         with:
-          name: b01-22-w11-kitreadiness-${{ matrix.os }}
+          name: b01-22-w12-kitreadiness-${{ matrix.os }}
           path: readiness-artifact/
           if-no-files-found: error
           retention-days: 14

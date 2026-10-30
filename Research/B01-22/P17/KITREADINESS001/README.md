@@ -110,3 +110,41 @@ duplicated kits, line aggregation, totals, and order invariance. Keep original
 three-file Unity source ZIP unchanged; four generated JSON previews and
 receipt reflect the updated CLI user-preview output. Native Unity
 Editor/PlayMode = NOT_RUN, pending independent B01-40/B01-60.
+
+## PASS17 WAVE12 — v1.3.0: exact bounded build-order advisor
+
+A genuine new **`buildOrder`** result in the executable read-only C#9 CLI uses
+the **original source-pinned `KitReadinessPlanner.Preview` for every unique
+permutation** of up to **six** requested kits, and returns a request sequence
+that yields the maximum count of `READY` builds without adding parts. It
+preserves the original sequence when scores tie (minimum moved positions)
+and de-duplicates identical kit labels in the enumeration. The planner is
+unmodified and there is no new Unity asset, Rigidbody, wallet, game state or
+in-game integration.
+
+The actual fixture `scenarios/order-priority.json` starts with
+`EK08, EK01, EK02` and a contested gyro/track/Heavy stock pool.
+The submitted sequence makes **1** kit buildable; the suggested sequence makes
+**2** kit builds possible using *exactly the same original C# planner*.
+The total procurement shortfall is independent of this reorder.
+
+For lists **longer than six**, the field explicitly reports
+`Status=NOT_EVALUATED_REQUEST_LIMIT`, `OrdersEvaluated=0` and returns
+the unchanged original request order; it **does not pretend** an exhaustive
+optimum was found. This cap bounds factorial cost and avoids freezing a
+game runtime. The research-only CLI handles up to 100 requests as before.
+
+Reproduce from repository root after the same Release build:
+
+```sh
+dotnet Research/B01-22/P17/KITREADINESS001/bin/Release/net8.0/ReadinessCli.dll --input Research/B01-22/P17/KITREADINESS001/scenarios/order-priority.json --out new-order-preview.json
+```
+
+Eight additional real CLI subprocess tests verify actual 1→2 improvement,
+replay suggested order, duplicate requests, >6 explicit no-optimum status,
+zero requests, fully buildable original-order ties, repeatability/nonmutation
+and six repeated kit requests. The physical package includes the real
+`priority-preview.json` generated from this input and its independent SHA256
+receipt. Source-only original Unity ZIP remains 3 members unchanged. This is
+a **decision-support preview, not automatic garage scheduling or purchases.**
+Independent B01-40 G0, B01-60 QA and native Unity G1 remain pending.

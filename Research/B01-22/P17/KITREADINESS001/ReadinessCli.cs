@@ -109,6 +109,8 @@ internal static class ReadinessCli
             // currently blocked), not only accepted atomic virtual reservations.
             ProcurementForecast procurement = KitProcurementForecast.Calculate(
                 KitReadinessPlanner.SourceSha, recipes, owned, ids);
+            KitBuildOrderAdvice buildOrder = KitBuildOrderAdvisor.Advise(
+                KitReadinessPlanner.SourceSha, recipes, owned, ids);
             return JsonSerializer.Serialize(new
             {
                 schema = "b01-kitreadiness-preview-v1",
@@ -117,7 +119,8 @@ internal static class ReadinessCli
                 modifies_game = false,
                 request_count = ids.Length,
                 result,
-                procurement
+                procurement,
+                buildOrder
             }, OutputOptions).Replace("\r\n", "\n") + "\n";
         }
     }
