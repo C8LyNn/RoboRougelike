@@ -1,0 +1,73 @@
+{
+  "package_id": "LD02-TECHOVERLAY-001",
+  "version": "R1",
+  "owner": "B01-13 HUMAN PLAYTESTING",
+  "repo": "C8LyNn/RoboRougelike",
+  "source_branch": "research/b01-13-pass17-wave08-ld02-unity-overlay",
+  "base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "scope": [
+    "Research/B01-13/P17F/**",
+    ".github/workflows/b01-13-p17w08-technical-overlay.yml"
+  ],
+  "dependency": "No imports from frozen B01-13 packages, no canonical Codex code, no third-party runtime DLLs",
+  "source_type": "Unity 6 URP isolated optional MonoBehaviour prefab, pure C# protocol, test-only dotnet shim",
+  "files": {
+    "UnityPackage/Runtime/Ld02TechnicalTrial.cs": {
+      "sha256": "0101e806f32e71afc58cad68cd5dd47f1992a97878c58ec4f94a26eab428888c",
+      "bytes": 4068
+    },
+    "UnityPackage/Runtime/Ld02TechnicalTrial.cs.meta": {
+      "sha256": "643b6d1d1b9f2faf3c789b2ed92b0ba68e3708870e51d2f5918db8ceed6772a1",
+      "bytes": 240
+    },
+    "UnityPackage/Runtime/Ld02TechnicalOverlay.cs": {
+      "sha256": "0a0e4cf3d59eb75d19060e978c50b6fdbc049a11dd4ccb377cf0500bbc6dd572",
+      "bytes": 3418
+    },
+    "UnityPackage/Runtime/Ld02TechnicalOverlay.cs.meta": {
+      "sha256": "d87c5e0f4e7be477b11deb87e1cf37fb41e33120240dc5db76972033a43b136e",
+      "bytes": 240
+    },
+    "UnityPackage/Prefabs/Ld02TechnicalOverlay.prefab": {
+      "sha256": "af13db874fdae327cfc81d890ccc18c1e44e5d732061b93d8101c9cb6ba09710",
+      "bytes": 1347
+    },
+    "UnityPackage/Prefabs/Ld02TechnicalOverlay.prefab.meta": {
+      "sha256": "0c62de7f4998b8a8c3a4a459ba8130ec850606457f65e4ef358fa11f1e2b4fc9",
+      "bytes": 151
+    },
+    "Tests/DotNetOnly/Program.cs": {
+      "sha256": "013d8e3a2e4e085f541b9775e45ba75c01cb5b8a1068108ea4d7460dd9e7b83c",
+      "bytes": 7329
+    },
+    "Tests/DotNetOnly/UnityEngineStubs.cs": {
+      "sha256": "2d2b44f39329e0492603f6ab599cd6c0f093e69c9526ba9534f15786675f6fb1",
+      "bytes": 993
+    },
+    "Tests/DotNetOnly/Ld02ProtocolTests.csproj": {
+      "sha256": "551f8909402751261acf27ea1065a8892ae82507d8bcd0432fc777ad4dce9f22",
+      "bytes": 676
+    },
+    "README.md": {
+      "sha256": "791e7f830a54ab492d25f28a6d3bb40882bdf0a9495c1e417fcf057d89ae6da6",
+      "bytes": 5456
+    },
+    "verify_package.py": {
+      "sha256": "780f1ddd7840028e4e9b9f63909aae36754fdecf4e6c08d8503aeffc3fdc57ee",
+      "bytes": 2444
+    },
+    "../../../.github/workflows/b01-13-p17w08-technical-overlay.yml": {
+      "sha256": "ccd41c5d95cfb643a0d6251458392fb61d8485b6c0ded1317cc89b5a6227d17b",
+      "bytes": 1296
+    }
+  },
+  "verification": {
+    "planned": "Windows 2025 Ubuntu 24.04 dotnet 8 original 35 cases and Python prefab source/GUID SHA gate",
+    "native_unity_editmode": "NOT_RUN",
+    "native_unity_playmode": "NOT_RUN",
+    "actual_player_and_humans": "NOT_RUN/0",
+    "independent_B01_40_B01_60": "PENDING",
+    "first_ci": "RED CS8618 non-nullable trial field from original source dotnet8; fixed in dedicated file; final new exact-head CI required"
+  },
+  "rollback": "Do not merge Draft. Remove imported isolated prefab instance and folder from authorized staging scene; preserve frozen originals. Discard isolated branch."
+}

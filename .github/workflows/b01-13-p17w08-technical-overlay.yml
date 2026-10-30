@@ -1,0 +1,34 @@
+name: B01-13 W08 Unity technical overlay C# and asset SHA QA
+on:
+  push:
+    branches:
+      - research/b01-13-pass17-wave08-ld02-unity-overlay
+  pull_request:
+    paths:
+      - 'Research/B01-13/P17F/**'
+      - '.github/workflows/b01-13-p17w08-technical-overlay.yml'
+jobs:
+  exact-source-and-csharp:
+    name: ${{ matrix.os }} .NET 8 original overlay
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify physical SHA-256 + .meta + prefab script GUID
+        shell: bash
+        run: python Research/B01-13/P17F/verify_package.py
+      - name: Compile original C# protocol + Unity adapter against test-only UnityEngine stubs
+        shell: bash
+        run: dotnet build Research/B01-13/P17F/Tests/DotNetOnly/Ld02ProtocolTests.csproj --configuration Release --warnaserror
+      - name: Execute original 35 C# behavior and negative tests
+        shell: bash
+        run: dotnet run --project Research/B01-13/P17F/Tests/DotNetOnly/Ld02ProtocolTests.csproj --configuration Release --no-build
