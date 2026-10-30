@@ -1,0 +1,28 @@
+{
+  "package": "B01-12-MISSION-JOURNAL-001",
+  "version": "R1",
+  "owner": "B01-12",
+  "dispatch": "#552",
+  "pins": {
+    "journal_engine.js": {
+      "bytes": 3866,
+      "sha256": "4bb2e777c12899a63a51697f4a1fdc16a92eb519bd944b294bec5312ef4db4ce"
+    },
+    "ui.js": {
+      "bytes": 3198,
+      "sha256": "be42d4b5e456a79976f85db06a7a4aea9b1fcb6c580fce82290f9e63b844427b"
+    },
+    "demo.html": {
+      "bytes": 3517,
+      "sha256": "fca0931638300e4115381ffc83535a41c6b52fdd6dd902e46f7bfa08ff4d4587"
+    },
+    "test_engine.cjs": {
+      "bytes": 5219,
+      "sha256": "b5a21ace3f6a3051ffaf02c3a0a6508e087e7bae8ff3ac863265239a7c7ebea3"
+    },
+    "test_browser.py": {
+      "bytes": 5580,
+      "sha256": "cb22f687006d787652ea640239e016a3f2f07efc8cf06069df41cd5c1bce0b6a"
+    }
+  }
+}

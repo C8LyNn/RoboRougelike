@@ -1,0 +1,439 @@
+{
+  "total": 108,
+  "passed": 108,
+  "failed": 0,
+  "cases": [
+    {
+      "name": "320x720: title",
+      "pass": true
+    },
+    {
+      "name": "320x720: five objectives",
+      "pass": true
+    },
+    {
+      "name": "320x720: initial revision",
+      "pass": true
+    },
+    {
+      "name": "320x720: initial completions",
+      "pass": true
+    },
+    {
+      "name": "320x720: initial available count",
+      "pass": true
+    },
+    {
+      "name": "320x720: progress 0",
+      "pass": true
+    },
+    {
+      "name": "320x720: no overflow initial",
+      "pass": true
+    },
+    {
+      "name": "320x720: selected",
+      "pass": true
+    },
+    {
+      "name": "320x720: pinned id",
+      "pass": true
+    },
+    {
+      "name": "320x720: aria pressed true",
+      "pass": true
+    },
+    {
+      "name": "320x720: unpinned",
+      "pass": true
+    },
+    {
+      "name": "320x720: keyboard complete",
+      "pass": true
+    },
+    {
+      "name": "320x720: next goal available",
+      "pass": true
+    },
+    {
+      "name": "320x720: progress one",
+      "pass": true
+    },
+    {
+      "name": "320x720: receipt generated",
+      "pass": true
+    },
+    {
+      "name": "320x720: export valid JSON",
+      "pass": true
+    },
+    {
+      "name": "320x720: invalid import atomic",
+      "pass": true
+    },
+    {
+      "name": "320x720: invalid import status",
+      "pass": true
+    },
+    {
+      "name": "320x720: reset all",
+      "pass": true
+    },
+    {
+      "name": "320x720: round-trip restore",
+      "pass": true
+    },
+    {
+      "name": "320x720: restored revision",
+      "pass": true
+    },
+    {
+      "name": "320x720: done filter",
+      "pass": true
+    },
+    {
+      "name": "320x720: locked filter",
+      "pass": true
+    },
+    {
+      "name": "320x720: available filter",
+      "pass": true
+    },
+    {
+      "name": "320x720: all filter",
+      "pass": true
+    },
+    {
+      "name": "320x720: no overflow after controls",
+      "pass": true
+    },
+    {
+      "name": "320x720: no JS errors",
+      "pass": true
+    },
+    {
+      "name": "768x1024: title",
+      "pass": true
+    },
+    {
+      "name": "768x1024: five objectives",
+      "pass": true
+    },
+    {
+      "name": "768x1024: initial revision",
+      "pass": true
+    },
+    {
+      "name": "768x1024: initial completions",
+      "pass": true
+    },
+    {
+      "name": "768x1024: initial available count",
+      "pass": true
+    },
+    {
+      "name": "768x1024: progress 0",
+      "pass": true
+    },
+    {
+      "name": "768x1024: no overflow initial",
+      "pass": true
+    },
+    {
+      "name": "768x1024: selected",
+      "pass": true
+    },
+    {
+      "name": "768x1024: pinned id",
+      "pass": true
+    },
+    {
+      "name": "768x1024: aria pressed true",
+      "pass": true
+    },
+    {
+      "name": "768x1024: unpinned",
+      "pass": true
+    },
+    {
+      "name": "768x1024: keyboard complete",
+      "pass": true
+    },
+    {
+      "name": "768x1024: next goal available",
+      "pass": true
+    },
+    {
+      "name": "768x1024: progress one",
+      "pass": true
+    },
+    {
+      "name": "768x1024: receipt generated",
+      "pass": true
+    },
+    {
+      "name": "768x1024: export valid JSON",
+      "pass": true
+    },
+    {
+      "name": "768x1024: invalid import atomic",
+      "pass": true
+    },
+    {
+      "name": "768x1024: invalid import status",
+      "pass": true
+    },
+    {
+      "name": "768x1024: reset all",
+      "pass": true
+    },
+    {
+      "name": "768x1024: round-trip restore",
+      "pass": true
+    },
+    {
+      "name": "768x1024: restored revision",
+      "pass": true
+    },
+    {
+      "name": "768x1024: done filter",
+      "pass": true
+    },
+    {
+      "name": "768x1024: locked filter",
+      "pass": true
+    },
+    {
+      "name": "768x1024: available filter",
+      "pass": true
+    },
+    {
+      "name": "768x1024: all filter",
+      "pass": true
+    },
+    {
+      "name": "768x1024: no overflow after controls",
+      "pass": true
+    },
+    {
+      "name": "768x1024: no JS errors",
+      "pass": true
+    },
+    {
+      "name": "1280x720: title",
+      "pass": true
+    },
+    {
+      "name": "1280x720: five objectives",
+      "pass": true
+    },
+    {
+      "name": "1280x720: initial revision",
+      "pass": true
+    },
+    {
+      "name": "1280x720: initial completions",
+      "pass": true
+    },
+    {
+      "name": "1280x720: initial available count",
+      "pass": true
+    },
+    {
+      "name": "1280x720: progress 0",
+      "pass": true
+    },
+    {
+      "name": "1280x720: no overflow initial",
+      "pass": true
+    },
+    {
+      "name": "1280x720: selected",
+      "pass": true
+    },
+    {
+      "name": "1280x720: pinned id",
+      "pass": true
+    },
+    {
+      "name": "1280x720: aria pressed true",
+      "pass": true
+    },
+    {
+      "name": "1280x720: unpinned",
+      "pass": true
+    },
+    {
+      "name": "1280x720: keyboard complete",
+      "pass": true
+    },
+    {
+      "name": "1280x720: next goal available",
+      "pass": true
+    },
+    {
+      "name": "1280x720: progress one",
+      "pass": true
+    },
+    {
+      "name": "1280x720: receipt generated",
+      "pass": true
+    },
+    {
+      "name": "1280x720: export valid JSON",
+      "pass": true
+    },
+    {
+      "name": "1280x720: invalid import atomic",
+      "pass": true
+    },
+    {
+      "name": "1280x720: invalid import status",
+      "pass": true
+    },
+    {
+      "name": "1280x720: reset all",
+      "pass": true
+    },
+    {
+      "name": "1280x720: round-trip restore",
+      "pass": true
+    },
+    {
+      "name": "1280x720: restored revision",
+      "pass": true
+    },
+    {
+      "name": "1280x720: done filter",
+      "pass": true
+    },
+    {
+      "name": "1280x720: locked filter",
+      "pass": true
+    },
+    {
+      "name": "1280x720: available filter",
+      "pass": true
+    },
+    {
+      "name": "1280x720: all filter",
+      "pass": true
+    },
+    {
+      "name": "1280x720: no overflow after controls",
+      "pass": true
+    },
+    {
+      "name": "1280x720: no JS errors",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: title",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: five objectives",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: initial revision",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: initial completions",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: initial available count",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: progress 0",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: no overflow initial",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: selected",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: pinned id",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: aria pressed true",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: unpinned",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: keyboard complete",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: next goal available",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: progress one",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: receipt generated",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: export valid JSON",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: invalid import atomic",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: invalid import status",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: reset all",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: round-trip restore",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: restored revision",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: done filter",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: locked filter",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: available filter",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: all filter",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: no overflow after controls",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: no JS errors",
+      "pass": true
+    }
+  ]
+}
