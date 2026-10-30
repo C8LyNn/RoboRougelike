@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""B01-10 GHOST-001/R10 deterministic Unity import ZIP, provenance and 6 negatives.
+"""B01-10 GHOST-001/R11 deterministic Unity import ZIP, provenance and 6 negatives.
 
 Python 3.8+, stdlib only. SOURCE/IMPORT-READY is NOT a Unity G1 or Codex ACK.
 """
@@ -98,7 +98,7 @@ def expected_members(sha):
         for name, blob in sorted(members.items())
     ]
     receipt = {
-        "package": "B01-10-GHOST-001/R10",
+        "package": "B01-10-GHOST-001/R11",
         "original_source_sha": sha,
         "original_pr": "https://github.com/C8LyNn/RoboRougelike/pull/422",
         "game_import_path": "Assets/B01TrainingGhost",
