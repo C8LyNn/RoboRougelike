@@ -1,4 +1,4 @@
-name: B01-10 P17W24 ECONBAL Approved Policy Oracle
+name: B01-10 P17W25 ECONBAL Approved 65 Quote Parity
 on:
   push:
     branches: [design/b01-10-p17w20-econbal-001]
@@ -27,6 +27,25 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile and execute exact original B01-22 V6 C#9 source negative witness
+        shell: bash
+        run: |
+          set -euo pipefail
+          parent=cc5d65f66ad7a764af6515c566e489b9fc3be82e
+          original=Assets/B01Packages/ECONAPPROVED006/Runtime/ApprovedEconomyPolicyV6.cs
+          git fetch --no-tags origin "$parent"
+          git show "$parent:$original" > "$RUNNER_TEMP/original-v6.cs"
+          blob=$(git hash-object "$RUNNER_TEMP/original-v6.cs")
+          test "$blob" = c72db78548f3e21765c54eb4609b748153118392
+          dotnet run -c Release --project Research/B01-10/P17/W20_ECONBAL_001/v6_source_witness.csproj -p:OriginalV6Source="$RUNNER_TEMP/original-v6.cs" > "$RUNNER_TEMP/econbal-real-v6-source.log" 2>&1
+          cat "$RUNNER_TEMP/econbal-real-v6-source.log"
+          grep -F "SOURCE_CONTRACT_RED_CONFIRMED price=1 original_quote=1 owner_strict_cheaper_target=0" "$RUNNER_TEMP/econbal-real-v6-source.log"
+          grep -F "C_SHARP_ORIGINAL_V6_DISTINCT_WIN_DEFER 1/1 SOURCE PASS" "$RUNNER_TEMP/econbal-real-v6-source.log"
+          grep -F "C_SHARP_ORIGINAL_V6_LOANER_ZERO_SCRAP_NEGATIVE 1/1 EXPECTED_SOURCE_POLICY_HOLD" "$RUNNER_TEMP/econbal-real-v6-source.log"
+          grep -F "B01_10_V6_ORIGINAL_SOURCE_DETECTOR_PASS" "$RUNNER_TEMP/econbal-real-v6-source.log"
       - name: Pin original source Git blobs, bytes, base and exclusive scope
         shell: bash
         env:
@@ -38,7 +57,7 @@ jobs:
           root=pathlib.Path('Research/B01-10/P17/W20_ECONBAL_001')
           doc=json.loads((root/'manifest.json').read_text(encoding='utf-8'))
           assert doc['packageId']=='B01-10-ECONBAL-001'
-          assert len(doc['originalSourceFiles'])==6
+          assert len(doc['originalSourceFiles'])==8
           for name,pin in doc['originalSourceFiles'].items():
               path=pathlib.Path(name)
               assert path.is_file() and not path.is_symlink()
@@ -52,7 +71,7 @@ jobs:
           files=subprocess.check_output(['git','diff','--name-only',
               doc['mainBaseSha'],head],text=True).splitlines()
           assert sorted(files)==sorted(doc['exactScope']),files
-          assert len(files)==7,files
+          assert len(files)==9,files
           print('B01-10 ECONBAL MANIFEST_SOURCE_PINS '+str(len(doc['originalSourceFiles']))
                 +' PASS; GIT_SCOPE '+str(len(files))+' PASS; SHA '+head)
           PY
@@ -62,9 +81,9 @@ jobs:
           set -euo pipefail
           python -m unittest discover -s Research/B01-10/P17/W20_ECONBAL_001 -p test_rebuild_balance.py -v > "$RUNNER_TEMP/econbal-tests.log" 2>&1
           cat "$RUNNER_TEMP/econbal-tests.log"
-          grep -F 'Ran 145 tests' "$RUNNER_TEMP/econbal-tests.log"
+          grep -F 'Ran 160 tests' "$RUNNER_TEMP/econbal-tests.log"
           grep -Fx 'OK' "$RUNNER_TEMP/econbal-tests.log"
-      - name: Execute fifteen fixture cases including owner-approved W24 policy and source P0 deadlock witness
+      - name: Execute seventeen fixture scenarios including V6 owner price15 and price30 parity
         shell: bash
         run: |
           set -euo pipefail
@@ -74,7 +93,7 @@ jobs:
           import json,sys
           report=json.load(open(sys.argv[1],encoding='utf8'))
           cases=report['cases']
-          assert len(cases)==15
+          assert len(cases)==17
           h=cases['twelve_victories_two_destroyed']['bootstrap_epoch_zero']
           assert (h['per_win']['free'],h['per_win']['paid'],
                   h['per_win']['charged_scrap'])==(12,12,840)
@@ -136,12 +155,20 @@ jobs:
           first=cases['approved_pre_first_win_65_paid_then_next_real_victory']['approved_owner_policy']
           assert (first['wins'],first['free'],first['paid'],first['restored'])==(1,1,1,1)
           assert first['charged_scrap']==65
+          price15=cases['approved_v6_parity_price_15']['approved_owner_policy']
+          price30=cases['approved_v6_parity_price_30']['approved_owner_policy']
+          assert price15['quote']==10
+          assert price30['quote']==20
+          assert price15['free']==1 and price15['paid']==1
+          assert price30['free']==1 and price30['paid']==1
+          assert price15['quote_rounding']=='nearest_half_up_clamped'
+          assert price30['quote_rounding']=='nearest_half_up_clamped'
           stress=json.load(open(sys.argv[2],encoding='utf8'))
           assert stress['episodes']==200
           assert stress['attempts_each']==12
           assert 'SYNTHETIC_ONLY' in stress['notice']
           assert len(stress['aggregate'])==2
-          print('B01-10 ECONBAL ACTUAL_SCENARIO_EXECUTION 15/15 PASS '
+          print('B01-10 ECONBAL ACTUAL_SCENARIO_EXECUTION 17/17 PASS '
                 '| BOOTSTRAP 2/2 PASS | SYNTHETIC_FIXED_SEED_EPISODES 200 PASS '
                 '| HUMAN_PLAYTEST NOT_RUN | UNITY NOT_RUN')
           PY
@@ -152,6 +179,7 @@ jobs:
           name: b01-10-econbal-original-${{ matrix.os }}-${{ github.run_id }}
           path: |
             ${{ runner.temp }}/econbal-tests.log
+            ${{ runner.temp }}/econbal-real-v6-source.log
             ${{ runner.temp }}/econbal-scenarios.json
             ${{ runner.temp }}/econbal-synthetic.json
           retention-days: 14
