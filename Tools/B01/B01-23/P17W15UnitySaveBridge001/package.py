@@ -49,7 +49,7 @@ def scope():
     core=source(ASSET+"/Core/AtomicWorldSwap.cs").decode()
     unity=source(ASSET+"/Unity/IsolatedTwinRigSaveHost.cs").decode()
     if ("ColdRestore.TryStage(bytes" not in core or
-        "snapshot.Generation<=currentCold.Snapshot.Generation" not in core or
+        "ready.Snapshot.Generation<=currentCold.Snapshot.Generation" not in core or
         "candidate.Capture(),snapshot" not in core or
         "checkpoint.Seal(" not in core or
         "return quarantined?WorldSwapVerdict.RollbackQuarantine:verdict;" not in core or
