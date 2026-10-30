@@ -35,8 +35,8 @@ def main(path):
   # FileShare.None is present only in original #729, store doesn't contain it.
   if x=="FileShare.None":continue
   if x not in store:raise AssertionError("R2_GUARD_MISSING:"+x)
- if "new CanonicalWorldGateway(gate,factory,this,authority)" not in session or
-    "CanonicalSingleAuthorityStoreV3R2" not in session:
+ if ("new CanonicalWorldGateway(gate,factory,this,authority)" not in session or
+     "CanonicalSingleAuthorityStoreV3R2" not in session):
   raise AssertionError("R2_SESSION_NOT_SELECTED_ORIGINAL_V3")
  for alt in ("743e36478ae8cf99e8429af1a8209da9d7ca64de",
              "75f1631f9a36ce51b0f8edc0c7857e924cdf78ec"):
