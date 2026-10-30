@@ -289,6 +289,63 @@ static class Program
             var g=Gate(false);var d=g.Record(Event(1,10,HapticKind.CriticalDamage));
             return d.Outcome==HapticOutcome.SuppressedDisabled&&d.RequireVisibleCriticalAlert;
         });
+
+        // W17 RED: source-only new-run boundary must explicitly signal motor STOP.
+        Check("W17 StartNewRun exposes motor-stop bool result contract",()=>
+            typeof(HapticGate).GetMethod("StartNewRun").ReturnType==typeof(bool));
+        Check("W17 active minor pulse demands motor-stop on new run",()=>{
+            var g=Gate();g.Record(Event(1,0));var wasActive=g.ActiveUntilMs>g.NowMs;
+            var ret=typeof(HapticGate).GetMethod("StartNewRun").Invoke(g,new object[]{8});
+            return wasActive&&ret is bool stop&&stop;
+        });
+        Check("W17 active critical pulse demands motor-stop on new run",()=>{
+            var g=Gate();g.Record(Event(1,0,HapticKind.CriticalDamage));
+            var ret=typeof(HapticGate).GetMethod("StartNewRun").Invoke(g,new object[]{8});
+            return ret is bool stop&&stop;
+        });
+        Check("W17 no previous impulse does not request motor stop",()=>{
+            var g=Gate();var ret=typeof(HapticGate).GetMethod("StartNewRun").Invoke(g,new object[]{8});
+            return ret is bool stop&&!stop;
+        });
+        Check("W17 expired previous impulse does not request stop",()=>{
+            var g=Gate();g.Record(Event(1,0));g.AdvanceTo(80);
+            var ret=typeof(HapticGate).GetMethod("StartNewRun").Invoke(g,new object[]{8});
+            return ret is bool stop&&!stop;
+        });
+        Check("W17 zero-strength suppressed pulse does not request stop",()=>{
+            var g=Gate();g.Record(Event(1,0,strength:0));
+            var ret=typeof(HapticGate).GetMethod("StartNewRun").Invoke(g,new object[]{8});
+            return ret is bool stop&&!stop;
+        });
+        Check("W17 disabled gate does not request stop after new run",()=>{
+            var g=Gate(false);var ret=typeof(HapticGate).GetMethod("StartNewRun").Invoke(g,new object[]{8});
+            return ret is bool stop&&!stop;
+        });
+        Check("W17 after explicit motor stop old run is cleanly reset",()=>{
+            var g=Gate();g.Record(Event(1,0));var ret=typeof(HapticGate).GetMethod("StartNewRun").Invoke(g,new object[]{8});
+            return ret is bool stop&&stop&&g.ActiveUntilMs==0&&g.LastPlayedMs==-1&&g.NowMs==0&&
+                   g.RunId==8&&g.Record(Event(1,0,run:8)).Outcome==HapticOutcome.Play;
+        });
+        Check("W17 active major pulse stop signal must be emitted at boundary",()=>{
+            var g=Gate();g.Record(Event(1,10,HapticKind.PartDetached));g.AdvanceTo(150);
+            var ret=typeof(HapticGate).GetMethod("StartNewRun").Invoke(g,new object[]{8});
+            return ret is bool stop&&stop;
+        });
+        Check("W17 previous physical pulse cannot re-trigger stop after boundary",()=>{
+            var g=Gate();g.Record(Event(1,0));
+            var first=typeof(HapticGate).GetMethod("StartNewRun").Invoke(g,new object[]{8});
+            var second=typeof(HapticGate).GetMethod("StartNewRun").Invoke(g,new object[]{9});
+            return first is bool s1&&s1&&second is bool s2&&!s2;
+        });
+        Check("W17 invalid run ID leaves prior active motor boundary intact",()=>{
+            var g=Gate();g.Record(Event(1,0,HapticKind.CriticalDamage));
+            bool rejected=Throws<ArgumentOutOfRangeException>(()=>g.StartNewRun(7));
+            return rejected&&g.ActiveUntilMs==300&&g.RunId==7;
+        });
+        Check("W17 disconnect via SetEnabled false remains explicit motor stop",()=>{
+            var g=Gate();g.Record(Event(1,0,HapticKind.CriticalDamage));
+            return g.SetEnabled(false)&&g.ActiveUntilMs==0;
+        });
         Console.WriteLine("RESULT "+pass+" PASS, "+fail+" FAIL");
         if(fail!=0)Environment.Exit(1);
     }
