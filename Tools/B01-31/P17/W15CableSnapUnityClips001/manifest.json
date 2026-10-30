@@ -1,0 +1,88 @@
+{
+  "package_id": "B01-31-CABLE-SNAP-ONE-SHOT-UNITY-CLIPS-001",
+  "version": "P17-W15-R1",
+  "owner": "B01-31 — CONCEPT ART & VISUAL EXPLORATION",
+  "task": "Complete prior original #557 W14 CableSnap art with four real Unity AnimationClip YAML assets (three source phases plus a physically authored uninterrupted 36-frame one-shot).",
+  "hq_issue": 571,
+  "governance_issue": 276,
+  "source_w14": {
+    "draft_pr": 557,
+    "exact_source_sha": "d6eb3406120bef2f921079dffe01d898985d7a25",
+    "source_actions_run": 41087336619,
+    "source_artifact": 12991802931,
+    "immutable_inner_unity_sprite_zip_sha256": "b164a1a5ac305d1c0147b131eb16f104d64685ea9267b3d8d20340028ba9e902",
+    "original_sprite_pngs": 36,
+    "original_unique_meta_guids": 41,
+    "read_only": true
+  },
+  "scope": [
+    "Tools/B01-31/P17/W15CableSnapUnityClips001/**",
+    ".github/workflows/b01-31-p17w15-cable-snap-native-clips.yml"
+  ],
+  "unity_import_addon": "Assets/B0131CableSnapVfx/Animations/** only in generated ZIP, not canonical game's repository Assets",
+  "real_output": {
+    "clip_yaml_files": 4,
+    "standalone_phases": [
+      "fracture",
+      "discharge",
+      "cooldown"
+    ],
+    "full_one_shot": "full_sequence",
+    "number_of_original_sprite_frames": 36,
+    "source_frame_duration_ms": 80,
+    "source_sample_fps": 12.5,
+    "phase_length_ms": 960,
+    "full_sequence_length_ms": 2880,
+    "phase_PPtr_keys_including_last_hold": 13,
+    "full_sequence_PPtr_keys_including_last_hold": 37,
+    "actual_total_PPtr_keys": 76,
+    "actual_unity_import_zip_members": 9,
+    "own_new_meta_GUIDs": 5,
+    "clip_loops": false,
+    "AnimatorController": "NOT_IMPLEMENTED",
+    "gameplay_triggers": "NOT_IMPLEMENTED"
+  },
+  "source_tests": [
+    "Immutable original physically produced W14 77-member ZIP exact sha256 and original 36 real original PNG bytes/metas compared against source receipt",
+    "Read original all 36 Unity Sprite Single .meta GUID from immutable actual W14, assert uniqueness",
+    "Write 3 full Unity .anim native PPtr curves at 80ms intervals + final terminal hold, 12.5fps and nonloop 0.96s",
+    "Write one original new sequential 36-frame Unity .anim at 80ms + last-hold 2.88s with actual 37 source sprite refs, no procedural fake or external controls",
+    "Actual loose .anim/.meta bytes exactly match 9-member physical ZIP bytes and CRC",
+    "Reject eight malformed input/asset mutants, including timestamp, loop, SpriteRenderer binding, source Sprite GUID, missing .meta",
+    "Re-run full producer exact byte determinism twice in Ubuntu",
+    "Independently parse actual native Unity YAML AnimationClip using PyYAML on Windows, 76 object keys, 36 real source Sprite meta GUIDs, 5 distinct new clip/folder GUIDs"
+  ],
+  "integrity": {
+    "selected_frozen_secure_v2_pr": 510,
+    "selected_frozen_secure_v2_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "sole_frozen_save_contract_pr": 556,
+    "sole_frozen_save_contract_sha": "33094f154c7b91119b36d58aab285e6e83c5de57",
+    "alternatives_hold": [
+      511,
+      494,
+      544,
+      549,
+      554
+    ],
+    "no_gameplay_code_modified": true,
+    "no_Codex_changes": true,
+    "no_merge": true
+  },
+  "qa_gates": {
+    "original_physical_art_source": "PENDING_EXECUTION",
+    "B01_40_independent_formal_G0": "PENDING",
+    "B01_60_real_unity_G1": "NOT_RUN",
+    "Live_SaveLoad": "NOT_RUN",
+    "G2": "HOLD",
+    "Codex_ACK": false,
+    "integration": false
+  },
+  "receivers": [
+    "B01-40 read-only exact source and original nine-member Unity ZIP+GUID/rollback/intake",
+    "B01-60 genuine licensed Unity6000.3.14f1 URP SpriteImporter, .anim parse, SpriteRenderer playback for 12.5fps/one-shot, GPU contrast+human timing",
+    "B01-12 optional visual event trigger only after authoritative gameplay owner approval",
+    "B01-23 and B01-62 remain exclusive secure reattach #510 + durable save #556 host adapter; this source never reads or writes Save/Load",
+    "B01-00 sole authorized later Codex Inbox #79 routing after gate"
+  ],
+  "rollback": "Delete only five NEW own version-specific source/workflow paths on isolated branch. If previously imported into an authorized disposable Unity host, delete only Assets/B0131CableSnapVfx/Animations/ and corresponding Animations.meta; never delete W14 Sprites, foreign empty directories, frozen #510/#556, Codex or other producers."
+}

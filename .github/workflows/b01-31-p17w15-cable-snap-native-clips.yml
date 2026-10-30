@@ -1,0 +1,83 @@
+name: B01-31 P17W15 original Unity .anim four Cable Snap phase+one-shot clips
+on:
+  push:
+    branches: [art/b01-31-p17w15-cable-snap-native-clips]
+    paths:
+      - 'Tools/B01-31/P17/W15CableSnapUnityClips001/**'
+      - '.github/workflows/b01-31-p17w15-cable-snap-native-clips.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01-31/P17/W15CableSnapUnityClips001/**'
+      - '.github/workflows/b01-31-p17w15-cable-snap-native-clips.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-unity-clip-authoring:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Download exact immutable ORIGINAL W14 Cable Snap physical sprite source from original run
+        uses: actions/download-artifact@v4
+        with:
+          name: B0131-P17W14-CABLE-SNAP-36-RGBA-3-GIF-2-BOARDS-UNITY-SPRITES
+          repository: C8LyNn/RoboRougelike
+          run-id: 41087336619
+          github-token: ${{ github.token }}
+          path: original-w14
+      - name: Install independent YAML semantic parser, compile both source scripts
+        run: |
+          python -m pip install --disable-pip-version-check "PyYAML==6.0.2"
+          python -m compileall -q Tools/B01-31/P17/W15CableSnapUnityClips001
+      - name: Author four actual original Unity class74 AnimationClip assets from frozen 36 RGBA Sprite GUIDs
+        run: |
+          python Tools/B01-31/P17/W15CableSnapUnityClips001/build_clips.py --original original-w14 --output output-w15
+          python Tools/B01-31/P17/W15CableSnapUnityClips001/verify_clips.py --original original-w14 --addon output-w15
+      - name: Rerender complete physical original Unity .anim ZIP and receipt, byte-for-byte SHA compare
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd output-w15 && find . -type f -print0 | sort -z | xargs -0 sha256sum) > /tmp/first.sha256
+          python Tools/B01-31/P17/W15CableSnapUnityClips001/build_clips.py --original original-w14 --output output-w15
+          python Tools/B01-31/P17/W15CableSnapUnityClips001/verify_clips.py --original original-w14 --addon output-w15
+          (cd output-w15 && find . -type f -print0 | sort -z | xargs -0 sha256sum) > /tmp/second.sha256
+          cmp /tmp/first.sha256 /tmp/second.sha256
+          echo "W15_ORIGINAL_FOUR_ACTUAL_UNITY_ANIMCLIP_76_PPTR_KEYS_SHA_PARITY_PASS"
+      - name: Upload original actual three phases plus one-shot Unity .anim and .meta files, physical ZIP and hash receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0131-P17W15-ORIGINAL-FOUR-CABLESNAP-UNITY-ANIMCLIPS
+          path: output-w15/
+          retention-days: 30
+          if-no-files-found: error
+  windows-independent-physical-animation-receiver:
+    needs: original-unity-clip-authoring
+    runs-on: windows-2022
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Download original W14 immutable physical sprite ZIP and receipt
+        uses: actions/download-artifact@v4
+        with:
+          name: B0131-P17W14-CABLE-SNAP-36-RGBA-3-GIF-2-BOARDS-UNITY-SPRITES
+          repository: C8LyNn/RoboRougelike
+          run-id: 41087336619
+          github-token: ${{ github.token }}
+          path: original-w14
+      - name: Download actual Ubuntu-authored standalone Unity .anim add-on, NEVER regenerate original
+        uses: actions/download-artifact@v4
+        with:
+          name: B0131-P17W15-ORIGINAL-FOUR-CABLESNAP-UNITY-ANIMCLIPS
+          path: original-w15
+      - name: Install ONLY independent semantic YAML parser
+        run: python -m pip install --disable-pip-version-check "PyYAML==6.0.2"
+      - name: Parse original physical four Unity .anim class74 objects and 76 real PPtr GUID refs against W14 ZIP
+        run: python Tools/B01-31/P17/W15CableSnapUnityClips001/verify_clips.py --original original-w14 --addon original-w15
