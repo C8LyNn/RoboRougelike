@@ -26,7 +26,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git hash-object Tools/B01/CI41/P17W11/exclusive_stage.py)" = 'c346c53e732b5e0683c85d290e36b2cab495ce04'
+          test "$(git hash-object Tools/B01/CI41/P17W11/exclusive_stage.py)" = '8a88299299a1ab1bbbf43a1da0ec4c739eae1945'
           test "$(git hash-object Tools/B01/CI41/P17W11/test_exclusive_stage.py)" = '247058df8c40838ea9d0dcd2c4905f6b3784b630'
           echo 'EXCLUSIVE_STAGE_SOURCE_PINS_PASS'
       - name: Run 20 physical Git and source staging regressions
