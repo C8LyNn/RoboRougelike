@@ -1,0 +1,34 @@
+{
+  "package": "B01-62-P17W25-WHOLE-GAME-ECONOMY-V7-002",
+  "version": 2,
+  "original_previous_v1": "ba3201644b252241429a6f493238c49d822adfae",
+  "exact_selected_strict_787": "f5db40bf293fe9582ec7c6fcb3515aeff6fcf937",
+  "exact_producer_780": "b4df10a7ad7e6c758f8331013f6b216b3a3689a3",
+  "producer_original_blobs": {
+    "policy": "53ebce6c07388dc9c8a8ed79b6de4d3ccbee4773",
+    "binary_section": "d8b71de91db36295b6220e9c4baad71eb54455f6"
+  },
+  "frozen_world_556": "33094f154c7b91119b36d58aab285e6e83c5de57",
+  "original_729": "b8ca29c7707cd6b4338d0b9772d74dee676d49d2",
+  "slot_marker": "slot.canonical-game-v2",
+  "envelope_magic": "B0162G02",
+  "economic_section_magic": "B01ECN7!",
+  "one_owner": ".owner ORIGINAL V3 gateway only",
+  "one_full_file": "save.envelope",
+  "auto_migration": false,
+  "codex_ack": false,
+  "native_G1": "NOT_RUN",
+  "formal_G0": "PENDING",
+  "runtime_Unity_772": "NOT_INTEGRATED",
+  "status": "NEW VERSION SOURCE ONLY",
+  "new_only_files": [
+    "Tools/B01/B01-62/P17W25WholeGameEconomyV7/WholeGameEconomySlotV2.cs",
+    "Tools/B01/B01-62/P17W25WholeGameEconomyV7/CanonicalWholeGameSessionV2.cs",
+    "Tools/B01/B01-62/P17W25WholeGameEconomyV7/Program.cs",
+    "Tools/B01/B01-62/P17W25WholeGameEconomyV7/WholeGameEconomyV7QA.csproj",
+    "Tools/B01/B01-62/P17W25WholeGameEconomyV7/source_guard.py",
+    "Tools/B01/B01-62/P17W25WholeGameEconomyV7/README.md",
+    "Tools/B01/B01-62/P17W25WholeGameEconomyV7/manifest.json",
+    ".github/workflows/b01-62-w25-whole-game-econ-v7.yml"
+  ]
+}
