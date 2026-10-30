@@ -26,6 +26,8 @@ def secure_case():
         "event": "pull_request",
         "required_job_names": ["dispatch (windows-2025)", "dispatch (ubuntu-24.04)"],
         "required_steps": [STEP_TEST, STEP_PLAN],
+        "required_runner_labels": {"dispatch (windows-2025)": "windows-2025",
+                                   "dispatch (ubuntu-24.04)": "ubuntu-24.04"},
     }
     docs = original_objects()
     docs[RUN_PATH].update({
@@ -35,10 +37,12 @@ def secure_case():
     docs[JOBS_PATH] = {
         "total_count": 2, "jobs": [
             {"id": 101, "name": "dispatch (windows-2025)", "head_sha": SHA,
+             "labels": ["windows-2025"], "run_id": 41000000001, "run_attempt": 1,
              "status": "completed", "conclusion": "success",
              "steps": [{"name": STEP_TEST, "status": "completed", "conclusion": "success"},
                        {"name": STEP_PLAN, "status": "completed", "conclusion": "success"}]},
             {"id": 102, "name": "dispatch (ubuntu-24.04)", "head_sha": SHA,
+             "labels": ["ubuntu-24.04"], "run_id": 41000000001, "run_attempt": 1,
              "status": "completed", "conclusion": "success",
              "steps": [{"name": STEP_TEST, "status": "completed", "conclusion": "success"},
                        {"name": STEP_PLAN, "status": "completed", "conclusion": "success"}]},
