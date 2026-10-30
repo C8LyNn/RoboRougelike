@@ -111,8 +111,8 @@ internal static class Independent
             bool l=(mask&1)!=0,h=(mask&2)!=0;
             if(api.TryRestoreExact556(Payload(10,l,h))!=WorldSwapVerdict.Accepted||
                !api.HasWorld||api.Quarantined||o.Last==null||!o.Last.Active||
-               !api.ContainsPrivateConsumedId(0,2310001)==l||
-               !api.ContainsPrivateConsumedId(1,2310002)==h||
+               api.ContainsPrivateConsumedId(0,2310001)!=l||
+               api.ContainsPrivateConsumedId(1,2310002)!=h||
                !Saved(api,11,l,h)||!ReadEpoch(root,o,10))return false;
         }
         return true;
