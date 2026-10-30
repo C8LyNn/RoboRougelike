@@ -281,6 +281,102 @@ public static class OriginalSafeRouteTests
         Reject("R2_FIND_FROM_NULL_GRID",()=>SafeRoutePlanner.FindFrom(null!,new GridCell(0,0),0,new RouteConditions(false,false)));
         Reject("R2_FIND_FROM_NEGATIVE_RADIUS",()=>SafeRoutePlanner.FindFrom(Map(),Map().Start,-1,new RouteConditions(false,false)));
         Reject("R2_FIND_FROM_OVERSIZE_RADIUS",()=>SafeRoutePlanner.FindFrom(Map(),Map().Start,3,new RouteConditions(false,false)));
+
+        Test("R3_REAL_PHYSICAL_CRATE_STAGING_SAFE_ALL_8",()=>{
+            var a=PhysicalObstacleRouter.AuditAllEight(Map(),new[]{new GridCell(3,8)});
+            Check(a.AllReachable&&a.Cases.Length==8,"staging unexpectedly unsafe");
+        });
+        Test("R3_BLOCK_HEAVY_LOWER_BYPASS_REJECT_ALL8",()=>{
+            var a=PhysicalObstacleRouter.AuditAllEight(Map(),new[]{new GridCell(7,8)});
+            Check(!a.AllReachable&&!a.Cases[5].Reachable,"heavy softlock missed");
+        });
+        Test("R3_LIGHT_STILL_NAVIGATES_DANGEROUS_HEAVY_BLOCK",()=>{
+            var a=PhysicalObstacleRouter.AuditAllEight(Map(),new[]{new GridCell(7,8)});
+            Check(a.Cases[0].Reachable&&a.Cases[1].Reachable,"light should not be softlocked");
+        });
+        Test("R3_ALTERNATE_CRATE_MOVE_SAFE_ALL_8",()=>{
+            Check(PhysicalObstacleRouter.AuditAllEight(Map(),new[]{new GridCell(4,4)}).AllReachable,"4 4");
+        });
+        Test("R3_REAL_CRATE_NOT_ON_LIGHT_ROUTE",()=>{
+            var m=Map();var block=new GridCell(3,8);
+            var p=PhysicalObstacleRouter.FindFrom(m,m.Start,0,new RouteConditions(false,true),new[]{block});
+            Check(p.Reachable,"light should have route");
+            foreach(var cell in p.Cells)Check(!cell.Equals(block),"route crosses crate");
+        });
+        Test("R3_HEAVY_3X3_FOOTPRINT_NEVER_OVERLAPS_REAL_CRATE",()=>{
+            var m=Map();var block=new GridCell(3,8);
+            var p=PhysicalObstacleRouter.FindFrom(m,m.Start,1,new RouteConditions(false,true),new[]{block});
+            Check(p.Reachable,"heavy blocked at safe stage");
+            foreach(var cell in p.Cells)
+                Check(Math.Abs(cell.X-block.X)>1||Math.Abs(cell.Z-block.Z)>1,
+                    "real crate overlaps heavy swept footprint");
+        });
+        Test("R3_REAL_BLOCKER_ON_START_IS_NO_ROUTE",()=>{
+            var m=Map();var p=PhysicalObstacleRouter.FindFrom(m,m.Start,0,
+                new RouteConditions(true,false),new[]{m.Start});
+            Check(!p.Reachable&&p.Cells.Length==0,"occupied start false positive");
+        });
+        Test("R3_REAL_BLOCKER_ON_EXIT_IS_NO_ROUTE",()=>{
+            var m=Map();var p=PhysicalObstacleRouter.FindFrom(m,m.Start,0,
+                new RouteConditions(true,false),new[]{m.Exit});
+            Check(!p.Reachable&&p.Cells.Length==0,"occupied exit false positive");
+        });
+        Test("R3_REAL_BLOCKED_CELLS_FROM_LIVE_ORIGIN",()=>{
+            var m=Map();var c=new RouteConditions(false,true);
+            var old=PhysicalObstacleRouter.FindFrom(m,m.Start,0,c,new[]{new GridCell(3,8)});
+            Check(old.Reachable&&old.Cells.Length>2,"baseline");
+            var next=old.Cells[1];
+            var live=PhysicalObstacleRouter.FindFrom(m,next,0,c,new[]{new GridCell(3,8)});
+            VerifyPhysicalGridWitnessFrom(m,next,live,0,c);
+            Check(live.Cells.Length<=old.Cells.Length,"stale origin");
+        });
+        Test("R3_EMPTY_PHYSICAL_INPUT_LEGACY_R2_PARITY_EIGHT_CASES",()=>{
+            var m=Map();for(int r=0;r<=1;r++)for(int g=0;g<=1;g++)
+            for(int h=0;h<=1;h++)
+            {
+                var state=new RouteConditions(g==1,h==1);
+                var a=SafeRoutePlanner.Find(m,r,state);
+                var b=PhysicalObstacleRouter.FindFrom(m,m.Start,r,state,Array.Empty<GridCell>());
+                Check(a.Cells.Length==b.Cells.Length,"R2 ABI changed");
+                for(int j=0;j<a.Cells.Length;j++)
+                    Check(a.Cells[j].Equals(b.Cells[j]),"BFS order diverged");
+            }
+        });
+        Test("R3_REAL_OBSTACLE_DUPLICATE_SAMPLES_ARE_IDEMPOTENT",()=>{
+            var m=Map();var c=new RouteConditions(false,true);
+            var a=PhysicalObstacleRouter.FindFrom(m,m.Start,0,c,new[]{new GridCell(3,8)});
+            var b=PhysicalObstacleRouter.FindFrom(m,m.Start,0,c,
+                new[]{new GridCell(3,8),new GridCell(3,8)});
+            Check(a.Cells.Length==b.Cells.Length,"duplicate physics hits");
+        });
+        Test("R3_SNAPSHOT_IS_NOT_SHARED_ACROSS_PHYSICS_UPDATES",()=>{
+            var m=Map();var sample=new[]{new GridCell(3,8)};
+            var a=PhysicalObstacleRouter.FindFrom(m,m.Start,1,new RouteConditions(false,true),sample);
+            sample[0]=new GridCell(7,8);
+            var b=PhysicalObstacleRouter.FindFrom(m,m.Start,1,new RouteConditions(false,true),sample);
+            Check(a.Reachable&&!b.Reachable,"stale/aliased occupancy");
+        });
+        Test("R3_CRATE_AUDIT_100_IDENTICAL_REPLAYS",()=>{
+            var m=Map();var b=new[]{new GridCell(7,8)};
+            var a=PhysicalObstacleRouter.AuditAllEight(m,b);
+            for(int i=0;i<100;i++)
+            {
+                var x=PhysicalObstacleRouter.AuditAllEight(m,b);
+                Check(a.AllReachable==x.AllReachable,"non-deterministic accept");
+                for(int j=0;j<8;j++)
+                    Check(a.Cases[j].Reachable==x.Cases[j].Reachable,"unstable reject");
+            }
+        });
+        Reject("R3_NULL_PHYSICAL_OCCUPANCY",()=>PhysicalObstacleRouter.FindFrom(
+            Map(),Map().Start,0,new RouteConditions(false,true),null!));
+        Reject("R3_OUTSIDE_PHYSICS_HIT",()=>PhysicalObstacleRouter.FindFrom(
+            Map(),Map().Start,0,new RouteConditions(false,true),new[]{new GridCell(-1,9)}));
+        Reject("R3_OVER_BUDGET_PHYSICAL_HITS",()=>PhysicalObstacleRouter.FindFrom(
+            Map(),Map().Start,0,new RouteConditions(false,true),new GridCell[Map().Width*Map().Height+1]));
+        Reject("R3_AUDIT_NULL_PHYSICS",()=>PhysicalObstacleRouter.AuditAllEight(Map(),null!));
+        Reject("R3_AUDIT_NULL_LEVEL",()=>PhysicalObstacleRouter.AuditAllEight(null!,new[]{new GridCell(3,8)}));
+        Reject("R3_BAD_HEAVY_FOOTPRINT",()=>PhysicalObstacleRouter.FindFrom(
+            Map(),Map().Start,3,new RouteConditions(false,true),Array.Empty<GridCell>()));
         Check(args.Length==1,"One results path required");
         string file=Path.GetFullPath(args[0]);Directory.CreateDirectory(Path.GetDirectoryName(file)!);
         File.WriteAllText(file,JsonSerializer.Serialize(new{package="B01-25-SAFEROUTE001/R1",

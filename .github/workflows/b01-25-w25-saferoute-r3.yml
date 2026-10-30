@@ -1,0 +1,95 @@
+name: B01-25 W25 SAFEROUTE R3 physical dynamic-obstacle original source QA
+on:
+  push:
+    branches: [research/b01-25-p17w25-saferoute001-r3-dynamic-obstruction]
+    paths:
+      - 'Assets/B0125SafeRoute001/**'
+      - 'Research/B01-25/P17/SAFEROUTE001/**'
+      - 'Tools/B01/B01-25/P17W25SafeRouteR3/**'
+      - '.github/workflows/b01-25-w25-saferoute-r3.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    env:
+      SRC: Research/B01-25/P17/SAFEROUTE001
+      OUT: Tools/B01/B01-25/P17W25SafeRouteR3/.output
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile all R1 R2 and new original R3 physical occupancy CSharp9
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$SRC/.output" "$OUT"
+          dotnet build "$SRC/SafeRouteRuntime.csproj" -c Release -p:LangVersion=9.0 -warnaserror
+      - name: Execute original full 8-mode moving-collider and rollback source tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --project "$SRC/SafeRouteTests.csproj" -c Release -- "$SRC/.output/results.json" 2>&1 | tee "$OUT/csharp-$RUNNER_OS.log"
+      - name: Execute actual original Git blob, GUID14 and physical scratch source QA
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-25/P17W25SafeRouteR3/check.py --out "$OUT/receipt.json" 2>&1 | tee "$OUT/qa-$RUNNER_OS.log"
+      - name: Assert actual source ZIP and machine readable receipts exist
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s "$OUT/receipt.zip"
+          test -s "$OUT/receipt.json"
+          test -s "$SRC/.output/results.json"
+          sha256sum "$OUT/receipt.zip"
+      - name: Upload original real machine source ZIP and QA evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-25-saferoute-r3-w25-${{ matrix.os }}
+          path: |
+            Research/B01-25/P17/SAFEROUTE001/.output/results.json
+            Tools/B01/B01-25/P17W25SafeRouteR3/.output/**
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 21
+  original-cross-os-source-zip-parity:
+    needs: original-source
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: b01-25-saferoute-r3-w25-*
+          path: evidence
+      - name: Download real Windows and Ubuntu original 23-member Unity SOURCE ZIPs
+        shell: bash
+        run: |
+          set -euo pipefail
+          A="$(find evidence/b01-25-saferoute-r3-w25-ubuntu-latest -name receipt.zip | head -n1)"
+          B="$(find evidence/b01-25-saferoute-r3-w25-windows-latest -name receipt.zip | head -n1)"
+          test -n "$A" && test -n "$B"
+          test -s "$A" && test -s "$B"
+          sha256sum "$A" "$B"
+          cmp "$A" "$B"
+          python - "$A" <<'PY'
+          import json,sys,zipfile
+          with zipfile.ZipFile(sys.argv[1]) as z:
+              n=z.namelist()
+              assert len(n)==24 and len(set(n))==24
+              assert all(i.create_system==3 for i in z.infolist())
+              m=json.loads(z.read("PACKAGE_MANIFEST.json"))
+              assert m["oneVersionOnly"] and m["nativeUnity"]=="NOT_RUN"
+              assert len(m["files"])==23
+          print("SAFEROUTE_R3_ORIGINAL_UNITY_SOURCE_ZIP_PARITY_PASS")
+          PY
