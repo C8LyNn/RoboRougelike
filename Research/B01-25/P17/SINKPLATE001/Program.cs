@@ -26,7 +26,7 @@ static class TestRunner
         Case("EXACT_HEAVY_THRESHOLD",()=>{var c=Plate();c.Advance(new(0,true,4));Eq(c.LockedWarning,.35,"threshold");});
         Case("NO_MASS_TOGGLE_EXPLOIT_MID_WARNING",()=>{var c=Plate();c.Advance(new(.1,true,1.5));c.Advance(new(.1,true,12));Eq(c.LockedWarning,.8,"locked light");});
         Case("LEAVING_WARNING_DOES_NOT_CANCEL_COLLAPSE",()=>{var c=Plate();c.Advance(new(.1,true,1.5));Steps(c,7,.1,false,1.5);Check(c.Phase==PlatePhase.Dropped,"timer should continue");});
-        Case("PAUSE_FREEZES_STATE_TIMER",()=>{var c=Plate();c.Advance(new(.2,true,12));double before=c.PhaseElapsed;for(int i=0;i<10;i++)c.Advance(new(.1,true,12,true));Eq(c.PhaseElapsed,before,"paused");Check(c.Phase==PlatePhase.Warning,"phase");});
+        Case("PAUSE_FREEZES_STATE_TIMER",()=>{var c=Plate();c.Advance(new(.1,true,12));double before=c.PhaseElapsed;for(int i=0;i<10;i++)c.Advance(new(.1,true,12,true));Eq(c.PhaseElapsed,before,"paused");Check(c.Phase==PlatePhase.Warning,"phase");});
         Case("COLLAPSE_ONLY_ONE_EVENT",()=>{var c=Plate();int grants=0;for(int i=0;i<30;i++)if(c.Advance(new(.1,true,12)).CollapseStarted)grants++;Check(grants==1&&c.CompletedCollapses==1,"single collapse");});
         Case("DROP_AND_RECOVERY_COLLIDER_DISABLED",()=>{var c=Plate();Steps(c,4,.1,true,12);Check(!c.Snapshot().SupportsVehicle,"dropped");Steps(c,12,.1,true,12);Check(c.Phase==PlatePhase.Recovering&&!c.Snapshot().SupportsVehicle,"recovery");});
         Case("STANDING_ON_RESTORED_PLATE_NO_REARM",()=>{var c=Plate();Steps(c,25,.1,true,12);Check(c.Phase==PlatePhase.AwaitClear&&c.Snapshot().SupportsVehicle,"await clear");Steps(c,30,.1,true,12);Check(c.CompletedCollapses==1,"farming");});
