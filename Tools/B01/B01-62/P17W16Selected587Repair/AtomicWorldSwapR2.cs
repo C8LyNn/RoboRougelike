@@ -119,7 +119,7 @@ namespace B01.W16Selected587Repair
                 // Same run+generation different bytes is a HARD fork rejection.
                 AuthorityDecision disposition;
                 try{disposition=authority.Evaluate(snapshot.RunId,snapshot.Generation,bytes);}
-                catch{return WorldSwapVerdict.RollbackQuarantine;}
+                catch{quarantined=true;return WorldSwapVerdict.RollbackQuarantine;}
                 if(disposition==AuthorityDecision.Reject)
                     return WorldSwapVerdict.StaleGeneration;
                 if(disposition==AuthorityDecision.Replay && currentCold!=null)
