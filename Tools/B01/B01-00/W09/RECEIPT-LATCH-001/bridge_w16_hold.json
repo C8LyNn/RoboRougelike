@@ -67,10 +67,10 @@
   ],
   "owner_selection": {
     "actor": "B01-23",
-    "state": "UNDECIDED",
-    "pr": null,
-    "sha": null,
-    "decision_url": null
+    "state": "SELECTED_ONE",
+    "pr": 587,
+    "sha": "ad7904eca571c742257551fa8103f266fcb9b752",
+    "decision_url": "https://github.com/C8LyNn/RoboRougelike/pull/596"
   },
   "release_gates": {
     "unity_g1": "NOT_RUN",
@@ -83,5 +83,25 @@
     "codex_ack": "NONE",
     "g2": "HOLD",
     "merged": false
+  },
+  "fresh_exact_587_qa": {
+    "pr": 590,
+    "qa_sha": "c28565639bef834e64c092ce142c449acdfb7ae5",
+    "target_pr": 587,
+    "tested_commit": "ad7904eca571c742257551fa8103f266fcb9b752",
+    "tested_core_blob": "16a7d7043a2ecb59a41bbfb063170235872fd7fc",
+    "verdict": "EXPECTED_RED_WITNESS",
+    "defects": [
+      "SAME_GENERATION_WORLD_FORK",
+      "ROLLBACK_EXCEPTION_VERDICT_MASKED"
+    ]
+  },
+  "owner_correction": {
+    "pr": 596,
+    "selected_lineage_pr": 587,
+    "observed_unfrozen_head": "7bd598fde2204d6a397a50b199be12f072b5cd66",
+    "state": "DRAFT_SOURCE_QA_PENDING",
+    "merged": false,
+    "source_g0": "HOLD"
   }
 }
