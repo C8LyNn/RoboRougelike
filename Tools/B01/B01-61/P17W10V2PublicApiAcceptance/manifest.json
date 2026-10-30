@@ -1,0 +1,18 @@
+{
+  "id": "B01-61-P17W10-SECURE-REATTACH-V2-PUBLIC-API-QA-001",
+  "version": "1.0.0",
+  "original_producer": "B01-23",
+  "producer_sha": "59479716140b0e2682f5a979e210e0f2709d4a31",
+  "source_blobs": {
+    "SecureDebrisPlaygroundV2.cs": "491c89a18827bb027854bba5e6be6630ce4947b6",
+    "SecureDockPolicy.cs": "cc6611343d585fd0f16ff048f8ecdb0e7b1be30c",
+    "SecureRigSpec.cs": "b680ed0ec969ac23203fa55eab7b90f8daa86e43"
+  },
+  "qa_scope": "Tools/B01/B01-61/P17W10V2PublicApiAcceptance/** + own workflow",
+  "source_tests": "9 independent C#9 groups and 6 negative source mutants",
+  "unity_native": "NOT_RUN",
+  "legacy_w07_api": "STILL_UNGUARDED_IN_OLD_CLASS",
+  "codex_ack": "NO",
+  "merge": "NO",
+  "rollback": "close Draft/drop QA branch only"
+}
