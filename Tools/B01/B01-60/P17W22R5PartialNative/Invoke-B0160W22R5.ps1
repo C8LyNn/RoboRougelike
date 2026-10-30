@@ -13,7 +13,7 @@ $exitCode=2
 function Need([bool]$ok,[string]$why) {
  if(-not $ok){throw "B0160_W22_FAIL_CLOSED: $why"}
 }
-function Git([string[]]$args2) {
+function Invoke-LocalGit([string[]]$args2) {
  $v=@(& git @args2 2>&1)
  Need ($LASTEXITCODE -eq 0) 'Local-only Git source identity command failed'
  return ($v -join [Environment]::NewLine).Trim()
@@ -30,22 +30,22 @@ try {
  $python=@(& python --version 2>&1)
  Need ($LASTEXITCODE -eq 0 -and ($python -join ' ') -match '^Python 3\.') 'Python 3 required'
  $repo=(Resolve-Path -LiteralPath $RepoPath -ErrorAction Stop).Path
- Need (([IO.Path]::GetFullPath((Git @('-C',$repo,'rev-parse','--show-toplevel')))).TrimEnd('\','/') -ieq
+ Need (([IO.Path]::GetFullPath((Invoke-LocalGit @('-C',$repo,'rev-parse','--show-toplevel')))).TrimEnd('\','/') -ieq
        ([IO.Path]::GetFullPath($repo)).TrimEnd('\','/')) 'Run from exact Git root'
- $head=Git @('-C',$repo,'rev-parse','HEAD')
+ $head=Invoke-LocalGit @('-C',$repo,'rev-parse','HEAD')
  Need ($head -match '^[0-9a-f]{40}$') 'No exact source Git HEAD'
  $w21='02272e8b0facc00d3943672770251b1d01182b85'
- Need ((Git @('-C',$repo,'merge-base',$w21,$head)) -eq $w21) 'W22 must descend frozen W21'
+ Need ((Invoke-LocalGit @('-C',$repo,'merge-base',$w21,$head)) -eq $w21) 'W22 must descend frozen W21'
  $file='Tools/B01/B01-60/P17W22R5PartialNative/Invoke-B0160W22R5.ps1'
  $runner='Tools/B01/B01-60/P17W22R5PartialNative/r5_native.py'
  $tests='Tools/B01/B01-60/P17W22R5PartialNative/test_r5_native.py'
  Need ([IO.Path]::GetFullPath((Join-Path $repo $file)) -ieq [IO.Path]::GetFullPath($PSCommandPath)) 'Launcher must be Git tracked'
  foreach($path in @($file,$runner,$tests)) {
-   Need ((Git @('-C',$repo,'hash-object','--',$path)) -eq
-         (Git @('-C',$repo,'rev-parse',"HEAD:$path"))) "Changed/untracked W22 source: $path"
+   Need ((Invoke-LocalGit @('-C',$repo,'hash-object','--',$path)) -eq
+         (Invoke-LocalGit @('-C',$repo,'rev-parse',"HEAD:$path"))) "Changed/untracked W22 source: $path"
  }
  $r5='cc7f73541517a18f4479bb155534bd4832d9985e'
- Need ((Git @('-C',$repo,'cat-file','-t',$r5)) -eq 'commit') 'R5 #690 Git SHA not present locally: no network fetch'
+ Need ((Invoke-LocalGit @('-C',$repo,'cat-file','-t',$r5)) -eq 'commit') 'R5 #690 Git SHA not present locally: no network fetch'
  if([string]::IsNullOrWhiteSpace($ScratchParent)){$ScratchParent=$env:TEMP}
  $parent=(Resolve-Path -LiteralPath $ScratchParent -ErrorAction Stop).Path
  Need (-not $parent.StartsWith('\\')) 'Network scratch refused'
