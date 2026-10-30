@@ -12,7 +12,7 @@
   },
   "source_pins": {
     "Tools/B01/B01-62/P17W08DebrisLedgerSaveQA/prepare.py": "4ed79ff1fea6f14a96cbd5d37eca7953ba58d3ee",
-    "Tools/B01/B01-62/P17W08DebrisLedgerSaveQA/DebrisLedgerSaveQA.csproj": "e89017444654fa6053cbb4c86875c8e4bcd2a83c",
+    "Tools/B01/B01-62/P17W08DebrisLedgerSaveQA/DebrisLedgerSaveQA.csproj": "de655a2119872b0ca7f18175c98235a81559c592",
     "Tools/B01/B01-62/P17W08DebrisLedgerSaveQA/Program.cs": "667567066e12c5d1d62a942c13e482ccee46b8f7",
     "Tools/B01/B01-62/P17W08DebrisLedgerSaveQA/README.md": "efc608c3e02efc179f8ea2dcc48f5d57e5c5a817",
     ".github/workflows/b01-62-p17w08-debris-ledger-save.yml": "d8ee04603c75bb323e87c42f1de1e6cf1f5451cd"
