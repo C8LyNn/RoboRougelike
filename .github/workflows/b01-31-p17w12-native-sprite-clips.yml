@@ -1,0 +1,82 @@
+name: B01-31 P17W12 original physical four Unity SpriteRenderer AnimationClip assets
+on:
+  push:
+    branches: [art/b01-31-p17w12-native-sprite-clips]
+    paths:
+      - 'Tools/B01-31/P17/W12DockClipAssets001/**'
+      - '.github/workflows/b01-31-p17w12-native-sprite-clips.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01-31/P17/W12DockClipAssets001/**'
+      - '.github/workflows/b01-31-p17w12-native-sprite-clips.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-unity-animationclip-authoring:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Download exact original W11 physical Sprite ZIP and receipt; NEVER regenerate source
+        uses: actions/download-artifact@v4
+        with:
+          name: B0131-P17W11-ORIGINAL-4-ANIM-32-PNG-4-GIF-UNITY-SPRITES
+          repository: C8LyNn/RoboRougelike
+          run-id: 41069320296
+          github-token: ${{ github.token }}
+          path: original-w11
+      - name: Source syntax check and original four real Unity AnimationClip YAML exports
+        run: |
+          python -m compileall -q Tools/B01-31/P17/W12DockClipAssets001
+          python -m pip install --disable-pip-version-check "PyYAML==6.0.2"
+          python Tools/B01-31/P17/W12DockClipAssets001/build_clips.py --original original-w11 --output output-w12
+          python Tools/B01-31/P17/W12DockClipAssets001/verify_clips.py --original original-w11 --addon output-w12
+      - name: Repeat physical original YAML/add-on ZIP and receipt; assert exact SHA reproducibility
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd output-w12 && find . -type f -print0 | sort -z | xargs -0 sha256sum) > /tmp/first.sha256
+          python Tools/B01-31/P17/W12DockClipAssets001/build_clips.py --original original-w11 --output output-w12
+          python Tools/B01-31/P17/W12DockClipAssets001/verify_clips.py --original original-w11 --addon output-w12
+          (cd output-w12 && find . -type f -print0 | sort -z | xargs -0 sha256sum) > /tmp/second.sha256
+          cmp /tmp/first.sha256 /tmp/second.sha256
+          echo "W12_ORIGINAL_UNITY_ANIM_4_CLIPS_NINE_ACTUAL_ASSETS_BYTE_PARITY_PASS"
+      - name: Upload four physical original .anim + .meta + add-on ZIP and exact SHA receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0131-P17W12-4-ORIGINAL-UNITY-ANIMCLIPS-NINE-ASSET-ZIP
+          path: output-w12/
+          retention-days: 30
+          if-no-files-found: error
+
+  original-physical-animationclip-windows-receiver:
+    needs: original-unity-animationclip-authoring
+    runs-on: windows-2022
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Original W11 source physical ZIP
+        uses: actions/download-artifact@v4
+        with:
+          name: B0131-P17W11-ORIGINAL-4-ANIM-32-PNG-4-GIF-UNITY-SPRITES
+          repository: C8LyNn/RoboRougelike
+          run-id: 41069320296
+          github-token: ${{ github.token }}
+          path: original-w11
+      - name: Download actual Ubuntu produced Unity YAML clip package without generating it
+        uses: actions/download-artifact@v4
+        with:
+          name: B0131-P17W12-4-ORIGINAL-UNITY-ANIMCLIPS-NINE-ASSET-ZIP
+          path: original-w12
+      - name: Install independent semantic YAML parser
+        run: python -m pip install --disable-pip-version-check "PyYAML==6.0.2"
+      - name: Independently parse four physical Unity AnimationClip YAML m_Sprite PPtr curves and original GUID links
+        run: python Tools/B01-31/P17/W12DockClipAssets001/verify_clips.py --original original-w11 --addon original-w12
