@@ -1,0 +1,59 @@
+{
+  "package_id": "B01-22-ECONCOREGUARD-005",
+  "version": "5.0.0-P17W23",
+  "parent_sha": "1135ca4f5d685f6188b7c221c7237a449e21f226",
+  "owner": "B01-22",
+  "frozen_files": {
+    "v3": "Assets/B01Packages/ECONREBUILD003/Runtime/RebuildOwnerAuthorityV3.cs",
+    "v4": "Assets/B01Packages/ECONREADINESS004/Runtime/EconomyRunReadinessGateV4.cs"
+  },
+  "frozen_sha1": {
+    "v3": "ace8d24196b7aa795f2af46beed508ce3e29ad7e",
+    "v4": "cb8f1e15a6d2ed1370d005653ce489c3f4ad5c51"
+  },
+  "pinned_blobs": {
+    "Assets/B01Packages/ECONCOREGUARD005/Runtime/CoreGuardedDeploymentProbeV5.cs": "2d0fdae02bce10c406464eda182218a5e9bec6a0",
+    "Assets/B01Packages/ECONCOREGUARD005.meta": "e299cf9ee532829f463043abcdec7347f4a6624c",
+    "Assets/B01Packages/ECONCOREGUARD005/Runtime.meta": "4220616000a8da8d1aa2ec9f2a2c624b9dcac5da",
+    "Assets/B01Packages/ECONCOREGUARD005/Runtime/CoreGuardedDeploymentProbeV5.cs.meta": "c5566a1dcc3063af504ed6a28eca5a7edf0533c3",
+    "Assets/B01Packages/ECONCOREGUARD005/Runtime/B01.EconCoreGuardV5.asmdef.meta": "d984f591dfafa22ed6e5c9a6c45d84e43b944c85",
+    "Assets/B01Packages/ECONCOREGUARD005/Runtime/B01.EconCoreGuardV5.asmdef": "5bcee10939a11924f38c8c93550aca359130da36",
+    "Tools/B01/ECONCOREGUARD005/Program.cs": "7db3b0a7f4703d2ff47a3c8a1966d76c1483bf20",
+    "Tools/B01/ECONCOREGUARD005/W23.Tests.csproj": "2e27270e15a4dc925be69d321a864c5e538d9b9a",
+    ".github/workflows/b01-22-p17w23-econ-core-guard.yml": "0b94c9562263d032ad41ccdb759dedf67eb41b73",
+    "Tools/B01/ECONCOREGUARD005/README.md": "aa5645d1f2681dc09058daeb2cf004d26f3d814d",
+    "Tools/B01/ECONCOREGUARD005/verify_package.py": "54350ef31a5d2e3def03177eea8f87ee87e7d587"
+  },
+  "owned_paths": [
+    ".github/workflows/b01-22-p17w23-econ-core-guard.yml",
+    "Assets/B01Packages/ECONCOREGUARD005.meta",
+    "Assets/B01Packages/ECONCOREGUARD005/Runtime.meta",
+    "Assets/B01Packages/ECONCOREGUARD005/Runtime/B01.EconCoreGuardV5.asmdef",
+    "Assets/B01Packages/ECONCOREGUARD005/Runtime/B01.EconCoreGuardV5.asmdef.meta",
+    "Assets/B01Packages/ECONCOREGUARD005/Runtime/CoreGuardedDeploymentProbeV5.cs",
+    "Assets/B01Packages/ECONCOREGUARD005/Runtime/CoreGuardedDeploymentProbeV5.cs.meta",
+    "Tools/B01/ECONCOREGUARD005/Program.cs",
+    "Tools/B01/ECONCOREGUARD005/README.md",
+    "Tools/B01/ECONCOREGUARD005/W23.Tests.csproj",
+    "Tools/B01/ECONCOREGUARD005/manifest.json",
+    "Tools/B01/ECONCOREGUARD005/verify_package.py"
+  ],
+  "core_identity": "REQUIRES_TRUSTED_PRIVATE_510_HOST",
+  "save_session": "ONLY_SELECTED_729_712_BRIDGE_NOT_WIRED",
+  "anti_softlock": "DETECT_NO_ALIVE_CORE_OR_NEXT_CHALLENGE;NO_APPROVED_LOANER",
+  "native_unity": "NOT_RUN",
+  "source_g0": "INDEPENDENT_PENDING",
+  "release": "HOLD",
+  "codex_ack": "NONE",
+  "receivers": [
+    "B01-23",
+    "B01-62",
+    "B01-61",
+    "B01-41",
+    "B01-40",
+    "B01-60",
+    "B01-10",
+    "B01-13",
+    "B01-00"
+  ]
+}
