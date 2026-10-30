@@ -1,0 +1,56 @@
+name: B01-61 W15 exact 556 cross-process cold Save Load generation QA
+on:
+  push:
+    branches:
+      - qa/b01-61-p17w15-crossprocess-rollback-anchor
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-61/P17W15CrossProcessGenerationQA/**'
+      - '.github/workflows/b01-61-p17w15-crossprocess-generation-qa.yml'
+jobs:
+  real-source-process:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Run exact original source cross-process physical files and W06
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --project Tools/B01/B01-61/P17W15CrossProcessGenerationQA/CrossProcessGenerationQA.csproj -c Release | tee qa_test.log
+      - name: Execute exact frozen original atomic host bridge core with adversarial worlds
+        shell: bash
+        run: |
+          set -euo pipefail
+          git cat-file -e '135a67d42acfccd59ca9145e09630d0b4bbade1c^{commit}' || git fetch --no-tags origin 135a67d42acfccd59ca9145e09630d0b4bbade1c
+          mkdir -p dist/bridge
+          git show 135a67d42acfccd59ca9145e09630d0b4bbade1c:Assets/B0123SecureV2HostBridge001/Runtime/AtomicColdUnityHostBridge.cs > dist/bridge/AtomicColdUnityHostBridge.cs
+          git show 135a67d42acfccd59ca9145e09630d0b4bbade1c:Assets/B0123SecureV2HostBridge001/Runtime/IsolatedSecureV2SaveHost.cs > dist/bridge/IsolatedSecureV2SaveHost.cs
+          test "$(git hash-object dist/bridge/AtomicColdUnityHostBridge.cs)" = "e9e9dc6d437e96dad6b08c1639e8bd94d62c4f4b"
+          test "$(git hash-object dist/bridge/IsolatedSecureV2SaveHost.cs)" = "980fddbefbe17f41590e36efaab9b9df017660fe"
+          dotnet build Tools/B01/B01-61/P17W15CrossProcessGenerationQA/WorldSwapSourceQA.csproj -c Release -p:BridgeSourcePath=../../../../dist/bridge/AtomicColdUnityHostBridge.cs --nologo
+          dotnet Tools/B01/B01-61/P17W15CrossProcessGenerationQA/bin/Release/net8.0/WorldSwapSourceQA.dll | tee qa_bridge.log
+      - name: Verify selected immutable blobs and produce exact SHA evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-61/P17W15CrossProcessGenerationQA/receipt.py --log qa_test.log --bridge-log qa_bridge.log --bridge-dir dist/bridge --out dist/b01-61-w15-generation-qa.json
+      - name: Upload actual separate-process output and provenance
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-61-w15-generation-${{ matrix.os }}
+          path: |
+            qa_test.log
+            qa_bridge.log
+            dist/b01-61-w15-generation-qa.json
+          if-no-files-found: warn
