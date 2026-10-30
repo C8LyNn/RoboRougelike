@@ -1,0 +1,71 @@
+{
+  "package_id": "B01-22-ECONAPPROVED-007",
+  "version": "7.0.0-P17W25",
+  "parent_sha": "cc5d65f66ad7a764af6515c566e489b9fc3be82e",
+  "pinned_blobs": {
+    "Assets/B01Packages/ECONAPPROVED007.meta": "3d370c5019edfec44ba9b8147459dad9da8afeb3",
+    "Assets/B01Packages/ECONAPPROVED007/Runtime.meta": "e638e3391722d64d43c35647a134b71fa4b69a60",
+    "Assets/B01Packages/ECONAPPROVED007/Runtime/ApprovedEconomyPolicyV7.cs.meta": "742a5256313ff59c572ebe536fdd6b3f852a9036",
+    "Assets/B01Packages/ECONAPPROVED007/Runtime/CanonicalEconomySectionV7.cs.meta": "a18c48c0646a00b3cf399f274d6d1116cda5abe0",
+    "Assets/B01Packages/ECONAPPROVED007/Runtime/B01.EconApprovedV7.asmdef.meta": "d71bf81c67f37ab0d492231315154c01f93c62a0",
+    "Assets/B01Packages/ECONAPPROVED007/Runtime/B01.EconApprovedV7.asmdef": "28e55876b4918455b46229e67ca7535dc10c0e03",
+    "Tools/B01/ECONAPPROVED007/W25.Tests.csproj": "29bcca3570a8e1ab0b53e8fb5c56ccc327b34123",
+    "Tools/B01/ECONAPPROVED007/README.md": "620f9fb3ec6eaa1ae77925e63561011372426ca3",
+    "Tools/B01/ECONAPPROVED007/INTEGRATION_CONTRACT.md": "162f387d035e1105d24b0f4df1d8e5229bc4244a",
+    ".github/workflows/b01-22-p17w25-econ-section-v7.yml": "b1612a2736485a0e467dc6b122187c7bf71f8360",
+    "Assets/B01Packages/ECONAPPROVED007/Runtime/ApprovedEconomyPolicyV7.cs": "53ebce6c07388dc9c8a8ed79b6de4d3ccbee4773",
+    "Assets/B01Packages/ECONAPPROVED007/Runtime/CanonicalEconomySectionV7.cs": "d8b71de91db36295b6220e9c4baad71eb54455f6",
+    "Tools/B01/ECONAPPROVED007/Program.cs": "ab9629da2894528e5a8a577ca77aecd4e5a396db",
+    "Tools/B01/ECONAPPROVED007/SectionTests.cs": "45972bdfc01f48eaefedadcafa4deaf0e5f7ac28",
+    "Tools/B01/ECONAPPROVED007/verify_package.py": "979990ca2abe2727424cecbdb494db4de70edcc4"
+  },
+  "owned_paths": [
+    ".github/workflows/b01-22-p17w25-econ-section-v7.yml",
+    "Assets/B01Packages/ECONAPPROVED007.meta",
+    "Assets/B01Packages/ECONAPPROVED007/Runtime.meta",
+    "Assets/B01Packages/ECONAPPROVED007/Runtime/ApprovedEconomyPolicyV7.cs",
+    "Assets/B01Packages/ECONAPPROVED007/Runtime/ApprovedEconomyPolicyV7.cs.meta",
+    "Assets/B01Packages/ECONAPPROVED007/Runtime/B01.EconApprovedV7.asmdef",
+    "Assets/B01Packages/ECONAPPROVED007/Runtime/B01.EconApprovedV7.asmdef.meta",
+    "Assets/B01Packages/ECONAPPROVED007/Runtime/CanonicalEconomySectionV7.cs",
+    "Assets/B01Packages/ECONAPPROVED007/Runtime/CanonicalEconomySectionV7.cs.meta",
+    "Tools/B01/ECONAPPROVED007/INTEGRATION_CONTRACT.md",
+    "Tools/B01/ECONAPPROVED007/Program.cs",
+    "Tools/B01/ECONAPPROVED007/README.md",
+    "Tools/B01/ECONAPPROVED007/SectionTests.cs",
+    "Tools/B01/ECONAPPROVED007/W25.Tests.csproj",
+    "Tools/B01/ECONAPPROVED007/manifest.json",
+    "Tools/B01/ECONAPPROVED007/verify_package.py"
+  ],
+  "frozen_files": {
+    "v3": "Assets/B01Packages/ECONREBUILD003/Runtime/RebuildOwnerAuthorityV3.cs",
+    "v4": "Assets/B01Packages/ECONREADINESS004/Runtime/EconomyRunReadinessGateV4.cs",
+    "v5": "Assets/B01Packages/ECONCOREGUARD005/Runtime/CoreGuardedDeploymentProbeV5.cs",
+    "v6": "Assets/B01Packages/ECONAPPROVED006/Runtime/ApprovedEconomyPolicyV6.cs"
+  },
+  "frozen_sha": {
+    "v3": "ace8d24196b7aa795f2af46beed508ce3e29ad7e",
+    "v4": "cb8f1e15a6d2ed1370d005653ce489c3f4ad5c51",
+    "v5": "2d0fdae02bce10c406464eda182218a5e9bec6a0",
+    "v6": "c72db78548f3e21765c54eb4609b748153118392"
+  },
+  "canonical_storage": "original #749 release RED #767; #773 only candidate pending QA owner selection",
+  "alternate_storage": "#753 #741 ALT_HOLD do not mix",
+  "source_g0": "INDEPENDENT_PENDING",
+  "native_unity": "NOT_RUN",
+  "game_integrated": false,
+  "codex_ack": "NONE",
+  "full_game_save": "NOT_WIRED",
+  "receivers": [
+    "B01-62",
+    "B01-23",
+    "B01-20",
+    "B01-40",
+    "B01-41",
+    "B01-61",
+    "B01-60",
+    "B01-10",
+    "B01-13",
+    "B01-00"
+  ]
+}
