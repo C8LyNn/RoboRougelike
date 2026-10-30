@@ -1,0 +1,65 @@
+{
+  "package": "B01-25-SWEEPORB001",
+  "version": 1,
+  "gridMeters": 4,
+  "levels": [
+    {
+      "levelId": "CLEARANCELADDER_SWEEP",
+      "mapPR": 359,
+      "mapCommit": "ad52a604ffa4f143d98e607049d6f79e0c7e580f",
+      "mapGitBlob": "53eb696950121465befea2855eda4d7268750016",
+      "orb": {
+        "fromCell": [
+          7,
+          10
+        ],
+        "toCell": [
+          9,
+          10
+        ],
+        "fromWorld": [
+          28,
+          40
+        ],
+        "toWorld": [
+          36,
+          40
+        ],
+        "radius": 1,
+        "warning": 1,
+        "active": 2,
+        "recovery": 3,
+        "offset": 0
+      }
+    },
+    {
+      "levelId": "SLALOM_SWEEP",
+      "mapPR": 346,
+      "mapCommit": "f565e250659692541d672cdab108c4cfb8cfdd31",
+      "mapGitBlob": "013f5fe2058e76233f580a439e8402c0fe09f124",
+      "orb": {
+        "fromCell": [
+          3,
+          8
+        ],
+        "toCell": [
+          5,
+          8
+        ],
+        "fromWorld": [
+          12,
+          32
+        ],
+        "toWorld": [
+          20,
+          32
+        ],
+        "radius": 1,
+        "warning": 1,
+        "active": 2,
+        "recovery": 3,
+        "offset": 3
+      }
+    }
+  ]
+}
