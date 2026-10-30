@@ -60,8 +60,7 @@ internal static class Program
     static string Hash(byte[] a)=>Convert.ToHexString(SHA256.HashData(a)).ToLowerInvariant();
     sealed class Gate:ICanonicalMutationGate
     {
-        public Func<bool>? Reenter;
-        public bool IsQuiescent()=>Reenter?.Invoke()??true;
+        public bool IsQuiescent()=>true;
     }
     sealed class World:ICanonicalStagedWorld
     {
