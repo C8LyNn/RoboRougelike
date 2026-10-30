@@ -1,0 +1,43 @@
+name: B01-61 W14 original cold-session idle callback reentrancy RED witness
+on:
+  push:
+    branches:
+      - qa/b01-61-p17w14-cold-idle-reentry-red
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-61/P17W14ColdIdleReentryQA/**'
+      - '.github/workflows/b01-61-p17w14-cold-idle-reentry.yml'
+jobs:
+  real-original-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Execute exact pinned original production CSharp and W06
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --project Tools/B01/B01-61/P17W14ColdIdleReentryQA/ColdIdleReentryQA.csproj -c Release | tee qa_test.log
+      - name: Build real original HEAD/source/bytes QA receipt
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-61/P17W14ColdIdleReentryQA/receipt.py --log qa_test.log --out dist/b01-61-p17w14-reentry-qa.json
+      - name: Publish exact-head evidence, no fabricated Unity XML
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-61-p17w14-cold-reentry-${{ matrix.os }}
+          path: |
+            qa_test.log
+            dist/b01-61-p17w14-reentry-qa.json
+          if-no-files-found: warn
