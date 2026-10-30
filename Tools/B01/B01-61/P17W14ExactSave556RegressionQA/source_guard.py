@@ -16,7 +16,7 @@ PINS={(NEW,SOURCE):"b52e511c370f5fca56c74029050844dc8cbb7f9a",
 def git(*a):return subprocess.check_output(["git",*a],cwd=ROOT,stderr=subprocess.PIPE)
 def main():
   changed=git("diff","--name-only",NEW,"HEAD").decode().splitlines()
-  if len(changed)!=6 or any(not x.startswith(ROOTQA) and x!=WF for x in changed):
+  if len(changed)!=7 or any(not x.startswith(ROOTQA) and x!=WF for x in changed):
     raise ValueError("QA_ONLY_SCOPE_DRIFT: "+repr(changed))
   for (ref,path),sha in PINS.items():
     raw=git("show",ref+":"+path)
@@ -25,7 +25,7 @@ def main():
     if ref==NEW and git("rev-parse","HEAD:"+path).decode().strip()!=sha:
        raise ValueError("SELECTED_556_PRODUCER_CHANGED")
   print("B0161_W14_DIRECT_ORIGINAL_PROVENANCE_GREEN selected_556="+NEW+
-        " frozen_549="+OLD+" selected_game_510="+GAME+" source_blobs=4/4 QA_only=6/6")
+        " frozen_549="+OLD+" selected_game_510="+GAME+" source_blobs=4/4 QA_only=7/7")
   print(json.dumps({"selected_save_candidate":556,"exact_sha":NEW,"frozen_v1":OLD,
     "original_unity_game":GAME,"save_schema_live_game":"HOLD","unity_g1":"NOT_RUN",
     "codex_ack":False,"merged":False},sort_keys=True))
