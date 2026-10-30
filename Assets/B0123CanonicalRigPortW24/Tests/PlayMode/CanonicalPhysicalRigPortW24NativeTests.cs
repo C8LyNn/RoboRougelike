@@ -61,6 +61,7 @@ namespace B01.CanonicalRigPortW24.Tests
             string root=NewOwnerRoot();
             var port=host.AddComponent<CanonicalPhysicalRigPortW24>();
             CanonicalWorldSlotLease? lease=null;
+            bool ownerReleased=false;
             try
             {
                 Assert.IsTrue(port.SetExternalWritersQuiesced(true));
@@ -91,12 +92,13 @@ namespace B01.CanonicalRigPortW24.Tests
                 yield return null;
                 Assert.IsTrue(gateway.TryCloseAfterPhysicalRetirement(
                     port.AllOwnedPhysicalRootsDestroyed));
+                ownerReleased=true;
             }
             finally
             {
                 UnityEngine.Object.Destroy(host);
                 // Only our uniquely named, newly created disposable test root.
-                if(lease!=null&&!lease.Live)Directory.Delete(root,true);
+                if(ownerReleased&&Directory.Exists(root))Directory.Delete(root,true);
             }
         }
         [UnityTest]
@@ -104,6 +106,7 @@ namespace B01.CanonicalRigPortW24.Tests
         {
             var go=new GameObject("B01 W24 invalid original #556");
             string root=NewOwnerRoot();CanonicalWorldSlotLease? lease=null;
+            bool ownerReleased=false;
             try
             {
                 var port=go.AddComponent<CanonicalPhysicalRigPortW24>();
@@ -118,12 +121,13 @@ namespace B01.CanonicalRigPortW24.Tests
                 Assert.IsTrue(port.AllOwnedPhysicalRootsDestroyed());
                 Assert.IsTrue(gateway.TryCloseAfterPhysicalRetirement(
                     port.AllOwnedPhysicalRootsDestroyed));
+                ownerReleased=true;
                 yield return null;
             }
             finally
             {
                 UnityEngine.Object.Destroy(go);
-                if(lease!=null&&!lease.Live)Directory.Delete(root,true);
+                if(ownerReleased&&Directory.Exists(root))Directory.Delete(root,true);
             }
         }
         [UnityTest]
@@ -131,6 +135,7 @@ namespace B01.CanonicalRigPortW24.Tests
         {
             var go=new GameObject("B01 W24 input quiescence");
             string root=NewOwnerRoot();CanonicalWorldSlotLease? lease=null;
+            bool ownerReleased=false;
             try
             {
                 var port=go.AddComponent<CanonicalPhysicalRigPortW24>();
@@ -141,12 +146,13 @@ namespace B01.CanonicalRigPortW24.Tests
                 Assert.IsNull(port.VisiblePartBody(0));
                 Assert.IsTrue(gateway.TryCloseAfterPhysicalRetirement(
                     port.AllOwnedPhysicalRootsDestroyed));
+                ownerReleased=true;
                 yield return null;
             }
             finally
             {
                 UnityEngine.Object.Destroy(go);
-                if(lease!=null&&!lease.Live)Directory.Delete(root,true);
+                if(ownerReleased&&Directory.Exists(root))Directory.Delete(root,true);
             }
         }
     }
