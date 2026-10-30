@@ -48,6 +48,7 @@ namespace B01.SecureReattachV2
     internal sealed partial class TransactionHost
     {
         private readonly Rig[] rigs=new Rig[2];
+        private bool built=true; // Original host BuildDemo() state boundary, QA-owned stub.
         private GuardedDockCommand gate;
         private DockResult inspector=DockResult.Allowed;
         public TransactionHost()
