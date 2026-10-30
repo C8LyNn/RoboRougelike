@@ -14,7 +14,7 @@ permissions:
   contents: read
 jobs:
   original-compiled-ghost:
-    runs-on: \${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 12
     strategy:
       fail-fast: false
@@ -71,10 +71,14 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: b01-10-ghost-original-compiled-\${{ matrix.os }}-\${{ github.run_id }}
+          name: b01-10-ghost-original-compiled-${{ matrix.os }}-${{ github.run_id }}
           path: |
-            \${{ runner.temp }}/ghost-tests.log
-            \${{ runner.temp }}/ghost-synthetic-demo.json
-            \${{ runner.temp }}/ghost-negative.log
+            ${{ runner.temp }}/ghost-tests.log
+            ${{ runner.temp }}/ghost-synthetic-demo.json
+            ${{ runner.temp }}/ghost-negative.log
+            ${{ runner.temp }}/B01-10_GHOST001_R2_UNITY_SOURCE.zip
+            ${{ runner.temp }}/ghost-zip-pack.json
+            ${{ runner.temp }}/ghost-zip-verify.json
+            ${{ runner.temp }}/ghost-zip-negatives.json
           retention-days: 14
           if-no-files-found: warn
