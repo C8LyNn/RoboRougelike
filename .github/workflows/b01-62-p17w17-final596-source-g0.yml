@@ -1,0 +1,71 @@
+name: B01-62 P17W17 FINAL SINGLE #596 exact source and original physical G0
+on:
+  push:
+    branches: [qa/b01-62-p17w17-final596-only-receiver]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W17Final596G0/**'
+      - '.github/workflows/b01-62-p17w17-final596-source-g0.yml'
+permissions:
+  contents: read
+jobs:
+  exact-selected:
+    runs-on: ${{ matrix.os }}
+    name: Only original frozen 596 direct source and physical receiver (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Pin EXACT B01-23 sole selected immutable #596 + frozen #510/#556 original Git blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W17Final596G0"
+          git fetch --no-tags origin efb2b06eafedab5469b57f163152d96aca3c5915 33094f154c7b91119b36d58aab285e6e83c5de57 d94400d95d13db7f27e1533df05c9292d5380431
+          mkdir -p "$dir/.source" "$dir/.output"
+          git show efb2b06eafedab5469b57f163152d96aca3c5915:Assets/B0123UnitySaveBridge001/Core/AtomicWorldSwap.cs > "$dir/.source/AtomicWorldSwap.cs"
+          git show 33094f154c7b91119b36d58aab285e6e83c5de57:Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs > "$dir/.source/DetachedSnapshotContract.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs > "$dir/.source/SecureRigSpec.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs > "$dir/.source/DebrisImpulseCore.cs"
+          test "$(git hash-object "$dir/.source/AtomicWorldSwap.cs")" = 1f9e883c38101f214e4335867faa731f7ae67689
+          test "$(git hash-object "$dir/.source/DetachedSnapshotContract.cs")" = b52e511c370f5fca56c74029050844dc8cbb7f9a
+          test "$(git hash-object "$dir/.source/SecureRigSpec.cs")" = b680ed0ec969ac23203fa55eab7b90f8daa86e43
+          test "$(git hash-object "$dir/.source/DebrisImpulseCore.cs")" = fa1aa5e531927cbe73cf5fdfe161b4a981316db5
+          git worktree add --detach "$dir/.producer596" efb2b06eafedab5469b57f163152d96aca3c5915
+          test "$(git -C "$dir/.producer596" rev-parse HEAD)" = efb2b06eafedab5469b57f163152d96aca3c5915
+          echo B0162_W17_EXACT_FINAL596_NOT_604_BLOBS_PINNED | tee "$dir/.output/source-pins.log"
+      - name: Direct compiled original selected 596 CSharp ID/monotonic Save/CAS/rollback and child process tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W17Final596G0"
+          dotnet run --project "$dir/ExactFinal596QA.csproj" --configuration Release --verbosity minimal 2>&1 | tee "$dir/.output/final596-original-CSharp.log"
+          grep -q 'B0162_W17_FINAL596_ORIGINAL_SOURCE_TOTAL 56 PASS 56 FAIL 0' "$dir/.output/final596-original-CSharp.log"
+          grep -q 'EXACT_ORIGINAL_596_CORE_W06_556_COMPILED' "$dir/.output/final596-original-CSharp.log"
+      - name: Independently rebuild genuine original 596 producer ZIP, check original GUID/asmdef and real malicious rollback witnesses
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W17Final596G0"
+          export B0162_ORIGINAL596_WORKTREE="$PWD/$dir/.producer596"
+          python -m unittest discover -s "$dir" -p 'test_exact596_receiver.py' -v 2>&1 | tee "$dir/.output/original596-physical-zip-and-rollback.log"
+          grep -q 'Ran 20 tests' "$dir/.output/original596-physical-zip-and-rollback.log"
+          grep -q '^OK' "$dir/.output/original596-physical-zip-and-rollback.log"
+          echo B0162_W17_EXACT_FINAL596_G0_PHYSICAL_20_OF_20_PASS | tee "$dir/.output/source-physical-pass.log"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-62-p17w17-final596-${{ matrix.os }}
+          path: Tools/B01/B01-62/P17W17Final596G0/.output/
+          include-hidden-files: true
+          if-no-files-found: error
