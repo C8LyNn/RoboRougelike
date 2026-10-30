@@ -1,0 +1,45 @@
+{
+  "package_id": "CI41-ONE-CANDIDATE-LOCK-001",
+  "version": "1.0.0",
+  "owner": "B01-41",
+  "wave": "PASS17_WAVE12",
+  "branch": "ci/b01-41-p17w12-candidate-lock",
+  "main_base": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "selected_pr": 510,
+  "selected_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "frozen_parent_pr": 488,
+  "frozen_parent_sha": "33a32b8bd9ab40467ab1a17b5684926a37dbd4d3",
+  "excluded_alternatives": [
+    {
+      "pr": 511,
+      "sha": "baf65f2664e38f3b9c38815c3f07285f8107c1b6"
+    },
+    {
+      "pr": 494,
+      "sha": "6efe45961ed0ffdf183e8016e350978b9f3dc51c"
+    }
+  ],
+  "owned_paths": [
+    "Tools/B01/CI41/P17W12/one_candidate_lock.py",
+    "Tools/B01/CI41/P17W12/test_one_candidate_lock.py",
+    "Tools/B01/CI41/P17W12/selected-plan.json",
+    "Tools/B01/CI41/P17W12/README.md",
+    "Tools/B01/CI41/P17W12/manifest.json",
+    ".github/workflows/b01-41-p17w12-one-candidate.yml"
+  ],
+  "expected_tests_per_host": 24,
+  "host_os": [
+    "ubuntu-24.04",
+    "windows-2025"
+  ],
+  "scope": "plan admission only; not asset stage or release certification",
+  "gates": {
+    "producer": "SOURCE_CI_PENDING",
+    "independent_G0": "PENDING",
+    "native_G1": "NOT_RUN",
+    "G2": "HOLD",
+    "codex_ack": false,
+    "integrated": false
+  },
+  "rollback": "Drop only own Draft PR / isolated files; all selected #510 original Git objects untouched."
+}
