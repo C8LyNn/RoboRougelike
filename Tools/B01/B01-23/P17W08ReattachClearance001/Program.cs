@@ -12,7 +12,7 @@ internal static class Program
     private static readonly ContactObservation Touch = new ContactObservation(false,false,true,0.005);
     private static readonly ContactObservation Block = new ContactObservation(false,false,true,0.006);
     private static DockVerdict Check(bool detached=true,bool dynamic=true,double distance=1,double reach=3,
-        int returned=-1,int capacity=64,double tolerance=0.005,IReadOnlyList<ContactObservation> hits=null)
+        int returned=-1,int capacity=64,double tolerance=0.005,IReadOnlyList<ContactObservation>? hits=null)
     {
         var contacts=hits??Empty;
         return DockClearancePolicy.Evaluate(detached,dynamic,distance,reach,returned<0?contacts.Count:returned,capacity,tolerance,contacts);
