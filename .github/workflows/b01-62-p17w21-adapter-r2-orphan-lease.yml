@@ -1,0 +1,56 @@
+name: B01-62 W21 Canonical #697 R2 no orphan lease loss under original #691
+on:
+  push:
+    branches: [qa/b01-62-p17w21-canonical-session-r2-orphan-lease]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W21CanonicalSessionLeaseR2/**'
+      - '.github/workflows/b01-62-p17w21-adapter-r2-orphan-lease.yml'
+permissions:
+  contents: read
+jobs:
+  original-selected-owner-lease:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Import only EXACT original canonical #691 V2, real #669 and frozen #556/W06
+        run: |
+          set -euo pipefail
+          root="Tools/B01/B01-62/P17W21CanonicalSessionLeaseR2"
+          mkdir -p "$root/.source" "b0162-w21-r2-evidence"
+          git fetch --no-tags origin 809f82575c638e1b4d2806b5f417bddab6c0871a d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121 33094f154c7b91119b36d58aab285e6e83c5de57 d94400d95d13db7f27e1533df05c9292d5380431
+          git show 809f82575c638e1b4d2806b5f417bddab6c0871a:Assets/B0123CanonicalSaveApi001/Core/CanonicalWorldGateway.cs > "$root/.source/CanonicalWorldGatewayV2.cs"
+          git show d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121:Tools/B01/B01-62/P17W20SingleFileSaveSlot/SingleFileSaveSlot.cs > "$root/.source/SingleFileSaveSlot.cs"
+          git show 33094f154c7b91119b36d58aab285e6e83c5de57:Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs > "$root/.source/DetachedSnapshotContract.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs > "$root/.source/DebrisImpulseCore.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs > "$root/.source/SecureRigSpec.cs"
+          test "$(git hash-object "$root/.source/CanonicalWorldGatewayV2.cs")" = 704e774dedd5be5af26e0791fba87ecdb109ae2a
+          test "$(git hash-object "$root/.source/SingleFileSaveSlot.cs")" = db7745635164d9eb6b10f3246538700158130b7b
+          test "$(git hash-object "$root/.source/DetachedSnapshotContract.cs")" = b52e511c370f5fca56c74029050844dc8cbb7f9a
+          test "$(git hash-object "$root/.source/DebrisImpulseCore.cs")" = fa1aa5e531927cbe73cf5fdfe161b4a981316db5
+          test "$(git hash-object "$root/.source/SecureRigSpec.cs")" = b680ed0ec969ac23203fa55eab7b90f8daa86e43
+          echo B0162_W21_ADAPTER_R2_ORIGINAL_GIT_BLOBS_5_5 | tee b0162-w21-r2-evidence/source.txt
+      - name: Compile real #691/#669 original source and exercise two real CLR lease failure controls
+        run: |
+          set -euo pipefail
+          dotnet run --project Tools/B01/B01-62/P17W21CanonicalSessionLeaseR2/Original691And669R2QA.csproj -c Release --verbosity quiet | tee b0162-w21-r2-evidence/tests.txt
+          grep -q 'B0162_W21_CANONICAL_681_669_ACTUAL_SOURCE_TOTAL 36 PASS 36 FAIL 0' b0162-w21-r2-evidence/tests.txt
+          grep -q 'B0162_W21_ORPHAN_FALSE_CLEANUP_HELD_OS_LEASE=GREEN' b0162-w21-r2-evidence/tests.txt
+          grep -q 'B0162_W21_ORPHAN_THROW_CLEANUP_HELD_OS_LEASE=GREEN' b0162-w21-r2-evidence/tests.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b0162-w21-adapter-r2-orphan-${{ matrix.os }}
+          path: b0162-w21-r2-evidence/*
+          if-no-files-found: error
