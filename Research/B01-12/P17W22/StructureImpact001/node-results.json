@@ -1,0 +1,328 @@
+{
+  "suite": "B01-12-STRUCTURE-IMPACT-001",
+  "runner": "node",
+  "passed": 80,
+  "failed": 0,
+  "cases": [
+    {
+      "case": "baseline graph valid",
+      "result": "PASS"
+    },
+    {
+      "case": "sample exact node count",
+      "result": "PASS"
+    },
+    {
+      "case": "sample edge count",
+      "result": "PASS"
+    },
+    {
+      "case": "core protected",
+      "result": "PASS"
+    },
+    {
+      "case": "core protected no partial",
+      "result": "PASS"
+    },
+    {
+      "case": "unknown target rejected",
+      "result": "PASS"
+    },
+    {
+      "case": "invalid target input rejected",
+      "result": "PASS"
+    },
+    {
+      "case": "redundant spine L path",
+      "result": "PASS"
+    },
+    {
+      "case": "redundant spine R path",
+      "result": "PASS"
+    },
+    {
+      "case": "gun needs crossbar",
+      "result": "PASS"
+    },
+    {
+      "case": "core connected baseline",
+      "result": "PASS"
+    },
+    {
+      "case": "wheel is a leaf",
+      "result": "PASS"
+    },
+    {
+      "case": "cell is a leaf",
+      "result": "PASS"
+    },
+    {
+      "case": "sensor is a leaf",
+      "result": "PASS"
+    },
+    {
+      "case": "front L isolates wheel FL",
+      "result": "PASS"
+    },
+    {
+      "case": "rear L isolates wheel RL",
+      "result": "PASS"
+    },
+    {
+      "case": "successful removal counts sum to original minus one",
+      "result": "PASS"
+    },
+    {
+      "case": "no detached node also retained",
+      "result": "PASS"
+    },
+    {
+      "case": "scan rows N minus core",
+      "result": "PASS"
+    },
+    {
+      "case": "scan ranking highest positive",
+      "result": "PASS"
+    },
+    {
+      "case": "scan repeat byte deterministic",
+      "result": "PASS"
+    },
+    {
+      "case": "preview repeat deterministic",
+      "result": "PASS"
+    },
+    {
+      "case": "no data mutation",
+      "result": "PASS"
+    },
+    {
+      "case": "inputs frozen do not throw",
+      "result": "PASS"
+    },
+    {
+      "case": "reject graph null",
+      "result": "PASS"
+    },
+    {
+      "case": "reject graph array",
+      "result": "PASS"
+    },
+    {
+      "case": "reject graph string",
+      "result": "PASS"
+    },
+    {
+      "case": "reject graph wrong version",
+      "result": "PASS"
+    },
+    {
+      "case": "reject graph missing nodes",
+      "result": "PASS"
+    },
+    {
+      "case": "reject graph extra field",
+      "result": "PASS"
+    },
+    {
+      "case": "reject graph no nodes",
+      "result": "PASS"
+    },
+    {
+      "case": "reject graph no core",
+      "result": "PASS"
+    },
+    {
+      "case": "reject graph core invalid",
+      "result": "PASS"
+    },
+    {
+      "case": "reject duplicate id",
+      "result": "PASS"
+    },
+    {
+      "case": "reject node extra attr",
+      "result": "PASS"
+    },
+    {
+      "case": "reject node bad kind",
+      "result": "PASS"
+    },
+    {
+      "case": "reject node invalid x",
+      "result": "PASS"
+    },
+    {
+      "case": "reject node negative x",
+      "result": "PASS"
+    },
+    {
+      "case": "reject node fractional coordinate",
+      "result": "PASS"
+    },
+    {
+      "case": "reject node label null",
+      "result": "PASS"
+    },
+    {
+      "case": "reject node id injection",
+      "result": "PASS"
+    },
+    {
+      "case": "reject node id too long",
+      "result": "PASS"
+    },
+    {
+      "case": "reject extra core",
+      "result": "PASS"
+    },
+    {
+      "case": "reject core kind changed",
+      "result": "PASS"
+    },
+    {
+      "case": "reject edge missing node",
+      "result": "PASS"
+    },
+    {
+      "case": "reject edge self-loop",
+      "result": "PASS"
+    },
+    {
+      "case": "reject edge three endpoints",
+      "result": "PASS"
+    },
+    {
+      "case": "reject edge not array",
+      "result": "PASS"
+    },
+    {
+      "case": "reject duplicate edge reversed",
+      "result": "PASS"
+    },
+    {
+      "case": "reject edge count overflow",
+      "result": "PASS"
+    },
+    {
+      "case": "reject nodes count overflow",
+      "result": "PASS"
+    },
+    {
+      "case": "chain bridge splits 2",
+      "result": "PASS"
+    },
+    {
+      "case": "chain ending armor removes downstream 1",
+      "result": "PASS"
+    },
+    {
+      "case": "chain last leaf removes no parts",
+      "result": "PASS"
+    },
+    {
+      "case": "chain sorted component B,D",
+      "result": "PASS"
+    },
+    {
+      "case": "ring all routes survive single removal",
+      "result": "PASS"
+    },
+    {
+      "case": "baseline disconnected is explicit",
+      "result": "PASS"
+    },
+    {
+      "case": "baseline disconnected not newly detached",
+      "result": "PASS"
+    },
+    {
+      "case": "baseline disconnected excluded retained",
+      "result": "PASS"
+    },
+    {
+      "case": "removing disconnected node leaves baseline",
+      "result": "PASS"
+    },
+    {
+      "case": "removing disconnected node reveals correct components",
+      "result": "PASS"
+    },
+    {
+      "case": "full scan compares all targets",
+      "result": "PASS"
+    },
+    {
+      "case": "deterministic subset fuzz 1",
+      "result": "PASS"
+    },
+    {
+      "case": "deterministic subset fuzz 2",
+      "result": "PASS"
+    },
+    {
+      "case": "deterministic subset fuzz 3",
+      "result": "PASS"
+    },
+    {
+      "case": "deterministic subset fuzz 4",
+      "result": "PASS"
+    },
+    {
+      "case": "deterministic subset fuzz 5",
+      "result": "PASS"
+    },
+    {
+      "case": "deterministic subset fuzz 6",
+      "result": "PASS"
+    },
+    {
+      "case": "deterministic subset fuzz 7",
+      "result": "PASS"
+    },
+    {
+      "case": "deterministic subset fuzz 8",
+      "result": "PASS"
+    },
+    {
+      "case": "deterministic subset fuzz 9",
+      "result": "PASS"
+    },
+    {
+      "case": "deterministic subset fuzz 10",
+      "result": "PASS"
+    },
+    {
+      "case": "deterministic subset fuzz 11",
+      "result": "PASS"
+    },
+    {
+      "case": "deterministic subset fuzz 12",
+      "result": "PASS"
+    },
+    {
+      "case": "deterministic subset fuzz 13",
+      "result": "PASS"
+    },
+    {
+      "case": "deterministic subset fuzz 14",
+      "result": "PASS"
+    },
+    {
+      "case": "deterministic subset fuzz 15",
+      "result": "PASS"
+    },
+    {
+      "case": "deterministic subset fuzz 16",
+      "result": "PASS"
+    },
+    {
+      "case": "deterministic subset fuzz 17",
+      "result": "PASS"
+    },
+    {
+      "case": "deterministic subset fuzz 18",
+      "result": "PASS"
+    }
+  ]
+}
