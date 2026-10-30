@@ -123,7 +123,7 @@ class Selected596ReceiverQA(unittest.TestCase):
  def test_20_source_readback_r2_p0_guards(self):
   core=self.p.source("Assets/B0123UnitySaveBridge001/Core/AtomicWorldSwap.cs").decode()
   unity=self.p.source("Assets/B0123UnitySaveBridge001/Unity/IsolatedTwinRigSaveHost.cs").decode()
-  for token in ("candidate.Activate();","post-activation physics/ID mismatch","checkpoint.Commit(","return quarantined?WorldSwapVerdict.RollbackQuarantine:verdict;","snap.Generation<=currentCold.Snapshot.Generation","FileCheckpointStore","FileShare.None","newest+1"):
+  for token in ("candidate.Activate();","post-activation physics/ID mismatch","checkpoint.Commit(","verdict=WorldSwapVerdict.RollbackQuarantine; // #582 after cleanup","snap.Generation<=currentCold.Snapshot.Generation","FileCheckpointStore","FileShare.None","newest+1"):
    self.assertIn(token,core)
   for token in ("new FileCheckpointStore(sidecar)","Application.persistentDataPath","part.SetActive(true);"):
    self.assertIn(token,unity)
