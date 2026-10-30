@@ -1,0 +1,110 @@
+name: B01-60 P17 W23 corrected owner #732 R5 seven native SOURCE CI (NOT UNITY)
+on:
+  push:
+    branches: [qa/b01-60-p17w23-coldrestart-fixed-seven-native-r1]
+    paths: ['Tools/B01/B01-60/P17W23FixedR5SevenNative/**','.github/workflows/b01-60-p17w23-r5-fixed7-native.yml']
+  pull_request:
+    paths: ['Tools/B01/B01-60/P17W23FixedR5SevenNative/**','.github/workflows/b01-60-p17w23-r5-fixed7-native.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  direct-corrected-owner-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch ONLY chosen #690 then corrected #732 original Git commits into ephemeral CI checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin cc7f73541517a18f4479bb155534bd4832d9985e
+          git fetch --no-tags origin 0bee4ce9928354433ec719c45a8186378361d46e
+          test "$(git cat-file -t 0bee4ce9928354433ec719c45a8186378361d46e)" = commit
+      - name: Test original corrected R5 g4-to-g5 Git SHAs, seven private checkpoints and safe physical rollback (15 Python source tests)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s Tools/B01/B01-60/P17W23FixedR5SevenNative -p test_fixed7.py -v 2>&1 | tee w23-fixed7-source.log
+          grep -F 'Ran 15 tests' w23-fixed7-source.log
+          grep -F 'OK' w23-fixed7-source.log
+      - name: Execute the exact original corrected owner #732 seven-project source-only preflight (no Unity)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W23FixedR5SevenNative/run_fixed7.py --mode preflight --scratch-parent "$RUNNER_TEMP" 2>&1 | tee w23-fixed7-preflight.log
+          grep -F 'B0160_W23_FIXED7_SEVEN_PRIVATE_SCRATCH_STAGE_ROLLBACK_PASS' w23-fixed7-preflight.log
+          grep -F 'B0160_W23_FIXED7_NATIVE_UNITY_G1_NOT_RUN' w23-fixed7-preflight.log
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0160-W23-FIXED7-ORIGINAL-SOURCE-NOT-UNITY-${{ matrix.os }}
+          path: |
+            w23-fixed7-source.log
+            w23-fixed7-preflight.log
+          retention-days: 14
+          if-no-files-found: warn
+  real-windows-powershell-safe-operator:
+    runs-on: windows-2025
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Exact owner #690 and only corrected #732 source in ephemeral CI clone
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin cc7f73541517a18f4479bb155534bd4832d9985e
+          git fetch --no-tags origin 0bee4ce9928354433ec719c45a8186378361d46e
+      - name: Actual Windows PowerShell corrected R5 seven private project source-only preflight
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W23FixedR5SevenNative\Invoke-B0160W23Fixed7.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:RUNNER_TEMP *>&1 | Tee-Object -FilePath w23-fixed7-real-powershell.log
+          if($LASTEXITCODE -ne 0){throw 'Original owner fixed7 PowerShell source preflight failed'}
+          if(!(Select-String w23-fixed7-real-powershell.log -Pattern 'B0160_W23_FIXED7_SOURCE_PASS_OWNER_PC_NATIVE_G1_NOT_RUN' -Quiet)){throw 'False native G1'}
+      - name: Actual Windows rejected scratch inside repo, no deletion
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W23FixedR5SevenNative\Invoke-B0160W23Fixed7.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:GITHUB_WORKSPACE *>&1 | Tee-Object -FilePath w23-fixed7-unsafe.log
+          $code=$LASTEXITCODE
+          if($code -ne 2){throw "Unapproved scratch accepted, code $code"}
+          $global:LASTEXITCODE=0
+      - name: Native request without independent G0 review explicitly denied exit3
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W23FixedR5SevenNative\Invoke-B0160W23Fixed7.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:RUNNER_TEMP -Run *>&1 | Tee-Object -FilePath w23-fixed7-no-g0.log
+          $code=$LASTEXITCODE
+          if($code -ne 3){throw "Missing independent G0 review not denied: $code"}
+          $global:LASTEXITCODE=0
+      - name: Native request with G0 claim but no installed real Unity denied exit3 before prompt
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W23FixedR5SevenNative\Invoke-B0160W23Fixed7.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:RUNNER_TEMP -Run -SourceG0Reviewed -UnityPath 'Z:\missing\6000.3.14f1\Editor\Unity.exe' *>&1 | Tee-Object -FilePath w23-fixed7-no-editor.log
+          $code=$LASTEXITCODE
+          if($code -ne 3){throw "Missing legitimate Unity Editor not denied: $code"}
+          if(Select-String w23-fixed7-no-editor.log -Pattern 'B0160_W23_FIXED7_REAL_UNITY_TESTS_FINISHED'){throw 'Fabricated native PASS'}
+          $global:LASTEXITCODE=0
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0160-W23-FIXED7-ACTUAL-WINDOWS-POWERSHELL-NOT-UNITY
+          path: |
+            w23-fixed7-real-powershell.log
+            w23-fixed7-unsafe.log
+            w23-fixed7-no-g0.log
+            w23-fixed7-no-editor.log
+          retention-days: 14
+          if-no-files-found: warn
