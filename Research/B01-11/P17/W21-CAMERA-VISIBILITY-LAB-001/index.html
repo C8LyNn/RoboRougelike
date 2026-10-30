@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="pl"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Camera Visibility Lab — B01-11</title>
+<style>
+:root{font-family:system-ui,"Segoe UI",sans-serif;color-scheme:dark;background:#0d1724;color:#f2f6ff}
+*{box-sizing:border-box}body{margin:0;padding:1.4rem 1rem}main{max-width:950px;margin:auto}
+h1{font-size:clamp(1.5rem,3.5vw,2.35rem)}p{line-height:1.6;color:#c1d0e4}
+.panel{padding:1rem 1.3rem;margin:1rem 0;background:#19293b;border:1px solid #54708c;border-radius:11px}
+.panel[data-level="danger"]{border-color:#f5a79d}.panel[data-level="warning"]{border-color:#e8c987}.panel[data-level="success"]{border-color:#86d3b1}
+button{border:1px solid #83b7ee;background:#25558c;color:#fff;font:inherit;padding:.8rem .9rem;border-radius:8px;cursor:pointer;min-height:46px}
+button:hover{background:#376a9c}button:focus-visible{outline:3px solid #ffdf84;outline-offset:3px}
+.controls{display:flex;flex-wrap:wrap;gap:.5rem}.controls button{flex:1 1 156px}
+canvas{display:block;width:100%;height:auto;aspect-ratio:760/460;background:#102033;border:1px solid #617d97;border-radius:10px;touch-action:manipulation;cursor:crosshair}
+small{color:#bdd0e8}.stat{font-variant-numeric:tabular-nums;font-weight:750;font-size:1.1rem}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style></head>
+<body><main><h1>Camera Visibility Lab</h1>
+<p>Laboratorium UX B01-11: widoczność sylwetki robota z pięciu próbnych promieni w rzucie z góry. Model jest syntetyczny — <strong>nie uruchamia Unity, PhysX ani prawdziwej kamery 3D</strong>.</p>
+<section aria-labelledby="scenarios"><h2 id="scenarios">Scenariusz testowy</h2><div class="controls">
+<button id="clear" type="button">Otwarty teren</button>
+<button id="wall" type="button">Wysoka ściana</button>
+<button id="corridor" type="button">Wąski korytarz</button>
+<button id="elevated" type="button">Niska osłona</button>
+</div></section>
+<section class="panel" id="status" data-level="warning" role="status" aria-live="polite" aria-atomic="true">
+<h2 id="title">Sprawdzanie widoczności</h2><p id="description"></p>
+<div class="stat" id="stat"></div><small id="blockers"></small>
+</section>
+<canvas id="diagram" width="760" height="460" aria-label="Schemat z góry: kamera, robot, przeszkody i promienie widoczności. Kliknij, aby przenieść kamerę." role="img"></canvas>
+<p>Kolor zielony oznacza odsłonięty promień, czerwony — zasłonięty. <strong>Nie należy identyfikować stanu tylko kolorem:</strong> tekst poniżej podaje liczbę widocznych próbek. Kliknięcie w diagram przesuwa pozycję kamery w próbnym modelu.</p>
+<div class="controls"><button id="suggest" type="button">Zaproponuj czytelniejszą pozycję</button><button id="reset" type="button">Przywróć pozycję początkową</button></div>
+<section aria-labelledby="loglabel"><h2 id="loglabel">Wynik i ograniczenia</h2><p id="recommendation" aria-live="polite"></p><ol id="log"></ol></section>
+<footer><small>Brak autorytatywnych colliderów, obrotów, widoczności na ekranie, FOV, raycastów Unity, smoothingu, przesłaniania VFX lub oceny gracza. Wynik 5/5 nie oznacza certyfikacji UX gry. Dane są wyłącznie demonstracyjne i nie dotykają Save/Load ani scen Unity.</small></footer>
+</main><script src="visibility.js"></script><script>
+(function(){
+  "use strict";
+  const $=id=>document.getElementById(id);
+  const canvas=$("diagram"),ctx=canvas.getContext("2d");
+  const W=canvas.width,H=canvas.height;
+  const xPixel=x=>(x+10)/20*W,zPixel=z=>(z+9)/15*H;
+  const xWorld=p=>p/W*20-10,zWorld=p=>p/H*15-9;
+  let scenario="wall";
+  const cam=()=>({x:0,z:-6,y:2});
+  const target=()=>({x:0,z:0,y:1});
+  const box=(id,minX,maxX,minZ,maxZ,height)=>({id,minX,maxX,minZ,maxZ,height});
+  function make(name){
+    const s={camera:cam(),target:target(),radius:0.35,obstacles:[]};
+    if(name==="wall")s.obstacles.push(box("wall",-1,1,-3.5,-2.5,3));
+    if(name==="corridor")s.obstacles.push(box("left-wall",-4,-1,-5,-1,3.5),box("right-wall",1,4,-5,-1,3.5),
+      box("cross-beam",-1,1,-2.8,-2.2,3));
+    if(name==="elevated")s.obstacles.push(box("low-cover",-1,1,-3.5,-2.5,0.5));
+    return s;
+  }
+  let state=make(scenario);
+  function log(message){
+    const row=document.createElement("li");row.textContent=message;$("log").prepend(row);
+    while($("log").children.length>12)$("log").lastElementChild.remove();
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    ctx.strokeStyle="#2b4259";ctx.lineWidth=1;
+    for(let x=-10;x<=10;x+=2){ctx.beginPath();ctx.moveTo(xPixel(x),0);ctx.lineTo(xPixel(x),H);ctx.stroke();}
+    for(let z=-9;z<=6;z+=2){ctx.beginPath();ctx.moveTo(0,zPixel(z));ctx.lineTo(W,zPixel(z));ctx.stroke();}
+    for(const b of state.obstacles){
+      ctx.fillStyle="#67778b";ctx.fillRect(xPixel(b.minX),zPixel(b.minZ),xPixel(b.maxX)-xPixel(b.minX),zPixel(b.maxZ)-zPixel(b.minZ));
+      ctx.fillStyle="#f4f8ff";ctx.font="13px system-ui";ctx.fillText(b.id,xPixel(b.minX)+5,zPixel(b.minZ)+17);
+    }
+    const result=CameraVisibilityLab.assess(state);
+    for(const ray of result.rays){
+      ctx.beginPath();ctx.moveTo(xPixel(state.camera.x),zPixel(state.camera.z));
+      ctx.lineTo(xPixel(ray.end.x),zPixel(ray.end.z));ctx.strokeStyle=ray.blocked?"#ff9a97":"#7ee0b1";
+      ctx.lineWidth=2;ctx.stroke();
+    }
+    ctx.fillStyle="#b0d5ff";ctx.beginPath();ctx.arc(xPixel(state.camera.x),zPixel(state.camera.z),8,0,2*Math.PI);ctx.fill();
+    ctx.fillStyle="#fff";ctx.font="bold 14px system-ui";
+    ctx.fillText("KAMERA",xPixel(state.camera.x)+11,zPixel(state.camera.z)-9);
+    ctx.fillStyle="#ffdf91";ctx.beginPath();ctx.arc(xPixel(state.target.x),zPixel(state.target.z),12,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle="#fff";ctx.fillText("ROBOT",xPixel(state.target.x)+17,zPixel(state.target.z)-11);
+    const copy=CameraVisibilityLab.uiCopy(result);
+    $("status").dataset.level=copy.level;$("title").textContent=copy.title;$("description").textContent=copy.detail;
+    $("stat").textContent=result.visible+" / "+result.total+" próbnych promieni jest odsłoniętych";
+    $("blockers").textContent="Przeszkody: "+(result.blockers.join(", ")||"brak");
+  }
+  function choose(name){scenario=name;state=make(name);$("recommendation").textContent="";log("Scenariusz: "+name);draw();}
+  for(const key of ["clear","wall","corridor","elevated"])$(key).addEventListener("click",()=>choose(key));
+  $("suggest").addEventListener("click",()=>{
+    const r=CameraVisibilityLab.suggest(state);
+    if(!r.ok){$("recommendation").textContent="Brak poprawnego rozwiązania: "+r.reason;return;}
+    const before=r.baseline.visible;state.camera={...r.candidate.camera};
+    const after=r.candidate.result.visible;
+    $("recommendation").textContent="Kandydat "+r.candidate.label+": "+before+"/5 → "+after+
+      "/5. Zmiana jest jedynie geometryczną propozycją do testu w Unity.";
+    log("Propozycja kamery: "+r.candidate.label+" "+before+"/5 → "+after+"/5");draw();
+  });
+  $("reset").addEventListener("click",()=>choose(scenario));
+  canvas.addEventListener("click",event=>{
+    const bounds=canvas.getBoundingClientRect();
+    const x=(event.clientX-bounds.left)/bounds.width*W;
+    const z=(event.clientY-bounds.top)/bounds.height*H;
+    state.camera={...state.camera,x:xWorld(x),z:zWorld(z)};
+    if(!CameraVisibilityLab.validate(state).ok){$("recommendation").textContent="Nieprawidłowa pozycja kamery";state.camera=cam();}
+    else $("recommendation").textContent="Kamera przesunięta ręcznie — wynik wyłącznie próbny.";
+    log("Przesunięto kamerę w schemacie.");draw();
+  });
+  draw();
+})();
+</script></body></html>
