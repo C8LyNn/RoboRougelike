@@ -83,6 +83,13 @@ namespace RoboRougelike.B0110.TrainingGhost
         public static GhostPose At(GhostRun run, float seconds)
         {
             Validate(run);
+            return AtValidated(run, seconds);
+        }
+
+        // Internal fast path: callers MUST own an immutable validated track.
+        // Do not expose this publicly to untrusted deserialized replay data.
+        internal static GhostPose AtValidated(GhostRun run, float seconds)
+        {
             Check(Finite(seconds), "Playback time must be finite");
             var frames = run.Frames;
             if (seconds <= 0) return Copy(frames[0].Pose);
@@ -272,6 +279,31 @@ namespace RoboRougelike.B0110.TrainingGhost
 
         public GhostRun Finish(GhostPose actualPose) => End(true, "Completed", actualPose);
         public GhostRun Fail(GhostPose actualPose) => End(false, "Failed", actualPose);
+    }
+
+    /// <summary>
+    /// Safe runtime playback: validates and deep-copies ONE track on binding,
+    /// then binary-searches its immutable frames in O(log N) per visual frame.
+    /// No Unity, CHL, physics, timers, rewards or mutable game references.
+    /// </summary>
+    public sealed class GhostPlayback
+    {
+        private readonly GhostRun track;
+        public float Duration => track.ElapsedSeconds;
+        public string CourseId => track.CourseId;
+        public string RigId => track.RigId;
+
+        public GhostPlayback(GhostRun run)
+        {
+            track = GhostMath.Clone(run);
+            GhostMath.Check(track.Completed,
+                "Only completed real attempts may be presented as a reference ghost");
+        }
+
+        public GhostPose Seek(float seconds)
+        {
+            return GhostMath.AtValidated(track, seconds);
+        }
     }
 
     public sealed class GhostBestBook
