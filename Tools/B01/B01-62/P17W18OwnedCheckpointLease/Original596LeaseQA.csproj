@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+ <PropertyGroup>
+  <TargetFramework>net8.0</TargetFramework><OutputType>Exe</OutputType>
+  <LangVersion>latest</LangVersion><Nullable>enable</Nullable>
+  <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+ </PropertyGroup>
+ <ItemGroup>
+  <Compile Include="Input/AtomicWorldSwap.cs"/>
+  <Compile Include="Input/DetachedSnapshotContract.cs"/>
+  <Compile Include="Input/DebrisImpulseCore.cs"/>
+  <Compile Include="OwnedCheckpointSlotLease.cs"/>
+  <Compile Include="Program.cs"/>
+ </ItemGroup>
+</Project>
