@@ -45,7 +45,7 @@ def validate_sources():
        manifest["source_sha"] != SOURCE_SHA:
         raise SourceError("WRONG_MANIFEST")
     rows = manifest["git_blobs"]
-    if len(rows) != 16 or len(set(rows)) != 16:
+    if len(rows) != 17 or len(set(rows)) != 17:
         raise SourceError("BAD_MANIFEST_MEMBER_COUNT")
     for name, expected in rows.items():
         if not (name.startswith("Assets/B01KitReadiness001") or
@@ -198,7 +198,7 @@ def main():
         if args.stage:
             if not args.previews:raise SourceError("PREVIEW_INPUT_REQUIRED")
             rec=stage(args.stage,args.previews)
-            print(json.dumps({"result":"B01_22_W10_PHYSICAL_SOURCE_PASS","receipt":rec},sort_keys=True))
+            print(json.dumps({"result":"B01_22_W11_PHYSICAL_SOURCE_PASS","receipt":rec},sort_keys=True))
         else:
             print(rollback(args.rollback))
     except (SourceError, OSError, ValueError, KeyError, subprocess.CalledProcessError) as e:
