@@ -12,7 +12,7 @@ using B01.B0162.Selected587CheckpointGate;
 internal sealed class World : IPreparedWorld
 {
     public RunSnapshot State;
-    public bool Active,Retired,MutationOnActivate,ThrowActivate,ThrowRetire,ThrowDeactivate;
+    public bool Active,Retired,MutationOnActivate,ThrowActivate,ThrowRetire;
     public AtomicDockLedger[] ActualOriginal510Ledgers=new AtomicDockLedger[2];
     public World(RunSnapshot s)
     {
@@ -40,7 +40,7 @@ internal sealed class World : IPreparedWorld
         Active=true;
         if(ThrowActivate)throw new IOException("after-activation side effects");
     }
-    public void Deactivate(){Active=false;if(ThrowDeactivate)throw new IOException("failed deactivate");}
+    public void Deactivate(){Active=false;}
     public void Retire(){if(ThrowRetire)throw new IOException("retirement failure");Retired=true;Active=false;}
 }
 internal sealed class Factory : IWorldFactory
