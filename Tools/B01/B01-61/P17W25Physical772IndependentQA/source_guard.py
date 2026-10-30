@@ -30,7 +30,7 @@ def main():
  for x in changed:
   if subprocess.run(["git","cat-file","-e",BASE+":"+x],cwd=ROOT,stderr=subprocess.DEVNULL).returncode==0:raise AssertionError("ORIGINAL_772_MODIFIED "+x)
  meta=git("ls-files","*.meta").splitlines()
- newmeta=[p for p in meta if p.startswith(ASSETS)]
+ newmeta=[p for p in meta if p.startswith(ASSETS) or p==ASSETS.rstrip("/")+".meta"]
  if len(newmeta)!=9:raise AssertionError("ORIGINAL_772_NEW_GUID_COUNT_NOT_NINE "+repr(newmeta))
  seen={}
  for path in meta:
