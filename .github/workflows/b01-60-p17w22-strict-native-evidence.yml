@@ -1,0 +1,66 @@
+name: B01-60 W22 strict W21 evidence consistency (SYNTHETIC, Unity NOT_RUN)
+on:
+  push:
+    branches: [qa/b01-60-p17w22-strict-native-evidence-r1]
+    paths:
+      - 'Tools/B01/B01-60/P17W22StrictNativeEvidence/**'
+      - '.github/workflows/b01-60-p17w22-strict-native-evidence.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-60/P17W22StrictNativeEvidence/**'
+      - '.github/workflows/b01-60-p17w22-strict-native-evidence.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic-independent-ubuntu:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify exact frozen W21 ancestry and no old file modifications
+        shell: bash
+        run: |
+          set -euo pipefail
+          SHA=02272e8b0facc00d3943672770251b1d01182b85
+          git merge-base --is-ancestor "$SHA" HEAD
+          git diff --name-only "$SHA" HEAD | LC_ALL=C sort > changed.txt
+          printf '%s\n' \
+            '.github/workflows/b01-60-p17w22-strict-native-evidence.yml' \
+            'Tools/B01/B01-60/P17W22StrictNativeEvidence/README.md' \
+            'Tools/B01/B01-60/P17W22StrictNativeEvidence/strict_evidence.py' \
+            'Tools/B01/B01-60/P17W22StrictNativeEvidence/test_strict_evidence.py' \
+            | LC_ALL=C sort > expected.txt
+          diff -u expected.txt changed.txt
+          test "$(git rev-parse HEAD:Tools/B01/B01-60/P17W21WindowsUnityHandoff/verify_evidence.py)" = 4f8b228035cb10445afcc4564b9c66a073555a70
+      - name: Run 14 synthetic adversarial independent evidence checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s Tools/B01/B01-60/P17W22StrictNativeEvidence -p test_strict_evidence.py -v 2>&1 | tee w22-source.log
+          grep -F 'Ran 14 tests' w22-source.log
+          grep -F 'OK' w22-source.log
+          echo 'W22_SOURCE_ONLY_14_SYNTHETIC_PASS_NATIVE_UNITY_NOT_RUN'
+  synthetic-independent-windows:
+    runs-on: windows-2025
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run 14 synthetic adversarial independent evidence checks (real Windows Python)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s Tools/B01/B01-60/P17W22StrictNativeEvidence -p test_strict_evidence.py -v 2>&1 | tee w22-source.log
+          grep -F 'Ran 14 tests' w22-source.log
+          grep -F 'OK' w22-source.log
+          echo 'W22_WINDOWS_SOURCE_ONLY_14_SYNTHETIC_PASS_NATIVE_UNITY_NOT_RUN'
