@@ -1,0 +1,81 @@
+name: B01-62 P17 W11 actual #494 W06 ledger failure atomicity QA
+on:
+  push:
+    branches:
+      - qa/b01-62-p17w11-original494-ledger-atomicity
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W11Atomicity494/**'
+      - '.github/workflows/b01-62-p17w11-original494-ledger-atomicity.yml'
+permissions:
+  contents: read
+jobs:
+  executable:
+    name: Immutable original gameplay+ledger (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Fetch exact frozen candidate Git objects — no branch checkout mutation
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin 6efe45961ed0ffdf183e8016e350978b9f3dc51c
+          git fetch --no-tags --depth=1 origin 33a32b8bd9ab40467ab1a17b5684926a37dbd4d3
+          git cat-file -e 6efe45961ed0ffdf183e8016e350978b9f3dc51c^{commit}
+          git cat-file -e 33a32b8bd9ab40467ab1a17b5684926a37dbd4d3^{commit}
+      - name: Execute independent original SHA, source mutation and isolated staging tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W11Atomicity494"
+          mkdir -p "$dir/.output"
+          python -m unittest discover -s "$dir" -p 'test_stage.py' -v 2>&1 | tee "$dir/.output/source-tests.log"
+          grep -q 'Ran 17 tests' "$dir/.output/source-tests.log"
+          grep -q '^OK' "$dir/.output/source-tests.log"
+          python "$dir/stage_source.py" --repo . --stage "$dir/.stage" | tee "$dir/.output/stage.log"
+          cp "$dir/.stage/original-source-receipt.json" "$dir/.output/source-receipt.json"
+          grep -q 'SOURCE_TRANSACTION=HOLD_REARM_AFTER_MUTATION' "$dir/.output/stage.log"
+      - name: Execute ACTUAL immutable W07 #494 + W06 C#9 classes in isolated managed Unity API stub
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W11Atomicity494"
+          dotnet run --project "$dir/Independent494.csproj" -c Release --verbosity minimal 2>&1 | tee "$dir/.output/csharp-tests.log"
+          grep -q 'TOTAL 9 PASS 9 FAIL 0 V2_494_RELEASE_HOLD_PARTIAL_STATE NATIVE_UNITY_NOT_RUN' "$dir/.output/csharp-tests.log"
+          echo B01_62_W11_SOURCE_EXECUTION_GREEN_BUT_REAL_TRANSACTION_HOLD
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-62-w11-494-transaction-${{ matrix.os }}
+          path: Tools/B01/B01-62/P17W11Atomicity494/.output/
+          include-hidden-files: true
+          if-no-files-found: error
+  parity:
+    name: Independent raw JSON parity Windows vs Ubuntu
+    needs: executable
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: b01-62-w11-494-transaction-ubuntu-24.04
+          path: ubuntu
+      - uses: actions/download-artifact@v4
+        with:
+          name: b01-62-w11-494-transaction-windows-2025
+          path: windows
+      - name: Enforce exact-byte original SHA receipt equality
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp ubuntu/source-receipt.json windows/source-receipt.json
+          sha256sum ubuntu/source-receipt.json windows/source-receipt.json
+          echo B01_62_W11_ORIGINAL_GIT_RECEIPT_CROSS_OS_BYTE_PARITY_PASS
