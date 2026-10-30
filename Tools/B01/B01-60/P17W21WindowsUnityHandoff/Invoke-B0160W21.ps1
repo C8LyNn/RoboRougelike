@@ -70,7 +70,7 @@ try {
  # The original V2 runner needs historical exact original Git objects. A normal
  # clone copies reachable refs but may omit FETCH_HEAD-only historical PR objects.
  # Rehydrate ONLY the new scratch clone from the local checkout; no network.
- # Tag the pinned objects ONLY IN SCRATCH so W20's nested local clone inherits them.
+ # Branch the pinned objects ONLY IN SCRATCH: git clone follows heads, not unrelated tags.
  $pins=@('d94400d95d13db7f27e1533df05c9292d5380431',
          'cb2b3a76e84266e2730fffc4ab048c1039f0652f',
          '33a32b8bd9ab40467ab1a17b5684926a37dbd4d3',
@@ -79,8 +79,8 @@ try {
    $pin=$pins[$i]
    Need ((Invoke-LocalGit @('-C',$repo,'cat-file','-t',$pin)) -eq 'commit') "Historical Git object missing locally: $pin; no automatic remote fetch"
    $null=Invoke-LocalGit @('-C',$source,'fetch','--no-tags','--',$repo,$pin)
-   $null=Invoke-LocalGit @('-C',$source,'tag',('b0160-w21-pin-'+$i),$pin)
-   Need ((Invoke-LocalGit @('-C',$source,'rev-parse',('b0160-w21-pin-'+$i))) -eq $pin) 'Local-only pinned source object failed'
+   $null=Invoke-LocalGit @('-C',$source,'branch',('b0160-w21-pin-'+$i),$pin)
+   Need ((Invoke-LocalGit @('-C',$source,'rev-parse',('refs/heads/b0160-w21-pin-'+$i))) -eq $pin) 'Local-only pinned source object failed'
  }
  Write-Host 'B0160_W21_OFFLINE_HISTORY_4_OBJECTS_PINNED_TO_SCRATCH_ONLY'
  $shell=(Get-Process -Id $PID).Path
