@@ -121,10 +121,15 @@ def extra_test_assets():
  return files
 def meta(path,is_folder=False):
  guid=hashlib.sha256(("B01-60-W12-UNITY-NATIVE-RECEIVER-ONLY/"+path).encode()).hexdigest()[:32]
- return ("fileFormatVersion: 2\n"
-         "guid: "+guid+"\n"+("folderAsset: yes\n" if is_folder else "")+
-         "DefaultImporter:\n  externalObjects: {}\n  userData: \n"
-         "  assetBundleName: \n  assetBundleVariant: \n").encode()
+ if is_folder:
+  settings="folderAsset: yes\nDefaultImporter:\n  externalObjects: {}\n  userData: \n  assetBundleName: \n  assetBundleVariant: \n"
+ elif path.endswith(".cs"):
+  settings="MonoImporter:\n  externalObjects: {}\n  serializedVersion: 2\n  defaultReferences: []\n  executionOrder: 0\n  icon: {instanceID: 0}\n  userData: \n  assetBundleName: \n  assetBundleVariant: \n"
+ elif path.endswith(".asmdef"):
+  settings="AssemblyDefinitionImporter:\n  externalObjects: {}\n  userData: \n  assetBundleName: \n  assetBundleVariant: \n"
+ else:
+  raise AssertionError("unsupported generated asset type "+path)
+ return ("fileFormatVersion: 2\n"+"guid: "+guid+"\n"+settings).encode()
 def guid_check(raws):
  lookup={}
  for p,raw in raws.items():
