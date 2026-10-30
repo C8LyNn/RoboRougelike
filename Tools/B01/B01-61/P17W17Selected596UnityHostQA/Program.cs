@@ -137,6 +137,42 @@ internal static class Program
         Console.WriteLine("W17_EXACT_SELECTED_596_CONCURRENT_HOST_RELEASE_GATE_RED=REPRODUCED "+
              "assertions="+assertions);
     }
+
+    // W18 NEW: original immutable #596 fixed global persistentDataPath sidecar
+    // makes an independently authorized run unusable after previous run even
+    // AFTER its old MonoBehaviour was retired. This is a source contract
+    // regression witness, not evidence of native NUnit failure.
+    static void CrossRunIdOwnership(string root)
+    {
+        string same=Path.Combine(root,"w18_cross_run_collision");
+        var first=Host(same,"W18 first independent run");
+        Check(first.TryRestoreBytes(Bytes(5,true,false),RUN,5),
+              "first original selected Unity host stores run 51 generation5");
+        State(first,5,true,false,"cross-run original");
+        Check(File.Exists(Sidecar(same)),
+              "original actual immutable #596 FileCheckpointStore created shared sidecar");
+        Close(first);
+        // Different run, new MonoBehaviour instance, no legacy controller:
+        // no public API to set a distinct sidecar path, unlike ALT #604.
+        const long differentRun=52;
+        var newer=Host(same,"W18 independent second run");
+        Check(!newer.TryRestoreBytes(
+              IsolatedTwinRigSaveHost.MakeFixture(differentRun,1,false,true),
+              differentRun,1),
+              "selected original host cannot initialize a different run in same dataPath");
+        Check(newer.LastRestoreVerdict==WorldSwapVerdict.RollbackQuarantine&&
+              newer.Quarantined&&!newer.HasWorld,
+              "second clean run is sticky quarantined due to previous run sidecar owner mismatch");
+        Check(!newer.TrySaveBytes(out byte[] refused)&&refused==null,
+              "quarantined independent run cannot save");
+        Check(File.ReadAllText(Sidecar(same)).Contains("|51|"),
+              "original first run sidecar remains unchanged and belongs to first authority");
+        sourceRed++;
+        Console.WriteLine("W18_SELECTED_596_NEW_RUN_STICKY_QUARANTINE_RED=GLOBAL_FIXED_SIDECAR_COLLISION");
+        Close(newer);
+        Console.WriteLine("W18_EXACT_SELECTED_596_CROSS_RUN_ID_QA_PASS assertions="+assertions+
+           " source_release_red="+sourceRed);
+    }
     static void Disk(string mode,string root)
     {
         var local=Path.Combine(root,"single_slot_restarts");
@@ -221,6 +257,7 @@ internal static class Program
         {
             if(args.Length==2 && args[0]=="physical")Physical(args[1]);
             else if(args.Length==2 && args[0]=="concurrent")ConcurrentHostAuthority(args[1]);
+            else if(args.Length==2 && args[0]=="cross-run")CrossRunIdOwnership(args[1]);
             else if(args.Length==2)Disk(args[0],args[1]);
             else throw new ArgumentException("usage [physical|concurrent|seal|restart|fork|advance|stale|corrupt] scratch");
             Console.WriteLine("B0161_W17_SELECTED_596_EXACT_ORIGINAL_UNITY_HOST_EXECUTED=YES");
