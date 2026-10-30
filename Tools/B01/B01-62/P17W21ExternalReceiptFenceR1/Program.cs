@@ -143,12 +143,12 @@ internal static class Program
                 string alt=Path.Combine(root,"alternate-save","save.envelope");
                 string dest=Path.Combine(root,"rollback-save","save.envelope");
                 File.Copy(alt,dest,true);
-                var(s,t,g)=Open(root,"rollback",id);
-                using(s)using(t)
+                var(s2,t2,g2)=Open(root,"rollback",id);
+                using(s2)using(t2)
                 {
-                    Check(g.Read(out _,out _)==FenceResult.Fork,
+                    Check(g2.Read(out _,out _)==FenceResult.Fork,
                         "EXTERNAL SAME-GENERATION valid #556 LEDGER FORK denied (#680)");
-                    Check(g.Commit(2,Original556(3,true,true))
+                    Check(g2.Commit(2,Original556(3,true,true))
                         ==FenceResult.Quarantined,
                         "forked old-world g2 cannot silently write later epoch");
                 }
@@ -182,6 +182,31 @@ internal static class Program
                         "no unauthorized automatic downgrade on uncertain cross-file state");
                     Check(File.Exists(Path.Combine(root,"gap-save","save.envelope")),
                         "forensic original Save payload remains preserved on gap");
+                }
+            }
+            // Loss of witness ACK AFTER its actual rename must quarantine
+            // current owner; the next independently leased owner may verify
+            // matching g2 Save+receipt after restart.
+            {
+                var hook=new Hook();
+                Guid ackId=Guid.NewGuid();
+                var(s,t,g)=New(root,"witness-ack",ackId,hook);
+                using(s)using(t)
+                {
+                    Check(g.Commit(0,Original556(1,true,false))==FenceResult.Accepted,
+                        "witness ACK setup original g1");
+                    hook.ThrowAfter=true;
+                    Check(g.Commit(1,Original556(2,false,true))
+                        ==FenceResult.Quarantined&&g.Quarantined,
+                        "witness physical rename then ACK lost seals current owner");
+                }
+                var(s2,t2,g2)=Open(root,"witness-ack",ackId);
+                using(s2)using(t2)
+                {
+                    Check(g2.Read(out long gen,out byte[] data)==FenceResult.Accepted&&
+                        gen==2&&ColdRestore.TryStage(data,out var cold)&&
+                        cold!.ContainsConsumedId(1,FrozenPartCatalog.Id(1)),
+                        "fresh owner validates g2 when Save and witness DID both persist");
                 }
             }
             // WITNESS RECORD CAN BE REPLACED TOO if attacker has access to
