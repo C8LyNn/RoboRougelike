@@ -15,15 +15,6 @@ static class Program
     }
     static bool Throws(Action action)
     {try{action();return false;}catch(ArgumentException){return true;}}
-
-    // Reflection adapter only for W09 test-first RED against immutable R2 source:
-    // the new host API is intentionally absent until a genuine source change.
-    static bool Ack(TacticalFeed f,TacticalItem ticket)
-    {
-        var method=typeof(TacticalFeed).GetMethod("AcknowledgeCritical");
-        if(method==null)return false;
-        return (bool)method.Invoke(f,new object[]{ticket});
-    }
     static void Main()
     {
         var feed=F();
@@ -217,73 +208,81 @@ static class Program
         Check("W09 ACK API exposed",()=>typeof(TacticalFeed).GetMethod("AcknowledgeCritical")!=null);
         Check("W09 acknowledge visible critical alert",()=>{
             var f=F();f.Record(E(1,10,TacticalKind.WeaponOffline,"gun"));
-            var ticket=f.Visible(false)[0];return Ack(f,ticket)&&f.Visible(false).Length==0;
+            var ticket=f.Visible(false)[0];return f.AcknowledgeCritical(ticket)&&f.Visible(false).Length==0;
         });
         Check("W09 repeated ACK is idempotent",()=>{
             var f=F();f.Record(E(1,10,TacticalKind.PartDetached,"wheel"));
-            var ticket=f.Visible(false)[0];return Ack(f,ticket)&&!Ack(f,ticket);
+            var ticket=f.Visible(false)[0];return f.AcknowledgeCritical(ticket)&&!f.AcknowledgeCritical(ticket);
         });
         Check("W09 ACK does not erase combat event history",()=>{
             var f=F();f.Record(E(1,10,TacticalKind.PartDetached,"wheel"));
-            var ticket=f.Visible(false)[0];return Ack(f,ticket)&&f.History().Length==1&&f.History()[0].SubjectId=="wheel";
+            var ticket=f.Visible(false)[0];return f.AcknowledgeCritical(ticket)&&f.History().Length==1&&f.History()[0].SubjectId=="wheel";
         });
         Check("W09 ACK old ticket cannot dismiss a later identical-source warning",()=>{
             var f=F(4,2);f.Record(E(1,10,TacticalKind.WeaponOffline,"gun"));
-            var old=f.Visible(false)[0];Ack(f,old);
+            var old=f.Visible(false)[0];f.AcknowledgeCritical(old);
             f.Record(E(2,30,TacticalKind.WeaponOffline,"gun"));
-            return !Ack(f,old)&&f.Visible(false).Length==1&&f.Visible(false)[0].LastSequence==2;
+            return !f.AcknowledgeCritical(old)&&f.Visible(false).Length==1&&f.Visible(false)[0].LastSequence==2;
         });
         Check("W09 ACK one critical never dismisses another",()=>{
             var f=F();f.Record(E(1,10,TacticalKind.PartDetached,"wheel"));
             f.Record(E(2,20,TacticalKind.WeaponOffline,"gun"));
             var first=f.Visible(false)[1];
-            return Ack(f,first)&&f.Visible(false).Length==1&&f.Visible(false)[0].SubjectId=="gun";
+            return f.AcknowledgeCritical(first)&&f.Visible(false).Length==1&&f.Visible(false)[0].SubjectId=="gun";
         });
         Check("W09 ACK stale run ticket does not alter fresh run",()=>{
             var f=F();f.Record(E(1,10,TacticalKind.PartDetached,"wheel"));
             var ticket=f.Visible(false)[0];f.StartNewRun(8);
             f.Record(E(1,12,TacticalKind.PartDetached,"wheel",run:8));
-            return !Ack(f,ticket)&&f.Visible(false).Length==1&&f.Visible(false)[0].RunId==8;
+            return !f.AcknowledgeCritical(ticket)&&f.Visible(false).Length==1&&f.Visible(false)[0].RunId==8;
         });
         Check("W09 ACK normal history record is rejected",()=>{
             var f=F();f.Record(E(1,10,TacticalKind.EnemyDestroyed,"foe"));
-            return !Ack(f,f.History()[0])&&f.Visible().Length==1;
+            return !f.AcknowledgeCritical(f.History()[0])&&f.Visible().Length==1;
         });
         Check("W09 ACK expired critical does not report success",()=>{
             var f=F();f.Record(E(1,10,TacticalKind.WeaponOffline,"gun"));
             var ticket=f.Visible(false)[0];f.AdvanceTo(6510);
-            return !Ack(f,ticket)&&f.Visible(false).Length==0;
+            return !f.AcknowledgeCritical(ticket)&&f.Visible(false).Length==0;
         });
         Check("W09 ACK after 32 normal event flood still hides retained alert",()=>{
             var f=F(3,1);f.Record(E(1,1,TacticalKind.WeaponOffline,"gun"));
             for(int i=2;i<=40;i++)f.Record(E(i,i,TacticalKind.EnemyDestroyed,"foe"+i));
             var ticket=f.Visible(false)[0];
-            return Ack(f,ticket)&&f.Visible(false).Length==0&&f.History().Length==3;
+            return f.AcknowledgeCritical(ticket)&&f.Visible(false).Length==0&&f.History().Length==3;
         });
         Check("W09 ACK does not reset monotonic input sequence",()=>{
             var f=F();f.Record(E(5,10,TacticalKind.WeaponOffline,"gun"));
-            var ticket=f.Visible(false)[0];Ack(f,ticket);
+            var ticket=f.Visible(false)[0];f.AcknowledgeCritical(ticket);
             return Throws(()=>f.Record(E(5,20,TacticalKind.WeaponOffline,"gun"))) &&
                    f.Record(E(6,20,TacticalKind.WeaponOffline,"gun"))==RecordOutcome.Accepted;
         });
         Check("W09 ACK does not advance displayed clock",()=>{
             var f=F();f.Record(E(1,10,TacticalKind.WeaponOffline,"gun"));
-            var ticket=f.Visible(false)[0];return Ack(f,ticket)&&f.NowMs==10;
+            var ticket=f.Visible(false)[0];return f.AcknowledgeCritical(ticket)&&f.NowMs==10;
         });
         Check("W09 ACK with one visible slot keeps unrelated newer critical",()=>{
             var f=F(4,1);f.Record(E(1,10,TacticalKind.PartDetached,"wheel"));
             var old=f.Visible(false)[0];f.Record(E(2,20,TacticalKind.WeaponOffline,"gun"));
-            return !Ack(f,old)&&f.Visible(false).Length==1&&f.Visible(false)[0].SubjectId=="gun";
+            return !f.AcknowledgeCritical(old)&&f.Visible(false).Length==1&&f.Visible(false)[0].SubjectId=="gun";
         });
         Check("W09 acknowledged critical does not reappear after clock advance",()=>{
             var f=F();f.Record(E(1,10,TacticalKind.WeaponOffline,"gun"));
-            var ticket=f.Visible(false)[0];Ack(f,ticket);f.AdvanceTo(2000);
+            var ticket=f.Visible(false)[0];f.AcknowledgeCritical(ticket);f.AdvanceTo(2000);
             return f.Visible(false).Length==0&&f.History().Length==1;
         });
         Check("W09 ACK detached view array still resolves same immutable ticket",()=>{
             var f=F();f.Record(E(1,10,TacticalKind.PartDetached,"wheel"));
             var ticket=f.Visible(false)[0];var detached=f.Visible(false);
-            return object.ReferenceEquals(ticket,detached[0])&&Ack(f,detached[0]);
+            return object.ReferenceEquals(ticket,detached[0])&&f.AcknowledgeCritical(detached[0]);
+        });
+
+        Check("W09 null acknowledgement ticket rejected",()=>Throws(()=>F().AcknowledgeCritical(null)));
+        Check("W09 synthetic matching ticket cannot dismiss real alert",()=>{
+            var f=F();var eventData=E(1,10,TacticalKind.WeaponOffline,"gun");
+            f.Record(eventData);
+            var fake=new TacticalItem(eventData,TacticalPriority.Critical);
+            return !f.AcknowledgeCritical(fake)&&f.Visible(false).Length==1;
         });
         Console.WriteLine("RESULT "+pass+" PASS, "+fail+" FAIL");
         if(fail!=0)Environment.Exit(1);
