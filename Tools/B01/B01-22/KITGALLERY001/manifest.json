@@ -1,7 +1,7 @@
 {
   "package_id": "B01-22-KITGALLERY-001",
-  "revision": "1.0.1",
-  "source_sha": "0d212a706c1e633b773d2e03b7b40c28bb63521b",
+  "revision": "1.1.0",
+  "source_sha": "b1d4e341d846c9397e236809a1d7e4c4fff9c935",
   "owner": "B01-22",
   "independent_qa": "PENDING",
   "native_unity": "NOT_RUN",
@@ -11,10 +11,11 @@
     ".github/workflows/b01-22-w03-kitgallery.yml"
   ],
   "test_commands": [
+    "dotnet run --project Tools/B01/B01-22/KITGALLERY001/GalleryCompile.csproj --configuration Release",
     "python -m unittest discover -s Tools/B01/B01-22/KITGALLERY001 -p test_gallery.py -v",
     "python Tools/B01/B01-22/KITGALLERY001/verify_gallery.py"
   ],
-  "rollback": "Remove isolated Assets/B01KitGallery001 folder and root meta from Codex disposable worktree only",
+  "rollback": "From an authorized disposable Unity worktree delete only Assets/B01KitGallery001 with root .meta if previously absent; no canonical scripts modified",
   "files": [
     ".github/workflows/b01-22-w03-kitgallery.yml",
     "Assets/B01KitGallery001.meta",
@@ -31,13 +32,15 @@
     "Tools/B01/B01-22/KITGALLERY001/original_source_fixture.json",
     "Tools/B01/B01-22/KITGALLERY001/test_gallery.py",
     "Tools/B01/B01-22/KITGALLERY001/verify_gallery.py",
+    "Assets/B01KitGallery001/Editor/KitComparisonRules.cs",
+    "Assets/B01KitGallery001/Editor/KitComparisonRules.cs.meta",
     "Tools/B01/B01-22/KITGALLERY001/manifest.json"
   ],
   "note": "No edits to canonical Codex game or W16 frozen economy",
   "git_blob_hashes": [
     {
       "path": ".github/workflows/b01-22-w03-kitgallery.yml",
-      "git_blob_sha1": "bc07fe5fd254d056b9e53ce2f4431be6bb55302e"
+      "git_blob_sha1": "c04583afcfd3594b41e91a602991571fe10e0657"
     },
     {
       "path": "Assets/B01KitGallery001.meta",
@@ -49,7 +52,7 @@
     },
     {
       "path": "Assets/B01KitGallery001/Data/KitGallery.json",
-      "git_blob_sha1": "dabbacedda08c07982f4a5b467b08e3c74092e56"
+      "git_blob_sha1": "bd4f151e5b4d95b88531e3d5d101168e0d614bb0"
     },
     {
       "path": "Assets/B01KitGallery001/Data/KitGallery.json.meta",
@@ -61,7 +64,7 @@
     },
     {
       "path": "Assets/B01KitGallery001/Editor/KitGalleryWindow.cs",
-      "git_blob_sha1": "7a12248d24a5c372d5c1e5aa813f5e2b967b2986"
+      "git_blob_sha1": "7a39f68a4e3c45d8204afeff929c59cca1cdf999"
     },
     {
       "path": "Assets/B01KitGallery001/Editor/KitGalleryWindow.cs.meta",
@@ -69,15 +72,15 @@
     },
     {
       "path": "Tools/B01/B01-22/KITGALLERY001/GalleryCompile.csproj",
-      "git_blob_sha1": "fb4aca95d7efeb223d1f2d93bd75fe66d3645f53"
+      "git_blob_sha1": "7ddf25a4c5f23628199a1f06792fd4283b90c23b"
     },
     {
       "path": "Tools/B01/B01-22/KITGALLERY001/OriginalEditorSourceTests.cs",
-      "git_blob_sha1": "95103752b55b23faba1f8cc9a2065565dc0da19c"
+      "git_blob_sha1": "814065f6fa8ee038f0df5e5ff86e56e25c470570"
     },
     {
       "path": "Tools/B01/B01-22/KITGALLERY001/README.md",
-      "git_blob_sha1": "4921fa68caf1fd5c9d7cb415bbfd134dd83e690c"
+      "git_blob_sha1": "73f6d0ba488d00d9250d4f676d7b2a5b2973fbe2"
     },
     {
       "path": "Tools/B01/B01-22/KITGALLERY001/UnityEditorStubs.cs",
@@ -85,37 +88,44 @@
     },
     {
       "path": "Tools/B01/B01-22/KITGALLERY001/original_source_fixture.json",
-      "git_blob_sha1": "9dd89d18d04bd8f259a702e4194c3ea52b63b797"
+      "git_blob_sha1": "372b3bc74553ea459e89be38378f4429090e00a2"
     },
     {
       "path": "Tools/B01/B01-22/KITGALLERY001/test_gallery.py",
-      "git_blob_sha1": "c45e9c2546f5f86760b63798a507fad00286ad9c"
+      "git_blob_sha1": "c2533451dfd2ef1d1ae71aaae61facee388420bb"
     },
     {
       "path": "Tools/B01/B01-22/KITGALLERY001/verify_gallery.py",
-      "git_blob_sha1": "6294085dcc258a6aecedf5a7fabef1ea858aa3da"
+      "git_blob_sha1": "4e0c0a433171fa9a015eeeb6ec94f6c30cb04774"
+    },
+    {
+      "path": "Assets/B01KitGallery001/Editor/KitComparisonRules.cs",
+      "git_blob_sha1": "753c575fa0d1bf352201c3c01bcf33b7b25fa9ba"
+    },
+    {
+      "path": "Assets/B01KitGallery001/Editor/KitComparisonRules.cs.meta",
+      "git_blob_sha1": "90e0a274249d2420617e3aa8a11234e08869cafe"
     }
   ],
   "tests": [
     {
-      "name": "Original Unity Editor C# source compiled with test-only Unity API stand-ins and 20 assertions",
-      "status": "PASS",
-      "tested_sha": "23114deb71e52c4c9be3f693c42a77e1e8cd02d7",
-      "evidence": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40907100934"
-    },
-    {
-      "name": "Python content, GUID and source validation 11 tests on Windows and Ubuntu",
-      "status": "PASS",
-      "tested_sha": "23114deb71e52c4c9be3f693c42a77e1e8cd02d7",
-      "evidence": "https://github.com/C8LyNn/RoboRougelike/actions/runs/40907100934"
-    },
-    {
-      "name": "Git blob integrity manifest on 1.0.1",
+      "name": "Exact Unity editor C# source compiled with test-only Unity APIs, 35 positive/negative checks",
       "status": "NOT_RUN"
     },
     {
-      "name": "Native Unity editor GUI/PlayMode",
+      "name": "Exact #411 original catalog, 15 Python cases, 6 stable .meta GUIDs, 17 original Git SHA blobs",
+      "status": "NOT_RUN"
+    },
+    {
+      "name": "Native Unity Editor comparison GUI + PlayMode",
       "status": "NOT_RUN"
     }
-  ]
+  ],
+  "feature_id": "B01-22-KITCOMPARE-001",
+  "previous_source_sha": "0d212a706c1e633b773d2e03b7b40c28bb63521b",
+  "parent_gallery_sha": "3dfbf28acea8d5e5680ad083eb770267907d0f4e",
+  "codex_gameplay_sha": "203a0805251ed28293888e43f2d49f0df63767c6",
+  "game_integration": "NOT_PERFORMED",
+  "codex_ack": "PENDING",
+  "install_blocker": "Use only after B01-40 G0, B01-60 independent QA and HQ; stacked on #390; source pinned exact #411"
 }
