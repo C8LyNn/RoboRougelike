@@ -6,6 +6,8 @@ import io
 import json
 import pathlib
 import tempfile
+import subprocess
+import sys
 import unittest
 from unittest import mock
 import zipfile
@@ -222,6 +224,62 @@ class PhysicalSourceTests(unittest.TestCase):
             self.assertEqual((dest/"receipt.json").read_bytes(),b"FOREIGN_CHANGED_RECEIPT")
             for name in FILES-{"receipt.json"}:
                 self.assertEqual((dest/name).read_bytes(),original[name])
+
+    def test_28_verify_stage_clean_is_strict_read_only(self):
+        with tempfile.TemporaryDirectory() as t:
+            p=pathlib.Path(t);self.data_dir(p/"in")
+            dest=p/"stage";receipt=stage(dest,p/"in",source_check=False)
+            before={k:(dest/k).read_bytes() for k in FILES}
+            first=pack_readiness.verify_stage(dest)
+            second=pack_readiness.verify_stage(dest)
+            self.assertEqual(first,receipt)
+            self.assertEqual(second,receipt)
+            self.assertEqual({k:(dest/k).read_bytes() for k in FILES},before)
+
+    def test_29_verify_stage_rejects_foreign_empty_dir_without_mutating(self):
+        with tempfile.TemporaryDirectory() as t:
+            p=pathlib.Path(t);self.data_dir(p/"in")
+            dest=p/"stage";stage(dest,p/"in",source_check=False)
+            foreign=dest/"foreign"/"empty";foreign.mkdir(parents=True)
+            before={k:(dest/k).read_bytes() for k in FILES}
+            with self.assertRaises(SourceError):
+                pack_readiness.verify_stage(dest)
+            self.assertTrue(foreign.is_dir())
+            self.assertEqual({k:(dest/k).read_bytes() for k in FILES},before)
+
+    def test_30_verify_stage_rejects_changed_receipt_without_mutating(self):
+        with tempfile.TemporaryDirectory() as t:
+            p=pathlib.Path(t);self.data_dir(p/"in")
+            dest=p/"stage";stage(dest,p/"in",source_check=False)
+            (dest/"receipt.json").write_bytes(b"FORGED_RECEIPT")
+            before={k:(dest/k).read_bytes() for k in FILES}
+            with self.assertRaises((SourceError,ValueError)):
+                pack_readiness.verify_stage(dest)
+            self.assertEqual({k:(dest/k).read_bytes() for k in FILES},before)
+
+    def test_31_actual_verify_stage_cli_pass_is_nonmutating(self):
+        with tempfile.TemporaryDirectory() as t:
+            p=pathlib.Path(t);self.data_dir(p/"in")
+            dest=p/"stage";stage(dest,p/"in",source_check=False)
+            before={k:(dest/k).read_bytes() for k in FILES}
+            result=subprocess.run([sys.executable,str(pathlib.Path(__file__).with_name("pack_readiness.py")),
+                                   "--verify-stage",str(dest)],cwd=ROOT,capture_output=True,text=True)
+            self.assertEqual(result.returncode,0,result.stderr)
+            self.assertEqual(json.loads(result.stdout)["result"],"VERIFIED_STAGE_READ_ONLY")
+            self.assertEqual({k:(dest/k).read_bytes() for k in FILES},before)
+
+    def test_32_actual_verify_stage_cli_rejects_foreign_empty_dir_no_deletion(self):
+        with tempfile.TemporaryDirectory() as t:
+            p=pathlib.Path(t);self.data_dir(p/"in")
+            dest=p/"stage";stage(dest,p/"in",source_check=False)
+            (dest/"unowned-empty").mkdir()
+            before={k:(dest/k).read_bytes() for k in FILES}
+            result=subprocess.run([sys.executable,str(pathlib.Path(__file__).with_name("pack_readiness.py")),
+                                   "--verify-stage",str(dest)],cwd=ROOT,capture_output=True,text=True)
+            self.assertEqual(result.returncode,2,result.stdout+result.stderr)
+            self.assertIn("FAIL_CLOSED",result.stderr)
+            self.assertTrue((dest/"unowned-empty").is_dir())
+            self.assertEqual({k:(dest/k).read_bytes() for k in FILES},before)
 
     def test_25_git_blob_identity_independent_known_sha1(self):
         # Independently verify the Git object framing against the standard
