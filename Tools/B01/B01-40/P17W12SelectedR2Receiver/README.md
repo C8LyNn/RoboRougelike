@@ -1,0 +1,37 @@
+# B01-40 — PASS17 WAVE12 exact-SHA Secure Reattach V2 R2 receiver G0
+
+**Only selected source**: B01-23 [Draft #510](https://github.com/C8LyNn/RoboRougelike/pull/510) at `d94400d95d13db7f27e1533df05c9292d5380431`, version `B01-23-SECURE-REATTACH-V2/2.0.0`. HQ #518 selects this exact source SHA; never stage #511, #494, legacy #439/#455/#471, nor mix two V2 revisions. Original #488 SHA `33a32b8bd9ab40467ab1a17b5684926a37dbd4d3` is the frozen superseded V1 baseline, not a second installed assembly.
+
+## Actual original-source data to verify
+
+- **Producer** #510 original `package.py build` run unchanged, no package source rewritten by receiver, exact original **INNER ZIP** 99,666 bytes, 35 members (34 original Git files and original manifest), SHA256 `d4ddfa3528ef0416aefffca72d884000f3b0c9959fb8dff53096487ef95c9387`. Manifest version 2.0.0, selected Git source SHA, original W06 dependency, predecessor #488, all Git file SHA256/length, native NOT_RUN and no Codex ACK. The GitHub Actions outer artifact ZIP is a wrapper; extract inner ZIP before checking its pinned SHA.
+- **Producer ownership** original W06 #421 `cb2b3a76e84266e2730fffc4ab048c1039f0652f`, selected cumulative 34 owner paths, exactly 12 new/modded paths relative to #488. Original W06 core/emitter and Runtime asmdef must remain exact pinned Git blobs, never altered.
+- **Unity importer** 14 unique new original author `.meta` GUIDs, 3 actual asmdef files and exact editor/test/runtime reference graph; no GUID or file path conflicts with original frozen W06, pinned read-only Codex R3 #383 `203a0805251ed28293888e43f2d49f0df63767c6` and original main `5f06af81e2dd9d877e4300259bb3dd008cb9c9d1`. The pinned Codex R3 is a historical receiver baseline, NOT a claim that its contents represent the user's current local Codex workspace.
+- **Independent B01-61** [#517](https://github.com/C8LyNn/RoboRougelike/pull/517) original exact Git-source tests SHA `12ceba268a3828d28dc9e99a0a36ec797599c8c1`; five original source Git blobs match the selected author and frozen W06. Source C# RED→GREEN with original W06 and simulated UnityEngine, run [#41070443412](https://github.com/C8LyNn/RoboRougelike/actions/runs/41070443412) both Windows and Ubuntu success. This is genuine executed C# but NOT native licensed Unity/PhysX.
+- **Safety source receipts** the three public `Reattach`, `TrySafeReattach`, `ReattachFromGui` routes all use one private `GuardedDockCommand` → actual Unity all-layer `OverlapBoxNonAlloc` / `ComputePenetration` source → private CommitDock → `AtomicDockLedger.TryReattach`. The original pure W06 ledger consumes/rearms the ID before applying physical changes; rollback compensation and quarantine are present in C# source. Does not execute real Unity.
+- **Receiver migration** ONLY new V2 root `Assets/B0123SecureReattachV2`; selected original scene builder creates empty V2-only scene. Read-only scans the historical Codex R3 and main Unity sources/scenes/prefabs, and a standalone host fixture; refuses preexisting V2 root, legacy W07/W08/W09 components, serialized original MonoScript GUIDs, duplicate selected GUIDs, #511/alternative staging, and foreign source paths. An actual Codex game scene/prefab is **not** silently migrated or certified; its current file inventory must be supplied and independently checked by Codex/B01-00 under explicit authorization.
+- **Actual transactional scratch deploy** copies original physical ZIP bytes to a fresh *external* temp folder with `os.replace` rename only after all members are prepared; injected mid-stage failure leaves no destination or scratch debris. Rollback compares all original files, their bytes AND all expected directories; it **refuses** foreign empty dirs/files, changed files, symlinks, missing members. No canonical game files touched, no unsafe delete on dirty receiver. Read-only old Codex source never staged.
+
+## Reproduce in GitHub Actions or on disposable machine
+
+Six separate checkouts, all exact original commits (no merge): `gate/` (B01-40 own Draft), `producer/` (#510), `independent-qa/` (#517), `frozen-w06/` (#421), `codex-r3/` (#383), `main-receiver/` (main frozen SHA). In common parent:
+
+```bash
+python gate/Tools/B01/B01-40/P17W12SelectedR2Receiver/receiver.py \
+  --producer producer --qa independent-qa --w06 frozen-w06 \
+  --codex codex-r3 --main main-receiver --out dist
+```
+
+The script executes **original author package.py build** on real immutable #510 source. Windows2025 and Ubuntu24.04 workflow uploads original real inner ZIP, JSON gate receipt, source stdout. Any wrong SHA, member, Git blob, GUID, assembly, own-source delta, alternative or unsafe staged path fails nonzero. On failure do NOT accept G0; retain the frozen producer unchanged.
+
+## Import / rollback for eventual authorized Codex receiver
+
+1. Require explicit source owner lock, B01-00 #79 approved handoff and concrete target receiver commit; Codex must acknowledge before editing any current canonical project. This Draft **does not** offer, claim or merge anything.
+2. In a disposable clone, confirm Unity `6000.3.14f1` project and compatible original dependency W06 `Assets/B0123DebrisRepulse001` / `B0123.DebrisRepulse.Runtime` on the exact frozen SHA. DO NOT install #511, #494, old W07/W08/W09 or keep their MonoScript GUID refs in scenes/prefabs. Require complete documented migration of every old reattach caller, script and serialized component; do not assume an empty new demo scene proves canonical migration.
+3. Validate the *inner* ZIP SHA, manifest and original Git bytes; then extract **only** selected `Assets/B0123SecureReattachV2/**` plus `Assets/B0123SecureReattachV2.meta` to a NEW clean target (never overwrite existing target), preserving all original author GUIDs and 3 asmdefs. Do not extract author `Tools`/CI workflow into production Unity assets. Include original W06 dependency or an authorized matching existing module; no merge of unrelated PRs.
+4. Run **native** Unity 6000.3.14f1 Editor compile, EditMode, PlayMode/PhysX, missing-ID, both rigs, all three routes, overlapping layer8/31 collider, failure rollback and reset/reentrancy; attach true XML+Editor.log, return code and exact SHA. Without valid Unity activation, **G1 NOT_RUN** and G2 remains HOLD.
+5. Rollback only if the staged selected set remains EXACTLY as originally installed and no foreign files/empty dirs appear; otherwise stop and retain all user data. Restore any authorized previous separate build via explicit backup only. The B01-40 scratch rollback is independently executable; it does not mutate real receiver.
+
+**G0 classification**: `ACCEPTED_SOURCE_ONLY` only after the actual dual-OS receiver workflow finishes SUCCESS on exact final receiver SHA. **G1 native** `NOT_RUN`; **G2 integration** `HOLD`; **Codex** `NOT_OFFERED, ACK_NONE, NOT_INTEGRATED`; **NO MERGE**. If source inspection reveals any existing legacy script in historic receiver, mark an actual **HOLD** for migration and report exact blocker. Nothing here substitutes for B01-60 native execution or Codex's authorized current-worktree migration.
+
+References: HQ #518, governance #276, historical failure #486, source #510, alternatives #511/#494, independent #517, previous B01-40 #501, original independent RED #502, G0 HAZARDPULSE #490 and SQUAD/DEBRIS #467 (unchanged). **Receiver:** B01-60 native G1, B01-61/62 exact-SHA regression and save/identity, B01-00 sole #79 queue, Codex after explicit ACK.

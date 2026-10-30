@@ -1,0 +1,80 @@
+name: B01-40 P17W12 selected #510 exact-SHA physical G0 migration rollback (NOT Unity)
+on:
+  push:
+    branches: [qa/b01-40-p17w12-secure-v2-r2-receiver-g0]
+    paths:
+      - 'Tools/B01/B01-40/P17W12SelectedR2Receiver/**'
+      - '.github/workflows/b01-40-p17w12-selected-r2-g0.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-40/P17W12SelectedR2Receiver/**'
+      - '.github/workflows/b01-40-p17w12-selected-r2-g0.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  physical-receiver:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - name: Checkout ONLY B01-40 W12 QA source
+        uses: actions/checkout@v4
+        with:
+          path: gate
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Checkout exactly ONE selected original producer #510
+        uses: actions/checkout@v4
+        with:
+          path: producer
+          ref: d94400d95d13db7f27e1533df05c9292d5380431
+          fetch-depth: 0
+      - name: Checkout B01-61 independent exact producer QA #517
+        uses: actions/checkout@v4
+        with:
+          path: independent-qa
+          ref: 12ceba268a3828d28dc9e99a0a36ec797599c8c1
+      - name: Checkout exact frozen original W06 dependency
+        uses: actions/checkout@v4
+        with:
+          path: frozen-w06
+          ref: cb2b3a76e84266e2730fffc4ab048c1039f0652f
+      - name: Checkout read-only known Codex R3 receiver #383
+        uses: actions/checkout@v4
+        with:
+          path: codex-r3
+          ref: 203a0805251ed28293888e43f2d49f0df63767c6
+      - name: Checkout read-only original main receiver
+        uses: actions/checkout@v4
+        with:
+          path: main-receiver
+          ref: 5f06af81e2dd9d877e4300259bb3dd008cb9c9d1
+      - name: Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Independent original physical ZIP GUID asmdef migration safe-stage rollback test
+        shell: bash
+        run: |
+          set -euo pipefail
+          python gate/Tools/B01/B01-40/P17W12SelectedR2Receiver/receiver.py \
+            --producer producer --qa independent-qa --w06 frozen-w06 \
+            --codex codex-r3 --main main-receiver --out dist | tee b01-40-w12-source-g0-stdout.txt
+          test -s dist/B01-23-SECURE-V2-R2-SELECTED-ORIGINAL.zip
+          test -s dist/B01-40-W12-G0-RECEIPT.json
+          echo "Physical original selected inner ZIP SHA256:"
+          python -c "from pathlib import Path; import hashlib; print(hashlib.sha256(Path('dist/B01-23-SECURE-V2-R2-SELECTED-ORIGINAL.zip').read_bytes()).hexdigest())"
+      - name: Upload real original selected producer physical ZIP and receiver evidence
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: B01-40-W12-SELECTED510-G0-${{ matrix.os }}
+          path: |
+            dist/B01-23-SECURE-V2-R2-SELECTED-ORIGINAL.zip
+            dist/B01-40-W12-G0-RECEIPT.json
+            b01-40-w12-source-g0-stdout.txt
+          if-no-files-found: warn
+          retention-days: 21
