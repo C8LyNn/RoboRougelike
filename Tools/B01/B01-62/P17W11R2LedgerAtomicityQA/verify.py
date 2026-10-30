@@ -69,7 +69,8 @@ def order_guard(source,name):
       "RearmAfterReattach("
     ]
     # R2 and V2 both must be evaluated without treating their source text as a PASS.
-    locations=[fragment.find(x) for x in actions]
+    compact=re.sub(r"\\s+","",fragment)
+    locations=[compact.find(re.sub(r"\\s+","",x)) for x in actions]
     if min(locations)<0 or locations != sorted(locations):
         raise Drift("TRANSACTION_SHAPE_DRIFT_"+name)
     return {"mutations_before_ledger":6, "ledger_rearm_after_mutations":True}
@@ -87,7 +88,7 @@ def check(src):
         raise Drift("FROZEN_LEDGER_SEMANTICS_DRIFT")
     if not all(t in src["v2"] for t in ("public bool Reattach(int index) => DockGate().Reattach(index)", "private bool CommitDock(int index)")):
         raise Drift("V2_ROUTE_CONTRACT_DRIFT")
-    r2shape=order_guard(r2,"Reattach") if False else order_guard(src["r2"],"Reattach")
+    r2shape=order_guard(src["r2"],"Reattach")
     v2shape=order_guard(src["v2"],"CommitDock")
     if "namespace B01.DebrisRepulse001" not in src["shim"]:
         raise Drift("SHIM_EMITTER_SPLIT_MARKER_DRIFT")
