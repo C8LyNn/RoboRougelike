@@ -1,0 +1,93 @@
+name: B01-40 P17W14 exact Save A/B source intake plus existing #536/#542 rollback and original #544 CSharp RED
+on:
+  push:
+    branches: [qa/b01-40-p17w14-save-admission-dual-wrapper-gate]
+    paths:
+      - 'Tools/B01/B01-40/P17W14SaveReceiverGate/**'
+      - '.github/workflows/b01-40-w14-save-transport-lock.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-40/P17W14SaveReceiverGate/**'
+      - '.github/workflows/b01-40-w14-save-transport-lock.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-git-original-receiver:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - name: Own B01-40 only, no canonical code modification
+        uses: actions/checkout@v4
+        with:
+          path: own
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Frozen only selected game Secure V2 R2 #510
+        uses: actions/checkout@v4
+        with:
+          path: game
+          ref: d94400d95d13db7f27e1533df05c9292d5380431
+          fetch-depth: 0
+      - name: Candidate Save A #544 exact original Git bytes (read-only)
+        uses: actions/checkout@v4
+        with:
+          path: save544
+          ref: e77529262b8f03c6e9f0e25b642038c351872044
+      - name: Candidate Save B #549 exact original Git bytes (read-only)
+        uses: actions/checkout@v4
+        with:
+          path: save549
+          ref: 6da2c523e03766cd5a6deaed0cb3cccf8765354b
+          fetch-depth: 0
+      - name: Original B01-40 safe receiver #536 exact source
+        uses: actions/checkout@v4
+        with:
+          path: wrapper536
+          ref: 77d75d73467d236f6e3404caa58271ffec9d45cb
+      - name: Original B01-60 hardened native receiver #542 exact source
+        uses: actions/checkout@v4
+        with:
+          path: wrapper542
+          ref: ed0234d8a3b1b3bc85f3d0a07bbe44b065c96508
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Execute exact original A/B producers, physical manifests, real #536/#542 safe rollback
+        shell: bash
+        run: |
+          set -euo pipefail
+          python own/Tools/B01/B01-40/P17W14SaveReceiverGate/intake.py \
+            --game game --save544 save544 --save549 save549 \
+            --wrapper536 wrapper536 --wrapper542 wrapper542 \
+            --project own/Tools/B01/B01-40/P17W14SaveReceiverGate \
+            --out dist | tee w14-intake-stdout.log
+          grep -q "B01_40_W14_RELEASE_DENIAL_PASS 7" w14-intake-stdout.log
+          grep -q "B01_40_W14_ROLLBACK_RECEIVERS_PASS" w14-intake-stdout.log
+          test -s dist/W14-save-receiver-gate.json
+      - name: Compile and EXECUTE unchanged original #544 CSharp codec + original W06/R2 ledger post-validate RED
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build own/Tools/B01/B01-40/P17W14SaveReceiverGate/Original544BoundaryQA.csproj -c Release --warnaserror
+          dotnet run --no-build -c Release --project own/Tools/B01/B01-40/P17W14SaveReceiverGate/Original544BoundaryQA.csproj \
+            | tee w14-original-544-csharp.log
+          grep -q "ORIGINAL_544_RELEASE_GATE_RED=MUTABLE_PUBLISHED_ARRAY_AND_ESCAPED_ATOMIC_LEDGER" w14-original-544-csharp.log
+          grep -q "UNITY_NATIVE=NOT_RUN" w14-original-544-csharp.log
+      - name: Upload execution evidence and explicit release hold, not native test XML
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-40-W14-SaveTransport-${{ matrix.os }}
+          path: |
+            dist/W14-save-receiver-gate.json
+            w14-intake-stdout.log
+            w14-original-544-csharp.log
+          retention-days: 21
+          if-no-files-found: warn
