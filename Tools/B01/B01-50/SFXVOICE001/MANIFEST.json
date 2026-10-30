@@ -39,11 +39,17 @@
     }
   },
   "tests": {
-    "original_dotnet8": "PENDING_ACTUAL_GITHUB_ACTIONS",
+    "original_dotnet8": "34/34 PASS, 0 FAIL; exact source .NET 8 warnings-as-errors",
     "unity_editmode": "NOT_RUN",
     "unity_playmode": "NOT_RUN",
     "actual_fps": "NOT_MEASURED",
-    "independent_qa": "PENDING"
+    "independent_qa": "PENDING",
+    "executed_workflow_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41046220659",
+    "executed_artifact_id": 12972676141,
+    "manifest_integrity": "7/7 original Git blob SHA and UTF8 file size verified",
+    "native_editmode": "NOT_RUN_ACTIVATION_PREFLIGHT",
+    "native_playmode": "NOT_RUN_ACTIVATION_PREFLIGHT"
   },
-  "rollback": "Delete only independent Tools/B01/B01-50/SFXVOICE001 and .github/workflows/b01-50-sfxvoice001.yml; no original Assets altered."
+  "rollback": "Delete only independent Tools/B01/B01-50/SFXVOICE001 and .github/workflows/b01-50-sfxvoice001.yml; no original Assets altered.",
+  "producer_status": "SOURCE_CSHARP_VERIFIED_IN_GITHUB_ACTIONS_QA_HANDOFF_PENDING"
 }
