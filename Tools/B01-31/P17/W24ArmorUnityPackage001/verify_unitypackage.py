@@ -69,7 +69,7 @@ def entrymap(members):
         guid,typ=name.split("/")
         if typ!="pathname":continue
         path=val.decode("utf-8").rstrip("\n")
-        need(val==(path+"\n").encode() and path.startswith("Assets/B01_31/")
+        need(val==(path+"\n").encode() and (path=="Assets/B01_31" or path.startswith("Assets/B01_31/"))
              and ".." not in path and "\\" not in path and "//" not in path,
              "no absolute, traversing or foreign Unity assets")
         need(guid not in guids and path not in bypath,
