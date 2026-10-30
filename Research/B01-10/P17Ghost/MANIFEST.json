@@ -1,6 +1,6 @@
 {
   "packageId": "B01-10-GHOST-001",
-  "version": "9.0.0-P17W15-PB_LAYOUT_GUARD",
+  "version": "10.0.0-P17W16-HUD_SNAPSHOT_OWNERSHIP",
   "role": "B01-10 GAME DESIGN & BALANCE",
   "scope": "OPT_IN_CHL_TRAINING_GHOST",
   "sourceBranch": "design/b01-10-p17w06-training-ghost",
@@ -14,7 +14,7 @@
     "B01-00 HQ",
     "Codex after ACK only"
   ],
-  "status": "R9_SOURCE_CI_PENDING / PHYSICAL_ZIP_SHA_PENDING / INDEPENDENT_G0_QA_PENDING / UNITY_G1_NOT_RUN / CODEX_ACK_NO",
+  "status": "R10_EXACT_SHA_SOURCE_CI_PENDING / SOURCE_G0_INDEPENDENT_PENDING / UNITY_G1_NOT_RUN / CODEX_ACK_NO / G2_HOLD",
   "originality": "First independent CHL practice ghost: 3D pose recording, 0.1s sampling, shortest-arc yaw replay, four-gate split comparison, two-rig personal best, no game state writes. Not an encounter editor, RUNSCORE post-run score, official CHL timer, economics or shared Physics patch. R7 introduces optional largest-loss reference segment replay without modifying physical CHL course.",
   "changedPaths": [
     "Research/B01-10/P17Ghost/**",
@@ -30,12 +30,12 @@
       "chars": 6400
     },
     "GhostSplitCoach.cs": {
-      "gitBlob": "5523a6b2a9567aeeef693aec28d9ad730e0a4040",
-      "chars": 15417
+      "gitBlob": "8f5128c9da46f81116e178862039238916c67be1",
+      "chars": 17840
     },
     "GhostSplitHud.cs": {
-      "gitBlob": "4c17bd3d0a783daf894e65309f0e8a1afb2ff65c",
-      "chars": 5093
+      "gitBlob": "7e5badbde8a19f9746fe0b5baee8b12ee92dfd5a",
+      "chars": 5362
     },
     "GhostCore.cs.meta": {
       "gitBlob": "7c730f4002b69b4b4501f04b9eeb6aaf23af0371",
@@ -58,30 +58,30 @@
       "chars": 169
     },
     "Program.cs": {
-      "gitBlob": "d698766cf5e5fdeb2c4741e0c38064efbc541881",
-      "chars": 47487
+      "gitBlob": "3c08c8e862cfec0b2fb2abc81aaefe4084e30348",
+      "chars": 52316
     },
     "Ghost.Runner.csproj": {
       "gitBlob": "bd9a53d96794ec1b1d34c3729ba0e985a30dc28c",
       "chars": 345
     },
     "README.md": {
-      "gitBlob": "511294e61a1fa3106a32ed74a303d1bd2f1b5edb",
-      "chars": 36782
+      "gitBlob": "6f142691dc08dee0a161ff770fdbbf486568d7b0",
+      "chars": 39050
     }
   },
   "workflow": {
     "path": ".github/workflows/b01-10-p17-ghost.yml",
-    "gitBlob": "4e9ee5d6aebebeaf10426258ef9ca8aabe765482"
+    "gitBlob": "6f01e25b27e33fdb787f526688f3aadf5be2b955"
   },
   "tests": {
     "tool": "dotnet 8.0 CSharp original source and test runner",
-    "namedCases": 145,
+    "namedCases": 157,
     "syntheticRandomizedTraces": 100,
-    "workflowRun": "W15 exact-head runner NOT_VERIFIED; prior R8 134/134 per OS historical only",
-    "windows": "W15 R9 145-source C# PENDING",
-    "ubuntu": "W15 R9 145-source C# PENDING",
-    "actualDemoJson": "W15 R9 PENDING",
+    "workflowRun": "W16 R10 exact head CI PENDING, predecessor R9 145/145 per OS is historical only",
+    "windows": "W16 157 C# PENDING actual execution",
+    "ubuntu": "W16 157 C# PENDING actual execution",
+    "actualDemoJson": "W16 R10 PENDING",
     "nativeUnity": "NOT_RUN",
     "UnityEditMode": "NOT_RUN",
     "UnityPlayMode": "NOT_RUN",
@@ -117,7 +117,7 @@
     "independentAcceptance": "PENDING",
     "CODEX_ACK": "PENDING"
   },
-  "qualityPatch": "W15 R9: GhostBestBook rejects inconsistent checkpoint count on same course+rig before comparing record; preserves old PB; 11 original tests #135-145, authentic recorder generated 3/4/8 gate reference. Same gate count physical layout still requires host CourseId versioning.",
+  "qualityPatch": "WAVE16 R10: portable GhostPracticePresentation clone-on-write/clone-on-read used by actual GhostSplitHud OnGUI, prevents returned host DTO edits forging display after gate/finish; 12 original C# tests #146-157",
   "sourceCodeGhostBlob": "376389273fe6263ac8a2d0b0741bb7a8fe9ae298",
   "fixtureDisclaimer": "The --demo Light and Heavy pose tracks are deterministic synthetic data, not actual Rigidbody/PhysX runs, manual play, or true native CHL-003 checkpoints.",
   "exactNativeStatus": "NO UNITY EDIT / NO UNITY PLAY / NO PHYSX / NO GAME INTEGRATION",
@@ -232,5 +232,5 @@
     "independentQA": "PENDING",
     "CodexACK": "PENDING"
   },
-  "currentPredecessorSHA": "0a5314f88f8f640f1f8afecb77f0327c9fa205db"
+  "currentPredecessorSHA": "efb754f8d735be8609c3623f66647220fc85c773"
 }
