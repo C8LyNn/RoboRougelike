@@ -360,6 +360,125 @@ internal static class Tests
                         CanonicalGateResult.RollbackQuarantine&&
                     d.Read(7,out long gen,out _)&&gen==10;
             }));
+        Check("W22 #710 two canonical gateways same real OS run+GUID are denied",()=>
+            Every((g,f,d,a)=>{
+                bool competitor=CanonicalWorldSlotLease.TryAcquire(d.Root,7,d.OwnerSlot,out _);
+                if(competitor)return false;
+                return a.TryRestore(Save(true,false,10),7,1)==
+                    CanonicalGateResult.Accepted&&!a.Quarantined;
+            }));
+        Check("W22 #710 same FileStream owner token can bind only ONE gateway",()=>
+            Every((g,f,d,a)=>{
+                // Access an independent correct slot to verify BindOnce semantics.
+                Guid extra=Guid.NewGuid();
+                if(!CanonicalWorldSlotLease.TryAcquire(d.Root,7,extra,
+                   out CanonicalWorldSlotLease? token)||token==null)return false;
+                var first=new CanonicalWorldGateway(g,new Factory(),d,token);
+                try
+                {
+                    _=new CanonicalWorldGateway(g,new Factory(),d,token);
+                    return false;
+                }
+                catch(InvalidOperationException)
+                {
+                    return first.TryCloseAfterPhysicalRetirement(()=>true);
+                }
+            }));
+        Check("W22 distinct genuine slot GUIDs independently coexist",()=>
+            Every((g,f,d,a)=>{
+                if(!CanonicalWorldSlotLease.TryAcquire(d.Root,7,Guid.NewGuid(),
+                    out CanonicalWorldSlotLease? other)||other==null)return false;
+                return other.TryCancelUnbound()&&a.AuthorityActive;
+            }));
+        Check("W22 unbound authority cancellation is legal only BEFORE staging",()=>
+            Every((g,f,d,a)=>{
+                if(!CanonicalWorldSlotLease.TryAcquire(d.Root,7,Guid.NewGuid(),
+                    out CanonicalWorldSlotLease? extra)||extra==null)return false;
+                return extra.TryCancelUnbound()&&!extra.TryCancelUnbound();
+            }));
+        Check("W22 #710 stale old preview denied after external durable gen fork",()=>
+            Every((g,f,d,a)=>{
+                byte[] old=Save(true,false,10);
+                if(a.TryRestore(old,7,1)!=CanonicalGateResult.Accepted)return false;
+                if(!d.Read(7,out long disk,out string prior)||disk!=10)return false;
+                byte[] other=Save(false,true,11);
+                if(!d.Commit(7,disk,prior,11,Hash(other)))return false;
+                return !a.TryCapturePreview(out _)&&a.Quarantined&&
+                    a.TryRestore(old,7,1)==CanonicalGateResult.RollbackQuarantine;
+            }));
+        Check("W22 wrong run cannot enter single owned authority",()=>
+            Every((g,f,d,a)=>{
+                return a.TryRestore(Save(true,false,1,77),77,1)==
+                    CanonicalGateResult.WrongRun&&f.Stages==0;
+            }));
+        Check("W22 owner shutdown requires proof of physical root retirement",()=>
+            Every((g,f,d,a)=>{
+                if(a.TryRestore(Save(true,false,10),7,1)!=CanonicalGateResult.Accepted)
+                    return false;
+                if(a.TryCloseAfterPhysicalRetirement(()=>false)||!a.AuthorityActive)
+                    return false;
+                if(CanonicalWorldSlotLease.TryAcquire(d.Root,7,d.OwnerSlot,out _))
+                    return false;
+                if(a.TryCapturePreview(out _))return false;
+                if(!a.TryCloseAfterPhysicalRetirement(()=>true)||a.AuthorityActive)
+                    return false;
+                if(!CanonicalWorldSlotLease.TryAcquire(d.Root,7,d.OwnerSlot,
+                    out CanonicalWorldSlotLease? fresh)||fresh==null)return false;
+                return fresh.TryCancelUnbound();
+            }));
+        Check("W22 failed stage cleanup with HasWorld=false KEEPS OS authority",()=>
+            Every((g,f,d,a)=>{
+                f.FailPrepareAfterAllocation=true;f.FailStageCleanup=true;
+                if(a.TryRestore(Save(true,false,10),7,1)!=
+                    CanonicalGateResult.RollbackQuarantine||
+                   !a.Quarantined||a.HasWorld)return false;
+                if(CanonicalWorldSlotLease.TryAcquire(d.Root,7,d.OwnerSlot,out _))
+                    return false;
+                // Now the independent test owner manually retires its disposable
+                // test-double orphan. Only THEN can it provide truthful proof.
+                if(f.Last==null)return false;
+                f.Last.Active=false;f.Last.Retired=true;
+                if(!a.TryCloseAfterPhysicalRetirement(()=>
+                    f.Last!=null&&!f.Last.Active&&f.Last.Retired))return false;
+                if(!CanonicalWorldSlotLease.TryAcquire(d.Root,7,d.OwnerSlot,
+                    out CanonicalWorldSlotLease? released)||released==null)return false;
+                return released.TryCancelUnbound();
+            }));
+        Check("W22 callback throws: OS owner stays held fail-closed",()=>
+            Every((g,f,d,a)=>{
+                if(a.TryCloseAfterPhysicalRetirement(
+                    ()=>throw new IOException("destroy not confirmed")))return false;
+                return a.AuthorityActive&&
+                    !CanonicalWorldSlotLease.TryAcquire(d.Root,7,d.OwnerSlot,out _);
+            }));
+        Check("W22 another thread cannot close owner or export it",()=>
+            Every((g,f,d,a)=>{
+                if(a.TryRestore(Save(true,false,10),7,1)!=CanonicalGateResult.Accepted)
+                    return false;
+                bool off=Task.Run(()=>a.TryCloseAfterPhysicalRetirement(()=>true))
+                    .GetAwaiter().GetResult();
+                return !off&&a.AuthorityActive&&
+                    !CanonicalWorldSlotLease.TryAcquire(d.Root,7,d.OwnerSlot,out _);
+            }));
+        Check("W22 real different CLR process cannot take the same slot",()=>
+            Every((g,f,d,a)=>{
+                var psi=new System.Diagnostics.ProcessStartInfo("dotnet");
+                psi.ArgumentList.Add(typeof(Tests).Assembly.Location);
+                psi.ArgumentList.Add("--probe-owner");
+                psi.ArgumentList.Add(d.Root);
+                psi.ArgumentList.Add(d.OwnerSlot.ToString("D"));
+                psi.RedirectStandardOutput=true;psi.RedirectStandardError=true;
+                psi.UseShellExecute=false;
+                using(var child=System.Diagnostics.Process.Start(psi))
+                {
+                    if(child==null)return false;
+                    if(!child.WaitForExit(30000))
+                    {
+                        child.Kill();return false;
+                    }
+                    return child.ExitCode==12&&!a.Quarantined&&a.AuthorityActive;
+                }
+            }));
         Check("physical factory fails staging before prior world mutated",()=>Every((g,f,d,a)=>{
             if(a.TryRestore(Save(true,false,10),7,1)!=CanonicalGateResult.Accepted)return false;
             World? old=f.Last;f.FailStage=true;
@@ -394,8 +513,16 @@ internal static class Tests
         }
         Console.WriteLine("UNITY_ENGINE_NOT_COMPILED; PRIVATE_510_RIG_LEDGER_PORT_NOT_IMPLEMENTED; FULL_CRASH_ATOMICITY_NOT_PROVEN");
     }
-    public static int Main()
+    public static int Main(string[] args)
     {
+        if(args.Length==3&&args[0]=="--probe-owner")
+        {
+            if(!Guid.TryParse(args[2],out Guid slot))return 20;
+            bool won=CanonicalWorldSlotLease.TryAcquire(args[1],7,slot,
+                out CanonicalWorldSlotLease? token);
+            if(won)token?.TryCancelUnbound();
+            return won?0:12;
+        }
         MainSuite();
         Console.WriteLine("TOTAL "+(passed+failed)+" PASS "+passed+" FAIL "+failed);
         return failed==0?0:1;
