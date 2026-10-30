@@ -102,7 +102,7 @@ namespace RoboRougelike.B01.Economy.RebuildV2
                    p.Health!=0||string.IsNullOrEmpty(t.ReservationKey)||
                    t.ReservationKey!=p.ReservationKey||
                    t.OrderedAfterWins!=s.Wins||
-                   t.Purchase!=p.Purchase||t.PaidQuote!=p.PaidQuote||
+                   t.Purchase<=1||t.PaidQuote<=0||t.PaidQuote>=t.Purchase||
                    t.Charged!=(t.WasFree?0:t.PaidQuote))return false;
                 if(t.WasFree)free++;
             }
