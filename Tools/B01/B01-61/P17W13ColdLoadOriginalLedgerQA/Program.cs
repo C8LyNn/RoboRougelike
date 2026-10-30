@@ -77,7 +77,7 @@ internal static class Program
     private static void ColdLoadMissingId(long id)
     {
         AtomicDockLedger before=Detach(id);
-        string json=SerializeFixture(Fixture(true,false));
+        string json=SerializeFixture(Fixture(id==2310001,id==2310002));
         QaSnapshot fromDisk=DecodeFixture(json);
         Check(FixtureLooksConsistent(fromDisk),"QA snapshot bytes roundtrip");
         // Construct NEW ORIGINAL atomic ledger instance after hypothetical cold process restart.
