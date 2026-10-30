@@ -26,8 +26,8 @@
       "bytes": 25021
     },
     "Research/B01-10/P17/W20_ECONBAL_001/rebuild_balance.py": {
-      "gitBlob": "d50a8de8dd3de038cb584356239c3d1561b2a985",
-      "bytes": 23404
+      "gitBlob": "958fb4e56008d922ea9c30a071fcb61382cf1e86",
+      "bytes": 23455
     },
     "Research/B01-10/P17/W20_ECONBAL_001/scenarios.json": {
       "gitBlob": "38d0f31e8cc8cfa00f5ed7a7962de07bf0124189",
@@ -75,7 +75,7 @@
       "windows-2025",
       "ubuntu-24.04"
     ],
-    "exactHeadExecution": "PENDING; previous W24 145/145 was prior SHA only",
+    "exactHeadExecution": "W25 R6 intermediate source run RED two tests #148/#149 because quote_rounding omitted from report; actual V6 original C# witness PASS expected source-contract RED; new corrected candidate CI pending.",
     "independentQA": "PENDING",
     "progressionCounterfactuals": 2,
     "postVictoryBoundary": "new 0HP damage after victory cannot complete by same victory",
@@ -111,7 +111,8 @@
       30,
       100
     ],
-    "approvedQuoteContract": "B01-10 proposes HALF_UP_CLAMPED_OWNER_B01_22_APPROVAL_PENDING; positive price1 rebuild0 PAID, quote strictly less than purchase"
+    "approvedQuoteContract": "B01-10 proposes HALF_UP_CLAMPED_OWNER_B01_22_APPROVAL_PENDING; positive price1 rebuild0 PAID, quote strictly less than purchase",
+    "redToGreenProvenance": "Intermediate exact SHA ac71fd78fb2155950688a974494919f9c88ac9de [Actions #41140975635] Python 158/160 (two errors: report field absent); direct original V6 C# witness 7 quotes+two original-stage checks PASS. Corrected source report field in new commit."
   },
   "receivers": [
     "B01-22 ECON owner/cost hypothesis",
