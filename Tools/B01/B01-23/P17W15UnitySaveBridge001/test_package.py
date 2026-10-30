@@ -37,7 +37,7 @@ class SourcePackageTests(unittest.TestCase):
         self.assertEqual(m["native_unity"],"NOT_RUN")
         self.assertEqual(m["canonical_510_live_import"],"HOLD")
         self.assertFalse(m["codex_ack"])
-        self.assertEqual(m["version"],"4.0.0")
+        self.assertEqual(m["version"],"5.0.0")
     def test_reject_foreign_member(self):
         with self.assertRaises(ValueError):
             p.verify(mutated(p.build(),extra={"Assets/Canon/HACK.cs":b"abc"}))
