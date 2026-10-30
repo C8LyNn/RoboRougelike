@@ -1,0 +1,35 @@
+name: B01-23 W25 live physical rollback R2 exact Unity source managed QA
+on:
+  push:
+    branches: [b01-23/p17w25-physical-rollback-velocity-r2]
+  pull_request:
+    paths:
+      - 'Assets/B0123CanonicalRigPortW24/**'
+      - 'Tools/B01/B01-23/P17W25PhysicalRollbackR2/**'
+      - '.github/workflows/b01-23-p17w25-physical-rollback-r2.yml'
+jobs:
+  source-only:
+    strategy:
+      fail-fast: false
+      matrix: {os: [windows-2025, ubuntu-24.04]}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Genuine frozen 510 atomic ledger original 556 CSharp 29 cases
+        run: dotnet run --project Tools/B01/B01-23/P17W24CanonicalPhysicalRigPort001/Original510PhysicalPortTests.csproj -c Release
+      - name: Compile REAL physical Unity source with explicitly fake managed UnityEngine shim (NOT PhysX)
+        run: dotnet run --project Tools/B01/B01-23/P17W25PhysicalRollbackR2/PhysicalSourceOnlyShimTests.csproj -c Release
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Exact original Git 510/556 pins and W25 source ZIP tests
+        run: python -m unittest discover -s Tools/B01/B01-23/P17W25PhysicalRollbackR2 -p test_package.py -v
+      - name: Real Git source physical ZIP for independent QA
+        run: python Tools/B01/B01-23/P17W25PhysicalRollbackR2/package.py build dist/B0123_W25_PhysicalRollback_R2.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-23-w25-real-physical-rollback-r2-${{ matrix.os }}
+          path: dist/B0123_W25_PhysicalRollback_R2.zip
+          if-no-files-found: error
