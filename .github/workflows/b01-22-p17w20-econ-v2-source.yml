@@ -1,13 +1,11 @@
 name: B01-22 P17 W20 ECON owner authority V2 source QA
 on:
-  push:
-    branches:
-      - b01-22/p17w20-econ-authority-v2
   pull_request:
     paths:
       - 'Assets/B01Packages/ECONREBUILD002/**'
       - 'Tools/B01/ECONREBUILD002/**'
       - '.github/workflows/b01-22-p17w20-econ-v2-source.yml'
+  workflow_dispatch:
 jobs:
   original-v2-source:
     strategy:
