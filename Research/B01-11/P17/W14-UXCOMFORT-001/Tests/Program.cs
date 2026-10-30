@@ -299,6 +299,62 @@ static class Program
             var g=Gate(n:0,shake:0);
             return Static(g.Record(Cue(1,0,VisualCueKind.CriticalFlash)),Indicator.Critical);
         });
+
+        // W15 RED: a zero-strength effect MUST NOT reserve real visual stimulus capacity.
+        Test("W15 zero damage flash renders static fallback",()=>
+            Static(Gate().Record(Cue(1,0,intensity:0)),Indicator.Damage));
+        Test("W15 zero explosion flash renders static fallback",()=>
+            Static(Gate().Record(Cue(1,0,VisualCueKind.ExplosionFlash,intensity:0)),Indicator.Explosion));
+        Test("W15 zero critical flash preserves static critical indicator",()=>
+            Static(Gate().Record(Cue(1,0,VisualCueKind.CriticalFlash,intensity:0)),Indicator.Critical));
+        Test("W15 zero flash does not consume finite window count",()=>{
+            var g=Gate();g.Record(Cue(1,0,intensity:0));return g.FlashCountWindow==0;
+        });
+        Test("W15 zero explosion and critical flashes never spend budget",()=>{
+            var g=Gate();g.Record(Cue(1,0,VisualCueKind.ExplosionFlash,intensity:0));
+            g.Record(Cue(2,0,VisualCueKind.CriticalFlash,intensity:0));
+            return g.FlashCountWindow==0;
+        });
+        Test("W15 zero flash cannot block immediate real flash via gap",()=>{
+            var g=Gate();g.Record(Cue(1,0,intensity:0));
+            return g.Record(Cue(2,0,intensity:100)).RenderMode==RenderMode.TimedEffect;
+        });
+        Test("W15 zero flash cannot occupy one flash capacity slot",()=>{
+            var g=Gate(n:1);g.Record(Cue(1,0,intensity:0));
+            return g.Record(Cue(2,250,intensity:50)).RenderMode==RenderMode.TimedEffect;
+        });
+        Test("W15 reduced mode zero flash is static",()=>
+            Static(Gate(ComfortMode.ReducedMotion).Record(Cue(1,0,intensity:0)),Indicator.Damage));
+        Test("W15 reduced mode zero cannot spend only slot",()=>{
+            var g=Gate(ComfortMode.ReducedMotion);g.Record(Cue(1,0,intensity:0));
+            return g.Record(Cue(2,100,intensity:100)).RenderMode==RenderMode.ReducedEffect;
+        });
+        Test("W15 no flashes zero remains static",()=>
+            Static(Gate(ComfortMode.NoFlashes).Record(Cue(1,0,intensity:0)),Indicator.Damage));
+        Test("W15 zero collision shake is static",()=>
+            Static(Gate().Record(Cue(1,0,VisualCueKind.CollisionShake,intensity:0)),Indicator.Collision));
+        Test("W15 zero detached shake is static",()=>
+            Static(Gate().Record(Cue(1,0,VisualCueKind.PartDetachShake,intensity:0)),Indicator.Detach));
+        Test("W15 custom shake budget zero stimulus static",()=>
+            Static(Gate(shake:100).Record(Cue(1,0,VisualCueKind.CollisionShake,intensity:0)),Indicator.Collision));
+        Test("W15 5000 zero flashes never consume budget",()=>{
+            var g=Gate();for(int i=1;i<=5000;i++)g.Record(Cue(i,i,intensity:0));
+            return g.FlashCountWindow==0;
+        });
+        Test("W15 zero-strength effect still advances replay sequence",()=>{
+            var g=Gate();g.Record(Cue(1,0,intensity:0));
+            return Throws<ArgumentException>(()=>g.Record(Cue(1,1,intensity:100)));
+        });
+        Test("W15 zero effect after nonzero retains prior quota only",()=>{
+            var g=Gate();g.Record(Cue(1,0,intensity:100));g.Record(Cue(2,250,intensity:0));
+            return g.FlashCountWindow==1&&g.Record(Cue(3,250,intensity:100)).RenderMode==RenderMode.TimedEffect;
+        });
+        Test("W15 zero strength does not invalidate future time",()=>{
+            var g=Gate();g.Record(Cue(1,100,intensity:0));
+            return g.NowMs==100&&Throws<ArgumentException>(()=>g.Record(Cue(2,99)));
+        });
+        Test("W15 baseline positive flash remains timed",()=>
+            Gate().Record(Cue(1,0,intensity:1)).RenderMode==RenderMode.TimedEffect);
         Console.WriteLine("RESULT "+passed+" PASS, "+failed+" FAIL");
         if(failed!=0)Environment.Exit(1);
     }
