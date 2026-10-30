@@ -1,0 +1,75 @@
+{
+  "package_id": "B01-31-DETACHED-IDENTITY-MARKERS-001",
+  "version": "P17-W13-R1",
+  "owner": "B01-31 — CONCEPT ART & VISUAL EXPLORATION",
+  "dispatch_issue": 535,
+  "deliverable": "16 genuinely generated original 256px RGBA identity-distinct detached-part world-marker art sprites; 3 visual 16-card reference boards, case-sensitive identity-keyed synthetic phase permutation, physical 34-file Unity Sprite import ZIP with 18 new GUIDs; source generator and independent actual binary/pixel receiver",
+  "purpose": "Enable human-readable detached part visual identity comparisons across proposed save/reload UI integration without creating or claiming a Save/Load data contract; emphasizes non-color-only 15-bit mirrored geometric glyph",
+  "explicit_non_goals": [
+    "No actual game Save/Load or stable ID round-trip performed",
+    "No Unity Animator/MonoBehaviour/scene/prefab or camera rendering",
+    "No authoritative source of truth for part identity; spoof/collision possible, diagnostic art only",
+    "No changes to selected frozen #510, legacy #511/#494, B01-23/B01-62 data schema, B01-40 rollback, Codex gameplay",
+    "No hard-coded actual runtime ID or serialization schema; example fixture format is only a visualization input"
+  ],
+  "selected_source": {
+    "pr": 510,
+    "immutable_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "G0": "ACCEPTED_SOURCE_ONLY via #521",
+    "G1": "NOT_RUN",
+    "alternatives_hold": [
+      511,
+      494
+    ]
+  },
+  "provenance": {
+    "source_base_main": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+    "art": "Fully original B01-31 authored geometrical shape algorithm and local example strings, no stock/3rd-party art"
+  },
+  "owned_paths": [
+    "Tools/B01-31/P17/W13DetachedIdentityArt001/**",
+    ".github/workflows/b01-31-p17w13-detached-id-markers.yml"
+  ],
+  "art_constraints": {
+    "synthetic_ids": 16,
+    "style": "Six-color accent palette, heavy hex salvage frame, geometric 5x5 mirrored 15-bit matrix and optional source-derived five hash notches; color is secondary; full synthetic opaque ID labels on review boards",
+    "resolution": "256x256 RGBA transparent sprites",
+    "generated_boards": [
+      "BEFORE_SAVE_SYNTHETIC.png",
+      "AFTER_LOAD_SIMULATED.png",
+      "AFTER_LOAD_SIMULATED_LIGHT.png"
+    ],
+    "sprite_zip_name": "B0131-DetachedIdentityMarkers-UnitySprites.zip",
+    "unity_namespace": "Assets/B0131DetachedIdentityMarkers/",
+    "zip_expected_members": 34,
+    "stable_meta_GUIDs": 18,
+    "source_fixture_warning": "pre_save/post_load_simulated is a SYNTHETIC permutation-only visual reference, not a real Save/Load round trip or actual ledger API"
+  },
+  "executed_test_plan": [
+    "source fixture two phases 16 unique case-sensitive opaque example IDs in two nonidentical orders, exact membership, 7 adversarial mutated fixtures must be rejected",
+    "16 original 256x256 RGBA PNGs physically rendered/decoded, transparency and nonempty shape",
+    "16 independently distinct 15-bit spatial patterns; 32 actual dark+light pixel-contrast measurements",
+    "32 actual source-derived identity->pixel byte checks over synthetic reorder (not a real save)",
+    "3 original 1400x1480 RGB full contact review boards physically rendered and decoded",
+    "real 34-member Unity Sprite archive with CRC/readback, deterministic stable 18 unique .meta GUIDs, original SpriteImporter alpha",
+    "producer executed twice byte-identically, Windows independent binary receiver physically opens Ubuntu artifacts and checks geometric pixel signatures without calling producer"
+  ],
+  "qa": {
+    "producer_source": "PENDING_ACTUAL_CI",
+    "formal_B01_40": "PENDING",
+    "formal_B01_60": "PENDING",
+    "unity_native": "NOT_RUN",
+    "actual_save_load": "NOT_RUN",
+    "G2": "HOLD",
+    "codex_ack": false,
+    "integrated": false
+  },
+  "rollback": "Delete only 5 own files plus unique workflow from disposable branch. Any later authorized Unity receiver removes solely Assets/B0131DetachedIdentityMarkers/ and sibling root .meta; never original #510 or other VFX/part files.",
+  "receivers": [
+    "B01-10/B01-12 optional game UX owner: understand diagnostic-only visual markers, not a security surface",
+    "B01-23/B01-62 only if future actual Save/Load schema decides to expose an opaque stable ID for optional art binding, no integration requested",
+    "B01-40 independent exact ZIP/GUID/collision/rollback",
+    "B01-60 Unity 6000.3.14f1 licensed Sprite import/URP/human readability",
+    "B01-00 optional #79 routing once formal QA complete"
+  ]
+}

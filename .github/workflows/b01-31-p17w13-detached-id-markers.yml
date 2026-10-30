@@ -1,0 +1,67 @@
+name: B01-31 P17W13 original detached-part identity marker real visual sprites + Unity ZIP
+on:
+  push:
+    branches: [art/b01-31-p17w13-detached-id-markers]
+    paths:
+      - 'Tools/B01-31/P17/W13DetachedIdentityArt001/**'
+      - '.github/workflows/b01-31-p17w13-detached-id-markers.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01-31/P17/W13DetachedIdentityArt001/**'
+      - '.github/workflows/b01-31-p17w13-detached-id-markers.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-art-physical-export:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned real raster library
+        run: python -m pip install --disable-pip-version-check "Pillow==11.3.0"
+      - name: Compile original source and independent physical receiver
+        run: python -m compileall -q Tools/B01-31/P17/W13DetachedIdentityArt001/
+      - name: Generate 16 actually distinct 256px identity art sprites and 34-entry Unity Sprite ZIP
+        run: |
+          python Tools/B01-31/P17/W13DetachedIdentityArt001/build_markers.py --fixture Tools/B01-31/P17/W13DetachedIdentityArt001/fixture.json --output build/B0131W13
+          python Tools/B01-31/P17/W13DetachedIdentityArt001/verify_artifact.py --fixture Tools/B01-31/P17/W13DetachedIdentityArt001/fixture.json --source build/B0131W13
+      - name: Physical art + ZIP + receipt repeat byte-for-byte deterministic verification
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd build/B0131W13 && find . -type f -print0 | sort -z | xargs -0 sha256sum) > /tmp/first.sha256
+          python Tools/B01-31/P17/W13DetachedIdentityArt001/build_markers.py --fixture Tools/B01-31/P17/W13DetachedIdentityArt001/fixture.json --output build/B0131W13
+          python Tools/B01-31/P17/W13DetachedIdentityArt001/verify_artifact.py --fixture Tools/B01-31/P17/W13DetachedIdentityArt001/fixture.json --source build/B0131W13
+          (cd build/B0131W13 && find . -type f -print0 | sort -z | xargs -0 sha256sum) > /tmp/second.sha256
+          cmp /tmp/first.sha256 /tmp/second.sha256
+          echo "W13_ORIGINAL_16_DETACHED_ID_ART_MARKERS_PNG_ZIP_RECEIPT_BYTE_PARITY_PASS"
+      - name: Upload real original marker sprites three boards Unity import ZIP and receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0131-P17W13-16-SYNTHETIC-ID-MARKER-PNG-THREE-BOARDS-UNITY-ZIP
+          path: build/B0131W13/
+          retention-days: 30
+          if-no-files-found: error
+  windows-binary-independent-visual-receiver:
+    needs: original-art-physical-export
+    runs-on: windows-2022
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Download physical actual original Ubuntu art output without regenerating original
+        uses: actions/download-artifact@v4
+        with:
+          name: B0131-P17W13-16-SYNTHETIC-ID-MARKER-PNG-THREE-BOARDS-UNITY-ZIP
+          path: actual-original-art
+      - name: Install image decoder only for independent physical pixel checks
+        run: python -m pip install --disable-pip-version-check "Pillow==11.3.0"
+      - name: Independently inspect real 16 PNG pixel patterns 3 boards 34-entry Unity Sprite ZIP GUID CRC
+        run: python Tools/B01-31/P17/W13DetachedIdentityArt001/verify_artifact.py --fixture Tools/B01-31/P17/W13DetachedIdentityArt001/fixture.json --source actual-original-art
