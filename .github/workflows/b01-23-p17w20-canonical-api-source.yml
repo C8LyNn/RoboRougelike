@@ -2,11 +2,6 @@ name: B01-23 W20 owner canonical SaveLoad API source and physical original Git
 on:
   push:
     branches: [b01-23/p17w20-canonical-world-api-v1]
-  pull_request:
-    paths:
-      - 'Assets/B0123CanonicalSaveApi001/**'
-      - 'Tools/B01/B01-23/P17W20CanonicalSaveApi001/**'
-      - '.github/workflows/b01-23-p17w20-canonical-api-source.yml'
 jobs:
   real-source-and-zip:
     strategy:

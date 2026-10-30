@@ -1,0 +1,40 @@
+name: B01-23 P17 W23 one real canonical OS slot lease V4
+on:
+  push:
+    branches: [b01-23/p17w23-unified-canonical-slot-v4]
+  pull_request:
+    paths:
+      - 'Assets/B0123CanonicalSaveApi001/Core/CanonicalWorldSlotLease.cs'
+      - 'Tools/B01/B01-23/P17W23UnifiedAuthority001/**'
+      - '.github/workflows/b01-23-p17w23-unified-authority-v4.yml'
+jobs:
+  original-real-slot:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2025, ubuntu-24.04]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Prepare exact original B01-62 669 source without modifying frozen SHA
+        run: python Tools/B01/B01-23/P17W23UnifiedAuthority001/source_prepare.py
+      - name: Compile original frozen W06 556 and actual 669 one OS lease tests
+        run: dotnet run --project Tools/B01/B01-23/P17W23UnifiedAuthority001/UnifiedOriginalSourceQA.csproj -c Release
+      - name: Real original Git ZIP and rollback safety
+        run: python -m unittest discover -s Tools/B01/B01-23/P17W23UnifiedAuthority001 -p test_package.py -v
+      - name: Build original physical INNER ZIP and exact SHA receipt
+        run: python Tools/B01/B01-23/P17W23UnifiedAuthority001/package.py --archive dist/B0123_W23_ONE_ORIGINAL_LEASE.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-23-w23-original-single-lease-${{ matrix.os }}
+          path: dist/B0123_W23_ONE_ORIGINAL_LEASE.zip
+          if-no-files-found: error

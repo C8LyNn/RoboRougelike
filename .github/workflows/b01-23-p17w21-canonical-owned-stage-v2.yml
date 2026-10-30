@@ -2,12 +2,6 @@ name: B01-23 W21 canonical #681 owned-stage V2 original source CI
 on:
   push:
     branches: [b01-23/p17w21-canonical-api-owned-stage-v2]
-  pull_request:
-    paths:
-      - 'Assets/B0123CanonicalSaveApi001/**'
-      - 'Tools/B01/B01-23/P17W20CanonicalSaveApi001/**'
-      - 'Tools/B01/B01-23/P17W21CanonicalOwnedStageV2/**'
-      - '.github/workflows/b01-23-p17w21-canonical-owned-stage-v2.yml'
 jobs:
   real-original-source:
     strategy:
