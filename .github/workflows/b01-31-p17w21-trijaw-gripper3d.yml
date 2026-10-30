@@ -1,0 +1,66 @@
+name: B01-31 P17W21 Original Articulated 3D TriJaw Service Gripper Physical QA
+on:
+  push:
+    branches: [art/b01-31-p17w21-trijaw-service-gripper3d]
+    paths:
+      - 'Tools/B01-31/P17/W21TriJawServiceGripper001/**'
+      - '.github/workflows/b01-31-p17w21-trijaw-gripper3d.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01-31/P17/W21TriJawServiceGripper001/**'
+      - '.github/workflows/b01-31-p17w21-trijaw-gripper3d.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-3D-gripper-authoring:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install exact physical RGB/GIF image art codec
+        run: python -m pip install --disable-pip-version-check "Pillow==11.3.0"
+      - name: Compile original independent tools
+        run: python -m compileall -q Tools/B01-31/P17/W21TriJawServiceGripper001
+      - name: Author REAL ORIGINAL 324 triangle glTF2 3 independently animated moving jaws and GIF boards
+        run: |
+          python Tools/B01-31/P17/W21TriJawServiceGripper001/build_gripper.py --output build/B0131W21
+          python Tools/B01-31/P17/W21TriJawServiceGripper001/verify_gripper.py --source build/B0131W21
+      - name: Rebuild ALL original GLB2 PNG GIF JSON receipt and 6 member physical ZIP and compare all hashes
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd build && find . -type f -print0 | sort -z | xargs -0 sha256sum) > /tmp/first.sha256
+          python Tools/B01-31/P17/W21TriJawServiceGripper001/build_gripper.py --output build/B0131W21
+          python Tools/B01-31/P17/W21TriJawServiceGripper001/verify_gripper.py --source build/B0131W21
+          (cd build && find . -type f -print0 | sort -z | xargs -0 sha256sum) > /tmp/second.sha256
+          cmp /tmp/first.sha256 /tmp/second.sha256
+          echo "B0131_W21_ORIGINAL_3D_TRIJAW_ALL_PHYSICAL_SHA_REPRODUCIBLE_PASS"
+      - name: Upload REAL glTF2 animated 3D tri-jaw, actual 7-pose dark-light PNG and 12-frame GIF ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0131-P17W21-ORIGINAL-ARTICULATED-3D-TRIJAW-GLB2-GIF-7POSE-BOARDS
+          path: build/
+          retention-days: 30
+          if-no-files-found: error
+  real-independent-Windows-original-GLB2-GIF-receiver:
+    runs-on: windows-2022
+    needs: original-3D-gripper-authoring
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Download actual original glTF2 and 3D GIF from Ubuntu (NEVER regenerate)
+        uses: actions/download-artifact@v4
+        with:
+          name: B0131-P17W21-ORIGINAL-ARTICULATED-3D-TRIJAW-GLB2-GIF-7POSE-BOARDS
+          path: original-ubuntu-art
+      - name: Install physical standalone PNG/GIF reader ONLY
+        run: python -m pip install --disable-pip-version-check "Pillow==11.3.0"
+      - name: Independently read actual GLB2 positions normals indices 6 physical tracks 42 poses and 241 geometry-gap samples
+        run: python Tools/B01-31/P17/W21TriJawServiceGripper001/verify_gripper.py --source original-ubuntu-art/B0131W21
