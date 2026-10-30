@@ -1,0 +1,95 @@
+name: B01-25 W23 SAFEROUTE original Unity route anti-softlock source QA
+on:
+  push:
+    branches: [research/b01-25-p17w23-saferoute001-r1]
+    paths:
+      - 'Assets/B0125SafeRoute001/**'
+      - 'Assets/B0125SafeRoute001.meta'
+      - 'Research/B01-25/P17/SAFEROUTE001/**'
+      - 'Tools/B01/B01-25/P17W23SafeRoute/**'
+      - '.github/workflows/b01-25-w23-saferoute.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 22
+    env:
+      SRC: Research/B01-25/P17/SAFEROUTE001
+      OUT: Tools/B01/B01-25/P17W23SafeRoute/.output
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile ORIGINAL CSharp9 netstandard2.1 route runtime warning-errors
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$SRC/.output" "$OUT"
+          dotnet build "$SRC/SafeRouteRuntime.csproj" -c Release -p:LangVersion=9.0 -warnaserror
+      - name: Execute ORIGINAL deterministic Light Heavy eight-state route tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --project "$SRC/SafeRouteTests.csproj" -c Release -- "$SRC/.output/results.json" 2>&1 | tee "$OUT/route-$RUNNER_OS.log"
+      - name: Independent Git-byte Unity GUID and safe physical scratch rollback
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-25/P17W23SafeRoute/check.py --out "$OUT/receipt.json" 2>&1 | tee "$OUT/physical-$RUNNER_OS.log"
+      - name: Original physical Unity SOURCE ZIP receipt preflight
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s "$OUT/receipt.zip"
+          test -s "$OUT/receipt.json"
+          test -s "$SRC/.output/results.json"
+          sha256sum "$OUT/receipt.zip"
+      - name: Upload original source, complete JSON and raw physical ZIP
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-25-saferoute-w23-${{ matrix.os }}
+          path: |
+            Research/B01-25/P17/SAFEROUTE001/.output/results.json
+            Tools/B01/B01-25/P17W23SafeRoute/.output/**
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 21
+  original-physical-zip-parity:
+    needs: original-source
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: b01-25-saferoute-w23-*
+          path: evidence
+      - name: Independently download original Unity SOURCE ZIPs and binary compare
+        shell: bash
+        run: |
+          set -euo pipefail
+          A="$(find evidence/b01-25-saferoute-w23-ubuntu-latest -name receipt.zip | head -n1)"
+          B="$(find evidence/b01-25-saferoute-w23-windows-latest -name receipt.zip | head -n1)"
+          test -n "$A" && test -n "$B"
+          test -s "$A" && test -s "$B"
+          sha256sum "$A" "$B"
+          cmp "$A" "$B"
+          python - "$A" <<'PY'
+          import json,sys,zipfile
+          with zipfile.ZipFile(sys.argv[1]) as z:
+              names=z.namelist()
+              assert len(names)==22 and len(set(names))==22
+              assert all(i.create_system==3 for i in z.infolist())
+              data=json.loads(z.read("PACKAGE_MANIFEST.json"))
+              assert len(data["files"])==21 and data["nativeUnity"]=="NOT_RUN"
+          print("SAFEROUTE_ORIGINAL_UNITY_SOURCE_ZIP_PARITY_PASS")
+          PY
