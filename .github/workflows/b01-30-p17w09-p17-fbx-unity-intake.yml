@@ -1,0 +1,145 @@
+name: B01-30 W09 original P17 GLB real FBX and Unity intake
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/b01-30-p17w09-p17-fbx-unity-intake.yml'
+      - 'Tools/B01/TechArt/P17W09/P17FbxIntake001/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-glb-real-blender-fbx:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Freeze B01-23 owner and B01-30 original GLB producer
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin refs/pull/423/head
+          test "$(git rev-parse FETCH_HEAD)" = "60a453e4ecd915725bc2fac5433ba7ad43a628cb"
+          git fetch --no-tags origin refs/pull/375/head
+          test "$(git rev-parse FETCH_HEAD)" = "5666a39eabd4cea91b2b605a9eb99ea2f1e226e8"
+          mkdir -p build/B01-30/W09/owner
+          for n in P17_Flanker_Reinforced.json P17_Bulwark_Reinforced.json P17_Skirmisher_Reinforced.json P17_StructuralBracingKits.json; do
+            git show "FETCH_HEAD:Assets/PARTSIZE001/Bracing/P17/$n" > "build/B01-30/W09/owner/$n"
+          done
+      - name: Download original physical GLB #423 source artifact
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/B01-30/W09/original
+          gh run download 41030346462 --repo C8LyNn/RoboRougelike \
+            --name B01-30-P17W06-BRACEVIS001-3-GLB-3-BLEND-6-PNG \
+            --dir build/B01-30/W09/original
+      - name: Install actual Blender and headless render libraries
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy xvfb libegl1 libegl-mesa0 libgl1-mesa-dri libosmesa6
+          python3 -m py_compile Tools/B01/TechArt/P17W09/P17FbxIntake001/*.py
+      - name: Convert real exact original GLBs to three genuine FBX binaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          blender --background --factory-startup --python-exit-code 1 \
+            --python Tools/B01/TechArt/P17W09/P17FbxIntake001/export_source_locked_fbx.py \
+            -- --original build/B01-30/W09/original --owner build/B01-30/W09/owner \
+            --out build/B01-30/W09/export
+      - name: Independently reimport actual FBX in fresh Blender and render three PNGs
+        shell: bash
+        run: |
+          set -euo pipefail
+          xvfb-run -a -s '-screen 0 1280x1024x24' blender --background --factory-startup \
+            --python-exit-code 1 \
+            --python Tools/B01/TechArt/P17W09/P17FbxIntake001/verify_real_fbx_reimport.py \
+            -- --fbxdir build/B01-30/W09/export --owner build/B01-30/W09/owner \
+            --out build/B01-30/W09/reimport
+      - name: Build genuine stable GUID UnityPackage and run five negative controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 Tools/B01/TechArt/P17W09/P17FbxIntake001/package_unity.py \
+            --fbxdir build/B01-30/W09/export \
+            --roundtrip build/B01-30/W09/reimport/p17-original-fbx-roundtrip-receipt.json \
+            --out build/B01-30/W09/unitypackage
+          python3 - <<'PY'
+          import json,hashlib,struct,tarfile
+          from pathlib import Path
+          p=Path("build/B01-30/W09")
+          r=json.loads((p/"reimport/p17-original-fbx-roundtrip-receipt.json").read_text())
+          q=json.loads((p/"unitypackage/unity-source-intake-receipt.json").read_text())
+          assert r["real_meshes"]==43 and r["original_braces"]==5 and r["real_pngs"]==3
+          assert q["original_binary_fbx_count"]==3 and q["actual_tar_member_count"]==12
+          assert len(q["real_corrupt_source_and_tar_negative_controls"])==5
+          for x in r["real_binary_fbx"]:
+            f=p/"reimport"/x["render"]["file"]
+            raw=f.read_bytes()
+            assert raw[:8]==b'\x89PNG\r\n\x1a\n'
+            assert tuple(struct.unpack(">II",raw[16:24]))==(960,720)
+            assert hashlib.sha256(raw).hexdigest()==x["render"]["sha256"]
+          f=p/"unitypackage"/q["unitypackage"];raw=f.read_bytes()
+          assert len(raw)==q["unitypackage_bytes"] and hashlib.sha256(raw).hexdigest()==q["unitypackage_sha256"]
+          with tarfile.open(f,"r:gz") as t:
+            names=[x.name for x in t.getmembers()]
+            assert len(set(names))==12
+          print("B0130_W09_REAL_3_FBX_43_MESH_5_BRACE_3_PNG_12_TAR_5_NEGATIVES_PASS",q["unitypackage_sha256"])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-30-W09-REAL-P17-3-FBX-UNITY-INTAKE
+          path: |
+            build/B01-30/W09/export/*.fbx
+            build/B01-30/W09/export/fbx-source-locked-export.json
+            build/B01-30/W09/reimport/*.png
+            build/B01-30/W09/reimport/p17-original-fbx-roundtrip-receipt.json
+            build/B01-30/W09/unitypackage/*.unitypackage
+            build/B01-30/W09/unitypackage/unity-source-intake-receipt.json
+          if-no-files-found: error
+          retention-days: 30
+  windows-independent-exact-binary-repack:
+    needs: [original-glb-real-blender-fbx]
+    runs-on: windows-2025
+    timeout-minutes: 8
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: B01-30-W09-REAL-P17-3-FBX-UNITY-INTAKE
+          path: build/B01-30/W09
+      - name: Rebuild original binary package with Windows and compare every byte to Ubuntu
+        run: |
+          set -euo pipefail
+          python Tools/B01/TechArt/P17W09/P17FbxIntake001/package_unity.py \
+            --fbxdir build/B01-30/W09/export \
+            --roundtrip build/B01-30/W09/reimport/p17-original-fbx-roundtrip-receipt.json \
+            --out build/B01-30/W09/windows-replay
+          python - <<'PY'
+          import json,hashlib
+          from pathlib import Path
+          p=Path("build/B01-30/W09")
+          a=json.loads((p/"unitypackage/unity-source-intake-receipt.json").read_text())
+          b=json.loads((p/"windows-replay/unity-source-intake-receipt.json").read_text())
+          first=(p/"unitypackage"/a["unitypackage"]).read_bytes()
+          second=(p/"windows-replay"/b["unitypackage"]).read_bytes()
+          assert first==second,"CROSS_OS_UNITY_PACKAGE_BYTES_DIFFER"
+          assert a["unitypackage_sha256"]==b["unitypackage_sha256"]
+          assert len(b["real_corrupt_source_and_tar_negative_controls"])==5
+          print("B0130_W09_REAL_THREE_FBX_WINDOWS_UBUNTU_BINARY_PACKAGE_IDENTICAL",hashlib.sha256(first).hexdigest())
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-30-W09-WINDOWS-REPLAY-RECEIPT
+          path: build/B01-30/W09/windows-replay/unity-source-intake-receipt.json
+          if-no-files-found: error
