@@ -1,0 +1,82 @@
+name: B01-40 P17W17 frozen #596 only source G0 and real safe disposable Unity migration
+on:
+  push:
+    branches: [qa/b01-40-p17w17-frozen596-only-physical-g0]
+    paths:
+      - 'Tools/B01/B01-40/P17W17Selected596G0/**'
+      - '.github/workflows/b01-40-p17w17-frozen596-intake.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-40/P17W17Selected596G0/**'
+      - '.github/workflows/b01-40-p17w17-frozen596-intake.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-596-original-source-G0:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: own
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/checkout@v4
+        with:
+          path: game
+          ref: d94400d95d13db7f27e1533df05c9292d5380431
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: save
+          ref: 33094f154c7b91119b36d58aab285e6e83c5de57
+          fetch-depth: 0
+      - name: W17 SOLE OWNER-selected bridge #596
+        uses: actions/checkout@v4
+        with:
+          path: bridge
+          ref: efb2b06eafedab5469b57f163152d96aca3c5915
+          fetch-depth: 0
+      - name: Unselected #604 read-only provenance (NEVER INSTALL)
+        uses: actions/checkout@v4
+        with:
+          path: loser
+          ref: 1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a
+      - name: Independent B01-61 #607 exact selected source QA
+        uses: actions/checkout@v4
+        with:
+          path: qa
+          ref: 86f3292c928e52609db6c7afdb2010971d6946f1
+      - name: Original B01-40 #575 safe receiver
+        uses: actions/checkout@v4
+        with:
+          path: receiver
+          ref: 3b743acc52bb44ae6a50af56ed9aca46d22821a7
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Execute original frozen #596 author ZIP and original #575 safe migration/rollback
+        shell: bash
+        run: |
+          set -euo pipefail
+          python own/Tools/B01/B01-40/P17W17Selected596G0/intake.py \
+            --game game --save save --bridge bridge --receiver receiver \
+            --loser loser --qa qa --out evidence | tee w17-selected596-stdout.log
+          grep -q 'B0140_W17_ORIGINAL_BRIDGE_PHYSICAL' w17-selected596-stdout.log
+          grep -q 'B0140_W17_COMBINED_SOURCE' w17-selected596-stdout.log
+          grep -q 'B0140_W17_CLEAN_COMBINED_CLONE_ROLLBACK 2' w17-selected596-stdout.log
+          grep -q 'B0140_W17_SELECTED_596_P0_SOURCE_GREEN_CANONICAL_HOLD' w17-selected596-stdout.log
+          test -s evidence/w17-selected596-intake.json
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-40-W17-Frozen596-${{ matrix.os }}
+          path: |
+            evidence/w17-selected596-intake.json
+            w17-selected596-stdout.log
+          if-no-files-found: warn
+          retention-days: 21
