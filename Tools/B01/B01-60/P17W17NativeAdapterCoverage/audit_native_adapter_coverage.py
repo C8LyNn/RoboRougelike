@@ -30,6 +30,7 @@ BRIDGE_UNITY="Assets/B0123UnitySaveBridge001/Unity/IsolatedTwinRigSaveHost.cs"
 ASMTEST="Assets/B0123UnitySaveBridge001/Tests/B0123.UnitySaveBridge.PlayModeTests.asmdef"
 ASMCORE="Assets/B0123UnitySaveBridge001/Core/B0123.UnitySaveBridge.Core.asmdef"
 ASMUNITY="Assets/B0123UnitySaveBridge001/Unity/B0123.UnitySaveBridge.Unity.asmdef"
+SOURCE_PINS={} # populated from ORIGINAL frozen Git source, not current working tree
 NATIVE_CASES=(
  "ColdLoad_RealRigidbody_RoundTripLightHeavy",
  "CorruptLoad_LeavesPreviouslyActiveRigidbodyAndIdsUntouched",
@@ -65,6 +66,10 @@ def check_assets(assets):
  require(set(assets)=={NATIVE_SOURCE,BRIDGE_CORE,FENCE_CORE,BRIDGE_UNITY,
                             ASMTEST,ASMCORE,ASMUNITY,GAME_SOURCE,GAME_LEDGER,
                             SAVE_SOURCE},"native exact source provenance not complete / extra source")
+ require(set(SOURCE_PINS)==set(assets),"original immutable Git hashes not initialized")
+ for name,raw in assets.items():
+  require(hashlib.sha256(raw).hexdigest()==SOURCE_PINS[name],
+          "original frozen Git byte integrity mismatch "+name)
  text=assets[NATIVE_SOURCE].decode("utf8")
  require(tuple(methods(text))==NATIVE_CASES,
          "required FIVE exact selected-adapter NUnit method identities missing/swapped")
@@ -145,6 +150,7 @@ def main():
   p:orig(GAME if p in (GAME_SOURCE,GAME_LEDGER) else
          SAVE if p==SAVE_SOURCE else PROPOSED,p) for p in paths
  }
+ SOURCE_PINS.update({p:hashlib.sha256(raw).hexdigest() for p,raw in originals.items()})
  positive=check_assets(originals)
  require(positive==5,"exact source five-case sample not verified")
  # Alternative #596 is NEVER blended with #604, only a negative mismatched
