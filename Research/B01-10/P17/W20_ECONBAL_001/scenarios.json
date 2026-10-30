@@ -1,7 +1,7 @@
 {
-  "schema": "B01-10 ECONBAL-001 scenario v2 (post-victory damage is not repaired by same win)",
+  "schema": "B01-10 ECONBAL-001 scenario v3: authentic next-challenge/core precondition (synthetic only)",
   "sourceOfPrices": "hypothetical 100 Scrap purchase, 70% paid quote; #252 mentions 65-75% hypothesis, NOT approved",
-  "evidence": "SYNTHETIC ONLY; manual scripted wins are NOT necessarily physically reachable; deploy-gate counterfactual refuses impossible scripted wins",
+  "evidence": "ALL HYPOTHETICAL. A future WIN cannot be credited if actual core is lost, an eligible next challenge is absent, or 0HP essential cannot deploy. No native source asserts a game softlock.",
   "cases": {
     "twelve_victories_two_destroyed": {
       "initial_scrap": 4000,
@@ -1003,6 +1003,64 @@
         },
         {
           "id": "attempt_win_without_second_loaner",
+          "won": true,
+          "destroyed": [],
+          "earned_scrap": 100
+        }
+      ]
+    },
+    "core_lost_looter_attempt_cannot_earn_or_loan": {
+      "initial_scrap": 0,
+      "purchase_price": 100,
+      "paid_quote_percent": 70,
+      "attempts": [
+        {
+          "id": "fatal_loss",
+          "won": false,
+          "destroyed": [
+            {
+              "id": "destroyed_drive",
+              "role": "mobility",
+              "blocks_deploy": true
+            }
+          ],
+          "earned_scrap": 0,
+          "core_alive_after": false
+        },
+        {
+          "id": "pretend_new_win",
+          "won": true,
+          "destroyed": [],
+          "earned_scrap": 100
+        },
+        {
+          "id": "pretend_second_win",
+          "won": true,
+          "destroyed": [],
+          "earned_scrap": 100
+        }
+      ]
+    },
+    "missing_next_challenge_cannot_invent_loaner_win": {
+      "initial_scrap": 0,
+      "purchase_price": 100,
+      "paid_quote_percent": 70,
+      "attempts": [
+        {
+          "id": "last_challenge_won",
+          "won": true,
+          "destroyed": [
+            {
+              "id": "critical_gun",
+              "role": "weapon",
+              "blocks_deploy": true
+            }
+          ],
+          "earned_scrap": 0,
+          "next_challenge_available_after": false
+        },
+        {
+          "id": "phantom_challenge",
           "won": true,
           "destroyed": [],
           "earned_scrap": 100
