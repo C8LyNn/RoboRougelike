@@ -1,0 +1,77 @@
+{
+  "package_id": "B01-30-P17-BRACE-VIS-001",
+  "version": "R1",
+  "role": "B01-30 TECH ART",
+  "scope": "Visual 3D logical occupancy fixture; no physical collider or part models",
+  "source_owner": "B01-23",
+  "source_pr": 375,
+  "immutable_source_head": "5666a39eabd4cea91b2b605a9eb99ea2f1e226e8",
+  "source_git_blobs": {
+    "P17_Flanker_Reinforced.json": "7259e3454b2f7dd72ca66de83673c143075a807f",
+    "P17_Bulwark_Reinforced.json": "8b00e5da047a22bc23644639e3292c447dd6b335",
+    "P17_Skirmisher_Reinforced.json": "edf332a66645c5ea4374b1957d2cc1a7d356e4d2",
+    "P17_StructuralBracingKits.json": "9b3d2403e7f6e32ea6e20f9f5bb0a83b859bc6e1"
+  },
+  "expected": {
+    "rig_count": 3,
+    "logical_parts": 43,
+    "braces": 5,
+    "predicted_mitigations": 6,
+    "per_rig": {
+      "Flanker": {
+        "parts": 15,
+        "braces": 1
+      },
+      "Bulwark": {
+        "parts": 16,
+        "braces": 2
+      },
+      "Skirmisher": {
+        "parts": 12,
+        "braces": 2
+      }
+    },
+    "outputs": [
+      "3 GLB 2.0 real 3D meshes",
+      "3 native Blender scene .blend",
+      "6 actual 960x720 PNG renders from independent GLB import",
+      "source-export-receipt.json",
+      "actual-glb-receiver-qa.json"
+    ],
+    "source_negatives": 12
+  },
+  "owner_paths": [
+    "Tools/B01/TechArt/P17W06/P17BracingVis001/**",
+    ".github/workflows/b01-30-p17w06-brace-visual.yml"
+  ],
+  "dependencies": [
+    "Blender 4.x python with glTF exporter and numpy",
+    "Original #375 exact SHA access"
+  ],
+  "constraints": [
+    "0.55m observed logical grid only, NOT physical collider",
+    "No actual wheel/track/hover dimensions inferred",
+    "No claim to measure contact points or collision clearance",
+    "No game runtime edits",
+    "No NEW MODEL_JOB",
+    "Unity G1 NOT_RUN",
+    "B01-40/60 independent QA pending",
+    "Codex integration not approved"
+  ],
+  "status": "PRODUCER_IN_PROGRESS",
+  "gates": {
+    "source_python": "NOT_RUN",
+    "real_blender_export": "NOT_RUN",
+    "clean_glb_reimport": "NOT_RUN",
+    "real_png": "NOT_RUN",
+    "independent_qa": "PENDING",
+    "unity_editor": "NOT_RUN",
+    "physx": "NOT_RUN"
+  },
+  "receiver": [
+    "B01-23 original model geometry source review",
+    "B01-40 artifact integrity G0",
+    "B01-60 independent 3D import QA"
+  ],
+  "rollback": "Delete only isolated output build/B01-30/P17W06/BraceVis001; no original 3 rigs modified."
+}
