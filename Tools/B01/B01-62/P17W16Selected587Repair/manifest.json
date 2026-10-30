@@ -1,0 +1,105 @@
+{
+  "name": "B01-62-P17W16-SELECTED-587-SECURITY-REPAIR",
+  "version": "2.0.0-SOURCE-ONLY-ADVISORY",
+  "owner": "B01-62",
+  "chosen_one_producer": {
+    "pr": 587,
+    "exact_head": "ad7904eca571c742257551fa8103f266fcb9b752",
+    "core_blob": "16a7d7043a2ecb59a41bbfb063170235872fd7fc",
+    "original_physical_inner_zip_sha256": "fec19b2e244ca9f37f6e9c069f70c615509b8d4b06264bece877d2a38168e89c",
+    "zip_size": 71047,
+    "zip_members": 23
+  },
+  "hold_alternative_bridge_prs": [
+    585
+  ],
+  "unselected_b01_62_refs": [
+    577,
+    584
+  ],
+  "only_frozen_save": {
+    "pr": 556,
+    "sha": "33094f154c7b91119b36d58aab285e6e83c5de57",
+    "csharp_git_blob": "b52e511c370f5fca56c74029050844dc8cbb7f9a"
+  },
+  "only_frozen_gameplay": {
+    "pr": 510,
+    "sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "w06_git_blob": "fa1aa5e531927cbe73cf5fdfe161b4a981316db5",
+    "r2_atomic_git_blob": "b6a4d04b0c6407c8c84451b4d599d96fe0e4d1a9",
+    "rigspec_git_blob": "b680ed0ec969ac23203fa55eab7b90f8daa86e43"
+  },
+  "source_red_witnesses": {
+    "after_activation_mutation_prevented_in_original_587": true,
+    "original_same_gen_world_fork": "RED_CONFIRMED",
+    "original_abort_cleanup_return_mask": "RED_CONFIRMED",
+    "original_restart_watermark_missing": "RED_CONFIRMED",
+    "correction": "three fail-closed measures; after-activation revalidate retained"
+  },
+  "actual_ci_prior": {
+    "run_id": 41097383618,
+    "platforms": [
+      "windows-2025",
+      "ubuntu-24.04"
+    ],
+    "old_source_expected_red_cases_per_os": 3,
+    "corrected_original_556_source_cases_per_os": 83,
+    "original_zip_receiver_tests_per_os": 12,
+    "conclusion": "2/2 SUCCESS",
+    "native_unity": "NOT_RUN"
+  },
+  "scope": [
+    {
+      "path": "Tools/B01/B01-62/P17W16Selected587Repair/AtomicWorldSwapR2.cs",
+      "git_blob": "bcaadcd26566f490866be8ba813e9b69a53c8ced"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W16Selected587Repair/FileGenerationAuthority.cs",
+      "git_blob": "1c8d6f78adc7d6d2dfb775d846c2947e179fa391"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W16Selected587Repair/Program.cs",
+      "git_blob": "699ea23e758799654d73e610e1005e63d5040b2f"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W16Selected587Repair/Original587Witness.cs",
+      "git_blob": "c502f5da1cd1d9c7b3d30691e6608cefb0b107aa"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W16Selected587Repair/Original587RedWitness.csproj",
+      "git_blob": "2258b563f63fe7f2764b0ae5aee7c61753bd66d9"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W16Selected587Repair/W16Selected587Repair.csproj",
+      "git_blob": "3d8fe901d775948c96ed7144d6bb0ecb5b989750"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W16Selected587Repair/test_receiver.py",
+      "git_blob": "14172164500817e5f6e387b0693a282c166498dc"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W16Selected587Repair/README.md",
+      "git_blob": "2d67b96f2fba7d18b8d252bc052c76096c39c3c4"
+    },
+    {
+      "path": ".github/workflows/b01-62-p17w16-selected587-repair.yml",
+      "git_blob": "3b391b31107a33b23794e0c149dc25c5ffffccaa"
+    }
+  ],
+  "gates": {
+    "new_source_g0": "PENDING_B01-40",
+    "new_independent_exact_sha_qa": "PENDING_B01-61",
+    "b01_23_adoption": "REQUIRED",
+    "real_510_private_rig_capture_and_hydrate": "BLOCKED_REQUIRES_NEW_OWNER_APPROVED_API",
+    "g1_unity": "NOT_RUN",
+    "live_saveload": "HOLD",
+    "g2": "HOLD",
+    "codex_ack": "NONE",
+    "merged": false
+  },
+  "limitations": [
+    "Not installed into Assets or Codex. A new B01-23 version is required; #587 original unchanged.",
+    "Disk journal verifies uninterrupted process restart and byte identity, not physics/disk crash-atomicity or directory fsync.",
+    "Host-owned dedicated directory required; source-only rollback fixture never runs against real receiver."
+  ]
+}
