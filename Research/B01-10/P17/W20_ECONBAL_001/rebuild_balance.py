@@ -78,7 +78,10 @@ def validate(plan: dict) -> dict:
             if pid in within:
                 raise InvalidScenario("same physical ID listed twice in one attempt")
             within.add(pid)
-            parts.append((pid, role))
+            essential = p.get("blocks_deploy", False)
+            if type(essential) is not bool:
+                raise InvalidScenario("blocks_deploy must be a real boolean")
+            parts.append((pid, role, essential))
         normalized.append((eid, won, earned, tuple(parts)))
     return {"initial_scrap": initial, "purchase_price": purchase,
             "paid_quote_percent": percent, "quote": quote,
@@ -86,7 +89,9 @@ def validate(plan: dict) -> dict:
 
 
 def run_plan(plan: dict, *, cadence: str = "per_win",
-             bootstrap: bool = True, priority: str = "critical_first") -> dict:
+             bootstrap: bool = True, priority: str = "critical_first",
+             enforce_deploy_gate: bool = False,
+             loaner_challenges: int = 0) -> dict:
     """Model destroyed-part requests and next-WIN completion, never host writes.
 
     One global free reservation per genuine win epoch (optionally epoch-0
@@ -97,28 +102,69 @@ def run_plan(plan: dict, *, cadence: str = "per_win",
         raise InvalidScenario("unsupported design policy")
     if type(bootstrap) is not bool:
         raise InvalidScenario("bootstrap must be boolean")
+    if type(enforce_deploy_gate) is not bool:
+        raise InvalidScenario("enforce_deploy_gate must be boolean")
+    # Borrowed rig under #154 is NOT approved; one hypothetical use maximum
+    # here, NEVER a live inventory asset/reward authority.
+    if type(loaner_challenges) is not int or loaner_challenges not in (0, 1):
+        raise InvalidScenario("loaner_challenges must be zero or one")
+    if loaner_challenges and not enforce_deploy_gate:
+        raise InvalidScenario("loaner requires modeled deploy eligibility gate")
     p = validate(plan)
     wallet = p["initial_scrap"]
     quote = p["quote"]
     wins = 0
     free_epoch = -1
     free_run_used = False
-    destroyed: dict[str, str] = {}
+    destroyed: dict[str, tuple[str, bool]] = {}
     reserved: dict[str, tuple[str, int]] = {}
     free_count = paid_count = denied_count = restored_count = 0
     expense = reward = 0
     critical_at_end = 0
     no_budget_critical = 0
+    loaner_used = blocked_deploy_attempts = contradicted_scripted_wins = 0
     observations: list[dict] = []
     for eid, won, earned, new in p["steps"]:
-        for pid, role in new:
+        # PRE-ENCOUNTER eligibility: pending/reserved 0HP parts remain
+        # destroyed, and cannot satisfy any essential mobility/weapon route.
+        # This is a *counterfactual design gate*, not real R3 CanDeploy.
+        essential_before = sum(is_essential for _, is_essential in destroyed.values())
+        if enforce_deploy_gate and essential_before:
+            if loaner_used < loaner_challenges:
+                loaner_used += 1
+            else:
+                blocked_deploy_attempts += 1
+                contradicted_scripted_wins += int(won)
+                observations.append({
+                    "attempt": eid, "win": False, "scripted_win_blocked": bool(won),
+                    "blocked_reason": "ESSENTIAL_0HP_PREVENTS_DEPLOY",
+                    "wallet": wallet, "wins": wins,
+                    "unavailable_mobility": sum(
+                        role == "mobility" for role, _ in destroyed.values()),
+                    "unavailable_essential": essential_before,
+                    "still_destroyed": len(destroyed),
+                    "reserved_waiting": len(reserved)})
+                # Blocked attempt NEVER consumes a queued voucher, reaches a
+                # victory, earns reward, produces more damage or starts a run.
+                continue
+        # IMPORTANT W21 CORRECTION: an actual win happens BEFORE damage from
+        # that encounter can enter the POST-encounter queue. Only tickets that
+        # existed *before this win* can be completed on this win.
+        if won:
+            restored_count += len(reserved)
+            for pid in tuple(reserved):
+                destroyed.pop(pid, None)
+            reserved.clear()
+            wins += 1
+        for pid, role, essential in new:
             if pid not in destroyed:
-                destroyed[pid] = role
-        items = [(pid, role) for pid, role in destroyed.items()
+                destroyed[pid] = (role, essential)
+        items = [(pid, role, essential)
+                 for pid, (role, essential) in destroyed.items()
                  if pid not in reserved]
         if priority == "critical_first":
-            items.sort(key=lambda pair: (ROLES.index(pair[1]), pair[0]))
-        for pid, role in items:
+            items.sort(key=lambda pair: (not pair[2], ROLES.index(pair[1]), pair[0]))
+        for pid, role, essential in items:
             has_credit = bootstrap or wins > 0
             free = has_credit and (free_epoch != wins if cadence == "per_win"
                                    else not free_run_used)
@@ -137,20 +183,14 @@ def run_plan(plan: dict, *, cadence: str = "per_win",
                     free_run_used = True
             else:
                 paid_count += 1
-        if won:
-            # A successful unique event authenticates the next cycle in this
-            # *model*. Only a future trusted runtime owner can authenticate it.
-            restored_count += len(reserved)
-            for pid in tuple(reserved):
-                destroyed.pop(pid, None)
-            reserved.clear()
-            wins += 1
         wallet += earned
         reward += earned
-        critical = sum(role == "mobility" for role in destroyed.values())
+        critical = sum(role == "mobility"
+                       for role, _ in destroyed.values())
+        essential = sum(is_essential for _, is_essential in destroyed.values())
         reserved_mobility = sum(
             role == "mobility" and pid in reserved
-            for pid, role in destroyed.items())
+            for pid, (role, _) in destroyed.items())
         unreserved_mobility = critical - reserved_mobility
         critical_at_end += int(critical > 0)
         no_budget_critical += int(critical > 0 and wallet < quote)
@@ -158,10 +198,19 @@ def run_plan(plan: dict, *, cadence: str = "per_win",
                              "wins": wins, "unavailable_mobility": critical,
                              "reserved_mobility": reserved_mobility,
                              "unreserved_mobility": unreserved_mobility,
+                             "unavailable_essential": essential,
+                             "used_temporary_loaner": bool(
+                                 enforce_deploy_gate and essential_before
+                                 and loaner_used <= loaner_challenges),
                              "still_destroyed": len(destroyed),
                              "reserved_waiting": len(reserved)})
     return {"cadence": cadence, "bootstrap": bootstrap, "priority": priority,
             "quote": quote, "attempts": len(p["steps"]), "wins": wins,
+            "enforce_deploy_gate": enforce_deploy_gate,
+            "hypothetical_loaner_budget": loaner_challenges,
+            "hypothetical_loaner_used": loaner_used,
+            "blocked_deploy_attempts": blocked_deploy_attempts,
+            "contradicted_scripted_wins": contradicted_scripted_wins,
             "free": free_count, "paid": paid_count, "denied": denied_count,
             "restored": restored_count, "charged_scrap": expense,
             "earned_scrap": reward, "wallet_final": wallet,
