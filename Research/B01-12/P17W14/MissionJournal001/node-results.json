@@ -1,0 +1,367 @@
+{
+  "total": 90,
+  "passed": 90,
+  "failed": 0,
+  "cases": [
+    {
+      "name": "initial valid",
+      "pass": true
+    },
+    {
+      "name": "task count",
+      "pass": true
+    },
+    {
+      "name": "initial empty",
+      "pass": true
+    },
+    {
+      "name": "strict initial schema",
+      "pass": true
+    },
+    {
+      "name": "initial only root available",
+      "pass": true
+    },
+    {
+      "name": "valid ready reach_gate",
+      "pass": true
+    },
+    {
+      "name": "completed reach_gate",
+      "pass": true
+    },
+    {
+      "name": "receipt reach_gate",
+      "pass": true
+    },
+    {
+      "name": "replay rejected reach_gate",
+      "pass": true
+    },
+    {
+      "name": "roundtrip reach_gate",
+      "pass": true
+    },
+    {
+      "name": "valid ready disable_turrets",
+      "pass": true
+    },
+    {
+      "name": "completed disable_turrets",
+      "pass": true
+    },
+    {
+      "name": "receipt disable_turrets",
+      "pass": true
+    },
+    {
+      "name": "replay rejected disable_turrets",
+      "pass": true
+    },
+    {
+      "name": "roundtrip disable_turrets",
+      "pass": true
+    },
+    {
+      "name": "valid ready defeat_guard",
+      "pass": true
+    },
+    {
+      "name": "completed defeat_guard",
+      "pass": true
+    },
+    {
+      "name": "receipt defeat_guard",
+      "pass": true
+    },
+    {
+      "name": "replay rejected defeat_guard",
+      "pass": true
+    },
+    {
+      "name": "roundtrip defeat_guard",
+      "pass": true
+    },
+    {
+      "name": "valid ready collect_reward",
+      "pass": true
+    },
+    {
+      "name": "completed collect_reward",
+      "pass": true
+    },
+    {
+      "name": "receipt collect_reward",
+      "pass": true
+    },
+    {
+      "name": "replay rejected collect_reward",
+      "pass": true
+    },
+    {
+      "name": "roundtrip collect_reward",
+      "pass": true
+    },
+    {
+      "name": "valid ready exit_arena",
+      "pass": true
+    },
+    {
+      "name": "completed exit_arena",
+      "pass": true
+    },
+    {
+      "name": "receipt exit_arena",
+      "pass": true
+    },
+    {
+      "name": "replay rejected exit_arena",
+      "pass": true
+    },
+    {
+      "name": "roundtrip exit_arena",
+      "pass": true
+    },
+    {
+      "name": "completed all",
+      "pass": true
+    },
+    {
+      "name": "done count",
+      "pass": true
+    },
+    {
+      "name": "full reset",
+      "pass": true
+    },
+    {
+      "name": "pin reach_gate",
+      "pass": true
+    },
+    {
+      "name": "unpin reach_gate",
+      "pass": true
+    },
+    {
+      "name": "pin no mutation reach_gate",
+      "pass": true
+    },
+    {
+      "name": "pin disable_turrets",
+      "pass": true
+    },
+    {
+      "name": "unpin disable_turrets",
+      "pass": true
+    },
+    {
+      "name": "pin no mutation disable_turrets",
+      "pass": true
+    },
+    {
+      "name": "pin defeat_guard",
+      "pass": true
+    },
+    {
+      "name": "unpin defeat_guard",
+      "pass": true
+    },
+    {
+      "name": "pin no mutation defeat_guard",
+      "pass": true
+    },
+    {
+      "name": "pin collect_reward",
+      "pass": true
+    },
+    {
+      "name": "unpin collect_reward",
+      "pass": true
+    },
+    {
+      "name": "pin no mutation collect_reward",
+      "pass": true
+    },
+    {
+      "name": "pin exit_arena",
+      "pass": true
+    },
+    {
+      "name": "unpin exit_arena",
+      "pass": true
+    },
+    {
+      "name": "pin no mutation exit_arena",
+      "pass": true
+    },
+    {
+      "name": "dep gate disable_turrets",
+      "pass": true
+    },
+    {
+      "name": "dep gate defeat_guard",
+      "pass": true
+    },
+    {
+      "name": "dep gate collect_reward",
+      "pass": true
+    },
+    {
+      "name": "dep gate exit_arena",
+      "pass": true
+    },
+    {
+      "name": "receipt rejects null",
+      "pass": true
+    },
+    {
+      "name": "receipt rejects ",
+      "pass": true
+    },
+    {
+      "name": "receipt rejects [object Object]",
+      "pass": true
+    },
+    {
+      "name": "receipt rejects 0",
+      "pass": true
+    },
+    {
+      "name": "receipt rejects ",
+      "pass": true
+    },
+    {
+      "name": "receipt rejects xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "pass": true
+    },
+    {
+      "name": "receipt rejects <script>",
+      "pass": true
+    },
+    {
+      "name": "receipt rejects with space",
+      "pass": true
+    },
+    {
+      "name": "receipt rejects 1/a",
+      "pass": true
+    },
+    {
+      "name": "invalid objective null",
+      "pass": true
+    },
+    {
+      "name": "invalid objective 0",
+      "pass": true
+    },
+    {
+      "name": "invalid objective malicious",
+      "pass": true
+    },
+    {
+      "name": "invalid objective [object Object]",
+      "pass": true
+    },
+    {
+      "name": "invalid objective ",
+      "pass": true
+    },
+    {
+      "name": "invalid import null",
+      "pass": true
+    },
+    {
+      "name": "invalid import [object Object]",
+      "pass": true
+    },
+    {
+      "name": "invalid import ",
+      "pass": true
+    },
+    {
+      "name": "invalid import 17",
+      "pass": true
+    },
+    {
+      "name": "invalid import garbage",
+      "pass": true
+    },
+    {
+      "name": "invalid import xxxxxxxxxxxxxxxxxxxxxxxx",
+      "pass": true
+    },
+    {
+      "name": "invalid import {",
+      "pass": true
+    },
+    {
+      "name": "invalid import {\"version\":2,\"done\":[],\"",
+      "pass": true
+    },
+    {
+      "name": "invalid import {\"version\":1,\"done\":[],\"",
+      "pass": true
+    },
+    {
+      "name": "invalid import {\"version\":1,\"done\":[],\"",
+      "pass": true
+    },
+    {
+      "name": "invalid import {\"version\":1,\"done\":[],\"",
+      "pass": true
+    },
+    {
+      "name": "bad state rejected {\"version\":1,\"done\":[\"defeat_guard\"],\"receipts\":[\"r\"],\"pin\":null,\"revision\":1}",
+      "pass": true
+    },
+    {
+      "name": "bad state rejected {\"version\":1,\"done\":[\"reach_gate\",\"reach_gate\"],\"receipts\":[\"r1\",\"r2\"],\"pin\":null,\"revision\":2}",
+      "pass": true
+    },
+    {
+      "name": "bad state rejected {\"version\":1,\"done\":[\"reach_gate\",\"disable_turrets\"],\"receipts\":[\"r1\",\"r1\"],\"pin\":null,\"revision\":2}",
+      "pass": true
+    },
+    {
+      "name": "bad state rejected {\"version\":1,\"done\":[\"reach_gate\"],\"receipts\":[],\"pin\":null,\"revision\":1}",
+      "pass": true
+    },
+    {
+      "name": "bad state rejected {\"version\":1,\"done\":[\"reach_gate\"],\"receipts\":[\"r\"],\"pin\":null,\"revision\":0}",
+      "pass": true
+    },
+    {
+      "name": "bad state rejected {\"version\":1,\"done\":[\"unknown\"],\"receipts\":[\"r\"],\"pin\":null,\"revision\":1}",
+      "pass": true
+    },
+    {
+      "name": "unknown event rejects",
+      "pass": true
+    },
+    {
+      "name": "extra event field rejects",
+      "pass": true
+    },
+    {
+      "name": "strict reset",
+      "pass": true
+    },
+    {
+      "name": "strict pin",
+      "pass": true
+    },
+    {
+      "name": "second completion cannot mutate source",
+      "pass": true
+    },
+    {
+      "name": "snapshot detached",
+      "pass": true
+    },
+    {
+      "name": "html injection rejects bad receipt",
+      "pass": true
+    }
+  ]
+}
