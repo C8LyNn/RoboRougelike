@@ -11,7 +11,7 @@ def require(q,msg):
 def audit(files,receipt):
     source={x["path"]:x for x in receipt["files"]}
     require(set(files)==set(source),"original archive paths mutated")
-    require(len(files)==22 and len(source)==22,"original import inventory length")
+    require(len(files)==17 and len(source)==17,"original import inventory length")
     for p,data in files.items():
         require(p.startswith(ROOT+"/") or p==ROOT+".meta","path escaped original isolated Unity namespace")
         require(data and len(data)==source[p]["bytes"] and SHA(data)==source[p]["sha256"],"SHA256 source drift "+p)
