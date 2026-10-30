@@ -53,11 +53,11 @@ try {
  Need (-not $parent.StartsWith('\\')) 'Network/UNC scratch forbidden'
  CheckNoLinks $parent
  Need ($parent -ine $repo -and -not(Inside $parent $repo) -and -not(Inside $repo $parent)) 'Scratch must be disjoint from original repository'
- $dir=Join-Path $parent ('B0160W21-'+[guid]::NewGuid().ToString('N'))
+ $dir=Join-Path $parent ('B21-'+[guid]::NewGuid().ToString('N'))
  Need (-not(Test-Path -LiteralPath $dir)) 'Refuse existing run directory'
  New-Item -ItemType Directory -Path $dir -ErrorAction Stop | Out-Null
- $source=Join-Path $dir 'frozen-W20-source'
- $results=Join-Path $dir 'W20-private-results'
+ $source=Join-Path $dir 's'
+ $results=Join-Path $dir 'r'
  New-Item -ItemType Directory -Path $results -ErrorAction Stop | Out-Null
  Write-Host "B0160_W21_NEW_PRIVATE_RUN=$dir"
  $cl=@(& git -c core.hooksPath=NUL clone --no-hardlinks --no-checkout -- $repo $source 2>&1)
@@ -85,6 +85,14 @@ try {
  Write-Host 'B0160_W21_OFFLINE_HISTORY_4_OBJECTS_PINNED_TO_SCRATCH_ONLY'
  $shell=(Get-Process -Id $PID).Path
  Need (Test-Path -LiteralPath $shell -PathType Leaf) 'No local PowerShell interpreter'
+ # Git-for-Windows treats long blobish sha:path arguments as filesystem paths.
+ # Pass core.longpaths only through the process environment (never user/global Git).
+ $idx=0
+ if(-not [string]::IsNullOrWhiteSpace($env:GIT_CONFIG_COUNT)){$idx=[int]$env:GIT_CONFIG_COUNT}
+ $env:GIT_CONFIG_COUNT=[string]($idx+1)
+ [Environment]::SetEnvironmentVariable(('GIT_CONFIG_KEY_'+$idx),'core.longpaths','Process')
+ [Environment]::SetEnvironmentVariable(('GIT_CONFIG_VALUE_'+$idx),'true','Process')
+ Write-Host 'B0160_W21_SHORT_PRIVATE_ROOT_PROCESS_LOCAL_LONGPATHS'
  $opts=@('-NoProfile','-File',$old,'-RepoPath',$source,'-ScratchParent',$results)
  if(-not [string]::IsNullOrWhiteSpace($UnityPath)){$opts+=@('-UnityPath',$UnityPath)}
  if($Run){$opts+='-Run'}
