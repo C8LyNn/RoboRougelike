@@ -1,0 +1,23 @@
+{
+  "package_id": "B01-12-FOCUSNAV-001",
+  "version": "R1",
+  "owner": "B01-12 Interactive UX Prototypes",
+  "source_sha256": {
+    "focus_engine.js": "a2a46ae1b18a48f78e3e1ff29aceaf5b09aa319bd799a30e410b79c5d8cb4ef9",
+    "focusnav.html": "f0a37c10b8184055173701f498e6df7bb9b92d4534b21e1a989e0a4884682976",
+    "test_engine.cjs": "049a446e74c6f2cbaf5049aa96aabd550d3a21a2bc54cb27376751d5bd3c581f",
+    "test_browser.py": "a429c1f86e367b92f60f1c124b5041bcc47010eaa88baa0030d97710a449a8ba"
+  },
+  "source_bytes": {
+    "focus_engine.js": 6142,
+    "focusnav.html": 7870,
+    "test_engine.cjs": 4051,
+    "test_browser.py": 5443
+  },
+  "scope": "Research/B01-12/P17W07/FocusNav001/**",
+  "dependencies": "Node.js 18+ for reducer tests; Python 3 + playwright + /usr/bin/chromium for browser; HTML runtime uses local JS file",
+  "nativeUnity": "NOT_RUN",
+  "gameIntegrated": false,
+  "codec": "no external import/export; deterministic in-memory focus state",
+  "rollback": "close Draft PR / delete standalone Research folder, no Unity assets or saves"
+}
