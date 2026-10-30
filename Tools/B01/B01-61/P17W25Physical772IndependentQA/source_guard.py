@@ -14,7 +14,8 @@ ASSETS+"Tests/PlayMode/CanonicalPhysicalRigPortW24NativeTests.cs":"6827351e8f578
 FROZEN={
 "DetachedSnapshotContract.cs":"b52e511c370f5fca56c74029050844dc8cbb7f9a",
 "DebrisImpulseCore.cs":"fa1aa5e531927cbe73cf5fdfe161b4a981316db5",
-"SecureRigSpec.cs":"b680ed0ec969ac23203fa55eab7b90f8daa86e43"}
+"SecureRigSpec.cs":"b680ed0ec969ac23203fa55eab7b90f8daa86e43",
+"AtomicDockLedger.cs":"b6a4d04b0c6407c8c84451b4d599d96fe0e4d1a9"}
 def git(*args):return subprocess.check_output(["git",*args],cwd=ROOT,text=True,stderr=subprocess.DEVNULL).strip()
 def main():
  p=argparse.ArgumentParser();p.add_argument("--log",type=Path,required=True);p.add_argument("--out",type=Path,required=True);a=p.parse_args()
