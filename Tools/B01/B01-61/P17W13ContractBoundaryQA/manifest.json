@@ -1,0 +1,24 @@
+{
+  "id": "B01-61-P17W13-DETACHED-SAVE-LOGICAL-CONTROL-QA",
+  "owner": "B01-61",
+  "target_producer_sha": "c2c179317af8155d17a1027283fe991565779ede",
+  "schema_blob": "6c036985411164372bf3d21d467780ff3777544e",
+  "original_510_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "w06_sha": "cb2b3a76e84266e2730fffc4ab048c1039f0652f",
+  "original_source_direct_compilation": true,
+  "unity_stub": false,
+  "git_qa_paths": 6,
+  "expected": "INDEPENDENT_QA_SUCCEEDS_SOURCE_RELEASE_GATE_RED",
+  "red_cases": [
+    "post-publication mutable RunSnapshot.Parts array",
+    "external direct mutable original W06 ledger via GetLedger"
+  ],
+  "actual_unity_host_restored": false,
+  "SaveLoad": "HOLD_SECURITY_AND_HOST_BRIDGE",
+  "source_G0_frozen510": "ACCEPTED_SOURCE_ONLY",
+  "G1": "NOT_RUN",
+  "G2": "HOLD",
+  "codex_ack": false,
+  "integrated": false,
+  "merged": false
+}
