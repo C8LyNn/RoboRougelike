@@ -1,0 +1,183 @@
+{
+  "schema": "b01-w18-paired-integrator-baseline-v1",
+  "freeze": {
+    "game_pr": 510,
+    "game_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "save_pr": 556,
+    "save_sha": "33094f154c7b91119b36d58aab285e6e83c5de57",
+    "host_pr": 596,
+    "host_sha": "efb2b06eafedab5469b57f163152d96aca3c5915",
+    "alt_pr": 604,
+    "alt_status": "ALT_HOLD",
+    "immutable": true
+  },
+  "guards": {
+    "selected_host_g0": "PENDING",
+    "selected_host_g1": "NOT_RUN",
+    "unity_physx": "NOT_RUN",
+    "canonical_game_save_load": "HOLD",
+    "host_security_629": "UNVERIFIED_SOURCE_RISK",
+    "fixture_631": "UNVERIFIED_SOURCE_RISK",
+    "checkpoint_lock": "NOT_NATIVE_PROVEN",
+    "codex_ack": "NONE",
+    "codex_offer": "BLOCKED",
+    "g2": "HOLD",
+    "merged": false
+  },
+  "assignment": "PAIRED_SAME_SOURCE_METADATA_ONLY",
+  "delivery": "NOT_SENT",
+  "measured_feedback_source": null,
+  "packages": [
+    {
+      "pr": 596,
+      "package_id": "B01-23-UNITY-SAVE-HOST-BRIDGE-001",
+      "owner": "B01-23",
+      "sha": "efb2b06eafedab5469b57f163152d96aca3c5915",
+      "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/596",
+      "purpose": "Owner-frozen #596 Save host R2; real private game hydration remains blocked",
+      "producer_source": "TESTED_SOURCE_ONLY",
+      "independent_qa": "NOT_FINAL_RELEASE",
+      "evidence": [
+        "https://github.com/C8LyNn/RoboRougelike/actions/runs/41097409278",
+        "https://github.com/C8LyNn/RoboRougelike/actions/runs/41098564548"
+      ],
+      "dependencies": [
+        "#510",
+        "#556",
+        "#596"
+      ],
+      "rollback": "DISCARD_OWN_UNMERGED_FILES_ONLY",
+      "known_blockers": [
+        "G0_PENDING",
+        "UNITY_NOT_RUN",
+        "LIVE_GAME_SAVE_HOLD",
+        "INTEGRATOR_NOT_MEASURED"
+      ],
+      "receiver": "B01-40/B01-60/B01-00",
+      "stages": {
+        "IMPLEMENTED": true,
+        "TESTED": true,
+        "QA_ACCEPTED": false,
+        "READY_FOR_INTEGRATOR": false,
+        "INTEGRATED": false,
+        "RELEASED": false
+      },
+      "arms": [
+        {
+          "name": "standard",
+          "presentation_fields": [
+            "pr",
+            "sha",
+            "purpose"
+          ],
+          "integrator_feedback": {
+            "status": "NOT_MEASURED",
+            "real_integrator_evidence": null,
+            "elapsed_seconds": null,
+            "retries": null,
+            "conflicts": null,
+            "regressions": null,
+            "reviewed_at": null
+          }
+        },
+        {
+          "name": "polished",
+          "presentation_fields": [
+            "pr",
+            "sha",
+            "purpose",
+            "evidence",
+            "dependencies",
+            "rollback",
+            "known_blockers",
+            "receiver"
+          ],
+          "integrator_feedback": {
+            "status": "NOT_MEASURED",
+            "real_integrator_evidence": null,
+            "elapsed_seconds": null,
+            "retries": null,
+            "conflicts": null,
+            "regressions": null,
+            "reviewed_at": null
+          }
+        }
+      ]
+    },
+    {
+      "pr": 607,
+      "package_id": "B01-61-EXACT-596-TRANSACTION-QA",
+      "owner": "B01-61",
+      "sha": "86f3292c928e52609db6c7afdb2010971d6946f1",
+      "pr_url": "https://github.com/C8LyNn/RoboRougelike/pull/607",
+      "purpose": "Independent exact original #596 transaction and ID regression QA source only",
+      "producer_source": "TESTED_SOURCE_ONLY",
+      "independent_qa": "NOT_FINAL_RELEASE",
+      "evidence": [
+        "https://github.com/C8LyNn/RoboRougelike/actions/runs/41098564548"
+      ],
+      "dependencies": [
+        "#510",
+        "#556",
+        "#596"
+      ],
+      "rollback": "DISCARD_OWN_UNMERGED_FILES_ONLY",
+      "known_blockers": [
+        "G0_PENDING",
+        "UNITY_NOT_RUN",
+        "LIVE_GAME_SAVE_HOLD",
+        "INTEGRATOR_NOT_MEASURED"
+      ],
+      "receiver": "B01-40/B01-60/B01-00",
+      "stages": {
+        "IMPLEMENTED": true,
+        "TESTED": true,
+        "QA_ACCEPTED": false,
+        "READY_FOR_INTEGRATOR": false,
+        "INTEGRATED": false,
+        "RELEASED": false
+      },
+      "arms": [
+        {
+          "name": "standard",
+          "presentation_fields": [
+            "pr",
+            "sha",
+            "purpose"
+          ],
+          "integrator_feedback": {
+            "status": "NOT_MEASURED",
+            "real_integrator_evidence": null,
+            "elapsed_seconds": null,
+            "retries": null,
+            "conflicts": null,
+            "regressions": null,
+            "reviewed_at": null
+          }
+        },
+        {
+          "name": "polished",
+          "presentation_fields": [
+            "pr",
+            "sha",
+            "purpose",
+            "evidence",
+            "dependencies",
+            "rollback",
+            "known_blockers",
+            "receiver"
+          ],
+          "integrator_feedback": {
+            "status": "NOT_MEASURED",
+            "real_integrator_evidence": null,
+            "elapsed_seconds": null,
+            "retries": null,
+            "conflicts": null,
+            "regressions": null,
+            "reviewed_at": null
+          }
+        }
+      ]
+    }
+  ]
+}
