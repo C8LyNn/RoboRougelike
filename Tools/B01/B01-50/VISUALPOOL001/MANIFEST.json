@@ -1,0 +1,64 @@
+{
+  "package_id": "B01-50-VISUALPOOL-001",
+  "version": "R1",
+  "owner": "B01-50",
+  "wave": "PASS17-WAVE11",
+  "base_main_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "ownership": [
+    "Tools/B01/B01-50/VISUALPOOL001/**",
+    ".github/workflows/b01-50-visualpool001.yml"
+  ],
+  "runtime_goal": "Prewarmed strictly optional cosmetic GameObjects with fixed pool, lifetime, tokenized leases, refusal at capacity and safe callback-first retirement.",
+  "source_files": {
+    "Tools/B01/B01-50/VISUALPOOL001/Core/OptionalVisualLeasePool.cs": {
+      "git_blob_sha": "bff9c7b3702546c7e12ab3d8457904ed878f005b",
+      "utf8_bytes": 7049
+    },
+    "Tools/B01/B01-50/VISUALPOOL001/Core/OptionalVisualLeasePool.cs.meta": {
+      "git_blob_sha": "d710be04aa6364be0154583ca6de71304072160f",
+      "utf8_bytes": 243
+    },
+    "Tools/B01/B01-50/VISUALPOOL001/Unity/B0150OptionalVisualPool.cs": {
+      "git_blob_sha": "e1c8fce8232adceff944e860354f9bb2df953f51",
+      "utf8_bytes": 4466
+    },
+    "Tools/B01/B01-50/VISUALPOOL001/Unity/B0150OptionalVisualPool.cs.meta": {
+      "git_blob_sha": "07ce269c64e98cbaca537dd608a63d0ef126dcef",
+      "utf8_bytes": 243
+    },
+    "Tools/B01/B01-50/VISUALPOOL001/Unity/B0150OptionalVisualPoolDemo.cs": {
+      "git_blob_sha": "ebba1273a3eba5e58b49fe1a617c816529928b7a",
+      "utf8_bytes": 904
+    },
+    "Tools/B01/B01-50/VISUALPOOL001/Unity/B0150OptionalVisualPoolDemo.cs.meta": {
+      "git_blob_sha": "a318ee5914150f1ce8b872c9eaf75cab344bfbb2",
+      "utf8_bytes": 243
+    },
+    "Tools/B01/B01-50/VISUALPOOL001/tests/Program.cs": {
+      "git_blob_sha": "0ca6d0dbdc76720b661ed4c42ebd8b7b408ecc30",
+      "utf8_bytes": 12894
+    },
+    "Tools/B01/B01-50/VISUALPOOL001/tests/VISUALPOOL.Tests.csproj": {
+      "git_blob_sha": "6bb4ee9eaa8538949c51e8da26d2fbf538724d59",
+      "utf8_bytes": 418
+    },
+    "Tools/B01/B01-50/VISUALPOOL001/README.md": {
+      "git_blob_sha": "78e3a493080e2528442d1f0a4f6b0070ee873560",
+      "utf8_bytes": 6541
+    },
+    ".github/workflows/b01-50-visualpool001.yml": {
+      "git_blob_sha": "15524cb4cc6af67f89bea7ca629631e8c5cdc57c",
+      "utf8_bytes": 3316
+    }
+  },
+  "tests": {
+    "true_original_dotnet8": "PENDING_WORKFLOW",
+    "guid_source": "PENDING_WORKFLOW",
+    "native_unity_editmode": "NOT_RUN",
+    "native_unity_playmode": "NOT_RUN",
+    "actual_game_fps_and_gc": "NOT_MEASURED",
+    "independent_qa": "PENDING"
+  },
+  "install": "Only with owner authorization into disposable Unity 6000.3.14f1 URP sandbox, preserve original three .cs + .meta pairs",
+  "rollback": "Disable sandbox adapter then remove isolated imported Unity scripts/.meta and temp GameObjects; never canonical Assets/code. Remove own Tools folder + workflow if cancelling Draft."
+}
