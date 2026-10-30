@@ -1,0 +1,1249 @@
+{
+  "schema": "B01-10 ECONBAL/R7 canonical B01-22 #780 V7 65%-floor one owner: 1->0 PAID, 5->3, 15->9, 30->19, 100->65",
+  "sourceOfPrices": "hypothetical 100 Scrap purchase, 70% paid quote; #252 mentions 65-75% hypothesis, NOT approved",
+  "evidence": "Original V6 #764 directly executable RED at price1 vs owner rule; actual NEW V7 #780 source fixes floor65 and binary section, but not native Unity and not yet G0 accepted. Test V7 original C# directly.",
+  "cases": {
+    "twelve_victories_two_destroyed": {
+      "initial_scrap": 4000,
+      "purchase_price": 100,
+      "paid_quote_percent": 70,
+      "attempts": [
+        {
+          "id": "win_0",
+          "won": true,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "v0_0",
+              "role": "other"
+            },
+            {
+              "id": "v0_1",
+              "role": "other"
+            }
+          ]
+        },
+        {
+          "id": "win_1",
+          "won": true,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "v1_0",
+              "role": "other"
+            },
+            {
+              "id": "v1_1",
+              "role": "other"
+            }
+          ]
+        },
+        {
+          "id": "win_2",
+          "won": true,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "v2_0",
+              "role": "other"
+            },
+            {
+              "id": "v2_1",
+              "role": "other"
+            }
+          ]
+        },
+        {
+          "id": "win_3",
+          "won": true,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "v3_0",
+              "role": "other"
+            },
+            {
+              "id": "v3_1",
+              "role": "other"
+            }
+          ]
+        },
+        {
+          "id": "win_4",
+          "won": true,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "v4_0",
+              "role": "other"
+            },
+            {
+              "id": "v4_1",
+              "role": "other"
+            }
+          ]
+        },
+        {
+          "id": "win_5",
+          "won": true,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "v5_0",
+              "role": "other"
+            },
+            {
+              "id": "v5_1",
+              "role": "other"
+            }
+          ]
+        },
+        {
+          "id": "win_6",
+          "won": true,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "v6_0",
+              "role": "other"
+            },
+            {
+              "id": "v6_1",
+              "role": "other"
+            }
+          ]
+        },
+        {
+          "id": "win_7",
+          "won": true,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "v7_0",
+              "role": "other"
+            },
+            {
+              "id": "v7_1",
+              "role": "other"
+            }
+          ]
+        },
+        {
+          "id": "win_8",
+          "won": true,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "v8_0",
+              "role": "other"
+            },
+            {
+              "id": "v8_1",
+              "role": "other"
+            }
+          ]
+        },
+        {
+          "id": "win_9",
+          "won": true,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "v9_0",
+              "role": "other"
+            },
+            {
+              "id": "v9_1",
+              "role": "other"
+            }
+          ]
+        },
+        {
+          "id": "win_10",
+          "won": true,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "v10_0",
+              "role": "other"
+            },
+            {
+              "id": "v10_1",
+              "role": "other"
+            }
+          ]
+        },
+        {
+          "id": "win_11",
+          "won": true,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "v11_0",
+              "role": "other"
+            },
+            {
+              "id": "v11_1",
+              "role": "other"
+            }
+          ]
+        }
+      ]
+    },
+    "six_losses_six_wins": {
+      "initial_scrap": 4000,
+      "purchase_price": 100,
+      "paid_quote_percent": 70,
+      "attempts": [
+        {
+          "id": "event_0",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "alt0_0",
+              "role": "mobility"
+            },
+            {
+              "id": "alt0_1",
+              "role": "mobility"
+            }
+          ]
+        },
+        {
+          "id": "event_1",
+          "won": true,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "alt1_0",
+              "role": "other"
+            },
+            {
+              "id": "alt1_1",
+              "role": "other"
+            }
+          ]
+        },
+        {
+          "id": "event_2",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "alt2_0",
+              "role": "other"
+            },
+            {
+              "id": "alt2_1",
+              "role": "other"
+            }
+          ]
+        },
+        {
+          "id": "event_3",
+          "won": true,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "alt3_0",
+              "role": "mobility"
+            },
+            {
+              "id": "alt3_1",
+              "role": "mobility"
+            }
+          ]
+        },
+        {
+          "id": "event_4",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "alt4_0",
+              "role": "other"
+            },
+            {
+              "id": "alt4_1",
+              "role": "other"
+            }
+          ]
+        },
+        {
+          "id": "event_5",
+          "won": true,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "alt5_0",
+              "role": "other"
+            },
+            {
+              "id": "alt5_1",
+              "role": "other"
+            }
+          ]
+        },
+        {
+          "id": "event_6",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "alt6_0",
+              "role": "mobility"
+            },
+            {
+              "id": "alt6_1",
+              "role": "mobility"
+            }
+          ]
+        },
+        {
+          "id": "event_7",
+          "won": true,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "alt7_0",
+              "role": "other"
+            },
+            {
+              "id": "alt7_1",
+              "role": "other"
+            }
+          ]
+        },
+        {
+          "id": "event_8",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "alt8_0",
+              "role": "other"
+            },
+            {
+              "id": "alt8_1",
+              "role": "other"
+            }
+          ]
+        },
+        {
+          "id": "event_9",
+          "won": true,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "alt9_0",
+              "role": "mobility"
+            },
+            {
+              "id": "alt9_1",
+              "role": "mobility"
+            }
+          ]
+        },
+        {
+          "id": "event_10",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "alt10_0",
+              "role": "other"
+            },
+            {
+              "id": "alt10_1",
+              "role": "other"
+            }
+          ]
+        },
+        {
+          "id": "event_11",
+          "won": true,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "alt11_0",
+              "role": "other"
+            },
+            {
+              "id": "alt11_1",
+              "role": "other"
+            }
+          ]
+        }
+      ]
+    },
+    "twelve_defeats_no_autorepair": {
+      "initial_scrap": 4000,
+      "purchase_price": 100,
+      "paid_quote_percent": 70,
+      "attempts": [
+        {
+          "id": "loss_0",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "lost0_0",
+              "role": "mobility"
+            },
+            {
+              "id": "lost0_1",
+              "role": "mobility"
+            }
+          ]
+        },
+        {
+          "id": "loss_1",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "lost1_0",
+              "role": "weapon"
+            },
+            {
+              "id": "lost1_1",
+              "role": "weapon"
+            }
+          ]
+        },
+        {
+          "id": "loss_2",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "lost2_0",
+              "role": "mobility"
+            },
+            {
+              "id": "lost2_1",
+              "role": "mobility"
+            }
+          ]
+        },
+        {
+          "id": "loss_3",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "lost3_0",
+              "role": "weapon"
+            },
+            {
+              "id": "lost3_1",
+              "role": "weapon"
+            }
+          ]
+        },
+        {
+          "id": "loss_4",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "lost4_0",
+              "role": "mobility"
+            },
+            {
+              "id": "lost4_1",
+              "role": "mobility"
+            }
+          ]
+        },
+        {
+          "id": "loss_5",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "lost5_0",
+              "role": "weapon"
+            },
+            {
+              "id": "lost5_1",
+              "role": "weapon"
+            }
+          ]
+        },
+        {
+          "id": "loss_6",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "lost6_0",
+              "role": "mobility"
+            },
+            {
+              "id": "lost6_1",
+              "role": "mobility"
+            }
+          ]
+        },
+        {
+          "id": "loss_7",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "lost7_0",
+              "role": "weapon"
+            },
+            {
+              "id": "lost7_1",
+              "role": "weapon"
+            }
+          ]
+        },
+        {
+          "id": "loss_8",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "lost8_0",
+              "role": "mobility"
+            },
+            {
+              "id": "lost8_1",
+              "role": "mobility"
+            }
+          ]
+        },
+        {
+          "id": "loss_9",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "lost9_0",
+              "role": "weapon"
+            },
+            {
+              "id": "lost9_1",
+              "role": "weapon"
+            }
+          ]
+        },
+        {
+          "id": "loss_10",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "lost10_0",
+              "role": "mobility"
+            },
+            {
+              "id": "lost10_1",
+              "role": "mobility"
+            }
+          ]
+        },
+        {
+          "id": "loss_11",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "lost11_0",
+              "role": "weapon"
+            },
+            {
+              "id": "lost11_1",
+              "role": "weapon"
+            }
+          ]
+        }
+      ]
+    },
+    "zero_scrap_mobility_first": {
+      "initial_scrap": 0,
+      "purchase_price": 100,
+      "paid_quote_percent": 70,
+      "attempts": [
+        {
+          "id": "first_loss",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "cosmetic",
+              "role": "other"
+            },
+            {
+              "id": "wheel_left",
+              "role": "mobility"
+            },
+            {
+              "id": "cannon",
+              "role": "weapon"
+            }
+          ]
+        },
+        {
+          "id": "second_loss",
+          "won": false,
+          "earned_scrap": 25,
+          "destroyed": []
+        },
+        {
+          "id": "third_win",
+          "won": true,
+          "earned_scrap": 100,
+          "destroyed": []
+        }
+      ]
+    },
+    "few_victories_reduced_rewards": {
+      "initial_scrap": 280,
+      "purchase_price": 100,
+      "paid_quote_percent": 70,
+      "attempts": [
+        {
+          "id": "t0",
+          "won": true,
+          "earned_scrap": 25,
+          "destroyed": [
+            {
+              "id": "hard0_0",
+              "role": "mobility"
+            },
+            {
+              "id": "hard0_1",
+              "role": "mobility"
+            },
+            {
+              "id": "hard0_2",
+              "role": "mobility"
+            }
+          ]
+        },
+        {
+          "id": "t1",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "hard1_0",
+              "role": "other"
+            },
+            {
+              "id": "hard1_1",
+              "role": "other"
+            },
+            {
+              "id": "hard1_2",
+              "role": "other"
+            }
+          ]
+        },
+        {
+          "id": "t2",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "hard2_0",
+              "role": "mobility"
+            },
+            {
+              "id": "hard2_1",
+              "role": "mobility"
+            },
+            {
+              "id": "hard2_2",
+              "role": "mobility"
+            }
+          ]
+        },
+        {
+          "id": "t3",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "hard3_0",
+              "role": "other"
+            },
+            {
+              "id": "hard3_1",
+              "role": "other"
+            },
+            {
+              "id": "hard3_2",
+              "role": "other"
+            }
+          ]
+        },
+        {
+          "id": "t4",
+          "won": true,
+          "earned_scrap": 25,
+          "destroyed": [
+            {
+              "id": "hard4_0",
+              "role": "mobility"
+            },
+            {
+              "id": "hard4_1",
+              "role": "mobility"
+            },
+            {
+              "id": "hard4_2",
+              "role": "mobility"
+            }
+          ]
+        },
+        {
+          "id": "t5",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "hard5_0",
+              "role": "other"
+            },
+            {
+              "id": "hard5_1",
+              "role": "other"
+            },
+            {
+              "id": "hard5_2",
+              "role": "other"
+            }
+          ]
+        },
+        {
+          "id": "t6",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "hard6_0",
+              "role": "mobility"
+            },
+            {
+              "id": "hard6_1",
+              "role": "mobility"
+            },
+            {
+              "id": "hard6_2",
+              "role": "mobility"
+            }
+          ]
+        },
+        {
+          "id": "t7",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "hard7_0",
+              "role": "other"
+            },
+            {
+              "id": "hard7_1",
+              "role": "other"
+            },
+            {
+              "id": "hard7_2",
+              "role": "other"
+            }
+          ]
+        },
+        {
+          "id": "t8",
+          "won": true,
+          "earned_scrap": 25,
+          "destroyed": [
+            {
+              "id": "hard8_0",
+              "role": "mobility"
+            },
+            {
+              "id": "hard8_1",
+              "role": "mobility"
+            },
+            {
+              "id": "hard8_2",
+              "role": "mobility"
+            }
+          ]
+        },
+        {
+          "id": "t9",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "hard9_0",
+              "role": "other"
+            },
+            {
+              "id": "hard9_1",
+              "role": "other"
+            },
+            {
+              "id": "hard9_2",
+              "role": "other"
+            }
+          ]
+        },
+        {
+          "id": "t10",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "hard10_0",
+              "role": "mobility"
+            },
+            {
+              "id": "hard10_1",
+              "role": "mobility"
+            },
+            {
+              "id": "hard10_2",
+              "role": "mobility"
+            }
+          ]
+        },
+        {
+          "id": "t11",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "hard11_0",
+              "role": "other"
+            },
+            {
+              "id": "hard11_1",
+              "role": "other"
+            },
+            {
+              "id": "hard11_2",
+              "role": "other"
+            }
+          ]
+        },
+        {
+          "id": "t12",
+          "won": true,
+          "earned_scrap": 25,
+          "destroyed": [
+            {
+              "id": "hard12_0",
+              "role": "mobility"
+            },
+            {
+              "id": "hard12_1",
+              "role": "mobility"
+            },
+            {
+              "id": "hard12_2",
+              "role": "mobility"
+            }
+          ]
+        },
+        {
+          "id": "t13",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "hard13_0",
+              "role": "other"
+            },
+            {
+              "id": "hard13_1",
+              "role": "other"
+            },
+            {
+              "id": "hard13_2",
+              "role": "other"
+            }
+          ]
+        },
+        {
+          "id": "t14",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "hard14_0",
+              "role": "mobility"
+            },
+            {
+              "id": "hard14_1",
+              "role": "mobility"
+            },
+            {
+              "id": "hard14_2",
+              "role": "mobility"
+            }
+          ]
+        },
+        {
+          "id": "t15",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "hard15_0",
+              "role": "other"
+            },
+            {
+              "id": "hard15_1",
+              "role": "other"
+            },
+            {
+              "id": "hard15_2",
+              "role": "other"
+            }
+          ]
+        }
+      ]
+    },
+    "two_parts_already_queued_when_next_win_occurs": {
+      "initial_scrap": 0,
+      "purchase_price": 100,
+      "paid_quote_percent": 70,
+      "attempts": [
+        {
+          "id": "defeat_a",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "a_0",
+              "role": "mobility"
+            },
+            {
+              "id": "a_1",
+              "role": "mobility"
+            }
+          ]
+        },
+        {
+          "id": "defeat_b",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": []
+        },
+        {
+          "id": "victory",
+          "won": true,
+          "earned_scrap": 0,
+          "destroyed": []
+        }
+      ]
+    },
+    "victory_breaks_essential_drive_next_win_unreachable": {
+      "initial_scrap": 0,
+      "purchase_price": 100,
+      "paid_quote_percent": 70,
+      "attempts": [
+        {
+          "id": "won_then_damaged",
+          "won": true,
+          "destroyed": [
+            {
+              "id": "drive_right",
+              "role": "mobility",
+              "blocks_deploy": true
+            }
+          ],
+          "earned_scrap": 0
+        },
+        {
+          "id": "scripted_next_win",
+          "won": true,
+          "destroyed": [],
+          "earned_scrap": 100
+        },
+        {
+          "id": "scripted_third_win",
+          "won": true,
+          "destroyed": [],
+          "earned_scrap": 50
+        }
+      ]
+    },
+    "one_loaner_losses_then_blocked": {
+      "initial_scrap": 0,
+      "purchase_price": 100,
+      "paid_quote_percent": 70,
+      "attempts": [
+        {
+          "id": "initial_loss",
+          "won": false,
+          "destroyed": [
+            {
+              "id": "essential_gun",
+              "role": "weapon",
+              "blocks_deploy": true
+            }
+          ],
+          "earned_scrap": 0
+        },
+        {
+          "id": "borrowed_challenge_loss",
+          "won": false,
+          "destroyed": [],
+          "earned_scrap": 0
+        },
+        {
+          "id": "attempt_win_without_second_loaner",
+          "won": true,
+          "destroyed": [],
+          "earned_scrap": 100
+        }
+      ]
+    },
+    "core_lost_looter_attempt_cannot_earn_or_loan": {
+      "initial_scrap": 0,
+      "purchase_price": 100,
+      "paid_quote_percent": 70,
+      "attempts": [
+        {
+          "id": "fatal_loss",
+          "won": false,
+          "destroyed": [
+            {
+              "id": "destroyed_drive",
+              "role": "mobility",
+              "blocks_deploy": true
+            }
+          ],
+          "earned_scrap": 0,
+          "core_alive_after": false
+        },
+        {
+          "id": "pretend_new_win",
+          "won": true,
+          "destroyed": [],
+          "earned_scrap": 100
+        },
+        {
+          "id": "pretend_second_win",
+          "won": true,
+          "destroyed": [],
+          "earned_scrap": 100
+        }
+      ]
+    },
+    "missing_next_challenge_cannot_invent_loaner_win": {
+      "initial_scrap": 0,
+      "purchase_price": 100,
+      "paid_quote_percent": 70,
+      "attempts": [
+        {
+          "id": "last_challenge_won",
+          "won": true,
+          "destroyed": [
+            {
+              "id": "critical_gun",
+              "role": "weapon",
+              "blocks_deploy": true
+            }
+          ],
+          "earned_scrap": 0,
+          "next_challenge_available_after": false
+        },
+        {
+          "id": "phantom_challenge",
+          "won": true,
+          "destroyed": [],
+          "earned_scrap": 100
+        }
+      ]
+    },
+    "victory_reward_affordability_order": {
+      "initial_scrap": 0,
+      "purchase_price": 100,
+      "paid_quote_percent": 70,
+      "attempts": [
+        {
+          "id": "rewarded_victory",
+          "won": true,
+          "earned_scrap": 70,
+          "destroyed": [
+            {
+              "id": "new_wheel",
+              "role": "mobility",
+              "blocks_deploy": false
+            },
+            {
+              "id": "new_gun",
+              "role": "weapon",
+              "blocks_deploy": false
+            }
+          ]
+        }
+      ]
+    },
+    "terminal_queued_paid_rebuild_exposure": {
+      "initial_scrap": 70,
+      "purchase_price": 100,
+      "paid_quote_percent": 70,
+      "attempts": [
+        {
+          "id": "final_victory",
+          "won": true,
+          "earned_scrap": 0,
+          "next_challenge_available_after": false,
+          "destroyed": [
+            {
+              "id": "final_wheel",
+              "role": "mobility",
+              "blocks_deploy": false
+            },
+            {
+              "id": "final_gun",
+              "role": "weapon",
+              "blocks_deploy": false
+            }
+          ]
+        }
+      ]
+    },
+    "approved_price_one_zero_paid_quote": {
+      "initial_scrap": 0,
+      "purchase_price": 1,
+      "paid_quote_percent": 70,
+      "attempts": [
+        {
+          "id": "win",
+          "won": true,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "partA",
+              "role": "other",
+              "blocks_deploy": false
+            },
+            {
+              "id": "partB",
+              "role": "other",
+              "blocks_deploy": false
+            }
+          ],
+          "next_challenge_available_after": false
+        }
+      ]
+    },
+    "approved_zero_wallet_one_loaner_wins_but_no_recovery": {
+      "initial_scrap": 0,
+      "purchase_price": 100,
+      "paid_quote_percent": 70,
+      "attempts": [
+        {
+          "id": "lost",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "weaponEssential",
+              "role": "weapon",
+              "blocks_deploy": true
+            }
+          ]
+        },
+        {
+          "id": "loanerVictory",
+          "won": true,
+          "earned_scrap": 0,
+          "destroyed": []
+        }
+      ]
+    },
+    "approved_pre_first_win_65_paid_then_next_real_victory": {
+      "initial_scrap": 65,
+      "purchase_price": 100,
+      "paid_quote_percent": 70,
+      "attempts": [
+        {
+          "id": "initialLoss",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "driveBroken",
+              "role": "mobility",
+              "blocks_deploy": false
+            }
+          ]
+        },
+        {
+          "id": "firstTrustedWin",
+          "won": true,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "futureDamage",
+              "role": "other",
+              "blocks_deploy": false
+            }
+          ]
+        }
+      ]
+    },
+    "approved_v7_floor_price_15": {
+      "initial_scrap": 10,
+      "purchase_price": 15,
+      "paid_quote_percent": 70,
+      "attempts": [
+        {
+          "id": "win_p15",
+          "won": true,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "newmoduleA_15",
+              "role": "other",
+              "blocks_deploy": false
+            },
+            {
+              "id": "newmoduleB_15",
+              "role": "other",
+              "blocks_deploy": false
+            }
+          ]
+        }
+      ]
+    },
+    "approved_v7_floor_price_30": {
+      "initial_scrap": 20,
+      "purchase_price": 30,
+      "paid_quote_percent": 70,
+      "attempts": [
+        {
+          "id": "win_p30",
+          "won": true,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "newmoduleA_30",
+              "role": "other",
+              "blocks_deploy": false
+            },
+            {
+              "id": "newmoduleB_30",
+              "role": "other",
+              "blocks_deploy": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,165 @@
+{
+  "packageId": "B01-10-ECONBAL-001",
+  "version": "7.0.0-P17W25-OWNER_B01_22_V7_FLOOR65",
+  "owner": "B01-10 GAME DESIGN & BALANCE",
+  "branch": "design/b01-10-p17w20-econbal-001",
+  "repository": "C8LyNn/RoboRougelike",
+  "mainBaseSha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "exactScope": [
+    ".github/workflows/b01-10-p17w20-econbalance.yml",
+    "Research/B01-10/P17/W20_ECONBAL_001/ACCEPTANCE.md",
+    "Research/B01-10/P17/W20_ECONBAL_001/README.md",
+    "Research/B01-10/P17/W20_ECONBAL_001/manifest.json",
+    "Research/B01-10/P17/W20_ECONBAL_001/rebuild_balance.py",
+    "Research/B01-10/P17/W20_ECONBAL_001/scenarios.json",
+    "Research/B01-10/P17/W20_ECONBAL_001/test_rebuild_balance.py",
+    "Research/B01-10/P17/W20_ECONBAL_001/v6_contract_witness.cs",
+    "Research/B01-10/P17/W20_ECONBAL_001/v6_source_witness.csproj",
+    "Research/B01-10/P17/W20_ECONBAL_001/v7_contract_witness.cs",
+    "Research/B01-10/P17/W20_ECONBAL_001/v7_source_witness.csproj"
+  ],
+  "originalSourceFiles": {
+    "Research/B01-10/P17/W20_ECONBAL_001/ACCEPTANCE.md": {
+      "gitBlob": "9eb06f5ec9587b639b61b3f5934b03de334168d6",
+      "bytes": 14941
+    },
+    "Research/B01-10/P17/W20_ECONBAL_001/README.md": {
+      "gitBlob": "7b5a8d5ba020959fc90f9d777c83e66653a6587f",
+      "bytes": 26247
+    },
+    "Research/B01-10/P17/W20_ECONBAL_001/rebuild_balance.py": {
+      "gitBlob": "ca87a111f426a0ea16898ee694bbf61d1b4d472b",
+      "bytes": 23405
+    },
+    "Research/B01-10/P17/W20_ECONBAL_001/scenarios.json": {
+      "gitBlob": "a192891c2bc45e5250fdd6d6b361d351e7939ed1",
+      "bytes": 27705
+    },
+    "Research/B01-10/P17/W20_ECONBAL_001/test_rebuild_balance.py": {
+      "gitBlob": "37e3b4d01f4b9eded32bbad67fefb9f319f499e6",
+      "bytes": 57647
+    },
+    "Research/B01-10/P17/W20_ECONBAL_001/v6_contract_witness.cs": {
+      "gitBlob": "08fcdb2462065cf7b354b39a2b18d77b4aff40d7",
+      "bytes": 6412
+    },
+    "Research/B01-10/P17/W20_ECONBAL_001/v6_source_witness.csproj": {
+      "gitBlob": "2f6510859a8cf33c5f4afe91bb99da76b54d56bd",
+      "bytes": 523
+    },
+    "Research/B01-10/P17/W20_ECONBAL_001/v7_contract_witness.cs": {
+      "gitBlob": "a509c02b723c565fb615e7d6c02fb3329b9a9a85",
+      "bytes": 6353
+    },
+    "Research/B01-10/P17/W20_ECONBAL_001/v7_source_witness.csproj": {
+      "gitBlob": "b8014e6386aa1e7490d31d319b0ece997ca7f740",
+      "bytes": 523
+    },
+    ".github/workflows/b01-10-p17w20-econbalance.yml": {
+      "gitBlob": "51d9b5cf7cb8c04c3c0b4b30adf96c01e083ace2",
+      "bytes": 12252
+    }
+  },
+  "runtimeAuthority": "NONE_OFFLINE_DESIGN_MODEL",
+  "gameImplementation": "NO",
+  "nativeUnity": "NOT_RUN",
+  "syntheticInput": true,
+  "frozenDependsOn": [
+    "#252@12572117a3dce369257feabc57021cde58023369 - provenance read-only",
+    "#510@d94400d95d13db7f27e1533df05c9292d5380431 - untouched",
+    "#556@33094f154c7b91119b36d58aab285e6e83c5de57 - untouched",
+    "#596@efb2b06eafedab5469b57f163152d96aca3c5915 - untouched",
+    "#642@22cec9888047994ae523cbe7bf1b0a483d64cec4 - untouched R3",
+    "#647@09c1809b73324a6d31c13e5d0143de62ac1e3ca6 - W20 selected frozen R4"
+  ],
+  "excluded": "No edits to frozen #252/#510/#556/#596/#642/#647 or ECON V2 #673. No #652/#644/#604 alt co-install. No canonical Assets, game/save edits.",
+  "tests": {
+    "namedPythonUnittest": 160,
+    "scenarios": 17,
+    "bootstrapBranches": 2,
+    "cadences": 2,
+    "sensitivities": "65/70/75 quote and critical mobility",
+    "syntheticStressEpisodes": 200,
+    "seed": 20261030,
+    "plannedOS": [
+      "windows-2025",
+      "ubuntu-24.04"
+    ],
+    "exactHeadExecution": "W25 R7 corrected current candidate CI PENDING; intermediate exact SHA 694df9981018d7050f4a0942140e8b131a2c807e original C# source V6 RED / V7 GREEN both PASS; 159/160 Python, test158 historical expected 20 vs V7 actual floor 18; test-only expected corrected in new source",
+    "independentQA": "PENDING",
+    "progressionCounterfactuals": 2,
+    "postVictoryBoundary": "new 0HP damage after victory cannot complete by same victory",
+    "essentialDeploy": "explicit essential flag; synthetic eligibility gate; optional one loaner NOT APPROVED",
+    "explicitCounters": [
+      "blocked_core_attempts",
+      "blocked_no_challenge_attempts",
+      "contradicted_scripted_wins",
+      "end_feasibility"
+    ],
+    "explicitCorePrecondition": true,
+    "explicitNextChallengePrecondition": true,
+    "rewardTimingModes": [
+      "after_reservation",
+      "before_reservation"
+    ],
+    "terminalPendingRisk": true,
+    "ownerApprovedPolicy": true,
+    "approvedQuotePercent": 65,
+    "zeroPricePaidDistinctFromFree": true,
+    "ownerV3SourceContractRed": [
+      "#694: initial FreeUsedAtWin=-1 Wins0 admits unverified free epoch zero",
+      "#694: Valid rejects price1 and zero cost paid reservation",
+      "#694: no prewin booked ticket at zero wallet; one-loaner winner cannot heal essential, circular softlock"
+    ],
+    "actualOriginalV6CS9SourceWitness": "#764 original c72db78548f3e21765c54eb4609b748153118392 expected P1 contract RED",
+    "quoteParityPrices": [
+      1,
+      2,
+      3,
+      5,
+      15,
+      30,
+      100
+    ],
+    "approvedQuoteContract": "B01-10 proposes HALF_UP_CLAMPED_OWNER_B01_22_APPROVAL_PENDING; positive price1 rebuild0 PAID, quote strictly less than purchase",
+    "redToGreenProvenance": "Intermediate exact SHA ac71fd78fb2155950688a974494919f9c88ac9de [Actions #41140975635] Python 158/160 (two errors: report field absent); direct original V6 C# witness 7 quotes+two original-stage checks PASS. Corrected source report field in new commit. | R7 original source run #41141796932: V6 negative C# PASS, V7 positive C# PASS, Python 159/160 ERROR test158 expected20 instead of actual18 with two paid 9 quotes; updated only own test expected18; pending final exact-head OS rerun.",
+    "ownerApprovedFloor65SourceAlignment": "#780@b4df10a7ad7e6c758f8331013f6b216b3a3689a3 B01-22 authored V7 floor; earlier B01-10 R6 half-up proposal SUPERSEDED",
+    "actualOriginalV7CS9SourceWitness": "#780 original 53ebce6c07388dc9c8a8ed79b6de4d3ccbee4773 expected P1 quote GREEN, zero-wallet loaner still integration HOLD"
+  },
+  "receivers": [
+    "B01-22 ECON owner/cost hypothesis",
+    "B01-13 UX critical risk",
+    "B01-40 read-only source intake",
+    "B01-60 independent QA",
+    "B01-00 design decision"
+  ],
+  "sixStates": {
+    "IMPLEMENTED": true,
+    "TESTED": false,
+    "QA_ACCEPTED": false,
+    "READY_FOR_INTEGRATOR": false,
+    "INTEGRATED": false,
+    "RELEASED": false
+  },
+  "gates": {
+    "SOURCE_G0": "PENDING",
+    "NATIVE_G1": "NOT_RUN",
+    "CODEX_ACK": "NONE",
+    "LIVE_GAME_ECONOMY": "NOT_WIRED",
+    "G2": "HOLD"
+  },
+  "rollback": "Close DRAFT or checkout prior SHA; offline model only, no Unity installation or destructive deletion",
+  "integratorFeedback": "NOT_MEASURED",
+  "noMerge": true,
+  "previousImmutableSourceSHA": "44974da60de9e486da8209ac59dca90b4be986d5",
+  "qualityFix": "W21 R2: fixes same-encounter victory auto-resolving newly destroyed modules; 22 prior repaired/2 awaiting after 12 wins. Explicit surrogate blocked deploy and one-loaner test under #154; no phantom scripted win/reward.",
+  "sourceCorrection": "W22 R3: do not offer one-shot unapproved borrowed rig without living owner Core + eligible real NEXT challenge; do not count phantom victory/reward/HP after terminal loss or no challenge. 25 new source regression cases; original trusted B01-22 #694 victory authority is NOT this model.",
+  "ownerEconomyDependencies": [
+    "B01-22 owner V7 #780 sole source proposed floor65, G0 pending, original C# directly compiled by B01-10",
+    "B01-22 frozen V6 #764 old quote P1 noncompliant, EXPECTED RED and DO NOT COINSTALL",
+    "Selected Save #749 old ABI flaw #767, new #773 candidate independently selected only by B01-00/23/62",
+    "True full-game Save/loaner+physics requires B01-23 #772, B01-20, B01-62 and independent G0/G1"
+  ],
+  "modelFeature": "Owner approved per-WIN free (NO bootstrap), exactly 65 percent floor including price1 paid0 distinct WasFree and single weaker loaner conceptual availability; direct-source V3 P0 findings signaled, no actual C# author source changes.",
+  "previousIterationExactSourceSha": "9996c5ad7c05c3c9f181e379cb5b6910ec814629"
+}

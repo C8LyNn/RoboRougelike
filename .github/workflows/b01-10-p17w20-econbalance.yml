@@ -1,0 +1,203 @@
+name: B01-10 P17W25 ECONBAL Owner V7 Floor65 Parity
+on:
+  push:
+    branches: [design/b01-10-p17w20-econbal-001]
+    paths:
+      - 'Research/B01-10/P17/W20_ECONBAL_001/**'
+      - '.github/workflows/b01-10-p17w20-econbalance.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'Research/B01-10/P17/W20_ECONBAL_001/**'
+      - '.github/workflows/b01-10-p17w20-econbalance.yml'
+permissions:
+  contents: read
+jobs:
+  original-economy-model:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile and execute exact original B01-22 V6 C#9 source negative witness
+        shell: bash
+        run: |
+          set -euo pipefail
+          parent=cc5d65f66ad7a764af6515c566e489b9fc3be82e
+          original=Assets/B01Packages/ECONAPPROVED006/Runtime/ApprovedEconomyPolicyV6.cs
+          git fetch --no-tags origin "$parent"
+          git show "$parent:$original" > "$RUNNER_TEMP/original-v6.cs"
+          blob=$(git hash-object "$RUNNER_TEMP/original-v6.cs")
+          test "$blob" = c72db78548f3e21765c54eb4609b748153118392
+          dotnet run -c Release --project Research/B01-10/P17/W20_ECONBAL_001/v6_source_witness.csproj -p:OriginalV6Source="$RUNNER_TEMP/original-v6.cs" > "$RUNNER_TEMP/econbal-real-v6-source.log" 2>&1
+          cat "$RUNNER_TEMP/econbal-real-v6-source.log"
+          grep -F "SOURCE_CONTRACT_RED_CONFIRMED price=1 original_quote=1 owner_strict_cheaper_target=0" "$RUNNER_TEMP/econbal-real-v6-source.log"
+          grep -F "C_SHARP_ORIGINAL_V6_DISTINCT_WIN_DEFER 1/1 SOURCE PASS" "$RUNNER_TEMP/econbal-real-v6-source.log"
+          grep -F "C_SHARP_ORIGINAL_V6_LOANER_ZERO_SCRAP_NEGATIVE 1/1 EXPECTED_SOURCE_POLICY_HOLD" "$RUNNER_TEMP/econbal-real-v6-source.log"
+          grep -F "B01_10_V6_ORIGINAL_SOURCE_DETECTOR_PASS" "$RUNNER_TEMP/econbal-real-v6-source.log"
+      - name: Compile exact NEW B01-22 V7 source and verify owner quote GREEN + loaner HOLD
+        shell: bash
+        run: |
+          set -euo pipefail
+          parent=b4df10a7ad7e6c758f8331013f6b216b3a3689a3
+          original=Assets/B01Packages/ECONAPPROVED007/Runtime/ApprovedEconomyPolicyV7.cs
+          git fetch --no-tags origin "$parent"
+          git show "$parent:$original" > "$RUNNER_TEMP/original-v7.cs"
+          blob=$(git hash-object "$RUNNER_TEMP/original-v7.cs")
+          test "$blob" = 53ebce6c07388dc9c8a8ed79b6de4d3ccbee4773
+          dotnet run -c Release --project Research/B01-10/P17/W20_ECONBAL_001/v7_source_witness.csproj -p:OriginalV7Source="$RUNNER_TEMP/original-v7.cs" > "$RUNNER_TEMP/econbal-real-v7-source.log" 2>&1
+          cat "$RUNNER_TEMP/econbal-real-v7-source.log"
+          grep -F "SOURCE_CONTRACT_GREEN_CONFIRMED price=1 original_quote=0" "$RUNNER_TEMP/econbal-real-v7-source.log"
+          grep -F "C_SHARP_ORIGINAL_V7_DISTINCT_WIN_DEFER 1/1 SOURCE PASS" "$RUNNER_TEMP/econbal-real-v7-source.log"
+          grep -F "C_SHARP_ORIGINAL_V7_LOANER_ZERO_SCRAP_NEGATIVE 1/1 EXPECTED_SOURCE_POLICY_HOLD" "$RUNNER_TEMP/econbal-real-v7-source.log"
+          grep -F "B01_10_V7_ORIGINAL_SOURCE_DETECTOR_PASS" "$RUNNER_TEMP/econbal-real-v7-source.log"
+      - name: Pin original source Git blobs, bytes, base and exclusive scope
+        shell: bash
+        env:
+          B01_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib,json,os,pathlib,subprocess
+          root=pathlib.Path('Research/B01-10/P17/W20_ECONBAL_001')
+          doc=json.loads((root/'manifest.json').read_text(encoding='utf-8'))
+          assert doc['packageId']=='B01-10-ECONBAL-001'
+          assert len(doc['originalSourceFiles'])==10
+          for name,pin in doc['originalSourceFiles'].items():
+              path=pathlib.Path(name)
+              assert path.is_file() and not path.is_symlink()
+              raw=path.read_bytes()
+              assert len(raw)==pin['bytes'],name
+              blob=subprocess.check_output(['git','hash-object',str(path)],text=True).strip()
+              assert blob==pin['gitBlob'],name
+              print('SOURCE '+name+' bytes='+str(len(raw))+' sha256='+hashlib.sha256(raw).hexdigest())
+          head=os.environ['B01_SOURCE_SHA']
+          assert len(head)==40
+          files=subprocess.check_output(['git','diff','--name-only',
+              doc['mainBaseSha'],head],text=True).splitlines()
+          assert sorted(files)==sorted(doc['exactScope']),files
+          assert len(files)==11,files
+          print('B01-10 ECONBAL MANIFEST_SOURCE_PINS '+str(len(doc['originalSourceFiles']))
+                +' PASS; GIT_SCOPE '+str(len(files))+' PASS; SHA '+head)
+          PY
+      - name: Execute actual original Python source balance and negative tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s Research/B01-10/P17/W20_ECONBAL_001 -p test_rebuild_balance.py -v > "$RUNNER_TEMP/econbal-tests.log" 2>&1
+          cat "$RUNNER_TEMP/econbal-tests.log"
+          grep -F 'Ran 160 tests' "$RUNNER_TEMP/econbal-tests.log"
+          grep -Fx 'OK' "$RUNNER_TEMP/econbal-tests.log"
+      - name: Execute seventeen fixture scenarios including V6 owner price15 and price30 parity
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Research/B01-10/P17/W20_ECONBAL_001/rebuild_balance.py --scenarios Research/B01-10/P17/W20_ECONBAL_001/scenarios.json > "$RUNNER_TEMP/econbal-scenarios.json"
+          python Research/B01-10/P17/W20_ECONBAL_001/rebuild_balance.py --stress > "$RUNNER_TEMP/econbal-synthetic.json"
+          python - "$RUNNER_TEMP/econbal-scenarios.json" "$RUNNER_TEMP/econbal-synthetic.json" <<'PY'
+          import json,sys
+          report=json.load(open(sys.argv[1],encoding='utf8'))
+          cases=report['cases']
+          assert len(cases)==17
+          h=cases['twelve_victories_two_destroyed']['bootstrap_epoch_zero']
+          assert (h['per_win']['free'],h['per_win']['paid'],
+                  h['per_win']['charged_scrap'])==(12,12,840)
+          assert (h['per_run']['free'],h['per_run']['paid'],
+                  h['per_run']['charged_scrap'])==(1,23,1610)
+          assert h['delta_scrap_per_run_minus_per_win']==770
+          n=cases['twelve_victories_two_destroyed']['no_bootstrap_epoch_zero']
+          assert n['per_win']['charged_scrap']==840
+          # Strict alternate design assumptions: unstartable future scripted
+          # wins MUST NOT magically clear 0HP essential blockers.
+          critical=cases['victory_breaks_essential_drive_next_win_unreachable']
+          assert critical['deploy_gate_no_loaner']['wins']==1
+          assert critical['deploy_gate_no_loaner']['blocked_deploy_attempts']==2
+          assert critical['deploy_gate_no_loaner']['contradicted_scripted_wins']==2
+          # Win 1 breaks drive. Win 2 uses ONE hypothetical loaner
+          # and repairs; win 3 is now normally reachable.
+          assert critical['deploy_gate_one_hypothetical_loaner']['wins']==3
+          assert critical['deploy_gate_one_hypothetical_loaner']['hypothetical_loaner_used']==1
+          assert critical['deploy_gate_one_hypothetical_loaner']['blocked_deploy_attempts']==0
+          second=cases['one_loaner_losses_then_blocked']
+          assert second['deploy_gate_one_hypothetical_loaner']['wins']==0
+          assert second['deploy_gate_one_hypothetical_loaner']['blocked_deploy_attempts']==1
+          core=cases['core_lost_looter_attempt_cannot_earn_or_loan']
+          assert core['deploy_gate_one_hypothetical_loaner']['blocked_core_attempts']==2
+          assert core['deploy_gate_one_hypothetical_loaner']['hypothetical_loaner_used']==0
+          assert core['deploy_gate_one_hypothetical_loaner']['earned_scrap']==0
+          assert core['deploy_gate_one_hypothetical_loaner']['end_feasibility']=='RUN_CORE_DESTROYED_NO_LOANER'
+          no_next=cases['missing_next_challenge_cannot_invent_loaner_win']
+          assert no_next['deploy_gate_one_hypothetical_loaner']['wins']==1
+          assert no_next['deploy_gate_one_hypothetical_loaner']['blocked_no_challenge_attempts']==1
+          assert no_next['deploy_gate_one_hypothetical_loaner']['hypothetical_loaner_used']==0
+          assert no_next['deploy_gate_one_hypothetical_loaner']['end_feasibility']=='NO_ELIGIBLE_NEXT_CHALLENGE'
+          r=cases['victory_reward_affordability_order']
+          assert r['bootstrap_epoch_zero']['per_win']['free']==1
+          assert r['bootstrap_epoch_zero']['per_win']['paid']==0
+          assert r['reward_credit_before_order']['per_win']['free']==1
+          assert r['reward_credit_before_order']['per_win']['paid']==1
+          assert r['bootstrap_epoch_zero']['per_win']['wins']==1
+          assert r['reward_credit_before_order']['per_win']['restored']==0
+          final=cases['terminal_queued_paid_rebuild_exposure']
+          assert final['bootstrap_epoch_zero']['per_win']['modeled_stranded_paid_scrap']==70
+          assert final['bootstrap_epoch_zero']['per_win']['modeled_stranded_pending_count']==2
+          assert final['bootstrap_epoch_zero']['per_win']['modeled_stranded_free_tickets']==1
+          assert final['bootstrap_epoch_zero']['per_win']['wins']==1
+          approved=cases['twelve_victories_two_destroyed']['approved_owner_policy']
+          assert approved['quote']==65
+          assert approved['cadence']=='per_win'
+          assert approved['bootstrap'] is False
+          assert (approved['free'],approved['paid'],approved['charged_scrap'])==(12,12,780)
+          assert (approved['restored'],approved['reserved_final'])==(22,2)
+          smallest=cases['approved_price_one_zero_paid_quote']['approved_owner_policy']
+          assert (smallest['quote'],smallest['free'],smallest['paid'])==(0,1,1)
+          assert smallest['modeled_stranded_free_tickets']==1
+          loaner=cases['approved_zero_wallet_one_loaner_wins_but_no_recovery']['approved_owner_policy']
+          assert loaner['hypothetical_loaner_used']==1
+          assert loaner['wins']==1
+          assert loaner['p0_post_loaner_win_deferred_rebuild_deadlock'] is True
+          assert loaner['end_feasibility']=='ESSENTIAL_0HP_NEXT_WIN_INACCESSIBLE'
+          first=cases['approved_pre_first_win_65_paid_then_next_real_victory']['approved_owner_policy']
+          assert (first['wins'],first['free'],first['paid'],first['restored'])==(1,1,1,1)
+          assert first['charged_scrap']==65
+          price15=cases['approved_v7_floor_price_15']['approved_owner_policy']
+          price30=cases['approved_v7_floor_price_30']['approved_owner_policy']
+          assert price15['quote']==9
+          assert price30['quote']==19
+          assert price15['free']==1 and price15['paid']==1
+          assert price30['free']==1 and price30['paid']==1
+          assert price15['quote_rounding']=='floor'
+          assert price30['quote_rounding']=='floor'
+          stress=json.load(open(sys.argv[2],encoding='utf8'))
+          assert stress['episodes']==200
+          assert stress['attempts_each']==12
+          assert 'SYNTHETIC_ONLY' in stress['notice']
+          assert len(stress['aggregate'])==2
+          print('B01-10 ECONBAL ACTUAL_SCENARIO_EXECUTION 17/17 PASS '
+                '| BOOTSTRAP 2/2 PASS | SYNTHETIC_FIXED_SEED_EPISODES 200 PASS '
+                '| HUMAN_PLAYTEST NOT_RUN | UNITY NOT_RUN')
+          PY
+      - name: Upload original source test logs and clearly synthetic balance evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-10-econbal-original-${{ matrix.os }}-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/econbal-tests.log
+            ${{ runner.temp }}/econbal-real-v6-source.log
+            ${{ runner.temp }}/econbal-real-v7-source.log
+            ${{ runner.temp }}/econbal-scenarios.json
+            ${{ runner.temp }}/econbal-synthetic.json
+          retention-days: 14
+          if-no-files-found: warn
