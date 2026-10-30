@@ -1,0 +1,98 @@
+name: B01-40 W20 provisional owner R4 #647 original ZIP plus same-GUID losing #652 negative G0
+on:
+  push:
+    branches: [qa/b01-40-p17w20-r4-647-provisional-physical-g0]
+    paths:
+      - 'Tools/B01/B01-40/P17W20ProvisionalR4SourceG0/**'
+      - '.github/workflows/b01-40-p17w20-provisional-r4-647-g0.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-40/P17W20ProvisionalR4SourceG0/**'
+      - '.github/workflows/b01-40-p17w20-provisional-r4-647-g0.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-provisional-r4-source-scratch-qa:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: own
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/checkout@v4
+        with:
+          path: selected
+          ref: 09c1809b73324a6d31c13e5d0143de62ac1e3ca6
+          fetch-depth: 0
+      - name: Competing R4 #652 only read original Git source for strict negative, do not install
+        uses: actions/checkout@v4
+        with:
+          path: loser_r4
+          ref: ae5dbfa5e9c4689d2bf80fcabf8438e9c673c419
+      - name: Prior competing R3 #644, read only actual original GUID for negative fixture
+        uses: actions/checkout@v4
+        with:
+          path: loser_r3
+          ref: d9b95146e46a5d81d5a291d7887e456164f4d0c2
+      - uses: actions/checkout@v4
+        with:
+          path: r2
+          ref: efb2b06eafedab5469b57f163152d96aca3c5915
+      - uses: actions/checkout@v4
+        with:
+          path: alt604
+          ref: 1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a
+      - uses: actions/checkout@v4
+        with:
+          path: game
+          ref: d94400d95d13db7f27e1533df05c9292d5380431
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: save
+          ref: 33094f154c7b91119b36d58aab285e6e83c5de57
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: safe
+          ref: 3b743acc52bb44ae6a50af56ed9aca46d22821a7
+      - uses: actions/checkout@v4
+        with:
+          path: oldg0
+          ref: 180849791c4b9594b12f26ef8d9dc0cf90adb61c
+      - uses: actions/checkout@v4
+        with:
+          path: guidfence
+          ref: 547b55560d1a33af182caeaf73f9a9b2d8b1b7fe
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Actually run original R4 author Git archive and old safe physical migration plus W20 same-GUID source negative
+        shell: bash
+        run: |
+          set -euo pipefail
+          python own/Tools/B01/B01-40/P17W20ProvisionalR4SourceG0/intake.py \
+            --selected selected --loser_r4 loser_r4 --loser_r3 loser_r3 \
+            --r2 r2 --alt604 alt604 --game game --save save \
+            --safe safe --oldg0 oldg0 --guidfence guidfence \
+            --output evidence | tee b0140-w20-r4-original-stdout.log
+          grep -q 'B0140_W20_PROVISIONAL_R4_647_SOURCE' b0140-w20-r4-original-stdout.log
+          grep -q 'B0140_W20_ORIGINAL_R4_647_PHYSICAL' b0140-w20-r4-original-stdout.log
+          grep -q 'B0140_W20_SAFE_SCRATCH_R4_647_MIGRATION' b0140-w20-r4-original-stdout.log
+          grep -q 'B0140_W20_PHYSICAL_PASS_FORMAL_R4_G0_HOLD_OWNER_FREEZE_NO_NATIVE_NO_MERGE' b0140-w20-r4-original-stdout.log
+          test -s evidence/provisional-r4-647-physical-g0-hold.json
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-40-W20-R4-647-PROVISIONAL-${{ matrix.os }}
+          path: |
+            evidence/provisional-r4-647-physical-g0-hold.json
+            b0140-w20-r4-original-stdout.log
+          if-no-files-found: warn
+          retention-days: 21
