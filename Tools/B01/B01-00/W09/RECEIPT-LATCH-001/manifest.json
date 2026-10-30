@@ -1,15 +1,15 @@
 {
   "schema_version": "b01-package-v1",
   "package_id": "B01-00-RECEIPT-LATCH-001",
-  "revision": "1.8.1",
+  "revision": "1.9.0",
   "owner": "B01-00",
   "producer_agent": "B01-00",
-  "issue": 608,
-  "purpose": "B01-00 W17 enforce B01-23 explicit owner freeze #596 exact SHA; mark #604 ALT_HOLD despite conflicting B01-40/#62 #609/#610 wrong-candidate G0 queues; full 406 original source tests and source offer blocked",
+  "issue": 632,
+  "purpose": "W18 B01-00 original paired standard/polished integrator metadata baseline, six lifecycle stages, nullable metrics, real receiver QA conflicts, strict #596 ONLY, zero invented Codex ACCEPTED time or RELEASED",
   "source_base_branch": "main",
   "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
   "source_branch": "b01-00/p17w09-receipt-latch-001",
-  "source_sha_before_manifest": "17dae2ca02bc35066f1c61658e55a615c5e245d2a4",
+  "source_sha_before_manifest": "f96d75654709639dea63dbeebac777c9d2ef4abd",
   "code_scope": [
     "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/**",
     ".github/workflows/b01-00-w09-receipt-latch.yml"
@@ -79,8 +79,8 @@
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/README.md",
-      "sha256": "b4d97c955119a754a714578549364181ba783db979dfb6ba4b8eb148a19a3b06",
-      "bytes": 33343
+      "sha256": "f42fa4c32c8cf7cb2ec94d7404e330f7d4b662129bd5aaebf7b8958e57e602a1",
+      "bytes": 37578
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/RED-GREEN.md",
@@ -109,8 +109,8 @@
     },
     {
       "path": ".github/workflows/b01-00-w09-receipt-latch.yml",
-      "sha256": "722f93be346967571a415d81929285d0122b16067727e79fc8b4e7fa928e6be4",
-      "bytes": 2562
+      "sha256": "88b734bdf4b8767b4cbcfa42d3e73369943b7bd955c6d60c934a7966684c3bd3",
+      "bytes": 2818
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/save_admission.py",
@@ -176,6 +176,26 @@
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/W17-ONE-FINAL-R2-CHOICE-HOLD.md",
       "sha256": "1c3e5e27596f0cc67fea54f59c477df32d35623c9d5663e02dfd82b32f14910d",
       "bytes": 8353
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/integration_experiment.py",
+      "sha256": "3ccf4dc33b5d53a577abbf3230647b427a90b3f76cad6a2cb3d2c4324637e0cd",
+      "bytes": 8491
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/integrator_w18_batch.json",
+      "sha256": "20476e5b128a0f3ec83b52a58c9b5f84ac611920334632deedb8c2e4513e23ec",
+      "bytes": 5207
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/test_integration_experiment.py",
+      "sha256": "f2ccecad2f5ac36967f661c969ff5e31afff1e16e5d7fa35f7ba4cfdde4851dd",
+      "bytes": 10433
+    },
+    {
+      "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/W18-INTEGRATOR-BATCH-BASELINE.md",
+      "sha256": "1ee10e958c6bbfa1419d860f08cb37c25ce5ee23c867aeb07856f96d59e74b31",
+      "bytes": 8872
     }
   ],
   "producer_tests": [
@@ -478,16 +498,57 @@
       "note": "W17 initial intermediate original jobs QUEUED on GitHub at author time, 406 cases not yet proven; later final HEAD requires its own run"
     },
     {
-      "name": "W17 exact final manifest HEAD",
+      "name": "W17 selected exact final HEAD 406 genuine source unit cases each OS",
+      "status": "PASS",
+      "total": 406,
+      "passed": 406,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "52485f60273c9be12a9e8d250e872ef74aae5954",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41101967421"
+    },
+    {
+      "name": "W18 initial original experiment test assertion mismatch genuine RED",
+      "status": "FAIL",
+      "total": 467,
+      "passed": 464,
+      "failed": 3,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "1556c40b44ce870889dd5a802dabe6018375a0ac",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41104797074",
+      "note": "Three original tests expected regex `source` while actual correct fail-closed source said package ID/owner/PR; corrected in own test only, no source validator flaw"
+    },
+    {
+      "name": "W18 corrected 467 cases after test-regex repair",
       "status": "NOT_RUN",
-      "note": "Verify actual post-manifest exact-HEAD Actions and publish separate GitHub PR comment"
+      "total": 467,
+      "passed": null,
+      "failed": null,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "c113da9397936c95f459ec67618413ef5a8fce80",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41105187407",
+      "note": "GitHub queued at writing; confirm original raw job logs later"
+    },
+    {
+      "name": "W18 exact final manifest HEAD",
+      "status": "NOT_RUN",
+      "note": "Final exact SHA after manifest update needs independent post-commit workflow log proof; publish in PR and issue comments"
     }
   ],
   "qa_b01_40": "PENDING_REVIEW_OF_B01_00_TOOL",
   "qa_b01_60": "PENDING_REVIEW_OF_B01_00_TOOL",
   "native_unity_editmode": "NOT_RUN",
   "native_unity_playmode": "NOT_RUN",
-  "g0": "FROZEN_510_556_ACCEPTED_SOURCE_ONLY / SELECTED_596_INDEPENDENT_SOURCE_QA_607_GREEN / SELECTED_596_FORMAL_PHYSICAL_G0_PENDING / B01_00_SELF_INDEPENDENT_QA_PENDING",
+  "g0": "FROZEN_GAME510_SAVE556_PRIOR_SOURCE_G0 / SELECTED596_ORIGINAL_B0140_625_PHYSICAL_CI_PASS / B0162_627_GUID_ASSERTION_FAIL / SELECTED596_FORMAL_G0_PENDING / B0100_OWN_INDEPENDENT_QA_PENDING",
   "g1": "NOT_RUN",
   "g2": "HOLD",
   "codex_sent": true,
@@ -516,7 +577,11 @@
     "W17 corrected #596/#604 have four overlapping producer paths; no dual installation, file mixing or Codex source offer without single owner-version SHA and B01-40 physical G0",
     "W17 independent B01-61 #607 source tests #596 exact correction; #603 tests unchanged original #604 core/fence from older commit not whole newest Unity package; neither is native G1 or canonical original #510 private host integration",
     "B01-23 #596 owner freeze #6529388456 explicitly overrides B01-40/#62 alternate #604 intake #609/#610; those original scripts are evidence for losing ALT_HOLD only and must not count toward formal selected #596 G0",
-    "Original W17 406 unit suite results must not be invented while all GitHub Actions runners remain QUEUED; no local clone network access, final SHA outcome must cite actual Actions logs when available"
+    "Original W17 406 unit suite results must not be invented while all GitHub Actions runners remain QUEUED; no local clone network access, final SHA outcome must cite actual Actions logs when available",
+    "W18 two representative paired standard/polished metadata source packages are NOT actually offered to Codex, feedback metrics NULL, not fabricated zeros nor measured integration throughput",
+    "B01-62 #627 original negative GUID count assertion failed both platforms while B01-40 #625 original physical exact #596 source CI PASSED both: must reconcile and obtain formal G0 before source offer",
+    "B01-61 #629 original CI failed at own QA scope guard workflow rename BEFORE executing host stale-owner theory, do not call hypothetical P0 verified",
+    "Actual W18 own 467 test cases initial 3 failed only test expected error message mismatch, separate corrected final SHA must rerun on Windows and Ubuntu, native Unity NOT_RUN"
   ],
   "rollback": "Remove disposable directory and noncanonical output files; do not delete other agents' frozen receipt records",
   "codex_offer_url": "https://github.com/C8LyNn/RoboRougelike/issues/79#issuecomment-6526629723",
@@ -532,7 +597,7 @@
     ],
     "physical_zip_sha256": "d4ddfa3528ef0416aefffca72d884000f3b0c9959fb8dff53096487ef95c9387"
   },
-  "save_load": "CANONICAL_FROZEN_510_PRIVATE_RIG_LEDGER_NOT_AUTHORIZED / SELECTED_596_ISOLATED_HOST_ONLY",
+  "save_load": "CANONICAL_GAME_510_PRIVATE_RIG_LEDGER_NOT_AUTHORIZED / NO_CODEX_ACK / NO_LIVE_HOST",
   "safe_rollback_receiver": "SCRATCH_ONLY / ORIGINAL_510_ROLLBACK_FORBIDDEN",
   "canonical_migration": "NOT_DONE",
   "save_contract_choice": {
@@ -610,5 +675,40 @@
     "native_unity_g1": "NOT_RUN",
     "ack": "NONE",
     "offer": "HOLD"
+  },
+  "w18_integrator_batch": {
+    "schema": "b01-w18-paired-integrator-baseline-v1",
+    "original_source_packages": [
+      {
+        "pr": 596,
+        "sha": "efb2b06eafedab5469b57f163152d96aca3c5915"
+      },
+      {
+        "pr": 607,
+        "sha": "86f3292c928e52609db6c7afdb2010971d6946f1"
+      }
+    ],
+    "paired_presentation_arms": 4,
+    "real_reviews": 0,
+    "acceptance_yield": null,
+    "integration_time_seconds": null,
+    "regression_rate": null,
+    "retries": null,
+    "feedback": "NOT_MEASURED",
+    "codex_offer": "BLOCKED",
+    "selected_596_g0": "PENDING_FORMAL",
+    "native_unity_g1": "NOT_RUN",
+    "source_host_629": "UNVERIFIED_SOURCE_RISK_QA_GUARD_FAILED",
+    "fixture_631": "UNVERIFIED_SOURCE_RISK",
+    "source_627": "GUID_COUNT_ASSERTION_FAILED_BOTH_OS",
+    "source_625": "PHYSICAL_CI_SUCCESS_BOTH_OS_PENDING_FORMAL_RECEIPT",
+    "six_stage": {
+      "IMPLEMENTED": true,
+      "TESTED": false,
+      "QA_ACCEPTED": false,
+      "READY_FOR_INTEGRATOR": false,
+      "INTEGRATED": false,
+      "RELEASED": false
+    }
   }
 }
