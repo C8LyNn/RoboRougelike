@@ -1,0 +1,60 @@
+{
+  "package_id": "B01-31-SAFEDOCK-SIGNAL-ART-001",
+  "version": "P17-W10-R1",
+  "owner": "B01-31 — CONCEPT ART & VISUAL EXPLORATION",
+  "dispatch": 483,
+  "design_input": {
+    "safety_findings": [
+      472,
+      476
+    ],
+    "demo_gate": 471,
+    "source_owner": "B01-23",
+    "severity": "P0 real legacy direct Reattach bypass unresolved"
+  },
+  "deliverable": "4 wholly original authored semantic SVG icons; actual 12 transparent RGBA PNGs (4 icons × 96/192/384px), 2 dark/light original contact art PNGs, 1 physical isolated Unity 6 sprite import ZIP with 4 original sprites and 6 deterministic GUID .meta, per-byte receipt",
+  "icons": {
+    "collision-overlap": "Penetrating collider/overlap — deny docking",
+    "distance-limit": "Reach exceeds guarded distance — deny docking",
+    "unguarded-route": "Legacy public reattach route not guarded — integration HOLD",
+    "query-saturated": "PhysX overlap capacity or check incomplete — fail closed"
+  },
+  "authoritative_logic": "NONE. Graphics cannot establish security, safety, correct colliders or actual API path gating.",
+  "excluded_status": "No green/allowed/safe symbol. A visually successful icon would be misleading while API bypass remains RED.",
+  "source_paths": [
+    "Tools/B01-31/P17/W10SafeDockSignals001/**",
+    ".github/workflows/b01-31-p17w10-safe-dock-diagnostics.yml"
+  ],
+  "import_target_namespace": "Assets/B0131SafeDockSignals/** (only inside external output ZIP; NO direct Assets edits)",
+  "render_dependencies": {
+    "python": "3.11",
+    "cairosvg": "2.8.2",
+    "pillow": "11.3.0"
+  },
+  "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "tests_expected": [
+    "Valid immutable source vector shapes/safe XML/no external refs",
+    "4 original independent silhouettes and 12 physical alpha RGBA PNG readbacks",
+    "24 actual dark/light background contrast cases, 2 original contact PNG boards",
+    "physical deterministic 10-member Unity Sprite ZIP, 6 unique stable .meta GUIDs, CRC/readback",
+    "negative source script/external/missing title; wrong GUID; output ZIP tamper",
+    "same original input rendered twice and receipt/image ZIP SHA identical",
+    "actual native Unity Edit/Play and human UI contrast UNEXECUTED"
+  ],
+  "gates": {
+    "producer_G0": "PENDING_REAL_CI",
+    "independent_B01_40_B01_60": "PENDING",
+    "unity_G1": "NOT_RUN",
+    "G2": "HOLD",
+    "codex_ACK": "NONE",
+    "game_integration": "NO"
+  },
+  "rollback": "Do not change canonical game or #471. Remove only this package's isolated file directory/workflow and any separately authorized temporary imported Assets/B0131SafeDockSignals + root .meta from disposable receiver; no game saves or shared materials",
+  "receivers": [
+    "B01-10/B01-12 visual/UI semantics only after actual safety API repaired",
+    "B01-23 owner of API security/fix and correct mapping",
+    "B01-40 independent artifact GUID/scope intake",
+    "B01-60 licensed Unity sprite import/art review",
+    "B01-00 optional CODEX INBOX #79 after gates"
+  ]
+}
