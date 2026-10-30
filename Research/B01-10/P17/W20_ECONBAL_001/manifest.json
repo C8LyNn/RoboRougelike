@@ -1,6 +1,6 @@
 {
   "packageId": "B01-10-ECONBAL-001",
-  "version": "4.0.0-P17W23-REWARD_TIMING_AND_STRANDED_SCRAP",
+  "version": "5.0.0-P17W24-OWNER_APPROVED-65PCT-ONE_WIN-LOANER",
   "owner": "B01-10 GAME DESIGN & BALANCE",
   "branch": "design/b01-10-p17w20-econbal-001",
   "repository": "C8LyNn/RoboRougelike",
@@ -16,28 +16,28 @@
   ],
   "originalSourceFiles": {
     "Research/B01-10/P17/W20_ECONBAL_001/ACCEPTANCE.md": {
-      "gitBlob": "0185ca2f8ad2d700b4518a056968481dcfb26199",
-      "bytes": 10216
+      "gitBlob": "26a8451be13d5e4593630a9a9aedbe2e28bf8155",
+      "bytes": 12701
     },
     "Research/B01-10/P17/W20_ECONBAL_001/README.md": {
-      "gitBlob": "56289df9d890d88605864552fc294e2b39c28a19",
-      "bytes": 19288
+      "gitBlob": "a6ddaaa4279c125428a3e50783cdf8f116af21ec",
+      "bytes": 23175
     },
     "Research/B01-10/P17/W20_ECONBAL_001/rebuild_balance.py": {
-      "gitBlob": "cf0a43c530dd8c3db75be0005c614aa827e2cfed",
-      "bytes": 19570
+      "gitBlob": "be08b13663d14951ad715b21924a86c5a208e9a9",
+      "bytes": 22654
     },
     "Research/B01-10/P17/W20_ECONBAL_001/scenarios.json": {
-      "gitBlob": "9f67a44845be4c4fb2ec010932e63138e639a0f0",
-      "bytes": 24568
+      "gitBlob": "ff7bc33bc0c6f405a162203d1924f976df741242",
+      "bytes": 26595
     },
     "Research/B01-10/P17/W20_ECONBAL_001/test_rebuild_balance.py": {
-      "gitBlob": "e6cc4706ef60ec8a460ca039bde805e00c6680dc",
-      "bytes": 42165
+      "gitBlob": "b80246f9652f88e9734982da8cb62358f3e2ecfe",
+      "bytes": 52406
     },
     ".github/workflows/b01-10-p17w20-econbalance.yml": {
-      "gitBlob": "6924ef75f20201c4a12fad75f82f11abebe1a722",
-      "bytes": 7787
+      "gitBlob": "30e7a8c0e3984ac8e54546fe0bec8c390c8951cc",
+      "bytes": 9010
     }
   },
   "runtimeAuthority": "NONE_OFFLINE_DESIGN_MODEL",
@@ -54,8 +54,8 @@
   ],
   "excluded": "No edits to frozen #252/#510/#556/#596/#642/#647 or ECON V2 #673. No #652/#644/#604 alt co-install. No canonical Assets, game/save edits.",
   "tests": {
-    "namedPythonUnittest": 120,
-    "scenarios": 12,
+    "namedPythonUnittest": 145,
+    "scenarios": 15,
     "bootstrapBranches": 2,
     "cadences": 2,
     "sensitivities": "65/70/75 quote and critical mobility",
@@ -65,7 +65,7 @@
       "windows-2025",
       "ubuntu-24.04"
     ],
-    "exactHeadExecution": "W23 R4 actual CI PENDING; R3 95/95 PASS earlier SHA is historical ONLY",
+    "exactHeadExecution": "R5 exact Git SHA CI pending; prior W23 120/120 only historical",
     "independentQA": "PENDING",
     "progressionCounterfactuals": 2,
     "postVictoryBoundary": "new 0HP damage after victory cannot complete by same victory",
@@ -82,7 +82,15 @@
       "after_reservation",
       "before_reservation"
     ],
-    "terminalPendingRisk": true
+    "terminalPendingRisk": true,
+    "ownerApprovedPolicy": true,
+    "approvedQuotePercent": 65,
+    "zeroPricePaidDistinctFromFree": true,
+    "ownerV3SourceContractRed": [
+      "#694: initial FreeUsedAtWin=-1 Wins0 admits unverified free epoch zero",
+      "#694: Valid rejects price1 and zero cost paid reservation",
+      "#694: no prewin booked ticket at zero wallet; one-loaner winner cannot heal essential, circular softlock"
+    ]
   },
   "receivers": [
     "B01-22 ECON owner/cost hypothesis",
@@ -109,15 +117,15 @@
   "rollback": "Close DRAFT or checkout prior SHA; offline model only, no Unity installation or destructive deletion",
   "integratorFeedback": "NOT_MEASURED",
   "noMerge": true,
-  "previousImmutableSourceSHA": "69e87fbcdd07c817b4c382947728455dd6494ae9",
+  "previousImmutableSourceSHA": "f390a0041493ee11481341fd3647d3bd4c236130",
   "qualityFix": "W21 R2: fixes same-encounter victory auto-resolving newly destroyed modules; 22 prior repaired/2 awaiting after 12 wins. Explicit surrogate blocked deploy and one-loaner test under #154; no phantom scripted win/reward.",
   "sourceCorrection": "W22 R3: do not offer one-shot unapproved borrowed rig without living owner Core + eligible real NEXT challenge; do not count phantom victory/reward/HP after terminal loss or no challenge. 25 new source regression cases; original trusted B01-22 #694 victory authority is NOT this model.",
   "ownerEconomyDependencies": [
-    "B01-22 #694 trusted V3 source not edited",
-    "B01-22 #716 read-only gate not edited",
-    "B01-13 #722 recovery route prototype not edited",
-    "#154 escape policy NOT APPROVED",
-    "#729/#712/#669 selected Save authority not touched"
+    "B01-22 #694 V3 old source no-epoch0/price1/one-loaner zeroScrap P0 requires new owner version",
+    "B01-22 #716 and #743 advisory CanDeploy read-only unchanged",
+    "B01-13 #722 human recovery demo unchanged",
+    "B01-23/62 #749 currently selected Save; #753 and #741 alternatives not mixed",
+    "canonical #729, frozen #510/#556/#690 unchanged"
   ],
-  "modelFeature": "Optional, unapproved model comparison of cash earned before/after post-encounter reservation; expose paid+free pending tickets stranded in run with no authentic next victory; no automatic refund, no game wallet mutation."
+  "modelFeature": "Owner approved per-WIN free (NO bootstrap), exactly 65 percent floor including price1 paid0 distinct WasFree and single weaker loaner conceptual availability; direct-source V3 P0 findings signaled, no actual C# author source changes."
 }
