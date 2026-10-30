@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Threading;
 using B01.DetachedSaveContract001;
@@ -62,6 +64,12 @@ namespace B01.CanonicalWorldApi001
         private readonly ICanonicalMutationGate gate;
         private readonly ICanonicalRigFactory factory;
         private readonly ICanonicalCommitPort durable;
+        private readonly FileStream ownerLease;
+        private readonly long ownerRun;
+        private readonly Guid ownerSlot;
+        private bool physicallyClosed;
+        private static readonly HashSet<CanonicalWorldGateway> live =
+            new HashSet<CanonicalWorldGateway>();
         private ICanonicalStagedWorld? active;
         private RunSnapshot? accepted;
         private bool busy, quarantined;
@@ -69,12 +77,48 @@ namespace B01.CanonicalWorldApi001
         public bool HasWorld => active != null;
         public long Generation => accepted?.Generation ?? 0;
 
+        // W22 MAJOR OWNER API: bare three-argument gateways no longer exist.
+        // The root MUST be a trusted, private owner-selected directory.
         public CanonicalWorldGateway(ICanonicalMutationGate gate,
-            ICanonicalRigFactory factory, ICanonicalCommitPort durable)
+            ICanonicalRigFactory factory, ICanonicalCommitPort durable,
+            string trustedPrivateRoot,long run,Guid persistentSlot)
         {
             this.gate=gate??throw new ArgumentNullException(nameof(gate));
             this.factory=factory??throw new ArgumentNullException(nameof(factory));
             this.durable=durable??throw new ArgumentNullException(nameof(durable));
+            if(run<=0||persistentSlot==Guid.Empty||string.IsNullOrWhiteSpace(trustedPrivateRoot))
+                throw new ArgumentException("Trusted run, slot and root required");
+            ownerRun=run;ownerSlot=persistentSlot;
+            string dir=Path.Combine(Path.GetFullPath(trustedPrivateRoot),
+                "b0123_canonical_authority_v3");
+            Directory.CreateDirectory(dir);
+            string file=Path.Combine(dir,"run_"+run.ToString(
+                System.Globalization.CultureInfo.InvariantCulture)+"_slot_"+
+                persistentSlot.ToString("N")+".owner");
+            ownerLease=new FileStream(file,FileMode.OpenOrCreate,
+                FileAccess.ReadWrite,FileShare.None);
+            lock(live)live.Add(this); // prevent GC releasing active-world OS lease
+        }
+        public Guid SlotId => ownerSlot;
+        public bool OwnerLeaseHeld => !physicallyClosed;
+        public bool TryCloseAfterVerifiedRetirement(Func<bool> allOwnedWorldsDestroyed)
+        {
+            if(physicallyClosed)return true;
+            if(busy||Thread.CurrentThread.ManagedThreadId!=mainThread||
+               allOwnedWorldsDestroyed==null)return false;
+            busy=true;
+            try
+            {
+                // This must attest ALL partial + published private #510 roots;
+                // merely HasWorld=false after Prepare failure is NOT enough.
+                if(!allOwnedWorldsDestroyed()){quarantined=true;return false;}
+                ownerLease.Dispose();
+                physicallyClosed=true;active=null;accepted=null;
+                lock(live)live.Remove(this);
+                return true;
+            }
+            catch{quarantined=true;return false;}
+            finally{busy=false;}
         }
         private bool Idle()
         {
@@ -102,7 +146,7 @@ namespace B01.CanonicalWorldApi001
         public bool TryCapturePreview(out byte[] bytes)
         {
             bytes=null!;
-            if(busy||quarantined||active==null||accepted==null)return false;
+            if(busy||quarantined||physicallyClosed||active==null||accepted==null)return false;
             // Acquire the transaction guard BEFORE calling any user-provided
             // quiescence callback; that callback may re-enter Save or Load.
             busy=true;
@@ -112,7 +156,15 @@ namespace B01.CanonicalWorldApi001
                 RunSnapshot now=active.Capture();
                 if(!SnapshotRules.Valid(now)||now.RunId!=accepted.RunId||
                    now.Generation!=accepted.Generation||!Idle())return false;
-                bytes=SnapshotCodec.Encode(now);return true;
+                bytes=SnapshotCodec.Encode(now);
+                // Read back the SAME durable authority before offering a preview.
+                // External valid backup rollback or malicious bypass is detected
+                // against the published generation and original #556 fingerprint.
+                if(!durable.Read(ownerRun,out long epoch,out string digest)||
+                   epoch!=accepted.Generation||
+                   !string.Equals(digest,Fingerprint(bytes),StringComparison.Ordinal))
+                {quarantined=true;bytes=null!;return false;}
+                return true;
             }
             catch{return false;}
             finally{busy=false;}
@@ -120,7 +172,8 @@ namespace B01.CanonicalWorldApi001
         public CanonicalGateResult TryRestore(byte[] bytes,long expectedRun,long minimumGeneration)
         {
             if(quarantined)return CanonicalGateResult.RollbackQuarantine;
-            if(busy)return CanonicalGateResult.HostBusy;
+            if(busy||physicallyClosed)return CanonicalGateResult.HostBusy;
+            if(expectedRun!=ownerRun)return CanonicalGateResult.WrongRun;
             // P0: the quiescence gate can synchronously re-enter this API.
             // Set busy BEFORE the first gate callback (which lives below).
             busy=true;

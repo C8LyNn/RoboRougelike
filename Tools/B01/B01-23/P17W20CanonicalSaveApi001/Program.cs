@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using B01.DebrisRepulse001;
@@ -126,6 +127,9 @@ internal static class Tests
     sealed class Disk : ICanonicalCommitPort
     {
         readonly string file;
+        public string Root => Path.GetDirectoryName(file)!;
+        public void ForceRevision(long run,long generation,string hash)
+        {Directory.CreateDirectory(Root);File.WriteAllText(file,run+"|"+generation+"|"+hash);}
         public bool ThrowBeforeCommit,ThrowAfterCommit,RejectCommit,FailRead;
         public Action? OnSuccess;
         public Disk(string file){this.file=file;}
@@ -160,8 +164,22 @@ internal static class Tests
         {
             var gate=new Gate();var fac=new Factory();
             var disk=new Disk(Path.Combine(dir,"revision"));
-            var api=new CanonicalWorldGateway(gate,fac,disk);
-            if(!test(gate,fac,disk,api))throw new InvalidOperationException("Assertion failed");
+            var api=new CanonicalWorldGateway(gate,fac,disk,dir,7,
+                Guid.Parse("9ff33be5-03a2-4923-a1b6-2cdb571d00aa"));
+            try
+            {
+                if(!test(gate,fac,disk,api))
+                    throw new InvalidOperationException("Assertion failed");
+            }
+            finally
+            {
+                // This is a MANAGED TEST-OWNER retirement. Real Unity must
+                // verify all actual private Rigidbody + ledger roots.
+                api.TryCloseAfterVerifiedRetirement(()=>{
+                    if(fac.Last!=null){fac.Last.Deactivate();fac.Last.Retire();}
+                    return true;
+                });
+            }
         }
         finally{if(Directory.Exists(dir))Directory.Delete(dir,true);}
     }
@@ -171,6 +189,24 @@ internal static class Tests
     {
         using(var sha=SHA256.Create())
             return Convert.ToHexString(sha.ComputeHash(data)).ToLowerInvariant();
+    }
+    // Genuine separate .NET8 child PROCESS (not another object in one CLR).
+    // The actual same-slot OS FileStream owner must refuse independent child
+    // while the previous original W06 consumed-ID world remains alive.
+    static int ChildProbe(string root,Guid slot)
+    {
+        var p=new ProcessStartInfo("dotnet"){
+            UseShellExecute=false,RedirectStandardOutput=true,
+            RedirectStandardError=true};
+        p.ArgumentList.Add(typeof(Tests).Assembly.Location);
+        p.ArgumentList.Add("--w22-probe");
+        p.ArgumentList.Add(root);
+        p.ArgumentList.Add(slot.ToString("D"));
+        using var child=Process.Start(p);
+        if(child==null)return -1;
+        if(!child.WaitForExit(30000))
+        {child.Kill(true);return -2;}
+        return child.ExitCode;
     }
     static void MainSuite()
     {
@@ -222,15 +258,26 @@ internal static class Tests
         Check("cold restart on same exact frozen bytes is allowed",()=>Every((g,f,d,a)=>{
             byte[] bytes=Save(false,true,10);
             if(a.TryRestore(bytes,7,1)!=CanonicalGateResult.Accepted)return false;
-            var next=new CanonicalWorldGateway(g,new Factory(),d);
-            return next.TryRestore(bytes,7,1)==CanonicalGateResult.Accepted;
+            bool blocked=false;
+            try{_ = new CanonicalWorldGateway(g,new Factory(),d,d.Root,7,a.SlotId);}
+            catch(IOException){blocked=true;}
+            if(!blocked||!a.TryCloseAfterVerifiedRetirement(()=>{
+                f.Last?.Deactivate();f.Last?.Retire();return true;}))return false;
+            var next=new CanonicalWorldGateway(g,new Factory(),d,d.Root,7,a.SlotId);
+            try{return next.TryRestore(bytes,7,1)==CanonicalGateResult.Accepted;}
+            finally{next.TryCloseAfterVerifiedRetirement(()=>true);}
         }));
         Check("cold restart same-gen different consumed ID is refused",()=>Every((g,f,d,a)=>{
             if(a.TryRestore(Save(true,false,10),7,1)!=CanonicalGateResult.Accepted)return false;
-            var freshFactory=new Factory();
-            var fresh=new CanonicalWorldGateway(g,freshFactory,d);
-            return fresh.TryRestore(Save(false,true,10),7,1)==CanonicalGateResult.StaleGeneration&&
-                freshFactory.Stages==0;
+            var freshFactory=new Factory();bool blocked=false;
+            try{_ = new CanonicalWorldGateway(g,freshFactory,d,d.Root,7,a.SlotId);}
+            catch(IOException){blocked=true;}
+            if(!blocked||!a.TryCloseAfterVerifiedRetirement(()=>{
+                f.Last?.Deactivate();f.Last?.Retire();return true;}))return false;
+            var fresh=new CanonicalWorldGateway(g,freshFactory,d,d.Root,7,a.SlotId);
+            try{return fresh.TryRestore(Save(false,true,10),7,1)==CanonicalGateResult.StaleGeneration&&
+                       freshFactory.Stages==0;}
+            finally{fresh.TryCloseAfterVerifiedRetirement(()=>true);}
         }));
         Check("external Commit AFTER disk write then throws -> sticky quarantine",()=>Every((g,f,d,a)=>{
             if(a.TryRestore(Save(true,false,10),7,1)!=CanonicalGateResult.Accepted)return false;
@@ -351,6 +398,51 @@ internal static class Tests
             return a.TryRestore(Save(false,true,11),7,1)==CanonicalGateResult.RollbackQuarantine&&
                 a.Quarantined&&!a.TryCapturePreview(out _);
         }));
+
+        Check("W22 #710 REAL child CLR process denied until owner retires private world",()=>Every((g,f,d,a)=>{
+            if(a.TryRestore(Save(true,false,10),7,1)!=CanonicalGateResult.Accepted)return false;
+            if(ChildProbe(d.Root,a.SlotId)!=7)return false;
+            if(!a.TryCloseAfterVerifiedRetirement(()=>{
+                f.Last?.Deactivate();f.Last?.Retire();return true;}))return false;
+            return ChildProbe(d.Root,a.SlotId)==0;
+        }));
+        Check("W22 #707 REAL child CLR denied after failed private Prepare",()=>Every((g,f,d,a)=>{
+            f.FailPrepareAfterAllocation=true;f.FailStageCleanup=true;
+            if(a.TryRestore(Save(false,true,10),7,1)!=CanonicalGateResult.RollbackQuarantine)
+                return false;
+            return !a.HasWorld&&a.Quarantined&&ChildProbe(d.Root,a.SlotId)==7;
+        }));
+        Check("W22 #710 two gateways same original #556 run and slot DENIED",()=>Every((g,f,d,a)=>{
+            if(a.TryRestore(Save(true,false,10),7,1)!=CanonicalGateResult.Accepted)return false;
+            bool blocked=false;
+            try{_ = new CanonicalWorldGateway(g,new Factory(),d,d.Root,7,a.SlotId);}
+            catch(IOException){blocked=true;}
+            return blocked&&a.HasWorld&&a.TryCapturePreview(out _);
+        }));
+        Check("W22 #710 external newer Heavy epoch blocks stale Light preview",()=>Every((g,f,d,a)=>{
+            if(a.TryRestore(Save(true,false,10),7,1)!=CanonicalGateResult.Accepted)return false;
+            d.ForceRevision(7,11,Hash(Save(false,true,11)));
+            return !a.TryCapturePreview(out _)&&a.Quarantined&&
+                a.TryRestore(Save(true,false,12),7,1)==CanonicalGateResult.RollbackQuarantine;
+        }));
+        Check("W22 #707 unpublished partial rig orphan holds same OS slot",()=>Every((g,f,d,a)=>{
+            f.FailPrepareAfterAllocation=true;f.FailStageCleanup=true;
+            if(a.TryRestore(Save(false,true,10),7,1)!=CanonicalGateResult.RollbackQuarantine||
+               !a.Quarantined||a.HasWorld)return false;
+            bool blocked=false;
+            try{_ = new CanonicalWorldGateway(g,new Factory(),d,d.Root,7,a.SlotId);}
+            catch(IOException){blocked=true;}
+            return blocked&&!a.TryCloseAfterVerifiedRetirement(()=>false)&&a.OwnerLeaseHeld;
+        }));
+        Check("W22 #707 throwing physical-root cleanup NEVER releases authority",()=>Every((g,f,d,a)=>{
+            if(a.TryRestore(Save(false,true,10),7,1)!=CanonicalGateResult.Accepted)return false;
+            bool closed=a.TryCloseAfterVerifiedRetirement(()=>
+                throw new IOException("physical roots still alive"));
+            bool blocked=false;
+            try{_ = new CanonicalWorldGateway(g,new Factory(),d,d.Root,7,a.SlotId);}
+            catch(IOException){blocked=true;}
+            return !closed&&blocked&&a.Quarantined&&a.OwnerLeaseHeld;
+        }));
         for(int n=0;n<16;n++)
         {
             int j=n;
@@ -361,8 +453,19 @@ internal static class Tests
         }
         Console.WriteLine("UNITY_ENGINE_NOT_COMPILED; PRIVATE_510_RIG_LEDGER_PORT_NOT_IMPLEMENTED; FULL_CRASH_ATOMICITY_NOT_PROVEN");
     }
-    public static int Main()
+    public static int Main(string[] args)
     {
+        if(args.Length==3&&args[0]=="--w22-probe")
+        {
+            try
+            {
+                string root=args[1];Guid slot=Guid.Parse(args[2]);
+                var child=new CanonicalWorldGateway(new Gate(),new Factory(),
+                    new Disk(Path.Combine(root,"revision")),root,7,slot);
+                return child.TryCloseAfterVerifiedRetirement(()=>true)?0:6;
+            }
+            catch(IOException){return 7;}
+        }
         MainSuite();
         Console.WriteLine("TOTAL "+(passed+failed)+" PASS "+passed+" FAIL "+failed);
         return failed==0?0:1;
