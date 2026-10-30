@@ -15,7 +15,7 @@ checks={
 "store never opens independent slot lease":not re.search(r'FileStream\s*\([^;]*slot\.lease',STORE,re.S) and 'private const string Marker = "slot.canonical-v3"' in STORE,
 "session still holds authority on quarantined unpublished world":"if(!HasWorld&&!restoring&&!Quarantined)" not in SESSION and "Unretired.Add(this)" in SESSION,
 "false or throwing physical retirement proof cannot free slot":"TryCloseAfterPhysicalRetirement" in SESSION and "allOwned" in SESSION,
-"storage never claims independent lifetime lock":"private readonly CanonicalWorldSlotLease authority" in STORE and "FileShare.None" not in STORE,
+"storage never claims independent lifetime lock":"private readonly CanonicalWorldSlotLease authority" in STORE and not re.search(r"new\s+FileStream\s*\(",STORE),
 "API gateway requires real selected owner lease":"CanonicalWorldSlotLease" in GATE and "BindOnce" in GATE,
 "original OS owner acquired exclusively":"FileShare.None" in LEASE,
 "full envelope carries generation, slot, payload and checksum":all(x in STORE for x in ("bw.Write(generation)","bw.Write(slotId.ToByteArray())","bw.Write(raw)","SHA256.HashData")),
