@@ -1,0 +1,199 @@
+{
+  "schema": "b0150-cilatency-snapshot-v1",
+  "repository": "C8LyNn/RoboRougelike",
+  "source": "GitHub REST actions/runs/{run_id} and actions/runs/{run_id}/jobs (GET, 2026-10-30)",
+  "workflow_runs": [
+    {
+      "id": 41091890028,
+      "name": "B01-50 W15 ZIPREADBENCH001 source QA",
+      "head_sha": "e06308c41ea1caba91d480f3df13a82b681ef375",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "created_at": "2026-10-30T16:39:35Z",
+      "updated_at": "2026-10-30T16:40:41Z",
+      "jobs": [
+        {
+          "id": 124187614158,
+          "run_id": 41091890028,
+          "name": "exact-source-zipread-qa (ubuntu-24.04)",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-30T16:39:36Z",
+          "started_at": "2026-10-30T16:40:05Z",
+          "completed_at": "2026-10-30T16:40:11Z"
+        },
+        {
+          "id": 124187614638,
+          "run_id": 41091890028,
+          "name": "exact-source-zipread-qa (windows-2025)",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-30T16:39:36Z",
+          "started_at": "2026-10-30T16:40:24Z",
+          "completed_at": "2026-10-30T16:40:40Z"
+        }
+      ]
+    },
+    {
+      "id": 41097231828,
+      "name": "B01-50 W16 LIGHTBUDGET001 original CSharp source tests",
+      "head_sha": "68befcd02b9812ea1d001c868a7151944e3d1b16",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "created_at": "2026-10-30T17:15:33Z",
+      "updated_at": "2026-10-30T17:16:52Z",
+      "jobs": [
+        {
+          "id": 124205970015,
+          "run_id": 41097231828,
+          "name": "original-csharp-source (ubuntu-24.04)",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-30T17:15:34Z",
+          "started_at": "2026-10-30T17:15:37Z",
+          "completed_at": "2026-10-30T17:16:41Z"
+        },
+        {
+          "id": 124205970947,
+          "run_id": 41097231828,
+          "name": "original-csharp-source (windows-2025)",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-30T17:15:35Z",
+          "started_at": "2026-10-30T17:15:37Z",
+          "completed_at": "2026-10-30T17:16:51Z"
+        }
+      ]
+    },
+    {
+      "id": 41101463346,
+      "name": "B01-50 W17 LIGHTBUDGET R2 original adapter RED GREEN",
+      "head_sha": "f349c15f2e5ea265cd71b45196c35d7cacb78598",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "created_at": "2026-10-30T17:46:52Z",
+      "updated_at": "2026-10-30T18:02:23Z",
+      "jobs": [
+        {
+          "id": 124219267079,
+          "run_id": 41101463346,
+          "name": "original-adapter-red-green (windows-2025)",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-30T17:46:52Z",
+          "started_at": "2026-10-30T17:56:59Z",
+          "completed_at": "2026-10-30T17:58:17Z"
+        },
+        {
+          "id": 124219267366,
+          "run_id": 41101463346,
+          "name": "original-adapter-red-green (ubuntu-24.04)",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-30T17:46:52Z",
+          "started_at": "2026-10-30T17:57:05Z",
+          "completed_at": "2026-10-30T17:57:40Z"
+        }
+      ]
+    },
+    {
+      "id": 41104845369,
+      "name": "B01-50 W18 LIGHTBUDGET R3 first-frame RED GREEN",
+      "head_sha": "62a0417f66eb5ee6aa64543dcbd8652eaa9b9788",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "created_at": "2026-10-30T18:12:12Z",
+      "updated_at": "2026-10-30T18:14:32Z",
+      "jobs": [
+        {
+          "id": 124231627016,
+          "run_id": 41104845369,
+          "name": "original-adapter-red-green (ubuntu-24.04)",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-30T18:12:13Z",
+          "started_at": "2026-10-30T18:12:35Z",
+          "completed_at": "2026-10-30T18:13:00Z"
+        },
+        {
+          "id": 124231627027,
+          "run_id": 41104845369,
+          "name": "original-adapter-red-green (windows-2025)",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-30T18:12:13Z",
+          "started_at": "2026-10-30T18:12:52Z",
+          "completed_at": "2026-10-30T18:14:32Z"
+        }
+      ]
+    },
+    {
+      "id": 41110999262,
+      "name": "B01-50 W19 LIGHTBUDGET R4 first-frame RED GREEN",
+      "head_sha": "d8b31259d57a4b31d9f2cbab8124ed00b88bc6d6",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "created_at": "2026-10-30T18:55:30Z",
+      "updated_at": "2026-10-30T18:56:34Z",
+      "jobs": [
+        {
+          "id": 124253084351,
+          "run_id": 41110999262,
+          "name": "original-adapter-red-green (ubuntu-24.04)",
+          "status": "completed",
+          "conclusion": "failure",
+          "created_at": "2026-10-30T18:55:30Z",
+          "started_at": "2026-10-30T18:55:33Z",
+          "completed_at": "2026-10-30T18:56:02Z"
+        },
+        {
+          "id": 124253084669,
+          "run_id": 41110999262,
+          "name": "original-adapter-red-green (windows-2025)",
+          "status": "completed",
+          "conclusion": "failure",
+          "created_at": "2026-10-30T18:55:30Z",
+          "started_at": "2026-10-30T18:55:32Z",
+          "completed_at": "2026-10-30T18:56:22Z"
+        }
+      ]
+    },
+    {
+      "id": 41111189586,
+      "name": "B01-50 W19 LIGHTBUDGET R4 first-frame RED GREEN",
+      "head_sha": "8c043afc52dccdc915e20c6e43e82a1034bfcd54",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "created_at": "2026-10-30T18:56:57Z",
+      "updated_at": "2026-10-30T19:01:50Z",
+      "jobs": [
+        {
+          "id": 124253699850,
+          "run_id": 41111189586,
+          "name": "original-adapter-red-green (windows-2025)",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-30T18:56:57Z",
+          "started_at": "2026-10-30T18:57:02Z",
+          "completed_at": "2026-10-30T18:58:13Z"
+        },
+        {
+          "id": 124253700287,
+          "run_id": 41111189586,
+          "name": "original-adapter-red-green (ubuntu-24.04)",
+          "status": "completed",
+          "conclusion": "success",
+          "created_at": "2026-10-30T18:56:57Z",
+          "started_at": "2026-10-30T18:57:04Z",
+          "completed_at": "2026-10-30T18:57:33Z"
+        }
+      ]
+    }
+  ]
+}

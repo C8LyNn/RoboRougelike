@@ -1,0 +1,65 @@
+name: B01-50 W20 CILATENCY001 actual GitHub timing provenance
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-50/CILATENCY001/**'
+      - '.github/workflows/b01-50-w20-cilatency.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-offline-analysis:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check exact 5 owned original Git blob pins
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p ci-evidence
+          while IFS=$'\t' read -r expected path; do
+            test -n "$expected" || continue
+            actual=$(git hash-object --no-filters "$path")
+            test "$actual" = "$expected" || { echo "PIN_MISMATCH $path"; exit 1; }
+            echo "OWN_SOURCE_PIN_PASS $path"
+          done < Tools/B01/B01-50/CILATENCY001/MANIFEST-GIT-BLOBS.tsv
+      - name: Execute original 20 Python unit tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python --version | tee ci-evidence/python_version.txt
+          python -m unittest discover -s Tools/B01/B01-50/CILATENCY001/tests -v 2>&1 | tee ci-evidence/source_tests.log
+      - name: Analyze actual historical 6 GitHub runs and 12 jobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-50/CILATENCY001/cilatency.py --input Tools/B01/B01-50/CILATENCY001/evidence/github_runs_w15_w19.json --output ci-evidence/real_actions_latency.json | tee ci-evidence/receipt_stdout.log
+          python - <<'PY'
+          import json
+          r=json.load(open('ci-evidence/real_actions_latency.json'))
+          assert r['run_count']==6 and r['job_count']==12,r
+          assert r['run_conclusions']=={'success':5,'failure':1},r
+          assert r['wait']['max_s']==613,r
+          assert r['unity_native_g1']=='NOT_ASSESSED_BY_ACTIONS_LATENCY'
+          assert r['integrator_accepted']=='NOT_OBSERVED'
+          print('REAL_ACTIONS_LATENCY_PASS six real runs, 12 real jobs; max original queue=613 seconds')
+          PY
+          git rev-parse HEAD > ci-evidence/exact_source_head.txt
+      - name: Preserve actual cross-OS source tests and offline receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-50-W20-CILATENCY-${{ matrix.os }}-${{ github.run_id }}
+          path: ci-evidence/
+          retention-days: 14
+          if-no-files-found: warn
