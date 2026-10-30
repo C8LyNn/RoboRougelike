@@ -1,0 +1,25 @@
+name: B01-23 W21 selected #681 mandatory OS held-slot canonical session
+on:
+  push:
+    branches: ['b01-23/p17w21-selected681-exclusive-session-r2']
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-23/P17W21Selected681ExclusiveSession001/**'
+      - '.github/workflows/b01-23-p17w21-selected681-exclusive-session.yml'
+jobs:
+  original-selected-681-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile actual ORIGINAL #681 gateway and #556 W06 then execute leased-owner source tests
+        run: dotnet run --project Tools/B01/B01-23/P17W21Selected681ExclusiveSession001/Selected681SessionTests.csproj -c Release
