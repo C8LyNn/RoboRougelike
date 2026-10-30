@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <Nullable>disable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="MotionTraceReplay.cs" />
+    <!-- The original .cs file is materialized by CI from immutable Git commit #495. -->
+    <Compile Include="PinnedOriginal/MotionStallLedger.cs" />
+  </ItemGroup>
+</Project>
