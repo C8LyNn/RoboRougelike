@@ -1,0 +1,101 @@
+name: B01-40 W19 one owner-selected R3 #642 original physical ZIP and safe source G0 HOLD
+on:
+  push:
+    branches: [qa/b01-40-p17w19-selected642-physical-g0-hold]
+    paths:
+      - 'Tools/B01/B01-40/P17W19SelectedR3SourceG0/**'
+      - '.github/workflows/b01-40-p17w19-selected642-physical-g0.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-40/P17W19SelectedR3SourceG0/**'
+      - '.github/workflows/b01-40-p17w19-selected642-physical-g0.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-owner-selected-r3-original-source:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: own
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: ONE selected owner R3 #642, immutable
+        uses: actions/checkout@v4
+        with:
+          path: selected
+          ref: 22cec9888047994ae523cbe7bf1b0a483d64cec4
+          fetch-depth: 0
+      - name: Other owner R3 #644 ALT_HOLD for negative GUID-only provenance ONLY
+        uses: actions/checkout@v4
+        with:
+          path: loser_r3
+          ref: d9b95146e46a5d81d5a291d7887e456164f4d0c2
+      - name: Frozen R2 #596 lineage provenance NEVER INSTALLED
+        uses: actions/checkout@v4
+        with:
+          path: r2
+          ref: efb2b06eafedab5469b57f163152d96aca3c5915
+      - name: Unselected #604 negative provenance NEVER INSTALLED
+        uses: actions/checkout@v4
+        with:
+          path: alt604
+          ref: 1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a
+      - name: Frozen one gameplay #510
+        uses: actions/checkout@v4
+        with:
+          path: game
+          ref: d94400d95d13db7f27e1533df05c9292d5380431
+          fetch-depth: 0
+      - name: Frozen one binary Save schema #556
+        uses: actions/checkout@v4
+        with:
+          path: save
+          ref: 33094f154c7b91119b36d58aab285e6e83c5de57
+          fetch-depth: 0
+      - name: Actual immutable safe B01-40 #575 scratch source receiver
+        uses: actions/checkout@v4
+        with:
+          path: safe
+          ref: 3b743acc52bb44ae6a50af56ed9aca46d22821a7
+      - name: Independent original B01-40 W17 physical test runner (immutable)
+        uses: actions/checkout@v4
+        with:
+          path: oldg0
+          ref: 180849791c4b9594b12f26ef8d9dc0cf90adb61c
+      - name: Independent original B01-40 W18 Unity serialized-script GUID gate
+        uses: actions/checkout@v4
+        with:
+          path: guidfence
+          ref: 547b55560d1a33af182caeaf73f9a9b2d8b1b7fe
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Actually execute one ORIGINAL #642 author Git ZIP + independent strict safe scratch candidate and GUID gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python own/Tools/B01/B01-40/P17W19SelectedR3SourceG0/intake.py \
+            --selected selected --loser_r3 loser_r3 --r2 r2 --alt604 alt604 \
+            --game game --save save --safe safe --oldg0 oldg0 --guidfence guidfence \
+            --output evidence | tee w19-original-physical-source.log
+          grep -q 'B0140_W19_OWNER_SELECTED_R3_SOURCE' w19-original-physical-source.log
+          grep -q 'B0140_W19_EXACT_AUTHOR_ORIGINAL_PHYSICAL' w19-original-physical-source.log
+          grep -q 'B0140_W19_ORIGINAL_SAFE_SCRATCH_R3_MIGRATION' w19-original-physical-source.log
+          grep -q 'B0140_W19_PHYSICAL_PASS_FORMAL_R3_G0_HOLD_UNRESOLVED_P0_NO_NATIVE_NO_MERGE' w19-original-physical-source.log
+          test -s evidence/selected-r3-642-physical-g0-hold.json
+      - name: Retain original machine stdout and JSON; NOT licensed native Unity XML
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-40-W19-Owner642-Physical-${{ matrix.os }}
+          path: |
+            evidence/selected-r3-642-physical-g0-hold.json
+            w19-original-physical-source.log
+          retention-days: 21
+          if-no-files-found: warn
