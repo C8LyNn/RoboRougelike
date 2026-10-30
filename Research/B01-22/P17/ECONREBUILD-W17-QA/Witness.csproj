@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <Nullable>disable</Nullable>
+    <Deterministic>true</Deterministic>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="../../../../Assets/B01Packages/ECONREBUILD001/Runtime/RebuildQueueService.cs" Link="FROZEN_OriginalRebuildQueueService.cs"/>
+    <Compile Include="../../../../Tools/B01/ECONREBUILD001/tests/UnityJsonShim.cs" Link="ORIGINAL_UnityJsonShim.cs"/>
+  </ItemGroup>
+</Project>
