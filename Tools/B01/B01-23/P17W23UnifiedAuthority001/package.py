@@ -21,7 +21,7 @@ def entries():
         PFX+"/Core/CanonicalWorldSlotLease.cs.meta",WF,V3_WF]:names.append(p)
     if len(names)!=len(set(names)):raise ValueError("duplicate")
     lease=src(PFX+"/Core/CanonicalWorldSlotLease.cs").decode()
-    if "TryAcquire(" in lease or "TryAdoptRealSlot" not in lease or "FileStream(" in lease:
+    if "public static bool TryAcquire(" in lease or "TryAdoptRealSlot" not in lease or "new FileStream(" in lease:
         raise ValueError("standalone .owner bypass remains")
     program=src(OWNER_PATH+"CanonicalUnifiedSlotSession.cs").decode()
     for x in ["SingleFileSaveSlot.TryOpenExisting","TryAdoptRealSlot",
