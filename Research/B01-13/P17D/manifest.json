@@ -11,8 +11,8 @@
   "dependencies": [],
   "files": {
     "Research/B01-13/P17D/ld02_observer.py": {
-      "sha256": "7925d787678284f90023b4360d2e001320a4349cc27c520a258600b752a1ab54",
-      "bytes": 11468
+      "sha256": "61f1e65deaaac3f670850a18e1a7011d7b8cb22a7640a383b5103fcfffa1a516",
+      "bytes": 11514
     },
     "Research/B01-13/P17D/test_ld02_observer.py": {
       "sha256": "8ace675bb1daad9e156002a7dd5390970db903d308435cd871f52f9be032ed95",
@@ -34,7 +34,8 @@
     "independent_b01_60": "PENDING",
     "unity_edit_play_windows_player": "NOT_RUN",
     "actual_human_participants": 0,
-    "windows_native_acl_junction": "NOT_MEASURED"
+    "windows_native_acl_junction": "NOT_MEASURED",
+    "windows_root_casing_fix": "Windows source initial CI RED due to os.path Path.resolve() case-normalization mismatch; fixed in actual R1 original module; final exact SHA CI required, no secret native Unity/Player testing"
   },
   "actual_game_evidence": false,
   "security_limits": [
