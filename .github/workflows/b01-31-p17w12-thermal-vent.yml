@@ -1,0 +1,68 @@
+name: B01-31 P17W12 original thermal vent animation actual PNG GIF Unity Sprite ZIP
+on:
+  push:
+    branches: [art/b01-31-p17w12-thermal-vent-vfx]
+    paths:
+      - 'Tools/B01-31/P17/W12ThermalVentVfx001/**'
+      - '.github/workflows/b01-31-p17w12-thermal-vent.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01-31/P17/W12ThermalVentVfx001/**'
+      - '.github/workflows/b01-31-p17w12-thermal-vent.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-thermal-vent-art:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned source and real PNG and GIF image renderer
+        run: python -m pip install --disable-pip-version-check "Pillow==11.3.0"
+      - name: Compile both producer code and independent physical receiver
+        run: python -m compileall -q Tools/B01-31/P17/W12ThermalVentVfx001/
+      - name: Produce original 24 actual RGBA 2 GIF 52-member real Unity ZIP
+        run: |
+          python Tools/B01-31/P17/W12ThermalVentVfx001/build_vent.py --output build/B01-31/P17W12/ThermalVent001
+          python Tools/B01-31/P17/W12ThermalVentVfx001/verify_artifact.py --source build/B01-31/P17W12/ThermalVent001
+      - name: Rerun and compare every actual generated binary SHA byte-for-byte
+        shell: bash
+        run: |
+          set -euo pipefail
+          F=build/B01-31/P17W12/ThermalVent001
+          (cd "$F" && find . -type f -print0 | sort -z | xargs -0 sha256sum) > /tmp/before.sha256
+          python Tools/B01-31/P17/W12ThermalVentVfx001/build_vent.py --output "$F"
+          python Tools/B01-31/P17/W12ThermalVentVfx001/verify_artifact.py --source "$F"
+          (cd "$F" && find . -type f -print0 | sort -z | xargs -0 sha256sum) > /tmp/after.sha256
+          cmp /tmp/before.sha256 /tmp/after.sha256
+          echo "THERMAL_VENT_ACTUAL_PNG_GIF_ZIP_RECEIPT_DETERMINISM_PASS"
+      - name: Upload actual original 24 PNG 2 real GIF and real Unity Sprite ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0131-P17W12-THERMAL-VENT-ORIGINAL-24-PNG-2-GIF-UNITY
+          path: build/B01-31/P17W12/ThermalVent001/
+          if-no-files-found: error
+          retention-days: 30
+  windows-external-physical-receiver:
+    needs: original-thermal-vent-art
+    runs-on: windows-2022
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Download physical Ubuntu-generated art without invoking source renderer
+        uses: actions/download-artifact@v4
+        with:
+          name: B0131-P17W12-THERMAL-VENT-ORIGINAL-24-PNG-2-GIF-UNITY
+          path: physical-original
+      - name: Pillow only for real physical GIF/PNG parser
+        run: python -m pip install --disable-pip-version-check "Pillow==11.3.0"
+      - name: Independently decode all source PNG/GIF/storyboard and verify original Unity ZIP GUIDs
+        run: python Tools/B01-31/P17/W12ThermalVentVfx001/verify_artifact.py --source physical-original
