@@ -65,6 +65,7 @@ jobs:
         with:
           name: b01-62-w13-save-rollback-${{ matrix.os }}
           path: Tools/B01/B01-62/P17W13PersistentIdContract/.output/
+          include-hidden-files: true
           if-no-files-found: error
   parity:
     name: Exact original source JSON receipt cross OS bytes
