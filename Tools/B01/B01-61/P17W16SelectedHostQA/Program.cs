@@ -108,8 +108,8 @@ internal static class Program
                 byte[] onDisk=File.ReadAllBytes(file);physicalFileRead++;
                 Check(SnapshotCodec.TryDecode(onDisk,out RunSnapshot? decoded)&&decoded!=null,
                     "selected #556 physical bytes genuinely read from operating system file");
-                Check(decoded!.Parts[0].Id==2310001 &&decoded.Parts[1].Id==2310002&&
-                      decoded.Parts[0].Consumed==light&&decoded.Parts[1].Consumed==heavy,
+                Check(decoded!.Parts[0].Id==2310001 &&decoded!.Parts[1].Id==2310002&&
+                      decoded!.Parts[0].Consumed==light&&decoded!.Parts[1].Consumed==heavy,
                     "stable Light/Heavy IDs persist from exact binary bytes");
                 var cold=new AtomicWorldSwap(new FactoryDouble());
                 Check(cold.TryLoad(onDisk,RUN,5,()=>true)==WorldSwapVerdict.Accepted,
