@@ -53,9 +53,15 @@
   },
   "ci": {
     "initial_git_actions_run": 41129812854,
-    "ubuntu": "SUCCESS_VERIFIED_RAW_LOG_20_20",
-    "windows": "PENDING",
-    "final_head": "PENDING"
+    "final_producer_original_qa_exact_head_runs": [
+      41130103136,
+      41130183163
+    ],
+    "ubuntu": "PASS_ORIGINAL_V1_RED_10_10_AND_R2_GREEN_10_10_BOTH_PUSH_PR",
+    "windows": "PASS_ORIGINAL_V1_RED_10_10_AND_R2_GREEN_10_10_BOTH_PUSH_PR",
+    "original_source_assertions_across_four_jobs": 80,
+    "verified": "ORIGINAL_RAW_OS_LOGS_READ_WINDOWS_AND_UBUNTU",
+    "new_manifest_change_requires_new_ci": "PENDING_EXACT_SHA"
   },
   "gates": {
     "r5_690_physical_source_g0": "B01-40_699_ACCEPTED_SOURCE_ONLY_34_GUID",
@@ -71,8 +77,8 @@
   },
   "stages": {
     "implemented": "YES",
-    "tested": "SOURCE_PARTIAL_UNTIL_FINAL_CI",
-    "qa_accepted": "INDEPENDENT_TEST_SCOPE_ONLY_PENDING_FINAL_SHA",
+    "tested": "ORIGINAL_SOURCE_80_80_PRE_MANIFEST_REVIEW",
+    "qa_accepted": "INDEPENDENT_CORRECTED_707_TEST_SCOPE_ONLY",
     "ready_for_integrator": "NO",
     "integrated": "NO",
     "released": "NO"
