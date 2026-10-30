@@ -1,0 +1,95 @@
+name: B01-25 W24 SAFEROUTE R2 live origin source + physical provenance
+on:
+  push:
+    branches: [research/b01-25-p17w24-saferoute001-r2-live-origin]
+    paths:
+      - 'Assets/B0125SafeRoute001/**'
+      - 'Research/B01-25/P17/SAFEROUTE001/**'
+      - 'Tools/B01/B01-25/P17W24SafeRouteR2/**'
+      - '.github/workflows/b01-25-w24-saferoute-r2.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    env:
+      SRC: Research/B01-25/P17/SAFEROUTE001
+      OUT: Tools/B01/B01-25/P17W24SafeRouteR2/.output
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile original current R2 CSharp9 netstandard2.1 code
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$SRC/.output" "$OUT"
+          dotnet build "$SRC/SafeRouteRuntime.csproj" -c Release -warnaserror
+      - name: Actually execute R1 and new R2 Light Heavy live-origin gameplay cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --project "$SRC/SafeRouteTests.csproj" -c Release -- "$SRC/.output/results.json" 2>&1 | tee "$OUT/behavior-$RUNNER_OS.log"
+      - name: Actual Git SHA parent lineage, 13 GUIDs, no-overwrite and rollback
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-25/P17W24SafeRouteR2/check.py --out "$OUT/receipt.json" 2>&1 | tee "$OUT/qa-$RUNNER_OS.log"
+      - name: Physical source archive preflight
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s "$SRC/.output/results.json"
+          test -s "$OUT/receipt.json"
+          test -s "$OUT/receipt.zip"
+          sha256sum "$OUT/receipt.zip"
+      - name: Upload exact machine source tests and actual Unity SOURCE bytes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-25-saferoute-r2-w24-${{ matrix.os }}
+          path: |
+            Research/B01-25/P17/SAFEROUTE001/.output/results.json
+            Tools/B01/B01-25/P17W24SafeRouteR2/.output/**
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 21
+  downloaded-source-zip-parity:
+    needs: original-source
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: b01-25-saferoute-r2-w24-*
+          path: evidence
+      - name: Download Windows and Ubuntu real physical source ZIP and compare bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          A="$(find evidence/b01-25-saferoute-r2-w24-ubuntu-latest -name receipt.zip | head -n1)"
+          B="$(find evidence/b01-25-saferoute-r2-w24-windows-latest -name receipt.zip | head -n1)"
+          test -n "$A" && test -n "$B"
+          test -s "$A" && test -s "$B"
+          sha256sum "$A" "$B"
+          cmp "$A" "$B"
+          python - "$A" <<'PY'
+          import json,sys,zipfile
+          with zipfile.ZipFile(sys.argv[1]) as z:
+              names=z.namelist()
+              assert len(names)==22 and len(set(names))==22
+              assert all(x.create_system==3 for x in z.infolist())
+              m=json.loads(z.read("PACKAGE_MANIFEST.json"))
+              assert len(m["files"])==21 and m["nativeUnity"]=="NOT_RUN"
+              assert m["requiresOnlyOneVersion"] is True
+          print("SAFEROUTE_R2_ORIGINAL_SOURCE_ZIP_PARITY_PASS")
+          PY
