@@ -1,0 +1,56 @@
+name: B01-61 W18 selected ONLY 596 uncertain checkpoint commit source P0 QA
+on:
+  push:
+    branches:
+      - qa/b01-61-p17w18-596-uncertain-commit-exception
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-61/P17W18UncertainCommitExceptionQA/**'
+      - '.github/workflows/b01-61-w18-596-uncertain-durable-commit.yml'
+permissions:
+  contents: read
+jobs:
+  original-596-uncertain-commit-source-qa:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Real original unchanged selected 596 CSharp9, frozen 556+W06+510 spec
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build Tools/B01/B01-61/P17W18UncertainCommitExceptionQA/UncertainCommitQA.csproj -c Release --nologo
+          set +e
+          dotnet Tools/B01/B01-61/P17W18UncertainCommitExceptionQA/bin/Release/net8.0/UncertainCommitQA.dll --release | tee qa_release.log
+          gate=${PIPESTATUS[0]}
+          set -e
+          echo "ACTUAL_SELECTED_596_SOURCE_RELEASE_EXIT=${gate}"
+          if [[ "${gate}" -ne 3 ]]; then
+            echo "INVALID_RED_WITNESS_OR_SOURCE_TEST_FAILURE"
+            exit 1
+          fi
+          grep -Fx 'TOTAL 13 PASS 13 FAIL 0' qa_release.log
+          grep -Fx 'SOURCE_RELEASE_GATE=HOLD_P0_RED' qa_release.log
+      - name: Check exact Git producer pins and only five QA-owned new paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-61/P17W18UncertainCommitExceptionQA/receipt.py --log qa_release.log --out dist/b01-61-w18-exact596-uncertain-commit.json
+      - name: Upload real stdout and SHA receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-61-w18-selected596-uncertain-commit-${{ matrix.os }}
+          path: |
+            qa_release.log
+            dist/b01-61-w18-exact596-uncertain-commit.json
+          if-no-files-found: warn
