@@ -1,0 +1,105 @@
+name: B01-50 W17 LIGHTBUDGET R2 original adapter RED GREEN
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-50/LIGHTBUDGET001R2/**'
+      - '.github/workflows/b01-50-w17-lightbudget-r2.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-adapter-red-green:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Pin immutable R1 + R2 blobs and inspect three new GUIDs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          ROOT=Tools/B01/B01-50/LIGHTBUDGET001R2
+          git fetch --no-tags origin 68befcd02b9812ea1d001c868a7151944e3d1b16
+          git show 68befcd02b9812ea1d001c868a7151944e3d1b16:Tools/B01/B01-50/LIGHTBUDGET001/Unity/B0150OptionalCosmeticLightBudget.cs > "$ROOT/tests/original_r1_adapter.cs"
+          test "$(git hash-object --no-filters "$ROOT/tests/original_r1_adapter.cs")" = ef5487d400da0a3372ecd157d00f3c9545390c23
+          echo 'IMMUTABLE_R1_ADAPTER_BLOB_PASS' | tee evidence/original_source_gate.txt
+          while IFS=$'\t' read -r expected path; do
+            test -n "$expected" || continue
+            test "$(git hash-object --no-filters "$path")" = "$expected" || { echo "R2_BLOB_DRIFT $path"; exit 1; }
+            echo "R2_BLOB_PASS $path"
+          done < "$ROOT/MANIFEST-GIT-BLOBS.tsv"
+          python - <<'PY' | tee evidence/guid_gate.txt
+          from pathlib import Path
+          import re
+          root=Path('Tools/B01/B01-50/LIGHTBUDGET001R2')
+          ids=[]
+          for name in ('Core/CosmeticLightBudget.cs','Unity/B0150OptionalCosmeticLightBudget.cs','Unity/B0150OptionalCosmeticLightDemo.cs'):
+              meta=Path(str(root/name)+'.meta')
+              assert (root/name).is_file() and meta.is_file()
+              s=meta.read_text()
+              assert 'MonoImporter:' in s and 'fileFormatVersion: 2' in s
+              m=re.search(r'^guid: ([0-9a-f]{32})$',s,re.M); assert m
+              ids.append(m.group(1))
+          assert len(set(ids))==3
+          count=0
+          for base in (Path('Assets'), Path('Tools/B01/B01-50/LIGHTBUDGET001')):
+              for meta in base.rglob('*.meta'):
+                  count+=1
+                  s=meta.read_text(errors='replace')
+                  for guid in ids: assert f'guid: {guid}' not in s, str(meta)
+          print('R2_NEW_GUID_PASS 3/3; original metas checked:',count)
+          PY
+      - name: Execute unchanged original R1 Unity adapter — EXPECTED 4/8 RED
+        shell: bash
+        run: |
+          set -euo pipefail
+          PROJECT=Tools/B01/B01-50/LIGHTBUDGET001R2/tests/LIGHTBUDGET.AdapterRegression.csproj
+          dotnet --version | tee evidence/dotnet_version.txt
+          set +e
+          AdapterSource=original_r1_adapter.cs dotnet run -c Release --project "$PROJECT" -- --receipt evidence/original_r1_expected_red.json 2>&1 | tee evidence/original_r1_expected_red.log
+          status=$?
+          set -e
+          test "$status" -eq 1 || { echo "ORIGINAL_R1_RED_NOT_OBSERVED exit=$status"; exit 1; }
+          python - <<'PY'
+          import json
+          r=json.load(open('evidence/original_r1_expected_red.json'))
+          assert r['total']==8 and r['passed']==4 and r['failed']==4, r
+          assert r['nativeUnity']=='NOT_RUN'
+          print('R1_ORIGINAL_RED_REPRODUCED: 4 FAIL / 8 source cases')
+          PY
+      - name: Compile actual R2 adapter — 8 GREEN plus original core 42 GREEN
+        shell: bash
+        run: |
+          set -euo pipefail
+          PROJECT=Tools/B01/B01-50/LIGHTBUDGET001R2/tests/LIGHTBUDGET.AdapterRegression.csproj
+          dotnet clean -c Release "$PROJECT" >/dev/null
+          dotnet run -c Release --project "$PROJECT" -- --receipt evidence/original_r2_green.json 2>&1 | tee evidence/original_r2_green.log
+          dotnet run -c Release --project Tools/B01/B01-50/LIGHTBUDGET001R2/tests/LIGHTBUDGET.Tests.csproj -- --receipt evidence/unchanged_42_core_tests.json 2>&1 | tee evidence/unchanged_42_core_tests.log
+          python - <<'PY'
+          import json
+          a=json.load(open('evidence/original_r2_green.json'))
+          b=json.load(open('evidence/unchanged_42_core_tests.json'))
+          assert a['total']==a['passed']==8 and a['failed']==0, a
+          assert b['total']==b['passed']==42 and b['failed']==0, b
+          assert a['nativeUnity']==b['nativeUnity']=='NOT_RUN'
+          print('R2_ADAPTER_GREEN 8/8; CORE_GREEN 42/42; NATIVE_NOT_RUN')
+          PY
+          git rev-parse HEAD > evidence/exact_head.txt
+          sha256sum Tools/B01/B01-50/LIGHTBUDGET001R2/Unity/B0150OptionalCosmeticLightBudget.cs > evidence/source_sha256.txt
+      - name: Preserve actual source RED GREEN and compilation receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: B01-50-W17-LIGHTBUDGET-R2-${{ matrix.os }}-${{ github.run_id }}
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 14
