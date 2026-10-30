@@ -7,6 +7,9 @@ ROOT=Path(__file__).resolve().parents[4]
 ASSET="Assets/B0123UnitySaveBridge001"
 TOOLS="Tools/B01/B01-23/P17W15UnitySaveBridge001/"
 WORKFLOW=".github/workflows/b01-23-p17w15-unity-save-bridge.yml"
+W16_WORKFLOW=".github/workflows/b01-23-p17w16-atomic-save-host-r2.yml"
+W16_RUNBOOK="Tools/B01/B01-23/P17W16AtomicUnitySaveHostR2/README.md"
+W15_FROZEN="ad7904eca571c742257551fa8103f266fcb9b752"
 SELECTED_SAVE="33094f154c7b91119b36d58aab285e6e83c5de57"
 SELECTED_GAME="d94400d95d13db7f27e1533df05c9292d5380431"
 PINS={
@@ -22,14 +25,15 @@ def source(path):return subprocess.check_output(["git","show","HEAD:"+path],cwd=
 def sha(b):return hashlib.sha256(b).hexdigest()
 def scope():
     subprocess.run(["git","merge-base","--is-ancestor",SELECTED_SAVE,"HEAD"],cwd=ROOT,check=True)
+    subprocess.run(["git","merge-base","--is-ancestor",W15_FROZEN,"HEAD"],cwd=ROOT,check=True)
     subprocess.run(["git","merge-base","--is-ancestor",SELECTED_GAME,"HEAD"],cwd=ROOT,check=True)
     for p,h in PINS.items():
         if git("rev-parse","HEAD:"+p)!=h:raise ValueError("frozen SOURCE blob changed "+p)
-    files=sorted([ASSET+".meta",WORKFLOW]+
+    files=sorted([ASSET+".meta",WORKFLOW,W16_WORKFLOW,W16_RUNBOOK]+
         git("ls-tree","-r","--name-only","HEAD",ASSET+"/").splitlines()+
         git("ls-tree","-r","--name-only","HEAD",TOOLS).splitlines())
-    if len(files)!=24 or len(files)!=len(set(files)):raise ValueError("W15 exactly 22 owner Git files required")
-    if any(not (p==ASSET+".meta" or p==WORKFLOW or p.startswith(ASSET+"/") or p.startswith(TOOLS))
+    if len(files)!=26 or len(files)!=len(set(files)):raise ValueError("W15 exactly 22 owner Git files required")
+    if any(not (p==ASSET+".meta" or p in (WORKFLOW,W16_WORKFLOW,W16_RUNBOOK) or p.startswith(ASSET+"/") or p.startswith(TOOLS))
            for p in files):raise ValueError("foreign file")
     metas=[];defs=[]
     for p in files:
@@ -73,6 +77,7 @@ def build():
       "package":"B01-23-UNITY-SAVE-HOST-BRIDGE-001","version":"2.0.0",
       "own_head_sha":git("rev-parse","HEAD"),
       "only_save_source_sha":SELECTED_SAVE,"gameplay_510_sha":SELECTED_GAME,
+      "supersedes_w15_sha":W15_FROZEN,
       "frozen_blob_guards":PINS,"unity_guid_count":11,"asmdef_count":3,
       "native_unity":"NOT_RUN","codex_ack":False,"canonical_510_live_import":"HOLD",
       "files":[{"path":p,"bytes":len(contents[p]),"sha256":sha(contents[p])} for p in files],
@@ -96,6 +101,7 @@ def verify(raw):
         manifest.get("version")!="2.0.0" or
         manifest.get("own_head_sha")!=git("rev-parse","HEAD") or
         manifest.get("only_save_source_sha")!=SELECTED_SAVE or
+        manifest.get("supersedes_w15_sha")!=W15_FROZEN or
         manifest.get("gameplay_510_sha")!=SELECTED_GAME or
         manifest.get("frozen_blob_guards")!=PINS or
         manifest.get("unity_guid_count")!=11 or
