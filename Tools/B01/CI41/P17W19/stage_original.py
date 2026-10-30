@@ -34,6 +34,8 @@ FILES={
     "fa1aa5e531927cbe73cf5fdfe161b4a981316db5",
  "Assets/B0123SecureReattachV2/Runtime/AtomicDockLedger.cs":
     "b6a4d04b0c6407c8c84451b4d599d96fe0e4d1a9",
+ "Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs":
+    "b680ed0ec969ac23203fa55eab7b90f8daa86e43",
 }
 HOST="Assets/B0123UnitySaveBridge001/Unity/IsolatedTwinRigSaveHost.cs"
 OWNED={
