@@ -1,0 +1,59 @@
+name: B01-41 P17W06 Unity asmdef compiler graph gate (Git objects, source-only)
+on:
+  push:
+    branches: ['ci/b01-41-p17w06-asmdef-graph']
+    paths:
+      - 'Tools/B01/CI41/P17W06/**'
+      - '.github/workflows/b01-41-p17w06-asmdef-graph.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  asmdef-graph:
+    name: Original Git asmdef graph + 22 physical regressions (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify original source/test blobs pinned to immutable Git bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git hash-object Tools/B01/CI41/P17W06/asmdef_graph_gate.py)" = 'd15467ab676bdc264cba0b988b52c2a3fdc062bc'
+          test "$(git hash-object Tools/B01/CI41/P17W06/test_asmdef_graph_gate.py)" = '294e7e749f0b05ebff0f28e65f3b1ceaf9c5865f'
+          echo 'SOURCE_BLOBS_PINNED'
+      - name: Execute 22 physical original Git blob tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = 'Windows' ]; then PY=python; else PY=python3; fi
+          "$PY" -m unittest discover -s Tools/B01/CI41/P17W06 -p test_asmdef_graph_gate.py -v 2>&1 | tee "Tools/B01/CI41/P17W06/results-${RUNNER_OS}.txt"
+          grep -q 'PHYSICAL_GIT_TREE_3_ASMDEFS_2_EDGES_PASS_NOT_UNITY' "Tools/B01/CI41/P17W06/results-${RUNNER_OS}.txt"
+          grep -q 'EXACT_ORIGINAL_GIT_BLOBS_NOT_WORKTREE_DIRTY_DATA' "Tools/B01/CI41/P17W06/results-${RUNNER_OS}.txt"
+          grep -q 'ORIGINAL_PHYSICAL_GIT_OBJECTS_CLI_NEGATIVE_DRIFT_EXIT2' "Tools/B01/CI41/P17W06/results-${RUNNER_OS}.txt"
+          echo 'PHYSICAL_ORIGINAL_GIT_ASMDEF_TESTS_PASS_SOURCE_ONLY'
+      - name: Validate 27 committed MOV001-MOV009 original Unity asmdefs on exact current HEAD
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = 'Windows' ]; then PY=python; else PY=python3; fi
+          SHA="$(git rev-parse HEAD)"
+          "$PY" Tools/B01/CI41/P17W06/asmdef_graph_gate.py --repo . --source-sha "$SHA" --require-count 27 --out "Tools/B01/CI41/P17W06/asmdef-original-${RUNNER_OS}.json"
+          "$PY" -c 'import json,sys; x=json.load(open(sys.argv[1])); assert x["result"]=="PASS_SOURCE_GRAPH" and x["tracked_asmdef_count"]==27 and x["native_unity"]=="NOT_RUN"; print("ORIGINAL_CODEX_MOV001_009_27_ASMDEFS_SOURCE_PASS",x["dependency_edge_count"],"edges")' "Tools/B01/CI41/P17W06/asmdef-original-${RUNNER_OS}.json"
+      - name: Upload real original Git-object findings and physical test log
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CI41-ASMGRAPH-ORIGINAL-${{ matrix.os }}
+          path: |
+            Tools/B01/CI41/P17W06/results-${{ runner.os }}.txt
+            Tools/B01/CI41/P17W06/asmdef-original-${{ runner.os }}.json
+          retention-days: 14
+          if-no-files-found: warn
