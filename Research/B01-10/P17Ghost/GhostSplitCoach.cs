@@ -163,14 +163,27 @@ namespace RoboRougelike.B0110.TrainingGhost
         // The host explicitly supplies a nonnegative visual-only replay clock.
         // Sampling never advances that clock, moves the real robot or fires gates.
         // 24-hour cap prevents unbounded float precision and invalid input.
-        public GhostPose PoseAt(double loopElapsedSeconds)
+        public GhostPose PoseAt(double loopElapsedSeconds) =>
+            PoseAt(loopElapsedSeconds, 1f);
+
+        // Optional visual-only study speed. Slower ghost demonstrations let
+        // players inspect steering/position without altering the authoritative
+        // course timer, actual vehicle, rewards or physical checkpoint logic.
+        // Host passes cumulative *visual* elapsed, never a physics delta.
+        public GhostPose PoseAt(double loopElapsedSeconds, float playbackSpeed)
         {
             GhostMath.Check(!double.IsNaN(loopElapsedSeconds)
                             && !double.IsInfinity(loopElapsedSeconds)
                             && loopElapsedSeconds >= 0d
                             && loopElapsedSeconds <= 86400d,
                 "Practice replay clock must be finite and bounded");
-            double phase = loopElapsedSeconds % SegmentDurationSeconds;
+            GhostMath.Check(!float.IsNaN(playbackSpeed)
+                            && !float.IsInfinity(playbackSpeed)
+                            && playbackSpeed >= .25f
+                            && playbackSpeed <= 2f,
+                "Visual practice speed must be between 0.25x and 2x");
+            double phase = (loopElapsedSeconds * playbackSpeed)
+                % SegmentDurationSeconds;
             return playback.Seek(StartSeconds + (float)phase);
         }
     }
