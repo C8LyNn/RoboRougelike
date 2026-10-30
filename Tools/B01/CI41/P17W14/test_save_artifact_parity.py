@@ -193,8 +193,13 @@ class OriginalPhysicalPackageControls(unittest.TestCase):
             p.zip_files(archive([("/etc/shadow",b"x")]))
 
     def test_23_zip_windows_backslash_refused(self):
+        # zipfile.ZipInfo normalizes backslash on Windows before writing.
+        # Mutate BOTH actual ZIP header names byte-for-byte, not ZipInfo input.
+        raw=archive([("a/b",b"x")])
+        self.assertEqual(raw.count(b"a/b"),2)
+        raw=raw.replace(b"a/b",b"a\\b")
         with self.assertRaisesRegex(p.Refuse,"UNSAFE_ZIP_MEMBER"):
-            p.zip_files(archive([("a\\b",b"x")]))
+            p.zip_files(raw)
 
     def test_24_zip_symlink_refused(self):
         with self.assertRaisesRegex(p.Refuse,"ZIP_SYMLINK"):
