@@ -111,11 +111,20 @@ namespace B01.LevelChallenges.SafeRoute
             }
             return true;
         }
+        // R2: route from the ACTUAL physical player's current cell, not the level's
+        // original spawn. Fail closed if teleported outside the map or placed on a
+        // blocked/hazardous cell. R1's public Find API remains compatible.
         public static SafeRoutePlan Find(LevelGrid map,int radius,RouteConditions condition)
         {
             if(map==null)throw new ArgumentNullException(nameof(map));
+            return FindFrom(map,map.Start,radius,condition);
+        }
+        public static SafeRoutePlan FindFrom(LevelGrid map,GridCell from,int radius,
+            RouteConditions condition)
+        {
+            if(map==null)throw new ArgumentNullException(nameof(map));
             if(radius<0||radius>2)throw new ArgumentOutOfRangeException(nameof(radius));
-            if(!IsClear(map,map.Start,radius,condition)||
+            if(!IsClear(map,from,radius,condition)||
                !IsClear(map,map.Exit,radius,condition))
                 return new SafeRoutePlan(false,Array.Empty<GridCell>(),0);
             int total=checked(map.Width*map.Height);
@@ -124,7 +133,7 @@ namespace B01.LevelChallenges.SafeRoute
             Array.Fill(parent,-1);
             int[] queue=new int[total];
             int head=0,tail=0;
-            int origin=map.Start.Z*map.Width+map.Start.X;
+            int origin=from.Z*map.Width+from.X;
             int end=map.Exit.Z*map.Width+map.Exit.X;
             seen[origin]=true;queue[tail++]=origin;
             while(head<tail)

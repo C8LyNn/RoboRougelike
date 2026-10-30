@@ -46,6 +46,25 @@ public static class OriginalSafeRouteTests
             }
         }
     }
+    // From a real live origin rather than the map design spawn.
+    private static void VerifyPhysicalGridWitnessFrom(LevelGrid map,GridCell from,
+        SafeRoutePlan path,int radius,RouteConditions state)
+    {
+        Check(path.Reachable&&path.Cells.Length>=1,"missing live route");
+        Check(path.Cells[0].Equals(from),"live origin mismatch");
+        Check(path.Cells[path.Cells.Length-1].Equals(map.Exit),"live exit mismatch");
+        var visited=new HashSet<GridCell>();
+        for(int i=0;i<path.Cells.Length;i++)
+        {
+            Check(SafeRoutePlanner.IsClear(map,path.Cells[i],radius,state),"unsafe live cell");
+            Check(visited.Add(path.Cells[i]),"live route repeats a cell");
+            if(i>0)
+            {
+                var a=path.Cells[i-1];var b=path.Cells[i];
+                Check(Math.Abs(a.X-b.X)+Math.Abs(a.Z-b.Z)==1,"nonadjacent live route");
+            }
+        }
+    }
     private static void Run(string[] args)
     {
         Test("MAP_ORIGINAL_DIMENSIONS_15X11",()=>{var m=Map();Check(m.Width==15&&m.Height==11,"size");});
@@ -189,6 +208,79 @@ public static class OriginalSafeRouteTests
         Reject("NEGATIVE_RADIUS",()=>SafeRoutePlanner.Find(Map(),-1,new RouteConditions(false,false)));
         Reject("UNSUPPORTED_LARGE_RADIUS",()=>SafeRoutePlanner.Find(Map(),3,new RouteConditions(false,false)));
         Reject("NULL_AUDIT_MAP",()=>SafeRoutePlanner.Audit(null!));
+        // W24 R2 independent tests of genuine live-origin route planning:
+        Test("R2_ROUTE_FROM_LIVE_PLAYER_NOT_OLD_SPAWN",()=>{
+            var m=Map();var cond=new RouteConditions(false,true);
+            var original=SafeRoutePlanner.Find(m,0,cond);
+            var location=original.Cells[original.Cells.Length/2];
+            var live=SafeRoutePlanner.FindFrom(m,location,0,cond);
+            Check(live.Reachable&&live.Cells[0].Equals(location),"stale spawn instead of player");
+            Check(live.Cells[live.Cells.Length-1].Equals(m.Exit),"wrong destination");
+            Check(live.Cells.Length<original.Cells.Length,"did not shorten route");
+        });
+        Test("R2_ROUTE_FROM_EXIT_IS_SINGLE_CELL",()=>{
+            var m=Map();var live=SafeRoutePlanner.FindFrom(m,m.Exit,0,new RouteConditions(false,true));
+            Check(live.Reachable&&live.Cells.Length==1&&live.Cells[0].Equals(m.Exit),"exit");
+        });
+        Test("R2_LIVE_ORIGIN_TELEPORT_OUT_OF_BOUNDS_FAIL_CLOSED",()=>{
+            var m=Map();var route=SafeRoutePlanner.FindFrom(m,new GridCell(-99,7),0,new RouteConditions(true,false));
+            Check(!route.Reachable&&route.Cells.Length==0&&route.NodesExplored==0,"outside accepted");
+        });
+        Test("R2_LIVE_ORIGIN_IN_CLOSED_GATE_FAILS_CLOSED",()=>{
+            var m=Map();var route=SafeRoutePlanner.FindFrom(m,new GridCell(7,4),0,new RouteConditions(false,false));
+            Check(!route.Reachable,"inside locked gate accepted");
+        });
+        Test("R2_LIVE_ORIGIN_INSIDE_ACTIVE_HAZARD_FAILS_CLOSED",()=>{
+            var m=Map();var route=SafeRoutePlanner.FindFrom(m,new GridCell(10,4),0,new RouteConditions(true,true));
+            Check(!route.Reachable,"active hazard origin accepted");
+        });
+        Test("R2_OPEN_GATE_ORIGIN_HAS_VALID_PATH",()=>{
+            var m=Map();var cond=new RouteConditions(true,false);
+            var route=SafeRoutePlanner.FindFrom(m,new GridCell(7,4),0,cond);
+            VerifyPhysicalGridWitnessFrom(m,new GridCell(7,4),route,0,cond);
+        });
+        Test("R2_EIGHT_STATES_REPLAN_AFTER_FIRST_STEP_LIGHT_HEAVY",()=>{
+            var m=Map();
+            for(int r=0;r<=1;r++)for(int g=0;g<=1;g++)for(int h=0;h<=1;h++)
+            {
+                var cond=new RouteConditions(g==1,h==1);
+                var first=SafeRoutePlanner.Find(m,r,cond);
+                Check(first.Reachable&&first.Cells.Length>2,"prerequisite source-safe route");
+                var from=first.Cells[1];
+                var live=SafeRoutePlanner.FindFrom(m,from,r,cond);
+                VerifyPhysicalGridWitnessFrom(m,from,live,r,cond);
+                Check(live.Cells.Length<=first.Cells.Length,"route longer from next step");
+            }
+        });
+        Test("R2_LEGACY_FIND_REMAINS_BYTEWISE_EQUIVALENT_TO_FIND_FROM_SPAWN",()=>{
+            var m=Map();
+            for(int r=0;r<=1;r++)for(int g=0;g<=1;g++)for(int h=0;h<=1;h++)
+            {
+                var cond=new RouteConditions(g==1,h==1);
+                var legacy=SafeRoutePlanner.Find(m,r,cond);
+                var current=SafeRoutePlanner.FindFrom(m,m.Start,r,cond);
+                Check(legacy.Cells.Length==current.Cells.Length,"legacy path changed");
+                for(int k=0;k<legacy.Cells.Length;k++)
+                    Check(legacy.Cells[k].Equals(current.Cells[k]),"legacy route diverged");
+            }
+        });
+        Test("R2_FROM_CELL_CANNOT_ALIAS_OTHER_CALLS",()=>{
+            var m=Map();var cond=new RouteConditions(false,true);
+            var p=SafeRoutePlanner.Find(m,0,cond);
+            var from=p.Cells[1];
+            var a=SafeRoutePlanner.FindFrom(m,from,0,cond);
+            a.Cells[0]=new GridCell(-77,-77);
+            var b=SafeRoutePlanner.FindFrom(m,from,0,cond);
+            Check(b.Cells[0].Equals(from),"shared mutated route across source calls");
+        });
+        Test("R2_HEAVY_NARROW_CURRENT_ORIGIN_FAILS_CLOSED",()=>{
+            var m=LevelGrid.Parse("#######","#S...E#","#######");
+            var route=SafeRoutePlanner.FindFrom(m,new GridCell(3,1),1,new RouteConditions(true,false));
+            Check(!route.Reachable,"heavy under-sized hallway accepted");
+        });
+        Reject("R2_FIND_FROM_NULL_GRID",()=>SafeRoutePlanner.FindFrom(null!,new GridCell(0,0),0,new RouteConditions(false,false)));
+        Reject("R2_FIND_FROM_NEGATIVE_RADIUS",()=>SafeRoutePlanner.FindFrom(Map(),Map().Start,-1,new RouteConditions(false,false)));
+        Reject("R2_FIND_FROM_OVERSIZE_RADIUS",()=>SafeRoutePlanner.FindFrom(Map(),Map().Start,3,new RouteConditions(false,false)));
         Check(args.Length==1,"One results path required");
         string file=Path.GetFullPath(args[0]);Directory.CreateDirectory(Path.GetDirectoryName(file)!);
         File.WriteAllText(file,JsonSerializer.Serialize(new{package="B01-25-SAFEROUTE001/R1",
