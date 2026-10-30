@@ -44,11 +44,11 @@ def check_parent():
             raise ValueError("frozen #421 parent dependency changed: "+path)
 
 def names():
-    result=git("ls-tree","-r","--name-only","HEAD",SUBTREE,TOOLS,WORKFLOW)
+    result=git("ls-tree","-r","--name-only","HEAD",SUBTREE,TOOLS,WORKFLOW,SUBTREE[:-1]+".meta")
     files=result.splitlines()
     if not files or len(files)!=len(set(files)):
         raise ValueError("empty or duplicate payload")
-    if not all(p.startswith((SUBTREE,TOOLS)) or p==WORKFLOW for p in files):
+    if not all(p.startswith((SUBTREE,TOOLS)) or p==WORKFLOW or p==SUBTREE[:-1]+".meta" for p in files):
         raise ValueError("file outside W07 exclusive ownership")
     for required in (
         SUBTREE+"Runtime/RigDemoDefinition.cs",
