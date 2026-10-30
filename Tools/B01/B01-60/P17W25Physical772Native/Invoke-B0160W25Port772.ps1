@@ -19,7 +19,7 @@ $exitCode=2
 function Need([bool]$ok,[string]$msg) {
  if(-not $ok){throw 'B0160_W25_PORT772_HOLD: '+$msg}
 }
-function Git([string[]]$a) {
+function LocalGit([string[]]$a) {
  $v=@(& git @a 2>&1)
  Need ($LASTEXITCODE -eq 0) 'Git original local command failed (no fetch)'
  return ($v -join [Environment]::NewLine).Trim()
@@ -36,22 +36,22 @@ try {
  $version=@(& python --version 2>&1)
  Need ($LASTEXITCODE -eq 0 -and ($version -join ' ') -match '^Python 3\.') 'Python3 missing'
  $repo=(Resolve-Path -LiteralPath $RepoPath -ErrorAction Stop).Path
- $root=Git @('-C',$repo,'rev-parse','--show-toplevel')
+ $root=LocalGit @('-C',$repo,'rev-parse','--show-toplevel')
  Need ([IO.Path]::GetFullPath($root).TrimEnd('\','/') -ieq
        [IO.Path]::GetFullPath($repo).TrimEnd('\','/')) 'Must use repo top-level'
- $head=Git @('-C',$repo,'rev-parse','HEAD')
+ $head=LocalGit @('-C',$repo,'rev-parse','HEAD')
  $parent='e4a1f8eeae267f26488156142158155fed1452fa'
- Need ((Git @('-C',$repo,'merge-base',$parent,$head)) -eq $parent) 'Not selected W24 QA descendant'
+ Need ((LocalGit @('-C',$repo,'merge-base',$parent,$head)) -eq $parent) 'Not selected W24 QA descendant'
  $owner='ce46a5e0cc5d26df6c4ece723e8efe20d70fc4b1'
- Need ((Git @('-C',$repo,'cat-file','-t',$owner)) -eq 'commit') 'Owner #772 must exist in local Git history; NO automatic fetch'
+ Need ((LocalGit @('-C',$repo,'cat-file','-t',$owner)) -eq 'commit') 'Owner #772 must exist in local Git history; NO automatic fetch'
  $paths=@(
   'Tools/B01/B01-60/P17W25Physical772Native/port772_native.py',
   'Tools/B01/B01-60/P17W25Physical772Native/test_port772_native.py',
   'Tools/B01/B01-60/P17W25Physical772Native/Invoke-B0160W25Port772.ps1'
  )
  foreach($p in $paths) {
-  Need ((Git @('-C',$repo,'hash-object','--',$p)) -eq
-       (Git @('-C',$repo,'rev-parse',"HEAD:$p"))) "Modified W25 runner file: $p"
+  Need ((LocalGit @('-C',$repo,'hash-object','--',$p)) -eq
+       (LocalGit @('-C',$repo,'rev-parse',"HEAD:$p"))) "Modified W25 runner file: $p"
  }
  Need ([IO.Path]::GetFullPath((Join-Path $repo $paths[2])) -ieq
        [IO.Path]::GetFullPath($PSCommandPath)) 'Must launch tracked original W25 script'
