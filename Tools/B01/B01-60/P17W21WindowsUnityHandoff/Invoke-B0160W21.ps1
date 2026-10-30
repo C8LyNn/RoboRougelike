@@ -100,6 +100,10 @@ try {
        Write-Host "B0160_W21_INNER_ORIGINAL_SHA_PROBE exit=$probeExit kind=$($probe -join ',')"
        $branches=@(& git -C $inner branch -a --list '*b0160-w21-pin*' 2>&1)
        Write-Host "B0160_W21_INNER_PIN_BRANCH_COUNT=$($branches.Count)"
+       $target="$($pins[0]):Assets/B0123SecureReattachV2/Tests/PlayMode/B0123.SecureReattachV2.PlayMode.asmdef.meta"
+       $pathProbe=@(& git -C $inner show $target 2>&1)
+       $pathExit=$LASTEXITCODE
+       Write-Host "B0160_W21_INNER_ORIGINAL_BLOB_PROBE exit=$pathExit output=$((($pathProbe | Select-Object -First 2) -join ' ') -replace '[\r\n]+',' ')"
      }
    }
  }
