@@ -1,0 +1,29 @@
+{
+  "package": "B01-12-CONFIRM-GUARD-001",
+  "version": "R1",
+  "owned_by": "B01-12",
+  "dispatch": "#535",
+  "status": "PRODUCER_CANDIDATE",
+  "pins": {
+    "confirm_engine.js": {
+      "bytes": 7446,
+      "sha256": "b5664dedd6abba2f702ef3c2cd87211b774049488edd02a58a16fab8d92d114f"
+    },
+    "demo.html": {
+      "bytes": 5233,
+      "sha256": "e17f2c0f5f4ae597461ce0ee5f14bfca92072349180dcbb9c35dd6e38f31c6ba"
+    },
+    "ui.js": {
+      "bytes": 3905,
+      "sha256": "311b9470860c33ba1ff682bf7e2d4ca42cb797933ee5ea9937f1f91164063f99"
+    },
+    "test_engine.cjs": {
+      "bytes": 6991,
+      "sha256": "ee284e3769bf4be6f57683ce4225d16e3f277c3edc0ac567048c0880a5b0600e"
+    },
+    "test_browser.py": {
+      "bytes": 6799,
+      "sha256": "27e9649ec8ed01620cd90a6637e06ffe91092a5e2ffba2cba86505a7579a3269"
+    }
+  }
+}
