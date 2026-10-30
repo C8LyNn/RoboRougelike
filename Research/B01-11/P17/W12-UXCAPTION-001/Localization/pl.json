@@ -1,0 +1,23 @@
+{
+  "locale": "pl",
+  "cues": {
+    "cue.steps": "Kroki",
+    "cue.fire": "Strzał",
+    "cue.impact": "Silne uderzenie",
+    "cue.detached": "Oderwanie części",
+    "cue.warning": "Zagrożenie w pobliżu",
+    "cue.pickup": "Podniesiono przedmiot",
+    "cue.machinery": "Praca maszyny"
+  },
+  "directions": {
+    "Front": "Z przodu",
+    "FrontRight": "Z przodu po prawej",
+    "Right": "Z prawej",
+    "BackRight": "Z tyłu po prawej",
+    "Back": "Z tyłu",
+    "BackLeft": "Z tyłu po lewej",
+    "Left": "Z lewej",
+    "FrontLeft": "Z przodu po lewej"
+  },
+  "repeatFormat": "×{count}"
+}

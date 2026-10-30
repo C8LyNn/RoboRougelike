@@ -1,0 +1,23 @@
+{
+  "locale": "en",
+  "cues": {
+    "cue.steps": "Footsteps",
+    "cue.fire": "Weapon fire",
+    "cue.impact": "Heavy impact",
+    "cue.detached": "Part detached",
+    "cue.warning": "Danger nearby",
+    "cue.pickup": "Item collected",
+    "cue.machinery": "Machinery"
+  },
+  "directions": {
+    "Front": "Ahead",
+    "FrontRight": "Ahead right",
+    "Right": "Right",
+    "BackRight": "Behind right",
+    "Back": "Behind",
+    "BackLeft": "Behind left",
+    "Left": "Left",
+    "FrontLeft": "Ahead left"
+  },
+  "repeatFormat": "×{count}"
+}

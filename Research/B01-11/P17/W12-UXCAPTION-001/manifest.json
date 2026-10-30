@@ -1,0 +1,126 @@
+{
+  "schema": "b01-package-v1",
+  "package_id": "B01-11-P17-UXCAPTION-001",
+  "version": "R2",
+  "owner": "B01-11 — UX RESEARCH & COMPETITIVE ANALYSIS",
+  "wave": "PASS17 WAVE13",
+  "issue": "https://github.com/C8LyNn/RoboRougelike/issues/535",
+  "branch": "research/b01-11-p17-w12-uxcaption-001",
+  "base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "source_commit": "7c0c08a2cc84635772379d6a9254a853d7fac90a",
+  "scope": [
+    "Research/B01-11/P17/W12-UXCAPTION-001/**",
+    ".github/workflows/b01-11-uxcaption-w12.yml"
+  ],
+  "files": [
+    {
+      "path": "Research/B01-11/P17/W12-UXCAPTION-001/Runtime/CaptionTrack.cs",
+      "bytes": 8818,
+      "git_blob_sha1": "0c88618a70446a44b2d3c9162fab407e646a78c5",
+      "sha256": "d04f71374a2e78b33b1bcda92c7f355e6a6f74357223ea463712c69cfbd41147"
+    },
+    {
+      "path": "Research/B01-11/P17/W12-UXCAPTION-001/Tests/Program.cs",
+      "bytes": 26946,
+      "git_blob_sha1": "439e562ecb69db1586e02131ed73da764bfebcfb",
+      "sha256": "7734fc17ff8d4ad5590fe9289386c0efb42736c8a2ccf3060511dfb0b09cdf68"
+    },
+    {
+      "path": "Research/B01-11/P17/W12-UXCAPTION-001/Tests/UXCaptionTests.csproj",
+      "bytes": 529,
+      "git_blob_sha1": "12ca0abccd7ec0e09135b34e3a0d51ff6496a154",
+      "sha256": "01e59bce07957912c921561fa5b067c3d10337b27b989e1ab2323c00415d4110"
+    },
+    {
+      "path": ".github/workflows/b01-11-uxcaption-w12.yml",
+      "bytes": 906,
+      "git_blob_sha1": "1f7716552771fc198fa15d8f0d4f65a5048a8404",
+      "sha256": "04e9af728e1400971ca6abc58a87dc421a86c6350ccf8f5f564ef9f95ede4d58"
+    },
+    {
+      "path": "Research/B01-11/P17/W12-UXCAPTION-001/Localization/en.json",
+      "bytes": 542,
+      "git_blob_sha1": "faf05c44fa28880f228fd77262c441d595c6b827",
+      "sha256": "98b5d183d318a824cb317e0a56c9010e434e2bc8b9a8306e019d9de651a3c3dc"
+    },
+    {
+      "path": "Research/B01-11/P17/W12-UXCAPTION-001/Localization/pl.json",
+      "bytes": 596,
+      "git_blob_sha1": "4a54a89a1de2f25c36f31c15f5b7cd37ba217129",
+      "sha256": "8950c96ca0379d1d6211ca45e04a852f9b571bd0d603a2c93862c419832c85bd"
+    },
+    {
+      "path": "Research/B01-11/P17/W12-UXCAPTION-001/README.md",
+      "bytes": 5861,
+      "git_blob_sha1": "aff36a1489a43c94b67e6dfb3b49a685727c60d2",
+      "sha256": "10304711089362d588a8d94197ebfecfbf0687f4d04e874c50e5e16d1d29ec67"
+    },
+    {
+      "path": "Research/B01-11/P17/W12-UXCAPTION-001/TEST_PLAN.md",
+      "bytes": 4258,
+      "git_blob_sha1": "78cc41407f799e1ebbf7309b3b3022e893647508",
+      "sha256": "3e3e0da1e59277c6fea1e147e45c61de368b201d4d75a6aacd2e016dc6a949c7"
+    },
+    {
+      "path": "Research/B01-11/P17/W12-UXCAPTION-001/QA_RECEIVER.md",
+      "bytes": 3461,
+      "git_blob_sha1": "56531b81d1904b1d883bde2c85f42d6f172fb0a9",
+      "sha256": "3cee4e18f7c3e559bc21f0a68de6b0f8a04414063b5bf4bfa6ab323da3d615ea"
+    },
+    {
+      "path": "Research/B01-11/P17/W12-UXCAPTION-001/INSTALL_FOR_CODEX.md",
+      "bytes": 4165,
+      "git_blob_sha1": "280e9d3e6aada32b6235352f5a3b52a27d671471",
+      "sha256": "a92ac14be14e0da0c3faf6e033a3994d6f0b639482c5e5645c69550134cfa1a7"
+    },
+    {
+      "path": "Research/B01-11/P17/W12-UXCAPTION-001/EVIDENCE/W13_CRITICAL_FLOOD_RED_GREEN.md",
+      "bytes": 2519,
+      "git_blob_sha1": "2d3c76748b305678a395597b41724ca8d57e5948",
+      "sha256": "bcdab49929b5ca339d4e5260332dcdb1759f187c0755b5ddb23205aefea6f329"
+    }
+  ],
+  "description": "Original compiled C# positional audio accessibility captions plus PL/EN JSON, with Critical priority protected against 32+ PartDetached flood, immutable snapshots and deterministic eviction. NOT integrated in Unity.",
+  "tests": [
+    {
+      "name": "R1 source unchanged + W13 12 test-first adversarial assertions Ubuntu RED",
+      "status": "FAIL",
+      "passed": 153,
+      "failed": 9,
+      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41081844186"
+    },
+    {
+      "name": "R1 source unchanged + W13 12 test-first adversarial assertions Windows RED",
+      "status": "FAIL",
+      "passed": 153,
+      "failed": 9,
+      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41081844186"
+    },
+    {
+      "name": "W13 fixed typed CSharp and PL EN fixtures Ubuntu",
+      "status": "PASS",
+      "passed": 167,
+      "failed": 0,
+      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41082497060"
+    },
+    {
+      "name": "W13 fixed typed CSharp and PL EN fixtures Windows",
+      "status": "PASS",
+      "passed": 167,
+      "failed": 0,
+      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41082497060"
+    },
+    {
+      "name": "Native Unity Editor/PlayMode Player, real positional sounds and human UX",
+      "status": "NOT_RUN"
+    }
+  ],
+  "producer_status": "R2_SOURCE_GREEN_167_PER_OS",
+  "independent_g0": "PENDING",
+  "independent_qa": "PENDING",
+  "native_g1": "NOT_RUN",
+  "codex_status": "NOT_OFFERED / ACK_PENDING / NOT_INTEGRATED",
+  "rollback": "Immutable R1 source and docs at b3e3c72991b4701fc6e08fa49c109ae0d7294418; discard W13 R2 producer branch or rollback own Research files; no Codex game or Secure V2 #510 changes.",
+  "note": "11 source+documentation+PL/EN/workflow payload SHA256/UTF8 bytes/Git blob pinned; manifest excludes itself to avoid circular digest. W13 full RED and GREEN tested actual original compiled C#; source-only not Unity.",
+  "docs_commit": "416907712654d8c0d4f41fd7722d003ea2f6049b"
+}
