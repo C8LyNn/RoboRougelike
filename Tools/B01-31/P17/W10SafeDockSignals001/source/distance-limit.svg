@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+<title>Dock distance exceeds validated reach; diagnostic only</title>
+<g stroke-linejoin="round" stroke-linecap="round">
+<rect x="12" y="42" width="232" height="172" rx="82" fill="#483521" stroke="#FFBF5F" stroke-width="10" stroke-dasharray="26 17"/>
+<path d="M32 98h51v60H32zm141 0h51v60h-51z" fill="#192736" stroke="#FFE4B2" stroke-width="10"/>
+<path d="M83 112h30m30 0h30M83 145h30m30 0h30" stroke="#FFBF5F" stroke-width="8" stroke-dasharray="7 11"/>
+<path d="M111 128H80m31 0-13-13m13 13-13 13m34-13h44m-44 0 13-13m-13 13 13 13" fill="none" stroke="#FFF3DD" stroke-width="9"/>
+<path d="M120 76v99" stroke="#FFBF5F" stroke-width="5" stroke-dasharray="3 13"/>
+</g></svg>
