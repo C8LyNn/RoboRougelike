@@ -166,16 +166,13 @@ class PhysicalStageTests(unittest.TestCase):
             g.plan(self.repo,target,self.head,"public-guard",pinned_sha=self.head)
 
     def test_14_reject_target_guid_collision_from_unrelated_asset(self):
-        # Same GUID in distinct original asset path causes conflict on import.
+        # Source is added after target; original target asset keeps its GUID.
         self.seed_variant("secure-v2")
-        selected=g.REQUIRED["secure-v2"][0]+".meta"
-        source_guid=g.guid_of((self.repo/selected).read_bytes(),selected)
-        self.put("Assets/OtherSafe.cs.meta","fileFormatVersion: 2\nguid: "+source_guid+"\n")
-        target=self.commit("target now owns same guid but unrelated path")
-        # Construct a new descendant with full same selected content.
-        head=self.commit("same candidate after collision")
-        with self.assertRaisesRegex(g.GateError,"TARGET_ALREADY_CONTAINS"):
-            # Same source assets already present in target, so prior-scoped gate wins.
+        target=self.base
+        path=g.REQUIRED["secure-v2"][0]+".meta"
+        self.put(path,"fileFormatVersion: 2\nguid: "+"f"*32+"\n")
+        head=self.commit("selected file acquired GUID of unrelated target asset")
+        with self.assertRaisesRegex(g.GateError,"TARGET_GUID_COLLISION"):
             g.plan(self.repo,target,head,"secure-v2",pinned_sha=head)
 
     def test_15_reject_missing_directory_metadata(self):
