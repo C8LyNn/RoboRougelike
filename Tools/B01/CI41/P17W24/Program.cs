@@ -254,14 +254,15 @@ internal static class Program
         if(cold==null)throw new IOException("COLD_REOPEN_FAILED");
         try
         {
+            var newFactory=new Factory();
+            Verify(cold.Attach(new Gate(),newFactory),
+                   "fresh cold owner binds one original gateway before physical Save Read");
             Verify(cold.Read(Run,out long gen,out string hash)&&
                    gen==(index==0?1:0)&&
                    (gen==0||hash==CanonicalSlotSessionV3.SourceHash(light)),
                    "cold genuine full single-file envelope persists correct epoch after multiple races");
             if(index==0)
             {
-                var newFactory=new Factory();
-                Verify(cold.Attach(new Gate(),newFactory),"fresh single canonical gateway attached");
                 Verify(cold.TryRestore(light,Run,1)==CanonicalGateResult.Accepted,
                        "cold original #556 run and W06 Light/Heavy ledger restored");
                 Verify(newFactory.RetireAll(),"cold surrogate physically retired");
