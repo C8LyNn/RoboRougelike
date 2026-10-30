@@ -71,7 +71,7 @@ class ScannerControls(unittest.TestCase):
         p=inputs();p["r2"]=p["r2"].replace("rig.Body.isKinematic = true;",
                               "if(!rig.Emitter.HasConsumedId(id)) return false; rig.Body.isKinematic = true;")
         # Shape scanner is NOT semantic approval: a new implementation requires manual QA.
-        self.assertEqual(gate.check(p)["data_integrity_verdict"],"BOTH_CANDIDATES_TRANSACTION_HOLD")
+        with self.assertRaises(gate.Drift):gate.check(p)
     def test_10_reordered_mutations_require_revalidation(self):
         p=inputs();p["r2"]=p["r2"].replace("rig.Body.angularVelocity = Vector3.zero;","")
         with self.assertRaises(gate.Drift):gate.check(p)
