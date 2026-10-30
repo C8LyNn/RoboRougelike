@@ -645,5 +645,186 @@ class RebuildModelTests(unittest.TestCase):
                           x["hypothetical_loaner_used"]), (0,1,0))
 
 
+    def test_96_same_reward_different_order_changes_same_won_garage_affordability(self):
+        ev=[attempt("win",True,(part("drive","mobility"),part("gun","weapon")),earned=70)]
+        a=run_plan(plan(ev,cash=0),reward_timing="after_reservation")
+        b=run_plan(plan(ev,cash=0),reward_timing="before_reservation")
+        self.assertEqual((a["free"],a["paid"],a["denied"]), (1,0,1))
+        self.assertEqual((b["free"],b["paid"],b["denied"]), (1,1,0))
+        self.assertEqual((a["wallet_final"],b["wallet_final"]),(70,0))
+        self.assertEqual((a["restored"],b["restored"]),(0,0))
+
+    def test_97_reward_before_order_never_uses_money_from_blocked_attempt(self):
+        ev=[dict(attempt("loss",False),core_alive_after=False),
+            attempt("phantom",True,(part("w"),),earned=700)]
+        b=run_plan(plan(ev,cash=0),reward_timing="before_reservation")
+        self.assertEqual((b["earned_scrap"],b["wallet_final"],b["wins"]),(0,0,0))
+
+    def test_98_reward_before_order_preserves_next_win_gate(self):
+        ev=[attempt("v1",True,(part("a"),),earned=100)]
+        b=run_plan(plan(ev,cash=0),reward_timing="before_reservation")
+        self.assertEqual((b["restored"],b["reserved_final"],b["free"]),(0,1,1))
+
+    def test_99_earned_currency_conservation_both_reward_orders(self):
+        ev=[attempt("v1",True,(part("a"),part("b")),earned=70),
+            attempt("v2",True,(part("c"),part("d")),earned=110)]
+        for timing in ("before_reservation","after_reservation"):
+            b=run_plan(plan(ev,cash=50),reward_timing=timing)
+            self.assertEqual(b["wallet_final"],50+b["earned_scrap"]-b["charged_scrap"])
+
+    def test_100_unsupported_reward_timing_fails_closed(self):
+        with self.assertRaises(InvalidScenario):
+            run_plan(plan([attempt("v",True)]),reward_timing="during_combat")
+
+    def test_101_reward_timing_not_injected_into_event_input(self):
+        ev=[dict(attempt("v",True),reward_timing="before_reservation")]
+        b=run_plan(plan(ev,cash=0))
+        self.assertEqual(b["reward_timing"],"after_reservation")
+
+    def test_102_empty_reward_preserves_identical_monetary_result(self):
+        ev=[attempt("v",True,(part("a"),part("b")))]
+        before=run_plan(plan(ev,cash=140),reward_timing="before_reservation")
+        after=run_plan(plan(ev,cash=140),reward_timing="after_reservation")
+        self.assertEqual((before["charged_scrap"],before["wallet_final"]),
+                         (after["charged_scrap"],after["wallet_final"]))
+
+    def test_103_reward_order_does_not_forge_free_epoch(self):
+        ev=[attempt("lost",False,(part("a"),part("b")),earned=70)]
+        x=run_plan(plan(ev,cash=0),bootstrap=False,
+                   reward_timing="before_reservation")
+        self.assertEqual((x["free"],x["paid"],x["wins"]),(0,1,0))
+
+    def test_104_terminal_no_challenge_reports_actual_modeled_paid_exposure(self):
+        ev=[dict(attempt("final_win",True,(part("a"),part("b"))),
+                 next_challenge_available_after=False)]
+        x=run_plan(plan(ev,cash=70))
+        self.assertEqual((x["modeled_stranded_pending_count"],
+                          x["modeled_stranded_paid_scrap"],
+                          x["modeled_stranded_free_tickets"]),(2,70,1))
+
+    def test_105_terminal_destroyed_core_reports_actual_modeled_paid_exposure(self):
+        ev=[dict(attempt("terminal_loss",False,(part("a"),part("b"))),
+                 core_alive_after=False)]
+        x=run_plan(plan(ev,cash=70))
+        self.assertEqual((x["modeled_stranded_pending_count"],
+                          x["modeled_stranded_paid_scrap"]),(2,70))
+
+    def test_106_essential_zero_hp_without_loaner_reports_stranded_paid(self):
+        ev=[attempt("lost",False,(
+            {"id":"gun","role":"weapon","blocks_deploy":True},
+            part("other")))]
+        x=run_plan(plan(ev,cash=70),enforce_deploy_gate=True)
+        self.assertEqual((x["modeled_stranded_pending_count"],
+                          x["modeled_stranded_paid_scrap"]),(2,70))
+
+    def test_107_hypothetical_loaner_available_is_not_assumed_irrecoverable(self):
+        ev=[attempt("lost",False,(
+            {"id":"gun","role":"weapon","blocks_deploy":True},
+            part("other")))]
+        x=run_plan(plan(ev,cash=70),enforce_deploy_gate=True,
+                   loaner_challenges=1)
+        self.assertEqual(x["modeled_stranded_paid_scrap"],0)
+        self.assertEqual(x["end_feasibility"],
+                         "ONE_UNAPPROVED_LOANER_COUNTERFACTUAL_AVAILABLE")
+
+    def test_108_loaner_defeat_makes_remaining_paid_reservation_stranded(self):
+        ev=[attempt("lost",False,(
+            {"id":"gun","role":"weapon","blocks_deploy":True},
+            part("other"))),attempt("loaner_defeat",False)]
+        x=run_plan(plan(ev,cash=70),enforce_deploy_gate=True,
+                   loaner_challenges=1)
+        self.assertEqual((x["hypothetical_loaner_used"],
+                          x["modeled_stranded_paid_scrap"]),(1,70))
+
+    def test_109_non_terminal_pending_has_zero_stranded_risk_indicator(self):
+        ev=[attempt("loss",False,(part("a"),part("b")))]
+        x=run_plan(plan(ev,cash=70))
+        self.assertEqual((x["reserved_final"],x["modeled_stranded_paid_scrap"]),
+                         (2,0))
+
+    def test_110_unreserved_destroyed_items_are_not_counted_as_paid_tickets(self):
+        ev=[dict(attempt("final",False,(part("a"),part("b"),part("c"))),
+                 next_challenge_available_after=False)]
+        x=run_plan(plan(ev,cash=0))
+        self.assertEqual((x["modeled_stranded_pending_count"],
+                          x["modeled_stranded_paid_scrap"],
+                          x["denied"]),(1,0,2))
+
+    def test_111_stranded_paid_only_charges_accepted_reservation(self):
+        ev=[dict(attempt("final",False,(part("a"),part("b"),part("c"))),
+                 next_challenge_available_after=False)]
+        x=run_plan(plan(ev,cash=70))
+        self.assertEqual((x["modeled_stranded_pending_count"],
+                          x["modeled_stranded_paid_scrap"],x["denied"]),
+                         (2,70,1))
+
+    def test_112_last_victory_repairs_old_tickets_not_new_stranded_tickets(self):
+        ev=[attempt("before",False,(part("old"),)),
+            dict(attempt("last_win",True,(part("new1"),part("new2"))),
+                 next_challenge_available_after=False)]
+        x=run_plan(plan(ev,cash=140))
+        self.assertEqual((x["restored"],x["modeled_stranded_pending_count"],
+                          x["modeled_stranded_paid_scrap"]),(1,2,70))
+
+    def test_113_wallet_paid_stranded_exposure_does_not_issue_refund(self):
+        ev=[dict(attempt("final",True,(part("a"),part("b"))),
+                 next_challenge_available_after=False)]
+        x=run_plan(plan(ev,cash=70))
+        self.assertEqual((x["wallet_final"],x["modeled_stranded_paid_scrap"]),(0,70))
+        self.assertNotIn("refund_issued",x)
+
+    def test_114_hypothetical_cost_grid_65_70_75_remains_discounted(self):
+        ev=[attempt("w",True,(part("a"),part("b")))]
+        for pct in (65,70,75):
+            with self.subTest(pct=pct):
+                x=run_plan(plan(ev,cash=1000,percent=pct))
+                self.assertEqual(x["charged_scrap"],pct)
+
+    def test_115_fixed_seed_synthetic_before_reward_is_reproducible(self):
+        from rebuild_balance import synthetic_batch
+        a=synthetic_batch(seed=98,episodes=3,
+                          reward_timing="before_reservation")
+        b=synthetic_batch(seed=98,episodes=3,
+                          reward_timing="before_reservation")
+        self.assertEqual(a,b)
+        self.assertEqual(a["reward_timing"],"before_reservation")
+
+    def test_116_invalid_synthetic_reward_order_is_rejected(self):
+        from rebuild_balance import synthetic_batch
+        with self.assertRaises(InvalidScenario):
+            synthetic_batch(episodes=1,reward_timing="invalid")
+
+    def test_117_reward_before_reservation_cannot_bypass_dead_core(self):
+        ev=[dict(attempt("terminal",False),core_alive_after=False),
+            attempt("fake_winner",True,earned=1000)]
+        x=run_plan(plan(ev,cash=0),reward_timing="before_reservation",
+                   enforce_deploy_gate=True,loaner_challenges=1)
+        self.assertEqual((x["wins"],x["earned_scrap"],
+                          x["hypothetical_loaner_used"]),(0,0,0))
+
+    def test_118_reward_before_reservation_cannot_bypass_no_challenge(self):
+        ev=[dict(attempt("last",True),next_challenge_available_after=False),
+            attempt("fake_winner",True,earned=1000)]
+        x=run_plan(plan(ev,cash=0),reward_timing="before_reservation")
+        self.assertEqual((x["wins"],x["earned_scrap"]),(1,0))
+
+    def test_119_after_reward_baseline_840_1610_not_regressed(self):
+        ev=[attempt(f"v{i}",True,(part(f"a{i}"),part(f"b{i}")))
+            for i in range(12)]
+        x=compare(plan(ev,cash=4000),reward_timing="after_reservation")
+        self.assertEqual((x["per_win"]["charged_scrap"],
+                          x["per_run"]["charged_scrap"]),(840,1610))
+
+    def test_120_reward_before_order_changes_delayed_ticket_count_not_win_count(self):
+        ev=[attempt("v",True,(part("a"),part("b")),earned=70)]
+        after=run_plan(plan(ev,cash=0))
+        before=run_plan(plan(ev,cash=0),
+                        reward_timing="before_reservation")
+        self.assertEqual((after["wins"],before["wins"]), (1,1))
+        self.assertEqual((after["reserved_final"],
+                          before["reserved_final"]),(1,2))
+        self.assertEqual((after["restored"],before["restored"]),(0,0))
+
+
 if __name__ == "__main__":
     unittest.main()
