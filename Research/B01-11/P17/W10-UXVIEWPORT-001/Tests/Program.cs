@@ -25,6 +25,17 @@ static class Program
         }
         return true;
     }
+
+    // W11 test-first optional reflection: R1 source deliberately has no measured-content API.
+    static HudLayout BuildMeasured(HudViewport v,int critical,int vitals,int threats,int objectives=0,int tips=0)
+    {
+        var t=typeof(HudLayoutCore).Assembly.GetType("B01.UXViewport.HudContentMetrics");
+        if(t==null)return null;
+        var arg=Activator.CreateInstance(t,new object[]{critical,vitals,threats,objectives,tips});
+        var method=typeof(HudLayoutCore).GetMethod("Build",new[]{typeof(HudViewport),t});
+        if(method==null)return null;
+        return (HudLayout)method.Invoke(null,new object[]{v,arg});
+    }
     static void Main()
     {
         var resolutions=new[]{
@@ -154,6 +165,70 @@ static class Program
             var b=HudLayoutCore.Build(new HudViewport(768,1024,showObjectives:false));
             return a.Critical.Y==b.Critical.Y&&a.Critical.Height==b.Critical.Height;
         });
+
+        // W11 measured text (host supplies real pixel extents, not guessed glyph widths).
+        Check("W11 measured-content API exists",()=>typeof(HudLayoutCore).Assembly.GetType("B01.UXViewport.HudContentMetrics")!=null);
+        Check("W11 portrait taller critical copy expands reserved panel",()=>{
+            var baseline=HudLayoutCore.Build(new HudViewport(768,1024));
+            var measured=BuildMeasured(new HudViewport(768,1024),250,0,0);
+            return measured!=null&&Valid(measured)&&measured.Critical.Height>=278&&measured.Critical.Height>baseline.Critical.Height;
+        });
+        Check("W11 measured critical also pushes following portrait vitals",()=>{
+            var baseline=HudLayoutCore.Build(new HudViewport(768,1024));
+            var measured=BuildMeasured(new HudViewport(768,1024),250,0,0);
+            return measured!=null&&measured.Vitals.Y>baseline.Vitals.Y&&Valid(measured);
+        });
+        Check("W11 measured vitals extends left column without overlapping objectives",()=>{
+            var baseline=HudLayoutCore.Build(new HudViewport(1920,1080));
+            var measured=BuildMeasured(new HudViewport(1920,1080),0,330,0);
+            return measured!=null&&measured.Vitals.Height>baseline.Vitals.Height&&Valid(measured);
+        });
+        Check("W11 measured threats moves critical downward on wide screen",()=>{
+            var baseline=HudLayoutCore.Build(new HudViewport(1920,1080));
+            var measured=BuildMeasured(new HudViewport(1920,1080),0,0,285);
+            return measured!=null&&measured.Critical.Y>baseline.Critical.Y&&Valid(measured);
+        });
+        Check("W11 huge optional objectives are omitted without hiding essentials",()=>{
+            var measured=BuildMeasured(new HudViewport(1280,720),0,0,0,500);
+            return measured!=null&&measured.Objectives.IsEmpty&&Valid(measured);
+        });
+        Check("W11 huge optional tips are omitted without hiding essentials",()=>{
+            var measured=BuildMeasured(new HudViewport(1280,720),0,0,0,0,600);
+            return measured!=null&&measured.Tips.IsEmpty&&Valid(measured);
+        });
+        Check("W11 measured small text never shrinks existing panels",()=>{
+            var baseline=HudLayoutCore.Build(new HudViewport(1280,720));
+            var measured=BuildMeasured(new HudViewport(1280,720),1,1,1,1,1);
+            return measured!=null&&Valid(measured)&&measured.Critical.Height==baseline.Critical.Height&&
+                   measured.Vitals.Height==baseline.Vitals.Height&&measured.Threats.Height==baseline.Threats.Height;
+        });
+        Check("W11 measured zero is legacy-equivalent geometry",()=>{
+            var baseline=HudLayoutCore.Build(new HudViewport(1024,768));
+            var measured=BuildMeasured(new HudViewport(1024,768),0,0,0);
+            return measured!=null&&Valid(measured)&&measured.Critical.Height==baseline.Critical.Height&&
+                   measured.Vitals.Height==baseline.Vitals.Height&&measured.Threats.Height==baseline.Threats.Height;
+        });
+        Check("W11 huge measured mandatory critical fails closed, never clips",()=>{
+            try { return BuildMeasured(new HudViewport(1280,720),900,0,0)==null?false:false; }
+            catch(System.Reflection.TargetInvocationException e){return e.InnerException is InvalidOperationException;}
+        });
+        Check("W11 measured complex portrait input still has nonoverlapping rectangles",()=>{
+            var measured=BuildMeasured(new HudViewport(768,1024,0,32,0,48,125),180,140,105);
+            return measured!=null&&Valid(measured);
+        });
+        Check("W11 measured font height does not double apply user scaling",()=>{
+            var m=BuildMeasured(new HudViewport(1920,1080,userScalePercent:150),200,0,0);
+            return m!=null&&m.Critical.Height==200+2*21&&Valid(m);
+        });
+        Check("W11 overlong objective copy may disappear without moving critical",()=>{
+            var a=BuildMeasured(new HudViewport(1920,1080),0,0,0,0);
+            var b=BuildMeasured(new HudViewport(1920,1080),0,0,0,1000);
+            return a!=null&&b!=null&&a.Critical.Y==b.Critical.Y&&b.Objectives.IsEmpty&&Valid(b);
+        });
+        Check("W11 left/right integer overflow insets must be rejected at input",()=>
+            Throws<ArgumentOutOfRangeException>(()=>new HudViewport(1280,720,left:int.MaxValue,right:1)));
+        Check("W11 top/bottom integer overflow insets must be rejected at input",()=>
+            Throws<ArgumentOutOfRangeException>(()=>new HudViewport(1280,720,top:int.MaxValue,bottom:1)));
         Console.WriteLine("RESULT "+passed+" PASS, "+failed+" FAIL");
         if(failed!=0)Environment.Exit(1);
     }
