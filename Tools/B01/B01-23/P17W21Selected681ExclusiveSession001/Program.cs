@@ -146,6 +146,18 @@ static class R2Tests
             proof.Allowed=true;
             return blocked&&first.TryCloseOnlyAfterAllOwnedWorldsGone();
         }));
+        Check("W21 throwing private physical retirement proof retains held OS authority",()=>InDir(path=>{
+            Guid slot=Guid.NewGuid();var disk=new Disk(Path.Combine(path,"revision"));
+            var proof=new Retire{Throws=true};
+            using var first=Open(path,51,slot,disk,proof);
+            if(first.TryRestore(Bytes(51,10,true,false),51,1)!=CanonicalGateResult.Accepted||
+               first.TryCloseOnlyAfterAllOwnedWorldsGone())return false;
+            bool denied=false;
+            try{using var second=Open(path,51,slot,disk,new Retire());}
+            catch(IOException){denied=true;}
+            proof.Throws=false;
+            return denied&&first.TryCloseOnlyAfterAllOwnedWorldsGone();
+        }));
         Check("W21 verified physical retirement releases slot and permits same-run cold restart",()=>InDir(path=>{
             Guid slot=Guid.NewGuid();var disk=new Disk(Path.Combine(path,"revision"));
             var first=Open(path,51,slot,disk,new Retire());
