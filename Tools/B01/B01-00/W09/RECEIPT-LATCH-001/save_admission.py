@@ -398,6 +398,24 @@ def audit_bridge_wave16(payload):
         else:
             verdicts[str(n)] = "HOLD_CHANGED_CORE_NEW_EXACT_SHA_QA_REQUIRED"
 
+    # W16 updated original-independent QA: #590 tested the CURRENT #587
+    # Git blob. Preserve the older #588 source RED as historical evidence,
+    # but do not keep advertising the newer exact source as "not re-tested".
+    fresh = doc(root.get("fresh_exact_587_qa"), "fresh_exact_587_qa")
+    if fresh != {
+        "pr": 590, "qa_sha": "c28565639bef834e64c092ce142c449acdfb7ae5",
+        "target_pr": 587,
+        "tested_commit": BRIDGE_EXPECTED[587][0],
+        "tested_core_blob": BRIDGE_EXPECTED[587][1],
+        "verdict": "EXPECTED_RED_WITNESS",
+        "defects": [
+            "SAME_GENERATION_WORLD_FORK",
+            "ROLLBACK_EXCEPTION_VERDICT_MASKED",
+        ],
+    }:
+        raise AdmissionError("current exact #587 independent QA #590 source/defects mismatch")
+    verdicts["587"] = "HOLD_CURRENT_EXACT_SOURCE_SECURITY_RED"
+
     if seen != set(BRIDGE_EXPECTED):
         raise AdmissionError("both original producer candidates required")
     historical = doc(root.get("noncanonical_qa"), "noncanonical_qa")
@@ -420,17 +438,25 @@ def audit_bridge_wave16(payload):
                ("pr", "sha", "decision_url")):
             raise AdmissionError("undecided cannot imply frozen selection")
     elif state == "SELECTED_ONE":
-        n = owner.get("pr")
-        if (n not in BRIDGE_EXPECTED
-                or owner.get("sha") != BRIDGE_EXPECTED[n][0]
-                or not isinstance(owner.get("decision_url"), str)
-                or not __import__("re").fullmatch(
-                    r"https://github\.com/C8LyNn/RoboRougelike/"
-                    r"(?:issues|pull)/[1-9][0-9]*#issuecomment-[1-9][0-9]*",
-                    owner["decision_url"])):
-            raise AdmissionError("version-specific owner decision receipt missing")
+        if (owner.get("pr") != 587
+                or owner.get("sha") != BRIDGE_EXPECTED[587][0]
+                or owner.get("decision_url") != pr_url(596)):
+            raise AdmissionError("owner-selected #587 lineage requires actual new #596 producer PR")
     else:
         raise AdmissionError("invalid bridge selection state")
+
+    revision = doc(root.get("owner_correction"), "owner_correction")
+    if (revision != {
+        "pr": 596,
+        "selected_lineage_pr": 587,
+        "observed_unfrozen_head": "7bd598fde2204d6a397a50b199be12f072b5cd66",
+        "state": "DRAFT_SOURCE_QA_PENDING",
+        "merged": False,
+        "source_g0": "HOLD",
+    }):
+        raise AdmissionError("unapproved or already-promoted R2 revision")
+    if state != "SELECTED_ONE":
+        raise AdmissionError("corrected R2 #596 owner selection must be explicit")
 
     gates = doc(root.get("release_gates"), "release_gates")
     if set(gates) != set(BRIDGE_HOLDS):
@@ -443,6 +469,8 @@ def audit_bridge_wave16(payload):
         "selected_source": owner.get("pr") if state == "SELECTED_ONE" else None,
         "owner_decision_state": state,
         "source_statuses": verdicts,
+        "selected_correction_pr": 596,
+        "selected_correction_status": "DRAFT_SOURCE_QA_PENDING",
         "independent_exact_sha_qa_current_green": False,
         "source_g0": "HOLD",
         "native_unity_g1": "NOT_RUN",
