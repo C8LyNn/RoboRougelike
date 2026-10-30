@@ -20,7 +20,7 @@
     "Assets/B01Packages/ECONREBUILD002/Runtime/B01.EconRebuildV2.asmdef.meta": "00184f0ef1f9a355aca7dd408114e6dd918369b1",
     "Tools/B01/ECONREBUILD002/RebuildV2.Tests.csproj": "b3b5577b94de61188a8d00a671e5210fa23cf32a",
     "Tools/B01/ECONREBUILD002/Program.cs": "ac68ef0173e098e6238a29c9163ce8a1f283451a",
-    "Tools/B01/ECONREBUILD002/README.md": "1c8cfb97ceef6aa09de4d1d61f07be90b5c67cd4"
+    "Tools/B01/ECONREBUILD002/README.md": "40b86912e0ba7c422911184a9cbe019f5954f09b"
   },
   "owned_paths": [
     ".github/workflows/b01-22-p17w20-econ-v2-source.yml",
