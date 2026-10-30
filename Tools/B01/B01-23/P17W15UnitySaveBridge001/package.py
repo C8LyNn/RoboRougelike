@@ -53,7 +53,7 @@ def scope():
         "candidate.Capture(),snapshot" not in core or
         "checkpoint.Seal(" not in core or
         "return quarantined?WorldSwapVerdict.RollbackQuarantine:verdict;" not in core or
-        "currentCold=restored;" not in core or
+        "currentCold=ready;" not in core or
         "old.Deactivate()" not in core or
         "quarantined=true;" not in core or
         "SameIdentityAndLedger" not in core or
