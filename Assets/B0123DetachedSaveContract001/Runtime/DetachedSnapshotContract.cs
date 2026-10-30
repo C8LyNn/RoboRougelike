@@ -34,13 +34,15 @@ namespace B01.DetachedSaveContract001
     public sealed class RunSnapshot
     {
         public readonly long RunId, Generation;
-        public readonly PersistedPart[] Parts;
+        // W14 R2 #550 fix: callers see a defensive copy, never backing storage.
+        private readonly PersistedPart[] frozenParts;
+        public PersistedPart[] Parts => (PersistedPart[])frozenParts.Clone();
         public RunSnapshot(long runId,long generation,IReadOnlyList<PersistedPart> parts)
         {
             RunId=runId;Generation=generation;
             if(parts==null)throw new ArgumentNullException(nameof(parts));
-            Parts=new PersistedPart[parts.Count];
-            for(int i=0;i<parts.Count;i++)Parts[i]=parts[i];
+            frozenParts=new PersistedPart[parts.Count];
+            for(int i=0;i<parts.Count;i++)frozenParts[i]=parts[i];
         }
     }
 
@@ -199,7 +201,9 @@ namespace B01.DetachedSaveContract001
         private static readonly Vector3d Zero=new Vector3d(0,0,0);
         private ColdRestore(RunSnapshot snapshot,DebrisImpulseLedger[] ledgers)
         { Snapshot=snapshot;rebuilt=ledgers; }
-        public DebrisImpulseLedger GetLedger(int slot)=>rebuilt[slot];
+        // W14 R2 #550: never hand out the mutable original W06 ledger.
+        public int ConsumedCount(int slot)=>rebuilt[slot].Count;
+        public bool ContainsConsumedId(int slot,long id)=>rebuilt[slot].Contains(id);
         public static bool TryStage(byte[] bytes,out ColdRestore? plan)
         {
             plan=null;
@@ -233,6 +237,8 @@ namespace B01.DetachedSaveContract001
         {
             if(hostIdle==null)return RestoreVerdict.Quarantine;
             if(swapping)return RestoreVerdict.TransactionBusy;
+            swapping=true; // guard validation, callbacks AND publication against reentrancy
+            try{
             bool idle;
             try{idle=hostIdle();}
             catch{return RestoreVerdict.Quarantine;}
@@ -243,14 +249,15 @@ namespace B01.DetachedSaveContract001
             if(minGeneration<=0||ready.Snapshot.Generation<minGeneration||
                (Current!=null&&ready.Snapshot.Generation<Current.Snapshot.Generation))
                 return RestoreVerdict.StaleGeneration;
-            swapping=true;
-            try
+            // Staged state may not be published if host became busy in the meantime.
+            try{idle=hostIdle();}catch{return RestoreVerdict.Quarantine;}
+            if(!idle)return RestoreVerdict.TransactionBusy;
             {
                 // Entire new logical session prepared before the only publish operation.
                 Current=ready;
                 return RestoreVerdict.Accepted;
             }
-            finally{swapping=false;}
+            }finally{swapping=false;}
         }
     }
 }

@@ -1,0 +1,57 @@
+name: B01-23 W14 selected Save R2 immutable snapshot private W06 security QA
+on:
+  push:
+    branches: ['b01-23/p17w14-selected-save-contract-r2']
+  pull_request:
+    paths:
+      - 'Assets/B0123DetachedSaveContract001/**'
+      - 'Tools/B01/B01-23/P17W13DetachedSaveContract001/**'
+      - 'Tools/B01/B01-23/P17W14DetachedSaveContractR2/**'
+      - '.github/workflows/b01-23-p17w14-detached-save-r2.yml'
+jobs:
+  source-regression:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Original frozen #510 W06 exact source pins
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs)" = fa1aa5e531927cbe73cf5fdfe161b4a981316db5
+          mkdir -p w14-results
+      - name: Compile original W06 with corrected Save R2 C# and execute #550 RED regression cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --project Tools/B01/B01-23/P17W13DetachedSaveContract001/SnapshotSourceTests.csproj -c Release | tee w14-results/real-csharp.txt
+          grep -q '^PASS W14 #550 RED 1' w14-results/real-csharp.txt
+          grep -q '^PASS W14 #550 RED 2' w14-results/real-csharp.txt
+          ! grep -q '^FAIL ' w14-results/real-csharp.txt
+      - name: Original Git source stage rollback and W14 security gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s Tools/B01/B01-23/P17W13DetachedSaveContract001 -p test_package.py -v 2>&1 | tee w14-results/w13-package.txt
+          python -m unittest discover -s Tools/B01/B01-23/P17W14DetachedSaveContractR2 -p test_security.py -v 2>&1 | tee w14-results/w14-security.txt
+          grep -q 'OK' w14-results/w13-package.txt
+          grep -q 'OK' w14-results/w14-security.txt
+          python Tools/B01/B01-23/P17W13DetachedSaveContract001/package.py build --archive w14-results/selected-save-r2-original.zip | tee w14-results/source-zip.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b01-23-w14-selected-save-r2-${{ matrix.os }}
+          path: w14-results/
+          if-no-files-found: warn

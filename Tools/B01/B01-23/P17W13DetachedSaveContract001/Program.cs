@@ -54,6 +54,53 @@ internal static class Program
     }
     static void MainTests()
     {
+
+        Test("W14 #550 RED 1 immutable validated snapshot after publication",()=>{
+            var host=new ColdSessionHandle();
+            if(host.TrySwap(SnapshotCodec.Encode(Run(true,false)),77,1,()=>true)!=RestoreVerdict.Accepted)return false;
+            var exposed=host.Current!.Snapshot.Parts;
+            exposed[0]=Part(0,false);exposed[1]=exposed[0];
+            return SnapshotRules.Valid(host.Current.Snapshot)&&
+                host.Current.Snapshot.Parts[0].State==PartDockState.Detached&&
+                host.Current.Snapshot.Parts[1].Id==2310002&&
+                host.Current.ContainsConsumedId(0,2310001)&&host.Current.ConsumedCount(0)==1;
+        });
+        Test("W14 #550 RED 2 no public original W06 ledger mutation escape",()=>{
+            if(typeof(ColdRestore).GetMethod("GetLedger")!=null)return false;
+            foreach(var m in typeof(ColdRestore).GetMethods(
+                System.Reflection.BindingFlags.Public|System.Reflection.BindingFlags.Instance))
+                if(typeof(DebrisImpulseLedger).IsAssignableFrom(m.ReturnType))return false;
+            var host=new ColdSessionHandle();
+            return host.TrySwap(SnapshotCodec.Encode(Run(true,false)),77,1,()=>true)==RestoreVerdict.Accepted &&
+                host.Current!.ContainsConsumedId(0,2310001);
+        });
+        Test("W14 host callback reentry denied before publication",()=>{
+            var host=new ColdSessionHandle();RestoreVerdict inside=RestoreVerdict.Accepted;
+            var outcome=host.TrySwap(SnapshotCodec.Encode(Run(true,false)),77,1,()=>{
+                inside=host.TrySwap(SnapshotCodec.Encode(Run(false,true,2)),77,1,()=>true);
+                return true;
+            });
+            return outcome==RestoreVerdict.Accepted&&inside==RestoreVerdict.TransactionBusy&&
+                host.Current!.Snapshot.Generation==1&&host.Current.ContainsConsumedId(0,2310001);
+        });
+        Test("W14 stale host state after staging denies and preserves pointer",()=>{
+            var host=new ColdSessionHandle();
+            host.TrySwap(SnapshotCodec.Encode(Run(true,false)),77,1,()=>true);
+            var previous=host.Current;int calls=0;
+            var result=host.TrySwap(SnapshotCodec.Encode(Run(false,true,2)),77,1,()=>++calls==1);
+            return calls==2&&result==RestoreVerdict.TransactionBusy&&ReferenceEquals(previous,host.Current);
+        });
+        Test("W14 host second idle callback exception keeps prior state",()=>{
+            var host=new ColdSessionHandle();
+            host.TrySwap(SnapshotCodec.Encode(Run(true,false)),77,1,()=>true);
+            var previous=host.Current;int calls=0;
+            var result=host.TrySwap(SnapshotCodec.Encode(Run(false,true,2)),77,1,()=>{
+                if(++calls==2)throw new Exception("host busy during cold stage");
+                return true;
+            });
+            return result==RestoreVerdict.Quarantine&&ReferenceEquals(previous,host.Current);
+        });
+
         Test("selected frozen #510 SHA encoded",()=>FrozenPartCatalog.SelectedSourceSha=="d94400d95d13db7f27e1533df05c9292d5380431");
         Test("exact original W06 stable Light/Heavy IDs",()=>FrozenPartCatalog.Id(0)==2310001&&FrozenPartCatalog.Id(1)==2310002);
         Test("clean both attached",()=>SnapshotRules.Valid(Run(false,false)));
@@ -78,10 +125,8 @@ internal static class Program
                 for(int i=0;i<2;i++)
                 {
                     bool detached=(f&(1<<i))!=0;
-                    var originalW06=plan.GetLedger(i);
-                    if(originalW06.Contains(FrozenPartCatalog.Id(i))!=detached||
-                       originalW06.Count!=(detached?1:0))return false;
-                    if(detached&&!originalW06.RearmAfterReattach(FrozenPartCatalog.Id(i)))return false;
+                    if(plan.ContainsConsumedId(i,FrozenPartCatalog.Id(i))!=detached||
+                       plan.ConsumedCount(i)!=(detached?1:0))return false;
                 }
                 return true;
             });
@@ -100,8 +145,8 @@ internal static class Program
                 File.WriteAllBytes(path,original);  // test external file transport, not Unity disk atomicity
                 byte[] read=File.ReadAllBytes(path);
                 bool valid=ColdRestore.TryStage(read,out ColdRestore? plan)&&plan!=null&&
-                    plan.Snapshot.Generation==42&&plan.GetLedger(0).Contains(2310001)&&
-                    !plan.GetLedger(1).Contains(2310002);
+                    plan.Snapshot.Generation==42&&plan.ContainsConsumedId(0,2310001)&&
+                    !plan.ContainsConsumedId(1,2310002);
                 return valid&&Convert.ToHexString(read)==Convert.ToHexString(original);
             }
             finally{Directory.Delete(root,true);}
@@ -162,7 +207,7 @@ internal static class Program
             var first=host.TrySwap(clean,77,1,()=>true);var old=host.Current;
             var rejected=host.TrySwap(SnapshotCodec.Encode(Run(false,true,2)),77,1,()=>false);
             return first==RestoreVerdict.Accepted&&rejected==RestoreVerdict.TransactionBusy&&
-                ReferenceEquals(old,host.Current)&&host.Current!.GetLedger(0).Contains(2310001);
+                ReferenceEquals(old,host.Current)&&host.Current!.ContainsConsumedId(0,2310001);
         });
         Test("cold pointer restore refuses corrupt payload and retains active",()=>{
             var host=new ColdSessionHandle();byte[] clean=SnapshotCodec.Encode(Run(true,false));
@@ -188,7 +233,7 @@ internal static class Program
             var old=host.Current;
             return host.TrySwap(SnapshotCodec.Encode(Run(false,true,2)),77,1,()=>true)==
                 RestoreVerdict.Accepted&&!ReferenceEquals(old,host.Current)&&
-                !host.Current!.GetLedger(0).Contains(2310001)&&host.Current.GetLedger(1).Contains(2310002);
+                !host.Current!.ContainsConsumedId(0,2310001)&&host.Current.ContainsConsumedId(1,2310002);
         });
         Test("host idle callback exception fails closed",()=>{
             var host=new ColdSessionHandle();
@@ -198,9 +243,9 @@ internal static class Program
         Test("original W06 ledger is separate and unique per physical rig",()=>{
             ColdRestore.TryStage(SnapshotCodec.Encode(Run(true,true)),out ColdRestore? p);
             if(p==null)return false;
-            return !ReferenceEquals(p.GetLedger(0),p.GetLedger(1))&&
-                p.GetLedger(0).Contains(2310001)&&!p.GetLedger(0).Contains(2310002)&&
-                p.GetLedger(1).Contains(2310002)&&!p.GetLedger(1).Contains(2310001);
+            return p.ConsumedCount(0)==1&&p.ConsumedCount(1)==1&&
+                p.ContainsConsumedId(0,2310001)&&!p.ContainsConsumedId(0,2310002)&&
+                p.ContainsConsumedId(1,2310002)&&!p.ContainsConsumedId(1,2310001);
         });
         for(int n=0;n<64;n++)
         {
