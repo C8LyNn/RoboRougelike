@@ -1,7 +1,7 @@
 {
   "schema": "B01_SOURCE_QA_MANIFEST_v1",
   "package_id": "B01-62-DOCK-PUBLIC-API-STATE-QA-001",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "owner": "B01-62",
   "wave": "PASS17-W10",
   "dispatch": "https://github.com/C8LyNn/RoboRougelike/issues/483",
@@ -13,15 +13,15 @@
   "host_integration": "NOT_RUN",
   "codex_ack": "NONE",
   "g0": "PENDING_INDEPENDENT",
-  "release_gate": "HOLD_UNSAFE_PUBLIC_API",
+  "release_gate": "W09_PUBLIC_API_HOLD_AND_V2_LEDGER_PRECONDITION_HOLD",
   "files": [
     {
       "path": ".github/workflows/b01-62-p17w10-dock-public-api-state.yml",
-      "git_blob": "56ff09220e3444b6de90f869e68f6f076af3fed4"
+      "git_blob": "57be42d661c32e114679f62a244131625e58d18b"
     },
     {
       "path": "Tools/B01/B01-62/P17W10DockPublicApiStateQA/README.md",
-      "git_blob": "186a46426b485d6efd5c6d74c62d81ebf02b8346"
+      "git_blob": "dde827ff86058a96ecfdc897d45a3b46b75252c2"
     },
     {
       "path": "Tools/B01/B01-62/P17W10DockPublicApiStateQA/gate.py",
@@ -30,6 +30,22 @@
     {
       "path": "Tools/B01/B01-62/P17W10DockPublicApiStateQA/test_gate.py",
       "git_blob": "c1ee6e1c4fa49e0b03f22bc8c955a642879d55b4"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W10DockPublicApiStateQA/V2_StateQA.csproj",
+      "git_blob": "3b5ffed65c5480cbd3bd4b88f8d60fa76384c1be"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W10DockPublicApiStateQA/V2_StateProgram.cs",
+      "git_blob": "5e79d6a611f4236ee39520c56624848813cb86ff"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W10DockPublicApiStateQA/v2_transaction_gate.py",
+      "git_blob": "254768ba2d1dd0918fa770289e227e8fec614ec0"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W10DockPublicApiStateQA/test_v2_transaction_gate.py",
+      "git_blob": "f45af8fdee559014ad44b5907424b68b918b2c19"
     }
   ],
   "original_source": {
@@ -41,14 +57,16 @@
     "ledger": "fa1aa5e531927cbe73cf5fdfe161b4a981316db5"
   },
   "tests": {
-    "positive_negative_cases": 26,
+    "w09_positive_negative": 26,
+    "v2_source_mutations": 14,
+    "v2_original_csharp": 9,
     "platforms": [
-      "ubuntu-24.04",
-      "windows-2025"
+      "windows-2025",
+      "ubuntu-24.04"
     ],
-    "expected_release_exit": 3,
-    "actual_execution": "PENDING_AT_MANIFEST_AUTHORING",
-    "ci_receipt": "SEE_GITHUB_ACTIONS"
+    "release_expected_exit3": true,
+    "unity": "NOT_RUN",
+    "status": "CHECK_CURRENT_PR_HEAD_CI"
   },
   "rollback": "Close Draft PR and delete only B01-62 W10 QA-only branch and files; do not touch B01-23 frozen producer.",
   "receiver": [
@@ -57,5 +75,13 @@
     "B01-60",
     "B01-61",
     "B01-00"
-  ]
+  ],
+  "v2_source_sha": "33a32b8bd9ab40467ab1a17b5684926a37dbd4d3",
+  "v2_original_blobs": {
+    "controller": "491c89a18827bb027854bba5e6be6630ce4947b6",
+    "policy": "cc6611343d585fd0f16ff048f8ecdb0e7b1be30c",
+    "ledger": "fa1aa5e531927cbe73cf5fdfe161b4a981316db5",
+    "emitter": "2b3a8465c550bd49a5c98be5a8064a4ce0947f4b",
+    "scene": "07de6c8ce784b714699ce5598564aab2b2f1db29"
+  }
 }
