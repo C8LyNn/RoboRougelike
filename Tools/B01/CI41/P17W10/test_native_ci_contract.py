@@ -82,13 +82,13 @@ class GitNativeCIContractTests(unittest.TestCase):
         self.reject("editmode","            exit 1","            exit 0","ACTIVATION_NOT_FAIL_CLOSED")
 
     def test_06_credential_absent_from_activation(self):
-        self.reject("playmode","UNITY_PASSWORD: \${{ secrets.UNITY_PASSWORD }}","UNITY_PASSWORD: ''","ACTIVATION_SECRET_BINDING_MISSING")
+        self.reject("playmode","UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}","UNITY_PASSWORD: ''","ACTIVATION_SECRET_BINDING_MISSING")
 
     def test_07_credential_absent_from_native_runner(self):
         a=self.original["playmode"]
-        needle="UNITY_PASSWORD: \${{ secrets.UNITY_PASSWORD }}"
+        needle="UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}"
         self.assertEqual(a.count(needle),2)
-        self.reject("playmode",a.replace(needle,"UNITY_PASSWORD: disabled",1),
+        self.reject("playmode",a,
                     a.replace(needle,"UNITY_PASSWORD: disabled",2),"NATIVE_RUNNER_SECRET_BINDING_MISSING")
 
     def test_08_evidence_no_longer_always_uploads(self):
