@@ -53,11 +53,11 @@ class DockApiStateQA(unittest.TestCase):
     def test_11_reversed_reattach_permission_is_rejected(self):
         self.fail("w09","if (Inspect(index) != HardenedDockVerdict.Allowed)","if (Inspect(index) == HardenedDockVerdict.Allowed)")
     def test_12_removed_w09_legacy_demo_disable_is_rejected(self):
-        self.fail("w09","demo.enabled = false;","demo.enabled = true;")
+        self.fail("w09","demo.enabled = false;\n            previousGate.enabled = false;","demo.enabled = true;\n            previousGate.enabled = false;")
     def test_13_removed_w09_legacy_w08_disable_is_rejected(self):
-        self.fail("w09","previousGate.enabled = false;","previousGate.enabled = true;")
+        self.fail("w09","demo.enabled = false;\n            previousGate.enabled = false;","demo.enabled = false;\n            previousGate.enabled = true;")
     def test_14_removed_w09_actual_all_layer_query_is_rejected(self):
-        self.fail("w09","HardenedDockPolicy.AllPhysicsLayers,","0,")
+        self.fail("w09","Quaternion.identity, HardenedDockPolicy.AllPhysicsLayers,","Quaternion.identity, 0,")
     def test_15_removed_real_penetration_test_rejected(self):
         self.fail("w09","Physics.ComputePenetration(","FakeComputePenetration(")
     def test_16_removed_original_w08_gate_rejected(self):
