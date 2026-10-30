@@ -65,7 +65,7 @@ def check_program(s):
        '(ra=="Accepted")!=(rb=="Accepted")',
        "for(int i=0;i<8;i++)Race(root,i)",
        "races==8&&workers==16",
-       "new FileCheckpointStore(path)",
+       "new OriginalPhysicalPort(path)",
        "Directory.Delete(root,true)",
        "Guid.NewGuid().ToString(\"N\")",
        "CI41_W21_MULTI_GATEWAY_OWNER_LEASE_EXTERNAL_NOT_CERTIFIED",
