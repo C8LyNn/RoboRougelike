@@ -1,0 +1,16 @@
+{
+  "name": "B0123.DetachedSaveContract.Runtime",
+  "rootNamespace": "B01.DetachedSaveContract001",
+  "references": [
+    "B0123.DebrisRepulse.Runtime"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": true
+}
