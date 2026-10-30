@@ -124,6 +124,10 @@ internal static class Program
         {File.WriteAllText(output,"INVALID_"+res);return 3;}
         try
         {
+            // Original V3 requires BindOnce via Attach before storage Read;
+            // Unbound acquired owner is NOT an active publication authority.
+            if(!slot.Attach(new Gate(),new Factory()))
+            {File.WriteAllText(output,"ATTACH_FAILED");return 9;}
             // Genuine exact original physical Save envelope or EMPTY after failed Prepare.
             if(!slot.Read(Run,out long gen,out string hash)||gen<0||
                (gen>0&&hash!=CanonicalSlotSessionV3.SourceHash(Snapshot(1,true,false))))
