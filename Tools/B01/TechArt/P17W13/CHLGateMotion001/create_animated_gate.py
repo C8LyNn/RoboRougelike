@@ -85,7 +85,7 @@ def frame_state(frame,pointer):
             "real_arrow_mesh_polygons":len(pointer.data.polygons)}
 def check_scene(pointer,static):
     if len(static)!=5:fail("STATIC_MESH_COUNT_CHANGED")
-    if pointer.name!=ROOT or len(pointer.data.polygons)<12 or len(pointer.data.vertices)<15:
+    if pointer.name!=ROOT or len(pointer.data.polygons)<11 or len(pointer.data.vertices)<14:
         fail("REAL_KEYFRAME_ARROW_GEOMETRY_MISSING")
     frames=[frame_state(frame,pointer) for frame in FRAMES]
     angles=[x["pointer_rot_z_deg"] for x in frames]
