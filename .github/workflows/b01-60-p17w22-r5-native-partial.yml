@@ -1,0 +1,101 @@
+name: B01-60 P17 W22 original R5 partial native receiver SOURCE tests only
+on:
+  push:
+    branches: [qa/b01-60-p17w22-r5-native-partial-safety-r1]
+    paths: ['Tools/B01/B01-60/P17W22R5PartialNative/**','.github/workflows/b01-60-p17w22-r5-native-partial.yml']
+  pull_request:
+    paths: ['Tools/B01/B01-60/P17W22R5PartialNative/**','.github/workflows/b01-60-p17w22-r5-native-partial.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-r5-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch exact original R5 #690 historical object into ephemeral CI checkout ONLY
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin cc7f73541517a18f4479bb155534bd4832d9985e
+          test "$(git cat-file -t cc7f73541517a18f4479bb155534bd4832d9985e)" = commit
+      - name: Run direct original SHA-pinned R5 12 source and physical safe rollback tests (not Unity)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s Tools/B01/B01-60/P17W22R5PartialNative -p test_r5_native.py -v 2>&1 | tee w22-r5-source.log
+          grep -F 'Ran 12 tests' w22-r5-source.log
+          grep -F 'OK' w22-r5-source.log
+      - name: Execute actual separate R5 source preflight with no Unity executable
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W22R5PartialNative/r5_native.py --mode preflight 2>&1 | tee w22-r5-preflight.log
+          grep -F 'B0160_W22_R5_SIX_PRIVATE_PROJECTS_STAGE_ROLLBACK_PASS' w22-r5-preflight.log
+          grep -F 'B0160_W22_G1_NOT_RUN_SOURCE_ONLY' w22-r5-preflight.log
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0160-W22-ORIGINAL-R5-SOURCE-ONLY-NOT-UNITY-${{ matrix.os }}
+          path: |
+            w22-r5-source.log
+            w22-r5-preflight.log
+          if-no-files-found: warn
+          retention-days: 14
+  real-windows-powershell:
+    runs-on: windows-2025
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Original Git historical SHA in CI only, not operator's computer
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin cc7f73541517a18f4479bb155534bd4832d9985e
+          git cat-file -e 'cc7f73541517a18f4479bb155534bd4832d9985e^{commit}'
+      - name: Real Windows PowerShell exact source and six private staged R5 projects, NO Unity
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W22R5PartialNative\Invoke-B0160W22R5.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:RUNNER_TEMP *>&1 | Tee-Object -FilePath w22-r5-windows-powershell.log
+          if($LASTEXITCODE -ne 0){throw "Windows W22 original R5 source-only refused"}
+          if(!(Select-String w22-r5-windows-powershell.log -Pattern 'B0160_W22_SOURCE_PASS_NATIVE_G1_NOT_RUN_FULL_R5_HOLD' -Quiet)){throw "False W22 source-only receipt"}
+      - name: Reject unsafe scratch inside source checkout with actual PowerShell
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W22R5PartialNative\Invoke-B0160W22R5.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:GITHUB_WORKSPACE *>&1 | Tee-Object -FilePath w22-r5-unsafe.log
+          $rc=$LASTEXITCODE
+          if($rc -ne 2){throw "Unsafe original project scratch not denied: $rc"}
+          $global:LASTEXITCODE=0
+      - name: Real Windows native request without Unity must deny before prompt (exit3)
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W22R5PartialNative\Invoke-B0160W22R5.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:RUNNER_TEMP -UnityPath 'Z:\fake\6000.3.14f1\Editor\Unity.exe' -Run *>&1 | Tee-Object -FilePath w22-r5-no-editor.log
+          $rc=$LASTEXITCODE
+          if($rc -ne 3){throw "Missing Editor failed to deny native mode: $rc"}
+          if(Select-String w22-r5-no-editor.log -Pattern 'B0160_W22_NATIVE_R5_PARTIAL_ONLY_FULL_G1_HOLD'){throw 'Faked R5 partial result'}
+          $global:LASTEXITCODE=0
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0160-W22-ACTUAL-WINDOWS-POWERSHELL-SOURCE-ONLY-NOT-UNITY
+          path: |
+            w22-r5-windows-powershell.log
+            w22-r5-unsafe.log
+            w22-r5-no-editor.log
+          retention-days: 14
+          if-no-files-found: warn
