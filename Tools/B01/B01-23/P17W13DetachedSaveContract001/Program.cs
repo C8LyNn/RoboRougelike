@@ -78,10 +78,9 @@ internal static class Program
                 for(int i=0;i<2;i++)
                 {
                     bool detached=(f&(1<<i))!=0;
-                    var originalW06=plan.GetLedger(i);
-                    if(originalW06.Contains(FrozenPartCatalog.Id(i))!=detached||
-                       originalW06.Count!=(detached?1:0))return false;
-                    if(detached&&!originalW06.RearmAfterReattach(FrozenPartCatalog.Id(i)))return false;
+                    if(plan.IsConsumed(i,FrozenPartCatalog.Id(i))!=detached||
+                       plan.ConsumedCount(i)!=(detached?1:0))return false;
+                    if(plan.IsConsumed(i,FrozenPartCatalog.Id(1-i)))return false;
                 }
                 return true;
             });
@@ -100,8 +99,8 @@ internal static class Program
                 File.WriteAllBytes(path,original);  // test external file transport, not Unity disk atomicity
                 byte[] read=File.ReadAllBytes(path);
                 bool valid=ColdRestore.TryStage(read,out ColdRestore? plan)&&plan!=null&&
-                    plan.Snapshot.Generation==42&&plan.GetLedger(0).Contains(2310001)&&
-                    !plan.GetLedger(1).Contains(2310002);
+                    plan.Snapshot.Generation==42&&plan.IsConsumed(0,2310001)&&
+                    !plan.IsConsumed(1,2310002);
                 return valid&&Convert.ToHexString(read)==Convert.ToHexString(original);
             }
             finally{Directory.Delete(root,true);}
@@ -124,13 +123,13 @@ internal static class Program
             byte[] b=SnapshotCodec.Encode(Run(true,false));
             return !SnapshotCodec.TryDecode(ReSign(b,0,0),out _);
         });
-        Test("old version 0 even if checksum recomputed",()=>{
+        Test("old schema1 even if checksum recomputed",()=>{
             byte[] b=SnapshotCodec.Encode(Run(true,false));
-            return !SnapshotCodec.TryDecode(ReSign(b,8,0),out _);
+            return !SnapshotCodec.TryDecode(ReSign(b,8,1),out _);
         });
-        Test("new version 2 even if checksum recomputed",()=>{
+        Test("unknown schema3 even if checksum recomputed",()=>{
             byte[] b=SnapshotCodec.Encode(Run(true,false));
-            return !SnapshotCodec.TryDecode(ReSign(b,8,2),out _);
+            return !SnapshotCodec.TryDecode(ReSign(b,8,3),out _);
         });
         Test("alternative selected source SHA explicitly rejected",()=>{
             byte[] b=SnapshotCodec.Encode(Run(true,false));
@@ -162,7 +161,7 @@ internal static class Program
             var first=host.TrySwap(clean,77,1,()=>true);var old=host.Current;
             var rejected=host.TrySwap(SnapshotCodec.Encode(Run(false,true,2)),77,1,()=>false);
             return first==RestoreVerdict.Accepted&&rejected==RestoreVerdict.TransactionBusy&&
-                ReferenceEquals(old,host.Current)&&host.Current!.GetLedger(0).Contains(2310001);
+                ReferenceEquals(old,host.Current)&&host.Current!.IsConsumed(0,2310001);
         });
         Test("cold pointer restore refuses corrupt payload and retains active",()=>{
             var host=new ColdSessionHandle();byte[] clean=SnapshotCodec.Encode(Run(true,false));
@@ -188,7 +187,7 @@ internal static class Program
             var old=host.Current;
             return host.TrySwap(SnapshotCodec.Encode(Run(false,true,2)),77,1,()=>true)==
                 RestoreVerdict.Accepted&&!ReferenceEquals(old,host.Current)&&
-                !host.Current!.GetLedger(0).Contains(2310001)&&host.Current.GetLedger(1).Contains(2310002);
+                !host.Current!.IsConsumed(0,2310001)&&host.Current.IsConsumed(1,2310002);
         });
         Test("host idle callback exception fails closed",()=>{
             var host=new ColdSessionHandle();
@@ -198,9 +197,9 @@ internal static class Program
         Test("original W06 ledger is separate and unique per physical rig",()=>{
             ColdRestore.TryStage(SnapshotCodec.Encode(Run(true,true)),out ColdRestore? p);
             if(p==null)return false;
-            return !ReferenceEquals(p.GetLedger(0),p.GetLedger(1))&&
-                p.GetLedger(0).Contains(2310001)&&!p.GetLedger(0).Contains(2310002)&&
-                p.GetLedger(1).Contains(2310002)&&!p.GetLedger(1).Contains(2310001);
+            return p.IsConsumed(0,2310001)&&!p.IsConsumed(0,2310002)&&
+                p.IsConsumed(1,2310002)&&!p.IsConsumed(1,2310001)&&
+                p.ConsumedCount(0)==1&&p.ConsumedCount(1)==1;
         });
         for(int n=0;n<64;n++)
         {
@@ -220,6 +219,75 @@ internal static class Program
                 b[pos]^=(byte)(1+(seed%251));return !ColdRestore.TryStage(b,out _);
             });
         }
+
+        Test("W14 #550 original input array mutation cannot touch validated snapshot",()=>{
+            var input=new[]{Part(0,true),Part(1,false)};
+            var snap=new RunSnapshot(77,1,input);
+            input[0]=Part(0,false,id:999);
+            return SnapshotRules.Valid(snap)&&snap.Parts[0].Id==2310001&&
+                snap.Parts[0].Consumed&&SnapshotCodec.TryDecode(SnapshotCodec.Encode(snap),out _);
+        });
+        Test("W14 #550 returned Parts array mutation cannot change published snapshot",()=>{
+            var host=new ColdSessionHandle();
+            var bytes=SnapshotCodec.Encode(Run(true,false));
+            if(host.TrySwap(bytes,77,1,()=>true)!=RestoreVerdict.Accepted||host.Current==null)return false;
+            var released=host.Current.Snapshot.Parts;
+            released[0]=Part(0,false,id:999);
+            released[1]=Part(1,true,id:999);
+            return host.Current.Snapshot.Parts[0].Id==2310001&&
+                host.Current.Snapshot.Parts[1].Id==2310002&&
+                SnapshotRules.Valid(host.Current.Snapshot)&&
+                host.Current.IsConsumed(0,2310001)&&
+                !host.Current.IsConsumed(1,2310002);
+        });
+        Test("W14 #550 returned Parts array mutation cannot flip detached state",()=>{
+            ColdRestore.TryStage(SnapshotCodec.Encode(Run(true,false)),out ColdRestore? p);
+            if(p==null)return false;
+            var copy=p.Snapshot.Parts;
+            copy[0]=Part(0,false);
+            return p.Snapshot.Parts[0].State==PartDockState.Detached&&
+                p.Snapshot.Parts[0].Consumed&&p.IsConsumed(0,2310001);
+        });
+        Test("W14 #550 original mutable DebrisImpulseLedger is NOT publicly exposed",()=>{
+            var methods=typeof(ColdRestore).GetMethods(System.Reflection.BindingFlags.Public|
+                System.Reflection.BindingFlags.Instance);
+            foreach(var method in methods)
+                if(method.ReturnType==typeof(DebrisImpulseLedger)||method.Name=="GetLedger")return false;
+            return true;
+        });
+        Test("W14 public consumed counters are side-effect free",()=>{
+            ColdRestore.TryStage(SnapshotCodec.Encode(Run(true,true)),out ColdRestore? p);
+            if(p==null)return false;
+            for(int n=0;n<200;n++){
+                if(!p.IsConsumed(0,2310001)||!p.IsConsumed(1,2310002)||
+                   p.ConsumedCount(0)!=1||p.ConsumedCount(1)!=1)return false;
+            }
+            return p.IsConsumed(0,2310001)&&p.IsConsumed(1,2310002);
+        });
+        Test("W14 cannot query a foreign consumed ID as own ID",()=>{
+            ColdRestore.TryStage(SnapshotCodec.Encode(Run(true,true)),out ColdRestore? p);
+            return p!=null&&!p.IsConsumed(0,2310002)&&!p.IsConsumed(1,2310001);
+        });
+        Test("W14 rejected stale data cannot mutate immutable published state",()=>{
+            var host=new ColdSessionHandle();
+            host.TrySwap(SnapshotCodec.Encode(Run(true,false,3)),77,1,()=>true);
+            var old=host.Current;
+            if(old==null)return false;
+            var exposed=old.Snapshot.Parts;exposed[0]=Part(0,false);
+            var refused=host.TrySwap(SnapshotCodec.Encode(Run(false,true,2)),77,1,()=>true);
+            return refused==RestoreVerdict.StaleGeneration&&ReferenceEquals(old,host.Current)&&
+                old.IsConsumed(0,2310001)&&old.Snapshot.Parts[0].Consumed;
+        });
+        Test("W14 old schema1 binary rejected even when checksum recomputed",()=>{
+            var encoded=SnapshotCodec.Encode(Run(true,false));
+            return !SnapshotCodec.TryDecode(ReSign(encoded,8,1),out _);
+        });
+        Test("W14 clean schema2 physical data roundtrips",()=>{
+            var bytes=SnapshotCodec.Encode(Run(true,true));
+            return SnapshotCodec.TryDecode(bytes,out RunSnapshot? restored)&&
+                restored!=null&&restored.Parts[0].Consumed&&restored.Parts[1].Consumed;
+        });
+
         Console.WriteLine("NATIVE_UNITY_NOT_RUN / COLD_HOST_ADAPTER_NOT_INTEGRATED");
     }
     public static int Main()

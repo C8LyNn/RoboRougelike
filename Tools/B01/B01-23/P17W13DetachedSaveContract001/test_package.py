@@ -10,13 +10,13 @@ def changed(raw,overrides=None,extra=None):
         for n in sorted(d):z.writestr(p.zinfo(n),d[n])
     return output.getvalue()
 class OriginalW13PhysicalPackageTests(unittest.TestCase):
-    def test_real_exact_source_paths(self):self.assertEqual(len(p.scope()),12)
+    def test_real_exact_source_paths(self):self.assertEqual(len(p.scope()),15)
     def test_original_frozen_game_head_pin(self):self.assertEqual(p.PIN,"d94400d95d13db7f27e1533df05c9292d5380431")
     def test_four_immutable_game_source_blobs(self):self.assertEqual(len(p.PINS),4)
     def test_original_guids_and_asmdef(self):self.assertIn(p.ASSET+".meta",p.scope())
     def test_real_source_contract(self):p.scope()
     def test_exact_deterministic_zip(self):self.assertEqual(p.build(),p.build())
-    def test_original_manifest_all_bytes(self):self.assertEqual(len(p.verify(p.build())),13)
+    def test_original_manifest_all_bytes(self):self.assertEqual(len(p.verify(p.build())),16)
     def test_reject_corrupted_source(self):
         b=p.build();path=p.scope()[2]
         with self.assertRaises(ValueError):p.verify(changed(b,{path:b"tampered"}))
