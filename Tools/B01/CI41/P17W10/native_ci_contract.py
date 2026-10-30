@@ -14,7 +14,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-COMMIT = re.compile(r"[0-9a-f]{40}\\Z")
+COMMIT = re.compile(r"[0-9a-f]{40}\Z")
 ACTIVATION = ("UNITY_EMAIL", "UNITY_PASSWORD", "UNITY_LICENSE", "UNITY_SERIAL")
 FILES = {
     "editmode": ".github/workflows/ci-02-editmode.yml",
@@ -51,7 +51,7 @@ def require_commit(repo: Path, sha: str) -> None:
 
 def object_text(repo: Path, sha: str, path: str) -> str:
     blob = command(repo, "show", sha+":"+path)
-    if not blob or len(blob) > MAX_FILE or b"\\0" in blob:
+    if not blob or len(blob) > MAX_FILE or b"\0" in blob:
         raise UnsafeContract("MISSING_OR_TOO_LARGE_WORKFLOW:"+path)
     try:
         return blob.decode("utf-8")
@@ -68,14 +68,14 @@ def must(section: str, pattern: str, reason: str) -> None:
 def validate(kind: str, body: str) -> dict:
     path = FILES[kind]
     # Deliberately reject surprising layouts rather than guessing YAML semantics.
-    must(body, r"^on:\\s*$", "MISSING_GITHUB_EVENT_GATE:"+kind)
-    must(body, r"^  push:\\s*$", "MISSING_PUSH_TRIGGER:"+kind)
-    must(body, r"^  workflow_dispatch:\\s*$", "MISSING_MANUAL_TRIGGER:"+kind)
+    must(body, r"^on:\s*$", "MISSING_GITHUB_EVENT_GATE:"+kind)
+    must(body, r"^  push:\s*$", "MISSING_PUSH_TRIGGER:"+kind)
+    must(body, r"^  workflow_dispatch:\s*$", "MISSING_MANUAL_TRIGGER:"+kind)
     if kind != "windows-build":
-        must(body, r"^  pull_request:\\s*$", "MISSING_PR_TRIGGER:"+kind)
-    must(body, r"^    branches: \\[main, develop\\]\\s*$",
+        must(body, r"^  pull_request:\s*$", "MISSING_PR_TRIGGER:"+kind)
+    must(body, r"^    branches: \[main, develop\]\s*$",
          "NATIVE_BRANCH_SCOPE_DRIFT:"+kind)
-    must(body, r"^permissions:\\s*\\n  contents: read\\s*$",
+    must(body, r"^permissions:\s*\n  contents: read\s*$",
          "UNSAFE_WORKFLOW_PERMISSIONS:"+kind)
     check("continue-on-error: true" not in body, "CONTINUE_ON_ERROR_BYPASS:"+kind)
     check(not re.search(r"(?m)^  (?:workflow_call|schedule):",body),
@@ -91,51 +91,51 @@ def validate(kind: str, body: str) -> dict:
         check(not re.search(r"(?m)^        if:", step),
               "CONDITIONAL_NATIVE_STEP_BYPASS:"+kind+":"+str(pos))
     checkout, preflight, activation, native, outcome, evidence = steps
-    must(checkout, r"^      - uses: "+re.escape(CHECKOUT)+r"\\b", "UNPINNED_CHECKOUT:"+kind)
-    must(checkout, r"^          persist-credentials: false\\s*$",
+    must(checkout, r"^      - uses: "+re.escape(CHECKOUT)+r"\b", "UNPINNED_CHECKOUT:"+kind)
+    must(checkout, r"^          persist-credentials: false\s*$",
          "CHECKOUT_CREDENTIAL_LEAK:"+kind)
-    must(preflight, r"^        run: python3 Tools/CI/validate_repository\\.py\\s*$",
+    must(preflight, r"^        run: python3 Tools/CI/validate_repository\.py\s*$",
          "MISSING_REPOSITORY_VALIDATOR:"+kind)
-    must(activation, r"^      - name: Require valid Unity activation credentials\\s*$",
+    must(activation, r"^      - name: Require valid Unity activation credentials\s*$",
          "MISSING_ACTIVATION_GATE:"+kind)
-    must(activation, r"^        run: \\|\\s*$", "ACTIVATION_SCRIPT_NOT_SHELL:"+kind)
+    must(activation, r"^        run: \|\s*$", "ACTIVATION_SCRIPT_NOT_SHELL:"+kind)
     for secret in ACTIVATION:
-        must(activation, r"^          "+secret+r": \\$\\{\\{ secrets\\."+secret+r" \\}\\}\\s*$",
+        must(activation, r"^          "+secret+r": \$\{\{ secrets\."+secret+r" \}\}\s*$",
              "ACTIVATION_SECRET_BINDING_MISSING:"+kind+":"+secret)
-    must(activation, r"(?m)^            exit 1\\s*$", "ACTIVATION_NOT_FAIL_CLOSED:"+kind)
-    must(activation, r"BLOCKED: Unity NOT RUN\\.", "ACTIVATION_BLOCKER_EVIDENCE_MISSING:"+kind)
-    must(activation, r"\\[ -z \\"\\$UNITY_EMAIL\\" \\]", "ACTIVATION_EMAIL_CHECK_MISSING:"+kind)
-    must(activation, r"\\[ -z \\"\\$UNITY_PASSWORD\\" \\]", "ACTIVATION_PASSWORD_CHECK_MISSING:"+kind)
-    must(activation, r"\\[ -z \\"\\$UNITY_LICENSE\\" \\]", "ACTIVATION_LICENSE_CHECK_MISSING:"+kind)
-    must(activation, r"\\[ -z \\"\\$UNITY_SERIAL\\" \\]", "ACTIVATION_SERIAL_CHECK_MISSING:"+kind)
-    check(not re.search(r"(?m)^\\s*echo.*\\$UNITY_(?:PASSWORD|LICENSE|SERIAL)",activation),
+    must(activation, r"(?m)^            exit 1\s*$", "ACTIVATION_NOT_FAIL_CLOSED:"+kind)
+    must(activation, r"BLOCKED: Unity NOT RUN\.", "ACTIVATION_BLOCKER_EVIDENCE_MISSING:"+kind)
+    must(activation, r"\[ -z \"\$UNITY_EMAIL\" \]", "ACTIVATION_EMAIL_CHECK_MISSING:"+kind)
+    must(activation, r"\[ -z \"\$UNITY_PASSWORD\" \]", "ACTIVATION_PASSWORD_CHECK_MISSING:"+kind)
+    must(activation, r"\[ -z \"\$UNITY_LICENSE\" \]", "ACTIVATION_LICENSE_CHECK_MISSING:"+kind)
+    must(activation, r"\[ -z \"\$UNITY_SERIAL\" \]", "ACTIVATION_SERIAL_CHECK_MISSING:"+kind)
+    check(not re.search(r"(?m)^\s*echo.*\$UNITY_(?:PASSWORD|LICENSE|SERIAL)",activation),
           "ACTIVATION_SECRET_ECHO:"+kind)
     check("|| true" not in activation and "exit 0" not in activation,
           "ACTIVATION_SHELL_BYPASS:"+kind)
 
     if kind in ("editmode","playmode"):
-        must(native, r"^        uses: "+re.escape(TEST_RUNNER)+r"\\b", "MISSING_PINNED_UNITY_TEST_RUNNER:"+kind)
-        must(native, r"^          unityVersion: "+re.escape(VERSION)+r"\\s*$", "UNITY_VERSION_DRIFT:"+kind)
-        must(native, r"^          testMode: "+kind+r"\\s*$", "NATIVE_TEST_MODE_DRIFT:"+kind)
-        must(native, r"^          artifactsPath: Artifacts/CI/"+("EditMode" if kind=="editmode" else "PlayMode")+r"\\s*$",
+        must(native, r"^        uses: "+re.escape(TEST_RUNNER)+r"\b", "MISSING_PINNED_UNITY_TEST_RUNNER:"+kind)
+        must(native, r"^          unityVersion: "+re.escape(VERSION)+r"\s*$", "UNITY_VERSION_DRIFT:"+kind)
+        must(native, r"^          testMode: "+kind+r"\s*$", "NATIVE_TEST_MODE_DRIFT:"+kind)
+        must(native, r"^          artifactsPath: Artifacts/CI/"+("EditMode" if kind=="editmode" else "PlayMode")+r"\s*$",
              "NATIVE_TEST_ARTIFACT_PATH_DRIFT:"+kind)
-        must(outcome, r"^        run: python3 Tools/CI/check_results\\.py Artifacts/CI/"+
+        must(outcome, r"^        run: python3 Tools/CI/check_results\.py Artifacts/CI/"+
              ("EditMode/editmode-results" if kind=="editmode" else "PlayMode/playmode-results")+
-             r"\\.xml\\s*$", "NATIVE_TEST_RESULT_CHECK_REMOVED:"+kind)
+             r"\.xml\s*$", "NATIVE_TEST_RESULT_CHECK_REMOVED:"+kind)
     else:
-        must(native, r"^        uses: "+re.escape(BUILDER)+r"\\b", "MISSING_PINNED_UNITY_BUILDER")
-        must(native, r"^          targetPlatform: StandaloneWindows64\\s*$", "WRONG_NATIVE_BUILD_TARGET")
-        must(native, r"^          unityVersion: "+re.escape(VERSION)+r"\\s*$", "UNITY_VERSION_DRIFT:build")
-        must(outcome, r"^        run: test -s build/StandaloneWindows64/RoboRougelike\\.exe\\s*$",
+        must(native, r"^        uses: "+re.escape(BUILDER)+r"\b", "MISSING_PINNED_UNITY_BUILDER")
+        must(native, r"^          targetPlatform: StandaloneWindows64\s*$", "WRONG_NATIVE_BUILD_TARGET")
+        must(native, r"^          unityVersion: "+re.escape(VERSION)+r"\s*$", "UNITY_VERSION_DRIFT:build")
+        must(outcome, r"^        run: test -s build/StandaloneWindows64/RoboRougelike\.exe\s*$",
              "NATIVE_PLAYER_OUTPUT_CHECK_REMOVED")
-    must(native, r"^          projectPath: \\.\\s*$", "WRONG_NATIVE_UNITY_PROJECT:"+kind)
+    must(native, r"^          projectPath: \.\s*$", "WRONG_NATIVE_UNITY_PROJECT:"+kind)
     for secret in ACTIVATION:
-        must(native, r"^          "+secret+r": \\$\\{\\{ secrets\\."+secret+r" \\}\\}\\s*$",
+        must(native, r"^          "+secret+r": \$\{\{ secrets\."+secret+r" \}\}\s*$",
              "NATIVE_RUNNER_SECRET_BINDING_MISSING:"+kind+":"+secret)
-    must(evidence, r"^        if: always\\(\\)\\s*$", "LOSS_OF_FAILURE_EVIDENCE:"+kind)
-    must(evidence, r"^        uses: "+re.escape(UPLOAD)+r"\\b", "UNPINNED_EVIDENCE_UPLOAD:"+kind)
-    must(evidence, r"^          if-no-files-found: warn\\s*$", "MISSING_MISSING_ARTIFACT_WARNING:"+kind)
-    must(evidence, r"^          path: \\|?\\s*$", "MISSING_LOG_OUTPUT_MAPPING:"+kind)
+    must(evidence, r"^        if: always\(\)\s*$", "LOSS_OF_FAILURE_EVIDENCE:"+kind)
+    must(evidence, r"^        uses: "+re.escape(UPLOAD)+r"\b", "UNPINNED_EVIDENCE_UPLOAD:"+kind)
+    must(evidence, r"^          if-no-files-found: warn\s*$", "MISSING_MISSING_ARTIFACT_WARNING:"+kind)
+    must(evidence, r"^          path: \|?\s*$", "MISSING_LOG_OUTPUT_MAPPING:"+kind)
     check("Artifacts/CI/" in evidence, "MISSING_NATIVE_LOGS:"+kind)
     return {"file":path,"gate":"SOURCE_CONTRACT_PASS","native_unity":"NOT_RUN",
             "step_count":len(steps),"kind":kind}
@@ -161,7 +161,7 @@ def main() -> int:
     except (UnsafeContract, ValueError, OSError) as exc:
         result={"package":"CI41-NATIVE-CONTRACT-001","result":"FAIL_CLOSED",
                 "blocker":str(exc),"native_unity":"NOT_RUN","game_g1":"NOT_ASSESSED"}
-    output=json.dumps(result,indent=2,sort_keys=True)+"\\n"
+    output=json.dumps(result,indent=2,sort_keys=True)+"\n"
     if args.out:
         Path(args.out).write_text(output,encoding="utf-8")
     print(output,end="")
