@@ -9,8 +9,8 @@ This is a working isolated 3-tier decorative particle emission intensity mechani
 Core/OptionalParticleEmissionBudget.cs is an original deterministic C#9 pure policy (no external libraries): up to 4096 manually approved optional decorative ParticleSystem emitters, inspection cap 1–128 per frame with round-robin and no starvation. It changes only emission multiplier on transition among:
 
 - Near: **100% of original captured rateOverTimeMultiplier**, not blindly 1.
-- Medium: **35% of original baseline**, after exceeding near distance + hysteresis (default core 20m + 2m). Return to near only **below** near distance − hysteresis.
-- Far: **0% of baseline**, after exceeding far distance + hysteresis (default core 40m + 2m). Return to medium only **below** far distance − hysteresis.
+- Medium: **35% of original baseline**, after exceeding near distance + hysteresis (source-test scenario 20m + 2m; the Unity adapter Inspector defaults to 18m near + 2m hysteresis). Return to near only **below** near distance − hysteresis.
+- Far: **0% of baseline**, after exceeding far distance + hysteresis (source-test scenario 40m + 2m; the Unity adapter Inspector defaults to 38m far + 2m hysteresis). Return to medium only **below** far distance − hysteresis.
 - Near-to-Far and Far-to-Near direct jumps work. Stable bands do not reapply the value each frame. Invalid distance fails before mutation, failed callback leaves state retryable, RestoreAll restores the exact original multiplier.
 
 Unity/B0150OptionalParticleEmissionLod.cs is an isolated opt-in Unity 6 MonoBehaviour **using the real ParticleSystem.emission.rateOverTimeMultiplier**. It captures each authorized emitter original multiplier, excludes inactive and emission-disabled emitters and duplicate instances, restores exact originals when disabled/destroyed or when changing approved emitters. NEVER invokes ParticleSystem.Stop, Clear, changes colliders/trigger modules, Renderer.enabled, gameplay scripts, weapons, aiming, save state, or canonical source.
@@ -33,7 +33,7 @@ Source C# tests use simulated camera distances and have NO Unity renderer/GPU ex
 
 1. In an explicitly authorized disposable Unity 6000.3.14f1 URP project, copy the original Core/OptionalParticleEmissionBudget.cs and Unity/B0150OptionalParticleEmissionLod.cs plus their paired .cs.meta files (and optional demo), preserving the three supplied GUIDs, into a **new sandbox Assets folder**. Do not edit active Codex game assets or scenes.
 2. Attach optional LOD adapter and manual demo to temporary GameObjects, assign camera and adapter in the Inspector, enter PlayMode, manually call CreateOptionalParticleSamples through the demo context menu.
-3. Move camera through 20m and 40m thresholds including ±2m hysteresis; verify exact emission.rateOverTimeMultiplier, particle counts, preserved existing emission curve, original non-unit baseline on disable, and exclusion of a pre-disabled emitter. Capture Unity Editor/PlayMode logs and compare actual GPU/CPU/particle count/FPS baseline with enabled policy on the same legal host.
+3. For the default Unity adapter, move the camera through 18m and 38m thresholds including ±2m hysteresis (the .NET core tests use 20m and 40m); verify exact emission.rateOverTimeMultiplier, particle counts, preserved existing emission curve, original non-unit baseline on disable, and exclusion of a pre-disabled emitter. Capture Unity Editor/PlayMode logs and compare actual GPU/CPU/particle count/FPS baseline with enabled policy on the same legal host.
 4. Check fixed .meta GUIDs against the **actual receiving checkout**; GitHub Action checks only repository-tracked Assets, not unpublished Codex local files.
 
 ## Receiver / rollback
