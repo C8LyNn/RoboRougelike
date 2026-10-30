@@ -1,0 +1,56 @@
+name: B01-12 GARAGE-FILTER-001 original-source QA
+on:
+  pull_request:
+    paths:
+      - 'Research/B01-12/P17W17/GarageFilter001/**'
+      - '.github/workflows/b01-12-garage-filter.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-byte-node-and-chromium:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install original Chromium runner
+        run: |
+          python -m pip install playwright==1.55.0
+          python -m playwright install --with-deps chromium
+      - name: "Test exact original bytes: Node and real Chromium"
+        working-directory: Research/B01-12/P17W17/GarageFilter001
+        run: |
+          node test_engine.cjs
+          python test_browser.py
+      - name: Negatively mutate disposable copy and require both fail-closed
+        shell: bash
+        run: |
+          set -eu
+          t="$(mktemp -d)"
+          cp -a Research/B01-12/P17W17/GarageFilter001/. "$t/"
+          printf 'X' >> "$t/ui.js"
+          set +e
+          (cd "$t" && node test_engine.cjs) > "$t/node-negative.log" 2>&1
+          n=$?
+          (cd "$t" && python test_browser.py) > "$t/browser-negative.log" 2>&1
+          b=$?
+          set -e
+          cat "$t/node-negative.log" "$t/browser-negative.log"
+          test "$n" -eq 2
+          test "$b" -eq 2
+          grep -q 'FAIL_CLOSED ui.js' "$t/node-negative.log"
+          grep -q 'FAIL_CLOSED ui.js' "$t/browser-negative.log"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b01-12-garage-filter-original-qa
+          path: |
+            Research/B01-12/P17W17/GarageFilter001/node-results.json
+            Research/B01-12/P17W17/GarageFilter001/browser-results.json
+            Research/B01-12/P17W17/GarageFilter001/evidence-1280x720.png
+          if-no-files-found: warn

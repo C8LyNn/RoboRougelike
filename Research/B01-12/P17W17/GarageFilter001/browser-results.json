@@ -1,0 +1,411 @@
+{
+  "package": "B01-12-GARAGE-FILTER-001/R1",
+  "runner": "chromium-playwright",
+  "passed": 96,
+  "total": 96,
+  "exit": 0,
+  "cases": [
+    {
+      "name": "320x720 initial 12 records",
+      "pass": true
+    },
+    {
+      "name": "320x720 safe screen width",
+      "pass": true
+    },
+    {
+      "name": "320x720 initial status",
+      "pass": true
+    },
+    {
+      "name": "320x720 weapon mass filter result",
+      "pass": true
+    },
+    {
+      "name": "320x720 weapon sorted ids",
+      "pass": true
+    },
+    {
+      "name": "320x720 facets driven by original engine",
+      "pass": true
+    },
+    {
+      "name": "320x720 export schema",
+      "pass": true
+    },
+    {
+      "name": "320x720 export ids",
+      "pass": true
+    },
+    {
+      "name": "320x720 copy enabled",
+      "pass": true
+    },
+    {
+      "name": "320x720 malformed filter fail-closed",
+      "pass": true
+    },
+    {
+      "name": "320x720 malformed filter status",
+      "pass": true
+    },
+    {
+      "name": "320x720 export invalidated",
+      "pass": true
+    },
+    {
+      "name": "320x720 copy disabled",
+      "pass": true
+    },
+    {
+      "name": "320x720 reset results",
+      "pass": true
+    },
+    {
+      "name": "320x720 owned preset",
+      "pass": true
+    },
+    {
+      "name": "320x720 keyboard Enter filter",
+      "pass": true
+    },
+    {
+      "name": "320x720 empty valid query shows guidance",
+      "pass": true
+    },
+    {
+      "name": "320x720 empty valid is not error",
+      "pass": true
+    },
+    {
+      "name": "320x720 markup rejected",
+      "pass": true
+    },
+    {
+      "name": "320x720 no injected IMG",
+      "pass": true
+    },
+    {
+      "name": "320x720 quoted phrase",
+      "pass": true
+    },
+    {
+      "name": "320x720 no horizontal document overflow after filters",
+      "pass": true
+    },
+    {
+      "name": "320x720 aria live status available",
+      "pass": true
+    },
+    {
+      "name": "320x720 no page exceptions",
+      "pass": true
+    },
+    {
+      "name": "768x1024 initial 12 records",
+      "pass": true
+    },
+    {
+      "name": "768x1024 safe screen width",
+      "pass": true
+    },
+    {
+      "name": "768x1024 initial status",
+      "pass": true
+    },
+    {
+      "name": "768x1024 weapon mass filter result",
+      "pass": true
+    },
+    {
+      "name": "768x1024 weapon sorted ids",
+      "pass": true
+    },
+    {
+      "name": "768x1024 facets driven by original engine",
+      "pass": true
+    },
+    {
+      "name": "768x1024 export schema",
+      "pass": true
+    },
+    {
+      "name": "768x1024 export ids",
+      "pass": true
+    },
+    {
+      "name": "768x1024 copy enabled",
+      "pass": true
+    },
+    {
+      "name": "768x1024 malformed filter fail-closed",
+      "pass": true
+    },
+    {
+      "name": "768x1024 malformed filter status",
+      "pass": true
+    },
+    {
+      "name": "768x1024 export invalidated",
+      "pass": true
+    },
+    {
+      "name": "768x1024 copy disabled",
+      "pass": true
+    },
+    {
+      "name": "768x1024 reset results",
+      "pass": true
+    },
+    {
+      "name": "768x1024 owned preset",
+      "pass": true
+    },
+    {
+      "name": "768x1024 keyboard Enter filter",
+      "pass": true
+    },
+    {
+      "name": "768x1024 empty valid query shows guidance",
+      "pass": true
+    },
+    {
+      "name": "768x1024 empty valid is not error",
+      "pass": true
+    },
+    {
+      "name": "768x1024 markup rejected",
+      "pass": true
+    },
+    {
+      "name": "768x1024 no injected IMG",
+      "pass": true
+    },
+    {
+      "name": "768x1024 quoted phrase",
+      "pass": true
+    },
+    {
+      "name": "768x1024 no horizontal document overflow after filters",
+      "pass": true
+    },
+    {
+      "name": "768x1024 aria live status available",
+      "pass": true
+    },
+    {
+      "name": "768x1024 no page exceptions",
+      "pass": true
+    },
+    {
+      "name": "1280x720 initial 12 records",
+      "pass": true
+    },
+    {
+      "name": "1280x720 safe screen width",
+      "pass": true
+    },
+    {
+      "name": "1280x720 initial status",
+      "pass": true
+    },
+    {
+      "name": "1280x720 weapon mass filter result",
+      "pass": true
+    },
+    {
+      "name": "1280x720 weapon sorted ids",
+      "pass": true
+    },
+    {
+      "name": "1280x720 facets driven by original engine",
+      "pass": true
+    },
+    {
+      "name": "1280x720 export schema",
+      "pass": true
+    },
+    {
+      "name": "1280x720 export ids",
+      "pass": true
+    },
+    {
+      "name": "1280x720 copy enabled",
+      "pass": true
+    },
+    {
+      "name": "1280x720 malformed filter fail-closed",
+      "pass": true
+    },
+    {
+      "name": "1280x720 malformed filter status",
+      "pass": true
+    },
+    {
+      "name": "1280x720 export invalidated",
+      "pass": true
+    },
+    {
+      "name": "1280x720 copy disabled",
+      "pass": true
+    },
+    {
+      "name": "1280x720 reset results",
+      "pass": true
+    },
+    {
+      "name": "1280x720 owned preset",
+      "pass": true
+    },
+    {
+      "name": "1280x720 keyboard Enter filter",
+      "pass": true
+    },
+    {
+      "name": "1280x720 empty valid query shows guidance",
+      "pass": true
+    },
+    {
+      "name": "1280x720 empty valid is not error",
+      "pass": true
+    },
+    {
+      "name": "1280x720 markup rejected",
+      "pass": true
+    },
+    {
+      "name": "1280x720 no injected IMG",
+      "pass": true
+    },
+    {
+      "name": "1280x720 quoted phrase",
+      "pass": true
+    },
+    {
+      "name": "1280x720 no horizontal document overflow after filters",
+      "pass": true
+    },
+    {
+      "name": "1280x720 aria live status available",
+      "pass": true
+    },
+    {
+      "name": "1280x720 no page exceptions",
+      "pass": true
+    },
+    {
+      "name": "1920x1080 initial 12 records",
+      "pass": true
+    },
+    {
+      "name": "1920x1080 safe screen width",
+      "pass": true
+    },
+    {
+      "name": "1920x1080 initial status",
+      "pass": true
+    },
+    {
+      "name": "1920x1080 weapon mass filter result",
+      "pass": true
+    },
+    {
+      "name": "1920x1080 weapon sorted ids",
+      "pass": true
+    },
+    {
+      "name": "1920x1080 facets driven by original engine",
+      "pass": true
+    },
+    {
+      "name": "1920x1080 export schema",
+      "pass": true
+    },
+    {
+      "name": "1920x1080 export ids",
+      "pass": true
+    },
+    {
+      "name": "1920x1080 copy enabled",
+      "pass": true
+    },
+    {
+      "name": "1920x1080 malformed filter fail-closed",
+      "pass": true
+    },
+    {
+      "name": "1920x1080 malformed filter status",
+      "pass": true
+    },
+    {
+      "name": "1920x1080 export invalidated",
+      "pass": true
+    },
+    {
+      "name": "1920x1080 copy disabled",
+      "pass": true
+    },
+    {
+      "name": "1920x1080 reset results",
+      "pass": true
+    },
+    {
+      "name": "1920x1080 owned preset",
+      "pass": true
+    },
+    {
+      "name": "1920x1080 keyboard Enter filter",
+      "pass": true
+    },
+    {
+      "name": "1920x1080 empty valid query shows guidance",
+      "pass": true
+    },
+    {
+      "name": "1920x1080 empty valid is not error",
+      "pass": true
+    },
+    {
+      "name": "1920x1080 markup rejected",
+      "pass": true
+    },
+    {
+      "name": "1920x1080 no injected IMG",
+      "pass": true
+    },
+    {
+      "name": "1920x1080 quoted phrase",
+      "pass": true
+    },
+    {
+      "name": "1920x1080 no horizontal document overflow after filters",
+      "pass": true
+    },
+    {
+      "name": "1920x1080 aria live status available",
+      "pass": true
+    },
+    {
+      "name": "1920x1080 no page exceptions",
+      "pass": true
+    }
+  ],
+  "viewport_sizes": [
+    [
+      320,
+      720
+    ],
+    [
+      768,
+      1024
+    ],
+    [
+      1280,
+      720
+    ],
+    [
+      1920,
+      1080
+    ]
+  ]
+}
