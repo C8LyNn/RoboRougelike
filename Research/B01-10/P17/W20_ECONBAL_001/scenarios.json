@@ -1,7 +1,7 @@
 {
-  "schema": "B01-10 ECONBAL-001/R5 2026-10-30 owner-approved 65pct, one free on verified win, zero-price paid, one-loaner deadlock negative witness (synthetic)",
+  "schema": "B01-10 ECONBAL/R6 owner V6 65pct half-up with strictly-less clamp; direct C# original V6 P=1 negative source witness, 17 synthetic scenarios",
   "sourceOfPrices": "hypothetical 100 Scrap purchase, 70% paid quote; #252 mentions 65-75% hypothesis, NOT approved",
-  "evidence": "ALL SCRIPTED SOURCE DESIGN ORACLES; B01-22 #694 original C#9 is not modified. One-loaner zero-Scrap softlock remains an unresolved owner's source implementation contract.",
+  "evidence": "REAL ORIGINAL B01-22 #764 C# compiled only by independent source witness; SOURCE CONTRACT RED at 1->1; chosen common DESIGN proposal half-up capped by price-1; native Unity not tested.",
   "cases": {
     "twelve_victories_two_destroyed": {
       "initial_scrap": 4000,
@@ -1190,6 +1190,54 @@
           "destroyed": [
             {
               "id": "futureDamage",
+              "role": "other",
+              "blocks_deploy": false
+            }
+          ]
+        }
+      ]
+    },
+    "approved_v6_parity_price_15": {
+      "initial_scrap": 10,
+      "purchase_price": 15,
+      "paid_quote_percent": 70,
+      "attempts": [
+        {
+          "id": "win_p15",
+          "won": true,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "newmoduleA_15",
+              "role": "other",
+              "blocks_deploy": false
+            },
+            {
+              "id": "newmoduleB_15",
+              "role": "other",
+              "blocks_deploy": false
+            }
+          ]
+        }
+      ]
+    },
+    "approved_v6_parity_price_30": {
+      "initial_scrap": 20,
+      "purchase_price": 30,
+      "paid_quote_percent": 70,
+      "attempts": [
+        {
+          "id": "win_p30",
+          "won": true,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "newmoduleA_30",
+              "role": "other",
+              "blocks_deploy": false
+            },
+            {
+              "id": "newmoduleB_30",
               "role": "other",
               "blocks_deploy": false
             }
