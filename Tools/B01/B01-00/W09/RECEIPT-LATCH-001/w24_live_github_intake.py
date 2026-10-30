@@ -25,12 +25,18 @@ PR_PINS={
     750:"60c73a6f9ed2585cbb9bf7aeaad8c62eef0629cb",
     732:"0bee4ce9928354433ec719c45a8186378361d46e",
     755:"f1bff0839e297df971d097231c4627a07005ee17",
+    758:"1034127a994c4453127d5906bb3c49d05fb59975",
+    766:"f376f729fcbba916089d3f38853f952afc675abe",
+    768:"34bf47a6953800226872029e42ce0535d464f322",
 }
 ACTION_RUN_PINS={
     41133131736:749,
     41134559111:755,
     41133166507:750,
     41132037039:732,
+    41137466367:758,
+    41137933943:766,
+    41138019965:768,
 }
 ALT_HOLD=[753,741,719,695,693,682,652,644,604]
 POLICY_LINES={
@@ -114,6 +120,18 @@ def validate(payload):
             "ACCEPTED_SOURCE_ONLY" in g0 and
             "#732" in g0,
             "B01-40 SOURCE_ONLY G0 acceptance missing")
+    independent=prs["758"].get("body","")
+    require("#749" in independent and "GREEN_SCOPE_ONLY" in independent and
+            "24/24" in independent,
+            "independent exact #749 C# source security receipt missing")
+    crash=prs["768"].get("body","")
+    require("#749" in crash and "16 PASS" in crash and
+            "crash" in crash.lower(),
+            "selected #749 honest crash original OS QA receipt missing")
+    cold_independent=prs["766"].get("body","")
+    require("#750" in cold_independent and
+            "10/10" in cold_independent and "NOT_RUN" in cold_independent,
+            "original #750 independent ColdRestart SOURCE-only QA missing")
     note=prs["750"].get("body","")
     require("ColdRestart" in note and
             "generation" in note.lower(),
@@ -133,7 +151,9 @@ def validate(payload):
        "host_fixture_750":"SOURCE_PASS_ONLY_NOT_SELECTED_NATIVE_G0",
        "host_fixture_732":"ACCEPTED_IN_755_SOURCE_ONLY",
        "formal_749_transport_g0":"ACCEPTED_SOURCE_ONLY",
-       "independent_749_SECURITY":"PENDING_EXACT_ORIGINAL_CROSSPROCESS_QA",
+       "independent_749_SECURITY":"SOURCE_GREEN_SCOPE_ONLY_B01_61_758",
+       "selected_749_crash_source":"SOURCE_GREEN_SCOPE_ONLY_B01_62_768",
+       "independent_750_fixture":"SOURCE_GREEN_SCOPE_ONLY_B01_61_766",
        "same_physical_owner":".owner",
        "legacy_669_raw_store_coinstall":"FORBIDDEN",
        "actual_private_510_world_adapter":"NOT_IMPLEMENTED",
