@@ -1,6 +1,6 @@
 {
   "packageId": "B01-10-GHOST-001",
-  "version": "7.0.0-P17W13-FOCUSED_VISUAL_DRILL",
+  "version": "8.0.0-P17W14-TERMINAL_OUTCOME_INTEGRITY",
   "role": "B01-10 GAME DESIGN & BALANCE",
   "scope": "OPT_IN_CHL_TRAINING_GHOST",
   "sourceBranch": "design/b01-10-p17w06-training-ghost",
@@ -14,7 +14,7 @@
     "B01-00 HQ",
     "Codex after ACK only"
   ],
-  "status": "R7_ORIGINAL_SOURCE_AWAIT_EXACT_HEAD_CI / INDEPENDENT_SOURCE_G0_PENDING / NATIVE_UNITY_NOT_RUN / CODEX_ACK_NO",
+  "status": "R8_ORIGINAL_SOURCE_EXACT_SHA_CI_PENDING / SOURCE_G0_PENDING / UNITY_G1_NOT_RUN / CODEX_ACK_NO",
   "originality": "First independent CHL practice ghost: 3D pose recording, 0.1s sampling, shortest-arc yaw replay, four-gate split comparison, two-rig personal best, no game state writes. Not an encounter editor, RUNSCORE post-run score, official CHL timer, economics or shared Physics patch. R7 introduces optional largest-loss reference segment replay without modifying physical CHL course.",
   "changedPaths": [
     "Research/B01-10/P17Ghost/**",
@@ -22,8 +22,8 @@
   ],
   "codeFiles": {
     "GhostCore.cs": {
-      "gitBlob": "0eea61a784d59484f34968deeb4cd0c35bffeb4e",
-      "chars": 13923
+      "gitBlob": "a20fed2b16dfe03e782dc64702350feb37fee8aa",
+      "chars": 14536
     },
     "GhostVisualProxy.cs": {
       "gitBlob": "de795c06fd0b462a0fe5f895460dfa796a664cd0",
@@ -58,30 +58,30 @@
       "chars": 169
     },
     "Program.cs": {
-      "gitBlob": "3f70dfa59f768f6fbf9cdd5b8656d622d73dda5b",
-      "chars": 38723
+      "gitBlob": "5bd595dcac56716c582347f5107dab92e186929c",
+      "chars": 42615
     },
     "Ghost.Runner.csproj": {
       "gitBlob": "bd9a53d96794ec1b1d34c3729ba0e985a30dc28c",
       "chars": 345
     },
     "README.md": {
-      "gitBlob": "a659f19f48c86ffae2f70fd935561b74d9a48c4d",
-      "chars": 32007
+      "gitBlob": "886af785c30f6c91614395f34a6eadac4d26915d",
+      "chars": 34487
     }
   },
   "workflow": {
     "path": ".github/workflows/b01-10-p17-ghost.yml",
-    "gitBlob": "894809b6c592934977dc705c058125e4364bf5ba"
+    "gitBlob": "f866804aad9cbc31f2fbfaf0cbf0388d752a6bf3"
   },
   "tests": {
     "tool": "dotnet 8.0 CSharp original source and test runner",
-    "namedCases": 122,
+    "namedCases": 134,
     "syntheticRandomizedTraces": 100,
-    "workflowRun": "R7 exact SHA CI NOT_VERIFIED, awaiting new run; historic R6 109/109 per OS PASS only at predecessor",
-    "windows": "R7 122 tests AWAIT EXACT HEAD EXECUTION",
-    "ubuntu": "R7 122 tests AWAIT EXACT HEAD EXECUTION",
-    "actualDemoJson": "R7 PENDING exact-head execution",
+    "workflowRun": "W14 R8 exact-head CI NOT YET VERIFIED; R7 122/122 both OS at prior SHA only",
+    "windows": "W14 R8 exact-head source C# 134 tests PENDING",
+    "ubuntu": "W14 R8 exact-head source C# 134 tests PENDING",
+    "actualDemoJson": "W14 R8 exact-head demo PENDING",
     "nativeUnity": "NOT_RUN",
     "UnityEditMode": "NOT_RUN",
     "UnityPlayMode": "NOT_RUN",
@@ -117,7 +117,7 @@
     "independentAcceptance": "PENDING",
     "CODEX_ACK": "PENDING"
   },
-  "qualityPatch": "WAVE13 R7: original verified coach returns significant largest-loss reference segment for visual loop; GhostPracticeLoop.PoseAt repeated deterministic sample, opt-in Unity GhostVisualProxy.BindDrill/SeekDrill, HUD label; tests 110-122",
+  "qualityPatch": "W14 R8: fail-closed completed flag versus terminal EndReason; failed all-checkpoint reference cannot be promoted by toggling only Completed; 12 new real C# tests 123-134",
   "sourceCodeGhostBlob": "376389273fe6263ac8a2d0b0741bb7a8fe9ae298",
   "fixtureDisclaimer": "The --demo Light and Heavy pose tracks are deterministic synthetic data, not actual Rigidbody/PhysX runs, manual play, or true native CHL-003 checkpoints.",
   "exactNativeStatus": "NO UNITY EDIT / NO UNITY PLAY / NO PHYSX / NO GAME INTEGRATION",
@@ -232,5 +232,5 @@
     "independentQA": "PENDING",
     "CodexACK": "PENDING"
   },
-  "currentPredecessorSHA": "b2c73f0966aed648de951c4ee528e3c51c7f8e41"
+  "currentPredecessorSHA": "5ee6f3e61156baf14186f7920685e2536a44812e"
 }
