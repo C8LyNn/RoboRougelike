@@ -1,0 +1,54 @@
+name: B01-23 P17 W08 measured Rigidbody-WheelCollider support capture
+on:
+  push:
+    branches: ['b01-23/p17-w08-measured-support-capture-r1']
+  pull_request:
+    paths:
+      - 'Assets/B0123MeasuredSupport001/**'
+      - 'Assets/B0123MeasuredSupport001.meta'
+      - 'Tools/B01/B01-23/P17W08MeasuredSupport001/**'
+      - '.github/workflows/b01-23-p17-w08-measured-support.yml'
+  workflow_dispatch:
+jobs:
+  original-adapter:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Load exact immutable original mass-balance producer source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin refs/pull/417/head
+          mkdir -p Tools/B01/B01-23/P17W08MeasuredSupport001/original
+          git show f1c82267b1ad3d03d67ce17b478a180a69e7d7d7:Assets/PARTSIZE001/P17Balance/MassBalanceSolver.cs > Tools/B01/B01-23/P17W08MeasuredSupport001/original/MassBalanceSolver.cs
+          test "$(git hash-object Tools/B01/B01-23/P17W08MeasuredSupport001/original/MassBalanceSolver.cs)" = 2b53bf0a9aa7c32aee27fb4772b65edabf7324c6
+      - name: Compile original Unity runtime adapter plus original #417 C# and execute adversarial source tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p b0123-measured-evidence
+          dotnet run -c Release --project Tools/B01/B01-23/P17W08MeasuredSupport001/MeasuredSupportTests.csproj | tee b0123-measured-evidence/managed-original-adapter.log
+          grep -q 'ORIGINAL_SOURCE_ADAPTER_ASSERTIONS_PASS=' b0123-measured-evidence/managed-original-adapter.log
+          grep -q 'PHYSICS=STUB_NOT_REAL UNITY_EDITOR=NOT_RUN' b0123-measured-evidence/managed-original-adapter.log
+      - name: Build deterministic original-source Unity import ZIP and receipt
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 Tools/B01/B01-23/P17W08MeasuredSupport001/pack.py b0123-measured-evidence/measured-support-original.zip b0123-measured-evidence/source-receipt.json
+          python3 Tools/B01/B01-23/P17W08MeasuredSupport001/test_pack.py b0123-measured-evidence/measured-support-original.zip | tee b0123-measured-evidence/zip-tests.log
+      - name: Preserve exact original source and test artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b0123-measured-support-${{ matrix.os }}
+          path: b0123-measured-evidence/
+          if-no-files-found: warn
