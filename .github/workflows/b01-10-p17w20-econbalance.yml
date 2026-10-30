@@ -1,4 +1,4 @@
-name: B01-10 P17W23 ECONBAL Original Source Model
+name: B01-10 P17W24 ECONBAL Approved Policy Oracle
 on:
   push:
     branches: [design/b01-10-p17w20-econbal-001]
@@ -62,9 +62,9 @@ jobs:
           set -euo pipefail
           python -m unittest discover -s Research/B01-10/P17/W20_ECONBAL_001 -p test_rebuild_balance.py -v > "$RUNNER_TEMP/econbal-tests.log" 2>&1
           cat "$RUNNER_TEMP/econbal-tests.log"
-          grep -F 'Ran 120 tests' "$RUNNER_TEMP/econbal-tests.log"
+          grep -F 'Ran 145 tests' "$RUNNER_TEMP/econbal-tests.log"
           grep -Fx 'OK' "$RUNNER_TEMP/econbal-tests.log"
-      - name: Execute twelve source-model cases with terminal-fee and reward-order safety variants
+      - name: Execute fifteen fixture cases including owner-approved W24 policy and source P0 deadlock witness
         shell: bash
         run: |
           set -euo pipefail
@@ -74,7 +74,7 @@ jobs:
           import json,sys
           report=json.load(open(sys.argv[1],encoding='utf8'))
           cases=report['cases']
-          assert len(cases)==12
+          assert len(cases)==15
           h=cases['twelve_victories_two_destroyed']['bootstrap_epoch_zero']
           assert (h['per_win']['free'],h['per_win']['paid'],
                   h['per_win']['charged_scrap'])==(12,12,840)
@@ -119,12 +119,29 @@ jobs:
           assert final['bootstrap_epoch_zero']['per_win']['modeled_stranded_pending_count']==2
           assert final['bootstrap_epoch_zero']['per_win']['modeled_stranded_free_tickets']==1
           assert final['bootstrap_epoch_zero']['per_win']['wins']==1
+          approved=cases['twelve_victories_two_destroyed']['approved_owner_policy']
+          assert approved['quote']==65
+          assert approved['cadence']=='per_win'
+          assert approved['bootstrap'] is False
+          assert (approved['free'],approved['paid'],approved['charged_scrap'])==(12,12,780)
+          assert (approved['restored'],approved['reserved_final'])==(22,2)
+          smallest=cases['approved_price_one_zero_paid_quote']['approved_owner_policy']
+          assert (smallest['quote'],smallest['free'],smallest['paid'])==(0,1,1)
+          assert smallest['modeled_stranded_free_tickets']==1
+          loaner=cases['approved_zero_wallet_one_loaner_wins_but_no_recovery']['approved_owner_policy']
+          assert loaner['hypothetical_loaner_used']==1
+          assert loaner['wins']==1
+          assert loaner['p0_post_loaner_win_deferred_rebuild_deadlock'] is True
+          assert loaner['end_feasibility']=='ESSENTIAL_0HP_NEXT_WIN_INACCESSIBLE'
+          first=cases['approved_pre_first_win_65_paid_then_next_real_victory']['approved_owner_policy']
+          assert (first['wins'],first['free'],first['paid'],first['restored'])==(1,1,1,1)
+          assert first['charged_scrap']==65
           stress=json.load(open(sys.argv[2],encoding='utf8'))
           assert stress['episodes']==200
           assert stress['attempts_each']==12
           assert 'SYNTHETIC_ONLY' in stress['notice']
           assert len(stress['aggregate'])==2
-          print('B01-10 ECONBAL ACTUAL_SCENARIO_EXECUTION 12/12 PASS '
+          print('B01-10 ECONBAL ACTUAL_SCENARIO_EXECUTION 15/15 PASS '
                 '| BOOTSTRAP 2/2 PASS | SYNTHETIC_FIXED_SEED_EPISODES 200 PASS '
                 '| HUMAN_PLAYTEST NOT_RUN | UNITY NOT_RUN')
           PY
