@@ -1,0 +1,92 @@
+name: B01-25 W17 original immutable R3 game data regression
+on:
+  push:
+    branches: [research/b01-25-p17w17-magnetlane-scenarios-sourceqa]
+    paths:
+      - 'Research/B01-25/P17/W17_MAGNETLANE_SCENARIOS/**'
+      - 'Tools/B01/B01-25/W17Scenarios/**'
+      - '.github/workflows/b01-25-w17-magnetlane-scenarios.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  real-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    env:
+      R: Research/B01-25/P17/W17_MAGNETLANE_SCENARIOS
+      O: Tools/B01/B01-25/W17Scenarios/.output
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile real frozen R3 engine and source fixture
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$R/.output" "$O"
+          dotnet build "$R/Scenarios.csproj" -c Release -p:LangVersion=9.0 -warnaserror
+      - name: Execute original physical-source math and negative plan tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --no-build --project "$R/Scenarios.csproj" -c Release -- "$R/.output/results.json" 2>&1 | tee "$O/original-$RUNNER_OS.log"
+      - name: Check exact original Git pins ZIP and foreign-safe rollback
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-25/W17Scenarios/check.py --out "$O/receipt.json" 2>&1 | tee "$O/qa-$RUNNER_OS.log"
+      - name: Assert actual original data ZIP and receipts exist before upload
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s "$O/receipt.zip"
+          test -s "$O/receipt.json"
+          test -s "$R/.output/results.json"
+          sha256sum "$O/receipt.zip"
+      - name: Upload original real evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-25-w17-source-${{ matrix.os }}
+          path: |
+            Research/B01-25/P17/W17_MAGNETLANE_SCENARIOS/.output/results.json
+            Tools/B01/B01-25/W17Scenarios/.output/**
+          if-no-files-found: error
+          include-hidden-files: true
+          retention-days: 21
+  cross-os-original-source-zip:
+    needs: real-source
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: b01-25-w17-source-*
+          path: evidence
+      - name: Byte compare actual independent original physical data ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          A="$(find evidence/b01-25-w17-source-ubuntu-latest -name receipt.zip | head -n1)"
+          B="$(find evidence/b01-25-w17-source-windows-latest -name receipt.zip | head -n1)"
+          test -n "$A" && test -n "$B"
+          test -s "$A" && test -s "$B"
+          sha256sum "$A" "$B"
+          cmp "$A" "$B"
+          python - "$A" <<'PY'
+          import json,sys,zipfile
+          with zipfile.ZipFile(sys.argv[1]) as z:
+              assert len(z.namelist())==9 and len(set(z.namelist()))==9
+              assert all(i.create_system==3 for i in z.infolist())
+              m=json.loads(z.read("PACKAGE_MANIFEST.json"))
+              assert len(m["files"])==8 and m["nativeUnity"]=="NOT_RUN"
+          print("W17_ORIGINAL_SOURCE_DATA_ZIP_PARITY_PASS")
+          PY

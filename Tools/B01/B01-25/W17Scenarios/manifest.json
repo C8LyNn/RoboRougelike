@@ -1,0 +1,35 @@
+{
+  "packageId": "B01-25-W17-MAGNETLANE-SCENARIOS-DATA",
+  "version": "R1",
+  "producer": "B01-25",
+  "wave": "P17-W17",
+  "branch": "research/b01-25-p17w17-magnetlane-scenarios-sourceqa",
+  "baseSha": "c9663a8c50599bdb0f8954c42737d8e0d8afcaec",
+  "frozenR3SourceSha": "c9663a8c50599bdb0f8954c42737d8e0d8afcaec",
+  "frozenR3CoreBlob": "2453bc1f0c562681e1ffcdec8437f9178536c089",
+  "scope": [
+    "Research/B01-25/P17/W17_MAGNETLANE_SCENARIOS/**",
+    "Tools/B01/B01-25/W17Scenarios/**",
+    ".github/workflows/b01-25-w17-magnetlane-scenarios.yml"
+  ],
+  "gitBlobs": {
+    ".github/workflows/b01-25-w17-magnetlane-scenarios.yml": "ac306d66d3de6106b4d6f940c42b86b6fa766a3b",
+    "Research/B01-25/P17/W17_MAGNETLANE_SCENARIOS/.gitignore": "b67c661cfb5cc73f5f68cfe85fd17e954856ea87",
+    "Research/B01-25/P17/W17_MAGNETLANE_SCENARIOS/fixtures.json": "b5fcdbca1fbd69676084c52066741d5b0e9e72a2",
+    "Research/B01-25/P17/W17_MAGNETLANE_SCENARIOS/Program.cs": "be5f343c7916b49fb9952d8c4189f7da14e26f42",
+    "Research/B01-25/P17/W17_MAGNETLANE_SCENARIOS/Scenarios.csproj": "072ca2a5e8ccb4f27e323b6bf142d3c06c7a227c",
+    "Tools/B01/B01-25/W17Scenarios/.gitignore": "b67c661cfb5cc73f5f68cfe85fd17e954856ea87",
+    "Tools/B01/B01-25/W17Scenarios/check.py": "fba005993cf7cbd2687b30271c7ac3cccb7b3855",
+    "Tools/B01/B01-25/W17Scenarios/README.md": "531a7c445ea5335d7e544b1d931ba18ab3dd8087"
+  },
+  "nativeUnity": "NOT_RUN",
+  "independentG0": "PENDING",
+  "sourceCI": "W18_FIX_QUEUED",
+  "codexAck": false,
+  "integrated": false,
+  "g2": "HOLD",
+  "merged": false,
+  "limitations": "Data-only original C# route scenarios; no Unity scene, runtime loader, native PhysX, Codex or Save/Load interface",
+  "rollback": "Only remove newly authored W17 data, QA and W17 workflow on isolated disposable branch; preserve foreign empty folders and all frozen sources.",
+  "w18Fix": "Ensure GitHub Actions upload-artifact includes hidden .output directories; explicit pre-upload zip/receipt checks and post-download source ZIP cmp."
+}
