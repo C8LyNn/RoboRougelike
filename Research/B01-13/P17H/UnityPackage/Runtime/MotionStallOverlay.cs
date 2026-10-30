@@ -9,7 +9,7 @@ namespace Swarm.B01.Playtesting
     /// </summary>
     public sealed class MotionStallOverlay : MonoBehaviour
     {
-        [SerializeField] private Transform observedVehicle;
+        [SerializeField] private Transform observedVehicle = null;
         [SerializeField] private bool visibleAtStart = true;
         [SerializeField] private float panelWidth = 380f;
         [SerializeField] private float panelTop = 12f;
