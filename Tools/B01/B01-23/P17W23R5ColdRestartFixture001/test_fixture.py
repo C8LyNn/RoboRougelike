@@ -1,5 +1,5 @@
 import pathlib,re,unittest,subprocess
-ROOT=pathlib.Path(__file__).resolve().parents[5]
+ROOT=pathlib.Path(__file__).resolve().parents[4]
 F='Assets/B0123UnitySaveBridge001/Tests/IsolatedSaveWorldNativePlayModeTests.cs'
 R5='cc7f73541517a18f4479bb155534bd4832d9985e'
 class ColdRestartFixtureTests(unittest.TestCase):
