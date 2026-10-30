@@ -304,6 +304,76 @@ static class Program
             var c=f.Visible()[0];
             return HasLocaleEntry("pl","cues",c.LocalizationKey)&&HasLocaleEntry("pl","directions",c.Direction.ToString());
         });
+
+        // W13 RED: live safety-critical captions must not disappear behind part-detach spam.
+        Check("W13 critical stays visible through 32 part-detach events",()=>{
+            var f=Track(3,2);f.Record(Cue(1,10,SoundCueKind.CriticalWarning,key:"cue.warning",source:"core"));
+            for(int i=2;i<=34;i++)f.Record(Cue(i,i*10,SoundCueKind.PartDetached,key:"cue.detached",source:"part"+i));
+            var a=f.Visible();return a.Length==2&&a[0].Kind==SoundCueKind.CriticalWarning;
+        });
+        Check("W13 one-slot critical cannot be displaced by detached part",()=>{
+            var f=Track(1,1);f.Record(Cue(1,10,SoundCueKind.CriticalWarning,key:"cue.warning"));
+            f.Record(Cue(2,20,SoundCueKind.PartDetached,key:"cue.detached",source:"part2"));
+            return f.Visible().Length==1&&f.Visible()[0].Kind==SoundCueKind.CriticalWarning;
+        });
+        Check("W13 full critical queue rejects weaker urgent event",()=>{
+            var f=Track(2,2);f.Record(Cue(1,10,SoundCueKind.CriticalWarning,key:"cue.warning"));
+            f.Record(Cue(2,11,SoundCueKind.CriticalWarning,key:"cue.warning",source:"other"));
+            f.Record(Cue(3,12,SoundCueKind.PartDetached,key:"cue.detached",source:"part"));
+            return f.Visible().Length==2&&f.Visible()[0].Kind==SoundCueKind.CriticalWarning&&
+                   f.Visible()[1].Kind==SoundCueKind.CriticalWarning;
+        });
+        Check("W13 weaker urgent drop advances replay sequence",()=>{
+            var f=Track(1,1);f.Record(Cue(1,10,SoundCueKind.CriticalWarning,key:"cue.warning"));
+            f.Record(Cue(2,20,SoundCueKind.PartDetached,key:"cue.detached",source:"part"));
+            return Throws<ArgumentException>(()=>f.Record(Cue(2,21,SoundCueKind.PartDetached,key:"cue.detached",source:"part")));
+        });
+        Check("W13 critical shown ahead of newer detached part",()=>{
+            var f=Track(3,2);f.Record(Cue(1,10,SoundCueKind.CriticalWarning,key:"cue.warning",source:"core"));
+            f.Record(Cue(2,20,SoundCueKind.PartDetached,key:"cue.detached",source:"part"));
+            return f.Visible()[0].Kind==SoundCueKind.CriticalWarning;
+        });
+        Check("W13 critical above all recent detached events in two visible slots",()=>{
+            var f=Track(5,2);f.Record(Cue(1,10,SoundCueKind.CriticalWarning,key:"cue.warning",source:"core"));
+            for(int i=2;i<=5;i++)f.Record(Cue(i,i*10,SoundCueKind.PartDetached,key:"cue.detached",source:"part"+i));
+            return f.Visible()[0].Kind==SoundCueKind.CriticalWarning;
+        });
+        Check("W13 critical survives mixed detached and normal flood",()=>{
+            var f=Track(4,3);f.Record(Cue(1,10,SoundCueKind.CriticalWarning,key:"cue.warning",source:"core"));
+            for(int i=2;i<=80;i++)f.Record(Cue(i,i*20,i%2==0?SoundCueKind.PartDetached:SoundCueKind.WeaponFire,
+                key:i%2==0?"cue.detached":"cue.fire",source:"source"+i));
+            return f.Visible()[0].Kind==SoundCueKind.CriticalWarning;
+        });
+        Check("W13 lower-priority detached cannot evict older critical after coalescence",()=>{
+            var f=Track(2,2);f.Record(Cue(1,10,SoundCueKind.CriticalWarning,key:"cue.warning",source:"core"));
+            f.Record(Cue(2,20,SoundCueKind.CriticalWarning,key:"cue.warning",source:"core"));
+            f.Record(Cue(3,30,SoundCueKind.PartDetached,key:"cue.detached",source:"part"));
+            f.Record(Cue(4,40,SoundCueKind.PartDetached,key:"cue.detached",source:"part2"));
+            return f.Visible()[0].Kind==SoundCueKind.CriticalWarning&&f.Visible()[0].Occurrences==2;
+        });
+        Check("W13 two distinct critical alerts both survive detached flood",()=>{
+            var f=Track(3,3);f.Record(Cue(1,10,SoundCueKind.CriticalWarning,key:"cue.warning",source:"coreA"));
+            f.Record(Cue(2,20,SoundCueKind.CriticalWarning,key:"cue.warning",source:"coreB"));
+            for(int i=3;i<=28;i++)f.Record(Cue(i,30+i,SoundCueKind.PartDetached,key:"cue.detached",source:"part"+i));
+            var a=f.Visible(true);return a.Length==3&&
+                a[0].Kind==SoundCueKind.CriticalWarning&&a[1].Kind==SoundCueKind.CriticalWarning;
+        });
+        Check("W13 normal cannot evict critical under one slot",()=>{
+            var f=Track(1,1);f.Record(Cue(1,10,SoundCueKind.CriticalWarning,key:"cue.warning"));
+            f.Record(Cue(2,20,SoundCueKind.Footsteps));
+            return f.Visible()[0].Kind==SoundCueKind.CriticalWarning;
+        });
+        Check("W13 critical remains visible before its 6000ms TTL",()=>{
+            var f=Track(2,2);f.Record(Cue(1,10,SoundCueKind.CriticalWarning,key:"cue.warning",source:"core"));
+            f.Record(Cue(2,20,SoundCueKind.PartDetached,key:"cue.detached",source:"part"));
+            f.AdvanceTo(6009);
+            return f.Visible().Length==1&&f.Visible()[0].Kind==SoundCueKind.CriticalWarning;
+        });
+        Check("W13 newer critical can replace oldest critical on full critical capacity",()=>{
+            var f=Track(1,1);f.Record(Cue(1,10,SoundCueKind.CriticalWarning,key:"cue.warning",source:"old"));
+            f.Record(Cue(2,20,SoundCueKind.CriticalWarning,key:"cue.warning",source:"new"));
+            return f.Visible()[0].SourceId=="new";
+        });
         Console.WriteLine("RESULT "+pass+" PASS, "+fail+" FAIL");
         if(fail!=0)Environment.Exit(1);
     }
