@@ -1,0 +1,64 @@
+name: B01-62 W25 independent exact #773 OS path / crash / IDs
+on:
+  push:
+    branches: [qa/b01-62-p17w25-773-independent-crossplatform-g0]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W25Independent773CrossPlatform/**'
+      - '.github/workflows/b01-62-w25-773-independent-crossplatform.yml'
+permissions:
+  contents: read
+jobs:
+  original-773-crossplatform:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Pin unmodified exact original #773, #729, #669, #556, W06 and #510 Git sources
+        run: |
+          set -euo pipefail
+          dir=Tools/B01/B01-62/P17W25Independent773CrossPlatform
+          mkdir -p "$dir/.original" b0162-w25-evidence
+          git fetch --no-tags origin 3aaaec4027ee246fbfb6f209179f0e9507363473 8634e71dfcf633323073fe584a6c0884f1ca5d23 b8ca29c7707cd6b4338d0b9772d74dee676d49d2 d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121 33094f154c7b91119b36d58aab285e6e83c5de57 d94400d95d13db7f27e1533df05c9292d5380431
+          test "$(git hash-object Tools/B01/B01-62/P17W24CanonicalPathFixR2/CanonicalSingleAuthorityStoreV3R2.cs)" = 3689238a16d706eda1bf4905cba8029cd2fe77aa
+          test "$(git hash-object Tools/B01/B01-62/P17W24CanonicalPathFixR2/CanonicalSlotSessionV3R2.cs)" = b3841132fbfc05da5708af4047f7db141a4abe91
+          git show b8ca29c7707cd6b4338d0b9772d74dee676d49d2:Assets/B0123CanonicalSaveApi001/Core/CanonicalWorldGateway.cs > "$dir/.original/CanonicalWorldGatewayV3.cs"
+          git show b8ca29c7707cd6b4338d0b9772d74dee676d49d2:Assets/B0123CanonicalSaveApi001/Core/CanonicalWorldSlotLease.cs > "$dir/.original/CanonicalWorldSlotLease.cs"
+          git show d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121:Tools/B01/B01-62/P17W20SingleFileSaveSlot/SingleFileSaveSlot.cs > "$dir/.original/SingleFileSaveSlotV1.cs"
+          git show 33094f154c7b91119b36d58aab285e6e83c5de57:Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs > "$dir/.original/DetachedSnapshotContract.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs > "$dir/.original/DebrisImpulseCore.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs > "$dir/.original/SecureRigSpec.cs"
+          test "$(git hash-object "$dir/.original/CanonicalWorldGatewayV3.cs")" = 21733278b6ab0669fccb6d085e0b6cf242792de2
+          test "$(git hash-object "$dir/.original/CanonicalWorldSlotLease.cs")" = a9331dd620336d8c42165d134dc8a5e05ed51873
+          test "$(git hash-object "$dir/.original/SingleFileSaveSlotV1.cs")" = db7745635164d9eb6b10f3246538700158130b7b
+          test "$(git hash-object "$dir/.original/DetachedSnapshotContract.cs")" = b52e511c370f5fca56c74029050844dc8cbb7f9a
+          test "$(git hash-object "$dir/.original/DebrisImpulseCore.cs")" = fa1aa5e531927cbe73cf5fdfe161b4a981316db5
+          test "$(git hash-object "$dir/.original/SecureRigSpec.cs")" = b680ed0ec969ac23203fa55eab7b90f8daa86e43
+          echo W25_EXACT_773_749_729_669_556_W06_510_SOURCE_PINS=PASS | tee b0162-w25-evidence/provenance.txt
+      - name: Execute 19 independent original-source real OS cases, including platform-specific alias P0 source RED
+        run: |
+          set -euo pipefail
+          dotnet run --project Tools/B01/B01-62/P17W25Independent773CrossPlatform/Original773W25QA.csproj -c Release --verbosity minimal 2>&1 | tee b0162-w25-evidence/tests.txt
+          grep -q 'B0162_W25_773_INDEPENDENT_SOURCE_TOTAL 19 PASS 19 FAIL 0' b0162-w25-evidence/tests.txt
+          if [ "$RUNNER_OS" = Linux ]; then
+            grep -q 'W25_773_LINUX_CASE_VARIANT_TWO_SAME_SLOT_G1_FILES=SOURCE_P0_RED_REPRODUCED' b0162-w25-evidence/tests.txt
+          else
+            grep -q 'W25_773_WINDOWS_CASE_ALIAS_PHYSICAL_FORK=DENIED' b0162-w25-evidence/tests.txt
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b0162-w25-773-original-${{ matrix.os }}
+          path: b0162-w25-evidence/*
+          if-no-files-found: error
