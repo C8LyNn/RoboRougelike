@@ -172,6 +172,29 @@ internal static class Program
             "host callback exception quarantined");
         Assert(Object.ReferenceEquals(old,session.Current),"all invalid original requests preserve prior pointer");
     }
+    static void ActualBinaryDiskSaveAndColdLoad()
+    {
+        byte[] data=Bytes(true,true,13);
+        string path=Path.Combine(Path.GetTempPath(),"b01-61-w14-original-save-"+Guid.NewGuid().ToString("N")+".bin");
+        try
+        {
+            File.WriteAllBytes(path,data);
+            Assert(File.Exists(path)&&new FileInfo(path).Length==data.Length,"original Save bytes physically written to OS filesystem");
+            byte[] persisted=File.ReadAllBytes(path);
+            Assert(data.SequenceEqual(persisted),"original binary file bytes identical after disk read");
+            var newColdHost=new ColdSessionHandle();
+            Assert(newColdHost.TrySwap(persisted,8712301,13,()=>true)==RestoreVerdict.Accepted,
+                "fresh original source cold logical host accepts REAL disk binary");
+            Assert(newColdHost.Current!=null &&
+                newColdHost.Current.Snapshot.Parts[0].Id==2310001 &&
+                newColdHost.Current.Snapshot.Parts[1].Id==2310002,
+                "original stable Light and Heavy identities survive physical file reload");
+            Assert(newColdHost.Current!.Snapshot.Parts[0].Consumed &&
+                newColdHost.Current.Snapshot.Parts[1].Consumed,
+                "original consumed flags for both rigs survive real file reload");
+        }
+        finally { if(File.Exists(path))File.Delete(path); }
+    }
     static void Original510BoundaryStillRequiresGameAdapter()
     {
         var stage=Stage(true,false);
@@ -199,6 +222,7 @@ internal static class Program
             Test("hostIdle reentrancy denial RED→GREEN",NestedHostCallback);
             Test("host becomes busy before publish RED→GREEN",BusyBetweenPreflightAndCommit);
             Test("rejected corrupt/stale/foreign/busy preserves original committed pointer",FailClosedNoMutation);
+            Test("actual binary file Save to disk and fresh original cold logical Load",ActualBinaryDiskSaveAndColdLoad);
             Test("standalone cold logical file is NOT frozen #510 live ledger restore",Original510BoundaryStillRequiresGameAdapter);
             Console.WriteLine((green?"SELECTED_556_ORIGINAL_SOURCE_SECURITY_GREEN":"FROZEN_549_ORIGINAL_SOURCE_SECURITY_RED")+
                 " cases="+tests+" assertions="+count+
