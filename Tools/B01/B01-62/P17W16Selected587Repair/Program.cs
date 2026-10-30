@@ -50,7 +50,7 @@ internal static class Program
         public void Activate()
         {
             ActivationCount++;Active=true;
-            if(MutateOnActivate)Data=Snap(false,true,Data.Generation,Data.RunId,13);
+            if(MutateOnActivate)Data=Snap(!Data.Parts[0].Consumed,!Data.Parts[1].Consumed,Data.Generation,Data.RunId,13);
             if(FailActivate)throw new IOException("bad activate");
         }
         public void Deactivate()
