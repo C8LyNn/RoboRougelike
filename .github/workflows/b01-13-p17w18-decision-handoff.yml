@@ -1,0 +1,43 @@
+name: B01-13 W18 Decision Handoff original source and UI logic
+on:
+  push:
+    paths: ['Research/B01-13/P17P/**', '.github/workflows/b01-13-p17w18-decision-handoff.yml']
+  pull_request:
+    paths: ['Research/B01-13/P17P/**', '.github/workflows/b01-13-p17w18-decision-handoff.yml']
+  workflow_dispatch:
+jobs:
+  original-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+        node: ['20', '22']
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify five original owned physical Git blobs/sizes/SHA256
+        run: python Research/B01-13/P17P/verify_package.py
+      - name: Pin true original W15 W16 W17 Git objects, execute W18 original source tests
+        shell: pwsh
+        run: |
+          git fetch --no-tags origin acc2288f72d47bd3969f840524cf8c5d07c0c6d2
+          git fetch --no-tags origin 3f83937874c69cb8744247cb51606dcb2fa0fd91
+          git fetch --no-tags origin f05790e274f31ac39c6ae4b2e873db896a3b36d8
+          node -e "const fs=require('fs'),cp=require('child_process');for(const [sha,source,dest] of [['acc2288f72d47bd3969f840524cf8c5d07c0c6d2','P17M/recovery_timeline.mjs','PinnedW15.mjs'],['3f83937874c69cb8744247cb51606dcb2fa0fd91','P17N/rater_consensus.mjs','PinnedW16.mjs'],['f05790e274f31ac39c6ae4b2e873db896a3b36d8','P17O/review_board.mjs','PinnedW17.mjs']])fs.writeFileSync('Research/B01-13/P17P/'+dest,cp.execFileSync('git',['show',sha+':Research/B01-13/'+source]))"
+          $w15=(git hash-object -- Research/B01-13/P17P/PinnedW15.mjs).Trim()
+          $w16=(git hash-object -- Research/B01-13/P17P/PinnedW16.mjs).Trim()
+          $w17=(git hash-object -- Research/B01-13/P17P/PinnedW17.mjs).Trim()
+          if ($w15 -ne '6ec383f0b3e341d58f9b5e971fc435a74d78a583' -or $w16 -ne '56d158bb6c107a04fc42e7ee78d6a07317997729' -or $w17 -ne 'd9f4267ad2f827a84e08f63e4c5880af1b8c739e') { throw "PIN_MISMATCH W15=$w15 W16=$w16 W17=$w17" }
+          Write-Output "PINNED_ORIGINAL_SOURCE_PASS W15=$w15 W16=$w16 W17=$w17"
+          $env:B01_W15_ORIGINAL_SOURCE=(Resolve-Path Research/B01-13/P17P/PinnedW15.mjs).Path
+          $env:B01_W16_ORIGINAL_SOURCE=(Resolve-Path Research/B01-13/P17P/PinnedW16.mjs).Path
+          $env:B01_W17_ORIGINAL_SOURCE=(Resolve-Path Research/B01-13/P17P/PinnedW17.mjs).Path
+          node --test Research/B01-13/P17P/test_decision_handoff.mjs
