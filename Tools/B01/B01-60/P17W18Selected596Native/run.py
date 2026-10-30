@@ -203,6 +203,21 @@ def validate_project_source(project,items,m):
  require((project/PS).read_bytes()==items[PS],
          "G1_SOURCE_FAIL: changed injected isolated Unity PlayerSettings")
  return True
+def source_archive(m,files,case):
+ # Existing hardened #532 ZIP reader intentionally accepts only the original
+ # #510 SOURCE-ONLY receipt schema. Record selected #596 as an extra immutable
+ # source SHA, never masquerade as native Unity G1.
+ return m.zip_data(files,{
+  "original_source_sha":GAME,
+  "sole_selected_bridge_sha":ONLY,
+  "case":case,
+  "native_unity":"NOT_RUN",
+  "source_only_preflight":True,
+  "codex_ack":False,
+  "integrated":False,
+  "native_meta_guids":m.guid_check(files),
+  "file_sha256":{p:h(v) for p,v in sorted(files.items())},
+ })
 def main():
  p=argparse.ArgumentParser()
  p.add_argument("--mode",choices=("preflight","native"),default="preflight")
@@ -235,9 +250,7 @@ def main():
   for case in METHODS:
    files,company,product=isolated_case_files(base,case,token,m)
    label=METHODS.index(case)
-   archive=m.zip_data(files,{"owner":"B01-60","source_SHA":ONLY,
-                             "native":"NOT_RUN","private_company":company,
-                             "private_product":product,"case":case})
+   archive=source_archive(m,files,case)
    project=root/("selected-private-"+str(label))
    m.stage(archive,files,project)
    validate_project_source(project,files,m)
