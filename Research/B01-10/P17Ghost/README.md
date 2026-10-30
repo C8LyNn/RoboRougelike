@@ -27,7 +27,7 @@ dotnet run --project Research/B01-10/P17Ghost/Ghost.Runner.csproj -c Release --n
 dotnet run --project Research/B01-10/P17Ghost/Ghost.Runner.csproj -c Release --no-build -- --demo
 \`\`\`
 
-The original source \`Program.cs\` runs **54 named positive/negative C# checks** including 100 extra deterministic synthetic motion traces, plus 2 synthetic example rigs and original JSON export. Output explicitly says **SYNTHETIC**, never live CHL-003 telemetry or native Unity/PhysX proof. \`--demo\` provides data for real game preview or design review; it is not a claim of playable Unity demo.
+The original source \`Program.cs\` runs **62 named positive/negative C# checks** including 100 extra deterministic synthetic motion traces, plus 2 synthetic example rigs and original JSON export. Output explicitly says **SYNTHETIC**, never live CHL-003 telemetry or native Unity/PhysX proof. \`--demo\` provides data for real game preview or design review; it is not a claim of playable Unity demo.
 
 The dedicated isolated \`.github/workflows/b01-10-p17-ghost.yml\` compiles and runs the real same original C# under .NET8 on **Windows 2025 and Ubuntu 24.04**, uploads real test logs and demo JSON, negative command exit2. Only count actual PASS once the CI run completes; native Unity remains **NOT_RUN** until a licensed editor imports this code and tests real rig physics.
 
@@ -48,3 +48,33 @@ The dedicated isolated \`.github/workflows/b01-10-p17-ghost.yml\` compiles and r
 - Existing B01-10 RUNSCORE001 stays under independent QA review and is not claimed SOURCE_G0_PASS; new branch is separate and does not invalidate its immutable SHA.
 
 **Acceptable state until independent review:** \`PRODUCER_CSHARP_TESTED / B01-40_G0_PENDING / B01-60_QA_PENDING / CHL003_OWNER_ACK_PENDING / CODEX_ACK_PENDING / NATIVE_UNITY_NOT_RUN / NO_MERGE\`.
+
+
+## PASS17 WAVE07 — GHOST-001/R2: real opt-in Unity URP visual + O(log N) playback
+
+**One enhancement to the existing Draft PR #422, NOT a second competing PR.** Its prior W06 \`GhostMath.At\` performed full \`GhostMath.Validate\` over every frame on *each visual request*, making playback O(N) per frame. W07 adds actual C# \`GhostPlayback\`: on \`new GhostPlayback(completedRun)\`, the source track is validated once and deep-cloned (even hostile caller edits to the original frames cannot later affect replay); \`Seek(t)\` uses a private, guarded O(log N) binary search over the validated immutable copy, without repeatedly validating the entire track. Direct public \`GhostMath.At\` still validates **every untrusted input** to fail closed. \`Seek\` returns fresh pose objects, never internal mutable frames. \`GhostPlayback\` rejects failed attempts as a reference.
+
+**Working authored Unity opt-in visual source:** new [\`GhostVisualProxy.cs\`](GhostVisualProxy.cs). It is compiled *only in Unity* under \`#if UNITY_5_3_OR_NEWER\`, and uses only \`UnityEngine\` / UnityEngine.Rendering + the original portable \`GhostPlayback\`. It creates an original procedural transparent 3D URP arrow \`Mesh\` + \`MeshRenderer\` + \`MeshFilter\` at runtime; it never creates a \`Collider\`, \`Rigidbody\`, trigger, weapon target, AI agent, reward or attack hitbox. It **refuses attachment to a non-empty/parented physical vehicle**. Method \`Bind(GhostRun)\` accepts only a completed validated track, \`Seek(float elapsed)\` receives a supplied playback clock, \`Hide()\` turns off rendering. The host still owns authoritative CHL checkpoint, pause/retry and real physics. Missing URP Unlit shader fails closed rather than claiming a visible ghost.
+
+**Exact opt-in import layout** (from files within \`Research/B01-10/P17Ghost/\`, only after B01-40/B01-60 review, with Codex/B01-20 integration authorization):
+
+\`\`\`
+Assets/
+  B01TrainingGhost.meta          <- source-owned B01TrainingGhost.meta
+  B01TrainingGhost/
+    GhostCore.cs                  <- source-owned GhostCore.cs
+    GhostCore.cs.meta             <- source-owned GhostCore.cs.meta
+    GhostVisualProxy.cs          <- source-owned GhostVisualProxy.cs
+    GhostVisualProxy.cs.meta     <- source-owned GhostVisualProxy.cs.meta
+\`\`\`
+
+Fixed original SHA-256-derived 128-bit Unity GUIDs:
+- Folder \`B01TrainingGhost.meta\`: \`8d7f2b090c0d4ef3ab2436c855d0b104\`.
+- Core \`GhostCore.cs.meta\`: \`74f1111e2e76821101d5ee4b43683a33\`.
+- Visual \`GhostVisualProxy.cs.meta\`: \`8e613294fbd6ad5dff7a0b23a5aa96e0\`.
+
+**Installer / receiver gate**: Before install, compare all three GUIDs against *the current authorized Codex Unity project* and refuse any existing destination path, GUID collision or already-present CHL ghost owner; the producer's generic CI source inspection does not prove these GUIDs are collision-free in the live private worktree. Copy only the two real C# files and their exact adjacent .meta plus the source-defined folder .meta; do not move the test runner or MANIFEST into \`Assets\`, which may cause unwanted .NET/Unity compilation. Create a fresh empty root \`GameObject\` named \`TrainingGhost_VisualOnly\`, add **only \`GhostVisualProxy\`** (no collider or Rigidbody), call \`Bind\` on an authoritative completed \`GhostRun\`, feed \`Seek\` with the opt-in playback clock, and \`Hide\` during transition. Do not wire replay to CHL-003's actual actor slot, gate triggers or win logic. On rollback, remove only this optional root, new 2 scripts/3 meta; restore any authorized scene/prefab byte for byte.
+
+**Actual source tests vs unexecuted native tests**: \`Program.cs\` increases to **62 authored original C# tests** (including 8 new bound-playback/anti-tamper/high-frequency seek tests and 100 generated synthetic sample traces in original test #50). The portable .NET8 workflow is designed for Windows+Ubuntu, but **only a completed workflow run can establish native execution of those C# cases**. The Unity \`GhostVisualProxy.cs\` is preprocessor-isolated from .NET8, so real Unity Editor compilation, shader behavior/transparency, mesh appearance, physics zero-collider inspection, three retries, human visual readability, and true Light/Heavy physics remain **NATIVE_UNITY_NOT_RUN** until a licensed Unity6000.3.14f1 worktree performs independent PlayMode QA.
+
+**QA request:** B01-40 source G0 check own-path/manifest/source/hash and 3 GUIDs; B01-60 independently execute 62 original portable C# tests on current SHA and inspect negative pose/time/clone paths; B01-20 only approves opt-in CHL host lifecycle; B01-00 controls Codex dispatch and ACK. \`G0=PENDING/G1=NOT_RUN/CODEX_ACK=PENDING\`.
