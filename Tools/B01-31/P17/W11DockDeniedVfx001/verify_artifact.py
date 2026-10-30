@@ -33,7 +33,7 @@ def inspect_zip(data,receipt):
                   and "\\" not in n for n in names),"ZIP path traversal")
         check(len({n.casefold() for n in names})==len(names),
               "Windows import casefold collision")
-        check(all(n==ROOT+".meta" or n.startswith(ROOT+"/"),
+        check(all(n==ROOT+".meta" or n.startswith(ROOT+"/")
                   for n in names),"alien Unity import namespace")
         check(len([n for n in names if n.endswith(".meta")])==38,
               "must include 38 stable .meta records")
