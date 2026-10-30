@@ -57,7 +57,7 @@ class RealOriginalSourcePackageTest(unittest.TestCase):
         data,_=p.produce()
         with zipfile.ZipFile(io.BytesIO(data)) as archive:
             receipt=json.loads(archive.read(p.MANIFEST))
-        receipt["requires_w07_sha"]="0"*40
+        receipt["requires_w08_sha"]="0"*40
         self.assertRaises(ValueError,p.verify,rewrite(data,{p.MANIFEST:json.dumps(receipt).encode()}))
     def test_safe_stage_and_rollback(self):
         data,_=p.produce()
