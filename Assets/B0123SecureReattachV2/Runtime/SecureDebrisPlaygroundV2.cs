@@ -21,7 +21,7 @@ namespace B01.SecureReattachV2
             public GameObject Part;
             public Rigidbody Body;
             public BoxCollider Collider;
-            public DebrisRepulsionEmitter Emitter;
+            public AtomicDockLedger Ledger;
             public Vector3 LocalMount;
             public bool Detached;
         }
@@ -70,9 +70,9 @@ namespace B01.SecureReattachV2
                 body.isKinematic=true; body.useGravity=false;
                 body.linearDamping=0; body.angularDamping=0;
                 body.constraints=RigidbodyConstraints.FreezeRotation;
-                DebrisRepulsionEmitter emitter=root.AddComponent<DebrisRepulsionEmitter>();
+                AtomicDockLedger ledger=new AtomicDockLedger();
                 rigs[i]=new Rig { Spec=s,Root=root,Part=part,Body=body,
-                    Collider=part.GetComponent<BoxCollider>(),Emitter=emitter,
+                    Collider=part.GetComponent<BoxCollider>(),Ledger=ledger,
                     LocalMount=mount,Detached=false };
             }
             built=true;
@@ -81,7 +81,7 @@ namespace B01.SecureReattachV2
         public Rigidbody PartBody(int index) => RequireRig(index).Body;
         public bool IsDetached(int index) => RequireRig(index).Detached;
         public long PartId(int index) => RequireRig(index).Spec.PartId;
-        public int AppliedCount(int index) => RequireRig(index).Emitter.AppliedCount;
+        public int AppliedCount(int index) => RequireRig(index).Ledger.Count;
 
         public bool Detach(int index)
         {
@@ -91,7 +91,13 @@ namespace B01.SecureReattachV2
             rig.Body.isKinematic=false;
             rig.Body.linearVelocity=new Vector3((float)rig.Spec.InitialSpeed,0,0);
             Vector3 ownerCentre=rig.Root.transform.position+new Vector3(0,1.2f,0);
-            if(!rig.Emitter.TryApplyDetachImpulse(rig.Spec.PartId,rig.Body,ownerCentre))
+            Vector3 com=rig.Body.worldCenterOfMass;
+            Vector3 velocity=rig.Body.linearVelocity;
+            if(!rig.Ledger.TryDetach(rig.Spec.PartId,
+                new Vector3d(ownerCentre.x,ownerCentre.y,ownerCentre.z),
+                new Vector3d(com.x,com.y,com.z),
+                new Vector3d(velocity.x,velocity.y,velocity.z),
+                rig.Body.mass, 2.5, 4.0, out Vector3d impulse))
             {
                 rig.Body.linearVelocity=Vector3.zero;
                 rig.Body.isKinematic=true;
@@ -99,6 +105,9 @@ namespace B01.SecureReattachV2
                 rig.Part.transform.localPosition=rig.LocalMount;
                 return false;
             }
+            if(impulse.MagnitudeSquared>0)
+                rig.Body.AddForce(new Vector3((float)impulse.X,(float)impulse.Y,(float)impulse.Z),
+                    ForceMode.Impulse);
             rig.Detached=true;
             return true;
         }
@@ -178,23 +187,48 @@ namespace B01.SecureReattachV2
             if(!built || index<0||index>=rigs.Length || rigs[index]==null ||
                 !rigs[index].Detached) return false;
             Rig rig=rigs[index];
-            rig.Body.linearVelocity=Vector3.zero;
-            rig.Body.angularVelocity=Vector3.zero;
-            rig.Body.isKinematic=true;
-            rig.Part.transform.SetParent(rig.Root.transform,false);
-            rig.Part.transform.localPosition=rig.LocalMount;
-            rig.Detached=false;
-            if(!rig.Emitter.RearmAfterReattach(rig.Spec.PartId))
-                throw new InvalidOperationException("Detached ID missing at protected reattach");
-            return true;
+            if(rig.Ledger.Busy) return false;
+            // Capture every property changed by the commit before reserving the ID.
+            Transform priorParent=rig.Part.transform.parent;
+            Vector3 priorPosition=rig.Part.transform.position;
+            Quaternion priorRotation=rig.Part.transform.rotation;
+            Vector3 priorVelocity=rig.Body.linearVelocity;
+            Vector3 priorAngularVelocity=rig.Body.angularVelocity;
+            bool priorKinematic=rig.Body.isKinematic;
+            bool priorDetached=rig.Detached;
+            // R2 transaction performs ledger rearm FIRST; no emitted force, no public
+            // reset. Exception compensation restores physical state AND consumed ID.
+            return rig.Ledger.TryReattach(rig.Spec.PartId,
+                () => {
+                    rig.Body.linearVelocity=Vector3.zero;
+                    rig.Body.angularVelocity=Vector3.zero;
+                    rig.Body.isKinematic=true;
+                    rig.Part.transform.SetParent(rig.Root.transform,false);
+                    rig.Part.transform.localPosition=rig.LocalMount;
+                    rig.Detached=false;
+                },
+                () => {
+                    rig.Part.transform.SetParent(priorParent,true);
+                    rig.Part.transform.position=priorPosition;
+                    rig.Part.transform.rotation=priorRotation;
+                    rig.Body.isKinematic=priorKinematic;
+                    rig.Body.linearVelocity=priorVelocity;
+                    rig.Body.angularVelocity=priorAngularVelocity;
+                    rig.Detached=priorDetached;
+                });
         }
 
         public void ResetForNewRun()
         {
+            // Preflight the whole reset: never destroy one rig mid-transaction.
+            for(int i=0;i<rigs.Length;i++)
+                if(rigs[i]!=null && rigs[i].Ledger.Busy)
+                    throw new InvalidOperationException("Cannot reset while docking");
             for(int i=0;i<rigs.Length;i++)
             {
                 Rig rig=rigs[i];
                 if(rig==null)continue;
+                rig.Ledger.ClearForNewRun();
                 if(rig.Part!=null && rig.Part.transform.parent==null)DestroyOwned(rig.Part);
                 if(rig.Root!=null)DestroyOwned(rig.Root);
                 rigs[i]=null;

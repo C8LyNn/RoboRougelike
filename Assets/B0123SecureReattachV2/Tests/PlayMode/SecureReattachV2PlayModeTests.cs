@@ -68,6 +68,38 @@ namespace B01.SecureReattachV2.Tests
             Assert.IsFalse(demo.IsDetached(0));
             Assert.AreEqual(0,demo.AppliedCount(0));
         }
+
+        [Test]
+        public void LostConsumedIdRejectsEveryPublicAliasWithoutPhysicalMutation()
+        {
+            Assert.IsTrue(demo.Detach(0));
+            Rigidbody body=demo.PartBody(0);
+            Vector3 velocity=body.linearVelocity;
+            bool kinematic=body.isKinematic;
+            Transform parent=body.transform.parent;
+            Vector3 worldPosition=body.transform.position;
+            // Test-only reflection: the R2 ledger is private, not a public UI API.
+            var rigsField=typeof(SecureDebrisPlaygroundV2).GetField("rigs",
+                System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance);
+            Assert.IsNotNull(rigsField);
+            var rigs=(System.Array)rigsField.GetValue(demo);
+            object rig=rigs.GetValue(0);
+            var ledgerField=rig.GetType().GetField("Ledger");
+            var ledger=(AtomicDockLedger)ledgerField.GetValue(rig);
+            Assert.AreEqual(1,ledger.Count);
+            ledger.ClearForNewRun(); // reproduce #486 out-of-sequence invalidation
+            Assert.AreEqual(0,ledger.Count);
+            Assert.IsFalse(demo.Reattach(0));
+            Assert.IsFalse(demo.TrySafeReattach(0));
+            Assert.IsFalse(demo.ReattachFromGui(0));
+            Assert.IsTrue(demo.IsDetached(0));
+            Assert.AreEqual(0,demo.AppliedCount(0));
+            Assert.AreEqual(kinematic,body.isKinematic);
+            Assert.AreEqual(parent,body.transform.parent);
+            Assert.AreEqual(worldPosition,body.transform.position);
+            Assert.AreEqual(velocity,body.linearVelocity);
+        }
+
         [Test]
         public void NotDetachedOrBadIndexDoesNotMoveParts()
         {
