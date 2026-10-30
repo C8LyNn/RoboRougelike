@@ -1,0 +1,115 @@
+name: B01-40 W23 OWNER FINAL #749 ONE V3 .owner + R5 #732 corrected original 39 GUID G0
+on:
+  push:
+    branches: [qa/b01-40-p17w23-selected749-732-exact-g0]
+    paths:
+      - 'Tools/B01/B01-40/P17W23Selected749G0/**'
+      - '.github/workflows/b01-40-p17w23-selected749-732-g0.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-40/P17W23Selected749G0/**'
+      - '.github/workflows/b01-40-p17w23-selected749-732-g0.yml'
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  genuine-owner-selected-749-732-original-source-g0:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 50
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: own
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/checkout@v4
+        with:
+          path: chosen
+          ref: 8634e71dfcf633323073fe584a6c0884f1ca5d23
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: api
+          ref: b8ca29c7707cd6b4338d0b9772d74dee676d49d2
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: r5fix
+          ref: 0bee4ce9928354433ec719c45a8186378361d46e
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: r5
+          ref: cc7f73541517a18f4479bb155534bd4832d9985e
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: game
+          ref: d94400d95d13db7f27e1533df05c9292d5380431
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: save
+          ref: 33094f154c7b91119b36d58aab285e6e83c5de57
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: storage
+          ref: d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121
+      - uses: actions/checkout@v4
+        with:
+          path: session
+          ref: bd8905ad549a7b26854b671be971f7d781308311
+      - uses: actions/checkout@v4
+        with:
+          path: r3alt
+          ref: 3aae22c03a13e7f10f235877b068e04f5e8c19b7
+      - uses: actions/checkout@v4
+        with:
+          path: v3alt
+          ref: 8ea411b49e629c059f16c9f8b59a534c19f660b8
+      - uses: actions/checkout@v4
+        with:
+          path: v2
+          ref: 809f82575c638e1b4d2806b5f417bddab6c0871a
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: safe
+          ref: 3b743acc52bb44ae6a50af56ed9aca46d22821a7
+      - uses: actions/checkout@v4
+        with:
+          path: guid
+          ref: 547b55560d1a33af182caeaf73f9a9b2d8b1b7fe
+      - uses: actions/checkout@v4
+        with:
+          path: previous
+          ref: 1f8b85665cb6c1369a15c377225c7e766818170d
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Execute ACTUAL ORIGINAL selected #749 CSharp+OS physical Source, CS7036 no-lease mutation, #732 corrected g5 author ZIP and 39 GUID Unity source-only scratch rollback
+        shell: bash
+        run: |
+          set -euo pipefail
+          python own/Tools/B01/B01-40/P17W23Selected749G0/intake.py --chosen chosen --api api --r5fix r5fix --r5 r5 --game game --save save --storage storage --session session --r3alt r3alt --v3alt v3alt --v2 v2 --safe safe --guid guid --previous previous --out evidence | tee b0140-w23-749-732-source.log
+          grep -q 'B0140_W23_SELECTED_749_ORIGINAL_GIT' b0140-w23-749-732-source.log
+          grep -q 'B0140_W23_SELECTED_749_ORIGINAL_CSHARP' b0140-w23-749-732-source.log
+          grep -q 'B0140_W23_SELECTED_732_NEW_NATIVE_FIXTURE_SOURCE' b0140-w23-749-732-source.log
+          grep -q 'B0140_W23_SELECTED_749_732_729_UNITY_SOURCE_SAFE' b0140-w23-749-732-source.log
+          grep -q 'B0140_W23_SELECTED_749_732_SOURCE_G0_PASS_GAME_HOLD_NATIVE_G1_NOT_RUN_NO_MERGE' b0140-w23-749-732-source.log
+          test -s evidence/selected-749-732-exact-g0-source-only.json
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-40-W23-OWNER749-R5FIX732-OriginalPhysicalG0-${{ matrix.os }}
+          path: |
+            evidence/selected-749-732-exact-g0-source-only.json
+            b0140-w23-749-732-source.log
+          retention-days: 21
+          if-no-files-found: warn
