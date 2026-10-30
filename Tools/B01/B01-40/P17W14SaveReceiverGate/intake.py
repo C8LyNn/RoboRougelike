@@ -18,6 +18,7 @@ SHAS={
  "game":"d94400d95d13db7f27e1533df05c9292d5380431",
  "save544":"e77529262b8f03c6e9f0e25b642038c351872044",
  "save549":"6da2c523e03766cd5a6deaed0cb3cccf8765354b",
+ "save556":"33094f154c7b91119b36d58aab285e6e83c5de57",
  "wrapper536":"77d75d73467d236f6e3404caa58271ffec9d45cb",
  "wrapper542":"ed0234d8a3b1b3bc85f3d0a07bbe44b065c96508"
 }
@@ -26,6 +27,8 @@ PINS={
             "2dd3ee7f465a595ed42c2cbb6637200bb903185f"),
  "save549":("Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs",
             "6c036985411164372bf3d21d467780ff3777544e"),
+ "save556":("Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs",
+            "b52e511c370f5fca56c74029050844dc8cbb7f9a"),
  "wrapper536":("Tools/B01/B01-40/P17W13RollbackPreservation/receiver.py",
                "27ec9c682e31c8acbf7863854d9fd47829f23c21"),
  "wrapper542":("Tools/B01/B01-60/P17W12NativeSecureV2QA/runner.py",
@@ -185,6 +188,78 @@ def test_receiver542(roots,root):
             "negative_checks":neg,"clean_rollback":True,
             "native_unity":"NOT_RUN"}
 
+
+def test_selected_556(roots, root):
+    # B01-23 independently designated #549 lineage, W14 new immutable R2 #556.
+    selected=roots["save556"]
+    choice=json.loads(git(selected,"show",
+        "HEAD:Tools/B01/B01-23/P17W14DetachedSaveContractR2/contract_selection.json"))
+    demand(choice["selected_save_lineage"]=="#549" and
+           choice["other_save_contract_544"]=="ALT_HOLD" and
+           choice["supersedes_sha"]==SHAS["save549"] and
+           choice["frozen_gameplay_pr_510"]==SHAS["game"] and
+           choice["codex_ack"] is False and choice["savegame_host"]=="NOT_INTEGRATED",
+           "SAVE556_OWNER_EXCLUSIVE_CHOICE_MISSING")
+    c=module("original556selectedpackager",selected/
+        "Tools/B01/B01-23/P17W13DetachedSaveContract001/package.py")
+    raw=c.build()
+    extracted=c.verify(raw)
+    demand(len(extracted)==17 and len(c.scope())==16,
+           "SOURCE556_UNEXPECTED_ORIGINAL_MEMBERS")
+    m=json.loads(extracted["PACKAGE_MANIFEST.json"])
+    demand(m["version"]=="2.0.0" and m["own_head_sha"]==SHAS["save556"] and
+           m["selected_secure_v2_sha"]==SHAS["game"] and
+           m["native_unity"]=="NOT_RUN" and m["savegame_host"]=="NOT_INTEGRATED" and
+           m["codex_ack"] is False and m["meta_guids"]==4,"SAVE556_INVALID_G0_PROVENANCE")
+    demand(len(m["files"])==16 and set(extracted)==
+           set([x["path"] for x in m["files"]])|{"PACKAGE_MANIFEST.json"},
+           "SOURCE556_WRONG_GIT_MEMBER_SCOPE")
+    for entry in m["files"]:
+        b=extracted[entry["path"]]
+        demand(git(selected,"show","HEAD:"+entry["path"])==b and
+               len(b)==entry["size"] and sha(b)==entry["sha256"],
+               "SOURCE556_WRONG_SOURCE_BYTES:"+entry["path"])
+    changes=set(git(selected,"diff","--name-only",SHAS["save549"],"HEAD").decode().splitlines())
+    demand(len(changes)==9 and all(p.startswith("Assets/B0123DetachedSaveContract001/") or
+           p.startswith("Tools/B01/B01-23/P17W13DetachedSaveContract001/") or
+           p.startswith("Tools/B01/B01-23/P17W14DetachedSaveContractR2/") or
+           p==".github/workflows/b01-23-p17w14-detached-save-r2.yml" for p in changes),
+           "UNAUTHORIZED_SAVE556_PRODUCER_SOURCE_DIFF")
+    runtime=extracted["Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs"].decode()
+    demand("public PersistedPart[] Parts => (PersistedPart[])frozenParts.Clone();" in runtime and
+           "public DebrisImpulseLedger GetLedger" not in runtime and
+           "public bool ContainsConsumedId" in runtime and
+           "public int ConsumedCount" in runtime,"ORIGINAL_SAVE556_SOURCE_SECURITY_GUARD_MISSING")
+    # Original #556 built-in package stage/rollback, actual physical members,
+    # foreign EMPTY directory must survive rejected rollback; then clean pass.
+    target=root/"selected-556"
+    c.stage(raw,target)
+    foreign=target/"Assets"/"B0123DetachedSaveContract001"/"FOREIGN_EMPTY_W14"/"nested"
+    foreign.mkdir(parents=True)
+    fail1=expected_hold(lambda:c.rollback(raw,target),"SAVE556_FOREIGN_EMPTY_NESTED_DENIED")
+    demand(foreign.is_dir(),"SAVE556_FOREIGN_EMPTY_REMOVED")
+    foreign.rmdir();foreign.parent.rmdir()
+    ownfile=target/"Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs"
+    previous=ownfile.read_bytes()
+    ownfile.write_bytes(b"UNAUTHORIZED")
+    fail2=expected_hold(lambda:c.rollback(raw,target),"SAVE556_FOREIGN_MODIFIED_SOURCE_DENIED")
+    demand(ownfile.read_bytes()==b"UNAUTHORIZED","SAVE556_TAMPER_ERASED")
+    ownfile.write_bytes(previous)
+    c.rollback(raw,target)
+    demand(not target.exists(),"SAVE556_CLEAN_ROLLBACK_DID_NOT_REMOVE")
+    # Keep artifact for inspection in GitHub Action stdout/JSON; never install it
+    # into the current live Codex worktree.
+    return {"source_pr":556,"selected_only":True,"sha":SHAS["save556"],
+            "supersedes_original_549":SHAS["save549"],
+            "original_inner_zip_sha256":sha(raw),"original_zip_bytes":len(raw),
+            "original_members":17,"original_git_byte_checks":16,"owned_r2_paths":9,
+            "meta_guids":4,"asmdefs":1,
+            "rollback_negative_checks":[fail1,fail2],
+            "clean_rollback":True,
+            "source_g0":"ACCEPTED_SOURCE_ONLY",
+            "live_unity_save_load":"NOT_INTEGRATED",
+            "unity_native":"NOT_RUN"}
+
 def negative_save_gate(packages):
     # Explicit future owner choice NOT PRESENT in HQ #552: no B01-40 selection.
     # Even if selected, both W13 versions expose security sensitive mutable APIs.
@@ -237,6 +312,7 @@ def main():
     with tempfile.TemporaryDirectory(prefix="B01-40-W14-SINGLE-PACKAGE-") as td:
         p=Path(td)
         packages=build_source_packages(roots,p)
+        selected556=test_selected_556(roots,p)
         r536=test_receiver536(roots,p)
         r542=test_receiver542(roots,p)
         denials=negative_save_gate(packages)
@@ -247,8 +323,9 @@ def main():
         "frozen_game_sha":SHAS["game"],
         "save_contract_selection":"PENDING_B01_23_B01_62_ONLY",
         "original_save_contracts":packages,
+        "chosen_corrected_save_contract":selected556,
         "source_transport":"ORIGINAL_BYTES_VALID_BOTH_CONTRACTS",
-        "save_release":"HOLD_ORIGINAL_CONTRACT_549_550_RED_AND_544_BOUNDARY_RED",
+        "save_release":"#556_SOURCE_G0_ONLY__LIVE_REHYDRATION_HOLD__INDEPENDENT_G1_PENDING",
         "rollback":"EXISTING_536_AND_542_SOURCE_FIXTURE_VERIFIED",
         "actual_receiver536":r536,
         "actual_receiver542":r542,
@@ -262,9 +339,10 @@ def main():
     out=a.out/"W14-save-receiver-gate.json"
     out.write_text(json.dumps(record,indent=2,sort_keys=True)+"\n")
     print("B01_40_W14_ORIGINAL_PACKAGES",json.dumps(packages,sort_keys=True))
+    print("B01_40_W14_SELECTED_556_SOURCE_G0",json.dumps(selected556,sort_keys=True))
     print("B01_40_W14_ROLLBACK_RECEIVERS_PASS",
           json.dumps({"536":r536["negative_checks"],"542":r542["negative_checks"]},sort_keys=True))
-    print("B01_40_W14_RELEASE_DENIAL_PASS",len(denials),"SAVE_SCHEMA_CHOICE_PENDING #510_FROZEN")
+    print("B01_40_W14_RELEASE_DENIAL_PASS",len(denials),"OLD_544_549_DENIED #556_EXCLUSIVE_SOURCE_G0 #510_FROZEN")
     print("NATIVE_UNITY_NOT_RUN G2_HOLD CODEX_ACK_NONE NO_MERGE")
 if __name__=="__main__":
     try:main()
