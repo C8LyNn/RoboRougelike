@@ -24,7 +24,12 @@ namespace RoboRougelike.B0110.TrainingGhost
         public float ReferenceSeconds { get; set; }
         public float TotalDeltaSeconds { get; set; }
         public int BiggestLossGate { get; set; }
+        // A finish-segment loss is NOT a checkpoint loss: gate=0, this flag=true.
+        public bool BiggestLossIsFinishSegment { get; set; }
         public float BiggestLossSeconds { get; set; }
+        public float FinishSegmentSeconds { get; set; }
+        public float ReferenceFinishSegmentSeconds { get; set; }
+        public float FinishSegmentDeltaSeconds { get; set; }
         public string Guidance { get; set; }
     }
 
@@ -52,6 +57,18 @@ namespace RoboRougelike.B0110.TrainingGhost
             reference = GhostMath.Clone(completedReference);
             GhostMath.Check(reference.Completed,
                 "Only completed attempts can be a training benchmark");
+            // Each genuine gate and finish leg must have a measurable positive
+            // duration. GhostRun permits zero-time source event markers, but a
+            // split COACH cannot promise accurate per-segment advice for them.
+            float previous = 0f;
+            foreach (float gate in reference.CheckpointSeconds)
+            {
+                GhostMath.Check(gate > previous,
+                    "Practice benchmark has zero-duration checkpoint segment");
+                previous = gate;
+            }
+            GhostMath.Check(reference.ElapsedSeconds > previous,
+                "Practice benchmark has zero-duration finish segment");
         }
 
         private static GhostSplitResult Copy(GhostSplitResult a)
@@ -133,15 +150,41 @@ namespace RoboRougelike.B0110.TrainingGhost
                 }
             }
 
+            // W10 fix: the old evaluator stopped at checkpoint #N and silently
+            // ignored the full last leg to finish. In a four-gate course this
+            // created a misleading "no loss" tip even when the finish cost 5s.
+            // Only compare an authoritative completed finish, not a failed run.
+            float finishSegment = 0f;
+            float referenceFinishSegment = 0f;
+            float finishDelta = 0f;
+            bool biggestLossIsFinish = false;
+            if (completed)
+            {
+                finishSegment = authoritativeRunSeconds - lastSeconds;
+                referenceFinishSegment = reference.ElapsedSeconds
+                    - reference.CheckpointSeconds[reference.RequiredCheckpoints - 1];
+                finishDelta = finishSegment - referenceFinishSegment;
+                if (finishDelta > maxLoss)
+                {
+                    maxLoss = finishDelta;
+                    worstGate = 0;
+                    biggestLossIsFinish = true;
+                }
+            }
+
             string guidance;
             if (!completed)
                 guidance = "Attempt ended before finish; retry to measure full-course pace.";
+            else if (biggestLossIsFinish && maxLoss > PaceToleranceSeconds)
+                guidance = "Practice finish segment after checkpoint "
+                           + reference.RequiredCheckpoints.ToString()
+                           + ": largest measured time loss versus reference.";
             else if (worstGate != 0 && maxLoss > PaceToleranceSeconds)
                 guidance = "Practice segment ending at checkpoint "
                            + worstGate.ToString()
                            + ": largest measured time loss versus reference.";
             else
-                guidance = "No checkpoint segment exceeded the time-loss tolerance.";
+                guidance = "No measured segment (including finish) exceeded time-loss tolerance.";
             // Stopwatch outcome only; do not report "vehicle unstable", collisions or
             // other diagnoses not supported by signed physical sensor evidence.
             var summary = new GhostPracticeSummary
@@ -151,7 +194,11 @@ namespace RoboRougelike.B0110.TrainingGhost
                 ReferenceSeconds = reference.ElapsedSeconds,
                 TotalDeltaSeconds = authoritativeRunSeconds - reference.ElapsedSeconds,
                 BiggestLossGate = worstGate,
+                BiggestLossIsFinishSegment = biggestLossIsFinish,
                 BiggestLossSeconds = maxLoss,
+                FinishSegmentSeconds = finishSegment,
+                ReferenceFinishSegmentSeconds = referenceFinishSegment,
+                FinishSegmentDeltaSeconds = finishDelta,
                 Guidance = guidance
             };
             finished = true;
