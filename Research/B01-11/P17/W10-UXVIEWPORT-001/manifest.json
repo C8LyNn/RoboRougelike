@@ -1,0 +1,93 @@
+{
+  "schema": "b01-package-v1",
+  "package_id": "B01-11-P17-UXVIEWPORT-001",
+  "revision": "R1",
+  "owner": "B01-11 — UX RESEARCH & COMPETITIVE ANALYSIS",
+  "wave": "PASS17 WAVE10",
+  "issue": "https://github.com/C8LyNn/RoboRougelike/issues/483",
+  "branch": "research/b01-11-p17-w10-uxviewport-001",
+  "base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "source_commit": "1ac19502ad6558e944a288851494c8f02f6f99dc",
+  "source_type": "Original pure C# adaptive HUD layout geometry, no Unity integration",
+  "files": [
+    {
+      "path": "Research/B01-11/P17/W10-UXVIEWPORT-001/Runtime/HudLayoutCore.cs",
+      "bytes": 7059,
+      "sha256": "16312ef1495576bbb7f0a852514b9aee111b023f3c6f2ed5dbd08ffd30e920b5",
+      "git_blob_sha1": "8b83d20f4d8648d39c1688de5b28020e84e2bd77"
+    },
+    {
+      "path": "Research/B01-11/P17/W10-UXVIEWPORT-001/Tests/Program.cs",
+      "bytes": 10042,
+      "sha256": "494141ecc7788b5fff88dc1a21a1d4fcb77d41a9c745462dda3b5c5fe1b1b840",
+      "git_blob_sha1": "3eb1cbd57343937a970b8044ebe5e1d97ce89fa3"
+    },
+    {
+      "path": "Research/B01-11/P17/W10-UXVIEWPORT-001/Tests/HudViewportTests.csproj",
+      "bytes": 402,
+      "sha256": "4f1e30959858c9fa32ee89130aed47de6e9358974e91bf61378779224df91492",
+      "git_blob_sha1": "cb6cff7e30b6b235e8e8f2978bca6cefc4a9c004"
+    },
+    {
+      "path": ".github/workflows/b01-11-uxviewport-w10.yml",
+      "bytes": 907,
+      "sha256": "8c20be6be4e8d1442fc098b56facd36c47447f051d2631f613dbdfd7e69acd4d",
+      "git_blob_sha1": "c49ad60f0dad5711ba11979057558d314fb99f7a"
+    },
+    {
+      "path": "Research/B01-11/P17/W10-UXVIEWPORT-001/README.md",
+      "bytes": 3535,
+      "sha256": "da7d60c904d5e5dd21479cebbdadd197af2227bf623fb90d3ed41734d481f0b3",
+      "git_blob_sha1": "accf151dd84ee391b94f7769c5e2b954545c8752"
+    },
+    {
+      "path": "Research/B01-11/P17/W10-UXVIEWPORT-001/TEST_PLAN.md",
+      "bytes": 1671,
+      "sha256": "1d48189283e96ebeaa01a837f9a5e3fbb4e86746a303ccd5f577910644e1152b",
+      "git_blob_sha1": "9317584df85fd6ee59b75d815eb355a08143526d"
+    },
+    {
+      "path": "Research/B01-11/P17/W10-UXVIEWPORT-001/INSTALL_FOR_CODEX.md",
+      "bytes": 2623,
+      "sha256": "af4c62829caa9bdc0c9b5220ecf9c0730ffda25361a7d7b92295b615047bb04a",
+      "git_blob_sha1": "ae83e9960fe517fdd84979adf77544cd3c1db174"
+    },
+    {
+      "path": "Research/B01-11/P17/W10-UXVIEWPORT-001/QA_RECEIVER.md",
+      "bytes": 1899,
+      "sha256": "bec4f6861f3713b17925917dd3d29fa99a6afb7c1e83a503b27040a3ff2c52fb",
+      "git_blob_sha1": "6790fa5f9aa9ff3fd0205c5f62fcefe7fcfaf0db"
+    }
+  ],
+  "tests": [
+    {
+      "name": "Original linked C# .NET8 Ubuntu",
+      "status": "PASS",
+      "passed": 75,
+      "failed": 0,
+      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41065292153"
+    },
+    {
+      "name": "Original linked C# .NET8 Windows",
+      "status": "PASS",
+      "passed": 75,
+      "failed": 0,
+      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41065292153"
+    },
+    {
+      "name": "Native Unity EditMode/PlayMode, actual Player HUD, human UX",
+      "status": "NOT_RUN"
+    }
+  ],
+  "source_producer": "COMPLETE_TESTED",
+  "g0_independent": "PENDING",
+  "qa_independent": "PENDING",
+  "g1_unity": "NOT_RUN",
+  "codex": "NOT_OFFERED / ACK_PENDING / NOT_INTEGRATED",
+  "scope": [
+    "Research/B01-11/P17/W10-UXVIEWPORT-001/**",
+    ".github/workflows/b01-11-uxviewport-w10.yml"
+  ],
+  "rollback": "Discard isolated W10 UXVIEWPORT research branch and own workflow; Codex owns any future accepted Unity adapter rollback",
+  "note": "No circular manifest self-hash; lists all eight other UTF-8 source/test/document/workflow files, stable original Git blob+bytes+SHA256. No Unity test pass claimed."
+}
