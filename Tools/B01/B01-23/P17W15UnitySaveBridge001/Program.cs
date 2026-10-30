@@ -166,7 +166,7 @@ class T
             h.TryLoad(Make(true,false),7,1,()=>true);
             f.Last!.FailActivate=true;f.FailActivate=true;
             var v=h.TryLoad(Make(false,true,2),7,1,()=>true);
-            return v==WorldSwapVerdict.HostException&&h.Quarantined&&
+            return v==WorldSwapVerdict.RollbackQuarantine&&h.Quarantined&&
                 !h.TrySave(7,()=>true,out _)&&
                 h.TryLoad(Make(true,false,3),7,1,()=>true)==WorldSwapVerdict.RollbackQuarantine;
         });
