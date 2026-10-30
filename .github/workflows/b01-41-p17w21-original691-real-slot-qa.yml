@@ -1,0 +1,71 @@
+name: B01-41 W21 ORIGINAL V2 #691 true crossprocess R4 physical checkpoint and #685 rollback QA
+on:
+  push:
+    branches: ['ci/b01-41-p17w21-canonical-v2-real-disk-crossprocess']
+    paths:
+      - 'Tools/B01/CI41/P17W21/**'
+      - '.github/workflows/b01-41-p17w21-original691-real-slot-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-real-gateway-checkpoint:
+    name: Real original #691 V2 gateway + #647 FileCheckpointStore 16 OS child CLR (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Actually execute 18 independent hostile source anti-mock guards
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
+          "$PY" -m unittest discover -s Tools/B01/CI41/P17W21/ -p test_source_guard.py -v 2>&1 | tee "ci41-w21-guards-${{ runner.os }}.txt"
+          grep -q 'Ran 18 tests' "ci41-w21-guards-${{ runner.os }}.txt"
+          grep -q 'OK' "ci41-w21-guards-${{ runner.os }}.txt"
+          grep -q 'W21_EXACT_ORIGINAL_691_GATEWAY_AND_647_FILESTORE_QA_SOURCE_VERIFIED' "ci41-w21-guards-${{ runner.os }}.txt"
+      - name: Require exact producer/frozen Git blobs and 7 new CI41 paths only
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
+          "$PY" Tools/B01/CI41/P17W21/source_guard.py --repo . --output "ci41-w21-git-${{ runner.os }}.json"
+          "$PY" -c 'import json,sys;x=json.load(open(sys.argv[1]));assert x["status"]=="SOURCE_SHA_SCOPE_PASS" and len(x["own_added_paths"])==7 and x["api_alternative_682"]=="ALT_HOLD" and x["host_alt_652"]=="ALT_HOLD" and x["native_unity"]=="NOT_RUN" and x["release"]=="HOLD" and x["expected_real_crossprocess_pairs_per_os"]==8;print("W21_ORIGINAL_691_AND_647_SHA_PINS_PASS")' "ci41-w21-git-${{ runner.os }}.json"
+      - name: Build exact original canonical V2 / R4 FileCheckpointStore / frozen #556 W06 #510 CSharp9
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build Tools/B01/CI41/P17W21/Original691RealSlotQA.csproj -c Release --warnaserror 2>&1 | tee "ci41-w21-build-${{ runner.os }}.txt"
+          grep -q 'Build succeeded' "ci41-w21-build-${{ runner.os }}.txt"
+      - name: EXECUTE original disk #685 rollback and 8 simultaneous 2-process gateway CAS races
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run -c Release --no-build --project Tools/B01/CI41/P17W21/Original691RealSlotQA.csproj 2>&1 | tee "ci41-w21-real-source-${{ runner.os }}.txt"
+          grep -q 'CI41_W21_ORIGINAL_691_REAL_R4_DISK_CAS_PASS races=8 child_processes=16 asserts=' "ci41-w21-real-source-${{ runner.os }}.txt"
+          grep -q 'CI41_W21_685_PARTIAL_PREPARE_CLEANUP_GREEN_AND_FAILED_CLEANUP_STICKY_QUARANTINE_GREEN' "ci41-w21-real-source-${{ runner.os }}.txt"
+          grep -q 'CI41_W21_REAL_COMMIT_ACK_LOST_QUARANTINE_AND_FROZEN_556_IDS_GREEN' "ci41-w21-real-source-${{ runner.os }}.txt"
+          grep -q 'CI41_W21_MULTI_GATEWAY_OWNER_LEASE_EXTERNAL_NOT_CERTIFIED' "ci41-w21-real-source-${{ runner.os }}.txt"
+          grep -q 'CI41_W21_NATIVE_UNITY_PHYSX_NOT_RUN_CANONICAL510_PRIVATE_ADAPTER_HOLD_G2_HOLD' "ci41-w21-real-source-${{ runner.os }}.txt"
+      - name: Retain source-only physical OS receipts, never forged native Unity G1
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CI41-W21-ORIGINAL-691-R4-REAL-OS-CAS-NOT-UNITY-${{ runner.os }}
+          path: |
+            ci41-w21-guards-${{ runner.os }}.txt
+            ci41-w21-git-${{ runner.os }}.json
+            ci41-w21-build-${{ runner.os }}.txt
+            ci41-w21-real-source-${{ runner.os }}.txt
+          retention-days: 14
+          if-no-files-found: warn
