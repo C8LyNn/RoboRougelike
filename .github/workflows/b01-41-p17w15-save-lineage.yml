@@ -26,8 +26,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git hash-object Tools/B01/CI41/P17W15/lineage_fence.py)" = '96aa8fbd6f545cea9296e299f8749d50d4119b61'
-          test "$(git hash-object Tools/B01/CI41/P17W15/test_lineage_fence.py)" = '3539118857c0052dabfc8e040bdb8121e047aa5e'
+          test "$(git hash-object Tools/B01/CI41/P17W15/lineage_fence.py)" = 'a4c1c71f519e1969fb18b221b714a5f6682e3f90'
+          test "$(git hash-object Tools/B01/CI41/P17W15/test_lineage_fence.py)" = 'd59f480278381be3a265dc6a33639a67fd3afcfb'
           echo 'CI41_SELECTED_SAVE_LINEAGE_ORIGINAL_TEST_BLOBS_PASS'
       - name: Execute 24 real disposable Git history, GUID, asmdef and alternative ownership negatives
         shell: bash
