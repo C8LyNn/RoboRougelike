@@ -18,11 +18,11 @@ internal static class OfficialHostSourceQA
     private sealed class World : IIsolatedRigWorld
     {
         private readonly RunSnapshot source;
-        public bool Visible, Busy, Disposed, FailShow, FailHide, FailDispose;
+        public bool Visible, Disposed, FailShow, FailHide;
         public bool MutateOnShow, BadStageCapture;
         public World(RunSnapshot snapshot){source=snapshot;}
         public bool IsVisible=>Visible;
-        public bool IsBusy=>Busy;
+        public bool IsBusy=>false;
         public RunSnapshot Capture(long run,long generation)
         {
             if(Disposed)throw new InvalidOperationException("world disposed");
@@ -40,7 +40,6 @@ internal static class OfficialHostSourceQA
         public void Dispose()
         {
             Disposed=true;Visible=false;
-            if(FailDispose)throw new InvalidOperationException("disposal fault");
         }
     }
     private sealed class Factory : IIsolatedRigFactory
