@@ -1,4 +1,4 @@
-name: B01-22 P17 W12 KITREADINESS-001 actual bounded optimal assembly order
+name: B01-22 P17 W15 KITREADINESS-001 read-only artifact intake
 on:
   pull_request:
     paths:
@@ -41,10 +41,12 @@ jobs:
         run: python -m unittest discover -s Research/B01-22/P17/KITREADINESS001 -p test_pack_readiness.py -v
       - name: Stage verified original Unity C# and 3 C# scenario previews
         run: python Research/B01-22/P17/KITREADINESS001/pack_readiness.py --stage readiness-artifact --previews readiness-previews
+      - name: Receiver preflight read-only verify of stage (never deletes)
+        run: python Research/B01-22/P17/KITREADINESS001/pack_readiness.py --verify-stage readiness-artifact
       - name: Upload original source ZIP, receipts and actual scenario decisions
         uses: actions/upload-artifact@v4
         with:
-          name: b01-22-w12-kitreadiness-${{ matrix.os }}
+          name: b01-22-w15-kitreadiness-${{ matrix.os }}
           path: readiness-artifact/
           if-no-files-found: error
           retention-days: 14

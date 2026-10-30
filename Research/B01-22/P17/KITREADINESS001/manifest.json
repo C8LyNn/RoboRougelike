@@ -1,6 +1,6 @@
 {
   "package_id": "B01-22-KITREADINESS-001",
-  "version": "1.3.3-RED",
+  "version": "1.3.3",
   "owner": "B01-22",
   "product": "Unity-compatible validated kit planner plus Research-only full-stock procurement and exact bounded priority order advisor",
   "source_sha": "b1d4e341d846c9397e236809a1d7e4c4fff9c935",
@@ -29,10 +29,10 @@
     "Research/B01-22/P17/KITREADINESS001/scenarios/starter-cache.json": "dde1761de2d3fe7e23bf1b3199dbbcdc4c7abddb",
     "Research/B01-22/P17/KITREADINESS001/scenarios/siege-cache.json": "d65b72aeac81cdc7a6d3ed5cfb673b494ec5b6d5",
     "Research/B01-22/P17/KITREADINESS001/scenarios/shared-gyro.json": "441a59f81a542e13b068d7f86e7b0c1e57829b18",
-    "Research/B01-22/P17/KITREADINESS001/pack_readiness.py": "2d6718b81d0f359ba6153d6078628aa387256dcd",
+    "Research/B01-22/P17/KITREADINESS001/pack_readiness.py": "5064510548c777b1f865b45d9f94ac5342e4aeb9",
     "Research/B01-22/P17/KITREADINESS001/test_pack_readiness.py": "97726c7e4fe45542105be8c03b8aaa402ef228d7",
-    "Research/B01-22/P17/KITREADINESS001/README.md": "f5b3b7b45423e284e0a64a753130fa4056924fa3",
-    ".github/workflows/b01-22-p17w08-kitreadiness.yml": "f7e78a48ed8808f602d4c03834be70a1267095e7",
+    "Research/B01-22/P17/KITREADINESS001/README.md": "3860c71e8a5054b55b83f5051b03843d27f166c8",
+    ".github/workflows/b01-22-p17w08-kitreadiness.yml": "002af10c1e9827484089e34423912ff92e8e803b",
     "Research/B01-22/P17/KITREADINESS001/ReadinessCli.cs": "c53bf577ec7ae849897027e87f2e70bde369d642",
     "Research/B01-22/P17/KITREADINESS001/ReadinessCli.csproj": "c5bfe35121382394824265c56986d5db66c5693b",
     "Research/B01-22/P17/KITREADINESS001/test_cli_readiness.py": "e12df589ba9d0a22d7e78036bcb0cca87af39f77",
@@ -59,7 +59,7 @@
     "git_blob_checks": 19,
     "python_cli_blackbox_tests": 31
   },
-  "producer_qa": "PENDING_EXACT_SHA_CI",
+  "producer_qa": "PENDING_EXACT_SHA_FINAL_CI",
   "independent_qa": "PENDING",
   "native_unity": "NOT_RUN",
   "handoff": "B01-40 independent exact SHA G0 check all 19 physical working tree blobs + 3 Unity source members and rollback foreign empty directory; B01-60 rerun 53/31/25 source tests; native Unity NOT_RUN unless real host. No Codex or Secure Reattach edits.",
@@ -151,9 +151,18 @@
   },
   "verify_w15": {
     "intent": "read-only exact seven-file source receipt audit without invoking rollback",
-    "red_expected": true,
+    "red_expected": false,
     "qa_cases": "28..32",
     "owner": "B01-22",
-    "no_game_writes": true
+    "no_game_writes": true,
+    "status": "FIX_CANDIDATE_PENDING_CI",
+    "actual_cli": "python Research/B01-22/P17/KITREADINESS001/pack_readiness.py --verify-stage <staged-directory>",
+    "physical_source_sha_pins": 19,
+    "expected_member_count": 7,
+    "postverify_byte_recheck": true,
+    "read_only": true,
+    "tests": "28..32",
+    "source_only": true,
+    "native_unity": "NOT_RUN"
   }
 }

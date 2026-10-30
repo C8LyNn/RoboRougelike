@@ -205,6 +205,26 @@ def owned_rollback_snapshot(dest):
     return {name:(dest/name).read_bytes() for name in sorted(FILES)}
 
 
+
+def verify_stage(dest):
+    """Read-only source and physical-receipt acceptance; NEVER unlink anything.
+
+    Require an unmodified original checkout and frozen #411 catalog. Then
+    inspect ALL 7 files and byte-level receipt under a stable dual snapshot.
+    A changed receiver or an unowned *empty* directory fails closed.
+    """
+    dest=pathlib.Path(dest)
+    validate_sources()
+    before=owned_rollback_snapshot(dest)
+    previews=read_previews(dest)
+    zipped=(dest/"kitreadiness-unity.zip").read_bytes()
+    receipt=json.loads((dest/"receipt.json").read_text(encoding="utf-8"))
+    verify_receipt(zipped, physical_unity_files(), previews, receipt)
+    if owned_rollback_snapshot(dest) != before:
+        raise SourceError("VERIFY_STAGE_CHANGED_DURING_READ")
+    return receipt
+
+
 def rollback(dest):
     dest=pathlib.Path(dest)
     before=owned_rollback_snapshot(dest)
@@ -230,14 +250,23 @@ def main():
     p=parser.add_mutually_exclusive_group(required=True)
     p.add_argument("--stage")
     p.add_argument("--rollback")
+    p.add_argument("--verify-stage")
     parser.add_argument("--previews")
     args=parser.parse_args()
     try:
         if args.stage:
             if not args.previews:raise SourceError("PREVIEW_INPUT_REQUIRED")
             rec=stage(args.stage,args.previews)
-            print(json.dumps({"result":"B01_22_W12_PHYSICAL_SOURCE_PASS","receipt":rec},sort_keys=True))
+            print(json.dumps({"result":"B01_22_W15_PHYSICAL_SOURCE_PASS","receipt":rec},sort_keys=True))
+        elif args.verify_stage:
+            if args.previews:raise SourceError("PREVIEWS_NOT_ALLOWED_FOR_READONLY_VERIFY")
+            rec=verify_stage(args.verify_stage)
+            print(json.dumps({"result":"VERIFIED_STAGE_READ_ONLY",
+                              "source_sha":SOURCE_SHA,
+                              "verified_members":sorted(FILES),
+                              "receipt":rec},sort_keys=True))
         else:
+            if args.previews:raise SourceError("PREVIEWS_NOT_ALLOWED_FOR_ROLLBACK")
             print(rollback(args.rollback))
     except (SourceError, OSError, ValueError, KeyError, subprocess.CalledProcessError) as e:
         print("FAIL_CLOSED:"+str(e),file=sys.stderr)
