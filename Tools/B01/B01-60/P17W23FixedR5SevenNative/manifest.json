@@ -1,0 +1,51 @@
+{
+  "package_id": "B01-60-P17W23-R5-FIXED7-NATIVE-001",
+  "role": "B01-60",
+  "wave": 23,
+  "source_owner_issue": 731,
+  "operator_auth_issue": 667,
+  "base_pr": 718,
+  "base_sha": "481bfb1cf2804d94fb49d7e6a57134e96c535b86",
+  "frozen_selected_r5": {
+    "pr": 690,
+    "sha": "cc7f73541517a18f4479bb155534bd4832d9985e"
+  },
+  "corrected_owner_fixture": {
+    "pr": 732,
+    "sha": "0bee4ce9928354433ec719c45a8186378361d46e",
+    "corrected_fixture_git_blob": "d096f65eeb37393204a35445dd87cbdffa642ce0"
+  },
+  "native_original_case_count": 7,
+  "qa_source_case_count": 15,
+  "unity_exact": "6000.3.14f1",
+  "native_G1": "NOT_RUN",
+  "R5_full_native_G1": "NOT_RUN",
+  "source_G0": "PENDING_INDEPENDENT_FORMAL_B01_40",
+  "canonical_V3_729_712_669_G1": "NOT_RUN",
+  "live_game_save": "HOLD",
+  "G2": "HOLD",
+  "codex_ACK": "NONE",
+  "source_only_default": true,
+  "user_manual_confirm_native": true,
+  "source_g0_operator_ack_only": true,
+  "no_remote_pc_access": true,
+  "no_auto_upload": true,
+  "no_merge": true,
+  "files": [
+    ".github/workflows/b01-60-p17w23-r5-fixed7-native.yml",
+    "Tools/B01/B01-60/P17W23FixedR5SevenNative/run_fixed7.py",
+    "Tools/B01/B01-60/P17W23FixedR5SevenNative/test_fixed7.py",
+    "Tools/B01/B01-60/P17W23FixedR5SevenNative/Invoke-B0160W23Fixed7.ps1",
+    "Tools/B01/B01-60/P17W23FixedR5SevenNative/README.md",
+    "Tools/B01/B01-60/P17W23FixedR5SevenNative/manifest.json"
+  ],
+  "integrator_feedback": "NOT_MEASURED",
+  "receivers": [
+    "B01-40",
+    "B01-41",
+    "B01-61",
+    "B01-00",
+    "B01-60"
+  ],
+  "rollback": "discard only QA-owned new W23 six-file Draft; no frozen/producer/user data changes"
+}
