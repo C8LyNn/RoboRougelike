@@ -1,0 +1,83 @@
+name: B01-31 P17W17 genuine dual-pivot animated glTF2 exact W16 mesh preservation
+on:
+  push:
+    branches: [art/b01-31-p17w17-split-coupler-animated-glb]
+    paths:
+      - 'Tools/B01-31/P17/W17SplitCouplerAnimatedGLB001/**'
+      - '.github/workflows/b01-31-p17w17-split-coupler-animated-glb.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01-31/P17/W17SplitCouplerAnimatedGLB001/**'
+      - '.github/workflows/b01-31-p17w17-split-coupler-animated-glb.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  producer-original-animated-glb:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Download exact immutable original W16 real GLB2 source artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: B0131-P17W16-ORIGINAL-3D-SPLIT-COUPLER-GLB2-OBJ-MTL-3VIEWS
+          repository: C8LyNn/RoboRougelike
+          run-id: 41097210391
+          github-token: ${{ github.token }}
+          path: original-w16
+      - name: Install pinned 7-pose genuine geometric triangle projection library
+        run: python -m pip install --disable-pip-version-check "Pillow==11.3.0"
+      - name: Compile original 3D author and independent physical glTF binary receiver
+        run: python -m compileall -q Tools/B01-31/P17/W17SplitCouplerAnimatedGLB001/
+      - name: Generate REAL W17 animated glTF2 physical 4 channels 2 pivots and true 7-pose boards
+        run: |
+          python Tools/B01-31/P17/W17SplitCouplerAnimatedGLB001/build_animated.py --original original-w16/B0131W16 --output build/B0131W17
+          python Tools/B01-31/P17/W17SplitCouplerAnimatedGLB001/verify_animated.py --original original-w16/B0131W16 --output build/B0131W17
+      - name: Reproduce full actual original animated GLB 2 PNG timeline receipt ZIP byte-for-byte
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd build && find . -type f -print0 | sort -z | xargs -0 sha256sum) > /tmp/first.sha256
+          python Tools/B01-31/P17/W17SplitCouplerAnimatedGLB001/build_animated.py --original original-w16/B0131W16 --output build/B0131W17
+          python Tools/B01-31/P17/W17SplitCouplerAnimatedGLB001/verify_animated.py --original original-w16/B0131W16 --output build/B0131W17
+          (cd build && find . -type f -print0 | sort -z | xargs -0 sha256sum) > /tmp/second.sha256
+          cmp /tmp/first.sha256 /tmp/second.sha256
+          echo "B0131_W17_ORIGINAL_REAL_ANIMATED_GLB_TWO_PIVOTS_4_CHANNELS_7_KEYS_BYTE_PARITY_PASS"
+      - name: Publish physical original animated 3D GLB actual 7-pose PNGs timeline and ZIP receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0131-P17W17-ORIGINAL-TWO-PIVOT-ANIMATED-GLB-2-7POSE-BOARDS
+          path: build/
+          retention-days: 30
+          if-no-files-found: error
+  independent-windows-glb-binary-receiver:
+    needs: producer-original-animated-glb
+    runs-on: windows-2022
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Independently download actual original frozen W16 model bytes
+        uses: actions/download-artifact@v4
+        with:
+          name: B0131-P17W16-ORIGINAL-3D-SPLIT-COUPLER-GLB2-OBJ-MTL-3VIEWS
+          repository: C8LyNn/RoboRougelike
+          run-id: 41097210391
+          github-token: ${{ github.token }}
+          path: original-w16
+      - name: Download actually authored Ubuntu W17 binary glTF and 7-pose images (NEVER regenerate)
+        uses: actions/download-artifact@v4
+        with:
+          name: B0131-P17W17-ORIGINAL-TWO-PIVOT-ANIMATED-GLB-2-7POSE-BOARDS
+          path: actual-w17
+      - name: Install only image decoder for real original preview pictures
+        run: python -m pip install --disable-pip-version-check "Pillow==11.3.0"
+      - name: Independently read actual binary 4 tracks / 28 keys original W16 source geometry 241 gap samples and ZIP
+        run: python Tools/B01-31/P17/W17SplitCouplerAnimatedGLB001/verify_animated.py --original original-w16/B0131W16 --output actual-w17/B0131W17
