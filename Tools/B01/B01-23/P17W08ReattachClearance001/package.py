@@ -89,7 +89,7 @@ def original_scope():
         ASSET + "/Runtime/DebrisSafeReattachGate.cs",
         ASSET + "/Editor/SafeReattachDemoInstaller.cs",
         ASSET + "/Tests/PlayMode/SafeDockPlayModeTests.cs",
-        OWN + "Program.cs", OWN + "SourceTests.csproj",
+        OWN + "Program.cs", OWN + "DockSourceTests.csproj",
         OWN + "package.py", OWN + "test_package.py", CI,
     ):
         if required not in files:

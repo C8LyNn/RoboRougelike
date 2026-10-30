@@ -24,7 +24,7 @@ jobs:
         with:
           dotnet-version: '8.0.x'
       - name: Real W08 game CSharp9 gate decision core and positive negative tests
-        run: dotnet run --project Tools/B01/B01-23/P17W08ReattachClearance001/SourceTests.csproj --configuration Release
+        run: dotnet run --project Tools/B01/B01-23/P17W08ReattachClearance001/DockSourceTests.csproj --configuration Release
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'

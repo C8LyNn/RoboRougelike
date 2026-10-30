@@ -17,7 +17,7 @@ This new **isolated Unity 6 physical docking gate** prevents a detached module f
 ## Execute exact source tests / physical ZIP
 
 ```bash
-dotnet run --project Tools/B01/B01-23/P17W08ReattachClearance001/SourceTests.csproj -c Release
+dotnet run --project Tools/B01/B01-23/P17W08ReattachClearance001/DockSourceTests.csproj -c Release
 python -m unittest discover -s Tools/B01/B01-23/P17W08ReattachClearance001 -p test_package.py -v
 python Tools/B01/B01-23/P17W08ReattachClearance001/package.py build --archive dist/B0123_W08_ReattachClearance_Delta.zip
 ```
