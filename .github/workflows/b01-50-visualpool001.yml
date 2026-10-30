@@ -60,6 +60,13 @@ jobs:
               if match:
                   assert match[1] not in identifiers, 'tracked Assets GUID collision: '+str(m)
               count += 1
+          adapter = (own / 'Unity/B0150OptionalVisualPool.cs').read_text()
+          burst = adapter.split('public bool TryShowOptional(', 1)[1].split('private void Update()', 1)[0]
+          assert 'GetComponentsInChildren<' not in burst, 'Per-burst component-array allocation regression'
+          assert 'cachedParticles[lease.Slot]' in burst, 'Per-slot particle cache not used'
+          assert 'particle.collision.enabled || particle.trigger.enabled' in adapter, 'Particle collision/trigger guard missing'
+          assert 'GetComponentsInChildren<MonoBehaviour>(true)' in adapter, 'Prefab script guard missing'
+          print('VISUALPOOL_ADAPTER_STATIC_SAFETY PASS; cached per-slot ParticleSystems, no burst component search')
           print(f'VISUALPOOL_META_GATE 3/3 PASS; scanned {count} existing canonical Unity .meta sources')
           PY
           sha256sum visualpool-evidence/source-qa.json visualpool-evidence/actual-csharp-test.log visualpool-evidence/meta-gate.log visualpool-evidence/dotnet-sdk.txt > visualpool-evidence/SHA256SUMS.txt
