@@ -1,0 +1,121 @@
+{
+  "package_id": "B01-62-P17W19-OWNER-R4-647-INDEPENDENT-QA-AND-R3-642-RED-WITNESS",
+  "version": "2.0.0-SOURCE-QA-ONLY",
+  "role": "B01-62",
+  "decision": "B01-23_OWNER_SELECTED_ONLY_R3_642__R4_647_OWNER_FIX__644_ALT_HOLD",
+  "selected_producer": {
+    "pr": 642,
+    "sha": "22cec9888047994ae523cbe7bf1b0a483d64cec4",
+    "original_core_git_blob": "a0a1923216d88ff8f50c560196f82cdec694f15c",
+    "physical_original_zip_sha256": "2fd97465358bddb7c9aeee91af2d4a0b75dd9b86525150e6bf708403291aa60d",
+    "zip_bytes": 96318,
+    "zip_members": 23,
+    "original_source_git_owned_files": 22,
+    "bridge_guids": 10,
+    "asmdefs": 3
+  },
+  "alt_hold": {
+    "pr": 644,
+    "sha": "d9b95146e46a5d81d5a291d7887e456164f4d0c2",
+    "never_mix": true
+  },
+  "historic_alternative": {
+    "pr": 604,
+    "status": "ALT_HOLD"
+  },
+  "frozen": {
+    "gameplay_510": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "save_556": "33094f154c7b91119b36d58aab285e6e83c5de57",
+    "host_v2_596": "efb2b06eafedab5469b57f163152d96aca3c5915",
+    "save_codec_blob": "b52e511c370f5fca56c74029050844dc8cbb7f9a",
+    "w06_blob": "fa1aa5e531927cbe73cf5fdfe161b4a981316db5",
+    "spec_blob": "b680ed0ec969ac23203fa55eab7b90f8daa86e43"
+  },
+  "new_owned_files": [
+    {
+      "path": "Tools/B01/B01-62/P17W19R3642QA/AtomicWorldSwapR3CommitFenceCandidate.cs",
+      "git_blob": "2d13b16a4665670dde2d301c38756db885b9f9bc"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W19R3642QA/Program.cs",
+      "git_blob": "84dd7fa6cc48c1940916c392adab12babba68f7e"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W19R3642QA/Original642.csproj",
+      "git_blob": "f38b1ffe7e81aea4a2fe643fa021b4d42907cce6"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W19R3642QA/CandidateFixR1.csproj",
+      "git_blob": "b2ce0d27064580a5dfb037950d3ce04c9db41629"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W19R3642QA/OwnerOriginal647R4.csproj",
+      "git_blob": "b4db001e11d8b95e87d5ed46e5c0f3e7e9e76e19"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W19R3642QA/test_original642_receiver.py",
+      "git_blob": "c27c198f6064e152f8e22700f59dbe09681191d7"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W19R3642QA/test_original647_owner_r4_receiver.py",
+      "git_blob": "6d53ca652a96a0c2d7e846c42f9bcd1ce0e6d7f9"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W19R3642QA/README.md",
+      "git_blob": "8c4f5a733071cf479b45902c09fa1c48b04609c1"
+    },
+    {
+      "path": ".github/workflows/b01-62-p17w19-r3-642-qa.yml",
+      "git_blob": "992962f7bf83c4cac02f2636d29b9a896c52bd0f"
+    }
+  ],
+  "actual_ci_original_head": {
+    "run_id": 41110798889,
+    "platforms": [
+      "ubuntu-24.04",
+      "windows-2025"
+    ],
+    "conclusion": "SUCCESS_BOTH",
+    "per_os": {
+      "original_source_red_detection_cases": 16,
+      "new_isolated_fixed_source_green_cases": 16,
+      "original_git_zip_receiver_cases": 21
+    },
+    "total_across_platforms": 106,
+    "source_status": "R3_642_ORIGINAL_EXACT_PRE_EXTENSION_106_PASS",
+    "new_owner_r4_exact_sha": "PENDING_UPDATED_CI"
+  },
+  "confirmed_source_defect": "Original #642 ICheckpointStore.Commit durably writes g11 then throws before ACK; TryLoad returns HostException and nonquarantined previous g10 physical world, despite on-disk g11; publishedHash TrySave gate now denies stale-export, but mandatory transaction uncertainty quarantine absent.",
+  "source_only_fix": "Arm durabilityAttempted before external Commit; any thrown exception after attempt triggers sticky RollbackQuarantine before old world can mint saved bytes; physical finally remains compensating, all later Save/Load refused.",
+  "gates": {
+    "actual_original_642_physical_intake": "PASS_PROVENANCE_ONLY",
+    "r3_security_release": "R3_642_ORIGINAL_HOLD_P0_REPRODUCED__OWNER_R4_647_CORRECTED_SOURCE_PENDING_INDEPENDENT_RECHECK",
+    "r3_formal_b01_40_g0": "OWNER_R4_647_PENDING",
+    "new_b01_62_candidate_independent_b01_61_qa": "SUPERSEDED_BY_OWNER_R4_647",
+    "b01_23_approval": "OWNER_R3_642_CONFIRMED_R4_647_PUBLISHED",
+    "native_unity_g1": "NOT_RUN",
+    "canonical_game_saveload": "HOLD_PRIVATE_510_RIG_LEDGER_INTERFACE",
+    "g2": "HOLD",
+    "codex_ack": "NONE",
+    "integrated": false,
+    "merged": false
+  },
+  "limitations": [
+    "Does not install code into Assets, create Unity package or merge.",
+    "Original source P0 RED detector PASS is not producer release PASS.",
+    "Only managed fake physics host; no activated Unity/PhysX/Editor.log.",
+    "Does not guarantee power-loss crash atomic multi-file save/checkpoint and durable directory sync.",
+    "Owned experimental AtomicWorldSwapR3CommitFenceCandidate is superseded by genuine owner B01-23 R4 and must never be co-installed."
+  ],
+  "owner_r4": {
+    "pr": 647,
+    "exact_head": "09c1809b73324a6d31c13e5d0143de62ac1e3ca6",
+    "actual_original_core_blob": "8fd1dd9a1bc870433809da8fba897ec924fa4113",
+    "original_inner_zip_bytes": 105099,
+    "original_members": 23,
+    "original_zip_sha256": "9ae2919e9cfdea1bf75f785b1cdfc2d3465a6a90c7d18ff22def69cb53406d30",
+    "original_author_prod_run": 41110483164,
+    "owner_prod_source_cases_both_os": 256,
+    "source_test_status": "NEW_B01_62_INDEPENDENT_CI_IN_PROGRESS"
+  }
+}

@@ -1,0 +1,108 @@
+name: B01-62 W19 selected R3 #642 original source P0 RED versus versioned QUARANTINE fix and physical G0
+on:
+  push:
+    branches: [qa/b01-62-p17w19-r3-642-uncertain-commit-g0]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W19R3642QA/**'
+      - '.github/workflows/b01-62-p17w19-r3-642-qa.yml'
+permissions:
+  contents: read
+jobs:
+  original-r3-security-and-physical:
+    runs-on: ${{ matrix.os }}
+    name: Exact producer #642 original RED to versioned safe source GREEN plus receiver (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Pin all 4 ORIGINAL SOURCE blobs and original selected #642 producer HEAD, never R3 #644
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W19R3642QA"
+          git fetch --no-tags origin 22cec9888047994ae523cbe7bf1b0a483d64cec4 33094f154c7b91119b36d58aab285e6e83c5de57 d94400d95d13db7f27e1533df05c9292d5380431
+          mkdir -p "$dir/.source" "$dir/.output"
+          git show 22cec9888047994ae523cbe7bf1b0a483d64cec4:Assets/B0123UnitySaveBridge001/Core/AtomicWorldSwap.cs > "$dir/.source/Original642AtomicWorldSwap.cs"
+          git show 33094f154c7b91119b36d58aab285e6e83c5de57:Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs > "$dir/.source/DetachedSnapshotContract.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs > "$dir/.source/DebrisImpulseCore.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs > "$dir/.source/SecureRigSpec.cs"
+          test "$(git hash-object "$dir/.source/Original642AtomicWorldSwap.cs")" = a0a1923216d88ff8f50c560196f82cdec694f15c
+          test "$(git hash-object "$dir/.source/DetachedSnapshotContract.cs")" = b52e511c370f5fca56c74029050844dc8cbb7f9a
+          test "$(git hash-object "$dir/.source/DebrisImpulseCore.cs")" = fa1aa5e531927cbe73cf5fdfe161b4a981316db5
+          test "$(git hash-object "$dir/.source/SecureRigSpec.cs")" = b680ed0ec969ac23203fa55eab7b90f8daa86e43
+          git worktree add --detach "$dir/.producer642" 22cec9888047994ae523cbe7bf1b0a483d64cec4
+          test "$(git -C "$dir/.producer642" rev-parse HEAD)" = 22cec9888047994ae523cbe7bf1b0a483d64cec4
+          echo B0162_W19_EXACT_SELECTED_R3_642_ORIGINAL_BLOBS_ONLY | tee "$dir/.output/original-provenance.log"
+      - name: Execute exactly original #642 C# R3 code and assert unresolved historical durable commit exception release RED
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W19R3642QA"
+          dotnet run --project "$dir/Original642.csproj" -c Release --verbosity minimal 2>&1 | tee "$dir/.output/original-642-expected-security-red.log"
+          grep -q 'B0162_W19_SOURCE_TOTAL 16 PASS 16 FAIL 0' "$dir/.output/original-642-expected-security-red.log"
+          grep -q 'B0162_W19_R3_ORIGINAL_SOURCE_COMMIT_ACK_RED=REPRODUCED' "$dir/.output/original-642-expected-security-red.log"
+      - name: Execute separate versioned B01-62 candidate source fixing exact original #642 Commit unknown-outcome quarantine
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W19R3642QA"
+          dotnet run --project "$dir/CandidateFixR1.csproj" -c Release --verbosity minimal 2>&1 | tee "$dir/.output/w19-candidate-source-security-green.log"
+          grep -q 'B0162_W19_SOURCE_TOTAL 16 PASS 16 FAIL 0' "$dir/.output/w19-candidate-source-security-green.log"
+          grep -q 'B0162_W19_R3_CORRECTED_COMMIT_AMBIGUITY=QUARANTINED' "$dir/.output/w19-candidate-source-security-green.log"
+      - name: Actually rebuild REAL exact original producer #642 96318-byte 23-entry ZIP and 21 scratch receiver checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W19R3642QA"
+          export B0162_ORIGINAL642_WORKTREE="$PWD/$dir/.producer642"
+          python -m unittest discover -s "$dir" -p test_original642_receiver.py -v 2>&1 | tee "$dir/.output/original-642-physical-receiver.log"
+          grep -q 'Ran 21 tests' "$dir/.output/original-642-physical-receiver.log"
+          grep -q '^OK' "$dir/.output/original-642-physical-receiver.log"
+          echo B0162_W19_SELECTED_642_ORIGINAL_23_ENTRY_G0_SCRATCH_RECEIPT_PASS | tee "$dir/.output/physical-receiver-result.log"
+      - name: Fetch EXACT final B01-23 owner-produced R4 #647 directly, forbid QA-source substitution
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W19R3642QA"
+          git fetch --no-tags origin 09c1809b73324a6d31c13e5d0143de62ac1e3ca6
+          git show 09c1809b73324a6d31c13e5d0143de62ac1e3ca6:Assets/B0123UnitySaveBridge001/Core/AtomicWorldSwap.cs > "$dir/.source/OwnerR4AtomicWorldSwap.cs"
+          test "$(git hash-object "$dir/.source/OwnerR4AtomicWorldSwap.cs")" = 8fd1dd9a1bc870433809da8fba897ec924fa4113
+          git worktree add --detach "$dir/.producer647" 09c1809b73324a6d31c13e5d0143de62ac1e3ca6
+          test "$(git -C "$dir/.producer647" rev-parse HEAD)" = 09c1809b73324a6d31c13e5d0143de62ac1e3ca6
+          echo B0162_W19_ORIGINAL_B0123_R4_647_SOURCE_EXACT_NOT_OWN_CANDIDATE | tee "$dir/.output/owner647-pins.log"
+      - name: Independent 16 directly linked original owner R4 647 transaction and identity security checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W19R3642QA"
+          dotnet run --project "$dir/OwnerOriginal647R4.csproj" -c Release --verbosity minimal 2>&1 | tee "$dir/.output/owner647-original-executed.log"
+          grep -q 'B0162_W19_SOURCE_TOTAL 16 PASS 16 FAIL 0' "$dir/.output/owner647-original-executed.log"
+          grep -q 'B0162_W19_R3_CORRECTED_COMMIT_AMBIGUITY=QUARANTINED' "$dir/.output/owner647-original-executed.log"
+      - name: Independent REAL exact original owner 647 R4 105099B 23-entry physical ZIP scratch rollback and MonoBehaviour source receipt
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W19R3642QA"
+          export B0162_ORIGINAL647_WORKTREE="$PWD/$dir/.producer647"
+          python -m unittest discover -s "$dir" -p test_original647_owner_r4_receiver.py -v 2>&1 | tee "$dir/.output/owner647-original-physical-source-receipt.log"
+          grep -q 'Ran 22 tests' "$dir/.output/owner647-original-physical-source-receipt.log"
+          grep -q '^OK' "$dir/.output/owner647-original-physical-source-receipt.log"
+          echo B0162_W19_REAL_OWNER_647_R4_SOURCE_PHYSICAL_RECEIVER_PASS | tee "$dir/.output/owner647-physical-G0-evidence.log"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-62-p17w19-r3-642-${{ matrix.os }}
+          path: Tools/B01/B01-62/P17W19R3642QA/.output/
+          include-hidden-files: true
+          if-no-files-found: error
