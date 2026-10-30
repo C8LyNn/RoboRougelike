@@ -52,6 +52,14 @@ def w22():
          "Current QA must descend exact frozen W22 PR #718")
  return m
 
+def corrected_stage_runner(n):
+ m=n.runner()
+ require(m.SHA==R5,"Original #718 W22 packager source authority unexpectedly changed")
+ # Original W12 reads only its local imported module parameter, never the frozen
+ # runner file: pin it to the NEW owner-only exact #732 source for this QA ZIP.
+ m.SHA=FIXED
+ return m
+
 def original_corrected_source(n,m):
  require(n.git("cat-file","-t",FIXED)=="commit",
          "Corrected original B01-23 #732 SHA not in local Git history: no automatic fetch")
@@ -108,7 +116,7 @@ def run(argv=None):
  parser.add_argument("--operator-consent",default="")
  args=parser.parse_args(argv)
  n=w22()
- m=n.runner()
+ m=corrected_stage_runner(n)
  selected=original_corrected_source(n,m)
  if args.mode=="native":
   require(os.name=="nt","Native run authorized only on Windows")
