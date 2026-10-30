@@ -19,7 +19,7 @@ def mutate(raw,changes=None,extra=None):
 
 class SecureV2PhysicalSourceTests(unittest.TestCase):
     def test_scope_original_source(self):
-        self.assertEqual(len(p.scope()),27)
+        self.assertEqual(len(p.scope()),34)
     def test_real_guard_contract(self):
         p.guard_contract()
     def test_deterministic_original_zip(self):
