@@ -1,0 +1,36 @@
+{
+  "package": "B01-11-FRAME-SAFETY-001/R2",
+  "base_commit": "c27fd4ecef6df52b0b8086cc2234904918fa1c4b",
+  "files": [
+    {
+      "path": "Research/B01-11/P17/W22-FRAME-SAFETY-001/index.html",
+      "bytes": 8621,
+      "sha256": "3092a85d0a4e8676e696e4299ce252e702f9652cfb51703fad36f8675a5f2a95"
+    },
+    {
+      "path": "Research/B01-11/P17/W22-FRAME-SAFETY-001/manifest.json",
+      "bytes": 994,
+      "sha256": "5395f308d2a653ebc1118c498ba4e63418fd04ce1cdcbf1a8573c1b8c0900e2c"
+    },
+    {
+      "path": "Research/B01-11/P17/W23-FRAME-SAFETY-R2/test_browser.cjs",
+      "bytes": 7595,
+      "sha256": "4548396d4602c882996061564135104d397dd6f4f170a2017018b25db7fd7a42"
+    },
+    {
+      "path": "Research/B01-11/P17/W23-FRAME-SAFETY-R2/test_source.cjs",
+      "bytes": 4517,
+      "sha256": "d3c094aecef7b267327fa50dd3a0e0521a3e48dad6e5e36240d9313991ff0d57"
+    },
+    {
+      "path": "Research/B01-11/P17/W23-FRAME-SAFETY-R2/README.md",
+      "bytes": 4268,
+      "sha256": "4fbe69695385ca066e89a10f3783517da4644a437c84ad725cb7522936c16eec"
+    },
+    {
+      "path": ".github/workflows/b01-11-p17w23-frame-safety-r2.yml",
+      "bytes": 1450,
+      "sha256": "5219db84ac51fef439508882e5aaf5280eface7b0a638fd61c48203cff92ddd2"
+    }
+  ]
+}
