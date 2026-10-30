@@ -104,7 +104,6 @@ internal static class Program
         var lease=new FileStream(path+".owner",FileMode.OpenOrCreate,
                                         FileAccess.ReadWrite,FileShare.None);
         {
-        {
             OwnerWorldLeaseRetirement.Hold(path,lease,()=>false,true);
             Assert("R5 cleanup not proven denies slot acquire",
                    !OwnerWorldLeaseRetirement.ReconcileBeforeNewAcquire(path));
