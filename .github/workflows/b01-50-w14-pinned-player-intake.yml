@@ -1,0 +1,59 @@
+name: B01-50 W14 Pinned Real Player Intake QA
+on:
+  push:
+    branches: [perf/b01-50-p17-w14-pinned-player-intake]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-50/PINNEDPLAYERW14/**'
+      - '.github/workflows/b01-50-w14-pinned-player-intake.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-source-qa:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.11'
+      - name: Verify physical original W13 source without modifying frozen PR
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin d7278f224faecb2aa694bcb93139ef338171e885
+          git show d7278f224faecb2aa694bcb93139ef338171e885:Tools/B01/B01-50/PLAYERFOOTPRINT001/playerfootprint.py > Tools/B01/B01-50/PINNEDPLAYERW14/original_playerfootprint.py
+          test "$(git hash-object --no-filters Tools/B01/B01-50/PINNEDPLAYERW14/original_playerfootprint.py)" = f8acb5a17d1721aade5d78eb8a8ae33f7db8477d
+          echo "EXACT_ORIGINAL_SOURCE_BLOB_OK f8acb5a17d1721aade5d78eb8a8ae33f7db8477d"
+      - name: Verify owner Git blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          while IFS=$'\t' read -r sha path; do
+            test -n "$sha" || continue
+            test "$(git hash-object --no-filters "$path")" = "$sha" || { echo "OWN_BLOB_DRIFT: $path"; exit 1; }
+            echo "OWNER_GIT_BLOB_PASS $path"
+          done < Tools/B01/B01-50/PINNEDPLAYERW14/MANIFEST-GIT-BLOBS.tsv
+      - name: Run exact frozen inspector with ten positive and negative QA cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          python -m unittest discover -s Tools/B01/B01-50/PINNEDPLAYERW14/tests -v 2>&1 | tee evidence/source_tests.log
+          git rev-parse HEAD > evidence/tested_sha.txt
+          python --version > evidence/python_version.txt
+      - name: Upload source-only test evidence (historical real ZIP unavailable in CI)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: B01-50-PINNEDPLAYERW14-${{ matrix.os }}-${{ github.run_id }}
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 14
