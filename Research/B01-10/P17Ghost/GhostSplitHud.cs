@@ -20,6 +20,8 @@ namespace RoboRougelike.B0110.TrainingGhost
 
         public bool IsBound => coach != null;
         public int AcceptedGates => coach == null ? 0 : coach.GatesReached;
+        public GhostPracticeLoop RecommendedLoop => coach == null ? null
+            : coach.RecommendedLoop;
 
         public void BindCompletedReference(GhostRun completed)
         {
@@ -74,7 +76,7 @@ namespace RoboRougelike.B0110.TrainingGhost
         {
             if (!showOverlay || coach == null) return;
             float width = Mathf.Min(390f, Mathf.Max(220f, Screen.width - screenAnchor.x - 14f));
-            float height = summary == null ? 92f : 153f;
+            float height = summary == null ? 92f : 177f;
             var bounds = new Rect(screenAnchor.x, screenAnchor.y, width, height);
             GUI.Box(bounds, "CHL-003 · TRAINING SPLITS (visual only)");
             GUI.Label(new Rect(bounds.x + 12, bounds.y + 27, width - 24, 24),
@@ -97,6 +99,14 @@ namespace RoboRougelike.B0110.TrainingGhost
                         : "No full-course comparison (attempt incomplete)");
                 GUI.Label(new Rect(bounds.x + 12, bounds.y + 116, width - 24, 24),
                     GhostPracticeFocus.Text(summary, coach.RequiredGates));
+                if (coach.RecommendedLoop != null)
+                {
+                    var segment = coach.RecommendedLoop;
+                    GUI.Label(new Rect(bounds.x + 12, bounds.y + 138, width - 24, 24),
+                        "Visual drill: " + segment.Label + " ["
+                        + segment.StartSeconds.ToString("0.00") + "-"
+                        + segment.EndSeconds.ToString("0.00") + "s]");
+                }
             }
         }
     }
