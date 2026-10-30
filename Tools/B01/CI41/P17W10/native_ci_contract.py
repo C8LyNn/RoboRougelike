@@ -135,7 +135,7 @@ def validate(kind: str, body: str) -> dict:
     must(evidence, r"^        if: always\(\)\s*$", "LOSS_OF_FAILURE_EVIDENCE:"+kind)
     must(evidence, r"^        uses: "+re.escape(UPLOAD)+r"\b", "UNPINNED_EVIDENCE_UPLOAD:"+kind)
     must(evidence, r"^          if-no-files-found: warn\s*$", "MISSING_MISSING_ARTIFACT_WARNING:"+kind)
-    must(evidence, r"^          path: \|?\s*$", "MISSING_LOG_OUTPUT_MAPPING:"+kind)
+    must(evidence, r"^          path: (?:\||Artifacts/CI/)\s*$", "MISSING_LOG_OUTPUT_MAPPING:"+kind)
     check("Artifacts/CI/" in evidence, "MISSING_NATIVE_LOGS:"+kind)
     return {"file":path,"gate":"SOURCE_CONTRACT_PASS","native_unity":"NOT_RUN",
             "step_count":len(steps),"kind":kind}
