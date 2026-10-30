@@ -15,6 +15,7 @@ namespace B01.UnitySaveBridge001.Tests
             try
             {
                 var host=game.AddComponent<IsolatedTwinRigSaveHost>();
+                Assert.IsTrue(host.TryUseIsolatedNativeTestSlot(System.Guid.NewGuid()));
                 byte[] save=IsolatedTwinRigSaveHost.MakeFixture(31,1,true,true);
                 Assert.IsTrue(host.TryRestoreBytes(save,31,1));
                 Assert.IsTrue(host.IsConsumed(0,2310001));
@@ -44,6 +45,7 @@ namespace B01.UnitySaveBridge001.Tests
             try
             {
                 var host=game.AddComponent<IsolatedTwinRigSaveHost>();
+                Assert.IsTrue(host.TryUseIsolatedNativeTestSlot(System.Guid.NewGuid()));
                 Assert.IsTrue(host.TryRestoreBytes(
                     IsolatedTwinRigSaveHost.MakeFixture(31,1,true,false),31,1));
                 byte[] corrupt=IsolatedTwinRigSaveHost.MakeFixture(31,2,false,true);
@@ -63,12 +65,15 @@ namespace B01.UnitySaveBridge001.Tests
             GameObject next=new GameObject("W15 new separate process");
             try
             {
+                System.Guid slot=System.Guid.NewGuid();
                 var original=prior.AddComponent<IsolatedTwinRigSaveHost>();
+                Assert.IsTrue(original.TryUseIsolatedNativeTestSlot(slot));
                 Assert.IsTrue(original.TryRestoreBytes(
                     IsolatedTwinRigSaveHost.MakeFixture(41,4,true,false),41,4));
                 Assert.IsTrue(original.TrySaveBytes(out byte[] saved));
                 prior.SetActive(false);
                 var restored=next.AddComponent<IsolatedTwinRigSaveHost>();
+                Assert.IsTrue(restored.TryUseIsolatedNativeTestSlot(slot));
                 Assert.IsTrue(restored.TryRestoreBytes(saved,41,4));
                 Assert.IsTrue(restored.IsConsumed(0,2310001));
                 Assert.IsFalse(restored.IsConsumed(1,2310002));
@@ -84,6 +89,7 @@ namespace B01.UnitySaveBridge001.Tests
             try
             {
                 var host=go.AddComponent<IsolatedTwinRigSaveHost>();
+                Assert.IsTrue(host.TryUseIsolatedNativeTestSlot(System.Guid.NewGuid()));
                 Assert.IsTrue(host.TryRestoreBytes(
                     IsolatedTwinRigSaveHost.MakeFixture(9,5,false,true),9,5));
                 Assert.IsFalse(host.TryRestoreBytes(
