@@ -139,6 +139,7 @@ internal static class Program
                     "stale original consumed Light ledger remains physically active");
                 Check(!host.TrySave(Run,()=>true,out _),
                     "R3 #642 newly fixes former #596 stale world export on changed durable fingerprint");
+                store.LoseAck=false; // subsequent new call now obtains an ordinary ACK
                 Check(host.TryLoad(Bytes(12,false,true),Run,12,()=>true)
                     ==WorldSwapVerdict.Accepted,
                     "EXPECTED_SOURCE_RED: uncertain commit host permits another restore without quarantine");
