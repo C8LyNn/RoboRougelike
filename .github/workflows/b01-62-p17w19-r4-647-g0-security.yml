@@ -1,0 +1,56 @@
+name: B01-62 W19 Owner R4 #647 Original G0 & Durable Commit RED-to-GREEN QA
+on:
+  push:
+    branches:
+      - qa/b01-62-p17w19-r4-647-g0-commit-repair
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W19R4Fixed647Intake/**'
+      - '.github/workflows/b01-62-p17w19-r4-647-g0-security.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-original-r4-647:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Fetch ONE B01-23 owner R4 #647, frozen selected #642/#596 and original #510/#556
+        run: |
+          git fetch --no-tags origin 09c1809b73324a6d31c13e5d0143de62ac1e3ca6
+          git fetch --no-tags origin 22cec9888047994ae523cbe7bf1b0a483d64cec4
+          git fetch --no-tags origin d94400d95d13db7f27e1533df05c9292d5380431
+          git fetch --no-tags origin 33094f154c7b91119b36d58aab285e6e83c5de57
+          git fetch --no-tags origin efb2b06eafedab5469b57f163152d96aca3c5915
+      - name: Rebuild original exact R4 #647 source ZIP and rollback physical scratch
+        run: |
+          set -o pipefail
+          mkdir -p b0162-w19-r4-evidence
+          python Tools/B01/B01-62/P17W19R4Fixed647Intake/intake.py --repo . --output b0162-w19-r4-evidence/physical.json | tee b0162-w19-r4-evidence/physical.stdout
+      - name: Pin exact R4 original Git C# core and untouched frozen W06/Save/R2
+        run: |
+          python Tools/B01/B01-62/P17W19R4Fixed647Intake/source_guard.py --repo . --out Tools/B01/B01-62/P17W19R4Fixed647Intake/Input --receipt b0162-w19-r4-evidence/original-source.json
+      - name: Execute original R4 #647 real disk ACK loss old and cold world P0 fixed
+        run: |
+          set -o pipefail
+          dotnet run --project Tools/B01/B01-62/P17W19R4Fixed647Intake/OriginalR4647CommitQA.csproj -c Release --verbosity quiet | tee b0162-w19-r4-evidence/original-r4-p0.stdout
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b0162-w19-r4-647-original-${{ matrix.os }}
+          path: b0162-w19-r4-evidence/*
+          if-no-files-found: error
