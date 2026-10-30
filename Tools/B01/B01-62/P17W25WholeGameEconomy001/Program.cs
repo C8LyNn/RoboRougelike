@@ -7,6 +7,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using B01.WholeGameEconomy001;
+using B01.CanonicalWholeGameAdapter001;
 using B01.CanonicalWorldApi001;
 using B01.DetachedSaveContract001;
 using B01.DebrisRepulse001;
@@ -270,9 +271,100 @@ internal static class W25GameEconomyQA
         Console.WriteLine("W25_LOANER_PERMIT_ENTERED_ONCE_MODEL_ONLY=PASS");
         return true;
     }
+    private sealed class StagedSourceWorld:ICanonicalStagedWorld
+    {
+        private readonly RunSnapshot original;
+        public bool Active,Retired;
+        public StagedSourceWorld(RunSnapshot s){original=s;}
+        public RunSnapshot Capture()=>original;
+        public void Activate(){Active=true;}
+        public void Deactivate(){Active=false;}
+        public void Retire(){Retired=true;Active=false;}
+    }
+    private sealed class ManagedFactory:ICanonicalRigFactory
+    {
+        public readonly List<StagedSourceWorld> All=new List<StagedSourceWorld>();
+        public ICanonicalStageOwnership BeginOwnedStage(RunSnapshot snap,ColdRestore plan)
+            =>new OwnedStage(this,snap);
+        public bool AllGone()=>All.All(w=>w.Retired);
+        private sealed class OwnedStage:ICanonicalStageOwnership
+        {
+            private readonly ManagedFactory parent;
+            private readonly RunSnapshot snapshot;
+            private StagedSourceWorld? made;
+            public OwnedStage(ManagedFactory p,RunSnapshot s){parent=p;snapshot=s;}
+            public ICanonicalStagedWorld PrepareInactive()
+            {
+                made=new StagedSourceWorld(snapshot);parent.All.Add(made);return made;
+            }
+            public bool CleanupUnpublishedAndVerifyDestroyed()
+            {
+                made?.Retire();return made==null||made.Retired;
+            }
+        }
+    }
+    private static bool ActualOriginal729GatewayOneEconomyCommitPort()
+    =>Scratch(parent=>{
+        string root=Path.Combine(parent,"game-authority");Directory.CreateDirectory(root);
+        var factory=new ManagedFactory();
+        if(CanonicalWholeGameSessionV1.TryOpen(root,Run,Slot,true,
+            new Gate(),factory,out var session)!=WholeGameSessionOpen.Accepted||
+            session==null)return false;
+        try
+        {
+            byte[] w1=World(1,true,false);var e1=Economy(1,70);
+            if(session.TryRestore(w1,e1,Run,1)!=CanonicalGateResult.Accepted||
+               !session.HasWorld||session.Quarantined)return false;
+            if(!session.TryCapture(out byte[] preview,
+                out ApprovedEconomySnapshotV6? wallet)||
+               wallet==null||wallet.Scrap!=70||!preview.SequenceEqual(w1))
+                return false;
+            if(!ApprovedEconomyPolicyV6.TryStageTrustedVictory(e1,
+                "verified-gameplay-victory-1","real-encounter-a",
+                out var e2,out var reason)||e2==null||reason!="OK")return false;
+            e2.Scrap=42;
+            byte[] w2=World(2,false,true);
+            if(session.TryRestore(w2,e2,Run,2)!=CanonicalGateResult.Accepted||
+               !session.TryCapture(out preview,out wallet)||wallet==null||
+               !preview.SequenceEqual(w2)||wallet.Generation!=2||
+               wallet.Scrap!=42||wallet.Wins!=1)return false;
+            var altered=e2.Copy();altered.Scrap=999;
+            if(session.TryRestore(w2,altered,Run,2)!=
+                CanonicalGateResult.StaleGeneration)return false;
+            // Freeze test-world to retire; original gateway is the only
+            // owner allowed to release its OS .owner lease.
+            if(!session.TryCloseAfterPhysicalRetirement(factory.AllGone))
+                return false;
+            var coldFactory=new ManagedFactory();
+            if(CanonicalWholeGameSessionV1.TryOpen(root,Run,Slot,false,
+                new Gate(),coldFactory,out var cold)!=WholeGameSessionOpen.Accepted||
+                cold==null)return false;
+            try
+            {
+                if(cold.TryRestore(w2,e2,Run,2)!=CanonicalGateResult.Accepted||
+                   !cold.TryCapture(out preview,out wallet)||
+                   wallet==null||wallet.Wins!=1||wallet.Scrap!=42||
+                   !preview.SequenceEqual(w2))return false;
+                Console.WriteLine("W25_CANONICAL_729_GATEWAY_ONE_FILE_WORLD_AND_WALLET=PASS");
+                Console.WriteLine("W25_CANONICAL_SAME_GENERATION_WALLET_FORK_REJECTED=PASS");
+                return true;
+            }
+            finally
+            {
+                cold.TryCloseAfterPhysicalRetirement(coldFactory.AllGone);
+                cold.Dispose();
+            }
+        }
+        finally
+        {
+            session.TryCloseAfterPhysicalRetirement(factory.AllGone);
+            session.Dispose();
+        }
+    });
     public static int Main()
     {
         Check("Actual single original #556 + original economy #764 one-file durable cold wallet+victory",RoundtripAndVictory);
+        Check("Actual original #729 gateway uses ONE full world+economy commit port and rejects same-epoch wallet fork",ActualOriginal729GatewayOneEconomyCommitPort);
         Check("Real physical rename then lost ACK does not split wallet and world",()=>Fault(true));
         Check("Before rename no authoritative partial wallet/world",()=>Fault(false));
         Check("Physical part ID map and corrupt one-file digest reject",CorruptionAndPhysicalId);
