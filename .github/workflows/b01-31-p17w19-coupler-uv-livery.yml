@@ -1,0 +1,83 @@
+name: B01-31 P17W19 original UV painted 3D coupler immutable source glTF2
+on:
+  push:
+    branches: [art/b01-31-p17w19-split-coupler-uv-livery]
+    paths:
+      - 'Tools/B01-31/P17/W19CouplerUVLivery001/**'
+      - '.github/workflows/b01-31-p17w19-coupler-uv-livery.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01-31/P17/W19CouplerUVLivery001/**'
+      - '.github/workflows/b01-31-p17w19-coupler-uv-livery.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-w19-uv-textured-coupler:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Download original immutable physical W16 3D geometry and original receipt
+        uses: actions/download-artifact@v4
+        with:
+          name: B0131-P17W16-ORIGINAL-3D-SPLIT-COUPLER-GLB2-OBJ-MTL-3VIEWS
+          repository: C8LyNn/RoboRougelike
+          run-id: 41097210391
+          github-token: ${{ github.token }}
+          path: immutable-w16
+      - name: Pin original RGBA texture renderer and real PNG reader
+        run: python -m pip install --disable-pip-version-check "Pillow==11.3.0"
+      - name: Compile actual authoring and independent original physical source receiver
+        run: python -m compileall -q Tools/B01-31/P17/W19CouplerUVLivery001/
+      - name: Physically author real GLB with 6 embedded original PNG PBR textures and 12 UV source meshes
+        run: |
+          python Tools/B01-31/P17/W19CouplerUVLivery001/build_livery.py --original immutable-w16/B0131W16 --output build/B0131W19
+          python Tools/B01-31/P17/W19CouplerUVLivery001/verify_livery.py --original immutable-w16/B0131W16 --output build/B0131W19
+      - name: Repeat complete 10-member physical GLB+PNG+3view+receipt ZIP source creation, full SHA parity
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd build && find . -type f -print0 | sort -z | xargs -0 sha256sum) > /tmp/original.sha256
+          python Tools/B01-31/P17/W19CouplerUVLivery001/build_livery.py --original immutable-w16/B0131W16 --output build/B0131W19
+          python Tools/B01-31/P17/W19CouplerUVLivery001/verify_livery.py --original immutable-w16/B0131W16 --output build/B0131W19
+          (cd build && find . -type f -print0 | sort -z | xargs -0 sha256sum) > /tmp/rebuilt.sha256
+          cmp /tmp/original.sha256 /tmp/rebuilt.sha256
+          echo "B0131_W19_ORIGINAL_UV_SIX_PBR_PNG_GLTF2_SOURCE_SHA_PARITY_PASS"
+      - name: Publish actual independently verified original GLB six PNG textures and two concept images
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0131-P17W19-ORIGINAL-UV-WORN-COUPLER-6-PNG-GLB2-3VIEWS
+          path: build/
+          retention-days: 30
+          if-no-files-found: error
+  independent-windows-actual-binary-uv-receiver:
+    needs: original-w19-uv-textured-coupler
+    runs-on: windows-2022
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Independently download original source W16 physical GLB, not regenerated
+        uses: actions/download-artifact@v4
+        with:
+          name: B0131-P17W16-ORIGINAL-3D-SPLIT-COUPLER-GLB2-OBJ-MTL-3VIEWS
+          repository: C8LyNn/RoboRougelike
+          run-id: 41097210391
+          github-token: ${{ github.token }}
+          path: immutable-w16
+      - name: Download actual Ubuntu authored W19 six embedded PNG texture model, not renderer
+        uses: actions/download-artifact@v4
+        with:
+          name: B0131-P17W19-ORIGINAL-UV-WORN-COUPLER-6-PNG-GLB2-3VIEWS
+          path: original-w19-output
+      - name: Install only source PNG binary image decoder
+        run: python -m pip install --disable-pip-version-check "Pillow==11.3.0"
+      - name: Verify all actual W16 original mesh byte prefixes, 12 UV accessors and 6 embedded genuine PNGs
+        run: python Tools/B01-31/P17/W19CouplerUVLivery001/verify_livery.py --original immutable-w16/B0131W16 --output original-w19-output/B0131W19
