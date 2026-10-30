@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+<PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><LangVersion>9.0</LangVersion><Nullable>enable</Nullable><TreatWarningsAsErrors>true</TreatWarningsAsErrors><EnableDefaultCompileItems>false</EnableDefaultCompileItems></PropertyGroup>
+<ItemGroup>
+<Compile Include="../../../../Assets/B0123CanonicalRigPortW24/Runtime/CanonicalRigLedgerHydratorW24.cs"/>
+<Compile Include=".original/DetachedSnapshotContract.cs"/>
+<Compile Include=".original/DebrisImpulseCore.cs"/>
+<Compile Include=".original/SecureRigSpec.cs"/>
+<Compile Include="Program.cs"/>
+</ItemGroup></Project>
