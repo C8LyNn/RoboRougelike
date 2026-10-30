@@ -1,0 +1,17 @@
+{
+  "name": "B01.EconCoreGuardV5",
+  "rootNamespace": "RoboRougelike.B01.Economy.CoreGuardV5",
+  "references": [
+    "B01.EconRebuildV3",
+    "B01.EconReadinessV4"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": true
+}
