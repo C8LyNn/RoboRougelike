@@ -1,0 +1,51 @@
+name: B01-61 W19 original #642 R3 ambiguity after real durable Commit independent CSharp QA
+on:
+  push:
+    branches: [qa/b01-61-p17w19-r3-642-ambiguous-commit-source]
+permissions:
+  contents: read
+jobs:
+  true-original-642-uncertain-commit-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Exact immutable R3 candidate Git source, frozen dependencies, scope
+        shell: bash
+        run: |
+          set -o pipefail
+          python Tools/B01/B01-61/P17W19R3Exact642UncertainCommitQA/source_guard.py 2>&1 | tee b0161-w19-r3-source.log
+      - name: Strict original R3 CSharp9, actual selected schema/W06, warnings as errors
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet build Tools/B01/B01-61/P17W19R3Exact642UncertainCommitQA/R3IndependentQA.csproj -c Release --warnaserror 2>&1 | tee b0161-w19-r3-build.log
+      - name: Execute actual R3 FileCheckpointStore write, missing acknowledgement and stale-world refusal
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet run --no-build -c Release --project Tools/B01/B01-61/P17W19R3Exact642UncertainCommitQA/R3IndependentQA.csproj 2>&1 | tee b0161-w19-r3-run.log
+          grep -q 'TOTAL 18 PASS 18 FAIL 0' b0161-w19-r3-run.log
+          grep -q 'R3_STALE_WORLD_SAVE_FENCE_GREEN=BLOCKED' b0161-w19-r3-run.log
+          grep -q 'DURABLE_COMMIT_THROW_AFTER_REAL_WRITE_RED=REPRODUCED' b0161-w19-r3-run.log
+          grep -q 'SOURCE_RELEASE_GATE=HOLD_UNCERTAIN_DURABLE_COMMIT_ACK' b0161-w19-r3-run.log
+      - name: Original stdout with explicit SOURCE release HOLD, not Unity Editor XML
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-61-w19-original642-commit-fault-${{ matrix.os }}
+          path: |
+            b0161-w19-r3-source.log
+            b0161-w19-r3-build.log
+            b0161-w19-r3-run.log
+          retention-days: 21
+          if-no-files-found: warn
