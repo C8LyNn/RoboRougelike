@@ -90,8 +90,9 @@ static class SectionChecks
            "cannot enter already-consumed loaner after restart");
         Ok(ApprovedEconomyPolicyV7.TryStageTrustedLoss(entry,
            "next-real-encounter",out var lost,out why),"real loss transitions staged "+why);
+        ApprovedEconomySnapshotV7 lostRead=null;
         Ok(CanonicalEconomySectionV7.TryEncode(lost,out var lostBytes,out why)&&
-           CanonicalEconomySectionV7.TryDecode(lostBytes,out var lostRead,out why)&&
+           CanonicalEconomySectionV7.TryDecode(lostBytes,out lostRead,out why)&&
            lostRead.Loaner.Phase==LoanerPhaseV7.Spent&&
            lostRead.Wins==1&&lostRead.Scrap==0&&
            lostRead.Pending.Count==1,"loss cannot heal, rearm or mint wins");
