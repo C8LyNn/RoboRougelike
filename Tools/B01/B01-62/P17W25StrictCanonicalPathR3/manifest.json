@@ -1,0 +1,26 @@
+{
+  "package": "B01-62-W25-SELECTED773-STRICT-PATH-005",
+  "new_version": "5.0.0-source-candidate",
+  "original_773_parent": "3aaaec4027ee246fbfb6f209179f0e9507363473",
+  "original_749_lineage": "8634e71dfcf633323073fe584a6c0884f1ca5d23",
+  "original_729_authority": "b8ca29c7707cd6b4338d0b9772d74dee676d49d2",
+  "fix": "StringComparison.Ordinal canonical filesystem root on ALL OS; original test #774 reproduced Linux case alias",
+  "files": [
+    "Tools/B01/B01-62/P17W25StrictCanonicalPathR3/CanonicalSingleAuthorityStoreV3R3.cs",
+    "Tools/B01/B01-62/P17W25StrictCanonicalPathR3/CanonicalSlotSessionV3R3.cs",
+    "Tools/B01/B01-62/P17W25StrictCanonicalPathR3/Program.cs",
+    "Tools/B01/B01-62/P17W25StrictCanonicalPathR3/Selected773StrictCanonicalPathR3.csproj",
+    "Tools/B01/B01-62/P17W25StrictCanonicalPathR3/source_guard.py",
+    "Tools/B01/B01-62/P17W25StrictCanonicalPathR3/manifest.json",
+    "Tools/B01/B01-62/P17W25StrictCanonicalPathR3/README.md",
+    ".github/workflows/b01-62-w25-773-strict-case-path.yml"
+  ],
+  "status": {
+    "producer": "CI_PENDING",
+    "independent_G0": "PENDING",
+    "owner_selection": "NOT_SELECTED",
+    "native_G1": "NOT_RUN",
+    "integrated": false,
+    "released": false
+  }
+}
