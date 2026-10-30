@@ -1,0 +1,38 @@
+name: B01-22 W17 read-only original ECON restore anti-replay
+on:
+  push:
+    branches:
+      - b01-22/p17w17-econrestore-readonly-qa
+  pull_request:
+    paths:
+      - Research/B01-22/P17/ECONREBUILD-W17-QA/**
+      - .github/workflows/b01-22-w17-econrestore-qa.yml
+jobs:
+  original-source-witness:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify frozen original C# and surrogate Git blobs
+        shell: bash
+        run: |
+          test "$(git hash-object Assets/B01Packages/ECONREBUILD001/Runtime/RebuildQueueService.cs)" = "cac95b28647528a7a46cb818c6d78037dc3e80a2"
+          test "$(git rev-parse HEAD:Assets/B01Packages/ECONREBUILD001/Runtime/RebuildQueueService.cs)" = "cac95b28647528a7a46cb818c6d78037dc3e80a2"
+          test "$(git hash-object Tools/B01/ECONREBUILD001/tests/UnityJsonShim.cs)" = "2189c750566d692361702268580a93d3b660536f"
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Actually compile frozen producer C# and run replay witness
+        shell: bash
+        run: |
+          dotnet run --project Research/B01-22/P17/ECONREBUILD-W17-QA/Witness.csproj -c Release -- "$RUNNER_TEMP/econrestore-w17-witness.json"
+          grep -q '"source_release": "RED"' "$RUNNER_TEMP/econrestore-w17-witness.json"
+          grep -q '"replay_of_original_win_id_accepted": true' "$RUNNER_TEMP/econrestore-w17-witness.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-22-w17-source-replay-${{ matrix.os }}
+          path: ${{ runner.temp }}/econrestore-w17-witness.json
+          if-no-files-found: error
