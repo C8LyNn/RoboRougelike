@@ -1,0 +1,60 @@
+name: B01-23 W13 selected 510 stable ID save snapshot source contract
+on:
+  push:
+    branches: ['b01-23/p17-w13-secure-v2-save-contract-r1']
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-23/P17W13SecureV2SaveContract001/**'
+      - '.github/workflows/b01-23-p17-w13-secure-v2-save.yml'
+jobs:
+  original-W06-R2-roundtrip:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Prepare EXACT frozen #510 original source as C# dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin refs/pull/510/head
+          s=d94400d95d13db7f27e1533df05c9292d5380431
+          p=Tools/B01/B01-23/P17W13SecureV2SaveContract001
+          mkdir -p "$p/Input" w13-saveload-receipt
+          test "$(git rev-parse "$s:Assets/B0123SecureReattachV2/Runtime/AtomicDockLedger.cs")" = b6a4d04b0c6407c8c84451b4d599d96fe0e4d1a9
+          test "$(git rev-parse "$s:Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs")" = fa1aa5e531927cbe73cf5fdfe161b4a981316db5
+          git show "$s:Assets/B0123SecureReattachV2/Runtime/AtomicDockLedger.cs" > "$p/Input/AtomicDockLedger.cs"
+          git show "$s:Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs" > "$p/Input/SecureRigSpec.cs"
+          git show "$s:Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs" > "$p/Input/DebrisImpulseCore.cs"
+      - name: Compile and EXECUTE genuine original W06/R2 consumed ID snapshot roundtrip and adversarial reload
+        shell: bash
+        run: |
+          set -euo pipefail
+          p=Tools/B01/B01-23/P17W13SecureV2SaveContract001
+          dotnet run -c Release --project "$p/SaveContractTests.csproj" | tee w13-saveload-receipt/original-ledger-roundtrip.log
+          grep -q 'SOURCE_SAVELOAD_ASSERTIONS_PASS=' w13-saveload-receipt/original-ledger-roundtrip.log
+          grep -q 'UNITY_NATIVE=NOT_RUN' w13-saveload-receipt/original-ledger-roundtrip.log
+      - name: Produce deterministic owner-only physical contract ZIP and hostile manifest/rollback tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-23/P17W13SecureV2SaveContract001/package.py w13-saveload-receipt/selected510-saveload-contract.zip | tee w13-saveload-receipt/pack.log
+          python -m unittest discover -s Tools/B01/B01-23/P17W13SecureV2SaveContract001 -p test_package.py -v 2>&1 | tee w13-saveload-receipt/package-negative.log
+          grep -q 'OK' w13-saveload-receipt/package-negative.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b0123-w13-saveload-contract-${{ matrix.os }}
+          path: w13-saveload-receipt/
+          if-no-files-found: warn
