@@ -2,7 +2,7 @@
 """B01-60 W17: original Git object exact-source audit of adapter native coverage.
 
 NOT a Unity runner, NOT PhysX, NOT a producer G0 packager/receiver.
-Proves a 16-case #532-only G1 receipt CANNOT prove #604's 5 new adapter cases.
+Proves #532-only 16-case G1 cannot verify the OWNER-SELECTED #596 4-case Save adapter.
 NEVER accepts simulated XML as Unity evidence.
 """
 from __future__ import annotations
@@ -88,7 +88,7 @@ def check_assets(assets):
  # NUnit test host instances and the original checkpoint validates run IDs.
  require("owner!=run" in assets[BRIDGE_CORE].decode(),
          "original checkpoint-store run ownership guard changed")
- owners=set(re.findall(r"MakeFixture\\(\\s*(\\d+)\\s*,",text))
+ owners=set(re.findall(r"MakeFixture\(\s*(\d+)\s*,",text))
  require({"31","41","9"}.issubset(owners),
          "original native test suite run-ID isolation assumptions changed")
  require("File.Delete(" not in text and "FileCheckpointStore" not in text,
@@ -128,10 +128,10 @@ def main():
   git("cat-file","-e",sha+"^{commit}")
  require(blob(GAME,GAME_SOURCE)==PROVEN_GIT_BLOBS[GAME_SOURCE]
          and blob(PROPOSED,GAME_SOURCE)==PROVEN_GIT_BLOBS[GAME_SOURCE],
-         "original #510 Unity runtime code does not match candidate #604")
+         "original #510 Unity runtime code does not match owner-selected #596")
  require(blob(GAME,GAME_LEDGER)==PROVEN_GIT_BLOBS[GAME_LEDGER]
          and blob(PROPOSED,GAME_LEDGER)==PROVEN_GIT_BLOBS[GAME_LEDGER],
-         "original #510 private consumed ledger differs in candidate #604")
+         "original #510 private consumed ledger differs in owner-selected #596")
  require(blob(SAVE,SAVE_SOURCE)==PROVEN_GIT_BLOBS[SAVE_SOURCE]
          and blob(PROPOSED,SAVE_SOURCE)==PROVEN_GIT_BLOBS[SAVE_SOURCE],
          "only selected frozen #556 Save source differs in candidate #604")
