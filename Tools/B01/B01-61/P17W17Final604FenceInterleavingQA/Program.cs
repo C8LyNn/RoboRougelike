@@ -50,7 +50,7 @@ internal static class Program
     {
         readonly RunSnapshot input;
         public bool Active,Retired,PoseCorruptAfterActivate,
-            IdCorruptAfterActivate,FailDeactivate,FailActivate,FailRetire;
+            IdCorruptAfterActivate,FailDeactivate;
         public int ActivationCount;
         public World(RunSnapshot s){input=s;}
         public RunSnapshot Capture()
@@ -72,7 +72,6 @@ internal static class Program
         public void Activate()
         {
             ActivationCount++;Active=true;
-            if(FailActivate)throw new IOException("fault-injected world activate");
         }
         public void Deactivate()
         {
@@ -82,7 +81,6 @@ internal static class Program
         public void Retire()
         {
             Retired=true;Active=false;
-            if(FailRetire)throw new IOException("fault-injected deferred retirement");
         }
     }
     sealed class Factory:IWorldFactory
@@ -90,14 +88,13 @@ internal static class Program
         public World? Last;
         public int PrepareCalls;
         public Action? BeforeCreate;
-        public bool PoseCorrupt,IdCorrupt,FailDeactivate,FailActivate,FailRetire;
+        public bool PoseCorrupt,IdCorrupt,FailDeactivate;
         public IPreparedWorld Prepare(RunSnapshot s)
         {
             PrepareCalls++;BeforeCreate?.Invoke();
             Last=new World(s){PoseCorruptAfterActivate=PoseCorrupt,
-                IdCorruptAfterActivate=IdCorrupt,FailDeactivate=FailDeactivate,
-                FailActivate=FailActivate,FailRetire=FailRetire};
-            PoseCorrupt=IdCorrupt=FailDeactivate=FailActivate=FailRetire=false;
+                IdCorruptAfterActivate=IdCorrupt,FailDeactivate=FailDeactivate};
+            PoseCorrupt=IdCorrupt=FailDeactivate=false;
             return Last;
         }
     }
