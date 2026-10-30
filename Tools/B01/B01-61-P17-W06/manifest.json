@@ -1,0 +1,54 @@
+{
+  "package_id": "B01-61-P17-W06-CODEX-BRACING-COLLISION-GATE-001",
+  "version": "1.0.0",
+  "owner": "B01-61 CODEX REGRESSION QA",
+  "category": "Independent original-source Unity .meta and path collision G0",
+  "immutable_producer": {
+    "source_pr": 375,
+    "bracing_sha": "5666a39eabd4cea91b2b605a9eb99ea2f1e226e8",
+    "producer_manifest_blob": "02221b524d2c106e90d179f16c09dcfef8815c6d",
+    "physical_zip_pr": 391,
+    "physical_zip_sha256": "c4f9b083d618013d1d6c4f8a888dcb57d0a4e59220d37acf3f45644c65953580"
+  },
+  "immutable_codex_game": {
+    "pr": 383,
+    "game_source_sha": "203a0805251ed28293888e43f2d49f0df63767c6",
+    "git_meta_files_expected": 1023,
+    "newer_game_source_not_tested": true
+  },
+  "own_blob_shas": {
+    "Tools/B01/B01-61-P17-W06/bracing_codex_preflight.py": "f8131561ebe66777f3510b5f23b8a3d1513d3884",
+    "Tools/B01/B01-61-P17-W06/test_bracing_codex_preflight.py": "89578dd123652abb7d4eee2d23670def1965ddb0",
+    "Tools/B01/B01-61-P17-W06/README.md": "5425b7b7e4e89c0de4b1499fe3e085e20c87bdba",
+    ".github/workflows/b01-61-p17w06-bracing-codex-preflight.yml": "6ed34c5dfef9c0a5a14b8c0a6ac346ceab076aa1"
+  },
+  "validation": {
+    "expected_original_package_meta": 6,
+    "expected_original_package_json": 4,
+    "negative_fixture_unittests": 16,
+    "full_codex_git_tree_original_read": true,
+    "batch_git_blobs": true,
+    "native_unity": "NOT_RUN",
+    "physx": "NOT_RUN",
+    "manual_play": "NOT_RUN",
+    "initial_real_red_reason": "Initial pinned game meta count mistakenly included one non-Assets metadata; exact Assets tree count is 1023. Corrected own source only."
+  },
+  "do_not_interpret_as": [
+    "G1 native import or collision",
+    "any prefab binding proof",
+    "original PARTSIZE or rigs installed",
+    "formal B01-40 G0 approval",
+    "Codex ACK or integration"
+  ],
+  "scope": [
+    "Tools/B01/B01-61-P17-W06/**",
+    ".github/workflows/b01-61-p17w06-bracing-codex-preflight.yml"
+  ],
+  "install": "No game install. Inspect CI exact source receipt and replay with Git + Python3.11 on isolated checkout.",
+  "rollback": "Remove own QA tool directory/workflow only; never modify producer, Codex, main/develop.",
+  "receivers": [
+    "B01-40 exact source G0 and live game import preflight",
+    "B01-60 Unity native G1 with legal Editor and real prefab references",
+    "B01-00 exclusive #79 routing"
+  ]
+}
