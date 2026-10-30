@@ -1,0 +1,15 @@
+{
+  "schema_version": "b01-dispatch-v1",
+  "stream_limit": 2,
+  "active_streams": ["PARTSIZE", "CHL"],
+  "approved_streams": ["PARTSIZE", "CHL"],
+  "codex_scope_confirmed": false,
+  "codex_reserved": ["Assets/Scripts", "Assets/Prefabs", "Tools/B01/B01-40"],
+  "tasks": [
+    {"id":"W06-DISPATCH","package_id":"DISPATCH001","owner":"B01-00","kind":"support","state":"NEW","scope":["Tools/B01/B01-00/W06/DISPATCH-001"],"dependencies":[],"stream":null,"priority":95},
+    {"id":"CHL-WORK","package_id":"CHL003","owner":"B01-20","kind":"production","state":"NEW","scope":["Research/B01-20/CHL"],"dependencies":[],"stream":"CHL","priority":80},
+    {"id":"CAMERA","package_id":"CAMERA001","owner":"B01-20","kind":"production","state":"NEW","scope":["Assets/Scripts/Camera"],"dependencies":[],"stream":"CAMERA","priority":90},
+    {"id":"FIRE","package_id":"FIRE001","owner":"B01-24","kind":"production","state":"NEW","scope":["Research/B01-24/FIRE"],"dependencies":[],"stream":"FIRE","priority":78},
+    {"id":"CHL-OVERLAP","package_id":"CHL004","owner":"B01-21","kind":"support","state":"NEW","scope":["Research/B01-20"],"dependencies":[],"stream":null,"priority":50}
+  ]
+}
