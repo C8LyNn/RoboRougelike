@@ -39,7 +39,7 @@
     },
     {
       "path": "Tools/B01/B01-62/P17W13PersistentIdContract/stage_original.py",
-      "git_blob": "47e06ec2da356a4b8d8613350d6755b547ed7a4d"
+      "git_blob": "cb18a1b5e9b324af9b7dd26e4d9d196ca43f355e"
     },
     {
       "path": "Tools/B01/B01-62/P17W13PersistentIdContract/test_rollback.py",
