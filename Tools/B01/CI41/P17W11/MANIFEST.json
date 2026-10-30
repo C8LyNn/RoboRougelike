@@ -1,0 +1,35 @@
+{
+  "package": "CI41-EXCLUSIVE-STAGE-001",
+  "version": "1.0.0",
+  "wave": "PASS17/WAVE11",
+  "producer": "B01-41",
+  "base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "branch": "ci/b01-41-p17w11-exclusive-dock-stage",
+  "inputs": {
+    "secure_v2_sha": "33a32b8bd9ab40467ab1a17b5684926a37dbd4d3",
+    "public_guard_sha": "6efe45961ed0ffdf183e8016e350978b9f3dc51c"
+  },
+  "owned_paths": [
+    "Tools/B01/CI41/P17W11/exclusive_stage.py",
+    "Tools/B01/CI41/P17W11/test_exclusive_stage.py",
+    "Tools/B01/CI41/P17W11/README.md",
+    "Tools/B01/CI41/P17W11/MANIFEST.json",
+    ".github/workflows/b01-41-p17w11-exclusive-stage.yml"
+  ],
+  "positive_negative_git_tests_per_os": 20,
+  "os": [
+    "ubuntu-24.04",
+    "windows-2025"
+  ],
+  "ownership_policy": "#276 immutable source, isolated only",
+  "safety": {
+    "transactional_atomicity": "UNVERIFIED_HOLD",
+    "public_api_contract": "UNVERIFIED_HOLD",
+    "native_unity": "NOT_RUN",
+    "G0": "INDEPENDENT_PENDING",
+    "G1": "HOLD",
+    "codex_ACK": false,
+    "integrated": false
+  },
+  "rollback": "Keep Draft unmerged; remove only isolated CI source and scratch stage receipt tree"
+}

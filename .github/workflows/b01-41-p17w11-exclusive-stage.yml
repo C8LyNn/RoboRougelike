@@ -1,0 +1,69 @@
+name: B01-41 W11 exact Git exclusive dock staging (SOURCE ONLY)
+on:
+  push:
+    branches: ['ci/b01-41-p17w11-exclusive-dock-stage']
+    paths:
+      - 'Tools/B01/CI41/P17W11/**'
+      - '.github/workflows/b01-41-p17w11-exclusive-stage.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  stage:
+    name: Immutable #488/#494 separate source staging and 20 Git tests (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Pin executable script and tests by original Git blob
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git hash-object Tools/B01/CI41/P17W11/exclusive_stage.py)" = '8a88299299a1ab1bbbf43a1da0ec4c739eae1945'
+          test "$(git hash-object Tools/B01/CI41/P17W11/test_exclusive_stage.py)" = '247058df8c40838ea9d0dcd2c4905f6b3784b630'
+          echo 'EXCLUSIVE_STAGE_SOURCE_PINS_PASS'
+      - name: Run 20 physical Git and source staging regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
+          "$PY" -m unittest discover -s Tools/B01/CI41/P17W11 -p test_exclusive_stage.py -v 2>&1 | tee "Tools/B01/CI41/P17W11/tests-${{ runner.os }}.txt"
+          grep -q 'Ran 20 tests' "Tools/B01/CI41/P17W11/tests-${{ runner.os }}.txt"
+          grep -q 'ACTUAL_UNITY_STAGING_EXCLUSIVE_AND_ALL_SHA256_MATCH_NO_GAME_WRITE' "Tools/B01/CI41/P17W11/tests-${{ runner.os }}.txt"
+      - name: Read original immutable producer refs without modifying producers
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin +refs/pull/488/head:refs/remotes/origin/ci41-readonly-pr488 +refs/pull/494/head:refs/remotes/origin/ci41-readonly-pr494
+          test "$(git rev-parse refs/remotes/origin/ci41-readonly-pr488)" = '33a32b8bd9ab40467ab1a17b5684926a37dbd4d3'
+          test "$(git rev-parse refs/remotes/origin/ci41-readonly-pr494)" = '6efe45961ed0ffdf183e8016e350978b9f3dc51c'
+          echo 'PRODUCER_PINNED_SHA_PASS'
+      - name: Physically stage two competing alternatives separately OUTSIDE game checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
+          BASE='5f06af81e2dd9d877e4300259bb3dd008cb9c9d1'
+          "$PY" Tools/B01/CI41/P17W11/exclusive_stage.py --repo . --target-sha "$BASE" --producer-sha 33a32b8bd9ab40467ab1a17b5684926a37dbd4d3 --variant secure-v2 --stage-dir "$RUNNER_TEMP/ci41-standalone-v2" --out "Tools/B01/CI41/P17W11/actual-v2-${{ runner.os }}.json"
+          "$PY" Tools/B01/CI41/P17W11/exclusive_stage.py --repo . --target-sha "$BASE" --producer-sha 6efe45961ed0ffdf183e8016e350978b9f3dc51c --variant public-guard --stage-dir "$RUNNER_TEMP/ci41-standalone-guard" --out "Tools/B01/CI41/P17W11/actual-guard-${{ runner.os }}.json"
+          "$PY" -c 'import json,sys; a=[json.load(open(x)) for x in sys.argv[1:]]; assert {x["selected_variant"] for x in a}=={"secure-v2","public-guard"} and all(x["exclusive_stage"]=="PASS" and x["native_unity"]=="NOT_RUN" and x["release_gate"]=="HOLD" and x["security_transaction"]=="UNVERIFIED_HOLD" for x in a); print("BOTH_OPTIONS_SOURCE_STAGED_SEPARATELY_G2_HOLD")' "Tools/B01/CI41/P17W11/actual-v2-${{ runner.os }}.json" "Tools/B01/CI41/P17W11/actual-guard-${{ runner.os }}.json"
+      - name: Upload physical source staging only; never claim native Unity
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CI41-EXCLUSIVE-STAGE-W11-${{ matrix.os }}
+          path: |
+            Tools/B01/CI41/P17W11/tests-${{ runner.os }}.txt
+            Tools/B01/CI41/P17W11/actual-v2-${{ runner.os }}.json
+            Tools/B01/CI41/P17W11/actual-guard-${{ runner.os }}.json
+            ${{ runner.temp }}/ci41-standalone-v2/**
+            ${{ runner.temp }}/ci41-standalone-guard/**
+          if-no-files-found: warn
+          retention-days: 14
