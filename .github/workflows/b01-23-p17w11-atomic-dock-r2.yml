@@ -1,0 +1,43 @@
+name: B01-23 W11 selected V2 R2 atomic docking original source QA
+on:
+  push:
+    branches: [b01-23/p17w11-secure-v2-atomic-r2]
+  pull_request:
+    paths:
+      - 'Assets/B0123SecureReattachV2/**'
+      - 'Tools/B01/B01-23/P17W10SecureReattachV2/**'
+      - 'Tools/B01/B01-23/P17W11DockAtomicR2/**'
+      - '.github/workflows/b01-23-p17w11-atomic-dock-r2.yml'
+jobs:
+  source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Run actual original W06 ledger and R2 atomic transaction source tests
+        run: dotnet run --project Tools/B01/B01-23/P17W11DockAtomicR2/AtomicSourceTests.csproj -c Release
+      - name: Rerun original W10 public reattach CSharp regression
+        run: dotnet run --project Tools/B01/B01-23/P17W10SecureReattachV2/DockV2SourceTests.csproj -c Release
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Rerun original Git physical ZIP stage and rollback negatives
+        run: python -m unittest discover -s Tools/B01/B01-23/P17W10SecureReattachV2 -p test_package.py -v
+      - name: Validate W11 source-specific transaction and provenance
+        run: python -m unittest discover -s Tools/B01/B01-23/P17W11DockAtomicR2 -p test_atomic_package.py -v
+      - name: Produce real original V2 R2 cumulative physical source ZIP
+        run: python Tools/B01/B01-23/P17W10SecureReattachV2/package.py build --archive dist/B0123_SecureReattach_R2_Source.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-23-w11-atomic-r2-${{ matrix.os }}
+          path: dist/B0123_SecureReattach_R2_Source.zip
+          if-no-files-found: error
