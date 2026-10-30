@@ -1,0 +1,87 @@
+{
+  "package_id": "B01-62-P17W22-INDEPENDENT-712-P0-DIFFERENTIAL-QA-001",
+  "version": "1.0.0-SOURCE-QA-ONLY",
+  "owner": "B01-62 DATA INTEGRITY & SAVE QA",
+  "selected": {
+    "one_canonical_api_lineage": [
+      681,
+      691
+    ],
+    "api_original_691": "809f82575c638e1b4d2806b5f417bddab6c0871a",
+    "api_682": "ALT_HOLD",
+    "durable_single_store_original_669": "d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121",
+    "original_v1_red_697": "ab62b041e50f8aa0defada2aadc0987d6c63f9d9",
+    "corrected_version_r2_green_712": "bd8905ad549a7b26854b671be971f7d781308311",
+    "one_host_r5_original_690": "cc7f73541517a18f4479bb155534bd4832d9985e",
+    "host_alt_693": "ALT_HOLD"
+  },
+  "original_git_blobs": {
+    "original_v1_697": "bcecb87c8b1b198e8c086d30f26846bf202ea1c4",
+    "original_r2_712": "fefc2e263e068b913c6e59ec3c8375bbbe43db4e",
+    "canonical_v2_691": "704e774dedd5be5af26e0791fba87ecdb109ae2a",
+    "storage_669": "db7745635164d9eb6b10f3246538700158130b7b",
+    "codec_556": "b52e511c370f5fca56c74029050844dc8cbb7f9a",
+    "w06": "fa1aa5e531927cbe73cf5fdfe161b4a981316db5",
+    "frozen_510_spec": "b680ed0ec969ac23203fa55eab7b90f8daa86e43"
+  },
+  "qa_only_paths": [
+    {
+      "path": "Tools/B01/B01-62/P17W22Independent712Gate/Program.cs",
+      "blob": "622e6c152fe0333103b5b83e8fa1def5b48e8e10"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W22Independent712Gate/Original712R2QA.csproj",
+      "blob": "300526e2d27c2e58c352e99740d65000d3a4980c"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W22Independent712Gate/Original697R1RedControl.csproj",
+      "blob": "9bf1268d421f9c6fffefcf4a0d148bb655d5113e"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W22Independent712Gate/README.md",
+      "blob": "d924477b78e093c0b78cc090887beb3189cce8f9"
+    },
+    {
+      "path": ".github/workflows/b01-62-w22-independent-712-gate.yml",
+      "blob": "91e14b60333c7fb0a18dbc97cf65b0a72cf19607"
+    }
+  ],
+  "expected_exact_per_os": {
+    "legacy_v1_source_red_witness_pass": 10,
+    "r2_corrected_source_green_witness_pass": 10,
+    "total_cases": 20
+  },
+  "ci": {
+    "initial_git_actions_run": 41129812854,
+    "final_producer_original_qa_exact_head_runs": [
+      41130103136,
+      41130183163
+    ],
+    "ubuntu": "PASS_ORIGINAL_V1_RED_10_10_AND_R2_GREEN_10_10_BOTH_PUSH_PR",
+    "windows": "PASS_ORIGINAL_V1_RED_10_10_AND_R2_GREEN_10_10_BOTH_PUSH_PR",
+    "original_source_assertions_across_four_jobs": 80,
+    "verified": "ORIGINAL_RAW_OS_LOGS_READ_WINDOWS_AND_UBUNTU",
+    "new_manifest_change_requires_new_ci": "PENDING_EXACT_SHA"
+  },
+  "gates": {
+    "r5_690_physical_source_g0": "B01-40_699_ACCEPTED_SOURCE_ONLY_34_GUID",
+    "formal_integrated_g0": "HOLD_NO_UNITY",
+    "r2_712_source_security": "GREEN_EXPECTED_TEST_SCOPED_NOT_RELEASED",
+    "native_g1": "NOT_RUN",
+    "live_private_510": "HOLD",
+    "cross_file_external_receipt_709": "OPTIONAL_NOT_AUTO_MIXED",
+    "external_restore_of_both_save_and_witness": "NOT_PREVENTED",
+    "g2": "HOLD",
+    "codex_ack": "NONE",
+    "merge": false
+  },
+  "stages": {
+    "implemented": "YES",
+    "tested": "ORIGINAL_SOURCE_80_80_PRE_MANIFEST_REVIEW",
+    "qa_accepted": "INDEPENDENT_CORRECTED_707_TEST_SCOPE_ONLY",
+    "ready_for_integrator": "NO",
+    "integrated": "NO",
+    "released": "NO"
+  },
+  "rollback": "Close unmerged Draft; remove only newly-added B01-62 QA/CI paths; original #712/#697/#691/#669/#556/#510 and physical receiver remain untouched."
+}
