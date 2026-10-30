@@ -239,7 +239,7 @@ internal static class Independent
         {
             if(r2.TryRestore(Data(1,true,false),Run,1)!=CanonicalGateResult.Accepted||
                a.Last==null||!a.Last.Active)return false;
-            if(!OpenV3(root,b,out g,out _)||g==null)return false;
+            if(!OpenV3(root,b,out g,out _,r2)||g==null)return false;
             if(g.TryRestore(Data(1,true,false),Run,1)!=CanonicalGateResult.Accepted||
                b.Last==null||!b.Last.Active||!g.AuthorityActive||
                !r2.OwnsSlot||!r2.HasWorld)return false;
