@@ -1,0 +1,34 @@
+{
+  "package": "B01-62-W25-WHOLE-GAME-ECONOMY-001",
+  "schema": "B0162G01/v1",
+  "parent_strict_path_r3_sha": "f5db40bf293fe9582ec7c6fcb3515aeff6fcf937",
+  "selected_749_original": "8634e71dfcf633323073fe584a6c0884f1ca5d23",
+  "base_773": "3aaaec4027ee246fbfb6f209179f0e9507363473",
+  "immutable_world_556": "33094f154c7b91119b36d58aab285e6e83c5de57",
+  "original_api_729": "b8ca29c7707cd6b4338d0b9772d74dee676d49d2",
+  "original_econ_764": "cc5d65f66ad7a764af6515c566e489b9fc3be82e",
+  "original_econ_blob": "c72db78548f3e21765c54eb4609b748153118392",
+  "one_physical_owner": "injected original #729 .owner only",
+  "one_final_file": "save.envelope (entire frozen #556 world and #764 econ JSON section same SHA/CAS/publish)",
+  "format_different": "slot.canonical-game-v1 - refuse older v3 no implicit migration",
+  "known_gaps": [
+    "#764 quote(1)=1 violates owner strict-lower quote(1)=0",
+    "still source-only: #772 real Unity world and #729 gateway direct economy transaction adapter absent",
+    "genuine victory receipt not signed/validated by storage; game host MUST supply trusted proof",
+    "no native Unity G1 or PowerLoss parent fsync"
+  ],
+  "new_only_files": [
+    "Tools/B01/B01-62/P17W25WholeGameEconomy001/WholeGameEconomySlotV1.cs",
+    "Tools/B01/B01-62/P17W25WholeGameEconomy001/Program.cs",
+    "Tools/B01/B01-62/P17W25WholeGameEconomy001/WholeGameEconomyQA.csproj",
+    "Tools/B01/B01-62/P17W25WholeGameEconomy001/source_guard.py",
+    "Tools/B01/B01-62/P17W25WholeGameEconomy001/manifest.json",
+    "Tools/B01/B01-62/P17W25WholeGameEconomy001/README.md",
+    ".github/workflows/b01-62-w25-unified-economy-save.yml"
+  ],
+  "G0": "PENDING_INDEPENDENT",
+  "G1": "NOT_RUN",
+  "integrated": false,
+  "released": false,
+  "code_ack": false
+}
