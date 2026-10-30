@@ -1,0 +1,19 @@
+{
+  "package_id": "B01-61-P17W20-R4-647-ORPHAN-PHYSICS-LIFECYCLE-QA-001",
+  "producer": "B01-23",
+  "exact_producer_pr": 647,
+  "exact_producer_sha": "09c1809b73324a6d31c13e5d0143de62ac1e3ca6",
+  "original_core_blob": "8fd1dd9a1bc870433809da8fba897ec924fa4113",
+  "original_host_blob": "82147492a9205f8ef5986ceb61aeb10d6ea24ff2",
+  "frozen_510_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "frozen_556_sha": "33094f154c7b91119b36d58aab285e6e83c5de57",
+  "unselected_r4_pr_652": "ALT_HOLD_OR_PENDING_OWNER_SELECTION; NEVER_IMPORT",
+  "actual_cpp": "CSharp9 original source, test-only managed Unity API, NOT native Unity",
+  "qa_only_paths": 7,
+  "source_pins": 5,
+  "original_runtime_assertions_per_os": 17,
+  "native_unity_g1": "NOT_RUN",
+  "integration": "NONE",
+  "merge": false,
+  "W20_source_result": "17/17 per OS expected negative scenario; CI exact head required"
+}
