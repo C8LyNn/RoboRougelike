@@ -1,0 +1,55 @@
+name: B01-62 W11 Original R2 Public Reattach and W06 Ledger Atomicity QA
+
+on:
+  push:
+    branches:
+      - qa/b01-62-p17w11-r2-original-ledger-atomicity
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W11R2LedgerAtomicityQA/**'
+      - '.github/workflows/b01-62-p17w11-r2-original-ledger-atomicity.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  original-csharp-qa:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout independent QA branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Fetch original immutable author sources
+        run: |
+          git fetch --no-tags origin cb2b3a76e84266e2730fffc4ab048c1039f0652f
+          git fetch --no-tags origin 33a32b8bd9ab40467ab1a17b5684926a37dbd4d3
+          git fetch --no-tags origin 6efe45961ed0ffdf183e8016e350978b9f3dc51c
+      - name: Twelve hostile source-verifier unit controls
+        run: python -m unittest discover -s Tools/B01/B01-62/P17W11R2LedgerAtomicityQA -p test_verify.py -v
+      - name: Materialize only pinned original Git source in isolated CI scratch
+        run: |
+          python Tools/B01/B01-62/P17W11R2LedgerAtomicityQA/verify.py --repo . --dest Tools/B01/B01-62/P17W11R2LedgerAtomicityQA/SourceSnapshot
+      - name: Execute actual unchanged R2 gameplay Csharp plus actual W06 ledger
+        run: |
+          dotnet run --project Tools/B01/B01-62/P17W11R2LedgerAtomicityQA/QA.csproj --configuration Release --verbosity quiet
+      - name: Archive actual source receipt and snapshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-62-w11-r2-ledger-${{ matrix.os }}
+          path: Tools/B01/B01-62/P17W11R2LedgerAtomicityQA/SourceSnapshot/receipt.json
+          if-no-files-found: error
