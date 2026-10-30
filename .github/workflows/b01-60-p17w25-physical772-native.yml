@@ -1,0 +1,100 @@
+name: B01-60 W25 exact #772 Unity physical G1 owner handoff (SOURCE ONLY UNITY NOT_RUN)
+on:
+  push:
+    branches: [qa/b01-60-p17w25-physical772-native-g1-r1]
+    paths:
+      - 'Tools/B01/B01-60/P17W25Physical772Native/**'
+      - '.github/workflows/b01-60-p17w25-physical772-native.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-60/P17W25Physical772Native/**'
+      - '.github/workflows/b01-60-p17w25-physical772-native.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  physical-original-772-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Get exact selected original Git #772 plus #729/#510/#556 (CI checkout only)
+        shell: bash
+        run: |
+          set -euo pipefail
+          for sha in ce46a5e0cc5d26df6c4ece723e8efe20d70fc4b1 b8ca29c7707cd6b4338d0b9772d74dee676d49d2 d94400d95d13db7f27e1533df05c9292d5380431 33094f154c7b91119b36d58aab285e6e83c5de57; do
+            git fetch --no-tags origin "$sha"
+            test "$(git cat-file -t "$sha")" = commit
+          done
+      - name: Verify descendant, 6 only ADD W25 source paths, original #718 runner unchanged
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=6a3589ff23bd811fb456d375e14b45c22b93337d
+          git merge-base --is-ancestor "$BASE" HEAD
+          git diff --name-status "$BASE" HEAD > actual.txt
+          awk '$1!="A" {print; exit 1}' actual.txt
+          test "$(wc -l < actual.txt)" -eq 6
+          test "$(git rev-parse HEAD:Tools/B01/B01-60/P17W22R5PartialNative/r5_native.py)" = 40ca11d886fc567a5a79f6abfeabdf2b37f4c36e
+          echo 'B0160_W25_6_ONLY_ADDED_FROZEN_RUNNER_UNMODIFIED'
+      - name: Real exact-author source GUID, three Unity scratch projects and fail-closed source checks (NOT native)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile Tools/B01/B01-60/P17W25Physical772Native/rig_native.py
+          python -m unittest discover -s Tools/B01/B01-60/P17W25Physical772Native -p test_rig_native.py -v 2>&1 | tee w25-rig-source.log
+          grep -F 'Ran 10 tests' w25-rig-source.log
+          grep -F 'OK' w25-rig-source.log
+          echo 'B0160_W25_PY_SOURCE_10_PASS_UNITY_G1_NOT_RUN'
+      - name: Standalone original exact SHA three-project source preflight and safe rollback
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W25Physical772Native/rig_native.py --mode preflight 2>&1 | tee w25-772-preflight.log
+          grep -F 'B0160_W25_RIG_772_THREE_PRIVATE_SCRATCH_PROJECTS_SOURCE_PASS' w25-772-preflight.log
+          grep -F 'B0160_W25_NATIVE_G1_NOT_RUN' w25-772-preflight.log
+  actual-windows-powershell-source-only:
+    runs-on: windows-2025
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Owner authored Git historical objects in disposable CI only
+        shell: bash
+        run: |
+          for sha in ce46a5e0cc5d26df6c4ece723e8efe20d70fc4b1 b8ca29c7707cd6b4338d0b9772d74dee676d49d2 d94400d95d13db7f27e1533df05c9292d5380431 33094f154c7b91119b36d58aab285e6e83c5de57; do git fetch --no-tags origin "$sha"; done
+      - name: Real Windows PowerShell exact #772 3 project source-only operator, no Unity
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W25Physical772Native\Invoke-B0160W25Rig.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:RUNNER_TEMP *>&1 | Tee-Object -FilePath w25-ps-preflight.log
+          if($LASTEXITCODE -ne 0){throw "W25 original #772 source-only PowerShell preflight failed"}
+          if(!(Select-String w25-ps-preflight.log -Pattern 'B0160_W25_RIG_PREFLIGHT_PASS_REAL_UNITY_G1_NOT_RUN' -Quiet)){throw "W25 FALSE G1"}
+      - name: Actual Windows PowerShell unsafe scratch refused exit2
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W25Physical772Native\Invoke-B0160W25Rig.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:GITHUB_WORKSPACE *>&1 | Tee-Object -FilePath w25-ps-unsafe.log
+          if($LASTEXITCODE -ne 2){throw "W25 unsafe scratch accepted"}
+          $global:LASTEXITCODE=0
+      - name: Actual Windows PowerShell -Run without independent G0 refused exit3
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W25Physical772Native\Invoke-B0160W25Rig.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:RUNNER_TEMP -Run *>&1 | Tee-Object -FilePath w25-ps-g0-missing.log
+          if($LASTEXITCODE -ne 3){throw "W25 missing source G0 accepted"}
+          $global:LASTEXITCODE=0
+      - name: Actual Windows PowerShell -Run missing licensed Editor refused exit3
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W25Physical772Native\Invoke-B0160W25Rig.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:RUNNER_TEMP -Run -SourceG0Approved -UnityPath 'Z:\missing\6000.3.14f1\Editor\Unity.exe' *>&1 | Tee-Object -FilePath w25-ps-no-editor.log
+          if($LASTEXITCODE -ne 3){throw "W25 missing Unity Editor accepted"}
+          $global:LASTEXITCODE=0
