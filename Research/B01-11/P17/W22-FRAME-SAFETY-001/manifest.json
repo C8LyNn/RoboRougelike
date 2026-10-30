@@ -1,0 +1,30 @@
+{
+  "package": "B01-11-FRAME-SAFETY-001/R1",
+  "files": [
+    {
+      "path": "Research/B01-11/P17/W22-FRAME-SAFETY-001/frame.js",
+      "bytes": 5503,
+      "sha256": "8c437accdc766e2d44132b47b397b662fc6930aa7f01690529d45dc77e8230a8"
+    },
+    {
+      "path": "Research/B01-11/P17/W22-FRAME-SAFETY-001/test_frame.cjs",
+      "bytes": 9669,
+      "sha256": "e15021f43c1d08e232c1cc75f1fe664633636d0dffaa8e473c1e46186708ba97"
+    },
+    {
+      "path": "Research/B01-11/P17/W22-FRAME-SAFETY-001/index.html",
+      "bytes": 8253,
+      "sha256": "da66f31a142533ecb7305288c8039abdf296dc696177bf87f846c99ffce17fa4"
+    },
+    {
+      "path": "Research/B01-11/P17/W22-FRAME-SAFETY-001/README.md",
+      "bytes": 3999,
+      "sha256": "fa482c79c24a7fc68536115a617775f290340e388617269a3c7cc2e77d6e5569"
+    },
+    {
+      "path": ".github/workflows/b01-11-p17w22-frame-safety-001.yml",
+      "bytes": 678,
+      "sha256": "a00b3fba42b62145cd39555b28ab454a7fdf768dca94bd3ed2105de89c25cfb4"
+    }
+  ]
+}
