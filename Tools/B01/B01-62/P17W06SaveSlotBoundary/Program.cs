@@ -184,7 +184,8 @@ internal static class Program
                 bug_reproduction=mode=="editor"?"simulated static reset plus actual unsafe write ONLY to disposable canary":"not_applicable"
             };
             File.WriteAllText(Path.Combine(sandbox,"receipt.json"),
-                JsonSerializer.Serialize(receipt,new JsonSerializerOptions{WriteIndented=true}));
+                JsonSerializer.Serialize(receipt,new JsonSerializerOptions{WriteIndented=true})
+                    .Replace("\r\n","\n"),new UTF8Encoding(false));
             Console.WriteLine($"SAVE_SLOT_BOUNDARY_SOURCE_QA=PASS mode={mode} checks={assertions} NOT_UNITY_NATIVE");
             return 0;
         }
