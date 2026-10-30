@@ -3,6 +3,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Globalization;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace B01KitReadiness001
 {
@@ -58,6 +61,55 @@ namespace B01KitReadiness001
             return kind + Separator + weapon;
         }
 
+        // Source-pinned reference BOM integrity. Caller-provided sourceSha alone
+        // is untrusted; this fingerprints every ordered part, count and unit price.
+        // Source #411 v1.0.3, original immutable catalog git blob:
+        // 372b3bc74553ea459e89be38378f4429090e00a2.
+        // Not a signature or an authorization for any in-game transaction.
+        private const string ApprovedRecipeDigest =
+            "6f121fe4207aaca2f30dfede9e79700d3af0dbec5349c87c1709c174dd4096eb";
+
+        private static void AddToken(StringBuilder output, string value)
+        {
+            if (value == null) throw new ArgumentException("NULL_RECIPE_TOKEN");
+            output.Append(value.Length.ToString(CultureInfo.InvariantCulture))
+                  .Append(':').Append(value);
+        }
+        private static void AddInt(StringBuilder output, int value)
+        {
+            AddToken(output, value.ToString(CultureInfo.InvariantCulture));
+        }
+        // Deterministic UTF-8 SHA256 over 154 length-prefixed original values.
+        // The count includes original source SHA, kit list length, ten IDs, part
+        // counts, and all original physical kind/weapon/count/scrap rows.
+        public static string ComputeRecipeFingerprint(KitRecipe[] catalog)
+        {
+            if (catalog == null) throw new ArgumentException("NULL_RECIPE_CATALOG");
+            var encoded = new StringBuilder();
+            AddToken(encoded, SourceSha);
+            AddInt(encoded, catalog.Length);
+            foreach (KitRecipe kit in catalog)
+            {
+                if (kit == null || kit.Parts == null)
+                    throw new ArgumentException("INVALID_RECIPE_FOR_HASH");
+                AddToken(encoded, kit.Id);
+                AddInt(encoded, kit.Parts.Length);
+                foreach (PartNeed part in kit.Parts)
+                {
+                    if (part == null) throw new ArgumentException("NULL_RECIPE_PART_FOR_HASH");
+                    AddToken(encoded, part.Kind);
+                    AddToken(encoded, part.Weapon);
+                    AddInt(encoded, part.Quantity);
+                    AddInt(encoded, part.UnitScrap);
+                }
+            }
+            using (SHA256 hash = SHA256.Create())
+            {
+                byte[] value = hash.ComputeHash(Encoding.UTF8.GetBytes(encoded.ToString()));
+                return BitConverter.ToString(value).Replace("-", "").ToLowerInvariant();
+            }
+        }
+
         // Invariant: no mutation of caller's recipe, stock or game state.
         // One request is reserved ATOMICALLY in a private virtual ledger:
         // an insufficient kit never consumes partial pieces before the next request.
@@ -93,6 +145,8 @@ namespace B01KitReadiness001
                 if (pieces > 12 || families.Count > 2)
                     throw new ArgumentException("INVALID_CATALOG_LIMIT");
             }
+            if (ComputeRecipeFingerprint(catalog) != ApprovedRecipeDigest)
+                throw new ArgumentException("ORIGINAL_KIT_RECIPE_SNAPSHOT_MISMATCH");
             var stock = new Dictionary<string, int>(StringComparer.Ordinal);
             foreach (OwnedPart part in inventory)
             {
