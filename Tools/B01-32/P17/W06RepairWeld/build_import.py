@@ -98,7 +98,7 @@ def build(output):
     with zipfile.ZipFile(zip_path,"w",compression=zipfile.ZIP_DEFLATED,compresslevel=9) as z:
         for path,body in sorted(assets.items()):
             info=zipfile.ZipInfo(path,date_time=(2020,1,1,0,0,0))
-            info.compress_type=zipfile.ZIP_DEFLATED;info.external_attr=0o100644<<16
+            info.compress_type=zipfile.ZIP_DEFLATED;info.create_system=3;info.external_attr=0o100644<<16
             z.writestr(info,body,compress_type=zipfile.ZIP_DEFLATED,compresslevel=9)
     with zipfile.ZipFile(zip_path) as z:
         require(z.testzip() is None and set(z.namelist())==set(assets),"ZIP unreadable")
