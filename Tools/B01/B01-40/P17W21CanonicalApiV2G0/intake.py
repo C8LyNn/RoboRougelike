@@ -213,14 +213,12 @@ def physical_combined_host(roots,safe,guid,api_assets,host_assets):
         require(guid.validate_script_refs(
             {**bad,**before[0]},guid.meta_guids({**bad,**before[0]}))=={},
             "OLD_SOURCE_GUID_VALIDATOR_REJECTED_UNEXPECTED_V1_FIXTURE")
-        for path,data in bad.items():
-            if data!=git(roots["api"] if path in api_assets else
-                         (roots["r5"] if path in host_assets else roots["game"]),
-                         "show","HEAD:"+path) and path in api_assets:
-                require(path==GATEWAY and data==v1,
-                        "API_V2_BYTE_SWAP_NEGATIVE_UNEXPECTED_FILE")
-                break
-        else:raise Hold("ALTERNATE_API_V1_BYTESWAP_ACCEPTED_AS_EXACT_V2")
+        require(bad[GATEWAY]==v1 and bad[GATEWAY]!=git(
+                roots["api"],"show","HEAD:"+GATEWAY),
+                "ALTERNATE_API_V1_BYTESWAP_ACCEPTED_AS_EXACT_V2")
+        require(all(b==git(roots["api"],"show","HEAD:"+p)
+                    for p,b in bad.items() if p in api_assets and p!=GATEWAY),
+                "API_V2_FOREIGN_SECONDARY_ORIGINAL_BYTES")
         require(safe.crawl(host)==before,"V1_NEGATIVE_CHANGED_FOREIGN_HOST")
         # Genuine original v2 + original selected R5 + frozen gameplay/Save,
         # strict new wholly disposable Unity source candidate and rollback.
