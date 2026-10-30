@@ -1,0 +1,13 @@
+bbba3c58bbb368a7070fb0d50aee5fd797fbefa2	Tools/B01/B01-50/LIGHTBUDGET001R2/Core/CosmeticLightBudget.cs
+fa4bebda7ef20f6fbf4b39d721a90fa86d3be804	Tools/B01/B01-50/LIGHTBUDGET001R2/Core/CosmeticLightBudget.cs.meta
+f80d61ba30036656f3e1c292dde32a52c956f34f	Tools/B01/B01-50/LIGHTBUDGET001R2/Unity/B0150OptionalCosmeticLightBudget.cs
+396a4ad1449d90c351df297ddeb7b8e97942c0c8	Tools/B01/B01-50/LIGHTBUDGET001R2/Unity/B0150OptionalCosmeticLightBudget.cs.meta
+56385e340553b388ec72bf0c25c3b181dd10d4b1	Tools/B01/B01-50/LIGHTBUDGET001R2/Unity/B0150OptionalCosmeticLightDemo.cs
+0960dddc6d5b3974d55b72e7de5df0cc9e4d4b0b	Tools/B01/B01-50/LIGHTBUDGET001R2/Unity/B0150OptionalCosmeticLightDemo.cs.meta
+f0d7b87d2dac428edffea2f2894a24c76c28ed92	Tools/B01/B01-50/LIGHTBUDGET001R2/tests/Program.cs
+1e39ec29b5d95efb9badef951ac0543325296fbb	Tools/B01/B01-50/LIGHTBUDGET001R2/tests/LIGHTBUDGET.Tests.csproj
+3494c2e4d1ef105b1702583bec4fb4a6f64b906d	Tools/B01/B01-50/LIGHTBUDGET001R2/tests/UnitySurrogate.cs
+75d53b6190cd15c4c4de4b1010848e6ce21c0046	Tools/B01/B01-50/LIGHTBUDGET001R2/tests/AdapterRegression.cs
+18d61a807c30cb93bc77a89efcf2c71ccdf58480	Tools/B01/B01-50/LIGHTBUDGET001R2/tests/LIGHTBUDGET.AdapterRegression.csproj
+1cacc1374074c0b2043bef9678c9604f61ad6f24	Tools/B01/B01-50/LIGHTBUDGET001R2/README.md
+4453923dfd4e3d89ee9456d5a4a89d9ad84a82b7	.github/workflows/b01-50-w17-lightbudget-r2.yml
