@@ -59,11 +59,12 @@ def verify(payload):
             if Path(x).is_absolute() or ".." in Path(x).parts or "\\" in x:
                 raise ValueError("traversal")
         m=json.loads(z.read(MANIFEST))
-        if m["commit"]!=git("rev-parse","HEAD") or m["selected_parent_v3"]!=V3_REF or
-           m["dependency_669_blob"]!=B0162_BLOB or
-           m["single_physical_lease"]!="ORIGINAL_B0162_669_SLOT.LEASE_ONLY" or
-           m["native_G1"]!="NOT_RUN" or m["codex_ack"] is not False or
-           m["full_510_private_unity_adapter"]!="NOT_IMPLEMENTED":
+        if (m["commit"]!=git("rev-parse","HEAD") or
+            m["selected_parent_v3"]!=V3_REF or
+            m["dependency_669_blob"]!=B0162_BLOB or
+            m["single_physical_lease"]!="ORIGINAL_B0162_669_SLOT.LEASE_ONLY" or
+            m["native_G1"]!="NOT_RUN" or m["codex_ack"] is not False or
+            m["full_510_private_unity_adapter"]!="NOT_IMPLEMENTED"):
             raise ValueError("false provenance/gate")
         if [x["path"] for x in m["source"]]!=expected:raise ValueError("manifest path order")
         for e in m["source"]:
