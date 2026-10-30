@@ -1,0 +1,17 @@
+{
+  "id": "B01-60-HAZARDPULSE-BOUNDARY-QA-001",
+  "version": "R1",
+  "qa_source_owner": "B01-60",
+  "producer": "B01-25",
+  "producer_pr": 430,
+  "immutable_source_sha": "6095577ece27320b1a861a738cc23ba42d6793a6",
+  "original_runtime_blob": "a7a2c69c80d43bf027f2b00896df72f892fa1a17",
+  "target": "C#9/netstandard2.1 original hazard timing and damage authorization",
+  "qa_cases": 10,
+  "pinned_git_objects": 9,
+  "negative_mutants": 8,
+  "original_source_changed": false,
+  "native_unity": "NOT_RUN",
+  "codex_ack": "PENDING",
+  "rollback": "Delete only independent QA branch and its six new scoped paths"
+}
