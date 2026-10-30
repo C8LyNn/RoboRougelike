@@ -1,0 +1,53 @@
+name: B01-61 W06 exact Codex gameplay GUID/path collision preflight
+
+on:
+  push:
+    branches: ['qa/b01-61-p17-w06-bracing-codex-guid-preflight']
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-61-P17-W06/**'
+      - '.github/workflows/b01-61-p17w06-bracing-codex-preflight.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  original-codex-asset-tree-g0:
+    name: Exact original Codex 1024 .meta source audit / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch immutable original Codex #383 gameplay plus B01-23 #375 assets
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=1 origin 203a0805251ed28293888e43f2d49f0df63767c6
+          git fetch --no-tags --depth=1 origin 5666a39eabd4cea91b2b605a9eb99ea2f1e226e8
+      - name: Adversarial metadata GUID and path receiver tests
+        shell: bash
+        run: |
+          set -o pipefail
+          python -m unittest discover -s Tools/B01/B01-61-P17-W06 -p 'test_bracing_codex_preflight.py' -v 2>&1 | tee b0161-w06-negative-tests.log
+      - name: Independently scan complete ORIGINAL Codex Assets meta GUID tree and ORIGINAL B01-23 producer source
+        shell: bash
+        run: |
+          set -o pipefail
+          python Tools/B01/B01-61-P17-W06/bracing_codex_preflight.py --repo . --output codex-bracing-g0-preflight.json 2>&1 | tee b0161-w06-original-game-asset-scan.log
+      - name: Preserve original exact tree scan receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b0161-w06-codex-original-bracing-g0-${{ matrix.os }}
+          path: |
+            codex-bracing-g0-preflight.json
+            b0161-w06-negative-tests.log
+            b0161-w06-original-game-asset-scan.log
+          if-no-files-found: warn
