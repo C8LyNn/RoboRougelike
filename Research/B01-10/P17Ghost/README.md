@@ -78,3 +78,39 @@ Fixed original SHA-256-derived 128-bit Unity GUIDs:
 **Actual source tests vs unexecuted native tests**: \`Program.cs\` increases to **62 authored original C# tests** (including 8 new bound-playback/anti-tamper/high-frequency seek tests and 100 generated synthetic sample traces in original test #50). The portable .NET8 workflow is designed for Windows+Ubuntu, but **only a completed workflow run can establish native execution of those C# cases**. The Unity \`GhostVisualProxy.cs\` is preprocessor-isolated from .NET8, so real Unity Editor compilation, shader behavior/transparency, mesh appearance, physics zero-collider inspection, three retries, human visual readability, and true Light/Heavy physics remain **NATIVE_UNITY_NOT_RUN** until a licensed Unity6000.3.14f1 worktree performs independent PlayMode QA.
 
 **QA request:** B01-40 source G0 check own-path/manifest/source/hash and 3 GUIDs; B01-60 independently execute 62 original portable C# tests on current SHA and inspect negative pose/time/clone paths; B01-20 only approves opt-in CHL host lifecycle; B01-00 controls Codex dispatch and ACK. \`G0=PENDING/G1=NOT_RUN/CODEX_ACK=PENDING\`.
+
+
+## PASS17 WAVE08 — actual RED → GREEN runner fix, reproducible physical Unity ZIP
+
+The original W06/W07 dedicated workflow contained **literal backslashes** before GitHub expression interpolations, notably \`runs-on: ${{ matrix.os }}\`, not a valid evaluated runner selector. Both jobs remained QUEUED despite ordinary CI-01 running normally. W08 **repaired all six escaped expression occurrences**, including runner and upload-artifact destinations: valid workflow has \`runs-on: ${{ matrix.os }}\` with NO literal leading backslash. GitHub jobs began running after the patch. No change to the game's canonical CI-01/02/03 workflow; no Unity source imported into shared Assets.
+
+**Real physical source package tool** [\`pack_ghost.py\`](pack_ghost.py) is Python3.8+ stdlib-only and produces a deterministic \`B01-10_GHOST001_R2_UNITY_SOURCE.zip\`. It fails closed unless the exact existing eight source/meta/docs files' **raw Git blob IDs** agree with this version's MANIFEST.json, source-only gates explicitly show native Unity NOT_RUN and CODEX ACK PENDING, all 3 GUIDs are correct and unique, the original core has no Unity dependency, and the Unity-only visual is preprocessor-guarded. It neither changes files nor accesses game/Codex code.
+
+The physical ZIP contains **exactly ten real members**, not a shell/reference-only receipt:
+
+\`\`\`
+UnityInstall/Assets/B01TrainingGhost.meta
+UnityInstall/Assets/B01TrainingGhost/GhostCore.cs
+UnityInstall/Assets/B01TrainingGhost/GhostCore.cs.meta
+UnityInstall/Assets/B01TrainingGhost/GhostVisualProxy.cs
+UnityInstall/Assets/B01TrainingGhost/GhostVisualProxy.cs.meta
+Evidence/Ghost.Runner.csproj
+Evidence/Program.cs
+Evidence/README.md
+Evidence/MANIFEST.json
+SOURCE_RECEIPT.json
+\`\`\`
+
+Member timestamps fixed to 1980-01-01, permissions 0644 and storage method ZIP_STORED. Each member has byte count and SHA256 in \`SOURCE_RECEIPT.json\`, plus the original immutable PR HEAD and **explicit** \`native_unity: NOT_RUN\`, \`independent_G0: PENDING\`, \`codex_ack: PENDING\`. The verifier re-opens original actual ZIP bytes and rejects all member SHA/bad-member/forged-ACK mismatches. The negative runner rebuilds and rejects six real mutated ZIPs: source tamper, .meta GUID drift, fabricated Codex ACK, fabricated Unity test PASS, injected path traversal into Codex R1, and missing Unity visual source.
+
+Commands run from repository root, replace the ref with exact current 40-hex commit:
+
+\`\`\`bash
+python Research/B01-10/P17Ghost/pack_ghost.py pack --sha <EXACT_GIT_HEAD> --zip /tmp/B01-10_GHOST001_R2_UNITY_SOURCE.zip --report /tmp/ghost-zip-build.json
+python Research/B01-10/P17Ghost/pack_ghost.py verify --sha <EXACT_GIT_HEAD> --zip /tmp/B01-10_GHOST001_R2_UNITY_SOURCE.zip --report /tmp/ghost-zip-verify.json
+python Research/B01-10/P17Ghost/pack_ghost.py negatives --sha <EXACT_GIT_HEAD> --zip /tmp/unused.zip --report /tmp/ghost-zip-negatives.json
+\`\`\`
+
+The dedicated [GitHub Actions workflow](../../../../.github/workflows/b01-10-p17-ghost.yml) now automatically executes **real original compiled .NET8 C# 62 named tests, 100 seeded synthetic traces, --demo JSON, invalid CLI exit2, this source ZIP build/readback and all six negative ZIP mutants** on both Windows 2025 and Ubuntu 24.04, uploading original ZIP and logs. Native Unity tests still require a licensed disposable 6000.3.14f1 installation, checking actual shaders, serialized GUID collisions, render and zero Collider. Synthetic test runs are *not* native physics telemetry.
+
+**Receiver action after actual final-head CI:** B01-40 verifies ORIGINAL physical ZIP checksum and member bytes on both OS, all 3 .meta GUID vs current authorized Codex worktree, source-tree/manifest and installation+rollback; B01-60 independently executes compiled original C#, mutated ZIP verification and actual Unity native tests only with real Editor. B01-20 confirms the optional real CHL event interface. B01-00 alone can dispatch via #79 after explicit independent approval; do not treat SOURCE_ZIP available, CI-green or this producer handoff as \`OFFERED/FROZEN\`, \`CODEX_CLAIMED\`, \`UNITY_G1_PASS\` or \`INTEGRATED\`.
