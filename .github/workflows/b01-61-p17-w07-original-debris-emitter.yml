@@ -1,0 +1,49 @@
+name: B01-61 W07 independent ORIGINAL B01-23 Unity emitter managed adapter QA
+
+on:
+  push:
+    branches: ['qa/b01-61-p17-w07-debris-emitter-original-qa']
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-61-P17-W07/**'
+      - '.github/workflows/b01-61-p17-w07-original-debris-emitter.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  original-unity-adapter-managed-boundary-qa:
+    name: Original B01-23 emitter actual CSharp + five mutants / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Fetch exact immutable ORIGINAL #421 producer Git commit
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=1 origin cb2b3a76e84266e2730fffc4ab048c1039f0652f
+      - name: Compile original two CSharp game files with boundary stub, execute 47 cases, kill 5 real source mutants
+        shell: bash
+        run: |
+          set -o pipefail
+          python Tools/B01/B01-61-P17-W07/run_original_adapter.py --repo . --output b0161-w07-adapter-receipt.json 2>&1 | tee b0161-w07-original-emitter.log
+      - name: Archive original managed-boundary acceptance evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b0161-w07-original-debris-emitter-${{ matrix.os }}
+          path: |
+            b0161-w07-original-emitter.log
+            b0161-w07-adapter-receipt.json
+          if-no-files-found: warn

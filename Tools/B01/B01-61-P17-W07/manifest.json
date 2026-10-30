@@ -1,0 +1,51 @@
+{
+  "schema": "B01-61-P17-W07-DEBRIS-ADAPTER-QA-001-MANIFEST-v1",
+  "package_id": "B01-61-P17-W07-DEBRIS-ADAPTER-QA-001",
+  "version": "1.0.0",
+  "owner": "B01-61 — CODEX REGRESSION QA",
+  "originalProducer": {
+    "pr": 421,
+    "sha": "cb2b3a76e84266e2730fffc4ab048c1039f0652f",
+    "physicalInnerZipSha256": "e98ee8bb7a428f954290633240e8abb2434a566d46be17a6b96ae9c11aa473b2",
+    "pureCoreGitBlob": "fa1aa5e531927cbe73cf5fdfe161b4a981316db5",
+    "originalEmitterGitBlob": "2b3a8465c550bd49a5c98be5a8064a4ce0947f4b",
+    "asmdefGitBlob": "25a49dc836b62d791c0bf40c214c1c6cf09a9fea",
+    "originalMetaCount": 5
+  },
+  "testedScope": "Actual original untouched C#9 core AND original emitter compiled under .NET8 fake QA-only Unity API, every call to fake Rigidbody tracked; not Unity/PhysX",
+  "originalPositiveNegativeCases": 47,
+  "adversarialOriginalSourceMutants": 5,
+  "ownedPaths": [
+    "Tools/B01/B01-61-P17-W07/**",
+    ".github/workflows/b01-61-p17-w07-original-debris-emitter.yml"
+  ],
+  "ownGitBlobs": {
+    "Tools/B01/B01-61-P17-W07/Program.cs": "c4af1578015b2bf6199769d1aa0e8d1687714150",
+    "Tools/B01/B01-61-P17-W07/UnityEngineBoundaryStub.cs": "4511962371793eb80099ca3ed23f0af77191707d",
+    "Tools/B01/B01-61-P17-W07/DebrisEmitterQA.csproj": "5f6b17f7cebc8406b03387eab3e664c99cc45b80",
+    "Tools/B01/B01-61-P17-W07/run_original_adapter.py": "dcf64febeb928c210a0e1e825c0a18c5b7a77396",
+    ".github/workflows/b01-61-p17-w07-original-debris-emitter.yml": "adb1928d520117b5dc17e298b598420d5bf1dbfd",
+    "Tools/B01/B01-61-P17-W07/README.md": "82cd49ff0edec5e7081f8b16751b13d3dd6af926"
+  },
+  "tests": {
+    "realOriginalGameCore": "COMPILE_AND_RUN_WITH_EMITTER",
+    "trueUnityNative": "NOT_RUN",
+    "physx": "NOT_RUN",
+    "collision": "NOT_RUN",
+    "originalGameIntegrated": false,
+    "codexAcknowledged": false
+  },
+  "knownRisks": [
+    "Stub assembly compilation does not equal original UnityEditor assembly compilation",
+    "Rigidbody physical dynamics and actual MonoBehaviour lifecycle NOT_RUN",
+    "Original B01-23 asmdef autoReferenced=false; Codex must explicitly reference the optional adapter",
+    "Known RED #431 original MOV asmdef remains red and this QA does not override it"
+  ],
+  "install": "No install; optional isolated QA code only. B01-40 verifies actual physical source and dependency chain; B01-60 executes native Unity later",
+  "rollback": "Delete only B01-61 own 6 file paths and temporary JSON receipts; do not touch original producer/Unity Assets or Codex.",
+  "receivers": [
+    "B01-40 source G0 and original import scope",
+    "B01-60 native Unity and PhysX G1",
+    "B01-00 exclusive Codex #79 queue"
+  ]
+}
