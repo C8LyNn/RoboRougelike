@@ -175,6 +175,21 @@ def preflight_host(host,incoming):
             t=raw.decode("utf-8",errors="replace")
             require(not any(s in t for s in LEGACY),
                     "LEGACY_SCENE_OR_CALLER_SERIALIZATION:"+name)
+    # Explicitly reject legacy/alternative EMPTY folders, too: a file-only
+    # scanner would miss them and later allow coexisting controllers.
+    for n in folders:
+        require(not any(n==d or n.startswith(d+"/") for d in DISALLOWED),
+                "LEGACY_OR_ALTERNATIVE_EMPTY_DIRECTORY_DENIED:"+n)
+    # Source-level hash pin: do not let a caller substitute a different
+    # controller/Save codec after the original producer ZIP was verified.
+    for name,pin in {
+        "Assets/B0123SecureReattachV2/Runtime/SecureDebrisPlaygroundV2.cs":
+            "328977b4cdcdcd7c9f128c01f11ff67f8e46086a",
+        "Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs":
+            "b52e511c370f5fca56c74029050844dc8cbb7f9a"}.items():
+        raw=incoming.get(name)
+        require(raw is not None and hashlib.sha1(b"blob "+str(len(raw)).encode()+b"\\0"+raw).hexdigest()==pin,
+                "FROZEN_GAME_OR_SAVE_SOURCE_MUTATED:"+name)
     # Even an EMPTY folder that claims an owner source path is a pre-existing
     # unowned directory: no implicit adoption.
     for n in folders:
