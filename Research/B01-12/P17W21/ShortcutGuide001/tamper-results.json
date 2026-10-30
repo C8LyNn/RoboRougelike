@@ -1,0 +1,19 @@
+{
+  "cases": [
+    {
+      "tool": "node",
+      "actual_exit_code": 2,
+      "expected_exit_code": 2,
+      "stderr": "FAIL_CLOSED source mismatch: ui.js",
+      "result": "EXPECTED_FAIL_CLOSED"
+    },
+    {
+      "tool": "python",
+      "actual_exit_code": 2,
+      "expected_exit_code": 2,
+      "stderr": "FAIL_CLOSED source mismatch: ui.js",
+      "result": "EXPECTED_FAIL_CLOSED"
+    }
+  ],
+  "all_expected": true
+}
