@@ -1,0 +1,55 @@
+name: B01-61 P17 W10 new V2 original public API source acceptance (Unity NOT_RUN)
+on:
+  push:
+    branches: [qa/b01-61-p17w10-v2-public-api-acceptance]
+    paths:
+      - 'Tools/B01/B01-61/P17W10V2PublicApiAcceptance/**'
+      - '.github/workflows/b01-61-p17w10-v2-public-api.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-61/P17W10V2PublicApiAcceptance/**'
+      - '.github/workflows/b01-61-p17w10-v2-public-api.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test-original-producer-CSharp9-V2-public-API:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Frozen producer scope, public API source inspection and mutation negatives
+        shell: bash
+        run: |
+          set -o pipefail
+          python Tools/B01/B01-61/P17W10V2PublicApiAcceptance/verify_source.py 2>&1 | tee v2-original-source-contract.log
+      - name: Compile ORIGINAL producer CSharp9 source under strict compiler
+        shell: bash
+        run: dotnet build Tools/B01/B01-61/P17W10V2PublicApiAcceptance/OriginalSourceQA.csproj -c Release --warnaserror
+      - name: Execute original public API guard with independent adversarial callers
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet run --no-build -c Release --project Tools/B01/B01-61/P17W10V2PublicApiAcceptance/OriginalSourceQA.csproj 2>&1 | tee v2-original-public-api-source-tests.log
+      - name: Preserve genuine source and CSharp9 test stdout, even RED
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-61-v2-public-api-${{ matrix.os }}
+          path: |
+            v2-original-source-contract.log
+            v2-original-public-api-source-tests.log
+          if-no-files-found: warn
+          retention-days: 21
