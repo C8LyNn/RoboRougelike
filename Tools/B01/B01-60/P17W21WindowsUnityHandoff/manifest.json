@@ -1,0 +1,35 @@
+{
+  "package_id": "B01-60-P17W21-WINDOWS-G1-HANDOFF",
+  "version": "1.0.0",
+  "owner": "B01-60",
+  "hq_issue": 687,
+  "authorization_issue": 667,
+  "base_frozen_pr": 684,
+  "base_exact_sha": "c75cb6e52a0de11f27b570c34e08d32082af421f",
+  "immutable_w20_operator_blob": "6e9b549ae36e9fbf6ba9260aeb1b4739d997fed0",
+  "native_scope": {
+    "V2_EditMode": 2,
+    "V2_PlayMode_PhysX": 14,
+    "R5_690": "NOT_RUN",
+    "Canonical_691": "NOT_RUN"
+  },
+  "no_auto_upload": true,
+  "no_delete": true,
+  "offline_clone": true,
+  "human_consent_required": true,
+  "sha256_is_signature": false,
+  "native_G1": "NOT_RUN_PENDING_OWNER_PC",
+  "G2": "HOLD",
+  "source_G0": "SEPARATE",
+  "paths": [
+    "Tools/B01/B01-60/P17W21WindowsUnityHandoff/Invoke-B0160W21.ps1",
+    "Tools/B01/B01-60/P17W21WindowsUnityHandoff/verify_evidence.py",
+    "Tools/B01/B01-60/P17W21WindowsUnityHandoff/test_verify_evidence.py",
+    "Tools/B01/B01-60/P17W21WindowsUnityHandoff/README.md",
+    "Tools/B01/B01-60/P17W21WindowsUnityHandoff/manifest.json",
+    ".github/workflows/b01-60-p17w21-windows-handoff.yml"
+  ],
+  "integrator_feedback": "NOT_MEASURED",
+  "merged": false,
+  "rollback": "Remove only new W21 files/branch; never touch W20 or user files"
+}
