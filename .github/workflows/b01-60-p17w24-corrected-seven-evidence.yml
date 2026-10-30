@@ -1,0 +1,99 @@
+name: B01-60 W24 full corrected seven R5 source receipt audit — NO Unity
+on:
+  push:
+    branches: [qa/b01-60-p17w24-corrected-r5-seven-evidence-gate-r1]
+    paths:
+      - 'Tools/B01/B01-60/P17W24Fixed7EvidenceAudit/**'
+      - '.github/workflows/b01-60-p17w24-corrected-seven-evidence.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-60/P17W24Fixed7EvidenceAudit/**'
+      - '.github/workflows/b01-60-p17w24-corrected-seven-evidence.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-owner-source-verifier:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Retrieve ONLY exact chosen #732 R5 fixture original Git objects in temporary CI checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin 0bee4ce9928354433ec719c45a8186378361d46e
+          test "$(git rev-parse 0bee4ce9928354433ec719c45a8186378361d46e:Assets/B0123UnitySaveBridge001/Tests/IsolatedSaveWorldNativePlayModeTests.cs)" = d096f65eeb37393204a35445dd87cbdffa642ce0
+      - name: Run 26 independent #732 source-byte plus MOCK NUnit adversarial artifact checks, not Unity
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s Tools/B01/B01-60/P17W24Fixed7EvidenceAudit -p test_audit_fixed7.py -v 2>&1 | tee w24-source-26.log
+          grep -F 'Ran 26 tests' w24-source-26.log
+          grep -F 'OK' w24-source-26.log
+      - name: Real original W23 #751 7-project Git source-only stage rollback then W24 read-only audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W23FixedR5SevenNative/run_fixed7.py --mode preflight --scratch-parent "$RUNNER_TEMP" 2>&1 | tee w24-original-seven-preflight.log
+          grep -F 'B0160_W23_FIXED7_SEVEN_PRIVATE_SCRATCH_STAGE_ROLLBACK_PASS' w24-original-seven-preflight.log
+          grep -F 'B0160_W23_FIXED7_NATIVE_UNITY_G1_NOT_RUN' w24-original-seven-preflight.log
+          evidence="$(grep -F 'B0160_W23_FIXED7_LOCAL_EVIDENCE_NO_UPLOAD=' w24-original-seven-preflight.log | tail -1 | cut -d= -f2-)"
+          test -d "$evidence"
+          python Tools/B01/B01-60/P17W24Fixed7EvidenceAudit/audit_fixed7.py "$evidence" 2>&1 | tee w24-independent-audit.log
+          grep -F '"verdict": "CONSISTENT_SOURCE_ONLY"' w24-independent-audit.log
+          grep -F '"native_G1": "NOT_RUN"' w24-independent-audit.log
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0160-W24-SEVEN-SOURCE-RECEIPT-NOT-UNITY-MATRIX_OS
+          path: |
+            w24-source-26.log
+            w24-original-seven-preflight.log
+            w24-independent-audit.log
+          if-no-files-found: warn
+          retention-days: 14
+  actual-windows-powershell-source-handoff:
+    runs-on: windows-2025
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Bring selected original #732 SHA into CI Git only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin 0bee4ce9928354433ec719c45a8186378361d46e
+      - name: Actual original W23 PowerShell source-only runner and independent W24 receipt audit
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W23FixedR5SevenNative\Invoke-B0160W23Fixed7.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:RUNNER_TEMP *>&1 | Tee-Object -FilePath w24-powershell-source.log
+          if($LASTEXITCODE -ne 0){throw 'Historical selected full 7-case operator source-only failed'}
+          if(!(Select-String w24-powershell-source.log -Pattern 'B0160_W23_FIXED7_SOURCE_PASS_OWNER_PC_NATIVE_G1_NOT_RUN' -Quiet)){throw 'Original Windows source-only status absent'}
+          $evidence=Get-ChildItem -LiteralPath $env:RUNNER_TEMP -Directory -Filter 'B22-*' | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+          if($null -eq $evidence){throw 'Original W23 receipt absent'}
+          & python .\Tools\B01\B01-60\P17W24Fixed7EvidenceAudit\audit_fixed7.py $evidence.FullName *>&1 | Tee-Object -FilePath w24-powershell-audit.log
+          if($LASTEXITCODE -ne 0){throw 'Independent W24 audit rejects actual Windows source-only bundle'}
+          if(!(Select-String w24-powershell-audit.log -Pattern '"verdict": "CONSISTENT_SOURCE_ONLY"' -Quiet)){throw 'Source-only receipt falsely promoted'}
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0160-W24-WINDOWS-POWERSHELL-SOURCE-NOT-UNITY
+          path: |
+            w24-powershell-source.log
+            w24-powershell-audit.log
+          retention-days: 14
+          if-no-files-found: warn
