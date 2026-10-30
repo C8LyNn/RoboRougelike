@@ -1,0 +1,68 @@
+name: B01-61 W23 selected #749 original source and single authority QA
+on:
+  push:
+    branches: [qa/b01-61-p17w23-selected749-lease-legacy-check]
+permissions:
+  contents: read
+jobs:
+  selected749-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Exact selected producer 749 SHA+own only paths
+        shell: bash
+        run: |
+          set -o pipefail
+          python Tools/B01/B01-61/P17W23Selected749IndependentQA/source_guard.py 2>&1 | tee b0161-w23-provenance.log
+      - name: Independently audit one physical .owner, no old lease, full #556 payload
+        shell: bash
+        run: |
+          set -o pipefail
+          python Tools/B01/B01-61/P17W23Selected749IndependentQA/independent_checks.py 2>&1 | tee b0161-w23-independent.log
+      - name: Fetch immutable ORIGINAL 729 669 556 W06 510 source for executable existing owner coverage
+        shell: bash
+        run: |
+          set -euo pipefail
+          d="Tools/B01/B01-62/P17W23OneAuthorityV3/.original"
+          mkdir -p "$d"
+          git fetch --no-tags origin b8ca29c7707cd6b4338d0b9772d74dee676d49d2 d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121 33094f154c7b91119b36d58aab285e6e83c5de57 d94400d95d13db7f27e1533df05c9292d5380431
+          git show b8ca29c7707cd6b4338d0b9772d74dee676d49d2:Assets/B0123CanonicalSaveApi001/Core/CanonicalWorldGateway.cs > "$d/CanonicalWorldGatewayV3.cs"
+          git show b8ca29c7707cd6b4338d0b9772d74dee676d49d2:Assets/B0123CanonicalSaveApi001/Core/CanonicalWorldSlotLease.cs > "$d/CanonicalWorldSlotLease.cs"
+          git show d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121:Tools/B01/B01-62/P17W20SingleFileSaveSlot/SingleFileSaveSlot.cs > "$d/SingleFileSaveSlotV1.cs"
+          git show 33094f154c7b91119b36d58aab285e6e83c5de57:Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs > "$d/DetachedSnapshotContract.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs > "$d/DebrisImpulseCore.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs > "$d/SecureRigSpec.cs"
+          test "$(git hash-object "$d/CanonicalWorldGatewayV3.cs")" = 21733278b6ab0669fccb6d085e0b6cf242792de2
+          test "$(git hash-object "$d/CanonicalWorldSlotLease.cs")" = a9331dd620336d8c42165d134dc8a5e05ed51873
+          test "$(git hash-object "$d/SingleFileSaveSlotV1.cs")" = db7745635164d9eb6b10f3246538700158130b7b
+          test "$(git hash-object "$d/DetachedSnapshotContract.cs")" = b52e511c370f5fca56c74029050844dc8cbb7f9a
+          test "$(git hash-object "$d/DebrisImpulseCore.cs")" = fa1aa5e531927cbe73cf5fdfe161b4a981316db5
+          test "$(git hash-object "$d/SecureRigSpec.cs")" = b680ed0ec969ac23203fa55eab7b90f8daa86e43
+          echo W23_SELECTED_749_ACTUAL_ORIGINAL_729_669_556_W06_510_SOURCE_6_6_PASS | tee b0161-w23-originals.log
+      - name: Execute unchanged original source original selected producer CSharp9 harness (corroboration only)
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet run --project Tools/B01/B01-62/P17W23OneAuthorityV3/Original729OneAuthorityQA.csproj -c Release 2>&1 | tee b0161-w23-original-tests.log
+          grep -q 'B0162_W23_SINGLE_OWNER_EXACT_SOURCE_TOTAL 11 PASS 11 FAIL 0' b0161-w23-original-tests.log
+          grep -q 'B0162_W23_REAL_729_ONE_OWNER_669_ATOMIC_SAVE_GREEN_SOURCE_ONLY' b0161-w23-original-tests.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b0161-w23-exact-selected749-${{ matrix.os }}
+          path: |
+            b0161-w23-provenance.log
+            b0161-w23-independent.log
+            b0161-w23-originals.log
+            b0161-w23-original-tests.log
+          if-no-files-found: warn

@@ -1,0 +1,11 @@
+{
+  "package_id": "B01-61-P17W23-SELECTED749-ORIGINAL-ONE-OWNER-SOURCE-GUARD-001",
+  "producer": 749,
+  "sha": "8634e71dfcf633323073fe584a6c0884f1ca5d23",
+  "independent_checks": 12,
+  "producer_rerun_expected_per_os": 11,
+  "original_pins": 6,
+  "own_paths": 5,
+  "G1": "NOT_RUN",
+  "merge": false
+}
