@@ -263,19 +263,61 @@ def claim(snapshot, claims_dir, task_id):
         return {'claim': str(target), 'sha256': hashlib.sha256(raw).hexdigest(), 'task_id': task_id}
 
 
+def _read_exact_owned_claim(path, task_id, expected_sha):
+    """Read a file under the guard; never trust a matching hash alone as permission."""
+    must_id(task_id, 'task id')
+    if not isinstance(expected_sha, str) or not re.fullmatch(r'[0-9a-f]{64}', expected_sha):
+        raise DispatchError('transition requires exact sha256')
+    if path.is_symlink() or not path.is_file():
+        raise DispatchError('claim not found or symlink')
+    raw = path.read_bytes()
+    if hashlib.sha256(raw).hexdigest() != expected_sha:
+        raise DispatchError('claim changed: transition refused')
+    try:
+        data = json.loads(raw)
+    except (json.JSONDecodeError, UnicodeDecodeError) as exc:
+        raise DispatchError('invalid claim JSON') from exc
+    validate_claims([data])
+    if data['id'] != task_id:
+        raise DispatchError('mismatched claim identity')
+    return data
+
+
+def freeze(claims_dir, task_id, expected_sha):
+    """Transition ACTIVE to immutable FROZEN with an atomic replace and new hash.
+
+    This is NOT Codex ACK. There is intentionally no local unfreeze or claim transfer.
+    """
+    must_id(task_id, 'task id')
+    with locked(claims_dir) as p:
+        target = p / f'{task_id}.json'
+        data = _read_exact_owned_claim(target, task_id, expected_sha)
+        if data['state'] != 'ACTIVE':
+            raise DispatchError('only ACTIVE claim may be frozen; no ownership bypass')
+        data = dict(data)
+        data['state'] = 'FROZEN'
+        raw = (json.dumps(data, sort_keys=True, separators=(',', ':')) + '\n').encode('utf-8')
+        temp = p / f'.dispatch_freeze_{task_id}.tmp'
+        fd = os.open(temp, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
+        try:
+            with os.fdopen(fd, 'wb') as handle:
+                handle.write(raw)
+                handle.flush()
+                os.fsync(handle.fileno())
+            os.replace(temp, target)
+        finally:
+            temp.unlink(missing_ok=True)
+        return {'frozen': task_id, 'claim': str(target),
+                'sha256': hashlib.sha256(raw).hexdigest(), 'previous_sha256': expected_sha}
+
+
 def release(claims_dir, task_id, expected_sha):
     must_id(task_id, 'task id')
-    if not re.fullmatch(r'[0-9a-f]{64}', expected_sha):
-        raise DispatchError('release requires exact sha256')
     with locked(claims_dir) as p:
         f = p / f'{task_id}.json'
-        if not f.is_file() or f.is_symlink():
-            raise DispatchError('claim not found or symlink')
-        raw = f.read_bytes()
-        if hashlib.sha256(raw).hexdigest() != expected_sha:
-            raise DispatchError('claim changed: rollback refused')
-        if load_json(f).get('id') != task_id:
-            raise DispatchError('mismatched claim identity')
+        data = _read_exact_owned_claim(f, task_id, expected_sha)
+        if data['state'] != 'ACTIVE':
+            raise DispatchError('release forbidden for FROZEN or CODEX_CLAIMED ownership')
         f.unlink()
     return {'released': task_id}
 
@@ -287,11 +329,14 @@ def main(argv=None):
     sub = p.add_subparsers(dest='action', required=True)
     sub.add_parser('plan')
     c = sub.add_parser('claim'); c.add_argument('task_id')
+    fr = sub.add_parser('freeze'); fr.add_argument('task_id'); fr.add_argument('--expected-sha', required=True)
     r = sub.add_parser('release'); r.add_argument('task_id'); r.add_argument('--expected-sha', required=True)
     args = p.parse_args(argv)
     try:
         if args.action == 'release':
             result = release(args.claims_dir, args.task_id, args.expected_sha)
+        elif args.action == 'freeze':
+            result = freeze(args.claims_dir, args.task_id, args.expected_sha)
         else:
             snapshot = load_json(args.snapshot)
             result = plan(snapshot, claims_from_dir(args.claims_dir)) if args.action == 'plan' else claim(snapshot, args.claims_dir, args.task_id)
