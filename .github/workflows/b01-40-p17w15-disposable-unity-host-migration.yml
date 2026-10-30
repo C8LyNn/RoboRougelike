@@ -1,0 +1,61 @@
+name: B01-40 P17W15 selected #510 + #556 atomic disposable Unity host clone and strict rollback
+on:
+  push:
+    branches: [qa/b01-40-p17w15-atomic-disposable-host-migration]
+    paths:
+      - 'Tools/B01/B01-40/P17W15AtomicReceiverMigration/**'
+      - '.github/workflows/b01-40-p17w15-disposable-unity-host-migration.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-40/P17W15AtomicReceiverMigration/**'
+      - '.github/workflows/b01-40-p17w15-disposable-unity-host-migration.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify-frozen-game-and-one-save:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - name: Own B01-40 QA only
+        uses: actions/checkout@v4
+        with:
+          path: own
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Single frozen original selected Secure V2 gameplay #510
+        uses: actions/checkout@v4
+        with:
+          path: game
+          ref: d94400d95d13db7f27e1533df05c9292d5380431
+          fetch-depth: 0
+      - name: Single selected frozen Save v2 original #556
+        uses: actions/checkout@v4
+        with:
+          path: save
+          ref: 33094f154c7b91119b36d58aab285e6e83c5de57
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Real original physical Git ZIPs and W06 bytes, clone + negative migration/rollback
+        shell: bash
+        run: |
+          set -euo pipefail
+          python own/Tools/B01/B01-40/P17W15AtomicReceiverMigration/migration.py --game game --save save --out evidence | tee w15-physical-migration.log
+          grep -q 'B0140_W15_G0_DISPOSABLE_MIGRATION_SOURCE_PASS' w15-physical-migration.log
+          grep -q 'B0140_W15_ATOMIC_DISPOSABLE_CLONE_PASS 2' w15-physical-migration.log
+          test -s evidence/source-only-receipt.json
+      - name: Retain original execution evidence; NOT native Unity XML
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-40-W15-Migration-${{ matrix.os }}
+          path: |
+            evidence/source-only-receipt.json
+            w15-physical-migration.log
+          if-no-files-found: warn
+          retention-days: 21
