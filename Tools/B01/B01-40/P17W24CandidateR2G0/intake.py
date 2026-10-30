@@ -240,7 +240,7 @@ def main():
     output=Path(args.out)
     check(not output.exists(),"EVIDENCE_OUTPUT_ALREADY_EXISTS")
     output.parent.mkdir(parents=True,exist_ok=True)
-    output.write_text(json.dumps(manifest,sort_keys=True,indent=2)+"\n")
+    output.write_bytes((json.dumps(manifest,sort_keys=True,indent=2)+"\n").encode("utf-8"))
     print("B0140_W24_SOURCE_TRANSPORT_G0_PASS_CANDIDATE_NOT_SELECTED")
     print("B0140_W24_NATIVE_UNITY_G1_NOT_RUN_LIVE_ECON_SAVE_HOLD_NO_MERGE")
     print("EVIDENCE_SHA256="+sha(output.read_bytes()))
