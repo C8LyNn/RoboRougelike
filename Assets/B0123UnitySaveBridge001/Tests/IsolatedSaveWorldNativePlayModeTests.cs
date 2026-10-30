@@ -19,6 +19,15 @@ namespace B01.UnitySaveBridge001.Tests
                 Assert.IsTrue(host.TryRestoreBytes(save,31,1));
                 Assert.IsTrue(host.IsConsumed(0,2310001));
                 Assert.IsTrue(host.IsConsumed(1,2310002));
+                // Actual native activeInHierarchy: unlike inactive staging,
+                // both rigidbodies must become real physics participants on publish.
+                var nativeBodies=game.GetComponentsInChildren<Rigidbody>(true);
+                Assert.AreEqual(2,nativeBodies.Length);
+                foreach(var body in nativeBodies)
+                {
+                    Assert.IsTrue(body.gameObject.activeInHierarchy);
+                    Assert.IsFalse(body.isKinematic);
+                }
                 Assert.IsTrue(host.TrySaveBytes(out byte[] bytes));
                 Assert.IsTrue(SnapshotCodec.TryDecode(bytes,out RunSnapshot snapshot));
                 Assert.AreEqual(2,snapshot.Parts.Length);

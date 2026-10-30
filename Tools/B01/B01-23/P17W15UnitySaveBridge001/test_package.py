@@ -24,6 +24,12 @@ class SourcePackageTests(unittest.TestCase):
         s=p.source(p.ASSET+"/Core/AtomicWorldSwap.cs").decode()
         self.assertIn("ColdRestore.TryStage",s)
         self.assertIn("if(touchedOld&&old!=null)",s)
+    def test_staged_primitive_goes_live_only_with_atomic_world_root(self):
+        source=p.source(p.ASSET+"/Unity/IsolatedTwinRigSaveHost.cs").decode()
+        self.assertIn("part.SetActive(true);",source)
+        self.assertIn("if(part.activeInHierarchy)",source)
+        self.assertIn("container.SetActive(true);",source)
+        self.assertIn("body.linearVelocity",source)
     def test_real_git_deterministic_archive(self):self.assertEqual(p.build(),p.build())
     def test_exact_23_archive_members(self):self.assertEqual(len(p.verify(p.build())),23)
     def test_manifest_source_guards(self):
