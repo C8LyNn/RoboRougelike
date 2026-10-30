@@ -13,7 +13,20 @@
       "status": "PASS",
       "passed": 65,
       "failed": 0,
-      "url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41046087105"
+      "url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41046087105",
+      "contract": {
+        "workflow_id": 401553591,
+        "workflow_path": ".github/workflows/b01-00-dispatch-w06.yml",
+        "event": "pull_request",
+        "required_job_names": [
+          "dispatch (windows-2025)",
+          "dispatch (ubuntu-24.04)"
+        ],
+        "required_steps": [
+          "Original source full dispatch and freeze regression suite",
+          "Produce deterministic example plan"
+        ]
+      }
     }
   },
   "qa": {
