@@ -103,7 +103,7 @@ internal static class Program
     }
     static int Main(string[] args)
     {
-        if(args.Length!=2||!(args[0]=="A"||args[0]=="B") ||
+        if(args.Length!=2||!(args[0]=="A"||args[0]=="B"||args[0]=="C") ||
            !(args[1]=="--audit"||args[1]=="--release"))
             return 10;
         string candidate=args[0];
@@ -162,13 +162,25 @@ internal static class Program
                      !s.IsConsumed(1,FrozenPartCatalog.Id(1)),
                     "Light ID remains OLD despite newer durable Heavy generation");
                 ambiguousUnsafe=verdict==WorldSwapVerdict.HostException&&!s.Quarantined;
-                Must(ambiguousUnsafe,"P0 original R3 ambiguous commit is NOT quarantined");
+                if(candidate=="C")
+                    Must(verdict==WorldSwapVerdict.RollbackQuarantine&&s.Quarantined,
+                        "R4 immediate same-call sticky quarantine after ambiguous durable commit");
+                else
+                    Must(ambiguousUnsafe,"P0 original R3 ambiguous commit is NOT quarantined");
                 bool generated=s.TrySave(Run,()=>true,out byte[] stale);
                 staleExport=generated&&OriginalSnapshot(stale,12,true,false);
                 if(candidate=="A")
                     Must(!staleExport,"R3A refuses stale consumed-Light export");
-                else
+                else if(candidate=="B")
                     Must(staleExport,"R3B still re-exports old consumed-Light at future gen");
+                else
+                {
+                    Must(!generated&&!staleExport,
+                        "R4 quarantine refuses all stale Light writes after uncertain commit");
+                    Must(s.TryLoad(Bytes(12,true,true),Run,12,()=>true)
+                        ==WorldSwapVerdict.RollbackQuarantine,
+                        "R4 quarantine is sticky against future Load");
+                }
                 // Real later restart reads the durable world's true generation11.
                 var freshFactory=new Factory();
                 var cold=new AtomicWorldSwap(freshFactory,new FileCheckpointStore(
@@ -182,12 +194,15 @@ internal static class Program
                     "cold restored Heavy ID matches durable committed world");
             }
             Console.WriteLine("CI41_W19_ORIGINAL_"+candidate+
-                "_UNCERTAIN_COMMIT_P0_RED_REPRODUCED durable_gen=11 "+
-                "not_quarantined="+ambiguousUnsafe+" stale_export="+staleExport);
+                (candidate=="C"?"_COMMIT_ACK_LOST_STICKY_QUARANTINE_PASS":"_UNCERTAIN_COMMIT_P0_RED_REPRODUCED")+
+                " durable_gen=11 not_quarantined="+ambiguousUnsafe+
+                " stale_export="+staleExport);
             Console.WriteLine("CI41_W19_ORIGINAL_"+candidate+
                 "_DIRECT_CSHARP_PASS asserts="+checks+
                 " exact_core_and_frozen_codec=TRUE native_unity=NOT_RUN");
-            Console.WriteLine("CI41_W19_SOURCE_QA_WITNESS_PASS_RELEASE_HOLD_NOT_SELECTED");
+            Console.WriteLine(candidate=="C" ?
+                "CI41_W19_R4_SOURCE_P0_FIX_PASS_G0_G1_STILL_HOLD" :
+                "CI41_W19_SOURCE_QA_WITNESS_PASS_RELEASE_HOLD_NOT_SELECTED");
             return args[1]=="--release"?3:0;
         }
         catch(Exception e)
