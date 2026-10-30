@@ -1,0 +1,73 @@
+name: B01-41 W20 fail closed native Unity evidence G1 and original R4 owner source lease audit
+on:
+  push:
+    branches: ['ci/b01-41-p17w20-unity-native-evidence-gate']
+    paths:
+      - 'Tools/B01/CI41/P17W20/**'
+      - '.github/workflows/b01-41-p17w20-native-evidence-gate.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  independent-native-evidence-verification:
+    name: 33 synthetic adversarial G1 receipts + real R4 original source pin (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Verify own five-file-only B01-41 W20 source scope against immutable #642
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git merge-base 22cec9888047994ae523cbe7bf1b0a483d64cec4 HEAD)" = '22cec9888047994ae523cbe7bf1b0a483d64cec4'
+          git diff --name-only 22cec9888047994ae523cbe7bf1b0a483d64cec4 HEAD | sort > ci41-w20-actual-paths.txt
+          cat > ci41-w20-expected-paths.txt <<'EOF'
+          .github/workflows/b01-41-p17w20-native-evidence-gate.yml
+          Tools/B01/CI41/P17W20/MANIFEST.json
+          Tools/B01/CI41/P17W20/README.md
+          Tools/B01/CI41/P17W20/test_verify_native_evidence.py
+          Tools/B01/CI41/P17W20/verify_native_evidence.py
+          EOF
+          diff -u ci41-w20-expected-paths.txt ci41-w20-actual-paths.txt
+          echo 'CI41_W20_ALL_FIVE_PATHS_OWNED_ORIGINAL_R3_FROZEN'
+      - name: Compare REAL distinct unselected R4 candidate public host SHA and OnDisable authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin '+refs/pull/647/head:refs/remotes/ci41/r4a' '+refs/pull/652/head:refs/remotes/ci41/r4b'
+          test "$(git rev-parse refs/remotes/ci41/r4a)" = '09c1809b73324a6d31c13e5d0143de62ac1e3ca6'
+          test "$(git rev-parse refs/remotes/ci41/r4b)" = 'ae5dbfa5e9c4689d2bf80fcabf8438e9c673c419'
+          test "$(git rev-parse 09c1809b73324a6d31c13e5d0143de62ac1e3ca6:Assets/B0123UnitySaveBridge001/Unity/IsolatedTwinRigSaveHost.cs)" = '82147492a9205f8ef5986ceb61aeb10d6ea24ff2'
+          test "$(git rev-parse ae5dbfa5e9c4689d2bf80fcabf8438e9c673c419:Assets/B0123UnitySaveBridge001/Unity/IsolatedTwinRigSaveHost.cs)" = '7b8354bc4cd846227b4bdf6d25d81bed34a325bc'
+          git show 09c1809b73324a6d31c13e5d0143de62ac1e3ca6:Assets/B0123UnitySaveBridge001/Unity/IsolatedTwinRigSaveHost.cs | grep -Fq 'OnDisable(){/* keep slot lifetime owner while a world survives */}'
+          git show 09c1809b73324a6d31c13e5d0143de62ac1e3ca6:Assets/B0123UnitySaveBridge001/Unity/IsolatedTwinRigSaveHost.cs | grep -Fq 'OnDestroy(){ReleaseSlot();}'
+          git show ae5dbfa5e9c4689d2bf80fcabf8438e9c673c419:Assets/B0123UnitySaveBridge001/Unity/IsolatedTwinRigSaveHost.cs | grep -Fq 'OnDisable(){ReleaseSlot();}'
+          echo 'W20_REAL_ORIGINAL_R4_647_ONDISABLE_OWNER_LEASE_RETAINED_652_SOURCE_RELEASE_RISK'
+          echo 'W20_OWNER_SELECTED_647_ONLY_652_ALT_HOLD_AND_HOST_P0_NO_INSTALL'
+      - name: Run 33 independently authored SYNTHETIC-ONLY malicious evidence fixtures
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
+          "$PY" -m unittest discover -s Tools/B01/CI41/P17W20/ -p test_verify_native_evidence.py -v 2>&1 | tee "ci41-w20-native-evidence-${{ runner.os }}.txt"
+          grep -q 'Ran 33 tests' "ci41-w20-native-evidence-${{ runner.os }}.txt"
+          grep -q 'OK' "ci41-w20-native-evidence-${{ runner.os }}.txt"
+          grep -q 'W20_SYNTHETIC_ONLY_STRUCTURAL_POSITIVE_NOT_G1_PASS' "ci41-w20-native-evidence-${{ runner.os }}.txt"
+          echo 'CI41_W20_TESTS_ARE_SYNTHETIC_VERIFIER_ONLY_REAL_UNITY_G1_NOT_RUN'
+      - name: Preserve read-only source pin and synthetic proof, explicitly NOT Unity G1
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CI41-W20-UNITY-NATIVE-EVIDENCE-GUARD-NOT-G1-${{ runner.os }}
+          path: |
+            ci41-w20-native-evidence-${{ runner.os }}.txt
+            ci41-w20-actual-paths.txt
+          retention-days: 14
+          if-no-files-found: warn
