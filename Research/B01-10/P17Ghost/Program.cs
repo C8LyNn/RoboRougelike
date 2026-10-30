@@ -32,6 +32,13 @@ internal static class Program
         r.Tick(step,false,P(gates+1));
         return r.Finish(P(gates+1));
     }
+    private static GhostPracticeTransport TrainingTransport()
+    {
+        var coach=new GhostSplitCoach(Run());
+        for(int i=0;i<4;i++)coach.AcceptValidatedGate(i,i+1f);
+        coach.EndTrial(true,10f);
+        return new GhostPracticeTransport(coach.RecommendedLoop);
+    }
     private static void Check(bool ok,string desc="check failure")
     {
         if(!ok)throw new InvalidOperationException(desc);
@@ -1116,6 +1123,126 @@ internal static class Program
             var mutable=loop.PoseAt(.25d,2f);
             mutable.X=1000;
             Check(Math.Abs(loop.PoseAt(.25d,2f).X-4.5f)<1e-5f);
+        });
+        Test("172 transport rejects absent real coach focus loop",()=>{
+            Check(Reject(()=>new GhostPracticeTransport(null)));
+        });
+        Test("173 new transport starts paused at first focus pose",()=>{
+            var c=new GhostSplitCoach(Run());
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1f);
+            c.EndTrial(true,10f);
+            var t=new GhostPracticeTransport(c.RecommendedLoop);
+            Check(!t.IsPlaying);Equal(t.PlaybackSpeed,1f);
+            Equal(t.ReferencePositionSeconds,0d);Equal(t.Pose().X,4f);
+        });
+        Test("174 paused visual transport ignores valid clock advances",()=>{
+            var t=TrainingTransport();t.Advance(.5d);
+            Equal(t.ReferencePositionSeconds,0d);Equal(t.Pose().X,4f);
+        });
+        Test("175 play advances only local reference cursor",()=>{
+            var t=TrainingTransport();t.Play();t.Advance(.25d);
+            Check(t.IsPlaying);Equal(t.ReferencePositionSeconds,.25d);
+            Check(Math.Abs(t.Pose().X-4.25f)<1e-5f);
+        });
+        Test("176 half speed advances only half future visual delta",()=>{
+            var t=TrainingTransport();t.SetSpeed(.5f);t.Play();t.Advance(.5d);
+            Equal(t.ReferencePositionSeconds,.25d);Equal(t.Pose().X,4.25f);
+        });
+        Test("177 changing speed does NOT jump already displayed pose",()=>{
+            var t=TrainingTransport();t.Play();t.Advance(.25d);
+            var before=t.Pose().X;
+            t.SetSpeed(.25f);
+            Equal(t.Pose().X,before);Equal(t.ReferencePositionSeconds,.25d);
+        });
+        Test("178 changed speed applies only on subsequent advances",()=>{
+            var t=TrainingTransport();t.Play();t.Advance(.25d);
+            t.SetSpeed(.5f);t.Advance(.25d);
+            Equal(t.ReferencePositionSeconds,.375d);
+            Check(Math.Abs(t.Pose().X-4.375f)<1e-5f);
+        });
+        Test("179 normal speed wraps completed reference focus segment",()=>{
+            var t=TrainingTransport();t.Play();t.Advance(1d);
+            Equal(t.ReferencePositionSeconds,0d);Equal(t.Pose().X,4f);
+        });
+        Test("180 pause freezes existing nonzero source cursor",()=>{
+            var t=TrainingTransport();t.Play();t.Advance(.2d);t.Pause();
+            t.Advance(.5d);Check(!t.IsPlaying);
+            Check(Math.Abs(t.Pose().X-4.2f)<1e-5f);
+        });
+        Test("181 resume continues from same paused ghost frame",()=>{
+            var t=TrainingTransport();t.Play();t.Advance(.2d);
+            t.Pause();t.Advance(1d);t.Play();t.Advance(.1d);
+            Check(Math.Abs(t.Pose().X-4.3f)<1e-5f);
+        });
+        Test("182 single step forward is a reference-time increment",()=>{
+            var t=TrainingTransport();t.Step(.1d);
+            Check(!t.IsPlaying);Check(Math.Abs(t.Pose().X-4.1f)<1e-5f);
+        });
+        Test("183 backwards step wraps source-only reference loop",()=>{
+            var t=TrainingTransport();t.Step(-.1d);
+            Check(!t.IsPlaying);Check(Math.Abs(t.Pose().X-4.9f)<1e-5f);
+        });
+        Test("184 frame stepping while playing is rejected atomically",()=>{
+            var t=TrainingTransport();t.Play();t.Advance(.3d);
+            Check(Reject(()=>t.Step(.2d)));
+            Equal(t.ReferencePositionSeconds,.3d);Check(t.IsPlaying);
+        });
+        Test("185 restart returns to start and pauses playback",()=>{
+            var t=TrainingTransport();t.Play();t.Advance(.4d);
+            t.Restart();Check(!t.IsPlaying);
+            Equal(t.ReferencePositionSeconds,0d);Equal(t.Pose().X,4f);
+        });
+        Test("186 explicit seek position and end wrap are deterministic",()=>{
+            var t=TrainingTransport();t.Seek(.75d);
+            Equal(t.ReferencePositionSeconds,.75d);Equal(t.Pose().X,4.75f);
+            t.Seek(1d);Equal(t.ReferencePositionSeconds,0d);
+        });
+        Test("187 invalid position seeks preserve previous visual cursor",()=>{
+            var t=TrainingTransport();t.Seek(.5d);
+            Check(Reject(()=>t.Seek(double.NaN)));
+            Check(Reject(()=>t.Seek(double.PositiveInfinity)));
+            Check(Reject(()=>t.Seek(-.01d)));
+            Check(Reject(()=>t.Seek(1.01d)));
+            Equal(t.ReferencePositionSeconds,.5d);
+        });
+        Test("188 corrupt visual clock delta never advances cursor",()=>{
+            var t=TrainingTransport();t.Play();t.Advance(.25d);
+            Check(Reject(()=>t.Advance(-1d)));
+            Check(Reject(()=>t.Advance(double.NaN)));
+            Check(Reject(()=>t.Advance(double.PositiveInfinity)));
+            Check(Reject(()=>t.Advance(10.01d)));
+            Equal(t.ReferencePositionSeconds,.25d);
+        });
+        Test("189 invalid zero and negative visual speed preserve state",()=>{
+            var t=TrainingTransport();t.SetSpeed(.5f);
+            Check(Reject(()=>t.SetSpeed(0f)));
+            Check(Reject(()=>t.SetSpeed(-1f)));
+            Equal(t.PlaybackSpeed,.5f);
+        });
+        Test("190 inclusive 0.25x and 2x speed boundaries work",()=>{
+            var t=TrainingTransport();t.SetSpeed(.25f);t.Play();t.Advance(1d);
+            Equal(t.ReferencePositionSeconds,.25d);
+            t.SetSpeed(2f);t.Advance(.125d);
+            Equal(t.ReferencePositionSeconds,.5d);
+        });
+        Test("191 NaN infinite and out-of-bounds speed cannot mutate state",()=>{
+            var t=TrainingTransport();t.SetSpeed(1.5f);
+            Check(Reject(()=>t.SetSpeed(float.NaN)));
+            Check(Reject(()=>t.SetSpeed(float.PositiveInfinity)));
+            Check(Reject(()=>t.SetSpeed(.24f)));
+            Check(Reject(()=>t.SetSpeed(2.01f)));
+            Equal(t.PlaybackSpeed,1.5f);
+        });
+        Test("192 returned ghost pose cannot corrupt transport reference",()=>{
+            var t=TrainingTransport();t.Seek(.5d);
+            var pose=t.Pose();pose.X=999f;
+            Equal(t.Pose().X,4.5f);
+        });
+        Test("193 paused speed changes preserve current cursor and stay paused",()=>{
+            var t=TrainingTransport();t.Seek(.75d);
+            t.SetSpeed(.25f);t.Advance(1d);
+            Check(!t.IsPlaying);Equal(t.ReferencePositionSeconds,.75d);
+            Equal(t.Pose().X,4.75f);
         });
         Console.WriteLine("B01-10 GHOST REAL_CSHARP "+passed+" PASS / "+failed+
           " FAIL | 100 seeded synthetic motion traces | UNITY=NOT_RUN");
