@@ -1,0 +1,54 @@
+{
+  "package_id": "B01-50-SCENECOST-001/R1",
+  "owner": "B01-50",
+  "scope": [
+    "Tools/B01/B01-50/SCENECOST001/**",
+    ".github/workflows/b01-50-scenecost001.yml"
+  ],
+  "source_base": "main@5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "classification": "REAL_UNITY_SERIALIZED_SCENE_STATIC_COMPONENT_INVENTORY_NOT_RUNTIME_PROFILING",
+  "files": {
+    "Tools/B01/B01-50/SCENECOST001/scenecost.py": {
+      "bytes": 9847,
+      "sha256": "0f9f1004ec36dca6da33cc15bee13ff71f15588d1e902cf3eb2ca6f1df0b4b8b",
+      "git_blob": "a83ddaa6aa94d0d9bc653b20403475e4d65d2428"
+    },
+    "Tools/B01/B01-50/SCENECOST001/tests/test_scenecost.py": {
+      "bytes": 5649,
+      "sha256": "1544382b858fa69bf9681b17a702d5b781d09e1ef2242e05d17fd192e90ef790",
+      "git_blob": "c2b4c19fbf5803d382257219c4cf0c1c29050d37"
+    },
+    "Tools/B01/B01-50/SCENECOST001/README.md": {
+      "bytes": 4463,
+      "sha256": "6a0e83ed8c04a40ceccda5dc9c5efc63f9ef0e89cd133f5b5f6432f695ac297c",
+      "git_blob": "bfd9cf6e39a9732540a17b3a1e659a323984c020"
+    },
+    "Tools/B01/B01-50/SCENECOST001/limits.json": {
+      "bytes": 174,
+      "sha256": "246773ea4458d6e784996b612695cf96b895bceb7376ba9b3173a287d149b3d9",
+      "git_blob": "9b5e611c31582ab4e27125b9fa02c96723f60515"
+    },
+    ".github/workflows/b01-50-scenecost001.yml": {
+      "bytes": 2152,
+      "sha256": "fd3db7fc1de0509e6f7b12eb19f3b9423f15fee3f03fcaeb544e930fcadff346",
+      "git_blob": "b0adebed04a79e51688a075ccc9214057e7f9f18"
+    },
+    "Tools/B01/B01-50/SCENECOST001/evidence/producer_receipt.json": {
+      "bytes": 1133,
+      "git_blob": "a98323ffac41515bedc9f39cca3c850ed5f8d6c6",
+      "sha256": "SHA256_NOT_COMPUTED_GIT_BLOB_VERIFIED"
+    }
+  },
+  "tests": {
+    "producer_python_unittest": "20/20 PASS Linux Python 3.13.5",
+    "original_real_scene_workflow": "PENDING_TRIGGER",
+    "independent_g0": "PENDING",
+    "native_unity": "NOT_RUN",
+    "actual_fps": "NOT_MEASURED"
+  },
+  "dependencies": [
+    "Python 3.10+ only; 0 external dependencies",
+    "Original Unity YAML source text files with exact SHA256 in generated output"
+  ],
+  "rollback": "Remove isolated SCENECOST001 Tools directory and own b01-50-scenecost001 workflow, without touching original Assets or saves."
+}
