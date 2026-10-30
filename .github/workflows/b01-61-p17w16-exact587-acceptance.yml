@@ -1,0 +1,56 @@
+name: B01-61 P17W16 original producer #587 direct atomic host acceptance and rollback
+on:
+  push:
+    branches: [qa/b01-61-p17w16-exact587-atomic-acceptance]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-61/P17W16ExactBridgeAcceptance/**'
+      - '.github/workflows/b01-61-p17w16-exact587-acceptance.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  genuine-selected-bridge-source-gates:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Exact original producer #587 and selected frozen source provenance
+        shell: bash
+        run: |
+          set -o pipefail
+          python Tools/B01/B01-61/P17W16ExactBridgeAcceptance/source_guard.py 2>&1 | tee b0161-w16-source.log
+      - name: Strict CSharp9 actual unchanged original bridge + #556 #510 W06
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet build Tools/B01/B01-61/P17W16ExactBridgeAcceptance/Original587W16QA.csproj -c Release --warnaserror 2>&1 | tee b0161-w16-build.log
+      - name: Exercise original transaction rollback, after-activation readback, motion save, equal-gen, quarantine
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet run -c Release --no-build --project Tools/B01/B01-61/P17W16ExactBridgeAcceptance/Original587W16QA.csproj 2>&1 | tee b0161-w16-run.log
+          grep -q 'W16_ORIGINAL_587_POST_ACTIVATION_READBACK_GREEN' b0161-w16-run.log
+          grep -q 'W16_REAL_587_MOTION_SAVE_FRESH_COLD_LOAD_GREEN' b0161-w16-run.log
+          grep -q 'W16_EXACT_587_RELEASE_GATE=HOLD_' b0161-w16-run.log
+          grep -q 'ACTUAL_LICENSED_UNITY_PHYSX=NOT_RUN' b0161-w16-run.log
+      - name: Store raw original source result (not Unity Editor XML)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-61-w16-exact587-${{ matrix.os }}
+          path: |
+            b0161-w16-source.log
+            b0161-w16-build.log
+            b0161-w16-run.log
+          retention-days: 21
+          if-no-files-found: warn

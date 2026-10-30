@@ -1,0 +1,31 @@
+{
+  "id": "B01-61-P17W16-EXACT-587-SOURCE-ACCEPTANCE-001",
+  "owner": "B01-61",
+  "producer_pr": 587,
+  "producer_sha": "ad7904eca571c742257551fa8103f266fcb9b752",
+  "producer_core_blob": "16a7d7043a2ecb59a41bbfb063170235872fd7fc",
+  "selected_contract_556": "33094f154c7b91119b36d58aab285e6e83c5de57",
+  "frozen_game_510": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "original_source_blob_pins": 6,
+  "qa_only_added_paths": 6,
+  "platforms": [
+    "ubuntu-24.04",
+    "windows-2025"
+  ],
+  "expected_w16_green": [
+    "readback after candidate Activate corruption must reject and restore old W06 state",
+    "detached motion save and fresh new-host load retains original IDs",
+    "reentrant Save during Load rejected"
+  ],
+  "expected_w16_hold": [
+    "different valid snapshots same generation accepted and old world retired",
+    "quarantine first core verdict HostException despite Quarantined=true",
+    "old Retire failure CleanupPending no public recovery"
+  ],
+  "real_native_unity": "NOT_RUN",
+  "canonical_game_510_private_ledger_restore": "BLOCKED",
+  "G2": "HOLD",
+  "CodexAck": false,
+  "integrated": false,
+  "merged": false
+}
