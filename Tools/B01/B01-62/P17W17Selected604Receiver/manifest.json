@@ -1,0 +1,85 @@
+{
+  "owner": "B01-62",
+  "wave": "P17W17",
+  "decision": "SELECT_ONLY_B01_23_PR604_ALT_HOLD_PR596",
+  "selected_producer": {
+    "pr": 604,
+    "sha": "1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a",
+    "core_blob": "399d3cb2074a2659af8f4e941edb28a3d2dd2832",
+    "fence_blob": "53f907125b09531ebdf5ffdfbb9c5c9b48eca217",
+    "original_inner_zip": {
+      "bytes": 101354,
+      "members": 27,
+      "original_git_entries": 26,
+      "sha256": "ef110b5906d385cbc51938a35510c97516a0942b28ec055519a78d1e3fe5afb8",
+      "unity_meta_guids": 11,
+      "asmdefs": 3
+    }
+  },
+  "held_alternative": {
+    "pr": 596,
+    "sha": "efb2b06eafedab5469b57f163152d96aca3c5915",
+    "status": "ALT_HOLD_NOT_CO_INSTALLED"
+  },
+  "frozen_save": {
+    "pr": 556,
+    "sha": "33094f154c7b91119b36d58aab285e6e83c5de57",
+    "source_blob": "b52e511c370f5fca56c74029050844dc8cbb7f9a"
+  },
+  "frozen_gameplay": {
+    "pr": 510,
+    "sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "rig_spec_blob": "b680ed0ec969ac23203fa55eab7b90f8daa86e43",
+    "w06_blob": "fa1aa5e531927cbe73cf5fdfe161b4a981316db5"
+  },
+  "qa_own_new_source_files": [
+    {
+      "path": "Tools/B01/B01-62/P17W17Selected604Receiver/Exact604IndependentSourceQA.cs",
+      "blob": "17a0c3fc51101ce6877c0372634561c084f72268"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W17Selected604Receiver/Exact604IndependentSourceQA.csproj",
+      "blob": "a3f06881444ce206c0bbd4909b2ba5b6ea56f062"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W17Selected604Receiver/test_exact604_receiver.py",
+      "blob": "aa1d7bfea829c12815cd932f7451068c521ecffa"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W17Selected604Receiver/README.md",
+      "blob": "3991c7b32fa1610c307736ba803852ab9735b708"
+    },
+    {
+      "path": ".github/workflows/b01-62-p17w17-final604-receiver.yml",
+      "blob": "578835bcd71dc7c8761fcc85840170e70715bcd6"
+    }
+  ],
+  "tests_expected_per_os": {
+    "source_original_CSharp": 60,
+    "independent_physical_zip_security": 20,
+    "native_Unity": "NOT_RUN"
+  },
+  "prior_producer_evidence": {
+    "pr": 604,
+    "run": 41097514646,
+    "claimed_original_source_tests_total_across_os": 254
+  },
+  "gates": {
+    "frozen_gameplay_g0": "ACCEPTED_SOURCE_ONLY",
+    "frozen_save_g0": "ACCEPTED_SOURCE_ONLY",
+    "selected_new_bridge_b01_62_independent_source_receipt": "PENDING_EXACT_SHA_CI",
+    "formal_B01_40_g0": "PENDING",
+    "independent_full_B01_61_qa": "PENDING",
+    "native_g1": "NOT_RUN",
+    "live_canonical_save": "HOLD_NO_PRIVATE_RIG_LEDGER_HOOK",
+    "g2": "HOLD",
+    "codex_ack": "NONE",
+    "merged": false
+  },
+  "limitations": [
+    "The new source QA uses managed IPreparedWorld, not activated Unity/PhysX.",
+    "No launch or modification of canonical Codex game scene or foreign user directory.",
+    "Original #604 fence is checkpoint digest, not atomic entire savegame+directory fsync/multi-process writer lock.",
+    "Only B01-23/Codex-owner approved new interface can capture/hydrate frozen #510 private Rig/AtomicDockLedger."
+  ]
+}
