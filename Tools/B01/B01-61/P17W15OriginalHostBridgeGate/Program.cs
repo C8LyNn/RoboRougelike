@@ -99,7 +99,7 @@ internal static class Program
     var old=cold.Current;
     void Reject(byte[] raw,long run,long min,Func<bool> idle,RestoreVerdict expected){
       Check(cold.TrySwap(raw,run,min,idle)==expected,"original #556 reject faulty swap");
-      Check(Object.ReferenceEquals(cold.Current,old),"original logical session pointer unchanged");
+      Check(object.ReferenceEquals(cold.Current,old),"original logical session pointer unchanged");
       Check(active.IsDetached(0)&&active.AppliedCount(0)==1&&b.transform.parent==parent&&
         b.transform.position==position&&b.linearVelocity==velocity,
         "original physical host unchanged on rejected transaction");
