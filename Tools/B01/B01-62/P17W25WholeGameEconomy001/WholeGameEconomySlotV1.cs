@@ -72,7 +72,7 @@ namespace B01.WholeGameEconomy001
             CanonicalWorldSlotLease owner)
         {
             if(owner==null||run<=0||slot==Guid.Empty||
-                owner.RunId!=run||owner.SlotId!=slot||
+                owner.RunId!=run||owner.SlotId!=slot||!owner.Live||
                 string.IsNullOrWhiteSpace(dir))return false;
             try
             {
@@ -269,7 +269,6 @@ namespace B01.WholeGameEconomy001
             catch(UnauthorizedAccessException){return WholeGameResult.IOError;}
         }
 
-        private bool Live()=>lease.Live&&!closed&&!quarantined;
         public WholeGameResult Read(out long generation,out byte[] world,
             out ApprovedEconomySnapshotV6? econ)
         {
