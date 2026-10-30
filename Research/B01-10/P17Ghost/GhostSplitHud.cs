@@ -91,8 +91,12 @@ namespace RoboRougelike.B0110.TrainingGhost
                 GUI.Label(new Rect(bounds.x + 12, bounds.y + 73, width - 24, 24),
                     summary.Completed ? "Finish measured (no rewards)" : "Attempt ended / retry");
                 GUI.Label(new Rect(bounds.x + 12, bounds.y + 94, width - 24, 24),
-                    summary.BiggestLossGate == 0 ? "No significant segment loss"
-                    : "Focus: gate " + summary.BiggestLossGate);
+                    !summary.Completed ? "Retry: no finish segment measured"
+                    : summary.BiggestLossIsFinishSegment
+                        ? "Focus: finish after gate " + coach.RequiredGates
+                    : summary.BiggestLossGate == 0
+                        ? "No significant loss (finish included)"
+                        : "Focus: gate " + summary.BiggestLossGate);
             }
         }
     }
