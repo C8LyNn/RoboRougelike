@@ -113,16 +113,18 @@ def execute(repo,output):
                 selected[tags[0]]=path
             game=parent_meta(repo,FROZEN_GAME,"Assets/B0123SecureReattachV2")
             save=parent_meta(repo,FROZEN_SAVE,"Assets/B0123DetachedSaveContract001")
+            w06=parent_meta(repo,FROZEN_GAME,"Assets/B0123DebrisRepulse001")
             # Exact original Git trees: the frozen #556 CONTRACT has FOUR .meta objects,
-            # not nine. Earlier 9 was a false QA fixture assumption, not producer RED.
-            print(f"ORIGINAL_META_COUNTS:selected={len(selected)} game={len(game)} save={len(save)}")
-            need(len(selected)==10 and len(game)==14 and len(save)==4,
+            # not nine; five other GUIDs are W06, separate root/dependency.
+            # Earlier 9 was a false QA group assignment, not producer RED.
+            print(f"ORIGINAL_META_COUNTS:selected={len(selected)} game={len(game)} save={len(save)} W06={len(w06)}")
+            need(len(selected)==10 and len(game)==14 and len(save)==4 and len(w06)==5,
                  "selected_dependency_guid_counts")
-            need(len(set(selected)|set(game)|set(save))==28,
+            need(len(set(selected)|set(game)|set(save)|set(w06))==33,
                  "CROSS_DEPENDENCY_META_GUID_COLLISION")
-            need(not (set(selected.values())&set(game.values()) or
-                      set(selected.values())&set(save.values()) or
-                      set(save.values())&set(game.values())),
+            path_sets=[set(d.values()) for d in (selected,game,save,w06)]
+            need(all(not (a&z) for i,a in enumerate(path_sets)
+                     for z in path_sets[i+1:]),
                  "CROSS_PACKAGE_PATH_COLLISION")
             asmdefs=[json.loads(contents[p])["name"] for p in paths if p.endswith(".asmdef")]
             need(sorted(asmdefs)==sorted(["B0123.UnitySaveBridge.Core",
@@ -204,8 +206,8 @@ def execute(repo,output):
               "game_510_sha":FROZEN_GAME,"save_556_sha":FROZEN_SAVE,
               "inner_zip_sha256":sha(raw),"inner_zip_bytes":len(raw),"inner_members":len(names),
               "original_b01_23_source_files":len(paths),
-              "guid_counts":{"selected_596":len(selected),"frozen_510":len(game),"frozen_556":len(save),
-                 "triple_no_duplicates":len(set(selected)|set(game)|set(save))},
+              "guid_counts":{"selected_596":len(selected),"frozen_510":len(game),"frozen_556":len(save),"frozen_W06":len(w06),
+                 "all_dependency_guids_unique":len(set(selected)|set(game)|set(save)|set(w06))},
               "selected_asmdefs":sorted(asmdefs),
               "tests_pass":checks,"source_physical_gate":"PASS",
               "formal_b01_40_g0":"PENDING_INDEPENDENT","unity_physx":"NOT_RUN",
@@ -215,7 +217,7 @@ def execute(repo,output):
             output.write_bytes((json.dumps(receipt,sort_keys=True,indent=2)+"\n").encode())
             print("SELECTED_596_ORIGINAL_INNER_ZIP_SHA256="+sha(raw))
             print("SELECTED_596_REAL_GIT_FILES=22 ZIP_MEMBERS=23 UNITY_META_GUIDS=10")
-            print("TRIPLE_596_510_556_GUID_CLOSURE=28/28 UNIQUE ASMDEFS=3")
+            print("FOUR_PACKAGE_596_510_556_W06_GUID_CLOSURE=33/33 UNIQUE ASMDEFS=3")
             print("B0162_W17_INDEPENDENT_PHYSICAL_CHECKS_PASS="+str(checks))
             print("SOURCE_G0_RECEIPT_PASS FORMAL_G0_PENDING UNITY_G1_NOT_RUN")
             print("CROSS_OS_RECEIPT_SHA256="+sha(output.read_bytes()))
