@@ -30,9 +30,10 @@ jobs:
           set -euo pipefail
           dir="Tools/B01/B01-61/P17W23V3R2SingleAuthorityQA/.source"
           mkdir -p "$dir"
-          git fetch --no-tags origin b8ca29c7707cd6b4338d0b9772d74dee676d49d2 bd8905ad549a7b26854b671be971f7d781308311 d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121 33094f154c7b91119b36d58aab285e6e83c5de57 d94400d95d13db7f27e1533df05c9292d5380431
+          git fetch --no-tags origin b8ca29c7707cd6b4338d0b9772d74dee676d49d2 809f82575c638e1b4d2806b5f417bddab6c0871a bd8905ad549a7b26854b671be971f7d781308311 d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121 33094f154c7b91119b36d58aab285e6e83c5de57 d94400d95d13db7f27e1533df05c9292d5380431
           git show b8ca29c7707cd6b4338d0b9772d74dee676d49d2:Assets/B0123CanonicalSaveApi001/Core/CanonicalWorldGateway.cs > "$dir/CanonicalWorldGatewayV3.cs"
           git show b8ca29c7707cd6b4338d0b9772d74dee676d49d2:Assets/B0123CanonicalSaveApi001/Core/CanonicalWorldSlotLease.cs > "$dir/CanonicalWorldSlotLease.cs"
+          git show 809f82575c638e1b4d2806b5f417bddab6c0871a:Assets/B0123CanonicalSaveApi001/Core/CanonicalWorldGateway.cs > "$dir/CanonicalWorldGatewayV2.cs"
           git show bd8905ad549a7b26854b671be971f7d781308311:Tools/B01/B01-62/P17W21CanonicalSessionLeaseR2/CanonicalSlotSessionR2.cs > "$dir/CanonicalSlotSessionR2.cs"
           git show d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121:Tools/B01/B01-62/P17W20SingleFileSaveSlot/SingleFileSaveSlot.cs > "$dir/SingleFileSaveSlot.cs"
           git show 33094f154c7b91119b36d58aab285e6e83c5de57:Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs > "$dir/DetachedSnapshotContract.cs"
@@ -40,6 +41,7 @@ jobs:
           git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs > "$dir/SecureRigSpec.cs"
           test "$(git hash-object "$dir/CanonicalWorldGatewayV3.cs")" = 21733278b6ab0669fccb6d085e0b6cf242792de2
           test "$(git hash-object "$dir/CanonicalWorldSlotLease.cs")" = a9331dd620336d8c42165d134dc8a5e05ed51873
+          test "$(git hash-object "$dir/CanonicalWorldGatewayV2.cs")" = 704e774dedd5be5af26e0791fba87ecdb109ae2a
           test "$(git hash-object "$dir/CanonicalSlotSessionR2.cs")" = fefc2e263e068b913c6e59ec3c8375bbbe43db4e
           test "$(git hash-object "$dir/SingleFileSaveSlot.cs")" = db7745635164d9eb6b10f3246538700158130b7b
           test "$(git hash-object "$dir/DetachedSnapshotContract.cs")" = b52e511c370f5fca56c74029050844dc8cbb7f9a
@@ -50,18 +52,19 @@ jobs:
         run: |
           set -euo pipefail
           dotnet build Tools/B01/B01-61/P17W23V3R2SingleAuthorityQA/Original729And712QA.csproj -c Release --nologo 2>&1 | tee build.log
+          dotnet build Tools/B01/B01-61/P17W23V3R2SingleAuthorityQA/Original712ChildQA.csproj -c Release --nologo 2>&1 | tee -a build.log
       - name: Execute two original physically conflicting owner sources and additional real OS CLR child
         shell: bash
         run: |
           set -euo pipefail
           set +e
-          dotnet Tools/B01/B01-61/P17W23V3R2SingleAuthorityQA/bin/Release/net8.0/Original729And712QA.dll --release | tee qa_release.log
+          dotnet Tools/B01/B01-61/P17W23V3R2SingleAuthorityQA/bin-parent/Release/net8.0/Original729And712QA.dll --release | tee qa_release.log
           rc=${PIPESTATUS[0]}
           set -e
           echo "B0161_W23_ORIGINAL_SOURCE_RELEASE_EXIT=${rc}"
           if [[ "${rc}" -ne 3 ]]; then echo 'W23_ORIGINAL_SOURCE_RED_WITNESS_OR_HARNESS_INVALID'; exit 1; fi
-          grep -Fx 'TOTAL 11 PASS 11 FAIL 0' qa_release.log
-          grep -Fx 'SOURCE_RELEASE_GATE=HOLD_TWO_INDEPENDENT_DOT_OWNER_DOT_LEASE_AUTHORITIES' qa_release.log
+          grep -Fx 'TOTAL 10 PASS 10 FAIL 0' qa_release.log
+          grep -Fx 'SOURCE_RELEASE_GATE=HOLD_729_OWNER_VS_712_LEASE_TWO_INDEPENDENT_AUTHORITIES' qa_release.log
       - name: Check original 7 Git source SHA + five B01-61 added-only QA files and source log markers
         shell: bash
         run: |
