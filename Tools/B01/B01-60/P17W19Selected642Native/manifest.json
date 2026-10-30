@@ -1,0 +1,75 @@
+{
+  "package_id": "B01-60-P17W19-SELECTED642-NATIVE-FIXTURE-GATE",
+  "role": "B01-60",
+  "hq_issue": 646,
+  "base_qa": {
+    "pr": 643,
+    "sha": "acddb0b5226df2354b2255e0af510e39fe464381"
+  },
+  "only_selected_R3": {
+    "pr": 642,
+    "sha": "22cec9888047994ae523cbe7bf1b0a483d64cec4",
+    "native_cases_authored": 5,
+    "source_g0": "PENDING"
+  },
+  "r3_alt_hold": {
+    "pr": 644,
+    "sha": "d9b95146e46a5d81d5a291d7887e456164f4d0c2"
+  },
+  "legacy_alt_hold": {
+    "pr": 604,
+    "sha": "1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a"
+  },
+  "frozen_game": {
+    "pr": 510,
+    "sha": "d94400d95d13db7f27e1533df05c9292d5380431"
+  },
+  "frozen_save": {
+    "pr": 556,
+    "sha": "33094f154c7b91119b36d58aab285e6e83c5de57"
+  },
+  "frozen_r2": {
+    "pr": 596,
+    "sha": "efb2b06eafedab5469b57f163152d96aca3c5915"
+  },
+  "original_selected_r3_blobs": {
+    "host": "7b8354bc4cd846227b4bdf6d25d81bed34a325bc",
+    "core": "a0a1923216d88ff8f50c560196f82cdec694f15c",
+    "native_tests": "e398b1fde8dcbd8e6d30a65b8f4b91a4965b9dd8"
+  },
+  "native_fixture_bug": {
+    "test": "ColdRestart_RestoresRealRigidbodyAndConsumedIds",
+    "source_load_generation": 4,
+    "source_save_generated_generation": 5,
+    "source_test_expected_restored_generation": 4,
+    "actual_unity_test_execution": "NOT_RUN",
+    "owner_new_version_fix_required": true
+  },
+  "source_QA_five_original_selected_Git_R3_projects_physically_staged_safe_rollback": 5,
+  "negative_failclosed_tests": 11,
+  "real_native_editor": "NOT_RUN_NO_ACTIVATION",
+  "genuine_XML": "NOT_CREATED",
+  "Editor_log": "NOT_CREATED",
+  "G1": "NOT_RUN",
+  "G2": "HOLD",
+  "live_canonical_save": "HOLD",
+  "Codex_ACK": "NONE",
+  "files": [
+    "Tools/B01/B01-60/P17W19Selected642Native/run.py",
+    "Tools/B01/B01-60/P17W19Selected642Native/test_source_fixture.py",
+    "Tools/B01/B01-60/P17W19Selected642Native/README.md",
+    "Tools/B01/B01-60/P17W19Selected642Native/manifest.json",
+    ".github/workflows/b01-60-p17w19-selected642-native-fixture.yml"
+  ],
+  "six_stage": {
+    "IMPLEMENTED": "YES",
+    "TESTED": "PENDING_EXACT_CI",
+    "QA_ACCEPTED": "NO_NATIVE",
+    "READY_FOR_INTEGRATOR": "NO",
+    "INTEGRATED": "NO",
+    "RELEASED": "NO"
+  },
+  "integrator_feedback": "NOT_MEASURED",
+  "merge": false,
+  "rollback": "five new W19 B01-60 files only, prior own W18 and all frozen producers unchanged"
+}
