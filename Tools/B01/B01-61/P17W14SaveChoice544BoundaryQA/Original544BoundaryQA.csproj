@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+<PropertyGroup>
+<OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><LangVersion>9.0</LangVersion>
+<Nullable>disable</Nullable><EnableDefaultCompileItems>false</EnableDefaultCompileItems><TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+</PropertyGroup>
+<ItemGroup>
+<Compile Include="../../../../Tools/B01/B01-23/P17W13SecureV2SaveContract001/StableIdSnapshotCodec.cs" Link="ORIGINAL_544_StableIdSnapshotCodec.cs"/>
+<Compile Include="Input/DebrisImpulseCore.cs" Link="ORIGINAL_W06_DebrisImpulseCore.cs"/>
+<Compile Include="Input/AtomicDockLedger.cs" Link="ORIGINAL_510_AtomicDockLedger.cs"/>
+<Compile Include="Input/SecureRigSpec.cs" Link="ORIGINAL_510_SecureRigSpec.cs"/>
+<Compile Include="Program.cs"/>
+</ItemGroup>
+</Project>

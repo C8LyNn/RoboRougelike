@@ -1,0 +1,71 @@
+name: B01-61 W14 - independent original #544 mutable snapshot authority and W06 gate
+on:
+  push:
+    branches: [qa/b01-61-p17w14-544-snapshot-authority-boundary]
+  pull_request:
+    paths:
+      - "Tools/B01/B01-61/P17W14SaveChoice544BoundaryQA/**"
+      - ".github/workflows/b01-61-p17w14-544-security-boundary.yml"
+  workflow_dispatch:
+jobs:
+  exact-544-real-csharp-security-qa:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Immutable #544 + #510/W06 original source provenance and scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-61/P17W14SaveChoice544BoundaryQA/source_pin.py | tee w14-source-pin.log
+          d=Tools/B01/B01-61/P17W14SaveChoice544BoundaryQA/Input
+          mkdir -p "$d"
+          s=d94400d95d13db7f27e1533df05c9292d5380431
+          git show "$s:Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs" > "$d/DebrisImpulseCore.cs"
+          git show "$s:Assets/B0123SecureReattachV2/Runtime/AtomicDockLedger.cs" > "$d/AtomicDockLedger.cs"
+          git show "$s:Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs" > "$d/SecureRigSpec.cs"
+      - name: Compile genuine selected W06/R2 + #544 new codec (no stubs)
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build Tools/B01/B01-61/P17W14SaveChoice544BoundaryQA/Original544BoundaryQA.csproj -c Release --warnaserror 2>&1 | tee w14-build.log
+      - name: Original-source security witness must prove RED and release gate must HOLD
+        shell: bash
+        run: |
+          set -uo pipefail
+          p=Tools/B01/B01-61/P17W14SaveChoice544BoundaryQA/Original544BoundaryQA.csproj
+          dotnet run -c Release --no-build --project "$p" -- --evidence > w14-evidence.log 2>&1
+          e=$?
+          cat w14-evidence.log
+          dotnet run -c Release --no-build --project "$p" -- --release > w14-release.log 2>&1
+          r=$?
+          cat w14-release.log
+          printf 'EVIDENCE_EXIT=%s RELEASE_EXIT=%s ORIGINAL_544_SOURCE=YES UNITY_NATIVE=NOT_RUN LIVE_SAVELOAD=HOLD\n' "$e" "$r" | tee w14-gate.txt
+          if [ "$e" != 0 ] || [ "$r" != 3 ]; then
+            echo "INDEPENDENT_QA_FAIL"; exit 1
+          fi
+          grep -q 'B0161_W14_REAL_544_PRODUCER_SECURITY_RED_WITNESS_PASS' w14-evidence.log || exit 1
+          grep -q 'RELEASE_GATE_RED_544=' w14-release.log || exit 1
+          echo "QA_WITNESS_PASS_ORIGINAL_544_SECURITY_RED; SAVE_CONTRACT_RELEASE_HOLD"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b01-61-w14-exact544-security-${{ matrix.os }}
+          path: |
+            w14-source-pin.log
+            w14-build.log
+            w14-evidence.log
+            w14-release.log
+            w14-gate.txt
+          if-no-files-found: warn

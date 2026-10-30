@@ -1,0 +1,22 @@
+{
+  "package": "B01-61-P17W14-SAVE-CONTRACT-544-ORIGINAL-BOUNDARY-QA-001",
+  "version": "1.0.0",
+  "owner": "B01-61",
+  "target_pr": 544,
+  "exact_target_sha": "e77529262b8f03c6e9f0e25b642038c351872044",
+  "selected_gameplay_pr": 510,
+  "exact_selected_gameplay_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "target_sha_policy": "#544 original source SHA immutable; separate new version required on RED",
+  "original_files": {
+    "StableIdSnapshotCodec.cs": "2dd3ee7f465a595ed42c2cbb6637200bb903185f",
+    "AtomicDockLedger.cs": "b6a4d04b0c6407c8c84451b4d599d96fe0e4d1a9",
+    "SecureRigSpec.cs": "b680ed0ec969ac23203fa55eab7b90f8daa86e43",
+    "DebrisImpulseCore.cs": "fa1aa5e531927cbe73cf5fdfe161b4a981316db5"
+  },
+  "expected_status": "CI_GREEN_IF_SOURCE_SECURITY_RED_REPRODUCED; RELEASE_HOLD",
+  "native_unity": "NOT_RUN",
+  "save_live": "NOT_INTEGRATED",
+  "no_codex_ack": true,
+  "no_merge": true,
+  "rollback": "Close Draft/drop 6 QA-added files only; producer unmodified."
+}
