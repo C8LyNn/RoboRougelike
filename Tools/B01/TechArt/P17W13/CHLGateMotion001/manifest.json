@@ -1,0 +1,58 @@
+{
+  "package_id": "B01-30-CHL003-ANIMATED-GATE-INDICATOR-001",
+  "revision": "R1",
+  "role": "B01-30 TECHART",
+  "original_stream": "B01-20 CHL003",
+  "source_original": {
+    "pr": 285,
+    "head": "c7b2a234a286089383503da41883d624fe650551",
+    "blob": "9308ceb9eab89d1ab483b560ff3ed58fa6d2d32e",
+    "path": "Assets/RoboRougelikeChallenges/CHL003/Demo/CHL003DemoBootstrap.cs"
+  },
+  "model_spec": {
+    "marker_x_m": 1.97,
+    "post_y_top_m": 2.6,
+    "animated_pivot_xyz": [
+      1.97,
+      4.08,
+      -0.32
+    ],
+    "real_meshes": 6,
+    "keyframe_degrees": {
+      "1": 0,
+      "31": -75,
+      "61": 0
+    },
+    "fps": 30
+  },
+  "expected_artifact": {
+    "actual_animated_binary_FBX": 1,
+    "actual_native_BLEND": 1,
+    "genuinely_rendered_PNG": 3,
+    "real_3d_mesh_nodes": 6,
+    "real_fbx_imported_keyed_frames": 3,
+    "source_mutation_tests": 1,
+    "geometry_mutations": 2,
+    "independent_import_action_removed_negative": 1,
+    "windows_binary_sha_checks": 5
+  },
+  "paths_only": [
+    "Tools/B01/TechArt/P17W13/CHLGateMotion001/**",
+    ".github/workflows/b01-30-p17w13-chl003-gate-motion.yml"
+  ],
+  "status": {
+    "producer": "PENDING_EXACT_SHA_CI",
+    "formal_independent_G0": "PENDING",
+    "licensed_Unity6_G1": "NOT_RUN",
+    "Codex_ACK": "NONE",
+    "integration": false,
+    "merged": false
+  },
+  "receivers": [
+    "B01-40 formal independent source G0",
+    "B01-60 independent licensed native Unity animation G1",
+    "B01-20 original CHL optional visual owner",
+    "B01-00 integration queue only"
+  ],
+  "rollback": "Only isolated candidate downloaded 3D files and build/B01-30/W13; never actual #510 or original owner gameplay."
+}
