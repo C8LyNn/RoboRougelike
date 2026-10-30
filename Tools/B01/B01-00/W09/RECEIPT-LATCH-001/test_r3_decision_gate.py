@@ -23,8 +23,9 @@ class R3ExclusiveSelection(unittest.TestCase):
     def test_initial_real_source_hold(self):
         x=audit(get())
         self.assertEqual(x["status"],
-                         "HOLD_OWNER_R3_EXCLUSIVE_SELECTION_AND_INDEPENDENT_QA")
-        self.assertIsNone(x["selected_sha"])
+                         "HOLD_SELECTED_642_P0_UNCERTAIN_DURABLE_COMMIT")
+        self.assertEqual(x["selected_sha"],
+             "22cec9888047994ae523cbe7bf1b0a483d64cec4")
 
     def test_both_original_producer_candidates_present(self):
         self.assertEqual(audit(get())["competing_prs"],[642,644])
@@ -50,7 +51,7 @@ class R3ExclusiveSelection(unittest.TestCase):
 
     def test_producer_130_tests_cannot_choose_644_automatically(self):
         self.assertTrue(audit(get())["never_auto_pick_more_tests"])
-        self.assertIsNone(audit(get())["selected_pr"])
+        self.assertEqual(audit(get())["selected_pr"],642)
 
     def test_wrong_schema(self):
         self.rejects(lambda x:x.update(schema="b01-w18"))
@@ -67,8 +68,8 @@ class R3ExclusiveSelection(unittest.TestCase):
     def test_unfreeze_alternative_604(self):
         self.rejects(lambda x:x["frozen"]["alt"].update(status="SELECTED"))
 
-    def test_select_642_without_real_owner_evidence(self):
-        self.rejects(lambda x:x["owner_choice"].update(status="SELECTED",
+    def test_fake_642_source_release_before_P0_fix(self):
+        self.rejects(lambda x:x["owner_choice"].update(status="QA_ACCEPTED",
             winner_pr=642,loser_pr=644))
 
     def test_select_644_without_real_owner_evidence(self):
@@ -242,7 +243,7 @@ class R3ExclusiveSelection(unittest.TestCase):
             self.assertEqual(main([str(FIXTURE)]),0)
         obj=json.loads(out.getvalue())
         self.assertEqual(obj["status"],
-            "HOLD_OWNER_R3_EXCLUSIVE_SELECTION_AND_INDEPENDENT_QA")
+            "HOLD_SELECTED_642_P0_UNCERTAIN_DURABLE_COMMIT")
         self.assertEqual(len(obj["receipt_sha256"]),64)
 
     def test_cli_release_strict_exit3(self):
@@ -267,7 +268,7 @@ class R3ExclusiveSelection(unittest.TestCase):
             with redirect_stderr(io.StringIO()):
                 self.assertEqual(main([str(FIXTURE),"--output",str(path)]),0)
                 self.assertEqual(main([str(FIXTURE),"--output",str(path)]),2)
-            self.assertIsNone(json.loads(path.read_text())["selected_pr"])
+            self.assertEqual(json.loads(path.read_text())["selected_pr"],642)
 
     def test_cli_invalid_json_rejected(self):
         with tempfile.TemporaryDirectory() as td:
