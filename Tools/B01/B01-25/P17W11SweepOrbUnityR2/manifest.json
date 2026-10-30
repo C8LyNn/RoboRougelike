@@ -34,7 +34,7 @@
     "Assets/B0125SweepOrbR2/Tests/PlayMode/SweepOrbUnityPlayModeTests.cs.meta": "a4c09300af28748a6b2613b6efed745d94e9ddee",
     "Tools/B01/B01-25/P17W11SweepOrbUnityR2/.gitignore": "b67c661cfb5cc73f5f68cfe85fd17e954856ea87",
     "Tools/B01/B01-25/P17W11SweepOrbUnityR2/README.md": "7a494c080398e0895dc9ce0ac806e0cb394351ed",
-    "Tools/B01/B01-25/P17W11SweepOrbUnityR2/verify.py": "e977474dd4671bf0bbab19e93eb90d815b0350f3"
+    "Tools/B01/B01-25/P17W11SweepOrbUnityR2/verify.py": "9bd911878082ac5cc523865e748b45844807b12e"
   },
   "delivery": "Optional isolated real Unity6 Rigidbody/visual orb/authoritative demo HP and scene factory, not canonical",
   "physicalZIP": "TO_BE_VERIFIED_BY_FINAL_CI",
