@@ -1,0 +1,57 @@
+name: B01-40 P17W13 frozen #510 destructive rollback RED + owned wrapper fail closed
+on:
+  push:
+    branches: [qa/b01-40-p17w13-original510-rollback-preservation-r2]
+    paths:
+      - 'Tools/B01/B01-40/P17W13RollbackPreservation/**'
+      - '.github/workflows/b01-40-w13-frozen510-rollback-redgreen.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-40/P17W13RollbackPreservation/**'
+      - '.github/workflows/b01-40-w13-frozen510-rollback-redgreen.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  real-source-rollback-regression:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    steps:
+      - name: Exclusive B01-40 QA, no producer modifications
+        uses: actions/checkout@v4
+        with:
+          path: receiver
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Frozen original selected Secure V2 #510; no alternatives
+        uses: actions/checkout@v4
+        with:
+          path: producer510
+          ref: d94400d95d13db7f27e1533df05c9292d5380431
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Execute ORIGINAL #510 actual rollback foreign-empty-dir RED and wrapper safe rollback GREEN
+        shell: bash
+        run: |
+          set -euo pipefail
+          python receiver/Tools/B01/B01-40/P17W13RollbackPreservation/receiver.py \
+            --producer producer510 --out dist | tee b01-40-w13-original-rollback-stdout.log
+          test -s dist/B01-40-W13-original-rollback-red-and-wrapper-green.json
+          grep -q "ACTUAL_FROZEN_510_ROLLBACK_RED" b01-40-w13-original-rollback-stdout.log
+          grep -q "VERSIONED_B0140_WRAPPER_GREEN" b01-40-w13-original-rollback-stdout.log
+          grep -q "SAVE_RELOAD_HOLD G1_NOT_RUN G2_HOLD" b01-40-w13-original-rollback-stdout.log
+      - name: Upload independent true original-code RED witness and new versioned safe-wrapper result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-40-W13-Original510Rollback-${{ matrix.os }}
+          path: |
+            dist/B01-40-W13-original-rollback-red-and-wrapper-green.json
+            b01-40-w13-original-rollback-stdout.log
+          retention-days: 21
+          if-no-files-found: warn
