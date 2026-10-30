@@ -1,6 +1,6 @@
 {
   "packageId": "B01-10-GHOST-001",
-  "version": "6.0.0-P17W12-SUBTHRESHOLD_FOCUS_FIX",
+  "version": "7.0.0-P17W13-FOCUSED_VISUAL_DRILL",
   "role": "B01-10 GAME DESIGN & BALANCE",
   "scope": "OPT_IN_CHL_TRAINING_GHOST",
   "sourceBranch": "design/b01-10-p17w06-training-ghost",
@@ -14,8 +14,8 @@
     "B01-00 HQ",
     "Codex after ACK only"
   ],
-  "status": "R6_109_CASE_SOURCE_BUILD_PENDING / PHYSICAL_ZIP_SHA_PENDING / INDEPENDENT_G0_QA_PENDING / NATIVE_UNITY_NOT_RUN / CODEX_NOT_CLAIMED",
-  "originality": "First independent CHL practice ghost: 3D pose recording, 0.1s sampling, shortest-arc yaw replay, four-gate split comparison, two-rig personal best, no game state writes. Not an encounter editor, RUNSCORE post-run score, official CHL timer, economics or shared Physics patch.",
+  "status": "R7_ORIGINAL_SOURCE_AWAIT_EXACT_HEAD_CI / INDEPENDENT_SOURCE_G0_PENDING / NATIVE_UNITY_NOT_RUN / CODEX_ACK_NO",
+  "originality": "First independent CHL practice ghost: 3D pose recording, 0.1s sampling, shortest-arc yaw replay, four-gate split comparison, two-rig personal best, no game state writes. Not an encounter editor, RUNSCORE post-run score, official CHL timer, economics or shared Physics patch. R7 introduces optional largest-loss reference segment replay without modifying physical CHL course.",
   "changedPaths": [
     "Research/B01-10/P17Ghost/**",
     ".github/workflows/b01-10-p17-ghost.yml"
@@ -26,16 +26,16 @@
       "chars": 13923
     },
     "GhostVisualProxy.cs": {
-      "gitBlob": "41dd8fe2443ddc2a2ac87b922c25bd6c341d5566",
-      "chars": 5245
+      "gitBlob": "de795c06fd0b462a0fe5f895460dfa796a664cd0",
+      "chars": 6400
     },
     "GhostSplitCoach.cs": {
-      "gitBlob": "e9b389dcc948cfe51a14c9133697534553ecd105",
-      "chars": 11975
+      "gitBlob": "5523a6b2a9567aeeef693aec28d9ad730e0a4040",
+      "chars": 15417
     },
     "GhostSplitHud.cs": {
-      "gitBlob": "a1e27bce3a2709588b74793870883edd3068a908",
-      "chars": 4547
+      "gitBlob": "4c17bd3d0a783daf894e65309f0e8a1afb2ff65c",
+      "chars": 5093
     },
     "GhostCore.cs.meta": {
       "gitBlob": "7c730f4002b69b4b4501f04b9eeb6aaf23af0371",
@@ -58,30 +58,30 @@
       "chars": 169
     },
     "Program.cs": {
-      "gitBlob": "7c400513ee0a7672a1e52d99632e0b9b6d40fc54",
-      "chars": 33106
+      "gitBlob": "3f70dfa59f768f6fbf9cdd5b8656d622d73dda5b",
+      "chars": 38723
     },
     "Ghost.Runner.csproj": {
       "gitBlob": "bd9a53d96794ec1b1d34c3729ba0e985a30dc28c",
       "chars": 345
     },
     "README.md": {
-      "gitBlob": "d493024fb2a76978f86ce96ccedd4e6acc0a8e4e",
-      "chars": 29174
+      "gitBlob": "a659f19f48c86ffae2f70fd935561b74d9a48c4d",
+      "chars": 32007
     }
   },
   "workflow": {
     "path": ".github/workflows/b01-10-p17-ghost.yml",
-    "gitBlob": "41f37c8e2c984ec7585d50e90e0d2eb3afc9eabb"
+    "gitBlob": "894809b6c592934977dc705c058125e4364bf5ba"
   },
   "tests": {
     "tool": "dotnet 8.0 CSharp original source and test runner",
-    "namedCases": 109,
+    "namedCases": 122,
     "syntheticRandomizedTraces": 100,
-    "workflowRun": "W12 R6 exact HEAD workflow PENDING; R5 100/100 per OS success is historical, not R6 PASS",
-    "windows": "W12 R6 109-case outcome NOT_VERIFIED",
-    "ubuntu": "W12 R6 109-case outcome NOT_VERIFIED",
-    "actualDemoJson": "W12 R6 PENDING",
+    "workflowRun": "R7 exact SHA CI NOT_VERIFIED, awaiting new run; historic R6 109/109 per OS PASS only at predecessor",
+    "windows": "R7 122 tests AWAIT EXACT HEAD EXECUTION",
+    "ubuntu": "R7 122 tests AWAIT EXACT HEAD EXECUTION",
+    "actualDemoJson": "R7 PENDING exact-head execution",
     "nativeUnity": "NOT_RUN",
     "UnityEditMode": "NOT_RUN",
     "UnityPlayMode": "NOT_RUN",
@@ -117,7 +117,7 @@
     "independentAcceptance": "PENDING",
     "CODEX_ACK": "PENDING"
   },
-  "qualityPatch": "W12 R6 eliminates false UX focus for losses within 0.15s: shared portable GhostPracticeFocus.Text used by Unity HUD; nine actual source C# tests 101..109",
+  "qualityPatch": "WAVE13 R7: original verified coach returns significant largest-loss reference segment for visual loop; GhostPracticeLoop.PoseAt repeated deterministic sample, opt-in Unity GhostVisualProxy.BindDrill/SeekDrill, HUD label; tests 110-122",
   "sourceCodeGhostBlob": "376389273fe6263ac8a2d0b0741bb7a8fe9ae298",
   "fixtureDisclaimer": "The --demo Light and Heavy pose tracks are deterministic synthetic data, not actual Rigidbody/PhysX runs, manual play, or true native CHL-003 checkpoints.",
   "exactNativeStatus": "NO UNITY EDIT / NO UNITY PLAY / NO PHYSX / NO GAME INTEGRATION",
@@ -232,5 +232,5 @@
     "independentQA": "PENDING",
     "CodexACK": "PENDING"
   },
-  "currentPredecessorSHA": "13a1a4770728f4e9d5704150afbe25483ca88ca9"
+  "currentPredecessorSHA": "b2c73f0966aed648de951c4ee528e3c51c7f8e41"
 }
