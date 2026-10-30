@@ -1,0 +1,41 @@
+{
+  "package": "B01-13-ECON-SAFETY-PLAYTEST-PROTOCOL-001/R1",
+  "producer": "B01-13",
+  "hq_issue": 731,
+  "dependency_pr": 722,
+  "base_commit": "5eb72088015062962ba8e9ac60ae684c8fba4bdb",
+  "parent_commit": "5eb72088015062962ba8e9ac60ae684c8fba4bdb",
+  "parent_blob": "d40993ae55940477a8086a403dede831d6419d62",
+  "selected_r5": "#690_READ_ONLY",
+  "selected_api": "#729_READ_ONLY",
+  "selected_session": "#712/#669_READ_ONLY",
+  "frozen_game": "#510",
+  "g1_native": "NOT_RUN",
+  "real_human_sessions": 0,
+  "files": {
+    "Research/B01-13/P17U/playtest_protocol.mjs": {
+      "git_blob_sha1": "c3d5b7a658081e9bb5a80fe9a4bcdf40ee47e6f9",
+      "bytes": 10382
+    },
+    "Research/B01-13/P17U/test_playtest_protocol.mjs": {
+      "git_blob_sha1": "4d474dd031317e02f2d0f14253c420eb01c3f0c8",
+      "bytes": 14416
+    },
+    "Research/B01-13/P17U/README.md": {
+      "git_blob_sha1": "ec765b60394da1580a2d50a8693075e053cfab9c",
+      "bytes": 6312
+    },
+    "Research/B01-13/P17U/verify_package.py": {
+      "git_blob_sha1": "c36d524a1e427a0fd928dee729dbe178daccf0e2",
+      "bytes": 1382
+    },
+    ".github/workflows/b01-13-p17w23-econ-human-protocol.yml": {
+      "git_blob_sha1": "f2367dee6a8ae68010bc1f6e25fc6f7caed6e67d",
+      "bytes": 2384
+    },
+    "Research/B01-13/P17T/recovery_routes.mjs": {
+      "git_blob_sha1": "d40993ae55940477a8086a403dede831d6419d62",
+      "bytes": 10572
+    }
+  }
+}

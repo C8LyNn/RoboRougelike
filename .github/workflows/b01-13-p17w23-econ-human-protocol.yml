@@ -1,0 +1,51 @@
+name: B01-13 W23 Human Economy Playtest Protocol Original Source
+on:
+  push:
+    paths: ['Research/B01-13/P17U/**', '.github/workflows/b01-13-p17w23-econ-human-protocol.yml']
+  pull_request:
+    paths: ['Research/B01-13/P17U/**', '.github/workflows/b01-13-p17w23-econ-human-protocol.yml']
+  workflow_dispatch:
+jobs:
+  source-and-cohort-files:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+        node: ['20', '22']
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify exact original W22 dependency and W23 Git/bytes
+        run: python Research/B01-13/P17U/verify_package.py
+      - name: Execute immutable W22 actual recovery solver source regression
+        run: node --test Research/B01-13/P17T/test_recovery_routes.mjs
+      - name: Execute new W23 operator protocol original source test
+        run: node --test Research/B01-13/P17U/test_playtest_protocol.mjs
+      - name: Generate four real cohort playtest packs in isolated runner temp
+        shell: pwsh
+        run: |
+          $root = Join-Path $env:RUNNER_TEMP 'b01-13-w23-playtest-operator'
+          New-Item -Path $root -ItemType Directory -ErrorAction Stop | Out-Null
+          foreach ($c in 0..3) {
+            $dir = Join-Path $root ('cohort-'+$c)
+            New-Item -Path $dir -ItemType Directory -ErrorAction Stop | Out-Null
+            node Research/B01-13/P17U/playtest_protocol.mjs --cohort "$c" $dir
+            if ($LASTEXITCODE -ne 0) { throw 'COHORT_GENERATION_FAILED' }
+            foreach ($file in (Get-ChildItem $dir -File)) {
+              Write-Output ("COHORT_FILE " + $file.Name + " SHA256=" + (Get-FileHash -Algorithm SHA256 $file.FullName).Hash.ToLowerInvariant())
+            }
+            if ((Get-ChildItem $dir -File).Count -ne 3) { throw 'COHORT_CARDINALITY_FAILED' }
+          }
+      - name: Upload all four independently generated future study cohorts
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-13-W23-HUMANPROTOCOL-${{ matrix.os }}-Node${{ matrix.node }}
+          path: ${{ runner.temp }}/b01-13-w23-playtest-operator/
+          if-no-files-found: error
+          retention-days: 14
