@@ -1,4 +1,4 @@
-# B01-00 RECEIPT-LATCH-001 v1.4.0 / PASS17 W13
+# B01-00 RECEIPT-LATCH-001 v1.5.0 / PASS17 W14
 
 Offline Python 3.11 standard-library executable for B01-00 coordinating multi-agent package receipts. `receipt_latch.py` validates offline snapshot consistency; `github_live.py` now checks a bounded subset of original GitHub PR, Actions workflow, job and step metadata online. Neither can authenticate the independence or authorization of a B01-40/B01-60 review, Codex ACK or merge. Source-ready is a **candidate for external review**, never formal G0, G1, Codex ACK or integration.
 
@@ -73,3 +73,20 @@ Actual package selected: **B01-23-SECURE-REATTACH-V2 v2.0.0** [#510](https://git
 **Security boundary:** `offer_protocol.py` uses no network and only checks internal shape/consistency of supplied JSON. `source_only_offer_record_consistent=true` explicitly **does not authenticate** any GitHub comment, person, review text, artifact bytes or actual ACK. The original B01-00 GitHub live verifier validates *producer source CI metadata* separately; neither replaces B01-40/60/61/62 independent approvals.
 
 **Rollback of this coordinator tool only:** discard the unmerged B01-00-owned Python directory and disposable CLI reports. Do not remove the actual frozen #510 producer source, selected original ZIP, receiver review/QA evidence or Codex Inbox immutable record. Receiver: B01-40 for source and rollback, B01-61 for transaction QA, B01-62 for ID persistence, B01-60 for actual licensed Unity PhysX, and B01-00 for ledger inventory/offer, with Codex as read-only offer recipient.
+
+## WAVE 14: One Save/Load source-contract admission — independent security RED outranks producer PASS
+
+The separate, executable `save_admission.py` maintains a **pre-integration source-only** comparison of the *two competing additive Save/Load proposals*, #544 and #549, against a fixed immutable gameplay candidate #510. Its companion `save_contract_w14_hold.json` has actual pinned GitHub PR SHA, independent QA state, and eight explicit release blockers. The B01-00 tool does **not** choose a design on behalf of B01-23; it records `owner_choice=UNDECIDED` until B01-23 publishes an exclusive, independently source-tested selection.
+
+```sh
+python Tools/B01/B01-00/W09/RECEIPT-LATCH-001/save_admission.py Tools/B01/B01-00/W09/RECEIPT-LATCH-001/save_contract_w14_hold.json
+python -m unittest discover -s Tools/B01/B01-00/W09/RECEIPT-LATCH-001 -p "test_*.py" -v
+```
+
+**Current correct output:** `#544=HOLD_INDEPENDENT_SOURCE_QA`, `#549=REJECT_EXACT_SOURCE_SECURITY_RED`, `verdict=HOLD_NO_ACCEPTED_SINGLE_SAVE_CONTRACT`. Although #549 producer tests passed, B01-61 [#550](https://github.com/C8LyNn/RoboRougelike/pull/550) independently executed the unmodified original C# and exposed mutable validated `RunSnapshot.Parts` and a public mutating W06 ledger accessor. Crucially the QA-tested earlier revision and #549 current branch HEAD have **identical Git blob** `6c036985411164372bf3d21d467780ff3777544e` for the original vulnerable `DetachedSnapshotContract.cs`. This pin avoids pretending #550 ran against the final producer commit while preserving the real security finding across identical original source bytes. Any new fixed-version SHA requires a separate B01-23 owner decision and fresh independent B01-61 testing.
+
+The new **53 original W14 unittest cases** reject wrong #510, two simultaneously eligible proposals, missing B01-23 choice, replayed older QA PASS, cross-SHA RED with different source blob, missing/duplicate RED evidence, false G1/SaveLoad/rollback/G2/ACK/merge, malformed comments and unauthorized overwrite. The full original Python test suite is **225 cases** on Windows2025 and Ubuntu24.04, with the existing real read-only GitHub #427 source-run checks. [Real W14 source run #41087521336](https://github.com/C8LyNn/RoboRougelike/actions/runs/41087521336) 225/225 PASS per OS. The CLI has no network or GitHub writes and cannot authenticate independent reviewer identity. A structurally eligible future candidate is **MANUAL_G0_REVIEW_REQUIRED**, never automatic approval.
+
+**Remaining source and native gates:** actual #510 source-only G0 previously accepted and offered in #79, **not Codex ACK**; #511/#494 held. Actual canonical Save/Load of detached/consumed IDs is NOT_IMPLEMENTED; original #510 rollback deletes foreign empty dirs and must NEVER be used on an occupied receiver; B01-40/62 safe wrappers require explicit integration decision; Unity native G1 Edit/Play/PhysX remains NOT_RUN where legal activation is unavailable; canonical host migration NOT_DONE; G2 HOLD. This gate must not be treated as an engine/native test or as a B01-23 owner selection.
+
+**Install/rollback:** copy only owner-controlled standalone Python tool in a separate checkout and run on a local receipt; discard its unmerged directory and disposable output on rollback. Never delete frozen #510, original ZIP, QA evidence, Codex Inbox, game Assets or an occupied receiver. Receiver B01-23 selects exactly one versioned Save contract, B01-61 tests its **original exact SHA**, B01-40/62 approve source/migration/rollback, B01-60 native G1, B01-00 checks source-only queue and prevents fake ACK.
