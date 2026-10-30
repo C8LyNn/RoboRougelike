@@ -932,6 +932,86 @@ internal static class Program
             Equal(prior.For("CHL003_R1","Light").RequiredCheckpoints,4);
             Equal(newBook.For("CHL003_R1","Light").RequiredCheckpoints,3);
         });
+        Test("146 presentation captures validated source checkpoint",()=>{
+            var c=new GhostSplitCoach(Run());var v=new GhostPracticePresentation();
+            v.CaptureGate(c.AcceptValidatedGate(0,1.5f));
+            Equal(v.LastGate.GateNumber,1);Equal(v.LastGate.Pace,GhostPace.Behind);
+        });
+        Test("147 returned host checkpoint mutation cannot forge HUD",()=>{
+            var c=new GhostSplitCoach(Run());var v=new GhostPracticePresentation();
+            var g=c.AcceptValidatedGate(0,1.5f);v.CaptureGate(g);
+            g.GateNumber=8;g.SegmentSeconds=900;g.Pace=GhostPace.Ahead;
+            Equal(v.LastGate.GateNumber,1);Equal(v.LastGate.SegmentSeconds,1.5f);
+            Equal(v.LastGate.Pace,GhostPace.Behind);
+        });
+        Test("148 presentation checkpoint getter returns defensive clone",()=>{
+            var c=new GhostSplitCoach(Run());var v=new GhostPracticePresentation();
+            v.CaptureGate(c.AcceptValidatedGate(0,1f));
+            var editable=v.LastGate;editable.GateNumber=7;
+            Equal(v.LastGate.GateNumber,1);
+        });
+        Test("149 completed coach finish is retained with real focus",()=>{
+            var c=new GhostSplitCoach(Run());var v=new GhostPracticePresentation();
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
+            v.CaptureEnd(c.EndTrial(true,10f));
+            Check(v.FinalSummary.Completed && v.FinalSummary.BiggestLossIsFinishSegment);
+            Equal(v.FinalSummary.BiggestLossSeconds,5f);
+        });
+        Test("150 returned host finish edit cannot forge HUD completion",()=>{
+            var c=new GhostSplitCoach(Run());var v=new GhostPracticePresentation();
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
+            var result=c.EndTrial(true,10f);v.CaptureEnd(result);
+            var guidance=v.FinalSummary.Guidance;
+            result.Completed=false;result.BiggestLossSeconds=0;
+            result.BiggestLossIsFinishSegment=false;result.Guidance="forged";
+            Check(v.FinalSummary.Completed && v.FinalSummary.BiggestLossIsFinishSegment);
+            Equal(v.FinalSummary.BiggestLossSeconds,5f);
+            Equal(v.FinalSummary.Guidance,guidance);
+        });
+        Test("151 public finish getter cannot alter retained summary",()=>{
+            var c=new GhostSplitCoach(Run());var v=new GhostPracticePresentation();
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
+            v.CaptureEnd(c.EndTrial(true,10f));
+            var shown=v.FinalSummary;shown.Completed=false;shown.BiggestLossSeconds=0;
+            Check(v.FinalSummary.Completed);Equal(v.FinalSummary.BiggestLossSeconds,5f);
+        });
+        Test("152 aborted source result remains incomplete on HUD",()=>{
+            var c=new GhostSplitCoach(Run());var v=new GhostPracticePresentation();
+            c.AcceptValidatedGate(0,1f);v.CaptureEnd(c.EndTrial(false,2f));
+            Check(!v.FinalSummary.Completed&&!v.FinalSummary.HasFullCourseComparison);
+        });
+        Test("153 retry clears both prior display snapshots",()=>{
+            var c=new GhostSplitCoach(Run());var v=new GhostPracticePresentation();
+            v.CaptureGate(c.AcceptValidatedGate(0,1f));
+            v.CaptureEnd(c.EndTrial(false,2f));v.Clear();
+            Check(v.LastGate==null && v.FinalSummary==null);
+        });
+        Test("154 null gate rejected without erasing prior checkpoint",()=>{
+            var c=new GhostSplitCoach(Run());var v=new GhostPracticePresentation();
+            v.CaptureGate(c.AcceptValidatedGate(0,1f));
+            Check(Reject(()=>v.CaptureGate(null)));
+            Equal(v.LastGate.GateNumber,1);
+        });
+        Test("155 impossible 9th gate rejected without mutation",()=>{
+            var c=new GhostSplitCoach(Run());var v=new GhostPracticePresentation();
+            v.CaptureGate(c.AcceptValidatedGate(0,1f));
+            Check(Reject(()=>v.CaptureGate(new GhostSplitResult{GateNumber=9})));
+            Equal(v.LastGate.GateNumber,1);
+        });
+        Test("156 null finish rejected without losing genuine source finish",()=>{
+            var c=new GhostSplitCoach(Run());var v=new GhostPracticePresentation();
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
+            v.CaptureEnd(c.EndTrial(true,10f));
+            Check(Reject(()=>v.CaptureEnd(null)));Check(v.FinalSummary.Completed);
+        });
+        Test("157 independent presentation buffers cannot alias outputs",()=>{
+            var c=new GhostSplitCoach(Run());var a=new GhostPracticePresentation();
+            var b=new GhostPracticePresentation();
+            var gate=c.AcceptValidatedGate(0,1f);
+            a.CaptureGate(gate);b.CaptureGate(gate);
+            a.Clear();gate.GateNumber=8;
+            Check(a.LastGate==null);Equal(b.LastGate.GateNumber,1);
+        });
         Console.WriteLine("B01-10 GHOST REAL_CSHARP "+passed+" PASS / "+failed+
           " FAIL | 100 seeded synthetic motion traces | UNITY=NOT_RUN");
         return failed==0?0:1;
