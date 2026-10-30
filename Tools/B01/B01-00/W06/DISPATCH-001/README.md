@@ -1,4 +1,4 @@
-# B01-00 DISPATCH-001 v1.1.0 / PASS17 WAVE07
+# B01-00 DISPATCH-001 v1.2.0 / PASS17 WAVE08
 
 An executable offline scheduler for B01 swarm task assignment. It detects overlapping repository paths, enforces frozen ownership, prevents duplicate package IDs, checks dependencies, blocks Codex-reserved scopes, limits active gameplay production streams, and creates atomic local claim files. Python 3.10+ standard library only. No Unity or game source is modified.
 
@@ -25,3 +25,9 @@ The plan command does not write any file. To undo an ACTIVE claim, confirm owner
 Historical W06 TEST_EVIDENCE/unittest.txt records 22 executed local unit tests, with zero failures and exit 0. W07 added 14 actual freeze/rollback regressions in test_freeze.py. See exact-head GitHub Actions for results of the expanded 36-case suite; the historical 22-case log is NOT evidence for new tests. The attached TEST_EVIDENCE/example-plan.json is the actual dry-run CLI output. The W07 revision manifest lists exact new source/evidence SHA256 and byte lengths; the PR HEAD is the authoritative commit SHA (not circularly embedded). The optional CI workflow runs tests on Windows and Ubuntu when triggered. Native Unity tests: NOT_RUN. Independent B01-40 and B01-60 QA: PENDING. CODEX ACK: not required for isolated planning tool; any gameplay handoff still follows #79 and #276.
 
 Refs: https://github.com/C8LyNn/RoboRougelike/issues/416 , https://github.com/C8LyNn/RoboRougelike/issues/276 , https://github.com/C8LyNn/RoboRougelike/issues/79 .
+
+## WAVE 08: cross-platform ownership safety
+
+Previous versions compared repository paths, package IDs, and stream identifiers case-sensitively. On Windows that can treat the **same physical path** as different owners, bypassing explicit reservations and introducing unsafe claims. v1.2.0 uses a conservative normalized comparison (Unicode NFKC plus casefold), rejects portable aliases in scope strings, and fail-closes Windows-special names (CON, NUL, COM1, LPT9, etc.), invalid punctuation, trailing periods/spaces, and control characters. It rejects case-colliding task/package/claim IDs and stream identifiers. Prefix matching remains segment-aware so `Assets/Scripts` and `Assets/Scripts2` are distinct.
+
+The new `test_portability.py` has 29 executable negative and positive cases, for 65 total producer tests. Physical [RED run](https://github.com/C8LyNn/RoboRougelike/actions/runs/41045653677) and [GREEN run](https://github.com/C8LyNn/RoboRougelike/actions/runs/41045838687) are pinned in `TEST_EVIDENCE/W08-RED-GREEN.md`. Both original workflows ran Windows and Ubuntu. The fixture is illustrative; neither verified code nor queue state implies a real Codex ACK or an authorization to edit gameplay. Prior W06/W07 immutable Git commits remain available, and old evidence files are historical.
