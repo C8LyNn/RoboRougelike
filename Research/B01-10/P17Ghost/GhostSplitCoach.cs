@@ -36,6 +36,34 @@ namespace RoboRougelike.B0110.TrainingGhost
         public string Guidance { get; set; }
     }
 
+    // Shared UI decision contract: a measured maximum below tolerance is
+    // informative data, not an actionable "focus" recommendation.
+    // Compiled in both portable .NET tests and Unity; UI must call this rather
+    // than infer focus from BiggestLossGate alone.
+    public static class GhostPracticeFocus
+    {
+        public static string Text(GhostPracticeSummary summary, int requiredGates)
+        {
+            GhostMath.Check(summary != null, "Practice summary is missing");
+            GhostMath.Check(requiredGates >= 1 && requiredGates <= 8,
+                "Practice gate count must be 1..8");
+            GhostMath.Check(!float.IsNaN(summary.BiggestLossSeconds)
+                            && !float.IsInfinity(summary.BiggestLossSeconds)
+                            && summary.BiggestLossSeconds >= 0f,
+                "Practice loss must be finite and non-negative");
+            if (!summary.Completed || !summary.HasFullCourseComparison)
+                return "Retry: no finish segment measured";
+            if (summary.BiggestLossSeconds <= GhostSplitCoach.PaceToleranceSeconds)
+                return "No significant loss (finish included)";
+            if (summary.BiggestLossIsFinishSegment)
+                return "Focus: finish after gate " + requiredGates;
+            GhostMath.Check(summary.BiggestLossGate >= 1
+                            && summary.BiggestLossGate <= requiredGates,
+                "Significant checkpoint loss without a valid gate");
+            return "Focus: gate " + summary.BiggestLossGate;
+        }
+    }
+
     public sealed class GhostSplitCoach
     {
         // Significant to a human without false precision from fixed 10 Hz poses.
