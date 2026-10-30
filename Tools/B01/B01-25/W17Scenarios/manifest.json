@@ -13,7 +13,7 @@
     ".github/workflows/b01-25-w17-magnetlane-scenarios.yml"
   ],
   "gitBlobs": {
-    ".github/workflows/b01-25-w17-magnetlane-scenarios.yml": "b5ea92748c2e48a33cebdd8dde13b2cb56b5af7e",
+    ".github/workflows/b01-25-w17-magnetlane-scenarios.yml": "ac306d66d3de6106b4d6f940c42b86b6fa766a3b",
     "Research/B01-25/P17/W17_MAGNETLANE_SCENARIOS/.gitignore": "b67c661cfb5cc73f5f68cfe85fd17e954856ea87",
     "Research/B01-25/P17/W17_MAGNETLANE_SCENARIOS/fixtures.json": "b5fcdbca1fbd69676084c52066741d5b0e9e72a2",
     "Research/B01-25/P17/W17_MAGNETLANE_SCENARIOS/Program.cs": "be5f343c7916b49fb9952d8c4189f7da14e26f42",
@@ -24,11 +24,12 @@
   },
   "nativeUnity": "NOT_RUN",
   "independentG0": "PENDING",
-  "sourceCI": "PENDING",
+  "sourceCI": "W18_FIX_QUEUED",
   "codexAck": false,
   "integrated": false,
   "g2": "HOLD",
   "merged": false,
   "limitations": "Data-only original C# route scenarios; no Unity scene, runtime loader, native PhysX, Codex or Save/Load interface",
-  "rollback": "Only remove newly authored W17 data, QA and W17 workflow on isolated disposable branch; preserve foreign empty folders and all frozen sources."
+  "rollback": "Only remove newly authored W17 data, QA and W17 workflow on isolated disposable branch; preserve foreign empty folders and all frozen sources.",
+  "w18Fix": "Ensure GitHub Actions upload-artifact includes hidden .output directories; explicit pre-upload zip/receipt checks and post-download source ZIP cmp."
 }
