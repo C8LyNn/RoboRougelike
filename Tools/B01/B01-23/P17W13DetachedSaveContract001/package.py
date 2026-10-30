@@ -49,10 +49,10 @@ def scope():
        "DebrisImpulseLedger" not in runtime or \
        "TryDetach(p.Id,Zero,Zero,Zero" not in runtime or \
        "Current=ready;" not in runtime or \
-       "p.Consumed!=detached" not in runtime or
-       "public PersistedPart[] Parts => (PersistedPart[])parts.Clone();" not in runtime or
-       "public DebrisImpulseLedger GetLedger(" in runtime or
-       "return rebuilt[slot];" in runtime or
+       "p.Consumed!=detached" not in runtime or \
+       "public PersistedPart[] Parts => (PersistedPart[])parts.Clone();" not in runtime or \
+       "public DebrisImpulseLedger GetLedger(" in runtime or \
+       "return rebuilt[slot];" in runtime or \
        "public bool IsConsumed(int slot,long id)" not in runtime:
         raise ValueError("immutable snapshot and opaque original W06 ledger required")
     if "private const int Version=2;" not in runtime or "B01SV14!" not in runtime:
