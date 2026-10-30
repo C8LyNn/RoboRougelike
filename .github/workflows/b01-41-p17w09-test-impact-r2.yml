@@ -1,0 +1,67 @@
+name: B01-41 P17W09 exact Git Unity test-impact R2
+on:
+  push:
+    branches: ['ci/b01-41-p17w09-testimpact-safety-r2']
+    paths:
+      - 'Tools/B01/CI41/P17W09/**'
+      - '.github/workflows/b01-41-p17w09-test-impact-r2.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  impact-r2:
+    name: Physical R1 RED and R2 GREEN (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Verify R2 source/test/proof original Git blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git hash-object Tools/B01/CI41/P17W09/test_impact_plan.py)" = '0158c1d8cc44ba3b5f6e0ed1b80a71bb883701da'
+          test "$(git hash-object Tools/B01/CI41/P17W09/test_test_impact_plan.py)" = 'e5e8adacdb47ab138f1a0d74b8fc021919932a0a'
+          test "$(git hash-object Tools/B01/CI41/P17W09/proof_red_green.py)" = '1b6e1c1f98a4e024f9d83e90c644fafe2bf46a84'
+          echo 'R2_EXACT_GIT_SOURCE_BLOBS_PASS'
+      - name: Run 34 real Git diff/rename/CLI source regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = "Windows" ]; then PY=python; else PY=python3; fi
+          "$PY" -m unittest discover -s Tools/B01/CI41/P17W09/ -p test_test_impact_plan.py -v 2>&1 | tee "Tools/B01/CI41/P17W09/tests-${{ runner.os }}.txt"
+          grep -q 'ACTUAL_CLI_PHYSICAL_GIT_DIFF_TARGETED_TWO_ASSEMBLIES_PASS' "Tools/B01/CI41/P17W09/tests-${{ runner.os }}.txt"
+          grep -q 'ACTUAL_CLI_INVENTORY_DRIFT_EXIT2' "Tools/B01/CI41/P17W09/tests-${{ runner.os }}.txt"
+      - name: Prove 3 original exact immutable R1 RED to R2 GREEN
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --depth=1 origin +refs/pull/459/head:refs/remotes/origin/ci41-w08-frozen
+          test "$(git rev-parse refs/remotes/origin/ci41-w08-frozen)" = '432acd34ca12378f512fa5e2384afbe1ff041b7b'
+          if [ "$RUNNER_OS" = "Windows" ]; then PY=python; else PY=python3; fi
+          "$PY" Tools/B01/CI41/P17W09/proof_red_green.py 2>&1 | tee "Tools/B01/CI41/P17W09/red-green-${{ runner.os }}.txt"
+          grep -q 'IMMUTABLE_ORIGINAL_R1_THREE_REAL_RED_TO_R2_GREEN_CASES_PASS' "Tools/B01/CI41/P17W09/red-green-${{ runner.os }}.txt"
+      - name: Read actual 9 MOV source modules (not Unity Editor)
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = "Windows" ]; then PY=python; else PY=python3; fi
+          "$PY" Tools/B01/CI41/P17W09/test_impact_plan.py --repo . --head-sha "$(git rev-parse HEAD)" --inventory-only --expect-module-count 9 --out "Tools/B01/CI41/P17W09/inventory-${{ runner.os }}.json"
+      - name: Save source Git QA receipts, not native Unity output
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CI41-TESTIMPACT-R2-${{ matrix.os }}
+          path: |
+            Tools/B01/CI41/P17W09/tests-${{ runner.os }}.txt
+            Tools/B01/CI41/P17W09/red-green-${{ runner.os }}.txt
+            Tools/B01/CI41/P17W09/red-green-receipt.json
+            Tools/B01/CI41/P17W09/inventory-${{ runner.os }}.json
+          retention-days: 14
+          if-no-files-found: warn
