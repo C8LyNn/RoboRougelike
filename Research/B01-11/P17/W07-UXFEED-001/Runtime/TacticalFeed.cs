@@ -157,6 +157,28 @@ namespace B01.UXFeed
             return candidates.ToArray();
         }
 
+
+        // Optional UI-only acknowledgement. Exact object identity prevents an older
+        // visible snapshot from dismissing a newer alert for the same subject.
+        // This never changes authoritative gameplay data or chronological history.
+        public bool AcknowledgeCritical(TacticalItem ticket)
+        {
+            if(ticket==null)throw new ArgumentNullException("ticket");
+            if(ticket.RunId!=_runId || ticket.Priority!=TacticalPriority.Critical)
+                return false;
+            for(int i=0;i<_criticalVisible.Count;i++)
+            {
+                var current=_criticalVisible[i];
+                if(!object.ReferenceEquals(current,ticket))continue;
+                long expires=current.LastTimeMs>long.MaxValue-CriticalTtlMs
+                    ?long.MaxValue:current.LastTimeMs+CriticalTtlMs;
+                if(_nowMs>=expires)return false;
+                _criticalVisible.RemoveAt(i);
+                return true;
+            }
+            return false;
+        }
+
         public static TacticalPriority PriorityOf(TacticalKind kind)
         {
             if(!Enum.IsDefined(typeof(TacticalKind),kind))
