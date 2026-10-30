@@ -1,0 +1,69 @@
+{
+  "package_id": "B01-60-P17W25-772-RIG-NATIVE-G1/R1",
+  "owner": "B01-60",
+  "hq_issue": 731,
+  "authorization_issue": 667,
+  "frozen_parent": {
+    "pr": 760,
+    "sha": "6a3589ff23bd811fb456d375e14b45c22b93337d"
+  },
+  "target_physics": {
+    "pr": 772,
+    "sha": "ce46a5e0cc5d26df6c4ece723e8efe20d70fc4b1",
+    "native_playmode_cases": 3
+  },
+  "canonical_api": {
+    "pr": 729,
+    "sha": "b8ca29c7707cd6b4338d0b9772d74dee676d49d2"
+  },
+  "frozen_game": {
+    "pr": 510,
+    "sha": "d94400d95d13db7f27e1533df05c9292d5380431"
+  },
+  "frozen_codec": {
+    "pr": 556,
+    "sha": "33094f154c7b91119b36d58aab285e6e83c5de57"
+  },
+  "candidate_store_successor": {
+    "pr": 773,
+    "sha": "3aaaec4027ee246fbfb6f209179f0e9507363473",
+    "owner_selected": false,
+    "not_coinstalled": true
+  },
+  "legacy_selected_store": {
+    "pr": 749,
+    "sha": "8634e71dfcf633323073fe584a6c0884f1ca5d23",
+    "security_P0_767": "SOURCE_RED"
+  },
+  "alternatives_hold": [
+    753,
+    741
+  ],
+  "R5_v6_separate": {
+    "pr": 750,
+    "sha": "60c73a6f9ed2585cbb9bf7aeaad8c62eef0629cb",
+    "native": "NOT_RUN"
+  },
+  "source_G0": "INDEPENDENT_PENDING",
+  "native_Unity_G1": "NOT_RUN",
+  "real_game_Save": "HOLD",
+  "private_original_510_world_wiring": "NOT_IMPLEMENTED",
+  "economy_wallet_victory_loaner_save": "NOT_IMPLEMENTED",
+  "Codex_ack": "NONE",
+  "integrator_feedback": "NOT_MEASURED",
+  "G2": "HOLD",
+  "native_manual_consent": "B0160 W25 RIG NATIVE",
+  "files": [
+    "Tools/B01/B01-60/P17W25Physical772Native/rig_native.py",
+    "Tools/B01/B01-60/P17W25Physical772Native/test_rig_native.py",
+    "Tools/B01/B01-60/P17W25Physical772Native/Invoke-B0160W25Rig.ps1",
+    "Tools/B01/B01-60/P17W25Physical772Native/README.md",
+    "Tools/B01/B01-60/P17W25Physical772Native/manifest.json",
+    ".github/workflows/b01-60-p17w25-physical772-native.yml"
+  ],
+  "no_merge": true,
+  "no_auto_upload": true,
+  "no_user_PC_access": true,
+  "no_alternative_source_mix": true,
+  "rollback": "Only remove W25 B01-60-only new branch/files; preserve owner project and all other agent sources"
+}
