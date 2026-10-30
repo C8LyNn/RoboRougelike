@@ -1,10 +1,10 @@
 {
   "schema_version": "b01-package-v1",
   "package_id": "B01-00-DISPATCH-001",
-  "revision": "1.1.0",
+  "revision": "1.2.0",
   "owner": "B01-00",
   "issue": 416,
-  "purpose": "Deterministic offline scheduler plus immutable freeze state transition; fail-closed release forbids FROZEN and CODEX_CLAIMED even with matching SHA256",
+  "purpose": "Deterministic offline swarm allocator with one-way freeze, ACTIVE-only release, Unicode/casefold portable ownership collision prevention and Windows path safety",
   "unity_version": null,
   "source_base_branch": "main",
   "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
@@ -15,8 +15,8 @@
   "files": [
     {
       "path": "Tools/B01/B01-00/W06/DISPATCH-001/dispatch.py",
-      "sha256": "0764cef23ef8e72852fd3c595aa527a2fc4331a6a31ee5a66c62df5cb9e0a896",
-      "bytes": 14600
+      "sha256": "94c6f2059a748ac723fca0188c4836f9aa8781524108af766653e98dd59bb59f",
+      "bytes": 15699
     },
     {
       "path": "Tools/B01/B01-00/W06/DISPATCH-001/test_dispatch.py",
@@ -29,14 +29,19 @@
       "bytes": 7936
     },
     {
+      "path": "Tools/B01/B01-00/W06/DISPATCH-001/test_portability.py",
+      "sha256": "094a84bc3606627866d52accd1435a01760e62f9027cae8ff37ecd07e40557c6",
+      "bytes": 6459
+    },
+    {
       "path": "Tools/B01/B01-00/W06/DISPATCH-001/snapshot_wave06.example.json",
       "sha256": "d9ccb5042f89dfef7b32a15ba034e250b2292fb8d734920abf7bb672f452dd5e",
       "bytes": 1170
     },
     {
       "path": "Tools/B01/B01-00/W06/DISPATCH-001/README.md",
-      "sha256": "2c6992ac5cbada436e334cce1eec2faa7f5a923be3946959eca180228135dc9e",
-      "bytes": 3925
+      "sha256": "5175c97568ac2909e7b8316a644a1e715c46ee55a19edde244bcbbcaa759fd50",
+      "bytes": 5227
     },
     {
       "path": "Tools/B01/B01-00/W06/DISPATCH-001/TEST_EVIDENCE/unittest.txt",
@@ -47,6 +52,11 @@
       "path": "Tools/B01/B01-00/W06/DISPATCH-001/TEST_EVIDENCE/example-plan.json",
       "sha256": "ccc27512e563af745b3ff43845c8ab762df15a6af1ee5053262997bace73713d",
       "bytes": 1159
+    },
+    {
+      "path": "Tools/B01/B01-00/W06/DISPATCH-001/TEST_EVIDENCE/W08-RED-GREEN.md",
+      "sha256": "386f91c5fd9b15c225aff786f52f3d8ce1309264f0c5c55714e28fb5c126bfd2",
+      "bytes": 2220
     },
     {
       "path": ".github/workflows/b01-00-dispatch-w06.yml",
@@ -66,36 +76,41 @@
   ],
   "tests": [
     {
-      "name": "Python unittest actual local execution",
+      "name": "W06 original 22 Python cases",
       "status": "PASS",
       "passed": 22,
       "failed": 0,
-      "skipped": 0,
-      "environment": "Python 3 local Linux",
+      "environment": "Historical original Python run; not current exact head",
       "evidence": "Tools/B01/B01-00/W06/DISPATCH-001/TEST_EVIDENCE/unittest.txt"
     },
     {
-      "name": "Deterministic illustrative CLI plan",
+      "name": "W08 adversarial RED original implementation",
+      "status": "EXPECTED_FAIL",
+      "total": 65,
+      "failures": 26,
+      "errors": 1,
+      "environment": "Windows2025 and Ubuntu24.04 on ce73208e7106e3ecdfbb8dbb5e64e4c179b1dcbf",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41045653677"
+    },
+    {
+      "name": "W08 corrected original source GREEN",
       "status": "PASS",
-      "environment": "Python 3 local Linux",
-      "evidence": "Tools/B01/B01-00/W06/DISPATCH-001/TEST_EVIDENCE/example-plan.json"
+      "total": 65,
+      "passed": 65,
+      "failed": 0,
+      "environment": "Windows2025 and Ubuntu24.04 on b6ec8a7303f954b21393ae59058e1f9e4b6bda52",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41045838687"
+    },
+    {
+      "name": "Exact W08 manifest HEAD CI",
+      "status": "NOT_RUN",
+      "environment": "Pending workflow after manifest change",
+      "evidence_url": null
     },
     {
       "name": "Unity EditMode/PlayMode",
       "status": "NOT_RUN",
-      "environment": "Not a Unity package"
-    },
-    {
-      "name": "W07 expanded original Python unit suite, 36 cases",
-      "status": "NOT_RUN",
-      "environment": "GitHub Windows2025/Ubuntu24.04 pending commit workflow",
-      "evidence": null
-    },
-    {
-      "name": "GitHub CI Windows/Ubuntu exact W07 SHA",
-      "status": "NOT_RUN",
-      "environment": "Not yet triggered at manifest commit",
-      "evidence": null
+      "environment": "Python coordination utility, no Unity source"
     }
   ],
   "qa_b01_40": {
@@ -108,13 +123,14 @@
     "reviewed_revision": null,
     "evidence_url": null
   },
-  "handoff_status": "PRODUCER_CODE_PUBLISHED_W07_QA_PENDING",
+  "handoff_status": "PRODUCER_TESTED_W08 / INDEPENDENT_QA_PENDING / NO_CODEX_ACK / UNMERGED",
   "codex_status": "NOT_REQUIRED_FOR_OFFLINE_COORDINATION; NO CODEX_ACK OR INTEGRATION CLAIMED",
   "limitations": [
     "Snapshot is illustrative and not automatically synced to live GitHub or Codex",
     "Claims coordinate only participants sharing the same reliable filesystem",
     "No native Unity/editor/gameplay claims",
-    "No local release/unfreeze for FROZEN or CODEX_CLAIMED claims; only external documented owner handback"
+    "No local release/unfreeze for FROZEN or CODEX_CLAIMED claims; only external documented owner handback",
+    "Casefold/NFKC is a conservative portable policy, not a proof of every filesystem alias; live snapshot and shared filesystem semantics must be verified externally"
   ],
   "rollback": "Remove disposable tool checkout; release owned claim with exact recorded SHA256; never automatically delete modified claims"
 }
