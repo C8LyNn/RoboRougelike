@@ -82,7 +82,14 @@ def validate(plan: dict) -> dict:
             if type(essential) is not bool:
                 raise InvalidScenario("blocks_deploy must be a real boolean")
             parts.append((pid, role, essential))
-        normalized.append((eid, won, earned, tuple(parts)))
+        core_alive_after = event.get("core_alive_after", True)
+        challenge_after = event.get("next_challenge_available_after", True)
+        if type(core_alive_after) is not bool:
+            raise InvalidScenario("core_alive_after must be a real boolean")
+        if type(challenge_after) is not bool:
+            raise InvalidScenario("next_challenge_available_after must be a real boolean")
+        normalized.append((eid, won, earned, tuple(parts),
+                           core_alive_after, challenge_after))
     return {"initial_scrap": initial, "purchase_price": purchase,
             "paid_quote_percent": percent, "quote": quote,
             "steps": tuple(normalized)}
@@ -123,31 +130,44 @@ def run_plan(plan: dict, *, cadence: str = "per_win",
     critical_at_end = 0
     no_budget_critical = 0
     loaner_used = blocked_deploy_attempts = contradicted_scripted_wins = 0
+    blocked_core_attempts = blocked_no_challenge_attempts = 0
+    core_alive = True
+    next_challenge_available = True
     observations: list[dict] = []
-    for eid, won, earned, new in p["steps"]:
-        # PRE-ENCOUNTER eligibility: pending/reserved 0HP parts remain
-        # destroyed, and cannot satisfy any essential mobility/weapon route.
-        # This is a *counterfactual design gate*, not real R3 CanDeploy.
+    for (eid, won, earned, new,
+         core_alive_after, challenge_after) in p["steps"]:
+        # PRE-ENCOUNTER safe eligibility. Core loss and absence of an eligible
+        # next challenge cannot be bypassed even by a hypothetical loaner.
         essential_before = sum(is_essential for _, is_essential in destroyed.values())
         started_with_loaner = False
-        if enforce_deploy_gate and essential_before:
-            if loaner_used < loaner_challenges:
+        reason = ("RUN_CORE_DESTROYED" if not core_alive
+                  else "NO_ELIGIBLE_NEXT_CHALLENGE" if not next_challenge_available
+                  else "ESSENTIAL_0HP_PREVENTS_DEPLOY"
+                       if enforce_deploy_gate and essential_before else None)
+        if reason:
+            if (reason == "ESSENTIAL_0HP_PREVENTS_DEPLOY"
+                    and loaner_used < loaner_challenges):
                 loaner_used += 1
                 started_with_loaner = True
             else:
                 blocked_deploy_attempts += 1
+                blocked_core_attempts += int(reason == "RUN_CORE_DESTROYED")
+                blocked_no_challenge_attempts += int(
+                    reason == "NO_ELIGIBLE_NEXT_CHALLENGE")
                 contradicted_scripted_wins += int(won)
                 observations.append({
                     "attempt": eid, "win": False, "scripted_win_blocked": bool(won),
-                    "blocked_reason": "ESSENTIAL_0HP_PREVENTS_DEPLOY",
+                    "blocked_reason": reason,
                     "wallet": wallet, "wins": wins,
                     "unavailable_mobility": sum(
                         role == "mobility" for role, _ in destroyed.values()),
                     "unavailable_essential": essential_before,
+                    "core_alive": core_alive,
+                    "next_challenge_available": next_challenge_available,
                     "still_destroyed": len(destroyed),
                     "reserved_waiting": len(reserved)})
-                # Blocked attempt NEVER consumes a queued voucher, reaches a
-                # victory, earns reward, produces more damage or starts a run.
+                # Invalid planned attempts cannot earn currency, damage a
+                # real rig, use an OS slot or consume a trusted victory.
                 continue
         # IMPORTANT W21 CORRECTION: an actual win happens BEFORE damage from
         # that encounter can enter the POST-encounter queue. Only tickets that
@@ -187,6 +207,12 @@ def run_plan(plan: dict, *, cadence: str = "per_win",
                 paid_count += 1
         wallet += earned
         reward += earned
+        # These are explicitly modeled *AFTER* encounter conditions.
+        # A destroyed core or no eligible next challenge remains blocked on
+        # subsequent events; a synthetic script cannot silently revive it.
+        core_alive = core_alive and core_alive_after
+        next_challenge_available = (
+            next_challenge_available and challenge_after)
         critical = sum(role == "mobility"
                        for role, _ in destroyed.values())
         essential = sum(is_essential for _, is_essential in destroyed.values())
@@ -206,14 +232,35 @@ def run_plan(plan: dict, *, cadence: str = "per_win",
                              "reserved_essential": reserved_essential,
                              "unreserved_essential": essential - reserved_essential,
                              "used_temporary_loaner": started_with_loaner,
+                             "core_alive": core_alive,
+                             "next_challenge_available": next_challenge_available,
                              "still_destroyed": len(destroyed),
                              "reserved_waiting": len(reserved)})
+    end_essential = sum(flag for _, flag in destroyed.values())
+    if not core_alive:
+        end_feasibility = "RUN_CORE_DESTROYED_NO_LOANER"
+    elif not next_challenge_available:
+        end_feasibility = "NO_ELIGIBLE_NEXT_CHALLENGE"
+    elif end_essential and enforce_deploy_gate:
+        end_feasibility = ("ONE_UNAPPROVED_LOANER_COUNTERFACTUAL_AVAILABLE"
+                           if loaner_used < loaner_challenges else
+                           "ESSENTIAL_0HP_NEXT_WIN_INACCESSIBLE")
+    elif end_essential:
+        end_feasibility = "ESSENTIAL_0HP_HOST_DEPLOY_UNVERIFIED"
+    else:
+        end_feasibility = "NORMAL_DEPLOY_ELIGIBLE_IN_MODEL_NOT_ACTUAL_WIN"
     return {"cadence": cadence, "bootstrap": bootstrap, "priority": priority,
+            "end_feasibility": end_feasibility,
+            "end_core_alive": core_alive,
+            "end_next_challenge_available": next_challenge_available,
+            "end_unavailable_essential": end_essential,
             "quote": quote, "attempts": len(p["steps"]), "wins": wins,
             "enforce_deploy_gate": enforce_deploy_gate,
             "hypothetical_loaner_budget": loaner_challenges,
             "hypothetical_loaner_used": loaner_used,
             "blocked_deploy_attempts": blocked_deploy_attempts,
+            "blocked_core_attempts": blocked_core_attempts,
+            "blocked_no_challenge_attempts": blocked_no_challenge_attempts,
             "contradicted_scripted_wins": contradicted_scripted_wins,
             "free": free_count, "paid": paid_count, "denied": denied_count,
             "restored": restored_count, "charged_scrap": expense,
