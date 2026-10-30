@@ -16,6 +16,8 @@ ROLES = ("mobility", "weapon", "other")
 CADENCES = ("per_win", "per_run")
 PRIORITIES = ("critical_first", "input_order")
 REWARD_TIMINGS = ("after_reservation", "before_reservation")
+APPROVED_PAID_QUOTE_PERCENT = 65
+APPROVED_POLICY_ID = "B01-P17-W24-OWNER-APPROVED-DESIGN-ORACLE"
 
 
 class InvalidScenario(ValueError):
@@ -41,12 +43,15 @@ def validate(plan: dict) -> dict:
     if not isinstance(plan, dict):
         raise InvalidScenario("scenario must be an object")
     initial = _number(plan.get("initial_scrap"), "initial_scrap")
-    purchase = _number(plan.get("purchase_price"), "purchase_price", 2)
+    purchase = _number(plan.get("purchase_price"), "purchase_price", 1)
     percent = _number(plan.get("paid_quote_percent"), "paid_quote_percent", 1)
     if percent >= 100:
         raise InvalidScenario("discounted rebuild must cost less than purchase")
     quote = purchase * percent // 100
-    if not 0 < quote < purchase:
+    # A positive purchase of 1 Scrap necessarily rounds the approved 65%
+    # quote down to 0. Zero-cost PAID reservations still count as PAID, not
+    # as an additional free-victory quota; preserve both distinct ledgers.
+    if not 0 <= quote < purchase:
         raise InvalidScenario("rounded paid quote outside valid range")
     steps = plan.get("attempts")
     if not isinstance(steps, list) or not 1 <= len(steps) <= 10000:
@@ -128,7 +133,7 @@ def run_plan(plan: dict, *, cadence: str = "per_win",
     free_epoch = -1
     free_run_used = False
     destroyed: dict[str, tuple[str, bool]] = {}
-    reserved: dict[str, tuple[str, int]] = {}
+    reserved: dict[str, tuple[str, int, bool]] = {}
     free_count = paid_count = denied_count = restored_count = 0
     expense = reward = 0
     critical_at_end = 0
@@ -206,7 +211,7 @@ def run_plan(plan: dict, *, cadence: str = "per_win",
                 continue
             wallet -= charge
             expense += charge
-            reserved[pid] = (eid, charge)
+            reserved[pid] = (eid, charge, free)
             if free:
                 free_count += 1
                 if cadence == "per_win":
@@ -268,10 +273,10 @@ def run_plan(plan: dict, *, cadence: str = "per_win",
         "NO_ELIGIBLE_NEXT_CHALLENGE",
         "ESSENTIAL_0HP_NEXT_WIN_INACCESSIBLE")
     stranded_tickets = len(reserved) if permanently_blocked_model else 0
-    stranded_paid_scrap = (sum(charge for _, charge in reserved.values())
+    stranded_paid_scrap = (sum(charge for _, charge, _ in reserved.values())
                            if permanently_blocked_model else 0)
     stranded_free_tickets = (
-        sum(charge == 0 for _, charge in reserved.values())
+        sum(is_free for _, _, is_free in reserved.values())
         if permanently_blocked_model else 0)
     return {"cadence": cadence, "bootstrap": bootstrap, "priority": priority,
             "reward_timing": reward_timing,
@@ -310,6 +315,34 @@ def compare(plan: dict, *, bootstrap: bool = True,
     return {"per_win": a, "per_run": b,
             "delta_scrap_per_run_minus_per_win":
                 b["charged_scrap"] - a["charged_scrap"]}
+
+
+def run_approved_plan(plan: dict, *,
+                      reward_timing: str = "after_reservation") -> dict:
+    """2026-10-30 OWNER APPROVED economic design policy, NOT a trusted host.
+
+    One REAL owner-validated winner is assumed for each scripted won=True
+    event. This function does NOT authenticate wins, leases, IDs, live Rig[],
+    or the single durable currency transaction. Host must do that itself.
+    No free epoch zero. One temporary loaner per run, only where explicit
+    CanDeploy evidence says essential 0HP while Core alive and challenge
+    available. Exactly 65% floor on positive purchase cost; paid-zero stays
+    a paid order, not a second coupon. Reward settlement order NOT DECIDED.
+    """
+    parsed = validate(plan)
+    approved = dict(plan)
+    approved["paid_quote_percent"] = APPROVED_PAID_QUOTE_PERCENT
+    out = run_plan(approved, cadence="per_win", bootstrap=False,
+                   priority="critical_first", enforce_deploy_gate=True,
+                   loaner_challenges=1, reward_timing=reward_timing)
+    out["owner_approved_policy"] = APPROVED_POLICY_ID
+    out["actual_trusted_victory_attestation"] = "NOT_AVAILABLE_MODEL_ONLY"
+    out["approved_one_free_per_verified_win_assumed"] = True
+    out["approved_loaner_weaker_asset"] = "DESIGN_CONTRACT_ONLY_NOT_SPAWNED"
+    out["source_quote_overridden_from"] = parsed["paid_quote_percent"]
+    out["quote_floor_formula"] = "purchase_price*65//100"
+    out["live_reward_settlement"] = "OWNER_IMPLEMENTATION_UNVERIFIED"
+    return out
 
 
 def synthetic_batch(*, seed: int = 20261030, episodes: int = 200,
@@ -382,7 +415,11 @@ def main(argv: list[str] | None = None) -> int:
                               plan, enforce_deploy_gate=True,
                               loaner_challenges=1),
                           "reward_credit_before_order": compare(
-                              plan, reward_timing="before_reservation")
+                              plan, reward_timing="before_reservation"),
+                          "approved_owner_policy": run_approved_plan(plan),
+                          "approved_owner_policy_reward_first_alternative":
+                              run_approved_plan(
+                                  plan, reward_timing="before_reservation")
                       } for name, plan in items["cases"].items()}}
     except (InvalidScenario, ValueError, OSError) as exc:
         print("MODEL_INPUT_REJECTED: " + str(exc), file=sys.stderr)
