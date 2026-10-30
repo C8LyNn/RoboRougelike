@@ -1,4 +1,4 @@
-# B01-00 RECEIPT-LATCH-001 v1.0.0 / PASS17 W09
+# B01-00 RECEIPT-LATCH-001 v1.1.0 / PASS17 W10
 
 Offline Python 3.11 standard-library executable for B01-00 coordinating multi-agent package receipts. It **does not validate Github provenance online**; it checks whether the *supplied* immutable snapshot is internally consistent before B01-40/B01-60 and the authorized operator verify the referenced original links/source. Source-ready is a **candidate for external review**, never formal G0, G1, Codex ACK or integration.
 
@@ -23,3 +23,18 @@ The tool rejects inconsistent paths, roles, source hashes, missing test counts, 
 Installation: copy only this isolated directory and run Python 3.11. Rollback: delete the copied tool and any self-generated non-canonical report files; **never** remove frozen handoff or QA receipts. No external writes or permanent side effects. GitHub links and actor names can be forged in local JSON; a result indicating consistent declared receipts is only advisory until reviewers verify the real GitHub objects/commits and provenance. Do not use this as an automated release gate without integrating authenticated source verification and authorized sign-off. Native Unity tests are NOT_RUN for this Python tool.
 
 Receiver: **B01-40** checks source/GitHub receipts, **B01-60** independently reproduces tests and negative cases, **B01-00** uses decision output to avoid premature source offer. Formal source freeze/offer only by authorized independent process under [#276](https://github.com/C8LyNn/RoboRougelike/issues/276), not by this CLI.
+
+## WAVE 10 — actual read-only GitHub provenance (new executable)
+
+`github_live.py` adds a new, separate real capability to the existing W09 JSON structure gate. It performs **GET-only** requests using Python stdlib to the fixed `api.github.com/repos/C8LyNn/RoboRougelike` host and a three-family path allowlist (pull request, Actions workflow run, issue comment), never an input-controlled external URL. The client forbids redirects and overly large replies, uses a finite timeout, and optionally accepts `GITHUB_TOKEN` from the environment. Do not place credentials in repository files or CLI arguments.
+
+```sh
+python Tools/B01/B01-00/W09/RECEIPT-LATCH-001/github_live.py Tools/B01/B01-00/W09/RECEIPT-LATCH-001/example_hold.json --require-source-objects
+python -m unittest discover -s Tools/B01/B01-00/W09/RECEIPT-LATCH-001 -p "test_*.py" -v
+```
+
+The supplied exact historical W08 source receipt points to [PR #427](https://github.com/C8LyNn/RoboRougelike/pull/427) and [its original passing workflow](https://github.com/C8LyNn/RoboRougelike/actions/runs/41046087105). This command verifies that the **current** PR head and its linked Actions run match the same exact immutable SHA, original repository, successful completion and run URL. If PR head is later replaced or moved, the tool **HOLDs** conservatively; it does not claim historical ancestry. Original CI test counts are **not** independently replayed or read from GitHub job logs by this command; the run status is only a source-object check.
+
+For QA comments, the tool checks existence, canonical comment URL, exact SHA mentioned in the body, and presence of a GitHub user login. **This cannot authenticate role identity or independent review content**, especially because multiple swarm roles can share a GitHub account. Its result therefore remains `HOLD_MANUAL_INDEPENDENT_QA`, `CODEX_ACK_NOT_AUTHENTICATED` and `G2_HOLD` regardless of passing GET checks. An OFFLINE JSON status never promotes to `OFFERED`, `CODEX_CLAIMED`, `INTEGRATED` or native `UNITY_PASS`. Authorized B01-40/60 evidence review is still required.
+
+The W10 workflow exercises the **original 76-case Python suite** on Windows 2025 and Ubuntu 24.04 and performs a real read-only API call for the example PR #427. A successful live check proves only accessible PR/CI metadata, not formal acceptance. If GitHub permission, network, token, rate limits, source head drift, or API objects prevent validation, the process exits nonzero with `HOLD`. Installation and rollback still consist solely of copying/deleting the own isolated tool and reports; no GitHub content is modified by either CLI.
