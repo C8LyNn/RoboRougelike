@@ -1,0 +1,60 @@
+name: B01-61 W21 exact owner canonical API V2 691 Prepare cleanup and multiowner
+on:
+  push:
+    branches: [qa/b01-61-p17w21-api691-orphan-cleanup-exact]
+  pull_request:
+    paths:
+      - "Tools/B01/B01-61/P17W21API691CleanupQA/**"
+      - ".github/workflows/b01-61-w21-api691-owned-stage-source.yml"
+jobs:
+  original-api-v2-source:
+    runs-on: ${{ matrix.os }}
+    strategy: {fail-fast: false, matrix: {os: [windows-2025, ubuntu-24.04]}}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Verify exact canonical original V2 source SHA and QA scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-61/P17W21API691CleanupQA/source_guard.py 2>&1 | tee pins.log
+      - name: Compile original owner API V2 and unchanged frozen Save/W06 + original OS disk
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build Tools/B01/B01-61/P17W21API691CleanupQA/API691IndependentQA.csproj -c Release --warnaserror 2>&1 | tee build.log
+      - name: Execute partial stage cleanup and inherited live two owner source release RED
+        shell: bash
+        run: |
+          set +e
+          p=Tools/B01/B01-61/P17W21API691CleanupQA/API691IndependentQA.csproj
+          dotnet run --no-build --project "$p" -c Release -- --evidence > source.log 2>&1
+          e=$?
+          cat source.log
+          dotnet run --no-build --project "$p" -c Release -- --release > release.log 2>&1
+          rel=$?
+          cat release.log
+          printf 'SOURCE_EXIT=%s RELEASE_EXIT=%s UNITY_NATIVE_G1_NOT_RUN\n' "$e" "$rel" | tee gate.txt
+          test "$e" = 0 && test "$rel" = 3 || exit 1
+          grep -q B0161_W21_API691_EXACT_SOURCE_WITNESSES_PASS source.log || exit 1
+          grep -q W21_691_685_PREPARE_PARTIAL_CLEANUP_GREEN source.log || exit 1
+          grep -q W21_691_685_FAILED_STAGE_CLEANUP_QUARANTINE_GREEN source.log || exit 1
+          grep -q W21_691_INHERITED_688_SAME_SLOT_TWO_LIVE_OWNER_SOURCE_RED source.log || exit 1
+          grep -q W21_CANONICAL_API691_RELEASE_HOLD release.log || exit 1
+          echo "PREPARE_FIX_SOURCE_GREEN_GLOBAL_LIVE_OWNER_RELEASE_RED"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b0161-w21-api691-${{ matrix.os }}
+          path: |
+            pins.log
+            build.log
+            source.log
+            release.log
+            gate.txt
+          if-no-files-found: warn

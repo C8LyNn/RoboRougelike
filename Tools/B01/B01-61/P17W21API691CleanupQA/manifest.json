@@ -1,0 +1,12 @@
+{
+  "package": "B01-61-W21-API691-V2-INDEPENDENT-PREPARE-CLEANUP-QA",
+  "version": "1.0.0",
+  "candidate_pr": 691,
+  "candidate_sha": "809f82575c638e1b4d2806b5f417bddab6c0871a",
+  "source_blob": "704e774dedd5be5af26e0791fba87ecdb109ae2a",
+  "source_691_only": true,
+  "alt_682": "HOLD",
+  "native_Unity": "NOT_RUN",
+  "release": "HOLD",
+  "merged": false
+}
