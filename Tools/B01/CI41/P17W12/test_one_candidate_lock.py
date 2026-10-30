@@ -136,15 +136,21 @@ class OneCandidateLockTests(unittest.TestCase):
             self.check(plan=d,sha=newsha)
 
     def test_17_reject_unfrozen_target_with_selected_path(self):
-        # New source descends from a real Git target commit that already has a V2 path.
+        # Build a different *real* target -> frozen parent -> candidate commit
+        # lineage; the target already contains a conflicting V2-owned asset.
+        git(self.repo,"reset","--hard",self.base)
         self.put("Assets/B0123SecureReattachV2/Runtime/Foreign.cs","class Foreign {}\n")
-        target=self.commit("unsafe target already includes selected source")
-        nextsha=self.commit("candidate descendant target")
+        target=self.commit("unsafe original target already includes selected source")
+        self.put("Assets/InheritedW06.cs","class FrozenLedger {}\n")
+        parent=self.commit("W06-like immutable ancestor of selected")
+        for i,path in enumerate(gate.REQUIRED):
+            self.put(path,"// Different full source fixture "+str(i)+"\n")
+        candidate=self.commit("actual selected descendant target")
         d=copy.deepcopy(self.plan)
-        d["candidate_sha"]=nextsha
-        d["imports"]=[{"pr":510,"sha":nextsha}]
+        d["candidate_sha"]=candidate
+        d["imports"]=[{"pr":510,"sha":candidate}]
         with self.assertRaisesRegex(gate.Rejected,"TARGET_HAS_LEGACY_OR_SELECTION_COLLISION"):
-            self.check(plan=d,sha=nextsha,base=target,parent=self.parent)
+            self.check(plan=d,sha=candidate,base=target,parent=parent)
 
     def test_18_reject_source_commit_missing_from_git_repo(self):
         d=copy.deepcopy(self.plan)
