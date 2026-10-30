@@ -1,0 +1,54 @@
+name: B01-62 W20 independent real original #669 valid-envelope rollback and fork QA
+on:
+  push:
+    branches: [qa/b01-62-p17w20-slotsave669-independent-recovery]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W20SlotSave669QA/**'
+      - '.github/workflows/b01-62-p17w20-669-independent-recovery.yml'
+permissions:
+  contents: read
+jobs:
+  original-669:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Verify immutable original #669 and frozen direct C# source blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W20SlotSave669QA"
+          mkdir -p "$dir/.source" "$dir/.output"
+          git fetch --no-tags origin 33094f154c7b91119b36d58aab285e6e83c5de57 d94400d95d13db7f27e1533df05c9292d5380431 d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121
+          test "$(git hash-object Tools/B01/B01-62/P17W20SingleFileSaveSlot/SingleFileSaveSlot.cs)" = db7745635164d9eb6b10f3246538700158130b7b
+          git show 33094f154c7b91119b36d58aab285e6e83c5de57:Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs > "$dir/.source/DetachedSnapshotContract.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs > "$dir/.source/DebrisImpulseCore.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs > "$dir/.source/SecureRigSpec.cs"
+          test "$(git hash-object "$dir/.source/DetachedSnapshotContract.cs")" = b52e511c370f5fca56c74029050844dc8cbb7f9a
+          test "$(git hash-object "$dir/.source/DebrisImpulseCore.cs")" = fa1aa5e531927cbe73cf5fdfe161b4a981316db5
+          test "$(git hash-object "$dir/.source/SecureRigSpec.cs")" = b680ed0ec969ac23203fa55eab7b90f8daa86e43
+          echo B0162_W20_669_ACTUAL_ORIGINAL_GIT_SOURCE_PINNED | tee "$dir/.output/source.log"
+      - name: Execute original #669 + #556/W06 10 independent real filesystem and Light/Heavy stable ID cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W20SlotSave669QA"
+          dotnet run --project "$dir/Original669RecoveryQA.csproj" -c Release --verbosity minimal 2>&1 | tee "$dir/.output/executed.log"
+          grep -q 'B0162_W20_669_INDEPENDENT_QA_TOTAL 10 PASS 10 FAIL 0' "$dir/.output/executed.log"
+          grep -q 'B0162_W20_669_VALID_OLD_ENVELOPE_EXTERNAL_ROLLBACK_RED_REPRODUCED' "$dir/.output/executed.log"
+          grep -q 'B0162_W20_669_VALID_SAME_GENERATION_EXTERNAL_FORK_RED_REPRODUCED' "$dir/.output/executed.log"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b0162-w20-original669-rollback-${{ matrix.os }}
+          path: Tools/B01/B01-62/P17W20SlotSave669QA/.output/
+          if-no-files-found: error
