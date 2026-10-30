@@ -64,8 +64,8 @@
     },
     {
       "path": "Tools/B01/B01-11/P17W24RecoveryHud001/verify_package.py",
-      "bytes": 2418,
-      "sha256": "ed4f635ef4a241dff5b71c997f1b9a7e12acd138057104b31cc569e2e3ac19e6"
+      "bytes": 2468,
+      "sha256": "f599ffb2866dca7d4a42a7cfb0e8d2f0aa695a56b55cc7a194a137f216610fc0"
     },
     {
       "path": ".github/workflows/b01-11-p17w24-recoveryhud.yml",
