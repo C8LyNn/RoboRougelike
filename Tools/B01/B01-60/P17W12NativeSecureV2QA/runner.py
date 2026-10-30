@@ -33,6 +33,10 @@ OWN={BASE+s for s in ("runner.py","IndependentSecureV2PlayMode.cs",
 # W13 own versioned rollback hardening only; exact #510 and frozen W12 #532 unchanged.
 OWN|={"Tools/B01/B01-60/P17W13NativeRollbackQA/"+n for n in ("audit.py","README.md","manifest.json")}
 OWN.add(".github/workflows/b01-60-p17w13-native-rollback-audit.yml")
+# W14 isolated QA-only native XML case identity gate; never touches immutable #510.
+OWN|={"Tools/B01/B01-60/P17W14NativeResultProof/"+n for n in
+     ("test_native_result_gate.py","README.md","manifest.json")}
+OWN.add(".github/workflows/b01-60-p17w14-native-xml-case-gate.yml")
 PREFIXES=("Assets/B0123DebrisRepulse001","Assets/B0123SecureReattachV2")
 NATIVE="Assets/B0160SecureV2NativeQA"
 PROJECT_EXTRA=("Packages/manifest.json","Packages/packages-lock.json",
@@ -273,16 +277,66 @@ def rollback(data,items,root):
  # Fail-closed scan completes BEFORE the first destructive operation.
  shutil.rmtree(root)
  require(not root.exists(),"rollback did not remove QA project")
+def expected_independent_native_cases(platform):
+ # Test identities from the existing frozen #532 independent Unity NUnit source,
+ # not merely a potentially forged summary 'passed=14' counter.
+ require(platform in ("EditMode","PlayMode"),"unsupported native platform")
+ if platform=="EditMode":
+  names=(
+   "ExactOwnerRuntimeAndOriginalW06AreLinkableByUnity",
+   "RealOriginalW06LedgerClearFailsClosedOnMissingIdBeforeCallbacks",
+  )
+  typename="SecureV2IndependentNativeEditMode"
+ else:
+  aliases=(
+   "ColliderOnLayer31RefusesWithoutAnyBodyOrLedgerMutation",
+   "MissingConsumedIdRefusesWithoutRealRigidbodyPartialCommit",
+  )
+  names=tuple(
+   name+"("+str(index)+","+str(route)+")"
+   for name in aliases for index in (0,1) for route in (0,1,2)
+  )+(
+   "ForcedMidCommitExceptionRestoresRealRigidbodyAndConsumedId",
+   "RollbackFailureIsQuarantinedRatherThanSilentlyAccepted",
+  )
+  typename="SecureV2IndependentNativePlayMode"
+ return {"B01.SecureReattachV2.NativeQA."+typename+"."+name for name in names}
+
 def parse_xml(file,minimum):
  require(file.is_file(),"Unity native missing NUnit XML "+str(file))
+ platform={2:"EditMode",14:"PlayMode"}.get(minimum)
+ require(platform is not None,"unrecognized native suite threshold")
  root=ET.parse(file).getroot()
  result=root.attrib.get("result","")
  passed=int(root.attrib.get("passed",0))
  failed=int(root.attrib.get("failed",0))
  require(root.tag=="test-run" and result=="Passed" and
          passed>=minimum and failed==0,
-         "native Unity XML real test failures "+str(root.attrib))
- return {"result":result,"passed":passed,"failed":failed,"xml":str(file)}
+         "native Unity XML failed or unverified run "+str(root.attrib))
+ expected={x.replace(" ","") for x in expected_independent_native_cases(platform)}
+ found={}
+ for case in root.iter("test-case"):
+  fullname=case.attrib.get("fullname","").replace(" ","")
+  if fullname in expected:
+   found[fullname]=found.get(fullname,0)+1
+   require(case.attrib.get("result")=="Passed",
+           "independent native NUnit case failed/skipped/inconclusive: "+fullname)
+ require(set(found)==expected and all(n==1 for n in found.values()),
+         "NATIVE_NOT_VERIFIED: absent, duplicate, or substituted B01-60 NUnit cases: "+
+         repr(sorted(expected-set(found)))+" duplicated="+
+         repr(sorted(k for k,v in found.items() if v!=1)))
+ return {"result":result,"passed":passed,"failed":failed,
+         "verified_independent_cases":len(expected),"xml":str(file)}
+
+def require_editor_version_log(path):
+ # Unity -logFile is mandatory, not an optional cosmetic artifact.
+ # The exact Editor.log can be preserved for independent host inspection.
+ require(path.is_file() and path.stat().st_size>0,
+         "NATIVE_NOT_VERIFIED: real Unity Editor.log missing/empty "+str(path))
+ log=path.read_text(encoding="utf-8",errors="replace")
+ require("6000.3.14f1" in log,
+         "NATIVE_NOT_VERIFIED: Unity Editor.log lacks selected editor version 6000.3.14f1")
+ return True
 def main():
  p=argparse.ArgumentParser()
  p.add_argument("--mode",choices=("preflight","native"),default="preflight")
@@ -352,7 +406,9 @@ def main():
      print("B01_60_W12_NATIVE_FAILED_OR_ACTIVATION_BLOCKED",platform,
            "returncode",started.returncode,"xml_exists",xml.exists())
      return 4
-    real[platform]=parse_xml(xml,min_tests)
+    # Fail closed on missing/wrong Unity log or forged aggregate-only NUnit XML.
+   require_editor_version_log(log)
+   real[platform]=parse_xml(xml,min_tests)
    (out/"native-verdict.json").write_text(json.dumps(
      {"native_unity":"EXECUTED","G1":"PASS","owner_sha":SHA,"results":real},
      sort_keys=True,indent=2)+"\n")
