@@ -123,5 +123,11 @@ class OriginalOwnerTemporalTests(unittest.TestCase):
         with self.assertRaisesRegex(Reject,"ORIGINAL_MAP_PROVENANCE_DRIFT"):
             inspect(v,self.maps,require_pins=True)
 
+    def test_17_reject_mislabelled_original_map_pr_even_when_map_bytes_match(self):
+        v=copy.deepcopy(self.original)
+        v["levels"][0]["mapPR"]=346
+        with self.assertRaisesRegex(Reject,"ORIGINAL_MAP_PROVENANCE_DRIFT"):
+            inspect(v,self.maps,require_pins=True)
+
 if __name__=="__main__":
     unittest.main()
