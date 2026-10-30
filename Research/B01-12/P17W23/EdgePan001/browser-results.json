@@ -1,0 +1,358 @@
+{
+  "tests": [
+    {
+      "case": "320: rendering",
+      "status": "PASS"
+    },
+    {
+      "case": "320: stage bounded",
+      "status": "PASS"
+    },
+    {
+      "case": "320: no document overflow",
+      "status": "PASS"
+    },
+    {
+      "case": "320: initial scroll",
+      "status": "PASS"
+    },
+    {
+      "case": "320: toggler checked",
+      "status": "PASS"
+    },
+    {
+      "case": "320: first module visible",
+      "status": "PASS"
+    },
+    {
+      "case": "320: dragging active",
+      "status": "PASS"
+    },
+    {
+      "case": "320: horizontal pan",
+      "status": "PASS"
+    },
+    {
+      "case": "320: vertical pan",
+      "status": "PASS"
+    },
+    {
+      "case": "320: finite pan",
+      "status": "PASS"
+    },
+    {
+      "case": "320: held part remains under pointer X",
+      "status": "PASS"
+    },
+    {
+      "case": "320: held part remains under pointer Y",
+      "status": "PASS"
+    },
+    {
+      "case": "320: end clears drag",
+      "status": "PASS"
+    },
+    {
+      "case": "320: stop after release",
+      "status": "PASS"
+    },
+    {
+      "case": "320: reset zero",
+      "status": "PASS"
+    },
+    {
+      "case": "320: right preset",
+      "status": "PASS"
+    },
+    {
+      "case": "320: left preset",
+      "status": "PASS"
+    },
+    {
+      "case": "320: disable",
+      "status": "PASS"
+    },
+    {
+      "case": "320: enable",
+      "status": "PASS"
+    },
+    {
+      "case": "320: aria live",
+      "status": "PASS"
+    },
+    {
+      "case": "320: no js error",
+      "status": "PASS"
+    },
+    {
+      "case": "320: viewport after",
+      "status": "PASS"
+    },
+    {
+      "case": "768: rendering",
+      "status": "PASS"
+    },
+    {
+      "case": "768: stage bounded",
+      "status": "PASS"
+    },
+    {
+      "case": "768: no document overflow",
+      "status": "PASS"
+    },
+    {
+      "case": "768: initial scroll",
+      "status": "PASS"
+    },
+    {
+      "case": "768: toggler checked",
+      "status": "PASS"
+    },
+    {
+      "case": "768: first module visible",
+      "status": "PASS"
+    },
+    {
+      "case": "768: dragging active",
+      "status": "PASS"
+    },
+    {
+      "case": "768: horizontal pan",
+      "status": "PASS"
+    },
+    {
+      "case": "768: vertical pan",
+      "status": "PASS"
+    },
+    {
+      "case": "768: finite pan",
+      "status": "PASS"
+    },
+    {
+      "case": "768: held part remains under pointer X",
+      "status": "PASS"
+    },
+    {
+      "case": "768: held part remains under pointer Y",
+      "status": "PASS"
+    },
+    {
+      "case": "768: end clears drag",
+      "status": "PASS"
+    },
+    {
+      "case": "768: stop after release",
+      "status": "PASS"
+    },
+    {
+      "case": "768: reset zero",
+      "status": "PASS"
+    },
+    {
+      "case": "768: right preset",
+      "status": "PASS"
+    },
+    {
+      "case": "768: left preset",
+      "status": "PASS"
+    },
+    {
+      "case": "768: disable",
+      "status": "PASS"
+    },
+    {
+      "case": "768: enable",
+      "status": "PASS"
+    },
+    {
+      "case": "768: aria live",
+      "status": "PASS"
+    },
+    {
+      "case": "768: no js error",
+      "status": "PASS"
+    },
+    {
+      "case": "768: viewport after",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: rendering",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: stage bounded",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: no document overflow",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: initial scroll",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: toggler checked",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: first module visible",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: dragging active",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: horizontal pan",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: vertical pan",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: finite pan",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: held part remains under pointer X",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: held part remains under pointer Y",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: end clears drag",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: stop after release",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: reset zero",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: right preset",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: left preset",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: disable",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: enable",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: aria live",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: no js error",
+      "status": "PASS"
+    },
+    {
+      "case": "1280: viewport after",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: rendering",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: stage bounded",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: no document overflow",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: initial scroll",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: toggler checked",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: first module visible",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: dragging active",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: horizontal pan",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: vertical pan",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: finite pan",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: held part remains under pointer X",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: held part remains under pointer Y",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: end clears drag",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: stop after release",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: reset zero",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: right preset",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: left preset",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: disable",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: enable",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: aria live",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: no js error",
+      "status": "PASS"
+    },
+    {
+      "case": "1920: viewport after",
+      "status": "PASS"
+    }
+  ],
+  "pass": 88,
+  "fail": 0
+}

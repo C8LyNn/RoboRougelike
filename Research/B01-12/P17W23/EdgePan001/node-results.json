@@ -1,0 +1,291 @@
+{
+  "tests": [
+    {
+      "case": "initial valid",
+      "status": "PASS"
+    },
+    {
+      "case": "initial bounds reject",
+      "status": "PASS"
+    },
+    {
+      "case": "no pan without drag",
+      "status": "PASS"
+    },
+    {
+      "case": "during drag scroll denied",
+      "status": "PASS"
+    },
+    {
+      "case": "pan right from middle",
+      "status": "PASS"
+    },
+    {
+      "case": "pan left from middle",
+      "status": "PASS"
+    },
+    {
+      "case": "pan up",
+      "status": "PASS"
+    },
+    {
+      "case": "pan down",
+      "status": "PASS"
+    },
+    {
+      "case": "center deadzone",
+      "status": "PASS"
+    },
+    {
+      "case": "corner diagonal",
+      "status": "PASS"
+    },
+    {
+      "case": "clamp left top",
+      "status": "PASS"
+    },
+    {
+      "case": "clamp right bottom",
+      "status": "PASS"
+    },
+    {
+      "case": "wrong pointer",
+      "status": "PASS"
+    },
+    {
+      "case": "end prevents motion",
+      "status": "PASS"
+    },
+    {
+      "case": "cancel safely",
+      "status": "PASS"
+    },
+    {
+      "case": "disable cancels",
+      "status": "PASS"
+    },
+    {
+      "case": "disabled pan no motion",
+      "status": "PASS"
+    },
+    {
+      "case": "enable restores",
+      "status": "PASS"
+    },
+    {
+      "case": "view cannot change mid-gesture",
+      "status": "PASS"
+    },
+    {
+      "case": "view clamps previous scroll",
+      "status": "PASS"
+    },
+    {
+      "case": "RESET state with enabled retained",
+      "status": "PASS"
+    },
+    {
+      "case": "monotonic revisions",
+      "status": "PASS"
+    },
+    {
+      "case": "bounded revision cap",
+      "status": "PASS"
+    },
+    {
+      "case": "no mutation on rejected event",
+      "status": "PASS"
+    },
+    {
+      "case": "deterministic replay",
+      "status": "PASS"
+    },
+    {
+      "case": "reject negative dt",
+      "status": "PASS"
+    },
+    {
+      "case": "reject too large dt",
+      "status": "PASS"
+    },
+    {
+      "case": "reject NaN dt",
+      "status": "PASS"
+    },
+    {
+      "case": "reject string dt",
+      "status": "PASS"
+    },
+    {
+      "case": "reject missing dt",
+      "status": "PASS"
+    },
+    {
+      "case": "reject extra field",
+      "status": "PASS"
+    },
+    {
+      "case": "reject unknown",
+      "status": "PASS"
+    },
+    {
+      "case": "reject non-object",
+      "status": "PASS"
+    },
+    {
+      "case": "reject array",
+      "status": "PASS"
+    },
+    {
+      "case": "reject invalid start",
+      "status": "PASS"
+    },
+    {
+      "case": "reject string pointer",
+      "status": "PASS"
+    },
+    {
+      "case": "reject extra START",
+      "status": "PASS"
+    },
+    {
+      "case": "reject wrong enabled",
+      "status": "PASS"
+    },
+    {
+      "case": "reject bad view",
+      "status": "PASS"
+    },
+    {
+      "case": "reject invalid scroll",
+      "status": "PASS"
+    },
+    {
+      "case": "edge profile 0",
+      "status": "PASS"
+    },
+    {
+      "case": "edge profile 1",
+      "status": "PASS"
+    },
+    {
+      "case": "edge profile 2",
+      "status": "PASS"
+    },
+    {
+      "case": "edge profile 3",
+      "status": "PASS"
+    },
+    {
+      "case": "edge profile 4",
+      "status": "PASS"
+    },
+    {
+      "case": "edge profile 5",
+      "status": "PASS"
+    },
+    {
+      "case": "edge profile 6",
+      "status": "PASS"
+    },
+    {
+      "case": "edge profile 7",
+      "status": "PASS"
+    },
+    {
+      "case": "edge profile 8",
+      "status": "PASS"
+    },
+    {
+      "case": "edge profile 9",
+      "status": "PASS"
+    },
+    {
+      "case": "edge profile 10",
+      "status": "PASS"
+    },
+    {
+      "case": "edge profile 11",
+      "status": "PASS"
+    },
+    {
+      "case": "edge profile 12",
+      "status": "PASS"
+    },
+    {
+      "case": "edge profile 13",
+      "status": "PASS"
+    },
+    {
+      "case": "edge profile 14",
+      "status": "PASS"
+    },
+    {
+      "case": "edge profile 15",
+      "status": "PASS"
+    },
+    {
+      "case": "edge profile 16",
+      "status": "PASS"
+    },
+    {
+      "case": "edge profile 17",
+      "status": "PASS"
+    },
+    {
+      "case": "edge profile 18",
+      "status": "PASS"
+    },
+    {
+      "case": "edge profile 19",
+      "status": "PASS"
+    },
+    {
+      "case": "edge profile 20",
+      "status": "PASS"
+    },
+    {
+      "case": "edge profile 21",
+      "status": "PASS"
+    },
+    {
+      "case": "reject state missing version",
+      "status": "PASS"
+    },
+    {
+      "case": "reject state unknown state key",
+      "status": "PASS"
+    },
+    {
+      "case": "reject state negative scroll",
+      "status": "PASS"
+    },
+    {
+      "case": "reject state oversize scroll",
+      "status": "PASS"
+    },
+    {
+      "case": "reject state bad rev",
+      "status": "PASS"
+    },
+    {
+      "case": "reject state bad pointer",
+      "status": "PASS"
+    },
+    {
+      "case": "reject state array drag",
+      "status": "PASS"
+    },
+    {
+      "case": "reject state nonfinite canvas",
+      "status": "PASS"
+    },
+    {
+      "case": "reject state oversize view",
+      "status": "PASS"
+    }
+  ],
+  "pass": 71,
+  "fail": 0,
+  "version": "v22.16.0"
+}
