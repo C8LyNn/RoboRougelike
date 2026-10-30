@@ -1,0 +1,12 @@
+{
+  "package": "B01-23-DETACHED-SAVE-CONTRACT-001",
+  "version": "2.0.0",
+  "selected_save_lineage": "#549",
+  "supersedes_sha": "6da2c523e03766cd5a6deaed0cb3cccf8765354b",
+  "other_save_contract_544": "ALT_HOLD",
+  "frozen_gameplay_pr_510": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "original_red_qa": "#550",
+  "unity_native": "NOT_RUN",
+  "savegame_host": "NOT_INTEGRATED",
+  "codex_ack": false
+}
