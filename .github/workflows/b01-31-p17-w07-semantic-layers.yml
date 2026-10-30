@@ -1,0 +1,53 @@
+name: B01-31 PASS17 W07 A1 semantic layer real-art exporter
+
+on:
+  push:
+    branches:
+      - art/b01-31-p17w07-a1-semantic-layers-001
+    paths:
+      - 'Docs/B01Concept/P17/W07/A1-SEMANTIC-LAYERS-001/**'
+      - '.github/workflows/b01-31-p17-w07-semantic-layers.yml'
+  pull_request:
+    paths:
+      - 'Docs/B01Concept/P17/W07/A1-SEMANTIC-LAYERS-001/**'
+      - '.github/workflows/b01-31-p17-w07-semantic-layers.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  render-original-component-pngs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch original immutable source
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=1 origin refs/heads/art/b01-31-p17-w02-a1-view-icons-001
+          test "$(git rev-parse FETCH_HEAD)" = "759c3471aab998b8ae1f153a9d4921401dddc749"
+      - name: Install pinned original art raster dependencies
+        run: python -m pip install --disable-pip-version-check 'CairoSVG==2.8.2' 'Pillow==11.3.0'
+      - name: Generate real PNGs and positive negative source tests
+        run: python Docs/B01Concept/P17/W07/A1-SEMANTIC-LAYERS-001/build_semantic_layers.py
+      - name: Repeat original export and require deterministic physical PNG hashes
+        shell: bash
+        run: |
+          BEFORE="$(sha256sum Docs/B01Concept/P17/W07/A1-SEMANTIC-LAYERS-001/rendered/receipt.json | awk '{print $1}')"
+          python Docs/B01Concept/P17/W07/A1-SEMANTIC-LAYERS-001/build_semantic_layers.py
+          AFTER="$(sha256sum Docs/B01Concept/P17/W07/A1-SEMANTIC-LAYERS-001/rendered/receipt.json | awk '{print $1}')"
+          test "$BEFORE" = "$AFTER"
+      - name: Upload physical original PNG artifact and receipts
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-31-p17w07-a1-semantic-layers
+          path: Docs/B01Concept/P17/W07/A1-SEMANTIC-LAYERS-001/rendered/
+          if-no-files-found: error
+          retention-days: 30

@@ -1,0 +1,79 @@
+{
+  "package_id": "B01-31-A1-SEMANTIC-LAYERS-001",
+  "version": "P17-W07-R1",
+  "owner": "B01-31",
+  "purpose": "Actual transparent 2D component sprites and whole-assembly source reference; source 3 distinct A1 views; not mechanical units",
+  "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "upstream": {
+    "pr": 377,
+    "commit": "759c3471aab998b8ae1f153a9d4921401dddc749",
+    "path": "Docs/B01Concept/P17/W02/A1-VIEW-ICONS-001/",
+    "blobs": {
+      "face": "3b18e0b2e02c550bdd667fe16f9c8501b88c4520",
+      "side": "9037da9ae1a44776475437b1c968a74ea84bbf9a",
+      "top": "8adb61ccdc4bd1a4dc962579184a83a7a8564236"
+    }
+  },
+  "views": [
+    "face",
+    "side",
+    "top"
+  ],
+  "sizes": [
+    128,
+    256
+  ],
+  "png_count": 28,
+  "semantics": [
+    {
+      "id": "part-mount",
+      "part": "mount-proposal"
+    },
+    {
+      "id": "part-arm",
+      "part": "support-arm"
+    },
+    {
+      "id": "part-damper",
+      "part": "damper-proposal"
+    },
+    {
+      "id": "part-wheel",
+      "part": "wheel"
+    }
+  ],
+  "output": "24 component full-canvas transparent RGBA PNGs + 3 source assembly PNGs + 1 visual contact sheet + JSON source/PNG hashes",
+  "runner": "python Docs/B01Concept/P17/W07/A1-SEMANTIC-LAYERS-001/build_semantic_layers.py",
+  "dependencies": [
+    "Python 3.11",
+    "CairoSVG==2.8.2",
+    "Pillow==11.3.0",
+    "original PR #377 Git commit"
+  ],
+  "design_gate": {
+    "A1_source": "original concept, research only",
+    "G_DESIGN": "PENDING",
+    "MODEL_JOB": "NOT_AUTHORIZED"
+  },
+  "exclusions": [
+    "Assets/**",
+    "game/physics/Unity integration",
+    "Codex source",
+    "CHL/PARTSIZE",
+    "B01-12/30/32 ownership"
+  ],
+  "receiver": "B01-40 source/scope/rollback, B01-60 independent actual PNG QA, B01-00 #79 gate, Codex sole integrator",
+  "rollback": "Delete only Docs/B01Concept/P17/W07/A1-SEMANTIC-LAYERS-001/** and .github/workflows/b01-31-p17-w07-semantic-layers.yml on disposable worktree",
+  "status": "PRODUCER_SOURCE_TEST_PASS__INDEPENDENT_QA_PENDING__NOT_OFFERED__NOT_INTEGRATED",
+  "test_contract": {
+    "expected_png": 28,
+    "required_source_checks": "Git blobs face, side, top + exact semantic groups",
+    "positive": "alpha/canvas/PNG readback, reconstruction IoU >=0.985, per-file SHA256",
+    "negative": "missing original semantic wheel, duplicated arm, opaque raster, tampered SVG blob and PNG SHA",
+    "CI_owner": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41038086859",
+    "CI_result": "68/68 PASS on previous HEAD; final manifest-only commit will require exact-SHA rerun",
+    "native_EditMode": "NOT_RUN (Unity activation preflight failed)",
+    "native_PlayMode": "NOT_RUN (Unity activation preflight failed)",
+    "independent_B01_40_B01_60": "PENDING"
+  }
+}
