@@ -26,7 +26,7 @@ def source(path):
 def blob(raw):
     return hashlib.sha1(("blob %d\0"%len(raw)).encode()+raw).hexdigest()
 def asset_names():
-    return sorted([p.relative_to(ROOT).as_posix() for p in (ROOT/A).rglob("*") if p.is_file()]+[str(A)+".meta"])
+    return sorted([p.relative_to(ROOT).as_posix() for p in (ROOT/A).rglob("*") if p.is_file()]+[A.as_posix()+".meta"])
 
 def check_core(raw):
     assert raw==git("show",R1+":"+CORE),"Frozen original R1 bytes differ"
@@ -85,17 +85,17 @@ def check_manifest():
     assert m["sourceVersion"]=="R2" and m["sourceBaseSha"]==R1
     assert m["unityG1"]=="NOT_RUN" and not m["codexAck"]
     all_names=asset_names()+[
-        str(T/"verify.py"),str(T/"README.md"),
-        str(T/".gitignore"),
+        (T/"verify.py").as_posix(),(T/"README.md").as_posix(),
+        (T/".gitignore").as_posix(),
         ".github/workflows/b01-25-w11-sweeporb-unity-r2.yml"]
     assert set(m["gitBlobs"])==set(all_names),"Unpinned or unexpected source"
     for path,sha in m["gitBlobs"].items():
         real=git("show","HEAD:"+path)
         assert blob(real)==sha and real==read(path),"Git-source pin mismatch "+path
     changed=git("diff","--name-only",R1,"HEAD").decode().splitlines()
-    assert set(changed)==set(all_names)|{str(T/"manifest.json")},"Scope pollution"
-    assert all(x.startswith(str(A)+"/") or x==str(A)+".meta" or
-               x.startswith(str(T)+"/") or
+    assert set(changed)==set(all_names)|{(T/"manifest.json").as_posix()},"Scope pollution"
+    assert all(x.startswith(A.as_posix()+"/") or x==A.as_posix()+".meta" or
+               x.startswith(T.as_posix()+"/") or
                x==".github/workflows/b01-25-w11-sweeporb-unity-r2.yml"
                for x in changed),"Foreign file overlap"
 
@@ -137,7 +137,7 @@ def stage_rollback(path):
 def check_path(path):
     assert not path.startswith("/"),"Absolute ZIP path"
     assert ".." not in pathlib.PurePosixPath(path).parts,"Traversal"
-    assert path=="PACKAGE_MANIFEST.json" or path==str(A)+".meta" or path.startswith(str(A)+"/"),"Foreign ZIP path"
+    assert path=="PACKAGE_MANIFEST.json" or path==A.as_posix()+".meta" or path.startswith(A.as_posix()+"/"),"Foreign ZIP path"
 
 class Checks(unittest.TestCase):
     def test_01_original_core_unchanged(self):check_core(read(A/"Runtime/SweepCore.cs"))
