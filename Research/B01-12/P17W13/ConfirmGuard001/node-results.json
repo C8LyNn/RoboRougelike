@@ -1,0 +1,255 @@
+{
+  "total": 62,
+  "passed": 62,
+  "failed": 0,
+  "cases": [
+    {
+      "name": "initial valid",
+      "pass": true
+    },
+    {
+      "name": "no initial receipt",
+      "pass": true
+    },
+    {
+      "name": "three actions",
+      "pass": true
+    },
+    {
+      "name": "two modes",
+      "pass": true
+    },
+    {
+      "name": "hold threshold 1200",
+      "pass": true
+    },
+    {
+      "name": "TTL 6000",
+      "pass": true
+    },
+    {
+      "name": "switch action abandon",
+      "pass": true
+    },
+    {
+      "name": "hold commits abandon",
+      "pass": true
+    },
+    {
+      "name": "two-step commits abandon",
+      "pass": true
+    },
+    {
+      "name": "switch action discard",
+      "pass": true
+    },
+    {
+      "name": "hold commits discard",
+      "pass": true
+    },
+    {
+      "name": "two-step commits discard",
+      "pass": true
+    },
+    {
+      "name": "switch action overwrite",
+      "pass": true
+    },
+    {
+      "name": "hold commits overwrite",
+      "pass": true
+    },
+    {
+      "name": "two-step commits overwrite",
+      "pass": true
+    },
+    {
+      "name": "too short 0",
+      "pass": true
+    },
+    {
+      "name": "too short 1",
+      "pass": true
+    },
+    {
+      "name": "too short 500",
+      "pass": true
+    },
+    {
+      "name": "too short 1199",
+      "pass": true
+    },
+    {
+      "name": "hold succeeds 1200",
+      "pass": true
+    },
+    {
+      "name": "hold succeeds 1201",
+      "pass": true
+    },
+    {
+      "name": "hold succeeds 2000",
+      "pass": true
+    },
+    {
+      "name": "hold succeeds 5000",
+      "pass": true
+    },
+    {
+      "name": "expires 6000",
+      "pass": true
+    },
+    {
+      "name": "expires 6001",
+      "pass": true
+    },
+    {
+      "name": "expires 25000",
+      "pass": true
+    },
+    {
+      "name": "hold expiry 6000",
+      "pass": true
+    },
+    {
+      "name": "hold expiry 6001",
+      "pass": true
+    },
+    {
+      "name": "pointer wrong",
+      "pass": true
+    },
+    {
+      "name": "pointer keyboard",
+      "pass": true
+    },
+    {
+      "name": "pointer P_2",
+      "pass": true
+    },
+    {
+      "name": "two step too early 0",
+      "pass": true
+    },
+    {
+      "name": "two step too early 1",
+      "pass": true
+    },
+    {
+      "name": "two step too early 199",
+      "pass": true
+    },
+    {
+      "name": "two step accepted 200",
+      "pass": true
+    },
+    {
+      "name": "two step accepted 201",
+      "pass": true
+    },
+    {
+      "name": "two step accepted 5999",
+      "pass": true
+    },
+    {
+      "name": "duplicate fail safety HOLD_START",
+      "pass": true
+    },
+    {
+      "name": "duplicate fail safety HOLD_END",
+      "pass": true
+    },
+    {
+      "name": "duplicate fail safety CONFIRM",
+      "pass": true
+    },
+    {
+      "name": "duplicate fail safety TICK",
+      "pass": true
+    },
+    {
+      "name": "cancel clears",
+      "pass": true
+    },
+    {
+      "name": "reset commits counter",
+      "pass": true
+    },
+    {
+      "name": "rearm new receipt serial",
+      "pass": true
+    },
+    {
+      "name": "invalid input object",
+      "pass": true
+    },
+    {
+      "name": "invalid state rejected",
+      "pass": true
+    },
+    {
+      "name": "input immutability",
+      "pass": true
+    },
+    {
+      "name": "nonmonotonic rejects",
+      "pass": true
+    },
+    {
+      "name": "jump rejects",
+      "pass": true
+    },
+    {
+      "name": "cancel recovers after giant clock jump",
+      "pass": true
+    },
+    {
+      "name": "reset recovers after giant clock jump",
+      "pass": true
+    },
+    {
+      "name": "unknown action",
+      "pass": true
+    },
+    {
+      "name": "unknown mode",
+      "pass": true
+    },
+    {
+      "name": "invalid pointer",
+      "pass": true
+    },
+    {
+      "name": "unknown event",
+      "pass": true
+    },
+    {
+      "name": "too many event fields",
+      "pass": true
+    },
+    {
+      "name": "big value rejected",
+      "pass": true
+    },
+    {
+      "name": "switch blocked while armed",
+      "pass": true
+    },
+    {
+      "name": "no commit on tick",
+      "pass": true
+    },
+    {
+      "name": "progress <=100",
+      "pass": true
+    },
+    {
+      "name": "unknown event preserves state",
+      "pass": true
+    },
+    {
+      "name": "expired cannot confirm",
+      "pass": true
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+name: B01-12 CONFIRM-GUARD-001 source QA
+on:
+  pull_request:
+    paths:
+      - 'Research/B01-12/P17W13/ConfirmGuard001/**'
+      - '.github/workflows/b01-12-confirm-guard.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-and-browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Setup real Chromium
+        run: |
+          python -m pip install playwright==1.55.0
+          python -m playwright install --with-deps chromium
+      - name: Original source engine, browser and corruption-negative QA
+        working-directory: Research/B01-12/P17W13/ConfirmGuard001
+        run: |
+          set -euo pipefail
+          node test_engine.cjs
+          python test_browser.py
+          tmp=$(mktemp -d)
+          trap 'rm -rf "$tmp"' EXIT
+          cp confirm_engine.js demo.html ui.js test_engine.cjs test_browser.py manifest.json "$tmp/"
+          printf '\n' >> "$tmp/ui.js"
+          set +e
+          (cd "$tmp" && node test_engine.cjs)
+          node_rc=$?
+          (cd "$tmp" && python test_browser.py)
+          browser_rc=$?
+          set -e
+          test "$node_rc" -eq 2
+          test "$browser_rc" -eq 2
+          echo 'CORRUPT_SOURCE_FAIL_CLOSED=2/2 PASS'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b01-12-confirm-guard-original-evidence
+          path: |
+            Research/B01-12/P17W13/ConfirmGuard001/node-results.json
+            Research/B01-12/P17W13/ConfirmGuard001/browser-results.json
+            Research/B01-12/P17W13/ConfirmGuard001/evidence-1280x720.png
+          if-no-files-found: warn

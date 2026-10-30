@@ -1,0 +1,663 @@
+{
+  "total": 164,
+  "passed": 164,
+  "failed": 0,
+  "cases": [
+    {
+      "name": "320x720: title",
+      "pass": true
+    },
+    {
+      "name": "320x720: initial idle",
+      "pass": true
+    },
+    {
+      "name": "320x720: initial receipt null",
+      "pass": true
+    },
+    {
+      "name": "320x720: initial commits 0",
+      "pass": true
+    },
+    {
+      "name": "320x720: has accessible status",
+      "pass": true
+    },
+    {
+      "name": "320x720: has progressbar",
+      "pass": true
+    },
+    {
+      "name": "320x720: all selected actions",
+      "pass": true
+    },
+    {
+      "name": "320x720: two modalities",
+      "pass": true
+    },
+    {
+      "name": "320x720: hold initially disabled",
+      "pass": true
+    },
+    {
+      "name": "320x720: confirm initially disabled",
+      "pass": true
+    },
+    {
+      "name": "320x720: no document overflow",
+      "pass": true
+    },
+    {
+      "name": "320x720: armed",
+      "pass": true
+    },
+    {
+      "name": "320x720: hold enabled",
+      "pass": true
+    },
+    {
+      "name": "320x720: selector disabled while armed",
+      "pass": true
+    },
+    {
+      "name": "320x720: live status armed",
+      "pass": true
+    },
+    {
+      "name": "320x720: short press rejected",
+      "pass": true
+    },
+    {
+      "name": "320x720: short press still armed",
+      "pass": true
+    },
+    {
+      "name": "320x720: long press accepted",
+      "pass": true
+    },
+    {
+      "name": "320x720: receipt action",
+      "pass": true
+    },
+    {
+      "name": "320x720: receipt source hold",
+      "pass": true
+    },
+    {
+      "name": "320x720: single commit",
+      "pass": true
+    },
+    {
+      "name": "320x720: repeat pointer impossible",
+      "pass": true
+    },
+    {
+      "name": "320x720: reset returns idle",
+      "pass": true
+    },
+    {
+      "name": "320x720: reset clears receipt",
+      "pass": true
+    },
+    {
+      "name": "320x720: mode updated",
+      "pass": true
+    },
+    {
+      "name": "320x720: action updated",
+      "pass": true
+    },
+    {
+      "name": "320x720: keyboard arm",
+      "pass": true
+    },
+    {
+      "name": "320x720: hold disabled in two-step",
+      "pass": true
+    },
+    {
+      "name": "320x720: confirm enabled",
+      "pass": true
+    },
+    {
+      "name": "320x720: keyboard confirm commits",
+      "pass": true
+    },
+    {
+      "name": "320x720: two-step correct receipt",
+      "pass": true
+    },
+    {
+      "name": "320x720: two-step correct action",
+      "pass": true
+    },
+    {
+      "name": "320x720: rearm serial 3",
+      "pass": true
+    },
+    {
+      "name": "320x720: rearm receipt null",
+      "pass": true
+    },
+    {
+      "name": "320x720: escape cancels",
+      "pass": true
+    },
+    {
+      "name": "320x720: escape no receipt",
+      "pass": true
+    },
+    {
+      "name": "320x720: third action switch",
+      "pass": true
+    },
+    {
+      "name": "320x720: manual cancel",
+      "pass": true
+    },
+    {
+      "name": "320x720: manual cancel message",
+      "pass": true
+    },
+    {
+      "name": "320x720: no overflow after changes",
+      "pass": true
+    },
+    {
+      "name": "320x720: no JS exception",
+      "pass": true
+    },
+    {
+      "name": "768x1024: title",
+      "pass": true
+    },
+    {
+      "name": "768x1024: initial idle",
+      "pass": true
+    },
+    {
+      "name": "768x1024: initial receipt null",
+      "pass": true
+    },
+    {
+      "name": "768x1024: initial commits 0",
+      "pass": true
+    },
+    {
+      "name": "768x1024: has accessible status",
+      "pass": true
+    },
+    {
+      "name": "768x1024: has progressbar",
+      "pass": true
+    },
+    {
+      "name": "768x1024: all selected actions",
+      "pass": true
+    },
+    {
+      "name": "768x1024: two modalities",
+      "pass": true
+    },
+    {
+      "name": "768x1024: hold initially disabled",
+      "pass": true
+    },
+    {
+      "name": "768x1024: confirm initially disabled",
+      "pass": true
+    },
+    {
+      "name": "768x1024: no document overflow",
+      "pass": true
+    },
+    {
+      "name": "768x1024: armed",
+      "pass": true
+    },
+    {
+      "name": "768x1024: hold enabled",
+      "pass": true
+    },
+    {
+      "name": "768x1024: selector disabled while armed",
+      "pass": true
+    },
+    {
+      "name": "768x1024: live status armed",
+      "pass": true
+    },
+    {
+      "name": "768x1024: short press rejected",
+      "pass": true
+    },
+    {
+      "name": "768x1024: short press still armed",
+      "pass": true
+    },
+    {
+      "name": "768x1024: long press accepted",
+      "pass": true
+    },
+    {
+      "name": "768x1024: receipt action",
+      "pass": true
+    },
+    {
+      "name": "768x1024: receipt source hold",
+      "pass": true
+    },
+    {
+      "name": "768x1024: single commit",
+      "pass": true
+    },
+    {
+      "name": "768x1024: repeat pointer impossible",
+      "pass": true
+    },
+    {
+      "name": "768x1024: reset returns idle",
+      "pass": true
+    },
+    {
+      "name": "768x1024: reset clears receipt",
+      "pass": true
+    },
+    {
+      "name": "768x1024: mode updated",
+      "pass": true
+    },
+    {
+      "name": "768x1024: action updated",
+      "pass": true
+    },
+    {
+      "name": "768x1024: keyboard arm",
+      "pass": true
+    },
+    {
+      "name": "768x1024: hold disabled in two-step",
+      "pass": true
+    },
+    {
+      "name": "768x1024: confirm enabled",
+      "pass": true
+    },
+    {
+      "name": "768x1024: keyboard confirm commits",
+      "pass": true
+    },
+    {
+      "name": "768x1024: two-step correct receipt",
+      "pass": true
+    },
+    {
+      "name": "768x1024: two-step correct action",
+      "pass": true
+    },
+    {
+      "name": "768x1024: rearm serial 3",
+      "pass": true
+    },
+    {
+      "name": "768x1024: rearm receipt null",
+      "pass": true
+    },
+    {
+      "name": "768x1024: escape cancels",
+      "pass": true
+    },
+    {
+      "name": "768x1024: escape no receipt",
+      "pass": true
+    },
+    {
+      "name": "768x1024: third action switch",
+      "pass": true
+    },
+    {
+      "name": "768x1024: manual cancel",
+      "pass": true
+    },
+    {
+      "name": "768x1024: manual cancel message",
+      "pass": true
+    },
+    {
+      "name": "768x1024: no overflow after changes",
+      "pass": true
+    },
+    {
+      "name": "768x1024: no JS exception",
+      "pass": true
+    },
+    {
+      "name": "1280x720: title",
+      "pass": true
+    },
+    {
+      "name": "1280x720: initial idle",
+      "pass": true
+    },
+    {
+      "name": "1280x720: initial receipt null",
+      "pass": true
+    },
+    {
+      "name": "1280x720: initial commits 0",
+      "pass": true
+    },
+    {
+      "name": "1280x720: has accessible status",
+      "pass": true
+    },
+    {
+      "name": "1280x720: has progressbar",
+      "pass": true
+    },
+    {
+      "name": "1280x720: all selected actions",
+      "pass": true
+    },
+    {
+      "name": "1280x720: two modalities",
+      "pass": true
+    },
+    {
+      "name": "1280x720: hold initially disabled",
+      "pass": true
+    },
+    {
+      "name": "1280x720: confirm initially disabled",
+      "pass": true
+    },
+    {
+      "name": "1280x720: no document overflow",
+      "pass": true
+    },
+    {
+      "name": "1280x720: armed",
+      "pass": true
+    },
+    {
+      "name": "1280x720: hold enabled",
+      "pass": true
+    },
+    {
+      "name": "1280x720: selector disabled while armed",
+      "pass": true
+    },
+    {
+      "name": "1280x720: live status armed",
+      "pass": true
+    },
+    {
+      "name": "1280x720: short press rejected",
+      "pass": true
+    },
+    {
+      "name": "1280x720: short press still armed",
+      "pass": true
+    },
+    {
+      "name": "1280x720: long press accepted",
+      "pass": true
+    },
+    {
+      "name": "1280x720: receipt action",
+      "pass": true
+    },
+    {
+      "name": "1280x720: receipt source hold",
+      "pass": true
+    },
+    {
+      "name": "1280x720: single commit",
+      "pass": true
+    },
+    {
+      "name": "1280x720: repeat pointer impossible",
+      "pass": true
+    },
+    {
+      "name": "1280x720: reset returns idle",
+      "pass": true
+    },
+    {
+      "name": "1280x720: reset clears receipt",
+      "pass": true
+    },
+    {
+      "name": "1280x720: mode updated",
+      "pass": true
+    },
+    {
+      "name": "1280x720: action updated",
+      "pass": true
+    },
+    {
+      "name": "1280x720: keyboard arm",
+      "pass": true
+    },
+    {
+      "name": "1280x720: hold disabled in two-step",
+      "pass": true
+    },
+    {
+      "name": "1280x720: confirm enabled",
+      "pass": true
+    },
+    {
+      "name": "1280x720: keyboard confirm commits",
+      "pass": true
+    },
+    {
+      "name": "1280x720: two-step correct receipt",
+      "pass": true
+    },
+    {
+      "name": "1280x720: two-step correct action",
+      "pass": true
+    },
+    {
+      "name": "1280x720: rearm serial 3",
+      "pass": true
+    },
+    {
+      "name": "1280x720: rearm receipt null",
+      "pass": true
+    },
+    {
+      "name": "1280x720: escape cancels",
+      "pass": true
+    },
+    {
+      "name": "1280x720: escape no receipt",
+      "pass": true
+    },
+    {
+      "name": "1280x720: third action switch",
+      "pass": true
+    },
+    {
+      "name": "1280x720: manual cancel",
+      "pass": true
+    },
+    {
+      "name": "1280x720: manual cancel message",
+      "pass": true
+    },
+    {
+      "name": "1280x720: no overflow after changes",
+      "pass": true
+    },
+    {
+      "name": "1280x720: no JS exception",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: title",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: initial idle",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: initial receipt null",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: initial commits 0",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: has accessible status",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: has progressbar",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: all selected actions",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: two modalities",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: hold initially disabled",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: confirm initially disabled",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: no document overflow",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: armed",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: hold enabled",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: selector disabled while armed",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: live status armed",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: short press rejected",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: short press still armed",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: long press accepted",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: receipt action",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: receipt source hold",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: single commit",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: repeat pointer impossible",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: reset returns idle",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: reset clears receipt",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: mode updated",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: action updated",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: keyboard arm",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: hold disabled in two-step",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: confirm enabled",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: keyboard confirm commits",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: two-step correct receipt",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: two-step correct action",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: rearm serial 3",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: rearm receipt null",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: escape cancels",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: escape no receipt",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: third action switch",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: manual cancel",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: manual cancel message",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: no overflow after changes",
+      "pass": true
+    },
+    {
+      "name": "1920x1080: no JS exception",
+      "pass": true
+    }
+  ]
+}
