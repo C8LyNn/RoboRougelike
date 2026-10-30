@@ -9,12 +9,12 @@ def main():
     assert m["package"]=="B01-11-RECOVERYHUD001/R1"
     assert m["base_commit"]==BASE
     entries=m["files"]
-    assert len(entries)==14 and len({e["path"] for e in entries})==14
+    assert len(entries)==15 and len({e["path"] for e in entries})==15
     recorded=set()
     for e in entries:
         p=e["path"]
         assert p and ".." not in pathlib.PurePosixPath(p).parts
-        assert (p.startswith("Assets/B01Packages/RECOVERYHUD001") or
+        assert (p=="Assets/B01Packages.meta" or p.startswith("Assets/B01Packages/RECOVERYHUD001") or
             p.startswith("Tools/B01/B01-11/P17W24RecoveryHud001/") or
             p==".github/workflows/b01-11-p17w24-recoveryhud.yml")
         f=ROOT/p
@@ -25,14 +25,14 @@ def main():
     expected=recorded|{"Tools/B01/B01-11/P17W24RecoveryHud001/manifest.json"}
     diff=subprocess.check_output(["git","diff","--name-only",BASE,"HEAD"],cwd=ROOT,text=True).splitlines()
     assert set(diff)==expected,sorted(set(diff)^expected)
-    own=[ROOT/"Assets/B01Packages/RECOVERYHUD001.meta"] + sorted((ROOT/"Assets/B01Packages/RECOVERYHUD001").rglob("*.meta"))
-    assert len(own)==5,len(own)
+    own=[ROOT/"Assets/B01Packages.meta",ROOT/"Assets/B01Packages/RECOVERYHUD001.meta"] + sorted((ROOT/"Assets/B01Packages/RECOVERYHUD001").rglob("*.meta"))
+    assert len(own)==6,len(own)
     guids=[]
     for f in own:
         match=re.search(r"^guid: ([0-9a-f]{32})$",f.read_text(),re.MULTILINE)
         assert match,f
         guids.append(match.group(1))
-    assert len(set(guids))==5
+    assert len(set(guids))==6
     for p in ["Runtime/RecoveryNotice.cs","Runtime/RecoveryNoticePanel.cs","Runtime/B01.RecoveryHud.asmdef"]:
         assert (ROOT/"Assets/B01Packages/RECOVERYHUD001"/(p+".meta")).exists(),p
     coll={}
