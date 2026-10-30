@@ -1,15 +1,15 @@
 {
   "schema_version": "b01-package-v1",
   "package_id": "B01-00-RECEIPT-LATCH-001",
-  "revision": "1.7.0",
+  "revision": "1.7.1",
   "owner": "B01-00",
   "producer_agent": "B01-00",
   "issue": 589,
-  "purpose": "B01-00 source owner queue W16: current exact #585 original C# RED by #572, #587 latest core SHA changed since #588 test; prevent false exact QA G0/Unity G1/Codex ACK",
+  "purpose": "B01-00 Wave16 exact active bridge RED intake: B01-23 selects #587 lineage, independent B01-61 #590 proves two P0 RELEASE RED on original exact #587 source, producer new #596 R2 still unaccepted/unfrozen; no false source G0, Unity, ACK",
   "source_base_branch": "main",
   "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
   "source_branch": "b01-00/p17w09-receipt-latch-001",
-  "source_sha_before_manifest": "8991644b3919279f23ffd6e154c14e7b05787c6f",
+  "source_sha_before_manifest": "82c60231a3800495cd5c8ba5424319bbeb10d2a4",
   "code_scope": [
     "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/**",
     ".github/workflows/b01-00-w09-receipt-latch.yml"
@@ -79,8 +79,8 @@
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/README.md",
-      "sha256": "8333adb06d88540fa623e6e9bb0c45e4e7734876f54ecd6bbfa27e081f300fb1",
-      "bytes": 24994
+      "sha256": "df93351f88683ff1be6b3d30fc74050c8bea09759a1d31d4000530d2a6ef2087",
+      "bytes": 27983
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/RED-GREEN.md",
@@ -109,13 +109,13 @@
     },
     {
       "path": ".github/workflows/b01-00-w09-receipt-latch.yml",
-      "sha256": "9932f40d6b5433ea65a56840f2ccc9fb6178e39e45627d3605db52e30eafab74",
-      "bytes": 2315
+      "sha256": "c8b7fed1a3e58cedebf4c8f06c74b6a5bf25c9c6b256a39078d0b09e520631f9",
+      "bytes": 2320
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/save_admission.py",
-      "sha256": "0fcce8da00babfcb1e48c6870c1a5ee0b545a506cf85d0a4c3fac6cdaaaa2c3f",
-      "bytes": 23652
+      "sha256": "393abd246bf26585696727d36a6a1167cb3b8d2c6b8b3e05e192efd523460859",
+      "bytes": 24870
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/test_save_admission.py",
@@ -149,18 +149,18 @@
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/bridge_w16_hold.json",
-      "sha256": "410e17698abc3004177900f592884a0e7aaa287e3f4b9999a600d6b8aa1ba8f8",
-      "bytes": 2693
+      "sha256": "81d6d1babb0d0f955c24a3cc0b15385e9395d62bb9a9270a33a5232a3503ac37",
+      "bytes": 3413
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/test_bridge_w16.py",
-      "sha256": "67d4651a48790c503adda3d5a69cf00faf84e944cd7acbc5cc0dbb616278e809",
-      "bytes": 12112
+      "sha256": "b4ccaed5025ad78cefdcd003822cfda49585b1b9b103af4f78b02d4faf003069",
+      "bytes": 13640
     },
     {
       "path": "Tools/B01/B01-00/W09/RECEIPT-LATCH-001/TEST_EVIDENCE/W16-BRIDGE-PROVENANCE-RED-HOLD.md",
-      "sha256": "b3eb595eeef2115cefc1f6dadcdecb5a6f0831f91a5e4c5fa658cb2dae7a5d47",
-      "bytes": 6011
+      "sha256": "fe688b03850ebaf9022d34c3badf368399d43851d74934315af59f89d8cd5eb0",
+      "bytes": 9000
     }
   ],
   "producer_tests": [
@@ -410,16 +410,42 @@
       "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41096301536"
     },
     {
-      "name": "W16 exact final manifest SHA original CI",
+      "name": "W16 initial exact final manifest HEAD original 344 source tests both OS",
+      "status": "PASS",
+      "total": 344,
+      "passed": 344,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "361c8c1b430a9b46b4900c4738fc011c48149e18",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41096831928"
+    },
+    {
+      "name": "W16 exact-current #590 two independent RED witnesses and #596 owner correction pending, 353 original source tests both OS",
+      "status": "PASS",
+      "total": 353,
+      "passed": 353,
+      "failed": 0,
+      "platforms": [
+        "windows-2025",
+        "ubuntu-24.04"
+      ],
+      "source_sha": "b0ae76cb7f15039d507a5a22d5572a124ec3c863",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41097743223"
+    },
+    {
+      "name": "W16 v1.7.1 exact final manifest HEAD",
       "status": "NOT_RUN",
-      "note": "To be checked after this commit; authoritative post-commit PR receipt needed"
+      "note": "Check post-manifest exact SHA GitHub Actions and post verified result as separate immutable PR/issue comment"
     }
   ],
   "qa_b01_40": "PENDING_REVIEW_OF_B01_00_TOOL",
   "qa_b01_60": "PENDING_REVIEW_OF_B01_00_TOOL",
   "native_unity_editmode": "NOT_RUN",
   "native_unity_playmode": "NOT_RUN",
-  "g0": "GAME_510_SOURCE_G0_ACCEPTED / SAVE_556_SOURCE_G0_ACCEPTED / BRIDGE_585_EXACT_RED / BRIDGE_587_EXACT_QA_PENDING / B01_00_TOOL_INDEPENDENT_QA_PENDING",
+  "g0": "GAME510_AND_SAVE556_SOURCE_ACCEPTED_ONLY / BRIDGE585_EXACT_RED_572 / BRIDGE587_EXACT_RED_590 / BRIDGE596_NEW_R2_QA_PENDING / B01_00_TOOL_INDEPENDENT_QA_PENDING",
   "g1": "NOT_RUN",
   "g2": "HOLD",
   "codex_sent": true,
@@ -442,7 +468,9 @@
     "Source-only #556 G0 and independent C# QA do not implement Unity host Save/Load; frozen #510 private ledger lacks an approved public hydration interface",
     "W15 selected-v2 code checks offline JSON consistency, not GitHub signatures, actual ZIP bytes, native Unity/PhysX, ACK or integration; B01-40/60 must independently accept B01-00 tool",
     "W16 only records original-source SHA-aware QA differences: #585 core same as #572 tested, #587 current core differs from #588 original test; current #587 release verdict requires new exact-SHA independent QA",
-    "B01-00 offline JSON gate cannot authenticate original GitHub source/QA actor automatically; independent bridge G0, native Unity/PhysX and live #510 private ledger hydration remain HOLD"
+    "B01-00 offline JSON gate cannot authenticate original GitHub source/QA actor automatically; independent bridge G0, native Unity/PhysX and live #510 private ledger hydration remain HOLD",
+    "Post-snapshot independent B01-61 #590 actually tested exact #587 original Git SHA, proved two P0 source REDs; new owner-selected correction #596 R2 is separate mutable Draft, not independently accepted",
+    "B01-00 W16 original 353 positive/negative policy tests PASS does not imply #587 or #596 production release, host Unity G1 or Codex ACK; original 510/556 frozen"
   ],
   "rollback": "Remove disposable directory and noncanonical output files; do not delete other agents' frozen receipt records",
   "codex_offer_url": "https://github.com/C8LyNn/RoboRougelike/issues/79#issuecomment-6526629723",
@@ -458,7 +486,7 @@
     ],
     "physical_zip_sha256": "d4ddfa3528ef0416aefffca72d884000f3b0c9959fb8dff53096487ef95c9387"
   },
-  "save_load": "BRIDGE_SOURCE_HOLD / LIVE_GAME_NOT_INTEGRATED",
+  "save_load": "BRIDGE_SOURCE_HOLD / PRIVATE_GAME_HOST_UNINTEGRATED",
   "safe_rollback_receiver": "SCRATCH_ONLY / ORIGINAL_510_ROLLBACK_FORBIDDEN",
   "canonical_migration": "NOT_DONE",
   "save_contract_choice": {
@@ -487,29 +515,26 @@
   },
   "bridge_selection": {
     "owner": "B01-23",
-    "state": "UNDECIDED",
-    "candidates": [
-      {
-        "pr": 585,
-        "sha": "135a67d42acfccd59ca9145e09630d0b4bbade1c",
-        "core_blob": "e9e9dc6d437e96dad6b08c1639e8bd94d62c4f4b",
-        "qa_pr": 572,
-        "qa_status": "EXACT_SOURCE_SECURITY_RED"
-      },
-      {
-        "pr": 587,
-        "sha": "ad7904eca571c742257551fa8103f266fcb9b752",
-        "core_blob": "16a7d7043a2ecb59a41bbfb063170235872fd7fc",
-        "qa_pr": 588,
-        "qa_earlier_sha": "39f03fd6a0d5fae10be5419db4beb79201147bc8",
-        "qa_earlier_core_blob": "db69bae2bf4cf106da68f13e0b067499f0da02f3",
-        "qa_status": "CHANGED_SOURCE_REQUIRES_NEW_EXACT_SHA_QA"
-      }
+    "selected_lineage_pr": 587,
+    "owner_selection_evidence_pr": 596,
+    "original_selected_source_sha": "ad7904eca571c742257551fa8103f266fcb9b752",
+    "original_source_g0": "HOLD_P0_SOURCE_RED",
+    "exact_original_qa_pr": 590,
+    "qa_sha": "c28565639bef834e64c092ce142c449acdfb7ae5",
+    "qa_tested_original_blob": "16a7d7043a2ecb59a41bbfb063170235872fd7fc",
+    "qa_red_codes": [
+      "SAME_GENERATION_WORLD_FORK",
+      "ROLLBACK_EXCEPTION_VERDICT_MASKED"
     ],
-    "alternative_port_qa": {
-      "pr": 582,
-      "port_pr": 577,
-      "disposition": "HOLD"
-    }
+    "correction_pr": 596,
+    "correction_observed_unfrozen_sha": "7bd598fde2204d6a397a50b199be12f072b5cd66",
+    "correction_state": "DRAFT_SOURCE_QA_PENDING",
+    "alt_hold": [
+      585,
+      577,
+      584
+    ],
+    "prior_qa_572": "ORIGINAL_585_EXACT_SOURCE_RED",
+    "prior_qa_588": "ORIGINAL_587_EARLIER_BLOB_RED"
   }
 }
