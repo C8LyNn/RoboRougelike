@@ -1,4 +1,5 @@
 import copy
+import pack_readiness
 import hashlib
 import re
 import io
@@ -171,6 +172,29 @@ class PhysicalSourceTests(unittest.TestCase):
             self.assertTrue(elsewhere.is_dir())
             self.assertTrue(link.is_symlink())
             self.assertEqual({x.name for x in dest.iterdir()}, FILES|{"external-link"})
+
+    def test_24_refuse_asset_mutation_after_validation_before_stage(self):
+        # Simulate a source flip AFTER the HEAD and working tree checks
+        # but BEFORE archive snapshot is made, without editing Unity files.
+        with tempfile.TemporaryDirectory() as t:
+            p=pathlib.Path(t)
+            self.data_dir(p/"in")
+            dest=p/"receiver"
+            corrupted=dict(self.files)
+            corrupted[ASSETS[1]]+=b"\n//DIRTY_AFTER_PRECHECK\n"
+            with mock.patch.object(pack_readiness,"physical_unity_files",return_value=corrupted):
+                with self.assertRaises(SourceError):
+                    stage(dest,p/"in",source_check=False)
+            self.assertFalse(dest.exists())
+
+    def test_25_git_blob_identity_independent_known_sha1(self):
+        # Independently verify the Git object framing against the standard
+        # Git SHA1 empty-blob identity and original source blob from #461.
+        self.assertEqual(pack_readiness.git_blob_oid(b""),
+            "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391")
+        expected=json.loads((pathlib.Path(__file__).with_name("manifest.json")).read_text())["git_blobs"][ASSETS[1]]
+        self.assertEqual(pack_readiness.git_blob_oid(self.files[ASSETS[1]]),expected)
+        self.assertNotEqual(pack_readiness.git_blob_oid(self.files[ASSETS[1]]+b"x"),expected)
 
     @staticmethod
     def original_digest(forced_price_delta=0, swap_first_two=False):

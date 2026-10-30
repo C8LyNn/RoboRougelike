@@ -33,6 +33,14 @@ def sha256(raw):
     return hashlib.sha256(raw).hexdigest()
 
 
+def git_blob_oid(raw):
+    # Git's EXACT canonical blob identity, not hash of the file alone.
+    # The manifest's SHA1 refers to Git object header + raw on-disk bytes.
+    if not isinstance(raw, bytes):
+        raise SourceError("INVALID_SOURCE_BYTES")
+    return hashlib.sha1(b"blob " + str(len(raw)).encode("ascii") + b"\0" + raw).hexdigest()
+
+
 def no_symlink(path):
     if any(p.is_symlink() for p in (path, *path.parents)):
         raise SourceError("SYMLINK_PATH_REFUSED")
@@ -56,15 +64,20 @@ def validate_sources():
             raise SourceError("UNSAFE_SOURCE_PATH")
         value = subprocess.run(["git", "rev-parse", "HEAD:" + name], cwd=ROOT,
                                check=True, capture_output=True, text=True).stdout.strip()
-        if value != expected or not (ROOT/name).is_file() or (ROOT/name).is_symlink():
+        physical = ROOT/name
+        if value != expected or not physical.is_file() or physical.is_symlink() or \
+           git_blob_oid(physical.read_bytes()) != expected:
             raise SourceError("MANIFEST_GIT_BLOB_MISMATCH:" + name)
     original = subprocess.run(["git","rev-parse",SOURCE_SHA+":"+CATALOG],
                               cwd=ROOT,check=True,capture_output=True,text=True).stdout.strip()
     now = subprocess.run(["git","rev-parse","HEAD:"+CATALOG],
                          cwd=ROOT,check=True,capture_output=True,text=True).stdout.strip()
-    if original != CATALOG_BLOB or now != original:
+    catalog_file = ROOT/CATALOG
+    if original != CATALOG_BLOB or now != original or \
+       not catalog_file.is_file() or catalog_file.is_symlink() or \
+       git_blob_oid(catalog_file.read_bytes()) != CATALOG_BLOB:
         raise SourceError("FROZEN_CATALOG_DRIFT")
-    cat = json.loads((ROOT/CATALOG).read_text(encoding="utf-8"))
+    cat = json.loads(catalog_file.read_text(encoding="utf-8"))
     if cat["version"] != "1.0.3" or len(cat["kits"]) != 10 or \
        cat["provenance"]["codex_sha"] != "203a0805251ed28293888e43f2d49f0df63767c6":
         raise SourceError("ORIGINAL_CATALOG_VERSION_DRIFT")
@@ -157,6 +170,11 @@ def stage(dest, preview_dir, source_check=True):
         raise SourceError("DEST_EXISTS_OR_PARENT_MISSING")
     if source_check:validate_sources()
     files=physical_unity_files()
+    # Re-check the actual archived snapshot after the initial source gate.
+    # A mutation between validate_sources() and this read must not enter ZIP.
+    approved = json.loads(pathlib.Path(__file__).with_name("manifest.json").read_text(encoding="utf-8"))["git_blobs"]
+    if any(git_blob_oid(files[name]) != approved[name] for name in ASSETS):
+        raise SourceError("UNITY_ASSET_CHANGED_BEFORE_PACKAGE")
     previews=read_previews(pathlib.Path(preview_dir))
     zipped=make_zip(files)
     receipt=receipt_for(zipped,files,previews)
