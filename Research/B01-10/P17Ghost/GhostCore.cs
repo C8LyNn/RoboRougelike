@@ -328,8 +328,18 @@ namespace RoboRougelike.B0110.TrainingGhost
             if (!run.Completed) return false;
             string key = Key(run);
             GhostRun old;
-            if (best.TryGetValue(key, out old) && old.ElapsedSeconds <= run.ElapsedSeconds)
-                return false;
+            if (best.TryGetValue(key, out old))
+            {
+                // Course/rig labels alone do not prove that a previous personal
+                // best used the same gate layout. Refuse cross-layout records
+                // BEFORE comparing elapsed time or mutating the stored best.
+                // The owning CHL host MUST version CourseId when it changes
+                // physical gates even if the gate count stays identical.
+                GhostMath.Check(old.RequiredCheckpoints == run.RequiredCheckpoints,
+                    "Personal-best checkpoint layout count changed; version CourseId");
+                if (old.ElapsedSeconds <= run.ElapsedSeconds)
+                    return false;
+            }
             best[key] = GhostMath.Clone(run);
             return true;
         }
