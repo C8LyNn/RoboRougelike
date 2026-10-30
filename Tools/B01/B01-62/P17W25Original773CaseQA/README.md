@@ -1,0 +1,5 @@
+# B01-62 W25 — independent original exact #773 Linux physical case-alias negative
+
+The NEW candidate [#773](https://github.com/C8LyNn/RoboRougelike/pull/773) uses `StringComparison.OrdinalIgnoreCase` to compare its actual canonical Save path with arbitrary public store input on ALL operating systems. Linux/most POSIX filesystem paths are case-sensitive. A DIFFERENT physical directory with same case-folded name may therefore be mistakenly accepted as 'canonical'; cold sessions built from exact owner default path cannot later find it. New independent original test compiles **unchanged exact #773 Git blob**, original #729 OS lease, frozen #556/W06 source, executes REAL Linux+Windows filesystem tests on newly generated temporary test-only directories, and checks physical path distinction on Linux. Successful QA witness means **PRODUCT G0 RED**, not a fix or Unity game success.
+
+No original/frozen source overwritten. #773 is owner-choice candidate only, #749 remains previous selection until explicit B01-23/B01-00. Alternative #753/#741 untouched. Native Unity G1 NOT_RUN, no merge.
