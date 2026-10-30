@@ -76,7 +76,11 @@ def pack(entries):
                     tar.addfile(member,io.BytesIO(blob))
     return output.getvalue()
 def inspect(binary,entries):
-    with tarfile.open(fileobj=io.BytesIO(binary),mode="r:gz") as t:
+    # IMPORTANT: tarfile may stop reading before the GZIP footer. Eagerly
+    # decompress the entire member so a corrupted GZIP CRC32/ISIZE is DENIED.
+    if not binary.startswith(b"\x1f\x8b"):fail("NOT_GENUINE_GZIP_ARCHIVE")
+    payload=gzip.decompress(binary)
+    with tarfile.open(fileobj=io.BytesIO(payload),mode="r:") as t:
         members=t.getmembers()
         if len(members)!=9 or any(not m.isfile() or ".." in m.name or m.name.startswith("/") for m in members):
             fail("ACTUAL_UNITY_TAR_STRUCTURE_OR_TRAVERSAL")
