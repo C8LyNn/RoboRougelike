@@ -15,7 +15,7 @@ $path="Tools/B01/B01-60/P17W20WindowsUnityOperator/Invoke-B0160WindowsUnity.ps1"
 function Need([bool]$ok,[string]$msg){if(-not $ok){throw "B01_60_W21_SOURCE_QA_DENIED: $msg"}}
 function GitRead([string[]]$arg) {
  $out=@(& git @arg 2>&1)
- Need ($LASTEXITCODE -eq 0) "Original git source unavailable"
+ Need ($LASTEXITCODE -eq 0) ("Original git source unavailable, rc="+$LASTEXITCODE+", argv="+($arg -join ",")+", output="+($out -join ";"))
  return ($out -join [Environment]::NewLine).Trim()
 }
 function VerifyEvidence([string]$scratch,[string]$expectedStatus,[string]$head) {
