@@ -1,0 +1,79 @@
+name: B01-61 P17W17 exact SELECTED #596 real Unity MonoBehaviour source slot-authority QA
+on:
+  push:
+    branches: [qa/b01-61-p17w17-selected596-unityhost-lease]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-61/P17W17Selected596UnityHostQA/**'
+      - '.github/workflows/b01-61-p17w17-selected596-monobehaviour.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  selected-original-596-actual-unity-host-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Verify only owner-selected original #596 and never competing #604
+        shell: bash
+        run: |
+          set -o pipefail
+          python Tools/B01/B01-61/P17W17Selected596UnityHostQA/source_guard.py 2>&1 | tee b0161-w17-p596-source.log
+      - name: Original selected Unity MonoBehaviour CSharp9 warning-as-error source build
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet build Tools/B01/B01-61/P17W17Selected596UnityHostQA/Original596UnityHostQA.csproj -c Release --warnaserror 2>&1 | tee b0161-w17-p596-build.log
+      - name: Execute original Unity Mono source physical-state + simultaneous host authority RED
+        shell: bash
+        run: |
+          set -o pipefail
+          p=Tools/B01/B01-61/P17W17Selected596UnityHostQA/Original596UnityHostQA.csproj
+          root="$PWD/b0161-w17-owned-596-scratch"
+          mkdir -p "$root"
+          dotnet run --no-build -c Release --project "$p" -- physical "$root" 2>&1 | tee b0161-w17-p596-physical.log
+          dotnet run --no-build -c Release --project "$p" -- concurrent "$root" 2>&1 | tee b0161-w17-p596-concurrent.log
+          grep -q 'W17_EXACT_SELECTED_596_ORIGINAL_UNITY_MONO_PHYSICAL_SOURCE_PASS' b0161-w17-p596-physical.log
+          grep -q 'W17_SELECTED_596_CONCURRENT_HOST_SOURCE_RED=' b0161-w17-p596-concurrent.log
+          grep -q 'W17_SELECTED_596_STALE_HOST_ESCALATION_RED=' b0161-w17-p596-concurrent.log
+          dotnet run --no-build -c Release --project "$p" -- cross-run "$root" 2>&1 | tee b0161-w18-p596-cross-run.log
+          grep -q 'W18_SELECTED_596_NEW_RUN_STICKY_QUARANTINE_RED=' b0161-w18-p596-cross-run.log
+      - name: Six fresh CLR processes use REAL original file checkpoint and #556 payload
+        shell: bash
+        run: |
+          set -o pipefail
+          p=Tools/B01/B01-61/P17W17Selected596UnityHostQA/Original596UnityHostQA.csproj
+          root="$PWD/b0161-w17-owned-596-scratch"
+          for mode in seal restart fork advance stale corrupt; do
+            dotnet run --no-build -c Release --project "$p" -- "$mode" "$root" 2>&1 | tee "b0161-w17-p596-$mode.log"
+            grep -q "W17_EXACT_SELECTED_596_PUBLIC_HOST_PROCESS_PASS mode=$mode" "b0161-w17-p596-$mode.log"
+          done
+      - name: Preserve original source logs (no fake native Unity Editor/PhysX XML)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-61-w17-exact596-unity-mono-${{ matrix.os }}
+          path: |
+            b0161-w17-p596-source.log
+            b0161-w17-p596-build.log
+            b0161-w17-p596-physical.log
+            b0161-w17-p596-concurrent.log
+            b0161-w18-p596-cross-run.log
+            b0161-w17-p596-seal.log
+            b0161-w17-p596-restart.log
+            b0161-w17-p596-fork.log
+            b0161-w17-p596-advance.log
+            b0161-w17-p596-stale.log
+            b0161-w17-p596-corrupt.log
+          if-no-files-found: warn
+          retention-days: 21
