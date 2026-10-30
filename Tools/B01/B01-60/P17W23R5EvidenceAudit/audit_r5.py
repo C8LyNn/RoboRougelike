@@ -74,8 +74,10 @@ def scoped_hashes(root):
   no_link(child)
   if child.is_file():
    rel=child.name
-   if rel.startswith("P") or rel.endswith((".xml",".log")):
-    if rel!=EVIDENCE:inventory[rel]=sha(read_file(child))
+   permitted={RECEIPT,EVIDENCE}|{f"{tag}{i}{suffix}" for i in range(6)
+     for tag in ("guard","r5case") for suffix in (".xml","-Editor.log","-process.log")}
+   need(rel in permitted,"Foreign root evidence entry: "+rel)
+   if rel!=EVIDENCE:inventory[rel]=sha(read_file(child))
   elif child.is_dir():
    need(re.fullmatch(r"P[0-5]",child.name) is not None,
         "Foreign directory under R5 evidence: "+child.name)
