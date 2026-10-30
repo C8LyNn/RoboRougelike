@@ -64,6 +64,60 @@ namespace RoboRougelike.B0110.TrainingGhost
         }
     }
 
+    // A read-only replay of the actual reference segment where the player
+    // lost the most *significant* time. Constructed only by a finished coach.
+    // Not a teleport, training checkpoint, collision body or game timer.
+    public sealed class GhostPracticeLoop
+    {
+        private readonly GhostPlayback playback;
+        public float StartSeconds { get; private set; }
+        public float EndSeconds { get; private set; }
+        public float SegmentDurationSeconds => EndSeconds - StartSeconds;
+        public bool IsFinishSegment { get; private set; }
+        public int GateNumber { get; private set; }
+        public string CourseId => playback.CourseId;
+        public string RigId => playback.RigId;
+        public string Label => IsFinishSegment
+            ? "finish after gate " + GateNumber
+            : "gate " + GateNumber;
+
+        internal GhostPracticeLoop(GhostRun reference, int gateNumber, bool finish)
+        {
+            GhostRun validated = GhostMath.Clone(reference);
+            GhostMath.Check(validated.Completed, "Loop requires a completed reference");
+            int count = validated.RequiredCheckpoints;
+            GhostMath.Check(gateNumber >= 1 && gateNumber <= count,
+                "Loop target gate not present");
+            GhostMath.Check(!finish || gateNumber == count,
+                "Finish loop must follow the last gate");
+            float start = finish ? validated.CheckpointSeconds[count - 1]
+                : gateNumber == 1 ? 0f : validated.CheckpointSeconds[gateNumber - 2];
+            float end = finish ? validated.ElapsedSeconds
+                : validated.CheckpointSeconds[gateNumber - 1];
+            GhostMath.Check(end > start,
+                "Loop requires a positive-duration measured segment");
+            StartSeconds = start;
+            EndSeconds = end;
+            IsFinishSegment = finish;
+            GateNumber = gateNumber;
+            playback = new GhostPlayback(validated);
+        }
+
+        // The host explicitly supplies a nonnegative visual-only replay clock.
+        // Sampling never advances that clock, moves the real robot or fires gates.
+        // 24-hour cap prevents unbounded float precision and invalid input.
+        public GhostPose PoseAt(double loopElapsedSeconds)
+        {
+            GhostMath.Check(!double.IsNaN(loopElapsedSeconds)
+                            && !double.IsInfinity(loopElapsedSeconds)
+                            && loopElapsedSeconds >= 0d
+                            && loopElapsedSeconds <= 86400d,
+                "Practice replay clock must be finite and bounded");
+            double phase = loopElapsedSeconds % SegmentDurationSeconds;
+            return playback.Seek(StartSeconds + (float)phase);
+        }
+    }
+
     public sealed class GhostSplitCoach
     {
         // Significant to a human without false precision from fixed 10 Hz poses.
@@ -72,7 +126,9 @@ namespace RoboRougelike.B0110.TrainingGhost
         private readonly List<GhostSplitResult> splits = new List<GhostSplitResult>();
         private float lastSeconds;
         private bool finished;
+        private GhostPracticeLoop recommendedLoop;
 
+        public GhostPracticeLoop RecommendedLoop => recommendedLoop;
         public int GatesReached => splits.Count;
         public int RequiredGates => reference.RequiredCheckpoints;
         public bool IsFinished => finished;
@@ -234,6 +290,17 @@ namespace RoboRougelike.B0110.TrainingGhost
                 FinishSegmentDeltaSeconds = finishDelta,
                 Guidance = guidance
             };
+            // Only a verified completion can produce a replay drill. Small
+            // deviations and failed trials never generate actionable loops.
+            GhostPracticeLoop nextLoop = null;
+            if (completed && maxLoss > PaceToleranceSeconds)
+            {
+                int targetGate = biggestLossIsFinish
+                    ? reference.RequiredCheckpoints : worstGate;
+                nextLoop = new GhostPracticeLoop(reference, targetGate,
+                    biggestLossIsFinish);
+            }
+            recommendedLoop = nextLoop;
             finished = true;
             return summary;
         }
