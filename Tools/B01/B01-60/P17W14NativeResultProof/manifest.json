@@ -1,0 +1,31 @@
+{
+  "package_id": "B01-60-NATIVE-RESULT-CASE-IDENTITY-GATE",
+  "version": "3.0.0",
+  "role": "B01-60",
+  "selected_gameplay_pr": 510,
+  "selected_gameplay_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "baseline_receiver_pr": 542,
+  "baseline_sha": "ed0234d8a3b1b3bc85f3d0a07bbe44b065c96508",
+  "base_native_runner_pr": 532,
+  "baseline_original_runner_git_blob": "269aed3ede17bfe614455e6e0edd446f60ae3b0f",
+  "changes": [
+    "Tools/B01/B01-60/P17W12NativeSecureV2QA/runner.py",
+    "Tools/B01/B01-60/P17W14NativeResultProof/test_native_result_gate.py",
+    "Tools/B01/B01-60/P17W14NativeResultProof/README.md",
+    "Tools/B01/B01-60/P17W14NativeResultProof/manifest.json",
+    ".github/workflows/b01-60-p17w14-native-xml-case-gate.yml"
+  ],
+  "preserves_qa_W13_rollback_security": true,
+  "fix": "Unity TestRunner returned XML must name exactly 2 independent EditMode and 14 independently-authored PlayMode test cases, each once with result Passed; actual Editor.log nonempty and exact Unity 6000.3.14f1 version marker",
+  "negative": "original validator incorrectly accepts NUnit XML containing only passed=2 or passed=14 counters and no test cases",
+  "test_fixture_type": "SYNTHETIC_ADVERSARIAL_NUNIT_XML_ONLY_NOT_UNITY",
+  "native_unity": "NOT_RUN_NO_LICENSED_EDITOR",
+  "save_adapter_contract": "B01-23/62_SELECT_ONE_#544_#549_AND_FIX_#550",
+  "G0": "B01-40_SOURCE_ONLY_ACCEPTED_#510",
+  "G1": "NOT_RUN",
+  "G2": "HOLD",
+  "codex_ack": false,
+  "integrated": false,
+  "no_merge": true,
+  "rollback": "Revert only own B01-60 runner.py change on newly versioned branch and discard new W14 QA files, preserve frozen #542 and #532 original SHAs"
+}
