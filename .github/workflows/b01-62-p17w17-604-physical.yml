@@ -1,0 +1,44 @@
+name: B01-62 W17 Exclusive #604 Physical G0 Intake Source QA
+on:
+  push:
+    branches:
+      - qa/b01-62-p17w17-selected604-physical-intake
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W17Selected604PhysicalIntake/**'
+      - '.github/workflows/b01-62-p17w17-604-physical.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  selected-604-physical-intake:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch ONLY exact selected original #604 plus frozen gameplay #510 and Save #556
+        run: |
+          git fetch --no-tags origin 1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a
+          git fetch --no-tags origin d94400d95d13db7f27e1533df05c9292d5380431
+          git fetch --no-tags origin 33094f154c7b91119b36d58aab285e6e83c5de57
+      - name: Execute original B01-23 physical Git ZIP and 3-package integration evidence
+        run: |
+          set -o pipefail
+          mkdir -p qa-b01-62-w17
+          python Tools/B01/B01-62/P17W17Selected604PhysicalIntake/intake.py --repo . --output qa-b01-62-w17/physical-receipt.json | tee qa-b01-62-w17/qa.stdout
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-62-w17-604-source-${{ matrix.os }}
+          path: qa-b01-62-w17/*
+          if-no-files-found: error
