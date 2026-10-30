@@ -63,11 +63,12 @@ static class Program {
             "FIRST_WIN_POSTCONDITIONS");
         var valid=Save(q);
         bool acceptedStale=q.TryRestore(stale,out var restoreReason);
+        var afterStale=acceptedStale?Save(q):null;
         bool replayAccepted=acceptedStale&&q.TryFinishVictory("win-0001",true,out err);
         Assert(acceptedStale,"DEFECT_NOT_REPRODUCED:stale restore refused");
         Assert(replayAccepted,"DEFECT_NOT_REPRODUCED:replayed event refused");
         Assert(h.Completions==1&&h.Parts[0].Health==1,"UNEXPECTED_PHYSICAL_MUTATION");
-        Assert(valid!=Save(q),"HISTORY_NOT_REWOUND");
+        Assert(valid!=afterStale,"HISTORY_NOT_REWOUND");
         Console.WriteLine("QA_DETECTOR_PASS stale save accepted + victory ID replayed");
         return new {
             name="stale_pre_victory_checkpoint_rewinds_victory_history",
