@@ -1,0 +1,414 @@
+{
+  "schema": "B01-24-PROJECTILE-EVASION-001-v1",
+  "original_R3_blob": "66cd1ee734b129117b3753d1205469a0496cb673",
+  "native_game_integrated": false,
+  "source_only": true,
+  "authored_roles": [
+    "Scout",
+    "Bruiser",
+    "Gunner",
+    "Flanker"
+  ],
+  "scenarios": [
+    {
+      "id": "HEADON_REACTION",
+      "role": "Scout",
+      "frames": [
+        {
+          "tick": 0,
+          "self": [
+            0,
+            0
+          ],
+          "selfVelocity": [
+            0,
+            0
+          ],
+          "selfRadius": 1,
+          "maxSpeed": 6,
+          "maxAcceleration": 15,
+          "reactionSeconds": 0.5,
+          "horizonSeconds": 2,
+          "canMove": true,
+          "shots": [
+            {
+              "id": 1,
+              "pos": [
+                10,
+                0
+              ],
+              "velocity": [
+                -10,
+                0
+              ],
+              "radius": 0.3,
+              "hostile": true
+            }
+          ],
+          "expect": "Dodge"
+        },
+        {
+          "tick": 1,
+          "self": [
+            0,
+            0
+          ],
+          "selfVelocity": [
+            0,
+            0
+          ],
+          "selfRadius": 1,
+          "maxSpeed": 6,
+          "maxAcceleration": 15,
+          "reactionSeconds": 0.5,
+          "horizonSeconds": 1,
+          "canMove": true,
+          "shots": [
+            {
+              "id": 2,
+              "pos": [
+                70,
+                0
+              ],
+              "velocity": [
+                -10,
+                0
+              ],
+              "radius": 0.3,
+              "hostile": true
+            }
+          ],
+          "expect": "Clear"
+        },
+        {
+          "tick": 2,
+          "self": [
+            0,
+            0
+          ],
+          "selfVelocity": [
+            0,
+            0
+          ],
+          "selfRadius": 1,
+          "maxSpeed": 6,
+          "maxAcceleration": 15,
+          "reactionSeconds": 0.5,
+          "horizonSeconds": 2,
+          "canMove": true,
+          "shots": [
+            {
+              "id": 3,
+              "pos": [
+                10,
+                0
+              ],
+              "velocity": [
+                -10,
+                0
+              ],
+              "radius": 0.3,
+              "hostile": false
+            }
+          ],
+          "expect": "Clear"
+        },
+        {
+          "tick": 3,
+          "self": [
+            0,
+            0
+          ],
+          "selfVelocity": [
+            0,
+            0
+          ],
+          "selfRadius": 1,
+          "maxSpeed": 6,
+          "maxAcceleration": 15,
+          "reactionSeconds": 0.5,
+          "horizonSeconds": 2,
+          "canMove": false,
+          "shots": [
+            {
+              "id": 4,
+              "pos": [
+                10,
+                0
+              ],
+              "velocity": [
+                -10,
+                0
+              ],
+              "radius": 0.3,
+              "hostile": true
+            }
+          ],
+          "expect": "MobilityDisabled"
+        }
+      ]
+    },
+    {
+      "id": "CROSSING_AND_FRIENDLY",
+      "role": "Gunner",
+      "frames": [
+        {
+          "tick": 0,
+          "self": [
+            0,
+            0
+          ],
+          "selfVelocity": [
+            0,
+            0
+          ],
+          "selfRadius": 1,
+          "maxSpeed": 6,
+          "maxAcceleration": 15,
+          "reactionSeconds": 0.5,
+          "horizonSeconds": 2,
+          "canMove": true,
+          "shots": [
+            {
+              "id": 10,
+              "pos": [
+                0,
+                10
+              ],
+              "velocity": [
+                0,
+                -10
+              ],
+              "radius": 0.3,
+              "hostile": true
+            }
+          ],
+          "expect": "Dodge"
+        },
+        {
+          "tick": 2,
+          "self": [
+            0,
+            0
+          ],
+          "selfVelocity": [
+            0,
+            0
+          ],
+          "selfRadius": 1,
+          "maxSpeed": 6,
+          "maxAcceleration": 15,
+          "reactionSeconds": 0.5,
+          "horizonSeconds": 2,
+          "canMove": true,
+          "shots": [
+            {
+              "id": 11,
+              "pos": [
+                0,
+                10
+              ],
+              "velocity": [
+                0,
+                10
+              ],
+              "radius": 0.3,
+              "hostile": true
+            }
+          ],
+          "expect": "Clear"
+        },
+        {
+          "tick": 4,
+          "self": [
+            0,
+            0
+          ],
+          "selfVelocity": [
+            0,
+            0
+          ],
+          "selfRadius": 1,
+          "maxSpeed": 6,
+          "maxAcceleration": 15,
+          "reactionSeconds": 0.5,
+          "horizonSeconds": 2,
+          "canMove": true,
+          "shots": [
+            {
+              "id": 12,
+              "pos": [
+                10,
+                0
+              ],
+              "velocity": [
+                -10,
+                0
+              ],
+              "radius": 0.3,
+              "hostile": true
+            }
+          ],
+          "expect": "Dodge"
+        },
+        {
+          "tick": 5,
+          "self": [
+            0,
+            0
+          ],
+          "selfVelocity": [
+            0,
+            0
+          ],
+          "selfRadius": 1,
+          "maxSpeed": 6,
+          "maxAcceleration": 15,
+          "reactionSeconds": 0.5,
+          "horizonSeconds": 2,
+          "canMove": true,
+          "shots": [],
+          "expect": "Clear"
+        }
+      ]
+    },
+    {
+      "id": "HEAVY_DISABLE_AND_RECOVER",
+      "role": "Bruiser",
+      "frames": [
+        {
+          "tick": 0,
+          "self": [
+            0,
+            0
+          ],
+          "selfVelocity": [
+            0,
+            0
+          ],
+          "selfRadius": 1,
+          "maxSpeed": 6,
+          "maxAcceleration": 0,
+          "reactionSeconds": 0.5,
+          "horizonSeconds": 2,
+          "canMove": true,
+          "shots": [
+            {
+              "id": 20,
+              "pos": [
+                10,
+                0
+              ],
+              "velocity": [
+                -10,
+                0
+              ],
+              "radius": 0.3,
+              "hostile": true
+            }
+          ],
+          "expect": "MobilityDisabled"
+        },
+        {
+          "tick": 1,
+          "self": [
+            0,
+            0
+          ],
+          "selfVelocity": [
+            0,
+            0
+          ],
+          "selfRadius": 1,
+          "maxSpeed": 0,
+          "maxAcceleration": 15,
+          "reactionSeconds": 0.5,
+          "horizonSeconds": 2,
+          "canMove": true,
+          "shots": [
+            {
+              "id": 21,
+              "pos": [
+                10,
+                0
+              ],
+              "velocity": [
+                -10,
+                0
+              ],
+              "radius": 0.3,
+              "hostile": true
+            }
+          ],
+          "expect": "MobilityDisabled"
+        },
+        {
+          "tick": 2,
+          "self": [
+            0,
+            0
+          ],
+          "selfVelocity": [
+            0,
+            0
+          ],
+          "selfRadius": 1,
+          "maxSpeed": 6,
+          "maxAcceleration": 15,
+          "reactionSeconds": 0.5,
+          "horizonSeconds": 2,
+          "canMove": true,
+          "shots": [
+            {
+              "id": 22,
+              "pos": [
+                10,
+                0
+              ],
+              "velocity": [
+                -10,
+                0
+              ],
+              "radius": 0.3,
+              "hostile": true
+            }
+          ],
+          "expect": "Dodge"
+        },
+        {
+          "tick": 3,
+          "self": [
+            0,
+            0
+          ],
+          "selfVelocity": [
+            0,
+            0
+          ],
+          "selfRadius": 1,
+          "maxSpeed": 6,
+          "maxAcceleration": 15,
+          "reactionSeconds": 0.5,
+          "horizonSeconds": 1,
+          "canMove": true,
+          "shots": [
+            {
+              "id": 23,
+              "pos": [
+                90,
+                0
+              ],
+              "velocity": [
+                -10,
+                0
+              ],
+              "radius": 0.3,
+              "hostile": true
+            }
+          ],
+          "expect": "Clear"
+        }
+      ]
+    }
+  ]
+}

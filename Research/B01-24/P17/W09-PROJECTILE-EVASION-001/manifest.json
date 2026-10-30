@@ -1,0 +1,91 @@
+{
+  "package_id": "B01-24-PROJECTILE-EVASION-001",
+  "version": "1.0.0",
+  "owner": "B01-24 — ENEMY AI & COMBAT SYSTEMS",
+  "branch": "research/b01-24-p17-w09-projectile-evasion",
+  "original_codex_R3_blob": "66cd1ee734b129117b3753d1205469a0496cb673",
+  "original_codex_R3_path": "Assets/R3/R3EnemyArchetype.cs",
+  "base_commit": "203a0805251ed28293888e43f2d49f0df63767c6",
+  "files": [
+    {
+      "path": "Research/B01-24/P17/W09-PROJECTILE-EVASION-001/ProjectileEvasion.cs",
+      "blob": "b3b3258acca219a7c9968b5b3091cede8603f9ab"
+    },
+    {
+      "path": "Research/B01-24/P17/W09-PROJECTILE-EVASION-001/ProjectileEvasion.cs.meta",
+      "blob": "72e8addf5f67a8aabd8b4c6c2fb199e676ca341e"
+    },
+    {
+      "path": "Research/B01-24/P17/W09-PROJECTILE-EVASION-001/Program.cs",
+      "blob": "249707a5741df40fbe090994c3d7829cc78700f8"
+    },
+    {
+      "path": "Research/B01-24/P17/W09-PROJECTILE-EVASION-001/evasion_scenarios.json",
+      "blob": "8ee86408327331b7961c22c315a6613f9e2f097b"
+    },
+    {
+      "path": "Research/B01-24/P17/W09-PROJECTILE-EVASION-001/ProjectileEvasionCI.csproj",
+      "blob": "2826fee7b067332f8c1a0919ebdc57af9bdd39c2"
+    },
+    {
+      "path": "Research/B01-24/P17/W09-PROJECTILE-EVASION-001/Tools/build_receiver.py",
+      "blob": "f2e6f49054e605a7eff39408b441f128e18a4460"
+    },
+    {
+      "path": "Research/B01-24/P17/W09-PROJECTILE-EVASION-001/Tools/test_receiver.py",
+      "blob": "f71aed75a697b72957abe3acfe9b20f603c2d9a8"
+    },
+    {
+      "path": "Research/B01-24/P17/W09-PROJECTILE-EVASION-001/README.md",
+      "blob": "d641803a48dc7cd7a2ce5f36f388b1496fe496fc"
+    },
+    {
+      "path": ".github/workflows/b01-24-p17-w09-projectile-evasion.yml",
+      "blob": "86ba13fd16637a81c925309497108f7d2ad78664"
+    }
+  ],
+  "delivery": {
+    "physical_inner_zip": "B01-24-PROJECTILE-EVASION-001-unity-source.zip",
+    "contents": [
+      "Assets/B0124ProjectileEvasion/ProjectileEvasion.cs",
+      "Assets/B0124ProjectileEvasion/ProjectileEvasion.cs.meta"
+    ],
+    "physical_zip_generated_by": "Research/B01-24/P17/W09-PROJECTILE-EVASION-001/Tools/build_receiver.py",
+    "receipt": "receiver-receipt.json",
+    "no_overwrite": true,
+    "importable_source_only": true
+  },
+  "mechanic": {
+    "kind": "2D continuous swept projectile collision evasion with role-specific acceleration-limited 8-way steering advice",
+    "original_roles": [
+      "Scout",
+      "Bruiser",
+      "Gunner",
+      "Flanker"
+    ],
+    "original_scenarios": 3,
+    "replayed_decisions": 12,
+    "scenario_sha256": "6cbf60eb98f524bb65d775554da17805bab9c7d4431318e46d024859e184f18a",
+    "provisional_policy": true,
+    "warning": "Advisory velocity assumes linearized motion after one acceleration-limited reaction step; not actual PhysX or wall-aware pathing"
+  },
+  "tests": {
+    "source_CSharp9": "36/36 real executed tests per OS on earlier code SHA",
+    "source_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41053509384",
+    "negative_physical_ZIP": "16 original FS mutation and deterministic ZIP tests, awaiting exact final SHA",
+    "independent_QA": "PENDING",
+    "native_Unity": "NOT_RUN",
+    "PhysX": "NOT_RUN",
+    "Player": "NOT_RUN",
+    "in_game": "NOT_INTEGRATED"
+  },
+  "ownership": {
+    "game_Assets_changed": false,
+    "merge": false,
+    "Codex_ACK": "PENDING",
+    "source_status": "PRODUCER_TESTED_PENDING_FINAL_HEAD_ZIP_G0",
+    "g1": "NOT_RUN",
+    "g2": "HOLD"
+  },
+  "rollback": "Do not import or turn off optional approved adapter and remove only original two imported optional assets after backup; leave Codex source unchanged"
+}
