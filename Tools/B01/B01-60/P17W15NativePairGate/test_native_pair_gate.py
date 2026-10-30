@@ -46,7 +46,7 @@ def synthetic_xml(path,mod,platform,scenario):
  ET.ElementTree(root).write(path,encoding="utf-8",xml_declaration=True)
 def run_real_main_with_subprocess_stub(mod,path,scenario):
  """Only SOURCE control flow is real, subprocess is NOT Unity and is labeled stub."""
- out=path/("old-" if mod.__name__=="frozen_original_W14" else "new-")+scenario
+ out=path/(("old-" if mod.__name__=="frozen_original_W14" else "new-")+scenario)
  unity=path/"SYNTHETIC_NOT_UNITY_EXECUTABLE"
  unity.touch()
  # Override pure staging to avoid copying source; source-control logic is executed
