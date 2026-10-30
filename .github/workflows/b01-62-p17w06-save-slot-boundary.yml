@@ -1,0 +1,106 @@
+name: B01-62 Original Codex save-slot path boundary and canary QA
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W06SaveSlotBoundary/**'
+      - '.github/workflows/b01-62-p17w06-save-slot-boundary.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-path-boundary:
+    name: Original Codex C# save slot and canary (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2025, ubuntu-24.04]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Fetch immutable original Codex storage, fail on Git blob drift
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin 203a0805251ed28293888e43f2d49f0df63767c6
+          python Tools/B01/B01-62/P17W06SaveSlotBoundary/prepare.py \
+            --repo . --out "$RUNNER_TEMP/b0162-original-storage"
+      - name: Run original C# editor test path and isolated real canary overwrite
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --project "$RUNNER_TEMP/b0162-original-storage/SlotBoundary.csproj" \
+            -c Release -- --mode editor --sandbox "$RUNNER_TEMP/b0162-slotqa-editor" \
+            | tee "$RUNNER_TEMP/editor.log"
+          grep -q '^SAVE_SLOT_BOUNDARY_SOURCE_QA=PASS mode=editor checks=10 NOT_UNITY_NATIVE$' "$RUNNER_TEMP/editor.log"
+          grep -q '^SIMULATED_SAVE_SLOT_CLOBBER_RISK=REPRODUCED_NOT_NATIVE_UNITY$' "$RUNNER_TEMP/editor.log"
+      - name: Run original C# batch QA override safely
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --project "$RUNNER_TEMP/b0162-original-storage/SlotBoundary.csproj" \
+            -c Release -- --mode batch-safe --sandbox "$RUNNER_TEMP/b0162-slotqa-batch-safe" \
+            -rrl-run-save-qa-path "$RUNNER_TEMP/b0162-slotqa-batch-safe/qa/safe.json" \
+            | tee "$RUNNER_TEMP/batch-safe.log"
+          grep -q '^SAVE_SLOT_BOUNDARY_SOURCE_QA=PASS mode=batch-safe checks=4 NOT_UNITY_NATIVE$' "$RUNNER_TEMP/batch-safe.log"
+      - name: Run missing QA batch override fail-closed receiver
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --project "$RUNNER_TEMP/b0162-original-storage/SlotBoundary.csproj" \
+            -c Release -- --mode batch-missing --sandbox "$RUNNER_TEMP/b0162-slotqa-batch-missing" \
+            | tee "$RUNNER_TEMP/batch-missing.log"
+          grep -q '^SAVE_SLOT_BOUNDARY_SOURCE_QA=PASS mode=batch-missing checks=2 NOT_UNITY_NATIVE$' "$RUNNER_TEMP/batch-missing.log"
+      - name: Run original unsafe QA batch override with receiver rejection
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --project "$RUNNER_TEMP/b0162-original-storage/SlotBoundary.csproj" \
+            -c Release -- --mode batch-unsafe --sandbox "$RUNNER_TEMP/b0162-slotqa-batch-unsafe" \
+            -rrl-run-save-qa-path "$RUNNER_TEMP/b0162-slotqa-batch-unsafe/host-data/Run/checkpoint.json" \
+            | tee "$RUNNER_TEMP/batch-unsafe.log"
+          grep -q '^SAVE_SLOT_BOUNDARY_SOURCE_QA=PASS mode=batch-unsafe checks=3 NOT_UNITY_NATIVE$' "$RUNNER_TEMP/batch-unsafe.log"
+      - name: Collect four original-code real disk receipts and logs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p Tools/B01/B01-62/P17W06SaveSlotBoundary/output
+          for mode in editor batch-safe batch-missing batch-unsafe; do
+            cp "$RUNNER_TEMP/b0162-slotqa-$mode/receipt.json" \
+              "Tools/B01/B01-62/P17W06SaveSlotBoundary/output/$mode.json"
+            cp "$RUNNER_TEMP/$mode.log" \
+              "Tools/B01/B01-62/P17W06SaveSlotBoundary/output/$mode.log"
+          done
+          echo 'ORIGINAL_CODEX_SLOT_BOUNDARY_19_CHECKS_PASS'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-62-slot-boundary-${{ matrix.os }}
+          path: Tools/B01/B01-62/P17W06SaveSlotBoundary/output/
+          if-no-files-found: error
+          retention-days: 14
+  exact-receipt-parity:
+    name: Independently compare four physical JSON receipt bytes across OS
+    runs-on: ubuntu-24.04
+    needs: original-path-boundary
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: b01-62-slot-boundary-windows-2025
+          path: received/win
+      - uses: actions/download-artifact@v4
+        with:
+          name: b01-62-slot-boundary-ubuntu-24.04
+          path: received/linux
+      - shell: bash
+        run: |
+          set -euo pipefail
+          for mode in editor batch-safe batch-missing batch-unsafe; do
+            cmp "received/win/$mode.json" "received/linux/$mode.json"
+            sha256sum "received/win/$mode.json"
+          done
+          echo "SAVE_SLOT_RECEIPTS_CROSS_OS_BYTE_PARITY=PASS"
