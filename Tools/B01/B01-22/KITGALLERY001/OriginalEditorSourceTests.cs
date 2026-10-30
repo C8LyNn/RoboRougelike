@@ -90,7 +90,12 @@ internal class OriginalEditorSourceTests
         return IsRejected(()=>KitComparisonRules.Compare(x.offers[0],x.offers[7]));
      });
      Check("null missing comparison TSV rejected",()=>IsRejected(()=>KitComparisonRules.ToTsv(null)));
-     Console.WriteLine("PASS_TOTAL "+checks+"/35");
+     Check("reject unknown valid-count part on unchanged source pin",()=>{var x=Clone(d);x.offers[0].parts[0].kind="UnlistedDrive";return IsRejected(()=>KitGalleryRules.Validate(x));});
+     Check("reject coherently forged line price and offer total",()=>{var x=Clone(d);x.offers[0].parts[0].unit_scrap+=3;x.offers[0].price_scrap+=6;return IsRejected(()=>KitGalleryRules.Validate(x));});
+     Check("reject coherently forged nonempty kit title",()=>{var x=Clone(d);x.offers[0].title="Inny zestaw";return IsRejected(()=>KitGalleryRules.Validate(x));});
+     Check("reject unknown positive-cost gun kind on pinned catalog",()=>{var x=Clone(d);x.offers[7].parts[0].weapon="UnlistedCannon";return IsRejected(()=>KitGalleryRules.Validate(x));});
+     Check("reject coherent quantity, count and scrap recalculation",()=>{var x=Clone(d);x.offers[0].parts[0].count++;x.offers[0].pieces++;x.offers[0].price_scrap+=15;return IsRejected(()=>KitGalleryRules.Validate(x));});
+     Console.WriteLine("PASS_TOTAL "+checks+"/40");
      return 0;
    } catch(Exception ex){Console.Error.WriteLine(ex);return 1;}
  }
