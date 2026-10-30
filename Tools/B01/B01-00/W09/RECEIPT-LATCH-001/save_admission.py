@@ -87,13 +87,23 @@ def audit(payload):
         if qa.get("state") not in ("PASS_SOURCE_ONLY", "SECURITY_RED", "NOT_RUN"):
             raise AdmissionError("invalid independent QA state")
         if qa["state"] == "NOT_RUN":
-            if any(qa.get(k) is not None for k in ("review_pr", "review_sha", "target_sha")):
+            if any(qa.get(k) is not None for k in
+                   ("review_pr", "review_sha", "target_sha", "tested_blob_sha")):
                 raise AdmissionError("QA NOT_RUN cannot contain fabricated review")
         else:
             if (not natural(qa.get("review_pr")) or qa["review_pr"] == n
                     or not valid_sha(qa.get("review_sha"))
-                    or qa.get("target_sha") != h):
-                raise AdmissionError("independent review must pin exactly tested source SHA")
+                    or not valid_sha(qa.get("target_sha"))):
+                raise AdmissionError("independent review must pin tested source commit")
+            if qa["state"] == "PASS_SOURCE_ONLY" and qa["target_sha"] != h:
+                raise AdmissionError("older QA PASS cannot promote later producer HEAD")
+            if qa["state"] == "SECURITY_RED" and qa["target_sha"] != h:
+                # A RED from an older branch commit can remain an active
+                # blocker ONLY for exactly the same original vulnerable blob.
+                # Do not pretend the review tested the later branch HEAD.
+                if (not valid_sha(x.get("source_blob_sha"))
+                        or qa.get("tested_blob_sha") != x["source_blob_sha"]):
+                    raise AdmissionError("older RED cannot transfer without identical source blob")
         codes = qa.get("failure_codes")
         if qa["state"] == "SECURITY_RED":
             if (type(codes) is not list or not codes
