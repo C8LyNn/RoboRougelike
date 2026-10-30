@@ -83,11 +83,17 @@ namespace B01.UXHaptic
             if(timeMs<_nowMs)throw new ArgumentOutOfRangeException("timeMs");
             _nowMs=timeMs;
         }
-        public void StartNewRun(int nextRunId)
+        // Returns true when the host MUST stop still-running physical motors
+        // before it publishes/starts the new run. Old void call sites still
+        // compile when they deliberately ignore the result; a future Unity
+        // adapter must consume it to prevent cross-run rumble.
+        public bool StartNewRun(int nextRunId)
         {
             if(nextRunId<=_runId)throw new ArgumentOutOfRangeException("nextRunId");
+            bool stop=_enabled&&_activeUntilMs>_nowMs;
             _runId=nextRunId;_nowMs=0;_lastSequence=0;
             _lastPlayedMs=-1;_activeUntilMs=0;_activeTier=HapticTier.Minor;
+            return stop;
         }
 
         public static HapticTier TierOf(HapticKind kind)
