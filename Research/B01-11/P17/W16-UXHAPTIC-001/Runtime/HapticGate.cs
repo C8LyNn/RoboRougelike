@@ -39,7 +39,7 @@ namespace B01.UXHaptic
             LeftPercent=left;RightPercent=right;DurationMs=duration;
             PreemptPrevious=preempt;
             // A critical warning must be visible, whether or not motors can play.
-            RequireVisibleCriticalAlert=cue.Kind==HapticKind.CriticalDamage;
+            RequireVisibleCriticalAlert=cue.Kind==HapticKind.CriticalDamage && outcome!=HapticOutcome.IgnoredOldRun;
         }
     }
 
