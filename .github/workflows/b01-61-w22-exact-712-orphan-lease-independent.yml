@@ -1,0 +1,59 @@
+name: B01-61 W22 exact #712 real OS orphan lease independent source QA
+on:
+  push:
+    branches: [qa/b01-61-p17w22-712-original-orphan-lease-red-green]
+permissions:
+  contents: read
+jobs:
+  direct-original-712-with-691-669:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Stage original #691 #669 frozen #556 W06 #510 exact blob bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          d="Tools/B01/B01-61/P17W22Canonical712IndependentQA/.source"
+          mkdir -p "$d"
+          git fetch --no-tags origin 809f82575c638e1b4d2806b5f417bddab6c0871a d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121 33094f154c7b91119b36d58aab285e6e83c5de57 d94400d95d13db7f27e1533df05c9292d5380431
+          git show 809f82575c638e1b4d2806b5f417bddab6c0871a:Assets/B0123CanonicalSaveApi001/Core/CanonicalWorldGateway.cs > "$d/CanonicalWorldGatewayV2.cs"
+          git show d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121:Tools/B01/B01-62/P17W20SingleFileSaveSlot/SingleFileSaveSlot.cs > "$d/SingleFileSaveSlot.cs"
+          git show 33094f154c7b91119b36d58aab285e6e83c5de57:Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs > "$d/DetachedSnapshotContract.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs > "$d/DebrisImpulseCore.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs > "$d/SecureRigSpec.cs"
+          python Tools/B01/B01-61/P17W22Canonical712IndependentQA/source_guard.py 2>&1 | tee b0161-w22-pin.log
+      - name: Compile exact unmodified R2 source CSharp9 strict
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet build Tools/B01/B01-61/P17W22Canonical712IndependentQA/Original712IndependentQA.csproj -c Release --warnaserror 2>&1 | tee b0161-w22-build.log
+      - name: Execute original R2 partial owner leak and REAL child CLR lease refusal
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet run --no-build -c Release --project Tools/B01/B01-61/P17W22Canonical712IndependentQA/Original712IndependentQA.csproj 2>&1 | tee b0161-w22-test.log
+          grep -q 'B0161_W22_ORIGINAL_712_691_669_SOURCE_TOTAL PASS=5 FAIL=0' b0161-w22-test.log
+          grep -q 'W22_712_ORPHAN_QUARANTINE_LOCK_RETENTION_GREEN=ReturnsFalse' b0161-w22-test.log
+          grep -q 'W22_712_ORPHAN_QUARANTINE_LOCK_RETENTION_GREEN=Throws' b0161-w22-test.log
+          grep -q 'W22_712_TRUE_COLD_RECOVERY_ONLY_AFTER_RETIRE_GREEN=Throws' b0161-w22-test.log
+          grep -q 'B0161_W22_SOURCE_FIX_707=GREEN_EXCLUSIVE_OWNER_UNTIL_VERIFIED_RETIRE' b0161-w22-test.log
+      - name: Preserve ORIGINAL source logs, not Unity NUnit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b0161-w22-r2-712-${{ matrix.os }}
+          path: |
+            b0161-w22-pin.log
+            b0161-w22-build.log
+            b0161-w22-test.log
+          if-no-files-found: warn

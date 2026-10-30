@@ -1,0 +1,11 @@
+{
+  "package": "B01-61-P17W22-712-R2-ORPHAN-LEASE-QA",
+  "exact_original_712_sha": "bd8905ad549a7b26854b671be971f7d781308311",
+  "selected_api": "691",
+  "storage": "669",
+  "actual_source_pins": 6,
+  "own_new_only": 6,
+  "independent_test_scenarios_per_os": 5,
+  "native_unity": "NOT_RUN",
+  "merge": false
+}
