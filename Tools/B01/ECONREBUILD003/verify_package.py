@@ -30,19 +30,19 @@ assert all(x.startswith(('Assets/B01Packages/ECONREBUILD003',
 new_guids = []
 for meta in sorted(Path('Assets/B01Packages/ECONREBUILD003').rglob('*.meta')):
     text = meta.read_text()
-    ms=re.findall(r'^guid:\\s*([0-9a-f]{32})$',text,re.M)
+    ms=re.findall(r'^guid:\s*([0-9a-f]{32})$',text,re.M)
     assert len(ms)==1,meta
     new_guids.extend(ms)
 # Also package root .meta is outside directory.
 rootmeta=Path('Assets/B01Packages/ECONREBUILD003.meta')
-rootmatch=re.findall(r'^guid:\\s*([0-9a-f]{32})$',rootmeta.read_text(),re.M)
+rootmatch=re.findall(r'^guid:\s*([0-9a-f]{32})$',rootmeta.read_text(),re.M)
 assert len(rootmatch)==1
 new_guids.extend(rootmatch)
 assert len(new_guids)==4 and len(set(new_guids))==4
 prior = set()
 for meta in Path('Assets/B01Packages/ECONREBUILD002').rglob('*.meta'):
-    prior.update(re.findall(r'^guid:\\s*([0-9a-f]{32})$',meta.read_text(),re.M))
-prior.update(re.findall(r'^guid:\\s*([0-9a-f]{32})$',Path('Assets/B01Packages/ECONREBUILD002.meta').read_text(),re.M))
+    prior.update(re.findall(r'^guid:\s*([0-9a-f]{32})$',meta.read_text(),re.M))
+prior.update(re.findall(r'^guid:\s*([0-9a-f]{32})$',Path('Assets/B01Packages/ECONREBUILD002.meta').read_text(),re.M))
 assert len(prior)==4 and not (prior & set(new_guids))
 asm=json.loads(Path('Assets/B01Packages/ECONREBUILD003/Runtime/B01.EconRebuildV3.asmdef').read_text())
 assert asm['noEngineReferences'] is True and asm['name']=='B01.EconRebuildV3'
