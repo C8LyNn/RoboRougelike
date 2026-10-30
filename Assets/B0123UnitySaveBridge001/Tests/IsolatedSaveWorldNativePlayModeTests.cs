@@ -15,7 +15,7 @@ namespace B01.UnitySaveBridge001.Tests
             try
             {
                 var host=game.AddComponent<IsolatedTwinRigSaveHost>();
-                Assert.IsTrue(host.TryUseIsolatedNativeTestSlot(System.Guid.NewGuid()));
+                Assert.IsTrue(host.TrySelectPersistentRunSlot(31,System.Guid.NewGuid()));
                 byte[] save=IsolatedTwinRigSaveHost.MakeFixture(31,1,true,true);
                 Assert.IsTrue(host.TryRestoreBytes(save,31,1));
                 Assert.IsTrue(host.IsConsumed(0,2310001));
@@ -45,7 +45,7 @@ namespace B01.UnitySaveBridge001.Tests
             try
             {
                 var host=game.AddComponent<IsolatedTwinRigSaveHost>();
-                Assert.IsTrue(host.TryUseIsolatedNativeTestSlot(System.Guid.NewGuid()));
+                Assert.IsTrue(host.TrySelectPersistentRunSlot(31,System.Guid.NewGuid()));
                 Assert.IsTrue(host.TryRestoreBytes(
                     IsolatedTwinRigSaveHost.MakeFixture(31,1,true,false),31,1));
                 byte[] corrupt=IsolatedTwinRigSaveHost.MakeFixture(31,2,false,true);
@@ -67,13 +67,13 @@ namespace B01.UnitySaveBridge001.Tests
             {
                 System.Guid slot=System.Guid.NewGuid();
                 var original=prior.AddComponent<IsolatedTwinRigSaveHost>();
-                Assert.IsTrue(original.TryUseIsolatedNativeTestSlot(slot));
+                Assert.IsTrue(original.TrySelectPersistentRunSlot(41,slot));
                 Assert.IsTrue(original.TryRestoreBytes(
                     IsolatedTwinRigSaveHost.MakeFixture(41,4,true,false),41,4));
                 Assert.IsTrue(original.TrySaveBytes(out byte[] saved));
                 prior.SetActive(false);
                 var restored=next.AddComponent<IsolatedTwinRigSaveHost>();
-                Assert.IsTrue(restored.TryUseIsolatedNativeTestSlot(slot));
+                Assert.IsTrue(restored.TrySelectPersistentRunSlot(41,slot));
                 Assert.IsTrue(restored.TryRestoreBytes(saved,41,4));
                 Assert.IsTrue(restored.IsConsumed(0,2310001));
                 Assert.IsFalse(restored.IsConsumed(1,2310002));
@@ -89,7 +89,7 @@ namespace B01.UnitySaveBridge001.Tests
             try
             {
                 var host=go.AddComponent<IsolatedTwinRigSaveHost>();
-                Assert.IsTrue(host.TryUseIsolatedNativeTestSlot(System.Guid.NewGuid()));
+                Assert.IsTrue(host.TrySelectPersistentRunSlot(9,System.Guid.NewGuid()));
                 Assert.IsTrue(host.TryRestoreBytes(
                     IsolatedTwinRigSaveHost.MakeFixture(9,5,false,true),9,5));
                 Assert.IsFalse(host.TryRestoreBytes(
@@ -100,6 +100,31 @@ namespace B01.UnitySaveBridge001.Tests
                 yield return null;
             }
             finally {Object.Destroy(go);}
+        }
+
+        [UnityTest]
+        public IEnumerator SeparateRunSlots_CannotPoisonLaterRunOrReuseForeignOwner()
+        {
+            System.Guid slot=System.Guid.NewGuid();
+            GameObject first=new GameObject("W18 run51 owner");
+            GameObject second=new GameObject("W18 run52 owner");
+            try
+            {
+                var a=first.AddComponent<IsolatedTwinRigSaveHost>();
+                Assert.IsTrue(a.TrySelectPersistentRunSlot(51,slot));
+                Assert.IsTrue(a.TryRestoreBytes(
+                    IsolatedTwinRigSaveHost.MakeFixture(51,1,true,false),51,1));
+                Assert.IsTrue(a.IsConsumed(0,2310001));
+                first.SetActive(false); // release file owner lease
+                var b=second.AddComponent<IsolatedTwinRigSaveHost>();
+                Assert.IsTrue(b.TrySelectPersistentRunSlot(52,slot));
+                Assert.IsTrue(b.TryRestoreBytes(
+                    IsolatedTwinRigSaveHost.MakeFixture(52,1,false,true),52,1));
+                Assert.IsTrue(b.IsConsumed(1,2310002));
+                Assert.IsFalse(b.IsConsumed(0,2310001));
+            }
+            finally {Object.Destroy(first);Object.Destroy(second);}
+            yield return null;
         }
     }
 }

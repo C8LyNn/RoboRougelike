@@ -79,18 +79,27 @@ namespace B01.UnitySaveBridge001
         private void OnDisable(){ReleaseSlot();}
         private void OnDestroy(){ReleaseSlot();}
 
-        // Test-only deterministic slot isolation. No arbitrary user filesystem path,
-        // and no player checkpoint deletion. Must run before first physical Load.
-        public bool TryUseIsolatedNativeTestSlot(Guid testId)
+        // Explicit isolated durable slot selection: unlike historical #596,
+        // a new run NEVER silently reuses another run's global checkpoint path.
+        // Same run + same non-empty slot GUID is stable across process restarts.
+        // Call ONLY before first physical Load; no arbitrary filesystem path input.
+        public bool TrySelectPersistentRunSlot(long desiredRunId,Guid slotId)
         {
-            if(testId==Guid.Empty||coordinator==null||coordinator.HasWorld||
-               coordinator.Busy||coordinator.Quarantined)return false;
+            if(desiredRunId<=0||slotId==Guid.Empty||coordinator==null||
+               coordinator.HasWorld||coordinator.Busy||coordinator.Quarantined)
+                return false;
             ReleaseSlot();
             checkpointPath=Path.Combine(Application.persistentDataPath,
-                "b0123_w18_native_qa_"+testId.ToString("N")+".checkpoint");
+                "b0123_isolated_save_slots",
+                "run_"+desiredRunId.ToString(System.Globalization.CultureInfo.InvariantCulture)+
+                "_slot_"+slotId.ToString("N")+".checkpoint");
             coordinator=new AtomicWorldSwap(this,new FileCheckpointStore(checkpointPath));
+            runId=desiredRunId;
             return AcquireSlot();
         }
+        // Test-only helper retained for external QA of the same unique slot API.
+        public bool TryUseIsolatedNativeTestSlot(Guid testId)
+            =>TrySelectPersistentRunSlot(runId,testId);
         private void Start()
         {
             if(buildInitialFixtureOnStart)
