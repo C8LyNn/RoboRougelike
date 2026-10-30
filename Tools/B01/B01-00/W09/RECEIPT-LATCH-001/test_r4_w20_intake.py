@@ -22,7 +22,7 @@ class W20Admission(unittest.TestCase):
     def test_base_policy_not_promoted(self):
         result=check(load())
         self.assertEqual(result["verdict"],
-            "HOLD_SELECTED_647_FORMAL_G0_AND_NATIVE_API")
+            "HOLD_SELECTED_647_COMPONENT_DESTROY_P0_RED")
         self.assertEqual(result["r4_final_sha"],
             "09c1809b73324a6d31c13e5d0143de62ac1e3ca6")
         self.assertEqual(result["r4_candidates"],[647,652])
@@ -30,7 +30,21 @@ class W20Admission(unittest.TestCase):
     def test_real_647_independent_qa_scoped(self):
         result=check(load())
         self.assertEqual(result["r4_647_independent_source_qa"],
-                         "GREEN_ONLY_FOR_ORIGINAL_647")
+                         "PARTIAL_GREEN_664_NEW_SOURCE_RED_670")
+
+    def test_670_original_ubuntu_orphan_world_source_red(self):
+        row=load()["r4_candidates"][0]["source"]["new_component_destroy_qa"]
+        self.assertEqual(row["observed_original_source_run"],41114875911)
+        self.assertEqual(row["release_gate"],"HOLD_SOURCE_P0_RED")
+        self.assertEqual(row["native_unity"],"NOT_RUN")
+
+    def test_670_must_not_erase_original_security_witness(self):
+        self.denies(lambda x:x["r4_candidates"][0]["source"].pop(
+            "new_component_destroy_qa"))
+
+    def test_670_cannot_assert_native_physx(self):
+        self.denies(lambda x:x["r4_candidates"][0]["source"][
+            "new_component_destroy_qa"].update(native_unity="PASS"))
 
     def test_real_652_risk_not_native(self):
         self.assertEqual(check(load())["r4_652_lease_lifecycle"],
@@ -279,7 +293,7 @@ class W20Admission(unittest.TestCase):
             self.assertEqual(main([str(FIXTURE)]),0)
         actual=json.loads(buffer.getvalue())
         self.assertEqual(actual["verdict"],
-                         "HOLD_SELECTED_647_FORMAL_G0_AND_NATIVE_API")
+                         "HOLD_SELECTED_647_COMPONENT_DESTROY_P0_RED")
         self.assertEqual(len(actual["input_sha256"]),64)
 
     def test_cli_require_release_exit3(self):
