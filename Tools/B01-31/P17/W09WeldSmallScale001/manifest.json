@@ -1,0 +1,50 @@
+{
+  "package_id": "B01-31-WELD-READABILITY-ATLAS-001",
+  "version": "P17-W09-R1",
+  "owner": "B01-31 CONCEPT ART & VISUAL EXPLORATION",
+  "purpose": "Real original-source weld VFX light/dark readability comparison PNG boards at 48/96/192px with measured per-frame contrast deltas",
+  "source_pr": 432,
+  "source_sha": "280ed3f59020432132ea5e156c68590d445009c8",
+  "source_actions_run": 41030815153,
+  "source_artifact": 12966020486,
+  "source_artifact_name": "B0132-W06-REPAIR-WELD-ORIGINAL-UNITY-ZIP-AND-PNG",
+  "source_binary_zip": "B0132-RepairWeld-UnityImport.zip",
+  "source_inner_zip_sha256": "0d82429073722f3402e25d056502917ec7dcd2fb62256355011457f58711d2ed",
+  "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "output": "2 original-derived 1396x1826 RGB PNG boards (7 original C# phases x 3 actual sizes, each on dark and light backdrop) + measurement receipt.json",
+  "interpretation": "Real 2D CPU composited art proof only; not a Unity screenshot or human readable guarantee. Detected small-scale risk flags are reported, not hidden.",
+  "source_tests": [
+    "exact original runtime artifact run, source SHA, physical binary ZIP SHA and CRC",
+    "7 original 512x512 RGBA PNG with exact source receipt SHA/alpha state",
+    "7x3x2=42 real resized and composited image cases",
+    "two physical final image boards verified PNG and SHA",
+    "transparency retained by idle/cooling final at all scales and backgrounds",
+    "negative mutated input/missing vis rejection",
+    "repeatability: output receipt SHA256 on two executions"
+  ],
+  "non_claimed": [
+    "Unity/URP screenshot",
+    "native EditMode/PlayMode",
+    "3D render or collider",
+    "human legibility certification",
+    "approved UI placement",
+    "real repair gameplay integration",
+    "CODEX_ACK"
+  ],
+  "qa": "PRODUCER_RUN_PENDING__B01-40_B01-60_INDEPENDENT_PENDING",
+  "owned_paths": [
+    "Tools/B01-31/P17/W09WeldSmallScale001/**",
+    ".github/workflows/b01-31-p17w09-weld-visibility-boards.yml"
+  ],
+  "no_touch": [
+    "Assets/**",
+    "Tools/B01-32/**",
+    "#432",
+    "#446",
+    "#454",
+    "main/develop",
+    "Codex-owned game"
+  ],
+  "rollback": "Delete only this independent B01-31 W09 folder plus its dedicated workflow from a disposable branch; no game/Unity import or original #432 source changes",
+  "recipients": "B01-32 source producer for visual risk feedback; B01-60 for native Unity shader/screenshot/art legibility; B01-40 for final binary artifact QA; B01-00 queues Codex only after G1/handoff"
+}
