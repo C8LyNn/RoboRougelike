@@ -1,0 +1,58 @@
+name: B01-61 W19 independently executed original R3 642 P0 commit exception and real CAS
+on:
+  push:
+    branches: [qa/b01-61-p17w19-r3-642-uncertain-commit-and-process-cas]
+  pull_request:
+    paths:
+      - "Tools/B01/B01-61/P17W19Selected642OriginalQA/**"
+      - ".github/workflows/b01-61-w19-r3-642-uncertain-commit-process.yml"
+jobs:
+  original-r3-642-security:
+    runs-on: ${{ matrix.os }}
+    strategy: {fail-fast: false, matrix: {os: [ubuntu-24.04, windows-2025]}}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Exact source SHA 642 and QA-only six paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-61/P17W19Selected642OriginalQA/source_guard.py 2>&1 | tee w19-pin.log
+      - name: Strict original producer R3 + #556 + W06 + #510 C#9 build
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build Tools/B01/B01-61/P17W19Selected642OriginalQA/Original642R3SecurityQA.csproj -c Release --warnaserror 2>&1 | tee w19-build.log
+      - name: Execute 32 real child OS processes and durable ACK-loss independent security RED witness
+        shell: bash
+        run: |
+          set +e
+          p=Tools/B01/B01-61/P17W19Selected642OriginalQA/Original642R3SecurityQA.csproj
+          dotnet run --no-build --project "$p" -c Release -- --evidence > w19-source.log 2>&1
+          evidence=$?
+          cat w19-source.log
+          dotnet run --no-build --project "$p" -c Release -- --release > w19-release.log 2>&1
+          release=$?
+          cat w19-release.log
+          printf 'SOURCE_WITNESS_EXIT=%s RELEASE_EXIT=%s UNITY_G1_NOT_RUN\n' "$evidence" "$release" | tee w19-gate.txt
+          test "$evidence" = 0 && test "$release" = 3 || exit 1
+          grep -q B0161_W19_R3_642_ORIGINAL_SOURCE_WITNESS_PASS w19-source.log || exit 1
+          grep -q W19_R3_642_SOURCE_P0_RED w19-source.log || exit 1
+          grep -q W19_R3_642_RELEASE_HOLD w19-release.log || exit 1
+          echo "QA_WITNESS_GREEN_BUT_R3_RELEASE_SECURITY_RED"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b0161-w19-642-security-${{ matrix.os }}
+          path: |
+            w19-pin.log
+            w19-build.log
+            w19-source.log
+            w19-release.log
+            w19-gate.txt
+          if-no-files-found: warn
