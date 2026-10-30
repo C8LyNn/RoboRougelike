@@ -1,0 +1,27 @@
+{
+  "id": "B01-61-P17W16-ORIGINAL-W16-DURABLE-FENCE-QA-001",
+  "scope": "QA_ONLY",
+  "source_producer_sha": "7d206c63e1e9ab4ee4ce52eb314507ce49721d2c",
+  "source_core_git_blob": "399d3cb2074a2659af8f4e941edb28a3d2dd2832",
+  "source_checkpoint_fence_blob": "53f907125b09531ebdf5ffdfbb9c5c9b48eca217",
+  "frozen_save_contract_sha": "33094f154c7b91119b36d58aab285e6e83c5de57",
+  "frozen_game_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "original_git_blob_pins": 6,
+  "owned_qa_paths": 6,
+  "independent_disk_process_modes": [
+    "seal",
+    "restart",
+    "fork",
+    "advance",
+    "stale",
+    "corrupt"
+  ],
+  "additional_original_source_transaction_process": true,
+  "expected": "W16 corrected source RED-to-GREEN and real disk fence cross-process monotonic acceptance; release only SOURCE",
+  "native_unity": "NOT_RUN",
+  "live_original_510_private_ledger": "NOT_BOUND",
+  "disk_atomic_save_and_fence_together": "NOT_PROVEN",
+  "g2": "HOLD",
+  "ack": false,
+  "merged": false
+}
