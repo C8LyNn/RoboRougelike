@@ -1,0 +1,39 @@
+name: B01-23 PASS17 W13 detached parts save contract original W06 CSharp + physical ZIP
+on:
+  push:
+    branches: [b01-23/p17w13-detached-save-contract-001]
+  pull_request:
+    paths:
+      - 'Assets/B0123DetachedSaveContract001/**'
+      - 'Assets/B0123DetachedSaveContract001.meta'
+      - 'Tools/B01/B01-23/P17W13DetachedSaveContract001/**'
+      - '.github/workflows/b01-23-p17w13-detached-save-contract.yml'
+jobs:
+  source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile and execute original W06 ledger and portable W13 Save Load binary
+        run: dotnet run --project Tools/B01/B01-23/P17W13DetachedSaveContract001/SnapshotSourceTests.csproj -c Release
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Real source ZIP identity, foreign empty directory and rollback failure tests
+        run: python -m unittest discover -s Tools/B01/B01-23/P17W13DetachedSaveContract001 -p test_package.py -v
+      - name: Produce deterministic exact Git source physical ZIP
+        run: python Tools/B01/B01-23/P17W13DetachedSaveContract001/package.py build --archive dist/B0123_DetachedSaveContract001.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-23-w13-detached-save-${{ matrix.os }}
+          path: dist/B0123_DetachedSaveContract001.zip
+          if-no-files-found: error
