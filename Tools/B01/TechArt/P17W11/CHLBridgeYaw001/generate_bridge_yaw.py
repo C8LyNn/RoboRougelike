@@ -101,7 +101,8 @@ def make(rig,yaw,should_pass,model,out):
     body=cube("CHL003_"+rig+"_ACTUAL_SOURCE_CHASSIS",(0,0,rootz-.12),
               (vehicle["chassis_x"],vehicle["chassis_z"],vehicle["chassis_height"]),metal)
     body.parent=carrier
-    body.matrix_parent_inverse=carrier.matrix_world.inverted()
+    body.matrix_parent_inverse.identity()
+    body.location=(0,0,-.12)
     wheels=[]
     for sx in (-1,1):
         for sy in (-1,1):
@@ -113,7 +114,8 @@ def make(rig,yaw,should_pass,model,out):
             ob.name=name
             ob.data.materials.append(tire)
             ob.parent=carrier
-            ob.matrix_parent_inverse=carrier.matrix_world.inverted()
+            ob.matrix_parent_inverse.identity()
+            ob.location=(sx*vehicle["wheel_x"],sy*vehicle["wheel_z"],-.52)
             wheels.append(ob)
     bpy.context.view_layer.update()
     mesh_vehicle=[body]+wheels
