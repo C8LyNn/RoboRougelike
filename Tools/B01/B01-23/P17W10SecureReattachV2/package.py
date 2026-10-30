@@ -111,7 +111,9 @@ def guard_contract():
        "public bool TrySafeReattach(int index) => Execute(index)" not in policy or \
        "public bool ReattachFromGui(int index) => Execute(index)" not in policy:
         raise ValueError("public aliases do not all use GuardedDockCommand.Execute")
-    if "return LastResult == DockResult.Allowed && commit(index);" not in policy:
+    if 'LastResult = DockResult.TransactionRejected;' not in policy or \
+       'if (LastResult != DockResult.Allowed) return false;' not in policy or \
+       'if (!commit(index))' not in policy:
         raise ValueError("dock mutator can execute without inspect approval")
     txn=blob(ASSET+"/Runtime/AtomicDockLedger.cs").decode()
     if "private readonly DebrisImpulseLedger consumed" not in txn or \
