@@ -136,7 +136,9 @@ internal static class IndependentQA
   if(!c.WaitForExit(13000)){try{c.Kill(true);}catch{} return false;}
   string output=c.StandardOutput.ReadToEnd(),errors=c.StandardError.ReadToEnd();
   children++;
-  if(c.ExitCode!=expected)
+  if(c.ExitCode==expected)
+   Console.WriteLine(output.Trim());
+  else
    Console.WriteLine("W23_741_CHILD_EXIT_FAIL "+mode+" want="+expected+
     " got="+c.ExitCode+" out="+output+" errors="+errors);
   string marker=mode=="--r3"?"W23_741_CHILD_R3_SINGLE_OWNER_BUSY":
