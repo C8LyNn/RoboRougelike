@@ -338,6 +338,120 @@ internal static class Program
             Equal(p.Seek(-12).X,0f);
             Equal(p.Seek(999).X,5f);
         });
+        Test("63 pace coach supports complete 4-gate genuine-order trial",()=>{
+            var c=new GhostSplitCoach(Run());
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
+            var s=c.EndTrial(true,5);
+            Check(s.Completed);Equal(s.BiggestLossGate,0);Equal(s.TotalDeltaSeconds,0f);
+        });
+        Test("64 pace signal behind when a gate is 0.5 sec late",()=>{
+            var c=new GhostSplitCoach(Run());
+            var r=c.AcceptValidatedGate(0,1.5f);
+            Equal(r.Pace,GhostPace.Behind);Equal(r.SegmentDeltaSeconds,.5f);
+        });
+        Test("65 pace signal ahead when a gate is 0.5 sec early",()=>{
+            var c=new GhostSplitCoach(Run());
+            Equal(c.AcceptValidatedGate(0,.5f).Pace,GhostPace.Ahead);
+        });
+        Test("66 pace signal even for exact reference gate",()=>{
+            var c=new GhostSplitCoach(Run());
+            Equal(c.AcceptValidatedGate(0,1f).Pace,GhostPace.Even);
+        });
+        Test("67 cumulative split measured against reference absolute time",()=>{
+            var c=new GhostSplitCoach(Run());
+            c.AcceptValidatedGate(0,1.5f);
+            var r=c.AcceptValidatedGate(1,2.25f);
+            Check(Math.Abs(r.CumulativeDeltaSeconds-.25f)<1e-5f);
+        });
+        Test("68 segment split measured independently of cumulative delta",()=>{
+            var c=new GhostSplitCoach(Run());
+            c.AcceptValidatedGate(0,1.5f);
+            var r=c.AcceptValidatedGate(1,2.25f);
+            Check(Math.Abs(r.SegmentDeltaSeconds+.25f)<1e-5f);
+        });
+        Test("69 exact late second segment yields right practice gate",()=>{
+            var c=new GhostSplitCoach(Run());
+            c.AcceptValidatedGate(0,1);
+            c.AcceptValidatedGate(1,3.5f); // second segment = 2.5, +1.5 sec
+            c.AcceptValidatedGate(2,4.5f);
+            c.AcceptValidatedGate(3,5.5f);
+            var s=c.EndTrial(true,6.5f);
+            Equal(s.BiggestLossGate,2);
+            Check(Math.Abs(s.BiggestLossSeconds-1.5f)<1e-5f);
+        });
+        Test("70 no unsupported claims about physical cause",()=>{
+            var c=new GhostSplitCoach(Run());
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1);
+            var s=c.EndTrial(true,5);
+            Check(!s.Guidance.Contains("collision")&&!s.Guidance.Contains("unstable"),"unsupported physical diagnosis");
+        });
+        Test("71 forged early completed trial refused atomically",()=>{
+            var c=new GhostSplitCoach(Run());
+            c.AcceptValidatedGate(0,1);
+            Check(Reject(()=>c.EndTrial(true,2)),"early success accepted");
+            Equal(c.GatesReached,1);
+            Check(!c.IsFinished);
+        });
+        Test("72 rejected duplicate gate does not advance",()=>{
+            var c=new GhostSplitCoach(Run());c.AcceptValidatedGate(0,1);
+            Check(Reject(()=>c.AcceptValidatedGate(0,2)),"duplicate gate");
+            Equal(c.GatesReached,1);
+        });
+        Test("73 skipped gate rejected without mutation",()=>{
+            var c=new GhostSplitCoach(Run());
+            Check(Reject(()=>c.AcceptValidatedGate(2,3)),"skip accepted");
+            Equal(c.GatesReached,0);
+        });
+        Test("74 zero-duration real segment rejected and recoverable",()=>{
+            var c=new GhostSplitCoach(Run());c.AcceptValidatedGate(0,1);
+            Check(Reject(()=>c.AcceptValidatedGate(1,1)),"zero elapsed accepted");
+            Equal(c.GatesReached,1);
+            Equal(c.AcceptValidatedGate(1,2).GateNumber,2);
+        });
+        Test("75 NaN and infinity gate time fail without state mutation",()=>{
+            var c=new GhostSplitCoach(Run());
+            Check(Reject(()=>c.AcceptValidatedGate(0,float.NaN)),"NaN");
+            Check(Reject(()=>c.AcceptValidatedGate(0,float.PositiveInfinity)),"Infinity");
+            Equal(c.GatesReached,0);
+        });
+        Test("76 incorrect final elapsed rejected without ending",()=>{
+            var c=new GhostSplitCoach(Run());c.AcceptValidatedGate(0,1);
+            Check(Reject(()=>c.EndTrial(false,float.NaN)),"NaN finish");
+            Check(!c.IsFinished);
+        });
+        Test("77 loss before checkpoint permitted and no false victory",()=>{
+            var c=new GhostSplitCoach(Run());var s=c.EndTrial(false,.5f);
+            Check(!s.Completed&&c.IsFinished);
+            Equal(s.BiggestLossGate,0);
+        });
+        Test("78 stop or post-finalization events refused",()=>{
+            var c=new GhostSplitCoach(Run());c.EndTrial(false,.5f);
+            Check(Reject(()=>c.AcceptValidatedGate(0,1)),"post end gate");
+            Check(Reject(()=>c.EndTrial(false,1)),"duplicate end");
+        });
+        Test("79 retry restores exact reference and clears trial state",()=>{
+            var c=new GhostSplitCoach(Run());c.AcceptValidatedGate(0,1.5f);
+            var r=c.Retry();
+            Equal(r.GatesReached,0);Equal(r.RequiredGates,4);
+            Equal(r.AcceptValidatedGate(0,1).Pace,GhostPace.Even);
+        });
+        Test("80 benchmark is deep-cloned; source edits cannot alter splits",()=>{
+            var run=Run();var c=new GhostSplitCoach(run);
+            run.CheckpointSeconds[0]=500;run.Frames[0].Pose.X=50;
+            Equal(c.AcceptValidatedGate(0,1).Pace,GhostPace.Even);
+        });
+        Test("81 returned split is copy, cannot mutate internal last split",()=>{
+            var c=new GhostSplitCoach(Run());var x=c.AcceptValidatedGate(0,1);
+            x.SegmentDeltaSeconds=999;x.GateNumber=99;
+            Equal(c.LastSplit.GateNumber,1);
+            Equal(c.LastSplit.SegmentDeltaSeconds,0f);
+        });
+        Test("82 failed benchmark cannot become a practice coach",()=>{
+            var rec=new GhostRecorder("X","L",4,P());
+            rec.Tick(1,false,P(1));
+            var lost=rec.Fail(P(1));
+            Check(Reject(()=>new GhostSplitCoach(lost)),"lost reference");
+        });
         Console.WriteLine("B01-10 GHOST REAL_CSHARP "+passed+" PASS / "+failed+
           " FAIL | 100 seeded synthetic motion traces | UNITY=NOT_RUN");
         return failed==0?0:1;
