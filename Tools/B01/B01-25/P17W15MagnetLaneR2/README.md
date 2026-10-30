@@ -1,0 +1,21 @@
+# B01-25 — PASS17 / WAVE15 — MAGNETLANE001 R2: exact moving-body exposure
+
+**Original source RED:** [R1 #562 at a4f685f103211a30e3142333f2559081f8a9aae6](https://github.com/C8LyNn/RoboRougelike/pull/562) integrates active phase exactly but samples only endpoint \`X,Z\` to decide whether the field affects an actual moving Rigidbody. Fast crossing from X=-7 to X=+7 leaves both endpoints outside [-3,+3] and misses real intermediate exposure. Entry from X=-7 to X=0 assigns the entire sample full 60N despite partial 3/7 physical exposure. In both cases this is a deterministic source witness, NOT a claim that R1 ran natively in Unity. R1 SHA and files are UNMODIFIED; R2 lives in a new package version and new Unity assembly namespace/GUIDs.
+
+**Complete R2:** \`Research/B01-25/P17/MAGNETLANE001R2/\` original pure C#9/netstandard2.1 time-and-geometry integrator and executable real positive/negative suite. A mandatory \`MagnetSample\` contains both **previous and current** actual Rigidbody XZ coordinates plus dt, mass, paused, alive. Source algorithm clips every *phase-active* segment to a 6x3m magnet rectangle; exact area integral of \`1-|z|/halfZ\` is obtained by segment/rectangle clipping and splitting at z=0. Returns mean Newton force over the entire actual fixed timestep, and active-in-field time fraction; preserves polarity flip, 0.6s warning, 2.4s active, 1.0s safe, max 0.1s legal timestep, 60N peak, Light 1.5kg versus Heavy 12kg, paused/dead fail closed, and physically separate world Z4 bypass. Both phase-time and spatial frame partitioning are tested. No API that silently treats a changing vehicle as stationary is exposed.
+
+\`Assets/B0125MagnetLaneR2/\` is a separately versioned Unity6 source-import package: real physical Rigidbody+CapsuleCollider, ground BoxColliders, collision geometry, renderer telegraph, Light/Heavy switch, GUI. Its host FixedUpdate now calls the R2 sample with previous/current Rigidbody position. Teleport/reset explicitly resets previousPhysicsPosition (no phantom crossing); six original authored Unity PlayMode NUnit cases (5 migrated plus one fast-crossing source case), 12 stable new GUIDs, 3 distinct isolated R2 asmdefs and nonoverwriting NEW additive scene generator. Native Unity/PhysX real PlayMode **NOT_RUN** until an activated Unity 6000.3.14f1 Editor host runs tests and retains Test Runner XML, Editor.log and return code.
+
+**REAL PRODUCER SOURCE CI** (not a Unity build) can run with Python3, Git and .NET8 from checkout root:
+
+    P=Research/B01-25/P17/MAGNETLANE001R2
+    mkdir -p "$P/.output"
+    dotnet build "$P/MagnetLaneRuntime.csproj" -c Release -p:LangVersion=9.0 -warnaserror
+    dotnet run --project "$P/MagnetLaneTests.csproj" -c Release -- "$P/.output/gameplay.json"
+    python Tools/B01/B01-25/P17W15MagnetLaneR2/check.py --out Tools/B01/B01-25/P17W15MagnetLaneR2/.output/receipt.json
+
+The dedicated Windows and Ubuntu workflows execute real source compiles and gameplay cases, original Git bytes/manifest/GUID/asmdef/negative ZIP/rollback QA. The third job downloads actual two-OS SOURCE ZIPs and compares original inner bytes. Do not assert GREEN until exact final SHA CI succeeds.
+
+**Receiver:** B01-40 independently inspects source scope, exact 29 blob pins, 12 unique .meta GUIDs/3 asmdefs, source ZIP/scratch reversible import for formal SOURCE G0; B01-60 independently verifies source and if licensed Unity host available executes six actual PhysX/PlayMode tests, in particular crossing and per-mass acceleration, collecting XML/logs; B01-00 decides any later Codex offer after gates. No Codex ACK, no integration/merge. Secure Reattach #510 and ONLY Save contract #556 remain FROZEN; neither is touched by B01-25. B01-23/62/61/40 own live Save/Load; this optional challenge has no save contract or authorizations.
+
+**Scope/rollback:** only newly created Assets/B0125MagnetLaneR2 with root .meta, Research/B01-25/P17/MAGNETLANE001R2, Tools/B01/B01-25/P17W15MagnetLaneR2, unique W15 workflow. Discard ONLY these new paths on disposable branch. Do NOT delete foreign empty directories, preexisting files, symlinks, original R1 or Codex source. Source supports linear interpolation between real sampled positions, not a certified full vehicle compound-hull sweep, actual Unity physics/integration still NOT_RUN.

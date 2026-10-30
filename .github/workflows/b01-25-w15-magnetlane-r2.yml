@@ -1,0 +1,85 @@
+name: B01-25 W15 MAGNETLANE original CSharp9 and physical Unity source QA
+on:
+  push:
+    branches: [research/b01-25-p17w15-magnetlane001-r2]
+    paths:
+      - 'Research/B01-25/P17/MAGNETLANE001R2/**'
+      - 'Assets/B0125MagnetLaneR2/**'
+      - 'Assets/B0125MagnetLaneR2.meta'
+      - 'Tools/B01/B01-25/P17W15MagnetLaneR2/**'
+      - '.github/workflows/b01-25-w15-magnetlane-r2.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    env:
+      SRC: Research/B01-25/P17/MAGNETLANE001R2
+      OUT: Tools/B01/B01-25/P17W15MagnetLaneR2/.output
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile actual CSharp9 netstandard2.1 with warnings-as-errors
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$SRC/.output" "$OUT"
+          dotnet build "$SRC/MagnetLaneRuntime.csproj" -c Release -p:LangVersion=9.0 -warnaserror
+      - name: Real original mass and field phase behavior, malformed input rejection
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --project "$SRC/MagnetLaneTests.csproj" -c Release -- "$SRC/.output/gameplay.json" 2>&1 | tee "$OUT/gameplay-$RUNNER_OS.log"
+      - name: Run original Git byte GUID asmdef ZIP and rollback gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-25/P17W15MagnetLaneR2/check.py --out "$OUT/receipt.json" 2>&1 | tee "$OUT/check-$RUNNER_OS.log"
+      - name: Preserve genuine source logs JSON and inner physical ZIP
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-25-magnetlane-r2-${{ matrix.os }}
+          path: |
+            Research/B01-25/P17/MAGNETLANE001R2/.output/gameplay.json
+            Tools/B01/B01-25/P17W15MagnetLaneR2/.output/**
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 21
+  physical-zip-cross-os:
+    needs: original-source
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: b01-25-magnetlane-r2-*
+          path: evidence
+      - name: Confirm byte-identical original Windows and Ubuntu source archives
+        shell: bash
+        run: |
+          set -euo pipefail
+          U="$(find evidence/b01-25-magnetlane-r2-ubuntu-latest -type f -name 'receipt.zip' | head -n1)"
+          W="$(find evidence/b01-25-magnetlane-r2-windows-latest -type f -name 'receipt.zip' | head -n1)"
+          test -s "$U" && test -s "$W"
+          sha256sum "$U" "$W"
+          cmp "$U" "$W"
+          python - "$U" <<'PY'
+          import json,sys,zipfile
+          with zipfile.ZipFile(sys.argv[1]) as z:
+              assert len(z.infolist())==20
+              assert all(e.create_system==3 for e in z.infolist())
+              m=json.loads(z.read("PACKAGE_MANIFEST.json"))
+              assert len(m["assets"])==19 and m["nativeUnity"]=="NOT_RUN" and not m["codexAck"]
+          print("MAGNETLANE_ORIGINAL_SOURCE_ZIP_PARITY_PASS")
+          PY
