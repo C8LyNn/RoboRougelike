@@ -1,0 +1,58 @@
+{
+  "decisions": [
+    {
+      "blockers": [],
+      "eligible": true,
+      "owner": "B01-00",
+      "package_id": "DISPATCH001",
+      "priority": 95,
+      "task_id": "W06-DISPATCH"
+    },
+    {
+      "blockers": [
+        "active_stream_limit",
+        "codex_reserved_scope",
+        "stream_not_approved"
+      ],
+      "eligible": false,
+      "owner": "B01-20",
+      "package_id": "CAMERA001",
+      "priority": 90,
+      "task_id": "CAMERA"
+    },
+    {
+      "blockers": [],
+      "eligible": true,
+      "owner": "B01-20",
+      "package_id": "CHL003",
+      "priority": 80,
+      "task_id": "CHL-WORK"
+    },
+    {
+      "blockers": [
+        "active_stream_limit",
+        "stream_not_approved"
+      ],
+      "eligible": false,
+      "owner": "B01-24",
+      "package_id": "FIRE001",
+      "priority": 78,
+      "task_id": "FIRE"
+    },
+    {
+      "blockers": [
+        "overlap_with_CHL-WORK"
+      ],
+      "eligible": false,
+      "owner": "B01-21",
+      "package_id": "CHL004",
+      "priority": 50,
+      "task_id": "CHL-OVERLAP"
+    }
+  ],
+  "schema_version": "b01-dispatch-v1",
+  "selected": [
+    "W06-DISPATCH",
+    "CHL-WORK"
+  ]
+}
