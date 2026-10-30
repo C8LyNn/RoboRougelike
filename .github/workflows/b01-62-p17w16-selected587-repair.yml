@@ -1,0 +1,79 @@
+name: B01-62 W16 one selected #587 original RED to repaired source GREEN
+on:
+  push:
+    branches: [qa/b01-62-p17w16-selected587-transaction-repair]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W16Selected587Repair/**'
+      - '.github/workflows/b01-62-p17w16-selected587-repair.yml'
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    name: Immutable original #587 RED -> selected #587 versioned W16 GREEN (${{ matrix.os }})
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify exact frozen 510+556 and selected producer 587 original Git blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W16Selected587Repair"
+          mkdir -p "$dir/.source" "$dir/.output"
+          git fetch --no-tags origin ad7904eca571c742257551fa8103f266fcb9b752 33094f154c7b91119b36d58aab285e6e83c5de57 d94400d95d13db7f27e1533df05c9292d5380431
+          git show ad7904eca571c742257551fa8103f266fcb9b752:Assets/B0123UnitySaveBridge001/Core/AtomicWorldSwap.cs > "$dir/.source/AtomicWorldSwapOriginal587.cs"
+          git show 33094f154c7b91119b36d58aab285e6e83c5de57:Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs > "$dir/.source/DetachedSnapshotContract.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs > "$dir/.source/DebrisImpulseCore.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs > "$dir/.source/SecureRigSpec.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123SecureReattachV2/Runtime/AtomicDockLedger.cs > "$dir/.source/AtomicDockLedger.cs"
+          test "$(git hash-object "$dir/.source/AtomicWorldSwapOriginal587.cs")" = 16a7d7043a2ecb59a41bbfb063170235872fd7fc
+          test "$(git hash-object "$dir/.source/DetachedSnapshotContract.cs")" = b52e511c370f5fca56c74029050844dc8cbb7f9a
+          test "$(git hash-object "$dir/.source/DebrisImpulseCore.cs")" = fa1aa5e531927cbe73cf5fdfe161b4a981316db5
+          test "$(git hash-object "$dir/.source/SecureRigSpec.cs")" = b680ed0ec969ac23203fa55eab7b90f8daa86e43
+          test "$(git hash-object "$dir/.source/AtomicDockLedger.cs")" = b6a4d04b0c6407c8c84451b4d599d96fe0e4d1a9
+          git worktree add --detach "$dir/.producer587" ad7904eca571c742257551fa8103f266fcb9b752
+          test "$(git -C "$dir/.producer587" rev-parse HEAD)" = ad7904eca571c742257551fa8103f266fcb9b752
+          echo ORIGINAL_587_556_510_W06_R2_FIVE_BLOBS_PINNED | tee "$dir/.output/provenance.log"
+      - name: Execute three genuine original #587 security RED witnesses, require reproduced
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W16Selected587Repair"
+          dotnet run --project "$dir/Original587RedWitness.csproj" --configuration Release --verbosity minimal 2>&1 | tee "$dir/.output/original587-expected-red.log"
+          grep -q 'ORIGINAL_587_SECURITY_RED_TOTAL 3 OF 3' "$dir/.output/original587-expected-red.log"
+      - name: Execute corrected #587 lineage CSharp with real on-disk authority and actual separate process
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W16Selected587Repair"
+          dotnet run --project "$dir/W16Selected587Repair.csproj" --configuration Release --verbosity minimal 2>&1 | tee "$dir/.output/repaired587-executed.log"
+          grep -q 'W16_SELECTED_587_SOURCE_TOTAL 83 PASS 83 FAIL 0' "$dir/.output/repaired587-executed.log"
+      - name: Actually rebuild ORIGINAL #587 physical ZIP and test fail-closed receiver in owned disposable scratch
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W16Selected587Repair"
+          export B0162_SELECTED587_REPO="$dir/.producer587"
+          python -m unittest discover -s "$dir" -p test_receiver.py -v 2>&1 | tee "$dir/.output/receiver-executed.log"
+          grep -q 'Ran 12 tests' "$dir/.output/receiver-executed.log"
+          grep -q '^OK' "$dir/.output/receiver-executed.log"
+          echo B01_62_W16_RECEIVER_ORIGINAL_587_23_MEMBERS_SAFE_PASS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-62-w16-selected587-${{ matrix.os }}
+          path: Tools/B01/B01-62/P17W16Selected587Repair/.output/
+          include-hidden-files: true
+          if-no-files-found: error
