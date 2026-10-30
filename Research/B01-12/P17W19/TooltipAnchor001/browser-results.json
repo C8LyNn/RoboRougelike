@@ -1,0 +1,512 @@
+{
+  "package": "B01-12-TOOLTIP-ANCHOR-001/R1",
+  "browser": "real Chromium / Playwright",
+  "viewports": [
+    "320x720",
+    "768x1024",
+    "1280x720",
+    "1920x1080"
+  ],
+  "passed": 124,
+  "total": 124,
+  "failed": 0,
+  "pageErrors": [],
+  "cases": [
+    {
+      "name": "320x720 8 buttons",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 default status",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 no horizontal overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 default width",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 dropdown 1280x720",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 dropdown 1920x1080",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 dropdown 768x1024",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 dropdown 320x720",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 focus reveals",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 label HP",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 side default",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 click pins",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 pin survives hover",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 pin survives blur",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 escape closes",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 escape clears pressed",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 preference top",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 computed rect top",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 preference right",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 computed rect right",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 preference bottom",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 computed rect bottom",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 preference left",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 computed rect left",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 obstruction toggle preserves tooltip",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 pin control enabled",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 close button",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 pin disabled when closed",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 tiny-view safe state",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 no JS exceptions",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 responsive body width",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 8 buttons",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 default status",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 no horizontal overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 default width",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 dropdown 1280x720",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 dropdown 1920x1080",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 dropdown 768x1024",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 dropdown 320x720",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 focus reveals",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 label HP",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 side default",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 click pins",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 pin survives hover",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 pin survives blur",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 escape closes",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 escape clears pressed",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 preference top",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 computed rect top",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 preference right",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 computed rect right",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 preference bottom",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 computed rect bottom",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 preference left",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 computed rect left",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 obstruction toggle preserves tooltip",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 pin control enabled",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 close button",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 pin disabled when closed",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 tiny-view safe state",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 no JS exceptions",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 responsive body width",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 8 buttons",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 default status",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 no horizontal overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 default width",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 dropdown 1280x720",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 dropdown 1920x1080",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 dropdown 768x1024",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 dropdown 320x720",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 focus reveals",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 label HP",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 side default",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 click pins",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 pin survives hover",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 pin survives blur",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 escape closes",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 escape clears pressed",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 preference top",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 computed rect top",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 preference right",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 computed rect right",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 preference bottom",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 computed rect bottom",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 preference left",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 computed rect left",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 obstruction toggle preserves tooltip",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 pin control enabled",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 close button",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 pin disabled when closed",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 tiny-view safe state",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 no JS exceptions",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 responsive body width",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 8 buttons",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 default status",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 no horizontal overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 default width",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 dropdown 1280x720",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 dropdown 1920x1080",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 dropdown 768x1024",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 dropdown 320x720",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 focus reveals",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 label HP",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 side default",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 click pins",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 pin survives hover",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 pin survives blur",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 escape closes",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 escape clears pressed",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 preference top",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 computed rect top",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 preference right",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 computed rect right",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 preference bottom",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 computed rect bottom",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 preference left",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 computed rect left",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 obstruction toggle preserves tooltip",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 pin control enabled",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 close button",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 pin disabled when closed",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 tiny-view safe state",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 no JS exceptions",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 responsive body width",
+      "status": "PASS"
+    }
+  ]
+}
