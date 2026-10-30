@@ -1,12 +1,12 @@
 name: B01-25 W16 MAGNETLANE original CSharp9 and physical Unity source QA
 on:
   push:
-    branches: [research/b01-25-p17w16-magnetlane001-r2]
+    branches: [research/b01-25-p17w16-magnetlane001-r3-atomic-input]
     paths:
       - 'Research/B01-25/P17/MAGNETLANE001R3/**'
       - 'Assets/B0125MagnetLaneR3/**'
       - 'Assets/B0125MagnetLaneR3.meta'
-      - 'Tools/B01/B01-25/P17W16MagnetLaneR2/**'
+      - 'Tools/B01/B01-25/P17W16MagnetLaneR3/**'
       - '.github/workflows/b01-25-w16-magnetlane-r3.yml'
   workflow_dispatch:
 permissions:
@@ -21,7 +21,7 @@ jobs:
     timeout-minutes: 15
     env:
       SRC: Research/B01-25/P17/MAGNETLANE001R3
-      OUT: Tools/B01/B01-25/P17W16MagnetLaneR2/.output
+      OUT: Tools/B01/B01-25/P17W16MagnetLaneR3/.output
     steps:
       - uses: actions/checkout@v4
         with:
@@ -50,7 +50,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python Tools/B01/B01-25/P17W16MagnetLaneR2/check.py --out "$OUT/receipt.json" 2>&1 | tee "$OUT/check-$RUNNER_OS.log"
+          python Tools/B01/B01-25/P17W16MagnetLaneR3/check.py --out "$OUT/receipt.json" 2>&1 | tee "$OUT/check-$RUNNER_OS.log"
       - name: Preserve genuine source logs JSON and inner physical ZIP
         if: always()
         uses: actions/upload-artifact@v4
@@ -58,7 +58,7 @@ jobs:
           name: b01-25-magnetlane-r3-${{ matrix.os }}
           path: |
             Research/B01-25/P17/MAGNETLANE001R3/.output/gameplay.json
-            Tools/B01/B01-25/P17W16MagnetLaneR2/.output/**
+            Tools/B01/B01-25/P17W16MagnetLaneR3/.output/**
           include-hidden-files: true
           if-no-files-found: warn
           retention-days: 21
