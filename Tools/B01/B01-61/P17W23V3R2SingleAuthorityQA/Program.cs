@@ -233,7 +233,7 @@ internal static class IndependentV3
         string exit=Path.Combine(root,"r2.exit");
         string baseDir=Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
         string childDll=Path.GetFullPath(Path.Combine(baseDir,"..","..","..",
-            "bin-child","Release","net8.0","ChildR2OriginalQA.dll"));
+            "bin-child","Release","net8.0","Original712ChildQA.dll"));
         var start=new ProcessStartInfo("dotnet")
             {UseShellExecute=false,RedirectStandardOutput=true,RedirectStandardError=true};
         start.ArgumentList.Add(childDll);
