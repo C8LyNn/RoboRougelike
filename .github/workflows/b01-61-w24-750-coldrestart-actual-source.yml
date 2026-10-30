@@ -1,0 +1,68 @@
+name: B01-61 W24 exact original R5 ColdRestart #750 g4 to g5 source regression
+on:
+  push:
+    branches: [qa/b01-61-p17w24-750-coldrestart-original-source-verification]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-61/P17W24R5ColdRestart750QA/**'
+      - '.github/workflows/b01-61-w24-750-coldrestart-actual-source.yml'
+permissions:
+  contents: read
+jobs:
+  original-r5-750-cold:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 16
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Hydrate exact unchanged original R5 core and frozen #556 W06 #510 sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir=Tools/B01/B01-61/P17W24R5ColdRestart750QA/.original
+          mkdir -p "$dir"
+          git fetch --no-tags origin cc7f73541517a18f4479bb155534bd4832d9985e 33094f154c7b91119b36d58aab285e6e83c5de57 d94400d95d13db7f27e1533df05c9292d5380431
+          git show cc7f73541517a18f4479bb155534bd4832d9985e:Assets/B0123UnitySaveBridge001/Core/AtomicWorldSwap.cs > "$dir/AtomicWorldSwap.cs"
+          git show 33094f154c7b91119b36d58aab285e6e83c5de57:Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs > "$dir/DetachedSnapshotContract.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs > "$dir/DebrisImpulseCore.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs > "$dir/SecureRigSpec.cs"
+          test "$(git hash-object "$dir/AtomicWorldSwap.cs")" = 7da9a9efe489cf8c441d7bb9a47ba3f60ba4c58c
+          test "$(git hash-object "$dir/DetachedSnapshotContract.cs")" = b52e511c370f5fca56c74029050844dc8cbb7f9a
+          test "$(git hash-object "$dir/DebrisImpulseCore.cs")" = fa1aa5e531927cbe73cf5fdfe161b4a981316db5
+          test "$(git hash-object "$dir/SecureRigSpec.cs")" = b680ed0ec969ac23203fa55eab7b90f8daa86e43
+          test "$(git rev-parse HEAD:Assets/B0123UnitySaveBridge001/Tests/IsolatedSaveWorldNativePlayModeTests.cs)" = 2508a04f57b04447112d2777ce4e3cd7478ed40e
+      - name: Build genuine selected original R5 core original frozen 556 W06 CSharp9
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build Tools/B01/B01-61/P17W24R5ColdRestart750QA/OriginalR5ColdQA.csproj -c Release --nologo 2>&1 | tee build.log
+      - name: Execute actual original R5 generation4 Save generation5 cold restart and identity regression
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet Tools/B01/B01-61/P17W24R5ColdRestart750QA/bin/Release/net8.0/OriginalR5ColdQA.dll 2>&1 | tee qa_release.log
+          grep -Fx 'TOTAL 5 PASS 5 FAIL 0' qa_release.log
+      - name: Exact original selected fixture CSharp and original frozen SHA provenance five-only QA receipt
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-61/P17W24R5ColdRestart750QA/receipt.py --log qa_release.log --out dist/b0161-w24-750-cold-source.json
+      - name: Original CSharp source stdout and immutable fixture receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b0161-w24-r5-cold750-${{ matrix.os }}
+          path: |
+            build.log
+            qa_release.log
+            dist/b0161-w24-750-cold-source.json
+          if-no-files-found: warn
