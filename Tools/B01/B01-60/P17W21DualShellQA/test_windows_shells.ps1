@@ -51,9 +51,9 @@ Need ($root -ine $temp -and $root -ine $proof) "QA scratch overlapping source ro
 $head=GitRead @("-C",$root,"rev-parse","HEAD")
 Need ($head -match '^[0-9a-f]{40}$' -and
       (GitRead @("-C",$root,"merge-base",$Base,$head)) -ceq $Base) "not on W20 descendant"
-Need ((GitRead @("-C",$root,"rev-parse",$Base+":"+$path)) -ceq
+Need ((GitRead @("-C",$root,"rev-parse",($Base+":"+$path))) -ceq
        "6e9b549ae36e9fbf6ba9260aeb1b4739d997fed0") "original W20 operator Git blob changed"
-Need ((GitRead @("-C",$root,"rev-parse","HEAD:" + $path)) -ceq
+Need ((GitRead @("-C",$root,"rev-parse",("HEAD:" + $path))) -ceq
        "6e9b549ae36e9fbf6ba9260aeb1b4739d997fed0") "old operator modified by W21"
 $cmd=if($Shell -ceq "WindowsPowerShell51"){"powershell.exe"}else{"pwsh.exe"}
 $exe=(Get-Command $cmd -ErrorAction Stop).Source
