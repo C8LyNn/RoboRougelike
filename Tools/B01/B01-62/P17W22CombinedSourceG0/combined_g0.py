@@ -140,9 +140,12 @@ def run(root:Path):
     if label=="R5":
      insist(not target.exists(),"original R5 clean exact byte rollback removes only owned scratch")
     else:
-     insist(target.exists() and not any(target.iterdir()),
-            "original API V2 clean rollback leaves only empty receiver")
-     target.rmdir()
+     insist(target.exists() and not any(p.is_file() or p.is_symlink()
+                                      for p in target.rglob("*")),
+            "original API V2 clean rollback preserves only test-owned EMPTY subdirectories")
+     # Original API2 rollback may retain owned empty ancestor directories.
+     # Remove ONLY this known UUID scratch tree so a fresh stage can run.
+     shutil.rmtree(target)
     module.stage(blob,target)
     # Poison exact owner file: neither packager may erase a modified user's file.
     f=next(target/n for n in imported[label]["files"] if n.endswith(".cs"))
