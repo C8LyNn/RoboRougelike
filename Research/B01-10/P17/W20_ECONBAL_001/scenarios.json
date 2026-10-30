@@ -1,7 +1,7 @@
 {
-  "schema": "B01-10 ECONBAL-001 scenario v1",
+  "schema": "B01-10 ECONBAL-001 scenario v2 (post-victory damage is not repaired by same win)",
   "sourceOfPrices": "hypothetical 100 Scrap purchase, 70% paid quote; #252 mentions 65-75% hypothesis, NOT approved",
-  "evidence": "SYNTHETIC ONLY; not observed real player/Unity runs",
+  "evidence": "SYNTHETIC ONLY; manual scripted wins are NOT necessarily physically reachable; deploy-gate counterfactual refuses impossible scripted wins",
   "cases": {
     "twelve_victories_two_destroyed": {
       "initial_scrap": 4000,
@@ -944,6 +944,68 @@
           "won": true,
           "earned_scrap": 0,
           "destroyed": []
+        }
+      ]
+    },
+    "victory_breaks_essential_drive_next_win_unreachable": {
+      "initial_scrap": 0,
+      "purchase_price": 100,
+      "paid_quote_percent": 70,
+      "attempts": [
+        {
+          "id": "won_then_damaged",
+          "won": true,
+          "destroyed": [
+            {
+              "id": "drive_right",
+              "role": "mobility",
+              "blocks_deploy": true
+            }
+          ],
+          "earned_scrap": 0
+        },
+        {
+          "id": "scripted_next_win",
+          "won": true,
+          "destroyed": [],
+          "earned_scrap": 100
+        },
+        {
+          "id": "scripted_third_win",
+          "won": true,
+          "destroyed": [],
+          "earned_scrap": 50
+        }
+      ]
+    },
+    "one_loaner_losses_then_blocked": {
+      "initial_scrap": 0,
+      "purchase_price": 100,
+      "paid_quote_percent": 70,
+      "attempts": [
+        {
+          "id": "initial_loss",
+          "won": false,
+          "destroyed": [
+            {
+              "id": "essential_gun",
+              "role": "weapon",
+              "blocks_deploy": true
+            }
+          ],
+          "earned_scrap": 0
+        },
+        {
+          "id": "borrowed_challenge_loss",
+          "won": false,
+          "destroyed": [],
+          "earned_scrap": 0
+        },
+        {
+          "id": "attempt_win_without_second_loaner",
+          "won": true,
+          "destroyed": [],
+          "earned_scrap": 100
         }
       ]
     }
