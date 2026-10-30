@@ -1,0 +1,91 @@
+{
+  "package_id": "B01-31-W23-ARMOR-OBJ-IMPORT-BRIDGE-001",
+  "version": "P17-W23-R1",
+  "owner": "B01-31 — CONCEPT ART & VISUAL EXPLORATION",
+  "HQ_issue": 731,
+  "description": "New actual export capability: 3 standalone OBJ+shared MTL files derived byte-faithfully from exact original independent W22 GLB pbr 3 geometry states, usable by standard Unity OBJ importer without requiring external glTF importer.",
+  "original_source": {
+    "pr": 725,
+    "head": "93ee04c56ea27ade2fa0b78b653acbe07790a370",
+    "real_GitHub_Actions_run": 41129782579,
+    "real_artifact_id": 13012642357,
+    "sha256": {
+      "OK": "a063ef3d8750ef7e65bd9f7ba57925e68f112d4f51e78f2048fe6552fb33fdfd",
+      "DAMAGED": "9f710d0b88d7b6b4df1898c2c26b488987e89a83a382f0ad85df6af1ee16c8fe",
+      "DESTROYED": "f7c994a3bd80dbf6c24655d06f26f13f95ba5e6d65b6590c5795dfc71243c20f"
+    },
+    "read_only": true
+  },
+  "source_only_paths": [
+    "Tools/B01-31/P17/W23ArmorObjImportBridge001/build_obj.py",
+    "Tools/B01-31/P17/W23ArmorObjImportBridge001/verify_obj.py",
+    "Tools/B01-31/P17/W23ArmorObjImportBridge001/manifest.json",
+    "Tools/B01-31/P17/W23ArmorObjImportBridge001/README.md",
+    ".github/workflows/b01-31-p17w23-armor-obj-unity-source.yml"
+  ],
+  "new_assets": {
+    "OBJ_source_models": 3,
+    "one_original_shared_MTL": 1,
+    "PBR_sidecar_JSON": 1,
+    "original_RGB_1800x625_preview_boards": 2,
+    "per_file_receipt": 1,
+    "distribution_physical_ZIP_members": 8,
+    "total_source_triangles": 756,
+    "exact_triangle_faces_per_state": {
+      "OK": 204,
+      "DAMAGED": 264,
+      "DESTROYED": 288
+    },
+    "source_mount_pivot": [
+      0,
+      0,
+      0
+    ]
+  },
+  "preservation": "all original GLB indexed triangle vertex coords and normals preserved exact FLOAT32 bit patterns in OBJ decimal .9g with independent checker; material identities per face preserved; no geometry tessellation, no scale conversion or source change; OBJ has no UV to invent, no fake material PBR equivalence",
+  "import_contract": "Unity supports OBJ as native model import format, but actual real activated Unity 6000.3.14f1 ModelImporter + real shading remains NOT_RUN; MTL approximate Lambert/Phong, not glTF metallic/roughness, exact original PBR factors preserved in JSON.",
+  "original_executed_test_plan": [
+    "Physical original W22 source GLB authentic exact SHA/receipt three states first",
+    "Read every real source GLB FLOAT32 POSITION, NORMAL and UINT16 triangle index for all 204/264/288 faces and six PBR original material identities",
+    "Independent parse and verify all three output OBJ triangles, v/vn corner indices, exact FLOAT32 binary round-trip per vertex/normal, original per-face material grouping and no unsafe external mtllib path",
+    "Verify one actual shared .MTL with original material Kd/d and approximate documented Ns/Ks/metallicity, original exact PBR factors in sidecar JSON",
+    "Open two original physically rendered 1800x625 RGB PNG comparison boards from new OBJ, three distinct geometry silhouettes per board",
+    "Physical eight-entry ZIP CRC and exact raw byte parity with all artifact members",
+    "Eight semantic/invalid OBJ/GLB negative mutations rejected",
+    "Entire output authoring, file digests and ZIP repeated twice bit-for-bit identical",
+    "Windows2022 independent read-only receiver downloads Ubuntu actual output and original immutable W22 source, never runs exporter"
+  ],
+  "governance": {
+    "immutable_510": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "immutable_556": "33094f154c7b91119b36d58aab285e6e83c5de57",
+    "immutable_596": "efb2b06eafedab5469b57f163152d96aca3c5915",
+    "selected_host_R5": "#690 unchanged",
+    "selected_V3_API": "#729 unchanged",
+    "storage": "#712 and #669 unchanged",
+    "alternative_api": "#719 ALT_HOLD",
+    "runtime_save_changes": false,
+    "managed_colliders": false,
+    "Canon_Assets_changed": false
+  },
+  "six_stage": {
+    "IMPLEMENTED": "YES_SOURCE",
+    "TESTED": "PENDING_REAL_CI",
+    "QA_ACCEPTED": "NO",
+    "READY_FOR_INTEGRATOR": "NO",
+    "INTEGRATED": "NO",
+    "RELEASED": "NO",
+    "B01_31_source_format_G0": "PENDING",
+    "B01_30_40_formal_G0": "PENDING",
+    "B01_60_activated_Unity_G1": "NOT_RUN",
+    "G2": "HOLD",
+    "Codex_ACK": "NO",
+    "Integrator_Feedback": "NOT_MEASURED"
+  },
+  "receivers": [
+    "B01-30/40 formal real physical source/OBJ importer transparency, provenance/GUID source migration safe scratch",
+    "B01-60 manual owner-approved activated Unity #667 native OBJ import check (no third-party glTF dependency) + true Editor.log/NUnit and material appearance",
+    "B01-10/22 optional armor three state readability only",
+    "B01-00 later gated original packet source intake when formal G0 and G1 respected"
+  ],
+  "rollback": "Remove ONLY five new W23 exclusive source/workflow paths, and if separately opted-in scratch import only exact W23 3 OBJ+shared MTL+PBR sidecar generated files. Never delete old W22 GLB originals, foreign/empty dirs, other owners files, frozen game/Save/Load or Codex."
+}
