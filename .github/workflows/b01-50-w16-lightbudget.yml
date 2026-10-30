@@ -1,0 +1,88 @@
+name: B01-50 W16 LIGHTBUDGET001 original CSharp source tests
+on:
+  push:
+    branches: [perf/b01-50-p17-w16-lightbudget001]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-50/LIGHTBUDGET001/**'
+      - '.github/workflows/b01-50-w16-lightbudget.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-csharp-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Check own source blob pins, Unity GUIDs and original Assets noncollision
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          while IFS=$'\t' read -r expected path; do
+            test -n "$expected" || continue
+            actual=$(git hash-object --no-filters "$path")
+            test "$actual" = "$expected" || { echo "GIT_BLOB_MISMATCH $path"; exit 1; }
+            echo "SOURCE_GIT_BLOB_PASS $path"
+          done < Tools/B01/B01-50/LIGHTBUDGET001/MANIFEST-GIT-BLOBS.tsv
+          python - <<'PY' | tee evidence/guid_source_gate.txt
+          from pathlib import Path
+          import re
+          base=Path('Tools/B01/B01-50/LIGHTBUDGET001')
+          paths=['Core/CosmeticLightBudget.cs',
+                 'Unity/B0150OptionalCosmeticLightBudget.cs',
+                 'Unity/B0150OptionalCosmeticLightDemo.cs']
+          guids=[]
+          for path in paths:
+              code=base/path
+              meta=Path(str(code)+'.meta')
+              assert code.is_file() and meta.is_file(), path
+              content=meta.read_text()
+              assert 'MonoImporter:' in content and 'fileFormatVersion: 2' in content, path
+              found=re.search(r'^guid: ([0-9a-f]{32})$', content, re.M)
+              assert found, path
+              guids.append(found.group(1))
+          assert len(set(guids)) == 3
+          checked=0
+          for existing in Path('Assets').rglob('*.meta'):
+              checked+=1
+              content=existing.read_text(errors='replace')
+              for guid in guids:
+                  assert f'guid: {guid}' not in content, f'GUID collision with {existing}'
+          print('UNITY_META_SOURCE_GATE: 3/3 original GUIDs PASS, canonical Assets checked:', checked)
+          PY
+      - name: Compile actual production CSharp selector and execute 42 positive and negative tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet --version | tee evidence/dotnet_version.txt
+          dotnet run -c Release --project Tools/B01/B01-50/LIGHTBUDGET001/tests/LIGHTBUDGET.Tests.csproj -- --receipt evidence/qa_original.json 2>&1 | tee evidence/qa_original.log
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          r=json.loads(Path('evidence/qa_original.json').read_text())
+          assert r['total'] == 42 and r['passed'] == 42 and r['failed'] == 0, r
+          assert r['nativeUnity'] == 'NOT_RUN' and r['actualGpuDrawCalls'] == 'NOT_MEASURED'
+          assert r['actualFps'] == 'NOT_MEASURED'
+          print('EXACT_ORIGINAL_CSHARP_TESTS 42/42 PASS; NATIVE_NOT_RUN')
+          PY
+          git rev-parse HEAD > evidence/exact_tested_commit.txt
+          sha256sum Tools/B01/B01-50/LIGHTBUDGET001/Core/CosmeticLightBudget.cs Tools/B01/B01-50/LIGHTBUDGET001/Unity/*.cs > evidence/source_sha256.txt
+      - name: Upload authentic CSharp QA and GUID evidence, not Unity-native evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: B01-50-LIGHTBUDGET001-${{ matrix.os }}-${{ github.run_id }}
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 14
