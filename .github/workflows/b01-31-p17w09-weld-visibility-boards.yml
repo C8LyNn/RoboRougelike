@@ -72,3 +72,29 @@ jobs:
           path: output-weld/
           if-no-files-found: error
           retention-days: 30
+
+  cross-os-physical-pixel-parity:
+    needs: original-source-smallscale-visual-boards
+    runs-on: ubuntu-24.04
+    timeout-minutes: 6
+    steps:
+      - name: Download Ubuntu physically rendered PNG boards
+        uses: actions/download-artifact@v4
+        with:
+          name: b01-31-p17w09-repair-weld-smallscale-ubuntu-24.04
+          path: ubuntu
+      - name: Download Windows physically rendered PNG boards
+        uses: actions/download-artifact@v4
+        with:
+          name: b01-31-p17w09-repair-weld-smallscale-windows-2022
+          path: windows
+      - name: Compare output PNG and source-receipt SHA256 across operating systems
+        shell: bash
+        run: |
+          for file in WELD_SMALLSCALE_DARK.png WELD_SMALLSCALE_LIGHT.png receipt.json; do
+            A="$(sha256sum "ubuntu/$file" | cut -d' ' -f1)"
+            B="$(sha256sum "windows/$file" | cut -d' ' -f1)"
+            echo "ORIGINAL_PHYSICAL_CROSS_OS $file Ubuntu=$A Windows=$B"
+            test "$A" = "$B"
+          done
+          echo "ORIGINAL_PHYSICAL_CROSS_OS_ALL_THREE_BYTE_IDENTICAL"
