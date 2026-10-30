@@ -95,7 +95,7 @@ def preflight(snapshot):
     return "QA_FIXTURE_ONLY"
 
 def safe_target(target,repo,new=False):
-    target=Path(target).absolute(); root=Path(repo).resolve()
+    target=Path(target).resolve(strict=False); root=Path(repo).resolve()
     if target==root or root in target.parents or target.is_symlink():raise Hold("UNSAFE_TARGET")
     if new and (target.exists() or not target.parent.is_dir()):raise Hold("STAGE_TARGET_EXISTS")
     if not new and not target.is_dir():raise Hold("MISSING_STAGE")
