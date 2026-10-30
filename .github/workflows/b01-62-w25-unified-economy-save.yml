@@ -1,0 +1,56 @@
+name: B01-62 W25 one physical owner full original world plus economy Save
+on:
+  push:
+    branches: [feature/b01-62-p17w25-single-atomic-game-economy-envelope-v1]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W25WholeGameEconomy001/**'
+      - '.github/workflows/b01-62-w25-unified-economy-save.yml'
+permissions:
+  contents: read
+jobs:
+  frozen-556-real-764-atomic-unified-save:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Obtain immutable exact ORIGINAL B01-22 economy reducer #764
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin cc5d65f66ad7a764af6515c566e489b9fc3be82e
+          mkdir -p Tools/B01/B01-62/P17W25WholeGameEconomy001/.source b0162-w25-unified-evidence
+          git show cc5d65f66ad7a764af6515c566e489b9fc3be82e:Assets/B01Packages/ECONAPPROVED006/Runtime/ApprovedEconomyPolicyV6.cs > Tools/B01/B01-62/P17W25WholeGameEconomy001/.source/ApprovedEconomyPolicyV6.cs
+          python Tools/B01/B01-62/P17W25WholeGameEconomy001/source_guard.py b0162-w25-unified-evidence/original-git-provenance.json | tee b0162-w25-unified-evidence/source-guard.log
+          grep -q 'W25_WHOLE_GAME_ORIGINAL_PINNED_764_AND_556_729=PASS' b0162-w25-unified-evidence/source-guard.log
+      - name: Compile real original #556/#729/#764 and test single OS file+world+economy
+        run: |
+          set -euo pipefail
+          dotnet run --project Tools/B01/B01-62/P17W25WholeGameEconomy001/WholeGameEconomyQA.csproj -c Release --verbosity quiet | tee b0162-w25-unified-evidence/physical-file-econ-save.log
+          grep -q 'W25_CANONICAL_729_GATEWAY_ONE_FILE_WORLD_AND_WALLET=PASS' b0162-w25-unified-evidence/physical-file-econ-save.log
+          grep -q 'W25_CANONICAL_LIVE_PHYSICS_PREVIEW_AFTER_MOVEMENT=PASS' b0162-w25-unified-evidence/physical-file-econ-save.log
+          grep -q 'W25_CANONICAL_SAME_GENERATION_WALLET_FORK_REJECTED=PASS' b0162-w25-unified-evidence/physical-file-econ-save.log
+          grep -q 'W25_GAME_ECON_ONE_FILE_WORLD_WALLET_VICTORY_COLD=PASS' b0162-w25-unified-evidence/physical-file-econ-save.log
+          grep -q 'W25_GAME_ECON_AFTER_ATOMIC_RENAME_LOST_ACK_COLD_BOTH=PASS' b0162-w25-unified-evidence/physical-file-econ-save.log
+          grep -q 'W25_GAME_ECON_BEFORE_RENAME_NO_HALF_WALLET_AND_WORLD=PASS' b0162-w25-unified-evidence/physical-file-econ-save.log
+          grep -q 'W25_GAME_ECON_WRONG_PHYSICAL_ID_AND_CORRUPT_FULL_FILE_DENIED=PASS' b0162-w25-unified-evidence/physical-file-econ-save.log
+          grep -q 'W25_764_PRICE_ONE_STRICT_LOWER_CONTRACT=RED_REQUIRES_OWNER_V7' b0162-w25-unified-evidence/physical-file-econ-save.log
+          grep -q 'W25_GAME_ECON_ONE_ENVELOPE_SOURCE_TOTAL 6 PASS 6 FAIL 0' b0162-w25-unified-evidence/physical-file-econ-save.log
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b0162-w25-world-economy-${{ matrix.os }}
+          path: b0162-w25-unified-evidence/*
+          if-no-files-found: error
