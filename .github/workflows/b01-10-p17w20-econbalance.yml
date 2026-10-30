@@ -1,4 +1,4 @@
-name: B01-10 P17W25 ECONBAL Approved 65 Quote Parity
+name: B01-10 P17W25 ECONBAL Owner V7 Floor65 Parity
 on:
   push:
     branches: [design/b01-10-p17w20-econbal-001]
@@ -46,6 +46,22 @@ jobs:
           grep -F "C_SHARP_ORIGINAL_V6_DISTINCT_WIN_DEFER 1/1 SOURCE PASS" "$RUNNER_TEMP/econbal-real-v6-source.log"
           grep -F "C_SHARP_ORIGINAL_V6_LOANER_ZERO_SCRAP_NEGATIVE 1/1 EXPECTED_SOURCE_POLICY_HOLD" "$RUNNER_TEMP/econbal-real-v6-source.log"
           grep -F "B01_10_V6_ORIGINAL_SOURCE_DETECTOR_PASS" "$RUNNER_TEMP/econbal-real-v6-source.log"
+      - name: Compile exact NEW B01-22 V7 source and verify owner quote GREEN + loaner HOLD
+        shell: bash
+        run: |
+          set -euo pipefail
+          parent=b4df10a7ad7e6c758f8331013f6b216b3a3689a3
+          original=Assets/B01Packages/ECONAPPROVED007/Runtime/ApprovedEconomyPolicyV7.cs
+          git fetch --no-tags origin "$parent"
+          git show "$parent:$original" > "$RUNNER_TEMP/original-v7.cs"
+          blob=$(git hash-object "$RUNNER_TEMP/original-v7.cs")
+          test "$blob" = 53ebce6c07388dc9c8a8ed79b6de4d3ccbee4773
+          dotnet run -c Release --project Research/B01-10/P17/W20_ECONBAL_001/v7_source_witness.csproj -p:OriginalV7Source="$RUNNER_TEMP/original-v7.cs" > "$RUNNER_TEMP/econbal-real-v7-source.log" 2>&1
+          cat "$RUNNER_TEMP/econbal-real-v7-source.log"
+          grep -F "SOURCE_CONTRACT_GREEN_CONFIRMED price=1 original_quote=0" "$RUNNER_TEMP/econbal-real-v7-source.log"
+          grep -F "C_SHARP_ORIGINAL_V7_DISTINCT_WIN_DEFER 1/1 SOURCE PASS" "$RUNNER_TEMP/econbal-real-v7-source.log"
+          grep -F "C_SHARP_ORIGINAL_V7_LOANER_ZERO_SCRAP_NEGATIVE 1/1 EXPECTED_SOURCE_POLICY_HOLD" "$RUNNER_TEMP/econbal-real-v7-source.log"
+          grep -F "B01_10_V7_ORIGINAL_SOURCE_DETECTOR_PASS" "$RUNNER_TEMP/econbal-real-v7-source.log"
       - name: Pin original source Git blobs, bytes, base and exclusive scope
         shell: bash
         env:
@@ -57,7 +73,7 @@ jobs:
           root=pathlib.Path('Research/B01-10/P17/W20_ECONBAL_001')
           doc=json.loads((root/'manifest.json').read_text(encoding='utf-8'))
           assert doc['packageId']=='B01-10-ECONBAL-001'
-          assert len(doc['originalSourceFiles'])==8
+          assert len(doc['originalSourceFiles'])==10
           for name,pin in doc['originalSourceFiles'].items():
               path=pathlib.Path(name)
               assert path.is_file() and not path.is_symlink()
@@ -71,7 +87,7 @@ jobs:
           files=subprocess.check_output(['git','diff','--name-only',
               doc['mainBaseSha'],head],text=True).splitlines()
           assert sorted(files)==sorted(doc['exactScope']),files
-          assert len(files)==9,files
+          assert len(files)==11,files
           print('B01-10 ECONBAL MANIFEST_SOURCE_PINS '+str(len(doc['originalSourceFiles']))
                 +' PASS; GIT_SCOPE '+str(len(files))+' PASS; SHA '+head)
           PY
@@ -155,14 +171,14 @@ jobs:
           first=cases['approved_pre_first_win_65_paid_then_next_real_victory']['approved_owner_policy']
           assert (first['wins'],first['free'],first['paid'],first['restored'])==(1,1,1,1)
           assert first['charged_scrap']==65
-          price15=cases['approved_v6_parity_price_15']['approved_owner_policy']
-          price30=cases['approved_v6_parity_price_30']['approved_owner_policy']
-          assert price15['quote']==10
-          assert price30['quote']==20
+          price15=cases['approved_v7_floor_price_15']['approved_owner_policy']
+          price30=cases['approved_v7_floor_price_30']['approved_owner_policy']
+          assert price15['quote']==9
+          assert price30['quote']==19
           assert price15['free']==1 and price15['paid']==1
           assert price30['free']==1 and price30['paid']==1
-          assert price15['quote_rounding']=='nearest_half_up_clamped'
-          assert price30['quote_rounding']=='nearest_half_up_clamped'
+          assert price15['quote_rounding']=='floor'
+          assert price30['quote_rounding']=='floor'
           stress=json.load(open(sys.argv[2],encoding='utf8'))
           assert stress['episodes']==200
           assert stress['attempts_each']==12
@@ -180,6 +196,7 @@ jobs:
           path: |
             ${{ runner.temp }}/econbal-tests.log
             ${{ runner.temp }}/econbal-real-v6-source.log
+            ${{ runner.temp }}/econbal-real-v7-source.log
             ${{ runner.temp }}/econbal-scenarios.json
             ${{ runner.temp }}/econbal-synthetic.json
           retention-days: 14
