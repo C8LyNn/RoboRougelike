@@ -7,6 +7,9 @@ ROOT=Path(__file__).resolve().parents[4]
 ASSET="Assets/B0123DetachedSaveContract001"
 TOOLS="Tools/B01/B01-23/P17W13DetachedSaveContract001/"
 WORKFLOW=".github/workflows/b01-23-p17w13-detached-save-contract.yml"
+W14="Tools/B01/B01-23/P17W14SaveImmutability001/"
+W14_WORKFLOW=".github/workflows/b01-23-p17w14-detached-save-v2-immutable.yml"
+PARENT_W13="6da2c523e03766cd5a6deaed0cb3cccf8765354b"
 PIN="d94400d95d13db7f27e1533df05c9292d5380431"
 PINS={
  "Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs":"fa1aa5e531927cbe73cf5fdfe161b4a981316db5",
@@ -20,12 +23,15 @@ def source(path):return subprocess.check_output(["git","show","HEAD:"+path],cwd=
 def sha(data):return hashlib.sha256(data).hexdigest()
 def scope():
     subprocess.run(["git","merge-base","--is-ancestor",PIN,"HEAD"],cwd=ROOT,check=True)
+    subprocess.run(["git","merge-base","--is-ancestor",PARENT_W13,"HEAD"],cwd=ROOT,check=True)
     for p,h in PINS.items():
         if git("rev-parse","HEAD:"+p)!=h:raise ValueError("frozen #510 source drift: "+p)
-    paths=sorted([ASSET+".meta",WORKFLOW]+git("ls-tree","-r","--name-only","HEAD",ASSET+"/").splitlines()+
-        git("ls-tree","-r","--name-only","HEAD",TOOLS).splitlines())
-    if len(paths)!=12 or len(paths)!=len(set(paths)):raise ValueError("expected twelve unique W13 owner paths")
-    if any(not(x==ASSET+".meta" or x==WORKFLOW or x.startswith(ASSET+"/") or x.startswith(TOOLS)) for x in paths):
+    paths=sorted([ASSET+".meta",WORKFLOW,W14_WORKFLOW]+
+        git("ls-tree","-r","--name-only","HEAD",ASSET+"/").splitlines()+
+        git("ls-tree","-r","--name-only","HEAD",TOOLS).splitlines()+
+        git("ls-tree","-r","--name-only","HEAD",W14).splitlines())
+    if len(paths)!=15 or len(paths)!=len(set(paths)):raise ValueError("expected twelve unique W13 owner paths")
+    if any(not(x==ASSET+".meta" or x in (WORKFLOW,W14_WORKFLOW) or x.startswith(ASSET+"/") or x.startswith(TOOLS) or x.startswith(W14)) for x in paths):
         raise ValueError("owner scope violation")
     metas=[];defs=[]
     for p in paths:
@@ -43,7 +49,15 @@ def scope():
        "DebrisImpulseLedger" not in runtime or \
        "TryDetach(p.Id,Zero,Zero,Zero" not in runtime or \
        "Current=ready;" not in runtime or \
-       "p.Consumed!=detached" not in runtime:
+       "p.Consumed!=detached" not in runtime or
+       "public PersistedPart[] Parts => (PersistedPart[])parts.Clone();" not in runtime or
+       "public DebrisImpulseLedger GetLedger(" in runtime or
+       "return rebuilt[slot];" in runtime or
+       "public bool IsConsumed(int slot,long id)" not in runtime:
+        raise ValueError("immutable snapshot and opaque original W06 ledger required")
+    if "private const int Version=2;" not in runtime or "B01SV14!" not in runtime:
+        raise ValueError("version 2 schema migration required")
+    if False:
         raise ValueError("missing save/restore safety contract")
     return paths
 
@@ -53,8 +67,8 @@ def zinfo(name):
     return z
 def build():
     files=scope();blobs={p:source(p) for p in files}
-    manifest={"package":"B01-23-DETACHED-SAVE-CONTRACT-001","version":"1.0.0",
-        "selected_secure_v2_sha":PIN,"own_head_sha":git("rev-parse","HEAD"),
+    manifest={"package":"B01-23-DETACHED-SAVE-CONTRACT-001","version":"2.0.0",
+        "selected_secure_v2_sha":PIN,"supersedes_w13_sha":PARENT_W13,"own_head_sha":git("rev-parse","HEAD"),
         "frozen_blobs":PINS,"meta_guids":4,"native_unity":"NOT_RUN","savegame_host":"NOT_INTEGRATED",
         "codex_ack":False,
         "files":[{"path":p,"size":len(blobs[p]),"sha256":sha(blobs[p])} for p in files]}
@@ -74,7 +88,8 @@ def verify(raw):
         data={x:z.read(x) for x in names}
     manifest=json.loads(data[MANIFEST])
     if manifest.get("package")!="B01-23-DETACHED-SAVE-CONTRACT-001" or \
-       manifest.get("version")!="1.0.0" or manifest.get("selected_secure_v2_sha")!=PIN or \
+       manifest.get("version")!="2.0.0" or manifest.get("selected_secure_v2_sha")!=PIN or \
+       manifest.get("supersedes_w13_sha")!=PARENT_W13 or
        manifest.get("own_head_sha")!=git("rev-parse","HEAD") or \
        manifest.get("frozen_blobs")!=PINS or manifest.get("meta_guids")!=4 or \
        manifest.get("native_unity")!="NOT_RUN" or \

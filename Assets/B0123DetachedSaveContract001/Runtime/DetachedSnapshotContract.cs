@@ -7,7 +7,7 @@ using B01.DebrisRepulse001;
 
 namespace B01.DetachedSaveContract001
 {
-    // Version 1: isolated two-rig contract only. This is NOT a patch to frozen #510.
+    // Version 2: validated snapshot immutability and opaque W06 ledgers. This is NOT a patch to frozen #510.
     public enum PartDockState : byte { Attached=0, Detached=1 }
     public enum RestoreVerdict { Accepted, InvalidSnapshot, WrongRun, StaleGeneration, TransactionBusy, Quarantine }
 
@@ -34,13 +34,16 @@ namespace B01.DetachedSaveContract001
     public sealed class RunSnapshot
     {
         public readonly long RunId, Generation;
-        public readonly PersistedPart[] Parts;
+        private readonly PersistedPart[] parts;
+        // Defensive COPY: no caller receives the validated backing store.
+        // PersistedPart contains readonly fields and immutable strings/values.
+        public PersistedPart[] Parts => (PersistedPart[])parts.Clone();
         public RunSnapshot(long runId,long generation,IReadOnlyList<PersistedPart> parts)
         {
             RunId=runId;Generation=generation;
             if(parts==null)throw new ArgumentNullException(nameof(parts));
-            Parts=new PersistedPart[parts.Count];
-            for(int i=0;i<parts.Count;i++)Parts[i]=parts[i];
+            this.parts=new PersistedPart[parts.Count];
+            for(int i=0;i<parts.Count;i++)this.parts[i]=parts[i];
         }
     }
 
@@ -93,8 +96,8 @@ namespace B01.DetachedSaveContract001
     // Signed/foreign / malicious content is NOT authenticated by the checksum.
     public static class SnapshotCodec
     {
-        private static readonly byte[] Magic=Encoding.ASCII.GetBytes("B01SV13!");
-        private const int Version=1;
+        private static readonly byte[] Magic=Encoding.ASCII.GetBytes("B01SV14!");
+        private const int Version=2;
         private const int DigestBytes=32;
         public const int MaxBytes=8192;
         public static byte[] Encode(RunSnapshot snap)
@@ -199,7 +202,18 @@ namespace B01.DetachedSaveContract001
         private static readonly Vector3d Zero=new Vector3d(0,0,0);
         private ColdRestore(RunSnapshot snapshot,DebrisImpulseLedger[] ledgers)
         { Snapshot=snapshot;rebuilt=ledgers; }
-        public DebrisImpulseLedger GetLedger(int slot)=>rebuilt[slot];
+        // Read-only ID checks ONLY. Do NOT expose the mutable W06 ledger,
+        // which permits RearmAfterReattach without any physical dock transaction.
+        public bool IsConsumed(int slot,long id)
+        {
+            if(slot<0||slot>=rebuilt.Length)throw new ArgumentOutOfRangeException(nameof(slot));
+            return id==FrozenPartCatalog.Id(slot) && rebuilt[slot].Contains(id);
+        }
+        public int ConsumedCount(int slot)
+        {
+            if(slot<0||slot>=rebuilt.Length)throw new ArgumentOutOfRangeException(nameof(slot));
+            return rebuilt[slot].Count;
+        }
         public static bool TryStage(byte[] bytes,out ColdRestore? plan)
         {
             plan=null;
