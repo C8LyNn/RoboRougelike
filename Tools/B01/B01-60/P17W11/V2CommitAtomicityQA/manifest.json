@@ -1,0 +1,44 @@
+{
+  "package": "B01-60-P17W11-V2-PRODUCER-COMMIT-ATOMICITY-RECEIVER",
+  "owner": "B01-60",
+  "version": "1.0.0",
+  "original_producer": {
+    "pr": 488,
+    "sha": "33a32b8bd9ab40467ab1a17b5684926a37dbd4d3",
+    "original_commit_body_blob": "491c89a18827bb027854bba5e6be6630ce4947b6",
+    "original_policy_blob": "cc6611343d585fd0f16ff048f8ecdb0e7b1be30c",
+    "frozen_W06_sha": "cb2b3a76e84266e2730fffc4ab048c1039f0652f",
+    "frozen_original_W06_ledger_blob": "fa1aa5e531927cbe73cf5fdfe161b4a981316db5"
+  },
+  "purpose": "Execute verbatim original V2 private CommitDock C#9 body against actual original W06 DebrisImpulseLedger and real original V2 GuardedDockCommand, with explicit QA-only fake physical Rigidbody/Transform fields. Separate from #486 modeled physical witness and #491 routing QA.",
+  "scope": {
+    "own_only": [
+      "Tools/B01/B01-60/P17W11/V2CommitAtomicityQA/Harness.cs",
+      "Tools/B01/B01-60/P17W11/V2CommitAtomicityQA/OriginalCommitQa.csproj",
+      "Tools/B01/B01-60/P17W11/V2CommitAtomicityQA/gate.py",
+      "Tools/B01/B01-60/P17W11/V2CommitAtomicityQA/README.md",
+      "Tools/B01/B01-60/P17W11/V2CommitAtomicityQA/manifest.json",
+      ".github/workflows/b01-60-p17w11-v2-commit-atomicity.yml"
+    ]
+  },
+  "tests": [
+    "3 genuine public V2 aliases positive rearm",
+    "3 genuine aliases obstructed => atomic untouched",
+    "3 genuine aliases deliberately missing W06 consumed ID => ORIGINAL actual CommitDock method throws AFTER mutating QA-physical state",
+    "3 genuine aliases invalid indices reject and preserve physical/ledger state",
+    "actual unmodified original W06 source TryDetach/RearmAfterReattach/ClearForNewRun",
+    "literal producer CommitDock C# method extracted by brace and SHA-pinned original Git object; method fragment SHA256 receipt",
+    "original W10/parent W06 source scope verification",
+    "dual Windows2025/Ubuntu24.04 direct .NET8 C#9 compiler and actual executable logs"
+  ],
+  "gates": {
+    "source_original_transaction": "EXPECTED_RED_OWN_QA_DIAGNOSTIC",
+    "native_unity": "NOT_RUN",
+    "G2": "HOLD",
+    "codex_ack": "PENDING",
+    "integrated": false,
+    "merge": false
+  },
+  "handoff": "B01-23 must choose one owner-supported revision #488/#494, correct missing ledger rearm before any physical commit or true failure atomic rollback, publish new version SHA; B01-40 physical source; B01-60/61/62 independently retest without touching frozen source.",
+  "rollback": "Close this Draft and drop exactly six QA-owned files; generated/ transient test-only and archived Actions evidence only; original producer never modified."
+}
