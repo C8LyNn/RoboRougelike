@@ -84,6 +84,15 @@ def check_assets(assets):
          "post-activation readback source unavailable")
  require('Path.Combine(Application.persistentDataPath,"b0123_one_save_host_v2.checkpoint")' in assets[BRIDGE_UNITY].decode(),
          "owner original Unity host global sidecar path changed; re-audit isolation")
+ # NEW G1 test-isolation risk: the SAME durable file is used for all four
+ # NUnit test host instances and the original checkpoint validates run IDs.
+ require("owner!=run" in assets[BRIDGE_CORE].decode(),
+         "original checkpoint-store run ownership guard changed")
+ owners=set(re.findall(r"MakeFixture\\(\\s*(\\d+)\\s*,",text))
+ require({"31","41","9"}.issubset(owners),
+         "original native test suite run-ID isolation assumptions changed")
+ require("File.Delete(" not in text and "FileCheckpointStore" not in text,
+         "original native fixture cleanup/path wiring changed; re-audit")
  expected={
   ASMTEST:("B0123.UnitySaveBridge.PlayModeTests",{
    "B0123.UnitySaveBridge.Core","B0123.UnitySaveBridge.Unity",
@@ -183,6 +192,7 @@ def main():
  print("B01_60_W17_ALTERNATIVE_604_NO_MIXING_5_VS_4_NEGATIVE_PASS")
  print("B01_60_W17_NATIVE_ADAPTER_SOURCE_SCOPE_NEGATIVE_PASS",neg)
  print("B01_60_W17_ORIGINAL_532_NATIVE_PROJECT_MISSING_556_AND_ADAPTER_596_WITNESSED")
+ print("B01_60_W17_OWNER_596_SHARED_GLOBAL_CHECKPOINT_NATIVE_TEST_ISOLATION_P0_SOURCE_WITNESS")
  print("B01_60_W17_ACTUAL_UNITY_EDIT_PLAY_PHYSX_NOT_RUN_NO_ACTIVATED_EDITOR")
  out=ROOT/"qa-w17-native-adapter-coverage-evidence"
  require(not out.exists(),"refuse existing output folder")
