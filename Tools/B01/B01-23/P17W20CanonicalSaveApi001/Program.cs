@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using B01.DebrisRepulse001;
@@ -188,6 +189,24 @@ internal static class Tests
     {
         using(var sha=SHA256.Create())
             return Convert.ToHexString(sha.ComputeHash(data)).ToLowerInvariant();
+    }
+    // Genuine separate .NET8 child PROCESS (not another object in one CLR).
+    // The actual same-slot OS FileStream owner must refuse independent child
+    // while the previous original W06 consumed-ID world remains alive.
+    static int ChildProbe(string root,Guid slot)
+    {
+        var p=new ProcessStartInfo("dotnet"){
+            UseShellExecute=false,RedirectStandardOutput=true,
+            RedirectStandardError=true};
+        p.ArgumentList.Add(typeof(Tests).Assembly.Location);
+        p.ArgumentList.Add("--w22-probe");
+        p.ArgumentList.Add(root);
+        p.ArgumentList.Add(slot.ToString("D"));
+        using var child=Process.Start(p);
+        if(child==null)return -1;
+        if(!child.WaitForExit(30000))
+        {child.Kill(true);return -2;}
+        return child.ExitCode;
     }
     static void MainSuite()
     {
@@ -380,6 +399,19 @@ internal static class Tests
                 a.Quarantined&&!a.TryCapturePreview(out _);
         }));
 
+        Check("W22 #710 REAL child CLR process denied until owner retires private world",()=>Every((g,f,d,a)=>{
+            if(a.TryRestore(Save(true,false,10),7,1)!=CanonicalGateResult.Accepted)return false;
+            if(ChildProbe(d.Root,a.SlotId)!=7)return false;
+            if(!a.TryCloseAfterVerifiedRetirement(()=>{
+                f.Last?.Deactivate();f.Last?.Retire();return true;}))return false;
+            return ChildProbe(d.Root,a.SlotId)==0;
+        }));
+        Check("W22 #707 REAL child CLR denied after failed private Prepare",()=>Every((g,f,d,a)=>{
+            f.FailPrepareAfterAllocation=true;f.FailStageCleanup=true;
+            if(a.TryRestore(Save(false,true,10),7,1)!=CanonicalGateResult.RollbackQuarantine)
+                return false;
+            return !a.HasWorld&&a.Quarantined&&ChildProbe(d.Root,a.SlotId)==7;
+        }));
         Check("W22 #710 two gateways same original #556 run and slot DENIED",()=>Every((g,f,d,a)=>{
             if(a.TryRestore(Save(true,false,10),7,1)!=CanonicalGateResult.Accepted)return false;
             bool blocked=false;
@@ -421,8 +453,19 @@ internal static class Tests
         }
         Console.WriteLine("UNITY_ENGINE_NOT_COMPILED; PRIVATE_510_RIG_LEDGER_PORT_NOT_IMPLEMENTED; FULL_CRASH_ATOMICITY_NOT_PROVEN");
     }
-    public static int Main()
+    public static int Main(string[] args)
     {
+        if(args.Length==3&&args[0]=="--w22-probe")
+        {
+            try
+            {
+                string root=args[1];Guid slot=Guid.Parse(args[2]);
+                var child=new CanonicalWorldGateway(new Gate(),new Factory(),
+                    new Disk(Path.Combine(root,"revision")),root,7,slot);
+                return child.TryCloseAfterVerifiedRetirement(()=>true)?0:6;
+            }
+            catch(IOException){return 7;}
+        }
         MainSuite();
         Console.WriteLine("TOTAL "+(passed+failed)+" PASS "+passed+" FAIL "+failed);
         return failed==0?0:1;
