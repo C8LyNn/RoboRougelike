@@ -1,0 +1,22 @@
+{
+  "package_id": "B01-60-DEBRIS-KINEMATICS-INDEPENDENT-QA-001",
+  "version": "R1",
+  "role": "B01-60",
+  "original_producer": "B01-23",
+  "producer_pr": 421,
+  "producer_sha": "cb2b3a76e84266e2730fffc4ab048c1039f0652f",
+  "original_core_blob": "fa1aa5e531927cbe73cf5fdfe161b4a981316db5",
+  "source_scope": "Tools/B01/B01-60/P17W08/DebrisKinematicsQA/** + dedicated unique workflow",
+  "independent_source_fuzz_events": 65536,
+  "metamorphic_translation_cases": 1024,
+  "metamorphic_mirror_cases": 1024,
+  "metamorphic_mass_cases": 2048,
+  "source_mutation_negatives": 8,
+  "original_source_hashes": 8,
+  "unity_guid_count": 5,
+  "native_g1": "NOT_RUN",
+  "game_integration": "NO",
+  "codex_ack": "PENDING",
+  "source_test_status": "PENDING_CI_AT_CREATION",
+  "rollback": "Close QA PR and delete only six QA-owned paths, preserve frozen #421 and Codex"
+}

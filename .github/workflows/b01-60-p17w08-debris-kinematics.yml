@@ -1,0 +1,56 @@
+name: B01-60 P17 W08 Original Debris 65k physics-law source QA (Unity NOT_RUN)
+on:
+  push:
+    branches: [qa/b01-60-p17w08-debris-kinematics]
+    paths:
+      - 'Tools/B01/B01-60/P17W08/DebrisKinematicsQA/**'
+      - '.github/workflows/b01-60-p17w08-debris-kinematics.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-60/P17W08/DebrisKinematicsQA/**'
+      - '.github/workflows/b01-60-p17w08-debris-kinematics.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  independent-real-original-CSharp-kinematics:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 16}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Reject producer drift and boundary/scope mutants
+        shell: bash
+        run: python Tools/B01/B01-60/P17W08/DebrisKinematicsQA/source_gate.py
+      - name: Compile and execute ORIGINAL producer 33 tests separately
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet build Tools/B01/B01-23/P17W06DebrisRepulse001/DebrisRepulseTests.csproj -c Release --warnaserror
+          dotnet run --no-build -c Release --project Tools/B01/B01-23/P17W06DebrisRepulse001/DebrisRepulseTests.csproj | tee original-debris-tests.log
+      - name: Compile original core directly into independent physics-law receiver
+        shell: bash
+        run: dotnet build Tools/B01/B01-60/P17W08/DebrisKinematicsQA/DebrisKinematicsQA.csproj -c Release --warnaserror
+      - name: Execute 65536 original CSharp impulses and analytical invariants
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet run --no-build -c Release --project Tools/B01/B01-60/P17W08/DebrisKinematicsQA/DebrisKinematicsQA.csproj | tee independent-debris-kinematics.log
+      - name: Preserve original producer and independent test logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-60-w08-debris-kinematics-${{ matrix.os }}
+          path: |
+            original-debris-tests.log
+            independent-debris-kinematics.log
+          if-no-files-found: warn
+          retention-days: 21
