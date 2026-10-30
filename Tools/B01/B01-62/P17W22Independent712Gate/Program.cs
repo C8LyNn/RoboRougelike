@@ -262,6 +262,9 @@ internal static class IndependentOriginalGate
             if(!New(dir,true,f,out var s)||s==null)return false;
             try
             {
+                // Foreign identity is checked only after the legitimate
+                // FileShare.None lifetime owner has physically retired.
+                if(!CloseTrusted(s,f))return false;
                 if(Session.TryOpen(dir,Run,Guid.NewGuid(),false,out var bad)!=
                     CanonicalSessionOpenStatus.NoOwner||bad!=null)return false;
                 if(Session.TryOpen(dir,Run+1,Slot,false,out bad)!=
