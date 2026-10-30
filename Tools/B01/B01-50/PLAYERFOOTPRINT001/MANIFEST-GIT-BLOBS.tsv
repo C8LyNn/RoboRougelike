@@ -1,4 +1,4 @@
-88eabf7970c0e903c012da453afbb27e817c1956	Tools/B01/B01-50/PLAYERFOOTPRINT001/playerfootprint.py
+f8acb5a17d1721aade5d78eb8a8ae33f7db8477d	Tools/B01/B01-50/PLAYERFOOTPRINT001/playerfootprint.py
 aacd2dcdb9474a819dd3fa252bf80d2f4ce289ac	Tools/B01/B01-50/PLAYERFOOTPRINT001/tests/test_playerfootprint.py
 80827ab66a78de100fd8f2b82eda24d29a7daffc	Tools/B01/B01-50/PLAYERFOOTPRINT001/README.md
 433d597d0dd31919bc84e46339a3fa5a9f5e8aa7	.github/workflows/b01-50-playerfootprint001.yml
