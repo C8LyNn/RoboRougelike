@@ -197,8 +197,17 @@ def rollback(raw,target):
     if not target.is_dir() or target.is_symlink():
         raise ValueError("target missing or symlink")
     found=set()
+    # R1.1 rollback must NOT silently delete foreign EMPTY directories.
+    # A folder is owned only if it is the exact parent of an original member.
+    allowed_dirs=set()
+    for member in original:
+        parts=Path(member).parts
+        for level in range(1,len(parts)):
+            allowed_dirs.add(Path(*parts[:level]).as_posix())
     for p in target.rglob("*"):
         if p.is_symlink():raise ValueError("foreign symlink")
+        if p.is_dir() and p.relative_to(target).as_posix() not in allowed_dirs:
+            raise ValueError("foreign empty directory")
         if p.is_file():
             name=p.relative_to(target).as_posix()
             if name not in original or p.read_bytes()!=original[name]:

@@ -74,6 +74,12 @@ jobs:
           python Tools/B01/B01-23/P17W10SecureReattachV2/package.py verify --archive w11-receipts/v2-1-1-original-unity-package.zip
           python -m unittest discover -s Tools/B01/B01-23/P17W10SecureReattachV2 -p test_package.py -v 2>&1 | tee w11-receipts/package-qa.log
           grep -q 'OK' w11-receipts/package-qa.log
+      - name: Read-only real migrated V2 receiver preflight with hostile legacy scene/prefab regression
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s Tools/B01/B01-23/P17W11SecureV2RearmAtomicity -p test_receiver.py -v 2>&1 | tee w11-receipts/receiver-preflight.log
+          grep -q 'OK' w11-receipts/receiver-preflight.log
       - name: Archive exact original source, executable source tests and negative rollback
         if: always()
         uses: actions/upload-artifact@v4
