@@ -107,6 +107,7 @@ def workflow_attestation(ci, run, getter, rid, source, blockers):
     event = contract.get("event")
     names = contract.get("required_job_names")
     steps = contract.get("required_steps")
+    runner_labels = contract.get("required_runner_labels")
     def valid_strings(values):
         return (type(values) is list and 0 < len(values) <= 8
                 and all(isinstance(v, str) and 0 < len(v) < 128 and v.strip() == v
@@ -116,12 +117,22 @@ def workflow_attestation(ci, run, getter, rid, source, blockers):
             or not isinstance(workflow_path, str)
             or not re.fullmatch(r"\.github/workflows/[A-Za-z0-9_-]+\.ya?ml", workflow_path)
             or event not in ("pull_request", "push", "workflow_dispatch")
-            or not valid_strings(names) or not valid_strings(steps)):
+            or not valid_strings(names) or not valid_strings(steps)
+            or type(runner_labels) is not dict
+            or set(runner_labels) != set(names)
+            or not all(type(x) is str for x in runner_labels.values())
+            or set(runner_labels.values()) != {"windows-2025", "ubuntu-24.04"}
+            or len(names) != 2):
         blockers.append("source_workflow_contract_invalid")
         return False
     if (run.get("workflow_id") != wid or run.get("path") != workflow_path
             or run.get("event") != event):
         blockers.append("live_workflow_identity_mismatch")
+        return False
+
+    attempt = run.get("run_attempt")
+    if type(attempt) is not int or attempt < 1:
+        blockers.append("live_run_attempt_invalid")
         return False
 
     try:
@@ -142,6 +153,10 @@ def workflow_attestation(ci, run, getter, rid, source, blockers):
     if len(job_names) != len(set(job_names)):
         blockers.append("live_job_duplicate_name")
         return False
+    job_ids = [j.get("id") if type(j) is dict else None for j in jobs]
+    if len(job_ids) != len(set(job_ids)):
+        blockers.append("live_job_duplicate_id")
+        return False
     by_name = dict(zip(job_names, jobs))
     if not set(names) <= set(by_name):
         blockers.append("live_required_job_missing")
@@ -155,6 +170,17 @@ def workflow_attestation(ci, run, getter, rid, source, blockers):
             blockers.append("live_job_sha_or_result_mismatch")
             good = False
             continue
+        labels = job.get("labels")
+        expected_label = runner_labels[name]
+        if (type(labels) is not list
+                or expected_label not in labels
+                or set(x for x in labels if x in ("windows-2025", "ubuntu-24.04"))
+                    != {expected_label}):
+            blockers.append("live_runner_label_mismatch")
+            good = False
+        if job.get("run_id") != rid or job.get("run_attempt") != attempt:
+            blockers.append("live_job_run_or_attempt_mismatch")
+            good = False
         traces = job.get("steps")
         if type(traces) is not list:
             blockers.append("live_required_step_missing_or_fail")
@@ -250,6 +276,8 @@ def verify_live(record, getter):
         "producer_ci_run_object_matches": proof["producer_ci_run"],
         "source_git_objects_verified": verified_source,
         "source_workflow_jobs_verified": proof["source_workflow_jobs"],
+        "runner_identity_proof": ("RUNNER_LABELS_AND_ATTEMPT_MATCH"
+                                  if proof["source_workflow_jobs"] else "HOLD"),
         "source_gates_label": ("ORIGINAL_WORKFLOW_AND_JOBS_MATCH" if verified_source
                                else "SOURCE_WORKFLOW_PROOF_HOLD"),
         "declared_source_gates_consistent": declared["source_gates_consistent"],
