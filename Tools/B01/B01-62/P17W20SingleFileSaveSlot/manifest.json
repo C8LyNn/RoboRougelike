@@ -1,0 +1,54 @@
+{
+  "package": "B01-62-SLOTSAVE-001",
+  "version": "1.0.0",
+  "wave": "P17-W20",
+  "owner": "B01-62",
+  "source_scope_only": true,
+  "selected_r4_pr": 647,
+  "selected_r4_sha": "09c1809b73324a6d31c13e5d0143de62ac1e3ca6",
+  "alternative_r4_pr": 652,
+  "alternative_r4_policy": "ALT_HOLD_DO_NOT_IMPORT",
+  "selected_r3_pr": 642,
+  "selected_r3_sha": "22cec9888047994ae523cbe7bf1b0a483d64cec4",
+  "frozen_510_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "frozen_556_sha": "33094f154c7b91119b36d58aab285e6e83c5de57",
+  "frozen_596_sha": "efb2b06eafedab5469b57f163152d96aca3c5915",
+  "files": [
+    "Tools/B01/B01-62/P17W20SingleFileSaveSlot/SingleFileSaveSlot.cs",
+    "Tools/B01/B01-62/P17W20SingleFileSaveSlot/Program.cs",
+    "Tools/B01/B01-62/P17W20SingleFileSaveSlot/SlotsaveQA.csproj",
+    "Tools/B01/B01-62/P17W20SingleFileSaveSlot/source_guard.py",
+    "Tools/B01/B01-62/P17W20SingleFileSaveSlot/README.md",
+    "Tools/B01/B01-62/P17W20SingleFileSaveSlot/manifest.json",
+    ".github/workflows/b01-62-p17w20-singlefile-slot.yml"
+  ],
+  "api_contract": {
+    "run_id": "positive long",
+    "slot_id": "nonempty UUID",
+    "revision": "monotone sequential long",
+    "snapshot_binary": "unchanged original #556",
+    "authoritative_physical_file": "save.envelope",
+    "pending_files": "never restored",
+    "commit": "same-directory stage, Flush(true), File.Move overwrite, verify",
+    "lease": "FileShare.None across full owner lifetime",
+    "ambiguous_ack": "quarantine and new owner revalidation"
+  },
+  "proof": {
+    "native_unity": "NOT_RUN",
+    "hardware_powerloss_directory_sync": "NOT_PROVEN",
+    "canonical_510_binding": "NOT_IMPLEMENTED",
+    "formal_g0": "PENDING",
+    "codex_ack": false,
+    "integrated": false,
+    "merged": false
+  },
+  "receivers": [
+    "B01-23 canonical capture/hydration host",
+    "B01-20 UX/quiescence",
+    "B01-61 independent transactions",
+    "B01-41 ownership",
+    "B01-40 original physical G0",
+    "B01-60 native G1",
+    "B01-00 exclusive integrator"
+  ]
+}
