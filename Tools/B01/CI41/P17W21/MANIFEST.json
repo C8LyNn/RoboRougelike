@@ -1,0 +1,60 @@
+{
+  "package": "CI41-691-ORIGINAL-CROSSPROCESS-SLOT-001",
+  "version": "R1",
+  "owner": "B01-41",
+  "hq": "https://github.com/C8LyNn/RoboRougelike/issues/687",
+  "pr_base": {
+    "number": 691,
+    "sha": "809f82575c638e1b4d2806b5f417bddab6c0871a"
+  },
+  "api_owner_selected": {
+    "pr": 681,
+    "sha": "eed2e39636edfd8b8db754c426db452164cbf9d7",
+    "candidate_v2": 691
+  },
+  "api_alt_682": "ALT_HOLD",
+  "host_owner_r4": {
+    "pr": 647,
+    "sha": "09c1809b73324a6d31c13e5d0143de62ac1e3ca6"
+  },
+  "host_r5_new_version": {
+    "pr": 690,
+    "sha": "cc7f73541517a18f4479bb155534bd4832d9985e",
+    "status": "SEPARATE_NOT_INSTALLED"
+  },
+  "host_alt_652": "ALT_HOLD",
+  "frozen_game_510": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "frozen_save_556": "33094f154c7b91119b36d58aab285e6e83c5de57",
+  "frozen_host_596": "efb2b06eafedab5469b57f163152d96aca3c5915",
+  "owned_paths": [
+    "Tools/B01/CI41/P17W21/Original691RealSlotQA.csproj",
+    "Tools/B01/CI41/P17W21/Program.cs",
+    "Tools/B01/CI41/P17W21/source_guard.py",
+    "Tools/B01/CI41/P17W21/test_source_guard.py",
+    "Tools/B01/CI41/P17W21/README.md",
+    "Tools/B01/CI41/P17W21/MANIFEST.json",
+    ".github/workflows/b01-41-p17w21-original691-real-slot-qa.yml"
+  ],
+  "planned_tests": {
+    "real_clr_worker_processes_per_os": 16,
+    "parallel_real_cas_pairs_per_os": 8,
+    "independent_adversarial_python_cases_per_os": 18,
+    "original_file_checkpoint_store": true,
+    "original_selected_v2_gateway": true,
+    "real_unity": false
+  },
+  "release_gate": "SOURCE_ONLY_NOT_GAME",
+  "native_g1": "NOT_RUN",
+  "canonical_private_510_world": "NOT_IMPLEMENTED",
+  "true_original_556_full_envelope_recovery": "NOT_CERTIFIED",
+  "lifecycle": {
+    "IMPLEMENTED": true,
+    "TESTED": "PENDING_CI",
+    "QA_ACCEPTED": false,
+    "READY_FOR_INTEGRATOR": false,
+    "INTEGRATED": false,
+    "RELEASED": false
+  },
+  "feedback": "NOT_MEASURED",
+  "rollback": "Leave Draft unmerged, discard ONLY 7 newly added CI41 test paths, never modify shared game/Unity persistent save."
+}
