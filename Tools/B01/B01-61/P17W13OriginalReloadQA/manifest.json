@@ -1,0 +1,31 @@
+{
+  "package": "B01-61-P17W13-ORIGINAL-SAVE-RELOAD-WITNESS",
+  "version": "1.0.0",
+  "scope": "B01-61 independent QA only",
+  "source_pr": 510,
+  "source_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "original_w06_sha": "cb2b3a76e84266e2730fffc4ab048c1039f0652f",
+  "original_git_blob_pins": [
+    "328977b4cdcdcd7c9f128c01f11ff67f8e46086a",
+    "9f80f705475bd312f209033a57bd07e03bf95628",
+    "b680ed0ec969ac23203fa55eab7b90f8daa86e43",
+    "b6a4d04b0c6407c8c84451b4d599d96fe0e4d1a9",
+    "fa1aa5e531927cbe73cf5fdfe161b4a981316db5"
+  ],
+  "test_unity_boundary_derived_from_qa_pr": 517,
+  "original_game_csharp_directly_compiled": true,
+  "expected_result": "ORIGINAL_SOURCE_RELOAD_QA_PASS plus SAVE_REHYDRATION_RELEASE_GATE_RED",
+  "json_snapshot": "QA-only observed state; not production save schema",
+  "old_candidates_HOLD": [
+    511,
+    494
+  ],
+  "G0": "ACCEPTED_SOURCE_ONLY producer via #521",
+  "SAVELOAD": "HOLD_NO_PRODUCTION_REHYDRATION_API",
+  "G1": "NOT_RUN",
+  "G2": "HOLD",
+  "actual_codex_receiver": "NOT_SCANNED",
+  "ack": false,
+  "integrated": false,
+  "merge": false
+}
