@@ -32,6 +32,10 @@ namespace B01.B0162.AtomicHostBridge
         bool IsQuiescent();
         object CurrentWorldToken { get; } // reference identity, NOT a mutable snapshot
         RunSnapshot CaptureCurrent();
+        // Read-only access to actual RUNNING frozen #510 private ledger, exposed
+        // through a NEW authorized owner interface, never reflection.
+        bool ContainsConsumedId(int slot, long id);
+        int ConsumedCount(int slot);
         IPreparedWorld PrepareFreshWorld(RunSnapshot snapshot);
         // success => stage published, failure => live world and token unchanged;
         // on THROW possibly partial change, RestorePrevious MUST restore entirely.
@@ -66,6 +70,13 @@ namespace B01.B0162.AtomicHostBridge
                 if (before == null) return Fail("SAVE_MISSING_WORLD");
                 RunSnapshot snap = host.CaptureCurrent();
                 if (!SnapshotRules.Valid(snap)) return BridgeResult.InvalidSnapshot;
+                for (int i = 0; i < FrozenPartCatalog.Slots; ++i)
+                {
+                    PersistedPart p = snap.Parts[i];
+                    if (host.ContainsConsumedId(i, p.Id) != p.Consumed ||
+                        host.ConsumedCount(i) != (p.Consumed ? 1 : 0))
+                        return BridgeResult.InvalidSnapshot;
+                }
                 byte[] candidate = SnapshotCodec.Encode(snap); // actual unchanged #556
                 if (!host.IsQuiescent() || !ReferenceEquals(host.CurrentWorldToken, before))
                     return BridgeResult.Busy;
@@ -107,6 +118,13 @@ namespace B01.B0162.AtomicHostBridge
 
                 RunSnapshot priorSnapshot = host.CaptureCurrent();
                 if (!SnapshotRules.Valid(priorSnapshot)) return Fail("CURRENT_WORLD_INVALID");
+                for (int i = 0; i < FrozenPartCatalog.Slots; ++i)
+                {
+                    PersistedPart p = priorSnapshot.Parts[i];
+                    if (host.ContainsConsumedId(i, p.Id) != p.Consumed ||
+                        host.ConsumedCount(i) != (p.Consumed ? 1 : 0))
+                        return Fail("CURRENT_WORLD_LEDGER_DIVERGED");
+                }
                 if (snapshot.RunId != priorSnapshot.RunId) return BridgeResult.WrongRun;
                 if (snapshot.Generation < priorSnapshot.Generation)
                     return BridgeResult.StaleGeneration;
