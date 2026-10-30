@@ -1,0 +1,23 @@
+{
+  "package": "B01-61-P17W14-EXACT556-REAL-ORIGINAL-RED-GREEN-QA-001",
+  "version": "1.0.0",
+  "selected_save_pr": 556,
+  "selected_save_sha": "33094f154c7b91119b36d58aab285e6e83c5de57",
+  "old_save_pr": 549,
+  "old_save_sha": "6da2c523e03766cd5a6deaed0cb3cccf8765354b",
+  "alternative_save_pr": 554,
+  "other_schema_pr": 544,
+  "selected_gameplay_pr": 510,
+  "selected_gameplay_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "original_blob_pins": {
+    "save_556": "b52e511c370f5fca56c74029050844dc8cbb7f9a",
+    "save_549": "6c036985411164372bf3d21d467780ff3777544e",
+    "atomic_510": "b6a4d04b0c6407c8c84451b4d599d96fe0e4d1a9",
+    "w06": "fa1aa5e531927cbe73cf5fdfe161b4a981316db5"
+  },
+  "scope": "source direct-original security RED->GREEN and cold W06 transaction QA",
+  "native_unity": "NOT_RUN",
+  "actual_game_save": "HOLD",
+  "codex_ack": false,
+  "merged": false
+}

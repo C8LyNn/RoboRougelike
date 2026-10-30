@@ -1,0 +1,72 @@
+name: B01-61 W14 - exact chosen Save #556 ORIGINAL source RED-to-GREEN
+on:
+  push:
+    branches: [qa/b01-61-p17w14-556-exact-red-green-snapshot]
+  pull_request:
+    paths:
+      - "Tools/B01/B01-61/P17W14ExactSave556RegressionQA/**"
+      - ".github/workflows/b01-61-p17w14-exact556-red-green.yml"
+  workflow_dispatch:
+jobs:
+  original-save-v1-red-v2-green:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Direct original selected #556 + baseline #549 + W06 + R2 immutable Git pins
+        shell: bash
+        run: |
+          set -euo pipefail
+          p=Tools/B01/B01-61/P17W14ExactSave556RegressionQA
+          python "$p/source_guard.py" 2>&1 | tee w14-git-pin.log
+          mkdir -p "$p/Input"
+          git show 6da2c523e03766cd5a6deaed0cb3cccf8765354b:Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs > "$p/Input/Old.cs"
+          git show 33094f154c7b91119b36d58aab285e6e83c5de57:Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs > "$p/Input/New.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs > "$p/Input/DebrisImpulseCore.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123SecureReattachV2/Runtime/AtomicDockLedger.cs > "$p/Input/AtomicDockLedger.cs"
+      - name: Build original v1 and exact selected v2 CSharp via identical independent QA program
+        shell: bash
+        run: |
+          set -euo pipefail
+          p=Tools/B01/B01-61/P17W14ExactSave556RegressionQA
+          dotnet build "$p/OldOriginalSourceQA.csproj" -c Release --warnaserror 2>&1 | tee w14-build-v1.log
+          dotnet build "$p/NewOriginalSourceQA.csproj" -c Release --warnaserror 2>&1 | tee w14-build-v2.log
+      - name: Assert OLD real original v1 RED exit3; exact chosen v2 GREEN exit0; live game HOLD
+        shell: bash
+        run: |
+          set +e
+          p=Tools/B01/B01-61/P17W14ExactSave556RegressionQA
+          dotnet run --no-build -c Release --project "$p/OldOriginalSourceQA.csproj" -- --red > w14-old-red.log 2>&1
+          old=$?
+          cat w14-old-red.log
+          dotnet run --no-build -c Release --project "$p/NewOriginalSourceQA.csproj" -- --green > w14-new-green.log 2>&1
+          new=$?
+          cat w14-new-green.log
+          printf 'OLD_549_EXPECTED_RED_EXIT=%s NEW_556_EXPECTED_GREEN_EXIT=%s LIVE_UNITY_SAVELOAD=HOLD NATIVE_G1=NOT_RUN\n' "$old" "$new" | tee w14-verdict.txt
+          test "$old" = 3 && test "$new" = 0 || exit 1
+          grep -q FROZEN_549_ORIGINAL_SOURCE_SECURITY_RED w14-old-red.log || exit 1
+          grep -q SELECTED_556_ORIGINAL_SOURCE_SECURITY_GREEN w14-new-green.log || exit 1
+          echo 'B01-61 INDEPENDENT EXACT 556 ORIGINAL SAVE SRC RED->GREEN PASS, NATIVE G1 NOT_RUN'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b01-61-w14-exact556-original-${{ matrix.os }}
+          path: |
+            w14-git-pin.log
+            w14-build-v1.log
+            w14-build-v2.log
+            w14-old-red.log
+            w14-new-green.log
+            w14-verdict.txt
+          if-no-files-found: warn

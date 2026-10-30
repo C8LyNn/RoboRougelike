@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+<PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><LangVersion>9.0</LangVersion><Nullable>enable</Nullable><EnableDefaultCompileItems>false</EnableDefaultCompileItems><TreatWarningsAsErrors>true</TreatWarningsAsErrors></PropertyGroup>
+<ItemGroup>
+<Compile Include="Input/Old.cs" Link="REAL_Old_DetachedSnapshotContract.cs"/>
+<Compile Include="Input/DebrisImpulseCore.cs" Link="ORIGINAL_W06_DebrisImpulseCore.cs"/>
+<Compile Include="Input/AtomicDockLedger.cs" Link="ORIGINAL_510_R2_AtomicDockLedger.cs"/>
+<Compile Include="Program.cs"/>
+</ItemGroup>
+</Project>
