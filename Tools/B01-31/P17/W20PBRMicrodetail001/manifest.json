@@ -1,0 +1,93 @@
+{
+  "package_id": "B01-31-COUPLER-PBR-MICRODETAIL-NORMORM-001",
+  "version": "P17-W20-R1",
+  "owner": "B01-31 — CONCEPT ART & VISUAL EXPLORATION",
+  "dispatch_issue": 668,
+  "governance_issue": 276,
+  "purpose": "Actually new original material-detail capability: create physically authored tangent-space NORMAL and packed AO/Roughness/Metallic surface details for previously unlit-depth basecolor W19 coupler without touching original 3D model, UV, baseColor or source bytes",
+  "immutable_source": {
+    "W19_PR": 653,
+    "W19_HEAD": "4db85218b9efbb5bef48403a88a4ef94589488f9",
+    "W19_GLB_SHA256": "f8683e5ee3f0916fbde534895e5e01f890bf577b0083858e8dc361b1f8d5ae41",
+    "W19_immutable_actions_run": 41110977749,
+    "W19_physical_artifact_id": 13003621811,
+    "origin": "B0131SplitCouplerWornLivery.glb",
+    "read_only": true
+  },
+  "owned_source_paths": [
+    "Tools/B01-31/P17/W20PBRMicrodetail001/build_materials.py",
+    "Tools/B01-31/P17/W20PBRMicrodetail001/verify_materials.py",
+    "Tools/B01-31/P17/W20PBRMicrodetail001/README.md",
+    "Tools/B01-31/P17/W20PBRMicrodetail001/manifest.json",
+    ".github/workflows/b01-31-p17w20-pbr-microdetail.yml"
+  ],
+  "new_actual_physical_assets": {
+    "binary_standard_glTF2": "B0131SplitCouplerMicrodetailPBR.glb",
+    "two_independent_existing_coupler_root_meshes": 2,
+    "original_unchanged_triangles": 1312,
+    "original_unchanged_materials": 6,
+    "original_unchanged_UV_source_primitives": 12,
+    "original_six_basecolor_pngs_byte_identical": true,
+    "new_normal_maps": "6 newly authored RGB PNG tangent-space images 256x256, standard glTF2 normalTexture",
+    "new_orm_maps": "6 newly authored RGB PNG 256x256, AO red channel R, roughness green G, metallic blue B, assigned as both occlusionTexture and metallicRoughnessTexture glTF2",
+    "new_total_embedded_pngs": 18,
+    "original_embedded_basecolor_pngs": 6,
+    "material_binding_counts": {
+      "normalTexture": 6,
+      "occlusionTexture": 6,
+      "metallicRoughnessTexture": 6
+    },
+    "independent_1800x740_review_atlases": 2,
+    "source_receipt": 1,
+    "physical_deterministic_ZIP_members": 16
+  },
+  "tests": [
+    "Read exact original W19 physical artifact and full SHA; never regenerate W19 mesh/UV/baseColor",
+    "Original W19 complete actual GLB BIN prefix byte identical, original nodes/scenes/meshes/accessors/54 original bufferViews/6 basecolor images/textures and all PBR baseColor factors preserved",
+    "12 true new physically appended image/png MIME+bufferView and texture entries; each actual embedded PNG byte-exact to independent generated loose source",
+    "Per original material six standard glTF normalTexture and 6 shared occlusionTexture + metallicRoughnessTexture binding with correct six source material IDs",
+    "Physically decode 12 real 256px RGB original maps; verify normal pixels decode approximate unit tangent vectors (blue-forward), channel R occlusion/G roughness/B metallic semantics and nonconstant roughness/metal detail",
+    "Actually decode two 1800x740 PNG atlases, six color-distinct physical material tiles each",
+    "16-member actual ZIP CRC and byte-for-byte parity with all original loose art files",
+    "8 adversarial malformed GLB/material/geometry source mutations correctly rejected",
+    "Second complete full author rebuild produces identical SHA for every GLB, PNG, receipt, original ZIP",
+    "Actual independent Windows2022 binary receipt verifier downloads exact original W19 and actual Ubuntu-produced W20 artifact without executing creator"
+  ],
+  "governance": {
+    "frozen_game_510": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "frozen_save_556": "33094f154c7b91119b36d58aab285e6e83c5de57",
+    "frozen_save_R2_596": "efb2b06eafedab5469b57f163152d96aca3c5915",
+    "frozen_R3_642": "22cec9888047994ae523cbe7bf1b0a483d64cec4",
+    "alternate_R4": "selection B01-23 sole #647 or #652; B01-31 cannot choose",
+    "canonical_API_666": "B01-23/62/20 only",
+    "local_windows_Unity_667": "B01-60 only",
+    "Codex": "QUOTA_OFFLINE; NO ACK; NO MERGE"
+  },
+  "gates": {
+    "IMPLEMENTED": "AFTER_SOURCE_COMMIT",
+    "TESTED": "PENDING_REAL_EXACT_HEAD_CI",
+    "QA_ACCEPTED": "NO",
+    "READY_FOR_INTEGRATOR": "NO",
+    "INTEGRATED": "NO",
+    "RELEASED": "NO",
+    "SOURCE_G0": "PENDING",
+    "FORMAL_B01_30_40_G0": "PENDING",
+    "NATIVE_B01_60_Unity_G1": "NOT_RUN",
+    "LIVE_SAVELOAD": "NOT_RUN",
+    "G2": "HOLD",
+    "CODEx_ACK": "NO"
+  },
+  "technical_caveats": [
+    "glTF2 tangent-space normalTexture requires valid tangent basis; original W19 GLB lacks explicit tangents, real target importer must compute tangents; never claim Unity passes from binary source QA",
+    "AO and packed metallicRoughness standard glTF PBR channel semantics; material original factors still multiply textures in target shader",
+    "Unity 6000.3.14f1 needs approved glTF import plugin/converter; absent native G1 do not assert importer supports these texture bindings",
+    "Original map relief is procedural artistic approximation, not scanned PBR or physically measured metal roughness"
+  ],
+  "receivers": [
+    "B01-30/40 actual 18 embedded PNG binary/six PBR material receipt, UV/tangent compatibility, non-destructive scratch rollback",
+    "B01-60 actual human-operated activated Unity 6000.3.14f1 host (#667) evaluate glTF normal/ORM via approved importer, capture real Editor.log/XML/screenshots and failures",
+    "B01-12 optional cosmetic in-game visual choice after game owner signoff",
+    "B01-00 later G0+native gated integrator source offer, Codex quota offline so not ACK"
+  ],
+  "rollback": "Delete only 5 unique W20 own source/workflow paths; generated physical W20 GLB/textures only artifact, no install. If authorized separate scratch import, remove ONLY B0131SplitCouplerMicrodetailPBR distinctly named W20 products, never original W19/W18/W17/W16, canonical assets, foreign empty dirs or frozen #510/#556/#596/#642/R4."
+}
