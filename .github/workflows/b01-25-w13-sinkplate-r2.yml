@@ -1,13 +1,13 @@
 name: B01-25 W13 SINKPLATE R2 original CSharp9 and physical Unity SOURCE QA
 on:
   push:
-    branches: [research/b01-25-p17w13-sinkplate001-r1]
+    branches: [research/b01-25-p17w13-sinkplate001-r2]
     paths:
       - 'Research/B01-25/P17/SINKPLATE001R2/**'
       - 'Assets/B0125SinkPlateR2/**'
       - 'Assets/B0125SinkPlateR2.meta'
-      - 'Tools/B01/B01-25/P17W13SinkPlate001/**'
-      - '.github/workflows/b01-25-w13-sinkplate.yml'
+      - 'Tools/B01/B01-25/P17W13SinkPlateR2/**'
+      - '.github/workflows/b01-25-w13-sinkplate-r2.yml'
   workflow_dispatch:
 permissions:
   contents: read
@@ -21,7 +21,7 @@ jobs:
     timeout-minutes: 15
     env:
       SRC: Research/B01-25/P17/SINKPLATE001R2
-      OUT: Tools/B01/B01-25/P17W13SinkPlate001/.output
+      OUT: Tools/B01/B01-25/P17W13SinkPlateR2/.output
     steps:
       - uses: actions/checkout@v4
         with:
@@ -44,7 +44,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python Tools/B01/B01-25/P17W13SinkPlate001/check.py --out "$OUT/receipt.json" 2>&1 | tee "$OUT/source-$RUNNER_OS.log"
+          python Tools/B01/B01-25/P17W13SinkPlateR2/check.py --out "$OUT/receipt.json" 2>&1 | tee "$OUT/source-$RUNNER_OS.log"
       - name: Save actual raw source evidence and original inner ZIP
         if: always()
         uses: actions/upload-artifact@v4
@@ -52,7 +52,7 @@ jobs:
           name: b01-25-sinkplate-r2-${{ matrix.os }}
           path: |
             Research/B01-25/P17/SINKPLATE001R2/.output/gameplay.json
-            Tools/B01/B01-25/P17W13SinkPlate001/.output/**
+            Tools/B01/B01-25/P17W13SinkPlateR2/.output/**
           include-hidden-files: true
           if-no-files-found: warn
           retention-days: 21
