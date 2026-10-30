@@ -16,10 +16,10 @@ SOURCE={
 }
 def git(*args):
     return subprocess.check_output(["git", *args],cwd=ROOT,text=True).strip()
-BRIDGE_COMMIT="cf7f2a155570f99c412585d5f09f8f97f9e83754"
+BRIDGE_COMMIT="135a67d42acfccd59ca9145e09630d0b4bbade1c"
 BRIDGE_BLOBS={
- "Assets/B0123UnitySaveBridge001/Core/AtomicWorldSwap.cs":"74e853601ecc7a5455d9bb466432ce7c027e0695",
- "Assets/B0123UnitySaveBridge001/Unity/IsolatedTwinRigSaveHost.cs":"94594b0b83514e9f2e1c5bb21ddef9f093b299fc",
+ "Assets/B0123SecureV2HostBridge001/Runtime/AtomicColdUnityHostBridge.cs":"e9e9dc6d437e96dad6b08c1639e8bd94d62c4f4b",
+ "Assets/B0123SecureV2HostBridge001/Runtime/IsolatedSecureV2SaveHost.cs":"980fddbefbe17f41590e36efaab9b9df017660fe",
 }
 def receipt(log_path,bridge_log,bridge_dir):
     subprocess.run(["git","merge-base","--is-ancestor",BASE,"HEAD"],cwd=ROOT,check=True)
@@ -43,12 +43,13 @@ def receipt(log_path,bridge_log,bridge_dir):
         if required not in log: raise ValueError("missing actual original-source evidence: "+required)
     bridge_text=bridge_log.read_text(encoding="utf-8")
     for required in (
-        "BRIDGE TOTAL 13 PASS 13 FAIL 0",
-        "PASS BRIDGE_historic_wrong_busy_callback_self_denies",
-        "PASS BRIDGE_fixed_external_host_idle_callback_accepts",
-        "PASS BRIDGE_activation_failure_reactivates_old_world",
-        "PASS BRIDGE_rollback_failure_sets_quarantine_and_deny_future",
-        "BRIDGE_CORE_SELECTED_SOURCE_DIRECT_QA=EXECUTED",
+        "OFFICIAL BRIDGE TOTAL 13 PASS 13 FAIL 0",
+        "PASS HOST_selected_556_cold_load_commits_visible_world",
+        "PASS HOST_actual_save_binary_retains_original_W06_flags",
+        "PASS HOST_activation_exception_reactivates_old_world",
+        "PASS HOST_rollback_failure_permanently_quarantines",
+        "SELECTED_556_SOURCE_ONLY=TRUE ORIGINAL_OFFICIAL_BRIDGE_CORE=EXECUTED",
+        "OFFICIAL_BRIDGE_POST_ACTIVATION_DIVERGENCE=SOURCE_RED",
         "UNITY_NATIVE_PHYSX=NOT_RUN LIVE_CANONICAL_510_RESTORE=NOT_IMPLEMENTED",
     ):
         if required not in bridge_text:
@@ -60,12 +61,12 @@ def receipt(log_path,bridge_log,bridge_dir):
         actual_blob=git("hash-object",str(candidate))
         if actual_blob!=expected_blob:
             raise ValueError("changed bridge blob "+str(candidate)+": "+actual_blob)
-    unity_host=(bridge_dir/"IsolatedTwinRigSaveHost.cs").read_text(encoding="utf-8")
-    if ("coordinator.TryLoad(bytes,expectedRun,minGeneration,PhysicalIdle)" not in unity_host or
-        "coordinator.TrySave(runId,PhysicalIdle,out bytes)" not in unity_host or
-        "private bool CanOperate() => coordinator!=null&&!coordinator.Busy&&PhysicalIdle();" not in unity_host or
-        "TryLoad(bytes,expectedRun,minGeneration,CanOperate)" in unity_host):
-        raise ValueError("Unity host callback still self-blocks or producer wiring drift")
+    unity_host=(bridge_dir/"IsolatedSecureV2SaveHost.cs").read_text(encoding="utf-8")
+    if ("bridge = new AtomicColdUnityHostBridge(77, new UnityRigFactory(transform)," not in unity_host or
+        "() => !liveCommand" not in unity_host or
+        "return bridge.TrySave(out bytes)" not in unity_host or
+        "return bridge.TryLoad(bytes, minimumGeneration)" not in unity_host):
+        raise ValueError("original official Unity host wiring drift; no native claim")
     return {
       "qa_head_sha":git("rev-parse","HEAD"),
       "only_selected_save_commit":BASE,
@@ -76,7 +77,8 @@ def receipt(log_path,bridge_log,bridge_dir):
       "bridge_exact_candidate_commit":BRIDGE_COMMIT,
       "bridge_original_git_blob_pins":BRIDGE_BLOBS,
       "bridge_original_atomic_core_source_assertions":{"pass":13,"fail":0},
-      "bridge_unity_host_callback_source_inspection":"FIXED_AT_EXACT_PIN_NOT_NATIVE",
+      "bridge_unity_host_callback_source_inspection":"EXACT_SOURCE_PIN_NOT_NATIVE",
+      "bridge_post_activation_capture_gate":"RED_ACTIVATED_WORLD_CAN_DIVERGE",
       "durable_rollback_anchor":"NOT_IMPLEMENTED_IN_SOURCE_ONLY_556",
       "same_generation_commit_identity":"HOST_MUST_ENFORCE",
       "new_unity_host_adapter_exact_sha":BRIDGE_COMMIT,
