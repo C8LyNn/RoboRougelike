@@ -191,6 +191,133 @@ def audit(payload):
     }
 
 
+
+# W15 distinct explicit source receipt; W14 remains historical evidence.
+SELECTED_V2_SCHEMA = "b01-w15-selected-save-host-gate-v1"
+FROZEN_GAME_SHA = "d94400d95d13db7f27e1533df05c9292d5380431"
+FROZEN_SAVE_SHA = "33094f154c7b91119b36d58aab285e6e83c5de57"
+HOLD_HOST = {
+    "adapter": "NOT_IMPLEMENTED", "actual_unity_save_reload": "NOT_RUN",
+    "native_physx_g1": "NOT_RUN", "migration": "NOT_DONE",
+    "receiver_rollback": "SCRATCH_ONLY",
+    "original_510_rollback": "FORBIDDEN", "codex_ack": "NONE",
+    "integrated": False, "merged": False, "g2": "HOLD",
+}
+
+
+def audit_selected_v2(raw):
+    """Offline receipt consistency, NEVER live Unity/QA actor authentication."""
+    root = doc(raw, "W15 receipt")
+    if root.get("schema") != SELECTED_V2_SCHEMA:
+        raise AdmissionError("unsupported W15 versioned receipt schema")
+    game = doc(root.get("gameplay"), "gameplay")
+    save = doc(root.get("selected_save"), "selected_save")
+    if (game.get("pr") != 510 or game.get("sha") != FROZEN_GAME_SHA
+            or game.get("url") != pr_url(510) or game.get("frozen") is not True):
+        raise AdmissionError("frozen gameplay #510 mismatch")
+    if (save.get("pr") != 556 or save.get("sha") != FROZEN_SAVE_SHA
+            or save.get("url") != pr_url(556) or save.get("frozen") is not True
+            or save.get("target_game_sha") != FROZEN_GAME_SHA
+            or save.get("version") != "2.0.0"):
+        raise AdmissionError("only frozen #556 can be selected")
+    owner = doc(root.get("owner_choice"), "owner_choice")
+    if (owner.get("agent") != "B01-23" or owner.get("selection") != "SELECTED_ONE"
+            or owner.get("pr") != 556 or owner.get("sha") != FROZEN_SAVE_SHA):
+        raise AdmissionError("exclusive producer choice missing")
+    held = root.get("alternatives_hold")
+    if (type(held) is not list or sorted(held) != [494, 511, 544, 549, 554]):
+        raise AdmissionError("old and alternative source HOLD missing")
+    g0 = doc(root.get("physical_source_g0"), "physical_source_g0")
+    expected_g0 = {
+        "agent": "B01-40", "state": "ACCEPTED_SOURCE_ONLY", "pr": 560,
+        "url": pr_url(560),
+        "qa_sha": "1a218df9e287a8a254b7d84c228c962ab232b9b5",
+        "target_sha": FROZEN_SAVE_SHA,
+        "inner_zip_sha256":
+            "20c3c17c252f084014e9766010ab4651770a41f73ce534fc2aa7fd2edc697060",
+        "members": 17,
+    }
+    if g0 != expected_g0:
+        raise AdmissionError("physical G0 source-only provenance mismatch")
+    qas = root.get("independent_source_qa")
+    if type(qas) is not list or len(qas) != 2:
+        raise AdmissionError("two source QA receipts required")
+    expected_qa = {
+        563: ("42aa590a2f6b08e33886027ea452ef3392a2f2c0", "OPEN_DRAFT"),
+        570: ("413bee4c232145be4cdf5745088fe1538a5f421b", "CLOSED_UNMERGED"),
+    }
+    seen = set()
+    for entry in qas:
+        qa = doc(entry, "independent QA")
+        n = qa.get("pr")
+        if n not in expected_qa or n in seen:
+            raise AdmissionError("duplicate or alternative QA")
+        seen.add(n)
+        h, state = expected_qa[n]
+        if (qa.get("agent") != "B01-61" or qa.get("target_sha") != FROZEN_SAVE_SHA
+                or qa.get("result") != "PASS_SOURCE_ONLY"
+                or qa.get("qa_sha") != h or qa.get("pr_state") != state
+                or qa.get("url") != pr_url(n)
+                or qa.get("merged") is not False):
+            raise AdmissionError("QA SHA/state does not match selected #556")
+    history = root.get("historical_rejections")
+    if (type(history) is not list or len(history) != 2
+            or {r.get("pr") for r in history if type(r) is dict} != {544, 549}
+            or any(type(r) is not dict or
+                   r.get("status") != "HISTORICAL_SECURITY_RED_NOT_SELECTED"
+                   for r in history)):
+        raise AdmissionError("historical security RED forgotten")
+    if (root.get("legacy_security_qa") != 550
+            or root.get("legacy_red_source_blob") !=
+                "6c036985411164372bf3d21d467780ff3777544e"):
+        raise AdmissionError("historical original #550 SHA mismatch")
+    host = doc(root.get("host_runtime"), "host_runtime")
+    if set(host) != set(HOLD_HOST):
+        raise AdmissionError("unknown host gate field or missing blocker")
+    for k, v in HOLD_HOST.items():
+        if host[k] != v or type(host[k]) is not type(v):
+            raise AdmissionError("unreviewed host gate promotion: " + k)
+    if root.get("adapter_package_id") != "NOT_ASSIGNED":
+        raise AdmissionError("no approved host bridge can be invented")
+    return {
+        "schema": SELECTED_V2_SCHEMA,
+        "selected_gameplay_pr": 510, "selected_save_pr": 556,
+        "selected_save_sha": FROZEN_SAVE_SHA,
+        "source_g0_recorded": "ACCEPTED_SOURCE_ONLY",
+        "independent_source_qa_records": [563, 570],
+        "historical_rejected_sources": [544, 549, 554],
+        "source_claims_authenticated_online": False,
+        "unity_host_adapter": "NOT_IMPLEMENTED",
+        "unity_cold_save_load": "NOT_RUN", "native_physx_g1": "NOT_RUN",
+        "receiver_migration": "NOT_DONE", "rollback": "SCRATCH_ONLY",
+        "codex_ack": "UNCONFIRMED", "g2": "HOLD",
+        "integrated": False, "release_allowed": False,
+        "verdict": "SOURCE_G0_RECORDED_HOST_GATE_HOLD",
+    }
+
+
+def selected_main(argv=None):
+    parser = argparse.ArgumentParser(description="W15 selected frozen #556 host receipt")
+    parser.add_argument("receipt", type=Path)
+    parser.add_argument("--output", type=Path)
+    a = parser.parse_args(argv)
+    try:
+        blob = a.receipt.read_bytes()
+        result = audit_selected_v2(json.loads(blob.decode("utf-8")))
+        result["input_sha256"] = hashlib.sha256(blob).hexdigest()
+        rendered = json.dumps(result, sort_keys=True, indent=2) + "\n"
+        if a.output is None:
+            print(rendered, end="")
+        else:
+            if a.output.resolve() == a.receipt.resolve() or a.output.exists():
+                raise AdmissionError("refuse to overwrite evidence")
+            with a.output.open("x", encoding="utf-8") as stream:
+                stream.write(rendered)
+        return 0
+    except (AdmissionError, OSError, ValueError, UnicodeError, TypeError) as err:
+        print("SELECTED_SAVE_HOST_HOLD: " + str(err), file=sys.stderr)
+        return 2
+
 def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("receipt", type=Path)
@@ -218,4 +345,6 @@ def main(argv=None):
 
 
 if __name__ == "__main__":
+    if len(sys.argv) > 1 and sys.argv[1] == "--selected-v2":
+        raise SystemExit(selected_main(sys.argv[2:]))
     raise SystemExit(main())
