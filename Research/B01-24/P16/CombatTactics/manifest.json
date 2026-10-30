@@ -1,0 +1,58 @@
+{
+  "package_id": "B01-24-TACTICS-001",
+  "version": "0.1.0",
+  "status": "RESEARCH_PROTOTYPE_NOT_FROZEN_NOT_INTEGRATED",
+  "owner": "B01-24",
+  "receiver": "B01-40 provenance then Codex technical review; B01-60 independent QA",
+  "source_baseline": {
+    "repository": "C8LyNn/RoboRougelike",
+    "codex_pr": 310,
+    "commit": "561c223f7f01c1e609548bf1c8c66b5132ec5485",
+    "enemy_path": "Assets/Pack/P12_PipelineSafeEnemyTurret.cs",
+    "enemy_blob": "61995b65c4def25e93fa2ad17c09f1bbd7c001ff"
+  },
+  "files": [
+    {
+      "path": "Research/B01-24/P16/CombatTactics/tactics.mjs",
+      "git_blob": "0f08e2baf1c8b5d5610354a4a7d59dca9b100ee5",
+      "scope": "functional standalone deterministic prototype"
+    },
+    {
+      "path": "Research/B01-24/P16/CombatTactics/tactics.test.mjs",
+      "git_blob": "5daeb506b56ae505e8a5f60bc4a33ddb52867ace",
+      "scope": "runnable standard Node test suite"
+    }
+  ],
+  "requires": {
+    "runtime": "Node 18+ for standalone .mjs tests; no npm packages",
+    "production": "Codex-owned Unity adapter must translate decisions into real R6 steering/shot control; none installed"
+  },
+  "executed_evidence": {
+    "original_github_source_and_tests": "V8 isolated CodeMode exact git blobs; 18/18 actual assertions PASS",
+    "native_node_test_runner_on_git_checkout": "NOT_RUN",
+    "unity_csharp_compiler": "NOT_RUN",
+    "unity_editmode": "NOT_RUN",
+    "unity_playmode": "NOT_RUN",
+    "windows_player": "NOT_RUN",
+    "independent_b01_60": "PENDING"
+  },
+  "policy": {
+    "world_cover": "report only; does not suppress direct fire pending B01-10/HQ policy",
+    "ramming": "advisory mode when no weapon but drive healthy; no applied impulse or actual damage",
+    "other": "no weapon-family, power, health, damage, aim or economy rules changed"
+  },
+  "ownership": {
+    "modifies_gameplay_assets": false,
+    "modifies_codex_owned_source": false,
+    "modifies_chl_003": false,
+    "modifies_partsize": false,
+    "merge": false
+  },
+  "limitations": [
+    "planar XZ geometry and swept AABB/disc are not Unity colliders or vehicle PhysX",
+    "simple local steering can deadlock in labyrinth; blocked step returns zero",
+    "input self.drive and weapons numbers must come from actual mounted live game state",
+    "no real projectile, weapon cooldown, recoil, line-of-sight or collision authority",
+    "no explicit approval of new canonical gameplay package or owner-side handoff freeze"
+  ]
+}
