@@ -1,0 +1,70 @@
+{
+  "package_id": "B01-60-P17W09-HAZARDPULSE-RETARGETABLE-INDEPENDENT-RETEST",
+  "version": "1.0.0",
+  "owner": "B01-60",
+  "scope": "QA-only exact original source and candidate original C# execution",
+  "original": {
+    "producer": "B01-25",
+    "pr": 430,
+    "immutable_sha": "6095577ece27320b1a861a738cc23ba42d6793a6",
+    "original_pulse_core_git_blob": "a7a2c69c80d43bf027f2b00896df72f892fa1a17",
+    "known_defect": "10x0.1 vs 4x0.25 at nominal phase boundary 1s",
+    "producer_r2": {
+      "pr": 470,
+      "source_sha": "ebc3d6162f4516147092960291e50e15fe6c4582",
+      "path": "Research/B01-25/P17/HAZARDPULSE001R2/PulseCore.cs",
+      "git_blob": "42385a88a43a2d5854a00d74ac82e65075b8c56b",
+      "scope": "11 new B01-25 R2 paths only, unchanged R1 original"
+    }
+  },
+  "frozen_qa": {
+    "pr": 444,
+    "immutable_sha": "5dc838f3342083ebc78bbf8704053b996dac4a8a",
+    "test_program_git_blob": "e65ca6134e0730c1a91a7f98cc1da286f6ff08f6",
+    "old_expected": "9 PASS / 1 FAIL",
+    "candidate_expected": "10 PASS / 0 FAIL"
+  },
+  "new_qa": {
+    "matrix": "2 offsets * 8 legal frame partition patterns * 24 whole seconds = 384 phase checks + 16 activation authorization counts per tested source",
+    "original_expected": "SOURCE_RED_REPRODUCED",
+    "candidate_expected": "ZERO disagreements",
+    "verification": "immutable Git blob source copy generated only in test work dir, compiled actual C#9, two OS",
+    "candidate_requirements": "new distinct 40-character commit descended from original #430; only B01-25 Research package and B01-25 own workflow allowed changed paths"
+  },
+  "files": [
+    "Tools/B01/B01-60/P17W09/HazardPhaseReworkGate/BoundaryMatrix.cs",
+    "Tools/B01/B01-60/P17W09/HazardPhaseReworkGate/Matrix.csproj",
+    "Tools/B01/B01-60/P17W09/HazardPhaseReworkGate/FrozenW07.csproj",
+    "Tools/B01/B01-60/P17W09/HazardPhaseReworkGate/retarget.py",
+    "Tools/B01/B01-60/P17W09/HazardPhaseReworkGate/README.md",
+    "Tools/B01/B01-60/P17W09/HazardPhaseReworkGate/manifest.json",
+    ".github/workflows/b01-60-p17w09-hazard-phase-rework.yml"
+  ],
+  "gates": {
+    "G0_original": "INDEPENDENT_RED_REPRODUCED_9PASS_1FAIL_38_MISMATCHES",
+    "G0_candidate": "INDEPENDENT_SOURCE_GREEN_R2_10PASS_0FAIL_0_MISMATCHES",
+    "G1": "UNITY_NOT_RUN",
+    "G2": "HOLD",
+    "codex_ack": "PENDING",
+    "integrated": false,
+    "merged": false
+  },
+  "rollback": "Delete only B01-60 Tools/B01/B01-60/P17W09/HazardPhaseReworkGate and own CI workflow; never overwrite producer original #430, #444 frozen QA, or Codex sources.",
+  "evidence": {
+    "first_full_red_green_workflow": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41054076970",
+    "verified_first_QA_head": "a002f63519fd35d3c68105b78636137ee496e4e9",
+    "windows_baseline": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41054076970/artifacts/12976321764",
+    "ubuntu_baseline": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41054076970/artifacts/12976241790",
+    "windows_candidate": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41054076970/artifacts/12975143963",
+    "ubuntu_candidate": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41054076970/artifacts/12974824710",
+    "executed_jobs": 4,
+    "all_success": true,
+    "original_W07": "9_PASS_1_FAIL_each_OS",
+    "candidate_W07": "10_PASS_0_FAIL_each_OS",
+    "matrix_boundary_checks_each_source_each_OS": 384,
+    "baseline_mismatches": 38,
+    "candidate_mismatches": 0,
+    "pulse_checks_each_source_each_OS": 16,
+    "actual_unity": "NOT_RUN"
+  }
+}
