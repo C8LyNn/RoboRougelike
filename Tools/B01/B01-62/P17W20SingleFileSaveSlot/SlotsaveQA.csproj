@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+ <PropertyGroup>
+ <TargetFramework>net8.0</TargetFramework>
+ <OutputType>Exe</OutputType>
+ <Nullable>enable</Nullable>
+ <LangVersion>9.0</LangVersion>
+ <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+ <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+ </PropertyGroup>
+ <ItemGroup>
+ <Compile Include="SingleFileSaveSlot.cs" />
+ <Compile Include="OriginalFrozen/DetachedSnapshotContract.cs" />
+ <Compile Include="OriginalFrozen/DebrisImpulseCore.cs" />
+ <Compile Include="OriginalFrozen/SecureRigSpec.cs" />
+ <Compile Include="Program.cs" />
+ </ItemGroup>
+</Project>
