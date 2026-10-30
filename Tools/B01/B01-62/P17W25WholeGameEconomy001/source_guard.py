@@ -30,7 +30,7 @@ def main(out):
  actual=hashlib.sha1(b"blob "+str(len(raw)).encode()+b"\0"+raw).hexdigest()
  if actual!=PIN_ECON:raise AssertionError("NOT_ORIGINAL_UNMODIFIED_764_BINARY")
  expected={"Tools/B01/B01-62/P17W25WholeGameEconomy001/"+n for n in (
- "WholeGameEconomySlotV1.cs","Program.cs","WholeGameEconomyQA.csproj",
+ "WholeGameEconomySlotV1.cs","CanonicalWholeGameSessionV1.cs","Program.cs","WholeGameEconomyQA.csproj",
  "source_guard.py","manifest.json","README.md")}
  expected.add(".github/workflows/b01-62-w25-unified-economy-save.yml")
  if set(git("diff","--name-only",BASE,"HEAD").splitlines())!=expected:
@@ -52,6 +52,6 @@ def main(out):
   "native_G1":"NOT_RUN","frozen_modified":False,"integrated":False,"code_ACK":False}
  receiver.write_text(json.dumps(data,sort_keys=True,indent=2)+"\n")
  print("W25_WHOLE_GAME_ORIGINAL_PINNED_764_AND_556_729=PASS")
- print("W25_WHOLE_GAME_NEW_ONLY_GITHUB_SCOPE=7/7")
+ print("W25_WHOLE_GAME_NEW_ONLY_GITHUB_SCOPE=8/8")
  print("W25_WHOLE_GAME_SOURCE_RECEIPT_SHA256="+hashlib.sha256(receiver.read_bytes()).hexdigest())
 if __name__=="__main__":main(sys.argv[1])
