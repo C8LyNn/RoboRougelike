@@ -57,7 +57,7 @@ internal static class Independent750
            !first.IsConsumed(0,FrozenPartCatalog.Id(0))||
            first.IsConsumed(1,FrozenPartCatalog.Id(1)))return false;
         if(!first.TrySave(Run,()=>true,out byte[] saved)||
-           !SnapshotCodec.TryDecode(saved,out RunSnapshot snapshot)||
+           !SnapshotCodec.TryDecode(saved,out RunSnapshot? snapshot)||snapshot==null||
            snapshot.Generation!=5||snapshot.RunId!=Run||
            !ColdRestore.TryStage(saved,out ColdRestore? cold)||cold==null||
            !cold.ContainsConsumedId(0,FrozenPartCatalog.Id(0))||
