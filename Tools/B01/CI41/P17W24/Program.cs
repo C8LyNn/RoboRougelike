@@ -158,9 +158,11 @@ internal static class Program
         File.WriteAllText(start,"GO");
         Verify(a.WaitForExit(25000)&&b.WaitForExit(25000),
                "both independent CLR processes exited");
+        string sa=File.Exists(oa)?File.ReadAllText(oa):"MISSING_A";
+        string sb=File.Exists(ob)?File.ReadAllText(ob):"MISSING_B";
         Verify(a.ExitCode==0&&b.ExitCode==0,
-               "both original real session operations produced expected status");
-        string sa=File.ReadAllText(oa),sb=File.ReadAllText(ob);
+               "both original real sessions exit expected status: a="+a.ExitCode+
+               "/"+sa+" b="+b.ExitCode+"/"+sb);
         if(mustDeny)
             Verify(sa=="BUSY"&&sb=="BUSY",
                    "two external CLR processes denied by SAME original .owner FileShare.None");
