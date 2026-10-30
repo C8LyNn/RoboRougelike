@@ -1,0 +1,236 @@
+{
+  "packageId": "B01-10-GHOST-001",
+  "version": "13.0.0-P17W19-FOCUS_STOP_AT_END",
+  "role": "B01-10 GAME DESIGN & BALANCE",
+  "scope": "OPT_IN_CHL_TRAINING_GHOST",
+  "sourceBranch": "design/b01-10-p17w06-training-ghost",
+  "draftPR": "https://github.com/C8LyNn/RoboRougelike/pull/422",
+  "producer": "B01-10",
+  "owner": "B01-10",
+  "receiver": [
+    "B01-40 SOURCE_G0",
+    "B01-60 INDEPENDENT QA",
+    "B01-20 CHL-003 INTERFACE OWNER",
+    "B01-00 HQ",
+    "Codex after ACK only"
+  ],
+  "status": "R13_EXACT_SHA_SOURCE_CI_PENDING / SOURCE_G0_INDEPENDENT_PENDING / UNITY_G1_NOT_RUN / HOST_LIVE_SAVE_NOT_APPLICABLE / CODEX_ACK_NO / G2_HOLD",
+  "originality": "First independent CHL practice ghost: 3D pose recording, 0.1s sampling, shortest-arc yaw replay, four-gate split comparison, two-rig personal best, no game state writes. Not an encounter editor, RUNSCORE post-run score, official CHL timer, economics or shared Physics patch. R7 introduces optional largest-loss reference segment replay without modifying physical CHL course.",
+  "changedPaths": [
+    "Research/B01-10/P17Ghost/**",
+    ".github/workflows/b01-10-p17-ghost.yml"
+  ],
+  "codeFiles": {
+    "GhostCore.cs": {
+      "gitBlob": "d71ab96882ae323fc98995e187979ab25d4c18d2",
+      "chars": 15147
+    },
+    "GhostVisualProxy.cs": {
+      "gitBlob": "0a6ce37751a4f7893b07e9e9d27703606048c860",
+      "chars": 11138
+    },
+    "GhostSplitCoach.cs": {
+      "gitBlob": "6ea1f7492d52d56d5390fc4b1501985e58b6ddf0",
+      "chars": 24577
+    },
+    "GhostSplitHud.cs": {
+      "gitBlob": "7e5badbde8a19f9746fe0b5baee8b12ee92dfd5a",
+      "chars": 5362
+    },
+    "GhostCore.cs.meta": {
+      "gitBlob": "7c730f4002b69b4b4501f04b9eeb6aaf23af0371",
+      "chars": 240
+    },
+    "GhostVisualProxy.cs.meta": {
+      "gitBlob": "f4190a8badf10e98950cd59a140e8d6d742d72e3",
+      "chars": 240
+    },
+    "GhostSplitCoach.cs.meta": {
+      "gitBlob": "0770e380a87eba56cdf64f7dc8094c711c6445bd",
+      "chars": 240
+    },
+    "GhostSplitHud.cs.meta": {
+      "gitBlob": "41bc10a4c0fd400cc3704da8964b752fa8d4eaab",
+      "chars": 240
+    },
+    "B01TrainingGhost.meta": {
+      "gitBlob": "8c40264e679ae446d67c4fb79387e3f06df7431a",
+      "chars": 169
+    },
+    "Program.cs": {
+      "gitBlob": "6a96ee9ea9e0a1cba058fcc292334970259278b9",
+      "chars": 71963
+    },
+    "Ghost.Runner.csproj": {
+      "gitBlob": "bd9a53d96794ec1b1d34c3729ba0e985a30dc28c",
+      "chars": 345
+    },
+    "README.md": {
+      "gitBlob": "6f3e3725d32e33036f4673d06cef8e9a531e5819",
+      "chars": 50702
+    }
+  },
+  "workflow": {
+    "path": ".github/workflows/b01-10-p17-ghost.yml",
+    "gitBlob": "f0656e486191ab16b070cd468226c17603f682fc"
+  },
+  "tests": {
+    "tool": "dotnet 8.0 CSharp original source and test runner",
+    "namedCases": 215,
+    "syntheticRandomizedTraces": 100,
+    "workflowRun": "R13 exact-head original source CI PENDING; previous R12 193/193 Windows+Ubuntu is historical",
+    "windows": "R13 original C# 215 named tests PENDING",
+    "ubuntu": "R13 original C# 215 named tests PENDING",
+    "actualDemoJson": "R13 PENDING",
+    "nativeUnity": "NOT_RUN",
+    "UnityEditMode": "NOT_RUN",
+    "UnityPlayMode": "NOT_RUN",
+    "actualPhysicsLightHeavy": "NOT_RUN",
+    "independentQA": "PENDING",
+    "highFrequencySeeksInNamedCase61": 10000
+  },
+  "originalCHL": {
+    "issue": 91,
+    "owner": "B01-20",
+    "referencePR": 285,
+    "contract": "four ordered physical checkpoints, two real vehicle rigs (Light/Heavy), virtual ghost has no collider/control/physics",
+    "note": "Never hook or claim host timeline verified until owner independently approves adapter and actual native tests"
+  },
+  "gates": {
+    "producerNativeUnity": false,
+    "B0140G0": "PENDING",
+    "B0160QA": "PENDING",
+    "B0120Compat": "PENDING",
+    "B0100Approval": "PENDING",
+    "CodeXACK": "PENDING",
+    "noMerge": true
+  },
+  "install": "Copy GhostCore.cs to unique authorized Unity project Assets/B01TrainingGhost after B01-40/B01-60 acceptance; add new GUID/meta; opt-in adapter only in Codex/B01-20 authorized worktree; do not copy branch into game.",
+  "rollback": "Only delete fresh Assets/B01TrainingGhost folder + adjacent folder .meta and optional new standalone visual root; if an already present destination or GUID collision reject install, no game patches by producer",
+  "earlierProducerState": {
+    "priorPackage": "RUNSCORE001/R2",
+    "priorPR": 401,
+    "exactSHA": "7e27fb212dc6e0913b9f7e758d44072ccedbbf40",
+    "unchanged": true,
+    "priorOriginalSourceCSharp": "Windows 74/74 PASS; Ubuntu 74/74 PASS",
+    "priorPhysicalZip": "2d06e57607eb2df953084706175bf270026e1596445cc43fbf23d1f7c8a2dde5",
+    "independentAcceptance": "PENDING",
+    "CODEX_ACK": "PENDING"
+  },
+  "qualityPatch": "W19 R13: original portable loop true endpoint PoseAtOffset, GhostPracticeTransport Loop(default)/StopAtEnd one-shot auto pause/frame clamp and original native GhostVisualProxy OnGUI repeat toggle; 22 original real C# tests 194-215.",
+  "sourceCodeGhostBlob": "376389273fe6263ac8a2d0b0741bb7a8fe9ae298",
+  "fixtureDisclaimer": "The --demo Light and Heavy pose tracks are deterministic synthetic data, not actual Rigidbody/PhysX runs, manual play, or true native CHL-003 checkpoints.",
+  "exactNativeStatus": "NO UNITY EDIT / NO UNITY PLAY / NO PHYSX / NO GAME INTEGRATION",
+  "importLayout": {
+    "src": "Research/B01-10/P17Ghost/",
+    "unityRoot": "Assets/B01TrainingGhost/",
+    "uniqueFolder": "Assets/B01TrainingGhost.meta",
+    "files": [
+      "GhostCore.cs",
+      "GhostCore.cs.meta",
+      "GhostVisualProxy.cs",
+      "GhostVisualProxy.cs.meta",
+      "GhostSplitCoach.cs",
+      "GhostSplitCoach.cs.meta",
+      "GhostSplitHud.cs",
+      "GhostSplitHud.cs.meta"
+    ],
+    "GUIDS": {
+      "B01TrainingGhost.meta": "8d7f2b090c0d4ef3ab2436c855d0b104",
+      "GhostCore.cs.meta": "74f1111e2e76821101d5ee4b43683a33",
+      "GhostVisualProxy.cs.meta": "8e613294fbd6ad5dff7a0b23a5aa96e0",
+      "GhostSplitCoach.cs.meta": "7cf6f79b815d4778ab69d561811a6001",
+      "GhostSplitHud.cs.meta": "407311dc82d84a41baf4fe8f1ae028a6"
+    },
+    "needsLicensedUnityImport": true,
+    "nonColliderGhost": true,
+    "physicsOwner": "CHL003 B01-20",
+    "coachHostContract": "Actual B01-20 CHL controller alone validates actor/gate, actual physics time. Coach only observes and displays authorized accepted gate callbacks."
+  },
+  "actualNativeStatus": "NATIVE_EDIT_NOT_RUN / NATIVE_PLAY_NOT_RUN / RENDER_NOT_RUN / PHYSX_ZERO_COLLIDER_NOT_VERIFIED",
+  "originalGameCodeTouched": false,
+  "W08": {
+    "repair": "GitHub Actions literal escaped expression \\${{ matrix.os }} caused runners queued, fixed to real ${{ matrix.os }} and artifact placeholders",
+    "originalRunnerRed": [
+      "41038245459 QUEUED",
+      "41038238957 QUEUED"
+    ],
+    "originalRunnerGreen": "41045933045 SUCCESS Windows2025+Ubuntu24.04",
+    "producerCSharpActual": "62/62 PASS each OS; 100 synthetic seeded motion traces each; demo JSON PASS; invalid CLI exit2 PASS",
+    "zipSHA256": "0f796db7d7014be1c4a23da7c7af7188824caab271dbef1205154c3ede4ed526",
+    "zipTestHead": "e2af0bc5e23958c24846ae4015fdf5e18b2c3004 (historical W08 version, not W09)",
+    "members": 10,
+    "sourceFileCount": 2,
+    "unityMetaCount": 3,
+    "negativeTestCount": 6,
+    "negativeTestNames": [
+      "original_source_tamper",
+      "original_meta_GUID_drift",
+      "forged_Codex_ACK",
+      "forged_Unity_PASS",
+      "injected_Codex_game_path",
+      "missing_real_visual_source"
+    ],
+    "originalArtifactIds": {
+      "ubuntu": 12971839291,
+      "windows": 12972616543
+    },
+    "reproducibleBuilder": "pack_ghost.py",
+    "reproducibleBuilderGitBlob": "e923355eec1358fa9f616072b430298d5780d5d2",
+    "runnerExpressionRedToGreen": true,
+    "remainingBlockers": [
+      "Independent B01-40 G0",
+      "Independent B01-60 QA",
+      "B01-20 CHL owner interface",
+      "native Unity license and PlayMode/URP visual",
+      "actual Codex claim"
+    ]
+  },
+  "exactFinalHeadMustPassWorkflow": true,
+  "W09": {
+    "feature": "original opt-in per-gate benchmark practice coach & Unity OnGUI split display",
+    "portableSource": "GhostSplitCoach.cs",
+    "unityVisualSource": "GhostSplitHud.cs",
+    "caseRange": "63-82 inclusive, 20 new original compiled CSharp tests",
+    "sourceBlobCoach": "6db432e7be05847e2bb294f6503d8710df81fc0b",
+    "sourceBlobHud": "41f4e067f704a9814b4de8240010f1db3abbfe90",
+    "unmodifiedGhostBaseRuntimeBlob": "0eea61a784d59484f34968deeb4cd0c35bffeb4e",
+    "sourcePackBuilderGitBlob": "30212ba57b8f82e65ec1842ae92382560ae25241",
+    "physicalZipMembers": 14,
+    "unitySources": 4,
+    "unityMetas": 5,
+    "nativeUnity": "NOT_RUN",
+    "previousGreen": "e2af0bc5e23958c24846ae4015fdf5e18b2c3004 / 62 PASS Windows+Ubuntu / ZIP10; not proof of W09 changes",
+    "physicalZipSHA": "PENDING_FINAL_EXACT_HEAD_CI",
+    "previousOriginalSourceHead": "dbbafcd26f09df2f8c682b9b9f9515406c0f3132",
+    "previousOriginalRunner": "41053673382 BOTH Windows+Ubuntu 82/82 PASS; 14 ZIP member parity",
+    "previousZipSHA256": "2f5d754c411c4a537a68db582630b7c6d9299d9544da681ce0e29f8039be7e74"
+  },
+  "W10": {
+    "change": "W09 GhostSplitCoach.EndTrial ignored last checkpoint to finish; a player +5 sec slower there received false no-loss coaching. W10 measures final leg and tracks BiggestLossIsFinishSegment; HUD displays finish advice. Coach rejects zero-duration benchmark legs without changing generic GhostMath.Validate.",
+    "producer": "B01-10",
+    "filePaths": [
+      "GhostSplitCoach.cs",
+      "GhostSplitHud.cs",
+      "Program.cs",
+      "README.md",
+      "MANIFEST.json",
+      ".github/workflows/b01-10-p17-ghost.yml"
+    ],
+    "coachGitBlob": "6ac6e1cbb19aa850c67333417d1a2e78dac66d04",
+    "hudGitBlob": "6072d99d3130dc0ea93e22b495f65a115c675977",
+    "testsGitBlob": "cf23307c53801a5589ab1c114b24927dfbbb5fa8",
+    "newTestRange": "83..96",
+    "originalCSharpCases": 96,
+    "originalZipMembers": 14,
+    "originalImportScripts": 4,
+    "originalMetaGUIDs": 5,
+    "zipBuilderBlob": "30212ba57b8f82e65ec1842ae92382560ae25241",
+    "originalPhysicalZipSHA256": "PENDING_FINAL_EXACT_HEAD_CI",
+    "finalHeadCI": "PENDING_FINAL_EXACT_HEAD_CI",
+    "nativeUnity": "NOT_RUN",
+    "independentQA": "PENDING",
+    "CodexACK": "PENDING"
+  },
+  "currentPredecessorSHA": "94a06bafca7734fba2c2d6ff4849e1b9447a8485"
+}

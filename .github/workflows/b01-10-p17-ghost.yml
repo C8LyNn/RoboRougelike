@@ -1,0 +1,84 @@
+name: B01-10 W19 Original Training Ghost CSharp
+on:
+  push:
+    branches: [design/b01-10-p17w06-training-ghost]
+    paths:
+      - 'Research/B01-10/P17Ghost/**'
+      - '.github/workflows/b01-10-p17-ghost.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'Research/B01-10/P17Ghost/**'
+      - '.github/workflows/b01-10-p17-ghost.yml'
+permissions:
+  contents: read
+jobs:
+  original-compiled-ghost:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile original portable ghost recorder/playback CSharp (warnings errors)
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build Research/B01-10/P17Ghost/Ghost.Runner.csproj --configuration Release --nologo --warnaserror
+      - name: Actually execute 215 original CSharp positive/adverse tests + 100 synthetic traces
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --project Research/B01-10/P17Ghost/Ghost.Runner.csproj --configuration Release --no-build -- --test | tee "$RUNNER_TEMP/ghost-tests.log"
+          grep -F "B01-10 GHOST REAL_CSHARP 215 PASS / 0 FAIL" "$RUNNER_TEMP/ghost-tests.log"
+      - name: Run original executable two-rig demo JSON
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --project Research/B01-10/P17Ghost/Ghost.Runner.csproj --configuration Release --no-build -- --demo | tee "$RUNNER_TEMP/ghost-synthetic-demo.json"
+          grep -F '"Completed": true' "$RUNNER_TEMP/ghost-synthetic-demo.json"
+          grep -F '"SplitDeltaSeconds": [' "$RUNNER_TEMP/ghost-synthetic-demo.json"
+          grep -F '"notice": "SYNTHETIC EXAMPLE' "$RUNNER_TEMP/ghost-synthetic-demo.json"
+      - name: Invalid CLI refuses to claim PASS
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          dotnet run --project Research/B01-10/P17Ghost/Ghost.Runner.csproj --configuration Release --no-build -- --bad > "$RUNNER_TEMP/ghost-negative.log" 2>&1
+          result=$?
+          set -e
+          test "$result" -eq 2
+          grep -F "USAGE:" "$RUNNER_TEMP/ghost-negative.log"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Assemble and verify physical Unity6 Ghost archive, run six corruptions
+        shell: bash
+        env:
+          B01_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          python Research/B01-10/P17Ghost/pack_ghost.py pack --sha "$B01_SOURCE_SHA" --zip "$RUNNER_TEMP/B01-10_GHOST001_R13_UNITY_SOURCE.zip" --report "$RUNNER_TEMP/ghost-zip-pack.json"
+          python Research/B01-10/P17Ghost/pack_ghost.py verify --sha "$B01_SOURCE_SHA" --zip "$RUNNER_TEMP/B01-10_GHOST001_R13_UNITY_SOURCE.zip" --report "$RUNNER_TEMP/ghost-zip-verify.json"
+          python Research/B01-10/P17Ghost/pack_ghost.py negatives --sha "$B01_SOURCE_SHA" --zip "$RUNNER_TEMP/unused-negatives.zip" --report "$RUNNER_TEMP/ghost-zip-negatives.json"
+          grep -F '"pass": true' "$RUNNER_TEMP/ghost-zip-negatives.json"
+      - name: Upload real source-CSharp logs and two-rig synthetic demo
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b01-10-ghost-original-compiled-${{ matrix.os }}-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/ghost-tests.log
+            ${{ runner.temp }}/ghost-synthetic-demo.json
+            ${{ runner.temp }}/ghost-negative.log
+            ${{ runner.temp }}/B01-10_GHOST001_R13_UNITY_SOURCE.zip
+            ${{ runner.temp }}/ghost-zip-pack.json
+            ${{ runner.temp }}/ghost-zip-verify.json
+            ${{ runner.temp }}/ghost-zip-negatives.json
+          retention-days: 14
+          if-no-files-found: warn
