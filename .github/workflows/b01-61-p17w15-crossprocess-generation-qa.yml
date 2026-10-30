@@ -27,11 +27,23 @@ jobs:
         run: |
           set -euo pipefail
           dotnet run --project Tools/B01/B01-61/P17W15CrossProcessGenerationQA/CrossProcessGenerationQA.csproj -c Release | tee qa_test.log
+      - name: Execute exact frozen original atomic host bridge core with adversarial worlds
+        shell: bash
+        run: |
+          set -euo pipefail
+          git cat-file -e 'cf7f2a155570f99c412585d5f09f8f97f9e83754^{commit}' || git fetch --no-tags origin cf7f2a155570f99c412585d5f09f8f97f9e83754
+          mkdir -p dist/bridge
+          git show cf7f2a155570f99c412585d5f09f8f97f9e83754:Assets/B0123UnitySaveBridge001/Core/AtomicWorldSwap.cs > dist/bridge/AtomicWorldSwap.cs
+          git show cf7f2a155570f99c412585d5f09f8f97f9e83754:Assets/B0123UnitySaveBridge001/Unity/IsolatedTwinRigSaveHost.cs > dist/bridge/IsolatedTwinRigSaveHost.cs
+          test "$(git hash-object dist/bridge/AtomicWorldSwap.cs)" = "74e853601ecc7a5455d9bb466432ce7c027e0695"
+          test "$(git hash-object dist/bridge/IsolatedTwinRigSaveHost.cs)" = "94594b0b83514e9f2e1c5bb21ddef9f093b299fc"
+          dotnet build Tools/B01/B01-61/P17W15CrossProcessGenerationQA/WorldSwapSourceQA.csproj -c Release -p:BridgeSourcePath=../../../../dist/bridge/AtomicWorldSwap.cs --nologo
+          dotnet Tools/B01/B01-61/P17W15CrossProcessGenerationQA/bin/Release/net8.0/WorldSwapSourceQA.dll | tee qa_bridge.log
       - name: Verify selected immutable blobs and produce exact SHA evidence
         shell: bash
         run: |
           set -euo pipefail
-          python Tools/B01/B01-61/P17W15CrossProcessGenerationQA/receipt.py --log qa_test.log --out dist/b01-61-w15-generation-qa.json
+          python Tools/B01/B01-61/P17W15CrossProcessGenerationQA/receipt.py --log qa_test.log --bridge-log qa_bridge.log --bridge-dir dist/bridge --out dist/b01-61-w15-generation-qa.json
       - name: Upload actual separate-process output and provenance
         if: always()
         uses: actions/upload-artifact@v4
@@ -39,5 +51,6 @@ jobs:
           name: b01-61-w15-generation-${{ matrix.os }}
           path: |
             qa_test.log
+            qa_bridge.log
             dist/b01-61-w15-generation-qa.json
           if-no-files-found: warn
