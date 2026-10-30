@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+<PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><LangVersion>9.0</LangVersion><Nullable>enable</Nullable><TreatWarningsAsErrors>true</TreatWarningsAsErrors><EnableDefaultCompileItems>false</EnableDefaultCompileItems><DefineConstants>OLD</DefineConstants></PropertyGroup>
+<ItemGroup><Compile Include="Program.cs"/>
+<Compile Include=".original/CanonicalSlotCommitAdapterV1.cs"/>
+<Compile Include=".original/CanonicalWorldGatewayV2.cs"/>
+<Compile Include=".original/SingleFileSaveSlot.cs"/>
+<Compile Include=".original/DetachedSnapshotContract.cs"/>
+<Compile Include=".original/DebrisImpulseCore.cs"/>
+<Compile Include=".original/SecureRigSpec.cs"/>
+</ItemGroup></Project>
