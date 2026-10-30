@@ -1,0 +1,31 @@
+{
+  "scenario": "siege-cache",
+  "requests": [
+    "EK08",
+    "EK02"
+  ],
+  "owned_parts": [
+    {
+      "kind": "CrawlerTrack",
+      "count": 2
+    },
+    {
+      "kind": "Gun",
+      "weapon": "RocketLauncher",
+      "count": 1
+    },
+    {
+      "kind": "Gun",
+      "weapon": "Heavy",
+      "count": 1
+    },
+    {
+      "kind": "Gyroscope",
+      "count": 1
+    },
+    {
+      "kind": "DirectionalShield",
+      "count": 1
+    }
+  ]
+}

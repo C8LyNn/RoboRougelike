@@ -1,0 +1,21 @@
+{
+  "scenario": "starter-cache",
+  "requests": [
+    "EK01",
+    "EK01"
+  ],
+  "owned_parts": [
+    {
+      "kind": "Wheel",
+      "count": 2
+    },
+    {
+      "kind": "Suspension",
+      "count": 2
+    },
+    {
+      "kind": "Gyroscope",
+      "count": 1
+    }
+  ]
+}
