@@ -155,7 +155,7 @@ internal static class IndependentDebrisLawQA
         Test("EIGHT_COINCIDENT_CENTER_STABLE_FALLBACKS",()=>{
             for(long id=1;id<=64;id++)
             {
-                var a=new DebrisImpulseLedger(),b=new DebrisImpulseLedger();
+                DebrisImpulseLedger a=new DebrisImpulseLedger(),b=new DebrisImpulseLedger();
                 Check(Detach(a,id,Zero,Zero,Zero,2,2,4,out Vector3d first),"fallback A");
                 Check(Detach(b,id,Zero,Zero,Zero,2,2,4,out Vector3d second),"fallback B");
                 Close(Norm(first),4,"fallback magnitude");

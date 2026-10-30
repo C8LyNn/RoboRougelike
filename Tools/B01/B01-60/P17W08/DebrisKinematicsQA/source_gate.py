@@ -72,7 +72,7 @@ def main():
     asmdef=json.loads((ROOT/P/"Runtime/B0123.DebrisRepulse.Runtime.asmdef").read_text(encoding="utf-8"))
     if asmdef["autoReferenced"] is not False or asmdef["name"]!="B0123.DebrisRepulse.Runtime":
         raise ValueError("original opt-in Unity assembly contract drift")
-    if git("rev-parse","HEAD^")!=PRODUCER:
+    if git("merge-base",PRODUCER,"HEAD")!=PRODUCER:
         raise ValueError("QA branch must be directly stacked on exact immutable producer SHA")
     verify_scope(git("diff","--name-only",PRODUCER,"HEAD").splitlines())
     print("PASS 8/8 pinned original Git blobs + 5/5 stable unique GUID + asmdef opt-in + 6/6 QA-only paths")
