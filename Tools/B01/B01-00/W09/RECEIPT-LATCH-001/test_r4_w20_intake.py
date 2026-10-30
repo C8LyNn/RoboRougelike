@@ -22,8 +22,9 @@ class W20Admission(unittest.TestCase):
     def test_base_policy_not_promoted(self):
         result=check(load())
         self.assertEqual(result["verdict"],
-            "HOLD_R4_EXCLUSIVE_OWNER_DECISION_AND_NATIVE_API")
-        self.assertIsNone(result["r4_final_sha"])
+            "HOLD_SELECTED_647_FORMAL_G0_AND_NATIVE_API")
+        self.assertEqual(result["r4_final_sha"],
+            "09c1809b73324a6d31c13e5d0143de62ac1e3ca6")
         self.assertEqual(result["r4_candidates"],[647,652])
 
     def test_real_647_independent_qa_scoped(self):
@@ -278,7 +279,7 @@ class W20Admission(unittest.TestCase):
             self.assertEqual(main([str(FIXTURE)]),0)
         actual=json.loads(buffer.getvalue())
         self.assertEqual(actual["verdict"],
-                         "HOLD_R4_EXCLUSIVE_OWNER_DECISION_AND_NATIVE_API")
+                         "HOLD_SELECTED_647_FORMAL_G0_AND_NATIVE_API")
         self.assertEqual(len(actual["input_sha256"]),64)
 
     def test_cli_require_release_exit3(self):
@@ -303,7 +304,7 @@ class W20Admission(unittest.TestCase):
             with redirect_stderr(io.StringIO()):
                 self.assertEqual(main([str(FIXTURE),"--output",str(output)]),0)
                 self.assertEqual(main([str(FIXTURE),"--output",str(output)]),2)
-            self.assertIsNone(json.loads(output.read_text())["r4_final_pr"])
+            self.assertEqual(json.loads(output.read_text())["r4_final_pr"],647)
 
     def test_cli_invalid_json_fails(self):
         with tempfile.TemporaryDirectory() as tmp:
