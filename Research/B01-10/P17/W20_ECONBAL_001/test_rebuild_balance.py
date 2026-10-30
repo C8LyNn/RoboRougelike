@@ -873,11 +873,11 @@ class RebuildModelTests(unittest.TestCase):
                                  price=2,cash=1))
         self.assertEqual((x["quote"],x["charged_scrap"]), (1,1))
 
-    def test_128_owner_approved_price_three_halfup_two(self):
+    def test_128_owner_approved_price_three_floor_one(self):
         from rebuild_balance import run_approved_plan
         x=run_approved_plan(plan([attempt("v",True,(part("a"),part("b")))],
-                                 price=3,cash=2))
-        self.assertEqual((x["quote"],x["charged_scrap"]), (2,2))
+                                 price=3,cash=1))
+        self.assertEqual((x["quote"],x["charged_scrap"]), (1,1))
 
     def test_129_zero_paid_ticket_never_mislabeled_free_when_terminal(self):
         from rebuild_balance import run_approved_plan
@@ -902,7 +902,7 @@ class RebuildModelTests(unittest.TestCase):
                 self.assertGreaterEqual(x["quote"],0)
                 self.assertLess(x["quote"],price)
                 self.assertEqual(x["quote"],
-                                 min((price*65+50)//100,price-1))
+                                 price*65//100)
 
     def test_132_approved_duplicate_win_id_fails_preflight(self):
         from rebuild_balance import run_approved_plan
@@ -1019,9 +1019,9 @@ class RebuildModelTests(unittest.TestCase):
         self.assertEqual((x["quote"],x["paid"],x["free"]),(0,1,1))
 
 
-    def test_146_v6_explicit_halfup_5_15_30_100_parity(self):
+    def test_146_v7_floor_5_15_30_100_parity(self):
         from rebuild_balance import run_approved_plan
-        for purchase,expected in [(5,3),(15,10),(30,20),(100,65)]:
+        for purchase,expected in [(5,3),(15,9),(30,19),(100,65)]:
             with self.subTest(purchase=purchase):
                 x=run_approved_plan(plan([attempt("win",True,
                      (part("a"),part("b")))],cash=1000,price=purchase))
@@ -1039,13 +1039,13 @@ class RebuildModelTests(unittest.TestCase):
         self.assertEqual(x["quote_rounding"],"floor")
         self.assertEqual(x["quote"],9)
 
-    def test_149_approved_always_selects_halfup_clamp_not_old_floor(self):
+    def test_149_approved_now_uses_owner_v7_floor(self):
         from rebuild_balance import run_approved_plan
         x=run_approved_plan(plan([attempt("v",True,(part("a"),part("b")))],
                                      cash=100,price=15))
-        self.assertEqual(x["quote_rounding"],"nearest_half_up_clamped")
-        self.assertEqual(x["quote"],10)
-        self.assertIn("PROPOSED_V6",x["quote_policy_proposal"])
+        self.assertEqual(x["quote_rounding"],"floor")
+        self.assertEqual(x["quote"],9)
+        self.assertIn("V7_PR780",x["quote_authority_reference"])
 
     def test_150_invalid_unknown_rounding_rejected(self):
         p=plan([attempt("v",True)])
@@ -1074,7 +1074,7 @@ class RebuildModelTests(unittest.TestCase):
             p=plan([attempt("v",True,(part("a"),part("b")))],
                    cash=1000,price=15,percent=pct)
             x=run_approved_plan(p)
-            self.assertEqual(x["quote"],10)
+            self.assertEqual(x["quote"],9)
 
     def test_154_quote_one_scarp_five_consumes_paid_order_not_free(self):
         from rebuild_balance import run_approved_plan
@@ -1118,17 +1118,13 @@ class RebuildModelTests(unittest.TestCase):
         self.assertEqual(x["quote"],0)
         self.assertNotIn("game_merged",x)
 
-    def test_160_original_v6_halfup_only_incompatible_on_strict_price_one(self):
+    def test_160_owner_v7_floor_is_single_accepted_design_quote(self):
         from rebuild_balance import run_approved_plan
         for price in (1,5,15,30,100):
-            expected_nearest=(price*65+50)//100
-            expected_clamped=min(expected_nearest,price-1)
+            expected_floor=price*65//100
             x=run_approved_plan(plan([attempt("v")],price=price))
-            self.assertEqual(x["quote"],expected_clamped)
-            if price==1:
-                self.assertNotEqual(expected_nearest,expected_clamped)
-            else:
-                self.assertEqual(expected_nearest,expected_clamped)
+            self.assertEqual(x["quote"],expected_floor)
+            self.assertLess(expected_floor,price)
 
 
 if __name__ == "__main__":
