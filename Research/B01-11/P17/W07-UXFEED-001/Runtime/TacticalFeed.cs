@@ -56,6 +56,9 @@ namespace B01.UXFeed
         readonly int _capacity;
         readonly int _visibleSlots;
         readonly List<TacticalItem> _history=new List<TacticalItem>();
+        // Active critical HUD alerts must outlive chronological history eviction.
+        // Bound this independent queue by visibleSlots (<=6), not by history capacity.
+        readonly List<TacticalItem> _criticalVisible=new List<TacticalItem>();
         int _runId;
         long _nowMs;
         long _lastSequence;
@@ -74,7 +77,7 @@ namespace B01.UXFeed
         public void StartNewRun(int runId)
         {
             if(runId<=_runId)throw new ArgumentOutOfRangeException("runId");
-            _history.Clear();_runId=runId;_nowMs=0;_lastSequence=0;
+            _history.Clear();_criticalVisible.Clear();_runId=runId;_nowMs=0;_lastSequence=0;
         }
         public void AdvanceTo(long nowMs)
         {
@@ -105,8 +108,14 @@ namespace B01.UXFeed
                 _lastSequence=x.Sequence;_nowMs=x.TimeMs;
                 return RecordOutcome.Coalesced;
             }
-            _history.Add(new TacticalItem(x,priority));
+            var item=new TacticalItem(x,priority);
+            _history.Add(item);
             if(_history.Count>_capacity)_history.RemoveAt(0);
+            if(priority==TacticalPriority.Critical)
+            {
+                _criticalVisible.Add(item);
+                if(_criticalVisible.Count>_visibleSlots)_criticalVisible.RemoveAt(0);
+            }
             _lastSequence=x.Sequence;_nowMs=x.TimeMs;
             return RecordOutcome.Accepted;
         }
@@ -120,12 +129,22 @@ namespace B01.UXFeed
         public TacticalItem[] Visible(bool includeNormal=true)
         {
             var candidates=new List<TacticalItem>();
-            foreach(var item in _history)
+            // Critical alerts are transient UI state, not dependent on history survival.
+            foreach(var item in _criticalVisible)
             {
-                if(!includeNormal && item.Priority!=TacticalPriority.Critical)continue;
-                var ttl=item.Priority==TacticalPriority.Critical?CriticalTtlMs:NormalTtlMs;
-                long expires=item.LastTimeMs>long.MaxValue-ttl?long.MaxValue:item.LastTimeMs+ttl;
+                long expires=item.LastTimeMs>long.MaxValue-CriticalTtlMs
+                    ?long.MaxValue:item.LastTimeMs+CriticalTtlMs;
                 if(_nowMs<expires)candidates.Add(item);
+            }
+            if(includeNormal)
+            {
+                foreach(var item in _history)
+                {
+                    if(item.Priority!=TacticalPriority.Normal)continue;
+                    long expires=item.LastTimeMs>long.MaxValue-NormalTtlMs
+                        ?long.MaxValue:item.LastTimeMs+NormalTtlMs;
+                    if(_nowMs<expires)candidates.Add(item);
+                }
             }
             candidates.Sort((a,b)=>
             {
