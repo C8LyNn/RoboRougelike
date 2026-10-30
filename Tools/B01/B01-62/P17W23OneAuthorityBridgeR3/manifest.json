@@ -27,7 +27,8 @@
     "Tools/B01/B01-62/P17W23OneAuthorityBridgeR3/source_guard.py",
     "Tools/B01/B01-62/P17W23OneAuthorityBridgeR3/README.md",
     "Tools/B01/B01-62/P17W23OneAuthorityBridgeR3/manifest.json",
-    ".github/workflows/b01-62-p17w23-one-v3-authority.yml"
+    ".github/workflows/b01-62-p17w23-one-v3-authority.yml",
+    "Tools/B01/B01-62/P17W23OneAuthorityBridgeR3/g0_intake.py"
   ],
   "native": "NOT_RUN",
   "private_510_live": "NOT_IMPLEMENTED",
@@ -41,5 +42,14 @@
     "ready_for_integrator": false,
     "integrated": false,
     "released": false
+  },
+  "source_g0": {
+    "selected_R5_pr": 690,
+    "selected_V3_pr": 729,
+    "expected_combined_guids": 39,
+    "original_author_packagers_both_executed": true,
+    "root_manifest_collision": "must preserve separately",
+    "formal_b01_40": "PENDING",
+    "native_unity": "NOT_RUN"
   }
 }
