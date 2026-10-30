@@ -1,0 +1,33 @@
+name: B01-23 W24 original #510 physical Unity stage source
+on:
+  push:
+    branches: [b01-23/p17w24-frozen510-physical-rig-world-port-v1]
+  pull_request:
+    paths:
+      - 'Assets/B0123CanonicalRigPortW24/**'
+      - 'Tools/B01/B01-23/P17W24CanonicalPhysicalRigPort001/**'
+      - '.github/workflows/b01-23-p17w24-physical510-port.yml'
+jobs:
+  original-source:
+    strategy:
+      fail-fast: false
+      matrix: {os: [windows-2025, ubuntu-24.04]}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Real selected frozen #510 atomic ledger and #556/W06 consumed IDs C#9
+        run: dotnet run --project Tools/B01/B01-23/P17W24CanonicalPhysicalRigPort001/Original510PhysicalPortTests.csproj -c Release
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: True original Git source and Unity 9 GUID + safe migration negatives
+        run: python -m unittest discover -s Tools/B01/B01-23/P17W24CanonicalPhysicalRigPort001 -p test_package.py -v
+      - name: Original deterministic source physical ZIP
+        run: python Tools/B01/B01-23/P17W24CanonicalPhysicalRigPort001/package.py build dist/B0123_W24_Physical_Rig_Source.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-23-w24-physical-rig-${{ matrix.os }}
+          path: dist/B0123_W24_Physical_Rig_Source.zip
+          if-no-files-found: error
