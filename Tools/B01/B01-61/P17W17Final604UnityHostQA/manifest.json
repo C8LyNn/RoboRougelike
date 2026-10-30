@@ -1,0 +1,15 @@
+{
+  "id": "B01-61-W17-EXACT604-ORIGINAL-UNITY-HOST-BOUNDARY-001",
+  "qa_version": "1.0.0",
+  "producer_pr": 604,
+  "producer_sha": "1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a",
+  "original_unity_host_blob": "5012e98bba786c6b9702992c317586a0015678c1",
+  "original_core_blob": "399d3cb2074a2659af8f4e941edb28a3d2dd2832",
+  "original_fence_blob": "53f907125b09531ebdf5ffdfbb9c5c9b48eca217",
+  "game_frozen": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "save_frozen": "33094f154c7b91119b36d58aab285e6e83c5de57",
+  "managed_unity_api_stub": true,
+  "native_unity": "NOT_RUN",
+  "canonical_save": "HOLD",
+  "merge": false
+}
