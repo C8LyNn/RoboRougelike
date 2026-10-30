@@ -206,7 +206,7 @@ def execute(repo,output):
               "game_510_sha":FROZEN_GAME,"save_556_sha":FROZEN_SAVE,
               "inner_zip_sha256":sha(raw),"inner_zip_bytes":len(raw),"inner_members":len(names),
               "original_b01_23_source_files":len(paths),
-              "guid_counts":{"selected_642":len(selected),"frozen_510":len(game),"frozen_556":len(save),"frozen_W06":len(w06),
+              "guid_counts":{"selected_647":len(selected),"frozen_510":len(game),"frozen_556":len(save),"frozen_W06":len(w06),
                  "all_dependency_guids_unique":len(set(selected)|set(game)|set(save)|set(w06))},
               "selected_asmdefs":sorted(asmdefs),
               "tests_pass":checks,"source_physical_gate":"PASS",
