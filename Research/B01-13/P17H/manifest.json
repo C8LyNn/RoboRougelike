@@ -1,0 +1,77 @@
+{
+  "package_id": "MOTION-STALL-001",
+  "version": "R1",
+  "owner": "B01-13 HUMAN PLAYTESTING",
+  "source_branch": "research/b01-13-pass17-wave10-motion-stall",
+  "base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "exclusive_paths": [
+    "Research/B01-13/P17H/**",
+    ".github/workflows/b01-13-p17w10-motion-stall.yml"
+  ],
+  "files": {
+    "UnityPackage/Runtime/MotionStallLedger.cs": {
+      "sha256": "c391dfebd24621da9a2c23bbc722973b81258da2e490cc314cb4ebaccc5fce99",
+      "bytes": 4658
+    },
+    "UnityPackage/Runtime/MotionStallOverlay.cs": {
+      "sha256": "ae23c4a90dd60b12df06f25083bf15b1b5e5faec7b5d7052e624696dd1b045b5",
+      "bytes": 3778
+    },
+    "UnityPackage/Runtime/MotionStallLedger.cs.meta": {
+      "sha256": "4ec4facaa682c9452a71c498af79113799ee1e5ca94a7231005607a9b15425d7",
+      "bytes": 240
+    },
+    "UnityPackage/Runtime/MotionStallOverlay.cs.meta": {
+      "sha256": "58232b2de66f5c3c757022d90a26aa320aec211d20e009844d3549384de33306",
+      "bytes": 240
+    },
+    "UnityPackage/Prefabs/B01_13_MotionStall_Optional.prefab": {
+      "sha256": "4b187105c5d6bd5c65a936b938fa3874326f434b2c4ecf8eb7c365f7b7272d09",
+      "bytes": 1363
+    },
+    "UnityPackage/Prefabs/B01_13_MotionStall_Optional.prefab.meta": {
+      "sha256": "6b430286f95d9b56eb6043223be35f824d1c3b9462d652bd020e54b4f2bbbf63",
+      "bytes": 151
+    },
+    "Tests/DotNetOnly/Program.cs": {
+      "sha256": "d96c6f98385639c0f0b24f78d55e9bdb2f26f3b588674a6394fcb8b4d4fcea91",
+      "bytes": 12525
+    },
+    "Tests/DotNetOnly/UnityStubs.cs": {
+      "sha256": "2b1719ae8fd49637b194d37c5847399bc6a28291ee6f52357821f166eb21d45a",
+      "bytes": 2221
+    },
+    "Tests/DotNetOnly/MotionStallTests.csproj": {
+      "sha256": "686ff30e60d2f88f438bdbbb2dcab263c2afe251d4c478e0124b745b335ab3c7",
+      "bytes": 625
+    },
+    "verify_package.py": {
+      "sha256": "cd8545c9b67771dec325ce7b5c21fd042cfb7a775dd0c12a8ba976316b128157",
+      "bytes": 2890
+    },
+    "README.md": {
+      "sha256": "ae937c059b3ce6a62e9d32b57fb85764f117bba26360dfe928225e5c3aaa373d",
+      "bytes": 4538
+    },
+    "../../../.github/workflows/b01-13-p17w10-motion-stall.yml": {
+      "sha256": "bad55c692bb1df52f3dd9e00b69384a7f37de9d179f53ab92baeb0f17e25be97",
+      "bytes": 1719
+    }
+  },
+  "dependencies": "Unity 6 URP / read-only Transform and Old or Both Input Manager; test-only .NET8 UnityEngine mocks; assign observedVehicle in authorized isolated scene",
+  "features": [
+    "W/S held planar XZ no-motion >2 seconds under 0.1 m/s => suspected stall event once",
+    "moving after suspected stall => recovery event",
+    "sample gap >0.5 seconds or teleport >50 meters cancels without false stall/recovery",
+    "input release cancels current detection streak",
+    "no game-state or persistent data changes"
+  ],
+  "qa": {
+    "planned_original_dotnet_source_tests": 56,
+    "producer_ci": "AWAITING",
+    "independent_b01_40_b01_60": "PENDING",
+    "native_unity_editmode_playmode": "NOT_RUN",
+    "human_participants": 0
+  },
+  "rollback": "Leave Draft unmerged; discard isolated branch and any authorized test scene prefab/import directory. Frozen B01-13 previous packages unchanged."
+}
