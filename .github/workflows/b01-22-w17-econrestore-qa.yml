@@ -22,6 +22,10 @@ jobs:
           test "$(git hash-object Assets/B01Packages/ECONREBUILD001/Runtime/RebuildQueueService.cs)" = "cac95b28647528a7a46cb818c6d78037dc3e80a2"
           test "$(git rev-parse HEAD:Assets/B01Packages/ECONREBUILD001/Runtime/RebuildQueueService.cs)" = "cac95b28647528a7a46cb818c6d78037dc3e80a2"
           test "$(git hash-object Tools/B01/ECONREBUILD001/tests/UnityJsonShim.cs)" = "2189c750566d692361702268580a93d3b660536f"
+      - name: Verify the isolated QA package manifest before compiling original source
+        shell: bash
+        run: |
+          python -c 'import json; a=json.load(open("Research/B01-22/P17/ECONREBUILD-W17-QA/manifest.json")); assert a["original_producer"]["commit"]=="12572117a3dce369257feabc57021cde58023369"; assert a["original_producer"]["blob_sha1"]=="cac95b28647528a7a46cb818c6d78037dc3e80a2"; assert a["verdict"]["native_unity"]=="NOT_RUN"; assert len(a["owned_paths"])==5'
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x

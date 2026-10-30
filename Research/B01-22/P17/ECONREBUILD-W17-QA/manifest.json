@@ -1,0 +1,66 @@
+{
+  "schema": "b01-22-source-qa-package-manifest-v1",
+  "package_id": "B01-22-ECONREBUILD-RESTORE-QA-001",
+  "version": "1.1.0-W18",
+  "owner": "B01-22",
+  "scope": "isolated source-only original frozen ECON replay and durability QA",
+  "original_producer": {
+    "pr": 252,
+    "commit": "12572117a3dce369257feabc57021cde58023369",
+    "path": "Assets/B01Packages/ECONREBUILD001/Runtime/RebuildQueueService.cs",
+    "blob_sha1": "cac95b28647528a7a46cb818c6d78037dc3e80a2"
+  },
+  "original_test_shim": {
+    "path": "Tools/B01/ECONREBUILD001/tests/UnityJsonShim.cs",
+    "blob_sha1": "2189c750566d692361702268580a93d3b660536f"
+  },
+  "owned_paths": [
+    "Research/B01-22/P17/ECONREBUILD-W17-QA/Program.cs",
+    "Research/B01-22/P17/ECONREBUILD-W17-QA/Witness.csproj",
+    "Research/B01-22/P17/ECONREBUILD-W17-QA/README.md",
+    "Research/B01-22/P17/ECONREBUILD-W17-QA/manifest.json",
+    ".github/workflows/b01-22-w17-econrestore-qa.yml"
+  ],
+  "execution": {
+    "runner_matrix": [
+      "ubuntu-24.04",
+      "windows-2025"
+    ],
+    "original_compiler": "dotnet 8.0",
+    "modes": [
+      "original same-process current checkpoint control",
+      "original same-process stale checkpoint replay",
+      "two fresh OS processes for physical checkpoint write/reload",
+      "valid current checkpoint rejects already consumed event ID",
+      "older checkpoint permits same event ID after process restart"
+    ],
+    "artifacts": [
+      "econrestore-w17-witness.json",
+      "econrestore-w18-source-state.json",
+      "econrestore-w18-cross-process-qa.json"
+    ]
+  },
+  "verdict": {
+    "qa_detector": "PASS_if_reproduced",
+    "frozen_source_release": "RED/HOLD_if_reproduced",
+    "native_unity": "NOT_RUN",
+    "live_game_host": "NOT_ASSESSED",
+    "g0": "NOT_INDEPENDENTLY_ACCEPTED",
+    "g2": "HOLD"
+  },
+  "dependencies": [
+    "frozen original ECONREBUILD #252 source",
+    "producer-original declared .NET surrogate (NOT actual Unity)"
+  ],
+  "rollback": "No install or mutation in game. Test-only QA files can be abandoned by closing PR; never recursively delete occupied receivers.",
+  "conflicts": [
+    "Do not edit #252/#263 frozen source",
+    "Do not edit #510/#556/#596 frozen sources or #604 ALT_HOLD",
+    "Do not edit Codex game source or protected branches"
+  ],
+  "receiver": [
+    "B01-00 owner / Codex for source-risk review",
+    "B01-40 independent physical QA",
+    "B01-60 independent native-only QA when available"
+  ]
+}

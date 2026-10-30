@@ -32,3 +32,7 @@ are untouched. Native Unity / PhysX NOT_RUN. No merge / no G2.
 ## PASS17 W18 — original two-process durable event-ID regression
 
 The original linked frozen #252 C# now has two additional executable QA modes: make a real pre-win and post-win source checkpoint and serialize a physical authoritative host snapshot to a local test JSON file; execute a NEW OS process to reconstruct that host and service from those bytes. A current checkpoint must reject replay of its consumed victory ID; the older structurally valid checkpoint is then accepted and the same ID replayed. CI executes two separate dotnet runs and records both source-state and process-boundary evidence on Windows and Ubuntu. Detector PASS means original source RELEASE RED/HOLD, not a successful release; tested host is a labeled surrogate, not canonical Unity/R3 or PhysX. No modifications to frozen packages and no integration claim.
+
+## Machine-readable producer/QA ownership
+
+`manifest.json` declares the QA package ID/version, all five and only five owned paths, both frozen Git blob identities and the original producer SHA, actual two-OS executable cases, explicit release RED/NATIVE_NOT_RUN semantics and a non-destructive no-install rollback. CI validates the manifest before running the compiled source; the original producer blobs remain checked against on-disk and HEAD Git object identities. No QA package file is for installation into canonical Unity.
