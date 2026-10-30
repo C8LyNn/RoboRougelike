@@ -67,7 +67,7 @@ static class W16 {
      "original #596 creates actual selected #556 Save bytes");
    string file=Path.Combine(dir,"world.save");File.WriteAllBytes(file,data!);
    var saved=File.ReadAllBytes(file);
-   Check(data.SequenceEqual(saved),"real OS Save and read preserve original file bytes");
+   Check(data!.SequenceEqual(saved),"real OS Save and read preserve original file bytes");
    Check(SnapshotCodec.TryDecode(saved,out RunSnapshot? snap)&&snap!=null&&snap.Generation==5,
      "original #556 codec uses freshly advanced generation");
    var cold=new AtomicWorldSwap(new Factory(),new FileCheckpointStore(sidecar));
