@@ -1,0 +1,49 @@
+{
+  "package": "B01-62-P17W22-R5-API2-COMBINED-G0-SOURCE-001",
+  "wave": "P17-W22",
+  "version": "1.0.0",
+  "owner": "B01-62",
+  "selected_host_r5_pr": 690,
+  "selected_host_r5_sha": "cc7f73541517a18f4479bb155534bd4832d9985e",
+  "r5_alt_hold": 693,
+  "selected_api_v1_pr": 681,
+  "selected_api_v2_pr": 691,
+  "selected_api_v2_sha": "809f82575c638e1b4d2806b5f417bddab6c0871a",
+  "api_alt_hold": [
+    682,
+    695
+  ],
+  "storage_pr": 669,
+  "session_r2_pr": 712,
+  "canonical_game_frozen": 510,
+  "canonical_wire_frozen": 556,
+  "files": [
+    "Tools/B01/B01-62/P17W22CombinedSourceG0/combined_g0.py",
+    "Tools/B01/B01-62/P17W22CombinedSourceG0/README.md",
+    "Tools/B01/B01-62/P17W22CombinedSourceG0/manifest.json",
+    ".github/workflows/b01-62-p17w22-r5-api-combined-g0.yml"
+  ],
+  "source_pins": {
+    "R5_inner_zip_sha256": "a37e942d6a0cc5236570edaf7cba49384a84d0553f88fb29988a855d692a1496",
+    "R5_inner_zip_bytes": 129088,
+    "R5_inner_members": 27,
+    "API2_inner_zip_sha256": "90198e6429d912a40e4e2df3935281627282f14799c4f34479439af150f5bccd",
+    "API2_inner_zip_bytes": 61736,
+    "API2_inner_members": 15,
+    "combined_unity_guid_count": 38
+  },
+  "source_gate": "PENDING_ACTUAL_CI",
+  "host_game_security_gate": "HOLD",
+  "native_g1": "NOT_RUN",
+  "private_510_game_adapter": "NOT_IMPLEMENTED",
+  "installer_acceptance": false,
+  "merge": false,
+  "codex_ack": false,
+  "receivers": [
+    "B01-40 source G0 and safe source migration",
+    "B01-61/41 native-independent R5 and R2 lifetime QA",
+    "B01-23/20 concrete private #510 API",
+    "B01-60 operator Windows G1",
+    "B01-00 authorized future Codex"
+  ]
+}
