@@ -1,0 +1,52 @@
+name: B01-60 W11 V2 original actual CommitDock source transaction RED reproducer (NOT UNITY)
+on:
+  push:
+    branches: [qa/b01-60-p17w11-secure-v2-real-commit-atomicity]
+    paths:
+      - 'Tools/B01/B01-60/P17W11/V2CommitAtomicityQA/**'
+      - '.github/workflows/b01-60-p17w11-v2-commit-atomicity.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-60/P17W11/V2CommitAtomicityQA/**'
+      - '.github/workflows/b01-60-p17w11-v2-commit-atomicity.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-original-CSharp9-transaction-red:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch immutable producer V2 and W06 parent Git source objects
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin cb2b3a76e84266e2730fffc4ab048c1039f0652f
+          git fetch --no-tags origin 33a32b8bd9ab40467ab1a17b5684926a37dbd4d3
+      - name: Compile original V2 private CommitDock body and original W06 ledger, actually execute all 3 aliases
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p qa-w11-v2-commit-evidence
+          python Tools/B01/B01-60/P17W11/V2CommitAtomicityQA/gate.py 2>&1 | tee qa-w11-v2-commit-evidence/independent-original-source-repro.log
+      - name: Archive exact old producer Git body+compiled CSharp9 stdout and real W06 ledger receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-60-w11-v2-real-commit-red-${{ matrix.os }}
+          path: qa-w11-v2-commit-evidence/
+          retention-days: 21
+          if-no-files-found: warn
