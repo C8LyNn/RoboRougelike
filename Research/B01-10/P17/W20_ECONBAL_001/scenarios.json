@@ -1,7 +1,7 @@
 {
-  "schema": "B01-10 ECONBAL-001 scenario v4: credited reward order and terminal pending fee exposure, synthetic only",
+  "schema": "B01-10 ECONBAL-001/R5 2026-10-30 owner-approved 65pct, one free on verified win, zero-price paid, one-loaner deadlock negative witness (synthetic)",
   "sourceOfPrices": "hypothetical 100 Scrap purchase, 70% paid quote; #252 mentions 65-75% hypothesis, NOT approved",
-  "evidence": "ALL SYNTHETIC. No actual R3 wallet/reward ordering, no proven refund policy, no gameplay terminal evidence.",
+  "evidence": "ALL SCRIPTED SOURCE DESIGN ORACLES; B01-22 #694 original C#9 is not modified. One-loaner zero-Scrap softlock remains an unresolved owner's source implementation contract.",
   "cases": {
     "twelve_victories_two_destroyed": {
       "initial_scrap": 4000,
@@ -1110,6 +1110,87 @@
             {
               "id": "final_gun",
               "role": "weapon",
+              "blocks_deploy": false
+            }
+          ]
+        }
+      ]
+    },
+    "approved_price_one_zero_paid_quote": {
+      "initial_scrap": 0,
+      "purchase_price": 1,
+      "paid_quote_percent": 70,
+      "attempts": [
+        {
+          "id": "win",
+          "won": true,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "partA",
+              "role": "other",
+              "blocks_deploy": false
+            },
+            {
+              "id": "partB",
+              "role": "other",
+              "blocks_deploy": false
+            }
+          ],
+          "next_challenge_available_after": false
+        }
+      ]
+    },
+    "approved_zero_wallet_one_loaner_wins_but_no_recovery": {
+      "initial_scrap": 0,
+      "purchase_price": 100,
+      "paid_quote_percent": 70,
+      "attempts": [
+        {
+          "id": "lost",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "weaponEssential",
+              "role": "weapon",
+              "blocks_deploy": true
+            }
+          ]
+        },
+        {
+          "id": "loanerVictory",
+          "won": true,
+          "earned_scrap": 0,
+          "destroyed": []
+        }
+      ]
+    },
+    "approved_pre_first_win_65_paid_then_next_real_victory": {
+      "initial_scrap": 65,
+      "purchase_price": 100,
+      "paid_quote_percent": 70,
+      "attempts": [
+        {
+          "id": "initialLoss",
+          "won": false,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "driveBroken",
+              "role": "mobility",
+              "blocks_deploy": false
+            }
+          ]
+        },
+        {
+          "id": "firstTrustedWin",
+          "won": true,
+          "earned_scrap": 0,
+          "destroyed": [
+            {
+              "id": "futureDamage",
+              "role": "other",
               "blocks_deploy": false
             }
           ]
