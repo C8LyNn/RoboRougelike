@@ -57,7 +57,7 @@
     "human_preference_measured": false
   },
   "gates": {
-    "selected_r4_g0": "PENDING_FORMAL_B01_40",
+    "selected_r4_g0": "HOLD_SOURCE_P0_RED",
     "new_r4_native_g1": "NOT_RUN",
     "canonical_game_save": "HOLD",
     "codex_available": false,
@@ -110,7 +110,16 @@
           "cases_each_os": 97,
           "scope": "PHYSICAL_GIT_ZIP_AND_DIRECT_DISK_CORE"
         },
-        "lease_lifecycle": "RETAIN_UNTIL_ONDESTROY_SOURCE_GREEN"
+        "lease_lifecycle": "DISABLE_GREEN_BUT_COMPONENT_DESTROY_ORPHAN_RED",
+        "new_component_destroy_qa": {
+          "pr": 670,
+          "producer_sha": "09c1809b73324a6d31c13e5d0143de62ac1e3ca6",
+          "observed_original_source_run": 41114875911,
+          "ubuntu_assertions": 17,
+          "finding": "HOST_COMPONENT_DESTROY_ONLY_RELEASES_SLOT_WITH_LIVE_ORPHAN_RIGIDBODIES",
+          "native_unity": "NOT_RUN",
+          "release_gate": "HOLD_SOURCE_P0_RED"
+        }
       },
       "owner": "B01-23",
       "parent": "r3_642",
