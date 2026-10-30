@@ -1,0 +1,233 @@
+{
+  "package": "B01-12-BOXSELECT-001/R1",
+  "total": 56,
+  "pass": 56,
+  "fail": 0,
+  "node": "v22.16.0",
+  "tests": [
+    {
+      "name": "initial-valid",
+      "ok": true
+    },
+    {
+      "name": "initial-world-size",
+      "ok": true
+    },
+    {
+      "name": "initial-locked-core",
+      "ok": true
+    },
+    {
+      "name": "root-immutable",
+      "ok": true
+    },
+    {
+      "name": "select-core-denied",
+      "ok": true
+    },
+    {
+      "name": "unknown-id-denied",
+      "ok": true
+    },
+    {
+      "name": "duplicate-id-denied",
+      "ok": true
+    },
+    {
+      "name": "select-one",
+      "ok": true
+    },
+    {
+      "name": "select-many-canonical",
+      "ok": true
+    },
+    {
+      "name": "select-add",
+      "ok": true
+    },
+    {
+      "name": "select-subtract",
+      "ok": true
+    },
+    {
+      "name": "select-toggle",
+      "ok": true
+    },
+    {
+      "name": "noop-does-not-revise",
+      "ok": true
+    },
+    {
+      "name": "selection-not-mutate-source",
+      "ok": true
+    },
+    {
+      "name": "empty-selection-move-denied",
+      "ok": true
+    },
+    {
+      "name": "valid-move",
+      "ok": true
+    },
+    {
+      "name": "move-atomic-on-collision",
+      "ok": true
+    },
+    {
+      "name": "move-out-of-bounds",
+      "ok": true
+    },
+    {
+      "name": "move-two-no-selfcollision",
+      "ok": true
+    },
+    {
+      "name": "undo-selection",
+      "ok": true
+    },
+    {
+      "name": "redo-selection",
+      "ok": true
+    },
+    {
+      "name": "undo-movement",
+      "ok": true
+    },
+    {
+      "name": "redo-cleared-after-fork",
+      "ok": true
+    },
+    {
+      "name": "bad-history-empty",
+      "ok": true
+    },
+    {
+      "name": "reset",
+      "ok": true
+    },
+    {
+      "name": "snapshot-roundtrip",
+      "ok": true
+    },
+    {
+      "name": "snapshot-omits-history",
+      "ok": true
+    },
+    {
+      "name": "snapshot-no-invalid",
+      "ok": true
+    },
+    {
+      "name": "rect-touch",
+      "ok": true
+    },
+    {
+      "name": "rect-inside",
+      "ok": true
+    },
+    {
+      "name": "rect-excludes-locked",
+      "ok": true
+    },
+    {
+      "name": "rect-add",
+      "ok": true
+    },
+    {
+      "name": "rect-touch-boundary-no-intersection",
+      "ok": true
+    },
+    {
+      "name": "rect-overflow-denied",
+      "ok": true
+    },
+    {
+      "name": "rect-zero-denied",
+      "ok": true
+    },
+    {
+      "name": "rect-nan-denied",
+      "ok": true
+    },
+    {
+      "name": "state-invalid-selected-locked",
+      "ok": true
+    },
+    {
+      "name": "state-invalid-overlap",
+      "ok": true
+    },
+    {
+      "name": "state-invalid-dirty-prototype",
+      "ok": true
+    },
+    {
+      "name": "state-invalid-duplicate-ids",
+      "ok": true
+    },
+    {
+      "name": "state-invalid-history",
+      "ok": true
+    },
+    {
+      "name": "invalid-state-no-mutation",
+      "ok": true
+    },
+    {
+      "name": "unexpected-property-denied",
+      "ok": true
+    },
+    {
+      "name": "missing-mode-denied",
+      "ok": true
+    },
+    {
+      "name": "prototype-event-denied",
+      "ok": true
+    },
+    {
+      "name": "unknown-event-denied",
+      "ok": true
+    },
+    {
+      "name": "negative-step-fraction-denied",
+      "ok": true
+    },
+    {
+      "name": "too-large-step-denied",
+      "ok": true
+    },
+    {
+      "name": "zero-move-denied",
+      "ok": true
+    },
+    {
+      "name": "high-revision-fail-closed",
+      "ok": true
+    },
+    {
+      "name": "event-no-mutation",
+      "ok": true
+    },
+    {
+      "name": "fuzz-invalid-rects",
+      "ok": true
+    },
+    {
+      "name": "fuzz-bad-modes",
+      "ok": true
+    },
+    {
+      "name": "history-bounded",
+      "ok": true
+    },
+    {
+      "name": "deterministic-replay",
+      "ok": true
+    },
+    {
+      "name": "node-vm-crossrealm-fail-closed",
+      "ok": true
+    }
+  ]
+}
