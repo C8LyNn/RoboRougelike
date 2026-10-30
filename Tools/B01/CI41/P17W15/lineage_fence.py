@@ -95,6 +95,8 @@ def audit(repo:Path,game_sha:str,history_sha:str,save_sha:str,
     ancestor(repo,history_sha,save_sha)
     base=entries(repo,game_sha)
     full=entries(repo,save_sha)
+    require(not any(p==SAVE_ROOT+".meta" or p.startswith(SAVE_ROOT+"/") for p in base),
+            "PREEXISTING_SAVE_SOURCE_IN_FROZEN_GAME_BASE")
     changed={p for p in set(base)|set(full) if base.get(p)!=full.get(p)}
     expected=set(SOURCE_RELATIVE)
     require(changed==expected,
