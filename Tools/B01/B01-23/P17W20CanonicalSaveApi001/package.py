@@ -80,7 +80,7 @@ def verify(raw):
         for name in names:
             if name.startswith("/") or "\\" in name or ".." in Path(name).parts:raise ValueError("unsafe archive path")
         m=json.loads(z.read(MANIFEST))
-        if m["sha"]!=git("rev-parse","HEAD") or m.get("selected_frozen_api_v1")!=FROZEN_API_V1 or
+        if m["sha"]!=git("rev-parse","HEAD") or m.get("selected_frozen_api_v1")!=FROZEN_API_V1 or \
            m.get("selected_frozen_api_v2")!=FROZEN_API_V2 or m["parent_r4_selected"]!=PARENT_647 or \
            m["native"]!="NOT_RUN" or m["codex_ack"] is not False or \
            m["canonical_510_private_adapter"]!="NOT_IMPLEMENTED" or \
