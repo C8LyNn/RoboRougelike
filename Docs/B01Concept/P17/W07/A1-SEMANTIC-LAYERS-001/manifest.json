@@ -64,5 +64,16 @@
   ],
   "receiver": "B01-40 source/scope/rollback, B01-60 independent actual PNG QA, B01-00 #79 gate, Codex sole integrator",
   "rollback": "Delete only Docs/B01Concept/P17/W07/A1-SEMANTIC-LAYERS-001/** and .github/workflows/b01-31-p17-w07-semantic-layers.yml on disposable worktree",
-  "status": "PRODUCER_QA_PENDING__INDEPENDENT_QA_PENDING__NOT_OFFERED__NOT_INTEGRATED"
+  "status": "PRODUCER_SOURCE_TEST_PASS__INDEPENDENT_QA_PENDING__NOT_OFFERED__NOT_INTEGRATED",
+  "test_contract": {
+    "expected_png": 28,
+    "required_source_checks": "Git blobs face, side, top + exact semantic groups",
+    "positive": "alpha/canvas/PNG readback, reconstruction IoU >=0.985, per-file SHA256",
+    "negative": "missing original semantic wheel, duplicated arm, opaque raster, tampered SVG blob and PNG SHA",
+    "CI_owner": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41038086859",
+    "CI_result": "68/68 PASS on previous HEAD; final manifest-only commit will require exact-SHA rerun",
+    "native_EditMode": "NOT_RUN (Unity activation preflight failed)",
+    "native_PlayMode": "NOT_RUN (Unity activation preflight failed)",
+    "independent_B01_40_B01_60": "PENDING"
+  }
 }
