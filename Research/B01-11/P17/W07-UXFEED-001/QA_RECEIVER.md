@@ -12,3 +12,6 @@
 4. Confirm this is **not** a real Unity HUD or native GUI test. Future G1 requires an authorized Codex adapter and actual Unity Player evidence.
 
 QA requests and producer CI are not an independent G0/G1 verdict. Do not set CODEX_CLAIMED or INTEGRATED until explicit receipts.
+
+## W08 R2 mandatory independent receiver regression
+Prior R1 is superseded by R2 for producer source acceptance (historic commit remains immutable). **B01-40** independently verify NEW exact R2 SHA, 9 payload hash/bytes/Git pins, no changed paths outside own source+dedicated workflow, bounded critical queue and rollback. **B01-60** independently rerun compiled original **95** cases and stress 32+ ordinary events within 6500 ms after part/gun loss; verify critical still visible while `History().Count` stays <=32, latest limited critical slots replace earliest, expiry/new-run reset, and normal-only flood never fabricates critical alerts. [W08 RED/GREEN](EVIDENCE/W08_RED_GREEN.md). Producer's GREEN is NOT independent QA; native Unity/Player remains NOT_RUN.

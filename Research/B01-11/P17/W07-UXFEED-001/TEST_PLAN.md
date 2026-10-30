@@ -1,4 +1,4 @@
-# Executable original-C# evidence — UXFEED-001/R1
+# Executable original-C# evidence — UXFEED-001/R2
 
 `dotnet run --project Research/B01-11/P17/W07-UXFEED-001/Tests/TacticalFeedTests.csproj --configuration Release`.
 
@@ -13,3 +13,6 @@
 **Actual original source CI** [#41037701035 SUCCESS](https://github.com/C8LyNn/RoboRougelike/actions/runs/41037701035): Ubuntu 87/87 PASS; Windows 87/87 PASS; **174/174 executed, 0 FAIL**. Original source code is compiled as linked C# in `Tests/TacticalFeedTests.csproj`. Follow-up final HEAD CI is separately checked after manifest commit.
 
 **NOT_RUN:** Unity 6000.3.14f1 Editor tests, PlayMode, actual Player HUD, in-game visual render, real combat event hooks, user playtest or audio/screen-reader. No synthetic native claims.
+
+## W08 original adversarial 8 test cases / final source green
+Run exact same .NET8 original source harness; eight new cases: critical survives normal history overflow; critical-only filter survives flood; two critical alerts survive flood; latest two replace earlier; TTL still expires; fixed-cap chronological history; new-run reset; no spurious critical from normal-only flood. [RED #41045734715](https://github.com/C8LyNn/RoboRougelike/actions/runs/41045734715): Ubuntu **91 PASS / 4 FAIL**, Windows **91 PASS / 4 FAIL** on R1 source with new tests. [GREEN #41045982978](https://github.com/C8LyNn/RoboRougelike/actions/runs/41045982978) on actual R2 C# source: Ubuntu **95 PASS / 0 FAIL**, Windows **95 PASS / 0 FAIL**. Previous 87 checks retained unchanged; **190 source assertions** total. Native Unity remains NOT_RUN.

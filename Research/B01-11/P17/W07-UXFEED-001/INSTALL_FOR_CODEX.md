@@ -17,3 +17,6 @@ Only Codex, after B01-00-approved source OFFER and explicit CODEX_ACK, may impor
 
 ## Rollback
 Ignore/delete isolated producer W07 research branch and its own workflow. If a canonical Unity adapter is later approved, only Codex rolls back the game-side integration; no B01 runtime, scene, prefab, .meta, R3, save, economy, or VFX code is modified here.
+
+## W08 R2 critical-alert retention boundary
+The 32-event chronological `History()` and the bounded (<=6) critical-alert transient view are now separate. Integration must never infer critical alert dismissal from history eviction; `Visible()` is the sole current TTL/priority view. New run clears both. Do not make persistent garage blocker copy or actual player damage depend on this UI feed. Source change is limited to `TacticalFeed.cs`; game-owned adapter, HUD geometry and VFX remain Codex territory. [RED/GREEN](EVIDENCE/W08_RED_GREEN.md).
