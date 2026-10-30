@@ -1,0 +1,99 @@
+using System.Collections;
+using NUnit.Framework;
+using UnityEngine;
+using UnityEngine.TestTools;
+using B01.DetachedSaveContract001;
+using B01.UnitySaveBridge001;
+namespace B01.UnitySaveBridge001.Tests
+{
+    public sealed class IsolatedSaveWorldNativePlayModeTests
+    {
+        [UnityTest]
+        public IEnumerator ColdLoad_RealRigidbody_RoundTripLightHeavy()
+        {
+            GameObject game=new GameObject("W15 native save test host");
+            try
+            {
+                var host=game.AddComponent<IsolatedTwinRigSaveHost>();
+                byte[] save=IsolatedTwinRigSaveHost.MakeFixture(31,1,true,true);
+                Assert.IsTrue(host.TryRestoreBytes(save,31,1));
+                Assert.IsTrue(host.IsConsumed(0,2310001));
+                Assert.IsTrue(host.IsConsumed(1,2310002));
+                // Actual native activeInHierarchy: unlike inactive staging,
+                // both rigidbodies must become real physics participants on publish.
+                var nativeBodies=game.GetComponentsInChildren<Rigidbody>(true);
+                Assert.AreEqual(2,nativeBodies.Length);
+                foreach(var body in nativeBodies)
+                {
+                    Assert.IsTrue(body.gameObject.activeInHierarchy);
+                    Assert.IsFalse(body.isKinematic);
+                }
+                Assert.IsTrue(host.TrySaveBytes(out byte[] bytes));
+                Assert.IsTrue(SnapshotCodec.TryDecode(bytes,out RunSnapshot snapshot));
+                Assert.AreEqual(2,snapshot.Parts.Length);
+                Assert.AreEqual(1.5,snapshot.Parts[0].MassKg,.0001);
+                Assert.AreEqual(12,snapshot.Parts[1].MassKg,.0001);
+                yield return null;
+            }
+            finally {Object.Destroy(game);}
+        }
+        [UnityTest]
+        public IEnumerator CorruptLoad_LeavesPreviouslyActiveRigidbodyAndIdsUntouched()
+        {
+            GameObject game=new GameObject("W15 fail closed native host");
+            try
+            {
+                var host=game.AddComponent<IsolatedTwinRigSaveHost>();
+                Assert.IsTrue(host.TryRestoreBytes(
+                    IsolatedTwinRigSaveHost.MakeFixture(31,1,true,false),31,1));
+                byte[] corrupt=IsolatedTwinRigSaveHost.MakeFixture(31,2,false,true);
+                corrupt[117]^=1;
+                Assert.IsFalse(host.TryRestoreBytes(corrupt,31,1));
+                Assert.IsTrue(host.IsConsumed(0,2310001));
+                Assert.IsFalse(host.IsConsumed(1,2310002));
+                Assert.AreEqual(1,host.Generation);
+                yield return null;
+            }
+            finally {Object.Destroy(game);}
+        }
+        [UnityTest]
+        public IEnumerator ColdRestart_RestoresRealRigidbodyAndConsumedIds()
+        {
+            GameObject prior=new GameObject("W15 old separate process");
+            GameObject next=new GameObject("W15 new separate process");
+            try
+            {
+                var original=prior.AddComponent<IsolatedTwinRigSaveHost>();
+                Assert.IsTrue(original.TryRestoreBytes(
+                    IsolatedTwinRigSaveHost.MakeFixture(41,4,true,false),41,4));
+                Assert.IsTrue(original.TrySaveBytes(out byte[] saved));
+                prior.SetActive(false);
+                var restored=next.AddComponent<IsolatedTwinRigSaveHost>();
+                Assert.IsTrue(restored.TryRestoreBytes(saved,41,4));
+                Assert.IsTrue(restored.IsConsumed(0,2310001));
+                Assert.IsFalse(restored.IsConsumed(1,2310002));
+                Assert.AreEqual(4,restored.Generation);
+                yield return null;
+            }
+            finally {Object.Destroy(prior);Object.Destroy(next);}
+        }
+        [UnityTest]
+        public IEnumerator WrongGeneration_CannotPartiallyPublishRealPhysicalWorld()
+        {
+            var go=new GameObject("W15 generation native test");
+            try
+            {
+                var host=go.AddComponent<IsolatedTwinRigSaveHost>();
+                Assert.IsTrue(host.TryRestoreBytes(
+                    IsolatedTwinRigSaveHost.MakeFixture(9,5,false,true),9,5));
+                Assert.IsFalse(host.TryRestoreBytes(
+                    IsolatedTwinRigSaveHost.MakeFixture(9,3,true,false),9,3));
+                Assert.IsFalse(host.IsConsumed(0,2310001));
+                Assert.IsTrue(host.IsConsumed(1,2310002));
+                Assert.AreEqual(5,host.Generation);
+                yield return null;
+            }
+            finally {Object.Destroy(go);}
+        }
+    }
+}
