@@ -1,0 +1,75 @@
+name: B01-41 P17 W18 exact #596 original REAL parallel CLR checkpoint CAS
+on:
+  push:
+    branches: ['ci/b01-41-p17w18-596-concurrent-checkpoint-cas']
+    paths:
+      - 'Tools/B01/CI41/P17W18/**'
+      - '.github/workflows/b01-41-p17w18-596-real-concurrent-cas.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  real-original-source-cross-process:
+    name: 24 real concurrent CLR processes original #596 disk CAS (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Require exact original unmodified B01-41 witness and source guard Git blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git hash-object Tools/B01/CI41/P17W18/Program.cs)" = '2802469f5a361439c4e2ca54f69b3b36927db81d'
+          test "$(git hash-object Tools/B01/CI41/P17W18/source_guard.py)" = 'e200fe343672b7c4863b253dac72a6fda0342b85'
+          test "$(git hash-object Tools/B01/CI41/P17W18/test_source_guard.py)" = '59b5496f42c6cf7284853104ede1c874cb25df20'
+          echo 'CI41_W18_EXACT_OWN_SOURCE_TEST_BLOBS_PASS'
+      - name: Execute 18 hostile controls of actual original #596 CAS witness and forbidden source replacement
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
+          "$PY" -m unittest discover -s Tools/B01/CI41/P17W18/ -p test_source_guard.py -v 2>&1 | tee "ci41-w18-python-${{ runner.os }}.txt"
+          grep -q 'Ran 18 tests' "ci41-w18-python-${{ runner.os }}.txt"
+          grep -q 'ACTUAL_596_SOURCE_DIRECTLY_COMPILED_MULTI_PROCESS_CAS_READY_G1_NOT_RUN' "ci41-w18-python-${{ runner.os }}.txt"
+      - name: Audit actual #510/#556/#596 unchanged Git originals and own seven paths only
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
+          "$PY" Tools/B01/CI41/P17W18/source_guard.py --repo . --output "ci41-w18-receipt-${{ runner.os }}.json"
+          "$PY" -c 'import json,sys; x=json.load(open(sys.argv[1])); assert x["source_guard"]=="PASS_FOR_ORIGINAL_IMMUTABLE_SOURCE" and len(x["owner_only_added_paths"])==7 and x["expected_real_concurrent_pairs"]==12 and x["native_unity_g1"]=="NOT_RUN" and x["release_gate"]=="HOLD" and x["alternative_604"]=="ALT_HOLD"; print("W18_ORIGINAL_596_ONLY_READ_ONLY_SOURCE_GUARD_PASS")' "ci41-w18-receipt-${{ runner.os }}.json"
+      - name: Compile REAL selected #596 FileCheckpointStore and frozen Save/W06/#510 with warnings as errors
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build Tools/B01/CI41/P17W18/Original596ParallelCheckpointQA.csproj -c Release --warnaserror 2>&1 | tee "ci41-w18-build-${{ runner.os }}.txt"
+      - name: Run 12 simultaneous real OS two-CLR-process races on original checkpoint file CAS
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run -c Release --no-build --project Tools/B01/CI41/P17W18/Original596ParallelCheckpointQA.csproj 2>&1 | tee "ci41-w18-real-cas-${{ runner.os }}.txt"
+          grep -q 'CI41_W18_REAL_ORIGINAL_596_CROSS_PROCESS_CAS_PASS races=12 child_processes=24 ' "ci41-w18-real-cas-${{ runner.os }}.txt"
+          grep -q 'SELECTED_596_ORIGINAL_CAS_PROCESS_LOCK_POSITIVE_ONLY' "ci41-w18-real-cas-${{ runner.os }}.txt"
+          grep -q 'ORIGINAL_HOST_MULTI_INSTANCE_LEASE_AND_NATIVE_UNITY_G1_NOT_RUN_HOLD' "ci41-w18-real-cas-${{ runner.os }}.txt"
+      - name: Archive read-only Git SHA receipt and real OS contention stdout (native G1 NOT_RUN)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CI41-W18-596-REAL-PARALLEL-CAS-${{ runner.os }}
+          path: |
+            ci41-w18-python-${{ runner.os }}.txt
+            ci41-w18-receipt-${{ runner.os }}.json
+            ci41-w18-build-${{ runner.os }}.txt
+            ci41-w18-real-cas-${{ runner.os }}.txt
+          retention-days: 14
+          if-no-files-found: warn
