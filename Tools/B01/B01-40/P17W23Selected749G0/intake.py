@@ -232,7 +232,8 @@ def original_r5_fix_and_assets(r,safe):
 def unity_selected_source_scratch(r,safe,guid,r5assets):
     predecessor=module(r["previous"],
         "Tools/B01/B01-40/P17W23V3G0/intake.py","b0140_w23_742_original_immutable")
-    owner,v3raw,v3assets,v3=predecessor.original_v3_producer(r,safe)
+    prior_names={**r,"v3":r["api"]}  # source-only read alias for immutable #742 API receiver
+    owner,v3raw,v3assets,v3=predecessor.original_v3_producer(prior_names,safe)
     need(v3["zip_bytes"]==90659 and v3["v3_guids"]==5,
          "ORIGINAL_V3_729_AUTHOR_BYTES_MISMATCH")
     frozen,receipt=safe.source_files(r["game"],r["save"])
