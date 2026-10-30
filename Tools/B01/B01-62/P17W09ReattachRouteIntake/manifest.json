@@ -1,0 +1,47 @@
+{
+  "schema": "b01-independent-source-intake-v1",
+  "package_id": "B01-62-REATTACH-ROUTE-INTAKE-001",
+  "version": "P17-W09-R1",
+  "role": "B01-62 DATA INTEGRITY & SAVE QA",
+  "branch": "qa/b01-62-p17w09-reattach-route-intake",
+  "scope": [
+    "Tools/B01/B01-62/P17W09ReattachRouteIntake/**",
+    ".github/workflows/b01-62-p17w09-reattach-route-intake.yml"
+  ],
+  "source_pins": {
+    "Tools/B01/B01-62/P17W09ReattachRouteIntake/intake.py": "a2a725760e1722d1dddea9c61a2b4bcf170c1df8",
+    "Tools/B01/B01-62/P17W09ReattachRouteIntake/test_intake.py": "a46ccd3bb3ae1f545d80527d6225b5fd4a4fa493",
+    "Tools/B01/B01-62/P17W09ReattachRouteIntake/README.md": "ab7df0a812996a8263208e7678383d62ec5fc0b2",
+    ".github/workflows/b01-62-p17w09-reattach-route-intake.yml": "a655838912ca05364b0418bc08568246c383316c"
+  },
+  "producer_sources": [
+    {
+      "pr": 421,
+      "sha": "cb2b3a76e84266e2730fffc4ab048c1039f0652f",
+      "blob": "fa1aa5e531927cbe73cf5fdfe161b4a981316db5"
+    },
+    {
+      "pr": 439,
+      "sha": "cdcaea750fda1a9d7db6018e34970f4b9f206427",
+      "blob": "e4e31c32cb5abda2fef987efa4b45fd61e828312"
+    },
+    {
+      "pr": 455,
+      "sha": "99dfbd25d471f9983f9472b12d3725f4c002f7e9",
+      "blobs": [
+        "7c7e96a10d69149119309863a0c2a9bdab829072",
+        "de0a847dbecacb92ad63a09ca12f5c9c372d597a",
+        "5892f7e31d1e9fa07c124d63324c796b5abc282b"
+      ]
+    }
+  ],
+  "result_expected": "SOURCE_INTEGRATION_HOLD (original W07 GUI bypasses W08 optional gate)",
+  "tests_expected": "16 source call-route/mutation tests per Windows2025 and Ubuntu24.04 plus exact generated JSON cross-OS parity",
+  "tests_actual": "PENDING_FIRST_RUN",
+  "native_unity": "NOT_RUN",
+  "runtime_physics": "NOT_RUN",
+  "receiver": "B01-40 formal physical/GUID/asmdef gate; B01-60/61 independent source/native; B01-23 owner versioned repair; B01-00 later Codex #79 decision",
+  "source_mutation": false,
+  "merge": false,
+  "rollback": "Close unmerged Draft and delete only owned QA paths and created temporary evidence; never producer/Codex sources"
+}

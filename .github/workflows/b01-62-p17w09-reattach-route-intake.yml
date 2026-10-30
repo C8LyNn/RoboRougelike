@@ -1,0 +1,74 @@
+name: B01-62 immutable original W06 W07 W08 reattach integration-bypass intake
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W09ReattachRouteIntake/**'
+      - '.github/workflows/b01-62-p17w09-reattach-route-intake.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-route-acceptance:
+    name: Original #421/#439/#455 cross-package GUI bypass gate (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2025, ubuntu-24.04]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch exact immutable producer commits without mutating game
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin cb2b3a76e84266e2730fffc4ab048c1039f0652f
+          git fetch --no-tags origin cdcaea750fda1a9d7db6018e34970f4b9f206427
+          git fetch --no-tags origin 99dfbd25d471f9983f9472b12d3725f4c002f7e9
+      - name: Execute 16 source-route positives, negatives and bypass controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s Tools/B01/B01-62/P17W09ReattachRouteIntake \
+            -p test_intake.py -v 2>&1 | tee "$RUNNER_TEMP/qa-tests.log"
+          grep -q '^Ran 16 tests' "$RUNNER_TEMP/qa-tests.log"
+          grep -q '^OK$' "$RUNNER_TEMP/qa-tests.log"
+      - name: Produce physical original-source release HOLD receipt (expected RED)
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p Tools/B01/B01-62/P17W09ReattachRouteIntake/output
+          python Tools/B01/B01-62/P17W09ReattachRouteIntake/intake.py --repo . \
+            --output Tools/B01/B01-62/P17W09ReattachRouteIntake/output/receipt.json \
+            --expect-hold | tee Tools/B01/B01-62/P17W09ReattachRouteIntake/output/run.log
+          grep -q '^B01_62_REATTACH_SOURCE_GATE=SOURCE_INTEGRATION_HOLD$' \
+            Tools/B01/B01-62/P17W09ReattachRouteIntake/output/run.log
+          cp "$RUNNER_TEMP/qa-tests.log" \
+            Tools/B01/B01-62/P17W09ReattachRouteIntake/output/tests.log
+          echo B01_62_VERIFIED_ORIGINAL_UI_BYPASS_EXPECTED_SOURCE_RED
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-62-w09-reattach-route-${{ matrix.os }}
+          path: Tools/B01/B01-62/P17W09ReattachRouteIntake/output/
+          if-no-files-found: error
+          retention-days: 14
+  raw-cross-os-qa-parity:
+    needs: source-route-acceptance
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: b01-62-w09-reattach-route-windows-2025
+          path: received/windows
+      - uses: actions/download-artifact@v4
+        with:
+          name: b01-62-w09-reattach-route-ubuntu-24.04
+          path: received/ubuntu
+      - shell: bash
+        run: |
+          set -euo pipefail
+          cmp received/windows/receipt.json received/ubuntu/receipt.json
+          sha256sum received/windows/receipt.json received/ubuntu/receipt.json
+          echo B01_62_ORIGINAL_REATTACH_SOURCE_GATE_BYTE_PARITY=PASS
