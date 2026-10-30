@@ -1,0 +1,58 @@
+{
+  "package_id": "B01-60-P17W24-R5V6-SEVEN-NATIVE/R1",
+  "owner": "B01-60",
+  "hq_issue": 731,
+  "authorization_issue": 667,
+  "version": "1.0.0",
+  "base_qa": {
+    "pr": 735,
+    "sha": "c782eeec12b46e4a142af79d6e641ab4c9e2e004"
+  },
+  "selected_original_R5": {
+    "pr": 690,
+    "sha": "cc7f73541517a18f4479bb155534bd4832d9985e"
+  },
+  "corrected_fixture_only": {
+    "pr": 750,
+    "sha": "60c73a6f9ed2585cbb9bf7aeaad8c62eef0629cb",
+    "blob": "2508a04f57b04447112d2777ce4e3cd7478ed40e"
+  },
+  "canonical_save_candidate": {
+    "pr": 749,
+    "sha": "8634e71dfcf633323073fe584a6c0884f1ca5d23",
+    "status": "SELECTED_CANDIDATE_ONLY"
+  },
+  "alternative_bridges": [
+    753,
+    741
+  ],
+  "run_scope": {
+    "R5V6_PlayMode": 7,
+    "private_G1_probe": 7,
+    "V2_EditMode": "SEPARATE",
+    "V2_PlayMode": "SEPARATE",
+    "live_SaveLoad": "NOT_RUN"
+  },
+  "consent_phrase": "B0160 R5V6 SEVEN NATIVE",
+  "manual_g0_flag": "SourceG0Approved",
+  "no_auto_fetch": true,
+  "no_auto_upload": true,
+  "no_auto_delete": true,
+  "no_ssh": true,
+  "no_merge": true,
+  "files": [
+    "Tools/B01/B01-60/P17W24R5V6SevenNative/r5v6_native.py",
+    "Tools/B01/B01-60/P17W24R5V6SevenNative/Invoke-B0160W24R5V6.ps1",
+    "Tools/B01/B01-60/P17W24R5V6SevenNative/test_r5v6_native.py",
+    "Tools/B01/B01-60/P17W24R5V6SevenNative/README.md",
+    "Tools/B01/B01-60/P17W24R5V6SevenNative/manifest.json",
+    ".github/workflows/b01-60-p17w24-r5v6-seven-native.yml"
+  ],
+  "SOURCE_G0": "INDEPENDENT_G0_REQUIRED_BEFORE_OWNER_NATIVE",
+  "NATIVE_G1": "NOT_RUN",
+  "CANONICAL_GAME_SAVE": "HOLD_PRIVATE_510_ADAPTER",
+  "G2": "HOLD",
+  "CODEX_ACK": "NONE",
+  "INTEGRATOR_FEEDBACK": "NOT_MEASURED",
+  "rollback": "Only discard W24 owned branch/new files, preserve owner game and all other sources"
+}

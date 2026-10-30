@@ -1,0 +1,111 @@
+name: B01-60 W24 R5 V6 seven native test owner handoff SOURCE ONLY Unity NOT_RUN
+on:
+  push:
+    branches: [qa/b01-60-p17w24-r5v6-seven-native-r1]
+    paths:
+      - 'Tools/B01/B01-60/P17W24R5V6SevenNative/**'
+      - '.github/workflows/b01-60-p17w24-r5v6-seven-native.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-60/P17W24R5V6SevenNative/**'
+      - '.github/workflows/b01-60-p17w24-r5v6-seven-native.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-v6-source-and-7-private-stages:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Exact owner #750 plus #690 Git objects (ephemeral hosted CI only)
+        shell: bash
+        run: |
+          set -euo pipefail
+          for sha in 60c73a6f9ed2585cbb9bf7aeaad8c62eef0629cb cc7f73541517a18f4479bb155534bd4832d9985e; do
+            git fetch --no-tags origin "$sha"
+            test "$(git cat-file -t "$sha")" = commit
+          done
+          echo 'W24_EXACT_AUTHOR_V6_R5_PINNED_GITHUB_HOST_ONLY'
+      - name: Source identity and exact 6 W24 ADDED-only files vs frozen W23
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=c782eeec12b46e4a142af79d6e641ab4c9e2e004
+          git merge-base --is-ancestor "$BASE" HEAD
+          git diff --name-status "$BASE" HEAD > changed.txt
+          awk '$1!="A" {print; exit 1}' changed.txt
+          test "$(wc -l < changed.txt)" -eq 6
+          test "$(git rev-parse HEAD:Tools/B01/B01-60/P17W22R5PartialNative/r5_native.py)" = 40ca11d886fc567a5a79f6abfeabdf2b37f4c36e
+          echo 'W24_FROZEN_718_735_UNTOUCHED_SIX_OWN_ADDITIONS_ONLY'
+      - name: Execute 10 direct exact owner original V6 source and physical 7-project safe scratch tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile Tools/B01/B01-60/P17W24R5V6SevenNative/r5v6_native.py
+          python -m unittest discover -s Tools/B01/B01-60/P17W24R5V6SevenNative -p test_r5v6_native.py -v 2>&1 | tee w24-v6-source.log
+          grep -F 'Ran 10 tests' w24-v6-source.log
+          grep -F 'OK' w24-v6-source.log
+          echo 'W24_V6_REAL_ORIGINAL_SOURCE_PASS_NATIVE_UNITY_NOT_RUN'
+      - name: Standalone complete seven-case source preflight (no Unity process)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W24R5V6SevenNative/r5v6_native.py --mode preflight 2>&1 | tee w24-v6-preflight.log
+          grep -F 'B0160_W24_R5V6_SOURCE_ONLY_7_PROJECTS_STAGE_ROLLBACK_PASS' w24-v6-preflight.log
+          grep -F 'B0160_W24_NATIVE_G1_NOT_RUN' w24-v6-preflight.log
+  actual-windows-powershell-no-unity:
+    runs-on: windows-2025
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Pin exact original author V6 in hosted runner only
+        shell: bash
+        run: |
+          set -euo pipefail
+          for sha in 60c73a6f9ed2585cbb9bf7aeaad8c62eef0629cb cc7f73541517a18f4479bb155534bd4832d9985e; do
+            git fetch --no-tags origin "$sha"
+          done
+      - name: Real Windows PowerShell source-only run with 7 owned scratch projects
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W24R5V6SevenNative\Invoke-B0160W24R5V6.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:RUNNER_TEMP *>&1 | Tee-Object -FilePath w24-powershell-preflight.log
+          if($LASTEXITCODE -ne 0){throw 'Source-only W24 original V6 Windows PowerShell preflight failed'}
+          if(!(Select-String w24-powershell-preflight.log -Pattern 'B0160_W24_SOURCE_PREFLIGHT_7_CASES_PASS_NATIVE_G1_NOT_RUN' -Quiet)){throw 'Source-only receipt missing'}
+      - name: Unsafe scratch parent must be rejected with exit2
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W24R5V6SevenNative\Invoke-B0160W24R5V6.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:GITHUB_WORKSPACE *>&1 | Tee-Object -FilePath w24-unsafe-scratch.log
+          $rc=$LASTEXITCODE
+          if($rc -ne 2){throw "Unsafe scratch not denied: $rc"}
+          $global:LASTEXITCODE=0
+      - name: Native -Run without approved G0 must be rejected exit3 with no consent/Unity
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W24R5V6SevenNative\Invoke-B0160W24R5V6.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:RUNNER_TEMP -Run *>&1 | Tee-Object -FilePath w24-g0-denied.log
+          $rc=$LASTEXITCODE
+          if($rc -ne 3){throw "Missing G0 wrongly permitted native path: $rc"}
+          if(Select-String w24-g0-denied.log -Pattern 'SEVEN_R5V6_NATIVE_TESTS_RECORDED'){throw 'Fake native PASS'}
+          $global:LASTEXITCODE=0
+      - name: Native -Run with manual G0 but missing Unity Editor must deny exit3
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W24R5V6SevenNative\Invoke-B0160W24R5V6.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:RUNNER_TEMP -Run -SourceG0Approved -UnityPath 'Z:\missing\6000.3.14f1\Editor\Unity.exe' *>&1 | Tee-Object -FilePath w24-missing-editor.log
+          $rc=$LASTEXITCODE
+          if($rc -ne 3){throw "Missing editor wrongly permitted native path: $rc"}
+          if(Select-String w24-missing-editor.log -Pattern 'SEVEN_R5V6_NATIVE_TESTS_RECORDED'){throw 'Fake native PASS'}
+          $global:LASTEXITCODE=0
