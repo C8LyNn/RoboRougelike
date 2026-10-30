@@ -1,0 +1,78 @@
+name: B01-32 W07 dual recoil original 3D Unity art and physical ZIP Windows+Linux CI (NOT Unity native)
+on:
+  push:
+    branches: [art/b01-32-p17-w07-dual-recoil-animation]
+    paths:
+      - Tools/B01-32/P17/W07DualRecoil/**
+      - .github/workflows/b01-32-p17w07-dual-recoil.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  real-original-producer-ubuntu:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Execute compiled real original CSharp9 dual-channel recoil core + sampled poses
+        run: dotnet run -c Release --project Tools/B01-32/P17/W07DualRecoil/CoreTests/CoreTests.csproj -- build/DualRecoilW07/frames.json
+      - name: Parse three actual original Unity-runtime/test CSharp9 sources with Roslyn
+        run: dotnet run -c Release --project Tools/B01-32/P17/W07DualRecoil/SyntaxTests/SyntaxTests.csproj
+      - name: Install original CPU preview renderer
+        run: python -m pip install --disable-pip-version-check "Pillow==11.3.0"
+      - name: Actually render eight motion states from compiled real CSharp samples to 512px PNG
+        run: python Tools/B01-32/P17/W07DualRecoil/render_samples.py --output build/DualRecoilW07
+      - name: Physically generate real original Unity 3D dual-barrel Resources prefab ZIP and GUID receipt
+        run: python Tools/B01-32/P17/W07DualRecoil/build_import.py --output build/DualRecoilW07
+      - name: Verify physical Unity ZIP exact original source and reject four mutated files
+        run: python Tools/B01-32/P17/W07DualRecoil/verify_import.py --output build/DualRecoilW07
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B0132-W07-DUAL-RECOIL-ORIGINAL-UNITY-ZIP-AND-PNG
+          path: build/DualRecoilW07/
+          retention-days: 30
+          if-no-files-found: error
+  independent-physical-windows:
+    needs: real-original-producer-ubuntu
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Execute compiled exact original CSharp9 recoil on Windows
+        run: dotnet run -c Release --project Tools/B01-32/P17/W07DualRecoil/CoreTests/CoreTests.csproj -- build/DualRecoilW07/frames.json
+      - name: Parse three original runtime and test sources with Roslyn on Windows
+        run: dotnet run -c Release --project Tools/B01-32/P17/W07DualRecoil/SyntaxTests/SyntaxTests.csproj
+      - name: Install physically original Pillow renderer for Windows
+        run: python -m pip install --disable-pip-version-check "Pillow==11.3.0"
+      - name: Render original Windows source CSharp-driven eight PNG motion proofs
+        run: python Tools/B01-32/P17/W07DualRecoil/render_samples.py --output build/DualRecoilW07
+      - name: Generate actual Unity prefab + original source + GUID ZIP from Windows
+        run: python Tools/B01-32/P17/W07DualRecoil/build_import.py --output build/DualRecoilW07
+      - name: Run strict real original import source receiver with four deliberate corruptions
+        run: python Tools/B01-32/P17/W07DualRecoil/verify_import.py --output build/DualRecoilW07
+      - uses: actions/download-artifact@v4
+        with:
+          name: B0132-W07-DUAL-RECOIL-ORIGINAL-UNITY-ZIP-AND-PNG
+          path: build/UbuntuOriginal
+      - name: Exact bytes of original real Unity ZIP and receipt must be identical Windows vs Linux
+        shell: bash
+        run: |
+          python -c "import pathlib,hashlib; a=pathlib.Path('build/DualRecoilW07/B0132-DualRecoil-UnityImport.zip').read_bytes(); b=pathlib.Path('build/UbuntuOriginal/B0132-DualRecoil-UnityImport.zip').read_bytes(); assert a==b,'CROSS_OS_REAL_ORIGINAL_ZIP_DIFFERENCE'; print('DUAL_RECOIL_CROSS_OS_ORIGINAL_ZIP_PARITY_PASS',hashlib.sha256(a).hexdigest())"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B0132-W07-DUAL-RECOIL-WINDOWS-RECEIPTS
+          path: |
+            build/DualRecoilW07/UNITY_IMPORT_RECEIPT.json
+            build/DualRecoilW07/PREVIEW_RECEIPT.json
+          retention-days: 30
+          if-no-files-found: error

@@ -1,0 +1,4 @@
+<Project Sdk="Microsoft.NET.Sdk">
+ <PropertyGroup><TargetFramework>net8.0</TargetFramework><OutputType>Exe</OutputType><ImplicitUsings>disable</ImplicitUsings><Nullable>enable</Nullable><LangVersion>9.0</LangVersion></PropertyGroup>
+ <ItemGroup><Compile Include="../Runtime/DualRecoilCore.cs" Link="DualRecoilCore.ORIGINAL.cs"/></ItemGroup>
+</Project>
