@@ -1,0 +1,50 @@
+name: B01-23 P17 W17 immutable #596 standalone receiver preflight
+on:
+  push:
+    branches: ['b01-23/p17-w17-596-final-receiver-gate-r1']
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-23/P17W17Final596Receiver001/**'
+      - '.github/workflows/b01-23-p17w17-596-final-receiver-gate.yml'
+jobs:
+  independent-receiver-source-preflight:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - name: Checkout only new W17 helper branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - name: Checkout exact original frozen #596 source (separate directory)
+        uses: actions/checkout@v4
+        with:
+          ref: efb2b06eafedab5469b57f163152d96aca3c5915
+          fetch-depth: 0
+          path: selected596
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run ONLY new 14 preflight original source identity and receiver negative tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p w17-receipt
+          python Tools/B01/B01-23/P17W17Final596Receiver001/test_receiver.py --selected selected596 2>&1 | tee w17-receipt/receiver-tests.txt
+          grep -q 'Ran 14 tests' w17-receipt/receiver-tests.txt
+          grep -q '^OK' w17-receipt/receiver-tests.txt
+      - name: Independently rebuild exact immutable original #596 physical inner ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-23/P17W17Final596Receiver001/audit.py --selected selected596 --zip w17-receipt/original-selected-596-inner.zip --receipt w17-receipt/final-source-receipt.json | tee w17-receipt/identity.txt
+          grep -q 'B01_23_W17_SELECTED_596_ORIGINAL_SOURCE_RECEIVER_PREFLIGHT_PASS_NOT_G0' w17-receipt/identity.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b01-23-w17-receiver-preflight-${{ matrix.os }}
+          path: w17-receipt/
+          if-no-files-found: warn
