@@ -1,0 +1,17 @@
+{
+  "name": "B0123.ReattachClearance.Runtime",
+  "rootNamespace": "B01.ReattachClearance001",
+  "references": [
+    "B0123.DebrisPlayground.Runtime",
+    "B0123.DebrisRepulse.Runtime"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
