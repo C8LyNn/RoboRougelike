@@ -179,6 +179,7 @@ def triangles_for(doc,binary,mesh):
     return len(xyz),len(areas),prim
 
 def inspect_doc(doc,binary,name,original,entry):
+    if doc.get("extensionsRequired"):fail("UNSUPPORTED_REQUIRED_EXTENSIONS")
     rig,braces,ids=original
     if len(doc.get("materials",[]))<3:fail("MATERIAL_PALETTE_TOO_SMALL")
     found=set();total_tri=0;stats=Counter();colors=Counter()
@@ -239,7 +240,7 @@ def adversarial(original,rig,entry,raw):
        ("wrong_physical_collision_claim",lambda d,b: next(n for n in d["nodes"] if n["name"]==nonbrace["name"])["extras"].update(p17_visual_only_no_collider=False)),
        ("wrong_source_grid_cell",lambda d,b: next(n for n in d["nodes"] if n["name"]==nonbrace["name"])["extras"].update(p17_source_cell="[9, 9, 9]")),
        ("wrong_material_association",lambda d,b: d["meshes"][next(n for n in d["nodes"] if n["name"]==brace["name"])["mesh"]]["primitives"][0].update(material=next(i for i,m in enumerate(d["materials"]) if m["name"]!="BRACE_SOURCE_VIS_ONLY"))),
-       ("forged_world_position",lambda d,b: next(n for n in d["nodes"] if n["name"]==nonbrace["name"]).update(translation=[12.0,2.0,3.0])),
+       ("forged_world_position",lambda d,b: (next(n for n in d["nodes"] if n["name"]==nonbrace["name"])["matrix"].__setitem__(12,12.0) if "matrix" in next(n for n in d["nodes"] if n["name"]==nonbrace["name"]) else next(n for n in d["nodes"] if n["name"]==nonbrace["name"]).update(translation=[12.0,2.0,3.0]))),
        ("missing_triangles",lambda d,b: d["meshes"][0]["primitives"][0].update(mode=1)),
        ("required_unknown_extension",lambda d,b: d.update(extensionsRequired=["KHR_unknown_fake_ext"])),
     ]
