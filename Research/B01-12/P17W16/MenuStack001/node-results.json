@@ -1,0 +1,355 @@
+{
+  "total": 87,
+  "passed": 87,
+  "failed": 0,
+  "cases": [
+    {
+      "name": "initial validated",
+      "ok": true
+    },
+    {
+      "name": "initial garage",
+      "ok": true
+    },
+    {
+      "name": "initial clean",
+      "ok": true
+    },
+    {
+      "name": "no back",
+      "ok": true
+    },
+    {
+      "name": "no forward",
+      "ok": true
+    },
+    {
+      "name": "no same route",
+      "ok": true
+    },
+    {
+      "name": "invalid route denied",
+      "ok": true
+    },
+    {
+      "name": "prototype pollution denied",
+      "ok": true
+    },
+    {
+      "name": "navigate parts",
+      "ok": true
+    },
+    {
+      "name": "breadcrumb parts",
+      "ok": true
+    },
+    {
+      "name": "navigate inspector",
+      "ok": true
+    },
+    {
+      "name": "breadcrumb inspector",
+      "ok": true
+    },
+    {
+      "name": "history length 3",
+      "ok": true
+    },
+    {
+      "name": "go back",
+      "ok": true
+    },
+    {
+      "name": "can forward",
+      "ok": true
+    },
+    {
+      "name": "go forward",
+      "ok": true
+    },
+    {
+      "name": "back again",
+      "ok": true
+    },
+    {
+      "name": "fork drops forward",
+      "ok": true
+    },
+    {
+      "name": "dirty turns on",
+      "ok": true
+    },
+    {
+      "name": "dirty unchanged denied",
+      "ok": true
+    },
+    {
+      "name": "guard on navigation",
+      "ok": true
+    },
+    {
+      "name": "guard requires dirty",
+      "ok": true
+    },
+    {
+      "name": "guard blocks re-nav",
+      "ok": true
+    },
+    {
+      "name": "guard blocks new dirty flag",
+      "ok": true
+    },
+    {
+      "name": "guard blocks reset? explicit allowed reset",
+      "ok": true
+    },
+    {
+      "name": "guard cancel",
+      "ok": true
+    },
+    {
+      "name": "cancel revision once",
+      "ok": true
+    },
+    {
+      "name": "second guard",
+      "ok": true
+    },
+    {
+      "name": "confirm navigates",
+      "ok": true
+    },
+    {
+      "name": "no pending discard",
+      "ok": true
+    },
+    {
+      "name": "mark dirty for back",
+      "ok": true
+    },
+    {
+      "name": "back held",
+      "ok": true
+    },
+    {
+      "name": "back discard",
+      "ok": true
+    },
+    {
+      "name": "mark dirty for forward",
+      "ok": true
+    },
+    {
+      "name": "forward held",
+      "ok": true
+    },
+    {
+      "name": "forward cancel",
+      "ok": true
+    },
+    {
+      "name": "clean manually",
+      "ok": true
+    },
+    {
+      "name": "forward clean",
+      "ok": true
+    },
+    {
+      "name": "reset",
+      "ok": true
+    },
+    {
+      "name": "reset copied state independent",
+      "ok": true
+    },
+    {
+      "name": "invalid event 0",
+      "ok": true
+    },
+    {
+      "name": "invalid event 1",
+      "ok": true
+    },
+    {
+      "name": "invalid event 2",
+      "ok": true
+    },
+    {
+      "name": "invalid event 3",
+      "ok": true
+    },
+    {
+      "name": "invalid event 4",
+      "ok": true
+    },
+    {
+      "name": "invalid event 5",
+      "ok": true
+    },
+    {
+      "name": "invalid event 6",
+      "ok": true
+    },
+    {
+      "name": "invalid event 7",
+      "ok": true
+    },
+    {
+      "name": "invalid event 8",
+      "ok": true
+    },
+    {
+      "name": "invalid event 9",
+      "ok": true
+    },
+    {
+      "name": "invalid event 10",
+      "ok": true
+    },
+    {
+      "name": "invalid event 11",
+      "ok": true
+    },
+    {
+      "name": "invalid event 12",
+      "ok": true
+    },
+    {
+      "name": "invalid event 13",
+      "ok": true
+    },
+    {
+      "name": "invalid event 14",
+      "ok": true
+    },
+    {
+      "name": "invalid event 15",
+      "ok": true
+    },
+    {
+      "name": "invalid event 16",
+      "ok": true
+    },
+    {
+      "name": "invalid event 17",
+      "ok": true
+    },
+    {
+      "name": "invalid event 18",
+      "ok": true
+    },
+    {
+      "name": "reject polluted Object prototype",
+      "ok": true
+    },
+    {
+      "name": "invalid state 0",
+      "ok": true
+    },
+    {
+      "name": "invalid state 1",
+      "ok": true
+    },
+    {
+      "name": "invalid state 2",
+      "ok": true
+    },
+    {
+      "name": "invalid state 3",
+      "ok": true
+    },
+    {
+      "name": "invalid state 4",
+      "ok": true
+    },
+    {
+      "name": "invalid state 5",
+      "ok": true
+    },
+    {
+      "name": "invalid state 6",
+      "ok": true
+    },
+    {
+      "name": "invalid state 7",
+      "ok": true
+    },
+    {
+      "name": "invalid state 8",
+      "ok": true
+    },
+    {
+      "name": "invalid state 9",
+      "ok": true
+    },
+    {
+      "name": "invalid state 10",
+      "ok": true
+    },
+    {
+      "name": "invalid state 11",
+      "ok": true
+    },
+    {
+      "name": "invalid state 12",
+      "ok": true
+    },
+    {
+      "name": "view immutable snapshot arrays",
+      "ok": true
+    },
+    {
+      "name": "view ancestor isolation",
+      "ok": true
+    },
+    {
+      "name": "guard snapshot independent",
+      "ok": true
+    },
+    {
+      "name": "guard normal reject no mutation",
+      "ok": true
+    },
+    {
+      "name": "non dirty pending corrupt",
+      "ok": true
+    },
+    {
+      "name": "guard reset clears",
+      "ok": true
+    },
+    {
+      "name": "history bounded 16",
+      "ok": true
+    },
+    {
+      "name": "history tail deterministic",
+      "ok": true
+    },
+    {
+      "name": "history back valid after trim",
+      "ok": true
+    },
+    {
+      "name": "history fork after trim",
+      "ok": true
+    },
+    {
+      "name": "revision max reject",
+      "ok": true
+    },
+    {
+      "name": "revision max allows reset",
+      "ok": true
+    },
+    {
+      "name": "cross realm plain objects fail-closed",
+      "ok": true
+    },
+    {
+      "name": "strict grammar no arbitrary route eval",
+      "ok": true
+    }
+  ]
+}

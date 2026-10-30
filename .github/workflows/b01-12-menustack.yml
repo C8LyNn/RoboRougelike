@@ -1,0 +1,52 @@
+name: B01-12 MENUSTACK-001 source QA
+on:
+  pull_request:
+    paths:
+      - 'Research/B01-12/P17W16/MenuStack001/**'
+      - '.github/workflows/b01-12-menustack.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-source-chromium:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install real Playwright Chromium
+        run: |
+          python -m pip install playwright==1.55.0
+          python -m playwright install --with-deps chromium
+      - name: Run original pinned source tests
+        working-directory: Research/B01-12/P17W16/MenuStack001
+        run: |
+          node test_engine.cjs
+          python test_browser.py
+      - name: Negative mutation of disposable copy must fail closed
+        working-directory: Research/B01-12/P17W16/MenuStack001
+        run: |
+          python - <<'PY'
+          import pathlib,shutil,tempfile,subprocess
+          root=pathlib.Path('.').resolve()
+          with tempfile.TemporaryDirectory() as td:
+              dest=pathlib.Path(td)/'copy';shutil.copytree(root,dest)
+              with (dest/'ui.js').open('ab') as fh:fh.write(b'\n')
+              for args in (['node','test_engine.cjs'],['python','test_browser.py']):
+                  p=subprocess.run(args,cwd=dest,capture_output=True,text=True)
+                  print('NEGATIVE',args,'exit',p.returncode,p.stdout[:200],p.stderr[:200])
+                  assert p.returncode==2 and 'FAIL_CLOSED ui.js' in (p.stdout+p.stderr)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b01-12-menustack-original-evidence
+          path: |
+            Research/B01-12/P17W16/MenuStack001/node-results.json
+            Research/B01-12/P17W16/MenuStack001/browser-results.json
+            Research/B01-12/P17W16/MenuStack001/evidence-1280x720.png
+          if-no-files-found: warn
