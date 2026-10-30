@@ -1,0 +1,73 @@
+name: B01-60 W21 Windows manual Unity handoff source QA (native NOT_RUN)
+on:
+  push:
+    branches: [qa/b01-60-p17w21-windows-native-handoff-r1]
+    paths: ['Tools/B01/B01-60/P17W21WindowsUnityHandoff/**','.github/workflows/b01-60-p17w21-windows-handoff.yml']
+  pull_request:
+    paths: ['Tools/B01/B01-60/P17W21WindowsUnityHandoff/**','.github/workflows/b01-60-p17w21-windows-handoff.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  independent-auditor:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Execute 20 SYNTHETIC W21 negative and structural evidence cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s Tools/B01/B01-60/P17W21WindowsUnityHandoff -p test_verify_evidence.py -v 2>&1 | tee w21-source-tests.log
+          grep -F 'Ran 20 tests' w21-source-tests.log
+          grep -F 'OK' w21-source-tests.log
+  windows-source-only:
+    runs-on: windows-2025
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Actual Windows PowerShell W21 frozen W20 source-only preflight, no Unity
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W21WindowsUnityHandoff\Invoke-B0160W21.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:RUNNER_TEMP *>&1 | Tee-Object -FilePath w21-source-powershell.log
+          if($LASTEXITCODE -ne 0){throw 'Windows real source-only W21 script failed'}
+          if(!(Select-String w21-source-powershell.log -Pattern 'B0160_W21_OPERATOR_SOURCE_EVIDENCE_VERIFIED_V2_ONLY_RELEASE_HOLD' -Quiet)){throw 'W21 real PowerShell receipt absent'}
+          Write-Host 'B01_60_W21_WINDOWS_REAL_POWERSHELL_SOURCE_ONLY_PASS_UNITY_NOT_RUN'
+      - name: Real Windows hostile scratch parent must be denied exit2
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W21WindowsUnityHandoff\Invoke-B0160W21.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:GITHUB_WORKSPACE *>&1 | Tee-Object -FilePath w21-unsafe-scratch.log
+          $code=$LASTEXITCODE
+          if($code -ne 2){throw "Unsafe scratch not denied: $code"}
+          $global:LASTEXITCODE=0
+      - name: No Unity installed must reject native -Run exit3 without consent prompt
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W21WindowsUnityHandoff\Invoke-B0160W21.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:RUNNER_TEMP -UnityPath 'Z:\missing\6000.3.14f1\Editor\Unity.exe' -Run *>&1 | Tee-Object -FilePath w21-missing-editor.log
+          $code=$LASTEXITCODE
+          if($code -ne 3){throw "Missing Editor must fail closed exit3: $code"}
+          if(Select-String w21-missing-editor.log -Pattern 'REAL_V2_ONLY_PASS'){throw 'False native V2 PASS'}
+          $global:LASTEXITCODE=0
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: B0160-W21-REAL-WINDOWS-SOURCE-ONLY-NOT-UNITY
+          path: |
+            w21-source-powershell.log
+            w21-unsafe-scratch.log
+            w21-missing-editor.log
+          retention-days: 14
