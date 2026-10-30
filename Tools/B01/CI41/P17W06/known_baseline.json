@@ -1,0 +1,28 @@
+{
+  "schema": "CI41-ASMGRAPH-KNOWN-RED-BASELINE-v1",
+  "baseline_origin_main_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "expected_asmdef_count": 27,
+  "known_errors": [
+    {
+      "code": "EDITMODE_ASSEMBLY_MUST_INCLUDE_EDITOR_ONLY",
+      "detail": "[]",
+      "path": "Assets/RoboRougelikeMechanics/MOV005OmniDrive/Tests/EditMode/RoboRougelike.MOV005OmniDrive.EditModeTests.asmdef"
+    },
+    {
+      "code": "EDITMODE_ASSEMBLY_MUST_INCLUDE_EDITOR_ONLY",
+      "detail": "[]",
+      "path": "Assets/RoboRougelikeMechanics/MOV006MagneticGrapple/Tests/EditMode/RoboRougelike.MOV006MagneticGrapple.EditModeTests.asmdef"
+    }
+  ],
+  "known_source_blob_pins": [
+    {
+      "path": "Assets/RoboRougelikeMechanics/MOV005OmniDrive/Tests/EditMode/RoboRougelike.MOV005OmniDrive.EditModeTests.asmdef",
+      "blob": "c0495aeba249d032a62b923717bd8dd94ee56858"
+    },
+    {
+      "path": "Assets/RoboRougelikeMechanics/MOV006MagneticGrapple/Tests/EditMode/RoboRougelike.MOV006MagneticGrapple.EditModeTests.asmdef",
+      "blob": "b042546b04fabdab2fd5d0c28957c11cdbccab95"
+    }
+  ],
+  "policy": "This is not a waiver, not a native Unity G1, and not a source graph PASS. Strict scan returns exit2. CI can ensure only these precisely pinned historical errors remain; any changed/added error or blob pin fails."
+}

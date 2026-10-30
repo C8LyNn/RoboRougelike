@@ -1,0 +1,69 @@
+name: B01-41 P17W06 Unity asmdef graph + pinned original known RED (source-only)
+on:
+  push:
+    branches: ['ci/b01-41-p17w06-asmdef-graph']
+    paths:
+      - 'Tools/B01/CI41/P17W06/**'
+      - '.github/workflows/b01-41-p17w06-asmdef-graph.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  asmdef-graph:
+    name: Original Git asmdef graph + 29 physical regressions (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify original source/test blobs pinned to immutable Git bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git hash-object Tools/B01/CI41/P17W06/asmdef_graph_gate.py)" = 'd15467ab676bdc264cba0b988b52c2a3fdc062bc'
+          test "$(git hash-object Tools/B01/CI41/P17W06/test_asmdef_graph_gate.py)" = '294e7e749f0b05ebff0f28e65f3b1ceaf9c5865f'
+          test "$(git hash-object Tools/B01/CI41/P17W06/verify_known_baseline.py)" = '96421f3b29dd3c006bef8cf41b59e9ec9cf7d913'
+          test "$(git hash-object Tools/B01/CI41/P17W06/known_baseline.json)" = '031a0caf430dd2a21b858a858b4618f0365e6850'
+          test "$(git hash-object Tools/B01/CI41/P17W06/test_known_baseline.py)" = 'a338b2a1296d8f45f9390f152d7192289b8c2615'
+          echo 'SOURCE_BLOBS_PINNED'
+      - name: Execute 22 original Git blob graph + 7 strict known-RED tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = 'Windows' ]; then PY=python; else PY=python3; fi
+          "$PY" -m unittest discover -s Tools/B01/CI41/P17W06 -p 'test_*.py' -v 2>&1 | tee "Tools/B01/CI41/P17W06/results-${RUNNER_OS}.txt"
+          grep -q 'PHYSICAL_GIT_TREE_3_ASMDEFS_2_EDGES_PASS_NOT_UNITY' "Tools/B01/CI41/P17W06/results-${RUNNER_OS}.txt"
+          grep -q 'EXACT_ORIGINAL_GIT_BLOBS_NOT_WORKTREE_DIRTY_DATA' "Tools/B01/CI41/P17W06/results-${RUNNER_OS}.txt"
+          grep -q 'ORIGINAL_PHYSICAL_GIT_OBJECTS_CLI_NEGATIVE_DRIFT_EXIT2' "Tools/B01/CI41/P17W06/results-${RUNNER_OS}.txt"
+          grep -q 'TWO_REAL_UNFIXED_ASMDEF_CONTRACT_DEFECTS_STAY_EXPLICIT_RED' "Tools/B01/CI41/P17W06/results-${RUNNER_OS}.txt"
+          echo '29_PHYSICAL_GIT_AND_FAIL_CLOSED_BASELINE_TESTS_PASS_SOURCE_ONLY'
+      - name: Strictly scan ORIGINAL 27 MOV001-009 asmdefs and preserve known source RED (exit2)
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = 'Windows' ]; then PY=python; else PY=python3; fi
+          SHA="$(git rev-parse HEAD)"
+          set +e
+          "$PY" Tools/B01/CI41/P17W06/asmdef_graph_gate.py --repo . --source-sha "$SHA" --require-count 27 --out "Tools/B01/CI41/P17W06/asmdef-original-${RUNNER_OS}.json"
+          GATE_EXIT=$?
+          set -e
+          if [ "$GATE_EXIT" -ne 2 ]; then echo "EXPECTED_TWO_KNOWN_UNFIXED_ORIGINAL_ASMDEF_DEFECTS_GATE_EXIT2_ACTUAL=$GATE_EXIT"; exit 2; fi
+          "$PY" Tools/B01/CI41/P17W06/verify_known_baseline.py --repo . --source-sha "$SHA" --report "Tools/B01/CI41/P17W06/asmdef-original-${RUNNER_OS}.json" --baseline Tools/B01/CI41/P17W06/known_baseline.json --out "Tools/B01/CI41/P17W06/known-defect-baseline-${RUNNER_OS}.json"
+          "$PY" -c 'import json,sys; g=json.load(open(sys.argv[1])); b=json.load(open(sys.argv[2])); assert g["result"]=="FAIL_SOURCE_GRAPH" and g["tracked_asmdef_count"]==27 and len(g["errors"])==2; assert b["status"]=="KNOWN_BASELINE_DEFECTS_OPEN" and b["game_source_g0"]=="HOLD_KNOWN_DEFECTS"; print("ORIGINAL_27_ASMDEFS_KNOWN_TWO_SOURCE_DEFECTS_UNFIXED_NO_FALSE_GREEN")' "Tools/B01/CI41/P17W06/asmdef-original-${RUNNER_OS}.json" "Tools/B01/CI41/P17W06/known-defect-baseline-${RUNNER_OS}.json"
+      - name: Upload real original Git-object findings and physical test log
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CI41-ASMGRAPH-ORIGINAL-${{ matrix.os }}
+          path: |
+            Tools/B01/CI41/P17W06/results-${{ runner.os }}.txt
+            Tools/B01/CI41/P17W06/asmdef-original-${{ runner.os }}.json
+            Tools/B01/CI41/P17W06/known-defect-baseline-${{ runner.os }}.json
+          retention-days: 14
+          if-no-files-found: warn
