@@ -31,13 +31,13 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git cat-file -e 'cf7f2a155570f99c412585d5f09f8f97f9e83754^{commit}' || git fetch --no-tags origin cf7f2a155570f99c412585d5f09f8f97f9e83754
+          git cat-file -e '135a67d42acfccd59ca9145e09630d0b4bbade1c^{commit}' || git fetch --no-tags origin 135a67d42acfccd59ca9145e09630d0b4bbade1c
           mkdir -p dist/bridge
-          git show cf7f2a155570f99c412585d5f09f8f97f9e83754:Assets/B0123UnitySaveBridge001/Core/AtomicWorldSwap.cs > dist/bridge/AtomicWorldSwap.cs
-          git show cf7f2a155570f99c412585d5f09f8f97f9e83754:Assets/B0123UnitySaveBridge001/Unity/IsolatedTwinRigSaveHost.cs > dist/bridge/IsolatedTwinRigSaveHost.cs
-          test "$(git hash-object dist/bridge/AtomicWorldSwap.cs)" = "74e853601ecc7a5455d9bb466432ce7c027e0695"
-          test "$(git hash-object dist/bridge/IsolatedTwinRigSaveHost.cs)" = "94594b0b83514e9f2e1c5bb21ddef9f093b299fc"
-          dotnet build Tools/B01/B01-61/P17W15CrossProcessGenerationQA/WorldSwapSourceQA.csproj -c Release -p:BridgeSourcePath=../../../../dist/bridge/AtomicWorldSwap.cs --nologo
+          git show 135a67d42acfccd59ca9145e09630d0b4bbade1c:Assets/B0123SecureV2HostBridge001/Runtime/AtomicColdUnityHostBridge.cs > dist/bridge/AtomicColdUnityHostBridge.cs
+          git show 135a67d42acfccd59ca9145e09630d0b4bbade1c:Assets/B0123SecureV2HostBridge001/Runtime/IsolatedSecureV2SaveHost.cs > dist/bridge/IsolatedSecureV2SaveHost.cs
+          test "$(git hash-object dist/bridge/AtomicColdUnityHostBridge.cs)" = "e9e9dc6d437e96dad6b08c1639e8bd94d62c4f4b"
+          test "$(git hash-object dist/bridge/IsolatedSecureV2SaveHost.cs)" = "980fddbefbe17f41590e36efaab9b9df017660fe"
+          dotnet build Tools/B01/B01-61/P17W15CrossProcessGenerationQA/WorldSwapSourceQA.csproj -c Release -p:BridgeSourcePath=../../../../dist/bridge/AtomicColdUnityHostBridge.cs --nologo
           dotnet Tools/B01/B01-61/P17W15CrossProcessGenerationQA/bin/Release/net8.0/WorldSwapSourceQA.dll | tee qa_bridge.log
       - name: Verify selected immutable blobs and produce exact SHA evidence
         shell: bash
