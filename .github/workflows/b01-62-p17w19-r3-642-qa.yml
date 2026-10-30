@@ -71,6 +71,35 @@ jobs:
           grep -q 'Ran 21 tests' "$dir/.output/original-642-physical-receiver.log"
           grep -q '^OK' "$dir/.output/original-642-physical-receiver.log"
           echo B0162_W19_SELECTED_642_ORIGINAL_23_ENTRY_G0_SCRATCH_RECEIPT_PASS | tee "$dir/.output/physical-receiver-result.log"
+      - name: Fetch EXACT final B01-23 owner-produced R4 #647 directly, forbid QA-source substitution
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W19R3642QA"
+          git fetch --no-tags origin 09c1809b73324a6d31c13e5d0143de62ac1e3ca6
+          git show 09c1809b73324a6d31c13e5d0143de62ac1e3ca6:Assets/B0123UnitySaveBridge001/Core/AtomicWorldSwap.cs > "$dir/.source/OwnerR4AtomicWorldSwap.cs"
+          test "$(git hash-object "$dir/.source/OwnerR4AtomicWorldSwap.cs")" = 8fd1dd9a1bc870433809da8fba897ec924fa4113
+          git worktree add --detach "$dir/.producer647" 09c1809b73324a6d31c13e5d0143de62ac1e3ca6
+          test "$(git -C "$dir/.producer647" rev-parse HEAD)" = 09c1809b73324a6d31c13e5d0143de62ac1e3ca6
+          echo B0162_W19_ORIGINAL_B0123_R4_647_SOURCE_EXACT_NOT_OWN_CANDIDATE | tee "$dir/.output/owner647-pins.log"
+      - name: Independent 16 directly linked original owner R4 647 transaction and identity security checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W19R3642QA"
+          dotnet run --project "$dir/OwnerOriginal647R4.csproj" -c Release --verbosity minimal 2>&1 | tee "$dir/.output/owner647-original-executed.log"
+          grep -q 'B0162_W19_SOURCE_TOTAL 16 PASS 16 FAIL 0' "$dir/.output/owner647-original-executed.log"
+          grep -q 'B0162_W19_R3_CORRECTED_COMMIT_AMBIGUITY=QUARANTINED' "$dir/.output/owner647-original-executed.log"
+      - name: Independent REAL exact original owner 647 R4 105099B 23-entry physical ZIP scratch rollback and MonoBehaviour source receipt
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W19R3642QA"
+          export B0162_ORIGINAL647_WORKTREE="$PWD/$dir/.producer647"
+          python -m unittest discover -s "$dir" -p test_original647_owner_r4_receiver.py -v 2>&1 | tee "$dir/.output/owner647-original-physical-source-receipt.log"
+          grep -q 'Ran 22 tests' "$dir/.output/owner647-original-physical-source-receipt.log"
+          grep -q '^OK' "$dir/.output/owner647-original-physical-source-receipt.log"
+          echo B0162_W19_REAL_OWNER_647_R4_SOURCE_PHYSICAL_RECEIVER_PASS | tee "$dir/.output/owner647-physical-G0-evidence.log"
       - uses: actions/upload-artifact@v4
         with:
           name: b01-62-p17w19-r3-642-${{ matrix.os }}
