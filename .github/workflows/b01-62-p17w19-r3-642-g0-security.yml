@@ -1,0 +1,55 @@
+name: B01-62 W19 R3 #642 Original Physical G0 and Uncertain Commit P0 QA
+on:
+  push:
+    branches:
+      - qa/b01-62-p17w19-r3-642-physical-uncertain-commit
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W19R3Candidate642Intake/**'
+      - '.github/workflows/b01-62-p17w19-r3-642-g0-security.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-original-r3-642:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Fetch sole selected R3 candidate #642 and exact frozen #510/#556 and old #596
+        run: |
+          git fetch --no-tags origin 22cec9888047994ae523cbe7bf1b0a483d64cec4
+          git fetch --no-tags origin d94400d95d13db7f27e1533df05c9292d5380431
+          git fetch --no-tags origin 33094f154c7b91119b36d58aab285e6e83c5de57
+          git fetch --no-tags origin efb2b06eafedab5469b57f163152d96aca3c5915
+      - name: Actually rebuild original #642 exact Git physical ZIP and strict rollback
+        run: |
+          set -o pipefail
+          mkdir -p b0162-w19-evidence
+          python Tools/B01/B01-62/P17W19R3Candidate642Intake/intake.py --repo . --output b0162-w19-evidence/physical.json | tee b0162-w19-evidence/physical.stdout
+      - name: Verify ORIGINAL frozen Git blob identities and copy readonly source into QA Input
+        run: |
+          python Tools/B01/B01-62/P17W19R3Candidate642Intake/source_guard.py --repo . --out Tools/B01/B01-62/P17W19R3Candidate642Intake/Input --receipt b0162-w19-evidence/original-source.json
+      - name: Execute ACTUAL original R3 #642 C#9 durable CAS ACK-loss and Light Heavy ID witnesses
+        run: |
+          set -o pipefail
+          dotnet run --project Tools/B01/B01-62/P17W19R3Candidate642Intake/OriginalR3642CommitQA.csproj -c Release --verbosity quiet | tee b0162-w19-evidence/original-r3-642-p0.stdout
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b0162-w19-r3-642-original-${{ matrix.os }}
+          path: b0162-w19-evidence/*
+          if-no-files-found: error
