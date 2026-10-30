@@ -1,0 +1,1355 @@
+{
+  "package": "B01-12-HUDSAFE-001/R1",
+  "kind": "chromium",
+  "passed": 224,
+  "failed": 0,
+  "js_errors": [],
+  "failures": [],
+  "results": [
+    {
+      "viewport": 320,
+      "case": "none/normal",
+      "test": "status",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "none/normal",
+      "test": "no_overlaps",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "none/normal",
+      "test": "atomic_fail",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "none/normal",
+      "test": "no_document_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "none/normal",
+      "test": "screen_matches_preset",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "none/normal",
+      "test": "live_status",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "none/crowded",
+      "test": "status",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "none/crowded",
+      "test": "no_overlaps",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "none/crowded",
+      "test": "atomic_fail",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "none/crowded",
+      "test": "no_document_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "none/crowded",
+      "test": "screen_matches_preset",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "none/crowded",
+      "test": "live_status",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "none/impossible",
+      "test": "status",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "none/impossible",
+      "test": "no_overlaps",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "none/impossible",
+      "test": "atomic_fail",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "none/impossible",
+      "test": "no_document_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "none/impossible",
+      "test": "screen_matches_preset",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "none/impossible",
+      "test": "live_status",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "notch/normal",
+      "test": "status",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "notch/normal",
+      "test": "no_overlaps",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "notch/normal",
+      "test": "atomic_fail",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "notch/normal",
+      "test": "no_document_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "notch/normal",
+      "test": "screen_matches_preset",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "notch/normal",
+      "test": "live_status",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "notch/crowded",
+      "test": "status",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "notch/crowded",
+      "test": "no_overlaps",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "notch/crowded",
+      "test": "atomic_fail",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "notch/crowded",
+      "test": "no_document_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "notch/crowded",
+      "test": "screen_matches_preset",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "notch/crowded",
+      "test": "live_status",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "notch/impossible",
+      "test": "status",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "notch/impossible",
+      "test": "no_overlaps",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "notch/impossible",
+      "test": "atomic_fail",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "notch/impossible",
+      "test": "no_document_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "notch/impossible",
+      "test": "screen_matches_preset",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "notch/impossible",
+      "test": "live_status",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "center/normal",
+      "test": "status",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "center/normal",
+      "test": "no_overlaps",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "center/normal",
+      "test": "atomic_fail",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "center/normal",
+      "test": "no_document_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "center/normal",
+      "test": "screen_matches_preset",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "center/normal",
+      "test": "live_status",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "center/crowded",
+      "test": "status",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "center/crowded",
+      "test": "no_overlaps",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "center/crowded",
+      "test": "atomic_fail",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "center/crowded",
+      "test": "no_document_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "center/crowded",
+      "test": "screen_matches_preset",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "center/crowded",
+      "test": "live_status",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "center/impossible",
+      "test": "status",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "center/impossible",
+      "test": "no_overlaps",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "center/impossible",
+      "test": "atomic_fail",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "center/impossible",
+      "test": "no_document_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "center/impossible",
+      "test": "screen_matches_preset",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "center/impossible",
+      "test": "live_status",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "large_insets",
+      "test": "safe_area",
+      "pass": true
+    },
+    {
+      "viewport": 320,
+      "case": "keyboard",
+      "test": "focus_visible",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "none/normal",
+      "test": "status",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "none/normal",
+      "test": "no_overlaps",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "none/normal",
+      "test": "atomic_fail",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "none/normal",
+      "test": "no_document_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "none/normal",
+      "test": "screen_matches_preset",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "none/normal",
+      "test": "live_status",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "none/crowded",
+      "test": "status",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "none/crowded",
+      "test": "no_overlaps",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "none/crowded",
+      "test": "atomic_fail",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "none/crowded",
+      "test": "no_document_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "none/crowded",
+      "test": "screen_matches_preset",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "none/crowded",
+      "test": "live_status",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "none/impossible",
+      "test": "status",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "none/impossible",
+      "test": "no_overlaps",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "none/impossible",
+      "test": "atomic_fail",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "none/impossible",
+      "test": "no_document_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "none/impossible",
+      "test": "screen_matches_preset",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "none/impossible",
+      "test": "live_status",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "notch/normal",
+      "test": "status",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "notch/normal",
+      "test": "no_overlaps",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "notch/normal",
+      "test": "atomic_fail",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "notch/normal",
+      "test": "no_document_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "notch/normal",
+      "test": "screen_matches_preset",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "notch/normal",
+      "test": "live_status",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "notch/crowded",
+      "test": "status",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "notch/crowded",
+      "test": "no_overlaps",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "notch/crowded",
+      "test": "atomic_fail",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "notch/crowded",
+      "test": "no_document_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "notch/crowded",
+      "test": "screen_matches_preset",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "notch/crowded",
+      "test": "live_status",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "notch/impossible",
+      "test": "status",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "notch/impossible",
+      "test": "no_overlaps",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "notch/impossible",
+      "test": "atomic_fail",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "notch/impossible",
+      "test": "no_document_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "notch/impossible",
+      "test": "screen_matches_preset",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "notch/impossible",
+      "test": "live_status",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "center/normal",
+      "test": "status",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "center/normal",
+      "test": "no_overlaps",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "center/normal",
+      "test": "atomic_fail",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "center/normal",
+      "test": "no_document_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "center/normal",
+      "test": "screen_matches_preset",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "center/normal",
+      "test": "live_status",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "center/crowded",
+      "test": "status",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "center/crowded",
+      "test": "no_overlaps",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "center/crowded",
+      "test": "atomic_fail",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "center/crowded",
+      "test": "no_document_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "center/crowded",
+      "test": "screen_matches_preset",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "center/crowded",
+      "test": "live_status",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "center/impossible",
+      "test": "status",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "center/impossible",
+      "test": "no_overlaps",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "center/impossible",
+      "test": "atomic_fail",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "center/impossible",
+      "test": "no_document_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "center/impossible",
+      "test": "screen_matches_preset",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "center/impossible",
+      "test": "live_status",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "large_insets",
+      "test": "safe_area",
+      "pass": true
+    },
+    {
+      "viewport": 768,
+      "case": "keyboard",
+      "test": "focus_visible",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "none/normal",
+      "test": "status",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "none/normal",
+      "test": "no_overlaps",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "none/normal",
+      "test": "atomic_fail",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "none/normal",
+      "test": "no_document_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "none/normal",
+      "test": "screen_matches_preset",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "none/normal",
+      "test": "live_status",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "none/crowded",
+      "test": "status",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "none/crowded",
+      "test": "no_overlaps",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "none/crowded",
+      "test": "atomic_fail",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "none/crowded",
+      "test": "no_document_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "none/crowded",
+      "test": "screen_matches_preset",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "none/crowded",
+      "test": "live_status",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "none/impossible",
+      "test": "status",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "none/impossible",
+      "test": "no_overlaps",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "none/impossible",
+      "test": "atomic_fail",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "none/impossible",
+      "test": "no_document_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "none/impossible",
+      "test": "screen_matches_preset",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "none/impossible",
+      "test": "live_status",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "notch/normal",
+      "test": "status",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "notch/normal",
+      "test": "no_overlaps",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "notch/normal",
+      "test": "atomic_fail",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "notch/normal",
+      "test": "no_document_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "notch/normal",
+      "test": "screen_matches_preset",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "notch/normal",
+      "test": "live_status",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "notch/crowded",
+      "test": "status",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "notch/crowded",
+      "test": "no_overlaps",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "notch/crowded",
+      "test": "atomic_fail",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "notch/crowded",
+      "test": "no_document_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "notch/crowded",
+      "test": "screen_matches_preset",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "notch/crowded",
+      "test": "live_status",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "notch/impossible",
+      "test": "status",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "notch/impossible",
+      "test": "no_overlaps",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "notch/impossible",
+      "test": "atomic_fail",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "notch/impossible",
+      "test": "no_document_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "notch/impossible",
+      "test": "screen_matches_preset",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "notch/impossible",
+      "test": "live_status",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "center/normal",
+      "test": "status",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "center/normal",
+      "test": "no_overlaps",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "center/normal",
+      "test": "atomic_fail",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "center/normal",
+      "test": "no_document_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "center/normal",
+      "test": "screen_matches_preset",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "center/normal",
+      "test": "live_status",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "center/crowded",
+      "test": "status",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "center/crowded",
+      "test": "no_overlaps",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "center/crowded",
+      "test": "atomic_fail",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "center/crowded",
+      "test": "no_document_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "center/crowded",
+      "test": "screen_matches_preset",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "center/crowded",
+      "test": "live_status",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "center/impossible",
+      "test": "status",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "center/impossible",
+      "test": "no_overlaps",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "center/impossible",
+      "test": "atomic_fail",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "center/impossible",
+      "test": "no_document_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "center/impossible",
+      "test": "screen_matches_preset",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "center/impossible",
+      "test": "live_status",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "large_insets",
+      "test": "safe_area",
+      "pass": true
+    },
+    {
+      "viewport": 1280,
+      "case": "keyboard",
+      "test": "focus_visible",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "none/normal",
+      "test": "status",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "none/normal",
+      "test": "no_overlaps",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "none/normal",
+      "test": "atomic_fail",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "none/normal",
+      "test": "no_document_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "none/normal",
+      "test": "screen_matches_preset",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "none/normal",
+      "test": "live_status",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "none/crowded",
+      "test": "status",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "none/crowded",
+      "test": "no_overlaps",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "none/crowded",
+      "test": "atomic_fail",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "none/crowded",
+      "test": "no_document_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "none/crowded",
+      "test": "screen_matches_preset",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "none/crowded",
+      "test": "live_status",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "none/impossible",
+      "test": "status",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "none/impossible",
+      "test": "no_overlaps",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "none/impossible",
+      "test": "atomic_fail",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "none/impossible",
+      "test": "no_document_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "none/impossible",
+      "test": "screen_matches_preset",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "none/impossible",
+      "test": "live_status",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "notch/normal",
+      "test": "status",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "notch/normal",
+      "test": "no_overlaps",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "notch/normal",
+      "test": "atomic_fail",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "notch/normal",
+      "test": "no_document_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "notch/normal",
+      "test": "screen_matches_preset",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "notch/normal",
+      "test": "live_status",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "notch/crowded",
+      "test": "status",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "notch/crowded",
+      "test": "no_overlaps",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "notch/crowded",
+      "test": "atomic_fail",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "notch/crowded",
+      "test": "no_document_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "notch/crowded",
+      "test": "screen_matches_preset",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "notch/crowded",
+      "test": "live_status",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "notch/impossible",
+      "test": "status",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "notch/impossible",
+      "test": "no_overlaps",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "notch/impossible",
+      "test": "atomic_fail",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "notch/impossible",
+      "test": "no_document_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "notch/impossible",
+      "test": "screen_matches_preset",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "notch/impossible",
+      "test": "live_status",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "center/normal",
+      "test": "status",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "center/normal",
+      "test": "no_overlaps",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "center/normal",
+      "test": "atomic_fail",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "center/normal",
+      "test": "no_document_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "center/normal",
+      "test": "screen_matches_preset",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "center/normal",
+      "test": "live_status",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "center/crowded",
+      "test": "status",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "center/crowded",
+      "test": "no_overlaps",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "center/crowded",
+      "test": "atomic_fail",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "center/crowded",
+      "test": "no_document_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "center/crowded",
+      "test": "screen_matches_preset",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "center/crowded",
+      "test": "live_status",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "center/impossible",
+      "test": "status",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "center/impossible",
+      "test": "no_overlaps",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "center/impossible",
+      "test": "atomic_fail",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "center/impossible",
+      "test": "no_document_horizontal_overflow",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "center/impossible",
+      "test": "screen_matches_preset",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "center/impossible",
+      "test": "live_status",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "large_insets",
+      "test": "safe_area",
+      "pass": true
+    },
+    {
+      "viewport": 1920,
+      "case": "keyboard",
+      "test": "focus_visible",
+      "pass": true
+    }
+  ],
+  "exit": 0
+}

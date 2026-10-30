@@ -1,0 +1,27 @@
+{
+  "package": "B01-12-HUDSAFE-001",
+  "version": "R1",
+  "pins": {
+    "layout_engine.js": {
+      "sha256": "4df223a5b9ef861cb65305673fb3c0c5314703b0dbc832ae86ba4f3f545b2656",
+      "bytes": 4378
+    },
+    "ui.js": {
+      "sha256": "793668c5a8492ac4f2cdfc10a96d85d550794690a41b39e497bcd0f4be66a01d",
+      "bytes": 3175
+    },
+    "demo.html": {
+      "sha256": "2d223920abfc28a2fc0bf8b1bd927a62128a79f4ab6a8a6d7d3343f75f9a3ec2",
+      "bytes": 3873
+    },
+    "test_engine.cjs": {
+      "sha256": "6dfd4b1e784c6093a1b452b494b88161e5503452f7d11ff6e3d7d99f9aa8f65a",
+      "bytes": 4953
+    },
+    "test_browser.py": {
+      "sha256": "2cb6ff417d206b8797918521436dde3c06334b42d481422d7ec6d6afe4d014b8",
+      "bytes": 3387
+    }
+  },
+  "files_scope": "Research/B01-12/P17W12/HudSafe001/**"
+}
