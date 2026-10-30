@@ -49,10 +49,12 @@ jobs:
         with:
           path: game
           ref: d94400d95d13db7f27e1533df05c9292d5380431
+          fetch-depth: 0
       - uses: actions/checkout@v4
         with:
           path: save
           ref: 33094f154c7b91119b36d58aab285e6e83c5de57
+          fetch-depth: 0
       - uses: actions/checkout@v4
         with:
           path: safe
