@@ -67,7 +67,7 @@ class RealEvidenceStructureNegativeControls(unittest.TestCase):
         self.assertEqual(out["total_nunit_cases"],22)
         self.assertEqual(out["g1"],"NOT_CERTIFIED_REQUIRE_LOCAL_HUMAN_EDITOR_EVIDENCE_REVIEW")
         self.assertEqual(out["result"],"STRUCTURALLY_CONSISTENT_NOT_PROVEN_NATIVE_EXECUTION")
-        self.assertIsNone(v.OWNER_SIGNED_R4)
+        self.assertEqual(v.OWNER_SIGNED_R4,"647")
         print("W20_SYNTHETIC_ONLY_STRUCTURAL_POSITIVE_NOT_G1_PASS")
     def test_02_wrong_r4_or_mixed_647_652(self):
         self.m["source_sha"]=v.R4["652"]["sha"]
@@ -182,7 +182,7 @@ class RealEvidenceStructureNegativeControls(unittest.TestCase):
         finally:
             sys.argv=saved
         self.assertEqual(json.loads((self.root/"release.json").read_text())["release_gate"],
-                         "HOLD_OWNER_R4_UNSELECTED_OR_NATIVE_UNATTESTED")
+                         "HOLD_HOST_P0_AND_NATIVE_UNATTESTED")
     def test_32_invalid_receipt_has_nonzero_process_status_not_a_pass(self):
         self.m["producer_pr"]="604"
         self.save()
@@ -195,4 +195,9 @@ class RealEvidenceStructureNegativeControls(unittest.TestCase):
             sys.argv=saved
         self.assertEqual(json.loads((self.root/"rejected.json").read_text())["result"],
                          "REJECTED_EVIDENCE")
+    def test_33_syntactically_complete_losing_r4_652_still_rejected(self):
+        self.m["producer_pr"]="652"
+        self.m["source_sha"]=v.R4["652"]["sha"]
+        self.m["source_sha_after"]=v.R4["652"]["sha"]
+        self.fail("UNTRUSTED_OR_MIXED_R4_SOURCE_SHA")
 if __name__=="__main__":unittest.main(verbosity=2)
