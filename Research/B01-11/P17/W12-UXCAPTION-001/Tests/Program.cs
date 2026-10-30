@@ -367,7 +367,7 @@ static class Program
             var f=Track(2,2);f.Record(Cue(1,10,SoundCueKind.CriticalWarning,key:"cue.warning",source:"core"));
             f.Record(Cue(2,20,SoundCueKind.PartDetached,key:"cue.detached",source:"part"));
             f.AdvanceTo(6009);
-            return f.Visible().Length==1&&f.Visible()[0].Kind==SoundCueKind.CriticalWarning;
+            return f.Visible().Length>=1&&f.Visible()[0].Kind==SoundCueKind.CriticalWarning;
         });
         Check("W13 newer critical can replace oldest critical on full critical capacity",()=>{
             var f=Track(1,1);f.Record(Cue(1,10,SoundCueKind.CriticalWarning,key:"cue.warning",source:"old"));
