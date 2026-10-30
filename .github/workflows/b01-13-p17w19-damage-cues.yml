@@ -1,0 +1,41 @@
+name: B01-13 W19 Damage Cue Tutorial original source
+on:
+  push:
+    paths: ['Research/B01-13/P17Q/**', '.github/workflows/b01-13-p17w19-damage-cues.yml']
+  pull_request:
+    paths: ['Research/B01-13/P17Q/**', '.github/workflows/b01-13-p17w19-damage-cues.yml']
+  workflow_dispatch:
+jobs:
+  source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+        node: ['20', '22']
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify original five owned physical Git blobs, byte sizes and SHA256
+        run: python Research/B01-13/P17Q/verify_package.py
+      - name: Execute actual original Node model, CLI and UI interaction regression
+        run: node --test Research/B01-13/P17Q/test_damage_cues.mjs
+
+      - name: Produce physical self-contained playable HTML
+        shell: pwsh
+        run: |
+          $out = Join-Path $env:RUNNER_TEMP 'b01-13-w19-playable.html'
+          node Research/B01-13/P17Q/damage_cues.mjs --output $out
+          if ($LASTEXITCODE -ne 0 -or -not (Test-Path $out)) { throw 'PLAYABLE_HTML_GENERATION_FAILED' }
+      - name: Upload exact source generated playable UX demo
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-13-W19-Playable-${{ matrix.os }}-Node${{ matrix.node }}
+          path: ${{ runner.temp }}/b01-13-w19-playable.html
+          if-no-files-found: error
+          retention-days: 14
