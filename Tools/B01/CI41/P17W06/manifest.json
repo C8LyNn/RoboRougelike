@@ -1,0 +1,50 @@
+{
+  "package": "CI41-ASMGRAPH-001",
+  "version": "1.0.0",
+  "producer": "B01-41",
+  "cycle": "PASS17_WAVE06",
+  "branch": "ci/b01-41-p17w06-asmdef-graph",
+  "original_main_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "scope": [
+    "Tools/B01/CI41/P17W06/**",
+    ".github/workflows/b01-41-p17w06-asmdef-graph.yml"
+  ],
+  "source_git_blobs": {
+    "asmdef_graph_gate.py": "d15467ab676bdc264cba0b988b52c2a3fdc062bc",
+    "test_asmdef_graph_gate.py": "294e7e749f0b05ebff0f28e65f3b1ceaf9c5865f",
+    "verify_known_baseline.py": "96421f3b29dd3c006bef8cf41b59e9ec9cf7d913",
+    "test_known_baseline.py": "a338b2a1296d8f45f9390f152d7192289b8c2615",
+    "known_baseline.json": "031a0caf430dd2a21b858a858b4618f0365e6850"
+  },
+  "original_repo_asmdefs": 27,
+  "known_source_errors": 2,
+  "strict_source_scan": {
+    "result": "FAIL_SOURCE_GRAPH",
+    "exit_code": 2,
+    "known_paths": [
+      "Assets/RoboRougelikeMechanics/MOV005OmniDrive/Tests/EditMode/RoboRougelike.MOV005OmniDrive.EditModeTests.asmdef",
+      "Assets/RoboRougelikeMechanics/MOV006MagneticGrapple/Tests/EditMode/RoboRougelike.MOV006MagneticGrapple.EditModeTests.asmdef"
+    ]
+  },
+  "baseline_control": {
+    "status": "KNOWN_BASELINE_DEFECTS_OPEN",
+    "new_errors": 0,
+    "game_source_g0": "HOLD_KNOWN_DEFECTS"
+  },
+  "expected_tests_per_os": 29,
+  "platforms": [
+    "ubuntu-24.04",
+    "windows-2025"
+  ],
+  "actual_unity_editor_by_producer": "NOT_RUN",
+  "independent_QA": "PENDING",
+  "G1": "NOT_RUN",
+  "receivers": [
+    "B01-40",
+    "B01-60",
+    "B01-61"
+  ],
+  "Codex_ACK": "PENDING",
+  "integrated": false,
+  "rollback": "Leave new Draft unmerged or remove only own seven isolated paths; no game changes"
+}
