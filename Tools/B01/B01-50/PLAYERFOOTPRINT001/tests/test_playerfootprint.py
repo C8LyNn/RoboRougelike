@@ -140,7 +140,7 @@ class PlayerFootprintTests(unittest.TestCase):
         self.build(extra={"secret.txt": b"UNIQUEPAYLOADHERE"}, compression=zipfile.ZIP_STORED)
         raw = self.zip_path.read_bytes()
         self.assertIn(b"UNIQUEPAYLOADHERE", raw)
-        self.zip_path.write_bytes(raw.replace(b"UNIQUEPAYLOADHERE", b"ALTEREDPAYLOADXX", 1))
+        self.zip_path.write_bytes(raw.replace(b"UNIQUEPAYLOADHERE", b"ALTEREDPAYLOADXYZ", 1))
         with self.assertRaises(zipfile.BadZipFile):
             m.inspect(self.zip_path)
 
