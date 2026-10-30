@@ -123,7 +123,7 @@ class TestPhysical(unittest.TestCase):
     def setUp(self):
         self.work = tempfile.TemporaryDirectory()
         self.addCleanup(self.work.cleanup)
-        self.root = Path(self.work.name)
+        self.root = Path(self.work.name).resolve()
         self.binary = self.root/'player.exe'
         self.binary.write_bytes(PLAYER)
         self.private = self.root/'private'
