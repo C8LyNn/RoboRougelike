@@ -1,0 +1,65 @@
+{
+  "package": "B01-60-P17W12-UNITY-NATIVE-EXACT-SHA-RECEIVER",
+  "version": "1.0.0",
+  "owner": "B01-60",
+  "source": {
+    "pr": 510,
+    "sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "frozen_parent_pr": 488,
+    "parent_sha": "33a32b8bd9ab40467ab1a17b5684926a37dbd4d3",
+    "original_W06_sha": "cb2b3a76e84266e2730fffc4ab048c1039f0652f",
+    "alternative_511": "NOT_SELECTED",
+    "alternative_494": "NOT_SELECTED",
+    "old_W07_W08_W09": "FORBIDDEN_IN_TEST_PROJECT"
+  },
+  "unity": {
+    "version": "6000.3.14f1",
+    "test_framework": "1.6.0",
+    "required_legal_license": true,
+    "host_editor_available": "NO",
+    "native_run_in_this_thread": "NOT_RUN",
+    "native_editor_log": "NOT_CREATED",
+    "native_test_xml": "NOT_CREATED",
+    "PlayMode_testcases_authored": 14,
+    "EditMode_testcases_authored": 2
+  },
+  "QA_scope": {
+    "paths": [
+      "Tools/B01/B01-60/P17W12NativeSecureV2QA/runner.py",
+      "Tools/B01/B01-60/P17W12NativeSecureV2QA/IndependentSecureV2PlayMode.cs",
+      "Tools/B01/B01-60/P17W12NativeSecureV2QA/IndependentSecureV2EditMode.cs",
+      "Tools/B01/B01-60/P17W12NativeSecureV2QA/README.md",
+      "Tools/B01/B01-60/P17W12NativeSecureV2QA/manifest.json",
+      ".github/workflows/b01-60-p17w12-native-unity-readiness.yml"
+    ],
+    "only_qa_owned": true,
+    "producer_changes": false,
+    "codex_changes": false,
+    "merge": false
+  },
+  "actual_source_pins": {
+    "Assets/B0123SecureReattachV2/Runtime/AtomicDockLedger.cs": "b6a4d04b0c6407c8c84451b4d599d96fe0e4d1a9",
+    "Assets/B0123SecureReattachV2/Runtime/SecureDebrisPlaygroundV2.cs": "328977b4cdcdcd7c9f128c01f11ff67f8e46086a",
+    "Assets/B0123SecureReattachV2/Runtime/SecureDockPolicy.cs": "9f80f705475bd312f209033a57bd07e03bf95628",
+    "Assets/B0123SecureReattachV2/Tests/PlayMode/SecureReattachV2PlayModeTests.cs": "77c1962ae5cb2c1d58b5c9f0a18148387eff5d1a",
+    "Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs": "fa1aa5e531927cbe73cf5fdfe161b4a981316db5"
+  },
+  "preflight": [
+    "all tracked original selected V2 + W06 Unity assets and meta from exact Git bytes",
+    "own QA native Unity test mono and asmdef asset materialization in a new clean Unity project",
+    "no legacy/alternative source paths in selected project",
+    "cross OS SHA-identical physical native Unity test project ZIP",
+    "unique GUID check original + new QA meta",
+    "10 adversarial ZIP and staging+rollback negative checks",
+    "only if licensed Editor present, real separate EditMode & PlayMode with XML and Editor.log"
+  ],
+  "rollback": "Delete only unique own QA branch files; never overwrite original project. Native mode creates disposable temp Unity project and removes it after execution; host should preserve only output logs/ZIP/XML.",
+  "gates": {
+    "source_preflight": "CI_PENDING",
+    "native_unity_G1": "NOT_RUN",
+    "G2": "HOLD",
+    "codex_offer": "NOT_SENT_BY_B01_60",
+    "codex_ack": "NONE",
+    "integrated": false
+  }
+}
