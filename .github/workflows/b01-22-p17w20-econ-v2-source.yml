@@ -1,0 +1,63 @@
+name: B01-22 P17 W20 ECON owner authority V2 source QA
+on:
+  pull_request:
+    paths:
+      - 'Assets/B01Packages/ECONREBUILD002/**'
+      - 'Tools/B01/ECONREBUILD002/**'
+      - '.github/workflows/b01-22-p17w20-econ-v2-source.yml'
+  workflow_dispatch:
+jobs:
+  original-v2-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2 # PR merge parent = original immutable base; push parent = same base
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Compile ORIGINAL V2 Unity-compatible C#9 source with strict warnings
+        shell: bash
+        run: dotnet build Tools/B01/ECONREBUILD002/RebuildV2.Tests.csproj -c Release
+      - name: Real OS disk CAS / owner / replay / economy model
+        shell: bash
+        run: |
+          dotnet run --project Tools/B01/ECONREBUILD002/RebuildV2.Tests.csproj -c Release --no-build -- "$RUNNER_TEMP/b01-22-econ-v2-owner.json" --scenario | tee "$RUNNER_TEMP/b01-22-econ-v2-case.log"
+          dotnet run --project Tools/B01/ECONREBUILD002/RebuildV2.Tests.csproj -c Release --no-build -- "$RUNNER_TEMP/b01-22-econ-v2-owner.json" --verify | tee -a "$RUNNER_TEMP/b01-22-econ-v2-case.log"
+          grep -q 'SOURCE_CSHARP_TESTS_PASS' "$RUNNER_TEMP/b01-22-econ-v2-case.log"
+          grep -q 'BALANCE_MODEL_ONLY' "$RUNNER_TEMP/b01-22-econ-v2-case.log"
+      - name: Verify new V2 scope and frozen original ECON blob
+        shell: bash
+        run: |
+          test "$(git rev-parse HEAD:Assets/B01Packages/ECONREBUILD001/Runtime/RebuildQueueService.cs)" = "cac95b28647528a7a46cb818c6d78037dc3e80a2"
+          test "$(git rev-parse HEAD:Tools/B01/ECONREBUILD001/tests/UnityJsonShim.cs)" = "2189c750566d692361702268580a93d3b660536f"
+          if ! git cat-file -e 12572117a3dce369257feabc57021cde58023369^{commit} 2>/dev/null; then
+            git fetch --no-tags --depth=1 origin 12572117a3dce369257feabc57021cde58023369
+          fi
+          git diff --exit-code 12572117a3dce369257feabc57021cde58023369 HEAD -- Assets/B01Packages/ECONREBUILD001 Tools/B01/ECONREBUILD001
+          python3 - <<'PY'
+          import json, subprocess
+          p = 'Tools/B01/ECONREBUILD002/manifest.json'
+          m = json.load(open(p, encoding='utf-8'))
+          assert m['source_parent_commit'] == '12572117a3dce369257feabc57021cde58023369'
+          for path, sha in m['verified_blob_sha1'].items():
+              actual = subprocess.check_output(['git','rev-parse','HEAD:'+path], text=True).strip()
+              assert actual == sha, (path,actual,sha)
+          paths = set(subprocess.check_output(['git','diff','--name-only',m['source_parent_commit'],'HEAD'], text=True).splitlines())
+          assert paths == set(m['owned_paths']), (sorted(paths),sorted(m['owned_paths']))
+          assert m['native_unity'] == 'NOT_RUN' and m['release_gate'] == 'HOLD'
+          print('PASS MANIFEST exact original V2 owned blobs and 11 scoped paths')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-22-econ-v2-source-${{ matrix.os }}
+          path: |
+            ${{ runner.temp }}/b01-22-econ-v2-case.log
+            ${{ runner.temp }}/b01-22-econ-v2-owner.json
+            ${{ runner.temp }}/lostack.json
+            ${{ runner.temp }}/reject.json
+          if-no-files-found: error
