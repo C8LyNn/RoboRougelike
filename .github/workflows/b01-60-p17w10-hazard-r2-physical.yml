@@ -1,0 +1,49 @@
+name: B01-60 P17 W10 HAZARD R2 original Git-byte physical source acceptance (UNITY NOT_RUN)
+on:
+  push:
+    branches: [qa/b01-60-p17w10-hazard-r2-physical-receiver]
+    paths:
+      - 'Tools/B01/B01-60/P17W10/HazardReceiverQA/**'
+      - '.github/workflows/b01-60-p17w10-hazard-r2-physical.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-60/P17W10/HazardReceiverQA/**'
+      - '.github/workflows/b01-60-p17w10-hazard-r2-physical.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-physical-receiver:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch exact frozen parent R1 and immutable owner R2 commits
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin 6095577ece27320b1a861a738cc23ba42d6793a6
+          git fetch --no-tags origin ebc3d6162f4516147092960291e50e15fe6c4582
+      - name: Independently execute original 10 Git blob pins, 12-file source ZIP, 14 malicious negatives, stage+rollback
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p qa-w10-hazard-physical-evidence
+          python Tools/B01/B01-60/P17W10/HazardReceiverQA/receiver.py 2>&1 | tee qa-w10-hazard-physical-evidence/independent-source-receiver-stdout.log
+      - name: Preserve actual source ZIP and receipt even if RED
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-60-w10-hazard-r2-physical-${{ matrix.os }}
+          path: qa-w10-hazard-physical-evidence/
+          retention-days: 21
+          if-no-files-found: warn
