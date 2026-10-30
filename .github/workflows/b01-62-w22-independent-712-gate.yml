@@ -1,0 +1,68 @@
+name: B01-62 W22 independent original #712 R2 vs #697 P0 red
+on:
+  push:
+    branches: [qa/b01-62-p17w22-r2-712-independent-p0-compare]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W22Independent712Gate/**'
+      - '.github/workflows/b01-62-w22-independent-712-gate.yml'
+permissions:
+  contents: read
+jobs:
+  original-source-differential:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Fetch and pin literal original #697 #712 #691 #669 #556 W06 #510
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W22Independent712Gate"
+          mkdir -p "$dir/.original" "b0162-w22-original-evidence"
+          git fetch --no-tags origin ab62b041e50f8aa0defada2aadc0987d6c63f9d9 bd8905ad549a7b26854b671be971f7d781308311 809f82575c638e1b4d2806b5f417bddab6c0871a d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121 33094f154c7b91119b36d58aab285e6e83c5de57 d94400d95d13db7f27e1533df05c9292d5380431
+          git show ab62b041e50f8aa0defada2aadc0987d6c63f9d9:Tools/B01/B01-62/P17W21Canonical681SlotAdapter001/CanonicalSlotCommitAdapter.cs > "$dir/.original/CanonicalSlotCommitAdapterV1.cs"
+          git show 809f82575c638e1b4d2806b5f417bddab6c0871a:Assets/B0123CanonicalSaveApi001/Core/CanonicalWorldGateway.cs > "$dir/.original/CanonicalWorldGatewayV2.cs"
+          git show d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121:Tools/B01/B01-62/P17W20SingleFileSaveSlot/SingleFileSaveSlot.cs > "$dir/.original/SingleFileSaveSlot.cs"
+          git show 33094f154c7b91119b36d58aab285e6e83c5de57:Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs > "$dir/.original/DetachedSnapshotContract.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs > "$dir/.original/DebrisImpulseCore.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs > "$dir/.original/SecureRigSpec.cs"
+          test "$(git hash-object "$dir/.original/CanonicalSlotCommitAdapterV1.cs")" = bcecb87c8b1b198e8c086d30f26846bf202ea1c4
+          test "$(git hash-object Tools/B01/B01-62/P17W21CanonicalSessionLeaseR2/CanonicalSlotSessionR2.cs)" = fefc2e263e068b913c6e59ec3c8375bbbe43db4e
+          test "$(git hash-object "$dir/.original/CanonicalWorldGatewayV2.cs")" = 704e774dedd5be5af26e0791fba87ecdb109ae2a
+          test "$(git hash-object "$dir/.original/SingleFileSaveSlot.cs")" = db7745635164d9eb6b10f3246538700158130b7b
+          test "$(git hash-object "$dir/.original/DetachedSnapshotContract.cs")" = b52e511c370f5fca56c74029050844dc8cbb7f9a
+          test "$(git hash-object "$dir/.original/DebrisImpulseCore.cs")" = fa1aa5e531927cbe73cf5fdfe161b4a981316db5
+          test "$(git hash-object "$dir/.original/SecureRigSpec.cs")" = b680ed0ec969ac23203fa55eab7b90f8daa86e43
+          echo B0162_W22_SEVEN_ORIGINAL_CSHARP_BLOBS_EXACT_GIT_VERIFIED | tee b0162-w22-original-evidence/provenance.log
+      - name: Compile original V1 #697 exact source, independently reproduce RED
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W22Independent712Gate"
+          dotnet run --project "$dir/Original697R1RedControl.csproj" -c Release --verbosity minimal 2>&1 | tee b0162-w22-original-evidence/original697-expected-red.log
+          grep -q 'B0162_W22_712_INDEPENDENT_ORIGINAL_SOURCE_TOTAL 10 PASS 10 FAIL 0' b0162-w22-original-evidence/original697-expected-red.log
+          grep -q 'B0162_W22_V1_697_EXPECTED_PRODUCT_SECURITY_RED=REPRODUCED' b0162-w22-original-evidence/original697-expected-red.log
+      - name: Compile original R2 #712 exact source, independently verify new GREEN
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W22Independent712Gate"
+          dotnet run --project "$dir/Original712R2QA.csproj" -c Release --verbosity minimal 2>&1 | tee b0162-w22-original-evidence/original712-corrected-green.log
+          grep -q 'B0162_W22_712_INDEPENDENT_ORIGINAL_SOURCE_TOTAL 10 PASS 10 FAIL 0' b0162-w22-original-evidence/original712-corrected-green.log
+          grep -q 'B0162_W22_R2_712_EXPECTED_PRODUCT_SECURITY_GREEN=VERIFIED_SOURCE' b0162-w22-original-evidence/original712-corrected-green.log
+          grep -q 'W22_FIXED_R2_712_ORPHAN_LEASE_DENIED_GREEN' b0162-w22-original-evidence/original712-corrected-green.log
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b0162-w22-independent-v1-vs-r2-${{ matrix.os }}
+          path: b0162-w22-original-evidence/*
+          if-no-files-found: error
