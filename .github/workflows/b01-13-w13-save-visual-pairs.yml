@@ -1,0 +1,27 @@
+name: B01-13 W13 Save Visual Pairs source
+on:
+  push:
+    paths: ['Research/B01-13/P17K/**', '.github/workflows/b01-13-w13-save-visual-pairs.yml']
+  pull_request:
+    paths: ['Research/B01-13/P17K/**', '.github/workflows/b01-13-w13-save-visual-pairs.yml']
+  workflow_dispatch:
+jobs:
+  original-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+        node: ['20', '22']
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify exact source blobs and physical SHA256
+        run: python Research/B01-13/P17K/verify_package.py
+      - name: Original Node unit and negative filesystem tests
+        run: node --test Research/B01-13/P17K/test_save_visual_pairs.mjs

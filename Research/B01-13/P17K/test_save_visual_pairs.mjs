@@ -1,0 +1,46 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
+import crypto from "node:crypto";
+import {spawnSync} from "node:child_process";
+import {fileURLToPath} from "node:url";
+import {SOURCE_SHA,hashBinary,blank,evaluate,cli} from "./save_visual_pairs.mjs";
+const H="a".repeat(64);
+function caseFile(scenario="DETACHED_HELD"){
+ const p=blank({scenario,session:"T0042",exe_sha:H}),second={visual_token:"V02",state:scenario==="DETACHED_HELD"?"DETACHED":"ATTACHED",socket:scenario==="DETACHED_HELD"?null:"S02"};
+ const row=[{visual_token:"V01",state:"ATTACHED",socket:"S01"},second];
+ p.unfilled=false;p.snapshots[0].modules=row.map(x=>({...x}));p.snapshots[1].modules=row.map(x=>({...x}));return p;
+}
+function temp(fn){const d=fs.mkdtempSync(path.join(os.tmpdir(),"b01w13-"));try{fn(d)}finally{fs.rmSync(d,{recursive:true,force:true})}}
+test("empty template is never an observed result",()=>assert.throws(()=>evaluate(blank({scenario:"ATTACHED_ONLY",session:"T0001",exe_sha:H})),/UNFILLED/));
+test("exact selected SHA enforced",()=>{const p=caseFile();p.selected_sha="b".repeat(40);assert.throws(()=>evaluate(p),/SELECTED_SHA/)});
+test("attached-only no visible drift",()=>assert.equal(evaluate(caseFile("ATTACHED_ONLY")).status,"NO_OBSERVED_VISUAL_DRIFT"));
+test("detached case no visible drift",()=>assert.equal(evaluate(caseFile()).status,"NO_OBSERVED_VISUAL_DRIFT"));
+test("reattach case no visible drift",()=>assert.equal(evaluate(caseFile("REATTACHED_BEFORE_SAVE")).status,"NO_OBSERVED_VISUAL_DRIFT"));
+test("missing module red",()=>{const p=caseFile();p.snapshots[1].modules.pop();assert.deepEqual(evaluate(p).diff.missing,["V02"])});
+test("unexpected module red",()=>{const p=caseFile();p.snapshots[1].modules.push({visual_token:"V03",state:"DETACHED",socket:null});assert.deepEqual(evaluate(p).diff.unexpected,["V03"])});
+test("detached state change red",()=>{const p=caseFile();p.snapshots[1].modules[1]={visual_token:"V02",state:"ATTACHED",socket:"S02"};assert.deepEqual(evaluate(p).diff.state_change,["V02"])});
+test("attached state change red",()=>{const p=caseFile();p.snapshots[1].modules[0]={visual_token:"V01",state:"DETACHED",socket:null};assert.deepEqual(evaluate(p).diff.state_change,["V01"])});
+test("socket location drift red",()=>{const p=caseFile();p.snapshots[1].modules[0].socket="S03";assert.deepEqual(evaluate(p).diff.socket_change,["V01"])});
+test("duplicate token rejected",()=>{const p=caseFile();p.snapshots[1].modules[1].visual_token="V01";assert.throws(()=>evaluate(p),/DUPLICATE_TOKEN/)});
+test("duplicate physical socket rejected",()=>{const p=caseFile("ATTACHED_ONLY");p.snapshots[1].modules[1].socket="S01";assert.throws(()=>evaluate(p),/DUPLICATE_SOCKET/)});
+test("detached cannot claim attached socket",()=>{const p=caseFile();p.snapshots[1].modules[1].socket="S03";assert.throws(()=>evaluate(p),/DETACHED_SOCKET/)});
+test("attached requires socket",()=>{const p=caseFile();p.snapshots[1].modules[0].socket=null;assert.throws(()=>evaluate(p),/SOCKET/)});
+test("reversed stage cannot pass",()=>{const p=caseFile();p.snapshots.reverse();assert.throws(()=>evaluate(p),/STAGE_ORDER/)});
+test("PII field refused",()=>{const p=caseFile();p.person_name="Bob";assert.throws(()=>evaluate(p),/SCHEMA/)});
+test("free text refused",()=>{const p=caseFile();p.snapshots[0].modules[0].note="private";assert.throws(()=>evaluate(p),/SCHEMA/)});
+test("forged human verification refused",()=>{const p=caseFile();p.human_verified=1;assert.throws(()=>evaluate(p),/FORGED_GATE/)});
+test("forged Unity verification refused",()=>{const p=caseFile();p.native_unity="PASS";assert.throws(()=>evaluate(p),/FORGED_GATE/)});
+test("forged source-to-binary refused",()=>{const p=caseFile();p.source_to_player="ATTESTED";assert.throws(()=>evaluate(p),/FORGED_GATE/)});
+test("detached scenario must have detached module",()=>{const p=caseFile("ATTACHED_ONLY");p.scenario="DETACHED_HELD";assert.throws(()=>evaluate(p),/NO_DETACHED_BEFORE/)});
+test("attached scenario must have all attached",()=>{const p=caseFile();p.scenario="ATTACHED_ONLY";assert.throws(()=>evaluate(p),/UNEXPECTED_DETACHED_BEFORE/)});
+test("unknown scenario rejected",()=>assert.throws(()=>blank({scenario:"BAD",session:"T0001",exe_sha:H}),/SCENARIO/));
+test("anonymous session ID only",()=>assert.throws(()=>blank({scenario:"ATTACHED_ONLY",session:"John",exe_sha:H}),/SESSION/));
+test("real binary digest equals known SHA256",()=>temp(d=>{const f=path.join(d,"dummy");fs.writeFileSync(f,"SYNTHETIC");assert.equal(hashBinary(f),crypto.createHash("sha256").update("SYNTHETIC").digest("hex"))}));
+test("empty binary rejected",()=>temp(d=>{const f=path.join(d,"dummy");fs.writeFileSync(f,"");assert.throws(()=>hashBinary(f),/BINARY_FILE/)}));
+test("exclusive output cannot overwrite",()=>temp(d=>{const f=path.join(d,"dummy"),out=path.join(d,"out");fs.writeFileSync(f,"SYNTHETIC");const cmd=["template","--player",f,"--scenario","ATTACHED_ONLY","--session","T0001","--output",out];cli(cmd);assert.throws(()=>cli(cmd),/EEXIST/)}));
+test("Git worktree output refused with real input",()=>temp(d=>{const f=path.join(d,"dummy");fs.writeFileSync(f,"SYNTHETIC");fs.mkdirSync(path.join(d,".git"));assert.throws(()=>cli(["template","--player",f,"--scenario","ATTACHED_ONLY","--session","T0001","--output",path.join(d,"out")]),/REPOSITORY_OUTPUT/)}));
+test("real executable subprocess template then evaluate",()=>temp(d=>{const exe=path.join(d,"player"),tpl=path.join(d,"tpl.json"),inp=path.join(d,"inp.json"),out=path.join(d,"out.json"),bin=fileURLToPath(new URL("./save_visual_pairs.mjs",import.meta.url));fs.writeFileSync(exe,"SYNTHETIC");let r=spawnSync(process.execPath,[bin,"template","--player",exe,"--scenario","ATTACHED_ONLY","--session","T0042","--output",tpl],{encoding:"utf8"});assert.equal(r.status,0,r.stderr);const t=JSON.parse(fs.readFileSync(tpl));t.unfilled=false;t.snapshots[0].modules=[{visual_token:"V10",state:"ATTACHED",socket:"S05"}];t.snapshots[1].modules=[{visual_token:"V10",state:"ATTACHED",socket:"S05"}];fs.writeFileSync(inp,JSON.stringify(t));r=spawnSync(process.execPath,[bin,"evaluate","--input",inp,"--output",out],{encoding:"utf8"});assert.equal(r.status,0,r.stderr);assert.equal(JSON.parse(fs.readFileSync(out)).human_verified,0)}));
+test("human CLI command never available",()=>{const bin=fileURLToPath(new URL("./save_visual_pairs.mjs",import.meta.url)),r=spawnSync(process.execPath,[bin,"human"],{encoding:"utf8"});assert.equal(r.status,2);assert.match(r.stderr,/UNKNOWN_COMMAND/)});
