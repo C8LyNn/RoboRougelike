@@ -1,0 +1,559 @@
+{
+  "package": "B01-12-RUNRECAP-001/R1",
+  "suite": "chromium",
+  "pass": 136,
+  "fail": 0,
+  "jsErrors": [],
+  "cases": [
+    {
+      "name": "320x720 root heading",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 outcome defeat",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 effective damage",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 repaired HP",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 module losses",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 all 10 events",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 aria initial selection",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 damage cause",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 detach filter count",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 detach title accessible",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 causal detail present",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 intersection type/source",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 structural cause",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 no match",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 empty message",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 search filter restored",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 reset all event filters",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 reset query",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 selected event",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 causality is shown",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 valid export JSON",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 export 10 events",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 invalid import rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 atomic unchanged",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 valid import accepted",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 new count",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 new outcome",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 new damage",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 new detach count",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 injection rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 injection atomic",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 no reflected HTML",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 no horizontal overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "320x720 JS exception free",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 root heading",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 outcome defeat",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 effective damage",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 repaired HP",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 module losses",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 all 10 events",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 aria initial selection",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 damage cause",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 detach filter count",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 detach title accessible",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 causal detail present",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 intersection type/source",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 structural cause",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 no match",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 empty message",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 search filter restored",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 reset all event filters",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 reset query",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 selected event",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 causality is shown",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 valid export JSON",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 export 10 events",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 invalid import rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 atomic unchanged",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 valid import accepted",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 new count",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 new outcome",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 new damage",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 new detach count",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 injection rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 injection atomic",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 no reflected HTML",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 no horizontal overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "768x1024 JS exception free",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 root heading",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 outcome defeat",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 effective damage",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 repaired HP",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 module losses",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 all 10 events",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 aria initial selection",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 damage cause",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 detach filter count",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 detach title accessible",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 causal detail present",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 intersection type/source",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 structural cause",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 no match",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 empty message",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 search filter restored",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 reset all event filters",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 reset query",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 selected event",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 causality is shown",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 valid export JSON",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 export 10 events",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 invalid import rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 atomic unchanged",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 valid import accepted",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 new count",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 new outcome",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 new damage",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 new detach count",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 injection rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 injection atomic",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 no reflected HTML",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 no horizontal overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "1280x720 JS exception free",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 root heading",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 outcome defeat",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 effective damage",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 repaired HP",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 module losses",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 all 10 events",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 aria initial selection",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 damage cause",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 detach filter count",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 detach title accessible",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 causal detail present",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 intersection type/source",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 structural cause",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 no match",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 empty message",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 search filter restored",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 reset all event filters",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 reset query",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 selected event",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 causality is shown",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 valid export JSON",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 export 10 events",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 invalid import rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 atomic unchanged",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 valid import accepted",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 new count",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 new outcome",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 new damage",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 new detach count",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 injection rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 injection atomic",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 no reflected HTML",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 no horizontal overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "1920x1080 JS exception free",
+      "status": "PASS"
+    }
+  ],
+  "viewports": [
+    "320x720",
+    "768x1024",
+    "1280x720",
+    "1920x1080"
+  ]
+}

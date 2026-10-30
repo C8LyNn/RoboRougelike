@@ -1,0 +1,50 @@
+name: B01-12 RUNRECAP-001 source QA
+on:
+  pull_request:
+    paths:
+      - 'Research/B01-12/P17W11/RunRecap001/**'
+      - '.github/workflows/b01-12-runrecap.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-and-browser:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Chromium and Playwright
+        run: |
+          python -m pip install playwright==1.55.0
+          python -m playwright install --with-deps chromium
+      - name: Test original verified files in Node and Chromium
+        working-directory: Research/B01-12/P17W11/RunRecap001
+        run: |
+          node test_engine.cjs
+          python test_browser.py
+      - name: Deliberate tamper must fail closed (exit 2)
+        run: |
+          cp -a Research/B01-12/P17W11/RunRecap001 /tmp/rr-tamper
+          printf 'X' >> /tmp/rr-tamper/demo.html
+          set +e
+          (cd /tmp/rr-tamper && node test_engine.cjs)
+          node_code=$?
+          (cd /tmp/rr-tamper && python test_browser.py)
+          browser_code=$?
+          set -e
+          echo "tamper exits: node=$node_code, browser=$browser_code"
+          test "$node_code" -eq 2 && test "$browser_code" -eq 2
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b01-12-runrecap-original-evidence
+          path: |
+            Research/B01-12/P17W11/RunRecap001/node-results.json
+            Research/B01-12/P17W11/RunRecap001/browser-results.json
+            Research/B01-12/P17W11/RunRecap001/evidence-1280x720.png
+          if-no-files-found: warn

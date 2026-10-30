@@ -1,0 +1,27 @@
+{
+  "package": "B01-12-RUNRECAP-001",
+  "version": "R1",
+  "scope": "Research/B01-12/P17W11/RunRecap001",
+  "files": {
+    "recap_engine.js": {
+      "sha256": "301dc4f3035e94900da6532bd0efe8823346e393c4e4e541a8645efd02cfb23b",
+      "bytes": 7032
+    },
+    "demo.html": {
+      "sha256": "ad57911b89d3a5b99ed051d6c3b6d6cdf130bb40e3c90e4880ed84c611d2bf84",
+      "bytes": 5904
+    },
+    "ui.js": {
+      "sha256": "e301bf1e54d8f2c0e607c4cba6595ef3475b82184a4dee7246a519086ffb9813",
+      "bytes": 3288
+    },
+    "test_engine.cjs": {
+      "sha256": "f683e5cf1ba0d7f8303fd4bceca8ff1206549113aae4e58df289b043223619d0",
+      "bytes": 7451
+    },
+    "test_browser.py": {
+      "sha256": "29bf1054837d9fa73363e81e66d9ce37c2784ba0cde98071153f6c7bc93203db",
+      "bytes": 6288
+    }
+  }
+}

@@ -1,0 +1,274 @@
+{
+  "package": "B01-12-RUNRECAP-001/R1",
+  "date": "2026-10-30",
+  "suite": "node",
+  "pass": 66,
+  "fail": 0,
+  "exit": 0,
+  "cases": [
+    {
+      "name": "schema",
+      "status": "PASS"
+    },
+    {
+      "name": "sample roundtrip",
+      "status": "PASS"
+    },
+    {
+      "name": "sample timeline count",
+      "status": "PASS"
+    },
+    {
+      "name": "effective damage (not overkill)",
+      "status": "PASS"
+    },
+    {
+      "name": "healed HP",
+      "status": "PASS"
+    },
+    {
+      "name": "module loss",
+      "status": "PASS"
+    },
+    {
+      "name": "module total",
+      "status": "PASS"
+    },
+    {
+      "name": "end core HP",
+      "status": "PASS"
+    },
+    {
+      "name": "impact loss remains positive HP",
+      "status": "PASS"
+    },
+    {
+      "name": "gun remains attached",
+      "status": "PASS"
+    },
+    {
+      "name": "damage source attribution",
+      "status": "PASS"
+    },
+    {
+      "name": "impact reason label",
+      "status": "PASS"
+    },
+    {
+      "name": "hit overkill visible",
+      "status": "PASS"
+    },
+    {
+      "name": "input untouched by derive",
+      "status": "PASS"
+    },
+    {
+      "name": "filter all",
+      "status": "PASS"
+    },
+    {
+      "name": "filter hit",
+      "status": "PASS"
+    },
+    {
+      "name": "filter detach",
+      "status": "PASS"
+    },
+    {
+      "name": "filter repair",
+      "status": "PASS"
+    },
+    {
+      "name": "filter terrain",
+      "status": "PASS"
+    },
+    {
+      "name": "filter enemy and detach",
+      "status": "PASS"
+    },
+    {
+      "name": "case insensitive search",
+      "status": "PASS"
+    },
+    {
+      "name": "search reason",
+      "status": "PASS"
+    },
+    {
+      "name": "search no results",
+      "status": "PASS"
+    },
+    {
+      "name": "filter preserves chronology",
+      "status": "PASS"
+    },
+    {
+      "name": "wrong filter type rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "wrong filter source rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "filter oversize rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "filter object rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "wrong schema rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "extra top field rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid run id rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "empty modules rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "duplicate module id rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "unknown module ref rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "extra module property rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "markup module name rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "newline module name rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "zero HP module rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "duplicate event id rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "events out of order rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "event time beyond run rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid event type rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "negative damage rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "fractional damage rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid damage source rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "unknown detach reason rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "detach at positive HP destroyed rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "hit after detach rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "repair after detach rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "repair undamaged module rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "illegal repair source rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "extra event key rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "empty JSON rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "malformed JSON rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "oversize JSON rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid outcome rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "overlong duration rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "300 events cap enforced",
+      "status": "PASS"
+    },
+    {
+      "name": "24 modules cap enforced",
+      "status": "PASS"
+    },
+    {
+      "name": "input root array rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "prototype polluted parsed object rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "zero events supported",
+      "status": "PASS"
+    },
+    {
+      "name": "same timestamp supported",
+      "status": "PASS"
+    },
+    {
+      "name": "empty query supported",
+      "status": "PASS"
+    },
+    {
+      "name": "deterministic repeat",
+      "status": "PASS"
+    },
+    {
+      "name": "parse clones input",
+      "status": "PASS"
+    }
+  ]
+}
