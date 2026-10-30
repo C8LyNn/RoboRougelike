@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="../../../../../Research/B01-24/P17/W06-SQUAD-PRESSURE-001/SquadPressure.cs" Link="UNCHANGED_OriginalB0124_SquadPressure.cs" />
+    <Compile Include="../../../../../Assets/R3/R3EnemyArchetype.cs" Link="UNCHANGED_OriginalCodex_R3EnemyArchetype.cs" />
+  </ItemGroup>
+</Project>

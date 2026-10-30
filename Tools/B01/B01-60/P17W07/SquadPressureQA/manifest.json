@@ -1,0 +1,66 @@
+{
+  "package_id": "B01-60-INDEPENDENT-SQUAD-PRESSURE-QA-001",
+  "version": "1.0.0",
+  "owner": "B01-60",
+  "wave": "PASS17-W07",
+  "parent_source": {
+    "producer": "B01-24",
+    "pr": 429,
+    "sha": "4d13f76e6c0c08033e305900daf61c0a7267a725",
+    "runtime_path": "Research/B01-24/P17/W06-SQUAD-PRESSURE-001/SquadPressure.cs",
+    "runtime_git_blob": "3402fe61153e307ba164340956afd76aec6e8603",
+    "original_codex_pr": 383,
+    "original_codex_gameplay_sha": "203a0805251ed28293888e43f2d49f0df63767c6",
+    "original_r3_path": "Assets/R3/R3EnemyArchetype.cs",
+    "original_r3_git_blob": "66cd1ee734b129117b3753d1205469a0496cb673"
+  },
+  "api_scope": "read-only independent original C#9 state machine property invariants; no enemy AI adapter or gameplay mutation",
+  "files": [
+    "Tools/B01/B01-60/P17W07/SquadPressureQA/Program.cs",
+    "Tools/B01/B01-60/P17W07/SquadPressureQA/IndependentQA.csproj",
+    "Tools/B01/B01-60/P17W07/SquadPressureQA/verify_frozen.py",
+    "Tools/B01/B01-60/P17W07/SquadPressureQA/README.md",
+    "Tools/B01/B01-60/P17W07/SquadPressureQA/manifest.json",
+    ".github/workflows/b01-60-p17w07-squad-pressure-independent.yml"
+  ],
+  "independent_test_cases": [
+    "128 seeded squads * 480 original CSharp9 Tick transitions with shuffled observation permutation, model transition proof, per-role cooldown, global gap, exclusive active, LOS/capability/range",
+    "11 invalid timed observation IDs and numeric values rejected without state mutation compared to twin untouched scheduler",
+    "250 intentionally failed hostile ticks followed by clean calls enforce atomic rejection",
+    "huge time jump end/grant ordering and 64-bit upper bound",
+    "transiently disabled archetype fairness / role non-starvation",
+    "two independent squads, one suppressed, no leaked state"
+  ],
+  "known_limitations": [
+    "Original producer scheduler only advisory: NO native Unity 6000.3.14f1, actual enemy AI, attack, physics, damage or human play",
+    "Producer balance parameters provisional; engine tick cadence unspecified",
+    "Contract does not identify target per mark; scout Started creates timed flag before full window completes; Codex must define target/interrupt semantics",
+    "Producer CI source tests not equivalent to Codex integration"
+  ],
+  "g0": "B01_60_INDEPENDENT_SOURCE_CSHARP_QA_PASS",
+  "g1": "NATIVE_UNITY_NOT_RUN",
+  "g2": "HOLD",
+  "codex_ack": "PENDING",
+  "integrated": false,
+  "no_merge": true,
+  "rollback": "Delete only this QA folder and its own dedicated workflow; do not alter B01-24 producer #429, Assets/R3, main/develop or Codex.",
+  "actual_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41037951233",
+  "tested_code_sha": "3246f436fa9d14d17484cc7e01de0ebdcc389703",
+  "original_source_immutable_sha": "4d13f76e6c0c08033e305900daf61c0a7267a725",
+  "real_test_receipts": {
+    "windows": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41037951233/artifacts/12969011219",
+    "ubuntu": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41037951233/artifacts/12969310821",
+    "source_sha1_7_of_7": "PASS",
+    "direct_CSharp9_compilation": "PASS_WARNASERROR",
+    "test_groups": "6_PASS_0_FAIL_PER_OS",
+    "actual_CSharp9_Tick_invocations_per_OS": 61440,
+    "fuzz_started": 18489,
+    "fuzz_active": 5780,
+    "fuzz_ended": 18445,
+    "fuzz_idle": 18726,
+    "invalid_atomic_twin_inputs": 11,
+    "repeated_invalid_rejected_stateful_ticks": 250,
+    "trace_sha256": "7ed0496e72abb40cfb6ace9a4e605d2bde5a98d5ca79b260815497bceb8da7dc",
+    "both_OS": "SUCCESS"
+  }
+}

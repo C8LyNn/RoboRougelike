@@ -1,0 +1,62 @@
+name: B01-60 P17 W07 original SquadPressure independent CSharp stress QA (NOT UNITY)
+on:
+  push:
+    branches: ['qa/b01-60-p17w07-squad-pressure-independent']
+    paths:
+      - 'Tools/B01/B01-60/P17W07/SquadPressureQA/**'
+      - '.github/workflows/b01-60-p17w07-squad-pressure-independent.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-60/P17W07/SquadPressureQA/**'
+      - '.github/workflows/b01-60-p17w07-squad-pressure-independent.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  independent-csharp-state-qa:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Resolve immutable producer 429 and original Codex 383 commits
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin 4d13f76e6c0c08033e305900daf61c0a7267a725
+          git fetch --no-tags origin 203a0805251ed28293888e43f2d49f0df63767c6
+          mkdir -p qa-receipts
+      - name: Verify ORIGINAL input Git file identity and strictly QA-owned diff
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W07/SquadPressureQA/verify_frozen.py | tee qa-receipts/git-source-pins.json
+      - name: Compile unmodified game and producer code as CSharp 9 warnings-as-errors
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build Tools/B01/B01-60/P17W07/SquadPressureQA/IndependentQA.csproj -c Release --warnaserror | tee qa-receipts/dotnet-build.txt
+      - name: Independently fuzz actual original game scheduler 61k times and test atomic invalid rollback
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run -c Release --no-build --project Tools/B01/B01-60/P17W07/SquadPressureQA/IndependentQA.csproj | tee qa-receipts/independent-squad-pressure.txt
+      - name: Preserve independently observed stdout and source pins
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-60-w07-squad-pressure-independent-${{ matrix.os }}
+          path: qa-receipts/
+          if-no-files-found: warn
+          retention-days: 21
