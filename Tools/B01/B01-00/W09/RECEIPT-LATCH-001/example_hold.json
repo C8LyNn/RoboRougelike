@@ -25,7 +25,11 @@
         "required_steps": [
           "Original source full dispatch and freeze regression suite",
           "Produce deterministic example plan"
-        ]
+        ],
+        "required_runner_labels": {
+          "dispatch (windows-2025)": "windows-2025",
+          "dispatch (ubuntu-24.04)": "ubuntu-24.04"
+        }
       }
     }
   },
