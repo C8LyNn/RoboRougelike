@@ -1,0 +1,33 @@
+{
+  "package_id": "CI41-ACTION-EVIDENCE-001",
+  "version": "1.0.0",
+  "owner": "B01-41",
+  "wave": "PASS17_WAVE13",
+  "base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "branch": "ci/b01-41-p17w13-action-evidence",
+  "selected_source_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "original_pinned_runs": [
+    41069853535,
+    41074147973,
+    41073443777,
+    41073443940
+  ],
+  "tests_per_os": 35,
+  "owned_paths": [
+    "Tools/B01/CI41/P17W13/action_evidence.py",
+    "Tools/B01/CI41/P17W13/test_action_evidence.py",
+    "Tools/B01/CI41/P17W13/README.md",
+    "Tools/B01/CI41/P17W13/manifest.json",
+    ".github/workflows/b01-41-p17w13-action-evidence.yml"
+  ],
+  "gates": {
+    "producer": "CI_PENDING",
+    "independent_source_G0": "EXTERNAL_ACCEPTANCE_521_ONLY",
+    "native_Unity_G1": "NOT_RUN",
+    "save_load": "HOLD_UNTIL_NEW_CONTRACT",
+    "G2": "HOLD",
+    "codex_ack": false,
+    "integrated": false
+  },
+  "rollback": "Leave own Draft unmerged; remove only W13 CI-owned paths; do not touch original producer source or original GitHub run metadata."
+}
