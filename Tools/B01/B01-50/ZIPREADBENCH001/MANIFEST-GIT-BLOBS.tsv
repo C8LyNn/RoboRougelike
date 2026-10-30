@@ -1,0 +1,5 @@
+e3b76193b729477dd4ac5df66642fb401eb1dfb1	Tools/B01/B01-50/ZIPREADBENCH001/zipreadbench.py
+7639414b57eab2ab887cecb0beb7ea6d6eb68f27	Tools/B01/B01-50/ZIPREADBENCH001/tests/test_zipreadbench.py
+7ae4a74d359eaa08115529699a359ca2dde4c865	Tools/B01/B01-50/ZIPREADBENCH001/README.md
+1a4aa9189253fb9d5a8724b03d62c71eca088366	Tools/B01/B01-50/ZIPREADBENCH001/evidence/historical_zip_readbench.json
+d254a963b853c27066606d6bdb819cc2022686c2	.github/workflows/b01-50-w15-zipreadbench.yml
