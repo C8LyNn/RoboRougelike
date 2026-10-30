@@ -177,9 +177,9 @@ class RebuildModelTests(unittest.TestCase):
         with self.assertRaises(InvalidScenario):
             validate(plan([attempt("win")],cash=float("nan")))
 
-    def test_26_quote_rounding_to_zero_rejected(self):
-        with self.assertRaises(InvalidScenario):
-            validate(plan([attempt("win")],price=2,percent=1))
+    def test_26_quote_rounding_to_zero_allowed_for_discounted_paid_order(self):
+        x=validate(plan([attempt("win")],price=2,percent=1))
+        self.assertEqual(x["quote"],0)
 
     def test_27_purchase_price_must_exceed_quote(self):
         with self.assertRaises(InvalidScenario):
@@ -824,6 +824,190 @@ class RebuildModelTests(unittest.TestCase):
         self.assertEqual((after["reserved_final"],
                           before["reserved_final"]),(1,2))
         self.assertEqual((after["restored"],before["restored"]),(0,0))
+
+
+    def test_121_owner_approved_exact_65_quote(self):
+        from rebuild_balance import run_approved_plan
+        x=run_approved_plan(plan([attempt("v",True,(part("a"),part("b")))]))
+        self.assertEqual((x["quote"],x["charged_scrap"],x["free"],x["paid"]),
+                         (65,65,1,1))
+        self.assertEqual((x["cadence"],x["bootstrap"]),("per_win",False))
+
+    def test_122_owner_approved_12wins_22_repaired_and_2_pending_780scrap(self):
+        from rebuild_balance import run_approved_plan
+        s=[attempt(f"v{i}",True,(part(f"a{i}"),part(f"b{i}")))
+           for i in range(12)]
+        x=run_approved_plan(plan(s,cash=4000))
+        self.assertEqual((x["wins"],x["free"],x["paid"],x["charged_scrap"],
+                          x["restored"],x["reserved_final"]),(12,12,12,780,22,2))
+
+    def test_123_owner_approved_no_previctory_free_quota(self):
+        from rebuild_balance import run_approved_plan
+        x=run_approved_plan(plan([attempt("loss",False,(part("a"),))],cash=65))
+        self.assertEqual((x["wins"],x["free"],x["paid"],x["charged_scrap"]),
+                         (0,0,1,65))
+
+    def test_124_owner_approved_first_winner_gives_one_free(self):
+        from rebuild_balance import run_approved_plan
+        x=run_approved_plan(plan([attempt("first",True,(part("a"),part("b")))],
+                                 cash=65))
+        self.assertEqual((x["free"],x["paid"],x["charged_scrap"]),(1,1,65))
+
+    def test_125_owner_approved_does_not_stockpile_unused_wins(self):
+        from rebuild_balance import run_approved_plan
+        x=run_approved_plan(plan([attempt("w1",True),attempt("w2",True),
+                                  attempt("w3",True,(part("a"),part("b")))],
+                                 cash=65))
+        self.assertEqual((x["wins"],x["free"],x["paid"]),(3,1,1))
+
+    def test_126_owner_approved_price_one_paid_zero_not_free(self):
+        from rebuild_balance import run_approved_plan
+        x=run_approved_plan(plan([attempt("v",True,(part("a"),part("b")))],
+                                 price=1,cash=0))
+        self.assertEqual((x["quote"],x["free"],x["paid"],x["denied"],
+                          x["charged_scrap"]),(0,1,1,0,0))
+
+    def test_127_owner_approved_price_two_floor_one(self):
+        from rebuild_balance import run_approved_plan
+        x=run_approved_plan(plan([attempt("v",True,(part("a"),part("b")))],
+                                 price=2,cash=1))
+        self.assertEqual((x["quote"],x["charged_scrap"]), (1,1))
+
+    def test_128_owner_approved_price_three_floor_one(self):
+        from rebuild_balance import run_approved_plan
+        x=run_approved_plan(plan([attempt("v",True,(part("a"),part("b")))],
+                                 price=3,cash=1))
+        self.assertEqual((x["quote"],x["charged_scrap"]), (1,1))
+
+    def test_129_zero_paid_ticket_never_mislabeled_free_when_terminal(self):
+        from rebuild_balance import run_approved_plan
+        s=[dict(attempt("last",True,(part("a"),part("b"))),
+                next_challenge_available_after=False)]
+        x=run_approved_plan(plan(s,price=1,cash=0))
+        self.assertEqual((x["free"],x["paid"],x["modeled_stranded_free_tickets"],
+                          x["modeled_stranded_pending_count"]),(1,1,1,2))
+
+    def test_130_zero_paid_ticket_previctory_not_double_free(self):
+        from rebuild_balance import run_approved_plan
+        s=[attempt("loss",False,(part("a"),part("b")))]
+        x=run_approved_plan(plan(s,price=1,cash=0))
+        self.assertEqual((x["free"],x["paid"],x["wins"],
+                          x["charged_scrap"]),(0,2,0,0))
+
+    def test_131_approved_quoted_cost_always_less_than_positive_purchase(self):
+        from rebuild_balance import run_approved_plan
+        for price in (1,2,3,7,10,39,99,100,999,1000000000):
+            with self.subTest(price=price):
+                x=run_approved_plan(plan([attempt("v",True)],price=price))
+                self.assertGreaterEqual(x["quote"],0)
+                self.assertLess(x["quote"],price)
+                self.assertEqual(x["quote"],price*65//100)
+
+    def test_132_approved_duplicate_win_id_fails_preflight(self):
+        from rebuild_balance import run_approved_plan
+        with self.assertRaises(InvalidScenario):
+            run_approved_plan(plan([attempt("same",True),attempt("same",True)]))
+
+    def test_133_approved_lost_battle_never_grants_victory_credit(self):
+        from rebuild_balance import run_approved_plan
+        x=run_approved_plan(plan([attempt("loss",False,(part("wheel"),))],
+                                 cash=0))
+        self.assertEqual((x["wins"],x["free"],x["denied"]),(0,0,1))
+
+    def test_134_approved_broken_nonessential_part_does_not_block(self):
+        from rebuild_balance import run_approved_plan
+        x=run_approved_plan(plan([
+            attempt("loss",False,(part("visual","other"),)),
+            attempt("victory",True)],cash=0))
+        self.assertEqual((x["wins"],x["blocked_deploy_attempts"]),(1,0))
+
+    def test_135_approved_essential_0hp_uses_single_loaner_when_valid(self):
+        from rebuild_balance import run_approved_plan
+        s=[attempt("lost",False,({"id":"gun","role":"weapon",
+                                 "blocks_deploy":True},)),
+           attempt("loaner_win",True)]
+        x=run_approved_plan(plan(s,cash=0))
+        self.assertEqual((x["hypothetical_loaner_used"],x["wins"],
+                          x["restored"],x["destroyed_final"]),(1,1,1,0))
+
+    def test_136_approved_loaner_loss_exhausts_lease_per_run(self):
+        from rebuild_balance import run_approved_plan
+        s=[attempt("lost",False,({"id":"gun","role":"weapon",
+                                 "blocks_deploy":True},)),
+           attempt("borrowed_lost",False),attempt("another_win",True)]
+        x=run_approved_plan(plan(s,cash=0))
+        self.assertEqual((x["hypothetical_loaner_used"],x["wins"],
+                          x["blocked_deploy_attempts"]),(1,0,1))
+
+    def test_137_approved_dead_core_forbids_loaner_and_fake_win(self):
+        from rebuild_balance import run_approved_plan
+        s=[dict(attempt("lost",False,({"id":"gun","role":"weapon",
+                                      "blocks_deploy":True},)),
+                core_alive_after=False),attempt("fake_win",True,earned=500)]
+        x=run_approved_plan(plan(s,cash=0))
+        self.assertEqual((x["wins"],x["hypothetical_loaner_used"],
+                          x["earned_scrap"]),(0,0,0))
+
+    def test_138_approved_no_next_challenge_forbids_loaner(self):
+        from rebuild_balance import run_approved_plan
+        s=[dict(attempt("won",True,({"id":"gun","role":"weapon",
+                                    "blocks_deploy":True},)),
+                next_challenge_available_after=False),
+           attempt("fake_challenge",True)]
+        x=run_approved_plan(plan(s,cash=0))
+        self.assertEqual((x["wins"],x["hypothetical_loaner_used"],
+                          x["blocked_no_challenge_attempts"]),(1,0,1))
+
+    def test_139_approved_same_win_cannot_repair_broken_new_part(self):
+        from rebuild_balance import run_approved_plan
+        x=run_approved_plan(plan([attempt("v",True,(part("a"),))],cash=0))
+        self.assertEqual((x["wins"],x["restored"],x["reserved_final"]),(1,0,1))
+
+    def test_140_approved_override_70_and_75_historical_quotes(self):
+        from rebuild_balance import run_approved_plan
+        for pct in (1,10,70,75,99):
+            x=run_approved_plan(plan([attempt("v",True,(part("a"),part("b")))],
+                                     cash=65,percent=pct))
+            self.assertEqual((x["quote"],x["charged_scrap"]),(65,65))
+            self.assertEqual(x["source_quote_overridden_from"],pct)
+
+    def test_141_approved_does_not_mutate_caller_plan(self):
+        from rebuild_balance import run_approved_plan
+        p=plan([attempt("v",True,(part("a"),part("b")))],percent=70)
+        before=json.dumps(p,sort_keys=True)
+        run_approved_plan(p)
+        self.assertEqual(before,json.dumps(p,sort_keys=True))
+
+    def test_142_approved_model_does_not_claim_trusted_game_event(self):
+        from rebuild_balance import run_approved_plan
+        x=run_approved_plan(plan([attempt("v",True)]))
+        self.assertEqual(x["actual_trusted_victory_attestation"],
+                         "NOT_AVAILABLE_MODEL_ONLY")
+        self.assertEqual(x["approved_loaner_weaker_asset"],
+                         "DESIGN_CONTRACT_ONLY_NOT_SPAWNED")
+        self.assertFalse(x.get("game_integrated",False))
+
+    def test_143_owner_has_not_set_native_reward_settlement_order(self):
+        from rebuild_balance import run_approved_plan
+        s=[attempt("v",True,(part("a"),part("b")),earned=65)]
+        p=plan(s,cash=0)
+        late=run_approved_plan(p,reward_timing="after_reservation")
+        early=run_approved_plan(p,reward_timing="before_reservation")
+        self.assertEqual((late["free"],late["paid"],late["denied"]),(1,0,1))
+        self.assertEqual((early["free"],early["paid"],early["denied"]),(1,1,0))
+        self.assertEqual(late["live_reward_settlement"],
+                         "OWNER_IMPLEMENTATION_UNVERIFIED")
+
+    def test_144_invalid_zero_purchase_price_rejected(self):
+        from rebuild_balance import run_approved_plan
+        with self.assertRaises(InvalidScenario):
+            run_approved_plan(plan([attempt("v",True)],price=0))
+
+    def test_145_explicit_original_price_one_even_with_75pct_works(self):
+        from rebuild_balance import run_approved_plan
+        x=run_approved_plan(plan([attempt("v",True,(part("a"),part("b")))],
+                                 price=1,percent=75,cash=0))
+        self.assertEqual((x["quote"],x["paid"],x["free"]),(0,1,1))
 
 
 if __name__ == "__main__":
