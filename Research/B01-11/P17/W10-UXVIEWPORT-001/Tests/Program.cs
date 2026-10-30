@@ -26,15 +26,10 @@ static class Program
         return true;
     }
 
-    // W11 test-first optional reflection: R1 source deliberately has no measured-content API.
+    // R2 production test: compile and call the original strongly-typed source API.
     static HudLayout BuildMeasured(HudViewport v,int critical,int vitals,int threats,int objectives=0,int tips=0)
     {
-        var t=typeof(HudLayoutCore).Assembly.GetType("B01.UXViewport.HudContentMetrics");
-        if(t==null)return null;
-        var arg=Activator.CreateInstance(t,new object[]{critical,vitals,threats,objectives,tips});
-        var method=typeof(HudLayoutCore).GetMethod("Build",new[]{typeof(HudViewport),t});
-        if(method==null)return null;
-        return (HudLayout)method.Invoke(null,new object[]{v,arg});
+        return HudLayoutCore.Build(v,new HudContentMetrics(critical,vitals,threats,objectives,tips));
     }
     static void Main()
     {
@@ -208,10 +203,8 @@ static class Program
             return measured!=null&&Valid(measured)&&measured.Critical.Height==baseline.Critical.Height&&
                    measured.Vitals.Height==baseline.Vitals.Height&&measured.Threats.Height==baseline.Threats.Height;
         });
-        Check("W11 huge measured mandatory critical fails closed, never clips",()=>{
-            try { return BuildMeasured(new HudViewport(1280,720),900,0,0)==null?false:false; }
-            catch(System.Reflection.TargetInvocationException e){return e.InnerException is InvalidOperationException;}
-        });
+        Check("W11 huge measured mandatory critical fails closed, never clips",()=>
+            Throws<InvalidOperationException>(()=>BuildMeasured(new HudViewport(1280,720),900,0,0)));
         Check("W11 measured complex portrait input still has nonoverlapping rectangles",()=>{
             var measured=BuildMeasured(new HudViewport(768,1024,0,32,0,48,125),180,140,105);
             return measured!=null&&Valid(measured);
@@ -229,6 +222,23 @@ static class Program
             Throws<ArgumentOutOfRangeException>(()=>new HudViewport(1280,720,left:int.MaxValue,right:1)));
         Check("W11 top/bottom integer overflow insets must be rejected at input",()=>
             Throws<ArgumentOutOfRangeException>(()=>new HudViewport(1280,720,top:int.MaxValue,bottom:1)));
+
+        Check("W11 zero metrics constructor accepted",()=>Valid(HudLayoutCore.Build(
+            new HudViewport(1280,720),new HudContentMetrics(0,0,0))));
+        Check("W11 null measured metrics preserves legacy R1",()=>{
+            var v=new HudViewport(1024,768);var a=HudLayoutCore.Build(v);var b=HudLayoutCore.Build(v,null);
+            return a.Critical.Height==b.Critical.Height&&a.Vitals.Height==b.Vitals.Height&&Valid(b);
+        });
+        Check("W11 negative critical text metrics rejected",()=>
+            Throws<ArgumentOutOfRangeException>(()=>new HudContentMetrics(-1,0,0)));
+        Check("W11 negative optional text metrics rejected",()=>
+            Throws<ArgumentOutOfRangeException>(()=>new HudContentMetrics(0,0,0,-1,0)));
+        Check("W11 oversized text metrics rejected",()=>
+            Throws<ArgumentOutOfRangeException>(()=>new HudContentMetrics(0,0,16385)));
+        Check("W11 extreme double-overflow horizontal insets rejected",()=>
+            Throws<ArgumentOutOfRangeException>(()=>new HudViewport(1280,720,left:int.MaxValue,right:int.MaxValue)));
+        Check("W11 extreme double-overflow vertical insets rejected",()=>
+            Throws<ArgumentOutOfRangeException>(()=>new HudViewport(1280,720,top:int.MaxValue,bottom:int.MaxValue)));
         Console.WriteLine("RESULT "+passed+" PASS, "+failed+" FAIL");
         if(failed!=0)Environment.Exit(1);
     }
