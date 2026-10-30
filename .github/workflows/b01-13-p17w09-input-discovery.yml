@@ -1,0 +1,43 @@
+name: B01-13 W09 INPUT-DISCOVERY original Unity input adapter QA
+on:
+  push:
+    branches:
+      - research/b01-13-pass17-wave09-input-discovery
+  pull_request:
+    paths:
+      - 'Research/B01-13/P17G/**'
+      - '.github/workflows/b01-13-p17w09-input-discovery.yml'
+jobs:
+  original-source-input-QA:
+    name: ${{ matrix.os }} .NET 8 source and exact prefab GUID
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify exact physical source and prefab GUID pins
+        shell: bash
+        run: python Research/B01-13/P17G/verify_package.py
+      - name: Build original production C-sharp plus test-only UnityEngine mock API
+        shell: bash
+        run: dotnet build Research/B01-13/P17G/Tests/DotNetOnly/InputDiscoveryTests.csproj --configuration Release --warnaserror
+      - name: Execute original positive and negative input-observation tests
+        shell: bash
+        run: |
+          mkdir -p Research/B01-13/P17G/Tests/Evidence
+          dotnet run --project Research/B01-13/P17G/Tests/DotNetOnly/InputDiscoveryTests.csproj --configuration Release --no-build | tee Research/B01-13/P17G/Tests/Evidence/results.txt
+      - name: Publish physical original stdout evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-13-w09-${{ matrix.os }}-original-test-output
+          path: Research/B01-13/P17G/Tests/Evidence/results.txt
+          if-no-files-found: warn
