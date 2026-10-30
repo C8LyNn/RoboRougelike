@@ -282,6 +282,62 @@ internal static class Program
             Equal(copy.RequiredCheckpoints,4);
             Equal(GhostMath.At(copy,copy.ElapsedSeconds).X,5f);
         });
+        Test("55 bound playback follows direct validated pose",()=>{
+            var track=Run("Light",1);
+            var playback=new GhostPlayback(track);
+            for(int i=0;i<=20;i++){
+                var t=i*.25f;
+                var a=playback.Seek(t);var b=GhostMath.At(track,t);
+                Equal(a.X,b.X);Equal(a.Yaw,b.Yaw);
+            }
+        });
+        Test("56 reference track is cloned on bind, source mutation cannot poison",()=>{
+            var t=Run();
+            var playback=new GhostPlayback(t);
+            var original=playback.Seek(0).X;
+            t.Frames[0].Pose.X=999;
+            t.Frames[1].Time=-10;
+            Equal(playback.Seek(0).X,original);
+            Equal(playback.Seek(2.5f).X,2.5f);
+        });
+        Test("57 seek pose result cannot mutate internally held frames",()=>{
+            var playback=new GhostPlayback(Run());
+            var a=playback.Seek(0);
+            a.X=1000;a.Yaw=129;
+            Equal(playback.Seek(0).X,0f);
+            Equal(playback.Seek(0).Yaw,0f);
+        });
+        Test("58 bound playback rejects failure as reference",()=>{
+            var r=new GhostRecorder("X","L",1,P());
+            r.Tick(1,false,P(1));
+            var bad=r.Fail(P(1));
+            Check(Reject(()=>new GhostPlayback(bad)),"failed race accepted");
+        });
+        Test("59 playback refuses nonfinite seek even on validated track",()=>{
+            var p=new GhostPlayback(Run());
+            Check(Reject(()=>p.Seek(float.NaN)),"NaN accepted");
+            Check(Reject(()=>p.Seek(float.PositiveInfinity)),"Infinity accepted");
+        });
+        Test("60 playback exposes immutable identity and duration",()=>{
+            var p=new GhostPlayback(Run("Heavy",2,"CHLCOURSE"));
+            Equal(p.CourseId,"CHLCOURSE");Equal(p.RigId,"Heavy");
+            Equal(p.Duration,10f);
+        });
+        Test("61 stable playback handles 10000 repeated seeks deterministically",()=>{
+            var p=new GhostPlayback(Run());
+            double total=0;
+            for(int i=0;i<10000;i++){
+                var v=p.Seek((i%1001)*.005f);
+                Check(float.IsFinite(v.X) && float.IsFinite(v.Yaw),"nonfinite replay");
+                total+=v.X;
+            }
+            Check(total>0,"empty replay");
+        });
+        Test("62 bound playback clamps both endpoints after bind",()=>{
+            var p=new GhostPlayback(Run());
+            Equal(p.Seek(-12).X,0f);
+            Equal(p.Seek(999).X,5f);
+        });
         Console.WriteLine("B01-10 GHOST REAL_CSHARP "+passed+" PASS / "+failed+
           " FAIL | 100 seeded synthetic motion traces | UNITY=NOT_RUN");
         return failed==0?0:1;
