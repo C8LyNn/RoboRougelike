@@ -127,4 +127,3 @@ summary = {'package':'B01-12-CONTROLS-001/R1', 'source_sha256':hashlib.sha256(so
 (ROOT/'test-results.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 print(json.dumps({k:v for k,v in summary.items() if k!='checks'},indent=2))
 sys.exit(0 if not summary['failed'] and not page_errors else 1)
-
