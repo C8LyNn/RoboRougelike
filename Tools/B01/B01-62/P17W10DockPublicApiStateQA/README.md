@@ -28,3 +28,23 @@ W09 is a **source-level protected isolated demo UI**. A separate external script
 **Gate results:** independent W10 QA `SOURCE_EVIDENCE_PASS` if workflow green, `EXTERNAL_PUBLIC_API_HOLD` until producer fix, `NATIVE_UNITY_NOT_RUN`, `G1/G2_HOLD`, `CODEX_NOT_ACK`. Receiving roles: B01-23 source owner, B01-40 physical/GUID/asmdef gate, B01-60/61 independent licensed-native regression, B01-00 future #79 routing. No QA-only guard should be installed into live game.
 
 **Rollback:** close draft and remove ONLY W10 QA paths from this branch. Original #421/#439/#455/#471 source is immutable. There is no Unity gameplay installation or save migration to undo.
+
+
+## W10 extension — secure V2 #488: transaction and consumed-ID safety
+
+**Immutable new producer candidate:** [#488](https://github.com/C8LyNn/RoboRougelike/pull/488) `33a32b8bd9ab40467ab1a17b5684926a37dbd4d3`. This is distinct from prior independent [#487](https://github.com/C8LyNn/RoboRougelike/pull/487), which only inspects the older W09 public-call bypass. The W10 extension checks a **different source and data-integrity invariant** in V2, without editing V2.
+
+- `v2_transaction_gate.py` directly fetches **five exact original Git source objects** W06/W10, including the real original V2 `CommitDock`, `GuardedDockCommand`, W06 ledger and emitter, and V2 scene builder. The three public V2 docking aliases are routed through one Inspector before Commit. However the V2 private `CommitDock` mutates velocity, Rigidbody kinematic flag, parent, local position and detached flag **before** testing `RearmAfterReattach`, which can fail when the consumed ID is absent. Source review flags `HOLD_COMMIT_BEFORE_ID_REARM`.
+- `test_v2_transaction_gate.py`: 14 independent original-source pin/contract and negative mutation checks (not original engine execution).
+- `V2_StateQA.csproj` / `V2_StateProgram.cs`: C#9/.NET8 directly compiles and executes the **unmodified original W06 DebrisImpulseCore.cs and original V2 SecureDockPolicy.cs**, staged from the exact V2 source Git SHA, not mocks. Nine checks prove consumed-ID loss after original `ClearForNewRun()`, false rearm in that state, actual guarded router committing after allowed inspector, rejection on blocked aliases and an explicitly **MODELED physical state sequence** that remains modified when the ledger rejects. The state model is NOT Unity Rigidbody execution, and original production `CommitDock` is source-inspected, not executed in .NET.
+
+Reproduction on a disposable branch checkout with Git + Python3.11 + .NET8:
+```bash
+git fetch --no-tags --depth=1 origin 33a32b8bd9ab40467ab1a17b5684926a37dbd4d3
+python -m unittest discover -s Tools/B01/B01-62/P17W10DockPublicApiStateQA -p test_v2_transaction_gate.py -v
+mkdir -p Tools/B01/B01-62/P17W10DockPublicApiStateQA/.output
+python Tools/B01/B01-62/P17W10DockPublicApiStateQA/v2_transaction_gate.py --repo . --receipt Tools/B01/B01-62/P17W10DockPublicApiStateQA/.output/v2-evidence.json --stage Tools/B01/B01-62/P17W10DockPublicApiStateQA/.source_v2
+dotnet run --project Tools/B01/B01-62/P17W10DockPublicApiStateQA/V2_StateQA.csproj -c Release
+```
+
+Write-once stage/output directories: remove only those disposable **QA-generated** directories on rollback; never run any game-save mutation. Native licensed Unity tests remain **NOT_RUN**. **B01-23** should accept/reject the source precondition defect with a separately versioned owner fix; ideally enforce consumed-ID preconditions before any rigidbody/parent modification and test failure atomicity after a valid detach and ledger reset, with no unsafe double rearm. B01-60 runs real Unity PlayMode, B01-40 formal G0; B01-00 alone queues any future Codex integration.
