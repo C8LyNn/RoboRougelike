@@ -38,6 +38,16 @@ jobs:
           grep -q 'R3_STALE_WORLD_SAVE_FENCE_GREEN=BLOCKED' b0161-w19-r3-run.log
           grep -q 'DURABLE_COMMIT_THROW_AFTER_REAL_WRITE_RED=REPRODUCED' b0161-w19-r3-run.log
           grep -q 'SOURCE_RELEASE_GATE=HOLD_UNCERTAIN_DURABLE_COMMIT_ACK' b0161-w19-r3-run.log
+      - name: Direct ORIGINAL R3 Unity MonoBehaviour physical-hierarchy lease lifecycle
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet build Tools/B01/B01-61/P17W19R3Exact642UncertainCommitQA/R3UnityLifecycleQA.csproj -c Release --warnaserror 2>&1 | tee b0161-w19-r3-mono-build.log
+          dotnet run --no-build -c Release --project Tools/B01/B01-61/P17W19R3Exact642UncertainCommitQA/R3UnityLifecycleQA.csproj 2>&1 | tee b0161-w19-r3-mono-run.log
+          grep -q 'W19_R3_642_DISABLE_RELEASE_LEASE_TWO_LIVE_WORLDS_RED=REPRODUCED' b0161-w19-r3-mono-run.log
+          grep -q 'W19_R3_642_ONDISABLE_PHYSICS_STILL_ACTIVE_RED=REPRODUCED' b0161-w19-r3-mono-run.log
+          grep -q 'W19_R3_642_TWO_HOSTS_CURRENT_OWNER_SAVEBLOCK_RED=REPRODUCED' b0161-w19-r3-mono-run.log
+          grep -q 'W19_R3_642_PER_RUN_52_PUBLIC_HOST_GREEN=ISOLATED' b0161-w19-r3-mono-run.log
       - name: Original stdout with explicit SOURCE release HOLD, not Unity Editor XML
         if: always()
         uses: actions/upload-artifact@v4
@@ -47,5 +57,7 @@ jobs:
             b0161-w19-r3-source.log
             b0161-w19-r3-build.log
             b0161-w19-r3-run.log
+            b0161-w19-r3-mono-build.log
+            b0161-w19-r3-mono-run.log
           retention-days: 21
           if-no-files-found: warn
