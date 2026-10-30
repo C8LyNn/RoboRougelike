@@ -27,8 +27,8 @@ namespace B01.UnitySaveBridge001
     public sealed class AtomicWorldSwap
     {
         private readonly IWorldFactory factory;
-        private IPreparedWorld current;
-        private ColdRestore currentCold;
+        private IPreparedWorld? current;
+        private ColdRestore? currentCold;
         private bool busy, quarantined, cleanupPending;
         public bool Busy => busy;
         public bool Quarantined => quarantined;
@@ -51,7 +51,7 @@ namespace B01.UnitySaveBridge001
         // private Rig/AtomicDockLedger. Host must gate all its state mutators while Busy.
         public bool TrySave(long expectedRun, Func<bool> hostIdle,out byte[] bytes)
         {
-            bytes=null;
+            bytes=null!;
             if(busy||quarantined||current==null||currentCold==null||
                expectedRun<=0||hostIdle==null)return false;
             busy=true;
@@ -80,13 +80,13 @@ namespace B01.UnitySaveBridge001
             if(busy)return WorldSwapVerdict.HostBusy;
             if(hostIdle==null)return WorldSwapVerdict.HostException;
             busy=true; // includes idle callbacks, original #556 decode, staging and publication
-            IPreparedWorld candidate=null;
-            IPreparedWorld old=current;
+            IPreparedWorld? candidate=null;
+            IPreparedWorld? old=current;
             bool touchedOld=false, touchedNew=false, published=false;
             try
             {
                 if(!Idle(hostIdle))return WorldSwapVerdict.HostBusy;
-                if(!ColdRestore.TryStage(bytes,out ColdRestore restored)||restored==null)
+                if(!ColdRestore.TryStage(bytes,out ColdRestore? restored)||restored==null)
                     return WorldSwapVerdict.InvalidSnapshot;
                 RunSnapshot snapshot=restored.Snapshot;
                 if(expectedRun<=0||snapshot.RunId!=expectedRun)return WorldSwapVerdict.WrongRun;

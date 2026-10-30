@@ -49,13 +49,13 @@ class T
     class Factory : IWorldFactory
     {
         public World? Last;
-        public bool FailFactory,FailActivate,FailRetire,WrongCapture;
+        public bool FailFactory,FailActivate,WrongCapture;
         public Action? OnPrepare;
         public IPreparedWorld Prepare(RunSnapshot p)
         {
             OnPrepare?.Invoke();
             if(FailFactory)throw new IOException("prepare");
-            Last=new World(p){FailActivate=FailActivate,FailRetire=FailRetire,WrongCapture=WrongCapture};
+            Last=new World(p){FailActivate=FailActivate,WrongCapture=WrongCapture};
             return Last;
         }
     }
