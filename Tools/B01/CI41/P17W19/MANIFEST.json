@@ -8,14 +8,16 @@
   "R3_original_candidates": {
     "A": {
       "pr": 642,
-      "sha": "22cec9888047994ae523cbe7bf1b0a483d64cec4"
+      "sha": "22cec9888047994ae523cbe7bf1b0a483d64cec4",
+      "role": "OWNER_SELECTED_R3"
     },
     "B": {
       "pr": 644,
-      "sha": "d9b95146e46a5d81d5a291d7887e456164f4d0c2"
+      "sha": "d9b95146e46a5d81d5a291d7887e456164f4d0c2",
+      "role": "ALT_HOLD_NO_MERGE"
     }
   },
-  "selection": "B01_23_OWNER_NOT_CI41",
+  "selection": "OWNER_SELECTED_A_642_ONLY__B_644_ALT_HOLD",
   "frozen": {
     "game510": "d94400d95d13db7f27e1533df05c9292d5380431",
     "save556": "33094f154c7b91119b36d58aab285e6e83c5de57",
@@ -33,18 +35,26 @@
   ],
   "tests": {
     "dual_os": true,
-    "independent_Git_negative_cases_per_os": 16,
+    "independent_Git_negative_cases_per_os": 18,
     "direct_compile_each_actual_original_core": true,
     "actual_disk_fault_injection": true,
-    "native_unity": false
+    "native_unity": false,
+    "separate_R4_exact_core_compiled": true,
+    "separate_variant_build_roots": 3
   },
   "gates": {
-    "g0": "B01_40_PENDING",
+    "g0": "R3_A_AND_NEW_R4_INDEPENDENT_B01_40_REQUIRED",
     "g1": "NOT_RUN",
     "canonical_game_Save": "HOLD",
     "g2": "HOLD",
     "codex_ack": false,
     "integrated": false
   },
-  "rollback": "Discard only 7 new QA-owned paths and own disposable stage roots; do not merge, coinstall or delete user data."
+  "rollback": "Discard only 7 new QA-owned paths and own disposable stage roots; do not merge, coinstall or delete user data.",
+  "R4_owner_proposed_fix": {
+    "pr": 652,
+    "sha": "ae5dbfa5e9c4689d2bf80fcabf8438e9c673c419",
+    "base": "22cec9888047994ae523cbe7bf1b0a483d64cec4",
+    "status": "NEW_VERSION_REQUIRES_INDEPENDENT_QA_AND_G0"
+  }
 }
