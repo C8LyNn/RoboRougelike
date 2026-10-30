@@ -1,0 +1,93 @@
+{
+  "package_id": "B01-31-W24-NATIVE-ARMOR-UNITYPACKAGE-001",
+  "version": "P17-W24-R1",
+  "owner": "B01-31 — CONCEPT ART & VISUAL EXPLORATION",
+  "hq": "https://github.com/C8LyNn/RoboRougelike/issues/731",
+  "source_W23": {
+    "PR": 740,
+    "SHA": "48f376a3ca07998c33483ecb5ede3d5706f1381d",
+    "original_run": 41132293604,
+    "artifact": 13012614601,
+    "immutable_OBJ_SHA256": {
+      "OK": "bb5cef04d44497d2f2bb27c7f0bacc4acda8990e504200282352c3245c17c5d3",
+      "DAMAGED": "6575a6eea08b68951b6ef57c86aaf9ccfdb45a0abc3ca5a229901877c1d171f7",
+      "DESTROYED": "32950c0a822b9f063b0f8e4792fb31dc114463e6bc53d2a1daad46ae909d34f5"
+    },
+    "physical_real_faces": {
+      "OK": 204,
+      "DAMAGED": 264,
+      "DESTROYED": 288
+    }
+  },
+  "original_new_feature": "Physically importable native Unity .unitypackage distribution: three genuine original OBJ meshes, original six-material MTL, exact original glTF PBR sidecar, two preview boards, one real MonoBehaviour with three visual phases, explicit-consent GUID/SHA-pinned Editor prefab composer; no gameplay authority",
+  "source_paths": [
+    "Assets/B01_31.meta",
+    "Assets/B01_31/W24ArmorStates.meta",
+    "Assets/B01_31/W24ArmorStates/Models.meta",
+    "Assets/B01_31/W24ArmorStates/Editor.meta",
+    "Assets/B01_31/W24ArmorStates/B0131W24ArmorDamageVisual.cs",
+    "Assets/B01_31/W24ArmorStates/B0131W24ArmorDamageVisual.cs.meta",
+    "Assets/B01_31/W24ArmorStates/Editor/B0131W24CreateArmorVisualPrefab.cs",
+    "Assets/B01_31/W24ArmorStates/Editor/B0131W24CreateArmorVisualPrefab.cs.meta",
+    "Tools/B01-31/P17/W24ArmorUnityPackage001/build_unitypackage.py",
+    "Tools/B01-31/P17/W24ArmorUnityPackage001/verify_unitypackage.py",
+    "Tools/B01-31/P17/W24ArmorUnityPackage001/Harness/VisualManagedHarness.csproj",
+    "Tools/B01-31/P17/W24ArmorUnityPackage001/Harness/UnityEngineStub.cs",
+    "Tools/B01-31/P17/W24ArmorUnityPackage001/Harness/Program.cs",
+    "Tools/B01-31/P17/W24ArmorUnityPackage001/README.md",
+    "Tools/B01-31/P17/W24ArmorUnityPackage001/manifest.json",
+    ".github/workflows/b01-31-p17w24-unitypackage-armor.yml",
+    "Assets/B01_31/W24ArmorStates/Models/README.md",
+    "Assets/B01_31/W24ArmorStates/Models/README.md.meta"
+  ],
+  "output_generated_but_not_in_source_git": "Real B0131W24-Armor-ThreeStates-NATIVE-OBJ-Visual.unitypackage physical tar+gzip with exactly 13 Unity assets, unique GUID+meta, three original OBJ+MTL/PBR/review source, native two C#; generated only in Actions artifact, not auto imported.",
+  "authored_behavior": [
+    "Explicit menu item only; EditorUtility.DisplayDialog user consent required",
+    "Checks original exact 3 W23 OBJ SHA before any prefab generation",
+    "No overwrite: output prefab pre-existence checked and aborted; never deletes foreign files",
+    "Creates only Assets/B01_31/W24ArmorStates/Generated/B0131_W24_ArmorVisual_ONLY.prefab within reviewed isolated import",
+    "Runtime visual component accepts three distinct live GameObject refs and toggles exactly one active model for explicit Ok/Damaged/Destroyed phase; no component HP, save load, data owner, rig, ID, loot or economy authority",
+    "Reject invalid visual transitions and failed duplicate/null configuration without modifying previous valid state"
+  ],
+  "source_tests": [
+    "Real W23 original physical artifact verified by per-model SHA and per 204/264/288 triangle count",
+    "Real Unitypackage binary .tar.gz decoded; all 13 legitimate Unity asset pathname/GUID/meta/asset exact source byte parity; unsafe nonowned, traversal and collision paths blocked",
+    "Eight mutated source tar member/GUID/content cases must reject",
+    "Original native C# runtime component compiled directly via .NET 8 linked source and explicitly synthetic UnityEngine stub; 12 actual visual-state regression assertions (NOT native Unity)",
+    "Complete Unitypackage/receipt rebuilt twice and SHA byte-identical",
+    "Independent Windows 2022 downloads actual Ubuntu-created Unitypackage and immutable W23 artifact, validates no generator execution; separate actual .NET managed stub test",
+    "No automatic host installation, no original Sources/Assets modification other than new B01-31 paths"
+  ],
+  "freeze": [
+    "#510 gameplay",
+    "Save #556",
+    "R2 #596",
+    "selected host R5 #690",
+    "canonical V3 #729",
+    "selected bridge #749",
+    "#712 storage",
+    "#753 ALT_HOLD until explicit B01-00 decision",
+    "other old art #599/#614/#636/#653/#677/#703/#725/#740"
+  ],
+  "gates": {
+    "IMPLEMENTED": "SOURCE_COMMITTED",
+    "TESTED": "PENDING_ACTUAL_CI",
+    "QA_ACCEPTED": "NO",
+    "READY_FOR_INTEGRATOR": "NO",
+    "INTEGRATED": "NO",
+    "RELEASED": "NO",
+    "B01_31_original_source_package_G0": "PENDING",
+    "B01_30_40_formal_G0": "PENDING",
+    "B01_60_real_activated_Unity_G1": "NOT_RUN",
+    "G2": "HOLD",
+    "Codex_ACK": "NO",
+    "Integrator_feedback": "NOT_MEASURED"
+  },
+  "receivers": [
+    "B01-30/40: original exact W23 source/Unity 13 GUID/meta/Unitypackage package G0 transport+foreign-safe disposable scratch and duplication check",
+    "B01-60: operator-accepted licensed Unity6000.3.14f1 import package and explicit prefab creation/URP render, genuine Editor.log/XML/ModelImporter screenshot G1",
+    "B01-10/22/13: external visual feedback on armor damage readability and 65% rebuild UX only, gameplay authority not implemented",
+    "B01-00: after G0/G1 follow-on authorized integration routing"
+  ],
+  "rollback": "No auto installation. In disposable Unity project, remove only Assets/B01_31/W24ArmorStates namespace once verified it contains no user/foreign changes. Do NOT delete any nonowned or foreign even-empty directories; no protected game/SaveLoad branch updates."
+}
