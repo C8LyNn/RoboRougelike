@@ -1,6 +1,17 @@
+# B01-61 / PASS17 WAVE23 — two ORIGINAL owner runtimes, independently compiled, real child CLR process
+
+**IMPORTANT discovered source ABI gap:** Selected V3 #729 changes CanonicalWorldGateway constructor from three arguments to four, requiring CanonicalWorldSlotLease. The original immutable #712 CanonicalSlotSessionR2.cs instantiates ORIGINAL V2 #691 three-argument gateway. Direct compiling #729 gateway + #712 R2 into ONE .NET8 project yields expected genuine C# compile error **CS7036**, independently witnessed in initial GitHub CI source build (plus a QA-only warning-as-error). Those original sources must NOT be patched in place nor treated as a single compilable Unity assembly. Current W23 package correctly compiles **TWO separate** original C#9 binaries: parent directly compiles exact #729 selected V3 + #669 + frozen #556/W06/#510, child directly compiles original exact #712 R2 + exact #691 API V2 + #669 + same frozen sources. Both binaries run in independent REAL CLR OS processes against the SAME physical single-file #669 generation and same run+GUID, thereby also proving their distinct FileShare.None owner locks can coexist.
+
+Original producer code has never been copied, edited or silently adapted. Child is QA-owned ICanonicalRigFactory fault-injection model only; the source gateway/session/storage code is literal original frozen SHA-pinned source. The **one V3+R2 co-compiled product is currently ABI-INCOMPATIBLE**, beyond the physical two-lock split-brain risk. A new owner-versioned bridge must address BOTH, without co-installing #691 and #729 in one Unity project.
+
+**10 independent real-original-source assertions per OS:** four frozen #556/W06 consumed-ID masks, V3 same OS .owner lock denial, V3 wrong-run, V3 partial stage sticky lease, false/throw physical proof fail-closed, real original #669 gen1→gen2 ID/fork rejection, and one combined **real parent V3 + separate actual child #712 R2** simultaneously active Light g1 world followed by true child physical Heavy g2 save while parent V3 Light remains active, with source V3 stale preview detection AFTER write. Source stdout marks expected RED, product release remains HOLD despite detector PASS.
+
+**Seven NEW own-only paths:** QA parent C# Program.cs + Original729And712QA.csproj, child ChildR2.cs + Original712ChildQA.csproj, README, receipt.py, dedicated GitHub workflow. Parent and child use distinct bin-parent / bin-child output directories; original source SHA pins include #729 V3 gateway+lease, #691 V2 gateway, #712 R2 session, #669 storage, #556 codec, W06 and frozen #510 spec. Both compiled on Windows2025 and Ubuntu24.04 with strict C#9 warnings-as-errors. Actual evidence requires final SHA CI logs; no native Unity G1 or honest entire game acceptance claimed.
+
+---
 # B01-61 PASS 17 WAVE 23 — SELECTED V3 #729 vs R2 #712 REAL original dual authority independent QA
 
-Dispatch: [HQ #731](https://github.com/C8LyNn/RoboRougelike/issues/731). One selected B01-23 canonical API #681 → #691 → **V3 #729 immutable `b8ca29c7707cd6b4338d0b9772d74dee676d49d2`**. Rival #719/#695/#682 ALT_HOLD. One B01-62 session R2 **#712 immutable `bd8905ad549a7b26854b671be971f7d781308311`** and physically authoritative envelope store **#669 `d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121`**. Original frozen #510, #556, #596, #642, #647 and selected R5 #690 unchanged. This independent QA branch is based EXACT #729 head and adds ONLY five new B01-61 QA files, never changes frozen owner or public production source; no merge.
+Dispatch: [HQ #731](https://github.com/C8LyNn/RoboRougelike/issues/731). One selected B01-23 canonical API #681 → #691 → **V3 #729 immutable `b8ca29c7707cd6b4338d0b9772d74dee676d49d2`**. Rival #719/#695/#682 ALT_HOLD. One B01-62 session R2 **#712 immutable `bd8905ad549a7b26854b671be971f7d781308311`** and physically authoritative envelope store **#669 `d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121`**. Original frozen #510, #556, #596, #642, #647 and selected R5 #690 unchanged. This independent QA branch is based EXACT #729 head and adds ONLY seven new B01-61 QA files, never changes frozen owner or public production source; no merge.
 
 ## Observed architecture issue to independently verify at source level
 
@@ -17,7 +28,7 @@ Direct immutable original code compiled:
 
 The original on-disk `SingleFileSaveSlot`, true `FileStream(FileShare.None)`, atomic `File.Move`, frozen #556 binary snapshot, original W06 consumed IDs and all V3 and R2 implementation code are REAL. The private `ICanonicalRigFactory`/staged-world models are synthetic C# fault injection, NOT genuine Unity Editor/PhysX/frozen private #510 `Rig[]` + `AtomicDockLedger`. Do not interpret log label disk generation 1 as native Unity G1.
 
-11 scoped executable C#9/.NET8 checks per OS:
+Historical initial all-in-one plan (superseded by the separately compiled direct-original parent/child architecture above):
 1. Four original #556/W06 Light/Heavy consumed stable-ID bit combinations.
 2. Within V3 only, actual original physical .owner same-run/slot second acquisition denied, `BindOnce` duplicate denied, same scope owner release after proof.
 3. Wrong run rejected before staging.
