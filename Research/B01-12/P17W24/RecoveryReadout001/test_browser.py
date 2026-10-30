@@ -1,0 +1,63 @@
+#!/usr/bin/env python3
+import json,os,pathlib,hashlib,sys
+from playwright.sync_api import sync_playwright
+ROOT=pathlib.Path(__file__).resolve().parent
+m=json.loads((ROOT/'manifest.json').read_text())
+for filename,p in m['files'].items():
+    b=(ROOT/filename).read_bytes()
+    if len(b)!=p['bytes'] or hashlib.sha256(b).hexdigest()!=p['sha256']:
+        print('FAIL_CLOSED source mismatch: '+filename,file=sys.stderr);sys.exit(2)
+checks=[]
+def check(label,cond):
+    checks.append({'case':label,'status':'PASS' if cond else 'FAIL'})
+    if not cond: print('FAIL',label,file=sys.stderr)
+html=(ROOT/'demo.html').read_text(encoding='utf8')
+for fn in ('readout_engine.js','fixtures.js','ui.js'):
+    html=html.replace(f'<script src="{fn}"></script>',f'<script>{(ROOT/fn).read_text(encoding="utf8")}</script>')
+with sync_playwright() as p:
+    browser=p.chromium.launch(executable_path=os.environ.get('CHROMIUM_PATH') or None,headless=True,args=['--no-sandbox'])
+    for w,h in ((320,720),(768,1024),(1280,720),(1920,1080)):
+        page=browser.new_page(viewport={'width':w,'height':h},device_scale_factor=1)
+        errors=[];page.on('pageerror',lambda ex:errors.append(str(ex)))
+        page.set_content(html,wait_until='load')
+        debug=lambda:page.evaluate('window.__readoutDebug()')
+        check(f'{w}: scenarios count',page.locator('.scenario').count()==5)
+        check(f'{w}: first selected',debug()['current']==0)
+        check(f'{w}: normal route',debug()['route']=='NORMAL')
+        check(f'{w}: normal no obstacle',page.locator('#status').inner_text().find('zdolna')>=0)
+        check(f'{w}: initial parts',debug()['parts']==3)
+        check(f'{w}: real screen no overflow',page.evaluate('document.documentElement.scrollWidth<=window.innerWidth+1'))
+        page.locator('.scenario').nth(1).click()
+        check(f'{w}: loaner route',debug()['route']=='LOANER_AVAILABLE')
+        check(f'{w}: loaner explicit', 'jednorazowy' in page.locator('#status').inner_text())
+        check(f'{w}: loaner pressed',page.locator('.scenario').nth(1).get_attribute('aria-pressed')=='true')
+        check(f'{w}: prior unpressed',page.locator('.scenario').first.get_attribute('aria-pressed')=='false')
+        check(f'{w}: pending reason',page.locator('.part[data-status="pending"]').count()==1)
+        check(f'{w}: victory verified label', 'win-08' in page.locator('#victory').inner_text())
+        check(f'{w}: free availability', 'dostępna' in page.locator('#free').inner_text())
+        page.locator('#export').click()
+        check(f'{w}: json visible',not page.locator('#exportPanel').is_hidden())
+        parsed=json.loads(page.locator('#json').inner_text())
+        check(f'{w}: exact projected route',parsed['route']=='LOANER_AVAILABLE')
+        check(f'{w}: json no mutation handles',not any(k in parsed for k in ['claim','rebuild','startCombat','save']))
+        page.locator('#hide').click()
+        check(f'{w}: export hidden',page.locator('#exportPanel').is_hidden())
+        page.locator('.scenario').nth(2).click()
+        check(f'{w}: core dead route',debug()['route']=='CORE_DESTROYED')
+        check(f'{w}: core dead no victory', 'Nie potwierdzono' in page.locator('#victory').inner_text())
+        page.locator('.scenario').nth(3).click()
+        check(f'{w}: exhausted route',debug()['route']=='LOANER_EXHAUSTED')
+        page.locator('.scenario').nth(4).click()
+        check(f'{w}: no challenge route',debug()['route']=='NO_CHALLENGE')
+        page.locator('.scenario').first.focus();page.keyboard.press('Enter')
+        check(f'{w}: keyboard first route',debug()['route']=='NORMAL')
+        check(f'{w}: 320 width unclipped',page.evaluate('document.documentElement.scrollWidth<=window.innerWidth+1'))
+        check(f'{w}: aria live present',page.locator('#status').get_attribute('aria-live')=='polite')
+        check(f'{w}: no page exceptions',len(errors)==0)
+        if w==1280: page.screenshot(path=str(ROOT/'evidence-1280x720.png'),full_page=True)
+        page.close()
+    browser.close()
+pass_n=sum(x['status']=='PASS' for x in checks)
+(ROOT/'browser-results.json').write_text(json.dumps({'pass':pass_n,'fail':len(checks)-pass_n,'tests':checks},indent=2,ensure_ascii=False)+'\n')
+print('CHROMIUM',f'{pass_n}/{len(checks)}','PASS' if pass_n==len(checks) else 'FAIL')
+if pass_n!=len(checks):sys.exit(1)

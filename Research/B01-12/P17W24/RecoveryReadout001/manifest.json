@@ -1,0 +1,29 @@
+{
+  "package": "B01-12-RECOVERY-READOUT-001/R1",
+  "files": {
+    "readout_engine.js": {
+      "sha256": "06c00121b607dd3dca78d3d5e189a3f0fbf05cd446c52ced6a326b0570cf2fb2",
+      "bytes": 4188
+    },
+    "fixtures.js": {
+      "sha256": "bce8c395a06a56af3446c732a4917046a560a385ffb99979a69788b46ed07c3a",
+      "bytes": 1929
+    },
+    "ui.js": {
+      "sha256": "8da93bd68ad8c9eb896a79e3d9a2c7e1d67a8fe40cd39733bd0118af37c7a459",
+      "bytes": 2286
+    },
+    "demo.html": {
+      "sha256": "a92d5ee4e8a995732e0e3a567fec9ccd9651206b8a6ab2104492393a35d9c0ff",
+      "bytes": 4296
+    },
+    "test_engine.cjs": {
+      "sha256": "831d92562fd166a2ea7b2165ee9711da51790d821421e5065c198c95980ed479",
+      "bytes": 5375
+    },
+    "test_browser.py": {
+      "sha256": "7607b3307819710d925f1a72d5c741b76c6560b4084e7fbb4cbc72bdb4009716",
+      "bytes": 4327
+    }
+  }
+}
