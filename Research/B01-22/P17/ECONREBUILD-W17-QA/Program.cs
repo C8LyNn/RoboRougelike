@@ -31,6 +31,18 @@ sealed class ReadOnlyHost : IAuthoritativeRebuildPort {
         Completions++;reason="OK";return true;
     }
 }
+
+sealed class ReplayProcessSnapshot {
+    public string Schema {get;set;}
+    public string StaleCheckpoint {get;set;}
+    public string CurrentCheckpoint {get;set;}
+    public string PhysicalId {get;set;}
+    public string PartKind {get;set;}
+    public float PartHealth {get;set;}
+    public int Cash {get;set;}
+    public int CompletedHostBatches {get;set;}
+}
+
 static class Program {
     const string Source="12572117a3dce369257feabc57021cde58023369";
     static void Assert(bool b,string why){if(!b)throw new InvalidOperationException(why);}
@@ -79,9 +91,73 @@ static class Program {
             native_unity="NOT_RUN"
         };
     }
+    static void SaveProcessState(string path) {
+        var host=new ReadOnlyHost();
+        string id="33333333333333333333333333333333";
+        host.Parts.Add(new RebuildPartView(id,"Track",0));
+        var q=new RebuildQueueService(host);
+        string old=Save(q);
+        Assert(q.TryQueueDestroyed(id,out var err),"PROC1_QUEUE:"+err);
+        Assert(q.TryFinishVictory("persisted-victory-01",true,out err),"PROC1_WIN:"+err);
+        Assert(q.WonChallenges==1&&host.Completions==1&&host.Reservations.Count==0
+            &&host.Parts.Single().Health==1,"PROC1_HOST_DID_NOT_COMMIT");
+        var info=new ReplayProcessSnapshot {
+            Schema="b01-22-w18-original-source-restart-v1",
+            StaleCheckpoint=old,CurrentCheckpoint=Save(q),
+            PhysicalId=id,PartKind=host.Parts.Single().PartKind,
+            PartHealth=host.Parts.Single().Health,Cash=host.Cash,
+            CompletedHostBatches=host.Completions
+        };
+        File.WriteAllText(path,JsonSerializer.Serialize(info,new JsonSerializerOptions
+            {WriteIndented=true})+"\n");
+        Console.WriteLine("PASS process1: real original C# win and physical snapshot serialized");
+    }
+    static void ProbeFreshProcess(string input,string output) {
+        var info=JsonSerializer.Deserialize<ReplayProcessSnapshot>(File.ReadAllText(input));
+        Assert(info!=null&&info.Schema=="b01-22-w18-original-source-restart-v1",
+            "BAD_ORIGINAL_SNAPSHOT");
+        var host=new ReadOnlyHost{Cash=info.Cash,Completions=info.CompletedHostBatches};
+        host.Parts.Add(new RebuildPartView(info.PhysicalId,info.PartKind,info.PartHealth));
+        var fresh=new RebuildQueueService(host);
+        Assert(fresh.TryRestore(info.CurrentCheckpoint,out var reason),
+            "PROC2_CURRENT_RESTORE:"+reason);
+        bool goodReplayRejected=!fresh.TryFinishVictory("persisted-victory-01",true,out reason);
+        Assert(goodReplayRejected&&reason=="VICTORY_EVENT_REPLAY",
+            "CURRENT_PERSISTED_EVENT_REPLAY_NOT_REJECTED");
+        bool oldAccepted=fresh.TryRestore(info.StaleCheckpoint,out reason);
+        var restored=oldAccepted?Save(fresh):null;
+        bool replay=oldAccepted&&fresh.TryFinishVictory("persisted-victory-01",true,out reason);
+        Assert(oldAccepted&&replay,"CROSS_PROCESS_DEFECT_NOT_REPRODUCED");
+        Assert(restored==info.StaleCheckpoint,"EXPECTED_OLD_METADATA_NOT_RESTORED");
+        Assert(host.Completions==1&&host.Cash==info.Cash&&host.Parts.Single().Health==1
+            &&host.Reservations.Count==0,"PHYSICAL_STATE_CHANGED");
+        var result=new {
+            schema="b01-22-w18-cross-process-qa-v1",
+            producer_source_sha=Source,
+            source_blob_sha1="cac95b28647528a7a46cb818c6d78037dc3e80a2",
+            actual_distinct_process_runs=true,
+            host_state_restored_from_disk=true,
+            current_checkpoint_rejected_duplicate_victory_id=goodReplayRejected,
+            stale_checkpoint_accepted=oldAccepted,
+            same_consumed_victory_id_replayed=replay,
+            host_physical_batch_completed_count=host.Completions,
+            qa_detector="PASS",source_release="RED",
+            live_canonical_unity_host="NOT_TESTED",native_unity="NOT_RUN"
+        };
+        File.WriteAllText(output,JsonSerializer.Serialize(result,new JsonSerializerOptions
+            {WriteIndented=true})+"\n");
+        Console.WriteLine("QA_DETECTOR_PASS cross-process stale save + same event replay; SOURCE_RELEASE_RED; NATIVE_UNITY_NOT_RUN");
+    }
     static int Main(string[] args){
-        if(args.Length!=1)return 2;
+        if(args.Length!=1 && args.Length!=2 && args.Length!=3)return 2;
         try{
+            if(args.Length==2 && args[0]=="--make-process-snapshot"){
+                SaveProcessState(args[1]);return 0;
+            }
+            if(args.Length==3 && args[0]=="--probe-after-process-restart"){
+                ProbeFreshProcess(args[1],args[2]);return 0;
+            }
+            if(args.Length!=1)return 2;
             CurrentCheckpoint();
             var result=StaleReplay();
             string json=JsonSerializer.Serialize(new {

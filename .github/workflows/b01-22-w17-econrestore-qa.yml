@@ -1,4 +1,4 @@
-name: B01-22 W17 read-only original ECON restore anti-replay
+name: B01-22 W18 original ECON persisted checkpoint replay QA
 on:
   push:
     branches:
@@ -31,8 +31,21 @@ jobs:
           dotnet run --project Research/B01-22/P17/ECONREBUILD-W17-QA/Witness.csproj -c Release -- "$RUNNER_TEMP/econrestore-w17-witness.json"
           grep -q '"source_release": "RED"' "$RUNNER_TEMP/econrestore-w17-witness.json"
           grep -q '"replay_of_original_win_id_accepted": true' "$RUNNER_TEMP/econrestore-w17-witness.json"
+      - name: Cross-process persisted checkpoint original-source negative QA
+        shell: bash
+        run: |
+          dotnet run --project Research/B01-22/P17/ECONREBUILD-W17-QA/Witness.csproj -c Release -- --make-process-snapshot "$RUNNER_TEMP/econrestore-w18-source-state.json"
+          dotnet run --project Research/B01-22/P17/ECONREBUILD-W17-QA/Witness.csproj -c Release -- --probe-after-process-restart "$RUNNER_TEMP/econrestore-w18-source-state.json" "$RUNNER_TEMP/econrestore-w18-cross-process-qa.json"
+          grep -q '"actual_distinct_process_runs": true' "$RUNNER_TEMP/econrestore-w18-cross-process-qa.json"
+          grep -q '"current_checkpoint_rejected_duplicate_victory_id": true' "$RUNNER_TEMP/econrestore-w18-cross-process-qa.json"
+          grep -q '"stale_checkpoint_accepted": true' "$RUNNER_TEMP/econrestore-w18-cross-process-qa.json"
+          grep -q '"same_consumed_victory_id_replayed": true' "$RUNNER_TEMP/econrestore-w18-cross-process-qa.json"
+          grep -q '"source_release": "RED"' "$RUNNER_TEMP/econrestore-w18-cross-process-qa.json"
       - uses: actions/upload-artifact@v4
         with:
           name: b01-22-w17-source-replay-${{ matrix.os }}
-          path: ${{ runner.temp }}/econrestore-w17-witness.json
+          path: |
+            ${{ runner.temp }}/econrestore-w17-witness.json
+            ${{ runner.temp }}/econrestore-w18-source-state.json
+            ${{ runner.temp }}/econrestore-w18-cross-process-qa.json
           if-no-files-found: error

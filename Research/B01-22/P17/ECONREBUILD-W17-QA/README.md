@@ -28,3 +28,7 @@ reject stale checkpoints and event replays across process restarts.
 Only a new owner-authorized version can fix #252. Current frozen
 #510 and #556, Codex, ECONLEGENDARY #263, wallet and game Assets
 are untouched. Native Unity / PhysX NOT_RUN. No merge / no G2.
+
+## PASS17 W18 — original two-process durable event-ID regression
+
+The original linked frozen #252 C# now has two additional executable QA modes: make a real pre-win and post-win source checkpoint and serialize a physical authoritative host snapshot to a local test JSON file; execute a NEW OS process to reconstruct that host and service from those bytes. A current checkpoint must reject replay of its consumed victory ID; the older structurally valid checkpoint is then accepted and the same ID replayed. CI executes two separate dotnet runs and records both source-state and process-boundary evidence on Windows and Ubuntu. Detector PASS means original source RELEASE RED/HOLD, not a successful release; tested host is a labeled surrogate, not canonical Unity/R3 or PhysX. No modifications to frozen packages and no integration claim.
