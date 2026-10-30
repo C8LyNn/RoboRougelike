@@ -1,0 +1,66 @@
+name: B01-31 P17W22 Original Three True 3D Modular Armor Damage Geometry States QA
+on:
+  push:
+    branches: [art/b01-31-p17w22-modular-armor-three-geometry-states]
+    paths:
+      - 'Tools/B01-31/P17/W22ArmorGeometryStates001/**'
+      - '.github/workflows/b01-31-p17w22-armor-3geometry-states.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01-31/P17/W22ArmorGeometryStates001/**'
+      - '.github/workflows/b01-31-p17w22-armor-3geometry-states.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  author-original-real-armor-3d-geometries:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install original source physical RGB image encoder and receiver
+        run: python -m pip install --disable-pip-version-check "Pillow==11.3.0"
+      - name: Compile real author and independent mesh verifier
+        run: python -m compileall -q Tools/B01-31/P17/W22ArmorGeometryStates001
+      - name: Author three separate real GLB2 armors and four actual physical 3D review boards
+        run: |
+          python Tools/B01-31/P17/W22ArmorGeometryStates001/build_armor.py --output build/B0131W22
+          python Tools/B01-31/P17/W22ArmorGeometryStates001/verify_armor.py --source build/B0131W22
+      - name: Complete two full physical geometry/image/receipt/ZIP rebuild SHA parity
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd build && find . -type f -print0 | sort -z | xargs -0 sha256sum) >/tmp/first.sha256
+          python Tools/B01-31/P17/W22ArmorGeometryStates001/build_armor.py --output build/B0131W22
+          python Tools/B01-31/P17/W22ArmorGeometryStates001/verify_armor.py --source build/B0131W22
+          (cd build && find . -type f -print0 | sort -z | xargs -0 sha256sum) >/tmp/second.sha256
+          cmp /tmp/first.sha256 /tmp/second.sha256
+          echo "B0131_W22_TRUE_3STATE_3D_ARMOR_ARTIFACT_SHA_PARITY_PASS"
+      - name: Upload actual three genuine original GLB2 meshes, four RGB source boards and physical ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0131-P17W22-ORIGINAL-ARMOR-1x2x2-OK-DAMAGED-DESTROYED-3GLB2
+          path: build/
+          retention-days: 30
+          if-no-files-found: error
+  independent-windows-readonly-real-armor-mesh-qa:
+    needs: author-original-real-armor-3d-geometries
+    runs-on: windows-2022
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Download ACTUAL original Ubuntu three real geometries and RGB concept boards
+        uses: actions/download-artifact@v4
+        with:
+          name: B0131-P17W22-ORIGINAL-ARMOR-1x2x2-OK-DAMAGED-DESTROYED-3GLB2
+          path: original-ubuntu-armor
+      - name: Install only physical source RGB PNG reader
+        run: python -m pip install --disable-pip-version-check "Pillow==11.3.0"
+      - name: Independently parse real 3 glTF2 meshes and exact front armor damage area gradient
+        run: python Tools/B01-31/P17/W22ArmorGeometryStates001/verify_armor.py --source original-ubuntu-armor/B0131W22

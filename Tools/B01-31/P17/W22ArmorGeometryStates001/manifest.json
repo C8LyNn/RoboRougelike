@@ -1,0 +1,100 @@
+{
+  "package_id": "B01-31-MODULAR-ARMOR-3GEOMETRY-STATES-001",
+  "version": "P17-W22-R1",
+  "owner": "B01-31 — CONCEPT ART & VISUAL EXPLORATION",
+  "hq": 713,
+  "purpose": "Three actual geometric variants of one visual modular armor part, repaired / split physically / fractured open; not alternate texture or shader swap. Offers standalone source asset input for separately authorized rebuild/softlock visual tests.",
+  "module_reference": {
+    "grid_envelope_XYZ": [
+      1,
+      2,
+      2
+    ],
+    "units": "illustrative build grid units; no claim Unity physical metric size",
+    "common_pivot": [
+      0,
+      0,
+      0
+    ],
+    "frozen_collider_authority": "NO_COLLIDERS",
+    "native_mesh_import": "NOT_RUN"
+  },
+  "source_paths": [
+    "Tools/B01-31/P17/W22ArmorGeometryStates001/build_armor.py",
+    "Tools/B01-31/P17/W22ArmorGeometryStates001/verify_armor.py",
+    "Tools/B01-31/P17/W22ArmorGeometryStates001/README.md",
+    "Tools/B01-31/P17/W22ArmorGeometryStates001/manifest.json",
+    ".github/workflows/b01-31-p17w22-armor-3geometry-states.yml"
+  ],
+  "original_real_3D_assets": {
+    "three_genuine_glTF2_models": [
+      "B0131ArmorModule1x2x2-OK.glb",
+      "B0131ArmorModule1x2x2-DAMAGED.glb",
+      "B0131ArmorModule1x2x2-DESTROYED.glb"
+    ],
+    "physical_triangles_expected": {
+      "OK": 204,
+      "DAMAGED": 264,
+      "DESTROYED": 288
+    },
+    "actually_source_model_differences": "geometrically complete face plate vs six disjoint original irregular torn armor sheets with transparent cracks vs missing plate and broken shards/exposed inner supports",
+    "source_model_root_count": 1,
+    "independent_materials_each": 6,
+    "three_original_three_camera_1800x640_PNG": 3,
+    "one_original_three_state_1800x650_PNG": 1,
+    "actual_state_metadata": "states.json",
+    "sha256_receipt": "receipt.json",
+    "physical_zip_members": 9
+  },
+  "source_actual_tests": [
+    "Re-open each physical glTF2 JSON and original binary vertex NORMAL/index fields independently; all original faces nondegenerate with proper winding and per-face normals",
+    "Three actual different original shape byte digests (not merely different materials): 204, 264, 288 triangle faces",
+    "Original mounting pivot exact 0,0,0 in each glTF2, all source geometry axis bbox ranges within conceptual 1x2x2 dimensions",
+    "Independent measured genuine source front-facing full-plate physical area OK>DAMAGED>DESTROYED by >0.15 grid units²",
+    "Actual four physical original concept image boards contain three visually distinct geometry renderings/viewpoints and all board pixel streams differ",
+    "Actual physical ZIP nine members, CRC and raw file byte parity with all independent original GLBs/PNGs/JSON",
+    "Eight negative altered genuine binary GLB/geometry/material/source/pivot variants must fail",
+    "All original GLB/PNG/state/receipt/ZIP outputs rebuilt twice and each SHA identical",
+    "Windows2022 independently checks actual Ubuntu artifact without executing producer"
+  ],
+  "governance": {
+    "frozen_510_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "frozen_556_sha": "33094f154c7b91119b36d58aab285e6e83c5de57",
+    "frozen_596_sha": "efb2b06eafedab5469b57f163152d96aca3c5915",
+    "selected_R4_frozen_647_sha": "09c1809b73324a6d31c13e5d0143de62ac1e3ca6",
+    "new_corrected_R5_690": "B01-23 only",
+    "canonical_save_691": "B01-23/20/62 only",
+    "new_storage_712": "B01-62 only",
+    "Unity_op_Windows_711": "B01-60 only",
+    "alternatives": "#652 #682 #693 #695 ALT_HOLD"
+  },
+  "boundary": {
+    "no_gameplay_Asset_changes": true,
+    "no_Unity_scene_or_prefab": true,
+    "no_SaveLoad_or_ID_change": true,
+    "no_Rigidbody_collider_damage_logic": true,
+    "no_economy_cadence_change": true,
+    "no_Codex_integration": true,
+    "no_merge": true
+  },
+  "gate": {
+    "IMPLEMENTED": "SOURCE_COMMITTED",
+    "TESTED": "PENDING_EXACT_CI",
+    "QA_ACCEPTED": "NO",
+    "READY_FOR_INTEGRATOR": "NO",
+    "INTEGRATED": "NO",
+    "RELEASED": "NO",
+    "art_source_G0": "PENDING",
+    "formal_B01_30_40_G0": "PENDING",
+    "native_B01_60_Unity_G1": "NOT_RUN",
+    "G2": "HOLD",
+    "integrator_feedback": "NOT_MEASURED"
+  },
+  "receivers": [
+    "B01-30/40: formal independent actual original geometry and safe scratch source transport, inspect real envelopes, materials and ZIP",
+    "B01-60: real authorized user-operated Unity 6000.3.14f1 mesh import/URP/PhysX with approved glTF importer; until actual logs G1 NOT_RUN",
+    "B01-10/22/13: optional readability/softlock/rebuild-state visual proposal only; no HP, price, free token or authority changes",
+    "B01-00: eventual reviewed handoff to integrator when actual gates pass"
+  ],
+  "rollback": "Remove ONLY the five W22 new source/workflow paths, or strictly B0131ArmorModule1x2x2 W22-namespaced assets from separately approved disposable imported scratch. Never delete original W16-W21 artwork, any frozen code, foreign even-empty dirs or Codex."
+}
