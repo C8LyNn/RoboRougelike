@@ -15,6 +15,7 @@ from pathlib import Path
 ROLES = ("mobility", "weapon", "other")
 CADENCES = ("per_win", "per_run")
 PRIORITIES = ("critical_first", "input_order")
+REWARD_TIMINGS = ("after_reservation", "before_reservation")
 
 
 class InvalidScenario(ValueError):
@@ -98,7 +99,8 @@ def validate(plan: dict) -> dict:
 def run_plan(plan: dict, *, cadence: str = "per_win",
              bootstrap: bool = True, priority: str = "critical_first",
              enforce_deploy_gate: bool = False,
-             loaner_challenges: int = 0) -> dict:
+             loaner_challenges: int = 0,
+             reward_timing: str = "after_reservation") -> dict:
     """Model post-encounter destroyed-part requests; never write a game host.
 
     Win first completes only preexisting reservations, THEN new event damage
@@ -107,6 +109,8 @@ def run_plan(plan: dict, *, cadence: str = "per_win",
     """
     if cadence not in CADENCES or priority not in PRIORITIES:
         raise InvalidScenario("unsupported design policy")
+    if reward_timing not in REWARD_TIMINGS:
+        raise InvalidScenario("unsupported reward settlement timing")
     if type(bootstrap) is not bool:
         raise InvalidScenario("bootstrap must be boolean")
     if type(enforce_deploy_gate) is not bool:
@@ -181,6 +185,12 @@ def run_plan(plan: dict, *, cadence: str = "per_win",
         for pid, role, essential in new:
             if pid not in destroyed:
                 destroyed[pid] = (role, essential)
+        # *Hypothesis only*: many garages credit encounter earnings BEFORE the
+        # post-combat reservation screen. The historical default instead charges
+        # first. Do not assume either sequence matches the native reward owner.
+        if reward_timing == "before_reservation":
+            wallet += earned
+            reward += earned
         items = [(pid, role, essential)
                  for pid, (role, essential) in destroyed.items()
                  if pid not in reserved]
@@ -205,8 +215,9 @@ def run_plan(plan: dict, *, cadence: str = "per_win",
                     free_run_used = True
             else:
                 paid_count += 1
-        wallet += earned
-        reward += earned
+        if reward_timing == "after_reservation":
+            wallet += earned
+            reward += earned
         # These are explicitly modeled *AFTER* encounter conditions.
         # A destroyed core or no eligible next challenge remains blocked on
         # subsequent events; a synthetic script cannot silently revive it.
@@ -249,7 +260,24 @@ def run_plan(plan: dict, *, cadence: str = "per_win",
         end_feasibility = "ESSENTIAL_0HP_HOST_DEPLOY_UNVERIFIED"
     else:
         end_feasibility = "NORMAL_DEPLOY_ELIGIBLE_IN_MODEL_NOT_ACTUAL_WIN"
+    # Delayed tickets may become impossible to complete. The debit was already
+    # made, so expose real modeled economic exposure without a refund API.
+    # These are modeled exposure amounts, NOT actual game losses/refunds.
+    permanently_blocked_model = end_feasibility in (
+        "RUN_CORE_DESTROYED_NO_LOANER",
+        "NO_ELIGIBLE_NEXT_CHALLENGE",
+        "ESSENTIAL_0HP_NEXT_WIN_INACCESSIBLE")
+    stranded_tickets = len(reserved) if permanently_blocked_model else 0
+    stranded_paid_scrap = (sum(charge for _, charge in reserved.values())
+                           if permanently_blocked_model else 0)
+    stranded_free_tickets = (
+        sum(charge == 0 for _, charge in reserved.values())
+        if permanently_blocked_model else 0)
     return {"cadence": cadence, "bootstrap": bootstrap, "priority": priority,
+            "reward_timing": reward_timing,
+            "modeled_stranded_pending_count": stranded_tickets,
+            "modeled_stranded_paid_scrap": stranded_paid_scrap,
+            "modeled_stranded_free_tickets": stranded_free_tickets,
             "end_feasibility": end_feasibility,
             "end_core_alive": core_alive,
             "end_next_challenge_available": next_challenge_available,
@@ -273,9 +301,12 @@ def run_plan(plan: dict, *, cadence: str = "per_win",
 
 
 def compare(plan: dict, *, bootstrap: bool = True,
-            priority: str = "critical_first") -> dict:
-    a = run_plan(plan, cadence="per_win", bootstrap=bootstrap, priority=priority)
-    b = run_plan(plan, cadence="per_run", bootstrap=bootstrap, priority=priority)
+            priority: str = "critical_first",
+            reward_timing: str = "after_reservation") -> dict:
+    a = run_plan(plan, cadence="per_win", bootstrap=bootstrap,
+                 priority=priority, reward_timing=reward_timing)
+    b = run_plan(plan, cadence="per_run", bootstrap=bootstrap,
+                 priority=priority, reward_timing=reward_timing)
     return {"per_win": a, "per_run": b,
             "delta_scrap_per_run_minus_per_win":
                 b["charged_scrap"] - a["charged_scrap"]}
@@ -283,7 +314,8 @@ def compare(plan: dict, *, bootstrap: bool = True,
 
 def synthetic_batch(*, seed: int = 20261030, episodes: int = 200,
                     win_percent: int = 55, quote_percent: int = 70,
-                    bootstrap: bool = True) -> dict:
+                    bootstrap: bool = True,
+                    reward_timing: str = "after_reservation") -> dict:
     """Fixed-seed invented traces for sensitivity exploration, NOT playtests."""
     _number(seed, "seed")
     _number(episodes, "episodes", 1)
@@ -293,6 +325,8 @@ def synthetic_batch(*, seed: int = 20261030, episodes: int = 200,
     if win_percent > 100:
         raise InvalidScenario("win_percent exceeds 100")
     _number(quote_percent, "quote_percent", 1)
+    if reward_timing not in REWARD_TIMINGS:
+        raise InvalidScenario("unsupported reward settlement timing")
     rng = random.Random(seed)
     keys = ("charged_scrap", "free", "paid", "denied", "restored",
             "destroyed_final", "attempts_with_mobility_unavailable",
@@ -312,13 +346,15 @@ def synthetic_batch(*, seed: int = 20261030, episodes: int = 200,
         plan = {"initial_scrap": 400, "purchase_price": 100,
                 "paid_quote_percent": quote_percent, "attempts": events}
         for policy in CADENCES:
-            outcome = run_plan(plan, cadence=policy, bootstrap=bootstrap)
+            outcome = run_plan(plan, cadence=policy, bootstrap=bootstrap,
+                               reward_timing=reward_timing)
             for key in keys:
                 totals[policy][key] += outcome[key]
     return {"notice": "SYNTHETIC_ONLY; NOT a real human/Unity gameplay experiment",
             "seed": seed, "episodes": episodes, "attempts_each": 12,
             "win_percent": win_percent, "quote_percent": quote_percent,
-            "bootstrap": bootstrap, "aggregate": totals}
+            "bootstrap": bootstrap, "reward_timing": reward_timing,
+            "aggregate": totals}
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -335,8 +371,8 @@ def main(argv: list[str] | None = None) -> int:
             items = json.loads(ns.scenarios.read_text(encoding="utf-8"))
             if not isinstance(items, dict) or not isinstance(items.get("cases"), dict):
                 raise InvalidScenario("scenarios requires cases object")
-            output = {"notice": "MODEL ONLY; deploy gate and loaner are "
-                                 "UNAPPROVED synthetic counterfactuals",
+            output = {"notice": "MODEL ONLY; reward order, deploy gate and "
+                                 "loaner are UNAPPROVED synthetic alternatives",
                       "cases": {name: {
                           "bootstrap_epoch_zero": compare(plan, bootstrap=True),
                           "no_bootstrap_epoch_zero": compare(plan, bootstrap=False),
@@ -344,7 +380,9 @@ def main(argv: list[str] | None = None) -> int:
                               plan, enforce_deploy_gate=True),
                           "deploy_gate_one_hypothetical_loaner": run_plan(
                               plan, enforce_deploy_gate=True,
-                              loaner_challenges=1)
+                              loaner_challenges=1),
+                          "reward_credit_before_order": compare(
+                              plan, reward_timing="before_reservation")
                       } for name, plan in items["cases"].items()}}
     except (InvalidScenario, ValueError, OSError) as exc:
         print("MODEL_INPUT_REJECTED: " + str(exc), file=sys.stderr)
