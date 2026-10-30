@@ -155,8 +155,9 @@ internal static class Program
             Check(a.TryLoad(Bytes(31,true,false),RUN,31,()=>true)==WorldSwapVerdict.Accepted,
                   "identical checkpoint hash cold Load permitted on new process with no world");
             Consumed(a,true,false,31,"actual cross-process restore");
+            RunSnapshot parsed=null!;
             Check(a.TrySave(RUN,()=>true,out byte[] saved)&&saved!=null &&
-                  SnapshotCodec.TryDecode(saved,out RunSnapshot parsed)&&parsed!=null,
+                  SnapshotCodec.TryDecode(saved,out parsed)&&parsed!=null,
                   "actual immutable #556 codec file-fenced Save after cold restore");
             Check(parsed.Parts[0].Id==2310001&&parsed.Parts[1].Id==2310002,
                   "original #510 stable numeric IDs survive process restart");
