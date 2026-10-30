@@ -1,0 +1,78 @@
+name: B01-41 P17W12 one frozen Secure V2 source admission lock
+on:
+  push:
+    branches: ['ci/b01-41-p17w12-candidate-lock']
+    paths:
+      - 'Tools/B01/CI41/P17W12/**'
+      - '.github/workflows/b01-41-p17w12-one-candidate.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  candidate:
+    name: Exact #510 source-only gate + 24 physical Git negatives (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify exact own source and real Git test blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git hash-object Tools/B01/CI41/P17W12/one_candidate_lock.py)" = 'ebac34329b3b594e23bb2c4d8bdc98fa136cbeb8'
+          test "$(git hash-object Tools/B01/CI41/P17W12/test_one_candidate_lock.py)" = '0cdcbf972aaae56591324d98b12e03ef8a0ab7ef'
+          echo 'W12_ORIGINAL_CI41_SOURCE_AND_TEST_PINS_PASS'
+      - name: Run 24 positive/negative physical Git / JSON policy tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
+          "$PY" -m unittest discover -s Tools/B01/CI41/P17W12/ -p test_one_candidate_lock.py -v 2>&1 | tee "Tools/B01/CI41/P17W12/tests-${{ runner.os }}.txt"
+          grep -q 'Ran 24 tests' "Tools/B01/CI41/P17W12/tests-${{ runner.os }}.txt"
+          grep -q 'W12_ONE_CANDIDATE_ORIGINAL_GIT_LOCK_PASS_RELEASE_HOLD' "Tools/B01/CI41/P17W12/tests-${{ runner.os }}.txt"
+      - name: Read exact original selected and alternative Git PR objects (never merge)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin +refs/pull/488/head:refs/remotes/origin/ci41-ro488 +refs/pull/510/head:refs/remotes/origin/ci41-ro510 +refs/pull/511/head:refs/remotes/origin/ci41-ro511 +refs/pull/494/head:refs/remotes/origin/ci41-ro494
+          test "$(git rev-parse refs/remotes/origin/ci41-ro488)" = '33a32b8bd9ab40467ab1a17b5684926a37dbd4d3'
+          test "$(git rev-parse refs/remotes/origin/ci41-ro510)" = 'd94400d95d13db7f27e1533df05c9292d5380431'
+          test "$(git rev-parse refs/remotes/origin/ci41-ro511)" = 'baf65f2664e38f3b9c38815c3f07285f8107c1b6'
+          test "$(git rev-parse refs/remotes/origin/ci41-ro494)" = '6efe45961ed0ffdf183e8016e350978b9f3dc51c'
+          echo 'W12_ORIGINAL_4_PRODUCER_COMMITS_EXACTLY_PINNED_PASS'
+      - name: Execute selected #510 only against actual original Git source and reject actual #511/#494 import plans
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
+          "$PY" Tools/B01/CI41/P17W12/one_candidate_lock.py --repo . --plan Tools/B01/CI41/P17W12/selected-plan.json --out "Tools/B01/CI41/P17W12/original-selected-${{ runner.os }}.json"
+          "$PY" -c 'import json,sys; x=json.load(open(sys.argv[1])); x["imports"]=[{"pr":511,"sha":"baf65f2664e38f3b9c38815c3f07285f8107c1b6"}]; json.dump(x,open(sys.argv[2],"w"))' "Tools/B01/CI41/P17W12/selected-plan.json" "Tools/B01/CI41/P17W12/negative-511-${{ runner.os }}.json"
+          "$PY" -c 'import json,sys; x=json.load(open(sys.argv[1])); x["imports"]=[{"pr":494,"sha":"6efe45961ed0ffdf183e8016e350978b9f3dc51c"}]; json.dump(x,open(sys.argv[2],"w"))' "Tools/B01/CI41/P17W12/selected-plan.json" "Tools/B01/CI41/P17W12/negative-494-${{ runner.os }}.json"
+          set +e
+          "$PY" Tools/B01/CI41/P17W12/one_candidate_lock.py --repo . --plan "Tools/B01/CI41/P17W12/negative-511-${{ runner.os }}.json" --out "Tools/B01/CI41/P17W12/denied-511-${{ runner.os }}.json"
+          RC511=$?
+          "$PY" Tools/B01/CI41/P17W12/one_candidate_lock.py --repo . --plan "Tools/B01/CI41/P17W12/negative-494-${{ runner.os }}.json" --out "Tools/B01/CI41/P17W12/denied-494-${{ runner.os }}.json"
+          RC494=$?
+          set -e
+          test "$RC511" -eq 2
+          test "$RC494" -eq 2
+          "$PY" -c 'import json,sys; g=json.load(open(sys.argv[1])); n=[json.load(open(x)) for x in sys.argv[2:]]; assert g["lock"]=="SELECTED_SOURCE_PREFLIGHT_PASS" and g["selected_pr"]==510 and g["native_unity_g1"]=="NOT_RUN" and g["release_gate"]=="HOLD"; assert len(g["verified_original_git_blobs"])==7 and all(x["lock"]=="REJECTED_FAIL_CLOSED" and x["release_gate"]=="HOLD" for x in n); print("W12_ACTUAL_SELECTED_510_ACCEPTED_SOURCE_ONLY_511_494_BOTH_DENIED")' "Tools/B01/CI41/P17W12/original-selected-${{ runner.os }}.json" "Tools/B01/CI41/P17W12/denied-511-${{ runner.os }}.json" "Tools/B01/CI41/P17W12/denied-494-${{ runner.os }}.json"
+      - name: Preserve actual Git source-only positive + negative receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CI41-W12-ONE-CANDIDATE-${{ runner.os }}
+          path: |
+            Tools/B01/CI41/P17W12/tests-${{ runner.os }}.txt
+            Tools/B01/CI41/P17W12/original-selected-${{ runner.os }}.json
+            Tools/B01/CI41/P17W12/denied-511-${{ runner.os }}.json
+            Tools/B01/CI41/P17W12/denied-494-${{ runner.os }}.json
+          retention-days: 14
+          if-no-files-found: warn
