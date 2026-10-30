@@ -17,3 +17,12 @@
 
 ## Governance / rollback
 Own single branch `research/b01-11-p17-w16-uxhaptic-001`, `main@5f06af81e2dd9d877e4300259bb3dd008cb9c9d1`. Only own W16 Research path and dedicated workflow. Historical predecessor UXCOMFORT #565 remains immutable. After external G0 by B01-40 and independent source QA by B01-60, ONLY B01-00 may decide Codex Inbox #79 OFFER; an OFFER is not Codex ACK or game integration. Rollback: drop own isolated research subtree + workflow or producer branch; zero Unity game files to restore, no merge.
+
+
+## W17 — R2: mandatory physical motor stop at run boundary
+
+A **source-level integration contract gap** was found in R1: `StartNewRun(nextRunId)` invalidated the internal active impulse and its 80/160/300ms interval but returned `void`. A future Unity Input System bridge could therefore still be vibrating a **previous run's gamepad motor** after the new run logically began, with no way for the transition caller to learn that motor shutdown was mandatory.
+
+**R2 FIX:** `StartNewRun(nextRunId)` now returns a `bool`: `true` only when the outgoing run has a still-active, enabled motor request (`ActiveUntilMs > NowMs`). It **must be consumed by a future authorized host** to stop actual motors *before* publishing the new run. `false` for idle, expired, muted and zero-strength events. Invalid run IDs throw before state mutation. The method still clears active pulse, last-played cooldown, run sequence and clock, while retaining enabled setting. **All earlier source call sites invoking the method as a statement remain compatible.** This is NOT proof the game currently stops hardware: no Unity Input System adapter is installed. The return-value API is a source-compatible change only, not a binary-compatible ABI guarantee.
+
+Test-first detector at unchanged R1 source `eacbbb35a440edb83405919ffd34a7f11b3fc9bb`, then corrected original source `fc9046c022d1a0512b2858f43bc82cee41fef11a`; 12 explicit cross-run reset / stop / no-op / invalid-state contract cases. [RED workflow #41100770919](https://github.com/C8LyNn/RoboRougelike/actions/runs/41100770919), [GREEN workflow #41100849650](https://github.com/C8LyNn/RoboRougelike/actions/runs/41100849650). Only completed original logs support a PASS or FAIL claim. [Evidence](EVIDENCE/W17_RUN_TRANSITION_RED_GREEN.md).

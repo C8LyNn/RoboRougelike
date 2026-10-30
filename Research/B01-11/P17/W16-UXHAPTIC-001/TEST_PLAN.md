@@ -16,3 +16,13 @@ Coverage: five haptic kinds, three-tier directionality, intensity clamping and s
 
 ### Not tested
 Actual native Unity Editor, PlayMode, PhysX, Input System gamepad, XInput/Steam Input/Quest/Steam Deck motor pulses, real on-screen alert, hardware accessibility, human QA: **NOT_RUN**. No Unity assets, .meta, GUID, asmdefs or game adapter. No code can be called CODEX_READY without separate receiver.
+
+
+## W17 / R2 — run-boundary motor-stop contract
+
+Re-run full original C# executable (same project, original runtime directly linked):
+```sh
+dotnet run --project Research/B01-11/P17/W16-UXHAPTIC-001/Tests/UXHapticTests.csproj -c Release --no-launch-profile
+```
+
+Twelve additional executable cases explicitly verify `StartNewRun(int)` returns boolean mandatory physical STOP for active old-run Minor/Major/Critical impulses; returns false for idle/expired/disabled/zero strength and a second immediate reset; still clears old run and allows fresh first source sequence; invalid new-run ID leaves existing active motor state intact; `SetEnabled(false)` continues to emit STOP on active motor. Test-first RED source is unchanged R1 at `eacbbb35a440edb83405919ffd34a7f11b3fc9bb`; actual C# repair `fc9046c022d1a0512b2858f43bc82cee41fef11a`. The full original suite now has **126 named executable checks per OS**. Run receipts: [RED #41100770919](https://github.com/C8LyNn/RoboRougelike/actions/runs/41100770919), [GREEN #41100849650](https://github.com/C8LyNn/RoboRougelike/actions/runs/41100849650); check actual result status and exact final SHA before release. New returned `bool` must be consumed by Codex-owned eventual driver; no native device evidence here.
