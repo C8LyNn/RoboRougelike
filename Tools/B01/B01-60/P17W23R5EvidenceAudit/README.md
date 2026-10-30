@@ -34,7 +34,7 @@ The audit is offline, **read-only**, never accesses owner game checkpoint, never
 python -m unittest discover -s Tools/B01/B01-60/P17W23R5EvidenceAudit -p test_audit_r5.py -v
 ```
 
-33 **synthetic/adversarial only** tests validate expected source and partial-native shapes and omissions, test case names, six unique private checkpoints, all original six guard results plus six R5 selected method results, strict exact Unity 6000.3.14f1 Editor.log/process codes, no foreign tests, bad hashes, errors, owner SHA drift, corrupt/skipped/faked XML, symlink rejection. Dual-OS CI also executes actual W22 original Git-SHA source-only preflight then independent W23 audit of the resulting physical scratch receipt. Real Windows PowerShell source-only operator separately invoked in CI, **never Unity**.
+35 **synthetic/adversarial only** tests validate expected source and partial-native shapes and omissions, test case names, six unique private checkpoints, all original six guard results plus six R5 selected method results, strict exact Unity 6000.3.14f1 Editor.log/process codes, no foreign tests, bad hashes, errors, owner SHA drift, corrupt/skipped/faked XML, symlink rejection. Dual-OS CI also executes actual W22 original Git-SHA source-only preflight then independent W23 audit of the resulting physical scratch receipt. Real Windows PowerShell source-only operator separately invoked in CI, **never Unity**.
 
 **GATES:** `IMPLEMENTED=YES`; `TESTED=PENDING_REAL_CI`; `QA_ACCEPTED=NO_PENDING`; `READY_FOR_INTEGRATOR=NO`; `INTEGRATED=NO`; `RELEASED=NO`. `SOURCE_G0=R5_699_SOURCE_ONLY`; `NATIVE_G1=NOT_RUN`; `R5_FULL_G1=HOLD_COLDRESTART`; `CANONICAL_729_712_669_G1=NOT_RUN`; `GAME_SAVELOAD=HOLD`; `G2=HOLD`; `CODEX_ACK=NONE`; `INTEGRATOR_FEEDBACK=NOT_MEASURED`.
 
