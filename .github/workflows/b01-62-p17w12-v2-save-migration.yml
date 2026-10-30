@@ -1,0 +1,59 @@
+name: B01-62 W12 Selected #510 Save Migration QA
+on:
+  push:
+    branches:
+      - qa/b01-62-p17w12-selected-v2-save-migration
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W12SelectedV2MigrationQA/**'
+      - '.github/workflows/b01-62-p17w12-v2-save-migration.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-source-migration:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch only selected frozen original source
+        run: git fetch --no-tags origin d94400d95d13db7f27e1533df05c9292d5380431
+      - name: Execute 34 independent migration, identity and rollback tests
+        run: python -m unittest discover -s Tools/B01/B01-62/P17W12SelectedV2MigrationQA -p test_intake.py -v
+      - name: Verify five immutable original #510 blobs and issue evidence receipt
+        run: |
+          mkdir -p selected-source-qa
+          python Tools/B01/B01-62/P17W12SelectedV2MigrationQA/intake.py --repo . --output selected-source-qa/receipt.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-62-w12-selected-source-${{ matrix.os }}
+          path: selected-source-qa/receipt.json
+          if-no-files-found: error
+  cross-os-receipt-parity:
+    runs-on: ubuntu-24.04
+    needs: exact-source-migration
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: b01-62-w12-selected-source-windows-2025
+          path: windows
+      - uses: actions/download-artifact@v4
+        with:
+          name: b01-62-w12-selected-source-ubuntu-24.04
+          path: ubuntu
+      - name: Compare original receipts byte for byte
+        run: |
+          cmp windows/receipt.json ubuntu/receipt.json
+          sha256sum windows/receipt.json ubuntu/receipt.json
+          echo "B01_62_SELECTED_SOURCE_CROSS_OS_PARITY=PASS"
