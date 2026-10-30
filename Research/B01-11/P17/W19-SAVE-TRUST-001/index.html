@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SaveTrust — prototyp UX potwierdzenia checkpointu</title>
+  <style>
+    :root { font-family: system-ui,Segoe UI,sans-serif; color-scheme: dark; background:#101722; color:#f4f6fb; }
+    * { box-sizing: border-box; } body { margin:0; padding:2rem 1rem; }
+    main { width:min(890px,100%); margin:auto; } h1 { font-size:clamp(1.55rem,4vw,2.5rem); margin-bottom:.4rem; }
+    p { line-height:1.55; } .hint { color:#b9c9df; } .panel { border:1px solid #506078; background:#1b293a; border-radius:12px; padding:1.3rem; margin:1.25rem 0; }
+    .panel[data-level=success] { border-color:#8fe1ad; } .panel[data-level=danger] { border-color:#ffa89c; }
+    .panel[data-level=active] { border-color:#97c6ff; } .tag { font-weight:700; color:#d9e6fa; font-size:.86rem; }
+    #headline { font-size:1.45rem; margin:.4rem 0; } button { cursor:pointer; background:#244e7d; border:1px solid #83b3eb; color:white; padding:.8rem 1rem; border-radius:8px; font:inherit; min-height:45px; }
+    button:focus-visible { outline:3px solid #ffe096; outline-offset:3px; } button:hover { background:#316499; }
+    .controls { display:flex; flex-wrap:wrap; gap:.6rem; } .controls button { flex:1 1 220px; }
+    ol { max-height:285px; overflow:auto; line-height:1.5; } li { margin:.4rem 0; }
+    code { overflow-wrap:anywhere; } footer { font-size:.87rem; }
+    @media (prefers-reduced-motion:reduce) { *,*::before,*::after { scroll-behavior:auto !important; animation:none !important; transition:none !important; } }
+  </style>
+</head>
+<body>
+<main>
+  <h1>SaveTrust — jak komunikować stan zapisu</h1>
+  <p class="hint">Interaktywny, syntetyczny prototyp B01-11. Symuluje zdarzenia hosta; <strong>nie wykonuje zapisu do gry ani kontroli dysku</strong>.</p>
+  <section class="panel" id="status" data-level="neutral" role="status" aria-live="polite" aria-atomic="true">
+    <div class="tag">BIEŻĄCY STAN CHECKPOINTU</div>
+    <h2 id="headline">Gotowość do zapisu</h2><p id="detail">Brak potwierdzenia nowego zapisu dla bieżącej operacji.</p>
+    <p id="identity" class="hint"></p>
+  </section>
+  <section aria-labelledby="controls-heading"><h2 id="controls-heading">Scenariusze do odtworzenia</h2>
+    <div class="controls">
+      <button type="button" id="confirmed">Potwierdzony zapis</button>
+      <button type="button" id="ambiguous">Commit wykonał się, potem wyjątek</button>
+      <button type="button" id="busy">Konkurencyjna sesja zapisu</button>
+      <button type="button" id="reconcile">Odczyt kontrolny po błędzie</button>
+      <button type="button" id="fresh">Nowy run — bez starego potwierdzenia</button>
+    </div>
+  </section>
+  <section aria-labelledby="audit-heading"><h2 id="audit-heading">Dziennik zdarzeń (syntetyczny)</h2><ol id="log" aria-label="Wyniki zdarzeń"></ol></section>
+  <footer class="hint">Zasada UX: komunikat „Zapis potwierdzony” wyłącznie po zdarzeniu hosta z trwałym odczytem kontrolnym. Komunikat w prototypie nie jest dowodem istnienia takiego odczytu w Unity. Przed integracją potrzebna jest autoryzowana implementacja oraz niezależne QA.</footer>
+</main>
+<script src="save_state.js"></script>
+<script>
+(function () {
+  'use strict';
+  let run = 1, seq = 0, operation = 0;
+  let state = SaveTrust.initialState(run, 'demo_slot');
+  const status = document.getElementById('status');
+  const title = document.getElementById('headline');
+  const detail = document.getElementById('detail');
+  const identity = document.getElementById('identity');
+  const log = document.getElementById('log');
+  const fakeDigest = 'a'.repeat(64);
+  function render() {
+    const v = SaveTrust.copy(state);
+    status.dataset.level = v.level;
+    title.textContent = v.title; detail.textContent = v.detail;
+    identity.textContent = 'Run: ' + state.runId + ' | Slot: ' + state.slot + ' | Ostatnia potwierdzona generacja: ' + (state.generation ?? 'brak');
+  }
+  function emit(kind, extra) {
+    const event = { kind, runId:run, slot:'demo_slot', seq:++seq, ...extra };
+    const result = SaveTrust.transition(state, event);
+    state = result.state;
+    const item = document.createElement('li');
+    item.textContent = String(event.seq) + ' / ' + kind + ' — ' + (result.accepted ? 'PRZYJĘTO' : 'ODRZUCONO: ' + result.reason);
+    log.prepend(item); render();
+    return result;
+  }
+  function begin() { const id='demo_op_'+(++operation); emit('BEGIN',{operationId:id}); return state.phase === 'saving' ? id : null; }
+  document.getElementById('confirmed').addEventListener('click',()=>{
+    if (state.phase==='blocked') emit('HOST_READY',{confirmed:true});
+    const id=begin(); if (!id) return;
+    emit('SAVE_VERIFIED',{operationId:id,proof:{kind:'durable-readback',generation:(state.generation??0)+1,digest:fakeDigest}});
+  });
+  document.getElementById('ambiguous').addEventListener('click',()=>{
+    if (state.phase==='blocked') emit('HOST_READY',{confirmed:true});
+    const id=begin(); if (id) emit('SAVE_UNCERTAIN',{operationId:id});
+  });
+  document.getElementById('busy').addEventListener('click',()=>{
+    if (state.phase==='blocked') emit('HOST_READY',{confirmed:true});
+    const id=begin(); if (id) emit('SAVE_FAILED',{operationId:id,reason:'BUSY'});
+  });
+  document.getElementById('reconcile').addEventListener('click',()=>{
+    if (state.phase !== 'uncertain') { const item=document.createElement('li'); item.textContent='Odczyt wymaga wcześniejszego wyniku niejednoznacznego'; log.prepend(item); return; }
+    const id=state.operationId;
+    emit('RECONCILE_BEGIN',{operationId:id});
+    emit('RECONCILE_VERIFIED',{operationId:id,proof:{kind:'durable-readback',generation:(state.generation??0)+1,digest:fakeDigest}});
+  });
+  document.getElementById('fresh').addEventListener('click',()=>{
+    run++; seq=0; operation=0; state=SaveTrust.initialState(run,'demo_slot');
+    const item=document.createElement('li'); item.textContent='NEW RUN ' + run + ' — poprzednie potwierdzenie wyzerowane'; log.prepend(item); render();
+  });
+  render();
+})();
+</script>
+</body>
+</html>
