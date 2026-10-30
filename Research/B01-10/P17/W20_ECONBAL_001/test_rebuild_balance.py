@@ -94,6 +94,8 @@ class RebuildModelTests(unittest.TestCase):
                           x["attempts_with_mobility_unavailable"]), (1,1,1,1))
         # Both are physically unavailable before the next genuine victory.
         self.assertEqual(x["observations"][0]["unavailable_mobility"],1)
+        self.assertEqual(x["observations"][0]["reserved_mobility"],1)
+        self.assertEqual(x["observations"][0]["unreserved_mobility"],0)
 
     def test_13_prioritization_prefers_mobility_even_if_listed_later(self):
         p = plan([attempt("lost",False,(part("paint","other"),
@@ -106,6 +108,10 @@ class RebuildModelTests(unittest.TestCase):
         self.assertEqual(b["free"],1)
         self.assertEqual(a["restored"],0)
         self.assertEqual(b["restored"],0)
+        self.assertEqual(a["observations"][0]["reserved_mobility"],1)
+        self.assertEqual(b["observations"][0]["reserved_mobility"],0)
+        self.assertEqual(a["observations"][0]["unreserved_mobility"],0)
+        self.assertEqual(b["observations"][0]["unreserved_mobility"],1)
 
     def test_14_no_bootstrap_requires_winning_before_first_coupon(self):
         s=[attempt("first",True,(part("a"),)),
