@@ -1,0 +1,62 @@
+name: B01-61 W13 - original W06 R2 cold-load persistence HOLD QA
+on:
+  push:
+    branches: [qa/b01-61-p17w13-coldload-original-w06-identity]
+  pull_request:
+    paths:
+      - "Tools/B01/B01-61/P17W13ColdLoadOriginalLedgerQA/**"
+      - ".github/workflows/b01-61-p17w13-coldload-ledger.yml"
+  workflow_dispatch:
+jobs:
+  original-ledger-cross-process-persistence:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+      - name: Actual original CSharp W06 plus R2 deterministic cold-load tests
+        shell: bash
+        run: |
+          set +e
+          python Tools/B01/B01-61/P17W13ColdLoadOriginalLedgerQA/source_gate.py > w13-source-pin.log 2>&1
+          p=$?
+          cat w13-source-pin.log
+          dotnet build Tools/B01/B01-61/P17W13ColdLoadOriginalLedgerQA/OriginalColdLoadQA.csproj -c Release --warnaserror > w13-build.log 2>&1
+          b=$?
+          cat w13-build.log
+          e=99
+          g=99
+          if [ "$b" = 0 ]; then
+            dotnet run -c Release --no-build --project Tools/B01/B01-61/P17W13ColdLoadOriginalLedgerQA/OriginalColdLoadQA.csproj -- --evidence > w13-evidence.log 2>&1
+            e=$?
+            cat w13-evidence.log
+            dotnet run -c Release --no-build --project Tools/B01/B01-61/P17W13ColdLoadOriginalLedgerQA/OriginalColdLoadQA.csproj -- --release > w13-release.log 2>&1
+            g=$?
+            cat w13-release.log
+          fi
+          printf 'GIT_PIN=%s BUILD=%s EVIDENCE=%s RELEASE=%s UNITY_G1=NOT_RUN GAME_SAVELOAD=HOLD\n' "$p" "$b" "$e" "$g" | tee w13-verdict.txt
+          if [ "$p" != 0 ] || [ "$b" != 0 ] || [ "$e" != 0 ] || [ "$g" != 3 ]; then
+            echo "W13_QA_INFRA_FAIL"
+            exit 1
+          fi
+          echo "REAL_ORIGINAL_LEDGER_SOURCE_QA_PASS; SAVE_REHYDRATION_RELEASE_HOLD"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b01-61-w13-coldload-original-${{ matrix.os }}
+          path: |
+            w13-source-pin.log
+            w13-build.log
+            w13-evidence.log
+            w13-release.log
+            w13-verdict.txt

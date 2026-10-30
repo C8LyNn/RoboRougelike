@@ -1,0 +1,32 @@
+{
+  "package": "B01-61-P17W13-COLDLOAD-ORIGINAL-LEDGER-QA-001",
+  "version": "1.0.0",
+  "selected_pr": 510,
+  "selected_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "original_w06": "cb2b3a76e84266e2730fffc4ab048c1039f0652f",
+  "exact_runtime_blobs": {
+    "AtomicDockLedger": "b6a4d04b0c6407c8c84451b4d599d96fe0e4d1a9",
+    "DebrisImpulseCore": "fa1aa5e531927cbe73cf5fdfe161b4a981316db5",
+    "SecureDebrisPlaygroundV2": "328977b4cdcdcd7c9f128c01f11ff67f8e46086a"
+  },
+  "description": "Source actual-CLR cold-process-loss witness; QA-only DTO not a game save schema",
+  "requirement": "New B01-23/62 distinct versioned save adapter SHA to test true restore/transaction",
+  "source_g0": "existing original #521 G0_ACCEPTED_SOURCE_ONLY",
+  "save_rehydrate": "HOLD_NO_PRODUCER_API",
+  "unity_native": "NOT_RUN",
+  "g2": "HOLD",
+  "codex_ack": false,
+  "integrated": false,
+  "no_merge": true,
+  "owners": [
+    "B01-61"
+  ],
+  "receivers": [
+    "B01-23",
+    "B01-62",
+    "B01-40",
+    "B01-60",
+    "B01-00"
+  ],
+  "rollback": "close Draft, remove only six new own QA files; no producer or Codex writes"
+}
