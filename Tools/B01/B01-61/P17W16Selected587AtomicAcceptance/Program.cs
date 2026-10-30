@@ -79,10 +79,9 @@ internal static class Program
     {
         public World? Last;
         public bool PoseMutates,IdentityMutates,NewThrowActivate,NewThrowDeactivate;
-        public bool NewThrowRetire,PrepareThrows;
+        public bool NewThrowRetire;
         public IPreparedWorld Prepare(RunSnapshot snapshot)
         {
-            if(PrepareThrows)throw new IOException("injected factory failure");
             Last=new World(snapshot){
                 MutatePoseOnActivation=PoseMutates,
                 MutateIdentityOnActivation=IdentityMutates,
