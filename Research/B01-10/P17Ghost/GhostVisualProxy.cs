@@ -18,6 +18,11 @@ namespace RoboRougelike.B0110.TrainingGhost
         private Material ownedMaterial;
         private MeshRenderer visual;
         private const float Height = 0.12f;
+        // OFF by default. When explicitly enabled, this dedicated visual
+        // proxy draws practice buttons and drives only its own ghost arrow.
+        [SerializeField] private bool showPracticeControls = false;
+        private GhostPracticeTransport practiceTransport;
+        private bool explicitlyHidden;
 
         public bool IsBound => playback != null || drill != null;
         public float Duration => drill != null ? drill.SegmentDurationSeconds
@@ -46,7 +51,9 @@ namespace RoboRougelike.B0110.TrainingGhost
             var validated = new GhostPlayback(completedTrack);
             EnsureVisual();
             drill = null;
+            practiceTransport = null;
             playback = validated;
+            explicitlyHidden = false;
             visual.enabled = false;
         }
 
@@ -60,6 +67,8 @@ namespace RoboRougelike.B0110.TrainingGhost
             EnsureVisual();
             playback = null;
             drill = practiceLoop;
+            practiceTransport = new GhostPracticeTransport(practiceLoop);
+            explicitlyHidden = false;
             visual.enabled = false;
         }
 
@@ -92,12 +101,84 @@ namespace RoboRougelike.B0110.TrainingGhost
             transform.SetPositionAndRotation(
                 new Vector3(p.X, p.Y + Height, p.Z),
                 Quaternion.Euler(0f, p.Yaw, 0f));
-            if (visual != null) visual.enabled = true;
+            if (visual != null) visual.enabled = !explicitlyHidden;
         }
 
         public void Hide()
         {
+            explicitlyHidden = true;
             if (visual != null) visual.enabled = false;
+        }
+
+        public void Show()
+        {
+            explicitlyHidden = false;
+            if (visual != null) visual.enabled = true;
+        }
+
+        // Mutually exclusive with a host-driven manual SeekDrill clock:
+        // enable this built-in transport only for opt-in local visual review.
+        public void EnablePracticeControls(bool enable)
+        {
+            if (enable && practiceTransport == null)
+                throw new InvalidOperationException(
+                    "Bind a completed coach practice loop before enabling controls");
+            showPracticeControls = enable;
+            if (!enable && practiceTransport != null)
+                practiceTransport.Pause();
+        }
+
+        private void Update()
+        {
+            if (!showPracticeControls || practiceTransport == null || drill == null)
+                return;
+            practiceTransport.Advance(Time.unscaledDeltaTime);
+            // Ghost pose only: no Time.timeScale/Rigidbody/PhysX or CHL state.
+            ApplyVisualPose(practiceTransport.Pose());
+        }
+
+        private void OnGUI()
+        {
+            if (!showPracticeControls || practiceTransport == null || drill == null)
+                return;
+            float width = Mathf.Min(390f, Mathf.Max(240f, Screen.width - 20f));
+            float x = Mathf.Max(10f, Screen.width - width - 10f);
+            float y = Mathf.Max(10f, Screen.height - 125f);
+            GUI.Box(new Rect(x, y, width, 115f),
+                "CHL VISUAL DRILL / " + drill.Label + " (no physics)");
+            GUI.Label(new Rect(x + 10f, y + 22f, width - 20f, 20f),
+                "Visual segment: " + practiceTransport.ReferencePositionSeconds.ToString("0.00")
+                + "/" + practiceTransport.ReferenceSegmentDuration.ToString("0.00")
+                + "s  @ " + practiceTransport.PlaybackSpeed.ToString("0.##") + "x");
+
+            if (GUI.Button(new Rect(x + 10f, y + 45f, 72f, 25f),
+                practiceTransport.IsPlaying ? "Pause" : "Play"))
+            {
+                if (practiceTransport.IsPlaying) practiceTransport.Pause();
+                else practiceTransport.Play();
+            }
+            if (GUI.Button(new Rect(x + 86f, y + 45f, 56f, 25f), "-0.1s"))
+            {
+                practiceTransport.Pause();
+                practiceTransport.Step(-0.1d);
+            }
+            if (GUI.Button(new Rect(x + 146f, y + 45f, 56f, 25f), "+0.1s"))
+            {
+                practiceTransport.Pause();
+                practiceTransport.Step(0.1d);
+            }
+            if (GUI.Button(new Rect(x + 206f, y + 45f, 68f, 25f), "Restart"))
+                practiceTransport.Restart();
+
+            float button = (width - 50f) / 4f;
+            if (GUI.Button(new Rect(x + 10f, y + 78f, button, 24f), "0.25x"))
+                practiceTransport.SetSpeed(.25f);
+            if (GUI.Button(new Rect(x + 20f + button, y + 78f, button, 24f), "0.5x"))
+                practiceTransport.SetSpeed(.5f);
+            if (GUI.Button(new Rect(x + 30f + 2f * button, y + 78f, button, 24f), "1x"))
+                practiceTransport.SetSpeed(1f);
+            if (GUI.Button(new Rect(x + 40f + 3f * button, y + 78f, button, 24f), "2x"))
+                practiceTransport.SetSpeed(2f);
         }
 
         private void EnsureVisual()
