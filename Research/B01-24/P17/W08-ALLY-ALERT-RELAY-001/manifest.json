@@ -1,0 +1,86 @@
+{
+  "package_id": "B01-24-ALLY-ALERT-RELAY-001",
+  "version": "1.0.0",
+  "owner": "B01-24 — ENEMY AI & COMBAT SYSTEMS",
+  "branch": "research/b01-24-p17-w08-ally-alert-relay",
+  "baseline_codex_sha": "203a0805251ed28293888e43f2d49f0df63767c6",
+  "original_codex_R3_path": "Assets/R3/R3EnemyArchetype.cs",
+  "original_codex_R3_blob": "66cd1ee734b129117b3753d1205469a0496cb673",
+  "description": "Real original CSharp9 role-scoped delayed visual-alert relay for enemy squads, report integrity and communication jamming",
+  "files": [
+    {
+      "path": "Research/B01-24/P17/W08-ALLY-ALERT-RELAY-001/AllyAlertRelay.cs",
+      "blob": "90583bfc5b29f5024e5874861c36d0d3652eb78d"
+    },
+    {
+      "path": "Research/B01-24/P17/W08-ALLY-ALERT-RELAY-001/AllyAlertRelay.cs.meta",
+      "blob": "59387702a6c18c8edd17634de94b16b513d9c27d"
+    },
+    {
+      "path": "Research/B01-24/P17/W08-ALLY-ALERT-RELAY-001/Program.cs",
+      "blob": "15cc2a943390b85dca2fff885c0b8b95deae0434"
+    },
+    {
+      "path": "Research/B01-24/P17/W08-ALLY-ALERT-RELAY-001/radio_scenarios.json",
+      "blob": "bd30d67a7a745ec7fe8364bf591d64e2ae5d3bbe"
+    },
+    {
+      "path": "Research/B01-24/P17/W08-ALLY-ALERT-RELAY-001/AllyAlertRelayCI.csproj",
+      "blob": "d25d0497e1499c67616b3b0bcb6b5ee7757374f8"
+    },
+    {
+      "path": "Research/B01-24/P17/W08-ALLY-ALERT-RELAY-001/Tools/build_receiver.py",
+      "blob": "729662555dbe2e28ce49ca942f5bbbe0c7a51063"
+    },
+    {
+      "path": "Research/B01-24/P17/W08-ALLY-ALERT-RELAY-001/Tools/test_receiver.py",
+      "blob": "aea6b6657df6b4904de03c384bde5cbfae0c4ee7"
+    },
+    {
+      "path": "Research/B01-24/P17/W08-ALLY-ALERT-RELAY-001/README.md",
+      "blob": "b2bccb6aafb6fe3b098fd9ff95bea228bbbb2b48"
+    },
+    {
+      "path": ".github/workflows/b01-24-p17-w08-ally-alert-relay.yml",
+      "blob": "cc32ee954759e54fb444bda4462eab14ff780ed9"
+    }
+  ],
+  "original_scenarios": 3,
+  "authored_scenario_ticks": 16,
+  "authored_receiver_states": 32,
+  "trace_sha256": "10a25cde6daf7a0ac450d393ba52d098ba0afee253861292f5914ed63c697422",
+  "tests": {
+    "compiled_source_CSharp9_windows": "48 PASS / 0 FAIL",
+    "compiled_source_CSharp9_ubuntu": "48 PASS / 0 FAIL",
+    "initial_source_green_ci": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41046122390",
+    "independent_G0": "PENDING",
+    "unity_editor": "NOT_RUN",
+    "unity_playmode": "NOT_RUN",
+    "physx": "NOT_RUN",
+    "windows_player": "NOT_RUN",
+    "physical_receiver_zip": "Final SHA CI gated, not validated yet"
+  },
+  "artifact": {
+    "internal_zip_name": "B01-24-ALLY-ALERT-RELAY-001-unity-source.zip",
+    "receiver_receipt": "receiver-receipt.json",
+    "asset_paths": [
+      "Assets/B0124AllyAlertRelay/AllyAlertRelay.cs",
+      "Assets/B0124AllyAlertRelay/AllyAlertRelay.cs.meta"
+    ],
+    "unitypackage": false
+  },
+  "governance": {
+    "file_scope": "Research/B01-24/P17/W08-ALLY-ALERT-RELAY-001/** and own workflow only",
+    "canonical_assets_changed": false,
+    "producer_merge": false,
+    "independent_B01_40": "PENDING",
+    "independent_B01_60": "PENDING",
+    "CODEX_SENT": "NO",
+    "CODEX_ACK": "PENDING",
+    "GAME_INTEGRATED": false,
+    "source_G0": "AUTHOR_PASS",
+    "G1": "NOT_RUN",
+    "G2": "HOLD"
+  },
+  "rollback": "Disable optional Codex adapter and delete only separately imported newly created CSharp and meta files, after preserving local edits."
+}
