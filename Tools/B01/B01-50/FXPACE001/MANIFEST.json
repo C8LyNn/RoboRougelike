@@ -7,7 +7,7 @@
     "Tools/B01/B01-50/FXPACE001/**",
     ".github/workflows/b01-50-fxpace001.yml"
   ],
-  "stage": "PRODUCER_PENDING_CSHARP_CI",
+  "stage": "PRODUCER_CSHARP_TESTS_VERIFIED_IN_GITHUB_ACTIONS_INDEPENDENT_QA_PENDING",
   "purpose": "real bounded scheduling of cosmetic-only Unity VFX activations; never actual projectile, damage or physics",
   "files": {
     "Tools/B01/B01-50/FXPACE001/Core/CosmeticActivationBudget.cs": {
@@ -40,11 +40,15 @@
     }
   },
   "tests": {
-    "csharp_dotnet8": "PENDING_CI",
+    "csharp_dotnet8": "23/23 PASS, 0 FAIL, true original CSharp compiled .NET 8 warnings-as-errors; 300 visual-only requests / 38 simulated frames / cap 8",
     "unity_editor": "NOT_RUN",
     "unity_player": "NOT_RUN",
     "real_game_fps": "NOT_MEASURED",
-    "independent_qa": "PENDING"
+    "independent_qa": "PENDING",
+    "source_ci_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41038187452",
+    "source_ci_artifact_id": 12968213928,
+    "source_ci_job_id": 124004134764,
+    "manifest_git_blob_validation": "7/7 original file Git blob and byte count PASS"
   },
   "rollback": "Delete isolated Tools/B01/B01-50/FXPACE001 and its one own workflow; do not edit original Unity Assets or saves."
 }
