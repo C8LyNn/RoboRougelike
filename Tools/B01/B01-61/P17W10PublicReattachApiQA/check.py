@@ -32,7 +32,7 @@ def original_git_object(sha, path, expected):
         raise ValueError("SOURCE_BLOB_DRIFT " + path + " " + actual)
     raw = command("show", sha + ":" + path)
     actual_bytes = hashlib.sha1(
-        b"blob " + str(len(raw)).encode() + b"\\x00" + raw).hexdigest()
+        b"blob " + str(len(raw)).encode() + bytes([0]) + raw).hexdigest()
     if actual_bytes != expected:
         raise ValueError("SOURCE_BYTES_DRIFT " + path)
     return raw.decode("utf-8")
