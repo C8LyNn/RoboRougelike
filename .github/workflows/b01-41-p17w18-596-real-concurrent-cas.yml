@@ -31,7 +31,7 @@ jobs:
           set -euo pipefail
           test "$(git hash-object Tools/B01/CI41/P17W18/Program.cs)" = '2802469f5a361439c4e2ca54f69b3b36927db81d'
           test "$(git hash-object Tools/B01/CI41/P17W18/source_guard.py)" = 'e200fe343672b7c4863b253dac72a6fda0342b85'
-          test "$(git hash-object Tools/B01/CI41/P17W18/test_source_guard.py)" = '59b5496f42c6cf7284853104ede1c874cb25df20'
+          test "$(git hash-object Tools/B01/CI41/P17W18/test_source_guard.py)" = 'b41e43cff7b5133aec89e4003337ecf5e6e64c0d'
           echo 'CI41_W18_EXACT_OWN_SOURCE_TEST_BLOBS_PASS'
       - name: Execute 18 hostile controls of actual original #596 CAS witness and forbidden source replacement
         shell: bash
