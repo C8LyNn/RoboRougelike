@@ -1,0 +1,59 @@
+name: B01-41 P17 W17 original #604 native PlayMode negative tests — SOURCE readiness only
+on:
+  push:
+    branches: ['ci/b01-41-p17w17-native-save-negatives-604']
+    paths:
+      - 'Assets/B0141SaveBridgeNativeQA/**'
+      - 'Assets/B0141SaveBridgeNativeQA.meta'
+      - 'Tools/B01/CI41/P17W17/**'
+      - '.github/workflows/b01-41-p17w17-native-negative-readiness.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native-source-readiness:
+    name: Real original #604 + own four native negative case SOURCE readiness (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify own original source, test and authored native CSharp blob pins
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git hash-object Tools/B01/CI41/P17W17/native_suite_guard.py)" = 'a7f821a0915de7eb113759317ab4a452f121c3d9'
+          test "$(git hash-object Tools/B01/CI41/P17W17/test_native_suite_guard.py)" = '329aca20f030d20ee927c61ebc9effce279ba96b'
+          test "$(git hash-object Assets/B0141SaveBridgeNativeQA/Tests/SaveBridgeFailureNativeTests.cs)" = '1a30d8e369074d7f4300b757016fdfe48194a91b'
+          echo 'CI41_W17_PINNED_QA_AND_NATIVE_AUTHOR_SOURCE_PASS'
+      - name: Execute 22 real source inventory, hostile test mutation and Unity TestAssemblies import checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
+          "$PY" -m unittest discover -s Tools/B01/CI41/P17W17 -p test_native_suite_guard.py -v 2>&1 | tee "ci41-w17-tests-${{ runner.os }}.txt"
+          grep -q 'Ran 22 tests' "ci41-w17-tests-${{ runner.os }}.txt"
+          grep -q 'FOUR_REAL_UNITY_PLAYMODE_NEGATIVE_SOURCE_CASES_AUTHORED_G1_NOT_RUN' "ci41-w17-tests-${{ runner.os }}.txt"
+      - name: Audit exact original selected #556/#510 ancestor SHA and all original #604 blobs without code mutations
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
+          "$PY" Tools/B01/CI41/P17W17/native_suite_guard.py --repo . --output "ci41-w17-source-${{ runner.os }}.json"
+          "$PY" -c 'import json,sys;x=json.load(open(sys.argv[1]));assert x["source_readiness"]=="SOURCE_CHECK_PASS" and len(x["new_native_tests_authored"])==4 and len(x["original_producer_native_tests_authored"])==5 and x["total_authored_native_cases"]==9 and x["real_unity_playmode"]=="NOT_RUN" and x["real_physx"]=="NOT_RUN" and x["canonical_510_save"]=="HOLD" and x["selected_adapter"]=="NONE_BY_B01_41" and x["release_gate"]=="HOLD";print("EXACT_NATIVE_4_NEW_PLUS_5_ORIGINAL_SOURCE_READY_G1_NOT_RUN")' "ci41-w17-source-${{ runner.os }}.json"
+      - name: Archive exact read-only QA scope and run logs — never claim Unity native PASS
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CI41-W17-NATIVE-NEGATIVE-SOURCE-${{ runner.os }}
+          path: |
+            ci41-w17-tests-${{ runner.os }}.txt
+            ci41-w17-source-${{ runner.os }}.json
+          retention-days: 14
+          if-no-files-found: warn
