@@ -37,8 +37,8 @@ CANDIDATES={
        "host_slot_lease":"SOURCE_IMPLEMENTED_NOT_INDEPENDENTLY_QA"},
 }
 SECURITY={
- "629_stale_public_host":"HISTORICAL_R2_RED_R3_INDEPENDENT_NOT_RUN",
- "637_durable_commit_then_throw":"HISTORICAL_R2_RED_R3_INDEPENDENT_NOT_RUN",
+ "629_stale_public_host":"R3_EXACT_642_SOURCE_GREEN_STALE_REPLAY",
+ "637_durable_commit_then_throw":"R3_EXACT_642_INDEPENDENT_RELEASE_P0_RED",
  "631_native_checkpoint_fixture":"SOURCE_RISK_R3_NATIVE_NOT_RUN",
  "640_slot_ownership":"HISTORICAL_R2_RED_R3_INDEPENDENT_NOT_RUN",
  "original_556_consumed_light_heavy":"R3_INDEPENDENT_NOT_RUN",
@@ -46,8 +46,8 @@ SECURITY={
  "crash_atomic_payload_and_checkpoint":"NOT_PROVEN",
 }
 GATES={
- "r3_independent_security_qa":"NOT_RUN",
- "r3_physical_g0":"PENDING",
+ "r3_independent_security_qa":"PARTIAL_629_GREEN_637_P0_RED",
+ "r3_physical_g0":"HOLD_P0_RED",
  "native_unity_editmode":"NOT_RUN",
  "native_unity_playmode":"NOT_RUN",
  "native_unity_physx":"NOT_RUN",
@@ -75,8 +75,9 @@ def audit(document):
     need(document.get("security")==SECURITY,"do not fake R3 security independent QA")
     need(document.get("gates")==GATES,"do not fake G0/G1/live-game/ACK/G2/merge")
     need(document.get("owner_choice")=={
-        "authority":"B01-23","status":"PENDING","winner_pr":None,
-        "loser_pr":None,"decision_comment_url":None},
+        "authority":"B01-23","status":"SELECTED_LINEAGE_SECURITY_HOLD","winner_pr":642,
+        "loser_pr":644,"decision_comment_url":
+        "https://github.com/C8LyNn/RoboRougelike/pull/642#issuecomment-6530905217"},
         "owner B01-23 has not explicitly frozen ONE R3; reject forged decision")
     need(document.get("competing_sources_installed") is False,
         "never install both R3 candidates")
@@ -100,12 +101,15 @@ def audit(document):
         need(record.get("owner")=="B01-23"
              and record.get("lineage_parent_pr")==596
              and record.get("lineage_parent_sha")==PARENT["r2"]["sha"]
-             and record.get("branch_selection")=="UNSELECTED_PENDING_OWNER",
+             and record.get("branch_selection")==(
+                 "SELECTED_BASE_SECURITY_HOLD" if pr==642 else "ALT_HOLD"),
              "candidate owner/lineage/selection conflict")
         need(record.get("ci_status")=="PRODUCER_SOURCE_PASS_ONLY",
              "producer source CI is not independent R3 acceptance")
-        need(record.get("independent_qa")=="NOT_RUN"
-             and record.get("formal_g0")=="PENDING"
+        need(record.get("independent_qa")==(
+                 "PARTIAL_629_GREEN_637_P0_RED" if pr==642 else "NOT_RUN")
+             and record.get("formal_g0")==(
+                 "HOLD_P0_RED" if pr==642 else "ALT_HOLD")
              and record.get("native_g1")=="NOT_RUN",
              "cannot promote producer tests into independent G0/G1")
         need(record.get("lifecycle")==SIX,"six distinct lifecycle stages; no promotion")
@@ -117,12 +121,12 @@ def audit(document):
     need(observed==set(CANDIDATES),"must record both candidates")
     return {
         "schema":SCHEMA,
-        "status":"HOLD_OWNER_R3_EXCLUSIVE_SELECTION_AND_INDEPENDENT_QA",
-        "selected_pr":None,"selected_sha":None,
+        "status":"HOLD_SELECTED_642_P0_UNCERTAIN_DURABLE_COMMIT",
+        "selected_pr":642,"selected_sha":CANDIDATES[642]["sha"],
         "competing_prs":[642,644],
         "producer_source_ci_pass":True,
-        "independent_r3_security_qa":"NOT_RUN",
-        "r3_physical_g0":"PENDING",
+        "independent_r3_security_qa":"PARTIAL_629_GREEN_637_P0_RED",
+        "r3_physical_g0":"HOLD_P0_RED",
         "native_unity_g1":"NOT_RUN",
         "canonical_game_save_load":"HOLD",
         "codex_offer":"BLOCKED","codex_ack":"NONE",
@@ -134,6 +138,7 @@ def audit(document):
         "immutable_r2_sha":PARENT["r2"]["sha"],
         "alt604":"ALT_HOLD",
         "R3_historical_risks_not_independently_retested":list(SECURITY),
+        "selection_receipt_is_offline_structural_only":True,
         "never_auto_pick_more_tests":True,
         "no_original_source_mutation":True,
         "ready_for_codex":False,
