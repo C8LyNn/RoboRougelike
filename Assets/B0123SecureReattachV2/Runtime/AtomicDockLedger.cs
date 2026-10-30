@@ -57,7 +57,7 @@ namespace B01.SecureReattachV2
                 }
                 catch (Exception originalFailure)
                 {
-                    Exception rollbackFailure = null;
+                    Exception rollbackFailure = null!;
                     try { rollbackPhysical(); }
                     catch (Exception e) { rollbackFailure = e; }
 
