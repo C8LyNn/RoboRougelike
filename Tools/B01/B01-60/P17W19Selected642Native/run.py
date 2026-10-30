@@ -46,7 +46,9 @@ def adapt():
  spec=importlib.util.spec_from_file_location("b0160_native_r3_original_W18_launcher",EXISTING)
  require(spec is not None and spec.loader is not None,"original own W18 native launcher missing")
  m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
- require(m.ONLY==R2_FROZEN and m.ALT==LEGACY_ALT and m.BASE==BASE,
+ require(m.ONLY==R2_FROZEN and m.ALT==LEGACY_ALT and
+         m.BASE=="f4e26ac21ade9a54c0c38927ee48cea50ed8377c" and
+         m.git("rev-parse",BASE+":Tools/B01/B01-60/P17W18Selected596Native/run.py").decode().strip()=="25448069aec7a0e71473169e2ddae56437e8723a",
          "W18 original QA launcher source unexpectedly modified")
  m.ONLY=SELECTED
  m.ALT=R3_ALT
