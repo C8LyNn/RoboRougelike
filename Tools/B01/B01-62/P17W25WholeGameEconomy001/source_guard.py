@@ -50,7 +50,7 @@ def main(out):
   "new_only_paths":sorted(expected),
   "future_release":"OWNER_APPROVAL_G0_NATIVE_G1_PENDING",
   "native_G1":"NOT_RUN","frozen_modified":False,"integrated":False,"code_ACK":False}
- receiver.write_text(json.dumps(data,sort_keys=True,indent=2)+"\n")
+ receiver.write_bytes((json.dumps(data,sort_keys=True,indent=2)+"\n").encode("utf-8"))
  print("W25_WHOLE_GAME_ORIGINAL_PINNED_764_AND_556_729=PASS")
  print("W25_WHOLE_GAME_NEW_ONLY_GITHUB_SCOPE=8/8")
  print("W25_WHOLE_GAME_SOURCE_RECEIPT_SHA256="+hashlib.sha256(receiver.read_bytes()).hexdigest())
