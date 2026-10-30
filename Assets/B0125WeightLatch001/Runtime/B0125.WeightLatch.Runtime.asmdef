@@ -1,0 +1,14 @@
+{
+  "name": "B0125.WeightLatch.Runtime",
+  "rootNamespace": "B0125.WeightLatch",
+  "references": [],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
