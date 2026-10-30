@@ -43,10 +43,10 @@
   ],
   "owner_choice": {
     "owner": "B01-23",
-    "state": "PENDING",
-    "selected_pr": null,
-    "loser_pr": null,
-    "decision_url": null
+    "state": "ONE_FROZEN",
+    "selected_pr": 596,
+    "loser_pr": 604,
+    "decision_url": "https://github.com/C8LyNn/RoboRougelike/pull/596#issuecomment-6529388456"
   },
   "receiver": {
     "bridge_physical_g0": "NOT_ACCEPTED",
