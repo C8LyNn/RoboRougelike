@@ -1,0 +1,55 @@
+name: B01-23 P17 W15 atomic Unity host bridge original W06 + frozen #556
+on:
+  push:
+    branches: ['b01-23/p17-w15-unity-atomic-save-host-r1']
+  pull_request:
+    paths:
+      - 'Assets/B0123SecureV2HostBridge001/**'
+      - 'Tools/B01/B01-23/P17W15AtomicUnityHost001/**'
+      - '.github/workflows/b01-23-p17w15-atomic-unity-host.yml'
+jobs:
+  genuine-original-source-atomic-host:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify frozen original one Save #556 and original W06 input git blob IDs
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse 33094f154c7b91119b36d58aab285e6e83c5de57:Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs)" = b52e511c370f5fca56c74029050844dc8cbb7f9a
+          test "$(git rev-parse 33094f154c7b91119b36d58aab285e6e83c5de57:Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs)" = fa1aa5e531927cbe73cf5fdfe161b4a981316db5
+          mkdir -p w15-atomic-receipt
+      - name: Compile REAL frozen #556 codec and REAL W06 plus new whole-world host core; execute fault injection
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --project Tools/B01/B01-23/P17W15AtomicUnityHost001/AtomicHostSourceTests.csproj -c Release | tee w15-atomic-receipt/real-source-host-tests.log
+          grep -q 'ATOMIC_UNITY_HOST_SOURCE_ASSERTIONS_PASS=' w15-atomic-receipt/real-source-host-tests.log
+          grep -q 'UNITY_NATIVE=NOT_RUN CANONICAL_510_INTEGRATED=NO' w15-atomic-receipt/real-source-host-tests.log
+      - name: Original Git source ZIP identity/9 meta GUIDs/2 asmdefs and empty foreign directory rollback refusal
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s Tools/B01/B01-23/P17W15AtomicUnityHost001 -p test_package.py -v 2>&1 | tee w15-atomic-receipt/source-package-negatives.log
+          grep -q 'Ran 18 tests' w15-atomic-receipt/source-package-negatives.log
+          grep -q 'OK' w15-atomic-receipt/source-package-negatives.log
+          python Tools/B01/B01-23/P17W15AtomicUnityHost001/package.py build --zip w15-atomic-receipt/original-w15-atomic-source-inner.zip | tee w15-atomic-receipt/physical-zip.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b0123-w15-host-source-${{ matrix.os }}
+          path: w15-atomic-receipt/
+          if-no-files-found: warn
