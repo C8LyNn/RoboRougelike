@@ -55,8 +55,8 @@ internal static class Candidate544OriginalQA
             for(int slot=0;slot<2;slot++)
             {
                 var part=decoded.Parts[slot];
-                var orig=slot==0?SecureRigCatalog.Light:SecureRigCatalog.Heavy;
-                Assert(part.Id==orig.PartId && part.ModuleGuid==authority.Parts[slot].ModuleGuid,
+                var originalRig=slot==0?SecureRigCatalog.Light:SecureRigCatalog.Heavy;
+                Assert(part.Id==originalRig.PartId && part.ModuleGuid==authority.Parts[slot].ModuleGuid,
                     "frozen original #510 Light/Heavy source ID mapping");
                 Assert(part.Detached == ((bit&(1<<slot))!=0) &&
                     staged.StagedLedger(slot).Contains(part.Id)==part.Detached,
