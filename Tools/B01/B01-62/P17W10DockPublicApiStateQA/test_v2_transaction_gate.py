@@ -32,8 +32,8 @@ class V2TransactionQA(unittest.TestCase):
   self.assertEqual(a["native_physx"],"NOT_RUN")
   self.assertEqual(a["real_save_reload"],"NOT_RUN")
  def test_05_physical_parent_mutation_missing_rejected(self):
-  self.rejects("controller","rig.Part.transform.SetParent(rig.Root.transform,false);",
-          "rig.Part.transform.SetParent(null,true);")
+  self.rejects("controller","rig.Body.isKinematic=true;\n            rig.Part.transform.SetParent(rig.Root.transform,false);",
+          "rig.Body.isKinematic=true;\n            rig.Part.transform.SetParent(null,true);")
  def test_06_id_rearm_before_body_mutation_needs_new_review(self):
   self.rejects("controller",
    "rig.Detached=false;\n            if(!rig.Emitter.RearmAfterReattach(rig.Spec.PartId))",
