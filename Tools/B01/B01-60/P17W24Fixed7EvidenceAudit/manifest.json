@@ -1,0 +1,59 @@
+{
+  "package_id": "B01-60-P17W24-SELECTED732-FIXED7-EVIDENCE-001",
+  "wave": 24,
+  "owner": "B01-60",
+  "hq_issue": 731,
+  "native_auth_issue": 667,
+  "base_prev_qa": {
+    "pr": 751,
+    "sha": "f0ab4b7f64d2f9e09cd4bd79def729b27829d913"
+  },
+  "selected_original_host": {
+    "pr": 690,
+    "sha": "cc7f73541517a18f4479bb155534bd4832d9985e"
+  },
+  "selected_corrected_fixture": {
+    "pr": 732,
+    "sha": "0bee4ce9928354433ec719c45a8186378361d46e",
+    "blob": "d096f65eeb37393204a35445dd87cbdffa642ce0"
+  },
+  "alternative_uncertified_fixture": {
+    "pr": 750,
+    "sha": "60c73a6f9ed2585cbb9bf7aeaad8c62eef0629cb",
+    "blob": "2508a04f57b04447112d2777ce4e3cd7478ed40e",
+    "co_install": false
+  },
+  "selected_canonical_candidate": {
+    "pr": 749,
+    "applies_to_this_test": false
+  },
+  "G0": "B01-40_755_ACCEPTED_SOURCE_TRANSPORT_ONLY_FOR_732",
+  "G1": "NOT_RUN",
+  "G2": "HOLD",
+  "original_seven_R5_PlayMode_tests": 7,
+  "original_guard_PlayMode_tests": 7,
+  "expected_native_logs_if_run": 42,
+  "source_QA_test_count": 26,
+  "operator_manual_unity_exact": "6000.3.14f1",
+  "self_hashed_evidence_is_not_attestation": true,
+  "no_auto_upload": true,
+  "no_merge": true,
+  "files": [
+    "Tools/B01/B01-60/P17W24Fixed7EvidenceAudit/audit_fixed7.py",
+    "Tools/B01/B01-60/P17W24Fixed7EvidenceAudit/test_audit_fixed7.py",
+    "Tools/B01/B01-60/P17W24Fixed7EvidenceAudit/README.md",
+    "Tools/B01/B01-60/P17W24Fixed7EvidenceAudit/manifest.json",
+    ".github/workflows/b01-60-p17w24-corrected-seven-evidence.yml"
+  ],
+  "implementation": "Independent read-only receipt auditor for selected original seven-case corrected #732 fixture",
+  "integrator_feedback": "NOT_MEASURED",
+  "receiver": [
+    "B01-00",
+    "B01-23",
+    "B01-40",
+    "B01-41",
+    "B01-61",
+    "B01-60"
+  ],
+  "rollback": "discard only newly authored QA W24 files; no owner/frozen source mutation"
+}
