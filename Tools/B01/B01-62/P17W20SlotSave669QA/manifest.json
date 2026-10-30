@@ -1,0 +1,61 @@
+{
+  "package_id": "B01-62-W20-SLOTSAVE669-INDEPENDENT-EXTERNAL-ROLLBACK-QA-001",
+  "version": "1.0.0",
+  "owner": "B01-62 independent QA (not producer)",
+  "selected_original_669": {
+    "pr": 669,
+    "sha": "d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121",
+    "exact_original_code_git_blob": "db7745635164d9eb6b10f3246538700158130b7b"
+  },
+  "selected_host": {
+    "pr": 647,
+    "sha": "09c1809b73324a6d31c13e5d0143de62ac1e3ca6",
+    "rival_652": "ALT_HOLD"
+  },
+  "frozen": {
+    "gameplay_510": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "save_556": "33094f154c7b91119b36d58aab285e6e83c5de57",
+    "historical_596": "efb2b06eafedab5469b57f163152d96aca3c5915",
+    "selected_r3_642": "22cec9888047994ae523cbe7bf1b0a483d64cec4",
+    "save_codec_blob": "b52e511c370f5fca56c74029050844dc8cbb7f9a",
+    "w06_blob": "fa1aa5e531927cbe73cf5fdfe161b4a981316db5",
+    "spec_blob": "b680ed0ec969ac23203fa55eab7b90f8daa86e43"
+  },
+  "own_paths": [
+    {
+      "path": "Tools/B01/B01-62/P17W20SlotSave669QA/Program.cs",
+      "git_blob": "d36a7c5d39a07d0269afd0ffb98a6d863f673f12"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W20SlotSave669QA/Original669RecoveryQA.csproj",
+      "git_blob": "e2face11bd74d35c6e8d9d7e12f32987d80d80e9"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W20SlotSave669QA/README.md",
+      "git_blob": "98bb14d2a4cf61a29f2e3e1c302095f3e4ed02cb"
+    },
+    {
+      "path": ".github/workflows/b01-62-p17w20-669-independent-recovery.yml",
+      "git_blob": "97a3f74187616b0ef65f863daba33267624a3094"
+    }
+  ],
+  "expected_per_os": {
+    "original_source_qa_assertions": 10,
+    "source_trust_red_witnesses": 2,
+    "normal_api_positive_checks": 8
+  },
+  "source_security_scope": "External replacement of VALID persisted Save envelope, not a second legitimate leased producer; SHA256 alone is not anti-rollback/nonfork evidence.",
+  "lifecycle": {
+    "implemented": "YES",
+    "tested": "PENDING_FINAL_CI",
+    "qa_accepted": "NO_PRODUCER_RELEASE",
+    "ready_for_integrator": "NO",
+    "integrated": "NO",
+    "released": "NO",
+    "formal_owner_host_r4_source_g0": "HOLD_PENDING_P0",
+    "native_g1": "NOT_RUN",
+    "canonical_game_save": "HOLD",
+    "g2": "HOLD",
+    "codex_ack": "NONE"
+  }
+}
