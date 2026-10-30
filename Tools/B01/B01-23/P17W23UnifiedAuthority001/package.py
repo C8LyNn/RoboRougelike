@@ -2,7 +2,7 @@
 """W23 immutable Git source-only package, exact SHA and safe disposable rollback."""
 import io,json,hashlib,zipfile,subprocess,tempfile
 from pathlib import Path
-from source_prepare import ROOT,OWNER,ORIGINAL,B0162_REF,B0162_PATH,B0162_BLOB,V3_REF,check,git
+from source_prepare import ROOT,OWNER,ORIGINAL,B0162_REF,B0162_PATH,B0162_BLOB,R2_REF,R2_PATH,R2_BLOB,V3_REF,check,git
 MANIFEST="B01-23/W23/PACKAGE_MANIFEST.json"  # unique, avoid flat manifest overlay
 PFX="Assets/B0123CanonicalSaveApi001"
 OWNER_PATH="Tools/B01/B01-23/P17W23UnifiedAuthority001/"
@@ -40,6 +40,7 @@ def newzip():
         "single_physical_lease":"ORIGINAL_B0162_669_SLOT.LEASE_ONLY",
         "dependency_669_commit":B0162_REF,"dependency_669_blob":B0162_BLOB,
         "dependency_669_path":B0162_PATH,
+        "dependency_712_ref":R2_REF,"dependency_712_blob":R2_BLOB,
         "original_frozen_blobs":ORIGINAL,"native_G1":"NOT_RUN",
         "full_510_private_unity_adapter":"NOT_IMPLEMENTED","codex_ack":False,
         "source":[{"path":n,"sha256":sha(data[n]),"bytes":len(data[n])} for n in names]}
@@ -64,6 +65,7 @@ def verify(payload):
         if (m["commit"]!=git("rev-parse","HEAD") or
             m["selected_parent_v3"]!=V3_REF or
             m["dependency_669_blob"]!=B0162_BLOB or
+            m["dependency_712_blob"]!=R2_BLOB or m["dependency_712_ref"]!=R2_REF or
             m["single_physical_lease"]!="ORIGINAL_B0162_669_SLOT.LEASE_ONLY" or
             m["native_G1"]!="NOT_RUN" or m["codex_ack"] is not False or
             m["full_510_private_unity_adapter"]!="NOT_IMPLEMENTED"):
