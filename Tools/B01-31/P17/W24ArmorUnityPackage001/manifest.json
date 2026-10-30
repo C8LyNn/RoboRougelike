@@ -36,7 +36,9 @@
     "Tools/B01-31/P17/W24ArmorUnityPackage001/Harness/Program.cs",
     "Tools/B01-31/P17/W24ArmorUnityPackage001/README.md",
     "Tools/B01-31/P17/W24ArmorUnityPackage001/manifest.json",
-    ".github/workflows/b01-31-p17w24-unitypackage-armor.yml"
+    ".github/workflows/b01-31-p17w24-unitypackage-armor.yml",
+    "Assets/B01_31/W24ArmorStates/Models/README.md",
+    "Assets/B01_31/W24ArmorStates/Models/README.md.meta"
   ],
   "output_generated_but_not_in_source_git": "Real B0131W24-Armor-ThreeStates-NATIVE-OBJ-Visual.unitypackage physical tar+gzip with exactly 13 Unity assets, unique GUID+meta, three original OBJ+MTL/PBR/review source, native two C#; generated only in Actions artifact, not auto imported.",
   "authored_behavior": [
