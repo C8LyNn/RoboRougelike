@@ -1,0 +1,72 @@
+{
+  "package_id": "B01-62-P17W23-ONE-AUTHORITY-V3-SAVE-001",
+  "owner": "B01-62",
+  "version": "1.0.0-source-only",
+  "original_api_729": "b8ca29c7707cd6b4338d0b9772d74dee676d49d2",
+  "original_api_v3_gateway_blob": "21733278b6ab0669fccb6d085e0b6cf242792de2",
+  "original_api_v3_lease_blob": "a9331dd620336d8c42165d134dc8a5e05ed51873",
+  "original_storage_669": "d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121",
+  "original_storage_669_blob": "db7745635164d9eb6b10f3246538700158130b7b",
+  "original_session_r2_712": "bd8905ad549a7b26854b671be971f7d781308311",
+  "frozen_game_510": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "frozen_save_556": "33094f154c7b91119b36d58aab285e6e83c5de57",
+  "original_codec_blob": "b52e511c370f5fca56c74029050844dc8cbb7f9a",
+  "original_w06_blob": "fa1aa5e531927cbe73cf5fdfe161b4a981316db5",
+  "original_spec_blob": "b680ed0ec969ac23203fa55eab7b90f8daa86e43",
+  "selected_r5_690": "cc7f73541517a18f4479bb155534bd4832d9985e",
+  "alternate_719_695_682_693": "ALT_HOLD_NOT_INCLUDED",
+  "own_paths": [
+    {
+      "path": "Tools/B01/B01-62/P17W23OneAuthorityV3/CanonicalSingleAuthorityStoreV3.cs",
+      "blob": "f8fab0b35147a23ae31bcb4a0cf91590d0896d97"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W23OneAuthorityV3/CanonicalSlotSessionV3.cs",
+      "blob": "9d86581626c8657b6662cb281f7621fa43343fb3"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W23OneAuthorityV3/Program.cs",
+      "blob": "e573e6473eafb752b5bc590a193481a771bd8f63"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W23OneAuthorityV3/Original729OneAuthorityQA.csproj",
+      "blob": "8d89968881d00845957de00848ec3fa5a859f6de"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W23OneAuthorityV3/README.md",
+      "blob": "1274e7599d40ed5130befddd86880088e8ad87f9"
+    },
+    {
+      "path": ".github/workflows/b01-62-w23-one-authority-v3.yml",
+      "blob": "3576fbe33dc8e262858b709652dd4b9ba60d772f"
+    }
+  ],
+  "sole_os_lock": "CanonicalWorldSlotLease original #729 b0123_canonical_world_authority/.owner",
+  "second_slot_lease": "NONE; new V3 slot source has no slot.lease",
+  "legacy_669_interoperability": "FOREIGN_MARKER_REFUSAL; no automatic existing saves migration",
+  "source_test_expected": {
+    "os": [
+      "windows-2025",
+      "ubuntu-24.04"
+    ],
+    "cases_per_os": 11,
+    "real_filesystem": true,
+    "child_clr_process": true
+  },
+  "release_gates": {
+    "SOURCE_G0": "PENDING_NEW_PACKET",
+    "R5_690_PHYSICAL_G0": "ACCEPTED_SOURCE_ONLY_B01-40_699",
+    "NATIVE_G1": "NOT_RUN",
+    "FROZEN_510_PRIVATE_GAME": "NOT_IMPLEMENTED",
+    "G2": "HOLD",
+    "CODEX_ACK": "NONE",
+    "MERGE": "NO"
+  },
+  "trust_limits": [
+    "external valid-file rollback remains possible with private directory write access",
+    "no selected #709 external highwater",
+    "no native Unity/PhysX or actual #510 private Rig[] hydration",
+    "no powerloss parent directory fsync evidence"
+  ],
+  "safe_rollback": "Close unmerged Draft; remove only newly added B01-62 Tools and CI, never alter foreign assets."
+}
