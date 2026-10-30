@@ -94,10 +94,10 @@ secondFx.BeginWeld(22u);secondFx.SetVisualProgress(.7f);
 Check(!fx1.IsVisualActive&&AllClear(go1),"separate instance independent of first");
 Check(secondFx.IsVisualActive,"other instance remains active");
 var material=Lines(second)[0].sharedMaterial;
-Object.Destroy(second);
+UnityEngine.Object.Destroy(second);
 Check(material.WasDestroyed,"original OnDestroy disposes visual material");
-Object.Destroy(alt);
-Object.Destroy(go1);
+UnityEngine.Object.Destroy(alt);
+UnityEngine.Object.Destroy(go1);
 Check(Lines(second).All(l=>!l.enabled),"original source destruction hides lines");
 // 512 deterministic actual Unity adapter interactions with independent instances
 uint seed=0xA43F1234u;
@@ -113,7 +113,7 @@ for(int i=0;i<512;i++)
  Check(Lines(sample).Length==9&&Lines(sample).All(l=>WeldVisualCore.Finite(l.Positions[0].x)),"seeded geometry finite "+i);
  if(i%3==0)fx.CancelWeld();else if(i%3==1)fx.SetVisualsEnabled(false);else sample.SetActive(false);
  Check(fx.Phase==WeldPhase.Idle&&AllClear(sample),"seeded cancellation removes render lines "+i);
- Object.Destroy(sample);
+ UnityEngine.Object.Destroy(sample);
 }
 Console.WriteLine("W09_ACTUAL_UNMODIFIED_WELD_MONOBEHAVIOUR_SURROGATE_PASS "+checks+"/"+checks+
 " original compiled C#9 against test-only UnityEngine; ORIGINAL_AUTHOR_ASSERTS="+NUnit.Framework.Assert.Calls);
