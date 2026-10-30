@@ -129,9 +129,11 @@ def run_plan(plan: dict, *, cadence: str = "per_win",
         # destroyed, and cannot satisfy any essential mobility/weapon route.
         # This is a *counterfactual design gate*, not real R3 CanDeploy.
         essential_before = sum(is_essential for _, is_essential in destroyed.values())
+        started_with_loaner = False
         if enforce_deploy_gate and essential_before:
             if loaner_used < loaner_challenges:
                 loaner_used += 1
+                started_with_loaner = True
             else:
                 blocked_deploy_attempts += 1
                 contradicted_scripted_wins += int(won)
@@ -192,6 +194,8 @@ def run_plan(plan: dict, *, cadence: str = "per_win",
             role == "mobility" and pid in reserved
             for pid, (role, _) in destroyed.items())
         unreserved_mobility = critical - reserved_mobility
+        reserved_essential = sum(pid in reserved for pid, (_, blocked) in
+                                 destroyed.items() if blocked)
         critical_at_end += int(critical > 0)
         no_budget_critical += int(critical > 0 and wallet < quote)
         observations.append({"attempt": eid, "win": won, "wallet": wallet,
@@ -199,9 +203,9 @@ def run_plan(plan: dict, *, cadence: str = "per_win",
                              "reserved_mobility": reserved_mobility,
                              "unreserved_mobility": unreserved_mobility,
                              "unavailable_essential": essential,
-                             "used_temporary_loaner": bool(
-                                 enforce_deploy_gate and essential_before
-                                 and loaner_used <= loaner_challenges),
+                             "reserved_essential": reserved_essential,
+                             "unreserved_essential": essential - reserved_essential,
+                             "used_temporary_loaner": started_with_loaner,
                              "still_destroyed": len(destroyed),
                              "reserved_waiting": len(reserved)})
     return {"cadence": cadence, "bootstrap": bootstrap, "priority": priority,
