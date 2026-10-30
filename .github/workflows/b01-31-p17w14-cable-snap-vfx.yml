@@ -1,0 +1,67 @@
+name: B01-31 P17W14 original three-phase detached cable snap VFX actual art CI
+on:
+  push:
+    branches: [art/b01-31-p17w14-cable-snap-vfx]
+    paths:
+      - 'Tools/B01-31/P17/W14CableSnapVfx001/**'
+      - '.github/workflows/b01-31-p17w14-cable-snap-vfx.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01-31/P17/W14CableSnapVfx001/**'
+      - '.github/workflows/b01-31-p17w14-cable-snap-vfx.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-cable-snap-physical-export:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install exact original raster authoring library
+        run: python -m pip install --disable-pip-version-check "Pillow==11.3.0"
+      - name: Original source and independent receiver Python syntax
+        run: python -m compileall -q Tools/B01-31/P17/W14CableSnapVfx001/
+      - name: Render 36 actual original PNG frames + 3 GIF + 2 boards + 77-file Unity Sprite ZIP
+        run: |
+          python Tools/B01-31/P17/W14CableSnapVfx001/build_cable_snap.py --output build/B0131W14
+          python Tools/B01-31/P17/W14CableSnapVfx001/verify_physical.py --source build/B0131W14
+      - name: Actual physical original PNG GIF ZIP and receipt second run per-byte parity
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd build/B0131W14 && find . -type f -print0 | sort -z | xargs -0 sha256sum) > /tmp/first.sha256
+          python Tools/B01-31/P17/W14CableSnapVfx001/build_cable_snap.py --output build/B0131W14
+          python Tools/B01-31/P17/W14CableSnapVfx001/verify_physical.py --source build/B0131W14
+          (cd build/B0131W14 && find . -type f -print0 | sort -z | xargs -0 sha256sum) > /tmp/second.sha256
+          cmp /tmp/first.sha256 /tmp/second.sha256
+          echo "B0131_W14_CABLE_SNAP_ALL_ORIGINAL_ART_SHA_BYTE_PARITY_PASS"
+      - name: Attach actual original 36 sprite binaries, 3 GIF, 2 boards and Unity import ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0131-P17W14-CABLE-SNAP-36-RGBA-3-GIF-2-BOARDS-UNITY-SPRITES
+          path: build/B0131W14/
+          retention-days: 30
+          if-no-files-found: error
+  independent-physical-binary-windows:
+    needs: original-cable-snap-physical-export
+    runs-on: windows-2022
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Download only truly produced original Ubuntu art binary files
+        uses: actions/download-artifact@v4
+        with:
+          name: B0131-P17W14-CABLE-SNAP-36-RGBA-3-GIF-2-BOARDS-UNITY-SPRITES
+          path: actual-original-art
+      - name: Install image decoder; DO NOT reexecute original renderer
+        run: python -m pip install --disable-pip-version-check "Pillow==11.3.0"
+      - name: Independently decode 36 original PNG 3 actual GIFs and 77 ZIP members + GUIDs
+        run: python Tools/B01-31/P17/W14CableSnapVfx001/verify_physical.py --source actual-original-art
