@@ -1,0 +1,89 @@
+name: B01-40 W11 exclusive reattach physical G0 + fail-closed transaction receiver (NOT Unity)
+on:
+  push:
+    branches: [qa/b01-40-p17w11-dock-exclusive-transaction-gate]
+    paths:
+      - 'Tools/B01/B01-40/P17W11DockExclusiveGate/**'
+      - '.github/workflows/b01-40-w11-dock-exclusive-intake.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-40/P17W11DockExclusiveGate/**'
+      - '.github/workflows/b01-40-w11-dock-exclusive-intake.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  independent-readonly-source-intake:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: gate
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/checkout@v4
+        with:
+          path: v2
+          ref: 33a32b8bd9ab40467ab1a17b5684926a37dbd4d3
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: guard
+          ref: 6efe45961ed0ffdf183e8016e350978b9f3dc51c
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: legacy
+          ref: cdcaea750fda1a9d7db6018e34970f4b9f206427
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: w06
+          ref: cb2b3a76e84266e2730fffc4ab048c1039f0652f
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: w09
+          ref: 763748f1be0c61356fb4462144640bb359364226
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Execute frozen producer original physical ZIPs and independent source/mutation gate
+        shell: bash
+        run: |
+          python gate/Tools/B01/B01-40/P17W11DockExclusiveGate/gate.py \
+            --v2 v2 --guard guard --legacy legacy --w06 w06 --w09 w09 \
+            --out dist --choice none | tee b01-40-w11-source-log.txt
+      - name: Assert release gate really rejects competing candidates, even when G0 archives validate
+        shell: bash
+        run: |
+          for selected in v2 guard both; do
+            set +e
+            python gate/Tools/B01/B01-40/P17W11DockExclusiveGate/gate.py \
+              --v2 v2 --guard guard --legacy legacy --w06 w06 --w09 w09 \
+              --out dist --choice "$selected" --release > "release-$selected.txt" 2>&1
+            status=$?
+            set -e
+            cat "release-$selected.txt"
+            if [ "$status" -ne 3 ]; then
+              echo "FAIL release gate should exit 3 for $selected; got $status"
+              exit 1
+            fi
+          done
+          echo "PASS three intentionally blocked release paths; neither frozen producer accepted for gameplay"
+      - name: Archive actual G0 source evidence and RED release receipt (never native Unity)
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b01-40-w11-dock-source-${{ matrix.os }}
+          path: |
+            dist/w11-dock-intake.json
+            b01-40-w11-source-log.txt
+            release-*.txt
+          retention-days: 21
+          if-no-files-found: warn
