@@ -54,7 +54,7 @@
     "Research/B01-25/P17/SINKPLATE001R2/SinkPlateRuntime.csproj": "4938ab4f3e7bd707f2a5376aa7e2a2a31108f916",
     "Research/B01-25/P17/SINKPLATE001R2/SinkPlateTests.csproj": "bd68275311dc13a8b359c981e2fdfd3d319534f0",
     "Tools/B01/B01-25/P17W13SinkPlateR2/.gitignore": "b67c661cfb5cc73f5f68cfe85fd17e954856ea87",
-    "Tools/B01/B01-25/P17W13SinkPlateR2/check.py": "42a8a44b7d7d01f773588ce1dfd3d7b38594427e",
+    "Tools/B01/B01-25/P17W13SinkPlateR2/check.py": "28252ce3b27714a9189c02a3fa1df0839365c5ec",
     "Tools/B01/B01-25/P17W13SinkPlateR2/README.md": "d7ca218815101b2d860bf092c1c3f6fa0e644235"
   },
   "rollback": "Discard ONLY new R2 asset/research/tools/workflow on disposable branch. R1 #529 frozen SHA and main/Codex never edited."
