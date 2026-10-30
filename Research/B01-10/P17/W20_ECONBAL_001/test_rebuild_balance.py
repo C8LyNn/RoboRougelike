@@ -459,5 +459,191 @@ class RebuildModelTests(unittest.TestCase):
         self.assertEqual(x["observations"][-1]["unavailable_essential"],1)
 
 
+    def test_71_core_destroyed_after_loss_blocks_all_later_wins(self):
+        s=[dict(attempt("loss",False,(part("wheel","mobility"),)),
+                core_alive_after=False),attempt("next",True,earned=100)]
+        x=run_plan(plan(s))
+        self.assertEqual((x["wins"],x["blocked_core_attempts"],
+                          x["contradicted_scripted_wins"],x["earned_scrap"]),
+                         (0,1,1,0))
+        self.assertEqual(x["end_feasibility"],"RUN_CORE_DESTROYED_NO_LOANER")
+
+    def test_72_core_destroyed_cannot_take_even_one_loaner(self):
+        s=[dict(attempt("loss",False,({"id":"wheel","role":"mobility",
+                                        "blocks_deploy":True},)),
+                core_alive_after=False),
+           attempt("next",True)]
+        x=run_plan(plan(s),enforce_deploy_gate=True,loaner_challenges=1)
+        self.assertEqual((x["hypothetical_loaner_used"],x["blocked_core_attempts"],
+                          x["wins"]), (0,1,0))
+
+    def test_73_no_challenge_after_win_blocks_later_winner(self):
+        s=[dict(attempt("victory",True,(part("gun","weapon"),)),
+                next_challenge_available_after=False),
+           attempt("impossible",True,earned=99)]
+        x=run_plan(plan(s))
+        self.assertEqual((x["wins"],x["restored"],
+                          x["blocked_no_challenge_attempts"]), (1,0,1))
+        self.assertEqual(x["end_feasibility"],"NO_ELIGIBLE_NEXT_CHALLENGE")
+
+    def test_74_one_loaner_never_creates_nonexistent_challenge(self):
+        s=[dict(attempt("loss",False,({"id":"gun","role":"weapon",
+                                        "blocks_deploy":True},)),
+                next_challenge_available_after=False),
+           attempt("fake_win",True)]
+        x=run_plan(plan(s),enforce_deploy_gate=True,loaner_challenges=1)
+        self.assertEqual((x["hypothetical_loaner_used"],
+                          x["blocked_no_challenge_attempts"],
+                          x["contradicted_scripted_wins"]), (0,1,1))
+
+    def test_75_core_reason_has_priority_over_no_challenge(self):
+        s=[dict(attempt("bad",False),core_alive_after=False,
+                next_challenge_available_after=False), attempt("future",True)]
+        x=run_plan(plan(s))
+        self.assertEqual((x["blocked_core_attempts"],
+                          x["blocked_no_challenge_attempts"]), (1,0))
+        self.assertEqual(x["observations"][-1]["blocked_reason"],"RUN_CORE_DESTROYED")
+
+    def test_76_malformed_core_flag_fails_preflight(self):
+        s=[dict(attempt("victory",True),core_alive_after=1)]
+        with self.assertRaises(InvalidScenario):
+            validate(plan(s))
+
+    def test_77_malformed_challenge_flag_fails_preflight(self):
+        s=[dict(attempt("victory",True),next_challenge_available_after="false")]
+        with self.assertRaises(InvalidScenario):
+            validate(plan(s))
+
+    def test_78_both_missing_end_flags_default_to_true(self):
+        x=run_plan(plan([attempt("v",True)]))
+        self.assertTrue(x["end_core_alive"] and x["end_next_challenge_available"])
+        self.assertEqual(x["end_feasibility"],
+                         "NORMAL_DEPLOY_ELIGIBLE_IN_MODEL_NOT_ACTUAL_WIN")
+
+    def test_79_valid_explicit_true_flags_retain_baseline(self):
+        a=run_plan(plan([attempt("v",True,(part("one"),))]))
+        b=run_plan(plan([dict(attempt("v",True,(part("one"),)),
+                              core_alive_after=True,
+                              next_challenge_available_after=True)]))
+        self.assertEqual(a,b)
+
+    def test_80_core_destroyed_after_current_win_does_not_erase_that_win(self):
+        s=[dict(attempt("last_win",True,earned=50),core_alive_after=False)]
+        x=run_plan(plan(s),cadence="per_win")
+        self.assertEqual((x["wins"],x["earned_scrap"],x["wallet_final"]),
+                         (1,50,1050))
+        self.assertFalse(x["end_core_alive"])
+
+    def test_81_after_core_loss_no_extra_damage_from_phantom_attempt(self):
+        s=[dict(attempt("loss",False),core_alive_after=False),
+           attempt("unreachable",False,(part("spurious"),))]
+        x=run_plan(plan(s))
+        self.assertEqual((x["destroyed_final"],x["denied"],
+                          x["blocked_deploy_attempts"]), (0,0,1))
+
+    def test_82_after_no_challenge_no_phantom_victory_credit(self):
+        s=[dict(attempt("last",True),next_challenge_available_after=False),
+           attempt("phantom",True,(part("wheel","mobility"),),earned=100)]
+        x=run_plan(plan(s),cadence="per_win")
+        self.assertEqual((x["wins"],x["free"],x["earned_scrap"],
+                          x["destroyed_final"]), (1,0,0,0))
+
+    def test_83_existing_repair_queue_is_not_healed_after_no_challenge(self):
+        s=[dict(attempt("loss",False,(part("wheel","mobility"),)),
+                next_challenge_available_after=False),
+           attempt("phantom_win",True)]
+        x=run_plan(plan(s))
+        self.assertEqual((x["restored"],x["reserved_final"]), (0,1))
+
+    def test_84_existing_repair_queue_not_healed_by_coreless_attempt(self):
+        s=[dict(attempt("loss",False,(part("weapon","weapon"),)),
+                core_alive_after=False),attempt("phantom_win",True)]
+        x=run_plan(plan(s))
+        self.assertEqual((x["restored"],x["reserved_final"]), (0,1))
+
+    def test_85_end_essential_assessment_marks_unapproved_loaner_option(self):
+        s=[attempt("loss",False,({"id":"wheel","role":"mobility",
+                                  "blocks_deploy":True},))]
+        x=run_plan(plan(s),enforce_deploy_gate=True,loaner_challenges=1)
+        self.assertEqual(x["end_feasibility"],
+                         "ONE_UNAPPROVED_LOANER_COUNTERFACTUAL_AVAILABLE")
+        self.assertEqual(x["end_unavailable_essential"],1)
+
+    def test_86_no_loaner_essential_0hp_end_is_inaccessible_in_model(self):
+        s=[attempt("loss",False,({"id":"drive","role":"mobility",
+                                  "blocks_deploy":True},))]
+        x=run_plan(plan(s),enforce_deploy_gate=True)
+        self.assertEqual(x["end_feasibility"],
+                         "ESSENTIAL_0HP_NEXT_WIN_INACCESSIBLE")
+
+    def test_87_without_authoritative_deploy_check_mark_unverified_not_green(self):
+        s=[attempt("loss",False,({"id":"gun","role":"weapon",
+                                  "blocks_deploy":True},))]
+        x=run_plan(plan(s))
+        self.assertEqual(x["end_feasibility"],
+                         "ESSENTIAL_0HP_HOST_DEPLOY_UNVERIFIED")
+
+    def test_88_one_loaner_lost_exhausts_last_recovery_option(self):
+        s=[attempt("loss",False,({"id":"gun","role":"weapon",
+                                  "blocks_deploy":True},)),
+           attempt("loaner_loss",False)]
+        x=run_plan(plan(s),enforce_deploy_gate=True,loaner_challenges=1)
+        self.assertEqual(x["hypothetical_loaner_used"],1)
+        self.assertEqual(x["end_feasibility"],
+                         "ESSENTIAL_0HP_NEXT_WIN_INACCESSIBLE")
+
+    def test_89_one_loaner_win_recovers_queue_and_unlocks_normal(self):
+        s=[attempt("loss",False,({"id":"gun","role":"weapon",
+                                  "blocks_deploy":True},)),
+           attempt("borrowed_victory",True)]
+        x=run_plan(plan(s),enforce_deploy_gate=True,loaner_challenges=1)
+        self.assertEqual((x["wins"],x["restored"],x["destroyed_final"]),
+                         (1,1,0))
+        self.assertEqual(x["end_feasibility"],
+                         "NORMAL_DEPLOY_ELIGIBLE_IN_MODEL_NOT_ACTUAL_WIN")
+
+    def test_90_terminal_core_overrides_still_available_loaner(self):
+        s=[dict(attempt("loss",False,({"id":"gun","role":"weapon",
+                                      "blocks_deploy":True},)),
+                core_alive_after=False)]
+        x=run_plan(plan(s),enforce_deploy_gate=True,loaner_challenges=1)
+        self.assertEqual(x["end_feasibility"],"RUN_CORE_DESTROYED_NO_LOANER")
+        self.assertEqual(x["hypothetical_loaner_used"],0)
+
+    def test_91_missing_challenge_overrides_still_available_loaner(self):
+        s=[dict(attempt("loss",False,({"id":"gun","role":"weapon",
+                                      "blocks_deploy":True},)),
+                next_challenge_available_after=False)]
+        x=run_plan(plan(s),enforce_deploy_gate=True,loaner_challenges=1)
+        self.assertEqual(x["end_feasibility"],"NO_ELIGIBLE_NEXT_CHALLENGE")
+        self.assertEqual(x["hypothetical_loaner_used"],0)
+
+    def test_92_alternating_eight_wins_preserves_previous_money_comparison(self):
+        s=[attempt(f"v{i}",True,(part(f"wheel{i}","mobility"),
+                                  part(f"gun{i}","weapon"))) for i in range(8)]
+        y=compare(plan(s,cash=3000))
+        self.assertEqual((y["per_win"]["charged_scrap"],
+                          y["per_run"]["charged_scrap"],
+                          y["per_win"]["restored"]), (560,1050,14))
+
+    def test_93_critical_gate_does_not_invent_actual_player_observation(self):
+        x=run_plan(plan([attempt("w",True)]),enforce_deploy_gate=True)
+        self.assertNotIn("verified_native",x)
+        self.assertIn("_IN_MODEL_",x["end_feasibility"])
+
+    def test_94_invalid_late_flag_rejects_entire_scenario(self):
+        s=[attempt("w",True), dict(attempt("later",False),core_alive_after=None)]
+        with self.assertRaises(InvalidScenario):
+            run_plan(plan(s))
+
+    def test_95_persisted_no_challenge_flag_remains_fail_closed(self):
+        s=[dict(attempt("no_next",False),next_challenge_available_after=False),
+           dict(attempt("forged_reenable",True),
+                next_challenge_available_after=True)]
+        x=run_plan(plan(s),enforce_deploy_gate=True,loaner_challenges=1)
+        self.assertEqual((x["wins"],x["blocked_no_challenge_attempts"],
+                          x["hypothetical_loaner_used"]), (0,1,0))
+
+
 if __name__ == "__main__":
     unittest.main()
