@@ -10,7 +10,7 @@ assert SRC.is_file(),"first run immutable physical Git/ZIP intake"
 unchanged=SRC.read_bytes()
 source=unchanged.decode()
 patterns=[
-  ("SKIP_CANCEL_ON_VISUAL_OFF","if (!enabled) CancelWeld();","if (false) CancelWeld();"),
+  ("SKIP_CANCEL_ON_VISUAL_OFF","if (!enabled) CancelWeld();","if (enabled) CancelWeld();"),
   ("SKIP_CORE_CANCEL_AT_CANCEL","public void CancelWeld()\n        {\n            core.Cancel();",
        "public void CancelWeld()\n        {\n            // core.Cancel();"),
   ("SKIP_CORE_CANCEL_ON_DISABLE","private void OnDisable()\n        {\n            core.Cancel();",
