@@ -19,7 +19,7 @@ class SourceIntegrity(unittest.TestCase):
  def test_06_deny_fake_session(self):
   with self.assertRaises(AssertionError):g.validate_program(src+"\nclass CanonicalSlotSessionV3 {}")
  def test_07_deny_test_without_original_session(self):self.denied("CanonicalSlotSessionV3.TryOpen","MockSession.TryOpen")
- def test_08_deny_missing_old_669(self):self.denied("Legacy.TryOpenExisting","MockLegacy.TryOpenExisting")
+ def test_08_deny_missing_old_669(self):self.denied("Legacy.TryOpenExisting","FakeSlot.TryOpenExisting")
  def test_09_deny_replaced_real_CLR(self):self.denied("Process.Start(psi)","new Thread(()=>{})")
  def test_10_deny_missing_race_barrier(self):self.denied('File.WriteAllText(start,"GO")',"Thread.Sleep(1)")
  def test_11_deny_missing_dual_process_exit(self):self.denied("a.WaitForExit(25000)&&b.WaitForExit(25000)","a.WaitForExit(25000)")
