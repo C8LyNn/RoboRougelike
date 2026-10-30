@@ -92,11 +92,11 @@ def run_plan(plan: dict, *, cadence: str = "per_win",
              bootstrap: bool = True, priority: str = "critical_first",
              enforce_deploy_gate: bool = False,
              loaner_challenges: int = 0) -> dict:
-    """Model destroyed-part requests and next-WIN completion, never host writes.
+    """Model post-encounter destroyed-part requests; never write a game host.
 
-    One global free reservation per genuine win epoch (optionally epoch-0
-    bootstrap) versus one per run. Per-win FREE is NOT a per-purchase coupon.
-    Losses neither restore parts nor refill the free allowance.
+    Win first completes only preexisting reservations, THEN new event damage
+    can queue for a FUTURE victory. Optional essential deploy requirements are
+    explicit synthetic input assumptions, not Unity CanDeploy assessment.
     """
     if cadence not in CADENCES or priority not in PRIORITIES:
         raise InvalidScenario("unsupported design policy")
@@ -288,10 +288,16 @@ def main(argv: list[str] | None = None) -> int:
             items = json.loads(ns.scenarios.read_text(encoding="utf-8"))
             if not isinstance(items, dict) or not isinstance(items.get("cases"), dict):
                 raise InvalidScenario("scenarios requires cases object")
-            output = {"notice": "MODEL ONLY, not host/native/player evidence",
+            output = {"notice": "MODEL ONLY; deploy gate and loaner are "
+                                 "UNAPPROVED synthetic counterfactuals",
                       "cases": {name: {
                           "bootstrap_epoch_zero": compare(plan, bootstrap=True),
-                          "no_bootstrap_epoch_zero": compare(plan, bootstrap=False)
+                          "no_bootstrap_epoch_zero": compare(plan, bootstrap=False),
+                          "deploy_gate_no_loaner": run_plan(
+                              plan, enforce_deploy_gate=True),
+                          "deploy_gate_one_hypothetical_loaner": run_plan(
+                              plan, enforce_deploy_gate=True,
+                              loaner_challenges=1)
                       } for name, plan in items["cases"].items()}}
     except (InvalidScenario, ValueError, OSError) as exc:
         print("MODEL_INPUT_REJECTED: " + str(exc), file=sys.stderr)
