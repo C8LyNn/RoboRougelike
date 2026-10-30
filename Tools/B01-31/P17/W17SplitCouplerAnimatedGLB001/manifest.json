@@ -1,0 +1,91 @@
+{
+  "package_id": "B01-31-SPLIT-COUPLER-KINEMATIC-GLB-001",
+  "version": "P17-W17-R1",
+  "owner": "B01-31 — CONCEPT ART & VISUAL EXPLORATION",
+  "hq_issue": 608,
+  "governance_issue": 276,
+  "purpose": "Genuine additive glTF2 two-independent-pivot original 3D kinematic snap-recoil animation on original physically frozen W16 GLB model, with two physical animated 7-pose geometry storyboards. W16 mesh/material/normals must remain byte-identical.",
+  "source": {
+    "pr": 599,
+    "exact_commit_sha": "5df35807c61d3e238a04b3b3a493e095a589b001",
+    "physical_actions_run": 41097210391,
+    "original_artifact_id": 12996617273,
+    "original_GLB_SHA256": "eeae6a553ca6136b5eaa97a65d5dd995f5f28fcb8bc54eb2180dfe28bc3653d7",
+    "source_glb_original_faces": 1312,
+    "original_meshes": 2,
+    "original_materials": 6,
+    "read_only": true
+  },
+  "owner_paths": [
+    "Tools/B01-31/P17/W17SplitCouplerAnimatedGLB001/**",
+    ".github/workflows/b01-31-p17w17-split-coupler-animated-glb.yml"
+  ],
+  "export": {
+    "real_glTF2_GLb": "B0131SplitCouplerConcept-SnapRecoil.glb",
+    "original_animation": "B0131_SnapRecoil_1p20s",
+    "animation_duration_seconds": 1.2,
+    "track_count": 4,
+    "channels": [
+      "LeftConnectorPivot.translation",
+      "LeftConnectorPivot.rotation",
+      "RightConnectorPivot.translation",
+      "RightConnectorPivot.rotation"
+    ],
+    "keyframe_samples": 7,
+    "rotation_axis": "X local",
+    "end_state": "disconnected/separated, no reattach; both roots x=-0.36/+0.36 at t1.2s",
+    "min_physical_full_mesh_gap_m": 0.26,
+    "original_geometry_byte_preservation": "exact GLB2 BIN original full geometry byte prefix and all 36 original accessor & bufferView descriptors",
+    "three_dimensional_original_previews": [
+      "B0131-SplitCoupler-SnapRecoil-dark-7poses.png",
+      "B0131-SplitCoupler-SnapRecoil-light-7poses.png"
+    ],
+    "timeline": "timeline.json",
+    "receipt": "receipt.json",
+    "physical_distribution_zip_members": 5
+  },
+  "actual_tests": [
+    "Download physically frozen original W16 first-pass signed receipt + exact original GLB SHA; NEVER regenerate W16 original.",
+    "Actual 4-animation-channels/two-node 7-keyframed transform glTF2 JSON/BIN readback, original mesh/material/pivot document unmodified, source BIN byte prefix exactly preserved.",
+    "Two isolated pivot X tracks separate from baseline; X-axis-only rotation cannot close X gap; independent 241 interpolated animated evaluations show actual original mesh-body/world X gap >=0.26m.",
+    "Actual normalized quaternion X rotation physical FLOAT32 readback; real 7 unique time keys in a real 1.20-sec glTF animation.",
+    "Two 2100×520 actual source triangle-projected image boards with 7 independent visually different 3D world poses, dark/light themes.",
+    "Real deterministic five-file ZIP actual CRC and exact raw member-to-loose byte parity with original asset and receipt.",
+    "7 negative input/semantic mutations rejected in independent receiver; full producer output twice SHA256 byte-identical.",
+    "Windows independent receiver downloads original W16 immutable artifact AND actual Ubuntu W17 physical 3D output without calling original renderer; verifies all listed binary claims."
+  ],
+  "qa": {
+    "producer_art_format_G0": "PENDING_REAL_CI",
+    "B01_40_formal_independent_G0": "PENDING",
+    "B01_60_activated_Unity6000_G1": "NOT_RUN",
+    "LIVE_GAME_SAVELOAD": "NOT_RUN",
+    "G2": "HOLD",
+    "Codex_ACK": false,
+    "integrated": false,
+    "no_merge": true
+  },
+  "no_runtime_guarantees": [
+    "glTF animation has no loop flag; ONE_SHOT_HOLD is just host playback recommendation",
+    "No Unity ModelImporter/native animation execution, no source original W16 game or B01-30 engine scripts",
+    "No Rigidbody physics / collider / reattach, no Save/Load/ID/ledger authority",
+    "No canonical Assets/** / #510/#556 / Codex source edits"
+  ],
+  "frozen": {
+    "reattach_pr": 510,
+    "reattach_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "save_pr": 556,
+    "save_sha": "33094f154c7b91119b36d58aab285e6e83c5de57",
+    "adapter_alternatives": [
+      596,
+      604
+    ],
+    "adapter_select_owner": "B01-23/B01-62 — B01-31 does not pick or integrate"
+  },
+  "receivers": [
+    "B01-30/40 independent actual glTF GLB2 kinematic geometry and intended one-way animation intake",
+    "B01-60 actual licensed Unity 6000.3.14f1 import/clip playback/PhysX only if real native environment available",
+    "B01-12 optional non-authoritative cosmetic 3D state after gameplay ownership decision",
+    "B01-00 only authorized handoff after formal source/native gates"
+  ],
+  "rollback": "Only own five NEW W17 tools/workflow paths. W17 output ZIP never auto-installed; in authorized scratch Unity/Blender remove only B0131SplitCouplerConcept-SnapRecoil* imported files, never original W16 model, existing W14/15 assets, occupied foreign empty directories, frozen code, Codex source."
+}
