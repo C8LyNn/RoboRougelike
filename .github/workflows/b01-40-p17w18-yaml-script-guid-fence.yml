@@ -1,0 +1,87 @@
+name: B01-40 W18 exact #596 YAML m_Script GUID closure + original W17 receiver source G0
+on:
+  push:
+    branches: [qa/b01-40-p17w18-yaml-script-guid-fence]
+    paths:
+      - 'Tools/B01/B01-40/P17W18SerializedScriptGuidFence/**'
+      - '.github/workflows/b01-40-p17w18-yaml-script-guid-fence.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-40/P17W18SerializedScriptGuidFence/**'
+      - '.github/workflows/b01-40-p17w18-yaml-script-guid-fence.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-source-scratch-and-guid-only-negative:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: own
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/checkout@v4
+        with:
+          path: game
+          ref: d94400d95d13db7f27e1533df05c9292d5380431
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: save
+          ref: 33094f154c7b91119b36d58aab285e6e83c5de57
+          fetch-depth: 0
+      - name: Sole owner-frozen adapter #596 exact original
+        uses: actions/checkout@v4
+        with:
+          path: bridge
+          ref: efb2b06eafedab5469b57f163152d96aca3c5915
+          fetch-depth: 0
+      - name: Original immutable B01-40 #625 W17 independent physical G0
+        uses: actions/checkout@v4
+        with:
+          path: w17
+          ref: 180849791c4b9594b12f26ef8d9dc0cf90adb61c
+      - name: Original immutable B01-40 #575 strict safe candidate publish and rollback
+        uses: actions/checkout@v4
+        with:
+          path: receiver
+          ref: 3b743acc52bb44ae6a50af56ed9aca46d22821a7
+      - name: ALT_HOLD #604 Git inspection ONLY (never source imported)
+        uses: actions/checkout@v4
+        with:
+          path: loser
+          ref: 1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a
+      - name: Independent original C# #607 selected host core QA provenance
+        uses: actions/checkout@v4
+        with:
+          path: qa
+          ref: 86f3292c928e52609db6c7afdb2010971d6946f1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Execute old unchanged physical G0 then W18 new Unity serialized-script GUID denial
+        shell: bash
+        run: |
+          set -euo pipefail
+          python own/Tools/B01/B01-40/P17W18SerializedScriptGuidFence/fence.py \
+             --game game --save save --bridge bridge --receiver receiver \
+             --w17 w17 --loser loser --qa qa --output evidence | tee w18-guid-fence-stdout.log
+          grep -q 'B0140_W18_AUTHOR_SELECTED_596_ORIGINAL_PHYSICAL' w18-guid-fence-stdout.log
+          grep -q 'B0140_W18_SERIALIZED_GUID_FENCE' w18-guid-fence-stdout.log
+          grep -q 'B0140_W18_OLD_RECEIVER_BYPASS_PROVEN_NEW_GUID_FENCE_REJECTS' w18-guid-fence-stdout.log
+          grep -q 'B0140_W18_PHYSICAL_G0_ACCEPTED_SOURCE_ONLY_NATIVE_G1_NOT_RUN_PUBLIC_HOST_HOLD_G2_HOLD_NO_MERGE' w18-guid-fence-stdout.log
+          test -s evidence/w18-one596-source-receipt.json
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-40-P17W18-596-ScriptGUID-${{ matrix.os }}
+          path: |
+            evidence/w18-one596-source-receipt.json
+            w18-guid-fence-stdout.log
+          if-no-files-found: warn
+          retention-days: 21
