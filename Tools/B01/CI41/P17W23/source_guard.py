@@ -26,7 +26,7 @@ def check_program(s):
     checks=["using B01.CanonicalWorldApi001;","using B01.SingleFileSaveSlot001;",
       "new CanonicalWorldGateway(", "new FileCheckpointStore(path)",
       "SingleFileSaveSlot.TryCreateNew", "CanonicalWorldSlotLease.TryAcquire",
-      "store.Dispose();","gateway.AuthorityActive&&factory.Last.Active",
+      "store.Dispose();","gateway.AuthorityActive&&factory.Last!=null&&factory.Last.Active",
       'first=="BUSY"&&rb=="BUSY"', "a.WaitForExit(25000)&&b.WaitForExit(25000)",
       "Process.Start(psi)","File.WriteAllText(start,\"GO\")",
       "CanonicalSlotSessionR2", # check should not use it, removed
