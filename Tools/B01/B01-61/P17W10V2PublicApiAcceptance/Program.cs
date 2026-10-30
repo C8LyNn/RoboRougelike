@@ -119,7 +119,7 @@ internal static class PublicDockApiQa
         var clear=Array.Empty<DockHit>();
         Yes(SecureDockPolicy.AllLayers==-1,"wrong all-layer constant");
         Yes(SecureDockPolicy.Capacity==128,"capacity drift");
-        Yes(SecureDockPolicy.Check(true,true,1,3,-1,0,128,.005,clear)==DockResult.InvalidInput,
+        Yes(SecureDockPolicy.Check(true,true,1,3,0,0,128,.005,clear)==DockResult.InvalidInput,
             "layer mask bypass accepted");
         Yes(SecureDockPolicy.Check(true,true,1,3,-1,128,128,.005,
             NewHits(128,new DockHit(false,false,true,0)))==DockResult.QuerySaturated,
