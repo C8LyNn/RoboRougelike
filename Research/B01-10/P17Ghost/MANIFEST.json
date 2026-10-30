@@ -1,6 +1,6 @@
 {
   "packageId": "B01-10-GHOST-001",
-  "version": "3.0.0-P17W09-PRACTICE_SPLIT_COACH",
+  "version": "4.0.0-P17W10-FINISH_SPLIT_FIX",
   "role": "B01-10 GAME DESIGN & BALANCE",
   "scope": "OPT_IN_CHL_TRAINING_GHOST",
   "sourceBranch": "design/b01-10-p17w06-training-ghost",
@@ -14,7 +14,7 @@
     "B01-00 HQ",
     "Codex after ACK only"
   ],
-  "status": "ORIGINAL_COACH_AND_HUD_SOURCE_AUTHORED / 82_CSHARP_TESTS_NOT_RUN_AT_NEW_HEAD / INDEPENDENT_G0_QA_PENDING / NATIVE_UNITY_NOT_RUN / CODEX_ACK_PENDING",
+  "status": "PRODUCER_SOURCE_PATCHED / ORIGINAL_96_CASES_AWAIT_FINAL_EXACT_HEAD_CI / PHYSICAL_ZIP_SHA_PENDING / INDEPENDENT_G0_QA_PENDING / NATIVE_UNITY_NOT_RUN / CODEX_NOT_CLAIMED",
   "originality": "First independent CHL practice ghost: 3D pose recording, 0.1s sampling, shortest-arc yaw replay, four-gate split comparison, two-rig personal best, no game state writes. Not an encounter editor, RUNSCORE post-run score, official CHL timer, economics or shared Physics patch.",
   "changedPaths": [
     "Research/B01-10/P17Ghost/**",
@@ -30,12 +30,12 @@
       "chars": 5245
     },
     "GhostSplitCoach.cs": {
-      "gitBlob": "6db432e7be05847e2bb294f6503d8710df81fc0b",
-      "chars": 7517
+      "gitBlob": "6ac6e1cbb19aa850c67333417d1a2e78dac66d04",
+      "chars": 10106
     },
     "GhostSplitHud.cs": {
-      "gitBlob": "41f4e067f704a9814b4de8240010f1db3abbfe90",
-      "chars": 4227
+      "gitBlob": "6072d99d3130dc0ea93e22b495f65a115c675977",
+      "chars": 4477
     },
     "GhostCore.cs.meta": {
       "gitBlob": "7c730f4002b69b4b4501f04b9eeb6aaf23af0371",
@@ -58,30 +58,30 @@
       "chars": 169
     },
     "Program.cs": {
-      "gitBlob": "39b9355a271a53b394a013f37306ce1ee02599e0",
-      "chars": 22759
+      "gitBlob": "cf23307c53801a5589ab1c114b24927dfbbb5fa8",
+      "chars": 28350
     },
     "Ghost.Runner.csproj": {
       "gitBlob": "bd9a53d96794ec1b1d34c3729ba0e985a30dc28c",
       "chars": 345
     },
     "README.md": {
-      "gitBlob": "3fa4a73d6b4a10b94b317cc60b5751a740f6fedd",
-      "chars": 21206
+      "gitBlob": "f95d2c4f83367b252e8abe848f0b3258fe68417e",
+      "chars": 24862
     }
   },
   "workflow": {
     "path": ".github/workflows/b01-10-p17-ghost.yml",
-    "gitBlob": "8d95c4bf480a2a79872db61586ff2e3b0c181ef3"
+    "gitBlob": "bf4f1fd974e5affd9a44d31220e5085b860f0f7a"
   },
   "tests": {
     "tool": "dotnet 8.0 CSharp original source and test runner",
-    "namedCases": 82,
+    "namedCases": 96,
     "syntheticRandomizedTraces": 100,
-    "workflowRun": "PENDING final W09 exact head",
-    "windows": "W09 exact SHA NOT_RUN until new CI completes; W08 62/62 PASS is historical only",
-    "ubuntu": "W09 exact SHA NOT_RUN until new CI completes; W08 62/62 PASS is historical only",
-    "actualDemoJson": "W09 NOT_RUN at current head",
+    "workflowRun": "PENDING final W10 SHA action; do not claim 96 PASS until actual logs",
+    "windows": "W10 exact-head 96 tests PENDING; W09 82/82 real PASS at prior SHA",
+    "ubuntu": "W10 exact-head 96 tests PENDING; W09 82/82 real PASS at prior SHA",
+    "actualDemoJson": "W10 PENDING exact-head run",
     "nativeUnity": "NOT_RUN",
     "UnityEditMode": "NOT_RUN",
     "UnityPlayMode": "NOT_RUN",
@@ -117,7 +117,7 @@
     "independentAcceptance": "PENDING",
     "CODEX_ACK": "PENDING"
   },
-  "qualityPatch": "New deterministic online per-gate segment pace and worst-loss report, zero reward/physics writes, safe replay retry, native OnGUI display. Source-only NOT Unity-tested.",
+  "qualityPatch": "W10 fixes real false coaching guidance by measuring final gate-to-finish segment; adds finish-only result fields, reference segment positivity guards, Unity HUD focus hint, and 14 new adversarial C# tests.",
   "sourceCodeGhostBlob": "376389273fe6263ac8a2d0b0741bb7a8fe9ae298",
   "fixtureDisclaimer": "The --demo Light and Heavy pose tracks are deterministic synthetic data, not actual Rigidbody/PhysX runs, manual play, or true native CHL-003 checkpoints.",
   "exactNativeStatus": "NO UNITY EDIT / NO UNITY PLAY / NO PHYSX / NO GAME INTEGRATION",
@@ -201,6 +201,35 @@
     "unityMetas": 5,
     "nativeUnity": "NOT_RUN",
     "previousGreen": "e2af0bc5e23958c24846ae4015fdf5e18b2c3004 / 62 PASS Windows+Ubuntu / ZIP10; not proof of W09 changes",
-    "physicalZipSHA": "PENDING_FINAL_EXACT_HEAD_CI"
+    "physicalZipSHA": "PENDING_FINAL_EXACT_HEAD_CI",
+    "previousOriginalSourceHead": "dbbafcd26f09df2f8c682b9b9f9515406c0f3132",
+    "previousOriginalRunner": "41053673382 BOTH Windows+Ubuntu 82/82 PASS; 14 ZIP member parity",
+    "previousZipSHA256": "2f5d754c411c4a537a68db582630b7c6d9299d9544da681ce0e29f8039be7e74"
+  },
+  "W10": {
+    "change": "W09 GhostSplitCoach.EndTrial ignored last checkpoint to finish; a player +5 sec slower there received false no-loss coaching. W10 measures final leg and tracks BiggestLossIsFinishSegment; HUD displays finish advice. Coach rejects zero-duration benchmark legs without changing generic GhostMath.Validate.",
+    "producer": "B01-10",
+    "filePaths": [
+      "GhostSplitCoach.cs",
+      "GhostSplitHud.cs",
+      "Program.cs",
+      "README.md",
+      "MANIFEST.json",
+      ".github/workflows/b01-10-p17-ghost.yml"
+    ],
+    "coachGitBlob": "6ac6e1cbb19aa850c67333417d1a2e78dac66d04",
+    "hudGitBlob": "6072d99d3130dc0ea93e22b495f65a115c675977",
+    "testsGitBlob": "cf23307c53801a5589ab1c114b24927dfbbb5fa8",
+    "newTestRange": "83..96",
+    "originalCSharpCases": 96,
+    "originalZipMembers": 14,
+    "originalImportScripts": 4,
+    "originalMetaGUIDs": 5,
+    "zipBuilderBlob": "30212ba57b8f82e65ec1842ae92382560ae25241",
+    "originalPhysicalZipSHA256": "PENDING_FINAL_EXACT_HEAD_CI",
+    "finalHeadCI": "PENDING_FINAL_EXACT_HEAD_CI",
+    "nativeUnity": "NOT_RUN",
+    "independentQA": "PENDING",
+    "CodexACK": "PENDING"
   }
 }
