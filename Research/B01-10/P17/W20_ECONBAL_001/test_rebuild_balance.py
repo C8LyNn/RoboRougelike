@@ -873,11 +873,11 @@ class RebuildModelTests(unittest.TestCase):
                                  price=2,cash=1))
         self.assertEqual((x["quote"],x["charged_scrap"]), (1,1))
 
-    def test_128_owner_approved_price_three_floor_one(self):
+    def test_128_owner_approved_price_three_halfup_two(self):
         from rebuild_balance import run_approved_plan
         x=run_approved_plan(plan([attempt("v",True,(part("a"),part("b")))],
                                  price=3,cash=1))
-        self.assertEqual((x["quote"],x["charged_scrap"]), (1,1))
+        self.assertEqual((x["quote"],x["charged_scrap"]), (2,2))
 
     def test_129_zero_paid_ticket_never_mislabeled_free_when_terminal(self):
         from rebuild_balance import run_approved_plan
@@ -901,7 +901,8 @@ class RebuildModelTests(unittest.TestCase):
                 x=run_approved_plan(plan([attempt("v",True)],price=price))
                 self.assertGreaterEqual(x["quote"],0)
                 self.assertLess(x["quote"],price)
-                self.assertEqual(x["quote"],price*65//100)
+                self.assertEqual(x["quote"],
+                                 min((price*65+50)//100,price-1))
 
     def test_132_approved_duplicate_win_id_fails_preflight(self):
         from rebuild_balance import run_approved_plan
@@ -1016,6 +1017,118 @@ class RebuildModelTests(unittest.TestCase):
         x=run_approved_plan(plan([attempt("v",True,(part("a"),part("b")))],
                                  price=1,percent=75,cash=0))
         self.assertEqual((x["quote"],x["paid"],x["free"]),(0,1,1))
+
+
+    def test_146_v6_explicit_halfup_5_15_30_100_parity(self):
+        from rebuild_balance import run_approved_plan
+        for purchase,expected in [(5,3),(15,10),(30,20),(100,65)]:
+            with self.subTest(purchase=purchase):
+                x=run_approved_plan(plan([attempt("win",True,
+                     (part("a"),part("b")))],cash=1000,price=purchase))
+                self.assertEqual((x["quote"],x["charged_scrap"]), (expected,expected))
+
+    def test_147_owner_requirement_price_one_must_clamp_to_zero(self):
+        from rebuild_balance import run_approved_plan
+        x=run_approved_plan(plan([attempt("win",True,
+              (part("a"),part("b")))],cash=0,price=1))
+        self.assertEqual((x["quote"],x["free"],x["paid"]),(0,1,1))
+
+    def test_148_rounding_floor_old_15_is_nine_not_ten(self):
+        x=run_plan(plan([attempt("v",True,(part("a"),part("b")))],
+                         cash=1000,price=15,percent=65))
+        self.assertEqual(x["quote_rounding"],"floor")
+        self.assertEqual(x["quote"],9)
+
+    def test_149_approved_always_selects_halfup_clamp_not_old_floor(self):
+        from rebuild_balance import run_approved_plan
+        x=run_approved_plan(plan([attempt("v",True,(part("a"),part("b")))],
+                                     cash=100,price=15))
+        self.assertEqual(x["quote_rounding"],"nearest_half_up_clamped")
+        self.assertEqual(x["quote"],10)
+        self.assertIn("PROPOSED_V6",x["quote_policy_proposal"])
+
+    def test_150_invalid_unknown_rounding_rejected(self):
+        p=plan([attempt("v",True)])
+        p["quote_rounding"]="ceil_no_clamp"
+        with self.assertRaises(InvalidScenario):
+            run_plan(p)
+
+    def test_151_invalid_non_string_rounding_rejected(self):
+        p=plan([attempt("v",True)])
+        p["quote_rounding"]=True
+        with self.assertRaises(InvalidScenario):
+            run_plan(p)
+
+    def test_152_price_one_approved_normal_and_reward_first_zero_paid(self):
+        from rebuild_balance import run_approved_plan
+        p=plan([attempt("v",True,(part("a"),part("b")),earned=5)],
+               cash=0,price=1)
+        for timing in ("after_reservation","before_reservation"):
+            with self.subTest(timing=timing):
+                x=run_approved_plan(p,reward_timing=timing)
+                self.assertEqual((x["free"],x["paid"],x["charged_scrap"]),(1,1,0))
+
+    def test_153_rounding_65_only_not_70_history(self):
+        from rebuild_balance import run_approved_plan
+        for pct in (1,65,70,75):
+            p=plan([attempt("v",True,(part("a"),part("b")))],
+                   cash=1000,price=15,percent=pct)
+            x=run_approved_plan(p)
+            self.assertEqual(x["quote"],10)
+
+    def test_154_quote_one_scarp_five_consumes_paid_order_not_free(self):
+        from rebuild_balance import run_approved_plan
+        x=run_approved_plan(plan([attempt("v",True,
+                    (part("a"),part("b"),part("c")))],cash=6,price=5))
+        self.assertEqual((x["free"],x["paid"],x["charged_scrap"]),(1,2,6))
+
+    def test_155_owner_approved_strictly_cheaper_full_quote_range(self):
+        from rebuild_balance import run_approved_plan
+        for price in list(range(1,150)) + [999,100000,1000000000]:
+            x=run_approved_plan(plan([attempt("v")],price=price))
+            self.assertLess(x["quote"],price)
+            self.assertGreaterEqual(x["quote"],0)
+
+    def test_156_approved_price_max_is_safe_from_overflow(self):
+        from rebuild_balance import run_approved_plan
+        x=run_approved_plan(plan([attempt("v")],price=1000000000))
+        self.assertEqual(x["quote"],650000000)
+        self.assertLess(x["quote"],1000000000)
+
+    def test_157_price_one_zero_cost_paid_does_not_consume_free_win_quota(self):
+        from rebuild_balance import run_approved_plan
+        p=plan([attempt("loss",False,(part("a"),part("b"))),
+                attempt("v",True,(part("c"),part("d")))],cash=0,price=1)
+        x=run_approved_plan(p)
+        self.assertEqual((x["wins"],x["free"],x["paid"],x["charged_scrap"]),
+                         (1,1,3,0))
+        self.assertEqual((x["restored"],x["reserved_final"]),(2,2))
+
+    def test_158_newly_damaged_in_same_win_waits_for_next_distinct_win(self):
+        from rebuild_balance import run_approved_plan
+        p=plan([attempt("v1",True,(part("a"),part("b"))),
+                attempt("v2",True,(part("c"),part("d")))],cash=100,price=15)
+        x=run_approved_plan(p)
+        self.assertEqual((x["free"],x["paid"],x["charged_scrap"]), (2,2,20))
+        self.assertEqual((x["restored"],x["reserved_final"]),(2,2))
+
+    def test_159_price_one_rebuild_satisfies_strict_less_even_below_one(self):
+        from rebuild_balance import run_approved_plan
+        x=run_approved_plan(plan([attempt("v")],price=1))
+        self.assertEqual(x["quote"],0)
+        self.assertNotIn("game_merged",x)
+
+    def test_160_original_v6_halfup_only_incompatible_on_strict_price_one(self):
+        from rebuild_balance import run_approved_plan
+        for price in (1,5,15,30,100):
+            expected_nearest=(price*65+50)//100
+            expected_clamped=min(expected_nearest,price-1)
+            x=run_approved_plan(plan([attempt("v")],price=price))
+            self.assertEqual(x["quote"],expected_clamped)
+            if price==1:
+                self.assertNotEqual(expected_nearest,expected_clamped)
+            else:
+                self.assertEqual(expected_nearest,expected_clamped)
 
 
 if __name__ == "__main__":
