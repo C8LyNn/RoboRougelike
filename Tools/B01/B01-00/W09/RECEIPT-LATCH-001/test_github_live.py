@@ -27,6 +27,29 @@ def original_objects():
             "id": run, "html_url": REPO + "actions/runs/" + str(run),
             "head_sha": SHA, "status": "completed", "conclusion": "success",
             "repository": {"full_name": "C8LyNn/RoboRougelike"},
+            "workflow_id": 401553591,
+            "path": ".github/workflows/b01-00-dispatch-w06.yml",
+            "event": "pull_request",
+        },
+        "/actions/runs/" + str(run) + "/jobs": {
+            "total_count": 2, "jobs": [
+                {"id": 101, "name": "dispatch (windows-2025)", "head_sha": SHA,
+                 "status": "completed", "conclusion": "success",
+                 "steps": [
+                     {"name": "Original source full dispatch and freeze regression suite",
+                      "status": "completed", "conclusion": "success"},
+                     {"name": "Produce deterministic example plan",
+                      "status": "completed", "conclusion": "success"},
+                 ]},
+                {"id": 102, "name": "dispatch (ubuntu-24.04)", "head_sha": SHA,
+                 "status": "completed", "conclusion": "success",
+                 "steps": [
+                     {"name": "Original source full dispatch and freeze regression suite",
+                      "status": "completed", "conclusion": "success"},
+                     {"name": "Produce deterministic example plan",
+                      "status": "completed", "conclusion": "success"},
+                 ]},
+            ],
         },
     }
 
