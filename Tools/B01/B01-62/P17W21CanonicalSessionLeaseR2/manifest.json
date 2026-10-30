@@ -1,0 +1,35 @@
+{
+  "package": "B01-62-CANONICAL-SLOT-SESSION-002",
+  "version": "2.0.0",
+  "owner": "B01-62",
+  "wave": "P17-W21",
+  "parent_pr": 697,
+  "parent_sha": "ab62b041e50f8aa0defada2aadc0987d6c63f9d9",
+  "selected_api": 681,
+  "api_v2": 691,
+  "alt_hold_api": 682,
+  "original_storage": 669,
+  "original_storage_sha": "d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121",
+  "fixes_qa_issue": 707,
+  "scope": "one R2 class: Dispose only releases when !HasWorld&&!restoring&&!Quarantined; explicit verified physical retirement can close quarantine escrow",
+  "files": [
+    "Tools/B01/B01-62/P17W21CanonicalSessionLeaseR2/CanonicalSlotSessionR2.cs",
+    "Tools/B01/B01-62/P17W21CanonicalSessionLeaseR2/Program.cs",
+    "Tools/B01/B01-62/P17W21CanonicalSessionLeaseR2/Original691And669R2QA.csproj",
+    "Tools/B01/B01-62/P17W21CanonicalSessionLeaseR2/README.md",
+    "Tools/B01/B01-62/P17W21CanonicalSessionLeaseR2/manifest.json",
+    ".github/workflows/b01-62-p17w21-adapter-r2-orphan-lease.yml"
+  ],
+  "native": "NOT_RUN",
+  "canonical_game_integrated": false,
+  "hardware_powerloss": "NOT_PROVEN",
+  "merged": false,
+  "receiver": [
+    "B01-23 canonical world rig owner",
+    "B01-61 #707 regression new SHA",
+    "B01-41 source OS owner concurrency",
+    "B01-40 safe source G0",
+    "B01-60 native Unity",
+    "B01-00 Codex later"
+  ]
+}
