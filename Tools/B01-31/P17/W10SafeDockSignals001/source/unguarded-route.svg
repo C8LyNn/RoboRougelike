@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+<title>Legacy reattach route is not guarded by verified safety check; diagnostic only</title>
+<g stroke-linejoin="round" stroke-linecap="round">
+<path d="M128 12 227 54v70c0 61-38 101-99 120C67 225 29 185 29 124V54Z" fill="#423421" stroke="#FFCF70" stroke-width="11"/>
+<path d="M94 115V88c0-27 19-44 43-44 22 0 38 15 38 37" stroke="#FFF2D7" stroke-width="13" fill="none"/>
+<path d="M86 117h96v77H86Z" fill="#192435" stroke="#FFF2D7" stroke-width="9"/>
+<path d="M134 134v24" stroke="#FFCF70" stroke-width="11"/>
+<circle cx="134" cy="175" r="7" fill="#FFCF70"/>
+<path d="M52 216 212 55" stroke="#FF7757" stroke-width="17"/>
+<path d="M52 216 212 55" stroke="#171D2B" stroke-width="6"/>
+</g></svg>
