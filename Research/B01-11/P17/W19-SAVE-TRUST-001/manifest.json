@@ -1,0 +1,31 @@
+{
+  "package": "B01-11-SAVE-TRUST-001/R1",
+  "scope": "source-only synthetic UX prototype; no Unity save/persistence",
+  "files": [
+    {
+      "path": "Research/B01-11/P17/W19-SAVE-TRUST-001/save_state.js",
+      "bytes": 7387,
+      "sha256": "6982701d260e1fdb94d4908418558c2d124e1cdb808ac53b10b03b034c58a105"
+    },
+    {
+      "path": "Research/B01-11/P17/W19-SAVE-TRUST-001/index.html",
+      "bytes": 6155,
+      "sha256": "f8340c1713ebe8f646eacf1fa2fd8f5d6575d10e0a9df37ff5ffc5cee84638a7"
+    },
+    {
+      "path": "Research/B01-11/P17/W19-SAVE-TRUST-001/test_save_state.cjs",
+      "bytes": 9368,
+      "sha256": "d75fdc0c772972c0d9f84da248cc2157ab7f89e6e34a85110eb8b517ce6f6967"
+    },
+    {
+      "path": "Research/B01-11/P17/W19-SAVE-TRUST-001/README.md",
+      "bytes": 4416,
+      "sha256": "282218f472a8f0a56f964b3d441b25d6b259e44c563e279a938010b7e3fba712"
+    },
+    {
+      "path": ".github/workflows/b01-11-p17w19-save-trust-001.yml",
+      "bytes": 799,
+      "sha256": "20ed616409ab17fc810661e4c2d2310cbf05bd3f7380a629064a112a5c6a2897"
+    }
+  ]
+}
