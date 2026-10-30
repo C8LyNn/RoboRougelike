@@ -1,0 +1,44 @@
+name: B01-50 FXPACE-001 original CSharp frame-pacing tests
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-50/FXPACE001/**'
+      - '.github/workflows/b01-50-fxpace001.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-csharp-cosmetic-burst:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Build and run original CSharp queue with warnings-as-errors
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p fxpace-receipts
+          dotnet --version | tee fxpace-receipts/dotnet-version.txt
+          dotnet run --configuration Release --project Tools/B01/B01-50/FXPACE001/tests/FXPACE001.Tests.csproj -- --receipt fxpace-receipts/source-tests.json 2>&1 | tee fxpace-receipts/original-csharp-tests.log
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('fxpace-receipts/source-tests.json').read_text())
+          assert d['failed']==0
+          assert d['passed']==d['total']
+          assert d['total'] >= 20
+          assert d['nativeUnity']=='NOT_RUN' and d['measuredFPS']=='NOT_MEASURED'
+          print(f"TRUE_CSHARP_SOURCE_PASS={d['passed']}; Unity Player NOT_RUN")
+          PY
+          sha256sum fxpace-receipts/* > fxpace-receipts/SHA256SUMS.txt
+      - name: Preserve original CSharp pass/fail evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-50-FXPACE001-ORIGINAL-CSHARP-TESTS
+          path: fxpace-receipts/**
+          if-no-files-found: error
+          retention-days: 30

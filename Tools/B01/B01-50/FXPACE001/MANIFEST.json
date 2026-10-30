@@ -1,0 +1,54 @@
+{
+  "package": "B01-50-FXPACE-001",
+  "version": "R1",
+  "producer": "B01-50",
+  "base_commit": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "ownership": [
+    "Tools/B01/B01-50/FXPACE001/**",
+    ".github/workflows/b01-50-fxpace001.yml"
+  ],
+  "stage": "PRODUCER_CSHARP_TESTS_VERIFIED_IN_GITHUB_ACTIONS_INDEPENDENT_QA_PENDING",
+  "purpose": "real bounded scheduling of cosmetic-only Unity VFX activations; never actual projectile, damage or physics",
+  "files": {
+    "Tools/B01/B01-50/FXPACE001/Core/CosmeticActivationBudget.cs": {
+      "git_blob_sha1": "8d1b9c91d9da1b5eebfb6e4c210f2de8d95231b0",
+      "utf8_bytes": 5819
+    },
+    "Tools/B01/B01-50/FXPACE001/tests/Program.cs": {
+      "git_blob_sha1": "985d9faa24e7fc4efc99e2001dd7019fe62071a0",
+      "utf8_bytes": 10073
+    },
+    "Tools/B01/B01-50/FXPACE001/tests/FXPACE001.Tests.csproj": {
+      "git_blob_sha1": "fe6d1015a437472d3dba592de87777cdf2f5bcde",
+      "utf8_bytes": 420
+    },
+    "Tools/B01/B01-50/FXPACE001/Unity/B0150CosmeticFxPacer.cs": {
+      "git_blob_sha1": "05fe6a9f7b98187759b32a07bbe35538f6f1ed36",
+      "utf8_bytes": 3133
+    },
+    "Tools/B01/B01-50/FXPACE001/Unity/B0150CosmeticBurstDemo.cs": {
+      "git_blob_sha1": "001cd3b17d3685237178a748d727a9dc7c9cb180",
+      "utf8_bytes": 1121
+    },
+    "Tools/B01/B01-50/FXPACE001/README.md": {
+      "git_blob_sha1": "1c5af7063d7c25fee624a8c8cb7e20556eaae0d5",
+      "utf8_bytes": 5364
+    },
+    ".github/workflows/b01-50-fxpace001.yml": {
+      "git_blob_sha1": "a6d17f400661617551f347bc83ec3b134ec8fd30",
+      "utf8_bytes": 1702
+    }
+  },
+  "tests": {
+    "csharp_dotnet8": "23/23 PASS, 0 FAIL, true original CSharp compiled .NET 8 warnings-as-errors; 300 visual-only requests / 38 simulated frames / cap 8",
+    "unity_editor": "NOT_RUN",
+    "unity_player": "NOT_RUN",
+    "real_game_fps": "NOT_MEASURED",
+    "independent_qa": "PENDING",
+    "source_ci_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41038187452",
+    "source_ci_artifact_id": 12968213928,
+    "source_ci_job_id": 124004134764,
+    "manifest_git_blob_validation": "7/7 original file Git blob and byte count PASS"
+  },
+  "rollback": "Delete isolated Tools/B01/B01-50/FXPACE001 and its one own workflow; do not edit original Unity Assets or saves."
+}
