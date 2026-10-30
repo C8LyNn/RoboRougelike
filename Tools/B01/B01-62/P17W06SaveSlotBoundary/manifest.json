@@ -1,0 +1,46 @@
+{
+  "schema": "b01-qa-package-v1",
+  "package_id": "B01-62-SAVE-SLOT-BOUNDARY-001",
+  "version": "P17-W06-R1",
+  "owner": "B01-62 DATA INTEGRITY & SAVE QA",
+  "base": "main",
+  "branch": "qa/b01-62-p17w06-save-slot-boundary",
+  "scope": [
+    "Tools/B01/B01-62/P17W06SaveSlotBoundary/**",
+    ".github/workflows/b01-62-p17w06-save-slot-boundary.yml"
+  ],
+  "source_blob_ids": {
+    "Tools/B01/B01-62/P17W06SaveSlotBoundary/prepare.py": "352a27ef94bd66dd1afed2ed0eb7396db27e5709",
+    "Tools/B01/B01-62/P17W06SaveSlotBoundary/Shims.cs": "ce43fe9f0e8cb2a2feebe6ecd88291c835ea68cf",
+    "Tools/B01/B01-62/P17W06SaveSlotBoundary/SlotBoundary.csproj": "0ea57adb148f1abbf48ba4eb051badf698ec5bdd",
+    "Tools/B01/B01-62/P17W06SaveSlotBoundary/Program.cs": "c53c9da147cad90e3b8af51b10c4468e5ba1d457",
+    "Tools/B01/B01-62/P17W06SaveSlotBoundary/README.md": "0f84770b780471340722d1edcecff0e46de3d7e6",
+    ".github/workflows/b01-62-p17w06-save-slot-boundary.yml": "62ccc6d1217410263c953b69a765cc7da5856caa"
+  },
+  "original_codex_git": {
+    "commit": "203a0805251ed28293888e43f2d49f0df63767c6",
+    "source_path": "Assets/R1/R1RunCheckpoint.cs",
+    "git_blob": "6eb8682c14329088d5698fc369009fb86b99b426"
+  },
+  "intended_tests": {
+    "windows": "19 original-method C# source path assertions over 4 actual processes",
+    "ubuntu": "19 original-method C# source path assertions over 4 actual processes",
+    "negative": "Physical disposable-canary original Write overwrites after simulated TestPath static reset; guards reject 5 unsafe paths",
+    "output": "4 JSON receipts+logs per OS, compare JSON byte-for-byte across OS",
+    "run_status": "PENDING"
+  },
+  "limitations": [
+    "No real Unity DomainReload/JsonUtility/G1",
+    "R1 controller is NOT compiled, only original static storage / DTO",
+    "No user checkpoint accessed, all canaries are in NEW disposable sandbox",
+    "Receiver-side path guard is NOT a Codex/gameplay fix",
+    "Expected original unsafe write is restricted to disposable in-sandbox canary, not native test",
+    "No acceptance/merge/ACK claims"
+  ],
+  "recipient": [
+    "B01-40 provenance G0",
+    "B01-60 independent source QA",
+    "B01-00 routes only approved handoff to Codex #79"
+  ],
+  "rollback": "Close unmerged Draft; delete only QA paths and self-created disposable scratch directories, not actual user saves or Codex original source"
+}
