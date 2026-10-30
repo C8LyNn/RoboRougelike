@@ -1,0 +1,136 @@
+{
+  "schema_version": "b01-package-v1",
+  "package_id": "B01-00-DISPATCH-001",
+  "revision": "1.2.0",
+  "owner": "B01-00",
+  "issue": 416,
+  "purpose": "Deterministic offline swarm allocator with one-way freeze, ACTIVE-only release, Unicode/casefold portable ownership collision prevention and Windows path safety",
+  "unity_version": null,
+  "source_base_branch": "main",
+  "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "codex_target_branch": null,
+  "codex_target_sha": null,
+  "scope_ack_url": null,
+  "dependency_package_ids": [],
+  "files": [
+    {
+      "path": "Tools/B01/B01-00/W06/DISPATCH-001/dispatch.py",
+      "sha256": "94c6f2059a748ac723fca0188c4836f9aa8781524108af766653e98dd59bb59f",
+      "bytes": 15699
+    },
+    {
+      "path": "Tools/B01/B01-00/W06/DISPATCH-001/test_dispatch.py",
+      "sha256": "b5e63c1aee297a2f63e9feac3afe3d989b57002e0c912e907e292d9a06cc56a4",
+      "bytes": 8311
+    },
+    {
+      "path": "Tools/B01/B01-00/W06/DISPATCH-001/test_freeze.py",
+      "sha256": "aa1e7530ada4c4600c1d426fc9bb3512c464b740129d88c07c1128dde1bd9c07",
+      "bytes": 7936
+    },
+    {
+      "path": "Tools/B01/B01-00/W06/DISPATCH-001/test_portability.py",
+      "sha256": "094a84bc3606627866d52accd1435a01760e62f9027cae8ff37ecd07e40557c6",
+      "bytes": 6459
+    },
+    {
+      "path": "Tools/B01/B01-00/W06/DISPATCH-001/snapshot_wave06.example.json",
+      "sha256": "d9ccb5042f89dfef7b32a15ba034e250b2292fb8d734920abf7bb672f452dd5e",
+      "bytes": 1170
+    },
+    {
+      "path": "Tools/B01/B01-00/W06/DISPATCH-001/README.md",
+      "sha256": "5175c97568ac2909e7b8316a644a1e715c46ee55a19edde244bcbbcaa759fd50",
+      "bytes": 5227
+    },
+    {
+      "path": "Tools/B01/B01-00/W06/DISPATCH-001/TEST_EVIDENCE/unittest.txt",
+      "sha256": "eb5fdaa1156517f776c2d6eda9a28adbfe948bd36ac954d5cefdb5b407faa25e",
+      "bytes": 2373
+    },
+    {
+      "path": "Tools/B01/B01-00/W06/DISPATCH-001/TEST_EVIDENCE/example-plan.json",
+      "sha256": "ccc27512e563af745b3ff43845c8ab762df15a6af1ee5053262997bace73713d",
+      "bytes": 1159
+    },
+    {
+      "path": "Tools/B01/B01-00/W06/DISPATCH-001/TEST_EVIDENCE/W08-RED-GREEN.md",
+      "sha256": "386f91c5fd9b15c225aff786f52f3d8ce1309264f0c5c55714e28fb5c126bfd2",
+      "bytes": 2220
+    },
+    {
+      "path": ".github/workflows/b01-00-dispatch-w06.yml",
+      "sha256": "c1ba63dd1d596370d00c3532dcd9cd8f6372b35a8599fabe8f57b42b1ead1c85",
+      "bytes": 863
+    }
+  ],
+  "possible_conflicts": [],
+  "excluded_paths": [
+    "Assets/**",
+    "Codex canonical gameplay and active worktree",
+    "B01-40/60/61/62 source QA",
+    "main/develop merges"
+  ],
+  "source_license_provenance": [
+    "Original B01-00 tool created for W06 coordination"
+  ],
+  "tests": [
+    {
+      "name": "W06 original 22 Python cases",
+      "status": "PASS",
+      "passed": 22,
+      "failed": 0,
+      "environment": "Historical original Python run; not current exact head",
+      "evidence": "Tools/B01/B01-00/W06/DISPATCH-001/TEST_EVIDENCE/unittest.txt"
+    },
+    {
+      "name": "W08 adversarial RED original implementation",
+      "status": "EXPECTED_FAIL",
+      "total": 65,
+      "failures": 26,
+      "errors": 1,
+      "environment": "Windows2025 and Ubuntu24.04 on ce73208e7106e3ecdfbb8dbb5e64e4c179b1dcbf",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41045653677"
+    },
+    {
+      "name": "W08 corrected original source GREEN",
+      "status": "PASS",
+      "total": 65,
+      "passed": 65,
+      "failed": 0,
+      "environment": "Windows2025 and Ubuntu24.04 on b6ec8a7303f954b21393ae59058e1f9e4b6bda52",
+      "evidence_url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41045838687"
+    },
+    {
+      "name": "Exact W08 manifest HEAD CI",
+      "status": "NOT_RUN",
+      "environment": "Pending workflow after manifest change",
+      "evidence_url": null
+    },
+    {
+      "name": "Unity EditMode/PlayMode",
+      "status": "NOT_RUN",
+      "environment": "Python coordination utility, no Unity source"
+    }
+  ],
+  "qa_b01_40": {
+    "decision": "PENDING",
+    "reviewed_revision": null,
+    "evidence_url": null
+  },
+  "qa_b01_60": {
+    "decision": "PENDING",
+    "reviewed_revision": null,
+    "evidence_url": null
+  },
+  "handoff_status": "PRODUCER_TESTED_W08 / INDEPENDENT_QA_PENDING / NO_CODEX_ACK / UNMERGED",
+  "codex_status": "NOT_REQUIRED_FOR_OFFLINE_COORDINATION; NO CODEX_ACK OR INTEGRATION CLAIMED",
+  "limitations": [
+    "Snapshot is illustrative and not automatically synced to live GitHub or Codex",
+    "Claims coordinate only participants sharing the same reliable filesystem",
+    "No native Unity/editor/gameplay claims",
+    "No local release/unfreeze for FROZEN or CODEX_CLAIMED claims; only external documented owner handback",
+    "Casefold/NFKC is a conservative portable policy, not a proof of every filesystem alias; live snapshot and shared filesystem semantics must be verified externally"
+  ],
+  "rollback": "Remove disposable tool checkout; release owned claim with exact recorded SHA256; never automatically delete modified claims"
+}
