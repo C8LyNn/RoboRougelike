@@ -1,0 +1,129 @@
+name: B01-50 W24 DEBRISSLEEP R2 original R1 contact-Stay RED to GREEN
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-50/DEBRISSLEEP001R2/**'
+      - '.github/workflows/b01-50-w24-debrissleep-r2.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-debris-r1-red-r2-green:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Verify 17 original Git blobs + six unique original importer GUIDs
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROOT=Tools/B01/B01-50/DEBRISSLEEP001R2
+          mkdir -p ci-evidence
+          n=0
+          while IFS=$'\t' read -r expected file; do
+            test -n "$expected" || continue
+            test "$(git hash-object --no-filters "$file")" = "$expected" || { echo "PIN_MISMATCH $file"; exit 1; }
+            n=$((n+1))
+            echo "ORIGINAL_OWN_GIT_BLOB_PASS $file"
+          done < "$ROOT/MANIFEST-GIT-BLOBS.tsv"
+          test "$n" -eq 17 || { echo "BLOB_PIN_COUNT_WRONG $n"; exit 1; }
+          python - <<'PY' | tee ci-evidence/own_guid_gate.txt
+          from pathlib import Path
+          import re, json
+          r=Path("Tools/B01/B01-50/DEBRISSLEEP001R2")
+          metas=list(r.rglob("*.meta"))
+          assert len(metas)==6,len(metas)
+          fresh=[]
+          for p in metas:
+              src=Path(str(p)[:-5])
+              assert src.is_file(),src
+              data=p.read_text()
+              assert "fileFormatVersion: 2" in data
+              m=re.search(r"^guid: ([0-9a-f]{32})$",data,re.M)
+              assert m,p
+              fresh.append(m.group(1))
+          assert len(set(fresh))==6
+          old={"37be3e94b7d649dd856f5a6a4408b5bd","b3a1343cdf7345f8840d2fd9694a8f61"}
+          assert not (set(fresh)&old)
+          n=0
+          for p in Path("Assets").rglob("*.meta"):
+              n+=1
+              t=p.read_text(errors="replace")
+              assert not any("guid: "+g in t for g in fresh),"GUID collision "+str(p)
+          path=r/"NativeG1/Tests/PlayMode/B0150.DebrisSleep.R2.PlayModeTests.asmdef"
+          d=json.loads(path.read_text())
+          assert d["references"]==["B0150.DebrisSleep.R2.Runtime"]
+          assert "UNITY_INCLUDE_TESTS" in d["defineConstraints"]
+          assert "TestAssemblies" in d["optionalUnityReferences"]
+          native=(r/"NativeG1/Tests/PlayMode/DebrisSleepR2NativePlayModeTests.cs").read_text()
+          assert native.count("[UnityTest]")==4
+          assert "WaitForFixedUpdate" in native
+          assert "DebrisStayWitness" in native
+          print("ORIGINAL_UNITY_IMPORT_GUID_PASS 6/6; checked canonical Assets metas",n)
+          print("NATIVE_PLAYMODE_SOURCE_PRESENT_4; NATIVE_EDITOR_NOT_RUN")
+          PY
+      - name: Retrieve exact untouched frozen R1 adapter and require five original REDs
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROOT=Tools/B01/B01-50/DEBRISSLEEP001R2
+          git fetch --no-tags origin d6d5526f5d8057f5a1f357218d460b808c307b5f
+          git show d6d5526f5d8057f5a1f357218d460b808c307b5f:Tools/B01/B01-50/DEBRISSLEEP001/Unity/B0150OptionalDebrisSleepGovernor.cs > "$ROOT/tests/original_r1_adapter.cs"
+          test "$(git hash-object --no-filters "$ROOT/tests/original_r1_adapter.cs")" = 4cb010a5b9fa9f4f067b6bd90efdc9d1196548d2
+          echo "FROZEN_R1_EXACT_GIT_BLOB_PASS" | tee ci-evidence/original_r1_sha.txt
+          PROJECT="$ROOT/tests/DEBRISSLEEP.Tests.csproj"
+          dotnet --version | tee ci-evidence/dotnet_version.txt
+          set +e
+          AdapterSource=original_r1_adapter.cs dotnet run -c Release --project "$PROJECT" -- --receipt ci-evidence/frozen_r1_expected_red.json 2>&1 | tee ci-evidence/frozen_r1_expected_red.log
+          rc=$?
+          set -e
+          test "$rc" -eq 1 || { echo "ORIGINAL_R1_EXPECTED_RED_NOT_OBSERVED exit=$rc"; exit 1; }
+          python - <<'PY'
+          import json
+          d=json.load(open("ci-evidence/frozen_r1_expected_red.json"))
+          assert d["total"]==59 and d["passed"]==54 and d["failed"]==5,d
+          checks=("original OnCollisionStay revokes","sustained contact Stay",
+                  "null Stay does not","stale Stay while disabled",
+                  "revoked consent ignores stale Stay")
+          assert len(d["failures"])==5
+          for name in checks:
+              assert any(name in f for f in d["failures"]),name
+          assert d["nativeUnity"]=="NOT_RUN" and d["nativePhysX"]=="NOT_RUN"
+          print("ORIGINAL_R1_RELEASE_RED_PROVEN 54 baseline PASS, 5 real original-source RED")
+          PY
+      - name: Compile actual R2 Unity-facing production and require 59 source GREEN
+        shell: bash
+        run: |
+          set -euo pipefail
+          PROJECT=Tools/B01/B01-50/DEBRISSLEEP001R2/tests/DEBRISSLEEP.Tests.csproj
+          dotnet clean -c Release "$PROJECT" >/dev/null
+          dotnet run -c Release --project "$PROJECT" -- --receipt ci-evidence/corrected_r2_59_green.json 2>&1 | tee ci-evidence/corrected_r2_59_green.log
+          python - <<'PY'
+          import json
+          x=json.load(open("ci-evidence/corrected_r2_59_green.json"))
+          assert x["total"]==x["passed"]==59 and x["failed"]==0,x
+          assert x["genuineProductionCore"] and x["genuineProductionUnityFacingAdapter"]
+          assert x["unitySurface"]=="SURROGATE_TEST_ONLY_NOT_UNITY"
+          assert x["nativeUnity"]==x["nativePhysX"]=="NOT_RUN"
+          assert x["actualFrameTime"]==x["physicalSleepAcceptance"]=="NOT_MEASURED"
+          print("CORRECTED_R2_SOURCE_GREEN 59/59; NATIVE_PLAYMODE_NOT_RUN")
+          PY
+          git rev-parse HEAD > ci-evidence/exact_pr_head_sha.txt
+          sha256sum Tools/B01/B01-50/DEBRISSLEEP001R2/Core/DebrisSleepPolicy.cs Tools/B01/B01-50/DEBRISSLEEP001R2/Unity/B0150OptionalDebrisSleepGovernor.cs > ci-evidence/production_sha256.txt
+      - name: Archive exact R1 RED, R2 GREEN and G1 native source only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-50-W24-DEBRISSLEEP-R2-${{ matrix.os }}-${{ github.run_id }}
+          path: ci-evidence/
+          retention-days: 14
+          if-no-files-found: warn

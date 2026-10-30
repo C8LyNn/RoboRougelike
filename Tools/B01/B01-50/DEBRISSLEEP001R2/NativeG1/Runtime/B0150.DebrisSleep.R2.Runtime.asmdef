@@ -1,0 +1,14 @@
+{
+  "name": "B0150.DebrisSleep.R2.Runtime",
+  "rootNamespace": "B01.Performance.DebrisSleep001",
+  "references": [],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
