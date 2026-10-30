@@ -1,0 +1,78 @@
+name: B01-32 P17 W08 real scan sweep 3D OBJ + physical Unity URP source ZIP QA
+on:
+  push:
+    branches: [art/b01-32-p17-w08-scan-sweep-vfx]
+    paths:
+      - Tools/B01-32/P17/W08ScanSweep/**
+      - .github/workflows/b01-32-p17w08-scan-sweep.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-csharp-to-obj-to-unity-ubuntu:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Compile+execute actual original CSharp9 3D geometry, 2048 trajectories and 8 timeline snapshots
+        run: dotnet run -c Release --project Tools/B01-32/P17/W08ScanSweep/CoreTests/CoreTests.csproj -- build/ScanSweepW08/frames.json build/ScanSweepW08/scan-sector.obj
+      - name: Roslyn CSharp9 syntax check original 3 runtime/Unity tests (NOT native Unity)
+        run: dotnet run -c Release --project Tools/B01-32/P17/W08ScanSweep/SyntaxTests/SyntaxTests.csproj
+      - name: Install genuine CPU 3D OBJ preview dependencies
+        run: python -m pip install --disable-pip-version-check "Pillow==11.3.0"
+      - name: Render eight real RGBA scan-sector images from original compiled CSharp OBJ mesh
+        run: python Tools/B01-32/P17/W08ScanSweep/render_mesh.py --output build/ScanSweepW08
+      - name: Generate physical Unity URP shader, original prefab, sources and .meta ZIP
+        run: python Tools/B01-32/P17/W08ScanSweep/build_import.py --output build/ScanSweepW08
+      - name: Validate actual physical import source ZIP bytes, GUID, URP shader and four corruptions
+        run: python Tools/B01-32/P17/W08ScanSweep/verify_import.py --output build/ScanSweepW08
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B0132-W08-SCAN-SWEEP-ORIGINAL-UNITY-OBJ-PNG
+          path: build/ScanSweepW08/
+          retention-days: 30
+          if-no-files-found: error
+  independent-windows-physical-parity:
+    needs: original-csharp-to-obj-to-unity-ubuntu
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Compile+execute actual original CSharp9 geometry and timeline on Windows
+        run: dotnet run -c Release --project Tools/B01-32/P17/W08ScanSweep/CoreTests/CoreTests.csproj -- build/ScanSweepW08/frames.json build/ScanSweepW08/scan-sector.obj
+      - name: Parse all three original Unity CSharp9 runtime/test scripts on Windows
+        run: dotnet run -c Release --project Tools/B01-32/P17/W08ScanSweep/SyntaxTests/SyntaxTests.csproj
+      - name: Install same original physical OBJ CPU preview requirements
+        run: python -m pip install --disable-pip-version-check "Pillow==11.3.0"
+      - name: Render eight real original physical OBJ PNGs on Windows
+        run: python Tools/B01-32/P17/W08ScanSweep/render_mesh.py --output build/ScanSweepW08
+      - name: Generate actual original Unity shader/prefab/meta archive on Windows
+        run: python Tools/B01-32/P17/W08ScanSweep/build_import.py --output build/ScanSweepW08
+      - name: Independently verify original physical ZIP and four bad-source mutants
+        run: python Tools/B01-32/P17/W08ScanSweep/verify_import.py --output build/ScanSweepW08
+      - uses: actions/download-artifact@v4
+        with:
+          name: B0132-W08-SCAN-SWEEP-ORIGINAL-UNITY-OBJ-PNG
+          path: build/UbuntuOriginal
+      - name: Cross-platform exact original Unity import ZIP and 3D OBJ byte parity
+        shell: bash
+        run: |
+          python -c "import hashlib,pathlib; c=['B0132-ScanSweep-UnityImport.zip','scan-sector.obj']; a=pathlib.Path('build/ScanSweepW08'); b=pathlib.Path('build/UbuntuOriginal'); [(lambda x,y: print('SCAN_CROSS_OS_ORIGINAL_BINARY_PARITY_PASS',p,hashlib.sha256(x).hexdigest()) if x==y else (_ for _ in ()).throw(AssertionError('SCAN_CROSS_OS_BYTES_DIFFER '+p)))((a/p).read_bytes(),(b/p).read_bytes()) for p in c]"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B0132-W08-SCAN-SWEEP-WINDOWS-RECEIPTS
+          path: |
+            build/ScanSweepW08/SOURCE_RECEIPT.json
+            build/ScanSweepW08/RENDER_RECEIPT.json
+          retention-days: 30
+          if-no-files-found: error

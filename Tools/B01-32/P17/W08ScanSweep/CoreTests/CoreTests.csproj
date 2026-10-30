@@ -1,0 +1,1 @@
+<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><TargetFramework>net8.0</TargetFramework><OutputType>Exe</OutputType><LangVersion>9.0</LangVersion><ImplicitUsings>disable</ImplicitUsings><Nullable>enable</Nullable></PropertyGroup><ItemGroup><Compile Include="../Runtime/ScanSweepCore.cs" Link="ORIGINAL_ScanSweepCore.cs"/></ItemGroup></Project>

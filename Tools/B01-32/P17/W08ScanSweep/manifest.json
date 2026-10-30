@@ -1,0 +1,32 @@
+{
+  "package_id": "B01-32-SCAN-SWEEP-VFX-001",
+  "version": "R1",
+  "wave": "PASS17/WAVE08",
+  "owner": "B01-32 Animation & VFX",
+  "intent": "Original 3D transparent rotating cosmetic scan sector",
+  "render_model": {
+    "vertices": 128,
+    "triangles": 64,
+    "opening_degrees": 60,
+    "radius_world_units": 2.25
+  },
+  "duration": {
+    "sweep_seconds": 1.4,
+    "fade_seconds": 0.42
+  },
+  "native_unity": "NOT_RUN",
+  "actual_game_mutation": false,
+  "source_paths": [
+    "Tools/B01-32/P17/W08ScanSweep/**",
+    ".github/workflows/b01-32-p17w08-scan-sweep.yml"
+  ],
+  "import_paths": "Assets/B0132ScanSweep/**",
+  "qa": [
+    "B01-40 independent physical ZIP/GUID/path/rollback",
+    "B01-60 licensed Unity 6000.3.14f1 URP native shader+PlayMode",
+    "B01-00 optional #79 queue"
+  ],
+  "rollback": "Remove only new Assets/B0132ScanSweep including its root .meta and optional Codex presentation adapter",
+  "codex_ack": "PENDING",
+  "merge": "NO"
+}
