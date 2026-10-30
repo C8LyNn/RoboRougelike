@@ -88,7 +88,7 @@ namespace UnityEngine
         }
         public Transform parent { get=>_parent; set=>SetParent(value,true); }
         public Transform parentTransform=>_parent;
-        public Quaternion rotation=>Quaternion.identity;
+        public Quaternion rotation {get;set;} = Quaternion.identity;
         public Vector3 lossyScale=>localScale;
         public Vector3 TransformPoint(Vector3 x)=>position+x;
         public void SetParent(Transform next,bool worldPositionStays)
