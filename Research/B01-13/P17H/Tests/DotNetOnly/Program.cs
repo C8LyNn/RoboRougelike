@@ -91,7 +91,7 @@ internal static class Program
         Case("time_negative_rejected_on_begin", () => Throws<ArgumentOutOfRangeException>(()=>new MotionStallLedger().Begin(-1,0,0)));
         Case("x_nan_rejected", () => Throws<ArgumentOutOfRangeException>(()=>New().Observe(11,double.NaN,0,true)));
         Case("z_inf_rejected", () => Throws<ArgumentOutOfRangeException>(()=>New().Observe(11,0,double.NegativeInfinity,true)));
-        Case("overflow_world_delta_rejected", () => { var l=New();Throws<ArgumentOutOfRangeException>(()=>l.Observe(11,double.MaxValue,0,true)); });
+        Case("overflow_world_delta_rejected", () => { var l=New();l.Begin(10,double.MaxValue,0);Throws<ArgumentOutOfRangeException>(()=>l.Observe(11,-double.MaxValue,0,true)); });
         Case("bad_sample_does_not_mutate_state", () => { var l=New();l.Observe(10.1,0,0,true);Throws<ArgumentOutOfRangeException>(()=>l.Observe(10.05,1,0,true));Equal(S.Attempting,l.CurrentState); });
         Case("begin_resets_all_counters", () => { var l=New();for(int i=0;i<=21;i++)l.Observe(10+i*.1,0,0,true);l.Begin(50,1,2);Equal(0,l.AttemptCount);Equal(0,l.SuspectedStallCount);Equal(S.Idle,l.CurrentState); });
         Case("begin_invalid_preserves_existing", () => { var l=New();l.Observe(10.1,0,0,true);Throws<ArgumentOutOfRangeException>(()=>l.Begin(double.NaN,0,0));Equal(1,l.AttemptCount); });
