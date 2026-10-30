@@ -18,7 +18,7 @@ A = "Assets/B0161ReattachBypassQA/"
 OWNED = set([
  D+"verify.py",D+"README.md",D+"manifest.json",
  ".github/workflows/b01-61-p17w09-reattach-bypass.yml",
- A+".meta",A+"Tests.meta",A+"Tests/PlayMode.meta",
+ A.rstrip("/")+".meta",A+"Tests.meta",A+"Tests/PlayMode.meta",
  A+"Tests/PlayMode/B0161.ReattachBypass.PlayMode.asmdef",
  A+"Tests/PlayMode/B0161.ReattachBypass.PlayMode.asmdef.meta",
  A+"Tests/PlayMode/ReattachBypassPlayModeTests.cs",
