@@ -16,7 +16,7 @@ PINS=[
 D="Tools/B01/B01-61/P17W17Selected596UnityHostQA/"
 OWN={D+n for n in ("SyntheticUnityEngine.cs","Original596UnityHostQA.csproj",
                       "Program.cs","source_guard.py","README.md","manifest.json")}
-OWN.add(".github/workflows/b01-61-p17w17-selected596-unity-host-lease.yml")
+OWN.add(".github/workflows/b01-61-p17w17-selected596-monobehaviour.yml")
 def g(*args):return subprocess.check_output(["git","-C",str(ROOT),*args],text=True).strip()
 def check(x,m):
  if not x:raise AssertionError(m)
