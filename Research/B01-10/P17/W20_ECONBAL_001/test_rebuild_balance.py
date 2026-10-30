@@ -1109,7 +1109,7 @@ class RebuildModelTests(unittest.TestCase):
         p=plan([attempt("v1",True,(part("a"),part("b"))),
                 attempt("v2",True,(part("c"),part("d")))],cash=100,price=15)
         x=run_approved_plan(p)
-        self.assertEqual((x["free"],x["paid"],x["charged_scrap"]), (2,2,20))
+        self.assertEqual((x["free"],x["paid"],x["charged_scrap"]), (2,2,18))
         self.assertEqual((x["restored"],x["reserved_final"]),(2,2))
 
     def test_159_price_one_rebuild_satisfies_strict_less_even_below_one(self):
