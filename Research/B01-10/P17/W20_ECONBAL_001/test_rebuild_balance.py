@@ -876,7 +876,7 @@ class RebuildModelTests(unittest.TestCase):
     def test_128_owner_approved_price_three_halfup_two(self):
         from rebuild_balance import run_approved_plan
         x=run_approved_plan(plan([attempt("v",True,(part("a"),part("b")))],
-                                 price=3,cash=1))
+                                 price=3,cash=2))
         self.assertEqual((x["quote"],x["charged_scrap"]), (2,2))
 
     def test_129_zero_paid_ticket_never_mislabeled_free_when_terminal(self):
