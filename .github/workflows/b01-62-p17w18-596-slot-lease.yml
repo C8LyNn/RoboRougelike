@@ -1,0 +1,50 @@
+name: B01-62 W18 Original #596 Owned Checkpoint Slot Lease Source QA
+on:
+  push:
+    branches:
+      - qa/b01-62-p17w18-owned-checkpoint-slot-lease-r1
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W18OwnedCheckpointLease/**'
+      - '.github/workflows/b01-62-p17w18-596-slot-lease.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-original-596-multiprocess-lease:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Fetch ONLY final selected #596 and frozen #556/#510 exact source
+        run: |
+          git fetch --no-tags origin efb2b06eafedab5469b57f163152d96aca3c5915
+          git fetch --no-tags origin 33094f154c7b91119b36d58aab285e6e83c5de57
+          git fetch --no-tags origin d94400d95d13db7f27e1533df05c9292d5380431
+      - name: Verify immutable original Git blobs and build QA-only Inputs
+        run: |
+          mkdir -p b0162-w18-receipts
+          python Tools/B01/B01-62/P17W18OwnedCheckpointLease/source_guard.py --repo . --out Tools/B01/B01-62/P17W18OwnedCheckpointLease/Input --receipt b0162-w18-receipts/source.json
+      - name: Run actual original #596 checkpoint CAS with multi-process exclusive owner slot
+        run: |
+          set -o pipefail
+          dotnet run --project Tools/B01/B01-62/P17W18OwnedCheckpointLease/Original596LeaseQA.csproj -c Release --verbosity quiet | tee b0162-w18-receipts/original-596-lease.log
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b0162-w18-596-lease-${{ matrix.os }}
+          path: b0162-w18-receipts/*
+          if-no-files-found: error
