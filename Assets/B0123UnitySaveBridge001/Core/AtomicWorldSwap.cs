@@ -308,6 +308,36 @@ namespace B01.UnitySaveBridge001
             return verdict;
         }
 
+        // W21 #670: the owner MonoBehaviour can be removed without destroying
+        // its original active child Rigidbody hierarchy. Shutdown freezes all
+        // further Save/Load first; only a successful complete retirement permits
+        // eventual lease release AFTER real Unity object destruction is observed.
+        public bool TryRetireForOwnerRemoval()
+        {
+            quarantined=true;
+            if(busy||cleanupPending)return false;
+            busy=true;
+            bool safe=true;
+            try
+            {
+                if(current!=null)
+                {
+                    try{current.Deactivate();}catch{safe=false;}
+                    try{current.Retire();}catch{safe=false;}
+                    // No future Save, Load or re-publish from a removed host.
+                    current=null;
+                    currentCold=null;
+                }
+            }
+            catch{safe=false;}
+            finally
+            {
+                if(!safe)cleanupPending=true;
+                busy=false;
+            }
+            return safe;
+        }
+
         private static bool SameIdentityAndLedger(RunSnapshot a,RunSnapshot b)
         {
             if(!SnapshotRules.Valid(a)||!SnapshotRules.Valid(b)||
