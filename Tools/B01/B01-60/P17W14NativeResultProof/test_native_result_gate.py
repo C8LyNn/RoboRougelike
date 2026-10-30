@@ -83,7 +83,7 @@ def main():
     ("duplicate_first",original,None,True,None),
     ("one_case_skipped",original,None,False,{original[0]:"Skipped"}),
     ("one_case_failed_aggregate_forged",original,None,False,{original[0]:"Failed"}),
-    ("one_name_typo",[x.replace("Rollback","RollBack") for x in original],None,False,None),
+    ("one_name_typo",[x+"-typo" if i==0 else x for i,x in enumerate(original)],None,False,None),
     ("one_case_missing_plus_high_counter",original[:-1],n+1200,False,None),
    ]
    for label,identities,pas,duplicate,results in cases:
@@ -113,8 +113,8 @@ def main():
   path.write_text("<test-run")
   denied(lambda:new.parse_xml(path,2),"truncated malformed XML")
   neg+=1
- check(witness==2 and neg==24 and pos==3,
-       "expected 2 original RED, 24 new refusals and 3 positives")
+ check(witness==2 and neg==26 and pos==3,
+       "expected 2 original RED, 26 new refusals and 3 positives")
  print("B01_60_W14_GENUINE_ORIGINAL_W13_XML_SUMMARY_FALSE_GREEN_RED",witness)
  print("B01_60_W14_CORRECTED_NATIVE_G1_PARSER_NEGATIVE_PASS",neg)
  print("B01_60_W14_CORRECTED_NATIVE_G1_PARSER_SYNTHETIC_CASES_PASS",pos)
