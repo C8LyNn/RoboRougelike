@@ -1,0 +1,64 @@
+{
+  "package": "CI41-V3-669-DUAL-AUTHORITY-WITNESS-001",
+  "version": "R1",
+  "owner": "B01-41",
+  "hq": 731,
+  "selected_v3": {
+    "pr": 729,
+    "sha": "b8ca29c7707cd6b4338d0b9772d74dee676d49d2"
+  },
+  "selected_storage": {
+    "pr": 669,
+    "sha": "d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121"
+  },
+  "session_r2": {
+    "pr": 712,
+    "sha": "bd8905ad549a7b26854b671be971f7d781308311",
+    "disposition": "INCOMPATIBLE_UNTIL_NEW_ONE_AUTHORITY_BRIDGE"
+  },
+  "selected_host": {
+    "pr": 690,
+    "sha": "cc7f73541517a18f4479bb155534bd4832d9985e",
+    "coinstalled": false
+  },
+  "alt_hold": [
+    719,
+    682,
+    695,
+    693,
+    652
+  ],
+  "frozen_game510": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "frozen_save556": "33094f154c7b91119b36d58aab285e6e83c5de57",
+  "owned_paths": [
+    "Tools/B01/CI41/P17W23/Program.cs",
+    "Tools/B01/CI41/P17W23/OriginalV3StorageAuthorityQA.csproj",
+    "Tools/B01/CI41/P17W23/source_guard.py",
+    "Tools/B01/CI41/P17W23/test_source_guard.py",
+    "Tools/B01/CI41/P17W23/README.md",
+    "Tools/B01/CI41/P17W23/MANIFEST.json",
+    ".github/workflows/b01-41-p17w23-v3-669-two-lease-witness.yml"
+  ],
+  "expected": {
+    "python_hostile_per_os": 18,
+    "external_os_pairs_per_os": 8,
+    "child_clr_per_os": 16,
+    "result": "EXPECTED_SECURITY_RED_WITNESS_PASS",
+    "native_unity": "NOT_RUN"
+  },
+  "gate": {
+    "g0": "ONE_AUTHORITY_BRIDGE_PENDING",
+    "g1": "NOT_RUN",
+    "live_save": "HOLD",
+    "g2": "HOLD",
+    "codex_ack": false
+  },
+  "six_states": {
+    "IMPLEMENTED": true,
+    "TESTED": "CI_PENDING",
+    "QA_ACCEPTED": false,
+    "READY_FOR_INTEGRATOR": false,
+    "INTEGRATED": false,
+    "RELEASED": false
+  }
+}
