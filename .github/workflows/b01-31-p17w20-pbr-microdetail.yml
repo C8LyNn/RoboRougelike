@@ -1,0 +1,84 @@
+name: B01-31 P17W20 Original Normal-ORM PBR glTF2 material microdetail QA
+on:
+  push:
+    branches: [art/b01-31-p17w20-pbr-microdetail-orm-normal]
+    paths:
+      - 'Tools/B01-31/P17/W20PBRMicrodetail001/**'
+      - '.github/workflows/b01-31-p17w20-pbr-microdetail.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01-31/P17/W20PBRMicrodetail001/**'
+      - '.github/workflows/b01-31-p17w20-pbr-microdetail.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-w20-physical-normal-orm-materials:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Download exactly original W19 physical GLB2 and SHA receipt read-only
+        uses: actions/download-artifact@v4
+        with:
+          name: B0131-P17W19-ORIGINAL-UV-WORN-COUPLER-6-PNG-GLB2-3VIEWS
+          repository: C8LyNn/RoboRougelike
+          run-id: 41110977749
+          github-token: ${{ github.token }}
+          path: original-w19
+      - name: Pin image painter + physical PNG decoder
+        run: python -m pip install --disable-pip-version-check "Pillow==11.3.0"
+      - name: Compile original renderer and separate read-only physical material receiver
+        run: python -m compileall -q Tools/B01-31/P17/W20PBRMicrodetail001
+      - name: Produce original 6 normal and 6 packed ORM PNG images embedded real GLB2
+        run: |
+          python Tools/B01-31/P17/W20PBRMicrodetail001/build_materials.py --original original-w19/B0131W19 --output build/B0131W20
+          python Tools/B01-31/P17/W20PBRMicrodetail001/verify_materials.py --original original-w19/B0131W19 --output build/B0131W20
+      - name: Full second physical GLB and 12 PNG 2 boards 16 ZIP SHA byte parity
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd build && find . -type f -print0 | sort -z | xargs -0 sha256sum) >/tmp/first.sha256
+          python Tools/B01-31/P17/W20PBRMicrodetail001/build_materials.py --original original-w19/B0131W19 --output build/B0131W20
+          python Tools/B01-31/P17/W20PBRMicrodetail001/verify_materials.py --original original-w19/B0131W19 --output build/B0131W20
+          (cd build && find . -type f -print0 | sort -z | xargs -0 sha256sum) >/tmp/second.sha256
+          cmp /tmp/first.sha256 /tmp/second.sha256
+          echo "B0131_W20_ORIGINAL_ACTUAL_PBR_NORMAL_ORM_GLB2_ALL_SHA_PARITY_PASS"
+      - name: Publish actual six normal six ORM physical material PNGs and UV GLB
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0131-P17W20-ORIGINAL-6-NORMAL-6-ORM-GLB2-PBR-MICRODETAIL
+          path: build/
+          retention-days: 30
+          if-no-files-found: error
+
+  windows-independent-real-normal-orm-material-receiver:
+    needs: original-w20-physical-normal-orm-materials
+    runs-on: windows-2022
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Read original exact immutable W19 GLB2 source, never regenerate
+        uses: actions/download-artifact@v4
+        with:
+          name: B0131-P17W19-ORIGINAL-UV-WORN-COUPLER-6-PNG-GLB2-3VIEWS
+          repository: C8LyNn/RoboRougelike
+          run-id: 41110977749
+          github-token: ${{ github.token }}
+          path: original-w19
+      - name: Read ACTUAL Ubuntu-original W20 embedded glTF2 materials/PNGs, not source renderer
+        uses: actions/download-artifact@v4
+        with:
+          name: B0131-P17W20-ORIGINAL-6-NORMAL-6-ORM-GLB2-PBR-MICRODETAIL
+          path: original-w20
+      - name: Only install physical 256px RGB map decoder
+        run: python -m pip install --disable-pip-version-check "Pillow==11.3.0"
+      - name: Independently verify W19 100 percent original mesh/UV/basecolor byte preservation and all 18 glTF PNGs
+        run: python Tools/B01-31/P17/W20PBRMicrodetail001/verify_materials.py --original original-w19/B0131W19 --output original-w20/B0131W20
