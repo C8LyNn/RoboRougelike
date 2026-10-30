@@ -273,10 +273,21 @@ internal static class W25GameEconomyQA
     }
     private sealed class StagedSourceWorld:ICanonicalStagedWorld
     {
-        private readonly RunSnapshot original;
+        private RunSnapshot current;
         public bool Active,Retired;
-        public StagedSourceWorld(RunSnapshot s){original=s;}
-        public RunSnapshot Capture()=>original;
+        public StagedSourceWorld(RunSnapshot s){current=s;}
+        public RunSnapshot Capture()=>current;
+        public void SimulatePhysicalMovement()
+        {
+            PersistedPart[] parts=current.Parts;
+            PersistedPart p=parts[0];
+            parts[0]=new PersistedPart(p.Id,p.OwnerId,p.ParentId,
+                p.AssetGuid,p.SocketGuid,p.State,p.Consumed,p.Kinematic,
+                new Vector3d(p.Position.X+0.25,p.Position.Y,p.Position.Z),
+                p.Qx,p.Qy,p.Qz,p.Qw,
+                p.LinearVelocity,p.AngularVelocity,p.MassKg);
+            current=new RunSnapshot(current.RunId,current.Generation,parts);
+        }
         public void Activate(){Active=true;}
         public void Deactivate(){Active=false;}
         public void Retire(){Retired=true;Active=false;}
@@ -319,6 +330,17 @@ internal static class W25GameEconomyQA
                 out ApprovedEconomySnapshotV6? wallet)||
                wallet==null||wallet.Scrap!=70||!preview.SequenceEqual(w1))
                 return false;
+            // Real active Rigidbody velocity/pose may move after a durable
+            // checkpoint without changing the current Save generation.
+            // The official Gateway must expose this VALID changed preview,
+            // not falsely require byte equality with old disk g1.
+            factory.All.Last().SimulatePhysicalMovement();
+            if(!session.TryCapture(out preview,out wallet)||wallet==null||
+                preview.SequenceEqual(w1)||
+                !ColdRestore.TryStage(preview,out ColdRestore? moved)||moved==null||
+                moved.Snapshot.Generation!=1||wallet.Scrap!=70)
+                return false;
+            Console.WriteLine("W25_CANONICAL_LIVE_PHYSICS_PREVIEW_AFTER_MOVEMENT=PASS");
             if(!ApprovedEconomyPolicyV6.TryStageTrustedVictory(e1,
                 "verified-gameplay-victory-1","real-encounter-a",
                 out var e2,out var reason)||e2==null||reason!="OK")return false;
