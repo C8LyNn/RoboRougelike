@@ -44,18 +44,19 @@ def sha(value, name):
 
 
 def ref_url(value, kind):
-    """Only a structurally scoped GitHub URL; does not authenticate the URL."""
-    if not isinstance(value, str) or not value.startswith(REPO) or any(x in value for x in ("?", "#", "\\", "%", "//")):
+    """Structural first-party GitHub URL; no external provenance authentication."""
+    if not isinstance(value, str) or not value.startswith(REPO):
         return False
     tail = value[len(REPO):]
+    if any(x in tail for x in ("?", "\\", "%", "//")):
+        return False
     if kind == "run":
         return bool(re.fullmatch(r"actions/runs/[1-9][0-9]*", tail))
     if kind == "pr":
         return bool(re.fullmatch(r"pull/[1-9][0-9]*", tail))
     if kind == "comment":
-        return bool(re.fullmatch(r"(?:issues|pull)/[1-9][0-9]*/issuecomment-[1-9][0-9]*", tail))
+        return bool(re.fullmatch(r"(?:issues|pull)/[1-9][0-9]*#issuecomment-[1-9][0-9]*", tail))
     return False
-
 
 def positive_ci(entry, source, label, blockers):
     if type(entry) is not dict:
