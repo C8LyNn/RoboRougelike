@@ -97,12 +97,17 @@ namespace RoboRougelike.B0110.TrainingGhost
     // of Unity timescale and authoritative CHL/PhysX clocks.
     // R11's stateless PoseAt(elapsed, speed) is retained for existing hosts;
     // this stateful controller is for changing speed without resetting phase.
+    // Default loop mode preserves the established practice replay contract.
+    // StopAtEnd holds the true final source pose for turn-by-turn inspection.
+    public enum GhostPracticeRepeatMode { Loop, StopAtEnd }
+
     public sealed class GhostPracticeTransport
     {
         private readonly GhostPracticeLoop loop;
         private double referencePosition;
         private float playbackSpeed = 1f;
         private bool playing;
+        private GhostPracticeRepeatMode repeatMode = GhostPracticeRepeatMode.Loop;
 
         public GhostPracticeTransport(GhostPracticeLoop validatedFocusLoop)
         {
@@ -114,7 +119,18 @@ namespace RoboRougelike.B0110.TrainingGhost
         public double ReferencePositionSeconds => referencePosition;
         public float PlaybackSpeed => playbackSpeed;
         public bool IsPlaying => playing;
+        public GhostPracticeRepeatMode RepeatMode => repeatMode;
+        public bool IsAtEnd => referencePosition >= ReferenceSegmentDuration;
         public float ReferenceSegmentDuration => loop.SegmentDurationSeconds;
+
+        public void SetRepeatMode(GhostPracticeRepeatMode mode)
+        {
+            GhostMath.Check(mode == GhostPracticeRepeatMode.Loop
+                            || mode == GhostPracticeRepeatMode.StopAtEnd,
+                "Unknown practice repeat mode");
+            // Changing repeat policy never teleports a paused visual pose.
+            repeatMode = mode;
+        }
 
         public void SetSpeed(float speed)
         {
@@ -126,7 +142,12 @@ namespace RoboRougelike.B0110.TrainingGhost
             playbackSpeed = speed;
         }
 
-        public void Play() { playing = true; }
+        public void Play()
+        {
+            // An intentional Play from a held endpoint begins a new review.
+            if (IsAtEnd) referencePosition = 0d;
+            playing = true;
+        }
         public void Pause() { playing = false; }
 
         public void Restart()
@@ -149,7 +170,8 @@ namespace RoboRougelike.B0110.TrainingGhost
                             && referenceSeconds >= 0d
                             && referenceSeconds <= ReferenceSegmentDuration,
                 "Practice transport seek outside validated reference segment");
-            referencePosition = referenceSeconds == ReferenceSegmentDuration
+            referencePosition = repeatMode == GhostPracticeRepeatMode.Loop
+                && referenceSeconds == ReferenceSegmentDuration
                 ? 0d : referenceSeconds;
         }
 
@@ -161,7 +183,10 @@ namespace RoboRougelike.B0110.TrainingGhost
                             && referenceSeconds >= -1d
                             && referenceSeconds <= 1d,
                 "Visual frame step must be finite and within plus/minus 1s");
-            referencePosition = Wrap(referencePosition + referenceSeconds);
+            double target = referencePosition + referenceSeconds;
+            referencePosition = repeatMode == GhostPracticeRepeatMode.StopAtEnd
+                ? Math.Max(0d, Math.Min(ReferenceSegmentDuration, target))
+                : Wrap(target);
         }
 
         public void Advance(double unscaledVisualDeltaSeconds)
@@ -171,12 +196,23 @@ namespace RoboRougelike.B0110.TrainingGhost
                             && unscaledVisualDeltaSeconds >= 0d
                             && unscaledVisualDeltaSeconds <= 10d,
                 "Visual transport delta must be finite and bounded");
-            if (playing)
-                referencePosition = Wrap(referencePosition
-                    + unscaledVisualDeltaSeconds * playbackSpeed);
+            if (!playing) return;
+            double next = referencePosition + unscaledVisualDeltaSeconds * playbackSpeed;
+            if (repeatMode == GhostPracticeRepeatMode.StopAtEnd
+                && next >= ReferenceSegmentDuration)
+            {
+                referencePosition = ReferenceSegmentDuration;
+                playing = false;
+            }
+            else
+            {
+                referencePosition = Wrap(next);
+            }
         }
 
-        public GhostPose Pose() => loop.PoseAt(referencePosition);
+        public GhostPose Pose() => IsAtEnd
+            ? loop.PoseAtOffset(ReferenceSegmentDuration)
+            : loop.PoseAt(referencePosition);
     }
 
     // Shared UI decision contract: a measured maximum below tolerance is
@@ -249,6 +285,18 @@ namespace RoboRougelike.B0110.TrainingGhost
         // The host explicitly supplies a nonnegative visual-only replay clock.
         // Sampling never advances that clock, moves the real robot or fires gates.
         // 24-hour cap prevents unbounded float precision and invalid input.
+        // Unlike cyclic PoseAt, the closed interval [0,duration] includes
+        // the actual final recorded reference pose. For StopAtEnd only.
+        public GhostPose PoseAtOffset(double referenceOffsetSeconds)
+        {
+            GhostMath.Check(!double.IsNaN(referenceOffsetSeconds)
+                            && !double.IsInfinity(referenceOffsetSeconds)
+                            && referenceOffsetSeconds >= 0d
+                            && referenceOffsetSeconds <= SegmentDurationSeconds,
+                "Focus reference offset must lie within its measured segment");
+            return playback.Seek(StartSeconds + (float)referenceOffsetSeconds);
+        }
+
         public GhostPose PoseAt(double loopElapsedSeconds) =>
             PoseAt(loopElapsedSeconds, 1f);
 
