@@ -1,0 +1,29 @@
+{
+  "id": "B01-13-REATTACH-TRIAL-MATRIX-001/R1",
+  "candidate_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "owner": "B01-13",
+  "mode": "TECHNICAL_OPERATOR_ONLY",
+  "base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "files": {
+    "Research/B01-13/P17J/trial_matrix.mjs": {
+      "git_sha1": "97cdfe952e0ef9701e81e7d6635d0867fb41f55d",
+      "bytes": 5170
+    },
+    "Research/B01-13/P17J/test_trial_matrix.mjs": {
+      "git_sha1": "b12b8d6dffd7b408cb8436a11f5e3156cbf24eda",
+      "bytes": 5081
+    },
+    "Research/B01-13/P17J/README.md": {
+      "git_sha1": "479e2f27e833891995ba3f2f44323ac1a981b42f",
+      "bytes": 3856
+    },
+    "Research/B01-13/P17J/verify_package.py": {
+      "git_sha1": "ea90253eea4bc304f73cf4613703b323e5d0fc65",
+      "bytes": 769
+    },
+    ".github/workflows/b01-13-p17w12-trial-matrix.yml": {
+      "git_sha1": "39ee6d4c0f3a90bc2c181821c317413ac6a675da",
+      "bytes": 915
+    }
+  }
+}

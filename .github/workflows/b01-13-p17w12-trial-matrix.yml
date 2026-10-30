@@ -1,0 +1,27 @@
+name: B01-13 P17W12 trial matrix source
+on:
+  push:
+    paths: ['Research/B01-13/P17J/**', '.github/workflows/b01-13-p17w12-trial-matrix.yml']
+  pull_request:
+    paths: ['Research/B01-13/P17J/**', '.github/workflows/b01-13-p17w12-trial-matrix.yml']
+  workflow_dispatch:
+jobs:
+  original-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+        node: ['20', '22']
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify exact original Git blobs and print SHA256
+        run: python Research/B01-13/P17J/verify_package.py
+      - name: Execute actual positive and negative tests
+        run: node --test Research/B01-13/P17J/test_trial_matrix.mjs
