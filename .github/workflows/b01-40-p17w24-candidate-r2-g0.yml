@@ -78,6 +78,7 @@ jobs:
           grep -q 'B0140_W24_DISPOSABLE_PHYSICAL_STAGE_AND_SAFE_ROLLBACK_PASS' b0140-w24-source.log
           grep -q 'B0140_W24_SOURCE_TRANSPORT_G0_PASS_CANDIDATE_NOT_SELECTED' b0140-w24-source.log
           grep -q 'B0140_W24_NATIVE_UNITY_G1_NOT_RUN_LIVE_ECON_SAVE_HOLD_NO_MERGE' b0140-w24-source.log
+          grep -q 'EVIDENCE_SHA256=ab94e0d87f3820145bc16ddc982c7980d3566dec9bdbafd05a9295d2dc67ec70' b0140-w24-source.log
           test -s evidence/b0140-w24-candidate-773-source-g0.json
       - uses: actions/upload-artifact@v4
         if: always()
