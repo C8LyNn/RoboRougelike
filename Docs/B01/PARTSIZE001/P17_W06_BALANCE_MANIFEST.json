@@ -1,0 +1,94 @@
+{
+  "schema": "B01-PACKAGE-RECEIPT-v1",
+  "package_id": "PARTSIZE001-P17-MASSBALANCE-001",
+  "version": "R1",
+  "producer": "B01-23",
+  "producer_issue": 416,
+  "origin_issue": 141,
+  "parent_producer_pr": 405,
+  "parent_commit_sha": "cc60bec87c9a76bd785d9f7a1a67d2c6ad831e6a",
+  "isolated_pr": 417,
+  "branch": "b01-23/p17-w06-massbalance-r1",
+  "executable_source_commit": "466eaeb71b02d3fe79a08008c44ce64fd25b73e7",
+  "immutable_source_files": "original byte identities pinned by Git blob SHA1; manifest-only later commit does not alter source files",
+  "files": [
+    {
+      "path": "Assets/PARTSIZE001/P17Balance.meta",
+      "git_blob_sha1": "1ec0b814f14f01eadcf5c4c3553098768141bb7f",
+      "bytes": 169
+    },
+    {
+      "path": "Assets/PARTSIZE001/P17Balance/MassBalanceSolver.cs",
+      "git_blob_sha1": "2b53bf0a9aa7c32aee27fb4772b65edabf7324c6",
+      "bytes": 8156
+    },
+    {
+      "path": "Assets/PARTSIZE001/P17Balance/MassBalanceSolver.cs.meta",
+      "git_blob_sha1": "21f77966bb38e1364a0530344a4993e4c8520965",
+      "bytes": 240
+    },
+    {
+      "path": "Tools/B01/PARTSIZE001/P17Balance/BalanceTests.csproj",
+      "git_blob_sha1": "e9350c786e2fda869e8ecd9a1e970048b7e3d397",
+      "bytes": 479
+    },
+    {
+      "path": "Tools/B01/PARTSIZE001/P17Balance/Program.cs",
+      "git_blob_sha1": "8b60d2da5a3caad2df8a3906b7a2282708b74ef5",
+      "bytes": 7379
+    },
+    {
+      "path": "Tools/B01/PARTSIZE001/P17Balance/README.md",
+      "git_blob_sha1": "66984b8ae901199a486ea6d7f145acb56b31d92a",
+      "bytes": 4092
+    },
+    {
+      "path": ".github/workflows/b01-23-p17-balance-source.yml",
+      "git_blob_sha1": "18c21530e43168ef55e1414bf7390e5c0d761b78",
+      "bytes": 1224
+    }
+  ],
+  "claimed_scope": [
+    "Assets/PARTSIZE001/P17Balance.meta",
+    "Assets/PARTSIZE001/P17Balance/**",
+    "Tools/B01/PARTSIZE001/P17Balance/**",
+    ".github/workflows/b01-23-p17-balance-source.yml",
+    "Docs/B01/PARTSIZE001/P17_W06_BALANCE_MANIFEST.json"
+  ],
+  "protected_excluded_scope": [
+    "Assets/R3/**",
+    "Assets/B01Packages/**",
+    "Assets/PARTSIZE001/Runtime/**",
+    "Assets/PARTSIZE001/Bracing/**",
+    "Assets/PARTSIZE001/P17NativeProbe/**",
+    "Assets/CHL003/**",
+    "main",
+    "develop"
+  ],
+  "physical_zip_sha256": null,
+  "physical_zip_reason": "Git immutable PR source is delivery path; no ZIP generated or claimed for this R1",
+  "initial_original_source_ci": {
+    "url": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41029454594",
+    "status": "SUCCESS",
+    "head_sha": "466eaeb71b02d3fe79a08008c44ce64fd25b73e7",
+    "ubuntu": "44/44 source assertions PASS, exit0",
+    "windows": "44/44 source assertions PASS, exit0",
+    "scope": "original .cs compiled against .NET8 from .csproj; not Unity"
+  },
+  "native_tests": {
+    "edit_mode": "NOT_RUN",
+    "play_mode": "NOT_RUN",
+    "physx": "NOT_RUN",
+    "player": "NOT_RUN",
+    "real_prefab_contact_samples": "NOT_MEASURED"
+  },
+  "qa_b01_40": "PENDING",
+  "qa_b01_60": "PENDING",
+  "g0": "PRODUCER_SOURCE_TEST_PASS_INDEPENDENT_PENDING",
+  "g1": "NATIVE_NOT_RUN",
+  "g2": "HOLD",
+  "codex_ack": "NO",
+  "receiver": "B01-40 and B01-60, B01-00 decides CODEX INBOX #79",
+  "rollback": "remove only new P17Balance folder and meta from authorized disposable receiver; do not remove frozen sources",
+  "restrictions": "No canonical Codex writes, no main/develop merge, not a dynamic physics guarantee"
+}
