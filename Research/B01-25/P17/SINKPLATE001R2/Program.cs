@@ -38,7 +38,7 @@ static class TestRunner
         Case("SIMULTANEOUS_TWO_PLATES_INDEPENDENT",()=>{var a=Plate();var b=Plate();Steps(a,4,.1,true,12);Check(b.Phase==PlatePhase.Ready,"shared state");});
         Case("FULL_50_CYCLES_NO_DUPLICATES",()=>{var c=Plate();for(int run=0;run<50;run++){Steps(c,25,.1,true,12);Check(c.Phase==PlatePhase.AwaitClear&&c.CompletedCollapses==run+1,"round");c.Advance(new(0,false,12));}Check(c.CompletedCollapses==50,"count");});
         Case("AUTHORED_ALTERNATE_SAFE_LANE",()=>{
-            using var json=JsonDocument.Parse(File.ReadAllText("Research/B01-25/P17/SINKPLATE001/arena.json"));
+            using var json=JsonDocument.Parse(File.ReadAllText("Research/B01-25/P17/SINKPLATE001R2/arena.json"));
             var r=json.RootElement;
             Check(r.GetProperty("version").GetInt32()==1&&r.GetProperty("metersPerCell").GetInt32()==1,"arena");
             var plate=r.GetProperty("plate"); var bypass=r.GetProperty("safeBypass");
