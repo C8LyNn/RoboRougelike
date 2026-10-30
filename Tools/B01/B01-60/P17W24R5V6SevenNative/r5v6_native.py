@@ -103,6 +103,11 @@ def main(argv=None):
     n=original()
     src=selected_source(n)
     m=n.runner()
+    # Frozen #718 intentionally rebinds its private W12 verifier SHA to old R5.
+    # This NEW, run-local W24 module is pinned to the owner-authored V6 source;
+    # never mutate #718, #750 or W12 disk files to retarget evidence checks.
+    need(m.SHA==R5,"frozen original W12 test verifier unexpected source pin")
+    m.SHA=V6
     if opts.mode=="native":
         need(os.name=="nt","only Windows operator may invoke Unity")
         need(opts.operator_consent=="B0160 R5V6 SEVEN NATIVE",
