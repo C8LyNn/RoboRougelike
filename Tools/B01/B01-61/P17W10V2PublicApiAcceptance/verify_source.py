@@ -51,7 +51,7 @@ def contract(host,policy):
             "GUI_BYPASS")
     inspect=method(host,"private DockResult InspectDock(int index)")
     require("Physics.OverlapBoxNonAlloc" in inspect and
-            "SecureDockPolicy.AllLayers" in inspect and
+            "SecureDockPolicy.AllLayers,QueryTriggerInteraction.Ignore" in inspect and
             "Physics.ComputePenetration" in inspect and
             "SecureDockPolicy.Check" in inspect,"PHYSICS_CLEARANCE_BYPASS")
     execute=method(policy,"private bool Execute(int index)")
