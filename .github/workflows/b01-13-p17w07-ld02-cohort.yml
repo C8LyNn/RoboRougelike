@@ -1,0 +1,44 @@
+name: B01-13 W07 LD02 technical cohort exact-source QA
+on:
+  push:
+    branches:
+      - research/b01-13-pass17-wave07-ld02-cohort
+  pull_request:
+    paths:
+      - 'Research/B01-13/P17E/**'
+      - '.github/workflows/b01-13-p17w07-ld02-cohort.yml'
+jobs:
+  immutable-original:
+    runs-on: ${{ matrix.os }}
+    name: ${{ matrix.os }} Python ${{ matrix.python }} exact cohort source
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+        python: ['3.11', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Verify parent original and own physical SHA256/bytes before execution
+        shell: bash
+        run: |
+          python - <<'PY'
+          import hashlib,json,pathlib
+          manifest=json.loads(pathlib.Path('Research/B01-13/P17E/manifest.json').read_text(encoding='utf-8'))
+          for path, spec in manifest['files'].items():
+              data=pathlib.Path(path).read_bytes()
+              assert hashlib.sha256(data).hexdigest()==spec['sha256'] and len(data)==spec['bytes'],path
+              print('W07_SOURCE_PIN_PASS',path,len(data),spec['sha256'])
+          orig=pathlib.Path('Research/B01-13/P17D/ld02_observer.py').read_bytes()
+          expect=manifest['parent_original_sha256']
+          assert hashlib.sha256(orig).hexdigest()==expect,'W06 ORIGINAL CHANGED: STOP'
+          print('W06_PARENT_PIN_PASS',len(orig),expect)
+          PY
+      - name: Compile original source
+        shell: bash
+        run: python -m py_compile Research/B01-13/P17E/ld02_cohort.py Research/B01-13/P17E/test_ld02_cohort.py
+      - name: Run original physical JSONL cohort tests
+        shell: bash
+        run: python Research/B01-13/P17E/test_ld02_cohort.py -v
