@@ -169,8 +169,9 @@ def original_actual_dotnet(r,original):
                 b=gitfile(r[k],path)
                 must(blob(b)==oid,"ORIGINAL_CSHARP_REFERENCE_GIT_BLOB_DRIFT:"+file)
                 (inputs/file).write_bytes(b)
-            return subprocess.run(["dotnet","run" if not mutate else "build",
-                "--project",str(folder/Path(proj).name),
+            command=(["dotnet","run","--project",str(folder/Path(proj).name)]
+                if not mutate else ["dotnet","build",str(folder/Path(proj).name)])
+            return subprocess.run([*command,
                 "-c","Release","--verbosity","quiet"],
                 cwd=folder,capture_output=True,text=True,errors="replace")
         positive=execute("new_corrected_original_741",False)
