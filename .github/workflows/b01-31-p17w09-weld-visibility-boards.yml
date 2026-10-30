@@ -1,0 +1,74 @@
+name: B01-31 W09 original RepairWeld small-scale visual atlas and physical artifact CI
+
+on:
+  push:
+    branches: [art/b01-31-p17-w09-weld-smallscale-boards]
+    paths:
+      - 'Tools/B01-31/P17/W09WeldSmallScale001/**'
+      - '.github/workflows/b01-31-p17w09-weld-visibility-boards.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01-31/P17/W09WeldSmallScale001/**'
+      - '.github/workflows/b01-31-p17w09-weld-visibility-boards.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  original-source-smallscale-visual-boards:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify immutable producer original Git commit
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=1 origin refs/heads/art/b01-32-p17-w06-repair-weld-vfx
+          test "$(git rev-parse FETCH_HEAD)" = "280ed3f59020432132ea5e156c68590d445009c8"
+      - name: Verify original source run and artifact identity
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test "$(gh api repos/$GITHUB_REPOSITORY/actions/runs/41030815153 --jq .head_sha)" = "280ed3f59020432132ea5e156c68590d445009c8"
+          test "$(gh api repos/$GITHUB_REPOSITORY/actions/runs/41030815153 --jq .conclusion)" = "success"
+          test "$(gh api repos/$GITHUB_REPOSITORY/actions/artifacts/12966020486 --jq .name)" = "B0132-W06-REPAIR-WELD-ORIGINAL-UNITY-ZIP-AND-PNG"
+          test "$(gh api repos/$GITHUB_REPOSITORY/actions/artifacts/12966020486 --jq .expired)" = "false"
+      - name: Fetch actual original physical PNG and Unity ZIP archive
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh run download 41030815153 --name B0132-W06-REPAIR-WELD-ORIGINAL-UNITY-ZIP-AND-PNG --dir original-weld
+      - name: Install pinned PNG library
+        run: python -m pip install --disable-pip-version-check Pillow==11.3.0
+      - name: Build original-source real light and dark PNG boards and measured pixel visibility
+        run: python Tools/B01-31/P17/W09WeldSmallScale001/build_boards.py --original original-weld --output output-weld
+      - name: Repeat full render and assert identical bytes on original source
+        shell: bash
+        run: |
+          BEFORE="$(sha256sum output-weld/receipt.json | awk '{print $1}')"
+          DARK="$(sha256sum output-weld/WELD_SMALLSCALE_DARK.png | awk '{print $1}')"
+          LIGHT="$(sha256sum output-weld/WELD_SMALLSCALE_LIGHT.png | awk '{print $1}')"
+          python Tools/B01-31/P17/W09WeldSmallScale001/build_boards.py --original original-weld --output output-weld
+          test "$BEFORE" = "$(sha256sum output-weld/receipt.json | awk '{print $1}')"
+          test "$DARK" = "$(sha256sum output-weld/WELD_SMALLSCALE_DARK.png | awk '{print $1}')"
+          test "$LIGHT" = "$(sha256sum output-weld/WELD_SMALLSCALE_LIGHT.png | awk '{print $1}')"
+      - name: Archive actual reviewable art PNGs and exact per-frame contrast receipt
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-31-p17w09-repair-weld-smallscale-${{ matrix.os }}
+          path: output-weld/
+          if-no-files-found: error
+          retention-days: 30
