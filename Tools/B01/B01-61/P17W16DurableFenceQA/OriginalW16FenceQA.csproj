@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+<PropertyGroup>
+<OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework>
+<LangVersion>9.0</LangVersion><Nullable>annotations</Nullable>
+<ImplicitUsings>disable</ImplicitUsings><EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+</PropertyGroup>
+<ItemGroup>
+<Compile Include="Program.cs"/>
+<Compile Include="../../../../Assets/B0123UnitySaveBridge001/Core/AtomicWorldSwap.cs" Link="EXACT_ORIGINAL_W16_BRIDGE.cs"/>
+<Compile Include="../../../../Assets/B0123UnitySaveBridge001/Core/CheckpointFence.cs" Link="EXACT_ORIGINAL_W16_FENCE.cs"/>
+<Compile Include="../../../../Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs" Link="EXACT_FROZEN_556_SCHEMA.cs"/>
+<Compile Include="../../../../Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs" Link="EXACT_ORIGINAL_W06_LEDGER.cs"/>
+<Compile Include="../../../../Assets/B0123SecureReattachV2/Runtime/AtomicDockLedger.cs" Link="EXACT_FROZEN_510_R2.cs"/>
+<Compile Include="../../../../Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs" Link="EXACT_FROZEN_510_RIG_CATALOG.cs"/>
+</ItemGroup></Project>

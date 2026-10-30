@@ -1,0 +1,71 @@
+name: B01-61 W16 exact ORIGINAL B01-23 durable checkpoint-fence cross-process acceptance
+on:
+  push:
+    branches: [qa/b01-61-p17w16-durable-fence-exact-w16]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-61/P17W16DurableFenceQA/**'
+      - '.github/workflows/b01-61-p17w16-durable-checkpoint-fence.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-producer-durable-fence-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Exactly frozen selected #510 #556 and NEW W16 source
+        shell: bash
+        run: |
+          set -o pipefail
+          python Tools/B01/B01-61/P17W16DurableFenceQA/source_guard.py 2>&1 | tee b0161-w16-fence-provenance.log
+      - name: Compile real original new CheckpointFence + original AtomicWorldSwap and frozen W06
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet build Tools/B01/B01-61/P17W16DurableFenceQA/OriginalW16FenceQA.csproj -c Release --warnaserror 2>&1 | tee b0161-w16-fence-build.log
+      - name: Direct original atomic rollback, post-activation and first-call quarantine
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet run --no-build -c Release --project Tools/B01/B01-61/P17W16DurableFenceQA/OriginalW16FenceQA.csproj 2>&1 | tee b0161-w16-transaction.log
+          grep -q W16_ORIGINAL_SOURCE_FIX_588_EQUAL_GEN_CONFLICT_GREEN b0161-w16-transaction.log
+          grep -q W16_ORIGINAL_SOURCE_FIX_582_FIRST_VERDICT_QUARANTINE_GREEN b0161-w16-transaction.log
+          grep -q W16_ORIGINAL_SOURCE_FIX_572_POST_ACTIVATION_CHECK_GREEN b0161-w16-transaction.log
+      - name: Six INDEPENDENT CLR processes read write same real OS checkpoint watermark file
+        shell: bash
+        run: |
+          set -o pipefail
+          p=Tools/B01/B01-61/P17W16DurableFenceQA/OriginalW16FenceQA.csproj
+          f="$PWD/b0161-w16-original-watermark-private-scratch.bin"
+          for mode in seal restart fork advance stale corrupt; do
+            dotnet run --no-build -c Release --project "$p" -- "$mode" "$f" 2>&1 | tee "b0161-w16-fence-$mode.log"
+            grep -q "W16_EXACT_ORIGINAL_FENCE_QA_PROCESS_PASS mode=$mode" "b0161-w16-fence-$mode.log"
+          done
+      - name: Preserve actual original source and watermark output, no fake Editor logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-61-w16-durable-fence-${{ matrix.os }}
+          path: |
+            b0161-w16-fence-provenance.log
+            b0161-w16-fence-build.log
+            b0161-w16-transaction.log
+            b0161-w16-fence-seal.log
+            b0161-w16-fence-restart.log
+            b0161-w16-fence-fork.log
+            b0161-w16-fence-advance.log
+            b0161-w16-fence-stale.log
+            b0161-w16-fence-corrupt.log
+          if-no-files-found: warn
+          retention-days: 21
