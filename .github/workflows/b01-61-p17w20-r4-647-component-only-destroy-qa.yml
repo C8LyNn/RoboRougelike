@@ -1,0 +1,52 @@
+name: B01-61 W20 exact R4 #647 Component-only Destroy live-world lease regression
+on:
+  push:
+    branches: [qa/b01-61-p17w20-r4-647-component-only-destroy]
+permissions:
+  contents: read
+jobs:
+  exact-r4-public-host-component-destroy-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Original SHA exact and owned QA-only 7 files
+        shell: bash
+        run: |
+          set -o pipefail
+          python Tools/B01/B01-61/P17W20R4ComponentOnlyDestroyQA/source_guard.py 2>&1 | tee b0161-w20-pin.log
+      - name: Compile true original Unity CSharp source with managed Unity API
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet build Tools/B01/B01-61/P17W20R4ComponentOnlyDestroyQA/OriginalR4HostQA.csproj -c Release --warnaserror 2>&1 | tee b0161-w20-build.log
+      - name: Execute original component-only OnDestroy + real OS checkpoint lease
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet run --no-build -c Release --project Tools/B01/B01-61/P17W20R4ComponentOnlyDestroyQA/OriginalR4HostQA.csproj 2>&1 | tee b0161-w20-run.log
+          grep -q 'W20_EXACT_R4_COMPONENT_ONLY_ONDESTROY_LEASE_LOST_WITH_LIVE_CHILDREN_RED=REPRODUCED' b0161-w20-run.log
+          grep -q 'W20_EXACT_R4_SECOND_HOST_DUPLICATE_PHYSICAL_WORLDS_RED=REPRODUCED' b0161-w20-run.log
+          grep -q 'W20_EXACT_R4_SECOND_HOST_SAVE_WITH_ORPHAN_LIGHT_RED=REPRODUCED' b0161-w20-run.log
+          grep -q 'SOURCE_QA_WITNESS=PASS_EXPECTED_P0_RED' b0161-w20-run.log
+          grep -q 'R4_SECURITY_RELEASE=HOLD_COMPONENT_ONLY_DESTROY_ORPHAN_PHYSICS' b0161-w20-run.log
+      - name: Preserve full unedited source test stdout, not real Unity XML
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-61-w20-r4-component-destroy-${{ matrix.os }}
+          path: |
+            b0161-w20-pin.log
+            b0161-w20-build.log
+            b0161-w20-run.log
+          retention-days: 21
+          if-no-files-found: warn
