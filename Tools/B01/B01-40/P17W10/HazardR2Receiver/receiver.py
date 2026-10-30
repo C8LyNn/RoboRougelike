@@ -214,59 +214,39 @@ def strict_rollback(files, dest):
     shutil.rmtree(dest)
     check(not dest.exists(), "rollback incomplete")
 
+def expect_rejected(operation, label):
+    try:
+        operation()
+    except GateError:
+        return 1
+    raise GateError(label + ": negative control unexpectedly accepted")
+
 def negative_receipts(files, archive):
     count = 0
     with tempfile.TemporaryDirectory(prefix="b01-40-r2-g0-") as d:
-        tmp = Path(d)
-        dest = tmp / "stage"
+        dest = Path(d) / "stage"
         strict_stage(files, dest)
         check(len([p for p in dest.rglob("*") if p.is_file()]) == len(files), "staged file count")
-        try:
-            strict_stage(files, dest)
-            raise GateError("overwrite was allowed")
-        except GateError:
-            count += 1
+        count += expect_rejected(lambda: strict_stage(files, dest), "overwrite")
         ownpath = dest / sorted(files)[0]
         saved = ownpath.read_bytes()
         ownpath.write_bytes(b"modified-by-foreign-receiver")
-        try:
-            strict_rollback(files, dest)
-            raise GateError("tamper rollback incorrectly accepted")
-        except GateError:
-            count += 1
+        count += expect_rejected(lambda: strict_rollback(files, dest), "tampered rollback")
         ownpath.write_bytes(saved)
         extra = dest / "FOREIGN.txt"
         extra.write_text("preserve me")
-        try:
-            strict_rollback(files, dest)
-            raise GateError("foreign file rollback incorrectly accepted")
-        except GateError:
-            count += 1
+        count += expect_rejected(lambda: strict_rollback(files, dest), "foreign member rollback")
         extra.unlink()
         strict_rollback(files, dest)
         count += 1
     changed = dict(files)
     changed[sorted(files)[0]] = b"tampered"
-    try:
-        exact_archive(archive, changed)
-        raise GateError("corruption erroneously accepted")
-    except GateError:
-        count += 1
-    try:
-        exact_archive(deterministic_zip({**files, "FOREIGN": b"unexpected"}), files)
-        raise GateError("unexpected archive member erroneously accepted")
-    except GateError:
-        count += 1
-    try:
-        exact_archive(deterministic_zip({k:v for k,v in files.items() if k != sorted(files)[0]}), files)
-        raise GateError("missing archive member erroneously accepted")
-    except GateError:
-        count += 1
-    try:
-        deterministic_zip({"../ESCAPE": b"malicious"})
-        raise GateError("traversal erroneously accepted")
-    except GateError:
-        count += 1
+    count += expect_rejected(lambda: exact_archive(archive, changed), "corrupted source bytes")
+    count += expect_rejected(lambda: exact_archive(
+        deterministic_zip({**files, "FOREIGN": b"unexpected"}), files), "unexpected ZIP member")
+    count += expect_rejected(lambda: exact_archive(
+        deterministic_zip({k:v for k,v in files.items() if k != sorted(files)[0]}), files), "missing ZIP member")
+    count += expect_rejected(lambda: deterministic_zip({"../ESCAPE": b"malicious"}), "ZIP traversal")
     return count
 
 def main():
