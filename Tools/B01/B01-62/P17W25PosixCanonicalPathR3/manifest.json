@@ -1,0 +1,73 @@
+{
+  "package_id": "B01-62-W25-773-DESCENDANT-POSIX-STRICT-CANONICAL-R3-001",
+  "owner": "B01-62",
+  "version": "R3.0.0-UNSELECTED",
+  "source_only": true,
+  "base_candidate_773": "3aaaec4027ee246fbfb6f209179f0e9507363473",
+  "only_predecessor_selected_749": "8634e71dfcf633323073fe584a6c0884f1ca5d23",
+  "red_source_witness": {
+    "qa_pr": 790,
+    "qa_sha": "dbaa78c319f25b5692faa670a1f75e3ad1f4cdb6",
+    "physical_posix_case_variant_same_run_slot_g1_light_heavy": true,
+    "original_store_git_blob": "3689238a16d706eda1bf4905cba8029cd2fe77aa",
+    "original_session_git_blob": "b3841132fbfc05da5708af4047f7db141a4abe91"
+  },
+  "r3_source_blobs": {
+    "store": "26933165eb181f9e0968a88e250220082d6110fe",
+    "session": "c106e18f796ec42523b9bebc88e473e2fd8871db"
+  },
+  "upstream_exact_blobs": {
+    "v3_gateway": "21733278b6ab0669fccb6d085e0b6cf242792de2",
+    "v3_lease": "a9331dd620336d8c42165d134dc8a5e05ed51873",
+    "legacy_669": "db7745635164d9eb6b10f3246538700158130b7b",
+    "frozen_556": "b52e511c370f5fca56c74029050844dc8cbb7f9a",
+    "w06": "fa1aa5e531927cbe73cf5fdfe161b4a981316db5",
+    "spec_510": "b680ed0ec969ac23203fa55eab7b90f8daa86e43"
+  },
+  "fix": "replace canonical full-path comparison only StringComparison.OrdinalIgnoreCase -> StringComparison.Ordinal; independent session type/namespace only",
+  "new_owned_only_paths": [
+    {
+      "path": "Tools/B01/B01-62/P17W25PosixCanonicalPathR3/CanonicalSingleAuthorityStoreV3R3.cs",
+      "blob": "26933165eb181f9e0968a88e250220082d6110fe"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W25PosixCanonicalPathR3/CanonicalSlotSessionV3R3.cs",
+      "blob": "c106e18f796ec42523b9bebc88e473e2fd8871db"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W25PosixCanonicalPathR3/Program.cs",
+      "blob": "fe757ccd0645559ccaaee97a279886bdab3c4219"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W25PosixCanonicalPathR3/Original773R3PositiveQA.csproj",
+      "blob": "5396d2a6e6a54229a0616deb185684319d19038b"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W25PosixCanonicalPathR3/README.md",
+      "blob": "52dd0d098c96d3dc7beeb134e714b9957799093c"
+    },
+    {
+      "path": ".github/workflows/b01-62-w25-r3-posix-single-path.yml",
+      "blob": "9a38ac5d95236761097010738fc8185f88064e44"
+    }
+  ],
+  "test_cases_per_os": 19,
+  "OS": [
+    "windows-2025",
+    "ubuntu-24.04"
+  ],
+  "qa": "PENDING_FINAL_SHA_CI",
+  "gates": {
+    "selected_candidate": "749_ORIGINAL_UNTIL_EXPLICIT_OWNER_DECISION",
+    "rejected_773": "SOURCE_P0_RED_POSIX_CASE_ALIAS",
+    "proposed_r3": "NOT_YET_SELECTED_NEEDS_B01_00_23",
+    "alternatives_741_753": "ALT_HOLD",
+    "source_g0": "NEW_SHA_PENDING_B01_40",
+    "native_g1": "NOT_RUN",
+    "game_private_510_port": "B01-23_772_SOURCE_ONLY_NO_NATIVE",
+    "whole_game_economy_save": "NOT_IMPLEMENTED",
+    "codex": "NONE",
+    "merge": false
+  },
+  "rollback": "close Draft; discard only seven new B01-62 own paths, untouched original source and user saved data."
+}
