@@ -45,7 +45,10 @@ def scope():
     core=source(ASSET+"/Core/AtomicWorldSwap.cs").decode()
     unity=source(ASSET+"/Unity/IsolatedTwinRigSaveHost.cs").decode()
     if ("ColdRestore.TryStage(bytes" not in core or
-        "currentCold=restored;" not in core or
+        "currentCold=ready;" not in core or
+        "checkpoint.Commit(" not in core or
+        "post-activation physics/ID mismatch" not in core or
+        "verdict=WorldSwapVerdict.RollbackQuarantine" not in core or
         "old.Deactivate()" not in core or
         "quarantined=true;" not in core or
         "SameIdentityAndLedger" not in core or
