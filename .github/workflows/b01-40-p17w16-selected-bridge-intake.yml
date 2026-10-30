@@ -1,0 +1,75 @@
+name: B01-40 P17W16 original #587 provisional physical single-bridge G0 hold and safe #510/#556 migration
+on:
+  push:
+    branches: [qa/b01-40-p17w16-single-bridge-source-receiver]
+    paths:
+      - "Tools/B01/B01-40/P17W16SelectedBridgeIntake/**"
+      - ".github/workflows/b01-40-p17w16-selected-bridge-intake.yml"
+  pull_request:
+    paths:
+      - "Tools/B01/B01-40/P17W16SelectedBridgeIntake/**"
+      - ".github/workflows/b01-40-p17w16-selected-bridge-intake.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inspect-bridge-original-on-disposable-host:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - name: B01-40 independent W16 QA only
+        uses: actions/checkout@v4
+        with:
+          path: own
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Game one frozen #510
+        uses: actions/checkout@v4
+        with:
+          path: game
+          ref: d94400d95d13db7f27e1533df05c9292d5380431
+          fetch-depth: 0
+      - name: Single frozen #556 Save
+        uses: actions/checkout@v4
+        with:
+          path: save
+          ref: 33094f154c7b91119b36d58aab285e6e83c5de57
+          fetch-depth: 0
+      - name: Provisional source selected lineage #587 not production accepted
+        uses: actions/checkout@v4
+        with:
+          path: bridge
+          ref: ad7904eca571c742257551fa8103f266fcb9b752
+          fetch-depth: 0
+      - name: Original unchanged B01-40 W15 safe candidate publisher and rollback
+        uses: actions/checkout@v4
+        with:
+          path: receiver
+          ref: 3b743acc52bb44ae6a50af56ed9aca46d22821a7
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Execute original #587 physical packager + actual original W15 clone and strict rollback
+        shell: bash
+        run: |
+          set -euo pipefail
+          python own/Tools/B01/B01-40/P17W16SelectedBridgeIntake/intake.py \
+            --game game --save save --bridge bridge --receiver receiver --out evidence | tee w16-bridge-stdout.log
+          grep -q "B0140_W16_ORIGINAL_BRIDGE_PHYSICAL" w16-bridge-stdout.log
+          grep -q "B0140_W16_COMBINED_SOURCE" w16-bridge-stdout.log
+          grep -q "B0140_W16_CLEAN_COMBINED_CLONE_ROLLBACK 2" w16-bridge-stdout.log
+          grep -q "B0140_W16_RELEASE_HOLD_SAME_GENERATION_FORK_NEEDED_NEW_VERSION" w16-bridge-stdout.log
+          test -s evidence/w16-bridge-intake.json
+      - name: Archive real original stdout and structured receipt (NOT Unity Editor evidence)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-40-W16-SourceOnly-${{ matrix.os }}
+          path: |
+            evidence/w16-bridge-intake.json
+            w16-bridge-stdout.log
+          retention-days: 21
+          if-no-files-found: warn
