@@ -232,8 +232,8 @@ def execute(source: Path, output: Path):
             "Original VFX renderer and original Unity prefab never modified"
         ]
     }
-    (output/"receipt.json").write_text(
-        json.dumps(result, indent=2, ensure_ascii=False)+"\n", encoding="utf-8")
+    (output/"receipt.json").write_bytes(
+        (json.dumps(result, indent=2, ensure_ascii=False)+"\n").encode("utf-8"))
     print(json.dumps({
         "status":"PASS", "boards":len(files), "physical_image_samples":len(measurements),
         "risk_flags":len(result["summary"]["low_readability_risks"]),
