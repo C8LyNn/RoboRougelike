@@ -1,0 +1,57 @@
+name: B01-61 W18 exact selected 596 real OS multiprocess checkpoint CAS
+on:
+  push:
+    branches: [qa/b01-61-p17w18-selected596-multiprocess-checkpoint-cas]
+  pull_request:
+    paths:
+      - "Tools/B01/B01-61/P17W18MultiprocessCASQA/**"
+      - ".github/workflows/b01-61-p17w18-exact596-process-checkpoint-race.yml"
+jobs:
+  selected596-real-processes:
+    runs-on: ${{ matrix.os }}
+    strategy: {fail-fast: false, matrix: {os: [ubuntu-24.04, windows-2025]}}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Exact original source immutable SHA and six own QA files
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-61/P17W18MultiprocessCASQA/source_guard.py 2>&1 | tee w18-pins.log
+      - name: Build unmodified original W16 R2 checkpoint and immutable Save/R2 ledger
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build Tools/B01/B01-61/P17W18MultiprocessCASQA/RealProcessCASQA.csproj -c Release --warnaserror 2>&1 | tee w18-build.log
+      - name: Run actual 32 child operating-system process CAS conflicts and rollback cases
+        shell: bash
+        run: |
+          set +e
+          p=Tools/B01/B01-61/P17W18MultiprocessCASQA/RealProcessCASQA.csproj
+          dotnet run --no-build --project "$p" -c Release -- --evidence > w18-source.log 2>&1
+          sourceExit=$?
+          cat w18-source.log
+          dotnet run --no-build --project "$p" -c Release -- --release > w18-release.log 2>&1
+          releaseExit=$?
+          cat w18-release.log
+          printf 'W18_SOURCE_EXIT=%s RELEASE_EXIT=%s NATIVE_UNITY=NOT_RUN\n' "$sourceExit" "$releaseExit" | tee w18-verdict.txt
+          test "$sourceExit" = 0 && test "$releaseExit" = 3 || exit 1
+          grep -q B0161_W18_FINAL596_REAL_INTERPROCESS_SOURCE_QA_PASS w18-source.log || exit 1
+          grep -q W18_LIVE_RELEASE_HOLD w18-release.log || exit 1
+          echo "W18_CAS_SOURCE_QA_EXECUTED_RELEASE_HOLD_NATIVE_NOT_RUN"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b0161-w18-596-real-processes-${{ matrix.os }}
+          path: |
+            w18-pins.log
+            w18-build.log
+            w18-source.log
+            w18-release.log
+            w18-verdict.txt
+          if-no-files-found: warn

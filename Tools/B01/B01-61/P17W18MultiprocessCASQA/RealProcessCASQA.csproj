@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup>
+<OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><LangVersion>9.0</LangVersion>
+<Nullable>enable</Nullable><EnableDefaultCompileItems>false</EnableDefaultCompileItems><TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+</PropertyGroup><ItemGroup>
+<Compile Include="Program.cs"/>
+<Compile Include="../../../../Assets/B0123UnitySaveBridge001/Core/AtomicWorldSwap.cs" Link="ExactOriginal596TransactionAndFileCheckpointStore.cs"/>
+<Compile Include="../../../../Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs" Link="ExactOriginal556BinaryCodec.cs"/>
+<Compile Include="../../../../Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs" Link="OriginalW06ConsumedLedger.cs"/>
+<Compile Include="../../../../Assets/B0123SecureReattachV2/Runtime/AtomicDockLedger.cs" Link="ExactOriginal510R2Ledger.cs"/>
+</ItemGroup></Project>
