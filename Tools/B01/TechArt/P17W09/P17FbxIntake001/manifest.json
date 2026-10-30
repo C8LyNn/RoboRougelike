@@ -1,0 +1,61 @@
+{
+  "package_id": "B01-30-P17-ORIGINAL-GLB-UNITY-FBX-001",
+  "version": "R1",
+  "role": "B01-30 TECH ART",
+  "workflow_wave": "PASS17-WAVE09",
+  "goal": "Real exact source-locked 3D visual 3-FBX source intake to Unity6; no physics or new model",
+  "source_owner": {
+    "pr": 375,
+    "head": "5666a39eabd4cea91b2b605a9eb99ea2f1e226e8",
+    "git_blobs": {
+      "P17_Flanker_Reinforced.json": "7259e3454b2f7dd72ca66de83673c143075a807f",
+      "P17_Bulwark_Reinforced.json": "8b00e5da047a22bc23644639e3292c447dd6b335",
+      "P17_Skirmisher_Reinforced.json": "edf332a66645c5ea4374b1957d2cc1a7d356e4d2",
+      "P17_StructuralBracingKits.json": "9b3d2403e7f6e32ea6e20f9f5bb0a83b859bc6e1"
+    }
+  },
+  "source_immutable_3_glb": {
+    "pr": 423,
+    "head": "60a453e4ecd915725bc2fac5433ba7ad43a628cb",
+    "original_run": 41030346462,
+    "original_artifact": 12964979343
+  },
+  "expected_asset_binary": {
+    "real_FBX_7x": 3,
+    "original_parts": 43,
+    "original_brace_amber": 5,
+    "real_reimport_PNGs": 3,
+    "unitypackage_assets": 4,
+    "unitypackage_tar_members": 12,
+    "stable_meta_guids": 4,
+    "negative_mutants": 5,
+    "Windows_Ubuntu_unitypackage_raw_binary_parity": true
+  },
+  "paths_only": [
+    "Tools/B01/TechArt/P17W09/P17FbxIntake001/**",
+    ".github/workflows/b01-30-p17w09-p17-fbx-unity-intake.yml"
+  ],
+  "receivers": [
+    "B01-40 - source physical package/GUID independent G0",
+    "B01-60 - actual native Unity 6 URP G1",
+    "B01-23 - original PARTSIZE owner conditional source feedback",
+    "B01-00 - Codex queue after formal acceptance only"
+  ],
+  "gates": {
+    "producer_blender": "PENDING_EXACT_SHA_CI",
+    "source_package": "PENDING_EXACT_SHA_CI",
+    "cross_os_binary": "PENDING_EXACT_SHA_CI",
+    "independent_g0": "PENDING",
+    "native_unity_g1": "NOT_RUN",
+    "codex_ack": "NOT_SENT",
+    "game_integrated": false
+  },
+  "not_approved": [
+    "Native Unity 6 Editor importer",
+    "Native Unity URP materials",
+    "Native Unity PhysX",
+    "Physical collider/socket/clearance",
+    "Any new model catalogue or integration"
+  ],
+  "rollback": "Remove only Assets/B0130P17VisualBridge001 from disposable Unity test project after verifying no foreign references; remove isolated build/B01-30/W09 output. No canonical game changes."
+}
