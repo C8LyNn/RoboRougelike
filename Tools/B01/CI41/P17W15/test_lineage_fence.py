@@ -129,7 +129,7 @@ class RealGitLineageTests(unittest.TestCase):
         self.bad(c.GAME_ROOT+"/Runtime/Game.cs","MUTATED GAMEPLAY\n","SOURCE_CLOSURE_DRIFT")
 
     def test_07_reject_removed_original_gameplay_file(self):
-        (self.repo/c.GAME_ROOT+"/Runtime/Game.cs").unlink()
+        (self.repo/(c.GAME_ROOT+"/Runtime/Game.cs")).unlink()
         head=self.commit("delete original")
         with self.assertRaisesRegex(c.Refused,"SOURCE_CLOSURE_DRIFT"):
             self.audit(save=head)
@@ -163,9 +163,8 @@ class RealGitLineageTests(unittest.TestCase):
              "unity_native":"NOT_RUN","savegame_host":"NOT_INTEGRATED",
              "codex_ack":False}))
         history=self.commit("history")
-        newest=self.commit("v2")
-        with self.assertRaisesRegex(c.Refused,"SOURCE_CLOSURE_DRIFT"):
-            self.audit(base=base,history=history,save=newest)
+        with self.assertRaisesRegex(c.Refused,"PREEXISTING_SAVE_SOURCE"):
+            self.audit(base=base,history=history,save=history)
 
     def test_13_reject_missing_unity_asset_meta(self):
         (self.repo/(ROOT+"/Runtime/DetachedSnapshotContract.cs.meta")).unlink()
