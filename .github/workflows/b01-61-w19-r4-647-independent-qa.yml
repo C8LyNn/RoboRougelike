@@ -1,0 +1,58 @@
+name: B01-61 W19 exact owner R4 #647 direct original core and Unity MonoBehaviour lifecycle independent
+on:
+  push:
+    branches: [qa/b01-61-p17w19-r4-647-host-lifecycle-independent]
+permissions:
+  contents: read
+jobs:
+  r4-independent-original-source-security:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Verify exact original owner R4 #647 + frozen #510 #556 W06, QA-only
+        shell: bash
+        run: |
+          set -o pipefail
+          python Tools/B01/B01-61/P17W19R4Exact647IndependentQA/source_guard.py 2>&1 | tee b0161-r4-source.log
+      - name: Actual original R4 core, real file commit ACK fault and original #556 W06
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet build Tools/B01/B01-61/P17W19R4Exact647IndependentQA/R4IndependentQA.csproj -c Release --warnaserror 2>&1 | tee b0161-r4-core-build.log
+          dotnet run --no-build -c Release --project Tools/B01/B01-61/P17W19R4Exact647IndependentQA/R4IndependentQA.csproj 2>&1 | tee b0161-r4-core-run.log
+          grep -q 'TOTAL 18 PASS 18 FAIL 0' b0161-r4-core-run.log
+          grep -q 'R4_DURABLE_COMMIT_ACK_LOSS_FIRST_CALL_GREEN=QUARANTINED' b0161-r4-core-run.log
+          grep -q 'R4_STALE_WORLD_SAVE_FENCE_GREEN=BLOCKED' b0161-r4-core-run.log
+          grep -q 'SOURCE_RELEASE_GATE=SOURCE_ONLY_RED_TO_GREEN_NO_NATIVE_GO' b0161-r4-core-run.log
+      - name: Real R4 Unity MonoBehaviour OnDisable lifecycle + OS lease + original Rigidbody staging
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet build Tools/B01/B01-61/P17W19R4Exact647IndependentQA/R4UnityLifecycleQA.csproj -c Release --warnaserror 2>&1 | tee b0161-r4-unity-build.log
+          dotnet run --no-build -c Release --project Tools/B01/B01-61/P17W19R4Exact647IndependentQA/R4UnityLifecycleQA.csproj 2>&1 | tee b0161-r4-unity-run.log
+          grep -q 'W19_R4_647_ONDISABLE_KEEPS_LIVE_WORLD_SLOT_LEASE_GREEN=EXCLUSIVE' b0161-r4-unity-run.log
+          grep -q 'W19_R4_647_HOST_TAKEOVER_ONLY_AFTER_ONDESTROY_GREEN=PASS' b0161-r4-unity-run.log
+          grep -q 'W19_R4_647_PER_RUN_52_PUBLIC_HOST_GREEN=ISOLATED' b0161-r4-unity-run.log
+      - name: Store exact original source stdout (NOT genuine Unity Editor/PhysX)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-61-w19-exact-r4-647-${{ matrix.os }}
+          path: |
+            b0161-r4-source.log
+            b0161-r4-core-build.log
+            b0161-r4-core-run.log
+            b0161-r4-unity-build.log
+            b0161-r4-unity-run.log
+          if-no-files-found: warn
+          retention-days: 21

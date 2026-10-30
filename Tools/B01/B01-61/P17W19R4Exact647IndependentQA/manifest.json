@@ -1,0 +1,19 @@
+{
+  "package_id": "B01-61-P17W19-R4-647-INDEPENDENT-TRANSACTION-UNITY-LIFECYCLE-QA",
+  "owner": "B01-61",
+  "owner_selected_R3_642": "22cec9888047994ae523cbe7bf1b0a483d64cec4",
+  "exact_R4_candidate_sha": "09c1809b73324a6d31c13e5d0143de62ac1e3ca6",
+  "original_core_git_blob": "8fd1dd9a1bc870433809da8fba897ec924fa4113",
+  "original_unity_host_git_blob": "82147492a9205f8ef5986ceb61aeb10d6ea24ff2",
+  "exclude_R3_644": true,
+  "exclude_604": true,
+  "original_source_git_blobs_pinned": 5,
+  "QA_only_paths": 9,
+  "core_assertions_per_OS": 18,
+  "lifecycle": "actual ORIGINAL Unity MonoBehaviour callbacks through synthetic UnityEngine API; NOT native PhysX",
+  "frozen_510": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "frozen_556": "33094f154c7b91119b36d58aab285e6e83c5de57",
+  "native_Unity_G1": "NOT_RUN",
+  "real_game_private_ledger": "HOLD",
+  "merged": false
+}

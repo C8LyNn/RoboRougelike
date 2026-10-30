@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup>
+<OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework>
+<LangVersion>9.0</LangVersion><Nullable>annotations</Nullable>
+<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+<TreatWarningsAsErrors>true</TreatWarningsAsErrors><NoWarn>CS0649</NoWarn>
+</PropertyGroup><ItemGroup>
+<Compile Include="LifecycleProgram.cs"/>
+<Compile Include="SyntheticUnityEngine.cs"/>
+<Compile Include="../../../../Assets/B0123UnitySaveBridge001/Unity/IsolatedTwinRigSaveHost.cs" Link="EXACT_R3_642_PRODUCTION_MONO.cs"/>
+<Compile Include="../../../../Assets/B0123UnitySaveBridge001/Core/AtomicWorldSwap.cs" Link="EXACT_R3_642_PRODUCTION_CORE.cs"/>
+<Compile Include="../../../../Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs" Link="FROZEN_556_SCHEMA.cs"/>
+<Compile Include="../../../../Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs" Link="ORIGINAL_W06_LEDGER.cs"/>
+<Compile Include="../../../../Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs" Link="FROZEN_510_IDENTITY.cs"/>
+</ItemGroup></Project>
