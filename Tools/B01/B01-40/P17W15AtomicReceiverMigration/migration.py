@@ -188,7 +188,7 @@ def preflight_host(host,incoming):
         "Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs":
             "b52e511c370f5fca56c74029050844dc8cbb7f9a"}.items():
         raw=incoming.get(name)
-        require(raw is not None and hashlib.sha1(b"blob "+str(len(raw)).encode()+b"\\0"+raw).hexdigest()==pin,
+        require(raw is not None and hashlib.sha1(b"blob "+str(len(raw)).encode()+bytes([0])+raw).hexdigest()==pin,
                 "FROZEN_GAME_OR_SAVE_SOURCE_MUTATED:"+name)
     # Even an EMPTY folder that claims an owner source path is a pre-existing
     # unowned directory: no implicit adoption.
