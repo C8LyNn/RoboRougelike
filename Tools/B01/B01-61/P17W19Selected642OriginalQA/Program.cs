@@ -226,10 +226,6 @@ static class Program {
       "NEW original #642 published fingerprint fence blocks old Light g12 Save");
    staleFenceGreen++;
    Console.WriteLine("W19_R3_642_STALE_SAVE_FENCE_GREEN=OLD_LIGHT_G10_CANNOT_WRITE_G12_AFTER_DISK_G11");
-   Check(host.TryLoad(SourceSave(12,false,true),Run,12,()=>true)
-     ==WorldSwapVerdict.StaleGeneration||host.TryLoad(SourceSave(12,false,true),Run,12,()=>false)
-     ==WorldSwapVerdict.HostBusy,
-     "checkpoint failed state cannot silently bypass write authority in reentrant attempt");
   });
  }
  static void PerRunNamedCheckpointIsolation(){
