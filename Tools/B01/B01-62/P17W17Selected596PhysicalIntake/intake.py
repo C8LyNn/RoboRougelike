@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """B01-62 P17/W17: independent ORIGINAL Git #596 physical #510+#556 coexistence/migration.
-No canonical receiver and no producer source writes. Explicit #596 ALTERNATIVE_HOLD.
+No canonical receiver and no producer source writes. #604 ALTERNATIVE_HOLD.
 """
 import argparse, hashlib, importlib.util, io, json, os, pathlib, shutil, subprocess, tempfile, zipfile
 
