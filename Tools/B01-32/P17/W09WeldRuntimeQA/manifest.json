@@ -1,0 +1,27 @@
+{
+  "package_id": "B01-32-P17-W09-REPAIR-WELD-RUNTIME-QA-001",
+  "version": "R1",
+  "role": "B01-32 Animation & VFX",
+  "purpose": "Real original frozen B01-32 #432 MonoBehaviour adapter compile and behavior acceptance using explicit non-native UnityEngine surrogate",
+  "producer_pr": 432,
+  "producer_sha": "280ed3f59020432132ea5e156c68590d445009c8",
+  "original_artifact_run": 41030815153,
+  "original_artifact_id": 12966020486,
+  "original_zip_sha256": "0d82429073722f3402e25d056502917ec7dcd2fb62256355011457f58711d2ed",
+  "immutable_input_paths": [
+    "Tools/B01-32/P17/W06RepairWeld/Runtime/WeldVisualCore.cs",
+    "Tools/B01-32/P17/W06RepairWeld/Runtime/B0132RepairWeldVfx.cs",
+    "Tools/B01-32/P17/W06RepairWeld/Tests/RepairWeldPlayModeTests.cs"
+  ],
+  "own_paths": [
+    "Tools/B01-32/P17/W09WeldRuntimeQA/**",
+    ".github/workflows/b01-32-p17w09-weld-adapter-qa.yml"
+  ],
+  "native_unity": "NOT_RUN",
+  "no_canonical_assets_changed": true,
+  "followups": [
+    "B01-40 independent original artifact current-Codex intake",
+    "B01-60 licensed Unity 6000.3.14f1 PlayMode native+GPU",
+    "B01-00 CODEX INBOX #79 only if separately accepted"
+  ]
+}
