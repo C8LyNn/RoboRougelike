@@ -1,0 +1,23 @@
+{
+  "package": "B01-61-P17-W11-ATOMIC-R2-SOURCE-RETEST-001",
+  "version": "1.0.0",
+  "owner": "B01-61",
+  "exact_target": {
+    "branch": "b01-23/p17w11-secure-v2-atomic-r2",
+    "sha": "d94400d95d13db7f27e1533df05c9292d5380431"
+  },
+  "w06_sha": "cb2b3a76e84266e2730fffc4ab048c1039f0652f",
+  "source_blobs": [
+    "328977b4cdcdcd7c9f128c01f11ff67f8e46086a",
+    "9f80f705475bd312f209033a57bd07e03bf95628",
+    "b680ed0ec969ac23203fa55eab7b90f8daa86e43",
+    "b6a4d04b0c6407c8c84451b4d599d96fe0e4d1a9",
+    "fa1aa5e531927cbe73cf5fdfe161b4a981316db5"
+  ],
+  "changed_paths": "7 new B01-61 QA-only",
+  "test_engine": "original R2 host + original AtomicDockLedger + original W06 ledger under SYNTHETIC Unity API",
+  "native_unity": "NOT_RUN",
+  "codex_ack": false,
+  "merge": false,
+  "rollback": "close unmerged QA PR, discard only isolated QA branch"
+}
