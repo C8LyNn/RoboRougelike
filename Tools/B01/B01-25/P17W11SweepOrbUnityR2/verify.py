@@ -188,6 +188,14 @@ class Checks(unittest.TestCase):
         m=json.loads(source(T/"manifest.json"))
         self.assertEqual(m["unityG1"],"NOT_RUN")
         self.assertFalse(m["integrated"])
+    def test_19_zip_creator_platform_deterministic(self):
+        with tempfile.TemporaryDirectory() as d:
+            file=pathlib.Path(d)/"byte-constant.zip"
+            build_zip(file)
+            with zipfile.ZipFile(file) as z:
+                self.assertEqual(20,len(z.infolist()))
+                self.assertTrue(all(x.create_system==3 for x in z.infolist()),
+                                "ZIP metadata must not vary with host OS")
     def test_18_source_factory_creates_actual_savable_scene(self):
         s=source(A/"Editor/SweepOrbSceneBuilder.cs")
         self.assertIn("SWEEPORB_R2_Demo.unity",s)
