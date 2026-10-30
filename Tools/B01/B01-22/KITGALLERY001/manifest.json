@@ -1,6 +1,6 @@
 {
   "package_id": "B01-22-KITGALLERY-001",
-  "revision": "1.1.0",
+  "revision": "1.1.1",
   "source_sha": "b1d4e341d846c9397e236809a1d7e4c4fff9c935",
   "owner": "B01-22",
   "independent_qa": "PENDING",
@@ -66,7 +66,7 @@
     },
     {
       "path": "Assets/B01KitGallery001/Editor/KitGalleryWindow.cs",
-      "git_blob_sha1": "7a39f68a4e3c45d8204afeff929c59cca1cdf999"
+      "git_blob_sha1": "f338404db300ed14d56fbbd98e8f68e956c19492"
     },
     {
       "path": "Assets/B01KitGallery001/Editor/KitGalleryWindow.cs.meta",
@@ -78,11 +78,11 @@
     },
     {
       "path": "Tools/B01/B01-22/KITGALLERY001/OriginalEditorSourceTests.cs",
-      "git_blob_sha1": "814065f6fa8ee038f0df5e5ff86e56e25c470570"
+      "git_blob_sha1": "ad236e26734e45c42e7cde0b52e4c336ef1a3361"
     },
     {
       "path": "Tools/B01/B01-22/KITGALLERY001/README.md",
-      "git_blob_sha1": "99a5e6b6bc0dfcd9848a4d7858ee7536793b4378"
+      "git_blob_sha1": "eaa93013b766691f4eaa05748d1520d06a6ab4b5"
     },
     {
       "path": "Tools/B01/B01-22/KITGALLERY001/UnityEditorStubs.cs",
@@ -94,7 +94,7 @@
     },
     {
       "path": "Tools/B01/B01-22/KITGALLERY001/test_gallery.py",
-      "git_blob_sha1": "c2533451dfd2ef1d1ae71aaae61facee388420bb"
+      "git_blob_sha1": "763db4ee4da5e2f9c78ef3b04141c013ccd1e411"
     },
     {
       "path": "Tools/B01/B01-22/KITGALLERY001/verify_gallery.py",
@@ -119,23 +119,27 @@
   ],
   "tests": [
     {
-      "name": "35 original Editor C# cases on both OS",
+      "name": "Original Editor C# unit sources and coherent-price forgery negatives",
+      "status": "NOT_RUN",
+      "expected_cases": 40,
+      "environment": "Windows 2025, Ubuntu 24.04, dotnet 8 Unity API test stubs"
+    },
+    {
+      "name": "Original and independent semantic snapshot Python source tests",
+      "status": "NOT_RUN",
+      "expected_cases": 17
+    },
+    {
+      "name": "Real deterministic Unity ZIP + SAFE rollback and mutation checks",
+      "status": "NOT_RUN",
+      "expected_cases": 15
+    },
+    {
+      "name": "19 tracked Git source blob identities, six Unity .meta GUIDs",
       "status": "NOT_RUN"
     },
     {
-      "name": "15 Python catalog source cases",
-      "status": "NOT_RUN"
-    },
-    {
-      "name": "15 actual physical ZIP and rollback tests",
-      "status": "NOT_RUN"
-    },
-    {
-      "name": "19 exact Git blob hashes and 6 unique Unity GUIDs",
-      "status": "NOT_RUN"
-    },
-    {
-      "name": "native Unity Editor GUI/PlayMode",
+      "name": "Native licensed Unity GUI and PlayMode",
       "status": "NOT_RUN"
     }
   ],
@@ -151,5 +155,12 @@
     "zip": "kitcompare-unity.zip",
     "receipt": "receipt.json",
     "data_only": true
+  },
+  "bugfix": {
+    "id": "B01-22-W07-COHERENT-SNAPSHOT-001",
+    "red_source_sha": "aab92e157433d0b57e38f36ccd1502e6a3fdc5bd",
+    "red_evidence": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41037567102",
+    "expected_sha256": "d748152edbc0c3837f870c9b8bdb3fb9e4b8dab147633d7abe1028b19356450a",
+    "meaning": "Strict original fixed 10-kit semantic content; no live-game economy or purchase authority"
   }
 }
