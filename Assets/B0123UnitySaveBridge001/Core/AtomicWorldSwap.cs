@@ -108,6 +108,8 @@ namespace B01.UnitySaveBridge001
         private readonly IWorldFactory factory;
         private readonly ICheckpointStore checkpoint;
         private long saveGeneration;
+        private long publishedGeneration;
+        private string publishedHash="";
         private IPreparedWorld? current;
         private ColdRestore? currentCold;
         private bool busy, quarantined, cleanupPending;
@@ -154,7 +156,13 @@ namespace B01.UnitySaveBridge001
                 // Motion legitimately changes detached world poses/velocities after Load.
                 // Only immutable identity, authority and detached/consumed coupling must match.
                 if(!SameIdentityAndLedger(snap,currentCold.Snapshot))return false;
-                if(!checkpoint.Read(expectedRun,out long durable,out string _))return false;
+                if(!checkpoint.Read(expectedRun,out long durable,out string diskHash))
+                    return false;
+                // W18: never mint a newer checkpoint from a physical world
+                // invalidated by another owner advancing this durable slot.
+                if(durable!=publishedGeneration||diskHash!=publishedHash||
+                   currentCold.Snapshot.Generation!=publishedGeneration)
+                    return false;
                 long newest=Math.Max(Math.Max(currentCold.Snapshot.Generation,saveGeneration),durable);
                 if(newest==long.MaxValue)return false;
                 long next=newest+1;
@@ -226,6 +234,8 @@ namespace B01.UnitySaveBridge001
                         quarantined=true;verdict=WorldSwapVerdict.RollbackQuarantine;break;
                     }
                     current=candidate;currentCold=ready;
+                    publishedGeneration=snap.Generation;
+                    publishedHash=fingerprint;
                     saveGeneration=Math.Max(saveGeneration,snap.Generation);
                     candidate=null;published=true;
                     verdict=WorldSwapVerdict.Accepted;

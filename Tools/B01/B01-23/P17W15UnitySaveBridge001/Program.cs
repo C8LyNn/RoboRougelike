@@ -257,6 +257,53 @@ class T
                !SnapshotCodec.TryDecode(second,out RunSnapshot? b)||a==null||b==null)return false;
             return a.Generation==5&&b.Generation==6;
         });
+
+        Check("W18 file-backed stale host cannot export old Light IDs after new Heavy commits",()=>{
+            string root=Path.Combine(Path.GetTempPath(),"b0123_w18_"+Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(root);
+            try
+            {
+                string file=Path.Combine(root,"checkpoint");
+                var older=new AtomicWorldSwap(new Factory(),new FileCheckpointStore(file));
+                var newer=new AtomicWorldSwap(new Factory(),new FileCheckpointStore(file));
+                if(older.TryLoad(Make(true,false,10),7,1,()=>true)!=WorldSwapVerdict.Accepted||
+                   newer.TryLoad(Make(false,true,11),7,1,()=>true)!=WorldSwapVerdict.Accepted)
+                    return false;
+                return !older.TrySave(7,()=>true,out byte[] rejected)&&
+                    (rejected==null||rejected.Length==0)&&
+                    newer.IsConsumed(1,2310002)&&!newer.IsConsumed(0,2310001);
+            }finally{Directory.Delete(root,true);}
+        });
+        Check("W18 file-backed current host may still save with next epoch",()=>{
+            string root=Path.Combine(Path.GetTempPath(),"b0123_w18_"+Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(root);
+            try
+            {
+                var live=new AtomicWorldSwap(new Factory(),
+                    new FileCheckpointStore(Path.Combine(root,"checkpoint")));
+                if(live.TryLoad(Make(false,true,21),7,1,()=>true)!=WorldSwapVerdict.Accepted||
+                   !live.TrySave(7,()=>true,out byte[] data)||
+                   !SnapshotCodec.TryDecode(data,out RunSnapshot? parsed)||parsed==null)return false;
+                return parsed.Generation==22&&parsed.Parts[1].Consumed&&!parsed.Parts[0].Consumed;
+            }finally{Directory.Delete(root,true);}
+        });
+        Check("W18 cold replacement invalidates old live host authority",()=>{
+            string root=Path.Combine(Path.GetTempPath(),"b0123_w18_"+Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(root);
+            try
+            {
+                string file=Path.Combine(root,"checkpoint");
+                var older=new AtomicWorldSwap(new Factory(),new FileCheckpointStore(file));
+                if(older.TryLoad(Make(true,false,32),7,1,()=>true)!=WorldSwapVerdict.Accepted)return false;
+                var replacement=new AtomicWorldSwap(new Factory(),new FileCheckpointStore(file));
+                if(replacement.TryLoad(Make(false,true,33),7,1,()=>true)!=WorldSwapVerdict.Accepted)
+                    return false;
+                return !older.TrySave(7,()=>true,out _)&&
+                    replacement.TrySave(7,()=>true,out byte[] data)&&
+                    SnapshotCodec.TryDecode(data,out RunSnapshot? snap)&&snap!=null&&
+                    snap.Generation==34&&!snap.Parts[0].Consumed&&snap.Parts[1].Consumed;
+            }finally{Directory.Delete(root,true);}
+        });
         Console.WriteLine("UNITY_NATIVE_NOT_RUN; FROZEN_510_PRIVATE_IMPORT_HOLD");
     }
     public static int Main(){Tests();Console.WriteLine("TOTAL "+(pass+fail)+" PASS "+pass+" FAIL "+fail);return fail==0?0:1;}
