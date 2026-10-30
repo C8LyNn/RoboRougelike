@@ -1,0 +1,87 @@
+name: B01-40 W21 ORIGINAL API V2 #691 physical source ZIP, GUID and R5 scratch G0
+on:
+  push:
+    branches: [qa/b01-40-p17w21-api691-v2-physical-g0]
+    paths: ['Tools/B01/B01-40/P17W21CanonicalApiV2G0/**', '.github/workflows/b01-40-p17w21-api691-physical-g0.yml']
+  pull_request:
+    paths: ['Tools/B01/B01-40/P17W21CanonicalApiV2G0/**', '.github/workflows/b01-40-p17w21-api691-physical-g0.yml']
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  original-v2-api-immutable-zip-and-disposable-world-g0:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: own
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/checkout@v4
+        with:
+          path: api
+          ref: 809f82575c638e1b4d2806b5f417bddab6c0871a
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: api_v1
+          ref: eed2e39636edfd8b8db754c426db452164cbf9d7
+      - uses: actions/checkout@v4
+        with:
+          path: api_alt
+          ref: 5387e829a5f6d38b713086e6fb906a9a755189ff
+      - uses: actions/checkout@v4
+        with:
+          path: r5
+          ref: cc7f73541517a18f4479bb155534bd4832d9985e
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: r4
+          ref: 09c1809b73324a6d31c13e5d0143de62ac1e3ca6
+      - uses: actions/checkout@v4
+        with:
+          path: game
+          ref: d94400d95d13db7f27e1533df05c9292d5380431
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: save
+          ref: 33094f154c7b91119b36d58aab285e6e83c5de57
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: safe
+          ref: 3b743acc52bb44ae6a50af56ed9aca46d22821a7
+      - uses: actions/checkout@v4
+        with:
+          path: guidfence
+          ref: 547b55560d1a33af182caeaf73f9a9b2d8b1b7fe
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Actually run original API #691 owner packager and physical combined R5 #690 safe disposable clone/rollback
+        shell: bash
+        run: |
+          set -euo pipefail
+          python own/Tools/B01/B01-40/P17W21CanonicalApiV2G0/intake.py \
+            --api api --api_v1 api_v1 --api_alt api_alt --r5 r5 --r4 r4 \
+            --game game --save save --safe safe --guidfence guidfence \
+            --output evidence | tee api-original-physical-source.log
+          grep -q 'B0140_W21_API_691_ORIGINAL_ZIP' api-original-physical-source.log
+          grep -q 'B0140_W21_API_691_AUTHOR_ORIGINAL_STAGE' api-original-physical-source.log
+          grep -q 'B0140_W21_API_691_R5_690_COMBINED_SAFE' api-original-physical-source.log
+          grep -q 'B0140_W21_API_V2_PHYSICAL_G0_PASS_CANONICAL_GAME_SAVE_HOLD_NATIVE_NOT_RUN_NO_MERGE' api-original-physical-source.log
+          test -s evidence/canonical-api-v2-691-g0-source-only.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: B01-40-W21-API691-SourcePhysical-${{ matrix.os }}
+          path: |
+            evidence/canonical-api-v2-691-g0-source-only.json
+            api-original-physical-source.log
+          retention-days: 21
+          if-no-files-found: warn
