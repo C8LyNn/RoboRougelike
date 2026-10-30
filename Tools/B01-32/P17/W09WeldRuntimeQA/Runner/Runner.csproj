@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+ <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework>
+  <LangVersion>9.0</LangVersion><ImplicitUsings>disable</ImplicitUsings>
+  <EnableDefaultCompileItems>true</EnableDefaultCompileItems><Nullable>disable</Nullable>
+  <TreatWarningsAsErrors>true</TreatWarningsAsErrors></PropertyGroup>
+ <ItemGroup>
+ <Compile Include="../../../../../build/W09WeldReceiver/Original/WeldVisualCore.cs" Link="Original/WeldVisualCore.cs"/>
+ <Compile Include="../../../../../build/W09WeldReceiver/Original/B0132RepairWeldVfx.cs" Link="Original/B0132RepairWeldVfx.cs"/>
+ <Compile Include="../../../../../build/W09WeldReceiver/Original/RepairWeldPlayModeTests.cs" Link="Original/RepairWeldPlayModeTests.cs"/>
+ </ItemGroup>
+</Project>
