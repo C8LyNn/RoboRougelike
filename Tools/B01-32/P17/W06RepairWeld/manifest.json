@@ -1,0 +1,43 @@
+{
+  "package_id": "B01-32-REPAIR-WELD-VFX-001",
+  "version": "1.0.0",
+  "owner": "B01-32 Animation & VFX",
+  "wave": "PASS17/WAVE06",
+  "purpose": "Purely cosmetic procedural repair welding arc, sparks, cooling, cancel and visual opt-out",
+  "mechanic": "Explicit visual animation lifecycle Idle->Welding->Cooling->Idle; independent from real repair transactions",
+  "render_technique": "Unity LineRenderer: central weld arc plus eight dynamically updated pooled sparks",
+  "unity_target": "6000.3.14f1 URP",
+  "native_unity": "NOT_RUN",
+  "source_paths": [
+    "Tools/B01-32/P17/W06RepairWeld/**",
+    ".github/workflows/b01-32-p17-w06-repair-weld.yml"
+  ],
+  "physical_unity_namespace": "Assets/B0132RepairWeld/**",
+  "direct_game_mutation": false,
+  "runtime_api": [
+    "BeginWeld(uint seed)",
+    "SetVisualProgress(float normalized)",
+    "FinishWeld()",
+    "CancelWeld()",
+    "SetVisualsEnabled(bool enabled)"
+  ],
+  "independent_of": [
+    "B01-32 DamageDecals #340",
+    "B01-32 WheelWake #366",
+    "B01-32 SalvageBeacon #372/#402",
+    "Codex actual repair HP/currency/garage transactions"
+  ],
+  "receiver_order": [
+    "B01-40 physical file/GUID preflight and independent G0",
+    "B01-60 licensed Unity imports and authored native PlayMode",
+    "B01-00 optional CODEX INBOX #79 scheduling"
+  ],
+  "limits": [
+    "C# core .NET8 evidence is not native Unity",
+    "Pillow proof images are CPU-generated from original C# sample JSON, not real GPU/Unity screenshots",
+    "Prefab runtime shader visual appearance needs Unity URP verification"
+  ],
+  "rollback": "Delete only Assets/B0132RepairWeld directory plus its root .meta in an authorized disposable import; any later Codex-owned visual adapter separately rolled back",
+  "integration_status": "NOT_INTEGRATED",
+  "codex_ack": "PENDING"
+}
