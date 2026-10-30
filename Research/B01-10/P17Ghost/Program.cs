@@ -1244,6 +1244,152 @@ internal static class Program
             Check(!t.IsPlaying);Equal(t.ReferencePositionSeconds,.75d);
             Equal(t.Pose().X,4.75f);
         });
+
+        Test("194 default loop playback still wraps exactly as R12",()=>{
+            var t=TrainingTransport();Equal(t.RepeatMode,GhostPracticeRepeatMode.Loop);
+            t.Play();t.Advance(1d);
+            Equal(t.ReferencePositionSeconds,0d);Equal(t.Pose().X,4f);
+        });
+        Test("195 stop-at-end renders actual finish source frame, not start",()=>{
+            var t=TrainingTransport();t.SetRepeatMode(GhostPracticeRepeatMode.StopAtEnd);
+            t.Play();t.Advance(1d);
+            Check(!t.IsPlaying&&t.IsAtEnd);
+            Equal(t.ReferencePositionSeconds,1d);Equal(t.Pose().X,5f);
+        });
+        Test("196 stop-at-end at double speed reaches final pose in half second",()=>{
+            var t=TrainingTransport();t.SetRepeatMode(GhostPracticeRepeatMode.StopAtEnd);
+            t.SetSpeed(2f);t.Play();t.Advance(.5d);
+            Check(!t.IsPlaying);Equal(t.Pose().X,5f);
+        });
+        Test("197 one-shot overshoot clamps to exact end without wrapping",()=>{
+            var t=TrainingTransport();t.SetRepeatMode(GhostPracticeRepeatMode.StopAtEnd);
+            t.Play();t.Advance(8d);
+            Equal(t.ReferencePositionSeconds,1d);Equal(t.Pose().X,5f);
+        });
+        Test("198 stop mode finishes on exact duration and remains paused",()=>{
+            var t=TrainingTransport();t.SetRepeatMode(GhostPracticeRepeatMode.StopAtEnd);
+            t.Play();t.Advance(.4d);Check(t.IsPlaying);
+            t.Advance(.6d);Check(!t.IsPlaying&&t.IsAtEnd);
+        });
+        Test("199 before endpoint one-shot remains playing",()=>{
+            var t=TrainingTransport();t.SetRepeatMode(GhostPracticeRepeatMode.StopAtEnd);
+            t.Play();t.Advance(.9d);
+            Check(t.IsPlaying&&!t.IsAtEnd);
+            Check(Math.Abs(t.Pose().X-4.9f)<.0001f);
+        });
+        Test("200 intentional Play from completed one-shot starts new review",()=>{
+            var t=TrainingTransport();t.SetRepeatMode(GhostPracticeRepeatMode.StopAtEnd);
+            t.Play();t.Advance(1d);t.Play();
+            Check(t.IsPlaying&&!t.IsAtEnd);
+            Equal(t.ReferencePositionSeconds,0d);Equal(t.Pose().X,4f);
+        });
+        Test("201 repeated paused updates keep authentic ending visible",()=>{
+            var t=TrainingTransport();t.SetRepeatMode(GhostPracticeRepeatMode.StopAtEnd);
+            t.Play();t.Advance(1d);t.Advance(1d);t.Advance(0d);
+            Check(!t.IsPlaying);Equal(t.Pose().X,5f);
+        });
+        Test("202 backward step from held end exposes real final corner",()=>{
+            var t=TrainingTransport();t.SetRepeatMode(GhostPracticeRepeatMode.StopAtEnd);
+            t.Play();t.Advance(1d);t.Step(-.1d);
+            Check(!t.IsPlaying);Check(Math.Abs(t.Pose().X-4.9f)<.0001f);
+        });
+        Test("203 step negative from start clamps instead of looping",()=>{
+            var t=TrainingTransport();t.SetRepeatMode(GhostPracticeRepeatMode.StopAtEnd);
+            t.Step(-.1d);
+            Equal(t.ReferencePositionSeconds,0d);Equal(t.Pose().X,4f);
+        });
+        Test("204 forward step from end clamps with no teleport",()=>{
+            var t=TrainingTransport();t.SetRepeatMode(GhostPracticeRepeatMode.StopAtEnd);
+            t.Seek(1d);t.Step(.2d);
+            Equal(t.ReferencePositionSeconds,1d);Equal(t.Pose().X,5f);
+        });
+        Test("205 changing repeat policy mid-segment never rewrites current pose",()=>{
+            var t=TrainingTransport();t.Play();t.Advance(.25d);t.Pause();
+            var old=t.Pose().X;
+            t.SetRepeatMode(GhostPracticeRepeatMode.StopAtEnd);
+            Equal(t.Pose().X,old);Equal(t.ReferencePositionSeconds,.25d);
+            t.SetRepeatMode(GhostPracticeRepeatMode.Loop);
+            Equal(t.Pose().X,old);Check(!t.IsPlaying);
+        });
+        Test("206 toggling loop at held end preserves frame until user Play",()=>{
+            var t=TrainingTransport();t.SetRepeatMode(GhostPracticeRepeatMode.StopAtEnd);
+            t.Play();t.Advance(1d);
+            t.SetRepeatMode(GhostPracticeRepeatMode.Loop);
+            Equal(t.Pose().X,5f);Check(!t.IsPlaying);
+            t.Play();Equal(t.Pose().X,4f);
+        });
+        Test("207 unknown repeat mode rejects atomically",()=>{
+            var t=TrainingTransport();t.SetRepeatMode(GhostPracticeRepeatMode.StopAtEnd);
+            Check(Reject(()=>t.SetRepeatMode((GhostPracticeRepeatMode)100)));
+            Equal(t.RepeatMode,GhostPracticeRepeatMode.StopAtEnd);
+        });
+        Test("208 Seek to measured endpoint in StopAtEnd preserves source pose",()=>{
+            var t=TrainingTransport();t.SetRepeatMode(GhostPracticeRepeatMode.StopAtEnd);
+            t.Seek(1d);
+            Check(t.IsAtEnd);Equal(t.Pose().X,5f);
+        });
+        Test("209 legacy Loop Seek at endpoint still wraps",()=>{
+            var t=TrainingTransport();t.Seek(1d);
+            Equal(t.ReferencePositionSeconds,0d);Equal(t.Pose().X,4f);
+        });
+        Test("210 direct measured offset gets true finish frame without modulo",()=>{
+            var c=new GhostSplitCoach(Run());
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1f);
+            c.EndTrial(true,10f);
+            var loop=c.RecommendedLoop;
+            Equal(loop.PoseAtOffset(0d).X,4f);
+            Equal(loop.PoseAtOffset(1d).X,5f);
+            Equal(loop.PoseAt(1d).X,4f);
+        });
+        Test("211 malformed measured focus offset rejected without playback edits",()=>{
+            var c=new GhostSplitCoach(Run());
+            for(int i=0;i<4;i++)c.AcceptValidatedGate(i,i+1f);
+            c.EndTrial(true,10f);
+            var loop=c.RecommendedLoop;
+            Check(Reject(()=>loop.PoseAtOffset(-.1d)));
+            Check(Reject(()=>loop.PoseAtOffset(1.1d)));
+            Check(Reject(()=>loop.PoseAtOffset(double.NaN)));
+            Check(Reject(()=>loop.PoseAtOffset(double.PositiveInfinity)));
+            Equal(loop.PoseAtOffset(.5d).X,4.5f);
+        });
+        Test("212 stop-at-end focus gate1 holds actual gate1 pose",()=>{
+            var c=new GhostSplitCoach(Run());
+            c.AcceptValidatedGate(0,1.5f);
+            c.AcceptValidatedGate(1,2.5f);
+            c.AcceptValidatedGate(2,3.5f);
+            c.AcceptValidatedGate(3,4.5f);
+            c.EndTrial(true,5.5f);
+            var t=new GhostPracticeTransport(c.RecommendedLoop);
+            t.SetRepeatMode(GhostPracticeRepeatMode.StopAtEnd);
+            t.Play();t.Advance(1d);
+            Equal(t.Pose().X,1f);Check(!t.IsPlaying);
+        });
+        Test("213 stop-at-end focus gate2 holds measured gate2 source pose",()=>{
+            var c=new GhostSplitCoach(Run());
+            c.AcceptValidatedGate(0,1f);
+            c.AcceptValidatedGate(1,3.5f);
+            c.AcceptValidatedGate(2,4.5f);
+            c.AcceptValidatedGate(3,5.5f);
+            c.EndTrial(true,6.5f);
+            var t=new GhostPracticeTransport(c.RecommendedLoop);
+            Equal(c.RecommendedLoop.GateNumber,2);
+            t.SetRepeatMode(GhostPracticeRepeatMode.StopAtEnd);
+            t.Play();t.Advance(1d);
+            Equal(t.Pose().X,2f);Check(!t.IsPlaying);
+        });
+        Test("214 quarter speed one-shot does not finish before 4 visual seconds",()=>{
+            var t=TrainingTransport();t.SetRepeatMode(GhostPracticeRepeatMode.StopAtEnd);
+            t.SetSpeed(.25f);t.Play();t.Advance(3d);
+            Check(t.IsPlaying);Check(Math.Abs(t.Pose().X-4.75f)<.0001f);
+            t.Advance(1d);Check(!t.IsPlaying);
+            Equal(t.Pose().X,5f);
+        });
+        Test("215 restart preserves selected repeat preference and resets cursor",()=>{
+            var t=TrainingTransport();t.SetRepeatMode(GhostPracticeRepeatMode.StopAtEnd);
+            t.Play();t.Advance(1d);t.Restart();
+            Check(!t.IsPlaying);Equal(t.Pose().X,4f);
+            Equal(t.RepeatMode,GhostPracticeRepeatMode.StopAtEnd);
+        });
         Console.WriteLine("B01-10 GHOST REAL_CSHARP "+passed+" PASS / "+failed+
           " FAIL | 100 seeded synthetic motion traces | UNITY=NOT_RUN");
         return failed==0?0:1;
