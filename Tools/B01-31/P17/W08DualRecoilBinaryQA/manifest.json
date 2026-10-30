@@ -1,0 +1,40 @@
+{
+  "package_id": "B01-31-DUALRECOIL-BINARY-VISUAL-QA-001",
+  "version": "P17-W08-R1",
+  "owner": "B01-31",
+  "target_original_pr": 446,
+  "target_original_sha": "d020db8bf43626dfecf979ffc47b57dd526a7ca0",
+  "target_original_actions_run": 41038102796,
+  "target_original_artifact": 12968263808,
+  "producer_zip": "B0132-DualRecoil-UnityImport.zip",
+  "producer_zip_sha256": "0260a77c34fbde91c3349f6989afd390a6299a686fe472fe83432ed8aaf35d25",
+  "original_source_branch": "art/b01-32-p17-w07-dual-recoil-animation",
+  "repository_source_base": "main@5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "purpose": "Independently download and binary-check original compiled C# CPU preview PNGs + exact actual 17-file Unity prefab ZIP of #446. No producer source edits.",
+  "tests": [
+    "physical source-run SHA and named artifact pin",
+    "8 real 512px RGBA frames alpha, left/right channels, OFF",
+    "real 2048x1024 contact PNG tile pixel equivalence and receipts",
+    "17 original Unity ZIP entries, CRC, 11 .meta GUIDs",
+    "original Git C# source/provenance equivalence",
+    "negative tampering, opaque background, zip traversal/case duplicate"
+  ],
+  "owned_paths": [
+    "Tools/B01-31/P17/W08DualRecoilBinaryQA/**",
+    ".github/workflows/b01-31-p17w08-recoil-image-receiver.yml"
+  ],
+  "excluded_paths": [
+    "Assets/**",
+    "Codex",
+    "B01-32 original",
+    "CHL",
+    "PARTSIZE",
+    "MODEL_JOB"
+  ],
+  "rollback": "Delete only this new B01-31 receiver directory and dedicated workflow on disposable branch; never alter #446 binaries or canonical game.",
+  "qa": "B01-31_VISUAL_BINARY_INDEPENDENT_OF_PRODUCER_PENDING_CI",
+  "native_unity": "NOT_RUN",
+  "formal_B01_40_60": "PENDING",
+  "codex_ack": "NONE",
+  "merge": "PROHIBITED"
+}
