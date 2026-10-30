@@ -1,0 +1,50 @@
+<!doctype html><html lang="pl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B01-12 · Dostępność — laboratorium UX</title>
+<style>
+:root{color-scheme:dark;--bg:#101827;--surface:#1d2b41;--fg:#f2f7ff;--muted:#c5d2e5;--accent:#9bddff;--warning:#ffd88a;--scale:1;--duration:220ms}
+*{box-sizing:border-box}html{background:var(--bg)}body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,'Segoe UI',sans-serif;font-size:calc(16px * var(--scale));line-height:1.45}
+main{max-width:1100px;margin:auto;padding:20px 16px 72px}header{margin-bottom:20px}h1{font-size:1.65em;margin:0 0 8px}h2{font-size:1.17em;margin:0 0 14px}p{margin:6px 0 12px}.muted{color:var(--muted)}
+.layout{display:grid;grid-template-columns:minmax(0,0.95fr) minmax(0,1.05fr);gap:16px}.panel{padding:18px;background:var(--surface);border:2px solid var(--muted);border-radius:12px;min-width:0}
+fieldset{min-width:0;border:1px solid var(--muted);border-radius:10px;margin:0 0 12px;padding:10px 12px}legend{padding:0 6px;font-weight:700}select,button,textarea{font:inherit;color:var(--fg);background:var(--bg);border:2px solid var(--muted);border-radius:7px;padding:9px 10px;max-width:100%}select{width:100%}
+button{cursor:pointer}button:hover{border-color:var(--accent)}button:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:3px}button:disabled{opacity:.55;cursor:not-allowed}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}textarea{display:block;width:100%;min-height:130px;resize:vertical;overflow-wrap:anywhere;white-space:pre-wrap}#status{min-height:2em;color:var(--accent);font-weight:700}#warning{padding:14px;border:3px solid var(--warning);border-radius:9px;margin:14px 0;background:var(--bg);transition:transform var(--duration) ease}
+#warning strong{color:var(--warning)}#warning[data-pattern=true]{background-image:repeating-linear-gradient(135deg,transparent 0 12px,rgba(255,255,255,.1) 12px 16px)}
+#warning.pulse{transform:translateX(3px)}#warning p{margin:5px 0 0}.action{border-color:var(--accent);color:var(--accent)}#subtitle{padding:12px;border:1px dashed var(--muted);border-radius:7px}.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.stat{border:1px solid var(--muted);padding:8px;border-radius:8px}.stat strong{display:block;font-size:1.12em;overflow-wrap:anywhere}
+label{display:block;margin-bottom:4px;font-weight:600}footer{margin-top:20px;padding-top:16px;border-top:1px solid var(--muted)}
+@media(max-width:760px){.layout{grid-template-columns:1fr}main{padding:12px 12px 70px}.panel{padding:12px}}
+</style></head><body><main>
+<header><h1>Dostępność · podgląd ustawień</h1><p class="muted">B01-12-A11Y-PREFS-001/R1 · Samodzielny prototyp przeglądarkowy. Nie modyfikuje gry ani jej zapisu.</p></header>
+<div class="layout"><section class="panel" aria-labelledby="settingsHeading"><h2 id="settingsHeading">Ustawienia</h2>
+<fieldset><legend>Widoczność</legend><label for="contrast">Kontrast interfejsu</label><select id="contrast"><option value="standard">Standardowy</option><option value="high">Wysoki kontrast</option></select><label for="textScale">Rozmiar tekstu</label><select id="textScale"><option value="100">100%</option><option value="125">125%</option><option value="150">150%</option></select></fieldset>
+<fieldset><legend>Sygnały i ruch</legend><label for="motion">Animacje</label><select id="motion"><option value="normal">Standardowe</option><option value="reduced">Ograniczone (0 ms)</option></select><label for="cues">Ostrzeżenia</label><select id="cues"><option value="icon-text">Ikona i tekst</option><option value="icon-text-pattern">Ikona, tekst i wzór</option></select><label for="captions">Napisy dialogowe</label><select id="captions"><option value="true">Włączone</option><option value="false">Wyłączone</option></select></fieldset>
+<div class="row"><button id="undo" type="button">Cofnij</button><button id="redo" type="button">Ponów</button><button id="reset" type="button">Domyślne</button></div>
+<p id="status" role="status" aria-live="polite">Ustawienia domyślne.</p>
+<h2>Profil przenośny (tylko UX)</h2><div class="row"><button id="export" type="button">Eksportuj JSON</button><button id="import" type="button">Importuj JSON</button></div>
+<label for="profile">Profil JSON (nie jest zapisem gry)</label><textarea id="profile" spellcheck="false" aria-label="Profil ustawień dostępności JSON"></textarea><p class="muted" id="exportStatus" role="status" aria-live="polite">Brak eksportu.</p>
+</section><section class="panel" aria-labelledby="previewHeading"><h2 id="previewHeading">Podgląd rozgrywki</h2>
+<p class="muted">Symulacja sygnałów w garażu i walce; zawsze obecna ikona i tekst, niezależnie od koloru.</p>
+<div id="warning" role="group" aria-label="Ostrzeżenie o pojeździe"><strong><span aria-hidden="true">⚠</span> Uwaga: brak napędu po lewej stronie</strong><p>Nie rozpoczynaj próby przed podłączeniem działającej części ruchu.</p></div>
+<button id="demo" class="action" type="button">Zademonstruj ostrzeżenie</button>
+<p id="subtitle">Napisy: „Ostrzeżenie! Sprawdź moduły ruchu.”</p>
+<div class="stats" aria-label="Stan ustawień"><div class="stat">Kontrast tekstu <strong id="ratio">—</strong></div><div class="stat">Animacja <strong id="duration">—</strong></div><div class="stat">Zmiany <strong id="revision">0</strong></div><div class="stat">Eksport <strong id="exportState">Brak</strong></div></div>
+<h2 style="margin-top:20px">Podgląd funkcjonalny</h2><p>Zmiana ustawienia aktualizuje rzeczywiste zmienne CSS i reprezentację ostrzeżenia. Wybór nie znika podczas Undo/Redo; import odrzuca nieznane pola atomowo.</p>
+</section></div><footer class="muted">Produkt badawczy UX, bez Input System, save/load, Unity Player, PhysX ani natywnego G1. Odbiór wymagany przez B01-40/B01-60.</footer></main>
+<script src="a11y_engine.js"></script><script>
+(()=>{'use strict';const api=globalThis.B01A11y;let state=api.fresh();const $=id=>document.getElementById(id);const ids=['contrast','textScale','motion','cues','captions'];
+function render(message){const v=api.preview(state.prefs),root=document.documentElement;for(const [key,val] of Object.entries(v.palette))root.style.setProperty('--'+(key==='surface'?'surface':key),val);
+root.style.setProperty('--scale',String(v.fontScale));root.style.setProperty('--duration',v.animationMs+'ms');
+for(const id of ids)$(id).value=String(state.prefs[id]);$('warning').dataset.pattern=String(v.showPattern);$('subtitle').hidden=!v.showCaptions;
+$('ratio').textContent=v.minimumTextContrast.toFixed(2)+':1';$('duration').textContent=v.animationMs+' ms';$('revision').textContent=String(state.revision);
+$('undo').disabled=state.past.length===0;$('redo').disabled=state.future.length===0;
+$('exportState').textContent=state.exported===null?'Brak':'Aktualny';$('exportStatus').textContent=state.exported===null?'Brak aktualnego eksportu.':'Eksport odpowiada bieżącemu stanowi.';
+if(message!==undefined)$('status').textContent=message;
+}
+function act(event){let res=api.transition(state,event);state=res.state;if(res.ok && res.changed){$('profile').value='';}if(event.type==='EXPORT' && res.ok)$('profile').value=res.output;
+render(res.reason);return res;}
+for(const id of ids)$(id).addEventListener('change',()=>{const value=id==='textScale'?Number($(id).value):id==='captions'?$(id).value==='true':$(id).value;act({type:'SET',key:id,value});});
+for(const id of ['undo','redo','reset','export'])$(id).addEventListener('click',()=>act({type:id.toUpperCase()}));
+$('import').addEventListener('click',()=>act({type:'IMPORT',text:$('profile').value}));
+$('demo').addEventListener('click',()=>{const el=$('warning');el.classList.remove('pulse');void el.offsetWidth;el.classList.add('pulse');$('status').textContent='Ostrzeżenie: ikona + tekst'+(state.prefs.cues==='icon-text-pattern'?' + wzór.':'.');});
+render(state.status);
+})();
+</script></body></html>

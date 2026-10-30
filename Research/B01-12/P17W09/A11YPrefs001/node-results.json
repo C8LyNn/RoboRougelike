@@ -1,0 +1,379 @@
+{
+  "package": "B01-12-A11Y-PREFS-001/R1",
+  "environment": {
+    "node": "v22.16.0"
+  },
+  "total": 92,
+  "pass": 92,
+  "fail": [],
+  "cases": [
+    {
+      "case": "fresh defaults",
+      "pass": true
+    },
+    {
+      "case": "fresh distinct object",
+      "pass": true
+    },
+    {
+      "case": "schema",
+      "pass": true
+    },
+    {
+      "case": "version",
+      "pass": true
+    },
+    {
+      "case": "fresh validity",
+      "pass": true
+    },
+    {
+      "case": "default contrast >= 7",
+      "pass": true
+    },
+    {
+      "case": "high contrast >= 7",
+      "pass": true
+    },
+    {
+      "case": "standard animation",
+      "pass": true
+    },
+    {
+      "case": "reduced motion zero duration",
+      "pass": true
+    },
+    {
+      "case": "standard captions visible",
+      "pass": true
+    },
+    {
+      "case": "captions toggle",
+      "pass": true
+    },
+    {
+      "case": "pattern toggle",
+      "pass": true
+    },
+    {
+      "case": "150% font factor",
+      "pass": true
+    },
+    {
+      "case": "125% font factor",
+      "pass": true
+    },
+    {
+      "case": "contrast symmetry",
+      "pass": true
+    },
+    {
+      "case": "black-white contrast 21",
+      "pass": true
+    },
+    {
+      "case": "valid preference contrast=standard",
+      "pass": true
+    },
+    {
+      "case": "valid preference contrast=high",
+      "pass": true
+    },
+    {
+      "case": "valid preference textScale=100",
+      "pass": true
+    },
+    {
+      "case": "valid preference textScale=125",
+      "pass": true
+    },
+    {
+      "case": "valid preference textScale=150",
+      "pass": true
+    },
+    {
+      "case": "valid preference motion=normal",
+      "pass": true
+    },
+    {
+      "case": "valid preference motion=reduced",
+      "pass": true
+    },
+    {
+      "case": "valid preference cues=icon-text",
+      "pass": true
+    },
+    {
+      "case": "valid preference cues=icon-text-pattern",
+      "pass": true
+    },
+    {
+      "case": "valid preference captions=true",
+      "pass": true
+    },
+    {
+      "case": "valid preference captions=false",
+      "pass": true
+    },
+    {
+      "case": "mutation revision increments",
+      "pass": true
+    },
+    {
+      "case": "mutation has undo",
+      "pass": true
+    },
+    {
+      "case": "no unwanted redo",
+      "pass": true
+    },
+    {
+      "case": "no-op object unchanged",
+      "pass": true
+    },
+    {
+      "case": "no-op no revision",
+      "pass": true
+    },
+    {
+      "case": "undo restores 100%",
+      "pass": true
+    },
+    {
+      "case": "undo creates redo",
+      "pass": true
+    },
+    {
+      "case": "undo changes revision",
+      "pass": true
+    },
+    {
+      "case": "redo restores 125%",
+      "pass": true
+    },
+    {
+      "case": "redo clears future",
+      "pass": true
+    },
+    {
+      "case": "redo leaves original untouched",
+      "pass": true
+    },
+    {
+      "case": "undo fail empty preserves state",
+      "pass": true
+    },
+    {
+      "case": "redo fail empty preserves state",
+      "pass": true
+    },
+    {
+      "case": "export returns output",
+      "pass": true
+    },
+    {
+      "case": "export stable schema",
+      "pass": true
+    },
+    {
+      "case": "export unchanged revision",
+      "pass": true
+    },
+    {
+      "case": "export state pinned",
+      "pass": true
+    },
+    {
+      "case": "edit invalidates prior export",
+      "pass": true
+    },
+    {
+      "case": "import valid prefs",
+      "pass": true
+    },
+    {
+      "case": "import creates 1 undo",
+      "pass": true
+    },
+    {
+      "case": "import equals deterministic export",
+      "pass": true
+    },
+    {
+      "case": "malformed-profile rejection",
+      "pass": true
+    },
+    {
+      "case": "atomic reject empty",
+      "pass": true
+    },
+    {
+      "case": "atomic reject malformed",
+      "pass": true
+    },
+    {
+      "case": "atomic reject array",
+      "pass": true
+    },
+    {
+      "case": "atomic reject null",
+      "pass": true
+    },
+    {
+      "case": "atomic reject bad-schema",
+      "pass": true
+    },
+    {
+      "case": "atomic reject future-version",
+      "pass": true
+    },
+    {
+      "case": "atomic reject missing-version",
+      "pass": true
+    },
+    {
+      "case": "atomic reject extra-envelope",
+      "pass": true
+    },
+    {
+      "case": "atomic reject extra-pref",
+      "pass": true
+    },
+    {
+      "case": "atomic reject missing-pref",
+      "pass": true
+    },
+    {
+      "case": "atomic reject bad-contrast",
+      "pass": true
+    },
+    {
+      "case": "atomic reject bad-motion",
+      "pass": true
+    },
+    {
+      "case": "atomic reject string-scale",
+      "pass": true
+    },
+    {
+      "case": "atomic reject fractional-scale",
+      "pass": true
+    },
+    {
+      "case": "atomic reject numeric-captions",
+      "pass": true
+    },
+    {
+      "case": "atomic reject object-cues",
+      "pass": true
+    },
+    {
+      "case": "atomic reject proto-injection",
+      "pass": true
+    },
+    {
+      "case": "atomic reject oversized",
+      "pass": true
+    },
+    {
+      "case": "atomic reject non-string",
+      "pass": true
+    },
+    {
+      "case": "reject action unknown",
+      "pass": true
+    },
+    {
+      "case": "reject action missing-type",
+      "pass": true
+    },
+    {
+      "case": "reject action null",
+      "pass": true
+    },
+    {
+      "case": "reject action set key",
+      "pass": true
+    },
+    {
+      "case": "reject action set value",
+      "pass": true
+    },
+    {
+      "case": "reject action set extra",
+      "pass": true
+    },
+    {
+      "case": "reject action no-event-set",
+      "pass": true
+    },
+    {
+      "case": "reject action reset extra",
+      "pass": true
+    },
+    {
+      "case": "reject action undo extra",
+      "pass": true
+    },
+    {
+      "case": "reject action redo extra",
+      "pass": true
+    },
+    {
+      "case": "reject action export extra",
+      "pass": true
+    },
+    {
+      "case": "reject action import missing",
+      "pass": true
+    },
+    {
+      "case": "invalid state fails closed",
+      "pass": true
+    },
+    {
+      "case": "invalid prototype state fails closed",
+      "pass": true
+    },
+    {
+      "case": "invalid preview fails closed",
+      "pass": true
+    },
+    {
+      "case": "invalid export fails closed",
+      "pass": true
+    },
+    {
+      "case": "bounded history 24",
+      "pass": true
+    },
+    {
+      "case": "history still valid",
+      "pass": true
+    },
+    {
+      "case": "history copies do not alias state",
+      "pass": true
+    },
+    {
+      "case": "revision 90",
+      "pass": true
+    },
+    {
+      "case": "reset defaults",
+      "pass": true
+    },
+    {
+      "case": "reset keeps past",
+      "pass": true
+    },
+    {
+      "case": "invalid import preserves export",
+      "pass": true
+    },
+    {
+      "case": "valid neutral import no mutation",
+      "pass": true
+    }
+  ]
+}

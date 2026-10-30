@@ -1,0 +1,27 @@
+{
+  "package_id": "B01-12-A11Y-PREFS-001",
+  "version": "R1",
+  "owner": "B01-12 Interactive UX Prototypes",
+  "type": "BROWSER_RESEARCH_FUNCTIONAL",
+  "pinned": {
+    "a11y_engine.js": {
+      "sha256": "d56a1637e399c742ffe16ce5bdac8e55e329cfa9d7f53f320e55c3b9bc9356e3",
+      "bytes": 7023
+    },
+    "a11y.html": {
+      "sha256": "94eb1a208c0462c274aab5fc5a9b4a7511432918ff9365ecb5e98355050371e1",
+      "bytes": 8038
+    },
+    "test_engine.cjs": {
+      "sha256": "dac179b418557f8fc6a8e5a9c0f32d130a8ad68ad28c669770b1fa2fe9158119",
+      "bytes": 9061
+    },
+    "test_browser.py": {
+      "sha256": "0141e5d2106ed08990df21d611d4e22fb9475108f4ebf06a71507b1828789239",
+      "bytes": 6912
+    }
+  },
+  "independent_QA": "PENDING",
+  "native_unity": "NOT_RUN",
+  "game_integrated": false
+}
