@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <AdapterSource Condition="'$(AdapterSource)' == ''">../Unity/B0150OptionalCosmeticLightBudget.cs</AdapterSource>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="AdapterRegression.cs" />
+    <Compile Include="UnitySurrogate.cs" />
+    <Compile Include="../Core/CosmeticLightBudget.cs" />
+    <Compile Include="$(AdapterSource)" />
+  </ItemGroup>
+</Project>
