@@ -1,0 +1,71 @@
+{
+  "package_id": "B01-62-W24-SELECTED749-HONEST-CRASH-RECOVERY-QA-001",
+  "version": "R1/source-test-only",
+  "owner": "B01-62 DATA INTEGRITY & SAVE QA",
+  "exact_selected": {
+    "bridge_pr": 749,
+    "bridge_sha": "8634e71dfcf633323073fe584a6c0884f1ca5d23",
+    "bridge_session_original_blob": "9d86581626c8657b6662cb281f7621fa43343fb3",
+    "bridge_store_original_blob": "f8fab0b35147a23ae31bcb4a0cf91590d0896d97",
+    "v3_api_pr": 729,
+    "v3_sha": "b8ca29c7707cd6b4338d0b9772d74dee676d49d2",
+    "v3_original_gateway_git_blob": "21733278b6ab0669fccb6d085e0b6cf242792de2",
+    "v3_original_owner_git_blob": "a9331dd620336d8c42165d134dc8a5e05ed51873",
+    "original_storage_669": "d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121",
+    "original_storage_git_blob": "db7745635164d9eb6b10f3246538700158130b7b",
+    "frozen_original_codec_556": "b52e511c370f5fca56c74029050844dc8cbb7f9a",
+    "w06_original_git_blob": "fa1aa5e531927cbe73cf5fdfe161b4a981316db5",
+    "frozen_510_spec_git_blob": "b680ed0ec969ac23203fa55eab7b90f8daa86e43",
+    "r5_host_690": "cc7f73541517a18f4479bb155534bd4832d9985e",
+    "r5_corrected_fixture_750": "60c73a6f9ed2585cbb9bf7aeaad8c62eef0629cb"
+  },
+  "rejected_alternatives": {
+    "709": "OPTIONAL_NOT_SELECTED_NO_ANTI_TAMPER",
+    "741": "ALT_HOLD",
+    "753": "ALT_HOLD"
+  },
+  "files_new_only": [
+    {
+      "path": "Tools/B01/B01-62/P17W24Selected749CrashRecoveryQA/Program.cs",
+      "blob": "9f60609edf790248692d2a951339cb6512f8accc"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W24Selected749CrashRecoveryQA/Original749CrashQA.csproj",
+      "blob": "aa6bafc39933feacc2e653cc8c834898153c5883"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W24Selected749CrashRecoveryQA/README.md",
+      "blob": "1e635ecb82ac6f6fd48611981b799400fa9e6fe9"
+    },
+    {
+      "path": ".github/workflows/b01-62-w24-selected749-crash-recovery.yml",
+      "blob": "999a0fb3d92c352d8a4660b8614aafeadea71fb9"
+    }
+  ],
+  "real_cases": {
+    "original_baseline": 11,
+    "new_honest_crash": 5,
+    "per_os": 16,
+    "os": [
+      "windows-2025",
+      "ubuntu-24.04"
+    ],
+    "direct_original_source": true,
+    "real_separate_child_clr": true,
+    "real_File_Move": true,
+    "real_digest_corruption": true,
+    "orphan_stage_not_deleted": true
+  },
+  "gates": {
+    "tested": "PENDING_FINAL_SHA_CI",
+    "formal_selected_749_g0": "B01-40_755_SOURCE_TRANSPORT_SCOPE_ONLY",
+    "new_qa_source_g0": "QA_ONLY_NO_UNITY_ASSETS",
+    "native_g1": "NOT_RUN",
+    "gameplay_private_rig_510": "NOT_IMPLEMENTED",
+    "release": "HOLD",
+    "codex_ack": "NONE",
+    "merge": "NO"
+  },
+  "owner_policy": "2026-10-30 approved honest local crash/corruption/idempotence, sophisticated hostile external valid file rollback not release requirement",
+  "safe_rollback": "Close QA-only draft, preserve all original and foreign saved data."
+}

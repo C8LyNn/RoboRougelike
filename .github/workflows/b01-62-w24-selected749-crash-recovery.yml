@@ -1,0 +1,60 @@
+name: B01-62 W24 selected #749 honest crash / rollback / identity QA
+on:
+  push:
+    branches: [qa/b01-62-p17w24-selected749-crash-rollback-negative-001]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W24Selected749CrashRecoveryQA/**'
+      - '.github/workflows/b01-62-w24-selected749-crash-recovery.yml'
+permissions:
+  contents: read
+jobs:
+  original-selected-source:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Verify exact selected original #749, #729 and frozen #669/#556/W06/#510 source
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W24Selected749CrashRecoveryQA"
+          mkdir -p "$dir/.original" b0162-w24-evidence
+          git fetch --no-tags origin 8634e71dfcf633323073fe584a6c0884f1ca5d23 b8ca29c7707cd6b4338d0b9772d74dee676d49d2 d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121 33094f154c7b91119b36d58aab285e6e83c5de57 d94400d95d13db7f27e1533df05c9292d5380431
+          test "$(git hash-object Tools/B01/B01-62/P17W23OneAuthorityV3/CanonicalSlotSessionV3.cs)" = 9d86581626c8657b6662cb281f7621fa43343fb3
+          test "$(git hash-object Tools/B01/B01-62/P17W23OneAuthorityV3/CanonicalSingleAuthorityStoreV3.cs)" = f8fab0b35147a23ae31bcb4a0cf91590d0896d97
+          git show b8ca29c7707cd6b4338d0b9772d74dee676d49d2:Assets/B0123CanonicalSaveApi001/Core/CanonicalWorldGateway.cs > "$dir/.original/CanonicalWorldGatewayV3.cs"
+          git show b8ca29c7707cd6b4338d0b9772d74dee676d49d2:Assets/B0123CanonicalSaveApi001/Core/CanonicalWorldSlotLease.cs > "$dir/.original/CanonicalWorldSlotLease.cs"
+          git show d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121:Tools/B01/B01-62/P17W20SingleFileSaveSlot/SingleFileSaveSlot.cs > "$dir/.original/SingleFileSaveSlotV1.cs"
+          git show 33094f154c7b91119b36d58aab285e6e83c5de57:Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs > "$dir/.original/DetachedSnapshotContract.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs > "$dir/.original/DebrisImpulseCore.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs > "$dir/.original/SecureRigSpec.cs"
+          test "$(git hash-object "$dir/.original/CanonicalWorldGatewayV3.cs")" = 21733278b6ab0669fccb6d085e0b6cf242792de2
+          test "$(git hash-object "$dir/.original/CanonicalWorldSlotLease.cs")" = a9331dd620336d8c42165d134dc8a5e05ed51873
+          test "$(git hash-object "$dir/.original/SingleFileSaveSlotV1.cs")" = db7745635164d9eb6b10f3246538700158130b7b
+          test "$(git hash-object "$dir/.original/DetachedSnapshotContract.cs")" = b52e511c370f5fca56c74029050844dc8cbb7f9a
+          test "$(git hash-object "$dir/.original/DebrisImpulseCore.cs")" = fa1aa5e531927cbe73cf5fdfe161b4a981316db5
+          test "$(git hash-object "$dir/.original/SecureRigSpec.cs")" = b680ed0ec969ac23203fa55eab7b90f8daa86e43
+          echo W24_EXACT_SELECTED_749_729_669_556_W06_510_SHA_PIN_PASS | tee b0162-w24-evidence/provenance.txt
+      - name: Execute actual 16 OS / crash / W06 ID original source tests
+        run: |
+          set -euo pipefail
+          dotnet run --project "Tools/B01/B01-62/P17W24Selected749CrashRecoveryQA/Original749CrashQA.csproj" -c Release --verbosity minimal 2>&1 | tee b0162-w24-evidence/tests.txt
+          grep -q 'B0162_W24_749_HONEST_CRASH_ORIGINAL_SOURCE_TOTAL 16 PASS 16 FAIL 0' b0162-w24-evidence/tests.txt
+          grep -q 'B0162_W23_REAL_729_ONE_OWNER_669_ATOMIC_SAVE_GREEN_SOURCE_ONLY' b0162-w24-evidence/tests.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b0162-w24-selected749-crash-${{ matrix.os }}
+          path: b0162-w24-evidence/*
+          if-no-files-found: error
