@@ -1,0 +1,107 @@
+name: B01-60 W19 selected R3 #642 five native cases SOURCE QA (Unity G1 NOT_RUN)
+on:
+  push:
+    branches: [qa/b01-60-p17w19-selected642-native-fixture-gate-r1]
+    paths:
+      - 'Tools/B01/B01-60/P17W19Selected642Native/**'
+      - '.github/workflows/b01-60-p17w19-selected642-native-fixture.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-60/P17W19Selected642Native/**'
+      - '.github/workflows/b01-60-p17w19-selected642-native-fixture.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-selected-642-five-native-source-projects-true-physical-rollback:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Pin exact original Git source including sole R3 #642, never install losing R3 #644
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin d94400d95d13db7f27e1533df05c9292d5380431
+          git fetch --no-tags origin 33094f154c7b91119b36d58aab285e6e83c5de57
+          git fetch --no-tags origin efb2b06eafedab5469b57f163152d96aca3c5915
+          git fetch --no-tags origin 22cec9888047994ae523cbe7bf1b0a483d64cec4
+          git fetch --no-tags origin d9b95146e46a5d81d5a291d7887e456164f4d0c2
+          git fetch --no-tags origin 1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a
+          git fetch --no-tags origin acddb0b5226df2354b2255e0af510e39fe464381
+          git fetch --no-tags origin 33a32b8bd9ab40467ab1a17b5684926a37dbd4d3
+          git fetch --no-tags origin cb2b3a76e84266e2730fffc4ab048c1039f0652f
+      - name: Actually stage & safely rollback five exact R3 #642 Unity test projects and reject 11 physical/source mutations
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W19Selected642Native/test_source_fixture.py 2>&1 | tee b0160-w19-s642-source-witness.log
+          cp b0160-w19-s642-source-witness.log qa-w19-native642-source-only-evidence/stdout.log
+      - name: Execute exact R3 #642 selected native launcher as SOURCE preflight only
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W19Selected642Native/run.py --mode preflight --out qa-w19-s642-preflight 2>&1 | tee b0160-w19-s642-preflight.log
+          grep -F 'B01_60_W18_G1_NOT_RUN_SOURCE_PREFLIGHT_ONLY' b0160-w19-s642-preflight.log
+          grep -F 'B01_60_W19_ORIGINAL_R3_NATIVE_FIXTURE_COLD_RESTART_GEN4_EXPECTS_GEN5_HOLD' b0160-w19-s642-preflight.log
+      - name: Probe genuine native missing Editor path; require exit 3 no fake XML/Editor.log
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          python Tools/B01/B01-60/P17W19Selected642Native/run.py --mode native --unity /B01/NO_ACTIVATED_UNITY_6000.3.14f1 --out qa-w19-s642-not-run 2>&1 | tee b0160-w19-s642-native-NOT_RUN.log
+          native_exit="${PIPESTATUS[0]}"
+          set -e
+          if [ "$native_exit" -ne 3 ]; then echo "B01_60_W19_EXPECTED_NATIVE_NOT_RUN_EXIT3_GOT=$native_exit"; exit 1; fi
+          grep -F 'B01_60_W18_G1_NOT_RUN_NO_AUTHORIZED_ACTIVATED_UNITY_EDITOR' b0160-w19-s642-native-NOT_RUN.log
+          grep -F 'B01_60_W19_ORIGINAL_R3_NATIVE_FIXTURE_COLD_RESTART_GEN4_EXPECTS_GEN5_HOLD' b0160-w19-s642-native-NOT_RUN.log
+          test -f qa-w19-s642-not-run/receipt.json
+          test ! -e qa-w19-s642-not-run/selected-bridge-native-verdict.json
+          test ! -e qa-w19-s642-not-run/selected-0.xml
+          test ! -e qa-w19-s642-not-run/guard-0.xml
+          test ! -e qa-w19-s642-not-run/selected-0-Editor.log
+          echo 'B01_60_W19_NO_LICENSED_UNITY_NATIVE_G1_NOT_RUN_NO_XML_EDITORLOG'
+      - name: Refuse forged native G1 and audit exact original selected SHA in receipts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          a=json.loads(Path("qa-w19-native642-source-only-evidence/receipt.json").read_text())
+          b=json.loads(Path("qa-w19-s642-not-run/receipt.json").read_text())
+          assert a["selected_r3"]=="22cec9888047994ae523cbe7bf1b0a483d64cec4"
+          assert a["unselected_r3_alt_hold"]=="d9b95146e46a5d81d5a291d7887e456164f4d0c2"
+          assert a["selected_native_private_projects_physical_stage_and_rollback"]==5
+          assert a["source_adversarial_failclosed"]==11
+          assert a["source_native_fixture_bug"]["actual_generation_encoded_by_TrySave"]==5
+          assert a["source_native_fixture_bug"]["original_test_expected_restored_Generation"]==4
+          assert a["G1"]=="NOT_RUN" and a["real_editor_log"]=="NOT_CREATED"
+          assert b["sole_bridge_SHA"]=="22cec9888047994ae523cbe7bf1b0a483d64cec4"
+          assert len(b["original_selected_native_test_methods_authored"])==5
+          assert b["native_G1"]=="NOT_RUN" and b["Unity6000_3_14f1"]=="NOT_RUN"
+          print("B01_60_W19_SOURCE_ONLY_NOT_NATIVE_RESULT_GATE_PASS")
+          PY
+      - name: Preserve source-only exact-SHA original fixture evidence (not Unity G1)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b0160-w19-selected642-native-sourceQA-NOT_Unity-${{ matrix.os }}
+          path: |
+            qa-w19-native642-source-only-evidence/
+            qa-w19-s642-preflight/
+            qa-w19-s642-not-run/
+            b0160-w19-s642-source-witness.log
+            b0160-w19-s642-preflight.log
+            b0160-w19-s642-native-NOT_RUN.log
+          retention-days: 21
+          if-no-files-found: warn
