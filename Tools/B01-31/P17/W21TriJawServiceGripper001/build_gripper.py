@@ -21,8 +21,8 @@ PKG="B01-31-TRIJAW-SERVICE-GRIPPER-CONCEPT3D-001"
 VER="P17-W21-R1"
 BASENAME="B0131-TriJawServiceGripper"
 TIMES=(0.,.15,.32,.45,.62,.82,1.10)
-RADIUS=(.72,.66,.56,.47,.41,.42,.42)
-TILT=(0.,1.,3.,7.,12.,9.,8.)
+RADIUS=(.72,.66,.56,.47,.41,.42,.46)
+TILT=(0.,1.,3.,7.,12.,9.,16.)
 MAT=[
  ("GraphiteHousing",(0.18,0.23,0.29,1),.58,.65),
  ("BrushedSilver",(0.62,0.69,0.74,1),.70,.29),
