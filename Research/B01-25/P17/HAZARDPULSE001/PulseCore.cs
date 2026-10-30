@@ -120,7 +120,10 @@ namespace B01.LevelChallenges
             if(!PulseZoneConfig.Finite(x) || !PulseZoneConfig.Finite(z))return false;
             var dx=x-Config.CenterX;
             var dz=z-Config.CenterZ;
-            return dx*dx+dz*dz<=Config.RadiusMeters*Config.RadiusMeters;
+            // Sub-micrometer tolerance avoids an IEEE754 false miss exactly at
+            // an authored circle boundary (e.g. world 28 + radius 1.35).
+            double tolerantRadius=Config.RadiusMeters+1e-9;
+            return dx*dx+dz*dz<=tolerantRadius*tolerantRadius;
         }
 
         public PulseSnapshot Advance(PulseSample sample)
