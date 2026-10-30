@@ -103,10 +103,11 @@ def refs_integrity(roots,own):
     check(b"CanonicalSingleAuthorityStoreV3R2" in source(roots["candidate"],R2+"CanonicalSlotSessionV3R2.cs"),
           "R2_SESSION_NOT_BOUND_TO_R2_STORE")
     t=source(roots["r5"],R5TEST)
-    check(b"Assert.AreEqual(5,decoded.Generation)" in t
+    previous=cmd(roots["r5"],"show",PINS["r5base"]+":"+R5TEST)
+    check(b"Assert.AreEqual(5,savedSnapshot.Generation)" in t
           and b"TryRestoreBytes(saved,41,5)" in t
-          and t!=source(roots["r5base"],R5TEST) if "r5base" in roots else
-          b"Assert.AreEqual(5,decoded.Generation)" in t and b"TryRestoreBytes(saved,41,5)" in t,
+          and b"Assert.AreEqual(5,restored.Generation)" in t
+          and previous!=t,
           "R5_COLD_GEN5_SOURCE_NOT_PRESENT")
     print("B0140_W24_ORIGINAL_EXACT_SHA_SOURCE_LINEAGE_PASS")
 def pack_unity(roots):
