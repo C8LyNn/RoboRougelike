@@ -144,8 +144,12 @@ def known_original_source_release_red(imports):
 
 def test_neg(fn,label):
     try:fn()
-    except (Hold,ValueError,OSError,AssertionError) as exc:
-        return label
+    except Exception as exc:
+        # The pinned original W15 receiver is imported as a separate module,
+        # so its own GateHold class is not identical to this W16 GateHold.
+        if isinstance(exc,(Hold,ValueError,OSError,AssertionError)) or exc.__class__.__name__=="GateHold":
+            return label
+        raise
     raise AssertionError("DENIAL_TEST_FALSE_ACCEPT:"+label)
 def actual_tests(roots,old,selected,summary):
     # W15 B01-40 original executable is reused exactly, no rebuilt migration
