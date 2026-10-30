@@ -1,7 +1,7 @@
 {
-  "schema": "B01-10 ECONBAL/R6 owner V6 65pct half-up with strictly-less clamp; direct C# original V6 P=1 negative source witness, 17 synthetic scenarios",
+  "schema": "B01-10 ECONBAL/R7 canonical B01-22 #780 V7 65%-floor one owner: 1->0 PAID, 5->3, 15->9, 30->19, 100->65",
   "sourceOfPrices": "hypothetical 100 Scrap purchase, 70% paid quote; #252 mentions 65-75% hypothesis, NOT approved",
-  "evidence": "REAL ORIGINAL B01-22 #764 C# compiled only by independent source witness; SOURCE CONTRACT RED at 1->1; chosen common DESIGN proposal half-up capped by price-1; native Unity not tested.",
+  "evidence": "Original V6 #764 directly executable RED at price1 vs owner rule; actual NEW V7 #780 source fixes floor65 and binary section, but not native Unity and not yet G0 accepted. Test V7 original C# directly.",
   "cases": {
     "twelve_victories_two_destroyed": {
       "initial_scrap": 4000,
@@ -1197,7 +1197,7 @@
         }
       ]
     },
-    "approved_v6_parity_price_15": {
+    "approved_v7_floor_price_15": {
       "initial_scrap": 10,
       "purchase_price": 15,
       "paid_quote_percent": 70,
@@ -1221,7 +1221,7 @@
         }
       ]
     },
-    "approved_v6_parity_price_30": {
+    "approved_v7_floor_price_30": {
       "initial_scrap": 20,
       "purchase_price": 30,
       "paid_quote_percent": 70,
