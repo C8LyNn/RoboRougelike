@@ -1,0 +1,48 @@
+{
+  "package_id": "B01-31-DOCK-DENIED-UNITY-CLIPS-001",
+  "version": "P17-W12-R1",
+  "owner": "B01-31 — CONCEPT ART & VISUAL EXPLORATION",
+  "dispatch_issue": 518,
+  "purpose": "Deliver four real Unity AnimationClip YAML asset files completing previous W11 original 8-frame RGBA Sprite sequences. No gameplay or host animation controller.",
+  "authored_output": "Four .anim 10fps 0.8s 8-frame loop+closure, four .anim.meta + one Animations folder .meta, isolated nine-member ZIP, actual loose Unity assets and hashed receipt",
+  "source_w11_original": {
+    "draft_pr": 505,
+    "exact_sha": "13632b19b8fee3c263aea62bc91535ba45b12168",
+    "original_actions_run": 41069320296,
+    "original_artifact_id": 12982903484,
+    "original_inner_sprite_zip_sha256": "7fc696ef80730192d41fffdb8736f1b6b81ce9611126c4ada7c40a4fc861aaef",
+    "original_sprite_count": 32,
+    "original_anim_gif_count": 4,
+    "immutable_source": true
+  },
+  "source_base_main": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "own_paths": [
+    "Tools/B01-31/P17/W12DockClipAssets001/**",
+    ".github/workflows/b01-31-p17w12-native-sprite-clips.yml"
+  ],
+  "external_output_zip_namespace": "Assets/B0131DockDeniedVfx/Animations/**",
+  "no_import_into_canonical_game": true,
+  "test_contract": [
+    "Verify exact original W11 physical Sprite ZIP and authored source receipt",
+    "Read 32 actual original Sprite .meta GUID and source PNG bytes",
+    "Create 4 physical .anim YAML with explicit 9 PPtr keys covering 8x100ms+800ms loop closure",
+    "Verify 4 native m_Sprite SpriteRenderer bindings, 32 original GUID references and matching mappings",
+    "Create 5 unique new .meta GUIDs, 9-member ZIP with CRC and per-member exact byte readback",
+    "Reject 7 original-source negative mutants: clip 700ms, non-loop, wrong class, wrong binding, corrupted source GUID, 900ms, missing meta",
+    "Independently parse actual .anim using PyYAML safe loader and validate all references against real W11 ZIP",
+    "Run repeated full artifact SHA parity, Windows byte receiver"
+  ],
+  "native_unity": "NOT_RUN: no Unity licensed import/PlayMode/AssetDatabase",
+  "independent_formal_QA": "B01-40/B01-60 PENDING",
+  "api_repair_owner": "B01-23 only, #510 single selected candidate; #511/#494 alternatives excluded",
+  "gameplay_security": "NO CLAIM. Visual clip is not status source or authorized UI wiring.",
+  "gate": "PRODUCER SOURCE PASS only after green workflow, Unity G1 NOT_RUN, G2 HOLD, no Codex ACK/offer/integration",
+  "rollback": "Delete only own W12 new source/workflow paths; if separately authorized in disposable Unity host, remove ONLY Assets/B0131DockDeniedVfx/Animations and Animations.meta, never W11 Sprites, older W10 icon assets, gameplay, Codex, or #510",
+  "receivers": [
+    "B01-40 independent ZIP/GUID and receiver conflicts",
+    "B01-60 real Unity 6000.3.14f1 Sprite/AnimationClip import and true GPU/PlayMode validation",
+    "B01-12 optional UX after authoritative guarded API state",
+    "B01-23 owns safety/atomicity; no need to modify",
+    "B01-00 optional #79 queue after formal gates"
+  ]
+}
