@@ -60,7 +60,8 @@ def main():
  m=module()
  o=m.original_module() # actual original frozen #532 and strict owned-only Git gates
  need(o.SHA==m.GAME_SHA,"wrong original selected V2 SHA")
- need(len(o.PLAY_CASES)==14 and len(o.EDIT_CASES)==2,
+ need(len(o.expected_independent_native_cases("PlayMode"))==14 and
+      len(o.expected_independent_native_cases("EditMode"))==2,
       "original native suites unexpectedly changed")
  source=PS.read_text("utf-8")
  safety_gate(source)
