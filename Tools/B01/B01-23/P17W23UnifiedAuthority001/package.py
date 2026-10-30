@@ -8,6 +8,8 @@ PFX="Assets/B0123CanonicalSaveApi001"
 OWNER_PATH="Tools/B01/B01-23/P17W23UnifiedAuthority001/"
 WF=".github/workflows/b01-23-p17w23-unified-authority-v4.yml"
 V3_WF=".github/workflows/b01-23-p17w22-canonical-authority-v3.yml"
+V2_WF=".github/workflows/b01-23-p17w21-canonical-owned-stage-v2.yml"
+V1_WF=".github/workflows/b01-23-p17w20-canonical-api-source.yml"
 def src(p):return subprocess.check_output(["git","show","HEAD:"+p],cwd=ROOT)
 def sha(b):return hashlib.sha256(b).hexdigest()
 def entries():
@@ -18,7 +20,7 @@ def entries():
         "source_prepare.py","package.py","test_package.py","README.md"}
     if {Path(x).name for x in names}!=expect:raise ValueError("wrong owner scope")
     for p in [PFX+"/Core/CanonicalWorldGateway.cs",PFX+"/Core/CanonicalWorldSlotLease.cs",
-        PFX+"/Core/CanonicalWorldSlotLease.cs.meta",WF,V3_WF]:names.append(p)
+        PFX+"/Core/CanonicalWorldSlotLease.cs.meta",WF,V3_WF,V2_WF,V1_WF]:names.append(p)
     if len(names)!=len(set(names)):raise ValueError("duplicate")
     lease=src(PFX+"/Core/CanonicalWorldSlotLease.cs").decode()
     if "public static bool TryAcquire(" in lease or "TryAdoptRealSlot" not in lease or "new FileStream(" in lease:

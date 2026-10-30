@@ -2,12 +2,6 @@ name: B01-23 W22 canonical #691 real authority V3 OS source and package
 on:
   push:
     branches: [b01-23/p17w22-canonical-authority-fence-v3]
-  pull_request:
-    paths:
-      - 'Assets/B0123CanonicalSaveApi001/**'
-      - 'Tools/B01/B01-23/P17W20CanonicalSaveApi001/**'
-      - 'Tools/B01/B01-23/P17W22CanonicalAuthorityV3/**'
-      - '.github/workflows/b01-23-p17w22-canonical-authority-v3.yml'
 jobs:
   source-real-file:
     strategy:
