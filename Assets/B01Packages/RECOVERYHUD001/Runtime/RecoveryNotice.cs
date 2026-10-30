@@ -63,6 +63,19 @@ namespace B01.RecoveryHud
             return true;
         }
 
+        // This is only a display sanity check, NOT a quotation engine. Both
+        // currently disputed owner-side rounding rules are permitted (floor and
+        // half-up); neither is selected by this UI. The approved strict discount
+        // excludes a 1-Scrap purchase -> 1-Scrap rebuild. Checked 64-bit
+        // intermediates avoid overflow at Int32.MaxValue.
+        private static bool ValidDiscountQuote(int purchase, int quoted)
+        {
+            if (purchase <= 0 || quoted < 0 || quoted >= purchase) return false;
+            long scaled = (long)purchase * 65L;
+            long floor = scaled / 100L;
+            long halfUp = (scaled + 50L) / 100L;
+            return quoted == floor || quoted == halfUp;
+        }
         // expectedEpoch is a HOST epoch read before rendering, not a cryptographic
         // trust proof. Neither caller flags nor this view replace the owner-side CAS.
         public static RecoveryNotice Build(RecoveryRead input, string expectedRunId, string expectedSlotId, long expectedEpoch)
@@ -86,9 +99,10 @@ namespace B01.RecoveryHud
             if (input.PendingDestroyedParts < 0 || input.PendingDestroyedParts > 500 ||
                 (input.PendingForNextVictory && input.PendingDestroyedParts == 0) ||
                 (!input.PendingForNextVictory && input.PendingDestroyedParts > 0) ||
-                (input.OriginalPartPriceScrap.HasValue && input.OriginalPartPriceScrap.Value < 0) ||
-                (input.HostQuotedPaidScrap.HasValue && input.HostQuotedPaidScrap.Value < 0) ||
-                (input.HostQuotedPaidScrap.HasValue && !input.OriginalPartPriceScrap.HasValue) ||
+                (input.OriginalPartPriceScrap.HasValue && input.OriginalPartPriceScrap.Value <= 0) ||
+                (input.HostQuotedPaidScrap.HasValue &&
+                    (!input.OriginalPartPriceScrap.HasValue ||
+                     !ValidDiscountQuote(input.OriginalPartPriceScrap.Value, input.HostQuotedPaidScrap.Value))) ||
                 (input.LoanerOfferAuthorizedByHost &&
                     (input.LoanerAlreadySpent || !input.CoreAlive || !input.NextChallengeEligible ||
                      input.NormalConstructionFunctional)))
