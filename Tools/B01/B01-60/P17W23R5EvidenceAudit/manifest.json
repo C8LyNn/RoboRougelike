@@ -1,0 +1,46 @@
+{
+  "package_id": "B01-60-P17W23-R5-RECEIPT-AUDIT-001",
+  "version": "1.0.0",
+  "role": "B01-60",
+  "hq_issue": 731,
+  "owner_authorization": 667,
+  "base_original_pr": 718,
+  "base_exact_sha": "481bfb1cf2804d94fb49d7e6a57134e96c535b86",
+  "selected_host": {
+    "pr": 690,
+    "sha": "cc7f73541517a18f4479bb155534bd4832d9985e"
+  },
+  "selected_canonical_V3": {
+    "pr": 729,
+    "sha": "b8ca29c7707cd6b4338d0b9772d74dee676d49d2",
+    "tested": false
+  },
+  "new_changes": "read-only receipt auditor only",
+  "files": [
+    ".github/workflows/b01-60-p17w23-r5-evidence-audit.yml",
+    "Tools/B01/B01-60/P17W23R5EvidenceAudit/audit_r5.py",
+    "Tools/B01/B01-60/P17W23R5EvidenceAudit/test_audit_r5.py",
+    "Tools/B01/B01-60/P17W23R5EvidenceAudit/README.md",
+    "Tools/B01/B01-60/P17W23R5EvidenceAudit/manifest.json"
+  ],
+  "original_r5_native_scope": "6 original R5 PlayMode tests excluding deterministic source-mismatched ColdRestart",
+  "full_R5_G1": "HOLD",
+  "native_G1": "NOT_RUN",
+  "source_G0": "R5_699_SOURCE_ONLY",
+  "canon_save_G1": "NOT_RUN",
+  "G2": "HOLD",
+  "codex_ACK": "NONE",
+  "no_merge": true,
+  "all_original_frozen_sources_unchanged": true,
+  "source_only_authorized": true,
+  "operator_shares_evidence_manually": true,
+  "attestation": "NONE",
+  "receivers": [
+    "B01-61",
+    "B01-41",
+    "B01-40",
+    "B01-23",
+    "B01-00"
+  ],
+  "integrator_feedback": "NOT_MEASURED"
+}
