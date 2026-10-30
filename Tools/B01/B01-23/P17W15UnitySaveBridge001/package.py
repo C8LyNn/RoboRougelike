@@ -55,7 +55,9 @@ def scope():
         "publishedHash=fingerprint;" not in core or
         "TryUseIsolatedNativeTestSlot" not in unity or
         "TrySelectPersistentRunSlot" not in unity or
-        "b0123_isolated_save_slots" not in unity or
+        "CheckpointSlotPath.ForRun" not in unity or
+        "class CheckpointSlotPath" not in core or
+        "b0123_isolated_save_slots" not in core or
         "slotOwnerLease" not in unity or
         "FileShare.None" not in unity or
         "quarantined=true;" not in core or

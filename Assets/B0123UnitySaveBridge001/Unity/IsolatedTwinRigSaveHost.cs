@@ -89,10 +89,8 @@ namespace B01.UnitySaveBridge001
                coordinator.HasWorld||coordinator.Busy||coordinator.Quarantined)
                 return false;
             ReleaseSlot();
-            checkpointPath=Path.Combine(Application.persistentDataPath,
-                "b0123_isolated_save_slots",
-                "run_"+desiredRunId.ToString(System.Globalization.CultureInfo.InvariantCulture)+
-                "_slot_"+slotId.ToString("N")+".checkpoint");
+            checkpointPath=CheckpointSlotPath.ForRun(
+                Application.persistentDataPath,desiredRunId,slotId);
             coordinator=new AtomicWorldSwap(this,new FileCheckpointStore(checkpointPath));
             runId=desiredRunId;
             return AcquireSlot();

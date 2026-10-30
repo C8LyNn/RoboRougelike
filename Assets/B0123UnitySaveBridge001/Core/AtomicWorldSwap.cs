@@ -26,6 +26,21 @@ namespace B01.UnitySaveBridge001
         IPreparedWorld Prepare(RunSnapshot snapshot);
     }
 
+
+    // Stable, path-safe identity function shared by actual Unity MonoBehaviour and
+    // executed source tests. GUIDs and positive run IDs cannot inject directories.
+    public static class CheckpointSlotPath
+    {
+        public static string ForRun(string persistentRoot,long run,Guid slot)
+        {
+            if(string.IsNullOrWhiteSpace(persistentRoot)||run<=0||slot==Guid.Empty)
+                throw new ArgumentException("Run and owned slot must be valid");
+            return System.IO.Path.Combine(persistentRoot,"b0123_isolated_save_slots",
+                "run_"+run.ToString(System.Globalization.CultureInfo.InvariantCulture)+
+                "_slot_"+slot.ToString("N")+".checkpoint");
+        }
+    }
+
     public interface ICheckpointStore
     {
         bool Read(long run,out long generation,out string hash);
