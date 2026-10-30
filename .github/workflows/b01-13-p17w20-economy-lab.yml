@@ -1,0 +1,42 @@
+name: B01-13 W20 Rebuild Economy Hypothesis Lab
+on:
+  push:
+    paths: ['Research/B01-13/P17R/**', '.github/workflows/b01-13-p17w20-economy-lab.yml']
+  pull_request:
+    paths: ['Research/B01-13/P17R/**', '.github/workflows/b01-13-p17w20-economy-lab.yml']
+  workflow_dispatch:
+jobs:
+  source-and-playable:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+        node: ['20', '22']
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify exact Git blobs/byte counts and print SHA256
+        run: python Research/B01-13/P17R/verify_package.py
+      - name: Execute original deterministic economy model and CLI/DOM tests
+        run: node --test Research/B01-13/P17R/test_economy_lab.mjs
+      - name: Render actual standalone offline HTML in disposable runner temp
+        shell: pwsh
+        run: |
+          $out = Join-Path $env:RUNNER_TEMP 'b01-13-w20-economy-lab.html'
+          node Research/B01-13/P17R/economy_lab.mjs --output $out
+          if ($LASTEXITCODE -ne 0 -or -not (Test-Path $out)) { throw 'ECON_HTML_GENERATION_FAILED' }
+          $hash=(Get-FileHash -Algorithm SHA256 $out).Hash.ToLowerInvariant()
+          Write-Output "OFFLINE_ARTIFACT_SHA256=$hash"
+      - name: Upload offline hypothesis simulator
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-13-W20-ECONLAB-${{ matrix.os }}-Node${{ matrix.node }}
+          path: ${{ runner.temp }}/b01-13-w20-economy-lab.html
+          if-no-files-found: error
+          retention-days: 14
