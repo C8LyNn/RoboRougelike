@@ -1,0 +1,53 @@
+name: B01-12 BOXSELECT-001 source QA
+on:
+  pull_request:
+    paths:
+      - 'Research/B01-12/P17W20/BoxSelect001/**'
+      - '.github/workflows/b01-12-boxselect.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-source-and-browser:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install real Chromium Playwright
+        run: |
+          python -m pip install playwright==1.55.0
+          python -m playwright install --with-deps chromium
+      - name: Original Node and Chromium, exact SHA256 pins
+        working-directory: Research/B01-12/P17W20/BoxSelect001
+        run: |
+          node test_engine.cjs
+          python test_browser.py
+      - name: Copy-only mutation must fail closed in BOTH runners
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp -a Research/B01-12/P17W20/BoxSelect001 "$RUNNER_TEMP/boxselect-tamper"
+          printf '\n' >> "$RUNNER_TEMP/boxselect-tamper/ui.js"
+          cd "$RUNNER_TEMP/boxselect-tamper"
+          set +e
+          node test_engine.cjs >node-tamper.log 2>&1; a=$?
+          python test_browser.py >browser-tamper.log 2>&1; b=$?
+          set -e
+          cat node-tamper.log browser-tamper.log
+          test "$a" -eq 2 && test "$b" -eq 2
+          grep -q 'FAIL_CLOSED source mismatch: ui.js' node-tamper.log
+          grep -q 'FAIL_CLOSED source mismatch: ui.js' browser-tamper.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b01-12-boxselect-original-evidence
+          path: |
+            Research/B01-12/P17W20/BoxSelect001/node-results.json
+            Research/B01-12/P17W20/BoxSelect001/browser-results.json
+            Research/B01-12/P17W20/BoxSelect001/evidence-1280x720.png
+          if-no-files-found: warn

@@ -1,0 +1,31 @@
+{
+  "package": "B01-12-BOXSELECT-001",
+  "version": "R1",
+  "owner": "B01-12",
+  "wave": "PASS17_W20",
+  "dispatch_issue": 668,
+  "pins": {
+    "box_engine.js": {
+      "sha256": "8b22a773adc4b1cf43aba904ffbd50c099a2ee92b4f8176143b41f56cfbe4a10",
+      "bytes": 6553
+    },
+    "demo.html": {
+      "sha256": "1ce9e6b92ec28fb77c3ba7b0bf2641de884dcb1c7f28d06b1e5aca9367ba27e1",
+      "bytes": 9393
+    },
+    "ui.js": {
+      "sha256": "6eca3842bb31aa845676d117389739410a4e80d0f0e5a1023dfdcc8831723520",
+      "bytes": 4826
+    },
+    "test_engine.cjs": {
+      "sha256": "bb3eb79d0fdddb2844bffc1fdc4382f2627db4dd43bcf50e339738516212d335",
+      "bytes": 8927
+    },
+    "test_browser.py": {
+      "sha256": "b1fdb1c15d639b80a89490f7cb84eadff8d62f9381f72178134bcb38f18e35ed",
+      "bytes": 7894
+    }
+  },
+  "source_scope": "Research/B01-12/P17W20/BoxSelect001/**",
+  "native_unity": "NOT_RUN"
+}

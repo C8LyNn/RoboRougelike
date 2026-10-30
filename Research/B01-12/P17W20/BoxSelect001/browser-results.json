@@ -1,0 +1,446 @@
+{
+  "package": "B01-12-BOXSELECT-001/R1",
+  "total": 109,
+  "pass": 109,
+  "fail": 0,
+  "js_errors": [],
+  "native_unity": "NOT_RUN",
+  "tests": [
+    {
+      "name": "320x720/title",
+      "ok": true
+    },
+    {
+      "name": "320x720/parts-11",
+      "ok": true
+    },
+    {
+      "name": "320x720/disabled-core",
+      "ok": true
+    },
+    {
+      "name": "320x720/initial-rev",
+      "ok": true
+    },
+    {
+      "name": "320x720/no-document-x-overflow",
+      "ok": true
+    },
+    {
+      "name": "320x720/board-scrollable",
+      "ok": true
+    },
+    {
+      "name": "320x720/click-select",
+      "ok": true
+    },
+    {
+      "name": "320x720/selected-list",
+      "ok": true
+    },
+    {
+      "name": "320x720/undo-enabled",
+      "ok": true
+    },
+    {
+      "name": "320x720/move-down",
+      "ok": true
+    },
+    {
+      "name": "320x720/undo-move",
+      "ok": true
+    },
+    {
+      "name": "320x720/redo-move",
+      "ok": true
+    },
+    {
+      "name": "320x720/clear-selection",
+      "ok": true
+    },
+    {
+      "name": "320x720/select-all-wheels",
+      "ok": true
+    },
+    {
+      "name": "320x720/locked-core-not-selected",
+      "ok": true
+    },
+    {
+      "name": "320x720/subtract",
+      "ok": true
+    },
+    {
+      "name": "320x720/add",
+      "ok": true
+    },
+    {
+      "name": "320x720/toggle",
+      "ok": true
+    },
+    {
+      "name": "320x720/export-json",
+      "ok": true
+    },
+    {
+      "name": "320x720/reset-no-selection",
+      "ok": true
+    },
+    {
+      "name": "320x720/reset-position",
+      "ok": true
+    },
+    {
+      "name": "320x720/keyboard-activation",
+      "ok": true
+    },
+    {
+      "name": "320x720/keyboard-move",
+      "ok": true
+    },
+    {
+      "name": "320x720/keyboard-undo",
+      "ok": true
+    },
+    {
+      "name": "320x720/keyboard-redo",
+      "ok": true
+    },
+    {
+      "name": "320x720/no-x-overflow-after-ui",
+      "ok": true
+    },
+    {
+      "name": "768x1024/title",
+      "ok": true
+    },
+    {
+      "name": "768x1024/parts-11",
+      "ok": true
+    },
+    {
+      "name": "768x1024/disabled-core",
+      "ok": true
+    },
+    {
+      "name": "768x1024/initial-rev",
+      "ok": true
+    },
+    {
+      "name": "768x1024/no-document-x-overflow",
+      "ok": true
+    },
+    {
+      "name": "768x1024/board-scrollable",
+      "ok": true
+    },
+    {
+      "name": "768x1024/click-select",
+      "ok": true
+    },
+    {
+      "name": "768x1024/selected-list",
+      "ok": true
+    },
+    {
+      "name": "768x1024/undo-enabled",
+      "ok": true
+    },
+    {
+      "name": "768x1024/move-down",
+      "ok": true
+    },
+    {
+      "name": "768x1024/undo-move",
+      "ok": true
+    },
+    {
+      "name": "768x1024/redo-move",
+      "ok": true
+    },
+    {
+      "name": "768x1024/clear-selection",
+      "ok": true
+    },
+    {
+      "name": "768x1024/select-all-wheels",
+      "ok": true
+    },
+    {
+      "name": "768x1024/locked-core-not-selected",
+      "ok": true
+    },
+    {
+      "name": "768x1024/subtract",
+      "ok": true
+    },
+    {
+      "name": "768x1024/add",
+      "ok": true
+    },
+    {
+      "name": "768x1024/toggle",
+      "ok": true
+    },
+    {
+      "name": "768x1024/export-json",
+      "ok": true
+    },
+    {
+      "name": "768x1024/reset-no-selection",
+      "ok": true
+    },
+    {
+      "name": "768x1024/reset-position",
+      "ok": true
+    },
+    {
+      "name": "768x1024/keyboard-activation",
+      "ok": true
+    },
+    {
+      "name": "768x1024/keyboard-move",
+      "ok": true
+    },
+    {
+      "name": "768x1024/keyboard-undo",
+      "ok": true
+    },
+    {
+      "name": "768x1024/keyboard-redo",
+      "ok": true
+    },
+    {
+      "name": "768x1024/no-x-overflow-after-ui",
+      "ok": true
+    },
+    {
+      "name": "1280x720/title",
+      "ok": true
+    },
+    {
+      "name": "1280x720/parts-11",
+      "ok": true
+    },
+    {
+      "name": "1280x720/disabled-core",
+      "ok": true
+    },
+    {
+      "name": "1280x720/initial-rev",
+      "ok": true
+    },
+    {
+      "name": "1280x720/no-document-x-overflow",
+      "ok": true
+    },
+    {
+      "name": "1280x720/board-scrollable",
+      "ok": true
+    },
+    {
+      "name": "1280x720/click-select",
+      "ok": true
+    },
+    {
+      "name": "1280x720/selected-list",
+      "ok": true
+    },
+    {
+      "name": "1280x720/undo-enabled",
+      "ok": true
+    },
+    {
+      "name": "1280x720/move-down",
+      "ok": true
+    },
+    {
+      "name": "1280x720/undo-move",
+      "ok": true
+    },
+    {
+      "name": "1280x720/redo-move",
+      "ok": true
+    },
+    {
+      "name": "1280x720/clear-selection",
+      "ok": true
+    },
+    {
+      "name": "1280x720/select-all-wheels",
+      "ok": true
+    },
+    {
+      "name": "1280x720/locked-core-not-selected",
+      "ok": true
+    },
+    {
+      "name": "1280x720/subtract",
+      "ok": true
+    },
+    {
+      "name": "1280x720/add",
+      "ok": true
+    },
+    {
+      "name": "1280x720/toggle",
+      "ok": true
+    },
+    {
+      "name": "1280x720/export-json",
+      "ok": true
+    },
+    {
+      "name": "1280x720/reset-no-selection",
+      "ok": true
+    },
+    {
+      "name": "1280x720/reset-position",
+      "ok": true
+    },
+    {
+      "name": "1280x720/keyboard-activation",
+      "ok": true
+    },
+    {
+      "name": "1280x720/keyboard-move",
+      "ok": true
+    },
+    {
+      "name": "1280x720/keyboard-undo",
+      "ok": true
+    },
+    {
+      "name": "1280x720/keyboard-redo",
+      "ok": true
+    },
+    {
+      "name": "1280x720/no-x-overflow-after-ui",
+      "ok": true
+    },
+    {
+      "name": "1280x720/mouse-box-rect",
+      "ok": true
+    },
+    {
+      "name": "1280x720/mouse-drag-gone",
+      "ok": true
+    },
+    {
+      "name": "1280x720/rect-inside-doesnt-hit",
+      "ok": true
+    },
+    {
+      "name": "1280x720/right-20-success",
+      "ok": true
+    },
+    {
+      "name": "1280x720/collision-rejected-ui",
+      "ok": true
+    },
+    {
+      "name": "1920x1080/title",
+      "ok": true
+    },
+    {
+      "name": "1920x1080/parts-11",
+      "ok": true
+    },
+    {
+      "name": "1920x1080/disabled-core",
+      "ok": true
+    },
+    {
+      "name": "1920x1080/initial-rev",
+      "ok": true
+    },
+    {
+      "name": "1920x1080/no-document-x-overflow",
+      "ok": true
+    },
+    {
+      "name": "1920x1080/board-scrollable",
+      "ok": true
+    },
+    {
+      "name": "1920x1080/click-select",
+      "ok": true
+    },
+    {
+      "name": "1920x1080/selected-list",
+      "ok": true
+    },
+    {
+      "name": "1920x1080/undo-enabled",
+      "ok": true
+    },
+    {
+      "name": "1920x1080/move-down",
+      "ok": true
+    },
+    {
+      "name": "1920x1080/undo-move",
+      "ok": true
+    },
+    {
+      "name": "1920x1080/redo-move",
+      "ok": true
+    },
+    {
+      "name": "1920x1080/clear-selection",
+      "ok": true
+    },
+    {
+      "name": "1920x1080/select-all-wheels",
+      "ok": true
+    },
+    {
+      "name": "1920x1080/locked-core-not-selected",
+      "ok": true
+    },
+    {
+      "name": "1920x1080/subtract",
+      "ok": true
+    },
+    {
+      "name": "1920x1080/add",
+      "ok": true
+    },
+    {
+      "name": "1920x1080/toggle",
+      "ok": true
+    },
+    {
+      "name": "1920x1080/export-json",
+      "ok": true
+    },
+    {
+      "name": "1920x1080/reset-no-selection",
+      "ok": true
+    },
+    {
+      "name": "1920x1080/reset-position",
+      "ok": true
+    },
+    {
+      "name": "1920x1080/keyboard-activation",
+      "ok": true
+    },
+    {
+      "name": "1920x1080/keyboard-move",
+      "ok": true
+    },
+    {
+      "name": "1920x1080/keyboard-undo",
+      "ok": true
+    },
+    {
+      "name": "1920x1080/keyboard-redo",
+      "ok": true
+    },
+    {
+      "name": "1920x1080/no-x-overflow-after-ui",
+      "ok": true
+    }
+  ]
+}
