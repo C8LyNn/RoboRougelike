@@ -1,0 +1,80 @@
+name: B01-31 P17W11 real original denied HOLD animation VFX physical frames and Unity Sprite ZIP
+on:
+  push:
+    branches: [art/b01-31-p17w11-dock-denial-vfx]
+    paths:
+      - 'Tools/B01-31/P17/W11DockDeniedVfx001/**'
+      - '.github/workflows/b01-31-p17w11-dock-denied-vfx.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01-31/P17/W11DockDeniedVfx001/**'
+      - '.github/workflows/b01-31-p17w11-dock-denied-vfx.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  produce-actual-original-animated-art:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch exact original W10 authored vector asset commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin refs/pull/489/head
+          test "$(git rev-parse FETCH_HEAD)" = "7944af98524b7eb5ceadb88eb056de1d486ac461"
+          mkdir -p w10-source
+          for name in collision-overlap distance-limit unguarded-route query-saturated; do
+            git show "FETCH_HEAD:Tools/B01-31/P17/W10SafeDockSignals001/source/${name}.svg" > "w10-source/${name}.svg"
+          done
+      - name: Install pinned real source SVG raster and PNG/GIF image libraries
+        run: python -m pip install --disable-pip-version-check "CairoSVG==2.8.2" "Pillow==11.3.0"
+      - name: Syntax-check both actual new producer and independent physical receiver
+        run: python -m compileall -q Tools/B01-31/P17/W11DockDeniedVfx001/
+      - name: Generate 32 actual RGBA frames four GIFs and Unity sprite ZIP and test physical bytes
+        run: |
+          python Tools/B01-31/P17/W11DockDeniedVfx001/build_vfx.py --w10-svg-dir w10-source --output out/w11
+          python Tools/B01-31/P17/W11DockDeniedVfx001/verify_artifact.py --source out/w11
+      - name: Full physical original animated art SHA and deterministic rerender check
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd out/w11 && find . -type f -print0 | sort -z | xargs -0 sha256sum) > /tmp/first.sha256
+          python Tools/B01-31/P17/W11DockDeniedVfx001/build_vfx.py --w10-svg-dir w10-source --output out/w11
+          python Tools/B01-31/P17/W11DockDeniedVfx001/verify_artifact.py --source out/w11
+          (cd out/w11 && find . -type f -print0 | sort -z | xargs -0 sha256sum) > /tmp/second.sha256
+          cmp /tmp/first.sha256 /tmp/second.sha256
+          echo "DOCK_DENIED_ORIGINAL_ANIM_ALL_FRAME_GIF_ZIP_RECEIPT_SHA_PARITY_PASS"
+      - name: Upload real original 32 PNG sprites 4 GIF preview original storyboard and 70-file Unity ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0131-P17W11-ORIGINAL-4-ANIM-32-PNG-4-GIF-UNITY-SPRITES
+          path: out/w11/
+          retention-days: 30
+          if-no-files-found: error
+
+  independent-physical-receipt-windows:
+    needs: produce-actual-original-animated-art
+    runs-on: windows-2022
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Download actual Linux-produced immutable VFX binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: B0131-P17W11-ORIGINAL-4-ANIM-32-PNG-4-GIF-UNITY-SPRITES
+          path: physical-original
+      - name: Install Pillow independently for real PNG and actual GIF readback on Windows
+        run: python -m pip install --disable-pip-version-check "Pillow==11.3.0"
+      - name: Independent-implementation physical 32 PNG 4 GIF Unity ZIP+GUID 70 member acceptance
+        run: python Tools/B01-31/P17/W11DockDeniedVfx001/verify_artifact.py --source physical-original
