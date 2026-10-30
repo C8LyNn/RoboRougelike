@@ -13,6 +13,7 @@ import sys
 from pathlib import Path
 import bpy
 from mathutils import Vector
+sys.path.insert(0,str(Path(__file__).resolve().parent))
 from source_contract import GRID_M, RIG_FILES, load_pinned
 
 def digest(p:Path):return hashlib.sha256(p.read_bytes()).hexdigest()
