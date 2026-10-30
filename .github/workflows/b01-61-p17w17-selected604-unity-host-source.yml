@@ -1,0 +1,56 @@
+name: B01-61 P17W17 final selected 604 ORIGINAL Unity host source QA
+on:
+  push:
+    branches: [qa/b01-61-p17w17-final604-unity-host-source-boundary]
+  pull_request:
+    paths:
+      - "Tools/B01/B01-61/P17W17Final604UnityHostQA/**"
+      - ".github/workflows/b01-61-p17w17-selected604-unity-host-source.yml"
+jobs:
+  exact-original-604-unity-host-source:
+    runs-on: ${{ matrix.os }}
+    strategy: {fail-fast: false, matrix: {os: [ubuntu-24.04, windows-2025]}}
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Verify exact frozen original source SHA and exclusive QA file scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-61/P17W17Final604UnityHostQA/source_guard.py 2>&1 | tee w17-pins.log
+      - name: Build genuine original 604 Unity-facing MonoBehaviour C# with managed API stub
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build Tools/B01/B01-61/P17W17Final604UnityHostQA/Actual604UnityHostSourceQA.csproj -c Release --warnaserror 2>&1 | tee w17-build.log
+      - name: Execute real original Unity-facing C# source cold Save Load and durable checkpoint fault probes
+        shell: bash
+        run: |
+          set +e
+          p=Tools/B01/B01-61/P17W17Final604UnityHostQA/Actual604UnityHostSourceQA.csproj
+          dotnet run --no-build --project "$p" -c Release -- --evidence > w17-source.log 2>&1
+          src=$?
+          cat w17-source.log
+          dotnet run --no-build --project "$p" -c Release -- --release > w17-release.log 2>&1
+          rel=$?
+          cat w17-release.log
+          printf 'SOURCE_EXIT=%s RELEASE_EXIT=%s NATIVE_UNITY=NOT_RUN\n' "$src" "$rel" | tee w17-status.txt
+          test "$src" = 0 && test "$rel" = 3 || exit 1
+          grep -q B0161_W17_604_EXACT_ORIGINAL_UNITY_HOST_SOURCE_QA_PASS w17-source.log || exit 1
+          grep -q B0161_W17_604_RELEASE_HOLD w17-release.log || exit 1
+          echo "B01-61_W17_ORIGINAL_UNITY_SOURCE_QA_EXECUTED_NATIVE_NOT_RUN"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b0161-w17-exact604-unity-host-${{ matrix.os }}
+          path: |
+            w17-pins.log
+            w17-build.log
+            w17-source.log
+            w17-release.log
+            w17-status.txt
+          if-no-files-found: warn
