@@ -1,6 +1,6 @@
 {
   "packageId": "B01-10-GHOST-001",
-  "version": "2.0.0-P17W07-UNITY_VISUAL_FASTPLAYBACK",
+  "version": "2.0.1-P17W08-WORKFLOW_REPAIR_PHYSICAL_ZIP",
   "role": "B01-10 GAME DESIGN & BALANCE",
   "scope": "OPT_IN_CHL_TRAINING_GHOST",
   "sourceBranch": "design/b01-10-p17w06-training-ghost",
@@ -14,7 +14,7 @@
     "B01-00 HQ",
     "Codex after ACK only"
   ],
-  "status": "PRODUCER_SOURCE_IMPLEMENTED / CI_CSHARP_QUEUED_NOT_RUN / G0_PENDING / INDEPENDENT_QA_PENDING / UNITY_NOT_RUN / CODEX_NOT_CLAIMED / NO_MERGE",
+  "status": "SOURCE_CSHARP_62_OF_62_PASS_WIN_UBUNTU_AT_PRELIMINARY_HEAD / FINAL_EXACT_SHA_CI_REQUIRED / PHYSICAL_SOURCE_ZIP_PASS / G0_QA_PENDING / UNITY_NOT_RUN / CODEX_ACK_PENDING",
   "originality": "First independent CHL practice ghost: 3D pose recording, 0.1s sampling, shortest-arc yaw replay, four-gate split comparison, two-rig personal best, no game state writes. Not an encounter editor, RUNSCORE post-run score, official CHL timer, economics or shared Physics patch.",
   "changedPaths": [
     "Research/B01-10/P17Ghost/**",
@@ -50,22 +50,22 @@
       "chars": 345
     },
     "README.md": {
-      "gitBlob": "d43aa0f93f62a5ca06b8231e3ffbf5fd756690dd",
-      "chars": 12649
+      "gitBlob": "47e70891f8c9adb5640153b6f483bd93ff607720",
+      "chars": 16774
     }
   },
   "workflow": {
     "path": ".github/workflows/b01-10-p17-ghost.yml",
-    "gitBlob": "c294e4ec37bb0aa2774da2bb771294e2d91f0e06"
+    "gitBlob": "96206a8414772c587f90bf7d87cebd6af817ef42"
   },
   "tests": {
     "tool": "dotnet 8.0 CSharp original source and test runner",
     "namedCases": 62,
     "syntheticRandomizedTraces": 100,
-    "workflowRun": "QUEUED/NOT_RUN as of W07, verify exact final SHA before claim",
-    "windows": "QUEUED/NOT_RUN",
-    "ubuntu": "QUEUED/NOT_RUN",
-    "actualDemoJson": "NOT_RUN in final SHA",
+    "workflowRun": "41045933045 SUCCESS (pre-manifest-final head); final exact-head CI must be checked separately",
+    "windows": "PASS 62/62 at 41045933045 preliminary SHA a20fd6e8; requires final HEAD CI",
+    "ubuntu": "PASS 62/62 at 41045933045 preliminary SHA a20fd6e8; requires final HEAD CI",
+    "actualDemoJson": "PASS from original CLI Windows+Ubuntu at 41045933045",
     "nativeUnity": "NOT_RUN",
     "UnityEditMode": "NOT_RUN",
     "UnityPlayMode": "NOT_RUN",
@@ -125,5 +125,43 @@
     "physicsOwner": "CHL003 B01-20"
   },
   "actualNativeStatus": "NATIVE_EDIT_NOT_RUN / NATIVE_PLAY_NOT_RUN / RENDER_NOT_RUN / PHYSX_ZERO_COLLIDER_NOT_VERIFIED",
-  "originalGameCodeTouched": false
+  "originalGameCodeTouched": false,
+  "W08": {
+    "repair": "GitHub Actions literal escaped expression \\${{ matrix.os }} caused runners queued, fixed to real ${{ matrix.os }} and artifact placeholders",
+    "originalRunnerRed": [
+      "41038245459 QUEUED",
+      "41038238957 QUEUED"
+    ],
+    "originalRunnerGreen": "41045933045 SUCCESS Windows2025+Ubuntu24.04",
+    "producerCSharpActual": "62/62 PASS each OS; 100 synthetic seeded motion traces each; demo JSON PASS; invalid CLI exit2 PASS",
+    "zipSHA256": "957acd46fd2de5bf6fe0844af1308f6e8c96a6dfe549b59165754088e29a9683",
+    "zipTestHead": "a20fd6e8b74d6c98181fdf48bc2341c4783b9b00 PRELIMINARY, FINAL SHA requires new ZIP hash",
+    "members": 10,
+    "sourceFileCount": 2,
+    "unityMetaCount": 3,
+    "negativeTestCount": 6,
+    "negativeTestNames": [
+      "original_source_tamper",
+      "original_meta_GUID_drift",
+      "forged_Codex_ACK",
+      "forged_Unity_PASS",
+      "injected_Codex_game_path",
+      "missing_real_visual_source"
+    ],
+    "originalArtifactIds": {
+      "ubuntu": 12971839291,
+      "windows": 12972616543
+    },
+    "reproducibleBuilder": "pack_ghost.py",
+    "reproducibleBuilderGitBlob": "e923355eec1358fa9f616072b430298d5780d5d2",
+    "runnerExpressionRedToGreen": true,
+    "remainingBlockers": [
+      "Independent B01-40 G0",
+      "Independent B01-60 QA",
+      "B01-20 CHL owner interface",
+      "native Unity license and PlayMode/URP visual",
+      "actual Codex claim"
+    ]
+  },
+  "exactFinalHeadMustPassWorkflow": true
 }
