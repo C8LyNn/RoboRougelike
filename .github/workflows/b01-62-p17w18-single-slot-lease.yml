@@ -1,0 +1,57 @@
+name: B01-62 W18 original frozen #596 multi-host RED and versioned slot lease GREEN
+on:
+  push:
+    branches: [feature/b01-62-p17w18-single-slot-host-lease-r1]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W18SingleSlotLease/**'
+      - '.github/workflows/b01-62-p17w18-single-slot-lease.yml'
+permissions:
+  contents: read
+jobs:
+  original-red-new-green:
+    runs-on: ${{ matrix.os }}
+    name: Frozen original 596 historical RED + versioned slot lease isolated GREEN (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Actual selected frozen #596 core and original immutable #556/#510 direct Git pin
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W18SingleSlotLease"
+          git fetch --no-tags origin efb2b06eafedab5469b57f163152d96aca3c5915 33094f154c7b91119b36d58aab285e6e83c5de57 d94400d95d13db7f27e1533df05c9292d5380431
+          mkdir -p "$dir/.source" "$dir/.output"
+          git show efb2b06eafedab5469b57f163152d96aca3c5915:Assets/B0123UnitySaveBridge001/Core/AtomicWorldSwap.cs > "$dir/.source/AtomicWorldSwap.cs"
+          git show 33094f154c7b91119b36d58aab285e6e83c5de57:Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs > "$dir/.source/DetachedSnapshotContract.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs > "$dir/.source/DebrisImpulseCore.cs"
+          git show d94400d95d13db7f27e1533df05c9292d5380431:Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs > "$dir/.source/SecureRigSpec.cs"
+          test "$(git hash-object "$dir/.source/AtomicWorldSwap.cs")" = 1f9e883c38101f214e4335867faa731f7ae67689
+          test "$(git hash-object "$dir/.source/DetachedSnapshotContract.cs")" = b52e511c370f5fca56c74029050844dc8cbb7f9a
+          test "$(git hash-object "$dir/.source/DebrisImpulseCore.cs")" = fa1aa5e531927cbe73cf5fdfe161b4a981316db5
+          test "$(git hash-object "$dir/.source/SecureRigSpec.cs")" = b680ed0ec969ac23203fa55eab7b90f8daa86e43
+          echo B0162_W18_SELECTED_ONLY_596_556_510_ORIGINAL_SOURCE_BLOBS_PINNED | tee "$dir/.output/provenance.log"
+      - name: Actually execute original #596 stale-world replay source RED then candidate single-slot host lease GREEN
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W18SingleSlotLease"
+          dotnet run --project "$dir/SingleSlotLease.csproj" --configuration Release --verbosity minimal 2>&1 | tee "$dir/.output/executed-original-red-leased-green.log"
+          grep -q 'B0162_W18_SINGLE_SLOT_SOURCE_TOTAL 35 PASS 35 FAIL 0' "$dir/.output/executed-original-red-leased-green.log"
+          grep -q 'HISTORICAL_FROZEN_596_SHARED_SLOT_RESURRECTION_SOURCE_RED_REPRODUCED' "$dir/.output/executed-original-red-leased-green.log"
+          grep -q 'NEW_R1_SOURCE_ONLY_NO_UNITY_NATIVE_NO_PRODUCER_ADOPTION' "$dir/.output/executed-original-red-leased-green.log"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-62-p17w18-original596-red-single-slot-green-${{ matrix.os }}
+          path: Tools/B01/B01-62/P17W18SingleSlotLease/.output/
+          include-hidden-files: true
+          if-no-files-found: error
