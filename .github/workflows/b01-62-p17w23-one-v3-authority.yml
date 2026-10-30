@@ -44,6 +44,8 @@ jobs:
           grep -q 'B0162_W23_EXACT_SELECTED_729_SINGLE_OS_OWNER_NO_LEASE' b0162-w23-one-owner-evidence/real-qa.txt
           grep -q 'B0162_W23_ORPHAN_FALSE_CLEANUP_HELD_OWNER=GREEN' b0162-w23-one-owner-evidence/real-qa.txt
           grep -q 'B0162_W23_ORPHAN_THROW_CLEANUP_HELD_OWNER=GREEN' b0162-w23-one-owner-evidence/real-qa.txt
+          grep -q 'B0162_W23_ORIGINAL_669_LEGACY_DIRECT_OPEN_DENIED=TRUE' b0162-w23-one-owner-evidence/real-qa.txt
+          grep -q 'B0162_W23_LEGACY_OWNER_V1_MIGRATION=HOLD_NO_DATA_CHANGE' b0162-w23-one-owner-evidence/real-qa.txt
           grep -q 'FAIL 0' b0162-w23-one-owner-evidence/real-qa.txt
       - name: Execute exact ORIGINAL author R5 and V3 physical ZIP, 39 Unity GUID cross-source G0 scratch
         run: |
