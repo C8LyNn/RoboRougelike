@@ -1,0 +1,37 @@
+{
+  "package": "CI41-NATIVE-CONTRACT-001",
+  "version": "1.0.0",
+  "cycle": "PASS17_WAVE10",
+  "owner": "B01-41",
+  "branch": "ci/b01-41-p17-w10-native-ci-contract",
+  "base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "read_only_original_workflows": [
+    ".github/workflows/ci-02-editmode.yml",
+    ".github/workflows/ci-03-playmode.yml",
+    ".github/workflows/ci-04-build.yml"
+  ],
+  "owned_paths": [
+    "Tools/B01/CI41/P17W10/native_ci_contract.py",
+    "Tools/B01/CI41/P17W10/test_native_ci_contract.py",
+    "Tools/B01/CI41/P17W10/README.md",
+    "Tools/B01/CI41/P17W10/MANIFEST.json",
+    ".github/workflows/b01-41-p17-w10-native-ci-contract.yml"
+  ],
+  "tests": {
+    "expected_real_git_mutant_cases_per_os": 20,
+    "systems": [
+      "windows-2025",
+      "ubuntu-24.04"
+    ],
+    "real_unity": "NOT_RUN"
+  },
+  "status": {
+    "producer": "CI_PENDING",
+    "independent_G0": "PENDING",
+    "unity_G1": "NOT_RUN",
+    "codex_ACK": false,
+    "merged": false,
+    "integrated": false
+  },
+  "rollback": "Only leave Draft unmerged/delete W10-owned paths. Original workflows stay immutable."
+}
