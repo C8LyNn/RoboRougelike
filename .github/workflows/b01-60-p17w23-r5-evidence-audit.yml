@@ -29,12 +29,12 @@ jobs:
           set -euo pipefail
           git fetch --no-tags origin cc7f73541517a18f4479bb155534bd4832d9985e
           test "$(git cat-file -t cc7f73541517a18f4479bb155534bd4832d9985e)" = commit
-      - name: Execute 33 synthetic adversarial R5 receipt tests (NOT Unity)
+      - name: Execute 35 synthetic adversarial R5 receipt tests (NOT Unity)
         shell: bash
         run: |
           set -euo pipefail
           python -m unittest discover -s Tools/B01/B01-60/P17W23R5EvidenceAudit -p test_audit_r5.py -v 2>&1 | tee w23-r5-adversarial.log
-          grep -F 'Ran 33 tests' w23-r5-adversarial.log
+          grep -F 'Ran 35 tests' w23-r5-adversarial.log
           grep -F 'OK' w23-r5-adversarial.log
       - name: Execute original W22 real selected R5 Git source-only private stage/rollback
         shell: bash
