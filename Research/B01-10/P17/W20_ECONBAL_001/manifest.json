@@ -1,0 +1,96 @@
+{
+  "packageId": "B01-10-ECONBAL-001",
+  "version": "1.0.0-P17W20",
+  "owner": "B01-10 GAME DESIGN & BALANCE",
+  "branch": "design/b01-10-p17w20-econbal-001",
+  "repository": "C8LyNn/RoboRougelike",
+  "mainBaseSha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "exactScope": [
+    ".github/workflows/b01-10-p17w20-econbalance.yml",
+    "Research/B01-10/P17/W20_ECONBAL_001/ACCEPTANCE.md",
+    "Research/B01-10/P17/W20_ECONBAL_001/README.md",
+    "Research/B01-10/P17/W20_ECONBAL_001/manifest.json",
+    "Research/B01-10/P17/W20_ECONBAL_001/rebuild_balance.py",
+    "Research/B01-10/P17/W20_ECONBAL_001/scenarios.json",
+    "Research/B01-10/P17/W20_ECONBAL_001/test_rebuild_balance.py"
+  ],
+  "originalSourceFiles": {
+    "Research/B01-10/P17/W20_ECONBAL_001/ACCEPTANCE.md": {
+      "gitBlob": "39aca854c319e966aa43059e31fd038e756b9a74",
+      "bytes": 3995
+    },
+    "Research/B01-10/P17/W20_ECONBAL_001/README.md": {
+      "gitBlob": "898283de0944d47e5cac7f75f4458e811c881449",
+      "bytes": 6354
+    },
+    "Research/B01-10/P17/W20_ECONBAL_001/rebuild_balance.py": {
+      "gitBlob": "9178dc5c756169b189ca2462ee6563cf0aaec0b2",
+      "bytes": 11035
+    },
+    "Research/B01-10/P17/W20_ECONBAL_001/scenarios.json": {
+      "gitBlob": "38fc9ac6d921b30fba78a1f84a173f815b66dbcd",
+      "bytes": 20355
+    },
+    "Research/B01-10/P17/W20_ECONBAL_001/test_rebuild_balance.py": {
+      "gitBlob": "55dd8de302d1f62e804226d0117d76d2dc5eb818",
+      "bytes": 12810
+    },
+    ".github/workflows/b01-10-p17w20-econbalance.yml": {
+      "gitBlob": "f2c0569c2216c168b3bac432dfe947be7abe1556",
+      "bytes": 4929
+    }
+  },
+  "runtimeAuthority": "NONE_OFFLINE_DESIGN_MODEL",
+  "gameImplementation": "NO",
+  "nativeUnity": "NOT_RUN",
+  "syntheticInput": true,
+  "frozenDependsOn": [
+    "#252@12572117a3dce369257feabc57021cde58023369 - provenance read-only",
+    "#510@d94400d95d13db7f27e1533df05c9292d5380431 - untouched",
+    "#556@33094f154c7b91119b36d58aab285e6e83c5de57 - untouched",
+    "#596@efb2b06eafedab5469b57f163152d96aca3c5915 - untouched",
+    "#642@22cec9888047994ae523cbe7bf1b0a483d64cec4 - untouched R3",
+    "#647@09c1809b73324a6d31c13e5d0143de62ac1e3ca6 - W20 selected frozen R4"
+  ],
+  "excluded": "No edits to frozen #252/#510/#556/#596/#642/#647 or ECON V2 #673. No #652/#644/#604 alt co-install. No canonical Assets, game/save edits.",
+  "tests": {
+    "namedPythonUnittest": 45,
+    "scenarios": 6,
+    "bootstrapBranches": 2,
+    "cadences": 2,
+    "sensitivities": "65/70/75 quote and critical mobility",
+    "syntheticStressEpisodes": 200,
+    "seed": 20261030,
+    "plannedOS": [
+      "windows-2025",
+      "ubuntu-24.04"
+    ],
+    "exactHeadExecution": "PENDING_ACTUAL_CI",
+    "independentQA": "PENDING"
+  },
+  "receivers": [
+    "B01-22 ECON owner/cost hypothesis",
+    "B01-13 UX critical risk",
+    "B01-40 read-only source intake",
+    "B01-60 independent QA",
+    "B01-00 design decision"
+  ],
+  "sixStates": {
+    "IMPLEMENTED": true,
+    "TESTED": false,
+    "QA_ACCEPTED": false,
+    "READY_FOR_INTEGRATOR": false,
+    "INTEGRATED": false,
+    "RELEASED": false
+  },
+  "gates": {
+    "SOURCE_G0": "PENDING",
+    "NATIVE_G1": "NOT_RUN",
+    "CODEX_ACK": "NONE",
+    "LIVE_GAME_ECONOMY": "NOT_WIRED",
+    "G2": "HOLD"
+  },
+  "rollback": "Close DRAFT or checkout prior SHA; offline model only, no Unity installation or destructive deletion",
+  "integratorFeedback": "NOT_MEASURED",
+  "noMerge": true
+}
