@@ -1,0 +1,57 @@
+{
+  "package": "B01-25-MAGNETLANE001",
+  "schemaVersion": 1,
+  "metersPerCell": 1,
+  "ground": "Isolated real Unity 6 URP floor, magnetic lane applies actual ForceMode.Force only within active area",
+  "magnetLane": {
+    "center": [
+      0,
+      0
+    ],
+    "size": [
+      6,
+      3
+    ],
+    "forceNewton": 60
+  },
+  "safeBypass": {
+    "center": [
+      0,
+      4
+    ],
+    "size": [
+      6,
+      2
+    ],
+    "permanent": true
+  },
+  "westApproach": {
+    "center": [
+      -7,
+      0
+    ],
+    "size": [
+      8,
+      10
+    ]
+  },
+  "eastExit": {
+    "center": [
+      7,
+      0
+    ],
+    "size": [
+      8,
+      10
+    ]
+  },
+  "timerSeconds": {
+    "warning": 0.6,
+    "active": 2.4,
+    "safe": 1
+  },
+  "vehicleMassKg": {
+    "light": 1.5,
+    "heavy": 12
+  }
+}
