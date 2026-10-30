@@ -1,0 +1,59 @@
+name: B01-61 W12 exact frozen #510 receiver-migration/rollback (source only, Unity NOT_RUN)
+on:
+  push:
+    branches: [qa/b01-61-p17w12-v2-receiver-migration]
+    paths:
+      - 'Tools/B01/B01-61/P17W12ReceiverMigrationQA/**'
+      - '.github/workflows/b01-61-p17w12-receiver-migration.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-61/P17W12ReceiverMigrationQA/**'
+      - '.github/workflows/b01-61-p17w12-receiver-migration.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-frozen-source-receiver-migration:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Independently verify 35 member original #510 source ZIP and safe synthetic receiver
+        shell: bash
+        run: |
+          set -o pipefail
+          python Tools/B01/B01-61/P17W12ReceiverMigrationQA/receiver_gate.py 2>&1 | tee b0161-w12-source-receiver.log
+      - name: Execute independent disabled-Unity-component and faulted rollback negative tests
+        shell: bash
+        run: |
+          set -o pipefail
+          python -m unittest discover -s Tools/B01/B01-61/P17W12ReceiverMigrationQA -p test_receiver_gate.py -v 2>&1 | tee b0161-w12-tests.log
+      - name: Release gate must HOLD with exact exit 3, never fake ACK or native PASS
+        shell: bash
+        run: |
+          set +e
+          python Tools/B01/B01-61/P17W12ReceiverMigrationQA/receiver_gate.py --release > b0161-w12-release-hold.log 2>&1
+          rc=$?
+          cat b0161-w12-release-hold.log
+          test "$rc" -eq 3
+          grep -q 'RELEASE_GATE_HOLD' b0161-w12-release-hold.log
+      - name: Retain true source stdout and intentional HOLD evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-61-w12-selected-receiver-${{ matrix.os }}
+          path: |
+            b0161-w12-source-receiver.log
+            b0161-w12-tests.log
+            b0161-w12-release-hold.log
+          if-no-files-found: warn
+          retention-days: 21

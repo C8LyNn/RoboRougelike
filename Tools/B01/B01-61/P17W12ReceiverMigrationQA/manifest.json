@@ -1,0 +1,38 @@
+{
+  "id": "B01-61-P17W12-EXCLUSIVE-SOURCE-RECEIVER-MIGRATION-QA-001",
+  "role": "B01-61",
+  "package": "B01-23-SECURE-REATTACH-V2",
+  "version": "2.0.0",
+  "selected_producer_pr": 510,
+  "selected_producer_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "exact_producer_archive_sha256": "d4ddfa3528ef0416aefffca72d884000f3b0c9959fb8dff53096487ef95c9387",
+  "archive_members": 35,
+  "owned_files": 34,
+  "meta_guid_count": 14,
+  "asmdef_count": 3,
+  "producer_packager_blob": "a4dd7df4ea2ae83049ff76c460953c2b6cb50850",
+  "selected_source_guid": "b01a0a10000000000000000000000009",
+  "blocked_w07_w08_w09_guids": [
+    "b017d070000000000000000000000008",
+    "b018d080000000000000000000000008",
+    "b019d090000000000000000000000008"
+  ],
+  "blocked_alternatives": [
+    511,
+    494
+  ],
+  "scope": [
+    "Tools/B01/B01-61/P17W12ReceiverMigrationQA/**",
+    ".github/workflows/b01-61-p17w12-receiver-migration.yml"
+  ],
+  "tests": "21 independent actual original frozen source archive + disposable receiver migration/rollback scenarios per OS",
+  "unity_native": "NOT_RUN",
+  "actual_receiver": "NOT_SCANNED",
+  "G0": "SOURCE_PRECHECK_ONLY",
+  "G1": "NOT_RUN",
+  "G2": "HOLD",
+  "codex_ack": false,
+  "integrated": false,
+  "merge": false,
+  "rollback": "close own unmerged Draft and discard QA branch; do not touch producer or Codex"
+}
