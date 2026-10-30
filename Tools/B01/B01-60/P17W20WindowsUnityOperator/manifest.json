@@ -25,16 +25,6 @@
     "pr": 642,
     "sha": "22cec9888047994ae523cbe7bf1b0a483d64cec4"
   },
-  "r4_awaiting_owner_selection": [
-    {
-      "pr": 647,
-      "sha": "09c1809b73324a6d31c13e5d0143de62ac1e3ca6"
-    },
-    {
-      "pr": 652,
-      "sha": "ae5dbfa5e9c4689d2bf80fcabf8438e9c673c419"
-    }
-  ],
   "alt_hold": [
     644,
     604
@@ -55,7 +45,8 @@
     "no_credentials": true,
     "no_automatic_upload": true,
     "sha256_evidence_unsigned": true,
-    "uses_original_runner": true
+    "uses_original_runner": true,
+    "selected_r4_blocked_until_independent_security_and_g0": true
   },
   "G1": "NOT_RUN_PENDING_USER_EXECUTION",
   "G2": "HOLD",
@@ -76,5 +67,18 @@
     "Tools/B01/B01-60/P17W20WindowsUnityOperator/manifest.json",
     ".github/workflows/b01-60-p17w20-windows-local-operator.yml"
   ],
-  "rollback": "only 6 NEW W20 QA-owned files; old producers and prior QA unchanged"
+  "rollback": "only 6 NEW W20 QA-owned files; old producers and prior QA unchanged",
+  "selected_r4": {
+    "pr": 647,
+    "sha": "09c1809b73324a6d31c13e5d0143de62ac1e3ca6",
+    "authority": "B01-23 signed frozen source",
+    "security_gate": "HOLD_P0_ORPHAN_PHYSICS_AFTER_COMPONENT_ONLY_DESTROY",
+    "independent_source_finding": "B01-61 #670",
+    "native_Save_G1": "NOT_RUN"
+  },
+  "r4_alt_hold": {
+    "pr": 652,
+    "sha": "ae5dbfa5e9c4689d2bf80fcabf8438e9c673c419",
+    "never_mix": true
+  }
 }
