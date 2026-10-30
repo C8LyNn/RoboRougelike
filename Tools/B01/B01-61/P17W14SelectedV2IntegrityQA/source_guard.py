@@ -25,7 +25,13 @@ def g(*args):
 def require(x,m):
  if not x:raise AssertionError(m)
 def main():
- diff=set(filter(None,g("diff","--name-only",SELECTED,"HEAD").splitlines()))
+ # Actions pull_request checkout can be a synthetic merge of later producer-only
+ # commits; measure QA's own second parent, not changes from the new base.
+ try:
+  qa_head=g("rev-parse","HEAD^2")
+ except subprocess.CalledProcessError:
+  qa_head=g("rev-parse","HEAD")
+ diff=set(filter(None,g("diff","--name-only",SELECTED,qa_head).splitlines()))
  require(diff==FILES,"QA_SCOPE_NOT_EXCLUSIVE "+repr(sorted(diff^FILES)))
  for path,ref,sha in PINS:
   require(g("rev-parse",ref+":"+path)==sha,"IMMUTABLE_SOURCE_REF_FAIL "+path)
