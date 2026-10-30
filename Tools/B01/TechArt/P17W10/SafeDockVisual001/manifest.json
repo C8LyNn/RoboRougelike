@@ -1,0 +1,68 @@
+{
+  "package_id": "B01-30-P17W10-SAFEDOCK-VISUAL-001",
+  "version": "R1",
+  "role": "B01-30 TECHART",
+  "kind": "source-pinned real 3D visualization, not safe reattach mechanism or native physics",
+  "original_rig": {
+    "owner": "B01-23",
+    "pr": 439,
+    "head": "cdcaea750fda1a9d7db6018e34970f4b9f206427",
+    "source_path": "Assets/B0123DebrisPlayground001/Runtime/RigDemoDefinition.cs",
+    "git_blob": "b7d1a503c89537316fe48dbb54f5997bb21d14ce"
+  },
+  "original_safe_gate": {
+    "owner": "B01-23",
+    "pr": 471,
+    "head": "763748f1be0c61356fb4462144640bb359364226",
+    "source_path": "Assets/B0123DockHardening001/Runtime/HardenedDockDemo.cs",
+    "git_blob": "d46c6341db199d010f48de00f98250becd2d7c87"
+  },
+  "states": [
+    "Light_SAFE",
+    "Light_BLOCKED_LAYER8",
+    "Heavy_SAFE",
+    "Heavy_BLOCKED_LAYER8"
+  ],
+  "expected_generated": {
+    "source_blender_BLEND": 4,
+    "actual_binary_FBX": 4,
+    "actual_BLENDER_render_PNG": 4,
+    "receiver_JSON": 1,
+    "producer_JSON": 1,
+    "real_mesh_nodes": 14,
+    "real_source_RIGS": 2,
+    "positive_intersections": 2,
+    "source_hash_negative": 1,
+    "live_in_memory_collision_mutants": 4,
+    "receiver_blocker_removal_negatives": 2,
+    "windows_archive_SHA_check": true
+  },
+  "actual_qa": {
+    "source": "PENDING_EXACT_SHA_CI",
+    "fresh_blender": "PENDING_EXACT_SHA_CI",
+    "windows_artifact": "PENDING_EXACT_SHA_CI",
+    "independent_B01_40": "PENDING",
+    "independent_B01_60": "PENDING",
+    "unity_G1": "NOT_RUN",
+    "safe_reattach_API": "NOT_PROVEN",
+    "codex_ACK": "NOT_SENT",
+    "game_integrated": false
+  },
+  "own_paths": [
+    "Tools/B01/TechArt/P17W10/SafeDockVisual001/**",
+    ".github/workflows/b01-30-p17w10-safedock-visual.yml"
+  ],
+  "limitation": [
+    "Original source fixes for public legacy Reattach route remain B01-23 ownership",
+    "Blender FBX does not assign Unity physics layer8 to red diagnostic box",
+    "AABB overlap in source visualization is not Unity PhysX.ComputePenetration nor release safety",
+    "Source source-hashed visual constraints only; no native Unity or independent review"
+  ],
+  "receiver": [
+    "B01-40 formal visual source G0",
+    "B01-60 independently import actual 3D in authorized Unity for optional G1",
+    "B01-23 safety source fix #472/#476",
+    "B01-00 queue only after acceptance"
+  ],
+  "rollback": "Remove only isolated build/B01-30/W10 output and optional visual FBX from disposable receiving project; no original B01-23/Codex Assets writes"
+}

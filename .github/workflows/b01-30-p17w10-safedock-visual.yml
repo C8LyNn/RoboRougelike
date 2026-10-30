@@ -1,0 +1,145 @@
+name: B01-30 P17 W10 original SAFE versus hidden-layer8 BLOCKED real 3D
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/b01-30-p17w10-safedock-visual.yml'
+      - 'Tools/B01/TechArt/P17W10/SafeDockVisual001/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  real-original-safedock-3d:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Freeze exact W07 two physical demo rigs and W09 safe dock source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/B01-30/W10/original
+          git fetch --no-tags origin refs/pull/439/head
+          test "$(git rev-parse FETCH_HEAD)" = "cdcaea750fda1a9d7db6018e34970f4b9f206427"
+          git show "FETCH_HEAD:Assets/B0123DebrisPlayground001/Runtime/RigDemoDefinition.cs" \
+            > build/B01-30/W10/original/RigDemoDefinition.cs
+          git fetch --no-tags origin refs/pull/471/head
+          test "$(git rev-parse FETCH_HEAD)" = "763748f1be0c61356fb4462144640bb359364226"
+          git show "FETCH_HEAD:Assets/B0123DockHardening001/Runtime/HardenedDockDemo.cs" \
+            > build/B01-30/W10/original/HardenedDockDemo.cs
+          python3 - <<'PY'
+          import hashlib
+          from pathlib import Path
+          root=Path("build/B01-30/W10/original")
+          originals={"RigDemoDefinition.cs":"b7d1a503c89537316fe48dbb54f5997bb21d14ce",
+          "HardenedDockDemo.cs":"d46c6341db199d010f48de00f98250becd2d7c87"}
+          for name,expect in originals.items():
+              data=(root/name).read_bytes()
+              blob=hashlib.sha1(b"blob "+str(len(data)).encode()+b"\x00"+data).hexdigest()
+              assert blob==expect,("ORIGINAL_OWNER_SOURCE_DRIFT",name,blob)
+          print("B0130_W10_ORIGINAL_OWNER_PHYSICAL_RIG_AND_HARDENED_SOURCE_PIN_PASS")
+          PY
+      - name: Install Blender, NumPy and headless EGL libraries
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y blender python3-numpy xvfb libegl1 libegl-mesa0 libgl1-mesa-dri libosmesa6
+          python3 -m py_compile Tools/B01/TechArt/P17W10/SafeDockVisual001/*.py
+      - name: Produce four actual original-source SAFE and blocked layer8 3D FBX, .blend, PNG; negative mutants
+        shell: bash
+        run: |
+          set -euo pipefail
+          xvfb-run -a -s '-screen 0 1280x1024x24' blender --background \
+            --factory-startup --python-exit-code 1 \
+            --python Tools/B01/TechArt/P17W10/SafeDockVisual001/produce_original_dock_visuals.py \
+            -- --source build/B01-30/W10/original --out build/B01-30/W10/producer
+      - name: Independently re-import four original 3D FBXs in fresh Blender and retest real overlap
+        shell: bash
+        run: |
+          set -euo pipefail
+          blender --background --factory-startup --python-exit-code 1 \
+            --python Tools/B01/TechArt/P17W10/SafeDockVisual001/verify_real_fbx.py \
+            -- --original build/B01-30/W10/producer --out build/B01-30/W10/receiver
+      - name: Independently check real physical 4 FBX, 4 native Blender and 4 PNG and original geometry receipts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib,json,struct
+          from pathlib import Path
+          root=Path("build/B01-30/W10")
+          p=json.loads((root/"producer/source-locked-safedock-3d-qa.json").read_text())
+          q=json.loads((root/"receiver/real-fbx-independent-process-qa.json").read_text())
+          assert len(p["cases"])==4 and q["real_3d_meshes_total"]==14
+          assert q["positive_hidden_layer8_visual_overlaps"]==2
+          assert q["adversarial_geometry_blocker_removals_rejected"]==2
+          assert p["negative_source_mutants_rejected"]==1
+          assert p["actual_in_memory_overlap_mutants_rejected"]==4
+          assert all(x["blocked_real_part_and_layer8_blocker_AABB_contact_m"]>.005
+                     for x in p["cases"] if x["variant"]=="BLOCKED_LAYER8")
+          assert all(x["blocked_real_part_and_layer8_blocker_AABB_contact_m"]==0
+                     for x in p["cases"] if x["variant"]=="SAFE")
+          for entry in p["cases"]:
+              for kind in ("fbx","blend","png"):
+                  f=root/"producer"/entry[kind]["file"];data=f.read_bytes()
+                  assert len(data)==entry[kind]["bytes"]
+                  assert hashlib.sha256(data).hexdigest()==entry[kind]["sha256"]
+                  if kind=="fbx":assert data.startswith(b"Kaydara FBX Binary  \x00\x1a\x00")
+                  if kind=="png":
+                      assert data[:8]==b'\x89PNG\r\n\x1a\n'
+                      assert tuple(struct.unpack(">II",data[16:24]))==(960,720)
+          print("B0130_W10_REAL_4_FBX_4_BLEND_4_PNG_2_SOURCE_RIG_2_BLOCKER_RED_NEGATIVES_PASS")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-30-W10-REAL-SAFEDOCK-TWO-RIG-3D-SOURCE-QA
+          path: |
+            build/B01-30/W10/producer/*.fbx
+            build/B01-30/W10/producer/*.blend
+            build/B01-30/W10/producer/*.png
+            build/B01-30/W10/producer/source-locked-safedock-3d-qa.json
+            build/B01-30/W10/receiver/real-fbx-independent-process-qa.json
+          if-no-files-found: error
+          retention-days: 30
+  windows-actual-binary-asset-integrity:
+    runs-on: windows-2025
+    needs: [real-original-safedock-3d]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: B01-30-W10-REAL-SAFEDOCK-TWO-RIG-3D-SOURCE-QA
+          path: build/B01-30/W10
+      - name: Hash every actual physical 3D FBX/BLEND/PNG and assert SAFE/BLOCKED geometry semantics
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib,json,struct
+          from pathlib import Path
+          base=Path("build/B01-30/W10")
+          src=list(base.rglob("source-locked-safedock-3d-qa.json"))
+          assert len(src)==1,src
+          q=json.loads(src[0].read_text())
+          assert len(q["cases"])==4
+          for c in q["cases"]:
+              assert c["source_chassis_part_clearance_m"]==.25
+              assert c["source_3d_chassis_part_AABB_overlap_m"]==0
+              assert (c["blocked_real_part_and_layer8_blocker_AABB_contact_m"]>.005)==(c["variant"]=="BLOCKED_LAYER8")
+              for kind in ("fbx","blend","png"):
+                  files=list(base.rglob(c[kind]["file"]))
+                  assert len(files)==1,(kind,c[kind]["file"])
+                  data=files[0].read_bytes()
+                  assert len(data)==c[kind]["bytes"]
+                  assert hashlib.sha256(data).hexdigest()==c[kind]["sha256"]
+                  if kind=="fbx":assert data.startswith(b"Kaydara FBX Binary  \x00\x1a\x00")
+                  if kind=="png":
+                      assert data[:8]==b'\x89PNG\r\n\x1a\n'
+                      assert struct.unpack(">II",data[16:24])==(960,720)
+          print("B0130_W10_WINDOWS_REAL_12_SOURCE_LOCKED_3D_BINARIES_AND_SAFE_BLOCKED_VISUAL_PARITY_PASS")
+          PY
