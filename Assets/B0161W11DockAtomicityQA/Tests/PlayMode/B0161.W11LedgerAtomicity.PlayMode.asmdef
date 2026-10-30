@@ -1,0 +1,24 @@
+{
+  "name": "B0161.W11LedgerAtomicity.PlayMode",
+  "rootNamespace": "B01.W11LedgerAtomicityQA.Tests",
+  "references": [
+    "B0123.DebrisPlayground.Runtime",
+    "B0123.DebrisRepulse.Runtime"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false,
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}
