@@ -1,3 +1,4 @@
+// W23 R3: NO original legacy #669 slot.owner marker; old raw .lease client must fail closed.
 // W23 R3: derived from exact original #669 storage blob db7745635164d9eb6b10f3246538700158130b7b.
 // One owner-only authority #729 .owner; NO second .lease. SOURCE-ONLY.
 // B01-62 W20 SLOTSAVE-001/R1: a single atomic envelope binds frozen #556
@@ -39,7 +40,7 @@ namespace B01.SingleAuthoritySlot003
         private const string Magic = "B0162S01"; // 8-byte protocol tag
         private const int Version = 1;
         private const int MaxBytes = 8*1024*1024;
-        private const string Marker = "slot.owner";
+        private const string Marker = "slot.canonical-v3";
         // Single selected V3 authority physically owns ONE .owner OS FileStream.
         // NEVER create/open a competing .lease file.
         private const string Final = "save.envelope";
@@ -62,7 +63,7 @@ namespace B01.SingleAuthoritySlot003
         }
 
         private static string Identity(long run,Guid slot)
-            => "B0162_SINGLE_ENVELOPE_V1|"+run+"|"+slot.ToString("N")+"\n";
+            => "B0162_SINGLE_ENVELOPE_V3_OWNER|"+run+"|"+slot.ToString("N")+"\n";
 
         private static bool IsUnsafeExisting(string path)
         {
