@@ -1,0 +1,68 @@
+{
+  "schema": "b01-w17-one-bridge-version-v1",
+  "frozen": {
+    "game_pr": 510,
+    "game_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "save_pr": 556,
+    "save_sha": "33094f154c7b91119b36d58aab285e6e83c5de57",
+    "immutable": true
+  },
+  "lineage": {
+    "selected_original_pr": 587,
+    "selected_original_sha": "ad7904eca571c742257551fa8103f266fcb9b752",
+    "original_587_source_release": "HOLD_P0_RED",
+    "alternative_585": "ALT_HOLD"
+  },
+  "versions": [
+    {
+      "pr": 596,
+      "url": "https://github.com/C8LyNn/RoboRougelike/pull/596",
+      "sha": "efb2b06eafedab5469b57f163152d96aca3c5915",
+      "producer_ci": "PASS_SOURCE_ONLY",
+      "qa_pr": 607,
+      "qa_sha": "86f3292c928e52609db6c7afdb2010971d6946f1",
+      "qa_tested_commit": "efb2b06eafedab5469b57f163152d96aca3c5915",
+      "qa_scope": "EXACT_CORE_AND_CORRECTION_SOURCE_ONLY",
+      "qa_assertions_per_os": 82,
+      "archive_sha256": "005ac910ca9476203bc3ff1748d9198d45835abad21d97e12ad6c1bfe50484e9",
+      "archive_entries": 23
+    },
+    {
+      "pr": 604,
+      "url": "https://github.com/C8LyNn/RoboRougelike/pull/604",
+      "sha": "1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a",
+      "producer_ci": "PASS_SOURCE_ONLY",
+      "qa_pr": 603,
+      "qa_sha": "df1ed1e9707094cbdcac74662cda4094b7a0c370",
+      "qa_tested_commit": "7d206c63e1e9ab4ee4ce52eb314507ce49721d2c",
+      "qa_scope": "UNCHANGED_CORE_FENCE_ONLY_NOT_WHOLE_HEAD",
+      "qa_assertions_per_os": 52,
+      "archive_sha256": "ef110b5906d385cbc51938a35510c97516a0942b28ec055519a78d1e3fe5afb8",
+      "archive_entries": 27
+    }
+  ],
+  "owner_choice": {
+    "owner": "B01-23",
+    "state": "PENDING",
+    "selected_pr": null,
+    "loser_pr": null,
+    "decision_url": null
+  },
+  "receiver": {
+    "bridge_physical_g0": "NOT_ACCEPTED",
+    "unity_editmode_g1": "NOT_RUN",
+    "unity_playmode_g1": "NOT_RUN",
+    "unity_physx_g1": "NOT_RUN",
+    "canonical_private_rig_capture": "NOT_AUTHORIZED",
+    "canonical_private_ledger_hydration": "NOT_AUTHORIZED",
+    "live_cold_game_save_load": "HOLD",
+    "real_scene_migration": "NOT_DONE",
+    "rollback": "SCRATCH_SAFE_ONLY",
+    "original_510_rollback": "FORBIDDEN",
+    "codex_ack": "NONE",
+    "g2": "HOLD",
+    "installed": false,
+    "merged": false
+  },
+  "offer_to_codex": false
+}
