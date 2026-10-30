@@ -80,6 +80,36 @@ internal static class Program
     {
         public World? Last,Previous;
         public int Builds;
+#if API_V2
+        public ICanonicalStageOwnership BeginOwnedStage(RunSnapshot snap,ColdRestore cold)
+        {
+            if(cold.Snapshot.RunId!=snap.RunId||
+               cold.ContainsConsumedId(0,FrozenPartCatalog.Id(0))!=
+                    snap.Parts[0].Consumed)throw new Exception("bad ledger");
+            // Exact NEW selected owner #691 contract returns empty tracked owner
+            // BEFORE first private/physical allocation.
+            return new Owned(this,snap);
+        }
+        private sealed class Owned:ICanonicalStageOwnership
+        {
+            private readonly Factory factory;
+            private readonly RunSnapshot snapshot;
+            public Owned(Factory factory,RunSnapshot snap)
+            {this.factory=factory;snapshot=snap;}
+            public ICanonicalStagedWorld PrepareInactive()
+            {
+                factory.Previous=factory.Last;
+                factory.Last=new World(snapshot);
+                factory.Builds++;
+                return factory.Last;
+            }
+            public bool CleanupUnpublishedAndVerifyDestroyed()
+            {
+                if(factory.Last!=null)factory.Last.Retire();
+                return factory.Last==null||factory.Last.Retired;
+            }
+        }
+#else
         public ICanonicalStagedWorld BuildInactive(RunSnapshot snap,ColdRestore cold)
         {
             if(cold.Snapshot.RunId!=snap.RunId||
@@ -87,6 +117,7 @@ internal static class Program
                     snap.Parts[0].Consumed)throw new Exception("bad ledger");
             Previous=Last;Last=new World(snap);Builds++;return Last;
         }
+#endif
         public bool RetireAll()
         {
             if(Last!=null)Last.Retire();
