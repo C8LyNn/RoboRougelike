@@ -1,0 +1,23 @@
+# B01-61 / PASS17 WAVE17 — independent ONE final #604 candidate source QA
+
+**Dispatch:** [#608](https://github.com/C8LyNn/RoboRougelike/issues/608), role B01-61 independent QA. **Recommended final source candidate:** B01-23 [Draft #604](https://github.com/C8LyNn/RoboRougelike/pull/604) EXACT HEAD `1aa8a59ce1bb4fcd998f0b2b1ce25dfaea333f0a`. Do not integrate competing B01-23 #596, former #585/#587, or B01-62 standalone adapters. Final producer/candidate selection and formal G0 belong B01-23/62/40, not this QA-only branch. Immutable selected schema #556 `33094f154c7b91119b36d58aab285e6e83c5de57`, gameplay #510 `d94400d95d13db7f27e1533df05c9292d5380431` and original W06 unchanged. **Five new B01-61-only paths; no changes to Assets, package scripts, Codex, frozen parents or producer source, no merge.**
+
+## Why this isn't another #603/#607
+
+[#603](https://github.com/C8LyNn/RoboRougelike/pull/603) compiled earlier #604 candidate’s original core/fence and verified sequential different-process restart. This independent W17 test compiles the **ACTUAL FINAL NEW #604 commit's original code bytes** and tests new deterministic **interleaved multi-instance shared-slot race**: host A validates g11, host B durably seals g12 using the same REAL `FileCheckpointFence` during host A’s staged `IWorldFactory.Prepare`; A’s subsequent original `checkpoint.Seal(g11)` must refuse, A must compensate its previously published g10 world and immediately quarantine, the shared file must retain g12, a new cold host must load g12 and original Light/Heavy consumed flags must match. No timing-based flaky threads are needed.
+
+Other **20 checks** include: four physical source codec Light/Heavy combinations including W06 consumed flags, 88-byte real sidecar receipt and exact commit digest, physical binary snapshot disk→new coordinator read, identical cold exact replay, different same-generation fork refused before factory staging, stale after higher commit, re-signed foreign stable ID, post-activation pose and ID mutation rollback retaining original real fence g10, failed compensating `Deactivate` immediate quarantine, hostile corrupted disk fence, wrong run, corrupt checksum, nested callback exclusion, second host-idle failure staging cleanup, and explicit original durable Save refusal for changed motion at *unchanged* generation.
+
+**Test fidelity:** original selected immutable #604 `AtomicWorldSwap.cs` Git blob `399d3cb2074a2659af8f4e941edb28a3d2dd2832`, `CheckpointFence.cs` blob `53f907125b09531ebdf5ffdfbb9c5c9b48eca217`, real unchanged Save #556 blob `b52e511c370f5fca56c74029050844dc8cbb7f9a`, original W06 blob `fa1aa5e531927cbe73cf5fdfe161b4a981316db5` + original #510 catalog compiled **directly as source**, not copies of codec/adapter. The only fake is `IWorldFactory/IPreparedWorld` as an intentional adversarial physical lifecycle boundary, NOT Unity/Rigidbody/PhysX, no native test claim. The W17 exact FULL Unity host `IsolatedTwinRigSaveHost.cs` Git blob `5012e98bba786c6b9702992c317586a0015678c1` is pinned/checked structurally for proper persistent opt-in, original #556 snapshot creation and inactive body activation, **not compiled with a licensed Unity runtime**. Source/Git verification is not a substitute for engine validation.
+
+**Important release boundary:** `FileCheckpointFence` is a persistent single-file watermark, **not a transaction that atomically commits the game Save bytes + checkpoint sidecar + world**; two concurrent *processes* are not proven safe under simultaneous nonserialized File.Replace, and power-loss/directory fsync not tested. In a durable host, checkpoint payload hash mismatch caused by moving physics at the same generation is intentionally refused; a future owner-authorized Save transaction must advance the generation. The demo cannot save/import frozen #510 private `Rig[]/AtomicDockLedger` because no authorized public capture/hydrate API exists. Native Unity 6000.3.14f1 EditMode/PlayMode/PhysX `G1_NOT_RUN` absent activated editor; Codex ACK `NONE`, real game `LIVE_SAVELOAD_HOLD`, G2 `HOLD`.
+
+## Commands
+
+```sh
+dotnet build Tools/B01/B01-61/P17W17Final604FenceInterleavingQA/Selected604QA.csproj -c Release
+dotnet run --project Tools/B01/B01-61/P17W17Final604FenceInterleavingQA/Selected604QA.csproj -c Release --no-build | tee qa_original.log
+python Tools/B01/B01-61/P17W17Final604FenceInterleavingQA/receipt.py --log qa_original.log --out dist/b01-61-p17w17-final604-qa.json
+```
+
+**Gates:** `G0_SOURCE_QA_PASS_IF_EXECUTED` != formal B01-40 G0 nor Unity G1. No Codex code change, no unauthorized merges. **Receiver:** B01-23/62 single selection, B01-40 formal physical ZIP+GUID+safe rollback, B01-60 licensed native #532/#567/#581/#601 (or NOT_RUN), B01-00 authority/owner API.
