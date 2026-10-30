@@ -152,6 +152,57 @@ static class Program
         Check("Record object is immutable view type",()=>{
             var item=F().History();return item.Length==0&&typeof(TacticalItem).GetField("TotalAmount").IsInitOnly;
         });
+
+        // W08 adversarial RED fixtures: historical capacity must not hide unexpired critical warnings.
+        Check("W08 critical survives normal-event history overflow",()=>{
+            var f=F(3,2);f.Record(E(1,1,TacticalKind.WeaponOffline,"left-gun"));
+            for(int i=2;i<=25;i++)f.Record(E(i,i,TacticalKind.EnemyDestroyed,"enemy"+i));
+            var v=f.Visible();return v.Length==2&&v[0].SubjectId=="left-gun"&&v[0].Priority==TacticalPriority.Critical;
+        });
+        Check("W08 critical-only survives normal flood",()=>{
+            var f=F(2,1);f.Record(E(1,10,TacticalKind.PartDetached,"front-wheel"));
+            for(int i=2;i<=15;i++)f.Record(E(i,10+i,TacticalKind.ObjectiveChanged,"objective"+i));
+            var v=f.Visible(false);return v.Length==1&&v[0].SubjectId=="front-wheel";
+        });
+        Check("W08 two critical messages survive history overflow",()=>{
+            var f=F(3,2);
+            f.Record(E(1,1,TacticalKind.PartDetached,"track-left"));
+            f.Record(E(2,2,TacticalKind.WeaponOffline,"cannon-right"));
+            for(int i=3;i<=24;i++)f.Record(E(i,i,TacticalKind.EnemyDestroyed,"foe"+i));
+            var v=f.Visible(false);
+            return v.Length==2&&v[0].SubjectId=="cannon-right"&&v[1].SubjectId=="track-left";
+        });
+        Check("W08 latest two critical replace oldest even after normal flood",()=>{
+            var f=F(3,2);
+            f.Record(E(1,1,TacticalKind.PartDetached,"old-left"));
+            f.Record(E(2,2,TacticalKind.WeaponOffline,"new-right"));
+            f.Record(E(3,3,TacticalKind.PartDetached,"new-wheel"));
+            for(int i=4;i<=30;i++)f.Record(E(i,i,TacticalKind.ObjectiveChanged,"o"+i));
+            var v=f.Visible(false);
+            return v.Length==2&&v[0].SubjectId=="new-wheel"&&v[1].SubjectId=="new-right";
+        });
+        Check("W08 retained critical expires after TTL despite history overflow",()=>{
+            var f=F(2,1);f.Record(E(1,10,TacticalKind.WeaponOffline,"gun"));
+            for(int i=2;i<=8;i++)f.Record(E(i,i+10,TacticalKind.EnemyDestroyed,"e"+i));
+            f.AdvanceTo(6510);
+            return f.Visible().Length==0&&f.Visible(false).Length==0;
+        });
+        Check("W08 history remains bounded independently of protected visible alerts",()=>{
+            var f=F(2,1);f.Record(E(1,1,TacticalKind.WeaponOffline,"gun"));
+            for(int i=2;i<=10;i++)f.Record(E(i,i,TacticalKind.EnemyDestroyed,"enemy"+i));
+            var h=f.History();return h.Length==2&&h[0].SubjectId=="enemy9"&&h[1].SubjectId=="enemy10";
+        });
+        Check("W08 new run clears protected critical warning after history overflow",()=>{
+            var f=F(2,1);f.Record(E(1,1,TacticalKind.PartDetached,"wheel"));
+            for(int i=2;i<=12;i++)f.Record(E(i,i,TacticalKind.ObjectiveChanged,"o"+i));
+            f.StartNewRun(8);return f.Visible().Length==0&&f.Visible(false).Length==0&&f.Count==0;
+        });
+        Check("W08 normal-only flood never gains critical priority",()=>{
+            var f=F(2,1);
+            for(int i=1;i<=25;i++)f.Record(E(i,i,TacticalKind.EnemyDestroyed,"e"+i));
+            return f.Visible(false).Length==0&&f.Visible().Length==1&&
+                   f.Visible()[0].SubjectId=="e25";
+        });
         Console.WriteLine("RESULT "+pass+" PASS, "+fail+" FAIL");
         if(fail!=0)Environment.Exit(1);
     }
