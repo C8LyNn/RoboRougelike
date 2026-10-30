@@ -1,0 +1,61 @@
+name: B01-12 RECOVERY-READOUT-001 original source QA
+"on":
+  pull_request:
+    paths:
+      - 'Research/B01-12/P17W24/RecoveryReadout001/**'
+      - '.github/workflows/b01-12-recovery-readout.yml'
+  push:
+    branches:
+      - 'research/b01-12-p17w24-recovery-readout001-r1'
+permissions:
+  contents: read
+jobs:
+  source-browser-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install real Chromium and Playwright
+        run: |
+          python -m pip install playwright==1.55.0
+          python -m playwright install --with-deps chromium
+      - name: Execute original Node tests
+        working-directory: Research/B01-12/P17W24/RecoveryReadout001
+        run: node test_engine.cjs
+      - name: Execute real Chromium UI
+        working-directory: Research/B01-12/P17W24/RecoveryReadout001
+        run: python test_browser.py
+      - name: Corrupted-source must fail closed in both runners
+        shell: bash
+        run: |
+          set -euo pipefail
+          source='Research/B01-12/P17W24/RecoveryReadout001'
+          mkdir -p "$RUNNER_TEMP/recovery-copy"
+          cp -a "$source/." "$RUNNER_TEMP/recovery-copy/"
+          printf 'X' >> "$RUNNER_TEMP/recovery-copy/ui.js"
+          cd "$RUNNER_TEMP/recovery-copy"
+          set +e
+          node test_engine.cjs > tamper-node.log 2>&1
+          node_exit=$?
+          python test_browser.py > tamper-python.log 2>&1
+          python_exit=$?
+          set -e
+          cat tamper-node.log tamper-python.log
+          test "$node_exit" -eq 2 && test "$python_exit" -eq 2
+          grep -q 'FAIL_CLOSED source mismatch: ui.js' tamper-node.log
+          grep -q 'FAIL_CLOSED source mismatch: ui.js' tamper-python.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: recovery-readout-source-qa
+          path: |
+            Research/B01-12/P17W24/RecoveryReadout001/node-results.json
+            Research/B01-12/P17W24/RecoveryReadout001/browser-results.json
+            Research/B01-12/P17W24/RecoveryReadout001/evidence-1280x720.png
+          if-no-files-found: warn
