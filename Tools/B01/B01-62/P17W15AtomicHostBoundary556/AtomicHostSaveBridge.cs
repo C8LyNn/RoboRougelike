@@ -83,6 +83,54 @@ namespace B01.SaveHostBoundary556
             catch {return false;}
             finally {operation=false;}
         }
+        // Write-new-slot only: an existing save or another owner file is NEVER overwritten.
+        // Same-directory flush+move is a source-level crash-risk reduction,
+        // not a verified power-loss durable directory fsync on every platform.
+        public bool TrySaveNewFile(string path)
+        {
+            if(string.IsNullOrWhiteSpace(path) || operation || quarantined)return false;
+            string temp="";
+            try
+            {
+                string full=Path.GetFullPath(path);
+                string dir=Path.GetDirectoryName(full)!;
+                if(!Directory.Exists(dir) || File.Exists(full) || Directory.Exists(full))
+                    return false;
+                if(!TryCapture(out byte[] bytes))return false;
+                temp=full+"."+Guid.NewGuid().ToString("N")+".atomic-tmp";
+                using(var fs=new FileStream(temp,FileMode.CreateNew,FileAccess.Write,FileShare.None))
+                {
+                    fs.Write(bytes,0,bytes.Length);
+                    fs.Flush(true);
+                }
+                if(!Idle())return false;
+                File.Move(temp,full); // fails if another owner created target after preflight
+                return true;
+            }
+            catch{return false;}
+            finally
+            {
+                if(temp.Length>0)
+                {
+                    try {if(File.Exists(temp))File.Delete(temp);}
+                    catch {quarantined=true;}
+                }
+            }
+        }
+        public RestoreVerdict TryLoadFile(string path)
+        {
+            if(string.IsNullOrWhiteSpace(path))return RestoreVerdict.InvalidSnapshot;
+            if(operation)return RestoreVerdict.TransactionBusy;
+            if(quarantined)return RestoreVerdict.Quarantine;
+            try
+            {
+                var info=new FileInfo(path);
+                if(!info.Exists || info.Length==0 || info.Length>SnapshotCodec.MaxBytes)
+                    return RestoreVerdict.InvalidSnapshot;
+                return TryColdLoad(File.ReadAllBytes(path));
+            }
+            catch{return RestoreVerdict.InvalidSnapshot;}
+        }
         public RestoreVerdict TryColdLoad(byte[] bytes)
         {
             if(quarantined)return RestoreVerdict.Quarantine;
