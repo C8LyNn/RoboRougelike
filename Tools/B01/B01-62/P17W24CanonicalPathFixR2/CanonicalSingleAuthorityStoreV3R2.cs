@@ -126,54 +126,6 @@ namespace B01.CanonicalSingleAuthorityStore004
             => StoresByOwner.TryGetValue(owner.Identity,out var previous)&&
                 ReferenceEquals(previous.authority,owner);
 
-        // Original #729's one physical OS lease prevents TWO lease owners, but
-        // original #749 permitted TWO public store instances bound to SAME lease.
-        // Escrow ONE full Save store per exact physical lease object, even after
-        // storage.Dispose(); only a NEW physical lease object after original V3
-        // verified retirement can replace this entry.
-        private static readonly object SingleStoreGate=new object();
-        private static readonly Dictionary<string,CanonicalSingleAuthorityStoreV3R2>
-            StoresByOwner=new Dictionary<string,CanonicalSingleAuthorityStoreV3R2>(
-                StringComparer.OrdinalIgnoreCase);
-
-        private static bool DuplicateStore(CanonicalWorldSlotLease owner)
-            => StoresByOwner.TryGetValue(owner.Identity,out var previous)&&
-                ReferenceEquals(previous.authority,owner);
-
-        public static SlotStatus TryCreateNew(string directory,long run,Guid slot,
-            CanonicalWorldSlotLease owner,out CanonicalSingleAuthorityStoreV3R2? opened,
-            IAtomicEnvelopePublisher? hook=null)
-        {
-            opened=null;
-            if(!ValidPath(directory,run,slot)||
-                !OwnerMatches(owner,run,slot,directory))return SlotStatus.Invalid;
-            lock(SingleStoreGate)
-            {
-                if(DuplicateStore(owner))return SlotStatus.Busy;
-                SlotStatus status=TryCreateNewCore(directory,run,slot,owner,
-                    out opened,hook);
-                if(status==SlotStatus.Accepted&&opened!=null)
-                    StoresByOwner[owner.Identity]=opened;
-                return status;
-            }
-        }
-        public static SlotStatus TryOpenExisting(string directory,long run,Guid slot,
-            CanonicalWorldSlotLease owner,out CanonicalSingleAuthorityStoreV3R2? opened,
-            IAtomicEnvelopePublisher? hook=null)
-        {
-            opened=null;
-            if(!ValidPath(directory,run,slot)||
-                !OwnerMatches(owner,run,slot,directory))return SlotStatus.Invalid;
-            lock(SingleStoreGate)
-            {
-                if(DuplicateStore(owner))return SlotStatus.Busy;
-                SlotStatus status=TryOpenExistingCore(directory,run,slot,owner,
-                    out opened,hook);
-                if(status==SlotStatus.Accepted&&opened!=null)
-                    StoresByOwner[owner.Identity]=opened;
-                return status;
-            }
-        }
         private static SlotStatus TryCreateNewCore(string directory,long run,Guid slot,
             CanonicalWorldSlotLease owner,out CanonicalSingleAuthorityStoreV3R2? opened,
             IAtomicEnvelopePublisher? hook=null)
