@@ -1,0 +1,78 @@
+name: B01-41 W24 selected exact #749 original one owner 24 external CLR regression
+on:
+  push:
+    branches: [ci/b01-41-p17w24-selected749-real-crossprocess-qa]
+    paths:
+      - 'Tools/B01/CI41/P17W24/**'
+      - '.github/workflows/b01-41-p17w24-selected749-exact-original-os-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  selected-exact-original-749:
+    name: Selected #749 12 true two-process lease races with frozen #556 (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Actually execute 18 independent anti-mock source unit tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
+          "$PY" -m unittest discover -s Tools/B01/CI41/P17W24/ -p test_source_guard.py -v 2>&1 | tee "ci41-w24-python-${{ runner.os }}.txt"
+          grep -q 'Ran 18 tests' "ci41-w24-python-${{ runner.os }}.txt"
+          grep -q 'OK' "ci41-w24-python-${{ runner.os }}.txt"
+      - name: Exact original frozen #669 source only for negative legacy writer, no co-install
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121
+          mkdir -p Tools/B01/CI41/P17W24/.original
+          git show d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121:Tools/B01/B01-62/P17W20SingleFileSaveSlot/SingleFileSaveSlot.cs > Tools/B01/CI41/P17W24/.original/SingleFileSaveSlotV1.cs
+          test "$(git hash-object Tools/B01/CI41/P17W24/.original/SingleFileSaveSlotV1.cs)" = db7745635164d9eb6b10f3246538700158130b7b
+      - name: Verify every original selected source Git blob and exactly 7 CI41 files
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
+          "$PY" Tools/B01/CI41/P17W24/source_guard.py "ci41-w24-origin-${{ runner.os }}.json"
+          "$PY" -c 'import json,sys;x=json.load(open(sys.argv[1]));assert x["status"]=="SELECTED_ORIGINAL_SHA_AND_TEST_SCOPE_PASS" and len(x["added_owned_paths"])==7 and x["G1"]=="NOT_RUN" and x["expected_real_pair_races_each_os"]==12 and x["alternatives"][0]=="#753_ALT_HOLD";print("CI41_W24_ONE_SELECTED_749_SHA_ORIGINAL_SOURCE_SCOPE_PASS")' "ci41-w24-origin-${{ runner.os }}.json"
+      - name: Compile original selected V3/one owner full #556 Save and negative legacy source
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build Tools/B01/CI41/P17W24/Original749CrossprocessQA.csproj -c Release --warnaserror 2>&1 | tee "ci41-w24-build-${{ runner.os }}.txt"
+          grep -q 'Build succeeded' "ci41-w24-build-${{ runner.os }}.txt"
+      - name: EXECUTE original selected #749 12 true synchronized external CLR pairs and ID rollback
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --no-build -c Release --project Tools/B01/CI41/P17W24/Original749CrossprocessQA.csproj 2>&1 | tee "ci41-w24-real-${{ runner.os }}.txt"
+          grep -q 'CI41_W24_SELECTED_749_ORIGINAL_SINGLE_OWNER_PASS assertions=' "ci41-w24-real-${{ runner.os }}.txt"
+          grep -q 'barrier_pairs=12 child_processes=24' "ci41-w24-real-${{ runner.os }}.txt"
+          grep -q 'CI41_W24_707_PARTIAL_FALSE_THROW_QUARANTINE_ESCROW_PASS' "ci41-w24-real-${{ runner.os }}.txt"
+          grep -q 'CI41_W24_669_LEGACY_WRITER_REJECTED_AND_FROZEN_556_IDS_COLD_PASS' "ci41-w24-real-${{ runner.os }}.txt"
+          grep -q 'CI41_W24_REAL_OS_SOURCE_ONLY_NOT_UNITY_G1_NOT_RUN_G2_HOLD' "ci41-w24-real-${{ runner.os }}.txt"
+      - name: Preserve genuine exact SHA tests not fake native Unity evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CI41-W24-ORIGINAL-749-ONE-OS-OWNER-NOT-UNITY-${{ runner.os }}
+          path: |
+            ci41-w24-python-${{ runner.os }}.txt
+            ci41-w24-origin-${{ runner.os }}.json
+            ci41-w24-build-${{ runner.os }}.txt
+            ci41-w24-real-${{ runner.os }}.txt
+          retention-days: 14
+          if-no-files-found: warn
