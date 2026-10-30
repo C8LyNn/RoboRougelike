@@ -1,0 +1,66 @@
+{
+  "schema": "b01-50-zipreadbench-v1",
+  "provenance": "HISTORICAL_ZIP_READ_AND_DECOMPRESS_NOT_UNITY_RUNTIME",
+  "archive": "RoboRougelike_CX_Windows_x64.zip",
+  "source": "Codex #310, real stored archive; no Player executed",
+  "archive_sha256": "a4e1054e09066bb6cd27d3985994ac1a66bcc85caf7ff202af8f59e340bdf442",
+  "original_source_blob": "f8acb5a17d1721aade5d78eb8a8ae33f7db8477d",
+  "original_source_commit": "d7278f224faecb2aa694bcb93139ef338171e885",
+  "host_os": "Linux",
+  "python_version": "3.13.5",
+  "repeats": 3,
+  "archive_bytes": 39623366,
+  "files": 211,
+  "uncompressed_bytes": 103666052,
+  "median_round_ns": 452657694,
+  "p95_round_ns": 470499781,
+  "rounds": [
+    {
+      "bytes_read": 103666052,
+      "elapsed_ns": 470499781,
+      "round": 1
+    },
+    {
+      "bytes_read": 103666052,
+      "elapsed_ns": 452657694,
+      "round": 2
+    },
+    {
+      "bytes_read": 103666052,
+      "elapsed_ns": 437785404,
+      "round": 3
+    }
+  ],
+  "top5_median_read": [
+    {
+      "path": "UnityPlayer.dll",
+      "bytes": 36340136,
+      "median_read_ns": 168570387
+    },
+    {
+      "path": "MonoBleedingEdge/EmbedRuntime/mono-2.0-bdwgc.dll",
+      "bytes": 7828904,
+      "median_read_ns": 35809465
+    },
+    {
+      "path": "RoboRougelike_Data/Managed/mscorlib.dll",
+      "bytes": 4632064,
+      "median_read_ns": 20119943
+    },
+    {
+      "path": "D3D12/D3D12Core.dll",
+      "bytes": 4725304,
+      "median_read_ns": 19720088
+    },
+    {
+      "path": "RoboRougelike_Data/globalgamemanagers.assets.resS",
+      "bytes": 6174944,
+      "median_read_ns": 18391448
+    }
+  ],
+  "local_full_211_file_json_sha256": "51375f2a37647d6e8783a35e0ad12292b1a199333a00bbde9cc822936ae74bfc",
+  "native_unity": false,
+  "player_execution": false,
+  "performance_fps": false,
+  "limitations": "Three wall-clock samples (1MiB buffered read, decompression+SHA256 in Python) on one cache-influenced Linux host, not Unity startup, not disk-only latency, no confidence interval"
+}
