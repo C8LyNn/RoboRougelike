@@ -24,7 +24,10 @@ R3={
          "host_blob":"7b8354bc4cd846227b4bdf6d25d81bed34a325bc"},
     "B":{"pr":644,"sha":"d9b95146e46a5d81d5a291d7887e456164f4d0c2",
          "core_blob":"1f9e883c38101f214e4335867faa731f7ae67689",
-         "host_blob":"2bcade1ba2ebe839db5240a0ca0ecf1eaaafccd0"}
+         "host_blob":"2bcade1ba2ebe839db5240a0ca0ecf1eaaafccd0"},
+    "C":{"pr":652,"sha":"ae5dbfa5e9c4689d2bf80fcabf8438e9c673c419",
+         "core_blob":"04866a5682d4898a3f8ba0cfa9083cb684213269",
+         "host_blob":"7b8354bc4cd846227b4bdf6d25d81bed34a325bc"}
 }
 FILES={
  "Assets/B0123UnitySaveBridge001/Core/AtomicWorldSwap.cs":None,
@@ -73,7 +76,7 @@ def inspect_source(candidate,core,host):
         require("OnDisable(){ReleaseSlot();}" in host and
                 "TrySelectPersistentRunSlot" in host,
                 "R3A_ON_DISABLE_AND_RUN_SLOT_OWNER_WIRING_CHANGED")
-    else:
+    elif candidate=="B":
         require("durable!=publishedGeneration" not in core and
                 "publishedGeneration" not in core,
                 "R3B_CORE_CHANGED_RECHECK_ORIGINAL_SECURITY")
@@ -81,6 +84,15 @@ def inspect_source(candidate,core,host):
                 "private void OnDestroy()" in host and
                 "ConfigureCheckpointSlotBeforeAwake" in host,
                 "R3B_RETAINED_OWNER_SLOT_WIRING_CHANGED")
+    else:
+        require("commitMayHaveChangedAuthority" in core and
+                "quarantined=true" in core and
+                "durable!=publishedGeneration" in core and
+                "diskHash!=publishedHash" in core,
+                "R4_PENDING_COMMIT_STICKY_QUARANTINE_GUARD_MISSING")
+        require("OnDisable(){ReleaseSlot();}" in host and
+                "TrySelectPersistentRunSlot" in host,
+                "R4_MUST_RETAIN_SELECTED_R3A_HOST_NOT_ALT_R3B")
 
 def stage(candidate,root):
     require(candidate in R3,"UNKNOWN_VARIANT")
@@ -91,6 +103,8 @@ def stage(candidate,root):
     require(git("rev-parse","--verify",original["sha"]+"^{commit}")==
             original["sha"],"WRONG_R3_HEAD")
     git("merge-base","--is-ancestor",FROZEN["596"],original["sha"])
+    if candidate=="C":
+        git("merge-base","--is-ancestor",R3["A"]["sha"],original["sha"])
     # QA branch itself derives solely from #596, and contains own seven ADDED paths.
     changed=set(git("diff","--name-only",FROZEN["596"],"HEAD").splitlines())
     require(changed==OWNED,"QA_SCOPE_NOT_7_NEW_EXCLUSIVE_FILES")
@@ -121,7 +135,10 @@ def stage(candidate,root):
       "original_exact_sha":original["sha"],
       "original_frozen":FROZEN,
       "stage":"EXACT_ORIGINAL_GIT_BLOBS_ONLY",
-      "no_mixed_assets":True,"selected_r3":"NONE_OWNER_DECISION_PENDING",
+      "no_mixed_assets":True,"selected_r3":"A_642_EXPLICIT_OWNER_CHOICE",
+      "variant_role":{"A":"OWNER_SELECTED_R3_FROZEN",
+                      "B":"ALT_HOLD_NEVER_CO_INSTALL",
+                      "C":"OWNER_R4_DESCENDANT_PENDING_G0"}[candidate],
       "source_files":files,
       "original_public_unity_host_blob":blob,
       "runtime_compilation":"PENDING_DOTNET_RUN",
@@ -131,7 +148,7 @@ def stage(candidate,root):
 
 def main():
     p=argparse.ArgumentParser()
-    p.add_argument("--candidate",required=True,choices=["A","B"])
+    p.add_argument("--candidate",required=True,choices=["A","B","C"])
     p.add_argument("--dest",required=True)
     args=p.parse_args()
     root=Path(args.dest)
