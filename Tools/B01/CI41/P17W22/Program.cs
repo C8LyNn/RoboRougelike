@@ -153,7 +153,7 @@ internal static class Program
             while(!File.Exists(peer)&&timer.Elapsed<TimeSpan.FromSeconds(15))
                 Thread.Sleep(2);
             // Explicit stage owner/physical test fake retirement, not native PhysX.
-            sess.TryCloseAfterPhysicalRetirement(()=>true);
+            sess.TryCloseAfterPhysicalRetirement(()=>factory.TrustedPhysicalRetire());
             sess.Dispose();
         }
     }
