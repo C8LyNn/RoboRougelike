@@ -19,7 +19,10 @@ def fixture():
           "head":{"sha":sha},"base":{"repo":{"full_name":gate.REPO}},
           "title":("ONE versioned owner" if n==749 else "C# owner"),
           "body":("Canonical old .lease" if n==753 else "ColdRestart generation" if n==750
-           else "#749 and #732 ACCEPTED_SOURCE_ONLY" if n==755 else "signed")}
+           else "#749 and #732 ACCEPTED_SOURCE_ONLY" if n==755
+           else "#749 SOURCE_RELEASE_GATE=GREEN_SCOPE_ONLY_FROZEN_PRIVATE_510_HOLD 24/24" if n==758
+           else "#750 SOURCE 10/10, native NOT_RUN" if n==766
+           else "#749 honest crash 16 PASS" if n==768 else "signed")}
     runs={str(run):{"id":run,"head_sha":gate.PR_PINS[pr],
                   "status":"completed","conclusion":"success"}
           for run,pr in gate.ACTION_RUN_PINS.items()}
@@ -50,7 +53,9 @@ class W24LiveIntakeUnitTests(unittest.TestCase):
     def test_g0_transport_only(self):
         v=gate.validate(fixture())
         self.assertEqual(v["formal_749_transport_g0"],"ACCEPTED_SOURCE_ONLY")
-        self.assertEqual(v["independent_749_SECURITY"],"PENDING_EXACT_ORIGINAL_CROSSPROCESS_QA")
+        self.assertEqual(v["independent_749_SECURITY"],"SOURCE_GREEN_SCOPE_ONLY_B01_61_758")
+        self.assertEqual(v["selected_749_crash_source"],"SOURCE_GREEN_SCOPE_ONLY_B01_62_768")
+        self.assertEqual(v["independent_750_fixture"],"SOURCE_GREEN_SCOPE_ONLY_B01_61_766")
     def test_two_alt_drafts(self):
         v=gate.validate(fixture())
         self.assertEqual([x["pr"] for x in v["non_selected_verified"]],[753,741])
@@ -175,6 +180,26 @@ class W24LiveIntakeUnitTests(unittest.TestCase):
     def test_reject_fake_function_gate(self):
         self.deny(lambda x: x['hq'].update(body=x['hq']['body'].replace('Block fight start ONLY for a genuinely non-functional robot','Block always')))
 
+
+    def test_reject_source_758_sha(self):
+        self.deny(lambda x: x['pulls']['758']['head'].update(sha='a'*40))
+    def test_reject_source_766_sha(self):
+        self.deny(lambda x: x['pulls']['766']['head'].update(sha='b'*40))
+    def test_reject_source_768_sha(self):
+        self.deny(lambda x: x['pulls']['768']['head'].update(sha='c'*40))
+    def test_reject_source_758_run_wrong_head(self):
+        self.deny(lambda x: x['runs']['41137466367'].update(head_sha='0'*40))
+    def test_reject_source_766_run_failed(self):
+        self.deny(lambda x: x['runs']['41137933943'].update(conclusion='failure'))
+    def test_reject_source_768_run_wrong_head(self):
+        self.deny(lambda x: x['runs']['41138019965'].update(head_sha='0'*40))
+    def test_reject_source_missing_758_scoped_qa(self):
+        self.deny(lambda x: x['pulls']['758'].update(body='no independent source'))
+    def test_reject_source_missing_768_crash_qa(self):
+        self.deny(lambda x: x['pulls']['768'].update(body='no crash test'))
+    def test_reject_source_missing_766_cold_qa(self):
+        self.deny(lambda x: x['pulls']['766'].update(body='no fixture test'))
+
 class W24LiveCLI(unittest.TestCase):
     def test_cli_snapshot_returns_source_hold(self):
         with tempfile.TemporaryDirectory() as td:
@@ -225,6 +250,6 @@ class W24LiveCLI(unittest.TestCase):
         self.assertEqual(result["real_native_unity_g1"],"NOT_RUN")
         self.assertFalse(result["release"])
     def test_every_required_run_checked(self):
-        self.assertEqual(set(gate.ACTION_RUN_PINS.values()),{749,755,750,732})
+        self.assertEqual(set(gate.ACTION_RUN_PINS.values()),{749,755,750,732,758,766,768})
 if __name__=="__main__":
     unittest.main()
