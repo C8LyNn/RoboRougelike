@@ -1,0 +1,11 @@
+# B01-11 / PASS17-WAVE06 / UXFOCUS-001 R1 — real C# keyboard navigation core
+
+**A NEW, GAME-ELIGIBLE C# UI INTERACTION MECHANIC**, not another browser UX mock, localization pack or COMBAT-CUES HUD. Original standalone pure C# `Runtime/MenuNavCore.cs` exposes `MenuNavCore.Targets(MenuSnapshot)` and `MenuNavCore.Step(MenuSnapshot,string focusId,NavCommand)` to handle directional focus and safe action selection, without UnityEngine dependencies.
+
+**Exactly sourced geometry:** vehicle selection and upgrade reward controls match authored `Assets/R1/R1RunHUD.cs` Git blob `049266e930fcb27062c0425dda248a970b681923` as inspected at Codex gameplay commit `203a0805251ed28293888e43f2d49f0df63767c6`. Supported screens: `VehicleSelect` (3 cards, seed, conditional resume, prepare, sandbox, map editor, quit), `RewardChoice` (0–3 dynamic offers), `Results` (restart). Intentionally **NOT** Garage, combat aim/weapon, pause-menu focus, save implementation, or CHL/PARTSIZE.
+
+**Real behavior:** deterministic spatial keyboard focus, no diagonal escape from last card to a lower Quit button, clamps to valid source controls, disabled/unavailable checkpoint cannot be accidentally confirmed, stale focus from a prior screen or a consumed reward yields no action on Confirm, changing available choices safely re-establishes focus, text editing suspends navigation, screen transition blocks all actions. The source returns `NavAction` but performs ZERO game mutations, so integration owner retains sole authority.
+
+**Executed genuine code tests** are in `Tests/Program.cs`, compiled together with exact source `MenuNavCore.cs` via .NET 8. [Original Ubuntu+Windows GitHub Actions](https://github.com/C8LyNn/RoboRougelike/actions/runs/41029585530) (60 cases per OS when fully completed); independent B01-40/60 still PENDING, Unity native and human playtest NOT_RUN. No false claim of player GUI keyboard operation.
+
+**Owner & scope:** only `Research/B01-11/P17/W06-UXFOCUS-001/**` and own `.github/workflows/b01-11-uxfocus-w06.yml`. Branch `research/b01-11-p17-w06-uxfocus-001` based on untouched `main@5f06af81e2dd9d877e4300259bb3dd008cb9c9d1`. No `Assets/**` modification, no merge. Previous frozen UXHELP-001 R2 [#394](https://github.com/C8LyNn/RoboRougelike/pull/394) unchanged.

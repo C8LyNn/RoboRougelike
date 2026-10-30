@@ -1,0 +1,91 @@
+{
+  "schema": "b01-package-v1",
+  "package_id": "B01-11-P17-UXFOCUS-001",
+  "revision": "R1",
+  "owner": "B01-11 UX RESEARCH & COMPETITIVE ANALYSIS",
+  "workflow": "PASS17 / WAVE06",
+  "issue": "https://github.com/C8LyNn/RoboRougelike/issues/416",
+  "source_branch": "research/b01-11-p17-w06-uxfocus-001",
+  "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "source_commit": "a58eadc567acb6af0a08d7a70509bf6d051932de",
+  "source_game_hud_blob": "049266e930fcb27062c0425dda248a970b681923",
+  "source_game_reference": "203a0805251ed28293888e43f2d49f0df63767c6",
+  "source_provenance": "B01-11 original keyboard focus/navigation policy C# for existing R1 GUI; all code self-authored, no Unity source or external assets copied.",
+  "files": [
+    {
+      "path": "Research/B01-11/P17/W06-UXFOCUS-001/Runtime/MenuNavCore.cs",
+      "git_blob_sha1": "bdf3ac0990f0d1d8a31ffb00b14ed23150097e70",
+      "sha256": "11de7107d1703d814a8cbf3bfbf6ed3e7d972d7b60d33fecd8d3f5ec033410db",
+      "bytes": 7077
+    },
+    {
+      "path": "Research/B01-11/P17/W06-UXFOCUS-001/Tests/Program.cs",
+      "git_blob_sha1": "4acaf76ce12f336a872200a2f9e8824cbc349a2f",
+      "sha256": "1f0f1a2a820cf13b5964c6bdfdd08acc32cecf553399ef350ed32a45642eaa49",
+      "bytes": 10469
+    },
+    {
+      "path": "Research/B01-11/P17/W06-UXFOCUS-001/Tests/MenuNavTests.csproj",
+      "git_blob_sha1": "5fde9979fd17843a6187a61aabd304e75dcd8163",
+      "sha256": "0511940e3d62f902037fc59cb977b28b70e3f678092f6bf381c8fc723986602e",
+      "bytes": 398
+    },
+    {
+      "path": ".github/workflows/b01-11-uxfocus-w06.yml",
+      "git_blob_sha1": "ee5db1f1036a3b011e8f9df98db1e5d2e9241c6a",
+      "sha256": "eac3e8d05d5c153a70070b1fc3c62ef173e32d5f196cb5e986b1993e9feac8f6",
+      "bytes": 891
+    },
+    {
+      "path": "Research/B01-11/P17/W06-UXFOCUS-001/README.md",
+      "git_blob_sha1": "116e9110399aed43a3a1d991529c795819f5a421",
+      "sha256": "b846f258c1ab214a7522568760c673eca5b478473bcef4041e827f3a52ad8421",
+      "bytes": 2274
+    },
+    {
+      "path": "Research/B01-11/P17/W06-UXFOCUS-001/INSTALL_FOR_CODEX.md",
+      "git_blob_sha1": "1e6837e3ea0ef63b944b4422c5eeb05de1974199",
+      "sha256": "37e3332a4517d81b79dddcaa779616a3fac61b0b41f6bb3ecf0457b7f22052f3",
+      "bytes": 2449
+    },
+    {
+      "path": "Research/B01-11/P17/W06-UXFOCUS-001/TEST_PLAN.md",
+      "git_blob_sha1": "d4b4da25e36db6e4803d8c82370dd1c50bc38307",
+      "sha256": "92d22d5cb328e93d3b7e977b83b3226857267b75c331b315f40d61a251212faf",
+      "bytes": 1107
+    },
+    {
+      "path": "Research/B01-11/P17/W06-UXFOCUS-001/QA_RECEIVER.md",
+      "git_blob_sha1": "673157c243229c883be1b8ff64c343fee3c7b30f",
+      "sha256": "406befaf278b40014254fd1a0e5b0cc5ed0c980f3a06189d9f10c052e9940cee",
+      "bytes": 1341
+    }
+  ],
+  "tests": [
+    {
+      "name": "Original compiled C# .NET8 Ubuntu",
+      "status": "PASS",
+      "passed": 60,
+      "failed": 0,
+      "ci": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41029585530"
+    },
+    {
+      "name": "Original compiled C# .NET8 Windows",
+      "status": "PASS",
+      "passed": 60,
+      "failed": 0,
+      "ci": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41029585530"
+    },
+    {
+      "name": "Unity Editor/PlayMode/Windows Player, actual HUD integration, human playtest",
+      "status": "NOT_RUN"
+    }
+  ],
+  "qa_b01_40": "PENDING",
+  "qa_b01_60": "PENDING",
+  "codex_ack": "PENDING",
+  "integration": "NOT_INTEGRATED",
+  "status": "PRODUCER_SOURCE_TESTED_60_60_EACH_OS / INDEPENDENT_G0_PENDING / INDEPENDENT_QA_PENDING / NOT_OFFERED / CODEX_ACK_PENDING",
+  "rollback": "Discard isolated branch and dedicated workflow only; zero canonical Unity game files edited.",
+  "manifest_note": "Files array covers every source/test/workflow/doc except manifest itself, avoiding a circular self hash."
+}
