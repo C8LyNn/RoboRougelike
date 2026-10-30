@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using UnityEngine;
 using B01.DetachedSaveContract001;
 using B01.DebrisRepulse001;
@@ -40,7 +41,11 @@ namespace B01.UnitySaveBridge001
             }
             return true;
         }
-        private void Awake(){coordinator=new AtomicWorldSwap(this);}
+        private void Awake()
+        {
+            string sidecar=Path.Combine(Application.persistentDataPath,"b0123_one_save_host_v2.checkpoint");
+            coordinator=new AtomicWorldSwap(this,new FileCheckpointStore(sidecar));
+        }
         private void Start()
         {
             if(buildInitialFixtureOnStart)

@@ -173,8 +173,8 @@ class T
         Check("old retire error recorded cleanup pending but new commit remains",()=>{
             var f=new Factory();var h=new AtomicWorldSwap(f);
             h.TryLoad(Make(true,false),7,1,()=>true);f.Last!.FailRetire=true;
-            return h.TryLoad(Make(false,true,2),7,1,()=>true)==WorldSwapVerdict.Accepted&&
-                h.CleanupPending&&h.IsConsumed(1,2310002)&&!h.IsConsumed(0,2310001);
+            return h.TryLoad(Make(false,true,2),7,1,()=>true)==WorldSwapVerdict.RollbackQuarantine&&
+                h.CleanupPending&&h.Quarantined&&h.IsConsumed(1,2310002)&&!h.IsConsumed(0,2310001);
         });
         Check("reentrant nested Load denied during idle callback",()=>{
             var h=new AtomicWorldSwap(new Factory());WorldSwapVerdict nested=WorldSwapVerdict.Accepted;
@@ -216,6 +216,47 @@ class T
                     WorldSwapVerdict.InvalidSnapshot;
             });
         }
+
+        Check("W16 #588 same-generation conflicting world RED->GREEN",()=>{
+            var f=new Factory();var store=new MemoryCheckpointStore();
+            var h=new AtomicWorldSwap(f,store);
+            if(h.TryLoad(Make(true,false,5),7,1,()=>true)!=WorldSwapVerdict.Accepted)return false;
+            var old=f.Last;
+            return h.TryLoad(Make(false,true,5),7,1,()=>true)==WorldSwapVerdict.StaleGeneration &&
+                ReferenceEquals(old,f.Last)&&old!.Active&&h.IsConsumed(0,2310001);
+        });
+        Check("W16 durable same generation fork after fresh restart RED->GREEN",()=>{
+            string dir=Path.Combine(Path.GetTempPath(),"b01-w16-"+Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(dir);string sidecar=Path.Combine(dir,"revision");
+            try
+            {
+                var one=new AtomicWorldSwap(new Factory(),new FileCheckpointStore(sidecar));
+                var saved=Make(true,false,9);
+                if(one.TryLoad(saved,7,1,()=>true)!=WorldSwapVerdict.Accepted)return false;
+                var two=new AtomicWorldSwap(new Factory(),new FileCheckpointStore(sidecar));
+                if(two.TryLoad(Make(false,true,9),7,1,()=>true)!=WorldSwapVerdict.StaleGeneration)return false;
+                if(two.TryLoad(Make(false,true,8),7,1,()=>true)!=WorldSwapVerdict.StaleGeneration)return false;
+                return two.TryLoad(saved,7,1,()=>true)==WorldSwapVerdict.Accepted&&two.IsConsumed(0,2310001);
+            }
+            finally{Directory.Delete(dir,true);}
+        });
+        Check("W16 #582 retirement failure sticky quarantine result",()=>{
+            var f=new Factory();var h=new AtomicWorldSwap(f);
+            if(h.TryLoad(Make(true,false),7,1,()=>true)!=WorldSwapVerdict.Accepted)return false;
+            f.Last!.FailRetire=true;
+            var value=h.TryLoad(Make(false,true,2),7,1,()=>true);
+            return value==WorldSwapVerdict.RollbackQuarantine&&h.Quarantined&&
+                h.TryLoad(Make(false,true,3),7,1,()=>true)==WorldSwapVerdict.RollbackQuarantine;
+        });
+        Check("W16 physical Save allocates strict new generation",()=>{
+            var h=new AtomicWorldSwap(new Factory());
+            if(h.TryLoad(Make(true,false,4),7,1,()=>true)!=WorldSwapVerdict.Accepted||
+               !h.TrySave(7,()=>true,out byte[] first)||
+               !h.TrySave(7,()=>true,out byte[] second)||
+               !SnapshotCodec.TryDecode(first,out RunSnapshot? a)||
+               !SnapshotCodec.TryDecode(second,out RunSnapshot? b)||a==null||b==null)return false;
+            return a.Generation==5&&b.Generation==6;
+        });
         Console.WriteLine("UNITY_NATIVE_NOT_RUN; FROZEN_510_PRIVATE_IMPORT_HOLD");
     }
     public static int Main(){Tests();Console.WriteLine("TOTAL "+(pass+fail)+" PASS "+pass+" FAIL "+fail);return fail==0?0:1;}
