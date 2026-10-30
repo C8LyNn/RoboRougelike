@@ -154,6 +154,10 @@ internal static class Program
             var p=Single();p.Tick(0,Obs());var t=p.Tick(1,Obs(visible:false));
             Ensure(t.State==PressureState.Ended&&!p.HasActiveReservation,"slot not released");
         });
+        Check("target leaving range revokes active reservation immediately",()=>{
+            var p=Single(R3EnemyArchetype.Bruiser);p.Tick(0,Obs(distance:12));
+            Ensure(p.Tick(1,Obs(distance:17)).State==PressureState.Ended,"range loss not released");
+        });
         Check("dead enemy cancels active reservation",()=>{
             var p=Single();p.Tick(0,Obs());Ensure(p.Tick(1,Obs(alive:false)).State==PressureState.Ended,"dead reserved slot");
         });
