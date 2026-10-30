@@ -1,0 +1,115 @@
+name: B01-40 W23 original R3 #741 independent 38 CSharp + 3arg mutant and V3 R5 physical source G0
+on:
+  push:
+    branches: [qa/b01-40-p17w23-one-owner-741-original-g0]
+    paths:
+      - 'Tools/B01/B01-40/P17W23R3OneOwnerG0/**'
+      - '.github/workflows/b01-40-p17w23-r3-741-one-owner-g0.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-40/P17W23R3OneOwnerG0/**'
+      - '.github/workflows/b01-40-p17w23-r3-741-one-owner-g0.yml'
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  original-r3-741-source-direct-csharp-and-v3-physical-g0:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: own
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/checkout@v4
+        with:
+          path: bridge
+          ref: 3aae22c03a13e7f10f235877b068e04f5e8c19b7
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: r2
+          ref: bd8905ad549a7b26854b671be971f7d781308311
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: v3
+          ref: b8ca29c7707cd6b4338d0b9772d74dee676d49d2
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: v2
+          ref: 809f82575c638e1b4d2806b5f417bddab6c0871a
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: alt
+          ref: 8ea411b49e629c059f16c9f8b59a534c19f660b8
+      - uses: actions/checkout@v4
+        with:
+          path: r5
+          ref: cc7f73541517a18f4479bb155534bd4832d9985e
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: r4
+          ref: 09c1809b73324a6d31c13e5d0143de62ac1e3ca6
+      - uses: actions/checkout@v4
+        with:
+          path: game
+          ref: d94400d95d13db7f27e1533df05c9292d5380431
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: save
+          ref: 33094f154c7b91119b36d58aab285e6e83c5de57
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: storage
+          ref: d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121
+      - uses: actions/checkout@v4
+        with:
+          path: safe
+          ref: 3b743acc52bb44ae6a50af56ed9aca46d22821a7
+      - uses: actions/checkout@v4
+        with:
+          path: guid
+          ref: 547b55560d1a33af182caeaf73f9a9b2d8b1b7fe
+      - uses: actions/checkout@v4
+        with:
+          path: w21
+          ref: 3cd990c1fabe7c01d226f40f3b8faa6de59e9819
+      - uses: actions/checkout@v4
+        with:
+          path: w23
+          ref: 1f8b85665cb6c1369a15c377225c7e766818170d
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Independently compile genuine original #741 R3 against selected #729 and frozen #556 OS storage, require CS7036 old ctor mutant and strict 39-GUID R5 source-only migration
+        shell: bash
+        run: |
+          set -euo pipefail
+          python own/Tools/B01/B01-40/P17W23R3OneOwnerG0/intake.py --bridge bridge --r2 r2 --v3 v3 --v2 v2 --alt alt --r5 r5 --r4 r4 --game game --save save --storage storage --safe safe --guid guid --w21 w21 --w23 w23 --out evidence | tee b0140-w23-r3-original.log
+          grep -q 'B0140_W23_R3_741_EXACT_ORIGINAL_GIT' b0140-w23-r3-original.log
+          grep -q 'B0140_W23_R3_741_REAL_ORIGINAL_DOTNET' b0140-w23-r3-original.log
+          grep -q 'B0140_W23_R3_741_SAFE_FOREIGN_ROLLBACK' b0140-w23-r3-original.log
+          grep -q 'B0140_W23_R3_741_729_R5_UNITY_PHYSICAL' b0140-w23-r3-original.log
+          grep -q 'B0140_W23_R3_741_G0_SOURCE_ONLY_PASS_NATIVE_NOT_RUN_C510_GAME_HOLD_NO_MERGE' b0140-w23-r3-original.log
+          test -s evidence/r3-741-one-authority-source-g0.json
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-40-W23-R3-741-OriginalOSG0-${{ matrix.os }}
+          path: |
+            evidence/r3-741-one-authority-source-g0.json
+            b0140-w23-r3-original.log
+          retention-days: 21
+          if-no-files-found: warn
