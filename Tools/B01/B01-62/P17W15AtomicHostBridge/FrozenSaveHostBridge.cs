@@ -91,12 +91,12 @@ namespace B01.B0162.AtomicHostBridge
             try
             {
                 if (source == null) return BridgeResult.InvalidSnapshot;
+                // Clone FIRST: IsQuiescent is host-controlled and may invoke callbacks.
+                byte[] copied = (byte[])source.Clone();
                 if (!host.IsQuiescent()) return BridgeResult.Busy;
                 object before = host.CurrentWorldToken;
                 if (before == null) return Fail("LOAD_MISSING_WORLD");
 
-                // Defensive private byte copy BEFORE any host-controlled callback.
-                byte[] copied = (byte[])source.Clone();
                 if (!ColdRestore.TryStage(copied, out ColdRestore? cold) || cold == null)
                     return BridgeResult.InvalidSnapshot;
                 RunSnapshot snapshot = cold.Snapshot;
