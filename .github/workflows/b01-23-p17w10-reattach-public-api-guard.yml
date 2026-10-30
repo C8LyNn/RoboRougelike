@@ -36,7 +36,7 @@ jobs:
           git fetch --no-tags origin refs/pull/439/head
           test "$(git rev-parse cdcaea750fda1a9d7db6018e34970f4b9f206427:Assets/B0123DebrisPlayground001/Runtime/DebrisRigPlayground.cs)" = e4e31c32cb5abda2fef987efa4b45fd61e828312
           test "$(git rev-parse 763748f1be0c61356fb4462144640bb359364226:Assets/B0123DebrisPlayground001/Runtime/DebrisRigPlayground.cs)" = e4e31c32cb5abda2fef987efa4b45fd61e828312
-      - name: RED: compile actual unchanged frozen W07 production public API and require security assertion failure
+      - name: 'RED - compile actual unchanged frozen W07 production public API and require security assertion failure'
         shell: bash
         run: |
           set -euo pipefail
@@ -49,7 +49,7 @@ jobs:
           fi
           grep -q 'SOURCE_SECURITY_RED public direct Reattach rejects real penetrated obstacle 0' w10-real-receipts/old-frozen-red.log
           echo 'FROZEN_ORIGINAL_W07_SECURITY_RED_CONFIRMED'
-      - name: GREEN: compile and execute revised genuine original game API against negative physics call-path
+      - name: 'GREEN - compile and execute revised genuine original game API against negative physics call-path'
         shell: bash
         run: |
           set -euo pipefail
