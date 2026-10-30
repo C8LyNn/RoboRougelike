@@ -48,7 +48,8 @@ METHODS=(
 )
 PINS={
  NATIVE_FIXTURE:"6827351e8f578030de932b2d36a5c0c55337a2f7",
- PHYSICAL:"",LEDGER:"", # assigned by independent original Git blob identity call below
+ PHYSICAL:"2a9ac87d3028d5c5a51915a27c8d2f49aa363f85",
+ LEDGER:"eb21cb12605e94d17dc7decdf040c9009ca0aafe",
  "Assets/B0123CanonicalRigPortW24/Runtime/B0123.CanonicalRigPortW24.Runtime.asmdef":
     "301f9b7a240bcbe0221fd1f4e320a99c9b86c08d",
  "Assets/B0123CanonicalRigPortW24/Tests/PlayMode/B0123.CanonicalRigPortW24.PlayMode.asmdef":
