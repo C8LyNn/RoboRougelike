@@ -42,14 +42,14 @@ class RealGitLineageTests(unittest.TestCase):
                  "public class W06Ledger {}\n")
         self.game=self.commit("frozen game")
         for i,p in enumerate(c.SOURCE_RELATIVE):
-            if "P17W14DetachedSaveContractR2/" in p or
-               p.endswith("b01-23-p17w14-detached-save-r2.yml"):
+            if ("P17W14DetachedSaveContractR2/" in p or
+                p.endswith("b01-23-p17w14-detached-save-r2.yml")):
                 continue
             self.put(p,self.body(p))
         self.old=self.commit("historical save v1")
         for p in c.SOURCE_RELATIVE:
-            if "P17W14DetachedSaveContractR2/" in p or
-               p.endswith("b01-23-p17w14-detached-save-r2.yml"):
+            if ("P17W14DetachedSaveContractR2/" in p or
+                p.endswith("b01-23-p17w14-detached-save-r2.yml")):
                 self.put(p,self.body(p))
         self.save=self.commit("fixed save v2")
         self.game_original=self.game
