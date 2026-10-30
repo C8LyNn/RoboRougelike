@@ -77,7 +77,7 @@ internal static class OriginalReadinessSourceTests
             modifies_game=false,
             result
         },serializer);
-        File.WriteAllText(Path.Combine(output,file.Replace(".json","-preview.json")),json+"\n");
+        File.WriteAllText(Path.Combine(output,file.Replace(".json","-preview.json")),json.Replace("\r\n","\n")+"\n");
         Console.WriteLine("SCENARIO "+file+" ready="+result.ReadyCount+" blocked="+result.BlockedCount);
     }
     public static int Main(string[] args)

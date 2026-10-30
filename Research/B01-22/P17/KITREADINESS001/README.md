@@ -50,3 +50,6 @@ foreign or modified files; no blind deletes. To remove this Git-only research,
 close its Draft PR and discard its own new branch; never merge to main/develop.
 Native Unity G1 and independent B01-40/B01-60 QA remain NOT_RUN/PENDING
 until actual execution. B01-00 alone decides #79 OFFERED; Codex ACK not assumed.
+
+## PASS17 W08 cross-platform parity fix
+Original raw Windows/Ubuntu first-run inner source ZIP SHA matched, but preview JSON hashes differed due platform-dependent C# JsonSerializer indentation (CRLF/LF). The original C# scenario writer now normalizes CRLF to LF before writing each generated JSON; physical receiver rejects CR-containing or non-newline-terminated preview files and has a dedicated CRLF negative test. Compare **raw inner** source ZIP and all three original preview JSON hashes across Windows and Ubuntu; outer GitHub Actions ZIP hash is not the evidence.

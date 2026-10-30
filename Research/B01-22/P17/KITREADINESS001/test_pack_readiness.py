@@ -103,6 +103,13 @@ class PhysicalSourceTests(unittest.TestCase):
             (dest/PREVIEWS[0]).write_text("{}")
             with self.assertRaises((SourceError,KeyError)):rollback(dest)
             self.assertTrue(dest.exists())
+    def test_16_noncanonical_crlf_preview_rejected(self):
+        with tempfile.TemporaryDirectory() as t:
+            p=pathlib.Path(t);self.data_dir(p/"in")
+            target=p/"in"/PREVIEWS[0]
+            target.write_bytes(target.read_bytes().replace(b"\\n",b"\\r\\n"))
+            with self.assertRaises(SourceError):read_previews(p/"in")
+
     def test_15_receipt_rejects_unexpected_member_byte(self):
         files=dict(self.files);files[ASSETS[1]]=files[ASSETS[1]]+b"changed"
         rec=receipt_for(self.zip,self.files,self.preview())

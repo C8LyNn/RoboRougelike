@@ -112,6 +112,8 @@ def read_previews(path):
         if current.is_symlink() or not current.is_file():
             raise SourceError("MISSING_PREVIEW:"+name)
         data=current.read_bytes()
+        if b"\r" in data or not data.endswith(b"\n"):
+            raise SourceError("NONCANONICAL_PREVIEW_LINE_ENDINGS:"+name)
         parsed=json.loads(data)
         if parsed["schema"] != "b01-kitreadiness-preview-v1" or \
            parsed["source_sha"] != SOURCE_SHA or parsed["reference_only"] is not True or \
