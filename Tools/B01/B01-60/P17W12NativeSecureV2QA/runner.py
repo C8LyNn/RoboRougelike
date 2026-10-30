@@ -30,6 +30,9 @@ BASE="Tools/B01/B01-60/P17W12NativeSecureV2QA/"
 WF=".github/workflows/b01-60-p17w12-native-unity-readiness.yml"
 OWN={BASE+s for s in ("runner.py","IndependentSecureV2PlayMode.cs",
                        "IndependentSecureV2EditMode.cs","README.md","manifest.json")}|{WF}
+# W13 own versioned rollback hardening only; exact #510 and frozen W12 #532 unchanged.
+OWN|={"Tools/B01/B01-60/P17W13NativeRollbackQA/"+n for n in ("audit.py","README.md","manifest.json")}
+OWN.add(".github/workflows/b01-60-p17w13-native-rollback-audit.yml")
 PREFIXES=("Assets/B0123DebrisRepulse001","Assets/B0123SecureReattachV2")
 NATIVE="Assets/B0160SecureV2NativeQA"
 PROJECT_EXTRA=("Packages/manifest.json","Packages/packages-lock.json",
@@ -244,11 +247,30 @@ def stage(data,items,root):
 def rollback(data,items,root):
  expected=verify(data,items)
  require(root.is_dir() and not root.is_symlink(),"no safe staged Unity project")
+ # W13 security fix: a file-only inventory can be identical while unowned EMPTY
+ # directories remain. Never recursively delete those foreign user directories.
+ allowed_dirs=set()
+ for name in expected:
+  parent=PurePosixPath(name).parent
+  while str(parent)!=".":
+   allowed_dirs.add(str(parent))
+   parent=parent.parent
  present={}
+ present_dirs=set()
  for f in root.rglob("*"):
   require(not f.is_symlink(),"stage contains symlink")
-  if f.is_file():present[f.relative_to(root).as_posix()]=f.read_bytes()
- require(present==expected,"rollback refused changed/unowned staged content")
+  relative=f.relative_to(root).as_posix()
+  if f.is_dir():
+   present_dirs.add(relative)
+  elif f.is_file():
+   present[relative]=f.read_bytes()
+  else:
+   raise AssertionError("unexpected special receiver entry "+relative)
+ require(present==expected,"rollback refused changed/unowned staged file")
+ require(present_dirs==allowed_dirs,
+         "rollback refused foreign/missing directory, including EMPTY directory: "+
+         repr(sorted(present_dirs.symmetric_difference(allowed_dirs))))
+ # Fail-closed scan completes BEFORE the first destructive operation.
  shutil.rmtree(root)
  require(not root.exists(),"rollback did not remove QA project")
 def parse_xml(file,minimum):
