@@ -110,8 +110,12 @@ def build_source_packages(roots, scratch):
 
 def expected_hold(fn,label):
     try:fn()
-    except (Hold,AssertionError,ValueError,OSError):
-        return label
+    except Exception as exc:
+        # Each immutable wrapper defines its own named Hold exception in an
+        # independently imported module. Recognize only expected denial types.
+        if isinstance(exc,(Hold,AssertionError,ValueError,OSError)) or exc.__class__.__name__=="Hold":
+            return label
+        raise
     raise Hold("GATE_FALSE_ACCEPTED:"+label)
 
 def test_receiver536(roots,root):
