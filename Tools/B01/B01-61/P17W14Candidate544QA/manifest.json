@@ -1,0 +1,28 @@
+{
+  "package": "B01-61-P17W14-ORIGINAL544-SCHEMA-SECURITY-GATE",
+  "version": "1.0.0",
+  "scope": "QA_ONLY",
+  "original_544_pr": 544,
+  "original_544_source_sha": "e77529262b8f03c6e9f0e25b642038c351872044",
+  "original_544_blob": "2dd3ee7f465a595ed42c2cbb6637200bb903185f",
+  "frozen_selected_gameplay_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+  "original_w06_blob": "fa1aa5e531927cbe73cf5fdfe161b4a981316db5",
+  "original_r2_blob": "b6a4d04b0c6407c8c84451b4d599d96fe0e4d1a9",
+  "original_rig_blob": "b680ed0ec969ac23203fa55eab7b90f8daa86e43",
+  "source_red_categories": [
+    "post-publish RunSnapshot.Parts public array mutation",
+    "PreparedRestore.StagedLedger exposes mutable frozen #510 ledger",
+    "TrustedManifest.Parts mutable authority if receiver leaks reference"
+  ],
+  "other_producer_549": "RED already in independent #550; not tested here",
+  "expected_evidence": "QA PASS reproduces explicit candidate #544 SOURCE RELEASE RED",
+  "native_unity": "NOT_RUN",
+  "actual_game_save_load": "NOT_RUN",
+  "G0_original_510": "ACCEPTED_SOURCE_ONLY",
+  "SAVELOAD": "HOLD_UNSAFE_CANDIDATE",
+  "G1": "NOT_RUN",
+  "G2": "HOLD",
+  "codex_ack": false,
+  "integrated": false,
+  "merged": false
+}
