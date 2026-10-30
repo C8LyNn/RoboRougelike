@@ -1,0 +1,42 @@
+name: B01-50 SFXVOICE-001 original optional-audio voice tests
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-50/SFXVOICE001/**'
+      - '.github/workflows/b01-50-sfxvoice001.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-csharp-audio-budget:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Build and execute actual CSharp source with warnings as errors
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p sfxvoice-evidence
+          dotnet --version | tee sfxvoice-evidence/dotnet-sdk.txt
+          dotnet run -c Release --project Tools/B01/B01-50/SFXVOICE001/tests/SFXVOICE.Tests.csproj -- --receipt sfxvoice-evidence/test-receipt.json 2>&1 | tee sfxvoice-evidence/original-csharp-tests.log
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('sfxvoice-evidence/test-receipt.json').read_text())
+          assert d['failed'] == 0 and d['passed'] == d['total'] and d['total'] >= 30
+          assert d['nativeUnity'] == 'NOT_RUN' and d['fps'] == 'NOT_MEASURED'
+          print('ORIGINAL_CSHARP_VOICE_ALLOCATOR_PASS', d['passed'], 'UNREAL/NATIVE_UNITY_NOT_RUN')
+          PY
+          sha256sum sfxvoice-evidence/test-receipt.json sfxvoice-evidence/original-csharp-tests.log sfxvoice-evidence/dotnet-sdk.txt > sfxvoice-evidence/SHA256SUMS.txt
+      - name: Preserve real .NET original source receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-50-SFXVOICE001-ORIGINAL-DOTNET-SOURCE-TESTS
+          path: sfxvoice-evidence/**
+          if-no-files-found: error
+          retention-days: 30

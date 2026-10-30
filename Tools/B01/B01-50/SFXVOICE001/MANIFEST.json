@@ -1,0 +1,55 @@
+{
+  "package_id": "B01-50-SFXVOICE-001",
+  "version": "R1",
+  "producer": "B01-50",
+  "base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "exclusive_paths": [
+    "Tools/B01/B01-50/SFXVOICE001/**",
+    ".github/workflows/b01-50-sfxvoice001.yml"
+  ],
+  "package_classification": "ORIGINAL_OPTIONAL_AUDIO_CSHARP_ALLOCATOR_WITH_UNITY_SANDBOX_ADAPTER",
+  "files": {
+    "Tools/B01/B01-50/SFXVOICE001/Core/OptionalSfxVoiceBudget.cs": {
+      "git_blob_sha": "c29b6d067c9649d9ef5cc8ae6f1859e1af0c941f",
+      "utf8_bytes": 8738
+    },
+    "Tools/B01/B01-50/SFXVOICE001/tests/Program.cs": {
+      "git_blob_sha": "1f8f5de093eba0a709980c67e8a81abdfcf63d64",
+      "utf8_bytes": 10785
+    },
+    "Tools/B01/B01-50/SFXVOICE001/tests/SFXVOICE.Tests.csproj": {
+      "git_blob_sha": "35ed245c6205761b05dd8a11a10b293ef4f2209a",
+      "utf8_bytes": 416
+    },
+    "Tools/B01/B01-50/SFXVOICE001/Unity/B0150OptionalSfxVoices.cs": {
+      "git_blob_sha": "0b27d01877681809f553f4435f3152e10d5069ae",
+      "utf8_bytes": 4305
+    },
+    "Tools/B01/B01-50/SFXVOICE001/Unity/B0150OptionalSfxBurstDemo.cs": {
+      "git_blob_sha": "b1bb35bb8ffea418cf1dcf19e7a0ad80cc0cf483",
+      "utf8_bytes": 1135
+    },
+    "Tools/B01/B01-50/SFXVOICE001/README.md": {
+      "git_blob_sha": "f5822b803648d8f8af73a2dfa21a490962c4ca7e",
+      "utf8_bytes": 5191
+    },
+    ".github/workflows/b01-50-sfxvoice001.yml": {
+      "git_blob_sha": "46ab4f1235ff72c8ec2886ad3959c425eab84826",
+      "utf8_bytes": 1806
+    }
+  },
+  "tests": {
+    "original_dotnet8": "34/34 PASS, 0 FAIL; exact source .NET 8 warnings-as-errors",
+    "unity_editmode": "NOT_RUN",
+    "unity_playmode": "NOT_RUN",
+    "actual_fps": "NOT_MEASURED",
+    "independent_qa": "PENDING",
+    "executed_workflow_run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41046220659",
+    "executed_artifact_id": 12972676141,
+    "manifest_integrity": "7/7 original Git blob SHA and UTF8 file size verified",
+    "native_editmode": "NOT_RUN_ACTIVATION_PREFLIGHT",
+    "native_playmode": "NOT_RUN_ACTIVATION_PREFLIGHT"
+  },
+  "rollback": "Delete only independent Tools/B01/B01-50/SFXVOICE001 and .github/workflows/b01-50-sfxvoice001.yml; no original Assets altered.",
+  "producer_status": "SOURCE_CSHARP_VERIFIED_IN_GITHUB_ACTIONS_QA_HANDOFF_PENDING"
+}
