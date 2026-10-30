@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework>
+    <LangVersion>9.0</LangVersion><Nullable>enable</Nullable>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../../../Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs"/>
+    <Compile Include="../../../../Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs"/>
+    <Compile Include="../../../../Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs"/>
+    <Compile Include="../../../../Assets/B0123UnitySaveBridge001/Core/AtomicWorldSwap.cs"/>
+    <Compile Include="Program.cs"/>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,54 @@
+name: B01-61 W16 selected 587 actual atomic source release gate
+on:
+  push:
+    branches:
+      - qa/b01-61-p17w16-selected587-activation-atomic-release-gate
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-61/P17W16Selected587AtomicAcceptance/**'
+      - '.github/workflows/b01-61-p17w16-selected587-atomic-qa.yml'
+jobs:
+  exact-original-selected-bridge-release-hold:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile genuine selected 587 bridge + original 556/W06/510 catalog and run release gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build Tools/B01/B01-61/P17W16Selected587AtomicAcceptance/AtomicAcceptance.csproj -c Release --nologo
+          set +e
+          dotnet Tools/B01/B01-61/P17W16Selected587AtomicAcceptance/bin/Release/net8.0/AtomicAcceptance.dll --release | tee qa_release.log
+          exit_code=${PIPESTATUS[0]}
+          set -e
+          echo "ACTUAL_PRODUCER_RELEASE_GATE_EXIT=${exit_code}"
+          if [[ "${exit_code}" -ne 3 ]]; then
+            echo "INVALID_EXPECTED_P0_RED_OR_UNEXPECTED_SOURCE_FAILURE"
+            exit 1
+          fi
+          grep -Fx 'TOTAL 15 PASS 15 FAIL 0' qa_release.log
+          grep -Fx 'RELEASE_VERDICT=HOLD_P0_RED' qa_release.log
+      - name: Verify EXACT original Git source hashes, path ownership, actual QA stdout
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-61/P17W16Selected587AtomicAcceptance/receipt.py --log qa_release.log --out dist/b01-61-p17w16-exact587-atomic-qa.json
+      - name: Upload actual C# stdout + manifest without implying native G1
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b01-61-p17w16-selected587-${{ matrix.os }}
+          if-no-files-found: warn
+          path: |
+            qa_release.log
+            dist/b01-61-p17w16-exact587-atomic-qa.json
