@@ -57,7 +57,7 @@ internal static class Independent
     private sealed class World:ICanonicalStagedWorld
     {
         readonly RunSnapshot initial;
-        public bool Active,Retired,FailDeactivate,FailRetire,AlterAfterActivate;
+        public bool Active,Retired,FailRetire,AlterAfterActivate;
         public World(RunSnapshot state){initial=state;}
         public RunSnapshot Capture()
         {
@@ -72,7 +72,6 @@ internal static class Independent
         public void Activate(){Active=true;}
         public void Deactivate()
         {
-            if(FailDeactivate)throw new IOException("old world refuses deactivation");
             Active=false;
         }
         public void Retire()
