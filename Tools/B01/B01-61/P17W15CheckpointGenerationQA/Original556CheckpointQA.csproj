@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework>
+    <LangVersion>9.0</LangVersion><Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings><EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="../../../../Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs" Link="EXACT_ORIGINAL_556_SAVE_CONTRACT.cs" />
+    <Compile Include="../../../../Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs" Link="EXACT_ORIGINAL_W06_LEDGER.cs" />
+    <Compile Include="../../../../Assets/B0123SecureReattachV2/Runtime/AtomicDockLedger.cs" Link="EXACT_ORIGINAL_FROZEN510_ATOMIC_R2.cs" />
+    <Compile Include="../../../../Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs" Link="EXACT_ORIGINAL_FROZEN510_ID_CATALOG.cs" />
+  </ItemGroup>
+</Project>
