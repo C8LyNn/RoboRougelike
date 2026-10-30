@@ -1,0 +1,35 @@
+{
+  "package_id": "CI41-SELECTED-SAVE-LINEAGE-FENCE-001",
+  "version": "1.0.0",
+  "role": "B01-41",
+  "wave": "PASS17_WAVE15",
+  "base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "branch": "ci/b01-41-p17w15-save-lineage-fence",
+  "immutable": {
+    "gameplay_pr": 510,
+    "gameplay_sha": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "save_pr": 556,
+    "save_sha": "33094f154c7b91119b36d58aab285e6e83c5de57",
+    "historical_ancestor_pr": 549,
+    "historical_ancestor_sha": "6da2c523e03766cd5a6deaed0cb3cccf8765354b"
+  },
+  "expected_source_additions": 16,
+  "expected_fixture_tests_per_os": 24,
+  "owned_paths": [
+    "Tools/B01/CI41/P17W15/lineage_fence.py",
+    "Tools/B01/CI41/P17W15/test_lineage_fence.py",
+    "Tools/B01/CI41/P17W15/README.md",
+    "Tools/B01/CI41/P17W15/MANIFEST.json",
+    ".github/workflows/b01-41-p17w15-save-lineage.yml"
+  ],
+  "gates": {
+    "producer": "CI_PENDING",
+    "source_G0": "EXTERNAL_ACCEPTANCE_ONLY",
+    "native_g1": "NOT_RUN",
+    "host_save": "UNVERIFIED_HOLD",
+    "G2": "HOLD",
+    "codex_ack": false,
+    "integrated": false
+  },
+  "rollback": "Unmerged CI-only Draft; delete only new W15 own paths, no game files touched."
+}
