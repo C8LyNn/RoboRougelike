@@ -330,7 +330,8 @@ def main():
         "native Unity/URP/PhysX NOT_RUN","producer-side test, B01-40/60 independent G0 pending",
         "no Codex ACK/integration; no source game Assets changed"]}
     path=args.out/"p17-original-glb-binary-qa.json"
-    with path.open("w",encoding="utf-8",newline="\n") as out:\n        out.write(json.dumps(output,indent=2,sort_keys=True)+"\n")
+    with path.open("w",encoding="utf-8",newline="\n") as out:
+        out.write(json.dumps(output,indent=2,sort_keys=True)+"\n")
     print("B01_30_W08_ACTUAL_3_GLB2_43_MESH_5_BRACE_BINARY_QA_PASS",
         json.dumps({"triangles":output["real_triangles_total"],
           "binary_originals":3,"mesh_parts":43,"brace_visuals":5,
