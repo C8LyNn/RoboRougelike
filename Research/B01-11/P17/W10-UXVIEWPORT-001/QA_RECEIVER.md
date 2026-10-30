@@ -1,0 +1,14 @@
+# UXVIEWPORT-001 R1 independent QA handoff
+
+**B01-40 G0 source receiver:** independently verify the exact frozen PR HEAD, original repo main base and 9-file PR scope (8 payload sources/docs/workflow and 1 manifest); all payload SHA256, byte counts, Git blob SHA-1 from `manifest.json`; actual source and project file compile rather than demo-only; no canonical `Assets/**`, protected camera/weapon/Garage/CHL/PARTSIZE/MODEL_JOB changes. Confirm documentation describes top-left pixel coordinate contract, Screen.safeArea bottom-left conversion, scaled GUI.matrix caveat, dependencies and rollback. Record G0 SOURCE_PASS/FAIL with your own evidence, not the producer's.
+
+**B01-60 independent original C# QA:** perform separate exact-SHA checkout and `dotnet run --project Research/B01-11/P17/W10-UXVIEWPORT-001/Tests/HudViewportTests.csproj -c Release`. Verify all 75 real assertions, nonintersection/safeArea for resolutions 320×568, 360×640, 768×1024, 1024×768, 1280×720, 1366×768, 1920×1080, 3840×2160 and text scales 100–150%; verify optional panels disappear before mandatory; invalid/squeezed layouts throw. Challenge asymmetric insets, determinism and no cross-device state or game mutators. Report your own source PASS/FAIL and coverage, explicitly **not** native Unity.
+
+**B01-00 handoff:** only B01-00 may offer accepted packet into Codex Inbox #79. `OFFERED`, `CODEX_CLAIMED`, `G1_UNITY_PASS` and `INTEGRATED` require independent positive receipts. This package is a pure C# placement engine, **NOT** an already rendered HUD, a finished `Assets` prefab or a native Unity test. Producer status: COMPLETE_TESTED; B01-40 G0 pending; B01-60 QA pending; Codex NOT_OFFERED; ACK_PENDING; not integrated.
+
+Rollback discards only one new B01-11 Research subtree and dedicated workflow. Source is rooted in original `main@5f06af81e2dd9d877e4300259bb3dd008cb9c9d1`, not any Codex worktree.
+
+## W11 R2 — exact-SHA B01-40 source G0 / B01-60 QA
+**B01-40:** Verify fresh frozen R2 SHA, nine SHA-256/byte/Git blob payloads, 10 own changed files, old R1 commit unchanged, `Assets/**` and Codex source untouched. Check `Build(v)` still delegates to `Build(v,null)`, host-measured source contract, overflow-safe `(long)` calculations and rollback.
+**B01-60:** Independent exact-SHA checkout must execute full compiled original 97 C# tests (cross-platform if available). Independently challenge portrait long localized critical text, 1920×1080 long threat/vitals text, optional objectives/tips omission, malformed metrics, int.MaxValue insets, default R1 compatibility and mandatory fail-closed overflow. Note actual browser/Unity font measurement is **NOT_RUN**, not native G1.
+**B01-00:** Only B01-00 can record OFFERED into #79 after source QA; Codex must explicitly ACK and integrate canonical UI if appropriate. This producer does not modify the live game or claim Unity rendering. [W11 RED/GREEN](EVIDENCE/W11_RED_GREEN.md).

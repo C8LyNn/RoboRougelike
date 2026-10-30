@@ -1,0 +1,113 @@
+{
+  "schema": "b01-package-v1",
+  "package_id": "B01-11-P17-UXVIEWPORT-001",
+  "revision": "R2",
+  "owner": "B01-11 — UX RESEARCH & COMPETITIVE ANALYSIS",
+  "wave": "PASS17 WAVE11",
+  "issue": "https://github.com/C8LyNn/RoboRougelike/issues/500",
+  "branch": "research/b01-11-p17-w10-uxviewport-001",
+  "base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "source_commit": "5e6e272a71d2c1a899e48ae803bd80383170cc1b",
+  "source_type": "Original pure C# adaptive safe HUD geometry with optional host-measured text bounds and overflow-safe viewport, NOT integrated Unity gameplay",
+  "files": [
+    {
+      "path": "Research/B01-11/P17/W10-UXVIEWPORT-001/Runtime/HudLayoutCore.cs",
+      "bytes": 8617,
+      "sha256": "0a1df67e33845f3f34f8d916541b440fdbb1e2f168fe5e8d6011fc87146523f1",
+      "git_blob_sha1": "5ddaf083358d112c6f667639184152abb9c6ab15"
+    },
+    {
+      "path": "Research/B01-11/P17/W10-UXVIEWPORT-001/Tests/Program.cs",
+      "bytes": 16088,
+      "sha256": "07c7914fa7c984b5a0da9d9e4828836bb0325cd679b8c13671f86d4fcc415f36",
+      "git_blob_sha1": "0b272127816d4a5bb4f962a8ee612c5f3060dd36"
+    },
+    {
+      "path": "Research/B01-11/P17/W10-UXVIEWPORT-001/Tests/HudViewportTests.csproj",
+      "bytes": 402,
+      "sha256": "4f1e30959858c9fa32ee89130aed47de6e9358974e91bf61378779224df91492",
+      "git_blob_sha1": "cb6cff7e30b6b235e8e8f2978bca6cefc4a9c004"
+    },
+    {
+      "path": ".github/workflows/b01-11-uxviewport-w10.yml",
+      "bytes": 907,
+      "sha256": "8c20be6be4e8d1442fc098b56facd36c47447f051d2631f613dbdfd7e69acd4d",
+      "git_blob_sha1": "c49ad60f0dad5711ba11979057558d314fb99f7a"
+    },
+    {
+      "path": "Research/B01-11/P17/W10-UXVIEWPORT-001/README.md",
+      "bytes": 5683,
+      "sha256": "1de1f5c06619b42a1c2df264835fee1531e6319a588755ca8c3e64d5afcb712b",
+      "git_blob_sha1": "6a44c3fd7c9d41cbc3a38b62df0d91b83b211e8e"
+    },
+    {
+      "path": "Research/B01-11/P17/W10-UXVIEWPORT-001/TEST_PLAN.md",
+      "bytes": 3082,
+      "sha256": "6dfc8d82b3bb8c7c56ab0e50f071165977d31495dd025e71871d0730847999bb",
+      "git_blob_sha1": "e6002c938c52799b255aaaf95834a2bd27e04e91"
+    },
+    {
+      "path": "Research/B01-11/P17/W10-UXVIEWPORT-001/INSTALL_FOR_CODEX.md",
+      "bytes": 4120,
+      "sha256": "a08fb44413111fa8392ee309b367a373d5d0d4089feffdc61d15678124e64d0e",
+      "git_blob_sha1": "9bbfde1a876d635a3044fd75b574464685176a11"
+    },
+    {
+      "path": "Research/B01-11/P17/W10-UXVIEWPORT-001/QA_RECEIVER.md",
+      "bytes": 2934,
+      "sha256": "9ae51aa163972c8e5f3b46154463a6e612aed3fc89d27a0b6793456ccff4940c",
+      "git_blob_sha1": "a9276e35fdbbb9fa90b98425ac28edda488e0c67"
+    },
+    {
+      "path": "Research/B01-11/P17/W10-UXVIEWPORT-001/EVIDENCE/W11_RED_GREEN.md",
+      "bytes": 2697,
+      "sha256": "833e098bba9c5fc450202d15b3750609c4a00d728b780dbbbe74580fb11d812b",
+      "git_blob_sha1": "e0c60803032587214806dee8a0abf9c18f213809"
+    }
+  ],
+  "tests": [
+    {
+      "name": "Real typed C# source Ubuntu R2 .NET8",
+      "status": "PASS",
+      "passed": 97,
+      "failed": 0,
+      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41069518743"
+    },
+    {
+      "name": "Real typed C# source Windows R2 .NET8",
+      "status": "PASS",
+      "passed": 97,
+      "failed": 0,
+      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41069518743"
+    },
+    {
+      "name": "R1 original runtime + 15 new W11 tests Ubuntu RED",
+      "status": "FAIL",
+      "passed": 75,
+      "failed": 15,
+      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41069079972"
+    },
+    {
+      "name": "R1 original runtime + 15 new W11 tests Windows RED",
+      "status": "FAIL",
+      "passed": 75,
+      "failed": 15,
+      "run": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41069079972"
+    },
+    {
+      "name": "Native Unity EditMode/PlayMode, Player visual HUD, human UX",
+      "status": "NOT_RUN"
+    }
+  ],
+  "source_producer": "R2_REAL_SOURCE_REPAIR_AND_TESTED_97_PER_OS",
+  "g0_independent": "PENDING",
+  "qa_independent": "PENDING",
+  "g1_unity": "NOT_RUN",
+  "codex": "NOT_OFFERED / ACK_PENDING / NOT_INTEGRATED",
+  "scope": [
+    "Research/B01-11/P17/W10-UXVIEWPORT-001/**",
+    ".github/workflows/b01-11-uxviewport-w10.yml"
+  ],
+  "rollback": "Historical immutable R1 at 4e967a27a483d2aee13c365c22835e11b2af6467; discard isolated W10 producer branch or revert R2-only changes; no Codex-owned game source touched.",
+  "note": "9 pinned payloads including RED/GREEN evidence, excluding manifest to prevent circular digest. Final packaged SHA is doc commit descendant of typed code commit, separately CI-tested."
+}
