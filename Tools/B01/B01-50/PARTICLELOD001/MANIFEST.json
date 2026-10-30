@@ -41,8 +41,8 @@
       "utf8_bytes": 432
     },
     "Tools/B01/B01-50/PARTICLELOD001/README.md": {
-      "git_blob_sha": "1708dc35529e403651413f4a7212e8786956fa53",
-      "utf8_bytes": 5907
+      "git_blob_sha": "34267774797065f00a4333b87834e3d66fe11348",
+      "utf8_bytes": 6127
     },
     ".github/workflows/b01-50-particlelod001.yml": {
       "git_blob_sha": "4dfc9f907e234d6495a29e7416c7937ef34c0f15",
@@ -56,7 +56,8 @@
     "unity_editor": "NOT_RUN",
     "unity_playmode": "NOT_RUN",
     "native_particle_count": "NOT_MEASURED",
-    "fps_gpu": "NOT_MEASURED"
+    "fps_gpu": "NOT_MEASURED",
+    "note": "README discrepancy fixed: .NET test thresholds 20/40m, Unity adapter inspector defaults 18/38m; source CI results recorded in PR evidence, not overwritten into manifest."
   },
   "rollback": "Remove only owned Tools subtree + dedicated workflow. In disposable Unity import disable adapter to restore old emission multiplier, then remove sandbox files and generated .meta."
 }
