@@ -146,12 +146,12 @@ internal static class Program
                         ==SlotStatus.Accepted,"initial persistent g1 for lost ACK scenario");
                     hook.ThrowAfter=true;
                     Check(session!.TryCommit(1,Original556(2,false,true))
-                        ==SlotStatus!.Quarantined&&session!.Quarantined,
+                        ==SlotStatus.Quarantined&&session!.Quarantined,
                         "renamed full g2 then ACK lost => sticky quarantine");
-                    Check(session!.TryRead(out _,out _)==SlotStatus!.Quarantined,
+                    Check(session!.TryRead(out _,out _)==SlotStatus.Quarantined,
                         "uncertain owner cannot read+reissue stale save");
                     Check(session!.TryCommit(2,Original556(3,true,false))
-                        ==SlotStatus!.Quarantined,
+                        ==SlotStatus.Quarantined,
                         "uncertain owner cannot overwrite durable g2 with stale g3");
                 }
                 Check(SingleFileSaveSlot.TryOpenExisting(crash,Run,id,out var recovered)
@@ -180,7 +180,7 @@ internal static class Program
                         ==SlotStatus.Accepted,"commit initial g1 before interrupted stage");
                     hook.ThrowBefore=true;
                     Check(s!.TryCommit(1,Original556(2,false,true))
-                        ==SlotStatus!.Quarantined&&s!.Quarantined,
+                        ==SlotStatus.Quarantined&&s!.Quarantined,
                         "pre-rename callback error conservatively quarantines");
                 }
                 Check(Directory.EnumerateFiles(crash,"*.stage").Any(),
