@@ -1,0 +1,56 @@
+{
+  "package_id": "B01-62-P17-W25-773-PATH-CASE-NEGATIVE-ORIGINAL-QA",
+  "version": "1.0.0-qa-source-only",
+  "owner": "B01-62",
+  "predecessor": {
+    "selected_749": "8634e71dfcf633323073fe584a6c0884f1ca5d23",
+    "confirmed_p0_767": "6d0dff5571cb1d8b252311557dd8142e1b616cf1"
+  },
+  "candidate": {
+    "pr": 773,
+    "head": "3aaaec4027ee246fbfb6f209179f0e9507363473",
+    "git_original_store": "3689238a16d706eda1bf4905cba8029cd2fe77aa",
+    "git_original_session": "b3841132fbfc05da5708af4047f7db141a4abe91"
+  },
+  "frozen_original_git_blobs": {
+    "v3_729_gateway": "21733278b6ab0669fccb6d085e0b6cf242792de2",
+    "v3_729_lease": "a9331dd620336d8c42165d134dc8a5e05ed51873",
+    "original_669_legacy": "db7745635164d9eb6b10f3246538700158130b7b",
+    "frozen_556": "b52e511c370f5fca56c74029050844dc8cbb7f9a",
+    "w06": "fa1aa5e531927cbe73cf5fdfe161b4a981316db5",
+    "spec_510": "b680ed0ec969ac23203fa55eab7b90f8daa86e43"
+  },
+  "changed_paths": [
+    {
+      "path": "Tools/B01/B01-62/P17W25Independent773CrossPlatform/Program.cs",
+      "git_blob": "cfe75995e9b6403ebe818df36f0d17434aa06e3b"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W25Independent773CrossPlatform/Original773W25QA.csproj",
+      "git_blob": "db99861e7500e7d02ab39a4ceb70dd114f5f1a50"
+    },
+    {
+      "path": "Tools/B01/B01-62/P17W25Independent773CrossPlatform/README.md",
+      "git_blob": "fe99257756c111cad95757516bafcc6995e02c09"
+    },
+    {
+      "path": ".github/workflows/b01-62-w25-773-independent-crossplatform.yml",
+      "git_blob": "a78a526dfe17f9745e0eb0aac6f173a1079198b7"
+    }
+  ],
+  "original_test_assertions_per_os": 19,
+  "negative_witness_expected": "LINUX: 773 same-run/slot/g1 two physical files with only case differences; WINDOWS: denies case alias physical fork",
+  "release_gates": {
+    "product_qa_773": "PENDING_SOURCE_ACTUAL",
+    "selected_successor": "HOLD_UNTIL_INDEPENDENT_QA",
+    "alts_741_753": "ALT_HOLD",
+    "original_749": "CANDIDATE_UNTIL_EXPLICIT_CHANGE",
+    "original_772_physical_port": "SOURCE_NOT_NATIVE_G1",
+    "physical_g0": "HOLD_NEW_SHA",
+    "native_unity_g1": "NOT_RUN",
+    "whole_game_economy": "NOT_ATOMICALLY_IMPLEMENTED",
+    "codex": "UNAVAILABLE",
+    "merge": false
+  },
+  "rollback": "close Draft and ignore only 5 new QA paths; never touch original/frozen/Unity project/foreign slot"
+}
