@@ -14,6 +14,8 @@ namespace B01.UnitySaveBridge001
     {
         [SerializeField] private bool buildInitialFixtureOnStart;
         private AtomicWorldSwap coordinator;
+        private FileStream slotOwnerLease;
+        private string checkpointPath;
         private long runId=1;
         public WorldSwapVerdict LastRestoreVerdict {get;private set;}
         public bool HasWorld => coordinator!=null&&coordinator.HasWorld;
@@ -26,7 +28,8 @@ namespace B01.UnitySaveBridge001
         // checking coordinator.Busy from THIS callback would self-deadlock.
         private bool PhysicalIdle()
         {
-            if(!isActiveAndEnabled||coordinator==null||coordinator.Quarantined||
+            if(!isActiveAndEnabled||slotOwnerLease==null||
+               coordinator==null||coordinator.Quarantined||
                transform.position!=Vector3.zero||transform.rotation!=Quaternion.identity||
                transform.lossyScale!=Vector3.one)
                 return false;
@@ -38,14 +41,63 @@ namespace B01.UnitySaveBridge001
                 string type=component.GetType().Name;
                 if(type=="SecureDebrisPlaygroundV2"||type=="DebrisRigPlayground")
                     return false;
+                var competing=component as IsolatedTwinRigSaveHost;
+                if(competing!=null&&competing.isActiveAndEnabled&&competing.HasWorld)
+                    return false;
             }
             return true;
         }
+        // Long-lived OS slot lease, separate from the short checkpoint CAS lock.
+        // Unity OnDisable releases ownership when its physics hierarchy goes inactive.
+        private bool AcquireSlot()
+        {
+            if(slotOwnerLease!=null)return true;
+            try
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(checkpointPath));
+                slotOwnerLease=new FileStream(checkpointPath+".owner",
+                    FileMode.OpenOrCreate,FileAccess.ReadWrite,FileShare.None);
+                return true;
+            }
+            catch(IOException){return false;}
+            catch(UnauthorizedAccessException){return false;}
+        }
+        private void ReleaseSlot()
+        {
+            if(slotOwnerLease==null)return;
+            try{slotOwnerLease.Dispose();}
+            finally{slotOwnerLease=null;}
+        }
         private void Awake()
         {
-            string sidecar=Path.Combine(Application.persistentDataPath,"b0123_one_save_host_v2.checkpoint");
-            coordinator=new AtomicWorldSwap(this,new FileCheckpointStore(sidecar));
+            checkpointPath=Path.Combine(Application.persistentDataPath,
+                "b0123_one_save_host_v2.checkpoint");
+            coordinator=new AtomicWorldSwap(this,new FileCheckpointStore(checkpointPath));
+            AcquireSlot();
         }
+        private void OnEnable(){if(!string.IsNullOrEmpty(checkpointPath))AcquireSlot();}
+        private void OnDisable(){ReleaseSlot();}
+        private void OnDestroy(){ReleaseSlot();}
+
+        // Explicit isolated durable slot selection: unlike historical #596,
+        // a new run NEVER silently reuses another run's global checkpoint path.
+        // Same run + same non-empty slot GUID is stable across process restarts.
+        // Call ONLY before first physical Load; no arbitrary filesystem path input.
+        public bool TrySelectPersistentRunSlot(long desiredRunId,Guid slotId)
+        {
+            if(desiredRunId<=0||slotId==Guid.Empty||coordinator==null||
+               coordinator.HasWorld||coordinator.Busy||coordinator.Quarantined)
+                return false;
+            ReleaseSlot();
+            checkpointPath=CheckpointSlotPath.ForRun(
+                Application.persistentDataPath,desiredRunId,slotId);
+            coordinator=new AtomicWorldSwap(this,new FileCheckpointStore(checkpointPath));
+            runId=desiredRunId;
+            return AcquireSlot();
+        }
+        // Test-only helper retained for external QA of the same unique slot API.
+        public bool TryUseIsolatedNativeTestSlot(Guid testId)
+            =>TrySelectPersistentRunSlot(runId,testId);
         private void Start()
         {
             if(buildInitialFixtureOnStart)
