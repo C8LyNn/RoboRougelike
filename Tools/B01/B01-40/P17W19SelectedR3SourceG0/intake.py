@@ -238,6 +238,9 @@ def main():
     roots={key:getattr(args,key).resolve() for key in
            ("selected","loser_r3","r2","alt604","game","save","safe",
             "oldg0","guidfence")}
+    # Immutable original W17 utility expects the candidate checkout key "bridge".
+    # Bind it to the one verified owner-selected R3; never to a loser.
+    roots["bridge"]=roots["selected"]
     provenance=pin_roots(roots)
     safe=load(roots["safe"]/
        "Tools/B01/B01-40/P17W15AtomicReceiverMigration/migration.py",
