@@ -73,6 +73,7 @@ namespace UnityEngine
             get=>_parent==null?local:_parent.position+local;
             set=>local=_parent==null?value:value-_parent.position;
         }
+        public Transform parent { get=>_parent; set=>SetParent(value,true); }
         public Transform parentTransform=>_parent;
         public Quaternion rotation=>Quaternion.identity;
         public Vector3 lossyScale=>localScale;
