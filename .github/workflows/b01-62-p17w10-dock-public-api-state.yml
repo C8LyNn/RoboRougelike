@@ -1,0 +1,100 @@
+name: B01-62 W10 original W09 public API and stable-ID safety QA
+on:
+  push:
+    branches:
+      - qa/b01-62-p17w10-dock-public-api-state
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W10DockPublicApiStateQA/**'
+      - '.github/workflows/b01-62-p17w10-dock-public-api-state.yml'
+permissions:
+  contents: read
+jobs:
+  source:
+    name: Original-source and mutation QA (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Fetch exact immutable producer V2 original Git objects
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin 33a32b8bd9ab40467ab1a17b5684926a37dbd4d3
+          git cat-file -e 33a32b8bd9ab40467ab1a17b5684926a37dbd4d3^{commit}
+      - name: Execute 26 independent source/negative tests and keep actual log
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="Tools/B01/B01-62/P17W10DockPublicApiStateQA/.output"
+          mkdir -p "$out"
+          python -m unittest discover -s Tools/B01/B01-62/P17W10DockPublicApiStateQA -p test_gate.py -v 2>&1 | tee "$out/tests.log"
+          grep -q 'Ran 26 tests' "$out/tests.log"
+          grep -q '^OK' "$out/tests.log"
+      - name: Verify exact producer and run proof PASS / release HOLD
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="Tools/B01/B01-62/P17W10DockPublicApiStateQA/.output"
+          python Tools/B01/B01-62/P17W10DockPublicApiStateQA/gate.py --repo . --receipt "$out/evidence.json" | tee "$out/evidence.log"
+          grep -q 'B01_62_W10_RESULT=HOLD_UNSAFE_PUBLIC_API' "$out/evidence.log"
+          set +e
+          python Tools/B01/B01-62/P17W10DockPublicApiStateQA/gate.py --repo . --receipt "$out/release.json" --release > "$out/release.log" 2>&1
+          rc=$?
+          set -e
+          cat "$out/release.log"
+          if [ "$rc" -ne 3 ]; then echo "Expected original W09 external public API release HOLD (exit 3), actual $rc"; exit 1; fi
+          cmp "$out/evidence.json" "$out/release.json"
+          echo B01_62_W10_NEGATIVE_RELEASE_GATE_EXPECTED_RED_EXIT3
+      - name: Independently replay exact original W06 ID ledger and V2 router transaction
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir="Tools/B01/B01-62/P17W10DockPublicApiStateQA"
+          out="$dir/.output"
+          python -m unittest discover -s "$dir" -p test_v2_transaction_gate.py -v 2>&1 | tee "$out/v2-tests.log"
+          grep -q 'Ran 14 tests' "$out/v2-tests.log"
+          grep -q '^OK' "$out/v2-tests.log"
+          python "$dir/v2_transaction_gate.py" --repo . --receipt "$out/v2-evidence.json" --stage "$dir/.source_v2" | tee "$out/v2-gate.log"
+          grep -q 'B01_62_V2_TRANSACTION=HOLD_COMMIT_BEFORE_ID_REARM' "$out/v2-gate.log"
+          dotnet run --project "$dir/V2_StateQA.csproj" -c Release --verbosity minimal | tee "$out/v2-csharp.log"
+          grep -q 'TOTAL 9 PASS 9 FAIL 0' "$out/v2-csharp.log"
+          echo B01_62_V2_ORIGINAL_W06_CSHARP_STATE_REPRODUCED_SOURCE_ONLY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-62-w10-dock-state-${{ matrix.os }}
+          path: Tools/B01/B01-62/P17W10DockPublicApiStateQA/.output/
+          include-hidden-files: true
+          if-no-files-found: error
+  parity:
+    name: Cross-OS exact original JSON parity
+    needs: source
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: b01-62-w10-dock-state-ubuntu-24.04
+          path: ubuntu
+      - uses: actions/download-artifact@v4
+        with:
+          name: b01-62-w10-dock-state-windows-2025
+          path: windows
+      - name: Compare source receipt bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp ubuntu/evidence.json windows/evidence.json
+          cmp ubuntu/release.json windows/release.json
+          cmp ubuntu/v2-evidence.json windows/v2-evidence.json
+          sha256sum ubuntu/v2-evidence.json windows/v2-evidence.json
+          sha256sum ubuntu/evidence.json windows/evidence.json
+          echo B01_62_W10_CROSS_OS_SOURCE_RECEIPT_PARITY_PASS
