@@ -1,0 +1,27 @@
+{
+  "name": "B0123.UnitySaveBridge.PlayModeTests",
+  "rootNamespace": "B01.UnitySaveBridge001.Tests",
+  "references": [
+    "B0123.UnitySaveBridge.Core",
+    "B0123.UnitySaveBridge.Unity",
+    "B0123.DetachedSaveContract.Runtime"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "noEngineReferences": false
+}
