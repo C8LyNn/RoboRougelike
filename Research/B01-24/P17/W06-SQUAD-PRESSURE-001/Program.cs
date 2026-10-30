@@ -198,6 +198,15 @@ internal static class Program
             Reject(()=>new SquadPressurePolicy(4,0,1,new[]{1,4,4,4},new[]{1f,1f,1f,1f}));
             Reject(()=>new SquadPressurePolicy(1,0,1,new[]{1,1,1,1},new[]{1f,float.NaN,1f,1f}));
         });
+        Check("deep copy of role tuning arrays prevents later outside balance modification",()=>{
+            int[] cooldown={10,15,12,13};float[] ranges={35f,16f,60f,32f};
+            var policy=new SquadPressurePolicy(3,2,12,cooldown,ranges);
+            var p=new SquadPressureScheduler(new[]{new PressureMember(10,R3EnemyArchetype.Bruiser)},policy);
+            cooldown[1]=3;ranges[1]=199f;
+            Ensure(p.Tick(0,Obs(distance:20)).State==PressureState.Idle,"mutated external balance array changed scheduler");
+            Ensure(policy.CooldownFor(R3EnemyArchetype.Bruiser)==15&&policy.RangeFor(R3EnemyArchetype.Bruiser)==16,
+                "tuning array copy escaped");
+        });
         Check("deep copy of original roster forbids mutation during run",()=>{
             var a=new[]{new PressureMember(10,R3EnemyArchetype.Scout)};
             var p=new SquadPressureScheduler(a,Rule());a[0]=new PressureMember(20,R3EnemyArchetype.Gunner);
