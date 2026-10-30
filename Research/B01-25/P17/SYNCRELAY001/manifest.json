@@ -1,0 +1,87 @@
+{
+  "packageId": "B01-25-SYNCRELAY-001",
+  "version": "R1",
+  "role": "B01-25 — Level & Challenge Design",
+  "sourceBaseSha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "branch": "research/b01-25-p17w07-syncrelay001",
+  "fileScope": [
+    "Research/B01-25/P17/SYNCRELAY001/**",
+    ".github/workflows/b01-25-w07-syncrelay.yml"
+  ],
+  "gitBlobs": {
+    "SyncRelayCore.cs": "675d741e0a1f20dd336ace90179eaef4d5ad70bb",
+    "Program.cs": "f1ae0e169fef68536b8c6f7fe017be38d794ff00",
+    "profiles.json": "d4ad2a2d3e15aaf89cdc2d5feaa0cb51f5b9fd84",
+    "SyncRelayTest.csproj": "0f8dd8babe2b91c7e959effe3bd11e133b08e184",
+    "SyncRelayUnityCompat.csproj": "fafa27adf823edb6b71cc2252493212140094c65",
+    ".gitignore": "6943b188d80a5efce450393ae612928f653e0876",
+    "README.md": "dac1a02eb9073fc253e1f4344e859f85a080f4a4",
+    ".github/workflows/b01-25-w07-syncrelay.yml": "282f2226b4c805d2e8f768ec39df6f7cea2fddca"
+  },
+  "gameMechanic": "Exactly two unordered physical source-level relay activation points, one player, finite timer, either-first, one-shot latch, fail-safe retry and death/reset; game adapter optional Codex-only",
+  "entryApi": "SyncRelayController.Activate(siteId,playerWorldX,playerWorldZ,playerAlive,paused); Advance(deltaSeconds,playerAlive,paused)",
+  "inputs": [
+    {
+      "mapPR": 359,
+      "originalCommit": "ad52a604ffa4f143d98e607049d6f79e0c7e580f",
+      "originalGitBlob": "53eb696950121465befea2855eda4d7268750016",
+      "sites": [
+        [
+          9,
+          6
+        ],
+        [
+          5,
+          10
+        ]
+      ],
+      "windowSeconds": 24,
+      "originalItems": 415,
+      "sourceShortestFloorCells": 8
+    },
+    {
+      "mapPR": 346,
+      "originalCommit": "f565e250659692541d672cdab108c4cfb8cfdd31",
+      "originalGitBlob": "013f5fe2058e76233f580a439e8402c0fe09f124",
+      "sites": [
+        [
+          5,
+          6
+        ],
+        [
+          9,
+          12
+        ]
+      ],
+      "windowSeconds": 48,
+      "originalItems": 360,
+      "sourceShortestFloorCells": 16
+    }
+  ],
+  "test": {
+    "realSourceCI": 41037968021,
+    "originalWinJob": 124003421285,
+    "originalUbuntuJob": 124003420798,
+    "expectedAssertionsPerOS": 53,
+    "expectedNegativePerOS": 15,
+    "compat": "Real same original source compiles netstandard2.1 / LangVersion 9.0 / warnaserror Windows+Ubuntu",
+    "actualArtifacts": {
+      "windows": 12969460610,
+      "ubuntu": 12968474000
+    },
+    "nativeUnity": "NOT_RUN",
+    "independentQA": "PENDING"
+  },
+  "ownsGameAssets": false,
+  "ownsCodexSource": false,
+  "ownsGameFinish": false,
+  "ownsGlobalEnemyAndReward": false,
+  "rollback": "discard only isolated producer-owned Research/SYNCRELAY001 and unique workflow on disposable branch; Codex exclusively handles native adapter rollback",
+  "receivers": [
+    "B01-40 independent manifest/source/G0 and OFFERED_FROZEN decision",
+    "B01-60 independent G0 test then authorized Unity G1",
+    "B01-00 determines inbox #79 handoff priority",
+    "Codex explicitly ACKs and integrates only after selected"
+  ],
+  "status": "PRODUCER_ORIGINAL_CSHARP9_GREEN_BOTH_OS / INDEPENDENT_QA_PENDING / NATIVE_UNITY_NOT_RUN / CODEX_ACK_PENDING / NOT_INTEGRATED"
+}

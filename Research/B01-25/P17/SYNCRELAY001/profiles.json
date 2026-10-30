@@ -1,0 +1,75 @@
+{
+  "packageId": "B01-25-SYNCRELAY-001",
+  "version": "R1",
+  "gridMeters": 4,
+  "levels": [
+    {
+      "id": "CLEARANCE_RELAY",
+      "mapPR": 359,
+      "mapCommit": "ad52a604ffa4f143d98e607049d6f79e0c7e580f",
+      "mapPath": "Research/B01-25/P17/CLEARANCELADDER001/arena.json",
+      "mapGitBlob": "53eb696950121465befea2855eda4d7268750016",
+      "windowSeconds": 24,
+      "sites": [
+        {
+          "id": "CLEARANCE_A",
+          "cell": [
+            9,
+            6
+          ],
+          "world": [
+            36,
+            24
+          ],
+          "radius": 1.6
+        },
+        {
+          "id": "CLEARANCE_B",
+          "cell": [
+            5,
+            10
+          ],
+          "world": [
+            20,
+            40
+          ],
+          "radius": 1.6
+        }
+      ]
+    },
+    {
+      "id": "SLALOM_RELAY",
+      "mapPR": 346,
+      "mapCommit": "f565e250659692541d672cdab108c4cfb8cfdd31",
+      "mapPath": "Research/B01-25/P17/SLALOM001/arena.json",
+      "mapGitBlob": "013f5fe2058e76233f580a439e8402c0fe09f124",
+      "windowSeconds": 48,
+      "sites": [
+        {
+          "id": "SLALOM_A",
+          "cell": [
+            5,
+            6
+          ],
+          "world": [
+            20,
+            24
+          ],
+          "radius": 1.6
+        },
+        {
+          "id": "SLALOM_B",
+          "cell": [
+            9,
+            12
+          ],
+          "world": [
+            36,
+            48
+          ],
+          "radius": 1.6
+        }
+      ]
+    }
+  ]
+}
