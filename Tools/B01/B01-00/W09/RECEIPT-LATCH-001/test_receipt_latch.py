@@ -29,6 +29,10 @@ def make_record(native=False):
                                 "workflow_path": ".github/workflows/b01-00-dispatch-w06.yml",
                                 "event": "pull_request",
                                 "required_job_names": ["dispatch (windows-2025)", "dispatch (ubuntu-24.04)"],
+                                "required_runner_labels": {
+                                    "dispatch (windows-2025)": "windows-2025",
+                                    "dispatch (ubuntu-24.04)": "ubuntu-24.04",
+                                },
                                 "required_steps": ["Original source full dispatch and freeze regression suite",
                                                    "Produce deterministic example plan"]}},
         },
