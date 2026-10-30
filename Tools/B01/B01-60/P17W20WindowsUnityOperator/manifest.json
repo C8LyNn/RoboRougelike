@@ -1,0 +1,84 @@
+{
+  "package_id": "B01-60-P17W20-WINDOWS-MANUAL-UNITY-OPERATOR",
+  "version": "1.0.0",
+  "owner": "B01-60",
+  "hq": 668,
+  "owner_authorization": 667,
+  "canonical_api": 666,
+  "baseQA": {
+    "pr": 657,
+    "sha": "680e3e8127d076842ceec006efb95d8763681587"
+  },
+  "immutable_game": {
+    "pr": 510,
+    "sha": "d94400d95d13db7f27e1533df05c9292d5380431"
+  },
+  "immutable_save": {
+    "pr": 556,
+    "sha": "33094f154c7b91119b36d58aab285e6e83c5de57"
+  },
+  "immutable_r2": {
+    "pr": 596,
+    "sha": "efb2b06eafedab5469b57f163152d96aca3c5915"
+  },
+  "immutable_r3": {
+    "pr": 642,
+    "sha": "22cec9888047994ae523cbe7bf1b0a483d64cec4"
+  },
+  "alt_hold": [
+    644,
+    604
+  ],
+  "native_test_scope": {
+    "original_v2_editmode": 2,
+    "original_v2_playmode": 14,
+    "selected_r4_native": "NOT_ENABLED_UNTIL_OWNER_G0_AND_FIX",
+    "canonical_SaveLoad": "HOLD"
+  },
+  "windows_runner": {
+    "interactive_typed_consent_required": true,
+    "source_only_by_default": true,
+    "isolated_local_clone": true,
+    "auto_remote_fetch": false,
+    "no_ssh": true,
+    "no_automatic_cleanup": true,
+    "no_credentials": true,
+    "no_automatic_upload": true,
+    "sha256_evidence_unsigned": true,
+    "uses_original_runner": true,
+    "selected_r4_blocked_until_independent_security_and_g0": true
+  },
+  "G1": "NOT_RUN_PENDING_USER_EXECUTION",
+  "G2": "HOLD",
+  "integrator_feedback": "NOT_MEASURED",
+  "six_stage": {
+    "IMPLEMENTED": "YES",
+    "TESTED": "PENDING_ACTUAL_WINDOWS_SOURCE_CI",
+    "QA_ACCEPTED": "SOURCE_ONLY_PENDING",
+    "READY_FOR_INTEGRATOR": "NO",
+    "INTEGRATED": "NO",
+    "RELEASED": "NO"
+  },
+  "paths": [
+    "Tools/B01/B01-60/P17W20WindowsUnityOperator/Invoke-B0160WindowsUnity.ps1",
+    "Tools/B01/B01-60/P17W20WindowsUnityOperator/base_native.py",
+    "Tools/B01/B01-60/P17W20WindowsUnityOperator/test_contract.py",
+    "Tools/B01/B01-60/P17W20WindowsUnityOperator/README.md",
+    "Tools/B01/B01-60/P17W20WindowsUnityOperator/manifest.json",
+    ".github/workflows/b01-60-p17w20-windows-local-operator.yml"
+  ],
+  "rollback": "only 6 NEW W20 QA-owned files; old producers and prior QA unchanged",
+  "selected_r4": {
+    "pr": 647,
+    "sha": "09c1809b73324a6d31c13e5d0143de62ac1e3ca6",
+    "authority": "B01-23 signed frozen source",
+    "security_gate": "HOLD_P0_ORPHAN_PHYSICS_AFTER_COMPONENT_ONLY_DESTROY",
+    "independent_source_finding": "B01-61 #670",
+    "native_Save_G1": "NOT_RUN"
+  },
+  "r4_alt_hold": {
+    "pr": 652,
+    "sha": "ae5dbfa5e9c4689d2bf80fcabf8438e9c673c419",
+    "never_mix": true
+  }
+}

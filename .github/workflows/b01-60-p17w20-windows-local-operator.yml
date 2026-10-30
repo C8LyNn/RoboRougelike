@@ -1,0 +1,129 @@
+name: B01-60 W20 Windows local Unity operator source QA (native G1 NOT_RUN)
+on:
+  push:
+    branches: [qa/b01-60-p17w20-windows-manual-unity-operator-r1]
+    paths: ['Tools/B01/B01-60/P17W20WindowsUnityOperator/**','.github/workflows/b01-60-p17w20-windows-local-operator.yml']
+  pull_request:
+    paths: ['Tools/B01/B01-60/P17W20WindowsUnityOperator/**','.github/workflows/b01-60-p17w20-windows-local-operator.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-python:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Pin historical frozen native source and exact source parent objects
+        shell: bash
+        run: |
+          set -euo pipefail
+          for sha in d94400d95d13db7f27e1533df05c9292d5380431 cb2b3a76e84266e2730fffc4ab048c1039f0652f 33a32b8bd9ab40467ab1a17b5684926a37dbd4d3 33094f154c7b91119b36d58aab285e6e83c5de57 680e3e8127d076842ceec006efb95d8763681587; do
+            git fetch --no-tags origin "$sha"
+          done
+      - name: Execute original exact 2+14 native identities and 10 hostile PowerShell source mutations
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W20WindowsUnityOperator/test_contract.py 2>&1 | tee w20-static.log
+          cp w20-static.log qa-w20-windows-operator-static-source-evidence/stdout.log
+      - name: Real original V2 SOURCE-only ZIP plus physical negative checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W20WindowsUnityOperator/base_native.py --mode preflight --out qa-w20-base-preflight 2>&1 | tee w20-base.log
+          grep -F 'B01_60_W20_SOURCE_V2_PREFLIGHT_PASS' w20-base.log
+      - name: Intentional unavailable Editor must be NOT_RUN, without genuine XML or Editor.log
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          python Tools/B01/B01-60/P17W20WindowsUnityOperator/base_native.py --mode native --unity /B01/MISSING_UNITY_6000.3.14f1 --out qa-w20-base-unity-absent 2>&1 | tee w20-no-editor.log
+          rc="${PIPESTATUS[0]}"
+          set -e
+          if [ "$rc" -ne 3 ]; then echo "MISSING_EDITOR_GATE_FAILED $rc"; exit 1; fi
+          test ! -e qa-w20-base-unity-absent/native-verdict.json
+          test ! -e qa-w20-base-unity-absent/EditMode.xml
+          test ! -e qa-w20-base-unity-absent/PlayMode.xml
+          echo 'B01_60_W20_UNITY_NATIVE_G1_NOT_RUN_NO_EDITOR_XML'
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-60-W20-ORIGINAL-V2-STATIC-NOT-UNITY-${{ matrix.os }}
+          path: |
+            qa-w20-windows-operator-static-source-evidence/
+            qa-w20-base-preflight/
+            qa-w20-base-unity-absent/
+            w20-static.log
+            w20-base.log
+            w20-no-editor.log
+          retention-days: 21
+          if-no-files-found: warn
+  windows-real-powershell:
+    runs-on: windows-2025
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Actual Windows PowerShell local GUID clone and source-only preflight, never native
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Stop'
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W20WindowsUnityOperator\Invoke-B0160WindowsUnity.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:RUNNER_TEMP *>&1 | Tee-Object -FilePath windows-preflight.log
+          if($LASTEXITCODE -ne 0){ throw "Local Windows source preflight failed" }
+          if(!(Select-String -Path windows-preflight.log -Pattern "B0160_W20_PREFLIGHT_PASS_REAL_UNITY_G1_NOT_RUN" -Quiet)){throw "Source-only PASS missing"}
+      - name: Actual Windows PowerShell rejects scratch inside original repo
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W20WindowsUnityOperator\Invoke-B0160WindowsUnity.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:GITHUB_WORKSPACE *>&1 | Tee-Object -FilePath windows-unsafe-scratch.log
+          $rc=$LASTEXITCODE
+          if($rc -ne 2){throw "Unsafe scratch not denied exit2: $rc"}
+          Write-Host "B01_60_W20_WINDOWS_SCRATCH_DENIED_PASS"
+          $global:LASTEXITCODE=0
+      - name: Windows native request must refuse missing Editor without an interactive bypass
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W20WindowsUnityOperator\Invoke-B0160WindowsUnity.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:RUNNER_TEMP -UnityPath 'Z:\B0160\missing\6000.3.14f1\Editor\Unity.exe' -Run *>&1 | Tee-Object -FilePath windows-missing-unity.log
+          $rc=$LASTEXITCODE
+          if($rc -ne 3){throw "Missing real Unity not denied exit3: $rc"}
+          Write-Host "B01_60_W20_WINDOWS_MISSING_UNITY_NOT_RUN_PASS"
+          $global:LASTEXITCODE=0
+      - name: Verify physical Windows evidence, retained source SHA, SHA256 manifest, no native claim
+        shell: pwsh
+        run: |
+          $dirs=@(Get-ChildItem -LiteralPath $env:RUNNER_TEMP -Directory -Filter "B0160W20-*")
+          if($dirs.Count -lt 2){throw "Windows source/missing Editor evidence folders absent"}
+          foreach($x in $dirs) {
+            $e=Join-Path $x.FullName 'evidence'
+            $report=Get-Content (Join-Path $e 'operator-report.json') -Raw | ConvertFrom-Json
+            if($report.native_g1 -ne 'NOT_RUN' -or $report.uploaded -or $report.merged){throw "Fake native G1/upload status"}
+            $hash=Join-Path $e 'sha256-manifest.json'
+            $actual=(Get-FileHash $hash -Algorithm SHA256).Hash.ToLowerInvariant()
+            $expected=(Get-Content (Join-Path $e 'sha256-manifest.json.sha256') -Raw).Trim()
+            if($actual -ne $expected){throw "SHA256 proof mismatch"}
+          }
+          Write-Host "B01_60_W20_ACTUAL_WINDOWS_POWERSHELL_LOCAL_SOURCE_AND_SHA256_PASS"
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-60-W20-ACTUAL-WINDOWS-POWERSHELL-DRYRUN-NOT-UNITY
+          path: |
+            windows-preflight.log
+            windows-unsafe-scratch.log
+            windows-missing-unity.log
+            ${{ runner.temp }}/B0160W20-*/evidence/
+          retention-days: 14
+          if-no-files-found: warn
