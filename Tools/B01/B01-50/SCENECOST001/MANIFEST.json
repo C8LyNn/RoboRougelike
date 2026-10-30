@@ -36,7 +36,7 @@
     "Tools/B01/B01-50/SCENECOST001/evidence/producer_receipt.json": {
       "bytes": 1133,
       "git_blob": "a98323ffac41515bedc9f39cca3c850ed5f8d6c6",
-      "sha256": "SHA256_NOT_COMPUTED_GIT_BLOB_VERIFIED"
+      "sha256": "e4a7419e2758db5559beca359d704ee57b13183a7180205e71a26eb03dbdf69a"
     }
   },
   "tests": {
