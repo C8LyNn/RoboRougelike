@@ -33,7 +33,7 @@ test("cannot substitute #510",()=>{const p=trial();p.game_sha="f".repeat(40);err
 test("no participant names or notes schema",()=>{const p=trial();p.participant_name="Bob";error(p,"SCHEMA")});
 test("event free text denied",()=>{const p=trial();p.events[1].note="personal";error(p,"SCHEMA")});
 test("cue must lead",()=>{const p=trial();p.events[0].event="HELP";error(p,"COMPLETE_TIMELINE|CUE_FIRST")});
-test("duplicate cue denied",()=>{const p=trial();p.events.splice(1,0,C(2,"CUE"));error(p,"DUPLICATE_CUE")});
+test("duplicate cue denied at first-cue validation",()=>{const p=trial();p.events.splice(1,0,C(2,"CUE"));error(p,"CUE_FIRST")});
 test("nonmonotonic event timestamp denied",()=>{const p=trial();p.events[2].at_ms=100;error(p,"EVENT_TIME")});
 test("negative event timestamp denied",()=>{const p=trial();p.events[1].at_ms=-1;error(p,"EVENT_TIME")});
 test("noninteger event timestamp denied",()=>{const p=trial();p.events[1].at_ms=2.5;error(p,"EVENT_TIME")});
