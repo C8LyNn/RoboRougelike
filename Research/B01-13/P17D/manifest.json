@@ -15,8 +15,8 @@
       "bytes": 11514
     },
     "Research/B01-13/P17D/test_ld02_observer.py": {
-      "sha256": "8ace675bb1daad9e156002a7dd5390970db903d308435cd871f52f9be032ed95",
-      "bytes": 11787
+      "sha256": "7acace79dba6438261e680ee4bd9eccca3e2bf362cb0e717a24637153014194a",
+      "bytes": 11797
     },
     "Research/B01-13/P17D/README.md": {
       "sha256": "0f53f3a6fbc91a7add439c7bfe2c905b670c02156337a527e66f2d8e7628d6f1",
@@ -35,7 +35,8 @@
     "unity_edit_play_windows_player": "NOT_RUN",
     "actual_human_participants": 0,
     "windows_native_acl_junction": "NOT_MEASURED",
-    "windows_root_casing_fix": "Windows source initial CI RED due to os.path Path.resolve() case-normalization mismatch; fixed in actual R1 original module; final exact SHA CI required, no secret native Unity/Player testing"
+    "windows_root_casing_fix": "Windows source initial CI RED due to os.path Path.resolve() case-normalization mismatch; fixed in actual R1 original module; final exact SHA CI required, no secret native Unity/Player testing",
+    "windows_temp_location_fix": "Original Windows tempfile path may be OS-native junction; tests use explicitly resolved canonical temp base. Real operator root remains fail-closed when ambiguous/junction; exact final source CI is decisive."
   },
   "actual_game_evidence": false,
   "security_limits": [
