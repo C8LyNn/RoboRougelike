@@ -1,0 +1,32 @@
+{
+  "package": "B01-12-TOOLTIP-ANCHOR-001/R1",
+  "version": 1,
+  "owner": "B01-12",
+  "wave": "PASS17-W19",
+  "sources": {
+    "anchor_engine.js": {
+      "sha256": "c657deaf025dbdcac541a4ef0b75a7fa344aa42f3cb6ee48acbb43083e3b568d",
+      "bytes": 6393
+    },
+    "demo.html": {
+      "sha256": "7bed223aeb4b0dff341257cda616664e3d0a6068ec948bc1854c64dd9aca36b3",
+      "bytes": 7044
+    },
+    "ui.js": {
+      "sha256": "76c904abb1780acee00e74e82cd0d4cb70ffad2e3daf0af7580d5a2bd69987df",
+      "bytes": 5197
+    },
+    "test_engine.cjs": {
+      "sha256": "8bca2ec89382f3dda84c838436823e82d5285e6aa330d157e6fe422322841772",
+      "bytes": 10011
+    },
+    "test_browser.py": {
+      "sha256": "de065714083320da0756bdf87e75e19bc5cbe9be184e3b17661f0684ac8be94a",
+      "bytes": 6914
+    }
+  },
+  "qa": "PRODUCER_ONLY",
+  "nativeUnity": "NOT_RUN",
+  "sourceG0": "PENDING",
+  "gameIntegrated": false
+}

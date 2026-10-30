@@ -1,0 +1,58 @@
+name: B01-12 TOOLTIP-ANCHOR-001 original-source QA
+on:
+  pull_request:
+    paths:
+      - 'Research/B01-12/P17W19/TooltipAnchor001/**'
+      - '.github/workflows/b01-12-tooltip-anchor.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-and-chromium:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install real Chromium and pinned Playwright
+        run: |
+          python -m pip install playwright==1.55.0
+          python -m playwright install --with-deps chromium
+      - name: Execute verified original Node and real browser tests
+        working-directory: Research/B01-12/P17W19/TooltipAnchor001
+        run: |
+          node test_engine.cjs
+          python3 test_browser.py
+      - name: Verify corrupt-copy rejection before source execution
+        working-directory: Research/B01-12/P17W19/TooltipAnchor001
+        shell: bash
+        run: |
+          set -euo pipefail
+          scratch="$(mktemp -d)"
+          trap 'rm -rf -- "$scratch"' EXIT
+          cp anchor_engine.js ui.js demo.html test_engine.cjs test_browser.py manifest.json "$scratch"/
+          printf '!' >> "$scratch/ui.js"
+          set +e
+          (cd "$scratch" && node test_engine.cjs) > "$scratch/node-negative.log" 2>&1
+          node_status=$?
+          (cd "$scratch" && python3 test_browser.py) > "$scratch/browser-negative.log" 2>&1
+          browser_status=$?
+          set -e
+          cat "$scratch/node-negative.log" "$scratch/browser-negative.log"
+          test "$node_status" -eq 2
+          test "$browser_status" -eq 2
+          grep -F 'FAIL_CLOSED source mismatch: ui.js' "$scratch/node-negative.log"
+          grep -F 'FAIL_CLOSED source mismatch: ui.js' "$scratch/browser-negative.log"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b01-12-tooltip-anchor-original-receipts
+          path: |
+            Research/B01-12/P17W19/TooltipAnchor001/node-results.json
+            Research/B01-12/P17W19/TooltipAnchor001/browser-results.json
+            Research/B01-12/P17W19/TooltipAnchor001/evidence-1280x720.png
+          if-no-files-found: warn

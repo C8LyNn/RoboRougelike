@@ -1,0 +1,407 @@
+{
+  "package": "B01-12-TOOLTIP-ANCHOR-001/R1",
+  "node": "v22.16.0",
+  "passed": 94,
+  "total": 94,
+  "failed": 0,
+  "sourceHashes": {
+    "anchor_engine.js": {
+      "sha256": "c657deaf025dbdcac541a4ef0b75a7fa344aa42f3cb6ee48acbb43083e3b568d",
+      "bytes": 6393
+    },
+    "demo.html": {
+      "sha256": "7bed223aeb4b0dff341257cda616664e3d0a6068ec948bc1854c64dd9aca36b3",
+      "bytes": 7044
+    },
+    "ui.js": {
+      "sha256": "76c904abb1780acee00e74e82cd0d4cb70ffad2e3daf0af7580d5a2bd69987df",
+      "bytes": 5197
+    },
+    "test_engine.cjs": {
+      "sha256": "8bca2ec89382f3dda84c838436823e82d5285e6aa330d157e6fe422322841772",
+      "bytes": 10011
+    },
+    "test_browser.py": {
+      "sha256": "de065714083320da0756bdf87e75e19bc5cbe9be184e3b17661f0684ac8be94a",
+      "bytes": 6914
+    }
+  },
+  "cases": [
+    {
+      "name": "constant catalogue",
+      "status": "PASS"
+    },
+    {
+      "name": "default top",
+      "status": "PASS"
+    },
+    {
+      "name": "preferred bottom",
+      "status": "PASS"
+    },
+    {
+      "name": "preferred right",
+      "status": "PASS"
+    },
+    {
+      "name": "preferred left",
+      "status": "PASS"
+    },
+    {
+      "name": "fallback top to bottom near upper boundary",
+      "status": "PASS"
+    },
+    {
+      "name": "fallback bottom to top near lower boundary",
+      "status": "PASS"
+    },
+    {
+      "name": "fallback right to left near right boundary",
+      "status": "PASS"
+    },
+    {
+      "name": "fallback left to right near left boundary",
+      "status": "PASS"
+    },
+    {
+      "name": "no clipping with larger safe inset",
+      "status": "PASS"
+    },
+    {
+      "name": "no side fits large tooltip",
+      "status": "PASS"
+    },
+    {
+      "name": "tooltip taller than safe area",
+      "status": "PASS"
+    },
+    {
+      "name": "exclusion prevents overlap",
+      "status": "PASS"
+    },
+    {
+      "name": "all four sides blocked fail-closed",
+      "status": "PASS"
+    },
+    {
+      "name": "same solve deterministic",
+      "status": "PASS"
+    },
+    {
+      "name": "source mutation forbidden",
+      "status": "PASS"
+    },
+    {
+      "name": "overlap edge noncollision",
+      "status": "PASS"
+    },
+    {
+      "name": "exactly 8 exclusions supported",
+      "status": "PASS"
+    },
+    {
+      "name": "more than 8 exclusions invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid viewport width",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid viewport height",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid anchor width",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid anchor height",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid anchor x",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid anchor y",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid tooltip width",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid tooltip height",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid gap -1",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid gap 129",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid gap Infinity",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid gap NaN",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid gap 12",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid gap null",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid preferred none",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid preferred TOP",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid preferred ",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid preferred null",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid preferred 3",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid inset top",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid inset bottom",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid inset left",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid inset right",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid exclusions null",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid exclusions {}",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid exclusions \"bad\"",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid exclusions [{}]",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid top-level input null",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid top-level input {}",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid top-level input []",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid top-level input {\"viewport\":{\"width\":640,\"height\":400},\"anchor\":{\"",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid top-level input {\"viewport\":{\"width\":640,\"height\":400},\"anchor\":{\"",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor outside viewport",
+      "status": "PASS"
+    },
+    {
+      "name": "exclusion outside viewport",
+      "status": "PASS"
+    },
+    {
+      "name": "safe region has no positive width",
+      "status": "PASS"
+    },
+    {
+      "name": "initial state valid",
+      "status": "PASS"
+    },
+    {
+      "name": "unknown state key rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid state open with null ID",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid state closed but pinned",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid state version",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid state revision",
+      "status": "PASS"
+    },
+    {
+      "name": "show opens with revision",
+      "status": "PASS"
+    },
+    {
+      "name": "HIDE closes hover",
+      "status": "PASS"
+    },
+    {
+      "name": "PIN persists HIDE",
+      "status": "PASS"
+    },
+    {
+      "name": "SHOW cannot replace pinned",
+      "status": "PASS"
+    },
+    {
+      "name": "PIN other replaces pinned",
+      "status": "PASS"
+    },
+    {
+      "name": "PIN same toggles close",
+      "status": "PASS"
+    },
+    {
+      "name": "ESCAPE force closes pinned",
+      "status": "PASS"
+    },
+    {
+      "name": "RESET force closes",
+      "status": "PASS"
+    },
+    {
+      "name": "idempotent CLOSE",
+      "status": "PASS"
+    },
+    {
+      "name": "idempotent SHOW",
+      "status": "PASS"
+    },
+    {
+      "name": "revision cap rejects changes",
+      "status": "PASS"
+    },
+    {
+      "name": "revision cap permits no-op",
+      "status": "PASS"
+    },
+    {
+      "name": "state immutable on invalid",
+      "status": "PASS"
+    },
+    {
+      "name": "each allowed id hp",
+      "status": "PASS"
+    },
+    {
+      "name": "each allowed id mass",
+      "status": "PASS"
+    },
+    {
+      "name": "each allowed id energy",
+      "status": "PASS"
+    },
+    {
+      "name": "each allowed id heat",
+      "status": "PASS"
+    },
+    {
+      "name": "each allowed id speed",
+      "status": "PASS"
+    },
+    {
+      "name": "each allowed id repair",
+      "status": "PASS"
+    },
+    {
+      "name": "each allowed id armor",
+      "status": "PASS"
+    },
+    {
+      "name": "each allowed id weapon",
+      "status": "PASS"
+    },
+    {
+      "name": "malformed event null",
+      "status": "PASS"
+    },
+    {
+      "name": "malformed event []",
+      "status": "PASS"
+    },
+    {
+      "name": "malformed event {}",
+      "status": "PASS"
+    },
+    {
+      "name": "malformed event \"foo\"",
+      "status": "PASS"
+    },
+    {
+      "name": "malformed event {\"type\":\"FOO\"}",
+      "status": "PASS"
+    },
+    {
+      "name": "malformed event {\"type\":\"PIN\"}",
+      "status": "PASS"
+    },
+    {
+      "name": "malformed event {\"type\":\"SHOW\"}",
+      "status": "PASS"
+    },
+    {
+      "name": "malformed event {\"type\":\"PIN\",\"id\":\"bad\"}",
+      "status": "PASS"
+    },
+    {
+      "name": "malformed event {\"type\":\"ESCAPE\",\"id\":\"hp\"}",
+      "status": "PASS"
+    },
+    {
+      "name": "malformed event {\"type\":\"RESET\",\"extra\":1}",
+      "status": "PASS"
+    },
+    {
+      "name": "malformed event {\"type\":\"SHOW\",\"id\":\"hp\",\"extra\":1}",
+      "status": "PASS"
+    },
+    {
+      "name": "reject inherited fake records",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid state polluted prototype",
+      "status": "PASS"
+    }
+  ]
+}
