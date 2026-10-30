@@ -1,0 +1,52 @@
+name: B01-61 W21 exact selected original #691 V2 independent #685 plus owner authority regression
+on:
+  push:
+    branches: [qa/b01-61-p17w21-canonical691-stage-ownership-negative]
+permissions:
+  contents: read
+jobs:
+  selected-691-v2-original-stage-and-ownership:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Exact frozen V2 original SHA and six exclusive added QA paths
+        shell: bash
+        run: |
+          set -o pipefail
+          python Tools/B01/B01-61/P17W21CanonicalV2IndependentQA/source_guard.py 2>&1 | tee b0161-w21-v2-pins.log
+      - name: Compile ORIGINAL gateway V2 source and untouched frozen #556/W06
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet build Tools/B01/B01-61/P17W21CanonicalV2IndependentQA/CanonicalV2IndependentQA.csproj -c Release --warnaserror 2>&1 | tee b0161-w21-v2-build.log
+      - name: Execute exact original V2 partial-stage cleanup & two-active-owner risks
+        shell: bash
+        run: |
+          set -o pipefail
+          dotnet run --no-build -c Release --project Tools/B01/B01-61/P17W21CanonicalV2IndependentQA/CanonicalV2IndependentQA.csproj 2>&1 | tee b0161-w21-v2-run.log
+          grep -q 'B0161_W21_SELECTED_V2_691_QA_TOTAL PASS=9 FAIL=0' b0161-w21-v2-run.log
+          grep -q 'W21_CANONICAL_V2_691_TWO_ACTIVE_GATEWAYS_SAME_SLOT_RELEASE_RED=REPRODUCED' b0161-w21-v2-run.log
+          grep -q 'W21_CANONICAL_V2_691_STALE_OWNER_PREVIEW_WITH_NEW_DURABLE_EPOCH_RED=REPRODUCED' b0161-w21-v2-run.log
+          grep -q 'SOURCE_685_PARTIAL_OWNER_CLEANUP=GREEN_REPRO_FIX' b0161-w21-v2-run.log
+          grep -q 'SOURCE_GATE=HOLD_GLOBAL_MULTI_OWNER_AUTHORITY_691' b0161-w21-v2-run.log
+      - name: Original source logs, NOT real Unity Editor/PhysX
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-61-w21-canonical-v2-691-negative-${{ matrix.os }}
+          path: |
+            b0161-w21-v2-pins.log
+            b0161-w21-v2-build.log
+            b0161-w21-v2-run.log
+          if-no-files-found: warn
+          retention-days: 21
