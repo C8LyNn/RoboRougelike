@@ -113,8 +113,12 @@ def execute(repo,output):
                 selected[tags[0]]=path
             game=parent_meta(repo,FROZEN_GAME,"Assets/B0123SecureReattachV2")
             save=parent_meta(repo,FROZEN_SAVE,"Assets/B0123DetachedSaveContract001")
-            need(len(selected)==10 and len(game)==14 and len(save)==9,"selected_dependency_guid_counts")
-            need(len(set(selected)|set(game)|set(save))==33,
+            # Exact original Git trees: the frozen #556 CONTRACT has FOUR .meta objects,
+            # not nine. Earlier 9 was a false QA fixture assumption, not producer RED.
+            print(f"ORIGINAL_META_COUNTS:selected={len(selected)} game={len(game)} save={len(save)}")
+            need(len(selected)==10 and len(game)==14 and len(save)==4,
+                 "selected_dependency_guid_counts")
+            need(len(set(selected)|set(game)|set(save))==28,
                  "CROSS_DEPENDENCY_META_GUID_COLLISION")
             need(not (set(selected.values())&set(game.values()) or
                       set(selected.values())&set(save.values()) or
@@ -211,7 +215,7 @@ def execute(repo,output):
             output.write_bytes((json.dumps(receipt,sort_keys=True,indent=2)+"\n").encode())
             print("SELECTED_596_ORIGINAL_INNER_ZIP_SHA256="+sha(raw))
             print("SELECTED_596_REAL_GIT_FILES=22 ZIP_MEMBERS=23 UNITY_META_GUIDS=10")
-            print("TRIPLE_596_510_556_GUID_CLOSURE=33/33 UNIQUE ASMDEFS=3")
+            print("TRIPLE_596_510_556_GUID_CLOSURE=28/28 UNIQUE ASMDEFS=3")
             print("B0162_W17_INDEPENDENT_PHYSICAL_CHECKS_PASS="+str(checks))
             print("SOURCE_G0_RECEIPT_PASS FORMAL_G0_PENDING UNITY_G1_NOT_RUN")
             print("CROSS_OS_RECEIPT_SHA256="+sha(output.read_bytes()))
