@@ -1,0 +1,58 @@
+name: B01-25 W10 SWEEPORB original CSharp9 moving hazard (NOT Unity)
+on:
+  push:
+    branches: [research/b01-25-p17w10-sweeporb001]
+    paths:
+      - 'Research/B01-25/P17/SWEEPORB001/**'
+      - '.github/workflows/b01-25-w10-sweeporb.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  actual-gameplay-source:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    timeout-minutes: 12
+    env:
+      SRC: Research/B01-25/P17/SWEEPORB001
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Original source MapDocument blobs pinned by Git SHA
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$SRC/.output"
+          git fetch --no-tags origin ad52a604ffa4f143d98e607049d6f79e0c7e580f f565e250659692541d672cdab108c4cfb8cfdd31
+          git show ad52a604ffa4f143d98e607049d6f79e0c7e580f:Research/B01-25/P17/CLEARANCELADDER001/arena.json > "$SRC/.output/clearance.json"
+          git show f565e250659692541d672cdab108c4cfb8cfdd31:Research/B01-25/P17/SLALOM001/arena.json > "$SRC/.output/slalom.json"
+          test "$(git hash-object "$SRC/.output/clearance.json")" = 53eb696950121465befea2855eda4d7268750016
+          test "$(git hash-object "$SRC/.output/slalom.json")" = 013f5fe2058e76233f580a439e8402c0fe09f124
+          echo ORIGINAL_MAP_GIT_BLOBS_PASS
+      - name: Compile ACTUAL original CSharp9 Unity API-compatible code warning-as-error
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build "$SRC/SweepUnityCompat.csproj" -c Release -p:LangVersion=9.0 -warnaserror
+      - name: Execute actual original swept motion, negative cases and source authored maps
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --project "$SRC/SweepOrb.csproj" -c Release -- "$SRC/profiles.json" "$SRC/.output/clearance.json" "$SRC/.output/slalom.json" "$SRC/.output/receipt.json" 2>&1 | tee "$SRC/.output/source-$RUNNER_OS.log"
+          test -s "$SRC/.output/receipt.json"
+      - name: Store physical original stdout and JSON receipt even when RED
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-25-sweeporb-${{ matrix.os }}
+          path: |
+            Research/B01-25/P17/SWEEPORB001/.output/receipt.json
+            Research/B01-25/P17/SWEEPORB001/.output/source-*.log
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 21

@@ -1,0 +1,36 @@
+{
+  "packageId": "B01-25-SWEEPORB001",
+  "version": "R1",
+  "owner": "B01-25",
+  "branch": "research/b01-25-p17w10-sweeporb001",
+  "baseSha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "ownedPaths": [
+    "Research/B01-25/P17/SWEEPORB001/**",
+    ".github/workflows/b01-25-w10-sweeporb.yml"
+  ],
+  "gitBlobs": {
+    ".gitignore": "6943b188d80a5efce450393ae612928f653e0876",
+    "Program.cs": "5b05c68a4a120b86ae7b7059c947cef3b4dd431c",
+    "SweepCore.cs": "ca98d0aa967d9e6267a5901304155a7a684620d7",
+    "SweepOrb.csproj": "fdb81851b261417d7a917b52757c34b44fed3407",
+    "SweepUnityCompat.csproj": "758ef0d18177165aaf0816cf52805f838e3d4f65",
+    "profiles.json": "ab3a8006e72a9e28cbd4c9817075f955402507fc",
+    "README.md": "e5e87afb81749543065b84e4ee882661768e5656",
+    ".github/workflows/b01-25-w10-sweeporb.yml": "31a99922545db4da454ddede508ca932c50b2c60"
+  },
+  "mapBlobs": [
+    "53eb696950121465befea2855eda4d7268750016",
+    "013f5fe2058e76233f580a439e8402c0fe09f124"
+  ],
+  "mechanic": "Moving 8m rail orb, 1s warning / 2s moving / 3s harmless recovery, continuous player/obstacle relative segment intersection, one damage request per cycle",
+  "status": {
+    "producerSourceTests": "PENDING_NEW_CI",
+    "formalG0": "PENDING",
+    "independentQA": "PENDING",
+    "unityNative": "NOT_RUN",
+    "codexAck": "NONE",
+    "integrated": false,
+    "merge": false
+  },
+  "rollback": "Discard own SWEEPORB001 folder and W10 workflow from isolated branch; no canonical files touched"
+}
