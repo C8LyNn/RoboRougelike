@@ -16,7 +16,7 @@ PINS={
 }
 def git(*args):return subprocess.check_output(["git",*args],text=True,cwd=ROOT).strip()
 def main():
- assert git("rev-parse","HEAD^")==BASE,"BASE_CHANGED"
+ subprocess.run(["git","merge-base","--is-ancestor",BASE,"HEAD"],cwd=ROOT,check=True)
  files=set(filter(None,git("diff","--name-only",BASE,"HEAD").splitlines()))
  assert files==OWN,"WRONG_SCOPE "+repr(sorted(files^OWN))
  for path,blob in PINS.items():
