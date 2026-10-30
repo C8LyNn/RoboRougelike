@@ -1,4 +1,17 @@
 import copy
+import hashlib
+import re
+
+def semantic_fingerprint(gallery):
+    fields=[gallery["schema"],gallery["source_sha"],gallery["source_package"],
+            "1" if gallery["reference_only"] else "0",len(gallery["offers"])]
+    for offer in gallery["offers"]:
+        fields.extend([offer["id"],offer["title"],offer["role"],offer["description"],
+                       offer["price_scrap"],offer["pieces"],len(offer["parts"])])
+        for part in offer["parts"]:
+            fields.extend([part["kind"],part.get("weapon",""),part["count"],part["unit_scrap"]])
+    canonical="".join(str(len(str(v).encode("utf-16-le"))//2)+":"+str(v) for v in fields)
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
 import json
 import unittest
 from pathlib import Path
@@ -47,4 +60,15 @@ class GalleryTests(unittest.TestCase):
         self.assertEqual(sum(a["id"]!=b["id"] for a in self.gallery["offers"] for b in self.gallery["offers"]),90)
     def test_ek08_vs_ek01_delta(self):
         self.assertEqual(self.gallery["offers"][7]["price_scrap"]-self.gallery["offers"][0]["price_scrap"],125)
+    def test_snapshot_digest_matches_compiled_csharp_constant(self):
+        source=(ROOT/"Assets/B01KitGallery001/Editor/KitGalleryWindow.cs").read_text(encoding="utf-8")
+        signature=re.search(r'FrozenCatalogDigest = "([0-9a-f]{64})"',source)
+        self.assertIsNotNone(signature)
+        self.assertEqual(semantic_fingerprint(self.gallery),signature.group(1))
+    def test_coherently_forged_price_has_different_snapshot_digest(self):
+        forged=copy.deepcopy(self.gallery)
+        forged["offers"][0]["parts"][0]["unit_scrap"]+=3
+        forged["offers"][0]["price_scrap"]+=6
+        self.assertEqual(forged["offers"][0]["price_scrap"],sum(x["count"]*x["unit_scrap"] for x in forged["offers"][0]["parts"]))
+        self.assertNotEqual(semantic_fingerprint(forged),semantic_fingerprint(self.gallery))
 if __name__=="__main__":unittest.main()
