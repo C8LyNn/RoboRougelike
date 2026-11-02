@@ -1,0 +1,115 @@
+{
+  "schema": "b01-package-v1",
+  "package_id": "B01-31-P17W28-ARMOR-VISUAL-PHYSICS-ISOLATION-001",
+  "revision": "P17-W28-R1",
+  "owner": "B01-31 — CONCEPT ART & VISUAL EXPLORATION",
+  "hq_issue": 800,
+  "purpose": "Prevent imported three-model W24 visual prefab colliders/Rigidbody from altering real P12/vehicle physics in opt-in W27 Unity demo scene. Genuine Unity Editor source patch on separate own branch and five actual Unity EditMode NUnit cases (authored, NOT_RUN).",
+  "exact_W27_parent": "45a5c54d6b6985b54e6fba22a9095ecbf04eba60",
+  "source_base_branch": "art/b01-31-p17w27-live-armor-demo-native-playmode",
+  "source_base_sha": "45a5c54d6b6985b54e6fba22a9095ecbf04eba60",
+  "codex_target_branch": null,
+  "codex_target_sha": null,
+  "codex_scope_ack_url": "https://github.com/C8LyNn/RoboRougelike/issues/800#issuecomment-6588575166",
+  "dependencies": [
+    "W27 #820 EXACT parent",
+    "W25 #788 @ dfff0aeaa7098a16621387557a04836bf873fd73",
+    "W24 #770 @ 668c7eed8f96cdb0c65062c4ec3a0d80bf26ee93",
+    "original P12 game source unchanged"
+  ],
+  "real_original_Git_blobs": {
+    "W27_Editor_PARENT": "6f2fb998469ca232332c9485c13cc51f1518b1e6",
+    "P12_GAME": "544bed274b616b91fd98c45d2b194b2f3a2d112a",
+    "W24_ThreeStateVisual": "8cf3664b9b6e5b0fd6623be7c3f4e72fd9164664",
+    "W25_RealSourceBinder": "e1622abf22319e4448b53a0630d40387ade7a2b2"
+  },
+  "owner_source_paths": [
+    "Assets/B01_31/W27ArmorLiveDemo/Editor/B0131W27CreateArmorLiveDemoScene.cs",
+    "Assets/B01_31/W28VisualPhysicsSafety.meta",
+    "Assets/B01_31/W28VisualPhysicsSafety/Tests.meta",
+    "Assets/B01_31/W28VisualPhysicsSafety/Tests/EditMode.meta",
+    "Assets/B01_31/W28VisualPhysicsSafety/Tests/EditMode/B0131W28VisualOnlyEditModeTests.cs",
+    "Assets/B01_31/W28VisualPhysicsSafety/Tests/EditMode/B0131W28VisualOnlyEditModeTests.cs.meta",
+    "Assets/B01_31/W28VisualPhysicsSafety/Tests/EditMode/RoboRougelike.B0131.W28.NativeEditModeTests.asmdef",
+    "Assets/B01_31/W28VisualPhysicsSafety/Tests/EditMode/RoboRougelike.B0131.W28.NativeEditModeTests.asmdef.meta",
+    "Tools/B01-31/P17/W28VisualPhysicsSafety001/Harness/W28RealEditorSourceHarness.csproj",
+    "Tools/B01-31/P17/W28VisualPhysicsSafety001/Harness/SyntheticUnityEngine.cs",
+    "Tools/B01-31/P17/W28VisualPhysicsSafety001/Harness/SyntheticUnityEditor.cs",
+    "Tools/B01-31/P17/W28VisualPhysicsSafety001/Harness/Program.cs",
+    "Tools/B01-31/P17/W28VisualPhysicsSafety001/package_source.py",
+    "Tools/B01-31/P17/W28VisualPhysicsSafety001/verify_source.py",
+    "Tools/B01-31/P17/W28VisualPhysicsSafety001/README.md",
+    "Tools/B01-31/P17/W28VisualPhysicsSafety001/manifest.json",
+    ".github/workflows/b01-31-p17w28-real-armor-physics-safety.yml"
+  ],
+  "source_license_provenance": [
+    "Original B01-31 Unity Editor C# patch to existing own W27 source",
+    "Original new B01-31 Unity EditMode 5-case NUnit source test and authentic .asmdef/.meta",
+    "No external R41 Claude assets or Codex source modifications"
+  ],
+  "interface_contract": {
+    "input": "ONLY a newly created instance of original W24 B0131W24ArmorDamageVisual 3D model prefab in isolated Editor Scene build",
+    "safety_preflight": "original W24 visual root marker present, >=1 real Renderer, no original P12 gameplay damageable in subtree, no Unity Joint in subtree, no null",
+    "output": "all Colliders and Rigidbody removed by Object.DestroyImmediate from owned VISUAL clone descendant components ONLY, including inactive children; all renderers preserved, original authoritative P12 on separate GameObject never touched",
+    "negative_effect": "invalid source returns false without any mutation, prevents Editor scene creation and does not SaveScene/copy foreign assets",
+    "new_files": "Five original NUnit EditMode checks use real Unity GameObjects and original P12/W24 types via Assembly-CSharp runtime reflection; not a synthetic Unity G1 claim"
+  },
+  "risk": {
+    "class": "MEDIUM",
+    "likelihood": "medium",
+    "impact": "high if W24 imported OBJ has physics components in active vehicle scene",
+    "reversibility": "safe with approved disposable import only",
+    "mitigation": "guard real authored original W24 prefab clone before binding and before saving scene; never touch original imported model; native EditMode tests require activated Unity"
+  },
+  "test_plan": [
+    {
+      "name": "Actual W27 Editor patch+P12/W24/W25/W27 game source compiled and executed via .NET8",
+      "status": "PENDING_REAL_CI",
+      "environment": "Ubuntu24 + Windows2022, synthetic ONLY Unity APIs, original actual source"
+    },
+    {
+      "name": "Prior actual W27 source P12 damage/repair regression",
+      "status": "PENDING_REAL_CI",
+      "environment": "Ubuntu24 + Windows2022, synthetic engine"
+    },
+    {
+      "name": "Original source ZIP exact 17 Git files / five Unity native GUID+meta / 8 corrupt negative mutations / deterministic rebuilding",
+      "status": "PENDING_REAL_CI",
+      "environment": "Ubuntu original author / independent Windows binary receiver"
+    },
+    {
+      "name": "Five genuine native Unity EditMode scripts, W27 5 real native PlayMode scripts",
+      "status": "NOT_RUN",
+      "environment": "owner-approved activated Windows Unity 6000.3.14f1; Editor.log & NUnit XML required"
+    },
+    {
+      "name": "Full Windows Player, screenshot, manual gameplay, Save/ECON, W28 game integration",
+      "status": "NOT_RUN",
+      "environment": "owned by Codex + B01-60, no current authority"
+    }
+  ],
+  "exclusions": [
+    "Any Codex #817 #824 / main / develop / feature/w26-model-intake worktree",
+    "Assets/Pack original P12 or player gameplay source",
+    "Assets/B01_31/W24ArmorStates",
+    "Assets/B01_31/W25P12DamageVisualBinding",
+    "game-owned Rigidbody/Collider/Projectile/Save/ECON/owner authority",
+    "R41 Claude turret binary"
+  ],
+  "stages": {
+    "DESIGNED": "YES",
+    "IMPLEMENTED": "SOURCE_PATCH",
+    "TESTED": "PENDING_REAL_CI",
+    "B01_31_SOURCE_G0": "PENDING",
+    "FORMAL_INDEPENDENT_G0": "PENDING",
+    "QA_ACCEPTED": "NO",
+    "READY_FOR_INTEGRATOR": "NO",
+    "INTEGRATED": "NO",
+    "RELEASED": "NO",
+    "NATIVE_UNITY_G1": "NOT_RUN",
+    "G2": "HOLD",
+    "Codex_ACK": "NO"
+  },
+  "next_owner": "B01-30/40 independent exact source/GUID/patch review, then B01-60 actual Unity EditMode 5/5 and W27 PlayMode 5/5 and scene; B01-00 only may authorize Codex offer",
+  "rollback": "Own W28 source patch built as whole-blob replacement ONLY for W27 Editor file on immutable parent SHA in approved isolated worktree; original W27 can be restored from exact 45a5c... source blob. Never delete W24/W25, real P12, any user/foreign even-empty directory or player Save. No automatically installed Unitypackage."
+}
