@@ -198,12 +198,13 @@ public sealed class B0161W28DynamicOwnClearanceRegressionTests
         Assert.That(obj.assembly.ClearProjectilePath(obj.gun,
             obj.gun.Muzzle.forward,beam.Module.Settings.rangeMeters,.001f),Is.False);
         beam.SendMessage("FixedUpdate");beam.SendMessage("FixedUpdate");
-        Assert.That(beam.Module.Heat,Is.LessThanOrEqualTo(initial+.0001f),
+        var blocked=beam.Module.Heat;
+        Assert.That(blocked,Is.LessThanOrEqualTo(initial+.0001f),
             "blocked continuous beam must not accumulate extra heat");
         rb.position=obj.gun.Muzzle.position+obj.gun.Muzzle.right*3f;
         Physics.SyncTransforms();
         beam.SendMessage("FixedUpdate");beam.SendMessage("FixedUpdate");
-        Assert.That(beam.Module.Heat,Is.GreaterThan(initial),
+        Assert.That(beam.Module.Heat,Is.GreaterThan(blocked),
             "same held beam should resume and accumulate heat after moving obstruction");
         beam.SetTriggerHeld(false);
         UnityEngine.Object.Destroy(obj.rig);
