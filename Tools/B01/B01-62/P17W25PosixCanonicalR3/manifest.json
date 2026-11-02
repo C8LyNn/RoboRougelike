@@ -1,0 +1,23 @@
+{
+  "id": "B01-62-W25-773-POSIX-CANONICAL-R3",
+  "parent_773": "3aaaec4027ee246fbfb6f209179f0e9507363473",
+  "parent_749": "8634e71dfcf633323073fe584a6c0884f1ca5d23",
+  "version": "3.0.0-w25",
+  "competing_ALT_HOLD": [
+    741,
+    753
+  ],
+  "producer_selected": "NOT_YET",
+  "g0": "PENDING",
+  "g1": "NOT_RUN",
+  "released": false,
+  "files": [
+    "Tools/B01/B01-62/P17W25PosixCanonicalR3/CanonicalSingleAuthorityStoreV3R3.cs",
+    "Tools/B01/B01-62/P17W25PosixCanonicalR3/CanonicalSlotSessionV3R3.cs",
+    "Tools/B01/B01-62/P17W25PosixCanonicalR3/Program.cs",
+    "Tools/B01/B01-62/P17W25PosixCanonicalR3/Selected773PosixR3.csproj",
+    "Tools/B01/B01-62/P17W25PosixCanonicalR3/README.md",
+    "Tools/B01/B01-62/P17W25PosixCanonicalR3/manifest.json",
+    ".github/workflows/b01-62-w25-773-posix-case-r3.yml"
+  ]
+}
