@@ -1,0 +1,79 @@
+name: B01-10 P17W27 Original V7 Real-Source Multi-Battle Campaign
+on:
+  push:
+    paths:
+      - 'Research/B01-10/P17/W27_ECON_CAMPAIGN_001/**'
+      - '.github/workflows/b01-10-p17w27-econ-campaign.yml'
+  pull_request:
+    paths:
+      - 'Research/B01-10/P17/W27_ECON_CAMPAIGN_001/**'
+      - '.github/workflows/b01-10-p17w27-econ-campaign.yml'
+permissions:
+  contents: read
+jobs:
+  original-v7-campaign:
+    name: actual-original-v7-campaign (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify five exact original B01-10 files and exclusive six-path Git scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json,os,subprocess
+          doc=json.load(open("Research/B01-10/P17/W27_ECON_CAMPAIGN_001/manifest.json",encoding="utf-8"))
+          files=doc["sourceFiles"]
+          assert len(files)==5,(len(files),files)
+          for path,expected in sorted(files.items()):
+              physical=os.stat(path).st_size
+              blob=subprocess.check_output(["git","hash-object",path],text=True).strip()
+              assert (blob,physical)==(expected["gitBlob"],expected["bytes"]), (path,blob,physical,expected)
+          base=doc["baseCommit"]
+          subprocess.run(["git","fetch","--no-tags","origin",base],check=True,stdout=subprocess.DEVNULL)
+          diff=subprocess.check_output(["git","diff","--name-only",base,"HEAD"],text=True).splitlines()
+          allowed=set(files)|{"Research/B01-10/P17/W27_ECON_CAMPAIGN_001/manifest.json"}
+          assert len(diff)==6 and set(diff)==allowed,(diff,allowed)
+          print("W27_ORIGINAL_MANIFEST_PINS 5/5 PASS; W27_EXCLUSIVE_GIT_SCOPE 6/6 PASS")
+          PY
+      - name: Fetch and independently pin two REAL B01-22 owner V7 originals
+        shell: bash
+        run: |
+          set -euo pipefail
+          source_sha=b4df10a7ad7e6c758f8331013f6b216b3a3689a3
+          git fetch --no-tags origin "$source_sha"
+          git show "$source_sha:Assets/B01Packages/ECONAPPROVED007/Runtime/ApprovedEconomyPolicyV7.cs" > "$RUNNER_TEMP/original-policy.cs"
+          git show "$source_sha:Assets/B01Packages/ECONAPPROVED007/Runtime/CanonicalEconomySectionV7.cs" > "$RUNNER_TEMP/original-section.cs"
+          test "$(git hash-object "$RUNNER_TEMP/original-policy.cs")" = 53ebce6c07388dc9c8a8ed79b6de4d3ccbee4773
+          test "$(git hash-object "$RUNNER_TEMP/original-section.cs")" = d8b71de91db36295b6220e9c4baad71eb54455f6
+          echo "W27_ORIGINAL_B01_22_SOURCE_PIN 2/2 PASS @ $source_sha"
+      - name: Actually compile and execute original V7 policy and binary section for six campaigns
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --configuration Release --project Research/B01-10/P17/W27_ECON_CAMPAIGN_001/CampaignChecks.csproj -p:OriginalV7Policy="$RUNNER_TEMP/original-policy.cs" -p:OriginalV7Section="$RUNNER_TEMP/original-section.cs" > "$RUNNER_TEMP/w27-econ-campaign.log" 2>&1 || { cat "$RUNNER_TEMP/w27-econ-campaign.log"; exit 1; }
+          cat "$RUNNER_TEMP/w27-econ-campaign.log"
+          grep -F "W27_CAMPAIGN_12WINS 12_FREE 12_PAID 780_SCRAP 22_RESTORED_2_PENDING PASS" "$RUNNER_TEMP/w27-econ-campaign.log"
+          grep -F "W27_LOANER_LOSS serial_spent_no_rearm_no_loot PASS" "$RUNNER_TEMP/w27-econ-campaign.log"
+          grep -F "W27_EXPECTED_SOURCE_CONTRACT_RED loaner_won_zero_cash_no_prior_order_gun0hp PASS" "$RUNNER_TEMP/w27-econ-campaign.log"
+          grep -F "W27_SOURCE_TESTS_PASS scenarios=6" "$RUNNER_TEMP/w27-econ-campaign.log"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b01-10-w27-exact-original-v7-${{ matrix.os }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/w27-econ-campaign.log
+          if-no-files-found: warn
+          retention-days: 14
