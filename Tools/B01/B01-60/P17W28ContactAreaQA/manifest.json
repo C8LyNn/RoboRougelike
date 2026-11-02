@@ -1,0 +1,61 @@
+{
+  "package_id": "B01-60-P17W28-CONTACT-AREA-NATIVE-001/R1",
+  "owner": "B01-60",
+  "hq": 800,
+  "codex_inbox": 79,
+  "role": "independent actual Codex gameplay Unity regression QA",
+  "parent": {
+    "pr": 824,
+    "sha": "e03d36f2b86f8c73a067e574b67237a8921f622a"
+  },
+  "preceding": {
+    "pr": 817,
+    "sha": "e7a85944465d908f175a6f5e2ae07f4aedcc593f"
+  },
+  "prior_b0160": {
+    "pr": 808,
+    "sha": "9cf07ef7f372689e1ac1308d0241ca8e5f22e54e",
+    "different_rig_target": true
+  },
+  "native_assembly": "Assembly-CSharp-Editor existing Assets/Tests/Editor",
+  "native_2_cases": [
+    "RotarySaw_DynamicallyAttachedOwnerColliderNeverBecomesContactVictim",
+    "Emp_OwnElectronicsNeverDisrupt_EnemyBehindWallDoesNotDisrupt_ButPulseCostsCooldown"
+  ],
+  "original_codex_git_blobs": {
+    "Assets/R3/R3VehicleAssembly.cs": "ed97dd1b0ee3b77c839615497b249dcaee479bb8",
+    "Assets/WeaponIntegration/RRLSawBinding.cs": "a0bc49151fcecde159685f2a0841447606a9d291",
+    "Assets/WeaponIntegration/RRLEmpBinding.cs": "6ff22154024dd04ee72043f9766db1840218df03",
+    "Assets/RoboRougelikeMechanics/WPN005RotarySaw/Runtime/RotarySawModule.cs": "a79a81280d2ebd3a6f68c26619f7dda6335a5b5f",
+    "Assets/RoboRougelikeMechanics/WPN006EMP/Runtime/EmpEmitter.cs": "f38da021c22de609a196876d508ec9d92fb9ff56",
+    "Assets/Tests/Editor/W27BeamClearanceTests.cs": "39147e59ef43d50514e74875642a9af7833855a6",
+    "Assets/Tests/Editor/W27SpecialWeaponClearanceTests.cs": "5041bbb68bbf10d859bec25dc52ff4356d39e0c4",
+    "Assets/R1/W27WeaponPlayerQA.cs": "1f9023317f49488eb5ebbad93fb079d6b0d3b024"
+  },
+  "new_unity_guid": "77b16028b34f46af9d92f225a51c902e",
+  "own_exact_added_paths": [
+    "Assets/Tests/Editor/W28B0160ContactAreaClearanceTests.cs",
+    "Assets/Tests/Editor/W28B0160ContactAreaClearanceTests.cs.meta",
+    "Tools/B01/B01-60/P17W28ContactAreaQA/check.py",
+    "Tools/B01/B01-60/P17W28ContactAreaQA/test_check.py",
+    "Tools/B01/B01-60/P17W28ContactAreaQA/Invoke-B0160W28Native.ps1",
+    "Tools/B01/B01-60/P17W28ContactAreaQA/README.md",
+    "Tools/B01/B01-60/P17W28ContactAreaQA/manifest.json",
+    ".github/workflows/b01-60-p17w28-contact-area-native.yml"
+  ],
+  "source_tests": "PENDING_NEW_EXACT_HEAD_CI",
+  "UNITY_NATIVE": "NOT_RUN",
+  "WINDOWS_PLAYER": "NOT_RUN",
+  "GAME_INTEGRATION": "NOT_DONE",
+  "ZIP_SHA256": null,
+  "anti_softlock": "#812_P0_PRODUCT_RED",
+  "save_compatibility": "#797_Unity_3_API_RED",
+  "G0": "PENDING_INDEPENDENT",
+  "G1": "NOT_RUN",
+  "G2": "HOLD",
+  "codex_ack": "NOT_SENT_PENDING_G0",
+  "no_merge": true,
+  "no_producer_changes": true,
+  "no_main_develop_writes": true,
+  "rollback": "discard only eight W28 B01-60-only new files and branch, preserve existing project/user Save"
+}
