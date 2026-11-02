@@ -1,0 +1,72 @@
+name: B01-41 W28 exact original #797 Unity API compiler incompatibility / source-only
+on:
+  push:
+    branches: [ci/b01-41-p17w28-unity-api-compiler-gate]
+    paths:
+      - 'Tools/B01/CI41/P17W28UnityApiGate/**'
+      - '.github/workflows/b01-41-p17w28-unity-api-compiler.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-producer-negative-compiler:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Fetch exact immutable original producer, frozen and Codex W27 commits
+        run: |
+          set -euo pipefail
+          for sha in \
+            2b7983f0f9e09dd1d56906b379a3f7af7b02f21a \
+            b4df10a7ad7e6c758f8331013f6b216b3a3689a3 \
+            b8ca29c7707cd6b4338d0b9772d74dee676d49d2 \
+            33094f154c7b91119b36d58aab285e6e83c5de57 \
+            d94400d95d13db7f27e1533df05c9292d5380431 \
+            e03d36f2b86f8c73a067e574b67237a8921f622a \
+            e7a85944465d908f175a6f5e2ae07f4aedcc593f; do
+            git fetch --no-tags origin "$sha"
+            test "$(git rev-parse "$sha^{commit}")" = "$sha"
+          done
+      - name: Execute ten independent source, mutation and evidence guards
+        run: |
+          set -euo pipefail
+          mkdir -p ci41-w28-evidence
+          python -m unittest discover -s Tools/B01/CI41/P17W28UnityApiGate -p test_source_probe.py -v 2>&1 | tee ci41-w28-evidence/unittest.log
+          grep -q 'Ran 10 tests' ci41-w28-evidence/unittest.log
+          grep -q '^OK$' ci41-w28-evidence/unittest.log
+      - name: Compile REAL original C#9 against netstandard2.1 (known incompatible #797 RED witness)
+        run: |
+          set -euo pipefail
+          python Tools/B01/CI41/P17W28UnityApiGate/source_probe.py ci41-w28-evidence 2>&1 | tee ci41-w28-evidence/source-probe.log
+          grep -q 'CI41_W28_EXACT_ORIGINAL_PRODUCER_AND_W27_SHA_PASS' ci41-w28-evidence/source-probe.log
+          grep -q 'CI41_W28_REAL_CSHARP9_NETSTANDARD21_COMPILER EXPECTED_LEGACY_UNITY_API_RED' ci41-w28-evidence/source-probe.log
+          python -c 'import json; x=json.load(open("ci41-w28-evidence/source-probe-receipt.json")); assert x["compatibility"]=="EXPECTED_LEGACY_UNITY_API_RED" and x["unity_6000_3_14f1"]=="NOT_RUN" and x["windows_player"]=="NOT_RUN" and x["formal_G0"].startswith("HOLD"); print("CI41_W28_NO_FALSE_SOURCE_COMPATIBILITY_OR_NATIVE_PASS")' | tee -a ci41-w28-evidence/source-probe.log
+      - name: Preserve original compiler log, Git blob/coverage receipt and unit negatives
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: B01-41-W28-ORIGINAL-797-UNITY-API-PRODUCT-RED-NOT-UNITY-${{ runner.os }}
+          path: |
+            ci41-w28-evidence/real-original-netstandard21-compiler.log
+            ci41-w28-evidence/source-probe-receipt.json
+            ci41-w28-evidence/source-probe.log
+            ci41-w28-evidence/unittest.log
+          retention-days: 14
+          if-no-files-found: warn
