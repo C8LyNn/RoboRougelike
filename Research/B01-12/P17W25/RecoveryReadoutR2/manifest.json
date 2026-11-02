@@ -1,5 +1,5 @@
 {
-  "package": "B01-12-RECOVERY-READOUT-001/R2",
+  "package": "B01-12-RECOVERY-READOUT-001/R3",
   "original_pr": 771,
   "original_sha": "7628b6bd299c29f937c5d5aa383f58dad6945d92",
   "files": {
@@ -12,8 +12,8 @@
       "bytes": 1929
     },
     "ui.js": {
-      "sha256": "947480b0f64d486fe8668d5f9ad17da107febfd40fd6eca7d0984e45ab177ee3",
-      "bytes": 2299
+      "sha256": "5f9b1d8ec644d94cbdc399eae73901bac64ed3f6dc2e490e4deacbbdd96051a2",
+      "bytes": 2911
     },
     "demo.html": {
       "sha256": "9a9c54e80962bc138fa824c9430ad8423af95f14773f385a2250ca723545c669",
@@ -38,6 +38,14 @@
     "r1-original/fixtures.js": {
       "sha256": "bce8c395a06a56af3446c732a4917046a560a385ffb99979a69788b46ed07c3a",
       "bytes": 1929
+    },
+    "r2-original/ui.js": {
+      "sha256": "947480b0f64d486fe8668d5f9ad17da107febfd40fd6eca7d0984e45ab177ee3",
+      "bytes": 2299
+    },
+    "test_stale_browser.py": {
+      "sha256": "70978136727be69acfd0ae7dd9509bac8bd390c003bb6a22651c16800348ed53",
+      "bytes": 6217
     }
   }
 }

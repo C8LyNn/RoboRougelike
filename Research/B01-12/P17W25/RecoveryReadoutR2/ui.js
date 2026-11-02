@@ -5,8 +5,21 @@
  const put=(id,value)=>{el(id).textContent=String(value)};
  function choose(index){
   if(!Number.isInteger(index)||index<0||index>=data.length)return false;
-  const {label,...payload}=data[index];const next=engine.project(payload);if(!next.ok){put('status','Odmowa odczytu: '+next.code);return false;}
-  current=index;view=next;
+  const {label,...payload}=data[index];const next=engine.project(payload);if(!next.ok){
+   // The failed snapshot invalidates ALL previously rendered status and JSON.
+   // A prior NORMAL/LOANER_AVAILABLE screen must never survive rejected data.
+   current=-1;view=null;
+   for(const btn of el('scenarios').children)btn.setAttribute('aria-pressed','false');
+   put('identity','Brak wiarygodnego odczytu');
+   put('status','Odmowa odczytu: '+next.code+' — stan poprzedni unieważniony');
+   put('victory','Brak danych — odczyt odrzucony');
+   put('free','Brak danych — odczyt odrzucony');
+   el('parts').replaceChildren();
+   el('exportPanel').hidden=true;put('json','');
+   el('export').disabled=true;
+   return false;
+  }
+  current=index;view=next;el('export').disabled=false;
   for(const [i,btn] of [...el('scenarios').children].entries())btn.setAttribute('aria-pressed',String(i===current));
   put('identity','Run '+view.run+' · Generacja '+view.generation);
   el('status').replaceChildren();const heading=document.createElement('strong');heading.textContent=view.route.replaceAll('_',' ');el('status').append(heading,document.createTextNode(view.explanation));
