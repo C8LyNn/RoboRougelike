@@ -1,0 +1,73 @@
+name: B01-40 W27 selected five composite source G0 exact SHA and ABI
+on:
+  push:
+    branches:
+      - qa/b01-40-p17w27-selected-five-composite-g0
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-40/P17W27CompositeIntake/**'
+      - '.github/workflows/b01-40-p17w27-selected-five-composite-g0.yml'
+permissions:
+  contents: read
+jobs:
+  exact-physical-source-and-abi:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Validate Git provenance, source collisions, GUID, asmdef, serialized script and safe transport
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-40/P17W27CompositeIntake/intake.py --out b0140-w27-receipts | tee b0140-w27-receipts-output.log
+          cp b0140-w27-receipts-output.log b0140-w27-receipts/intake.log
+          grep -q 'B0140_W27_ALL_ASSET_SHA_GUID_ASMDEF_STRICT_SCRATCH=PASS' b0140-w27-receipts/intake.log
+          grep -q 'B0140_W27_G1_NATIVE_NOT_RUN_G2_HOLD' b0140-w27-receipts/intake.log
+      - name: Compile ORIGINAL real full Store and V7 source; prove Unity API profile incompatibility without changing producer
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-40/P17W27CompositeIntake/profile_probe.py --out b0140-w27-receipts | tee b0140-w27-abi-output.log
+          cp b0140-w27-abi-output.log b0140-w27-receipts/abi.log
+          grep -q 'B0140_W27_ORIGINAL_797_780_729_556_510_NET8_BUILD=PASS' b0140-w27-receipts/abi.log
+          grep -q 'B0140_W27_ORIGINAL_UNITY_COMPAT_NETSTANDARD21_EXPECTED_ABI_RED=CONFIRMED' b0140-w27-receipts/abi.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b0140-w27-selected-five-${{ matrix.os }}
+          path: b0140-w27-receipts/
+          if-no-files-found: warn
+  identical-original-source-inner-zip:
+    needs: [exact-physical-source-and-abi]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: b0140-w27-selected-five-ubuntu-24.04
+          path: ubuntu
+      - uses: actions/download-artifact@v4
+        with:
+          name: b0140-w27-selected-five-windows-2025
+          path: windows
+      - name: Byte-exact cross-OS composite source ZIP + manifest equality
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp ubuntu/B0140_W27_SELECTED_FIVE_SOURCE_ONLY.zip windows/B0140_W27_SELECTED_FIVE_SOURCE_ONLY.zip
+          cmp ubuntu/composite-manifest.json windows/composite-manifest.json
+          cmp ubuntu/package-sha256.json windows/package-sha256.json
+          sha256sum ubuntu/B0140_W27_SELECTED_FIVE_SOURCE_ONLY.zip
+          echo 'B0140_W27_CROSS_OS_PHYSICAL_INNER_ZIP_AND_MANIFEST_IDENTICAL=PASS'
