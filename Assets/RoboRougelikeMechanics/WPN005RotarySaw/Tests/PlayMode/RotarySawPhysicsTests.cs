@@ -125,6 +125,47 @@ namespace RoboRougelike.Weapons.RotarySaw.Tests
             Assert.AreEqual(1,t.HitCount);
             Assert.AreEqual(1,saw.DamageEventsLastTick);
         }
+        // W28: an owned part in the rotating disc must stop the motor *before*
+        // energy/heat and external damage, then immediately permit recovery after removal.
+        [UnityTest] public IEnumerator OwnArmorInBladeDiscStopsMotorAndResumesAfterClearance()
+        {
+            SetupSaw();
+            config.heatPerSecondAtFullRpm=15f; saw.Configure(config);
+            var enemy=Target(new Vector3(0f,0f,-.55f));
+            var armor=Make("W28 owned armor blocking blade");
+            armor.transform.SetParent(owner.transform);
+            armor.transform.localPosition=new Vector3(0f,0f,.55f);
+            armor.AddComponent<BoxCollider>().size=Vector3.one*.3f;
+            Physics.SyncTransforms();
+            yield return new WaitForFixedUpdate();
+            Assert.IsTrue(saw.OwnGeometryBlockedLastTick);
+            Assert.AreEqual(0f,saw.Motor.Heat,"blocked own armor must not heat the saw");
+            Assert.AreEqual(0f,saw.Motor.Rpm,"blocked own armor must not spin the saw");
+            Assert.AreEqual(0f,enemy.TotalDamage,"own armor must not permit damage to enemy beyond");
+            armor.SetActive(false); Physics.SyncTransforms();
+            yield return new WaitForFixedUpdate();
+            Assert.IsFalse(saw.OwnGeometryBlockedLastTick);
+            Assert.Greater(saw.Motor.Rpm,0f,"unchanged motor request should resume after clearance");
+            Assert.Greater(enemy.TotalDamage,0f,"nonblocked contact target must be cut");
+        }
+
+        [UnityTest] public IEnumerator RegisteredDetachedOwnPartStillStopsSawUntilCleared()
+        {
+            SetupSaw();
+            var former=Make("W28 registered former owned part");
+            former.transform.position=new Vector3(0f,0f,.55f);
+            var collision=former.AddComponent<BoxCollider>();collision.size=Vector3.one*.3f;
+            saw.RegisterOwnerCollider(collision);
+            Physics.SyncTransforms();
+            yield return new WaitForFixedUpdate();
+            Assert.IsTrue(saw.OwnGeometryBlockedLastTick,"registered detached collider remains a safety blocker");
+            Assert.AreEqual(0f,saw.Motor.Rpm);
+            former.transform.position=new Vector3(0f,0f,3f);Physics.SyncTransforms();
+            yield return new WaitForFixedUpdate();
+            Assert.IsFalse(saw.OwnGeometryBlockedLastTick);
+            Assert.Greater(saw.Motor.Rpm,0f);
+        }
+
         [UnityTest] public IEnumerator OwnPartsNotCut()
         {
             SetupSaw(); var t=Target(new Vector3(0f,0f,.55f));

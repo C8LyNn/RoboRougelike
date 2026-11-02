@@ -37,6 +37,9 @@ namespace RoboRougelike.Weapons.RotarySaw
         public bool IsMotorRequested { get { return motorRequested; } }
         public bool OverflowedLastTick { get; private set; }
         public int DamageEventsLastTick { get; private set; }
+        // Physical obstruction by an owned part stops the MOTOR, not just the damage sink.
+        // This includes still-registered detached parts, and recovers without resetting the request.
+        public bool OwnGeometryBlockedLastTick { get; private set; }
 
         private void Awake() { EnsureInitialized(); ResolveInterfaces(); }
         private void OnValidate() { if (configuration != null) configuration.ClampToSafeValues(); }
@@ -127,6 +130,35 @@ namespace RoboRougelike.Weapons.RotarySaw
             }
         }
 
+        // Contact weapons have a swept blade DISC, not a projectile muzzle path.
+        // Ignore only the saw's own body/colliders; a different owned module blocks the disc.
+        private bool IntersectsOtherOwnedPart()
+        {
+            if (bladeCenter == null || overlapBuffer == null || ownerRoot == null) return true;
+            Vector3 center = bladeCenter.position;
+            float extent = Mathf.Sqrt(configuration.bladeRadius * configuration.bladeRadius +
+                                      configuration.bladeHalfThickness * configuration.bladeHalfThickness);
+            // A saturated broadphase cannot prove that an owner component is absent.
+            int count = Physics.OverlapSphereNonAlloc(center, extent, overlapBuffer,
+                ~0, QueryTriggerInteraction.Ignore);
+            if (count >= overlapBuffer.Length) return true;
+            Vector3 axle = CurrentAxle(bladeCenter);
+            for (int i = 0; i < count; i++)
+            {
+                Collider collider = overlapBuffer[i];
+                if (collider == null || !IsOwnCollider(collider) ||
+                    collider.transform.IsChildOf(transform)) continue;
+                // ClosestPoint returns the centre for overlapping solid volumes.
+                // An internal intersection is unsafe even if the blade hub has a dead zone.
+                if (collider.bounds.Contains(center)) return true;
+                Vector3 closest = collider.ClosestPoint(center);
+                if (RotarySawContactMath.IsOnCuttingDisc(closest - center, axle,
+                    configuration.bladeRadius, configuration.bladeHalfThickness,
+                    configuration.hubDeadZone)) return true;
+            }
+            return false;
+        }
+
         private bool automaticSimulation=true;
         public void SetAutomaticSimulation(bool value)=>automaticSimulation=value;
         private void FixedUpdate(){if(automaticSimulation)Advance(Time.fixedDeltaTime);}
@@ -143,15 +175,19 @@ namespace RoboRougelike.Weapons.RotarySaw
                 Debug.LogWarning("WPN-005: no IRotarySawDamageSink; refusing damage. Integrate R6 adapter.", this);
                 warnedMissingSink = true;
             }
+            // Check at every physics step, AFTER the current owner transform/rotation has moved.
+            // When blocked, neither energy nor new thermal heat may be consumed.
+            OwnGeometryBlockedLastTick = ready && motorRequested && IntersectsOtherOwnedPart();
+            bool requestUnblocked = motorRequested && !OwnGeometryBlockedLastTick;
             bool energyAvailable = true;
-            if (ready && motorRequested && motor.JamRemaining <= 0f && !motor.Overheated &&
+            if (ready && requestUnblocked && motor.JamRemaining <= 0f && !motor.Overheated &&
                 configuration.energyPerSecond > 0f)
             {
                 // Missing/deactivated provider => fail closed (no free energy).
                 energyAvailable = energySourceBehaviour != null && energySourceBehaviour.isActiveAndEnabled &&
                                   energy != null && energy.TryConsume(configuration.energyPerSecond * dt);
             }
-            motor.Tick(motorRequested, energyAvailable, ready, dt);
+            motor.Tick(requestUnblocked, energyAvailable, ready, dt);
             if (!motor.CanCut) return;
 
             Vector3 center = bladeCenter.position;
