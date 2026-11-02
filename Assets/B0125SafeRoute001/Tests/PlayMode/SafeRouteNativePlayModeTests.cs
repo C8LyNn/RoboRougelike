@@ -169,5 +169,82 @@ namespace B0125.SafeRoute.Tests
             Assert.IsFalse(demo.CurrentPlan.Reachable);
             Object.Destroy(host);
         }
+        [UnityTest]
+        public IEnumerator W27TwoOriginalRealPhysicalCratesOccupyDistinctCells()
+        {
+            var host=new GameObject("R4 two distinct physical BoxCollider obstacles");
+            var demo=host.AddComponent<SafeRouteUnityDemo>();
+            yield return new WaitForFixedUpdate();
+            Assert.IsTrue(demo.AuxiliaryCrate.isKinematic);
+            Assert.NotNull(demo.AuxiliaryCrate.GetComponent<BoxCollider>());
+            Assert.AreEqual(new GridCell(11,8),demo.AuxiliaryCrateCell);
+            Assert.GreaterOrEqual(demo.PhysicalBlockedCells,2);
+            Assert.IsTrue(demo.CurrentPlan.Reachable);
+            Object.Destroy(host);
+        }
+        [UnityTest]
+        public IEnumerator W27TwoSoloSafeCratesCombinedHeavySoftlockIsRejected()
+        {
+            var host=new GameObject("R4 no combined Heavy softlock");
+            var demo=host.AddComponent<SafeRouteUnityDemo>();
+            yield return new WaitForFixedUpdate();
+            var before=demo.AuxiliaryCrate.position;
+            Assert.IsFalse(demo.TryMoveAuxiliaryCrate(new GridCell(5,5)));
+            Assert.AreEqual(before,demo.AuxiliaryCrate.position);
+            Assert.Greater(demo.RejectedCrateMoves,0);
+            demo.SetHeavy(true);
+            Assert.IsTrue(demo.CurrentPlan.Reachable);
+            Object.Destroy(host);
+        }
+        [UnityTest]
+        public IEnumerator W27SafeMoveOfSecondPhysicalCrateKeepsHeavyRoute()
+        {
+            var host=new GameObject("R4 safe composite crate relocation");
+            var demo=host.AddComponent<SafeRouteUnityDemo>();
+            demo.SetHeavy(true);
+            yield return new WaitForFixedUpdate();
+            Assert.IsTrue(demo.TryMoveAuxiliaryCrate(new GridCell(4,4)));
+            yield return new WaitForFixedUpdate();
+            Assert.AreEqual(new GridCell(4,4),demo.AuxiliaryCrateCell);
+            Assert.IsTrue(demo.CurrentPlan.Reachable);
+            Assert.IsTrue(demo.PhysicallyClearCurrentPlan());
+            Object.Destroy(host);
+        }
+        [UnityTest]
+        public IEnumerator W27UnexpectedSecondCrateMoveFailsClosedWithoutFalseGuidance()
+        {
+            var host=new GameObject("R4 external physical obstacle movement");
+            var demo=host.AddComponent<SafeRouteUnityDemo>();
+            demo.SetHeavy(true);
+            yield return new WaitForFixedUpdate();
+            Assert.IsTrue(demo.CurrentPlan.Reachable);
+            var old=demo.AuxiliaryCrate.position;
+            // Cell (11,8) -> (5,5) in original 2m grid coordinates.
+            var moved=old+new Vector3(-12f,0,-6f);
+            demo.AuxiliaryCrate.position=moved;
+            demo.AuxiliaryCrate.transform.position=moved;
+            Physics.SyncTransforms();
+            yield return new WaitForFixedUpdate();
+            Assert.AreEqual(new GridCell(5,5),demo.AuxiliaryCrateCell);
+            Assert.IsFalse(demo.CurrentPlan.Reachable);
+            Assert.IsFalse(demo.CurrentRouteFromPlayer);
+            Object.Destroy(host);
+        }
+        [UnityTest]
+        public IEnumerator W27SubcellObstacleMoveTriggersRealPhysicalReplan()
+        {
+            var host=new GameObject("R4 subcell pose tracking");
+            var demo=host.AddComponent<SafeRouteUnityDemo>();
+            yield return new WaitForFixedUpdate();
+            int before=demo.ReplanRevision;
+            Vector3 p=demo.AuxiliaryCrate.position+new Vector3(.14f,0,0);
+            demo.AuxiliaryCrate.position=p;
+            demo.AuxiliaryCrate.transform.position=p;
+            Physics.SyncTransforms();
+            yield return new WaitForFixedUpdate();
+            Assert.Greater(demo.ReplanRevision,before);
+            Assert.AreEqual(new GridCell(11,8),demo.AuxiliaryCrateCell);
+            Object.Destroy(host);
+        }
     }
 }

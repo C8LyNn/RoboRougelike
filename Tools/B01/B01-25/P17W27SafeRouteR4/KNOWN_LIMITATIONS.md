@@ -1,0 +1,8 @@
+# Limitations — R4 W27 (source handoff / honesty)
+
+- No authorized real Unity Editor/PhysX execution in this agent conversation. 17 PlayMode NUnit **sources authored, not run**. Native G1 NOT_RUN. Generated scene factory exists, but no verified .unity YAML scene or actual prefab has been serialized by an Editor.
+- Two original local demonstration crates only; external arbitrary scene props/third-party rigidbodies are not auto-registered into dynamic obstacle sampling. Live Unity game/map generator is not integrated. Physically sampled colliders may touch more than one cell, producing conservative results.
+- OverlapBoxNonAlloc max collider result 256. Saturation/unobserved registered colliders causes fail-closed NO_PATH; this may be conservative even if some route exists. Actual PhysX overflow scenario needs native test.
+- Heavy uses conservative 3×3 *square* footprint at 2m grid; true modular rig swept hull, turning radius, contact friction, ramps, terrain, detaching parts and moving players need native and human tests. No guarantee vehicle completes path from source-only BFS.
+- Deliberate relocation in sample is controlled teleport of kinematic crate, not a continuous swept move or player push simulation; intermediate swept path collisions not tested. No direct edits to Codex's actual worktree or target world; no economy, inventory, Save, AI or rewards.
+- Active W26 Codex scope covers R3 garage spatial occupancy and weapon clearance; integration dependency and original package compatibility unresolved. No handoff/ACK to #79 until formal B01-40 G0, B01-60 native G1 disposition and B01-00 approval.
