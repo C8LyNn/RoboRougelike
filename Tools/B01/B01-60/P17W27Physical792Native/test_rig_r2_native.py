@@ -25,7 +25,7 @@ class Original792PhysicalNativeSourceTests(unittest.TestCase):
    self.assertNotEqual(self.m.git("rev-parse",r.PARENT+":"+path),sha)
 
  def test_03_all_other_unity_772_bits_stay_original_sha(self):
-  originals=self.m.selected_source()
+  originals=self.m.selected_source(self.n)
   self.assertEqual(set(originals),set(self.src))
   for path,bytes_ in originals.items():
    if path not in r.R2_BLOBS:self.assertEqual(self.src[path],bytes_,path)
@@ -47,7 +47,7 @@ class Original792PhysicalNativeSourceTests(unittest.TestCase):
 
  def test_06_nine_original_unity_guid_closure_unchanged(self):
   self.assertEqual(self.helper.guid_check(self.src),
-                   self.helper.guid_check(self.m.selected_source()))
+                   self.helper.guid_check(self.m.selected_source(self.n)))
 
  def test_07_four_independent_product_save_scopes(self):
   produced=[]
