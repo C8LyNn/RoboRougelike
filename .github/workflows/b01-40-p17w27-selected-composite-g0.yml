@@ -1,0 +1,74 @@
+name: B01-40 W27 exact #787 + #797 + #792 + #780 + #750 SOURCE G0 / Unity ABI RED
+on:
+  push:
+    branches: [qa/b01-40-p17w27-selected-composite-g0-r1]
+    paths:
+      - 'Tools/B01/B01-40/P17W27CompositeG0/**'
+      - '.github/workflows/b01-40-p17w27-selected-composite-g0.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-40/P17W27CompositeG0/**'
+      - '.github/workflows/b01-40-p17w27-selected-composite-g0.yml'
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  original-exact-git-source-only:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - name: Checkout new QA-only branch with all immutable Git producer refs
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Original exact SHA + independent source closure + true private physical scratch negative tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-40/P17W27CompositeG0/intake.py --out evidence/w27-selected-composite-manifest.json | tee b0140-w27-source-g0.log
+          grep -q 'B0140_W27_EXACT_PINNED_SOURCE_BLOBS_PASS' b0140-w27-source-g0.log
+          grep -q 'B0140_W27_UNITY_797_TARGET_API_REPRODUCER_P0_RED_CONFIRMED' b0140-w27-source-g0.log
+          grep -q 'B0140_W27_OWNED_DISPOSABLE_SOURCE_STAGE_ROLLBACK_NEGATIVES_PASS' b0140-w27-source-g0.log
+          grep -q 'B0140_W27_EXACT_SOURCE_TRANSPORT_G0_PASS_PRODUCT_G0_HOLD' b0140-w27-source-g0.log
+          grep -q 'B0140_W27_G1_NOT_RUN_NO_CODEX_INSTALL_NO_MERGE' b0140-w27-source-g0.log
+          test -s evidence/w27-selected-composite-manifest.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b0140-w27-selected-source-${{ matrix.os }}
+          path: |
+            evidence/
+            b0140-w27-source-g0.log
+          if-no-files-found: warn
+  cross-os-identical-receipt:
+    needs: original-exact-git-source-only
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: b0140-w27-selected-source-*
+          path: downloaded
+      - name: Verify bit-identical ORIGINAL source receipt on Windows and Ubuntu
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib
+          from pathlib import Path
+          paths=sorted(Path("downloaded").glob("*/evidence/w27-selected-composite-manifest.json"))
+          if len(paths)!=2:
+              raise SystemExit("SOURCE_G0_HOLD: two original platform manifests required, got "+str(len(paths)))
+          raw=[p.read_bytes() for p in paths]
+          digests=[hashlib.sha256(b).hexdigest() for b in raw]
+          print("B0140_W27_ORIGINAL_CROSS_OS_SHA256",list(zip(map(str,paths),digests)))
+          if raw[0]!=raw[1]:
+              raise SystemExit("SOURCE_G0_HOLD: manifest bytes disagree across platforms")
+          print("B0140_W27_CROSS_OS_BYTE_EXACT_SOURCE_RECEIPT_PASS",digests[0])
+          PY
