@@ -1,0 +1,40 @@
+{
+  "schema": "B01-G0-SOURCE-RECEIPT-R1",
+  "package_id": "B01-24-ENEMY-CHARGE-001",
+  "revision": "W27-R1",
+  "base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "exclusive_prefix": "Assets/B01Packages/EnemyCharge001",
+  "files": [
+    "Assets/B01Packages/EnemyCharge001.meta",
+    "Assets/B01Packages/EnemyCharge001/Editor.meta",
+    "Assets/B01Packages/EnemyCharge001/Editor/B01.EnemyCharge001.Editor.asmdef",
+    "Assets/B01Packages/EnemyCharge001/Editor/B01.EnemyCharge001.Editor.asmdef.meta",
+    "Assets/B01Packages/EnemyCharge001/Editor/ChargeDemoSceneBuilder.cs",
+    "Assets/B01Packages/EnemyCharge001/Editor/ChargeDemoSceneBuilder.cs.meta",
+    "Assets/B01Packages/EnemyCharge001/README.md",
+    "Assets/B01Packages/EnemyCharge001/Runtime.meta",
+    "Assets/B01Packages/EnemyCharge001/Runtime/B01.EnemyCharge001.Runtime.asmdef",
+    "Assets/B01Packages/EnemyCharge001/Runtime/B01.EnemyCharge001.Runtime.asmdef.meta",
+    "Assets/B01Packages/EnemyCharge001/Runtime/ChargeDemoHealth.cs",
+    "Assets/B01Packages/EnemyCharge001/Runtime/ChargeDemoHealth.cs.meta",
+    "Assets/B01Packages/EnemyCharge001/Runtime/EnemyChargeMotor.cs",
+    "Assets/B01Packages/EnemyCharge001/Runtime/EnemyChargeMotor.cs.meta",
+    "Assets/B01Packages/EnemyCharge001/Tests.meta",
+    "Assets/B01Packages/EnemyCharge001/Tests/PlayMode.meta",
+    "Assets/B01Packages/EnemyCharge001/Tests/PlayMode/B01.EnemyCharge001.PlayMode.asmdef",
+    "Assets/B01Packages/EnemyCharge001/Tests/PlayMode/B01.EnemyCharge001.PlayMode.asmdef.meta",
+    "Assets/B01Packages/EnemyCharge001/Tests/PlayMode/EnemyChargePhysicsTests.cs",
+    "Assets/B01Packages/EnemyCharge001/Tests/PlayMode/EnemyChargePhysicsTests.cs.meta"
+  ],
+  "source_review": "B01-24",
+  "native_unity": "NOT_RUN",
+  "independent_g0": "PENDING",
+  "asset_generation": "Editor action required; generated prefab and scene NOT YET IN COMMIT",
+  "codex_ack": "NONE",
+  "blocked_from": [
+    "main",
+    "develop",
+    "Codex active worktree",
+    "canonical combat AI"
+  ]
+}
