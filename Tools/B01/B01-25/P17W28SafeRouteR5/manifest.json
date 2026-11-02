@@ -44,7 +44,7 @@
     ".github/workflows/b01-25-w24-saferoute-r2.yml": "3be7309e484621706dbb2f7d789077b3c97a04d3",
     ".github/workflows/b01-25-w25-saferoute-r3.yml": "fcc66813c697e4047c56729aa50c269234789d03",
     ".github/workflows/b01-25-w27-saferoute-r4.yml": "17f312a0514c7ac8e0f1b98ec4e807b96acdf95e",
-    ".github/workflows/b01-25-w28-saferoute-r5.yml": "1a0514bf0b604a05d095afe346c37eec97e8ef3e",
+    ".github/workflows/b01-25-w28-saferoute-r5.yml": "84433e294854a5047298fbd223b9c6326f404822",
     "Assets/B0125SafeRoute001.meta": "bacb874a278d997f667151893c4438c65aca4d29",
     "Assets/B0125SafeRoute001/Editor.meta": "dff34cb12f18c909d1cfe10eed8f0b2906895e55",
     "Assets/B0125SafeRoute001/Editor/B0125.SafeRoute.Editor.asmdef": "d904023d5d761f6a274652a2bb7afbb83e939673",
@@ -128,5 +128,6 @@
     "Unity scene factory exists, no .unity prefab and no native Unity G1 executed yet",
     "Follows all registered source colliders, limit 32 body roots and 16 shapes each; miss/disabled or query saturation fail closed"
   ],
-  "rollback": "Reject all occupied/stale/symlink paths. Stage only own 23 original Unity source/meta files into fresh disposal checkout; unlink only files newly staged, preserve foreign directories and Save, no merge."
+  "rollback": "Reject all occupied/stale/symlink paths. Stage only own 23 original Unity source/meta files into fresh disposal checkout; unlink only files newly staged, preserve foreign directories and Save, no merge.",
+  "workflowBranchCorrected": true
 }

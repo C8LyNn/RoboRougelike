@@ -1,7 +1,7 @@
-name: B01-25 W28 SAFEROUTE R5 real two-crate composite anti-softlock source
+name: B01-25 W28 SAFEROUTE R5 real registered compound world obstacles source
 on:
   push:
-    branches: [research/b01-25-p17w28-saferoute001-r5-multi-obstacle]
+    branches: [research/b01-25-p17w28-saferoute001-r5-world-objects]
     paths:
       - 'Assets/B0125SafeRoute001/**'
       - 'Research/B01-25/P17/SAFEROUTE001/**'
@@ -28,7 +28,7 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
-      - name: Compile unchanged original CSharp9 R3 plus R5 real dual crate regressions
+      - name: Compile original CSharp9 R1-R5 runtime source and foreign world obstacle regressions
         shell: bash
         run: |
           set -euo pipefail
