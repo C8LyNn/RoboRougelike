@@ -1,0 +1,70 @@
+name: B01-60 W28 Saw EMP ORIGINAL W27 Unity native QA source-only NOT_RUN
+on:
+  push:
+    branches: [qa/b01-60-p17w28-contact-area-native-regression-r1]
+    paths:
+      - 'Assets/Tests/Editor/W28B0160ContactAreaClearanceTests.cs'
+      - 'Assets/Tests/Editor/W28B0160ContactAreaClearanceTests.cs.meta'
+      - 'Tools/B01/B01-60/P17W28ContactAreaQA/**'
+      - '.github/workflows/b01-60-p17w28-contact-area-native.yml'
+  pull_request:
+    paths:
+      - 'Assets/Tests/Editor/W28B0160ContactAreaClearanceTests.cs'
+      - 'Assets/Tests/Editor/W28B0160ContactAreaClearanceTests.cs.meta'
+      - 'Tools/B01/B01-60/P17W28ContactAreaQA/**'
+      - '.github/workflows/b01-60-p17w28-contact-area-native.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact_codex_source_and_native_test_source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Check exact current original #824 SHA, unchanged eight production blobs and OWN only eight additions
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W28ContactAreaQA/check.py | tee b0160-w28-original-source.txt
+          grep -F '"source": "PASS_PROVENANCE_AND_AUTHORED_TESTS_ONLY"' b0160-w28-original-source.txt
+          grep -F '"unity_playmode": "NOT_RUN"' b0160-w28-original-source.txt
+          echo 'B0160_W28_ORIGINAL_Codex_NATIVE_TEST_SOURCE_ONLY_PASS_NO_EDITOR_RUN'
+      - name: Execute 10 independent original-source/ownership/real-Unity-evidence adversarial checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile Tools/B01/B01-60/P17W28ContactAreaQA/check.py Tools/B01/B01-60/P17W28ContactAreaQA/test_check.py
+          python -m unittest discover -s Tools/B01/B01-60/P17W28ContactAreaQA -p test_check.py -v 2>&1 | tee b0160-w28-source-tests.log
+          grep -F 'Ran 10 tests' b0160-w28-source-tests.log
+          grep -F 'OK' b0160-w28-source-tests.log
+          echo 'B0160_W28_SOURCE_CHECKS_10_PASS_NOT_UNITY'
+  real_windows_powershell_safe_preflight:
+    runs-on: windows-2025
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Real Windows PowerShell safe preflight, 2 authored Unity source tests, no Unity process
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W28ContactAreaQA\Invoke-B0160W28Native.ps1 -RepoPath $env:GITHUB_WORKSPACE *>&1 | Tee-Object -FilePath b0160-w28-powershell-source.log
+          if($LASTEXITCODE -ne 0){throw 'W28 PowerShell source gate failed'}
+          if(!(Select-String b0160-w28-powershell-source.log -Pattern 'B0160_W28_SOURCE_CHECK_ONLY_NATIVE_UNITY_NOT_RUN' -Quiet)){throw 'Native falsely promoted'}
+      - name: Explicit native -Run WITHOUT approved G0 must fail exit3
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W28ContactAreaQA\Invoke-B0160W28Native.ps1 -RepoPath $env:GITHUB_WORKSPACE -Run *>&1 | Tee-Object -FilePath b0160-w28-no-g0.log
+          $rc=$LASTEXITCODE
+          if($rc -ne 3){throw "Native without G0 was allowed: $rc"}
+          if(Select-String b0160-w28-no-g0.log -Pattern 'STRUCTURALLY_PASS'){throw 'Fake Unity native result'}
+          $global:LASTEXITCODE=0
