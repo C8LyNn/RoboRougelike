@@ -28,10 +28,21 @@ namespace B0125.SafeRoute
         private int respawns;
         private Rigidbody physicalCrate;
         private Collider crateCollider;
+        private Rigidbody auxiliaryCrate;
+        private Collider auxiliaryCollider;
         private GridCell observedCrateCell;
+        private GridCell observedAuxiliaryCell;
+        private Vector3 observedCratePose;
+        private Vector3 observedAuxiliaryPose;
+        private bool occupancyUncertain;
+        private int replanRevision;
         private GridCell[] occupiedCells=System.Array.Empty<GridCell>();
         private int rejectedCrateMoves;
         public Rigidbody PhysicalCrate=>physicalCrate;
+        public Rigidbody AuxiliaryCrate=>auxiliaryCrate;
+        public GridCell AuxiliaryCrateCell=>observedAuxiliaryCell;
+        public bool OccupancyUncertain=>occupancyUncertain;
+        public int ReplanRevision=>replanRevision;
         public GridCell CrateCell=>observedCrateCell;
         public int RejectedCrateMoves=>rejectedCrateMoves;
         public int PhysicalBlockedCells=>occupiedCells.Length;
@@ -116,6 +127,13 @@ namespace B0125.SafeRoute
             crateCollider=box.GetComponent<BoxCollider>();
             physicalCrate=box.AddComponent<Rigidbody>();
             physicalCrate.isKinematic=true;physicalCrate.useGravity=false;
+            observedAuxiliaryCell=new GridCell(11,8);
+            var second=Slab("R4 SECOND REAL KINEMATIC BLOCKING CRATE",
+                Center(observedAuxiliaryCell,.8f),
+                new Vector3(1.25f,1.6f,1.25f),Color.blue);
+            auxiliaryCollider=second.GetComponent<BoxCollider>();
+            auxiliaryCrate=second.AddComponent<Rigidbody>();
+            auxiliaryCrate.isKinematic=true;auxiliaryCrate.useGravity=false;
             var unit=GameObject.CreatePrimitive(PrimitiveType.Capsule);
             unit.name="Dynamic physical Light / Heavy test rig";
             unit.transform.SetParent(transform,false);
@@ -162,10 +180,17 @@ namespace B0125.SafeRoute
             paused=false;drive=Vector2.zero;respawns=0;hasRouteOrigin=false;
             rejectedCrateMoves=0;
             observedCrateCell=new GridCell(3,8);
+            observedAuxiliaryCell=new GridCell(11,8);
             if(physicalCrate!=null)
             {
                 var stage=Center(observedCrateCell,.8f);
                 physicalCrate.position=stage;physicalCrate.transform.position=stage;
+                Physics.SyncTransforms();
+            }
+            if(auxiliaryCrate!=null)
+            {
+                var secondary=Center(observedAuxiliaryCell,.8f);
+                auxiliaryCrate.position=secondary;auxiliaryCrate.transform.position=secondary;
                 Physics.SyncTransforms();
             }
             gateDesiredOpen=false;physicalGateClear=false;hazardActive=true;
@@ -179,13 +204,22 @@ namespace B0125.SafeRoute
             PaintHazards();
             Replan();
         }
-        // REAL Unity Physics broadphase only: sample the crate collider across
-        // the 15x11 fixed world grid; never synthesize a safe route from a UI flag.
-        private GridCell[] SampleActualCrateCollider()
+        // R4: original finite physical broadphase snapshot for TWO separate
+        // kinematic Rigidbody+BoxCollider props. Unknown/overflowed observations
+        // must NEVER make an obsolete "safe" route appear.
+        private GridCell[] SamplePhysicalBlockers(Collider excluded=null)
         {
-            if(crateCollider==null||!crateCollider.enabled)return System.Array.Empty<GridCell>();
+            occupancyUncertain=false;
+            if(crateCollider==null||auxiliaryCollider==null||
+               !crateCollider.enabled||!auxiliaryCollider.enabled)
+            {
+                occupancyUncertain=true;
+                return System.Array.Empty<GridCell>();
+            }
             var buffer=new Collider[256];
             var cells=new List<GridCell>();
+            bool primaryDetected=excluded==crateCollider;
+            bool auxiliaryDetected=excluded==auxiliaryCollider;
             Physics.SyncTransforms();
             for(int z=0;z<level.Height;z++)
             for(int x=0;x<level.Width;x++)
@@ -194,23 +228,54 @@ namespace B0125.SafeRoute
                 int hits=Physics.OverlapBoxNonAlloc(Center(cell,.8f),
                     new Vector3(.8f,.72f,.8f),buffer,Quaternion.identity,
                     ~0,QueryTriggerInteraction.Ignore);
+                if(hits>=buffer.Length)
+                {
+                    occupancyUncertain=true;
+                    return System.Array.Empty<GridCell>();
+                }
+                bool occupied=false;
                 for(int i=0;i<hits;i++)
-                    if(buffer[i]==crateCollider){cells.Add(cell);break;}
+                {
+                    if(buffer[i]==crateCollider && excluded!=crateCollider)
+                    {primaryDetected=true;occupied=true;}
+                    if(buffer[i]==auxiliaryCollider && excluded!=auxiliaryCollider)
+                    {auxiliaryDetected=true;occupied=true;}
+                }
+                if(occupied)cells.Add(cell);
+            }
+            if(!primaryDetected||!auxiliaryDetected)
+            {
+                occupancyUncertain=true;
+                return System.Array.Empty<GridCell>();
             }
             return cells.ToArray();
         }
-        // A deliberate CRATE MOVE requires the original 8-scenario audit
-        // to be safe for BOTH physical rigs, not merely current Light.
-        public bool TryMoveCrate(GridCell proposed)
+        public bool TryMoveCrate(GridCell proposed)=>
+            TryMovePhysicalCrate(physicalCrate,crateCollider,auxiliaryCollider,proposed);
+        public bool TryMoveAuxiliaryCrate(GridCell proposed)=>
+            TryMovePhysicalCrate(auxiliaryCrate,auxiliaryCollider,crateCollider,proposed);
+        // Check the COMBINED real currently observed occupancy of the other
+        // crate with the proposed mover footprint; a safe solo move is NOT
+        // necessarily safe when two physical objects coexist.
+        private bool TryMovePhysicalCrate(Rigidbody mover,Collider movingCollider,
+            Collider otherCollider,GridCell proposed)
         {
-            if(level==null||physicalCrate==null)return false;
+            if(level==null||mover==null||movingCollider==null||otherCollider==null)
+                return false;
             if(!level.Contains(proposed.X,proposed.Z)||
-               level.At(proposed.X,proposed.Z)!='.'||
-               !PhysicalObstacleRouter.AuditAllEight(level,new[]{proposed}).AllReachable)
+                level.At(proposed.X,proposed.Z)!='.')
+            {rejectedCrateMoves++;return false;}
+            var otherCells=SamplePhysicalBlockers(movingCollider);
+            if(occupancyUncertain)
+            {rejectedCrateMoves++;return false;}
+            var hypothetical=new List<GridCell>(otherCells){proposed};
+            if(!PhysicalObstacleRouter.AuditAllEight(level,hypothetical).AllReachable)
             {rejectedCrateMoves++;return false;}
             var target=new Bounds(Center(proposed,.8f),new Vector3(1.25f,1.6f,1.25f));
             var hull=player.GetComponent<Collider>();
             if(hull!=null&&hull.bounds.Intersects(target))
+            {rejectedCrateMoves++;return false;}
+            if(otherCollider.bounds.Intersects(target))
             {rejectedCrateMoves++;return false;}
             foreach(var wall in obstacles)
                 if(wall.bounds.Intersects(target))
@@ -218,11 +283,11 @@ namespace B0125.SafeRoute
             foreach(var gate in gates)
                 if(gate.GetComponent<Collider>().bounds.Intersects(target))
                 {rejectedCrateMoves++;return false;}
-            physicalCrate.position=target.center;
-            physicalCrate.transform.position=target.center;
+            mover.position=target.center;
+            mover.transform.position=target.center;
             Physics.SyncTransforms();
-            observedCrateCell=proposed;
-            Replan();return true;
+            Replan();
+            return true;
         }
         public void ToggleGate()
         {
@@ -278,17 +343,12 @@ namespace B0125.SafeRoute
             }
             // Fix W23 R1 bug: route was always from design SPAWN even when
             // Light/Heavy had traversed the level. Update only on cell change.
-            var observed=new GridCell(
-                Mathf.RoundToInt(physicalCrate.position.x/CellSize)+level.Width/2,
-                Mathf.RoundToInt(physicalCrate.position.z/CellSize)+level.Height/2);
-            // External physics movements do not bypass fail-closed route
-            // recomputation. Scripted legal moves already call Replan().
+            // Detect BOTH foreign-script/physics Rigidbody pose changes,
+            // including within the same grid cell before/after a tile crossing.
             if(!hasRouteOrigin||!ActualPlayerCell().Equals(routeOrigin)||
-               !observed.Equals(observedCrateCell))
-            {
-                observedCrateCell=observed;
+               (physicalCrate.position-observedCratePose).sqrMagnitude>.0004f||
+               (auxiliaryCrate.position-observedAuxiliaryPose).sqrMagnitude>.0004f)
                 Replan();
-            }
         }
         public void Replan()
         {
@@ -298,9 +358,20 @@ namespace B0125.SafeRoute
             // teleport or entering a previously unseen map cell.
             routeOrigin=ActualPlayerCell();
             hasRouteOrigin=true;
-            occupiedCells=SampleActualCrateCollider();
-            current=PhysicalObstacleRouter.FindFrom(level,routeOrigin,radius,
-                new RouteConditions(physicalGateClear,hazardActive),occupiedCells);
+            observedCratePose=physicalCrate.position;
+            observedAuxiliaryPose=auxiliaryCrate.position;
+            observedCrateCell=new GridCell(
+                Mathf.RoundToInt(observedCratePose.x/CellSize)+level.Width/2,
+                Mathf.RoundToInt(observedCratePose.z/CellSize)+level.Height/2);
+            observedAuxiliaryCell=new GridCell(
+                Mathf.RoundToInt(observedAuxiliaryPose.x/CellSize)+level.Width/2,
+                Mathf.RoundToInt(observedAuxiliaryPose.z/CellSize)+level.Height/2);
+            occupiedCells=SamplePhysicalBlockers();
+            current=occupancyUncertain
+                ?new SafeRoutePlan(false,System.Array.Empty<GridCell>(),0)
+                :PhysicalObstacleRouter.FindFrom(level,routeOrigin,radius,
+                    new RouteConditions(physicalGateClear,hazardActive),occupiedCells);
+            replanRevision++;
             foreach(var old in routeMarkers)
                 if(old!=null)Destroy(old);
             routeMarkers.Clear();
@@ -326,7 +397,8 @@ namespace B0125.SafeRoute
                     ~0,QueryTriggerInteraction.Ignore);
                 foreach(var collider in hit)
                 {
-                    if(obstacles.Contains(collider)||collider==crateCollider)return false;
+                    if(obstacles.Contains(collider)||collider==crateCollider||
+                       collider==auxiliaryCollider)return false;
                     // Authoritative physical obstruction check: an actually
                     // overlapping gate collider blocks even if a script state
                     // previously marked all gates raised.
@@ -338,15 +410,23 @@ namespace B0125.SafeRoute
         }
         private void OnGUI()
         {
-            GUILayout.BeginArea(new Rect(12,12,405,350),GUI.skin.box);
+            GUILayout.BeginArea(new Rect(12,12,430,480),GUI.skin.box);
             GUILayout.Label("B01-25 SAFEROUTE001 — COLLIDER-AWARE ROUTE GUIDE");
             GUILayout.Label("Light / Heavy: "+(heavy?"HEAVY, 3x3 clearance":"LIGHT, 1x1 clearance"));
             GUILayout.Label("Gate physical clear "+physicalGateClear+
                 " | hazard active "+hazardActive);
             GUILayout.Label("SAFE ALL EIGHT STATES: "+audit.AllReachable);
             GUILayout.Label("Live origin cell: "+routeOrigin+" | guided: "+CurrentRouteFromPlayer);
-            GUILayout.Label("Real obstacle: "+observedCrateCell+
-                " | occupied cells: "+PhysicalBlockedCells);
+            GUILayout.Label("Physical crates: "+observedCrateCell+" & "+
+                observedAuxiliaryCell+" | occupied: "+PhysicalBlockedCells);
+            GUILayout.Label("Occupancy uncertain: "+occupancyUncertain+
+                " | route revision: "+replanRevision);
+            if(GUILayout.Button("Try pair SOFTLOCK: move crate B to (5,5)"))
+                TryMoveAuxiliaryCrate(new GridCell(5,5));
+            if(GUILayout.Button("Move crate B safely to (4,4)"))
+                TryMoveAuxiliaryCrate(new GridCell(4,4));
+            if(GUILayout.Button("Reset crate B to safe staging (11,8)"))
+                TryMoveAuxiliaryCrate(new GridCell(11,8));
             GUILayout.Label("Unsafe crate moves rejected: "+RejectedCrateMoves);
             if(GUILayout.Button("Move crate to SAFE cell (4,4)"))
                 TryMoveCrate(new GridCell(4,4));

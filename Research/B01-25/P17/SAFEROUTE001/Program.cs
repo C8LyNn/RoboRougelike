@@ -377,6 +377,105 @@ public static class OriginalSafeRouteTests
         Reject("R3_AUDIT_NULL_LEVEL",()=>PhysicalObstacleRouter.AuditAllEight(null!,new[]{new GridCell(3,8)}));
         Reject("R3_BAD_HEAVY_FOOTPRINT",()=>PhysicalObstacleRouter.FindFrom(
             Map(),Map().Start,3,new RouteConditions(false,true),Array.Empty<GridCell>()));
+        // W27 R4 actual composite physical blocker behavior and Heavy safety.
+        Test("R4_TWO_REAL_CRATES_START_SAFE_ALL_EIGHT",()=>{
+            var a=PhysicalObstacleRouter.AuditAllEight(Map(),
+                new[]{new GridCell(3,8),new GridCell(11,8)});
+            Check(a.AllReachable&&a.Cases.Length==8,"initial real crates unsafe");
+        });
+        Test("R4_BOTH_INDIVIDUALLY_SAFE_BUT_TOGETHER_SOFTLOCK_HEAVY",()=>{
+            var m=Map();var first=new GridCell(3,8);var other=new GridCell(5,5);
+            Check(PhysicalObstacleRouter.AuditAllEight(m,new[]{first}).AllReachable,
+                "first individually blocked");
+            Check(PhysicalObstacleRouter.AuditAllEight(m,new[]{other}).AllReachable,
+                "second individually blocked");
+            var combined=PhysicalObstacleRouter.AuditAllEight(m,new[]{first,other});
+            Check(!combined.AllReachable,"unsafe combined physical footprint accepted");
+            Check(!combined.Cases[5].Reachable,"Heavy gate-closed/hazard-active softlock missed");
+        });
+        Test("R4_COMBINED_LIGHT_ROUTE_MAY_EXIST_WHEN_HEAVY_IS_BLOCKED",()=>{
+            var a=PhysicalObstacleRouter.AuditAllEight(Map(),
+                new[]{new GridCell(3,8),new GridCell(5,5)});
+            Check(a.Cases[1].Reachable&&!a.Cases[5].Reachable,
+                "Light/Heavy footprint divergence not detected");
+        });
+        Test("R4_SAFE_SECOND_CRATE_TARGET_4_4_WITH_FIRST_3_8",()=>{
+            var a=PhysicalObstacleRouter.AuditAllEight(Map(),
+                new[]{new GridCell(3,8),new GridCell(4,4)});
+            Check(a.AllReachable,"second real crate safe move blocked");
+        });
+        Test("R4_SAFE_FIRST_CRATE_MOVE_4_4_WITH_SECOND_11_8",()=>{
+            var a=PhysicalObstacleRouter.AuditAllEight(Map(),
+                new[]{new GridCell(4,4),new GridCell(11,8)});
+            Check(a.AllReachable,"first real crate safe relocation blocked");
+        });
+        Test("R4_ALL_EIGHT_GATE_HAZARD_HEAVY_CASES_AVOID_BOTH_REAL_CRATES",()=>{
+            var m=Map();var a=new GridCell(3,8);var b=new GridCell(11,8);
+            for(int radius=0;radius<=1;radius++)
+            for(int gate=0;gate<=1;gate++)
+            for(int hazard=0;hazard<=1;hazard++)
+            {
+                var state=new RouteConditions(gate==1,hazard==1);
+                var p=PhysicalObstacleRouter.FindFrom(m,m.Start,radius,state,new[]{a,b});
+                Check(p.Reachable,"initial dual crate mode softlocks");
+                foreach(var cell in p.Cells)
+                    foreach(var blocker in new[]{a,b})
+                        Check(Math.Abs(cell.X-blocker.X)>radius||
+                              Math.Abs(cell.Z-blocker.Z)>radius,
+                              "physical blocker overlaps route rig envelope");
+            }
+        });
+        Test("R4_TWO_CRATE_ROUTES_IGNORE_INPUT_ORDER",()=>{
+            var m=Map();var state=new RouteConditions(false,true);
+            var a=PhysicalObstacleRouter.FindFrom(m,m.Start,1,state,
+                new[]{new GridCell(3,8),new GridCell(11,8)});
+            var b=PhysicalObstacleRouter.FindFrom(m,m.Start,1,state,
+                new[]{new GridCell(11,8),new GridCell(3,8)});
+            Check(a.Reachable&&b.Reachable&&a.Cells.Length==b.Cells.Length,"different ordering");
+            for(int k=0;k<a.Cells.Length;k++)
+                Check(a.Cells[k].Equals(b.Cells[k]),"non-deterministic tie break");
+        });
+        Test("R4_EXTERNAL_PHYSICAL_CRATE_RELOCATION_DETECTED_AS_NO_ROUTE",()=>{
+            var m=Map();var state=new RouteConditions(false,true);
+            var safe=PhysicalObstacleRouter.FindFrom(m,m.Start,1,state,
+                new[]{new GridCell(3,8),new GridCell(11,8)});
+            var unsafeRoute=PhysicalObstacleRouter.FindFrom(m,m.Start,1,state,
+                new[]{new GridCell(3,8),new GridCell(5,5)});
+            Check(safe.Reachable&&!unsafeRoute.Reachable,"external move hidden");
+        });
+        Test("R4_LIVE_REPLAN_DURING_TWO_CRATE_OCCUPANCY",()=>{
+            var m=Map();var state=new RouteConditions(false,true);
+            var start=PhysicalObstacleRouter.FindFrom(m,m.Start,1,state,
+                new[]{new GridCell(3,8),new GridCell(11,8)});
+            Check(start.Reachable&&start.Cells.Length>1,"prior route");
+            var current=start.Cells[1];
+            var live=PhysicalObstacleRouter.FindFrom(m,current,1,state,
+                new[]{new GridCell(3,8),new GridCell(11,8)});
+            VerifyPhysicalGridWitnessFrom(m,current,live,1,state);
+            Check(live.Cells.Length<=start.Cells.Length,"stale live route");
+        });
+        Test("R4_PHYSICAL_OCCUPANCY_SNAPSHOT_REPLACED_BETWEEN_FRAMES",()=>{
+            var m=Map();var sample=new[]{new GridCell(3,8),new GridCell(11,8)};
+            var before=PhysicalObstacleRouter.AuditAllEight(m,sample);
+            sample[1]=new GridCell(5,5);
+            var after=PhysicalObstacleRouter.AuditAllEight(m,sample);
+            Check(before.AllReachable&&!after.AllReachable,"stale physical source");
+        });
+        Test("R4_SECOND_CRATE_MUST_NOT_BE_ALLOWED_TO_BLOCK_EXIT",()=>{
+            var m=Map();var route=PhysicalObstacleRouter.FindFrom(m,m.Start,1,
+                new RouteConditions(true,false),
+                new[]{new GridCell(3,8),m.Exit});
+            Check(!route.Reachable,"real exit blocked but route marked safe");
+        });
+        Test("R4_OVERLAPPING_TWO_CRATES_ARE_IDEMPOTENT_IN_BFS",()=>{
+            var m=Map();var state=new RouteConditions(false,true);
+            var p=PhysicalObstacleRouter.FindFrom(m,m.Start,1,state,
+                new[]{new GridCell(3,8)});
+            var q=PhysicalObstacleRouter.FindFrom(m,m.Start,1,state,
+                new[]{new GridCell(3,8),new GridCell(3,8)});
+            Check(p.Reachable&&q.Reachable&&p.Cells.Length==q.Cells.Length,
+                "duplicate physics broadphase cell changed navigation");
+        });
         Check(args.Length==1,"One results path required");
         string file=Path.GetFullPath(args[0]);Directory.CreateDirectory(Path.GetDirectoryName(file)!);
         File.WriteAllText(file,JsonSerializer.Serialize(new{package="B01-25-SAFEROUTE001/R1",
