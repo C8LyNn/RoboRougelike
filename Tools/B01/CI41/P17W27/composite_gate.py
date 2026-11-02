@@ -95,6 +95,11 @@ RUNTIME_PINS = {
     "ledger_510": {
         "Assets/B0123SecureReattachV2/Runtime/AtomicDockLedger.cs": "b6a4d04b0c6407c8c84451b4d599d96fe0e4d1a9",
     },
+    "debris_W06_original_510_lineage": {
+        "Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs": "fa1aa5e531927cbe73cf5fdfe161b4a981316db5",
+        "Assets/B0123DebrisRepulse001/Runtime/DebrisRepulsionEmitter.cs": "2b3a8465c550bd49a5c98be5a8064a4ce0947f4b",
+        "Assets/B0123DebrisRepulse001/Runtime/B0123.DebrisRepulse.Runtime.asmdef": "25a49dc836b62d791c0bf40c214c1c6cf09a9fea",
+    },
 }
 GUID_PATTERN = re.compile(rb"(?m)^guid:\s*([0-9a-f]{32})\s*$")
 
