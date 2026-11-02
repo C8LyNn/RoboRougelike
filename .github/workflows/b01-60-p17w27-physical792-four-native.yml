@@ -1,0 +1,133 @@
+name: B01-60 W27 exact original #792 four Unity PhysX source QA — NO Unity in CI
+on:
+  push:
+    branches: [qa/b01-60-p17w27-physical792-four-native-r1]
+    paths:
+      - 'Tools/B01/B01-60/P17W27Physical792Native/**'
+      - '.github/workflows/b01-60-p17w27-physical792-four-native.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-60/P17W27Physical792Native/**'
+      - '.github/workflows/b01-60-p17w27-physical792-four-native.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-author-sources-and-four-stage-rollback:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch immutable selected original source refs ONLY in disposable GitHub Actions checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          for sha in \
+            ce46a5e0cc5d26df6c4ece723e8efe20d70fc4b1 \
+            16cb2a7b5158605b15191b6074f9e392e0d1ebd3 \
+            8634e71dfcf633323073fe584a6c0884f1ca5d23 \
+            3aaaec4027ee246fbfb6f209179f0e9507363473 \
+            f5db40bf293fe9582ec7c6fcb3515aeff6fcf937 \
+            2b7983f0f9e09dd1d56906b379a3f7af7b02f21a \
+            b4df10a7ad7e6c758f8331013f6b216b3a3689a3 \
+            60c73a6f9ed2585cbb9bf7aeaad8c62eef0629cb
+          do
+            git fetch --no-tags origin "$sha"
+          done
+          test "$(git rev-parse 16cb2a7b5158605b15191b6074f9e392e0d1ebd3:Assets/B0123CanonicalRigPortW24/Runtime/CanonicalPhysicalRigPortW24.cs)" = 7623f698b6e644b8d8247a011b453bf40adc2227
+          test "$(git rev-parse 16cb2a7b5158605b15191b6074f9e392e0d1ebd3:Assets/B0123CanonicalRigPortW24/Tests/PlayMode/CanonicalPhysicalRigPortW24NativeTests.cs)" = 358ef67f8f0f795d94a646e8e11c27158e2c8f0d
+      - name: Run 19 exact selected original Git and adversarial original real scratch tests — never Unity.exe
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s Tools/B01/B01-60/P17W27Physical792Native -p test_port792_native.py -v 2>&1 | tee w27-source-19.log
+          grep -F 'Ran 19 tests' w27-source-19.log
+          grep -F 'OK' w27-source-19.log
+      - name: Physically stage and roll back 4 real Unity source project copies, exact original #792, no Unity.exe
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W27Physical792Native/port792_native.py --mode preflight --scratch-parent "$RUNNER_TEMP" 2>&1 | tee w27-source-four-stage.log
+          grep -F 'B0160_W27_FOUR_PRIVATE_SOURCE_STAGE_ROLLBACK_PASS' w27-source-four-stage.log
+          grep -F 'B0160_W27_NATIVE_UNITY_G1_NOT_RUN' w27-source-four-stage.log
+          grep -F 'B0160_W27_FULL_SAVE_ECON_G1_NOT_RUN_COMPOSITE_G0_HOLD' w27-source-four-stage.log
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0160-W27-FOUR-792-SOURCE-NOT-UNITY-${{ matrix.os }}
+          path: |
+            w27-source-19.log
+            w27-source-four-stage.log
+          if-no-files-found: warn
+          retention-days: 14
+  local-operator-windows-source-only-negative-gates:
+    runs-on: windows-2025
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Retrieve exact author refs into GitHub Actions scratch only — NEVER user PC
+        shell: bash
+        run: |
+          set -euo pipefail
+          for sha in \
+            ce46a5e0cc5d26df6c4ece723e8efe20d70fc4b1 \
+            16cb2a7b5158605b15191b6074f9e392e0d1ebd3 \
+            8634e71dfcf633323073fe584a6c0884f1ca5d23 \
+            3aaaec4027ee246fbfb6f209179f0e9507363473 \
+            f5db40bf293fe9582ec7c6fcb3515aeff6fcf937 \
+            2b7983f0f9e09dd1d56906b379a3f7af7b02f21a \
+            b4df10a7ad7e6c758f8331013f6b216b3a3689a3 \
+            60c73a6f9ed2585cbb9bf7aeaad8c62eef0629cb
+          do git fetch --no-tags origin "$sha"; done
+      - name: Actual PowerShell 7 source-only safe original physical stage+rollback
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W27Physical792Native\Invoke-B0160W27Port792.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:RUNNER_TEMP *>&1 | Tee-Object -FilePath w27-windows-source-only.log
+          if($LASTEXITCODE -ne 0){throw 'W27 source-only operator failed'}
+          if(!(Select-String w27-windows-source-only.log -Pattern 'B0160_W27_PORT792_SOURCE_ONLY_PASS G1_NOT_RUN' -Quiet)){throw 'Native G1 falsely asserted'}
+      - name: Reject writing scratch under protected original checkout, even an empty one
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W27Physical792Native\Invoke-B0160W27Port792.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:GITHUB_WORKSPACE *>&1 | Tee-Object -FilePath w27-unsafe-scratch.log
+          $code=$LASTEXITCODE
+          if($code -ne 2){throw "Unsafe original checkout scratch should be denied exit2: $code"}
+          $global:LASTEXITCODE=0
+      - name: Reject native -Run when independent source G0 was not reviewed
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W27Physical792Native\Invoke-B0160W27Port792.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:RUNNER_TEMP -Run *>&1 | Tee-Object -FilePath w27-no-G0.log
+          $code=$LASTEXITCODE
+          if($code -ne 3){throw "Native lacking G0 consent should be denied exit3: $code"}
+          $global:LASTEXITCODE=0
+      - name: Reject native if exact activated Unity Hub 6000.3.14f1 executable missing
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W27Physical792Native\Invoke-B0160W27Port792.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:RUNNER_TEMP -Run -G0Reviewed -UnityPath 'Z:\missing\6000.3.14f1\Editor\Unity.exe' *>&1 | Tee-Object -FilePath w27-no-Editor.log
+          $code=$LASTEXITCODE
+          if($code -ne 3){throw "Native missing real Unity Editor should be denied exit3: $code"}
+          $global:LASTEXITCODE=0
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0160-W27-POWERSHELL-SOURCE-ONLY-NOT-UNITY
+          path: |
+            w27-windows-source-only.log
+            w27-unsafe-scratch.log
+            w27-no-G0.log
+            w27-no-Editor.log
+          if-no-files-found: warn
+          retention-days: 14
