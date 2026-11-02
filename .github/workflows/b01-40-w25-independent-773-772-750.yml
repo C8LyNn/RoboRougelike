@@ -1,0 +1,55 @@
+name: B01-40 W25 independent exact-source G0 and Linux case-alias security
+on:
+  push:
+    branches:
+      - qa/b01-40-p17w25-773-772-750-independent-g0
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-40/P17W25IndependentG0/**'
+      - '.github/workflows/b01-40-w25-independent-773-772-750.yml'
+permissions:
+  contents: read
+jobs:
+  original-source-g0:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Independently verify original exact SHA ancestry, ABI, GUID and safe scratch
+        run: |
+          set -euo pipefail
+          mkdir -p b0140-w25-results
+          python Tools/B01/B01-40/P17W25IndependentG0/intake.py --out b0140-w25-results | tee b0140-w25-results/intake.log
+          grep -q 'B0140_W25_ORIGINAL_SHA_PROVENANCE_GUID_ABI_SCRATCH_PASS' b0140-w25-results/intake.log
+      - name: Build exact original #773 store + #729 lease + #556 codec + #510 IDs
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-40/P17W25IndependentG0/prepare_runtime.py --out "$RUNNER_TEMP/B0140W25Original"
+          cp "$RUNNER_TEMP/B0140W25Original/sources-original-sha.json" b0140-w25-results/
+          dotnet build "$RUNNER_TEMP/B0140W25Original/CaseAliasNegative.csproj" -c Release --verbosity quiet | tee b0140-w25-results/build.log
+      - name: Independent true physical OS negative - distinct-case canonical path MUST be denied
+        run: |
+          set -euo pipefail
+          dotnet run --no-build --project "$RUNNER_TEMP/B0140W25Original/CaseAliasNegative.csproj" -c Release --verbosity quiet 2>&1 | tee b0140-w25-results/case-alias-runtime.log
+          grep -q 'B0140_W25_SELECTED773_ONE_CANONICAL_PHYSICAL_PATH=PASS' b0140-w25-results/case-alias-runtime.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b0140-w25-773-772-750-${{ matrix.os }}
+          path: b0140-w25-results/*
+          if-no-files-found: warn
