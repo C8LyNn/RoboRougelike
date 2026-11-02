@@ -1,0 +1,43 @@
+name: B01-22 W27 ORIGINAL ECON V7 24-Fight Campaign and One-Shot Loaner Regression
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/ECONCAMPAIGNW27/**'
+      - '.github/workflows/b01-22-p17w27-econ-campaign.yml'
+  workflow_dispatch:
+jobs:
+  original-v7-economy-campaign:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Build ORIGINAL frozen production V7 economic reducer plus new campaign tests
+        shell: bash
+        run: dotnet build Tools/B01/ECONCAMPAIGNW27/W27.Tests.csproj --configuration Release
+      - name: Execute 24-fight V7 win and loaner source witnesses plus cold independent process
+        shell: bash
+        run: |
+          dotnet run --project Tools/B01/ECONCAMPAIGNW27/W27.Tests.csproj --configuration Release --no-build -- --scenario "$RUNNER_TEMP/w27-campaign.bin" | tee "$RUNNER_TEMP/w27-campaign.log"
+          dotnet run --project Tools/B01/ECONCAMPAIGNW27/W27.Tests.csproj --configuration Release --no-build -- --cold "$RUNNER_TEMP/w27-campaign.bin" | tee -a "$RUNNER_TEMP/w27-campaign.log"
+          grep -q "CAMPAIGN_SOURCE_PASS battles=24" "$RUNNER_TEMP/w27-campaign.log"
+          grep -q "P0_SOFTLOCK_WITNESS_DETECTED" "$RUNNER_TEMP/w27-campaign.log"
+          grep -q "W27_COLD_SOURCE_PASS" "$RUNNER_TEMP/w27-campaign.log"
+          grep -q "game_playtest_participants=0" "$RUNNER_TEMP/w27-campaign.log"
+      - name: Validate frozen actual V7 blobs and 7 new own-only paths
+        shell: bash
+        run: python3 Tools/B01/ECONCAMPAIGNW27/verify_package.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-22-w27-original-campaign-${{ matrix.os }}
+          path: |
+            ${{ runner.temp }}/w27-campaign.log
+            ${{ runner.temp }}/w27-campaign.bin
+          if-no-files-found: error
