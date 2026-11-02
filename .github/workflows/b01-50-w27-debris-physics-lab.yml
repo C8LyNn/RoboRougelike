@@ -1,0 +1,48 @@
+name: B01-50 W27 physics lab original source + CSV fail-closed evidence parser
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-50/W27DebrisPhysicsLab001/**'
+      - '.github/workflows/b01-50-w27-debris-physics-lab.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-source-transport-and-analyzer:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate exact Git blob manifest, GUIDs, actual Unity YAML scene and R3 ABI
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-50/W27DebrisPhysicsLab001/Tools/verify_package.py | tee source_validation.log
+      - name: Run original actual Python parser fail-closed unit suite
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s Tools/B01/B01-50/W27DebrisPhysicsLab001/Tools/tests -p 'test_*.py' -v 2>&1 | tee original_parser_tests.log
+          git rev-parse HEAD > source_commit_sha.txt
+          echo 'UNITY_NATIVE_G1=NOT_RUN; ProfilerRecorder native samples NOT COLLECTED' | tee native_disposition.txt
+      - name: Preserve original source evidence, never claim native Unity
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-50-W27-LAB-SOURCE-${{ matrix.os }}-${{ github.run_id }}
+          path: |
+            source_validation.log
+            original_parser_tests.log
+            source_commit_sha.txt
+            native_disposition.txt
+          retention-days: 14
+          if-no-files-found: warn
