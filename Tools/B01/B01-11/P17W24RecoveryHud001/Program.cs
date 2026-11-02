@@ -77,7 +77,14 @@ internal static class Program
         Test("positive pending count without flag denied",()=>{var s=Good();s.PendingDestroyedParts=1;Is(s,RecoveryNoticeKind.Unknown);});
         Test("negative pending count denied",()=>{var s=Good();s.PendingDestroyedParts=-1;Is(s,RecoveryNoticeKind.Unknown);});
         Test("too many pending parts denied",()=>{var s=Good();s.PendingDestroyedParts=501;s.PendingForNextVictory=true;Is(s,RecoveryNoticeKind.Unknown);});
-        Test("verified free rebuild text only if source says available",()=>{var s=Good();s.FreeRebuildAvailableFromTrustedWin=true;TextHas(s,"jedna na zwycięstwo");});
+        Test("verified free rebuild requires actual host-provided distinct victory identity",()=>{var s=Good();s.FreeRebuildAvailableFromTrustedWin=true;s.HostVerifiedFreeVictoryId="win-12";TextHas(s,"jedna na zwycięstwo");});
+        Test("phantom free claim without a winner ID is hidden",()=>{var s=Good();s.FreeRebuildAvailableFromTrustedWin=true;Is(s,RecoveryNoticeKind.Unknown);});
+        Test("empty victory ID denied",()=>{var s=Good();s.FreeRebuildAvailableFromTrustedWin=true;s.HostVerifiedFreeVictoryId="";Is(s,RecoveryNoticeKind.Unknown);});
+        Test("path-injection victory ID denied",()=>{var s=Good();s.FreeRebuildAvailableFromTrustedWin=true;s.HostVerifiedFreeVictoryId="../win";Is(s,RecoveryNoticeKind.Unknown);});
+        Test("unverified nonASCII winner ID denied",()=>{var s=Good();s.FreeRebuildAvailableFromTrustedWin=true;s.HostVerifiedFreeVictoryId="zwycięstwo";Is(s,RecoveryNoticeKind.Unknown);});
+        Test("free claim with valid host ID does not bypass lease proof",()=>{var s=Good();s.FreeRebuildAvailableFromTrustedWin=true;s.HostVerifiedFreeVictoryId="win-13";s.SingleLiveOwner=false;Is(s,RecoveryNoticeKind.Unknown);});
+        Test("free claim with valid ID does not override uncertain Save",()=>{var s=Good();s.FreeRebuildAvailableFromTrustedWin=true;s.HostVerifiedFreeVictoryId="win-13";s.DurableCommitCertain=false;Is(s,RecoveryNoticeKind.SaveUncertain);});
+        Test("free flag false never grants credit even with old host winner ID",()=>{var s=Good();s.HostVerifiedFreeVictoryId="win-12";TextHas(s,"Brak zweryfikowanej");});
         Test("unverified free rebuild cannot be promised",()=>TextHas(Good(),"Brak zweryfikowanej"));
         Test("owner quoted 65% displayed without independent price computation",()=>{var s=Good();s.OriginalPartPriceScrap=100;s.HostQuotedPaidScrap=65;TextHas(s,"65 Scrap");TextHas(s,"65% ceny");});
         Test("owner controls rounding including price 1 quote 0",()=>{var s=Good();s.OriginalPartPriceScrap=1;s.HostQuotedPaidScrap=0;TextHas(s,"0 Scrap");});
