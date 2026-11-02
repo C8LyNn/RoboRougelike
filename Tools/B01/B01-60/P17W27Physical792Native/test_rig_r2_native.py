@@ -59,7 +59,7 @@ class Original792PhysicalNativeSourceTests(unittest.TestCase):
                     self.helper.guid_check(self.src)+1)
   self.assertEqual(len(set(produced)),4)
 
- def test_08 original_four_native_filter_identifiers(self):
+ def test_08_original_four_native_filter_identifiers(self):
   for method in r.METHODS:
    self.assertTrue((r.SUITE+method).startswith(
     "B01.CanonicalRigPortW24.Tests.CanonicalPhysicalRigPortW24NativeTests."))
