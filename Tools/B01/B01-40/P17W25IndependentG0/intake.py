@@ -17,11 +17,11 @@ STORE="Tools/B01/B01-62/P17W24CanonicalPathFixR2/CanonicalSingleAuthorityStoreV3
 FIXTURE="Assets/B0123UnitySaveBridge001/Tests/IsolatedSaveWorldNativePlayModeTests.cs"
 PREFIX="Assets/B0123CanonicalRigPortW24/"
 PACKAGES={
- "game":("Assets/B0123DebrisRepulse001/","Assets/B0123SecureReattachV2/"),
- "codec":("Assets/B0123DetachedSaveContract001/",),
- "api":("Assets/B0123CanonicalSaveApi001/",),
- "r5fix":("Assets/B0123UnitySaveBridge001/",),
- "port":("Assets/B0123CanonicalRigPortW24/",),
+ "game":("Assets/B0123DebrisRepulse001","Assets/B0123SecureReattachV2"),
+ "codec":("Assets/B0123DetachedSaveContract001",),
+ "api":("Assets/B0123CanonicalSaveApi001",),
+ "r5fix":("Assets/B0123UnitySaveBridge001",),
+ "port":("Assets/B0123CanonicalRigPortW24",),
 }
 def git(*args,check=True):
  p=subprocess.run(["git",*args],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
@@ -100,7 +100,7 @@ def guid_closure():
     prior=by_guid.get(guid)
     require(prior is None or prior==path,"DUPLICATE_UNITY_GUID_"+guid+":"+path)
     by_guid[guid]=path
- portpaths=[p for p in owned if p.startswith(PREFIX)]
+ portpaths=[p for p in owned if p.startswith(PREFIX.rstrip('/'))]
  require(len(portpaths)==9,"PORT_NEW_META_NOT_NINE")
  asmdefs=[p for p in tree(PINS["port"],PREFIX) if p.endswith(".asmdef")]
  require(len(asmdefs)==2,"PORT_ASMDEF_NOT_TWO")
