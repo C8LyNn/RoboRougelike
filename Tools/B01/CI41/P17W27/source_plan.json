@@ -1,0 +1,100 @@
+{
+  "package_id": "CI41-W27-COMPOSITE-SOURCE-CLOSURE-001",
+  "revision": "R1",
+  "owner": "B01-41",
+  "hq": 800,
+  "inbox": 79,
+  "source_base_branch": "main",
+  "source_base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "producers": {
+    "main": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+    "selected_strict_path_787": "f5db40bf293fe9582ec7c6fcb3515aeff6fcf937",
+    "whole_game_797": "2b7983f0f9e09dd1d56906b379a3f7af7b02f21a",
+    "physical_rig_792": "16cb2a7b5158605b15191b6074f9e392e0d1ebd3",
+    "econ_v7_780": "b4df10a7ad7e6c758f8331013f6b216b3a3689a3",
+    "r5_fixture_750": "60c73a6f9ed2585cbb9bf7aeaad8c62eef0629cb",
+    "physical_parent_772": "ce46a5e0cc5d26df6c4ece723e8efe20d70fc4b1",
+    "r5_parent_690": "cc7f73541517a18f4479bb155534bd4832d9985e",
+    "canonical_api_729": "b8ca29c7707cd6b4338d0b9772d74dee676d49d2",
+    "frozen_save_556": "33094f154c7b91119b36d58aab285e6e83c5de57",
+    "frozen_game_510": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "w06_debris_421": "cb2b3a76e84266e2730fffc4ab048c1039f0652f"
+  },
+  "unity_version": "6000.3.14f1",
+  "selected_runtime": "whole_game_797",
+  "replaced_store": "selected_strict_path_787",
+  "prohibitions": [
+    "NEVER_CO_INSTALL_RAW_787_STORE_AND_797_WHOLEGAME_STORE",
+    "NEVER_USE_OLD_749_773_793_764",
+    "NO_AUTO_MIGRATION",
+    "NO_UNAUTHORIZED_MERGE",
+    "NO_NATIVE_UNITY_PASS"
+  ],
+  "asset_sources": [
+    {
+      "ref": "w06_debris_421",
+      "prefix": "Assets/B0123DebrisRepulse001/"
+    },
+    {
+      "ref": "frozen_game_510",
+      "prefix": "Assets/B0123SecureReattachV2/"
+    },
+    {
+      "ref": "frozen_save_556",
+      "prefix": "Assets/B0123DetachedSaveContract001/"
+    },
+    {
+      "ref": "r5_parent_690",
+      "prefix": "Assets/B0123UnitySaveBridge001/"
+    },
+    {
+      "ref": "canonical_api_729",
+      "prefix": "Assets/B0123CanonicalSaveApi001/"
+    },
+    {
+      "ref": "physical_rig_792",
+      "prefix": "Assets/B0123CanonicalRigPortW24/"
+    },
+    {
+      "ref": "econ_v7_780",
+      "prefix": "Assets/B01Packages/ECONAPPROVED007/"
+    }
+  ],
+  "explicit_files": [
+    {
+      "ref": "r5_fixture_750",
+      "path": "Assets/B0123UnitySaveBridge001/Tests/IsolatedSaveWorldNativePlayModeTests.cs",
+      "replaces_from": "r5_parent_690"
+    },
+    {
+      "ref": "whole_game_797",
+      "path": "Tools/B01/B01-62/P17W25WholeGameEconomyV7/WholeGameEconomySlotV2.cs"
+    },
+    {
+      "ref": "whole_game_797",
+      "path": "Tools/B01/B01-62/P17W25WholeGameEconomyV7/CanonicalWholeGameSessionV2.cs"
+    }
+  ],
+  "audit_only": [
+    {
+      "ref": "selected_strict_path_787",
+      "path": "Tools/B01/B01-62/P17W25StrictCanonicalPathR3/CanonicalSingleAuthorityStoreV3R3.cs"
+    },
+    {
+      "ref": "selected_strict_path_787",
+      "path": "Tools/B01/B01-62/P17W25StrictCanonicalPathR3/CanonicalSlotSessionV3R3.cs"
+    }
+  ],
+  "producer_changes_only": [
+    "#792 two R2 changed existing original #772 Unity source files; full #792 Assets scope includes #772 inherited .meta/asmdefs.",
+    "#750 intentionally replaces one pre-existing R5 fixture file from #690; no separate Save writer."
+  ],
+  "native_unity_g1": "NOT_RUN",
+  "codex_ack": "NONE",
+  "codex_w26_reserved": [
+    "one-owner save/session",
+    "garage spatial placement",
+    "weapon functional clearance",
+    "model intake"
+  ]
+}
