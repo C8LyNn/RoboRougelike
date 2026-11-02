@@ -1,0 +1,21 @@
+{
+  "name": "B0123.BuildImpactTelemetry.Tests",
+  "rootNamespace": "B01.BuildImpactTelemetry001.Tests",
+  "references": [
+    "B0123.BuildImpactTelemetry"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
