@@ -37,8 +37,12 @@ def read_source(role,path):
 
 def list_source(role,prefix):
     sha=PLAN["producers"][role]
-    names=git("ls-tree","-r","--name-only",sha,"--",prefix).decode().splitlines()
-    return sorted(x for x in names if x.startswith(prefix) and not x.endswith("/"))
+    # Unity folder .meta MUST be included too; a slash-only ls-tree query
+    # silently omits the root-folder GUID (7 missing GUIDs in W27 R1).
+    base=prefix.rstrip("/")
+    names=git("ls-tree","-r","--name-only",sha,"--",prefix,base+".meta").decode().splitlines()
+    return sorted(x for x in names if x==base+".meta" or
+                  (x.startswith(prefix) and not x.endswith("/")))
 
 def hash_git(b):
     return hashlib.sha1(b"blob "+str(len(b)).encode()+b"\0"+b).hexdigest()
@@ -63,6 +67,10 @@ def select():
                              "chosen_source_role":role})
         entries[path]=(role,read_source(role,path))
     assert len(replaced)==1 and replaced[0]["chosen_source_role"]=="r5_fixture_750"
+    # Exactly seven original Unity package root-folder .meta files.
+    for scope in PLAN["asset_sources"]:
+        assert scope["prefix"].rstrip("/")+".meta" in entries, (
+            "MISSING_ORIGINAL_UNITY_PACKAGE_ROOT_META:"+scope["prefix"])
     audits=[]
     for spec in PLAN["audit_only"]:
         path=spec["path"];role=spec["ref"];b=read_source(role,path)
@@ -140,6 +148,17 @@ def package(out):
     assert all(x["path"].startswith(("Assets/","Tools/")) for x in selected_files)
     assert any(x["path"].endswith("CanonicalWholeGameSessionV2.cs") for x in selected_files)
     assert any(x["path"].endswith("WholeGameEconomySlotV2.cs") for x in selected_files)
+    # Exact original independent B01-40 W27 source closure crosscheck:
+    # 87 selected (excludes two audit-only R3 raw writer files) and 53 Unity GUIDs.
+    assert len(selected_files)==87, "SCOPE_INCOMPLETE_EXPECTED_87_SELECTED_SOURCE_FILES"
+    assert audit["unique_guid_count"]==53, "SCOPE_INCOMPLETE_EXPECTED_53_UNIQUE_GUIDS"
+    # Crosscheck original #797 source Unity compatibility P0, without
+    # pretending that a Python static scan is native Unity compilation.
+    whole=b"\n".join(b for path,(role,b) in entries.items()
+                     if role=="whole_game_797" and path.endswith(".cs"))
+    for api in (b"SHA256.HashData",b"Convert.ToHexString",
+                b"File.Move(staging,authoritative,true)"):
+        assert api in whole, "UNITY_API_BLOCKER_NO_LONGER_MATCHES_ORIGINAL_RECHECK:"+api.decode()
     # Only source files listed, no hidden branch-history coinstall.
     receipt={
      "package_id":PLAN["package_id"],"revision":PLAN["revision"],"origin":"EXACT_GIT_ORIGINAL_BLOBS",
@@ -156,6 +175,9 @@ def package(out):
               "G0_UNITY_ABI":"HOLD_MISSING_GAME_BINDER_AND_NATIVE",
               "G1_NATIVE_UNITY":"NOT_RUN","G2_CODEX_INTEGRATION":"HOLD",
               "CODEX_ACK":"NONE","INTEGRATED":False},
+     "unity_api_blocker_797":{"status":"CONFIRMED_SOURCE_SYMBOLS_WITH_SEPARATE_NATIVE_PROBE",
+       "symbols":["SHA256.HashData","Convert.ToHexString","File.Move(string,string,bool)"],
+       "native_probe":"https://github.com/C8LyNn/RoboRougelike/pull/797#issuecomment-6588699104"},
      "only_safe_path":"REVIEW_OR_DISPOSABLE_SOURCE_STAGING_NO_LIVE_GAME_INSTALL",
      "rollback":"REMOVE_ONLY_FRESH_UUID_OWNED_STAGING; never rollback foreign or active Codex files"}
     out=scan_dir_for_foreign(out)
@@ -197,6 +219,8 @@ def package(out):
         print("CI41_W27_EXACT_ORIGINAL_GIT_BLOBS_AND_GUIDS_PASS files="+str(len(selected_files))+
               " unique_guids="+str(audit["unique_guid_count"])+" zip_sha256="+result["sha256_zip"])
         print("CI41_W27_ONE_WHOLE_GAME_797_ONLY_R3_787_AUDIT_NOT_INSTALLED")
+        print("CI41_W27_R3_787_TWO_AUDIT_BLOBS_PLUS_87_INSTALLED_SOURCE_EQUALS_89_53_GUIDS")
+        print("CI41_W27_797_UNITY_API_ABI_P0_HOLD_THREE_SOURCE_SYMBOLS")
         print("CI41_W27_SAFE_FOREIGN_SCRATCH_AND_CODEX_WORKTREE_UNTOUCHED")
         print("CI41_W27_G0_SOURCE_PROVENANCE_PASS_G0_GAME_BINDER_HOLD_G1_NATIVE_NOT_RUN")
         return result
