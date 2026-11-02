@@ -1,0 +1,65 @@
+{
+  "package_id": "B01-12-GARAGE-SPATIAL-ZONES-001/R1",
+  "revision": "1.0.0",
+  "owner": "B01-12",
+  "hq_issue": 800,
+  "base_pr": 824,
+  "base_commit": "e03d36f2b86f8c73a067e574b67237a8921f622a",
+  "files": {
+    ".github/workflows/b01-12-w28-garage-spatial.yml": {
+      "bytes": 2050,
+      "sha256": "88f0f3ad85ba3320ed548be7ca27779e472ec76947f01334a185ffde6fd405d9",
+      "git_blob_sha1": "ffaf0cfc3ec3f4937e0157e11125e0240ddb14e5"
+    },
+    "Assets/B01UserExperience/B0112GarageSpatialW28/B0112GarageSpatialOverlay.cs": {
+      "bytes": 10684,
+      "sha256": "d03325a7fe8594c785e275cb570c9dbb2dd92dd269b562ad91aa6454885ccbe8",
+      "git_blob_sha1": "8fd7304e5832fd5fb31fbe1e74bb4a26400f76fa"
+    },
+    "Assets/B01UserExperience/B0112GarageSpatialW28/B0112GarageSpatialOverlay.cs.meta": {
+      "bytes": 243,
+      "sha256": "c87b5158170810942a8f8347d45abea04a2570ec79af82be4dcfa23255e3e0d2",
+      "git_blob_sha1": "78142dc4b4aed1e539f86333dbfe796fb3ebe710"
+    },
+    "Assets/B01UserExperience/B0112GarageSpatialW28.meta": {
+      "bytes": 172,
+      "sha256": "54739ffccfeb6d054be523de9a624172b9e2c0d5f60fd548eadd1f2ff234aa03",
+      "git_blob_sha1": "93038cbceff66d2a102cbc00b50afa714bf3e7c0"
+    },
+    "Assets/B01UserExperience.meta": {
+      "bytes": 172,
+      "sha256": "3a5fef18e4f9d4ea29f5906621341cae876af675bc338c5228adf25fa5b700ef",
+      "git_blob_sha1": "72dd615f9a8742b96496a4fc7a9df48f1eb20966"
+    },
+    "Assets/Tests/Editor/B0112GarageSpatialW28Tests.cs": {
+      "bytes": 1794,
+      "sha256": "51fcb9a1131cceedb212340536afb93352594f44bb806b39205e4547bdfb88b1",
+      "git_blob_sha1": "dcb972edb8477b676f8e82908986e960d329b119"
+    },
+    "Assets/Tests/Editor/B0112GarageSpatialW28Tests.cs.meta": {
+      "bytes": 243,
+      "sha256": "00b0798025a26e07eab23fc0ea1c12033608d0681e32e727da330d75d33b5033",
+      "git_blob_sha1": "f83bce52c8914d72745f9151fd689f30578ecdfc"
+    },
+    "Tools/B01/B01-12/P17W28GarageSpatial/README.md": {
+      "bytes": 4929,
+      "sha256": "1885d327f9a788b0c0289f78667b6853c16e6fafc58c8ade8c412db2db050ce1",
+      "git_blob_sha1": "d4c822be294c08d3037450891a40057119ac5828"
+    },
+    "Tools/B01/B01-12/P17W28GarageSpatial/RISK_ROLLBACK.md": {
+      "bytes": 1146,
+      "sha256": "56c321c850c7a65a9b56f934482e1c654db2404d202acb92a8c964128348e741",
+      "git_blob_sha1": "cb1bc4e3cfa24aefdbf9bdf79322ae600994188c"
+    },
+    "Tools/B01/B01-12/P17W28GarageSpatial/pinned_game_api.json": {
+      "bytes": 701,
+      "sha256": "7ef3c361e4fd0c6e8f9d094cc896e71d7d5f15c03ca64d597900337d4288429d",
+      "git_blob_sha1": "9054fac10e03dd997c48f7b81d73e9309f8bd9a8"
+    },
+    "Tools/B01/B01-12/P17W28GarageSpatial/test_source.py": {
+      "bytes": 7442,
+      "sha256": "b418fb231aba805f1bc495d69588c8d9c68dc2b3b15add36a94f947751a7f807",
+      "git_blob_sha1": "3d1b3bc295e128a0f179a7c9c5ebd91f66c0d9c9"
+    }
+  }
+}

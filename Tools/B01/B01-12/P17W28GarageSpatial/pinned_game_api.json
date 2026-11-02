@@ -1,0 +1,16 @@
+{
+  "gameplay_source_pr": 824,
+  "gameplay_head_sha": "e03d36f2b86f8c73a067e574b67237a8921f622a",
+  "validator_owner": "R3GarageView.PlacementIssue",
+  "grid_meters": 0.55,
+  "host_blobs": {
+    "Assets/R3/R3GarageView.cs": "fb6f4f21c2f3953e43e1a7b223ef5110dbcc26c1",
+    "Assets/R3/R3VehicleModel.cs": "1d0f378dc598e08b3d7c16975f419d84231511bb",
+    "Assets/R3/R3MountingGrid.cs": "f39faa2ad90d56fb19caac42b3d8aff8285d8663",
+    "Assets/R3/R3VehicleAssembly.cs": "ed97dd1b0ee3b77c839615497b249dcaee479bb8",
+    "Assets/R4_1/R41PartGeometry.cs": "76a14de4c347dd3e91b0a37487d804023eab5da1"
+  },
+  "source_g0": "PENDING",
+  "unity_g1": "NOT_RUN",
+  "physical_sweep_validator": "CODEX_FUTURE_REQUIRED"
+}
