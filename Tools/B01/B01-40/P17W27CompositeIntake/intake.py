@@ -221,9 +221,9 @@ def main():
   "CODEX_ACK":"NO_NEW_HANDOFF_ACK","G2":"HOLD","RELEASED":False,"MERGED":False},
  "rollback":"No in-place overwrite. Stage to fresh owned disposable clone only; preserve alien EMPTY dirs, modified files, symlinks, current player saves; fail closed and discard owned clone."
  }
- (out/"composite-manifest.json").write_text(json.dumps(manifest,indent=2,sort_keys=True)+"\n")
+ (out/"composite-manifest.json").write_bytes((json.dumps(manifest,indent=2,sort_keys=True)+"\n").encode("utf-8"))
  zipdetails=write_zip(out,assets,manifest)
- (out/"package-sha256.json").write_text(json.dumps(zipdetails,indent=2,sort_keys=True)+"\n")
+ (out/"package-sha256.json").write_bytes((json.dumps(zipdetails,indent=2,sort_keys=True)+"\n").encode("utf-8"))
  print("B0140_W27_SELECTED_FIVE_EXACT_GIT_ANCESTRY=PASS")
  print("B0140_W27_ALL_ASSET_SHA_GUID_ASMDEF_STRICT_SCRATCH=PASS")
  print("B0140_W27_SOURCE_COMPOSITE_ZIP_SHA256="+zipdetails["sha256"])
