@@ -1,0 +1,42 @@
+{
+  "package_id": "B01-60-W27-RIG792-WINDOWS-GIT-RECURSION-FIX-002",
+  "owner": "B01-60",
+  "hq_issue": 800,
+  "original_runner_pr": 808,
+  "original_runner_sha": "d1a6f4e5f9934ddd760ba922c8779743512cea19",
+  "original_failed_action": 41528849217,
+  "original_windows_job": 125563546126,
+  "confirmed_original_failure": "The script failed due to call depth overflow",
+  "regression": "PowerShell function Git recursively invokes itself instead of git.exe",
+  "fixed_behavior": "function Invoke-VerifiedGit invokes external git.exe; all call sites renamed",
+  "code_paths_modified": [
+    "Tools/B01/B01-60/P17W27Physical792Native/Invoke-B0160W27Physical.ps1"
+  ],
+  "files_added": [
+    ".github/workflows/b01-60-w27-rig792-powershell-call-depth-r2.yml",
+    "Tools/B01/B01-60/P17W27PowershellOperatorFix/README.md",
+    "Tools/B01/B01-60/P17W27PowershellOperatorFix/manifest.json"
+  ],
+  "original_selected_physics_792": "16cb2a7b5158605b15191b6074f9e392e0d1ebd3",
+  "original_save_787": "f5db40bf293fe9582ec7c6fcb3515aeff6fcf937",
+  "full_econ_save_797": "2b7983f0f9e09dd1d56906b379a3f7af7b02f21a",
+  "econ_780": "b4df10a7ad7e6c758f8331013f6b216b3a3689a3",
+  "r5_750": "60c73a6f9ed2585cbb9bf7aeaad8c62eef0629cb",
+  "confirmed_full_composite_transport_G0": "B01-40_807_ACCEPTED_SOURCE_ONLY",
+  "confirmed_797_Unity_API_G0": "FAIL_CS0117_CS1501",
+  "native_G1": "NOT_RUN",
+  "full_game_save_G1": "NOT_RUN",
+  "source_CI": "PENDING",
+  "codex_acceptance": "NONE_NEW_PACKAGE",
+  "integrated": false,
+  "released": false,
+  "merged": false,
+  "owner_PC_access": false,
+  "receiver": [
+    "B01-00",
+    "B01-41",
+    "B01-60"
+  ],
+  "rollback": "revert only new child PowerShell script change and child-owned workflow/docs; do not touch original #808 or frozen producers",
+  "risk": "HIGH_FOR_NATIVE_OPERATOR_LOOPS; NO GAME_SAVE_ACCESS"
+}
