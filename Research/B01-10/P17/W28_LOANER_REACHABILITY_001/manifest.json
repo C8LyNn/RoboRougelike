@@ -1,0 +1,71 @@
+{
+  "schema": "B01-10-W28-REACHABILITY-REPRO-v1",
+  "owner": "B01-10",
+  "packageId": "B01-10-LOANER-REACHABILITY-001",
+  "iteration": "P17/W28 R1",
+  "sourceBranch": "design/b01-10-p17w28-v7-loaner-reachability",
+  "previousW27Head": "b4292e80009b9a6fd59ab384ad25eaa2e85a6437",
+  "originalProducer": {
+    "PR": 780,
+    "SHA": "b4df10a7ad7e6c758f8331013f6b216b3a3689a3",
+    "policyBlob": "53ebce6c07388dc9c8a8ed79b6de4d3ccbee4773",
+    "binaryBlob": "d8b71de91db36295b6220e9c4baad71eb54455f6",
+    "modified": false
+  },
+  "sourceFiles": {
+    "Research/B01-10/P17/W28_LOANER_REACHABILITY_001/ACCEPTANCE.md": {
+      "gitBlob": "1cdec06c025da46f3c23670a41c9f6a7e0046dee",
+      "bytes": 1641
+    },
+    "Research/B01-10/P17/W28_LOANER_REACHABILITY_001/LoanerReachability.cs": {
+      "gitBlob": "88ea9f3290e8afc1e7e80c0ff691f62b8f0e1f4c",
+      "bytes": 10563
+    },
+    "Research/B01-10/P17/W28_LOANER_REACHABILITY_001/LoanerReachability.csproj": {
+      "gitBlob": "011e40a9ab535eda0de31e10dbd6fdee338e6ba2",
+      "bytes": 573
+    },
+    "Research/B01-10/P17/W28_LOANER_REACHABILITY_001/README.md": {
+      "gitBlob": "96aa0bae0bfcda56968db69a835b59c534d47a4e",
+      "bytes": 4033
+    },
+    ".github/workflows/b01-10-p17w28-v7-loaner-reachability.yml": {
+      "gitBlob": "75545872f266454ad5648c5f103d4f1d6d6c6863",
+      "bytes": 3902
+    }
+  },
+  "scopeDiff": [
+    ".github/workflows/b01-10-p17w28-v7-loaner-reachability.yml",
+    "Research/B01-10/P17/W28_LOANER_REACHABILITY_001/ACCEPTANCE.md",
+    "Research/B01-10/P17/W28_LOANER_REACHABILITY_001/LoanerReachability.cs",
+    "Research/B01-10/P17/W28_LOANER_REACHABILITY_001/LoanerReachability.csproj",
+    "Research/B01-10/P17/W28_LOANER_REACHABILITY_001/README.md",
+    "Research/B01-10/P17/W28_LOANER_REACHABILITY_001/manifest.json"
+  ],
+  "suite": {
+    "exactOriginalCS9": true,
+    "testCases": 6,
+    "expectedUbuntuResult": "PENDING",
+    "expectedWindowsResult": "PENDING",
+    "gameProof": "NONE_SYNTHETIC_IDS",
+    "nativeUnity": "NOT_RUN",
+    "independentG0": "PENDING",
+    "softlock": "REPRO_SOURCE_ONLY",
+    "acceptedFix": false
+  },
+  "dependencies": [
+    "B01-22 #780 immutable V7",
+    "B01-22 #812 own existing 24-fight source regression (not repeated)",
+    "B01-10 W27 #811 exact head",
+    "B01-00 owner policy decision",
+    "B01-20/23/62 actual game loop/CAS",
+    "B01-40/41/61 independent source G0",
+    "B01-60 native Unity game G1"
+  ],
+  "limitations": [
+    "Only source V7 policy and original SECTION methods compiled; actual CanDeploy game world not wired",
+    "The accepted policy has no approved special-case loaner recovery; no change made",
+    "This test cannot prove real authenticated combat receipt"
+  ],
+  "rollback": "Close standalone stacked Draft; no original V7 or Codex worktree and no game save writes."
+}
