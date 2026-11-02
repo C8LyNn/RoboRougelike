@@ -1,0 +1,55 @@
+{
+  "package_id": "B01-60-P17W27-PHYSICAL792-FOUR-NATIVE-001",
+  "owner": "B01-60",
+  "hq_issue": 800,
+  "base_qa_pr": 777,
+  "base_qa_sha": "8057c4da7edc49f67ec2de505c4d56a57eba4483",
+  "source_dependencies": {
+    "sole_store_787": "f5db40bf293fe9582ec7c6fcb3515aeff6fcf937",
+    "one_envelope_v7_797": "2b7983f0f9e09dd1d56906b379a3f7af7b02f21a",
+    "physical_792": "16cb2a7b5158605b15191b6074f9e392e0d1ebd3",
+    "economy_v7_780": "b4df10a7ad7e6c758f8331013f6b216b3a3689a3",
+    "r5_cold_restart_750": "60c73a6f9ed2585cbb9bf7aeaad8c62eef0629cb",
+    "previous_frozen_772": "ce46a5e0cc5d26df6c4ece723e8efe20d70fc4b1"
+  },
+  "critical_git_blobs": {
+    "physical_runtime_original": "7623f698b6e644b8d8247a011b453bf40adc2227",
+    "native_fixture_original": "358ef67f8f0f795d94a646e8e11c27158e2c8f0d"
+  },
+  "old_original_R5_750_native_covered_by_pr": 760,
+  "version": "1.0.0",
+  "source_qa_test_count": 19,
+  "original_Unity_PhysX_PlayMode_cases": 4,
+  "original_isolation_guard_cases": 4,
+  "original_real_Editor_log_count_if_native": 8,
+  "source_only_default": true,
+  "unit_test_framework": "Unity Test Framework 1.6.0",
+  "Unity_version": "6000.3.14f1",
+  "source_G0": "PENDING_INDEPENDENT_COMPOSITE",
+  "native_G1": "NOT_RUN",
+  "game_save_G1": "NOT_RUN",
+  "game_accepted": false,
+  "integrated": false,
+  "released": false,
+  "codex_ack": false,
+  "no_merge": true,
+  "gate": "HOLD_UNTIL_OWNER_SOURCE_G0_AND_REAL_WINDOWS_UNITY_LOGS",
+  "paths": [
+    "Tools/B01/B01-60/P17W27Physical792Native/port792_native.py",
+    "Tools/B01/B01-60/P17W27Physical792Native/test_port792_native.py",
+    "Tools/B01/B01-60/P17W27Physical792Native/Invoke-B0160W27Port792.ps1",
+    "Tools/B01/B01-60/P17W27Physical792Native/README.md",
+    "Tools/B01/B01-60/P17W27Physical792Native/manifest.json",
+    ".github/workflows/b01-60-p17w27-physical792-four-native.yml"
+  ],
+  "receiver": [
+    "B01-40",
+    "B01-41",
+    "B01-61",
+    "B01-00",
+    "B01-23",
+    "B01-60"
+  ],
+  "risk": "HIGH_PHYSICS_ROLLBACK_LOST_MOMENTUM_AND_STATE",
+  "rollback": "discard new QA-only W27 files; no live game/migration"
+}
