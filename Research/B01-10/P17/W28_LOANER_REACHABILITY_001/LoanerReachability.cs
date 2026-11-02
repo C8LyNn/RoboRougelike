@@ -170,14 +170,25 @@ static class LoanerReachability
             ModuleId=Drive,ReservationId="fake-contingent-in-V7",
             AfterWins=0,Free=true,ChargedScrap=0,PurchaseScrap=100
         });
-        Check(!ApprovedEconomyPolicyV7.Valid(fake),
-            "pre-first-win claimed FREE is INVALID original V7 source state");
-        Check(!CanonicalEconomySectionV7.TryEncode(fake,out _,out _),
-            "original V7 binary cannot encode future FREE claim at Wins0");
+        // ACTUAL red witness on immutable original #780 V7:
+        // Valid() accepts a crafted FREE booking at Wins=0 if FreeUsedForWin=0.
+        // This cannot be created with legitimate TryReserveDestroyed() and
+        // is NOT proof that a player can influence the one-writer host.
+        Check(ApprovedEconomyPolicyV7.Valid(fake),
+            "EXACT ORIGINAL SOURCE RED: crafted Free ticket passes Valid at Wins0");
+        Check(CanonicalEconomySectionV7.TryEncode(fake,out var forged,out var why),
+            "EXACT ORIGINAL SOURCE RED: binary encodes crafted Free epoch0 "+why);
+        Check(CanonicalEconomySectionV7.TryDecode(forged,
+            out var roundtrip,out why)&&roundtrip.Wins==0&&
+            roundtrip.Pending.Count==1&&roundtrip.Pending[0].Free,
+            "EXACT ORIGINAL SOURCE RED: binary decoder accepts impossible Free epoch0");
+        Check(!ApprovedEconomyPolicyV7.TryReserveDestroyed(s,Drive,
+            out _,out var expectedReject)&&expectedReject=="INSUFFICIENT_SCRAP",
+            "legitimate source API still denies zero-wallet paid65 before any Win");
         Check(ApprovedEconomyPolicyV7.Valid(s)&&s.Pending.Count==0,
-            "attempt to fake free ticket did not mutate owner snapshot");
+            "malformed test-only snapshot did not alter legitimate owner state");
         cases++;
-        Console.WriteLine("W28_C_NO_EPOCH0_CLAIM_ORIGINAL_V7_SCHEMA_REJECTS PASS");
+        Console.WriteLine("W28_C_EPOCH0_FREE_VALIDATION_GAP_EXPECTED_SOURCE_RED PASS");
     }
     static void CheckLossOrBlockedEvidence()
     {
