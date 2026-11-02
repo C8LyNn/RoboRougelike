@@ -1,0 +1,96 @@
+name: B01-60 W27 exact #792 4 R2 PhysX native handoff SOURCE ONLY Unity NOT_RUN
+on:
+  push:
+    branches: [qa/b01-60-p17w27-physical792-native-g1-r1]
+    paths:
+      - 'Tools/B01/B01-60/P17W27Physical792Native/**'
+      - '.github/workflows/b01-60-p17w27-rig-r2-native.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-60/P17W27Physical792Native/**'
+      - '.github/workflows/b01-60-p17w27-rig-r2-native.yml'
+permissions:
+  contents: read
+jobs:
+  original-author-792-physical-source:
+    strategy:
+      fail-fast: false
+      matrix: {os: [windows-2025, ubuntu-24.04]}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Fetch ONLY original exact author historical Git refs into disposable hosted CI checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          for sha in 16cb2a7b5158605b15191b6074f9e392e0d1ebd3 ce46a5e0cc5d26df6c4ece723e8efe20d70fc4b1 b8ca29c7707cd6b4338d0b9772d74dee676d49d2 d94400d95d13db7f27e1533df05c9292d5380431 33094f154c7b91119b36d58aab285e6e83c5de57; do
+            git fetch --no-tags origin "$sha"
+            test "$(git cat-file -t "$sha")" = commit
+          done
+      - name: Exactly six own additions, W25 old G1 source unchanged, no Codex overlay
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=494e1056366c9004deefd7e4a73ad07b0a62a137
+          git merge-base --is-ancestor "$BASE" HEAD
+          git diff --name-status "$BASE" HEAD > w27-diff.txt
+          awk '$1!="A" {print; exit 1}' w27-diff.txt
+          test "$(wc -l < w27-diff.txt)" -eq 6
+          test "$(git rev-parse HEAD:Tools/B01/B01-60/P17W25Physical772Native/rig_native.py)" = "$(git rev-parse "$BASE":Tools/B01/B01-60/P17W25Physical772Native/rig_native.py)"
+          echo 'B0160_W27_ONLY_6_NEW_OWN_QA_FILES_SELECTED_792_NO_CODEX_OVERLAY'
+      - name: Executed original Git source and 4 disposable real Unity-project staging unit tests (NO Editor)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile Tools/B01/B01-60/P17W27Physical792Native/rig_r2_native.py
+          python -m unittest discover -s Tools/B01/B01-60/P17W27Physical792Native -p test_rig_r2_native.py -v 2>&1 | tee w27-source-tests.log
+          grep -F 'Ran 12 tests' w27-source-tests.log
+          grep -F 'OK' w27-source-tests.log
+          echo 'B0160_W27_12_EXACT_AUTHOR_SOURCE_TESTS_PASS_NATIVE_UNITY_NOT_RUN'
+      - name: Standalone original four-project physical stage/rollback; never Unity
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W27Physical792Native/rig_r2_native.py --mode preflight 2>&1 | tee w27-source-preflight.log
+          grep -F 'B0160_W27_FOUR_ORIGINAL_R2_PROJECTS_STAGE_ROLLBACK_PASS' w27-source-preflight.log
+          grep -F 'B0160_W27_NATIVE_G1_NOT_RUN' w27-source-preflight.log
+  actual-windows-powershell-no-unity:
+    runs-on: windows-2025
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Original #792 exact Git object in CI, not on owner's PC
+        shell: bash
+        run: |
+          for sha in 16cb2a7b5158605b15191b6074f9e392e0d1ebd3 ce46a5e0cc5d26df6c4ece723e8efe20d70fc4b1 b8ca29c7707cd6b4338d0b9772d74dee676d49d2 d94400d95d13db7f27e1533df05c9292d5380431 33094f154c7b91119b36d58aab285e6e83c5de57; do git fetch --no-tags origin "$sha"; done
+      - name: Real Windows PowerShell 4 original projects source-only
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W27Physical792Native\Invoke-B0160W27Physical.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:RUNNER_TEMP *>&1 | Tee-Object -FilePath w27-windows-preflight.log
+          if($LASTEXITCODE -ne 0){throw 'R2 Windows source preflight failed'}
+          if(!(Select-String w27-windows-preflight.log -Pattern 'B0160_W27_SOURCE_ONLY_FOUR_PHYSICS_PROJECTS_PASS_NATIVE_UNITY_G1_NOT_RUN' -Quiet)){throw 'Missing source-only receipt'}
+      - name: Reject source tree scratch exit2
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W27Physical792Native\Invoke-B0160W27Physical.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:GITHUB_WORKSPACE *>&1 | Tee-Object -FilePath w27-scratch-negative.log
+          if($LASTEXITCODE -ne 2){throw 'Unsafe source scratch not rejected'}
+          $global:LASTEXITCODE=0
+      - name: Deny native without independently accepted #792 G0 exit3
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W27Physical792Native\Invoke-B0160W27Physical.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:RUNNER_TEMP -Run *>&1 | Tee-Object -FilePath w27-no-g0.log
+          if($LASTEXITCODE -ne 3){throw 'Unapproved native erroneously accepted'}
+          $global:LASTEXITCODE=0
+      - name: Deny native with no real installed Unity Hub Editor exit3
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W27Physical792Native\Invoke-B0160W27Physical.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:RUNNER_TEMP -Run -SourceG0Approved -UnityPath 'Z:\missing\6000.3.14f1\Editor\Unity.exe' *>&1 | Tee-Object -FilePath w27-no-unity.log
+          if($LASTEXITCODE -ne 3){throw 'Missing Editor incorrectly allowed native'}
+          $global:LASTEXITCODE=0
