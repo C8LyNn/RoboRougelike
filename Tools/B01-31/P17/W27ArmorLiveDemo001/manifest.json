@@ -1,0 +1,141 @@
+{
+  "schema": "b01-package-v1",
+  "package_id": "B01-31-W27-REAL-P12-ARMOR-PLAYMODE-DEMO-001",
+  "revision": "P17-W27-R1",
+  "owner": "B01-31 — CONCEPT ART & VISUAL EXPLORATION",
+  "issue": "https://github.com/C8LyNn/RoboRougelike/issues/800",
+  "unity_version": "6000.3.14f1",
+  "purpose": "Real isolated playable P12 damage/repair -> original W25 armor 3-model visual scene and five native Unity PlayMode acceptance test sources; no game/Codex changes.",
+  "source_base_branch": "art/b01-31-p17w25-real-p12-damage-to-armor-visual",
+  "source_base_sha": "dfff0aeaa7098a16621387557a04836bf873fd73",
+  "codex_target_branch": null,
+  "codex_target_sha": null,
+  "scope_ack_url": "https://github.com/C8LyNn/RoboRougelike/issues/800#issuecomment-6588575166",
+  "dependency_package_ids": [
+    "W24-ARMOR-UNITYPACKAGE-001/#770",
+    "W25-P12-DAMAGE-VISUAL-BINDING-001/#788"
+  ],
+  "original_source_immutable_github_blobs": {
+    "Assets/Pack/P12_PipelineSafeDamageable.cs": "544bed274b616b91fd98c45d2b194b2f3a2d112a",
+    "Assets/B01_31/W24ArmorStates/B0131W24ArmorDamageVisual.cs": "8cf3664b9b6e5b0fd6623be7c3f4e72fd9164664",
+    "Assets/B01_31/W25P12DamageVisualBinding/B0131W25P12DamageVisualBinding.cs": "e1622abf22319e4448b53a0630d40387ade7a2b2"
+  },
+  "source_license_provenance": [
+    "Own original B01-31 C# demo scene, runtime and native PlayMode test source",
+    "Preexisting original P12/W24/W25 read-only exact pinned Git blobs",
+    "No Claude R41 model or weapon authority imported"
+  ],
+  "new_unity_asset_paths": [
+    "Assets/B01_31/W27ArmorLiveDemo",
+    "Assets/B01_31/W27ArmorLiveDemo/Editor",
+    "Assets/B01_31/W27ArmorLiveDemo/Tests",
+    "Assets/B01_31/W27ArmorLiveDemo/Tests/PlayMode",
+    "Assets/B01_31/W27ArmorLiveDemo/B0131W27ArmorLiveDemoDriver.cs",
+    "Assets/B01_31/W27ArmorLiveDemo/Editor/B0131W27CreateArmorLiveDemoScene.cs",
+    "Assets/B01_31/W27ArmorLiveDemo/Tests/PlayMode/B0131W27ArmorRealP12PlayModeTests.cs",
+    "Assets/B01_31/W27ArmorLiveDemo/Tests/PlayMode/RoboRougelike.B0131.W27.NativePlayModeTests.asmdef"
+  ],
+  "physical_bundle": "Actual 8 new-only asset Unity TAR/GZIP archive with 20 physical members, per-member real SHA/bytes/GUID in GitHub Actions receipt.json; not auto imported",
+  "possible_conflicts": [
+    "W24 #770 + W25 #788 are stacked Draft PRs; importing W27 alone without parent sources breaks dependency",
+    "Codex active W26 model weapon garage/Save intake scope remains reserved",
+    "Original P12 death invokes R6 gameplay callbacks; native Unity may reveal issues that managed-only tests do not"
+  ],
+  "excluded_paths": [
+    "Codex worktree and feature/w26-model-intake",
+    "Assets/Pack/**",
+    "Assets/B01_31/W24ArmorStates/**",
+    "Assets/B01_31/W25P12DamageVisualBinding/**",
+    "R41 turret assets",
+    "R3 Garage",
+    "Save/Load/ECON/gameplay weapon authority"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC1",
+      "given": "W24 prefab + W25 binder imported into licensed disposable Unity project",
+      "when": "Human opts in to W27 Editor scene builder",
+      "then": "One new non-overwriting .unity scene with original P12 source, original three-state visual, W25 binding, ground/camera/light and demo buttons"
+    },
+    {
+      "id": "AC2",
+      "given": "Original P12 living and HP100",
+      "when": "Press Hit40 then Hit20",
+      "then": "Real P12 HP100→60→40, OK→DAMAGED geometry, exactly one active"
+    },
+    {
+      "id": "AC3",
+      "given": "Living original P12 damaged",
+      "when": "Press Repair",
+      "then": "P12 RestoreHealthRatio 100% and W24 OK geometry"
+    },
+    {
+      "id": "AC4",
+      "given": "Original P12 living",
+      "when": "Press Lethal",
+      "then": "Original Die/Died updates separate persistent W24 DESTROYED geometry, no reward or Save"
+    },
+    {
+      "id": "AC5",
+      "given": "Real licensed Unity 6000.3.14f1 editor",
+      "when": "Run five new native NUnit PlayMode cases",
+      "then": "Obtain real Unity Editor.log, NUnit XML, source SHA, actual PASS/FAIL; otherwise NOT_RUN"
+    }
+  ],
+  "test_plan": [
+    {
+      "name": "Four ORIGINAL P12/W24/W25/W27 C# sources .NET8 with ONLY synthetic UnityEngine",
+      "status": "SOURCE_PASS_PER_ORIGINAL_CI",
+      "environment": "Ubuntu24+Windows2022",
+      "evidence": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41529219706"
+    },
+    {
+      "name": "Original prior W25 P12 source regressions",
+      "status": "SOURCE_PASS_PER_ORIGINAL_CI",
+      "environment": "Ubuntu24+Windows2022",
+      "evidence": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41529219706"
+    },
+    {
+      "name": "Physical 8 GUID Unitypackage original 20 TAR members, 8 mutated negatives, real SHA parity",
+      "status": "SOURCE_PASS_PER_ORIGINAL_CI",
+      "environment": "Ubuntu24 author+Windows2022 independent receiver",
+      "evidence": "https://github.com/C8LyNn/RoboRougelike/actions/runs/41529219706"
+    },
+    {
+      "name": "Real native Unity five NUnit PlayMode tests and actual generated .unity scene",
+      "status": "NOT_RUN",
+      "environment": "owner-approved Unity 6000.3.14f1 Windows",
+      "evidence": null
+    }
+  ],
+  "qa_b01_60": {
+    "decision": "NOT_RUN",
+    "reviewed_revision": null,
+    "evidence_url": null
+  },
+  "risk": {
+    "likelihood": "MEDIUM",
+    "impact": "MEDIUM",
+    "reversibility": "easy only in approved disposable copy",
+    "controls": [
+      "Explicit opt-in scene creation",
+      "Only additive new scene; refuse existing destination",
+      "Pin original P12 W24 W25 Git blob SHA",
+      "No automatic game/codex source modification",
+      "Native tests explicitly required for source Destroy/R6 behavior"
+    ]
+  },
+  "stage": {
+    "IMPLEMENTED": "YES_SOURCE",
+    "TESTED": "YES_SOURCE_ONLY",
+    "QA_ACCEPTED": "NO_FORMAL",
+    "READY_FOR_CODEX": "NO",
+    "INTEGRATED": "NO",
+    "RELEASED": "NO",
+    "FORMAL_G0": "PENDING",
+    "NATIVE_UNITY_G1": "NOT_RUN",
+    "G2": "HOLD"
+  },
+  "next_owner": "B01-30/40 independent G0 followed by B01-60 authorized real Unity G1; B01-00 alone decides Codex inbox later",
+  "rollback": "Remove only owner-scoped W27 assets and generated W27 .unity scene after verifying no foreign even-empty dirs; no original P12, W24, W25, player Save or Codex worktree changes."
+}
