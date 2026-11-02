@@ -1,0 +1,71 @@
+name: B01-40 W28 real W27 original weapon PhysX native-fixture SOURCE G0
+on:
+  push:
+    branches: [qa/b01-40-p17w28-physx-weapon-regression-r1]
+    paths:
+      - 'Assets/Tests/Editor/B0140W28PhysicalClearanceTests.cs'
+      - 'Assets/Tests/Editor/B0140W28PhysicalClearanceTests.cs.meta'
+      - 'Tools/B01/B01-40/P17W28WeaponPhysicalG0/**'
+      - '.github/workflows/b01-40-w28-original-physx-weapon-g0.yml'
+  pull_request:
+    paths:
+      - 'Assets/Tests/Editor/B0140W28PhysicalClearanceTests.cs'
+      - 'Assets/Tests/Editor/B0140W28PhysicalClearanceTests.cs.meta'
+      - 'Tools/B01/B01-40/P17W28WeaponPhysicalG0/**'
+      - '.github/workflows/b01-40-w28-original-physx-weapon-g0.yml'
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  original-w27-src-and-native-test-fixture:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2025, ubuntu-24.04]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Original W27 SHA + physical test source + real dirty-file denial
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-40/P17W28WeaponPhysicalG0/verify.py --output evidence/b0140-w28-physx-g0.json | tee evidence-source.log
+          grep -q 'B0140_W28_ORIGINAL_FINAL_W27_SHA_AND_OWNER_ONLY_SCOPE_PASS' evidence-source.log
+          grep -q 'B0140_W28_UNIQUE_NEW_UNITY_GUID_AND_TWO_NATIVE_TEST_SOURCES_PASS' evidence-source.log
+          grep -q 'B0140_W28_REAL_DISPOSABLE_SOURCE_STAGE_DIRTY_NEGATIVE_AND_FOREIGN_PRESERVATION_PASS' evidence-source.log
+          grep -q 'B0140_W28_NATIVE_UNITY_PHYSX_TEST_SOURCE_G0_PASS_TWO_AUTHORED_NATIVE_NOT_RUN' evidence-source.log
+          test -s evidence/b0140-w28-physx-g0.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b0140-w28-physx-${{ matrix.os }}
+          path: |
+            evidence/
+            evidence-source.log
+          if-no-files-found: warn
+  source-receipt-byte-parity:
+    needs: original-w27-src-and-native-test-fixture
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: b0140-w28-physx-*
+          path: incoming
+      - name: Compare two executed independent original Git source manifests
+        shell: bash
+        run: |
+          python - <<'PY'
+          import pathlib,hashlib
+          p=sorted(pathlib.Path("incoming").glob("*/evidence/b0140-w28-physx-g0.json"))
+          if len(p)!=2:raise SystemExit("G0_FAIL_TWO_OS_RECEIPTS_MISSING")
+          b=[f.read_bytes() for f in p]
+          if b[0]!=b[1]:raise SystemExit("G0_FAIL_NONDETERMINISTIC_OS_EVIDENCE")
+          print("B0140_W28_CROSS_OS_SOURCE_RECEIPT_BIT_EXACT_PASS",hashlib.sha256(b[0]).hexdigest())
+          print("B0140_W28_NATIVE_UNITY_NOT_RUN_AND_WIN_PLAYER_NOT_BUILT")
+          PY
