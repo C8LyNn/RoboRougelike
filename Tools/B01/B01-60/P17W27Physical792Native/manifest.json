@@ -1,0 +1,59 @@
+{
+  "package_id": "B01-60-P17W27-RIG-R2-NATIVE-001",
+  "revision": "R1",
+  "source_owner": "B01-60",
+  "source_base_sha": "494e1056366c9004deefd7e4a73ad07b0a62a137",
+  "hq_issue": 800,
+  "coordination_rules": 799,
+  "codex_scope_ack": 6588669295,
+  "selected_source_closure": [
+    {
+      "pr": 792,
+      "sha": "16cb2a7b5158605b15191b6074f9e392e0d1ebd3",
+      "role": "Unity physical rig replacement R2 four native cases"
+    },
+    {
+      "pr": 750,
+      "sha": "60c73a6f9ed2585cbb9bf7aeaad8c62eef0629cb",
+      "role": "separate R5 seven-case native runner #760, not co-installed"
+    },
+    {
+      "pr": 787,
+      "sha": "f5db40bf293fe9582ec7c6fcb3515aeff6fcf937",
+      "role": "selected one-owner source only; NO Unity code here"
+    },
+    {
+      "pr": 797,
+      "sha": "2b7983f0f9e09dd1d56906b379a3f7af7b02f21a",
+      "role": "economy/world envelope, requires Codex binder/G0"
+    },
+    {
+      "pr": 780,
+      "sha": "b4df10a7ad7e6c758f8331013f6b216b3a3689a3",
+      "role": "economy V7 source only; not included in rig stage"
+    }
+  ],
+  "owner_792_modified_blobs": {
+    "Assets/B0123CanonicalRigPortW24/Runtime/CanonicalPhysicalRigPortW24.cs": "7623f698b6e644b8d8247a011b453bf40adc2227",
+    "Assets/B0123CanonicalRigPortW24/Tests/PlayMode/CanonicalPhysicalRigPortW24NativeTests.cs": "358ef67f8f0f795d94a646e8e11c27158e2c8f0d"
+  },
+  "UNITY_TESTS_AUTHORED": 4,
+  "NATIVE_TESTS_EXECUTED": 0,
+  "ci_scope": "SOURCE_PHYSICAL_STAGE_ONLY_NO_UNITY_EXECUTABLE",
+  "G0": "PENDING_B01_40_41_61_COMPOSITE_CLOSURE",
+  "G1": "NOT_RUN_NO_EDITOR_LOG_OR_REAL_NUNIT",
+  "G2": "HOLD_UNTIL_G0_AND_NATIVE_EVIDENCE",
+  "CODEX_ACK": "SCOPE_ONLY_NOT_PACKAGE_HANDOFF",
+  "receiver": "B01-41/61 independent QA; B01-40 G0; B01-00 owner native handoff",
+  "files": [
+    "Tools/B01/B01-60/P17W27Physical792Native/rig_r2_native.py",
+    "Tools/B01/B01-60/P17W27Physical792Native/test_rig_r2_native.py",
+    "Tools/B01/B01-60/P17W27Physical792Native/Invoke-B0160W27Physical.ps1",
+    "Tools/B01/B01-60/P17W27Physical792Native/README.md",
+    "Tools/B01/B01-60/P17W27Physical792Native/manifest.json",
+    ".github/workflows/b01-60-p17w27-rig-r2-native.yml"
+  ],
+  "no_merge": true,
+  "rollback": "Discard six B01-60-only newly added W27 files/branch, preserve Codex worktree, producer source, scratch",
+  "source_only_not_a_full_integrated_game": true
+}
