@@ -1,0 +1,45 @@
+{
+  "package_id": "B01-13-W28-PLAYTEST-EVIDENCE-INTAKE-001/R1",
+  "revision": "R1",
+  "owner": "B01-13 HUMAN PLAYTESTING",
+  "hq_issue": 800,
+  "parent_pr": 819,
+  "parent_sha": "65c73fd4a3e6c9fcc61b2e388542b96dbfa1748c",
+  "parent_source": "Research/B01-13/P17W27/observer.mjs",
+  "parent_source_blob": "dbac634f78943e44a08a1ae6f80c1ae8ebe9a125",
+  "base_branch": "research/b01-13-p17w27-real-playtest-observer",
+  "codex_worktree": "NO_MODIFY",
+  "selected_codex_prs": [
+    "#817",
+    "#824"
+  ],
+  "known_softlock": "#812_P0_UNRESOLVED",
+  "actual_human_sessions": 0,
+  "source_tests_count": 40,
+  "windows_player_build": "NOT_BUILT",
+  "unity_editor_g1": "NOT_RUN",
+  "independent_source_g0": "PENDING",
+  "files": {
+    "Research/B01-13/P17W28/playtest_intake.py": {
+      "git_blob_sha1": "79ee1e32e462a291d86887ae7aaffde1f158f246",
+      "bytes": 14550
+    },
+    "Research/B01-13/P17W28/test_playtest_intake.py": {
+      "git_blob_sha1": "adeb90fe0333edda96d50975a8c83c5689b9729d",
+      "bytes": 10697
+    },
+    "Research/B01-13/P17W28/verify_package.py": {
+      "git_blob_sha1": "abbce94e32456207f57d2b9b9cc0824e72014d42",
+      "bytes": 1190
+    },
+    "Research/B01-13/P17W28/README.md": {
+      "git_blob_sha1": "f61ad789f9796c4dda053baa55ad10022e58ff45",
+      "bytes": 7693
+    },
+    ".github/workflows/b01-13-w28-evidence-intake.yml": {
+      "git_blob_sha1": "a6be4e98433b4bb12752081635c0b3a475eeabea",
+      "bytes": 1693
+    }
+  },
+  "windows_ci_fix": "EXACT ORIGINAL WINDOWS CRLF TEXT-FIXTURE PIN AND WINDOWS ABSOLUTE PATH ERROR CODE; VALIDATOR UNCHANGED"
+}
