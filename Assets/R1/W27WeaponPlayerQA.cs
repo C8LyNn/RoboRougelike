@@ -29,6 +29,9 @@ namespace RoboRougelike.R1
         }
         IEnumerator Exercise()
         {
+            float deadline=Time.realtimeSinceStartup+45;
+            while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<deadline)yield return null;
+            Require(R1RunController.Instance?.Progress!=null,"game bootstrap");
             var paletteObject=new GameObject("W27 palette");var palette=paletteObject.AddComponent<R3VisualPalette>();
             var shader=Shader.Find("Universal Render Pipeline/Lit");Require(shader!=null,"URP shader");var material=new Material(shader);
             for(int i=0;i<palette.Parts.Length;i++)palette.Parts[i]=material;
