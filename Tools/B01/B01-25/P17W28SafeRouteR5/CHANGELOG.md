@@ -1,0 +1,5 @@
+# B01-25 SAFEROUTE changelog
+
+R1 #745 original standalone conservative Light/Heavy map. R2 #763 current-player physical origin and gate obstruction checks. R3 #789 one physical moving crate occupancy and eight-state single-crate safety. R4 #813 immutable SHA `456186ba3ee25beab6f00905a3f8f114fc477c1b`: two physical crate union and 8-state combined Heavy softlock check, subcell external replan, PhysX overflow fail-closed, source tests 94/94 Windows+Ubuntu and original Git QA 24/24, original cross-OS source ZIP byte identity.
+
+R5 W28: genuine world integration seam `TryRegisterWorldBlocker(Rigidbody)` / `UnregisterWorldBlocker(Rigidbody)` to handle real independently owned detached robot parts and multi-BoxCollider assemblies in original SAFEROUTE navigation; no foreign-body mutation, real physical broadphase per collider, strict missing-collider failure and external pose/child transform rotation/scale replan. Six new original C#9 gameplay source tests, five new authored real Unity PlayMode native regression cases, new original G0 source closure and strict dual-OS receipt.
