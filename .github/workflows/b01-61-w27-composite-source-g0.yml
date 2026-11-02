@@ -46,7 +46,7 @@ jobs:
           test "$(git hash-object "$src/ApprovedEconomyPolicyV7.cs")" = 53ebce6c07388dc9c8a8ed79b6de4d3ccbee4773
           test "$(git hash-object "$src/CanonicalEconomySectionV7.cs")" = d8b71de91db36295b6220e9c4baad71eb54455f6
           dotnet run --project Tools/B01/B01-62/P17W25WholeGameEconomyV7/WholeGameEconomyV7QA.csproj -c Release --nologo 2>&1 | tee original-797-780-direct-source.log
-      - name: Independently witness exact original 797 Unity API incompatibility under netstandard2.1
+      - name: Independently witness exact ORIGINAL 797 Unity-like netstandard2.1 ABI failure
         shell: bash
         run: |
           set -euo pipefail
@@ -57,14 +57,15 @@ jobs:
           cat original-797-unity-abi-negative.log
           test "$result" -ne 0
           grep -Eq 'error CS0117.*(HashData|ToHexString)|error CS1501.*Move' original-797-unity-abi-negative.log
-          echo 'B0161_W27_ORIGINAL_797_NETSTANDARD21_UNITY_LIKE_ABI=RED_EXPECTED_WITNESS_CONFIRMED'
-      - name: Require exact immutable selected-source QA-only diff and no producer files modified
+          echo 'B0161_W27_ORIGINAL_797_NETSTANDARD21_ABI=RED_CONFIRMED'
+      - name: Exact source QA-only diff safety
         shell: bash
         run: |
           set -euo pipefail
           git diff --name-only 2b7983f0f9e09dd1d56906b379a3f7af7b02f21a HEAD > qa_only_files.txt
           test "$(wc -l < qa_only_files.txt | tr -d ' ')" = 4
-          ! grep -vE '^Tools/B01/B01-61/P17W27CompositeExactG0/|^\.github/workflows/b01-61-w27-composite-source-g0.yml
+          python -c 'import pathlib; s=pathlib.Path("qa_only_files.txt").read_text().splitlines(); assert len(s)==4 and all(x.startswith("Tools/B01/B01-61/P17W27CompositeExactG0/") or x==".github/workflows/b01-61-w27-composite-source-g0.yml" for x in s); print("B0161_W27_QA_ONLY_FOUR_NEW_FILES=PASS")'
+      - name: SHA256 exact package and no duplicate raw writer source import guard
         shell: bash
         run: |
           set -euo pipefail
@@ -79,20 +80,4 @@ jobs:
             original-797-780-direct-source.log
             original-797-unity-abi-negative.log
             qa_only_files.txt
-          if-no-files-found: warn
- qa_only_files.txt
-          echo 'B0161_W27_FOUR_ADDED_QA_ONLY_ORIGINAL_PRODUCER_UNTOUCHED=PASS'
-      - name: SHA256 exact package and no duplicate raw writer source import guard
-        shell: bash
-        run: |
-          set -euo pipefail
-          python -c 'import pathlib,json,hashlib; b=pathlib.Path("dist/b0161-w27-original-exact"); r=json.loads((b/"SOURCE_RECEIPT.json").read_text()); data=(b/"B0161_W27_EXACT_SOURCE_ONLY.zip").read_bytes(); assert hashlib.sha256(data).hexdigest()==r["sha256"]; assert r["referenced_only_files"]==2; assert r["native_unity_g1"]=="NOT_RUN"; print("B0161_W27_SELECTED_787_REFERENCE_ONLY_797_SINGLE_WRITER=PASS"); print("B0161_W27_INNER_ZIP_SHA256="+r["sha256"])'
-      - name: Preserve original compiler stdout source packet manifest and OS scratch evidence
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: b0161-w27-composite-source-g0-${{ matrix.os }}
-          path: |
-            dist/b0161-w27-original-exact/**
-            original-797-780-direct-source.log
           if-no-files-found: warn
