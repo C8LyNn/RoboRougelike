@@ -1,0 +1,1 @@
+# W27 R1: original Unity demo driver with real P12 damage/repair buttons; consent-only additive isolated .unity test scene builder; 5 new genuine Unity PlayMode NUnit test cases; 8 new Unity GUIDs; physical delta unitypackage and independent source/negative tests. Parent W25 and W24 unchanged. Native G1 NOT_RUN.
