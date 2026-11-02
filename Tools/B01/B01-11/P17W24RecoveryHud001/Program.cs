@@ -88,7 +88,8 @@ internal static class Program
         Test("unverified free rebuild cannot be promised",()=>TextHas(Good(),"Brak zweryfikowanej"));
         Test("owner quoted 65% displayed without independent price computation",()=>{var s=Good();s.OriginalPartPriceScrap=100;s.HostQuotedPaidScrap=65;TextHas(s,"65 Scrap");TextHas(s,"65% ceny");});
         Test("owner controls rounding including price 1 quote 0",()=>{var s=Good();s.OriginalPartPriceScrap=1;s.HostQuotedPaidScrap=0;TextHas(s,"0 Scrap");});
-        Test("owner quote independent of UI currency arithmetic",()=>{var s=Good();s.OriginalPartPriceScrap=101;s.HostQuotedPaidScrap=66;TextHas(s,"66 Scrap");});
+        Test("owner quote independent of UI currency arithmetic but ECON V7 floor required",()=>{var s=Good();s.OriginalPartPriceScrap=101;s.HostQuotedPaidScrap=65;TextHas(s,"65 Scrap");});
+        Test("old R2 half-up 101 quote 66 now rejected by V7",()=>{var s=Good();s.OriginalPartPriceScrap=101;s.HostQuotedPaidScrap=66;Is(s,RecoveryNoticeKind.Unknown);});
         Test("negative original price denied",()=>{var s=Good();s.OriginalPartPriceScrap=-1;Is(s,RecoveryNoticeKind.Unknown);});
         Test("negative host quote denied",()=>{var s=Good();s.OriginalPartPriceScrap=1;s.HostQuotedPaidScrap=-1;Is(s,RecoveryNoticeKind.Unknown);});
         Test("unanchored host quote denied",()=>{var s=Good();s.HostQuotedPaidScrap=65;Is(s,RecoveryNoticeKind.Unknown);});
