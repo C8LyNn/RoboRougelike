@@ -145,9 +145,6 @@ public sealed class B0140W28PhysicalClearanceTests
     [UnityTest]
     public IEnumerator DifferentLpmRpmGroupsAreIndependent_WhenOwnedArmorBlocksOnlyOneGun()
     {
-        var c = CreateRig(R4WeaponKind.Basic, 0);
-        c.Dispose();
-        yield return null;
         // Use the original R3 two-gun fixture layout from WeaponGroupTests.
         var model = new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
         model.Parts.Add(new R3PartState(new Vector3Int(1, 2, 0), R3PartKind.Gun)
