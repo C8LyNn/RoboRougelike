@@ -73,12 +73,12 @@ def inspect(entries,repo):
          b"PrefabUtility.InstantiatePrefab(" in scene and
          b"SaveScene(created, Output" in scene and
          b"File.Exists(Output)" in scene and
-         b"File.Exists(Output + \\".meta\\")" in scene,
+         b'File.Exists(Output + ".meta")' in scene,
          "real manual opt-in new scene builder without overwrite")
     test=entries[mapping[ROOT+"/Tests/PlayMode/B0131W27ArmorRealP12PlayModeTests.cs"]+"/asset"]
     need(test.count(b"[UnityTest]")==5 and
-         b"Call(t.source, \\"ApplyDamage\\"" in test and
-         b"Call(t.source, \\"RestoreHealthRatio\\"" in test and
+         b'Call(t.source, "ApplyDamage"' in test and
+         b'Call(t.source, "RestoreHealthRatio"' in test and
          b"RuntimeType(" in test and b"UnityTearDown" in test and
          b"Assembly-CSharp" in test and b"SetDamageThreshold" in test,
          "five genuine original P12/W24/W25 reflective Unity NUnit tests")
