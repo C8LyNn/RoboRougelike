@@ -57,7 +57,7 @@ class RealW27SourceAndNewNativeScenarioSourceTests(unittest.TestCase):
     def test_06_EMP_direct_and_real_LPM_group_exercised(self):
         self.assertIn("emp.Fire()",self.body)
         self.assertIn("assembly.FireGroup(false)",self.body)
-        self.assertIn("state.DeviceReadyAt",self.assembly)
+        self.assertIn("emp.State.DeviceReadyAt",self.assembly)
         self.assertIn("canonical.DeviceReadyAt",self.body)
 
     def test_07_meta_guid_is_unique_and_source_native_is_honest(self):
