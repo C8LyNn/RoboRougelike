@@ -30,6 +30,9 @@ namespace B01.RecoveryHud
         public bool PendingForNextVictory { get; set; }
         public int PendingDestroyedParts { get; set; }
         public bool FreeRebuildAvailableFromTrustedWin { get; set; }
+        // Identity must be verified by the authoritative ECON V7 owner, not by HUD.
+        // An arbitrary caller-provided string is NOT a victory or a reward proof.
+        public string HostVerifiedFreeVictoryId { get; set; } = "";
         public int? HostQuotedPaidScrap { get; set; }
         public int? OriginalPartPriceScrap { get; set; }
     }
@@ -63,18 +66,16 @@ namespace B01.RecoveryHud
             return true;
         }
 
-        // This is only a display sanity check, NOT a quotation engine. Both
-        // currently disputed owner-side rounding rules are permitted (floor and
-        // half-up); neither is selected by this UI. The approved strict discount
-        // excludes a 1-Scrap purchase -> 1-Scrap rebuild. Checked 64-bit
-        // intermediates avoid overflow at Int32.MaxValue.
+        // DISPLAY CHECK ONLY. HQ #800 selected ECON V7 floor(65% of purchase).
+        // The actual owner must compute/charge inside its canonical transaction.
+        // 64-bit intermediates guard Int32.MaxValue; floor makes 1 Scrap -> 0
+        // paid (not a free-victory entitlement).
         private static bool ValidDiscountQuote(int purchase, int quoted)
         {
             if (purchase <= 0 || quoted < 0 || quoted >= purchase) return false;
             long scaled = (long)purchase * 65L;
             long floor = scaled / 100L;
-            long halfUp = (scaled + 50L) / 100L;
-            return quoted == floor || quoted == halfUp;
+            return quoted == floor;
         }
         // expectedEpoch is a HOST epoch read before rendering, not a cryptographic
         // trust proof. Neither caller flags nor this view replace the owner-side CAS.
@@ -99,6 +100,8 @@ namespace B01.RecoveryHud
             if (input.PendingDestroyedParts < 0 || input.PendingDestroyedParts > 500 ||
                 (input.PendingForNextVictory && input.PendingDestroyedParts == 0) ||
                 (!input.PendingForNextVictory && input.PendingDestroyedParts > 0) ||
+                (input.FreeRebuildAvailableFromTrustedWin &&
+                    !ValidToken(input.HostVerifiedFreeVictoryId)) ||
                 (input.OriginalPartPriceScrap.HasValue && input.OriginalPartPriceScrap.Value <= 0) ||
                 (input.HostQuotedPaidScrap.HasValue &&
                     (!input.OriginalPartPriceScrap.HasValue ||
@@ -112,7 +115,7 @@ namespace B01.RecoveryHud
             if (input.HostQuotedPaidScrap.HasValue)
                 cost = " Wycena właściciela: " +
                     input.HostQuotedPaidScrap.Value.ToString(CultureInfo.InvariantCulture) +
-                    " Scrap; zatwierdzona zasada: 65% ceny nowej części (zaokrąglenie ustala ekonomia).";
+                    " Scrap; zatwierdzona zasada: 65% ceny nowej części, zaokrąglenie w dół (ECON V7).";
             string pending = input.PendingForNextVictory
                 ? " Oczekujące odbudowy: " + input.PendingDestroyedParts.ToString(CultureInfo.InvariantCulture) +
                   ". Części zniszczone w bieżącym zwycięstwie wracają dopiero po następnym rzeczywistym zwycięstwie."
