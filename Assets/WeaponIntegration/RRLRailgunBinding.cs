@@ -34,7 +34,10 @@ namespace RoboRougelike.WeaponIntegration
             Module.SetOperational(Device.Available&&State.ReloadReadyAt<=Time.time);
             Module.Configure(new RailgunConfig{cooldownSeconds=2.4f*(tank!=null?tank.PackageIntervalScale:intervalScale)});
         }
-        public bool Fire(){Refresh();if(!Device.Available||Time.time<State.DeviceReadyAt)return false;return Module.TryFire();}
+        public bool Fire(){Refresh();if(!Device.Available||Time.time<State.DeviceReadyAt)return false;
+            var assembly=Device.Owner.GetComponent<R3VehicleAssembly>();
+            if(assembly!=null&&!assembly.ClearProjectilePath(GetComponent<R3MountedPart>()))return false;
+            return Module.TryFire();}
         public bool BeginReload()
         {Refresh();if(!Device.Available||State.Ammo>=Magazine||State.ReloadReadyAt>0)return false;State.ReloadReadyAt=Time.time+2;return true;}
         void Update(){Refresh();if(enemy!=null&&Device.Available&&State.Ammo==0)BeginReload();}
@@ -47,6 +50,8 @@ namespace RoboRougelike.WeaponIntegration
         public bool TrySpawnShot(RailgunShot shot)
         {
             if(!Device.Available||shot.OwnerBody!=Device.Body||shot.OwnerRoot!=Device.Owner.gameObject||P17PhysicalShell.AvailableSlots<1)return false;
+            var assembly=Device.Owner.GetComponent<R3VehicleAssembly>();
+            if(assembly!=null&&!assembly.ClearProjectilePath(GetComponent<R3MountedPart>(),shot.InitialVelocity,shot.Spec.Range,shot.Spec.Radius))return false;
             GameObject shell=null;
             try
             {

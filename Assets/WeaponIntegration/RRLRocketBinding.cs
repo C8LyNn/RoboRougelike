@@ -41,6 +41,8 @@ namespace RoboRougelike.WeaponIntegration
         public bool Fire()
         {
             Refresh();if(!Device.Available||Time.time<State.DeviceReadyAt)return false;
+            var assembly=Device.Owner.GetComponent<R3VehicleAssembly>();
+            if(assembly!=null&&!assembly.ClearProjectilePath(GetComponent<R3MountedPart>()))return false;
             int live=0;foreach(var rocket in Object.FindObjectsByType<RocketProjectile>(FindObjectsSortMode.None))if(rocket.IsInitialized&&!rocket.IsResolved)live++;
             if(live>=32)return false;
             Module.SetConfig(new RocketConfig{damageAtCenter=60*(tank!=null?tank.PackageDamageScale:damageScale),cooldown=1.7f*(tank!=null?tank.PackageIntervalScale:intervalScale)});

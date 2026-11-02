@@ -51,6 +51,8 @@ namespace RoboRougelike.WeaponIntegration
         {
             RefreshResources();
             if(!Available||Time.time<State.DeviceReadyAt||State.ReloadReadyAt>Time.time)return false;
+            var assembly=Owner.GetComponent<R3VehicleAssembly>();
+            if(assembly!=null&&!assembly.ClearProjectilePath(GetComponent<R3MountedPart>()))return false;
             Module.SetOperational(true);
             Module.Configure(new ShotgunConfig{cooldownSeconds=.85f*(tank!=null?tank.PackageIntervalScale:intervalScale)});
             bool result=Module.TryFire();
@@ -84,6 +86,15 @@ namespace RoboRougelike.WeaponIntegration
         public bool TrySpawnVolley(IReadOnlyList<ShotgunPelletSpawn> pellets)
         {
             if(!Available||pellets==null||pellets.Count==0||P17PhysicalShell.AvailableSlots<pellets.Count)return false;
+            var assembly=Owner.GetComponent<R3VehicleAssembly>();
+            var part=GetComponent<R3MountedPart>();
+            if(assembly!=null)
+                foreach(var pellet in pellets)
+                {
+                    var velocity=pellet.Direction*pellet.ProjectileSpeed+pellet.InheritedVelocity;
+                    var range=Mathf.Min(pellet.MaxDistance,velocity.magnitude*pellet.Lifetime);
+                    if(!assembly.ClearProjectilePath(part,velocity,range,.05f))return false;
+                }
             var created=new List<GameObject>(pellets.Count);
             try
             {
