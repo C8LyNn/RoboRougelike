@@ -1,0 +1,93 @@
+{
+  "schema": "B01-W27-SELECTED-COMPOSITE-DEPENDENCIES-V1",
+  "package_id": "B01-40-P17W27-SELECTED-COMPOSITE-SOURCE-001",
+  "revision": "1.0.0",
+  "owner": "B01-40",
+  "hq": "https://github.com/C8LyNn/RoboRougelike/issues/800",
+  "codex_inbox": "https://github.com/C8LyNn/RoboRougelike/issues/79",
+  "source_heads": {
+    "#787": "f5db40bf293fe9582ec7c6fcb3515aeff6fcf937",
+    "#797": "2b7983f0f9e09dd1d56906b379a3f7af7b02f21a",
+    "#792": "16cb2a7b5158605b15191b6074f9e392e0d1ebd3",
+    "#780": "b4df10a7ad7e6c758f8331013f6b216b3a3689a3",
+    "#750": "60c73a6f9ed2585cbb9bf7aeaad8c62eef0629cb"
+  },
+  "frozen_dependencies": {
+    "#729": "b8ca29c7707cd6b4338d0b9772d74dee676d49d2",
+    "#510": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "#556": "33094f154c7b91119b36d58aab285e6e83c5de57"
+  },
+  "codex_target_base": "f92c873bb1e397a598b133e107ae704e15f86768",
+  "unity_version": "6000.3.14f1",
+  "source_roles": {
+    "#787": "selected one-owner path/lease source-contract ONLY; do not install raw Store as a second Save writer",
+    "#797": "exclusive proposed full world+ECON V7 writer, currently Unity API compile RED",
+    "#792": "only proposed physical Rigidbody+AtomicDockLedger replacement; no old #772 coinstall",
+    "#780": "only proposed V7 economy binary SECTION and logic; V6 #764 excluded",
+    "#750": "corrected R5 native ColdRestart fixture; frozen R5 runtime unchanged"
+  },
+  "source_selection": "ONLY exact owner-scope Git asset paths, plus named #787 authority references and #797 two runtime source files; never flat-overlay entire ancestry or root PACKAGE_MANIFEST.json",
+  "excluded_packages": [
+    "#749 legacy Store",
+    "#773 raw R2 Store",
+    "#793 full-game V6",
+    "#764 ECON V6",
+    "#772 physical R1",
+    "#753 competing .lease",
+    "#741 competing .owner",
+    "#794 competing R3"
+  ],
+  "required_unit_signoffs": [
+    "B01-41 independent current SHA concurrency/paths/ACK",
+    "B01-61 independent current SHA ID/rollback/economy",
+    "B01-40 exact source physical G0",
+    "B01-60 owner-opt-in native Windows Unity G1"
+  ],
+  "known_blockers": [
+    {
+      "code": "UNITY_ABI_797",
+      "status": "FAIL_CONFIRMED_BY_ACTUAL_UNITY_MINIMAL_API_PROBE",
+      "evidence": "https://github.com/C8LyNn/RoboRougelike/pull/797#issuecomment-6588699104",
+      "owner": "B01-62",
+      "actions": [
+        "publish versioned target-compatible replacement retaining real atomic move/flush/ACK semantics",
+        "rerun G0 exact new SHA; do not install old #797"
+      ]
+    },
+    {
+      "code": "UNITY_BINDER_MISSING",
+      "status": "BLOCKED",
+      "owner": "B01-23/B01-20/B01-62",
+      "actions": [
+        "wire selected #792 physical roots and #797 replacement same-owner session to actual Unity runtime",
+        "G1 genuine EditMode/PlayMode via B01-60"
+      ]
+    },
+    {
+      "code": "SAVE_MIGRATION_UNPROVEN",
+      "status": "BLOCKED",
+      "owner": "B01-23/B01-62",
+      "actions": [
+        "backup-first non-destructive migration with byte-verified restore; no automatic legacy V1/V3 installation"
+      ]
+    },
+    {
+      "code": "LIVE_ENGINE_G1",
+      "status": "NOT_RUN",
+      "owner": "B01-60",
+      "actions": [
+        "verify activated native Unity 6000.3.14f1, Editor.log, NUnit XML, SHA and exit status"
+      ]
+    }
+  ],
+  "acceptance": {
+    "G0_source_transport": "PENDING_CI",
+    "G0_game_unity_abi": "HOLD",
+    "G1_native_Unity": "NOT_RUN",
+    "G2_codex_handoff": "HOLD",
+    "Codex_ACK": "NONE",
+    "INTEGRATED": false,
+    "RELEASED": false
+  },
+  "safe_rollback": "Close isolated B01-40 Draft and delete ONLY a byte-verified newly-owned disposable candidate stage; preserve symlinks, foreign empty dirs, user files, existing player Save and reserved Codex worktree."
+}
