@@ -16,7 +16,7 @@ for raw in MANIFEST.read_text().splitlines():
     actual=subprocess.check_output(["git","hash-object","--no-filters",str(p)],text=True).strip()
     assert actual==sha,(path,sha,actual)
     files.append(path)
-assert all(p.startswith(str(ROOT)+"/") or p==".github/workflows/b01-50-w27-debris-physics-lab.yml" for p in files)
+assert all(p.startswith(ROOT.as_posix()+"/") or p==".github/workflows/b01-50-w27-debris-physics-lab.yml" for p in files)
 tracked=[p for p in ROOT.rglob("*") if p.is_file() and p!=MANIFEST]
 assert len(files)==len(tracked)+1,("manifest closure",len(files),len(tracked))
 metas=list(ROOT.rglob("*.meta"))
