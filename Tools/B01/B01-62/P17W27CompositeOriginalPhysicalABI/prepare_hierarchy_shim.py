@@ -7,7 +7,7 @@ import sys
 
 path=pathlib.Path(sys.argv[1]).resolve()
 original=path.read_bytes()
-blob=hashlib.sha1(b"blob "+str(len(original)).encode()+b"\\0"+original).hexdigest()
+blob=hashlib.sha1(b"blob "+str(len(original)).encode()+b"\0"+original).hexdigest()
 assert blob=="53d16eb828772532f81a7af1ed2ed3a712b0e9e4", "FROZEN_792_SHIM_SHA_MISMATCH"
 
 src=original.decode("utf-8")
