@@ -1,0 +1,17 @@
+name: B01-22 W28 native Unity R3 economy acceptance SOURCE-PROVENANCE ONLY
+on:
+  pull_request:
+    paths:
+      - 'Assets/Tests/Editor/B0122W28LiveGarageRecoveryRegression.cs'
+      - 'Assets/Tests/Editor/B0122W28LiveGarageRecoveryRegression.cs.meta'
+      - 'Tools/B01/ECONLIVEW28/**'
+      - '.github/workflows/b01-22-w28-live-game-economy-source.yml'
+jobs:
+  source-provenance-not-unity:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Verify exact real Unity model & test source Git blobs, scope and guid (NOT EDITMODE)
+        run: python3 Tools/B01/ECONLIVEW28/verify_package.py
