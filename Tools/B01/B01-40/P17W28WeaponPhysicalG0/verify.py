@@ -90,10 +90,11 @@ def check():
  must(len(g)==1,"INVALID_NEW_UNITY_META")
  guid=g[0]
  # Check ALL Unity metas at parent, not just this fixture.
- for f in run("ls-tree","-r","--name-only",BASE,"--","Assets").decode().splitlines():
-  if f.endswith(".meta"):
-   must(not re.search(rb"(?m)^guid:\s*"+guid+rb"\s*$",blob(BASE,f)),
-        "NEW_GUID_COLLIDES_WITH_ORIGINAL:"+f)
+ # One Git index scan on both platforms, not thousands of Git subprocesses.
+ probe=subprocess.run(["git","grep","-l",guid.decode(),BASE,"--","Assets"],
+                      capture_output=True)
+ must(probe.returncode==1,
+      "NEW_GUID_COLLIDES_OR_GIT_SCAN_FAILED:"+probe.stdout.decode(errors="replace")[-240:])
  print("B0140_W28_UNIQUE_NEW_UNITY_GUID_AND_TWO_NATIVE_TEST_SOURCES_PASS",guid.decode())
  # Real negative fixture mutation proving byte-guard refusal, no pseudo-PASS.
  with tempfile.TemporaryDirectory(prefix="b0140-w28-owned-only-") as d:
