@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <NoWarn>CS8618;CS8625</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../B01-62/P17W25WholeGameEconomyV7/WholeGameEconomySlotV2.cs"/>
+    <Compile Include="../../B01-62/P17W25WholeGameEconomyV7/CanonicalWholeGameSessionV2.cs"/>
+    <Compile Include="../../B01-62/P17W25WholeGameEconomyV7/.source/ApprovedEconomyPolicyV7.cs"/>
+    <Compile Include="../../B01-62/P17W25WholeGameEconomyV7/.source/CanonicalEconomySectionV7.cs"/>
+    <Compile Include="../../../../Assets/B0123CanonicalSaveApi001/Core/CanonicalWorldGateway.cs"/>
+    <Compile Include="../../../../Assets/B0123CanonicalSaveApi001/Core/CanonicalWorldSlotLease.cs"/>
+    <Compile Include="../../../../Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs"/>
+    <Compile Include="../../../../Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs"/>
+    <Compile Include="../../../../Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs"/>
+  </ItemGroup>
+</Project>
