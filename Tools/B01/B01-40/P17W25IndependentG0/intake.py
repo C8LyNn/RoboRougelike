@@ -88,7 +88,10 @@ def guid_closure():
  owned={}; by_guid={}
  for owner,dirs in PACKAGES.items():
   for prefix in dirs:
-   for path in tree(PINS[owner],prefix):
+   rootmeta=prefix+".meta"
+   has_root_meta=subprocess.run(["git","cat-file","-e",PINS[owner]+":"+rootmeta],
+    stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL).returncode==0
+   for path in tree(PINS[owner],prefix)+([rootmeta] if has_root_meta else []):
     if not path.endswith(".meta"):continue
     data=file(PINS[owner],path)
     m=re.search(rb"(?m)^guid:\s*([a-fA-F0-9]{32})\s*$",data)
