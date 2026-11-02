@@ -1,0 +1,73 @@
+name: B01-41 W27 exact selected five PR original source closure G0 no Unity activation
+on:
+  push:
+    branches: [ci/b01-41-p17w27-composite-source-closure-g0]
+    paths:
+      - 'Tools/B01/CI41/P17W27/**'
+      - '.github/workflows/b01-41-p17w27-immutable-source-g0.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  real-original-git-source-packet:
+    name: Original W27 source tree, Unity GUIDs and safe stage (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Real original immutable producer Git object fetch, NEVER check out producer worktree
+        shell: bash
+        run: |
+          set -euo pipefail
+          for sha in f5db40bf293fe9582ec7c6fcb3515aeff6fcf937 2b7983f0f9e09dd1d56906b379a3f7af7b02f21a 16cb2a7b5158605b15191b6074f9e392e0d1ebd3 b4df10a7ad7e6c758f8331013f6b216b3a3689a3 60c73a6f9ed2585cbb9bf7aeaad8c62eef0629cb ce46a5e0cc5d26df6c4ece723e8efe20d70fc4b1 cc7f73541517a18f4479bb155534bd4832d9985e b8ca29c7707cd6b4338d0b9772d74dee676d49d2 33094f154c7b91119b36d58aab285e6e83c5de57 d94400d95d13db7f27e1533df05c9292d5380431 cb2b3a76e84266e2730fffc4ab048c1039f0652f; do
+            git fetch --no-tags origin "$sha"
+            test "$(git rev-parse "$sha^{commit}")" = "$sha"
+          done
+      - name: Assert only five B01-41 source-G0/CI paths and immutable base
+        shell: bash
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor 5f06af81e2dd9d877e4300259bb3dd008cb9c9d1 HEAD
+          git diff --name-only 5f06af81e2dd9d877e4300259bb3dd008cb9c9d1 HEAD | sort > ci41-w27-own.txt
+          printf '%s\n' '.github/workflows/b01-41-p17w27-immutable-source-g0.yml' 'Tools/B01/CI41/P17W27/README.md' 'Tools/B01/CI41/P17W27/source_packet.py' 'Tools/B01/CI41/P17W27/source_plan.json' 'Tools/B01/CI41/P17W27/test_source_packet.py' | sort > ci41-w27-expected.txt
+          diff -u ci41-w27-expected.txt ci41-w27-own.txt
+          echo CI41_W27_FIVE_NEW_OWN_FILES_NO_PRODUCER_OR_CODEX_EDITS
+      - name: Execute 18 adversarial source packet and safe-rollback tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
+          "$PY" -m unittest discover -s Tools/B01/CI41/P17W27 -p test_source_packet.py -v 2>&1 | tee "ci41-w27-guards-${{ runner.os }}.txt"
+          grep -q 'Ran 18 tests' "ci41-w27-guards-${{ runner.os }}.txt"
+          grep -q 'OK' "ci41-w27-guards-${{ runner.os }}.txt"
+      - name: Construct actual exact Git byte original Unity SOURCE composite and measured SHA256 ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
+          DEST="$RUNNER_TEMP/ci41-w27-owned-${RUNNER_OS}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          "$PY" Tools/B01/CI41/P17W27/source_packet.py --out "$DEST" 2>&1 | tee "ci41-w27-source-${{ runner.os }}.txt"
+          grep -q 'CI41_W27_EXACT_ORIGINAL_GIT_BLOBS_AND_GUIDS_PASS' "ci41-w27-source-${{ runner.os }}.txt"
+          grep -q 'CI41_W27_ONE_WHOLE_GAME_797_ONLY_R3_787_AUDIT_NOT_INSTALLED' "ci41-w27-source-${{ runner.os }}.txt"
+          grep -q 'CI41_W27_G0_SOURCE_PROVENANCE_PASS_G0_GAME_BINDER_HOLD_G1_NATIVE_NOT_RUN' "ci41-w27-source-${{ runner.os }}.txt"
+          "$PY" -c 'import json,sys,hashlib,zipfile,pathlib;x=pathlib.Path(sys.argv[1]);r=json.loads((x/"QA_RECEIPT.json").read_text());b=(x/"CI41_W27_EXACT_SELECTED_SOURCE_CLOSURE.zip").read_bytes();assert hashlib.sha256(b).hexdigest()==r["sha256_zip"] and r["G1_NATIVE"]=="NOT_RUN" and r["G0_INSTALL"]=="HOLD";z=zipfile.ZipFile(x/"CI41_W27_EXACT_SELECTED_SOURCE_CLOSURE.zip");assert len(z.namelist())==r["zip_members"] and "MANIFEST.json" in z.namelist();print("CI41_W27_ACTUAL_IMMUTABLE_ZIP_SHA256_VERIFIED",r["sha256_zip"],r["authored_files"],r["meta_guids"])' "$DEST"
+      - name: Original machine log and physical inspectable Git SOURCE archive, NOT Unity/Editor G1
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CI41-W27-ORIGINAL-FIVE-PR-SOURCE-G0-NOT-UNITY-${{ runner.os }}
+          path: |
+            ci41-w27-own.txt
+            ci41-w27-expected.txt
+            ci41-w27-guards-${{ runner.os }}.txt
+            ci41-w27-source-${{ runner.os }}.txt
+            ${{ runner.temp }}/ci41-w27-owned-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}/*
+          retention-days: 14
+          if-no-files-found: warn
