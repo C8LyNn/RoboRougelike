@@ -39,6 +39,7 @@ namespace B01.RecoveryHud
                 case RecoveryNoticeKind.Unknown: return "NIEZWERYFIKOWANE";
                 case RecoveryNoticeKind.CoreDestroyed: return "CORE ZNISZCZONY";
                 case RecoveryNoticeKind.LoanerSpent: return "ROBOT WYKORZYSTANY";
+                case RecoveryNoticeKind.ProgressionAtRisk: return "RYZYKO SOFTLOCKA";
                 case RecoveryNoticeKind.AwaitingNextVictory: return "OCZEKUJE";
                 default: return "BLOKADA KONSTRUKCJI";
             }
