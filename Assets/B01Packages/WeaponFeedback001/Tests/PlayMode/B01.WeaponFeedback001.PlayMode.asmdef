@@ -1,0 +1,23 @@
+{
+  "name": "B01.WeaponFeedback001.PlayMode",
+  "rootNamespace": "B01.WeaponFeedback001",
+  "references": [
+    "B01.WeaponFeedback001.Runtime"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false,
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}
