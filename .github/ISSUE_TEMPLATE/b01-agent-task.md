@@ -23,6 +23,25 @@ assignees: []
 - **Poza zakresem / zakazy:**
 - **Powiązane issue, PR i decyzje projektowe:**
 
+
+### Pilotaż oceny ryzyka (Risk Assessment) — tylko wybrane nowe zadania
+
+**Na początek:** zastosuj tę krótką ocenę w **3 kolejnych, uzgodnionych przez B01-00 nowych zadaniach**. Nie przepisuj wstecz całego backlogu, nie zmieniaj zasad G0/G1/G2, niezależnego QA ani uprawnień Codexa. To **wspomaganie planowania testów**, nie automatyczna zgoda na merge i nie zastępstwo dla #276.
+
+- **Prawdopodobieństwo awarii:** niskie / średnie / wysokie / nieznane — z czego wynika ocena?
+- **Wpływ awarii:** niewielki / istotny / krytyczny — co może ucierpieć (np. jazda, ekonomia, save, dane gracza)?
+- **Odwracalność skutków:** łatwa / trudna / niemożliwa / nieznana — czy rollback kodu przywróci również dane/stany?
+- **Poziom końcowy:** `LOW` / `MEDIUM` / `HIGH`, **uzasadnienie jednym zdaniem**. Gdy możliwa jest nieodwracalna utrata danych, rozważ `HIGH` nawet przy małym prawdopodobieństwie. Nieznane ryzyko oznacz jawnie, nie zgaduj.
+- **Plan działania:** 1–3 najbardziej wartościowe testy, wymagane zabezpieczenie/rollback, kto weryfikuje i jaki dowód powstanie.
+
+**Praktyczne minimum kontroli:**
+- `LOW`: sprawdzenie zmienionego zachowania + podstawowy smoke; nie pomijaj obowiązujących gate/QA.
+- `MEDIUM`: sprawdzenie zmiany, przypadków brzegowych i powiązanych systemów.
+- `HIGH`: dodatkowo testy regresji/integracji odpowiednie do skutków, niezależny odbiór i realnie sprawdzony plan ochrony danych lub wycofania, gdy dotyczy. Jeśli wymagane środowisko nie jest dostępne: `NOT_RUN/BLOCKED`, a nie PASS.
+
+**Wynik pilotażu:** B01-00 porównuje po trzech zadaniach: trafność ocen, wykryte regresje, czas/zużycie pracy QA i liczbę poprawek. Dopiero na tej podstawie HQ decyduje, czy rozszerzać praktykę na inne zadania/roje.
+
+
 ## 2. Acceptance Criteria (AC): co ma działać
 
 Zdefiniuj **przed implementacją** konkretnie dla tej funkcji. Każde kryterium ma mieć wynik możliwy do zaobserwowania i sposób weryfikacji. Nie są to ogólne czynności typu „napisz testy” — to wymagania wobec zachowania produktu lub systemu.
