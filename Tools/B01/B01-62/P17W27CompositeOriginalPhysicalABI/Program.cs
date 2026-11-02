@@ -89,16 +89,22 @@ internal static class CompositeActualSourceQA
                 return false;
             try
             {
-                if(s.TryRestore(World(1,true,false),Economy(1,80),Run,1)!=
-                    CanonicalGateResult.Accepted)return false;
+                var g1Status=s.TryRestore(World(1,true,false),Economy(1,80),Run,1);
+                Console.WriteLine("W27_TRACE_G1_RESTORE="+g1Status+";QUARANTINE="+s.Quarantined);
+                if(g1Status!=CanonicalGateResult.Accepted)return false;
                 var light=port.VisiblePartBody(0);
                 var heavy=port.VisiblePartBody(1);
+                Console.WriteLine("W27_TRACE_PHYS_BODIES="+(light!=null)+"/"+(heavy!=null)+
+                    ";CHILDREN="+(light?.transform.parent!=null)+"/"+
+                    (heavy?.transform.parent!=null));
                 if(light==null||heavy==null||
                    light.transform.parent!=null||heavy.transform.parent==null||
                    !port.VisibleConsumedId(0,FrozenPartCatalog.Id(0))||
                    port.VisibleConsumedId(1,FrozenPartCatalog.Id(1)))return false;
-                if(!s.TryCapture(out var live,out var wallet)||
-                   wallet==null||wallet.Scrap!=80||
+                bool cap1=s.TryCapture(out var live,out var wallet);
+                Console.WriteLine("W27_TRACE_CAPTURE_G1="+cap1+";ECON="+wallet?.Scrap+
+                    ";QUARANTINE="+s.Quarantined);
+                if(!cap1||wallet==null||wallet.Scrap!=80||
                    !ColdRestore.TryStage(live,out var coldSource)||coldSource==null)
                     return false;
                 if(CanonicalWholeGameSessionV2.TryOpen(root,Run,Slot,false,
@@ -110,8 +116,10 @@ internal static class CompositeActualSourceQA
                    out var won,out var why)||won==null||why!="OK")
                     return false;
                 won.Scrap=35;
-                if(s.TryRestore(World(2,false,true),won,Run,2)!=
-                    CanonicalGateResult.Accepted)return false;
+                var g2Status=s.TryRestore(World(2,false,true),won,Run,2);
+                Console.WriteLine("W27_TRACE_G2_RESTORE="+g2Status+
+                    ";QUARANTINE="+s.Quarantined);
+                if(g2Status!=CanonicalGateResult.Accepted)return false;
                 if(!s.TryCapture(out live,out wallet)||
                    wallet==null||wallet.Wins!=1||wallet.Scrap!=35||
                    wallet.ConsumedVictoryIds.Count!=1||
@@ -122,8 +130,10 @@ internal static class CompositeActualSourceQA
                    !File.Exists(Path.Combine(OwnedDir(root),"slot.canonical-game-v2"))||
                    Directory.GetFiles(OwnedDir(root),"*.lease").Length!=0)
                     return false;
-                if(!s.TryCloseAfterPhysicalRetirement(
-                    port.AllOwnedPhysicalRootsDestroyed))return false;
+                bool retired=s.TryCloseAfterPhysicalRetirement(
+                    port.AllOwnedPhysicalRootsDestroyed);
+                Console.WriteLine("W27_TRACE_OWNER_RETIRE="+retired);
+                if(!retired)return false;
             }
             finally{s.Dispose();}
             var port2=Physical();
@@ -133,13 +143,14 @@ internal static class CompositeActualSourceQA
                reloaded==null)return false;
             try
             {
-                var econ=Economy(2,35);
                 if(!ApprovedEconomyPolicyV7.TryStageTrustedVictory(
                     Economy(1,80),"w27-unique-victory-1","w27-real-encounter-a",
                     out var won,out _)||won==null)return false;
                 won.Scrap=35;
-                if(reloaded.TryRestore(World(2,false,true),won,Run,2)!=
-                   CanonicalGateResult.Accepted)return false;
+                var coldStatus=reloaded.TryRestore(World(2,false,true),won,Run,2);
+                Console.WriteLine("W27_TRACE_COLD_RESTORE="+coldStatus+
+                    ";QUARANTINE="+reloaded.Quarantined);
+                if(coldStatus!=CanonicalGateResult.Accepted)return false;
                 if(!reloaded.TryCapture(out var world,out var wallet)||
                    wallet==null||wallet.Scrap!=35||wallet.Wins!=1||
                    wallet.ConsumedVictoryIds.Single()!="w27-unique-victory-1"||
