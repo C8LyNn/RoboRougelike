@@ -10,7 +10,8 @@ namespace B01.RecoveryHud
     {
         Unknown = 0, SaveUncertain = 1, CoreDestroyed = 2,
         Ready = 3, LoanerAvailable = 4, LoanerSpent = 5,
-        AwaitingNextVictory = 6, RepairRequired = 7
+        AwaitingNextVictory = 6, RepairRequired = 7,
+        ProgressionAtRisk = 8
     }
 
     public sealed class RecoveryRead
@@ -147,6 +148,20 @@ namespace B01.RecoveryHud
                     "Dostępny jednorazowy robot zastępczy",
                     "Słabszy robot zastępczy może zostać zaproponowany raz przez uprawniony system gry. Twoje zniszczone części pozostają w kolejce.",
                     detail, true);
+
+            // #812 / W28: player has a living Core but no functional rig;
+            // a one-shot loaner is already spent and the destroyed essential
+            // part waits for a DIFFERENT future victory. Do not pretend that
+            // an eligible next challenge means the player can actually enter it.
+            // Risk is a UX warning, NOT proof that paid recovery/normal rebuild,
+            // a legal run ending or some other host-verified route is impossible.
+            if (input.LoanerAlreadySpent && input.PendingForNextVictory)
+                return new RecoveryNotice(RecoveryNoticeKind.ProgressionAtRisk,
+                    "Ryzyko zablokowania postępu",
+                    "Robot zastępczy został wykorzystany, a potrzebne części czekają na następne zwycięstwo. " +
+                    "Nie ma tu potwierdzenia, że można rozpocząć następną walkę. " +
+                    "Sprawdź u właściciela gry dostępną płatną odbudowę, inne sprawne części lub zgodne z zasadami zakończenie runu.",
+                    detail, false);
 
             if (input.LoanerAlreadySpent)
                 return new RecoveryNotice(RecoveryNoticeKind.LoanerSpent,
