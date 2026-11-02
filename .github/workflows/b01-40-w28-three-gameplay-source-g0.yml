@@ -1,0 +1,63 @@
+name: B01-40 W28 original 804 810 814 gameplay source G0
+on:
+  push:
+    branches: [qa/b01-40-p17w28-gameplay-three-package-source-g0]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-40/P17W28GameplaySourceG0/**'
+      - '.github/workflows/b01-40-w28-three-gameplay-source-g0.yml'
+permissions:
+  contents: read
+jobs:
+  producer-original-physical-source:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify original exact SHA manifests, Unity asset GUID/asmdef and safe stage
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-40/P17W28GameplaySourceG0/intake.py --out b0140-w28-gameplay-g0 | tee w28-stdout.log
+          cp w28-stdout.log b0140-w28-gameplay-g0/stdout.log
+          grep -q 'B0140_W28_ORIGINAL_3_PACKAGES_EXACT_SHA_FILES=59_GUID=34_ASMDEF=9' w28-stdout.log
+          grep -q 'B0140_W28_SOURCE_TRANSPORT_G0=PASS' w28-stdout.log
+          grep -q 'B0140_W28_NATIVE_UNITY_G1_NOT_RUN' w28-stdout.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b0140-w28-source-${{ matrix.os }}
+          path: b0140-w28-gameplay-g0/
+          if-no-files-found: warn
+  cross-os-byte-identity:
+    needs: [producer-original-physical-source]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: b0140-w28-source-ubuntu-24.04
+          path: ubuntu
+      - uses: actions/download-artifact@v4
+        with:
+          name: b0140-w28-source-windows-2025
+          path: windows
+      - name: Compare actual original source ZIP and exact receipts
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp ubuntu/B01_W28_GAMEPLAY_G0_SOURCE_ONLY.zip windows/B01_W28_GAMEPLAY_G0_SOURCE_ONLY.zip
+          cmp ubuntu/manifest.json windows/manifest.json
+          cmp ubuntu/zip-sha256.json windows/zip-sha256.json
+          sha256sum ubuntu/B01_W28_GAMEPLAY_G0_SOURCE_ONLY.zip
+          echo B0140_W28_CROSS_OS_PHYSICAL_SOURCE_ZIP_IDENTICAL=PASS
