@@ -35,7 +35,7 @@ public sealed class WeaponGroupTests
     {
         EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);yield return new EnterPlayMode();
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
-        model.Parts.Add(new R3PartState(new Vector3Int(0,3,0),R3PartKind.Gun){Weapon=R4WeaponKind.Automatic});
+        model.Parts.Add(new R3PartState(new Vector3Int(1,2,0),R3PartKind.Gun){Weapon=R4WeaponKind.Automatic});
         var paletteObject=new GameObject("palette");var palette=paletteObject.AddComponent<R3VisualPalette>();var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
         for(int i=0;i<palette.Parts.Length;i++)palette.Parts[i]=material;
         for(int i=0;i<palette.Weapons.Length;i++)palette.Weapons[i]=material;
@@ -59,7 +59,14 @@ public sealed class WeaponGroupTests
     {
         EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);yield return new EnterPlayMode();
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Heavy));
-        for(int i=0;i<11;i++)model.Parts.Add(new R3PartState(new Vector3Int(i%7-3,2,i/7-3),R3PartKind.Gun){Weapon=i%2==0?R4WeaponKind.Automatic:R4WeaponKind.Basic});
+        // Keep all guns attached to a structural row with clear firing lanes.
+        // The old staggered rows put barrels directly behind other guns.
+        for(int x=-6;x<=5;x++)
+            if(x!=0) {
+                if(x < -3 || x > 3)model.Parts.Add(new R3PartState(new Vector3Int(x,1,-3),R3PartKind.Armor));
+                int index=x<0?x+6:x+5;
+                model.Parts.Add(new R3PartState(new Vector3Int(x,2,-3),R3PartKind.Gun){Weapon=index%2==0?R4WeaponKind.Automatic:R4WeaponKind.Basic});
+            }
         var paletteObject=new GameObject("palette");var palette=paletteObject.AddComponent<R3VisualPalette>();var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
         for(int i=0;i<palette.Parts.Length;i++)palette.Parts[i]=material;
         for(int i=0;i<palette.Weapons.Length;i++)palette.Weapons[i]=material;
@@ -79,7 +86,7 @@ public sealed class WeaponGroupTests
         EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
         yield return new EnterPlayMode();
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
-        model.Parts.Add(new R3PartState(new Vector3Int(0,3,0),R3PartKind.Gun){Weapon=R4WeaponKind.Automatic});
+        model.Parts.Add(new R3PartState(new Vector3Int(1,2,0),R3PartKind.Gun){Weapon=R4WeaponKind.Automatic});
         var paletteObject=new GameObject("palette");var palette=paletteObject.AddComponent<R3VisualPalette>();
         var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
         for(int i=0;i<palette.Parts.Length;i++)palette.Parts[i]=material;
