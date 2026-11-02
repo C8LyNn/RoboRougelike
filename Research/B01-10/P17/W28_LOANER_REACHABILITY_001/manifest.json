@@ -14,24 +14,24 @@
   },
   "sourceFiles": {
     "Research/B01-10/P17/W28_LOANER_REACHABILITY_001/ACCEPTANCE.md": {
-      "gitBlob": "1cdec06c025da46f3c23670a41c9f6a7e0046dee",
-      "bytes": 1641
+      "gitBlob": "4db3710662a04f3dab788ff8e66edaf6eb8fd996",
+      "bytes": 1947
     },
     "Research/B01-10/P17/W28_LOANER_REACHABILITY_001/LoanerReachability.cs": {
-      "gitBlob": "88ea9f3290e8afc1e7e80c0ff691f62b8f0e1f4c",
-      "bytes": 10563
+      "gitBlob": "6c2294ab329f6e8e589938d3e19540ca919147a4",
+      "bytes": 11400
     },
     "Research/B01-10/P17/W28_LOANER_REACHABILITY_001/LoanerReachability.csproj": {
       "gitBlob": "011e40a9ab535eda0de31e10dbd6fdee338e6ba2",
       "bytes": 573
     },
     "Research/B01-10/P17/W28_LOANER_REACHABILITY_001/README.md": {
-      "gitBlob": "96aa0bae0bfcda56968db69a835b59c534d47a4e",
-      "bytes": 4033
+      "gitBlob": "0e342f23505fd9daeef9e51cba7b16b7632d1684",
+      "bytes": 4411
     },
     ".github/workflows/b01-10-p17w28-v7-loaner-reachability.yml": {
-      "gitBlob": "75545872f266454ad5648c5f103d4f1d6d6c6863",
-      "bytes": 3902
+      "gitBlob": "1b4c466e77e2d78b5b1b87c3708ca862355291d3",
+      "bytes": 3938
     }
   },
   "scopeDiff": [
@@ -51,7 +51,9 @@
     "nativeUnity": "NOT_RUN",
     "independentG0": "PENDING",
     "softlock": "REPRO_SOURCE_ONLY",
-    "acceptedFix": false
+    "acceptedFix": false,
+    "exactHeadExecution": "PENDING corrected actual V7 source witness. First W28 source original RED #41545355299: Valid accepted impossible no-WIN FREE, failure was test expectation not compiler; corrected expected negative with original codec roundtrip.",
+    "actualSourceValidationDefect": "B01-22 V7 unchanged: Valid accepts manually crafted Free=true Pending at Wins0/FreeUsedForWin0; original Encode/Decode accept. Legitimate TryReserveDestroyed denies zero-wallet paid65. Test-only manually constructed state, NOT a proven player exploit or product anti-tamper requirement."
   },
   "dependencies": [
     "B01-22 #780 immutable V7",
