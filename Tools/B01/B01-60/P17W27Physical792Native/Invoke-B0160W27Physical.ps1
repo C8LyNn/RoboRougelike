@@ -11,7 +11,7 @@ $rc=2
 function Require([bool]$ok,[string]$reason){
  if(-not $ok){throw "B0160_W27_HOLD: $reason"}
 }
-function Git([string[]]$a){
+function LocalGit([string[]]$a){
  $o=@(& git @a 2>&1)
  Require ($LASTEXITCODE -eq 0) 'local Git check failed; no automatic fetch'
  return ($o -join [Environment]::NewLine).Trim()
@@ -28,19 +28,19 @@ try {
  $ver=@(& python --version 2>&1)
  Require ($LASTEXITCODE -eq 0 -and ($ver -join ' ') -match '^Python 3\.') 'Python3 required'
  $root=(Resolve-Path -LiteralPath $RepoPath -ErrorAction Stop).Path
- Require (([IO.Path]::GetFullPath((Git @('-C',$root,'rev-parse','--show-toplevel')))).TrimEnd('\','/') -ieq
+ Require (([IO.Path]::GetFullPath((LocalGit @('-C',$root,'rev-parse','--show-toplevel')))).TrimEnd('\','/') -ieq
     ([IO.Path]::GetFullPath($root)).TrimEnd('\','/')) 'RepoPath must be exact checkout root'
  $base='494e1056366c9004deefd7e4a73ad07b0a62a137'
  $head=Git @('-C',$root,'rev-parse','HEAD')
- Require ((Git @('-C',$root,'merge-base',$base,$head)) -eq $base) 'untrusted #783 ancestry'
+ Require ((LocalGit @('-C',$root,'merge-base',$base,$head)) -eq $base) 'untrusted #783 ancestry'
  $owner='16cb2a7b5158605b15191b6074f9e392e0d1ebd3'
- Require ((Git @('-C',$root,'cat-file','-t',$owner)) -eq 'commit') 'exact #792 original Git object missing; no auto-fetch'
+ Require ((LocalGit @('-C',$root,'cat-file','-t',$owner)) -eq 'commit') 'exact #792 original Git object missing; no auto-fetch'
  $mine='Tools/B01/B01-60/P17W27Physical792Native/Invoke-B0160W27Physical.ps1'
  $pythonFile='Tools/B01/B01-60/P17W27Physical792Native/rig_r2_native.py'
  Require ([IO.Path]::GetFullPath((Join-Path $root $mine)) -ieq [IO.Path]::GetFullPath($PSCommandPath)) 'wrong operator source file'
  foreach($file in @($mine,$pythonFile)){
-  Require ((Git @('-C',$root,'hash-object','--',$file)) -eq
-           (Git @('-C',$root,'rev-parse',"HEAD:$file"))) "dirty operator code: $file"
+  Require ((LocalGit @('-C',$root,'hash-object','--',$file)) -eq
+           (LocalGit @('-C',$root,'rev-parse',"HEAD:$file"))) "dirty operator code: $file"
  }
  if([string]::IsNullOrWhiteSpace($ScratchParent)){$ScratchParent=$env:TEMP}
  $scratch=(Resolve-Path -LiteralPath $ScratchParent -ErrorAction Stop).Path
