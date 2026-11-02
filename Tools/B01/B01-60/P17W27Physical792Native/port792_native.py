@@ -100,7 +100,7 @@ def validate(n,q):
  old=git_source(n,PORT772,RUNTIME)
  new=git_source(n,PORT792,RUNTIME)
  for token in (b"resumePending",b"resumeLinear",b"resumeAngular",
-               b"body.linearVelocity",b"body.angularVelocity"):
+               b"r.Body.linearVelocity",b"r.Body.angularVelocity"):
   need(token in new,"Missing live-world current velocity rollback: "+token.decode())
  need(blob(raw)==FIXTURE_BLOB and blob(new)==RUNTIME_BLOB and old!=new,
       "Regression R2 must change original runtime/fixture, not merely README")
