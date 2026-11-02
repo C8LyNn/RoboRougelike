@@ -69,7 +69,7 @@ def git(*args):
 def sha(data):return hashlib.sha256(data).hexdigest()
 def read(ref,path):return git("show",ref+":"+path)
 def index(ref,prefix):
-    return [p for p in git("ls-tree","-r","--name-only",ref,"--",prefix).decode().splitlines()
+    return [p for p in git("ls-tree","-r","--name-only",ref,"--",prefix,prefix+".meta").decode().splitlines()
             if p==prefix+".meta" or p.startswith(prefix+"/")]
 def blobs_and_ancestry():
     for name,ref in PINS.items():
