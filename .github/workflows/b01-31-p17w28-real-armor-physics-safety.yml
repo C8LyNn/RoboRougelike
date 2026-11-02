@@ -1,0 +1,78 @@
+name: B01-31 W28 Real P12 Armor Visual Physics Isolation Source and Native EditMode Evidence
+on:
+  push:
+    branches: [art/b01-31-p17w28-visual-physics-isolation]
+    paths:
+      - 'Assets/B01_31/W27ArmorLiveDemo/Editor/B0131W27CreateArmorLiveDemoScene.cs'
+      - 'Assets/B01_31/W28VisualPhysicsSafety/**'
+      - 'Assets/B01_31/W28VisualPhysicsSafety.meta'
+      - 'Tools/B01-31/P17/W28VisualPhysicsSafety001/**'
+      - '.github/workflows/b01-31-p17w28-real-armor-physics-safety.yml'
+  pull_request:
+    paths:
+      - 'Assets/B01_31/W27ArmorLiveDemo/Editor/B0131W27CreateArmorLiveDemoScene.cs'
+      - 'Assets/B01_31/W28VisualPhysicsSafety/**'
+      - 'Assets/B01_31/W28VisualPhysicsSafety.meta'
+      - 'Tools/B01-31/P17/W28VisualPhysicsSafety001/**'
+      - '.github/workflows/b01-31-p17w28-real-armor-physics-safety.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  ubuntu-real-game-and-editor-source-safety:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Compile and run REAL original P12 W24 W25 W27 Unity Editor W28 code (only UnityEngine/Editor are synthetic)
+        run: dotnet run -c Release --project Tools/B01-31/P17/W28VisualPhysicsSafety001/Harness/W28RealEditorSourceHarness.csproj
+      - name: Run previous original P12 W24 W25 W27 source game regression
+        run: dotnet run -c Release --project Tools/B01-31/P17/W27ArmorLiveDemo001/Harness/W27OriginalRealSourceHarness.csproj
+      - name: Generate actual changed-source ZIP and independent safe receiver
+        run: |
+          python Tools/B01-31/P17/W28VisualPhysicsSafety001/package_source.py --repo . --out build/W28
+          python Tools/B01-31/P17/W28VisualPhysicsSafety001/verify_source.py --repo . --out build/W28
+      - name: Double-author exact original W28 changed source bytes and require identical SHA
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd build/W28 && sha256sum *.zip receipt.json) > /tmp/w28_before.sha256
+          python Tools/B01-31/P17/W28VisualPhysicsSafety001/package_source.py --repo . --out build/W28
+          python Tools/B01-31/P17/W28VisualPhysicsSafety001/verify_source.py --repo . --out build/W28
+          (cd build/W28 && sha256sum *.zip receipt.json) > /tmp/w28_after.sha256
+          cmp /tmp/w28_before.sha256 /tmp/w28_after.sha256
+          echo W28_ORIGINAL_SOURCE_SHA_PARITY_PASS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B0131-W28-REAL-ARMOR-VISUAL-ONLY-PHYSICS-SAFETY-PATCH
+          path: build/W28/
+          if-no-files-found: error
+          retention-days: 30
+  windows-independent-original-P12-editor-safety:
+    needs: ubuntu-real-game-and-editor-source-safety
+    runs-on: windows-2022
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: B0131-W28-REAL-ARMOR-VISUAL-ONLY-PHYSICS-SAFETY-PATCH
+          path: original-Ubuntu-W28
+      - name: Execute real P12 W24 W25 W27 original Editor CSharp safety against synthetic ENGINE only
+        run: dotnet run -c Release --project Tools/B01-31/P17/W28VisualPhysicsSafety001/Harness/W28RealEditorSourceHarness.csproj
+      - name: Replay original W27 source case regressions
+        run: dotnet run -c Release --project Tools/B01-31/P17/W27ArmorLiveDemo001/Harness/W27OriginalRealSourceHarness.csproj
+      - name: Independent read-only physical SOURCE ZIP receiver, NEVER regenerate
+        run: python Tools/B01-31/P17/W28VisualPhysicsSafety001/verify_source.py --repo . --out original-Ubuntu-W28
