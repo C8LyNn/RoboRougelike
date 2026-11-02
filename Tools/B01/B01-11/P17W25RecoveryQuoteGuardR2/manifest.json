@@ -9,8 +9,8 @@
     },
     {
       "path": "Tools/B01/B01-11/P17W25RecoveryQuoteGuardR2/Program.cs",
-      "bytes": 5714,
-      "sha256": "bcf5edd50706565d970f1f7a65028ca518466f980becbf4fb3f1692c56297eed"
+      "bytes": 6793,
+      "sha256": "7f763f8cefeb2123d1d53d6a5bcf0ae4a9f7b6e62dd4508c5ee1ba1443214813"
     },
     {
       "path": "Tools/B01/B01-11/P17W25RecoveryQuoteGuardR2/QuoteGuard.Tests.csproj",
@@ -19,8 +19,8 @@
     },
     {
       "path": "Tools/B01/B01-11/P17W25RecoveryQuoteGuardR2/README.md",
-      "bytes": 4414,
-      "sha256": "e233eb1c2e56431b8bb791810b6a086373fda2fa59ac5c1487d863d50d681d60"
+      "bytes": 5986,
+      "sha256": "e54ba86870af45192c3a913369dd819a642dbd217bf07748623e70a6b4e10add"
     },
     {
       "path": "Tools/B01/B01-11/P17W25RecoveryQuoteGuardR2/test_r1_red.py",
