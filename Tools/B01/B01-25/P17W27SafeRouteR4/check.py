@@ -55,7 +55,8 @@ def stage(file,root):
         for path in reversed(written):path.unlink()
         raise
 def undo(written):
-    for path in reversed(written):path.unlink()class OriginalPhysicalR4QA(unittest.TestCase):
+    for path in reversed(written):path.unlink()
+class OriginalPhysicalR4QA(unittest.TestCase):
     def test_01_only_three_own_modified_ten_own_new_paths(self):
         listed=set(git("diff","--name-only",BASE,"HEAD").decode().splitlines())
         self.assertEqual(13,len(listed))

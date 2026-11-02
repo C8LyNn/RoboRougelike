@@ -91,7 +91,7 @@
     "Tools/B01/B01-25/P17W25SafeRouteR3/README.md": "d517cb2cddf57120a8a302837e7f146db712ead3",
     "Tools/B01/B01-25/P17W27SafeRouteR4/.gitignore": "b67c661cfb5cc73f5f68cfe85fd17e954856ea87",
     "Tools/B01/B01-25/P17W27SafeRouteR4/CHANGELOG.md": "62d69db4662a5665dac1f90d46d82155f0bc02a8",
-    "Tools/B01/B01-25/P17W27SafeRouteR4/check.py": "8eb3fd40b0a94814f3a1468dcfd5a30583c24689",
+    "Tools/B01/B01-25/P17W27SafeRouteR4/check.py": "84cc54b3df149789ff08b0ed244852d38169dece",
     "Tools/B01/B01-25/P17W27SafeRouteR4/INSTALL_FOR_CODEX.md": "80ae3f14d5719456f941133d02fd38d35f76b87f",
     "Tools/B01/B01-25/P17W27SafeRouteR4/KNOWN_LIMITATIONS.md": "3510521c13f38a9793d224343a2c8ab874d45011",
     "Tools/B01/B01-25/P17W27SafeRouteR4/QA_B01_60.md": "30e70347ea9a623eb8f0a95dd9b5aaaf358fa437",
@@ -145,5 +145,6 @@
   "integrated": false,
   "released": false,
   "g2": "HOLD",
-  "rollback": "Only in disposable fresh Unity checkout. Reject existing paths/symlinks; unlink only exactly newly staged 23 Unity source/meta owner files; never remove foreign empty directories or original R3. No main/develop/PC edits."
+  "rollback": "Only in disposable fresh Unity checkout. Reject existing paths/symlinks; unlink only exactly newly staged 23 Unity source/meta owner files; never remove foreign empty directories or original R3. No main/develop/PC edits.",
+  "producerFix": "First exact head CI #41528979993 original CSharp9 94/94 PASS but Python original source QA syntax error between undo/class; repaired only own checker and repinned exact Git blob; old CI RED and new complete exact head run required"
 }
