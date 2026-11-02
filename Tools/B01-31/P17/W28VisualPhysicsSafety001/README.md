@@ -1,0 +1,25 @@
+# B01-31 — PASS17 WAVE28 — ACTUAL imported 3D armor visual physical-safety fix
+
+**Package:** B01-31-P17W28-ARMOR-VISUAL-PHYSICS-ISOLATION-001/P17-W28-R1. Branch strictly based on [W27 #820 @45a5c54d6b6985b54e6fba22a9095ecbf04eba60](https://github.com/C8LyNn/RoboRougelike/pull/820). Independent source scope, no Codex/weapon/Garage/Save/main mutation or merge.
+
+## Real confirmed integration hazard, source change and safety behavior
+
+Prior opt-in W27 Unity Editor scene builder instantiated W24 three-model prefab without checking whether native OBJ importer/original scene prefabs supplied Collider/Rigidbody components. That creates risk of accidental physics overlap with the separate **authoritative P12** gameplay component. W28 modifies **only B01-31-owned W27 Editor source** to call real public Unity Editor `StripVisualOnlyPhysics(GameObject ownVisualInstance)` immediately after instantiating a NEW W24 visual clone, before attaching W25 binder, P12 and before saving any `.unity` scene.
+
+The method performs full fail-closed preflight: nonnull own clone, real W24 B0131W24ArmorDamageVisual marker on root, >=1 native Renderer including inactive children, ZERO original P12 gameplay `P12PipelineSafeDamageable` components in clone subtree and ZERO Unity `Joint` components. If any invalid, it refuses the entire manual scene creation **without changing components**. If safe, it removes **all Unity Rigidbody and Collider on only that freshly-created VISUAL clone** (also inactive children), preserves Renderer hierarchy and all external P12 root gameplay/ownership/physics. Original W24 model imported asset is NOT modified; source W24/W25 and main #510/Save authority untouched. This changes what will actually be installed into the manual W27 demo scene, not merely a theoretical report.
+
+## Genuine Unity native tests + real managed original-source QA
+
+Five newly authored **original real Unity EditMode `[Test]` cases** (W28 dedicated TestAssemblies asmdef + real Unity `.meta` GUIDs): real primitive imported child BoxCollider safely removed; child+root Rigidbody removed while a **separate actual original P12** game source preserves its physics; misnested P12 refuses with zero mutations; visual Joint refuses without changing colliders; foreign/unmarked or unrenderable visual root rejected before changes. These tests require real licensed Windows Unity 6000.3.14f1 before `G1` can pass. Five old W27 actual PlayMode UnityTest sources remain authored but NOT_RUN.
+
+Extra .NET8 runner compiles **verbatim FIVE actual original game/editor C# files**: frozen P12 gameplay, W24 three-state actual visual, W25 P12 binder, W27 GUI runtime driver and the NEW W28-modified W27 Editor file, using clearly labeled SYNTHETIC UnityEngine/UnityEditor API stand-ins ONLY. It executes 26 check assertions including real original P12 ApplyDamage→Died, original visual state transition, authority/physics separation and unsafe negative cases. This is source/managed QA, NOT Unity native or PhysX.
+
+Physical original W28 ZIP contains exact changed owned W27 Editor C#, five original new W28 Unity GUID `.meta` source members, two real native test C#/.asmdef and real .NET8 harness/author/validator; original 17-file SHA256 member receipt. Independent verifier reopens ZIP and checks exact original byte parity against checked-in source, 5 GUID uniqueness, denies eight actual tampered source/foreign member cases, and runs on independent Windows2022 artifact downloaded from Ubuntu24. Two exact full source exports have SHA byte parity. This is a **SOURCE PATCH ZIP, not a `.unitypackage` to auto-overwrite an existing W27 Editor file**.
+
+## G0/G1 and receivers
+
+Original W27 #820 PlayMode source CI was PASS Ubuntu+Windows but formal B01-30/40 G0 and real Unity G1 remained PENDING/NOT_RUN. W28 requires **new independent** G0 because a whole source file changed. B01-30/40 must verify exact source SHA/old-editor single-file replacement GUID isolation in authorized disposable scratch, and cannot install alternative sources into Codex. B01-60 must import exact W24 model+prefab/W25/W27 source **then** W28 patch, run W28 five native EditMode cases and W27 five PlayMode cases and actual opted-in scene with imported OBJ meshes. Require original Editor.log, NUnit XML, Unity project commit SHA, actual screenshot of healthy/damaged/destroyed states and confirm zero Collider/Rigidbody in the visual clone while original P12 body stays.
+
+**NOT implemented:** full W28 Codex gameplay feature completion, game weapon Saw/EMP, real garage spatial zones, Save/ECON fix #797, R41 muzzle pivot or Windows Player build. These remain under other owners, and no false claim of playable game integration. W28 source branch is isolated from Codex #817/#824, now active.
+
+**Rollback:** no automatically installed files; revert W28 modified W27 Editor file from EXACT parent W27 SHA (never restore/alter any other owner file), remove only new W28 own tests/tools in reviewed scratch, preserving all foreign even-empty directories and player data. No merge or Codex offer until formal G0 and owner B01-00 ACK.
