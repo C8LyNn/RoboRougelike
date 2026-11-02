@@ -1,0 +1,83 @@
+{
+  "schema": "b01-package-v1",
+  "package_id": "CI41-W28-CODEX824-SAW-EMP-NATIVE-QA-001",
+  "revision": "R1",
+  "owner": "B01-41",
+  "hq": 800,
+  "source_base_branch": "feature/w27-weapon-garage",
+  "source_base_sha": "e03d36f2b86f8c73a067e574b67237a8921f622a",
+  "scope": "INDEPENDENT_NATIVE_TEST_SOURCE_ONLY",
+  "unity_version": "6000.3.14f1",
+  "test_mode": "UnityTest EnterPlayMode genuine original game R3 rigidbodies and colliders",
+  "native_tests_expected": 4,
+  "original_sources": {
+    "codex_824": "e03d36f2b86f8c73a067e574b67237a8921f622a",
+    "saw_binding": "a0bc49151fcecde159685f2a0841447606a9d291",
+    "emp_binding": "6ff22154024dd04ee72043f9766db1840218df03",
+    "saw_module": "a79a81280d2ebd3a6f68c26619f7dda6335a5b5f",
+    "emp_module": "f38da021c22de609a196876d508ec9d92fb9ff56"
+  },
+  "owner_delta": [
+    "Assets/Tests/Editor/CI41W28SawEmpNativeRegressionTests.cs",
+    "Assets/Tests/Editor/CI41W28SawEmpNativeRegressionTests.cs.meta",
+    "Tools/B01/CI41/P17W28/manifest.json",
+    "Tools/B01/CI41/P17W28/README.md",
+    "Tools/B01/CI41/P17W28/source_gate.py",
+    "Tools/B01/CI41/P17W28/test_source_gate.py",
+    ".github/workflows/b01-41-p17w28-saw-emp-native-source-g0.yml"
+  ],
+  "guid": "b0141f28ca52fa78f212b07e4c241001",
+  "four_acceptance_tests": [
+    "Saw_ActualRotatingOwnedArmor_StopsBlockedMotorHeat_ThenResumes",
+    "Saw_OriginalOwnerContactsNeverReceiveDamageFromRotatingBlade",
+    "Emp_OriginalDirectModule_ExternalWallShieldsTarget_NotOwnVehicle",
+    "Emp_ActualDirectBinding_DedupOwnPhysicalModuleAndConsumesCooldownOnce"
+  ],
+  "qa_scope": [
+    "Saw: owned cutter-disc occupation suppresses motor heat/RPM; after clear recovers",
+    "Saw: owned rig collider receives zero self inflicted damage",
+    "EMP: real external wall occludes, own receiver immune, legitimate activation spends cooldown",
+    "EMP: multi-collider external receiver dedup, cooldown and no bullet ammo"
+  ],
+  "tests": [
+    {
+      "name": "source_provenance_and_antimock",
+      "environment": "GitHub Actions Windows2025+Ubuntu24.04",
+      "status": "PENDING"
+    },
+    {
+      "name": "Unity6000.3.14f1 EditMode native",
+      "environment": "owner-operated licensed Unity",
+      "status": "NOT_RUN"
+    },
+    {
+      "name": "Windows x64 Player blocked weapons",
+      "status": "NOT_RUN"
+    }
+  ],
+  "gates": {
+    "G0_source": "PENDING",
+    "G0_product": "HOLD",
+    "G1_native": "NOT_RUN",
+    "G2": "HOLD",
+    "CODEX_ACK": "NONE"
+  },
+  "risk": {
+    "level": "HIGH",
+    "mitigation": "No gameplay source changes; never annotate saw native as PASS before Editor.log NUnit XML; source W27 SHA frozen"
+  },
+  "excluded": [
+    "Codex reserved R3/weapon implementation edits",
+    "main/develop",
+    "Save/Load authority",
+    "old active Codex worktree",
+    "new player release"
+  ],
+  "rollback": "close unmerged Draft and remove 7 only-owned new files in scratch; never touch player data",
+  "receivers": [
+    "B01-60 native Unity",
+    "B01-61 independent regression",
+    "B01-40 source G0",
+    "Codex through B01-00 only when accepted"
+  ]
+}

@@ -1,0 +1,60 @@
+name: B01-41 W28 original Codex 824 source pinned four Saw-EMP native UnityTest intake
+on:
+  push:
+    branches: [ci/b01-41-p17w28-codex824-saw-emp-independent-native-regressions]
+    paths:
+      - 'Tools/B01/CI41/P17W28/**'
+      - 'Assets/Tests/Editor/CI41W28SawEmpNativeRegressionTests.cs'
+      - 'Assets/Tests/Editor/CI41W28SawEmpNativeRegressionTests.cs.meta'
+      - '.github/workflows/b01-41-p17w28-saw-emp-native-source-g0.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-codex824-non-native-intake:
+    name: CI41 exact Codex W27 source and genuine native TEST SOURCE, NOT editor G1 (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Confirm exact Git SHA ancestor not Codex worktree changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor e03d36f2b86f8c73a067e574b67237a8921f622a HEAD
+          test "$(git rev-parse e03d36f2b86f8c73a067e574b67237a8921f622a^{commit})" = "e03d36f2b86f8c73a067e574b67237a8921f622a"
+      - name: Execute 12 hostile fake-source detection and stable test contract controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
+          "$PY" -m unittest discover -s Tools/B01/CI41/P17W28 -p test_source_gate.py -v 2>&1 | tee "ci41-w28-unit-${{ runner.os }}.txt"
+          grep -q 'Ran 12 tests' "ci41-w28-unit-${{ runner.os }}.txt"
+          grep -q 'OK' "ci41-w28-unit-${{ runner.os }}.txt"
+      - name: Verify 11 real original Codex W27 product code Git blobs and EXACT 7 new test-only files
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
+          "$PY" Tools/B01/CI41/P17W28/source_gate.py "ci41-w28-receipt-${{ runner.os }}.json" | tee "ci41-w28-audit-${{ runner.os }}.txt"
+          "$PY" -c 'import json,sys; x=json.load(open(sys.argv[1])); assert x["source_security_status"]=="SELECTED_W27_SHA_AND_OWN_SCOPE_AUTHENTICATED" and x["native_cases"]==4 and x["Unity_G1"]=="NOT_RUN" and len(x["exact_owner_added_files"])==7; print("CI41_W28_SOURCE_G0_EXACT_824_7_OWN_FILES_11_ORIGINAL_BLOBS_PASS");print("CI41_W28_UNITY_NATIVE_SAW_EMP_FOUR_CASES_NOT_RUN")' "ci41-w28-receipt-${{ runner.os }}.json"
+      - name: Preserve exact Git evidence; never falsify Unity log, XML or Windows Player
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CI41-W28-CODEX824-SAW-EMP-FOUR-NATIVE-TESTS-NOT-RUN-${{ runner.os }}
+          path: |
+            ci41-w28-unit-${{ runner.os }}.txt
+            ci41-w28-audit-${{ runner.os }}.txt
+            ci41-w28-receipt-${{ runner.os }}.json
+            Assets/Tests/Editor/CI41W28SawEmpNativeRegressionTests.cs
+            Assets/Tests/Editor/CI41W28SawEmpNativeRegressionTests.cs.meta
+          retention-days: 14
+          if-no-files-found: warn
