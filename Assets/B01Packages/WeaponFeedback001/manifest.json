@@ -1,0 +1,38 @@
+{
+  "schema": "B01-G0-SOURCE-RECEIPT-R1",
+  "package_id": "B01-32-WEAPON-FEEDBACK-001",
+  "revision": "W27-R1",
+  "base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "exclusive_prefix": "Assets/B01Packages/WeaponFeedback001",
+  "files": [
+    "Assets/B01Packages/WeaponFeedback001.meta",
+    "Assets/B01Packages/WeaponFeedback001/Editor.meta",
+    "Assets/B01Packages/WeaponFeedback001/Editor/B01.WeaponFeedback001.Editor.asmdef",
+    "Assets/B01Packages/WeaponFeedback001/Editor/B01.WeaponFeedback001.Editor.asmdef.meta",
+    "Assets/B01Packages/WeaponFeedback001/Editor/WeaponFeedbackSceneBuilder.cs",
+    "Assets/B01Packages/WeaponFeedback001/Editor/WeaponFeedbackSceneBuilder.cs.meta",
+    "Assets/B01Packages/WeaponFeedback001/README.md",
+    "Assets/B01Packages/WeaponFeedback001/Runtime.meta",
+    "Assets/B01Packages/WeaponFeedback001/Runtime/B01.WeaponFeedback001.Runtime.asmdef",
+    "Assets/B01Packages/WeaponFeedback001/Runtime/B01.WeaponFeedback001.Runtime.asmdef.meta",
+    "Assets/B01Packages/WeaponFeedback001/Runtime/WeaponFeedbackVisual.cs",
+    "Assets/B01Packages/WeaponFeedback001/Runtime/WeaponFeedbackVisual.cs.meta",
+    "Assets/B01Packages/WeaponFeedback001/Tests.meta",
+    "Assets/B01Packages/WeaponFeedback001/Tests/PlayMode.meta",
+    "Assets/B01Packages/WeaponFeedback001/Tests/PlayMode/B01.WeaponFeedback001.PlayMode.asmdef",
+    "Assets/B01Packages/WeaponFeedback001/Tests/PlayMode/B01.WeaponFeedback001.PlayMode.asmdef.meta",
+    "Assets/B01Packages/WeaponFeedback001/Tests/PlayMode/WeaponFeedbackVisualTests.cs",
+    "Assets/B01Packages/WeaponFeedback001/Tests/PlayMode/WeaponFeedbackVisualTests.cs.meta"
+  ],
+  "owner_review": "B01-32",
+  "native_unity": "NOT_RUN",
+  "independent_g0": "PENDING",
+  "physical_prefabs_and_scene": "NOT_YET_GENERATED_BY_UNITY_EDITOR",
+  "excluded": [
+    "Codex weapon/aim/ammo/fire",
+    "Codex turret intake",
+    "canonical damage",
+    "Save"
+  ],
+  "codex_ack": "NONE"
+}
