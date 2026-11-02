@@ -63,6 +63,7 @@ FROZEN = {
     "canonical_api_729": ("b8ca29c7707cd6b4338d0b9772d74dee676d49d2", "Assets/B0123CanonicalSaveApi001"),
     "world_codec_556": ("33094f154c7b91119b36d58aab285e6e83c5de57", "Assets/B0123DetachedSaveContract001"),
     "ledger_510": ("d94400d95d13db7f27e1533df05c9292d5380431", "Assets/B0123SecureReattachV2"),
+    "debris_W06_original_510_lineage": ("d94400d95d13db7f27e1533df05c9292d5380431", "Assets/B0123DebrisRepulse001"),
 }
 RUNTIME_PINS = {
     "strict_save_787": {
