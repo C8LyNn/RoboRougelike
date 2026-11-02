@@ -1,0 +1,7 @@
+# SAFEROUTE R5 limitations
+
+This is NOT Codex playable game integration. R5 changes B01-25-owned standalone Unity level only, leaves source-only gameplay bridge public so an authorized Codex integrator can call registration on detached/dynamic world Rigidbody and unregister on retirement. Actual original Codex build, R3 game, garage, weapon clearance, official Save have not been modified. Unity Editor 6000.3.14f1 / PhysX native automated tests (22 authored cases), actual Windows Player and human playtest NOT_RUN.
+
+Currently supports up to 32 registered Rigidbody sources and 16 active nontrigger attached physical colliders per source; deliberately fail-closed in case of unobserved/lost colliders, out-of-bounds obstacles, full query buffer. No auto-discovery of all world colliders, scene object lifetime management/Save, one-owner registration must be wired after actual detachment. Designed for surface 15x11 test map and conservative 3x3 Heavy hull; not a proof of real vehicle turn radius, walls, swept velocity, wheel tracks, subcell continuous collision, full combat performance, world persistence.
+
+If a registered Rigidbody is destroyed without `UnregisterWorldBlocker`, route remains fail-closed until owner cleans its registry. This prevents hallucinated safe routes but can yield a blocking HUD and needs explicit receiver lifecycle policy. Original legacy versions share GUIDs; never coinstall/overlay. B01-40 independent G0 pending; B01-60 actual licensed Windows Unity G1 pending; Codex receiving is B01-00 decision only.
