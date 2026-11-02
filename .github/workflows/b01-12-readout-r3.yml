@@ -1,0 +1,66 @@
+name: B01-12 W27 Recovery Readout R3 stale-status regression
+"on":
+  pull_request:
+    paths:
+      - 'Research/B01-12/P17W25/RecoveryReadoutR2/**'
+      - '.github/workflows/b01-12-readout-r3.yml'
+  push:
+    branches:
+      - 'research/b01-12-p17w27-recovery-readout-r3'
+permissions:
+  contents: read
+jobs:
+  actual-original-source:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: |
+          python -m pip install playwright==1.55.0
+          python -m playwright install --with-deps chromium
+      - name: Original R1 RED and current engine source
+        working-directory: Research/B01-12/P17W25/RecoveryReadoutR2
+        run: |
+          node r1-red-reproducer.cjs
+          node test_engine.cjs
+      - name: Original responsive Chromium and W27 actual old-vs-new regression
+        working-directory: Research/B01-12/P17W25/RecoveryReadoutR2
+        run: |
+          python test_browser.py
+          python test_stale_browser.py
+      - name: Modified source must fail before any runner starts
+        shell: bash
+        run: |
+          set -euo pipefail
+          src=Research/B01-12/P17W25/RecoveryReadoutR2
+          dst="$RUNNER_TEMP/readout-r3-tamper"
+          mkdir -p "$dst"
+          cp -a "$src/." "$dst/"
+          printf 'X' >> "$dst/ui.js"
+          cd "$dst"
+          set +e
+          node test_engine.cjs >node.log 2>&1; n=$?
+          python test_browser.py >browser.log 2>&1; b=$?
+          python test_stale_browser.py >stale.log 2>&1; s=$?
+          set -e
+          cat node.log browser.log stale.log
+          test "$n" -eq 2 && test "$b" -eq 2 && test "$s" -eq 2
+          grep -q 'FAIL_CLOSED source mismatch: ui.js' node.log
+          grep -q 'FAIL_CLOSED source mismatch: ui.js' browser.log
+          grep -q 'FAIL_CLOSED source mismatch: ui.js' stale.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b01-12-w27-r3-chromium-source-receipt
+          path: |
+            Research/B01-12/P17W25/RecoveryReadoutR2/node-results.json
+            Research/B01-12/P17W25/RecoveryReadoutR2/browser-results.json
+            Research/B01-12/P17W25/RecoveryReadoutR2/stale-results.json
+            Research/B01-12/P17W25/RecoveryReadoutR2/evidence-r3-1280x720.png
+          if-no-files-found: warn
