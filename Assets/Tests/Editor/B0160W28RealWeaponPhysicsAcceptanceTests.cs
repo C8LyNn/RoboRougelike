@@ -122,6 +122,7 @@ public sealed class B0160W28RealWeaponPhysicsAcceptanceTests
             Assert.That(saw.Module.DamageEventsLastTick,Is.Zero,
                 "rotary contact must filter own collider even during rotation");
         }
+        Assert.That(saw.Module.Motor.Rpm,Is.GreaterThan(0f),"physical saw motor must actually spin during the owned-contact test");
         Assert.That(core.Damageable.CurrentHp,Is.EqualTo(ownHp),
             "rotating saw caused friendly damage");
         saw.SetMotorRequested(false);
