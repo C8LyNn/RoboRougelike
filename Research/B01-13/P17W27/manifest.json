@@ -1,0 +1,43 @@
+{
+  "package_id": "B01-13-REAL-PLAYTEST-OBSERVATION-001/R1",
+  "revision": "R1",
+  "owner": "B01-13 HUMAN PLAYTESTING",
+  "hq_issue": 800,
+  "parent_pr": 786,
+  "parent_sha": "b79b6e817b7d905d243fc1a02cee7cf90063c151",
+  "source_branch": "research/b01-13-p17w27-real-playtest-observer",
+  "codex_scope": "NO_MODIFY (feature/pass17-reload-fix)",
+  "human_sessions": 0,
+  "native_g1": "NOT_RUN",
+  "physical_data_provenance": "OPERATOR_SELF_REPORTED",
+  "tests_expected": {
+    "node_each_os": 48,
+    "browser": "REAL_CHROMIUM_AUTOMATED_NO_HUMAN"
+  },
+  "files": {
+    "Research/B01-13/P17W27/observer.mjs": {
+      "git_blob_sha1": "dbac634f78943e44a08a1ae6f80c1ae8ebe9a125",
+      "bytes": 17910
+    },
+    "Research/B01-13/P17W27/test_observer.mjs": {
+      "git_blob_sha1": "c0b6374b21cdace7ac8c33a1089416ca0c6ccd38",
+      "bytes": 9281
+    },
+    "Research/B01-13/P17W27/browser_test.py": {
+      "git_blob_sha1": "d4e784a8ecb831f0437aca4227f3e8e70843f76c",
+      "bytes": 4688
+    },
+    "Research/B01-13/P17W27/README.md": {
+      "git_blob_sha1": "a64c3808ab7afc277d84263085e8f08c7c25d48a",
+      "bytes": 8052
+    },
+    "Research/B01-13/P17W27/verify_package.py": {
+      "git_blob_sha1": "02065cb45a150369a3aaadc1dfd3256fa7ba8f1b",
+      "bytes": 1168
+    },
+    ".github/workflows/b01-13-w27-human-observation.yml": {
+      "git_blob_sha1": "1fa520006e1df62058a0b1844b5e7361cfacb938",
+      "bytes": 2744
+    }
+  }
+}
