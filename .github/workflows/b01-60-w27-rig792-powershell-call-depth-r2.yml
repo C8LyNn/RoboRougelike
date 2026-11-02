@@ -1,0 +1,89 @@
+name: B01-60 W27 original #808 Windows PowerShell Git recursion RED to GREEN — NO Unity
+on:
+  push:
+    branches: [fix/b01-60-p17w27-rig792-powershell-git-recursion-r2]
+    paths:
+      - 'Tools/B01/B01-60/P17W27Physical792Native/Invoke-B0160W27Physical.ps1'
+      - 'Tools/B01/B01-60/P17W27PowershellOperatorFix/**'
+      - '.github/workflows/b01-60-w27-rig792-powershell-call-depth-r2.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-60/P17W27Physical792Native/Invoke-B0160W27Physical.ps1'
+      - 'Tools/B01/B01-60/P17W27PowershellOperatorFix/**'
+      - '.github/workflows/b01-60-w27-rig792-powershell-call-depth-r2.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-windows-real-powershell:
+    runs-on: windows-2025
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch frozen original #792 and old #772 source only into hosted CI checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin ce46a5e0cc5d26df6c4ece723e8efe20d70fc4b1
+          git fetch --no-tags origin 16cb2a7b5158605b15191b6074f9e392e0d1ebd3
+          test "$(git rev-parse 16cb2a7b5158605b15191b6074f9e392e0d1ebd3:Assets/B0123CanonicalRigPortW24/Runtime/CanonicalPhysicalRigPortW24.cs)" = 7623f698b6e644b8d8247a011b453bf40adc2227
+      - name: Verify actual local PowerShell helper invokes EXTERNAL git.exe and original sibling source unchanged
+        shell: pwsh
+        run: |
+          $p='.\Tools\B01\B01-60\P17W27Physical792Native\Invoke-B0160W27Physical.ps1'
+          $raw=Get-Content -LiteralPath $p -Raw
+          if($raw -match 'function\s+Git\s*\('){throw 'Original recursion still present'}
+          if($raw -match '&\s+git\s+@a'){throw 'Original recursive invocation present'}
+          if($raw -notmatch 'function\s+Invoke-VerifiedGit\s*\('){throw 'Fixed helper absent'}
+          if($raw -notmatch '&\s+git\.exe\s+@a'){throw 'External git.exe absent'}
+          $old='d1a6f4e5f9934ddd760ba922c8779743512cea19'
+          $n='Tools/B01/B01-60/P17W27Physical792Native/rig_r2_native.py'
+          $a=(& git.exe rev-parse "$($old):$n").Trim()
+          $b=(& git.exe rev-parse "HEAD:$n").Trim()
+          if($a -ne $b){throw 'Original Python native runner drifted'}
+          Write-Output 'B0160_W27_ORIGINAL_NATIVE_RUNNER_UNMODIFIED_HELPER_FIX_ONLY_PASS'
+      - name: Reproduce formerly RED real Windows PowerShell source-only original four project stage and strict rollback
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W27Physical792Native\Invoke-B0160W27Physical.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:RUNNER_TEMP *>&1 | Tee-Object -FilePath w27-r2-windows-source.log
+          $code=$LASTEXITCODE
+          if($code -ne 0){throw "Formerly recursive PowerShell still failed exit $code"}
+          if(!(Select-String w27-r2-windows-source.log -Pattern 'B0160_W27_SOURCE_ONLY_FOUR_PHYSICS_PROJECTS_PASS_NATIVE_UNITY_G1_NOT_RUN' -Quiet)){throw 'Source-only original native NOT_RUN receipt missing'}
+          if(Select-String w27-r2-windows-source.log -Pattern 'call depth overflow' -Quiet){throw 'Original recursion still present'}
+      - name: Reject scratch overlapping source checkout, never delete foreign files
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W27Physical792Native\Invoke-B0160W27Physical.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:GITHUB_WORKSPACE *>&1 | Tee-Object -FilePath w27-r2-deny-scratch.log
+          $code=$LASTEXITCODE
+          if($code -ne 2){throw "Unsafe scratch expected exit2 got $code"}
+          $global:LASTEXITCODE=0
+      - name: Reject attempting Unity G1 without independent exact #792 source G0
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W27Physical792Native\Invoke-B0160W27Physical.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:RUNNER_TEMP -Run *>&1 | Tee-Object -FilePath w27-r2-deny-nog0.log
+          $code=$LASTEXITCODE
+          if($code -ne 3){throw "Native without G0 expected exit3 got $code"}
+          $global:LASTEXITCODE=0
+      - name: Reject native if exact licensed Unity Editor is absent, even when operator states G0 review
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W27Physical792Native\Invoke-B0160W27Physical.ps1 -RepoPath $env:GITHUB_WORKSPACE -ScratchParent $env:RUNNER_TEMP -Run -SourceG0Approved -UnityPath 'Z:\missing\6000.3.14f1\Editor\Unity.exe' *>&1 | Tee-Object -FilePath w27-r2-deny-noeditor.log
+          $code=$LASTEXITCODE
+          if($code -ne 3){throw "Native lacking real Unity Editor expected exit3 got $code"}
+          $global:LASTEXITCODE=0
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0160-W27-808-R2-WINDOWS-SOURCE-NOT-UNITY
+          path: |
+            w27-r2-windows-source.log
+            w27-r2-deny-scratch.log
+            w27-r2-deny-nog0.log
+            w27-r2-deny-noeditor.log
+          retention-days: 14
+          if-no-files-found: warn
