@@ -40,8 +40,14 @@ def verify_original():
  subprocess.run(["git","merge-base","--is-ancestor",BASE,"HEAD"],cwd=ROOT,check=True)
  assert git("rev-parse",PREV+":Assets/B0123CanonicalSaveApi001/Core/CanonicalWorldGateway.cs")==SOURCE["Assets/B0123CanonicalSaveApi001/Core/CanonicalWorldGateway.cs"]
  for p,expected in SOURCE.items():
-  raw=(ROOT/p).read_bytes()
-  assert git("rev-parse",BASE+":"+p)==expected,("producer blob",p)
+  # #826's selected branch does not carry #780 Assets: original policy and
+  # section are exact immutable #780 Git blobs staged only as .source.
+  if p.startswith("Assets/B01Packages/ECONAPPROVED007/Runtime/"):
+   raw=(ROOT/(PROD+".source/"+pathlib.Path(p).name)).read_bytes()
+   assert git("rev-parse","b4df10a7ad7e6c758f8331013f6b216b3a3689a3:"+p)==expected,("V7 upstream blob",p)
+  else:
+   raw=(ROOT/p).read_bytes()
+   assert git("rev-parse",BASE+":"+p)==expected,("producer blob",p)
   assert blob(raw)==expected,("local original mismatch",p)
  changes=set(git("diff","--name-only",BASE,"HEAD").splitlines())
  own={SELF+"source_mutation_abi_qa.py",SELF+"README.md",FLOW}
@@ -62,7 +68,10 @@ def build_mutant(name,variant,root):
  assert code.count(variant["old"])==1,("variant source pattern changed",name)
  code=code.replace(variant["old"],variant["new"])
  mutant=root/"WholeGameEconomySlotV3.cs";mutant.write_text(code,encoding="utf8")
- src=[mutant,session,*(ROOT/p for p in SOURCE if p not in [PROD+"WholeGameEconomySlotV3.cs",PROD+"CanonicalWholeGameSessionV3.cs"])]
+ src=[mutant,session,*(
+  ROOT/(PROD+".source/"+pathlib.Path(p).name)
+  if p.startswith("Assets/B01Packages/ECONAPPROVED007/Runtime/") else ROOT/p
+  for p in SOURCE if p not in [PROD+"WholeGameEconomySlotV3.cs",PROD+"CanonicalWholeGameSessionV3.cs"])]
  # Include EXACT V7 binary producer original, not legacy alternative; source paths
  # verified against BASE commit before running. No fake implementations/shims.
  include="\n".join('    <Compile Include="'+escape(str(p),{'"':"&quot;"})+'"/>' for p in src)
