@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+<PropertyGroup><TargetFramework>netstandard2.1</TargetFramework><OutputType>Library</OutputType>
+<LangVersion>9.0</LangVersion><Nullable>enable</Nullable><NoWarn>CS8618;CS8625</NoWarn>
+<TreatWarningsAsErrors>true</TreatWarningsAsErrors><EnableDefaultCompileItems>false</EnableDefaultCompileItems></PropertyGroup>
+<ItemGroup>
+<Compile Include="WholeGameEconomySlotV3.cs"/><Compile Include="CanonicalWholeGameSessionV3.cs"/>
+
+<Compile Include=".source/ApprovedEconomyPolicyV7.cs"/>
+<Compile Include=".source/CanonicalEconomySectionV7.cs"/>
+<Compile Include="../../../../Assets/B0123CanonicalSaveApi001/Core/CanonicalWorldGateway.cs"/>
+<Compile Include="../../../../Assets/B0123CanonicalSaveApi001/Core/CanonicalWorldSlotLease.cs"/>
+<Compile Include="../../../../Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs"/>
+<Compile Include="../../../../Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs"/>
+<Compile Include="../../../../Assets/B0123SecureReattachV2/Runtime/SecureRigSpec.cs"/>
+</ItemGroup></Project>

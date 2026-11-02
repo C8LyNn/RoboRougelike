@@ -1,0 +1,21 @@
+{
+  "package": "B01-62-P17W28-UNITY-COMPAT-WHOLE-GAME-003",
+  "kind": "EXCLUSIVE_REPLACEMENT_OF_797",
+  "base_original_797": "2b7983f0f9e09dd1d56906b379a3f7af7b02f21a",
+  "owner_contract_787": "f5db40bf293fe9582ec7c6fcb3515aeff6fcf937",
+  "original_physics_792": "16cb2a7b5158605b15191b6074f9e392e0d1ebd3",
+  "producer_v7_780": "b4df10a7ad7e6c758f8331013f6b216b3a3689a3",
+  "on_disk_compatible_v2": true,
+  "envelope_magic": "B0162G02",
+  "slot_marker": "slot.canonical-game-v2",
+  "owner": "ORIGINAL_729_ONE_OWNER_LEASE",
+  "file": "save.envelope",
+  "compiler_target": "netstandard2.1 C#9",
+  "initial_publish": "File.Move two args",
+  "existing_file_publish": "File.Replace same directory no backup",
+  "no_secondary_writer": true,
+  "independent_G0": "PENDING",
+  "native_G1": "NOT_RUN",
+  "integrated": false,
+  "released": false
+}
