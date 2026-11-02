@@ -346,7 +346,7 @@ namespace B0125.SafeRoute.Tests
             yield return new WaitForFixedUpdate();
             var root=new GameObject("Detached compound robot module");
             root.transform.position=demo.PhysicalCrate.position+
-                new Vector3(12f,0,0);
+                new Vector3(20f,0,0);
             var body=root.AddComponent<Rigidbody>();
             body.isKinematic=true;body.useGravity=false;
             var a=GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -355,12 +355,12 @@ namespace B0125.SafeRoute.Tests
             a.transform.localScale=new Vector3(1.25f,1.4f,1.25f);
             var b=GameObject.CreatePrimitive(PrimitiveType.Cube);
             b.transform.SetParent(root.transform,false);
-            b.transform.localPosition=new Vector3(-4f,0,0);
+            b.transform.localPosition=new Vector3(-12f,0,0);
             b.transform.localScale=new Vector3(1.25f,1.4f,1.25f);
             Physics.SyncTransforms();
             Assert.IsTrue(demo.TryRegisterWorldBlocker(body));
-            // Root body near (9,8), child B at (7,8); the second physical
-            // shape creates the actual Heavy chokepoint.
+            // Root body at SAFE (13,8), child B at (7,8); ONLY the
+            // additional compound child physically creates the chokepoint.
             Assert.AreEqual(1,demo.RegisteredWorldBlockerCount);
             Assert.IsFalse(demo.CurrentPlan.Reachable);
             Assert.IsTrue(demo.UnregisterWorldBlocker(body));

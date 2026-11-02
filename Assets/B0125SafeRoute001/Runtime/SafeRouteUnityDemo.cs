@@ -320,7 +320,9 @@ namespace B0125.SafeRoute
             var cells=new List<GridCell>();
             bool primaryDetected=excluded==crateCollider;
             bool auxiliaryDetected=excluded==auxiliaryCollider;
-            var seen=new bool[externalObstacles.Count];
+            var seen=new bool[externalObstacles.Count][];
+            for(int k=0;k<externalObstacles.Count;k++)
+                seen[k]=new bool[externalObstacles[k].Shapes.Length];
             for(int k=0;k<externalObstacles.Count;k++)
             {
                 var external=externalObstacles[k];
@@ -361,10 +363,11 @@ namespace B0125.SafeRoute
                     {auxiliaryDetected=true;occupied=true;}
                     for(int k=0;k<externalObstacles.Count;k++)
                     {
-                        foreach(var shape in externalObstacles[k].Shapes)
+                        var shapes=externalObstacles[k].Shapes;
+                        for(int m=0;m<shapes.Length;m++)
                         {
-                            if(buffer[i]!=shape)continue;
-                            seen[k]=true;occupied=true;
+                            if(buffer[i]!=shapes[m])continue;
+                            seen[k][m]=true;occupied=true;
                             break;
                         }
                     }
@@ -373,7 +376,8 @@ namespace B0125.SafeRoute
             }
             bool allWorldSeen=true;
             for(int k=0;k<seen.Length;k++)
-                if(!seen[k])allWorldSeen=false;
+                for(int m=0;m<seen[k].Length;m++)
+                    if(!seen[k][m])allWorldSeen=false;
             if(!primaryDetected||!auxiliaryDetected||!allWorldSeen)
             {
                 occupancyUncertain=true;
