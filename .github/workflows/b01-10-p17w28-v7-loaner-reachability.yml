@@ -65,7 +65,7 @@ jobs:
           dotnet run -c Release --project Research/B01-10/P17/W28_LOANER_REACHABILITY_001/LoanerReachability.csproj -p:ExactPolicy="$RUNNER_TEMP/actual-v7-policy.cs" -p:ExactSection="$RUNNER_TEMP/actual-v7-section.cs" > "$RUNNER_TEMP/w28-loaner-reachability.log" 2>&1 || { cat "$RUNNER_TEMP/w28-loaner-reachability.log"; exit 1; }
           cat "$RUNNER_TEMP/w28-loaner-reachability.log"
           grep -F "W28_C1_PRICE1_CASH0_PAID0_LOANER_WIN RECOVERABLE_SOURCE PASS" "$RUNNER_TEMP/w28-loaner-reachability.log"
-          grep -F "W28_C_NO_EPOCH0_CLAIM" "$RUNNER_TEMP/w28-loaner-reachability.log"
+          grep -F "W28_C_EPOCH0_FREE_VALIDATION_GAP_EXPECTED_SOURCE_RED PASS" "$RUNNER_TEMP/w28-loaner-reachability.log"
           grep -F "W28_ORIGINAL_V7_REACHABILITY_SUITE_PASS cases=6" "$RUNNER_TEMP/w28-loaner-reachability.log"
       - uses: actions/upload-artifact@v4
         if: always()
