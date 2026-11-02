@@ -16,8 +16,8 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference='Stop'
 $exitCode=2
 function Require([bool]$ok,[string]$reason) {if(-not $ok){throw "B0160_W28_HOLD: $reason"}}
-function LocalGit([string[]]$args) {
- $lines=@(& git @args 2>&1)
+function LocalGit([string[]]$gitArgs) {
+ $lines=@(& git @gitArgs 2>&1)
  Require ($LASTEXITCODE -eq 0) 'Git source verification failed, no auto-fetch'
  return ($lines -join [Environment]::NewLine).Trim()
 }
