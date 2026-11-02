@@ -18,6 +18,34 @@ namespace RoboRougelike.B0131.Art.Editor
         private const string W27Folder = "Assets/B01_31/W27ArmorLiveDemo";
         private const string Output = W27Folder + "/Generated/B0131_W27_P12_ArmorLiveDemo_ONLY.unity";
 
+        /// <summary>
+        /// W28: make the newly instantiated three-model geometry strictly visual.
+        /// Never changes W24 source prefab or anything outside the owned clone.
+        /// Full preflight BEFORE any component removal: original P12 or other
+        /// authored gameplay must remain on its separate authoritative object.
+        /// </summary>
+        public static bool StripVisualOnlyPhysics(GameObject ownVisualInstance)
+        {
+            if (ownVisualInstance == null ||
+                ownVisualInstance.GetComponent<B0131W24ArmorDamageVisual>() == null ||
+                ownVisualInstance.GetComponentsInChildren<Renderer>(true).Length == 0 ||
+                ownVisualInstance.GetComponentsInChildren<P12PipelineSafeDamageable>(true).Length != 0 ||
+                ownVisualInstance.GetComponentsInChildren<Joint>(true).Length != 0)
+                return false;
+
+            // Remove Rigidbody first. This must only touch the freshly cloned
+            // W24 VISUAL subtree; no gameplay P12, rig, or live physics owner.
+            var bodies = ownVisualInstance.GetComponentsInChildren<Rigidbody>(true);
+            var colliders = ownVisualInstance.GetComponentsInChildren<Collider>(true);
+            for (int i = 0; i < bodies.Length; ++i)
+                Object.DestroyImmediate(bodies[i]);
+            for (int i = 0; i < colliders.Length; ++i)
+                Object.DestroyImmediate(colliders[i]);
+
+            return ownVisualInstance.GetComponentsInChildren<Rigidbody>(true).Length == 0 &&
+                   ownVisualInstance.GetComponentsInChildren<Collider>(true).Length == 0;
+        }
+
         [MenuItem("Tools/B01-31/W27/Create Isolated P12 Armor Live Demo Scene...")]
         public static void CreateWithExplicitConsent()
         {
@@ -76,6 +104,11 @@ namespace RoboRougelike.B0131.Art.Editor
                 visual.transform.position = new Vector3(0f, 1.4f, 0f);
                 var visualController = visual.GetComponent<B0131W24ArmorDamageVisual>();
                 if (visualController == null) throw new InvalidOperationException("W24 visual script absent");
+                // W28: Imported original 3D OBJ prefabs can carry optional physics
+                // components. Remove those ONLY on our new visual INSTANCE, not
+                // on model assets, game P12 source, existing prefab or rig.
+                if (!StripVisualOnlyPhysics(visual))
+                    throw new InvalidOperationException("Imported visual instance contains unsafe gameplay or has no renderable mesh");
                 var binder = visual.AddComponent<B0131W25P12DamageVisualBinding>();
 
                 // Source is a deliberately SEPARATE GameObject so P12's genuine
