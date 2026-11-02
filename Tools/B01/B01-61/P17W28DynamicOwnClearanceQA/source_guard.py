@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Exact-source independent Codex #824 dynamic-weapon Unity QA preflight. Not a Unity runner."""
 import hashlib,json,pathlib,re,subprocess,sys
-ROOT=pathlib.Path(__file__).resolve().parents[5]
+ROOT=pathlib.Path(__file__).resolve().parents[4]
 BASE="e03d36f2b86f8c73a067e574b67237a8921f622a"
 PREFIX="Tools/B01/B01-61/P17W28DynamicOwnClearanceQA/"
 ADDED="Assets/Tests/Editor/B0161W28DynamicOwnClearanceRegressionTests.cs"
