@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+<PropertyGroup>
+<TargetFramework>net8.0</TargetFramework><OutputType>Exe</OutputType>
+<ImplicitUsings>enable</ImplicitUsings><Nullable>disable</Nullable>
+<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+</PropertyGroup>
+<ItemGroup><Compile Include="../../../../../Assets/B01Performance/B0150DebrisSparkBudget001/Runtime/DebrisSparkBudgetCore.cs" />
+<Compile Include="Program.cs" /></ItemGroup>
+</Project>
