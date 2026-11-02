@@ -1,0 +1,38 @@
+{
+  "schema": "B01-G0-SOURCE-RECEIPT-R1",
+  "package_id": "B01-21-MAP-JUMPPAD-001",
+  "revision": "W27-R1",
+  "base_sha": "5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",
+  "exclusive_prefix": "Assets/B01Packages/MapJumpPad001",
+  "files": [
+    "Assets/B01Packages/MapJumpPad001.meta",
+    "Assets/B01Packages/MapJumpPad001/Editor.meta",
+    "Assets/B01Packages/MapJumpPad001/Editor/B01.MapJumpPad001.Editor.asmdef",
+    "Assets/B01Packages/MapJumpPad001/Editor/B01.MapJumpPad001.Editor.asmdef.meta",
+    "Assets/B01Packages/MapJumpPad001/Editor/MapJumpPadSceneBuilder.cs",
+    "Assets/B01Packages/MapJumpPad001/Editor/MapJumpPadSceneBuilder.cs.meta",
+    "Assets/B01Packages/MapJumpPad001/README.md",
+    "Assets/B01Packages/MapJumpPad001/Runtime.meta",
+    "Assets/B01Packages/MapJumpPad001/Runtime/B01.MapJumpPad001.Runtime.asmdef",
+    "Assets/B01Packages/MapJumpPad001/Runtime/B01.MapJumpPad001.Runtime.asmdef.meta",
+    "Assets/B01Packages/MapJumpPad001/Runtime/MapJumpPad.cs",
+    "Assets/B01Packages/MapJumpPad001/Runtime/MapJumpPad.cs.meta",
+    "Assets/B01Packages/MapJumpPad001/Tests.meta",
+    "Assets/B01Packages/MapJumpPad001/Tests/PlayMode.meta",
+    "Assets/B01Packages/MapJumpPad001/Tests/PlayMode/B01.MapJumpPad001.PlayMode.asmdef",
+    "Assets/B01Packages/MapJumpPad001/Tests/PlayMode/B01.MapJumpPad001.PlayMode.asmdef.meta",
+    "Assets/B01Packages/MapJumpPad001/Tests/PlayMode/MapJumpPadPhysicsTests.cs",
+    "Assets/B01Packages/MapJumpPad001/Tests/PlayMode/MapJumpPadPhysicsTests.cs.meta"
+  ],
+  "owner_review": "B01-21",
+  "native_unity": "NOT_RUN",
+  "independent_g0": "PENDING",
+  "physical_prefab_and_scene": "NOT_YET_GENERATED_BY_UNITY_EDITOR",
+  "excluded": [
+    "MAPGEN",
+    "SAFEROUTE",
+    "Codex reserved systems",
+    "Save"
+  ],
+  "codex_ack": "NONE"
+}
