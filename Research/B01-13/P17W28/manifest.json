@@ -25,8 +25,8 @@
       "bytes": 14550
     },
     "Research/B01-13/P17W28/test_playtest_intake.py": {
-      "git_blob_sha1": "0f05b4cb10bbedb03fadf5c1e05572648b926905",
-      "bytes": 10688
+      "git_blob_sha1": "adeb90fe0333edda96d50975a8c83c5689b9729d",
+      "bytes": 10697
     },
     "Research/B01-13/P17W28/verify_package.py": {
       "git_blob_sha1": "abbce94e32456207f57d2b9b9cc0824e72014d42",
@@ -40,5 +40,6 @@
       "git_blob_sha1": "a6be4e98433b4bb12752081635c0b3a475eeabea",
       "bytes": 1693
     }
-  }
+  },
+  "windows_ci_fix": "EXACT ORIGINAL WINDOWS CRLF TEXT-FIXTURE PIN AND WINDOWS ABSOLUTE PATH ERROR CODE; VALIDATOR UNCHANGED"
 }

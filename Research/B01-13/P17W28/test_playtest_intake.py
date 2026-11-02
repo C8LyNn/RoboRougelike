@@ -33,7 +33,7 @@ class TestEvidence(unittest.TestCase):
  def assert_refuse(self,fn,code):
   with self.assertRaisesRegex(m.Refused,code):fn()
  def log_pass(self,case='P01_BASIC_AUTOMATIC_HEAVY',name='test.log'):
-  (self.evidence/name).write_text('synthetic test data only\n')
+  (self.evidence/name).write_bytes(b'synthetic test data only\n')
   q=json.loads(self.responses.read_text());case_row=next(x for x in q['cases'] if x['id']==case);case_row.update(status='PASS',reason='NONE',evidence=name);self.save(q)
 
  def test_template_17_unique(self):
@@ -75,7 +75,7 @@ class TestEvidence(unittest.TestCase):
  def test_path_parent_escape(self):
   self.log_pass();d=json.loads(self.responses.read_text());d['cases'][0]['evidence']='../other.log';self.save(d);self.assert_refuse(self.check,'EVIDENCE_ESCAPE')
  def test_path_absolute_refusal(self):
-  self.log_pass();d=json.loads(self.responses.read_text());d['cases'][0]['evidence']=str(self.evidence/'test.log');self.save(d);self.assert_refuse(self.check,'EVIDENCE_ESCAPE')
+  self.log_pass();d=json.loads(self.responses.read_text());d['cases'][0]['evidence']=str(self.evidence/'test.log');self.save(d);self.assert_refuse(self.check,'EVIDENCE_(ESCAPE|PATH)')
  def test_symlink_evidence_refusal(self):
   x=self.root/'original.log';x.write_text('proof')
   try:(self.evidence/'aliased.log').symlink_to(x)
