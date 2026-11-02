@@ -31,7 +31,7 @@ namespace RoboRougelike.B0131.Art
                 float.IsNaN(amount) || float.IsInfinity(amount) || amount <= 0f)
                 return false;
             // Explicit isolated scene actor; real original P12 damage pipeline.
-            testPart.ApplyDamage(amount, testPart.transform.position, Vector3.forward);
+            testPart.ApplyDamage(amount, testPart.transform.position, new Vector3(0f, 0f, 1f));
             visualBinder.RefreshVisual();
             return true;
         }
