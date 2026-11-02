@@ -78,8 +78,15 @@ class SourcePacketGuards(unittest.TestCase):
     def test_17_no_unverified_native_claim(self):
         self.assertEqual(p.PLAN["native_unity_g1"],"NOT_RUN")
         self.assertEqual(p.PLAN["codex_ack"],"NONE")
-    def test_18_selected_sources_are_original_git_not_mocked(self):
+    def test_18_original_unity_root_metas_not_omitted(self):
         self.assertEqual(len(p.PLAN["asset_sources"]),7)
         self.assertEqual(len(p.PLAN["explicit_files"]),3)
+        # Real original frozen Git trees, not manually fabricated test GUIDs.
+        for scope in p.PLAN["asset_sources"]:
+            paths=p.list_source(scope["ref"],scope["prefix"])
+            meta=scope["prefix"].rstrip("/")+".meta"
+            self.assertIn(meta,paths)
+            raw=p.read_source(scope["ref"],meta)
+            self.assertEqual(len(p.GUID_RE.findall(raw)),1)
 
 if __name__=="__main__":unittest.main(verbosity=2)
