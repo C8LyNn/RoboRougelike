@@ -1,0 +1,25 @@
+{
+  "package_id": "B01-40-P17W25-INDEPENDENT-G0-773-772-750-001",
+  "owner": "B01-40",
+  "wave": "P17/W25",
+  "selected_lineage_parent": "#749@8634e71dfcf633323073fe584a6c0884f1ca5d23",
+  "candidate": "#773@3aaaec4027ee246fbfb6f209179f0e9507363473",
+  "unity_port": "#772@ce46a5e0cc5d26df6c4ece723e8efe20d70fc4b1",
+  "r5fixture": "#750@60c73a6f9ed2585cbb9bf7aeaad8c62eef0629cb",
+  "canonical_gateway": "#729@b8ca29c7707cd6b4338d0b9772d74dee676d49d2",
+  "frozen_game": "#510@d94400d95d13db7f27e1533df05c9292d5380431",
+  "frozen_codec": "#556@33094f154c7b91119b36d58aab285e6e83c5de57",
+  "alt_hold": [
+    "#753",
+    "#741"
+  ],
+  "execution": "independent original-source git and real OS case-sensitive directory negative",
+  "source_G0": "PENDING_ACTUAL_CI",
+  "native_unity_G1": "NOT_RUN",
+  "live_game_save_load": "HOLD",
+  "g2": "HOLD",
+  "codex_ack": null,
+  "ready_for_integrator": false,
+  "merged": false,
+  "release": false
+}
