@@ -1,7 +1,7 @@
 {
   "schema": "B01-G0-SOURCE-RECEIPT-R2",
   "package_id": "B01-24-ENEMY-CHARGE-001",
-  "revision": "W28-R2",
+  "revision": "W28-R2.1",
   "source_parent_pr": 804,
   "source_parent_sha": "4dcec50d1a9a245393ea9f63d1f6925eb6566465",
   "exclusive_prefix": "Assets/B01Packages/EnemyCharge001",
@@ -13,7 +13,7 @@
     "Assets/B01Packages/EnemyCharge001/manifest.json"
   ],
   "w27_original_meta_guids": "UNCHANGED",
-  "authored_playmode_tests": 6,
+  "authored_playmode_tests": 7,
   "native_unity": "NOT_RUN",
   "source_compile": "NOT_RUN",
   "independent_g0": "PENDING",

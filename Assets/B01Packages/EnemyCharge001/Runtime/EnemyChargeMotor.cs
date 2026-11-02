@@ -173,11 +173,25 @@ namespace B01.EnemyCharge001
         // or a kinematic/moving obstruction introduced during the charge.
         void OnCollisionStay(Collision collision) { HandleChargeContact(collision); }
 
+        // Ground/ceiling-only support contacts must not abort a horizontal dash.
+        // A wall or another vehicle has a lateral normal and still stops the dash.
+        static bool IsVerticalSupportOnly(Collision collision)
+        {
+            if (collision.contactCount == 0) return false;
+            for (int i = 0; i < collision.contactCount; i++)
+            {
+                float vertical = Mathf.Abs(Vector3.Dot(collision.GetContact(i).normal, Vector3.up));
+                if (vertical < .7f) return false;
+            }
+            return true;
+        }
+
         void HandleChargeContact(Collision collision)
         {
             if (phase != Phase.Charging || !enabledByAI || !target ||
                 collision.collider == null || collision.rigidbody == rb)
                 return;
+            if (IsVerticalSupportOnly(collision)) return;
 
             Transform struck = collision.collider.transform;
             if (IsFriendly(struck))

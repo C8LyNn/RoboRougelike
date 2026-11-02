@@ -7,7 +7,7 @@ namespace B01.EnemyCharge001.Tests
 {
     public sealed class EnemyChargePhysicsTests
     {
-        GameObject enemy, target, wall;
+        GameObject enemy, target, wall, ground;
         EnemyChargeMotor Make(bool obstacle)
         {
             enemy = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -40,6 +40,7 @@ namespace B01.EnemyCharge001.Tests
             if (enemy) Object.DestroyImmediate(enemy);
             if (target) Object.DestroyImmediate(target);
             if (wall) Object.DestroyImmediate(wall);
+            if (ground) Object.DestroyImmediate(ground);
         }
 
         [UnityTest]
@@ -105,6 +106,23 @@ namespace B01.EnemyCharge001.Tests
             for (int i = 0; i < 85; i++) yield return new WaitForFixedUpdate();
             Assert.AreEqual(0, propHealth.Hits, "A moving obstacle is not the assigned target");
             Assert.AreEqual(0, target.GetComponent<ChargeDemoHealth>().Hits);
+        }
+
+        [UnityTest]
+        public IEnumerator FloorSupportContact_DoesNotAbortCharge()
+        {
+            Make(false);
+            ground = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            ground.name = "SolidTestFloor";
+            ground.transform.position = new Vector3(0f, -.65f, 0f);
+            ground.transform.localScale = new Vector3(14f, .3f, 8f);
+            enemy.GetComponent<Rigidbody>().useGravity = true;
+
+            int ticks = 0;
+            while (ticks++ < 150 && target.GetComponent<ChargeDemoHealth>().Hits == 0)
+                yield return new WaitForFixedUpdate();
+            Assert.AreEqual(1, target.GetComponent<ChargeDemoHealth>().Hits,
+                "Support contact must not cancel a horizontal physics charge");
         }
 
         [UnityTest]
