@@ -45,9 +45,9 @@ try {
  $owner='16cb2a7b5158605b15191b6074f9e392e0d1ebd3'
  Need ((LocalGit @('-C',$repo,'cat-file','-t',$owner)) -eq 'commit') 'Owner #772 must exist in local Git history; NO automatic fetch'
  $paths=@(
-  'Tools/B01/B01-60/P17W27Physical772Native/port792_native.py',
-  'Tools/B01/B01-60/P17W27Physical772Native/test_port792_native.py',
-  'Tools/B01/B01-60/P17W27Physical772Native/Invoke-B0160W27Port792.ps1'
+  'Tools/B01/B01-60/P17W27Physical792Native/port792_native.py',
+  'Tools/B01/B01-60/P17W27Physical792Native/test_port792_native.py',
+  'Tools/B01/B01-60/P17W27Physical792Native/Invoke-B0160W27Port792.ps1'
  )
  foreach($p in $paths) {
   Need ((LocalGit @('-C',$repo,'hash-object','--',$p)) -eq
