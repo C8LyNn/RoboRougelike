@@ -1,0 +1,56 @@
+name: B01-62 W28 Unity NetStandard2.1 one whole game V7 Save
+on:
+  push:
+    branches: [b01-62/p17w28-unity-compatible-one-save-v3]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W28UnityCompatibleWholeGameV3/**'
+      - '.github/workflows/b01-62-w28-unity-compatible-whole-game-v3.yml'
+permissions:
+  contents: read
+jobs:
+  unity-abi-and-atomic-disk-source:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Restore exactly original immutable V7 producer
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin b4df10a7ad7e6c758f8331013f6b216b3a3689a3
+          mkdir -p Tools/B01/B01-62/P17W28UnityCompatibleWholeGameV3/.source b0162-w28-evidence
+          git show b4df10a7ad7e6c758f8331013f6b216b3a3689a3:Assets/B01Packages/ECONAPPROVED007/Runtime/ApprovedEconomyPolicyV7.cs > Tools/B01/B01-62/P17W28UnityCompatibleWholeGameV3/.source/ApprovedEconomyPolicyV7.cs
+          git show b4df10a7ad7e6c758f8331013f6b216b3a3689a3:Assets/B01Packages/ECONAPPROVED007/Runtime/CanonicalEconomySectionV7.cs > Tools/B01/B01-62/P17W28UnityCompatibleWholeGameV3/.source/CanonicalEconomySectionV7.cs
+          python Tools/B01/B01-62/P17W28UnityCompatibleWholeGameV3/source_guard.py b0162-w28-evidence/guard.json | tee b0162-w28-evidence/source-guard.log
+      - name: Strict Unity-profile NetStandard2.1 C#9 real production files
+        run: |
+          set -euo pipefail
+          dotnet build Tools/B01/B01-62/P17W28UnityCompatibleWholeGameV3/WholeGameEconomyUnityV3Abi.csproj -c Release --verbosity quiet | tee b0162-w28-evidence/netstandard21-abi.log
+          grep -q 'Build succeeded' b0162-w28-evidence/netstandard21-abi.log
+      - name: Original physical OS cold-save tests plus replacement failure negatives
+        run: |
+          set -euo pipefail
+          dotnet run --project Tools/B01/B01-62/P17W28UnityCompatibleWholeGameV3/WholeGameEconomyUnityV3QA.csproj -c Release --verbosity quiet | tee b0162-w28-evidence/w28-disk-tests.log
+          grep -q 'W28_REPLACE_AFTER_ACK_LOSS_COLD_ATOMIC_V7=PASS' b0162-w28-evidence/w28-disk-tests.log
+          grep -q 'W28_REPLACE_BEFORE_FAULT_PRESERVES_OLD_ATOMIC_V7=PASS' b0162-w28-evidence/w28-disk-tests.log
+          grep -q 'W25_V7_GAME_ECON_ONE_ENVELOPE_SOURCE_TOTAL 9 PASS 9 FAIL 0' b0162-w28-evidence/w28-disk-tests.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b0162-w28-source-${{ matrix.os }}
+          path: b0162-w28-evidence/*
+          if-no-files-found: warn
