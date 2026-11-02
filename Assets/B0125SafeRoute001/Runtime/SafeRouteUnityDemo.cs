@@ -34,6 +34,20 @@ namespace B0125.SafeRoute
         private GridCell observedAuxiliaryCell;
         private Vector3 observedCratePose;
         private Vector3 observedAuxiliaryPose;
+        // Registered foreign world rigidbodies include debris, crates and detached
+        // modules from the REAL scene, not only the two authored test crates.
+        // The owner must opt in; we never mutate their Rigidbody authority.
+        private sealed class ExternalObstacle
+        {
+            internal Rigidbody Body;
+            internal Collider Shape;
+            internal Vector3 ObservedPosition;
+            internal Quaternion ObservedRotation;
+            internal bool ObservedEnabled;
+        }
+        private const int MaxWorldBlockers=32;
+        private readonly List<ExternalObstacle> externalObstacles=
+            new List<ExternalObstacle>();
         private bool occupancyUncertain;
         private int replanRevision;
         private GridCell[] occupiedCells=System.Array.Empty<GridCell>();
@@ -42,6 +56,7 @@ namespace B0125.SafeRoute
         public Rigidbody AuxiliaryCrate=>auxiliaryCrate;
         public GridCell AuxiliaryCrateCell=>observedAuxiliaryCell;
         public bool OccupancyUncertain=>occupancyUncertain;
+        public int RegisteredWorldBlockerCount=>externalObstacles.Count;
         public int ReplanRevision=>replanRevision;
         public GridCell CrateCell=>observedCrateCell;
         public int RejectedCrateMoves=>rejectedCrateMoves;
@@ -204,7 +219,61 @@ namespace B0125.SafeRoute
             PaintHazards();
             Replan();
         }
-        // R4: original finite physical broadphase snapshot for TWO separate
+        // R5 scene integration seam: allow independently owned real Rigidbody
+        // parts (including post-detachment vehicle components) to become actual
+        // navigation blockers. Never write to the object, Save or its owner.
+        public bool TryRegisterWorldBlocker(Rigidbody body)
+        {
+            if(body==null||body==player||body==physicalCrate||
+               body==auxiliaryCrate||externalObstacles.Count>=MaxWorldBlockers)
+                return false;
+            var shape=body.GetComponent<Collider>();
+            if(shape==null||!shape.enabled||!shape.gameObject.activeInHierarchy)
+                return false;
+            foreach(var item in externalObstacles)
+                if(item.Body==body||item.Shape==shape)return false;
+            externalObstacles.Add(new ExternalObstacle{
+                Body=body,Shape=shape,ObservedPosition=body.position,
+                ObservedRotation=body.rotation,ObservedEnabled=shape.enabled});
+            Replan();
+            return true;
+        }
+        public bool UnregisterWorldBlocker(Rigidbody body)
+        {
+            if(body==null)return false;
+            for(int i=0;i<externalObstacles.Count;i++)
+            {
+                if(externalObstacles[i].Body!=body)continue;
+                externalObstacles.RemoveAt(i);
+                Replan();
+                return true;
+            }
+            return false;
+        }
+        private bool ExternalWorldChanged()
+        {
+            foreach(var item in externalObstacles)
+            {
+                if(item.Body==null||item.Shape==null)return true;
+                if((item.Body.position-item.ObservedPosition).sqrMagnitude>.0004f||
+                   Quaternion.Angle(item.Body.rotation,item.ObservedRotation)>.2f||
+                   item.Shape.enabled!=item.ObservedEnabled||
+                   !item.Shape.gameObject.activeInHierarchy)
+                    return true;
+            }
+            return false;
+        }
+        private void RememberExternalWorld()
+        {
+            foreach(var item in externalObstacles)
+            {
+                if(item.Body==null||item.Shape==null)continue;
+                item.ObservedPosition=item.Body.position;
+                item.ObservedRotation=item.Body.rotation;
+                item.ObservedEnabled=item.Shape.enabled;
+            }
+        }
+        // R5: original finite physical broadphase snapshot for TWO separate
         // kinematic Rigidbody+BoxCollider props. Unknown/overflowed observations
         // must NEVER make an obsolete "safe" route appear.
         private GridCell[] SamplePhysicalBlockers(Collider excluded=null)
@@ -220,6 +289,18 @@ namespace B0125.SafeRoute
             var cells=new List<GridCell>();
             bool primaryDetected=excluded==crateCollider;
             bool auxiliaryDetected=excluded==auxiliaryCollider;
+            var seen=new bool[externalObstacles.Count];
+            for(int k=0;k<externalObstacles.Count;k++)
+            {
+                var external=externalObstacles[k];
+                if(external.Body==null||external.Shape==null||
+                   !external.Shape.enabled||
+                   !external.Shape.gameObject.activeInHierarchy)
+                {
+                    occupancyUncertain=true;
+                    return System.Array.Empty<GridCell>();
+                }
+            }
             Physics.SyncTransforms();
             for(int z=0;z<level.Height;z++)
             for(int x=0;x<level.Width;x++)
@@ -240,10 +321,18 @@ namespace B0125.SafeRoute
                     {primaryDetected=true;occupied=true;}
                     if(buffer[i]==auxiliaryCollider && excluded!=auxiliaryCollider)
                     {auxiliaryDetected=true;occupied=true;}
+                    for(int k=0;k<externalObstacles.Count;k++)
+                    {
+                        if(buffer[i]!=externalObstacles[k].Shape)continue;
+                        seen[k]=true;occupied=true;
+                    }
                 }
                 if(occupied)cells.Add(cell);
             }
-            if(!primaryDetected||!auxiliaryDetected)
+            bool allWorldSeen=true;
+            for(int k=0;k<seen.Length;k++)
+                if(!seen[k])allWorldSeen=false;
+            if(!primaryDetected||!auxiliaryDetected||!allWorldSeen)
             {
                 occupancyUncertain=true;
                 return System.Array.Empty<GridCell>();
@@ -277,6 +366,10 @@ namespace B0125.SafeRoute
             {rejectedCrateMoves++;return false;}
             if(otherCollider.bounds.Intersects(target))
             {rejectedCrateMoves++;return false;}
+            foreach(var item in externalObstacles)
+                if(item.Shape==null||!item.Shape.enabled||
+                   item.Shape.bounds.Intersects(target))
+                {rejectedCrateMoves++;return false;}
             foreach(var wall in obstacles)
                 if(wall.bounds.Intersects(target))
                 {rejectedCrateMoves++;return false;}
@@ -347,7 +440,8 @@ namespace B0125.SafeRoute
             // including within the same grid cell before/after a tile crossing.
             if(!hasRouteOrigin||!ActualPlayerCell().Equals(routeOrigin)||
                (physicalCrate.position-observedCratePose).sqrMagnitude>.0004f||
-               (auxiliaryCrate.position-observedAuxiliaryPose).sqrMagnitude>.0004f)
+               (auxiliaryCrate.position-observedAuxiliaryPose).sqrMagnitude>.0004f||
+               ExternalWorldChanged())
                 Replan();
         }
         public void Replan()
@@ -367,6 +461,7 @@ namespace B0125.SafeRoute
                 Mathf.RoundToInt(observedAuxiliaryPose.x/CellSize)+level.Width/2,
                 Mathf.RoundToInt(observedAuxiliaryPose.z/CellSize)+level.Height/2);
             occupiedCells=SamplePhysicalBlockers();
+            RememberExternalWorld();
             current=occupancyUncertain
                 ?new SafeRoutePlan(false,System.Array.Empty<GridCell>(),0)
                 :PhysicalObstacleRouter.FindFrom(level,routeOrigin,radius,
@@ -399,6 +494,8 @@ namespace B0125.SafeRoute
                 {
                     if(obstacles.Contains(collider)||collider==crateCollider||
                        collider==auxiliaryCollider)return false;
+                    foreach(var external in externalObstacles)
+                        if(external.Shape==collider)return false;
                     // Authoritative physical obstruction check: an actually
                     // overlapping gate collider blocks even if a script state
                     // previously marked all gates raised.
@@ -421,6 +518,7 @@ namespace B0125.SafeRoute
                 observedAuxiliaryCell+" | occupied: "+PhysicalBlockedCells);
             GUILayout.Label("Occupancy uncertain: "+occupancyUncertain+
                 " | route revision: "+replanRevision);
+            GUILayout.Label("External physical blockers: "+RegisteredWorldBlockerCount);
             if(GUILayout.Button("Try pair SOFTLOCK: move crate B to (5,5)"))
                 TryMoveAuxiliaryCrate(new GridCell(5,5));
             if(GUILayout.Button("Move crate B safely to (4,4)"))

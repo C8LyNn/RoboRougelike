@@ -246,5 +246,96 @@ namespace B0125.SafeRoute.Tests
             Assert.AreEqual(new GridCell(11,8),demo.AuxiliaryCrateCell);
             Object.Destroy(host);
         }
+        // W28 real Unity world-part registration, native gate B01-60 NOT_RUN.
+        [UnityTest]
+        public IEnumerator W28RealDetachedModuleColliderBlocksHeavyWithoutAuthoritativeMutation()
+        {
+            var host=new GameObject("R5 external part world");
+            var demo=host.AddComponent<SafeRouteUnityDemo>();
+            demo.SetHeavy(true);
+            yield return new WaitForFixedUpdate();
+            Assert.IsTrue(demo.CurrentPlan.Reachable);
+            var part=GameObject.CreatePrimitive(PrimitiveType.Cube);
+            var box=part.GetComponent<BoxCollider>();
+            part.transform.localScale=new Vector3(1.25f,1.6f,1.25f);
+            part.transform.position=demo.PhysicalCrate.position+new Vector3(8f,0,0);
+            var body=part.AddComponent<Rigidbody>();
+            body.useGravity=false;body.isKinematic=true;
+            Physics.SyncTransforms();
+            Vector3 immutable=body.position;
+            Assert.IsTrue(demo.TryRegisterWorldBlocker(body));
+            Assert.AreEqual(1,demo.RegisteredWorldBlockerCount);
+            Assert.AreEqual(immutable,body.position);
+            Assert.IsFalse(demo.CurrentPlan.Reachable);
+            Assert.IsFalse(demo.CurrentRouteFromPlayer);
+            Assert.NotNull(box);
+            Assert.IsTrue(demo.UnregisterWorldBlocker(body));
+            Assert.IsTrue(demo.CurrentPlan.Reachable);
+            Object.Destroy(part);Object.Destroy(host);
+        }
+        [UnityTest]
+        public IEnumerator W28ExternallyMovingDebrisCausesRealPhysicsResample()
+        {
+            var host=new GameObject("R5 moving detached part");
+            var demo=host.AddComponent<SafeRouteUnityDemo>();
+            demo.SetHeavy(true);
+            yield return new WaitForFixedUpdate();
+            var debris=GameObject.CreatePrimitive(PrimitiveType.Cube);
+            debris.transform.localScale=new Vector3(1.25f,1.6f,1.25f);
+            debris.transform.position=demo.PhysicalCrate.position+
+                new Vector3(8f,0,0);
+            var body=debris.AddComponent<Rigidbody>();
+            body.useGravity=false;body.isKinematic=true;
+            Assert.IsTrue(demo.TryRegisterWorldBlocker(body));
+            Assert.IsFalse(demo.CurrentPlan.Reachable);
+            int rev=demo.ReplanRevision;
+            body.position+=new Vector3(10f,0,0);
+            body.transform.position=body.position;
+            Physics.SyncTransforms();
+            yield return new WaitForFixedUpdate();
+            Assert.Greater(demo.ReplanRevision,rev);
+            Assert.IsTrue(demo.CurrentPlan.Reachable);
+            Object.Destroy(debris);Object.Destroy(host);
+        }
+        [UnityTest]
+        public IEnumerator W28DisabledRegisteredColliderFailsClosedUntilUnregistered()
+        {
+            var host=new GameObject("R5 disabled foreign physics part");
+            var demo=host.AddComponent<SafeRouteUnityDemo>();
+            yield return new WaitForFixedUpdate();
+            var debris=GameObject.CreatePrimitive(PrimitiveType.Cube);
+            debris.transform.position=demo.PhysicalCrate.position+
+                new Vector3(12f,0,0);
+            var body=debris.AddComponent<Rigidbody>();
+            body.isKinematic=true;body.useGravity=false;
+            Assert.IsTrue(demo.TryRegisterWorldBlocker(body));
+            Assert.IsTrue(demo.CurrentPlan.Reachable);
+            debris.GetComponent<Collider>().enabled=false;
+            yield return new WaitForFixedUpdate();
+            Assert.IsTrue(demo.OccupancyUncertain);
+            Assert.IsFalse(demo.CurrentPlan.Reachable);
+            Assert.IsTrue(demo.UnregisterWorldBlocker(body));
+            Assert.IsTrue(demo.CurrentPlan.Reachable);
+            Object.Destroy(debris);Object.Destroy(host);
+        }
+        [UnityTest]
+        public IEnumerator W28ForeignObstacleDoesNotAllowPlayerOrDuplicateRegistration()
+        {
+            var host=new GameObject("R5 registry rejects player");
+            var demo=host.AddComponent<SafeRouteUnityDemo>();
+            yield return new WaitForFixedUpdate();
+            Assert.IsFalse(demo.TryRegisterWorldBlocker(demo.Player));
+            Assert.IsFalse(demo.TryRegisterWorldBlocker(demo.PhysicalCrate));
+            Assert.IsFalse(demo.TryRegisterWorldBlocker(demo.AuxiliaryCrate));
+            var part=GameObject.CreatePrimitive(PrimitiveType.Cube);
+            part.transform.position=demo.PhysicalCrate.position+
+                new Vector3(12f,0,0);
+            var body=part.AddComponent<Rigidbody>();
+            body.isKinematic=true;body.useGravity=false;
+            Assert.IsTrue(demo.TryRegisterWorldBlocker(body));
+            Assert.IsFalse(demo.TryRegisterWorldBlocker(body));
+            Assert.AreEqual(1,demo.RegisteredWorldBlockerCount);
+            Object.Destroy(part);Object.Destroy(host);
+        }
     }
 }

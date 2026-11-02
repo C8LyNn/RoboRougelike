@@ -476,6 +476,53 @@ public static class OriginalSafeRouteTests
             Check(p.Reachable&&q.Reachable&&p.Cells.Length==q.Cells.Length,
                 "duplicate physics broadphase cell changed navigation");
         });
+        Test("R5_EXTERNAL_DETACHED_PART_CAN_SOFTLOCK_HEAVY",()=>{
+            var m=Map();var obstacle=new[]{new GridCell(3,8),
+                new GridCell(11,8),new GridCell(7,8)};
+            var a=PhysicalObstacleRouter.AuditAllEight(m,obstacle);
+            Check(!a.AllReachable&&!a.Cases[5].Reachable,
+                "external physical detached part incorrectly ignored");
+        });
+        Test("R5_EXTERNAL_PHYSICAL_DEBRIS_ALLOWS_LIGHT_BYPASS",()=>{
+            var p=PhysicalObstacleRouter.FindFrom(Map(),Map().Start,0,
+                new RouteConditions(false,true),new[]{new GridCell(3,8),
+                    new GridCell(11,8),new GridCell(7,8)});
+            Check(p.Reachable,"small rig should retain alternative route");
+        });
+        Test("R5_UNREGISTER_REAL_DEBRIS_RESTORES_HEAVY_ROUTE",()=>{
+            var m=Map();var blocked=PhysicalObstacleRouter.FindFrom(m,m.Start,1,
+                new RouteConditions(false,true),new[]{new GridCell(3,8),
+                    new GridCell(11,8),new GridCell(7,8)});
+            var removed=PhysicalObstacleRouter.FindFrom(m,m.Start,1,
+                new RouteConditions(false,true),new[]{new GridCell(3,8),
+                    new GridCell(11,8)});
+            Check(!blocked.Reachable&&removed.Reachable,"stale debris exclusion");
+        });
+        Test("R5_EXTERNAL_PART_IN_ONE_OF_EIGHT_MODES_IS_DETECTED",()=>{
+            var m=Map();var a=PhysicalObstacleRouter.AuditAllEight(m,
+                new[]{new GridCell(3,8),new GridCell(11,8),new GridCell(7,8)});
+            Check(a.Cases.Length==8&&!a.AllReachable,"wrong composite 3-source audit");
+        });
+        Test("R5_MANY_PHYSICAL_PARTS_SHOULD_NOT_MUTATE_SOURCE_GRID",()=>{
+            var m=Map();var p=m.Start;
+            var b=new List<GridCell>();
+            for(int i=0;i<12;i++)b.Add(new GridCell(3,8));
+            var result=PhysicalObstacleRouter.FindFrom(m,p,1,
+                new RouteConditions(false,true),b);
+            var control=PhysicalObstacleRouter.FindFrom(m,p,1,
+                new RouteConditions(false,true),new[]{new GridCell(3,8)});
+            Check(result.Reachable&&control.Reachable&&result.Cells.Length==control.Cells.Length,
+                "registered duplicate cells broke deterministic route");
+        });
+        Test("R5_MOVED_DETACHED_PART_SNAPSHOTS_CHANGE_ROUTE",()=>{
+            var m=Map();var b=new[]{new GridCell(3,8),new GridCell(11,8),
+                new GridCell(7,8)};
+            var before=PhysicalObstacleRouter.AuditAllEight(m,b);
+            b[2]=new GridCell(12,8);
+            var after=PhysicalObstacleRouter.AuditAllEight(m,b);
+            Check(!before.AllReachable&&after.AllReachable,
+                "external physical part move was not reflected in replan");
+        });
         Check(args.Length==1,"One results path required");
         string file=Path.GetFullPath(args[0]);Directory.CreateDirectory(Path.GetDirectoryName(file)!);
         File.WriteAllText(file,JsonSerializer.Serialize(new{package="B01-25-SAFEROUTE001/R1",
