@@ -1,3 +1,12 @@
+# W27 R3 amendment (current branch, supersedes R2 policy text below)
+
+**Current game policy is no longer disputed.** HQ #800 selected ECON V7 #780: paid repair quote must equal **floor(65% × purchase price)** and remain strictly cheaper for every purchase >0; in particular `1→0 paid` (not a free victory coupon), `5→3`, `15→9`, `30→19`, `100→65`. The existing Unity-facing `RecoveryNotice.cs` now rejects previously tolerated R2 `15→10`, `30→20`, `101→66`; no independent quote calculation/charge is performed by the view. The R2 history below describes the old frozen #775 behavior, not current R3.
+
+**Confirmed phantom-free message aligned with B01-12 #785:** `FreeRebuildAvailableFromTrustedWin=true` must be accompanied by a syntactically valid, nonempty `HostVerifiedFreeVictoryId` supplied by the authoritative game owner. A missing/malformed ID hides the entire stale status and any loaner hint. This is a **presentation consistency check only**; strings are not cryptographic or ECON combat proof. Genuine victory ID must be validated and consumed under the actual V7 session by the gameplay owner. `Free=false` with a stored last victory ID displays no coupon.
+
+R3 keeps and updates **the existing W24/W25 exact-manifest workflow and direct-source tests**, not a third competing HUD. R3 is a new stacked Draft based on exact frozen B01-11 #775; no historical PR/source branch edited. R3 HUD is NOT inserted into Codex's worktree or canonical game. Independent B01-40 G0, Unity Windows G1 and Codex integration ACK remain HOLD/NOT_RUN/NONE.
+
+---
 # B01-11 — PASS17 / WAVE25 — RECOVERYHUD001/R2 PRICE-TRUTH GUARD
 
 ## Confirmed W24 production UX defect and narrow patch
