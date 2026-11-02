@@ -70,7 +70,7 @@ def selected(m):
  for path,sha in R2_BLOBS.items():
   need(m.git("rev-parse",R2+":"+path)==sha,
        "original physics or 4-test fixture Git blob mismatch "+path)
- source=m.selected_source()  # proves original #772 scope, nine GUID and prior SHA closure
+ source=m.selected_source(m.original_module())  # exact original #772 closure
  for path,sha in R2_BLOBS.items():
   source[path]=m.git_bytes(R2,path)
  need(tuple(x.decode() for x in re.findall(
