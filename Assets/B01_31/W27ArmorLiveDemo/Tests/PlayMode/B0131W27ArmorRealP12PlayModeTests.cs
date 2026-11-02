@@ -167,10 +167,10 @@ namespace RoboRougelike.B0131.W27.NativeTests
         public IEnumerator DisableReenableRehydratesActualP12HPWithoutExtraDamage()
         {
             var t = Setup();
-            t.binder.enabled = false;
+            ((Behaviour)t.binder).enabled = false;
             Call(t.source, "ApplyDamage", 75f, Vector3.zero, Vector3.forward);
             yield return null;
-            t.binder.enabled = true;
+            ((Behaviour)t.binder).enabled = true;
             yield return null;
             Assert.AreEqual(25f, Property<float>(t.source, "CurrentHp"), 0.001f);
             Assert.IsTrue(t.damaged.activeSelf);
