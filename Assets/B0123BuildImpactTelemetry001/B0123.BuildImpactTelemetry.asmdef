@@ -1,0 +1,14 @@
+{
+  "name": "B0123.BuildImpactTelemetry",
+  "rootNamespace": "B01.BuildImpactTelemetry001",
+  "references": [],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
