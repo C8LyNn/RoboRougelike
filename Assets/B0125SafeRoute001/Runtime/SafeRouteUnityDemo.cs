@@ -40,10 +40,12 @@ namespace B0125.SafeRoute
         private sealed class ExternalObstacle
         {
             internal Rigidbody Body;
-            internal Collider Shape;
+            internal Collider[] Shapes;
             internal Vector3 ObservedPosition;
             internal Quaternion ObservedRotation;
-            internal bool ObservedEnabled;
+            internal Vector3[] ChildWorldPositions;
+            internal Quaternion[] ChildWorldRotations;
+            internal Vector3[] ChildWorldScales;
         }
         private const int MaxWorldBlockers=32;
         private readonly List<ExternalObstacle> externalObstacles=
@@ -227,14 +229,26 @@ namespace B0125.SafeRoute
             if(body==null||body==player||body==physicalCrate||
                body==auxiliaryCrate||externalObstacles.Count>=MaxWorldBlockers)
                 return false;
-            var shape=body.GetComponent<Collider>();
-            if(shape==null||!shape.enabled||!shape.gameObject.activeInHierarchy)
-                return false;
+            // Vehicle parts frequently have multiple child colliders. Register
+            // their FULL physically attached compound, not only root collider.
+            var all=body.GetComponentsInChildren<Collider>(true);
+            var shapes=new List<Collider>();
+            foreach(var shape in all)
+            {
+                if(shape==null||shape.isTrigger||shape.attachedRigidbody!=body)
+                    continue;
+                if(!shape.enabled||!shape.gameObject.activeInHierarchy)
+                    return false;
+                shapes.Add(shape);
+            }
+            if(shapes.Count==0||shapes.Count>16)return false;
             foreach(var item in externalObstacles)
-                if(item.Body==body||item.Shape==shape)return false;
+                if(item.Body==body)return false;
             externalObstacles.Add(new ExternalObstacle{
-                Body=body,Shape=shape,ObservedPosition=body.position,
-                ObservedRotation=body.rotation,ObservedEnabled=shape.enabled});
+                Body=body,Shapes=shapes.ToArray(),
+                ChildWorldPositions=new Vector3[shapes.Count],
+                ChildWorldRotations=new Quaternion[shapes.Count],
+                ChildWorldScales=new Vector3[shapes.Count]});
             Replan();
             return true;
         }
@@ -254,12 +268,22 @@ namespace B0125.SafeRoute
         {
             foreach(var item in externalObstacles)
             {
-                if(item.Body==null||item.Shape==null)return true;
+                if(item.Body==null||item.Shapes==null)return true;
                 if((item.Body.position-item.ObservedPosition).sqrMagnitude>.0004f||
-                   Quaternion.Angle(item.Body.rotation,item.ObservedRotation)>.2f||
-                   item.Shape.enabled!=item.ObservedEnabled||
-                   !item.Shape.gameObject.activeInHierarchy)
+                   Quaternion.Angle(item.Body.rotation,item.ObservedRotation)>.2f)
                     return true;
+                for(int i=0;i<item.Shapes.Length;i++)
+                {
+                    var shape=item.Shapes[i];
+                    if(shape==null||!shape.enabled||
+                       !shape.gameObject.activeInHierarchy)return true;
+                    if((shape.transform.position-item.ChildWorldPositions[i])
+                       .sqrMagnitude>.0004f||
+                       Quaternion.Angle(shape.transform.rotation,
+                           item.ChildWorldRotations[i])>.2f||
+                       (shape.transform.lossyScale-item.ChildWorldScales[i])
+                       .sqrMagnitude>.0004f)return true;
+                }
             }
             return false;
         }
@@ -267,10 +291,17 @@ namespace B0125.SafeRoute
         {
             foreach(var item in externalObstacles)
             {
-                if(item.Body==null||item.Shape==null)continue;
+                if(item.Body==null||item.Shapes==null)continue;
                 item.ObservedPosition=item.Body.position;
                 item.ObservedRotation=item.Body.rotation;
-                item.ObservedEnabled=item.Shape.enabled;
+                for(int i=0;i<item.Shapes.Length;i++)
+                {
+                    var shape=item.Shapes[i];
+                    if(shape==null)continue;
+                    item.ChildWorldPositions[i]=shape.transform.position;
+                    item.ChildWorldRotations[i]=shape.transform.rotation;
+                    item.ChildWorldScales[i]=shape.transform.lossyScale;
+                }
             }
         }
         // R5: original finite physical broadphase snapshot for TWO separate
@@ -293,12 +324,19 @@ namespace B0125.SafeRoute
             for(int k=0;k<externalObstacles.Count;k++)
             {
                 var external=externalObstacles[k];
-                if(external.Body==null||external.Shape==null||
-                   !external.Shape.enabled||
-                   !external.Shape.gameObject.activeInHierarchy)
+                if(external.Body==null||external.Shapes==null)
                 {
                     occupancyUncertain=true;
                     return System.Array.Empty<GridCell>();
+                }
+                foreach(var shape in external.Shapes)
+                {
+                    if(shape==null||!shape.enabled||
+                       !shape.gameObject.activeInHierarchy)
+                    {
+                        occupancyUncertain=true;
+                        return System.Array.Empty<GridCell>();
+                    }
                 }
             }
             Physics.SyncTransforms();
@@ -323,8 +361,12 @@ namespace B0125.SafeRoute
                     {auxiliaryDetected=true;occupied=true;}
                     for(int k=0;k<externalObstacles.Count;k++)
                     {
-                        if(buffer[i]!=externalObstacles[k].Shape)continue;
-                        seen[k]=true;occupied=true;
+                        foreach(var shape in externalObstacles[k].Shapes)
+                        {
+                            if(buffer[i]!=shape)continue;
+                            seen[k]=true;occupied=true;
+                            break;
+                        }
                     }
                 }
                 if(occupied)cells.Add(cell);
@@ -367,9 +409,10 @@ namespace B0125.SafeRoute
             if(otherCollider.bounds.Intersects(target))
             {rejectedCrateMoves++;return false;}
             foreach(var item in externalObstacles)
-                if(item.Shape==null||!item.Shape.enabled||
-                   item.Shape.bounds.Intersects(target))
-                {rejectedCrateMoves++;return false;}
+                foreach(var shape in item.Shapes)
+                    if(shape==null||!shape.enabled||
+                       shape.bounds.Intersects(target))
+                    {rejectedCrateMoves++;return false;}
             foreach(var wall in obstacles)
                 if(wall.bounds.Intersects(target))
                 {rejectedCrateMoves++;return false;}
@@ -495,7 +538,8 @@ namespace B0125.SafeRoute
                     if(obstacles.Contains(collider)||collider==crateCollider||
                        collider==auxiliaryCollider)return false;
                     foreach(var external in externalObstacles)
-                        if(external.Shape==collider)return false;
+                        foreach(var shape in external.Shapes)
+                            if(shape==collider)return false;
                     // Authoritative physical obstruction check: an actually
                     // overlapping gate collider blocks even if a script state
                     // previously marked all gates raised.
