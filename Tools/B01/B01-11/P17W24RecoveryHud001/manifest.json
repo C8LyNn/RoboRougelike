@@ -34,8 +34,8 @@
     },
     {
       "path": "Assets/B01Packages/RECOVERYHUD001/Runtime/RecoveryNotice.cs",
-      "bytes": 8949,
-      "sha256": "c149017bc05130ae846c7ff09e8cbe7c138b9efb804c3f73265420b04631aa5b"
+      "bytes": 9165,
+      "sha256": "296a185d8d132a370461d8f7485d8017902f7578848bba92853bbe367577ab1c"
     },
     {
       "path": "Assets/B01Packages/RECOVERYHUD001/Runtime/RecoveryNotice.cs.meta",
@@ -54,8 +54,8 @@
     },
     {
       "path": "Tools/B01/B01-11/P17W24RecoveryHud001/Program.cs",
-      "bytes": 11861,
-      "sha256": "09519cacea8b04371a517aa69fb9ade7026e4386ac2b911b8ea9816cd4018700"
+      "bytes": 13265,
+      "sha256": "24568f3e11281c66d176b35186423288cb34a2967bb4c5ea0b79db417192d299"
     },
     {
       "path": "Tools/B01/B01-11/P17W24RecoveryHud001/README.md",
