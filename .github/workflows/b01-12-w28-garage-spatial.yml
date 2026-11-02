@@ -1,0 +1,50 @@
+name: B01-12 W28 Garage 3D Spatial Overlay source gate
+on:
+  push:
+    paths:
+      - 'Assets/B01UserExperience/**'
+      - 'Assets/Tests/Editor/B0112GarageSpatialW28Tests.cs*'
+      - 'Tools/B01/B01-12/P17W28GarageSpatial/**'
+      - '.github/workflows/b01-12-w28-garage-spatial.yml'
+  pull_request:
+    paths:
+      - 'Assets/B01UserExperience/**'
+      - 'Assets/Tests/Editor/B0112GarageSpatialW28Tests.cs*'
+      - 'Tools/B01/B01-12/P17W28GarageSpatial/**'
+      - '.github/workflows/b01-12-w28-garage-spatial.yml'
+permissions:
+  contents: read
+jobs:
+  source-gate:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify original W27 game source identity + our full package
+        run: python Tools/B01/B01-12/P17W28GarageSpatial/test_source.py --require-w27
+      - name: Negative source corruption must fail before runtime checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          scratch="${RUNNER_TEMP}/b0112-w28-tamper"
+          mkdir -p "$scratch"
+          cp -R Assets "$scratch/Assets"
+          mkdir -p "$scratch/Tools/B01/B01-12"
+          cp -R Tools/B01/B01-12/P17W28GarageSpatial "$scratch/Tools/B01/B01-12/P17W28GarageSpatial"
+          mkdir -p "$scratch/.github/workflows"
+          cp .github/workflows/b01-12-w28-garage-spatial.yml "$scratch/.github/workflows/"
+          printf 'X' >> "$scratch/Assets/B01UserExperience/B0112GarageSpatialW28/B0112GarageSpatialOverlay.cs"
+          set +e
+          python Tools/B01/B01-12/P17W28GarageSpatial/test_source.py --root "$scratch" > "$RUNNER_TEMP/b0112-tamper.txt" 2>&1
+          code=$?
+          set -e
+          cat "$RUNNER_TEMP/b0112-tamper.txt"
+          test "$code" -eq 2
+      - name: Explicit native gate status
+        run: echo 'UNITY_EDITOR=NOT_RUN / UNITY_EDITMODE=NOT_RUN / UNITY_PLAYMODE=NOT_RUN / WINDOWS_PLAYER=NOT_RUN'
