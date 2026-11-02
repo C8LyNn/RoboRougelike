@@ -1,0 +1,77 @@
+{
+  "package_id": "B01-60-P17W28-ACTUAL-R3-WEAPON-PHYSICS-REGRESSION-001",
+  "owner": "B01-60 INDEPENDENT QA",
+  "hq_issue": 800,
+  "codex_inbox_issue": 79,
+  "unity_target": "6000.3.14f1 URP",
+  "previous_codex_w27_pr": 824,
+  "source_base_sha": "e03d36f2b86f8c73a067e574b67237a8921f622a",
+  "source_parent_w26_pr": 817,
+  "source_parent_w26_sha": "e7a85944465d908f175a6f5e2ae07f4aedcc593f",
+  "independent_actual_fixture_git_blob": "ca03f894237e431449c948a361dce87bad4db24f",
+  "native_test_count": 4,
+  "real_game_objects": [
+    "R3VehicleAssembly.Build",
+    "R3MountedPart",
+    "RRLShotgunBinding",
+    "RRLSawBinding",
+    "RRLEmpBinding",
+    "EmpReceiver",
+    "R3VehicleModel",
+    "R4WeaponKind"
+  ],
+  "native_test_cases": [
+    {
+      "name": "DynamicOwnedRigidbody_EntersAndLeavesShotgunPath_WithoutSpendingBlockedAmmo",
+      "required": "real Rigidbody moves into/out of own barrel; no spent ammo/cooldown on blocked group; clear shot resumes",
+      "status": "NOT_RUN"
+    },
+    {
+      "name": "RotarySaw_RotatingAgainstOwnArmor_DoesNotDamageItsPhysicalOwner",
+      "required": "rotating actual saw motor (>0 RPM) with own armor physics contact; zero own damage; key-up motor stop",
+      "status": "NOT_RUN"
+    },
+    {
+      "name": "EmpArea_OwnModulesStaySafe_ExternalWallOccludes_ThenClearPulseRecovers",
+      "required": "real radial EMP own-vehicle immunity, external wall LOS, cooldown only on genuine pulse, enemy behind wall then exposed",
+      "status": "NOT_RUN"
+    },
+    {
+      "name": "TwoWeaponGroups_OwnBlockedShotgunDoesNotSuppressUnblockedBasicGroup",
+      "required": "two original physical assembled guns; LPM owned-blocker never spends, clear RPM other weapon still fires; original 0.55m grid",
+      "status": "NOT_RUN"
+    }
+  ],
+  "original_owned_source_runtime_modified": false,
+  "historical_W27_native_EditMode": "6_6_REPORTED_BY_CODEX_SCOPE_ONLY",
+  "actual_nunit_Editor_log_from_new_fixture": "NOT_RUN",
+  "actual_windows_player_zip": "NOT_BUILT_BY_B01-60",
+  "game_softlock_812": "CONFIRMED_ORIGINAL_ECON_V7_SOURCE_WITNESS_BUT_NOT_REPRODUCED_IN_PLAYER",
+  "royalty_owner_exception_approved": false,
+  "original_api_save_797": "BLOCKED_BY_PRODUCER_IF_UNFIXED",
+  "source_QA": "PENDING_CI",
+  "source_G0": "PENDING_B01-40_B01-61",
+  "native_G1": "NOT_RUN",
+  "player_G1": "NOT_RUN",
+  "game_accepted": false,
+  "integrated": false,
+  "released": false,
+  "merged": false,
+  "codex_ACK_for_this_QA": "NONE",
+  "filenames": [
+    "Assets/Tests/Editor/B0160W28RealWeaponPhysicsAcceptanceTests.cs",
+    "Assets/Tests/Editor/B0160W28RealWeaponPhysicsAcceptanceTests.cs.meta",
+    "Tools/B01/B01-60/P17W28WeaponPhysicsAcceptance/verify_source.py",
+    "Tools/B01/B01-60/P17W28WeaponPhysicsAcceptance/manifest.json",
+    "Tools/B01/B01-60/P17W28WeaponPhysicsAcceptance/README.md",
+    ".github/workflows/b01-60-p17w28-actual-weapons-source.yml"
+  ],
+  "rollback": "Discard only this isolated QA Draft branch; no original Codex/game/Save changes",
+  "recipient": [
+    "B01-40",
+    "B01-61",
+    "B01-00",
+    "Codex (only after verified source G0)",
+    "B01-60 native reviewer"
+  ]
+}

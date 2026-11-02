@@ -1,0 +1,56 @@
+name: B01-60 W28 actual original R3 Unity PhysX four-case SOURCE ONLY
+on:
+  push:
+    branches: [qa/b01-60-p17w28-real-game-weapon-acceptance-r1]
+    paths:
+      - 'Assets/Tests/Editor/B0160W28RealWeaponPhysicsAcceptanceTests.cs'
+      - 'Assets/Tests/Editor/B0160W28RealWeaponPhysicsAcceptanceTests.cs.meta'
+      - 'Tools/B01/B01-60/P17W28WeaponPhysicsAcceptance/**'
+      - '.github/workflows/b01-60-p17w28-actual-weapons-source.yml'
+  pull_request:
+    paths:
+      - 'Assets/Tests/Editor/B0160W28RealWeaponPhysicsAcceptanceTests.cs'
+      - 'Assets/Tests/Editor/B0160W28RealWeaponPhysicsAcceptanceTests.cs.meta'
+      - 'Tools/B01/B01-60/P17W28WeaponPhysicsAcceptance/**'
+      - '.github/workflows/b01-60-p17w28-actual-weapons-source.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-codex-game-code-and-real-unity-tests-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2025, ubuntu-24.04]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify exact native game code W27 and four new actual Unity acceptance tests / no producer edits
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W28WeaponPhysicsAcceptance/verify_source.py 2>&1 | tee w28-source-only.log
+          grep -F 'B0160_W28_ACTUAL_824_AUTHOR_GIT_CODE_8_PATHS_IMMUTABLE_PASS' w28-source-only.log
+          grep -F 'B0160_W28_FOUR_ORIGINAL_REAL_R3_UNITY_PLAYMODE_TEST_IDENTITIES_REGISTERED' w28-source-only.log
+          grep -F 'B0160_W28_ONLY_SIX_ADD_ONLY_QA_PATHS_AND_UNIQUE_GUID_PASS' w28-source-only.log
+          grep -F 'B0160_W28_SOURCE_ONLY_PASS_UNITY_AND_WINDOWS_PLAYER_NOT_RUN' w28-source-only.log
+      - name: Verified original SHA and actual Unity source marker, NOT Editor
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse e03d36f2b86f8c73a067e574b67237a8921f622a:Assets/R3/R3VehicleAssembly.cs)" = ed97dd1b0ee3b77c839615497b249dcaee479bb8
+          grep -F '[UnityTest]' Assets/Tests/Editor/B0160W28RealWeaponPhysicsAcceptanceTests.cs | wc -l
+          echo 'B0160_W28_UNITY_EDITOR_NOT_IN_CI_EDITMODE_PLAYMODE_NOT_RUN'
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0160-W28-ACTUAL-R3-WEAPON-SOURCE-NOT-UNITY-${{ matrix.os }}
+          path: w28-source-only.log
+          if-no-files-found: warn
+          retention-days: 14
