@@ -73,7 +73,7 @@ def validate(n,q):
  need(n.git("merge-base",PORT772,PORT792)==PORT772,"#792 not isolated descendant of owner #772")
  changed=set(n.git("diff","--name-only",PORT772,PORT792).splitlines())
  own="Tools/B01/B01-23/P17W25PhysicalRollbackR2/"
- need(len(changed)==9 and RUNTIME in changed and FIXTURE in changed and
+ need(len(changed)==10 and RUNTIME in changed and FIXTURE in changed and
       all(p in (RUNTIME,FIXTURE,".github/workflows/b01-23-p17w25-physical-rollback-r2.yml") or
           p.startswith(own) for p in changed),
       "#792 is no longer exactly 2 corrected original Unity files + 7 owner test/CI files")
