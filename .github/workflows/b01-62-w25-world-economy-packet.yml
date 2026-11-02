@@ -1,0 +1,44 @@
+name: B01-62 W25 original 556 plus 764 economic full one-file packet
+on:
+  push:
+    branches: [feature/b01-62-p17w25-world-economy-single-envelope-v1]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W25WorldEconomyEnvelope001/**'
+      - '.github/workflows/b01-62-w25-world-economy-packet.yml'
+permissions:
+  contents: read
+jobs:
+  original-source-physical-packet:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Fetch source-exact original B01-22 #764 with no shared modifications
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin cc5d65f66ad7a764af6515c566e489b9fc3be82e
+          mkdir -p Tools/B01/B01-62/P17W25WorldEconomyEnvelope001/.source b0162-w25-world-econ-evidence
+          git show cc5d65f66ad7a764af6515c566e489b9fc3be82e:Assets/B01Packages/ECONAPPROVED006/Runtime/ApprovedEconomyPolicyV6.cs > Tools/B01/B01-62/P17W25WorldEconomyEnvelope001/.source/ApprovedEconomyPolicyV6.cs
+          test "$(git hash-object Tools/B01/B01-62/P17W25WorldEconomyEnvelope001/.source/ApprovedEconomyPolicyV6.cs)" = "c72db78548f3e21765c54eb4609b748153118392"
+      - name: Direct source immutable frozen #556 and original approved #764 world+economy binary
+        run: |
+          set -euo pipefail
+          dotnet run --project Tools/B01/B01-62/P17W25WorldEconomyEnvelope001/OriginalWorldEconomyW25.csproj -c Release --verbosity quiet | tee b0162-w25-world-econ-evidence/real-original.txt
+          grep -q 'B0162_W25_REAL_ORIGINAL_556_764_FULL_GAME_PACKET 5 PASS 5 FAIL 0' b0162-w25-world-econ-evidence/real-original.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b0162-w25-world-economy-${{ matrix.os }}
+          path: b0162-w25-world-econ-evidence/*
+          if-no-files-found: error

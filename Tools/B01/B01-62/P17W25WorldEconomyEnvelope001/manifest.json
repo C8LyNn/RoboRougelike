@@ -1,0 +1,22 @@
+{
+  "package": "B01-62-W25-ATOMIC-WORLD-ECONOMY-ENVELOPE-001",
+  "version": 1,
+  "source_parent": "3aaaec4027ee246fbfb6f209179f0e9507363473",
+  "owner_api_original": "b8ca29c7707cd6b4338d0b9772d74dee676d49d2",
+  "original_economy_764": "cc5d65f66ad7a764af6515c566e489b9fc3be82e",
+  "economy_blob": "c72db78548f3e21765c54eb4609b748153118392",
+  "binary_original_556": "33094f154c7b91119b36d58aab285e6e83c5de57",
+  "owned_files": [
+    "Tools/B01/B01-62/P17W25WorldEconomyEnvelope001/WorldEconomyPacketV1.cs",
+    "Tools/B01/B01-62/P17W25WorldEconomyEnvelope001/Program.cs",
+    "Tools/B01/B01-62/P17W25WorldEconomyEnvelope001/OriginalWorldEconomyW25.csproj",
+    "Tools/B01/B01-62/P17W25WorldEconomyEnvelope001/README.md",
+    "Tools/B01/B01-62/P17W25WorldEconomyEnvelope001/manifest.json",
+    ".github/workflows/b01-62-w25-world-economy-packet.yml"
+  ],
+  "new_disk_writer": false,
+  "actual_unity_adapter": false,
+  "real_native_G1": "NOT_RUN",
+  "integrated": false,
+  "released": false
+}
