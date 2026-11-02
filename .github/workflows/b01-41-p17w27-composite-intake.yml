@@ -1,0 +1,75 @@
+name: B01-41 W27 five-PR immutable composite intake G0 evidence (NOT Unity)
+on:
+  push:
+    branches: [ci/b01-41-p17w27-composite-intake-g0-r1]
+    paths:
+      - 'Tools/B01/CI41/P17W27/**'
+      - '.github/workflows/b01-41-p17w27-composite-intake.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  composite-source-receipt:
+    name: Exact-source/GUID/ABI transport only (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch only explicit immutable source commits and exact PR bases
+        run: |
+          set -euo pipefail
+          for sha in \
+            f5db40bf293fe9582ec7c6fcb3515aeff6fcf937 \
+            3aaaec4027ee246fbfb6f209179f0e9507363473 \
+            2b7983f0f9e09dd1d56906b379a3f7af7b02f21a \
+            ba3201644b252241429a6f493238c49d822adfae \
+            16cb2a7b5158605b15191b6074f9e392e0d1ebd3 \
+            ce46a5e0cc5d26df6c4ece723e8efe20d70fc4b1 \
+            b4df10a7ad7e6c758f8331013f6b216b3a3689a3 \
+            cc5d65f66ad7a764af6515c566e489b9fc3be82e \
+            60c73a6f9ed2585cbb9bf7aeaad8c62eef0629cb \
+            cc7f73541517a18f4479bb155534bd4832d9985e \
+            b8ca29c7707cd6b4338d0b9772d74dee676d49d2 \
+            33094f154c7b91119b36d58aab285e6e83c5de57 \
+            d94400d95d13db7f27e1533df05c9292d5380431; do
+            git fetch --no-tags origin "$sha" 2>&1 | tail -n 3
+            test "$(git rev-parse "$sha^{commit}")" = "$sha"
+          done
+      - name: Execute 10 negative security/transport unit regressions
+        run: |
+          set -euo pipefail
+          mkdir -p ci41-w27-evidence
+          python -m unittest discover -s Tools/B01/CI41/P17W27 -p 'test_composite_gate.py' -v 2>&1 | tee ci41-w27-evidence/unittest.log
+          grep -q 'Ran 10 tests' ci41-w27-evidence/unittest.log
+          grep -q '^OK$' ci41-w27-evidence/unittest.log
+      - name: Actual immutable Git SHA, selected 5 PR scope, original source and Unity GUID scan
+        run: |
+          set -euo pipefail
+          python Tools/B01/CI41/P17W27/composite_gate.py ci41-w27-evidence 2>&1 | tee ci41-w27-evidence/composite.log
+          grep -q 'CI41_W27_REAL_GIT_PINNED_SELECTED_FIVE_SOURCE_DELTA_PASS' ci41-w27-evidence/composite.log
+          grep -q 'CI41_W27_ORIGINAL_UNITY_SOURCE_GUID_AND_ASMDEF_NO_COLLISION_PASS' ci41-w27-evidence/composite.log
+          grep -q 'CI41_W27_G0_PARTIAL_QA_G1_NOT_RUN_G2_HOLD_Codex_NOT_OFFERED' ci41-w27-evidence/composite.log
+          python -c 'import json; r=json.load(open("ci41-w27-evidence/composite-receipt.json")); assert len(r["selection"])==5 and r["native_unity_G1"]=="NOT_RUN" and r["G2"]=="HOLD" and r["composite_formal_G0"]=="HOLD_FOR_B01_40_AND_B01_61" and r["codeX_handoff"]=="NOT_OFFERED"; print("CI41_W27_NO_FALSE_UNITY_OR_FORMAL_G0_PASS")' | tee -a ci41-w27-evidence/composite.log
+      - name: Preserve exact OS source-only receipts, never Unity G1 evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CI41-W27-COMPOSITE-SOURCE-ONLY-NO-UNITY-${{ runner.os }}
+          path: ci41-w27-evidence/*
+          retention-days: 14
+          if-no-files-found: warn
