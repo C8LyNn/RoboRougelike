@@ -1,0 +1,80 @@
+name: B01-31 W27 REAL P12 Armor Live Demo + Native Unity PlayMode Acceptance Source
+on:
+  push:
+    branches: [art/b01-31-p17w27-live-armor-demo-native-playmode]
+    paths:
+      - 'Assets/B01_31/W27ArmorLiveDemo/**'
+      - 'Assets/B01_31/W27ArmorLiveDemo.meta'
+      - 'Tools/B01-31/P17/W27ArmorLiveDemo001/**'
+      - '.github/workflows/b01-31-p17w27-real-armor-playmode-demo.yml'
+  pull_request:
+    paths:
+      - 'Assets/B01_31/W27ArmorLiveDemo/**'
+      - 'Assets/B01_31/W27ArmorLiveDemo.meta'
+      - 'Tools/B01-31/P17/W27ArmorLiveDemo001/**'
+      - '.github/workflows/b01-31-p17w27-real-armor-playmode-demo.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  ubuntu-real-original-sources-and-real-native-demo-bundle:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Compile REAL four existing P12+W24+W25+W27 CSharp sources, synthetic UnityEngine ONLY
+        run: dotnet run -c Release --project Tools/B01-31/P17/W27ArmorLiveDemo001/Harness/W27OriginalRealSourceHarness.csproj
+      - name: Run original W25 full real P12 damage/Die source regression, unchanged
+        run: dotnet run -c Release --project Tools/B01-31/P17/W25P12DamageVisualBinding001/Harness/P12LiveVisualHarness.csproj
+      - name: Compile independent original TAR producer+binary verifier
+        run: python -m compileall -q Tools/B01-31/P17/W27ArmorLiveDemo001
+      - name: Build real 8-asset/20-member Unity native demo+PlayMode test tar and independent 8-mutant source QA
+        run: |
+          python Tools/B01-31/P17/W27ArmorLiveDemo001/build_bundle.py --repo . --out build/B0131W27
+          python Tools/B01-31/P17/W27ArmorLiveDemo001/verify_bundle.py --repo . --out build/B0131W27
+      - name: Byte-rebuild physical Unitypackage and receipt twice and require exact original SHA parity
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd build && find . -type f -print0 | sort -z | xargs -0 sha256sum) > /tmp/w27_source_before.sha256
+          python Tools/B01-31/P17/W27ArmorLiveDemo001/build_bundle.py --repo . --out build/B0131W27
+          python Tools/B01-31/P17/W27ArmorLiveDemo001/verify_bundle.py --repo . --out build/B0131W27
+          (cd build && find . -type f -print0 | sort -z | xargs -0 sha256sum) > /tmp/w27_source_after.sha256
+          cmp /tmp/w27_source_before.sha256 /tmp/w27_source_after.sha256
+          echo B0131_W27_REAL_UNITY_DEMO_BINARY_SHA_PARITY_PASS
+      - name: Publish REAL incremental Unity .unitypackage incl NUnit PlayMode source and original SHA receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0131-W27-REAL-P12-ARMOR-DEMO-AND-UNITY-PLAYMODE-TESTS
+          path: build/B0131W27/
+          if-no-files-found: error
+          retention-days: 30
+  windows-readonly-receiver-with-actual-original-CSharp-logic:
+    needs: ubuntu-real-original-sources-and-real-native-demo-bundle
+    runs-on: windows-2022
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Download ACTUAL Ubuntu-created original W27 Unitypackage never regenerate
+        uses: actions/download-artifact@v4
+        with:
+          name: B0131-W27-REAL-P12-ARMOR-DEMO-AND-UNITY-PLAYMODE-TESTS
+          path: original-ubuntu-W27
+      - name: Run actual P12 W24 W25 W27 CSharp on Windows; only ENGINE SHIM synthetic
+        run: dotnet run -c Release --project Tools/B01-31/P17/W27ArmorLiveDemo001/Harness/W27OriginalRealSourceHarness.csproj
+      - name: Run original prior real W25 P12 event and repair regressions on Windows
+        run: dotnet run -c Release --project Tools/B01-31/P17/W25P12DamageVisualBinding001/Harness/P12LiveVisualHarness.csproj
+      - name: Independent Windows verifier parses original Ubuntu binary 8 GUID tar no author execution
+        run: python Tools/B01-31/P17/W27ArmorLiveDemo001/verify_bundle.py --repo . --out original-ubuntu-W27
