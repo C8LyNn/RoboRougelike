@@ -94,7 +94,7 @@
     "Tools/B01/B01-25/P17W27SafeRouteR4/TEST_PLAN.md": "4a26674101bce6c8710fcab394b213d72739abc1",
     "Tools/B01/B01-25/P17W28SafeRouteR5/.gitignore": "b67c661cfb5cc73f5f68cfe85fd17e954856ea87",
     "Tools/B01/B01-25/P17W28SafeRouteR5/CHANGELOG.md": "9742dbfb1f443ded94f605a39b526156d41288ee",
-    "Tools/B01/B01-25/P17W28SafeRouteR5/check.py": "1de4dc810f26ccf225c0ba568678fee6707aa5f3",
+    "Tools/B01/B01-25/P17W28SafeRouteR5/check.py": "6859e4c4dee1469de260529b5ec7ec3a68272aa8",
     "Tools/B01/B01-25/P17W28SafeRouteR5/INSTALL_FOR_CODEX.md": "f68014f2c01f9327bb125bfd4098b47781b35c2f",
     "Tools/B01/B01-25/P17W28SafeRouteR5/KNOWN_LIMITATIONS.md": "d643d0fd2783523db61ddac9938cb89d9ff38360",
     "Tools/B01/B01-25/P17W28SafeRouteR5/QA_B01_60.md": "40ea39fccc8276743635f6ff924d01904f678daa",
@@ -129,5 +129,6 @@
     "Follows all registered source colliders, limit 32 body roots and 16 shapes each; miss/disabled or query saturation fail closed"
   ],
   "rollback": "Reject all occupied/stale/symlink paths. Stage only own 23 original Unity source/meta files into fresh disposal checkout; unlink only files newly staged, preserve foreign directories and Save, no merge.",
-  "workflowBranchCorrected": true
+  "workflowBranchCorrected": true,
+  "redToGreenQA": "Original exact prior run 41545882031 CSharp9 100/100 actual PASS, Python QA stopped because remaining R4 class reference. Fixed to R5 and full new exact SHA retest required"
 }

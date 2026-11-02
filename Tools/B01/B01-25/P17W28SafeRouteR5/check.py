@@ -246,7 +246,7 @@ def main():
     ap=argparse.ArgumentParser();ap.add_argument("--out",required=True)
     args=ap.parse_args();out=pathlib.Path(args.out);out.parent.mkdir(parents=True,exist_ok=True)
     t=unittest.TextTestRunner(verbosity=2).run(
-       unittest.defaultTestLoader.loadTestsFromTestCase(OriginalPhysicalR4QA))
+       unittest.defaultTestLoader.loadTestsFromTestCase(OriginalPhysicalR5QA))
     with tempfile.TemporaryDirectory() as d:
         z=pathlib.Path(d)/"original-source.zip"
         digest=zip_sources(z);out.with_suffix(".zip").write_bytes(z.read_bytes())
