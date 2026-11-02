@@ -1,0 +1,17 @@
+# B01-60 W27 — fix confirmed Windows PowerShell Git command recursion in selected #808 native test operator
+
+**CO ZAWIERA PACZKA / CO ZMIENIA W GRZE:** This is an actual **one-file bug fix** to the original owner-selected B01-60 [#808@d1a6f4e5f9934ddd760ba922c8779743512cea19](https://github.com/C8LyNn/RoboRougelike/pull/808), NOT a new competing Unity native runner. In the original checked-in PowerShell script `Invoke-B0160W27Physical.ps1`, local `function Git([string[]]$a)` calls `& git @a`. PowerShell resolves the local function before the native executable; actual [original Windows Actions #41528849217, job 125563546126](https://github.com/C8LyNn/RoboRougelike/actions/runs/41528849217) **RED** after call-depth overflow. Original source-only Python on Ubuntu/Windows was separately green; Unity was NOT_RUN.
+
+**FIX:** Only in newly versioned B01-60 descendant branch, rename local PowerShell helper `Git` → `Invoke-VerifiedGit`, redirect ALL original helper invocation sites to that explicit name, and invoke real external `& git.exe @a`, verified available by `Get-Command git.exe`. No original #808 branch changed, no producer #792, no Codex worktree or Save authority/ECON changes, no release. Preserve unchanged root/scratch/real license/exact Git SHA/manual G0/native authorization guards.
+
+**JAK ODBIERAĆ:** Execute actual Windows source-only default (no Unity Editor) against this new reviewed child branch using **unchanged original command**:
+
+```powershell
+pwsh -NoProfile -File .\Tools\B01\B01-60\P17W27Physical792Native\Invoke-B0160W27Physical.ps1 -RepoPath .
+```
+
+Expected source-only original marker: `B0160_W27_SOURCE_ONLY_FOUR_PHYSICS_PROJECTS_PASS_NATIVE_UNITY_G1_NOT_RUN` with exit0; no source checkout/data changes, four isolated staged-and-rolled-back Unity project source copies. Negative Windows tests assert unsafe scratch overlap exit2; actual native `-Run` lacking independent #792 G0 exit3; no genuine Unity Editor `-Run -SourceG0Approved` exit3; user must still TYPE exact `B0160 W27 PHYSICS NATIVE` if real Editor legitimately exists and formal G0 completed.
+
+**CZEGO NIE SPRAWDZONO:** No actual Unity Editor/PhysX or G1 run. NATIVE G1=NOT_RUN; full #787/#797/#792/#780/#750 composite Save G1=NOT_RUN. [B01-40 source G0 #807](https://github.com/C8LyNn/RoboRougelike/pull/807) accepted transport (89 exact assets, 53 GUID) but detected ORIGINAL #797 production `SHA256.HashData`, `Convert.ToHexString`, and `File.Move(a,b,true)` unsupported by target Unity ABI. Thus FULL_GAME_G0=HOLD, CODEX OFFER=HOLD, full Save and loaner G2=HOLD; B01-62 must produce versioned Unity ABI fix separately. This repair has no user-PC access or protected merge.
+
+**AC/DoD:** AC-W27-PS-01 real original Windows PowerShell source-only invocation returns exit0 and marker. AC-W27-PS-02 no call depth overflow (original known RED). AC-W27-PS-03 unsafe scratch denied exit2. AC-W27-PS-04 no source G0 / no Unity Editor native denied exit3. DoD original HEAD and exact SHA CI logs from real Windows, narrow one-file change and own manifest, clear rollback; source-only green never claims native G1 or full-game acceptance. RISK MEDIUM (native operator blocked before test); runtime Save HIGH remains separately HOLD. Receivers B01-60 and B01-41 independent source QA; B01-00 only after owner decisions. **NO duplicate #809** (closed as duplicate). Rollback simply abandon this separate child Draft PR and use frozen original #808; do not change original branch or owner game.
