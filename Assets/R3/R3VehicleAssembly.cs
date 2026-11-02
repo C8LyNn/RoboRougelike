@@ -83,7 +83,7 @@ namespace RoboRougelike.R3
         {
             if(part==null||part.Muzzle==null)return false;
             var origin=part.Muzzle.position;
-            float radius=Mathf.Max(.025f,R4WeaponDefinition.Get(part.Weapon).Diameter*.5f);
+            float radius=Mathf.Max(.025f,RoboRougelike.WeaponIntegration.RRLAimFeedback.ProjectileRadius(part));
             bool IsGun(Collider c)=>c!=null&&c.transform.IsChildOf(part.transform);
             bool IsOwner(Collider c)=>c!=null&&c.transform.IsChildOf(transform);
             // The barrel itself can rotate into another part even if its tip
@@ -97,7 +97,8 @@ namespace RoboRougelike.R3
             foreach(var c in Physics.OverlapSphere(origin,radius,~0,QueryTriggerInteraction.Ignore))
                 if(IsOwner(c)&&!IsGun(c))return false;
             float own=float.PositiveInfinity,other=float.PositiveInfinity;
-            float range=R4WeaponDefinition.Get(part.Weapon).Speed*controller.PhysicalShellLifetime;
+            float range=RoboRougelike.WeaponIntegration.RRLAimFeedback.Range(part,controller);
+            if(range<=0||float.IsNaN(range)||float.IsInfinity(range))return false;
             foreach(var hit in Physics.SphereCastAll(origin,radius,part.Muzzle.forward,range,~0,QueryTriggerInteraction.Ignore))
             {
                 if(hit.collider==null||IsGun(hit.collider))continue;
@@ -120,9 +121,8 @@ namespace RoboRougelike.R3
                         if(emp!=null&&emp.Fire())part.NextFireTime=emp.State.DeviceReadyAt;continue;
                     }
                     if(part.Weapon==R4WeaponKind.BeamCutter||part.Weapon==R4WeaponKind.RotarySaw)continue;
-                    // WPN-specific projectiles have separate range and spread rules;
-                    // they require their own per-shot clearance integration.
-                    if(part.Weapon<=R4WeaponKind.Heavy&&!ClearProjectilePath(part))continue;
+                    if((part.Weapon<=R4WeaponKind.Railgun||part.Weapon==R4WeaponKind.RocketLauncher)
+                       &&!ClearProjectilePath(part))continue;
                     if(part.Weapon==R4WeaponKind.Shotgun)
                     {
                         var binding=part.GetComponent<RoboRougelike.WeaponIntegration.RRLShotgunBinding>();
