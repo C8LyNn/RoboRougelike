@@ -65,37 +65,39 @@ def live_hazard_geometry_clear(arena, adapter, catalog, assembly):
     if "item.transform.localPosition=(Vector3)state.Cell*0.55f;" not in assembly:
         return False
 
-    def vector(call, source):
-        m = re.search(
-            re.escape(call) + r"\\(new Vector3\\(\\s*([+\\-0-9.]+f?)\\s*,"
-            r"\\s*([+\\-0-9.]+f?)\\s*,\\s*([+\\-0-9.]+f?)\\s*\\)\\)",
-            source,
-        )
-        if not m:
-            return None
+    def parse_vector(expr):
         try:
-            return tuple(float(v.rstrip("f")) for v in m.groups())
+            fields = expr.split(",", 2)
+            if len(fields) != 3:
+                return None
+            return tuple(float(v.strip().rstrip("f")) for v in fields)
         except ValueError:
             return None
 
-    radius_match = re.search(r"zone\\.Configure\\(\\s*([0-9.]+)f?\\s*,", adapter)
-    if not radius_match:
-        return False
-    radius = float(radius_match.group(1)) + .05  # W34 test-side margin
-    hazards = re.findall(
-        r"Hazard\\(new Vector3\\(\\s*([+\\-0-9.]+f?)\\s*,"
-        r"\\s*([+\\-0-9.]+f?)\\s*,\\s*([+\\-0-9.]+f?)\\s*\\)\\)",
-        arena,
-    )
-    if len(hazards) != 2:
+    def get_vector(prefix, source):
+        index = source.find(prefix)
+        if index < 0:
+            return None
+        after = source[index + len(prefix):].split(")", 1)[0]
+        return parse_vector(after)
+
+    radius_text = adapter.split("zone.Configure(", 1)
+    if len(radius_text) != 2:
         return False
     try:
-        hazard_xz = [(float(x.rstrip("f")), float(z.rstrip("f")))
-                     for x, y, z in hazards]
+        radius = float(radius_text[1].split(",", 1)[0].strip().rstrip("f")) + .05
     except ValueError:
         return False
-    spawn = vector("new Vector3", arena.split("PlayerSpawn =>", 1)[1].split(";", 1)[0]) if "PlayerSpawn =>" in arena else None
-    pad = vector("JumpPad", arena)
+    fragments = arena.split("Hazard(new Vector3(")[1:]
+    if len(fragments) != 2:
+        return False
+    hazards = [parse_vector(part.split(")", 1)[0]) for part in fragments]
+    if None in hazards:
+        return False
+    hazard_xz = [(v[0], v[2]) for v in hazards]
+    spawn_line = arena.split("PlayerSpawn =>", 1)
+    spawn = get_vector("new Vector3(", spawn_line[1].split(";", 1)[0]) if len(spawn_line) == 2 else None
+    pad = get_vector("JumpPad(new Vector3(", arena)
     if spawn is None or pad is None:
         return False
     if "launch.Configure(8.5f,2f,1.25f)" not in arena:
