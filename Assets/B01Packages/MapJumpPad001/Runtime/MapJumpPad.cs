@@ -24,8 +24,17 @@ namespace B01.MapJumpPad001
         private readonly Dictionary<Rigidbody, double> lastLaunch =
             new Dictionary<Rigidbody, double>();
 
+        // A wreckage Rigidbody may be Destroyed/disabled inside a trigger.
+        // PhysX does not guarantee OnTriggerExit for those lifecycle events.
+        // Reuse these buffers so long encounters do not allocate each tick.
+        private readonly List<Rigidbody> staleBodies = new List<Rigidbody>();
+        private readonly List<Collider> staleColliders = new List<Collider>();
+
         public bool IsActive => active;
         public Vector2 FootprintMeters => footprintMeters;
+        // Diagnostics only; do not expose mutable dictionaries to callers.
+        public int TrackedContactBodies => contacts.Count;
+        public int CooldownHistoryBodies => lastLaunch.Count;
         public void SetActive(bool value) { active = value; }
         public void Configure(float up, float forward, float cooldown)
         {
@@ -91,6 +100,45 @@ namespace B01.MapJumpPad001
             if (!body || !contacts.TryGetValue(body, out HashSet<Collider> colliders)) return;
             colliders.Remove(other);
             if (colliders.Count == 0) contacts.Remove(body);
+        }
+
+        // B01-25 W30: original gameplay pad must forget transient R3
+        // debris that dies while overlapping it. Do NOT drop live cooldowns.
+        // R3Debris can disable colliders for 0.45s before its 10s retirement.
+        private void FixedUpdate()
+        {
+            if (contacts.Count == 0 && lastLaunch.Count == 0) return;
+            staleBodies.Clear();
+            foreach (var entry in contacts)
+            {
+                if (!entry.Key)
+                {
+                    staleBodies.Add(entry.Key);
+                    continue;
+                }
+                staleColliders.Clear();
+                foreach (var collider in entry.Value)
+                    if (!collider || !collider.enabled ||
+                        !collider.gameObject.activeInHierarchy ||
+                        collider.attachedRigidbody != entry.Key)
+                        staleColliders.Add(collider);
+                foreach (var collider in staleColliders)
+                    entry.Value.Remove(collider);
+                if (entry.Value.Count == 0)
+                    staleBodies.Add(entry.Key);
+            }
+            foreach (var body in staleBodies)
+                contacts.Remove(body);
+            staleBodies.Clear();
+
+            // The old cooldown history must also release destroyed bodies;
+            // retained live bodies still obey exactly the original cooldown.
+            foreach (var entry in lastLaunch)
+                if (!entry.Key) staleBodies.Add(entry.Key);
+            foreach (var body in staleBodies)
+                lastLaunch.Remove(body);
+            staleBodies.Clear();
+            staleColliders.Clear();
         }
 
         private void OnDisable()
