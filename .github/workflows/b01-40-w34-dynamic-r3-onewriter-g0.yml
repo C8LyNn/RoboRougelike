@@ -38,10 +38,10 @@ jobs:
       - name: Stage one ORIGINAL #923 producer in a disposable detached Git worktree and source-pin #877/#780/#855
         run: |
           set -euo pipefail
-          git fetch --no-tags origin 8de168dd83fe1d01a36def9acfae462bd63c9018
+          git fetch --no-tags origin e6eb24b7a45a66a5fa5d039f59c80b7e4be4439b
           git fetch --no-tags origin b4df10a7ad7e6c758f8331013f6b216b3a3689a3
           git fetch --no-tags origin c9c19665a4f9385e6479f7151097deb797026ade
-          git worktree add --detach _source923 8de168dd83fe1d01a36def9acfae462bd63c9018
+          git worktree add --detach _source923 e6eb24b7a45a66a5fa5d039f59c80b7e4be4439b
           mkdir -p _source923/Tools/B01/B01-62/P17W30AdmissionV3/.source
           mkdir -p _source923/Tools/B01/B01-62/P17W33R3World/.source
           git show 3bd9b159997924dcecb4e1cd1d41137896e5199e:Assets/R3/R3VehicleCatalog.cs > _source923/Tools/B01/B01-62/P17W33R3World/.source/R3VehicleCatalog.cs
@@ -62,13 +62,13 @@ jobs:
         run: |
           set -euo pipefail
           dotnet run --project _source923/Tools/B01/B01-62/P17W33R3World/R3WorldActualOsQA.csproj -c Release -v quiet | tee w34-evidence/producer-923-original-r3-disk-11.log
-          grep -q 'B0162_W33_R3_SAME_ONE_WRITER_REAL_OS_TOTAL 11 PASS 11 FAIL 0' w34-evidence/producer-923-original-r3-disk-11.log
+          grep -q 'B0162_W33_R3_SAME_ONE_WRITER_REAL_OS_TOTAL 15 PASS 15 FAIL 0' w34-evidence/producer-923-original-r3-disk-11.log
           grep -q 'B0162_W33_UNITY_NATIVE=NOT_RUN_GAME_R3_BINDER=NOT_INTEGRATED' w34-evidence/producer-923-original-r3-disk-11.log
-      - name: Execute 14 newly authored B01-40 independent actual #923 codec and original #877 factory Csharp9 negative tests
+      - name: Execute 18 newly authored B01-40 independent actual #923 codec and original #877 factory Csharp9 negative tests
         run: |
           set -euo pipefail
-          dotnet run --project _source923/Tools/B01/B01-62/P17W33R3World/IndependentCases.csproj -c Release -v quiet | tee w34-evidence/independent-r3-codec-14.log
-          grep -q 'B0140_W34_INDEPENDENT_ORIGINAL_R3_CODEC_TOTAL 14 PASS 14 FAIL 0' w34-evidence/independent-r3-codec-14.log
+          dotnet run --project _source923/Tools/B01/B01-62/P17W33R3World/IndependentCases.csproj -c Release -v quiet | tee w34-evidence/independent-r3-codec-18.log
+          grep -q 'B0140_W34_INDEPENDENT_ORIGINAL_R3_CODEC_TOTAL 18 PASS 18 FAIL 0' w34-evidence/independent-r3-codec-14.log
           grep -q 'B0140_W34_NATIVE_UNITY_NOT_RUN_NO_REAL_PHYSICS_BINDER' w34-evidence/independent-r3-codec-14.log
       - name: Verify scratch original #923 tracked Git sources unchanged after test execution
         run: |
