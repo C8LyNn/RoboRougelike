@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="UnityPhysicsContractShim.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="../../../../Assets/B01Packages/MapJumpPad001/Runtime/MapJumpPad.cs"
+             Link="ORIGINAL-MapJumpPad.cs" />
+  </ItemGroup>
+</Project>
