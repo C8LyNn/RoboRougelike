@@ -83,6 +83,7 @@ static class Program
     }
     public static int Main()
     {
+        Console.OutputEncoding=System.Text.Encoding.UTF8;
         Run("no-target",false,()=>false,()=>"Najedź na ścianę bloku pojazdu.");
         int n=0;
         Run("post-preview-rejection",true,()=>false,()=>++n==1?null:"Fizyczna kolizja po zmianie przeszkody.");
@@ -101,17 +102,19 @@ def execute(method, folder):
     result=subprocess.run(
        ["dotnet","run","--project",str(folder/"ClickTargetSourceProbe.csproj"),
         "--configuration","Release","--no-launch-profile"],
-       stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,check=False
+       stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,encoding="utf-8",errors="strict",check=False
     )
     if result.returncode:
         print(result.stdout,result.stderr,file=sys.stderr)
         raise AssertionError("original production method failed direct source compile")
-    return {line.split("|",1)[0]:line.split("|",2)[1:] for line in result.stdout.splitlines() if line.count("|")==2}
+    return {line.lstrip("\ufeff").split("|",1)[0]:line.lstrip("\ufeff").split("|",2)[1:] for line in result.stdout.splitlines() if line.count("|")==2}
 with tempfile.TemporaryDirectory(prefix="b0111_w30_garage_") as temp:
     folder=Path(temp)
     baseline=execute(method_from(original),folder/'old')
     current_result=execute(method_from(current),folder/'new')
 expected_keys={"no-target","post-preview-rejection","pre-validation-rejection","successful-purchase","inactive-garage"}
+print("SOURCE_WINDOWS_UTF8_BASELINE",repr(baseline))
+print("SOURCE_WINDOWS_UTF8_FIXED",repr(current_result))
 assert set(baseline)==set(current_result)==expected_keys,(baseline,current_result)
 assert baseline["no-target"]==["NO","Zamontowano dokładnie w miejscu podglądu."]
 assert baseline["post-preview-rejection"]==["NO","Montaż nieudany."]
