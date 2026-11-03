@@ -8,10 +8,19 @@
   "one_writer": true,
   "owner_lease": "#729",
   "world_count_max": 1024,
-  "source_acceptance": "PENDING_CI",
+  "source_acceptance": "PENDING_FINAL_W34_SHA_CI",
   "external_native_g1": "NOT_RUN",
   "r3_actual_game_stage": false,
   "approval_913": "PENDING",
   "anti_softlock_834": "PENDING",
-  "release": false
+  "release": false,
+  "wave34": {
+    "real_r4_weapon_kinds_0_to_8": true,
+    "one_mounted_rig_ledger_owner": true,
+    "source_os_cases_expected_per_platform": 36,
+    "new_w34_cases": 4,
+    "actual_physics_capture_integrated": false,
+    "actual_unity_native": "NOT_RUN",
+    "owner_913_schema_approval": "PENDING"
+  }
 }

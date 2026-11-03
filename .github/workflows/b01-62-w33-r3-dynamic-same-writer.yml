@@ -71,7 +71,7 @@ jobs:
         run: |
           set -euo pipefail
           dotnet run --project Tools/B01/B01-62/P17W33R3World/R3WorldActualOsQA.csproj -c Release -v quiet | tee b0162-w33-evidence/w33.log
-          grep -q 'B0162_W33_R3_SAME_ONE_WRITER_REAL_OS_TOTAL 11 PASS 11 FAIL 0' b0162-w33-evidence/w33.log
+          grep -q 'B0162_W33_R3_SAME_ONE_WRITER_REAL_OS_TOTAL 15 PASS 15 FAIL 0' b0162-w33-evidence/w33.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:

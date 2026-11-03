@@ -30,6 +30,7 @@ def run(out):
  if actual!=expected:raise AssertionError("NOT_EXACT_15_OWN_PATHS "+str(actual^expected))
  check_ref(GAME,"Assets/R3/R3VehicleCatalog.cs","f76de5bbdcc1dbdb7ddb9fe9859c36c232fd8584")
  check_ref(GAME,"Assets/R3/R3VehicleModel.cs","1d0f378dc598e08b3d7c16975f419d84231511bb")
+ check_ref(GAME,"Assets/R4/R4WeaponDefinition.cs","502f6d7f70d4e8078260de632ab181f244a4d730")
  check_ref(BASE,"Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs","b52e511c370f5fca56c74029050844dc8cbb7f9a")
  check_ref(V7,"Assets/B01Packages/ECONAPPROVED007/Runtime/ApprovedEconomyPolicyV7.cs","53ebce6c07388dc9c8a8ed79b6de4d3ccbee4773")
  check_ref(ADMISSION,"Assets/B01Packages/ECONADMISSIONW29/Runtime/EconomyV7AdmissionW29.cs","59ad0f42cec5385cc132c1a3917cffd8ebf65d2c")
@@ -56,7 +57,8 @@ def run(out):
   raise AssertionError("UNAUTHORIZED_SILENT_SCHEMA_MIGRATION")
  codec=Path(ROOT+"CanonicalR3WorldV1.cs").read_text()
  for token in ('Magic="B01R3W01"',"MaxParts=1024","MaxBytes=3*1024*1024",
-               "p.PhysicalId","p.OwnerPhysicalId","p.DefenseRechargeAge",
+               "p.PhysicalId","p.OwnerPhysicalId","mountedOwner=0",
+               "p.Weapon>8","p.Kind!=2&&p.Weapon!=0","p.DefenseRechargeAge",
                "float.IsPositiveInfinity","PartValid","!ids.Add",
                "stream.Position!=stream.Length"):
   if token not in codec:raise AssertionError("MISSING_DYNAMIC_CODEC_GUARD "+token)
@@ -71,7 +73,7 @@ def run(out):
        "writer_count":1,"outer_format":"B0162G02",
        "dynamic_world_format":"B01R3W01","frozen_world":"B01SV13! unchanged",
        "owner_schema_approval":"PENDING","game_r3_physical_stage":"NOT_IMPLEMENTED",
-       "source_os_suite":"W28 9 + W29 6 + W30 4 + W31 2 + W33 11",
+       "source_os_suite":"W28 9 + W29 6 + W30 4 + W31 2 + W33 11 + W34 4",
        "native_unity":"NOT_RUN","released":False}
  b=(json.dumps(data,indent=2,sort_keys=True)+"\n").encode()
  Path(out).write_bytes(b)
