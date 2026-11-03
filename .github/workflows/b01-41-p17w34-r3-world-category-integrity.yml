@@ -35,7 +35,7 @@ jobs:
         run: |
           set -euo pipefail
           for sha in \
-            8de168dd83fe1d01a36def9acfae462bd63c9018 \
+            e6eb24b7a45a66a5fa5d039f59c80b7e4be4439b \
             3bd9b159997924dcecb4e1cd1d41137896e5199e \
             b4df10a7ad7e6c758f8331013f6b216b3a3689a3 \
             c9c19665a4f9385e6479f7151097deb797026ade; do
