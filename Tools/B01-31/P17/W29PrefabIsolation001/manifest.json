@@ -20,6 +20,7 @@
   "original_W28_editor_blob": "3a4a82c28f419497a0511e64d930e5dec30f9826",
   "modified_owner_paths": [
     "Assets/B01_31/W27ArmorLiveDemo/Editor/B0131W27CreateArmorLiveDemoScene.cs",
+    "Tools/B01-31/P17/W27ArmorLiveDemo001/verify_bundle.py",
     "Tools/B01-31/P17/W28VisualPhysicsSafety001/Harness/Program.cs",
     "Tools/B01-31/P17/W28VisualPhysicsSafety001/Harness/SyntheticUnityEditor.cs",
     "Tools/B01-31/P17/W28VisualPhysicsSafety001/Harness/SyntheticUnityEngine.cs"
@@ -48,6 +49,7 @@
     "Assets/B01_31/W29PrefabIsolation/Tests/EditMode/B0131W29DetachedArmorPrefabTests.cs.meta",
     "Assets/B01_31/W29PrefabIsolation/Tests/EditMode/RoboRougelike.B0131.W29.NativeEditModeTests.asmdef",
     "Assets/B01_31/W29PrefabIsolation/Tests/EditMode/RoboRougelike.B0131.W29.NativeEditModeTests.asmdef.meta",
+    "Tools/B01-31/P17/W27ArmorLiveDemo001/verify_bundle.py",
     "Tools/B01-31/P17/W28VisualPhysicsSafety001/Harness/Program.cs",
     "Tools/B01-31/P17/W28VisualPhysicsSafety001/Harness/SyntheticUnityEditor.cs",
     "Tools/B01-31/P17/W28VisualPhysicsSafety001/Harness/SyntheticUnityEngine.cs",
@@ -61,7 +63,8 @@
     "Before removing visual physics, rejects all unrelated/missing MonoBehaviour children, including inactive hierarchy, also original P12 and Joint, without partial mutation.",
     "Five native Unity EditMode tests use original actual imported W24 3-OBJ visual prefab, verify model source asset dependency hash stays unchanged, prefab copy has no link, source geometry phase refs all survive, visual colliders/RB only in copy stripped, and foreign extra script rejected.",
     "Existing original .NET8 harness executes original P12/W24/W25/W27/W29 Editor C# source methods in synthetic UnityEngine/UnityEditor only, 37 source assertions; prior W27 25 source assertions rerun. Never claim actual Unity native success from this.",
-    "Original physical 16-file changed-source ZIP reproducible SHA across complete exports, five Unity GUID original .meta, 8 malicious changes rejected by independent receiver on Ubuntu and Windows."
+    "Original physical 16-file changed-source ZIP reproducible SHA across complete exports, five Unity GUID original .meta, 8 malicious changes rejected by independent receiver on Ubuntu and Windows.",
+    "Inherited original W27 physical unitypackage receiver must validate the stronger W29 detached-prefab sequence, not fail because its obsolete direct PrefabUtility.InstantiatePrefab string was removed. No relaxation: require clone, full unpack, disconnected flag and fail-closed sanitizer."
   ],
   "gates": {
     "IMPLEMENTED": "SOURCE",
