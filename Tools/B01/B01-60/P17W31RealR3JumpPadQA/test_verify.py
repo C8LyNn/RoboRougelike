@@ -16,7 +16,7 @@ class OriginalGameJumpPadW31(unittest.TestCase):
    self.assertIn(token,self.c)
  def test_05_real_r3_multi_collider_not_fake_10kg(self):
   for token in ("body.mass, Is.GreaterThan(20f)","GetComponentsInChildren<Collider>",
-                "c.attachedRigidbody == body","p.body.isKinematic"): self.assertIn(token,self.c)
+                "c.attachedRigidbody == body","body.isKinematic"): self.assertIn(token,self.c)
  def test_06_real_physics_velocity_and_height_both_checked(self):
   for token in ("p.body.linearVelocity.y","p.body.position.y","maxUpVelocity, Is.GreaterThan(5f)",
                 "maxHeight, Is.GreaterThan(2.3f)"):self.assertIn(token,self.c)

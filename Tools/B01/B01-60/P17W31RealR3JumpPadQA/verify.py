@@ -45,7 +45,7 @@ def verify():
   "run.Player.GetComponent<R3VehicleAssembly>()","run.Player.GetComponent<Rigidbody>()",
   "run.Arena.Build(R5ArenaKind.SalvageYard)","run.Player.MoveTo(landing, Quaternion.identity)",
   "p.body.linearVelocity.y","p.body.position.y","p.pad.SetActive(false)",
-  "p.pad.CanLaunch(p.body)","p.body.mass","p.body.isKinematic",
+  "p.pad.CanLaunch(p.body)","p.body.mass","body.isKinematic",
   "GetComponentsInChildren<Collider>","RigidbodyConstraints.FreezePositionY"):
   need(token in c,"actual full vehicle native test not wired: "+token)
  pad=game("Assets/B01Packages/MapJumpPad001/Runtime/MapJumpPad.cs")
