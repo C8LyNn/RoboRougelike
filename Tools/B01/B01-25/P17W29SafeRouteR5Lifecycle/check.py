@@ -68,7 +68,7 @@ class OriginalPhysicalR51QA(unittest.TestCase):
             self.assertEqual(blob(raw(path)),sha,path)
     def test_03_original_r3_branch_exact_parent_sha_and_old_manifest_immutable(self):
         m=doc(T+"/manifest.json")
-        self.assertEqual(BASE,m["parentR5Sha"])
+        self.assertEqual(BASE,m["exactParentR5Sha"])
         self.assertEqual(git("show",BASE+":"+OLD_T+"/manifest.json"),
                          git("show","HEAD:"+OLD_T+"/manifest.json"))
     def test_04_exact_three_existing_r3_code_file_provenance_and_modified_sha(self):

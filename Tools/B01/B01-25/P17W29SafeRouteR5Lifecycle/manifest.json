@@ -95,7 +95,7 @@
     "Tools/B01/B01-25/P17W28SafeRouteR5/README.md": "9accd2c0788fe2fa25dfb686f977f879fca910af",
     "Tools/B01/B01-25/P17W28SafeRouteR5/TEST_PLAN.md": "00b29e8212e30c2f340ad031dca6b3799cce9b6e",
     "Tools/B01/B01-25/P17W29SafeRouteR5Lifecycle/.gitignore": "b67c661cfb5cc73f5f68cfe85fd17e954856ea87",
-    "Tools/B01/B01-25/P17W29SafeRouteR5Lifecycle/check.py": "f6f6c0b97d9ab54edbc8735f2fb6112c331eedfa",
+    "Tools/B01/B01-25/P17W29SafeRouteR5Lifecycle/check.py": "ad12a3a5521e184404d0d7a0be138a476256d235",
     "Tools/B01/B01-25/P17W29SafeRouteR5Lifecycle/README.md": "c74d3f7dfed4803c6265f34cd003ce1d42adea69"
   },
   "gitBlobs": {
@@ -161,7 +161,7 @@
     "Tools/B01/B01-25/P17W28SafeRouteR5/README.md": "9accd2c0788fe2fa25dfb686f977f879fca910af",
     "Tools/B01/B01-25/P17W28SafeRouteR5/TEST_PLAN.md": "00b29e8212e30c2f340ad031dca6b3799cce9b6e",
     "Tools/B01/B01-25/P17W29SafeRouteR5Lifecycle/.gitignore": "b67c661cfb5cc73f5f68cfe85fd17e954856ea87",
-    "Tools/B01/B01-25/P17W29SafeRouteR5Lifecycle/check.py": "f6f6c0b97d9ab54edbc8735f2fb6112c331eedfa",
+    "Tools/B01/B01-25/P17W29SafeRouteR5Lifecycle/check.py": "ad12a3a5521e184404d0d7a0be138a476256d235",
     "Tools/B01/B01-25/P17W29SafeRouteR5Lifecycle/README.md": "c74d3f7dfed4803c6265f34cd003ce1d42adea69"
   },
   "closureCount": 64,
@@ -188,5 +188,6 @@
     "Real Unity 6000.3.14f1 Windows PlayMode 26 original test cases must run with Editor.log NUnit XML process exit before G1 PASS",
     "Owner R3Debris.Separated not changed; consumer wiring requires B01-00 and Codex after formal acceptance",
     "No Windows native Player build or manual playtest in this isolated package"
-  ]
+  ],
+  "qaRedToGreen": "Run 41626861816 100 C#9 tests PASS each OS but 31/32 Git QA because checker looked up parentR5Sha not exactParentR5Sha. Repaired checker + repinned own source SHA and full re-run required"
 }
