@@ -6,7 +6,7 @@ import subprocess
 import sys
 
 BASE = "3bd9b159997924dcecb4e1cd1d41137896e5199e"
-ROOT = pathlib.Path(__file__).resolve().parents[5]
+ROOT = pathlib.Path(__file__).resolve().parents[4]
 TEST = "Assets/Tests/Editor/B0125W32RealArenaChallengeTests.cs"
 META = TEST + ".meta"
 DOC = "Docs/W32/B01-25_R5_ARENA_CHALLENGE_QA.md"
