@@ -1,4 +1,4 @@
-name: B01-21 W33 JumpPad original-CSharp contact lifecycle SOURCE ONLY
+name: B01-21 W33-W34 JumpPad original-CSharp contact lifecycle SOURCE ONLY
 on:
   push:
     branches: [b01-21/p17w33-jumppad-stale-collider-r1]
@@ -51,12 +51,24 @@ jobs:
           cat "$RUNNER_TEMP/legacy.log"
           test "$legacy_rc" -eq 23
           grep -q EXPECTED_STALE_CONTACT_RED "$RUNNER_TEMP/legacy.log"
+          # Previous approved W33 candidate still retains destroyed Rigidbody keys:
+          # exact old code must remain RED specifically for W34 cache-lifetime assertion.
+          dotnet clean "$PROJECT" --configuration Release --verbosity quiet
+          git show b3a053d8cd7c6a5a5ba69eb671633d1de218d42e:"$SRC" > "$RUNNER_TEMP/W33MapJumpPad.cs"
+          dotnet build "$PROJECT" --configuration Release "-p:MapJumpPadSource=$RUNNER_TEMP/W33MapJumpPad.cs" --output "$RUNNER_TEMP/w33-bin" --verbosity quiet
+          set +e
+          dotnet "$RUNNER_TEMP/w33-bin/B0121JumpPadGuard.dll" > "$RUNNER_TEMP/w33.log" 2>&1
+          w33_rc=$?
+          set -e
+          cat "$RUNNER_TEMP/w33.log"
+          test "$w33_rc" -eq 24
+          grep -q EXPECTED_DESTROYED_BODY_CACHE_RED "$RUNNER_TEMP/w33.log"
           dotnet clean "$PROJECT" --configuration Release --verbosity quiet
           dotnet build "$PROJECT" --configuration Release --output "$RUNNER_TEMP/fixed-bin" --verbosity quiet
           dotnet "$RUNNER_TEMP/fixed-bin/B0121JumpPadGuard.dll" > "$RUNNER_TEMP/fixed.log" 2>&1
           cat "$RUNNER_TEMP/fixed.log"
           grep -q B0121_ORIGINAL_CSHARP_GREEN "$RUNNER_TEMP/fixed.log"
-          echo "SOURCE_CSHARP_RED_TO_GREEN=PASS (NOT UNITY G1)" | tee "$RUNNER_TEMP/receipt.txt"
+          echo "SOURCE_CSHARP_W29_RED_W33_RED_W34_GREEN=PASS (NOT UNITY G1)" | tee "$RUNNER_TEMP/receipt.txt"
       - name: Upload source logs (including failed case)
         uses: actions/upload-artifact@v4
         if: always()
@@ -66,6 +78,7 @@ jobs:
             ${{ runner.temp }}/w33-paths.txt
             ${{ runner.temp }}/w33-head.txt
             ${{ runner.temp }}/legacy.log
+            ${{ runner.temp }}/w33.log
             ${{ runner.temp }}/fixed.log
             ${{ runner.temp }}/receipt.txt
           if-no-files-found: warn
