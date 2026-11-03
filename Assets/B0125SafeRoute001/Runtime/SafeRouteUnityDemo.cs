@@ -46,6 +46,9 @@ namespace B0125.SafeRoute
             internal Vector3[] ChildWorldPositions;
             internal Quaternion[] ChildWorldRotations;
             internal Vector3[] ChildWorldScales;
+            // Tracks temporary R3Debris collider disable/enable transitions.
+            // A dormant collider remains registered but route is NO_PATH.
+            internal bool[] ChildCollidable;
         }
         private const int MaxWorldBlockers=32;
         private readonly List<ExternalObstacle> externalObstacles=
@@ -226,7 +229,8 @@ namespace B0125.SafeRoute
         // navigation blockers. Never write to the object, Save or its owner.
         public bool TryRegisterWorldBlocker(Rigidbody body)
         {
-            if(body==null||body==player||body==physicalCrate||
+            if(body==null||!body.gameObject.activeInHierarchy||
+               body==player||body==physicalCrate||
                body==auxiliaryCrate||externalObstacles.Count>=MaxWorldBlockers)
                 return false;
             // Vehicle parts frequently have multiple child colliders. Register
@@ -237,8 +241,10 @@ namespace B0125.SafeRoute
             {
                 if(shape==null||shape.isTrigger||shape.attachedRigidbody!=body)
                     continue;
-                if(!shape.enabled||!shape.gameObject.activeInHierarchy)
-                    return false;
+                // R3Debris.Separated runs in Awake while all debris
+                // colliders are intentionally disabled for ~0.45 seconds.
+                // Keep ownership of these real attached shapes while dormant;
+                // sampling stays fail-closed until physics enables them.
                 shapes.Add(shape);
             }
             if(shapes.Count==0||shapes.Count>16)return false;
@@ -248,7 +254,8 @@ namespace B0125.SafeRoute
                 Body=body,Shapes=shapes.ToArray(),
                 ChildWorldPositions=new Vector3[shapes.Count],
                 ChildWorldRotations=new Quaternion[shapes.Count],
-                ChildWorldScales=new Vector3[shapes.Count]});
+                ChildWorldScales=new Vector3[shapes.Count],
+                ChildCollidable=new bool[shapes.Count]});
             Replan();
             return true;
         }
@@ -264,6 +271,22 @@ namespace B0125.SafeRoute
             }
             return false;
         }
+        // Unity destroyed objects compare equal to null even though the C#
+        // managed wrapper remains. Only those fully destroyed Rigidbody
+        // sources can be retired automatically; temporary disabled colliders
+        // must remain tracked and fail closed until they become solid again.
+        public int PruneDestroyedWorldBlockers()
+        {
+            int removed=0;
+            for(int i=externalObstacles.Count-1;i>=0;i--)
+            {
+                if(externalObstacles[i].Body!=null)continue;
+                externalObstacles.RemoveAt(i);
+                removed++;
+            }
+            if(removed>0)Replan();
+            return removed;
+        }
         private bool ExternalWorldChanged()
         {
             foreach(var item in externalObstacles)
@@ -275,8 +298,10 @@ namespace B0125.SafeRoute
                 for(int i=0;i<item.Shapes.Length;i++)
                 {
                     var shape=item.Shapes[i];
-                    if(shape==null||!shape.enabled||
-                       !shape.gameObject.activeInHierarchy)return true;
+                    if(shape==null)return true;
+                    bool nowCollidable=shape.enabled&&
+                        shape.gameObject.activeInHierarchy;
+                    if(nowCollidable!=item.ChildCollidable[i])return true;
                     if((shape.transform.position-item.ChildWorldPositions[i])
                        .sqrMagnitude>.0004f||
                        Quaternion.Angle(shape.transform.rotation,
@@ -301,6 +326,8 @@ namespace B0125.SafeRoute
                     item.ChildWorldPositions[i]=shape.transform.position;
                     item.ChildWorldRotations[i]=shape.transform.rotation;
                     item.ChildWorldScales[i]=shape.transform.lossyScale;
+                    item.ChildCollidable[i]=shape.enabled&&
+                        shape.gameObject.activeInHierarchy;
                 }
             }
         }
@@ -442,7 +469,12 @@ namespace B0125.SafeRoute
         }
         private void FixedUpdate()
         {
-            if(player==null||paused)return;
+            // R3Debris destroys wreckage after 10 seconds. Retire only when
+            // Unity actually destroys the Rigidbody; a temporarily disabled
+            // collider is still registered and cannot fabricate a safe route.
+            if(player==null)return;
+            PruneDestroyedWorldBlockers();
+            if(paused)return;
             float dt=Time.fixedDeltaTime;
             if(dt<=0||dt>.05f)return;
             foreach(var gate in gates)
