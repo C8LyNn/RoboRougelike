@@ -1,0 +1,51 @@
+name: B01-22 W33 original #915 V7 temporal RED receiver (no product patch)
+on:
+  pull_request:
+    paths:
+      - 'Assets/Tests/Editor/B0110W32EconomySettlementParityTests.cs'
+      - 'Assets/Tests/Editor/B0110W32EconomySettlementParityTests.cs.meta'
+      - 'Assets/Tests/Editor/B0122W32RebuildTransactionsTests.cs'
+      - 'Assets/Tests/Editor/B0122W32RebuildTransactionsTests.cs.meta'
+      - 'Tools/B01/ECONR3W33/**'
+      - '.github/workflows/b01-22-w33-original-915-nextwin-qa.yml'
+  workflow_dispatch:
+jobs:
+  actual-915-methods-v7-red-receiver:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2025, ubuntu-24.04]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Stage exact frozen ORIGINAL V7 policy, not another ECON implementation
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin 95060c1d254624355737fd2c48dd87cf79099ebe b4df10a7ad7e6c758f8331013f6b216b3a3689a3 e3043eac4b694d25aa57de73c47000d3ea796104
+          mkdir -p Tools/B01/ECONR3W33/.source
+          git show b4df10a7ad7e6c758f8331013f6b216b3a3689a3:Assets/B01Packages/ECONAPPROVED007/Runtime/ApprovedEconomyPolicyV7.cs > Tools/B01/ECONR3W33/.source/ApprovedEconomyPolicyV7.cs
+      - name: Check exactly producer #915 original product unchanged and fetch real CSharp methods
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 Tools/B01/ECONR3W33/verify_package.py | tee "$RUNNER_TEMP/w33-b01-22-original-methods.log"
+      - name: Compile real extracted original R3 RepairCost Repair RepairInventory EmergencyRepair with V7
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build Tools/B01/ECONR3W33/W33.Receiver.csproj -c Release | tee -a "$RUNNER_TEMP/w33-b01-22-original-methods.log"
+          dotnet run --project Tools/B01/ECONR3W33/W33.Receiver.csproj -c Release --no-build | tee -a "$RUNNER_TEMP/w33-b01-22-original-methods.log"
+          grep -q 'W33_ORIGINAL_915_PRICE_V7_SOURCE_PASS' "$RUNNER_TEMP/w33-b01-22-original-methods.log"
+          grep -q 'W33_ORIGINAL_915_NEXT_WIN_PRODUCT_RED' "$RUNNER_TEMP/w33-b01-22-original-methods.log"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b01-22-w33-original-915-temporal-red-${{ matrix.os }}
+          path: ${{ runner.temp }}/w33-b01-22-original-methods.log
+          if-no-files-found: warn
