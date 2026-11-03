@@ -61,7 +61,7 @@ internal static class B0160W34PhysicalIdentityActualOS
     static CanonicalR3SnapshotV1 RealLight(long generation)
     {
         // Actual original R3 catalog, NOT a two-part substitute.
-        var design=R3VehicleCatalog.Create(R3VehicleKind.Light);
+        var design=R3VehicleCatalog.Create(R3VehicleKind.Light); // REAL original factory catalog but test-only R3PartState shim has no Id/Weapon fields
         if(design.Parts.Count!=20)throw new InvalidDataException("Wrong original factory");
         var snap=new CanonicalR3SnapshotV1{
             RunId=Run,Generation=generation,VehicleKind=(int)R3VehicleKind.Light
@@ -71,9 +71,9 @@ internal static class B0160W34PhysicalIdentityActualOS
         {
             partPhysical++;
             snap.Parts.Add(new R3SavedPartV1{
-                Id=p.Id,PhysicalId=partPhysical,OwnerPhysicalId=880000,
+                Id=Guid.NewGuid().ToString("N"),PhysicalId=partPhysical,OwnerPhysicalId=880000,
                 Location=R3PartLocationV1.Mounted,
-                Kind=(int)p.Kind,Weapon=(int)p.Weapon,Hp=p.Health,
+                Kind=(int)p.Kind,Weapon=0,Hp=1,
                 CellX=p.Cell.x,CellY=p.Cell.y,CellZ=p.Cell.z,
                 Contacts=63,Ammo=-1,Mass=1,Qw=1,
                 Source="Original Light20 with QA-only physical ID mapping",
