@@ -9,7 +9,7 @@ REF={
  "game877":"3bd9b159997924dcecb4e1cd1d41137896e5199e",
  "game873":"d537b7310979b91df27a08b14d0f1c74d0889089",
  "writer896":"a0282f2de0250d2a8fe421bbe182b4cb6fab2a11",
- "dynamic923":"8de168dd83fe1d01a36def9acfae462bd63c9018",
+ "dynamic923":"e6eb24b7a45a66a5fa5d039f59c80b7e4be4439b",
  "economy780":"b4df10a7ad7e6c758f8331013f6b216b3a3689a3",
  "admission855":"c9c19665a4f9385e6479f7151097deb797026ade",
  "economy910":"f865177bfb8340b15ccf12a4c0a377151a297adf",
@@ -128,6 +128,8 @@ def static_guards():
                    "!physical.Add(p.PhysicalId)",
                    "!ids.Add(p.Id)",
                    "p.ConsumedDetach!=(p.Location==R3PartLocationV1.Detached)",
+                   "mountedWeaponTypes.Count>2","p.Weapon>8",
+                   "p.Kind!=2&&p.Weapon!=0","mountedOwner=0",
                    "p.Parts.Count"): # last sentinel checked independently below
         if marker=="p.Parts.Count":continue
         check(marker in codec,"DYNAMIC_CODEC_"+marker[:25])
@@ -158,6 +160,7 @@ def static_guards():
             "same_original_outer_envelope":"B0162G02",
             "frozen_old_two_rig_codec_unchanged":True,
             "dynamic_world_20_83_139_source_supported":True,
+            "source_R4_weapon_limit_and_mounted_owner_guard":True,
             "new_original_source_negative_controls":4,
             "live_Unity_R3_Rig_Dock_binder":"NOT_IMPLEMENTED",
             "Unity6000_3_14f1_native":"NOT_RUN",
