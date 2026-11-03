@@ -43,7 +43,7 @@ namespace RoboRougelike.B01Performance.Tests
                 Assert.NotNull(a.GetComponent<DetachedModuleVfxController>());
                 Assert.IsNull(b.GetComponent<DetachedModuleVfxController>(), "R2 defers unselected emitter allocation");
                 Assert.Greater(a.GetComponent<DetachedModuleVfxController>().EmissionRate, 0f);
-                Assert.AreEqual(0f, b.GetComponent<DetachedModuleVfxController>().EmissionRate);
+                // Under lazy allocation the unselected debris intentionally has NO VFX component.
                 Assert.AreEqual(beforeFast, ra.linearVelocity.x, 0.001f);
                 Assert.AreEqual(beforeSlow, rb.linearVelocity.x, 0.001f);
             }
@@ -201,5 +201,36 @@ namespace RoboRougelike.B01Performance.Tests
                 Object.Destroy(root);
             }
         }
+        [UnityTest]
+        public IEnumerator BelowVfxActualParticleThresholdDoesNotReportActiveEmitter()
+        {
+            var root = new GameObject("B0150_W30_no_phantom_sparks");
+            var budget = root.AddComponent<B0150DetachedDebrisSparkBudget>();
+            GameObject part = null;
+            try
+            {
+                // Budget accepts a weaker velocity threshold than VFX001's own
+                // serialized default 2.2 m/s. Source R2 incorrectly said
+                // ActiveEmitters=1 even though actual EmissionRate was zero.
+                budget.Configure(1, .2f, .25f);
+                part = Spawn("actual_R3_slow_unlit_debris", 1f);
+                yield return null;
+                budget.RefreshNow();
+                var fx = part.GetComponent<DetachedModuleVfxController>();
+                Assert.IsNotNull(fx, "Selected source creates the VFX component");
+                Assert.AreEqual(0f, fx.EmissionRate, "Physics must not light slow debris");
+                Assert.IsFalse(fx.IsDetached, "No phantom detached VFX after denial");
+                Assert.AreEqual(0, budget.ActiveEmitters,
+                    "Budget must count REAL emitting visuals, not selection slots");
+                Assert.IsNotNull(part.GetComponent<Rigidbody>());
+                Assert.IsTrue(part.activeInHierarchy);
+            }
+            finally
+            {
+                if (part != null) Object.Destroy(part);
+                Object.Destroy(root);
+            }
+        }
+
     }
 }
