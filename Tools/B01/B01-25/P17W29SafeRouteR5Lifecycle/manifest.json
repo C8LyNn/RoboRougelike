@@ -95,7 +95,7 @@
     "Tools/B01/B01-25/P17W28SafeRouteR5/README.md": "9accd2c0788fe2fa25dfb686f977f879fca910af",
     "Tools/B01/B01-25/P17W28SafeRouteR5/TEST_PLAN.md": "00b29e8212e30c2f340ad031dca6b3799cce9b6e",
     "Tools/B01/B01-25/P17W29SafeRouteR5Lifecycle/.gitignore": "b67c661cfb5cc73f5f68cfe85fd17e954856ea87",
-    "Tools/B01/B01-25/P17W29SafeRouteR5Lifecycle/check.py": "fa5fc5ac320bd7f9341fc8689fe9325586fbc871",
+    "Tools/B01/B01-25/P17W29SafeRouteR5Lifecycle/check.py": "2b447fb8ffa631968016ddaba2cd911a9faa812e",
     "Tools/B01/B01-25/P17W29SafeRouteR5Lifecycle/README.md": "d104cc4d4d5d287d8f509cf871c3777b24840bb7"
   },
   "gitBlobs": {
@@ -161,7 +161,7 @@
     "Tools/B01/B01-25/P17W28SafeRouteR5/README.md": "9accd2c0788fe2fa25dfb686f977f879fca910af",
     "Tools/B01/B01-25/P17W28SafeRouteR5/TEST_PLAN.md": "00b29e8212e30c2f340ad031dca6b3799cce9b6e",
     "Tools/B01/B01-25/P17W29SafeRouteR5Lifecycle/.gitignore": "b67c661cfb5cc73f5f68cfe85fd17e954856ea87",
-    "Tools/B01/B01-25/P17W29SafeRouteR5Lifecycle/check.py": "fa5fc5ac320bd7f9341fc8689fe9325586fbc871",
+    "Tools/B01/B01-25/P17W29SafeRouteR5Lifecycle/check.py": "2b447fb8ffa631968016ddaba2cd911a9faa812e",
     "Tools/B01/B01-25/P17W29SafeRouteR5Lifecycle/README.md": "d104cc4d4d5d287d8f509cf871c3777b24840bb7"
   },
   "closureCount": 64,
@@ -190,5 +190,6 @@
     "No Windows native Player build or manual playtest in this isolated package"
   ],
   "qaRedToGreen": "Run 41626861816 100 C#9 tests PASS each OS but 31/32 Git QA because checker looked up parentR5Sha not exactParentR5Sha. Repaired checker + repinned own source SHA and full re-run required",
-  "w30IncrementalFix": "One reused 256 Collider[] original Unity Physics.OverlapBoxNonAlloc buffer per owner MonoBehaviour; 27 authored native, 33 source transport QA. Unity Editor/Player NOT_RUN."
+  "w30IncrementalFix": "One reused 256 Collider[] original Unity Physics.OverlapBoxNonAlloc buffer per owner MonoBehaviour; 27 authored native, 33 source transport QA. Unity Editor/Player NOT_RUN.",
+  "w30QARedToGreen": "First source CI 41688778666 had 100/100 CSharp9 but old test_14 and test_28 expected 26 UnityTest sources, now 27. Fix 2 assertions only, re-pin and rerun all three jobs."
 }

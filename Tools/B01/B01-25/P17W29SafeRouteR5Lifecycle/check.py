@@ -135,7 +135,7 @@ class OriginalPhysicalR51QA(unittest.TestCase):
         self.assertIn("occupiedCells=SamplePhysicalBlockers()",s)
     def test_14_full_17_actual_nunit_unity_playmode_sources_authored_not_run(self):
         t=raw(A+"/Tests/PlayMode/SafeRouteNativePlayModeTests.cs").decode()
-        self.assertEqual(26,t.count("[UnityTest]"))
+        self.assertEqual(27,t.count("[UnityTest]"))
         for name in ("W27TwoOriginalRealPhysicalCratesOccupyDistinctCells",
            "W27TwoSoloSafeCratesCombinedHeavySoftlockIsRejected",
            "W27SafeMoveOfSecondPhysicalCrateKeepsHeavyRoute",
@@ -234,7 +234,7 @@ class OriginalPhysicalR51QA(unittest.TestCase):
         self.assertIn("Replan();",part)
     def test_28_native_world_detached_and_compound_child_tests_authored_not_run(self):
         t=raw(A+"/Tests/PlayMode/SafeRouteNativePlayModeTests.cs").decode()
-        self.assertEqual(26,t.count("[UnityTest]"))
+        self.assertEqual(27,t.count("[UnityTest]"))
         for name in (
             "W28RealDetachedModuleColliderBlocksHeavyWithoutAuthoritativeMutation",
             "W28ExternallyMovingDebrisCausesRealPhysicsResample",
