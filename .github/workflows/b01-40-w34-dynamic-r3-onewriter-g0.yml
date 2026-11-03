@@ -68,8 +68,8 @@ jobs:
         run: |
           set -euo pipefail
           dotnet run --project _source923/Tools/B01/B01-62/P17W33R3World/IndependentCases.csproj -c Release -v quiet | tee w34-evidence/independent-r3-codec-18.log
-          grep -q 'B0140_W34_INDEPENDENT_ORIGINAL_R3_CODEC_TOTAL 18 PASS 18 FAIL 0' w34-evidence/independent-r3-codec-14.log
-          grep -q 'B0140_W34_NATIVE_UNITY_NOT_RUN_NO_REAL_PHYSICS_BINDER' w34-evidence/independent-r3-codec-14.log
+          grep -q 'B0140_W34_INDEPENDENT_ORIGINAL_R3_CODEC_TOTAL 18 PASS 18 FAIL 0' w34-evidence/independent-r3-codec-18.log
+          grep -q 'B0140_W34_NATIVE_UNITY_NOT_RUN_NO_REAL_PHYSICS_BINDER' w34-evidence/independent-r3-codec-18.log
       - name: Verify scratch original #923 tracked Git sources unchanged after test execution
         run: |
           set -euo pipefail
