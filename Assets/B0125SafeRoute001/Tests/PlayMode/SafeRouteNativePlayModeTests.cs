@@ -444,5 +444,28 @@ namespace B0125.SafeRoute.Tests
             Assert.IsTrue(demo.CurrentPlan.Reachable);
             Object.Destroy(root);
         }
+        [UnityTest]
+        public IEnumerator W29InactiveCompoundPrefabChildrenDoNotStrandDebrisRoute()
+        {
+            var host=new GameObject("W29 inactive decorative child");
+            var demo=host.AddComponent<SafeRouteUnityDemo>();
+            yield return new WaitForFixedUpdate();
+            var root=new GameObject("detached module with inactive dormant ornament");
+            root.transform.position=demo.PhysicalCrate.position+
+                new Vector3(12f,0,0);
+            var body=root.AddComponent<Rigidbody>();
+            body.isKinematic=true;body.useGravity=false;
+            var active=GameObject.CreatePrimitive(PrimitiveType.Cube);
+            active.transform.SetParent(root.transform,false);
+            active.transform.localScale=new Vector3(1.25f,1.6f,1.25f);
+            var dormant=GameObject.CreatePrimitive(PrimitiveType.Cube);
+            dormant.transform.SetParent(root.transform,false);
+            dormant.SetActive(false);
+            Physics.SyncTransforms();
+            Assert.IsTrue(demo.TryRegisterWorldBlocker(body));
+            Assert.IsFalse(demo.OccupancyUncertain);
+            Assert.IsTrue(demo.CurrentPlan.Reachable);
+            Object.Destroy(root);Object.Destroy(host);
+        }
     }
 }

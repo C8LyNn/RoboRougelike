@@ -239,8 +239,12 @@ namespace B0125.SafeRoute
             var shapes=new List<Collider>();
             foreach(var shape in all)
             {
-                if(shape==null||shape.isTrigger||shape.attachedRigidbody!=body)
+                if(shape==null||shape.isTrigger||shape.attachedRigidbody!=body||
+                   !shape.gameObject.activeInHierarchy)
                     continue;
+                // Inactive prefab children are not active detached geometry;
+                // unlike temporarily disabled colliders on ACTIVE children,
+                // they must not permanently strand the route in NO_PATH.
                 // R3Debris.Separated runs in Awake while all debris
                 // colliders are intentionally disabled for ~0.45 seconds.
                 // Keep ownership of these real attached shapes while dormant;
