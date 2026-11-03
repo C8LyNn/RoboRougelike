@@ -37,4 +37,22 @@ public class W27GarageOccupiedZonesTests
         run.Garage.Close();
         Assert.That(run.Player.GetComponentsInChildren<LineRenderer>().Any(l=>l.name=="W27 occupied cell"),Is.False,"Closing the garage must immediately hide its overlay.");
     }
+    [UnityTest] public IEnumerator WheelGhostDistinguishesItsProtrudingGeometryDuringRotation()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float end=Time.realtimeSinceStartup+15;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<end)yield return null;
+        var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        run.SelectVehicle(R3VehicleKind.Light);Assert.That(run.OpenSandboxGarage(),Is.True);
+        var garage=run.Garage;garage.SelectedPart=R3PartKind.Wheel;garage.Select(new Vector3Int(1,1,1));
+        foreach(var turn in new[]{0,1})
+        {
+            if(turn!=0)garage.RotateSelected(0,turn);
+            var visual=garage.Preview.GetComponentsInChildren<Renderer>().FirstOrDefault(r=>r.name=="Koło");
+            Assert.That(visual,Is.Not.Null,"The ghost uses the actual wheel geometry.");
+            var color=visual.sharedMaterial.color;
+            Assert.That(color.b,Is.GreaterThan(color.r));Assert.That(color.b,Is.GreaterThan(color.g));
+            Assert.That(visual.GetComponentsInChildren<Collider>().All(c=>!c.enabled),Is.True,"Ghost geometry cannot affect physics.");
+        }
+    }
 }

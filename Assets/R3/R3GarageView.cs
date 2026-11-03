@@ -16,6 +16,7 @@ namespace RoboRougelike.R3
         private P12PipelineSafeCamera follow;
         private R3VisualPalette palette;
         private GameObject previewRoot,marker;
+        private readonly System.Collections.Generic.HashSet<Renderer> payloadRenderers=new System.Collections.Generic.HashSet<Renderer>();
         private readonly RaycastHit[] hits=new RaycastHit[512];
         private float yaw=35,pitch=32,distance=9,previousNear;
         private Vector3 pivotLocal;
@@ -65,7 +66,7 @@ namespace RoboRougelike.R3
         {
             if(run.Player!=null)R3BuildValidation.SetGarageSockets(run.Player.GetComponent<R3VehicleAssembly>(),false);
             if(previewRoot!=null){previewRoot.SetActive(false);Destroy(previewRoot);}
-            previewRoot=null;marker=null;HasTarget=false;orbitDragging=false;
+            previewRoot=null;marker=null;payloadRenderers.Clear();HasTarget=false;orbitDragging=false;
             RestoreArena();
             if(isOpen){view.nearClipPlane=previousNear;view.rect=new Rect(0,0,1,1);follow.enabled=true;}
             isOpen=false;
@@ -134,7 +135,7 @@ namespace RoboRougelike.R3
         public void RefreshPreview()
         {
             if(previewRoot!=null){previewRoot.SetActive(false);Destroy(previewRoot);}
-            previewRoot=new GameObject("Podgląd garażu");previewRoot.transform.SetParent(run.Player.transform,false);marker=null;
+            previewRoot=new GameObject("Podgląd garażu");previewRoot.transform.SetParent(run.Player.transform,false);marker=null;payloadRenderers.Clear();
             ShowOccupiedCells();
             foreach(var part in run.VehicleModel.Parts.Where(p=>p.Health<=0))
             {
@@ -181,6 +182,9 @@ namespace RoboRougelike.R3
             var collider=item.GetComponent<Collider>();collider.enabled=false;Destroy(collider);
             if(!R3VehicleModel.UsesWideFootprint(kind)&&(Tool==R41GarageTool.Mount||plan))
                 R41PartGeometry.Payload(item.transform,kind,weapon,material,false,out _);
+            if(!plan&&Tool==R41GarageTool.Mount)
+                foreach(var renderer in item.GetComponentsInChildren<Renderer>())
+                    if(renderer.transform!=item.transform)payloadRenderers.Add(renderer);
             if(!plan&&Tool==R41GarageTool.Mount)AddPortMarkers(item.transform,kind,contacts,material);
             return item;
         }
@@ -210,6 +214,7 @@ namespace RoboRougelike.R3
                shownTool!=Tool||shownRotation!=SelectedRotation||shownContacts!=SelectedContactMask)
             {
                 if(marker!=null){marker.SetActive(false);Destroy(marker);}
+                payloadRenderers.Clear();
                 marker=CreateGhost(Cell,MountKind,MountWeapon,palette.Valid,false,
                     SelectedRotation,SelectedContactMask);
                 shownKind=MountKind;shownWeapon=MountWeapon;shownTool=Tool;shownRotation=SelectedRotation;
@@ -217,7 +222,8 @@ namespace RoboRougelike.R3
             }
             marker.SetActive(HasTarget);marker.transform.localPosition=(Vector3)Cell*R41PartGeometry.Grid;
             var material=Tool==R41GarageTool.Mount?(PreviewValid?palette.Valid:palette.Invalid):palette.Selection;
-            foreach(var renderer in marker.GetComponentsInChildren<Renderer>())renderer.sharedMaterial=material;
+            foreach(var renderer in marker.GetComponentsInChildren<Renderer>())
+                renderer.sharedMaterial=payloadRenderers.Contains(renderer)?palette.Payload:material;
         }
         public static Vector3Int LocalFace(Transform vehicle,Vector3 worldNormal)
         {
