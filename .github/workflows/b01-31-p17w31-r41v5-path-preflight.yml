@@ -1,0 +1,80 @@
+name: B01-31 W31 R41 v5 EXISTING Unity Editor FBX Path and Preclone Safety
+on:
+  push:
+    branches: [art/b01-31-p17w31-r41v5-path-preflight]
+    paths:
+      - 'Assets/B01_31/W30R41V5Adapter/Editor/B0131W30CreateR41V5AdapterCandidate.cs'
+      - 'Assets/B01_31/W30R41V5Adapter/R41V5AssetPaths*'
+      - 'Assets/B01_31/W30R41V5Adapter/Tests/EditMode/R41V5W31PrecloneEditModeTests.cs*'
+      - 'Tools/B01-31/P17/W31R41V5PathPreflight001/**'
+      - '.github/workflows/b01-31-p17w31-r41v5-path-preflight.yml'
+  pull_request:
+    paths:
+      - 'Assets/B01_31/W30R41V5Adapter/Editor/B0131W30CreateR41V5AdapterCandidate.cs'
+      - 'Assets/B01_31/W30R41V5Adapter/R41V5AssetPaths*'
+      - 'Assets/B01_31/W30R41V5Adapter/Tests/EditMode/R41V5W31PrecloneEditModeTests.cs*'
+      - 'Tools/B01-31/P17/W31R41V5PathPreflight001/**'
+      - '.github/workflows/b01-31-p17w31-r41v5-path-preflight.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  ubuntu-actual-original-W30-and-W31-CSharp-source:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Execute ORIGINAL W31 production CSharp FBX-path source and W30 muzzle math (29 assertions)
+        run: dotnet run -c Release --project Tools/B01-31/P17/W31R41V5PathPreflight001/W31RealSource.csproj
+      - name: Preserve ORIGINAL W30 actual production dual-muzzle CSharp 52 regression assertions
+        run: dotnet run -c Release --project Tools/B01-31/P17/W30TurretV5Adapter001/R41V5Kinematics.csproj
+      - name: Original 12-source-file source-patch actual Python and independent verifier syntax
+        run: python -m compileall -q Tools/B01-31/P17/W31R41V5PathPreflight001/
+      - name: Build original physical 12-file source patch and independent check 8 corrupt mutants
+        run: |
+          python Tools/B01-31/P17/W31R41V5PathPreflight001/build_source.py --repo . --out build/B0131W31
+          python Tools/B01-31/P17/W31R41V5PathPreflight001/verify_source.py --repo . --out build/B0131W31
+      - name: Rebuild complete original ZIP+receipt exactly twice and check byte SHA parity
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd build/B0131W31 && sha256sum *.zip receipt.json) > /tmp/b0131-w31-original.sha
+          python Tools/B01-31/P17/W31R41V5PathPreflight001/build_source.py --repo . --out build/B0131W31
+          python Tools/B01-31/P17/W31R41V5PathPreflight001/verify_source.py --repo . --out build/B0131W31
+          (cd build/B0131W31 && sha256sum *.zip receipt.json) > /tmp/b0131-w31-second.sha
+          cmp /tmp/b0131-w31-original.sha /tmp/b0131-w31-second.sha
+          echo B0131_W31_REAL_ORIGINAL_GIT_SOURCE_ZIP_SHA_PARITY_PASS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B0131-W31-EXISTING-R41-V5-ABSOLUTE-FBX-PRECLONE-SOURCE-PATCH
+          path: build/B0131W31/
+          if-no-files-found: error
+          retention-days: 30
+  windows-independent-real-W31-CSharp-and-Ubuntu-artifact:
+    needs: ubuntu-actual-original-W30-and-W31-CSharp-source
+    runs-on: windows-2022
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: B0131-W31-EXISTING-R41-V5-ABSOLUTE-FBX-PRECLONE-SOURCE-PATCH
+          path: original-Ubuntu-W31
+      - name: Independent Windows runs actual W31 CSharp project-absolute source and 0.55m kinematics
+        run: dotnet run -c Release --project Tools/B01-31/P17/W31R41V5PathPreflight001/W31RealSource.csproj
+      - name: Independent Windows runs original W30 52 dual-muzzle source regressions
+        run: dotnet run -c Release --project Tools/B01-31/P17/W30TurretV5Adapter001/R41V5Kinematics.csproj
+      - name: Independent original downloaded Ubuntu W31 source ZIP read-only SHA/member/GUID/mutants
+        run: python Tools/B01-31/P17/W31R41V5PathPreflight001/verify_source.py --repo . --out original-Ubuntu-W31
