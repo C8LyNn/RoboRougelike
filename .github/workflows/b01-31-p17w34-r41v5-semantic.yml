@@ -1,0 +1,47 @@
+name: B01-31 W34 Original R41 v5 Rig CSharp SEMANTIC SOURCE (NOT UNITY)
+on:
+  push:
+    branches:
+      - qa/b01-31-p17w34-r41v5-original-rig-semantic
+    paths:
+      - 'Tools/B01-31/P17/W34RigSemantic001/**'
+      - '.github/workflows/b01-31-p17w34-r41v5-semantic.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01-31/P17/W34RigSemantic001/**'
+      - '.github/workflows/b01-31-p17w34-r41v5-semantic.yml'
+permissions:
+  contents: read
+jobs:
+  exact-original-rig-method:
+    name: ${{ matrix.os }} real original CSharp SOURCE semantic (NO UNITY)
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Test the actual exact immutable PR HEAD, not a synthetic merge.
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Compile + execute exact original B01-31 W33 two CSharp methods with 14 behavior controls and three mutation negatives
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01-31/P17/W34RigSemantic001/build_and_check.py --receipt Artifacts/B01-31/W34/receipt.json
+          echo "ORIGINAL_R41_V5_SOURCE_SEMANTICS_ONLY_NOT_REAL_UNITY_OR_FBX"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-31-W34-original-CSharp-source-semantic-${{ matrix.os }}-NO-UNITY
+          path: Artifacts/B01-31/W34/receipt.json
+          if-no-files-found: error
+          retention-days: 30
