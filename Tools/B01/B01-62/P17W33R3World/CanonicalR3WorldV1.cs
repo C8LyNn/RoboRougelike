@@ -127,6 +127,9 @@ namespace B01.CanonicalR3World001
                world.Parts.Count>MaxParts)return false;
             var ids=new HashSet<string>(StringComparer.Ordinal);
             var physical=new HashSet<long>();
+            // ORIGINAL R3VehicleModel.MaxWeaponTypes=2 applies only to
+            // mounted weapon families; inventory may legitimately stock more.
+            var mountedWeaponTypes=new HashSet<int>();
             int cores=0,mounted=0;
             long mountedOwner=0;
             foreach(var p in world.Parts)
@@ -145,6 +148,11 @@ namespace B01.CanonicalR3World001
                     // while all individual part IDs still appear unique.
                     if(mountedOwner==0)mountedOwner=p.OwnerPhysicalId;
                     if(p.OwnerPhysicalId!=mountedOwner)return false;
+                    if(p.Kind==2)
+                    {
+                        mountedWeaponTypes.Add(p.Weapon);
+                        if(mountedWeaponTypes.Count>2)return false;
+                    }
                     mounted++;
                 }
             }
