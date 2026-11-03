@@ -1,0 +1,59 @@
+name: B01-60 W32 existing R3 positive repairs + false bulk quote SOURCE-only witness
+on:
+  push:
+    branches:
+      - qa/b01-60-p17w31-real-garage-safe-recovery-r1
+    paths:
+      - 'Assets/Tests/Editor/B0160W31SafeRestorationGameAcceptanceTests.cs'
+      - 'Assets/Tests/Editor/B0160W31SafeRestorationGameAcceptanceTests.cs.meta'
+      - 'Tools/B01/B01-60/P17W31SafeRestoration/**'
+      - '.github/workflows/b01-60-p17w31-safe-restoration-source.yml'
+  pull_request:
+    paths:
+      - 'Assets/Tests/Editor/B0160W31SafeRestorationGameAcceptanceTests.cs'
+      - 'Assets/Tests/Editor/B0160W31SafeRestorationGameAcceptanceTests.cs.meta'
+      - 'Tools/B01/B01-60/P17W31SafeRestoration/**'
+      - '.github/workflows/b01-60-p17w31-safe-restoration-source.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-game-source-four-real-nunit-and-false-quote-source-red-witness:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run actual original Git source/repair-transaction contract and 3 negative mutants
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W31SafeRestoration/verify_source.py 2>&1 | tee b0160-w31-safe-restoration-source-only.log
+          grep -F 'B0160_W32_CURRENT_R3_DEEPCOPY_DROPS_RESTORATION_GATE_EXPECTED_PRODUCT_SOURCE_RED' b0160-w31-safe-restoration-source-only.log
+          grep -F 'B0160_W31_LATEST_ORIGINAL_877_5_GAME_BLOBS_IMMUTABLE_PASS' b0160-w31-safe-restoration-source-only.log
+          grep -F 'B0160_W32_FOUR_REAL_R3_SAFE_REPAIR_AND_BULK_QUOTE_NATIVE_TESTS_AUTHORED_ONLY' b0160-w31-safe-restoration-source-only.log
+          grep -F 'B0160_W31_SIX_QA_ONLY_ADD_PATHS_AND_NEW_UNITY_GUID_UNIQUE_PASS' b0160-w31-safe-restoration-source-only.log
+          grep -F 'B0160_W31_THREE_DELIBERATE_REPAIR_GATE_MUTANTS_REJECTED_PASS' b0160-w31-safe-restoration-source-only.log
+          grep -F 'B0160_W31_SOURCE_ONLY_PASS_NATIVE_UNITY_G1_AND_WINDOWS_PLAYER_NOT_RUN' b0160-w31-safe-restoration-source-only.log
+      - name: Explicit proof of no native Unity nor shipped Player in this job
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo 'B0160_W31_UNITY_EDITOR_AND_NUNIT_ACTUAL_EXECUTION_NOT_RUN'
+          echo 'B0160_W31_WINDOWS_X64_PLAYER_ZIP_SHA_PLAYER_LOG_NOT_CREATED'
+          echo 'B0160_W31_PRODUCT_G1_IS_BLOCKED_ON_REAL_UNITY'
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0160-W31-SAFE-RESTORATION-SOURCE-NOT-UNITY-${{ matrix.os }}
+          path: b0160-w31-safe-restoration-source-only.log
+          if-no-files-found: warn
+          retention-days: 14
