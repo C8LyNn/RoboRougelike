@@ -185,7 +185,13 @@ public class R4CombatTests
         foreach(var part in assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun))part.GunPivot.rotation=Quaternion.Euler(-30,180,0);
         R1EncounterManager.ClearTransientObjects();assembly.FireGuns();assembly.FireGroup(true);
         Assert.That(UnityEngine.Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Length,Is.EqualTo(3));
-        float end=Time.time+0.17f;yield return Until(()=>Time.time>=end,"Szybkostrzelność");assembly.FireGuns();assembly.FireGroup(true);
+        float end=Time.time+0.17f;yield return Until(()=>Time.time>=end,"Szybkostrzelność");
+        // The real input loop may aim a barrel into our own armor while waiting.
+        // Keep the cadence fixture unobstructed without bypassing the firing guard.
+        foreach(var part in assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun))part.GunPivot.rotation=Quaternion.Euler(-30,180,0);
+        Physics.SyncTransforms();
+        Assert.That(assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun).All(assembly.ClearProjectilePath),Is.True,"Cadence requires clear physical gun paths.");
+        assembly.FireGuns();assembly.FireGroup(true);
         var shots=UnityEngine.Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None);
         Assert.That(shots.Count(p=>p.Weapon==R4WeaponKind.Automatic),Is.EqualTo(4));
         Assert.That(shots.Count(p=>p.Weapon==R4WeaponKind.Basic),Is.EqualTo(1));
