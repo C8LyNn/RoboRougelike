@@ -1,0 +1,51 @@
+name: B01-50 W34 original R3 garage performance source QA (NOT Unity)
+on:
+  pull_request:
+    paths:
+      - 'Assets/Tests/Editor/B0150W32RealGarageProfilerTests.cs'
+      - 'Assets/Tests/Editor/B0150W32RealGarageProfilerTests.cs.meta'
+      - 'Tools/B01/B01-50/W32LiveGarageProfile001/**'
+      - '.github/workflows/b01-50-w32-live-garage-profile.yml'
+permissions:
+  contents: read
+concurrency:
+  group: b0150-source-garage-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  exact-source-perf-fixture:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 32
+      - name: Verify pinned original game base exists in bounded checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          git cat-file -e '3bd9b159997924dcecb4e1cd1d41137896e5199e^{commit}'
+          git merge-base --is-ancestor 3bd9b159997924dcecb4e1cd1d41137896e5199e HEAD
+      - name: Execute original repo and B01-50 negative source QA (NOT native Unity)
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p ci-evidence
+          git rev-parse HEAD | tee ci-evidence/head.txt
+          python Tools/CI/validate_repository.py 2>&1 | tee ci-evidence/verify_repository.log
+          python Tools/B01/B01-50/W32LiveGarageProfile001/verify.py --selftest 2>&1 | tee ci-evidence/negative_source_tests.log
+          python Tools/B01/B01-50/W32LiveGarageProfile001/verify.py 2>&1 | tee ci-evidence/original_source_scope.log
+          echo "UNITY_EDITOR=NOT_RUN; WIN64_PLAYER=NOT_BUILT; NATIVE_PERFORMANCE=NOT_MEASURED" | tee ci-evidence/native_gate.txt
+      - name: Preserve exact original SHA and source-only receipt
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: B01-50-W34-LIVE-R3-GARAGE-SOURCE-${{ matrix.os }}-${{ github.run_id }}
+          path: ci-evidence/
+          if-no-files-found: warn
+          retention-days: 14
