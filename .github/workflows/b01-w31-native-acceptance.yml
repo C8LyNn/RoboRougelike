@@ -198,3 +198,33 @@ jobs:
           name: W31-Windows-Player-smoke-${{ github.run_id }}
           path: player-logs/Player.log
           if-no-files-found: warn
+  native-verdict:
+    name: Fail CLOSED unless Unity Edit + Play + Win64 + extracted Player all executed
+    needs: [activation-and-source, editmode, playmode, build-windows, extracted-player]
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Enforce all real native results (source-only green is NOT G1)
+        env:
+          PREFLIGHT: ${{ needs.activation-and-source.result }}
+          EDIT: ${{ needs.editmode.result }}
+          PLAY: ${{ needs.playmode.result }}
+          WIN64: ${{ needs.build-windows.result }}
+          BOOT: ${{ needs.extracted-player.result }}
+        shell: bash
+        run: |
+          {
+            echo '### W31 exact-SHA REAL native gate'
+            echo "Preflight: ${PREFLIGHT}"
+            echo "Unity EditMode: ${EDIT}"
+            echo "Unity PlayMode: ${PLAY}"
+            echo "Windows x64 Player build: ${WIN64}"
+            echo "Extracted Windows Player boot: ${BOOT}"
+            echo 'This gate does not certify full matches, manual UI or cold Save.'
+          } >> "${GITHUB_STEP_SUMMARY}"
+          if [[ "${PREFLIGHT}" != success || "${EDIT}" != success || "${PLAY}" != success || "${WIN64}" != success || "${BOOT}" != success ]]; then
+            echo '::error::W31 FULL NATIVE FAIL_CLOSED: a Unity/Player stage failed or is NOT_RUN; SOURCE PASS is not native PASS.'
+            exit 1
+          fi
+          echo 'W31 four native pipeline stages REALLY EXECUTED SUCCESS (still not G2/release).'

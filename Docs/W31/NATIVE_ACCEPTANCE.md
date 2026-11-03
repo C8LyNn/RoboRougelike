@@ -18,3 +18,6 @@ Correction in the EXISTING #877 integrated game candidate: ADD ONLY both missing
 
 ## W31 CI cost control
 The source verifier needs **only two immutable trees**, current HEAD and approved #873 parent SHA; fetching the entire repository history and every agent branch wastes runner time. W30/W31 CI now use checkout depth 1 and one extra shallow explicit fetch of immutable #873 commit SHA, before exact Git diff/negative-source checks. No test assertion is suppressed or loosened. Old slow full-checkout attempts are preserved as historical evidence; current head must rerun both source and license gates.
+
+## Final verdict cannot misrepresent native acceptance
+A distinct `native-verdict` job executes `if: always()` and checks the **actual job conclusions** of source preflight, Unity EditMode, Unity PlayMode, Windows x64 build and extracted Windows Player boot. Any `skipped`, `failure` or `cancelled` marks **overall W31 workflow FAIL_CLOSED** with an explicit GitHub job summary, even if `activation-and-source` passes. This prevents a green GitHub badge from being mistaken for Unity G1 after missing-license skips. Native PASS is not full gameplay acceptance; 2 encounters and cold Save need independent evidence. Historical initial workflow had source-only green with skipped native; it is superseded by this stricter gate on a new exact SHA.
