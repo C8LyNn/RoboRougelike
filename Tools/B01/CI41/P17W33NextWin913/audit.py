@@ -88,7 +88,7 @@ def inspect(src):
  if "Mathf.CeilToInt((1-part.Health)*purchase*0.35f)" not in methods[0]:
   raise AssertionError("partial repair policy was changed")
  for m in methods[1:]:
-  if "part.Health=1;" not in m:raise AssertionError("temporal source witness changed: new proof required")
+  if not re.search(r"\bpart\.Health\s*=\s*1\s*;",m):raise AssertionError("temporal source witness changed: new proof required")
  if "cost<=0" in methods[2] or "price <= 0" in methods[1]:
   raise AssertionError("paid0 rejected")
  return methods
