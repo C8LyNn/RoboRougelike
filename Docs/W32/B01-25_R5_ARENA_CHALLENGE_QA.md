@@ -37,3 +37,18 @@ A 3.4m clearance probe is a bounded level-design envelope, **not** a guarantee f
 **Updated source guard:** The existing own Windows/Ubuntu workflow now also immutably pins original `R3VehicleCatalog.cs` and `R3VehicleAssembly.cs` against parent #877, verifies factory calls/0.55m grid and rejects deliberate missing factory and undersized grid mutants. Source-only receipts cannot certify Unity. Need exact new PR head GitHub Actions and independent B01-40/61 G0, then activated Unity6000.3.14f1 Test Framework 2/2 with Editor.log, NUnit XML and exit code, and extracted Player under owner-authorized G1.
 
 **Rollback:** Discard own unmerged QA-only PR #911; protected project #877 remains unchanged. W33 additions supersede original 3.4m QA assumptions above; the W32 section remains a historical record.
+
+## PASS17 / WAVE 34 — actual R5 damage-hazard coverage, SAME #911
+
+**W33 source-oracle gap:** the earlier `AssertCoverClear` ignored trigger-only and non-solid gameplay components, so a geometrically open corridor could still expose Light/Standard/Heavy to active `TelegraphedHazardZone` damage. This is a missing QA assertion, not a verified original-game bug or gameplay-code change.
+
+**W34 changes within the ORIGINAL two Unity NUnit test methods (no additional test file):**
+- Resolve the two **actual** `TelegraphedHazardZone` components attached by existing `R5Arena.Build` via `RRLHazardAdapter.Awake` and use each actual `hazard.Radius`, not an invented damage trigger.
+- Check conservative **horizontal XZ Bounds-to-circle clearance** with 0.05m test margin along each real factory-sized corridor pose and real Salvage Yard pad ingress/nominal landing. Independent native #901 still owns full R3 vehicle actual launch; #921 owns stale-collider JumpPad lifecycle.
+- Strictly distinguish this conservative geometric oracle from actual active damage, moving cover/parts, physics sweeps, player speed, 3D hit points, custom builds or gameplay victory. No `R5Arena`, `RRLHazardAdapter`, `TelegraphedHazardZone` or other production source was modified.
+
+**Actual cross-OS executable evidence:** existing owner `Tools/B01/B01-25/P17W32R5ChallengeQA/verify.py` now parses the **unaltered canonical** R5 hazard positions, pad/spawn, and original adapter `zone.Configure` radius; it computes a deterministic conservative source-space clearance witness for all 3 original factory envelopes. Three new intentionally negative mutations must return RED: move real hazard into central corridor, enlarge radius to 5m, delete one hazard. Together with prior 4 source mutants = **7 negative guards**. Six protected original game-source blobs are exact-parent pinned: R5 Arena, JumpPad, W29 tests, R3 factory and assembly, RRLHazardAdapter. This is **executable source-level geometry**, not licensed Unity or built Player.
+
+**Required next gate:** check current exact-HEAD Windows+Ubuntu GitHub CI logs; B01-40/61 independent G0, activated Unity 6000.3.14f1 real EditMode `B0125W32RealArenaChallengeTests` 2/2 with NUnit XML/Editor.log/exit, B01-60 #901 real multi-collider pad and #921 damaged-wheel lifecycle acceptance, then extracted Windows x64 Player. Do NOT inherit W33 CI after new commit. `UNITY_G1=NOT_RUN`, `PLAYER=NOT_BUILT` unless real evidence appears.
+
+**Rollback:** discard original QA-only Draft #911 entirely; immutable #873/#877 game source retained. No #834 loaner exception or second Save writer introduced.
