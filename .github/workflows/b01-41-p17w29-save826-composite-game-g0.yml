@@ -63,7 +63,7 @@ jobs:
           DEST="$RUNNER_TEMP/ci41-w29-owned-${RUNNER_OS}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
           SRC="$DEST/ci41-w29-owned-original-abi-project/Tools/B01/B01-62/P17W28UnityCompatibleWholeGameV3"
           dotnet --version
-          dotnet build "$SRC/WholeGameEconomyUnityV3Abi.csproj" -c Release --nologo -v minimal /p:Deterministic=true 2>&1 | tee "ci41-w29-netstandard21-${{ runner.os }}.txt"
+          dotnet build "$SRC/WholeGameEconomyUnityV3Abi.csproj" -c Release --nologo -v minimal -p:Deterministic=true 2>&1 | tee "ci41-w29-netstandard21-${{ runner.os }}.txt"
           grep -q 'Build succeeded' "ci41-w29-netstandard21-${{ runner.os }}.txt"
           echo CI41_W29_TRUE_ORIGINAL_826_CSHARP9_NETSTANDARD21_ABI_BUILD_PASS
       - name: EXECUTE original producer C#9 real physical one-file cold-restart and V7 wallet tests
