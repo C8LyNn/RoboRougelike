@@ -522,7 +522,18 @@ namespace RogueMachine.P12PipelineSafe
                 aimToleranceDegrees)
                 return;
 
-            if(packageSaw!=null){packageSaw.SetMotorRequested(!FriendlyInLine(aimPoint));return;}
+            if(packageSaw!=null)
+            {
+                // A contact disc must not spin and overheat while the enemy is still
+                // crossing the arena. Use the REAL target collider surface instead
+                // of center-to-center range, allowing ~1.5m for motor spin-up.
+                // The existing line-of-fire team guard remains authoritative.
+                float preSpinRange=packageSaw.Module.ContactRadius+1.5f;
+                bool inSawApproach=Vector3.Distance(muzzle.position,
+                    targetCollider.ClosestPoint(muzzle.position))<=preSpinRange;
+                packageSaw.SetMotorRequested(inSawApproach&&!FriendlyInLine(aimPoint));
+                return;
+            }
             if(packageBeam!=null)
             {packageBeam.SetTriggerHeld(!FriendlyInLine(aimPoint));return;}
             if(packageEmp!=null&&distance>8.5f)return;

@@ -65,13 +65,29 @@ public class RRLW6SawPhysicalTests
         run.Encounter.SetCombatActive(false);yield return null;
         var enemy=run.Encounter.Enemies.FirstOrDefault(e=>e.GetComponentInChildren<RotarySawModule>()!=null);
         Assert.That(enemy,Is.Not.Null,"Saw AI must be reachable in actual arena roster");
-        var body=enemy.GetComponent<Rigidbody>();run.Player.GetComponent<Rigidbody>().position=new Vector3(100,4,100);body.position=new Vector3(100,4,108);
-        // This case tests melee approach/cutting, with the initial aim already facing the target.
-        enemy.GetComponentsInChildren<Transform>().Single(t=>t.name=="Enemy_Yaw").rotation=Quaternion.LookRotation(Vector3.back);
-        enemy.SetCombatActive(true);Physics.SyncTransforms();float distance=Vector3.Distance(body.position,run.Player.transform.position);
+        var body=enemy.GetComponent<Rigidbody>();run.Player.GetComponent<Rigidbody>().position=new Vector3(100,4,100);
+        var yaw=enemy.GetComponentsInChildren<Transform>().Single(t=>t.name=="Enemy_Yaw");
+        var saw=enemy.GetComponentInChildren<RotarySawModule>();
+        // W34: distant AI must NOT waste its heat budget spinning a melee rotor
+        // while its genuine R3 vehicle crosses the arena to reach the player.
+        body.position=new Vector3(100,4,132);
+        yaw.rotation=Quaternion.LookRotation(Vector3.back);
+        enemy.SetCombatActive(true);Physics.SyncTransforms();
+        float farEnd=Time.time+.3f;while(Time.time<farEnd)yield return null;
+        Assert.IsFalse(saw.IsMotorRequested,"Distant Wasteland saw must not pre-heat at 30m");
+        Assert.That(saw.Motor.Rpm,Is.EqualTo(0f).Within(.001f));
+        Assert.That(saw.Motor.Heat,Is.EqualTo(0f).Within(.001f));
+
+        // Resume the ORIGINAL real melee approach test at 8m, with the original
+        // same enemy, physical car, real target collider and motor physics.
+        enemy.SetCombatActive(false);body.position=new Vector3(100,4,108);
+        yaw.rotation=Quaternion.LookRotation(Vector3.back);
+        enemy.SetCombatActive(true);Physics.SyncTransforms();
+        float distance=Vector3.Distance(body.position,run.Player.transform.position);
         float end=Time.time+1;while(Time.time<end)yield return null;
         Assert.That(Vector3.Distance(body.position,run.Player.transform.position),Is.LessThan(distance-1));
-        Assert.That(enemy.GetComponentInChildren<RotarySawModule>().Motor.Rpm,Is.GreaterThan(0));
+        Assert.That(saw.Motor.Rpm,Is.GreaterThan(0),
+            "After closing the real physical gap the existing saw must start spinning");
     }
     // W30: use the existing Wasteland enemy prefab and real owned colliders,
     // not a synthetic cube or an exemption from the physical saw safety gate.
