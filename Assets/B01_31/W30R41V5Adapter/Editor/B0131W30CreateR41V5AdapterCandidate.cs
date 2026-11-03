@@ -1,6 +1,7 @@
 #if UNITY_EDITOR
 using System;
 using System.IO;
+using System.Security.Cryptography;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -19,6 +20,12 @@ namespace RoboRougelike.B0131.W30.Editor
         public const string CandidatePath =
             GeneratedFolder + "/R41_Turret_v5_ADAPTER_CANDIDATE_ONLY.prefab";
 
+        // Actual producer-v5 Windows FBX bytes previously inspected by native
+        // QA. A different file/version must receive a NEW independent contract
+        // and explicit producer approval; never silently update old fallback.
+        public const string KnownV5FbxSha256 =
+            "fc83d677744d7e60b5f5f5f3ad3d9e72c97f84b66bbacf142c14959becfa5533";
+
         public static bool IsApprovedImportedModel(GameObject model, out string reason)
         {
             reason = "";
@@ -28,6 +35,25 @@ namespace RoboRougelike.B0131.W30.Editor
             if (string.IsNullOrEmpty(path) ||
                 !path.EndsWith("/R41_Turret_v5.fbx", StringComparison.OrdinalIgnoreCase))
             { reason = "WRONG_ASSET_NOT_R41_Turret_v5.fbx"; return false; }
+            if (!File.Exists(path))
+            { reason = "ORIGINAL_V5_FBX_BYTES_NOT_ACCESSIBLE"; return false; }
+            // Unity 6000.3 / netstandard-compatible API. Explicitly avoid
+            // SHA256.HashData and Convert.ToHexString from incompatible V2 Save.
+            string sourceSha;
+            using (var reader = File.OpenRead(path))
+            using (var hasher = SHA256.Create())
+            {
+                var digest = hasher.ComputeHash(reader);
+                var result = new System.Text.StringBuilder(64);
+                foreach (var b in digest) result.Append(b.ToString("x2"));
+                sourceSha = result.ToString();
+            }
+            if (!string.Equals(sourceSha,KnownV5FbxSha256,
+                StringComparison.OrdinalIgnoreCase))
+            {
+                reason = "UNVERIFIED_V5_FBX_SHA256_REQUIRES_NEW_PRODUCER_REVIEW";
+                return false;
+            }
             var importer = AssetImporter.GetAtPath(path) as ModelImporter;
             if (importer == null || !importer.bakeAxisConversion)
             {
