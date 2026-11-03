@@ -1,0 +1,68 @@
+name: B01-60 W29 original #828 Saw buffer overflow correction SOURCE ONLY native NOT_RUN
+on:
+  push:
+    branches: [qa/b01-60-p17w29-saw-overflow-production-correction-r1]
+    paths:
+      - 'Assets/RoboRougelikeMechanics/WPN005RotarySaw/Runtime/RotarySawModule.cs'
+      - 'Assets/RoboRougelikeMechanics/WPN005RotarySaw/Tests/PlayMode/RotarySawPhysicsTests.cs'
+      - 'Tools/B01/B01-60/P17W29SawOverflowQA/**'
+      - '.github/workflows/b01-60-p17w29-saw-overflow.yml'
+  pull_request:
+    paths:
+      - 'Assets/RoboRougelikeMechanics/WPN005RotarySaw/Runtime/RotarySawModule.cs'
+      - 'Assets/RoboRougelikeMechanics/WPN005RotarySaw/Tests/PlayMode/RotarySawPhysicsTests.cs'
+      - 'Tools/B01/B01-60/P17W29SawOverflowQA/**'
+      - '.github/workflows/b01-60-p17w29-saw-overflow.yml'
+permissions:
+  contents: read
+jobs:
+  genuine_original_saw_source_contract:
+    strategy:
+      fail-fast: false
+      matrix: {os: [ubuntu-24.04, windows-2025]}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: One original producer code branch modified + 1 authentic Unity 21st PlayMode case, no old case edited
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W29SawOverflowQA/verify.py | tee b0160-w29-saw-original-source-receipt.log
+          grep -F '"source_test_status": "PASS_EXACT_DIFF_ONLY"' b0160-w29-saw-original-source-receipt.log
+          grep -F '"unity_g1": "NOT_RUN"' b0160-w29-saw-original-source-receipt.log
+          grep -F '"native_default_player_enemy_geometry": "KNOWN_FAIL_UNRESOLVED"' b0160-w29-saw-original-source-receipt.log
+      - name: Execute adversarial 11 original source Git and native receipt tests, not Unity
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile Tools/B01/B01-60/P17W29SawOverflowQA/verify.py Tools/B01/B01-60/P17W29SawOverflowQA/test_verify.py
+          python -m unittest discover -s Tools/B01/B01-60/P17W29SawOverflowQA -p test_verify.py -v 2>&1 | tee b0160-w29-saw-source-tests.log
+          grep -F 'Ran 11 tests' b0160-w29-saw-source-tests.log
+          grep -F 'OK' b0160-w29-saw-source-tests.log
+          echo 'B0160_W29_SOURCE_ONLY_11_ORIGINAL_AUTHOR_TESTS_PASS_UNITY_NOT_RUN'
+  real_windows_powershell_manual_g1_safety:
+    runs-on: windows-2025
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Real Windows PowerShell SOURCE safe check, not Unity
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W29SawOverflowQA\Invoke-B0160W29SawNative.ps1 -RepoPath $env:GITHUB_WORKSPACE *>&1 | Tee-Object -FilePath b0160-w29-windows-source.log
+          if($LASTEXITCODE -ne 0){throw "source preflight failed"}
+          if(!(Select-String b0160-w29-windows-source.log -Pattern 'B0160_W29_SOURCE_ONLY_GREEN_NO_UNITY_PROCESS' -Quiet)){throw "no source receipt"}
+      - name: Deny real native launch before independent G0 and manual approval, expected exit3
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W29SawOverflowQA\Invoke-B0160W29SawNative.ps1 -RepoPath $env:GITHUB_WORKSPACE -Run *>&1 | Tee-Object -FilePath b0160-w29-native-without-g0.log
+          $return=$LASTEXITCODE
+          if($return -ne 3){throw "unsupported unattended Unity launch allowed: $return"}
+          if(Select-String b0160-w29-native-without-g0.log -Pattern 'STRUCTURAL_PASS'){throw 'false Unity PASS'}
+          $global:LASTEXITCODE=0
