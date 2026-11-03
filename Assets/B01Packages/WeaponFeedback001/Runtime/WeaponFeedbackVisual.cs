@@ -30,6 +30,11 @@ namespace B01.WeaponFeedback001
         public int ImpactPoolSize => impacts.Count;
 
         void Awake() { CachePivot(); if(muzzleLight)muzzleLight.enabled=false; }
+        void OnEnable()
+        {
+            // Restores the last visual damage state only when the component is active.
+            SetWeaponDamageVisual(DamageVisualFraction);
+        }
         void CachePivot()
         {
             if(!recoilVisualPivot)return;
@@ -43,6 +48,7 @@ namespace B01.WeaponFeedback001
             impactPrefab=hitFx;damagedWeaponSmoke=smoke;
             CachePivot();
             if(muzzleLight)muzzleLight.enabled=false;
+            if (isActiveAndEnabled) SetWeaponDamageVisual(DamageVisualFraction);
         }
         // Not authoritative. Call exactly once after a confirmed shot.
         public void NotifyShot()
@@ -110,6 +116,7 @@ namespace B01.WeaponFeedback001
                 if (impacts[i] && impactExpiry[i] > 0f && Time.time >= impactExpiry[i])
                 {
                     impacts[i].Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                    impacts[i].gameObject.SetActive(false);
                     impactExpiry[i] = 0f;
                 }
             if(muzzleLight&&muzzleLight.enabled)
@@ -123,9 +130,38 @@ namespace B01.WeaponFeedback001
         }
         void OnDisable()
         {
-            if(muzzleLight)muzzleLight.enabled=false;
-            if(recoilVisualPivot&&pivotSet)recoilVisualPivot.localPosition=restLocalPosition;
-            foreach (var impact in impacts) if (impact) Destroy(impact.gameObject);
+            if (muzzleLight) muzzleLight.enabled = false;
+            lightLeft = 0f;
+            if (muzzleFlash) muzzleFlash.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            if (damagedWeaponSmoke)
+            {
+                var emission = damagedWeaponSmoke.emission;
+                emission.enabled = false;
+                damagedWeaponSmoke.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            }
+            if (recoilVisualPivot && pivotSet) recoilVisualPivot.localPosition = restLocalPosition;
+            // Disabling a gun must stop detached impact effects immediately, but
+            // preserve pooled allocations for the same gun when it is re-enabled.
+            for (int i = 0; i < impacts.Count; i++)
+            {
+                var impact = impacts[i];
+                if (impact)
+                {
+                    impact.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                    impact.gameObject.SetActive(false);
+                }
+                impactExpiry[i] = 0f;
+            }
+        }
+        void OnDestroy()
+        {
+            // Pool objects have no parent: reclaim them when the owning weapon dies.
+            foreach (var impact in impacts)
+            {
+                if (!impact) continue;
+                if (Application.isPlaying) Destroy(impact.gameObject);
+                else DestroyImmediate(impact.gameObject);
+            }
             impacts.Clear();
             impactExpiry.Clear();
             nextImpactIndex = 0;
