@@ -1,0 +1,54 @@
+name: B01-62 W29 cold read original V3 paired world-economy
+on:
+  push:
+    branches: [b01-62/p17w29-cold-restart-read-v3]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W29ColdReadV3/**'
+      - '.github/workflows/b01-62-w29-cold-read-v3.yml'
+permissions:
+  contents: read
+jobs:
+  actual-original-disk-source:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Load genuine original ECON V7 only and prove Git scope
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin b4df10a7ad7e6c758f8331013f6b216b3a3689a3
+          mkdir -p Tools/B01/B01-62/P17W29ColdReadV3/.source b0162-w29-read-evidence
+          git show b4df10a7ad7e6c758f8331013f6b216b3a3689a3:Assets/B01Packages/ECONAPPROVED007/Runtime/ApprovedEconomyPolicyV7.cs > Tools/B01/B01-62/P17W29ColdReadV3/.source/ApprovedEconomyPolicyV7.cs
+          git show b4df10a7ad7e6c758f8331013f6b216b3a3689a3:Assets/B01Packages/ECONAPPROVED007/Runtime/CanonicalEconomySectionV7.cs > Tools/B01/B01-62/P17W29ColdReadV3/.source/CanonicalEconomySectionV7.cs
+          python Tools/B01/B01-62/P17W29ColdReadV3/source_guard.py b0162-w29-read-evidence/receipt.json | tee b0162-w29-read-evidence/scope.log
+      - name: Unity-like netstandard2.1 real source compile
+        run: |
+          set -euo pipefail
+          dotnet build Tools/B01/B01-62/P17W29ColdReadV3/ColdReadV3Abi.csproj -c Release -v quiet | tee b0162-w29-read-evidence/abi.log
+          grep -q 'Build succeeded' b0162-w29-read-evidence/abi.log
+      - name: Real disk cold read V7 fault and lock tests
+        run: |
+          set -euo pipefail
+          dotnet run --project Tools/B01/B01-62/P17W29ColdReadV3/ColdReadV3Qa.csproj -c Release -v quiet | tee b0162-w29-read-evidence/tests.log
+          grep -q 'B0162_W29_COLD_READ_REAL_OS_TOTAL 6 PASS 6 FAIL 0' b0162-w29-read-evidence/tests.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b0162-w29-cold-${{ matrix.os }}
+          path: b0162-w29-read-evidence/*
+          if-no-files-found: warn
