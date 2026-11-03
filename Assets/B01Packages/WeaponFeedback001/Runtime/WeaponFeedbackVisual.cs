@@ -21,6 +21,12 @@ namespace B01.WeaponFeedback001
         readonly List<ParticleSystem> impacts = new List<ParticleSystem>();
         readonly List<float> impactExpiry = new List<float>();
         int nextImpactIndex;
+        int EffectiveImpactCapacity => Mathf.Clamp(maximumImpactInstances, 1, 32);
+        // Corrupt serialized stats or bad physics callbacks must never put NaN/Infinity
+        // into a Transform, emission curve, or particle lifetime.
+        static bool Finite(float value) => !float.IsNaN(value) && !float.IsInfinity(value);
+        static bool Finite(Vector3 value) =>
+            Finite(value.x) && Finite(value.y) && Finite(value.z);
         Vector3 restLocalPosition;
         float lightLeft;
         bool pivotSet;
@@ -29,7 +35,17 @@ namespace B01.WeaponFeedback001
         public float DamageVisualFraction { get; private set; }
         public int ImpactPoolSize => impacts.Count;
 
-        void Awake() { CachePivot(); if(muzzleLight)muzzleLight.enabled=false; }
+        void Awake()
+        {
+            CachePivot();
+            if (muzzleLight) muzzleLight.enabled = false;
+            if (muzzleFlash) muzzleFlash.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        }
+        void OnEnable()
+        {
+            // Restores the last visual damage state only when the component is active.
+            SetWeaponDamageVisual(DamageVisualFraction);
+        }
         void CachePivot()
         {
             if(!recoilVisualPivot)return;
@@ -39,14 +55,50 @@ namespace B01.WeaponFeedback001
         public void BindVisuals(Transform pivot, ParticleSystem muzzle, Light flash,
                                 ParticleSystem hitFx, ParticleSystem smoke)
         {
-            recoilVisualPivot=pivot; muzzleFlash=muzzle; muzzleLight=flash;
-            impactPrefab=hitFx;damagedWeaponSmoke=smoke;
-            CachePivot();
-            if(muzzleLight)muzzleLight.enabled=false;
+            // Rebinds happen when visual weapon models are swapped in the garage.
+            // Restore the OLD pivot and stop OLD emitters before replacing references.
+            bool changed = recoilVisualPivot != pivot || muzzleFlash != muzzle ||
+                           muzzleLight != flash || impactPrefab != hitFx ||
+                           damagedWeaponSmoke != smoke;
+            if (changed)
+            {
+                if (recoilVisualPivot && pivotSet)
+                    recoilVisualPivot.localPosition = restLocalPosition;
+                if (muzzleFlash)
+                    muzzleFlash.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                if (muzzleLight) muzzleLight.enabled = false;
+                if (damagedWeaponSmoke)
+                {
+                    var oldEmission = damagedWeaponSmoke.emission;
+                    oldEmission.enabled = false;
+                    damagedWeaponSmoke.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                }
+                ReleaseImpactPool();
+            }
+            recoilVisualPivot = pivot;
+            muzzleFlash = muzzle;
+            muzzleLight = flash;
+            impactPrefab = hitFx;
+            damagedWeaponSmoke = smoke;
+            // Rebinding identical references during recoil must not redefine
+            // the displaced pivot as its permanent resting position.
+            if (changed)
+            {
+                pivotSet = false;
+                CachePivot();
+            }
+            else if (!pivotSet)
+                CachePivot();
+            lightLeft = 0f;
+            if (muzzleLight) muzzleLight.enabled = false;
+            if (muzzleFlash)
+                muzzleFlash.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            SetWeaponDamageVisual(DamageVisualFraction);
         }
         // Not authoritative. Call exactly once after a confirmed shot.
         public void NotifyShot()
         {
+            if (!isActiveAndEnabled) return;
             ShotFeedbackCount++;
             if(muzzleFlash)muzzleFlash.Play(true);
             if(muzzleLight){muzzleLight.enabled=true;lightLeft=lightDurationSeconds;}
@@ -56,14 +108,20 @@ namespace B01.WeaponFeedback001
         // Not authoritative. Collision/damage code supplies the verified impact event.
         public void NotifyImpact(Vector3 position,Vector3 outwardNormal)
         {
+            if (!isActiveAndEnabled) return;
+            // Untrusted/malformed impact positions cannot become world transforms.
+            // Count only a valid confirmed visual event; do not allocate on rejection.
+            if (!Finite(position)) return;
             ImpactFeedbackCount++;
             if(!impactPrefab)return;
-            Vector3 normal=outwardNormal.sqrMagnitude>.0001f?outwardNormal.normalized:Vector3.up;
+            float magnitude = Finite(outwardNormal) ? outwardNormal.magnitude : 0f;
+            Vector3 normal = Finite(magnitude) && magnitude > .01f
+                ? outwardNormal / magnitude : Vector3.up;
             // Reuse a bounded number of particle objects. Bursts must not allocate
             // one new GameObject per hit (or exceed the configured budget).
             ParticleSystem copy;
             int slot;
-            if(impacts.Count < maximumImpactInstances)
+            if(impacts.Count < EffectiveImpactCapacity)
             {
                 copy = Instantiate(impactPrefab, position,
                     Quaternion.FromToRotation(Vector3.up, normal), null);
@@ -85,50 +143,89 @@ namespace B01.WeaponFeedback001
                 copy.transform.SetPositionAndRotation(position,
                     Quaternion.FromToRotation(Vector3.up, normal));
             }
-            nextImpactIndex = (slot + 1) % maximumImpactInstances;
+            nextImpactIndex = (slot + 1) % EffectiveImpactCapacity;
             copy.gameObject.SetActive(true);
             copy.Play(true);
-            impactExpiry[slot] = Time.time + impactLifetimeSeconds;
+            impactExpiry[slot] = Time.unscaledTime + impactLifetimeSeconds;
         }
         // 0..1 comes from game health; this class never writes HP.
         public void SetWeaponDamageVisual(float fraction)
         {
-            DamageVisualFraction=Mathf.Clamp01(fraction);
+            // Mathf.Clamp01(NaN) returns NaN; prevent invalid emission curves.
+            DamageVisualFraction=Finite(fraction)?Mathf.Clamp01(fraction):0f;
             if(!damagedWeaponSmoke)return;
             var emission=damagedWeaponSmoke.emission;
-            emission.enabled=DamageVisualFraction>.01f;
-            emission.rateOverTime=DamageVisualFraction*18f;
-            if(DamageVisualFraction>.01f&&!damagedWeaponSmoke.isPlaying)
+            bool activeSmoke = isActiveAndEnabled && DamageVisualFraction > .01f;
+            emission.enabled = activeSmoke;
+            emission.rateOverTime = DamageVisualFraction * 18f;
+            if (activeSmoke && !damagedWeaponSmoke.isPlaying)
                 damagedWeaponSmoke.Play(true);
-            else if(DamageVisualFraction<=.01f&&damagedWeaponSmoke.isPlaying)
-                damagedWeaponSmoke.Stop(true,ParticleSystemStopBehavior.StopEmitting);
+            else if (!activeSmoke && damagedWeaponSmoke.isPlaying)
+                damagedWeaponSmoke.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         }
         void Update()
         {
             // Expire effects without destroying their pooled GameObjects.
             for (int i = 0; i < impacts.Count; i++)
-                if (impacts[i] && impactExpiry[i] > 0f && Time.time >= impactExpiry[i])
+                if (impacts[i] && impactExpiry[i] > 0f && Time.unscaledTime >= impactExpiry[i])
                 {
                     impacts[i].Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                    impacts[i].gameObject.SetActive(false);
                     impactExpiry[i] = 0f;
                 }
             if(muzzleLight&&muzzleLight.enabled)
             {
-                lightLeft-=Time.deltaTime;
+                lightLeft-=Time.unscaledDeltaTime;
                 if(lightLeft<=0f)muzzleLight.enabled=false;
             }
             if(recoilVisualPivot&&pivotSet)
                 recoilVisualPivot.localPosition=Vector3.Lerp(recoilVisualPivot.localPosition,
-                    restLocalPosition,1f-Mathf.Exp(-recoilRecoverySpeed*Time.deltaTime));
+                    restLocalPosition,1f-Mathf.Exp(-recoilRecoverySpeed*Time.unscaledDeltaTime));
         }
         void OnDisable()
         {
-            if(muzzleLight)muzzleLight.enabled=false;
-            if(recoilVisualPivot&&pivotSet)recoilVisualPivot.localPosition=restLocalPosition;
-            foreach (var impact in impacts) if (impact) Destroy(impact.gameObject);
+            if (muzzleLight) muzzleLight.enabled = false;
+            lightLeft = 0f;
+            if (muzzleFlash) muzzleFlash.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            if (damagedWeaponSmoke)
+            {
+                var emission = damagedWeaponSmoke.emission;
+                emission.enabled = false;
+                damagedWeaponSmoke.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            }
+            if (recoilVisualPivot && pivotSet) recoilVisualPivot.localPosition = restLocalPosition;
+            // Disabling a gun must stop detached impact effects immediately, but
+            // preserve pooled allocations for the same gun when it is re-enabled.
+            for (int i = 0; i < impacts.Count; i++)
+            {
+                var impact = impacts[i];
+                if (impact)
+                {
+                    impact.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                    impact.gameObject.SetActive(false);
+                }
+                impactExpiry[i] = 0f;
+            }
+        }
+        void ReleaseImpactPool()
+        {
+            // Detached world-space particles are owned by this component even
+            // though their GameObjects are not children of the visual model.
+            foreach (var impact in impacts)
+            {
+                if (!impact) continue;
+                impact.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                impact.gameObject.SetActive(false);
+                if (Application.isPlaying) Destroy(impact.gameObject);
+                else DestroyImmediate(impact.gameObject);
+            }
             impacts.Clear();
             impactExpiry.Clear();
             nextImpactIndex = 0;
+        }
+        void OnDestroy()
+        {
+            ReleaseImpactPool();
         }
     }
 }
