@@ -12,7 +12,7 @@ def export(repo,out):
  paths=m["all_package_paths"]
  need(m["package_id"]==PKG and
       m["exact_W28_parent"]=="2508f533d3ed8c31f581e491afb2494ab7fa774c" and
-      len(paths)==16 and paths==sorted(set(paths)) and
+      len(paths)==17 and paths==sorted(set(paths)) and
       sorted(m["modified_owner_paths"]+m["added_owner_paths"])==paths,
       "author owner manifest and 16 exact files")
  members={}
