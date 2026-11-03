@@ -1,0 +1,107 @@
+{
+  "schema": "B01-31-source-intake-1",
+  "package_id": "B01-31-P17W30-R41-V5-AXIS-LOCKED-ADAPTER-001",
+  "revision": "P17-W30-R1",
+  "owner": "B01-31 — CONCEPT ART & VISUAL EXPLORATION",
+  "hq_issue": 800,
+  "exact_W29_owner_parent": "ced677d7b3f9fa81e6b0e5b51a028a518770e096",
+  "base_pr": "#870",
+  "base_branch": "art/b01-31-p17w29-prefab-detached-armor-intake",
+  "all_new_owner_source_paths": [
+    ".github/workflows/b01-31-p17w30-r41v5-candidate.yml",
+    "Assets/B01_31/W30R41V5Adapter.meta",
+    "Assets/B01_31/W30R41V5Adapter/Editor.meta",
+    "Assets/B01_31/W30R41V5Adapter/Editor/B0131W30CreateR41V5AdapterCandidate.cs",
+    "Assets/B01_31/W30R41V5Adapter/Editor/B0131W30CreateR41V5AdapterCandidate.cs.meta",
+    "Assets/B01_31/W30R41V5Adapter/R41V5MuzzleGeometry.cs",
+    "Assets/B01_31/W30R41V5Adapter/R41V5MuzzleGeometry.cs.meta",
+    "Assets/B01_31/W30R41V5Adapter/Tests.meta",
+    "Assets/B01_31/W30R41V5Adapter/Tests/EditMode.meta",
+    "Assets/B01_31/W30R41V5Adapter/Tests/EditMode/R41V5ActualFbxImportEditModeTests.cs",
+    "Assets/B01_31/W30R41V5Adapter/Tests/EditMode/R41V5ActualFbxImportEditModeTests.cs.meta",
+    "Assets/B01_31/W30R41V5Adapter/Tests/EditMode/RoboRougelike.B0131.W30.RealR41FbxEditModeTests.asmdef",
+    "Assets/B01_31/W30R41V5Adapter/Tests/EditMode/RoboRougelike.B0131.W30.RealR41FbxEditModeTests.asmdef.meta",
+    "Tools/B01-31/P17/W30TurretV5Adapter001/OriginalR41V5SourceAcceptance.cs",
+    "Tools/B01-31/P17/W30TurretV5Adapter001/R41V5Kinematics.csproj",
+    "Tools/B01-31/P17/W30TurretV5Adapter001/README.md",
+    "Tools/B01-31/P17/W30TurretV5Adapter001/build_source.py",
+    "Tools/B01-31/P17/W30TurretV5Adapter001/manifest.json",
+    "Tools/B01-31/P17/W30TurretV5Adapter001/verify_source.py"
+  ],
+  "external_verified_source": {
+    "asset_name": "R41_Turret_v5.fbx",
+    "sha256": "fc83d677744d7e60b5f5f5f3ad3d9e72c97f84b66bbacf142c14959becfa5533",
+    "origin": "Codex/R41 v5 isolated native importer report issue #79, real model local to operator, not present in repository",
+    "source_in_this_patch": false,
+    "required_native_source_path": "Assets/B01_31/W30R41V5Adapter/Incoming/R41_Turret_v5.fbx",
+    "required_import_setting": "ModelImporter.bakeAxisConversion = true",
+    "existing_original_working_turret": "FROZEN_NOT_EDITED",
+    "export_after_native_qa": "Assets/B01_31/W30R41V5Adapter/Generated/R41_Turret_v5_ADAPTER_CANDIDATE_ONLY.prefab"
+  },
+  "observed_external_qa": {
+    "original_v5_import_default_muzzles": "root-local left=(+.060,+.135,-.700), right=(-.060,+.135,-.700), legacy forwards +Y",
+    "original_v5_import_axis_baked": "left=(-.060,+.135,+.700), right=(+.060,+.135,+.700), legacy forwards -Y",
+    "v5_visual_pivot": "(0,+.135,0)",
+    "grid_m": 0.55,
+    "source_unity_native_evidence": "R41 v5 QA in issue #79 (earlier isolated local test, not W30 integration)",
+    "w30_native_editor_run": "NOT_RUN"
+  },
+  "interfaces": {
+    "input": "EXACT producer-v5 FBX selected in Unity Project, SHA verified and baked-axis imported; own optional Editor menu only",
+    "positive": "build NEW own preview GO with wrapper Yaw(+Y), child Pitch(+X), separate Muzzle_L/R (+Z), validate 12 exact 3D poses and source marker coincidence, disable clone Animators, remove physics ONLY from cloned visual; optionally SaveAsPrefabAsset to unique candidate path",
+    "negative": "Reject unknown SHA, wrong FBX, source scale !=1, absent/duplicate muzzles, wrong neutral marker positions, nonfinite/illegal math poses, foreign MonoBehaviour/Joints, missing rendering, old candidate path collision, Editor play; never modify original FBX or original AutomaticGun prefab",
+    "output": "own optional fallback-safe visual adapter candidate prefab only, no AutomaticGun hookup, no moving chassis/GUI/Save or publisher event",
+    "integration_blocker": "No actual source FBX bytes available to this connected tool runtime; actual real Unity native FBX import+play tests NOT_RUN; B01-60 must verify source SHA and exact imported geometry"
+  },
+  "test_plan": [
+    {
+      "kind": "SOURCE_COMPILER_CROSS_OS",
+      "status": "PENDING_CI",
+      "detail": "compile real R41V5MuzzleGeometry.cs via dotnet8 on Ubuntu+Windows, execute 52 original physics math checks"
+    },
+    {
+      "kind": "SOURCE_BUNDLE_CROSS_OS",
+      "status": "PENDING_CI",
+      "detail": "original 19 file ADD-only physical ZIP producer/independent verifier, 8 negative corruptions, 8 unique Unity GUID, two complete deterministic exports, Windows reads original Ubuntu artifact"
+    },
+    {
+      "kind": "NATIVE_REAL_FBX_IMPORT",
+      "status": "NOT_RUN",
+      "detail": "4 native EditMode tests require actual source FBX sha and ModelImporter baked axes, 12 yaw/pitch real Transform tests, no source prefab modifications"
+    },
+    {
+      "kind": "REAL_R41_GAME_PREFAB",
+      "status": "NOT_RUN",
+      "detail": "AutomaticGun binding, collider swept zones, Player Windows and fallback in actual gameplay not implemented without acceptance"
+    },
+    {
+      "kind": "QA_G0",
+      "status": "PENDING",
+      "detail": "formal independent B01-30/40 original SHA/GUID/source scope"
+    }
+  ],
+  "risks": [
+    "Real FBX only local to user/producer; cannot access via GitHub.",
+    "Native Unity actual ModelImporter and prefab builder may have source-specific mismatch; no claimed G1.",
+    "This is VISUAL ONLY candidate, not a working weapon/physical turret prefab."
+  ],
+  "stages": {
+    "IMPLEMENTED": "SOURCE",
+    "TESTED": "PENDING_CI",
+    "QA_ACCEPTED": "NO",
+    "READY_FOR_INTEGRATOR": "NO",
+    "INTEGRATED": "NO",
+    "RELEASED": "NO",
+    "INDEPENDENT_G0": "PENDING",
+    "UNITY_NATIVE_G1": "NOT_RUN",
+    "WINDOWS_PLAYER": "NOT_RUN",
+    "G2": "HOLD",
+    "CODEX_ACK": "NO"
+  },
+  "next_owners": [
+    "B01-30/B01-40 formal G0 original new GUID and no source collisions",
+    "B01-60 approved local Unity Editor original FBX v5 physical import and 4 native tests",
+    "B01-00 gating later Codex/R41 production prefabbing, no source overwrite until reviewed"
+  ],
+  "rollback": "Remove only 19 W30 newly authored own paths from owner-approved isolated scratch. Keep original v5 FBX, existing working turret, P12, W24/W25/W27/W28/W29, R3/Save, all foreign/even-empty paths and active Codex worktree untouched."
+}
