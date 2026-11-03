@@ -19,6 +19,12 @@ namespace UnityEngine
      if(target is Component comp)comp.gameObject.Detach(comp);
      if(target is GameObject go)go.MarkDestroyed();
    }
+   // Synthetic clone ONLY: real W29 Editor source calls Unity Object.Instantiate.
+   public static T Instantiate<T>(T original) where T:Object
+   {
+     if (original is GameObject root) return (T)(Object)root.SyntheticDeepClone();
+     throw new NotSupportedException("Synthetic test supports GameObject only");
+   }
    protected static void Destroy(Object? obj,float delay=0) {}
  }
  public class Component : Object
@@ -44,7 +50,28 @@ namespace UnityEngine
    public string name {get;set;}
    public bool activeSelf {get;private set;}=true;
    public bool dead {get;private set;}
+   // Test-only model of an instantiated prefab link; native Unity uses
+   // PrefabUtility and its own real imported prefab root state.
+   internal bool syntheticPrefabConnected {get;set;}
    public Transform transform {get;}
+   internal GameObject SyntheticDeepClone()
+   {
+      var clone=new GameObject(name+"(Clone)",activeSelf);
+      clone.syntheticPrefabConnected=true;
+      foreach(var component in components)
+        if(component is not Transform)clone.AddComponent(component.GetType());
+      foreach(var child in children)
+      {
+        var childClone=child.SyntheticDeepClone();
+        childClone.transform.SetParent(clone.transform,false);
+      }
+      return clone;
+   }
+   internal void SyntheticUnpack()
+   {
+     syntheticPrefabConnected=false;
+     foreach(var child in children)child.SyntheticUnpack();
+   }
    public GameObject(string n="synthetic",bool active=true)
    {name=n;activeSelf=active;transform=new Transform(this);components.Add(transform);}
    public static GameObject CreatePrimitive(PrimitiveType type)
