@@ -22,6 +22,11 @@ namespace B01.WeaponFeedback001
         readonly List<float> impactExpiry = new List<float>();
         int nextImpactIndex;
         int EffectiveImpactCapacity => Mathf.Clamp(maximumImpactInstances, 1, 32);
+        // Corrupt serialized stats or bad physics callbacks must never put NaN/Infinity
+        // into a Transform, emission curve, or particle lifetime.
+        static bool Finite(float value) => !float.IsNaN(value) && !float.IsInfinity(value);
+        static bool Finite(Vector3 value) =>
+            Finite(value.x) && Finite(value.y) && Finite(value.z);
         Vector3 restLocalPosition;
         float lightLeft;
         bool pivotSet;
@@ -104,9 +109,13 @@ namespace B01.WeaponFeedback001
         public void NotifyImpact(Vector3 position,Vector3 outwardNormal)
         {
             if (!isActiveAndEnabled) return;
+            // Untrusted/malformed impact positions cannot become world transforms.
+            // Count only a valid confirmed visual event; do not allocate on rejection.
+            if (!Finite(position)) return;
             ImpactFeedbackCount++;
             if(!impactPrefab)return;
-            Vector3 normal=outwardNormal.sqrMagnitude>.0001f?outwardNormal.normalized:Vector3.up;
+            Vector3 normal = Finite(outwardNormal) &&
+                outwardNormal.sqrMagnitude > .0001f ? outwardNormal.normalized : Vector3.up;
             // Reuse a bounded number of particle objects. Bursts must not allocate
             // one new GameObject per hit (or exceed the configured budget).
             ParticleSystem copy;
@@ -141,7 +150,8 @@ namespace B01.WeaponFeedback001
         // 0..1 comes from game health; this class never writes HP.
         public void SetWeaponDamageVisual(float fraction)
         {
-            DamageVisualFraction=Mathf.Clamp01(fraction);
+            // Mathf.Clamp01(NaN) returns NaN; prevent invalid emission curves.
+            DamageVisualFraction=Finite(fraction)?Mathf.Clamp01(fraction):0f;
             if(!damagedWeaponSmoke)return;
             var emission=damagedWeaponSmoke.emission;
             bool activeSmoke = isActiveAndEnabled && DamageVisualFraction > .01f;
