@@ -7,7 +7,8 @@ namespace RoboRougelike.B01Performance
 {
     /// <summary>
     /// Optional visual-only budget for actual R3Debris.Separated events.
-    /// R2: defer creating emitters until selected; cache Rigidbody per actual
+    /// R4: skip repeated native VFX writes when the selected body speed is unchanged;
+    /// defer creating emitters until selected; cache Rigidbody per actual
     /// detachment; do not rewrite inactive emitters on every refresh.
     /// No changes to Rigidbody, collider, module IDs or gameplay economics.
     /// </summary>
@@ -26,6 +27,8 @@ namespace RoboRougelike.B01Performance
         private readonly List<DetachedModuleVfxController> fx =
             new List<DetachedModuleVfxController>(70);
         private readonly List<bool> wasEmitting = new List<bool>(70);
+        // Aligned with tracked[]; no repeated ParticleSystem emission write for stable speeds.
+        private readonly List<float> lastEmissionSpeed = new List<float>(70);
         private readonly float[] speeds = new float[70];
         private readonly bool[] eligible = new bool[70];
         private readonly bool[] selected = new bool[70];
@@ -61,6 +64,7 @@ namespace RoboRougelike.B01Performance
             bodies.Clear();
             fx.Clear();
             wasEmitting.Clear();
+            lastEmissionSpeed.Clear();
             visibleCount = 0;
         }
 
@@ -84,6 +88,7 @@ namespace RoboRougelike.B01Performance
             bodies.Add(body);
             fx.Add(existing);
             wasEmitting.Add(false);
+            lastEmissionSpeed.Add(float.NaN);
             if (existing != null) existing.SetDetachedMotion(false, 0f);
         }
 
@@ -99,6 +104,7 @@ namespace RoboRougelike.B01Performance
                 bodies.RemoveAt(i);
                 fx.RemoveAt(i);
                 wasEmitting.RemoveAt(i);
+                lastEmissionSpeed.RemoveAt(i);
             }
         }
 
@@ -146,6 +152,15 @@ namespace RoboRougelike.B01Performance
                     if (emitter != null && emitter.isActiveAndEnabled)
                     {
                         float speed = Mathf.Sqrt(speeds[i]);
+                        // A stable, still-emitting lease already has the correct rate.
+                        // Do not re-enter VFX001.Apply/ParticleSystem.emission every refresh.
+                        // If another owner stopped it (rate=0), restart normally.
+                        if (wasEmitting[i] && lastEmissionSpeed[i] == speed &&
+                            emitter.EmissionRate > 0f)
+                        {
+                            ++visibleCount;
+                            continue;
+                        }
                         emitter.SetDetachedMotion(true, speed);
                         // VFX001 may have a stricter per-emitter minimum speed
                         // than this controller's selection threshold. Never count
@@ -154,11 +169,13 @@ namespace RoboRougelike.B01Performance
                         if (emitter.EmissionRate > 0f)
                         {
                             wasEmitting[i] = true;
+                            lastEmissionSpeed[i] = speed;
                             ++visibleCount;
                             continue;
                         }
                         emitter.SetDetachedMotion(false, 0f);
                         wasEmitting[i] = false;
+                        lastEmissionSpeed[i] = float.NaN;
                         continue;
                     }
                 }
@@ -168,6 +185,7 @@ namespace RoboRougelike.B01Performance
                 if (wasEmitting[i] && emitter != null)
                     emitter.SetDetachedMotion(false, 0f);
                 wasEmitting[i] = false;
+                lastEmissionSpeed[i] = float.NaN;
             }
         }
 
