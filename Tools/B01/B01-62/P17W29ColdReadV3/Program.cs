@@ -8,6 +8,7 @@ using System.Linq;
 using B01.CanonicalWorldApi001;
 using B01.CanonicalColdRead003;
 using B01.DetachedSaveContract001;
+using B01.DebrisRepulse001;
 using B01.WholeGameEconomy003;
 using B01.SecureReattachV2;
 using RoboRougelike.B01.Economy.ApprovedV7;
