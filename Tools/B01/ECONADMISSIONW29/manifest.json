@@ -17,7 +17,7 @@
     "Tools/B01/ECONADMISSIONW29/W29.Tests.csproj": "11f3e2843792df59f1d3e57507e28bc84fc8c745",
     "Tools/B01/ECONADMISSIONW29/README.md": "9e00984eca395b1f0d7c2a984df1e9ec0afd5766",
     "Tools/B01/ECONADMISSIONW29/INTEGRATION.md": "f0bc03bbacda602d73457c125b272beb335897a1",
-    "Tools/B01/ECONADMISSIONW29/verify_package.py": "cd498b2e754ced3aef2cd66dcadac4fcb9811891",
+    "Tools/B01/ECONADMISSIONW29/verify_package.py": "e262a9fb67c99f1475520619e5cadfc8c2eb6ed8",
     ".github/workflows/b01-22-w29-v7-admission.yml": "8d1ea5905f50dc5432a4ec5846959c20a6d89090"
   },
   "only_added_paths": [
