@@ -32,7 +32,7 @@ class W30RealGameGarageSourceQA(unittest.TestCase):
     def bad(self,pathname,old,new=""):
         mutated=dict(self.original)
         self.assertIn(old,mutated[pathname])
-        mutated[pathname]=mutated[pathname].replace(old,new,1)
+        mutated[pathname]=mutated[pathname].replace(old,new)  # delete all references, not only the enum declaration
         with self.assertRaisesRegex(intake.GateError,"policy RED"):
             intake.source_contract(mutated)
 
