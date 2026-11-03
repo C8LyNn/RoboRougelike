@@ -35,9 +35,14 @@ namespace RoboRougelike.B01.GarageSpatialW28
     {
         public const float CellMeters=R41PartGeometry.Grid; // real canonical R3 0.55 m
         public const int MaxBoxes=256;
+        public const int ReservedCandidateBoxes=4;
+        public const int BackgroundBudget=MaxBoxes-ReservedCandidateBoxes;
         public const string ValidationOwner="R3GarageView.PlacementIssue";
 
         readonly List<B0112ZoneBox> boxes=new List<B0112ZoneBox>(MaxBoxes);
+        // Reused Unity list overloads avoid renderer/transform array allocations every frame.
+        readonly List<Renderer> rendererScratch=new List<Renderer>(64);
+        readonly List<Transform> transformScratch=new List<Transform>(64);
         readonly Material[] materials=new Material[5];
         R3GarageView garage;
         Mesh cube;
@@ -49,7 +54,7 @@ namespace RoboRougelike.B01.GarageSpatialW28
         public int VisibleBoxCount => visible?boxes.Count:0;
         public string LastReason => visible?reason:null;
         public bool SourceValidated => visible&&garage!=null&&garage.PreviewValid;
-        public bool HasPlacementIssue => visible&&garage!=null&&garage.PlacementIssue!=null;
+        public bool HasPlacementIssue => visible&&garage!=null&&garage.HasTarget&&garage.PlacementIssue!=null;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         static void AttachReadOnlyObserver()
@@ -81,7 +86,7 @@ namespace RoboRougelike.B01.GarageSpatialW28
             var primitive=GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube=primitive.GetComponent<MeshFilter>().sharedMesh;
             primitive.SetActive(false);
-            Destroy(primitive);
+            if(Application.isPlaying)Destroy(primitive);else DestroyImmediate(primitive);
             materials[(int)B0112ZoneKind.OccupiedRed]=NewTint(new Color(1f,.10f,.12f,.16f));
             materials[(int)B0112ZoneKind.ProtrusionBlue]=NewTint(new Color(.10f,.44f,1f,.20f));
             materials[(int)B0112ZoneKind.WeaponPurple]=NewTint(new Color(.66f,.22f,1f,.20f));
@@ -100,18 +105,21 @@ namespace RoboRougelike.B01.GarageSpatialW28
         public static B0112ZoneKind CandidateTint(bool hasTarget,string placementIssue)
             => IsAllowedByExistingValidator(hasTarget,placementIssue)?B0112ZoneKind.ValidGreen:B0112ZoneKind.OccupiedRed;
 
-        void Add(B0112ZoneKind kind,Vector3 position,Quaternion rotation,Vector3 size)
+        void Add(B0112ZoneKind kind,Vector3 position,Quaternion rotation,Vector3 size,bool candidate=false)
         {
-            if(boxes.Count>=MaxBoxes)return;
+            // Reserve all four candidate footprint cells even on a packed 180-cell rig.
+            if(boxes.Count >= (candidate ? MaxBoxes : BackgroundBudget))return;
             if(size.x<=0||size.y<=0||size.z<=0)return;
             boxes.Add(new B0112ZoneBox(kind,position,rotation,size));
         }
 
-        static Transform FindWeaponEndpoint(Transform root)
+        Transform FindWeaponEndpoint(Transform root)
         {
             if(root==null)return null;
-            foreach(var tr in root.GetComponentsInChildren<Transform>(true))
-                if(tr.name=="Wylot"||tr.name=="Środek piły")return tr;
+            transformScratch.Clear();
+            root.GetComponentsInChildren(true,transformScratch);
+            foreach(var tr in transformScratch)
+                if(tr!=null&&(tr.name=="Wylot"||tr.name=="Środek piły"))return tr;
             return null;
         }
 
@@ -122,7 +130,9 @@ namespace RoboRougelike.B01.GarageSpatialW28
             {
                 // The rendered wheel/track often extends beyond its logical cell.
                 // Renderer bounds are visual guidance, not a Collider/placement proof.
-                foreach(var renderer in root.GetComponentsInChildren<Renderer>(true))
+                rendererScratch.Clear();
+                root.GetComponentsInChildren(true,rendererScratch);
+                foreach(var renderer in rendererScratch)
                 {
                     if(renderer is ParticleSystemRenderer||renderer is LineRenderer||!renderer.enabled)continue;
                     var bounds=renderer.bounds;
@@ -149,9 +159,10 @@ namespace RoboRougelike.B01.GarageSpatialW28
         public void RebuildReadout(R3GarageView source)
         {
             boxes.Clear();reason=null;visible=false;garage=source;
-            if(source==null||source.Preview==null||!source.Preview.gameObject.activeInHierarchy||
-                !source.HasTarget||source.Tool!=R41GarageTool.Mount)return;
-            var assembly=source.Preview.GetComponentInParent<R3VehicleAssembly>();
+            if(source==null||source.Preview==null||source.Tool!=R41GarageTool.Mount)return;
+            // Existing zones remain visible when the cursor leaves the vehicle.
+            // No new target is invented: green/red candidate only exists on a real hit.
+            var assembly=source.Preview.GetComponentInParent<R3VehicleAssembly>(true);
             if(assembly==null||assembly.Model==null)return;
             var model=assembly.Model;
             var partRoot=assembly.transform;
@@ -171,12 +182,15 @@ namespace RoboRougelike.B01.GarageSpatialW28
             }
             // Always ask the EXISTING R3 placement authority; never compare colors
             // or volume overlap to accept a purchase/mount.
-            reason=source.PlacementIssue;
-            var tint=CandidateTint(source.HasTarget,reason);
-            foreach(var cell in R3VehicleModel.OccupiedCells(source.Cell,source.MountKind,source.SelectedRotation))
-                Add(tint,partRoot.TransformPoint((Vector3)cell*CellMeters),orientation,
-                    Vector3.one*(R41PartGeometry.BlockSize+.025f));
-            AddFunctionalEnvelope(source.Preview,source.MountKind);
+            if(source.HasTarget)
+            {
+                reason=source.PlacementIssue;
+                var tint=CandidateTint(true,reason);
+                foreach(var cell in R3VehicleModel.OccupiedCells(source.Cell,source.MountKind,source.SelectedRotation))
+                    Add(tint,partRoot.TransformPoint((Vector3)cell*CellMeters),orientation,
+                        Vector3.one*(R41PartGeometry.BlockSize+.025f),candidate:true);
+                AddFunctionalEnvelope(source.Preview,source.MountKind);
+            }
             visible=true;
         }
 
@@ -210,7 +224,8 @@ namespace RoboRougelike.B01.GarageSpatialW28
             int y=Mathf.RoundToInt(Screen.height*.11f);
             int width=Mathf.Min(Mathf.RoundToInt(Screen.width*.465f),660);
             if(width<220)return;
-            string state=reason==null?"ZIELONY: zgodne z aktualnym walidatorem R3":"CZERWONY: "+reason;
+            string state=!garage.HasTarget?"Najedź na powierzchnię, aby sprawdzić nowe mocowanie.":
+                reason==null?"ZIELONY: zgodne z aktualnym walidatorem R3":"CZERWONY: "+reason;
             GUI.Box(new Rect(x,y,width,57),"STREFY 3D  Czerwony: zajęte  |  Niebieski: wystające  |  Fiolet: broń\n"+
                 "Pomarańczowy: ruch  |  Zielony: montaż  ·  "+state);
         }

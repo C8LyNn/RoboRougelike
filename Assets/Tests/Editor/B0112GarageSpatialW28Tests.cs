@@ -28,6 +28,26 @@ public sealed class B0112GarageSpatialW28Tests
     {
         Assert.That(R3VehicleModel.OccupiedCells(Vector3Int.zero,R3PartKind.BonusModule,new Vector3Int(0,1,0)).Count(),Is.EqualTo(4));
     }
+    [Test] public void LargeRigReserveKeepsAllWideCandidateCellsAvailable()
+    {
+        Assert.That(B0112GarageSpatialOverlay.MaxBoxes,Is.EqualTo(256));
+        Assert.That(B0112GarageSpatialOverlay.ReservedCandidateBoxes,Is.EqualTo(4));
+        Assert.That(B0112GarageSpatialOverlay.BackgroundBudget,Is.EqualTo(252));
+        Assert.That(R3VehicleModel.OccupiedCells(Vector3Int.zero,R3PartKind.BonusModule,
+            new Vector3Int(1,0,0)).Count(),Is.EqualTo(B0112GarageSpatialOverlay.ReservedCandidateBoxes));
+    }
+    [Test] public void EditorInstantiationDoesNotLeaveTemporaryCubeBehind()
+    {
+        int before=Object.FindObjectsOfType<MeshFilter>(true).Length;
+        var go=new GameObject("B0112-editor-cleanup-test");
+        try
+        {
+            go.AddComponent<B0112GarageSpatialOverlay>();
+            Assert.That(Object.FindObjectsOfType<MeshFilter>(true).Length,Is.EqualTo(before),
+                "Readout Awake should DestroyImmediate its temporary cube in edit mode.");
+        }
+        finally {Object.DestroyImmediate(go);}
+    }
     [Test] public void ReadoutHasNoPhysicsColliderAndStartsHidden()
     {
         var go=new GameObject("B0112-readout-test");
