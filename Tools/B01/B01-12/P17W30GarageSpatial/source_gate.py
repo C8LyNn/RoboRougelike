@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""B01-12 W32 exact original-game source QA (not a native Unity test)."""
+"""B01-12 W34 exact original-game source QA (not a native Unity test)."""
 import argparse, hashlib, json, re, subprocess, sys
 from pathlib import Path
 PARENT="3bd9b159997924dcecb4e1cd1d41137896e5199e"
@@ -23,7 +23,7 @@ def main():
  a=p.parse_args()
  root=(a.root or Path(__file__).resolve().parents[4]).resolve()
  m=json.loads((root/BASE/"manifest.json").read_text())
- if m.get("package_id")!="B01-12-W30-LIVE-GARAGE-SAW-GHOST-001/R3" or m.get("parent_sha")!=PARENT:
+ if m.get("package_id")!="B01-12-W30-LIVE-GARAGE-SAW-GHOST-001/R4" or m.get("parent_sha")!=PARENT:
   print("FAIL_CLOSED invalid manifest/parent");return 2
  expected={RUNTIME,TESTS,BASE+"/source_gate.py",BASE+"/README.md",".github/workflows/b01-12-w30-garage-ghost.yml"}
  if set(m["files"])!=expected:
@@ -74,6 +74,18 @@ def main():
     and all(k in t for k in ["ActualEmpGhostShowsSourceMarkerButNeverDirectionalShotLine",
                             "ActualSawGhostDrawsOnlyOrangeDiscWhileBasicGunKeepsTwoPurpleHints",
                             "ProjectileGunOnlyOwnsDirectionalMuzzleVisual"]))
+ ok("W34 original ghost functional hint was placed LAST after installed part hints",
+    before.index("AddFunctionalEnvelope(source.Preview,source.MountKind)") >
+    before.index("foreach(var p in assembly.Parts)") > 0)
+ original_cells=s.index("foreach(var cell in R3VehicleModel.OccupiedCells(")
+ active_hint=s.index("AddFunctionalEnvelope(source.Preview,source.MountKind,source.MountWeapon);")
+ trusted_sockets=s.index("if(tint==B0112ZoneKind.ValidGreen)")
+ installed_hints=s.index("foreach(var p in assembly.Parts)")
+ ok("W34 active ghost functional zone precedes sockets and installed hints",
+    0<=original_cells<active_hint<trusted_sockets<installed_hints and
+    s.count("AddFunctionalEnvelope(source.Preview,source.MountKind,source.MountWeapon);")==1 and
+    "ActiveSawEnvelopeRemainsVisibleAtBounded256BoxLimit" in t and
+    "for(int i=0;i<B0112GarageSpatialOverlay.MaxBoxes+40;i++)" in t)
  ok("reused lists for 3 previously allocating traversals",
     all(k in s for k in ["GetComponentsInChildren(true,rendererScratch)",
       "GetComponentsInChildren(true,transformScratch)",
@@ -83,7 +95,7 @@ def main():
     "reason=source.PlacementIssue" in s and "=> hasTarget&&placementIssue==null" in s
     and not re.search(r"\.(GarageBuy|GarageMount|GarageRemove|GarageBuyWeapon|Save|Commit|Spend|Award)\s*\(",s))
  ok("real Unity NUnit test calls production envelope on unmounted ghost",
-    t.count("[Test]")==15 and "ActualFunctionalEnvelopeCreatesOrangeZoneForUninstalledSawGhost" in t
+    t.count("[Test]")==16 and "ActualFunctionalEnvelopeCreatesOrangeZoneForUninstalledSawGhost" in t
     and 'GetMethod("AddFunctionalEnvelope",flags)' in t)
  restoration=(root/"Assets/R3/R3RestorationValidation.cs").read_text(encoding="utf-8")
  validation=(root/"Assets/R3/R3BuildValidation.cs").read_text(encoding="utf-8")
@@ -93,6 +105,6 @@ def main():
     and "FunctionalWeaponPlacementIssue(candidate,probe)" in validation
     and "ExistingMountedWeaponPlacementIssue(probe,candidateColliders)" in validation)
  ok("current #877 host runtime untouched",all(blob((root/f).read_bytes())==pin for f,pin in HOST.items()))
- print(f"W32 SOURCE_GUARD {sum(results)}/{len(results)}; UNITY_G1=NOT_RUN; PLAYER=NOT_RUN")
+ print(f"W34 SOURCE_GUARD {sum(results)}/{len(results)}; UNITY_G1=NOT_RUN; PLAYER=NOT_RUN")
  return 0 if all(results) else 1
 if __name__=="__main__":sys.exit(main())

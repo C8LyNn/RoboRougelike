@@ -1,4 +1,4 @@
-name: B01-12 W32 real-game non-projectile weapon spatial UX regression
+name: B01-12 W34 real-game active preview zone priority regression
 on:
   push:
     paths:
@@ -29,7 +29,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Original #877 R1 RED, current non-projectile W32 type-specific zone source GREEN
+      - name: Original #877 last-ghost RED, W34 current candidate 256-priority source GREEN
         run: python Tools/B01/B01-12/P17W30GarageSpatial/source_gate.py
       - name: Negative exact-byte tests on disposable copies, no source mutation
         shell: bash

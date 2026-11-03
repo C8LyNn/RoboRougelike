@@ -222,6 +222,10 @@ namespace RoboRougelike.B01.GarageSpatialW28
             foreach(var cell in R3VehicleModel.OccupiedCells(source.Cell,source.MountKind,source.SelectedRotation))
                 Add(tint,partRoot.TransformPoint((Vector3)cell*CellMeters),orientation,
                     Vector3.one*(R41PartGeometry.BlockSize+.025f));
+            // W34: reserve visible envelope slots for the ACTIVE ghost BEFORE
+            // nearby sockets and every installed part consume the 256-box budget.
+            // Advisory ordering only; the original PlacementIssue still decides.
+            AddFunctionalEnvelope(source.Preview,source.MountKind,source.MountWeapon);
             // Show green trusted socket faces only near a candidate that the real
             // R3+BUILD001 physical validator has ALREADY accepted; green never
             // grants permission by itself and cannot override a red host rejection.
@@ -242,7 +246,6 @@ namespace RoboRougelike.B01.GarageSpatialW28
                 if(p==null||!p.Operational||!p.transform.IsChildOf(partRoot))continue;
                 AddFunctionalEnvelope(p.transform,p.Kind,p.Weapon);
             }
-            AddFunctionalEnvelope(source.Preview,source.MountKind,source.MountWeapon);
             visible=true;
         }
 

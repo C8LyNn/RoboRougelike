@@ -1,4 +1,4 @@
-# B01-12 · PASS 17 / WAVE 32 — REAL GAME GARAGE NON-PROJECTILE ZONE R3
+# B01-12 · PASS 17 / WAVE 34 — REAL GAME GARAGE NON-PROJECTILE ZONE R3
 
 **REAL integration branch parent:** CODEX [#877@a0de194fd382830fab4b7d013d204b0697b25078](https://github.com/C8LyNn/RoboRougelike/pull/877) (containing [#873](https://github.com/C8LyNn/RoboRougelike/pull/873) EMP, actual R5 JumpPad, integrated W27 #866 five-zone overlay and genuine R3 weapon mounting gate). This is **NOT** a new browser simulator, alternative GameObject UI, placement validator or new Save writer. It directly revises the **already included B01-12-owned** original Unity overlay/test files in a new isolated descendant branch. Do not copy all of #864 into the newer Codex receiver: that version has a different live red/blue and socket presentation.
 
@@ -51,3 +51,40 @@ Actual original `B0112GarageSpatialOverlay.AddFunctionalEnvelope` now distinguis
 **No scope expansion:** No modification of `Assets/R3/**`, Codex shared validator, EMP gameplay pulse, Saw physics, ECON V7, Save writer, menus, GUIDs, protected branches or user computer. One PR with six owner-scoped files, no merge. W29 inherited source provenance checker still requires owner-authorized new-version requalification after independent G0; do not disable it.
 
 **Gates:** IMPLEMENTED=SOURCE | SOURCE_CI=PENDING_ON_NEW_SHA | G0=PENDING_B01-40 | UNITY_G1=NOT_RUN | WINDOWS_PLAYER=NOT_BUILT | GAMEPLAY_ACCEPTED=NO | G2=HOLD | INTEGRATED_IN_CODEX_FINAL=NO | RELEASED=NO. Reviewer B01-60 native Unity EditMode15 plus scene PlayMode, real EMP/Saw/Basic garage ghost graphical verification and no economic mutation; B01-00/Codex integration/provenance requalification when approved.
+
+## W34 superseding delta — active preview visibility under a 256-zone cap
+
+**Confirmed original-source starvation path:** The W32 observer appended the CURRENT
+ghost's `AddFunctionalEnvelope(source.Preview,source.MountKind,source.MountWeapon)`
+only **after** `foreach(var p in assembly.Parts)`. A large R3 Standard/Heavy build
+may fill `MaxBoxes=256` with installed wheel/track renderers, mechanism hint boxes,
+and BUILD001 socket markers before the chosen Saw/EMP/Basic candidate's functional
+hint can be appended. This is a source-established ordering defect, not a claim that
+a full native 139-part Player stress test has been executed.
+
+**W34 repair within the SAME B01-12 MonoBehaviour and PR #889:** Draw actual
+host-authorized selected occupied cells first, THEN reserve current candidate
+Saw/EMP/Basic visual warning slots, THEN optional green nearby sockets, THEN
+installed-part hints. No new renderer, writer, collider, physical validator, 256
+cap, wallet, IDs, Save, or #903 status copy. A red rejected physical candidate
+remains red; orange/purple hints stay informational and cannot override
+`R3GarageView.PlacementIssue`. The current part's hints now cannot be starved
+by later installed-part geometry.
+
+**Tests:** 16 genuine Unity EditMode NUnit source cases authored in the original
+suite (formerly 15), including a new bounded 256+40 excess installed-hint
+test invoking the original private production envelope and box append through
+reflection. W34 exact-source guard adds historical OLD-order RED witness
+and requires cells < candidate < sockets < installed parts. The NUnit case
+establishes bounded first-in prioritization; source guard pins the actual
+RebuildReadout ordering. Neither substitutes for activated Unity 6000.3.14f1
+Editor/PlayMode and real Light20/Standard83/Heavy139 garage visual/Player QA.
+
+**Handoff:** Independent B01-40/61 exact new HEAD G0 and B01-60 native
+Editor/NUnit/Windows Player, including candidate Saw/EMP/Basic near 256 visual
+boxes and physical 256-hit validator deny. Original W29 Codex intake provenance
+still expects the old overlay blob and will legitimately fail until Codex
+re-ACKs and re-pins an approved newer source. Never bypass that gate.
+The dynamic whole-world Save #923 and V7 next-victory settlement are separate
+P0 owner tasks; do not represent them as completed by this visual-only patch.
+Rollback: omit latest own #889 commit; no other agent's code changes.

@@ -179,4 +179,44 @@ public sealed class B0112GarageSpatialW28Tests
         }
         finally {Object.DestroyImmediate(go);}
     }
+
+    [Test] public void ActiveSawEnvelopeRemainsVisibleAtBounded256BoxLimit()
+    {
+        // Reproduces the bounded append behavior with an original unmounted Saw ghost.
+        // RebuildReadout ordering is independently pinned by the W34 source gate.
+        var holder=new GameObject("B0112-W34-priority");
+        var ghost=new GameObject("candidate-saw-W34");
+        var muzzle=new GameObject("Środek piły");
+        try
+        {
+            muzzle.transform.SetParent(ghost.transform,false);
+            var overlay=holder.AddComponent<B0112GarageSpatialOverlay>();
+            var flags=System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance;
+            var type=typeof(B0112GarageSpatialOverlay);
+            var envelope=type.GetMethod("AddFunctionalEnvelope",flags);
+            var add=type.GetMethod("Add",flags);
+            var field=type.GetField("boxes",flags);
+            Assert.That(envelope,Is.Not.Null);
+            Assert.That(add,Is.Not.Null);
+            Assert.That(field,Is.Not.Null);
+            Assert.That(ghost.GetComponent<R3MountedPart>(),Is.Null);
+            envelope.Invoke(overlay,new object[]{ghost.transform,R3PartKind.Gun,
+                RoboRougelike.R4.R4WeaponKind.RotarySaw});
+            // Existing parts and socket hints may consume more than 256 slots.
+            for(int i=0;i<B0112GarageSpatialOverlay.MaxBoxes+40;i++)
+                add.Invoke(overlay,new object[]{B0112ZoneKind.ProtrusionBlue,
+                    new Vector3(i,0,0),Quaternion.identity,Vector3.one});
+            var zones=(System.Collections.Generic.List<B0112ZoneBox>)field.GetValue(overlay);
+            Assert.That(zones.Count,Is.EqualTo(B0112GarageSpatialOverlay.MaxBoxes));
+            Assert.That(zones[0].Kind,Is.EqualTo(B0112ZoneKind.MechanismOrange),
+                "The selected Saw disc must survive later installed-part hint saturation.");
+            Assert.That(zones.Count(z=>z.Kind==B0112ZoneKind.MechanismOrange),Is.EqualTo(1));
+        }
+        finally
+        {
+            Object.DestroyImmediate(muzzle);
+            Object.DestroyImmediate(ghost);
+            Object.DestroyImmediate(holder);
+        }
+    }
 }
