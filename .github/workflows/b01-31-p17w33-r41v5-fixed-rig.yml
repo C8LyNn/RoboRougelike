@@ -1,0 +1,48 @@
+name: B01-31 P17 W33 R41 v5 FIXED BASE RIG SOURCE (NOT UNITY)
+on:
+  push:
+    branches:
+      - art/b01-31-p17w33-r41v5-fixed-mount-yaw-pitch
+    paths:
+      - 'Assets/B01_31/W30R41V5Adapter/Editor/B0131W30CreateR41V5AdapterCandidate.cs'
+      - 'Assets/B01_31/W30R41V5Adapter/Tests/EditMode/R41V5W33FixedRigEditModeTests.cs*'
+      - 'Docs/W33/B01-31-R41V5-fixed-rig.md'
+      - 'Tools/B01-31/P17/W33RigFixed001/**'
+      - '.github/workflows/b01-31-p17w33-r41v5-fixed-rig.yml'
+  pull_request:
+    paths:
+      - 'Assets/B01_31/W30R41V5Adapter/Editor/B0131W30CreateR41V5AdapterCandidate.cs'
+      - 'Assets/B01_31/W30R41V5Adapter/Tests/EditMode/R41V5W33FixedRigEditModeTests.cs*'
+      - 'Docs/W33/B01-31-R41V5-fixed-rig.md'
+      - 'Tools/B01-31/P17/W33RigFixed001/**'
+      - '.github/workflows/b01-31-p17w33-r41v5-fixed-rig.yml'
+permissions:
+  contents: read
+jobs:
+  source-w33:
+    name: ${{ matrix.os }} SOURCE check only
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 24
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Original W33 owner Editor checks plus six negative source mutants and GUID scan
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01-31/P17/W33RigFixed001/check_source.py --receipt Artifacts/B01-31/W33/receipt.json
+          echo "SOURCE_W33_PASS_NATIVE_UNITY_NOT_RUN_EXTERNAL_FBX_NOT_PRESENT"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B01-31-W33-SOURCE-${{ matrix.os }}-NO-UNITY
+          path: Artifacts/B01-31/W33/receipt.json
+          if-no-files-found: error
+          retention-days: 30
