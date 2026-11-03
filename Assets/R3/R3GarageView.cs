@@ -291,7 +291,20 @@ namespace RoboRougelike.R3
             if(run==null||run.Progress?.State!=R1RunState.Garage||run.Transitioning)
             {Message="Garaż jest nieaktywny lub trwa zmiana sceny. Nie zmieniono części ani Złomu.";return false;}
             if(!HasTarget)
-            {Message=PlacementIssue??"Wskaż prawidłową powierzchnię montażową.";return false;}
+            {
+                // PlacementIssue is specific to MOUNT. For other garage tools
+                // an empty hit must not display advice about mounting blocks.
+                // Return before touching the model, Scrap or any part IDs.
+                if(Tool==R41GarageTool.Repair)
+                    Message="Wskaż część pojazdu do naprawy. Nie zmieniono części ani Złomu.";
+                else if(Tool==R41GarageTool.Remove)
+                    Message="Wskaż część pojazdu do usunięcia. Nie zmieniono części ani Złomu.";
+                else if(Tool!=R41GarageTool.Mount)
+                    Message="Wskaż część pojazdu do sprawdzenia. Nie zmieniono części ani Złomu.";
+                else
+                    Message=PlacementIssue??"Wskaż prawidłową powierzchnię montażową.";
+                return false;
+            }
             bool result;
             if(Tool==R41GarageTool.Mount)
             {
