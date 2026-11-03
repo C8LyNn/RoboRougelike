@@ -46,6 +46,6 @@ assert "snapshot.Wins==0&&snapshot.Pending.Any(t=>t.Free)" in production
 assert "TryDecodeForCanonicalOwner" in production and "TryEncodeForCanonicalOwner" in production
 for dangerous in ["FileStream","File.Write","File.Move","File.Replace","UnityEngine","SHA256.Create"]:
     assert dangerous not in production,dangerous
-assert m["unity_native"]=="NOT_RUN"
+assert m["native_unity"]=="NOT_RUN"
 assert m["full_game_writer"]=="NOT_CHANGED"
 print("W29_MANIFEST_PASS 13 add-only owned paths 12 exact Git blobs 2 unchanged original V7 CSharp runtime blobs 4 globally distinct Unity GUIDs SOURCE_G0_PENDING NATIVE_G1_NOT_RUN")
