@@ -66,7 +66,9 @@ jobs:
           cat "$RUNNER_TEMP/w28-loaner-reachability.log"
           grep -F "W28_C1_PRICE1_CASH0_PAID0_LOANER_WIN RECOVERABLE_SOURCE PASS" "$RUNNER_TEMP/w28-loaner-reachability.log"
           grep -F "W28_C_EPOCH0_FREE_VALIDATION_GAP_EXPECTED_SOURCE_RED PASS" "$RUNNER_TEMP/w28-loaner-reachability.log"
-          grep -F "W28_ORIGINAL_V7_REACHABILITY_SUITE_PASS cases=6" "$RUNNER_TEMP/w28-loaner-reachability.log"
+          grep -F "W29_TWO_ESSENTIALS_CASH0_1_FREE SOURCE_BLOCKED_AFTER_LOANER_WIN PASS" "$RUNNER_TEMP/w28-loaner-reachability.log"
+          grep -F "W29_TWO_ESSENTIALS_CASH65_FREE_PLUS_PAID SOURCE_RECOVERABLE PASS" "$RUNNER_TEMP/w28-loaner-reachability.log"
+          grep -F "W28_ORIGINAL_V7_REACHABILITY_SUITE_PASS cases=8" "$RUNNER_TEMP/w28-loaner-reachability.log"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
