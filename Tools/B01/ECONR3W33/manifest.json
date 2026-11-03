@@ -19,7 +19,7 @@
     "Assets/Tests/Editor/B0110W32EconomySettlementParityTests.cs.meta": "1bc91fbc678a4ac6eb6ddca53c3be4259575d958",
     "Assets/Tests/Editor/B0122W32RebuildTransactionsTests.cs": "7616ba1543db4dccdcc3fd601fe14a6725f72948",
     "Assets/Tests/Editor/B0122W32RebuildTransactionsTests.cs.meta": "0d3b6c222cecc0413243fe597541e91b25704736",
-    "Tools/B01/ECONR3W33/W33.Receiver.csproj": "ff6cc95325482540025f65c3e31208089fdd4631",
+    "Tools/B01/ECONR3W33/W33.Receiver.csproj": "2d63f4fad21e66fa727517be0a0f7d8ddd4d6252",
     "Tools/B01/ECONR3W33/README.md": "9345a2239c84200101aff039b1f7ded6abcdba00",
     "Tools/B01/ECONR3W33/verify_package.py": "e9a9557b2a5b682b541bd92ff455d317069d7c97",
     ".github/workflows/b01-22-w33-original-915-nextwin-qa.yml": "da55bd737f2b268ed3b7df086032e920c0fa3a39"

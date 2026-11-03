@@ -6,6 +6,8 @@
   <Nullable>disable</Nullable>
   <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
   <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  <!-- Generated source-only shim fields are intentionally initialized by the real game, not this fixture. -->
+  <NoWarn>CS0649</NoWarn>
  </PropertyGroup>
  <ItemGroup>
   <Compile Include=".generated/OriginalR3Methods.cs" />
