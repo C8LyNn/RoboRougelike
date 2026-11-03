@@ -115,6 +115,67 @@ public sealed class GarageEditFreedomTests
         Assert.That(run.VehicleModel.Parts.Single(p=>p.Id==id).Cell,Is.EqualTo(exterior));
         yield return new ExitPlayMode();
     }
+    // W30: adding armor may NOT disable an already mounted, physically clear saw.
+    // This exercises the real garage transaction and original R3 validator (not
+    // an isolated sphere/collider prototype or separate price implementation).
+    [UnityTest] public IEnumerator NewArmorCannotBlockExistingSawAfterGaragePurchase()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);
+        yield return new EnterPlayMode();
+        float deadline=Time.realtimeSinceStartup+15f;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<deadline)
+            yield return null;
+        var run=R1RunController.Instance;
+        Assert.That(run,Is.Not.Null);
+        Assert.That(run.SelectVehicle(R3VehicleKind.Light),Is.True);
+        Assert.That(run.OpenSandboxGarage(),Is.True);
+        run.VehicleModel.Award(100); // Fixture funds only; not a simulated victory.
+
+        var oldGun=run.VehicleModel.Parts.First(p=>p.Kind==R3PartKind.Gun);
+        string sawId=oldGun.Id;
+        Assert.That(run.GarageRemove(oldGun.Cell),Is.True);
+        // The original right-front wheel's protruding tire overlaps the new
+        // side-mount cell. Remove it legitimately; do not disable any Collider.
+        var wheel=run.VehicleModel.Parts.First(p=>p.Kind==R3PartKind.Wheel&&
+            p.Cell==new Vector3Int(2,0,1));
+        Assert.That(run.GarageRemove(wheel.Cell),Is.True);
+        var owned=run.VehicleModel.Inventory.Single(p=>p.Id==sawId);
+        owned.Weapon=RoboRougelike.R4.R4WeaponKind.RotarySaw;
+        var sawCell=new Vector3Int(2,0,2);
+        Assert.That(run.VehicleModel.OwnedPlacementError(sawId,sawCell,default),Is.Null,
+            "Actual exterior saw must be legal, or this native fixture needs correction.");
+        Assert.That(run.GarageMount(sawId,sawCell,default),Is.True);
+        // Physical side support is outside the blade's thin X-axis disc,
+        // but the next cell above the gun intersects the rotating disc.
+        var support=new Vector3Int(1,1,2);
+        Assert.That(run.VehicleModel.PlacementError(support,R3PartKind.Armor),Is.Null);
+        Assert.That(run.GarageBuy(support,R3PartKind.Armor),Is.True);
+        var blocked=new Vector3Int(2,1,2);
+        int wallet=run.VehicleModel.Scrap;
+        var ids=run.VehicleModel.Parts.Concat(run.VehicleModel.Inventory)
+            .Select(p=>p.Id).OrderBy(id=>id).ToArray();
+        int partsBefore=run.VehicleModel.Parts.Count;
+        var error=run.VehicleModel.PlacementError(blocked,R3PartKind.Armor);
+        Assert.That(error,Does.Contain("nowa część blokuje tarczę"),
+            "Valid grid attachment must be rejected because it disables the already-mounted saw.");
+        Assert.That(run.GarageBuy(blocked,R3PartKind.Armor),Is.False,
+            "Real Buy must use precisely the same live functional gate as the preview.");
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(wallet));
+        Assert.That(run.VehicleModel.Parts.Count,Is.EqualTo(partsBefore));
+        Assert.That(run.VehicleModel.Parts.Concat(run.VehicleModel.Inventory)
+            .Select(p=>p.Id).OrderBy(id=>id),Is.EqualTo(ids),
+            "Failed Buy must not mutate ownership, GUIDs or inventory.");
+        // Neighboring armor outside the same disc is still buildable.
+        var clear=new Vector3Int(1,1,3);
+        Assert.That(run.VehicleModel.PlacementError(clear,R3PartKind.Armor),Is.Null,
+            "Reverse physical clearance cannot forbid the whole garage.");
+        Assert.That(run.GarageBuy(clear,R3PartKind.Armor),Is.True);
+        Assert.That(run.VehicleModel.Scrap,
+            Is.EqualTo(wallet-run.VehicleModel.Price(R3PartKind.Armor)),
+            "Successful legal purchase must charge exactly once.");
+        yield return new ExitPlayMode();
+    }
+
     [UnityTest] public IEnumerator ActualMissionEntryRejectsIncompleteVehicleAndAcceptsRestoredGun()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);yield return new EnterPlayMode();
