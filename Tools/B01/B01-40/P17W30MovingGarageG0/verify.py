@@ -123,7 +123,7 @@ def source_contract():
                "model.OwnedPlacementError("):
   need(token in native,"NEW_REAL_UNITY_TEST_ENTRYPOINT_MISSING:"+token)
  need(native.count("[UnityTest]")==1,"NEW_QA_TEST_COUNT_DRIFT")
- for token in ("MapJumpPad(","B01.MapJumpPad001.MapJumpPad",
+ for token in ("JumpPad(new Vector3(7f,0f,-16f))","AddComponent<B01.MapJumpPad001.MapJumpPad>()",
                "kind==R5ArenaKind.SalvageYard"):
   need(token in arena,"ACTUAL_873_LIVE_ARENA_JUMP_PAD_MISSING:"+token)
  for token in ("OccupiedRed","ProtrusionBlue","WeaponPurple",
