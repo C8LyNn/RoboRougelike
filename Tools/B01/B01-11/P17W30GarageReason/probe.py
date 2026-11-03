@@ -90,13 +90,13 @@ static class Program
         bool ok=v.ClickTarget();
         Console.WriteLine(name+"|"+(ok?"YES":"NO")+"|"+v.Message);
     }
-    static void RepairScenario(string name, float? hp, int quote, int scrap, bool success=false)
+    static void RepairScenario(string name, float? hp, int quote, int scrap, bool success=false, bool restoreNow=false)
     {
         var v=new R3GarageView();
         v.Tool=R41GarageTool.Repair;v.HasTarget=true;
         v.run.VehicleModel.Part=hp.HasValue?new FakePart{Health=hp.Value}:null;
         v.run.VehicleModel.Quote=quote;v.run.VehicleModel.Scrap=scrap;
-        v.run.Fix=()=>success;
+        v.run.Fix=()=>{ if(success&&restoreNow&&v.run.VehicleModel.Part!=null) v.run.VehicleModel.Part.Health=1f; return success; };
         bool ok=v.ClickTarget();
         Console.WriteLine(name+"|"+(ok?"YES":"NO")+"|"+v.Message);
     }
@@ -114,6 +114,7 @@ static class Program
         RepairScenario("repair-no-quote",.5f,0,10);
         RepairScenario("repair-zero-destroyed-rejected",0f,0,0);
         RepairScenario("repair-zero-destroyed-paid-success",0f,0,0,true);
+        RepairScenario("repair-zero-destroyed-instant-success",0f,0,0,true,true);
         RepairScenario("repair-zero-partial-unknown",.5f,0,0);
         RepairScenario("repair-low-scrap",.5f,5,1);
         RepairScenario("repair-physical-reject",.5f,5,10);
@@ -140,7 +141,7 @@ with tempfile.TemporaryDirectory(prefix="b0111_w30_garage_") as temp:
     folder=Path(temp)
     baseline=execute(method_from(original),folder/'old')
     current_result=execute(method_from(current),folder/'new')
-expected_keys={"no-target","post-preview-rejection","pre-validation-rejection","successful-purchase","inactive-garage","repair-no-part","repair-healthy","repair-no-quote","repair-low-scrap","repair-physical-reject","repair-success","repair-zero-destroyed-rejected","repair-zero-destroyed-paid-success","repair-zero-partial-unknown"}
+expected_keys={"no-target","post-preview-rejection","pre-validation-rejection","successful-purchase","inactive-garage","repair-no-part","repair-healthy","repair-no-quote","repair-low-scrap","repair-physical-reject","repair-success","repair-zero-destroyed-rejected","repair-zero-destroyed-paid-success","repair-zero-destroyed-instant-success","repair-zero-partial-unknown"}
 print("SOURCE_WINDOWS_UTF8_BASELINE",ascii(baseline))
 print("SOURCE_WINDOWS_UTF8_FIXED",ascii(current_result))
 assert set(baseline)==set(current_result)==expected_keys,(baseline,current_result)
@@ -162,7 +163,11 @@ assert baseline["repair-zero-destroyed-rejected"]==["NO","Brak uszkodzeń, Złom
 assert current_result["repair-zero-destroyed-rejected"][0]=="NO"
 assert "Odbudowa za 0 Scrap została odrzucona" in current_result["repair-zero-destroyed-rejected"][1]
 assert "Brak dopuszczonej wyceny" not in current_result["repair-zero-destroyed-rejected"][1]
-assert baseline["repair-zero-destroyed-paid-success"]==current_result["repair-zero-destroyed-paid-success"]==["YES","Naprawiono wskazaną część."]
+assert baseline["repair-zero-destroyed-paid-success"]==["YES","Naprawiono wskazaną część."]
+assert current_result["repair-zero-destroyed-paid-success"][0]=="YES"
+assert "część nadal ma 0 HP" in current_result["repair-zero-destroyed-paid-success"][1]
+assert "Odbudowa nie jest gotowa" in current_result["repair-zero-destroyed-paid-success"][1]
+assert current_result["repair-zero-destroyed-instant-success"]==baseline["repair-zero-destroyed-instant-success"]==["YES","Naprawiono wskazaną część."]
 assert baseline["repair-zero-partial-unknown"]==["NO","Brak uszkodzeń, Złomu lub sprawnego połączenia."]
 assert "Brak potwierdzonej wyceny" in current_result["repair-zero-partial-unknown"][1]
 assert "Koszt: 5 Scrap; dostępne: 1 Scrap" in current_result["repair-low-scrap"][1]
@@ -170,5 +175,5 @@ assert "kontroli konstrukcji" in current_result["repair-physical-reject"][1]
 assert baseline["repair-success"]==current_result["repair-success"]==["YES","Naprawiono wskazaną część."]
 print("ORIGINAL_R3_SOURCE_RED_WITNESS",ascii(baseline))
 print("CORRECTED_R3_SOURCE_GREEN",ascii(current_result))
-print("ORIGINAL_METHOD_COMPILED_RED_TO_GREEN PASS 28 old/new method executions; 14 named scenarios")
+print("ORIGINAL_METHOD_COMPILED_RED_TO_GREEN PASS 30 old/new method executions; 15 named scenarios")
 print("NATIVE_UNITY_PLAYMODE NOT_RUN (separate authored NUnit UnityTest)")
