@@ -28,6 +28,8 @@ public class W27SawClearanceTests
         R3MountedPart gun=null;foreach(var part in rig.GetComponent<R3VehicleAssembly>().Parts)if(part.Id==state.Id){gun=part;break;}
         Assert.That(gun,Is.Not.Null);var saw=gun.GetComponent<RRLSawBinding>();
         Assert.That(saw.Device.Available,Is.True);
+        // Point the disc away from the supporting core before adding the blocker.
+        gun.GunPivot.rotation=Quaternion.Euler(-90,0,0);Physics.SyncTransforms();
         var blocker=GameObject.CreatePrimitive(PrimitiveType.Cube);blocker.name="W27 owned saw obstruction";
         blocker.transform.SetParent(rig.transform,true);blocker.transform.position=gun.Muzzle.position+gun.Muzzle.forward*.6f;
         blocker.transform.rotation=gun.Muzzle.rotation;blocker.transform.localScale=Vector3.one*.2f;Physics.SyncTransforms();
