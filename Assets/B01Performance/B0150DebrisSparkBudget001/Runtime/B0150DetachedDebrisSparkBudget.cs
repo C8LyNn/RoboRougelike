@@ -7,8 +7,9 @@ namespace RoboRougelike.B01Performance
 {
     /// <summary>
     /// Optional visual-only budget for actual R3Debris.Separated events.
-    /// No Rigidbody, collider, gameplay damage, ownership or Save writes.
-    /// Place ONE controller in the scene manually after independent acceptance.
+    /// R2: defer creating emitters until selected; cache Rigidbody per actual
+    /// detachment; do not rewrite inactive emitters on every refresh.
+    /// No changes to Rigidbody, collider, module IDs or gameplay economics.
     /// </summary>
     [DisallowMultipleComponent]
     [AddComponentMenu("B01/Performance/Detached cosmetic spark budget")]
@@ -21,20 +22,22 @@ namespace RoboRougelike.B01Performance
 
         private static B0150DetachedDebrisSparkBudget activeOwner;
         private readonly List<R3Debris> tracked = new List<R3Debris>(70);
+        private readonly List<Rigidbody> bodies = new List<Rigidbody>(70);
         private readonly List<DetachedModuleVfxController> fx =
             new List<DetachedModuleVfxController>(70);
-        private float[] speeds = new float[70];
-        private bool[] eligible = new bool[70];
-        private bool[] selected = new bool[70];
+        private readonly List<bool> wasEmitting = new List<bool>(70);
+        private readonly float[] speeds = new float[70];
+        private readonly bool[] eligible = new bool[70];
+        private readonly bool[] selected = new bool[70];
         private float nextRefresh;
         private int visibleCount;
+
         public int TrackedCount { get { return tracked.Count; } }
         public int ActiveEmitters { get { return visibleCount; } }
         public int MaximumEmitters { get { return maximumEmitters; } }
 
         private void OnEnable()
         {
-            // Only one authoritative visual budget per loaded scene/session.
             if (activeOwner != null && activeOwner != this)
             {
                 Debug.LogWarning("B0150: duplicate debris spark budget disabled", this);
@@ -50,11 +53,14 @@ namespace RoboRougelike.B01Performance
         {
             R3Debris.Separated -= Observe;
             if (activeOwner == this) activeOwner = null;
-            // Restore visual policy to off. Never disable, sleep or destroy debris itself.
+            // Stop only visuals we actually activated. Never change bodies.
             for (int i = 0; i < fx.Count; ++i)
-                if (fx[i] != null) fx[i].SetDetachedMotion(false, 0f);
+                if (wasEmitting[i] && fx[i] != null)
+                    fx[i].SetDetachedMotion(false, 0f);
             tracked.Clear();
+            bodies.Clear();
             fx.Clear();
+            wasEmitting.Clear();
             visibleCount = 0;
         }
 
@@ -62,19 +68,23 @@ namespace RoboRougelike.B01Performance
         {
             if (item == null || !item.gameObject.activeInHierarchy ||
                 tracked.Contains(item)) return;
-            // Bounded by actual R3Debris's 70-live-object design. Do not allocate
-            // an emitter for an already doomed or gameplay-owned object.
+            // The original game bounds R3Debris lifetime at 70. Release dead
+            // entries before declining additional active debris observations.
             if (tracked.Count >= 70) PurgeDead();
             if (tracked.Count >= 70) return;
-            var body = item.GetComponent<Rigidbody>();
+            Rigidbody body = item.GetComponent<Rigidbody>();
             if (body == null || body.isKinematic) return;
-            var emitter = item.GetComponentInChildren<DetachedModuleVfxController>(true);
-            if (emitter == null && createMissingCosmeticEmitters)
-                emitter = item.gameObject.AddComponent<DetachedModuleVfxController>();
-            if (emitter == null) return;
+
+            // Existing VFX components may already exist on an original prefab.
+            // Do not allocate a NEW component until actually selected.
+            DetachedModuleVfxController existing =
+                item.GetComponentInChildren<DetachedModuleVfxController>(true);
+            if (existing == null && !createMissingCosmeticEmitters) return;
             tracked.Add(item);
-            fx.Add(emitter);
-            emitter.SetDetachedMotion(false, 0f); // no unbudgeted impulse flash
+            bodies.Add(body);
+            fx.Add(existing);
+            wasEmitting.Add(false);
+            if (existing != null) existing.SetDetachedMotion(false, 0f);
         }
 
         private void PurgeDead()
@@ -83,9 +93,12 @@ namespace RoboRougelike.B01Performance
             {
                 if (tracked[i] != null && tracked[i].gameObject.activeInHierarchy)
                     continue;
-                if (fx[i] != null) fx[i].SetDetachedMotion(false, 0f);
+                if (wasEmitting[i] && fx[i] != null)
+                    fx[i].SetDetachedMotion(false, 0f);
                 tracked.RemoveAt(i);
+                bodies.RemoveAt(i);
                 fx.RemoveAt(i);
+                wasEmitting.RemoveAt(i);
             }
         }
 
@@ -96,7 +109,7 @@ namespace RoboRougelike.B01Performance
             RefreshNow();
         }
 
-        // Callable for actual Unity PlayMode tests; never changes collider or Rigidbody.
+        // Same game entrypoint as R1. Does not change Rigidbody or collision state.
         public void RefreshNow()
         {
             PurgeDead();
@@ -104,30 +117,54 @@ namespace RoboRougelike.B01Performance
             if (count > 70) throw new System.InvalidOperationException("R3 debris budget exceeded");
             for (int i = 0; i < count; ++i)
             {
-                var body = tracked[i].GetComponent<Rigidbody>();
+                Rigidbody body = bodies[i];
+                DetachedModuleVfxController emitter = fx[i];
                 bool valid = body != null && !body.isKinematic &&
                     tracked[i].enabled && tracked[i].gameObject.activeInHierarchy &&
-                    fx[i] != null && fx[i].isActiveAndEnabled;
+                    (emitter != null ? emitter.isActiveAndEnabled :
+                        createMissingCosmeticEmitters);
                 eligible[i] = valid;
                 speeds[i] = valid ? body.linearVelocity.sqrMagnitude : 0f;
             }
-            visibleCount = DebrisSparkBudgetCore.ChooseFastest(
-                speeds, eligible, selected, count, Mathf.Clamp(maximumEmitters, 0, 70),
-                minimumSpeed * minimumSpeed);
+
+            // A selected item is eligible for a VFX lease even if its emitter
+            // has not yet been created. ChooseFastest itself allocates nothing.
+            DebrisSparkBudgetCore.ChooseFastest(
+                speeds, eligible, selected, count,
+                Mathf.Clamp(maximumEmitters, 0, 70), minimumSpeed * minimumSpeed);
+            visibleCount = 0;
             for (int i = 0; i < count; ++i)
             {
-                if (fx[i] == null) continue;
-                // A selected visual receives speed, unselected gets zero particles.
-                // VFX001 uses world-space bounded maxParticles=16 per source emitter.
-                float speed = selected[i] ? Mathf.Sqrt(speeds[i]) : 0f;
-                fx[i].SetDetachedMotion(selected[i], speed);
+                DetachedModuleVfxController emitter = fx[i];
+                if (selected[i])
+                {
+                    if (emitter == null && createMissingCosmeticEmitters)
+                    {
+                        emitter = tracked[i].gameObject.AddComponent<DetachedModuleVfxController>();
+                        fx[i] = emitter;
+                    }
+                    if (emitter != null && emitter.isActiveAndEnabled)
+                    {
+                        float speed = Mathf.Sqrt(speeds[i]);
+                        emitter.SetDetachedMotion(true, speed);
+                        wasEmitting[i] = true;
+                        ++visibleCount;
+                        continue;
+                    }
+                }
+
+                // No redundant material/emission write for inactive or never
+                // allocated visuals. Only revoke a previously granted lease.
+                if (wasEmitting[i] && emitter != null)
+                    emitter.SetDetachedMotion(false, 0f);
+                wasEmitting[i] = false;
             }
         }
 
-        // Operator-only override: fail closed for invalid configuration.
         public void Configure(int max, float minSpeed, float cadence)
         {
-            if (max < 0 || max > 70 || float.IsNaN(minSpeed) || float.IsInfinity(minSpeed) ||
+            if (max < 0 || max > 70 ||
+                float.IsNaN(minSpeed) || float.IsInfinity(minSpeed) ||
                 minSpeed <= 0f || float.IsNaN(cadence) || float.IsInfinity(cadence) ||
                 cadence < .05f || cadence > 1f)
                 throw new System.ArgumentOutOfRangeException("Invalid VFX budget");

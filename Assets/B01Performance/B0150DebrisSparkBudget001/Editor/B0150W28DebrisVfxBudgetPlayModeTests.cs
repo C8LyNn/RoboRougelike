@@ -41,7 +41,7 @@ namespace RoboRougelike.B01Performance.Tests
                 Assert.AreEqual(2, budget.TrackedCount);
                 Assert.AreEqual(1, budget.ActiveEmitters);
                 Assert.NotNull(a.GetComponent<DetachedModuleVfxController>());
-                Assert.NotNull(b.GetComponent<DetachedModuleVfxController>());
+                Assert.IsNull(b.GetComponent<DetachedModuleVfxController>(), "R2 defers unselected emitter allocation");
                 Assert.Greater(a.GetComponent<DetachedModuleVfxController>().EmissionRate, 0f);
                 Assert.AreEqual(0f, b.GetComponent<DetachedModuleVfxController>().EmissionRate);
                 Assert.AreEqual(beforeFast, ra.linearVelocity.x, 0.001f);
@@ -99,6 +99,101 @@ namespace RoboRougelike.B01Performance.Tests
                 budget.RefreshNow();
                 Assert.AreEqual(0, budget.TrackedCount);
                 Assert.AreEqual(0, budget.ActiveEmitters);
+            }
+            finally
+            {
+                if (part != null) Object.Destroy(part);
+                Object.Destroy(root);
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator SeventyActualR3DebrisCreateAtMostEightEmittersUntilSelected()
+        {
+            var root = new GameObject("B0150_W29_large_battle_budget");
+            var budget = root.AddComponent<B0150DetachedDebrisSparkBudget>();
+            budget.Configure(8, 2f, .25f);
+            var parts = new System.Collections.Generic.List<GameObject>();
+            try
+            {
+                for (int i = 0; i < 70; ++i)
+                    parts.Add(Spawn("genuine_R3_detachment_" + i, 3f + i * .05f));
+                yield return null;
+                budget.RefreshNow();
+                Assert.AreEqual(70, budget.TrackedCount);
+                Assert.AreEqual(8, budget.ActiveEmitters);
+                int created = 0, emitting = 0;
+                for (int i = 0; i < parts.Count; ++i)
+                {
+                    var body = parts[i].GetComponent<Rigidbody>();
+                    var fx = parts[i].GetComponent<DetachedModuleVfxController>();
+                    Assert.NotNull(body);
+                    Assert.IsFalse(body.isKinematic);
+                    if (fx == null) continue;
+                    ++created;
+                    if (fx.EmissionRate > 0f) ++emitting;
+                }
+                Assert.AreEqual(8, created, "Do not allocate 70 VFX MonoBehaviours for 8 visual leases");
+                Assert.AreEqual(8, emitting);
+            }
+            finally
+            {
+                foreach (var p in parts) if (p != null) Object.Destroy(p);
+                Object.Destroy(root);
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator NextFastestRealDebrisGainsSlotAfterRetirement()
+        {
+            var root = new GameObject("B0150_W29_reassign_visual_lease");
+            var budget = root.AddComponent<B0150DetachedDebrisSparkBudget>();
+            budget.Configure(1, 2f, .25f);
+            GameObject fast = null, slow = null;
+            try
+            {
+                fast = Spawn("fast_R3_debris", 8f);
+                slow = Spawn("slow_R3_debris", 5f);
+                yield return null;
+                budget.RefreshNow();
+                Assert.NotNull(fast.GetComponent<DetachedModuleVfxController>());
+                Assert.IsNull(slow.GetComponent<DetachedModuleVfxController>());
+                fast.SetActive(false);
+                budget.RefreshNow();
+                Assert.AreEqual(1, budget.TrackedCount);
+                Assert.AreEqual(1, budget.ActiveEmitters);
+                var resumed = slow.GetComponent<DetachedModuleVfxController>();
+                Assert.NotNull(resumed);
+                Assert.Greater(resumed.EmissionRate, 0f);
+                Assert.AreEqual(0f, fast.GetComponent<DetachedModuleVfxController>().EmissionRate);
+            }
+            finally
+            {
+                if (fast != null) Object.Destroy(fast);
+                if (slow != null) Object.Destroy(slow);
+                Object.Destroy(root);
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator NoEmitterOrBodyWritesAtVisualBudgetZero()
+        {
+            var root = new GameObject("B0150_W29_zero_budget");
+            var budget = root.AddComponent<B0150DetachedDebrisSparkBudget>();
+            budget.Configure(0, 1f, .25f);
+            GameObject part = null;
+            try
+            {
+                part = Spawn("R3_debris_without_emitter", 7f);
+                yield return null;
+                var body = part.GetComponent<Rigidbody>();
+                float velocityBefore = body.linearVelocity.x;
+                budget.RefreshNow();
+                Assert.AreEqual(1, budget.TrackedCount);
+                Assert.AreEqual(0, budget.ActiveEmitters);
+                Assert.IsNull(part.GetComponent<DetachedModuleVfxController>());
+                Assert.AreEqual(velocityBefore, body.linearVelocity.x, .001f);
+                Assert.IsTrue(part.activeInHierarchy);
             }
             finally
             {
