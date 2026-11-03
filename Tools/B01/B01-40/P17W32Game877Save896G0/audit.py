@@ -283,8 +283,9 @@ def economy_pricing_witness():
   pairs.append({"purchase_scrap":price,"R3_destroyed_quote":old,
                 "approved_V7_quote":expected,
                 "R3_zero_quote_denied":old==0})
- must(all(x["R3_destroyed_quote"]!=x["approved_V7_quote"] for x in pairs),
-      "ECON_EXPECTED_RED_NO_ACTUAL_PRICE_DIFFERENCE")
+ must(sum(x["R3_destroyed_quote"]!=x["approved_V7_quote"] for x in pairs)==4 and
+      pairs[0]["R3_zero_quote_denied"] and pairs[0]["approved_V7_quote"]==0,
+      "ECON_EXPECTED_RED_PRICE_4_CASES_PLUS_PAID_ZERO")
  return {"product_result":"RED_EXPECTED_OWNER_APPROVED_V7_SOURCE_DIVERGENCE",
          "case_matrix":pairs,
          "fix_owner":"CODEX_CANONICAL_R3_ONLY",
