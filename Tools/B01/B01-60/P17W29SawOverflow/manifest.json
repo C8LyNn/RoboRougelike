@@ -1,0 +1,86 @@
+{
+  "package_id": "B01-60-P17W29-SAW828-OWNER-BROADPHASE-OVERFLOW-R1",
+  "revision": "R1",
+  "hq": 800,
+  "codex_inbox": 79,
+  "owner": "B01-60 independent QA / narrow quarantined original #828 follow-up",
+  "actual_ancestor_pr_828": "887fd18bf0a518ee24776c660f5efa6e3a0491d8",
+  "prior_gameplay_pr_824_parent": "e03d36f2b86f8c73a067e574b67237a8921f622a",
+  "old_producer_runtime_git_blob": "bb58273eaa756e1df5d98ab64111527c87576656",
+  "candidate_one_site_runtime_git_blob": "06715ac2dc18f8a8c926895d40d0a54d7c3c91ca",
+  "native_unity_target": "6000.3.14f1 URP",
+  "execution_contract": "Source CI only; genuine Unity PlayMode/WindowsPlayer tests require owner workstation and separate approved worktree",
+  "original_native_evidence_828": {
+    "EditMode": "2/4_PASS_2_FAIL",
+    "PlayMode": "19/20_PASS_1_FAIL",
+    "exact_producer_sha": "887fd18bf0a518ee24776c660f5efa6e3a0491d8",
+    "QA_848": "43e7c8e0077a8192ce3bad6c83e3f96820ad0246",
+    "source": "real Unity 6000.3.14f1 as reported in QA #848"
+  },
+  "fix_scope": "Exactly original owner safety broadphase saturation branch: set OverflowedLastTick before fail closed; leave 2nd existing contact broadphase and own armor safety invariant unchanged",
+  "original_test_preserved": "RotarySawPhysicsTests.OverlapOverflowDoesNotPartiallyDamage",
+  "new_native_tests": [
+    {
+      "name": "B0160W29SawOwnerQueryOverflowTests.SaturatedOwnerSafetyBroadphase_SetsOverflowAndStopsResources_ThenClearedMotorCuts",
+      "real_objects": [
+        "RotarySawModule",
+        "RotarySawDemoDamageSink",
+        "RotarySawEnergyReservoir",
+        "RotarySawDemoTarget",
+        "Rigidbody",
+        "BoxCollider",
+        "Physics.SyncTransforms"
+      ],
+      "assertions": [
+        "5 colliders saturate 4-slot own collision query => OverflowedLastTick true",
+        "no partial damage/RPM/heat/energy debit",
+        "after deactivation of 4 colliders query trusted, flag clears, original motor RPM/heat, one real target damaged/energy debit"
+      ],
+      "status": "AUTHORED_UNITY_NATIVE_NOT_RUN"
+    }
+  ],
+  "files": {
+    "changed_owner_original": [
+      "Assets/RoboRougelikeMechanics/WPN005RotarySaw/Runtime/RotarySawModule.cs"
+    ],
+    "new_QA": [
+      "Assets/RoboRougelikeMechanics/WPN005RotarySaw/Tests/PlayMode/B0160W29SawOwnerQueryOverflowTests.cs",
+      "Assets/RoboRougelikeMechanics/WPN005RotarySaw/Tests/PlayMode/B0160W29SawOwnerQueryOverflowTests.cs.meta",
+      "Tools/B01/B01-60/P17W29SawOverflow/verify_source.py",
+      "Tools/B01/B01-60/P17W29SawOverflow/README.md",
+      "Tools/B01/B01-60/P17W29SawOverflow/manifest.json",
+      ".github/workflows/b01-60-w29-saw828-overflow-source.yml"
+    ]
+  },
+  "required_physical_G1": [
+    "Original existing entire WPN005 PlayMode 20/20",
+    "existing real R3 player and Wasteland enemy EditMode all pass",
+    "new real owner-query overflow regression PASS",
+    "actual Windows Player saw target damage and no self damage",
+    "full source-current SHA compile and smoke"
+  ],
+  "known_HOLD": [
+    "#828 default player hull 4 actual armor colliders intersect blade",
+    "#828 Wasteland enemy saw 4 P12_EnemyBlock colliders intersect blade",
+    "Source-only patch does NOT fix mounted default blade geometry",
+    "Saw remains unaccepted for full integration until original gameplay placement/contacts corrected",
+    "New Unity 6000.3.14f1 G1 and Player unrun on this candidate"
+  ],
+  "source_ci": "PENDING",
+  "native_G1": "NOT_RUN",
+  "windows_player_G1": "NOT_RUN",
+  "formal_G0": "PENDING_B01-40_B01-41_B01-61",
+  "QA_ACCEPTED": "PENDING",
+  "ready_for_integrator": false,
+  "integrated": false,
+  "released": false,
+  "codex_ack": "NONE",
+  "no_merge": true,
+  "rollback": "Drop isolated W29 branch and restore exact unchanged original #828; no protected/default branch or producer source changed",
+  "receiver": [
+    "Codex Rotary Saw producer must adopt/review narrow one-line fix and separately restore default player/enemy geometry",
+    "B01-40/41/61 source G0",
+    "B01-60 independent real Unity/Windows Player G1",
+    "B01-00 owner coordination"
+  ]
+}
