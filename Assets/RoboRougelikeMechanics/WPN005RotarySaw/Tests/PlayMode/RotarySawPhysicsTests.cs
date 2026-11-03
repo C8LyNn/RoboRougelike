@@ -135,18 +135,42 @@ namespace RoboRougelike.Weapons.RotarySaw.Tests
             var armor=Make("W28 owned armor blocking blade");
             armor.transform.SetParent(owner.transform);
             armor.transform.localPosition=new Vector3(0f,0f,.55f);
-            armor.AddComponent<BoxCollider>().size=Vector3.one*.3f;
+            var ownCollider=armor.AddComponent<BoxCollider>();ownCollider.size=Vector3.one*.3f;
             Physics.SyncTransforms();
             yield return new WaitForFixedUpdate();
             Assert.IsTrue(saw.OwnGeometryBlockedLastTick);
+            Assert.That(saw.BlockingOwnColliderLastTick,Is.SameAs(ownCollider));
             Assert.AreEqual(0f,saw.Motor.Heat,"blocked own armor must not heat the saw");
             Assert.AreEqual(0f,saw.Motor.Rpm,"blocked own armor must not spin the saw");
             Assert.AreEqual(0f,enemy.TotalDamage,"own armor must not permit damage to enemy beyond");
             armor.SetActive(false); Physics.SyncTransforms();
             yield return new WaitForFixedUpdate();
             Assert.IsFalse(saw.OwnGeometryBlockedLastTick);
+            Assert.That(saw.BlockingOwnColliderLastTick,Is.Null,"clear pass must not show stale collider");
             Assert.Greater(saw.Motor.Rpm,0f,"unchanged motor request should resume after clearance");
             Assert.Greater(enemy.TotalDamage,0f,"nonblocked contact target must be cut");
+        }
+
+        [UnityTest] public IEnumerator FullOwnDiscQueryReportsOverflowAndFailsClosedBeforeEnergy()
+        {
+            SetupSaw();
+            config.maxOverlapHits=4;config.heatPerSecondAtFullRpm=50f;
+            saw.Configure(config);
+            var enemy=Target(new Vector3(0f,0f,-.55f));
+            for(int i=0;i<5;i++)
+            {
+                var owned=Make("W29 overcrowded owned frame "+i);
+                owned.transform.SetParent(owner.transform);
+                owned.transform.localPosition=new Vector3(0f,0f,.2f+i*.10f);
+                owned.AddComponent<BoxCollider>().size=Vector3.one*.15f;
+            }
+            Physics.SyncTransforms();
+            yield return new WaitForFixedUpdate();
+            Assert.IsTrue(saw.OverflowedLastTick,"the OWN safety query must set the public overflow diagnostic");
+            Assert.IsTrue(saw.OwnGeometryBlockedLastTick);
+            Assert.AreEqual(0f,saw.Motor.Rpm);
+            Assert.AreEqual(0f,saw.Motor.Heat,"saturated query must fail before heat or energy");
+            Assert.AreEqual(0f,enemy.TotalDamage,"no partial damage on saturated overlap");
         }
 
         [UnityTest] public IEnumerator RegisteredDetachedOwnPartStillStopsSawUntilCleared()

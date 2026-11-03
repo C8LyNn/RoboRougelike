@@ -40,6 +40,9 @@ namespace RoboRougelike.Weapons.RotarySaw
         // Physical obstruction by an owned part stops the MOTOR, not just the damage sink.
         // This includes still-registered detached parts, and recovers without resetting the request.
         public bool OwnGeometryBlockedLastTick { get; private set; }
+        // Collider that actually blocked the rotating disc, if the query was not saturated.
+        // Diagnostic only: an invalid mount must be corrected, not silently whitelisted.
+        public Collider BlockingOwnColliderLastTick { get; private set; }
 
         private void Awake() { EnsureInitialized(); ResolveInterfaces(); }
         private void OnValidate() { if (configuration != null) configuration.ClampToSafeValues(); }
@@ -139,9 +142,14 @@ namespace RoboRougelike.Weapons.RotarySaw
             float extent = Mathf.Sqrt(configuration.bladeRadius * configuration.bladeRadius +
                                       configuration.bladeHalfThickness * configuration.bladeHalfThickness);
             // A saturated broadphase cannot prove that an owner component is absent.
+            // Report the overflow even when the safety path returns BEFORE normal cutting.
             int count = Physics.OverlapSphereNonAlloc(center, extent, overlapBuffer,
                 ~0, QueryTriggerInteraction.Ignore);
-            if (count >= overlapBuffer.Length) return true;
+            if (count >= overlapBuffer.Length)
+            {
+                OverflowedLastTick = true;
+                return true;
+            }
             Vector3 axle = CurrentAxle(bladeCenter);
             for (int i = 0; i < count; i++)
             {
@@ -150,11 +158,19 @@ namespace RoboRougelike.Weapons.RotarySaw
                     collider.transform.IsChildOf(transform)) continue;
                 // ClosestPoint returns the centre for overlapping solid volumes.
                 // An internal intersection is unsafe even if the blade hub has a dead zone.
-                if (collider.bounds.Contains(center)) return true;
+                if (collider.bounds.Contains(center))
+                {
+                    BlockingOwnColliderLastTick = collider;
+                    return true;
+                }
                 Vector3 closest = collider.ClosestPoint(center);
                 if (RotarySawContactMath.IsOnCuttingDisc(closest - center, axle,
                     configuration.bladeRadius, configuration.bladeHalfThickness,
-                    configuration.hubDeadZone)) return true;
+                    configuration.hubDeadZone))
+                {
+                    BlockingOwnColliderLastTick = collider;
+                    return true;
+                }
             }
             return false;
         }
@@ -167,6 +183,7 @@ namespace RoboRougelike.Weapons.RotarySaw
             if(dt<=0||float.IsNaN(dt)||float.IsInfinity(dt))return;
             EnsureInitialized();
             OverflowedLastTick = false;
+            BlockingOwnColliderLastTick = null;
             DamageEventsLastTick = 0;
             bool ready = operational && enabled && isActiveAndEnabled && ownerRigidbody != null &&
                          bladeCenter != null && sink != null && damageSinkBehaviour != null && damageSinkBehaviour.isActiveAndEnabled;
