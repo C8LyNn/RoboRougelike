@@ -4,24 +4,55 @@ using NUnit.Framework;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.TestTools;
+using RoboRougelike.R3;
 using RoboRougelike.R5;
 using B01.MapJumpPad001;
 
 public sealed class B0125W32RealArenaChallengeTests
 {
-    // Probe a 3.4 m wide vehicle envelope against the ACTUAL generated
-    // solid cover. This is geometry acceptance, not a full driving test.
-    private static void AssertCoverClear(R5Arena arena, Vector3 center, string context)
+    // W33 correction: do NOT test only an arbitrary 3.4m vehicle. Original
+    // R3VehicleCatalog provides Light=20, Standard=83 and Heavy=139 cells.
+    // R3VehicleAssembly places cell centres on its existing 0.55m grid.
+    // This is a conservative factory-grid XZ proxy, NOT real mesh/PhysX hull.
+    private static Vector3 FactoryEnvelope(R3VehicleKind kind)
+    {
+        var design = R3VehicleCatalog.Create(kind);
+        int minX = int.MaxValue, maxX = int.MinValue;
+        int minZ = int.MaxValue, maxZ = int.MinValue;
+        foreach (var part in design.Parts)
+        {
+            minX = Mathf.Min(minX, part.Cell.x);
+            maxX = Mathf.Max(maxX, part.Cell.x);
+            minZ = Mathf.Min(minZ, part.Cell.z);
+            maxZ = Mathf.Max(maxZ, part.Cell.z);
+        }
+        int expected = kind == R3VehicleKind.Light ? 20 :
+            kind == R3VehicleKind.Standard ? 83 : 139;
+        Assert.That(design.Parts.Count, Is.EqualTo(expected),
+            "Production R3 factory changed: review arena vehicle envelope");
+        const float originalGridMeters = .55f;
+        const float horizontalMarginMeters = .30f; // total, 0.15m per side
+        float width = (maxX - minX + 1) * originalGridMeters +
+            horizontalMarginMeters;
+        float length = (maxZ - minZ + 1) * originalGridMeters +
+            horizontalMarginMeters;
+        Assert.That(width, Is.GreaterThan(0f));
+        Assert.That(length, Is.GreaterThan(0f));
+        return new Vector3(width, 1.2f, length);
+    }
+
+    private static void AssertCoverClear(R5Arena arena, Vector3 center,
+        Vector3 envelopeSize, string context)
     {
         var envelope = new Bounds(new Vector3(center.x, 1.1f, center.z),
-            new Vector3(3.4f, 1.2f, 3.4f));
+            envelopeSize);
         foreach (var collider in arena.Layout.GetComponentsInChildren<Collider>(true))
         {
             if (collider == null || !collider.enabled || collider.isTrigger ||
                 !collider.gameObject.activeInHierarchy)
                 continue;
             Assert.That(collider.bounds.Intersects(envelope), Is.False,
-                context + ": solid cover intersects vehicle envelope: " +
+                context + ": real solid cover intersects factory-grid envelope: " +
                 collider.name + " at " + collider.bounds);
         }
     }
@@ -31,7 +62,7 @@ public sealed class B0125W32RealArenaChallengeTests
     {
         EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         yield return new EnterPlayMode();
-        var host = new GameObject("B01-25 W32 canonical R5 geometry QA");
+        var host = new GameObject("B01-25 W33 canonical R5 geometry QA");
         var arena = host.AddComponent<R5Arena>();
         var shader = Shader.Find("Universal Render Pipeline/Lit");
         Assert.That(shader, Is.Not.Null);
@@ -41,13 +72,16 @@ public sealed class B0125W32RealArenaChallengeTests
         foreach (R5ArenaKind kind in Enum.GetValues(typeof(R5ArenaKind)))
         {
             arena.Build(kind);
-            yield return null; // Old layout is retired by the existing R5 Build.
+            yield return null; // Original R5 retires the previous layout.
             Physics.SyncTransforms();
-            for (int z = -20; z <= 18; z += 2)
-                AssertCoverClear(arena, new Vector3(0f, 1.1f, z),
-                    kind + " central passage z=" + z);
+            foreach (R3VehicleKind vehicle in Enum.GetValues(typeof(R3VehicleKind)))
+            {
+                Vector3 envelope = FactoryEnvelope(vehicle);
+                for (int z = -22; z <= 18; z += 2)
+                    AssertCoverClear(arena, new Vector3(0f, 1.1f, z),
+                        envelope, kind + "/" + vehicle + " corridor z=" + z);
+            }
         }
-
         UnityEngine.Object.Destroy(host);
         UnityEngine.Object.Destroy(material);
     }
@@ -57,7 +91,7 @@ public sealed class B0125W32RealArenaChallengeTests
     {
         EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         yield return new EnterPlayMode();
-        var host = new GameObject("B01-25 W32 jump pad route QA");
+        var host = new GameObject("B01-25 W33 existing R5 jump pad route QA");
         var arena = host.AddComponent<R5Arena>();
         var shader = Shader.Find("Universal Render Pipeline/Lit");
         Assert.That(shader, Is.Not.Null);
@@ -75,30 +109,30 @@ public sealed class B0125W32RealArenaChallengeTests
         Assert.That(Vector3.Dot(pad.transform.forward, Vector3.forward),
             Is.GreaterThan(.999f), "Expected live R5 pad launches toward +Z");
 
-        // Probe the ACTUAL straight ingress from the production spawn to
-        // the production pad. Do not teleport or modify the actual player.
-        for (int step = 0; step <= 12; step++)
-        {
-            Vector3 sample = Vector3.Lerp(arena.PlayerSpawn,
-                pad.transform.position, step / 12f);
-            AssertCoverClear(arena, sample, "Salvage Yard approach step " + step);
-        }
-
-        // A geometry-only ballistic estimate, NOT proof that the compound
-        // real player receives the impulse; independent QA #901 owns that.
         Assert.That(Physics.gravity.y, Is.LessThan(-1f));
         const float upwardChange = 8.5f;
         const float forwardChange = 2f;
         float estimatedFlightSeconds = 2f * upwardChange / -Physics.gravity.y;
         Vector3 estimatedTouchdown = pad.transform.position +
             pad.transform.forward * forwardChange * estimatedFlightSeconds;
-        for (int step = 0; step <= 12; step++)
-        {
-            Vector3 sample = Vector3.Lerp(pad.transform.position,
-                estimatedTouchdown, step / 12f);
-            AssertCoverClear(arena, sample, "Salvage Yard landing step " + step);
-        }
 
+        foreach (R3VehicleKind vehicle in Enum.GetValues(typeof(R3VehicleKind)))
+        {
+            Vector3 envelope = FactoryEnvelope(vehicle);
+            for (int step = 0; step <= 12; step++)
+            {
+                Vector3 approach = Vector3.Lerp(arena.PlayerSpawn,
+                    pad.transform.position, step / 12f);
+                AssertCoverClear(arena, approach, envelope,
+                    vehicle + " actual R5 pad ingress step " + step);
+                Vector3 landing = Vector3.Lerp(pad.transform.position,
+                    estimatedTouchdown, step / 12f);
+                AssertCoverClear(arena, landing, envelope,
+                    vehicle + " predicted landing step " + step);
+            }
+        }
+        // This does not prove the real R3 multi-collider car launches;
+        // independent B01-60 #901 owns the real PhysX impulse acceptance.
         UnityEngine.Object.Destroy(host);
         UnityEngine.Object.Destroy(material);
     }
