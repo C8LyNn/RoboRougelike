@@ -1,0 +1,59 @@
+name: B01-10 W34 R3 default vs V7 purchase source provenance (NOT UNITY)
+on:
+  push:
+    branches:
+      - qa/b01-10-p17w34-r3-econ-price-restore-witness-r1
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-10/P17W34R3PriceContinuity/**'
+      - '.github/workflows/b01-10-w34-r3-price-continuity.yml'
+permissions:
+  contents: read
+jobs:
+  real-original-store-price-witness:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Pin EXACT producer #923, actual game #877, approved V7 #780, admission #855
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin 0d4904b735999f772e048be4bddc6bcc7bb9a9f3
+          git fetch --no-tags --depth=1 origin 3bd9b159997924dcecb4e1cd1d41137896e5199e
+          git fetch --no-tags --depth=1 origin b4df10a7ad7e6c758f8331013f6b216b3a3689a3
+          git fetch --no-tags --depth=1 origin c9c19665a4f9385e6479f7151097deb797026ade
+          mkdir -p Tools/B01/B01-62/P17W30AdmissionV3/.source Tools/B01/B01-62/P17W33R3World/.source b0110-w34-receipts
+          git show 3bd9b159997924dcecb4e1cd1d41137896e5199e:Assets/R3/R3VehicleCatalog.cs > Tools/B01/B01-62/P17W33R3World/.source/R3VehicleCatalog.cs
+          git show b4df10a7ad7e6c758f8331013f6b216b3a3689a3:Assets/B01Packages/ECONAPPROVED007/Runtime/ApprovedEconomyPolicyV7.cs > Tools/B01/B01-62/P17W30AdmissionV3/.source/ApprovedEconomyPolicyV7.cs
+          git show b4df10a7ad7e6c758f8331013f6b216b3a3689a3:Assets/B01Packages/ECONAPPROVED007/Runtime/CanonicalEconomySectionV7.cs > Tools/B01/B01-62/P17W30AdmissionV3/.source/CanonicalEconomySectionV7.cs
+          git show c9c19665a4f9385e6479f7151097deb797026ade:Assets/B01Packages/ECONADMISSIONW29/Runtime/EconomyV7AdmissionW29.cs > Tools/B01/B01-62/P17W30AdmissionV3/.source/EconomyV7AdmissionW29.cs
+      - name: Verify source provenance and exact own five-file scope
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-10/P17W34R3PriceContinuity/source_guard.py | tee b0110-w34-receipts/scope.log
+          grep -q B0110_W34_ORIGINAL_R3_PRICE_PROVENANCE_SCOPE_PASS b0110-w34-receipts/scope.log
+      - name: Execute ORIGINAL one V3 Store + original V7 + actual R3 factory on physical OS disk
+        run: |
+          set -euo pipefail
+          dotnet run --project Tools/B01/B01-10/P17W34R3PriceContinuity/W34PriceContinuity.csproj -c Release -v quiet | tee b0110-w34-receipts/original-source-os.log
+          grep -q "B0110_W34_R3_ORIGINAL_ONE_WRITER_SOURCE_WITNESS_TOTAL 3 PASS 0 FAIL" b0110-w34-receipts/original-source-os.log
+          grep -q W34_SOURCE_SAVE_ADMISSION_ACCEPTS_UNAUTHENTICATED_GAME_PRICE_NOT_AN_ACTUAL_UNITY_EXPLOIT b0110-w34-receipts/original-source-os.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b0110-w34-original-r3-price-${{ matrix.os }}
+          path: b0110-w34-receipts/*
+          if-no-files-found: warn
