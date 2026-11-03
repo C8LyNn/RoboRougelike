@@ -1,0 +1,82 @@
+{
+  "package_id": "B01-60-P17W29-SAW-OVERFLOW-CORRECTION-001/R1",
+  "role": "B01-60 (isolated producer-assist proposal; independent B01-41/61 review required)",
+  "source_parent": {
+    "pr": 828,
+    "sha": "887fd18bf0a518ee24776c660f5efa6e3a0491d8"
+  },
+  "original_codex_w27": {
+    "pr": 824,
+    "sha": "e03d36f2b86f8c73a067e574b67237a8921f622a"
+  },
+  "original_product_before": {
+    "Assets/RoboRougelikeMechanics/WPN005RotarySaw/Runtime/RotarySawModule.cs": "bb58273eaa756e1df5d98ab64111527c87576656",
+    "Assets/RoboRougelikeMechanics/WPN005RotarySaw/Tests/PlayMode/RotarySawPhysicsTests.cs": "661a60faf2d06956bc980f4213b223a46165d466"
+  },
+  "own_exact_delta": {
+    "modified_existing_owned_prod_candidate": [
+      "Assets/RoboRougelikeMechanics/WPN005RotarySaw/Runtime/RotarySawModule.cs",
+      "Assets/RoboRougelikeMechanics/WPN005RotarySaw/Tests/PlayMode/RotarySawPhysicsTests.cs"
+    ],
+    "new_b0160_only": [
+      "Tools/B01/B01-60/P17W29SawOverflowQA/verify.py",
+      "Tools/B01/B01-60/P17W29SawOverflowQA/test_verify.py",
+      "Tools/B01/B01-60/P17W29SawOverflowQA/Invoke-B0160W29SawNative.ps1",
+      "Tools/B01/B01-60/P17W29SawOverflowQA/README.md",
+      "Tools/B01/B01-60/P17W29SawOverflowQA/manifest.json",
+      ".github/workflows/b01-60-p17w29-saw-overflow.yml"
+    ]
+  },
+  "gameplay_correction": "IntersectsOtherOwnedPart owner-safety Physics.OverlapSphereNonAlloc saturated -> OverflowedLastTick=true; return true (keep fail-closed)",
+  "native_original_tests_before": 20,
+  "native_original_tests_after": 21,
+  "native_new_test": "OwnerSafetyBroadphaseOverflowReportsAndResumesAfterClearing",
+  "required_native_suites": [
+    {
+      "platform": "PlayMode",
+      "suite": "RoboRougelike.Weapons.RotarySaw.Tests.RotarySawPhysicsTests",
+      "pass_cases": 21
+    },
+    {
+      "platform": "EditMode",
+      "suite": "RRLW6SawPhysicalTests",
+      "pass_cases": 4
+    }
+  ],
+  "independently_reproduced_prior_red": {
+    "pr": 848,
+    "editmode": "2/4",
+    "playmode": "19/20",
+    "real_default_player_mounted_saw_intersects_owned_hull": true,
+    "real_default_enemy_mounted_saw_intersects_owned_hull": true
+  },
+  "source_ci": "PENDING_EXACT_CURRENT_FINAL_SHA",
+  "native_g1": "NOT_RUN",
+  "windows_player": "NOT_RUN",
+  "actual_integrated_player": "NOT_RUN",
+  "g0": "PENDING_INDEPENDENT_B01_40_41_61",
+  "qa_accepted": false,
+  "ready_for_integration": false,
+  "integrated": false,
+  "released": false,
+  "other_w29_sources": {
+    "emp": {
+      "pr": 839,
+      "sha": "fea000fe0a706df2b52b6f295bdb3135ba1f9384",
+      "nativeQA": 849
+    },
+    "save": {
+      "pr": 826,
+      "sha": "99fb08619c78b3834bb4c0450499babf991f218a",
+      "abiQA": 847
+    },
+    "softlock": {
+      "pr": 812,
+      "status": "RED"
+    }
+  },
+  "rollback": "drop only separate new W29 derived branch, never modify producer original #828 branch, original Codex gameplay, player Save or protected refs",
+  "no_merge": true,
+  "no_user_pc_access": true,
+  "no_competing_save": true
+}
