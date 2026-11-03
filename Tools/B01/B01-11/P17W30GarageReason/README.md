@@ -1,6 +1,6 @@
 # B01-11 — P17/W30 — Original R3 garage rejected-mount reason / R1
 
-**Target:** existing playable Codex cumulative #873 SHA `d537b7310979b91df27a08b14d0f1c74d0889089`, exact direct child gameplay hard-geometry #877 SHA `20273c3580079dfb299c30c85a67e76f8d893e7f`. This W30 package is an isolated child of #877. It does not alter or reset parent #877, Codex active worktree, #873, original #826 Save, #861 saw, #834 policy, B01-12 garage visual, main/develop or other producer branches. Parent physical source current `Assets/R3/R3GarageView.cs` Git blob = `1976a19516905be63259109ec1af0a92ef52d6f4`.
+**Target:** existing playable Codex cumulative #873 SHA `d537b7310979b91df27a08b14d0f1c74d0889089`, exact current W30 hard-geometry #877 HEAD `9634b1e5b4576aca4304d1d5b4c3d01446737650` (including the new 256-hit saturation fail-closed guard). The original W29 #877 source-method RED witness is pinned separately at SHA `20273c3580079dfb299c30c85a67e76f8d893e7f`. This W30 package is an isolated child of #877. It does not alter or reset parent #877, Codex active worktree, #873, original #826 Save, #861 saw, #834 policy, B01-12 garage visual, main/develop or other producer branches. Parent physical source current `Assets/R3/R3GarageView.cs` Git blob = `1976a19516905be63259109ec1af0a92ef52d6f4`.
 
 ## Confirmed existing-player UI problem
 
