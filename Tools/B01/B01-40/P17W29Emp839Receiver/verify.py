@@ -54,7 +54,7 @@ def run(outpath):
   need(subprocess.run(["git","merge-base","--is-ancestor",before,after],
      capture_output=True).returncode==0,"WRONG_GIT_ANCESTRY:"+before[:10])
  owner_delta=git("diff","--name-status",OWNER_BASE,OWNER).decode().splitlines()
- need(len(owner_delta)==4 and all(x.startswith("M\t") for x in owner_delta),
+ need(len(owner_delta)==4 and sum(x.startswith("M\\t") for x in owner_delta)==3 and\n      sum(x.startswith("A\\t") for x in owner_delta)==1,
       "EMP_PRODUCER_839_SCOPE_DRIFT:"+repr(owner_delta))
  owner_paths={row.split("\t",1)[1] for row in owner_delta}
  need(owner_paths==set(MOD)|{"Docs/W28/EMP_DIRECT_ACTIVATION_QA.md"},
