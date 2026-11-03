@@ -201,6 +201,91 @@ internal static class W29ColdReadQa
         Console.WriteLine("W29_CORRUPT_COLD_PAIR_NO_LEAK_OWNER_RELEASED=PASS");
         return true;
       });
+
+    // Source-only controlled physical-world stand-in. Uses the actual
+    // #729 gateway/session/CAS, not an independent test Save implementation.
+    private sealed class QuiescentGate:ICanonicalMutationGate
+    {
+        public bool IsQuiescent()=>true;
+    }
+    private sealed class ReplayedWorld:ICanonicalStagedWorld
+    {
+        private readonly RunSnapshot source;
+        public bool retired;
+        public ReplayedWorld(RunSnapshot snapshot){source=snapshot;}
+        public RunSnapshot Capture()=>source;
+        public void Activate(){}
+        public void Deactivate(){}
+        public void Retire(){retired=true;}
+    }
+    private sealed class ReplayFactory:ICanonicalRigFactory
+    {
+        private readonly List<ReplayedWorld> worlds=new List<ReplayedWorld>();
+        public bool AllGone()=>worlds.All(x=>x.retired);
+        public ICanonicalStageOwnership BeginOwnedStage(RunSnapshot snapshot,
+            ColdRestore plan)=>new OwnedReplayStage(this,snapshot);
+        private sealed class OwnedReplayStage:ICanonicalStageOwnership
+        {
+            private readonly ReplayFactory factory;
+            private readonly RunSnapshot snapshot;
+            private ReplayedWorld? world;
+            public OwnedReplayStage(ReplayFactory f,RunSnapshot s)
+            {factory=f;snapshot=s;}
+            public ICanonicalStagedWorld PrepareInactive()
+            {
+                world=new ReplayedWorld(snapshot);
+                factory.worlds.Add(world);
+                return world;
+            }
+            public bool CleanupUnpublishedAndVerifyDestroyed()
+            {
+                if(world!=null)world.Retire();
+                return world==null||world.retired;
+            }
+        }
+    }
+    private static bool ColdReadThenOriginalTypedGateway()
+      =>Scratch(root=>{
+        if(!Save(root,true,out byte[] saved,out var savedEconomy)||
+            savedEconomy==null)return false;
+        string file=Path.Combine(StoreDir(root),"save.envelope");
+        byte[] before=File.ReadAllBytes(file);
+        if(CanonicalColdReadV3.ReadClosedSlot(root,Run,Slot,
+            out long gen,out byte[] coldBytes,out var coldEcon)!=
+            WholeGameResult.Accepted||coldEcon==null||
+            gen!=2||!coldBytes.SequenceEqual(saved))return false;
+        var factory=new ReplayFactory();
+        if(B01.CanonicalWholeGameAdapter003.CanonicalWholeGameSessionV3.TryOpen(
+            root,Run,Slot,false,new QuiescentGate(),factory,out var session)!=
+            B01.CanonicalWholeGameAdapter003.WholeGameSessionOpen.Accepted||
+            session==null)return false;
+        try
+        {
+            if(session.TryRestore(coldBytes,coldEcon,Run,gen)!=
+               CanonicalGateResult.Accepted||!session.HasWorld||
+               !session.TryCapture(out byte[] preview,out var wallet)||
+               wallet==null||!preview.SequenceEqual(coldBytes)||
+               wallet.Scrap!=24||wallet.Wins!=1||
+               wallet.ConsumedVictoryIds.Count!=1)return false;
+            if(B01.CanonicalWholeGameAdapter003.CanonicalWholeGameSessionV3.TryOpen(
+               root,Run,Slot,false,new QuiescentGate(),new ReplayFactory(),
+               out var concurrent)!=B01.CanonicalWholeGameAdapter003.WholeGameSessionOpen.Busy||
+               concurrent!=null)return false;
+            if(!File.ReadAllBytes(file).SequenceEqual(before))return false;
+            if(ApprovedEconomyPolicyV7.TryStageTrustedVictory(wallet,
+                "w29-genuine-fixture-win-1","w29-fixture-encounter-1",
+                out _,out _))return false;
+            if(!session.TryCloseAfterPhysicalRetirement(factory.AllGone))
+                return false;
+            Console.WriteLine("W29_COLD_BOOT_ORIGINAL_826_TYPED_GATEWAY_RESTORE=PASS");
+            return true;
+        }
+        finally
+        {
+            session.TryCloseAfterPhysicalRetirement(factory.AllGone);
+            session.Dispose();
+        }
+      });
     public static int Main()
     {
         Check("No Save file: cold reader does not create owner",EmptyNonMutating);
@@ -208,6 +293,7 @@ internal static class W29ColdReadQa
         Check("Actual disk generation2 victory read with ECON V7",()=>Cold(true));
         Check("Busy writer blocks cold reader without bytes",BusyDoesNotLeak);
         Check("Corrupt original envelope blocks cold read and releases owner",CorruptFailsClosed);
+        Check("Cold pair restores via original #826 gateway with same owner",ColdReadThenOriginalTypedGateway);
         Console.WriteLine("B0162_W29_COLD_READ_REAL_OS_TOTAL "+(pass+fail)+" PASS "+pass+" FAIL "+fail);
         Console.WriteLine("B0162_W29_SOURCE_ONLY_NATIVE_UNITY_NOT_RUN");
         return fail==0?0:1;

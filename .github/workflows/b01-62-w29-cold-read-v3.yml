@@ -45,7 +45,7 @@ jobs:
         run: |
           set -euo pipefail
           dotnet run --project Tools/B01/B01-62/P17W29ColdReadV3/ColdReadV3Qa.csproj -c Release -v quiet | tee b0162-w29-read-evidence/tests.log
-          grep -q 'B0162_W29_COLD_READ_REAL_OS_TOTAL 5 PASS 5 FAIL 0' b0162-w29-read-evidence/tests.log
+          grep -q 'B0162_W29_COLD_READ_REAL_OS_TOTAL 6 PASS 6 FAIL 0' b0162-w29-read-evidence/tests.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:
