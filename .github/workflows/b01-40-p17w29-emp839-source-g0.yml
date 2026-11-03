@@ -1,0 +1,64 @@
+name: B01-40 W29 independent EMP839 real Git source G0
+on:
+  push:
+    branches: [qa/b01-40-p17w29-emp839-exact-source-g0]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-40/P17W29Emp839G0/**'
+      - '.github/workflows/b01-40-p17w29-emp839-source-g0.yml'
+permissions:
+  contents: read
+jobs:
+  exact-original-source:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Independently verify #839 source against both real #824 gameplay SHAs, GUIDs and activation guard before resources
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-40/P17W29Emp839G0/verify.py --out w29-emp839-receipt | tee w29-emp839-stdout.log
+          cp w29-emp839-stdout.log w29-emp839-receipt/
+          grep -q 'B0140_W29_EMP839_SOURCE_G0_3_ORIGINAL_CODE_PATHS_EXACT_SHA_PASS' w29-emp839-stdout.log
+          grep -q 'B0140_W29_EMP839_CURRENT_GAME_SAME_PATH_NO_DRIFT_3_OF_3_PASS' w29-emp839-stdout.log
+          grep -q 'B0140_W29_EMP839_2_MUTANT_AND_SAFE_OS_SCRATCH_PASS' w29-emp839-stdout.log
+          grep -q 'B0140_W29_EMP839_NATIVE_G1_THIS_QA_NOT_RUN_INTEGRATED_NO' w29-emp839-stdout.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b0140-w29-emp839-${{ matrix.os }}
+          path: w29-emp839-receipt/
+          if-no-files-found: warn
+  original-zip-identical:
+    needs: [exact-original-source]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: b0140-w29-emp839-ubuntu-24.04
+          path: ubuntu
+      - uses: actions/download-artifact@v4
+        with:
+          name: b0140-w29-emp839-windows-2025
+          path: windows
+      - name: Check same original read-only candidate SHA source bits and manifest after actual runner uploads
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp ubuntu/B0140_W29_EMP839_SOURCE_ONLY.zip windows/B0140_W29_EMP839_SOURCE_ONLY.zip
+          cmp ubuntu/manifest.json windows/manifest.json
+          cmp ubuntu/zip-sha256.json windows/zip-sha256.json
+          sha256sum ubuntu/B0140_W29_EMP839_SOURCE_ONLY.zip
+          echo B0140_W29_EMP839_CROSS_OS_ORIGINAL_SOURCE_BYTE_IDENTICAL_PASS
