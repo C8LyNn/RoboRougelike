@@ -83,7 +83,7 @@ def verify(repo,out):
       receipt["exact_W28_parent"]=="2508f533d3ed8c31f581e491afb2494ab7fa774c" and
       receipt["original_W28_Editor_Git_blob"]=="3a4a82c28f419497a0511e64d930e5dec30f9826" and
       receipt["source_ZIP_sha256"]==SHA(src) and receipt["source_ZIP_bytes"]==len(src) and
-      receipt["source_original_file_count"]==16 and
+      receipt["source_original_file_count"]==17 and
       receipt["native_W29_EditMode_5"]=="AUTHORED_NOT_RUN" and
       receipt["native_Unity_G1"]=="NOT_RUN" and
       receipt["B01_30_40_FORMAL_G0"]=="PENDING" and
