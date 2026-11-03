@@ -9,6 +9,63 @@ using RoboRougelike.R3;
 
 public sealed class GarageEditFreedomTests
 {
+    // W32: paid-zero is a legitimate V7-priced transaction, NOT a free
+    // victory rebuild. Even a zero quote must require a real owned wreck.
+    [Test] public void OwnedMountedArmorAtPurchaseOneRepairsForPaidZeroAndKeepsGuid()
+    {
+        var design=new R3VehicleDesign();
+        design.Parts.Add(new R3PartState(Vector3Int.zero,R3PartKind.Core));
+        design.Parts.Add(new R3PartState(new Vector3Int(0,1,0),R3PartKind.Armor,0f));
+        var model=new R3VehicleModel(design,new R3GarageEconomy{ArmorCost=1});
+        var damaged=model.Parts.Single(p=>p.Kind==R3PartKind.Armor);
+        string id=damaged.Id;
+        int beforeParts=model.Parts.Count;
+        Assert.That(model.Scrap,Is.Zero);
+        Assert.That(model.RepairCost(damaged),Is.Zero);
+        Assert.That(model.Repair(damaged.Cell),Is.True,
+            "Owned connected 0HP Armor at price 1 is a PAID zero-Scrap rebuild.");
+        Assert.That(model.Scrap,Is.Zero);
+        Assert.That(damaged.Health,Is.EqualTo(1f));
+        Assert.That(model.Parts.Single(p=>p.Id==id),Is.SameAs(damaged));
+        Assert.That(model.Parts.Count,Is.EqualTo(beforeParts));
+        Assert.That(model.Repair(damaged.Cell),Is.False,
+            "Fully healthy part must not be repeatedly repaired at quote zero.");
+    }
+
+    [Test] public void EmergencyRepairAcceptsNonemptyZeroCostV7PlanWithoutMintingResources()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light),
+            new R3GarageEconomy{WheelCost=1});
+        var leftWheels=model.Parts.Where(p=>p.Kind==R3PartKind.Wheel&&p.Cell.x<0).ToArray();
+        Assert.That(leftWheels.Length,Is.GreaterThan(0));
+        foreach(var wheel in leftWheels)wheel.Health=0f;
+        Assert.That(model.CanDeploy,Is.False);
+        Assert.That(model.EmergencyRepairCost,Is.Zero);
+        var originalIds=model.Parts.Select(p=>p.Id).OrderBy(x=>x).ToArray();
+        int originalCount=model.Parts.Count;
+        Assert.That(model.EmergencyRepair(),Is.True,
+            "Nonempty genuine emergency restoration plan with zero quote is a PAID action.");
+        Assert.That(model.Scrap,Is.Zero);
+        Assert.That(model.CanDeploy,Is.True);
+        Assert.That(model.Parts.Count,Is.EqualTo(originalCount));
+        Assert.That(model.Parts.Select(p=>p.Id).OrderBy(x=>x),Is.EqualTo(originalIds));
+        Assert.That(model.EmergencyRepair(),Is.False,
+            "No accidental repeated zero-cost repair of an already deployable rig.");
+    }
+
+    [Test] public void AboveZeroHealthRepairKeepsOriginalPartialDamageQuote()
+    {
+        var model=new R3VehicleModel(new R3VehicleDesign(),
+            new R3GarageEconomy{ArmorCost=20});
+        var part=new R3PartState(Vector3Int.zero,R3PartKind.Armor,.5f);
+        Assert.That(model.RepairCost(part),Is.EqualTo(4),
+            "Only destroyed 0HP price changes to V7 65%-floor; partial repairs keep 35%-ceil.");
+        part.Health=1f;
+        Assert.That(model.RepairCost(part),Is.Zero);
+        part.Health=float.NaN;
+        Assert.That(model.RepairCost(part),Is.Zero);
+    }
+
     [Test] public void ModelCanRemoveLastGunAndEveryWheelButCannotDeploy()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
