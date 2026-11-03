@@ -104,7 +104,7 @@ def pack(files):
  stream=io.BytesIO()
  with zipfile.ZipFile(stream,"w",compression=zipfile.ZIP_STORED) as z:
   for p,raw in sorted(files.items()):
-   info=zipfile.ZipInfo(p,(1980,1,1,0,0,0));info.external_attr=0o100644<<16
+   info=zipfile.ZipInfo(p,(1980,1,1,0,0,0));info.create_system=3;info.external_attr=0o100644<<16
    z.writestr(info,raw)
  return stream.getvalue()
 def main():
