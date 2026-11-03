@@ -214,9 +214,13 @@ namespace RoboRougelike.Weapons.RotarySaw.Tests
             var saturated = new List<GameObject>();
             for (int i = 0; i < 6; i++)
             {
-                var part = Make("W30 physical overlap " + i);
-                part.transform.position = new Vector3(0f, 0f, .25f + i * .05f);
-                part.AddComponent<BoxCollider>().size = Vector3.one * .3f;
+                var part = Make("W31 owned physical overlap " + i);
+                part.transform.SetParent(owner.transform, false);
+                part.transform.localPosition = new Vector3(0f, 0f, .25f + i * .05f);
+                var collision = part.AddComponent<BoxCollider>();
+                collision.size = Vector3.one * .3f;
+                Assert.That(collision.attachedRigidbody, Is.SameAs(body),
+                    "The overflow fixture must exercise REAL owner colliders, not unrelated props");
                 saturated.Add(part);
             }
             Physics.SyncTransforms();
