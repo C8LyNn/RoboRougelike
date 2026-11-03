@@ -1,3 +1,8 @@
+## W34 additionally confirmed native-test source namespace defect
+
+While checking the six native Unity scene test source cases, B01-11 found that the pre-existing test file referenced `R41GarageTool` with `using RoboRougelike.R3;` but omitted `using RoboRougelike.R4_1;`. The actual enum is declared in real `Assets/R4_1/R41PartGeometry.cs` under `namespace RoboRougelike.R4_1`. This is a **real C# compile-scope defect in AUTHORED native test source**, even though GitHub's isolated method harness compiled: that host used its own explicit small enum shim and never compiled original Unity NUnit sources. Fixed the original native test file by adding the genuine `using RoboRougelike.R4_1;`. Extended original `verify.py` to assert the real source enum/namespace, required test import and six actual `[UnityTest]` declarations. This source fence is **not** a Unity Editor compile result, so native G1 remains `NOT_RUN` pending a licensed original Unity 6000.3.14f1 runner.
+
+---
 # W34 — EXISTING R3 GARAGE: TOOL-SPECIFIC EMPTY SELECTION
 
 **Verified actual original product defect:** in previous W33 `R3GarageView.ClickTarget` all garage tools used the `!HasTarget` early return `Message=PlacementIssue??...`, but `PlacementIssue` is **exclusively Mount-related** (`!HasTarget?"Najedź na ścianę bloku pojazdu."`). Actual user selecting **Repair**, **Remove** or **Inspect** without a part was incorrectly instructed to point at a mounting block face. This is a confirmed actual-live-source UI defect, not an invented Save/ECON or geometry bug.
