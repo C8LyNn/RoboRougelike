@@ -1,0 +1,64 @@
+{
+  "package": "B01-60-P17W32-REAL-R3-COMPOSITE-G1-V7-PAIDZERO-R1",
+  "game_parent_pr877": "3bd9b159997924dcecb4e1cd1d41137896e5199e",
+  "real_game_parent_pr873": "d537b7310979b91df27a08b14d0f1c74d0889089",
+  "role": "Independent original-game EditMode/PlayMode QA TESTS only; zero production edits",
+  "legacy_qa_sources": [
+    {
+      "pr": 899,
+      "head": "edbf935246e3dde1964c357131f671abf8fdf269",
+      "path": "Assets/Tests/Editor/B0160W31SafeRestorationGameAcceptanceTests.cs",
+      "source_git_blob": "a524cd7ff5d5696baad5ac1fd09679621e05546f",
+      "meta_git_blob": "18f2e18e5ca1cfeff6df73e6ac72a5ddd576717a"
+    },
+    {
+      "pr": 901,
+      "head": "92f67cb887e172ee41fd1a8b7b3bd1dadd2428e1",
+      "path": "Assets/Tests/Editor/B0160W31RealR3JumpPadTests.cs",
+      "source_git_blob": "e1dd46204b4847d466591dc9342a1cdcac4f1d10",
+      "meta_git_blob": "87304a9183f2724f584bc7a57f7d4789b5d3e979"
+    },
+    {
+      "pr": 897,
+      "head": "f8d06c78806d8b16655f76ccee775dc5fc21b21e",
+      "path": "Assets/Tests/Editor/B0110W31EconomyParityTests.cs",
+      "source_git_blob": "37293e66b7f5d8a3b3479ab80047f3c3bacff884",
+      "meta_git_blob": "d350155f18021a60040c7b82e984a32c68241896"
+    }
+  ],
+  "product_pins": {
+    "Assets/R3/R3VehicleModel.cs": "1d0f378dc598e08b3d7c16975f419d84231511bb",
+    "Assets/R3/R3BuildValidation.cs": "996a2de80039103538700020cca38bc0ede6076a",
+    "Assets/R3/R3RestorationValidation.cs": "0d31d7201957d36b637a9be58574ca6c4c5d1dbf",
+    "Assets/R1/R1RunController.cs": "09a6776db67662e8960d1f446ba5c5168cd3e4b2",
+    "Assets/R6/R6VehicleDrive.cs": "6e5991cf263ac64b943dc4ac09a546d65ad2fa45",
+    "Assets/R5/R5Arena.cs": "3ee9d05ffdccbd3dea991f80223afeacd91e3b95",
+    "Assets/B01Packages/MapJumpPad001/Runtime/MapJumpPad.cs": "711103bcb682af38b7c0e9bf4c21dea92c8e0547"
+  },
+  "own_new_unity_guid": "b01606032032ed40a38a9761b10d7c94",
+  "new_paths_exactly": [
+    "Assets/Tests/Editor/B0160W31SafeRestorationGameAcceptanceTests.cs",
+    "Assets/Tests/Editor/B0160W31SafeRestorationGameAcceptanceTests.cs.meta",
+    "Assets/Tests/Editor/B0160W31RealR3JumpPadTests.cs",
+    "Assets/Tests/Editor/B0160W31RealR3JumpPadTests.cs.meta",
+    "Assets/Tests/Editor/B0110W31EconomyParityTests.cs",
+    "Assets/Tests/Editor/B0110W31EconomyParityTests.cs.meta",
+    "Assets/Tests/Editor/B0160W32R3V7PaidZeroBoundaryTests.cs",
+    "Assets/Tests/Editor/B0160W32R3V7PaidZeroBoundaryTests.cs.meta",
+    "Tools/B01/B01-60/P17W32R3CompositeQA/verify.py",
+    "Tools/B01/B01-60/P17W32R3CompositeQA/test_verify.py",
+    "Tools/B01/B01-60/P17W32R3CompositeQA/README.md",
+    "Tools/B01/B01-60/P17W32R3CompositeQA/manifest.json",
+    ".github/workflows/b01-60-p17w32-real-r3-v7-composite.yml"
+  ],
+  "native_test_inventory": "B01-10 #897 5 NUnit parameter cases; B01-60 #899 2 genuine original-game UnityTest; B01-60 #901 2 genuine original-game UnityTest; NEW W32 5 original R3VehicleModel EditMode Test; total authored 14 native cases",
+  "defect_status": "EXPECTED_PRODUCT_RED at exact #877: R3 destroyed 35% CEIL not V7 floor65%, and Repair/RepairInventory/EmergencyRepair reject valid paid zero; RepairAffordable inherits denial",
+  "source_only": "PENDING_RUNNING",
+  "Unity_G1": "NOT_RUN",
+  "actual_Windows_Player": "NOT_RUN",
+  "saved_world": "NOT_INTEGRATED",
+  "anti_softlock_owner_834": "PENDING",
+  "release": false,
+  "receipt_note": "The 14 NUnit cases are authored, NEVER confused with cross-OS source verifier successes. No second R3 economy/Save/JumpPad implementation.",
+  "rollback": "omit ONLY 13 QA/test/manifest/workflow new files on isolated W32 branch; original #877, all producers, existing #899 #901 and #897 branches intact"
+}
