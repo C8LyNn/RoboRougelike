@@ -82,10 +82,10 @@ INSERT_ACTUAL_METHOD
 static class Program
 {
     static void Run(string name, bool target, Func<bool> purchase,
-        Func<string> reason, bool active = true)
+        Func<string> reason, bool active = true, R41GarageTool tool = R41GarageTool.Mount)
     {
         var v=new R3GarageView();
-        v.HasTarget=target;v.run.Purchase=purchase;v.LiveIssue=reason;
+        v.HasTarget=target;v.Tool=tool;v.run.Purchase=purchase;v.LiveIssue=reason;
         if(!active)v.run.Progress.State=R1RunState.Other;
         bool ok=v.ClickTarget();
         Console.WriteLine(name+"|"+(ok?"YES":"NO")+"|"+v.Message);
@@ -104,6 +104,9 @@ static class Program
     {
         Console.OutputEncoding=System.Text.Encoding.UTF8;
         Run("no-target",false,()=>false,()=>"Najedź na ścianę bloku pojazdu.");
+        Run("no-target-repair",false,()=>false,()=>"Najedź na ścianę bloku pojazdu.",true,R41GarageTool.Repair);
+        Run("no-target-remove",false,()=>false,()=>"Najedź na ścianę bloku pojazdu.",true,R41GarageTool.Remove);
+        Run("no-target-inspect",false,()=>false,()=>"Najedź na ścianę bloku pojazdu.",true,R41GarageTool.Inspect);
         int n=0;
         Run("post-preview-rejection",true,()=>false,()=>++n==1?null:"Fizyczna kolizja po zmianie przeszkody.");
         Run("pre-validation-rejection",true,()=>false,()=>"Zajęte pole siatki.");
@@ -141,11 +144,18 @@ with tempfile.TemporaryDirectory(prefix="b0111_w30_garage_") as temp:
     folder=Path(temp)
     baseline=execute(method_from(original),folder/'old')
     current_result=execute(method_from(current),folder/'new')
-expected_keys={"no-target","post-preview-rejection","pre-validation-rejection","successful-purchase","inactive-garage","repair-no-part","repair-healthy","repair-no-quote","repair-low-scrap","repair-physical-reject","repair-success","repair-zero-destroyed-rejected","repair-zero-destroyed-paid-success","repair-zero-destroyed-instant-success","repair-zero-partial-unknown"}
+expected_keys={"no-target","no-target-repair","no-target-remove","no-target-inspect","post-preview-rejection","pre-validation-rejection","successful-purchase","inactive-garage","repair-no-part","repair-healthy","repair-no-quote","repair-low-scrap","repair-physical-reject","repair-success","repair-zero-destroyed-rejected","repair-zero-destroyed-paid-success","repair-zero-destroyed-instant-success","repair-zero-partial-unknown"}
 print("SOURCE_WINDOWS_UTF8_BASELINE",ascii(baseline))
 print("SOURCE_WINDOWS_UTF8_FIXED",ascii(current_result))
 assert set(baseline)==set(current_result)==expected_keys,(baseline,current_result)
 assert baseline["no-target"]==["NO","Zamontowano dokładnie w miejscu podglądu."]
+for name in ("no-target-repair","no-target-remove","no-target-inspect"):
+    assert baseline[name]==["NO","Najedź na ścianę bloku pojazdu."],(name,baseline[name])
+assert current_result["no-target-repair"][0]=="NO" and "Wskaż część pojazdu do naprawy" in current_result["no-target-repair"][1]
+assert current_result["no-target-remove"][0]=="NO" and "Wskaż część pojazdu do usunięcia" in current_result["no-target-remove"][1]
+assert current_result["no-target-inspect"][0]=="NO" and "Wskaż część pojazdu do sprawdzenia" in current_result["no-target-inspect"][1]
+for name in ("no-target-repair","no-target-remove","no-target-inspect"):
+    assert "montaż" not in current_result[name][1] and "Najedź" not in current_result[name][1],(name,current_result[name])
 assert baseline["post-preview-rejection"]==["NO","Montaż nieudany."]
 assert current_result["no-target"]==["NO","Najedź na ścianę bloku pojazdu."]
 assert current_result["post-preview-rejection"]==["NO","Fizyczna kolizja po zmianie przeszkody."]
@@ -179,5 +189,5 @@ assert "kontroli konstrukcji" in current_result["repair-physical-reject"][1]
 assert baseline["repair-success"]==current_result["repair-success"]==["YES","Naprawiono wskazaną część."]
 print("ORIGINAL_R3_SOURCE_RED_WITNESS",ascii(baseline))
 print("CORRECTED_R3_SOURCE_GREEN",ascii(current_result))
-print("ORIGINAL_METHOD_COMPILED_RED_TO_GREEN PASS 30 old/new method executions; 15 named scenarios")
+print("ORIGINAL_METHOD_COMPILED_RED_TO_GREEN PASS 36 old/new method executions; 18 named scenarios")
 print("NATIVE_UNITY_PLAYMODE NOT_RUN (separate authored NUnit UnityTest)")
