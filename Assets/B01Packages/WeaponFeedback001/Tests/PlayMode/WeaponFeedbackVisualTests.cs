@@ -40,7 +40,56 @@ namespace B01.WeaponFeedback001.Tests
    yield return null;
    Assert.AreEqual(1, v.ImpactFeedbackCount);
   }
-  [UnityTest]public IEnumerator RapidBurst_ReusesBoundedImpactPool()
+  [UnityTest]public IEnumerator NoConfirmedShot_MuzzleDoesNotAutoPlay()
+  {
+   var v=Make(out Transform pivot,out Light light);
+   var muzzleGo=new GameObject("MuzzleFixture");
+   muzzleGo.transform.SetParent(host.transform,false);
+   var muzzle=muzzleGo.AddComponent<ParticleSystem>();
+   v.BindVisuals(pivot,muzzle,light,null,null);
+   yield return null;
+   Assert.IsFalse(muzzle.isPlaying,"Binding must clear playOnAwake.");
+   Assert.IsFalse(light.enabled,"No confirmed shot means no muzzle light.");
+   Assert.AreEqual(0,v.ShotFeedbackCount);
+   v.NotifyShot();
+   Assert.AreEqual(1,v.ShotFeedbackCount);
+   Assert.IsTrue(muzzle.isPlaying);
+  }
+  [UnityTest]public IEnumerator DisableStopsAllEffects_AndReusesImpactPoolAfterEnable()
+  {
+   var v=Make(out Transform pivot,out Light light);
+   var smokeGo=new GameObject("DamageSmokeFixture");
+   smokeGo.transform.SetParent(host.transform,false);
+   var smoke=smokeGo.AddComponent<ParticleSystem>();
+   var main=smoke.main;main.playOnAwake=false;
+   var muzzleGo=new GameObject("MuzzleFixture");
+   muzzleGo.transform.SetParent(host.transform,false);
+   var muzzle=muzzleGo.AddComponent<ParticleSystem>();
+   v.BindVisuals(pivot,muzzle,light,impactOriginal.GetComponent<ParticleSystem>(),smoke);
+   v.NotifyImpact(Vector3.zero,Vector3.up);
+   v.NotifyShot();
+   v.SetWeaponDamageVisual(.7f);
+   Assert.AreEqual(1,v.ImpactPoolSize);
+   Assert.IsTrue(light.enabled);
+   Assert.IsTrue(smoke.emission.enabled);
+   v.enabled=false;
+   Assert.IsFalse(light.enabled);
+   Assert.IsFalse(muzzle.isPlaying);
+   Assert.IsFalse(smoke.emission.enabled);
+   Assert.AreEqual(1,v.ImpactPoolSize,"Disabling must retain pool for reuse.");
+   v.NotifyImpact(Vector3.one,Vector3.up);
+   v.NotifyShot();
+   v.SetWeaponDamageVisual(.8f);
+   Assert.AreEqual(1,v.ImpactFeedbackCount);
+   Assert.AreEqual(1,v.ShotFeedbackCount);
+   Assert.IsFalse(smoke.emission.enabled,"Disabled component must not restart smoke.");
+   v.enabled=true;
+   Assert.IsTrue(smoke.emission.enabled,"Visual damage state resumes when enabled.");
+   v.NotifyImpact(Vector3.one,Vector3.up);
+   Assert.AreEqual(1,v.ImpactPoolSize,"Re-enabling should not allocate again.");
+   yield return null;
+  }
+    [UnityTest]public IEnumerator RapidBurst_ReusesBoundedImpactPool()
   {
    var v=Make(out Transform pivot,out Light light);
    for(int i=0;i<48;i++)
