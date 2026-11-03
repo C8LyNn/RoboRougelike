@@ -89,6 +89,50 @@ namespace B01.WeaponFeedback001.Tests
    Assert.AreEqual(1,v.ImpactPoolSize,"Re-enabling should not allocate again.");
    yield return null;
   }
+    [UnityTest]public IEnumerator NonFiniteImpactInput_IsRejectedWithoutAllocations()
+  {
+   var v=Make(out Transform pivot,out Light light);
+   v.NotifyImpact(new Vector3(float.NaN,0f,0f),Vector3.up);
+   v.NotifyImpact(new Vector3(0f,float.PositiveInfinity,0f),Vector3.up);
+   v.NotifyImpact(new Vector3(0f,0f,float.NegativeInfinity),Vector3.up);
+   Assert.AreEqual(0,v.ImpactFeedbackCount,
+    "Invalid positions must never produce confirmed visible impact events.");
+   Assert.AreEqual(0,v.ImpactPoolSize,
+    "Bad impact callbacks cannot allocate ParticleSystems.");
+   v.NotifyImpact(Vector3.one,new Vector3(float.NaN,0f,0f));
+   v.NotifyImpact(Vector3.right,new Vector3(float.PositiveInfinity,0f,0f));
+   v.NotifyImpact(Vector3.up,new Vector3(float.MaxValue,float.MaxValue,0f));
+   Assert.AreEqual(3,v.ImpactFeedbackCount,
+    "Valid positions with invalid normals should use safe world up.");
+   Assert.AreEqual(3,v.ImpactPoolSize);
+   yield return null;
+  }
+
+  [UnityTest]public IEnumerator NonFiniteDamageFraction_DisablesSmokeWithoutPoisoningCurve()
+  {
+   var v=Make(out Transform pivot,out Light light);
+   var smokeGo=new GameObject("BadDamageSmoke");
+   smokeGo.transform.SetParent(host.transform,false);
+   var smoke=smokeGo.AddComponent<ParticleSystem>();
+   var main=smoke.main;main.playOnAwake=false;
+   v.BindVisuals(pivot,null,light,null,smoke);
+   v.SetWeaponDamageVisual(.5f);
+   Assert.IsTrue(smoke.emission.enabled);
+   v.SetWeaponDamageVisual(float.NaN);
+   Assert.AreEqual(0f,v.DamageVisualFraction);
+   Assert.IsFalse(smoke.emission.enabled);
+   Assert.AreEqual(0f,smoke.emission.rateOverTime.constant);
+   v.SetWeaponDamageVisual(float.PositiveInfinity);
+   Assert.AreEqual(0f,v.DamageVisualFraction);
+   Assert.IsFalse(smoke.emission.enabled);
+   v.SetWeaponDamageVisual(float.NegativeInfinity);
+   Assert.AreEqual(0f,v.DamageVisualFraction);
+   v.SetWeaponDamageVisual(1.5f);
+   Assert.AreEqual(1f,v.DamageVisualFraction);
+   Assert.IsTrue(smoke.emission.enabled);
+   yield return null;
+  }
+
     [UnityTest]public IEnumerator RebindVisuals_ResetsOldModelAndDetachedImpactPool()
   {
    var v=Make(out Transform oldPivot,out Light oldLight);
