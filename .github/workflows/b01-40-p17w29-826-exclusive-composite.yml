@@ -1,0 +1,74 @@
+name: B01-40 W29 exclusive #826 V3 composite G0 and original OS Save regression
+on:
+  push:
+    branches: [qa/b01-40-p17w29-826-exclusive-composite-g0]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-40/P17W29CompositeG0/**'
+      - '.github/workflows/b01-40-p17w29-826-exclusive-composite.yml'
+permissions:
+  contents: read
+jobs:
+  exact-original-826-composite:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Existing B01-40 W27 original composite G0 upgraded to #826 exactly
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-40/P17W29CompositeG0/intake.py --out evidence/w29-selected-826-composite-manifest.json | tee w29-composite-source.log
+          grep -q 'B0140_W29_ORIGINAL_826_V3_UNITY_ABI_AND_ATOMIC_PUBLISH_SOURCE_SIGNATURES_PASS' w29-composite-source.log
+          grep -q 'B0140_W29_SOURCE_ZIP_RAW_R3_EXCLUDED_PASS' w29-composite-source.log
+          grep -q 'B0140_W29_OWNED_DISPOSABLE_SOURCE_STAGE_ROLLBACK_NEGATIVES_PASS' w29-composite-source.log
+          grep -q 'B0140_W29_826_SOURCE_TRANSPORT_G0_PASS_PRODUCT_G0_HOLD_BINDER' w29-composite-source.log
+      - name: Compile EXACT original #826+V7+frozen sources under netstandard2.1, run 9 actual OS tests
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-40/P17W29CompositeG0/probe_original826.py --out evidence/original_826_compiler | tee w29-original-runtime.log
+          grep -q 'B0140_W29_ORIGINAL_826_780_729_556_510_netstandard2.1_C9_COMPILE_PASS' w29-original-runtime.log
+          grep -q 'B0140_W29_ORIGINAL_V3_9_REAL_DISK_OS_SCENARIOS_PASS' w29-original-runtime.log
+          grep -q 'B0140_W29_EXECUTED_SOURCE_ONLY_REAL_UNITY_G1_NOT_RUN' w29-original-runtime.log
+          cp w29-composite-source.log w29-original-runtime.log evidence/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b0140-w29-826-composite-${{ matrix.os }}
+          path: evidence/
+          if-no-files-found: warn
+  physical-two-os-parity:
+    needs: [exact-original-826-composite]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: b0140-w29-826-composite-ubuntu-24.04
+          path: ubuntu
+      - uses: actions/download-artifact@v4
+        with:
+          name: b0140-w29-826-composite-windows-2025
+          path: windows
+      - name: Original source-only inner ZIP, GUID manifest, original compiler provenance byte parity
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp ubuntu/B0140_W29_826_EXCLUSIVE_COMPOSITE_SOURCE_ONLY.zip windows/B0140_W29_826_EXCLUSIVE_COMPOSITE_SOURCE_ONLY.zip
+          cmp ubuntu/w29-selected-826-composite-manifest.json windows/w29-selected-826-composite-manifest.json
+          cmp ubuntu/original_826_compiler/original-source-sha256.json windows/original_826_compiler/original-source-sha256.json
+          sha256sum ubuntu/B0140_W29_826_EXCLUSIVE_COMPOSITE_SOURCE_ONLY.zip
+          echo B0140_W29_CROSS_OS_SOURCE_ZIP_MANIFEST_V3_826_IDENTICAL_PASS
