@@ -15,7 +15,7 @@
   "source_tests_count": 80,
   "acceptance_cases": 21,
   "mandatory_p0_cases": 20,
-  "source_qa": "W34_CI_PENDING",
+  "source_qa": "W34_MISSING_HEAVY_TEST_FIXTURE_CORRECTED_REMOTE_PENDING",
   "fixes": [
     "DUPLICATE_EXE_HASH_VS_EXTRACTED_AMBIGUITY",
     "WINDOWS_CASEFOLD_DUPLICATE_NAMES",
@@ -30,8 +30,8 @@
       "bytes": 26795
     },
     "Research/B01-13/P17W28/test_playtest_intake.py": {
-      "git_blob_sha1": "447d2073e1cc55125ef2c1815b9f891cc4416ac4",
-      "bytes": 24738
+      "git_blob_sha1": "67eb79d0d7c5c54e579e05b29c4c2be75a44739b",
+      "bytes": 24892
     },
     "Research/B01-13/P17W32/test_zip_canonical.py": {
       "git_blob_sha1": "4933d318775877d89206f6391a84e76e3065b606",

@@ -330,7 +330,11 @@ class TestEvidence(unittest.TestCase):
   self.update_row('P15_PLAYER_ZIP_BOOT',status='NOT_RUN',reason='NONE',evidence=None)
   self.assert_refuse(self.check,'W34_P15_REQUIRED')
  def test_w34_cold_rejects_missing_heavy(self):
-  p=self.make_w34_bundle();del p['Heavy']
+  self.make_w34_bundle()
+  report=json.loads(self.responses.read_text())
+  row=next(x for x in report['cases'] if x['id']=='P16_SAVE_LOAD_COLD')
+  del row['evidence']['Heavy']
+  self.save(report)
   self.assert_refuse(self.check,'W34_R3_TRIPLE_REQUIRED')
  def test_w34_cold_rejects_2_slot_instead_of_83(self):
   self.make_w34_bundle()
