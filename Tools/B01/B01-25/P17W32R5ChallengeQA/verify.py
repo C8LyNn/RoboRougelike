@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """W32 canonical R5 source-only owner/scope guard. NOT a Unity gameplay test."""
 import pathlib
+import math
 import re
 import subprocess
 import sys
@@ -18,6 +19,7 @@ PRODUCTION = (
     "Assets/Tests/Editor/W29LiveArenaJumpPadTests.cs",
     "Assets/R3/R3VehicleCatalog.cs",
     "Assets/R3/R3VehicleAssembly.cs",
+    "Assets/PackageIntegration/RRLHazardAdapter.cs",
 )
 EXPECTED = {TEST, META, DOC, CHECK, WORKFLOW}
 NAMES = (
@@ -40,8 +42,87 @@ def valid_suite(s):
         "arena.Build(R5ArenaKind.SalvageYard)" in s and
         "collider.bounds.Intersects(envelope)" in s and
         "Physics.gravity.y" in s and
+        "TelegraphedHazardZone" in s and
+        "hazard.Radius" in s and
+        "hazards.Length, Is.EqualTo(2)" in s and
+        "dx * dx + dz * dz" in s and
         "new EnterPlayMode()" in s
     )
+
+# W34 deterministic XZ hazard-clearance oracle sourced from the REAL
+# production R5 arena positions and live RRLHazardAdapter radius. This runs
+# on Win/Ubuntu CI without pretending to execute Unity/PhysX.
+def live_hazard_geometry_clear(arena, adapter, catalog, assembly):
+    # Fail closed if this original game contract changes: no silent stale oracle.
+    required = (
+        "int width = light ? 1 : heavy ? 3 : 2;",
+        "int length = light ? 2 : heavy ? 4 : 3;",
+        "side * (width + 1)",
+        "light ? i * 2 - 1 : i - 3",
+    )
+    if any(token not in catalog for token in required):
+        return False
+    if "item.transform.localPosition=(Vector3)state.Cell*0.55f;" not in assembly:
+        return False
+
+    def vector(call, source):
+        m = re.search(
+            re.escape(call) + r"\\(new Vector3\\(\\s*([+\\-0-9.]+f?)\\s*,"
+            r"\\s*([+\\-0-9.]+f?)\\s*,\\s*([+\\-0-9.]+f?)\\s*\\)\\)",
+            source,
+        )
+        if not m:
+            return None
+        try:
+            return tuple(float(v.rstrip("f")) for v in m.groups())
+        except ValueError:
+            return None
+
+    radius_match = re.search(r"zone\\.Configure\\(\\s*([0-9.]+)f?\\s*,", adapter)
+    if not radius_match:
+        return False
+    radius = float(radius_match.group(1)) + .05  # W34 test-side margin
+    hazards = re.findall(
+        r"Hazard\\(new Vector3\\(\\s*([+\\-0-9.]+f?)\\s*,"
+        r"\\s*([+\\-0-9.]+f?)\\s*,\\s*([+\\-0-9.]+f?)\\s*\\)\\)",
+        arena,
+    )
+    if len(hazards) != 2:
+        return False
+    try:
+        hazard_xz = [(float(x.rstrip("f")), float(z.rstrip("f")))
+                     for x, y, z in hazards]
+    except ValueError:
+        return False
+    spawn = vector("new Vector3", arena.split("PlayerSpawn =>", 1)[1].split(";", 1)[0]) if "PlayerSpawn =>" in arena else None
+    pad = vector("JumpPad", arena)
+    if spawn is None or pad is None:
+        return False
+    if "launch.Configure(8.5f,2f,1.25f)" not in arena:
+        return False
+
+    # Nominal XZ grid envelopes derived from original R3 factory for all three
+    # factory types; real mesh extrema can be larger and demand native QA.
+    for width, length in ((1, 2), (2, 3), (3, 4)):
+        half_x = ((2 * (width + 1) + 1) * .55 + .30) / 2
+        half_z = ((2 * length + 1) * .55 + .30) / 2
+        samples = [(0.0, float(z)) for z in range(-22, 19, 2)]
+        # Existing SalvageYard real spawn -> JumpPad and nominal landing.
+        # Gravity 9.81 is a source-level estimate, NOT a Unity trajectory run.
+        landing_z = pad[2] + 2.0 * (2.0 * 8.5 / 9.81)
+        for step in range(13):
+            t = step / 12.0
+            samples.append((spawn[0] + (pad[0] - spawn[0]) * t,
+                            spawn[2] + (pad[2] - spawn[2]) * t))
+            samples.append((pad[0], pad[2] + (landing_z - pad[2]) * t))
+        for x, z in samples:
+            for hx, hz in hazard_xz:
+                dx = max(0.0, abs(hx - x) - half_x)
+                dz = max(0.0, abs(hz - z) - half_z)
+                if dx * dx + dz * dz <= radius * radius:
+                    return False
+    return True
+
 
 def main():
     changed = set(git("diff", "--name-only", BASE, "HEAD").splitlines())
@@ -65,12 +146,30 @@ def main():
             count += 1
     assert count == 1, "GUID collision: " + str(count)
     arena = (ROOT / PRODUCTION[0]).read_text(encoding="utf-8")
+    adapter = (ROOT / "Assets/PackageIntegration/RRLHazardAdapter.cs").read_text(encoding="utf-8")
+    catalog = (ROOT / "Assets/R3/R3VehicleCatalog.cs").read_text(encoding="utf-8")
+    assembly = (ROOT / "Assets/R3/R3VehicleAssembly.cs").read_text(encoding="utf-8")
+    assert live_hazard_geometry_clear(arena, adapter, catalog, assembly), (
+        "Real R5 hazard zones intersect factory vehicle travel envelope"
+    )
+    assert not live_hazard_geometry_clear(
+        arena.replace("Hazard(new Vector3(-6,0,-6));",
+                      "Hazard(new Vector3(0,0,-6));"), adapter, catalog, assembly
+    ), "Mutation guard: hazard moved into central lane not rejected"
+    assert not live_hazard_geometry_clear(
+        arena, adapter.replace("zone.Configure(1.5f", "zone.Configure(5f"),
+        catalog, assembly
+    ), "Mutation guard: hazard radius expansion not rejected"
+    assert not live_hazard_geometry_clear(
+        arena.replace("Hazard(new Vector3(6,0,8));", ""), adapter,
+        catalog, assembly
+    ), "Mutation guard: missing second hazard not rejected"
     assert "JumpPad(new Vector3(7f,0f,-16f))" in arena
     assert "PlayerSpawn => new Vector3(0,.7f,-22)" in arena
     assert "if(kind==R5ArenaKind.SalvageYard)" in arena
     assert "UNITY" in (ROOT / DOC).read_text(encoding="utf-8").upper()
     print("B01_25_W32_SOURCE_SCOPE_PASS: 5 own files, 2 authored native cases, "
-          "5 immutable production source blobs, one unique GUID, 4 negative mutations")
+          "6 immutable production source blobs, one unique GUID, 7 negative mutations and real R5 hazard geometry")
     print("UNITY_EDITMODE=NOT_RUN PLAYMODE=NOT_RUN WINDOWS_PLAYER=NOT_BUILT")
 
 if __name__ == "__main__":
