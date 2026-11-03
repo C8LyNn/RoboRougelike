@@ -1,0 +1,25 @@
+# B01-22 / P17 W34 — Longitudinal ORIGINAL #923 R3 139-part one-file V7 economy QA
+
+
+
+**DO NOT SHIP OR INTEGRATE THIS AS A NEW ECONOMY/SAVE.** Branch is exact direct child of original B01-62 [Draft #923](https://github.com/C8LyNn/RoboRougelike/pull/923) @ `e6eb24b7a45a66a5fa5d039f59c80b7e4be4439b` and changes **SIX ADD-only B01-22 source QA/CI files, ZERO game/Store/ECON product runtime files.** Original #923 is the only OS `.owner`+one `save.envelope` atomic V3 world+V7 wallet writer and the original #923 dynamic B01R3W01 R3 codec is reused unchanged. Frozen #556, #780 V7, #855 admission, #729 lease, Codex game #873/#877, #861 Saw and #915 CLOSED unmerged are never modified/installed.
+
+
+
+**New actually executed original-source regression (different from producer's 11 short tests):** compile ORIGINAL #923 `WholeGameEconomySlotV3.Create/Commit/Read` + original dynamic R3 codec and original game `R3VehicleCatalog.Create` (EXACT pinned #877 source but an EXPLICIT TEST-ONLY Unity shim), frozen #780 V7 reducer, #855 admission, #729 physical OS owner lease, original #556 legacy dependency. One real Heavy139 dynamic world retains all 139 stable GUIDs and separate 139 physical IDs, one inventory record and one detached part with nonzero motion/physics metadata. First destroyed P1 Armor is booked PAID0 at zero wins, stays HP0, and after first distinct simulated win heals. Run **24 distinct SOURCE-INJECTED synthetic victory events**, changing a fresh original Armor0HP prior to each win; only the prior already-booked destroyed part heals at the new distinct win, while the newly damaged same-fight part stays 0HP, then uses that actual Win's one earned free entitlement to reserve another destroyed part until Win+1. Each stage is CAS-committed through the ORIGINAL #923 actual physical OS disk Save, read back with original code and checked full dynamic world; final win24 has 24 settled tickets (one initial paid-zero +23 earlier free), 24 earned free bookings, exactly 1 still awaiting win25, wallet0, 24 consumed distinct WinIds and unchanged inventory/detached physical metadata. Win replay and same-part double-reservation rejected.
+
+
+
+**Separate Standard83 source-only spent-loaner terminal risk:** genuine original V7 reducer is given synthetic host facts for Core alive/owned destroyed Wheel/zero Scrap/no CanDeploy/next encounter; it enters one-shot Reserved→Entered→Spent through four original #923 CAS Save commits (initial g1, booked g2, entered g3, win1 Spent g4, free Wheel booked g5). Original expensive Wheel100 cannot be paid before Win1. Win1 FREE booking remains Wheel0HP until Win2, but loaner remains Spent with 0 Scrap and cannot be reserved again; win1 event cannot replay. A second independent CLR after owner lease retirement uses original closed-slot reader to load BOTH real files, verifies complete Heavy139 campaign and Standard83 Spent+Win2-only queue. **These IDs and host eligibility facts are synthetic harness inputs, NOT genuine signed combat receipts or executed actual Unity CanDeploy; this detects PRODUCT_SOFTLOCK_RISK RED, it is not a native playtest or policy authorization.**
+
+
+
+**Required gate distinction:** new actual Windows2025+Ubuntu24.04 GitHub Actions compiles genuine original C#9 with `.NET8`; tests actual OS disk FileStream, Flush/File.Replace and CAS, real OS `.owner` competition, real different cold CLR process; original #923 producer already covers corrupted envelope/ACK and frozen schema tests. This independent new QA intentionally focuses on long-term state consistency and on never misreporting a free entitlement as an immediate repair. G0 by B01-40/41/61 remains pending. Real Unity6000.3.14f1 R3VehicleModel/Rig[]/Rigidbody capture/restoration, auth combat, actual Windows Player extracted ZIP, Unity Editor.log/NUnit XML/Player.log have NOT RUN/NOT BUILT; source/OS disk proof is NOT physical game integration.
+
+
+
+**Real blockers/receivers:** B01-62 owns selected #923 future native bridge and original single Save; B01-20/23 owns physical real dynamic Rig[] and AtomicDockLedger; B01-00/Codex owns real current #877 gameplay; B01-10 latest #897 original accepted V7 temporal semantics; B01-40/41/61 independent composite exact SHA G0; B01-60 native Unity G1/Windows x64; owner issue #834 still awaits A/B for loaner spent + destroyed essential wheel. Do not mutate approved V7 or grant a second loaner, same-win recovery, fake Win2 or currency. Safe rollback discard this unmerged isolated QA-only Draft and delete only GitHub runner scratch; player's real Save and producer branches untouched.
+
+
+
+`IMPLEMENTED=YES_ORIGINAL_QA_CODE; TESTED=CI_PENDING_UNTIL_INSPECTED; INDEPENDENT_G0=PENDING; NATIVE_G1=NOT_RUN; R3_HOST_BINDER=NOT_IMPLEMENTED; PRODUCT_NEXT_WIN_HOST_INTEGRATION=RED; PRODUCT_ANTI_SOFTLOCK_834=RED_OWNER_PENDING; INTEGRATED=NO; MERGE=NO; RELEASED=NO`

@@ -1,0 +1,66 @@
+{
+  "package_id": "B01-22-P17W34-ORIGINAL923-R3-DYNAMIC-24WIN-ONE_OWNER-QA-001",
+  "parent_source_923_sha": "e6eb24b7a45a66a5fa5d039f59c80b7e4be4439b",
+  "original_923_product_blobs": {
+    "Tools/B01/B01-62/P17W33R3World/CanonicalR3WorldV1.cs": "029021b32538c309fc0e85eb48ca5202c96e239c",
+    "Tools/B01/B01-62/P17W33R3World/OriginalR3FactoryShim.cs": "294522ce81ea857c814ecb7710844a3ae9740f5d",
+    "Tools/B01/B01-62/P17W28UnityCompatibleWholeGameV3/WholeGameEconomySlotV3.cs": "65e58e579becedb86f1162d9a511508cb77dfb7b",
+    "Tools/B01/B01-62/P17W28UnityCompatibleWholeGameV3/CanonicalWholeGameSessionV3.cs": "52fb5a9ea0c4148072ec11ed0dcfa50260ec1f53",
+    "Tools/B01/B01-62/P17W29ColdReadV3/CanonicalColdReadV3.cs": "cfd7e93dc3b0130b74025f2635d12ff1e0f3f492",
+    "Assets/B0123CanonicalSaveApi001/Core/CanonicalWorldGateway.cs": "21733278b6ab0669fccb6d085e0b6cf242792de2",
+    "Assets/B0123CanonicalSaveApi001/Core/CanonicalWorldSlotLease.cs": "a9331dd620336d8c42165d134dc8a5e05ed51873"
+  },
+  "original_immutable_input_blobs": {
+    "Tools/B01/B01-62/P17W33R3World/.source/R3VehicleCatalog.cs": "f76de5bbdcc1dbdb7ddb9fe9859c36c232fd8584",
+    "Tools/B01/B01-62/P17W30AdmissionV3/.source/ApprovedEconomyPolicyV7.cs": "53ebce6c07388dc9c8a8ed79b6de4d3ccbee4773",
+    "Tools/B01/B01-62/P17W30AdmissionV3/.source/CanonicalEconomySectionV7.cs": "d8b71de91db36295b6220e9c4baad71eb54455f6",
+    "Tools/B01/B01-62/P17W30AdmissionV3/.source/EconomyV7AdmissionW29.cs": "59ad0f42cec5385cc132c1a3917cffd8ebf65d2c"
+  },
+  "pinned_own_blobs": {
+    "Tools/B01/ECONW34R3LongRun/Program.cs": "e223f249f048e9edcf27cb5727b8c688c2736faa",
+    "Tools/B01/ECONW34R3LongRun/W34.Original.csproj": "d1c9e375fe4aaceb435d01011f83183687811372",
+    "Tools/B01/ECONW34R3LongRun/verify_package.py": "ce2c71c95a4d38ed4976bf42819781935212073e",
+    "Tools/B01/ECONW34R3LongRun/README.md": "ef25ceb44f30881be2764683518189f6f5a2d7bb",
+    ".github/workflows/b01-22-w34-923-longrun.yml": "006baf716e0f22b92d598692c6f24dffbcfc8c6a"
+  },
+  "added_paths": [
+    ".github/workflows/b01-22-w34-923-longrun.yml",
+    "Tools/B01/ECONW34R3LongRun/Program.cs",
+    "Tools/B01/ECONW34R3LongRun/README.md",
+    "Tools/B01/ECONW34R3LongRun/W34.Original.csproj",
+    "Tools/B01/ECONW34R3LongRun/manifest.json",
+    "Tools/B01/ECONW34R3LongRun/verify_package.py"
+  ],
+  "game_runtime_changes": 0,
+  "new_writers": 0,
+  "world_save_owner": "ORIGINAL_B01_62_923",
+  "physical_file_tests": {
+    "heavy139_original_factory": true,
+    "standard83_loaner": true,
+    "modeled_wins": 24,
+    "model_only_victory_attestation": true,
+    "paid_zero0hp_pending": true,
+    "free_one_per_win": true,
+    "last_ticket_pending": true,
+    "real_os_one_file_cas": true,
+    "second_cold_clr": true
+  },
+  "owner_policy_834": "PENDING",
+  "real_game_physics_adapter": "NOT_IMPLEMENTED",
+  "native_g1": "NOT_RUN",
+  "Windows_Player": "NOT_BUILT",
+  "independent_composite_G0": "PENDING",
+  "source_ci": "PENDING",
+  "integrated": false,
+  "release": false,
+  "rollback": "Discard unmerged QA-only Draft; no real game Save touched",
+  "receivers": [
+    "B01-62 #923 sole R3 dynamic Save",
+    "B01-00/Codex game",
+    "B01-20/23 live Rig[] physical",
+    "B01-10 latest #897 policy",
+    "B01-40/41/61 independent G0",
+    "B01-60 Unity G1",
+    "Owner #834 anti-softlock"
+  ]
+}
