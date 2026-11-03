@@ -1,0 +1,14 @@
+{
+  "package": "B01-62-W31-FROZEN-ATOMIC-PAIR-001",
+  "parent_w30_885": "78c1d54d24a76c931ea80965a50eca03fae4156a",
+  "single_writer": true,
+  "magic": "B0162G02",
+  "owner": "#729",
+  "on_disk_change": false,
+  "gameplay_code_changed": false,
+  "source_ci": "PENDING",
+  "independent_composite_g0": "PENDING",
+  "native_g1": "NOT_RUN",
+  "game_integrated": false,
+  "released": false
+}

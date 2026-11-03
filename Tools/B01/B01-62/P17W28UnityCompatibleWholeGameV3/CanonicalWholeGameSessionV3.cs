@@ -141,7 +141,19 @@ namespace B01.CanonicalWholeGameAdapter003
         {
             if(Quarantined)return CanonicalGateResult.RollbackQuarantine;
             if(closed||restoring)return CanonicalGateResult.HostBusy;
-            if(expectedRun!=runId||!ValidatePair(world,economy))
+            if(expectedRun!=runId||world==null||economy==null)
+                return CanonicalGateResult.InvalidSnapshot;
+            // W31: one immutable logical pair must feed validation, CAS,
+            // authorization and original #729 physical staging.
+            byte[] frozenWorld;
+            ApprovedEconomySnapshotV7 frozenEconomy;
+            try
+            {
+                frozenWorld=(byte[])world.Clone();
+                frozenEconomy=economy.Copy();
+            }
+            catch{return CanonicalGateResult.InvalidSnapshot;}
+            if(!ValidatePair(frozenWorld,frozenEconomy))
                 return CanonicalGateResult.InvalidSnapshot;
             if(store==null)return CanonicalGateResult.HostException;
             restoring=true;
@@ -151,18 +163,18 @@ namespace B01.CanonicalWholeGameAdapter003
                     out byte[] priorWorld,out ApprovedEconomySnapshotV7? priorEcon);
                 if(existing!=WholeGameResult.Accepted&&existing!=WholeGameResult.Empty)
                 {quarantined=true;return CanonicalGateResult.RollbackQuarantine;}
-                long proposed=economy.Generation;
+                long proposed=frozenEconomy.Generation;
                 if(proposed<minimum || proposed<diskGen||
                    diskGen==long.MaxValue||
                    proposed>diskGen+1)
                     return CanonicalGateResult.StaleGeneration;
                 if(proposed==diskGen&&
-                   (priorEcon==null||!priorWorld.SequenceEqual(world)||
-                    !EquivalentEconomy(priorEcon,economy)))
+                   (priorEcon==null||!priorWorld.SequenceEqual(frozenWorld)||
+                    !EquivalentEconomy(priorEcon,frozenEconomy)))
                     return CanonicalGateResult.StaleGeneration;
-                armedWorld=(byte[])world.Clone();
-                armedEconomy=economy.Copy();
-                CanonicalGateResult outcome=gateway.TryRestore(world,runId,minimum);
+                armedWorld=frozenWorld;
+                armedEconomy=frozenEconomy;
+                CanonicalGateResult outcome=gateway.TryRestore(frozenWorld,runId,minimum);
                 if(gateway.Quarantined||store.Quarantined)
                 {quarantined=true;return CanonicalGateResult.RollbackQuarantine;}
                 return outcome;

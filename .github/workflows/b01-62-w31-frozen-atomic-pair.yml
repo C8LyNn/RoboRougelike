@@ -1,0 +1,73 @@
+name: B01-62 W31 original V3 freeze same writer atomic pair
+on:
+  push:
+    branches: [b01-62/p17w31-freeze-atomic-pair]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-62/P17W31AtomicPair/**'
+      - 'Tools/B01/B01-62/P17W28UnityCompatibleWholeGameV3/WholeGameEconomySlotV3.cs'
+      - 'Tools/B01/B01-62/P17W28UnityCompatibleWholeGameV3/CanonicalWholeGameSessionV3.cs'
+      - '.github/workflows/b01-62-w31-frozen-atomic-pair.yml'
+permissions:
+  contents: read
+jobs:
+  exact-source-pair:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Exact original #780 V7 and #855 admission unchanged
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin b4df10a7ad7e6c758f8331013f6b216b3a3689a3
+          git fetch --no-tags origin c9c19665a4f9385e6479f7151097deb797026ade
+          mkdir -p Tools/B01/B01-62/P17W30AdmissionV3/.source b0162-w31-evidence
+          git show b4df10a7ad7e6c758f8331013f6b216b3a3689a3:Assets/B01Packages/ECONAPPROVED007/Runtime/ApprovedEconomyPolicyV7.cs > Tools/B01/B01-62/P17W30AdmissionV3/.source/ApprovedEconomyPolicyV7.cs
+          git show b4df10a7ad7e6c758f8331013f6b216b3a3689a3:Assets/B01Packages/ECONAPPROVED007/Runtime/CanonicalEconomySectionV7.cs > Tools/B01/B01-62/P17W30AdmissionV3/.source/CanonicalEconomySectionV7.cs
+          git show c9c19665a4f9385e6479f7151097deb797026ade:Assets/B01Packages/ECONADMISSIONW29/Runtime/EconomyV7AdmissionW29.cs > Tools/B01/B01-62/P17W30AdmissionV3/.source/EconomyV7AdmissionW29.cs
+          python Tools/B01/B01-62/P17W31AtomicPair/source_guard.py b0162-w31-evidence/guard.json | tee b0162-w31-evidence/guard.log
+      - name: Original V3+V7+admission production ABI Csharp9 netstandard21
+        run: |
+          set -euo pipefail
+          dotnet build Tools/B01/B01-62/P17W30AdmissionV3/W30UnityAbi.csproj -c Release -v quiet | tee b0162-w31-evidence/abi.log
+          grep -q 'Build succeeded' b0162-w31-evidence/abi.log
+      - name: Rerun immutable original 9 real Save OS cases
+        run: |
+          set -euo pipefail
+          dotnet run --project Tools/B01/B01-62/P17W30AdmissionV3/W28OriginalRegression.csproj -c Release -v quiet | tee b0162-w31-evidence/w28.log
+          grep -q 'W25_V7_GAME_ECON_ONE_ENVELOPE_SOURCE_TOTAL 9 PASS 9 FAIL 0' b0162-w31-evidence/w28.log
+      - name: Rerun original 6 real cold OS read and gateway cases
+        run: |
+          set -euo pipefail
+          dotnet run --project Tools/B01/B01-62/P17W30AdmissionV3/W29ColdRegression.csproj -c Release -v quiet | tee b0162-w31-evidence/w29.log
+          grep -q 'B0162_W29_COLD_READ_REAL_OS_TOTAL 6 PASS 6 FAIL 0' b0162-w31-evidence/w29.log
+      - name: Rerun original 4 malformed V7 and repair OS cases
+        run: |
+          set -euo pipefail
+          dotnet run --project Tools/B01/B01-62/P17W30AdmissionV3/W30AdmissionQA.csproj -c Release -v quiet | tee b0162-w31-evidence/w30.log
+          grep -q 'B0162_W30_ADMISSION_SINGLE_WRITER_REAL_OS_TOTAL 4 PASS 4 FAIL 0' b0162-w31-evidence/w30.log
+      - name: W31 actual two mutation-of-caller original OS tests
+        run: |
+          set -euo pipefail
+          dotnet run --project Tools/B01/B01-62/P17W31AtomicPair/AtomicPairQA.csproj -c Release -v quiet | tee b0162-w31-evidence/w31.log
+          grep -q 'B0162_W31_MUTABLE_INPUT_REAL_OS_TOTAL 2 PASS 2 FAIL 0' b0162-w31-evidence/w31.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b0162-w31-atomic-${{ matrix.os }}
+          path: b0162-w31-evidence/*
+          if-no-files-found: warn
