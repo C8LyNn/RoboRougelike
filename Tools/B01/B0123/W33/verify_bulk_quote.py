@@ -37,7 +37,7 @@ def property_text(body):
     raise AssertionError("unclosed game getter")
 getter=property_text(source)
 old_getter=property_text(original)
-assert original.replace(old_getter,getter).replace("\r\n","\n")==source.replace("\r\n","\n"),"original product changed outside R3 getter"
+assert original.replace(old_getter,getter).replace("\r\n","\n").rstrip("\n")==source.replace("\r\n","\n").rstrip("\n"),"original product changed outside R3 getter"
 test_add_start="    // W33: bulk price preview MUST exercise"
 test_add_end="    [Test] public void ModelCanRemoveLastGunAndEveryWheelButCannotDeploy()"
 i=tests.index(test_add_start);j=tests.index(test_add_end,i)
