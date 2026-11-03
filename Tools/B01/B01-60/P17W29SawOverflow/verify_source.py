@@ -83,6 +83,10 @@ def check_test(source):
   "saw.DamageEventsLastTick,Is.Zero",
   "saw.Motor.Rpm,Is.Zero",
   "saw.Motor.Heat,Is.Zero",
+  "var energy=owner.AddComponent<RotarySawEnergyReservoir>()",
+  "saw.SetEnergySource(energy)",
+  "energy.Charge,Is.EqualTo(20f)",
+  "energy.Charge,Is.LessThan(20f)",
   "target.TotalDamage,Is.Zero",
   "targets[i].gameObject.SetActive(false)",
   "saw.OverflowedLastTick,Is.False",
@@ -104,7 +108,7 @@ def run():
  need(changed==EXPECTED,"W29 diff must be EXACT one touched original owner safety line plus six own QA additions: "+str(changed))
  need(g("rev-parse",BASE+":"+GAME)==BASE_RUNTIME_BLOB,"Original owner #828 physical source SHA drift")
  need(g("rev-parse","HEAD:"+GAME)==AFTER_RUNTIME_BLOB,"Our new one-line original runtime file SHA drift")
- old=g("show",BASE+":"+GAME); now=(ROOT/GAME).read_text(encoding="utf-8")
+ old=g("show",BASE+":"+GAME); now=(ROOT/GAME).read_text(encoding="utf-8").strip()
  exact_runtime(old,now)
  for path in BASE_IMMUTABLE:
   need(g("rev-parse",BASE+":"+path)==g("rev-parse","HEAD:"+path),
