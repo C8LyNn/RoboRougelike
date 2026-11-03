@@ -145,4 +145,96 @@ public sealed class B0150W32RealGarageProfilerTests
             " note=managed_thread_allocation_not_total_gc_gpu_or_physx");
         yield return new ExitPlayMode();
     }
+    // W33: same ORIGINAL R3 game garage, not a synthetic collider benchmark.
+    // Light/Heavy provide the 20/139-part endpoints in #913; Standard 83-part
+    // remains covered by the existing genuine owned-Saw legal/blocked fixture.
+    [UnityTest]
+    public IEnumerator ActualLight20PartR3GaragePlacementLatencyAndAllocations()
+    {
+        return ProfileCatalogScale(R3VehicleKind.Light, 20,
+            new Vector3Int(0, 0, 3), "light20");
+    }
+
+    [UnityTest]
+    public IEnumerator ActualHeavy139PartR3GaragePlacementLatencyAndAllocations()
+    {
+        return ProfileCatalogScale(R3VehicleKind.Heavy, 139,
+            new Vector3Int(0, 1, 5), "heavy139");
+    }
+
+    private static IEnumerator ProfileCatalogScale(R3VehicleKind kind,
+        int expectedParts, Vector3Int exteriorCell, string label)
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity", OpenSceneMode.Single);
+        yield return new EnterPlayMode();
+        float deadline = Time.realtimeSinceStartup + 15f;
+        while (R1RunController.Instance?.Progress == null &&
+               Time.realtimeSinceStartup < deadline)
+            yield return null;
+        var run = R1RunController.Instance;
+        Assert.That(run, Is.Not.Null);
+        Assert.That(run.SelectVehicle(kind), Is.True);
+        Assert.That(run.OpenSandboxGarage(), Is.True);
+        Assert.That(run.VehicleModel.Parts.Count, Is.EqualTo(expectedParts),
+            "Real catalog R3 count changed: repeat the performance intake review.");
+        var oldGun = run.VehicleModel.Parts.Single(p => p.Kind == R3PartKind.Gun);
+        string originalGunId = oldGun.Id;
+        Assert.That(run.GarageRemove(oldGun.Cell), Is.True,
+            "Actual game garage must remove the original mounted gun legally.");
+        var stored = run.VehicleModel.Inventory.Single(p => p.Id == originalGunId);
+        stored.Weapon = R4WeaponKind.RotarySaw;
+
+        // PhysX + exact original placement acceptance are mandatory: never
+        // print fake numbers after only a cheap logical occupancy rejection.
+        string preflight = run.VehicleModel.OwnedPlacementError(
+            originalGunId, exteriorCell, default);
+        Assert.That(preflight, Is.Null,
+            "Physical original exterior Saw candidate is not legal: " + preflight);
+        int scrap = run.VehicleModel.Scrap;
+        int installedCount = run.VehicleModel.Parts.Count;
+        int storedCount = run.VehicleModel.Inventory.Count;
+        var ownedIds = run.VehicleModel.Parts.Concat(run.VehicleModel.Inventory)
+            .Select(p => p.Id).OrderBy(id => id).ToArray();
+
+        for (int i = 0; i < WarmupsPerCase; ++i)
+        {
+            Assert.That(run.VehicleModel.OwnedPlacementError(
+                originalGunId, exteriorCell, default), Is.Null);
+            yield return null;
+        }
+        var ticks = new long[32];
+        var bytes = new long[32];
+        for (int i = 0; i < ticks.Length; ++i)
+        {
+            long preBytes = GC.GetAllocatedBytesForCurrentThread();
+            long preTicks = Stopwatch.GetTimestamp();
+            string error = run.VehicleModel.OwnedPlacementError(
+                originalGunId, exteriorCell, default);
+            ticks[i] = Stopwatch.GetTimestamp() - preTicks;
+            bytes[i] = GC.GetAllocatedBytesForCurrentThread() - preBytes;
+            Assert.That(error, Is.Null,
+                "The real physical gate must stay valid during measured trials.");
+            yield return null; // Let the original probe Destroy complete.
+        }
+        Assert.That(run.VehicleModel.Scrap, Is.EqualTo(scrap));
+        Assert.That(run.VehicleModel.Parts.Count, Is.EqualTo(installedCount));
+        Assert.That(run.VehicleModel.Inventory.Count, Is.EqualTo(storedCount));
+        Assert.That(run.VehicleModel.Parts.Concat(run.VehicleModel.Inventory)
+            .Select(p => p.Id).OrderBy(id => id), Is.EqualTo(ownedIds));
+
+        string envSha = Environment.GetEnvironmentVariable("B0150_W32_EXACT_GAME_SHA");
+        string provenance = string.IsNullOrEmpty(envSha) ?
+            "UNPINNED_NOT_ACCEPTABLE_FOR_G1" : envSha;
+        UnityEngine.Debug.Log(
+            "B0150_W33_REAL_R3_GARAGE_SCALE native_measurement_only " +
+            "game_sha=" + provenance +
+            " unity=" + Application.unityVersion +
+            " os=" + SystemInfo.operatingSystem +
+            " catalog_kind=" + kind + " baseline_parts=" + expectedParts +
+            " selected_cell=" + exteriorCell +
+            " samples=32 " + Summary(label, ticks, bytes) +
+            " note=real_editor_only_not_player_fps_or_gpu_and_no_save_writer");
+        yield return new ExitPlayMode();
+    }
+
 }
