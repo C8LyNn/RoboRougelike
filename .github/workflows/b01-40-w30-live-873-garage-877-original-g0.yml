@@ -1,0 +1,66 @@
+name: B01-40 W30 real existing 873 877 game + garage original source G0
+on:
+  push:
+    branches: [qa/b01-40-p17w30-live873-garage877-physical-g0]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-40/P17W30LiveGarageG0/**'
+      - '.github/workflows/b01-40-w30-live-873-garage-877-original-g0.yml'
+permissions:
+  contents: read
+jobs:
+  original-source-real-scratch:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Exact #873+#877 original Git object refs, real game gate, current Unity GUID, scratch hostiles
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-40/P17W30LiveGarageG0/audit.py --out w30-live-garage-g0 | tee w30-live-garage-stdout.log
+          cp w30-live-garage-stdout.log w30-live-garage-g0/stdout.log
+          grep -q 'B0140_W30_EXACT_LIVE_873_SOURCE_SCOPE_37_PASS' w30-live-garage-stdout.log
+          grep -q 'B0140_W30_EXACT_GARAGE_877_CHILD_ONLY_3_PASS' w30-live-garage-stdout.log
+          grep -q 'B0140_W30_ORIGINAL_810_839_866_BYTES_AND_LIVE_R5_PASS' w30-live-garage-stdout.log
+          grep -q 'B0140_W30_CANONICAL_GARAGE_BUY_MOUNT_PREVIEW_SOURCE_GUARD_PASS' w30-live-garage-stdout.log
+          grep -q 'B0140_W30_SAW_861_REVIEW_ONLY_NATIVE_UNITY_G1_NOT_RUN' w30-live-garage-stdout.log
+          grep -q 'B0140_W30_SAFE_SCRATCH_STAGE_AND_HOSTILE_NEGATIVES_PASS' w30-live-garage-stdout.log
+          grep -q 'B0140_W30_SOURCE_ONLY_NATIVE_UNITY_AND_WINDOWS_PLAYER_NOT_RUN' w30-live-garage-stdout.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b0140-w30-current-game-${{ matrix.os }}
+          path: w30-live-garage-g0/
+          if-no-files-found: warn
+  two-original-machine-byte-parity:
+    needs: [original-source-real-scratch]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: b0140-w30-current-game-ubuntu-24.04
+          path: ubuntu
+      - uses: actions/download-artifact@v4
+        with:
+          name: b0140-w30-current-game-windows-2025
+          path: windows
+      - name: Compare actual source-only game SHA and full original Git byte manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp ubuntu/W30_873_877_GAME_SOURCE_ONLY.zip windows/W30_873_877_GAME_SOURCE_ONLY.zip
+          cmp ubuntu/manifest.json windows/manifest.json
+          sha256sum ubuntu/W30_873_877_GAME_SOURCE_ONLY.zip
+          echo B0140_W30_CROSS_OS_GAME_SOURCE_873_877_BYTE_IDENTITY_PASS
