@@ -1,0 +1,40 @@
+{
+  "package": "B01-60-P17-W31-REAL-R3-MAP-JUMPPAD-G1-001/R1",
+  "owner": "B01-60 INDEPENDENT QA & PLAYTEST",
+  "game_parent_pr877": "a0de194fd382830fab4b7d013d204b0697b25078",
+  "game_chain_pr873": "d537b7310979b91df27a08b14d0f1c74d0889089",
+  "qa_parent_pr888": "4aab71e35a885f9fc117838a372a7f7e1bb32c65",
+  "source_pins": {
+    "Assets/B01Packages/MapJumpPad001/Runtime/MapJumpPad.cs": "711103bcb682af38b7c0e9bf4c21dea92c8e0547",
+    "Assets/R5/R5Arena.cs": "3ee9d05ffdccbd3dea991f80223afeacd91e3b95",
+    "Assets/R1/R1RunController.cs": "09a6776db67662e8960d1f446ba5c5168cd3e4b2",
+    "Assets/R1/R1VehicleState.cs": "c8042044f25d213e4fcfd7cd89bd0222161b46f1",
+    "Assets/R6/R6VehicleDrive.cs": "6e5991cf263ac64b943dc4ac09a546d65ad2fa45",
+    "Assets/Pack/P12_PipelineSafeTankController.cs": "8beeedb4db40b7b33c8f685d7b6aab1247a4b2d7",
+    "Assets/Tests/Editor/W29LiveArenaJumpPadTests.cs": "a18552c147aaed91ee44823b0667a86addf8be8f",
+    "Assets/Tests/Editor/R5ArenaTests.cs": "9a3a4fa3e4f0c21b627b999b593428f1e7fce40f"
+  },
+  "new_UnityTest_cases": [
+    "SalvageYard_ActualMultiColliderR3VehicleGetsOneRealUpwardImpulse",
+    "SalvageYard_DisabledRealPadCannotLaunchFullR3Vehicle"
+  ],
+  "unique_guid": "8b0160311c21e4389e6538160f2e631e",
+  "add_only_paths": [
+    "Assets/Tests/Editor/B0160W31RealR3JumpPadTests.cs",
+    "Assets/Tests/Editor/B0160W31RealR3JumpPadTests.cs.meta",
+    "Tools/B01/B01-60/P17W31RealR3JumpPadQA/verify.py",
+    "Tools/B01/B01-60/P17W31RealR3JumpPadQA/test_verify.py",
+    "Tools/B01/B01-60/P17W31RealR3JumpPadQA/manifest.json",
+    "Tools/B01/B01-60/P17W31RealR3JumpPadQA/README.md",
+    ".github/workflows/b01-60-p17w31-real-r3-jumppad.yml"
+  ],
+  "source_G0": "TO_BE_EXECUTED_FINAL_SHA_CI",
+  "Unity_6000_3_14f1_G1": "NOT_RUN",
+  "windows_player": "NOT_RUN",
+  "claim": "R1 genuine scene->run->R3 multi-collider Rigidbody->real R5 SalvageYard physical MAP-JUMPPAD, no copied component or independent gameplay runner",
+  "game_integration": false,
+  "QA_accepted": false,
+  "ready_for_codeX": false,
+  "release": false,
+  "rollback": "discard 7 newly added B01-60 W31 test/tool files only; no original game, Save, Codex worktree, old B01-60 W30 work changed"
+}

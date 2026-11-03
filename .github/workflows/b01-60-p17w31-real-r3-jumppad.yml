@@ -1,0 +1,45 @@
+name: B01-60 W31 real R3 vehicle vs R5 JumpPad SOURCE ONLY
+on:
+  push:
+    branches: [qa/b01-60-p17w31-live-r3-jumppad-acceptance-r1]
+    paths:
+      - 'Assets/Tests/Editor/B0160W31RealR3JumpPadTests.cs'
+      - 'Assets/Tests/Editor/B0160W31RealR3JumpPadTests.cs.meta'
+      - 'Tools/B01/B01-60/P17W31RealR3JumpPadQA/**'
+      - '.github/workflows/b01-60-p17w31-real-r3-jumppad.yml'
+  pull_request:
+    paths:
+      - 'Assets/Tests/Editor/B0160W31RealR3JumpPadTests.cs'
+      - 'Assets/Tests/Editor/B0160W31RealR3JumpPadTests.cs.meta'
+      - 'Tools/B01/B01-60/P17W31RealR3JumpPadQA/**'
+      - '.github/workflows/b01-60-p17w31-real-r3-jumppad.yml'
+permissions:
+  contents: read
+jobs:
+  exact_current_real_game_source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Verify byte-pinned original actual R3 run, R5 arena, R6 dynamics and real new Unity test
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W31RealR3JumpPadQA/verify.py | tee W31-real-r3-source.log
+          grep -F '"real_Unity_6000_3_14f1": "NOT_RUN"' W31-real-r3-source.log
+          grep -F '"status": "SOURCE_G0_GITHUB_EXACT_NATIVE_NOT_RUN"' W31-real-r3-source.log
+      - name: Run 10 original-product source-integrity, real vehicle and no-fake-native negative controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s Tools/B01/B01-60/P17W31RealR3JumpPadQA -p test_verify.py -v 2>&1 | tee W31-real-r3-source-unit.log
+          grep -F 'Ran 10 tests' W31-real-r3-source-unit.log
+          grep -F 'OK' W31-real-r3-source-unit.log
+          echo B0160_W31_NATIVE_FULL_R3_PAD=NOT_RUN_SOURCE_ONLY_PASS
