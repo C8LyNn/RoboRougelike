@@ -39,7 +39,7 @@ internal static class CI41IndependentQA
         Directory.CreateDirectory(root);
         try
         {
-            object?[] args={root,null,null};
+            object?[] args={root,null,null,null}; // Current original #923 owner test helper adds optional IOneFilePublisher
             if(!(bool)(Original("Open").Invoke(null,args) ?? false) ||
                args[1]==null || args[2]==null)
                 throw new Exception("Original same-writer source open failed");
