@@ -1,4 +1,4 @@
-name: B01-13 W28 Physical Playtest Evidence Intake
+name: B01-13 W29 Physical Playtest Evidence Intake R2
 on:
   push:
     paths:
@@ -24,18 +24,18 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Verify exact original Git blob and UTF8 byte manifest
         run: python Research/B01-13/P17W28/verify_package.py
-      - name: Execute 40 original physical evidence intake tests
+      - name: Execute 51 actual W29 evidence intake regression tests
         run: python -m unittest -v Research/B01-13/P17W28/test_playtest_intake.py
       - name: Create physical empty result template and hash
         shell: pwsh
         run: |
-          $out = Join-Path $env:RUNNER_TEMP 'w28-response-template.json'
+          $out = Join-Path $env:RUNNER_TEMP 'w29-response-template.json'
           python Research/B01-13/P17W28/playtest_intake.py --game-commit aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa --make-template $out
-          if ($LASTEXITCODE -ne 0) { throw 'W28_GENERATOR_FAILED' }
-          Write-Output ('W28_TEMPLATE_SHA256=' + (Get-FileHash -Algorithm SHA256 $out).Hash.ToLowerInvariant())
+          if ($LASTEXITCODE -ne 0) { throw 'W29_GENERATOR_FAILED' }
+          Write-Output ('W29_TEMPLATE_SHA256=' + (Get-FileHash -Algorithm SHA256 $out).Hash.ToLowerInvariant())
       - uses: actions/upload-artifact@v4
         with:
-          name: B01-13-W28-SYNTHETIC-EMPTY-TEMPLATE-${{ matrix.os }}-Py${{ matrix.python-version }}
-          path: ${{ runner.temp }}/w28-response-template.json
+          name: B01-13-W29-EMPTY-TEMPLATE-${{ matrix.os }}-Py${{ matrix.python-version }}
+          path: ${{ runner.temp }}/w29-response-template.json
           if-no-files-found: error
           retention-days: 14

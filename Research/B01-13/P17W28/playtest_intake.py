@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""B01-13 W28: verify operator-owned W27 observations + physical W28 evidence.
+"""B01-13 W29: verified physical multi-file Windows Player + recovery evidence on W28 intake.
 Never authenticates Unity gameplay or a human participant. No network, game writes or extraction.
 """
 from __future__ import annotations
@@ -15,7 +15,7 @@ import stat
 import sys
 import zipfile
 
-PACKAGE = 'B01-13-W28-PLAYTEST-EVIDENCE-INTAKE-001/R1'
+PACKAGE = 'B01-13-W29-PLAYTEST-EVIDENCE-INTAKE-001/R2'
 W27_SOURCE_HEAD = '65c73fd4a3e6c9fcc61b2e388542b96dbfa1748c'
 W27_SCHEMA = 'b01-13-observer-r1'
 CASE_IDS = ('P01_BASIC_AUTOMATIC_HEAVY','P02_SHOTGUN_RAIL_ROCKET','P03_BEAM','P04_ROTARY_SAW',
@@ -23,8 +23,10 @@ CASE_IDS = ('P01_BASIC_AUTOMATIC_HEAVY','P02_SHOTGUN_RAIL_ROCKET','P03_BEAM','P0
             'P08_GARAGE_FIVE_ZONES','P09_GARAGE_ROTATE_055M','P10_GARAGE_FAILED_TRANSACTION',
             'P11_MECHANICAL_ENVELOPES','P12_LOANER_POST_WIN_CONTINUATION',
             'P13_WIN_DEFERRED_REBUILD','P14_PLAYER_TWO_REAL_FIGHTS',
-            'P15_PLAYER_ZIP_BOOT','P16_SAVE_LOAD_COLD','P17_TURRET_V3_P1')
-P0 = CASE_IDS[:-1]
+            'P15_PLAYER_ZIP_BOOT','P16_SAVE_LOAD_COLD','P17_TURRET_V3_P1',
+            'P18_SAW_DEFAULT_MOUNT_AND_OVERFLOW','P19_EMP_DETACH_DIRECT_GUARD',
+            'P20_GARAGE_PHYSICAL_ZONE_COMMIT','P21_SAVE_ONE_OWNER_COLD_UNITY')
+P0 = tuple(x for x in CASE_IDS if x != 'P17_TURRET_V3_P1')
 STATUS = ('PASS','FAIL','BLOCKED','NOT_RUN')
 REASONS = ('NONE','COLLISION','AMMO_COOLDOWN','HEAT_ENERGY','AREA_OR_CONTACT','DYNAMIC',
            'GARAGE_ZONE','INVALID_INSTALL_MUTATED','FOOTPRINT','SOFTLOCK','REWARD',
@@ -104,7 +106,7 @@ def validate_w27(report, game_sha):
 
 def template(game_sha):
     ensure(type(game_sha) is str and SHA.fullmatch(game_sha) is not None,'GAME_COMMIT_SHA')
-    return {'schema':'b01-13-w28-acceptance-r1','gameCommit':game_sha,'realHumanParticipants':'UNVERIFIED',
+    return {'schema':'b01-13-w29-acceptance-r2','gameCommit':game_sha,'realHumanParticipants':'UNVERIFIED',
             'softlockDisposition':'NOT_EVALUATED',
             'cases':[{'id':n,'status':'NOT_RUN','reason':'NONE','evidence':None} for n in CASE_IDS]}
 
@@ -140,29 +142,51 @@ def inspect_unity_zip(file: Path):
 
 def evaluate_w28(body, game_sha, evidence_dir):
     strict_keys(body,('schema','gameCommit','realHumanParticipants','softlockDisposition','cases'),'W28_SCHEMA_KEYS')
-    ensure(body['schema']=='b01-13-w28-acceptance-r1','W28_SCHEMA')
+    ensure(body['schema']=='b01-13-w29-acceptance-r2','W28_SCHEMA')
     ensure(body['gameCommit']==game_sha,'W28_GAME_MISMATCH')
     ensure(body['realHumanParticipants']=='UNVERIFIED','W28_NO_PARTICIPANT_AUTHORITY')
     ensure(body['softlockDisposition'] in RECOVERY,'W28_SOFTLOCK_DISPOSITION')
     rows=body['cases'];ensure(type(rows) is list and len(rows)==len(CASE_IDS),'W28_ROW_COUNT')
     seen=set();evidence=[];results={};seenfiles=set()
+    def attach(case_id, role, name, allowed=None, is_zip=False):
+        ensure(type(name) is str and name, 'W29_EVIDENCE_ROLE_MISSING')
+        ensure(name not in seenfiles, 'W29_EVIDENCE_REUSED')
+        f=safe_file(evidence_dir,name)
+        if allowed is not None:ensure(f.suffix.lower() in allowed, 'W29_EVIDENCE_ROLE_FORMAT')
+        seenfiles.add(name)
+        proof=file_hash(f)
+        if is_zip:
+            ensure(f.suffix.lower()=='.zip','W29_PLAYER_ZIP_REQUIRED')
+            proof['zipStructure']=inspect_unity_zip(f)
+        evidence.append({'case':case_id,'role':role,'file':name,**proof})
     for row in rows:
-        strict_keys(row,('id','status','reason','evidence'),'W28_CASE_SCHEMA')
-        id=row['id'];ensure(type(id) is str and id in CASE_IDS and id not in seen,'W28_CASE_ID');seen.add(id)
+        strict_keys(row,('id','status','reason','evidence'),'W29_CASE_SCHEMA')
+        id=row['id'];ensure(type(id) is str and id in CASE_IDS and id not in seen,'W29_CASE_ID');seen.add(id)
         status=row['status'];reason=row['reason'];fname=row['evidence']
-        ensure(status in STATUS and reason in REASONS,'W28_ENUM')
+        ensure(status in STATUS and reason in REASONS,'W29_ENUM')
         if status in ('PASS','FAIL'):
-            ensure(type(fname) is str and len(fname)>0,'W28_RESULT_WITHOUT_EVIDENCE')
-            ensure(reason=='NONE' if status=='PASS' else reason!='NONE','W28_REASON_MISMATCH')
-            ensure(fname not in seenfiles,'W28_EVIDENCE_REUSED');seenfiles.add(fname)
-            f=safe_file(evidence_dir,fname);proof=file_hash(f)
-            if id=='P15_PLAYER_ZIP_BOOT':
-                ensure(f.suffix.lower()=='.zip','W28_PLAYER_ZIP_REQUIRED')
-                proof['zipStructure']=inspect_unity_zip(f)
-            if id=='P14_PLAYER_TWO_REAL_FIGHTS':ensure(f.suffix.lower() in ('.log','.txt','.xml'),'W28_PLAYER_FIGHTS_LOG_REQUIRED')
-            evidence.append({'case':id,'file':fname,**proof})
+            ensure(reason=='NONE' if status=='PASS' else reason!='NONE','W29_REASON_MISMATCH')
+            if status=='PASS' and id=='P15_PLAYER_ZIP_BOOT':
+                strict_keys(fname,('playerZip','playerLog'),'W29_BOOT_BUNDLE_REQUIRED')
+                attach(id,'player_zip',fname['playerZip'],is_zip=True)
+                attach(id,'player_log',fname['playerLog'],allowed=('.log','.txt'))
+            elif status=='PASS' and id=='P12_LOANER_POST_WIN_CONTINUATION':
+                strict_keys(fname,('before','after','playerLog'),'W29_RECOVERY_BUNDLE_REQUIRED')
+                attach(id,'before',fname['before'],allowed=('.png','.jpg','.jpeg','.json'))
+                attach(id,'after',fname['after'],allowed=('.png','.jpg','.jpeg','.json'))
+                attach(id,'player_log',fname['playerLog'],allowed=('.log','.txt'))
+                before=evidence[-3];after=evidence[-2]
+                ensure(before['sha256']!=after['sha256'],'W29_RECOVERY_IDENTICAL_STATES')
+            else:
+                ensure(type(fname) is str and fname,'W29_RESULT_WITHOUT_EVIDENCE')
+                if id=='P15_PLAYER_ZIP_BOOT' and fname.endswith('.zip'):
+                    attach(id,'failed_boot_zip',fname,is_zip=True)
+                elif id=='P14_PLAYER_TWO_REAL_FIGHTS':
+                    attach(id,'observation',fname,allowed=('.log','.txt','.xml'))
+                else:
+                    attach(id,'observation',fname)
         else:
-            ensure(fname is None and reason in ('NONE','INTEGRATION_MISSING','BUILD','OTHER'),'W28_UNOBSERVED_EVIDENCE')
+            ensure(fname is None and reason in ('NONE','INTEGRATION_MISSING','BUILD','OTHER'),'W29_UNOBSERVED_EVIDENCE')
         results[id]=status
     ensure(seen==set(CASE_IDS),'W28_MISSING_CASE')
     recovery=body['softlockDisposition']
@@ -172,22 +196,25 @@ def evaluate_w28(body, game_sha, evidence_dir):
     if results['P12_LOANER_POST_WIN_CONTINUATION']=='FAIL':ensure(recovery=='UNRESOLVED','W28_FAILED_SOFTLOCK_MUST_BE_UNRESOLVED')
     mandatory_complete=all(results[x]=='PASS' for x in P0)
     missing=[x for x in P0 if results[x]!='PASS']
-    return {'coverage':'ALL_P0_OPERATOR_PASS_WITH_FILES' if mandatory_complete else 'P0_INCOMPLETE_OR_FAILED',
+    return {'coverage':'ALL_P0_OPERATOR_PASS_WITH_REQUIRED_FILES' if mandatory_complete else 'P0_INCOMPLETE_OR_FAILED',
             'cases':results,'missingOrFailingP0':missing,'softlockDisposition':recovery,
             'evidence':evidence,'gameCommit':game_sha,
             'participantSessionsIndependentlyVerified':0,
             'nativeUnityG1':'NOT_VERIFIED_BY_THIS_TOOL',
             'windowsPlayerBoot':'NOT_INDEPENDENTLY_VERIFIED_BY_THIS_TOOL',
             'sourceEvidence':'PHYSICAL_BYTES_SHA256_ONLY_NOT_GAME_AUTHENTICITY',
+            'w29RequiredBootEvidence':'ZIP_PLUS_PLAYER_LOG_OPERATOR_SUBMITTED',
+            'w29RecoveryEvidence':'BEFORE_AFTER_PLUS_PLAYER_LOG_OPERATOR_SUBMITTED',
             'productGate':'HOLD_INDEPENDENT_G0_G1_AND_REAL_HUMAN_ACCEPTANCE'}
 
 def make_csv(receipt):
     f=io.StringIO(newline='');w=csv.writer(f,lineterminator='\n')
-    w.writerow(['case_id','operator_status','evidence_filename','evidence_sha256','evidence_bytes','game_commit','independent_unity_g1'])
-    proofs={x['case']:x for x in receipt['evidence']}
+    w.writerow(['case_id','operator_status','evidence_role','evidence_filename','evidence_sha256','evidence_bytes','game_commit','independent_unity_g1'])
+    proofs={id:[] for id in CASE_IDS}
+    for item in receipt['evidence']:proofs[item['case']].append(item)
     for id in CASE_IDS:
-        p=proofs.get(id,{})
-        w.writerow([id,receipt['cases'][id],p.get('file',''),p.get('sha256',''),p.get('bytes',''),receipt['gameCommit'],'NOT_VERIFIED'])
+        for p in proofs[id] or [{}]:
+            w.writerow([id,receipt['cases'][id],p.get('role',''),p.get('file',''),p.get('sha256',''),p.get('bytes',''),receipt['gameCommit'],'NOT_VERIFIED'])
     return f.getvalue()
 
 def safe_scratch(directory: Path):
@@ -209,7 +236,7 @@ def write_exclusive(out: Path, content: bytes):
         raise
 
 def run(argv=None):
-    parser=argparse.ArgumentParser(description='B01-13 W28: exact observer + physical evidence receipt, not Unity QA')
+    parser=argparse.ArgumentParser(description='B01-13 W29: actual boot and recovery bundles; still not independent Unity QA')
     parser.add_argument('--game-commit',required=True)
     parser.add_argument('--make-template',metavar='ABSOLUTE_JSON')
     parser.add_argument('--w27-report')
@@ -224,14 +251,14 @@ def run(argv=None):
         ensure(dest.is_absolute() and dest.parent.is_dir(),'TEMPLATE_ABSOLUTE_DIR')
         safe_scratch(dest.parent)
         write_exclusive(dest,(json.dumps(template(sha),indent=2,ensure_ascii=False)+'\n').encode())
-        print('W28_EMPTY_TEMPLATE_CREATED',dest)
+        print('W29_EMPTY_TEMPLATE_CREATED',dest)
         return
     ensure(all([args.w27_report,args.w28_responses,args.evidence_dir,args.output_dir]),'VERIFY_ARGS')
     inputs=[Path(args.w27_report),Path(args.w28_responses),Path(args.evidence_dir),Path(args.output_dir)]
     ensure(all(p.is_absolute() for p in inputs),'ABSOLUTE_PATH_REQUIRED')
     ensure(inputs[3].is_dir() and not inputs[3].is_symlink(),'OUT_DIR_REQUIRED')
     safe_scratch(inputs[3])
-    ensure(not any((inputs[3]/p).exists() for p in ('W28_RECEIPT.json','W28_RECEIPT.csv')),'REFUSE_OVERWRITE')
+    ensure(not any((inputs[3]/p).exists() for p in ('W29_RECEIPT.json','W29_RECEIPT.csv')),'REFUSE_OVERWRITE')
     ensure(inputs[3].resolve()!=inputs[2].resolve(),'OUTSIDE_EVIDENCE_DIR')
     report=read_json(inputs[0]);w27=validate_w27(report,sha)
     result=evaluate_w28(read_json(inputs[1]),sha,inputs[2]);result['w27Observation']=w27
@@ -240,13 +267,13 @@ def run(argv=None):
     result['w28ResponseFileSha256']=file_hash(inputs[1])['sha256']
     payload=(json.dumps(result,indent=2,sort_keys=True)+'\n').encode('utf8')
     csv_data=make_csv(result).encode('utf8')
-    write_exclusive(inputs[3]/'W28_RECEIPT.json',payload)
-    write_exclusive(inputs[3]/'W28_RECEIPT.csv',csv_data)
-    print('W28_PHYSICAL_EVIDENCE_VERIFIED',len(result['evidence']),'P0',result['coverage'],'SOFTLOCK',result['softlockDisposition'], 'PRODUCT',result['productGate'])
-    print('W28_RECEIPT_JSON_SHA256',hashlib.sha256(payload).hexdigest())
-    print('W28_RECEIPT_CSV_SHA256',hashlib.sha256(csv_data).hexdigest())
+    write_exclusive(inputs[3]/'W29_RECEIPT.json',payload)
+    write_exclusive(inputs[3]/'W29_RECEIPT.csv',csv_data)
+    print('W29_PHYSICAL_EVIDENCE_VERIFIED',len(result['evidence']),'P0',result['coverage'],'SOFTLOCK',result['softlockDisposition'], 'PRODUCT',result['productGate'])
+    print('W29_RECEIPT_JSON_SHA256',hashlib.sha256(payload).hexdigest())
+    print('W29_RECEIPT_CSV_SHA256',hashlib.sha256(csv_data).hexdigest())
 
 if __name__=='__main__':
     try:run()
     except (Refused,OSError) as e:
-        print('W28_FAIL_CLOSED',str(e),file=sys.stderr);sys.exit(2)
+        print('W29_FAIL_CLOSED',str(e),file=sys.stderr);sys.exit(2)
