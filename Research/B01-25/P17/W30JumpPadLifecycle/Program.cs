@@ -42,7 +42,7 @@ internal static class Program
             Console.WriteLine(name+":FAIL "+error);
         }
     }
-    private static void Invoke(MethodInfo method,MapJumpPad pad,Collider? collider=null)
+    private static void Invoke(MethodInfo method,MapJumpPad pad,Collider collider=null)
     {
         try {method.Invoke(pad,collider==null?null:new object[]{collider});}
         catch(TargetInvocationException error)
