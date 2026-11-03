@@ -2,7 +2,7 @@
   "schema": "B01-10-W28-REACHABILITY-REPRO-v1",
   "owner": "B01-10",
   "packageId": "B01-10-LOANER-REACHABILITY-001",
-  "iteration": "P17/W28 R1",
+  "iteration": "P17/W29 R2: original W28 branch continued, owner test-only",
   "sourceBranch": "design/b01-10-p17w28-v7-loaner-reachability",
   "previousW27Head": "b4292e80009b9a6fd59ab384ad25eaa2e85a6437",
   "originalProducer": {
@@ -14,24 +14,24 @@
   },
   "sourceFiles": {
     "Research/B01-10/P17/W28_LOANER_REACHABILITY_001/ACCEPTANCE.md": {
-      "gitBlob": "4db3710662a04f3dab788ff8e66edaf6eb8fd996",
-      "bytes": 1947
+      "gitBlob": "69a518a4858b79158b7f39f6cb489b20c94947e3",
+      "bytes": 2794
     },
     "Research/B01-10/P17/W28_LOANER_REACHABILITY_001/LoanerReachability.cs": {
-      "gitBlob": "6c2294ab329f6e8e589938d3e19540ca919147a4",
-      "bytes": 11400
+      "gitBlob": "07a35f9552004cd5ef30250942aee6640e659d62",
+      "bytes": 15887
     },
     "Research/B01-10/P17/W28_LOANER_REACHABILITY_001/LoanerReachability.csproj": {
       "gitBlob": "011e40a9ab535eda0de31e10dbd6fdee338e6ba2",
       "bytes": 573
     },
     "Research/B01-10/P17/W28_LOANER_REACHABILITY_001/README.md": {
-      "gitBlob": "0e342f23505fd9daeef9e51cba7b16b7632d1684",
-      "bytes": 4411
+      "gitBlob": "e32720ac7e2ebbe04d096be8f168461eb2ac7b29",
+      "bytes": 5918
     },
     ".github/workflows/b01-10-p17w28-v7-loaner-reachability.yml": {
-      "gitBlob": "1b4c466e77e2d78b5b1b87c3708ca862355291d3",
-      "bytes": 3938
+      "gitBlob": "e88b6861ad9c71fe524a5af0e93a6f923eed0a05",
+      "bytes": 4198
     }
   },
   "scopeDiff": [
@@ -44,16 +44,18 @@
   ],
   "suite": {
     "exactOriginalCS9": true,
-    "testCases": 6,
-    "expectedUbuntuResult": "PENDING",
-    "expectedWindowsResult": "PENDING",
+    "testCases": 8,
+    "expectedUbuntuResult": "PENDING_W29_R2_EXACT_HEAD",
+    "expectedWindowsResult": "PENDING_W29_R2_EXACT_HEAD",
     "gameProof": "NONE_SYNTHETIC_IDS",
     "nativeUnity": "NOT_RUN",
     "independentG0": "PENDING",
     "softlock": "REPRO_SOURCE_ONLY",
     "acceptedFix": false,
     "exactHeadExecution": "PENDING corrected actual V7 source witness. First W28 source original RED #41545355299: Valid accepted impossible no-WIN FREE, failure was test expectation not compiler; corrected expected negative with original codec roundtrip.",
-    "actualSourceValidationDefect": "B01-22 V7 unchanged: Valid accepts manually crafted Free=true Pending at Wins0/FreeUsedForWin0; original Encode/Decode accept. Legitimate TryReserveDestroyed denies zero-wallet paid65. Test-only manually constructed state, NOT a proven player exploit or product anti-tamper requirement."
+    "actualSourceValidationDefect": "B01-22 V7 unchanged: Valid accepts manually crafted Free=true Pending at Wins0/FreeUsedForWin0; original Encode/Decode accept. Legitimate TryReserveDestroyed denies zero-wallet paid65. Test-only manually constructed state, NOT a proven player exploit or product anti-tamper requirement.",
+    "twoEssentialSourceWitness": "W29 two mandatory broken physical owned IDs, one Free credit insufficient at cash0; one Free + one paid65 at cash65 completes both",
+    "realUnityCanDeploy": "NOT_RUN"
   },
   "dependencies": [
     "B01-22 #780 immutable V7",
@@ -69,5 +71,6 @@
     "The accepted policy has no approved special-case loaner recovery; no change made",
     "This test cannot prove real authenticated combat receipt"
   ],
-  "rollback": "Close standalone stacked Draft; no original V7 or Codex worktree and no game save writes."
+  "rollback": "Close standalone stacked Draft; no original V7 or Codex worktree and no game save writes.",
+  "previousW28VerifiedHead": "1688b0189c903f9b945c5a7de64ac09fc85cb378"
 }
