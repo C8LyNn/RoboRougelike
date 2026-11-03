@@ -74,7 +74,11 @@ namespace B01.CanonicalR3World001
                p.Location<R3PartLocationV1.Mounted||
                p.Location>R3PartLocationV1.Detached||
                p.ConsumedDetach!=(p.Location==R3PartLocationV1.Detached)||
-               p.Kind<0||p.Kind>18||p.Weapon<0||p.Weapon>255||
+               p.Kind<0||p.Kind>18||
+               // ORIGINAL R4WeaponKind enum at selected #877 has precisely
+               // Basic..EmpEmitter (0..8). Only Gun may carry non-Basic.
+               p.Weapon<0||p.Weapon>8||
+               (p.Kind!=2&&p.Weapon!=0)||
                p.SteeringMode<0||p.SteeringMode>63||
                p.UpgradeEffect<0||p.UpgradeEffect>255||
                p.Group<0||p.Group>2||
@@ -124,6 +128,7 @@ namespace B01.CanonicalR3World001
             var ids=new HashSet<string>(StringComparer.Ordinal);
             var physical=new HashSet<long>();
             int cores=0,mounted=0;
+            long mountedOwner=0;
             foreach(var p in world.Parts)
             {
                 if(!PartValid(p)||!ids.Add(p.Id)||!physical.Add(p.PhysicalId))
@@ -133,7 +138,15 @@ namespace B01.CanonicalR3World001
                     if(p.Location!=R3PartLocationV1.Mounted)return false;
                     cores++;
                 }
-                if(p.Location==R3PartLocationV1.Mounted)mounted++;
+                if(p.Location==R3PartLocationV1.Mounted)
+                {
+                    // One physical mounted rig has ONE ledger owner. Otherwise
+                    // a foreign vehicle part could be staged into this rig
+                    // while all individual part IDs still appear unique.
+                    if(mountedOwner==0)mountedOwner=p.OwnerPhysicalId;
+                    if(p.OwnerPhysicalId!=mountedOwner)return false;
+                    mounted++;
+                }
             }
             return cores==1&&mounted>0;
         }
