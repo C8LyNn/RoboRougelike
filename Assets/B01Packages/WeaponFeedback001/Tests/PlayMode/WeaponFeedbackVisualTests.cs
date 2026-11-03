@@ -89,6 +89,62 @@ namespace B01.WeaponFeedback001.Tests
    Assert.AreEqual(1,v.ImpactPoolSize,"Re-enabling should not allocate again.");
    yield return null;
   }
+    [UnityTest]public IEnumerator RebindVisuals_ResetsOldModelAndDetachedImpactPool()
+  {
+   var v=Make(out Transform oldPivot,out Light oldLight);
+   var oldSmokeGo=new GameObject("OldDamageSmoke");
+   oldSmokeGo.transform.SetParent(host.transform,false);
+   var oldSmoke=oldSmokeGo.AddComponent<ParticleSystem>();
+   var smokeMain=oldSmoke.main;smokeMain.playOnAwake=false;
+   v.BindVisuals(oldPivot,null,oldLight,
+    impactOriginal.GetComponent<ParticleSystem>(),oldSmoke);
+   Vector3 oldRest=oldPivot.localPosition;
+   v.NotifyShot();
+   v.NotifyImpact(Vector3.one,Vector3.up);
+   v.SetWeaponDamageVisual(.5f);
+   Assert.Less(oldPivot.localPosition.z,oldRest.z);
+   Assert.IsTrue(oldLight.enabled);
+   Assert.AreEqual(1,v.ImpactPoolSize);
+   Assert.IsTrue(oldSmoke.emission.enabled);
+
+   var nextPivotGo=new GameObject("NewVisualPivot");
+   nextPivotGo.transform.SetParent(host.transform,false);
+   nextPivotGo.transform.localPosition=new Vector3(.2f,0f,.3f);
+   Vector3 nextRest=nextPivotGo.transform.localPosition;
+   var nextLightGo=new GameObject("NewMuzzleLight");
+   nextLightGo.transform.SetParent(host.transform,false);
+   var nextLight=nextLightGo.AddComponent<Light>();
+   var nextImpactGo=new GameObject("NewImpactFX");
+   nextImpactGo.transform.SetParent(host.transform,false);
+   nextImpactGo.SetActive(false);
+   var nextImpact=nextImpactGo.AddComponent<ParticleSystem>();
+   v.BindVisuals(nextPivotGo.transform,null,nextLight,nextImpact,null);
+   Assert.Less(Vector3.Distance(oldPivot.localPosition,oldRest),.0001f);
+   Assert.IsFalse(oldLight.enabled);
+   Assert.IsFalse(oldSmoke.emission.enabled);
+   Assert.AreEqual(0,v.ImpactPoolSize,"Previous detached hit particles are released.");
+   Assert.AreEqual(nextRest,nextPivotGo.transform.localPosition);
+   v.NotifyShot();
+   v.NotifyImpact(Vector3.right,Vector3.up);
+   Assert.Less(nextPivotGo.transform.localPosition.z,nextRest.z);
+   Assert.AreEqual(oldRest,oldPivot.localPosition);
+   Assert.AreEqual(1,v.ImpactPoolSize);
+   yield return null;
+  }
+
+  [UnityTest]public IEnumerator SameVisualsRebind_DoesNotMakeRecoilPermanent()
+  {
+   var v=Make(out Transform pivot,out Light light);
+   var fx=impactOriginal.GetComponent<ParticleSystem>();
+   Vector3 rest=pivot.localPosition;
+   v.NotifyShot();
+   Assert.Less(pivot.localPosition.z,rest.z);
+   v.BindVisuals(pivot,null,light,fx,null);
+   yield return new WaitForSecondsRealtime(.35f);
+   Assert.Less(Vector3.Distance(pivot.localPosition,rest),.03f,
+    "A second BindVisuals call cannot adopt the recoiled pose as rest.");
+  }
+
     [UnityTest]public IEnumerator PausedGame_FlashAndImpactExpireAndRecoilRecovers()
   {
    var v=Make(out Transform pivot,out Light light);
