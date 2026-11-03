@@ -4,7 +4,7 @@ using RoboRougelike.B0131.Art.Editor;
 using RogueMachine.P12PipelineSafe;
 using UnityEngine;
 
-sealed class W29OnlySyntheticIntrusiveScript : MonoBehaviour {}
+sealed class W29OnlySyntheticIntrusiveScript : MonoBehaviour { public W29OnlySyntheticIntrusiveScript() {} }
 
 static class W28RealSourceHarness
 {
