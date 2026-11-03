@@ -1,0 +1,95 @@
+name: B01-25 W29 SAFEROUTE R5.1 physical debris lifecycle compatibility
+on:
+  push:
+    branches: [research/b01-25-p17w29-saferoute-r5-1-debris-lifecycle]
+    paths:
+      - 'Assets/B0125SafeRoute001/**'
+      - 'Research/B01-25/P17/SAFEROUTE001/**'
+      - 'Tools/B01/B01-25/P17W29SafeRouteR5Lifecycle/**'
+      - '.github/workflows/b01-25-w29-saferoute-r5-lifecycle.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 24
+    env:
+      SRC: Research/B01-25/P17/SAFEROUTE001
+      OUT: Tools/B01/B01-25/P17W29SafeRouteR5Lifecycle/.output
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile original CSharp9 R1-R5.1 runtime plus R3 detached debris lifecycle regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$SRC/.output" "$OUT"
+          dotnet build "$SRC/SafeRouteRuntime.csproj" -c Release -warnaserror
+      - name: Execute original REAL 8-mode two-crate Heavy anti-softlock behavior
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --project "$SRC/SafeRouteTests.csproj" -c Release -- "$SRC/.output/results.json" 2>&1 | tee "$OUT/behavior-$RUNNER_OS.log"
+      - name: Actually check original SHA pins, GUID14, source ZIP, scratch rollback
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-25/P17W29SafeRouteR5Lifecycle/check.py --out "$OUT/receipt.json" 2>&1 | tee "$OUT/source-qa-$RUNNER_OS.log"
+      - name: Verify original raw source evidence exists
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s "$SRC/.output/results.json"
+          test -s "$OUT/receipt.zip"
+          test -s "$OUT/receipt.json"
+          sha256sum "$OUT/receipt.zip"
+      - name: Preserve raw source ZIP, original machine logs, negative test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-25-saferoute-r5-lifecycle-w29-${{ matrix.os }}
+          path: |
+            Research/B01-25/P17/SAFEROUTE001/.output/results.json
+            Tools/B01/B01-25/P17W29SafeRouteR5Lifecycle/.output/**
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 21
+  actual-cross-os-source-zip-parity:
+    needs: original-source
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: b01-25-saferoute-r5-lifecycle-w29-*
+          path: evidence
+      - name: Download actual two platform original Unity source ZIPs and compare bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          A="$(find evidence/b01-25-saferoute-r5-lifecycle-w29-ubuntu-latest -name receipt.zip | head -n1)"
+          B="$(find evidence/b01-25-saferoute-r5-lifecycle-w29-windows-latest -name receipt.zip | head -n1)"
+          test -n "$A" && test -n "$B"
+          test -s "$A" && test -s "$B"
+          sha256sum "$A" "$B"
+          cmp "$A" "$B"
+          python - "$A" <<'PY'
+          import sys,json,zipfile
+          with zipfile.ZipFile(sys.argv[1]) as z:
+              names=z.namelist()
+              assert len(names)==24 and len(set(names))==24
+              assert all(i.create_system==3 for i in z.infolist())
+              m=json.loads(z.read("PACKAGE_MANIFEST.json"))
+              assert m["oneVersionOnly"] and m["nativeUnity"]=="NOT_RUN"
+              assert len(m["files"])==23
+          print("SAFEROUTE_R5_LIFECYCLE_ORIGINAL_UNITY_SOURCE_ZIP_PARITY_PASS")
+          PY

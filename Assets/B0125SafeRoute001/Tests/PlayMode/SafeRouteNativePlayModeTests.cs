@@ -367,5 +367,126 @@ namespace B0125.SafeRoute.Tests
             Assert.IsTrue(demo.CurrentPlan.Reachable);
             Object.Destroy(root);Object.Destroy(host);
         }
+        [UnityTest]
+        public IEnumerator W29R3DebrisDisabledColliderCanRegisterAndRecoversWhenEnabled()
+        {
+            var root=new GameObject("W29 real R3Debris disable window");
+            var demo=root.AddComponent<SafeRouteUnityDemo>();
+            demo.SetHeavy(true);
+            yield return new WaitForFixedUpdate();
+            var detached=GameObject.CreatePrimitive(PrimitiveType.Cube);
+            detached.name="R3Debris - collider muted by original Awake";
+            detached.transform.position=demo.PhysicalCrate.position+
+                new Vector3(8f,0,0);
+            detached.transform.localScale=new Vector3(1.25f,1.6f,1.25f);
+            var body=detached.AddComponent<Rigidbody>();
+            body.isKinematic=true;body.useGravity=false;
+            var shape=detached.GetComponent<Collider>();
+            shape.enabled=false;
+            Physics.SyncTransforms();
+            // R5 rejected this legitimate detachment: W29 retains it.
+            Assert.IsTrue(demo.TryRegisterWorldBlocker(body));
+            Assert.AreEqual(1,demo.RegisteredWorldBlockerCount);
+            Assert.IsTrue(demo.OccupancyUncertain);
+            Assert.IsFalse(demo.CurrentPlan.Reachable);
+            shape.enabled=true;
+            Physics.SyncTransforms();
+            yield return new WaitForFixedUpdate();
+            Assert.IsFalse(demo.OccupancyUncertain);
+            // Now actual geometry at (7,8) blocks Heavy, not just silence.
+            Assert.IsFalse(demo.CurrentPlan.Reachable);
+            Assert.IsTrue(demo.UnregisterWorldBlocker(body));
+            Assert.IsTrue(demo.CurrentPlan.Reachable);
+            Object.Destroy(detached);Object.Destroy(root);
+        }
+        [UnityTest]
+        public IEnumerator W29DormantDebrisDoesNotRebuildMarkersEveryPhysicsStep()
+        {
+            var root=new GameObject("W29 dormant registered body");
+            var demo=root.AddComponent<SafeRouteUnityDemo>();
+            yield return new WaitForFixedUpdate();
+            var debris=GameObject.CreatePrimitive(PrimitiveType.Cube);
+            debris.transform.position=demo.PhysicalCrate.position+
+                new Vector3(8f,0,0);
+            var body=debris.AddComponent<Rigidbody>();
+            body.isKinematic=true;body.useGravity=false;
+            var shape=debris.GetComponent<Collider>();
+            shape.enabled=false;
+            Assert.IsTrue(demo.TryRegisterWorldBlocker(body));
+            int revision=demo.ReplanRevision;
+            yield return new WaitForFixedUpdate();
+            yield return new WaitForFixedUpdate();
+            Assert.AreEqual(revision,demo.ReplanRevision,
+                "temporary R3Debris 0.45s disable must not churn route markers");
+            Assert.IsTrue(demo.OccupancyUncertain);
+            Object.Destroy(debris);Object.Destroy(root);
+        }
+        [UnityTest]
+        public IEnumerator W29ActuallyDestroyedDebrisIsAutoRetiredAndRouteReopens()
+        {
+            var root=new GameObject("W29 destroyed debris after ten seconds");
+            var demo=root.AddComponent<SafeRouteUnityDemo>();
+            demo.SetHeavy(true);
+            yield return new WaitForFixedUpdate();
+            var debris=GameObject.CreatePrimitive(PrimitiveType.Cube);
+            debris.transform.position=demo.PhysicalCrate.position+
+                new Vector3(8f,0,0);
+            debris.transform.localScale=new Vector3(1.25f,1.6f,1.25f);
+            var body=debris.AddComponent<Rigidbody>();
+            body.isKinematic=true;body.useGravity=false;
+            Physics.SyncTransforms();
+            Assert.IsTrue(demo.TryRegisterWorldBlocker(body));
+            Assert.IsFalse(demo.CurrentPlan.Reachable);
+            Object.Destroy(debris);
+            yield return null;
+            yield return new WaitForFixedUpdate();
+            Assert.AreEqual(0,demo.RegisteredWorldBlockerCount);
+            Assert.IsTrue(demo.CurrentPlan.Reachable);
+            Object.Destroy(root);
+        }
+        [UnityTest]
+        public IEnumerator W29InactiveCompoundPrefabChildrenDoNotStrandDebrisRoute()
+        {
+            var host=new GameObject("W29 inactive decorative child");
+            var demo=host.AddComponent<SafeRouteUnityDemo>();
+            yield return new WaitForFixedUpdate();
+            var root=new GameObject("detached module with inactive dormant ornament");
+            root.transform.position=demo.PhysicalCrate.position+
+                new Vector3(12f,0,0);
+            var body=root.AddComponent<Rigidbody>();
+            body.isKinematic=true;body.useGravity=false;
+            var active=GameObject.CreatePrimitive(PrimitiveType.Cube);
+            active.transform.SetParent(root.transform,false);
+            active.transform.localScale=new Vector3(1.25f,1.6f,1.25f);
+            var dormant=GameObject.CreatePrimitive(PrimitiveType.Cube);
+            dormant.transform.SetParent(root.transform,false);
+            dormant.SetActive(false);
+            Physics.SyncTransforms();
+            Assert.IsTrue(demo.TryRegisterWorldBlocker(body));
+            Assert.IsFalse(demo.OccupancyUncertain);
+            Assert.IsTrue(demo.CurrentPlan.Reachable);
+            Object.Destroy(root);Object.Destroy(host);
+        }
+        [UnityTest]
+        public IEnumerator W30RapidRealPhysicsReplansReuseBoundedQueryBuffer()
+        {
+            var host=new GameObject("W30 physical query alloc regression");
+            var demo=host.AddComponent<SafeRouteUnityDemo>();
+            yield return new WaitForFixedUpdate();
+            var field=typeof(SafeRouteUnityDemo).GetField("physicalHits",
+                System.Reflection.BindingFlags.NonPublic|
+                System.Reflection.BindingFlags.Instance);
+            Assert.IsNotNull(field);
+            var original=field.GetValue(demo) as Collider[];
+            Assert.IsNotNull(original);
+            Assert.AreEqual(256,original.Length);
+            for(int i=0;i<12;i++)
+            {
+                demo.Replan();
+                Assert.AreSame(original,field.GetValue(demo),
+                    "rapid debris movement cannot reallocate 256-slot buffer");
+            }
+            Object.Destroy(host);
+        }
     }
 }
