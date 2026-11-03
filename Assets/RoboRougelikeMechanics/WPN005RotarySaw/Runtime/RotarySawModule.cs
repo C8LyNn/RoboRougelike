@@ -132,8 +132,9 @@ namespace RoboRougelike.Weapons.RotarySaw
 
         // Contact weapons have a swept blade DISC, not a projectile muzzle path.
         // Ignore only the saw's own body/colliders; a different owned module blocks the disc.
-        private bool IntersectsOtherOwnedPart()
+        private bool IntersectsOtherOwnedPart(out bool broadphaseOverflow)
         {
+            broadphaseOverflow = false;
             if (bladeCenter == null || overlapBuffer == null || ownerRoot == null) return true;
             Vector3 center = bladeCenter.position;
             float extent = Mathf.Sqrt(configuration.bladeRadius * configuration.bladeRadius +
@@ -141,7 +142,11 @@ namespace RoboRougelike.Weapons.RotarySaw
             // A saturated broadphase cannot prove that an owner component is absent.
             int count = Physics.OverlapSphereNonAlloc(center, extent, overlapBuffer,
                 ~0, QueryTriggerInteraction.Ignore);
-            if (count >= overlapBuffer.Length) return true;
+            if (count >= overlapBuffer.Length)
+            {
+                broadphaseOverflow = true;
+                return true; // Fail closed, but preserve diagnostics.
+            }
             Vector3 axle = CurrentAxle(bladeCenter);
             for (int i = 0; i < count; i++)
             {
@@ -177,7 +182,14 @@ namespace RoboRougelike.Weapons.RotarySaw
             }
             // Check at every physics step, AFTER the current owner transform/rotation has moved.
             // When blocked, neither energy nor new thermal heat may be consumed.
-            OwnGeometryBlockedLastTick = ready && motorRequested && IntersectsOtherOwnedPart();
+            bool ownBroadphaseOverflow = false;
+            OwnGeometryBlockedLastTick = ready && motorRequested && IntersectsOtherOwnedPart(out ownBroadphaseOverflow);
+            if (ownBroadphaseOverflow) OverflowedLastTick = true;
+            // The blade must not coast through an owned part which ENTERS the disc
+            // after full spin-up. An ordinary motor.Tick(false) only decelerates RPM
+            // and can leave a visibly rotating steel disc inside the vehicle.
+            // Stopping does not reset heat/jam and keeps the request for recovery.
+            if (OwnGeometryBlockedLastTick) motor.StopImmediately();
             bool requestUnblocked = motorRequested && !OwnGeometryBlockedLastTick;
             bool energyAvailable = true;
             if (ready && requestUnblocked && motor.JamRemaining <= 0f && !motor.Overheated &&

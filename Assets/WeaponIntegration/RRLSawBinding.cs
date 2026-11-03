@@ -18,6 +18,10 @@ namespace RoboRougelike.WeaponIntegration
         {
             Device=GetComponent<RRLDeviceBinding>();if(Device==null)Device=gameObject.AddComponent<RRLDeviceBinding>();Device.Bind(state,owner);
             blade=center;tank=owner.GetComponent<P12PipelineSafeTankController>();damageScale=damageMultiplier;
+            // Enemy-only geometric clearance. Preserve the actual player's garage placement;
+            // an illegally mounted player saw must remain physically blocked.
+            if(owner.GetComponent<P12PipelineSafeEnemyTurret>()!=null)
+                PlaceEnemySawBeyondHull(owner,center);
             Module=gameObject.AddComponent<RotarySawModule>();Module.SetAutomaticSimulation(false);
             Module.Bind(Device.Body,owner,center);Module.SetDamageSink(this);
             foreach(var collider in owner.GetComponentsInChildren<Collider>())Module.RegisterOwnerCollider(collider);
@@ -25,7 +29,39 @@ namespace RoboRougelike.WeaponIntegration
             rotor=RoboRougelike.R4_1.R41PartGeometry.SawRotor(center,GetComponent<Renderer>().sharedMaterial);
             Device.Damageable.Died+=Stop;Module.SetOperational(Device.Available);
         }
-        public void SetMotorRequested(bool value){requested=value;if(!value&&Module!=null)Module.SetMotorRequested(false);}
+        // Runtime enemy prefabs previously mount the saw in the middle of their own armored hull.
+        // Keep the disc outside ALL existing chassis colliders across yaw changes, rather than
+        // exempting friendly armor from the module's real collision guard. No health/ID edits.
+        private static void PlaceEnemySawBeyondHull(Transform owner,Transform center)
+        {
+            if(center==null || center.parent==null)return;
+            // Existing scene 1.unity has Enemy_Muzzle directly under Enemy_Yaw;
+            // accept both direct and pitch-mediated yaw hierarchies.
+            Transform yaw=center.parent;
+            if(yaw!=null && yaw.name!="Enemy_Yaw")yaw=yaw.parent;
+            if(yaw==null || yaw.name!="Enemy_Yaw")return;
+            Vector3 forward=Vector3.ProjectOnPlane(yaw.forward,Vector3.up);
+            if(forward.sqrMagnitude<.00001f)return;
+            forward.Normalize();
+            float furthestRadius=0f;
+            foreach(var collider in owner.GetComponentsInChildren<Collider>(true))
+            {
+                if(collider==null||!collider.enabled||!collider.gameObject.activeInHierarchy||
+                   collider.transform.IsChildOf(center))continue;
+                Bounds bounds=collider.bounds;
+                Vector3 delta=bounds.center-yaw.position;
+                float radial=new Vector2(delta.x,delta.z).magnitude+
+                             new Vector2(bounds.extents.x,bounds.extents.z).magnitude;
+                furthestRadius=Mathf.Max(furthestRadius,radial);
+            }
+            // Signed projection is required: reversed/pitch-converted muzzles can start BEHIND yaw.
+            // Using radial magnitude would count a rear-facing offset as forward clearance.
+            float current=Vector3.Dot(center.position-yaw.position,forward);
+            float radius=new RotarySawConfiguration().bladeRadius;
+            float extra=Mathf.Max(0f,furthestRadius+radius+.06f-current);
+            if(extra>0f)center.position+=forward*extra;
+        }
+                public void SetMotorRequested(bool value){requested=value;if(!value&&Module!=null)Module.SetMotorRequested(false);}
         void FixedUpdate(){bool active=Device.Available;Module.SetOperational(active);Module.SetMotorRequested(active&&requested);Module.Advance(Time.fixedDeltaTime);CaptureState();}
         void LateUpdate(){if(rotor!=null)rotor.Rotate(Vector3.up,Module.Motor.Rpm*6*Time.deltaTime,Space.Self);}
         public void CaptureState(){if(Module==null||Device?.State==null)return;State.ThermalHeat=Module.Motor.Heat;State.ThermalLocked=Module.Motor.Overheated;State.DeviceReadyAt=Time.time+Module.Motor.JamRemaining;}

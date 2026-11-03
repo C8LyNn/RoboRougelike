@@ -26,6 +26,10 @@ public class RRLW6SawPhysicalTests
         var run=R1RunController.Instance;var palette=run.GetComponent<R3VisualPalette>();
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
         var state=model.Parts.First(p=>p.Kind==R3PartKind.Gun);state.Weapon=kind;
+        // The old central saw intersects four real hull armor cells. Move the
+        // original part to a connected exterior cell; never weaken self-contact.
+        state.Cell=new Vector3Int(0,1,4);
+        Assert.That(R3VehicleModel.Connected(model.Parts),Is.True,"Saw fixture must use a real connected exterior mount");
         var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(100,4,100),Quaternion.identity);
         // A static cutting target needs a supported rig; gravity must remain enabled.
         var platform=GameObject.CreatePrimitive(PrimitiveType.Cube);platform.transform.position=new Vector3(100,2.85f,100);platform.transform.localScale=new Vector3(12,1,12);
@@ -61,14 +65,100 @@ public class RRLW6SawPhysicalTests
         run.Encounter.SetCombatActive(false);yield return null;
         var enemy=run.Encounter.Enemies.FirstOrDefault(e=>e.GetComponentInChildren<RotarySawModule>()!=null);
         Assert.That(enemy,Is.Not.Null,"Saw AI must be reachable in actual arena roster");
-        var body=enemy.GetComponent<Rigidbody>();run.Player.GetComponent<Rigidbody>().position=new Vector3(100,4,100);body.position=new Vector3(100,4,108);
-        // This case tests melee approach/cutting, with the initial aim already facing the target.
-        enemy.GetComponentsInChildren<Transform>().Single(t=>t.name=="Enemy_Yaw").rotation=Quaternion.LookRotation(Vector3.back);
-        enemy.SetCombatActive(true);Physics.SyncTransforms();float distance=Vector3.Distance(body.position,run.Player.transform.position);
+        var body=enemy.GetComponent<Rigidbody>();run.Player.GetComponent<Rigidbody>().position=new Vector3(100,4,100);
+        var yaw=enemy.GetComponentsInChildren<Transform>().Single(t=>t.name=="Enemy_Yaw");
+        var saw=enemy.GetComponentInChildren<RotarySawModule>();
+        // W34: distant AI must NOT waste its heat budget spinning a melee rotor
+        // while its genuine R3 vehicle crosses the arena to reach the player.
+        body.position=new Vector3(100,4,132);
+        yaw.rotation=Quaternion.LookRotation(Vector3.back);
+        enemy.SetCombatActive(true);Physics.SyncTransforms();
+        float farEnd=Time.time+.3f;while(Time.time<farEnd)yield return null;
+        Assert.IsFalse(saw.IsMotorRequested,"Distant Wasteland saw must not pre-heat at 30m");
+        Assert.That(saw.Motor.Rpm,Is.EqualTo(0f).Within(.001f));
+        Assert.That(saw.Motor.Heat,Is.EqualTo(0f).Within(.001f));
+
+        // Resume the ORIGINAL real melee approach test at 8m, with the original
+        // same enemy, physical car, real target collider and motor physics.
+        enemy.SetCombatActive(false);body.position=new Vector3(100,4,108);
+        yaw.rotation=Quaternion.LookRotation(Vector3.back);
+        enemy.SetCombatActive(true);Physics.SyncTransforms();
+        float distance=Vector3.Distance(body.position,run.Player.transform.position);
         float end=Time.time+1;while(Time.time<end)yield return null;
         Assert.That(Vector3.Distance(body.position,run.Player.transform.position),Is.LessThan(distance-1));
-        Assert.That(enemy.GetComponentInChildren<RotarySawModule>().Motor.Rpm,Is.GreaterThan(0));
+        Assert.That(saw.Motor.Rpm,Is.GreaterThan(0),
+            "After closing the real physical gap the existing saw must start spinning");
     }
+    // W30: use the existing Wasteland enemy prefab and real owned colliders,
+    // not a synthetic cube or an exemption from the physical saw safety gate.
+    [UnityTest] public IEnumerator WastelandEnemySawPhysicalDiscClearsOwnHullAcrossYaw()
+    {
+        var run=R1RunController.Instance;
+        var template=(P12PipelineSafeEnemyTurret)typeof(R1RunController)
+            .GetField("enemyTemplate",System.Reflection.BindingFlags.Instance|
+                System.Reflection.BindingFlags.NonPublic).GetValue(run);
+        run.Encounter.Spawn(template,run.Player.transform,
+            new R1EncounterDefinition{EnemyCount=3,Arena=RoboRougelike.R5.R5ArenaKind.Wasteland},
+            run.Salvage,"w30-saw-yaw-fixture");
+        run.Encounter.SetCombatActive(false);
+        yield return null;
+
+        var enemy=run.Encounter.Enemies.FirstOrDefault(e=>e.GetComponentInChildren<RotarySawModule>()!=null);
+        Assert.That(enemy,Is.Not.Null,"Wasteland actual enemy must have a saw");
+        var module=enemy.GetComponentInChildren<RotarySawModule>();
+        var yaw=enemy.GetComponentsInChildren<Transform>().Single(t=>t.name=="Enemy_Yaw");
+        var muzzle=enemy.GetComponentsInChildren<Transform>().Single(t=>t.name=="Enemy_Muzzle");
+        Assert.That(muzzle.parent,Is.EqualTo(yaw),
+            "Actual serialized Enemy_Muzzle must be bound directly to Enemy_Yaw");
+        var ownerColliders=enemy.GetComponentsInChildren<Collider>();
+        Assert.That(ownerColliders.Length,Is.GreaterThan(0));
+
+        foreach(float degrees in new[]{0f,90f,180f,270f})
+        {
+            yaw.localRotation=Quaternion.Euler(0f,degrees,0f);
+            Physics.SyncTransforms();
+            foreach(var collider in ownerColliders)
+            {
+                if(collider==null||!collider.enabled||!collider.gameObject.activeInHierarchy||
+                   collider.transform.IsChildOf(muzzle))continue;
+                var center=muzzle.position;
+                var closest=collider.ClosestPoint(center);
+                bool intersects=collider.bounds.Contains(center)||
+                    RotarySawContactMath.IsOnCuttingDisc(closest-center,muzzle.right,
+                        module.ContactRadius,.14f,.06f);
+                Assert.IsFalse(intersects,
+                    $"Saw disc overlaps own collider {collider.name} at yaw {degrees}");
+            }
+        }
+
+        // A reversed imported muzzle may be BEHIND the real yaw pivot. The signed
+        // forward projection must move it wholly beyond the existing hull ring;
+        // a radial magnitude would mistake negative Z for positive clearance.
+        yaw.localRotation=Quaternion.identity;
+        muzzle.position=yaw.position-yaw.forward*.4f;
+        Physics.SyncTransforms();
+        float hullRadialBound=0f;
+        foreach(var collider in ownerColliders)
+        {
+            if(collider==null||!collider.enabled||!collider.gameObject.activeInHierarchy||
+               collider.transform.IsChildOf(muzzle))continue;
+            var bounds=collider.bounds;
+            var delta=bounds.center-yaw.position;
+            float radial=new Vector2(delta.x,delta.z).magnitude+
+                         new Vector2(bounds.extents.x,bounds.extents.z).magnitude;
+            hullRadialBound=Mathf.Max(hullRadialBound,radial);
+        }
+        var correction=typeof(RoboRougelike.WeaponIntegration.RRLSawBinding)
+            .GetMethod("PlaceEnemySawBeyondHull",
+                System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Static);
+        Assert.That(correction,Is.Not.Null,"Original enemy saw clearance helper must remain wired");
+        correction.Invoke(null,new object[]{enemy.transform,muzzle});
+        float forwardClearance=Vector3.Dot(muzzle.position-yaw.position,yaw.forward);
+        Assert.That(forwardClearance,Is.GreaterThanOrEqualTo(
+            hullRadialBound+module.ContactRadius+.059f),
+            "Reversed muzzle must not be mistaken for already-clear forward reach");
+    }
+
     [UnityTest] public IEnumerator GarageSawPreviewShowsTheActualWorldSizedCuttingDisc()
     {
         var preview=GameObject.CreatePrimitive(PrimitiveType.Cube);preview.transform.position=new Vector3(100,4,100);preview.transform.localScale=Vector3.one*.52f;

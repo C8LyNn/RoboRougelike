@@ -163,7 +163,11 @@ namespace RogueMachine.P12PipelineSafe
             var state=new RoboRougelike.R3.R3PartState(default,RoboRougelike.R3.R3PartKind.Gun)
                 {Id=EquipmentInstanceId("gun"),Weapon=WeaponKind,Source=name+" / uzbrojenie"};
             packageSaw=weaponBlock.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLSawBinding>();
-            packageSaw.Bind(state,transform,muzzle,ds);packageWeaponState=state;preferredDistance=1.6f;moveSpeed=Mathf.Max(moveSpeed,3.5f);strafeStrength=.1f;return true;
+            packageSaw.Bind(state,transform,muzzle,ds);packageWeaponState=state;
+            // The physically cleared saw extends beyond the armored hull. Approach until
+            // the blade (not the vehicle center) can reach the target without penetration.
+            preferredDistance=Mathf.Max(1.6f,Vector3.Distance(transform.position,muzzle.position)+.35f);
+            moveSpeed=Mathf.Max(moveSpeed,3.5f);strafeStrength=.1f;return true;
         }
         private R4SalvageLedger salvage;
         private string salvageId;
@@ -518,7 +522,18 @@ namespace RogueMachine.P12PipelineSafe
                 aimToleranceDegrees)
                 return;
 
-            if(packageSaw!=null){packageSaw.SetMotorRequested(!FriendlyInLine(aimPoint));return;}
+            if(packageSaw!=null)
+            {
+                // A contact disc must not spin and overheat while the enemy is still
+                // crossing the arena. Use the REAL target collider surface instead
+                // of center-to-center range, allowing ~1.5m for motor spin-up.
+                // The existing line-of-fire team guard remains authoritative.
+                float preSpinRange=packageSaw.Module.ContactRadius+1.5f;
+                bool inSawApproach=Vector3.Distance(muzzle.position,
+                    targetCollider.ClosestPoint(muzzle.position))<=preSpinRange;
+                packageSaw.SetMotorRequested(inSawApproach&&!FriendlyInLine(aimPoint));
+                return;
+            }
             if(packageBeam!=null)
             {packageBeam.SetTriggerHeld(!FriendlyInLine(aimPoint));return;}
             if(packageEmp!=null&&distance>8.5f)return;
