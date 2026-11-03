@@ -1,0 +1,31 @@
+name: B01-23 W31 canonical garage preview source guard (NOT UNITY)
+on:
+  push:
+    branches:
+      - b01-23/p17w31-r3-garage-saw-preview-gc-r1
+permissions:
+  contents: read
+jobs:
+  original-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2022, ubuntu-24.04]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify real R3 source, source-only mutant negatives and two-file regression
+        shell: bash
+        run: |
+          python Tools/B01/B0123/W31/verify_source.py > w31-r3-source.json
+          python -m json.tool w31-r3-source.json
+      - name: Upload source-only evidence (not a Windows Player or NUnit)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: B0123-W31-source-${{ matrix.os }}-${{ github.run_id }}
+          path: w31-r3-source.json
+          if-no-files-found: warn

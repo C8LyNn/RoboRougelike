@@ -21,6 +21,9 @@ namespace RoboRougelike.R3
         const int FunctionalQueryCapacity=256;
         readonly Collider[] functionalOverlap=new Collider[FunctionalQueryCapacity];
         readonly RaycastHit[] functionalCast=new RaycastHit[FunctionalQueryCapacity];
+        // R3 currently mounts WPN005 with its standard shared disc dimensions.
+        // Avoid re-allocating this read-only-used configuration for every ghost hover.
+        readonly RotarySawConfiguration defaultSawClearance=new RotarySawConfiguration();
         GameObject sockets;
 
         public static void Bind(R3VehicleAssembly actual,R3VehicleModel canonical)
@@ -117,7 +120,7 @@ namespace RoboRougelike.R3
             if(muzzle==null)return "Brak fizycznie zdefiniowanego wylotu broni.";
             if(candidate.Weapon==R4WeaponKind.RotarySaw)
             {
-                var config=new RotarySawConfiguration();
+                var config=defaultSawClearance;
                 float extent=Mathf.Sqrt(config.bladeRadius*config.bladeRadius+
                     config.bladeHalfThickness*config.bladeHalfThickness);
                 int count=Physics.OverlapSphereNonAlloc(muzzle.position,extent,
@@ -182,7 +185,7 @@ namespace RoboRougelike.R3
 
                 if(gun.Weapon==R4WeaponKind.RotarySaw)
                 {
-                    var config=new RotarySawConfiguration();
+                    var config=defaultSawClearance;
                     Vector3 center=gun.Muzzle.position;
                     float extent=Mathf.Sqrt(config.bladeRadius*config.bladeRadius+
                         config.bladeHalfThickness*config.bladeHalfThickness);
@@ -215,8 +218,21 @@ namespace RoboRougelike.R3
                 var segmentBounds=new Bounds((start+end)*.5f,
                     new Vector3(Mathf.Abs(delta.x),Mathf.Abs(delta.y),
                         Mathf.Abs(delta.z))+Vector3.one*(2f*radius));
-                if(!proposed.Any(c=>c!=null&&c.enabled&&
-                    c.bounds.Intersects(segmentBounds)))continue;
+                // Repeated garage ghost refreshes must not allocate a LINQ
+                // closure per previously-mounted directional gun.
+                bool candidateNearBarrel=false;
+                for(int candidateIndex=0;candidateIndex<proposed.Length;candidateIndex++)
+                {
+                    var collider=proposed[candidateIndex];
+                    if(collider!=null&&collider.enabled&&
+                       collider.gameObject.activeInHierarchy&&
+                       collider.bounds.Intersects(segmentBounds))
+                    {
+                        candidateNearBarrel=true;
+                        break;
+                    }
+                }
+                if(!candidateNearBarrel)continue;
                 // Same bounded PhysX scratch buffer and saturation refusal as
                 // #877. No allocating OverlapSphereAll/SphereCastAll fallback.
                 int count=Physics.OverlapCapsuleNonAlloc(start,end,radius,
