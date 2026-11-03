@@ -90,6 +90,10 @@ namespace RoboRougelike.R3
                 if(result!=BuildPlacementResult.Valid)return Explain(result);
                 // Same actual gameplay installation gate is called by preview AND Buy/Mount.
                 // Do not authorize a near-barrel or rotating saw envelope that enters own armor.
+                // Selected B01-23 #887: reject the reverse case before any payment:
+                // new armor must not disable an already mounted functional gun.
+                var mountedIssue=ExistingMountedWeaponPlacementIssue(probe,candidateColliders);
+                if(mountedIssue!=null)return mountedIssue;
                 return FunctionalWeaponPlacementIssue(candidate,probe);
             }
             finally
@@ -165,6 +169,72 @@ namespace RoboRougelike.R3
             }
             return null;
         }
+        string ExistingMountedWeaponPlacementIssue(GameObject probe,Collider[] proposed,HashSet<string> ignoredOwnerIds=null)
+        {
+            if(proposed==null||proposed.Length==0)
+                return "Brak fizycznego collidera proponowanej części.";
+            foreach(var gun in assembly.Parts)
+            {
+                if(gun==null||gun.Kind!=R3PartKind.Gun||!gun.Operational||
+                   !gun.gameObject.activeInHierarchy||!gun.transform.IsChildOf(transform)||
+                   gun.Muzzle==null||gun.Weapon==R4WeaponKind.EmpEmitter)continue;
+                if(ignoredOwnerIds!=null&&ignoredOwnerIds.Contains(gun.Id))continue;
+
+                if(gun.Weapon==R4WeaponKind.RotarySaw)
+                {
+                    var config=new RotarySawConfiguration();
+                    Vector3 center=gun.Muzzle.position;
+                    float extent=Mathf.Sqrt(config.bladeRadius*config.bladeRadius+
+                        config.bladeHalfThickness*config.bladeHalfThickness);
+                    // Candidate-only conservative bounds prefilter prevents a
+                    // global query for each gun on large real vehicles. Real
+                    // Collider.ClosestPoint then evaluates the original disc test.
+                    foreach(var candidateCollider in proposed)
+                    {
+                        if(candidateCollider==null||!candidateCollider.enabled||
+                           !candidateCollider.gameObject.activeInHierarchy||
+                           candidateCollider.bounds.SqrDistance(center)>extent*extent)continue;
+                        if(candidateCollider.bounds.Contains(center)||
+                           RotarySawContactMath.IsOnCuttingDisc(
+                               candidateCollider.ClosestPoint(center)-center,
+                               gun.Muzzle.right,config.bladeRadius,
+                               config.bladeHalfThickness,config.hubDeadZone))
+                            return "Fioletowa strefa: nowa część blokuje tarczę zamontowanej piły.";
+                    }
+                    continue;
+                }
+
+                if(gun.GunPivot==null)
+                    return "Nie można zweryfikować osi zamontowanej broni.";
+                Vector3 start=gun.GunPivot.position;
+                Vector3 end=gun.Muzzle.position;
+                Vector3 delta=end-start;
+                if(delta.sqrMagnitude<.00001f)
+                    return "Nieprawidłowa oś zamontowanej lufy.";
+                const float radius=.035f;
+                var segmentBounds=new Bounds((start+end)*.5f,
+                    new Vector3(Mathf.Abs(delta.x),Mathf.Abs(delta.y),
+                        Mathf.Abs(delta.z))+Vector3.one*(2f*radius));
+                if(!proposed.Any(c=>c!=null&&c.enabled&&
+                    c.bounds.Intersects(segmentBounds)))continue;
+                // Same bounded PhysX scratch buffer and saturation refusal as
+                // #877. No allocating OverlapSphereAll/SphereCastAll fallback.
+                int count=Physics.OverlapCapsuleNonAlloc(start,end,radius,
+                    functionalOverlap,~0,QueryTriggerInteraction.Ignore);
+                if(count>=FunctionalQueryCapacity)
+                    return "Fioletowa strefa: zbyt wiele kolizji przy zamontowanej lufie — montaż odrzucony.";
+                for(int i=0;i<count;i++)
+                {
+                    var hit=functionalOverlap[i];
+                    if(hit!=null&&hit.enabled&&
+                       hit.gameObject.activeInHierarchy&&
+                       hit.transform.IsChildOf(probe.transform))
+                        return "Fioletowa strefa: nowa część blokuje zamontowaną lufę.";
+                }
+            }
+            return null;
+        }
+
         static string Explain(BuildPlacementResult result)=>result==BuildPlacementResult.ColliderPenetration?
             "Fizyczny obrys części przenika istniejący collider.":result==BuildPlacementResult.NoCompatibleSocket?
             "Brak zgodnego, połączonego z rdzeniem mocowania. Koło i broń nie są podporą konstrukcji.":
