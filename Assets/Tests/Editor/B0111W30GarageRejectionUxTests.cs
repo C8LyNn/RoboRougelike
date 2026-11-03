@@ -219,8 +219,20 @@ public sealed class B0111W30GarageRejectionUxTests
                 model.Parts.Select(p=>p.Id).OrderBy(x=>x).ToArray());
             if(repaired)
             {
-                Assert.That(wheel.Health,Is.EqualTo(1f));
-                Assert.That(view.Message,Does.Contain("Naprawiono"));
+                if(wheel.Health<=0f)
+                {
+                    // An accepted V7 payment is not necessarily a completed
+                    // rebuild: 0HP booking can wait for the next real win.
+                    // This is an observed-HP UX assertion only; #897 must
+                    // separately prove actual pending ledger + trusted WinId.
+                    Assert.That(view.Message,Does.Contain("część nadal ma 0 HP"));
+                    Assert.That(view.Message,Does.Not.Contain("Naprawiono"));
+                }
+                else
+                {
+                    Assert.That(wheel.Health,Is.EqualTo(1f));
+                    Assert.That(view.Message,Does.Contain("Naprawiono"));
+                }
             }
             else
             {
