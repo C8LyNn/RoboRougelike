@@ -7,6 +7,7 @@ using UnityEngine.TestTools;
 using RoboRougelike.R3;
 using RoboRougelike.R5;
 using B01.MapJumpPad001;
+using RoboRougelike.Mechanics.HAZ001;
 
 public sealed class B0125W32RealArenaChallengeTests
 {
@@ -54,6 +55,28 @@ public sealed class B0125W32RealArenaChallengeTests
             Assert.That(collider.bounds.Intersects(envelope), Is.False,
                 context + ": real solid cover intersects factory-grid envelope: " +
                 collider.name + " at " + collider.bounds);
+        }
+        // W34: the R5 hazard has no solid wall collider. A geometrically
+        // unobstructed lane can still be a damage softlock. Probe ORIGINAL
+        // TelegraphedHazardZone components placed by R5Arena.Build and
+        // their actual configured radius, rather than an invented trigger.
+        var hazards = arena.Layout.GetComponentsInChildren<TelegraphedHazardZone>(true);
+        Assert.That(hazards.Length, Is.EqualTo(2),
+            context + ": expected two live R5 arena hazard zones");
+        foreach (var hazard in hazards)
+        {
+            Assert.That(hazard.Radius, Is.GreaterThan(0f));
+            Vector3 origin = hazard.transform.position;
+            float dx = Mathf.Max(0f, Mathf.Abs(origin.x - envelope.center.x) -
+                envelope.extents.x);
+            float dz = Mathf.Max(0f, Mathf.Abs(origin.z - envelope.center.z) -
+                envelope.extents.z);
+            const float hazardSafetyMargin = .05f;
+            Assert.That(dx * dx + dz * dz,
+                Is.GreaterThan((hazard.Radius + hazardSafetyMargin) *
+                    (hazard.Radius + hazardSafetyMargin)),
+                context + ": R5 telegraphed damage hazard intersects the " +
+                "factory vehicle's conservative XZ envelope: " + hazard.name);
         }
     }
 
