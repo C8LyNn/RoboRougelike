@@ -1,0 +1,14 @@
+{
+  "package": "B01-62-W30-SINGLE-WRITER-V7-ADMISSION-001",
+  "base_858": "e41c17d9e79317dbe8d4a16cee54baf301f8ee37",
+  "source_826": "99fb08619c78b3834bb4c0450499babf991f218a",
+  "admission_855": "c9c19665a4f9385e6479f7151097deb797026ade",
+  "writer_count": 1,
+  "format_magic": "B0162G02",
+  "old_slots_auto_migrated": false,
+  "source_ci": "PENDING",
+  "composite_g0": "PENDING_NEW_SHA",
+  "unity_native_g1": "NOT_RUN",
+  "integrated": false,
+  "released": false
+}

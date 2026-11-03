@@ -14,6 +14,7 @@ using B01.CanonicalWorldApi001;
 using B01.DetachedSaveContract001;
 using B01.WholeGameEconomy003;
 using RoboRougelike.B01.Economy.ApprovedV7;
+using RoboRougelike.B01.Economy.AdmissionW29;
 
 namespace B01.CanonicalWholeGameAdapter003
 {
@@ -110,7 +111,10 @@ namespace B01.CanonicalWholeGameAdapter003
             =>UnitySha256.LowerHex(UnitySha256.Hash(data));
         private bool ValidatePair(byte[] world,ApprovedEconomySnapshotV7 economy)
         {
-            if(world==null||economy==null||!ApprovedEconomyPolicyV7.Valid(economy)||
+            if(world==null||economy==null||
+               !EconomyV7AdmissionW29.TryAdmit(economy,
+                 new CanonicalEconomyIdentityW29(slotId.ToString("N"),
+                   runId.ToString(CultureInfo.InvariantCulture),economy.Generation),out _)||
                !ColdRestore.TryStage(world,out ColdRestore? staged)||staged==null||
                staged.Snapshot.RunId!=runId||
                economy.OwnerId!=slotId.ToString("N")||
