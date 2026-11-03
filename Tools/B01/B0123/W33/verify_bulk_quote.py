@@ -41,7 +41,7 @@ assert original.replace(old_getter,getter).replace("\r\n","\n")==source.replace(
 test_add_start="    // W33: bulk price preview MUST exercise"
 test_add_end="    [Test] public void ModelCanRemoveLastGunAndEveryWheelButCannotDeploy()"
 i=tests.index(test_add_start);j=tests.index(test_add_end,i)
-assert tests[:i]+tests[j:]==old_tests,"original test suite changed outside W33 methods"
+assert (tests[:i]+tests[j:]).rstrip("\r\n")==old_tests.rstrip("\r\n"),"original test suite changed outside W33 methods"
 assert tests.count("BulkQuotePhysicalRejectionDoesNotInventAvailableRepairCost")==1
 assert tests.count("BulkQuoteRechecksCumulativeRealOwnedRestorationBatch")==1
 assert tests.count("BulkQuoteKeepsPartialHpRepairsImmediateAndOutsideRestoreGate")==1
