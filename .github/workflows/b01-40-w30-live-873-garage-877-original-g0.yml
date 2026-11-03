@@ -32,11 +32,12 @@ jobs:
           python Tools/B01/B01-40/P17W30LiveGarageG0/audit.py --out w30-live-garage-g0 | tee w30-live-garage-stdout.log
           cp w30-live-garage-stdout.log w30-live-garage-g0/stdout.log
           grep -q 'B0140_W30_EXACT_LIVE_873_SOURCE_SCOPE_37_PASS' w30-live-garage-stdout.log
-          grep -q 'B0140_W30_EXACT_GARAGE_877_CHILD_ONLY_3_PASS' w30-live-garage-stdout.log
+          grep -q 'B0140_W30_EXACT_GARAGE_877_CHILD_ONLY_6_PASS' w30-live-garage-stdout.log
           grep -q 'B0140_W30_ORIGINAL_810_839_866_BYTES_AND_LIVE_R5_PASS' w30-live-garage-stdout.log
           grep -q 'B0140_W30_CANONICAL_GARAGE_BUY_MOUNT_PREVIEW_SOURCE_GUARD_PASS' w30-live-garage-stdout.log
           grep -q 'B0140_W30_SAW_861_REVIEW_ONLY_NATIVE_UNITY_G1_NOT_RUN' w30-live-garage-stdout.log
           grep -q 'B0140_W30_SAFE_SCRATCH_STAGE_AND_HOSTILE_NEGATIVES_PASS' w30-live-garage-stdout.log
+          grep -q 'B0140_W30_BOUNDED_NONALLOC_PHYSICS_SOURCE_AND_SAW_861_W30_TESTS_PRESENT' w30-live-garage-stdout.log
           grep -q 'B0140_W30_SOURCE_ONLY_NATIVE_UNITY_AND_WINDOWS_PLAYER_NOT_RUN' w30-live-garage-stdout.log
       - uses: actions/upload-artifact@v4
         if: always()

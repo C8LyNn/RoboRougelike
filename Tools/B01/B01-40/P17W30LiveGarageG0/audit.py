@@ -8,12 +8,12 @@ from pathlib import Path
 
 BASE="ed8cf4bcc131688b9a93968a89683d2496586683" # published #824
 LIVE="d537b7310979b91df27a08b14d0f1c74d0889089" # PR #873
-GARAGE="20273c3580079dfb299c30c85a67e76f8d893e7f" # child #877
+GARAGE="9634b1e5b4576aca4304d1d5b4c3d01446737650" # child #877
 PAD="05db0ddf0a48da592d924e68b7658eea6bba764e" # producer #810
 EMP="fea000fe0a706df2b52b6f295bdb3135ba1f9384" # producer #839
 OVERLAY="3b3f402ca2adcc9525d96388cca17f0b5e1ae06d" # selected garage #866
 SAW_BASE="887fd18bf0a518ee24776c660f5efa6e3a0491d8" # #828
-SAW_FIX="8321131aac3e175255a357cf5a30b7716ef6e8fd" # #861
+SAW_FIX="de817749393f5a9a6691f0856dde1b3da1b52068" # #861
 PAD_DIR="Assets/B01Packages/MapJumpPad001"
 EMP_PATHS=(
  "Assets/RoboRougelikeMechanics/WPN006EMP/Runtime/EmpEmitter.cs",
@@ -34,6 +34,7 @@ SAW_PATHS=(
  "Assets/RoboRougelikeMechanics/WPN005RotarySaw/Runtime/RotarySawModule.cs",
  "Assets/Tests/Editor/RRLW6SawTests.cs",
  "Assets/WeaponIntegration/RRLSawBinding.cs",
+ "Assets/RoboRougelikeMechanics/WPN005RotarySaw/Tests/PlayMode/RotarySawPhysicsTests.cs",
  "Docs/W29/B01_24_SAW_RECEIVER_R1.md")
 def deny(ok,msg):
  if not ok:raise AssertionError("B0140_W30_HOLD:"+msg)
@@ -70,7 +71,7 @@ def validation_guard():
       main.index("finally"),"WEAPON_HARDZONE_NOT_ON_SAME_AUTHORITY_AFTER_PHYSICS")
  deny(symbol_occurs(g,"SetInstallationGate(candidate=>gate","SetRestorationGate",
                        "Physics.OverlapBox","FunctionalWeaponPlacementIssue",
-                       "Physics.OverlapSphere","Physics.SphereCastAll",
+                       "Physics.OverlapSphereNonAlloc","Physics.SphereCastNonAlloc",
                        "RotarySawContactMath.IsOnCuttingDisc",
                        "other.ClosestPoint(muzzle.position)","!other.transform.IsChildOf(probe.transform)",
                        "other.transform.IsChildOf(transform)",
@@ -78,8 +79,19 @@ def validation_guard():
  deny(g.index("if(candidate.Weapon==R4WeaponKind.EmpEmitter)return null;") <
       g.index("if(candidate.Weapon==R4WeaponKind.RotarySaw)"),
       "EMP_WRONGLY_CAST_AS_PROJECTILE")
- deny(g.index("Physics.OverlapSphere") < g.index("Physics.SphereCastAll"),
+ deny(g.index("Physics.OverlapSphereNonAlloc") < g.index("Physics.SphereCastNonAlloc"),
       "DISC_AND_LINEAR_PHYSICS_BRANCH_REFACTORED")
+ deny(symbol_occurs(g,"const int FunctionalQueryCapacity=256;",
+      "new Collider[FunctionalQueryCapacity]",
+      "new RaycastHit[FunctionalQueryCapacity]",
+      "if(count>=functionalOverlap.Length)",
+      "if(nearCount>=functionalOverlap.Length)",
+      "if(castCount>=functionalCast.Length)"),
+      "BOUNDED_NONALLOC_QUERY_OR_SATURATION_FAIL_CLOSED_MISSING")
+ for current,mutant in (("if(count>=functionalOverlap.Length)","if(count>functionalOverlap.Length)"),
+                        ("if(castCount>=functionalCast.Length)","if(castCount>functionalCast.Length)")):
+  altered=g.replace(current,mutant,1)
+  deny(altered!=g and current not in altered,"NEGATIVE_MUTATION_NOT_EFFECTIVE")
  deny(symbol_occurs(g,"probe.SetActive(false)","DestroyImmediate(probe)"),
       "REJECTED_PROBE_CLEANUP_MISSING")
  model=raw(GARAGE,"Assets/R3/R3VehicleModel.cs").decode("utf-8")
@@ -143,6 +155,10 @@ def saw_hold():
       "SAW_OWNER_OVERFLOW_GUARD_MISSING")
  deny("Enemy_Muzzle" in binding and "Enemy_Yaw" in binding,
       "SAW_ENEMY_SERIALIZED_PARENT_PATH_NOT_MAPPED")
+ physics=raw(SAW_FIX,SAW_PATHS[4]).decode()
+ deny("OwnerSafetyOverflowPreservesEnergyHeatAndResumesDamage" in physics
+      and "WastelandEnemySawPhysicalDiscClearsOwnHullAcrossYaw" in tests,
+      "SAW_W30_AUTHORED_NATIVE_REGRESSIONS_MISSING")
  deny("new Vector3Int(0,1,4)" in tests,"SAW_PLAYER_LEGAL_EXTERNAL_FIXTURE_MISSING")
  return {"saw_candidate_pr":"#861",
          "sha":SAW_FIX,
@@ -224,10 +240,13 @@ def main():
       all(x[0] in ("A","M") for x in live_delta),
       "873_LIVE_GAME_CHANGE_COUNT_OR_DELETIONS")
  garage_delta=status(LIVE,GARAGE)
- deny(garage_delta=={("M",CANONICAL),("M",GARAGE_TEST),("A",GARAGE_DOC)},
-      "877_3_GAME_PATHS_NOT_EXCLUSIVE")
+ deny(garage_delta=={("M",CANONICAL),("M",GARAGE_TEST),("A",GARAGE_DOC),
+  ("A",".github/workflows/b01-w30-garage-source.yml"),
+  ("A","Docs/W30/GARAGE_BOUNDED_PHYSICS_RECEIPT.md"),
+  ("A","Tools/B01/Codex/W30/verify_garage.py")},
+      "877_6_GAME_PATHS_NOT_EXCLUSIVE")
  combined=set(p for _,p in live_delta|garage_delta)
- deny(len(combined)==40,"CUMULATIVE_40_SOURCE_PATHS_EXPECTED")
+ deny(len(combined)==43,"CUMULATIVE_43_SOURCE_PATHS_EXPECTED")
  provenance={}
  behavioral=validation_guard()
  dynamics_gates=dynamics(provenance)
@@ -241,7 +260,7 @@ def main():
  manifest={"schema":"B01-40-P17-W30-LIVE873-GARAGE877-ORIGINAL-G0-V1",
   "codex_game_base_824":BASE,"game_source_873":LIVE,"garage_child_877":GARAGE,
   "original_producers":{"jump_pad_810":PAD,"emp_839":EMP,"garage_overlay_866":OVERLAY},
-  "source_scope":{"873_adds_modifies":37,"877_extra":3,"combined_paths":40},
+  "source_scope":{"873_adds_modifies":37,"877_extra":6,"combined_paths":43},
   "unchanged_original_producer_blobs":{p:provenance[p] for p in
       sorted(set(provenance)-combined)},
   "changed_original_game_blobs":{p:provenance[p] for p in sorted(combined)},
@@ -264,13 +283,14 @@ def main():
  (out/"W30_873_877_GAME_SOURCE_ONLY.zip").write_bytes(archive)
  digest=hash256(archive)
  print("B0140_W30_EXACT_LIVE_873_SOURCE_SCOPE_37_PASS")
- print("B0140_W30_EXACT_GARAGE_877_CHILD_ONLY_3_PASS")
+ print("B0140_W30_EXACT_GARAGE_877_CHILD_ONLY_6_PASS")
  print("B0140_W30_ORIGINAL_810_839_866_BYTES_AND_LIVE_R5_PASS")
  print("B0140_W30_CANONICAL_GARAGE_BUY_MOUNT_PREVIEW_SOURCE_GUARD_PASS")
  print("B0140_W30_CURRENT_GAME_UNIQUE_GUID="+str(unity["original_unique_guid_count"])+
        "_ASMDEF="+str(unity["original_unique_asmdef_count"]))
  print("B0140_W30_SAW_861_REVIEW_ONLY_NATIVE_UNITY_G1_NOT_RUN")
  print("B0140_W30_SAFE_SCRATCH_STAGE_AND_HOSTILE_NEGATIVES_PASS")
+ print("B0140_W30_BOUNDED_NONALLOC_PHYSICS_SOURCE_AND_SAW_861_W30_TESTS_PRESENT")
  print("B0140_W30_INNER_ZIP_SHA256="+digest)
  print("B0140_W30_SOURCE_ONLY_NATIVE_UNITY_AND_WINDOWS_PLAYER_NOT_RUN")
 if __name__=="__main__":main()
