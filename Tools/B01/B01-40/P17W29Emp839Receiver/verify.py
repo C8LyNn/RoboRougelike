@@ -118,16 +118,39 @@ def run(outpath):
                   capture_output=True)
  need(p.returncode==1,"EMP_PLAYER_QA_GUID_ALREADY_IN_CURRENT_GAME:"+p.stdout.decode()[-160:])
  all_ids={}
- grep=subprocess.run(["git","grep","-n","-E","^guid: [0-9a-f]{32}$","HEAD","--","Assets"],capture_output=True)
- need(grep.returncode in (0,1),"UNITY_GUID_SCAN_ERROR")
- for line in grep.stdout.decode(errors="replace").splitlines():
-  found=re.match(r"^[^:]+:(.*\.meta):\d+:guid: ([0-9a-f]{32})$",line)
-  if found:
-   path,id=found.groups()
-   need(id not in all_ids or all_ids[id]==path,
-        "DUPLICATED_UNITY_META_GUID:"+id+" "+all_ids.get(id,"")+" "+path)
-   all_ids[id]=path
- need(value in all_ids,"NEW_PLAYER_META_NOT_IN_ACTUAL_HEAD")
+ # Enumerate exact current HEAD Git blobs in ONE index call and read their raw
+ # contents with ONE git cat-file --batch. Avoid grep output formatting/OS drift.
+ listing=git("ls-tree","-r","-z","HEAD","--","Assets")
+ metas=[]
+ for record in listing.split(b"\0"):
+  if not record:continue
+  header,git_path=record.split(b"\t",1)
+  if git_path.endswith(b".meta"):
+   metas.append((git_path.decode("utf-8"),header.split()[2]))
+ need(len(metas)>=700,"GAME_META_ENUMERATION_INCOMPLETE")
+ input_data=b"".join(object_sha+b"\n" for _,object_sha in metas)
+ batch=subprocess.run(["git","cat-file","--batch"],input=input_data,
+                      capture_output=True)
+ need(batch.returncode==0,"ORIGINAL_META_BLOB_BATCH_READ_FAILED")
+ cursor=0
+ for path,sha in metas:
+  nl=batch.stdout.find(b"\n",cursor)
+  need(nl>cursor,"MALFORMED_GIT_BATCH_HEADER")
+  header=batch.stdout[cursor:nl].split()
+  need(len(header)==3 and header[0]==sha and header[1]==b"blob",
+       "META_BLOB_IDENTITY_MISMATCH:"+path)
+  size=int(header[2]); data=batch.stdout[nl+1:nl+1+size]
+  need(len(data)==size and batch.stdout[nl+1+size:nl+2+size]==b"\n",
+       "META_BLOB_TRUNCATED:"+path)
+  cursor=nl+size+2
+  hits=re.findall(rb"(?m)^guid:\s*([0-9a-f]{32})\s*$",data)
+  need(len(hits)==1,"INVALID_UNITY_ASSET_META:"+path)
+  guid=hits[0].decode("ascii")
+  need(guid not in all_ids or all_ids[guid]==path,
+       "DUPLICATED_UNITY_META_GUID:"+guid+" "+all_ids.get(guid,"")+" "+path)
+  all_ids[guid]=path
+ need(value in all_ids and all_ids[value]=="Assets/R1/W27EmpPlayerQA.cs.meta",
+      "NEW_PLAYER_META_NOT_IN_ACTUAL_HEAD")
  print("B0140_W29_GAME_PLUS_EMP_NATIVE_QA_META_UNIQUE_GUID_PASS",len(all_ids))
  # Physically stage ORIGINAL producer source into an owned temporary directory.
  # Mutation must FAIL identity and NEVER permit user-file/empty-dir cleanup.
