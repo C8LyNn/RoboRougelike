@@ -62,6 +62,21 @@ jobs:
           cd ..
           git worktree remove --force _w33_915
           echo B0140_W33_ORIGINAL_915_R3_METHODS_SOURCE_ISOLATED_CSHARP_PASS | tee w33-evidence/original-915-completed.txt
+      - name: Independently execute latest original #910 W33 owner V7 Csharp9 on real unchanged #915 R3 methods (test-only)
+        run: |
+          set -euo pipefail
+          git worktree add --detach _w33_910 03d34006a4755b7f1b6d48498acf20fef01925cb
+          mkdir -p _w33_910/Tools/B01/ECONR3W33/.source
+          git show b4df10a7ad7e6c758f8331013f6b216b3a3689a3:Assets/B01Packages/ECONAPPROVED007/Runtime/ApprovedEconomyPolicyV7.cs > _w33_910/Tools/B01/ECONR3W33/.source/ApprovedEconomyPolicyV7.cs
+          cd _w33_910
+          python Tools/B01/ECONR3W33/verify_package.py | tee ../w33-evidence/original-910-scope.log
+          dotnet build Tools/B01/ECONR3W33/W33.Receiver.csproj -c Release -v quiet | tee ../w33-evidence/original-910-build.log
+          dotnet run --project Tools/B01/ECONR3W33/W33.Receiver.csproj -c Release --no-build | tee ../w33-evidence/original-910-temporal-red.log
+          grep -q 'W33_ORIGINAL_915_PRICE_V7_SOURCE_PASS' ../w33-evidence/original-910-temporal-red.log
+          grep -q 'W33_ORIGINAL_915_NEXT_WIN_PRODUCT_RED' ../w33-evidence/original-910-temporal-red.log
+          cd ..
+          git worktree remove --force _w33_910
+          echo B0140_W33_LATEST_910_ORIGINAL_V7_CSHARP9_PRICE_PASS_TEMPORAL_PRODUCT_RED | tee w33-evidence/original-910-completed.txt
       - uses: actions/upload-artifact@v4
         if: always()
         with:
