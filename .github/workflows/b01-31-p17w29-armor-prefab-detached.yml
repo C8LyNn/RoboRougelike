@@ -1,0 +1,82 @@
+name: B01-31 W29 Original W24 Prefab DETACH Before Visual Physics Native Acceptance
+on:
+  push:
+    branches: [art/b01-31-p17w29-prefab-detached-armor-intake]
+    paths:
+      - 'Assets/B01_31/W27ArmorLiveDemo/Editor/B0131W27CreateArmorLiveDemoScene.cs'
+      - 'Assets/B01_31/W29PrefabIsolation/**'
+      - 'Assets/B01_31/W29PrefabIsolation.meta'
+      - 'Tools/B01-31/P17/W28VisualPhysicsSafety001/Harness/**'
+      - 'Tools/B01-31/P17/W29PrefabIsolation001/**'
+      - '.github/workflows/b01-31-p17w29-armor-prefab-detached.yml'
+  pull_request:
+    paths:
+      - 'Assets/B01_31/W27ArmorLiveDemo/Editor/B0131W27CreateArmorLiveDemoScene.cs'
+      - 'Assets/B01_31/W29PrefabIsolation/**'
+      - 'Assets/B01_31/W29PrefabIsolation.meta'
+      - 'Tools/B01-31/P17/W28VisualPhysicsSafety001/Harness/**'
+      - 'Tools/B01-31/P17/W29PrefabIsolation001/**'
+      - '.github/workflows/b01-31-p17w29-armor-prefab-detached.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  ubuntu-original-real-unity-editor-CSharp-method-and-source-packet:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Compile and execute original P12 W24 W25 W27 W29 real source CSharp 37 managed checks synthetic ENGINE only
+        run: dotnet run -c Release --project Tools/B01-31/P17/W28VisualPhysicsSafety001/Harness/W28RealEditorSourceHarness.csproj
+      - name: Actual previously authored original P12 W24 W25 W27 damage and UI source 25 checks
+        run: dotnet run -c Release --project Tools/B01-31/P17/W27ArmorLiveDemo001/Harness/W27OriginalRealSourceHarness.csproj
+      - name: Python original source producer and truly independent receiver syntax
+        run: python -m compileall -q Tools/B01-31/P17/W29PrefabIsolation001
+      - name: Export original 17-source-file W29 patch with 5 new Unity GUIDs, deny 8 corrupted packets
+        run: |
+          python Tools/B01-31/P17/W29PrefabIsolation001/build_source.py --repo . --out build/B0131W29
+          python Tools/B01-31/P17/W29PrefabIsolation001/verify_source.py --repo . --out build/B0131W29
+      - name: Two fully physical original ZIP+receipt exports SHA byte parity, not a simulated packet
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd build/B0131W29 && sha256sum *.zip receipt.json) > /tmp/w29_before.sha
+          python Tools/B01-31/P17/W29PrefabIsolation001/build_source.py --repo . --out build/B0131W29
+          python Tools/B01-31/P17/W29PrefabIsolation001/verify_source.py --repo . --out build/B0131W29
+          (cd build/B0131W29 && sha256sum *.zip receipt.json) > /tmp/w29_after.sha
+          cmp /tmp/w29_before.sha /tmp/w29_after.sha
+          echo B0131_W29_REAL_ORIGINAL_SOURCE_SHA_PARITY_PASS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B0131-W29-REAL-W24-PREFAB-DETACHED-SOURCE-PATCH
+          path: build/B0131W29/
+          retention-days: 30
+          if-no-files-found: error
+  windows-independent-real-sources-and-unmodified-ubuntu-packet:
+    runs-on: windows-2022
+    needs: ubuntu-original-real-unity-editor-CSharp-method-and-source-packet
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: B0131-W29-REAL-W24-PREFAB-DETACHED-SOURCE-PATCH
+          path: original-ubuntu-W29
+      - name: Execute same exact original game+Editor CSharp W29 source 37 checks in Windows; not native Unity
+        run: dotnet run -c Release --project Tools/B01-31/P17/W28VisualPhysicsSafety001/Harness/W28RealEditorSourceHarness.csproj
+      - name: Execute original existing W27 P12 damage/repair managed source 25 checks in Windows
+        run: dotnet run -c Release --project Tools/B01-31/P17/W27ArmorLiveDemo001/Harness/W27OriginalRealSourceHarness.csproj
+      - name: Independent read-only ORIGINAL Ubuntu source patch SHA/GUID/8-hostile source QA; NEVER REGENERATE
+        run: python Tools/B01-31/P17/W29PrefabIsolation001/verify_source.py --repo . --out original-ubuntu-W29

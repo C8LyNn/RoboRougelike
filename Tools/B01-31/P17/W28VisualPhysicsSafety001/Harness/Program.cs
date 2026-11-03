@@ -4,6 +4,8 @@ using RoboRougelike.B0131.Art.Editor;
 using RogueMachine.P12PipelineSafe;
 using UnityEngine;
 
+sealed class W29OnlySyntheticIntrusiveScript : MonoBehaviour { public W29OnlySyntheticIntrusiveScript() {} }
+
 static class W28RealSourceHarness
 {
     private static int count;
@@ -109,7 +111,46 @@ static class W28RealSourceHarness
         p12.ApplyDamage(200f,Vector3.zero,Vector3.up);
         Check(p12.IsDead && destroyed.activeSelf && !ok.activeSelf,
               "25-real-original-P12-Die-Died-visual-dispatch-with-collider-free-scene");
-        Check(count==25,"26-exact-executed-cases-total");
-        Console.WriteLine("B0131_W28_REAL_P12_W24_W25_W27_EDITOR_DIRECT_CSHARP_SOURCE_26_CASES_PASS__NATIVE_UNITY_G1_NOT_RUN");
+        // W29 original Unity Editor source: a DETACHED clone must not delete
+        // the original three-state W24 prefab mesh or Physics components.
+        var originalPrefab=Visual();
+        originalPrefab.AddComponent<Rigidbody>();
+        var originalColliderCount=originalPrefab.GetComponentsInChildren<Collider>(true).Length;
+        Check(originalColliderCount==1 &&
+              originalPrefab.GetComponentsInChildren<Rigidbody>(true).Length==1,
+              "26-original-prefab-source-has-physical-components-before-copy");
+        var copy=B0131W27CreateArmorLiveDemoScene.CreateDetachedVisualClone(
+            originalPrefab,new UnityEngine.SceneManagement.Scene{isLoaded=true});
+        Check(copy!=null && !object.ReferenceEquals(copy,originalPrefab),
+              "27-original-editor-created-independent-clone");
+        Check(!UnityEditor.PrefabUtility.IsPartOfPrefabInstance(copy),
+              "28-original-unity-editor-unpacks-cloned-prefab-link");
+        Check(copy.GetComponentsInChildren<Renderer>(true).Length==
+              originalPrefab.GetComponentsInChildren<Renderer>(true).Length,
+              "29-original-render-meshes-survive-prefab-copy");
+        Check(B0131W27CreateArmorLiveDemoScene.StripVisualOnlyPhysics(copy),
+              "30-real-editor-visual-clone-passes-zero-foreign-authority-preflight");
+        Check(copy.GetComponentsInChildren<Collider>(true).Length==0 &&
+              copy.GetComponentsInChildren<Rigidbody>(true).Length==0,
+              "31-only-clone-physics-stripped");
+        Check(originalPrefab.GetComponentsInChildren<Collider>(true).Length==originalColliderCount &&
+              originalPrefab.GetComponentsInChildren<Rigidbody>(true).Length==1,
+              "32-original-prefab-asset-physics-unchanged");
+        var foreign=Visual();
+        foreign.AddComponent<W29OnlySyntheticIntrusiveScript>();
+        var priorForeignColliders=foreign.GetComponentsInChildren<Collider>(true).Length;
+        Check(!B0131W27CreateArmorLiveDemoScene.StripVisualOnlyPhysics(foreign) &&
+              foreign.GetComponentsInChildren<Collider>(true).Length==priorForeignColliders,
+              "33-foreign-script-rejected-without-mutating-original-hierarchy");
+        var invalid=B0131W27CreateArmorLiveDemoScene.CreateDetachedVisualClone(
+            originalPrefab,new UnityEngine.SceneManagement.Scene{isLoaded=false});
+        Check(invalid==null,"34-invalid-isolated-scene-rejected-before-allocating-clone");
+        Check(B0131W27CreateArmorLiveDemoScene.CreateDetachedVisualClone(
+              new GameObject("unmarked-foreign-prefab"),new UnityEngine.SceneManagement.Scene{isLoaded=true})==null,
+              "35-unmarked-foreign-model-refused");
+        Check(!p12.CurrentHp.Equals(float.NaN) && physicsOwner.GetComponents<Collider>().Length==1,
+              "36-real-authoritative-P12-physics-unchanged-after-prefab-unpack");
+        Check(count==36,"37-final-exact-regression-count");
+        Console.WriteLine("B0131_W29_REAL_P12_W24_W25_W27_EDITOR_PREFAB_DETACHED_CSHARP_SOURCE_37_CASES_PASS__NATIVE_UNITY_G1_NOT_RUN");
     }
 }

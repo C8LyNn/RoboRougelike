@@ -33,6 +33,16 @@ namespace RoboRougelike.B0131.Art.Editor
                 ownVisualInstance.GetComponentsInChildren<Joint>(true).Length != 0)
                 return false;
 
+            // Imported visual models must not execute an unrelated gameplay
+            // MonoBehaviour after a clone is inserted into the scene. The only
+            // allowed script is our existing three-state W24 read-only adapter.
+            // Missing-script (null) slots are refused, not silently ignored.
+            var controller = ownVisualInstance.GetComponent<B0131W24ArmorDamageVisual>();
+            var scripts = ownVisualInstance.GetComponentsInChildren<MonoBehaviour>(true);
+            for (int i = 0; i < scripts.Length; ++i)
+                if (scripts[i] != controller)
+                    return false;
+
             // Remove Rigidbody first. This must only touch the freshly cloned
             // W24 VISUAL subtree; no gameplay P12, rig, or live physics owner.
             var bodies = ownVisualInstance.GetComponentsInChildren<Rigidbody>(true);
@@ -44,6 +54,44 @@ namespace RoboRougelike.B0131.Art.Editor
 
             return ownVisualInstance.GetComponentsInChildren<Rigidbody>(true).Length == 0 &&
                    ownVisualInstance.GetComponentsInChildren<Collider>(true).Length == 0;
+        }
+
+        /// <summary>
+        /// W29: construct ONLY a separate local copy of the original W24 prefab.
+        /// Explicitly unpack any prefab links before W28's destructive visual
+        /// sanitizer runs. The original asset, connected prefab instances in
+        /// other scenes and real P12 gameplay components remain untouched.
+        /// </summary>
+        public static GameObject CreateDetachedVisualClone(
+            GameObject originalPrefab, Scene disposableScene)
+        {
+            if (originalPrefab == null ||
+                originalPrefab.GetComponent<B0131W24ArmorDamageVisual>() == null ||
+                !disposableScene.IsValid() || !disposableScene.isLoaded)
+                return null;
+
+            GameObject clone = null;
+            try
+            {
+                clone = Object.Instantiate(originalPrefab);
+                if (clone == null)
+                    throw new InvalidOperationException("Unity visual prefab copy failed");
+                SceneManager.MoveGameObjectToScene(clone, disposableScene);
+                if (PrefabUtility.IsPartOfPrefabInstance(clone))
+                    PrefabUtility.UnpackPrefabInstance(
+                        clone, PrefabUnpackMode.Completely,
+                        InteractionMode.AutomatedAction);
+                if (PrefabUtility.IsPartOfPrefabInstance(clone))
+                    throw new InvalidOperationException("Visual copy remains a linked prefab");
+                return clone;
+            }
+            catch
+            {
+                // The only object eligible for cleanup is the newly owned local
+                // copy. Never delete the source prefab, its models or old scenes.
+                if (clone != null) Object.DestroyImmediate(clone);
+                throw;
+            }
         }
 
         [MenuItem("Tools/B01-31/W27/Create Isolated P12 Armor Live Demo Scene...")]
@@ -98,8 +146,8 @@ namespace RoboRougelike.B0131.Art.Editor
                     NewSceneSetup.EmptyScene, NewSceneMode.Additive);
                 sceneCreated = true;
                 SceneManager.SetActiveScene(created);
-                var visual = (GameObject)PrefabUtility.InstantiatePrefab(prefab, created);
-                if (visual == null) throw new InvalidOperationException("W24 prefab instantiate failed");
+                var visual = CreateDetachedVisualClone(prefab, created);
+                if (visual == null) throw new InvalidOperationException("W24 prefab isolated copy rejected");
                 visual.name = "B0131_W27_THREE_STATE_ARMOR_VISUAL";
                 visual.transform.position = new Vector3(0f, 1.4f, 0f);
                 var visualController = visual.GetComponent<B0131W24ArmorDamageVisual>();

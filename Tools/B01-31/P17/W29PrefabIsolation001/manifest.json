@@ -1,0 +1,90 @@
+{
+  "package_id": "B01-31-P17W29-DETACHED-ARMOR-PREFAB-INTAKE-001",
+  "revision": "P17-W29-R1",
+  "owner": "B01-31 — CONCEPT ART & VISUAL EXPLORATION",
+  "hq": "https://github.com/C8LyNn/RoboRougelike/issues/800",
+  "exact_W28_parent": "2508f533d3ed8c31f581e491afb2494ab7fa774c",
+  "base_branch": "art/b01-31-p17w28-visual-physics-isolation",
+  "parent_pr": "#845",
+  "dependencies": [
+    "#845 W28 original visual physics",
+    " #820 W27 scene",
+    " #788 W25 P12 bridge",
+    " #770 W24 original visual models"
+  ],
+  "original_untouched_product_blobs": {
+    "P12": "544bed274b616b91fd98c45d2b194b2f3a2d112a",
+    "W24": "8cf3664b9b6e5b0fd6623be7c3f4e72fd9164664",
+    "W25": "e1622abf22319e4448b53a0630d40387ade7a2b2"
+  },
+  "original_W28_editor_blob": "3a4a82c28f419497a0511e64d930e5dec30f9826",
+  "modified_owner_paths": [
+    "Assets/B01_31/W27ArmorLiveDemo/Editor/B0131W27CreateArmorLiveDemoScene.cs",
+    "Tools/B01-31/P17/W27ArmorLiveDemo001/verify_bundle.py",
+    "Tools/B01-31/P17/W28VisualPhysicsSafety001/Harness/Program.cs",
+    "Tools/B01-31/P17/W28VisualPhysicsSafety001/Harness/SyntheticUnityEditor.cs",
+    "Tools/B01-31/P17/W28VisualPhysicsSafety001/Harness/SyntheticUnityEngine.cs"
+  ],
+  "added_owner_paths": [
+    "Assets/B01_31/W29PrefabIsolation.meta",
+    "Assets/B01_31/W29PrefabIsolation/Tests.meta",
+    "Assets/B01_31/W29PrefabIsolation/Tests/EditMode.meta",
+    "Assets/B01_31/W29PrefabIsolation/Tests/EditMode/B0131W29DetachedArmorPrefabTests.cs",
+    "Assets/B01_31/W29PrefabIsolation/Tests/EditMode/B0131W29DetachedArmorPrefabTests.cs.meta",
+    "Assets/B01_31/W29PrefabIsolation/Tests/EditMode/RoboRougelike.B0131.W29.NativeEditModeTests.asmdef",
+    "Assets/B01_31/W29PrefabIsolation/Tests/EditMode/RoboRougelike.B0131.W29.NativeEditModeTests.asmdef.meta",
+    "Tools/B01-31/P17/W29PrefabIsolation001/README.md",
+    "Tools/B01-31/P17/W29PrefabIsolation001/manifest.json",
+    "Tools/B01-31/P17/W29PrefabIsolation001/build_source.py",
+    "Tools/B01-31/P17/W29PrefabIsolation001/verify_source.py",
+    ".github/workflows/b01-31-p17w29-armor-prefab-detached.yml"
+  ],
+  "all_package_paths": [
+    ".github/workflows/b01-31-p17w29-armor-prefab-detached.yml",
+    "Assets/B01_31/W27ArmorLiveDemo/Editor/B0131W27CreateArmorLiveDemoScene.cs",
+    "Assets/B01_31/W29PrefabIsolation.meta",
+    "Assets/B01_31/W29PrefabIsolation/Tests.meta",
+    "Assets/B01_31/W29PrefabIsolation/Tests/EditMode.meta",
+    "Assets/B01_31/W29PrefabIsolation/Tests/EditMode/B0131W29DetachedArmorPrefabTests.cs",
+    "Assets/B01_31/W29PrefabIsolation/Tests/EditMode/B0131W29DetachedArmorPrefabTests.cs.meta",
+    "Assets/B01_31/W29PrefabIsolation/Tests/EditMode/RoboRougelike.B0131.W29.NativeEditModeTests.asmdef",
+    "Assets/B01_31/W29PrefabIsolation/Tests/EditMode/RoboRougelike.B0131.W29.NativeEditModeTests.asmdef.meta",
+    "Tools/B01-31/P17/W27ArmorLiveDemo001/verify_bundle.py",
+    "Tools/B01-31/P17/W28VisualPhysicsSafety001/Harness/Program.cs",
+    "Tools/B01-31/P17/W28VisualPhysicsSafety001/Harness/SyntheticUnityEditor.cs",
+    "Tools/B01-31/P17/W28VisualPhysicsSafety001/Harness/SyntheticUnityEngine.cs",
+    "Tools/B01-31/P17/W29PrefabIsolation001/README.md",
+    "Tools/B01-31/P17/W29PrefabIsolation001/build_source.py",
+    "Tools/B01-31/P17/W29PrefabIsolation001/manifest.json",
+    "Tools/B01-31/P17/W29PrefabIsolation001/verify_source.py"
+  ],
+  "test_criteria": [
+    "Original source W27 Unity Editor method creates fresh W24 prefab copy with Unity Object.Instantiate, moves only copy to new additive scene, completely unpacks connected prefab instance before removing components; fail-closed cleanup only copy.",
+    "Before removing visual physics, rejects all unrelated/missing MonoBehaviour children, including inactive hierarchy, also original P12 and Joint, without partial mutation.",
+    "Five native Unity EditMode tests use original actual imported W24 3-OBJ visual prefab, verify model source asset dependency hash stays unchanged, prefab copy has no link, source geometry phase refs all survive, visual colliders/RB only in copy stripped, and foreign extra script rejected.",
+    "Existing original .NET8 harness executes original P12/W24/W25/W27/W29 Editor C# source methods in synthetic UnityEngine/UnityEditor only, 37 source assertions; prior W27 25 source assertions rerun. Never claim actual Unity native success from this.",
+    "Original physical 16-file changed-source ZIP reproducible SHA across complete exports, five Unity GUID original .meta, 8 malicious changes rejected by independent receiver on Ubuntu and Windows.",
+    "Inherited original W27 physical unitypackage receiver must validate the stronger W29 detached-prefab sequence, not fail because its obsolete direct PrefabUtility.InstantiatePrefab string was removed. No relaxation: require clone, full unpack, disconnected flag and fail-closed sanitizer."
+  ],
+  "gates": {
+    "IMPLEMENTED": "SOURCE",
+    "TESTED": "PENDING_CI",
+    "QA_ACCEPTED": "NO",
+    "READY_FOR_INTEGRATOR": "NO",
+    "INTEGRATED": "NO",
+    "RELEASED": "NO",
+    "INDEPENDENT_G0": "PENDING",
+    "UNITY_NATIVE_G1": "NOT_RUN",
+    "WINDOWS_PLAYER": "NOT_RUN",
+    "G2": "HOLD",
+    "CODEX_ACK": "NO"
+  },
+  "scope": "B01-31 visual prefab/manual isolated Unity Editor only. No authoritative gameplay, canonical garage placement, Saw/EMP, Save/Loaner/ECON, turret R41, or Codex active worktree.",
+  "risk": "MEDIUM: real W24 original prefab and ModelImporter+nested Unity prefab hierarchy must pass actual native EditMode/Player/URP import. Unity source managed tests are synthetic and do not prove Editor behaviour.",
+  "receivers": [
+    "B01-30/B01-40 formal independent original path/GUID/dep closure G0",
+    "B01-60 original authorized Unity 6000.3.14f1 import of W24/W25/W27/W28/W29, native EditMode five, W28 five and W27 five PlayMode, actual Editor.log/NUnit/Windows evidence",
+    "B01-00 coordinator only if independent G0+native receipt permits handoff to Codex"
+  ],
+  "rollback": "Restore only 4 modified own parent files at exact 2508f... in approved isolated branch; drop 12 NEW own W29 paths. Never delete original W24/W25/P12, foreign/even-empty directories, active Codex worktrees or user game saves."
+}
