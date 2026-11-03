@@ -319,7 +319,13 @@ namespace RoboRougelike.R3
                 var selected=run.VehicleModel.At(Cell);
                 int quote=run.VehicleModel.RepairCost(selected);
                 result=run.GarageRepair(Cell);
-                if(result)Message="Naprawiono wskazaną część.";
+                // V7 can accept a PAID destroyed rebuild as Pending without
+                // restoring any HP until a later DISTINCT trusted victory.
+                // A bool success is NOT proof that the physical part is ready,
+                // nor proof of a durable pending ledger. Show observed HP only.
+                if(result&&selected!=null&&selected.Health<=0f)
+                    Message="Operacja przyjęta, ale część nadal ma 0 HP. Odbudowa nie jest gotowa; sprawdź status oczekiwania.";
+                else if(result)Message="Naprawiono wskazaną część.";
                 else if(selected==null)Message="Nie znaleziono części do naprawy w wybranej komórce.";
                 else if(selected.Health>=1f)Message="Część jest sprawna i nie wymaga naprawy.";
                 // ECON V7 can legally quote 0 Scrap for a PAID rebuild when
