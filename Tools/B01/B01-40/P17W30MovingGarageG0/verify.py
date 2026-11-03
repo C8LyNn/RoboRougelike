@@ -129,7 +129,7 @@ def source_contract():
  for token in ("OccupiedRed","ProtrusionBlue","WeaponPurple",
                "MechanismOrange","ValidGreen","source.PlacementIssue"):
   need(token in overlay,"ACTUAL_873_FIVE_VISUAL_GARAGE_CLASSES_MISSING:"+token)
- need("RotarySawContactMath" in report,"OWNER_877_REPORT_MISSING")
+ need("RotarySaw" in report and "installationGate" in report,"OWNER_877_REPORT_MISSING")
  print("B0140_W30_877_LIVE_PHYSICAL_WPN005_AND_GARAGE_PREVIEW_BUY_MOUNT_AUTHORITY_PASS")
  print("B0140_W30_873_JUMPPAD_FIVE_COLOR_GARAGE_SOURCE_WIRING_PASS")
  print("B0140_W30_NEW_REAL_UNITY_DYNAMIC_OWNER_RIGIDBODY_TEST_SOURCE_PASS_NOT_EXECUTED")
