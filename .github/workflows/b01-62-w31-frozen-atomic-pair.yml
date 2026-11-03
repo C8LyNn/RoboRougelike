@@ -2,12 +2,6 @@ name: B01-62 W31 original V3 freeze same writer atomic pair
 on:
   push:
     branches: [b01-62/p17w31-freeze-atomic-pair]
-  pull_request:
-    paths:
-      - 'Tools/B01/B01-62/P17W31AtomicPair/**'
-      - 'Tools/B01/B01-62/P17W28UnityCompatibleWholeGameV3/WholeGameEconomySlotV3.cs'
-      - 'Tools/B01/B01-62/P17W28UnityCompatibleWholeGameV3/CanonicalWholeGameSessionV3.cs'
-      - '.github/workflows/b01-62-w31-frozen-atomic-pair.yml'
 permissions:
   contents: read
 jobs:
