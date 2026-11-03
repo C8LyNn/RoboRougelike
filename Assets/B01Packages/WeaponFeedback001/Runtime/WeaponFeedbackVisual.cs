@@ -50,11 +50,37 @@ namespace B01.WeaponFeedback001
         public void BindVisuals(Transform pivot, ParticleSystem muzzle, Light flash,
                                 ParticleSystem hitFx, ParticleSystem smoke)
         {
-            recoilVisualPivot=pivot; muzzleFlash=muzzle; muzzleLight=flash;
-            impactPrefab=hitFx;damagedWeaponSmoke=smoke;
+            // Rebinds happen when visual weapon models are swapped in the garage.
+            // Restore the OLD pivot and stop OLD emitters before replacing references.
+            bool changed = recoilVisualPivot != pivot || muzzleFlash != muzzle ||
+                           muzzleLight != flash || impactPrefab != hitFx ||
+                           damagedWeaponSmoke != smoke;
+            if (changed)
+            {
+                if (recoilVisualPivot && pivotSet)
+                    recoilVisualPivot.localPosition = restLocalPosition;
+                if (muzzleFlash)
+                    muzzleFlash.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                if (muzzleLight) muzzleLight.enabled = false;
+                if (damagedWeaponSmoke)
+                {
+                    var oldEmission = damagedWeaponSmoke.emission;
+                    oldEmission.enabled = false;
+                    damagedWeaponSmoke.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                }
+                ReleaseImpactPool();
+            }
+            recoilVisualPivot = pivot;
+            muzzleFlash = muzzle;
+            muzzleLight = flash;
+            impactPrefab = hitFx;
+            damagedWeaponSmoke = smoke;
+            pivotSet = false;
             CachePivot();
-            if(muzzleLight)muzzleLight.enabled=false;
-            if(muzzleFlash)muzzleFlash.Stop(true,ParticleSystemStopBehavior.StopEmittingAndClear);
+            lightLeft = 0f;
+            if (muzzleLight) muzzleLight.enabled = false;
+            if (muzzleFlash)
+                muzzleFlash.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             SetWeaponDamageVisual(DamageVisualFraction);
         }
         // Not authoritative. Call exactly once after a confirmed shot.
@@ -163,18 +189,25 @@ namespace B01.WeaponFeedback001
                 impactExpiry[i] = 0f;
             }
         }
-        void OnDestroy()
+        void ReleaseImpactPool()
         {
-            // Pool objects have no parent: reclaim them when the owning weapon dies.
+            // Detached world-space particles are owned by this component even
+            // though their GameObjects are not children of the visual model.
             foreach (var impact in impacts)
             {
                 if (!impact) continue;
+                impact.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                impact.gameObject.SetActive(false);
                 if (Application.isPlaying) Destroy(impact.gameObject);
                 else DestroyImmediate(impact.gameObject);
             }
             impacts.Clear();
             impactExpiry.Clear();
             nextImpactIndex = 0;
+        }
+        void OnDestroy()
+        {
+            ReleaseImpactPool();
         }
     }
 }
