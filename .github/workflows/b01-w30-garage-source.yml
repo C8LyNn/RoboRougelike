@@ -18,8 +18,11 @@ jobs:
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
-          fetch-depth: 0
+          fetch-depth: 1
           persist-credentials: false
+      - name: Fetch only exact approved #873 baseline for source compare
+        shell: bash
+        run: git fetch --no-tags --depth=1 origin d537b7310979b91df27a08b14d0f1c74d0889089
       - name: Verify actual source and reject four deliberate source mutants
         shell: bash
         run: |

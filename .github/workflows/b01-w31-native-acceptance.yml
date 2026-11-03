@@ -25,7 +25,9 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           persist-credentials: false
-          fetch-depth: 0
+          fetch-depth: 1
+      - name: Fetch only the approved #873 source baseline commit
+        run: git fetch --no-tags --depth=1 origin d537b7310979b91df27a08b14d0f1c74d0889089
       - name: Verify repository and current W31 source gate
         run: |
           python3 Tools/CI/validate_repository.py
