@@ -56,6 +56,43 @@ public sealed class GarageEditFreedomTests
         foreach(var wheel in model.Parts.Where(p=>p.Kind==R3PartKind.Wheel&&p.Cell.x<0))wheel.Health=0;
         Assert.That(model.CanDeploy,Is.False);Assert.That(model.DeployError,Does.Contain("koło"));
     }
+
+    [UnityTest] public IEnumerator RealGarageRejectsOwnedSawDiscPenetrationBeforeInventoryMutation()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);
+        yield return new EnterPlayMode();
+        var until=Time.realtimeSinceStartup+15;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<until)
+            yield return null;
+        var run=R1RunController.Instance;
+        Assert.That(run,Is.Not.Null);
+        Assert.That(run.SelectVehicle(R3VehicleKind.Standard),Is.True);
+        Assert.That(run.OpenSandboxGarage(),Is.True);
+        var gun=run.VehicleModel.Parts.First(p=>p.Kind==R3PartKind.Gun);
+        var id=gun.Id;
+        var oldCell=gun.Cell;
+        Assert.That(run.GarageRemove(oldCell),Is.True);
+        var inventory=run.VehicleModel.Inventory.Single(p=>p.Id==id);
+        inventory.Weapon=RoboRougelike.R4.R4WeaponKind.RotarySaw;
+        int beforeWallet=run.VehicleModel.Scrap;
+        int beforeParts=run.VehicleModel.Parts.Count;
+        var issue=run.VehicleModel.OwnedPlacementError(id,oldCell,default);
+        Assert.That(issue,Does.Contain("tarcza piły"),
+            "Real central stock mount intersects own armor and must not be green.");
+        Assert.That(run.GarageMount(id,oldCell,default),Is.False);
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(beforeWallet));
+        Assert.That(run.VehicleModel.Parts.Count,Is.EqualTo(beforeParts));
+        Assert.That(run.VehicleModel.Inventory.Single(p=>p.Id==id).Id,Is.EqualTo(id));
+        // Exterior attachment remains available, never disable the saw globally.
+        var exterior=new Vector3Int(0,1,4);
+        Assert.That(run.VehicleModel.OwnedPlacementError(id,exterior,default),Is.Null,
+            "Connected exterior physical saw mount must be possible: "+
+                run.VehicleModel.OwnedPlacementError(id,exterior,default));
+        Assert.That(run.GarageMount(id,exterior,default),Is.True);
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(beforeWallet));
+        Assert.That(run.VehicleModel.Parts.Single(p=>p.Id==id).Cell,Is.EqualTo(exterior));
+        yield return new ExitPlayMode();
+    }
     [UnityTest] public IEnumerator ActualMissionEntryRejectsIncompleteVehicleAndAcceptsRestoredGun()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);yield return new EnterPlayMode();
