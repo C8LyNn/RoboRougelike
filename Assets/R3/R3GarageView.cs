@@ -322,7 +322,14 @@ namespace RoboRougelike.R3
                 if(result)Message="Naprawiono wskazaną część.";
                 else if(selected==null)Message="Nie znaleziono części do naprawy w wybranej komórce.";
                 else if(selected.Health>=1f)Message="Część jest sprawna i nie wymaga naprawy.";
-                else if(quote<=0)Message="Brak dopuszczonej wyceny naprawy tej części. Złom nie został pobrany.";
+                // ECON V7 can legally quote 0 Scrap for a PAID rebuild when
+                // the NEW part costs 1 Scrap. Zero price is not a free-win
+                // coupon, nor proof that the canonical repair may be denied.
+                // Keep UI diagnostic-only until the sole model/ECON owner
+                // accepts the transaction (see #897); do NOT alter gameplay.
+                else if(quote==0&&selected.Health<=0f)
+                    Message="Odbudowa za 0 Scrap została odrzucona. Nie pobrano Złomu; sprawdź mocowanie części.";
+                else if(quote<=0)Message="Brak potwierdzonej wyceny naprawy tej części. Złom nie został pobrany.";
                 else if(run.VehicleModel.Scrap<quote)
                     Message="Za mało Złomu na naprawę. Koszt: "+quote+" Scrap; dostępne: "+run.VehicleModel.Scrap+" Scrap.";
                 else
