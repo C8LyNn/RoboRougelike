@@ -21,6 +21,10 @@
 
 `probe_original826.py` osobno pobiera **oryginalne bajty Git** #826 V3 dwóch produkcyjnych C# i producenta 9 testów, prawdziwe #780 ekonomii, oryginalne #729 gateway/owner oraz frozen #556/#510. Kompiluje **netstandard2.1/C#9** i **.NET8/C#9**, uruchamia oryginalne dziewięć testów rzeczywistego lokalnego filesystem (wyłącznie scratch): 1/2 generation, File.Replace before/after lost ACK cold restart, checksum/IDs/genuine V7 and loaner. Nie używa syntetycznego Unity ani nie uruchamia Unity Editor. CI Windows2025+Ubuntu24 i trzeci job **fizycznie pobierający dwa artefakty** kontroluje identyczny SHA manifestu/Git źródeł.
 
+## Uzupełnienie W29 — pełna wspólna metadana Unity
+
+Peer B01-61 #852 wykazał, że oprócz własnych `Assets/B01Packages/ECONAPPROVED007/**` należy w pełnym intake uwzględnić **istniejący folder `Assets/B01Packages.meta`**. #780 i opublikowany Codex R3 #824 używają dokładnie tego samego Git blob `38bd6da78864e817f6c8905aa0805a83528d2a25` i GUID `b01a0001000000000000000000000001`. Nie wolno nadpisywać istniejącego folderu; importer ma zweryfikować identyczne bajty, pozostawić istniejący plik, a przy rozbieżności zatrzymać G0. Oryginalna paczka obejmuje **90 Git-source file paths / 54 unikalne Unity GUID / 12 asmdef**, z czego dwa raw #787 Store pozostają **wyłącznie referencyjne i fizycznie nieobecne w odbiorczym ZIP**. Stare wyniki 89/53 z pierwszego przebiegu są historyczne i niepełne; prawidłowy exact-SHA CI jest wymagany dla nowej wersji.
+
 ## Bramki odbioru
 
 `SOURCE_TRANSPORT_G0=PASS` dopiero po wykonanym CI na finalnym QA SHA. `SOURCE_NETSTANDARD21_ABI=PASS` dopiero po kompilacji oryginalnych bajtów. Te wyniki **nie** są `Unity G1`. Actual Tools-only #826 nie ma MonoBehaviour single-session, aktualnej prywatnej #510 Rig[]/AtomicDockLedger, legalnych gameplay WIN receipt, sprawdzonej migracji Save i realnego Windows Player. B01-23/20/62 i Codex potrzebują jednej autorytatywnej implementacji binder-a; B01-60 wykonuje natywne Unity 6000.3.14f1 Edit/Play, cold shutdown, corrupt, lost ACK i rzeczywiste ruchy Rigidbody, log Editor/NUnit XML/Player.log.
