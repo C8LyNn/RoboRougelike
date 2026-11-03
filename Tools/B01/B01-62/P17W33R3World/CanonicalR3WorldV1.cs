@@ -91,7 +91,8 @@ namespace B01.CanonicalR3World001
                !Finite(p.DisruptionRemaining,1e8f)||
                !Finite(p.ThermalHeat,1e8f)||
                !Finite(p.DefenseCharge,1e8f)||
-               !Finite(p.DefenseRechargeAge,1e8f)||
+               !(float.IsPositiveInfinity(p.DefenseRechargeAge)||
+                 Finite(p.DefenseRechargeAge,1e8f))||
                !Finite(p.UpgradeAmount,1e8f)||
                !Text(p.Source,256)||!Text(p.UpgradeId,256)||
                !Text(p.UpgradeTitle,256)||!Text(p.UpgradeDescription,1024)||
