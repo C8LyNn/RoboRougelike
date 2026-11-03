@@ -135,6 +135,7 @@ namespace RoboRougelike.R3
         {
             if(previewRoot!=null){previewRoot.SetActive(false);Destroy(previewRoot);}
             previewRoot=new GameObject("Podgląd garażu");previewRoot.transform.SetParent(run.Player.transform,false);marker=null;
+            ShowOccupiedCells();
             foreach(var part in run.VehicleModel.Parts.Where(p=>p.Health<=0))
             {
                 var plan=CreateGhost(part.Cell,part.Kind,part.Weapon,palette.Missing,true,
@@ -145,6 +146,26 @@ namespace RoboRougelike.R3
                     collider.size=new Vector3(R3BonusModuleGeometry.Width,R3BonusModuleGeometry.Height,R3BonusModuleGeometry.Width);}
             }
             UpdatePivot();RefreshMarker();
+        }
+        private void ShowOccupiedCells()
+        {
+            // Use exactly the cells that the model's placement check reserves,
+            // including destroyed plans and rotated, multi-cell modules.
+            float half=R41PartGeometry.Grid*.5f;
+            var corners=new[]{new Vector3(-half,-half,-half),new Vector3(half,-half,-half),
+                new Vector3(half,-half,half),new Vector3(-half,-half,half),
+                new Vector3(-half,half,-half),new Vector3(half,half,-half),
+                new Vector3(half,half,half),new Vector3(-half,half,half)};
+            var path=new[]{0,1,2,3,0,4,5,1,5,6,2,6,7,3,7,4};
+            var points=new Vector3[path.Length];for(int i=0;i<path.Length;i++)points[i]=corners[path[i]];
+            foreach(var cell in run.VehicleModel.Parts.SelectMany(R3VehicleModel.OccupiedCells).Distinct())
+            {
+                var zone=new GameObject("W27 occupied cell");zone.transform.SetParent(previewRoot.transform,false);
+                zone.transform.localPosition=(Vector3)cell*R41PartGeometry.Grid;
+                var line=zone.AddComponent<LineRenderer>();line.useWorldSpace=false;line.positionCount=points.Length;
+                line.SetPositions(points);line.startWidth=line.endWidth=.012f;line.sharedMaterial=palette.Invalid;
+                line.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;line.receiveShadows=false;
+            }
         }
         private GameObject CreateGhost(Vector3Int cell,R3PartKind kind,R4WeaponKind weapon,
             Material material,bool plan=false,Vector3Int rotation=default,
