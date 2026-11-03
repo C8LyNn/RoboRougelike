@@ -1,12 +1,12 @@
 name: B01-25 W29 SAFEROUTE R5.1 physical debris lifecycle compatibility
 on:
   push:
-    branches: [research/b01-25-p17w29-saferoute001-r5-world-objects]
+    branches: [research/b01-25-p17w29-saferoute-r5-1-debris-lifecycle]
     paths:
       - 'Assets/B0125SafeRoute001/**'
       - 'Research/B01-25/P17/SAFEROUTE001/**'
-      - 'Tools/B01/B01-25/P17W29SafeRouteR5/**'
-      - '.github/workflows/b01-25-w29-saferoute-r5.yml'
+      - 'Tools/B01/B01-25/P17W29SafeRouteR5Lifecycle/**'
+      - '.github/workflows/b01-25-w29-saferoute-r5-lifecycle.yml'
   workflow_dispatch:
 permissions:
   contents: read
@@ -20,7 +20,7 @@ jobs:
     timeout-minutes: 24
     env:
       SRC: Research/B01-25/P17/SAFEROUTE001
-      OUT: Tools/B01/B01-25/P17W29SafeRouteR5/.output
+      OUT: Tools/B01/B01-25/P17W29SafeRouteR5Lifecycle/.output
     steps:
       - uses: actions/checkout@v4
         with:
@@ -43,7 +43,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python Tools/B01/B01-25/P17W29SafeRouteR5/check.py --out "$OUT/receipt.json" 2>&1 | tee "$OUT/source-qa-$RUNNER_OS.log"
+          python Tools/B01/B01-25/P17W29SafeRouteR5Lifecycle/check.py --out "$OUT/receipt.json" 2>&1 | tee "$OUT/source-qa-$RUNNER_OS.log"
       - name: Verify original raw source evidence exists
         shell: bash
         run: |
@@ -59,7 +59,7 @@ jobs:
           name: b01-25-saferoute-r5-lifecycle-w29-${{ matrix.os }}
           path: |
             Research/B01-25/P17/SAFEROUTE001/.output/results.json
-            Tools/B01/B01-25/P17W29SafeRouteR5/.output/**
+            Tools/B01/B01-25/P17W29SafeRouteR5Lifecycle/.output/**
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 21

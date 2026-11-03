@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""W27 R4: original two-crate game source, real Git bytes, ZIP and scratch migration QA."""
+"""W29 R5.1 exact original R3Debris lifecycle source, Git byte and scratch QA."""
 import argparse,hashlib,json,pathlib,re,subprocess,tempfile,unittest,zipfile
 ROOT=pathlib.Path(__file__).resolve().parents[4]
 BASE="ed704172431cd08628bcbbf6e1926b2edb70812a"
@@ -280,7 +280,7 @@ def main():
     ap=argparse.ArgumentParser();ap.add_argument("--out",required=True)
     args=ap.parse_args();out=pathlib.Path(args.out);out.parent.mkdir(parents=True,exist_ok=True)
     t=unittest.TextTestRunner(verbosity=2).run(
-       unittest.defaultTestLoader.loadTestsFromTestCase(OriginalPhysicalR5QA))
+       unittest.defaultTestLoader.loadTestsFromTestCase(OriginalPhysicalR51QA))
     with tempfile.TemporaryDirectory() as d:
         z=pathlib.Path(d)/"original-source.zip"
         digest=zip_sources(z);out.with_suffix(".zip").write_bytes(z.read_bytes())
