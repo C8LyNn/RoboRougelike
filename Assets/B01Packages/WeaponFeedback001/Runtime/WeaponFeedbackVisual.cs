@@ -29,7 +29,12 @@ namespace B01.WeaponFeedback001
         public float DamageVisualFraction { get; private set; }
         public int ImpactPoolSize => impacts.Count;
 
-        void Awake() { CachePivot(); if(muzzleLight)muzzleLight.enabled=false; }
+        void Awake()
+        {
+            CachePivot();
+            if (muzzleLight) muzzleLight.enabled = false;
+            if (muzzleFlash) muzzleFlash.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        }
         void OnEnable()
         {
             // Restores the last visual damage state only when the component is active.
@@ -48,11 +53,13 @@ namespace B01.WeaponFeedback001
             impactPrefab=hitFx;damagedWeaponSmoke=smoke;
             CachePivot();
             if(muzzleLight)muzzleLight.enabled=false;
-            if (isActiveAndEnabled) SetWeaponDamageVisual(DamageVisualFraction);
+            if(muzzleFlash)muzzleFlash.Stop(true,ParticleSystemStopBehavior.StopEmittingAndClear);
+            SetWeaponDamageVisual(DamageVisualFraction);
         }
         // Not authoritative. Call exactly once after a confirmed shot.
         public void NotifyShot()
         {
+            if (!isActiveAndEnabled) return;
             ShotFeedbackCount++;
             if(muzzleFlash)muzzleFlash.Play(true);
             if(muzzleLight){muzzleLight.enabled=true;lightLeft=lightDurationSeconds;}
@@ -62,6 +69,7 @@ namespace B01.WeaponFeedback001
         // Not authoritative. Collision/damage code supplies the verified impact event.
         public void NotifyImpact(Vector3 position,Vector3 outwardNormal)
         {
+            if (!isActiveAndEnabled) return;
             ImpactFeedbackCount++;
             if(!impactPrefab)return;
             Vector3 normal=outwardNormal.sqrMagnitude>.0001f?outwardNormal.normalized:Vector3.up;
@@ -102,12 +110,13 @@ namespace B01.WeaponFeedback001
             DamageVisualFraction=Mathf.Clamp01(fraction);
             if(!damagedWeaponSmoke)return;
             var emission=damagedWeaponSmoke.emission;
-            emission.enabled=DamageVisualFraction>.01f;
-            emission.rateOverTime=DamageVisualFraction*18f;
-            if(DamageVisualFraction>.01f&&!damagedWeaponSmoke.isPlaying)
+            bool activeSmoke = isActiveAndEnabled && DamageVisualFraction > .01f;
+            emission.enabled = activeSmoke;
+            emission.rateOverTime = DamageVisualFraction * 18f;
+            if (activeSmoke && !damagedWeaponSmoke.isPlaying)
                 damagedWeaponSmoke.Play(true);
-            else if(DamageVisualFraction<=.01f&&damagedWeaponSmoke.isPlaying)
-                damagedWeaponSmoke.Stop(true,ParticleSystemStopBehavior.StopEmitting);
+            else if (!activeSmoke && damagedWeaponSmoke.isPlaying)
+                damagedWeaponSmoke.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         }
         void Update()
         {
