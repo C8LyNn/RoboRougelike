@@ -1,0 +1,76 @@
+name: B01-41 W34 independent REAL #923 R3 world vs V7 category writer integrity
+on:
+  push:
+    branches: [ci/b01-41-p17w34-r3-category-source-integrity-r1]
+    paths:
+      - 'Tools/B01/CI41/P17W34R3Schema/**'
+      - '.github/workflows/b01-41-p17w34-r3-world-category-integrity.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-923-independent-one-store-qa:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 1
+          filter: blob:none
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch only immutable original game/policy/admission sources
+        run: |
+          set -euo pipefail
+          for sha in \
+            8de168dd83fe1d01a36def9acfae462bd63c9018 \
+            3bd9b159997924dcecb4e1cd1d41137896e5199e \
+            b4df10a7ad7e6c758f8331013f6b216b3a3689a3 \
+            c9c19665a4f9385e6479f7151097deb797026ade; do
+            git fetch --depth=1 --no-tags origin "$sha"
+            test "$(git rev-parse "$sha^{commit}")" = "$sha"
+          done
+          mkdir -p Tools/B01/B01-62/P17W30AdmissionV3/.source Tools/B01/B01-62/P17W33R3World/.source
+          git show 3bd9b159997924dcecb4e1cd1d41137896e5199e:Assets/R3/R3VehicleCatalog.cs > Tools/B01/B01-62/P17W33R3World/.source/R3VehicleCatalog.cs
+          git show b4df10a7ad7e6c758f8331013f6b216b3a3689a3:Assets/B01Packages/ECONAPPROVED007/Runtime/ApprovedEconomyPolicyV7.cs > Tools/B01/B01-62/P17W30AdmissionV3/.source/ApprovedEconomyPolicyV7.cs
+          git show b4df10a7ad7e6c758f8331013f6b216b3a3689a3:Assets/B01Packages/ECONAPPROVED007/Runtime/CanonicalEconomySectionV7.cs > Tools/B01/B01-62/P17W30AdmissionV3/.source/CanonicalEconomySectionV7.cs
+          git show c9c19665a4f9385e6479f7151097deb797026ade:Assets/B01Packages/ECONADMISSIONW29/Runtime/EconomyV7AdmissionW29.cs > Tools/B01/B01-62/P17W30AdmissionV3/.source/EconomyV7AdmissionW29.cs
+      - name: Execute eight independent original-source and negative mutation guards
+        run: |
+          set -euo pipefail
+          mkdir -p ci41-w34-evidence
+          python -m unittest discover -s Tools/B01/CI41/P17W34R3Schema -p test_audit.py -v 2>&1 | tee ci41-w34-evidence/negative-tests.log
+          grep -q 'Ran 8 tests' ci41-w34-evidence/negative-tests.log
+          grep -q '^OK$' ci41-w34-evidence/negative-tests.log
+      - name: Compile and execute original one #923 Store C#9 against mismatched Core versus Armor category
+        run: |
+          set -euo pipefail
+          python Tools/B01/CI41/P17W34R3Schema/audit.py ci41-w34-evidence/real-original-writer 2>&1 | tee ci41-w34-evidence/real-original-writer.log
+          grep -q 'CI41_W34_GIT_OID_EXACT_6_OF_6_PASS' ci41-w34-evidence/real-original-writer.log
+          grep -q 'CI41_W34_ORIGINAL_ONE_SAVE_WRITER_CSHARP9_COMPILED_AND_EXECUTED' ci41-w34-evidence/real-original-writer.log
+          grep -q 'CI41_W34_CATEGORY_CORE_ARMOR_MISMATCH_ACCEPTED_PRODUCT_RED' ci41-w34-evidence/real-original-writer.log
+          grep -q 'CI41_W34_ORIGINAL_HP_GUID_NEGATIVES_REJECTED' ci41-w34-evidence/real-original-writer.log
+          python -c 'import json; d=json.load(open("ci41-w34-evidence/real-original-writer/independent-provenance.json")); assert d["original_writer_actual_result"]=="ACCEPTED_INCONSISTENT_CATEGORY_PRODUCT_RED" and d["Unity_6000_3_14f1"]=="NOT_RUN" and d["Windows_Player"]=="NOT_BUILT"'
+      - name: Save raw independent proof and compiler stdout (NOT Unity Player)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CI41-W34-ORIGINAL-923-WORLD-ECON-CATEGORY-NOT-UNITY-${{ runner.os }}
+          path: |
+            ci41-w34-evidence/*.log
+            ci41-w34-evidence/real-original-writer/*.json
+            ci41-w34-evidence/real-original-writer/*.log
+          if-no-files-found: warn
+          retention-days: 14
