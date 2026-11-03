@@ -1,0 +1,33 @@
+name: B01-10 W32 ECON R3/V7 price + temporal SOURCE witness (not Unity)
+on:
+  push:
+    branches:
+      - design/b01-10-p17-w31-econ-parity-qa-r1
+  pull_request:
+    paths:
+      - Assets/Tests/Editor/B0110W31EconomyParityTests.cs
+      - Assets/Tests/Editor/B0110W31EconomyParityTests.cs.meta
+      - Assets/Tests/Editor/B0110W32EconomySettlementParityTests.cs
+      - Assets/Tests/Editor/B0110W32EconomySettlementParityTests.cs.meta
+      - Docs/B01Design/W31_ECON_LIVE_R3_PARITY_QA.md
+      - Docs/B01Design/W32_ECON_V7_DEFERRED_SETTLEMENT_RECEIVER.md
+      - Tools/B01-10/W31_ECON_PARITY/source_guard.py
+      - .github/workflows/b01-10-w31-econ-parity-source.yml
+permissions:
+  contents: read
+jobs:
+  original-source-expected-red:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # PR workflow must test its exact producer HEAD, not GitHub's synthetic merge ref.
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Verify exact original R3 mismatch; this is source QA NOT native Unity
+        shell: bash
+        run: python Tools/B01-10/W31_ECON_PARITY/source_guard.py
