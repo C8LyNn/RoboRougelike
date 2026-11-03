@@ -256,4 +256,47 @@ public sealed class B0111W30GarageRejectionUxTests
         yield return new ExitPlayMode();
     }
 
+    [UnityTest]
+    public IEnumerator NonMountToolsEmptySelectionShowsCorrectAdviceWithoutGarageMutation()
+    {
+        // Real original R1/R3 Unity game scene, not the .NET8 source harness.
+        EditorSceneManager.OpenScene("Assets/scene 1.unity", OpenSceneMode.Single);
+        yield return new EnterPlayMode();
+        float deadline=Time.realtimeSinceStartup+15f;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<deadline)
+            yield return null;
+        var run=R1RunController.Instance;
+        Assert.That(run,Is.Not.Null);
+        Assert.That(run.SelectVehicle(R3VehicleKind.Standard),Is.True);
+        Assert.That(run.OpenSandboxGarage(),Is.True);
+        var view=run.Garage;
+        var model=run.VehicleModel;
+        int beforeScrap=model.Scrap;
+        var beforeIds=model.Parts.Select(p=>p.Id).OrderBy(x=>x).ToArray();
+        var beforeHealth=model.Parts.ToDictionary(p=>p.Id,p=>p.Health);
+        foreach(var scenario in new[]{
+            (R41GarageTool.Repair,"Wskaż część pojazdu do naprawy"),
+            (R41GarageTool.Remove,"Wskaż część pojazdu do usunięcia"),
+            (R41GarageTool.Inspect,"Wskaż część pojazdu do sprawdzenia")
+        })
+        {
+            view.SetTool(scenario.Item1);
+            Assert.That(view.HasTarget,Is.False);
+            Assert.That(view.ClickTarget(),Is.False);
+            Assert.That(view.Message,Does.Contain(scenario.Item2));
+            Assert.That(view.Message,Does.Not.Contain("Najedź na ścianę bloku pojazdu"));
+            Assert.That(model.Scrap,Is.EqualTo(beforeScrap));
+            CollectionAssert.AreEqual(beforeIds,
+                model.Parts.Select(p=>p.Id).OrderBy(x=>x).ToArray());
+            foreach(var part in model.Parts)
+                Assert.That(part.Health,Is.EqualTo(beforeHealth[part.Id]));
+        }
+        // The original mounting affordance must remain unchanged.
+        view.SetTool(R41GarageTool.Mount);
+        Assert.That(view.ClickTarget(),Is.False);
+        Assert.That(view.Message,Does.Contain("Najedź na ścianę bloku pojazdu"));
+        Assert.That(model.Scrap,Is.EqualTo(beforeScrap));
+        yield return new ExitPlayMode();
+    }
+
 }
