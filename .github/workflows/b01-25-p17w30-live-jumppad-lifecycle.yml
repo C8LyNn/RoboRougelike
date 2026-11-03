@@ -1,0 +1,99 @@
+name: B01-25 W30 original live game JumpPad lifecycle source evidence
+on:
+  push:
+    branches: [research/b01-25-p17w30-live-jumppad-contact-lifecycle]
+    paths:
+      - 'Assets/B01Packages/MapJumpPad001/Runtime/MapJumpPad.cs'
+      - 'Assets/Tests/Editor/W30LiveJumpPadDebrisLifecycleTests.cs*'
+      - 'Research/B01-25/P17/W30JumpPadLifecycle/**'
+      - 'Tools/B01/B01-25/P17W30LiveJumpPadLifecycle/**'
+      - '.github/workflows/b01-25-p17w30-live-jumppad-lifecycle.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  actual-original-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            label: ubuntu
+          - os: windows-2022
+            label: windows
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 22
+    env:
+      SRC: Research/B01-25/P17/W30JumpPadLifecycle
+      OUT: Tools/B01/B01-25/P17W30LiveJumpPadLifecycle/.output
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile exact original current-game MapJumpPad CSharp9 warnings-as-errors
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$SRC/.output" "$OUT"
+          dotnet build "$SRC/OriginalGameSource.csproj" -c Release -warnaserror
+      - name: Execute 10 actual original production-class managed behavior cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --project "$SRC/OriginalGameSource.csproj" -c Release -- "$SRC/.output/managed.json" 2>&1 | tee "$OUT/managed-${{ matrix.label }}.log"
+      - name: Exact Git original file identities and scratch ZIP negative/rollback controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-25/P17W30LiveJumpPadLifecycle/check.py --out "$OUT/source-qa.json" 2>&1 | tee "$OUT/git-source-${{ matrix.label }}.log"
+      - name: Require real machine receipts
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s "$SRC/.output/managed.json"
+          test -s "$OUT/source-qa.json"
+          test -s "$OUT/source-qa.zip"
+          sha256sum "$OUT/source-qa.zip"
+      - name: Preserve unmodified original evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b0125-w30-live-jumppad-${{ matrix.label }}
+          path: |
+            Research/B01-25/P17/W30JumpPadLifecycle/.output/**
+            Tools/B01/B01-25/P17W30LiveJumpPadLifecycle/.output/**
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 21
+  actual-source-zip-parity:
+    needs: actual-original-source
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: b0125-w30-live-jumppad-*
+          path: evidence
+      - name: Download real Windows and Linux original-source ZIPs and byte-compare
+        shell: bash
+        run: |
+          set -euo pipefail
+          A="$(find evidence/b0125-w30-live-jumppad-ubuntu -name source-qa.zip | head -n1)"
+          B="$(find evidence/b0125-w30-live-jumppad-windows -name source-qa.zip | head -n1)"
+          test -s "$A" && test -s "$B"
+          sha256sum "$A" "$B"
+          cmp "$A" "$B"
+          python - "$A" <<'PY'
+          import sys,json,zipfile
+          with zipfile.ZipFile(sys.argv[1]) as z:
+              names=z.namelist()
+              assert len(names)==4 and len(set(names))==4
+              m=json.loads(z.read("PACKAGE_MANIFEST.json"))
+              assert m["sourceOnly"] and m["nativeUnity"]=="NOT_RUN"
+              assert len(m["files"])==3
+          print("B0125_W30_ORIGINAL_GAME_SOURCE_ZIP_BYTE_PARITY_PASS")
+          PY
