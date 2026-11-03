@@ -95,9 +95,12 @@ def main():
         for p in sorted(modified):
             info=zipfile.ZipInfo(p,(1980,1,1,0,0,0))
             info.compress_type=zipfile.ZIP_STORED
+            info.create_system=3  # stable ZIP Unix host marker on Windows and Linux
             info.external_attr=0o100644<<16
             archive.writestr(info,blob("HEAD",p))
         info=zipfile.ZipInfo("SOURCE_RECEIPT.json",(1980,1,1,0,0,0))
+        info.create_system=3
+        info.external_attr=0o100644<<16
         archive.writestr(info,data)
     sha=hashlib.sha256(zipped.read_bytes()).hexdigest()
     print("B0100_W29_ORIGINAL_EMP_EXACT_3_FILES_PASS")
