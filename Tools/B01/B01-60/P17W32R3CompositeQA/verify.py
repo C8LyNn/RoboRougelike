@@ -47,16 +47,22 @@ def defect_witness(source):
  bulk_inherits=("Repair(part.Cell)" in bulk)
  return {"destroyed_quote_old_35ceil_RED":original_wrong_quote,
          "mounted_inventory_emergency_paid0_denied_RED":zero_denied,
-         "bulk_inherits_paid0_denial_RED":bulk_inherits}
+         "bulk_inherits_paid0_denial_RED":bulk_inherits,
+         "destroyed_zeroHP_instant_without_authenticated_next_win_RED":(
+          "part.Health = 1; return true;" in mounted and
+          "part.Health=1;return true;" in inv and
+          "foreach(var part in plan)part.Health=1;" in emerg)}
 def verify():
  head=git("rev-parse","HEAD")
- assert_rule(git("rev-parse","HEAD^")==BASE,
-     "W32 QA must be ONE direct child of current canonical #877 exact SHA")
+ assert_rule(git("merge-base",BASE,"HEAD")==BASE,
+     "W33 must preserve original game #877 ancestry")
+ assert_rule(git("merge-base",MANIFEST["w32_source_green_original_immutable"],"HEAD")==MANIFEST["w32_source_green_original_immutable"],
+     "W33 must advance only own previous frozen W32 QA branch")
  assert_rule(git("merge-base",MANIFEST["real_game_parent_pr873"],BASE)==MANIFEST["real_game_parent_pr873"],
      "selected #873 cumulative game ancestry unavailable")
  diff=[tuple(s.split("\t",1)) for s in git("diff","--name-status",BASE,"HEAD").splitlines()]
  assert_rule(set(diff)=={("A",p) for p in MANIFEST["new_paths_exactly"]} and
-   len(diff)==len(MANIFEST["new_paths_exactly"]),"QA-only 13 ADDED paths scope violated")
+   len(diff)==len(MANIFEST["new_paths_exactly"]),"QA-only 15 ADDED paths scope violated")
  for path,expected in MANIFEST["product_pins"].items():
   assert_rule(git("rev-parse","HEAD:"+path)==expected,"original GAME source advanced "+path)
  for source in MANIFEST["legacy_qa_sources"]:
@@ -68,25 +74,28 @@ def verify():
        for p in MANIFEST["new_paths_exactly"] if p.endswith(".cs.meta")]
  assert_rule(all(x is not None for x in guids),"missing real Unity GUID")
  vals=[x.group(1) for x in guids]
- assert_rule(len(set(vals))==4,"test GUID duplicate in selected new fixture set")
+ assert_rule(len(set(vals))==5,"test GUID duplicate in selected new fixture set")
  assert_rule(MANIFEST["own_new_unity_guid"] in vals,"W32 Unity GUID mismatched")
- old_guids=subprocess.check_output(["git","-C",str(ROOT),"grep","-h","-E","^guid:","HEAD^","--","Assets/"],stderr=subprocess.PIPE).decode(errors="replace")
+ old_guids=subprocess.check_output(["git","-C",str(ROOT),"grep","-h","-E","^guid:",BASE,"--","Assets/"],stderr=subprocess.PIPE).decode(errors="replace")
  assert_rule(all(("guid: "+g) not in old_guids for g in vals),
        "collision against actual ORIGINAL game asset GUID")
  new=get(TEST_PATH)
- assert_rule(new.count("[Test]")==5,"exactly 5 authored new direct production R3 NUnit cases")
+ assert_rule(new.count("[Test]")==5 and new.count("[TestCase(")==3,
+     "exactly 5 V7 and 3 real Light/Standard/Heavy TestCase inputs")
  for m in (
-  "ZeroQuotedMountedWheelRepairsAtNoScrapWithoutReplacingOwnedId",
-  "ZeroQuotedBulkRepairActuallyRestoresOneWithoutSpendingScrap",
-  "ZeroQuotedEmergencyRepairRecoversRequiredRightWheelAndPreservesIds",
+  "ZeroQuotedMountedWheelBooksOnceButStaysAtZeroHpUntilNextTrueVictory",
+  "ZeroQuotedBulkRebuildBooksOnceWithoutImmediateRestoration",
+  "ZeroQuotedEmergencyBooksPendingStillCannotDeployAndPreservesIds",
   "ExistingNonzeroPartialHpRepairRateAndOneDebitRemainUnchanged",
-  "NonzeroDestroyedRebuildStillRequiresFundsNoScrapOrIdMutationOnDenial"
+  "NonzeroDestroyedRebuildStillRequiresFundsNoScrapOrIdMutationOnDenial",
+  "ActualR3VehicleHasFullDynamicWorldAndStableIdsNotTwoSlots"
  ):
   assert_rule("void "+m+"()" in new,"missing actual native case "+m)
  for marker in ("model.Repair(Vector3Int.right)","model.RepairAffordable()",
                 "model.EmergencyRepair()","model.EmergencyRepairCost",
                 "model.CanDeploy","model.Scrap","model.At(Vector3Int.right).Id",
-                "model.RepairCost(part)","R3PartKind.Core","R3PartKind.Wheel"):
+                "model.RepairCost(part)","R3PartKind.Core","R3PartKind.Wheel",
+                "R3VehicleCatalog.Create(kind)","R3VehicleKind.Heavy"):
   assert_rule(marker in new,"real R3 model not invoked: "+marker)
  imported=[get(x["path"]) for x in MANIFEST["legacy_qa_sources"]]
  assert_rule("yield return new EnterPlayMode()" in imported[0] and
@@ -99,14 +108,32 @@ def verify():
  assert_rule("RepairInventory(owned.Id)" in imported[2] and
      "OwnedDestroyedArmorRebuildQuoteMatchesApprovedV7Floor65" in imported[2],
      "original B01-10 #897 V7 producer cases not staged byte-identical")
+ assert_rule("PurchasePriceOneAcceptsZeroPaidOrderButMustNotImmediatelyRestoreHP" in imported[2],
+     "obsolete W31 instant 0HP B01-10 fixture imported")
+ assert_rule("DestroyedOwnedMountedPartPaysV7QuoteButStaysAtZeroUntilAuthenticatedNextWin" in imported[3],
+     "missing latest B01-10 W32 authoritative next Win fixture")
+ assert_rule("LiveDefaultBasicGun_DestroyedEmergencyOrderMustWaitForRealNextVictory" in imported[0],
+     "obsolete #899 instant emergency fixture imported")
+ assert_rule("PhysicallyBlockedLegacySaw_BulkRepairEstimateNeverPromisesImpossibleSpend" in imported[0],
+     "missing original real #899 physics bulk quote coverage")
+ for kind,n in (("Light",20),("Standard",83),("Heavy",139)):
+  assert_rule("[TestCase(R3VehicleKind."+kind+", "+str(n)+")]" in new,
+       "missing real Unity catalog full vehicle count fixture "+kind)
+ assert_rule("Assert.That(part.Health, Is.Zero" in new and
+     "Assert.That(model.At(Vector3Int.right).Health, Is.Zero" in new and
+     "Assert.That(model.CanDeploy, Is.False" in new,
+     "W33 own fixture still accepts illegal instant destroyed recovery")
  witness=defect_witness(get("Assets/R3/R3VehicleModel.cs"))
  assert_rule(all(witness.values()),"expected original real R3 P0 defect no longer matches; reevaluate after owner patch")
- return {"status":"SOURCE_ONLY_EXPECTED_ORIGINAL_R3_PRODUCT_RED",
+ return {"status":"SOURCE_ONLY_EXPECTED_V7_NEXT_WIN_AND_SAVE913_PRODUCT_RED",
          "head":head,"canonical_game877_exact":BASE,
          "original_game_blobs_pinned":len(MANIFEST["product_pins"]),
+         "real_R3_Light_Standard_Heavy_part_counts":[20,83,139],
+         "frozen_sole_Save896_supported_slots":2,
+         "real_game_Save_G1":"BLOCKED_BY_PRODUCER_913",
          "imported_original_Unity_test_blob_pairs":len(MANIFEST["legacy_qa_sources"]),
          "new_QA_only_paths":len(diff),
-         "authored_genuine_original_Unity_NUnit_cases":14,
+         "authored_genuine_original_Unity_NUnit_cases":21,
          "product_defects":witness,
          "independent_source_code_CI":"PASS_ONLY_IF_ACTUALLY_RUN",
          "real_Unity_Editor_G1":"NOT_RUN","real_PhysX":"NOT_RUN",
