@@ -139,6 +139,10 @@ namespace RoboRougelike.B0131.W30.NativeTests
         [Test]
         public void NonFbxOrForeignModelRefusedWithoutTouchingExistingTurret()
         {
+            // The optional output might already exist from an approved
+            // earlier run. This negative test must not assume an empty folder.
+            var before=AssetDatabase.LoadAssetAtPath<GameObject>(
+                "Assets/B01_31/W30R41V5Adapter/Generated/R41_Turret_v5_ADAPTER_CANDIDATE_ONLY.prefab");
             var foreign=new GameObject("FOREIGN_SAVED_WORKING_TURRET");
             try
             {
@@ -149,9 +153,9 @@ namespace RoboRougelike.B0131.W30.NativeTests
                     "Cannot create a v5 adapter from live real gameplay turret!");
                 StringAssert.Contains("WRONG_ASSET",args[1].ToString());
                 Assert.IsNotNull(foreign);
-                Assert.IsFalse(AssetDatabase.IsValidFolder(
-                    "Assets/B01_31/W30R41V5Adapter/Generated"),
-                    "This test must run BEFORE owner-approved manual prefab generation");
+                Assert.AreSame(before,AssetDatabase.LoadAssetAtPath<GameObject>(
+                    "Assets/B01_31/W30R41V5Adapter/Generated/R41_Turret_v5_ADAPTER_CANDIDATE_ONLY.prefab"),
+                    "Foreign source must never replace old optional candidate or fallback");
             }
             finally { Object.DestroyImmediate(foreign); }
         }
