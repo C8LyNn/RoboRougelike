@@ -304,6 +304,100 @@ internal static class W33Os
           out _,out byte[] cold,out var e)==WholeGameResult.Corrupt&&
           cold.Length==0&&e==null;
       });
+    static bool InventoryDetachedPhysicalResourceRoundtrip()
+      =>Temp(root=>{
+        var w=World(R3VehicleKind.Heavy,1);
+        var inv=w.Parts.First(x=>x.Kind==0);
+        var detached=w.Parts.First(x=>x.Kind==1);
+        inv.Location=R3PartLocationV1.Inventory;
+        inv.UpgradeId="r3-upgrade-test";
+        inv.UpgradeTitle="Exact inventory bonus";
+        inv.UpgradeDescription="Preserve resources and own GUID";
+        inv.UpgradeEffect=2;inv.UpgradeAmount=.75f;
+        inv.Ammo=27;
+        detached.Location=R3PartLocationV1.Detached;
+        detached.ConsumedDetach=true;detached.Vx=3.75f;
+        detached.Wz=-1.25f;detached.ThermalHeat=.125f;
+        if(!CanonicalR3WorldCodecV1.Valid(w))return false;
+        if(!Open(root,out var gateway,out var slot)||slot==null)return false;
+        bool ok=false;
+        try
+        {
+            ok=slot.Commit(0,CanonicalR3WorldCodecV1.Encode(w),Econ(w))==
+                WholeGameResult.Accepted;
+        }
+        finally{if(!Close(gateway,slot))ok=false;}
+        if(!ok||CanonicalColdReadV3.ReadClosedSlot(root,Run,Slot,
+             out long gen,out byte[] world,out var wallet)!=WholeGameResult.Accepted||
+            gen!=1||wallet==null||wallet.Parts.Count!=139||
+            !CanonicalR3WorldCodecV1.TryDecode(world,out var saved)||saved==null)
+            return false;
+        var restoredInventory=saved.Parts.Single(x=>x.Id==inv.Id);
+        var restoredDetached=saved.Parts.Single(x=>x.Id==detached.Id);
+        return restoredInventory.Location==R3PartLocationV1.Inventory&&
+            restoredInventory.UpgradeId=="r3-upgrade-test"&&
+            restoredInventory.UpgradeAmount==.75f&&
+            restoredInventory.Ammo==27&&
+            restoredDetached.Location==R3PartLocationV1.Detached&&
+            restoredDetached.ConsumedDetach&&restoredDetached.Vx==3.75f&&
+            restoredDetached.Wz==-1.25f&&
+            restoredDetached.ThermalHeat==.125f;
+      });
+    static bool FreeWin1BookedThenSettledOnlyModeledWin2()
+      =>Temp(root=>{
+        var w=World(R3VehicleKind.Standard,1);
+        var damaged=w.Parts.First(x=>x.Kind==0);
+        damaged.Hp=0;
+        var initial=Econ(w,0);
+        if(!Open(root,out var gateway,out var slot)||slot==null)return false;
+        bool ok=false;
+        try
+        {
+            if(slot.Commit(0,CanonicalR3WorldCodecV1.Encode(w),initial)!=
+                WholeGameResult.Accepted)return false;
+            // ONLY synthetic QA source reducer receipts. These must never be
+            // passed by UI in actual Unity; real combat attestation is missing.
+            if(!ApprovedEconomyPolicyV7.TryStageTrustedVictory(initial,
+                "w33-source-only-first-win","w33-source-only-first-fight",
+                out var win1,out _)||win1==null||win1.Wins!=1||
+                win1.Parts.Single(p=>p.Id==damaged.Id).Hp!=0)
+                return false;
+            w.Generation=2;
+            if(slot.Commit(1,CanonicalR3WorldCodecV1.Encode(w),win1)!=
+                WholeGameResult.Accepted)return false;
+            if(!ApprovedEconomyPolicyV7.TryReserveDestroyed(win1,damaged.Id,
+                out var booked,out _)||booked==null||
+                booked.Pending.Count!=1||!booked.Pending[0].Free||
+                booked.Pending[0].ChargedScrap!=0||
+                booked.Parts.Single(p=>p.Id==damaged.Id).Hp!=0)
+                return false;
+            w.Generation=3;
+            if(slot.Commit(2,CanonicalR3WorldCodecV1.Encode(w),booked)!=
+               WholeGameResult.Accepted)return false;
+            if(!ApprovedEconomyPolicyV7.TryStageTrustedVictory(booked,
+                "w33-source-only-second-win","w33-source-only-second-fight",
+                out var win2,out _)||win2==null||win2.Wins!=2||
+                win2.Pending.Count!=0||
+                win2.Parts.Single(p=>p.Id==damaged.Id).Hp!=1)
+                return false;
+            w.Generation=4;damaged.Hp=1;
+            if(slot.Commit(3,CanonicalR3WorldCodecV1.Encode(w),win2)!=
+                WholeGameResult.Accepted||
+               ApprovedEconomyPolicyV7.TryStageTrustedVictory(win2,
+                "w33-source-only-second-win","w33-source-only-second-fight",
+                out _,out _))return false;
+            ok=true;
+        }
+        finally{if(!Close(gateway,slot))ok=false;}
+        if(!ok)return false;
+        return CanonicalColdReadV3.ReadClosedSlot(root,Run,Slot,
+            out long gen,out byte[] payload,out var econ)==
+               WholeGameResult.Accepted&&gen==4&&econ!=null&&
+               econ.Wins==2&&econ.ConsumedVictoryIds.Count==2&&
+               econ.Pending.Count==0&&econ.Scrap==0&&
+               CanonicalR3WorldCodecV1.TryDecode(payload,out var saved)&&
+               saved!=null&&saved.Parts.Single(p=>p.Id==damaged.Id).Hp==1;
+      });
     static int Main()
     {
         Test("Exact R3 Light 20 original parts complete roundtrip",
@@ -318,6 +412,10 @@ internal static class W33Os
         Test("Original frozen two-slot Save cannot silently become R3",NoMigrationLegacy556);
         Test("V7 P1=0 Scrap paid pending until next modeled distinct win",V7PaidZeroNextModeledVictory);
         Test("Dynamic R3 corrupted envelope sticky fail-closed",StickyCorrupt);
+        Test("Heavy inventory+detached physics/resource parts survive cold",
+             InventoryDetachedPhysicalResourceRoundtrip);
+        Test("Win1 FREE booked HP0; only later modeled Win2 restores same GUID",
+             FreeWin1BookedThenSettledOnlyModeledWin2);
         Console.WriteLine("B0162_W33_R3_SAME_ONE_WRITER_REAL_OS_TOTAL "+
             (pass+fail)+" PASS "+pass+" FAIL "+fail);
         Console.WriteLine("B0162_W33_UNITY_NATIVE=NOT_RUN_GAME_R3_BINDER=NOT_INTEGRATED");
