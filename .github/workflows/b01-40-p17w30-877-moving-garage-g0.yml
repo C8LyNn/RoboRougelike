@@ -1,0 +1,76 @@
+name: B01-40 W30 ORIGINAL live #873+#877 moving-garage Unity test SOURCE G0
+on:
+  push:
+    branches: [qa/b01-40-p17w30-877-moving-garage-g0-r1]
+    paths:
+      - 'Assets/Tests/Editor/B0140W30DynamicGarageClearanceTests.cs'
+      - 'Assets/Tests/Editor/B0140W30DynamicGarageClearanceTests.cs.meta'
+      - 'Tools/B01/B01-40/P17W30MovingGarageG0/**'
+      - '.github/workflows/b01-40-p17w30-877-moving-garage-g0.yml'
+  pull_request:
+    paths:
+      - 'Assets/Tests/Editor/B0140W30DynamicGarageClearanceTests.cs'
+      - 'Assets/Tests/Editor/B0140W30DynamicGarageClearanceTests.cs.meta'
+      - 'Tools/B01/B01-40/P17W30MovingGarageG0/**'
+      - '.github/workflows/b01-40-p17w30-877-moving-garage-g0.yml'
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  selected-source-qa:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Real source/delta/Unity meta and negative dirty-staging checks on immutable W30 head
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-40/P17W30MovingGarageG0/verify.py \
+            --receipt evidence/b0140-w30-877-dynamic-garage.json | tee b0140-w30-source.log
+          grep -q 'B0140_W30_ORIGINAL_873_37_FILES_AND_877_3_SOURCE_DELTAS_EXACT_UNMODIFIED_PASS' b0140-w30-source.log
+          grep -q 'B0140_W30_COMPLETE_RECEIVER_UNITY_GUID_UNIQUENESS_PASS' b0140-w30-source.log
+          grep -q 'B0140_W30_877_LIVE_PHYSICAL_WPN005_AND_GARAGE_PREVIEW_BUY_MOUNT_AUTHORITY_PASS' b0140-w30-source.log
+          grep -q 'B0140_W30_NEW_REAL_UNITY_DYNAMIC_OWNER_RIGIDBODY_TEST_SOURCE_PASS_NOT_EXECUTED' b0140-w30-source.log
+          grep -q 'B0140_W30_REAL_STAGING_DIRTY_PRODUCT_NEGATIVE_AND_FOREIGN_SAVE_PASS' b0140-w30-source.log
+          grep -q 'B0140_W30_EXACT_877_DYNAMIC_RECEIVER_SOURCE_G0_PASS' b0140-w30-source.log
+          test -s evidence/b0140-w30-877-dynamic-garage.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b0140-w30-dynamic-garage-${{ matrix.os }}
+          path: |
+            evidence/
+            b0140-w30-source.log
+          if-no-files-found: warn
+  cross-os-exact-receipt:
+    needs: selected-source-qa
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: b0140-w30-dynamic-garage-*
+          path: received
+      - name: Compare two physically executed original HEAD source manifests
+        shell: bash
+        run: |
+          python - <<'PY'
+          import hashlib
+          from pathlib import Path
+          files=sorted(Path("received").glob("*/evidence/b0140-w30-877-dynamic-garage.json"))
+          if len(files)!=2: raise SystemExit("B0140_W30_FAIL_NOT_TWO_OS")
+          a,b=[x.read_bytes() for x in files]
+          if a!=b: raise SystemExit("B0140_W30_FAIL_NONDETERMINISTIC_ORIGINAL_RECEIPT")
+          print("B0140_W30_CROSS_OS_EXACT_877_NATIVE_TEST_SOURCE_G0_PASS_SHA256",
+                hashlib.sha256(a).hexdigest())
+          print("B0140_W30_UNITY_G1_NOT_RUN_WINDOWS_PLAYER_NOT_BUILT")
+          PY
