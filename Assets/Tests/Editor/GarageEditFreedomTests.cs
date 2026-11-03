@@ -173,6 +173,47 @@ public sealed class GarageEditFreedomTests
         yield return new ExitPlayMode();
     }
 
+    // W31: the actual live garage repeatedly evaluates the same physical
+    // weapon ghost before the player clicks. Caching immutable default saw
+    // geometry must not make a previous blocked result turn green or debit IDs.
+    [UnityTest] public IEnumerator RepeatedSawPreviewMaintainsPhysicalRefusalAndWallet()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);
+        yield return new EnterPlayMode();
+        float deadline=Time.realtimeSinceStartup+15f;
+        while(R1RunController.Instance?.Progress==null&&
+              Time.realtimeSinceStartup<deadline)yield return null;
+        var run=R1RunController.Instance;
+        Assert.That(run,Is.Not.Null);
+        Assert.That(run.SelectVehicle(R3VehicleKind.Standard),Is.True);
+        Assert.That(run.OpenSandboxGarage(),Is.True);
+        var oldGun=run.VehicleModel.Parts.First(p=>p.Kind==R3PartKind.Gun);
+        var id=oldGun.Id;
+        var center=oldGun.Cell;
+        Assert.That(run.GarageRemove(center),Is.True);
+        var stored=run.VehicleModel.Inventory.Single(p=>p.Id==id);
+        stored.Weapon=RoboRougelike.R4.R4WeaponKind.RotarySaw;
+        int initialScrap=run.VehicleModel.Scrap;
+        int initialPartCount=run.VehicleModel.Parts.Count;
+        var initialIds=run.VehicleModel.Parts.Concat(run.VehicleModel.Inventory)
+            .Select(p=>p.Id).OrderBy(x=>x).ToArray();
+        string expected=run.VehicleModel.OwnedPlacementError(id,center,default);
+        Assert.That(expected,Does.Contain("tarcza piły"),
+            "Factory center overlaps actual owner armor; do not relax physical policy.");
+        for(int frame=0;frame<32;frame++)
+        {
+            Assert.That(run.VehicleModel.OwnedPlacementError(id,center,default),
+                Is.EqualTo(expected),"same live vehicle must not alternate allowed and blocked");
+            if(frame%8==7)yield return null;
+        }
+        Assert.That(run.GarageMount(id,center,default),Is.False);
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(initialScrap));
+        Assert.That(run.VehicleModel.Parts.Count,Is.EqualTo(initialPartCount));
+        Assert.That(run.VehicleModel.Parts.Concat(run.VehicleModel.Inventory)
+            .Select(p=>p.Id).OrderBy(x=>x),Is.EqualTo(initialIds));
+        yield return new ExitPlayMode();
+    }
+
     [UnityTest] public IEnumerator ExistingDeadLegacySawCannotRepairOrEmergencyRepair()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);
