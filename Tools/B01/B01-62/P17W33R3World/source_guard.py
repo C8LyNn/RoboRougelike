@@ -71,7 +71,7 @@ def run(out):
        "writer_count":1,"outer_format":"B0162G02",
        "dynamic_world_format":"B01R3W01","frozen_world":"B01SV13! unchanged",
        "owner_schema_approval":"PENDING","game_r3_physical_stage":"NOT_IMPLEMENTED",
-       "source_os_suite":"W28 9 + W29 6 + W30 4 + W31 2 + W33 9",
+       "source_os_suite":"W28 9 + W29 6 + W30 4 + W31 2 + W33 11",
        "native_unity":"NOT_RUN","released":False}
  b=(json.dumps(data,indent=2,sort_keys=True)+"\n").encode()
  Path(out).write_bytes(b)

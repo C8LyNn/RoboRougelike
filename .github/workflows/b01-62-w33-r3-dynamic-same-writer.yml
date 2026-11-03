@@ -51,7 +51,7 @@ jobs:
         run: |
           set -euo pipefail
           dotnet run --project Tools/B01/B01-62/P17W30AdmissionV3/W28OriginalRegression.csproj -c Release -v quiet | tee b0162-w33-evidence/w28.log
-          grep -q 'W25_V7_GAME_ECON_ONE_ENVELOPE_SOURCE_TOTAL 9 PASS 9 FAIL 0' b0162-w33-evidence/w28.log
+          grep -q 'W25_V7_GAME_ECON_ONE_ENVELOPE_SOURCE_TOTAL 11 PASS 11 FAIL 0' b0162-w33-evidence/w28.log
       - name: Rerun actual ORIGINAL W29 6 cold read OS regression cases
         run: |
           set -euo pipefail
