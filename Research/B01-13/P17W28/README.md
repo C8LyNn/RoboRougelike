@@ -138,3 +138,16 @@ Dedicated Actions matrix: **Windows 2025 / Ubuntu 24.04 × Python 3.11 / Python 
 **Critical limit:** matching physical bytes and operator-asserted JSON do not authenticate a Windows process, Unity, an embedded game commit, a human participant, player gameplay, or a successful game release. A malicious user could fabricate all three input files. Independent B01-60 execution/review is necessary. Source tests on dummy EXE/log archives never invoke Unity, Windows Player or any human. Always productGate HOLD_INDEPENDENT_G0_G1_AND_REAL_HUMAN_ACCEPTANCE and nativeUnityG1 NOT_VERIFIED.
 
 **R3 regression suite:** 51 inherited + 12 targeted = 63 Python source checks on each requested runner (Windows 2025, Ubuntu 24.04; Python 3.11/3.13). Cases include 66 MiB real ZIP, switched EXE/log after receipt, mismatched commit, invalid session schema/time, fake Unity success claim, wrong sibling DLL and missing receipt. These counts describe source test cases only; final CI result must be verified independently. Source G0 receiver B01-40, native G1/Player B01-60, release owner B01-00. No protected merge or release.
+
+
+## W32 R4 — unambiguous Windows Player ZIP evidence
+
+**Parent:** B01-13 W31 PR #905, exact immutable commit 7309b8b080041f984cae3adcdd8b2d08bb2f3ea0. Same W27/W28/W29 intake and existing W30 process receipt; not a new game or a second authority.
+
+**Reproduced physical W31 RED:** A structurally valid ZIP contains two RoboRougelike.exe entries with identical filenames but different binary bytes. W31 can hash the first, match W30 session receipt and report evidence consistency, yet standard filename-based extraction selects the second. An operator case P15 PASS on this archive is therefore unsafe/ambiguous. The exact original W31 tool accepted the archive and mismatched extracted identity.
+
+**R4 fix:** Original existing playtest_intake.py now validates every ZIP member's canonical Windows extraction name: exact and case-insensitive duplicates, file-vs-directory collisions, Unix symlink members, Windows unsafe characters, NTFS alternate streams, trailing dot/space and reserved DOS device names are fail-closed. The check applies both during archive inspection and direct session-receipt verification. Original 2 GiB ZIP limit, CRC test, traversal checks, physical EXE SHA256, Player.log SHA256 and W30 receipt remain intact. Legitimate UnityCrashHandler64.exe and an archive rooted in a nested directory still pass structure-only screening.
+
+**Tests:** 9 added source-only tests at Research/B01-13/P17W32/test_zip_canonical.py, seven new security/canonicality tests were RED with original W31, two positive cases PASS; all 9 PASS after source fix. Original 63 W31 tests unchanged, combined 72/72 locally PASS. Remote GitHub Actions is a separate source check. No tests ran the real Unity Editor or Player. Fake ZIP bytes do not certify genuine Unity gameplay, a human participant or Game G1. Independent B01-40/60 native QA remains mandatory.
+
+**Other W32 blockers:** current selected #877 is only SOURCE plus fail-closed native gate, #896 is one-writer source update not game-integrated, #897 reports 65% floor/paid-zero R3 rebuild pricing RED, #834 owner softlock decision pending. This PR neither changes gameplay nor gives false acceptance.

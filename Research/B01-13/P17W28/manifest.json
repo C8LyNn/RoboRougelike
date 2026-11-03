@@ -1,52 +1,52 @@
 {
-  "package_id": "B01-13-W31-PLAYTEST-EVIDENCE-INTAKE-001/R3",
-  "revision": "R3",
+  "package_id": "B01-13-W32-PLAYTEST-EVIDENCE-INTAKE-001/R4",
+  "revision": "R4",
   "owner": "B01-13 HUMAN PLAYTESTING",
   "hq_issue": 800,
-  "parent_pr": 886,
-  "parent_sha": "29a7e166c37aa434885f1731340b215f6244d885",
-  "source_branch": "research/b01-13-p17w31-player-archive-session-integrity-r3",
-  "previous_package": "B01-13-W29-PLAYTEST-EVIDENCE-INTAKE-001/R2",
-  "inherited_w27_observer_sha": "65c73fd4a3e6c9fcc61b2e388542b96dbfa1748c",
-  "inherited_w27_observer_git_blob": "dbac634f78943e44a08a1ae6f80c1ae8ebe9a125",
+  "parent_pr": 905,
+  "parent_sha": "7309b8b080041f984cae3adcdd8b2d08bb2f3ea0",
+  "source_branch": "research/b01-13-p17w32-canonical-player-zip-evidence-r4",
+  "previous_package": "B01-13-W31-PLAYTEST-EVIDENCE-INTAKE-001/R3",
   "codex_reserved_paths": "DO_NOT_MODIFY",
   "actual_human_sessions": 0,
   "unity_editor_g1": "NOT_RUN",
-  "independent_source_g0": "PENDING",
   "gameplay_integration": "NO",
   "windows_player_build": "NOT_BUILT_HERE",
-  "source_tests_count": 63,
+  "source_tests_count": 72,
   "acceptance_cases": 21,
   "mandatory_p0_cases": 20,
+  "source_qa": "LOCAL_72_PASS_REMOTE_PENDING",
   "fixes": [
-    "REAL_PHYSICAL_66_MIB_PLAYER_ZIP_PREVIOUSLY_REFUSED_FILE_SIZE",
-    "PLAYER_ZIP_CAP_2_GIB_ONLY_OTHER_EVIDENCE_64_MIB",
-    "P15_REQUIRES_ZIP_LOG_W30_RECEIPT",
-    "PHYSICAL_EXE_IN_ZIP_MATCHES_W30_EXE_HASH_AND_BYTES",
-    "PHYSICAL_LOG_HASH_BYTES_GAME_SHA_ZERO_EXIT_UCT_TIME_MATCH",
-    "NO_INDEPENDENT_G1_OR_HUMAN_CLAIM"
+    "DUPLICATE_EXE_HASH_VS_EXTRACTED_AMBIGUITY",
+    "WINDOWS_CASEFOLD_DUPLICATE_NAMES",
+    "SYMLINKS_RESERVED_PATH_NAMES_BLOCKED",
+    "KEEP_EXISTING_W30_EXE_LOG_RECEIPT_SHA_MATCH",
+    "SAME_21_CASE_GATE_NO_NATIVE_OR_HUMAN_CLAIM"
   ],
-  "source_qa": "LOCAL_63_PASS_GITHUB_CI_PENDING",
   "files": {
     "Research/B01-13/P17W28/playtest_intake.py": {
-      "git_blob_sha1": "c834755a781a4333438bcf5f5a7d55d9828eef20",
-      "bytes": 20267
+      "git_blob_sha1": "9f99a483aa4125e0ed35cd85e08ce98fba14abb0",
+      "bytes": 21587
     },
     "Research/B01-13/P17W28/test_playtest_intake.py": {
       "git_blob_sha1": "5a381323e5ce70f3926033c6be0c5d173bb99612",
       "bytes": 21369
     },
+    "Research/B01-13/P17W32/test_zip_canonical.py": {
+      "git_blob_sha1": "4933d318775877d89206f6391a84e76e3065b606",
+      "bytes": 4383
+    },
     "Research/B01-13/P17W28/verify_package.py": {
-      "git_blob_sha1": "2413b6b25e238dc80ac58e9eab6c2733945303e7",
+      "git_blob_sha1": "c5178ef3c74fc89241ec36ac7419e8c304825a71",
       "bytes": 1190
     },
     "Research/B01-13/P17W28/README.md": {
-      "git_blob_sha1": "9688a2cfecd4db0f83a7c7513581e66938e4284a",
-      "bytes": 16542
+      "git_blob_sha1": "72f7924ea1d5fb24ca61f092f1036343686e87a5",
+      "bytes": 18702
     },
     ".github/workflows/b01-13-w28-evidence-intake.yml": {
-      "git_blob_sha1": "3ed9996c5b82c5e0acbaa506a03009c7a682e711",
-      "bytes": 1691
+      "git_blob_sha1": "0f6ad1aa315b17e48ee9b2c4cf52c3a0e0665067",
+      "bytes": 1812
     }
   }
 }

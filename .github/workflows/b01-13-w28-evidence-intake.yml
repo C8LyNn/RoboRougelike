@@ -1,12 +1,14 @@
-name: B01-13 W31 Player Archive + Session Integrity R3
+name: B01-13 W32 Windows Player ZIP Canonicality R4
 on:
   push:
     paths:
       - 'Research/B01-13/P17W28/**'
+      - 'Research/B01-13/P17W32/**'
       - '.github/workflows/b01-13-w28-evidence-intake.yml'
   pull_request:
     paths:
       - 'Research/B01-13/P17W28/**'
+      - 'Research/B01-13/P17W32/**'
       - '.github/workflows/b01-13-w28-evidence-intake.yml'
   workflow_dispatch:
 jobs:
@@ -24,8 +26,8 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Verify exact original Git blob and UTF8 byte manifest
         run: python Research/B01-13/P17W28/verify_package.py
-      - name: Execute 63 actual W31 regression tests incl 66 MiB ZIP
-        run: python -m unittest -v Research/B01-13/P17W28/test_playtest_intake.py
+      - name: Execute 72 W32 original and ZIP canonicality regression tests
+        run: python -m unittest -v Research/B01-13/P17W28/test_playtest_intake.py Research/B01-13/P17W32/test_zip_canonical.py
       - name: Create physical empty result template and hash
         shell: pwsh
         run: |
@@ -35,7 +37,7 @@ jobs:
           Write-Output ('W29_TEMPLATE_SHA256=' + (Get-FileHash -Algorithm SHA256 $out).Hash.ToLowerInvariant())
       - uses: actions/upload-artifact@v4
         with:
-          name: B01-13-W31-EMPTY-TEMPLATE-${{ matrix.os }}-Py${{ matrix.python-version }}
+          name: B01-13-W32-EMPTY-TEMPLATE-${{ matrix.os }}-Py${{ matrix.python-version }}
           path: ${{ runner.temp }}/w29-response-template.json
           if-no-files-found: error
           retention-days: 14

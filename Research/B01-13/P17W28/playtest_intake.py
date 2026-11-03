@@ -17,7 +17,7 @@ import zipfile
 from datetime import datetime
 from pathlib import PurePosixPath
 
-PACKAGE = 'B01-13-W31-PLAYTEST-EVIDENCE-INTAKE-001/R3'
+PACKAGE = 'B01-13-W32-PLAYTEST-EVIDENCE-INTAKE-001/R4'
 W27_SOURCE_HEAD = '65c73fd4a3e6c9fcc61b2e388542b96dbfa1748c'
 W27_SCHEMA = 'b01-13-observer-r1'
 CASE_IDS = ('P01_BASIC_AUTOMATIC_HEAVY','P02_SHOTGUN_RAIL_ROCKET','P03_BEAM','P04_ROTARY_SAW',
@@ -127,11 +127,39 @@ def safe_file(root: Path, relative: str):
     ensure(resolved.resolve().is_relative_to(root.resolve()),'EVIDENCE_ESCAPE_RESOLVE')
     return regular(resolved,'EVIDENCE_NOT_REGULAR')
 
+def validate_unity_members(members):
+    """Fail closed on ambiguous Windows ZIP names before comparing Player bytes.
+
+    In R3 a first EXE could match the W30 receipt while the extractor selects
+    a second duplicate member with the same filename and different content.
+    """
+    ensure(2 < len(members) <= 20000,'ZIP_MEMBERS')
+    names=set()
+    windows_devices={'CON','PRN','AUX','NUL',*(f'COM{i}' for i in range(1,10)),
+                     *(f'LPT{i}' for i in range(1,10))}
+    for member in members:
+        name=member.filename
+        ensure(name and not name.startswith('/') and '\\' not in name and
+               '..' not in name.rstrip('/').split('/'),'ZIP_TRAVERSAL')
+        ensure(not any(ord(ch)<32 or ch in '<>:"|?*' for ch in name),
+               'ZIP_MEMBER_PATH_UNSAFE')
+        parts=name.rstrip('/').split('/')
+        ensure(all(part not in ('','.','..') and part==part.rstrip(' .') and
+                   part.split('.')[0].upper() not in windows_devices for part in parts),
+               'ZIP_MEMBER_PATH_UNSAFE')
+        canonical='/'.join(parts).casefold()
+        ensure(canonical not in names,'ZIP_DUPLICATE_MEMBER')
+        names.add(canonical)
+        mode=member.external_attr>>16
+        ensure(not (member.create_system==3 and stat.S_IFMT(mode)==stat.S_IFLNK),
+               'ZIP_SYMLINK_MEMBER')
+    return names
+
 def inspect_unity_zip(file: Path):
     try:
         with zipfile.ZipFile(file,'r') as z:
             members=z.infolist()
-            ensure(len(members)<=20000 and len(members)>2,'ZIP_MEMBERS')
+            validate_unity_members(members)
             ensure(all(not x.filename.startswith('/') and '\\' not in x.filename and '..' not in Path(x.filename).parts for x in members),'ZIP_TRAVERSAL')
             ensure(sum(x.file_size for x in members)<3*1024*1024*1024,'ZIP_BOMB_DECLARED')
             names=[x.filename.lower() for x in members]
@@ -178,7 +206,7 @@ def verify_w30_session(receipt: Path, archive: Path, player_log: Path, game_sha:
     found=0
     try:
         with zipfile.ZipFile(archive,'r') as z:
-            names={x.filename.casefold() for x in z.infolist()}
+            names=validate_unity_members(z.infolist())
             for info in z.infolist():
                 if not info.filename.lower().endswith('.exe') or info.is_dir():continue
                 if info.file_size!=exe_size:continue
