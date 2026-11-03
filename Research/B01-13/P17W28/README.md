@@ -1,3 +1,60 @@
+# B01-13 | PASS17 / WAVE29 — Existing evidence intake R2 (physical receipts, not new gameplay)
+
+**Owner:** B01-13 HUMAN PLAYTESTING | **HQ:** [#800](https://github.com/C8LyNn/RoboRougelike/issues/800) | **new descendant of own unmerged [W28 #844@4de04e7447c76cebec50f71e64f4e0b52ae928a9](https://github.com/C8LyNn/RoboRougelike/pull/844)**. Reuses W27 [#819](https://github.com/C8LyNn/RoboRougelike/pull/819) real observer output. This is a SOURCE-only functional FIX to the existing W28 intake. No edits to actual Codex R3 game, #828 Saw, #839 EMP, #826 Save, #846 garage, asset producers or protected branches.
+
+## Reproduced W28 real bug and W29 code correction
+
+**Original W28 physical RED:** an arbitrary tiny synthetic ZIP containing only three correctly named fake files `RoboRougelike.exe`, `UnityPlayer.dll`, `RoboRougelike_Data/boot.config` returned `P15_PLAYER_ZIP_BOOT=PASS` with just ONE evidence file. Original W28 correctly labelled actual independent boot `NOT_INDEPENDENTLY_VERIFIED_BY_THIS_TOOL`, but a misleading green operator receipt was still possible.
+
+**W29 R2:** P15 operator PASS now demands **two distinct existing physical files**, a CRC/structure-checked Windows ZIP plus **Player.log** or .txt, each with independently computed SHA256/byte count. A standalone ZIP fails `W29_BOOT_BUNDLE_REQUIRED`. Even with both files, `windowsPlayerBoot=NOT_INDEPENDENTLY_VERIFIED_BY_THIS_TOOL` and product gate HOLD: malicious/synthetic logs cannot be distinguished by this tool. Independent B01-60 must actually run extracted Player, verify its process exit, real gameplay, build SHA and log.
+
+**Softlock #812:** W28 accepted a single log plus self-reported `CONTINUE_VERIFIED` for P12 PASS. W29 requires a 3-file `before`, `after`, `playerLog` evidence bundle with distinct before/after SHA256 and valid relative paths. This is still **operator-self-reported**, not independent proof of a legal continuation. V7 economy, one-shot loaner and deferred rebuild remain unchanged. Absent real Unity evidence and B01-00-approved legal run-end/continuation, **P0 remains unresolved**.
+
+## W29 exact 21-case acceptance matrix
+
+Preserve original 17 case IDs unchanged and add FOUR P0 cases:
+- `P18_SAW_DEFAULT_MOUNT_AND_OVERFLOW`: re-test original player and enemy saw mounts, own collision, RPM/heat/energy/damage and overflow diagnostics; #828 currently native Edit 2/4 and Play 19/20, **BLOCKED** until producer repairs
+- `P19_EMP_DETACH_DIRECT_GUARD`: accepted exact #839, real energy/cooldown/owner attachment and native Player; source/native targeted #849 passed but independent G0 and integrated game still needed
+- `P20_GARAGE_PHYSICAL_ZONE_COMMIT`: five colors including PURPLE/ORANGE/true GREEN, identical real preview/commit, no Scrap/ID loss, grid 0.55m, player performance
+- `P21_SAVE_ONE_OWNER_COLD_UNITY`: exact Unity-compatible #826 plus #792 physical world + #780 V7, actual one-owner end-to-end cold save/load, loss ACK, cross-generation integrity
+
+P17 model/turret remains optional P1. All remaining **20 cases mandatory P0**. `BLOCKED` / `NOT_RUN` must not count as PASS. No human trials are invented.
+
+## Input schema R2 and execution
+
+Create source-only empty template:
+```bash
+python Research/B01-13/P17W28/playtest_intake.py --game-commit <ACTUAL_40_HEX_GAME_COMMIT> --make-template <NEW_ABSOLUTE_OUTPUT_JSON>
+```
+
+For ordinary cases, `evidence` is one relative filename. **P15 PASS** `evidence` must be an object:
+```json
+{"playerZip":"build/RoboRougelike_Windows.zip","playerLog":"logs/Player.log"}
+```
+**P12 PASS** `evidence` must be:
+```json
+{"before":"states/before.json","after":"states/after.json","playerLog":"logs/loaner-player.log"}
+```
+`before` and `after` accept .json/.png/.jpg/.jpeg, require distinct bytes; `playerLog` .log/.txt. P12 FAIL with `softlockDisposition=UNRESOLVED` can still use one physical failure log. W27 observer JSON and 21-case W29 response JSON must have the SAME game commit. The W29 schema is `b01-13-w29-acceptance-r2` (explicit version, no silent W28 interchange). Tool outputs only new `W29_RECEIPT.json` and `W29_RECEIPT.csv`, one CSV row per physical proof (multiple roles retained).
+
+Invoke:
+```bash
+python Research/B01-13/P17W28/playtest_intake.py --game-commit <EXACT_SHA> --w27-report <ABSOLUTE_OBSERVER_JSON> --w28-responses <ABSOLUTE_R2_21_CASE_JSON> --evidence-dir <ABSOLUTE_EXISTING_EVIDENCE_DIR> --output-dir <ABSOLUTE_EMPTY_SCRATCH_DIR>
+```
+No network, downloads, Unity launch, game Save writes, user PII or telemetry. Requires safe scratch outside any Git worktree and refuses output overwrite, evidence symlinks/path traversal, missing physical files and wrong case enums. Unique evidence SHA256+bytes are a **receipt**, never game authenticity or verified humans.
+
+## Verified boundaries and receiver
+
+Author's local actual Python 3.13 regression tests **51/51 PASS** in a disposable repo-shaped source checkout plus real five-file SHA/Git-blob manifest verifier **5/5 PASS**. Original old W28 fake ZIP acceptance reproduced separately. Updated own GitHub Windows/Ubuntu Python3.11+3.13 CI must independently run before any remote SOURCE PASS can be claimed. Source-only package; **NATIVE_UNITY_G1=NOT_RUN; LIVE_PLAYER_BUILD=NOT_BUILT_HERE; ACTUAL_HUMAN_SESSIONS=0; G0=PENDING; INTEGRATED=NO; RELEASED=NO; CODEX_ACK=NONE; PRODUCT_GATE=HOLD**.
+
+**Exact current upstream snapshots:** Saw #828 `887fd18bf0a518ee24776c660f5efa6e3a0491d8` source with real native default-hull compatibility/overflow RED per #848. EMP #839 `fea000fe0a706df2b52b6f295bdb3135ba1f9384` real targeted native PASS via #849, not game integrated. Save #826 `99fb08619c78b3834bb4c0450499babf991f218a` source/netstandard2.1/atomic API PASS via #847, not native Unity whole-game G1. Garage #846 gives advisory zones not physical validator. No ability to inspect Codex's local unpushed worktree, installed Windows Unity or user PC through this GitHub-only action.
+
+**Safe rollback:** discard only new W29 unmerged Draft; leave #844, #819, source game, Codex worktrees and user evidence intact. **Next owners:** B01-40 source/G0 exact manifest, B01-60 independent actual Unity/Player and legal recovery session, B01-00 softlock policy, Codex gameplay integrator only after approved intake. DO NOT offer to #79 without G0. 
+
+---
+
+## Original W28 historical documentation (R1, superseded where modified)
+
 # B01-13 / PASS 17 / WAVE 28 — PLAYTEST-EVIDENCE-INTAKE-001/R1
 
 **Owner:** B01-13 HUMAN PLAYTESTING. **HQ:** [#800](https://github.com/C8LyNn/RoboRougelike/issues/800). **Source:** exact inherited W27 [B01-13 #819 @ 65c73fd4a3e6c9fcc61b2e388542b96dbfa1748c](https://github.com/C8LyNn/RoboRougelike/pull/819). New isolated paths `Research/B01-13/P17W28/**` and one own GitHub workflow, no edits to W27 source, Unity, game, Codex, weapons, Save/Load, gameplay, main/develop, any frozen source. The final PR is stacked **only on the immutable original W27 owner branch**; the prior #819 and #786 have not been accepted/merged independently.

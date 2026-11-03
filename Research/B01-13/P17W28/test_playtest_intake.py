@@ -34,10 +34,16 @@ class TestEvidence(unittest.TestCase):
   with self.assertRaisesRegex(m.Refused,code):fn()
  def log_pass(self,case='P01_BASIC_AUTOMATIC_HEAVY',name='test.log'):
   (self.evidence/name).write_bytes(b'synthetic test data only\n')
-  q=json.loads(self.responses.read_text());case_row=next(x for x in q['cases'] if x['id']==case);case_row.update(status='PASS',reason='NONE',evidence=name);self.save(q)
+  q=json.loads(self.responses.read_text());case_row=next(x for x in q['cases'] if x['id']==case);case_row.update(status='PASS',reason='NONE',evidence=name)
+  if case=='P12_LOANER_POST_WIN_CONTINUATION':
+   (self.evidence/'before.json').write_text('{"driveHp":0}')
+   (self.evidence/'after.json').write_text('{"driveHp":100}')
+   (self.evidence/'loaner-player.log').write_text('operator-submitted test-only player log')
+   case_row['evidence']={'before':'before.json','after':'after.json','playerLog':'loaner-player.log'}
+  self.save(q)
 
  def test_template_17_unique(self):
-  t=m.template(SHA);self.assertEqual(len(t['cases']),17);self.assertEqual(len(set(x['id'] for x in t['cases'])),17)
+  t=m.template(SHA);self.assertEqual(len(t['cases']),21);self.assertEqual(len(set(x['id'] for x in t['cases'])),21)
  def test_blank_always_hold(self):
   r=self.check();self.assertEqual(r['productGate'],'HOLD_INDEPENDENT_G0_G1_AND_REAL_HUMAN_ACCEPTANCE');self.assertEqual(r['participantSessionsIndependentlyVerified'],0)
  def test_valid_8_w27_notrun(self):self.assertEqual(m.validate_w27(w27(),SHA)['pilot_gate'],'INCOMPLETE')
@@ -62,16 +68,16 @@ class TestEvidence(unittest.TestCase):
  def test_w28_participant_forged(self):
   d=m.template(SHA);d['realHumanParticipants']=1;self.save(d);self.assert_refuse(self.check,'W28_NO_PARTICIPANT')
  def test_w28_duplicates_rejected(self):
-  d=m.template(SHA);d['cases'][0]['id']=d['cases'][1]['id'];self.save(d);self.assert_refuse(self.check,'W28_CASE_ID')
+  d=m.template(SHA);d['cases'][0]['id']=d['cases'][1]['id'];self.save(d);self.assert_refuse(self.check,'W29_CASE_ID')
  def test_w28_pass_requires_physical_evidence(self):
-  d=m.template(SHA);d['cases'][0]['status']='PASS';self.save(d);self.assert_refuse(self.check,'W28_RESULT_WITHOUT_EVIDENCE')
+  d=m.template(SHA);d['cases'][0]['status']='PASS';self.save(d);self.assert_refuse(self.check,'W29_RESULT_WITHOUT_EVIDENCE')
  def test_w28_fail_requires_reason(self):
   d=m.template(SHA);d['cases'][0].update(status='FAIL',evidence='test.log');(self.evidence/'test.log').write_text('x');self.save(d)
-  self.assert_refuse(self.check,'W28_REASON_MISMATCH')
+  self.assert_refuse(self.check,'W29_REASON_MISMATCH')
  def test_w28_physical_sha(self):
   self.log_pass();r=self.check();e=r['evidence'][0];self.assertEqual(e['sha256'],hashlib.sha256(b'synthetic test data only\n').hexdigest());self.assertEqual(r['coverage'],'P0_INCOMPLETE_OR_FAILED')
  def test_w28_must_not_reuse_evidence(self):
-  self.log_pass();d=json.loads(self.responses.read_text());d['cases'][1].update(status='PASS',reason='NONE',evidence='test.log');self.save(d);self.assert_refuse(self.check,'W28_EVIDENCE_REUSED')
+  self.log_pass();d=json.loads(self.responses.read_text());d['cases'][1].update(status='PASS',reason='NONE',evidence='test.log');self.save(d);self.assert_refuse(self.check,'W29_EVIDENCE_REUSED')
  def test_path_parent_escape(self):
   self.log_pass();d=json.loads(self.responses.read_text());d['cases'][0]['evidence']='../other.log';self.save(d);self.assert_refuse(self.check,'EVIDENCE_ESCAPE')
  def test_path_absolute_refusal(self):
@@ -89,37 +95,37 @@ class TestEvidence(unittest.TestCase):
   self.log_pass('P12_LOANER_POST_WIN_CONTINUATION');d=json.loads(self.responses.read_text());d['softlockDisposition']='CONTINUE_VERIFIED';self.save(d)
   r=self.check();self.assertEqual(r['productGate'],'HOLD_INDEPENDENT_G0_G1_AND_REAL_HUMAN_ACCEPTANCE')
  def test_softlock_failed_must_be_unresolved(self):
-  self.log_pass('P12_LOANER_POST_WIN_CONTINUATION');d=json.loads(self.responses.read_text());d['softlockDisposition']='CONTINUE_VERIFIED';d['cases'][11]['status']='FAIL';d['cases'][11]['reason']='SOFTLOCK';self.save(d);self.assert_refuse(self.check,'W28_RECOVERY_WITHOUT_PASS')
+  self.log_pass('P12_LOANER_POST_WIN_CONTINUATION');d=json.loads(self.responses.read_text());d['softlockDisposition']='CONTINUE_VERIFIED';d['cases'][11]['status']='FAIL';d['cases'][11]['reason']='SOFTLOCK';d['cases'][11]['evidence']='loaner-player.log';self.save(d);self.assert_refuse(self.check,'W28_RECOVERY_WITHOUT_PASS')
  def test_softlock_fail_unresolved_allowed(self):
-  self.log_pass('P12_LOANER_POST_WIN_CONTINUATION');d=json.loads(self.responses.read_text());d['softlockDisposition']='UNRESOLVED';d['cases'][11]['status']='FAIL';d['cases'][11]['reason']='SOFTLOCK';self.save(d);self.assertEqual(self.check()['softlockDisposition'],'UNRESOLVED')
+  self.log_pass('P12_LOANER_POST_WIN_CONTINUATION');d=json.loads(self.responses.read_text());d['softlockDisposition']='UNRESOLVED';d['cases'][11]['status']='FAIL';d['cases'][11]['reason']='SOFTLOCK';d['cases'][11]['evidence']='loaner-player.log';self.save(d);self.assertEqual(self.check()['softlockDisposition'],'UNRESOLVED')
  def test_blocked_does_not_claim_success(self):
   d=m.template(SHA);d['cases'][0].update(status='BLOCKED',reason='INTEGRATION_MISSING');self.save(d);self.assertEqual(self.check()['cases']['P01_BASIC_AUTOMATIC_HEAVY'],'BLOCKED')
  def test_zip_requires_actual_zip_extension(self):
-  self.log_pass('P15_PLAYER_ZIP_BOOT','game.log');self.assert_refuse(self.check,'W28_PLAYER_ZIP_REQUIRED')
+  self.log_pass('P15_PLAYER_ZIP_BOOT','game.log');self.assert_refuse(self.check,'W29_BOOT_BUNDLE_REQUIRED')
  def test_zip_rejects_bad_magic(self):
-  (self.evidence/'fake.zip').write_bytes(b'PK\x03\x04bogus');d=m.template(SHA);d['cases'][14].update(status='PASS',evidence='fake.zip');self.save(d);self.assert_refuse(self.check,'ZIP_INVALID')
+  (self.evidence/'fake.zip').write_bytes(b'PK\x03\x04bogus');d=m.template(SHA);d['cases'][14].update(status='PASS',evidence={'playerZip':'fake.zip','playerLog':'player.log'});(self.evidence/'player.log').write_text('test only');self.save(d);self.assert_refuse(self.check,'ZIP_INVALID')
  def test_zip_requires_player_structure(self):
   with zipfile.ZipFile(self.evidence/'b.zip','w') as z:z.writestr('notes.txt','not a game');z.writestr('x.csv','dummy');z.writestr('x2.csv','dummy')
-  d=m.template(SHA);d['cases'][14].update(status='PASS',evidence='b.zip');self.save(d);self.assert_refuse(self.check,'ZIP_PLAYER_EXE_MISSING')
+  d=m.template(SHA);d['cases'][14].update(status='PASS',evidence={'playerZip':'b.zip','playerLog':'player.log'});(self.evidence/'player.log').write_text('test only');self.save(d);self.assert_refuse(self.check,'ZIP_PLAYER_EXE_MISSING')
  def test_zip_valid_structure_still_no_boot_claim(self):
   with zipfile.ZipFile(self.evidence/'player.zip','w') as z:
    z.writestr('RoboRougelike.exe','synthetic exe');z.writestr('UnityPlayer.dll','synthetic dll');z.writestr('RoboRougelike_Data/boot.config','synthetic config')
-  d=m.template(SHA);d['cases'][14].update(status='PASS',evidence='player.zip');self.save(d)
+  d=m.template(SHA);d['cases'][14].update(status='PASS',evidence={'playerZip':'player.zip','playerLog':'player.log'});(self.evidence/'player.log').write_text('test only');self.save(d)
   result=self.check();self.assertEqual(result['evidence'][0]['zipStructure'],'ARCHIVE_STRUCTURE_PRESENT_NOT_BOOT_PROOF');self.assertIn('NOT_INDEPENDENTLY',result['windowsPlayerBoot'])
  def test_zip_traversal_rejected(self):
   with zipfile.ZipFile(self.evidence/'trav.zip','w') as z:
    z.writestr('../RoboRougelike.exe','synthetic');z.writestr('UnityPlayer.dll','synthetic');z.writestr('Game_Data/boot.config','synthetic')
-  d=m.template(SHA);d['cases'][14].update(status='PASS',evidence='trav.zip');self.save(d);self.assert_refuse(self.check,'ZIP_TRAVERSAL')
+  d=m.template(SHA);d['cases'][14].update(status='PASS',evidence={'playerZip':'trav.zip','playerLog':'player.log'});(self.evidence/'player.log').write_text('test only');self.save(d);self.assert_refuse(self.check,'ZIP_TRAVERSAL')
  def test_2_fights_requires_log(self):
-  (self.evidence/'shot.png').write_bytes(b'dummy');d=m.template(SHA);d['cases'][13].update(status='PASS',evidence='shot.png');self.save(d);self.assert_refuse(self.check,'W28_PLAYER_FIGHTS_LOG_REQUIRED')
+  (self.evidence/'shot.png').write_bytes(b'dummy');d=m.template(SHA);d['cases'][13].update(status='PASS',evidence='shot.png');self.save(d);self.assert_refuse(self.check,'W29_EVIDENCE_ROLE_FORMAT')
  def test_cli_receipt_physically_emits_both_files(self):
-  self.output();j=json.loads((self.out/'W28_RECEIPT.json').read_text());self.assertEqual(j['gameCommit'],SHA);self.assertEqual(j['participantSessionsIndependentlyVerified'],0)
-  self.assertEqual(len((self.out/'W28_RECEIPT.csv').read_text().splitlines()),18)
+  self.output();j=json.loads((self.out/'W29_RECEIPT.json').read_text());self.assertEqual(j['gameCommit'],SHA);self.assertEqual(j['participantSessionsIndependentlyVerified'],0)
+  self.assertEqual(len((self.out/'W29_RECEIPT.csv').read_text().splitlines()),22)
  def test_cli_refuses_overwrite_preserves_original_bytes(self):
-  (self.out/'W28_RECEIPT.json').write_text('FOREIGN');self.assert_refuse(self.output,'REFUSE_OVERWRITE');self.assertEqual((self.out/'W28_RECEIPT.json').read_text(),'FOREIGN')
+  (self.out/'W29_RECEIPT.json').write_text('FOREIGN');self.assert_refuse(self.output,'REFUSE_OVERWRITE');self.assertEqual((self.out/'W29_RECEIPT.json').read_text(),'FOREIGN')
  def test_cli_template_physical(self):
   f=self.root/'template.json';m.run(['--game-commit',SHA,'--make-template',str(f)])
-  self.assertEqual(len(json.loads(f.read_text())['cases']),17)
+  self.assertEqual(len(json.loads(f.read_text())['cases']),21)
   self.assert_refuse(lambda:m.run(['--game-commit',SHA,'--make-template',str(f)]),'REFUSE_OVERWRITE')
  def test_evidence_input_cannot_be_output_dir(self):
   self.assert_refuse(lambda:m.run(['--game-commit',SHA,'--w27-report',str(self.report),'--w28-responses',str(self.responses),'--evidence-dir',str(self.evidence),'--output-dir',str(self.evidence)]),'OUTSIDE_EVIDENCE_DIR')
@@ -129,5 +135,63 @@ class TestEvidence(unittest.TestCase):
   self.assert_refuse(self.output,'REFUSE_GIT_WORKTREE')
  def test_no_pii_free_text_in_template(self):
   j=json.dumps(m.template(SHA));self.assertNotIn('email',j.lower());self.assertNotIn('participantName',j)
+
+
+ def make_player_zip(self,name='game.zip'):
+  with zipfile.ZipFile(self.evidence/name,'w') as z:
+   z.writestr('RoboRougelike.exe','test-only fake bytes')
+   z.writestr('UnityPlayer.dll','test-only fake dll')
+   z.writestr('RoboRougelike_Data/boot.config','test-only fake config')
+  return name
+ def update_row(self,case,**changes):
+  d=json.loads(self.responses.read_text());next(x for x in d['cases'] if x['id']==case).update(changes);self.save(d)
+
+ def test_w29_boot_rejects_legacy_single_zip_even_if_structurally_valid(self):
+  name=self.make_player_zip();self.update_row('P15_PLAYER_ZIP_BOOT',status='PASS',evidence=name)
+  self.assert_refuse(self.check,'W29_BOOT_BUNDLE_REQUIRED')
+ def test_w29_boot_rejects_missing_log(self):
+  name=self.make_player_zip();self.update_row('P15_PLAYER_ZIP_BOOT',status='PASS',evidence={'playerZip':name,'playerLog':'missing.log'})
+  self.assert_refuse(self.check,'EVIDENCE_NOT_REGULAR')
+ def test_w29_boot_accepts_physical_zip_and_log_but_no_independent_boot_claim(self):
+  name=self.make_player_zip();(self.evidence/'player.log').write_text('test-only bytes')
+  self.update_row('P15_PLAYER_ZIP_BOOT',status='PASS',evidence={'playerZip':name,'playerLog':'player.log'})
+  r=self.check();self.assertEqual([p['role'] for p in r['evidence']],['player_zip','player_log'])
+  self.assertEqual(r['cases']['P15_PLAYER_ZIP_BOOT'],'PASS')
+  self.assertEqual(r['windowsPlayerBoot'],'NOT_INDEPENDENTLY_VERIFIED_BY_THIS_TOOL')
+  self.assertEqual(r['productGate'],'HOLD_INDEPENDENT_G0_G1_AND_REAL_HUMAN_ACCEPTANCE')
+  lines=m.make_csv(r).splitlines();self.assertEqual(len(lines),23)
+ def test_w29_boot_rejects_nonlog_second_file(self):
+  name=self.make_player_zip();(self.evidence/'result.json').write_text('test-only')
+  self.update_row('P15_PLAYER_ZIP_BOOT',status='PASS',evidence={'playerZip':name,'playerLog':'result.json'})
+  self.assert_refuse(self.check,'W29_EVIDENCE_ROLE_FORMAT')
+ def test_w29_boot_rejects_unrecognized_metadata_fields(self):
+  self.make_player_zip();(self.evidence/'player.log').write_text('test-only')
+  self.update_row('P15_PLAYER_ZIP_BOOT',status='PASS',evidence={'playerZip':'game.zip','playerLog':'player.log','humanCertified':True})
+  self.assert_refuse(self.check,'W29_BOOT_BUNDLE_REQUIRED')
+ def test_w29_recovery_rejects_old_one_log_pass(self):
+  (self.evidence/'single.log').write_text('test-only')
+  self.update_row('P12_LOANER_POST_WIN_CONTINUATION',status='PASS',evidence='single.log')
+  self.assert_refuse(self.check,'W29_RECOVERY_BUNDLE_REQUIRED')
+ def test_w29_recovery_rejects_identical_before_and_after(self):
+  for name,bytes_ in [('before.json',b'{"hp":0}'),('after.json',b'{"hp":0}'),('player.log',b'test-only')]:
+   (self.evidence/name).write_bytes(bytes_)
+  self.update_row('P12_LOANER_POST_WIN_CONTINUATION',status='PASS',evidence={'before':'before.json','after':'after.json','playerLog':'player.log'})
+  self.assert_refuse(self.check,'W29_RECOVERY_IDENTICAL_STATES')
+ def test_w29_recovery_rejects_missing_after(self):
+  (self.evidence/'before.json').write_text('{"hp":0}');(self.evidence/'player.log').write_text('test-only')
+  self.update_row('P12_LOANER_POST_WIN_CONTINUATION',status='PASS',evidence={'before':'before.json','after':'missing.json','playerLog':'player.log'})
+  self.assert_refuse(self.check,'EVIDENCE_NOT_REGULAR')
+ def test_w29_recovery_actual_three_file_receipts_still_not_real_qa(self):
+  self.log_pass('P12_LOANER_POST_WIN_CONTINUATION')
+  d=json.loads(self.responses.read_text());d['softlockDisposition']='CONTINUE_VERIFIED';self.save(d)
+  r=self.check();self.assertEqual(len(r['evidence']),3)
+  self.assertEqual([x['role'] for x in r['evidence']],['before','after','player_log'])
+  self.assertEqual(r['productGate'],'HOLD_INDEPENDENT_G0_G1_AND_REAL_HUMAN_ACCEPTANCE')
+ def test_w29_all_four_extra_missing_are_p0(self):
+  r=self.check()
+  for case in ('P18_SAW_DEFAULT_MOUNT_AND_OVERFLOW','P19_EMP_DETACH_DIRECT_GUARD','P20_GARAGE_PHYSICAL_ZONE_COMMIT','P21_SAVE_ONE_OWNER_COLD_UNITY'):
+   self.assertIn(case,r['missingOrFailingP0'])
+ def test_w29_legacy_w28_schema_must_not_mix_silent_version(self):
+  d=m.template(SHA);d['schema']='b01-13-w28-acceptance-r1';self.save(d);self.assert_refuse(self.check,'W28_SCHEMA')
 
 if __name__=='__main__':unittest.main(verbosity=2)
