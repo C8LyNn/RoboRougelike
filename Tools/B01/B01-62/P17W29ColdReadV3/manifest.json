@@ -1,0 +1,14 @@
+{
+  "package": "B01-62-W29-COLD-READ-V3",
+  "base_826": "99fb08619c78b3834bb4c0450499babf991f218a",
+  "append_only": true,
+  "owner_contract": "original #729 .owner",
+  "one_file": "save.envelope",
+  "game_writer": "original #826 WholeGameEconomySlotV3 exclusively",
+  "reads_via_original_api": true,
+  "source_g0": "PENDING",
+  "formal_composite_g0": "HOLD",
+  "native_unity_g1": "NOT_RUN",
+  "integrated": false,
+  "released": false
+}
