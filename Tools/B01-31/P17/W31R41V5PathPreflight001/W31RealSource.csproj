@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../../../Assets/B01_31/W30R41V5Adapter/R41V5AssetPaths.cs"
+             Link="ORIGINAL_UNITY_W31_SOURCE_R41V5AssetPaths.cs"/>
+    <Compile Include="../../../../Assets/B01_31/W30R41V5Adapter/R41V5MuzzleGeometry.cs"
+             Link="ORIGINAL_UNITY_W30_SOURCE_R41V5MuzzleGeometry.cs"/>
+  </ItemGroup>
+</Project>
