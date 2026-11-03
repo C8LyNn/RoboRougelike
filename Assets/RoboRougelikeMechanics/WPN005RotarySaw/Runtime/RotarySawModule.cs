@@ -141,7 +141,13 @@ namespace RoboRougelike.Weapons.RotarySaw
             // A saturated broadphase cannot prove that an owner component is absent.
             int count = Physics.OverlapSphereNonAlloc(center, extent, overlapBuffer,
                 ~0, QueryTriggerInteraction.Ignore);
-            if (count >= overlapBuffer.Length) return true;
+            if (count >= overlapBuffer.Length)
+            {
+                // Fail closed AND retain the public diagnostic contract for native QA.
+                // Saturation here prevents the damage-contact query later in Advance.
+                OverflowedLastTick = true;
+                return true;
+            }
             Vector3 axle = CurrentAxle(bladeCenter);
             for (int i = 0; i < count; i++)
             {
