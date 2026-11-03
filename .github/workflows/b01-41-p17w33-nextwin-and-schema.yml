@@ -1,0 +1,73 @@
+name: B01-41 W33 original #915/#910 R3 V7 next-win RED and Save #913 capacity gate
+on:
+  push:
+    branches: [ci/b01-41-p17w33-next-win-r3-variants-save913-gate-r1]
+    paths:
+      - 'Tools/B01/CI41/P17W33NextWin913/**'
+      - '.github/workflows/b01-41-p17w33-nextwin-and-schema.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-r3-csharp-method-qa:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 28
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 1
+          filter: blob:none
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch only exact original immutable producer commits
+        run: |
+          set -euo pipefail
+          for sha in \
+            3bd9b159997924dcecb4e1cd1d41137896e5199e \
+            95060c1d254624355737fd2c48dd87cf79099ebe \
+            28841161afb56ad78ec8506121aa12fde59bf984 \
+            a0282f2de0250d2a8fe421bbe182b4cb6fab2a11 \
+            b4df10a7ad7e6c758f8331013f6b216b3a3689a3; do
+            git fetch --depth=1 --no-tags origin "$sha"
+            test "$(git rev-parse "$sha^{commit}")" = "$sha"
+          done
+      - name: Execute 10 real independent Python negative and provenance tests
+        run: |
+          set -euo pipefail
+          mkdir -p ci41-w33-logs
+          python -m unittest discover -s Tools/B01/CI41/P17W33NextWin913 -p test_audit.py -v 2>&1 | tee ci41-w33-logs/negative-unit.log
+          grep -q 'Ran 10 tests' ci41-w33-logs/negative-unit.log
+          grep -q '^OK$' ci41-w33-logs/negative-unit.log
+      - name: Compile and execute four original R3 C# methods for both competing producer candidates
+        run: |
+          set -euo pipefail
+          python Tools/B01/CI41/P17W33NextWin913/audit.py ci41-w33-logs/original-w33 2>&1 | tee ci41-w33-logs/witness.log
+          grep -q 'CI41_W33_EXACT_ORIGINAL_GIT_BLOB_PINS 7/7 PASS' ci41-w33-logs/witness.log
+          grep -q 'CI41_W33_REAL_ORIGINAL_METHOD_CSHARP9_BOTH_CANDIDATES 2/2 PASS' ci41-w33-logs/witness.log
+          grep -q 'CI41_W33_V7_FLOOR65_PAID0_SOURCE_PASS_BUT_NEXTWIN_PRODUCT_RED' ci41-w33-logs/witness.log
+          grep -q 'CI41_W33_REAL_R3_20_83_139_VS_FROZEN556_2_SLOTS_PRODUCT_RED' ci41-w33-logs/witness.log
+          python -c 'import json; x=json.load(open("ci41-w33-logs/original-w33/w33-receipt.json")); assert set(x["results"])=={"915","910"} and x["save_R3_dynamic_schema"]=="PRODUCT_RED_ISSUE_913" and x["next_win_deferred"]=="PRODUCT_RED_ON_BOTH_CANDIDATES"'
+      - name: Preserve original C#9 stdout, negative tests and exact-source report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CI41-W33-R3-NEXTWIN-SOURCE-NOT-UNITY-${{ runner.os }}
+          path: |
+            ci41-w33-logs/*.log
+            ci41-w33-logs/original-w33/*.json
+            ci41-w33-logs/original-w33/original-915-compiler-and-methods.log
+            ci41-w33-logs/original-w33/original-910-compiler-and-methods.log
+          if-no-files-found: warn
+          retention-days: 14
