@@ -20,6 +20,7 @@ namespace RoboRougelike.R3
             Payload=Make(template,new Color(0.08f,0.32f,1));
             GridOccupied=Make(template,new Color(1f,.08f,.03f));
             Transparent(Valid,0.42f);Transparent(Invalid,0.42f);Transparent(Missing,0.23f);Transparent(Selection,0.2f);Transparent(Payload,0.75f);
+            Payload.renderQueue=3100;
             for(int i=0;i<Weapons.Length;i++)Weapons[i]=Make(template,RoboRougelike.R4.R4WeaponDefinition.Get((RoboRougelike.R4.R4WeaponKind)i).Color);
         }
         private static Material Make(Material source, Color color)

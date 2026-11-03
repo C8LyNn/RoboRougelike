@@ -56,6 +56,8 @@ public class W27GarageOccupiedZonesTests
             Assert.That(color.b,Is.GreaterThan(color.r));Assert.That(color.b,Is.GreaterThan(color.g));
             Assert.That(visual.sharedMaterial.GetColor("_BaseColor").a,Is.GreaterThanOrEqualTo(.65f),
                 "The protruding blue geometry must remain distinguishable over an invalid red ghost.");
+            Assert.That(visual.sharedMaterial.renderQueue,Is.GreaterThan(garage.Preview.GetComponent<Renderer>().sharedMaterial.renderQueue),
+                "The blue protruding geometry must render after the translucent placement ghost.");
             Assert.That(visual.GetComponentsInChildren<Collider>().All(c=>!c.enabled),Is.True,"Ghost geometry cannot affect physics.");
         }
     }
