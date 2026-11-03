@@ -39,3 +39,11 @@ Additional targeted tests were run during development: `Artifacts/Local/W27/dire
 - Producer Save #797 `2b7983f0f9e09dd1d56906b379a3f7af7b02f21a` is still the previously incompatible Unity API source; #822 `e66968408b583404cd50250f53e655ea75a085fc` is a source test, not the repaired implementation. Await producer repair and independent G0; no competing save was imported.
 - B01 #804, #810, #813 and #814 remain separate pending independent acceptance and compatibility review. W27 must not import unapproved packages.
 - `R41_Turret_v3` is not installed. Previous native import found mismatched muzzle axes; await corrected source or validated rig adapter. Existing production prefab remains in use.
+
+## MOV input regression diagnosis
+
+A diagnostic run with temporary logging (`Artifacts/Local/W27/MOV-input-diagnostic3/`) reached the training range and reproduced the timeout. The original test mounted Blink at `(0,1,1)`: both its block and physical payload intersected the gun barrel and overlapped the muzzle. The guard returned `clear=false`; firing through that part would contradict the new safety requirement. The diagnostic logging was removed afterwards.
+
+The same input test now mounts Blink at `(1,1,1)`, explicitly verifies a clear path, and retains its real keyboard actions, mouse press and projectile assertion. All six `MOVSeriesGarageTests` passed in the native Editor on the modified test tree: `Artifacts/Local/W27/MOV-clear-fixture/`, exit 0. This fixture correction is not a retroactive PASS for the full EditMode run.
+
+Latest #810 source `05db0ddf0a48da592d924e68b7658eea6bba764e` has since received an independent **source transport / scope-only G0** in #829; native G1, generated prefab/scene and a B01-00 #79 integration offer are still pending. It has not been imported. Newer #827 and #843 supersede #804 and #813 respectively and are not implicitly approved for installation.
