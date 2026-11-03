@@ -166,8 +166,12 @@ assert "Brak dopuszczonej wyceny" not in current_result["repair-zero-destroyed-r
 assert baseline["repair-zero-destroyed-paid-success"]==["YES","Naprawiono wskazaną część."]
 assert current_result["repair-zero-destroyed-paid-success"][0]=="YES"
 assert "część nadal ma 0 HP" in current_result["repair-zero-destroyed-paid-success"][1]
-assert "Odbudowa nie jest gotowa" in current_result["repair-zero-destroyed-paid-success"][1]
-assert current_result["repair-zero-destroyed-instant-success"]==baseline["repair-zero-destroyed-instant-success"]==["YES","Naprawiono wskazaną część."]
+assert "Sprawdź status oczekiwania na kolejne zwycięstwo" in current_result["repair-zero-destroyed-paid-success"][1]
+assert baseline["repair-zero-destroyed-instant-success"]==["YES","Naprawiono wskazaną część."]
+assert current_result["repair-zero-destroyed-instant-success"][0]=="YES"
+assert "Niezgodność odbudowy" in current_result["repair-zero-destroyed-instant-success"][1]
+assert "przed kolejnym zwycięstwem" in current_result["repair-zero-destroyed-instant-success"][1]
+assert "Naprawiono" not in current_result["repair-zero-destroyed-instant-success"][1]
 assert baseline["repair-zero-partial-unknown"]==["NO","Brak uszkodzeń, Złomu lub sprawnego połączenia."]
 assert "Brak potwierdzonej wyceny" in current_result["repair-zero-partial-unknown"][1]
 assert "Koszt: 5 Scrap; dostępne: 1 Scrap" in current_result["repair-low-scrap"][1]
