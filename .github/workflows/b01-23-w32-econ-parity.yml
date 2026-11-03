@@ -16,7 +16,8 @@ jobs:
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
-          fetch-depth: 0
+          # Only the immutable #877 parent six commits behind is needed.
+          fetch-depth: 10
           persist-credentials: false
       - name: Execute real extracted R3 C#9 methods under .NET8 and reject three mutated implementations
         shell: bash
