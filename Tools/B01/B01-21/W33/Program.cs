@@ -55,8 +55,31 @@ public static class Program
                 + recovered + ", destroyed=" + recoveredAfterDestroy);
             return 23;
         }
-        Console.WriteLine("B0121_ORIGINAL_CSHARP_GREEN: disabled+destroyed recovery;"
-            + " duplicate live collider suppressed; three genuine source callbacks");
+        // W34: a destroyed Rigidbody can be retained by both Dictionary caches
+        // even when its Collider exit event did fire. Exercise original callbacks.
+        body.Destroyed = true;
+        var newBody = new Rigidbody { gameObject = new GameObject() };
+        var newPart = new BoxCollider { gameObject = new GameObject(),
+                                        attachedRigidbody = newBody };
+        Contact(pad, newPart);
+        Require(newBody.linearVelocity.y == 10f, "new real source body still launches");
+        var flags = BindingFlags.Instance | BindingFlags.NonPublic;
+        var contacts = (System.Collections.IDictionary)(typeof(MapJumpPad)
+            .GetField("contacts", flags)?.GetValue(pad)
+            ?? throw new Exception("original contacts cache missing"));
+        var launches = (System.Collections.IDictionary)(typeof(MapJumpPad)
+            .GetField("lastLaunch", flags)?.GetValue(pad)
+            ?? throw new Exception("original lastLaunch cache missing"));
+        if (contacts.Count != 1 || launches.Count != 1 ||
+            !contacts.Contains(newBody) || !launches.Contains(newBody))
+        {
+            Console.WriteLine("EXPECTED_DESTROYED_BODY_CACHE_RED: contacts="
+                + contacts.Count + ", lastLaunch=" + launches.Count);
+            return 24;
+        }
+
+        Console.WriteLine("B0121_ORIGINAL_CSHARP_GREEN: disabled+destroyed collider recovery;"
+            + " live duplicate suppressed; destroyed body retired from both caches");
         return 0;
     }
 }
