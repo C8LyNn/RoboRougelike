@@ -24,6 +24,8 @@ public class W27GarageOccupiedZonesTests
         Assert.That(lines.All(l=>l.GetComponent<Collider>()==null),Is.True,"The overlay cannot affect hit tests or physics.");
         Assert.That(lines.All(l=>l.positionCount>=16&&!l.useWorldSpace),Is.True);
         Assert.That(lines.All(l=>l.sharedMaterial.color.r>l.sharedMaterial.color.g),Is.True);
+        Assert.That(lines.All(l=>l.sharedMaterial.GetColor("_BaseColor").a>=.9f&&l.startWidth>=.02f),Is.True,
+            "Occupied-cell outlines must remain visible against both bright and dark vehicle surfaces.");
         Assert.That(lines.Any(l=>Vector3.Distance(l.transform.localPosition,new Vector3(.55f,0,1.1f))<.001f),Is.True,"The displayed cell uses the real 0.55m grid.");
         Assert.That(run.GarageBuy(new Vector3Int(1,1,1),R3PartKind.Armor),Is.True);
         lines=run.Player.GetComponentsInChildren<LineRenderer>().Where(l=>l.name=="W27 occupied cell").ToArray();
