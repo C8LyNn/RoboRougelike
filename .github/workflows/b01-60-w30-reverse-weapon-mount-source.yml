@@ -1,0 +1,58 @@
+name: B01-60 W30 original #877 reverse armor-through-saw AUTHORITY gap — SOURCE ONLY
+on:
+  push:
+    branches:
+      - qa/b01-60-p17w30-garage-reverse-weapon-volume-r1
+    paths:
+      - 'Assets/Tests/Editor/B0160W30ReverseWeaponMountSafetyTests.cs'
+      - 'Assets/Tests/Editor/B0160W30ReverseWeaponMountSafetyTests.cs.meta'
+      - 'Tools/B01/B01-60/P17W30ReverseMount/**'
+      - '.github/workflows/b01-60-w30-reverse-weapon-mount-source.yml'
+  pull_request:
+    paths:
+      - 'Assets/Tests/Editor/B0160W30ReverseWeaponMountSafetyTests.cs'
+      - 'Assets/Tests/Editor/B0160W30ReverseWeaponMountSafetyTests.cs.meta'
+      - 'Tools/B01/B01-60/P17W30ReverseMount/**'
+      - '.github/workflows/b01-60-w30-reverse-weapon-mount-source.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  actual-game-reverse-installed-saw-source-red-witness:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2025, ubuntu-24.04]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Independently verify exact original #877 game bytes and prove reverse install gap still present
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W30ReverseMount/verify_source.py 2>&1 | tee w30-reverse-weapon-source-only.log
+          grep -F 'B0160_W30_EXACT_877_ORIGINAL_CANONICAL_R3_SOURCE_IMMUTABLE_PASS' w30-reverse-weapon-source-only.log
+          grep -F 'B0160_W30_REVERSE_ARMOR_VS_EXISTING_SAW_BYPASS_PRESENT_EXPECTED_SOURCE_RED' w30-reverse-weapon-source-only.log
+          grep -F 'B0160_W30_ONE_REAL_UNITY_R3_PHYSX_FAILING_FIRST_PLAYMODE_TEST_AUTHORED_NOT_RUN' w30-reverse-weapon-source-only.log
+          grep -F 'B0160_W30_SIX_ADD_ONLY_QA_PATHS_UNIQUE_GUID_PASS' w30-reverse-weapon-source-only.log
+          grep -F 'B0160_W30_SOURCE_ONLY_WITNESS_PASS_UNITY_G1_PLAYER_NOT_RUN_GAME_NOT_ACCEPTED' w30-reverse-weapon-source-only.log
+      - name: Label product gap RED and explicitly deny synthetic Unity or Player PASS
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo 'B0160_W30_GAMEPLAY_P0_REVERSE_SAW_HARD_ZONE_NOT_FIXED'
+          echo 'B0160_W30_UNITY_EDITOR_NATIVE_EDIT_PLAY_NOT_RUN'
+          echo 'B0160_W30_WINDOWS_PLAYER_ZIP_LOG_AND_REAL_GAME_NOT_RUN'
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0160-W30-REVERSE-WEAPON-SOURCE-RED-NOT-UNITY-${{ matrix.os }}
+          path: w30-reverse-weapon-source-only.log
+          if-no-files-found: warn
+          retention-days: 14

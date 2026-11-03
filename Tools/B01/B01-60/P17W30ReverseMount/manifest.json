@@ -1,0 +1,46 @@
+{
+  "id": "B01-60-P17W30-REVERSE-WEAPON-PLACEMENT-AUTHORITY-RED-001",
+  "owner": "B01-60 independent QA",
+  "hq_issue": 800,
+  "producer_PR": 877,
+  "cumulative_game_PR": 873,
+  "original_producer_sha": "9634b1e5b4576aca4304d1d5b4c3d01446737650",
+  "base_game_sha": "d537b7310979b91df27a08b14d0f1c74d0889089",
+  "original_pinned_git_blobs": {
+    "Assets/R3/R3BuildValidation.cs": "ba247dd539e58d0cf004b8bb7be270f6e9d5c437",
+    "Assets/Tests/Editor/GarageEditFreedomTests.cs": "efba13d3be821e75e2c4e1798b87955be2ccd3a3",
+    "Assets/R5/R5Arena.cs": "3ee9d05ffdccbd3dea991f80223afeacd91e3b95"
+  },
+  "gap": "Original R3BuildValidation FunctionalWeaponPlacementIssue returns null for all candidate.Kind != Gun, so new Armor can bypass existing live saw-disc and short-barrel sweep checks while default BUILD001 physical collider check cannot cover non-collider movement envelope",
+  "test_case": "B0160W30ReverseWeaponMountSafetyTests.RealGarage_DoesNotAllowNewArmorToEnterAlreadyMountedSawDisc",
+  "fixture": "real Assets/scene 1.unity, R1RunController, Standard R3, existing original RotarySaw at exterior (0,1,4), real legal Armor supports (1,1,4),(1,1,5), actual Collider for candidate (0,1,5), original RotarySawContactMath and canonical PlacementError/GarageBuy with Scrap/ID/inventory negative assertions",
+  "expected_pre_fix": "RED_at_placement_or_earlier_if_fixture_not_supported",
+  "required_post_fix": "PASS_NATIVE_WHOLE_REAL_GAME_Unity6000.3.14f1_EditMode + WINDOWS_PLAYER",
+  "code_authority_mutated": false,
+  "test_source_authored": true,
+  "actual_native_g1": "NOT_RUN",
+  "real_player_g1": "NOT_RUN",
+  "source_ci": "PENDING",
+  "source_gap": "CONFIRMED_ORIGINAL_SOURCE_CONDITIONAL_BY_STATIC_GIT_BYTES_NOT_RUNTIME_PLAYER",
+  "formal_g0": "PENDING_INDEPENDENT_B01_40_B01_61",
+  "qa_accepted": false,
+  "game_integrated": false,
+  "merged": false,
+  "released": false,
+  "codex_ack": "NONE",
+  "add_only_paths": [
+    "Assets/Tests/Editor/B0160W30ReverseWeaponMountSafetyTests.cs",
+    "Assets/Tests/Editor/B0160W30ReverseWeaponMountSafetyTests.cs.meta",
+    "Tools/B01/B01-60/P17W30ReverseMount/verify_source.py",
+    "Tools/B01/B01-60/P17W30ReverseMount/README.md",
+    "Tools/B01/B01-60/P17W30ReverseMount/manifest.json",
+    ".github/workflows/b01-60-w30-reverse-weapon-mount-source.yml"
+  ],
+  "rollback": "Discard or close this isolated QA-only Draft; no original producer game or Player Save changes",
+  "next_owner": [
+    "Codex #877 primary R3BuildValidation single existing canonical physical placement authority",
+    "B01-40/B01-61 original source gate",
+    "B01-60 native Unity6000.3.14f1 and extracted Windows Player independent acceptance",
+    "B01-00 product/HQ"
+  ]
+}
