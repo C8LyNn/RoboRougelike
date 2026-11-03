@@ -197,6 +197,47 @@ namespace RoboRougelike.Weapons.RotarySaw.Tests
             Assert.IsTrue(saw.OverflowedLastTick);
             Assert.AreEqual(0,saw.DamageEventsLastTick);
         }
+        // W29: the FIRST safety broadphase may saturate before the damage scan.
+        // Preserve the diagnostic AND fail-closed response, then prove genuine
+        // damage and thermal motor recovery after the physical crowd disperses.
+        [UnityTest] public IEnumerator OwnerSafetyBroadphaseOverflowReportsAndResumesAfterClearing()
+        {
+            SetupSaw();
+            config.maxOverlapHits = 4;
+            config.heatPerSecondAtFullRpm = 20f;
+            saw.Configure(config);
+            var enemy = Target(new Vector3(0f, 0f, .55f));
+            var crowded = new List<RotarySawDemoTarget>();
+            for(int i = 0; i < 5; i++)
+                crowded.Add(Target(new Vector3(.02f * i, .02f * (i % 2), .5f)));
+            Physics.SyncTransforms();
+            yield return new WaitForFixedUpdate();
+
+            Assert.IsTrue(saw.OverflowedLastTick,
+                "saturated owner safety broadphase must report query overflow");
+            Assert.IsTrue(saw.OwnGeometryBlockedLastTick,
+                "unknown physical clearance must fail closed");
+            Assert.AreEqual(0f, saw.Motor.Rpm,
+                "overflow cannot spin a contact weapon into uncertain geometry");
+            Assert.AreEqual(0f, saw.Motor.Heat,
+                "overflow cannot consume heat budget");
+            Assert.AreEqual(0, saw.DamageEventsLastTick,
+                "overflow cannot deliver partial contact damage");
+            Assert.AreEqual(0f, enemy.TotalDamage);
+
+            foreach(var candidate in crowded) candidate.gameObject.SetActive(false);
+            Physics.SyncTransforms();
+            yield return new WaitForFixedUpdate();
+
+            Assert.IsFalse(saw.OverflowedLastTick,
+                "overflow report must recover after actual physics buffer clears");
+            Assert.IsFalse(saw.OwnGeometryBlockedLastTick);
+            Assert.Greater(saw.Motor.Rpm, 0f,
+                "unchanged motor request resumes once physical clearance is proven");
+            Assert.Greater(enemy.TotalDamage, 0f,
+                "clear external contact is cut without disabling own-part protection");
+        }
+
         [UnityTest] public IEnumerator RegisteredExternalOwnerColliderIsIgnored()
         {
             SetupSaw(); var t=Target(new Vector3(0f,0f,.55f));
