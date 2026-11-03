@@ -8,7 +8,7 @@ def main():
  assert m['parent_pr']==905 and m['parent_sha']=='7309b8b080041f984cae3adcdd8b2d08bb2f3ea0'
  assert len(m['files'])==6
  for name,expected in sorted(m['files'].items()):
-  assert name.startswith('Research/B01-13/P17W28/') or name=='.github/workflows/b01-13-w28-evidence-intake.yml',('OUT_OF_SCOPE',name)
+  assert (name.startswith('Research/B01-13/P17W28/') or name=='Research/B01-13/P17W32/test_zip_canonical.py' or name=='.github/workflows/b01-13-w28-evidence-intake.yml'),('OUT_OF_SCOPE',name)
   f=ROOT/name
   assert f.is_file() and not f.is_symlink(),('FILE',name)
   b=f.read_bytes();sha=hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()

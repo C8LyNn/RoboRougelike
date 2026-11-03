@@ -15,7 +15,7 @@
   "source_tests_count": 72,
   "acceptance_cases": 21,
   "mandatory_p0_cases": 20,
-  "source_qa": "LOCAL_72_PASS_REMOTE_PENDING",
+  "source_qa": "W33_CI_GATE_REPAIRED_REMOTE_PENDING",
   "fixes": [
     "DUPLICATE_EXE_HASH_VS_EXTRACTED_AMBIGUITY",
     "WINDOWS_CASEFOLD_DUPLICATE_NAMES",
@@ -37,8 +37,8 @@
       "bytes": 4383
     },
     "Research/B01-13/P17W28/verify_package.py": {
-      "git_blob_sha1": "c5178ef3c74fc89241ec36ac7419e8c304825a71",
-      "bytes": 1190
+      "git_blob_sha1": "b30ba4a5096469a9254d874d97bfb0535dab739e",
+      "bytes": 1248
     },
     "Research/B01-13/P17W28/README.md": {
       "git_blob_sha1": "72f7924ea1d5fb24ca61f092f1036343686e87a5",
