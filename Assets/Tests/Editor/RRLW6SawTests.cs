@@ -73,6 +73,49 @@ public class RRLW6SawPhysicalTests
         Assert.That(Vector3.Distance(body.position,run.Player.transform.position),Is.LessThan(distance-1));
         Assert.That(enemy.GetComponentInChildren<RotarySawModule>().Motor.Rpm,Is.GreaterThan(0));
     }
+    // W30: use the existing Wasteland enemy prefab and real owned colliders,
+    // not a synthetic cube or an exemption from the physical saw safety gate.
+    [UnityTest] public IEnumerator WastelandEnemySawPhysicalDiscClearsOwnHullAcrossYaw()
+    {
+        var run=R1RunController.Instance;
+        var template=(P12PipelineSafeEnemyTurret)typeof(R1RunController)
+            .GetField("enemyTemplate",System.Reflection.BindingFlags.Instance|
+                System.Reflection.BindingFlags.NonPublic).GetValue(run);
+        run.Encounter.Spawn(template,run.Player.transform,
+            new R1EncounterDefinition{EnemyCount=3,Arena=RoboRougelike.R5.R5ArenaKind.Wasteland},
+            run.Salvage,"w30-saw-yaw-fixture");
+        run.Encounter.SetCombatActive(false);
+        yield return null;
+
+        var enemy=run.Encounter.Enemies.FirstOrDefault(e=>e.GetComponentInChildren<RotarySawModule>()!=null);
+        Assert.That(enemy,Is.Not.Null,"Wasteland actual enemy must have a saw");
+        var module=enemy.GetComponentInChildren<RotarySawModule>();
+        var yaw=enemy.GetComponentsInChildren<Transform>().Single(t=>t.name=="Enemy_Yaw");
+        var muzzle=enemy.GetComponentsInChildren<Transform>().Single(t=>t.name=="Enemy_Muzzle");
+        Assert.That(muzzle.parent,Is.EqualTo(yaw),
+            "Actual serialized Enemy_Muzzle must be bound directly to Enemy_Yaw");
+        var ownerColliders=enemy.GetComponentsInChildren<Collider>();
+        Assert.That(ownerColliders.Length,Is.GreaterThan(0));
+
+        foreach(float degrees in new[]{0f,90f,180f,270f})
+        {
+            yaw.localRotation=Quaternion.Euler(0f,degrees,0f);
+            Physics.SyncTransforms();
+            foreach(var collider in ownerColliders)
+            {
+                if(collider==null||!collider.enabled||!collider.gameObject.activeInHierarchy||
+                   collider.transform.IsChildOf(muzzle))continue;
+                var center=muzzle.position;
+                var closest=collider.ClosestPoint(center);
+                bool intersects=collider.bounds.Contains(center)||
+                    RotarySawContactMath.IsOnCuttingDisc(closest-center,muzzle.right,
+                        module.ContactRadius,.14f,.06f);
+                Assert.IsFalse(intersects,
+                    $"Saw disc overlaps own collider {collider.name} at yaw {degrees}");
+            }
+        }
+    }
+
     [UnityTest] public IEnumerator GarageSawPreviewShowsTheActualWorldSizedCuttingDisc()
     {
         var preview=GameObject.CreatePrimitive(PrimitiveType.Cube);preview.transform.position=new Vector3(100,4,100);preview.transform.localScale=Vector3.one*.52f;

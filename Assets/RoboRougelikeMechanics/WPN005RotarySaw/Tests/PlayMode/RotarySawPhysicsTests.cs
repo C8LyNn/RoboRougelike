@@ -197,6 +197,51 @@ namespace RoboRougelike.Weapons.RotarySaw.Tests
             Assert.IsTrue(saw.OverflowedLastTick);
             Assert.AreEqual(0,saw.DamageEventsLastTick);
         }
+        // W30: a full owner-safety broadphase must not draw the energy reserve,
+        // heat the motor, spin or damage even if a valid target is also in range.
+        // When the overflow clears, the unchanged request must resume normally.
+        [UnityTest] public IEnumerator OwnerSafetyOverflowPreservesEnergyHeatAndResumesDamage()
+        {
+            SetupSaw();
+            config.maxOverlapHits = 4;
+            config.heatPerSecondAtFullRpm = 15f;
+            config.energyPerSecond = 10f;
+            saw.Configure(config);
+            var energy = owner.AddComponent<RotarySawEnergyReservoir>();
+            energy.SetChargeForTesting(20f);
+            saw.SetEnergySource(energy);
+            var victim = Target(new Vector3(0f, 0f, -.55f));
+            var saturated = new List<GameObject>();
+            for (int i = 0; i < 6; i++)
+            {
+                var part = Make("W30 physical overlap " + i);
+                part.transform.position = new Vector3(0f, 0f, .25f + i * .05f);
+                part.AddComponent<BoxCollider>().size = Vector3.one * .3f;
+                saturated.Add(part);
+            }
+            Physics.SyncTransforms();
+            yield return new WaitForFixedUpdate();
+
+            Assert.IsTrue(saw.OwnGeometryBlockedLastTick, "A full safety buffer cannot prove the blade is clear");
+            Assert.IsTrue(saw.OverflowedLastTick, "Fail-closed must still report overflow");
+            Assert.That(energy.Charge, Is.EqualTo(20f).Within(.0001f), "A denied attack must not spend energy");
+            Assert.That(saw.Motor.Heat, Is.EqualTo(0f).Within(.0001f), "A denied attack must not heat");
+            Assert.That(saw.Motor.Rpm, Is.EqualTo(0f).Within(.0001f), "A denied attack must not spin");
+            Assert.AreEqual(0f, victim.TotalDamage);
+            Assert.AreEqual(0, saw.DamageEventsLastTick);
+
+            foreach (var part in saturated) part.SetActive(false);
+            Physics.SyncTransforms();
+            yield return new WaitForFixedUpdate();
+
+            Assert.IsFalse(saw.OwnGeometryBlockedLastTick);
+            Assert.IsFalse(saw.OverflowedLastTick);
+            Assert.Greater(saw.Motor.Rpm, 0f);
+            Assert.Greater(saw.Motor.Heat, 0f);
+            Assert.Less(energy.Charge, 20f);
+            Assert.Greater(victim.TotalDamage, 0f, "Clearing overflow should restore real contact damage");
+        }
+
         [UnityTest] public IEnumerator RegisteredExternalOwnerColliderIsIgnored()
         {
             SetupSaw(); var t=Target(new Vector3(0f,0f,.55f));

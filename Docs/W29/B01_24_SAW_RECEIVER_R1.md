@@ -18,3 +18,8 @@ Independent actual Unity QA #848 found #828 EditMode 2/4 and original WPN005 Pla
 Run exact-HEAD original `RRLW6SawPhysicalTests` (4 cases), original `RotarySawPhysicsTests` (20 cases), #848 blocked/resume QA, and Windows extracted Player API-controlled scenario. Separately inspect heat/energy/RPM and own-armour safety; log Editor.log, NUnit XML, Player.log. No QA PASS is claimed by this document.
 
 **W29 receiver correction:** Original `Assets/scene 1.unity` serialized YAML proves `Enemy_Muzzle` is directly parented under `Enemy_Yaw` (IDs 695195063→2114861277). The original receiver helper wrongly assumed an intermediate pitch transform and would silently skip external placement. R1.1 accepts both direct and pitch-mediated yaw parents; actual Unity test remains NOT_RUN.
+
+## W30 additional authored Unity regressions (NOT_RUN)
+- `OwnerSafetyOverflowPreservesEnergyHeatAndResumesDamage` adds a real, enabled 20-unit energy reservoir, 10 energy/s, and 6 live BoxColliders against capacity 4; verifies fail-closed RPM/heat/damage/energy and recovery after physically disabling the blockers.
+- `WastelandEnemySawPhysicalDiscClearsOwnHullAcrossYaw` uses the existing Wasteland enemy prefab, `Enemy_Muzzle` direct `Enemy_Yaw` parent, and real owned collider geometry at yaw 0/90/180/270. No AI or weapon source bypass is introduced; failing this native case means #861 remains HOLD.
+- These two new UnityTest methods are **AUTHORED ONLY**; source readback is not a Unity test result. Re-run 4+1 W6 EditMode and 20+1 WPN005 PlayMode tests on exact final SHA, plus #848 and extracted Player.
