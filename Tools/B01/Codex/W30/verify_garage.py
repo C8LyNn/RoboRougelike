@@ -16,7 +16,9 @@ ALLOWED={RUNTIME,TESTS,"Docs/W29/GARAGE_FUNCTIONAL_SWEEP_GATE.md",
          ".github/workflows/b01-w30-garage-source.yml",
          ".github/workflows/b01-w31-native-acceptance.yml",
          "Tools/B01/Codex/W31/verify_artifacts.py",
-         "Docs/W31/NATIVE_ACCEPTANCE.md"}
+         "Docs/W31/NATIVE_ACCEPTANCE.md",
+         "Assets/B01Packages/MapJumpPad001/README.md.meta",
+         "Assets/B01Packages/MapJumpPad001/manifest.json.meta"}
 
 def checks(src,tests,rest):
     return {
