@@ -1,0 +1,55 @@
+name: B01-60 W34 original B01-62 #923 Save GUID physical ledger OS SOURCE negative
+on:
+  push:
+    branches: [qa/b01-60-p17w34-r3-save-physical-id-generations-r1]
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-60/P17W34R3PhysicalIdentity/**'
+      - '.github/workflows/b01-60-w34-original-923-physical-id.yml'
+permissions:
+  contents: read
+jobs:
+  original-923-same-writer-physical-id-os:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2025, ubuntu-24.04]
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 12
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Immutable #923 same-writer source provenance, original #877 real game factory
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin 3bd9b159997924dcecb4e1cd1d41137896e5199e
+          git fetch --no-tags --depth=1 origin b4df10a7ad7e6c758f8331013f6b216b3a3689a3
+          git fetch --no-tags --depth=1 origin c9c19665a4f9385e6479f7151097deb797026ade
+          mkdir -p Tools/B01/B01-62/P17W33R3World/.source Tools/B01/B01-62/P17W30AdmissionV3/.source
+          git show 3bd9b159997924dcecb4e1cd1d41137896e5199e:Assets/R3/R3VehicleCatalog.cs > Tools/B01/B01-62/P17W33R3World/.source/R3VehicleCatalog.cs
+          git show b4df10a7ad7e6c758f8331013f6b216b3a3689a3:Assets/B01Packages/ECONAPPROVED007/Runtime/ApprovedEconomyPolicyV7.cs > Tools/B01/B01-62/P17W30AdmissionV3/.source/ApprovedEconomyPolicyV7.cs
+          git show b4df10a7ad7e6c758f8331013f6b216b3a3689a3:Assets/B01Packages/ECONAPPROVED007/Runtime/CanonicalEconomySectionV7.cs > Tools/B01/B01-62/P17W30AdmissionV3/.source/CanonicalEconomySectionV7.cs
+          git show c9c19665a4f9385e6479f7151097deb797026ade:Assets/B01Packages/ECONADMISSIONW29/Runtime/EconomyV7AdmissionW29.cs > Tools/B01/B01-62/P17W30AdmissionV3/.source/EconomyV7AdmissionW29.cs
+          python Tools/B01/B01-60/P17W34R3PhysicalIdentity/source_gate.py
+      - name: Compile and execute actual unmodified #923 Csharp9 V3 Save and disk witness
+        run: |
+          set -euo pipefail
+          dotnet run --project Tools/B01/B01-60/P17W34R3PhysicalIdentity/Original923OsQA.csproj -c Release -v quiet | tee b0160-w34-923-os-source.log
+          grep -F 'B0160_W34_ORIGINAL_923_PHYSICAL_ID_OS_SOURCE_TOTAL 3 PASS 3 FAIL 0' b0160-w34-923-os-source.log
+          grep -F 'B0160_W34_SOURCE_WITNESS_PASS_PRODUCT_R3_LEDGER_IDENTITY_P0_RED' b0160-w34-923-os-source.log
+          grep -F 'B0160_W34_NATIVE_UNITY=NOT_RUN REAL_R3_BINDER=NOT_INTEGRATED' b0160-w34-923-os-source.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b0160-w34-r3-identity-${{ matrix.os }}
+          path: b0160-w34-923-os-source.log
+          if-no-files-found: warn
