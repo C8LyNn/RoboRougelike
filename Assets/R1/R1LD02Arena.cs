@@ -1,5 +1,7 @@
 using UnityEngine;
 using RoboRougelike.MapEditor;
+using B01.MapJumpPad001;
+using System.Linq;
 
 namespace RoboRougelike.R1
 {
@@ -41,7 +43,53 @@ namespace RoboRougelike.R1
             generatedLayoutWasActive=generatedLegacyLayout!=null&&generatedLegacyLayout.activeSelf;
             if(generatedLegacyFloor!=null)generatedLegacyFloor.SetActive(false);
             if(generatedLegacyLayout!=null)generatedLegacyLayout.SetActive(false);
-            ld02World.gameObject.SetActive(true);Physics.SyncTransforms();return ld02PlayerSpawn;
+            ld02World.gameObject.SetActive(true);Physics.SyncTransforms();
+            CreateJumpPadOnActiveLD02Ground();
+            return ld02PlayerSpawn;
+        }
+
+        // Original B01-21 physical pad, mounted in the actual active LD02 combat arena.
+        // Optional area: no mutation when a genuine wall/crate occupies the footprint.
+        void CreateJumpPadOnActiveLD02Ground()
+        {
+            if(ld02World==null||ld02World.GetComponentInChildren<MapJumpPad>()!=null)return;
+            var desired=ld02PlayerSpawn+Vector3.right*(MapWorld.Grid*2);
+            var hits=Physics.RaycastAll(desired+Vector3.up*5,Vector3.down,12f,
+                ~0,QueryTriggerInteraction.Ignore);
+            var ground=hits.Where(hit=>hit.collider!=null&&
+                hit.collider.transform.IsChildOf(ld02World.transform)&&
+                hit.collider.GetComponentInParent<MapItemReference>()?.Item.kind==MapItemKind.Ground)
+                .OrderBy(hit=>hit.distance).FirstOrDefault();
+            if(ground.collider==null||ground.normal.y<.85f)
+            {
+                Debug.LogWarning("[W29 JumpPad] No certified LD02 ground. Optional module skipped.");
+                return;
+            }
+            var position=ground.point+Vector3.up*.04f;
+            foreach(var obstacle in Physics.OverlapBox(position+Vector3.up*.44f,
+                new Vector3(.49f,.24f,.49f),Quaternion.identity,~0,QueryTriggerInteraction.Ignore))
+                if(obstacle!=null&&obstacle.enabled&&obstacle.gameObject.activeInHierarchy&&
+                   obstacle.GetComponentInParent<MapItemReference>()?.Item.kind!=MapItemKind.Ground)
+                {
+                    Debug.LogWarning("[W29 JumpPad] Real obstacle in footprint. Pad skipped.");
+                    return;
+                }
+            var root=new GameObject("LD02 MAP-JUMPPAD-001 Physical");
+            root.transform.SetParent(ld02World.transform,false);
+            root.transform.SetPositionAndRotation(position,Quaternion.Euler(0,90,0));
+            var trigger=root.AddComponent<BoxCollider>();
+            trigger.isTrigger=true;trigger.center=new Vector3(0,.28f,0);
+            trigger.size=new Vector3(1f,.55f,1f);
+            root.AddComponent<MapJumpPad>().Configure(8.5f,2f,1.25f);
+            var visual=GameObject.CreatePrimitive(PrimitiveType.Cube);
+            visual.name="LD02 JumpPad visual (no physics authority)";
+            visual.transform.SetParent(root.transform,false);
+            visual.transform.localPosition=new Vector3(0,.08f,0);
+            visual.transform.localScale=new Vector3(1f,.16f,1f);
+            var extra=visual.GetComponent<Collider>();
+            extra.enabled=false;Destroy(extra);
+            visual.GetComponent<Renderer>().sharedMaterial=palette.Selection;
+            Physics.SyncTransforms();
         }
         void ClearLD02Arena()
         {

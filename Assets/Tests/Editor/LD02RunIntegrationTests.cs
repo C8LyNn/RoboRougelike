@@ -99,6 +99,33 @@ public sealed class LD02RunIntegrationTests
         if(Physics.ComputePenetration(a,a.transform.position,a.transform.rotation,b,b.transform.position,b.transform.rotation,out _,out var distance))
             Assert.That(distance,Is.LessThan(.03f),$"{a.name} intersects {b.name} at spawn");
     }
+    [UnityTest] public IEnumerator LiveLD02SpawnsOriginalPhysicalJumpPad()
+    {
+        yield return Prepare(R3VehicleKind.Light); yield return Deploy();
+        var pad=Object.FindFirstObjectByType<B01.MapJumpPad001.MapJumpPad>();
+        Assert.That(pad,Is.Not.Null,"LD02 must contain the real B01-21 physics module");
+        Assert.That(pad.transform.IsChildOf(GameObject.Find("LD02 arena").transform),Is.True);
+        Assert.That(pad.GetComponent<BoxCollider>().isTrigger,Is.True);
+        run.Encounter.SetCombatActive(false);
+        var probe=GameObject.CreatePrimitive(PrimitiveType.Cube);
+        probe.name="W29 actual 10kg Rigidbody";
+        probe.transform.position=pad.transform.position+Vector3.up*1.9f;
+        var body=probe.AddComponent<Rigidbody>();
+        body.mass=10f;body.useGravity=true;
+        body.collisionDetectionMode=CollisionDetectionMode.ContinuousDynamic;
+        float maxUp=float.NegativeInfinity;
+        try
+        {
+            for(int i=0;i<130;i++)
+            {
+                yield return new WaitForFixedUpdate();
+                maxUp=Mathf.Max(maxUp,body.linearVelocity.y);
+            }
+            Assert.That(maxUp,Is.GreaterThan(5f),"Live LD02 pad must launch a physical Rigidbody");
+        }
+        finally { Object.Destroy(probe); }
+    }
+
     [UnityTest] public IEnumerator EnemiesFireRealProjectilesAtPlayer()
     {
         yield return Prepare(R3VehicleKind.Light);yield return Deploy();
