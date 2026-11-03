@@ -14,7 +14,7 @@ def export(repo,out):
       m["exact_W28_parent"]=="2508f533d3ed8c31f581e491afb2494ab7fa774c" and
       len(paths)==17 and paths==sorted(set(paths)) and
       sorted(m["modified_owner_paths"]+m["added_owner_paths"])==paths,
-      "author owner manifest and 16 exact files")
+      "author owner manifest and 17 exact files")
  members={}
  for path in paths:
   pure=pathlib.PurePosixPath(path)
