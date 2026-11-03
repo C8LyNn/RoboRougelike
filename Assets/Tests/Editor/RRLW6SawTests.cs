@@ -114,6 +114,33 @@ public class RRLW6SawPhysicalTests
                     $"Saw disc overlaps own collider {collider.name} at yaw {degrees}");
             }
         }
+
+        // A reversed imported muzzle may be BEHIND the real yaw pivot. The signed
+        // forward projection must move it wholly beyond the existing hull ring;
+        // a radial magnitude would mistake negative Z for positive clearance.
+        yaw.localRotation=Quaternion.identity;
+        muzzle.position=yaw.position-yaw.forward*.4f;
+        Physics.SyncTransforms();
+        float hullRadialBound=0f;
+        foreach(var collider in ownerColliders)
+        {
+            if(collider==null||!collider.enabled||!collider.gameObject.activeInHierarchy||
+               collider.transform.IsChildOf(muzzle))continue;
+            var bounds=collider.bounds;
+            var delta=bounds.center-yaw.position;
+            float radial=new Vector2(delta.x,delta.z).magnitude+
+                         new Vector2(bounds.extents.x,bounds.extents.z).magnitude;
+            hullRadialBound=Mathf.Max(hullRadialBound,radial);
+        }
+        var correction=typeof(RoboRougelike.WeaponIntegration.RRLSawBinding)
+            .GetMethod("PlaceEnemySawBeyondHull",
+                System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Static);
+        Assert.That(correction,Is.Not.Null,"Original enemy saw clearance helper must remain wired");
+        correction.Invoke(null,new object[]{enemy.transform,muzzle});
+        float forwardClearance=Vector3.Dot(muzzle.position-yaw.position,yaw.forward);
+        Assert.That(forwardClearance,Is.GreaterThanOrEqualTo(
+            hullRadialBound+module.ContactRadius+.059f),
+            "Reversed muzzle must not be mistaken for already-clear forward reach");
     }
 
     [UnityTest] public IEnumerator GarageSawPreviewShowsTheActualWorldSizedCuttingDisc()

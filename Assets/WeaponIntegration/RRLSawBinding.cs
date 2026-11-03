@@ -54,7 +54,9 @@ namespace RoboRougelike.WeaponIntegration
                              new Vector2(bounds.extents.x,bounds.extents.z).magnitude;
                 furthestRadius=Mathf.Max(furthestRadius,radial);
             }
-            float current=Vector3.ProjectOnPlane(center.position-yaw.position,Vector3.up).magnitude;
+            // Signed projection is required: reversed/pitch-converted muzzles can start BEHIND yaw.
+            // Using radial magnitude would count a rear-facing offset as forward clearance.
+            float current=Vector3.Dot(center.position-yaw.position,forward);
             float radius=new RotarySawConfiguration().bladeRadius;
             float extra=Mathf.Max(0f,furthestRadius+radius+.06f-current);
             if(extra>0f)center.position+=forward*extra;
