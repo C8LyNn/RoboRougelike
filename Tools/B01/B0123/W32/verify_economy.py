@@ -90,7 +90,7 @@ class R3VehicleModel {
  public bool Neighbour=true;
  public readonly List<R3PartState> Parts=new List<R3PartState>();
  public readonly List<R3PartState> inventory=new List<R3PartState>();
- public Func<R3PartState[],bool> restorationGate;
+ public Func<IReadOnlyList<R3PartState>,bool> restorationGate;
  public List<R3PartState> emergency;
  public int Price(R3PartKind k,R4WeaponKind w)=>NewPrice;
  public static bool ValidEconomicPart(R3PartState p)=>p!=null &&
