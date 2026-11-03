@@ -319,9 +319,9 @@ internal static class W34EconomyCampaign
              world!=null&&world.Parts.Count==139&&
              world.Parts.Count(p=>p.Location==R3PartLocationV1.Inventory)==1&&
              world.Parts.Count(p=>p.Location==R3PartLocationV1.Detached)==1&&
-             world.Parts.Single(p=>p.Id==economy.Pending[0].ModuleId).Hp==0,
+             world.Parts.Single(p=>p.Id==economy!.Pending[0].ModuleId).Hp==0,
              "cold full 139-part dynamic IDs, physical detached, pending HP0");
-        Need(!ApprovedEconomyPolicyV7.TryStageTrustedVictory(economy,
+        Need(!ApprovedEconomyPolicyV7.TryStageTrustedVictory(economy!,
              "w34-synthetic-owned-receipt-24","w34-source-encounter-24",
              out _,out _),"cold consumed win24 cannot reaward");
         Need(CanonicalColdReadV3.ReadClosedSlot(
@@ -336,7 +336,7 @@ internal static class W34EconomyCampaign
              "cold spent loaner and Win2-only free booking persist together");
         Need(CanonicalR3WorldCodecV1.TryDecode(borrowed,out var loanWorld)&&
              loanWorld!=null&&loanWorld.Parts.Count==83&&
-             loanWorld.Parts.Single(p=>p.Id==loaner.Pending[0].ModuleId).Hp==0,
+             loanWorld.Parts.Single(p=>p.Id==loaner!.Pending[0].ModuleId).Hp==0,
              "cold original 83-part Standard essential Wheel remains HP0");
         Console.WriteLine("W34_923_COLD_INDEPENDENT_CLR_PASS heavy139_wins=24 standard83_loaner=Spent");
     }
