@@ -18,6 +18,11 @@ namespace RoboRougelike.WeaponIntegration
             Device=GetComponent<RRLDeviceBinding>();if(Device==null)Device=gameObject.AddComponent<RRLDeviceBinding>();Device.Bind(state,owner);
             tank=owner.GetComponent<P12PipelineSafeTankController>();intervalScale=cadence;
             Module=gameObject.AddComponent<EmpEmitter>();Module.SetAutomaticSimulation(false);Module.BindVehicle(owner,owner.GetInstanceID(),RRLHitRouter.Team(owner));Module.SetOrigin(transform);
+            // Direct callers of Module.TryPulse must not bypass R3's current body/HP/team gate.
+            // Check live state at pulse time, including destruction/detachment before Update().
+            Module.SetActivationGate(() => Device != null && Device.Available &&
+                Device.Owner != null && transform.IsChildOf(Device.Owner) &&
+                !RRLEmpPartState.IsBlocked(gameObject));
             Module.RestoreCooldown(Mathf.Max(0,state.DeviceReadyAt-Time.time));Device.Damageable.Died+=Stop;RefreshAvailability();
         }
         public void RefreshAvailability(){if(Module!=null)Module.SetOperational(Device.Available);}

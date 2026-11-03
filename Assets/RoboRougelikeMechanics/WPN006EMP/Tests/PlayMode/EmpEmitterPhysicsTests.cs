@@ -200,6 +200,28 @@ namespace RoboRougelike.Mechanics.EMP.Tests
         }
 
         [Test]
+        public void Pulse_DirectModuleCallRechecksGateBeforeEnergyAndCooldown()
+        {
+            var bank = player.AddComponent<EmpEnergyReservoir>();
+            bank.Configure(100f, 40f, 0f);
+            emitter.Configure(9f, 3f, 12f, 7f);
+            emitter.SetEnergySource(bank);
+            emitter.SetActivationGate(() => false);
+            Assert.IsFalse(emitter.Ready);
+            Assert.IsFalse(emitter.TryPulse(out EmpPulseReport denied));
+            Assert.AreEqual(EmpPulseFailure.NotOperational, denied.Failure);
+            Assert.AreEqual(40f, bank.Current, "a directly blocked EMP cannot consume energy");
+            Assert.AreEqual(0f, emitter.CooldownRemaining, "blocked EMP cannot consume cooldown");
+            Assert.IsFalse(enemy.IsDisrupted);
+            emitter.SetActivationGate(() => true);
+            Assert.IsTrue(emitter.Ready);
+            Assert.IsTrue(emitter.TryPulse(out EmpPulseReport emitted));
+            Assert.AreEqual(1, emitted.ReceiversAffected);
+            Assert.AreEqual(33f, bank.Current);
+            Assert.AreEqual(12f, emitter.CooldownRemaining);
+        }
+
+        [Test]
         public void Pulse_DisabledEmitterRefuses()
         {
             emitter.SetOperational(false);
