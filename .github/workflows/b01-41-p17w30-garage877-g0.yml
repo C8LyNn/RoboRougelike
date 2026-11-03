@@ -1,0 +1,66 @@
+name: B01-41 W30 independent #873->#877 original game source + 14 negative garage checks
+on:
+  push:
+    branches: [ci/b01-41-p17w30-game877-canonical-garage-g0-r1]
+    paths:
+      - 'Tools/B01/CI41/P17W30Garage877/**'
+      - '.github/workflows/b01-41-p17w30-garage877-g0.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  independent-original-game-g0:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch only exact original Codex gameplay and garage commits
+        run: |
+          set -euo pipefail
+          for sha in \
+            ed8cf4bcc131688b9a93968a89683d2496586683 \
+            d537b7310979b91df27a08b14d0f1c74d0889089 \
+            20273c3580079dfb299c30c85a67e76f8d893e7f; do
+            git fetch --no-tags origin "$sha"
+            test "$(git rev-parse "$sha^{commit}")" = "$sha"
+          done
+      - name: 14 independently executed original-source and mutated-gate tests
+        run: |
+          set -euo pipefail
+          mkdir -p ci41-w30-evidence
+          python -m unittest discover -s Tools/B01/CI41/P17W30Garage877 -p test_intake.py -v 2>&1 | tee ci41-w30-evidence/unit-negative-tests.log
+          grep -q 'Ran 14 tests' ci41-w30-evidence/unit-negative-tests.log
+          grep -q '^OK$' ci41-w30-evidence/unit-negative-tests.log
+      - name: Independent actual Git-byte origin, canonical preview to Buy/Mount, and full Unity GUID/asmdef/casefold audit
+        run: |
+          set -euo pipefail
+          python Tools/B01/CI41/P17W30Garage877/intake.py ci41-w30-evidence/original-877-intake 2>&1 | tee ci41-w30-evidence/original-g0.log
+          grep -q 'CI41_W30_877_EXACT_PARENT_AND_3_ORIGINAL_BLOBS_PASS' ci41-w30-evidence/original-g0.log
+          grep -q 'CI41_W30_REAL_GAME_SOURCE_GATES_PASS 14' ci41-w30-evidence/original-g0.log
+          grep -q 'CI41_W30_REAL_UNITY_GUID_ASMDEF_CASEFOLD_PASS' ci41-w30-evidence/original-g0.log
+          python -c 'import json; x=json.load(open("ci41-w30-evidence/original-877-intake/receipt.json")); assert x["selected_game873"]=="d537b7310979b91df27a08b14d0f1c74d0889089" and x["selected_garage877"]=="20273c3580079dfb299c30c85a67e76f8d893e7f" and x["unity_native_G1"]=="NOT_RUN" and x["win_player"]=="NOT_RUN" and x["save826_game_binder"]=="NOT_IN_877"'
+          echo 'CI41_W30_G0_SOURCE_SELECTED_ONLY_NATIVE_AND_PLAYER_NOT_RUN'
+      - name: Preserve exact immutable source receipt, negative mutation logs and source gates
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: B01-41-W30-GAME873-GARAGE877-SOURCE-G0-${{ runner.os }}
+          path: |
+            ci41-w30-evidence/unit-negative-tests.log
+            ci41-w30-evidence/original-g0.log
+            ci41-w30-evidence/original-877-intake/receipt.json
+          retention-days: 14
+          if-no-files-found: warn
