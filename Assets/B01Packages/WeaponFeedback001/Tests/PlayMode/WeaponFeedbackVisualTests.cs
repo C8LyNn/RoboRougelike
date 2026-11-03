@@ -55,6 +55,21 @@ namespace B01.WeaponFeedback001.Tests
    Assert.AreEqual(12,v.ImpactPoolSize,
     "Further hits must reuse the existing GameObjects.");
   }
+    [UnityTest]public IEnumerator DamageSmoke_EmitsOnlyWhileDamaged()
+  {
+   var v=Make(out Transform pivot,out Light light);
+   var smokeGo=new GameObject("SmokeFixture");
+   smokeGo.transform.SetParent(host.transform,false);
+   var smoke=smokeGo.AddComponent<ParticleSystem>();
+   var main=smoke.main;main.playOnAwake=false;
+   smoke.Stop(true,ParticleSystemStopBehavior.StopEmittingAndClear);
+   v.BindVisuals(pivot,null,light,null,smoke);
+   v.SetWeaponDamageVisual(.65f);
+   Assert.IsTrue(smoke.emission.enabled);
+   yield return null;
+   v.SetWeaponDamageVisual(0f);
+   Assert.IsFalse(smoke.emission.enabled);
+  }
     [UnityTest]public IEnumerator WeaponDamageVisual_ClampsWithoutGameplayDamage()
   {
    var v=Make(out Transform pivot,out Light light);
