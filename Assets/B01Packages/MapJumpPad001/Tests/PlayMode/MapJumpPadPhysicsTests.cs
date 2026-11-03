@@ -86,6 +86,45 @@ namespace B01.MapJumpPad001.Tests
         }
 
         [UnityTest]
+        public IEnumerator DestroyedRigidbodyNoLongerOccupiesBothCachesWhenAnotherBodyEnters()
+        {
+            // Real Unity object lifetime, while the missing-Exit edge itself
+            // is exercised separately by W33's callback fault injection test.
+            var jump = Create(0f);
+            var firstBody = robot.GetComponent<Rigidbody>();
+            firstBody.useGravity = false;
+            jump.gameObject.SendMessage("OnTriggerEnter", robot.GetComponent<Collider>(),
+                SendMessageOptions.RequireReceiver);
+            yield return new WaitForFixedUpdate();
+            Assert.Greater(firstBody.linearVelocity.y, 5f);
+
+            Object.Destroy(robot);
+            robot = null;
+            yield return null; // allow Unity to complete Destroy and fake-null transition
+            Assert.That(firstBody == null, Is.True, "Original Rigidbody must be destroyed.");
+
+            robot = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            robot.transform.position = new Vector3(0f, 1.4f, 0f);
+            var secondBody = robot.AddComponent<Rigidbody>();
+            secondBody.useGravity = false;
+            jump.gameObject.SendMessage("OnTriggerEnter", robot.GetComponent<Collider>(),
+                SendMessageOptions.RequireReceiver);
+            yield return new WaitForFixedUpdate();
+            Assert.Greater(secondBody.linearVelocity.y, 5f);
+
+            var flags = System.Reflection.BindingFlags.Instance |
+                        System.Reflection.BindingFlags.NonPublic;
+            var contacts = (System.Collections.IDictionary)typeof(MapJumpPad)
+                .GetField("contacts", flags).GetValue(jump);
+            var launches = (System.Collections.IDictionary)typeof(MapJumpPad)
+                .GetField("lastLaunch", flags).GetValue(jump);
+            Assert.That(contacts.Count, Is.EqualTo(1), "Destroyed body retained in contacts.");
+            Assert.That(launches.Count, Is.EqualTo(1), "Destroyed body retained in lastLaunch.");
+            Assert.That(contacts.Contains(secondBody), Is.True);
+            Assert.That(launches.Contains(secondBody), Is.True);
+        }
+
+        [UnityTest]
         public IEnumerator MultiColliderRobotDoesNotReceiveDoubleLaunch()
         {
             Create(5f);
