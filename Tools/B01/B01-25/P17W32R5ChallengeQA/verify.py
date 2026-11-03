@@ -16,6 +16,8 @@ PRODUCTION = (
     "Assets/R5/R5Arena.cs",
     "Assets/B01Packages/MapJumpPad001/Runtime/MapJumpPad.cs",
     "Assets/Tests/Editor/W29LiveArenaJumpPadTests.cs",
+    "Assets/R3/R3VehicleCatalog.cs",
+    "Assets/R3/R3VehicleAssembly.cs",
 )
 EXPECTED = {TEST, META, DOC, CHECK, WORKFLOW}
 NAMES = (
@@ -29,6 +31,12 @@ def git(*args):
 def valid_suite(s):
     return s.count("[UnityTest]") == 2 and all(n in s for n in NAMES) and (
         "arena.Build(kind)" in s and
+        "R3VehicleCatalog.Create(kind)" in s and
+        "foreach (R3VehicleKind vehicle" in s and
+        "const float originalGridMeters = .55f;" in s and
+        "const float horizontalMarginMeters = .30f;" in s and
+        "design.Parts.Count, Is.EqualTo(expected)" in s and
+        "new Vector3(3.4f" not in s and
         "arena.Build(R5ArenaKind.SalvageYard)" in s and
         "collider.bounds.Intersects(envelope)" in s and
         "Physics.gravity.y" in s and
@@ -46,6 +54,8 @@ def main():
     assert valid_suite(source), "Missing real R5 NUnit acceptance source"
     assert not valid_suite(source.replace("[UnityTest]", "", 1)), "Mutation guard: removed NUnit not rejected"
     assert not valid_suite(source.replace("Physics.gravity.y", "1f")), "Mutation guard: fake gravity not rejected"
+    assert not valid_suite(source.replace("R3VehicleCatalog.Create(kind)", "FakeCatalog.Create(kind)")), "Mutation guard: fake factory not rejected"
+    assert not valid_suite(source.replace("const float originalGridMeters = .55f;", "const float originalGridMeters = 0.1f;")), "Mutation guard: shrunken grid not rejected"
     meta = (ROOT / META).read_text(encoding="utf-8")
     m = re.search(r"^guid:\s*([0-9a-f]{32})\s*$", meta, re.M)
     assert m, "Missing legal Unity meta GUID"
@@ -60,7 +70,7 @@ def main():
     assert "if(kind==R5ArenaKind.SalvageYard)" in arena
     assert "UNITY" in (ROOT / DOC).read_text(encoding="utf-8").upper()
     print("B01_25_W32_SOURCE_SCOPE_PASS: 5 own files, 2 authored native cases, "
-          "3 immutable production source blobs, one unique GUID, 2 negative mutations")
+          "5 immutable production source blobs, one unique GUID, 4 negative mutations")
     print("UNITY_EDITMODE=NOT_RUN PLAYMODE=NOT_RUN WINDOWS_PLAYER=NOT_BUILT")
 
 if __name__ == "__main__":
