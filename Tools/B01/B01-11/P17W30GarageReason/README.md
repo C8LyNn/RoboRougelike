@@ -1,0 +1,27 @@
+# B01-11 — P17/W30 — Original R3 garage rejected-mount reason / R1
+
+**Target:** existing playable Codex cumulative #873 SHA `d537b7310979b91df27a08b14d0f1c74d0889089`, exact direct child gameplay hard-geometry #877 SHA `20273c3580079dfb299c30c85a67e76f8d893e7f`. This W30 package is an isolated child of #877. It does not alter or reset parent #877, Codex active worktree, #873, original #826 Save, #861 saw, #834 policy, B01-12 garage visual, main/develop or other producer branches. Parent physical source current `Assets/R3/R3GarageView.cs` Git blob = `1976a19516905be63259109ec1af0a92ef52d6f4`.
+
+## Confirmed existing-player UI problem
+
+In the CURRENT canonical live garage, `R3GarageView.ClickTarget()` returned false immediately when `HasTarget=false` without resetting a previous `Zamontowano` success message. After a previously allowed placement was rejected by the authoritative `R3VehicleModel.Buy/Mount` recheck (e.g. moving collider or change of transaction state between preview and commit), it overwrote the useful reason with the unhelpful `Montaż nieudany.` instead of re-reading the **same** `PlacementIssue` authority. This is UI messaging; the canonical model already protects Scrap and part IDs on rejection.
+
+**Implemented production change:** EXACT one existing real `Assets/R3/R3GarageView.cs` live-game script. Before operations: if garage inactive/transitional, give explicit `Garaż jest nieaktywny...`; if no physical target, use existing `PlacementIssue`. For a mount action that reaches the original run controller and returns false, re-evaluate the very same `PlacementIssue` property (which funnels into `R3VehicleModel.PlacementError/OwnedPlacementError` and original `R3BuildValidation.Validate` from #877). If live reason exists, show it verbatim; if authority cannot supply one due to a transition, fail closed with `Montaż odrzucony po ponownej weryfikacji...` instead of invented collision claim. Preserve existing successful UI; never set a new collision gate, mount part, deduct Scrap, mutate ID/HP, issue a loaner, or write Save.
+
+## Actual authored native product regression
+
+`Assets/Tests/Editor/B0111W30GarageRejectionUxTests.cs` + unique `.meta`: TWO `[UnityTest]` scenario sources open original `Assets/scene 1.unity`, run ORIGINAL `R1RunController.OpenSandboxGarage`, and use real `R3GarageView`, actual R3VehicleModel + original geometry. Case 1: no-target click after stale success -> correct reason and unchanged physical model Scrap/part GUIDs. Case 2: select an actually legal geometry validated by original #877 canonical gate, inject a deterministic test-only gate flip so initial preview is legal but actual `Buy` rejects; the UI must show the new owner-gate reason, with unchanged wallet/part IDs. Restore original `R3BuildValidation.Bind` in `finally`. The injected gate flip is a deterministic model race witness, NOT a physical moving collider or successful Unity Player G1 proof. The true native tests have been **AUTHORED only**, no Unity Editor.log/NUnit execution has happened.
+
+## Exact executable original-source RED→GREEN
+
+`probe.py` extracts **unchanged actual production `ClickTarget()` method** byte text from two precise Git sources (#877 original and this W30 branch); compiles each method in separate .NET8 C#9 temporary projects against minimal *clearly synthetic* model/Unity substitutes and executes 5 navigation/denial cases: stale success with no target, post-preview rejection with live reason, original prevalidation reason, successful purchase, inactive garage. It checks genuine historic source RED (stale success and generic fallback) vs real changed production method GREEN. This is an executable **original method source-level unit** not a native Unity/PhysX test, so never mark Unity G1 based on it.
+
+`verify.py` checks all original package paths physically pinned by `manifest.json` SHA256+exact UTF8 bytes, exactly 1 modified R3 game script + 7 add-only own test/docs/CI paths, original #877 Git blob, unique new Unity .meta GUID and immutable ancestry. Actions Windows2022 + Ubuntu24.04 independently rerun both scripts. No silent Git edits, no protected ref, no installation on user PC.
+
+## Owner / gates / intake
+
+Risk MEDIUM: inability to know why the physical mount failed encourages repeated invalid clicks and can retain false previous success. Formal B01-40 independent G0 is still required after source QA. B01-60 / Codex must run native Unity 6000.3.14f1 Editor PlayMode actual authored tests + existing #877 physical geometry, rotated multi-part and saw/EMP garage regressions, game Windows Player incl five colored overlays, and save Editor.log/NUnit XML/Player.log+SHA. G1 remains NOT_RUN until performed. The apparent source-positive test must not be treated as the final physical game proof. Receiver Codex/B01-00 on cumulative candidate #877 ONLY after G0, no duplicate model/Save/garage runtime import.
+
+Rollback: discard this child unmerged PR. All original #873/#877/other-owner sources untouched. Do not run unsafe whole-branch cherry-pick of B01-11 historical #857 on top of Codex; its standalone read-only RecoveryHUD001 R5 had original source CI but remains separate `INTEGRATED=NO`, not a substitute for the present game's existing R3 garage.
+
+Statuses: IMPLEMENTED=YES_ORIGINAL_R3_GAME_SOURCE; TESTED=CI_PENDING; QA_ACCEPTED=NO; READY_FOR_INTEGRATOR=NO; INTEGRATED=NO; RELEASED=NO; SOURCE_G0=PENDING; NATIVE_G1=NOT_RUN; G2=HOLD; CODEX_ACK=NONE.
