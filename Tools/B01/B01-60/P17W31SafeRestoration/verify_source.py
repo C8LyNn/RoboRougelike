@@ -150,7 +150,7 @@ def fixture(source):
    require(term in body,name+" missing real R3/Save authority/wallet/ID check "+term)
  require(source.count('EditorSceneManager.OpenScene("Assets/scene 1.unity"')==4,
          "All four cases must boot actual R3 gameplay scene independently")
- require(source.count('yield return new ExitPlayMode();')==2,
+ require(source.count('yield return new ExitPlayMode();')==4,
          "Both real gameplay cases must return from Unity play mode")
  require("using UnityEngine;" in source and
          "using UnityEngine.TestTools;" in source and
