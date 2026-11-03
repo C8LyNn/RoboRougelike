@@ -270,7 +270,49 @@ namespace RoboRougelike.R3
         }
         public int AffordableRepairCost
         {
-            get {var preview=DeepCopy();preview.RepairAffordable();return Scrap-preview.Scrap;}
+            get
+            {
+                var preview=DeepCopy();
+                if(restorationGate!=null)
+                {
+                    // A DeepCopy has no live R3 actor/PhysX gate. Re-bind ONLY
+                    // this existing authoritative read-only restoration callback
+                    // to the ORIGINAL owned parts: never trust an unguarded copy
+                    // as a quote for a paid garage transaction.
+                    var destroyed=new Dictionary<string,R3PartState>(StringComparer.Ordinal);
+                    foreach(var owned in Parts.Where(p=>p!=null&&p.Health<=0f))
+                    {
+                        if(string.IsNullOrWhiteSpace(owned.Id)||!destroyed.TryAdd(owned.Id,owned))
+                            return 0; // corrupted/missing ownership IDs: fail closed
+                    }
+                    preview.SetRestorationGate(requested=>
+                    {
+                        if(requested==null||requested.Count==0)return false;
+                        var batch=new List<R3PartState>();
+                        var seen=new HashSet<string>(StringComparer.Ordinal);
+                        // Preview may have accepted earlier disconnected repairs.
+                        // Physical R3 hasn't rebuilt those colliders: revalidate
+                        // the ENTIRE prospective batch each time, not only the
+                        // final piece (which could be safe only in isolation).
+                        foreach(var already in preview.Parts)
+                        {
+                            if(already.Health>0f&&already.Id!=null&&
+                               destroyed.TryGetValue(already.Id,out var source)&&
+                               seen.Add(already.Id))batch.Add(source);
+                        }
+                        foreach(var pending in requested)
+                        {
+                            if(pending==null||pending.Id==null||
+                               !destroyed.TryGetValue(pending.Id,out var source))
+                                return false;
+                            if(seen.Add(pending.Id))batch.Add(source);
+                        }
+                        return batch.Count>0&&restorationGate(batch);
+                    });
+                }
+                preview.RepairAffordable();
+                return Scrap-preview.Scrap;
+            }
         }
         public bool Remove(Vector3Int cell)
         {
