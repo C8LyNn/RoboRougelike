@@ -1,0 +1,58 @@
+{
+  "package_id": "B01-60-P17W32-SAFE-RESTORATION-AND-BULK-QUOTE-NATIVE-ACCEPTANCE-002",
+  "role": "B01-60 independent QA",
+  "parent_game_pr": 877,
+  "base_exact_commit": "3bd9b159997924dcecb4e1cd1d41137896e5199e",
+  "cumulative_game_pr": 873,
+  "cumulative_game_exact": "d537b7310979b91df27a08b14d0f1c74d0889089",
+  "inherited_owner_fixes": [
+    "B01-23 #887 reverse armor against installed saw",
+    "B01-61 #883 restoration functional gate"
+  ],
+  "existing_qa_no_duplicate": [
+    "B01-60 #888 moving collider plus four-rotation suite",
+    "B01-40 #892 dynamic obstruction",
+    "B01-60 #884 legacy source RED closed unmerged"
+  ],
+  "actual_native_tests_authored": [
+    "LiveExteriorRotarySaw_PaidRebuildRestoresPhysicalGunAndSameIdOnce",
+    "LiveDefaultBasicGun_EmergencyRepairRestoresDeployabilityWithoutDuplicateWalletDebit",
+    "PhysicallyBlockedLegacySaw_BulkRepairEstimateNeverPromisesImpossibleSpend",
+    "LegalDefaultBasic_BulkRepairEstimateMatchesActualChargeAndStablePartId"
+  ],
+  "purpose": "New POSITIVE acceptance after protective garage rollback gate: physically clear paid saw repair must work without duplicated ID/wallet spend; legal basic gun emergency recovery must restore CanDeploy exactly once",
+  "gameplay_production_code_modified": false,
+  "native_game_scene": "Assets/scene 1.unity",
+  "test_framework": "Unity 6000.3.14f1 existing Editor Test Framework",
+  "source_ci": "PENDING",
+  "new_exact_head": "PENDING_AFTER_COMMIT",
+  "native_compile": "NOT_RUN",
+  "native_EditMode": "NOT_RUN",
+  "native_PlayMode": "NOT_RUN",
+  "windows_x64_ZIP": "NOT_BUILT",
+  "windows_player": "NOT_RUN",
+  "qa_accepted": false,
+  "integrated": false,
+  "released": false,
+  "software_scope": [
+    "Assets/Tests/Editor/B0160W31SafeRestorationGameAcceptanceTests.cs",
+    "Assets/Tests/Editor/B0160W31SafeRestorationGameAcceptanceTests.cs.meta",
+    "Tools/B01/B01-60/P17W31SafeRestoration/verify_source.py",
+    "Tools/B01/B01-60/P17W31SafeRestoration/README.md",
+    "Tools/B01/B01-60/P17W31SafeRestoration/manifest.json",
+    ".github/workflows/b01-60-p17w31-safe-restoration-source.yml"
+  ],
+  "parent_source_exact_blobs": {
+    "Assets/R3/R3BuildValidation.cs": "996a2de80039103538700020cca38bc0ede6076a",
+    "Assets/R3/R3RestorationValidation.cs": "0d31d7201957d36b637a9be58574ca6c4c5d1dbf",
+    "Assets/R3/R3VehicleModel.cs": "1d0f378dc598e08b3d7c16975f419d84231511bb",
+    "Assets/R1/R1RunController.cs": "09a6776db67662e8960d1f446ba5c5168cd3e4b2",
+    "Assets/Tests/Editor/GarageEditFreedomTests.cs": "6c59d1ab5f58225e44a97b3a7b434a228159649a"
+  },
+  "guid": "5ab2cd05bff24318ade73a61d4e64e39",
+  "owner_action": "Codex game owner should validate these positive native cases and repair ONLY true regression in its existing gate; do not create new system",
+  "rollback": "Discard this QA-only child of #877; no product sources affected",
+  "w32_new_finding": "source RED: AffordableRepairCost uses R3VehicleModel.DeepCopy with missing restorationGate so previously invalid centered Saw may show positive bulk quote while real GarageRepairAffordable denies transaction",
+  "w32_native_execution": "NOT_RUN",
+  "w32_gameplay_fixed": false
+}
