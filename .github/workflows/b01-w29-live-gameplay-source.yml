@@ -1,0 +1,56 @@
+name: B01-00 W29 exact original live gameplay source intake
+on:
+  push:
+    branches:
+      - feature/pass17-w29-playable-emp-garage-jumppad-r1
+  pull_request:
+    paths:
+      - 'Assets/R5/**'
+      - 'Assets/B01Packages/MapJumpPad001/**'
+      - 'Assets/B01UserExperience/**'
+      - 'Assets/RoboRougelikeMechanics/WPN006EMP/**'
+      - 'Assets/WeaponIntegration/RRLEmpBinding.cs'
+      - 'Tools/B01/Codex/W29/**'
+      - '.github/workflows/b01-w29-live-gameplay-source.yml'
+jobs:
+  source:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            label: ubuntu
+          - os: windows-2022
+            label: windows
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify original owner source, exact blob GUID and real R5 wiring
+        run: python Tools/B01/Codex/W29/verify_source.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: w29-source-only-${{ matrix.label }}
+          path: w29-source-receipt/
+  parity:
+    needs: source
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: w29-source-only-windows
+          path: receipts/windows
+      - uses: actions/download-artifact@v4
+        with:
+          name: w29-source-only-ubuntu
+          path: receipts/ubuntu
+      - name: Byte-compare original physical source ZIP and receipt cross-OS
+        run: |
+          cmp receipts/windows/W29_GAMEPLAY_SOURCE_ONLY.zip receipts/ubuntu/W29_GAMEPLAY_SOURCE_ONLY.zip
+          cmp receipts/windows/receipt.json receipts/ubuntu/receipt.json
+          sha256sum receipts/windows/W29_GAMEPLAY_SOURCE_ONLY.zip
+          echo "B0100_W29_REAL_SOURCE_CROSS_OS_BYTE_PARITY_PASS_NATIVE_NOT_RUN"
