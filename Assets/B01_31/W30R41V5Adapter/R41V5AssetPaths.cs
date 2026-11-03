@@ -18,7 +18,7 @@ namespace RoboRougelike.B0131.W30
             string unityAssetsAbsolutePath, string unityAssetPath,
             out string absoluteFbxPath, out string refusal)
         {
-            absoluteFbxPath = null;
+            absoluteFbxPath = "";
             refusal = "";
             if (string.IsNullOrWhiteSpace(unityAssetsAbsolutePath) ||
                 !Path.IsPathRooted(unityAssetsAbsolutePath))
