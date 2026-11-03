@@ -35,7 +35,10 @@ namespace RoboRougelike.WeaponIntegration
         private static void PlaceEnemySawBeyondHull(Transform owner,Transform center)
         {
             if(center==null || center.parent==null)return;
-            Transform yaw=center.parent.parent;
+            // Existing scene 1.unity has Enemy_Muzzle directly under Enemy_Yaw;
+            // accept both direct and pitch-mediated yaw hierarchies.
+            Transform yaw=center.parent;
+            if(yaw!=null && yaw.name!="Enemy_Yaw")yaw=yaw.parent;
             if(yaw==null || yaw.name!="Enemy_Yaw")return;
             Vector3 forward=Vector3.ProjectOnPlane(yaw.forward,Vector3.up);
             if(forward.sqrMagnitude<.00001f)return;

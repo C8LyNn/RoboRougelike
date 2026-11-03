@@ -16,3 +16,5 @@ Independent actual Unity QA #848 found #828 EditMode 2/4 and original WPN005 Pla
 
 ## Mandatory native regression
 Run exact-HEAD original `RRLW6SawPhysicalTests` (4 cases), original `RotarySawPhysicsTests` (20 cases), #848 blocked/resume QA, and Windows extracted Player API-controlled scenario. Separately inspect heat/energy/RPM and own-armour safety; log Editor.log, NUnit XML, Player.log. No QA PASS is claimed by this document.
+
+**W29 receiver correction:** Original `Assets/scene 1.unity` serialized YAML proves `Enemy_Muzzle` is directly parented under `Enemy_Yaw` (IDs 695195063→2114861277). The original receiver helper wrongly assumed an intermediate pitch transform and would silently skip external placement. R1.1 accepts both direct and pitch-mediated yaw parents; actual Unity test remains NOT_RUN.
