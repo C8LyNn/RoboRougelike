@@ -1,0 +1,42 @@
+name: B01-61 W30 original Codex877 restoration functional-zone source RED + native Unity adversarial test asset
+on:
+  push:
+    branches: [qa/b01-61-p17w30-877-restore-sweep-negative]
+  pull_request:
+    paths:
+      - 'Assets/Tests/Editor/B0161W30GarageRestoreHardZoneRegressionTests.cs'
+      - 'Assets/Tests/Editor/B0161W30GarageRestoreHardZoneRegressionTests.cs.meta'
+      - 'Tools/B01/B01-61/P17W30GarageRestoreHardZoneQA/**'
+      - '.github/workflows/b01-61-w30-877-restore-hardzone-source-negative.yml'
+permissions:
+  contents: read
+jobs:
+  original-877-source-negative:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2025, ubuntu-24.04]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: P0 expected original source RED, unchanged Git blobs, one unique Unity test GUID
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile Tools/B01/B01-61/P17W30GarageRestoreHardZoneQA/source_guard.py
+          python Tools/B01/B01-61/P17W30GarageRestoreHardZoneQA/source_guard.py dist/b0161-w30-877/original-negative-source.json | tee b0161-w30-original-source-negative.log
+          grep -F 'B0161_W30_877_RESTORATION_REPAIR_AND_EMERGENCY_REPAIR_BYPASS_SOURCE_RED=CONFIRMED' b0161-w30-original-source-negative.log
+          python -c 'import json,pathlib; d=json.loads(pathlib.Path("dist/b0161-w30-877/original-negative-source.json").read_text()); assert d["source_gate_result"].startswith("RED_"); assert d["native_Unity_6000_3_14f1"]=="NOT_RUN"; assert d["original_codex_877_head"]=="9634b1e5b4576aca4304d1d5b4c3d01446737650"; print("B0161_W30_DEFECT_WITNESS_ONLY_PRODUCT_SOURCE_G0_RED_NATIVE_NOT_RUN")'
+      - name: Archive original exact SHA source receipt only; native Editor log never simulated
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b0161-w30-original-877-restoration-red-${{ matrix.os }}
+          path: |
+            dist/b0161-w30-877/**
+            b0161-w30-original-source-negative.log
+          if-no-files-found: warn
