@@ -1,0 +1,44 @@
+name: B01-60 independent COURSE-DRIVE Chromium visual + input QA (NOT UNITY)
+on:
+  push:
+    branches: [qa/b01-60-p17-course-drive-browser-001]
+    paths:
+      - 'Tools/B01/COURSE-DRIVE-BROWSER-QA-001/**'
+      - '.github/workflows/b01-60-p17-course-browser.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-course-real-browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install isolated Chromium browser QA dependencies
+        run: |
+          python -m pip install playwright==1.56.0
+          python -m playwright install --with-deps chromium
+      - name: Generate original MAPGEN CSharp layouts (input fixture, NOT QA count)
+        run: |
+          dotnet run --project Research/B01-20/P17/MAPGEN-COURSE/MapgenCourseP17.csproj --configuration Release -- Research/B01-20/P17/MAPGEN-COURSE/presets.json p17-source-maps
+          python Research/B01-20/P17/MAPGEN-COURSE/verify_courses.py p17-source-maps
+          python Research/B01-20/P17/COURSE-DRIVE-001/build_viewer.py p17-source-maps
+      - name: Execute independently authored real browser tests and screenshots
+        run: |
+          python Tools/B01/COURSE-DRIVE-BROWSER-QA-001/browser_qa.py --html p17-source-maps/COURSE-DRIVE-001.html --output qa-receipts/receipt.json --screenshots qa-receipts/screens
+      - name: Upload native browser JSON + real PNG evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-60-course-drive-browser-ubuntu
+          path: qa-receipts/
+          if-no-files-found: warn
+          retention-days: 21
