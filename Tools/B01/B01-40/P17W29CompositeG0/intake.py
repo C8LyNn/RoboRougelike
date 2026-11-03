@@ -223,7 +223,7 @@ def selected_closure():
       "unity_guid_count":len(all_guids),
       "new_rig_guids":9,
       "new_economy_v7_guids":5,
-      "shared_economy_parent_meta_guid":all_guids.get("b01a0001000000000000000000000001"),
+      "shared_economy_parent_meta_guid":"b01a0001000000000000000000000001",
       "target_shared_folder_meta_blob":"38bd6da78864e817f6c8905aa0805a83528d2a25",
       "asmdef_names":asmdefs,
       "producer_exact_original_git_blobs":{
