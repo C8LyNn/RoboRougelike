@@ -64,7 +64,7 @@ jobs:
           python Tools/B01/CI41/P17W32Composite896/stage.py ci41-w32-evidence/disposable-composite-project 2>&1 | tee ci41-w32-evidence/original-git-source.log
           grep -q 'CI41_W32_IMMUTABLE_ORIGINAL_SOURCES_PASS 17' ci41-w32-evidence/original-git-source.log
           grep -q 'CI41_W32_ONE_FROZEN_PAIR_UNITY_COMPATIBLE_V3_WITH_V7_ADMISSION_PASS' ci41-w32-evidence/original-git-source.log
-          python -c 'import json; p=json.load(open("ci41-w32-evidence/disposable-composite-project/composite-provenance.json")); assert p["selected_active_save"]=="78c1d54d24a76c931ea80965a50eca03fae4156a" and p["only_one_writer"] is True and p["Unity_G1"]=="NOT_RUN" and p["r5_fixture"]=="PINNED_ONLY_NATIVE_NOT_RUN"'
+          python -c 'import json; p=json.load(open("ci41-w32-evidence/disposable-composite-project/composite-provenance.json")); assert p["selected_active_save"]=="a0282f2de0250d2a8fe421bbe182b4cb6fab2a11" and p["only_one_writer"] is True and p["Unity_G1"]=="NOT_RUN" and p["r5_fixture"]=="PINNED_ONLY_NATIVE_NOT_RUN"'
       - name: Enforce independent source RED receipt for R3 destroyed rebuild prices
         run: |
           set -euo pipefail
