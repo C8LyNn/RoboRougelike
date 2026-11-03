@@ -239,18 +239,18 @@ namespace RoboRougelike.R3
         public int RepairCost(R3PartState part)
         {
             if (!ValidEconomicPart(part) || part.Health >= 1f) return 0;
-            // Apply the existing proportional repair rate continuously to owned wrecks.
-            // A one-scrap purchase has no positive, strictly lower integer price;
-            // fail closed instead of giving away an owned part or charging full price.
             int purchase=Price(part.Kind,part.Weapon);
-            if(part.Health<=0&&purchase<=1)return 0;
-            int quote=Math.Max(1,Mathf.CeilToInt((1-part.Health)*purchase*0.35f));
-            return part.Health<=0?Math.Min(purchase-1,quote):quote;
+            // Approved ECON V7 #731/#780: a completely destroyed OWNED part
+            // rebuilds at floor(65% of NEW purchase price), including PAID 0
+            // for a one-Scrap part. This never consumes a victory coupon.
+            if(part.Health<=0f)return (int)(((long)purchase*65L)/100L);
+            // Preserve the existing above-zero-HP proportional repair quote.
+            return Math.Max(1,Mathf.CeilToInt((1-part.Health)*purchase*0.35f));
         }
         public bool Repair(Vector3Int cell)
         {
             var part = At(cell); int price = RepairCost(part);
-            if (part == null || price <= 0 || Scrap < price) return false;
+            if (part == null || !ValidEconomicPart(part) || part.Health >= 1f || Scrap < price) return false;
             if(part.Kind==R3PartKind.Gun&&InvalidWeaponTypes)return false;
             if (part.Health<=0&&!HasAliveExternalNeighbour(part.Cell,part.Kind,
                 part.RotationQuarterTurns,part.ContactMask))return false;
@@ -330,7 +330,7 @@ namespace RoboRougelike.R3
         public bool RepairInventory(string id)
         {
             var part=inventory.FirstOrDefault(p=>p.Id==id);int cost=RepairCost(part);
-            if(part==null||cost<=0||Scrap<cost)return false;
+            if(part==null||!ValidEconomicPart(part)||part.Health>=1f||Scrap<cost)return false;
             Scrap-=cost;part.Health=1;return true;
         }
         public int DismantleValue(R3PartState part) => !ValidEconomicPart(part)?0:Mathf.FloorToInt(Price(part.Kind,part.Weapon)*0.25f*Mathf.Clamp01(part.Health));
@@ -422,7 +422,7 @@ namespace RoboRougelike.R3
         {
             if(InvalidWeaponTypes)return false;
             var plan=EmergencyRepairPlan();
-            if(plan==null||plan.Count==0||plan.Any(p=>!ValidEconomicPart(p)||RepairCost(p)<=0))return false;
+            if(plan==null||plan.Count==0||plan.Any(p=>!ValidEconomicPart(p)||p.Health>=1f))return false;
             int price=plan.Sum(RepairCost);
             if(Scrap<price)return false;
             if(restorationGate!=null&&!restorationGate(plan))return false;
