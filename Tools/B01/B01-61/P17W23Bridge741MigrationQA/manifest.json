@@ -1,0 +1,11 @@
+{
+  "package_id": "B01-61-W23-R3-741-LEGACY-669-MIGRATION-NEGATIVE-QA",
+  "original_741_sha": "c86e388c519465177552f50e30128f158994c1f4",
+  "only_new_QA_paths": 6,
+  "pinned_original_git_blobs": 8,
+  "original_selected_729_sha": "b8ca29c7707cd6b4338d0b9772d74dee676d49d2",
+  "legacy_669_sha": "d6ec0c82e388e65c1e02ddfd920bb50a1f6ef121",
+  "source_scenarios_per_os": 4,
+  "native_unity": "NOT_RUN",
+  "merge": false
+}
