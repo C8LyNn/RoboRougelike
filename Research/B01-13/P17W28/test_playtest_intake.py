@@ -101,21 +101,22 @@ class TestEvidence(unittest.TestCase):
  def test_blocked_does_not_claim_success(self):
   d=m.template(SHA);d['cases'][0].update(status='BLOCKED',reason='INTEGRATION_MISSING');self.save(d);self.assertEqual(self.check()['cases']['P01_BASIC_AUTOMATIC_HEAVY'],'BLOCKED')
  def test_zip_requires_actual_zip_extension(self):
-  self.log_pass('P15_PLAYER_ZIP_BOOT','game.log');self.assert_refuse(self.check,'W29_BOOT_BUNDLE_REQUIRED')
+  self.log_pass('P15_PLAYER_ZIP_BOOT','game.log');self.assert_refuse(self.check,'W31_BOOT_SESSION_REQUIRED')
  def test_zip_rejects_bad_magic(self):
-  (self.evidence/'fake.zip').write_bytes(b'PK\x03\x04bogus');d=m.template(SHA);d['cases'][14].update(status='PASS',evidence={'playerZip':'fake.zip','playerLog':'player.log'});(self.evidence/'player.log').write_text('test only');self.save(d);self.assert_refuse(self.check,'ZIP_INVALID')
+  (self.evidence/'fake.zip').write_bytes(b'PK\x03\x04bogus');d=m.template(SHA);d['cases'][14].update(status='PASS',evidence={'playerZip':'fake.zip','playerLog':'player.log','sessionReceipt':'session.json'});(self.evidence/'player.log').write_text('test only');self.save(d);self.assert_refuse(self.check,'ZIP_INVALID')
  def test_zip_requires_player_structure(self):
   with zipfile.ZipFile(self.evidence/'b.zip','w') as z:z.writestr('notes.txt','not a game');z.writestr('x.csv','dummy');z.writestr('x2.csv','dummy')
-  d=m.template(SHA);d['cases'][14].update(status='PASS',evidence={'playerZip':'b.zip','playerLog':'player.log'});(self.evidence/'player.log').write_text('test only');self.save(d);self.assert_refuse(self.check,'ZIP_PLAYER_EXE_MISSING')
+  d=m.template(SHA);d['cases'][14].update(status='PASS',evidence={'playerZip':'b.zip','playerLog':'player.log','sessionReceipt':'session.json'});(self.evidence/'player.log').write_text('test only');self.save(d);self.assert_refuse(self.check,'ZIP_PLAYER_EXE_MISSING')
  def test_zip_valid_structure_still_no_boot_claim(self):
   with zipfile.ZipFile(self.evidence/'player.zip','w') as z:
    z.writestr('RoboRougelike.exe','synthetic exe');z.writestr('UnityPlayer.dll','synthetic dll');z.writestr('RoboRougelike_Data/boot.config','synthetic config')
-  d=m.template(SHA);d['cases'][14].update(status='PASS',evidence={'playerZip':'player.zip','playerLog':'player.log'});(self.evidence/'player.log').write_text('test only');self.save(d)
+  d=m.template(SHA);d['cases'][14].update(status='PASS',evidence={'playerZip':'player.zip','playerLog':'player.log','sessionReceipt':'session.json'});(self.evidence/'player.log').write_text('test only');self.save(d)
+  self.make_session_receipt('player.zip','player.log')
   result=self.check();self.assertEqual(result['evidence'][0]['zipStructure'],'ARCHIVE_STRUCTURE_PRESENT_NOT_BOOT_PROOF');self.assertIn('NOT_INDEPENDENTLY',result['windowsPlayerBoot'])
  def test_zip_traversal_rejected(self):
   with zipfile.ZipFile(self.evidence/'trav.zip','w') as z:
    z.writestr('../RoboRougelike.exe','synthetic');z.writestr('UnityPlayer.dll','synthetic');z.writestr('Game_Data/boot.config','synthetic')
-  d=m.template(SHA);d['cases'][14].update(status='PASS',evidence={'playerZip':'trav.zip','playerLog':'player.log'});(self.evidence/'player.log').write_text('test only');self.save(d);self.assert_refuse(self.check,'ZIP_TRAVERSAL')
+  d=m.template(SHA);d['cases'][14].update(status='PASS',evidence={'playerZip':'trav.zip','playerLog':'player.log','sessionReceipt':'session.json'});(self.evidence/'player.log').write_text('test only');self.save(d);self.assert_refuse(self.check,'ZIP_TRAVERSAL')
  def test_2_fights_requires_log(self):
   (self.evidence/'shot.png').write_bytes(b'dummy');d=m.template(SHA);d['cases'][13].update(status='PASS',evidence='shot.png');self.save(d);self.assert_refuse(self.check,'W29_EVIDENCE_ROLE_FORMAT')
  def test_cli_receipt_physically_emits_both_files(self):
@@ -137,6 +138,24 @@ class TestEvidence(unittest.TestCase):
   j=json.dumps(m.template(SHA));self.assertNotIn('email',j.lower());self.assertNotIn('participantName',j)
 
 
+ def make_session_receipt(self,archive='game.zip',player_log='player.log',**overrides):
+  exe=b''
+  with zipfile.ZipFile(self.evidence/archive) as z:
+   exe=z.read('RoboRougelike.exe')
+  lb=(self.evidence/player_log).read_bytes()
+  doc={'schema':'b01-13-w30-windows-player-session-r1',
+       'gameCommit':SHA,'gameCommitProvenance':'OPERATOR_ASSERTED_NOT_EMBEDDED_IN_PLAYER',
+       'processExitCode':0,'captureStatus':'PROCESS_EXITED_LOG_PRESENT',
+       'exeSha256':hashlib.sha256(exe).hexdigest(),'exeBytes':len(exe),
+       'playerLog':{'sha256':hashlib.sha256(lb).hexdigest(),'bytes':len(lb)},
+       'utcStart':'2026-11-03T12:00:00+00:00','utcEnd':'2026-11-03T12:02:00+00:00',
+       'unityNativeG1':'NOT_VERIFIED','actualGameplayPassed':'NOT_VERIFIED',
+       'humanSessionsIndependentlyVerified':0,'playerLaunchG1':'NOT_INDEPENDENTLY_VERIFIED'}
+  doc.update(overrides)
+  (self.evidence/'session.json').write_text(json.dumps(doc))
+  return doc
+ def set_boot(self,archive='game.zip'):
+  self.update_row('P15_PLAYER_ZIP_BOOT',status='PASS',evidence={'playerZip':archive,'playerLog':'player.log','sessionReceipt':'session.json'})
  def make_player_zip(self,name='game.zip'):
   with zipfile.ZipFile(self.evidence/name,'w') as z:
    z.writestr('RoboRougelike.exe','test-only fake bytes')
@@ -148,26 +167,27 @@ class TestEvidence(unittest.TestCase):
 
  def test_w29_boot_rejects_legacy_single_zip_even_if_structurally_valid(self):
   name=self.make_player_zip();self.update_row('P15_PLAYER_ZIP_BOOT',status='PASS',evidence=name)
-  self.assert_refuse(self.check,'W29_BOOT_BUNDLE_REQUIRED')
+  self.assert_refuse(self.check,'W31_BOOT_SESSION_REQUIRED')
  def test_w29_boot_rejects_missing_log(self):
-  name=self.make_player_zip();self.update_row('P15_PLAYER_ZIP_BOOT',status='PASS',evidence={'playerZip':name,'playerLog':'missing.log'})
+  name=self.make_player_zip();self.update_row('P15_PLAYER_ZIP_BOOT',status='PASS',evidence={'playerZip':name,'playerLog':'missing.log','sessionReceipt':'session.json'})
   self.assert_refuse(self.check,'EVIDENCE_NOT_REGULAR')
  def test_w29_boot_accepts_physical_zip_and_log_but_no_independent_boot_claim(self):
   name=self.make_player_zip();(self.evidence/'player.log').write_text('test-only bytes')
-  self.update_row('P15_PLAYER_ZIP_BOOT',status='PASS',evidence={'playerZip':name,'playerLog':'player.log'})
-  r=self.check();self.assertEqual([p['role'] for p in r['evidence']],['player_zip','player_log'])
+  self.update_row('P15_PLAYER_ZIP_BOOT',status='PASS',evidence={'playerZip':name,'playerLog':'player.log','sessionReceipt':'session.json'})
+  self.make_session_receipt(name,'player.log')
+  r=self.check();self.assertEqual([p['role'] for p in r['evidence']],['player_zip','player_log','session_receipt'])
   self.assertEqual(r['cases']['P15_PLAYER_ZIP_BOOT'],'PASS')
   self.assertEqual(r['windowsPlayerBoot'],'NOT_INDEPENDENTLY_VERIFIED_BY_THIS_TOOL')
   self.assertEqual(r['productGate'],'HOLD_INDEPENDENT_G0_G1_AND_REAL_HUMAN_ACCEPTANCE')
-  lines=m.make_csv(r).splitlines();self.assertEqual(len(lines),23)
+  lines=m.make_csv(r).splitlines();self.assertEqual(len(lines),24)
  def test_w29_boot_rejects_nonlog_second_file(self):
   name=self.make_player_zip();(self.evidence/'result.json').write_text('test-only')
-  self.update_row('P15_PLAYER_ZIP_BOOT',status='PASS',evidence={'playerZip':name,'playerLog':'result.json'})
+  self.update_row('P15_PLAYER_ZIP_BOOT',status='PASS',evidence={'playerZip':name,'playerLog':'result.json','sessionReceipt':'session.json'})
   self.assert_refuse(self.check,'W29_EVIDENCE_ROLE_FORMAT')
  def test_w29_boot_rejects_unrecognized_metadata_fields(self):
   self.make_player_zip();(self.evidence/'player.log').write_text('test-only')
-  self.update_row('P15_PLAYER_ZIP_BOOT',status='PASS',evidence={'playerZip':'game.zip','playerLog':'player.log','humanCertified':True})
-  self.assert_refuse(self.check,'W29_BOOT_BUNDLE_REQUIRED')
+  self.update_row('P15_PLAYER_ZIP_BOOT',status='PASS',evidence={'playerZip':'game.zip','playerLog':'player.log','sessionReceipt':'session.json','humanCertified':True})
+  self.assert_refuse(self.check,'W31_BOOT_SESSION_REQUIRED')
  def test_w29_recovery_rejects_old_one_log_pass(self):
   (self.evidence/'single.log').write_text('test-only')
   self.update_row('P12_LOANER_POST_WIN_CONTINUATION',status='PASS',evidence='single.log')
@@ -193,5 +213,72 @@ class TestEvidence(unittest.TestCase):
    self.assertIn(case,r['missingOrFailingP0'])
  def test_w29_legacy_w28_schema_must_not_mix_silent_version(self):
   d=m.template(SHA);d['schema']='b01-13-w28-acceptance-r1';self.save(d);self.assert_refuse(self.check,'W28_SCHEMA')
+
+
+ def test_w31_reject_zip_and_log_without_session_receipt(self):
+  name=self.make_player_zip();(self.evidence/'player.log').write_text('synthetic log')
+  self.set_boot(name)
+  self.assert_refuse(self.check,'EVIDENCE_NOT_REGULAR')
+ def test_w31_reject_receipt_game_sha_mismatch(self):
+  name=self.make_player_zip();(self.evidence/'player.log').write_text('synthetic log')
+  self.set_boot(name);self.make_session_receipt(gameCommit='b'*40)
+  self.assert_refuse(self.check,'W31_SESSION_GAME_SHA')
+ def test_w31_reject_receipt_nonzero_process_exit(self):
+  self.make_player_zip();(self.evidence/'player.log').write_text('synthetic log')
+  self.set_boot();self.make_session_receipt(processExitCode=3)
+  self.assert_refuse(self.check,'W31_SESSION_PROCESS_EXIT')
+ def test_w31_reject_receipt_missing_log(self):
+  self.make_player_zip();(self.evidence/'player.log').write_text('synthetic log')
+  self.set_boot();self.make_session_receipt(playerLog=None)
+  self.assert_refuse(self.check,'W31_SESSION_LOG_SCHEMA')
+ def test_w31_reject_receipt_player_log_tamper(self):
+  self.make_player_zip();(self.evidence/'player.log').write_text('synthetic log')
+  self.set_boot();self.make_session_receipt()
+  (self.evidence/'player.log').write_text('TAMPERED')
+  self.assert_refuse(self.check,'W31_PLAYER_LOG_MISMATCH')
+ def test_w31_reject_receipt_exe_not_matching_zip(self):
+  self.make_player_zip();(self.evidence/'player.log').write_text('synthetic log')
+  self.set_boot();self.make_session_receipt(exeSha256='b'*64)
+  self.assert_refuse(self.check,'W31_SESSION_ARCHIVE_EXE_MISMATCH')
+ def test_w31_reject_receipt_invalid_unity_claim(self):
+  self.make_player_zip();(self.evidence/'player.log').write_text('synthetic log')
+  self.set_boot();self.make_session_receipt(unityNativeG1='PASS')
+  self.assert_refuse(self.check,'W31_SESSION_FALSE_QA_CLAIM')
+ def test_w31_reject_receipt_false_time(self):
+  self.make_player_zip();(self.evidence/'player.log').write_text('synthetic log')
+  self.set_boot();self.make_session_receipt(utcEnd='2026-11-03T11:00:00+00:00')
+  self.assert_refuse(self.check,'W31_SESSION_TIME')
+ def test_w31_reject_receipt_fake_schema(self):
+  self.make_player_zip();(self.evidence/'player.log').write_text('synthetic log')
+  self.set_boot();self.make_session_receipt(schema='not-our-tool')
+  self.assert_refuse(self.check,'W31_SESSION_SCHEMA')
+ def test_w31_reject_wrong_sibling_of_exe(self):
+  with zipfile.ZipFile(self.evidence/'game.zip','w') as z:
+   z.writestr('RoboRougelike.exe',b'test-only fake bytes')
+   z.writestr('other/UnityPlayer.dll',b'test-only fake dll')
+   z.writestr('RoboRougelike_Data/boot.config',b'test-only fake config')
+  (self.evidence/'player.log').write_text('synthetic log')
+  self.set_boot();self.make_session_receipt()
+  self.assert_refuse(self.check,'W31_SESSION_ARCHIVE_EXE_MISMATCH')
+ def test_w31_large_real_file_zip_over_64_mib_streaming_allowed(self):
+  # Full original R2 rejected this 66 MiB physically real file with FILE_SIZE.
+  with zipfile.ZipFile(self.evidence/'game.zip','w',compression=zipfile.ZIP_STORED,allowZip64=True) as z:
+   with z.open('RoboRougelike.exe','w',force_zip64=True) as fd:
+    for _ in range(66):fd.write(b'x'*1024*1024)
+   z.writestr('UnityPlayer.dll',b'synthetic dll')
+   z.writestr('RoboRougelike_Data/boot.config',b'synthetic config')
+  self.assertGreater((self.evidence/'game.zip').stat().st_size,64*1024*1024)
+  (self.evidence/'player.log').write_text('synthetic log')
+  self.set_boot();self.make_session_receipt()
+  r=self.check()
+  self.assertEqual(r['w31SessionCrossCheck'],'W30_RECEIPT_EXE_AND_LOG_BYTES_MATCH_NOT_INDEPENDENT_UNITY_QA')
+  self.assertEqual(len(r['evidence']),3)
+  self.assertEqual(r['windowsPlayerBoot'],'NOT_INDEPENDENTLY_VERIFIED_BY_THIS_TOOL')
+ def test_w31_normal_zip_receipt_cross_checked_but_not_g1(self):
+  self.make_player_zip();(self.evidence/'player.log').write_text('synthetic log')
+  self.set_boot();self.make_session_receipt()
+  r=self.check()
+  self.assertEqual(r['evidence'][2]['crossCheck'],r['w31SessionCrossCheck'])
+  self.assertEqual(r['productGate'],'HOLD_INDEPENDENT_G0_G1_AND_REAL_HUMAN_ACCEPTANCE')
 
 if __name__=='__main__':unittest.main(verbosity=2)

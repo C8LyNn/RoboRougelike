@@ -123,3 +123,18 @@ Dedicated Actions matrix: **Windows 2025 / Ubuntu 24.04 × Python 3.11 / Python 
 **AC:** input must reference exact current game SHA and real W27 JSON, no phantom human counts; missing/invalid evidence FAIL_CLOSED, softlock PASS without continuation or run-end proof FAIL_CLOSED, malformed/traversal ZIP refused; outputs only in owned scratch. Expected producer result if tests pass: `IMPLEMENTED=YES; TESTED=SOURCE_ONLY; QA_ACCEPTED=NO; G0=PENDING; NATIVE_G1=NOT_RUN; GAME_ACCEPTED=NO; RELEASED=NO; REAL_HUMAN=0; CODEX_ACK=NONE; G2=HOLD`. Source manifest pins 4 code/docs files + one workflow physical SHA1 Git blob and UTF-8 bytes (5 nonself paths), no overwrites to W27.
 
 **Recipients:** B01-40 exact source-only manifest G0, B01-60 independent Unity/Windows Player/log/manual QA, B01-00 game gates and P0 softlock owner decision, B01-22/20 authoritative loaner/ECON owner, Codex remains sole integrator after accepted G0. Do not auto-post to #79 before G0, do not merge or release. Safe rollback: close isolated Draft; no writes to protected branches or live game saves, do not delete human observation exports.
+
+
+---
+
+## W31 R3: archive limit fix and coherent Windows Player evidence
+
+**Same original implementation:** changes only to inherited B01-13 playtest_intake.py, tests, README, manifest and workflow. No new game, validator, branch-family Save writer, garage logic or Codex worktree changes.
+
+**ACTUAL ORIGINAL RED:** Original W29 R2 refused a real physical 66 MiB ZIP with FILE_SIZE because all submitted evidence had a 64 MiB cap. New implementation raises the cap only for ZIP evidence to 2 GiB input bytes and streams checks. Other proof remains capped at 64 MiB. ZIP contents are never extracted; existing declared uncompressed size guard (<3 GiB) persists.
+
+**New P15 PASS requirement:** Three separate existing physical evidence files with evidence roles playerZip, playerLog, sessionReceipt. sessionReceipt must be the source-compatible output of the existing consent-gated W30 B01-13 operator tool #886. This validator binds the W30 declared gameCommit to W27/W29, checks process exit=0, nonempty log status, non-verified-G1 provenance and UTC order, hashes physical Player.log and binary EXE *inside the ZIP*, checks both against the reported W30 original output hash/bytes, and requires its UnityPlayer.dll and corresponding EXE_Data directory on the same ZIP level. Player ZIP can be larger than 64 MiB. Any missing/stale/replaced artifact -> FAIL_CLOSED. Same 21 W29 case IDs, same 8 W27 human-observation tasks and P12 softlock-before/after gate.
+
+**Critical limit:** matching physical bytes and operator-asserted JSON do not authenticate a Windows process, Unity, an embedded game commit, a human participant, player gameplay, or a successful game release. A malicious user could fabricate all three input files. Independent B01-60 execution/review is necessary. Source tests on dummy EXE/log archives never invoke Unity, Windows Player or any human. Always productGate HOLD_INDEPENDENT_G0_G1_AND_REAL_HUMAN_ACCEPTANCE and nativeUnityG1 NOT_VERIFIED.
+
+**R3 regression suite:** 51 inherited + 12 targeted = 63 Python source checks on each requested runner (Windows 2025, Ubuntu 24.04; Python 3.11/3.13). Cases include 66 MiB real ZIP, switched EXE/log after receipt, mismatched commit, invalid session schema/time, fake Unity success claim, wrong sibling DLL and missing receipt. These counts describe source test cases only; final CI result must be verified independently. Source G0 receiver B01-40, native G1/Player B01-60, release owner B01-00. No protected merge or release.
