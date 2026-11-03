@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using B01.BUILD001;
@@ -8,10 +9,33 @@ namespace RoboRougelike.R3
 {
     public sealed partial class R3BuildValidation
     {
+        // Identity is part of the SAME canonical physical restoration gate.
+        // Validating only spatial probes would allow a detached copy, inventory
+        // item or duplicated request to be certified as mounted-owned geometry.
+        // This has to be checked BEFORE a temporary collider is instantiated.
+        bool ValidCanonicalRestorationRequest(IReadOnlyList<R3PartState> requested)
+        {
+            if(assembly==null||model==null||requested==null||requested.Count==0)
+                return false;
+            var mounted=new HashSet<R3PartState>(model.Parts);
+            var ids=new HashSet<string>(StringComparer.Ordinal);
+            foreach(var part in requested)
+            {
+                if(part==null||string.IsNullOrWhiteSpace(part.Id)||
+                   !mounted.Contains(part)||!ids.Add(part.Id)||
+                   float.IsNaN(part.Health)||float.IsInfinity(part.Health)||
+                   part.Health<0f||part.Health>1f)
+                    return false;
+            }
+            return true;
+        }
         // Restoration keeps canonical reserved cells/connectivity and payment.
         // This gate only certifies newly recreated geometry, including batches.
         bool ValidateRestoration(IReadOnlyList<R3PartState> requested)
         {
+            // Fail closed before touching PhysX when the canonical model does not
+            // own the exact requested part objects or the request repeats an ID.
+            if(!ValidCanonicalRestorationRequest(requested))return false;
             var dead=requested.Where(p=>p.Health<=0).ToArray();if(dead.Length==0)return true;
             var run=R1RunController.Instance;
             if(run!=null&&ReferenceEquals(run.VehicleModel,model)&&(run.Progress?.State!=R1RunState.Garage||run.Transitioning))return false;
