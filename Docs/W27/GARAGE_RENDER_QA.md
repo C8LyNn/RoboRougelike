@@ -1,0 +1,12 @@
+# W27 garage overlay — real Windows Player offscreen evidence
+
+The Player's actual garage camera rendered to a 1280×720 `RenderTexture`; the build ran Windows x64, hidden batch mode, D3D11, with explicit API setup and no desktop capture or human input. It does not show the full GUI, and is not a manual gameplay/UX or performance test.
+
+- Before: gameplay `af33caed0d5b5412c450dd65ef0f1692f08bc695` + QA-only harness `1028ba42b2770b3b5f82adfa116d4be34003267c`, Player exit 0; [before](Evidence/garage-before.png). Red outlines are thin and low contrast; blue payload blends with invalid red ghost.
+- After: isolated QA/gameplay commit `7bb54f893b2eb905eeb5a7bddeede7ba0ac381b6`, Player compile/build/execute exit 0; [after](Evidence/garage-after.png). Red outlines are wider and opaque, blue child geometry uses 0.75 alpha and renders after the placement ghost. These images establish appearance only in the shown setup, not accessibility or all vehicles.
+- Unity EditMode: the outline readability test was observed RED; then `GarageReadability-green/` passed **12/12** garage/overlay tests, exit 0. The blue alpha test was RED before the change; `GarageBlue-green/` passed **12/12**, exit 0. The render queue test was RED before the change; `GarageQueue-green/` passed **2/2** overlay tests, exit 0. Full exact-after-commit regression is NOT_RUN.
+- A proposed emission adjustment (`3a3ec3e7`) did not visibly improve the Player image and was not included in this branch.
+
+The opt-in harness `Assets/R1/W27GarageRenderQA.cs` is compiled only with `B01_UNIFIED_RC2_ACCEPTANCE` and activated solely by `-batchmode -w27-garage-render-qa <directory>`. It does not change normal input or save data. Source gameplay modifications remain separate, in commits `7a97c5e8`, `3a0d1310`, `7bb54f89`; none is merged into main/develop/release. Separate full regression ran concurrently in a different Unity worktree; timing/performance was not measured. Remaining W27 color zones, dynamic weapon clearance and player acceptance are not completed by this QA.
+
+The final candidate `b84a86243ba8a1b0324cf9e8509e40505836ae7c` additionally places a short in-game Polish legend for the implemented red and blue meanings; it does not advertise unfinished colors. After this change the native `W27GarageOccupiedZonesTests;R41GarageTests` EditMode group passed **12/12**, exit 0 (`Artifacts/Local/W27/GarageLegend-Edit/`). The legend itself is GUI text and has not been assessed in a human GUI session or captured in the camera-only RenderTexture images above.

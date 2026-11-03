@@ -24,6 +24,8 @@ public class W27GarageOccupiedZonesTests
         Assert.That(lines.All(l=>l.GetComponent<Collider>()==null),Is.True,"The overlay cannot affect hit tests or physics.");
         Assert.That(lines.All(l=>l.positionCount>=16&&!l.useWorldSpace),Is.True);
         Assert.That(lines.All(l=>l.sharedMaterial.color.r>l.sharedMaterial.color.g),Is.True);
+        Assert.That(lines.All(l=>l.sharedMaterial.GetColor("_BaseColor").a>=.9f&&l.startWidth>=.02f),Is.True,
+            "Occupied-cell outlines must remain visible against both bright and dark vehicle surfaces.");
         Assert.That(lines.Any(l=>Vector3.Distance(l.transform.localPosition,new Vector3(.55f,0,1.1f))<.001f),Is.True,"The displayed cell uses the real 0.55m grid.");
         Assert.That(run.GarageBuy(new Vector3Int(1,1,1),R3PartKind.Armor),Is.True);
         lines=run.Player.GetComponentsInChildren<LineRenderer>().Where(l=>l.name=="W27 occupied cell").ToArray();
@@ -52,6 +54,10 @@ public class W27GarageOccupiedZonesTests
             Assert.That(visual,Is.Not.Null,"The ghost uses the actual wheel geometry.");
             var color=visual.sharedMaterial.color;
             Assert.That(color.b,Is.GreaterThan(color.r));Assert.That(color.b,Is.GreaterThan(color.g));
+            Assert.That(visual.sharedMaterial.GetColor("_BaseColor").a,Is.GreaterThanOrEqualTo(.65f),
+                "The protruding blue geometry must remain distinguishable over an invalid red ghost.");
+            Assert.That(visual.sharedMaterial.renderQueue,Is.GreaterThan(garage.Preview.GetComponent<Renderer>().sharedMaterial.renderQueue),
+                "The blue protruding geometry must render after the translucent placement ghost.");
             Assert.That(visual.GetComponentsInChildren<Collider>().All(c=>!c.enabled),Is.True,"Ghost geometry cannot affect physics.");
         }
     }

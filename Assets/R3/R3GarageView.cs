@@ -164,7 +164,7 @@ namespace RoboRougelike.R3
                 var zone=new GameObject("W27 occupied cell");zone.transform.SetParent(previewRoot.transform,false);
                 zone.transform.localPosition=(Vector3)cell*R41PartGeometry.Grid;
                 var line=zone.AddComponent<LineRenderer>();line.useWorldSpace=false;line.positionCount=points.Length;
-                line.SetPositions(points);line.startWidth=line.endWidth=.012f;line.sharedMaterial=palette.Invalid;
+                line.SetPositions(points);line.startWidth=line.endWidth=.024f;line.sharedMaterial=palette.GridOccupied;
                 line.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;line.receiveShadows=false;
             }
         }

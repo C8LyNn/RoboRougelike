@@ -258,6 +258,8 @@ namespace RoboRougelike.R1
             if(!run.ReactorPrepared&&!run.SandboxWorkshop&&!run.MapEditorSession)
                 if(GUI.Button(new Rect(650,168,265,38),"Zapisz wyprawę",compactButton))run.SaveRunCheckpoint();
             DrawFullActivityGarageActions(run);
+            Panel(new Rect(350,418,560,29));
+            GUI.Label(new Rect(360,422,540,22),"Czerwone linie: zajęte pola  •  Niebieski: obrys części",small);
             Panel(new Rect(350,452,560,76));
             GUI.Label(new Rect(363,458,370,24),"A / LPM: "+WeaponGroupName(model.WeaponGroupA),small);
             GUI.Label(new Rect(363,485,370,24),"B / PPM: "+WeaponGroupName(model.WeaponGroupB),small);
