@@ -1,0 +1,16 @@
+{
+  "name": "B01.EconAdmission.W29",
+  "rootNamespace": "RoboRougelike.B01.Economy.AdmissionW29",
+  "references": [
+    "B01.EconApprovedV7"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": true
+}

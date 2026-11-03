@@ -1,0 +1,40 @@
+name: B01-22 P17W29 V7 first-win admission owner guard ORIGINAL CSharp9
+on:
+  pull_request:
+    paths:
+      - 'Assets/B01Packages/ECONADMISSIONW29/**'
+      - 'Tools/B01/ECONADMISSIONW29/**'
+      - '.github/workflows/b01-22-w29-v7-admission.yml'
+  workflow_dispatch:
+jobs:
+  original-economy-admission:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2025, ubuntu-24.04]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Compile ORIGINAL V7 unmodified binary codec with NEW W29 admission source
+        shell: bash
+        run: dotnet build Tools/B01/ECONADMISSIONW29/W29.Tests.csproj --configuration Release
+      - name: Run original V7 RED reproducer and fail-closed W29 checks
+        shell: bash
+        run: |
+          dotnet run --project Tools/B01/ECONADMISSIONW29/W29.Tests.csproj --configuration Release --no-build | tee "$RUNNER_TEMP/b01-w29-admission.log"
+          grep -q 'W29_ECON_ADMISSION_SOURCE_PASS' "$RUNNER_TEMP/b01-w29-admission.log"
+          grep -q 'original_V7_input_flaw_reproduced=true' "$RUNNER_TEMP/b01-w29-admission.log"
+          grep -q 'checked_guard_denies=true' "$RUNNER_TEMP/b01-w29-admission.log"
+      - name: Git blob scope and four Unity GUIDs SOURCE only
+        shell: bash
+        run: python3 Tools/B01/ECONADMISSIONW29/verify_package.py | tee -a "$RUNNER_TEMP/b01-w29-admission.log"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b01-22-w29-v7-admission-${{ matrix.os }}
+          path: ${{ runner.temp }}/b01-w29-admission.log
+          if-no-files-found: error

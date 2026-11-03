@@ -1,0 +1,9 @@
+# B01-62 + Codex W29 receiver — exact V7 admission in one selected #826 owner
+
+AUTHORITATIVE INPUT ONLY: original #826 verifies whole-envelope slot owner, run ID, generation under one physical .owner lifetime lease. Pass those host-derived exact values in CanonicalEconomyIdentityW29. Decode V7 with EconomyV7AdmissionW29.TryDecodeForCanonicalOwner; reject/quarantine full slot on false before any physical Rig[]/ledger application. Before full game publication call EconomyV7AdmissionW29.TryEncodeForCanonicalOwner with exact host-backed NEW generation. Use same original whole-game CAS/readback/ACK-loss quarantine; never open or write a separate file from this library. No raw #787 alongside #826 and no old #797 writer.
+
+Exact missing invariant: current frozen original V7 Valid allows Wins0 FreeUsedForWin0 with pending Free=true and AfterWins0. New guard rejects Wins==0 && Pending.Any(t=>t.Free) while preserving a legit PAID ticket with quote0 and Free=false. Never trust client-supplied owner/generation or victory ID. This is an input safety gate, NOT anti-tamper signature, not real match victory attestation or current game's anti-softlock recovery.
+
+#812 remains P0: alive Core, expensive destroyed drive, zero Scrap, loaner genuine Win1 then free ticket queued for Win2 but loaner spent and real robot still nondeployable. Owner B01-00 must approve conditional preexisting-part recovery on genuine Win1 or legitimate terminal run outcome. This package adds neither so PRODUCT_SOFTLOCK=RED.
+
+Receiver gates B01-40/41/61 exact combined producer G0 with #826 #792 #780 #750, B01-60 actual Unity6000.3.14f1 Editor/NUnit/Player, Codex live R1 integration after source acceptance. No source-only PASS may be reported as native Unity PASS.
