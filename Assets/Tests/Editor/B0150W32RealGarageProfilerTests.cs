@@ -237,4 +237,83 @@ public sealed class B0150W32RealGarageProfilerTests
         yield return new ExitPlayMode();
     }
 
+    // W34: existing real 139-part UI hover/ghost, not just the isolated model gate.
+    // R3GarageView.Select -> RefreshMarker -> PreviewValid -> same authoritative
+    // R3BuildValidation; this includes actual Renderer[] material refreshes.
+    [UnityTest]
+    public IEnumerator ActualHeavy139GarageRepeatedSameCellVisualPreviewHasMeasuredLatencyAndAllocation()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity", OpenSceneMode.Single);
+        yield return new EnterPlayMode();
+        float deadline = Time.realtimeSinceStartup + 15f;
+        while (R1RunController.Instance?.Progress == null &&
+               Time.realtimeSinceStartup < deadline)
+            yield return null;
+        var run = R1RunController.Instance;
+        Assert.That(run, Is.Not.Null);
+        Assert.That(run.SelectVehicle(R3VehicleKind.Heavy), Is.True);
+        Assert.That(run.OpenSandboxGarage(), Is.True);
+        Assert.That(run.VehicleModel.Parts.Count, Is.EqualTo(139),
+            "Real Heavy R3 catalog changed: performance case must be reviewed.");
+
+        var original = run.VehicleModel.Parts.Single(p => p.Kind == R3PartKind.Gun);
+        string id = original.Id;
+        Assert.That(run.GarageRemove(original.Cell), Is.True);
+        var stored = run.VehicleModel.Inventory.Single(p => p.Id == id);
+        stored.Weapon = R4WeaponKind.RotarySaw;
+        var cell = new Vector3Int(0, 1, 5);
+        Assert.That(run.VehicleModel.OwnedPlacementError(id, cell, default),
+            Is.Null, "Real physical exterior gun placement must pass first.");
+        var view = run.Garage;
+        Assert.That(view, Is.Not.Null, "Must profile original real R3GarageView, not an invented ghost.");
+        view.ChooseInventory(id);
+        view.Select(cell);
+        Assert.That(view.HasTarget, Is.True);
+        Assert.That(view.PreviewValid, Is.True,
+            "Visual preview must use same real garage mount gate.");
+
+        int scrap = run.VehicleModel.Scrap;
+        int mountedCount = run.VehicleModel.Parts.Count;
+        int stockCount = run.VehicleModel.Inventory.Count;
+        var ids = run.VehicleModel.Parts.Concat(run.VehicleModel.Inventory)
+            .Select(p => p.Id).OrderBy(value => value).ToArray();
+        for (int i = 0; i < WarmupsPerCase; ++i)
+        {
+            view.Select(cell); // Repeated real same-cell hover, no fake marker.
+            Assert.That(view.PreviewValid, Is.True);
+            yield return null;
+        }
+        var ticks = new long[32];
+        var bytes = new long[32];
+        for (int i = 0; i < ticks.Length; ++i)
+        {
+            long beforeBytes = GC.GetAllocatedBytesForCurrentThread();
+            long beforeTicks = Stopwatch.GetTimestamp();
+            view.Select(cell);
+            ticks[i] = Stopwatch.GetTimestamp() - beforeTicks;
+            bytes[i] = GC.GetAllocatedBytesForCurrentThread() - beforeBytes;
+            Assert.That(view.HasTarget && view.PreviewValid, Is.True,
+                "Original view must keep displaying a genuinely legal candidate.");
+            yield return null; // Original per-frame Unity Destroy/probe lifecycle.
+        }
+        Assert.That(run.VehicleModel.Scrap, Is.EqualTo(scrap));
+        Assert.That(run.VehicleModel.Parts.Count, Is.EqualTo(mountedCount));
+        Assert.That(run.VehicleModel.Inventory.Count, Is.EqualTo(stockCount));
+        Assert.That(run.VehicleModel.Parts.Concat(run.VehicleModel.Inventory)
+            .Select(p => p.Id).OrderBy(value => value), Is.EqualTo(ids));
+
+        string sha = Environment.GetEnvironmentVariable("B0150_W32_EXACT_GAME_SHA");
+        string provenance = string.IsNullOrEmpty(sha) ?
+            "UNPINNED_NOT_ACCEPTABLE_FOR_G1" : sha;
+        UnityEngine.Debug.Log(
+            "B0150_W34_REAL_R3_HEAVY_GARAGE_VISUAL native_measurement_only " +
+            "game_sha=" + provenance +
+            " unity=" + Application.unityVersion +
+            " os=" + SystemInfo.operatingSystem +
+            " original_parts=139 samples=32 " +
+            Summary("heavy139_hover_ui", ticks, bytes) +
+            " note=full_existing_R3GarageView_Select_RefreshMarker_not_Player_fps");
+        yield return new ExitPlayMode();
+    }
+
 }
