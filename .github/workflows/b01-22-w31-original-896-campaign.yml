@@ -1,0 +1,52 @@
+name: B01-22 W31 ORIGINAL selected 896 one-file 24-win cold regression
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/ECONW31CAMPAIGN/**'
+      - '.github/workflows/b01-22-w31-original-896-campaign.yml'
+  workflow_dispatch:
+jobs:
+  original-896-full-save-campaign:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2025, ubuntu-24.04]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Stage immutable original V7 and W29 host admission only for build
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin b4df10a7ad7e6c758f8331013f6b216b3a3689a3 c9c19665a4f9385e6479f7151097deb797026ade
+          mkdir -p Tools/B01/ECONW31CAMPAIGN/.source
+          git show b4df10a7ad7e6c758f8331013f6b216b3a3689a3:Assets/B01Packages/ECONAPPROVED007/Runtime/ApprovedEconomyPolicyV7.cs > Tools/B01/ECONW31CAMPAIGN/.source/ApprovedEconomyPolicyV7.cs
+          git show b4df10a7ad7e6c758f8331013f6b216b3a3689a3:Assets/B01Packages/ECONAPPROVED007/Runtime/CanonicalEconomySectionV7.cs > Tools/B01/ECONW31CAMPAIGN/.source/CanonicalEconomySectionV7.cs
+          git show c9c19665a4f9385e6479f7151097deb797026ade:Assets/B01Packages/ECONADMISSIONW29/Runtime/EconomyV7AdmissionW29.cs > Tools/B01/ECONW31CAMPAIGN/.source/EconomyV7AdmissionW29.cs
+      - name: Compile selected exact 896 original one-file CSharp9 production code
+        shell: bash
+        run: dotnet build Tools/B01/ECONW31CAMPAIGN/W31.Receiver.csproj -c Release
+      - name: Run 24 fixture fights through original OS Save then new CLR cold restore
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --project Tools/B01/ECONW31CAMPAIGN/W31.Receiver.csproj -c Release --no-build -- --scenario "$RUNNER_TEMP/w31-b01-22-cold-slot" | tee "$RUNNER_TEMP/w31-896.log"
+          dotnet run --project Tools/B01/ECONW31CAMPAIGN/W31.Receiver.csproj -c Release --no-build -- --cold "$RUNNER_TEMP/w31-b01-22-cold-slot" | tee -a "$RUNNER_TEMP/w31-896.log"
+          grep -q 'W31_896_24_FIGHT_FULL_SAVE_SOURCE_PASS wins=24' "$RUNNER_TEMP/w31-896.log"
+          grep -q 'W31_896_COLD_SECOND_CLR_PASS wins=24 loaner=Spent pending=1' "$RUNNER_TEMP/w31-896.log"
+      - name: Check original selected source hashes and own-only transport scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 Tools/B01/ECONW31CAMPAIGN/verify_package.py | tee -a "$RUNNER_TEMP/w31-896.log"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b01-22-w31-original-896-campaign-${{ matrix.os }}
+          path: ${{ runner.temp }}/w31-896.log
+          if-no-files-found: error

@@ -1,0 +1,64 @@
+{
+  "package_id": "B01-22-P17W31-ORIGINAL896-LONG-CAMPAIGN-001",
+  "selected_original_896_sha": "a0282f2de0250d2a8fe421bbe182b4cb6fab2a11",
+  "producer_successor_of": "#885@78c1d54d24a76c931ea80965a50eca03fae4156a",
+  "baseline_previous_original_885_source_run": {
+    "sha": "4bc8ae6d2b87f3bf22b02b7c0b75df4ac4675c27",
+    "run_id": 41691429383,
+    "result": "WINDOWS+UBUNTU_344_CHECKS_EACH_PASS_NOT_A_896_QA_PROOF"
+  },
+  "source_producer_blobs": {
+    "Tools/B01/B01-62/P17W28UnityCompatibleWholeGameV3/WholeGameEconomySlotV3.cs": "e6e2068e4a59d6240d8516ae0899541263a6d5c6",
+    "Tools/B01/B01-62/P17W28UnityCompatibleWholeGameV3/CanonicalWholeGameSessionV3.cs": "52fb5a9ea0c4148072ec11ed0dcfa50260ec1f53",
+    "Tools/B01/B01-62/P17W29ColdReadV3/CanonicalColdReadV3.cs": "cfd7e93dc3b0130b74025f2635d12ff1e0f3f492"
+  },
+  "immutable_fetched_source_blobs": {
+    "ApprovedEconomyPolicyV7.cs": "53ebce6c07388dc9c8a8ed79b6de4d3ccbee4773",
+    "CanonicalEconomySectionV7.cs": "d8b71de91db36295b6220e9c4baad71eb54455f6",
+    "EconomyV7AdmissionW29.cs": "59ad0f42cec5385cc132c1a3917cffd8ebf65d2c"
+  },
+  "own_pinned_blobs": {
+    "Tools/B01/ECONW31CAMPAIGN/Program.cs": "73a1aa2d6984b9dc56cf522ebb9539d42c7636bb",
+    "Tools/B01/ECONW31CAMPAIGN/W31.Receiver.csproj": "39294c21f686fd54427764ca918e9e83c78c63ad",
+    "Tools/B01/ECONW31CAMPAIGN/README.md": "12a5c27c3a388df6df6303c3f2f81720b476072c",
+    "Tools/B01/ECONW31CAMPAIGN/verify_package.py": "548005e8d6f061dae2118c16a63d33c462c7818f",
+    ".github/workflows/b01-22-w31-original-896-campaign.yml": "c1845597c301c9c42af9b510d0b9f4a1ca4d85a0"
+  },
+  "own_added_paths": [
+    ".github/workflows/b01-22-w31-original-896-campaign.yml",
+    "Tools/B01/ECONW31CAMPAIGN/Program.cs",
+    "Tools/B01/ECONW31CAMPAIGN/README.md",
+    "Tools/B01/ECONW31CAMPAIGN/W31.Receiver.csproj",
+    "Tools/B01/ECONW31CAMPAIGN/manifest.json",
+    "Tools/B01/ECONW31CAMPAIGN/verify_package.py"
+  ],
+  "cases": {
+    "scenario_wins": 24,
+    "full_game_original_single_file_CAS": 51,
+    "free_reserved": 24,
+    "paid_zero_reserved": 1,
+    "restored_total": 24,
+    "final_pending": 1,
+    "final_loaner": "Spent",
+    "cold_new_CLR": true,
+    "foreign_writer_denied": true,
+    "first_epoch_free_forensic": "REJECT_BEFORE_PUBLICATION",
+    "actual_combat_issuer": "TEST_FIXTURE_ONLY"
+  },
+  "new_game_source_files": 0,
+  "native_unity_g1": "NOT_RUN",
+  "product_anti_softlock": "RED",
+  "owner_policy_834": "PENDING",
+  "independent_G0": "PENDING",
+  "status": "CI_PENDING",
+  "integration": "NOT_WIRED",
+  "rollback": "Close unmerged test-only Draft; never edit user Save or Codex worktree",
+  "receivers": [
+    "B01-62 selected sole #896 Save",
+    "B01-40/41/61 independent composite G0",
+    "B01-20/23 genuine Unity R3 physical and one-shot",
+    "B01-60 native Unity G1",
+    "B01-00 owner #834 decision",
+    "B01-10 balance"
+  ]
+}
