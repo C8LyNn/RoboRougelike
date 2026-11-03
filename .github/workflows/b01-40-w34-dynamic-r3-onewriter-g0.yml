@@ -1,0 +1,107 @@
+name: B01-40 W34 independent full R3 #923 sole-writer source G0 (NOT Unity)
+on:
+  push:
+    branches: [qa/b01-40-p17w34-923-onewriter-r3-fullworld-g0]
+permissions:
+  contents: read
+jobs:
+  original-923-source-and-independent-r3:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Independent exact original #923 single writer Git/dynamic-schema G0 + physical owned-byte rollback
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-40/P17W34R3FullWorldG0/audit.py w34-evidence | tee w34-audit.log
+          cp w34-audit.log w34-evidence/audit.log
+          grep -q 'B0140_W34_EXACT_923_ONE_ORIGINAL_ATOMIC_WRITER_G0=PASS' w34-audit.log
+          grep -q 'B0140_W34_FULL_R3_20_83_139_DYNAMIC_WORLD_SOURCE=PASS' w34-audit.log
+          grep -q 'B0140_W34_ORIGINAL_556_729_780_855_UNMODIFIED=PASS' w34-audit.log
+          grep -q 'B0140_W34_P0_REAL_GAME_PHYSICS_BINDER=NOT_IMPLEMENTED' w34-audit.log
+          grep -q 'B0140_W34_NATIVE_UNITY_G1_NOT_RUN_WINDOWS_PLAYER_NOT_BUILT' w34-audit.log
+      - name: Stage one ORIGINAL #923 producer in a disposable detached Git worktree and source-pin #877/#780/#855
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin e6eb24b7a45a66a5fa5d039f59c80b7e4be4439b
+          git fetch --no-tags origin b4df10a7ad7e6c758f8331013f6b216b3a3689a3
+          git fetch --no-tags origin c9c19665a4f9385e6479f7151097deb797026ade
+          git worktree add --detach _source923 e6eb24b7a45a66a5fa5d039f59c80b7e4be4439b
+          mkdir -p _source923/Tools/B01/B01-62/P17W30AdmissionV3/.source
+          mkdir -p _source923/Tools/B01/B01-62/P17W33R3World/.source
+          git show 3bd9b159997924dcecb4e1cd1d41137896e5199e:Assets/R3/R3VehicleCatalog.cs > _source923/Tools/B01/B01-62/P17W33R3World/.source/R3VehicleCatalog.cs
+          git show b4df10a7ad7e6c758f8331013f6b216b3a3689a3:Assets/B01Packages/ECONAPPROVED007/Runtime/ApprovedEconomyPolicyV7.cs > _source923/Tools/B01/B01-62/P17W30AdmissionV3/.source/ApprovedEconomyPolicyV7.cs
+          git show b4df10a7ad7e6c758f8331013f6b216b3a3689a3:Assets/B01Packages/ECONAPPROVED007/Runtime/CanonicalEconomySectionV7.cs > _source923/Tools/B01/B01-62/P17W30AdmissionV3/.source/CanonicalEconomySectionV7.cs
+          git show c9c19665a4f9385e6479f7151097deb797026ade:Assets/B01Packages/ECONADMISSIONW29/Runtime/EconomyV7AdmissionW29.cs > _source923/Tools/B01/B01-62/P17W30AdmissionV3/.source/EconomyV7AdmissionW29.cs
+          cp Tools/B01/B01-40/P17W34R3FullWorldG0/IndependentCases.cs _source923/Tools/B01/B01-62/P17W33R3World/IndependentCases.cs
+          cp Tools/B01/B01-40/P17W34R3FullWorldG0/IndependentCases.csproj _source923/Tools/B01/B01-62/P17W33R3World/IndependentCases.csproj
+          cd _source923
+          python Tools/B01/B01-62/P17W33R3World/source_guard.py ../w34-evidence/producer-923-original-scope.json | tee ../w34-evidence/producer-923-source-guard.log
+          cd ..
+      - name: Compile ORIGINAL #923 one full Save runtime Csharp9 netstandard2.1 ABI
+        run: |
+          set -euo pipefail
+          dotnet build _source923/Tools/B01/B01-62/P17W30AdmissionV3/W30UnityAbi.csproj -c Release -v quiet | tee w34-evidence/producer-923-original-netstandard-build.log
+          grep -q 'Build succeeded' w34-evidence/producer-923-original-netstandard-build.log
+      - name: Execute ORIGINAL new #923 full R3+atomic physical managed OS disk tests (11, not old 21)
+        run: |
+          set -euo pipefail
+          dotnet run --project _source923/Tools/B01/B01-62/P17W33R3World/R3WorldActualOsQA.csproj -c Release -v quiet | tee w34-evidence/producer-923-original-r3-disk-11.log
+          grep -q 'B0162_W33_R3_SAME_ONE_WRITER_REAL_OS_TOTAL 15 PASS 15 FAIL 0' w34-evidence/producer-923-original-r3-disk-11.log
+          grep -q 'B0162_W33_UNITY_NATIVE=NOT_RUN_GAME_R3_BINDER=NOT_INTEGRATED' w34-evidence/producer-923-original-r3-disk-11.log
+      - name: Execute 18 newly authored B01-40 independent actual #923 codec and original #877 factory Csharp9 negative tests
+        run: |
+          set -euo pipefail
+          dotnet run --project _source923/Tools/B01/B01-62/P17W33R3World/IndependentCases.csproj -c Release -v quiet | tee w34-evidence/independent-r3-codec-18.log
+          grep -q 'B0140_W34_INDEPENDENT_ORIGINAL_R3_CODEC_TOTAL 18 PASS 18 FAIL 0' w34-evidence/independent-r3-codec-18.log
+          grep -q 'B0140_W34_NATIVE_UNITY_NOT_RUN_NO_REAL_PHYSICS_BINDER' w34-evidence/independent-r3-codec-18.log
+      - name: Verify scratch original #923 tracked Git sources unchanged after test execution
+        run: |
+          set -euo pipefail
+          cd _source923
+          git diff --quiet
+          git diff --cached --quiet
+          cd ..
+          git worktree remove --force _source923
+          echo B0140_W34_ORIGINAL_PRODUCER_GIT_TRACKED_NOT_MODIFIED | tee w34-evidence/original-production-preserved.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b0140-w34-original-923-${{ matrix.os }}
+          path: w34-evidence/
+          if-no-files-found: warn
+  physically-compare-original-source-across-os:
+    needs: [original-923-source-and-independent-r3]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: b0140-w34-original-923-ubuntu-24.04
+          path: ubuntu
+      - uses: actions/download-artifact@v4
+        with:
+          name: b0140-w34-original-923-windows-2025
+          path: windows
+      - name: Physically compare independently produced immutable original 923/877/896/source packet bytes
+        run: |
+          set -euo pipefail
+          cmp ubuntu/B01_W34_SOURCE_ONLY_REVIEW.zip windows/B01_W34_SOURCE_ONLY_REVIEW.zip
+          cmp ubuntu/manifest.json windows/manifest.json
+          cmp ubuntu/sha256.json windows/sha256.json
+          sha256sum ubuntu/B01_W34_SOURCE_ONLY_REVIEW.zip
+          echo B0140_W34_ORIGINAL_WIN_UBUNTU_BYTE_EXACT_REVIEW_ONLY_PASS

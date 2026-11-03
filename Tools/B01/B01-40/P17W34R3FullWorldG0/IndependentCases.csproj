@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <!-- This QA-only project is copied into a DISPOSABLE exact #923 producer
+       worktree; it compiles the ORIGINAL code, never writes producer Git. -->
+  <ItemGroup>
+    <Compile Include="IndependentCases.cs" />
+    <Compile Include="OriginalR3FactoryShim.cs" />
+    <Compile Include=".source/R3VehicleCatalog.cs" />
+    <Compile Include="CanonicalR3WorldV1.cs" />
+  </ItemGroup>
+</Project>
