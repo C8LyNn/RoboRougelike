@@ -91,6 +91,49 @@ namespace RoboRougelike.B0131.W30.Editor
         }
 
         /// <summary>
+        /// W33 source-only hierarchy admission: distinguish a fixed base from
+        /// independently yawed housing and pitched barrel geometry BEFORE clone.
+        /// Fail closed instead of treating every imported renderer as a barrel.
+        /// This is not proof that a missing external FBX passes native visual QA.
+        /// </summary>
+        public static bool TryValidateSourceRigHierarchy(
+            GameObject originalVisual, out string refusal)
+        {
+            refusal = "";
+            if (originalVisual == null)
+            { refusal = "MISSING_ORIGINAL_R41_VISUAL"; return false; }
+            try
+            {
+                var sourceYaw = FindUnique(originalVisual.transform, "R41_Yaw");
+                var sourcePitch = FindUnique(originalVisual.transform, "R41_Pitch");
+                var left = FindUnique(originalVisual.transform, "Muzzle_L");
+                var right = FindUnique(originalVisual.transform, "Muzzle_R");
+                if (sourceYaw == originalVisual.transform ||
+                    sourcePitch == originalVisual.transform ||
+                    !sourcePitch.IsChildOf(sourceYaw))
+                { refusal = "UNPROVEN_R41_YAW_PITCH_HIERARCHY"; return false; }
+                if (!left.IsChildOf(sourcePitch) || !right.IsChildOf(sourcePitch))
+                { refusal = "MUZZLE_MARKERS_OUTSIDE_PITCH_BRANCH"; return false; }
+
+                int staticRenderers = 0, yawRenderers = 0, pitchRenderers = 0;
+                foreach (var renderer in originalVisual.GetComponentsInChildren<Renderer>(true))
+                {
+                    if (renderer.transform.IsChildOf(sourcePitch)) pitchRenderers++;
+                    else if (renderer.transform.IsChildOf(sourceYaw)) yawRenderers++;
+                    else staticRenderers++;
+                }
+                if (staticRenderers == 0 || yawRenderers == 0 || pitchRenderers == 0)
+                {
+                    refusal = "UNPROVEN_FIXED_BASE_YAW_AND_PITCH_VISUAL_SEGMENTS";
+                    return false;
+                }
+                return true;
+            }
+            catch (InvalidOperationException e)
+            { refusal = e.Message; return false; }
+        }
+
+        /// <summary>
         /// W31 pre-INSTANTIATION source hierarchy verification. Imported model
         /// scripts can execute Awake/OnEnable as soon as Instantiate is called;
         /// therefore rejecting them AFTER cloning (W30) is too late. This
@@ -136,6 +179,10 @@ namespace RoboRougelike.B0131.W30.Editor
             // This preflight MUST run before Object.Instantiate: a foreign
             // MonoBehaviour would execute on clone Awake before W30 rejection.
             if (!TryValidateSourceVisualHierarchy(originalFbx, out rejection))
+                return null;
+            // Original imported yaw/pitch branches MUST prove a distinct static
+            // mount + yaw shell + elevating barrels before any Instantiate.
+            if (!TryValidateSourceRigHierarchy(originalFbx, out rejection))
                 return null;
             GameObject root = null, copy = null;
             try
@@ -193,7 +240,26 @@ namespace RoboRougelike.B0131.W30.Editor
                 // with the new wrapper's yaw/pitch in this static candidate.
                 foreach(var anim in copy.GetComponentsInChildren<Animator>(true))
                     anim.enabled = false;
-                copy.transform.SetParent(pitch, true);
+                // W33: the FBX ROOT owns only the fixed base. Never pitch the
+                // complete imported turret. Move the imported yaw branch beneath
+                // our authoritative yaw wrapper; then extract its pitch branch
+                // beneath the authoritative pitch wrapper. Preserve world pose.
+                copy.transform.SetParent(root.transform, true);
+                var visualYaw = FindUnique(copy.transform, "R41_Yaw");
+                var visualPitch = FindUnique(copy.transform, "R41_Pitch");
+                if (!visualPitch.IsChildOf(visualYaw))
+                    throw new InvalidOperationException("ORIGINAL_R41_PITCH_NOT_IN_YAW_BRANCH");
+                visualYaw.SetParent(yaw, true);
+                visualPitch.SetParent(pitch, true);
+                if (copy.transform.IsChildOf(yaw) || copy.transform.IsChildOf(pitch) ||
+                    visualYaw.IsChildOf(pitch) || visualPitch.IsChildOf(visualYaw))
+                    throw new InvalidOperationException("W33_RIG_WRAPPER_OWNERSHIP_ERROR");
+                if (copy.GetComponentsInChildren<Renderer>(true).Length == 0 ||
+                    visualYaw.GetComponentsInChildren<Renderer>(true).Length == 0 ||
+                    visualPitch.GetComponentsInChildren<Renderer>(true).Length == 0)
+                    throw new InvalidOperationException("W33_EMPTY_RIG_VISUAL_BRANCH");
+                var fixedMountPosition = copy.transform.position;
+                var fixedMountRotation = copy.transform.rotation;
 
                 float[] yawAngles = {0f,45f,-90f,180f};
                 float[] pitchAngles = {0f,-20f,10f};
@@ -210,7 +276,9 @@ namespace RoboRougelike.B0131.W30.Editor
                        Vector3.Distance(left.forward,new Vector3((float)l.ForwardX,(float)l.ForwardY,(float)l.ForwardZ))>.001f ||
                        Vector3.Distance(right.forward,new Vector3((float)r.ForwardX,(float)r.ForwardY,(float)r.ForwardZ))>.001f ||
                        Vector3.Distance(originalLeft.position,left.position)>.011f ||
-                       Vector3.Distance(originalRight.position,right.position)>.011f)
+                       Vector3.Distance(originalRight.position,right.position)>.011f ||
+                       Vector3.Distance(copy.transform.position,fixedMountPosition)>.001f ||
+                       Quaternion.Angle(copy.transform.rotation,fixedMountRotation)>.05f)
                         throw new InvalidOperationException("YAW_PITCH_WRAPPER_MUZZLES_DIVERGE_" + y + "_" + p);
                 }
                 yaw.localRotation=Quaternion.identity;
