@@ -29,18 +29,18 @@ EXACT_ADDS={
  OWN+"manifest.json",".github/workflows/b01-60-p17w31-safe-restoration-source.yml"
 }
 TESTS=(
- "LiveExteriorRotarySaw_PaidRebuildRestoresPhysicalGunAndSameIdOnce",
- "LiveDefaultBasicGun_EmergencyRepairRestoresDeployabilityWithoutDuplicateWalletDebit",
+ "LiveExteriorRotarySaw_PartialDamagePaidRepairPreservesOperationalGunAndId",
+ "LiveDefaultBasicGun_DestroyedEmergencyOrderMustWaitForRealNextVictory",
  "PhysicallyBlockedLegacySaw_BulkRepairEstimateNeverPromisesImpossibleSpend",
- "LegalDefaultBasic_BulkRepairEstimateMatchesActualChargeAndStablePartId"
+ "LegalDefaultBasic_PartialDamageBulkQuoteMatchesActualImmediateRepair"
 )
 REQUIRED={
  TESTS[0]:(
   'new EnterPlayMode()','SelectVehicle(R3VehicleKind.Standard)',
   'OpenSandboxGarage()','R4WeaponKind.RotarySaw',
   'run.GarageMount(gunId, exterior, default)',
-  'destroyed.Health = 0f','former.gameObject.SetActive(false)',
-  'model.RepairCost(destroyed)','model.CanDeploy, Is.False',
+  'destroyed.Health = 0.5f','former.Operational, Is.True',
+  'model.RepairCost(destroyed)','model.CanDeploy, Is.True',
   'run.GarageRepair(exterior), Is.True',
   'model.Scrap, Is.EqualTo(wallet - price)',
   'model.Parts.Count, Is.EqualTo(count)',
@@ -57,8 +57,8 @@ REQUIRED={
   'run.GarageEmergencyRepair(), Is.True',
   'model.Scrap, Is.EqualTo(before - quote)',
   'Is.EqualTo(beforeIds)',
-  'model.CanDeploy, Is.True',
-  'realGun.Operational && realGun.gameObject.activeInHierarchy',
+  'model.CanDeploy, Is.False',
+  'run.Player, Is.Not.Null',
   'run.GarageEmergencyRepair(), Is.False',
  ),
  TESTS[2]:(
@@ -80,8 +80,8 @@ REQUIRED={
  TESTS[3]:(
   'new EnterPlayMode()', 'OpenSandboxGarage()',
   'gun.Weapon, Is.EqualTo(R4WeaponKind.Basic)',
-  'gun.Health = 0f',
-  'oldMounted.gameObject.SetActive(false)',
+  'gun.Health = 0.5f',
+  'oldMounted.Operational, Is.True',
   'int quote = model.AffordableRepairCost',
   'run.GarageRepairAffordable(), Is.True',
   'before - model.Scrap, Is.EqualTo(quote)',

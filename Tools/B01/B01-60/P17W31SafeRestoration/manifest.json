@@ -1,5 +1,5 @@
 {
-  "package_id": "B01-60-P17W32-SAFE-RESTORATION-AND-BULK-QUOTE-NATIVE-ACCEPTANCE-002",
+  "package_id": "B01-60-P17W32-REAL-R3-PARTIAL-PAID-V7-PENDING-QA-R3",
   "role": "B01-60 independent QA",
   "parent_game_pr": 877,
   "base_exact_commit": "3bd9b159997924dcecb4e1cd1d41137896e5199e",
@@ -15,10 +15,10 @@
     "B01-60 #884 legacy source RED closed unmerged"
   ],
   "actual_native_tests_authored": [
-    "LiveExteriorRotarySaw_PaidRebuildRestoresPhysicalGunAndSameIdOnce",
-    "LiveDefaultBasicGun_EmergencyRepairRestoresDeployabilityWithoutDuplicateWalletDebit",
+    "LiveExteriorRotarySaw_PartialDamagePaidRepairPreservesOperationalGunAndId",
+    "LiveDefaultBasicGun_DestroyedEmergencyOrderMustWaitForRealNextVictory",
     "PhysicallyBlockedLegacySaw_BulkRepairEstimateNeverPromisesImpossibleSpend",
-    "LegalDefaultBasic_BulkRepairEstimateMatchesActualChargeAndStablePartId"
+    "LegalDefaultBasic_PartialDamageBulkQuoteMatchesActualImmediateRepair"
   ],
   "purpose": "New POSITIVE acceptance after protective garage rollback gate: physically clear paid saw repair must work without duplicated ID/wallet spend; legal basic gun emergency recovery must restore CanDeploy exactly once",
   "gameplay_production_code_modified": false,
@@ -54,5 +54,10 @@
   "rollback": "Discard this QA-only child of #877; no product sources affected",
   "w32_new_finding": "source RED: AffordableRepairCost uses R3VehicleModel.DeepCopy with missing restorationGate so previously invalid centered Saw may show positive bulk quote while real GarageRepairAffordable denies transaction",
   "w32_native_execution": "NOT_RUN",
-  "w32_gameplay_fixed": false
+  "w32_gameplay_fixed": false,
+  "w32_v7_semantics": "0HP paid emergency remains pending until genuine distinct later win; partially damaged 0.5HP paid repair immediate",
+  "w32_expected_red": [
+    "0HP emergency original R3 incorrectly restores HP before win",
+    "invalid legacy centered Saw speculative bulk quote exceeds executable repair amount"
+  ]
 }
