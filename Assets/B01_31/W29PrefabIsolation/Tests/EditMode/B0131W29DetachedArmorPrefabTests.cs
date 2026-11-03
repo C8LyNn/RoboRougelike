@@ -152,7 +152,8 @@ namespace RoboRougelike.B0131.W29.NativeTests
         {
             var clone = Clone(Original(), DisposableScene());
             var render = clone.GetComponentsInChildren<Renderer>(true)[0];
-            var foreign = render.gameObject.AddComponent<B0131W29IntrusiveVisualProbe>();
+            var foreign = render.gameObject.AddComponent(FindOriginalType(
+                "RoboRougelike.B0131.Art.B0131W24ArmorDamageVisual"));
             var collider = render.gameObject.AddComponent<BoxCollider>();
             int before = clone.GetComponentsInChildren<Collider>(true).Length;
             Assert.IsFalse(Strip(clone), "Foreign script must never enter visual-only sandbox");
@@ -179,7 +180,5 @@ namespace RoboRougelike.B0131.W29.NativeTests
         }
     }
 
-    /// <summary>Negative-only: never attached to original model asset.</summary>
-    public sealed class B0131W29IntrusiveVisualProbe : MonoBehaviour {}
 }
 #endif
