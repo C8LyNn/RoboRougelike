@@ -1,0 +1,14 @@
+# B01-22 W29 — ECONADMISSIONW29 R1
+
+## Real original V7 source defect and narrow compatibility-safe hardening
+Independent B01-10 #837 demonstrated that frozen real ECON V7 #780 Valid and its original binary codec accept a manually created pending Free=true ticket at Wins=0 and FreeUsedForWin=0, even though normal TryReserveDestroyed does not mint this. This is an invalid snapshot/migration trust-boundary gap, not proof of a game-exploitable cheat.
+
+NEW ORIGINAL PRODUCTION C#9 SOURCE EconomyV7AdmissionW29 adds strict in-memory admission/encode/decode on the immutable original #780 V7 policy and codec: rejects any Free=true at Wins=0; validates exact trusted physical canonical owner/run/generation. Permits valid quote0 PAID Free=false (purchase1), first legitimate win FREE, one-shot reserved/entered/spent state. It does not change original V7 policy, old 65% pricing, next-win repair timing, robot one-shot, or save format. No game wallet, second writer, OS lock, raw Save, mutation or new victory issuer.
+
+Actual C#9 .NET8 source tests on Windows2025 and Ubuntu24.04 compile original frozen policy and codec directly with new runtime and warnings-as-errors. RED witness original validator+original binary encoder/decoder accept fabricated epoch0 FREE, then W29 gate must reject. Additional cases exercise legal zero-price PAID, genuine modeled Win1 FREE, Win2 settlement, win replay denial, loaner spent persistence, wrong owner, wrong run, stale gen, null owner and tampered checksum. Model combat IDs and physical facts in tests are test-only scenario inputs, not genuine Unity fight evidence.
+
+COMPATIBILITY/ORDER: New Unity asmdef B01.EconAdmission.W29 references existing actual B01.EconApprovedV7, autoReferenced=false, noEngineReferences=true. Original selected #826 full-world Save writer must invoke TryDecodeForCanonicalOwner after verifying full physical author identity in its ONE .owner session, and TryEncodeForCanonicalOwner before single atomic publication. No separately owned Save or sidecar. Caller passes only trusted host owner/run/generation, NEVER UI strings. If a historic epoch0 FREE snapshot is encountered, quarantine full slot and require owner-reviewed migration; never invent a win or silently repair.
+
+This package is not installed in the current Codex playable R1/R3 game, does not repair the separate P0 loaner Win1 softlock #812, and does not prove original #826 complete CAS or actual Unity Editor. B01-62 owns #826 integration, B01-40/41/61 formal independent composite G0, B01-23/20 physical world, B01-60 native Unity G1, B01-00 owner policy and actual Codex acceptance. Until installed and independently verified: game protection NOT_WIRED, real Windows Player NOT_RUN, anti-softlock gameplay RED, G2 HOLD. Do not offer Codex #79 before G0.
+
+Rollback: close this unmerged isolated Draft only. Immutable original #780, selected #826, #792, #750, current Codex worktree and user Save remain untouched.
