@@ -10,19 +10,25 @@ namespace B01.WeaponFeedback001.Editor{
   const string ImpactPath=Root+"/Prefabs/WeaponImpactFX001.prefab";
   const string WeaponPath=Root+"/Prefabs/WeaponFeedback001.prefab";
   const string ScenePath=Root+"/Scenes/WeaponFeedback001_Demo.unity";
+  static string OnDisk(string assetPath)
+  {
+   return Path.Combine(Directory.GetParent(Application.dataPath).FullName,assetPath);
+  }
   [MenuItem("B01/Weapon Feedback 001/Generate Prefabs And Demo Scene")]
   public static void Generate(){
    // Never replace an accepted or locally edited asset or reuse its .meta GUID.
    foreach(var path in new[]{ImpactPath,WeaponPath,ScenePath}){
-    if(File.Exists(path)||File.Exists(path+".meta")||
+    if(File.Exists(OnDisk(path))||File.Exists(OnDisk(path)+".meta")||
        AssetDatabase.LoadMainAssetAtPath(path)!=null)
      throw new System.InvalidOperationException("Refusing to overwrite existing VFX asset: "+path);
    }
-   Directory.CreateDirectory(Root+"/Prefabs");Directory.CreateDirectory(Root+"/Scenes");
+   Directory.CreateDirectory(OnDisk(Root+"/Prefabs"));
+   Directory.CreateDirectory(OnDisk(Root+"/Scenes"));
    var previouslyActive=SceneManager.GetActiveScene();
    var scene=EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Additive);
    try{
-   SceneManager.SetActiveScene(scene);
+   if(!SceneManager.SetActiveScene(scene))
+    throw new System.InvalidOperationException("Could not activate the isolated demo scene");
    var impactGo=new GameObject("ImpactSparks_VisualOnly");
    var impactPs=impactGo.AddComponent<ParticleSystem>();
    var impactMain=impactPs.main;impactMain.loop=false;impactMain.duration=.2f;impactMain.startLifetime=.25f;
