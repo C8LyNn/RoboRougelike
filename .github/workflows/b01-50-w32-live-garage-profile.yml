@@ -24,10 +24,13 @@ jobs:
         with:
           persist-credentials: false
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
-          fetch-depth: 1
-      - name: Fetch exact original canonical game base (no full repo history)
+          fetch-depth: 7
+      - name: Verify pinned original game base exists in bounded checkout
         shell: bash
-        run: git fetch --no-tags --depth=1 origin 3bd9b159997924dcecb4e1cd1d41137896e5199e
+        run: |
+          set -euo pipefail
+          git cat-file -e '3bd9b159997924dcecb4e1cd1d41137896e5199e^{commit}'
+          git merge-base --is-ancestor 3bd9b159997924dcecb4e1cd1d41137896e5199e HEAD
       - name: Execute original repo and B01-50 negative source QA (NOT native Unity)
         shell: bash
         run: |
