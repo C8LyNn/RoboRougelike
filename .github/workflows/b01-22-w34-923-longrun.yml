@@ -1,0 +1,68 @@
+name: B01-22 W34 original 923 139-part 24-win full Save single owner and loaner cold QA
+on:
+  pull_request:
+    paths:
+      - 'Tools/B01/ECONW34R3LongRun/**'
+      - '.github/workflows/b01-22-w34-923-longrun.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-923-longrun:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2025, ubuntu-24.04]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 3
+          # Never test GitHub's synthetic PR merge when upstream producer moves.
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Stage original immutable V7+admission+current R3 factory in disposable runner only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin e6eb24b7a45a66a5fa5d039f59c80b7e4be4439b
+          git fetch --no-tags origin 3bd9b159997924dcecb4e1cd1d41137896e5199e
+          git fetch --no-tags origin b4df10a7ad7e6c758f8331013f6b216b3a3689a3
+          git fetch --no-tags origin c9c19665a4f9385e6479f7151097deb797026ade
+          mkdir -p Tools/B01/B01-62/P17W33R3World/.source Tools/B01/B01-62/P17W30AdmissionV3/.source
+          git show 3bd9b159997924dcecb4e1cd1d41137896e5199e:Assets/R3/R3VehicleCatalog.cs > Tools/B01/B01-62/P17W33R3World/.source/R3VehicleCatalog.cs
+          git show b4df10a7ad7e6c758f8331013f6b216b3a3689a3:Assets/B01Packages/ECONAPPROVED007/Runtime/ApprovedEconomyPolicyV7.cs > Tools/B01/B01-62/P17W30AdmissionV3/.source/ApprovedEconomyPolicyV7.cs
+          git show b4df10a7ad7e6c758f8331013f6b216b3a3689a3:Assets/B01Packages/ECONAPPROVED007/Runtime/CanonicalEconomySectionV7.cs > Tools/B01/B01-62/P17W30AdmissionV3/.source/CanonicalEconomySectionV7.cs
+          git show c9c19665a4f9385e6479f7151097deb797026ade:Assets/B01Packages/ECONADMISSIONW29/Runtime/EconomyV7AdmissionW29.cs > Tools/B01/B01-62/P17W30AdmissionV3/.source/EconomyV7AdmissionW29.cs
+      - name: Check 0 product changes and exactly original Git source SHA/immutable bits
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 Tools/B01/ECONW34R3LongRun/verify_package.py | tee "$RUNNER_TEMP/b01-22-w34-923.log"
+      - name: Compile REAL selected original 923 one-store V7 + full R3 codec CSharp9
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet build Tools/B01/ECONW34R3LongRun/W34.Original.csproj -c Release | tee -a "$RUNNER_TEMP/b01-22-w34-923.log"
+      - name: Execute 24 distinct modeled fights through original OS one-file 139-part full Save
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --project Tools/B01/ECONW34R3LongRun/W34.Original.csproj -c Release --no-build -- --scenario "$RUNNER_TEMP/b01-22-w34-world" | tee -a "$RUNNER_TEMP/b01-22-w34-923.log"
+          grep -q 'W34_923_24_WINS_REAL_ONE_FILE_SAVE_PASS wins=24 parts=139 pending=1' "$RUNNER_TEMP/b01-22-w34-923.log"
+          grep -q 'W34_923_LOANER_SPENT_SOFTLOCK_RISK_SOURCE_RED' "$RUNNER_TEMP/b01-22-w34-923.log"
+      - name: NEW independent CLR process original closed-slot physical Save read 139+83
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run --project Tools/B01/ECONW34R3LongRun/W34.Original.csproj -c Release --no-build -- --cold "$RUNNER_TEMP/b01-22-w34-world" | tee -a "$RUNNER_TEMP/b01-22-w34-923.log"
+          grep -q 'W34_923_COLD_INDEPENDENT_CLR_PASS heavy139_wins=24 standard83_loaner=Spent' "$RUNNER_TEMP/b01-22-w34-923.log"
+          grep -q 'W34_923_EXACT_SOURCE_SCOPE_PASS' "$RUNNER_TEMP/b01-22-w34-923.log"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b01-22-w34-original-923-dynamic-fullsave-${{ matrix.os }}
+          path: ${{ runner.temp }}/b01-22-w34-923.log
+          if-no-files-found: warn
