@@ -1,0 +1,91 @@
+name: B01-40 W32 current 877 game plus frozen #896 one-writer real OS disk source G0
+on:
+  push:
+    branches: [qa/b01-40-p17w32-current877-frozen896-source-g0]
+permissions:
+  contents: read
+jobs:
+  original-exact-source-and-save:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: B01-40 independent original game #877 + frozen #896 unique Save, future Unity GUID union, hostile source rollback
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-40/P17W32Game877Save896G0/audit.py --out w32-evidence | tee w32-source.log
+          cp w32-source.log w32-evidence/source.log
+          grep -q 'B0140_W32_GARAGE877_NEW_REVERSE_RESTORATION_SAME_AUTHORITY_SOURCE_G0_PASS' w32-source.log
+          grep -q 'B0140_W32_SAVE896_855_ADMISSION_COLD_ONE_WRITER_SOURCE_G0_PASS' w32-source.log
+          grep -q 'B0140_W32_GAME_AND_SELECTED_RIG_ADMISSION_FUTURE_GUID_COLLISION_FREE' w32-source.log
+          grep -q 'B0140_W32_SIX_SOURCE_MUTANTS_AND_HOSTILE_OS_ROLLBACK_REJECTED' w32-source.log
+          grep -q 'B0140_W32_NATIVE_UNITY_AND_WINDOWS_PLAYER_NOT_RUN' w32-source.log
+          grep -q 'B0140_W32_ORIGINAL_R3_V7_65_PERCENT_REBUILD_SOURCE_RED_EXPECTED' w32-source.log
+      - name: Retrieve exact source-only Save #896 into NEW isolated runner worktree, no shared game mutation
+        run: |
+          set -euo pipefail
+          git worktree add --detach _w32_save_testonly a0282f2de0250d2a8fe421bbe182b4cb6fab2a11
+          mkdir -p _w32_save_testonly/Tools/B01/B01-62/P17W30AdmissionV3/.source
+          git show b4df10a7ad7e6c758f8331013f6b216b3a3689a3:Assets/B01Packages/ECONAPPROVED007/Runtime/ApprovedEconomyPolicyV7.cs > _w32_save_testonly/Tools/B01/B01-62/P17W30AdmissionV3/.source/ApprovedEconomyPolicyV7.cs
+          git show b4df10a7ad7e6c758f8331013f6b216b3a3689a3:Assets/B01Packages/ECONAPPROVED007/Runtime/CanonicalEconomySectionV7.cs > _w32_save_testonly/Tools/B01/B01-62/P17W30AdmissionV3/.source/CanonicalEconomySectionV7.cs
+          git show c9c19665a4f9385e6479f7151097deb797026ade:Assets/B01Packages/ECONADMISSIONW29/Runtime/EconomyV7AdmissionW29.cs > _w32_save_testonly/Tools/B01/B01-62/P17W30AdmissionV3/.source/EconomyV7AdmissionW29.cs
+      - name: Independent original #896 frozen pair source guard, C#9 ABI and actual OS disk tests 9+6+4+2
+        run: |
+          set -euo pipefail
+          cd _w32_save_testonly
+          python Tools/B01/B01-62/P17W31AtomicPair/source_guard.py ../w32-evidence/original-producer-scope.json | tee ../w32-evidence/save-scope.log
+          dotnet build Tools/B01/B01-62/P17W30AdmissionV3/W30UnityAbi.csproj -c Release -v quiet | tee ../w32-evidence/abi.log
+          dotnet run --project Tools/B01/B01-62/P17W30AdmissionV3/W28OriginalRegression.csproj -c Release -v quiet | tee ../w32-evidence/original-w28-9.log
+          dotnet run --project Tools/B01/B01-62/P17W30AdmissionV3/W29ColdRegression.csproj -c Release -v quiet | tee ../w32-evidence/original-w29-6.log
+          dotnet run --project Tools/B01/B01-62/P17W30AdmissionV3/W30AdmissionQA.csproj -c Release -v quiet | tee ../w32-evidence/original-w30-4.log
+          grep -q 'W25_V7_GAME_ECON_ONE_ENVELOPE_SOURCE_TOTAL 9 PASS 9 FAIL 0' ../w32-evidence/original-w28-9.log
+          grep -q 'B0162_W29_COLD_READ_REAL_OS_TOTAL 6 PASS 6 FAIL 0' ../w32-evidence/original-w29-6.log
+          grep -q 'B0162_W30_ADMISSION_SINGLE_WRITER_REAL_OS_TOTAL 4 PASS 4 FAIL 0' ../w32-evidence/original-w30-4.log
+          dotnet run --project Tools/B01/B01-62/P17W31AtomicPair/AtomicPairQA.csproj -c Release -v quiet | tee ../w32-evidence/original-w31-freeze-2.log
+          grep -q 'B0162_W31_MUTABLE_INPUT_REAL_OS_TOTAL 2 PASS 2 FAIL 0' ../w32-evidence/original-w31-freeze-2.log
+          echo B0140_W32_ORIGINAL_SAVE896_NATIVE_NETSTANDARD21_CSHARP9_AND_REAL_DISK_21_OF_21_PASS | tee ../w32-evidence/original-physical-os-completed.txt
+          cd ..
+          git worktree remove --force _w32_save_testonly
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b0140-w32-877-896-${{ matrix.os }}
+          path: w32-evidence/
+          if-no-files-found: warn
+  physical-two-os-source-byte-parity:
+    needs: [original-exact-source-and-save]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: b0140-w32-877-896-ubuntu-24.04
+          path: ubuntu
+      - uses: actions/download-artifact@v4
+        with:
+          name: b0140-w32-877-896-windows-2025
+          path: windows
+      - name: Compare physical original Git bytes, source-only ZIP and manifests
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp ubuntu/B0140_W32_GAME877_SAVE896_REVIEW_ONLY.zip windows/B0140_W32_GAME877_SAVE896_REVIEW_ONLY.zip
+          cmp ubuntu/manifest.json windows/manifest.json
+          cmp ubuntu/package-sha256.json windows/package-sha256.json
+          cmp ubuntu/original-producer-scope.json windows/original-producer-scope.json
+          sha256sum ubuntu/B0140_W32_GAME877_SAVE896_REVIEW_ONLY.zip
+          echo B0140_W32_EXACT_CURRENT_877_885_CROSS_OS_SOURCE_BINARY_EQUAL_PASS
