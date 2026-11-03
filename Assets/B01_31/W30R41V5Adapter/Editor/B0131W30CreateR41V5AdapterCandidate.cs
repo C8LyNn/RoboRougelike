@@ -35,12 +35,19 @@ namespace RoboRougelike.B0131.W30.Editor
             if (string.IsNullOrEmpty(path) ||
                 !path.EndsWith("/R41_Turret_v5.fbx", StringComparison.OrdinalIgnoreCase))
             { reason = "WRONG_ASSET_NOT_R41_Turret_v5.fbx"; return false; }
-            if (!File.Exists(path))
+            // W31: Unity AssetDatabase paths are relative to project Assets,
+            // NOT necessarily the Unity Editor process working directory.
+            // Resolve using the absolute Application.dataPath, fail closed for
+            // ANY foreign path before opening / hashing original FBX bytes.
+            if (!R41V5AssetPaths.TryResolveFbxPath(
+                Application.dataPath, path, out var realFbxPath,
+                out reason)) return false;
+            if (!File.Exists(realFbxPath))
             { reason = "ORIGINAL_V5_FBX_BYTES_NOT_ACCESSIBLE"; return false; }
             // Unity 6000.3 / netstandard-compatible API. Explicitly avoid
             // SHA256.HashData and Convert.ToHexString from incompatible V2 Save.
             string sourceSha;
-            using (var reader = File.OpenRead(path))
+            using (var reader = File.OpenRead(realFbxPath))
             using (var hasher = SHA256.Create())
             {
                 var digest = hasher.ComputeHash(reader);
@@ -84,6 +91,40 @@ namespace RoboRougelike.B0131.W30.Editor
         }
 
         /// <summary>
+        /// W31 pre-INSTANTIATION source hierarchy verification. Imported model
+        /// scripts can execute Awake/OnEnable as soon as Instantiate is called;
+        /// therefore rejecting them AFTER cloning (W30) is too late. This
+        /// operates on the source only and never rewrites imported FBX bytes.
+        /// Public for actual native NUnit negative probes without a fake FBX.
+        /// </summary>
+        public static bool TryValidateSourceVisualHierarchy(
+            GameObject originalVisual, out string refusal)
+        {
+            refusal = "";
+            if (originalVisual == null)
+            { refusal = "MISSING_ORIGINAL_VISUAL"; return false; }
+            if (originalVisual.GetComponentsInChildren<MonoBehaviour>(true).Length != 0)
+            { refusal = "FOREIGN_SCRIPT_BEFORE_CLONE"; return false; }
+            if (originalVisual.GetComponentsInChildren<Joint>(true).Length != 0)
+            { refusal = "FOREIGN_PHYSICAL_JOINT_BEFORE_CLONE"; return false; }
+            if (originalVisual.GetComponentsInChildren<Renderer>(true).Length == 0)
+            { refusal = "ORIGINAL_VISUAL_NO_MESH_RENDERERS"; return false; }
+            try
+            {
+                // Fail on zero OR multiple named original markers, including
+                // inactive or nested FBX hierarchy branches.
+                FindUnique(originalVisual.transform, "Muzzle_L");
+                FindUnique(originalVisual.transform, "Muzzle_R");
+                return true;
+            }
+            catch (InvalidOperationException e)
+            {
+                refusal = e.Message;
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Build a root candidate in memory only; caller must destroy it after
         /// inspection. On success Yaw and Pitch wrappers rotate physical visuals
         /// and named adapter muzzles; imported marker forwards are NOT trusted.
@@ -92,6 +133,10 @@ namespace RoboRougelike.B0131.W30.Editor
         {
             rejection = "";
             if (!IsApprovedImportedModel(originalFbx, out rejection)) return null;
+            // This preflight MUST run before Object.Instantiate: a foreign
+            // MonoBehaviour would execute on clone Awake before W30 rejection.
+            if (!TryValidateSourceVisualHierarchy(originalFbx, out rejection))
+                return null;
             GameObject root = null, copy = null;
             try
             {
