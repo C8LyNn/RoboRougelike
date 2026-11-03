@@ -75,8 +75,15 @@ namespace B01.WeaponFeedback001
             muzzleLight = flash;
             impactPrefab = hitFx;
             damagedWeaponSmoke = smoke;
-            pivotSet = false;
-            CachePivot();
+            // Rebinding identical references during recoil must not redefine
+            // the displaced pivot as its permanent resting position.
+            if (changed)
+            {
+                pivotSet = false;
+                CachePivot();
+            }
+            else if (!pivotSet)
+                CachePivot();
             lightLeft = 0f;
             if (muzzleLight) muzzleLight.enabled = false;
             if (muzzleFlash)
