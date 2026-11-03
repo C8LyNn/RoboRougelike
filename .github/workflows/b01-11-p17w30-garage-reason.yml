@@ -1,4 +1,4 @@
-name: B01-11 W31 canonical R3 garage mount+repair original-source QA
+name: B01-11 W34 original R3 garage tool-specific advice + V7 source QA
 on:
   push:
     branches: ['feature/b01-11-p17w31-live-garage-repair-copy-r2']
@@ -28,5 +28,5 @@ jobs:
           dotnet-version: '8.0.x'
       - name: Exact Git scope, original Git blob, SHA256 and Unity GUID
         run: python Tools/B01/B01-11/P17W30GarageReason/verify.py
-      - name: Compile ORIGINAL #877 and W31 R3 live mount+repair ClickTarget C# and reproduce RED to GREEN
+      - name: Compile ORIGINAL #877 and W34 R3 live mount+repair/inspect ClickTarget C# RED to GREEN
         run: python Tools/B01/B01-11/P17W30GarageReason/probe.py
