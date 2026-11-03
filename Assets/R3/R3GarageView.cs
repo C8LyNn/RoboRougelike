@@ -318,13 +318,15 @@ namespace RoboRougelike.R3
                 // denied transaction is read back without changing the model.
                 var selected=run.VehicleModel.At(Cell);
                 int quote=run.VehicleModel.RepairCost(selected);
+                // Capture pre-transaction state: owner V7 makes a 0HP rebuild
+                // a PAID pending order until the NEXT distinct verified win.
+                // Never infer a trusted pending record solely from a bool.
+                bool wasDestroyed=selected!=null&&selected.Health<=0f;
                 result=run.GarageRepair(Cell);
-                // V7 can accept a PAID destroyed rebuild as Pending without
-                // restoring any HP until a later DISTINCT trusted victory.
-                // A bool success is NOT proof that the physical part is ready,
-                // nor proof of a durable pending ledger. Show observed HP only.
-                if(result&&selected!=null&&selected.Health<=0f)
-                    Message="Operacja przyjęta, ale część nadal ma 0 HP. Odbudowa nie jest gotowa; sprawdź status oczekiwania.";
+                if(result&&wasDestroyed&&selected.Health<=0f)
+                    Message="Zlecenie przyjęte, ale część nadal ma 0 HP. Sprawdź status oczekiwania na kolejne zwycięstwo.";
+                else if(result&&wasDestroyed)
+                    Message="Niezgodność odbudowy: część przywrócono przed kolejnym zwycięstwem. Sprawdź stan gry.";
                 else if(result)Message="Naprawiono wskazaną część.";
                 else if(selected==null)Message="Nie znaleziono części do naprawy w wybranej komórce.";
                 else if(selected.Health>=1f)Message="Część jest sprawna i nie wymaga naprawy.";
