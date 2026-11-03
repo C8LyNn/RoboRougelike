@@ -269,13 +269,23 @@ class OriginalPhysicalR51QA(unittest.TestCase):
         self.assertIn("shape==null||!shape.enabled||",h)
     def test_32_four_unity_native_playmode_regressions_authored_not_executed(self):
         n=raw(A+"/Tests/PlayMode/SafeRouteNativePlayModeTests.cs").decode()
-        self.assertEqual(26,n.count("[UnityTest]"))
+        self.assertEqual(27,n.count("[UnityTest]"))
         for name in (
           "W29R3DebrisDisabledColliderCanRegisterAndRecoversWhenEnabled",
           "W29DormantDebrisDoesNotRebuildMarkersEveryPhysicsStep",
           "W29ActuallyDestroyedDebrisIsAutoRetiredAndRouteReopens",
           "W29InactiveCompoundPrefabChildrenDoNotStrandDebrisRoute"):
             self.assertIn(name,n)
+    def test_33_real_w30_bounded_physics_query_buffer_reused_across_replans(self):
+        h=raw(A+"/Runtime/SafeRouteUnityDemo.cs").decode()
+        n=raw(A+"/Tests/PlayMode/SafeRouteNativePlayModeTests.cs").decode()
+        self.assertIn("private const int PhysicalQueryCapacity=256;",h)
+        self.assertIn("private readonly Collider[] physicalHits=new Collider[PhysicalQueryCapacity];",h)
+        self.assertIn("var buffer=physicalHits;",h)
+        self.assertNotIn("var buffer=new Collider[256];",h)
+        self.assertIn("if(hits>=buffer.Length)",h)
+        self.assertIn("W30RapidRealPhysicsReplansReuseBoundedQueryBuffer",n)
+        self.assertEqual(27,n.count("[UnityTest]"))
 def main():
     ap=argparse.ArgumentParser();ap.add_argument("--out",required=True)
     args=ap.parse_args();out=pathlib.Path(args.out);out.parent.mkdir(parents=True,exist_ok=True)

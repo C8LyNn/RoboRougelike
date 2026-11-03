@@ -467,5 +467,26 @@ namespace B0125.SafeRoute.Tests
             Assert.IsTrue(demo.CurrentPlan.Reachable);
             Object.Destroy(root);Object.Destroy(host);
         }
+        [UnityTest]
+        public IEnumerator W30RapidRealPhysicsReplansReuseBoundedQueryBuffer()
+        {
+            var host=new GameObject("W30 physical query alloc regression");
+            var demo=host.AddComponent<SafeRouteUnityDemo>();
+            yield return new WaitForFixedUpdate();
+            var field=typeof(SafeRouteUnityDemo).GetField("physicalHits",
+                System.Reflection.BindingFlags.NonPublic|
+                System.Reflection.BindingFlags.Instance);
+            Assert.IsNotNull(field);
+            var original=field.GetValue(demo) as Collider[];
+            Assert.IsNotNull(original);
+            Assert.AreEqual(256,original.Length);
+            for(int i=0;i<12;i++)
+            {
+                demo.Replan();
+                Assert.AreSame(original,field.GetValue(demo),
+                    "rapid debris movement cannot reallocate 256-slot buffer");
+            }
+            Object.Destroy(host);
+        }
     }
 }

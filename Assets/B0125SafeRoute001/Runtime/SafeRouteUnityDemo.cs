@@ -53,6 +53,11 @@ namespace B0125.SafeRoute
         private const int MaxWorldBlockers=32;
         private readonly List<ExternalObstacle> externalObstacles=
             new List<ExternalObstacle>();
+        // W30 source improvement: the same bounded PhysX query buffer is
+        // reused across replans, including rapid detached-part movement.
+        // This MonoBehaviour executes its queries on Unity's main thread.
+        private const int PhysicalQueryCapacity=256;
+        private readonly Collider[] physicalHits=new Collider[PhysicalQueryCapacity];
         private bool occupancyUncertain;
         private int replanRevision;
         private GridCell[] occupiedCells=System.Array.Empty<GridCell>();
@@ -347,7 +352,7 @@ namespace B0125.SafeRoute
                 occupancyUncertain=true;
                 return System.Array.Empty<GridCell>();
             }
-            var buffer=new Collider[256];
+            var buffer=physicalHits;
             var cells=new List<GridCell>();
             bool primaryDetected=excluded==crateCollider;
             bool auxiliaryDetected=excluded==auxiliaryCollider;
