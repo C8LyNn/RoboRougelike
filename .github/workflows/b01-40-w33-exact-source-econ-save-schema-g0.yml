@@ -1,0 +1,105 @@
+name: B01-40 W33 original 877-915-896 source G0 + actual 913 world RED
+on:
+  push:
+    branches: [qa/b01-40-p17w33-877-915-896-schema913-integrator-g0]
+permissions:
+  contents: read
+jobs:
+  independent-original-source-abi:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Independent exact Git 877+915/910+896 one-owner provenance, original REDs and real isolated owned staging rollback
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-40/P17W33IntegratorG0/gate.py w33-evidence | tee w33-gate.log
+          cp w33-gate.log w33-evidence/gate.log
+          grep -q 'B0140_W33_ORIGINAL_877_915_910_896_SOURCE_SELECTION_G0_PASS' w33-gate.log
+          grep -q 'B0140_W33_SCHEMA_913_REAL_R3_20_83_139_VS_FROZEN_2_PRODUCT_RED_DETECTED' w33-gate.log
+          grep -q 'B0140_W33_V7_0HP_NEXT_AUTHENTIC_WIN_PRODUCT_TEMPORAL_RED_DETECTED' w33-gate.log
+          grep -q 'B0140_W33_SINGLE_FROZEN_896_WRITER_NO_DOUBLE_STORE_VERIFIED' w33-gate.log
+          grep -q 'B0140_W33_NATIVE_UNITY_G1_NOT_RUN_AND_PLAYER_NOT_BUILT' w33-gate.log
+      - name: Execute ORIGINAL #907 current R3 factory against frozen 2-slot real Csharp9 codec (not Unity)
+        run: |
+          set -euo pipefail
+          git worktree add --detach _w33_907 64d35ab765064760f1a75035a65b9554ab280d6c
+          mkdir -p _w33_907/Tools/B01/B01-62/P17W32R3WorldCompatibility/.source
+          git show a0282f2de0250d2a8fe421bbe182b4cb6fab2a11:Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs > _w33_907/Tools/B01/B01-62/P17W32R3WorldCompatibility/.source/DetachedSnapshotContract.cs
+          git show a0282f2de0250d2a8fe421bbe182b4cb6fab2a11:Assets/B0123DebrisRepulse001/Runtime/DebrisImpulseCore.cs > _w33_907/Tools/B01/B01-62/P17W32R3WorldCompatibility/.source/DebrisImpulseCore.cs
+          git show a0282f2de0250d2a8fe421bbe182b4cb6fab2a11:Tools/B01/B01-62/P17W28UnityCompatibleWholeGameV3/WholeGameEconomySlotV3.cs > _w33_907/Tools/B01/B01-62/P17W32R3WorldCompatibility/.source/WholeGameEconomySlotV3.cs
+          cd _w33_907
+          python Tools/B01/B01-62/P17W32R3WorldCompatibility/source_guard.py ../w33-evidence/original-907-scope.json | tee ../w33-evidence/original-907-scope.log
+          dotnet run --project Tools/B01/B01-62/P17W32R3WorldCompatibility/OriginalR3VsFrozen556.csproj -c Release -v quiet | tee ../w33-evidence/original-907-world-7.log
+          grep -q 'B0162_W32_R3_VS_556_REAL_ORIGINAL_CODE_TOTAL 7 PASS 7 FAIL 0' ../w33-evidence/original-907-world-7.log
+          grep -q 'B0162_W32_PRODUCT_COMPATIBILITY=RED_EXPECTED_SOURCE_WITNESS' ../w33-evidence/original-907-world-7.log
+          cd ..
+          git worktree remove --force _w33_907
+          echo B0140_W33_REAL_R3_ORIGINAL_CSHARP_7_OF_7_RED_WITNESS_PASS | tee w33-evidence/real-original-code.txt
+      - name: Execute ORIGINAL #915 actual R3 repair methods .NET8 Csharp9 source isolated including original mutants (not Unity)
+        run: |
+          set -euo pipefail
+          git worktree add --detach _w33_915 95060c1d254624355737fd2c48dd87cf79099ebe
+          cd _w33_915
+          python Tools/B01/B0123/W32/verify_economy.py | tee ../w33-evidence/original-915-methods.json
+          python -m json.tool ../w33-evidence/original-915-methods.json >/dev/null
+          grep -q 'ORIGINAL_R3_METHOD_SOURCE_ISOLATED_PASS' ../w33-evidence/original-915-methods.json
+          cd ..
+          git worktree remove --force _w33_915
+          echo B0140_W33_ORIGINAL_915_R3_METHODS_SOURCE_ISOLATED_CSHARP_PASS | tee w33-evidence/original-915-completed.txt
+      - name: Independently execute latest original #910 W33 owner V7 Csharp9 on real unchanged #915 R3 methods (test-only)
+        run: |
+          set -euo pipefail
+          git worktree add --detach _w33_910 f865177bfb8340b15ccf12a4c0a377151a297adf
+          mkdir -p _w33_910/Tools/B01/ECONR3W33/.source
+          git show b4df10a7ad7e6c758f8331013f6b216b3a3689a3:Assets/B01Packages/ECONAPPROVED007/Runtime/ApprovedEconomyPolicyV7.cs > _w33_910/Tools/B01/ECONR3W33/.source/ApprovedEconomyPolicyV7.cs
+          cd _w33_910
+          python Tools/B01/ECONR3W33/verify_package.py | tee ../w33-evidence/original-910-scope.log
+          dotnet build Tools/B01/ECONR3W33/W33.Receiver.csproj -c Release -v quiet | tee ../w33-evidence/original-910-build.log
+          dotnet run --project Tools/B01/ECONR3W33/W33.Receiver.csproj -c Release --no-build | tee ../w33-evidence/original-910-temporal-red.log
+          grep -q 'W33_ORIGINAL_915_PRICE_V7_SOURCE_PASS' ../w33-evidence/original-910-temporal-red.log
+          grep -q 'W33_ORIGINAL_915_NEXT_WIN_PRODUCT_RED' ../w33-evidence/original-910-temporal-red.log
+          cd ..
+          git worktree remove --force _w33_910
+          echo B0140_W33_LATEST_910_ORIGINAL_V7_CSHARP9_PRICE_PASS_TEMPORAL_PRODUCT_RED | tee w33-evidence/original-910-completed.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b0140-w33-original-${{ matrix.os }}
+          path: w33-evidence/
+          if-no-files-found: warn
+  physically-compare-original-crossos-review-only:
+    needs: [independent-original-source-abi]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: b0140-w33-original-ubuntu-24.04
+          path: ubuntu
+      - uses: actions/download-artifact@v4
+        with:
+          name: b0140-w33-original-windows-2025
+          path: windows
+      - name: Actually compare deterministic inner source ZIP, manifest and source SHA256 original OS artifacts
+        run: |
+          set -euo pipefail
+          cmp ubuntu/W33_SOURCE_REVIEW_NOT_INSTALLABLE.zip windows/W33_SOURCE_REVIEW_NOT_INSTALLABLE.zip
+          cmp ubuntu/manifest.json windows/manifest.json
+          cmp ubuntu/sha256.json windows/sha256.json
+          sha256sum ubuntu/W33_SOURCE_REVIEW_NOT_INSTALLABLE.zip
+          echo B0140_W33_ORIGINAL_SOURCE_ARTIFACT_WIN_LINUX_BYTE_IDENTICAL_PASS
