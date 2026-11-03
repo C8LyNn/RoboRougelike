@@ -1,0 +1,28 @@
+name: B01-25 W32 R5 challenge source scope (NOT Unity)
+on:
+  push:
+    branches:
+      - research/b01-25-p17w32-r5-challenge-qa
+permissions:
+  contents: read
+jobs:
+  exact-source-only:
+    name: Source-only scope and mutation guard / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch ONLY exact immutable canonical receiver SHA
+        shell: bash
+        run: git fetch --no-tags --depth=1 origin 3bd9b159997924dcecb4e1cd1d41137896e5199e
+      - name: Check exact owner scope, real production references and negatives
+        shell: bash
+        run: python Tools/B01/B01-25/P17W32R5ChallengeQA/verify.py
