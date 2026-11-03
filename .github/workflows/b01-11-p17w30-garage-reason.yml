@@ -1,0 +1,32 @@
+name: B01-11 W31 canonical R3 garage mount+repair original-source QA
+on:
+  push:
+    branches: ['feature/b01-11-p17w31-live-garage-repair-copy-r2']
+  pull_request:
+    paths:
+      - 'Assets/R3/R3GarageView.cs'
+      - 'Assets/Tests/Editor/B0111W30GarageRejectionUxTests.cs'
+      - 'Assets/Tests/Editor/B0111W30GarageRejectionUxTests.cs.meta'
+      - 'Tools/B01/B01-11/P17W30GarageReason/**'
+      - '.github/workflows/b01-11-p17w30-garage-reason.yml'
+permissions:
+  contents: read
+jobs:
+  original-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Exact Git scope, original Git blob, SHA256 and Unity GUID
+        run: python Tools/B01/B01-11/P17W30GarageReason/verify.py
+      - name: Compile ORIGINAL #877 and W31 R3 live mount+repair ClickTarget C# and reproduce RED to GREEN
+        run: python Tools/B01/B01-11/P17W30GarageReason/probe.py

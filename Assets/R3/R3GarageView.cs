@@ -285,7 +285,13 @@ namespace RoboRougelike.R3
         }
         public bool ClickTarget()
         {
-            if(!HasTarget||run.Progress?.State!=R1RunState.Garage||run.Transitioning)return false;
+            // An old success message must never survive a rejected click. Keep
+            // the original canonical model/BUILD001 gate as the only mount
+            // authority; these branches update DISPLAY ONLY.
+            if(run==null||run.Progress?.State!=R1RunState.Garage||run.Transitioning)
+            {Message="Garaż jest nieaktywny lub trwa zmiana sceny. Nie zmieniono części ani Złomu.";return false;}
+            if(!HasTarget)
+            {Message=PlacementIssue??"Wskaż prawidłową powierzchnię montażową.";return false;}
             bool result;
             if(Tool==R41GarageTool.Mount)
             {
@@ -293,10 +299,35 @@ namespace RoboRougelike.R3
                 result=Owned!=null?run.GarageMount(SelectedInventoryId,Cell,SelectedRotation):
                     MountKind==R3PartKind.Gun?run.GarageBuyWeapon(Cell,MountWeapon,SelectedRotation):
                     run.GarageBuy(Cell,MountKind,SelectedRotation);
-                Message=result?"Zamontowano dokładnie w miejscu podglądu.":"Montaż nieudany.";
+                if(result)Message="Zamontowano dokładnie w miejscu podglądu.";
+                else
+                {
+                    // Re-query the SAME authoritative placement predicate after
+                    // the transaction was rejected. Moving colliders, inventory
+                    // or owner state may have changed after the preview tick.
+                    // Never replace this with a cached ghost/overlay result.
+                    string currentIssue=PlacementIssue;
+                    Message=currentIssue??
+                        "Montaż odrzucony po ponownej weryfikacji. Odśwież podgląd; nie zmieniono części ani Złomu.";
+                }
             }
             else if(Tool==R41GarageTool.Repair)
-            {result=run.GarageRepair(Cell);Message=result?"Naprawiono wskazaną część.":"Brak uszkodzeń, Złomu lub sprawnego połączenia.";}
+            {
+                // This is display-only: the ORIGINAL R3VehicleModel.Repair
+                // remains the sole HP/Scrap/restoration authority. Any actual
+                // denied transaction is read back without changing the model.
+                var selected=run.VehicleModel.At(Cell);
+                int quote=run.VehicleModel.RepairCost(selected);
+                result=run.GarageRepair(Cell);
+                if(result)Message="Naprawiono wskazaną część.";
+                else if(selected==null)Message="Nie znaleziono części do naprawy w wybranej komórce.";
+                else if(selected.Health>=1f)Message="Część jest sprawna i nie wymaga naprawy.";
+                else if(quote<=0)Message="Brak dopuszczonej wyceny naprawy tej części. Złom nie został pobrany.";
+                else if(run.VehicleModel.Scrap<quote)
+                    Message="Za mało Złomu na naprawę. Koszt: "+quote+" Scrap; dostępne: "+run.VehicleModel.Scrap+" Scrap.";
+                else
+                    Message="Naprawa odrzucona przy kontroli konstrukcji lub przywracania geometrii. Sprawdź mocowania i strefy broni; Złom nie został pobrany.";
+            }
             else if(Tool==R41GarageTool.Remove)
             {result=run.GarageRemove(Cell);Message=result?"Żywa część wróciła do magazynu; utracony plan usunięty.":"Chroniony rdzeń, most lub pełny magazyn.";}
             else {result=run.VehicleModel.At(Cell)!=null;Message="Zaznaczono część na pojeździe. Jej HP i koszt w warsztacie.";}

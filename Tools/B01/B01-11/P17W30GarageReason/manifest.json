@@ -1,0 +1,43 @@
+{
+  "package": "B01-11-W30-GARAGE-REJECTION-001/R1",
+  "parent_commit": "a0de194fd382830fab4b7d013d204b0697b25078",
+  "historic_gate_blob": "1976a19516905be63259109ec1af0a92ef52d6f4",
+  "native_unity_g1": "NOT_RUN",
+  "files": [
+    {
+      "path": "Assets/R3/R3GarageView.cs",
+      "bytes": 24390,
+      "sha256": "e67775a0f69008331594899fac2724ce62603754041c76f98582621bc7e43570"
+    },
+    {
+      "path": "Assets/Tests/Editor/B0111W30GarageRejectionUxTests.cs",
+      "bytes": 8517,
+      "sha256": "3e804eec32418856e90284722220c79c23f7b50244bb77fd5eab52069c4df678"
+    },
+    {
+      "path": "Assets/Tests/Editor/B0111W30GarageRejectionUxTests.cs.meta",
+      "bytes": 60,
+      "sha256": "aa7ed4d17c4b6b94e8028557cb6a5cd04d130b764d6282a50ac53f86a8cc3e00"
+    },
+    {
+      "path": "Tools/B01/B01-11/P17W30GarageReason/probe.py",
+      "bytes": 8405,
+      "sha256": "444ddbd9c1e800f1a32086557eab9e782fdcc843a949ead64cba3761b289410c"
+    },
+    {
+      "path": "Tools/B01/B01-11/P17W30GarageReason/verify.py",
+      "bytes": 2483,
+      "sha256": "a3f756dfb5aa79a910c5e129963d4f0143eaee33f2b2f581bf126477ec71f98f"
+    },
+    {
+      "path": "Tools/B01/B01-11/P17W30GarageReason/README.md",
+      "bytes": 9366,
+      "sha256": "b181f902e52b065d069b466ac89f3f108a0520ff90f6ed44d8f978167db3a978"
+    },
+    {
+      "path": ".github/workflows/b01-11-p17w30-garage-reason.yml",
+      "bytes": 1181,
+      "sha256": "273840c401c601e44ea5871e8f45b21225039ec3aa64423ff81671b95620175d"
+    }
+  ]
+}
