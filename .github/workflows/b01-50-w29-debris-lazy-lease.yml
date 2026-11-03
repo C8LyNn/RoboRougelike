@@ -1,4 +1,4 @@
-name: B01-50 W30 R3 debris VFX invisible lease correction original source RED to GREEN
+name: B01-50 W31 original active VFX repeated-write regression W28 W29 W30 to W31
 on:
   pull_request:
     paths:
@@ -63,12 +63,12 @@ jobs:
           assert 'void SetDetachedMotion(bool detached, float speedMetersPerSecond)' in vfx
           assert 'R3Debris.Separated += Observe' in runtime
           assert runtime.count('GetComponent<Rigidbody>()')==1
-          assert native.count('[UnityTest]')==7
+          assert native.count('[UnityTest]')==8
           assert 'body.linearVelocity.sqrMagnitude' in runtime
           print('ORIGINAL_W29_GIT_BLOB_PINS 8/8 PASS; 3 original Unity GUID retained')
-          print('ORIGINAL_W30_NATIVE_PLAYMODE_SOURCES 7 PRESENT ONLY; NATIVE_UNITY_NOT_RUN')
+          print('ORIGINAL_W31_NATIVE_PLAYMODE_SOURCES 8 PRESENT ONLY; NATIVE_UNITY_NOT_RUN')
           PY
-      - name: Compile immutable original W28 MonoBehaviour and prove SIX actual source RED
+      - name: Compile immutable original W28 MonoBehaviour and prove eight actual source RED
         shell: bash
         run: |
           set -euo pipefail
@@ -93,11 +93,12 @@ jobs:
             'budget_zero_adds_no_visual_components',
             'unchosen_debris_has_no_repeated_vfx_property_writes',
             'late_vfx_allocation_after_fastest_retirement',
-            'ineffective_below_vfx_minimum_does_not_claim_active_emitter']
-          assert r['total']==22 and r['passed']==15 and r['failed']==7, r
+            'ineffective_below_vfx_minimum_does_not_claim_active_emitter',
+            'unchanged_speed_active_visual_avoids_repeated_emission_writes']
+          assert r['total']==23 and r['passed']==15 and r['failed']==8, r
           assert sorted(r['failures'])==sorted(expect),r['failures']
           assert r['nativeUnity']==r['nativePhysX']=='NOT_RUN'
-          print('W28_EXACT_ORIGINAL_ADAPTER_RED_PROVEN 15/22 pass; SEVEN genuine source regressions')
+          print('W28_EXACT_ORIGINAL_ADAPTER_RED_PROVEN 15/23 pass; EIGHT genuine source regressions')
           PY
       - name: Compile immutable ORIGINAL W29 R2 product source and prove NEW strict VFX threshold RED
         shell: bash
@@ -116,12 +117,34 @@ jobs:
           python - <<'PY'
           import json
           r=json.load(open("ci-evidence/w29_exact_original_expected_RED.json"))
-          assert r['total']==22 and r['passed']==21 and r['failed']==1, r
-          assert r['failures']==['ineffective_below_vfx_minimum_does_not_claim_active_emitter'],r
+          assert r['total']==23 and r['passed']==21 and r['failed']==2, r
+          assert r['failures']==['ineffective_below_vfx_minimum_does_not_claim_active_emitter', 'unchanged_speed_active_visual_avoids_repeated_emission_writes'],r
           assert r['nativeUnity']=='NOT_RUN'
-          print('W29_EXACT_ORIGINAL_PRODUCT_VISUAL_PHANTOM_RED_PROVEN 21/22 PASS 1 EXPECTED RED')
+          print('W29_EXACT_ORIGINAL_PRODUCT_VISUAL_PHANTOM_RED_PROVEN 21/23 PASS 2 EXPECTED RED')
           PY
-      - name: Compile corrected ACTUAL game MonoBehaviour R3 and require 22/22 original CSharp source GREEN
+      - name: Compile immutable exact W30 R3 MonoBehaviour and prove redundant stable-speed native writes RED
+        shell: bash
+        run: |
+          set -euo pipefail
+          root=Tools/B01/B01-50/W29DebrisSparkBudgetR2/tests
+          git fetch --no-tags origin 4077e9f3cd35146d640bae834a0943a16ce20581
+          git show 4077e9f3cd35146d640bae834a0943a16ce20581:Assets/B01Performance/B0150DebrisSparkBudget001/Runtime/B0150DetachedDebrisSparkBudget.cs > "$root/original_w30_adapter.cs"
+          test "$(git hash-object --no-filters "$root/original_w30_adapter.cs")" = 1057c506e45949283a78f5d09beba335b8cc75b0
+          dotnet clean -c Release "$root/UnityAdapterOriginal.Tests.csproj" >/dev/null
+          set +e
+          AdapterSource=original_w30_adapter.cs dotnet run -c Release --project "$root/UnityAdapterOriginal.Tests.csproj" -- --receipt ci-evidence/w30_exact_original_expected_RED.json 2>&1 | tee ci-evidence/w30_exact_original_expected_RED.log
+          rc=$?
+          set -e
+          test "$rc" -eq 1 || { echo "W30_STABLE_SPEED_RED_NOT_REPRODUCED exit=$rc"; exit 1; }
+          python - <<'PY'
+          import json
+          r=json.load(open("ci-evidence/w30_exact_original_expected_RED.json"))
+          assert r['total']==23 and r['passed']==22 and r['failed']==1,r
+          assert r['failures']==['unchanged_speed_active_visual_avoids_repeated_emission_writes'],r
+          assert r['nativeUnity']=='NOT_RUN'
+          print('W30_EXACT_ORIGINAL_PRODUCT_STABLE_VFX_WRITE_RED 22/23 PASS 1 EXPECTED RED')
+          PY
+      - name: Compile corrected ACTUAL game MonoBehaviour R4 and require 23/23 original CSharp source GREEN
         shell: bash
         run: |
           set -euo pipefail
@@ -131,11 +154,11 @@ jobs:
           python - <<'PY'
           import json
           r=json.load(open("ci-evidence/w29_corrected_GREEN.json"))
-          assert r['total']==r['passed']==22 and r['failed']==0,r
+          assert r['total']==r['passed']==23 and r['failed']==0,r
           assert r['originalUnityFacingSource'] is True
           assert r['nativeUnity']==r['nativePhysX']=='NOT_RUN'
           assert r['nativeGpu']=='NOT_MEASURED'
-          print('W30_CORRECTED_ORIGINAL_UNITY_FACING_ADAPTER 22/22 CSharp SOURCE_PASS; NATIVE_NOT_RUN')
+          print('W31_CORRECTED_ORIGINAL_UNITY_FACING_ADAPTER 23/23 CSharp SOURCE_PASS; NATIVE_NOT_RUN')
           PY
           git rev-parse HEAD > ci-evidence/source_commit_sha.txt
           sha256sum Assets/B01Performance/B0150DebrisSparkBudget001/Runtime/B0150DetachedDebrisSparkBudget.cs > ci-evidence/original_adapter_sha256.txt
@@ -143,7 +166,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: B01-50-W30-VFX-LEASE-${{ matrix.os }}-${{ github.run_id }}
+          name: B01-50-W31-VFX-LEASE-${{ matrix.os }}-${{ github.run_id }}
           path: ci-evidence/
           if-no-files-found: warn
           retention-days: 14

@@ -232,5 +232,41 @@ namespace RoboRougelike.B01Performance.Tests
             }
         }
 
+        [UnityTest]
+        public IEnumerator StableDetachedSpeedKeepsVisualAndRateChangesStillApply()
+        {
+            var root = new GameObject("B0150_W31_stable_speed_native");
+            var budget = root.AddComponent<B0150DetachedDebrisSparkBudget>();
+            budget.Configure(1, 2f, .25f);
+            GameObject part = null;
+            try
+            {
+                part = Spawn("actual_R3_detached_stable", 6f);
+                yield return null;
+                budget.RefreshNow();
+                var body = part.GetComponent<Rigidbody>();
+                var fx = part.GetComponent<DetachedModuleVfxController>();
+                Assert.NotNull(fx);
+                float initial = fx.EmissionRate;
+                Assert.Greater(initial, 0f);
+                for (int n = 0; n < 20; ++n)
+                {
+                    budget.RefreshNow();
+                    Assert.AreEqual(initial, fx.EmissionRate, 0.0001f);
+                    Assert.AreEqual(1, budget.ActiveEmitters);
+                }
+                body.linearVelocity = Vector3.right * 8f;
+                budget.RefreshNow();
+                Assert.Greater(fx.EmissionRate, initial);
+                Assert.AreEqual(1, budget.ActiveEmitters);
+            }
+            finally
+            {
+                if (part != null) Object.Destroy(part);
+                Object.Destroy(root);
+            }
+        }
+
+
     }
 }

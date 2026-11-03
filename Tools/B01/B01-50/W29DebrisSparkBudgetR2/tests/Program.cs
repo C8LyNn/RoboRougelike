@@ -192,6 +192,20 @@ Test("ineffective_below_vfx_minimum_does_not_claim_active_emitter", () => Case(f
     Must(!emitter.Detached,"ineffective lease should be cancelled to avoid phantom detached emitter");
     Must(f.Budget.ActiveEmitters==0,"counting invisible VFX as active");
 }));
+Test("unchanged_speed_active_visual_avoids_repeated_emission_writes", () => Case(f => {
+    var part=f.Add(6);
+    f.Budget.RefreshNow();
+    var fx=part.GetComponent<DetachedModuleVfxController>();
+    Must(fx!=null && fx.EmissionRate>0,"active visual lease required");
+    int initial=fx.SetCalls;
+    for(int i=0;i<24;i++)f.Budget.RefreshNow();
+    Must(fx.SetCalls==initial,"unchanged speed unnecessarily wrote ParticleSystem emission");
+    Must(f.Budget.ActiveEmitters==1,"unchanged speed lost visual lease");
+    part.GetComponent<Rigidbody>().linearVelocity=new Vector3(8,0,0);
+    f.Budget.RefreshNow();
+    Must(fx.SetCalls==initial+1,"changed speed failed to update VFX rate once");
+    Must(f.Budget.ActiveEmitters==1 && fx.EmissionRate>0,"updated speed lost VFX");
+}));
 string receipt=null;
 for (int i=0;i<args.Length-1;i++) if(args[i]=="--receipt")receipt=args[i+1];
 var report=new {
