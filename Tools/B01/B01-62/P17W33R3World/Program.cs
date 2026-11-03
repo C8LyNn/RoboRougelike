@@ -47,14 +47,14 @@ internal static class W33Os
         public bool Commit(long run,long prior,string old,long next,string hash)=>false;
     }
     static bool Open(string root,out CanonicalWorldGateway? gateway,
-        out WholeGameEconomySlotV3? store)
+        out WholeGameEconomySlotV3? store,IOneFilePublisher? publisher=null)
     {
         gateway=null;store=null;
         if(!CanonicalWorldSlotLease.TryAcquire(root,Run,Slot,out var lease)||
             lease==null)return false;
         gateway=new CanonicalWorldGateway(new Idle(),new NoRig(),new NoCommit(),lease);
         Directory.CreateDirectory(Path.GetDirectoryName(SlotDir(root))!);
-        return WholeGameEconomySlotV3.Create(SlotDir(root),Run,Slot,lease,out store)
+        return WholeGameEconomySlotV3.Create(SlotDir(root),Run,Slot,lease,out store,publisher)
               ==WholeGameResult.Accepted&&store!=null;
     }
     static bool Close(CanonicalWorldGateway? gateway,WholeGameEconomySlotV3? store)
@@ -398,6 +398,109 @@ internal static class W33Os
                CanonicalR3WorldCodecV1.TryDecode(payload,out var saved)&&
                saved!=null&&saved.Parts.Single(p=>p.Id==damaged.Id).Hp==1;
       });
+    static bool ActualR4WeaponAndMountedOwnerNegatives()
+    {
+        // The REAL selected #877 R4WeaponKind has nine members (0..8).
+        // Previous original W33 codec accepted arbitrary enum 9..255.
+        var w=World(R3VehicleKind.Standard,1);
+        var gun=w.Parts.Single(x=>x.Kind==2);
+        gun.Weapon=255;
+        if(CanonicalR3WorldCodecV1.Valid(w))return false;
+        gun.Weapon=9;
+        if(CanonicalR3WorldCodecV1.Valid(w))return false;
+        gun.Weapon=8; // legit original WPN-EMP
+        if(!CanonicalR3WorldCodecV1.Valid(w))return false;
+        gun.Weapon=0;
+        var armor=w.Parts.First(x=>x.Kind==0);
+        armor.Weapon=1; // ONLY R3 Guns may carry non-default weapon kind
+        if(CanonicalR3WorldCodecV1.Valid(w))return false;
+        armor.Weapon=0;
+        long prior=armor.OwnerPhysicalId;
+        armor.OwnerPhysicalId=prior+101; // foreign mounted rig within same owner Save
+        if(CanonicalR3WorldCodecV1.Valid(w))return false;
+        armor.OwnerPhysicalId=prior;
+        if(!CanonicalR3WorldCodecV1.Valid(w))return false;
+        return true;
+    }
+    sealed class SecondPublishFault:IOneFilePublisher
+    {
+        readonly bool afterReplace;
+        int calls;
+        public SecondPublishFault(bool after){afterReplace=after;}
+        public void Publish(string staging,string authoritative)
+        {
+            calls++;
+            if(calls==2&&!afterReplace)
+                throw new IOException("W34 intentionally before second File.Replace");
+            new OneFileOsPublisher().Publish(staging,authoritative);
+            if(calls==2&&afterReplace)
+                throw new IOException("W34 intentionally lost ACK after second File.Replace");
+        }
+    }
+    static bool DynamicAtomicFailClosedAndCold(bool afterRename)
+      =>Temp(root=>{
+        var w=World(R3VehicleKind.Heavy,1);
+        var e=Econ(w,91);
+        if(!Open(root,out var gateway,out var slot,
+                 new SecondPublishFault(afterRename))||slot==null)return false;
+        bool complete=false;
+        try
+        {
+            if(slot.Commit(0,CanonicalR3WorldCodecV1.Encode(w),e)!=
+                WholeGameResult.Accepted)return false;
+            w.Generation=2;
+            e.Generation=2;e.Scrap=17;
+            var watched=w.Parts.Single(x=>x.Kind==2);
+            watched.Ammo=13;watched.ThermalHeat=.5f;
+            // The original one-writer publish hook intentionally throws
+            // either before or after physical SAME-DIRECTORY replacement.
+            var outcome=slot.Commit(1,CanonicalR3WorldCodecV1.Encode(w),e);
+            if(outcome!=WholeGameResult.Quarantined||!slot.Quarantined)
+                return false;
+            complete=true;
+        }
+        finally{if(!Close(gateway,slot))complete=false;}
+        if(!complete)return false;
+        if(CanonicalColdReadV3.ReadClosedSlot(root,Run,Slot,
+             out long gen,out byte[] payload,out var wallet)!=
+             WholeGameResult.Accepted||wallet==null||
+             !CanonicalR3WorldCodecV1.TryDecode(payload,out var recovered)||
+             recovered==null||recovered.Parts.Count!=139)return false;
+        var gun=recovered.Parts.Single(x=>x.Kind==2);
+        // Either whole prior world+economy or whole new world+economy,
+        // NEVER an impossible mixed wallet+world success.
+        return afterRename
+            ? gen==2&&wallet.Scrap==17&&gun.Ammo==13&&gun.ThermalHeat==.5f
+            : gen==1&&wallet.Scrap==91&&gun.Ammo==-1&&gun.ThermalHeat==0;
+      });
+    static bool ActualOriginalGatewayCannotStageR3Yet()
+      =>Temp(root=>{
+        var w=World(R3VehicleKind.Light,1);
+        var e=Econ(w,27);
+        if(!Open(root,out var gateway,out var slot)||slot==null)return false;
+        bool complete=false;
+        try
+        {
+            complete=slot.Commit(0,CanonicalR3WorldCodecV1.Encode(w),e)==
+                     WholeGameResult.Accepted;
+        }
+        finally{if(!Close(gateway,slot))complete=false;}
+        if(!complete)return false;
+        var open=B01.CanonicalWholeGameAdapter003.CanonicalWholeGameSessionV3.TryOpen(
+            root,Run,Slot,false,new Idle(),new NoRig(),out var session);
+        if(open!=B01.CanonicalWholeGameAdapter003.WholeGameSessionOpen.Accepted||
+           session==null)return false;
+        try
+        {
+            var verdict=session.TryRestore(CanonicalR3WorldCodecV1.Encode(w),
+                e,Run,1);
+            // Existing #729 physical gate is 556-only and MUST NOT pretend
+            // it restored an R3; this is an explicit NEXT-OWNER blocker.
+            return verdict==CanonicalGateResult.InvalidSnapshot&&
+                !session.HasWorld&&session.OwnsSlot;
+        }
+        finally{session.TryCloseAfterPhysicalRetirement(()=>true);}
+      });
     static int Main()
     {
         Test("Exact R3 Light 20 original parts complete roundtrip",
@@ -416,6 +519,14 @@ internal static class W33Os
              InventoryDetachedPhysicalResourceRoundtrip);
         Test("Win1 FREE booked HP0; only later modeled Win2 restores same GUID",
              FreeWin1BookedThenSettledOnlyModeledWin2);
+        Test("Current R4 kinds 0..8 and ONE physical mounted-rig owner enforced",
+             ActualR4WeaponAndMountedOwnerNegatives);
+        Test("139-part pre-replace disk fault cannot mix wallet and physics",
+             ()=>DynamicAtomicFailClosedAndCold(false));
+        Test("139-part post-replace lost ACK cold-reconciles BOTH sections",
+             ()=>DynamicAtomicFailClosedAndCold(true));
+        Test("Original two-rig #729 gateway correctly refuses R3 physical stage",
+             ActualOriginalGatewayCannotStageR3Yet);
         Console.WriteLine("B0162_W33_R3_SAME_ONE_WRITER_REAL_OS_TOTAL "+
             (pass+fail)+" PASS "+pass+" FAIL "+fail);
         Console.WriteLine("B0162_W33_UNITY_NATIVE=NOT_RUN_GAME_R3_BINDER=NOT_INTEGRATED");
