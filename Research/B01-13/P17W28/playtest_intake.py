@@ -14,8 +14,10 @@ import re
 import stat
 import sys
 import zipfile
+from datetime import datetime
+from pathlib import PurePosixPath
 
-PACKAGE = 'B01-13-W29-PLAYTEST-EVIDENCE-INTAKE-001/R2'
+PACKAGE = 'B01-13-W31-PLAYTEST-EVIDENCE-INTAKE-001/R3'
 W27_SOURCE_HEAD = '65c73fd4a3e6c9fcc61b2e388542b96dbfa1748c'
 W27_SCHEMA = 'b01-13-observer-r1'
 CASE_IDS = ('P01_BASIC_AUTOMATIC_HEAVY','P02_SHOTGUN_RAIL_ROCKET','P03_BEAM','P04_ROTARY_SAW',
@@ -140,6 +142,66 @@ def inspect_unity_zip(file: Path):
     except (zipfile.BadZipFile,EOFError,ValueError): raise Refused('ZIP_INVALID')
     return 'ARCHIVE_STRUCTURE_PRESENT_NOT_BOOT_PROOF'
 
+def verify_w30_session(receipt: Path, archive: Path, player_log: Path, game_sha: str):
+    """Cross-check REAL FILE BYTES with the existing W30 operator-runner receipt.
+
+    This attests consistency, not that Unity ran or gameplay/humans passed.
+    """
+    doc=read_json(receipt)
+    ensure(type(doc) is dict and doc.get('schema')=='b01-13-w30-windows-player-session-r1',
+           'W31_SESSION_SCHEMA')
+    ensure(doc.get('gameCommit')==game_sha and
+           doc.get('gameCommitProvenance')=='OPERATOR_ASSERTED_NOT_EMBEDDED_IN_PLAYER',
+           'W31_SESSION_GAME_SHA')
+    ensure(type(doc.get('processExitCode')) is int and doc['processExitCode']==0 and
+           doc.get('captureStatus')=='PROCESS_EXITED_LOG_PRESENT','W31_SESSION_PROCESS_EXIT')
+    ensure(doc.get('unityNativeG1')=='NOT_VERIFIED' and
+           doc.get('actualGameplayPassed')=='NOT_VERIFIED' and
+           doc.get('humanSessionsIndependentlyVerified')==0 and
+           doc.get('playerLaunchG1')=='NOT_INDEPENDENTLY_VERIFIED',
+           'W31_SESSION_FALSE_QA_CLAIM')
+    log=doc.get('playerLog')
+    ensure(type(log) is dict and set(log)=={'sha256','bytes'},'W31_SESSION_LOG_SCHEMA')
+    physical_log=file_hash(player_log)
+    ensure(log==physical_log,'W31_PLAYER_LOG_MISMATCH')
+    try:
+        start=datetime.fromisoformat(doc['utcStart'])
+        end=datetime.fromisoformat(doc['utcEnd'])
+        ensure(start.utcoffset() is not None and end.utcoffset() is not None
+               and 0 <= (end-start).total_seconds() <= 86400,'W31_SESSION_TIME')
+    except (KeyError,TypeError,ValueError):raise Refused('W31_SESSION_TIME')
+    exe_sha=doc.get('exeSha256');exe_size=doc.get('exeBytes')
+    ensure(type(exe_sha) is str and len(exe_sha)==64 and
+           re.fullmatch('[0-9a-f]{64}',exe_sha) and
+           type(exe_size) is int and 0<exe_size<=512*1024*1024,
+           'W31_SESSION_EXE_RECORD')
+    found=0
+    try:
+        with zipfile.ZipFile(archive,'r') as z:
+            names={x.filename.casefold() for x in z.infolist()}
+            for info in z.infolist():
+                if not info.filename.lower().endswith('.exe') or info.is_dir():continue
+                if info.file_size!=exe_size:continue
+                # Corresponding UnityPlayer.dll and Unity Data must be siblings of this EXE.
+                part=PurePosixPath(info.filename)
+                prefix=str(part.parent)
+                prefix='' if prefix=='.' else prefix+'/'
+                dll=(prefix+'UnityPlayer.dll').casefold()
+                data=(prefix+part.stem+'_Data/').casefold()
+                if dll not in names or not any(x in names for x in
+                       (data+'boot.config',data+'globalgamemanagers')):continue
+                h=hashlib.sha256()
+                with z.open(info,'r') as binary:
+                    while True:
+                        chunk=binary.read(1024*1024)
+                        if not chunk:break
+                        h.update(chunk)
+                if h.hexdigest()==exe_sha:found+=1
+    except (zipfile.BadZipFile,EOFError,ValueError,RuntimeError,OSError):
+        raise Refused('W31_SESSION_ZIP_READ')
+    ensure(found==1,'W31_SESSION_ARCHIVE_EXE_MISMATCH')
+    return 'W30_RECEIPT_EXE_AND_LOG_BYTES_MATCH_NOT_INDEPENDENT_UNITY_QA'
+
 def evaluate_w28(body, game_sha, evidence_dir):
     strict_keys(body,('schema','gameCommit','realHumanParticipants','softlockDisposition','cases'),'W28_SCHEMA_KEYS')
     ensure(body['schema']=='b01-13-w29-acceptance-r2','W28_SCHEMA')
@@ -147,14 +209,14 @@ def evaluate_w28(body, game_sha, evidence_dir):
     ensure(body['realHumanParticipants']=='UNVERIFIED','W28_NO_PARTICIPANT_AUTHORITY')
     ensure(body['softlockDisposition'] in RECOVERY,'W28_SOFTLOCK_DISPOSITION')
     rows=body['cases'];ensure(type(rows) is list and len(rows)==len(CASE_IDS),'W28_ROW_COUNT')
-    seen=set();evidence=[];results={};seenfiles=set()
+    seen=set();evidence=[];results={};seenfiles=set();w30_crosscheck='NOT_EVALUATED'
     def attach(case_id, role, name, allowed=None, is_zip=False):
         ensure(type(name) is str and name, 'W29_EVIDENCE_ROLE_MISSING')
         ensure(name not in seenfiles, 'W29_EVIDENCE_REUSED')
         f=safe_file(evidence_dir,name)
         if allowed is not None:ensure(f.suffix.lower() in allowed, 'W29_EVIDENCE_ROLE_FORMAT')
         seenfiles.add(name)
-        proof=file_hash(f)
+        proof=file_hash(f,cap=2*1024*1024*1024 if is_zip else 64*1024*1024)
         if is_zip:
             ensure(f.suffix.lower()=='.zip','W29_PLAYER_ZIP_REQUIRED')
             proof['zipStructure']=inspect_unity_zip(f)
@@ -167,9 +229,15 @@ def evaluate_w28(body, game_sha, evidence_dir):
         if status in ('PASS','FAIL'):
             ensure(reason=='NONE' if status=='PASS' else reason!='NONE','W29_REASON_MISMATCH')
             if status=='PASS' and id=='P15_PLAYER_ZIP_BOOT':
-                strict_keys(fname,('playerZip','playerLog'),'W29_BOOT_BUNDLE_REQUIRED')
+                strict_keys(fname,('playerZip','playerLog','sessionReceipt'),'W31_BOOT_SESSION_REQUIRED')
                 attach(id,'player_zip',fname['playerZip'],is_zip=True)
                 attach(id,'player_log',fname['playerLog'],allowed=('.log','.txt'))
+                attach(id,'session_receipt',fname['sessionReceipt'],allowed=('.json',))
+                w30_crosscheck=verify_w30_session(
+                    safe_file(evidence_dir,fname['sessionReceipt']),
+                    safe_file(evidence_dir,fname['playerZip']),
+                    safe_file(evidence_dir,fname['playerLog']),game_sha)
+                evidence[-1]['crossCheck']=w30_crosscheck
             elif status=='PASS' and id=='P12_LOANER_POST_WIN_CONTINUATION':
                 strict_keys(fname,('before','after','playerLog'),'W29_RECOVERY_BUNDLE_REQUIRED')
                 attach(id,'before',fname['before'],allowed=('.png','.jpg','.jpeg','.json'))
@@ -203,7 +271,8 @@ def evaluate_w28(body, game_sha, evidence_dir):
             'nativeUnityG1':'NOT_VERIFIED_BY_THIS_TOOL',
             'windowsPlayerBoot':'NOT_INDEPENDENTLY_VERIFIED_BY_THIS_TOOL',
             'sourceEvidence':'PHYSICAL_BYTES_SHA256_ONLY_NOT_GAME_AUTHENTICITY',
-            'w29RequiredBootEvidence':'ZIP_PLUS_PLAYER_LOG_OPERATOR_SUBMITTED',
+            'w29RequiredBootEvidence':'ZIP_PLUS_PLAYER_LOG_PLUS_W30_RECEIPT_OPERATOR_SUBMITTED',
+            'w31SessionCrossCheck':w30_crosscheck,
             'w29RecoveryEvidence':'BEFORE_AFTER_PLUS_PLAYER_LOG_OPERATOR_SUBMITTED',
             'productGate':'HOLD_INDEPENDENT_G0_G1_AND_REAL_HUMAN_ACCEPTANCE'}
 
