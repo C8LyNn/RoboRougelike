@@ -90,7 +90,9 @@ def verify():
   "NonzeroDestroyedRebuildStillRequiresFundsNoScrapOrIdMutationOnDenial",
   "ActualR3VehicleHasFullDynamicWorldAndStableIdsNotTwoSlots"
  ):
-  assert_rule("void "+m+"()" in new,"missing actual native case "+m)
+  expected_signature=("void "+m+"(R3VehicleKind kind, int expected)" if
+     m=="ActualR3VehicleHasFullDynamicWorldAndStableIdsNotTwoSlots" else "void "+m+"()")
+  assert_rule(expected_signature in new,"missing actual native case "+m)
  for marker in ("model.Repair(Vector3Int.right)","model.RepairAffordable()",
                 "model.EmergencyRepair()","model.EmergencyRepairCost",
                 "model.CanDeploy","model.Scrap","model.At(Vector3Int.right).Id",
