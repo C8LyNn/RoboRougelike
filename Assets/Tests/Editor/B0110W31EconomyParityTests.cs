@@ -25,7 +25,7 @@ public sealed class B0110W31EconomyParityTests
     }
 
     [Test]
-    public void PurchasePriceOneAllowsZeroScrapPaidRebuildWithoutFreeWinCoupon()
+    public void PurchasePriceOneAcceptsZeroPaidOrderButMustNotImmediatelyRestoreHP()
     {
         var model = new R3VehicleModel(
             new R3VehicleDesign(),
@@ -40,7 +40,8 @@ public sealed class B0110W31EconomyParityTests
         Assert.That(model.RepairInventory(owned.Id), Is.True,
             "A zero-quoted PAID repair must be executable with 0 Scrap; current R3 code rejects price <= 0. This assertion is intentionally RED until authorized integration.");
         Assert.That(model.Scrap, Is.Zero);
-        Assert.That(owned.Health, Is.EqualTo(1f));
+        Assert.That(owned.Health, Is.Zero, 
+            "V7 0HP paid order must remain physically pending until the NEXT distinct authentic victory; immediate HP restoration would violate approved cadence.");
         Assert.That(model.Inventory.Single(p => p.Id == owned.Id).Id, Is.EqualTo(destroyed.Id),
             "Repair must retain the original owned identifier.");
     }
