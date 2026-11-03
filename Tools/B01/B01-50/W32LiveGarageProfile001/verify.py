@@ -65,9 +65,9 @@ def check_fixture(source):
         raise ValueError("No frame retirement between temporary geometry probes")
 
 def check_ci_workflow(workflow):
-    if "on:\\n  pull_request:" not in workflow.replace("\\r\\n", "\\n"):
+    if "on:\n  pull_request:" not in workflow.replace("\r\n", "\n"):
         raise ValueError("Duplicate or absent source-only PR trigger")
-    if re.search(r"(?m)^  push:\\s*$", workflow):
+    if re.search(r"(?m)^  push:\s*$", workflow):
         raise ValueError("W34 must not duplicate push+pull_request runner jobs")
     for required in (
         "cancel-in-progress: true",
