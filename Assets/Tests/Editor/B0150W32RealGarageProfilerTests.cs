@@ -1,0 +1,148 @@
+using System;
+using System.Collections;
+using System.Diagnostics;
+using System.Globalization;
+using System.Linq;
+using NUnit.Framework;
+using RoboRougelike.R1;
+using RoboRougelike.R3;
+using RoboRougelike.R4;
+using UnityEditor.SceneManagement;
+using UnityEngine;
+using UnityEngine.TestTools;
+
+// Runs against EXACT original live #877 R3 garage and its existing one installation gate.
+// An authored test is NOT performance evidence until a real Unity Editor executes it.
+// Mono/main-thread allocations are not native GPU/PhysX allocations.
+public sealed class B0150W32RealGarageProfilerTests
+{
+    private const int SamplesPerCase = 64;
+    private const int WarmupsPerCase = 8;
+    private static readonly Vector3Int SafeSawCell = new Vector3Int(0, 1, 4);
+
+    private static long Percentile(long[] values, double fraction)
+    {
+        var copy = (long[])values.Clone();
+        Array.Sort(copy);
+        return copy[Math.Max(0, Math.Min(copy.Length - 1,
+            (int)Math.Ceiling(copy.Length * fraction) - 1))];
+    }
+
+    private static string Summary(string label, long[] ticks, long[] bytes)
+    {
+        double microseconds = 1000000.0 / Stopwatch.Frequency;
+        return label + "_wall_us_p50=" +
+            (Percentile(ticks, .50) * microseconds).ToString("F3", CultureInfo.InvariantCulture) +
+            " " + label + "_wall_us_p95=" +
+            (Percentile(ticks, .95) * microseconds).ToString("F3", CultureInfo.InvariantCulture) +
+            " " + label + "_managed_thread_bytes_p50=" + Percentile(bytes, .50) +
+            " " + label + "_managed_thread_bytes_p95=" + Percentile(bytes, .95);
+    }
+
+    [UnityTest]
+    public IEnumerator ActualR3GarageOwnedSawPreviewHasNativeAllocationAndLatencyEvidence()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity", OpenSceneMode.Single);
+        yield return new EnterPlayMode();
+
+        float deadline = Time.realtimeSinceStartup + 15f;
+        while (R1RunController.Instance?.Progress == null &&
+               Time.realtimeSinceStartup < deadline)
+            yield return null;
+
+        var run = R1RunController.Instance;
+        Assert.That(run, Is.Not.Null);
+        Assert.That(run.SelectVehicle(R3VehicleKind.Standard), Is.True);
+        Assert.That(run.OpenSandboxGarage(), Is.True);
+
+        // Same original game fixture as GarageEditFreedomTests; nothing is
+        // purchased, repaired, persisted, or changed in original gameplay code.
+        var oldGun = run.VehicleModel.Parts.First(p => p.Kind == R3PartKind.Gun);
+        string sawId = oldGun.Id;
+        var centered = oldGun.Cell;
+        Assert.That(run.GarageRemove(centered), Is.True);
+        var stock = run.VehicleModel.Inventory.Single(p => p.Id == sawId);
+        stock.Weapon = R4WeaponKind.RotarySaw;
+
+        Assert.That(run.VehicleModel.OwnedPlacementError(sawId, centered, default),
+            Does.Contain("tarcza piły"),
+            "The real original centered saw must be rejected; do not profile a vacuous preflight.");
+        Assert.That(run.VehicleModel.OwnedPlacementError(sawId, SafeSawCell, default),
+            Is.Null, "The real exterior saw must enter the canonical physical gate.");
+
+        int beforeScrap = run.VehicleModel.Scrap;
+        int beforeParts = run.VehicleModel.Parts.Count;
+        int beforeInventory = run.VehicleModel.Inventory.Count;
+        var beforeIds = run.VehicleModel.Parts.Concat(run.VehicleModel.Inventory)
+            .Select(p => p.Id).OrderBy(id => id).ToArray();
+
+        // Warm up the same real R3 CreateProbe -> PhysX -> Destroy path.
+        // Let Unity retire temporary probes between frames to avoid a fake
+        // saturation profile caused by the test itself.
+        for (int i = 0; i < WarmupsPerCase; i++)
+        {
+            Assert.That(run.VehicleModel.OwnedPlacementError(sawId, SafeSawCell, default), Is.Null);
+            Assert.That(run.VehicleModel.OwnedPlacementError(sawId, centered, default),
+                Does.Contain("tarcza piły"));
+            yield return null;
+        }
+
+        long[] safeTicks = new long[SamplesPerCase];
+        long[] safeBytes = new long[SamplesPerCase];
+        long[] blockedTicks = new long[SamplesPerCase];
+        long[] blockedBytes = new long[SamplesPerCase];
+
+        for (int i = 0; i < SamplesPerCase; i++)
+        {
+            // ABBA ordering balances first/second-query effects over pairs.
+            bool blockedFirst = (i & 1) != 0;
+            for (int slot = 0; slot < 2; slot++)
+            {
+                bool blocked = slot == 0 ? blockedFirst : !blockedFirst;
+                long preBytes = GC.GetAllocatedBytesForCurrentThread();
+                long preTicks = Stopwatch.GetTimestamp();
+                string issue = run.VehicleModel.OwnedPlacementError(
+                    sawId, blocked ? centered : SafeSawCell, default);
+                long elapsedTicks = Stopwatch.GetTimestamp() - preTicks;
+                long allocatedBytes = GC.GetAllocatedBytesForCurrentThread() - preBytes;
+                if (blocked)
+                {
+                    blockedTicks[i] = elapsedTicks;
+                    blockedBytes[i] = allocatedBytes;
+                    Assert.That(issue, Does.Contain("tarcza piły"));
+                }
+                else
+                {
+                    safeTicks[i] = elapsedTicks;
+                    safeBytes[i] = allocatedBytes;
+                    Assert.That(issue, Is.Null);
+                }
+                // No manual Physics.SyncTransforms, global GC.Collect, or frame timing
+                // override: test samples existing original project behavior.
+                yield return null;
+            }
+        }
+
+        Assert.That(run.VehicleModel.Scrap, Is.EqualTo(beforeScrap));
+        Assert.That(run.VehicleModel.Parts.Count, Is.EqualTo(beforeParts));
+        Assert.That(run.VehicleModel.Inventory.Count, Is.EqualTo(beforeInventory));
+        Assert.That(run.VehicleModel.Parts.Concat(run.VehicleModel.Inventory)
+            .Select(p => p.Id).OrderBy(id => id), Is.EqualTo(beforeIds));
+
+        string expectedSha = Environment.GetEnvironmentVariable("B0150_W32_EXACT_GAME_SHA");
+        // Missing provenance does not invalidate the original correctness
+        // assertions, but excludes this sample from a formal performance gate.
+        string provenance = string.IsNullOrEmpty(expectedSha) ?
+            "UNPINNED_NOT_ACCEPTABLE_FOR_G1" : expectedSha;
+        UnityEngine.Debug.Log(
+            "B0150_W32_REAL_R3_GARAGE_PROFILE native_measurement_only " +
+            "game_sha=" + provenance +
+            " unity=" + Application.unityVersion +
+            " os=" + SystemInfo.operatingSystem +
+            " samples_per_case=" + SamplesPerCase + " " +
+            Summary("safe", safeTicks, safeBytes) + " " +
+            Summary("blocked", blockedTicks, blockedBytes) +
+            " note=managed_thread_allocation_not_total_gc_gpu_or_physx");
+        yield return new ExitPlayMode();
+    }
+}
