@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+<PropertyGroup><TargetFramework>net8.0</TargetFramework><OutputType>Exe</OutputType><LangVersion>9.0</LangVersion><Nullable>enable</Nullable><TreatWarningsAsErrors>true</TreatWarningsAsErrors><EnableDefaultCompileItems>false</EnableDefaultCompileItems></PropertyGroup>
+<ItemGroup>
+  <Compile Include="Program.cs"/>
+  <Compile Include="R3FactoryCompileShim.cs"/>
+  <Compile Include="../../../../Assets/R3/R3VehicleCatalog.cs"/>
+  <Compile Include=".source/DetachedSnapshotContract.cs"/>
+  <Compile Include=".source/DebrisImpulseCore.cs"/>
+</ItemGroup></Project>

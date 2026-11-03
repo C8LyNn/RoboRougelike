@@ -1,0 +1,17 @@
+{
+  "package": "B01-62-W32-R3-WORLD-SCHEMA-COMPAT-NEGATIVE-001",
+  "original_game": "3bd9b159997924dcecb4e1cd1d41137896e5199e",
+  "original_save": "a0282f2de0250d2a8fe421bbe182b4cb6fab2a11",
+  "frozen_slots": 2,
+  "game_counts": [
+    20,
+    83,
+    139
+  ],
+  "writer_files_changed": 0,
+  "authored_unity_tests": 0,
+  "native_unity": "NOT_RUN",
+  "one_writer_runtime_integrated": false,
+  "owner_schema_approval": "PENDING",
+  "status": "P0_PRODUCT_RED"
+}
