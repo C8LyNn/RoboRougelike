@@ -1,0 +1,104 @@
+{
+  "package_id": "CI41-W29-826-FULL-GAME-COMPOSITE-ORIGINAL-G0-001",
+  "revision": "R1",
+  "owner": "B01-41",
+  "hq": 800,
+  "gameplay_base": "ed8cf4bcc131688b9a93968a89683d2496586683",
+  "unity_target": "6000.3.14f1",
+  "producer_sha": {
+    "game_824": "ed8cf4bcc131688b9a93968a89683d2496586683",
+    "save826": "99fb08619c78b3834bb4c0450499babf991f218a",
+    "old_save797": "2b7983f0f9e09dd1d56906b379a3f7af7b02f21a",
+    "r3_787": "f5db40bf293fe9582ec7c6fcb3515aeff6fcf937",
+    "physical792": "16cb2a7b5158605b15191b6074f9e392e0d1ebd3",
+    "econ780": "b4df10a7ad7e6c758f8331013f6b216b3a3689a3",
+    "cold750": "60c73a6f9ed2585cbb9bf7aeaad8c62eef0629cb",
+    "rig772": "ce46a5e0cc5d26df6c4ece723e8efe20d70fc4b1",
+    "host690": "cc7f73541517a18f4479bb155534bd4832d9985e",
+    "api729": "b8ca29c7707cd6b4338d0b9772d74dee676d49d2",
+    "frozen556": "33094f154c7b91119b36d58aab285e6e83c5de57",
+    "frozen510": "d94400d95d13db7f27e1533df05c9292d5380431",
+    "w06_421": "cb2b3a76e84266e2730fffc4ab048c1039f0652f"
+  },
+  "scopes": [
+    {
+      "ref": "w06_421",
+      "prefix": "Assets/B0123DebrisRepulse001/"
+    },
+    {
+      "ref": "frozen510",
+      "prefix": "Assets/B0123SecureReattachV2/"
+    },
+    {
+      "ref": "frozen556",
+      "prefix": "Assets/B0123DetachedSaveContract001/"
+    },
+    {
+      "ref": "host690",
+      "prefix": "Assets/B0123UnitySaveBridge001/"
+    },
+    {
+      "ref": "api729",
+      "prefix": "Assets/B0123CanonicalSaveApi001/"
+    },
+    {
+      "ref": "physical792",
+      "prefix": "Assets/B0123CanonicalRigPortW24/"
+    },
+    {
+      "ref": "econ780",
+      "prefix": "Assets/B01Packages/ECONAPPROVED007/"
+    }
+  ],
+  "selected_files": [
+    {
+      "ref": "cold750",
+      "path": "Assets/B0123UnitySaveBridge001/Tests/IsolatedSaveWorldNativePlayModeTests.cs",
+      "replaces_from": "host690"
+    },
+    {
+      "ref": "save826",
+      "path": "Tools/B01/B01-62/P17W28UnityCompatibleWholeGameV3/WholeGameEconomySlotV3.cs"
+    },
+    {
+      "ref": "save826",
+      "path": "Tools/B01/B01-62/P17W28UnityCompatibleWholeGameV3/CanonicalWholeGameSessionV3.cs"
+    }
+  ],
+  "audit_only": [
+    {
+      "ref": "r3_787",
+      "path": "Tools/B01/B01-62/P17W25StrictCanonicalPathR3/CanonicalSingleAuthorityStoreV3R3.cs"
+    },
+    {
+      "ref": "r3_787",
+      "path": "Tools/B01/B01-62/P17W25StrictCanonicalPathR3/CanonicalSlotSessionV3R3.cs"
+    },
+    {
+      "ref": "old_save797",
+      "path": "Tools/B01/B01-62/P17W25WholeGameEconomyV7/WholeGameEconomySlotV2.cs"
+    },
+    {
+      "ref": "old_save797",
+      "path": "Tools/B01/B01-62/P17W25WholeGameEconomyV7/CanonicalWholeGameSessionV2.cs"
+    }
+  ],
+  "abi_project": [
+    "Tools/B01/B01-62/P17W28UnityCompatibleWholeGameV3/WholeGameEconomyUnityV3Abi.csproj",
+    "Tools/B01/B01-62/P17W28UnityCompatibleWholeGameV3/WholeGameEconomyUnityV3QA.csproj",
+    "Tools/B01/B01-62/P17W28UnityCompatibleWholeGameV3/Program.cs"
+  ],
+  "expected_selected_sources": 87,
+  "expected_selected_unity_guid": 53,
+  "save_policy": "ONLY_NEW_826_V3;RAW_787_AND_OLD_797_AUDIT_ONLY",
+  "gates": {
+    "G0_source": "PENDING",
+    "G0_product_binding": "HOLD",
+    "G1_native_Unity": "NOT_RUN",
+    "Codex_ack": "NONE",
+    "G2": "HOLD"
+  },
+  "no_automerge": true,
+  "no_user_pc": true,
+  "rollback": "Only fresh unique disposable CI scratch; never Codex worktree, player Save or foreign even empty output"
+}
