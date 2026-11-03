@@ -61,17 +61,17 @@ def source_contract(texts):
     emp=texts["Assets/RoboRougelikeMechanics/WPN006EMP/Runtime/EmpEmitter.cs"]
     jump=texts["Assets/B01Packages/MapJumpPad001/Runtime/MapJumpPad.cs"]
     tests=texts["Assets/Tests/Editor/GarageEditFreedomTests.cs"]
+    def before(src, earlier, later):
+        p=src.find(earlier);q=src.find(later)
+        return p>=0 and q>=0 and p<q
     policies={
       "single_installation_gate":"canonical.SetInstallationGate(candidate=>gate!=null?gate.Validate(candidate)" in build and
                                  "return installationGate(candidate)" in model,
       "preview_uses_both_model_errors":"OwnedPlacementError(Owned.Id,Cell,SelectedRotation)" in preview and
                                         "PlacementError(Cell,MountKind,false,MountWeapon,SelectedRotation,SelectedContactMask)" in preview,
-      "buy_checks_before_scrap":model.index("PlacementError(cell,kind,false,weapon,rotation)!=null")<
-                                  model.index("Scrap-=Price(kind,weapon)"),
-      "mount_checks_before_inventory_mutation":model.index("OwnedPlacementError(part.Id,cell,rotation)!=null")<
-                                      model.index("inventory.Remove(part);part.Cell=cell"),
-      "physical_original_BUILD001_before_sweep":build.index("BuildPlacementRules.CheckForInstallation(")<
-                                      build.index("return FunctionalWeaponPlacementIssue(candidate,probe);"),
+      "buy_checks_before_scrap":before(model,"PlacementError(cell,kind,false,weapon,rotation)!=null","Scrap-=Price(kind,weapon)"),
+      "mount_checks_before_inventory_mutation":before(model,"OwnedPlacementError(part.Id,cell,rotation)!=null","inventory.Remove(part);part.Cell=cell"),
+      "physical_original_BUILD001_before_sweep":before(build,"BuildPlacementRules.CheckForInstallation(","return FunctionalWeaponPlacementIssue(candidate,probe);"),
       "saw_physics_not_a_projectile":"RotarySawContactMath.IsOnCuttingDisc(" in build and
                                 "Physics.OverlapSphere(muzzle.position,extent" in build,
       "directional_hard_segment_only":"Physics.SphereCastAll(pivot.position,radius,delta.normalized," in build and
