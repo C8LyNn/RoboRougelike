@@ -48,6 +48,16 @@ for p in (ROOT/"Assets").rglob("*.meta"):
     for guid in re.findall(rb"(?m)^guid: ([0-9a-f]{32})\s*$",p.read_bytes()):
         all_guid.append(guid.decode())
 assert all_guid.count(match.group(1))==1,"new Unity GUID collision"
+# B01-11 native tests use an enum declared in R4_1, NOT the R3 namespace.
+# This is a SOURCE-ONLY import fence, never native NUnit/Unity acceptance.
+test_source=(ROOT/"Assets/Tests/Editor/B0111W30GarageRejectionUxTests.cs").read_text(encoding="utf-8")
+enum_source=(ROOT/"Assets/R4_1/R41PartGeometry.cs").read_text(encoding="utf-8")
+assert re.search(r"namespace\s+RoboRougelike\.R4_1\b",enum_source)
+assert re.search(r"public\s+enum\s+R41GarageTool\b",enum_source)
+assert re.search(r"(?m)^using RoboRougelike\.R4_1;$",test_source),"missing native R41GarageTool import"
+assert test_source.count("[UnityTest]")==6,"native test source expected exactly six authored cases"
+assert "NonMountToolsEmptySelectionShowsCorrectAdviceWithoutGarageMutation" in test_source
+print("NATIVE_TEST_SOURCE_IMPORT_PASS R41GarageTool from R4_1; 6 AUTHORED native UnityTests, NOT_RUN")
 print("ORIGINAL_GIT_SOURCE_SCOPE_PASS 1 MODIFIED 7 ADD ONLY")
 print("SHA256_MANIFEST_PASS 7 EXACT_BYTES and baseline original Git blob")
 print("UNITY_META_NEW_GUID_UNIQUE_PASS 1 of "+str(len(all_guid))+" all original assets")
