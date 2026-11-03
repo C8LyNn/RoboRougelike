@@ -99,8 +99,9 @@ def policy_check(src):
   if s not in src:raise AssertionError("owner approved original V7 drift: "+s)
  return True
 def schema_check(world,catalog,writer):
- if any(s not in world for s in ("public const int Slots=2","s.Parts.Length!=FrozenPartCatalog.Slots",
-                                "if(!SnapshotRules.Valid(snap))throw new InvalidDataException")):
+ if (not re.search(r"\bpublic\s+const\s+int\s+Slots\s*=\s*2\s*;",world) or
+     any(s not in world for s in ("s.Parts.Length!=FrozenPartCatalog.Slots",
+                                  "if(!SnapshotRules.Valid(snap))throw new InvalidDataException"))):
   raise AssertionError("frozen two-slot codec changed")
  if "ColdRestore.TryStage(world,out ColdRestore? staged)" not in writer:
   raise AssertionError("sole Save semantic binding changed")
