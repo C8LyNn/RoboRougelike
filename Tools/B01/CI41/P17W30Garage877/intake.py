@@ -160,7 +160,7 @@ def main(outpath):
           "integrated_gameplay_verified":"NO","windows_extracted_build":"NOT_AVAILABLE_FROM_THIS_CI"}
     data_bytes=(json.dumps(data,sort_keys=True,indent=2,ensure_ascii=False)+"\n").encode("utf-8")
     (outpath/"receipt.json").write_bytes(data_bytes)
-    print("CI41_W30_877_EXACT_PARENT_AND_3_ORIGINAL_BLOBS_PASS")
+    print("CI41_W30_877_EXACT_PARENT_AND_6_ORIGINAL_BLOBS_PASS")
     print("CI41_W30_REAL_GAME_SOURCE_GATES_PASS",len(contracts))
     print("CI41_W30_REAL_UNITY_GUID_ASMDEF_CASEFOLD_PASS",registry)
     print("CI41_W30_EVIDENCE_RECEIPT_SHA256="+hashlib.sha256(data_bytes).hexdigest())
