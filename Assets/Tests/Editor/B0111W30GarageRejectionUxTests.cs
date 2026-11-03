@@ -221,17 +221,22 @@ public sealed class B0111W30GarageRejectionUxTests
             {
                 if(wheel.Health<=0f)
                 {
-                    // An accepted V7 payment is not necessarily a completed
-                    // rebuild: 0HP booking can wait for the next real win.
-                    // This is an observed-HP UX assertion only; #897 must
-                    // separately prove actual pending ledger + trusted WinId.
+                    // An accepted V7 payment can remain Pending until a
+                    // DISTINCT authentic win. We check UX observation only,
+                    // not existence of trusted WinId or a persisted Save.
                     Assert.That(view.Message,Does.Contain("część nadal ma 0 HP"));
+                    Assert.That(view.Message,Does.Contain("kolejne zwycięstwo"));
                     Assert.That(view.Message,Does.Not.Contain("Naprawiono"));
                 }
                 else
                 {
+                    // #915/#910 currently implement PAID0 but incorrectly
+                    // resurrect 0HP immediately. UI must flag the confirmed
+                    // temporal rule conflict, not certify a valid V7 repair.
                     Assert.That(wheel.Health,Is.EqualTo(1f));
-                    Assert.That(view.Message,Does.Contain("Naprawiono"));
+                    Assert.That(view.Message,Does.Contain("Niezgodność odbudowy"));
+                    Assert.That(view.Message,Does.Contain("przed kolejnym zwycięstwem"));
+                    Assert.That(view.Message,Does.Not.Contain("Naprawiono"));
                 }
             }
             else
