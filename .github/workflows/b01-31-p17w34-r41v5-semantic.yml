@@ -24,6 +24,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          # Test the actual exact immutable PR HEAD, not a synthetic merge.
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
       - uses: actions/setup-dotnet@v4
         with:
