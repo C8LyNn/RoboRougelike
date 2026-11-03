@@ -420,7 +420,18 @@ internal static class W33Os
         if(CanonicalR3WorldCodecV1.Valid(w))return false;
         armor.OwnerPhysicalId=prior;
         if(!CanonicalR3WorldCodecV1.Valid(w))return false;
-        return true;
+        // Real R3 mounted-family limit is 2, but garage inventory can
+        // stock arbitrarily many weapon kinds without mounting them.
+        var upgrade=w.Parts.Where(x=>x.Kind==0).Take(2).ToArray();
+        if(upgrade.Length!=2)return false;
+        upgrade[0].Kind=2;upgrade[0].Weapon=1;
+        upgrade[1].Kind=2;upgrade[1].Weapon=2;
+        if(CanonicalR3WorldCodecV1.Valid(w))return false; // 0+1+2
+        upgrade[1].Location=R3PartLocationV1.Inventory;
+        if(!CanonicalR3WorldCodecV1.Valid(w))return false; // 0+1 mounted
+        upgrade[1].Kind=0;upgrade[1].Weapon=0;
+        upgrade[1].Location=R3PartLocationV1.Mounted;
+        return CanonicalR3WorldCodecV1.Valid(w);
     }
     sealed class SecondPublishFault:IOneFilePublisher
     {

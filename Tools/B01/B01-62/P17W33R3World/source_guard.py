@@ -58,7 +58,8 @@ def run(out):
  codec=Path(ROOT+"CanonicalR3WorldV1.cs").read_text()
  for token in ('Magic="B01R3W01"',"MaxParts=1024","MaxBytes=3*1024*1024",
                "p.PhysicalId","p.OwnerPhysicalId","mountedOwner=0",
-               "p.Weapon>8","p.Kind!=2&&p.Weapon!=0","p.DefenseRechargeAge",
+               "p.Weapon>8","p.Kind!=2&&p.Weapon!=0",
+               "mountedWeaponTypes.Count>2","p.DefenseRechargeAge",
                "float.IsPositiveInfinity","PartValid","!ids.Add",
                "stream.Position!=stream.Length"):
   if token not in codec:raise AssertionError("MISSING_DYNAMIC_CODEC_GUARD "+token)
