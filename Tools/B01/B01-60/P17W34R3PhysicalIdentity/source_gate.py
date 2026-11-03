@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Exact original #923 parent and 4 own add-only files; source only, no Unity."""
+"""Exact original #923 ancestor and 5 own add-only files; source only, no Unity."""
 import pathlib,subprocess,sys
 ROOT=pathlib.Path(__file__).resolve().parents[4]
 PARENT="e6eb24b7a45a66a5fa5d039f59c80b7e4be4439b"
@@ -17,7 +17,7 @@ def git(*args):
 def failif(test,why):
  if test:raise RuntimeError(why)
 def check():
- failif(git("rev-parse","HEAD^")!=PARENT,"parent MUST equal immutable original B01-62 #923 exact")
+ failif(git("merge-base",PARENT,"HEAD")!=PARENT,"immutable original B01-62 #923 must be exact sole source ancestor")
  names=[tuple(x.split("\t",1)) for x in git("diff","--name-status",PARENT,"HEAD").splitlines()]
  failif(set(names)!={("A",p) for p in PATHS} or len(names)!=len(PATHS),
      "ONLY 5 B01-60 QA new files; no B01-62 original writer or Codex game changes")
