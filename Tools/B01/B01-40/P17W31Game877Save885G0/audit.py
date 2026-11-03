@@ -124,8 +124,8 @@ def main():
  out.mkdir()
  (out/"manifest.json").write_bytes(raw)
  (out/"B0140_W34_923_REVIEW_ONLY_SOURCE.zip").write_bytes(packet)
- (out/"sha256.json").write_text(json.dumps({"inner_source_zip_sha256":digest(packet),
- "manifest_sha256":digest(raw)},sort_keys=True,indent=2)+"\n")
+ (out/"sha256.json").write_bytes((json.dumps({"inner_source_zip_sha256":digest(packet),
+ "manifest_sha256":digest(raw)},sort_keys=True,indent=2)+"\n").encode("utf-8"))
  print("B0140_W34_923_15_OF_15_PRODUCER_SOURCE_SCOPE_PASS")
  print("B0140_W34_923_SAME_ONE_WRITER_11_NEGATIVE_GUARDS_PASS")
  print("B0140_W34_923_DYNAMIC_R3_SCHEMA_SOURCE_POSITIVE_REAL_UNITY_NOT_RUN")
