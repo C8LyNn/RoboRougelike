@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using RoboRougelike.R1;
 using RoboRougelike.R3;
+using RoboRougelike.R4_1;
 
 // Native Unity regression source for the ACTUAL W29 #877 garage, not a
 // replacement garage or a self-contained prototype. Must be executed by
