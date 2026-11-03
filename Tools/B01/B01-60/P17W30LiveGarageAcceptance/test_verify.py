@@ -28,7 +28,7 @@ class W30RealCurrentGameAndPhysicalUnityAcceptanceSource(unittest.TestCase):
   self.assertEqual(set(tuple(f) for f in files),{("A",p) for p in v.OWN})
   self.assertFalse(any("Save" in p or "R3VehicleModel.cs" in p for _,p in files))
 
- def test_03_all_eight_relevant_current_game_sources_byte_pinned(self):
+ def test_03_all_nine_relevant_current_game_sources_byte_pinned(self):
   for path,blob in v.PINS.items():
    self.assertEqual(v.git("rev-parse","HEAD:"+path),blob,path)
 
@@ -78,7 +78,7 @@ class W30RealCurrentGameAndPhysicalUnityAcceptanceSource(unittest.TestCase):
   self.assertIn("pad.AddComponent<B01.MapJumpPad001.MapJumpPad>()",self.arena)
 
  def test_12_true_Unity_G1_five_suites_required_not_source_PASSED(self):
-  self.assertEqual(sum(count for _,_,count in v.SUITES.values()),49)
+  self.assertEqual(sum(count for _,_,count in v.SUITES.values()),51)
   self.assertEqual(self.scope["unity_g1"],"NOT_RUN")
   self.assertEqual(self.scope["player_windows_x64"],"NOT_RUN")
 
