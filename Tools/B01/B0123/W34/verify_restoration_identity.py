@@ -42,7 +42,7 @@ def extract(text,signature):
     raise AssertionError("unclosed source helper")
 
 helper=extract(source,signature)
-assert source.count(signature)==2, "helper and call expected"
+assert source.count(signature)==1 and source.count("ValidCanonicalRestorationRequest(requested)")==2, "one helper and one pre-physics call expected"
 assert source.count("if(!ValidCanonicalRestorationRequest(requested))return false;")==1
 assert source.index("if(!ValidCanonicalRestorationRequest(requested))return false;")<source.index("var probes=new List<GameObject>()")
 old_prefix="using System.Collections.Generic;"
