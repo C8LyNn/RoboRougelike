@@ -114,8 +114,9 @@ namespace B01.WeaponFeedback001
             if (!Finite(position)) return;
             ImpactFeedbackCount++;
             if(!impactPrefab)return;
-            Vector3 normal = Finite(outwardNormal) &&
-                outwardNormal.sqrMagnitude > .0001f ? outwardNormal.normalized : Vector3.up;
+            float magnitude = Finite(outwardNormal) ? outwardNormal.magnitude : 0f;
+            Vector3 normal = Finite(magnitude) && magnitude > .01f
+                ? outwardNormal / magnitude : Vector3.up;
             // Reuse a bounded number of particle objects. Bursts must not allocate
             // one new GameObject per hit (or exceed the configured budget).
             ParticleSystem copy;
