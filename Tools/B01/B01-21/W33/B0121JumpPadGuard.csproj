@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <MapJumpPadSource Condition="'$(MapJumpPadSource)' == ''">../../../../Assets/B01Packages/MapJumpPad001/Runtime/MapJumpPad.cs</MapJumpPadSource>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="UnityShim.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="$(MapJumpPadSource)" />
+  </ItemGroup>
+</Project>

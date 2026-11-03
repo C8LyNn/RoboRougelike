@@ -23,6 +23,28 @@ namespace B01.MapJumpPad001
             new Dictionary<Rigidbody, HashSet<Collider>>();
         private readonly Dictionary<Rigidbody, double> lastLaunch =
             new Dictionary<Rigidbody, double>();
+        // Reused scratch avoids per-trigger allocations while retiring missing part colliders.
+        private readonly List<Collider> staleContacts = new List<Collider>(4);
+        // Retire genuinely destroyed Rigidbodies from both caches without allocating
+        // enumerators or mutating Dictionary during iteration.
+        private readonly List<Rigidbody> staleBodies = new List<Rigidbody>(4);
+
+        private void RetireDestroyedBodies()
+        {
+            staleBodies.Clear();
+            foreach (var entry in contacts)
+                if (!entry.Key) staleBodies.Add(entry.Key);
+            for (int i = 0; i < staleBodies.Count; i++)
+                contacts.Remove(staleBodies[i]);
+
+            staleBodies.Clear();
+            foreach (var entry in lastLaunch)
+                if (!entry.Key) staleBodies.Add(entry.Key);
+            for (int i = 0; i < staleBodies.Count; i++)
+                lastLaunch.Remove(staleBodies[i]);
+            staleBodies.Clear();
+        }
+
 
         public bool IsActive => active;
         public Vector2 FootprintMeters => footprintMeters;
@@ -66,12 +88,27 @@ namespace B01.MapJumpPad001
             if (!other || other.isTrigger) return;
             Rigidbody body = other.attachedRigidbody;
             if (!body || body == GetComponent<Rigidbody>()) return;
+            RetireDestroyedBodies();
             if (!contacts.TryGetValue(body, out HashSet<Collider> colliders))
             {
                 colliders = new HashSet<Collider>();
                 contacts.Add(body, colliders);
             }
-            // Launch only on a genuine new body entry, not the second wheel collider.
+            // A destroyed or disabled vehicle part may never deliver OnTriggerExit.
+            // Remove only invalid contacts; live colliders still suppress double launches.
+            staleContacts.Clear();
+            foreach (Collider recorded in colliders)
+            {
+                if (!recorded || !recorded.enabled ||
+                    !recorded.gameObject.activeInHierarchy ||
+                    recorded.attachedRigidbody != body)
+                    staleContacts.Add(recorded);
+            }
+            for (int i = 0; i < staleContacts.Count; i++)
+                colliders.Remove(staleContacts[i]);
+            staleContacts.Clear();
+
+            // Launch only on a genuine new body entry, not the second live wheel.
             bool first = colliders.Count == 0;
             colliders.Add(other);
             if (!first || !CanLaunch(body)) return;
