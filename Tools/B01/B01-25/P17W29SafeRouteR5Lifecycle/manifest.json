@@ -18,11 +18,11 @@
   "modifiedOriginalPaths": {
     "Assets/B0125SafeRoute001/Runtime/SafeRouteUnityDemo.cs": {
       "oldR5GitBlob": "9b017e1418734d0a7ccfe611e6207081f8bd1d32",
-      "newGitBlob": "3304d567d7076590aa63a99ebed33ae54c9534e7"
+      "newGitBlob": "4231610adcaeed80d52a883caa1c68d54233ce1e"
     },
     "Assets/B0125SafeRoute001/Tests/PlayMode/SafeRouteNativePlayModeTests.cs": {
       "oldR5GitBlob": "3135315793de29db0d49a42f0c755c5d6fb4fd9c",
-      "newGitBlob": "ee628d341414f6c102d5dba993668b38fcb6d1fa"
+      "newGitBlob": "621dd83a62260eb135c1145d1a67d73aab04d121"
     }
   },
   "newOnlyPaths": [
@@ -54,13 +54,13 @@
     "Assets/B0125SafeRoute001/Runtime/SafeRouteCore.cs.meta": "d4ad2af34e17f5a22d9964d514942c7d798f29dd",
     "Assets/B0125SafeRoute001/Runtime/SafeRouteExample.cs": "6b9bfcfea677d3a642e3070c12d9359de0915f03",
     "Assets/B0125SafeRoute001/Runtime/SafeRouteExample.cs.meta": "7d613221f92233a1172f04692f005d5808ae615c",
-    "Assets/B0125SafeRoute001/Runtime/SafeRouteUnityDemo.cs": "3304d567d7076590aa63a99ebed33ae54c9534e7",
+    "Assets/B0125SafeRoute001/Runtime/SafeRouteUnityDemo.cs": "4231610adcaeed80d52a883caa1c68d54233ce1e",
     "Assets/B0125SafeRoute001/Runtime/SafeRouteUnityDemo.cs.meta": "1ad7f0eb4382c590fe3043bce7ef7a499a06fa7f",
     "Assets/B0125SafeRoute001/Tests.meta": "98fdc279f538ffc8dcce15b4a6d98204e1e34ce5",
     "Assets/B0125SafeRoute001/Tests/PlayMode.meta": "f48c02c0f6908fbc1170be9232e8d454d8381b6f",
     "Assets/B0125SafeRoute001/Tests/PlayMode/B0125.SafeRoute.PlayModeTests.asmdef": "ba7554e2c7ad38a3dd04ff0ed08fbb64682838fd",
     "Assets/B0125SafeRoute001/Tests/PlayMode/B0125.SafeRoute.PlayModeTests.asmdef.meta": "85bfe2cc5c2843a5731e79fe4f0285515a21ce1b",
-    "Assets/B0125SafeRoute001/Tests/PlayMode/SafeRouteNativePlayModeTests.cs": "ee628d341414f6c102d5dba993668b38fcb6d1fa",
+    "Assets/B0125SafeRoute001/Tests/PlayMode/SafeRouteNativePlayModeTests.cs": "621dd83a62260eb135c1145d1a67d73aab04d121",
     "Assets/B0125SafeRoute001/Tests/PlayMode/SafeRouteNativePlayModeTests.cs.meta": "dcf257ebd2fb80fceb5fe5b115bd7c846400871d",
     "Research/B01-25/P17/SAFEROUTE001/.gitignore": "6943b188d80a5efce450393ae612928f653e0876",
     "Research/B01-25/P17/SAFEROUTE001/PhysicalObstacleRouter.cs": "eb43c8f41f2b151324ae487984b00cb3da17b13a",
@@ -95,8 +95,8 @@
     "Tools/B01/B01-25/P17W28SafeRouteR5/README.md": "9accd2c0788fe2fa25dfb686f977f879fca910af",
     "Tools/B01/B01-25/P17W28SafeRouteR5/TEST_PLAN.md": "00b29e8212e30c2f340ad031dca6b3799cce9b6e",
     "Tools/B01/B01-25/P17W29SafeRouteR5Lifecycle/.gitignore": "b67c661cfb5cc73f5f68cfe85fd17e954856ea87",
-    "Tools/B01/B01-25/P17W29SafeRouteR5Lifecycle/check.py": "ad12a3a5521e184404d0d7a0be138a476256d235",
-    "Tools/B01/B01-25/P17W29SafeRouteR5Lifecycle/README.md": "c74d3f7dfed4803c6265f34cd003ce1d42adea69"
+    "Tools/B01/B01-25/P17W29SafeRouteR5Lifecycle/check.py": "fa5fc5ac320bd7f9341fc8689fe9325586fbc871",
+    "Tools/B01/B01-25/P17W29SafeRouteR5Lifecycle/README.md": "d104cc4d4d5d287d8f509cf871c3777b24840bb7"
   },
   "gitBlobs": {
     ".github/workflows/b01-25-w23-saferoute.yml": "7a87cfee78e4ce776b6de7ac11893ce94a502cfd",
@@ -120,13 +120,13 @@
     "Assets/B0125SafeRoute001/Runtime/SafeRouteCore.cs.meta": "d4ad2af34e17f5a22d9964d514942c7d798f29dd",
     "Assets/B0125SafeRoute001/Runtime/SafeRouteExample.cs": "6b9bfcfea677d3a642e3070c12d9359de0915f03",
     "Assets/B0125SafeRoute001/Runtime/SafeRouteExample.cs.meta": "7d613221f92233a1172f04692f005d5808ae615c",
-    "Assets/B0125SafeRoute001/Runtime/SafeRouteUnityDemo.cs": "3304d567d7076590aa63a99ebed33ae54c9534e7",
+    "Assets/B0125SafeRoute001/Runtime/SafeRouteUnityDemo.cs": "4231610adcaeed80d52a883caa1c68d54233ce1e",
     "Assets/B0125SafeRoute001/Runtime/SafeRouteUnityDemo.cs.meta": "1ad7f0eb4382c590fe3043bce7ef7a499a06fa7f",
     "Assets/B0125SafeRoute001/Tests.meta": "98fdc279f538ffc8dcce15b4a6d98204e1e34ce5",
     "Assets/B0125SafeRoute001/Tests/PlayMode.meta": "f48c02c0f6908fbc1170be9232e8d454d8381b6f",
     "Assets/B0125SafeRoute001/Tests/PlayMode/B0125.SafeRoute.PlayModeTests.asmdef": "ba7554e2c7ad38a3dd04ff0ed08fbb64682838fd",
     "Assets/B0125SafeRoute001/Tests/PlayMode/B0125.SafeRoute.PlayModeTests.asmdef.meta": "85bfe2cc5c2843a5731e79fe4f0285515a21ce1b",
-    "Assets/B0125SafeRoute001/Tests/PlayMode/SafeRouteNativePlayModeTests.cs": "ee628d341414f6c102d5dba993668b38fcb6d1fa",
+    "Assets/B0125SafeRoute001/Tests/PlayMode/SafeRouteNativePlayModeTests.cs": "621dd83a62260eb135c1145d1a67d73aab04d121",
     "Assets/B0125SafeRoute001/Tests/PlayMode/SafeRouteNativePlayModeTests.cs.meta": "dcf257ebd2fb80fceb5fe5b115bd7c846400871d",
     "Research/B01-25/P17/SAFEROUTE001/.gitignore": "6943b188d80a5efce450393ae612928f653e0876",
     "Research/B01-25/P17/SAFEROUTE001/PhysicalObstacleRouter.cs": "eb43c8f41f2b151324ae487984b00cb3da17b13a",
@@ -161,8 +161,8 @@
     "Tools/B01/B01-25/P17W28SafeRouteR5/README.md": "9accd2c0788fe2fa25dfb686f977f879fca910af",
     "Tools/B01/B01-25/P17W28SafeRouteR5/TEST_PLAN.md": "00b29e8212e30c2f340ad031dca6b3799cce9b6e",
     "Tools/B01/B01-25/P17W29SafeRouteR5Lifecycle/.gitignore": "b67c661cfb5cc73f5f68cfe85fd17e954856ea87",
-    "Tools/B01/B01-25/P17W29SafeRouteR5Lifecycle/check.py": "ad12a3a5521e184404d0d7a0be138a476256d235",
-    "Tools/B01/B01-25/P17W29SafeRouteR5Lifecycle/README.md": "c74d3f7dfed4803c6265f34cd003ce1d42adea69"
+    "Tools/B01/B01-25/P17W29SafeRouteR5Lifecycle/check.py": "fa5fc5ac320bd7f9341fc8689fe9325586fbc871",
+    "Tools/B01/B01-25/P17W29SafeRouteR5Lifecycle/README.md": "d104cc4d4d5d287d8f509cf871c3777b24840bb7"
   },
   "closureCount": 64,
   "unitySourceCount": 23,
@@ -172,8 +172,8 @@
   "oneVersionOnly": true,
   "doNotCoInstallR1R2R3R4R5R51": true,
   "originalSourceTestExpected": 100,
-  "originalPythonQAExpected": 32,
-  "nativeUnityPlayModeAuthored": 26,
+  "originalPythonQAExpected": 33,
+  "nativeUnityPlayModeAuthored": 27,
   "nativeUnity": "NOT_RUN",
   "formalG0": "PENDING_INDEPENDENT_B01-40",
   "g2": "HOLD",
@@ -189,5 +189,6 @@
     "Owner R3Debris.Separated not changed; consumer wiring requires B01-00 and Codex after formal acceptance",
     "No Windows native Player build or manual playtest in this isolated package"
   ],
-  "qaRedToGreen": "Run 41626861816 100 C#9 tests PASS each OS but 31/32 Git QA because checker looked up parentR5Sha not exactParentR5Sha. Repaired checker + repinned own source SHA and full re-run required"
+  "qaRedToGreen": "Run 41626861816 100 C#9 tests PASS each OS but 31/32 Git QA because checker looked up parentR5Sha not exactParentR5Sha. Repaired checker + repinned own source SHA and full re-run required",
+  "w30IncrementalFix": "One reused 256 Collider[] original Unity Physics.OverlapBoxNonAlloc buffer per owner MonoBehaviour; 27 authored native, 33 source transport QA. Unity Editor/Player NOT_RUN."
 }
