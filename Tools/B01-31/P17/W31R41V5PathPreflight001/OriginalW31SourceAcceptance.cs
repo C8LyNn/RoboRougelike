@@ -13,9 +13,9 @@ static class OriginalW31SourceCsharpAcceptance
 
     private static void Invalid(string root,string? path,string expected,string name)
     {
-        string? p; string reason;
-        bool ok=R41V5AssetPaths.TryResolveFbxPath(root,path!,out p!,out reason);
-        Check(!ok && p==null && reason==expected,name);
+        string p; string reason;
+        bool ok=R41V5AssetPaths.TryResolveFbxPath(root,path!,out p,out reason);
+        Check(!ok && p=="" && reason==expected,name);
     }
 
     public static void Main()
