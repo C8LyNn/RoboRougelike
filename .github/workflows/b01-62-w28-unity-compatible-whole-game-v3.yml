@@ -2,10 +2,6 @@ name: B01-62 W28 Unity NetStandard2.1 one whole game V7 Save
 on:
   push:
     branches: [b01-62/p17w28-unity-compatible-one-save-v3]
-  pull_request:
-    paths:
-      - 'Tools/B01/B01-62/P17W28UnityCompatibleWholeGameV3/**'
-      - '.github/workflows/b01-62-w28-unity-compatible-whole-game-v3.yml'
 permissions:
   contents: read
 jobs:

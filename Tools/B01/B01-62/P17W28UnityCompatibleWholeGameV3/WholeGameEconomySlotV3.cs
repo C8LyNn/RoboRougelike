@@ -14,6 +14,7 @@ using System.Text;
 using B01.CanonicalWorldApi001;
 using B01.DetachedSaveContract001;
 using RoboRougelike.B01.Economy.ApprovedV7;
+using RoboRougelike.B01.Economy.AdmissionW29;
 
 namespace B01.WholeGameEconomy003
 {
@@ -212,6 +213,12 @@ namespace B01.WholeGameEconomy003
             return new Guid(sha.Take(16).ToArray()).ToString("N");
         }
 
+        // W30: B01-22 #855 admission is part of the SAME sole V3 writer.
+        // Owner is never supplied by caller/UI and disk format stays B0162G02.
+        private CanonicalEconomyIdentityW29 Identity(long generation)
+            =>new CanonicalEconomyIdentityW29(slotId.ToString("N"),
+                runId.ToString(CultureInfo.InvariantCulture),generation);
+
         private bool Semantic(byte[] world,ApprovedEconomySnapshotV7 econ,
             long generation)
         {
@@ -219,7 +226,7 @@ namespace B01.WholeGameEconomy003
                 !ColdRestore.TryStage(world,out ColdRestore? staged)||
                 staged==null||staged.Snapshot.RunId!=runId||
                 staged.Snapshot.Generation!=generation||
-                !ApprovedEconomyPolicyV7.Valid(econ)||
+                !EconomyV7AdmissionW29.TryAdmit(econ,Identity(generation),out _)||
                 econ.OwnerId!=slotId.ToString("N")||
                 econ.RunId!=runId.ToString(CultureInfo.InvariantCulture)||
                 econ.Generation!=generation)return false;
@@ -241,8 +248,8 @@ namespace B01.WholeGameEconomy003
         {
             // EMBED EXACT unchanged B01-22 #780 V7 immutable producer binary
             // section, with its own bounded ID/loaner/victory serialization.
-            if(!CanonicalEconomySectionV7.TryEncode(econ,out byte[] e,
-                out string failure))
+            if(!EconomyV7AdmissionW29.TryEncodeForCanonicalOwner(econ,
+                Identity(epoch),out byte[] e,out string failure))
                 throw new InvalidDataException("V7 economy source rejected: "+failure);
             using var stream=new MemoryStream();
             using(var writer=new BinaryWriter(stream,Encoding.UTF8,true))
@@ -292,8 +299,8 @@ namespace B01.WholeGameEconomy003
                 byte[] w=reader.ReadBytes(wLength);
                 byte[] e=reader.ReadBytes(eLength);
                 if(w.Length!=wLength||e.Length!=eLength||
-                    !CanonicalEconomySectionV7.TryDecode(e,
-                        out ApprovedEconomySnapshotV7 parsed,out string _)||
+                    !EconomyV7AdmissionW29.TryDecodeForCanonicalOwner(e,
+                        Identity(gen),out ApprovedEconomySnapshotV7 parsed,out string _)||
                     !Semantic(w,parsed,gen))return WholeGameResult.Corrupt;
                 epoch=gen;world=w;economy=parsed;
                 return WholeGameResult.Accepted;

@@ -2,10 +2,6 @@ name: B01-62 W29 cold read original V3 paired world-economy
 on:
   push:
     branches: [b01-62/p17w29-cold-restart-read-v3]
-  pull_request:
-    paths:
-      - 'Tools/B01/B01-62/P17W29ColdReadV3/**'
-      - '.github/workflows/b01-62-w29-cold-read-v3.yml'
 permissions:
   contents: read
 jobs:
