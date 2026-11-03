@@ -1,0 +1,67 @@
+name: B01-60 W30 actual R3 Garage and integrated EMP JumpPad SOURCE ONLY
+on:
+  push:
+    branches: [qa/b01-60-p17w30-live-garage-dynamic-acceptance-r1]
+    paths:
+      - 'Assets/Tests/Editor/W30B0160GarageDynamicGateTests.cs'
+      - 'Assets/Tests/Editor/W30B0160GarageDynamicGateTests.cs.meta'
+      - 'Tools/B01/B01-60/P17W30LiveGarageAcceptance/**'
+      - '.github/workflows/b01-60-p17w30-live-garage-acceptance.yml'
+  pull_request:
+    paths:
+      - 'Assets/Tests/Editor/W30B0160GarageDynamicGateTests.cs'
+      - 'Assets/Tests/Editor/W30B0160GarageDynamicGateTests.cs.meta'
+      - 'Tools/B01/B01-60/P17W30LiveGarageAcceptance/**'
+      - '.github/workflows/b01-60-p17w30-live-garage-acceptance.yml'
+permissions:
+  contents: read
+jobs:
+  exact_real_game_source_only:
+    strategy:
+      fail-fast: false
+      matrix: {os: [ubuntu-24.04, windows-2025]}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: SHA-pin exact original #873 + #877 R3 game, current physical construction gate and 8 own-only additions
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W30LiveGarageAcceptance/verify.py | tee W30-original-game-source.log
+          grep -F '"status": "PASS_ORIGINAL_EXACT_HEAD_SOURCE_ONLY"' W30-original-game-source.log
+          grep -F '"unity_g1": "NOT_RUN"' W30-original-game-source.log
+      - name: Fifteen actual original current gameplay source and adversarial no-false-native cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile Tools/B01/B01-60/P17W30LiveGarageAcceptance/verify.py Tools/B01/B01-60/P17W30LiveGarageAcceptance/test_verify.py
+          python -m unittest discover -s Tools/B01/B01-60/P17W30LiveGarageAcceptance -p test_verify.py -v 2>&1 | tee W30-original-game-tests.log
+          grep -F 'Ran 15 tests' W30-original-game-tests.log
+          grep -F 'OK' W30-original-game-tests.log
+          echo 'B0160_W30_REAL_GAME_15_SOURCE_PASS_UNITY_51_NOT_RUN'
+  actual_windows_powershell_source_safety:
+    runs-on: windows-2025
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Real Windows PowerShell, exact original #877 + full source QA preflight, NO Editor
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W30LiveGarageAcceptance\Invoke-B0160W30Native.ps1 -RepoPath $env:GITHUB_WORKSPACE *>&1 | Tee-Object -FilePath W30-native-source-preflight.log
+          if($LASTEXITCODE -ne 0){throw 'source preflight failed'}
+          if(!(Select-String W30-native-source-preflight.log -Pattern 'B0160_W30_REAL_GAME_SOURCE_ONLY_NATIVE_UNITY_NOT_RUN' -Quiet)){throw 'no source-only receipt'}
+      - name: Deny -Run without independent G0, no Unity subprocess, exit3
+        shell: pwsh
+        run: |
+          & pwsh -NoProfile -File .\Tools\B01\B01-60\P17W30LiveGarageAcceptance\Invoke-B0160W30Native.ps1 -RepoPath $env:GITHUB_WORKSPACE -Run *>&1 | Tee-Object -FilePath W30-native-no-g0.log
+          $rc=$LASTEXITCODE
+          if($rc -ne 3){throw "Unauthorized Unity native allowed rc=$rc"}
+          if(Select-String W30-native-no-g0.log -Pattern 'NATIVE_49_XML_STRUCTURALLY_PASS'){throw 'fake Unity G1'}
+          $global:LASTEXITCODE=0
