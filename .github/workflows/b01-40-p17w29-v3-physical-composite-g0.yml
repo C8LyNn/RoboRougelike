@@ -1,0 +1,95 @@
+name: B01-40 W29 exact #826 V3 real OS Save + #792 physical + #780 V7 composite SOURCE G0
+on:
+  push:
+    branches: [qa/b01-40-p17w29-826-792-780-composite-g0-r1]
+    paths:
+      - 'Tools/B01/B01-40/P17W29Composite826G0/**'
+      - '.github/workflows/b01-40-p17w29-v3-physical-composite-g0.yml'
+  pull_request:
+    paths:
+      - 'Tools/B01/B01-40/P17W29Composite826G0/**'
+      - '.github/workflows/b01-40-p17w29-v3-physical-composite-g0.yml'
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  original-v3-physical-csharp-and-git-source:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2025, ubuntu-24.04]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch pinned exact producer Git objects without changing branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin \
+            99fb08619c78b3834bb4c0450499babf991f218a \
+            2b7983f0f9e09dd1d56906b379a3f7af7b02f21a \
+            f5db40bf293fe9582ec7c6fcb3515aeff6fcf937 \
+            16cb2a7b5158605b15191b6074f9e392e0d1ebd3 \
+            b4df10a7ad7e6c758f8331013f6b216b3a3689a3 \
+            60c73a6f9ed2585cbb9bf7aeaad8c62eef0629cb \
+            b8ca29c7707cd6b4338d0b9772d74dee676d49d2 \
+            d94400d95d13db7f27e1533df05c9292d5380431 \
+            33094f154c7b91119b36d58aab285e6e83c5de57 \
+            ce46a5e0cc5d26df6c4ece723e8efe20d70fc4b1 \
+            cc5d65f66ad7a764af6515c566e489b9fc3be82e \
+            cc7f73541517a18f4479bb155534bd4832d9985e \
+            3aaaec4027ee246fbfb6f209179f0e9507363473 \
+            e66968408b583404cd50250f53e655ea75a085fc
+      - name: Real original C#9 V3+Rigidbody-source managed physical + one V7 wallet OS Save, source GUID and dirty rollback
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-40/P17W29Composite826G0/intake.py \
+            --receipt evidence/b0140-w29-original-composite-v3.json | tee b0140-w29-original-source.log
+          grep -q 'B0140_W29_REAL_ORIGINAL_V3_826_PLUS_792_780_729_COLD_AND_ROLLBACK_2_OF_2_PASS_MANAGED_SOURCE_ONLY' b0140-w29-original-source.log
+          grep -q 'B0140_W29_SELECTED_ORIGINAL_UNITY_ASMDEF_GUID_CLOSURE_PASS' b0140-w29-original-source.log
+          grep -q 'B0140_W29_CURRENT_GAME_ORIGINAL_ASSET_PATH_AND_GUID_NO_COLLISION_PASS' b0140-w29-original-source.log
+          grep -q 'B0140_W29_DISPOSABLE_STAGE_DIRTY_NEGATIVE_AND_FOREIGN_SAVE_PRESERVED_PASS' b0140-w29-original-source.log
+          grep -q 'B0140_W29_ORIGINAL_EXACT_SHA_COMPOSITE_SOURCE_G0_PASS' b0140-w29-original-source.log
+          grep -q 'B0140_W29_NATIVE_UNITY_PHYSX_G1_NOT_RUN_NO_GAME_BINDER_NO_PLAYER' b0140-w29-original-source.log
+          test -s evidence/b0140-w29-original-composite-v3.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b0140-w29-original-v3-${{ matrix.os }}
+          path: |
+            evidence/
+            b0140-w29-original-source.log
+          if-no-files-found: warn
+  independent-original-source-receipt-parity:
+    needs: original-v3-physical-csharp-and-git-source
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: b0140-w29-original-v3-*
+          path: received
+      - name: Verify INNER original-source evidence bytes bit-exact Windows and Ubuntu
+        shell: bash
+        run: |
+          python - <<'PY'
+          import hashlib
+          from pathlib import Path
+          p=sorted(Path("received").glob("*/evidence/b0140-w29-original-composite-v3.json"))
+          if len(p)!=2:raise SystemExit("B0140_W29_SOURCE_G0_FAIL_TWO_ORIGINAL_OS_RECEIPTS_MISSING")
+          bs=[x.read_bytes() for x in p]
+          if bs[0]!=bs[1]:raise SystemExit("B0140_W29_SOURCE_G0_FAIL_OS_MANIFEST_BYTES_DIFFER")
+          print("B0140_W29_CROSS_OS_ORIGINAL_COMPOSITE_SOURCE_RECEIPT_PASS_SHA256",
+                hashlib.sha256(bs[0]).hexdigest())
+          print("B0140_W29_SOURCE_ONLY_NOT_UNITY_OR_WINDOWS_PLAYER")
+          PY
