@@ -1,0 +1,114 @@
+name: B01-40 W31 exact #877 garage + original #885 one-writer OS receiver G0
+on:
+  push:
+    branches: [qa/b01-40-p17w30-877-moving-garage-g0-r2]
+    paths:
+      - 'Assets/Tests/Editor/B0140W30DynamicGarageClearanceTests.cs'
+      - 'Assets/Tests/Editor/B0140W30DynamicGarageClearanceTests.cs.meta'
+      - 'Tools/B01/B01-40/P17W30MovingGarageG0/**'
+      - '.github/workflows/b01-40-p17w30-877-moving-garage-g0.yml'
+  pull_request:
+    paths:
+      - 'Assets/Tests/Editor/B0140W30DynamicGarageClearanceTests.cs'
+      - 'Assets/Tests/Editor/B0140W30DynamicGarageClearanceTests.cs.meta'
+      - 'Tools/B01/B01-40/P17W30MovingGarageG0/**'
+      - '.github/workflows/b01-40-p17w30-877-moving-garage-g0.yml'
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  selected-source-qa:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - name: Immutable original #885 one-writer plus frozen V7 and #855 admission source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin 78c1d54d24a76c931ea80965a50eca03fae4156a b4df10a7ad7e6c758f8331013f6b216b3a3689a3 c9c19665a4f9385e6479f7151097deb797026ade
+          src="$RUNNER_TEMP/b0140-w31-save885"
+          git worktree add --detach "$src" 78c1d54d24a76c931ea80965a50eca03fae4156a
+          mkdir -p "$src/Tools/B01/B01-62/P17W30AdmissionV3/.source"
+          git show b4df10a7ad7e6c758f8331013f6b216b3a3689a3:Assets/B01Packages/ECONAPPROVED007/Runtime/ApprovedEconomyPolicyV7.cs > "$src/Tools/B01/B01-62/P17W30AdmissionV3/.source/ApprovedEconomyPolicyV7.cs"
+          git show b4df10a7ad7e6c758f8331013f6b216b3a3689a3:Assets/B01Packages/ECONAPPROVED007/Runtime/CanonicalEconomySectionV7.cs > "$src/Tools/B01/B01-62/P17W30AdmissionV3/.source/CanonicalEconomySectionV7.cs"
+          git show c9c19665a4f9385e6479f7151097deb797026ade:Assets/B01Packages/ECONADMISSIONW29/Runtime/EconomyV7AdmissionW29.cs > "$src/Tools/B01/B01-62/P17W30AdmissionV3/.source/EconomyV7AdmissionW29.cs"
+          dotnet run --project "$src/Tools/B01/B01-62/P17W30AdmissionV3/W30AdmissionQA.csproj" -c Release -v quiet | tee b0140-w31-save885-original.log
+          grep -q 'B0162_W30_ADMISSION_SINGLE_WRITER_REAL_OS_TOTAL 4 PASS 4 FAIL 0' b0140-w31-save885-original.log
+          python Tools/B01/B01-40/P17W30MovingGarageG0/verify_save885.py --save-tree "$src" --qa-log b0140-w31-save885-original.log --receipt evidence/b0140-w31-save885.json
+          grep -q 'B0140_W31_ORIGINAL_SINGLE_WRITER_885_4_OF_4_REAL_OS_G0_PASS' b0140-w31-save885-original.log || echo 'B0140_W31_SOURCE_PASS_RECEIPT_EMITTED_SEPARATELY'
+
+      - name: Real source/delta/Unity meta and negative dirty-staging checks on immutable W30 head
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-40/P17W30MovingGarageG0/verify.py \
+            --receipt evidence/b0140-w30-877-dynamic-garage.json | tee b0140-w30-source.log
+          grep -q 'B0140_W30_ORIGINAL_873_37_FILES_AND_877_12_SOURCE_DELTAS_EXACT_UNMODIFIED_PASS' b0140-w30-source.log
+          grep -q 'B0140_W30_COMPLETE_RECEIVER_UNITY_GUID_UNIQUENESS_PASS' b0140-w30-source.log
+          grep -q 'B0140_W30_877_LIVE_PHYSICAL_WPN005_AND_GARAGE_PREVIEW_BUY_MOUNT_AUTHORITY_PASS' b0140-w30-source.log
+          grep -q 'B0140_W30_NEW_REAL_UNITY_DYNAMIC_OWNER_RIGIDBODY_TEST_SOURCE_PASS_NOT_EXECUTED' b0140-w30-source.log
+          grep -q 'B0140_W30_REAL_STAGING_DIRTY_PRODUCT_NEGATIVE_AND_FOREIGN_SAVE_PASS' b0140-w30-source.log
+          grep -q 'B0140_W30_EXACT_877_DYNAMIC_RECEIVER_SOURCE_G0_PASS' b0140-w30-source.log
+          test -s evidence/b0140-w30-877-dynamic-garage.json
+      - name: Genuine previously RED W31 Unity repository gate and original native artifact checker self-test
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/CI/validate_repository.py | tee b0140-w31-real-repository-preflight.log
+          source_root="$RUNNER_TEMP/b0140-w31-original-877"
+          git worktree add --detach "$source_root" bcbd0d034c852ad45b1416d3b4ed679f2996f7fe
+          (cd "$source_root" && python Tools/B01/Codex/W30/verify_garage.py) | tee b0140-w31-original-w30-garage.log
+          python Tools/B01/Codex/W31/verify_artifacts.py --selftest | tee b0140-w31-original-native-checker-selftest.log
+          grep -q 'Validated' b0140-w31-real-repository-preflight.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b0140-w30-dynamic-garage-${{ matrix.os }}
+          path: |
+            evidence/
+            b0140-w30-source.log
+            b0140-w31-save885-original.log
+            b0140-w31-real-repository-preflight.log
+            b0140-w31-original-w30-garage.log
+            b0140-w31-original-native-checker-selftest.log
+          if-no-files-found: warn
+  cross-os-exact-receipt:
+    needs: selected-source-qa
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: b0140-w30-dynamic-garage-*
+          path: received
+      - name: Compare two physically executed original HEAD source manifests
+        shell: bash
+        run: |
+          python - <<'PY'
+          import hashlib
+          from pathlib import Path
+          files=sorted(Path("received").glob("*/evidence/b0140-w30-877-dynamic-garage.json"))
+          if len(files)!=2: raise SystemExit("B0140_W30_FAIL_NOT_TWO_OS")
+          a,b=[x.read_bytes() for x in files]
+          if a!=b: raise SystemExit("B0140_W30_FAIL_NONDETERMINISTIC_ORIGINAL_RECEIPT")
+          print("B0140_W31_CROSS_OS_EXACT_877_GARAGE_SOURCE_G0_PASS_SHA256",
+                hashlib.sha256(a).hexdigest())
+          sv=sorted(Path("received").glob("*/evidence/b0140-w31-save885.json"))
+          if len(sv)!=2: raise SystemExit("B0140_W31_SAVE885_MISSING_OS_RECEIPT")
+          sa,sb=[x.read_bytes() for x in sv]
+          if sa!=sb: raise SystemExit("B0140_W31_SAVE885_MANIFEST_CROSS_OS_DIFFER")
+          print("B0140_W31_ORIGINAL_SAVE885_4_REAL_DISK_TESTS_PER_OS_PARITY_PASS_SHA256",
+                hashlib.sha256(sa).hexdigest())
+          print("B0140_W30_UNITY_G1_NOT_RUN_WINDOWS_PLAYER_NOT_BUILT")
+          PY
