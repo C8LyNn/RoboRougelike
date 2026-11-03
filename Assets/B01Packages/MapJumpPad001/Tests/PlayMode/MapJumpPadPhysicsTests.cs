@@ -56,6 +56,36 @@ namespace B01.MapJumpPad001.Tests
             Assert.LessOrEqual(best, 0.1f);
         }
         [UnityTest]
+        public IEnumerator MissingExitForDisabledPartColliderDoesNotBlockNextRealBodyContact()
+        {
+            // Deliberately simulate the lost OnTriggerExit of a destructible vehicle part.
+            // This is callback-level fault injection, NOT the full R3 vehicle acceptance.
+            var jump = Create(0f);
+            Rigidbody body = robot.GetComponent<Rigidbody>();
+            body.useGravity = false;
+            Collider oldWheel = robot.GetComponent<Collider>();
+            Assert.AreSame(body, oldWheel.attachedRigidbody);
+
+            jump.gameObject.SendMessage("OnTriggerEnter", oldWheel,
+                SendMessageOptions.RequireReceiver);
+            yield return new WaitForFixedUpdate();
+            Assert.Greater(body.linearVelocity.y, 5f, "Original contact must launch.");
+
+            body.linearVelocity = Vector3.zero;
+            oldWheel.enabled = false; // no matching OnTriggerExit is sent
+            var replacement = new GameObject("ReplacementWheelCollider");
+            replacement.transform.SetParent(robot.transform, false);
+            BoxCollider newWheel = replacement.AddComponent<BoxCollider>();
+            Assert.AreSame(body, newWheel.attachedRigidbody);
+
+            jump.gameObject.SendMessage("OnTriggerEnter", newWheel,
+                SendMessageOptions.RequireReceiver);
+            yield return new WaitForFixedUpdate();
+            Assert.Greater(body.linearVelocity.y, 5f,
+                "Stale disabled collider must not suppress the replacement entry.");
+        }
+
+        [UnityTest]
         public IEnumerator MultiColliderRobotDoesNotReceiveDoubleLaunch()
         {
             Create(5f);
