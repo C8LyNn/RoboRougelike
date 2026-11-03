@@ -1,0 +1,26 @@
+# B01-25 W29 — SAFEROUTE R5.1 original real R3 debris-lifecycle compatibility hotfix
+
+This modifies the **EXISTING SAFEROUTE R5 runtime and physical Unity PlayMode tests**, not a new map, solver or competing prototype. Exact original R5 frozen parent [Draft #843 @ `ed704172431cd08628bcbbf6e1926b2edb70812a`](https://github.com/C8LyNn/RoboRougelike/pull/843). No edits to original Codex's latest playable worktree, no branch merge, no original R3Debris source changes, no Save/ECON or anti-softlock V7 rules.
+
+**Independently confirmed code-level incompatibility with the PLAYABLE R3 branch `feature/w27-weapon-garage` @ `ed8cf4bcc131688b9a93968a89683d2496586683`:** its original `Assets/R3/R3Debris.cs` blob `380a99f57ffda68eb49817025d5d7e2387082bc3` raises `R3Debris.Separated` in `Awake` **after** disabling attached Collider shapes for **0.45 seconds**. It destroys the debris GameObject **after 10 seconds** (or earlier once original queue >70). R5 `TryRegisterWorldBlocker` returned `false` when any attached shape was temporarily disabled. Afterwards R5 `ExternalWorldChanged` could replan every fixed physics frame on a dormant shape, and a previously registered then destroyed Rigidbody would forever fail closed as a stale non-null managed wrapper in the registry. R5.1 repairs these specific original R3 integration lifecycle cases.
+
+**New actual Unity runtime behavior:**
+- `TryRegisterWorldBlocker(Rigidbody)` accepts temporarily disabled **non-trigger colliders on active GameObjects** whose `attachedRigidbody` is the exact originally owned body. It excludes permanently inactive prefab child GameObjects, player, self demo crates, foreign attached Rigidbody, duplicate and >32 owner/>16 shape registrations. It does not touch the body's velocity, position, isKinematic, collider state or persist any Save.
+- Until each registered collider is re-enabled and PHYSICALLY detected by original `Physics.OverlapBoxNonAlloc`, active route is `OccupancyUncertain=true`, `NO_PATH`, never fake safe. The per-shape `ChildCollidable` snapshot only triggers recompute on actual transition (or real pose change) instead of every dormant fixed step.
+- `PruneDestroyedWorldBlockers()` is called from FixedUpdate and automatically retires only sources whose **Unity Rigidbody was actually destroyed** (Unity object == null). This restores a valid route after the 10s/70-wreckage cap, while temporary disabled but still-owned source stays registered and fail-closed. Explicit `UnregisterWorldBlocker` still handles lifecycle by the ultimate integrator.
+- All prior R5 real Light/Heavy 8-scenario compound collider safety, physical crate relocation, external world pose/replan, no fake G0, remain unchanged.
+
+**Native test source changes:** four NEW original Unity PlayMode `[UnityTest]` cases, total **26**. They cover R3 0.45s disabled registration and physical re-enable, dormant no per-fixed-step route churn, actual destroyed rigidbody retirement and recovered Heavy route, and permanently inactive prefab child excluded. **G1 remains NOT_RUN** until an authorized activated Unity6000.3.14f1 Windows Editor executes them; source compilation CI is C#9 portable only, NOT native Unity.
+
+**Exact transport contract:** new R5.1 independent Draft branch based on immutable exact #843; 2 B01-25-owned existing original Unity source paths modified, 5 new owner-only versioned tools/CI paths, no old source overwritten; full current closure **64 original Git SHA1 source blobs** excluding self, **23 original Unity files**, **14 stable distinct Unity GUIDs**, **3 isolated asmdefs**, actual **24-member original Unity SOURCE ZIP**. Never coinstall R1/R2/R3/R4/R5/R5.1; same original Unity GUID identities intentionally preserved for single-version replace. Scratch import ONLY in empty disposable receiving Unity project after independent B01-40 G0; stage no files in occupied paths, no foreign symlink ancestors and preserve unrelated empty/occupied dirs on rollback.
+
+**Test from actual branch:**
+```bash
+dotnet build Research/B01-25/P17/SAFEROUTE001/SafeRouteRuntime.csproj -c Release -warnaserror
+dotnet run --project Research/B01-25/P17/SAFEROUTE001/SafeRouteTests.csproj -c Release -- Research/B01-25/P17/SAFEROUTE001/.output/results.json
+python Tools/B01/B01-25/P17W29SafeRouteR5Lifecycle/check.py --out Tools/B01/B01-25/P17W29SafeRouteR5Lifecycle/.output/receipt.json
+```
+
+CI dual Windows+Ubuntu runs original portable C#9 **100 source behavior cases expected**, original strict Python **32 physical Git SHA/14 GUID/3 asmdef/real ZIP/rollback/regression checks** per OS, third physical original source ZIP SHA-256+binary byte parity job. All current final SHA receipts must be verified before claim. No build on user's local PC, no active Codex working tree, no final Windows Player.
+
+**Gates/receivers:** B01-40 formal independently source G0, including diff and original Codex R3Debris ABI. B01-60 authorized real Unity6000.3.14f1 native 26 PlayMode cases + R3 debris event-lifecycle and actual extracted Windows Player regression; B01-00 solely decides whether approved R5.1 can be offered to Codex #79. **NOT** an active actual game integration yet. Original #828 saw/#839 EMP/#826 Save/#812 ECON owners unaffected. No merge or release.
