@@ -48,10 +48,12 @@ PARTS={
  "econ":("Assets/B01Packages/ECONAPPROVED007",),
 }
 CODEC="Assets/B0123DetachedSaveContract001/Runtime/DetachedSnapshotContract.cs"
+SHARED_ECON_FOLDER="Assets/B01Packages.meta"
 POLICY="Assets/B01Packages/ECONAPPROVED007/Runtime/ApprovedEconomyPolicyV7.cs"
 SECTION="Assets/B01Packages/ECONAPPROVED007/Runtime/CanonicalEconomySectionV7.cs"
 NATIVE="Assets/B0123UnitySaveBridge001/Tests/IsolatedSaveWorldNativePlayModeTests.cs"
 EXPECTED_BLOBS={
+ ("econ",SHARED_ECON_FOLDER):"38bd6da78864e817f6c8905aa0805a83528d2a25",
  ("save",CODEC):"b52e511c370f5fca56c74029050844dc8cbb7f9a",
  ("econ",POLICY):"53ebce6c07388dc9c8a8ed79b6de4d3ccbee4773",
  ("econ",SECTION):"d8b71de91db36295b6220e9c4baad71eb54455f6",
@@ -119,6 +121,16 @@ def selected_closure():
                     must(b==selected[path],"SAME_UNITY_PATH_TWO_OWNERS_DIFFER:"+path)
                 selected[path]=b
                 ownership[path]=owner
+    # Critical shared folder meta omitted by earlier W27 intake. It must be
+    # counted once, pinned as an original source, and compared to published R3.
+    # Existing game copy must never be overwritten merely by package install.
+    shared=read(PINS["econ"],SHARED_ECON_FOLDER)
+    must(SHARED_ECON_FOLDER not in selected,"SHARED_META_ALREADY_OWNER")
+    selected[SHARED_ECON_FOLDER]=shared
+    ownership[SHARED_ECON_FOLDER]="econ"
+    must(read(PINS["target"],SHARED_ECON_FOLDER)==shared,
+         "CODEX_GAME_SHARED_PACKAGES_FOLDER_META_CONFLICT")
+    print("B0140_W29_SHARED_B01PACKAGES_META_BYTE_EXACT_WITH_GAME_PASS")
     for owner,paths in DIRECT.items():
         for path in paths:
             must(path not in selected,"DIRECT_SOURCE_PATH_COLLISION:"+path)
@@ -137,8 +149,8 @@ def selected_closure():
         all_guids[g]=path
         owner=ownership[path]
         by_owner[owner]=by_owner.get(owner,0)+1
-    must(by_owner.get("rig")==9 and by_owner.get("econ")==5,
-         "NEW_9_RIG_5_ECON_GUID_COUNT:"+str(by_owner))
+    must(by_owner.get("rig")==9 and by_owner.get("econ")==6,
+         "NEW_9_RIG_6_ECON_INCLUDING_ROOT_GUID_COUNT:"+str(by_owner))
     asmdefs={}
     for path,b in selected.items():
         if path.endswith(".asmdef"):
@@ -211,6 +223,8 @@ def selected_closure():
       "unity_guid_count":len(all_guids),
       "new_rig_guids":9,
       "new_economy_v7_guids":5,
+      "shared_economy_parent_meta_guid":all_guids.get("b01a0001000000000000000000000001"),
+      "target_shared_folder_meta_blob":"38bd6da78864e817f6c8905aa0805a83528d2a25",
       "asmdef_names":asmdefs,
       "producer_exact_original_git_blobs":{
          name+":"+path:expected for (name,path),expected in EXPECTED_BLOBS.items()
