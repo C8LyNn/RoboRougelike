@@ -8,12 +8,15 @@ from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[4]
 GAME="d537b7310979b91df27a08b14d0f1c74d0889089"
-GARAGE="20273c3580079dfb299c30c85a67e76f8d893e7f"
+GARAGE="9634b1e5b4576aca4304d1d5b4c3d01446737650"
 BASE="ed8cf4bcc131688b9a93968a89683d2496586683"
 SCOPE={
- "Assets/R3/R3BuildValidation.cs":"5f3163c68629535fe008ce3e7dd8eb51e910a0ba",
- "Assets/Tests/Editor/GarageEditFreedomTests.cs":"51afabcf5fd03de4e577613bff324d9f485002fb",
+ "Assets/R3/R3BuildValidation.cs":"ba247dd539e58d0cf004b8bb7be270f6e9d5c437",
+ "Assets/Tests/Editor/GarageEditFreedomTests.cs":"efba13d3be821e75e2c4e1798b87955be2ccd3a3",
  "Docs/W29/GARAGE_FUNCTIONAL_SWEEP_GATE.md":"0373d99729e6c045bdb6176ae925b35c52644529",
+ "Docs/W30/GARAGE_BOUNDED_PHYSICS_RECEIPT.md":"ddc7a6904ca1cc1c55e730e977acaf8fcd7adc38",
+ "Tools/B01/Codex/W30/verify_garage.py":"eee4bc719ad840efb370c776f4064d2534ab6b46",
+ ".github/workflows/b01-w30-garage-source.yml":"a6aa40208d5b2a61f36fe9326ea96070c47cff7e",
 }
 REQUIRED={
  "Assets/R3/R3VehicleModel.cs":None,
@@ -36,7 +39,7 @@ def oid(data):
     return hashlib.sha1(b"blob "+str(len(data)).encode()+b"\0"+data).hexdigest()
 
 def show(ref,path):
-    if not re.fullmatch(r"[0-9a-f]{40}",ref) or not path.startswith(("Assets/","Docs/","Tools/")) or ".." in Path(path).parts or "\\" in path:
+    if not re.fullmatch(r"[0-9a-f]{40}",ref) or not path.startswith((".github/","Assets/","Docs/","Tools/")) or ".." in Path(path).parts or "\\" in path:
         raise GateError("unsafe or mutable file ref "+path)
     return git("show",ref+":"+path)
 
@@ -73,8 +76,8 @@ def source_contract(texts):
       "mount_checks_before_inventory_mutation":before(model,"OwnedPlacementError(part.Id,cell,rotation)!=null","inventory.Remove(part);part.Cell=cell"),
       "physical_original_BUILD001_before_sweep":before(build,"BuildPlacementRules.CheckForInstallation(","return FunctionalWeaponPlacementIssue(candidate,probe);"),
       "saw_physics_not_a_projectile":"RotarySawContactMath.IsOnCuttingDisc(" in build and
-                                "Physics.OverlapSphere(muzzle.position,extent" in build,
-      "directional_hard_segment_only":"Physics.SphereCastAll(pivot.position,radius,delta.normalized," in build and
+                                "Physics.OverlapSphereNonAlloc(muzzle.position,extent" in build,
+      "directional_hard_segment_only":"Physics.SphereCastNonAlloc(pivot.position,radius,delta.normalized," in build and
                                      "delta.magnitude" in build,
       "emp_radial_exemption":"candidate.Weapon==R4WeaponKind.EmpEmitter)return null;" in build and
                              "activationGate != null && !activationGate()" in emp,
@@ -92,6 +95,17 @@ def source_contract(texts):
                                     "AddComponent<B01.MapJumpPad001.MapJumpPad>()" in arena and
                                     "ForceMode.VelocityChange" in jump,
       "runtime_probe_uses_actual_game_scaling":"R41PartGeometry.Grid" in build and "Collider" in build,
+      "new_reused_bounded_physics_buffers":"const int FunctionalQueryCapacity=256;" in build and
+                                "readonly Collider[] functionalOverlap" in build and
+                                "readonly RaycastHit[] functionalCast" in build,
+      "saw_full_buffer_failclosed":"if(count>=functionalOverlap.Length)" in build and
+                                "przepełnienie bufora sprawdzania piły" in build,
+      "muzzle_pivot_full_buffer_failclosed":"if(nearCount>=functionalOverlap.Length)" in build and
+                                "przepełnienie bufora osi lufy" in build,
+      "short_barrel_full_buffer_failclosed":"if(castCount>=functionalCast.Length)" in build and
+                                "przepełnienie bufora lufy" in build,
+      "new_native_260_collider_source_fixture_authored":"new GameObject[260]" in tests and
+                                'Does.Contain("przepełnienie")' in tests,
     }
     if not all(policies.values()):
         raise GateError("canonical garage/gameplay source policy RED "+str([k for k,v in policies.items() if not v]))

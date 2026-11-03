@@ -85,6 +85,28 @@ public sealed class GarageEditFreedomTests
         Assert.That(run.VehicleModel.Inventory.Single(p=>p.Id==id).Id,Is.EqualTo(id));
         // Exterior attachment remains available, never disable the saw globally.
         var exterior=new Vector3Int(0,1,4);
+        // Real physical 260-collider stress for the 256-hit fail-closed query.
+        var realPlayer=run.Player.transform;
+        var blade=realPlayer.TransformPoint((Vector3)exterior*.55f+
+            Vector3.up*(.6f*.52f)+Vector3.forward*(1.65f*.52f));
+        var saturation=new GameObject[260];
+        for(int i=0;i<saturation.Length;i++)
+        {
+            var blocker=new GameObject("W30 owner query saturation "+i);
+            blocker.transform.SetParent(realPlayer,false);
+            blocker.transform.position=blade;
+            blocker.AddComponent<BoxCollider>().size=Vector3.one*.02f;
+            saturation[i]=blocker;
+        }
+        Physics.SyncTransforms();
+        var saturated=run.VehicleModel.OwnedPlacementError(id,exterior,default);
+        Assert.That(saturated,Does.Contain("przepełnienie"),
+            "Saturated owner sweep must fail closed, not silently truncate.");
+        Assert.That(run.GarageMount(id,exterior,default),Is.False);
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(beforeWallet));
+        Assert.That(run.VehicleModel.Inventory.Single(p=>p.Id==id).Id,Is.EqualTo(id));
+        foreach(var blocker in saturation){blocker.SetActive(false);Object.Destroy(blocker);}
+        Physics.SyncTransforms();
         Assert.That(run.VehicleModel.OwnedPlacementError(id,exterior,default),Is.Null,
             "Connected exterior physical saw mount must be possible: "+
                 run.VehicleModel.OwnedPlacementError(id,exterior,default));

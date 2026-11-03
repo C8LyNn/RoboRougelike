@@ -17,6 +17,10 @@ namespace RoboRougelike.R3
         readonly Dictionary<string,BuildDefinition> definitions=new Dictionary<string,BuildDefinition>();
         readonly BuildSocketRegistry registry=new BuildSocketRegistry();
         readonly List<GameObject> socketFaces=new List<GameObject>();
+        // No per-frame PhysX query arrays; full buffer means blocked, never permitted.
+        const int FunctionalQueryCapacity=256;
+        readonly Collider[] functionalOverlap=new Collider[FunctionalQueryCapacity];
+        readonly RaycastHit[] functionalCast=new RaycastHit[FunctionalQueryCapacity];
         GameObject sockets;
 
         public static void Bind(R3VehicleAssembly actual,R3VehicleModel canonical)
@@ -102,20 +106,23 @@ namespace RoboRougelike.R3
             if(candidate.Kind!=R3PartKind.Gun)return null;
             // EMP uses area occlusion/teams, not a projectile or rotating disc.
             if(candidate.Weapon==R4WeaponKind.EmpEmitter)return null;
-            var transforms=probe.GetComponentsInChildren<Transform>(true);
-            var muzzle=transforms.FirstOrDefault(t=>
-                t.name=="Wylot"||t.name=="Środek piły");
-            if(muzzle==null)
-                return "Brak fizycznie zdefiniowanego wylotu broni.";
+            var pivot=probe.transform.Find("Obrót broni");
+            if(pivot==null)return "Nie można określić fizycznej osi lufy.";
+            // Existing R41 physical probe hierarchy, not a visual port marker.
+            var muzzle=pivot.Find(candidate.Weapon==R4WeaponKind.RotarySaw?"Środek piły":"Wylot");
+            if(muzzle==null)return "Brak fizycznie zdefiniowanego wylotu broni.";
             if(candidate.Weapon==R4WeaponKind.RotarySaw)
             {
-                // Match the shipped WPN005 disc rather than casting a linear projectile.
                 var config=new RotarySawConfiguration();
                 float extent=Mathf.Sqrt(config.bladeRadius*config.bladeRadius+
                     config.bladeHalfThickness*config.bladeHalfThickness);
-                foreach(var other in Physics.OverlapSphere(muzzle.position,extent,
-                    ~0,QueryTriggerInteraction.Ignore))
+                int count=Physics.OverlapSphereNonAlloc(muzzle.position,extent,
+                    functionalOverlap,~0,QueryTriggerInteraction.Ignore);
+                if(count>=functionalOverlap.Length)
+                    return "Fioletowa strefa: przepełnienie bufora sprawdzania piły (montaż zablokowany).";
+                for(int i=0;i<count;i++)
                 {
+                    var other=functionalOverlap[i];
                     if(other==null||!other.enabled||!other.gameObject.activeInHierarchy||
                         other.transform.IsChildOf(probe.transform)||
                         !other.transform.IsChildOf(transform))continue;
@@ -128,22 +135,29 @@ namespace RoboRougelike.R3
                 }
                 return null;
             }
-            var pivot=transforms.FirstOrDefault(t=>t.name=="Obrót broni");
-            if(pivot==null)return "Nie można określić fizycznej osi lufy.";
             var delta=muzzle.position-pivot.position;
             if(delta.sqrMagnitude<.00001f)return "Nieprawidłowy fizyczny odcinek lufy.";
-            // Hard local barrel only: never block an entire infinite line of fire.
+            // Hard near-barrel clearance only, NOT an infinite shot trajectory.
             const float radius=.035f;
-            foreach(var other in Physics.OverlapSphere(pivot.position,radius,~0,
-                QueryTriggerInteraction.Ignore))
+            int nearCount=Physics.OverlapSphereNonAlloc(pivot.position,radius,
+                functionalOverlap,~0,QueryTriggerInteraction.Ignore);
+            if(nearCount>=functionalOverlap.Length)
+                return "Fioletowa strefa: przepełnienie bufora osi lufy (montaż zablokowany).";
+            for(int i=0;i<nearCount;i++)
+            {
+                var other=functionalOverlap[i];
                 if(other!=null&&other.enabled&&other.gameObject.activeInHierarchy&&
                     other.transform.IsChildOf(transform)&&
                     !other.transform.IsChildOf(probe.transform))
                     return "Fioletowa strefa: oś lufy zaczyna się we własnej części.";
-            foreach(var hit in Physics.SphereCastAll(pivot.position,radius,delta.normalized,
-                delta.magnitude,~0,QueryTriggerInteraction.Ignore))
+            }
+            int castCount=Physics.SphereCastNonAlloc(pivot.position,radius,delta.normalized,
+                functionalCast,delta.magnitude,~0,QueryTriggerInteraction.Ignore);
+            if(castCount>=functionalCast.Length)
+                return "Fioletowa strefa: przepełnienie bufora lufy (montaż zablokowany).";
+            for(int i=0;i<castCount;i++)
             {
-                var collider=hit.collider;
+                var collider=functionalCast[i].collider;
                 if(collider!=null&&collider.enabled&&
                     collider.transform.IsChildOf(transform)&&
                     !collider.transform.IsChildOf(probe.transform))

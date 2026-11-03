@@ -14,11 +14,11 @@ class W30RealGameGarageSourceQA(unittest.TestCase):
         cls.original={p:intake.show(intake.GARAGE,p).decode("utf-8-sig","replace") for p in names}
 
     def test_01_exact_original_three_file_scope_and_blob(self):
-        self.assertEqual(len(intake.test_origins()),3)
+        self.assertEqual(len(intake.test_origins()),6)
 
     def test_02_exact_original_runtime_canonical_checks(self):
         p=intake.source_contract(self.original)
-        self.assertEqual(len(p),14)
+        self.assertEqual(len(p),19)
         self.assertTrue(all(p.values()))
 
     def test_03_changed_original_producer_byte_rejected(self):
@@ -80,5 +80,14 @@ class W30RealGameGarageSourceQA(unittest.TestCase):
             with self.subTest(ref=name):
                 with self.assertRaises(intake.GateError):
                     intake.show(name,"../Assets/R3/R3BuildValidation.cs")
+
+    def test_15_saw_overlap_full_buffer_must_fail_closed(self):
+        self.bad("Assets/R3/R3BuildValidation.cs","if(count>=functionalOverlap.Length)")
+    def test_16_near_barrel_full_buffer_must_fail_closed(self):
+        self.bad("Assets/R3/R3BuildValidation.cs","if(nearCount>=functionalOverlap.Length)")
+    def test_17_muzzle_sweep_full_buffer_must_fail_closed(self):
+        self.bad("Assets/R3/R3BuildValidation.cs","if(castCount>=functionalCast.Length)")
+    def test_18_260_collider_unity_test_source_must_exist(self):
+        self.bad("Assets/Tests/Editor/GarageEditFreedomTests.cs","new GameObject[260]")
 
 if __name__=="__main__": unittest.main()
