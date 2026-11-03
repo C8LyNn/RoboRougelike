@@ -33,7 +33,9 @@ def verify_source(ref,paths):
 def main():
     head=git("rev-parse","HEAD").decode().strip()
     assert git("merge-base","--is-ancestor",BASE,head)==b""
-    pad_paths=git("diff","--name-only","5f06af81e2dd9d877e4300259bb3dd008cb9c9d1",PAD,"--","Assets/B01Packages/MapJumpPad001").decode().splitlines()
+    # Explicit ORIGINAL #810 19-path manifest includes Unity folder .meta paths.
+    # Git diff pathspec alone excludes the adjacent MapJumpPad001.meta root GUID.
+    pad_paths=["Assets/B01Packages/MapJumpPad001.meta","Assets/B01Packages/MapJumpPad001/Editor.meta","Assets/B01Packages/MapJumpPad001/Editor/B01.MapJumpPad001.Editor.asmdef","Assets/B01Packages/MapJumpPad001/Editor/B01.MapJumpPad001.Editor.asmdef.meta","Assets/B01Packages/MapJumpPad001/Editor/MapJumpPadSceneBuilder.cs","Assets/B01Packages/MapJumpPad001/Editor/MapJumpPadSceneBuilder.cs.meta","Assets/B01Packages/MapJumpPad001/README.md","Assets/B01Packages/MapJumpPad001/Runtime.meta","Assets/B01Packages/MapJumpPad001/Runtime/B01.MapJumpPad001.Runtime.asmdef","Assets/B01Packages/MapJumpPad001/Runtime/B01.MapJumpPad001.Runtime.asmdef.meta","Assets/B01Packages/MapJumpPad001/Runtime/MapJumpPad.cs","Assets/B01Packages/MapJumpPad001/Runtime/MapJumpPad.cs.meta","Assets/B01Packages/MapJumpPad001/Tests.meta","Assets/B01Packages/MapJumpPad001/Tests/PlayMode.meta","Assets/B01Packages/MapJumpPad001/Tests/PlayMode/B01.MapJumpPad001.PlayMode.asmdef","Assets/B01Packages/MapJumpPad001/Tests/PlayMode/B01.MapJumpPad001.PlayMode.asmdef.meta","Assets/B01Packages/MapJumpPad001/Tests/PlayMode/MapJumpPadPhysicsTests.cs","Assets/B01Packages/MapJumpPad001/Tests/PlayMode/MapJumpPadPhysicsTests.cs.meta","Assets/B01Packages/MapJumpPad001/manifest.json"]
     assert len(pad_paths)==19, pad_paths
     verify_source(PAD,pad_paths)
     verify_source(EMP,EMP_FILES)
