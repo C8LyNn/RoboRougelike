@@ -13,6 +13,7 @@ using System.Security.Cryptography;
 using System.Text;
 using B01.CanonicalWorldApi001;
 using B01.DetachedSaveContract001;
+using B01.CanonicalR3World001;
 using RoboRougelike.B01.Economy.ApprovedV7;
 using RoboRougelike.B01.Economy.AdmissionW29;
 
@@ -223,13 +224,33 @@ namespace B01.WholeGameEconomy003
             long generation)
         {
             if(world==null||world.Length<1||econ==null||generation<=0||
-                !ColdRestore.TryStage(world,out ColdRestore? staged)||
-                staged==null||staged.Snapshot.RunId!=runId||
-                staged.Snapshot.Generation!=generation||
                 !EconomyV7AdmissionW29.TryAdmit(econ,Identity(generation),out _)||
                 econ.OwnerId!=slotId.ToString("N")||
                 econ.RunId!=runId.ToString(CultureInfo.InvariantCulture)||
                 econ.Generation!=generation)return false;
+            // W33: one ORIGINAL Store accepts one explicitly VERSIONED
+            // dynamic R3 world as a payload, without a second writer.
+            // Never map a full actual R3 vehicle to the 2-slot #556 fixture.
+            if(CanonicalR3WorldCodecV1.IsR3World(world))
+            {
+                if(!CanonicalR3WorldCodecV1.TryDecode(world,
+                    out CanonicalR3SnapshotV1? dynamicWorld)||
+                    dynamicWorld==null||dynamicWorld.RunId!=runId||
+                    dynamicWorld.Generation!=generation||
+                    dynamicWorld.Parts.Count!=econ.Parts.Count)return false;
+                var economicIds=new Dictionary<string,float>(StringComparer.Ordinal);
+                foreach(var p in econ.Parts)
+                    if(!economicIds.TryAdd(p.Id,p.Hp))return false;
+                foreach(var p in dynamicWorld.Parts)
+                    if(!economicIds.TryGetValue(p.Id,out float hp)||hp!=p.Hp)
+                        return false;
+                return true;
+            }
+            // Exact frozen #556 two-rig format preserved for existing SOURCE
+            // fixtures only; NOT a generalization of its frozen ID catalog.
+            if(!ColdRestore.TryStage(world,out ColdRestore? staged)||
+               staged==null||staged.Snapshot.RunId!=runId||
+               staged.Snapshot.Generation!=generation)return false;
             var worldIds=staged.Snapshot.Parts.Select(p=>EconomicPartId(p.Id)).ToArray();
             var economyIds=econ.Parts.Select(p=>p.Id).ToArray();
             return worldIds.Length==economyIds.Length &&
@@ -368,10 +389,18 @@ namespace B01.WholeGameEconomy003
             bool publishAttempted=false;
             try
             {
-                WholeGameResult prior=ReadCore(out long existing,out _,out _);
+                WholeGameResult prior=ReadCore(out long existing,
+                    out byte[] priorWorld,out _);
                 if(prior!=WholeGameResult.Accepted&&prior!=WholeGameResult.Empty)
                 {quarantined=true;return prior;}
                 if(existing!=expectedGeneration)return WholeGameResult.Stale;
+                // Explicit migration is not approved. A previous frozen
+                // B01SV13! cannot silently become a dynamic R3 world or vice
+                // versa within the same slot. Fail without altering bytes.
+                if(prior==WholeGameResult.Accepted&&
+                   CanonicalR3WorldCodecV1.IsR3World(priorWorld)!=
+                   CanonicalR3WorldCodecV1.IsR3World(frozenWorld))
+                    return WholeGameResult.Invalid;
                 byte[] payload=Encode(expectedGeneration+1,frozenWorld,
                     frozenEcon);
                 if(payload.Length>MaxBytes)return WholeGameResult.Invalid;

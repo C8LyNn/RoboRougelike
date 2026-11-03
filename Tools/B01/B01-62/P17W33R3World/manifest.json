@@ -1,0 +1,26 @@
+{
+  "package": "B01-62-P17-W33-DYNAMIC-WORLD-SAME-WRITER-R1",
+  "base_896": "a0282f2de0250d2a8fe421bbe182b4cb6fab2a11",
+  "game_877": "3bd9b159997924dcecb4e1cd1d41137896e5199e",
+  "world_version": "B01R3W01",
+  "legacy_556": "B01SV13!",
+  "outer_writer": "B0162G02",
+  "one_writer": true,
+  "owner_lease": "#729",
+  "world_count_max": 1024,
+  "source_acceptance": "PENDING_FINAL_W34_SHA_CI",
+  "external_native_g1": "NOT_RUN",
+  "r3_actual_game_stage": false,
+  "approval_913": "PENDING",
+  "anti_softlock_834": "PENDING",
+  "release": false,
+  "wave34": {
+    "real_r4_weapon_kinds_0_to_8": true,
+    "one_mounted_rig_ledger_owner": true,
+    "source_os_cases_expected_per_platform": 36,
+    "new_w34_cases": 4,
+    "actual_physics_capture_integrated": false,
+    "actual_unity_native": "NOT_RUN",
+    "owner_913_schema_approval": "PENDING"
+  }
+}

@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 <PropertyGroup><TargetFramework>netstandard2.1</TargetFramework><OutputType>Library</OutputType><LangVersion>9.0</LangVersion><Nullable>enable</Nullable><TreatWarningsAsErrors>true</TreatWarningsAsErrors><NoWarn>CS8618;CS8625</NoWarn><EnableDefaultCompileItems>false</EnableDefaultCompileItems></PropertyGroup>
-<ItemGroup><Compile Include="../P17W28UnityCompatibleWholeGameV3/WholeGameEconomySlotV3.cs"/>
+<ItemGroup><Compile Include="../P17W33R3World/CanonicalR3WorldV1.cs"/><Compile Include="../P17W28UnityCompatibleWholeGameV3/WholeGameEconomySlotV3.cs"/>
 <Compile Include="../P17W28UnityCompatibleWholeGameV3/CanonicalWholeGameSessionV3.cs"/>
 <Compile Include="../P17W29ColdReadV3/CanonicalColdReadV3.cs"/>
 <Compile Include=".source/ApprovedEconomyPolicyV7.cs"/>
