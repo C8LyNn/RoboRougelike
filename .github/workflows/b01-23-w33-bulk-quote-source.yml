@@ -1,0 +1,33 @@
+name: B01-23 W33 ORIGINAL R3 bulk quote physical gate (NOT UNITY)
+on:
+  push:
+    branches:
+      - b01-23/p17w33-physical-bulk-quote-gate-r1
+permissions:
+  contents: read
+jobs:
+  canonical-bulk-quote-source:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2022, ubuntu-24.04]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 8
+          persist-credentials: false
+      - name: Compile ORIGINAL R3 property inside isolated .NET8 source harness
+        shell: bash
+        run: |
+          dotnet --version
+          python Tools/B01/B0123/W33/verify_bulk_quote.py > b0123-w33-source.json
+          python -m json.tool b0123-w33-source.json
+      - name: Save SOURCE-ONLY test receipt, not a Windows Unity build
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: B01-23-W33-R3-bulk-quote-source-${{ matrix.os }}-${{ github.run_id }}
+          path: b0123-w33-source.json
+          if-no-files-found: warn

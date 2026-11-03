@@ -9,6 +9,106 @@ using RoboRougelike.R3;
 
 public sealed class GarageEditFreedomTests
 {
+    // W33: bulk price preview MUST exercise the very same physical
+    // restoration authority that the real GarageRepairAffordable will use.
+    // This test is an original R3 model delegate contract, not a PhysX PASS.
+    [Test] public void BulkQuotePhysicalRejectionDoesNotInventAvailableRepairCost()
+    {
+        var design=new R3VehicleDesign();
+        design.Parts.Add(new R3PartState(Vector3Int.zero,R3PartKind.Core));
+        design.Parts.Add(new R3PartState(new Vector3Int(0,1,0),R3PartKind.Armor,0f));
+        var model=new R3VehicleModel(design);
+        model.Award(50);
+        var original=model.Parts.Single(p=>p.Kind==R3PartKind.Armor);
+        string id=original.Id;
+        int originalScrap=model.Scrap;
+        int inspected=0;
+        var gate=new System.Func<System.Collections.Generic.IReadOnlyList<R3PartState>,bool>(
+            requested=>
+            {
+                inspected++;
+                Assert.That(requested,Has.Count.EqualTo(1));
+                Assert.That(requested[0],Is.SameAs(original),
+                    "Physical authority must receive the REAL canonical part, not a detached copy.");
+                return false;
+            });
+        var setter=typeof(R3VehicleModel).GetMethod("SetRestorationGate",
+            System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+        Assert.That(setter,Is.Not.Null);
+        setter.Invoke(model,new object[]{gate});
+        Assert.That(model.AffordableRepairCost,Is.Zero,
+            "The copy must never quote an owned wreck forbidden by the original physical gate.");
+        Assert.That(inspected,Is.GreaterThan(0));
+        Assert.That(model.Scrap,Is.EqualTo(originalScrap));
+        Assert.That(original.Health,Is.Zero);
+        Assert.That(original.Id,Is.EqualTo(id));
+        Assert.That(model.RepairAffordable(),Is.Zero);
+        Assert.That(model.Scrap,Is.EqualTo(originalScrap));
+        Assert.That(original.Health,Is.Zero);
+    }
+
+    [Test] public void BulkQuoteRechecksCumulativeRealOwnedRestorationBatch()
+    {
+        var design=new R3VehicleDesign();
+        design.Parts.Add(new R3PartState(Vector3Int.zero,R3PartKind.Core));
+        design.Parts.Add(new R3PartState(new Vector3Int(0,1,0),R3PartKind.Armor,0f));
+        design.Parts.Add(new R3PartState(new Vector3Int(0,2,0),R3PartKind.Armor,0f));
+        var model=new R3VehicleModel(design);
+        model.Award(50);
+        var originalDead=model.Parts.Where(p=>p.Kind==R3PartKind.Armor).ToArray();
+        var originalIds=model.Parts.Select(p=>p.Id).ToArray();
+        int originalScrap=model.Scrap;
+        int calls=0;
+        var gate=new System.Func<System.Collections.Generic.IReadOnlyList<R3PartState>,bool>(
+            requested=>
+            {
+                calls++;
+                foreach(var p in requested)
+                    Assert.That(originalDead.Contains(p),Is.True,
+                        "The gate must see real owner IDs and object references.");
+                // First single stage is feasible; two simultaneous recreated
+                // colliders are physically forbidden in this synthetic veto.
+                return requested.Count==1;
+            });
+        var setter=typeof(R3VehicleModel).GetMethod("SetRestorationGate",
+            System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+        Assert.That(setter,Is.Not.Null);
+        setter.Invoke(model,new object[]{gate});
+        var first=model.Parts.First(p=>p.Kind==R3PartKind.Armor);
+        int firstPrice=model.RepairCost(first);
+        int quote=model.AffordableRepairCost;
+        Assert.That(calls,Is.GreaterThanOrEqualTo(2));
+        Assert.That(quote,Is.EqualTo(firstPrice),
+            "A second wreck cannot bypass the first still-prospective physical collider.");
+        Assert.That(model.Scrap,Is.EqualTo(originalScrap));
+        Assert.That(originalDead.All(p=>p.Health==0f),Is.True);
+        Assert.That(model.Parts.Select(p=>p.Id),Is.EqualTo(originalIds));
+    }
+
+    [Test] public void BulkQuoteKeepsPartialHpRepairsImmediateAndOutsideRestoreGate()
+    {
+        var design=new R3VehicleDesign();
+        design.Parts.Add(new R3PartState(Vector3Int.zero,R3PartKind.Core));
+        design.Parts.Add(new R3PartState(new Vector3Int(0,1,0),R3PartKind.Armor,.5f));
+        var model=new R3VehicleModel(design);
+        model.Award(50);
+        var part=model.Parts.Single(p=>p.Kind==R3PartKind.Armor);
+        int expected=model.RepairCost(part);
+        int calls=0;
+        var gate=new System.Func<System.Collections.Generic.IReadOnlyList<R3PartState>,bool>(
+            requested=>{calls++;return false;});
+        typeof(R3VehicleModel).GetMethod("SetRestorationGate",
+            System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic)
+            .Invoke(model,new object[]{gate});
+        Assert.That(model.AffordableRepairCost,Is.EqualTo(expected));
+        Assert.That(calls,Is.Zero,
+            "Partial-HP repair does not instantiate new physical geometry.");
+        int originalScrap=model.Scrap;
+        Assert.That(model.RepairAffordable(),Is.EqualTo(1));
+        Assert.That(part.Health,Is.EqualTo(1f));
+        Assert.That(model.Scrap,Is.EqualTo(originalScrap-expected));
+    }
+
     [Test] public void ModelCanRemoveLastGunAndEveryWheelButCannotDeploy()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
