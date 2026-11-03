@@ -23,7 +23,7 @@ SHA = {
     "RIG": "d94400d95d13db7f27e1533df05c9292d5380431",
     "COLD_R5": "60c73a6f9ed2585cbb9bf7aeaad8c62eef0629cb",
     "PHYS_QA": "e66968408b583404cd50250f53e655ea75a085fc",
-    "GAME_W31": "a0de194fd382830fab4b7d013d204b0697b25078",
+    "GAME_W31": "56c874aeac19d7724d7cddeaabc7a6a4f82c08d4",
     "STRICT_REF": "f5db40bf293fe9582ec7c6fcb3515aeff6fcf937",
 }
 # Exact original Git blob SHA-1, independently measured, no mutable branch checkouts.
