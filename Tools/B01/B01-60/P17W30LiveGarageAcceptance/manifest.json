@@ -1,0 +1,96 @@
+{
+  "package": "B01-60-P17W30-LIVE-GARAGE-G1-001/R1",
+  "owner": "B01-60 INDEPENDENT QA & PLAYTEST",
+  "type": "GAME-BASED NATIVE ACCEPTANCE SOURCE + OPERATOR",
+  "base_active_selected_game": {
+    "pr": 877,
+    "sha": "a0de194fd382830fab4b7d013d204b0697b25078"
+  },
+  "game_parent": {
+    "pr": 873,
+    "sha": "d537b7310979b91df27a08b14d0f1c74d0889089"
+  },
+  "upstream_w27": {
+    "pr": 824,
+    "sha": "ed8cf4bcc131688b9a93968a89683d2496586683"
+  },
+  "selected_saw": {
+    "pr": 861,
+    "sha": "de817749393f5a9a6691f0856dde1b3da1b52068",
+    "status": "NOT_INCLUDED_NO_DOUBLE_#863_OR_#861"
+  },
+  "selected_save": {
+    "pr": 826,
+    "sha": "99fb08619c78b3834bb4c0450499babf991f218a",
+    "status": "NOT_INCLUDED_REQUIRES_BINDER_NATIVE"
+  },
+  "current_game_product_blobs": {
+    "Assets/R3/R3BuildValidation.cs": "996a2de80039103538700020cca38bc0ede6076a",
+    "Assets/R3/R3GarageView.cs": "1976a19516905be63259109ec1af0a92ef52d6f4",
+    "Assets/R3/R3VehicleModel.cs": "1d0f378dc598e08b3d7c16975f419d84231511bb",
+    "Assets/Tests/Editor/GarageEditFreedomTests.cs": "6c59d1ab5f58225e44a97b3a7b434a228159649a",
+    "Assets/R5/R5Arena.cs": "3ee9d05ffdccbd3dea991f80223afeacd91e3b95",
+    "Assets/Tests/Editor/W29LiveArenaJumpPadTests.cs": "a18552c147aaed91ee44823b0667a86addf8be8f",
+    "Assets/Tests/Editor/RRLW6EmpTests.cs": "95778639d0024e248d0053e5b38c20135290aa3d",
+    "Assets/RoboRougelikeMechanics/WPN006EMP/Tests/PlayMode/EmpEmitterPhysicsTests.cs": "e4c949da2b6063b94dc9c29cf06e9619c911ba90",
+    "Assets/R3/R3RestorationValidation.cs": "0d31d7201957d36b637a9be58574ca6c4c5d1dbf"
+  },
+  "native_suite_expectations": [
+    {
+      "platform": "EditMode",
+      "suite": "GarageEditFreedomTests",
+      "expected": 13
+    },
+    {
+      "platform": "EditMode",
+      "suite": "W30B0160GarageDynamicGateTests",
+      "expected": 2
+    },
+    {
+      "platform": "EditMode",
+      "suite": "W29LiveArenaJumpPadTests",
+      "expected": 2
+    },
+    {
+      "platform": "EditMode",
+      "suite": "RRLW6EmpPhysicalTests",
+      "expected": 12
+    },
+    {
+      "platform": "PlayMode",
+      "suite": "RoboRougelike.Mechanics.EMP.Tests.EmpEmitterPhysicsTests",
+      "expected": 22
+    }
+  ],
+  "unity_native_total": 51,
+  "new_actual_unity_tests": [
+    "LiveOwnedBlockerMovedIntoSawDisc_RefusesWithoutScrapOrIdLoss_ThenRecovers",
+    "RotateRealSawGhost_UsesSameAuthoritativePlacementGateAndDoesNotMutateOnReject"
+  ],
+  "unique_unity_guid": "ab160030a28b4f99bd96e017b4d36250",
+  "new_add_only_files": [
+    "Assets/Tests/Editor/W30B0160GarageDynamicGateTests.cs",
+    "Assets/Tests/Editor/W30B0160GarageDynamicGateTests.cs.meta",
+    "Tools/B01/B01-60/P17W30LiveGarageAcceptance/verify.py",
+    "Tools/B01/B01-60/P17W30LiveGarageAcceptance/test_verify.py",
+    "Tools/B01/B01-60/P17W30LiveGarageAcceptance/Invoke-B0160W30Native.ps1",
+    "Tools/B01/B01-60/P17W30LiveGarageAcceptance/README.md",
+    "Tools/B01/B01-60/P17W30LiveGarageAcceptance/manifest.json",
+    ".github/workflows/b01-60-p17w30-live-garage-acceptance.yml"
+  ],
+  "source_ci": "PENDING_FINAL_EXACT_HEAD_GITHUB_ACTIONS",
+  "formal_g0": "PENDING_INDEPENDENT",
+  "native_unity_g1": "NOT_RUN",
+  "windows_player": "NOT_RUN",
+  "save_game": "NOT_INCLUDED",
+  "softlock": "#834_OWNER_DECISION_PENDING",
+  "qa_accepted": false,
+  "game_integration": false,
+  "release": false,
+  "run_on_owner_pc": false,
+  "merge": false,
+  "revert": "Discard only 8 added W30 B01-60 QA paths, preserve exactly #877/#873/#861 producers, active Codex worktree, original player Save",
+  "selected_garage_buffer": "selected actual Codex #877 W30 256-hit NonAlloc physics, 260 collider original authored stress, native NOT_RUN",
+  "selected_garage_revision": "latest #877 adds 2 original game-authored EditMode scenarios new Armor crossing existing Saw and invalid legacy Saw repair; 13 existing Garage cases, original native NOT_RUN",
+  "dedup": "overlapping B01-40 #892 moving Rigidbody fixture; B01-60 #884 reverse-mount and B01-23 #887 owner fix. Preserve unique yaw/49-case runner; no duplicate test import without peer selection"
+}
