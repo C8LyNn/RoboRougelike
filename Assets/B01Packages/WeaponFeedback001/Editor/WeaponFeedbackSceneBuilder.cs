@@ -32,7 +32,7 @@ namespace B01.WeaponFeedback001.Editor{
    var impactGo=new GameObject("ImpactSparks_VisualOnly");
    var impactPs=impactGo.AddComponent<ParticleSystem>();
    var impactMain=impactPs.main;impactMain.loop=false;impactMain.duration=.2f;impactMain.startLifetime=.25f;
-   impactMain.playOnAwake=false;
+   impactMain.playOnAwake=false;impactMain.useUnscaledTime=true;
    PrefabUtility.SaveAsPrefabAsset(impactGo,ImpactPath);
    Object.DestroyImmediate(impactGo);
    AssetDatabase.Refresh();
@@ -53,7 +53,7 @@ namespace B01.WeaponFeedback001.Editor{
    var muzzleEmission=muzzlePs.emission;muzzleEmission.rateOverTime=0f;
    var muzzleBurst=muzzlePs.emission;muzzleBurst.SetBursts(new[]{new ParticleSystem.Burst(0f,8)});
    var main=muzzlePs.main;main.loop=false;main.duration=.12f;main.startLifetime=.08f;
-   main.playOnAwake=false;
+   main.playOnAwake=false;main.useUnscaledTime=true;
    muzzlePs.Stop(true,ParticleSystemStopBehavior.StopEmittingAndClear);
    var flash=muzzle.AddComponent<Light>();flash.range=3f;flash.intensity=2f;flash.enabled=false;
    var smokeGo=new GameObject("DamageSmoke_VisualOnly");
@@ -62,7 +62,7 @@ namespace B01.WeaponFeedback001.Editor{
    var smoke=smokeGo.AddComponent<ParticleSystem>();
    var smokeMain=smoke.main;smokeMain.loop=true;smokeMain.startLifetime=.7f;
    smokeMain.startSpeed=.3f;smokeMain.startSize=.15f;
-   smokeMain.playOnAwake=false;
+   smokeMain.playOnAwake=false;smokeMain.useUnscaledTime=true;
    var smokeEmission=smoke.emission;smokeEmission.enabled=false;
    smoke.Stop(true,ParticleSystemStopBehavior.StopEmittingAndClear);
    var visual=weapon.AddComponent<WeaponFeedbackVisual>();
