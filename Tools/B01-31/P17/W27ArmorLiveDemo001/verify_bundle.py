@@ -70,7 +70,17 @@ def inspect(entries,repo):
     need(b"EditorUtility.DisplayDialog(" in scene and
          b"NewSceneSetup.EmptyScene, NewSceneMode.Additive" in scene and
          b"AssetDatabase.LoadAssetAtPath<GameObject>(W24Prefab)" in scene and
-         b"PrefabUtility.InstantiatePrefab(" in scene and
+         # W29 native scene now requires a detached independent prefab
+         # copy BEFORE stripping visual-only physics. Do not weaken this to
+         # "any instantiation" or blindly accept the old linked instance.
+         b"CreateDetachedVisualClone(prefab, created)" in scene and
+         b"Object.Instantiate(originalPrefab)" in scene and
+         b"PrefabUtility.IsPartOfPrefabInstance(clone)" in scene and
+         b"PrefabUtility.UnpackPrefabInstance(" in scene and
+         b"PrefabUnpackMode.Completely" in scene and
+         b"InteractionMode.AutomatedAction" in scene and
+         b"if (!StripVisualOnlyPhysics(visual))" in scene and
+         b"GetComponentsInChildren<MonoBehaviour>(true)" in scene and
          b"SaveScene(created, Output" in scene and
          b"File.Exists(Output)" in scene and
          b'File.Exists(Output + ".meta")' in scene,
