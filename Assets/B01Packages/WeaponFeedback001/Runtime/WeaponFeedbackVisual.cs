@@ -21,6 +21,7 @@ namespace B01.WeaponFeedback001
         readonly List<ParticleSystem> impacts = new List<ParticleSystem>();
         readonly List<float> impactExpiry = new List<float>();
         int nextImpactIndex;
+        int EffectiveImpactCapacity => Mathf.Clamp(maximumImpactInstances, 1, 32);
         Vector3 restLocalPosition;
         float lightLeft;
         bool pivotSet;
@@ -77,7 +78,7 @@ namespace B01.WeaponFeedback001
             // one new GameObject per hit (or exceed the configured budget).
             ParticleSystem copy;
             int slot;
-            if(impacts.Count < maximumImpactInstances)
+            if(impacts.Count < EffectiveImpactCapacity)
             {
                 copy = Instantiate(impactPrefab, position,
                     Quaternion.FromToRotation(Vector3.up, normal), null);
@@ -99,10 +100,10 @@ namespace B01.WeaponFeedback001
                 copy.transform.SetPositionAndRotation(position,
                     Quaternion.FromToRotation(Vector3.up, normal));
             }
-            nextImpactIndex = (slot + 1) % maximumImpactInstances;
+            nextImpactIndex = (slot + 1) % EffectiveImpactCapacity;
             copy.gameObject.SetActive(true);
             copy.Play(true);
-            impactExpiry[slot] = Time.time + impactLifetimeSeconds;
+            impactExpiry[slot] = Time.unscaledTime + impactLifetimeSeconds;
         }
         // 0..1 comes from game health; this class never writes HP.
         public void SetWeaponDamageVisual(float fraction)
@@ -122,7 +123,7 @@ namespace B01.WeaponFeedback001
         {
             // Expire effects without destroying their pooled GameObjects.
             for (int i = 0; i < impacts.Count; i++)
-                if (impacts[i] && impactExpiry[i] > 0f && Time.time >= impactExpiry[i])
+                if (impacts[i] && impactExpiry[i] > 0f && Time.unscaledTime >= impactExpiry[i])
                 {
                     impacts[i].Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
                     impacts[i].gameObject.SetActive(false);
@@ -130,12 +131,12 @@ namespace B01.WeaponFeedback001
                 }
             if(muzzleLight&&muzzleLight.enabled)
             {
-                lightLeft-=Time.deltaTime;
+                lightLeft-=Time.unscaledDeltaTime;
                 if(lightLeft<=0f)muzzleLight.enabled=false;
             }
             if(recoilVisualPivot&&pivotSet)
                 recoilVisualPivot.localPosition=Vector3.Lerp(recoilVisualPivot.localPosition,
-                    restLocalPosition,1f-Mathf.Exp(-recoilRecoverySpeed*Time.deltaTime));
+                    restLocalPosition,1f-Mathf.Exp(-recoilRecoverySpeed*Time.unscaledDeltaTime));
         }
         void OnDisable()
         {
