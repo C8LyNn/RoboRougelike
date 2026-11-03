@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <Nullable>disable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="LoanerReachability.cs" />
+    <Compile Include="$(ExactPolicy)" Link="RealOwnerV7Policy.cs" />
+    <Compile Include="$(ExactSection)" Link="RealOwnerV7BinarySection.cs" />
+  </ItemGroup>
+</Project>
