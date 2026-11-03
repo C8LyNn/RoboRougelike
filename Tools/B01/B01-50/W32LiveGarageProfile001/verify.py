@@ -64,8 +64,25 @@ def check_fixture(source):
     if "yield return null" not in source:
         raise ValueError("No frame retirement between temporary geometry probes")
 
+def check_ci_workflow(workflow):
+    if "on:\\n  pull_request:" not in workflow.replace("\\r\\n", "\\n"):
+        raise ValueError("Duplicate or absent source-only PR trigger")
+    if re.search(r"(?m)^  push:\\s*$", workflow):
+        raise ValueError("W34 must not duplicate push+pull_request runner jobs")
+    for required in (
+        "cancel-in-progress: true",
+        "actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+        "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+        "matrix.os",
+    ):
+        if required not in workflow:
+            raise ValueError("Missing pinned/original job efficiency requirement: " + required)
+    if "actions/checkout@v4" in workflow or "actions/upload-artifact@v4" in workflow:
+        raise ValueError("Mutable Action tag forbidden in B01-50 W34 CI")
+
 def run():
     script=(ROOT/NATIVE).read_text(encoding="utf-8")
+    check_ci_workflow((ROOT/WORKFLOW).read_text(encoding="utf-8"))
     check_fixture(script)
     meta=(ROOT/META).read_text(encoding="utf-8")
     if re.findall(r"(?m)^guid: ([0-9a-f]{32})\s*$", meta) != [GUID]:
@@ -114,6 +131,7 @@ class NativeFixtureNegativeTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.source=(ROOT/NATIVE).read_text(encoding="utf-8")
+        cls.workflow=(ROOT/WORKFLOW).read_text(encoding="utf-8")
     def check_rejects(self, a,b):
         self.assertIn(a,self.source)
         with self.assertRaises(ValueError):
@@ -144,8 +162,21 @@ class NativeFixtureNegativeTests(unittest.TestCase):
         self.check_rejects("view.PreviewValid", "fakePreviewValid")
     def test_no_missing_visual_measurements(self):
         self.check_rejects("B0150_W34_REAL_R3_HEAVY_GARAGE_VISUAL", "UNSUPPORTED_FAKE_METRIC")
+    def test_no_duplicate_push_event(self):
+        self.assertIn("  pull_request:", self.workflow)
+        with self.assertRaises(ValueError):
+            check_ci_workflow(self.workflow.replace("  pull_request:", "  push:"))
+    def test_no_mutable_checkout_tag(self):
+        with self.assertRaises(ValueError):
+            check_ci_workflow(self.workflow.replace(
+                "actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+                "actions/checkout@v4"))
+    def test_no_removed_stale_run_cancellation(self):
+        with self.assertRaises(ValueError):
+            check_ci_workflow(self.workflow.replace("cancel-in-progress: true", "cancel-in-progress: false"))
     def test_original_valid_source(self):
         check_fixture(self.source)
+        check_ci_workflow(self.workflow)
 
 if __name__ == "__main__":
     if "--selftest" in sys.argv:
