@@ -37,8 +37,9 @@ def read(root, relative):
 
 def verify_manifest(root):
     d=json.loads((root/PKG/'manifest.json').read_text(encoding='utf-8'))
-    require(d['package_id']=='B01-12-GARAGE-SPATIAL-ZONES-001/R1','package identity')
+    require(d['package_id']=='B01-12-GARAGE-SPATIAL-ZONES-001/R2','package identity')
     require(d['base_commit']=='e03d36f2b86f8c73a067e574b67237a8921f622a','baseline pin')
+    require(d['parent_source_commit']=='c267bebbd65337fa41db65185448da670f783d39','R1 parent must remain immutable')
     require(len(d['files'])>=9,'missing files')
     for name, entry in d['files'].items():
         b=read(root,name)
@@ -86,6 +87,14 @@ def verify_semantics(root):
         require(not re.search(pattern,src),f'forbidden gameplay/physics mutation: {pattern}')
     require('Collider' in src and 'DrawMesh' in src,'missing mesh-only description')
     require('MaxBoxes=256' in src,'volume bound absent')
+    require('ReservedCandidateBoxes=4' in src and 'BackgroundBudget=MaxBoxes-ReservedCandidateBoxes' in src,'no wide candidate priority')
+    require('candidate:true' in src and 'candidate ? MaxBoxes : BackgroundBudget' in src,'candidate reserve ineffective')
+    require('DestroyImmediate(primitive)' in src,'temporary Editor primitive may leak')
+    require('rendererScratch' in src and 'transformScratch' in src and
+            'GetComponentsInChildren(true,rendererScratch)' in src and
+            'GetComponentsInChildren(true,transformScratch)' in src,'per-frame GetComponents arrays')
+    require('if(source.HasTarget)' in src and 'source.Tool!=R41GarageTool.Mount)return' in src,
+            'idle readout should stay visible without phantom candidate')
     require('=> hasTarget&&placementIssue==null' in src,'preview validity must use R3 authority')
     require('public bool SourceValidated => visible&&garage!=null&&garage.PreviewValid' in src,'host-controlled acceptance lost')
     require('return' in src,'source invalid')

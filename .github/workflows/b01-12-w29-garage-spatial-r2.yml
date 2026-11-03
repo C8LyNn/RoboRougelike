@@ -1,0 +1,52 @@
+name: B01-12 W29 Garage Spatial R2 source regression
+on:
+  push:
+    paths:
+      - 'Assets/B01UserExperience/B0112GarageSpatialW28/**'
+      - 'Assets/Tests/Editor/B0112GarageSpatialW28Tests.cs'
+      - 'Tools/B01/B01-12/P17W28GarageSpatial/**'
+      - '.github/workflows/b01-12-w29-garage-spatial-r2.yml'
+  pull_request:
+    paths:
+      - 'Assets/B01UserExperience/B0112GarageSpatialW28/**'
+      - 'Assets/Tests/Editor/B0112GarageSpatialW28Tests.cs'
+      - 'Tools/B01/B01-12/P17W28GarageSpatial/**'
+      - '.github/workflows/b01-12-w29-garage-spatial-r2.yml'
+permissions:
+  contents: read
+jobs:
+  w29-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Actual original R1 to R2 source regression and immutable W27 API
+        run: |
+          python Tools/B01/B01-12/P17W28GarageSpatial/test_source.py --require-w27
+          python Tools/B01/B01-12/P17W28GarageSpatial/test_w29.py
+      - name: Both guards must reject mutated producer code
+        shell: bash
+        run: |
+          set -euo pipefail
+          tmp="${RUNNER_TEMP}/b0112w29t"
+          mkdir -p "$tmp"
+          cp -R Assets "$tmp/Assets"
+          mkdir -p "$tmp/Tools/B01/B01-12" "$tmp/.github/workflows"
+          cp -R Tools/B01/B01-12/P17W28GarageSpatial "$tmp/Tools/B01/B01-12/P17W28GarageSpatial"
+          cp .github/workflows/b01-12-w28-garage-spatial.yml .github/workflows/b01-12-w29-garage-spatial-r2.yml "$tmp/.github/workflows/"
+          printf X >> "$tmp/Assets/B01UserExperience/B0112GarageSpatialW28/B0112GarageSpatialOverlay.cs"
+          set +e
+          python Tools/B01/B01-12/P17W28GarageSpatial/test_source.py --root "$tmp"
+          code=$?
+          set -e
+          test "$code" -eq 2
+      - name: Native Unity explicitly not run
+        run: echo 'UNITY_EDITOR=NOT_RUN UNITY_EDITMODE=NOT_RUN UNITY_PLAYMODE=NOT_RUN WINDOWS_PLAYER=NOT_RUN'
