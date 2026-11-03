@@ -189,6 +189,41 @@ namespace RoboRougelike.Weapons.RotarySaw.Tests
             Assert.AreEqual(0f,weak.TotalDamage);
             Assert.AreEqual(0f,hard.TotalDamage);
         }
+        // W29: an OWN-GEOMETRY broadphase overflow must remain visible in
+        // OverflowedLastTick, even though the legacy DAMAGE broadphase is skipped.
+        [UnityTest] public IEnumerator OwnerOverlapOverflowFailsClosedAndRecoversWithDiagnostic()
+        {
+            SetupSaw();
+            config.maxOverlapHits = 4;
+            config.heatPerSecondAtFullRpm = 18f;
+            saw.Configure(config);
+            var target = Target(new Vector3(0f, 0f, -.55f));
+            var owned = new GameObject[4];
+            for (int i = 0; i < owned.Length; i++)
+            {
+                owned[i] = Make("W29 owner buffer saturator " + i);
+                owned[i].transform.SetParent(owner.transform, false);
+                owned[i].transform.localPosition = new Vector3(0f, (i - 1.5f) * .1f, .4f);
+                owned[i].AddComponent<BoxCollider>().size = Vector3.one * .2f;
+            }
+            Physics.SyncTransforms();
+            yield return new WaitForFixedUpdate();
+            Assert.IsTrue(saw.OverflowedLastTick,
+                "fail-closed owner broadphase saturation must retain the public overflow diagnostic");
+            Assert.IsTrue(saw.OwnGeometryBlockedLastTick);
+            Assert.AreEqual(0f, saw.Motor.Rpm);
+            Assert.AreEqual(0f, saw.Motor.Heat);
+            Assert.AreEqual(0f, target.TotalDamage);
+
+            for (int i = 0; i < owned.Length; i++) owned[i].SetActive(false);
+            Physics.SyncTransforms();
+            yield return new WaitForFixedUpdate();
+            Assert.IsFalse(saw.OverflowedLastTick, "diagnostic must reset after real clearance");
+            Assert.IsFalse(saw.OwnGeometryBlockedLastTick);
+            Assert.Greater(saw.Motor.Rpm, 0f);
+            Assert.Greater(target.TotalDamage, 0f, "motor must still cut an external contact after the obstruction clears");
+        }
+
         [UnityTest] public IEnumerator OverlapOverflowDoesNotPartiallyDamage()
         {
             SetupSaw(); config.maxOverlapHits=4; saw.Configure(config);
