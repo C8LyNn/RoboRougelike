@@ -182,6 +182,16 @@ Test("enable_after_disable_reobserves_new_debris", () => Case(f => {
     Must(f.Budget.TrackedCount==1 && f.Budget.ActiveEmitters==1,"reenabled component not subscribed");
     Must(later.GetComponent<DetachedModuleVfxController>()?.EmissionRate>0,"new debris missing visuals");
 }));
+Test("ineffective_below_vfx_minimum_does_not_claim_active_emitter", () => Case(f => {
+    f.Budget.Configure(1, .2f, .25f);
+    var slow=f.Add(1f);
+    f.Budget.RefreshNow();
+    var emitter=slow.GetComponent<DetachedModuleVfxController>();
+    Must(emitter!=null,"selected body should request source VFX once");
+    Must(emitter.EmissionRate==0f,"source VFX should emit zero below its actual threshold");
+    Must(!emitter.Detached,"ineffective lease should be cancelled to avoid phantom detached emitter");
+    Must(f.Budget.ActiveEmitters==0,"counting invisible VFX as active");
+}));
 string receipt=null;
 for (int i=0;i<args.Length-1;i++) if(args[i]=="--receipt")receipt=args[i+1];
 var report=new {

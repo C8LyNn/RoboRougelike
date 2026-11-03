@@ -1,4 +1,4 @@
-name: B01-50 W29 real R3 debris visual lazy lease original adapter RED to GREEN
+name: B01-50 W30 R3 debris VFX invisible lease correction original source RED to GREEN
 on:
   pull_request:
     paths:
@@ -9,7 +9,7 @@ on:
 permissions:
   contents: read
 jobs:
-  actual-original-w28-red-w29-green:
+  original-w28-and-w29-red-w30-green:
     strategy:
       fail-fast: false
       matrix:
@@ -23,7 +23,7 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
-      - name: Audit original 7 Git blob pins, unchanged 3 Unity GUID and original in-game R3/VFX event ABI
+      - name: Audit original 8 Git blob pins, unchanged 3 Unity GUID and original in-game R3/VFX event ABI
         shell: bash
         run: |
           set -euo pipefail
@@ -63,10 +63,10 @@ jobs:
           assert 'void SetDetachedMotion(bool detached, float speedMetersPerSecond)' in vfx
           assert 'R3Debris.Separated += Observe' in runtime
           assert runtime.count('GetComponent<Rigidbody>()')==1
-          assert native.count('[UnityTest]')==6
+          assert native.count('[UnityTest]')==7
           assert 'body.linearVelocity.sqrMagnitude' in runtime
           print('ORIGINAL_W29_GIT_BLOB_PINS 8/8 PASS; 3 original Unity GUID retained')
-          print('ORIGINAL_W29_NATIVE_PLAYMODE_SOURCES 6 PRESENT ONLY; NATIVE_UNITY_NOT_RUN')
+          print('ORIGINAL_W30_NATIVE_PLAYMODE_SOURCES 7 PRESENT ONLY; NATIVE_UNITY_NOT_RUN')
           PY
       - name: Compile immutable original W28 MonoBehaviour and prove SIX actual source RED
         shell: bash
@@ -92,13 +92,36 @@ jobs:
             'cache_rigidbody_component_out_of_refresh',
             'budget_zero_adds_no_visual_components',
             'unchosen_debris_has_no_repeated_vfx_property_writes',
-            'late_vfx_allocation_after_fastest_retirement']
-          assert r['total']==21 and r['passed']==15 and r['failed']==6, r
+            'late_vfx_allocation_after_fastest_retirement',
+            'ineffective_below_vfx_minimum_does_not_claim_active_emitter']
+          assert r['total']==22 and r['passed']==15 and r['failed']==7, r
           assert sorted(r['failures'])==sorted(expect),r['failures']
           assert r['nativeUnity']==r['nativePhysX']=='NOT_RUN'
-          print('W28_EXACT_ORIGINAL_ADAPTER_RED_PROVEN 15/21 pass; SIX genuine source regressions')
+          print('W28_EXACT_ORIGINAL_ADAPTER_RED_PROVEN 15/22 pass; SEVEN genuine source regressions')
           PY
-      - name: Compile corrected ACTUAL game MonoBehaviour R2 and require 21/21 original CSharp source GREEN
+      - name: Compile immutable ORIGINAL W29 R2 product source and prove NEW strict VFX threshold RED
+        shell: bash
+        run: |
+          set -euo pipefail
+          root=Tools/B01/B01-50/W29DebrisSparkBudgetR2/tests
+          git fetch --no-tags origin 0a91b7cb929178b01ad99e5a8a0c7e09cf342b3a
+          git show 0a91b7cb929178b01ad99e5a8a0c7e09cf342b3a:Assets/B01Performance/B0150DebrisSparkBudget001/Runtime/B0150DetachedDebrisSparkBudget.cs > "$root/original_w29_adapter.cs"
+          test "$(git hash-object --no-filters "$root/original_w29_adapter.cs")" = 3534984ed645364b4b50a9d2f1ae91270d3ce84b
+          dotnet clean -c Release "$root/UnityAdapterOriginal.Tests.csproj" >/dev/null
+          set +e
+          AdapterSource=original_w29_adapter.cs dotnet run -c Release --project "$root/UnityAdapterOriginal.Tests.csproj" -- --receipt ci-evidence/w29_exact_original_expected_RED.json 2>&1 | tee ci-evidence/w29_exact_original_expected_RED.log
+          rc=$?
+          set -e
+          test "$rc" -eq 1 || { echo "W29_STRICT_VISUAL_RED_NOT_REPRODUCED exit=$rc"; exit 1; }
+          python - <<'PY'
+          import json
+          r=json.load(open("ci-evidence/w29_exact_original_expected_RED.json"))
+          assert r['total']==22 and r['passed']==21 and r['failed']==1, r
+          assert r['failures']==['ineffective_below_vfx_minimum_does_not_claim_active_emitter'],r
+          assert r['nativeUnity']=='NOT_RUN'
+          print('W29_EXACT_ORIGINAL_PRODUCT_VISUAL_PHANTOM_RED_PROVEN 21/22 PASS 1 EXPECTED RED')
+          PY
+      - name: Compile corrected ACTUAL game MonoBehaviour R3 and require 22/22 original CSharp source GREEN
         shell: bash
         run: |
           set -euo pipefail
@@ -108,11 +131,11 @@ jobs:
           python - <<'PY'
           import json
           r=json.load(open("ci-evidence/w29_corrected_GREEN.json"))
-          assert r['total']==r['passed']==21 and r['failed']==0,r
+          assert r['total']==r['passed']==22 and r['failed']==0,r
           assert r['originalUnityFacingSource'] is True
           assert r['nativeUnity']==r['nativePhysX']=='NOT_RUN'
           assert r['nativeGpu']=='NOT_MEASURED'
-          print('W29_CORRECTED_ORIGINAL_UNITY_FACING_ADAPTER 21/21 CSharp SOURCE_PASS; NATIVE_NOT_RUN')
+          print('W30_CORRECTED_ORIGINAL_UNITY_FACING_ADAPTER 22/22 CSharp SOURCE_PASS; NATIVE_NOT_RUN')
           PY
           git rev-parse HEAD > ci-evidence/source_commit_sha.txt
           sha256sum Assets/B01Performance/B0150DebrisSparkBudget001/Runtime/B0150DetachedDebrisSparkBudget.cs > ci-evidence/original_adapter_sha256.txt
@@ -120,7 +143,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: B01-50-W29-DEBRISLAZY-${{ matrix.os }}-${{ github.run_id }}
+          name: B01-50-W30-VFX-LEASE-${{ matrix.os }}-${{ github.run_id }}
           path: ci-evidence/
           if-no-files-found: warn
           retention-days: 14

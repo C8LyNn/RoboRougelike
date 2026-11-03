@@ -147,8 +147,18 @@ namespace RoboRougelike.B01Performance
                     {
                         float speed = Mathf.Sqrt(speeds[i]);
                         emitter.SetDetachedMotion(true, speed);
-                        wasEmitting[i] = true;
-                        ++visibleCount;
+                        // VFX001 may have a stricter per-emitter minimum speed
+                        // than this controller's selection threshold. Never count
+                        // an invisible lease as an active emitting particle effect.
+                        // Clear IsDetached immediately on an ineffective request.
+                        if (emitter.EmissionRate > 0f)
+                        {
+                            wasEmitting[i] = true;
+                            ++visibleCount;
+                            continue;
+                        }
+                        emitter.SetDetachedMotion(false, 0f);
+                        wasEmitting[i] = false;
                         continue;
                     }
                 }
