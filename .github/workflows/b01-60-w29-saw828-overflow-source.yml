@@ -1,0 +1,61 @@
+name: B01-60 W29 original #828 saw owner overflow diagnostic regression — SOURCE ONLY
+on:
+  push:
+    branches:
+      - qa/b01-60-p17w29-saw828-overflow-diagnostic-r1
+    paths:
+      - 'Assets/RoboRougelikeMechanics/WPN005RotarySaw/Runtime/RotarySawModule.cs'
+      - 'Assets/RoboRougelikeMechanics/WPN005RotarySaw/Tests/PlayMode/B0160W29SawOwnerQueryOverflowTests.cs'
+      - 'Assets/RoboRougelikeMechanics/WPN005RotarySaw/Tests/PlayMode/B0160W29SawOwnerQueryOverflowTests.cs.meta'
+      - 'Tools/B01/B01-60/P17W29SawOverflow/**'
+      - '.github/workflows/b01-60-w29-saw828-overflow-source.yml'
+  pull_request:
+    paths:
+      - 'Assets/RoboRougelikeMechanics/WPN005RotarySaw/Runtime/RotarySawModule.cs'
+      - 'Assets/RoboRougelikeMechanics/WPN005RotarySaw/Tests/PlayMode/B0160W29SawOwnerQueryOverflowTests.cs'
+      - 'Assets/RoboRougelikeMechanics/WPN005RotarySaw/Tests/PlayMode/B0160W29SawOwnerQueryOverflowTests.cs.meta'
+      - 'Tools/B01/B01-60/P17W29SawOverflow/**'
+      - '.github/workflows/b01-60-w29-saw828-overflow-source.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-original-codex-828-one-site-source-repair:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2025, ubuntu-24.04]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Exact original #828 proof that safety overflow diagnostic fix does not disable owner protection
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W29SawOverflow/verify_source.py 2>&1 | tee w29-saw828-original-source.log
+          grep -F 'B0160_W29_REAL_ORIGINAL_828_OVERFLOW_SOURCE_ONE_FIX_PASS' w29-saw828-original-source.log
+          grep -F 'B0160_W29_EXISTING_R3_SAW_FIXTURE_AND_6_GIT_PATHS_UNMODIFIED_PASS' w29-saw828-original-source.log
+          grep -F 'B0160_W29_ACTUAL_UNITY_PHYSX_OVERFLOW_1_NATIVE_TEST_AUTHORED_ONLY_PASS' w29-saw828-original-source.log
+          grep -F 'B0160_W29_THREE_ACTUAL_FAIL_CLOSED_SOURCE_MUTANTS_REJECTED_PASS' w29-saw828-original-source.log
+          grep -F 'B0160_W29_SOURCE_ONLY_PASS_UNITY_G1_AND_WINDOWS_PLAYER_NOT_RUN' w29-saw828-original-source.log
+      - name: Confirm original #828 exact Unity native regression is preserved unchanged (not run)
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse 887fd18bf0a518ee24776c660f5efa6e3a0491d8:Assets/RoboRougelikeMechanics/WPN005RotarySaw/Runtime/RotarySawModule.cs)" = bb58273eaa756e1df5d98ab64111527c87576656
+          test "$(git rev-parse HEAD:Assets/RoboRougelikeMechanics/WPN005RotarySaw/Runtime/RotarySawModule.cs)" = 06715ac2dc18f8a8c926895d40d0a54d7c3c91ca
+          grep -F 'OverlapOverflowDoesNotPartiallyDamage()' Assets/RoboRougelikeMechanics/WPN005RotarySaw/Tests/PlayMode/RotarySawPhysicsTests.cs
+          echo 'B0160_W29_EXISTING_ORIGINAL_UNITY_PLAYMODE_PRESERVED_NOT_RUN'
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0160-W29-828-ONEFIX-SOURCE-NOT-UNITY-${{ matrix.os }}
+          path: w29-saw828-original-source.log
+          if-no-files-found: warn
+          retention-days: 14
