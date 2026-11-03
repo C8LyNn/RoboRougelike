@@ -46,7 +46,7 @@ sealed class FakeModel { public object At(int i) { return null; } }
 sealed class FakeRun
 {
     public FakeProgress Progress = new FakeProgress();
-    public bool Transitioning;
+    public bool Transitioning = false;
     public FakeModel VehicleModel = new FakeModel();
     public Func<bool> Purchase = () => false;
     public bool GarageMount(string id,int cell,int rotation) => Purchase();
@@ -61,8 +61,8 @@ sealed class R3GarageView
     public FakeRun run = new FakeRun();
     public R41GarageTool Tool = R41GarageTool.Mount;
     public string Message = "Zamontowano dokładnie w miejscu podglądu.";
-    public string SelectedInventoryId;
-    public int Cell,SelectedRotation,MountWeapon;
+    public string SelectedInventoryId = null;
+    public int Cell = 0, SelectedRotation = 0, MountWeapon = 0;
     public R3PartKind MountKind = R3PartKind.Armor;
     public object Owned => null;
     public Func<string> LiveIssue = () => null;
@@ -95,6 +95,7 @@ static class Program
 """
 
 def execute(method, folder):
+    folder.mkdir(parents=True,exist_ok=True)
     (folder/"Program.cs").write_text(WRAPPER.replace("INSERT_ACTUAL_METHOD",method),encoding="utf-8")
     (folder/"ClickTargetSourceProbe.csproj").write_text(PROJECT,encoding="utf-8")
     result=subprocess.run(
@@ -108,8 +109,8 @@ def execute(method, folder):
     return {line.split("|",1)[0]:line.split("|",2)[1:] for line in result.stdout.splitlines() if line.count("|")==2}
 with tempfile.TemporaryDirectory(prefix="b0111_w30_garage_") as temp:
     folder=Path(temp)
-    baseline=execute(method_from(original),folder)
-    current_result=execute(method_from(current),folder)
+    baseline=execute(method_from(original),folder/'old')
+    current_result=execute(method_from(current),folder/'new')
 expected_keys={"no-target","post-preview-rejection","pre-validation-rejection","successful-purchase","inactive-garage"}
 assert set(baseline)==set(current_result)==expected_keys,(baseline,current_result)
 assert baseline["no-target"]==["NO","Zamontowano dokładnie w miejscu podglądu."]
