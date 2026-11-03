@@ -1,0 +1,74 @@
+name: B01-31 W30 REAL R41 v5 Axis-Verified Adapter Original CSharp Source Gate
+on:
+  push:
+    branches: [art/b01-31-p17w30-r41v5-import-gate]
+    paths:
+      - 'Assets/B01_31/W30R41V5Adapter/**'
+      - 'Assets/B01_31/W30R41V5Adapter.meta'
+      - 'Tools/B01-31/P17/W30TurretV5Adapter001/**'
+      - '.github/workflows/b01-31-p17w30-r41v5-candidate.yml'
+  pull_request:
+    paths:
+      - 'Assets/B01_31/W30R41V5Adapter/**'
+      - 'Assets/B01_31/W30R41V5Adapter.meta'
+      - 'Tools/B01-31/P17/W30TurretV5Adapter001/**'
+      - '.github/workflows/b01-31-p17w30-r41v5-candidate.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  ubuntu-original-R41-production-muzzle-source-and-real-package:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Actual original R41 v5 production CSharp 52 kinematic source assertions
+        run: dotnet run -c Release --project Tools/B01-31/P17/W30TurretV5Adapter001/R41V5Kinematics.csproj
+      - name: Python original independent source validator syntax
+        run: python -m compileall -q Tools/B01-31/P17/W30TurretV5Adapter001
+      - name: Write actual SHA-pinned 19 original-source artifact; require 8 hostile packets to fail
+        run: |
+          python Tools/B01-31/P17/W30TurretV5Adapter001/build_source.py --repo . --out build/B0131W30
+          python Tools/B01-31/P17/W30TurretV5Adapter001/verify_source.py --repo . --out build/B0131W30
+      - name: Original full independent physical ZIP plus receipt double-export SHA parity
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd build/B0131W30 && sha256sum *.zip receipt.json) > /tmp/w30-before.sha256
+          python Tools/B01-31/P17/W30TurretV5Adapter001/build_source.py --repo . --out build/B0131W30
+          python Tools/B01-31/P17/W30TurretV5Adapter001/verify_source.py --repo . --out build/B0131W30
+          (cd build/B0131W30 && sha256sum *.zip receipt.json) > /tmp/w30-after.sha256
+          cmp /tmp/w30-before.sha256 /tmp/w30-after.sha256
+          echo R41V5_W30_ORIGINAL_SOURCE_SHA_PARITY_PASS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: B0131-W30-R41-V5-REAL-CSharp-AXIS-GATE-SOURCE
+          path: build/B0131W30/
+          if-no-files-found: error
+          retention-days: 30
+  windows-independent-original-R41-CSharp-and-Ubuntu-actual-artifact:
+    runs-on: windows-2022
+    needs: ubuntu-original-R41-production-muzzle-source-and-real-package
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: B0131-W30-R41-V5-REAL-CSharp-AXIS-GATE-SOURCE
+          path: original-Ubuntu-R41-W30
+      - name: Execute original production R41 v5 muzzle CSharp verbatim on independent Windows
+        run: dotnet run -c Release --project Tools/B01-31/P17/W30TurretV5Adapter001/R41V5Kinematics.csproj
+      - name: Read-only independent original Ubuntu physical source ZIP SHA and 8 hostile negatives; no author run
+        run: python Tools/B01-31/P17/W30TurretV5Adapter001/verify_source.py --repo . --out original-Ubuntu-R41-W30
