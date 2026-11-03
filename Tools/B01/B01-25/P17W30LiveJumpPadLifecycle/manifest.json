@@ -1,0 +1,73 @@
+{
+  "schema": "B01-original-live-game-source-v1",
+  "package_id": "B01-25-P17W30-R5-LIVE-JUMPPAD-LIFECYCLE",
+  "owner": "B01-25",
+  "primaryFeatureOwner": "B01-21",
+  "wave": "P17-W30",
+  "baseCandidateSha": "20273c3580079dfb299c30c85a67e76f8d893e7f",
+  "basePRs": [
+    873,
+    877
+  ],
+  "branch": "research/b01-25-p17w30-live-jumppad-contact-lifecycle",
+  "scope": "SOURCE_ONLY",
+  "actualOriginalGameplayPathModified": "Assets/B01Packages/MapJumpPad001/Runtime/MapJumpPad.cs",
+  "originalBlobBefore": "711103bcb682af38b7c0e9bf4c21dea92c8e0547",
+  "originalBlobAfter": "4f63ebd3573d1af3ce7f6d24a880e7b840657e6e",
+  "onlyModified": [
+    "Assets/B01Packages/MapJumpPad001/Runtime/MapJumpPad.cs"
+  ],
+  "onlyAdded": [
+    "Assets/Tests/Editor/W30LiveJumpPadDebrisLifecycleTests.cs",
+    "Assets/Tests/Editor/W30LiveJumpPadDebrisLifecycleTests.cs.meta",
+    "Research/B01-25/P17/W30JumpPadLifecycle/UnityPhysicsContractShim.cs",
+    "Research/B01-25/P17/W30JumpPadLifecycle/Program.cs",
+    "Research/B01-25/P17/W30JumpPadLifecycle/OriginalGameSource.csproj",
+    "Research/B01-25/P17/W30JumpPadLifecycle/.gitignore",
+    "Tools/B01/B01-25/P17W30LiveJumpPadLifecycle/check.py",
+    "Tools/B01/B01-25/P17W30LiveJumpPadLifecycle/README.md",
+    "Tools/B01/B01-25/P17W30LiveJumpPadLifecycle/.gitignore",
+    ".github/workflows/b01-25-p17w30-live-jumppad-lifecycle.yml",
+    "Tools/B01/B01-25/P17W30LiveJumpPadLifecycle/manifest.json"
+  ],
+  "exactOriginalReferencedSources": [
+    "Assets/R5/R5Arena.cs",
+    "Assets/Tests/Editor/W29LiveArenaJumpPadTests.cs",
+    "Assets/B01Packages/MapJumpPad001/Runtime/MapJumpPad.cs.meta",
+    "Assets/B01Packages/MapJumpPad001/Runtime/B01.MapJumpPad001.Runtime.asmdef"
+  ],
+  "gitBlobs": {
+    ".github/workflows/b01-25-p17w30-live-jumppad-lifecycle.yml": "a8b48b45a473c7e7345a80589bb5ce3b92b1f29b",
+    "Assets/B01Packages/MapJumpPad001/Runtime/B01.MapJumpPad001.Runtime.asmdef": "55ef987edc8cf51bb5da844d88b5f47c61858ebc",
+    "Assets/B01Packages/MapJumpPad001/Runtime/MapJumpPad.cs": "4f63ebd3573d1af3ce7f6d24a880e7b840657e6e",
+    "Assets/B01Packages/MapJumpPad001/Runtime/MapJumpPad.cs.meta": "12bd160b9887ef9fe36f024e5167d299e4c980a1",
+    "Assets/R5/R5Arena.cs": "3ee9d05ffdccbd3dea991f80223afeacd91e3b95",
+    "Assets/Tests/Editor/W29LiveArenaJumpPadTests.cs": "a18552c147aaed91ee44823b0667a86addf8be8f",
+    "Assets/Tests/Editor/W30LiveJumpPadDebrisLifecycleTests.cs": "18b9238851f7e6765025bd8c2d7bdc4d09b7711a",
+    "Assets/Tests/Editor/W30LiveJumpPadDebrisLifecycleTests.cs.meta": "f70d73bccc07f98f23c181ff66b7a30b057b1124",
+    "Research/B01-25/P17/W30JumpPadLifecycle/.gitignore": "1fbfa86d1e7d82e8accb65c8d6d1a35d369421f9",
+    "Research/B01-25/P17/W30JumpPadLifecycle/OriginalGameSource.csproj": "5bbbc4f0e07ce0ac8fb54217e8c5827e2c7c11f5",
+    "Research/B01-25/P17/W30JumpPadLifecycle/Program.cs": "bffaf23fd1020650a2683813942cd6d41e66aaac",
+    "Research/B01-25/P17/W30JumpPadLifecycle/UnityPhysicsContractShim.cs": "61db916df2d6ba5e7ed227dcf8e3a33f6fa4af52",
+    "Tools/B01/B01-25/P17W30LiveJumpPadLifecycle/.gitignore": "b67c661cfb5cc73f5f68cfe85fd17e954856ea87",
+    "Tools/B01/B01-25/P17W30LiveJumpPadLifecycle/check.py": "1b2e20c59d4953404e28cb560dbd002d45c17e49",
+    "Tools/B01/B01-25/P17W30LiveJumpPadLifecycle/README.md": "9eeb2af6028c13f07f8d82cdaec54706a826b5ca"
+  },
+  "sourceClosureCount": 15,
+  "actualOriginalUnityMetaGuid": "3d5cb97222f940dca2aabdc167f53f89",
+  "nativeUnity": "NOT_RUN",
+  "nativeTestsAuthored": 2,
+  "originalManagedRuntimeTestsExpected": 10,
+  "originalSourceGitQAExpected": 16,
+  "sourceZipEntryCount": 4,
+  "sourceCI": "PENDING_EXACT_SHA",
+  "requiresIndependentG0": true,
+  "formalG0": "PENDING_B01-21_B01-40_B01-61",
+  "g1": "NOT_RUN_B01-60",
+  "readyForIntegrator": false,
+  "integrated": false,
+  "released": false,
+  "windowsPlayer": "NOT_RUN",
+  "codexAck": false,
+  "rollback": "Never overwrite original R5 game in place. Source ZIP only; scratch stage rejects any existing path/symlink and rollbacks only newly staged owner files. B01-00/Codex must explicitly accept single-changed-file patch and have clean target backup after independent G0."
+}
