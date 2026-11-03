@@ -311,6 +311,65 @@ public sealed class GarageEditFreedomTests
         yield return new ExitPlayMode();
     }
 
+    // W34 source safety: a Save/repair caller may not request physical
+    // restoration for a clone/foreign/inventory part, a duplicated GUID or
+    // an invalid HP. Exercise the original live-game gate, not a test stub.
+    [UnityTest] public IEnumerator ActualLiveR3RestorationRejectsForeignDuplicateAndInvalidOwnedReferences()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);
+        yield return new EnterPlayMode();
+        float deadline=Time.realtimeSinceStartup+20f;
+        while(R1RunController.Instance?.Progress==null&&
+              Time.realtimeSinceStartup<deadline)yield return null;
+        var run=R1RunController.Instance;
+        Assert.That(run,Is.Not.Null);
+        Assert.That(run.SelectVehicle(R3VehicleKind.Standard),Is.True);
+        Assert.That(run.OpenSandboxGarage(),Is.True);
+        var model=run.VehicleModel;
+        var gate=run.Player.GetComponent<R3BuildValidation>();
+        Assert.That(gate,Is.Not.Null);
+        var method=typeof(R3BuildValidation).GetMethod("ValidateRestoration",
+            System.Reflection.BindingFlags.NonPublic|
+            System.Reflection.BindingFlags.Instance);
+        var identity=typeof(R3BuildValidation).GetMethod(
+            "ValidCanonicalRestorationRequest",
+            System.Reflection.BindingFlags.NonPublic|
+            System.Reflection.BindingFlags.Instance);
+        Assert.That(method,Is.Not.Null);
+        Assert.That(identity,Is.Not.Null);
+        var part=model.Parts.First(p=>p.Kind==R3PartKind.Armor);
+        float oldHp=part.Health;
+        int wallet=model.Scrap,parts=model.Parts.Count;
+        var ids=model.Parts.Select(p=>p.Id).OrderBy(id=>id).ToArray();
+        part.Health=0f;
+        var real=new R3PartState[]{part};
+        Assert.That((bool)identity.Invoke(gate,new object[]{real}),Is.True,
+            "Actual owned original part reference is eligible for physical inspection.");
+        var duplicate=new R3PartState[]{part,part};
+        Assert.That((bool)method.Invoke(gate,new object[]{duplicate}),Is.False,
+            "A duplicate original GUID in one physical repair transaction must fail closed.");
+        var counterfeit=part.Copy();
+        Assert.That(counterfeit.Id,Is.EqualTo(part.Id));
+        Assert.That((bool)method.Invoke(gate,
+            new object[]{new R3PartState[]{counterfeit}}),Is.False,
+            "A copied same-GUID object may not borrow the original mounted geometry authority.");
+        var foreign=new R3PartState(new Vector3Int(5,5,5),R3PartKind.Armor,0f);
+        Assert.That((bool)method.Invoke(gate,
+            new object[]{new R3PartState[]{foreign}}),Is.False);
+        Assert.That((bool)method.Invoke(gate,new object[]{null}),Is.False);
+        Assert.That((bool)method.Invoke(gate,
+            new object[]{System.Array.Empty<R3PartState>()}),Is.False);
+        part.Health=float.NaN;
+        Assert.That((bool)method.Invoke(gate,new object[]{real}),Is.False);
+        part.Health=float.PositiveInfinity;
+        Assert.That((bool)method.Invoke(gate,new object[]{real}),Is.False);
+        part.Health=oldHp;
+        Assert.That(model.Scrap,Is.EqualTo(wallet));
+        Assert.That(model.Parts.Count,Is.EqualTo(parts));
+        Assert.That(model.Parts.Select(p=>p.Id).OrderBy(id=>id),Is.EqualTo(ids));
+        yield return new ExitPlayMode();
+    }
+
     [UnityTest] public IEnumerator ActualMissionEntryRejectsIncompleteVehicleAndAcceptsRestoredGun()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);yield return new EnterPlayMode();
