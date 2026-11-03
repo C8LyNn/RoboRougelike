@@ -1,0 +1,90 @@
+name: B01-40 W29 selective live-game original EMP #839 + original native Player #849 G0
+on:
+  push:
+    branches: [integration/b01-40-p17w29-emp839-on-current-game-r1]
+    paths:
+      - 'Assets/RoboRougelikeMechanics/WPN006EMP/Runtime/EmpEmitter.cs'
+      - 'Assets/RoboRougelikeMechanics/WPN006EMP/Tests/PlayMode/EmpEmitterPhysicsTests.cs'
+      - 'Assets/WeaponIntegration/RRLEmpBinding.cs'
+      - 'Assets/R1/W27EmpPlayerQA.cs'
+      - 'Assets/R1/W27EmpPlayerQA.cs.meta'
+      - 'Tools/B01/B01-40/P17W29Emp839Receiver/**'
+      - '.github/workflows/b01-40-w29-selective-emp839-g0.yml'
+  pull_request:
+    paths:
+      - 'Assets/RoboRougelikeMechanics/WPN006EMP/Runtime/EmpEmitter.cs'
+      - 'Assets/RoboRougelikeMechanics/WPN006EMP/Tests/PlayMode/EmpEmitterPhysicsTests.cs'
+      - 'Assets/WeaponIntegration/RRLEmpBinding.cs'
+      - 'Assets/R1/W27EmpPlayerQA.cs'
+      - 'Assets/R1/W27EmpPlayerQA.cs.meta'
+      - 'Tools/B01/B01-40/P17W29Emp839Receiver/**'
+      - '.github/workflows/b01-40-w29-selective-emp839-g0.yml'
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  original-code-three-blob-game-receiver:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch original immutable EMP #839 and native QA #849 Git objects
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin \
+            fea000fe0a706df2b52b6f295bdb3135ba1f9384 \
+            e03d36f2b86f8c73a067e574b67237a8921f622a \
+            16d338f13779ee71ac74b8549e0168dce92bfda3
+      - name: Verify real original current game EMP source/test exact blobs + foreign Save untouched
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-40/P17W29Emp839Receiver/verify.py \
+            --receipt evidence/b0140-w29-original-emp839-game.json | tee b0140-w29-emp-source.log
+          grep -q 'B0140_W29_EMP_CURRENT_GAME_EXACT_BASE_AND_ONLY_3_SOURCE_2_NATIVE_QA_SELECTED_PASS' b0140-w29-emp-source.log
+          grep -q 'B0140_W29_EMP839_PRODUCT_3_OF_3_AND_849_PLAYER_QA_2_OF_2_GIT_BLOBS_EXACT_PASS' b0140-w29-emp-source.log
+          grep -q 'B0140_W29_REAL_RADIAL_EMP_GUARD_AND_ORIGINAL_NATIVE_QA_ENTRYPOINT_SOURCE_PASS' b0140-w29-emp-source.log
+          grep -q 'B0140_W29_OWNED_SOURCE_STAGE_DIRTY_NEGATIVE_AND_FOREIGN_SAVE_PRESERVED_PASS' b0140-w29-emp-source.log
+          grep -q 'B0140_W29_EMP839_EXACT_GAME_SOURCE_G0_PASS_NATIVE_G1_NOT_RUN' b0140-w29-emp-source.log
+          test -s evidence/b0140-w29-original-emp839-game.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b0140-w29-emp839-game-source-${{ matrix.os }}
+          path: |
+            evidence/
+            b0140-w29-emp-source.log
+          if-no-files-found: warn
+  verify-windows-linux-identical-emp-receiver:
+    needs: original-code-three-blob-game-receiver
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: b0140-w29-emp839-game-source-*
+          path: received
+      - name: Compare ORIGINAL byte-exact selected game source receipt on both OS
+        shell: bash
+        run: |
+          python - <<'PY'
+          import hashlib
+          from pathlib import Path
+          p=sorted(Path("received").glob("*/evidence/b0140-w29-original-emp839-game.json"))
+          if len(p)!=2:raise SystemExit("B0140_W29_EMP_G0_FAIL_TWO_OS_REQUIRED")
+          a,b=[x.read_bytes() for x in p]
+          if a!=b:raise SystemExit("B0140_W29_EMP_G0_FAIL_OS_RECEIPTS_DIFFER")
+          print("B0140_W29_EMP_ORIGINAL_GAME_SOURCE_CROSS_OS_BIT_EXACT_PASS",
+                hashlib.sha256(a).hexdigest())
+          print("B0140_W29_EMP_SELECTED_RUNTIME_SOURCE_INTEGRATED_QA_ONLY_NATIVE_UNITY_NOT_RUN")
+          PY
