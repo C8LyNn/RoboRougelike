@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1040" width="1600" height="1040" role="img" aria-labelledby="title desc">
+<title id="title">B01-31 W32 — R41 v5 dual muzzle visual exploration and geometry acceptance board</title>
+<desc id="desc">Original schematic concept drawing, not a render or dimensional mesh measurement of the missing Claude v5 FBX. Explains approved pivot, two +Z muzzle origins, candidate-only visual isolation, and required QA stages.</desc>
+<defs>
+<linearGradient id="bg" x2=".95" y2="1"><stop stop-color="#111e28"/><stop offset="1" stop-color="#0a121b"/></linearGradient>
+<linearGradient id="metal" x2=".75" y2="1"><stop stop-color="#45596a"/><stop offset=".45" stop-color="#263b49"/><stop offset="1" stop-color="#162630"/></linearGradient>
+<linearGradient id="upper" x2="1" y2="1"><stop stop-color="#637a89"/><stop offset="1" stop-color="#253e4a"/></linearGradient>
+<linearGradient id="glow" x2="1" y2="0"><stop stop-color="#49dae0"/><stop offset="1" stop-color="#8af8ef"/></linearGradient>
+<pattern id="dots" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="1.5" r="1" fill="#5e7688" opacity=".25"/></pattern>
+<marker id="arrCyan" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#65e4e5"/></marker>
+<marker id="arrGold" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#f4b35c"/></marker>
+<style>
+text{font-family:Arial,Helvetica,sans-serif;fill:#e7f0f3}
+.h1{font-size:39px;font-weight:700;letter-spacing:1.2px}.h2{font-size:22px;font-weight:700;letter-spacing:.5px}
+.label{font-size:15px;letter-spacing:1px;font-weight:700}.sm{font-size:16px}.xs{font-size:13px}
+.muted{fill:#9cb3c3}.cyan{fill:#74ebeb}.gold{fill:#f6bd70}.red{fill:#ff837e}
+.panel{fill:#13222e;stroke:#334858;stroke-width:1.5}.st{stroke:#74ebeb;stroke-width:2;fill:none}
+.dash{stroke:#6c91a1;stroke-width:1.5;stroke-dasharray:6 6;fill:none}
+</style>
+</defs>
+<rect width="1600" height="1040" fill="url(#bg)"/><rect width="1600" height="1040" fill="url(#dots)"/>
+<rect x="48" y="42" width="1504" height="143" rx="18" class="panel"/>
+<rect x="72" y="66" width="7" height="95" rx="3" fill="#74ebeb"/>
+<text x="102" y="98" class="label cyan">ROBOROUGELIKE · B01-31 · PASS 17 / WAVE 32</text>
+<text x="102" y="147" class="h1">R41 v5  /  DUAL-MUZZLE TURRET</text>
+<rect x="1233" y="69" width="288" height="42" rx="20" fill="#3e3033" stroke="#ff9589"/>
+<text x="1377" y="95" text-anchor="middle" class="label red">CONCEPT ONLY · NOT FBX</text>
+<text x="1232" y="144" class="xs muted">Candidate visualization · no gameplay replacement</text>
+<rect x="48" y="210" width="784" height="638" rx="18" class="panel"/>
+<text x="80" y="251" class="h2">A  /  INDUSTRIAL SILHOUETTE</text>
+<text x="80" y="280" class="sm muted">Suggested low-profile shell over isolated yaw / pitch wrapper</text>
+<line x1="105" y1="766" x2="774" y2="766" stroke="#39505f" stroke-width="2"/>
+<g opacity=".42"><path d="M155 762L395 650 693 736 483 820Z" fill="#142f3c" stroke="#3f6874"/>
+<path d="M155 762L155 746 395 637 693 724 693 736 483 820Z" fill="#203846" stroke="#2e4d5c"/></g>
+<!-- freeform stylized original concept, NOT real FBX geometry -->
+<path d="M237 604L372 541 561 589 614 671 479 747 266 688Z" fill="url(#metal)" stroke="#8298a6" stroke-width="3"/>
+<path d="M237 604L372 541 561 589 460 657Z" fill="url(#upper)" stroke="#9ab2bd" stroke-width="2"/>
+<path d="M266 688L460 657 614 671 479 747Z" fill="#1a2b37"/>
+<path d="M314 577L373 554 528 593 483 613Z" fill="#75dfdf" opacity=".16"/>
+<path d="M282 626L437 671 431 695 285 650Z" fill="#10202c" stroke="#d9aa66" stroke-width="2"/>
+<path d="M469 644L571 674 559 691 459 665Z" fill="#131e29" stroke="#80e7e5" stroke-width="2"/>
+<path d="M327 618L451 655 594 587 476 549Z" fill="#344d5d" stroke="#8aa4b3" stroke-width="2"/>
+<path d="M327 618L337 652 449 688 451 655Z" fill="#1a3343"/>
+<!-- twin barrels, illustrated only -->
+<path d="M488 553L622 473 654 485 526 571Z" fill="url(#upper)" stroke="#9db4c3" stroke-width="3"/>
+<path d="M517 583L655 501 691 516 554 603Z" fill="url(#upper)" stroke="#9db4c3" stroke-width="3"/>
+<path d="M620 472L651 469 667 483 654 496 622 487Z" fill="#0b1a25" stroke="#6ae8e5" stroke-width="4"/>
+<path d="M653 501L682 498 701 515 689 530 657 518Z" fill="#0b1a25" stroke="#6ae8e5" stroke-width="4"/>
+<path d="M615 486L635 479" stroke="#f6bd70" stroke-width="4"/>
+<path d="M649 514L673 507" stroke="#f6bd70" stroke-width="4"/>
+<path d="M311 598L358 579L365 588L323 609Z" fill="#f6b15c"/>
+<path d="M421 672L462 684L459 694L418 681Z" fill="#65e4e5" opacity=".65"/>
+<!-- connection + callouts -->
+<circle cx="420" cy="695" r="12" fill="#112a34" stroke="#f6bd70" stroke-width="3"/>
+<path d="M420 708L390 790L166 790" fill="none" stroke="#f6bd70" stroke-width="2"/>
+<text x="172" y="813" class="xs gold">Mount / pivot must remain gameplay-owned</text>
+<path d="M667 482L731 426 775 426" fill="none" stroke="#74ebeb" stroke-width="2"/>
+<text x="779" y="420" text-anchor="end" class="xs cyan">Two visual +Z muzzle origins</text>
+<path d="M316 625L244 483 108 483" fill="none" stroke="#f6bd70" stroke-width="2"/>
+<text x="109" y="472" class="xs gold">Armor-shell material proposal</text>
+<rect x="80" y="307" width="249" height="36" rx="10" fill="#223746" stroke="#486275"/>
+<text x="95" y="331" class="label cyan">GRAPHITE  /  CYAN  /  AMBER</text>
+<text x="80" y="375" class="sm muted">Color exploration does not override R3 part/weapon palette.</text>
+<text x="80" y="395" class="sm muted">No collider, HP, damage or Animator authority is proposed.</text>
+<rect x="858" y="210" width="694" height="638" rx="18" class="panel"/>
+<text x="889" y="251" class="h2">B  /  NEUTRAL ORTHOGRAPHIC CONTRACT</text>
+<text x="889" y="280" class="sm muted">Geometry constants from the existing W30 C# source (not an FBX survey)</text>
+<rect x="900" y="317" width="598" height="480" rx="12" fill="#10212b" stroke="#345567"/>
+<line x1="1132" y1="346" x2="1132" y2="777" class="dash"/>
+<line x1="944" y1="728" x2="1413" y2="728" class="dash"/>
+<!-- 0.55 meter footprint on same schematic proportional scale as 0.7 barrel length -->
+<rect x="1027" y="624" width="210" height="210" rx="7" fill="#243e4b" opacity=".42" stroke="#718a9a" stroke-width="2" stroke-dasharray="8 6"/>
+<circle cx="1132" cy="728" r="54" fill="#334958" stroke="#9db1be" stroke-width="3"/>
+<circle cx="1132" cy="728" r="34" fill="#0e202b" stroke="#f6bd70" stroke-width="4"/>
+<circle cx="1132" cy="728" r="6" fill="#f6bd70"/>
+<path d="M1084 724L1077 553Q1079 533 1093 533L1112 533 1110 724Z" fill="url(#metal)" stroke="#9bb2bf" stroke-width="2"/>
+<path d="M1150 724L1153 533 1171 533Q1185 533 1187 553L1179 724Z" fill="url(#metal)" stroke="#9bb2bf" stroke-width="2"/>
+<!-- scale assumes 264px for 0.70m; separation 45px for 0.12m -->
+<circle cx="1109.5" cy="464" r="12" fill="#112b37" stroke="#74ebeb" stroke-width="4"/>
+<circle cx="1154.5" cy="464" r="12" fill="#112b37" stroke="#74ebeb" stroke-width="4"/>
+<path d="M1109.5 452V384M1154.5 452V384" stroke="#74ebeb" stroke-width="2" marker-end="url(#arrCyan)"/>
+<text x="1177" y="386" class="label cyan">+Z FORWARD</text>
+<line x1="1109.5" y1="426" x2="1154.5" y2="426" stroke="#f4b35c" stroke-width="2"/>
+<line x1="1109.5" y1="416" x2="1109.5" y2="438" stroke="#f4b35c"/>
+<line x1="1154.5" y1="416" x2="1154.5" y2="438" stroke="#f4b35c"/>
+<text x="1132" y="410" text-anchor="middle" class="label gold">0.120 m</text>
+<line x1="1271" y1="464" x2="1271" y2="728" stroke="#f4b35c" stroke-width="2" marker-start="url(#arrGold)" marker-end="url(#arrGold)"/>
+<text x="1290" y="603" class="label gold">0.700 m</text>
+<path d="M1170 738L1315 764" stroke="#f4b35c" stroke-width="1.5"/>
+<text x="1321" y="766" class="xs gold">Pivot Y = 0.135 m</text>
+<path d="M1030 810L947 810" stroke="#9cb3c3" stroke-width="2"/>
+<text x="942" y="806" text-anchor="end" class="xs muted">0.55 m grid</text>
+<text x="927" y="350" class="label cyan">TOP VIEW (X/Z)</text>
+<text x="936" y="782" class="xs muted">Illustration scale is schematic; hull dimensions unverified</text>
+<rect x="48" y="874" width="1504" height="128" rx="18" class="panel"/>
+<text x="81" y="912" class="label cyan">SOURCE G0</text><text x="81" y="945" class="sm">#904 cross-OS source QA</text><text x="81" y="970" class="label gold">FORMAL REVIEW PENDING</text>
+<line x1="499" y1="894" x2="499" y2="979" stroke="#456172"/>
+<text x="535" y="912" class="label cyan">UNITY G1</text><text x="535" y="945" class="sm">Real SHA-pinned FBX + 8 native tests</text><text x="535" y="970" class="label red">NOT_RUN / FBX EXTERNAL</text>
+<line x1="1037" y1="894" x2="1037" y2="979" stroke="#456172"/>
+<text x="1074" y="912" class="label cyan">GAME / PLAYER G2</text><text x="1074" y="945" class="sm">Actual mount, 2 muzzles, Windows Player</text><text x="1074" y="970" class="label red">HOLD / KEEP OLD TURRET</text>
+</svg>
