@@ -37,9 +37,13 @@ static class OriginalR41V5SourceAcceptance
         foreach(var y in yaw)
         foreach(var p in pitch)
         {
-            bool positive=R41V5MuzzleGeometry.TryPose(y,p,R41V5MuzzleSide.Left,out var l)
-                       && R41V5MuzzleGeometry.TryPose(y,p,R41V5MuzzleSide.Right,out var r)
-                       && R41V5MuzzleGeometry.ValidatePosePair(in l,in r);
+            // Independent unconditional out initialization is mandatory:
+            // C# must not treat the right muzzle as potentially unassigned
+            // after short-circuited left negative (first W30 CI was RED).
+            bool leftComputed=R41V5MuzzleGeometry.TryPose(y,p,R41V5MuzzleSide.Left,out var l);
+            bool rightComputed=R41V5MuzzleGeometry.TryPose(y,p,R41V5MuzzleSide.Right,out var r);
+            bool positive=leftComputed && rightComputed &&
+                          R41V5MuzzleGeometry.ValidatePosePair(in l,in r);
             Yes(positive,$"14-25-physical-symmetric-muzzle-pair-{y}-{p}");
             Yes(Near(l.Y,r.Y,1e-9)&&Near(l.ForwardY,r.ForwardY,1e-9),
                 $"26-37-both-muzzles-share-same-physical-pitch-{y}-{p}");
