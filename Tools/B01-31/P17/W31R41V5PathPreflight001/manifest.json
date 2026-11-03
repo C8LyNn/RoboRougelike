@@ -1,0 +1,96 @@
+{
+  "schema": "B01-31-patch-manifest-v1",
+  "package_id": "B01-31-P17W31-R41V5-ABSOLUTE-ASSET-AND-PRECLONE-GATE-001",
+  "revision": "P17-W31-R1",
+  "owner": "B01-31 CONCEPT ART & VISUAL EXPLORATION",
+  "hq_issue": "https://github.com/C8LyNn/RoboRougelike/issues/800",
+  "codex_inbox": "https://github.com/C8LyNn/RoboRougelike/issues/79",
+  "exact_W30_parent": "bae40c25c48b26849c3291c84b79a66a9ba5c2a5",
+  "stack_on_PR": 893,
+  "old_W30_Editor_Git_Blob": "a138507c864a639d3ea6a8e219615412d7a7fc2c",
+  "all_changed_owner_paths": [
+    ".github/workflows/b01-31-p17w31-r41v5-path-preflight.yml",
+    "Assets/B01_31/W30R41V5Adapter/Editor/B0131W30CreateR41V5AdapterCandidate.cs",
+    "Assets/B01_31/W30R41V5Adapter/R41V5AssetPaths.cs",
+    "Assets/B01_31/W30R41V5Adapter/R41V5AssetPaths.cs.meta",
+    "Assets/B01_31/W30R41V5Adapter/Tests/EditMode/R41V5W31PrecloneEditModeTests.cs",
+    "Assets/B01_31/W30R41V5Adapter/Tests/EditMode/R41V5W31PrecloneEditModeTests.cs.meta",
+    "Tools/B01-31/P17/W31R41V5PathPreflight001/OriginalW31SourceAcceptance.cs",
+    "Tools/B01-31/P17/W31R41V5PathPreflight001/README.md",
+    "Tools/B01-31/P17/W31R41V5PathPreflight001/W31RealSource.csproj",
+    "Tools/B01-31/P17/W31R41V5PathPreflight001/build_source.py",
+    "Tools/B01-31/P17/W31R41V5PathPreflight001/manifest.json",
+    "Tools/B01-31/P17/W31R41V5PathPreflight001/verify_source.py"
+  ],
+  "modified_existing_W30_editor_path": "Assets/B01_31/W30R41V5Adapter/Editor/B0131W30CreateR41V5AdapterCandidate.cs",
+  "new_Unity_GUIDs": 2,
+  "original_verified_external_FBX_sha256": "fc83d677744d7e60b5f5f5f3ad3d9e72c97f84b66bbacf142c14959becfa5533",
+  "original_external_FBX_available_in_this_package": false,
+  "source_only_actual_product_fix": [
+    "Absolute original SHA-pinned FBX path resolved relative to Unity Application.dataPath, not process working directory; only exact own Incoming FBX allowed.",
+    "Before Unity Object.Instantiate can fire any foreign MonoBehaviour Awake/OnEnable, source FBX hierarchy is checked fail closed for all foreign scripts including inactive, Unity Joint, missing Renderer and missing/duplicated original Muzzle_L/R.",
+    "After successful preflight previous W30 existing actual source clone/unpack/dual muzzle/physics removal remains unchanged, original fallback AutomaticGun untouched."
+  ],
+  "tests": [
+    {
+      "kind": "genuine_NET8_CSharp_original_project_path_runtime",
+      "cases": 29,
+      "environment": "Ubuntu24+Windows2022",
+      "status": "PENDING_CI"
+    },
+    {
+      "kind": "existing_original_W30_production_math_NET8",
+      "cases": 52,
+      "environment": "Ubuntu24+Windows2022",
+      "status": "PENDING_CI"
+    },
+    {
+      "kind": "physical_W31_original_Git_only_source_ZIP_SHA_Guid_8_mutations",
+      "files": 12,
+      "environment": "Ubuntu writes Windows downloads+independent verifies",
+      "status": "PENDING_CI"
+    },
+    {
+      "kind": "native_Unity6000.3.14f1_W31_EditMode_source",
+      "cases": 4,
+      "environment": "actual Unity Editor",
+      "status": "NOT_RUN"
+    },
+    {
+      "kind": "original_W30_external_actual_FBX_native_Editor",
+      "cases": 4,
+      "environment": "actual Unity imported producer FBX",
+      "status": "NOT_RUN"
+    },
+    {
+      "kind": "real_automatic_gun_R3_mounted_weapon_gameplay_Windows_player",
+      "environment": "current #873/#877 updated game",
+      "status": "NOT_RUN"
+    }
+  ],
+  "protected": [
+    "Do not merge into #873/#877, don't modify player source/own current Codex worktree",
+    "Do not change original Claude R41 FBX, importer flags, old working turret",
+    "Do not declare synthetic runtime tests a native Unity PASS, no release"
+  ],
+  "source_intake": "exact parent W30 PR#893, W31 additional 12 owner paths; this is stacked SOURCE PATCH, not standalone Unitypackage; existing parent W30 source closure required",
+  "recipients": [
+    "B01-30/B01-40 independent formal G0 exact source/GUID + current original FBX dep",
+    "B01-60 authorized real Unity Editor import + native test suite and Windows Player, original FBX present",
+    "B01-00 for deliberate Codex intake only after formal G0/G1"
+  ],
+  "stage": {
+    "IMPLEMENTED": "YES_SOURCE",
+    "TESTED": "PENDING_CI",
+    "QA_ACCEPTED": "NO_FORMAL",
+    "READY_FOR_INTEGRATOR": "NO",
+    "INTEGRATED": "NO",
+    "RELEASED": "NO",
+    "FORMAL_G0": "PENDING",
+    "NATIVE_UNITY_G1": "NOT_RUN",
+    "Windows_Player": "NOT_RUN",
+    "G2": "HOLD",
+    "CODEX_ACK": "NONE"
+  },
+  "rollback": "Discard 11 owner-added W31 files and restore exactly one existing owner W30 Editor script to original Git blob a138507c864a639d3ea6a8e219615412d7a7fc2c on approved isolated branch; never touch external FBX, previously working turret, any foreign/even-empty directory, Save or Codex branch."
+}
