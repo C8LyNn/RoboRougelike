@@ -38,7 +38,7 @@ jobs:
         run: dotnet run -c Release --project Tools/B01-31/P17/W27ArmorLiveDemo001/Harness/W27OriginalRealSourceHarness.csproj
       - name: Python original source producer and truly independent receiver syntax
         run: python -m compileall -q Tools/B01-31/P17/W29PrefabIsolation001
-      - name: Export original 16-source-file W29 patch with 5 new Unity GUIDs, deny 8 corrupted packets
+      - name: Export original 17-source-file W29 patch with 5 new Unity GUIDs, deny 8 corrupted packets
         run: |
           python Tools/B01-31/P17/W29PrefabIsolation001/build_source.py --repo . --out build/B0131W29
           python Tools/B01-31/P17/W29PrefabIsolation001/verify_source.py --repo . --out build/B0131W29
