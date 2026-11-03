@@ -183,6 +183,46 @@ internal static class IndependentW34
         return !CanonicalR3WorldCodecV1.Valid(w)&&
                !CanonicalR3WorldCodecV1.TryDecode(Array.Empty<byte>(),out _);
     }
+    static bool NonexistentR4WeaponFamilyDenied()
+    {
+        var w=World(R3VehicleKind.Light);
+        var gun=w.Parts.Single(p=>p.Kind==2);
+        gun.Weapon=9;
+        bool unknown9=!CanonicalR3WorldCodecV1.Valid(w);
+        gun.Weapon=255;
+        bool unknown255=!CanonicalR3WorldCodecV1.Valid(w);
+        gun.Weapon=8;
+        return unknown9&&unknown255&&CanonicalR3WorldCodecV1.Valid(w);
+    }
+    static bool ArmorDisguisedAsWeaponDenied()
+    {
+        var w=World(R3VehicleKind.Standard);
+        var armor=w.Parts.First(p=>p.Kind==0);
+        armor.Weapon=1;
+        return !CanonicalR3WorldCodecV1.Valid(w);
+    }
+    static bool ForeignMountedRigOwnerDenied()
+    {
+        var w=World(R3VehicleKind.Heavy);
+        var foreign=w.Parts.First(p=>p.Kind==0);
+        foreign.OwnerPhysicalId+=777;
+        return !CanonicalR3WorldCodecV1.Valid(w);
+    }
+    static bool MountTwoWeaponsButNotThreeAndInventoryMayStockThird()
+    {
+        var w=World(R3VehicleKind.Heavy);
+        var armor=w.Parts.Where(p=>p.Kind==0).Take(2).ToArray();
+        if(armor.Length!=2)return false;
+        armor[0].Kind=2;armor[0].Weapon=1;
+        armor[1].Kind=2;armor[1].Weapon=2;
+        bool thirdMountedDenied=!CanonicalR3WorldCodecV1.Valid(w);
+        armor[1].Location=R3PartLocationV1.Inventory;
+        bool thirdInInventoryAllowed=CanonicalR3WorldCodecV1.Valid(w);
+        armor[1].Kind=0;armor[1].Weapon=0;
+        armor[1].Location=R3PartLocationV1.Mounted;
+        return thirdMountedDenied&&thirdInInventoryAllowed&&
+               CanonicalR3WorldCodecV1.Valid(w);
+    }
     static int Main()
     {
         Check("actual original R3 Light20 0.55m geometry IDs",()=>FactoryRoundTrip(R3VehicleKind.Light,20));
@@ -199,6 +239,10 @@ internal static class IndependentW34
         Check("out-of-range HP/ammo/cell rejected",InvalidResourceAndCellDenied);
         Check("wrong magic/version/junk/truncation rejected",WrongMagicVersionAndTruncationDenied);
         Check("empty missing parts rejected",EmptyOrNoPartsDenied);
+        Check("invalid R4 weapon kind 9/255 denied; EMP8 allowed",NonexistentR4WeaponFamilyDenied);
+        Check("armor cannot impersonate a gun weapon kind",ArmorDisguisedAsWeaponDenied);
+        Check("foreign mounted physical owner fails closed",ForeignMountedRigOwnerDenied);
+        Check("third mounted weapon family denied, inventory exempt",MountTwoWeaponsButNotThreeAndInventoryMayStockThird);
         Console.WriteLine("B0140_W34_INDEPENDENT_ORIGINAL_R3_CODEC_TOTAL "+
             (pass+fail)+" PASS "+pass+" FAIL "+fail);
         Console.WriteLine("B0140_W34_NATIVE_UNITY_NOT_RUN_NO_REAL_PHYSICS_BINDER");
