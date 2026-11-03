@@ -281,4 +281,78 @@ class TestEvidence(unittest.TestCase):
   self.assertEqual(r['evidence'][2]['crossCheck'],r['w31SessionCrossCheck'])
   self.assertEqual(r['productGate'],'HOLD_INDEPENDENT_G0_G1_AND_REAL_HUMAN_ACCEPTANCE')
 
+
+ def make_w34_bundle(self):
+  self.make_player_zip()
+  (self.evidence/'player.log').write_text('fake log')
+  self.set_boot()
+  baseline=self.make_session_receipt()
+  packs={}
+  for i,(kind,n) in enumerate(m.W34_R3_COUNTS.items()):
+   p=kind.lower();(self.evidence/p).mkdir()
+   snapshot={'schema':m.W34_SCHEMA,'gameCommit':SHA,'vehicleKind':kind,
+     'runId':2,'slotId':'2'*32,'generation':1,'walletScrap':17,
+     'envelopeSha256':'b'*64,
+     'parts':[{'id':f'{j+1:032x}','physicalId':j+1,'hp':1,
+       'location':'Mounted'} for j in range(n)],
+     'pendingIds':[],'loanerSpent':False,
+     'source':'OPERATOR_SELF_REPORTED_NO_INDEPENDENT_AUTHENTICATION'}
+   for stage in ('before','after'):
+    (self.evidence/p/(stage+'.json')).write_text(json.dumps(snapshot))
+    log=p+'/'+stage+'.log'
+    (self.evidence/log).write_text('fake '+p+' '+stage)
+    data=dict(baseline)
+    data['playerLog']=m.file_hash(self.evidence/log)
+    hour=13+i*2+(stage=='after')
+    data['utcStart']=f'2026-11-03T{hour:02d}:00:00+00:00'
+    data['utcEnd']=f'2026-11-03T{hour:02d}:01:00+00:00'
+    (self.evidence/p/(stage+'Receipt.json')).write_text(json.dumps(data))
+   packs[kind]={'before':p+'/before.json','after':p+'/after.json',
+     'beforeLog':p+'/before.log','afterLog':p+'/after.log',
+     'beforeReceipt':p+'/beforeReceipt.json','afterReceipt':p+'/afterReceipt.json'}
+  self.update_row('P16_SAVE_LOAD_COLD',status='PASS',evidence=packs)
+  return packs
+ def w34_mutate(self,p,fn):
+  file=self.evidence/p;v=json.loads(file.read_text());fn(v);file.write_text(json.dumps(v))
+ def test_w34_all_factory_cold_receipts_are_operator_only(self):
+  self.make_w34_bundle()
+  r=self.check()
+  self.assertEqual(r['w34R3ColdOperatorEvidence'],
+     'R3_20_83_139_OPERATOR_SNAPSHOTS_MATCH_NOT_NATIVE_QA')
+  self.assertEqual(r['nativeUnityG1'],'NOT_VERIFIED_BY_THIS_TOOL')
+  self.assertEqual(len([x for x in r['evidence'] if x['case']=='P16_SAVE_LOAD_COLD']),18)
+ def test_w34_single_old_save_log_rejected(self):
+  self.make_w34_bundle()
+  self.update_row('P16_SAVE_LOAD_COLD',status='PASS',evidence='old.log')
+  self.assert_refuse(self.check,'W34_R3_TRIPLE_REQUIRED')
+ def test_w34_cold_requires_p15(self):
+  self.make_w34_bundle()
+  self.update_row('P15_PLAYER_ZIP_BOOT',status='NOT_RUN',reason='NONE',evidence=None)
+  self.assert_refuse(self.check,'W34_P15_REQUIRED')
+ def test_w34_cold_rejects_missing_heavy(self):
+  self.make_w34_bundle()
+  report=json.loads(self.responses.read_text())
+  row=next(x for x in report['cases'] if x['id']=='P16_SAVE_LOAD_COLD')
+  del row['evidence']['Heavy']
+  self.save(report)
+  self.assert_refuse(self.check,'W34_R3_TRIPLE_REQUIRED')
+ def test_w34_cold_rejects_2_slot_instead_of_83(self):
+  self.make_w34_bundle()
+  self.w34_mutate('standard/after.json',lambda s:s['parts'].pop())
+  self.assert_refuse(self.check,'W34_R3_PART_COUNT')
+ def test_w34_cold_rejects_wallet_drift(self):
+  self.make_w34_bundle()
+  self.w34_mutate('light/after.json',lambda s:s.update(walletScrap=99))
+  self.assert_refuse(self.check,'W34_COLD_STATE_DRIFT')
+ def test_w34_cold_rejects_log_tamper(self):
+  self.make_w34_bundle()
+  (self.evidence/'heavy/after.log').write_text('tampered')
+  self.assert_refuse(self.check,'W34_SESSION_LOG')
+ def test_w34_cold_rejects_fake_overlapping_process(self):
+  self.make_w34_bundle()
+  self.w34_mutate('light/afterReceipt.json',
+    lambda s:s.update(utcStart='2026-11-03T12:00:00+00:00',
+      utcEnd='2026-11-03T12:01:00+00:00'))
+  self.assert_refuse(self.check,'W34_NOT_DISTINCT_SESSIONS')
+
 if __name__=='__main__':unittest.main(verbosity=2)

@@ -17,7 +17,7 @@ import zipfile
 from datetime import datetime
 from pathlib import PurePosixPath
 
-PACKAGE = 'B01-13-W31-PLAYTEST-EVIDENCE-INTAKE-001/R3'
+PACKAGE = 'B01-13-W34-PLAYTEST-EVIDENCE-INTAKE-001/R5'
 W27_SOURCE_HEAD = '65c73fd4a3e6c9fcc61b2e388542b96dbfa1748c'
 W27_SCHEMA = 'b01-13-observer-r1'
 CASE_IDS = ('P01_BASIC_AUTOMATIC_HEAVY','P02_SHOTGUN_RAIL_ROCKET','P03_BEAM','P04_ROTARY_SAW',
@@ -127,11 +127,39 @@ def safe_file(root: Path, relative: str):
     ensure(resolved.resolve().is_relative_to(root.resolve()),'EVIDENCE_ESCAPE_RESOLVE')
     return regular(resolved,'EVIDENCE_NOT_REGULAR')
 
+def validate_unity_members(members):
+    """Fail closed on ambiguous Windows ZIP names before comparing Player bytes.
+
+    In R3 a first EXE could match the W30 receipt while the extractor selects
+    a second duplicate member with the same filename and different content.
+    """
+    ensure(2 < len(members) <= 20000,'ZIP_MEMBERS')
+    names=set()
+    windows_devices={'CON','PRN','AUX','NUL',*(f'COM{i}' for i in range(1,10)),
+                     *(f'LPT{i}' for i in range(1,10))}
+    for member in members:
+        name=member.filename
+        ensure(name and not name.startswith('/') and '\\' not in name and
+               '..' not in name.rstrip('/').split('/'),'ZIP_TRAVERSAL')
+        ensure(not any(ord(ch)<32 or ch in '<>:"|?*' for ch in name),
+               'ZIP_MEMBER_PATH_UNSAFE')
+        parts=name.rstrip('/').split('/')
+        ensure(all(part not in ('','.','..') and part==part.rstrip(' .') and
+                   part.split('.')[0].upper() not in windows_devices for part in parts),
+               'ZIP_MEMBER_PATH_UNSAFE')
+        canonical='/'.join(parts).casefold()
+        ensure(canonical not in names,'ZIP_DUPLICATE_MEMBER')
+        names.add(canonical)
+        mode=member.external_attr>>16
+        ensure(not (member.create_system==3 and stat.S_IFMT(mode)==stat.S_IFLNK),
+               'ZIP_SYMLINK_MEMBER')
+    return names
+
 def inspect_unity_zip(file: Path):
     try:
         with zipfile.ZipFile(file,'r') as z:
             members=z.infolist()
-            ensure(len(members)<=20000 and len(members)>2,'ZIP_MEMBERS')
+            validate_unity_members(members)
             ensure(all(not x.filename.startswith('/') and '\\' not in x.filename and '..' not in Path(x.filename).parts for x in members),'ZIP_TRAVERSAL')
             ensure(sum(x.file_size for x in members)<3*1024*1024*1024,'ZIP_BOMB_DECLARED')
             names=[x.filename.lower() for x in members]
@@ -178,7 +206,7 @@ def verify_w30_session(receipt: Path, archive: Path, player_log: Path, game_sha:
     found=0
     try:
         with zipfile.ZipFile(archive,'r') as z:
-            names={x.filename.casefold() for x in z.infolist()}
+            names=validate_unity_members(z.infolist())
             for info in z.infolist():
                 if not info.filename.lower().endswith('.exe') or info.is_dir():continue
                 if info.file_size!=exe_size:continue
@@ -202,6 +230,69 @@ def verify_w30_session(receipt: Path, archive: Path, player_log: Path, game_sha:
     ensure(found==1,'W31_SESSION_ARCHIVE_EXE_MISMATCH')
     return 'W30_RECEIPT_EXE_AND_LOG_BYTES_MATCH_NOT_INDEPENDENT_UNITY_QA'
 
+W34_R3_COUNTS={'Light':20,'Standard':83,'Heavy':139}
+W34_SCHEMA='b01-13-w34-r3-cold-observation-r1'
+
+def w34_snapshot(doc,game_sha,kind,count):
+    strict_keys(doc,('schema','gameCommit','vehicleKind','runId','slotId',
+       'generation','walletScrap','envelopeSha256','parts',
+       'pendingIds','loanerSpent','source'),'W34_SNAPSHOT_SCHEMA')
+    ensure(doc['schema']==W34_SCHEMA and
+       doc['source']=='OPERATOR_SELF_REPORTED_NO_INDEPENDENT_AUTHENTICATION',
+       'W34_SNAPSHOT_SOURCE')
+    ensure(doc['gameCommit']==game_sha and doc['vehicleKind']==kind,
+       'W34_SNAPSHOT_IDENTITY')
+    ensure(type(doc['runId']) is int and doc['runId']>0 and
+       type(doc['generation']) is int and doc['generation']>0 and
+       type(doc['walletScrap']) is int and doc['walletScrap']>=0 and
+       type(doc['loanerSpent']) is bool and
+       type(doc['slotId']) is str and
+       re.fullmatch('[0-9a-f]{32}',doc['slotId']) and doc['slotId']!='0'*32 and
+       type(doc['envelopeSha256']) is str and
+       re.fullmatch('[0-9a-f]{64}',doc['envelopeSha256']),
+       'W34_SNAPSHOT_METADATA')
+    parts=doc['parts']
+    ensure(type(parts) is list and len(parts)==count,'W34_R3_PART_COUNT')
+    ids=set();physical=set();broken=set()
+    for p in parts:
+        strict_keys(p,('id','physicalId','hp','location'),'W34_PART_SCHEMA')
+        x=p['id'];pid=p['physicalId'];hp=p['hp']
+        ensure(type(x) is str and re.fullmatch('[0-9a-f]{32}',x)
+           and x!='0'*32 and x not in ids,'W34_PART_GUID')
+        ensure(type(pid) is int and pid>0 and pid not in physical,'W34_PHYSICAL_ID')
+        ensure(type(hp) in (int,float) and hp==hp and 0<=hp<=1 and
+           p['location'] in ('Mounted','Inventory','Detached'),'W34_PART_STATE')
+        ids.add(x);physical.add(pid)
+        if hp==0:broken.add(x)
+    pending=doc['pendingIds']
+    ensure(type(pending) is list and all(type(x) is str for x in pending)
+       and len(pending)==len(set(pending)) and
+       set(pending).issubset(broken),'W34_PENDING_IDS')
+
+def w34_session(receipt,log,game_sha,exe_sha):
+    doc=read_json(receipt)
+    ensure(type(doc) is dict and
+       doc.get('schema')=='b01-13-w30-windows-player-session-r1' and
+       doc.get('gameCommit')==game_sha and doc.get('exeSha256')==exe_sha and
+       doc.get('gameCommitProvenance')=='OPERATOR_ASSERTED_NOT_EMBEDDED_IN_PLAYER',
+       'W34_SESSION_IDENTITY')
+    ensure(type(doc.get('processExitCode')) is int and
+       doc['processExitCode']==0 and
+       doc.get('captureStatus')=='PROCESS_EXITED_LOG_PRESENT' and
+       doc.get('playerLog')==file_hash(log),'W34_SESSION_LOG')
+    ensure(doc.get('unityNativeG1')=='NOT_VERIFIED' and
+       doc.get('actualGameplayPassed')=='NOT_VERIFIED' and
+       doc.get('humanSessionsIndependentlyVerified')==0 and
+       doc.get('playerLaunchG1')=='NOT_INDEPENDENTLY_VERIFIED',
+       'W34_FALSE_NATIVE_CERTIFICATION')
+    try:
+        start=datetime.fromisoformat(doc['utcStart'])
+        end=datetime.fromisoformat(doc['utcEnd'])
+        ensure(start.utcoffset() is not None and end.utcoffset() is not None
+           and 0<=(end-start).total_seconds()<=86400,'W34_SESSION_TIME')
+    except (KeyError,TypeError,ValueError):raise Refused('W34_SESSION_TIME')
+    return start,end
+
 def evaluate_w28(body, game_sha, evidence_dir):
     strict_keys(body,('schema','gameCommit','realHumanParticipants','softlockDisposition','cases'),'W28_SCHEMA_KEYS')
     ensure(body['schema']=='b01-13-w29-acceptance-r2','W28_SCHEMA')
@@ -209,7 +300,7 @@ def evaluate_w28(body, game_sha, evidence_dir):
     ensure(body['realHumanParticipants']=='UNVERIFIED','W28_NO_PARTICIPANT_AUTHORITY')
     ensure(body['softlockDisposition'] in RECOVERY,'W28_SOFTLOCK_DISPOSITION')
     rows=body['cases'];ensure(type(rows) is list and len(rows)==len(CASE_IDS),'W28_ROW_COUNT')
-    seen=set();evidence=[];results={};seenfiles=set();w30_crosscheck='NOT_EVALUATED'
+    seen=set();evidence=[];results={};seenfiles=set();w30_crosscheck='NOT_EVALUATED';w34_cold='NOT_EVALUATED';exe_sha=None
     def attach(case_id, role, name, allowed=None, is_zip=False):
         ensure(type(name) is str and name, 'W29_EVIDENCE_ROLE_MISSING')
         ensure(name not in seenfiles, 'W29_EVIDENCE_REUSED')
@@ -238,6 +329,32 @@ def evaluate_w28(body, game_sha, evidence_dir):
                     safe_file(evidence_dir,fname['playerZip']),
                     safe_file(evidence_dir,fname['playerLog']),game_sha)
                 evidence[-1]['crossCheck']=w30_crosscheck
+                exe_sha=read_json(safe_file(evidence_dir,fname['sessionReceipt']))['exeSha256']
+            elif status=='PASS' and id=='P16_SAVE_LOAD_COLD':
+                # Full game R3 cold state cannot be operator PASS from one log.
+                ensure(results.get('P15_PLAYER_ZIP_BOOT')=='PASS' and
+                    exe_sha is not None,'W34_P15_REQUIRED')
+                strict_keys(fname,tuple(W34_R3_COUNTS),'W34_R3_TRIPLE_REQUIRED')
+                for kind,count in W34_R3_COUNTS.items():
+                    pack=fname[kind]
+                    strict_keys(pack,('before','after','beforeLog','afterLog',
+                         'beforeReceipt','afterReceipt'),'W34_COLD_BUNDLE')
+                    for key,extensions in (
+                        ('before',('.json',)),('after',('.json',)),
+                        ('beforeLog',('.log','.txt')),('afterLog',('.log','.txt')),
+                        ('beforeReceipt',('.json',)),('afterReceipt',('.json',))):
+                        attach(id,kind+'_'+key,pack[key],allowed=extensions)
+                    before=read_json(safe_file(evidence_dir,pack['before']))
+                    after=read_json(safe_file(evidence_dir,pack['after']))
+                    w34_snapshot(before,game_sha,kind,count)
+                    w34_snapshot(after,game_sha,kind,count)
+                    ensure(before==after,'W34_COLD_STATE_DRIFT')
+                    prior=w34_session(safe_file(evidence_dir,pack['beforeReceipt']),
+                        safe_file(evidence_dir,pack['beforeLog']),game_sha,exe_sha)
+                    later=w34_session(safe_file(evidence_dir,pack['afterReceipt']),
+                        safe_file(evidence_dir,pack['afterLog']),game_sha,exe_sha)
+                    ensure(prior[1]<later[0],'W34_NOT_DISTINCT_SESSIONS')
+                w34_cold='R3_20_83_139_OPERATOR_SNAPSHOTS_MATCH_NOT_NATIVE_QA'
             elif status=='PASS' and id=='P12_LOANER_POST_WIN_CONTINUATION':
                 strict_keys(fname,('before','after','playerLog'),'W29_RECOVERY_BUNDLE_REQUIRED')
                 attach(id,'before',fname['before'],allowed=('.png','.jpg','.jpeg','.json'))
@@ -273,6 +390,7 @@ def evaluate_w28(body, game_sha, evidence_dir):
             'sourceEvidence':'PHYSICAL_BYTES_SHA256_ONLY_NOT_GAME_AUTHENTICITY',
             'w29RequiredBootEvidence':'ZIP_PLUS_PLAYER_LOG_PLUS_W30_RECEIPT_OPERATOR_SUBMITTED',
             'w31SessionCrossCheck':w30_crosscheck,
+            'w34R3ColdOperatorEvidence':w34_cold,
             'w29RecoveryEvidence':'BEFORE_AFTER_PLUS_PLAYER_LOG_OPERATOR_SUBMITTED',
             'productGate':'HOLD_INDEPENDENT_G0_G1_AND_REAL_HUMAN_ACCEPTANCE'}
 
