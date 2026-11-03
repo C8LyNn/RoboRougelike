@@ -15,9 +15,9 @@ def need(x,message):
 def inspect(files,repo,receipt):
  expected=receipt["original_source_files"]
  paths=[row["path"] for row in expected]
- need(len(expected)==16 and len(paths)==len(set(paths)) and
-      len(files)==16 and set(files)==set(paths),
-      "precisely 16 original source files, no foreign/unowned members")
+ need(len(expected)==17 and len(paths)==len(set(paths)) and
+      len(files)==17 and set(files)==set(paths),
+      "precisely 17 original source files, no foreign/unowned members")
  for row in expected:
   p=row["path"];data=files[p]
   need(".." not in pathlib.PurePosixPath(p).parts and
