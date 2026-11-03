@@ -10,7 +10,7 @@ REF={
 "game877":"3bd9b159997924dcecb4e1cd1d41137896e5199e",
 "fullgame873":"d537b7310979b91df27a08b14d0f1c74d0889089",
 "numeric915":"95060c1d254624355737fd2c48dd87cf79099ebe",
-"numeric910":"28841161afb56ad78ec8506121aa12fde59bf984",
+"numeric910":"03d34006a4755b7f1b6d48498acf20fef01925cb",
 "writer896":"a0282f2de0250d2a8fe421bbe182b4cb6fab2a11",
 "writer885":"78c1d54d24a76c931ea80965a50eca03fae4156a",
 "schema907":"64d35ab765064760f1a75035a65b9554ab280d6c",
@@ -52,11 +52,16 @@ def scope():
  chk(changed==OWN,"B0140_EXCLUSIVE_THREE_ADD_PATHS"+str(sorted(changed^OWN)))
  x=dif("game877","numeric915");y=dif("game877","numeric910")
  chk(len(x)==6 and ("M",MODEL) in x,"915_EXACT_SIX_SCOPE")
- chk(len(y)==13 and ("M",MODEL) in y,"910_EXACT_THIRTEEN_SCOPE")
- chk(raw("game877",MODEL)!=raw("numeric915",MODEL)!=raw("numeric910",MODEL),
-     "PRICE_PRODUCERS_IDENTICAL_UNEXPECTED")
+ chk(len(y)==15 and ("M",MODEL) in y,"910_EXACT_FIFTEEN_SCOPE")
+ chk(git("merge-base","--is-ancestor",REF["numeric915"],REF["numeric910"])==b"",
+     "910_NOT_DESCENDANT_OF_CLOSED_915")
+ chk(len(dif("numeric915","numeric910"))==9 and all(status=="A" for status,_ in dif("numeric915","numeric910")),
+     "910_SUPERSEDED_915_EXTRA_NINE_QA_PATHS_NOT_ADD_ONLY")
+ chk(raw("game877",MODEL)!=raw("numeric915",MODEL) and
+     raw("numeric915",MODEL)==raw("numeric910",MODEL),
+     "NEW_910_DID_NOT_PRESERVE_UNMODIFIED_915_PRODUCT_R3")
  chk({p for status,p in x if status=="M"}=={MODEL,TEST},"915_FOREIGN_MODIFIED")
- chk({p for status,p in y if status=="M"}=={MODEL},"910_FOREIGN_MODIFIED")
+ chk({p for status,p in y if status=="M"}=={MODEL,TEST},"910_FOREIGN_MODIFIED")
  chk(len(dif("writer885","writer896"))==9 and
      {p for s,p in dif("writer885","writer896") if s=="M"}==
      {SLOT,SESSION,".github/workflows/b01-62-w30-single-writer-admission.yml"},
@@ -73,7 +78,7 @@ def semantic():
  contract=txt("writer896",WORLDS)
  catalog=txt("game877",CATALOG)
  one="if(part.Health<=0f)return (int)(((long)purchase*65L)/100L);"
- other="if(part.Health<=0f)return (int)((long)purchase*65L/100L);"
+ other="if(part.Health<=0f)return (int)(((long)purchase*65L)/100L);"
  chk(one in p and other in alternate and
      "Mathf.CeilToInt((1-part.Health)*purchase*0.35f)" in p and
      "Scrap -= price; part.Health = 1; return true;" in p,
@@ -123,8 +128,8 @@ def semantic():
      "PRICE_WITNESS_NOT_APPROVED_V7")
  return {
    "numeric_quote_source_915":"CORRECT_PRICE_P1_PAID_ZERO_SOURCE_ONLY",
-   "numeric_quote_source_910":"CORRECT_PRICE_ALTERNATE_NOT_COINSTALL",
-   "selected_numeric_pr":"NONE_PENDING_COORDINATOR",
+   "numeric_quote_source_910":"CORRECT_PRICE_LATEST_SUCCESSOR_OF_CLOSED_915_TEST_ONLY_EXTRA",
+   "selected_numeric_pr":"#910_LATEST_SOURCE_03d340_WITH_#915_PRODUCTION_BY_BLOBS_NOT_APPROVED_FOR_GAME",
    "direct_0HP_HP1_after_paid_order":"PRODUCT_TEMPORAL_RED_ON_BOTH_915_AND_910",
    "approved_V7_requires":"0HP_PENDING_UNTIL_NEXT_AUTHENTIC_DISTINCT_WIN_ID",
    "R3_actual_part_counts":[20,83,139],
