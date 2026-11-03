@@ -1,0 +1,48 @@
+name: B01-60 W33 corrected V7 next-authentic-win and R3 full Save capacity SOURCE ONLY
+on:
+  push:
+    branches: [qa/b01-60-p17w32-r3-acceptance-v7-paid-zero-r1]
+  pull_request:
+    paths:
+      - 'Assets/Tests/Editor/B0160W32R3V7PaidZeroBoundaryTests.cs'
+      - 'Assets/Tests/Editor/B0160W31SafeRestorationGameAcceptanceTests.cs'
+      - 'Assets/Tests/Editor/B0160W31RealR3JumpPadTests.cs'
+      - 'Assets/Tests/Editor/B0110W31EconomyParityTests.cs'
+      - 'Assets/Tests/Editor/B0110W32EconomySettlementParityTests.cs'
+      - 'Tools/B01/B01-60/P17W32R3CompositeQA/**'
+      - '.github/workflows/b01-60-p17w32-real-r3-v7-composite.yml'
+permissions:
+  contents: read
+jobs:
+  original_game_source_only:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Original full R3 source, copied unchanged original real native cases and defect witness
+        shell: bash
+        run: |
+          set -euo pipefail
+          python Tools/B01/B01-60/P17W32R3CompositeQA/verify.py | tee w32-source-receipt.txt
+          grep -F '"status": "SOURCE_ONLY_EXPECTED_V7_NEXT_WIN_AND_SAVE913_PRODUCT_RED"' w32-source-receipt.txt
+          grep -F '"real_Unity_Editor_G1": "NOT_RUN"' w32-source-receipt.txt
+          grep -F '"real_Windows_x64_Player": "NOT_RUN"' w32-source-receipt.txt
+      - name: Original source identity/defect/false-success negatives
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s Tools/B01/B01-60/P17W32R3CompositeQA -p test_verify.py -v 2>&1 | tee w32-test-source.txt
+          grep -F 'Ran 19 tests' w32-test-source.txt
+          grep -F 'OK' w32-test-source.txt
+          echo B0160_W33_SOURCE_ONLY_PASS_REAL_UNITY_AND_WIN_PLAYER_NOT_RUN_PRODUCT_ECON_RED
