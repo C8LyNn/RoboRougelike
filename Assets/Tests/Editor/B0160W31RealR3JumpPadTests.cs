@@ -84,6 +84,16 @@ public sealed class B0160W31RealR3JumpPadTests
             "must reposition the original R3 car, not a fake proxy");
     }
 
+    // A disabled pad cannot PASS merely because the fixture missed the trigger.
+    // Observe REAL original R3 core/wheel bounds intersecting the REAL pad trigger.
+    private static bool BodyActuallyOverlapsPadTrigger(MapJumpPad pad, Rigidbody body)
+    {
+        var trigger = pad.GetComponent<BoxCollider>();
+        return body.GetComponentsInChildren<Collider>().Any(c =>
+            c.enabled && !c.isTrigger && c.attachedRigidbody == body &&
+            c.bounds.Intersects(trigger.bounds));
+    }
+
     [UnityTest]
     public IEnumerator SalvageYard_ActualMultiColliderR3VehicleGetsOneRealUpwardImpulse()
     {
@@ -104,6 +114,7 @@ public sealed class B0160W31RealR3JumpPadTests
 
         float maxUpVelocity = float.NegativeInfinity;
         float maxHeight = float.NegativeInfinity;
+        bool actualPadContactObserved = false;
         for (int i = 0; i < 150; i++)
         {
             yield return new WaitForFixedUpdate();
@@ -111,7 +122,10 @@ public sealed class B0160W31RealR3JumpPadTests
                 "the actual vehicle must survive the real in-arena jump");
             maxUpVelocity = Mathf.Max(maxUpVelocity, p.body.linearVelocity.y);
             maxHeight = Mathf.Max(maxHeight, p.body.position.y);
+            actualPadContactObserved |= BodyActuallyOverlapsPadTrigger(p.pad, p.body);
         }
+        Assert.That(actualPadContactObserved, Is.True,
+            "real R3 mounted nontrigger colliders must genuinely cross original R5 pad trigger");
         Debug.Log("[B01-60 W31 R3 real JumpPad] mass=" + p.body.mass +
             " peakYspeed=" + maxUpVelocity + " peakHeight=" + maxHeight);
         Assert.That(maxUpVelocity, Is.GreaterThan(5f),
@@ -133,12 +147,16 @@ public sealed class B0160W31RealR3JumpPadTests
         PlaceActualR3VehicleAbovePad(p.run, p.pad, p.body);
 
         float maxUpVelocity = float.NegativeInfinity;
+        bool actualPadContactObserved = false;
         for (int i = 0; i < 130; i++)
         {
             yield return new WaitForFixedUpdate();
             Assert.That(p.body, Is.Not.Null);
             maxUpVelocity = Mathf.Max(maxUpVelocity, p.body.linearVelocity.y);
+            actualPadContactObserved |= BodyActuallyOverlapsPadTrigger(p.pad, p.body);
         }
+        Assert.That(actualPadContactObserved, Is.True,
+            "a disabled pad test is invalid if the original vehicle never entered its real trigger bounds");
         Debug.Log("[B01-60 W31 R3 disabled JumpPad] peakYspeed=" + maxUpVelocity);
         Assert.That(maxUpVelocity, Is.LessThan(4f),
             "disabled real pad must not inject the >=8.5m/s impulse");

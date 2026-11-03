@@ -46,7 +46,9 @@ def verify():
   "run.Arena.Build(R5ArenaKind.SalvageYard)","run.Player.MoveTo(landing, Quaternion.identity)",
   "p.body.linearVelocity.y","p.body.position.y","p.pad.SetActive(false)",
   "p.pad.CanLaunch(p.body)","p.body.mass","body.isKinematic",
-  "GetComponentsInChildren<Collider>","RigidbodyConstraints.FreezePositionY"):
+  "GetComponentsInChildren<Collider>","RigidbodyConstraints.FreezePositionY",
+  "BodyActuallyOverlapsPadTrigger","actualPadContactObserved",
+  "c.bounds.Intersects(trigger.bounds)"):
   need(token in c,"actual full vehicle native test not wired: "+token)
  pad=game("Assets/B01Packages/MapJumpPad001/Runtime/MapJumpPad.cs")
  arena=game("Assets/R5/R5Arena.cs")

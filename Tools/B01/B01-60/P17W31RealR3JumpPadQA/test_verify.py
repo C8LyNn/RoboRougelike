@@ -31,7 +31,12 @@ class OriginalGameJumpPadW31(unittest.TestCase):
   self.assertIn("RigidbodyConstraints.FreezePositionY",a)
   self.assertIn("body.constraints=RigidbodyConstraints.None",b)
   self.assertIn("p.body.constraints & RigidbodyConstraints.FreezePositionY",self.c)
- def test_10_scope_receipt_cannot_be_mistaken_for_native(self):
+ def test_10_actual_pad_trigger_contact_proof_for_active_and_disabled(self):
+  self.assertIn("BodyActuallyOverlapsPadTrigger",self.c)
+  self.assertIn("c.bounds.Intersects(trigger.bounds)",self.c)
+  self.assertEqual(self.c.count("actualPadContactObserved |= BodyActuallyOverlapsPadTrigger"),2)
+  self.assertEqual(self.c.count("Assert.That(actualPadContactObserved, Is.True"),2)
+ def test_11_scope_receipt_cannot_be_mistaken_for_native(self):
   self.assertEqual(self.r["real_Unity_6000_3_14f1"],"NOT_RUN")
   self.assertEqual(self.r["real_PhysX"],"NOT_RUN")
   self.assertFalse(self.r["qa_accepted"])
