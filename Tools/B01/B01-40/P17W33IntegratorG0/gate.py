@@ -205,8 +205,8 @@ def main():
  dest.mkdir()
  (dest/"manifest.json").write_bytes(rawjson)
  (dest/"W33_SOURCE_REVIEW_NOT_INSTALLABLE.zip").write_bytes(package)
- (dest/"sha256.json").write_text(json.dumps({"sha256":hashlib.sha256(package).hexdigest(),
-  "entries":len(selected)+2},sort_keys=True)+"\n",encoding="utf-8")
+ (dest/"sha256.json").write_bytes((json.dumps({"sha256":hashlib.sha256(package).hexdigest(),
+  "entries":len(selected)+2},sort_keys=True)+"\n").encode("utf-8"))
  print("B0140_W33_ORIGINAL_877_915_910_896_SOURCE_SELECTION_G0_PASS")
  print("B0140_W33_SCHEMA_913_REAL_R3_20_83_139_VS_FROZEN_2_PRODUCT_RED_DETECTED")
  print("B0140_W33_V7_0HP_NEXT_AUTHENTIC_WIN_PRODUCT_TEMPORAL_RED_DETECTED")
