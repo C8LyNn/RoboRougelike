@@ -57,7 +57,7 @@ def text(ref,p):
     return file(ref,p).decode("utf-8-sig")
 def changed(a,b):
     return {l.split("\t",1)[1]:l.split("\t",1)[0] for l in
-            git("diff","--name-status",REF[a],REF[b]).decode().splitlines()}
+            git("diff","--name-status",REF.get(a,a),REF.get(b,b)).decode().splitlines()}
 def source_integrity():
     current=git("rev-parse","HEAD").decode().strip()
     check(current not in REF.values(),"NEEDS_ISOLATED_QA_HEAD")
