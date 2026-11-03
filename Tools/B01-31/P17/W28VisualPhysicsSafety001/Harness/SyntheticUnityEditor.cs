@@ -26,8 +26,19 @@ namespace UnityEditor
   public static bool IsValidFolder(string s)=>false;
   public static void CreateFolder(string path,string folder){}
  }
+ public enum PrefabUnpackMode {OutermostRoot,Completely}
+ public enum InteractionMode {UserAction,AutomatedAction}
  public static class PrefabUtility
- {public static UnityEngine.Object InstantiatePrefab(UnityEngine.Object prefab,UnityEngine.SceneManagement.Scene scene)=>new GameObject();}
+ {
+   public static UnityEngine.Object InstantiatePrefab(UnityEngine.Object prefab,UnityEngine.SceneManagement.Scene scene)=>new GameObject();
+   public static bool IsPartOfPrefabInstance(GameObject go)=>go.syntheticPrefabConnected;
+   public static void UnpackPrefabInstance(GameObject root,PrefabUnpackMode mode,InteractionMode interaction)
+   {
+      if(!root.syntheticPrefabConnected)throw new InvalidOperationException("No connected prefab");
+      if(mode!=PrefabUnpackMode.Completely)throw new InvalidOperationException("Nested prefab not fully unpacked");
+      root.SyntheticUnpack();
+   }
+ }
 }
 namespace UnityEditor.SceneManagement
 {
