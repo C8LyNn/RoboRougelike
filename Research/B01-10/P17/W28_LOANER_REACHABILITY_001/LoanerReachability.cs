@@ -12,6 +12,7 @@ static class LoanerReachability
     const string Core="00000000000000000000000000000001";
     const string Drive="00000000000000000000000000000002";
     const string Permit="00000000000000000000000000000003";
+    const string Weapon="00000000000000000000000000000004";
     static int checks, cases;
     static void Check(bool b,string label)
     {
@@ -66,10 +67,14 @@ static class LoanerReachability
         };
     }
     static ApprovedEconomySnapshotV7 Enter(ApprovedEconomySnapshotV7 s,
-        string encounter)
+        string encounter,string[] requiredOwnedIds=null)
     {
+        // The host must supply genuine physical CanDeploy facts. This test
+        // explicitly enumerates two required broken GUIDs, not just one.
+        var facts=Facts(s,encounter);
+        if(requiredOwnedIds!=null)facts.EssentialDestroyedPhysicalIds=requiredOwnedIds;
         Check(ApprovedEconomyPolicyV7.TryReserveOneShotLoaner(s,
-            Facts(s,encounter),Permit,out var loaner,out var why),
+            facts,Permit,out var loaner,out var why),
             "V7 real original loaner reserve "+why);
         Check(ApprovedEconomyPolicyV7.TryConsumeLoanerOnTrustedChallengeEntry(
             loaner,encounter,Permit,out var entered,out why),
@@ -215,6 +220,81 @@ static class LoanerReachability
         cases++;
         Console.WriteLine("W28_C_LOANER_LOSS_CORE_AND_NEXT_GATES_NO_REARM PASS");
     }
+    // W29 gameplay risk NOT covered by the single-drive softlock analysis:
+    // one genuine prior win gives one Free order, but two required modules
+    // cannot both be restored at cash=0 before the one-shot loaner WIN.
+    // A proposed 1-GUID conditional free claim does not guarantee CanDeploy.
+    static void CheckTwoEssentialPartsNeedTwoTickets()
+    {
+        foreach(var cash in new[]{0,65})
+        {
+            var initial=Start(100,cash,false);
+            initial.Parts.Add(new OwnedModuleV7 {
+                Id=Weapon,Category="EssentialGun",Hp=1,PurchaseScrap=100
+            });
+            Check(ApprovedEconomyPolicyV7.Valid(initial),
+                "two original physical owned essential GUIDs source-valid");
+            // Previous synthetic Win makes exactly ONE free entitlement legal.
+            var s=Win(initial,"previous-victory-"+cash,"previous-fight-"+cash);
+            Check(s.Wins==1&&s.FreeUsedForWin==0&&s.Pending.Count==0,
+                "one previously earned source free booking, no coupons stockpiled");
+            s=s.Copy();
+            s.Parts.Single(p=>p.Id==Drive).Hp=0;
+            s.Parts.Single(p=>p.Id==Weapon).Hp=0;
+            Check(ApprovedEconomyPolicyV7.Valid(s),
+                "both owned essential modules destroyed after earlier victory");
+            Check(ApprovedEconomyPolicyV7.TryReserveDestroyed(
+                s,Drive,out var queued,out var why),
+                "first critical GUID prebooked with prior free coupon "+why);
+            Check(queued.Pending.Count==1&&queued.Pending[0].Free&&
+                queued.Parts.Single(p=>p.Id==Drive).Hp==0,
+                "one Free ticket does not repair any HP before next WIN");
+            s=SaveSection(queued);
+            if(cash==0)
+            {
+                Check(!ApprovedEconomyPolicyV7.TryReserveDestroyed(
+                    s,Weapon,out _,out var rejected)
+                    &&rejected=="INSUFFICIENT_SCRAP",
+                    "second essential GUID cannot be booked with single Free and cash0");
+                Check(s.Pending.Count==1&&s.Scrap==0&&s.FreeUsedForWin==1,
+                    "failed second order does not debit cash or duplicate free ticket");
+            }
+            else
+            {
+                Check(ApprovedEconomyPolicyV7.TryReserveDestroyed(
+                    s,Weapon,out var second,out var why2),
+                    "second required weapon paid65 pre-order "+why2);
+                Check(second.Pending.Count==2&&
+                    second.Pending.Count(p=>p.Free)==1&&
+                    second.Pending.Single(p=>!p.Free).ChargedScrap==65&&
+                    second.Scrap==0,
+                    "two required parts = exactly one Free plus one Paid, cash65");
+                s=SaveSection(second);
+            }
+            var fight="second-fight-"+cash;
+            s=Enter(s,fight,new[]{Drive,Weapon});
+            s=Win(s,"distinct-loaner-win-"+cash,fight);
+            Check(s.Wins==2&&s.Loaner.Phase==LoanerPhaseV7.Spent&&
+                s.Parts.Single(p=>p.Id==Drive).Hp==1,
+                "borrowed WIN completes pre-existing Free Drive order and spends permit");
+            if(cash==0)
+            {
+                Check(s.Parts.Single(p=>p.Id==Weapon).Hp==0&&s.Pending.Count==0,
+                    "source P0: remaining ESSENTIAL weapon stays 0HP after legal loaner WIN");
+                Check(!ApprovedEconomyPolicyV7.TryReserveOneShotLoaner(
+                    s,Facts(s,"new-fight"),Permit,out _,out _),
+                    "spent one-shot cannot rescue a second essential module");
+                Console.WriteLine("W29_TWO_ESSENTIALS_CASH0_1_FREE SOURCE_BLOCKED_AFTER_LOANER_WIN PASS");
+            }
+            else
+            {
+                Check(s.Parts.Single(p=>p.Id==Weapon).Hp==1&&s.Pending.Count==0,
+                    "source recovery with preexisting Free+Paid orders after next WIN");
+                Console.WriteLine("W29_TWO_ESSENTIALS_CASH65_FREE_PLUS_PAID SOURCE_RECOVERABLE PASS");
+            }
+            cases++;
+        }
+    }
     static int Main()
     {
         try
@@ -225,7 +305,8 @@ static class LoanerReachability
             CheckPriorWinFreeTicket();
             CheckIllegalUnmintedFree();
             CheckLossOrBlockedEvidence();
-            Check(cases==6,"six real original source decision cases");
+            CheckTwoEssentialPartsNeedTwoTickets();
+            Check(cases==8,"eight original source cases including two-essential rig");
             Console.WriteLine("W28_ORIGINAL_V7_REACHABILITY_SUITE_PASS"+
                 " cases="+cases+" checks="+checks+
                 " | P0_ZERO_SCRAP_ESSENTIAL_WIN_STILL_BLOCKED"+
