@@ -1,0 +1,28 @@
+name: B01-13 W30 Real Windows Player Session Source QA
+on:
+  push:
+    paths:
+      - 'Research/B01-13/P17W30/**'
+      - '.github/workflows/b01-13-w30-real-player-session.yml'
+  pull_request:
+    paths:
+      - 'Research/B01-13/P17W30/**'
+      - '.github/workflows/b01-13-w30-real-player-session.yml'
+  workflow_dispatch:
+jobs:
+  source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+        python-version: ['3.11', '3.13']
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Verify original Git SHA and byte pins
+        run: python Research/B01-13/P17W30/verify_package.py
+      - name: Source-only mocked process tests (NOT native game)
+        run: python -m unittest -v Research/B01-13/P17W30/test_native_session.py

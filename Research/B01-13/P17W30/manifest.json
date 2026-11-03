@@ -1,0 +1,43 @@
+{
+  "package_id": "B01-13-W30-INTERACTIVE-WINDOWS-PLAYER-SESSION-001/R1",
+  "owner": "B01-13 HUMAN PLAYTESTING",
+  "hq_issue": 800,
+  "source_parent_pr": 869,
+  "parent_sha": "6affe78371a4c9c0bcb90835ebb9bffee6976da9",
+  "branch": "research/b01-13-p17w30-interactive-windows-player-session-r1",
+  "dependency_ids": [
+    "#869/#844/#819 contract only",
+    "#873 #877 gameplay candidate not modified",
+    "#861 Saw native pending",
+    "#826 Save selected source pending integration",
+    "#834 owner softlock policy pending"
+  ],
+  "actual_human_sessions": 0,
+  "native_unity_g1": "NOT_RUN",
+  "windows_player_executed": "NOT_RUN",
+  "source_unit_tests": 17,
+  "qa_g0": "PENDING",
+  "source_test_environment": "local Linux Python 3.13; remote Windows/Ubuntu CI to run",
+  "files": {
+    "Research/B01-13/P17W30/native_session.py": {
+      "git_blob_sha1": "4f8a1e2dc4543b4f378d03e95c4fa8553847ca5d",
+      "bytes": 6011
+    },
+    "Research/B01-13/P17W30/test_native_session.py": {
+      "git_blob_sha1": "ca8b753ca2d3f907121224b43be472b587f2ac38",
+      "bytes": 5341
+    },
+    "Research/B01-13/P17W30/README.md": {
+      "git_blob_sha1": "31d1f9902715d0399d9ea639c9cd2c164e338322",
+      "bytes": 6898
+    },
+    "Research/B01-13/P17W30/verify_package.py": {
+      "git_blob_sha1": "ffd1445b4805fa5bf18626bac5eb8f17c774ad43",
+      "bytes": 1134
+    },
+    ".github/workflows/b01-13-w30-real-player-session.yml": {
+      "git_blob_sha1": "85f90f1d440f5aacffa1de247cd9ec3bd8c91f98",
+      "bytes": 914
+    }
+  }
+}
