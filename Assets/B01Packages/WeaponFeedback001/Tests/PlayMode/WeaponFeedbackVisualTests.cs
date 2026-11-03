@@ -40,7 +40,22 @@ namespace B01.WeaponFeedback001.Tests
    yield return null;
    Assert.AreEqual(1, v.ImpactFeedbackCount);
   }
-  [UnityTest]public IEnumerator WeaponDamageVisual_ClampsWithoutGameplayDamage()
+  [UnityTest]public IEnumerator RapidBurst_ReusesBoundedImpactPool()
+  {
+   var v=Make(out Transform pivot,out Light light);
+   for(int i=0;i<48;i++)
+    v.NotifyImpact(new Vector3(i,1,0),Vector3.up);
+   Assert.AreEqual(48,v.ImpactFeedbackCount);
+   Assert.AreEqual(12,v.ImpactPoolSize,
+    "FX pool must cap the number of created particle GameObjects.");
+   yield return null;
+   Assert.AreEqual(12,v.ImpactPoolSize);
+   for(int i=0;i<24;i++)
+    v.NotifyImpact(new Vector3(i,2,0),Vector3.forward);
+   Assert.AreEqual(12,v.ImpactPoolSize,
+    "Further hits must reuse the existing GameObjects.");
+  }
+    [UnityTest]public IEnumerator WeaponDamageVisual_ClampsWithoutGameplayDamage()
   {
    var v=Make(out Transform pivot,out Light light);
    v.SetWeaponDamageVisual(5f);

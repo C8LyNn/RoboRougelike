@@ -18,13 +18,16 @@ namespace B01.WeaponFeedback001
         [SerializeField, Min(0.05f)] float impactLifetimeSeconds = 2f;
         [SerializeField, Range(1,32)] int maximumImpactInstances = 12;
 
-        readonly Queue<ParticleSystem> impacts = new Queue<ParticleSystem>();
+        readonly List<ParticleSystem> impacts = new List<ParticleSystem>();
+        readonly List<float> impactExpiry = new List<float>();
+        int nextImpactIndex;
         Vector3 restLocalPosition;
         float lightLeft;
         bool pivotSet;
         public int ShotFeedbackCount { get; private set; }
         public int ImpactFeedbackCount { get; private set; }
         public float DamageVisualFraction { get; private set; }
+        public int ImpactPoolSize => impacts.Count;
 
         void Awake() { CachePivot(); if(muzzleLight)muzzleLight.enabled=false; }
         void CachePivot()
@@ -56,17 +59,36 @@ namespace B01.WeaponFeedback001
             ImpactFeedbackCount++;
             if(!impactPrefab)return;
             Vector3 normal=outwardNormal.sqrMagnitude>.0001f?outwardNormal.normalized:Vector3.up;
-            if(impacts.Count>=maximumImpactInstances)
+            // Reuse a bounded number of particle objects. Bursts must not allocate
+            // one new GameObject per hit (or exceed the configured budget).
+            ParticleSystem copy;
+            int slot;
+            if(impacts.Count < maximumImpactInstances)
             {
-                var old=impacts.Dequeue();
-                if(old)Destroy(old.gameObject);
+                copy = Instantiate(impactPrefab, position,
+                    Quaternion.FromToRotation(Vector3.up, normal), null);
+                slot = impacts.Count;
+                impacts.Add(copy);
+                impactExpiry.Add(0f);
             }
-            ParticleSystem copy=Instantiate(impactPrefab,position,
-                Quaternion.FromToRotation(Vector3.up,normal),null);
+            else
+            {
+                slot = nextImpactIndex % impacts.Count;
+                copy = impacts[slot];
+                if (!copy)
+                {
+                    copy = Instantiate(impactPrefab, position,
+                        Quaternion.FromToRotation(Vector3.up, normal), null);
+                    impacts[slot] = copy;
+                }
+                copy.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                copy.transform.SetPositionAndRotation(position,
+                    Quaternion.FromToRotation(Vector3.up, normal));
+            }
+            nextImpactIndex = (slot + 1) % maximumImpactInstances;
             copy.gameObject.SetActive(true);
             copy.Play(true);
-            impacts.Enqueue(copy);
-            Destroy(copy.gameObject,impactLifetimeSeconds);
+            impactExpiry[slot] = Time.time + impactLifetimeSeconds;
         }
         // 0..1 comes from game health; this class never writes HP.
         public void SetWeaponDamageVisual(float fraction)
@@ -83,6 +105,13 @@ namespace B01.WeaponFeedback001
         }
         void Update()
         {
+            // Expire effects without destroying their pooled GameObjects.
+            for (int i = 0; i < impacts.Count; i++)
+                if (impacts[i] && impactExpiry[i] > 0f && Time.time >= impactExpiry[i])
+                {
+                    impacts[i].Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                    impactExpiry[i] = 0f;
+                }
             if(muzzleLight&&muzzleLight.enabled)
             {
                 lightLeft-=Time.deltaTime;
@@ -96,7 +125,10 @@ namespace B01.WeaponFeedback001
         {
             if(muzzleLight)muzzleLight.enabled=false;
             if(recoilVisualPivot&&pivotSet)recoilVisualPivot.localPosition=restLocalPosition;
-            while(impacts.Count>0){var old=impacts.Dequeue();if(old)Destroy(old.gameObject);}
+            foreach (var impact in impacts) if (impact) Destroy(impact.gameObject);
+            impacts.Clear();
+            impactExpiry.Clear();
+            nextImpactIndex = 0;
         }
     }
 }
