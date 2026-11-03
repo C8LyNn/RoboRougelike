@@ -5,6 +5,8 @@ Strictly source/transport QA: no Save writer, Unity Editor, or Codex worktree.
 from __future__ import annotations
 import argparse
 import hashlib
+import io
+import zipfile
 import json
 import re
 import subprocess
@@ -287,7 +289,36 @@ def main():
     output=Path(args.out)
     must(not output.exists(),"RECEIPT_PATH_ALREADY_USED")
     output.parent.mkdir(parents=True,exist_ok=True)
-    output.write_bytes((json.dumps(m,sort_keys=True,indent=2)+"\n").encode("utf-8"))
+    manifest_bytes=(json.dumps(m,sort_keys=True,indent=2)+"\n").encode("utf-8")
+    output.write_bytes(manifest_bytes)
+    # SOURCE-only, NOT installable directly into Unity: omit audit-only old R3 raw
+    # Store to make it physically impossible for the receiver ZIP to overlay
+    # a second writer by accident. The exact raw R3 bytes remain proven by
+    # the manifest and immutable B01-40 G0 script.
+    importable={k:v for k,v in data.items() if k not in DIRECT["r3"]}
+    entries={"PACKAGE_MANIFEST.json":manifest_bytes,
+       "REVIEW_ONLY_README.txt":(
+         "G0 SOURCE ONLY. Do not install #826 until game binder/native G1. "
+         "No raw #787 Store; only one writer. Exact selected SHA in MANIFEST.\n"
+       ).encode("utf-8")}
+    for k,v in importable.items():
+        group="REVIEW_ONLY/" if k in DIRECT["full"] else "SOURCE/"
+        entries[group+k]=v
+    with io.BytesIO() as buffer:
+        with zipfile.ZipFile(buffer,"w",compression=zipfile.ZIP_DEFLATED,
+                             compresslevel=9) as archive:
+            for name,b in sorted(entries.items()):
+                info=zipfile.ZipInfo(name,date_time=(1980,1,1,0,0,0))
+                info.create_system=3; info.external_attr=(0o100644<<16)
+                info.compress_type=zipfile.ZIP_DEFLATED
+                archive.writestr(info,b,compress_type=zipfile.ZIP_DEFLATED,
+                                 compresslevel=9)
+        package=buffer.getvalue()
+    zipfile_path=output.parent/"B0140_W29_826_EXCLUSIVE_COMPOSITE_SOURCE_ONLY.zip"
+    must(not zipfile_path.exists(),"SOURCE_ZIP_RECEIPT_ALREADY_EXISTS")
+    zipfile_path.write_bytes(package)
+    print("B0140_W29_SOURCE_ZIP_RAW_R3_EXCLUDED_PASS members="+str(len(entries))+
+          " sha256="+sha(package))
     print("B0140_W29_826_SOURCE_TRANSPORT_G0_PASS_PRODUCT_G0_HOLD_BINDER")
     print("B0140_W29_G1_NOT_RUN_NO_CODEX_INSTALL_NO_MERGE")
     print("SOURCE_RECEIPT_SHA256="+sha(output.read_bytes()))
