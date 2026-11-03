@@ -1,0 +1,35 @@
+name: B01-30 P17 W34 Independent R41 v5 Fixed Rig SOURCE G0 not native
+on:
+  push:
+    branches: [qa/b01-30-p17w34-r41v5-fixed-rig-receiver-r1]
+  pull_request:
+    paths:
+      - 'Assets/B01_30/**'
+      - 'Assets/B01_30.meta'
+      - 'Tools/B01-30/**'
+      - '.github/workflows/b01-30-p17w34-r41v5-independent-source-g0.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-independent-g0:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Independent actual original rig source, 8 mutant negatives, 2 original native cases
+        run: python Tools/B01-30/P17/W34R41V5Receiver/check_source.py
+      - name: Upload independent SOURCE receipt (NEVER Unity evidence)
+        uses: actions/upload-artifact@v4
+        with:
+          name: B0130-W34-R41-V5-SOURCE-${{ matrix.os }}
+          path: build/B0130W34/receipt.json
+          if-no-files-found: error
