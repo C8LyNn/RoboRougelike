@@ -35,7 +35,7 @@ jobs:
             test "$got" = "$expected" || { echo "W29_ORIGINAL_BLOB_BAD $path expected=$expected got=$got"; exit 1; }
             n=$((n+1))
           done < Tools/B01/B01-50/W29DebrisSparkBudgetR2/MANIFEST-GIT-BLOBS.tsv
-          test "$n" -eq 7 || { echo "W29_EXACT_OWN_BLOBS_MISMATCH $n"; exit 1; }
+          test "$n" -eq 8 || { echo "W29_EXACT_OWN_BLOBS_MISMATCH $n"; exit 1; }
           python - <<'PY' | tee ci-evidence/w29_exact_original_git_abi_guid_audit.txt
           from pathlib import Path
           import re
@@ -65,7 +65,7 @@ jobs:
           assert runtime.count('GetComponent<Rigidbody>()')==1
           assert native.count('[UnityTest]')==6
           assert 'body.linearVelocity.sqrMagnitude' in runtime
-          print('ORIGINAL_W29_GIT_BLOB_PINS 7/7 PASS; 3 original Unity GUID retained')
+          print('ORIGINAL_W29_GIT_BLOB_PINS 8/8 PASS; 3 original Unity GUID retained')
           print('ORIGINAL_W29_NATIVE_PLAYMODE_SOURCES 6 PRESENT ONLY; NATIVE_UNITY_NOT_RUN')
           PY
       - name: Compile immutable original W28 MonoBehaviour and prove SIX actual source RED

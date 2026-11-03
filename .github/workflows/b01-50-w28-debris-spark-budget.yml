@@ -10,6 +10,9 @@ permissions:
   contents: read
 jobs:
   original-production-core-and-guid:
+    # Frozen W28 manifest is valid only against the ORIGINAL W28 PR base;
+    # W29 source successor has its own exact-baseline RED-to-GREEN test/manifest.
+    if: github.event_name == 'pull_request' && github.base_ref == 'feature/w27-weapon-garage'
     strategy:
       fail-fast: false
       matrix:
