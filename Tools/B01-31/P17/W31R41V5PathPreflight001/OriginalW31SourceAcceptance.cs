@@ -71,9 +71,13 @@ static class OriginalW31SourceCsharpAcceptance
         Invalid(assets,"","FOREIGN_OR_UNAPPROVED_V5_ASSET_PATH","24-empty-asset-path-rejected");
         Invalid(assets,"Assets/B01_31/W30R41V5Adapter/Generated/R41_Turret_v5.fbx",
                 "FOREIGN_OR_UNAPPROVED_V5_ASSET_PATH","25-generated-adapter-cannot-be-used-as-original");
-        Check(R41V5MuzzleGeometry.TryPose(0,0,R41V5MuzzleSide.Left,out var left) &&
-              R41V5MuzzleGeometry.TryPose(0,0,R41V5MuzzleSide.Right,out var right),
-              "26-original-W30-kinematic-source-linkage-intact");
+        // Both original production outs must be unconditionally initialized,
+        // regardless of whether the left muzzle is valid (C# CS0165).
+        bool leftOk=R41V5MuzzleGeometry.TryPose(
+            0,0,R41V5MuzzleSide.Left,out var left);
+        bool rightOk=R41V5MuzzleGeometry.TryPose(
+            0,0,R41V5MuzzleSide.Right,out var right);
+        Check(leftOk && rightOk,"26-original-W30-kinematic-source-linkage-intact");
         Check(R41V5MuzzleGeometry.ValidatePosePair(in left,in right),
               "27-original-W30-geometry-both-muzzles-still-physical-12cm");
         Check(R41V5MuzzleGeometry.GridMeters==0.55,
