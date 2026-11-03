@@ -1,0 +1,33 @@
+name: B01-23 W32 ORIGINAL R3 V7 repair methods .NET (NOT UNITY)
+on:
+  push:
+    branches:
+      - b01-23/p17w32-r3-econ-v7-repair-parity-r1
+permissions:
+  contents: read
+jobs:
+  actual-original-methods:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2022, ubuntu-24.04]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Execute real extracted R3 C#9 methods under .NET8 and reject three mutated implementations
+        shell: bash
+        run: |
+          dotnet --version
+          python Tools/B01/B0123/W32/verify_economy.py > b0123-w32-source-econ.json
+          python -m json.tool b0123-w32-source-econ.json
+      - name: Upload source-isolated receipt (NOT Unity/Player proof)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: B01-23-W32-original-methods-${{ matrix.os }}-${{ github.run_id }}
+          path: b0123-w32-source-econ.json
+          if-no-files-found: warn
