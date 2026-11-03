@@ -50,11 +50,14 @@ namespace RoboRougelike.Weapons.RotarySaw.Tests
                 minimumCutRpm=10f, maximumRpm=1000f,
                 accelerationRpmPerSecond=100000f, decelerationRpmPerSecond=100000f,
                 damagePerSecondAtFullRpm=100f, heatPerSecondAtFullRpm=15f,
-                maxOverlapHits=4, maxCuttableResistance=3f, energyPerSecond=0f
+                maxOverlapHits=4, maxCuttableResistance=3f, energyPerSecond=5f
             };
             saw.Configure(cfg);
             saw.Bind(body,owner.transform,rotor.transform);
-            saw.SetDamageSink(sink);
+             saw.SetDamageSink(sink);
+            var energy=owner.AddComponent<RotarySawEnergyReservoir>();
+            energy.SetChargeForTesting(20f);
+            saw.SetEnergySource(energy);
             saw.SetAutomaticSimulation(false);
             saw.SetMotorRequested(true);
 
@@ -82,6 +85,8 @@ namespace RoboRougelike.Weapons.RotarySaw.Tests
                 "Own-clearance unknown must not spin the saw");
             Assert.That(saw.Motor.Heat,Is.Zero,
                 "Own-clearance unknown must not generate thermal heat");
+            Assert.That(energy.Charge,Is.EqualTo(20f),
+                "Incomplete owner-clearance query must never debit actual rotary motor energy");
             foreach(var target in targets)
                 Assert.That(target.TotalDamage,Is.Zero,
                     "No external enemy target may be damaged during incomplete owner-clearance query");
@@ -100,6 +105,8 @@ namespace RoboRougelike.Weapons.RotarySaw.Tests
                 "Real original rotary motor must resume after query becomes trustworthy");
             Assert.That(saw.Motor.Heat,Is.GreaterThan(0f),
                 "Real motor only heats once unblocked");
+            Assert.That(energy.Charge,Is.LessThan(20f),
+                "Only a genuinely unblocked rotary motor may spend energy");
             Assert.That(targets[4].TotalDamage,Is.GreaterThan(0f),
                 "A remaining genuine enemy collider must receive actual saw damage");
             Assert.That(saw.DamageEventsLastTick,Is.EqualTo(1));
