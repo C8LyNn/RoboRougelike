@@ -20,6 +20,7 @@ OWN = {NATIVE, META, README, VERIFIER, WORKFLOW, MANIFEST}
 PINS = {
     "Assets/R3/R3BuildValidation.cs": "996a2de80039103538700020cca38bc0ede6076a",
     "Assets/R3/R3RestorationValidation.cs": "0d31d7201957d36b637a9be58574ca6c4c5d1dbf",
+    "Assets/R3/R3VehicleCatalog.cs": "f76de5bbdcc1dbdb7ddb9fe9859c36c232fd8584",
 }
 REQUIRED = (
     "UnityTest", "EditorSceneManager.OpenScene", "EnterPlayMode",
@@ -30,6 +31,11 @@ REQUIRED = (
     "B0150_W32_REAL_R3_GARAGE_PROFILE", "beforeScrap",
     "beforeInventory", "beforeIds", "yield return null",
     "UNPINNED_NOT_ACCEPTABLE_FOR_G1",
+    "R3VehicleKind.Light", "R3VehicleKind.Heavy",
+    "ActualLight20PartR3GaragePlacementLatencyAndAllocations",
+    "ActualHeavy139PartR3GaragePlacementLatencyAndAllocations",
+    "B0150_W33_REAL_R3_GARAGE_SCALE",
+    "baseline_parts=", "samples=32", "ProfileCatalogScale",
 )
 
 def git(*args):
@@ -42,8 +48,8 @@ def check_fixture(source):
     for marker in REQUIRED:
         if marker not in source:
             raise ValueError("Missing real native profiling invariant: " + marker)
-    if source.count("[UnityTest]") != 1:
-        raise ValueError("Expected exactly one original-game native fixture")
+    if source.count("[UnityTest]") != 3:
+        raise ValueError("Expected exactly three real original-game native fixtures (20/83/139)")
     if source.count("OwnedPlacementError(") < 4:
         raise ValueError("No repeated actual game validation paths")
     if "GarageBuy(" in source or "GarageMount(" in source or "File.Write" in source:
@@ -96,7 +102,7 @@ def run():
         actual.add(path)
     if actual!=OWN:
         raise ValueError("Not exactly six original new B01-50 paths: "+repr(sorted(actual)))
-    print("B0150_W32_ORIGINAL_SOURCE_PASS six ADD-only, five exact own blobs, two R3 original game pins")
+    print("B0150_W33_ORIGINAL_SOURCE_PASS six ADD-only, five exact own blobs, three R3 original game pins; three authored native tests for 20/83/139 parts")
     print("B0150_W32_TRUE_NATIVE_PROFILE_SOURCE_PRESENT; UNITY_EDITOR_NOT_RUN; WINDOWS_PLAYER_NOT_BUILT; GPU_FPS_NOT_MEASURED")
 
 class NativeFixtureNegativeTests(unittest.TestCase):
@@ -121,6 +127,12 @@ class NativeFixtureNegativeTests(unittest.TestCase):
         self.check_rejects("EnterPlayMode","UnknownMode")
     def test_no_fake_testframe(self):
         self.check_rejects("yield return null","yield break")
+    def test_no_removed_original_light_scale(self):
+        self.check_rejects("R3VehicleKind.Light", "R3VehicleKind.Standard")
+    def test_no_removed_original_heavy_scale(self):
+        self.check_rejects("R3VehicleKind.Heavy", "R3VehicleKind.Standard")
+    def test_no_removed_actual_scale_metrics(self):
+        self.check_rejects("B0150_W33_REAL_R3_GARAGE_SCALE", "SYNTHETIC_FAKE_SCALE")
     def test_original_valid_source(self):
         check_fixture(self.source)
 
