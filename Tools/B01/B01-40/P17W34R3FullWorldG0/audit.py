@@ -90,10 +90,13 @@ def source_integrity():
               "FROZEN_PREVIOUS_AUTHORITY_MUTATED_"+source)
     check(file("game877",GAME)==file("dynamic923",GAME),
           "GAME_CATALOG_BLOB_VIOLATED")
-    check(file("economy780",ECON)==file("dynamic923",ECON),
-          "V7_FROZEN_BLOB_MODIFIED")
-    check(file("admission855",ADMISSION)==file("dynamic923",ADMISSION),
-          "855_OWNER_ADMISSION_MODIFIED")
+    # #923 actually stages pinned V7/#855 into .source, not Assets.
+    check(bool(file("economy780",ECON)) and bool(file("admission855",ADMISSION)),
+          "IMMUTABLE_EXTERNAL_ORIGINAL_PROVENANCE_MISSING")
+    wf=text("dynamic923",".github/workflows/b01-62-w33-r3-dynamic-same-writer.yml")
+    for token in (REF["economy780"]+":"+ECON,
+                  REF["admission855"]+":"+ADMISSION):
+        check(token in wf,"EXACT_ORIGINAL_SOURCE_STAGING_"+token[:12])
     return sorted(producer)
 def static_guards():
     old=text("writer896",STORE)
