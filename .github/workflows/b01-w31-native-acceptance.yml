@@ -1,0 +1,230 @@
+name: B01 W31 conditional REAL Unity 6000.3.14f1 Editor + Windows Player
+on:
+  push:
+    branches:
+      - feature/pass17-w29-live-garage-functional-sweep-gate
+    paths:
+      - 'Assets/**'
+      - '.github/workflows/b01-w31-native-acceptance.yml'
+      - 'Tools/B01/Codex/W31/**'
+      - 'Tools/B01/Codex/W30/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: b01-w31-unity-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  activation-and-source:
+    name: Exact-SHA source + license gate (NOT Unity)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    outputs:
+      enabled: ${{ steps.license.outputs.enabled }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Fetch only the approved #873 source baseline commit
+        run: git fetch --no-tags --depth=1 origin d537b7310979b91df27a08b14d0f1c74d0889089
+      - name: Verify repository and current W31 source gate
+        run: |
+          python3 Tools/CI/validate_repository.py
+          python3 Tools/B01/Codex/W30/verify_garage.py
+          python3 Tools/B01/Codex/W31/verify_artifacts.py --selftest
+      - name: Check existing Unity activation without exposing credentials
+        id: license
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+        shell: bash
+        run: |
+          if [[ -n "${UNITY_EMAIL}" && -n "${UNITY_PASSWORD}" ]] && { [[ -n "${UNITY_LICENSE}" ]] || [[ -n "${UNITY_SERIAL}" ]]; }; then
+            echo 'enabled=true' >> "${GITHUB_OUTPUT}"
+            echo 'LICENSE_PRESENT_ONLY; activation must still succeed in real Unity.' | tee activation-status.txt
+          else
+            echo 'enabled=false' >> "${GITHUB_OUTPUT}"
+            echo 'UNITY_G1=NOT_RUN; WINDOWS_PLAYER=NOT_BUILT: Unity activation secrets are missing.' | tee activation-status.txt
+            echo '::warning::No Unity license activated. SOURCE PASS only; all native Unity jobs SKIPPED.'
+          fi
+      - name: Publish activation status (no secrets)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: W31-exact-SHA-activation-${{ github.run_id }}
+          path: activation-status.txt
+          if-no-files-found: warn
+  editmode:
+    name: REAL Unity EditMode / all cases
+    needs: activation-and-source
+    if: needs.activation-and-source.outputs.enabled == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Unity 6000.3.14f1 original full EditMode
+        uses: game-ci/unity-test-runner@32e57712352b500e17974b245a6dce9e11a73213
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+        with:
+          projectPath: .
+          unityVersion: 6000.3.14f1
+          cliVersion: v0.1.72
+          testMode: editmode
+          coverageEnabled: false
+          githubToken: ''
+          artifactsPath: Artifacts/CI/W31/EditMode
+      - name: Fail closed without actual fully passing NUnit3 XML
+        run: python3 Tools/B01/Codex/W31/verify_artifacts.py --xml-root Artifacts/CI/W31/EditMode
+      - name: Retain actual NUnit XML and Editor logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: W31-Unity-EditMode-${{ github.run_id }}
+          path: Artifacts/CI/W31/EditMode
+          if-no-files-found: warn
+  playmode:
+    name: REAL Unity PlayMode / all cases
+    needs: [activation-and-source, editmode]
+    if: needs.activation-and-source.outputs.enabled == 'true' && needs.editmode.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Unity 6000.3.14f1 original full PlayMode
+        uses: game-ci/unity-test-runner@32e57712352b500e17974b245a6dce9e11a73213
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+        with:
+          projectPath: .
+          unityVersion: 6000.3.14f1
+          cliVersion: v0.1.72
+          testMode: playmode
+          coverageEnabled: false
+          githubToken: ''
+          artifactsPath: Artifacts/CI/W31/PlayMode
+      - name: Fail closed without actual fully passing NUnit3 XML
+        run: python3 Tools/B01/Codex/W31/verify_artifacts.py --xml-root Artifacts/CI/W31/PlayMode
+      - name: Retain actual NUnit XML and Player logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: W31-Unity-PlayMode-${{ github.run_id }}
+          path: Artifacts/CI/W31/PlayMode
+          if-no-files-found: warn
+  build-windows:
+    name: REAL Windows x64 Mono build, SHA and ZIP
+    needs: [activation-and-source, playmode]
+    if: needs.activation-and-source.outputs.enabled == 'true' && needs.playmode.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Unity Windows x64 Player
+        uses: game-ci/unity-builder@4423ee75828dff56037d1d1cfdac6b68e3a6ba00
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+        with:
+          projectPath: .
+          unityVersion: 6000.3.14f1
+          targetPlatform: StandaloneWindows64
+          buildName: RoboRougelike
+          buildsPath: build
+          versioning: None
+      - name: Strict EXE + Data payload check, deterministic ZIP SHA256
+        run: python3 Tools/B01/Codex/W31/verify_artifacts.py --package-build build/StandaloneWindows64 --dest Artifacts/CI/W31/RoboRougelike-W31-Win64.zip
+      - name: Preserve real Player + byte manifest
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: W31-REAL-Windows-Player-${{ github.run_id }}
+          path: Artifacts/CI/W31/RoboRougelike-W31-Win64.*
+          if-no-files-found: warn
+          retention-days: 7
+  extracted-player:
+    name: REAL Windows extracted Player boot smoke (NOT full game win)
+    needs: build-windows
+    if: needs.build-windows.result == 'success'
+    runs-on: windows-2022
+    timeout-minutes: 12
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: W31-REAL-Windows-Player-${{ github.run_id }}
+          path: player-archive
+      - name: Extract, run executable, insist on process exit and Player.log
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $archive = 'player-archive/RoboRougelike-W31-Win64.zip'
+          if (!(Test-Path $archive)) { throw 'No real Windows Player ZIP' }
+          Expand-Archive -Path $archive -DestinationPath extracted -Force
+          $exe = Join-Path (Resolve-Path extracted) 'RoboRougelike.exe'
+          if (!(Test-Path $exe)) { throw 'No unpacked EXE' }
+          New-Item -ItemType Directory -Force -Path player-logs | Out-Null
+          $log = Join-Path (Resolve-Path player-logs) 'Player.log'
+          $proc = Start-Process -FilePath $exe -ArgumentList @('-batchmode','-nographics','-quit','-logFile',"$log") -PassThru
+          if (!$proc.WaitForExit(120000)) {
+            Stop-Process -Id $proc.Id -Force
+            throw 'Real Player exceeded the 120s boot timeout'
+          }
+          if ($proc.ExitCode -ne 0) { throw "Real Player exit code $($proc.ExitCode)" }
+          if (!(Test-Path $log) -or (Get-Item $log).Length -eq 0) { throw 'Missing actual Player.log' }
+          $txt = Get-Content $log -Raw
+          if ($txt -match 'NullReferenceException|Exception:|Fatal error') { throw 'Runtime exception in Player.log' }
+          Get-FileHash -Algorithm SHA256 $exe | Format-List
+      - name: Upload original extracted Player.log (boot only)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: W31-Windows-Player-smoke-${{ github.run_id }}
+          path: player-logs/Player.log
+          if-no-files-found: warn
+  native-verdict:
+    name: Fail CLOSED unless Unity Edit + Play + Win64 + extracted Player all executed
+    needs: [activation-and-source, editmode, playmode, build-windows, extracted-player]
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Enforce all real native results (source-only green is NOT G1)
+        env:
+          PREFLIGHT: ${{ needs.activation-and-source.result }}
+          EDIT: ${{ needs.editmode.result }}
+          PLAY: ${{ needs.playmode.result }}
+          WIN64: ${{ needs.build-windows.result }}
+          BOOT: ${{ needs.extracted-player.result }}
+        shell: bash
+        run: |
+          {
+            echo '### W31 exact-SHA REAL native gate'
+            echo "Preflight: ${PREFLIGHT}"
+            echo "Unity EditMode: ${EDIT}"
+            echo "Unity PlayMode: ${PLAY}"
+            echo "Windows x64 Player build: ${WIN64}"
+            echo "Extracted Windows Player boot: ${BOOT}"
+            echo 'This gate does not certify full matches, manual UI or cold Save.'
+          } >> "${GITHUB_STEP_SUMMARY}"
+          if [[ "${PREFLIGHT}" != success || "${EDIT}" != success || "${PLAY}" != success || "${WIN64}" != success || "${BOOT}" != success ]]; then
+            echo '::error::W31 FULL NATIVE FAIL_CLOSED: a Unity/Player stage failed or is NOT_RUN; SOURCE PASS is not native PASS.'
+            exit 1
+          fi
+          echo 'W31 four native pipeline stages REALLY EXECUTED SUCCESS (still not G2/release).'

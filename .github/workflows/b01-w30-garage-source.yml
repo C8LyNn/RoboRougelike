@@ -1,0 +1,37 @@
+name: B01 W30 canonical garage source receipt - NOT UNITY
+on:
+  push:
+    branches:
+      - feature/pass17-w29-live-garage-functional-sweep-gate
+  pull_request:
+    branches:
+      - feature/pass17-w29-playable-emp-garage-jumppad-r1
+permissions:
+  contents: read
+jobs:
+  source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Fetch only exact approved #873 baseline for source compare
+        shell: bash
+        run: git fetch --no-tags --depth=1 origin d537b7310979b91df27a08b14d0f1c74d0889089
+      - name: Verify actual source and reject four deliberate source mutants
+        shell: bash
+        run: |
+          python Tools/B01/Codex/W30/verify_garage.py > w30-garage-source.json
+          python -m json.tool w30-garage-source.json
+      - name: Upload source receipt only (not Unity logs or Player)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: W30-garage-source-${{ matrix.os }}-${{ github.run_id }}
+          path: w30-garage-source.json
+          if-no-files-found: warn

@@ -50,6 +50,14 @@ namespace RoboRougelike.R3
                         }
                     var volume=BuildVolumeValidator.Check(new BuildPhysicsEvidence(colliders,neighbors.ToArray(),true));
                     if(volume!=BuildPlacementResult.Valid){TraceRestorationFailure(prospective[index],volume,colliders,neighbors);return false;}
+                    // B01-61 #883 P0: Repair and EmergencyRepair MUST enforce
+                    // the same functional geometry as Buy/Mount before Scrap/HP edits.
+                    var newWeaponIssue=FunctionalWeaponPlacementIssue(prospective[index],probe);
+                    if(newWeaponIssue!=null)return false;
+                    // Batch-created probes see each other; ignore stale owner guns
+                    // whose IDs are also being replaced in the same transaction.
+                    var installedWeaponIssue=ExistingMountedWeaponPlacementIssue(probe,colliders,replacedIds);
+                    if(installedWeaponIssue!=null)return false;
                 }
                 return true;
             }finally{foreach(var probe in probes)if(probe!=null){probe.SetActive(false);if(Application.isPlaying)Destroy(probe);else DestroyImmediate(probe);}}
