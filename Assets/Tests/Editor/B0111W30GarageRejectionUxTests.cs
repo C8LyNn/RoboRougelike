@@ -178,4 +178,65 @@ public sealed class B0111W30GarageRejectionUxTests
         yield return new ExitPlayMode();
     }
 
+    [UnityTest]
+    public IEnumerator ZeroScrapPaidRebuildQuoteDoesNotProduceFalseUnavailablePriceMessage()
+    {
+        // Actual original R3 game / garage; model values injected by QA only.
+        // This checks DISPLAY correctness whether today's legacy model rejects
+        // paid-zero or the approved V7 repair model accepts it. It deliberately
+        // does NOT certify V7 price parity (#897 owns that RED witness).
+        EditorSceneManager.OpenScene("Assets/scene 1.unity", OpenSceneMode.Single);
+        yield return new EnterPlayMode();
+        var deadline=Time.realtimeSinceStartup+15f;
+        while(R1RunController.Instance?.Progress==null && Time.realtimeSinceStartup<deadline)
+            yield return null;
+        var run=R1RunController.Instance;
+        Assert.That(run,Is.Not.Null);
+        Assert.That(run.SelectVehicle(R3VehicleKind.Standard),Is.True);
+        Assert.That(run.OpenSandboxGarage(),Is.True);
+        var model=run.VehicleModel;
+        var wheel=model.Parts.First(p=>p.Kind==R3PartKind.Wheel && p.Health>=1f);
+        int oldPrice=model.Economy.WheelCost, oldScrap=model.Scrap;
+        float oldHp=wheel.Health;
+        var ids=model.Parts.Select(p=>p.Id).OrderBy(x=>x).ToArray();
+        var setter=typeof(R3VehicleModel).GetProperty("Scrap",
+            BindingFlags.Public|BindingFlags.Instance)?.GetSetMethod(true);
+        Assert.That(setter,Is.Not.Null);
+        try
+        {
+            model.Economy.WheelCost=1;
+            wheel.Health=0f;
+            setter.Invoke(model,new object[]{0});
+            Assert.That(model.Price(R3PartKind.Wheel),Is.EqualTo(1));
+            Assert.That(model.RepairCost(wheel),Is.EqualTo(0),
+                "A priced 0-Scrap quote is not an earned free-win entitlement.");
+            var view=run.Garage;
+            view.SetTool(R41GarageTool.Repair);
+            view.Select(wheel.Cell);
+            bool repaired=view.ClickTarget();
+            Assert.That(model.Scrap,Is.Zero);
+            CollectionAssert.AreEqual(ids,
+                model.Parts.Select(p=>p.Id).OrderBy(x=>x).ToArray());
+            if(repaired)
+            {
+                Assert.That(wheel.Health,Is.EqualTo(1f));
+                Assert.That(view.Message,Does.Contain("Naprawiono"));
+            }
+            else
+            {
+                Assert.That(wheel.Health,Is.Zero);
+                Assert.That(view.Message,Does.Contain("Odbudowa za 0 Scrap"));
+                Assert.That(view.Message,Does.Not.Contain("Brak dopuszczonej wyceny"));
+                Assert.That(view.Message,Does.Contain("Nie pobrano Złomu"));
+            }
+        }
+        finally
+        {
+            wheel.Health=oldHp;
+            model.Economy.WheelCost=oldPrice;
+            setter.Invoke(model,new object[]{oldScrap});
+        }
+        yield return new ExitPlayMode();
+    }
+
 }
