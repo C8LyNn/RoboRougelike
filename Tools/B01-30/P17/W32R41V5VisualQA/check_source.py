@@ -37,7 +37,7 @@ def main():
   if match:
    guid=match.group(1)
    require(guid not in guids,"duplicate Unity GUID "+guid)
-   guids[guid]=str(p.relative_to(ROOT))
+   guids[guid]=p.relative_to(ROOT).as_posix()
  meta=[p for p in EXPECTED if p.endswith(".meta")]
  require(len(meta)==5,"Own 5 native Unity meta files")
  for p in meta:
