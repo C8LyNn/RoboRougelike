@@ -163,7 +163,11 @@ namespace RogueMachine.P12PipelineSafe
             var state=new RoboRougelike.R3.R3PartState(default,RoboRougelike.R3.R3PartKind.Gun)
                 {Id=EquipmentInstanceId("gun"),Weapon=WeaponKind,Source=name+" / uzbrojenie"};
             packageSaw=weaponBlock.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLSawBinding>();
-            packageSaw.Bind(state,transform,muzzle,ds);packageWeaponState=state;preferredDistance=1.6f;moveSpeed=Mathf.Max(moveSpeed,3.5f);strafeStrength=.1f;return true;
+            packageSaw.Bind(state,transform,muzzle,ds);packageWeaponState=state;
+            // The physically cleared saw extends beyond the armored hull. Approach until
+            // the blade (not the vehicle center) can reach the target without penetration.
+            preferredDistance=Mathf.Max(1.6f,Vector3.Distance(transform.position,muzzle.position)+.35f);
+            moveSpeed=Mathf.Max(moveSpeed,3.5f);strafeStrength=.1f;return true;
         }
         private R4SalvageLedger salvage;
         private string salvageId;

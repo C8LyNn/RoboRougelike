@@ -26,6 +26,10 @@ public class RRLW6SawPhysicalTests
         var run=R1RunController.Instance;var palette=run.GetComponent<R3VisualPalette>();
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
         var state=model.Parts.First(p=>p.Kind==R3PartKind.Gun);state.Weapon=kind;
+        // The old central saw intersects four real hull armor cells. Move the
+        // original part to a connected exterior cell; never weaken self-contact.
+        state.Cell=new Vector3Int(0,1,4);
+        Assert.That(R3VehicleModel.Connected(model.Parts),Is.True,"Saw fixture must use a real connected exterior mount");
         var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(100,4,100),Quaternion.identity);
         // A static cutting target needs a supported rig; gravity must remain enabled.
         var platform=GameObject.CreatePrimitive(PrimitiveType.Cube);platform.transform.position=new Vector3(100,2.85f,100);platform.transform.localScale=new Vector3(12,1,12);
