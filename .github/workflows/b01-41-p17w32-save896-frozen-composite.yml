@@ -49,7 +49,7 @@ jobs:
             e66968408b583404cd50250f53e655ea75a085fc \
             3bd9b159997924dcecb4e1cd1d41137896e5199e \
             f5db40bf293fe9582ec7c6fcb3515aeff6fcf937; do
-            git fetch --no-tags origin "$sha"
+            git fetch --depth=1 --no-tags origin "$sha"
             test "$(git rev-parse "$sha^{commit}")" = "$sha"
           done
       - name: Execute 13 independent mutation/writer-source tests
