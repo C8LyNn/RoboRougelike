@@ -13,7 +13,10 @@ ALLOWED={RUNTIME,TESTS,"Docs/W29/GARAGE_FUNCTIONAL_SWEEP_GATE.md",
          "Docs/W30/GARAGE_BOUNDED_PHYSICS_RECEIPT.md",
          "Assets/R3/R3RestorationValidation.cs",
          "Tools/B01/Codex/W30/verify_garage.py",
-         ".github/workflows/b01-w30-garage-source.yml"}
+         ".github/workflows/b01-w30-garage-source.yml",
+         ".github/workflows/b01-w31-native-acceptance.yml",
+         "Tools/B01/Codex/W31/verify_artifacts.py",
+         "Docs/W31/NATIVE_ACCEPTANCE.md"}
 
 def checks(src,tests,rest):
     return {
