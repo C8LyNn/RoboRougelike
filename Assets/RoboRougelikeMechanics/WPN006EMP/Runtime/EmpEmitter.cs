@@ -39,10 +39,14 @@ namespace RoboRougelike.Mechanics.EMP
         private readonly List<EmpCandidate> pending = new List<EmpCandidate>();
         private readonly EmpCooldownTimer cooldownTimer = new EmpCooldownTimer();
         private bool operational = true;
+        // Optional authoritative vehicle state gate; checked on EVERY direct pulse call.
+        // Never rely only on a binding's last Update() to close a newly destroyed part.
+        private Func<bool> activationGate;
         private struct EmpCandidate { public EmpReceiver Receiver; public float Duration; }
         public float CooldownRemaining => cooldownTimer.Remaining;
         public float PulseRadius => radius;
-        public bool Ready => operational && isActiveAndEnabled && cooldownTimer.Ready;
+        public bool Ready => operational && isActiveAndEnabled && cooldownTimer.Ready &&
+                             (activationGate == null || activationGate());
         public event Action<EmpPulseReport> Pulsed;
 
         public void Configure(float newRadius, float newDuration, float newCooldown, float newEnergy = 0f,
@@ -65,6 +69,7 @@ namespace RoboRougelike.Mechanics.EMP
         public void SetOrigin(Transform origin) => pulseOrigin = origin;
         public void SetEnergySource(MonoBehaviour bank) => energySource = bank;
         public void SetOperational(bool value) => operational = value;
+        public void SetActivationGate(Func<bool> gate) => activationGate = gate;
 
         public void ConfigurePhysics(LayerMask targetMask, LayerMask obstacleMask, int targetBudget = 1024,
             int rayBudget = 128)
@@ -89,7 +94,8 @@ namespace RoboRougelike.Mechanics.EMP
         public bool TryPulse(out EmpPulseReport report)
         {
             report = new EmpPulseReport { Radius = radius };
-            if (!operational || !isActiveAndEnabled)
+            if (!operational || !isActiveAndEnabled ||
+                (activationGate != null && !activationGate()))
                 return Fail(ref report, EmpPulseFailure.NotOperational);
             if (!cooldownTimer.Ready)
                 return Fail(ref report, EmpPulseFailure.CoolingDown);
