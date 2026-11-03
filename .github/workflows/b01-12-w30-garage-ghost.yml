@@ -1,0 +1,49 @@
+name: B01-12 W32 real-game non-projectile weapon spatial UX regression
+on:
+  push:
+    paths:
+      - 'Assets/B01UserExperience/B0112GarageSpatialW28/**'
+      - 'Assets/Tests/Editor/B0112GarageSpatialW28Tests.cs'
+      - 'Tools/B01/B01-12/P17W30GarageSpatial/**'
+      - '.github/workflows/b01-12-w30-garage-ghost.yml'
+  pull_request:
+    paths:
+      - 'Assets/B01UserExperience/B0112GarageSpatialW28/**'
+      - 'Assets/Tests/Editor/B0112GarageSpatialW28Tests.cs'
+      - 'Tools/B01/B01-12/P17W30GarageSpatial/**'
+      - '.github/workflows/b01-12-w30-garage-ghost.yml'
+permissions:
+  contents: read
+jobs:
+  actual-source:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 3
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Original #877 R1 RED, current non-projectile W32 type-specific zone source GREEN
+        run: python Tools/B01/B01-12/P17W30GarageSpatial/source_gate.py
+      - name: Negative exact-byte tests on disposable copies, no source mutation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -c "import os,pathlib;p=pathlib.Path('Assets/B01UserExperience/B0112GarageSpatialW28/B0112GarageSpatialOverlay.cs');pathlib.Path(os.environ['RUNNER_TEMP'],'bad-overlay.cs').write_bytes(p.read_bytes()+b'X');p=pathlib.Path('Assets/Tests/Editor/B0112GarageSpatialW28Tests.cs');pathlib.Path(os.environ['RUNNER_TEMP'],'bad-tests.cs').write_bytes(p.read_bytes()+b'X')"
+          set +e
+          python Tools/B01/B01-12/P17W30GarageSpatial/source_gate.py --overlay-copy "${RUNNER_TEMP}/bad-overlay.cs"
+          overlay_code=$?
+          python Tools/B01/B01-12/P17W30GarageSpatial/source_gate.py --tests-copy "${RUNNER_TEMP}/bad-tests.cs"
+          tests_code=$?
+          set -e
+          test "$overlay_code" -eq 2
+          test "$tests_code" -eq 2
+          echo 'ORIGINAL_SOURCE_TAMPER_2_OF_2_FAIL_CLOSED'
+      - name: Native Unity scope declaration
+        run: echo 'SOURCE_ONLY=YES UNITY_COMPILE=NOT_RUN UNITY_EDITMODE=NOT_RUN UNITY_PLAYMODE=NOT_RUN WINDOWS_PLAYER=NOT_RUN'

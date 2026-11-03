@@ -39,6 +39,11 @@ namespace RoboRougelike.B01.GarageSpatialW28
 
         readonly List<B0112ZoneBox> boxes=new List<B0112ZoneBox>(MaxBoxes);
         readonly Material[] materials=new Material[5];
+        // Reuse Unity component traversal buffers across 10Hz readouts (no per-part arrays).
+        readonly List<Renderer> rendererScratch=new List<Renderer>(64);
+        readonly List<Transform> transformScratch=new List<Transform>(64);
+        readonly List<B01.BUILD001.BuildMountSurface> socketScratch=
+            new List<B01.BUILD001.BuildMountSurface>(32);
         R3GarageView garage;
         Mesh cube;
         bool shaderWarned;
@@ -88,7 +93,7 @@ namespace RoboRougelike.B01.GarageSpatialW28
             var primitive=GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube=primitive.GetComponent<MeshFilter>().sharedMesh;
             primitive.SetActive(false);
-            Destroy(primitive);
+            if(Application.isPlaying)Destroy(primitive);else DestroyImmediate(primitive);
             materials[(int)B0112ZoneKind.OccupiedRed]=NewTint(new Color(1f,.10f,.12f,.16f));
             materials[(int)B0112ZoneKind.ProtrusionBlue]=NewTint(new Color(.10f,.44f,1f,.20f));
             materials[(int)B0112ZoneKind.WeaponPurple]=NewTint(new Color(.66f,.22f,1f,.20f));
@@ -114,22 +119,42 @@ namespace RoboRougelike.B01.GarageSpatialW28
             boxes.Add(new B0112ZoneBox(kind,position,rotation,size));
         }
 
-        static Transform FindWeaponEndpoint(Transform root)
+        // A garage ghost has NO R3MountedPart component. Use its selected weapon type.
+        public static bool NeedsSawDiscZone(R3PartKind kind,R4WeaponKind weapon)
+            => kind==R3PartKind.Gun&&weapon==R4WeaponKind.RotarySaw;
+
+        // Only projectile/beam guns have a directional muzzle corridor.
+        // EMP area pulses and contact Saw MUST NOT show a false 3.2m firing line.
+        public static bool NeedsDirectionalMuzzleZone(R3PartKind kind,R4WeaponKind weapon)
+            => kind==R3PartKind.Gun&&weapon!=R4WeaponKind.EmpEmitter&&
+               weapon!=R4WeaponKind.RotarySaw;
+
+        // Informational WPN005 default disc dimensions (radius .90m, half-thickness .14m).
+        // Placement authority remains the existing R3BuildValidation physical check.
+        public static B0112ZoneBox SawDiscHint(Transform muzzle)
+            => new B0112ZoneBox(B0112ZoneKind.MechanismOrange,muzzle.position,
+                muzzle.rotation,new Vector3(.28f,1.8f,1.8f));
+
+        Transform FindWeaponEndpoint(Transform root)
         {
             if(root==null)return null;
-            foreach(var tr in root.GetComponentsInChildren<Transform>(true))
-                if(tr.name=="Wylot"||tr.name=="Środek piły")return tr;
+            transformScratch.Clear();
+            root.GetComponentsInChildren(true,transformScratch);
+            foreach(var tr in transformScratch)
+                if(tr!=null&&(tr.name=="Wylot"||tr.name=="Środek piły"))return tr;
             return null;
         }
 
-        void AddFunctionalEnvelope(Transform root,R3PartKind kind)
+        void AddFunctionalEnvelope(Transform root,R3PartKind kind,R4WeaponKind weapon)
         {
             if(root==null)return;
             if(Protrusion(kind))
             {
                 // The rendered wheel/track often extends beyond its logical cell.
                 // Renderer bounds are visual guidance, not a Collider/placement proof.
-                foreach(var renderer in root.GetComponentsInChildren<Renderer>(true))
+                rendererScratch.Clear();
+                root.GetComponentsInChildren(true,rendererScratch);
+                foreach(var renderer in rendererScratch)
                 {
                     if(renderer is ParticleSystemRenderer||renderer is LineRenderer||!renderer.enabled)continue;
                     var bounds=renderer.bounds;
@@ -139,18 +164,34 @@ namespace RoboRougelike.B01.GarageSpatialW28
             }
             if(kind==R3PartKind.Gun)
             {
-                var muzzle=FindWeaponEndpoint(root);
-                if(muzzle!=null)
+                if(weapon==R4WeaponKind.EmpEmitter)
                 {
-                    // Solid-coloured near-muzzle box marks the hard local exclusion.
-                    Add(B0112ZoneKind.WeaponPurple,muzzle.position+muzzle.forward*.24f,
-                        muzzle.rotation,new Vector3(.34f,.34f,.48f));
-                    // Thin line is information only; never veto placement at long range.
-                    Add(B0112ZoneKind.WeaponPurple,muzzle.position+muzzle.forward*1.8f,
-                        muzzle.rotation,new Vector3(.04f,.04f,3.2f));
-                    if(root.GetComponent<R3MountedPart>()?.Weapon==R4WeaponKind.RotarySaw)
-                        Add(B0112ZoneKind.MechanismOrange,muzzle.position,muzzle.rotation,
-                            new Vector3(.28f,1.8f,1.8f));
+                    // WPN006 is an area effect. Mark its source, NOT a projectile path
+                    // or a false 9m physical exclusion. The actual effect owns its radius.
+                    Add(B0112ZoneKind.WeaponPurple,root.position,root.rotation,
+                        Vector3.one*.55f);
+                }
+                else
+                {
+                    var muzzle=FindWeaponEndpoint(root);
+                    if(muzzle!=null)
+                    {
+                        if(NeedsDirectionalMuzzleZone(kind,weapon))
+                        {
+                            // Local gun-axis clearance and an advisory shot line.
+                            Add(B0112ZoneKind.WeaponPurple,muzzle.position+muzzle.forward*.24f,
+                                muzzle.rotation,new Vector3(.34f,.34f,.48f));
+                            // The distant line never vetoes mounting.
+                            Add(B0112ZoneKind.WeaponPurple,muzzle.position+muzzle.forward*1.8f,
+                                muzzle.rotation,new Vector3(.04f,.04f,3.2f));
+                        }
+                        if(NeedsSawDiscZone(kind,weapon))
+                        {
+                            // The contact saw has an orange rotating disc, not a shot line.
+                            var hint=SawDiscHint(muzzle);
+                            Add(hint.Kind,hint.Position,hint.Rotation,hint.Size);
+                        }
+                    }
                 }
             }
             if(Mechanism(kind))
@@ -185,19 +226,23 @@ namespace RoboRougelike.B01.GarageSpatialW28
             // R3+BUILD001 physical validator has ALREADY accepted; green never
             // grants permission by itself and cannot override a red host rejection.
             if(tint==B0112ZoneKind.ValidGreen)
-                foreach(var socket in assembly.GetComponentsInChildren<B01.BUILD001.BuildMountSurface>())
+            {
+                socketScratch.Clear();
+                assembly.GetComponentsInChildren(true,socketScratch);
+                foreach(var socket in socketScratch)
                 {
                     if(socket==null||!socket.gameObject.activeInHierarchy)continue;
                     if(Vector3.Distance(socket.transform.position,source.Preview.position)>1.1f)continue;
                     Add(B0112ZoneKind.ValidGreen,socket.transform.position,socket.transform.rotation,
                         new Vector3(.15f,.15f,.035f));
                 }
+            }
             foreach(var p in assembly.Parts)
             {
                 if(p==null||!p.Operational||!p.transform.IsChildOf(partRoot))continue;
-                AddFunctionalEnvelope(p.transform,p.Kind);
+                AddFunctionalEnvelope(p.transform,p.Kind,p.Weapon);
             }
-            AddFunctionalEnvelope(source.Preview,source.MountKind);
+            AddFunctionalEnvelope(source.Preview,source.MountKind,source.MountWeapon);
             visible=true;
         }
 

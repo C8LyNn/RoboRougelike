@@ -1,0 +1,35 @@
+{
+  "package_id": "B01-12-W30-LIVE-GARAGE-SAW-GHOST-001/R3",
+  "revision": "3.0.0",
+  "owner": "B01-12",
+  "parent_pr": 877,
+  "parent_sha": "3bd9b159997924dcecb4e1cd1d41137896e5199e",
+  "frozen_parent_unchanged": true,
+  "hq_issue": 800,
+  "original_overlay_git_blob_sha1": "bfbc544ef6722ebd60ed86ed65ba45a441726069",
+  "source_only": true,
+  "native_unity": "NOT_RUN",
+  "files": {
+    "Assets/B01UserExperience/B0112GarageSpatialW28/B0112GarageSpatialOverlay.cs": {
+      "bytes": 15685,
+      "git_blob_sha1": "1845df823f3111cce99b15a542acc029e8f72f64"
+    },
+    "Assets/Tests/Editor/B0112GarageSpatialW28Tests.cs": {
+      "bytes": 9889,
+      "git_blob_sha1": "7300d7f1d73519a69334b51a67d07b41f59af866"
+    },
+    "Tools/B01/B01-12/P17W30GarageSpatial/source_gate.py": {
+      "bytes": 6342,
+      "git_blob_sha1": "2db78ce18d2c033faa5aba4531e3768a307e1506"
+    },
+    "Tools/B01/B01-12/P17W30GarageSpatial/README.md": {
+      "bytes": 9411,
+      "git_blob_sha1": "3125261d00ff2cce07cf19dadec5f8e7f3ec73ec"
+    },
+    ".github/workflows/b01-12-w30-garage-ghost.yml": {
+      "bytes": 2246,
+      "git_blob_sha1": "2e318545f0d30b99b2f5a6f33e60bae929e97b67"
+    }
+  },
+  "previous_pr_head": "98c7574bed23bd996c68fae7296c14f4f38b35b1"
+}
