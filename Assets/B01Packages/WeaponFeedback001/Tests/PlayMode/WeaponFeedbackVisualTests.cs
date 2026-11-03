@@ -89,6 +89,51 @@ namespace B01.WeaponFeedback001.Tests
    Assert.AreEqual(1,v.ImpactPoolSize,"Re-enabling should not allocate again.");
    yield return null;
   }
+    [UnityTest]public IEnumerator PausedGame_FlashAndImpactExpireAndRecoilRecovers()
+  {
+   var v=Make(out Transform pivot,out Light light);
+   var field=typeof(WeaponFeedbackVisual).GetField("impactLifetimeSeconds",
+     System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+   Assert.IsNotNull(field);
+   field.SetValue(v,.05f);
+   var initial=pivot.localPosition;
+   v.NotifyShot();
+   v.NotifyImpact(Vector3.one,Vector3.up);
+   Assert.IsTrue(light.enabled);
+   Assert.AreEqual(1,v.ImpactPoolSize);
+   float priorScale=Time.timeScale;
+   Time.timeScale=0f;
+   try
+   {
+    yield return new WaitForSecondsRealtime(.25f);
+    Assert.IsFalse(light.enabled,"Muzzle flash must not stick during pause.");
+    Assert.Less(Vector3.Distance(initial,pivot.localPosition),.03f,
+      "Visual recoil must recover in unscaled time.");
+    int activeImpacts=0;
+    foreach(var ps in Object.FindObjectsByType<ParticleSystem>(
+      FindObjectsInactive.Include,FindObjectsSortMode.None))
+     if(ps.name.StartsWith("IsolatedImpactFX(Clone)")&&ps.gameObject.activeSelf)
+      activeImpacts++;
+    Assert.AreEqual(0,activeImpacts,"Hit particles should expire during pause.");
+    Assert.AreEqual(1,v.ImpactPoolSize,"Expired FX stays pooled.");
+   }
+   finally { Time.timeScale=priorScale; }
+  }
+  [UnityTest]public IEnumerator InvalidSerializedImpactBudget_IsBoundedAndSafe()
+  {
+   var v=Make(out Transform pivot,out Light light);
+   var field=typeof(WeaponFeedbackVisual).GetField("maximumImpactInstances",
+     System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+   Assert.IsNotNull(field);
+   field.SetValue(v,0);
+   for(int i=0;i<40;i++)v.NotifyImpact(Vector3.right*i,Vector3.up);
+   Assert.AreEqual(1,v.ImpactPoolSize,
+    "A zero-valued serialized capacity must fail safely without divide by zero.");
+   field.SetValue(v,999);
+   for(int i=0;i<64;i++)v.NotifyImpact(Vector3.right*i,Vector3.up);
+   Assert.AreEqual(32,v.ImpactPoolSize,"A corrupted oversized capacity must cap at 32.");
+   yield return null;
+  }
     [UnityTest]public IEnumerator RapidBurst_ReusesBoundedImpactPool()
   {
    var v=Make(out Transform pivot,out Light light);
