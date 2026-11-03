@@ -1,0 +1,33 @@
+name: B01-23 W34 original R3 physical restoration identity source (NOT UNITY)
+on:
+  push:
+    branches:
+      - b01-23/p17w34-r3-restoration-identity-gate-r1
+permissions:
+  contents: read
+jobs:
+  original-restoration-source:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2022, ubuntu-24.04]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 8
+          persist-credentials: false
+      - name: Execute original R3 identity method with source mutation rejections (NOT Unity)
+        shell: bash
+        run: |
+          dotnet --version
+          python Tools/B01/B0123/W34/verify_restoration_identity.py > b0123-w34-source.json
+          python -m json.tool b0123-w34-source.json
+      - name: Save SOURCE-ONLY evidence — not Unity/Windows Player
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: B01-23-W34-restoration-identity-${{ matrix.os }}-${{ github.run_id }}
+          path: b0123-w34-source.json
+          if-no-files-found: warn
