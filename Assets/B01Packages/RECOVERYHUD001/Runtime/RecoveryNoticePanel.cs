@@ -45,16 +45,36 @@ namespace B01.RecoveryHud
             }
         }
 
-        private void OnDisable()
+        // The canonical host MUST invoke this synchronously BEFORE starting a
+        // Save/Load transition, run/slot switch, owner lease handoff, or replay
+        // reconstruction. A previously rendered READY/LOANER notice is no
+        // longer trustworthy while there is no current authenticated snapshot.
+        // This invalidates DISPLAY ONLY: no wallet/Save/gameplay mutations.
+        public void Invalidate()
         {
-            // Prevent retaining a stale GREEN notice when the UI is reused for
-            // another run/slot or when a scene changes. This does NOT release
-            // any actual world, physical lease, or persistent Save.
             CurrentKind = RecoveryNoticeKind.Unknown;
             if (heading != null) heading.text = "Oczekiwanie na zweryfikowany stan";
             if (explanation != null) explanation.text = "";
             if (detail != null) detail.text = "";
             if (severityLabel != null) severityLabel.text = "NIEZWERYFIKOWANE";
+        }
+
+        private void OnDisable()
+        {
+            // Scene changes and garage UI reuse must not retain an old GREEN.
+            Invalidate();
+        }
+
+        private void OnApplicationPause(bool paused)
+        {
+            // Fail closed on application suspension, without assuming the
+            // world/session lease is still current after a resume.
+            if (paused) Invalidate();
+        }
+
+        private void OnApplicationFocus(bool focused)
+        {
+            if (!focused) Invalidate();
         }
     }
 }
