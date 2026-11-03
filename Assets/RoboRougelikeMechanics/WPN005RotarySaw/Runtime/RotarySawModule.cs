@@ -185,6 +185,11 @@ namespace RoboRougelike.Weapons.RotarySaw
             bool ownBroadphaseOverflow = false;
             OwnGeometryBlockedLastTick = ready && motorRequested && IntersectsOtherOwnedPart(out ownBroadphaseOverflow);
             if (ownBroadphaseOverflow) OverflowedLastTick = true;
+            // The blade must not coast through an owned part which ENTERS the disc
+            // after full spin-up. An ordinary motor.Tick(false) only decelerates RPM
+            // and can leave a visibly rotating steel disc inside the vehicle.
+            // Stopping does not reset heat/jam and keeps the request for recovery.
+            if (OwnGeometryBlockedLastTick) motor.StopImmediately();
             bool requestUnblocked = motorRequested && !OwnGeometryBlockedLastTick;
             bool energyAvailable = true;
             if (ready && requestUnblocked && motor.JamRemaining <= 0f && !motor.Overheated &&
