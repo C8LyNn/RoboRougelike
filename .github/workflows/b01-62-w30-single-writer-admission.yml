@@ -2,12 +2,6 @@ name: B01-62 W30 V3 exact 855 admission same writer real OS
 on:
   push:
     branches: [b01-62/p17w30-single-writer-v7-admission]
-  pull_request:
-    paths:
-      - 'Tools/B01/B01-62/P17W30AdmissionV3/**'
-      - 'Tools/B01/B01-62/P17W28UnityCompatibleWholeGameV3/WholeGameEconomySlotV3.cs'
-      - 'Tools/B01/B01-62/P17W28UnityCompatibleWholeGameV3/CanonicalWholeGameSessionV3.cs'
-      - '.github/workflows/b01-62-w30-single-writer-admission.yml'
 permissions:
   contents: read
 jobs:

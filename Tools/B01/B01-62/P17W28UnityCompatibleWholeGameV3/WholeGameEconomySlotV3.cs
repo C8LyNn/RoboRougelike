@@ -349,7 +349,20 @@ namespace B01.WholeGameEconomy003
             if(quarantined)return WholeGameResult.Quarantined;
             if(busy)return WholeGameResult.Busy;
             if(expectedGeneration<0||expectedGeneration==long.MaxValue||
-                !Semantic(world,econ,expectedGeneration+1))
+                world==null||econ==null)return WholeGameResult.Invalid;
+            // W31: freeze the *entire* submitted pair BEFORE semantic checks.
+            // The host may mutate its mutable world buffer or economy object
+            // during a disk publish callback / Unity frame. Never validate
+            // caller bytes then publish another epoch's mutable contents.
+            byte[] frozenWorld;
+            ApprovedEconomySnapshotV7 frozenEcon;
+            try
+            {
+                frozenWorld=(byte[])world.Clone();
+                frozenEcon=econ.Copy();
+            }
+            catch{return WholeGameResult.Invalid;}
+            if(!Semantic(frozenWorld,frozenEcon,expectedGeneration+1))
                 return WholeGameResult.Invalid;
             busy=true;
             bool publishAttempted=false;
@@ -359,8 +372,8 @@ namespace B01.WholeGameEconomy003
                 if(prior!=WholeGameResult.Accepted&&prior!=WholeGameResult.Empty)
                 {quarantined=true;return prior;}
                 if(existing!=expectedGeneration)return WholeGameResult.Stale;
-                byte[] payload=Encode(expectedGeneration+1,(byte[])world.Clone(),
-                    econ.Copy());
+                byte[] payload=Encode(expectedGeneration+1,frozenWorld,
+                    frozenEcon);
                 if(payload.Length>MaxBytes)return WholeGameResult.Invalid;
                 string stage=Path.Combine(directory,"pending-"+
                     Guid.NewGuid().ToString("N")+".stage");
@@ -380,9 +393,9 @@ namespace B01.WholeGameEconomy003
                     out byte[] actualWorld,out ApprovedEconomySnapshotV7? actualEconomy);
                 if(outcome!=WholeGameResult.Accepted||
                     actual!=expectedGeneration+1||
-                    !actualWorld.SequenceEqual(world)||
+                    !actualWorld.SequenceEqual(frozenWorld)||
                     actualEconomy==null||
-                    !SameEconomicSection(actualEconomy,econ))
+                    !SameEconomicSection(actualEconomy,frozenEcon))
                 {quarantined=true;return WholeGameResult.Quarantined;}
                 return WholeGameResult.Accepted;
             }
