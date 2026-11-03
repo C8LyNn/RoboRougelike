@@ -113,8 +113,8 @@ with tempfile.TemporaryDirectory(prefix="b0111_w30_garage_") as temp:
     baseline=execute(method_from(original),folder/'old')
     current_result=execute(method_from(current),folder/'new')
 expected_keys={"no-target","post-preview-rejection","pre-validation-rejection","successful-purchase","inactive-garage"}
-print("SOURCE_WINDOWS_UTF8_BASELINE",repr(baseline))
-print("SOURCE_WINDOWS_UTF8_FIXED",repr(current_result))
+print("SOURCE_WINDOWS_UTF8_BASELINE",ascii(baseline))
+print("SOURCE_WINDOWS_UTF8_FIXED",ascii(current_result))
 assert set(baseline)==set(current_result)==expected_keys,(baseline,current_result)
 assert baseline["no-target"]==["NO","Zamontowano dokładnie w miejscu podglądu."]
 assert baseline["post-preview-rejection"]==["NO","Montaż nieudany."]
@@ -124,7 +124,7 @@ assert baseline["pre-validation-rejection"]==current_result["pre-validation-reje
 assert baseline["successful-purchase"]==current_result["successful-purchase"]==["YES","Zamontowano dokładnie w miejscu podglądu."]
 assert current_result["inactive-garage"][0]=="NO"
 assert "nieaktywny" in current_result["inactive-garage"][1]
-print("ORIGINAL_R3_SOURCE_RED_WITNESS",baseline)
-print("CORRECTED_R3_SOURCE_GREEN",current_result)
+print("ORIGINAL_R3_SOURCE_RED_WITNESS",ascii(baseline))
+print("CORRECTED_R3_SOURCE_GREEN",ascii(current_result))
 print("ORIGINAL_METHOD_COMPILED_RED_TO_GREEN PASS 10 old/new method executions; 7 assertions")
 print("NATIVE_UNITY_PLAYMODE NOT_RUN (separate authored NUnit UnityTest)")
