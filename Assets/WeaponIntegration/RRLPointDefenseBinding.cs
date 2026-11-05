@@ -25,7 +25,9 @@ namespace RoboRougelike.WeaponIntegration
             var prefab=template.AddComponent<PointDefenseInterceptor>();
             Controller=gameObject.AddComponent<PointDefenseController>();Controller.SetAutomaticSimulation(false);
             // Explicit live balance: two hits against the original 12-HP rocket, limited magazine.
-            Controller.Configure(new PointDefenseConfiguration{useAmmunition=true,startingAmmunition=state.Ammo,interceptorDamage=6},prefab);
+            var energy=owner.GetComponent<VehicleEnergyBank>();
+            Controller.Configure(new PointDefenseConfiguration{useAmmunition=true,startingAmmunition=state.Ammo,interceptorDamage=6,energyPerShot=energy!=null?5f:0f},prefab);
+            Controller.SetEnergySource(energy);
             Controller.Bind(Device.Body,owner,pivot,muzzle,RRLHitRouter.Team(owner));
             Controller.RestoreState(state.Ammo,Mathf.Max(0,state.DeviceReadyAt-Time.time));
             Device.Damageable.Died+=Stop;Refresh();

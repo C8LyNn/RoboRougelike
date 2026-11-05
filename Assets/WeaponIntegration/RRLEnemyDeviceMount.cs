@@ -19,7 +19,7 @@ namespace RoboRougelike.WeaponIntegration
             if(support==null)return;var bounds=support.GetComponent<Collider>().bounds;
             var rotation=owner.rotation*R3MountingGrid.Rotation(state.RotationQuarterTurns);
             var center=new Vector3(bounds.center.x,bounds.max.y+.26f,bounds.center.z);
-            item.transform.SetPositionAndRotation(center-rotation*new Vector3(.275f,0,.275f),rotation);
+            item.transform.SetPositionAndRotation(center,rotation);
             item.transform.SetParent(support.transform,true);
         }
     }

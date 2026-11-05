@@ -18,7 +18,7 @@ namespace RoboRougelike.R4_1
         public static Transform Payload(Transform block,R3PartKind kind,R4WeaponKind weapon,Material material,bool solid,out Transform muzzle)
         {
             muzzle=null;
-            if(kind>=R3PartKind.Booster)
+            if(kind>=R3PartKind.Booster&&kind<=R3PartKind.CrawlerTrack)
             {
                 // Geometry belongs to this real HP block and shared body, never an extra weapon.
                 var type=kind==R3PartKind.Blink||kind==R3PartKind.Gyroscope?PrimitiveType.Sphere:

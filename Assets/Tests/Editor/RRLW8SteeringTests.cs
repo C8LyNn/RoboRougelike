@@ -57,7 +57,7 @@ public class RRLW8SteeringTests
         Assert.That(source.CurrentSolution.frontRightDegrees,Is.GreaterThan(source.CurrentSolution.frontLeftDegrees));
         Assert.That(collider.enabled,Is.True);Assert.That(payload.localRotation,Is.EqualTo(physicalPose));Assert.That(payload.GetComponent<MeshRenderer>().enabled,Is.False);
         Assert.That(wheels[0].transform.Find("MOV011 visual yaw").GetComponentsInChildren<Collider>(),Is.Empty);
-        Assert.That(R3VehicleModel.OccupiedCells(run.VehicleModel.Parts.Single(p=>p.Id==module.Id)).Count(),Is.EqualTo(4));
+        Assert.That(R3VehicleModel.OccupiedCells(run.VehicleModel.Parts.Single(p=>p.Id==module.Id)).Count(),Is.EqualTo(1));
     }
     [UnityTest] public IEnumerator CrabAndCounterPhaseChangeActualR6TravelThroughTheSameForcePath()
     {
@@ -101,7 +101,7 @@ public class RRLW8SteeringTests
         var copy=run.VehicleModel.DeepCopy();var state=copy.Parts.Single(p=>p.Id==id);Assert.That(state.Health,Is.Zero);
         int scrap=copy.Scrap;Assert.That(copy.Repair(state.Cell),Is.True);Assert.That(copy.Scrap,Is.LessThan(scrap));
         Assert.That(state.GetType().GetField("SteeringMode").GetValue(state),Is.EqualTo(SteeringMode.Crab));
-        Assert.That(R3VehicleModel.OccupiedCells(state.Cell,kind,new Vector3Int(1,0,1)).Distinct().Count(),Is.EqualTo(4));
+        Assert.That(R3VehicleModel.OccupiedCells(state.Cell,kind,new Vector3Int(1,0,1)).Distinct().Count(),Is.EqualTo(1));
         var restored=R3VehicleAssembly.Build(copy,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,4,100),Quaternion.identity);
         Assert.That(restored.GetComponentsInChildren<IndependentSteeringController>().Single().Mode,Is.EqualTo(SteeringMode.Crab));yield return null;
     }

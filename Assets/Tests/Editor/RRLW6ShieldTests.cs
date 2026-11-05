@@ -11,12 +11,12 @@ using RoboRougelike.Defenses.DirectionalShield;
 
 public class RRLW6ShieldModelTests
 {
-    [Test] public void ShieldUsesExistingFourCellXyzGridWithoutReindexingBonuses()
+    [Test] public void ShieldUsesOneCellForEveryRotationWithoutReindexingBonuses()
     {
         Assert.That((int)R3PartKind.BonusModule,Is.EqualTo(13));
         Assert.That(Enum.TryParse("DirectionalShield",out R3PartKind kind),Is.True,"DEF001 has no physical catalog identity");
         for(int x=0;x<4;x++)for(int y=0;y<4;y++)for(int z=0;z<4;z++)
-            Assert.That(R3VehicleModel.OccupiedCells(Vector3Int.zero,kind,new Vector3Int(x,y,z)).Distinct().Count(),Is.EqualTo(4));
+            Assert.That(R3VehicleModel.OccupiedCells(Vector3Int.zero,kind,new Vector3Int(x,y,z)).Distinct().Count(),Is.EqualTo(1));
     }
 }
 

@@ -7,7 +7,8 @@ using RoboRougelike.R1;
 
 namespace RoboRougelike.R3
 {
-    public enum R3PartKind { Armor, Wheel, Gun, Core, Suspension, Booster, JumpDrive, Blink, Gyroscope, OmniDrive, MagneticGrapple, HoverEngine, CrawlerTrack, BonusModule, DirectionalShield, PointDefense, StructuralScanner, ScannerPulse, IndependentSteering }
+    // Append new values: checkpoints store these numeric IDs.
+    public enum R3PartKind { Armor, Wheel, Gun, Core, Suspension, Booster, JumpDrive, Blink, Gyroscope, OmniDrive, MagneticGrapple, HoverEngine, CrawlerTrack, BonusModule, DirectionalShield, PointDefense, StructuralScanner, ScannerPulse, IndependentSteering, Battery }
     public enum R3DriveKind { Wheels, Tracks, Omni, Hover }
     public enum R3VehicleKind { Standard, Light, Heavy }
     [Serializable]
@@ -19,7 +20,7 @@ namespace RoboRougelike.R3
         public string Id = Guid.NewGuid().ToString("N");
         public string Source = "Zakup / pojazd startowy";
         public R4WeaponKind Weapon;
-        // A bonus is a physical, single inventory item occupying a 1x2x2 grid footprint.
+        // A bonus is a physical, single inventory item occupying one grid cell.
         public string UpgradeId, UpgradeTitle, UpgradeDescription;
         public R1UpgradeEffect UpgradeEffect;
         public float UpgradeAmount;
@@ -57,7 +58,7 @@ namespace RoboRougelike.R3
             R3PartKind.Booster=>35, R3PartKind.JumpDrive=>45, R3PartKind.Blink=>60,
             R3PartKind.Gyroscope=>30, R3PartKind.OmniDrive=>40, R3PartKind.MagneticGrapple=>45,
             R3PartKind.HoverEngine=>35, R3PartKind.CrawlerTrack=>45,
-            R3PartKind.BonusModule=>60,R3PartKind.DirectionalShield=>60,R3PartKind.PointDefense=>70,R3PartKind.StructuralScanner=>40,R3PartKind.ScannerPulse=>30,R3PartKind.IndependentSteering=>45, _=>ArmorCost };
+            R3PartKind.BonusModule=>60,R3PartKind.DirectionalShield=>60,R3PartKind.PointDefense=>70,R3PartKind.StructuralScanner=>40,R3PartKind.ScannerPulse=>30,R3PartKind.IndependentSteering=>45,R3PartKind.Battery=>25, _=>ArmorCost };
     }
     public sealed partial class R3VehicleModel
     {
@@ -67,6 +68,7 @@ namespace RoboRougelike.R3
         private readonly List<R3PartState> inventory=new List<R3PartState>();
         public IReadOnlyList<R3PartState> Inventory => inventory;
         public int Scrap { get; private set; }
+        public VehicleEnergyState Energy { get; } = new VehicleEnergyState();
         private Func<R3PartState,string> installationGate;
         internal void SetInstallationGate(Func<R3PartState,string> gate) { installationGate=gate; }
         private Func<IReadOnlyList<R3PartState>,bool> restorationGate;
@@ -132,6 +134,7 @@ namespace RoboRougelike.R3
             copy.Parts.Clear();copy.Parts.AddRange(Parts.Select(p=>p.Copy()));copy.inventory.AddRange(inventory.Select(p=>p.Copy()));copy.Scrap=Scrap;
             copy.factoryWheels.Clear();foreach(var item in factoryWheels)copy.factoryWheels.Add(item.Key,item.Value);
             copy.SuspensionEnabled=SuspensionEnabled;copy.SuspensionMode=SuspensionMode;copy.SuspensionHeightOffset=SuspensionHeightOffset;
+            copy.RefreshEnergyLayout();copy.Energy.Restore(Energy.Current);
             copy.SelectedDrive=SelectedDrive;copy.GyroEnabled=GyroEnabled;copy.BoosterThrustNewtons=BoosterThrustNewtons;
             copy.BoosterDurationSeconds=BoosterDurationSeconds;copy.GrappleReadyAt=GrappleReadyAt;
             copy.HoverHeightMeters=HoverHeightMeters;
@@ -140,18 +143,23 @@ namespace RoboRougelike.R3
             return copy;
         }
         public void Award(int amount) { Scrap = (int)Math.Min(100000L, Scrap + (long)Math.Max(0, amount)); }
-        // All parts have a voxel footprint. The bonus is one logical item
-        // occupying 2x2x1 cells; 90-degree rotations allow vertical placement.
+        public static bool IsPassiveEnergyPart(R3PartKind kind) =>
+            kind==R3PartKind.Suspension||kind==R3PartKind.Gyroscope||kind==R3PartKind.BonusModule||
+            kind==R3PartKind.DirectionalShield||kind==R3PartKind.IndependentSteering;
+        public void RefreshEnergyLayout()
+        {
+            var alive=Parts.Where(p=>p.Health>0).ToArray();
+            Energy.Refresh(alive.Count(p=>p.Kind==R3PartKind.Battery),
+                alive.Count(p=>IsPassiveEnergyPart(p.Kind)),alive.Any(p=>p.Kind==R3PartKind.Core));
+        }
+        // Every part reserves one structural cell. Rotation changes ports and
+        // functional geometry, but never the size of its mounting footprint.
         public static IEnumerable<Vector3Int> OccupiedCells(Vector3Int anchor,R3PartKind kind) =>
             OccupiedCells(anchor,kind,default);
-        public static bool UsesWideFootprint(R3PartKind kind) => kind==R3PartKind.BonusModule||kind==R3PartKind.DirectionalShield||kind==R3PartKind.PointDefense||kind==R3PartKind.StructuralScanner||kind==R3PartKind.ScannerPulse||kind==R3PartKind.IndependentSteering;
+        public static bool UsesWideFootprint(R3PartKind kind) => false;
         public static IEnumerable<Vector3Int> OccupiedCells(Vector3Int anchor,R3PartKind kind,Vector3Int turns)
         {
             yield return anchor;
-            if(!UsesWideFootprint(kind))yield break;
-            yield return anchor+R3MountingGrid.Rotate(Vector3Int.right,turns);
-            yield return anchor+R3MountingGrid.Rotate(Vector3Int.forward,turns);
-            yield return anchor+R3MountingGrid.Rotate(Vector3Int.right+Vector3Int.forward,turns);
         }
         public static IEnumerable<Vector3Int> OccupiedCells(R3PartState part) =>
             OccupiedCells(part.Cell,part.Kind,part.RotationQuarterTurns);
@@ -205,7 +213,7 @@ namespace RoboRougelike.R3
             if(kind==R3PartKind.Gun&&!Enum.IsDefined(typeof(R4WeaponKind),weapon))return "Nieznany rodzaj broni.";
             var footprint=OccupiedCells(cell,kind,rotation).ToArray();
             if(footprint.Any(c=>Math.Abs(c.x)>6||Math.Abs(c.z)>7||c.y<0||c.y>5))return "Moduł wykracza poza siatkę montażową.";
-            if(footprint.Any(c=>At(c)!=null))return "Zajęte pole obrysu 1×2×2. Utraconą część odtwórz lub usuń jej plan.";
+            if(footprint.Any(c=>At(c)!=null))return "Zajęte pole części. Utraconą część odtwórz lub usuń jej plan.";
             if(Parts.Sum(p=>OccupiedCells(p).Count())+footprint.Length>180)return "Limit 180 pól części.";
             if(kind==R3PartKind.BonusModule&&!owned)return "Moduły bonusów zdobywa się wyłącznie jako nagrody.";
             if(kind==R3PartKind.Gun)
@@ -217,7 +225,7 @@ namespace RoboRougelike.R3
             if (kind == R3PartKind.Suspension && Parts.Count(p => p.Kind == kind) >= 8) return "Limit 8 modułów zawieszenia.";
             int limit=kind switch {R3PartKind.Booster=>4,R3PartKind.JumpDrive=>2,R3PartKind.Blink=>1,
                 R3PartKind.Gyroscope=>2,R3PartKind.MagneticGrapple=>2,R3PartKind.DirectionalShield=>2,R3PartKind.PointDefense=>2,R3PartKind.StructuralScanner=>1,R3PartKind.ScannerPulse=>1,R3PartKind.IndependentSteering=>1,_=>8};
-            if(kind>=R3PartKind.Booster&&Parts.Count(p=>p.Kind==kind)>=limit)return "Limit modułów: "+limit+".";
+            if(kind>=R3PartKind.Booster&&kind!=R3PartKind.Battery&&Parts.Count(p=>p.Kind==kind)>=limit)return "Limit modułów: "+limit+".";
             if(kind==R3PartKind.CrawlerTrack&&cell.x==0)return "Gąsienicę zamontuj po lewej lub prawej stronie.";
             if (!HasAliveExternalNeighbour(cell,kind,rotation,contactMask))
                 return "Brak zgodnych punktów mocowania ze sprawną konstrukcją.";

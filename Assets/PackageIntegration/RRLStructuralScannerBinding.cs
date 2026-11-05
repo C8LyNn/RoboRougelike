@@ -19,8 +19,9 @@ namespace RoboRougelike.PackageIntegration
             Device=GetComponent<RRLDeviceBinding>();if(Device==null)Device=gameObject.AddComponent<RRLDeviceBinding>();Device.Bind(state,owner);
             registry=gameObject.AddComponent<StructuralScanRegistry>();Scanner=gameObject.AddComponent<StructuralScanController>();
             // Profile from the supplied PR4 production bridge, not the package24m/75deg default.
-            Scanner.Configure(new StructuralScanSettings{rangeMeters=60,fullConeDegrees=85});
-            Scanner.Bind(transform,owner,owner.GetInstanceID(),RRLHitRouter.Team(owner),registry);
+            var energy=owner.GetComponent<VehicleEnergyBank>();
+            Scanner.Configure(new StructuralScanSettings{rangeMeters=60,fullConeDegrees=85,activationEnergy=energy!=null?10f:0f});
+            Scanner.Bind(transform,owner,owner.GetInstanceID(),RRLHitRouter.Team(owner),registry,energy);
             Scanner.RestoreCooldown(state.DeviceReadyAt-Time.time);Device.Damageable.Died+=RefreshAvailability;RefreshAvailability();
         }
         public void RefreshAvailability()

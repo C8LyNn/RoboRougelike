@@ -22,6 +22,8 @@ namespace RoboRougelike.WeaponIntegration
             tank=owner.GetComponent<P12PipelineSafeTankController>();damageScale=damageMultiplier;
             Module=gameObject.AddComponent<BeamCutterModule>();Module.SetAutomaticSimulation(false);
             Module.Bind(Device.Body,muzzle,owner,this);Module.RestoreThermalState(state.ThermalHeat,state.ThermalLocked);
+            var energy=owner.GetComponent<VehicleEnergyBank>();
+            if(energy!=null){Module.Configure(new BeamCutterSettings{energyPerSecond=VehicleEnergyCosts.ContinuousWeaponPerSecond});Module.RestoreThermalState(state.ThermalHeat,state.ThermalLocked);Module.SetEnergySource(energy);}
             Module.SetOwnColliderFilter(c=>!RRLHitRouter.CanHit(c,owner));
             var visual=new GameObject("WPN003 beam visual");visual.transform.SetParent(transform,false);
             var line=visual.AddComponent<LineRenderer>();line.sharedMaterial=GetComponent<Renderer>().sharedMaterial;

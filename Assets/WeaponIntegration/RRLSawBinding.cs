@@ -20,6 +20,8 @@ namespace RoboRougelike.WeaponIntegration
             blade=center;tank=owner.GetComponent<P12PipelineSafeTankController>();damageScale=damageMultiplier;
             Module=gameObject.AddComponent<RotarySawModule>();Module.SetAutomaticSimulation(false);
             Module.Bind(Device.Body,owner,center);Module.SetDamageSink(this);
+            var energy=owner.GetComponent<VehicleEnergyBank>();
+            if(energy!=null){Module.Configure(new RotarySawConfiguration{energyPerSecond=VehicleEnergyCosts.ContinuousWeaponPerSecond});Module.SetEnergySource(energy);}
             foreach(var collider in owner.GetComponentsInChildren<Collider>())Module.RegisterOwnerCollider(collider);
             Module.Motor.RestoreState(state.ThermalHeat,state.ThermalLocked,Mathf.Max(0,state.DeviceReadyAt-Time.time));
             rotor=RoboRougelike.R4_1.R41PartGeometry.SawRotor(center,GetComponent<Renderer>().sharedMaterial);

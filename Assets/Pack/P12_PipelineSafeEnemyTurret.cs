@@ -58,7 +58,22 @@ namespace RogueMachine.P12PipelineSafe
         private RoboRougelike.WeaponIntegration.RRLPointDefenseBinding packagePointDefense;
         private RoboRougelike.WeaponIntegration.RRLShieldBinding packageShield;
         // Equipment data belongs to the enemy, independently of temporary debris views.
-        private R3PartState packageWeaponState,packageShieldState,packagePointDefenseState;
+        private R3PartState packageWeaponState,packageShieldState,packagePointDefenseState,packageBatteryState;
+        private P12PipelineSafeDamageable packageBattery;
+        public bool EquipBattery()
+        {
+            if(packageBattery!=null||IsDefeated||weaponBlock==null)return false;
+            var item=GameObject.CreatePrimitive(PrimitiveType.Cube);item.name="Bateria przeciwnika +100";
+            item.transform.SetParent(transform,false);item.transform.localPosition=new Vector3(0,1.65f,-1.65f);
+            item.transform.localScale=Vector3.one*R41PartGeometry.BlockSize;
+            item.GetComponent<Renderer>().sharedMaterial=weaponBlock.GetComponent<Renderer>().sharedMaterial;
+            packageBatteryState=new R3PartState(new Vector3Int(0,3,-3),R3PartKind.Battery)
+                {Id=EquipmentInstanceId("battery"),Source=name+" / bateria"};
+            RoboRougelike.WeaponIntegration.RRLEnemyDeviceMount.Attach(item,transform,packageBatteryState);
+            packageBattery=item.AddComponent<P12PipelineSafeDamageable>();packageBattery.Configure(100,true);
+            packageBattery.SetBaseTint(new Color(.2f,.9f,.35f));item.AddComponent<VehicleEnergyBattery>();
+            GetComponent<VehicleEnergyBank>()?.Refresh();return true;
+        }
         public bool EquipDirectionalShield()
         {
             if(packageShield!=null||IsDefeated)return false;
@@ -68,7 +83,7 @@ namespace RogueMachine.P12PipelineSafe
             item.transform.SetParent(transform,false);item.transform.localPosition=(Vector3)state.Cell*.55f;
             item.transform.localRotation=R3MountingGrid.Rotation(state.RotationQuarterTurns);
             item.GetComponent<Renderer>().sharedMaterial=weaponMaterial!=null?weaponMaterial:weaponBlock.GetComponent<Renderer>().sharedMaterial;
-            R3BonusModuleGeometry.ConfigureCube(item,true);
+            item.transform.localScale=Vector3.one*R41PartGeometry.BlockSize;
             RoboRougelike.WeaponIntegration.RRLEnemyDeviceMount.Attach(item,transform,state);
             var hp=item.AddComponent<P12PipelineSafeDamageable>();hp.Configure(180,true);hp.SetBaseTint(new Color(.25f,.6f,1));
             packageShield=item.AddComponent<RoboRougelike.WeaponIntegration.RRLShieldBinding>();packageShield.Bind(state,transform);packageShieldState=state;
@@ -82,7 +97,7 @@ namespace RogueMachine.P12PipelineSafe
             var item=GameObject.CreatePrimitive(PrimitiveType.Cube);item.name="DEF002 mounted defense";
             item.transform.SetParent(transform,false);item.transform.localPosition=(Vector3)state.Cell*.55f;
             item.GetComponent<Renderer>().sharedMaterial=weaponMaterial!=null?weaponMaterial:weaponBlock.GetComponent<Renderer>().sharedMaterial;
-            R3BonusModuleGeometry.ConfigureCube(item,true);
+            item.transform.localScale=Vector3.one*R41PartGeometry.BlockSize;
             RoboRougelike.WeaponIntegration.RRLEnemyDeviceMount.Attach(item,transform,state);
             var hp=item.AddComponent<P12PipelineSafeDamageable>();hp.Configure(160,true);
             packagePointDefense=item.AddComponent<RoboRougelike.WeaponIntegration.RRLPointDefenseBinding>();packagePointDefense.Bind(state,transform);packagePointDefenseState=state;return true;
@@ -388,6 +403,8 @@ namespace RogueMachine.P12PipelineSafe
             }
             for(int i=0;i<driveWheels.Count;i++)items.Add(new R4SalvageItem(new R3PartState(default,R3PartKind.Wheel)
                 {Id=EquipmentInstanceId("wheel/"+i),Source=name+" / koło "+(i+1),DisruptionRemaining=SalvageDisruption(driveWheels[i])},Condition(driveWheels[i])));
+            if(packageBatteryState!=null)
+                items.Add(new R4SalvageItem(packageBatteryState,packageBattery!=null&&packageBattery.transform.IsChildOf(transform)?Condition(packageBattery):0));
             if(packageShieldState!=null)
             {
                 if(packageShield!=null)packageShield.CaptureState();
@@ -527,6 +544,9 @@ namespace RogueMachine.P12PipelineSafe
                 return;
             // Do not shoot through another vehicle from the same encounter.
             if(FriendlyInLine(aimPoint))return;
+
+            if(packageEmp==null&&packageRocket==null&&packageRailgun==null&&packageShotgun==null)
+            {var energy=GetComponent<VehicleEnergyBank>();if(energy!=null&&!energy.TrySpend(VehicleEnergyCosts.BasicShot))return;}
 
             nextFireTime =
                 Time.time +
@@ -1035,6 +1055,8 @@ namespace RogueMachine.P12PipelineSafe
                 int count=Physics.RaycastNonAlloc(gun.Muzzle.position,ray.normalized,movementHits,ray.magnitude,~0,QueryTriggerInteraction.Ignore);
                 bool ally=false;for(int i=0;i<count;i++){var other=movementHits[i].collider.GetComponentInParent<P12PipelineSafeEnemyTurret>();if(other!=null&&other!=this&&!other.IsDefeated)ally=true;}
                 if(ally)continue;
+                var energy=GetComponent<VehicleEnergyBank>();
+                if(energy!=null&&!energy.TrySpend(VehicleEnergyCosts.BasicShot))continue;
                 var profile=R4WeaponDefinition.Get(gun.Kind);
                 RoboRougelike.R6.R6CombatFeedback.Muzzle(gun.Muzzle,gun.Kind);
                 gun.NextShot=Time.time+profile.Interval*(fireInterval/R4WeaponDefinition.Get(WeaponKind).Interval);

@@ -54,7 +54,8 @@ public class R4CombatTests
         var recovered=ledger.Items.Single(p=>p.Kind==R3PartKind.Gun&&p.Source.StartsWith(sourcePrefix));
         Assert.That(recovered.Health,Is.EqualTo(0.65f).Within(0.01));
         Assert.That(recovered.Weapon,Is.EqualTo(R4WeaponKind.Automatic));
-        Assert.That(Run.Encounter.Enemies,Is.Empty);Assert.That(ledger.Items.Count,Is.EqualTo(10));
+        Assert.That(Run.Encounter.Enemies,Is.Empty);Assert.That(ledger.Items.Count,Is.EqualTo(11));
+        Assert.That(ledger.Items.Count(p=>p.Kind==R3PartKind.Battery),Is.EqualTo(1));
     }
     [UnityTest] public IEnumerator DestroyedGunCanBeRebuiltAndDuplicateRewardIsRejected()
     {
@@ -219,8 +220,9 @@ public class R4CombatTests
         yield return Until(()=>yaw==null,"Wrak musi faktycznie wygasnąć",15);
         Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Combat));Assert.That(Run.Salvage.Items.Count,Is.EqualTo(8));
         RRLW2TestFlow.DefeatAll(Run);
-        yield return Until(()=>Run.Progress.State==R1RunState.Salvage,"Końcowe łupy");Assert.That(Run.Salvage.Items.Count,Is.EqualTo(18));
-        Assert.That(Run.Salvage.Items.Select(p=>p.Id).Distinct().Count(),Is.EqualTo(18));
+        yield return Until(()=>Run.Progress.State==R1RunState.Salvage,"Końcowe łupy");Assert.That(Run.Salvage.Items.Count,Is.EqualTo(19));
+        Assert.That(Run.Salvage.Items.Count(p=>p.Kind==R3PartKind.Battery),Is.EqualTo(1));
+        Assert.That(Run.Salvage.Items.Select(p=>p.Id).Distinct().Count(),Is.EqualTo(19));
         Assert.That(RRLW2TestFlow.Claim(Run,new[]{saved.Id}),Is.True);Assert.That(Run.VehicleModel.Inventory.Single(p=>p.Id==saved.Id).Weapon,Is.EqualTo(R4WeaponKind.Heavy));
     }
 }

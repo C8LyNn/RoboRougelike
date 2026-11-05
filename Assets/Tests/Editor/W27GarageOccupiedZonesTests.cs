@@ -33,9 +33,8 @@ public class W27GarageOccupiedZonesTests
         Assert.That(lines.Any(l=>Vector3.Distance(l.transform.localPosition,new Vector3(.55f,.55f,.55f))<.001f),Is.True);
         Assert.That(run.GarageBuy(new Vector3Int(1,1,2),R3PartKind.DirectionalShield,new Vector3Int(3,0,0)),Is.True);
         lines=run.Player.GetComponentsInChildren<LineRenderer>().Where(l=>l.name=="W27 occupied cell").ToArray();
-        Assert.That(lines.Length,Is.EqualTo(25),"One rotated shield reserves four cells, not four parts.");
-        foreach(var cell in new[]{new Vector3Int(1,1,2),new Vector3Int(2,1,2),new Vector3Int(1,2,2),new Vector3Int(2,2,2)})
-            Assert.That(lines.Any(l=>Vector3.Distance(l.transform.localPosition,(Vector3)cell*.55f)<.001f),Is.True,"Rotated occupied cell "+cell);
+        Assert.That(lines.Length,Is.EqualTo(22),"The rotated shield reserves exactly one cell.");
+        Assert.That(lines.Any(l=>Vector3.Distance(l.transform.localPosition,new Vector3(.55f,.55f,1.1f))<.001f),Is.True,"The rotated shield's occupied cell is shown.");
         run.Garage.Close();
         Assert.That(run.Player.GetComponentsInChildren<LineRenderer>().Any(l=>l.name=="W27 occupied cell"),Is.False,"Closing the garage must immediately hide its overlay.");
     }

@@ -23,7 +23,8 @@ namespace RoboRougelike.MOVSeries
             if(Model.Parts.Any(p=>p.Kind==R3PartKind.MagneticGrapple))
             {
                 grapple=gameObject.AddComponent<MagneticGrappleController>();grapple.BindVehicle(body);
-                grapple.Settings.useEnergy=false;grapple.Settings.maximumVehicleAcceleration=6;
+                grapple.Settings.useEnergy=true;grapple.Settings.activationEnergy=VehicleEnergyCosts.Grapple;
+                grapple.SetEnergyProvider(GetComponent<VehicleEnergyBank>());grapple.Settings.maximumVehicleAcceleration=6;
                 grapple.Settings.maximumTargetAcceleration=4;grapple.Settings.maximumTensionNewtons=8000;
                 grapple.Settings.cooldownSeconds=6;grapple.TargetFilter=CanGrappleTarget;
                 grapple.Released+=()=>{ClearGrappleTarget();if(assembly!=null)Model.GrappleReadyAt=Time.time+6;};
@@ -35,7 +36,8 @@ namespace RoboRougelike.MOVSeries
                 if(part.Kind==R3PartKind.Blink)
                 {
                     var blink=part.gameObject.AddComponent<BlinkDrive>();blink.BindToVehicle(body);
-                    blink.Configure(new BlinkSettings{DistanceMeters=8,CooldownSeconds=6});
+                    blink.Configure(new BlinkSettings{DistanceMeters=8,CooldownSeconds=6,EnergyCost=VehicleEnergyCosts.Blink});
+                    blink.SetEnergySource(GetComponent<VehicleEnergyBank>());
                     blink.SetAvailabilityFilter(()=>Available(part));blink.SetGroundFilter(IsTerrain);blinks.Add(blink);
                 }
                 else

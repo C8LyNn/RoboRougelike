@@ -71,7 +71,7 @@ public class RRLW8StructuralScanTests
     {
         Assert.That(module,Is.Not.Null,"COM physical module missing");
         Assert.That(Activate(),Is.True);var assembly=run.Player.GetComponent<R3VehicleAssembly>();var model=assembly.Model;
-        var state=model.Parts.Single(p=>p.Id==module.Id);Assert.That(R3VehicleModel.OccupiedCells(state).Count(),Is.EqualTo(4));Assert.That(module.GetComponents<P12PipelineSafeDamageable>().Length,Is.EqualTo(1));
+        var state=model.Parts.Single(p=>p.Id==module.Id);Assert.That(R3VehicleModel.OccupiedCells(state).Count(),Is.EqualTo(1));Assert.That(module.GetComponents<P12PipelineSafeDamageable>().Length,Is.EqualTo(1));
         string id=state.Id;float readyAt=state.DeviceReadyAt;Assert.That(readyAt,Is.GreaterThan(Time.time));
         module.Damageable.ApplyDamage(100000,module.transform.position,Vector3.up);assembly.Capture();
         Assert.That(Activate(),Is.False);Assert.That(scanner.Contacts,Is.Empty);Assert.That(state.Health,Is.Zero);Assert.That(state.DeviceReadyAt,Is.EqualTo(readyAt));

@@ -24,9 +24,9 @@ public sealed class B0112GarageSpatialW28Tests
     {
         Assert.That(B0112GarageSpatialOverlay.CandidateTint(false,null),Is.EqualTo(B0112ZoneKind.OccupiedRed));
     }
-    [Test] public void WidePartStillOneItemFourLogicalCells()
+    [Test] public void BonusPartOccupiesOneLogicalCell()
     {
-        Assert.That(R3VehicleModel.OccupiedCells(Vector3Int.zero,R3PartKind.BonusModule,new Vector3Int(0,1,0)).Count(),Is.EqualTo(4));
+        Assert.That(R3VehicleModel.OccupiedCells(Vector3Int.zero,R3PartKind.BonusModule,new Vector3Int(0,1,0)).Count(),Is.EqualTo(1));
     }
     [Test] public void InvalidMountRemainsRedIndependentOfPurpleOrOrangeWarnings()
     {

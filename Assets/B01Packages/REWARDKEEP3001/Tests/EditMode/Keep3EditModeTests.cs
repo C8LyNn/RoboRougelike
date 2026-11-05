@@ -24,5 +24,10 @@ namespace RoboRougelike.B01.Rewards.Tests{
    var a=P("Armor");string e;Assert.IsTrue(s.TryOpen("win",new[]{a},out e),e);
    Assert.IsFalse(s.TryToggleSelection(a.InstanceId,out e));Assert.AreEqual("ARMOR_EXCLUDED",e);
   }
+  [Test] public void EnemyBatteryCanBeRecovered(){var h=new Host();var s=new RewardKeep3Service(h);
+   var battery=P("Battery");string e;Assert.IsTrue(s.TryOpen("win",new[]{battery},out e),e);
+   Assert.IsTrue(s.TryToggleSelection(battery.InstanceId,out e),e);Assert.IsTrue(s.TryCommit(out e),e);
+   Assert.That(h.O.Contains(battery.InstanceId),Is.True);
+  }
  }
 }

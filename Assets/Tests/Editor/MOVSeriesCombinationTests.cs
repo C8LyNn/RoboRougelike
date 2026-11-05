@@ -42,7 +42,7 @@ public class MOVSeriesCombinationTests
     {
         var v=Build(R3VehicleKind.Standard,0);yield return MOVSeriesDeviceTests.Seconds(.5f);var b=v.GetComponent<Rigidbody>();
         b.position=new Vector3(0,.9f,1000);b.rotation=Quaternion.Euler(0,0,8);v.transform.SetPositionAndRotation(b.position,b.rotation);Physics.SyncTransforms();
-        var a=v.GetComponent<MOVSeriesVehicleAdapter>();Assert.That(a.TryJump(),Is.True);Assert.That(a.TryBoost(),Is.True);
+        var a=v.GetComponent<MOVSeriesVehicleAdapter>();var energy=v.GetComponent<VehicleEnergyBank>();float before=energy.Current;Assert.That(a.TryJump(),Is.True);Assert.That(energy.Current,Is.EqualTo(before-VehicleEnergyCosts.Jump).Within(.01f));before=energy.Current;Assert.That(a.TryBoost(),Is.True);Assert.That(energy.Current,Is.EqualTo(before-VehicleEnergyCosts.BoosterActivation).Within(.01f));
         yield return MOVSeriesDeviceTests.FixedStep();
         Assert.That(v.GetComponentInChildren<GyroStabilizer>().LastAngularAcceleration.sqrMagnitude,Is.GreaterThan(.01f));
         Assert.That(v.GetComponentInChildren<VehicleBooster>().IsBoosting,Is.True);Assert.That(b.linearVelocity.y,Is.GreaterThan(1));

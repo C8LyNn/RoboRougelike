@@ -27,12 +27,14 @@ namespace RoboRougelike.MOVSeries
                 {
                     case R3PartKind.Booster:
                         var booster=part.gameObject.AddComponent<VehicleBooster>();booster.Bind(body,part.transform);
-                        booster.Configure(Mathf.Clamp(Model.BoosterThrustNewtons,500,6000),Mathf.Clamp(Model.BoosterDurationSeconds,.2f,2),5,10f/boostCount,20);
+                        booster.Configure(Mathf.Clamp(Model.BoosterThrustNewtons,500,6000),Mathf.Clamp(Model.BoosterDurationSeconds,.2f,2),5,10f/boostCount,20,VehicleEnergyCosts.BoosterActivation);
+                        booster.SetEnergySource(GetComponent<VehicleEnergyBank>());
                         booster.SetAvailabilityFilter(()=>Available(part));boosters.Add(booster);break;
                     case R3PartKind.JumpDrive:
                         var jump=part.gameObject.AddComponent<JumpDrive>();jump.BindToVehicle(body);jump.SetGroundProbe(jumpProbe);
                         jump.Configure(new JumpDriveSettings{TargetJumpHeightMeters=1.2f,SupportedMassKg=500,MaxUpwardSpeedMps=5.2f,
-                            CooldownSeconds=6,GroundProbeDistanceMeters=.3f});
+                            CooldownSeconds=6,GroundProbeDistanceMeters=.3f,EnergyCost=VehicleEnergyCosts.Jump});
+                        jump.SetEnergySource(GetComponent<VehicleEnergyBank>());
                         jump.SetAvailabilityFilter(()=>Available(part));jump.SetGroundFilter(IsTerrain);jumps.Add(jump);break;
                     case R3PartKind.Gyroscope:
                         var gyro=part.gameObject.AddComponent<GyroStabilizer>();gyro.BindToVehicle(body);
@@ -76,7 +78,7 @@ namespace RoboRougelike.MOVSeries
         public void ApplyDeviceSettings()
         {
             int count=Mathf.Max(1,Model.Parts.Count(p=>p.Kind==R3PartKind.Booster));
-            foreach(var b in boosters)if(b!=null)b.Configure(Model.BoosterThrustNewtons,Model.BoosterDurationSeconds,5,10f/count,20);
+            foreach(var b in boosters)if(b!=null)b.Configure(Model.BoosterThrustNewtons,Model.BoosterDurationSeconds,5,10f/count,20,VehicleEnergyCosts.BoosterActivation);
             foreach(var pod in GetComponentsInChildren<RoboRougelike.Mechanics.MOV007.HoverLiftPod>())pod.targetHeightMeters=Model.HoverHeightMeters;
             SyncDevices();
         }

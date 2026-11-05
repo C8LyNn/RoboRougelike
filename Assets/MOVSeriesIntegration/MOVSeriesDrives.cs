@@ -25,8 +25,9 @@ namespace RoboRougelike.MOVSeries
         void ConfigureDrives()
         {
             if(Model.Parts.Any(p=>p.Kind==R3PartKind.OmniDrive))
-            {omni=gameObject.AddComponent<OmniDriveController>();omni.SetLimits(12,5);omni.SetCoasting(true);}
-            if(Model.Parts.Any(p=>p.Kind==R3PartKind.CrawlerTrack))tracks=gameObject.AddComponent<CrawlerTrackController>();
+            {omni=gameObject.AddComponent<OmniDriveController>();omni.SetLimits(12,5);omni.SetCoasting(true);omni.SetEnergySource(GetComponent<VehicleEnergyBank>());}
+            if(Model.Parts.Any(p=>p.Kind==R3PartKind.CrawlerTrack))
+            {tracks=gameObject.AddComponent<CrawlerTrackController>();tracks.SetEnergySource(GetComponent<VehicleEnergyBank>());tracks.SetEnergyCost(6f);}
             if(Model.Parts.Any(p=>p.Kind==R3PartKind.HoverEngine))
             {
                 hover=gameObject.AddComponent<HoverVehicleController>();hover.forwardSpeedMetersPerSec=Model.Design.Speed;
@@ -40,12 +41,13 @@ namespace RoboRougelike.MOVSeries
                 bool tiltedMount=Vector3.Dot(part.transform.localRotation*Vector3.up,Vector3.up)<.999f;
                 if(part.Kind==R3PartKind.OmniDrive)
                 {
-                    var m=part.gameObject.AddComponent<OmniDriveModule>();m.Configure(Model.Design.Speed,4,Model.Design.TurnSpeed,2);
+                    var m=part.gameObject.AddComponent<OmniDriveModule>();m.Configure(Model.Design.Speed,4,Model.Design.TurnSpeed,2,5f);
                     m.SetAvailabilityFilter(()=>Available(part));m.GroundProbe.SetGroundFilter(IsTerrain);
                 }
                 else if(part.Kind==R3PartKind.HoverEngine)
                 {
                     var m=part.gameObject.AddComponent<HoverLiftPod>();m.targetHeightMeters=Model.HoverHeightMeters;
+                    m.requireEnergy=true;m.energySourceBehaviour=GetComponent<VehicleEnergyBank>();
                     m.SetUseMountAxes(tiltedMount);
                     m.nominalLoadKg=250;m.maximumLiftToNominalWeight=1.8f;m.springFrequencyHz=1.1f;m.dampingRatio=1;
                     m.SetAvailabilityFilter(()=>Available(part));m.SetGroundFilter(IsTerrain);

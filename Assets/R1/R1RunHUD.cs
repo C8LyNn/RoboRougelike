@@ -67,7 +67,7 @@ namespace RoboRougelike.R1
             if(progress.State==R1RunState.Garage&&!run.Transitioning){DrawGarage(run);return;}
             if (progress.State == R1RunState.Combat && !run.Transitioning)
             {
-                Panel(new Rect(20, 18, 660, 158));
+                Panel(new Rect(20, 18, 660, 180));
                 GUI.Label(new Rect(36, 27, 630, 30), $"STARCIE {progress.EncounterIndex + 1}/{progress.TotalEncounters}   •   Wrogowie: {run.Encounter.AliveCount}   •   Złom: {run.VehicleModel.Scrap}", body);
                 var player = run.Player;
                 if (player != null)
@@ -78,6 +78,8 @@ namespace RoboRougelike.R1
                     GUI.Label(new Rect(36, 93, 630, 26), $"Konstrukcja: {player.Structure.ConnectedBlockCount}/{player.Structure.InitialStructuralBlockCount}    Koła: {player.Modules.ActiveWheelCount}/{player.Modules.InitialWheelCount}    Bronie: {player.Modules.ActiveWeaponCount}/{plannedGuns}", small);
                     var physicsBody=player.GetComponent<Rigidbody>();
                     GUI.Label(new Rect(36, 126, 630, 25), $"Masa: {physicsBody.mass:0} kg • Prędkość: {physicsBody.linearVelocity.magnitude:0.0} m/s • Esc — pauza", small);
+                    var energy=player.GetComponent<VehicleEnergyBank>();
+                    if(energy!=null)GUI.Label(new Rect(36,151,630,25),$"Energia: {energy.Current:0}/{energy.Maximum:0}  •  Turkusowe pole ładuje szybciej",small);
                 }
                 if (!run.Paused)
                 {
@@ -133,7 +135,7 @@ namespace RoboRougelike.R1
             else if (progress.State == R1RunState.UpgradeChoice)
             {
                 GUI.Label(new Rect(90, 90, 1120, 65), $"Zwycięstwo!  +{run.LastScrapReward} Złomu", title);
-                GUI.Label(new Rect(90, 170, 1120, 55), "Wybierz moduł 1×2×2 i zamontuj go w garażu, aby aktywować bonus", heading);
+                GUI.Label(new Rect(90, 170, 1120, 55), "Wybierz moduł 1×1×1 i zamontuj go w garażu, aby aktywować bonus", heading);
                 // Keep rendering a stable snapshot: a click clears Offers immediately.
                 var offers = new R1UpgradeDefinition[progress.Offers.Count];
                 for (int i = 0; i < offers.Length; i++) offers[i] = progress.Offers[i];
@@ -186,6 +188,8 @@ namespace RoboRougelike.R1
             Panel(new Rect(10,10,320,700));Panel(new Rect(950,10,320,700));
             GUI.Label(new Rect(30,25,290,40),"GARAŻ",heading);
             GUI.Label(new Rect(30,67,290,35),$"Złom: {model.Scrap}  •  Pola: {System.Linq.Enumerable.Sum(model.Parts,p=>System.Linq.Enumerable.Count(R3VehicleModel.OccupiedCells(p)))}/180",body);
+            var garageEnergy=run.Player!=null?run.Player.GetComponent<VehicleEnergyBank>():null;
+            if(garageEnergy!=null)GUI.Label(new Rect(30,91,290,20),$"Energia: {garageEnergy.Current:0}/{garageEnergy.Maximum:0}",small);
             DrawMovementCatalog(run);
             GUI.backgroundColor=Color.white;
             string[] tools={"Montuj","Zaznacz","Napraw","Zdejmij"};

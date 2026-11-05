@@ -55,7 +55,7 @@ namespace RoboRougelike.B01.Rewards
             "Armor","Wheel","Gun","Core","Suspension","Booster","JumpDrive","Blink",
             "Gyroscope","OmniDrive","MagneticGrapple","HoverEngine","CrawlerTrack",
             "BonusModule","DirectionalShield","PointDefense","StructuralScanner",
-            "ScannerPulse","IndependentSteering"
+            "ScannerPulse","IndependentSteering","Battery"
         };
 
         private static bool ValidGuid(string id) {

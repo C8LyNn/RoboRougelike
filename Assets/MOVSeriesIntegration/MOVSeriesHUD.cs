@@ -12,8 +12,8 @@ namespace RoboRougelike.R1
         GUIStyle garageTabStyle;
         static readonly R3PartKind[] shopKinds={R3PartKind.Armor,R3PartKind.Wheel,R3PartKind.Gun,R3PartKind.Suspension,
             R3PartKind.Booster,R3PartKind.JumpDrive,R3PartKind.Blink,R3PartKind.Gyroscope,
-            R3PartKind.OmniDrive,R3PartKind.MagneticGrapple,R3PartKind.HoverEngine,R3PartKind.CrawlerTrack,R3PartKind.DirectionalShield,R3PartKind.PointDefense,R3PartKind.StructuralScanner,R3PartKind.ScannerPulse,R3PartKind.IndependentSteering};
-        static readonly string[] shopNames={"Pancerz","Koło","Broń","Zawieszenie","Booster","Skok","Blink","Żyroskop","Omni","Zaczep","Hover","Gąsienica","Tarcza","Obrona pkt.","Skan struktury","Impuls skanera","Skręt osi"};
+            R3PartKind.OmniDrive,R3PartKind.MagneticGrapple,R3PartKind.HoverEngine,R3PartKind.CrawlerTrack,R3PartKind.DirectionalShield,R3PartKind.PointDefense,R3PartKind.StructuralScanner,R3PartKind.ScannerPulse,R3PartKind.IndependentSteering,R3PartKind.Battery};
+        static readonly string[] shopNames={"Pancerz","Koło","Broń","Zawieszenie","Booster","Skok","Blink","Żyroskop","Omni","Zaczep","Hover","Gąsienica","Tarcza","Obrona pkt.","Skan struktury","Impuls skanera","Skręt osi","Bateria +100"};
         static readonly string[] driveNames={"Koła","Gąsienice","Omni","Hover"};
         void DrawMovementCatalog(R1RunController run)
         {
@@ -76,11 +76,13 @@ namespace RoboRougelike.R1
                 if(GUI.Button(new Rect(30,420,135,31),"Niżej − 0,1 m",compactButton))ChangeMovement(run,m.BoosterThrustNewtons,m.BoosterDurationSeconds,m.GyroEnabled,m.HoverHeightMeters-.1f);
                 if(GUI.Button(new Rect(175,420,135,31),"Wyżej + 0,1 m",compactButton))ChangeMovement(run,m.BoosterThrustNewtons,m.BoosterDurationSeconds,m.GyroEnabled,m.HoverHeightMeters+.1f);
             }
+            else if(selected==R3PartKind.Battery)
+                GUI.Label(new Rect(30,355,280,95),"Bateria: +100 maks. energii.\nDziała po zamontowaniu.\nEnergia odnawia się powoli;\nturkusowe pole ładuje szybciej.",small);
             else if(selected==R3PartKind.PointDefense)
-                GUI.Label(new Rect(30,355,280,100),"Obrona 1×2×2 • automat 24 m\n40 nabojów • T przeładuj (3 s)\nChroni przed pociskami i rakietami.\nWymaga wolnej linii strzału.",small);
+                GUI.Label(new Rect(30,355,280,100),"Obrona 1×1×1 • automat 24 m\n40 nabojów • T przeładuj (3 s)\nChroni przed pociskami i rakietami.\nWymaga wolnej linii strzału.",small);
             else if(selected==R3PartKind.DirectionalShield)
             {
-                GUI.Label(new Rect(30,355,280,100),"Tarcza 1×2×2 • ładuje się sama\n100 osłony • 120° • zasięg 9 m\nRegeneracja 12/s po 3 s.\nKierunek zmienisz obrotem XYZ.",small);
+                GUI.Label(new Rect(30,355,280,100),"Tarcza 1×1×1 • ładuje się sama\n100 osłony • 120° • zasięg 9 m\nRegeneracja 12/s po 3 s.\nKierunek zmienisz obrotem XYZ.",small);
             }
             else if(selected==R3PartKind.IndependentSteering)
                 GUI.Label(new Rect(30,355,280,100),"M — zmień tryb podczas jazdy\nPrzód / tył / przeciwnie / krab.\nWymaga 4 prostych kół narożnych.\nInny układ: standardowy skręt R6.",small);
