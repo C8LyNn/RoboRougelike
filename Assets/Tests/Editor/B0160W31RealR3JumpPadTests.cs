@@ -97,7 +97,24 @@ public sealed class B0160W31RealR3JumpPadTests
     [UnityTest]
     public IEnumerator SalvageYard_ActualMultiColliderR3VehicleGetsOneRealUpwardImpulse()
     {
-        yield return StartActualR3CombatInSalvageYard();
+        EditorSceneManager.OpenScene(GameplayScene, OpenSceneMode.Single);
+        yield return new EnterPlayMode();
+        float deadline = Time.realtimeSinceStartup + 15f;
+        while (R1RunController.Instance?.Progress == null && Time.realtimeSinceStartup < deadline) yield return null;
+        var run = R1RunController.Instance;
+        Assert.That(run, Is.Not.Null, "must boot actual scene 1 and R3 run");
+        Assert.That(run.StartRun(), Is.True, "actual run progression must start");
+        Assert.That(run.ChooseRoute(0), Is.True, "actual R1 route/encounter must start");
+        while ((run.Transitioning || run.Player == null) && Time.realtimeSinceStartup < deadline) yield return null;
+        Assert.That(run.Transitioning, Is.False, "actual encounter transition timed out");
+        Assert.That(run.Player, Is.Not.Null, "actual R3 Player must have spawned");
+        Assert.That(run.Player.GetComponent<R3VehicleAssembly>(), Is.Not.Null, "must test real mounted R3 car, NOT a synthetic cube");
+        run.Encounter.SetCombatActive(false);
+        run.Player.Controller.SetGameplayInputEnabled(false);
+        run.Arena.Build(R5ArenaKind.SalvageYard);
+        Physics.SyncTransforms();
+        Assert.That(run.Arena.Kind, Is.EqualTo(R5ArenaKind.SalvageYard));
+        Assert.That(run.Arena.Layout.GetComponentsInChildren<MapJumpPad>().Length, Is.EqualTo(1), "actual R5 Salvage Yard must have ONE real pad");
         var p = ActualVehicleAndPad();
         Assert.That(p.pad.IsActive, Is.True);
         Assert.That(p.pad.CanLaunch(p.body), Is.True,
@@ -117,7 +134,7 @@ public sealed class B0160W31RealR3JumpPadTests
         bool actualPadContactObserved = false;
         for (int i = 0; i < 150; i++)
         {
-            yield return new WaitForFixedUpdate();
+            float previousFixed = Time.fixedTime; while (Time.fixedTime <= previousFixed) yield return null;
             Assert.That(p.body, Is.Not.Null,
                 "the actual vehicle must survive the real in-arena jump");
             maxUpVelocity = Mathf.Max(maxUpVelocity, p.body.linearVelocity.y);
@@ -139,7 +156,24 @@ public sealed class B0160W31RealR3JumpPadTests
     [UnityTest]
     public IEnumerator SalvageYard_DisabledRealPadCannotLaunchFullR3Vehicle()
     {
-        yield return StartActualR3CombatInSalvageYard();
+        EditorSceneManager.OpenScene(GameplayScene, OpenSceneMode.Single);
+        yield return new EnterPlayMode();
+        float deadline = Time.realtimeSinceStartup + 15f;
+        while (R1RunController.Instance?.Progress == null && Time.realtimeSinceStartup < deadline) yield return null;
+        var run = R1RunController.Instance;
+        Assert.That(run, Is.Not.Null, "must boot actual scene 1 and R3 run");
+        Assert.That(run.StartRun(), Is.True, "actual run progression must start");
+        Assert.That(run.ChooseRoute(0), Is.True, "actual R1 route/encounter must start");
+        while ((run.Transitioning || run.Player == null) && Time.realtimeSinceStartup < deadline) yield return null;
+        Assert.That(run.Transitioning, Is.False, "actual encounter transition timed out");
+        Assert.That(run.Player, Is.Not.Null, "actual R3 Player must have spawned");
+        Assert.That(run.Player.GetComponent<R3VehicleAssembly>(), Is.Not.Null, "must test real mounted R3 car, NOT a synthetic cube");
+        run.Encounter.SetCombatActive(false);
+        run.Player.Controller.SetGameplayInputEnabled(false);
+        run.Arena.Build(R5ArenaKind.SalvageYard);
+        Physics.SyncTransforms();
+        Assert.That(run.Arena.Kind, Is.EqualTo(R5ArenaKind.SalvageYard));
+        Assert.That(run.Arena.Layout.GetComponentsInChildren<MapJumpPad>().Length, Is.EqualTo(1), "actual R5 Salvage Yard must have ONE real pad");
         var p = ActualVehicleAndPad();
         p.pad.SetActive(false);
         Assert.That(p.pad.CanLaunch(p.body), Is.False,
@@ -150,7 +184,7 @@ public sealed class B0160W31RealR3JumpPadTests
         bool actualPadContactObserved = false;
         for (int i = 0; i < 130; i++)
         {
-            yield return new WaitForFixedUpdate();
+            float previousFixed = Time.fixedTime; while (Time.fixedTime <= previousFixed) yield return null;
             Assert.That(p.body, Is.Not.Null);
             maxUpVelocity = Mathf.Max(maxUpVelocity, p.body.linearVelocity.y);
             actualPadContactObserved |= BodyActuallyOverlapsPadTrigger(p.pad, p.body);
@@ -173,3 +207,4 @@ public sealed class B0160W31RealR3JumpPadTests
         }
     }
 }
+
