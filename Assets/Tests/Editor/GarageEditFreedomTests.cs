@@ -9,6 +9,14 @@ using RoboRougelike.R3;
 
 public sealed class GarageEditFreedomTests
 {
+    static R3PartState QaFirstGun(R3VehicleModel model)
+    {foreach(var p in model.Parts)if(p.Kind==R3PartKind.Gun)return p;Assert.Fail("Expected a mounted gun");return null;}
+    static R3PartState QaWheelAt(R3VehicleModel model,Vector3Int cell)
+    {foreach(var p in model.Parts)if(p.Kind==R3PartKind.Wheel&&p.Cell==cell)return p;Assert.Fail("Expected wheel at "+cell);return null;}
+    static R3PartState QaSinglePart(System.Collections.Generic.IEnumerable<R3PartState> parts,string id)
+    {R3PartState result=null;foreach(var p in parts)if(p.Id==id){Assert.That(result,Is.Null,"duplicate part id");result=p;}Assert.That(result,Is.Not.Null,"missing part id "+id);return result;}
+    static R3MountedPart QaSingleMounted(System.Collections.Generic.IEnumerable<R3MountedPart> parts,string id)
+    {R3MountedPart result=null;foreach(var p in parts)if(p.Id==id){Assert.That(result,Is.Null,"duplicate mounted id");result=p;}Assert.That(result,Is.Not.Null,"missing mounted id "+id);return result;}
     [Test] public void ModelCanRemoveLastGunAndEveryWheelButCannotDeploy()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
@@ -68,11 +76,11 @@ public sealed class GarageEditFreedomTests
         Assert.That(run,Is.Not.Null);
         Assert.That(run.SelectVehicle(R3VehicleKind.Standard),Is.True);
         Assert.That(run.OpenSandboxGarage(),Is.True);
-        var gun=run.VehicleModel.Parts.First(p=>p.Kind==R3PartKind.Gun);
+        var gun=QaFirstGun(run.VehicleModel);
         var id=gun.Id;
         var oldCell=gun.Cell;
         Assert.That(run.GarageRemove(oldCell),Is.True);
-        var inventory=run.VehicleModel.Inventory.Single(p=>p.Id==id);
+        var inventory=QaSinglePart(run.VehicleModel.Inventory,id);
         inventory.Weapon=RoboRougelike.R4.R4WeaponKind.RotarySaw;
         int beforeWallet=run.VehicleModel.Scrap;
         int beforeParts=run.VehicleModel.Parts.Count;
@@ -82,7 +90,7 @@ public sealed class GarageEditFreedomTests
         Assert.That(run.GarageMount(id,oldCell,default),Is.False);
         Assert.That(run.VehicleModel.Scrap,Is.EqualTo(beforeWallet));
         Assert.That(run.VehicleModel.Parts.Count,Is.EqualTo(beforeParts));
-        Assert.That(run.VehicleModel.Inventory.Single(p=>p.Id==id).Id,Is.EqualTo(id));
+        Assert.That(QaSinglePart(run.VehicleModel.Inventory,id).Id,Is.EqualTo(id));
         // Exterior attachment remains available, never disable the saw globally.
         var exterior=new Vector3Int(0,1,4);
         // Real physical 260-collider stress for the 256-hit fail-closed query.
@@ -104,7 +112,7 @@ public sealed class GarageEditFreedomTests
             "Saturated owner sweep must fail closed, not silently truncate.");
         Assert.That(run.GarageMount(id,exterior,default),Is.False);
         Assert.That(run.VehicleModel.Scrap,Is.EqualTo(beforeWallet));
-        Assert.That(run.VehicleModel.Inventory.Single(p=>p.Id==id).Id,Is.EqualTo(id));
+        Assert.That(QaSinglePart(run.VehicleModel.Inventory,id).Id,Is.EqualTo(id));
         foreach(var blocker in saturation){blocker.SetActive(false);Object.Destroy(blocker);}
         Physics.SyncTransforms();
         Assert.That(run.VehicleModel.OwnedPlacementError(id,exterior,default),Is.Null,
@@ -112,7 +120,7 @@ public sealed class GarageEditFreedomTests
                 run.VehicleModel.OwnedPlacementError(id,exterior,default));
         Assert.That(run.GarageMount(id,exterior,default),Is.True);
         Assert.That(run.VehicleModel.Scrap,Is.EqualTo(beforeWallet));
-        Assert.That(run.VehicleModel.Parts.Single(p=>p.Id==id).Cell,Is.EqualTo(exterior));
+        Assert.That(QaSinglePart(run.VehicleModel.Parts,id).Cell,Is.EqualTo(exterior));
         yield return new ExitPlayMode();
     }
     [UnityTest] public IEnumerator NewArmorCannotBlockExistingSawAfterGaragePurchase()
@@ -128,15 +136,14 @@ public sealed class GarageEditFreedomTests
         Assert.That(run.OpenSandboxGarage(),Is.True);
         run.VehicleModel.Award(100); // Fixture funds only; not a simulated victory.
 
-        var oldGun=run.VehicleModel.Parts.First(p=>p.Kind==R3PartKind.Gun);
+        var oldGun=QaFirstGun(run.VehicleModel);
         string sawId=oldGun.Id;
         Assert.That(run.GarageRemove(oldGun.Cell),Is.True);
         // The original right-front wheel's protruding tire overlaps the new
         // side-mount cell. Remove it legitimately; do not disable any Collider.
-        var wheel=run.VehicleModel.Parts.First(p=>p.Kind==R3PartKind.Wheel&&
-            p.Cell==new Vector3Int(2,0,1));
+        var wheel=QaWheelAt(run.VehicleModel,new Vector3Int(2,0,1));
         Assert.That(run.GarageRemove(wheel.Cell),Is.True);
-        var owned=run.VehicleModel.Inventory.Single(p=>p.Id==sawId);
+        var owned=QaSinglePart(run.VehicleModel.Inventory,sawId);
         owned.Weapon=RoboRougelike.R4.R4WeaponKind.RotarySaw;
         var sawCell=new Vector3Int(2,0,2);
         Assert.That(run.VehicleModel.OwnedPlacementError(sawId,sawCell,default),Is.Null,
@@ -185,13 +192,13 @@ public sealed class GarageEditFreedomTests
         Assert.That(run.SelectVehicle(R3VehicleKind.Standard),Is.True);
         Assert.That(run.OpenSandboxGarage(),Is.True);
         var model=run.VehicleModel;
-        var gun=model.Parts.First(p=>p.Kind==R3PartKind.Gun);
+        var gun=QaFirstGun(model);
         string id=gun.Id;
         // Physically consistent legacy/stale damaged mount fixture: the old
         // authorizer could previously mount a centered saw without disc safety.
         gun.Weapon=RoboRougelike.R4.R4WeaponKind.RotarySaw;
         gun.Health=0f;
-        var oldMounted=run.Player.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Id==id);
+        var oldMounted=QaSingleMounted(run.Player.GetComponent<R3VehicleAssembly>().Parts,id);
         oldMounted.gameObject.SetActive(false);
         model.Award(1000);
         Physics.SyncTransforms();
