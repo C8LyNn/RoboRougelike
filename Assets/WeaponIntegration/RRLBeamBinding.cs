@@ -32,7 +32,15 @@ namespace RoboRougelike.WeaponIntegration
         void FixedUpdate()
         {
             bool available=Device.Available;Module.SetOperational(available);Module.SetAttached(available);
-            Module.SetTriggerHeld(held&&available);Module.ManualFixedStep(Time.fixedDeltaTime);CaptureState();
+            bool canFire=held&&available;
+            if(canFire)
+            {
+                var assembly=Device.Owner.GetComponent<R3VehicleAssembly>();
+                var part=GetComponent<R3MountedPart>();
+                if(assembly!=null)canFire=part!=null&&part.Muzzle!=null&&
+                    assembly.ClearProjectilePath(part,part.Muzzle.forward,Module.Settings.rangeMeters,.001f);
+            }
+            Module.SetTriggerHeld(canFire);Module.ManualFixedStep(Time.fixedDeltaTime);CaptureState();
         }
         public void CaptureState(){if(Module==null||Device?.State==null)return;State.ThermalHeat=Module.Heat;State.ThermalLocked=Module.IsOverheated;}
         public void ApplyBeamHit(in BeamHitRequest hit)

@@ -38,13 +38,13 @@ public class MOVSeriesGarageTests
     void Buy(Vector3Int cell,R3PartKind kind)=>Assert.That(run.GarageBuy(cell,kind),Is.True,kind+" at "+cell+" / "+run.VehicleModel.PlacementError(cell,kind));
     void Corners(R3PartKind kind)
     {foreach(int x in new[]{-1,1})foreach(int z in new[]{-3,3})Buy(new Vector3Int(x,0,z),kind);}
-    void FullConstruction()
+    void FullConstruction(bool keepGunClear=false)
     {
         Corners(R3PartKind.HoverEngine);
         foreach(int x in new[]{-2,2})foreach(int z in new[]{-3,3})Buy(new Vector3Int(x,0,z),R3PartKind.Suspension);
         foreach(int x in new[]{-1,1})Buy(new Vector3Int(x*3,0,-3),R3PartKind.CrawlerTrack);
         Buy(new Vector3Int(-1,1,0),R3PartKind.Booster);Buy(new Vector3Int(0,0,-3),R3PartKind.JumpDrive);
-        Buy(new Vector3Int(0,1,1),R3PartKind.Blink);Buy(new Vector3Int(0,1,-1),R3PartKind.Gyroscope);
+        Buy(new Vector3Int(keepGunClear?1:0,1,1),R3PartKind.Blink);Buy(new Vector3Int(0,1,-1),R3PartKind.Gyroscope);
         Buy(new Vector3Int(-1,1,2),R3PartKind.MagneticGrapple);Buy(new Vector3Int(0,0,3),R3PartKind.OmniDrive);
         Assert.That(run.VehicleModel.Scrap,Is.EqualTo(15));
         foreach(var part in run.Player.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p.Kind>=R3PartKind.Booster))
@@ -104,13 +104,16 @@ public class MOVSeriesGarageTests
     }
     [UnityTest] public IEnumerator ActualKeyboardActivatesAbilitiesAndExistingMouseStillFires()
     {
-        FullConstruction();VirtualInput();Assert.That(run.EnterTestRange(),Is.True);yield return Until(()=>!run.Transitioning);yield return MOVSeriesDeviceTests.Seconds(.6f);
+        // This input test needs a clear barrel; the old Blink placement intersected it.
+        FullConstruction(keepGunClear:true);VirtualInput();Assert.That(run.EnterTestRange(),Is.True);yield return Until(()=>!run.Transitioning);yield return MOVSeriesDeviceTests.Seconds(.6f);
         yield return KeyPress(Key.LeftShift);Assert.That(run.Player.GetComponentInChildren<VehicleBooster>().IsBoosting,Is.True);
         bool gyro=run.VehicleModel.GyroEnabled;yield return KeyPress(Key.G);Assert.That(run.VehicleModel.GyroEnabled,Is.EqualTo(!gyro));
         yield return KeyPress(Key.Q);Assert.That(run.VehicleModel.Parts.Single(p=>p.Kind==R3PartKind.Blink).DeviceReadyAt,Is.GreaterThan(Time.time));
         yield return KeyPress(Key.Space);Assert.That(run.VehicleModel.Parts.Single(p=>p.Kind==R3PartKind.JumpDrive).DeviceReadyAt,Is.GreaterThan(Time.time));
         yield return MOVSeriesDeviceTests.Seconds(1.4f);yield return KeyPress(Key.E);Assert.That(run.Player.GetComponent<MOVSeriesVehicleAdapter>().GrappleAttached,Is.True);
         yield return KeyPress(Key.E);Assert.That(run.Player.GetComponent<MOVSeriesVehicleAdapter>().GrappleAttached,Is.False);
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();
+        Assert.That(assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun).Any(assembly.ClearProjectilePath),Is.True,"The input fixture must leave a physical path for the shot.");
         InputSystem.QueueStateEvent(mouse,new MouseState().WithButton(MouseButton.Left));
         yield return Until(()=>UnityEngine.Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None).Any(s=>s.name=="P17_PlayerPhysicalShell"));
         InputSystem.QueueStateEvent(mouse,new MouseState());

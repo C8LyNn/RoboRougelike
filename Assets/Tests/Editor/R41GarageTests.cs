@@ -73,7 +73,11 @@ public class R41GarageTests
         Assert.That(Run.VehicleModel.At(cell).Id,Is.EqualTo(id));Assert.That(Run.StartNextEncounter(),Is.True);
         yield return Until(()=>!Run.Transitioning,"Następne starcie");Run.Encounter.SetCombatActive(false);
         Assert.That(Run.VehicleModel.At(cell).Id,Is.EqualTo(id));Assert.That(Run.Player.Modules.WeaponOnline,Is.True);
-        R1EncounterManager.ClearTransientObjects();Run.Player.GetComponent<R3VehicleAssembly>().FireGuns();
+        R1EncounterManager.ClearTransientObjects();var assembly=Run.Player.GetComponent<R3VehicleAssembly>();
+        foreach(var gun in assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun))gun.GunPivot.rotation=Quaternion.Euler(-70,0,0);
+        Physics.SyncTransforms();
+        Assert.That(assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun).Any(assembly.ClearProjectilePath),Is.True,"The physical firing test needs a clear path after armor is mounted.");
+        assembly.FireGuns();
         Assert.That(UnityEngine.Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None).Length,Is.GreaterThan(0));
         Assert.That(garage.Point(TopRay(cell)),Is.False,"Walka nie może przyjmować wejścia garażu.");
     }

@@ -5,7 +5,7 @@ namespace RoboRougelike.R3
     public sealed class R3VisualPalette : MonoBehaviour
     {
         public readonly Material[] Parts = new Material[System.Enum.GetValues(typeof(R3PartKind)).Length];
-        public Material Valid, Invalid, Missing,Selection;
+        public Material Valid, Invalid, Missing,Selection,Payload,GridOccupied;
         public readonly Material[] Weapons=new Material[RoboRougelike.R4.R4WeaponDefinition.Count];
         public void Initialize(Material template)
         {
@@ -17,7 +17,10 @@ namespace RoboRougelike.R3
             Valid=Make(template,Color.green); Invalid=Make(template,new Color(1,0.2f,0.12f));
             Missing=Make(template,new Color(0.4f,0.2f,0.22f));
             Selection=Make(template,new Color(0.1f,0.9f,1,0.2f));
-            Transparent(Valid,0.42f);Transparent(Invalid,0.42f);Transparent(Missing,0.23f);Transparent(Selection,0.2f);
+            Payload=Make(template,new Color(0.08f,0.32f,1));
+            GridOccupied=Make(template,new Color(1f,.08f,.03f));
+            Transparent(Valid,0.42f);Transparent(Invalid,0.42f);Transparent(Missing,0.23f);Transparent(Selection,0.2f);Transparent(Payload,0.75f);
+            Payload.renderQueue=3100;
             for(int i=0;i<Weapons.Length;i++)Weapons[i]=Make(template,RoboRougelike.R4.R4WeaponDefinition.Get((RoboRougelike.R4.R4WeaponKind)i).Color);
         }
         private static Material Make(Material source, Color color)
@@ -39,7 +42,7 @@ namespace RoboRougelike.R3
             foreach(var mat in Parts) if(mat!=null) Destroy(mat);
             foreach(var mat in Weapons)if(mat!=null)Destroy(mat);
             if(Valid!=null)Destroy(Valid); if(Invalid!=null)Destroy(Invalid); if(Missing!=null)Destroy(Missing);
-            if(Selection!=null)Destroy(Selection);
+            if(Selection!=null)Destroy(Selection);if(Payload!=null)Destroy(Payload);if(GridOccupied!=null)Destroy(GridOccupied);
         }
     }
 }
