@@ -89,7 +89,7 @@ public class MOVSeriesSpecialTests
         var v=Build(R3VehicleKind.Light,0,R3PartKind.MagneticGrapple,R3PartKind.Booster,R3PartKind.Blink,R3PartKind.Gyroscope);
         Box("Static anchor",new Vector3(0,2,1015),new Vector3(6,4,1));yield return MOVSeriesDeviceTests.Seconds(.5f);
         var rope=v.GetComponent<MagneticGrappleController>();Assert.That(rope,Is.Not.Null);
-        Assert.That(Act(v,"TryGrapple",Vector3.forward),Is.True);Assert.That(rope.IsAttached,Is.True);Vector3 before=v.GetComponent<Rigidbody>().position;
+        var energy=v.GetComponent<VehicleEnergyBank>();float beforeEnergy=energy.Current;Assert.That(Act(v,"TryGrapple",Vector3.forward),Is.True);Assert.That(energy.Current,Is.EqualTo(beforeEnergy-VehicleEnergyCosts.Grapple).Within(.01f));Assert.That(rope.IsAttached,Is.True);Vector3 before=v.GetComponent<Rigidbody>().position;
         Assert.That(Act(v,"TryBlink",Vector3.back),Is.False);Assert.That(v.GetComponent<Rigidbody>().position,Is.EqualTo(before));
         Assert.That(v.GetComponent<MOVSeriesVehicleAdapter>().TryBoost(),Is.True);yield return MOVSeriesDeviceTests.Seconds(.7f);
         Assert.That(v.GetComponent<Rigidbody>().position.z,Is.GreaterThan(before.z+.3f));Assert.That(v.GetComponent<Rigidbody>().linearVelocity.magnitude,Is.LessThan(14));

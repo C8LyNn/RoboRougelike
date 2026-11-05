@@ -101,7 +101,7 @@ public sealed class R3ContactAndRewardTests
     }
 
     [Test]
-    public void TurningBonusOnDifferentAxesRotatesItsFourCellFootprint()
+    public void TurningBonusOnDifferentAxesPreservesItsSingleCellFootprint()
     {
         var origin=Vector3Int.zero;
         var flat=R3VehicleModel.OccupiedCells(origin,R3PartKind.BonusModule).ToArray();
@@ -109,12 +109,9 @@ public sealed class R3ContactAndRewardTests
             new Vector3Int(0,0,1)).ToArray();
         var yawed=R3VehicleModel.OccupiedCells(origin,R3PartKind.BonusModule,
             new Vector3Int(0,1,0)).ToArray();
-        Assert.AreEqual(4,flat.Distinct().Count());
-        Assert.AreEqual(4,standing.Distinct().Count());
-        Assert.AreEqual(4,yawed.Distinct().Count());
-        Assert.AreEqual(1,flat.Select(x=>x.y).Distinct().Count());
-        Assert.AreEqual(2,standing.Select(x=>x.y).Distinct().Count());
-        Assert.AreEqual(1,yawed.Select(x=>x.y).Distinct().Count());
+        CollectionAssert.AreEqual(new[]{origin},flat);
+        CollectionAssert.AreEqual(new[]{origin},standing);
+        CollectionAssert.AreEqual(new[]{origin},yawed);
     }
 
     [Test]

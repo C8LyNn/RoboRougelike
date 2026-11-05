@@ -55,7 +55,10 @@ namespace RoboRougelike.WeaponIntegration
             if(assembly!=null&&!assembly.ClearProjectilePath(GetComponent<R3MountedPart>()))return false;
             Module.SetOperational(true);
             Module.Configure(new ShotgunConfig{cooldownSeconds=.85f*(tank!=null?tank.PackageIntervalScale:intervalScale)});
+            var energy=Owner.GetComponent<VehicleEnergyBank>();
+            if(energy!=null&&!energy.TrySpend(VehicleEnergyCosts.Shotgun))return false;
             bool result=Module.TryFire();
+            if(!result&&energy!=null)energy.Refund(VehicleEnergyCosts.Shotgun);
             if(result)State.DeviceReadyAt=Module.NextReadyTime;
             return result;
         }

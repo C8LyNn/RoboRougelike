@@ -86,7 +86,7 @@ public class RRLW8PulseScannerTests
     {
         Assert.That(Enum.TryParse("ScannerPulse",out kind),Is.True,"SEN must be an owned physical garage module");
         yield return Build();Assert.That(Activate(),Is.True);var assembly=run.Player.GetComponent<R3VehicleAssembly>();var state=run.VehicleModel.Parts.Single(p=>p.Id==module.Id);
-        string id=state.Id;float ready=state.DeviceReadyAt;Assert.That(R3VehicleModel.OccupiedCells(state).Count(),Is.EqualTo(4));
+        string id=state.Id;float ready=state.DeviceReadyAt;Assert.That(R3VehicleModel.OccupiedCells(state).Count(),Is.EqualTo(1));
         module.Damageable.ApplyDamage(100000,module.transform.position,Vector3.up);assembly.Capture();Assert.That(state.Health,Is.Zero);Assert.That(Activate(),Is.False);
         var copy=run.VehicleModel.DeepCopy();int scrap=copy.Scrap;Assert.That(copy.Repair(state.Cell),Is.True);Assert.That(copy.Scrap,Is.LessThan(scrap));
         var vehicle=R3VehicleAssembly.Build(copy,new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(100,4,100),Quaternion.identity);

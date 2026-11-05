@@ -42,7 +42,7 @@ public sealed class R3PhysicalBonusModuleTests
         finally {UnityEngine.Object.DestroyImmediate(upgrade);}
     }
     [Test]
-    public void ModuleOccupiesFourCellsButIsOnePart()
+    public void ModuleOccupiesOneCellAndIsOnePart()
     {
         var upgrade=MakeUpgrade();
         try
@@ -62,10 +62,9 @@ public sealed class R3PhysicalBonusModuleTests
             foreach(var cell in R3VehicleModel.OccupiedCells(anchor,R3PartKind.BonusModule))
                 Assert.AreSame(model.At(anchor),model.At(cell));
             Assert.IsTrue(R3VehicleModel.Connected(model.Parts));
-            Assert.IsNotNull(model.PlacementError(new Vector3Int(2,2,1),R3PartKind.Armor));
+            Assert.IsNull(model.At(new Vector3Int(2,2,1)),"A neighboring cell is not reserved by the module.");
             Assert.IsFalse(model.Buy(new Vector3Int(3,2,0),R3PartKind.BonusModule));
-            Assert.IsTrue(model.Remove(new Vector3Int(2,2,1)),
-                "Removing any cell removes the whole module.");
+            Assert.IsTrue(model.Remove(anchor),"Removing the occupied cell returns the whole module.");
             Assert.AreEqual(initial,model.Parts.Count);
             Assert.AreEqual(1,model.Inventory.Count);
             Assert.AreEqual(module.Id,model.Inventory[0].Id);
@@ -76,9 +75,9 @@ public sealed class R3PhysicalBonusModuleTests
     public void FootprintMustFitBoundsAndNotOverlapExistingParts()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
-        Assert.IsNotNull(model.PlacementError(new Vector3Int(6,2,0),R3PartKind.BonusModule,true));
+        Assert.IsNotNull(model.PlacementError(new Vector3Int(7,2,0),R3PartKind.BonusModule,true));
         Assert.IsNotNull(model.PlacementError(new Vector3Int(0,1,0),R3PartKind.BonusModule,true));
-        Assert.AreEqual(4,R3VehicleModel.OccupiedCells(new Vector3Int(0,3,0),R3PartKind.BonusModule).Count());
+        Assert.AreEqual(1,R3VehicleModel.OccupiedCells(new Vector3Int(0,3,0),R3PartKind.BonusModule).Count());
     }
     [Test]
     public void CopyPreservesUpgradeIdentityAndSingleModuleCondition()

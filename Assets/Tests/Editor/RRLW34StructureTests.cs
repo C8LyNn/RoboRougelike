@@ -57,17 +57,17 @@ public class RRLW34StructureTests
             var d=Design();d.Parts.Add(Bonus(Vector3Int.right-support,turns));
             var v=Build(d);var m=Module(v);
             Assert.That(v.GetComponentsInChildren<P12_PipelineSafePlayerBlock>().Length,Is.EqualTo(3),
-                "A four-cell module has one real structural owner, never HP-less helper blocks: "+turns);
+                "A one-cell module has one real structural owner, never HP-less helper blocks: "+turns);
             Assert.That(m.GetComponentsInChildren<P12PipelineSafeDamageable>().Length,Is.EqualTo(1));
             Assert.That(m.GetComponentsInChildren<Collider>().Length,Is.EqualTo(1));
             Assert.That(v.Structure.ConnectedBlockCount,Is.EqualTo(3));
             Assert.That(m.Operational,Is.True);Assert.That(v.Structure.IsBlockConnected(m.Block),Is.True);
             var state=v.GetComponent<R3VehicleAssembly>().Model.Parts.Single(p=>p.Kind==R3PartKind.BonusModule);
             var cells=R3VehicleModel.OccupiedCells(state).ToArray();
-            Assert.That(cells.Distinct().Count(),Is.EqualTo(4));
+            Assert.That(cells.Distinct().Count(),Is.EqualTo(1));
             var box=m.GetComponent<BoxCollider>();
             var center=v.transform.InverseTransformPoint(box.transform.TransformPoint(box.center));
-            var expected=cells.Aggregate(Vector3.zero,(sum,c)=>sum+(Vector3)c)*(.55f/4);
+            var expected=cells.Aggregate(Vector3.zero,(sum,c)=>sum+(Vector3)c)*(.55f/cells.Length);
             Assert.That(Vector3.Distance(center,expected),Is.LessThan(.001f));
             Physics.SyncTransforms();
             var bounds=box.bounds;
@@ -76,13 +76,13 @@ public class RRLW34StructureTests
             Object.Destroy(v.gameObject);yield return null;
         }
     }
-    [UnityTest] public IEnumerator NonAnchorFaceConnectsButBridgeLossReleasesWholeModuleOnce()
+    [UnityTest] public IEnumerator SingleCellConnectsToBridgeAndDetachesWhenBridgeIsLost()
     {
         var d=Design();d.Parts.Add(new R3PartState(Vector3Int.right,R3PartKind.Armor));
-        d.Parts.Add(Bonus(new Vector3Int(2,0,-1)));
+        d.Parts.Add(Bonus(new Vector3Int(2,0,0)));
         var v=Build(d);var assembly=v.GetComponent<R3VehicleAssembly>();var module=Module(v);
         Assert.That(R3VehicleModel.Connected(assembly.Model.Parts),Is.True);
-        Assert.That(v.Structure.IsBlockConnected(module.Block),Is.True,"Only a non-anchor footprint face touches the bridge.");
+        Assert.That(v.Structure.IsBlockConnected(module.Block),Is.True,"The module's single cell touches the bridge.");
         var bridge=assembly.Parts.Single(p=>p.Kind==R3PartKind.Armor);
         bridge.Damageable.ApplyDamage(10000,bridge.transform.position,Vector3.right);
         v.Structure.EvaluateStructure();
@@ -98,10 +98,10 @@ public class RRLW34StructureTests
         Assert.That(chunk.linearVelocity.x,Is.GreaterThan(5));
         Object.Destroy(chunk.gameObject);Object.Destroy(bridge.gameObject);
     }
-    [UnityTest] public IEnumerator OwnerDestructionRemovesAllFourCellsAndDropsDependentPart()
+    [UnityTest] public IEnumerator OwnerDestructionRemovesOneCellAndDropsDependentPart()
     {
         var d=Design();d.Parts.Add(Bonus(Vector3Int.right));
-        d.Parts.Add(new R3PartState(new Vector3Int(3,0,0),R3PartKind.Wheel));
+        d.Parts.Add(new R3PartState(new Vector3Int(2,0,0),R3PartKind.Wheel));
         var v=Build(d);var module=Module(v);
         var leaf=v.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Kind==R3PartKind.Wheel);
         Assert.That(v.Structure.IsBlockConnected(leaf.Block),Is.True);
@@ -124,11 +124,11 @@ public class RRLW34StructureTests
         Assert.That(module.Operational,Is.False);Assert.That(v.Structure.IsBlockConnected(module.Block),Is.False);
         Object.Destroy(module.GetComponentInParent<Rigidbody>().gameObject);yield return null;
     }
-    [UnityTest] public IEnumerator ProjectileOnNonAnchorCellHitsTheSingleModuleHealthPool()
+    [UnityTest] public IEnumerator ProjectileOnModuleCellHitsTheSingleModuleHealthPool()
     {
         var d=Design();d.Parts.Add(Bonus(Vector3Int.right));
         var v=Build(d);var module=Module(v);
-        var target=v.transform.TransformPoint(new Vector3(2,0,1)*.55f);
+        var target=v.transform.TransformPoint(new Vector3(1,0,0)*.55f);
         var shot=GameObject.CreatePrimitive(PrimitiveType.Sphere);shot.transform.SetParent(fixtures.transform,true);
         shot.transform.position=target+Vector3.down*2;shot.transform.localScale=Vector3.one*.1f;
         var body=shot.AddComponent<Rigidbody>();body.useGravity=false;

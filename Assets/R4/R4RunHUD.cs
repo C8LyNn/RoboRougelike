@@ -163,7 +163,7 @@ namespace RoboRougelike.R1
             foreach(var item in items.Skip(inventoryPage*4).Take(4).ToArray())
             {
                 GUI.backgroundColor=garage.SelectedInventoryId==item.Id?new Color(0.3f,0.9f,0.9f):Color.white;
-                if(GUI.Button(new Rect(970,75+row*66,280,60),$"{R4WeaponDefinition.PartName(item)}\nW magazynie • {(R3VehicleModel.UsesWideFootprint(item.Kind)?"1×2×2 • ":"")}HP {item.Health*100:0}%",compactButton))
+                if(GUI.Button(new Rect(970,75+row*66,280,60),$"{R4WeaponDefinition.PartName(item)}\nW magazynie • {(R3VehicleModel.UsesWideFootprint(item.Kind)?"1×1×1 • ":"")}HP {item.Health*100:0}%",compactButton))
                 {garage.ChooseInventory(item.Id);dismantleConfirmation=null;}row++;
             }
             GUI.backgroundColor=Color.white;
@@ -172,14 +172,14 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(1180,345,70,32),"→",compactButton))inventoryPage=Mathf.Min(pages-1,inventoryPage+1);
             var selected=items.FirstOrDefault(p=>p.Id==garage.SelectedInventoryId);
             if(selected==null)
-            {GUI.Label(new Rect(970,390,280,240),"Wybierz część z magazynu. Bonusy 1×2×2 działają wyłącznie po montażu i zajmują cztery sąsiednie pola. Zniszczone moduły napraw przed montażem.\n\nZdjęte moduły wracają do magazynu.",body);return;}
+            {GUI.Label(new Rect(970,390,280,240),"Wybierz część z magazynu. Bonusy 1×1×1 działają wyłącznie po montażu i zajmują jedno pole. Zniszczone moduły napraw przed montażem.\n\nZdjęte moduły wracają do magazynu.",body);return;}
             var profile=R4WeaponDefinition.Get(selected.Weapon);
             GUI.Label(new Rect(970,390,280,66),selected.Kind==R3PartKind.BonusModule?
-                $"Moduł 1×2×2 • HP {selected.Health*100:0}%\n{BonusText(selected)} (po montażu)":
+                $"Moduł 1×1×1 • HP {selected.Health*100:0}%\n{BonusText(selected)} (po montażu)":
                 selected.Kind==R3PartKind.PointDefense?
-                $"Obrona 1×2×2 • {(selected.Ammo<0?40:selected.Ammo)}/40 • zasięg 24 m\nMasa 35 kg • HP {selected.Health*100:0}%":
+                $"Obrona 1×1×1 • {(selected.Ammo<0?40:selected.Ammo)}/40 • zasięg 24 m\nMasa 35 kg • HP {selected.Health*100:0}%":
                 selected.Kind==R3PartKind.DirectionalShield?
-                $"Tarcza 1×2×2 • {(selected.DefenseCharge<0?100:selected.DefenseCharge):0}/100 osłony\n120° • 9 m • masa 32 kg • HP {selected.Health*100:0}%":
+                $"Tarcza 1×1×1 • {(selected.DefenseCharge<0?100:selected.DefenseCharge):0}/100 osłony\n120° • 9 m • masa 32 kg • HP {selected.Health*100:0}%":
                 selected.Kind==R3PartKind.Gun?
                 R4WeaponDefinition.Brief(selected,run.ActiveStats?.Damage??1f,run.ActiveStats?.FireInterval??1f)+$"\nMasa {profile.Mass:0} kg • HP {selected.Health*100:0}%":$"{R4WeaponDefinition.PartName(selected)} • masa {R4WeaponDefinition.PartMass(selected)}\nHP {selected.Health*100:0}%",small);
             if(selected.DisruptionRemaining>0)

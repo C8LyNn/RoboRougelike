@@ -20,6 +20,9 @@ namespace RoboRougelike.R3
         public int groupA,groupB;
         public ActiveSuspensionSupportMode suspensionMode;
         public float suspensionHeight,boosterThrust,boosterDuration,hoverHeight,grappleRemaining;
+        // Version 0 checkpoints predate energy and start with the core's charge.
+        public int energyVersion;
+        public float energy;
         public R3DriveKind drive;
     }
     public sealed partial class R3VehicleModel
@@ -42,6 +45,7 @@ namespace RoboRougelike.R3
                 mounted=Parts.Select(p=>SavePart(p,now)).ToArray(),inventory=inventory.Select(p=>SavePart(p,now)).ToArray(),
                 wheels=factoryWheels.Select(p=>new R3WheelCheckpoint{id=p.Key,cell=p.Value.Cell,rotation=p.Value.Rotation,contacts=p.Value.Contacts}).ToArray(),
                 groups=weaponGroupPreference.Select(p=>new R3GroupCheckpoint{id=p.Key,secondary=p.Value}).ToArray(),scrap=Scrap,
+                energyVersion=1,energy=Energy.Current,
                 suspensionEnabled=SuspensionEnabled,suspensionMode=SuspensionMode,suspensionHeight=SuspensionHeightOffset,
                 gyroEnabled=GyroEnabled,drive=SelectedDrive,boosterThrust=BoosterThrustNewtons,boosterDuration=BoosterDurationSeconds,
                 hoverHeight=HoverHeightMeters,grappleRemaining=Remaining(GrappleReadyAt,now),
@@ -98,6 +102,10 @@ namespace RoboRougelike.R3
             restored.SuspensionMode=data.suspensionMode;restored.SuspensionHeightOffset=data.suspensionHeight;restored.GyroEnabled=data.gyroEnabled;
             restored.BoosterThrustNewtons=data.boosterThrust;restored.BoosterDurationSeconds=data.boosterDuration;restored.HoverHeightMeters=data.hoverHeight;
             restored.GrappleReadyAt=data.grappleRemaining>0?now+data.grappleRemaining:0;
+            if(data.energyVersion<0||data.energyVersion>1||
+                (data.energyVersion==1&&(!Finite(data.energy)||data.energy<0)))return false;
+            restored.RefreshEnergyLayout();
+            restored.Energy.Restore(data.energyVersion==0?VehicleEnergyState.CoreCapacity:data.energy);
             model=restored;error=null;return true;
         }
     }

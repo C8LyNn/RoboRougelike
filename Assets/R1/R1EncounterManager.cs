@@ -35,6 +35,10 @@ namespace RoboRougelike.R1
                 enemy.gameObject.SetActive(true);
                 enemy.ConfigureEncounter(player, definition.HealthMultiplier, definition.DamageMultiplier,
                     definition.FireIntervalMultiplier, definition.ProjectileSpeedMultiplier);
+                var energy=enemy.GetComponent<RoboRougelike.R3.VehicleEnergyBank>();
+                if(energy==null)energy=enemy.gameObject.AddComponent<RoboRougelike.R3.VehicleEnergyBank>();
+                energy.ConfigureEnemy(enemy.Core);
+                if(i==count-1)enemy.EquipBattery();
                 enemy.ConfigureMovement(definition.MoveSpeed, definition.PreferredDistance, definition.StrafeStrength);
                 // One real shotgun escort on larger encounters; its actual equipment enters salvage.
                 if(count>=3&&i==count-1&&definition.SpawnVariant(i)==RoboRougelike.R5.R5EnemyVariant.Normal)

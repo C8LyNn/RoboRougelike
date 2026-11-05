@@ -52,13 +52,13 @@ namespace RoboRougelike.R4
             R3PartKind.Booster=>18,R3PartKind.JumpDrive=>24,R3PartKind.Blink=>28,R3PartKind.Gyroscope=>16,
             R3PartKind.OmniDrive=>22,R3PartKind.MagneticGrapple=>24,R3PartKind.HoverEngine=>18,R3PartKind.CrawlerTrack=>40,R3PartKind.BonusModule=>32,R3PartKind.DirectionalShield=>32,R3PartKind.PointDefense=>35,R3PartKind.StructuralScanner=>16,R3PartKind.ScannerPulse=>12,R3PartKind.IndependentSteering=>14,_=>8};
         public static string PartName(R3PartState part) => part.Kind==R3PartKind.BonusModule?
-            (string.IsNullOrWhiteSpace(part.UpgradeTitle)?"Moduł bonusu 1×2×2":part.UpgradeTitle+" [1×2×2]"):
+            (string.IsNullOrWhiteSpace(part.UpgradeTitle)?"Moduł bonusu 1×1×1":part.UpgradeTitle+" [1×1×1]"):
             PartName(part.Kind,part.Weapon);
         public static string PartName(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic) => kind==R3PartKind.Gun?Get(weapon).Name:
             kind switch {R3PartKind.Wheel=>"Koło",R3PartKind.Suspension=>"Aktywne zawieszenie",R3PartKind.Core=>"Rdzeń",
                 R3PartKind.Booster=>"Booster",R3PartKind.JumpDrive=>"Napęd skokowy",R3PartKind.Blink=>"Blink",
                 R3PartKind.Gyroscope=>"Żyroskop",R3PartKind.OmniDrive=>"Omni",R3PartKind.MagneticGrapple=>"Zaczep magnetyczny",
                 R3PartKind.HoverEngine=>"Silnik zawisu",R3PartKind.CrawlerTrack=>"Gąsienica",
-                R3PartKind.BonusModule=>"Moduł bonusu 1×2×2",R3PartKind.DirectionalShield=>"DEF-001 Tarcza kierunkowa",R3PartKind.PointDefense=>"DEF-002 Obrona punktowa",R3PartKind.StructuralScanner=>"COM-001 Skan struktury",R3PartKind.ScannerPulse=>"SEN-001 Impuls skanera",R3PartKind.IndependentSteering=>"MOV-011 Sterowanie osiami",_=>"Pancerz"};
+                R3PartKind.Battery=>"Bateria +100 energii",R3PartKind.BonusModule=>"Moduł bonusu 1×1×1",R3PartKind.DirectionalShield=>"DEF-001 Tarcza kierunkowa",R3PartKind.PointDefense=>"DEF-002 Obrona punktowa",R3PartKind.StructuralScanner=>"COM-001 Skan struktury",R3PartKind.ScannerPulse=>"SEN-001 Impuls skanera",R3PartKind.IndependentSteering=>"MOV-011 Sterowanie osiami",_=>"Pancerz"};
     }
 }

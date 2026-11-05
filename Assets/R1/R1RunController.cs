@@ -54,6 +54,7 @@ namespace RoboRougelike.R1
             var sourceDefinition = Resources.Load<R1RunDefinition>("R1/Run");
             Definition = sourceDefinition != null ? Instantiate(sourceDefinition) : null;
             gameObject.AddComponent<R1RunHUD>();
+            gameObject.AddComponent<R1EnergyFieldDirector>().Bind(this);
             try
             {
                 var catalog=Resources.Load<TextAsset>("R5/Encounters");
@@ -180,7 +181,7 @@ namespace RoboRougelike.R1
             RecoveredModules+=ids.Length;EarnedScrap+=Salvage.DismantledScrap;
             if(Progress.State==R1RunState.Garage)
             {
-                // No stat bonus is applied here. Only a mounted, live 1x2x2 module works.
+                // No stat bonus is applied here. Only a mounted, live module works.
                 Garage.Open();
             }
             Debug.Log("[R4] Nagrody: bonusy="+bonuses.Length+"; moduły="+ids.Length+

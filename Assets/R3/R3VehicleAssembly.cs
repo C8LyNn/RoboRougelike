@@ -147,6 +147,8 @@ namespace RoboRougelike.R3
                         if(rail!=null&&rail.Fire())part.NextFireTime=rail.State.DeviceReadyAt;
                         continue;
                     }
+                    var energy=GetComponent<VehicleEnergyBank>();
+                    if(energy!=null&&!energy.TrySpend(VehicleEnergyCosts.BasicShot))continue;
                     part.NextFireTime=Time.time+controller.WeaponInterval(part.Weapon);
                     controller.FireFrom(part.Muzzle,part.Weapon,part.Id);
                 }
@@ -208,6 +210,7 @@ namespace RoboRougelike.R3
             modules.ConfigureExternalModules(wheels,weapons,model.Parts.Count(p=>p.Kind==R3PartKind.Wheel&&p.Cell.x<0),model.Parts.Count(p=>p.Kind==R3PartKind.Wheel&&p.Cell.x>0));
             var tank=root.AddComponent<P12PipelineSafeTankController>();
             assembly.Bind(model,tank);
+            root.AddComponent<VehicleEnergyBank>().Configure(assembly);
             var vehicle=root.AddComponent<R1VehicleState>();vehicle.Bind(tank,pivot);
             root.SetActive(true);tank.SetGameplayInputEnabled(false);
             vehicle.Apply(stats);

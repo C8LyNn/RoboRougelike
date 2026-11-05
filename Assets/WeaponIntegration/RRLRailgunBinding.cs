@@ -37,7 +37,10 @@ namespace RoboRougelike.WeaponIntegration
         public bool Fire(){Refresh();if(!Device.Available||Time.time<State.DeviceReadyAt)return false;
             var assembly=Device.Owner.GetComponent<R3VehicleAssembly>();
             if(assembly!=null&&!assembly.ClearProjectilePath(GetComponent<R3MountedPart>()))return false;
-            return Module.TryFire();}
+            var energy=Device.Owner.GetComponent<VehicleEnergyBank>();
+            if(energy!=null&&!energy.TrySpend(VehicleEnergyCosts.Railgun))return false;
+            bool fired=Module.TryFire();if(!fired&&energy!=null)energy.Refund(VehicleEnergyCosts.Railgun);
+            return fired;}
         public bool BeginReload()
         {Refresh();if(!Device.Available||State.Ammo>=Magazine||State.ReloadReadyAt>0)return false;State.ReloadReadyAt=Time.time+2;return true;}
         void Update(){Refresh();if(enemy!=null&&Device.Available&&State.Ammo==0)BeginReload();}
