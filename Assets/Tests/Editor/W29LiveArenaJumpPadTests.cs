@@ -34,7 +34,8 @@ public sealed class W29LiveArenaJumpPadTests
         Physics.SyncTransforms();
         float best=float.NegativeInfinity;
         for(int i=0;i<135;i++)
-        {yield return new WaitForFixedUpdate();best=Mathf.Max(best,body.linearVelocity.y);}
+        {float previousFixed=Time.fixedTime;while(Time.fixedTime<=previousFixed)yield return null;
+            best=Mathf.Max(best,body.linearVelocity.y);}
         Assert.That(best,Is.GreaterThan(5f),"actual PhysX jump pad must launch heavy body");
         Object.Destroy(robot);Object.Destroy(host);Object.Destroy(mat);
     }
