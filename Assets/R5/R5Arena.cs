@@ -63,7 +63,7 @@ namespace RoboRougelike.R5
             pad.transform.SetParent(Layout,false);pad.transform.localPosition=position;
             var area=pad.AddComponent<BoxCollider>();area.isTrigger=true;
             area.center=new Vector3(0f,.28f,0f);area.size=new Vector3(1f,.55f,1f);
-            var launch=pad.AddComponent<B01.MapJumpPad001.MapJumpPad>();
+            var launch=pad.AddComponent<global::B01.MapJumpPad001.MapJumpPad>();
             launch.Configure(8.5f,2f,1.25f);
             var visual=GameObject.CreatePrimitive(PrimitiveType.Cube);
             visual.name="Podest jump pad • tylko wizualny";

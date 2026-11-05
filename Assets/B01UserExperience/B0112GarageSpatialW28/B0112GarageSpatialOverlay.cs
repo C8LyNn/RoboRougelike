@@ -185,7 +185,7 @@ namespace RoboRougelike.B01.GarageSpatialW28
             // R3+BUILD001 physical validator has ALREADY accepted; green never
             // grants permission by itself and cannot override a red host rejection.
             if(tint==B0112ZoneKind.ValidGreen)
-                foreach(var socket in assembly.GetComponentsInChildren<B01.BUILD001.BuildMountSurface>())
+                foreach(var socket in assembly.GetComponentsInChildren<global::B01.BUILD001.BuildMountSurface>())
                 {
                     if(socket==null||!socket.gameObject.activeInHierarchy)continue;
                     if(Vector3.Distance(socket.transform.position,source.Preview.position)>1.1f)continue;
