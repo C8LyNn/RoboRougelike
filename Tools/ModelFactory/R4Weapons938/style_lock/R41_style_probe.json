@@ -1,0 +1,1855 @@
+{
+ "fbx": "C:\\Users\\kubap\\Desktop\\Blender_Modele\\wynik\\v6_1_wiezyczka\\R41_Turret_v6.1.fbx",
+ "fbx_sha256": "03c60486a6af5890f1106bc090d70bb3c09a67f8278e02c2942cab8e77845d6a",
+ "blend": "C:\\Users\\kubap\\Desktop\\Blender_Modele\\wynik\\v6_wiezyczka\\R41_Turret_v6.blend",
+ "blend_sha256": "bafc1552d7dbc8feec0bccd707dd88be294fadb78535c7fb168628a367ce95db",
+ "blender": "5.2.3 LTS",
+ "fbx_survey": {
+  "materials": {
+   "Armor_Dark": {
+    "base": [
+     0.035,
+     0.038,
+     0.045
+    ],
+    "metallic": 0.55,
+    "roughness": 0.45,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "Armor_Gunmetal": {
+    "base": [
+     0.16,
+     0.17,
+     0.18
+    ],
+    "metallic": 0.35,
+    "roughness": 0.55,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "Armor_Plate_Light": {
+    "base": [
+     0.27,
+     0.28,
+     0.285
+    ],
+    "metallic": 0.3,
+    "roughness": 0.58,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "Barrel_Heat": {
+    "base": [
+     0.24,
+     0.13,
+     0.06
+    ],
+    "metallic": 0.9,
+    "roughness": 0.32,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "Energy_Hot": {
+    "base": [
+     1.0,
+     0.38,
+     0.06
+    ],
+    "metallic": 0.0,
+    "roughness": 0.25,
+    "emission": [
+     1.0,
+     0.22,
+     0.02
+    ],
+    "emission_strength": 3.5
+   },
+   "Hazard_Yellow": {
+    "base": [
+     0.95,
+     0.6,
+     0.03
+    ],
+    "metallic": 0.15,
+    "roughness": 0.5,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "Muzzle_Flash": {
+    "base": [
+     1.0,
+     0.62,
+     0.15
+    ],
+    "metallic": 0.0,
+    "roughness": 0.3,
+    "emission": [
+     1.0,
+     0.5,
+     0.1
+    ],
+    "emission_strength": 12.0
+   },
+   "Sensor_Eye_Red": {
+    "base": [
+     1.0,
+     0.1,
+     0.06
+    ],
+    "metallic": 0.0,
+    "roughness": 0.2,
+    "emission": [
+     1.0,
+     0.06,
+     0.03
+    ],
+    "emission_strength": 12.0
+   },
+   "Steel_Light": {
+    "base": [
+     0.55,
+     0.62,
+     0.68
+    ],
+    "metallic": 0.9,
+    "roughness": 0.25,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "TeamColor_Red": {
+    "base": [
+     0.6,
+     0.035,
+     0.025
+    ],
+    "metallic": 0.35,
+    "roughness": 0.38,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   }
+  },
+  "area_m2": {
+   "Armor_Dark": 1.41624,
+   "Armor_Gunmetal": 0.54479,
+   "Armor_Plate_Light": 0.25847,
+   "Energy_Hot": 0.11374,
+   "TeamColor_Red": 0.06133,
+   "Steel_Light": 0.04619,
+   "Barrel_Heat": 0.03283,
+   "Hazard_Yellow": 0.00369,
+   "Sensor_Eye_Red": 0.00105
+  },
+  "area_share": {
+   "Armor_Dark": 0.5715,
+   "Armor_Gunmetal": 0.2198,
+   "Armor_Plate_Light": 0.1043,
+   "Energy_Hot": 0.0459,
+   "TeamColor_Red": 0.0247,
+   "Steel_Light": 0.0186,
+   "Barrel_Heat": 0.0132,
+   "Hazard_Yellow": 0.0015,
+   "Sensor_Eye_Red": 0.0004
+  },
+  "triangles": 11452,
+  "objects": {
+   "GunPivot": {
+    "type": "EMPTY",
+    "parent": "R41_AutomaticGun_ROOT",
+    "loc": [
+     0.0,
+     0.0,
+     0.135
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ]
+   },
+   "Muzzle": {
+    "type": "EMPTY",
+    "parent": "R41_Pitch",
+    "loc": [
+     0.0,
+     -0.7,
+     0.0
+    ],
+    "rot_deg": [
+     90.0,
+     -0.0,
+     0.0
+    ]
+   },
+   "Muzzle_L": {
+    "type": "EMPTY",
+    "parent": "R41_Barrels",
+    "loc": [
+     -0.06,
+     -0.7,
+     0.0
+    ],
+    "rot_deg": [
+     90.0,
+     -0.0,
+     0.0
+    ]
+   },
+   "Muzzle_R": {
+    "type": "EMPTY",
+    "parent": "R41_Barrels",
+    "loc": [
+     0.06,
+     -0.7,
+     0.0
+    ],
+    "rot_deg": [
+     90.0,
+     -0.0,
+     0.0
+    ]
+   },
+   "MuzzleFlash_L": {
+    "type": "MESH",
+    "parent": "R41_Barrels",
+    "loc": [
+     -0.06,
+     -0.664,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ]
+   },
+   "MuzzleFlash_R": {
+    "type": "MESH",
+    "parent": "R41_Barrels",
+    "loc": [
+     0.06,
+     -0.664,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ]
+   },
+   "R41_AutomaticGun_ROOT": {
+    "type": "EMPTY",
+    "parent": null,
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     -0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "R41_Barrel_L": {
+    "type": "MESH",
+    "parent": "R41_Barrels",
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ]
+   },
+   "R41_Barrel_R": {
+    "type": "MESH",
+    "parent": "R41_Barrels",
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ]
+   },
+   "R41_Barrels": {
+    "type": "MESH",
+    "parent": "R41_Pitch",
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ]
+   },
+   "R41_Base": {
+    "type": "MESH",
+    "parent": "R41_AutomaticGun_ROOT",
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ]
+   },
+   "R41_Pitch": {
+    "type": "MESH",
+    "parent": "R41_Yaw",
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ]
+   },
+   "R41_Yaw": {
+    "type": "MESH",
+    "parent": "GunPivot",
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ]
+   },
+   "Socket_Mount_Bottom": {
+    "type": "EMPTY",
+    "parent": "R41_AutomaticGun_ROOT",
+    "loc": [
+     0.0,
+     0.0,
+     -0.26
+    ],
+    "rot_deg": [
+     -180.0,
+     0.0,
+     0.0
+    ]
+   }
+  }
+ },
+ "blend_survey": {
+  "materials": {
+   "Armor_Dark": {
+    "base": [
+     0.035,
+     0.038,
+     0.045
+    ],
+    "metallic": 0.55,
+    "roughness": 0.45,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "Armor_Dark.001": {
+    "base": [
+     0.035,
+     0.038,
+     0.045
+    ],
+    "metallic": 0.55,
+    "roughness": 0.45,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "Armor_Gunmetal": {
+    "base": [
+     0.16,
+     0.17,
+     0.18
+    ],
+    "metallic": 0.35,
+    "roughness": 0.55,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "Armor_Gunmetal.001": {
+    "base": [
+     0.16,
+     0.17,
+     0.18
+    ],
+    "metallic": 0.35,
+    "roughness": 0.55,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "Armor_Plate_Light": {
+    "base": [
+     0.27,
+     0.28,
+     0.285
+    ],
+    "metallic": 0.3,
+    "roughness": 0.58,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "Armor_Plate_Light.001": {
+    "base": [
+     0.27,
+     0.28,
+     0.285
+    ],
+    "metallic": 0.3,
+    "roughness": 0.58,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "Barrel_Heat": {
+    "base": [
+     0.24,
+     0.13,
+     0.06
+    ],
+    "metallic": 0.9,
+    "roughness": 0.32,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "Barrel_Heat.001": {
+    "base": [
+     0.24,
+     0.13,
+     0.06
+    ],
+    "metallic": 0.9,
+    "roughness": 0.32,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "Collider_Preview": {
+    "base": [
+     1.0,
+     0.85,
+     0.2
+    ],
+    "metallic": 0.0,
+    "roughness": 1.0,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "DBG_blue": {
+    "base": [
+     0.8,
+     0.8,
+     0.8
+    ],
+    "metallic": 0.0,
+    "roughness": 0.5,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "DBG_blue.001": {
+    "base": [
+     0.8,
+     0.8,
+     0.8
+    ],
+    "metallic": 0.0,
+    "roughness": 0.5,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "DBG_blue_depression_only": {
+    "base": [
+     0.8,
+     0.8,
+     0.8
+    ],
+    "metallic": 0.0,
+    "roughness": 0.5,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "DBG_blue_depression_only_edge": {
+    "base": [
+     0.8,
+     0.8,
+     0.8
+    ],
+    "metallic": 0.0,
+    "roughness": 0.5,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "DBG_blue_edge": {
+    "base": [
+     0.8,
+     0.8,
+     0.8
+    ],
+    "metallic": 0.0,
+    "roughness": 0.5,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "DBG_blue_edge.001": {
+    "base": [
+     0.8,
+     0.8,
+     0.8
+    ],
+    "metallic": 0.0,
+    "roughness": 0.5,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "DBG_green_mount_face_cells_below": {
+    "base": [
+     0.8,
+     0.8,
+     0.8
+    ],
+    "metallic": 0.0,
+    "roughness": 0.5,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "DBG_green_mount_face_cells_below.001": {
+    "base": [
+     0.8,
+     0.8,
+     0.8
+    ],
+    "metallic": 0.0,
+    "roughness": 0.5,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "DBG_green_mount_face_cells_below_edge": {
+    "base": [
+     0.8,
+     0.8,
+     0.8
+    ],
+    "metallic": 0.0,
+    "roughness": 0.5,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "DBG_green_mount_face_cells_below_edge.001": {
+    "base": [
+     0.8,
+     0.8,
+     0.8
+    ],
+    "metallic": 0.0,
+    "roughness": 0.5,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "DBG_purple_yaw0": {
+    "base": [
+     0.8,
+     0.8,
+     0.8
+    ],
+    "metallic": 0.0,
+    "roughness": 0.5,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "DBG_purple_yaw0.001": {
+    "base": [
+     0.8,
+     0.8,
+     0.8
+    ],
+    "metallic": 0.0,
+    "roughness": 0.5,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "DBG_purple_yaw0_edge": {
+    "base": [
+     0.8,
+     0.8,
+     0.8
+    ],
+    "metallic": 0.0,
+    "roughness": 0.5,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "DBG_purple_yaw0_edge.001": {
+    "base": [
+     0.8,
+     0.8,
+     0.8
+    ],
+    "metallic": 0.0,
+    "roughness": 0.5,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "DBG_red": {
+    "base": [
+     0.8,
+     0.8,
+     0.8
+    ],
+    "metallic": 0.0,
+    "roughness": 0.5,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "DBG_red.001": {
+    "base": [
+     0.8,
+     0.8,
+     0.8
+    ],
+    "metallic": 0.0,
+    "roughness": 0.5,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "DBG_red_edge": {
+    "base": [
+     0.8,
+     0.8,
+     0.8
+    ],
+    "metallic": 0.0,
+    "roughness": 0.5,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "DBG_red_edge.001": {
+    "base": [
+     0.8,
+     0.8,
+     0.8
+    ],
+    "metallic": 0.0,
+    "roughness": 0.5,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "Energy_Hot": {
+    "base": [
+     1.0,
+     0.38,
+     0.06
+    ],
+    "metallic": 0.0,
+    "roughness": 0.25,
+    "emission": [
+     1.0,
+     0.22,
+     0.02
+    ],
+    "emission_strength": 3.5
+   },
+   "Energy_Hot.001": {
+    "base": [
+     1.0,
+     0.38,
+     0.06
+    ],
+    "metallic": 0.0,
+    "roughness": 0.25,
+    "emission": [
+     1.0,
+     0.22,
+     0.02
+    ],
+    "emission_strength": 3.5
+   },
+   "Floor": {
+    "base": [
+     0.03,
+     0.035,
+     0.04
+    ],
+    "metallic": 0.3,
+    "roughness": 0.6,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "Hazard_Yellow": {
+    "base": [
+     0.95,
+     0.6,
+     0.03
+    ],
+    "metallic": 0.15,
+    "roughness": 0.5,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "Hazard_Yellow.001": {
+    "base": [
+     0.95,
+     0.6,
+     0.03
+    ],
+    "metallic": 0.15,
+    "roughness": 0.5,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "Muzzle_Flash": {
+    "base": [
+     1.0,
+     0.62,
+     0.15
+    ],
+    "metallic": 0.0,
+    "roughness": 0.3,
+    "emission": [
+     1.0,
+     0.5,
+     0.1
+    ],
+    "emission_strength": 12.0
+   },
+   "Sensor_Eye_Red": {
+    "base": [
+     1.0,
+     0.1,
+     0.06
+    ],
+    "metallic": 0.0,
+    "roughness": 0.2,
+    "emission": [
+     1.0,
+     0.06,
+     0.03
+    ],
+    "emission_strength": 12.0
+   },
+   "Sensor_Eye_Red.001": {
+    "base": [
+     1.0,
+     0.1,
+     0.06
+    ],
+    "metallic": 0.0,
+    "roughness": 0.2,
+    "emission": [
+     1.0,
+     0.06,
+     0.03
+    ],
+    "emission_strength": 12.0
+   },
+   "Steel_Light": {
+    "base": [
+     0.55,
+     0.62,
+     0.68
+    ],
+    "metallic": 0.9,
+    "roughness": 0.25,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "Steel_Light.001": {
+    "base": [
+     0.55,
+     0.62,
+     0.68
+    ],
+    "metallic": 0.9,
+    "roughness": 0.25,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "TeamColor_Red": {
+    "base": [
+     0.6,
+     0.035,
+     0.025
+    ],
+    "metallic": 0.35,
+    "roughness": 0.38,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   },
+   "TeamColor_Red.001": {
+    "base": [
+     0.6,
+     0.035,
+     0.025
+    ],
+    "metallic": 0.35,
+    "roughness": 0.38,
+    "emission": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "emission_strength": 0.0
+   }
+  },
+  "area_m2": {
+   "Armor_Dark": 1.41624,
+   "Armor_Gunmetal": 0.54479,
+   "Armor_Plate_Light": 0.25847,
+   "Energy_Hot": 0.11374,
+   "TeamColor_Red": 0.06133,
+   "Steel_Light": 0.04619,
+   "Barrel_Heat": 0.03283,
+   "Hazard_Yellow": 0.00369,
+   "Sensor_Eye_Red": 0.00105
+  },
+  "area_share": {
+   "Armor_Dark": 0.5715,
+   "Armor_Gunmetal": 0.2198,
+   "Armor_Plate_Light": 0.1043,
+   "Energy_Hot": 0.0459,
+   "TeamColor_Red": 0.0247,
+   "Steel_Light": 0.0186,
+   "Barrel_Heat": 0.0132,
+   "Hazard_Yellow": 0.0015,
+   "Sensor_Eye_Red": 0.0004
+  },
+  "triangles": 11452,
+  "objects": {
+   "COL_Barrel_L": {
+    "type": "MESH",
+    "parent": "R41_Barrel_L",
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "COL_Barrel_R": {
+    "type": "MESH",
+    "parent": "R41_Barrel_R",
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "COL_Barrels": {
+    "type": "MESH",
+    "parent": "R41_Barrels",
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "COL_Base_Body": {
+    "type": "MESH",
+    "parent": "R41_Base",
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "COL_Base_Collar": {
+    "type": "MESH",
+    "parent": "R41_Base",
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "COL_Base_Plate": {
+    "type": "MESH",
+    "parent": "R41_Base",
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "COL_Pitch_Receiver": {
+    "type": "MESH",
+    "parent": "R41_Pitch",
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "COL_Yaw_CellPack": {
+    "type": "MESH",
+    "parent": "R41_Yaw",
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "COL_Yaw_CheekL": {
+    "type": "MESH",
+    "parent": "R41_Yaw",
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "COL_Yaw_CheekR": {
+    "type": "MESH",
+    "parent": "R41_Yaw",
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "COL_Yaw_Turntable": {
+    "type": "MESH",
+    "parent": "R41_Yaw",
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "DBG_0.275_blue": {
+    "type": "MESH",
+    "parent": null,
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "DBG_0.275_blue_depression_only": {
+    "type": "MESH",
+    "parent": null,
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "DBG_0.275_blue_depression_only_edges": {
+    "type": "MESH",
+    "parent": null,
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "DBG_0.275_blue_edges": {
+    "type": "MESH",
+    "parent": null,
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "DBG_0.275_green_mount_face_cells_below": {
+    "type": "MESH",
+    "parent": null,
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "DBG_0.275_green_mount_face_cells_below_edges": {
+    "type": "MESH",
+    "parent": null,
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "DBG_0.275_purple_yaw0": {
+    "type": "MESH",
+    "parent": null,
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "DBG_0.275_purple_yaw0_edges": {
+    "type": "MESH",
+    "parent": null,
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "DBG_0.275_red": {
+    "type": "MESH",
+    "parent": null,
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "DBG_0.275_red_edges": {
+    "type": "MESH",
+    "parent": null,
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "DBG_0.55_blue": {
+    "type": "MESH",
+    "parent": null,
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "DBG_0.55_blue_edges": {
+    "type": "MESH",
+    "parent": null,
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "DBG_0.55_green_mount_face_cells_below": {
+    "type": "MESH",
+    "parent": null,
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "DBG_0.55_green_mount_face_cells_below_edges": {
+    "type": "MESH",
+    "parent": null,
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "DBG_0.55_purple_yaw0": {
+    "type": "MESH",
+    "parent": null,
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "DBG_0.55_purple_yaw0_edges": {
+    "type": "MESH",
+    "parent": null,
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "DBG_0.55_red": {
+    "type": "MESH",
+    "parent": null,
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "DBG_0.55_red_edges": {
+    "type": "MESH",
+    "parent": null,
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "GunPivot": {
+    "type": "EMPTY",
+    "parent": "R41_AutomaticGun_ROOT",
+    "loc": [
+     0.0,
+     0.0,
+     0.135
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "GunPivot.001": {
+    "type": "EMPTY",
+    "parent": "R41_AutomaticGun_ROOT.001",
+    "loc": [
+     0.0,
+     0.0,
+     0.135
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "Muzzle": {
+    "type": "EMPTY",
+    "parent": "R41_Pitch",
+    "loc": [
+     0.0,
+     -0.7,
+     0.0
+    ],
+    "rot_deg": [
+     90.0,
+     0.0,
+     0.0
+    ]
+   },
+   "Muzzle.001": {
+    "type": "EMPTY",
+    "parent": "R41_Pitch.001",
+    "loc": [
+     0.0,
+     -0.7,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "Muzzle_L": {
+    "type": "EMPTY",
+    "parent": "R41_Barrels",
+    "loc": [
+     -0.06,
+     -0.7,
+     0.0
+    ],
+    "rot_deg": [
+     90.0,
+     0.0,
+     0.0
+    ]
+   },
+   "Muzzle_L.001": {
+    "type": "EMPTY",
+    "parent": "R41_Barrels.001",
+    "loc": [
+     -0.06,
+     -0.7,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "Muzzle_R": {
+    "type": "EMPTY",
+    "parent": "R41_Barrels",
+    "loc": [
+     0.06,
+     -0.7,
+     0.0
+    ],
+    "rot_deg": [
+     90.0,
+     0.0,
+     0.0
+    ]
+   },
+   "Muzzle_R.001": {
+    "type": "EMPTY",
+    "parent": "R41_Barrels.001",
+    "loc": [
+     0.06,
+     -0.7,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "MuzzleFlash_L": {
+    "type": "MESH",
+    "parent": "R41_Barrels",
+    "loc": [
+     -0.06,
+     -0.664,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "MuzzleFlash_R": {
+    "type": "MESH",
+    "parent": "R41_Barrels",
+    "loc": [
+     0.06,
+     -0.664,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "PreviewCam": {
+    "type": "CAMERA",
+    "parent": null,
+    "loc": [
+     -0.95,
+     -1.25,
+     0.52
+    ],
+    "rot_deg": [
+     71.826,
+     -0.0,
+     -42.686
+    ]
+   },
+   "R41_AutomaticGun_ROOT": {
+    "type": "EMPTY",
+    "parent": null,
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "R41_AutomaticGun_ROOT.001": {
+    "type": "EMPTY",
+    "parent": null,
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "R41_Barrel_L": {
+    "type": "MESH",
+    "parent": "R41_Barrels",
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "R41_Barrel_R": {
+    "type": "MESH",
+    "parent": "R41_Barrels",
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "R41_Barrels": {
+    "type": "MESH",
+    "parent": "R41_Pitch",
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "R41_Barrels.001": {
+    "type": "MESH",
+    "parent": "R41_Pitch.001",
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "R41_Base": {
+    "type": "MESH",
+    "parent": "R41_AutomaticGun_ROOT",
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "R41_Base.001": {
+    "type": "MESH",
+    "parent": "R41_AutomaticGun_ROOT.001",
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "R41_Pitch": {
+    "type": "MESH",
+    "parent": "R41_Yaw",
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "R41_Pitch.001": {
+    "type": "MESH",
+    "parent": "R41_Yaw.001",
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "R41_Yaw": {
+    "type": "MESH",
+    "parent": "GunPivot",
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "R41_Yaw.001": {
+    "type": "MESH",
+    "parent": "GunPivot.001",
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "Socket_Mount_Bottom": {
+    "type": "EMPTY",
+    "parent": "R41_AutomaticGun_ROOT",
+    "loc": [
+     0.0,
+     0.0,
+     -0.26
+    ],
+    "rot_deg": [
+     180.0,
+     0.0,
+     0.0
+    ]
+   },
+   "Socket_Mount_Bottom.001": {
+    "type": "EMPTY",
+    "parent": "R41_AutomaticGun_ROOT.001",
+    "loc": [
+     0.0,
+     0.0,
+     -0.26
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  }
+ },
+ "blend_frame_range": [
+  1,
+  96,
+  24
+ ],
+ "blend_actions": [
+  "Demo_Aim_Pitch.001",
+  "Demo_Aim_Yaw.001",
+  "Fire_L_Flash",
+  "Fire_L_Recoil",
+  "Fire_R_Flash",
+  "Fire_R_Recoil"
+ ],
+ "blend_custom_props": {
+  "GunPivot": {
+   "role": "game-driven pivot",
+   "physical": "(0,0.135,0)",
+   "unity_local_in_0.52_block": "(0,0.2596,0)"
+  },
+  "GunPivot.001": {
+   "role": "game-driven pivot",
+   "physical": "(0,0.135,0)",
+   "unity_local_in_0.52_block": "(0,0.2596,0)"
+  },
+  "Muzzle": {
+   "role": "single projectile spawn (centre)",
+   "physical": "(0,0.135,0.700)"
+  },
+  "Muzzle.001": {
+   "role": "single projectile spawn (centre)",
+   "physical": "(0,0.135,0.700)"
+  },
+  "Muzzle_L": {
+   "role": "left barrel spawn (file x<0)"
+  },
+  "Muzzle_L.001": {
+   "role": "left barrel spawn (file x<0)"
+  },
+  "Muzzle_R": {
+   "role": "right barrel spawn (file x>0)"
+  },
+  "Muzzle_R.001": {
+   "role": "right barrel spawn (file x>0)"
+  },
+  "MuzzleFlash_L": {
+   "role": "muzzle flash FX LEFT - idle scale 0.001, scale 1 on shot"
+  },
+  "MuzzleFlash_R": {
+   "role": "muzzle flash FX RIGHT - idle scale 0.001, scale 1 on shot"
+  },
+  "R41_AutomaticGun_ROOT": {
+   "unity_up": "+Y",
+   "unity_forward": "+Z",
+   "unit": "meter",
+   "version": "v6",
+   "style": "heavy industrial armour + team colour (Supreme-Commander-inspired); alternating barrel recoil",
+   "physical_space": "vehicle-root 1x; under the 0.52-scaled WeaponBlock use localScale 1/0.52",
+   "contract_change": "none vs v4/v5 (v4 vs v3: pivot 0.312->0.135, muzzle 0.936->0.700, barrel axes 0.0936->0.060; mount point unchanged)"
+  },
+  "R41_AutomaticGun_ROOT.001": {
+   "unity_up": "+Y",
+   "unity_forward": "+Z",
+   "unit": "meter",
+   "version": "v5",
+   "style": "heavy industrial armour + team colour (Supreme-Commander-inspired)",
+   "physical_space": "vehicle-root 1x; under the 0.52-scaled WeaponBlock use localScale 1/0.52",
+   "contract_change": "none vs v4 (v4 vs v3: pivot 0.312->0.135, muzzle 0.936->0.700, barrel axes 0.0936->0.060; mount point unchanged)"
+  },
+  "R41_Barrel_L": {
+   "role": "recoiling barrel LEFT (file x<0): slides back along local -Z",
+   "recoil_m": "0.035"
+  },
+  "R41_Barrel_R": {
+   "role": "recoiling barrel RIGHT (file x>0): slides back along local -Z",
+   "recoil_m": "0.035"
+  },
+  "R41_Barrels": {
+   "role": "Barrels housing: rigid child of Pitch (spine, jackets, collar)"
+  },
+  "R41_Barrels.001": {
+   "role": "Barrels: rigid child of Pitch"
+  },
+  "R41_Pitch": {
+   "role": "Pitch: rotate around local X only",
+   "pitch_range_deg": "-10..+35"
+  },
+  "R41_Pitch.001": {
+   "role": "Pitch: rotate around local X only",
+   "pitch_range_deg": "-10..+35"
+  },
+  "R41_Yaw": {
+   "role": "Yaw: rotate around local Y only"
+  },
+  "R41_Yaw.001": {
+   "role": "Yaw: rotate around local Y only"
+  },
+  "Socket_Mount_Bottom": {
+   "role": "mounting face centre, normal -Y, connects to cell (0,-1,0)"
+  },
+  "Socket_Mount_Bottom.001": {
+   "role": "mounting face centre, normal -Y, connects to cell (0,-1,0)"
+  }
+ }
+}

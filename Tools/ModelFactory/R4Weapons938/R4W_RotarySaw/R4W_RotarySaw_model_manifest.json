@@ -1,0 +1,69 @@
+{
+ "id": "R4W_RotarySaw",
+ "kind": "R4WeaponKind.RotarySaw",
+ "game_name": "WPN-005 Rotary Saw",
+ "units": "meter 1:1",
+ "axes": "file/Unity +Z forward, +Y up",
+ "cell": "logical 1x1x1 on 0.55 m grid; mount = Socket_Mount_Bottom",
+ "hierarchy": {
+  "R4W_RotarySaw_ROOT": null,
+  "R4W_RotarySaw_Base": "R4W_RotarySaw_ROOT",
+  "Socket_Mount_Bottom": "R4W_RotarySaw_ROOT",
+  "GunPivot": "R4W_RotarySaw_ROOT",
+  "R4W_RotarySaw_Yaw": "GunPivot",
+  "R4W_RotarySaw_Pitch": "R4W_RotarySaw_Yaw",
+  "R4W_RotarySaw_Blade": "R4W_RotarySaw_Pitch",
+  "Saw_BlurDisc": "R4W_RotarySaw_Pitch",
+  "Saw_Sparks": "R4W_RotarySaw_Pitch",
+  "Muzzle": "R4W_RotarySaw_Pitch"
+ },
+ "node_roles": {
+  "R4W_RotarySaw_ROOT": {
+   "unity_up": "+Y",
+   "unity_forward": "+Z",
+   "unit": "meter",
+   "version": "v1",
+   "weapon_kind": "R4WeaponKind.RotarySaw",
+   "style": "R41_Turret_v6.1 standard (heavy industrial armour + team colour)",
+   "issue": "#938"
+  },
+  "Socket_Mount_Bottom": {
+   "role": "mounting face centre, normal -Y, connects to cell (0,-1,0)"
+  },
+  "GunPivot": {
+   "role": "game-driven pivot",
+   "physical": "(0,0.135,0)"
+  },
+  "R4W_RotarySaw_Yaw": {
+   "role": "Yaw: rotate around local Y only"
+  },
+  "R4W_RotarySaw_Pitch": {
+   "role": "Pitch: rotate around local X only (arm + guard)",
+   "pitch_range_deg": "-10..+35"
+  },
+  "R4W_RotarySaw_Blade": {
+   "role": "physical saw blade: spins around local X (game axle = muzzle.right)",
+   "radius_m": "0.3",
+   "teeth": "24",
+   "max_rpm_game": "2800"
+  },
+  "Saw_BlurDisc": {
+   "role": "speed-blur disc FX: scale 0.001 idle/slow, 1 above ~450 rpm (game minimumCutRpm)"
+  },
+  "Saw_Sparks": {
+   "role": "jam/contact sparks FX at the cutting point - idle scale 0.001"
+  },
+  "Muzzle": {
+   "role": "saw disc centre (contact origin); local X = blade axle",
+   "physical": "(0,0.135,0.62)"
+  }
+ },
+ "muzzles": [
+  "Muzzle"
+ ],
+ "visible_exits_note": "contact weapon: Muzzle = disc centre (no projectile)",
+ "notes": [
+  "Blade 0.60 m diameter on a +X side arm; disc centre 0.620 m forward of the pivot.",
+  "Runtime placeholder rotor (R41PartGeometry.SawRotor) and RotarySawConfiguration are NOT changed (see extra_checks.game_contact_disc)."
+ ]
+}

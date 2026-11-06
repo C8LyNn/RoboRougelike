@@ -1,0 +1,63 @@
+{
+ "id": "R4W_Shotgun",
+ "kind": "R4WeaponKind.Shotgun",
+ "fps": 24,
+ "frame_range": [
+  1,
+  179
+ ],
+ "note": "One baked take in FBX/GLB (master timeline). Unity: split into clips by these frame ranges; loop=true clips are seamless.",
+ "clips": [
+  {
+   "name": "Idle",
+   "start": 1,
+   "end": 25,
+   "loop": true,
+   "desc": "rest hold, loopable"
+  },
+  {
+   "name": "AimYaw",
+   "start": 27,
+   "end": 75,
+   "loop": false,
+   "desc": "yaw 0 -> +90 -> -90 -> 0 about local Y (Unity)"
+  },
+  {
+   "name": "AimPitch",
+   "start": 77,
+   "end": 113,
+   "loop": false,
+   "desc": "pitch 0 -> +35.0 -> -10.0 -> 0 about local X (Unity)"
+  },
+  {
+   "name": "Fire",
+   "start": 115,
+   "end": 123,
+   "loop": false,
+   "desc": "salvo: wide flash, 30 mm block recoil and return (cadence 0.85 s = Fire + Pump)"
+  },
+  {
+   "name": "Pump",
+   "start": 125,
+   "end": 137,
+   "loop": false,
+   "desc": "mechanical cycle: fore-end back 60 mm, forward"
+  },
+  {
+   "name": "Reload",
+   "start": 139,
+   "end": 179,
+   "loop": false,
+   "desc": "top gate opens, 4 shell-feed beats (gate held), gate closes, pump cycle (game: 12 salvos, T reload)"
+  }
+ ],
+ "animated_nodes": [
+  "MuzzleFlash",
+  "R4W_Shotgun_Barrels",
+  "R4W_Shotgun_LoadingGate",
+  "R4W_Shotgun_Pitch",
+  "R4W_Shotgun_Pump",
+  "R4W_Shotgun_Yaw"
+ ],
+ "gameplay": "Animation is visual only: it adds no gameplay capability, shot count or timing authority."
+}

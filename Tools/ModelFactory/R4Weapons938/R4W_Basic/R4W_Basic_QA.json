@@ -1,0 +1,1166 @@
+{
+ "id": "R4W_Basic",
+ "kind": "R4WeaponKind.Basic",
+ "game_name": "Dzia\u0142o podstawowe",
+ "blender": "5.2.3 LTS",
+ "started": "2026-11-06 15:34:12",
+ "failures": [],
+ "notes": [
+  "Visual muzzle 0.660 m forward of the pivot (R41 v6.1: 0.700). Runtime placeholder positions are not changed."
+ ],
+ "meshes": [
+  {
+   "object": "R4W_Basic_Base",
+   "verts": 1508,
+   "triangles": 3044,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.051758,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.005,
+    0.005,
+    0.995,
+    0.989
+   ],
+   "materials": [
+    "Armor_Dark",
+    "Armor_Gunmetal",
+    "Energy_Hot",
+    "Armor_Plate_Light",
+    "Steel_Light",
+    "TeamColor_Red"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4W_Basic_Yaw",
+   "verts": 2261,
+   "triangles": 4514,
+   "shells": 2,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.009423,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.005,
+    0.005,
+    0.995,
+    0.995
+   ],
+   "materials": [
+    "Armor_Dark",
+    "Energy_Hot",
+    "Steel_Light",
+    "Armor_Gunmetal",
+    "Armor_Plate_Light",
+    "TeamColor_Red",
+    "Hazard_Yellow"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4W_Basic_Pitch",
+   "verts": 1010,
+   "triangles": 2020,
+   "shells": 8,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.005798,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.005,
+    0.005,
+    0.995,
+    0.995
+   ],
+   "materials": [
+    "Armor_Dark",
+    "Steel_Light",
+    "Armor_Gunmetal",
+    "Armor_Plate_Light",
+    "Sensor_Eye_Red",
+    "TeamColor_Red",
+    "Energy_Hot",
+    "Hazard_Yellow"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4W_Basic_Barrel",
+   "verts": 622,
+   "triangles": 1256,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.001317,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.004,
+    0.004,
+    0.993,
+    0.996
+   ],
+   "materials": [
+    "Armor_Dark",
+    "Steel_Light",
+    "Barrel_Heat",
+    "Energy_Hot"
+   ],
+   "ok": true
+  }
+ ],
+ "fx_meshes": [
+  {
+   "object": "MuzzleFlash",
+   "verts": 92,
+   "triangles": 180,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.000273,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.998,
+    0.979
+   ],
+   "materials": [
+    "Muzzle_Flash"
+   ],
+   "ok": true
+  }
+ ],
+ "triangles_total": 10834,
+ "triangles_fx": 180,
+ "triangles_r41_reference": 11452,
+ "topology_PASS": true,
+ "palette": {
+  "material_area_share": {
+   "Armor_Dark": 0.5232,
+   "Armor_Gunmetal": 0.2453,
+   "Armor_Plate_Light": 0.1343,
+   "Energy_Hot": 0.0369,
+   "TeamColor_Red": 0.0242,
+   "Steel_Light": 0.0218,
+   "Barrel_Heat": 0.0096,
+   "Hazard_Yellow": 0.0041,
+   "Sensor_Eye_Red": 0.0005
+  },
+  "family_share": {
+   "1_dark_gunmetal": 0.7684,
+   "2_light_steel": 0.1562,
+   "3_team_red": 0.0242,
+   "4_hazard_yellow": 0.0041,
+   "T_technical": 0.047
+  },
+  "r41_family_share": {
+   "1_dark_gunmetal": 0.7913,
+   "2_light_steel": 0.1229,
+   "3_team_red": 0.0247,
+   "4_hazard_yellow": 0.0015,
+   "T_technical": 0.0595
+  },
+  "bands": {
+   "1_dark_gunmetal": [
+    0.62,
+    0.88
+   ],
+   "2_light_steel": [
+    0.06,
+    0.24
+   ],
+   "3_team_red": [
+    0.012,
+    0.07
+   ],
+   "4_hazard_yellow": [
+    0.001,
+    0.03
+   ],
+   "T_technical": [
+    0.0,
+    0.16
+   ]
+  },
+  "in_band": {
+   "1_dark_gunmetal": true,
+   "2_light_steel": true,
+   "3_team_red": true,
+   "4_hazard_yellow": true,
+   "T_technical": true
+  },
+  "violations": [],
+  "PASS": true
+ },
+ "contract": {
+  "R4W_Basic_ROOT": {
+   "position_file": [
+    0.0,
+    0.0,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    1.0,
+    -0.0
+   ],
+   "parent": null
+  },
+  "Socket_Mount_Bottom": {
+   "position_file": [
+    0.0,
+    -0.26,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    -1.0,
+    -0.0
+   ],
+   "parent": "R4W_Basic_ROOT"
+  },
+  "GunPivot": {
+   "position_file": [
+    0.0,
+    0.135,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    1.0,
+    -0.0
+   ],
+   "parent": "R4W_Basic_ROOT"
+  },
+  "Muzzle": {
+   "position_file": [
+    0.0,
+    0.135,
+    0.66
+   ],
+   "forward_file": [
+    0.0,
+    -0.0,
+    1.0
+   ],
+   "parent": "R4W_Basic_Pitch"
+  },
+  "unity_axes": "file/Unity: +Z forward, +Y up, meters; Yaw about local Y, Pitch about local X"
+ },
+ "sweep": {
+  "aim_sweep": {
+   "yaw_deg": "0..350 step 10",
+   "elevation_deg": "-10.0..35.0 step 2",
+   "collisions": 0,
+   "samples": []
+  },
+  "static_occupied": {
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "bounds_file": [
+    [
+     -0.2565,
+     -0.26,
+     -0.2565
+    ],
+    [
+     0.2565,
+     0.016,
+     0.2565
+    ]
+   ],
+   "inside_own_cell": true
+  },
+  "rest_pose": {
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "bounds_file": [
+    [
+     -0.2565,
+     -0.26,
+     -0.257
+    ],
+    [
+     0.2565,
+     0.236,
+     0.62
+    ]
+   ]
+  },
+  "moving_sweep": {
+   "cells": [
+    [
+     -1,
+     0,
+     -1
+    ],
+    [
+     -1,
+     0,
+     0
+    ],
+    [
+     -1,
+     0,
+     1
+    ],
+    [
+     -1,
+     1,
+     -1
+    ],
+    [
+     -1,
+     1,
+     0
+    ],
+    [
+     -1,
+     1,
+     1
+    ],
+    [
+     0,
+     0,
+     -1
+    ],
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ],
+    [
+     0,
+     1,
+     -1
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     1,
+     1
+    ],
+    [
+     1,
+     0,
+     -1
+    ],
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     1,
+     0,
+     1
+    ],
+    [
+     1,
+     1,
+     -1
+    ],
+    [
+     1,
+     1,
+     0
+    ],
+    [
+     1,
+     1,
+     1
+    ]
+   ],
+   "bounds_file": [
+    [
+     -0.62,
+     -0.0023,
+     -0.62
+    ],
+    [
+     0.62,
+     0.5046,
+     0.62
+    ]
+   ],
+   "max_radius_from_pivot_axis_m": 0.621,
+   "neighbour_cells_entered": [
+    [
+     -1,
+     0,
+     -1
+    ],
+    [
+     -1,
+     0,
+     0
+    ],
+    [
+     -1,
+     0,
+     1
+    ],
+    [
+     -1,
+     1,
+     -1
+    ],
+    [
+     -1,
+     1,
+     0
+    ],
+    [
+     -1,
+     1,
+     1
+    ],
+    [
+     0,
+     0,
+     -1
+    ],
+    [
+     0,
+     0,
+     1
+    ],
+    [
+     0,
+     1,
+     -1
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     1,
+     1
+    ],
+    [
+     1,
+     0,
+     -1
+    ],
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     1,
+     0,
+     1
+    ],
+    [
+     1,
+     1,
+     -1
+    ],
+    [
+     1,
+     1,
+     0
+    ],
+    [
+     1,
+     1,
+     1
+    ]
+   ]
+  },
+  "yaw_body_max_radius_m": 0.2664,
+  "yaw_body_inside_cell_all_yaw": true,
+  "mount_socket": {
+   "position_file": [
+    0.0,
+    -0.26,
+    -0.0
+   ],
+   "normal_file": [
+    0.0,
+    -1.0,
+    -0.0
+   ],
+   "on_cell_bottom_face": true
+  },
+  "line_of_fire": [
+   {
+    "muzzle": "Muzzle",
+    "elevation": -10,
+    "origin_file": [
+     0.0,
+     0.02039,
+     0.64997
+    ],
+    "dir_file": [
+     0.0,
+     -0.1736,
+     0.9848
+    ],
+    "own_hit_within_6m": null,
+    "exit_clear": true,
+    "cells": [
+     [
+      0,
+      -1,
+      4
+     ],
+     [
+      0,
+      -1,
+      5
+     ],
+     [
+      0,
+      -1,
+      6
+     ],
+     [
+      0,
+      -1,
+      7
+     ],
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      0,
+      2
+     ],
+     [
+      0,
+      0,
+      3
+     ],
+     [
+      0,
+      0,
+      4
+     ]
+    ]
+   },
+   {
+    "muzzle": "Muzzle",
+    "elevation": 0,
+    "origin_file": [
+     0.0,
+     0.135,
+     0.66
+    ],
+    "dir_file": [
+     0.0,
+     -0.0,
+     1.0
+    ],
+    "own_hit_within_6m": null,
+    "exit_clear": true,
+    "cells": [
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      0,
+      2
+     ],
+     [
+      0,
+      0,
+      3
+     ],
+     [
+      0,
+      0,
+      4
+     ],
+     [
+      0,
+      0,
+      5
+     ],
+     [
+      0,
+      0,
+      6
+     ],
+     [
+      0,
+      0,
+      7
+     ]
+    ]
+   },
+   {
+    "muzzle": "Muzzle",
+    "elevation": 15,
+    "origin_file": [
+     0.0,
+     0.30582,
+     0.63751
+    ],
+    "dir_file": [
+     0.0,
+     0.2588,
+     0.9659
+    ],
+    "own_hit_within_6m": null,
+    "exit_clear": true,
+    "cells": [
+     [
+      0,
+      1,
+      1
+     ],
+     [
+      0,
+      1,
+      2
+     ],
+     [
+      0,
+      1,
+      3
+     ],
+     [
+      0,
+      1,
+      4
+     ],
+     [
+      0,
+      1,
+      5
+     ],
+     [
+      0,
+      2,
+      5
+     ],
+     [
+      0,
+      2,
+      6
+     ]
+    ]
+   },
+   {
+    "muzzle": "Muzzle",
+    "elevation": 34,
+    "origin_file": [
+     0.0,
+     0.50407,
+     0.54716
+    ],
+    "dir_file": [
+     0.0,
+     0.5592,
+     0.829
+    ],
+    "own_hit_within_6m": null,
+    "exit_clear": true,
+    "cells": [
+     [
+      0,
+      1,
+      1
+     ],
+     [
+      0,
+      1,
+      2
+     ],
+     [
+      0,
+      2,
+      2
+     ],
+     [
+      0,
+      2,
+      3
+     ],
+     [
+      0,
+      3,
+      3
+     ],
+     [
+      0,
+      3,
+      4
+     ],
+     [
+      0,
+      3,
+      5
+     ],
+     [
+      0,
+      4,
+      5
+     ],
+     [
+      0,
+      4,
+      6
+     ]
+    ]
+   }
+  ],
+  "line_of_fire_pose": "rest pose",
+  "fire_exit_clear_all": true
+ },
+ "animation_clash": {
+  "frames_checked": 139,
+  "pairs": [
+   [
+    "R4W_Basic_Barrel",
+    "R4W_Basic_Pitch"
+   ],
+   [
+    "R4W_Basic_Barrel",
+    "R4W_Basic_Yaw"
+   ],
+   [
+    "R4W_Basic_Barrel",
+    "R4W_Basic_Base"
+   ],
+   [
+    "R4W_Basic_Pitch",
+    "R4W_Basic_Yaw"
+   ],
+   [
+    "R4W_Basic_Pitch",
+    "R4W_Basic_Base"
+   ],
+   [
+    "R4W_Basic_Yaw",
+    "R4W_Basic_Base"
+   ]
+  ],
+  "collisions": 0,
+  "samples": [],
+  "per_pair": {},
+  "PASS": true
+ },
+ "extra_checks": {},
+ "renders": [
+  "R4W_Basic_front.png",
+  "R4W_Basic_back.png",
+  "R4W_Basic_side.png",
+  "R4W_Basic_top.png",
+  "R4W_Basic_34front.png",
+  "R4W_Basic_34rear.png",
+  "R4W_Basic_34front_wireframe.png",
+  "R4W_Basic_side_wireframe.png",
+  "R4W_Basic_colliders_sweep.png",
+  "poses/R4W_Basic_Idle_f013.png",
+  "poses/R4W_Basic_AimYaw_f039.png",
+  "poses/R4W_Basic_AimPitch_f089.png",
+  "poses/R4W_Basic_AimPitch_f101.png",
+  "poses/R4W_Basic_Fire_f116.png",
+  "poses/R4W_Basic_Recoil_f129.png",
+  "poses/R4W_Basic_Return_f135.png",
+  "R4W_Basic_HERO_eevee.png",
+  "R4W_Basic_vs_R41_34front.png",
+  "R4W_Basic_vs_R41_side.png"
+ ],
+ "lod1": {
+  "file": "R4W_Basic_LOD1.fbx",
+  "triangles": 5416,
+  "method": "DECIMATE collapse 0.5 (automatic, not hand-authored)"
+ },
+ "fbx_reimport": {
+  "frames": [
+   1,
+   13,
+   25,
+   27,
+   51,
+   75,
+   77,
+   95,
+   113,
+   115,
+   119,
+   124,
+   126,
+   127,
+   129,
+   131,
+   135,
+   139
+  ],
+  "worst": {
+   "pos_mm": 0.0001,
+   "rot_deg": 0.0,
+   "geom_mm": 0.0002,
+   "scale_err": 0.0,
+   "missing": [],
+   "parent_bad": []
+  },
+  "per_frame": {
+   "1": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "13": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "25": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "27": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "51": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "75": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "77": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "95": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0002,
+    "missing": [],
+    "parent_bad": []
+   },
+   "113": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "115": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "119": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "124": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "126": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "127": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "129": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "131": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "135": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "139": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   }
+  },
+  "nodes_as_imported": {
+   "R4W_Basic_ROOT": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     -0.0,
+     0.0,
+     0.0
+    ],
+    "parent": null
+   },
+   "R4W_Basic_Base": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_Basic_ROOT"
+   },
+   "Socket_Mount_Bottom": {
+    "loc": [
+     0.0,
+     0.0,
+     -0.26
+    ],
+    "rot_deg": [
+     -180.0,
+     0.0,
+     0.0
+    ],
+    "parent": "R4W_Basic_ROOT"
+   },
+   "GunPivot": {
+    "loc": [
+     0.0,
+     0.0,
+     0.135
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_Basic_ROOT"
+   },
+   "R4W_Basic_Yaw": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "GunPivot"
+   },
+   "R4W_Basic_Pitch": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_Basic_Yaw"
+   },
+   "R4W_Basic_Barrel": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_Basic_Pitch"
+   },
+   "MuzzleFlash": {
+    "loc": [
+     0.0,
+     -0.624,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_Basic_Pitch"
+   },
+   "Muzzle": {
+    "loc": [
+     0.0,
+     -0.66,
+     0.0
+    ],
+    "rot_deg": [
+     90.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_Basic_Pitch"
+   }
+  },
+  "PASS": true,
+  "thresholds": "pos<0.05mm rot<0.01deg geom<0.05mm, 0 missing, 0 parent changes (R41 v6.1 QA)"
+ },
+ "r41_compare": "rendered from real R41_Turret_v6.1.fbx (SHA verified)",
+ "glb_reimport": {
+  "rest_frame_worst": {
+   "pos_mm": 0.0,
+   "rot_deg": 0.0,
+   "scale_err": 0.0,
+   "geom_mm": 0.0,
+   "missing": [],
+   "parent_bad": []
+  },
+  "actions_imported": 4,
+  "PASS": true,
+  "note": "glTF importer; world-space comparison at frame 1"
+ },
+ "files": {
+  "R4W_Basic.blend": {
+   "sha256": "65e6d0db89b877b9d8272b404eab41093fcbee4babf3350094af0723424abcf0",
+   "bytes": 1677647
+  },
+  "R4W_Basic.fbx": {
+   "sha256": "a3d4c11490fe7f990641ad0e3e845bcc5fdf84e34be8bcefa81e9439a0ed68b7",
+   "bytes": 515068
+  },
+  "R4W_Basic.glb": {
+   "sha256": "f9fda0dead09694a1141b78feb1697d026fbc3a54f6e75edfbc8c3d2fe586326",
+   "bytes": 542192
+  },
+  "R4W_Basic_colliders.glb": {
+   "sha256": "e1aa29e4ac1037d8b20c7f5a7f46f66b6ed211af144b9d4e343125bd4df0793f",
+   "bytes": 527088
+  },
+  "R4W_Basic_LOD1.fbx": {
+   "sha256": "2fd198139648167c1c8813a935e59e65f9e52735919142c9d6793bd7062da87a",
+   "bytes": 253244
+  }
+ },
+ "unity_import_test": "UNITY_NOT_RUN (Unity not available in this session)",
+ "unity_import_settings": "Scale Factor 1, Convert Units ON, Bake Axis Conversion ON, Animation: split clips by animation_manifest.json frame ranges (24 fps)",
+ "status": "BLENDER_PASS",
+ "seconds": 7.0
+}

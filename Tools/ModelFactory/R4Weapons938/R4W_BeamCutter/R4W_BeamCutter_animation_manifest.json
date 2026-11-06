@@ -1,0 +1,74 @@
+{
+ "id": "R4W_BeamCutter",
+ "kind": "R4WeaponKind.BeamCutter",
+ "fps": 24,
+ "frame_range": [
+  1,
+  223
+ ],
+ "note": "One baked take in FBX/GLB (master timeline). Unity: split into clips by these frame ranges; loop=true clips are seamless.",
+ "clips": [
+  {
+   "name": "Idle",
+   "start": 1,
+   "end": 25,
+   "loop": true,
+   "desc": "rest hold, loopable"
+  },
+  {
+   "name": "AimYaw",
+   "start": 27,
+   "end": 75,
+   "loop": false,
+   "desc": "yaw 0 -> +90 -> -90 -> 0 about local Y (Unity)"
+  },
+  {
+   "name": "AimPitch",
+   "start": 77,
+   "end": 113,
+   "loop": false,
+   "desc": "pitch 0 -> +35.0 -> -10.0 -> 0 about local X (Unity)"
+  },
+  {
+   "name": "WarmUp",
+   "start": 115,
+   "end": 133,
+   "loop": false,
+   "desc": "focus ring spins up 0 -> 180 deg, emitter glow grows"
+  },
+  {
+   "name": "Fire",
+   "start": 135,
+   "end": 159,
+   "loop": true,
+   "desc": "continuous beam loop: core + sheath on (pulse), ring 1 rev / 24 f (6-fold symmetric, seamless)"
+  },
+  {
+   "name": "Heat",
+   "start": 161,
+   "end": 185,
+   "loop": false,
+   "desc": "sustained fire: housing heat glow on, radiator fins open 35 deg, beam stays on"
+  },
+  {
+   "name": "Cooldown",
+   "start": 187,
+   "end": 223,
+   "loop": false,
+   "desc": "trigger released: beam off, glow fades, fins stay open then close, ring coasts to rest"
+  }
+ ],
+ "animated_nodes": [
+  "Beam_Core",
+  "Beam_EmitterGlow",
+  "Beam_HeatGlow",
+  "Beam_Sheath",
+  "R4W_BeamCutter_FinL",
+  "R4W_BeamCutter_FinR",
+  "R4W_BeamCutter_FocusRing",
+  "R4W_BeamCutter_Pitch",
+  "R4W_BeamCutter_Yaw"
+ ],
+ "gameplay": "Animation is visual only: it adds no gameplay capability, shot count or timing authority.",
+ "beam_note": "Beam_Core is a 0.70 m visual stub; the gameplay beam (16 m, heat, cooling on release) stays in runtime code"
+}

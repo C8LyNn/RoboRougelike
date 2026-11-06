@@ -1,0 +1,67 @@
+{
+ "id": "R4W_Heavy",
+ "kind": "R4WeaponKind.Heavy",
+ "game_name": "Ci\u0119\u017cka armata",
+ "units": "meter 1:1",
+ "axes": "file/Unity +Z forward, +Y up",
+ "cell": "logical 1x1x1 on 0.55 m grid; mount = Socket_Mount_Bottom",
+ "hierarchy": {
+  "R4W_Heavy_ROOT": null,
+  "R4W_Heavy_Base": "R4W_Heavy_ROOT",
+  "Socket_Mount_Bottom": "R4W_Heavy_ROOT",
+  "GunPivot": "R4W_Heavy_ROOT",
+  "R4W_Heavy_Yaw": "GunPivot",
+  "R4W_Heavy_Pitch": "R4W_Heavy_Yaw",
+  "R4W_Heavy_Barrel": "R4W_Heavy_Pitch",
+  "R4W_Heavy_Breech": "R4W_Heavy_Barrel",
+  "MuzzleFlash": "R4W_Heavy_Pitch",
+  "Muzzle": "R4W_Heavy_Pitch"
+ },
+ "node_roles": {
+  "R4W_Heavy_ROOT": {
+   "unity_up": "+Y",
+   "unity_forward": "+Z",
+   "unit": "meter",
+   "version": "v1",
+   "weapon_kind": "R4WeaponKind.Heavy",
+   "style": "R41_Turret_v6.1 standard (heavy industrial armour + team colour)",
+   "issue": "#938"
+  },
+  "Socket_Mount_Bottom": {
+   "role": "mounting face centre, normal -Y, connects to cell (0,-1,0)"
+  },
+  "GunPivot": {
+   "role": "game-driven pivot",
+   "physical": "(0,0.135,0)"
+  },
+  "R4W_Heavy_Yaw": {
+   "role": "Yaw: rotate around local Y only"
+  },
+  "R4W_Heavy_Pitch": {
+   "role": "Pitch: rotate around local X only",
+   "pitch_range_deg": "-8..+30"
+  },
+  "R4W_Heavy_Barrel": {
+   "role": "recoiling barrel: slides back along local -Z",
+   "recoil_m": "0.075"
+  },
+  "R4W_Heavy_Breech": {
+   "role": "sliding-wedge breech block, child of barrel: drops along local -Y after recoil, rises to close",
+   "drop_m": "0.03"
+  },
+  "MuzzleFlash": {
+   "role": "muzzle flash FX - idle scale 0.001"
+  },
+  "Muzzle": {
+   "role": "projectile spawn",
+   "physical": "(0,0.135,0.7)"
+  }
+ },
+ "muzzles": [
+  "Muzzle"
+ ],
+ "visible_exits_note": "1 visible barrel = 1 Muzzle",
+ "notes": [
+  "Pitch range -8..+30 deg (heavier mass; R41 -10..+35). Runtime pitch limits are not changed by this asset."
+ ]
+}

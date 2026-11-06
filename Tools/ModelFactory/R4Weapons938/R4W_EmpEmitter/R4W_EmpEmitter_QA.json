@@ -1,0 +1,1073 @@
+{
+ "id": "R4W_EmpEmitter",
+ "kind": "R4WeaponKind.EmpEmitter",
+ "game_name": "WPN-006 EMP Emitter",
+ "blender": "5.2.3 LTS",
+ "started": "2026-11-06 15:35:59",
+ "failures": [],
+ "notes": [
+  "Pitch intentionally absent: EMP acts radially; Yaw only orients the LOS sensor.",
+  "Ring angles at clip ends are multiples of 120 deg (3-fold symmetric pods)."
+ ],
+ "meshes": [
+  {
+   "object": "R4W_EmpEmitter_Base",
+   "verts": 1612,
+   "triangles": 3252,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.051763,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.005,
+    0.005,
+    0.993,
+    0.995
+   ],
+   "materials": [
+    "Armor_Dark",
+    "Armor_Gunmetal",
+    "Energy_Hot",
+    "Armor_Plate_Light",
+    "Steel_Light",
+    "TeamColor_Red",
+    "Hazard_Yellow"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4W_EmpEmitter_Yaw",
+   "verts": 2082,
+   "triangles": 4172,
+   "shells": 2,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00869,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.004,
+    0.004,
+    0.996,
+    0.996
+   ],
+   "materials": [
+    "Armor_Dark",
+    "Energy_Hot",
+    "Steel_Light",
+    "Armor_Gunmetal",
+    "Armor_Plate_Light",
+    "Sensor_Eye_Red",
+    "TeamColor_Red",
+    "Hazard_Yellow"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4W_EmpEmitter_ChargeRing_Lower",
+   "verts": 696,
+   "triangles": 1392,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00033,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.003,
+    0.003,
+    0.997,
+    0.977
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Plate_Light",
+    "Armor_Dark",
+    "Energy_Hot",
+    "TeamColor_Red"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4W_EmpEmitter_ChargeRing_Upper",
+   "verts": 696,
+   "triangles": 1392,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00033,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.003,
+    0.003,
+    0.997,
+    0.977
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Plate_Light",
+    "Armor_Dark",
+    "Energy_Hot",
+    "TeamColor_Red"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4W_EmpEmitter_Antenna_1",
+   "verts": 293,
+   "triangles": 582,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 4.2e-05,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.003,
+    0.003,
+    0.982,
+    0.997
+   ],
+   "materials": [
+    "Armor_Dark",
+    "Steel_Light",
+    "Armor_Gunmetal",
+    "Energy_Hot"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4W_EmpEmitter_Antenna_2",
+   "verts": 293,
+   "triangles": 582,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 4.2e-05,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.003,
+    0.003,
+    0.982,
+    0.997
+   ],
+   "materials": [
+    "Armor_Dark",
+    "Steel_Light",
+    "Armor_Gunmetal",
+    "Energy_Hot"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4W_EmpEmitter_Antenna_3",
+   "verts": 293,
+   "triangles": 582,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 4.2e-05,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.003,
+    0.003,
+    0.982,
+    0.997
+   ],
+   "materials": [
+    "Armor_Dark",
+    "Steel_Light",
+    "Armor_Gunmetal",
+    "Energy_Hot"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4W_EmpEmitter_Antenna_4",
+   "verts": 293,
+   "triangles": 582,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 4.2e-05,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.003,
+    0.003,
+    0.982,
+    0.997
+   ],
+   "materials": [
+    "Armor_Dark",
+    "Steel_Light",
+    "Armor_Gunmetal",
+    "Energy_Hot"
+   ],
+   "ok": true
+  }
+ ],
+ "fx_meshes": [
+  {
+   "object": "EMP_PulseRing",
+   "verts": 256,
+   "triangles": 512,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 9e-05,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.001,
+    0.001,
+    0.573,
+    0.999
+   ],
+   "materials": [
+    "Energy_Hot"
+   ],
+   "ok": true
+  },
+  {
+   "object": "EMP_CoreFlash",
+   "verts": 50,
+   "triangles": 96,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.000849,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.001,
+    0.001,
+    0.999,
+    0.817
+   ],
+   "materials": [
+    "Muzzle_Flash"
+   ],
+   "ok": true
+  },
+  {
+   "object": "EMP_ChargeGlow",
+   "verts": 128,
+   "triangles": 256,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 2.9e-05,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.998,
+    0.895
+   ],
+   "materials": [
+    "Energy_Hot"
+   ],
+   "ok": true
+  }
+ ],
+ "triangles_total": 12536,
+ "triangles_fx": 864,
+ "triangles_r41_reference": 11452,
+ "topology_PASS": true,
+ "palette": {
+  "material_area_share": {
+   "Armor_Dark": 0.5335,
+   "Armor_Gunmetal": 0.2556,
+   "Armor_Plate_Light": 0.1004,
+   "Energy_Hot": 0.0569,
+   "Steel_Light": 0.0256,
+   "TeamColor_Red": 0.0228,
+   "Hazard_Yellow": 0.0037,
+   "Sensor_Eye_Red": 0.0014
+  },
+  "family_share": {
+   "1_dark_gunmetal": 0.7892,
+   "2_light_steel": 0.1259,
+   "3_team_red": 0.0228,
+   "4_hazard_yellow": 0.0037,
+   "T_technical": 0.0583
+  },
+  "r41_family_share": {
+   "1_dark_gunmetal": 0.7913,
+   "2_light_steel": 0.1229,
+   "3_team_red": 0.0247,
+   "4_hazard_yellow": 0.0015,
+   "T_technical": 0.0595
+  },
+  "bands": {
+   "1_dark_gunmetal": [
+    0.62,
+    0.88
+   ],
+   "2_light_steel": [
+    0.06,
+    0.24
+   ],
+   "3_team_red": [
+    0.012,
+    0.07
+   ],
+   "4_hazard_yellow": [
+    0.001,
+    0.03
+   ],
+   "T_technical": [
+    0.0,
+    0.16
+   ]
+  },
+  "in_band": {
+   "1_dark_gunmetal": true,
+   "2_light_steel": true,
+   "3_team_red": true,
+   "4_hazard_yellow": true,
+   "T_technical": true
+  },
+  "violations": [],
+  "PASS": true
+ },
+ "contract": {
+  "R4W_EmpEmitter_ROOT": {
+   "position_file": [
+    0.0,
+    0.0,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    1.0,
+    -0.0
+   ],
+   "parent": null
+  },
+  "Socket_Mount_Bottom": {
+   "position_file": [
+    0.0,
+    -0.26,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    -1.0,
+    -0.0
+   ],
+   "parent": "R4W_EmpEmitter_ROOT"
+  },
+  "GunPivot": {
+   "position_file": [
+    0.0,
+    0.135,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    1.0,
+    -0.0
+   ],
+   "parent": "R4W_EmpEmitter_ROOT"
+  },
+  "Muzzle": {
+   "position_file": [
+    0.0,
+    0.312,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    1.0,
+    -0.0
+   ],
+   "parent": "R4W_EmpEmitter_Yaw"
+  },
+  "unity_axes": "file/Unity: +Z forward, +Y up, meters; Yaw about local Y, Pitch about local X"
+ },
+ "sweep": {
+  "aim_sweep": {
+   "yaw_deg": "0..350 step 10",
+   "elevation_deg": "-0.0..0.0 step 2",
+   "collisions": 0,
+   "samples": []
+  },
+  "static_occupied": {
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "bounds_file": [
+    [
+     -0.2565,
+     -0.26,
+     -0.2565
+    ],
+    [
+     0.2565,
+     0.016,
+     0.2565
+    ]
+   ],
+   "inside_own_cell": true
+  },
+  "rest_pose": {
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ]
+   ],
+   "bounds_file": [
+    [
+     -0.2565,
+     -0.26,
+     -0.2565
+    ],
+    [
+     0.2565,
+     0.304,
+     0.2565
+    ]
+   ]
+  },
+  "moving_sweep": {
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ]
+   ],
+   "bounds_file": [
+    [
+     -0.1915,
+     0.018,
+     -0.1915
+    ],
+    [
+     0.1915,
+     0.304,
+     0.1915
+    ]
+   ],
+   "max_radius_from_pivot_axis_m": 0.1915,
+   "neighbour_cells_entered": [
+    [
+     0,
+     1,
+     0
+    ]
+   ]
+  },
+  "yaw_body_max_radius_m": 0.1915,
+  "yaw_body_inside_cell_all_yaw": true,
+  "mount_socket": {
+   "position_file": [
+    0.0,
+    -0.26,
+    -0.0
+   ],
+   "normal_file": [
+    0.0,
+    -1.0,
+    -0.0
+   ],
+   "on_cell_bottom_face": true
+  },
+  "line_of_fire": [
+   {
+    "muzzle": "Muzzle",
+    "elevation": 0,
+    "origin_file": [
+     0.0,
+     0.312,
+     -0.0
+    ],
+    "dir_file": [
+     0.0,
+     1.0,
+     -0.0
+    ],
+    "own_hit_within_6m": null,
+    "exit_clear": true,
+    "cells": [
+     [
+      0,
+      1,
+      0
+     ],
+     [
+      0,
+      2,
+      0
+     ],
+     [
+      0,
+      3,
+      0
+     ],
+     [
+      0,
+      4,
+      0
+     ],
+     [
+      0,
+      5,
+      0
+     ],
+     [
+      0,
+      6,
+      0
+     ]
+    ]
+   }
+  ],
+  "line_of_fire_pose": "rest pose; ray straight up from the pulse origin",
+  "fire_exit_clear_all": true
+ },
+ "animation_clash": {
+  "frames_checked": 189,
+  "pairs": [
+   [
+    "R4W_EmpEmitter_ChargeRing_Lower",
+    "R4W_EmpEmitter_Yaw"
+   ],
+   [
+    "R4W_EmpEmitter_ChargeRing_Upper",
+    "R4W_EmpEmitter_Yaw"
+   ],
+   [
+    "R4W_EmpEmitter_ChargeRing_Lower",
+    "R4W_EmpEmitter_ChargeRing_Upper"
+   ],
+   [
+    "R4W_EmpEmitter_Antenna_1",
+    "R4W_EmpEmitter_Yaw"
+   ],
+   [
+    "R4W_EmpEmitter_Antenna_2",
+    "R4W_EmpEmitter_Yaw"
+   ],
+   [
+    "R4W_EmpEmitter_Antenna_3",
+    "R4W_EmpEmitter_Yaw"
+   ],
+   [
+    "R4W_EmpEmitter_Antenna_4",
+    "R4W_EmpEmitter_Yaw"
+   ],
+   [
+    "R4W_EmpEmitter_Antenna_1",
+    "R4W_EmpEmitter_ChargeRing_Lower"
+   ],
+   [
+    "R4W_EmpEmitter_Antenna_1",
+    "R4W_EmpEmitter_ChargeRing_Upper"
+   ],
+   [
+    "R4W_EmpEmitter_Antenna_2",
+    "R4W_EmpEmitter_ChargeRing_Lower"
+   ],
+   [
+    "R4W_EmpEmitter_Antenna_2",
+    "R4W_EmpEmitter_ChargeRing_Upper"
+   ],
+   [
+    "R4W_EmpEmitter_Antenna_3",
+    "R4W_EmpEmitter_ChargeRing_Lower"
+   ],
+   [
+    "R4W_EmpEmitter_Antenna_3",
+    "R4W_EmpEmitter_ChargeRing_Upper"
+   ],
+   [
+    "R4W_EmpEmitter_Antenna_4",
+    "R4W_EmpEmitter_ChargeRing_Lower"
+   ],
+   [
+    "R4W_EmpEmitter_Antenna_4",
+    "R4W_EmpEmitter_ChargeRing_Upper"
+   ],
+   [
+    "R4W_EmpEmitter_Yaw",
+    "R4W_EmpEmitter_Base"
+   ]
+  ],
+  "collisions": 0,
+  "samples": [],
+  "per_pair": {},
+  "PASS": true
+ },
+ "extra_checks": {},
+ "renders": [
+  "R4W_EmpEmitter_front.png",
+  "R4W_EmpEmitter_back.png",
+  "R4W_EmpEmitter_side.png",
+  "R4W_EmpEmitter_top.png",
+  "R4W_EmpEmitter_34front.png",
+  "R4W_EmpEmitter_34rear.png",
+  "R4W_EmpEmitter_34front_wireframe.png",
+  "R4W_EmpEmitter_side_wireframe.png",
+  "R4W_EmpEmitter_colliders_sweep.png",
+  "poses/R4W_EmpEmitter_Idle_f025.png",
+  "poses/R4W_EmpEmitter_AimYaw_f063.png",
+  "poses/R4W_EmpEmitter_Charge_f135.png",
+  "poses/R4W_EmpEmitter_EMP_f142.png",
+  "poses/R4W_EmpEmitter_Recovery_f163.png",
+  "R4W_EmpEmitter_HERO_eevee.png",
+  "R4W_EmpEmitter_HERO2_eevee.png",
+  "R4W_EmpEmitter_vs_R41_34front.png",
+  "R4W_EmpEmitter_vs_R41_side.png"
+ ],
+ "lod1": {
+  "file": "R4W_EmpEmitter_LOD1.fbx",
+  "triangles": 6264,
+  "method": "DECIMATE collapse 0.5 (automatic, not hand-authored)"
+ },
+ "fbx_reimport": {
+  "frames": [
+   1,
+   25,
+   49,
+   51,
+   75,
+   99,
+   101,
+   119,
+   137,
+   139,
+   145,
+   151,
+   153,
+   171,
+   189
+  ],
+  "worst": {
+   "pos_mm": 0.0001,
+   "rot_deg": 0.0,
+   "geom_mm": 0.0001,
+   "scale_err": 0.0,
+   "missing": [],
+   "parent_bad": []
+  },
+  "per_frame": {
+   "1": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "25": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "49": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "51": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "75": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "99": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "101": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "119": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "137": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "139": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "145": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "151": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "153": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "171": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "189": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   }
+  },
+  "nodes_as_imported": {
+   "R4W_EmpEmitter_ROOT": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     -0.0,
+     0.0,
+     0.0
+    ],
+    "parent": null
+   },
+   "R4W_EmpEmitter_Base": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_EmpEmitter_ROOT"
+   },
+   "Socket_Mount_Bottom": {
+    "loc": [
+     0.0,
+     0.0,
+     -0.26
+    ],
+    "rot_deg": [
+     -180.0,
+     0.0,
+     0.0
+    ],
+    "parent": "R4W_EmpEmitter_ROOT"
+   },
+   "GunPivot": {
+    "loc": [
+     0.0,
+     0.0,
+     0.135
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_EmpEmitter_ROOT"
+   },
+   "R4W_EmpEmitter_Yaw": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "GunPivot"
+   },
+   "R4W_EmpEmitter_ChargeRing_Lower": {
+    "loc": [
+     0.0,
+     0.0,
+     0.007
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     480.0
+    ],
+    "parent": "R4W_EmpEmitter_Yaw"
+   },
+   "R4W_EmpEmitter_ChargeRing_Upper": {
+    "loc": [
+     0.0,
+     0.0,
+     0.051
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     -480.0
+    ],
+    "parent": "R4W_EmpEmitter_Yaw"
+   },
+   "R4W_EmpEmitter_Antenna_1": {
+    "loc": [
+     0.08344,
+     0.08344,
+     -0.013
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     135.0
+    ],
+    "parent": "R4W_EmpEmitter_Yaw"
+   },
+   "R4W_EmpEmitter_Antenna_2": {
+    "loc": [
+     -0.08344,
+     0.08344,
+     -0.013
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     -135.0
+    ],
+    "parent": "R4W_EmpEmitter_Yaw"
+   },
+   "R4W_EmpEmitter_Antenna_3": {
+    "loc": [
+     -0.08344,
+     -0.08344,
+     -0.013
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     -45.0
+    ],
+    "parent": "R4W_EmpEmitter_Yaw"
+   },
+   "R4W_EmpEmitter_Antenna_4": {
+    "loc": [
+     0.08344,
+     -0.08344,
+     -0.013
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     45.0
+    ],
+    "parent": "R4W_EmpEmitter_Yaw"
+   },
+   "EMP_PulseRing": {
+    "loc": [
+     0.0,
+     0.0,
+     0.097
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_EmpEmitter_Yaw"
+   },
+   "EMP_CoreFlash": {
+    "loc": [
+     0.0,
+     0.0,
+     0.097
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_EmpEmitter_Yaw"
+   },
+   "EMP_ChargeGlow": {
+    "loc": [
+     0.0,
+     0.0,
+     0.029
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_EmpEmitter_Yaw"
+   },
+   "Muzzle": {
+    "loc": [
+     0.0,
+     0.0,
+     0.177
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_EmpEmitter_Yaw"
+   }
+  },
+  "PASS": true,
+  "thresholds": "pos<0.05mm rot<0.01deg geom<0.05mm, 0 missing, 0 parent changes (R41 v6.1 QA)"
+ },
+ "r41_compare": "rendered from real R41_Turret_v6.1.fbx (SHA verified)",
+ "glb_reimport": {
+  "rest_frame_worst": {
+   "pos_mm": 0.0,
+   "rot_deg": 0.0,
+   "scale_err": 0.0,
+   "geom_mm": 0.0,
+   "missing": [],
+   "parent_bad": []
+  },
+  "actions_imported": 10,
+  "PASS": true,
+  "note": "glTF importer; world-space comparison at frame 1"
+ },
+ "files": {
+  "R4W_EmpEmitter.blend": {
+   "sha256": "7f48cbec4efe17ffcf52283d015df0873aa27f5d55ebd7b7966e598b5f06890f",
+   "bytes": 1899459
+  },
+  "R4W_EmpEmitter.fbx": {
+   "sha256": "5b50beea4e8734b4bc200bff03749eb04dd6f70643c9351fb0d26fa9b23c1922",
+   "bytes": 712076
+  },
+  "R4W_EmpEmitter.glb": {
+   "sha256": "ad24075fee8f19b774b25e2674311e43c70f560d4ee427c1cbeaab5cd9dd3676",
+   "bytes": 668540
+  },
+  "R4W_EmpEmitter_colliders.glb": {
+   "sha256": "092fba4fa997ea71e3bdd931bda1c538d2ac9770bcb9bb04938a344dbb5eb639",
+   "bytes": 602224
+  },
+  "R4W_EmpEmitter_LOD1.fbx": {
+   "sha256": "ec72c9af822acad67b1d60ccd6110d4c638ef789601809109e7dded43adfd43a",
+   "bytes": 300124
+  }
+ },
+ "unity_import_test": "UNITY_NOT_RUN (Unity not available in this session)",
+ "unity_import_settings": "Scale Factor 1, Convert Units ON, Bake Axis Conversion ON, Animation: split clips by animation_manifest.json frame ranges (24 fps)",
+ "status": "BLENDER_PASS",
+ "seconds": 8.1
+}
