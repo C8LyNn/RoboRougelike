@@ -203,7 +203,7 @@ public class R3GaragePlayTests
         extraGun.Damageable.ApplyDamage(1000,extraGun.transform.position,Vector3.forward);assembly.Capture();
         Assert.That(Run.Player.Modules.ActiveWeaponCount,Is.EqualTo(2));
         Assert.That(Run.StartNextEncounter(),Is.True);yield return Until(()=>!Run.Transitioning,"Druga walka.");
-        Assert.That(Run.Player.Modules.ActiveWeaponCount,Is.EqualTo(2));Assert.That(Run.VehicleModel.Parts.Count,Is.EqualTo(61));
+        Assert.That(Run.Player.Modules.ActiveWeaponCount,Is.EqualTo(2));Assert.That(Run.VehicleModel.Parts.Count,Is.EqualTo(62));
         Assert.That(Run.Encounter.AliveCount,Is.EqualTo(3));
         var positions=Run.Encounter.Enemies.Select(e=>e.transform.position).ToArray();
         float moveUntil=Time.time+0.9f;yield return Until(()=>Time.time>=moveUntil,"Ruch dwóch AI.");
@@ -231,7 +231,7 @@ public class R3GaragePlayTests
         Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Won));
         var previous=Run;Run.RestartRun();yield return Until(()=>Run!=null&&Run!=previous&&Run.Progress!=null,"Nowa próba.");
         Run.StartRun();yield return Until(()=>!Run.Transitioning,"Nienaruszony wzorzec.");
-        Assert.That(Run.VehicleModel.Scrap,Is.Zero);Assert.That(Run.VehicleModel.Parts.Count,Is.EqualTo(58));Assert.That(Run.Progress.Acquired,Is.Empty);
+        Assert.That(Run.VehicleModel.Scrap,Is.Zero);Assert.That(Run.VehicleModel.Parts.Count,Is.EqualTo(59));Assert.That(Run.Progress.Acquired,Is.Empty);
     }
 
     [UnityTest] public IEnumerator TurretSupportLossDropsEntireRemainingWeapon()

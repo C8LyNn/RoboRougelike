@@ -95,7 +95,7 @@ public sealed class GarageEditFreedomTests
         Assert.That(run.VehicleModel.Parts.Count,Is.EqualTo(beforeParts));
         Assert.That(QaSinglePart(run.VehicleModel.Inventory,id).Id,Is.EqualTo(id));
         // Exterior attachment remains available, never disable the saw globally.
-        var exterior=new Vector3Int(0,1,3);
+        var exterior=new Vector3Int(0,1,4);
         // Real physical 260-collider stress for the 256-hit fail-closed query.
         var realPlayer=run.Player.transform;
         var blade=realPlayer.TransformPoint((Vector3)exterior*.55f+

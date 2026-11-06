@@ -27,6 +27,10 @@ namespace RoboRougelike.R3
                     design.Parts.Add(new R3PartState(new Vector3Int(x,1,z),battery?R3PartKind.Battery:R3PartKind.Armor));
                 }
             }
+            // Front armor intercepts head-on impacts before the low wheel centers,
+            // reducing nose-up torque without suppressing physics.
+            if(!light&&!heavy)
+                design.Parts.Add(new R3PartState(new Vector3Int(0,1,3),R3PartKind.Armor));
             int[] positions=light?new[]{-2,2}:heavy?new[]{-3,-1,1,3}:new[]{-2,0,2};
             for(int side=-1;side<=1;side+=2)foreach(int z in positions)
                 design.Parts.Add(new R3PartState(new Vector3Int(side*(width+1),0,z),R3PartKind.Wheel));
