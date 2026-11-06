@@ -653,6 +653,14 @@ namespace RogueMachine.P12PipelineSafe
                 {
                     desired=tangent;obstacleTangent=tangent;navigationUntil=Time.time+1.1f;
                 }
+                else
+                {
+                    // If both sides are obstructed, keep backing away long enough
+                    // to clear the obstacle instead of immediately ramming outward.
+                    var inward=Vector3.ProjectOnPlane(movementBounds.center-movementBody.position,Vector3.up).normalized;
+                    if(inward.sqrMagnitude<.001f||!CanMove(inward,step+.08f,ramming))return;
+                    desired=inward;obstacleTangent=inward;navigationUntil=Time.time+2.5f;
+                }
             }
             if(desired.sqrMagnitude<0.001f)desired=Vector3.ProjectOnPlane(movementBounds.center-movementBody.position,Vector3.up).normalized;
             desired.Normalize();

@@ -115,6 +115,52 @@ public class R3GaragePlayTests
         Assert.That(Mathf.Abs(body.position.x), Is.LessThanOrEqualTo(38.01f));
     }
 
+    [UnityTest] public IEnumerator DisarmedEnemyRetreatsWhenBothBoundaryTangentsAreBlocked()
+    {
+        var enemy = Run.Encounter.Enemies.First();
+        enemy.SetCombatActive(false);
+        var weapon = enemy.WeaponBlock;
+        Assert.That(weapon, Is.Not.Null);
+        weapon.ApplyDamage(100000, weapon.transform.position, Vector3.up);
+        foreach (var gun in enemy.AdditionalWeapons)
+            if (gun.Block != null && !gun.Block.IsDead) gun.Block.ApplyDamage(100000, gun.Block.transform.position, Vector3.up);
+        yield return null;
+        Assert.That(enemy.WeaponOnline, Is.False);
+        var body = enemy.GetComponent<Rigidbody>();
+        var drive = enemy.GetComponent<RoboRougelike.R6.R6VehicleDrive>();
+        // Isolate a measured lane from the arena's own obstacles, with a real
+        // floor, rigidbody, wheels and colliders on both sides.
+        var center = new Vector3(1000, 0, 1000);
+        var floor = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        floor.transform.position = center + Vector3.down * .5f;
+        floor.transform.localScale = new Vector3(40, 1, 40);
+        enemy.ConfigureMovementBounds(new Bounds(center, new Vector3(10, 100, 10)));
+        body.position = center + new Vector3(4.99f, 0, 0); body.rotation = Quaternion.identity;
+        body.linearVelocity = Vector3.zero; body.angularVelocity = Vector3.zero;
+        var target = Run.Player.GetComponent<Rigidbody>(); target.isKinematic = true;
+        target.position = center + new Vector3(10, .7f, 0); target.rotation = Quaternion.identity;
+        Physics.SyncTransforms(); body.WakeUp();
+        yield return Until(() => { drive.RefreshMass(); return drive.GroundedWheels > 0; }, "Koła przeciwnika muszą dotykać podłoża.", 5);
+        foreach (float offset in new[] { -1.05f, 1.05f })
+        {
+            var wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            wall.transform.position = center + new Vector3(5, 1.5f, offset);
+            wall.transform.localScale = new Vector3(5, 3, .2f);
+        }
+        Physics.SyncTransforms();
+        var before = body.position;
+        enemy.SetCombatActive(true);
+        float end = Time.time + 2;
+        int grounded = 0;
+        while (Time.time < end)
+        {
+            yield return MOVSeriesDeviceTests.FixedStep();
+            if (drive.GroundedWheels > 0) grounded++;
+        }
+        Assert.That(grounded, Is.GreaterThan(0));
+        Assert.That(body.position.x - before.x, Is.LessThan(-.3f), "Przy zablokowanych stycznych przeciwnik powinien wycofać się do środka areny.");
+    }
+
     [UnityTest] public IEnumerator EnemyMovesTangentiallyAlongInnerBoundaryWithGroundedWheels()
     {
         var enemy = Run.Encounter.Enemies.First();
