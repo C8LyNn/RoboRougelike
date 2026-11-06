@@ -77,7 +77,7 @@ public sealed class FullMergeRuntimeQA : MonoBehaviour
             if(phase==99){if(Time.realtimeSinceStartup-entered>.6f){finished=true;result.finishedUtc=DateTime.UtcNow.ToString("o");Save();trace.Dispose();aim.Dispose();File.WriteAllText(Path.Combine(output,"aim-timeline.csv"),timeline.ToCsv());Application.Quit(result.status=="Passed"?0:1);}return;}
             if(Time.realtimeSinceStartup>deadline)throw new TimeoutException("Finite QA phase "+phase+" activity "+activity);
             if(phase==0){if(R1RunController.Instance?.Progress==null)return;run=R1RunController.Instance;result.width=Screen.width;result.height=Screen.height;
-                Require(run.SelectVehicle(vehicle=="Heavy"?R3VehicleKind.Heavy:R3VehicleKind.Light),"Vehicle selected");
+                Require(run.SelectVehicle(vehicle=="Heavy"?R3VehicleKind.Heavy:vehicle=="Standard"?R3VehicleKind.Standard:R3VehicleKind.Light),"Vehicle selected");
                 run.RequestedSeed=7;Require(mode=="Camera"?run.OpenSandboxGarage():run.PrepareUnifiedRun(),"Actual preparation garage");Capture("00-garage");Go(1);}
             else if(phase==1){if(Time.realtimeSinceStartup-entered<.4f)return;
                 if(mode=="Camera"){
