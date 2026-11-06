@@ -59,7 +59,7 @@ namespace RoboRougelike.R3
             Physics.SyncTransforms();
             R3BuildValidation.SetGarageSockets(run.Player.GetComponent<R3VehicleAssembly>(),true);
             if(!Application.isBatchMode){Cursor.lockState=CursorLockMode.None;Cursor.visible=true;}
-            HasTarget=false;Tool=R41GarageTool.Mount;SelectedInventoryId=null;SelectedRotation=default;
+            HasTarget=false;Tool=R41GarageTool.Mount;UseInventory=true;SelectedInventoryId=null;SelectedRotation=default;
             RefreshPreview();FrameVehicle();
         }
         public void Close()

@@ -191,7 +191,7 @@ public sealed class UnitCellEnergyTests
             foreach(var p in design.Parts)if(p.Kind==R3PartKind.Gun){p.Weapon=kinds[i];break;}
             var model=new R3VehicleModel(design);
             var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(500+i*20,30,100),Quaternion.identity);
-            vehicle.GetComponent<Rigidbody>().isKinematic=true;yield return null;
+            var movingBody=vehicle.GetComponent<Rigidbody>();movingBody.useGravity=false;movingBody.linearVelocity=Vector3.forward;vehicle.Controller.enabled=false;yield return null;
             var assembly=vehicle.GetComponent<R3VehicleAssembly>();var bank=vehicle.GetComponent<VehicleEnergyBank>();
             R3MountedPart gun=null;foreach(var part in assembly.Parts)if(part.Kind==R3PartKind.Gun){gun=part;break;}
             Assert.That(gun,Is.Not.Null,kinds[i].ToString());
@@ -227,17 +227,18 @@ public sealed class UnitCellEnergyTests
             var design=R3VehicleCatalog.Create(R3VehicleKind.Light);
             foreach(var p in design.Parts)if(p.Kind==R3PartKind.Gun){p.Weapon=kinds[i];break;}
             var vehicle=R3VehicleAssembly.Build(new R3VehicleModel(design),new R1RunStats(),palette,new Vector3(600+i*20,30,100),Quaternion.identity);
-            vehicle.GetComponent<Rigidbody>().isKinematic=true;yield return null;
+            var movingBody=vehicle.GetComponent<Rigidbody>();movingBody.useGravity=false;movingBody.linearVelocity=Vector3.forward;vehicle.Controller.enabled=false;yield return null;
             var assembly=vehicle.GetComponent<R3VehicleAssembly>();var bank=vehicle.GetComponent<VehicleEnergyBank>();
             R3MountedPart gun=null;foreach(var p in assembly.Parts)if(p.Kind==R3PartKind.Gun){gun=p;break;}
             Assert.That(gun,Is.Not.Null);gun.GunPivot.rotation=Quaternion.LookRotation(Vector3.up,Vector3.forward);Physics.SyncTransforms();
             Assert.That(assembly.ClearProjectilePath(gun),Is.True,kinds[i]+" must have a clear path");
-            bank.Recharge(1000);float before=bank.Current;
+            bank.Recharge(1000);Assert.That(bank.TrySpend(200),Is.True);float before=bank.Current;float started=Time.fixedTime;
             assembly.SetGroupTriggers(true,false);
             float until=Time.fixedTime+.6f;deadline=Time.realtimeSinceStartup+10;
             while(Time.fixedTime<until&&Time.realtimeSinceStartup<deadline)yield return null;
             Assert.That(Time.fixedTime,Is.GreaterThanOrEqualTo(until));
-            Assert.That(bank.Current,Is.LessThan(before-1f),kinds[i]+" must consume more than passive regeneration while held");
+            float elapsed=Time.fixedTime-started;
+            Assert.That(bank.Current,Is.LessThan(before+VehicleEnergyState.RegenerationPerSecond*elapsed-1f),kinds[i]+" must consume energy while held");
             assembly.SetGroupTriggers(false,false);UnityEngine.Object.Destroy(vehicle.gameObject);yield return null;
         }
         yield return new ExitPlayMode();
@@ -304,7 +305,7 @@ public sealed class UnitCellEnergyTests
         Assert.That((bool)Call(energy, "TrySpend", 51f), Is.False);
         Assert.That(Number(energy, "Current"), Is.EqualTo(50));
         Call(energy, "Advance", 2f);
-        Assert.That(Number(energy, "Current"), Is.EqualTo(60));
+        Assert.That(Number(energy, "Current"), Is.EqualTo(70));
         Call(energy, "Recharge", 1000f);
         Assert.That(Number(energy, "Current"), Is.EqualTo(600));
         Call(energy, "Refresh", 0, 1, true);

@@ -42,7 +42,7 @@ public class R4CombatTests
     [UnityTest] public IEnumerator CoreDeathSnapshotsActualSurvivingWeaponBeforeWreckCleanup()
     {
         var enemy=Run.Encounter.Enemies.First();
-        string sourcePrefix=enemy.name+" /";
+        string originalGunId=enemy.EquipmentInstanceId("gun");
         var yaw=enemy.transform.Find("Enemy_Yaw");
         var gun=yaw.GetComponentsInChildren<P12PipelineSafeDamageable>().OrderByDescending(p=>p.transform.localPosition.sqrMagnitude).First();
         gun.ApplyDamage(gun.MaxHp*0.35f,gun.transform.position,Vector3.forward);
@@ -51,10 +51,10 @@ public class R4CombatTests
         Assert.That(Run.Progress.State.ToString(),Is.EqualTo("Salvage"),"Przed ulepszeniem wymagany jest rzeczywisty wybór łupów.");
         var property=typeof(R1RunController).GetProperty("Salvage");Assert.That(property,Is.Not.Null);
         var ledger=(R4SalvageLedger)property.GetValue(Run);
-        var recovered=ledger.Items.Single(p=>p.Kind==R3PartKind.Gun&&p.Source.StartsWith(sourcePrefix));
+        var recovered=ledger.Items.Single(p=>p.Kind==R3PartKind.Gun&&p.Id==originalGunId);
         Assert.That(recovered.Health,Is.EqualTo(0.65f).Within(0.01));
         Assert.That(recovered.Weapon,Is.EqualTo(R4WeaponKind.Automatic));
-        Assert.That(Run.Encounter.Enemies,Is.Empty);Assert.That(ledger.Items.Count,Is.EqualTo(11));
+        Assert.That(Run.Encounter.Enemies,Is.Empty);Assert.That(ledger.Items.Count,Is.EqualTo(13));
         Assert.That(ledger.Items.Count(p=>p.Kind==R3PartKind.Battery),Is.EqualTo(1));
     }
     [UnityTest] public IEnumerator DestroyedGunCanBeRebuiltAndDuplicateRewardIsRejected()
@@ -147,6 +147,7 @@ public class R4CombatTests
     {
         var enemy=Run.Encounter.Enemies.First();enemy.Core.ApplyDamage(10000,enemy.Core.transform.position,Vector3.up);RRLW2TestFlow.DefeatAll(Run);
         yield return Until(()=>Run.Progress.State==R1RunState.Salvage,"Loot");RRLW2TestFlow.Claim(Run,Array.Empty<string>());
+        var spareStarterGun=Run.VehicleModel.Parts.First(p=>p.Kind==R3PartKind.Gun);Assert.That(Run.GarageRemove(spareStarterGun.Cell),Is.True);
         Run.VehicleModel.Award(100);Assert.That(Run.GarageBuyWeapon(new Vector3Int(1,2,0),R4WeaponKind.Automatic),Is.True);
         Assert.That(Run.StartNextEncounter(),Is.True);yield return Until(()=>!Run.Transitioning,"Fight");Run.Encounter.SetCombatActive(false);
         VirtualInput();InputSystem.QueueStateEvent(mouse,new MouseState());yield return null;yield return null;
@@ -171,6 +172,7 @@ public class R4CombatTests
     {
         var enemy=Run.Encounter.Enemies.First();enemy.Core.ApplyDamage(10000,enemy.Core.transform.position,Vector3.up);RRLW2TestFlow.DefeatAll(Run);
         yield return Until(()=>Run.Progress.State==R1RunState.Salvage,"Łupy");RRLW2TestFlow.Claim(Run,Array.Empty<string>());
+        var spareStarterGun=Run.VehicleModel.Parts.First(p=>p.Kind==R3PartKind.Gun);Assert.That(Run.GarageRemove(spareStarterGun.Cell),Is.True);
         Run.VehicleModel.Award(100);Assert.That(Run.GarageBuyWeapon(new Vector3Int(1,2,0),R4WeaponKind.Automatic),Is.True);
         Assert.That(Run.GarageBuyWeapon(new Vector3Int(-1,2,0),R4WeaponKind.Automatic),Is.True);
         var damage=Run.Definition.Upgrades.Single(p=>p.Effect==R1UpgradeEffect.Damage);
@@ -215,14 +217,14 @@ public class R4CombatTests
         var enemy=Run.Encounter.Enemies[0];var yaw=enemy.transform.Find("Enemy_Yaw");
         enemy.Core.ApplyDamage(10000,enemy.Core.transform.position,Vector3.up);
         yield return Until(()=>!enemy.enabled,"Wyłączenie AI");
-        Assert.That(Run.Salvage.Items.Count,Is.EqualTo(8));var saved=Run.Salvage.Items.First(p=>p.Kind==R3PartKind.Gun);
+        Assert.That(Run.Salvage.Items.Count,Is.EqualTo(9));var saved=Run.Salvage.Items.First(p=>p.Kind==R3PartKind.Gun);
         Assert.That(saved.Weapon,Is.EqualTo(R4WeaponKind.Heavy));Assert.That(saved.Health,Is.EqualTo(1));
         yield return Until(()=>yaw==null,"Wrak musi faktycznie wygasnąć",15);
-        Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Combat));Assert.That(Run.Salvage.Items.Count,Is.EqualTo(8));
+        Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Combat));Assert.That(Run.Salvage.Items.Count,Is.EqualTo(9));
         RRLW2TestFlow.DefeatAll(Run);
-        yield return Until(()=>Run.Progress.State==R1RunState.Salvage,"Końcowe łupy");Assert.That(Run.Salvage.Items.Count,Is.EqualTo(19));
+        yield return Until(()=>Run.Progress.State==R1RunState.Salvage,"Końcowe łupy");Assert.That(Run.Salvage.Items.Count,Is.EqualTo(22));
         Assert.That(Run.Salvage.Items.Count(p=>p.Kind==R3PartKind.Battery),Is.EqualTo(1));
-        Assert.That(Run.Salvage.Items.Select(p=>p.Id).Distinct().Count(),Is.EqualTo(19));
+        Assert.That(Run.Salvage.Items.Select(p=>p.Id).Distinct().Count(),Is.EqualTo(22));
         Assert.That(RRLW2TestFlow.Claim(Run,new[]{saved.Id}),Is.True);Assert.That(Run.VehicleModel.Inventory.Single(p=>p.Id==saved.Id).Weapon,Is.EqualTo(R4WeaponKind.Heavy));
     }
 }

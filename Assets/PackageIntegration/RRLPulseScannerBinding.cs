@@ -26,8 +26,8 @@ namespace RoboRougelike.PackageIntegration
             RefreshAvailability();if(Device==null||!Device.Available||Pulse==null||!Pulse.Ready)return false;
             RRLPulseSignal.Prepare(R1RunController.Instance);Physics.SyncTransforms();
             var energy=Device.Owner.GetComponent<VehicleEnergyBank>();
-            if(energy!=null&&!energy.TrySpend(10f))return false;
-            if(Pulse.TryPulse(transform.position)<0){if(energy!=null)energy.Refund(10f);return false;}
+            if(energy!=null&&!energy.TrySpend(5f))return false;
+            if(Pulse.TryPulse(transform.position)<0){if(energy!=null)energy.Refund(5f);return false;}
             Device.State.DeviceReadyAt=Time.time+Pulse.RemainingCooldown;return true;
         }
         void OnEnable(){if(Pulse!=null&&Device?.State!=null)Pulse.RestoreCooldown(Device.State.DeviceReadyAt-Time.time);RefreshAvailability();}

@@ -23,6 +23,11 @@ public class RRLW8SteeringTests
     IEnumerator Build(R3VehicleKind chassis=R3VehicleKind.Light,bool withSuspension=false)
     {
         Assert.That(run.SelectVehicle(chassis),Is.True);Assert.That(run.OpenSandboxGarage(),Is.True);
+        // The starter now has six wheels. Build the original 12-wheel fixture explicitly;
+        // this test covers steering fallback, not garage purchase validation.
+        if(chassis==R3VehicleKind.Standard)
+            foreach(int side in new[]{-1,1})foreach(int z in new[]{-1,0,1})
+                run.VehicleModel.Parts.Add(new R3PartState(new Vector3Int(side*3,1,z),R3PartKind.Wheel));
         Assert.That(run.GarageBuy(new Vector3Int(0,chassis==R3VehicleKind.Light?1:2,-2),kind),Is.True);
         if(withSuspension)foreach(var cell in MOV009ModelTests.Cells(chassis))Assert.That(run.GarageBuy(cell,R3PartKind.Suspension),Is.True);
         Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
@@ -52,7 +57,7 @@ public class RRLW8SteeringTests
         Assert.That(wheels.Length,Is.EqualTo(4));foreach(var wheel in wheels)Assert.That(wheel.GetComponent<SteeringWheelModule>(),Is.Not.Null);
         var payload=wheels[0].transform.Find("Koło");var collider=payload.GetComponent<Collider>();var physicalPose=payload.localRotation;
         drive.Step(1,1,10,5,105);
-        var expected=SteeringMath.Solve(source.CurrentSolution.frontCenterDegrees,source.CurrentSolution.rearCenterDegrees,new SteeringGeometry{wheelbaseMeters=1.1f,trackMeters=2.2f});
+        var expected=SteeringMath.Solve(source.CurrentSolution.frontCenterDegrees,source.CurrentSolution.rearCenterDegrees,new SteeringGeometry{wheelbaseMeters=(wheels.Max(w=>w.Cell.z)-wheels.Min(w=>w.Cell.z))*.55f,trackMeters=(wheels.Max(w=>w.Cell.x)-wheels.Min(w=>w.Cell.x))*.55f});
         Assert.That(source.CurrentSolution.curvatureInverseMeters,Is.EqualTo(expected.curvatureInverseMeters).Within(.0001));
         Assert.That(source.CurrentSolution.frontRightDegrees,Is.GreaterThan(source.CurrentSolution.frontLeftDegrees));
         Assert.That(collider.enabled,Is.True);Assert.That(payload.localRotation,Is.EqualTo(physicalPose));Assert.That(payload.GetComponent<MeshRenderer>().enabled,Is.False);
@@ -108,6 +113,7 @@ public class RRLW8SteeringTests
     [UnityTest] public IEnumerator TwelveWheelLayoutAndAlternateDriveKeepFallbackWithoutCompetingSolver()
     {
         Assert.That(Enum.TryParse("IndependentSteering",out kind),Is.True);yield return Build(R3VehicleKind.Standard);
+        Assert.That(run.Player.GetComponent<R3VehicleAssembly>().Parts.Count(p=>p.Kind==R3PartKind.Wheel),Is.EqualTo(12));
         Assert.That(Supported,Is.False);Assert.That(SetMode(SteeringMode.Crab),Is.False);yield return Drive(.3f);
         Assert.That(source.CurrentSolution.curvatureInverseMeters,Is.Zero);Assert.That(body.angularVelocity.y,Is.GreaterThan(.1f),"Standard R6 fallback remains playable");
         run.VehicleModel.SelectedDrive=R3DriveKind.Hover;drive.Step(1,1,10,5,105);Assert.That(source.CurrentSolution.curvatureInverseMeters,Is.Zero);

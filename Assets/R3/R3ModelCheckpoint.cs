@@ -106,6 +106,7 @@ namespace RoboRougelike.R3
                 (data.energyVersion==1&&(!Finite(data.energy)||data.energy<0)))return false;
             restored.RefreshEnergyLayout();
             restored.Energy.Restore(data.energyVersion==0?VehicleEnergyState.CoreCapacity:data.energy);
+            restored.InitialEnergyPrepared=true;
             model=restored;error=null;return true;
         }
     }

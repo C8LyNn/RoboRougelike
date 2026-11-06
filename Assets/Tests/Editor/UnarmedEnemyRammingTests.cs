@@ -68,3 +68,30 @@ public sealed class UnarmedEnemyRammingTests
     }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }
+
+public sealed class ArmedEnemyRammingTests
+{
+    [UnityTest] public IEnumerator ArmedEnemyActuallyApproachesAndContactsPlayer()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float deadline=Time.realtimeSinceStartup+20;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<deadline)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light),Is.True);
+        Assert.That(run.OpenSandboxGarage(),Is.True);Assert.That(run.EnterTestRange(),Is.True);
+        while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+        var range=run.GetComponent<R6TestRange>();var enemy=range.TrainingTarget;Assert.That(enemy.WeaponOnline,Is.True);
+        enemy.transform.SetParent(null,true);range.Layout.gameObject.SetActive(false);
+        var body=enemy.GetComponent<Rigidbody>();var player=run.Player.GetComponent<Rigidbody>();player.isKinematic=true;
+        foreach(var hp in run.Player.GetComponentsInChildren<P12PipelineSafeDamageable>())hp.SetDurabilityMultiplier(50);
+        body.position=player.position+Vector3.forward*9;body.rotation=Quaternion.identity;body.linearVelocity=Vector3.zero;
+        enemy.ConfigureMovement(5,15,0);var probe=enemy.gameObject.AddComponent<RamContactProbe>();probe.Target=run.Player.transform;
+        Physics.SyncTransforms();range.SetTrainingFire(true);float initial=Vector3.Distance(body.position,player.position);
+        deadline=Time.realtimeSinceStartup+25;
+        while(!probe.Contact&&Time.realtimeSinceStartup<deadline)yield return null;
+        Debug.Log($"Armed ram: contact={probe.Contact} distance={initial:F2}->{Vector3.Distance(body.position,player.position):F2}");
+        Assert.That(probe.Contact,Is.True,"An armed, mobile enemy must physically contact the player.");
+        Assert.That(enemy.WeaponOnline,Is.True,"Ramming does not require discarding the weapon.");
+        yield return new ExitPlayMode();
+    }
+    [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
+}

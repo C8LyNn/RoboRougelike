@@ -27,7 +27,7 @@ public class MOVSeriesCombinationTests
         if(drive!=R3PartKind.Armor)
         {
             int w=kind==R3VehicleKind.Light?1:kind==R3VehicleKind.Standard?2:3;
-            int l=kind==R3VehicleKind.Light?2:kind==R3VehicleKind.Standard?3:4;
+            int l=kind==R3VehicleKind.Light?1:kind==R3VehicleKind.Standard?3:4;
             foreach(int side in new[]{-1,1})foreach(int z in new[]{kind==R3VehicleKind.Standard?-4:-l,l})model.Parts.Add(new R3PartState(new Vector3Int(side*(w+1),0,z),drive));
             model.SelectedDrive=drive==R3PartKind.CrawlerTrack?R3DriveKind.Tracks:drive==R3PartKind.OmniDrive?R3DriveKind.Omni:R3DriveKind.Hover;
         }

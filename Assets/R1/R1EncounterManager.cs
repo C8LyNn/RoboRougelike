@@ -40,6 +40,7 @@ namespace RoboRougelike.R1
                 energy.ConfigureEnemy(enemy.Core);
                 if(i==count-1)enemy.EquipBattery();
                 enemy.ConfigureMovement(definition.MoveSpeed, definition.PreferredDistance, definition.StrafeStrength);
+                enemy.gameObject.AddComponent<EnemySelfDestruct>().Configure(enemy,player);
                 // One real shotgun escort on larger encounters; its actual equipment enters salvage.
                 if(count>=3&&i==count-1&&definition.SpawnVariant(i)==RoboRougelike.R5.R5EnemyVariant.Normal)
                 {
@@ -57,6 +58,8 @@ namespace RoboRougelike.R1
                 }
                 if(count>=4&&i==0&&definition.SpawnVariant(i)==RoboRougelike.R5.R5EnemyVariant.Normal)
                     enemy.EquipPointDefense();
+                if(definition.SpawnVariant(i)==RoboRougelike.R5.R5EnemyVariant.Normal&&enemy.EquipAdditionalGun())
+                    enemy.GetComponent<RoboRougelike.R6.R6VehicleDrive>()?.RefreshParts();
                 RoboRougelike.WeaponIntegration.RRLEmpVehicleAdapter.Configure(enemy.transform);
                 enemies.Add(enemy);
             }
@@ -93,6 +96,8 @@ namespace RoboRougelike.R1
                     debris.Add(body.gameObject);
             }
             foreach (var item in debris) { item.SetActive(false); Object.Destroy(item); }
+            foreach(var pickup in Object.FindObjectsByType<RoboRougelike.R3.EnergyPickup>(FindObjectsSortMode.None))
+            {pickup.gameObject.SetActive(false);Object.Destroy(pickup.gameObject);}
             foreach(var item in Object.FindObjectsByType<RoboRougelike.R3.R3Debris>(FindObjectsSortMode.None))
             {item.gameObject.SetActive(false);Object.Destroy(item.gameObject);}
         }

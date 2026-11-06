@@ -95,6 +95,8 @@ namespace RoboRougelike.R6
                 yaw+=PartMass(part)*(r.x*r.x+r.z*r.z+.045f);
             }
             body.inertiaTensorRotation=Quaternion.identity;body.inertiaTensor=new Vector3(Mathf.Max(1,yaw*.5f),Mathf.Max(1,yaw),Mathf.Max(1,yaw*.5f));
+            var assembly=GetComponent<R3VehicleAssembly>();
+            if(assembly!=null&&assembly.Model!=null)assembly.TuneChassis();
             nextMassRefresh=Time.time+.1f;RefreshGroundContact();
         }
         void RefreshGroundContact()

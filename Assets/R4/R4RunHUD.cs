@@ -157,48 +157,41 @@ namespace RoboRougelike.R1
         }
         private void DrawInventory(R1RunController run)
         {
-            var model=run.VehicleModel;var garage=run.Garage;var items=model.Inventory;
-            int pages=Mathf.Max(1,Mathf.CeilToInt(items.Count/4f));inventoryPage=Mathf.Clamp(inventoryPage,0,pages-1);
-            int row=0;
-            foreach(var item in items.Skip(inventoryPage*4).Take(4).ToArray())
+            var model=run.VehicleModel;var garage=run.Garage;
+            if(!catalogGroup.HasValue)
+            {GUI.Label(new Rect(970,85,280,120),"Wybierz stos części z listy po lewej. Zobaczysz tu każdy egzemplarz i jego HP.",small);return;}
+            var kind=catalogGroup.Value;var weapon=catalogWeapon;
+            var items=model.Inventory.Where(p=>InCatalogGroup(p,kind,weapon,catalogBonusId)).ToArray();
+            string name=kind==R3PartKind.BonusModule&&items.Length>0?R4WeaponDefinition.PartName(items[0]):R4WeaponDefinition.PartName(kind,weapon);
+            GUI.Label(new Rect(970,70,280,48),$"{name}  × {items.Length}",body);
+            stackScroll=GUI.BeginScrollView(new Rect(970,118,280,210),stackScroll,new Rect(0,0,255,Mathf.Max(210,items.Length*40)));
+            for(int i=0;i<items.Length;i++)
             {
-                GUI.backgroundColor=garage.SelectedInventoryId==item.Id?new Color(0.3f,0.9f,0.9f):Color.white;
-                if(GUI.Button(new Rect(970,75+row*66,280,60),$"{R4WeaponDefinition.PartName(item)}\nW magazynie • {(R3VehicleModel.UsesWideFootprint(item.Kind)?"1×1×1 • ":"")}HP {item.Health*100:0}%",compactButton))
-                {garage.ChooseInventory(item.Id);dismantleConfirmation=null;}row++;
+                var item=items[i];GUI.backgroundColor=garage.SelectedInventoryId==item.Id?new Color(.3f,.9f,.9f):Color.white;
+                if(GUI.Button(new Rect(0,i*40,250,36),$"{R4WeaponDefinition.PartName(item)} • HP {item.Health*100:0}%",compactButton))
+                {garage.ChooseInventory(item.Id);dismantleConfirmation=null;catalogOpen=false;}
             }
-            GUI.backgroundColor=Color.white;
-            if(GUI.Button(new Rect(970,345,70,32),"←",compactButton))inventoryPage=Mathf.Max(0,inventoryPage-1);
-            GUI.Label(new Rect(1050,347,130,30),$"{inventoryPage+1}/{pages}",small);
-            if(GUI.Button(new Rect(1180,345,70,32),"→",compactButton))inventoryPage=Mathf.Min(pages-1,inventoryPage+1);
+            GUI.EndScrollView();GUI.backgroundColor=Color.white;
+            int price=model.Price(kind,weapon);
+            GUI.enabled=kind!=R3PartKind.BonusModule&&model.Scrap>=price&&model.Inventory.Count<R3VehicleModel.InventoryCapacity;
+            if(GUI.Button(new Rect(970,340,280,40),$"Kup do magazynu — {price} Z",compactButton))
+            {
+                if(run.GaragePurchase(kind,weapon))
+                {var purchased=model.Inventory.Last();garage.ChooseInventory(purchased.Id);catalogOpen=false;garage.Message="Kupiono część. Kliknij pojazd, aby ją zamontować.";}
+                else garage.Message="Nie udało się kupić części.";
+            }
+            GUI.enabled=true;
             var selected=items.FirstOrDefault(p=>p.Id==garage.SelectedInventoryId);
             if(selected==null)
-            {GUI.Label(new Rect(970,390,280,240),"Wybierz część z magazynu. Bonusy 1×1×1 działają wyłącznie po montażu i zajmują jedno pole. Zniszczone moduły napraw przed montażem.\n\nZdjęte moduły wracają do magazynu.",body);return;}
-            var profile=R4WeaponDefinition.Get(selected.Weapon);
-            GUI.Label(new Rect(970,390,280,66),selected.Kind==R3PartKind.BonusModule?
-                $"Moduł 1×1×1 • HP {selected.Health*100:0}%\n{BonusText(selected)} (po montażu)":
-                selected.Kind==R3PartKind.PointDefense?
-                $"Obrona 1×1×1 • {(selected.Ammo<0?40:selected.Ammo)}/40 • zasięg 24 m\nMasa 35 kg • HP {selected.Health*100:0}%":
-                selected.Kind==R3PartKind.DirectionalShield?
-                $"Tarcza 1×1×1 • {(selected.DefenseCharge<0?100:selected.DefenseCharge):0}/100 osłony\n120° • 9 m • masa 32 kg • HP {selected.Health*100:0}%":
-                selected.Kind==R3PartKind.Gun?
-                R4WeaponDefinition.Brief(selected,run.ActiveStats?.Damage??1f,run.ActiveStats?.FireInterval??1f)+$"\nMasa {profile.Mass:0} kg • HP {selected.Health*100:0}%":$"{R4WeaponDefinition.PartName(selected)} • masa {R4WeaponDefinition.PartMass(selected)}\nHP {selected.Health*100:0}%",small);
-            if(selected.DisruptionRemaining>0)
-                GUI.Label(new Rect(970,446,280,18),$"EMP jeszcze {selected.DisruptionRemaining:0.0} s po montażu",small);
-            string error=garage.PlacementIssue;
-            GUI.enabled=garage.HasTarget&&error==null&&selected.Health>0;
-            if(GUI.Button(new Rect(970,465,280,42),"Zamontuj — bez opłaty",compactButton))
-            {garage.Message=run.GarageMount(selected.Id,garage.Cell,garage.SelectedRotation)?"Moduł zamontowany z zachowanym HP.":"Montaż nieudany.";return;}
+            {GUI.Label(new Rect(970,400,280,100),"Wybierz egzemplarz z listy. Zielony podgląd oznacza poprawne miejsce montażu.",small);return;}
+            GUI.Label(new Rect(970,395,280,70),$"{R4WeaponDefinition.PartName(selected)} • HP {selected.Health*100:0}%\nKliknij pojazd, aby zamontować.",small);
             int repairQuote=model.RepairCost(selected);
             GUI.enabled=repairQuote>0&&model.Scrap>=repairQuote;
-            string repairLabel=selected.Health<=0&&repairQuote==0?"Odbudowa niedostępna":
-                selected.Health<=0&&selected.Kind!=R3PartKind.BonusModule?
-                $"Odbuduj: {repairQuote} Z • zakup: {model.Price(selected.Kind,selected.Weapon)} Z":
-                $"{(selected.Health<=0?"Odbuduj":"Napraw")} — {repairQuote} Z";
-            if(GUI.Button(new Rect(970,515,280,42),repairLabel,compactButton))run.GarageRepairInventory(selected.Id);
+            if(GUI.Button(new Rect(970,480,280,42),$"Napraw / odbuduj — {repairQuote} Z",compactButton))run.GarageRepairInventory(selected.Id);
             GUI.enabled=true;
-            if(GUI.Button(new Rect(970,565,280,42),dismantleConfirmation==selected.Id?"Potwierdź rozmontowanie":$"Rozmontuj → {model.DismantleValue(selected)} Z",compactButton))
+            if(GUI.Button(new Rect(970,535,280,42),dismantleConfirmation==selected.Id?"Potwierdź rozmontowanie":$"Rozmontuj → {model.DismantleValue(selected)} Z",compactButton))
             {if(dismantleConfirmation==selected.Id){run.GarageDismantle(selected.Id);dismantleConfirmation=null;return;}dismantleConfirmation=selected.Id;}
-            GUI.Label(new Rect(970,618,280,77),error??$"Wybrano {garage.Cell}. Zielony podgląd.\nŹródło: {selected.Source}",small);
+            GUI.Label(new Rect(970,590,280,100),garage.PlacementIssue??"Zielony podgląd: kliknij, aby zamontować.",small);
         }
     }
 }
