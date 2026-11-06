@@ -1,0 +1,96 @@
+name: B01-41 W29 REAL original Save826 composite game G0 and strict C#9 netstandard21
+on:
+  push:
+    branches: [ci/b01-41-p17w29-save826-original-composite-game-g0]
+    paths:
+      - '.github/workflows/b01-41-p17w29-save826-composite-game-g0.yml'
+      - 'Tools/B01/CI41/P17W29/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-source-compile-and-cold:
+    name: Exact original 826 and NEW Codex824 G0 (${{ matrix.os }}) — NOT UNITY G1
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    steps:
+      - name: Checkout exact isolated CI41 branch, NEVER protected/active user checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Fetch EXACT original immutable producer SHA objects, never switch worktree
+        shell: bash
+        run: |
+          set -euo pipefail
+          for sha in ed8cf4bcc131688b9a93968a89683d2496586683 99fb08619c78b3834bb4c0450499babf991f218a 2b7983f0f9e09dd1d56906b379a3f7af7b02f21a f5db40bf293fe9582ec7c6fcb3515aeff6fcf937 16cb2a7b5158605b15191b6074f9e392e0d1ebd3 b4df10a7ad7e6c758f8331013f6b216b3a3689a3 60c73a6f9ed2585cbb9bf7aeaad8c62eef0629cb ce46a5e0cc5d26df6c4ece723e8efe20d70fc4b1 cc7f73541517a18f4479bb155534bd4832d9985e b8ca29c7707cd6b4338d0b9772d74dee676d49d2 33094f154c7b91119b36d58aab285e6e83c5de57 d94400d95d13db7f27e1533df05c9292d5380431 cb2b3a76e84266e2730fffc4ab048c1039f0652f; do
+            git fetch --no-tags origin "$sha"
+            test "$(git rev-parse "$sha^{commit}")" = "$sha"
+          done
+      - name: Enforce EXACT five new B01-41 paths and original game base
+        shell: bash
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor ed8cf4bcc131688b9a93968a89683d2496586683 HEAD
+          git diff --name-status ed8cf4bcc131688b9a93968a89683d2496586683 HEAD | sort > ci41-w29-real-own.txt
+          printf '%s\n' 'A	.github/workflows/b01-41-p17w29-save826-composite-game-g0.yml' 'A	Tools/B01/CI41/P17W29/README.md' 'A	Tools/B01/CI41/P17W29/source_plan.json' 'A	Tools/B01/CI41/P17W29/composite_g0.py' 'A	Tools/B01/CI41/P17W29/test_composite_g0.py' | sort > ci41-w29-expected.txt
+          diff -u ci41-w29-expected.txt ci41-w29-real-own.txt
+          echo CI41_W29_EXACT_FIVE_OWN_PATHS_NO_CODEx_OR_GAME_EDITS
+      - name: Run 18 anti-fake no-double-writer and foreign rollback checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
+          "$PY" -m unittest discover -s Tools/B01/CI41/P17W29 -p test_composite_g0.py -v 2>&1 | tee "ci41-w29-negative-${{ runner.os }}.txt"
+          grep -q 'Ran 18 tests' "ci41-w29-negative-${{ runner.os }}.txt"
+          grep -q 'OK' "ci41-w29-negative-${{ runner.os }}.txt"
+      - name: Construct REAL exact 826 V3 source ZIP, full 53 GUID and actual Codex game collision intake
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = Windows ]; then PY=python; else PY=python3; fi
+          DEST="$RUNNER_TEMP/ci41-w29-owned-${RUNNER_OS}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          "$PY" Tools/B01/CI41/P17W29/composite_g0.py --out "$DEST" 2>&1 | tee "ci41-w29-composite-${{ runner.os }}.txt"
+          "$PY" -c 'import pathlib,sys,hashlib,json,zipfile;p=pathlib.Path(sys.argv[1]);r=json.loads((p/"QA_RECEIPT.json").read_text());m=json.loads((p/"MANIFEST.json").read_text());z=(p/"CI41_W29_SAVE826_SINGLE_WRITER_ORIGINAL_SOURCE.zip").read_bytes();assert hashlib.sha256(z).hexdigest()==r["zip_sha256"] and len(m["selected_source_files"])==87 and m["unique_unity_guid_count"]==53 and len(m["excluded_historic_writer_audit"])==4 and m["comparison_with_current_codex_game"]["safe_additive_without_current_game_overwrite"] and r["G1_UNITY"]=="NOT_RUN";w=zipfile.ZipFile(p/"CI41_W29_SAVE826_SINGLE_WRITER_ORIGINAL_SOURCE.zip");assert len(w.namelist())==r["members"] and w.read("MANIFEST.json");print("CI41_W29_826_REAL_COMPOSITE_SAFE_SOURCE_G0_PASS",r["sources"],r["guids"],r["zip_sha256"])' "$DEST"
+      - name: COMPILE EXACT ORIGINAL #826 C#9 code netstandard2.1 with real frozen #729 #556 and V7
+        shell: bash
+        run: |
+          set -euo pipefail
+          DEST="$RUNNER_TEMP/ci41-w29-owned-${RUNNER_OS}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          SRC="$DEST/ci41-w29-owned-original-abi-project/Tools/B01/B01-62/P17W28UnityCompatibleWholeGameV3"
+          dotnet --version
+          dotnet build "$SRC/WholeGameEconomyUnityV3Abi.csproj" -c Release --nologo -v minimal -p:Deterministic=true 2>&1 | tee "ci41-w29-netstandard21-${{ runner.os }}.txt"
+          grep -q 'Build succeeded' "ci41-w29-netstandard21-${{ runner.os }}.txt"
+          echo CI41_W29_TRUE_ORIGINAL_826_CSHARP9_NETSTANDARD21_ABI_BUILD_PASS
+      - name: EXECUTE original producer C#9 real physical one-file cold-restart and V7 wallet tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          DEST="$RUNNER_TEMP/ci41-w29-owned-${RUNNER_OS}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          SRC="$DEST/ci41-w29-owned-original-abi-project/Tools/B01/B01-62/P17W28UnityCompatibleWholeGameV3"
+          dotnet run --project "$SRC/WholeGameEconomyUnityV3QA.csproj" -c Release --nologo 2>&1 | tee "ci41-w29-original-cold-v7-${{ runner.os }}.txt"
+          grep -q 'W25_V7_GAME_ECON_ONE_ENVELOPE_SOURCE_TOTAL 9 PASS 9 FAIL 0' "ci41-w29-original-cold-v7-${{ runner.os }}.txt"
+          grep -q 'W28_REPLACE_AFTER_ACK_LOSS_COLD_ATOMIC_V7=PASS' "ci41-w29-original-cold-v7-${{ runner.os }}.txt"
+          grep -q 'W28_REPLACE_BEFORE_FAULT_PRESERVES_OLD_ATOMIC_V7=PASS' "ci41-w29-original-cold-v7-${{ runner.os }}.txt"
+          echo CI41_W29_ORIGINAL_826_REAL_CLR_COLD_NINE_OF_NINE_SOURCE_PASS_NOT_UNITY_G1
+      - name: Real source ZIP+manifest and original logs, NATIVE UNITY NOT RUN
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CI41-W29-SAVE826-ORIGINAL-COMPOSITE-COLD-ABI-NOT-UNITY-${{ runner.os }}
+          path: |
+            ci41-w29-real-own.txt
+            ci41-w29-expected.txt
+            ci41-w29-negative-${{ runner.os }}.txt
+            ci41-w29-composite-${{ runner.os }}.txt
+            ci41-w29-netstandard21-${{ runner.os }}.txt
+            ci41-w29-original-cold-v7-${{ runner.os }}.txt
+            ${{ runner.temp }}/ci41-w29-owned-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}/CI41_W29_SAVE826_SINGLE_WRITER_ORIGINAL_SOURCE.zip
+            ${{ runner.temp }}/ci41-w29-owned-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}/MANIFEST.json
+            ${{ runner.temp }}/ci41-w29-owned-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}/QA_RECEIPT.json
+          retention-days: 14
+          if-no-files-found: warn
