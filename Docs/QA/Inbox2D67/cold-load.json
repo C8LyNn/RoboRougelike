@@ -1,0 +1,13 @@
+{
+    "status": "PASS",
+    "phase": "load",
+    "error": "",
+    "method": "Two separate Windows Player processes, API-driven; not human gameplay",
+    "isolated": true,
+    "battery": true,
+    "inventory": true,
+    "ids": true,
+    "hp": true,
+    "energy": true,
+    "scrap": true
+}
