@@ -7,3 +7,6 @@ Focused.xml: 5/5 real Unity EditMode PASS on source working tree immediately bef
 Full PlayMode 478/478 PASS is from prior 7e37e1e0 (see sibling Inbox7e37), not 58a22184 or 4ab28e59. The complete EditMode suite is not yet PASS. Several older fixtures, one B01-24 fixture, a 180-part construction scenario, and a full six-encounter physical pilot need further investigation. Human testing is NOT_RUN. No G1 or release approval.
 
 Original hashes are recorded; logs redact local home paths and Unity session metadata. Screenshots are diagnostic render textures, not UI captures.
+Later fixture review found that the MOVSeriesDriveTests helper directly placed gyro and booster on the Standard starter gun cells. Its apparent hover PASS is therefore not sufficient evidence for a valid Standard construction; the separate actual-garage hover test passed, and the invalid fixture is being corrected and retested.
+
+Full PlayMode on exact commit 0738ac37c8a7251b6b03a7bcb8a0c9224d1b8491: 478/478 PASS, exit 0. GarageRange: 11/11 PASS on working state subsequently committed as 0738, including maximum 180-part physical garage build, real projectile, workshop repair/remount and damaged suspension support checks. Later commits may only update test fixtures; verify full suites at final SHA.
