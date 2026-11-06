@@ -77,7 +77,8 @@ public class RRLW2GameplayTests
             // Every physically mounted defense is loot in addition to legacy guns/wheels.
             int defenses=foes.Sum(e=>e.GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLShieldBinding>().Length+
                 e.GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLPointDefenseBinding>().Length);
-            int expected=foes.Sum(e=>e.InitialWheelCount+Math.Max(1,e.VariantWeapons.Count)+e.AdditionalWeapons.Count)+defenses;
+            int expected=foes.Sum(e=>e.InitialWheelCount+Math.Max(1,e.VariantWeapons.Count)+e.AdditionalWeapons.Count+
+                e.GetComponentsInChildren<VehicleEnergyBattery>().Length)+defenses;
             RRLW2TestFlow.DefeatAll(run);yield return Until(()=>run.Progress.State==R1RunState.Salvage,"Full encounter victory");
             Assert.That(run.Salvage.Items.Count,Is.EqualTo(expected));Assert.That(run.Salvage.Items.Select(p=>p.Id).Distinct().Count(),Is.EqualTo(expected));
             Assert.That(run.ConfirmRewards(Array.Empty<string>(),new[]{0}),Is.True);

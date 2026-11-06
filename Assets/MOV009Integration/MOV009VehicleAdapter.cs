@@ -46,10 +46,34 @@ namespace RoboRougelike.MOV009Integration
             RideHeightMeters=.77f;
             foreach(var part in parts)
             {
-                var module=part.GetComponent<ActiveSuspensionModule>();
-                if(module==null)module=part.gameObject.AddComponent<ActiveSuspensionModule>();
+                // The package measures and applies force at its own transform. Project
+                // onto the chassis reference plane so a module mounted high on the
+                // vehicle retains the same calibrated ride height and probe reach.
+                var chassisPoint=transform.InverseTransformPoint(part.transform.position);
+                ActiveSuspensionModule module;
+                if(Mathf.Abs(chassisPoint.y)<.001f)
+                {
+                    // Keep the original force point and hierarchy for floor-level mounts.
+                    module=part.GetComponent<ActiveSuspensionModule>();
+                    if(module==null)module=part.gameObject.AddComponent<ActiveSuspensionModule>();
+                }
+                else
+                {
+                    chassisPoint.y=0f;
+                    var point=part.transform.Find("Suspension support point");
+                    if(point==null)
+                    {
+                        point=new GameObject("Suspension support point").transform;
+                        point.SetParent(part.transform,false);
+                    }
+                    point.position=transform.TransformPoint(chassisPoint);
+                    module=point.GetComponent<ActiveSuspensionModule>();
+                    if(module==null)module=point.gameObject.AddComponent<ActiveSuspensionModule>();
+                }
                 module.ConfigureSpring(RideHeightMeters,StiffnessPerModule,DampingPerModule,MaximumForcePerModule);
-                part.gameObject.AddComponent<MOV009PartBinding>().Configure(part,module);
+                var binding=part.GetComponent<MOV009PartBinding>();
+                if(binding==null)binding=part.gameObject.AddComponent<MOV009PartBinding>();
+                binding.Configure(part,module);
             }
             suspension.RefreshModules();ApplySettings();
         }
