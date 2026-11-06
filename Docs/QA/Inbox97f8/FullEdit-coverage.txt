@@ -1,0 +1,7 @@
+Exact source SHA 97f8c56ecede78fc53ee91c75c0aed234ddb21f6
+Shard 1: total 682 / pass 679 / fail 3 / skip 0; exit 2.
+Shard 2: total 712 / pass 711 / fail 1 / skip 0; exit 2.
+Combined: total 1394 unique / pass 1390 / fail 4 / skip 0.
+Against prior fdf full test-case names: 1393 prior names all present, 0 missing, 0 duplicates; 1 new diagnostic case EnemyMovesTangentiallyAlongInnerBoundaryWithGroundedWheels.
+IMPORTANT: Unity class-name filters explicitly selected the B01-24 test marked NUnit Explicit for unresolved opaque-cover policy; unlike an unfiltered run that skips it, it ran and failed. This was an unintended consequence of sharding. Its failure does not approve that policy, and it must be reported separately. No G1/G2 approval.
+Other failed cases: B01-24 stale private-signature reflection fixture, enemy at physical arena wall, and zoom two-frame displacement 1.02365m vs <1m. Separate unchanged isolated retests are pending; do not change historical shard results.

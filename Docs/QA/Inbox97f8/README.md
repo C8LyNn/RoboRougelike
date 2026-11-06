@@ -9,3 +9,6 @@ One front armor block in Standard addresses front-wheel crash torque. Prior cont
 Text logs redact user paths and session metadata. Original SHA256 hashes are recorded separately. No merge or G1 claimed.
 Full EditMode shard 2 at exact 97f8: 711 PASS / 1 FAIL / 0 SKIP, exit 2. Zoom smoothness measured 1.02365m over two frames vs <1m threshold. Test and camera unchanged; new vehicle geometry and concurrent editor load are possible but unproven factors. Run same test alone after both shards finish. Shard 1 and overall coverage remain pending.
 
+
+Full EditMode at exact 97f8, split by class: 1390 PASS / 4 FAIL / 0 SKIP across 1394 distinct cases, no missing previous names or duplicates. WARNING: class selection explicitly ran a B01 policy-conditional NUnit Explicit test that an unfiltered run skips; it failed and the policy remains unapproved. See FullEdit-coverage.txt and both shard XMLs; isolated camera/boundary retests pending.
+
