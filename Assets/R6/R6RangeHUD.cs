@@ -43,7 +43,7 @@ namespace RoboRougelike.R1
             {
                 Panel(new Rect(925,18,335,150));GUI.Label(new Rect(940,25,305,30),"CEL ELEKTRONICZNY",heading);
                 GUI.Label(new Rect(940,62,305,38),range.TrainingFireRequested?"Ostrzał WŁĄCZONY":"Ostrzał WYŁĄCZONY",body);
-                GUI.Label(new Rect(940,106,305,55),range.TrainingTarget.IsDefeated?"Cel zniszczony. R resetuje próbę.":"Robot na lewo przed startem.\nEsc — sterowanie ostrzałem celu.",small);
+                GUI.Label(new Rect(940,106,305,55),range.TrainingTarget.IsDefeated?"Cel zniszczony.":"Robot na lewo przed startem.\nEsc — sterowanie ostrzałem celu.",small);
             }
             DrawAimReticle(run);
             Panel(new Rect(18,625,1244,78));

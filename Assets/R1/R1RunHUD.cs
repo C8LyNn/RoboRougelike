@@ -244,7 +244,7 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(970,465,280,56),$"Odbudowa awaryjna — {emergencyCost} Z\nniezbędne moduły: 100% HP",compactButton))
                 garage.Message=run.GarageEmergencyRepair()?"Odbudowano niezbędną broń, napęd i połączenia; koszt pobrano raz.":"Brak środków lub poprawnego planu napędu / rdzenia.";
             GUI.enabled=true;
-            GUI.Label(new Rect(970,550,280,100),"Części wybieraj z listy po lewej. Po wybraniu egzemplarza kliknij miejsce na pojeździe.",small);
+
             }
             GUI.Label(new Rect(350,25,580,60),run.SandboxWorkshop?$"{model.Design.Name} • Warsztat poligonu":$"{model.Design.Name}  •  Następna walka {run.Progress.EncounterIndex+1}/{run.Progress.TotalEncounters}",heading);
             DrawReactorGarageAction(run);
