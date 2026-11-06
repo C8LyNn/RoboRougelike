@@ -1,6 +1,6 @@
 # Energia, walka, pojazdy i garaż — raport testowy
 
-Baza: PR #936 / `6d5636672a805619225d20a4097d3784f180ea00`. Kod buildu: `9b29b423e3335e6e1027cb8488970f7b845a4df4`. Gałąź: `feature/energy-combat-garage-refinement`. Unity 6000.3.14f1; nie scalono do main.
+Baza: PR #936 / `6d5636672a805619225d20a4097d3784f180ea00`. Kod buildu: `a085a3371f6b82fd857e91fd0514d65539fe006d`. Gałąź: `feature/energy-combat-garage-refinement`. Unity 6000.3.14f1; nie scalono do main.
 
 ## Co zmieniono
 
@@ -15,9 +15,9 @@ Baza: PR #936 / `6d5636672a805619225d20a4097d3784f180ea00`. Kod buildu: `9b29b42
 
 ## Wyniki testów
 
-- Końcowy zestaw nowych funkcji w Unity EditMode: **18/18 PASS**, exit 0, na kodzie buildu.
+- Zestaw nowych funkcji w Unity EditMode: **18/18 PASS**, exit 0, przed końcowym usunięciem powtórzonych napisów. Po tej zmianie katalog, zakup i obsługa Esc: **3/3 PASS**, exit 0, na kodzie buildu.
 - Szerszy zestaw EditMode: **41/41 PASS**, exit 0, przed końcowym dodaniem okresowego taranowania; jego funkcję zweryfikowano następnie osobno: **6/6 PASS**, w tym rzeczywisty kontakt uzbrojonego i rozbrojonego wroga oraz autodestrukcję.
-- Pełny Unity PlayMode: **478/478 PASS**, exit 0, przed końcową zmianą cyklu AI i testowym rozszerzeniem Playera. Nie powtarzano całego PlayMode po tej niewielkiej zmianie; powtórzono testy dotyczące AI.
+- Pełny Unity PlayMode: **478/478 PASS**, exit 0, przed końcową zmianą cyklu AI, rozszerzeniem testowego Playera i usunięciem kilku powtórzeń w HUD. Nie powtarzano całego PlayMode po tych zmianach; powtórzono testy dotyczące AI oraz katalogu.
 - Pierwsza szeroka regresja dała **82/101 PASS**. Wykryte błędy były związane m.in. z nowym podwoziem w starszych konfiguracjach testowych, dodatkowymi częściami nagród oraz testem zużycia piły. Poprawione scenariusze uruchomiono ponownie: **20/21 PASS**, a ostatnią konfigurację 12 kół i osiągi sprawdzono później **3/3 PASS**. Nie przedstawia to ponownego pełnego przebiegu 101/101.
 - Unity / fizyka: w teście przyspieszenie po 0,6 s wyniosło 4,08 / 2,06 / 1,77 m/s dla lekkiego / średniego / ciężkiego. Próbę hamowania lekkiego wykonano automatycznie, bez oceny subiektywnej. Oba pojazdy wjechały na fizyczne rampy; mierzona maksymalna wysokość w krótkim przebiegu wyniosła 4,44 m i 1,32 m.
 - Windows x64 build: **PASS**, exit 0, 0 błędów, 2 ostrzeżenia. ZIP wypakowano i uruchomiono zawarty w nim Player w tle.
@@ -26,7 +26,7 @@ Baza: PR #936 / `6d5636672a805619225d20a4097d3784f180ea00`. Kod buildu: `9b29b42
 
 ## Build do testu
 
-`Builds/RoboRougelike_EnergyCombat_Garage_TEST_Windows_x64.zip`; 39 647 063 bajty; SHA-256 `59ca7638a54d3953eaac678a1f5a3a3f773d945bb8ceaf3805539400f02c9d89`. Wypakuj całe archiwum i uruchom `RoboRougelike.exe`.
+`Builds/RoboRougelike_EnergyCombat_Garage_TEST_v2_Windows_x64.zip`; 39 646 978 bajtów; SHA-256 `9f0c7b2286af14906d82236a6edbc020a548a3e1451779666fbba9b644933307`. Wypakuj całe archiwum i uruchom `RoboRougelike.exe`.
 
 W garażu wybierz **KATALOG CZĘŚCI**, kliknij typ, a następnie egzemplarz z odpowiednim HP lub kup część do magazynu. Po wyborze kliknij powierzchnię pojazdu. Na arenie obserwuj wskaźnik energii, turkusowe pole oraz niebieskie kostki.
 
