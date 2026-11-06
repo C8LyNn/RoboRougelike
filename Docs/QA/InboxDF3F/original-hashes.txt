@@ -22,3 +22,5 @@ weapons.json original_sha256=2db01745fe71f4e9bfcd10f0f388de5d8e11c11e60c0ea85d8a
 combat.json original_sha256=b1b60b92b95940a91621d2f9fff0f0cb34c0d936c454ef03f3ed714c65e6beda; published copy redacts user path and session metadata
 cold-save.json original_sha256=baadadcf6f3d52811cbf45d2c969358a842eaf9095576da70efa0b7870e825c3; published copy redacts user path and session metadata
 cold-load.json original_sha256=bef8b8013f74f2deb80afcb5f30e13ede85105bd662dc0930ad9a423670325dd; published copy redacts user path and session metadata
+
+FullEdit-Editor.log.zip original_log_sha256=b32b592bc56c5f7831252fae5db0ebfdb681547925b59e392ad23b80633349d1; published copy redacts user path and session metadata
