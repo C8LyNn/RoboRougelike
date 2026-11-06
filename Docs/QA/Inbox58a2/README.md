@@ -34,3 +34,6 @@ BumperExperiment: 3/3 PASS on isolated fdf working tree with two Armor parts at 
 
 BumperRegression: 20 PASS / 2 FAIL on working tree f104 plus two armor blocks and 2 count fixture changes. Failed: moving virtual-input pilot lost weapons on stage 3, and .6s acceleration Standard=1.9668 m/s versus Heavy=1.7694 (ordering correct, gap .1974 below existing .25 threshold). This supersedes no prior six-victory claim: different working state and independent pilot run. Two-block solution remains under evaluation and was not yet committed.
 
+
+SingleBumper experiment: 4/4 PASS, exit 0 on isolated fdf working tree with one Armor at (0,1,3). 9 m/s barrier peak speed 9, spin .16 rad/s, height 50.6500–50.6527, first impact on Armor; acceleration Light/Standard/Heavy 4.078174/2.019628/1.769371, Standard's .250257 m/s lead was very close to the existing .25 threshold. Twin physical gun shots and all 18 terrain traversals passed. This is not a full release regression.
+
