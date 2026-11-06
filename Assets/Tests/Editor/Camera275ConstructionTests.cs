@@ -23,7 +23,7 @@ public sealed class Camera275ConstructionTests
     IEnumerator Prepare(R3VehicleKind kind,string extra="")
     {
         Assert.That(run.SelectVehicle(kind)&&run.OpenSandboxGarage(),Is.True);
-        if(extra=="Tall")for(int y=2;y<=5;y++)Assert.That(run.GarageBuy(new Vector3Int(1,y,0),R3PartKind.Armor),Is.True,"Tall added cell "+y);
+        if(extra=="Tall")for(int y=2;y<=5;y++)Assert.That(run.GarageBuy(new Vector3Int(2,y,-2),R3PartKind.Armor),Is.True,"Tall added cell "+y);
         if(extra=="Wide")foreach(int sign in new[]{-1,1})for(int x=3;x<=6;x++)Assert.That(run.GarageBuy(new Vector3Int(sign*x,1,0),R3PartKind.Armor),Is.True,"Wide added cell "+sign*x);
         Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
         run.GetComponent<R6TestRange>().Layout.gameObject.SetActive(false);
@@ -84,11 +84,15 @@ public sealed class Camera275ConstructionTests
     {
         yield return Prepare(R3VehicleKind.Standard);
         var assembly=run.Player.GetComponent<R3VehicleAssembly>();var gun=assembly.Parts.First(p=>p.Kind==R3PartKind.Gun);
+        // The current standard starter carries two guns. Isolate the muzzle
+        // under test so the other gun cannot affect the aggregate counts.
+        foreach(var other in assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun&&p!=gun))other.gameObject.SetActive(false);
         gun.GunPivot.rotation=Quaternion.identity;
         var point=gun.Muzzle.position+gun.Muzzle.forward*30;
         wall=GameObject.CreatePrimitive(PrimitiveType.Cube);wall.name="CAM275 enclosing muzzle wall";
         wall.transform.position=gun.Muzzle.position;wall.transform.localScale=Vector3.one*.5f;Physics.SyncTransforms();
         var snapshot=RRLAimFeedback.Evaluate(assembly,run.Player.Controller,point,null);
+        Assert.That(snapshot.Guns,Is.EqualTo(1),"Inactive guns must not be advertised by aim feedback.");
         Assert.That(snapshot.InRange,Is.EqualTo(1));Assert.That(snapshot.Aligned,Is.EqualTo(1));
         Assert.That(snapshot.Clear,Is.Zero,"A ray starting inside an obstruction must not advertise a clear muzzle");
     }

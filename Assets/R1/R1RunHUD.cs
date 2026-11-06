@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Linq;
 using RoboRougelike.R3;
 using RoboRougelike.R4;
 using RoboRougelike.R4_1;
@@ -8,8 +9,9 @@ namespace RoboRougelike.R1
     public sealed partial class R1RunHUD : MonoBehaviour
     {
         private GUIStyle title, heading, body, small, button, compactButton;
-        private int weaponPage;
+
         private readonly Color panel = new Color(0.04f, 0.06f, 0.08f, 0.94f);
+        internal bool ClosePartCatalog(){if(!catalogOpen)return false;catalogOpen=false;return true;}
         private void Setup()
         {
             if (title != null) return;
@@ -43,7 +45,7 @@ namespace RoboRougelike.R1
             {
                 Draw(run);
                 if(!sessionOverlay&&run.MapEditing)run.MapEditorPointer(Event.current,rawPointer);
-                else if(!sessionOverlay&&run.Progress?.State==R1RunState.Garage&&!run.Transitioning&&!run.Paused&&!run.QuitRequested)run.Garage.HandleGuiPointer(Event.current,rawPointer);
+                else if(!sessionOverlay&&!catalogOpen&&run.Progress?.State==R1RunState.Garage&&!run.Transitioning&&!run.Paused&&!run.QuitRequested)run.Garage.HandleGuiPointer(Event.current,rawPointer);
             }
             finally { GUI.matrix = previous; GUI.enabled = true; }
         }
@@ -64,7 +66,8 @@ namespace RoboRougelike.R1
             var progress = run.Progress;
             if(run.MapEditing&&!run.Paused){DrawMapEditor(run);return;}
             if(progress.State==R1RunState.TestDrive){DrawTestRange(run);return;}
-            if(progress.State==R1RunState.Garage&&!run.Transitioning){DrawGarage(run);return;}
+            if(progress.State==R1RunState.Garage&&!run.Transitioning){if(catalogOpen)DrawFullCatalog(run);else DrawGarage(run);return;}
+            catalogOpen=false;
             if (progress.State == R1RunState.Combat && !run.Transitioning)
             {
                 Panel(new Rect(20, 18, 660, 180));
@@ -79,7 +82,8 @@ namespace RoboRougelike.R1
                     var physicsBody=player.GetComponent<Rigidbody>();
                     GUI.Label(new Rect(36, 126, 630, 25), $"Masa: {physicsBody.mass:0} kg • Prędkość: {physicsBody.linearVelocity.magnitude:0.0} m/s • Esc — pauza", small);
                     var energy=player.GetComponent<VehicleEnergyBank>();
-                    if(energy!=null)GUI.Label(new Rect(36,151,630,25),$"Energia: {energy.Current:0}/{energy.Maximum:0}  •  Turkusowe pole ładuje szybciej",small);
+                    if(energy!=null)GUI.Label(new Rect(36,151,630,25),$"Energia: {energy.Current:0}/{energy.Maximum:0}  •  Pole: 50% brakującej + 5%/s przez 10 s",small);
+                    if(run.PickupGraceRemaining>0)GUI.Label(new Rect(36,174,630,22),$"Zbierz energię: {run.PickupGraceRemaining:0.0} s • Enter — nagrody",small);
                 }
                 if (!run.Paused)
                 {
@@ -117,7 +121,8 @@ namespace RoboRougelike.R1
                     Panel(new Rect(x,205,360,280));
                     GUI.Label(new Rect(x+20,220,320,40),design.Name,heading);
                     GUI.Label(new Rect(x+20,270,320,90),design.Description,body);
-                    GUI.Label(new Rect(x+20,365,320,45),$"Części: {design.Parts.Count}  •  Jazda: {design.Speed:0.0} m/s\nRdzeń: {design.CoreHp:0} HP",small);
+                    float estimatedSpeed=R3VehicleAssembly.SpeedFor(design.Parts.Sum(R4WeaponDefinition.PartMass),design.Parts.Count(p=>p.Kind==R3PartKind.Wheel));
+                    GUI.Label(new Rect(x+20,365,320,45),$"Części: {design.Parts.Count}  •  Jazda: {estimatedSpeed:0.0} m/s\nRdzeń: {design.CoreHp:0} HP",small);
                     if(GUI.Button(new Rect(x+20,420,320,48),run.SelectedVehicle==kind?"WYBRANY":"Wybierz",button))run.SelectVehicle(kind);
                 }
                 GUI.Label(new Rect(90,505,900,62),"6 starć • 3 areny • elity • Oblężnik. Wybieraj ryzyko i zachowuj sprawne moduły. Po walce: jeden moduł z trzech + do 3 części z wraków → garaż.",body);
@@ -213,16 +218,16 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(175,580,130,40),"Zoom −",compactButton))garage.Zoom(1);
             if(GUI.Button(new Rect(30,630,275,40),"Dopasuj widok",compactButton))garage.FrameVehicle();
             GUI.Label(new Rect(30,676,280,25),"PPM — kamera • Q/E R/F Z/X — część",small);
-            if(GUI.Button(new Rect(970,25,280,38),inventoryOpen?"← Warsztat":$"Magazyn ({model.Inventory.Count}) →",compactButton))
-            {inventoryOpen=!inventoryOpen;garage.UseInventory=inventoryOpen;if(!inventoryOpen)garage.SelectedInventoryId=null;garage.RefreshMarker();}
+            if(GUI.Button(new Rect(970,25,280,38),inventoryOpen?"← Stan pojazdu":"Wybrany stos części →",compactButton))
+            {inventoryOpen=!inventoryOpen;garage.RefreshMarker();}
             if(inventoryOpen)DrawInventory(run);
             else {
             GUI.Label(new Rect(970,70,280,65),$"Komórka: {garage.Cell}\n{PartName(selected?.Kind??garage.SelectedPart)} {(selected==null?"— nowa część":"")}",body);
-            GUI.Label(new Rect(970,140,280,65),selected==null?$"Montaż: {model.Price(garage.SelectedPart,garage.SelectedWeapon)} Złomu":
+            GUI.Label(new Rect(970,140,280,65),selected==null?(garage.SelectedInventoryId!=null?"Wybrano egzemplarz z magazynu.":"Wybierz egzemplarz z katalogu części."):
                 $"{(selected.Health<=0?"Utracony plan":selected.Health<0.999f?"Zamontowana • uszkodzona":"Zamontowana • sprawna")} • HP: {selected.Health*100:0}%\n{(selected.Health<=0?"Odtworzenie":"Naprawa")}: {model.RepairCost(selected)} Złomu",small);
             string error=garage.PlacementIssue;
             GUI.enabled=garage.Tool==R41GarageTool.Mount&&error==null;
-            if(GUI.Button(new Rect(970,216,280,48),"Zamontuj w miejscu ghosta",compactButton))garage.ClickTarget();
+            GUI.Label(new Rect(970,216,280,48),"Montaż: wybierz egzemplarz i kliknij pojazd.",small);
             GUI.enabled=selected!=null&&model.RepairCost(selected)>0&&model.Scrap>=model.RepairCost(selected);
             if(GUI.Button(new Rect(970,275,280,48),selected!=null&&selected.Health<=0?"Odtwórz utraconą część":"Napraw wybraną część",button))
                 garage.Message=run.GarageRepair(garage.Cell)?"Przywrócono HP części.":"Najpierw odtwórz połączenie z konstrukcją.";
@@ -239,19 +244,7 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(970,465,280,56),$"Odbudowa awaryjna — {emergencyCost} Z\nniezbędne moduły: 100% HP",compactButton))
                 garage.Message=run.GarageEmergencyRepair()?"Odbudowano niezbędną broń, napęd i połączenia; koszt pobrano raz.":"Brak środków lub poprawnego planu napędu / rdzenia.";
             GUI.enabled=true;
-            int weaponPages=Mathf.Max(1,(R4WeaponDefinition.Count+2)/3);weaponPage=Mathf.Clamp(weaponPage,0,weaponPages-1);
-            for(int slot=0;slot<3;slot++)
-            {
-                int w=weaponPage*3+slot;if(w>=R4WeaponDefinition.Count)break;
-                string caption=w==0?"Działo":w==1?"Automat":w==2?"Ciężka":R4WeaponDefinition.Get((R4WeaponKind)w).ShortName;
-                if(GUI.Button(new Rect(970+slot*94,535,90,40),caption,compactButton))
-                {garage.SelectedWeapon=(R4WeaponKind)w;garage.SelectedPart=R3PartKind.Gun;partsPage=0;garage.SelectedInventoryId=null;garage.UseInventory=false;garage.SetTool(R41GarageTool.Mount);}
-            }
-            if(GUI.Button(new Rect(970,580,50,26),"‹",compactButton))weaponPage=(weaponPage+weaponPages-1)%weaponPages;
-            GUI.Label(new Rect(1028,582,155,25),$"Broń {weaponPage+1}/{weaponPages}",small);
-            if(GUI.Button(new Rect(1200,580,50,26),"›",compactButton))weaponPage=(weaponPage+1)%weaponPages;
-            GUI.Label(new Rect(970,615,280,48),selected==null?$"{R4WeaponDefinition.Get(garage.SelectedWeapon).Name}\n{error??"Miejsce poprawne."}":
-                $"{R4WeaponDefinition.PartName(selected)}\nDemontaż po zdjęciu: {model.DismantleValue(selected)} Z",small);
+
             }
             GUI.Label(new Rect(350,25,580,60),run.SandboxWorkshop?$"{model.Design.Name} • Warsztat poligonu":$"{model.Design.Name}  •  Następna walka {run.Progress.EncounterIndex+1}/{run.Progress.TotalEncounters}",heading);
             DrawReactorGarageAction(run);

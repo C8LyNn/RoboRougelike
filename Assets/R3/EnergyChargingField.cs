@@ -6,7 +6,8 @@ namespace RoboRougelike.R3
     /// <summary>A shared charging area; each vehicle is charged once per physics step.</summary>
     public sealed class EnergyChargingField : MonoBehaviour
     {
-        public const float ChargePerSecond = 25f;
+        public const float ChargeDuration = 10f;
+        readonly Dictionary<VehicleEnergyBank,float> nextUse = new Dictionary<VehicleEnergyBank,float>();
         readonly Collider[] hits = new Collider[1024];
         readonly HashSet<VehicleEnergyBank> vehicles = new HashSet<VehicleEnergyBank>();
         Material visualMaterial;
@@ -39,7 +40,11 @@ namespace RoboRougelike.R3
                 var bank=hits[i]!=null?hits[i].GetComponentInParent<VehicleEnergyBank>():null;
                 if(bank!=null&&bank.isActiveAndEnabled)vehicles.Add(bank);
             }
-            foreach(var bank in vehicles)bank.Recharge(ChargePerSecond*Time.fixedDeltaTime);
+            foreach(var bank in vehicles)
+            {
+                if(nextUse.TryGetValue(bank,out var ready)&&Time.time<ready)continue;
+                nextUse[bank]=Time.time+ChargeDuration;bank.ApplyFieldCharge();
+            }
         }
 
         void OnDestroy(){if(visualMaterial!=null)Destroy(visualMaterial);}

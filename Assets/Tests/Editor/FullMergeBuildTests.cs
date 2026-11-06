@@ -20,9 +20,10 @@ public sealed class FullMergeBuildTests
     }
     [UnityTest] public IEnumerator DirectBuyCannotUseGunAsStructuralScaffoldingOrSpendOnRefusal()
     {
-        var model=run.VehicleModel;var gun=model.Parts.Single(p=>p.Kind==R3PartKind.Gun);
+        var model=run.VehicleModel;var gun=model.Parts.First(p=>p.Kind==R3PartKind.Gun);
         var cell=gun.Cell+Vector3Int.up;Assert.That(model.At(cell),Is.Null);
         int money=model.Scrap;var ids=model.Parts.Select(p=>p.Id).ToArray();
+        Assert.That(model.PlacementError(cell,R3PartKind.Armor),Is.EqualTo("Brak zgodnego, połączonego z rdzeniem mocowania. Koło i broń nie są podporą konstrukcji."));
         Assert.That(model.Buy(cell,R3PartKind.Armor),Is.False,"Direct model API must respect the actual bound garage validator");
         Assert.That(model.Scrap,Is.EqualTo(money));Assert.That(model.Parts.Select(p=>p.Id),Is.EqualTo(ids));
         yield return null;
@@ -31,8 +32,9 @@ public sealed class FullMergeBuildTests
     {
         var model=run.VehicleModel;var stored=new R3PartState(default,R3PartKind.Wheel);
         Assert.That(model.ReceiveSalvage(new[]{stored}),Is.True);
-        var cell=model.Parts.Single(p=>p.Kind==R3PartKind.Gun).Cell+Vector3Int.up;
+        var cell=model.Parts.First(p=>p.Kind==R3PartKind.Gun).Cell+Vector3Int.up;
         int money=model.Scrap;var ids=model.Parts.Select(p=>p.Id).ToArray();
+        Assert.That(model.OwnedPlacementError(stored.Id,cell,default),Is.EqualTo("Brak zgodnego, połączonego z rdzeniem mocowania. Koło i broń nie są podporą konstrukcji."));
         Assert.That(model.Mount(stored.Id,cell),Is.False);
         Assert.That(model.Inventory.Single().Id,Is.EqualTo(stored.Id));Assert.That(model.Scrap,Is.EqualTo(money));
         Assert.That(model.Parts.Select(p=>p.Id),Is.EqualTo(ids));yield return null;
@@ -73,7 +75,7 @@ public sealed class FullMergeBuildTests
         var model=run.VehicleModel;var part=new R3PartState(default,R3PartKind.BonusModule)
             {UpgradeId="fm270-wide",UpgradeEffect=R1UpgradeEffect.Damage,UpgradeAmount=.25f};
         Assert.That(model.ReceiveSalvage(new[]{part}),Is.True);int money=model.Scrap;
-        Assert.That(run.GarageMount(part.Id,new Vector3Int(1,3,0),new Vector3Int(1,0,0)),Is.True);
+        Assert.That(run.GarageMount(part.Id,new Vector3Int(2,2,-2),new Vector3Int(1,0,0)),Is.True);
         yield return null;var mounted=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==part.Id);
         Assert.That(model.Inventory,Is.Empty);Assert.That(model.Parts.Count(p=>p.Id==part.Id),Is.EqualTo(1));
         Assert.That(mounted.GetComponentsInChildren<R3MountedPart>().Length,Is.EqualTo(1));
@@ -91,7 +93,7 @@ public sealed class FullMergeBuildTests
     {
         var wheel=run.Player.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Kind==R3PartKind.Wheel);
         Debug.Log("[Full270 wheel geometry] "+string.Join(",",wheel.GetComponentsInChildren<Collider>().Select(c=>c.GetType().Name+":"+c.transform.localScale)));
-        var cell=new Vector3Int(0,0,4);var rotation=new Vector3Int(0,1,0);
+        var cell=new Vector3Int(0,0,3);var rotation=new Vector3Int(0,1,0);
         Assert.That(run.GarageBuy(cell,R3PartKind.Wheel,rotation),Is.True,run.VehicleModel.PlacementError(cell,R3PartKind.Wheel,false,default,rotation));
         yield return null;
     }

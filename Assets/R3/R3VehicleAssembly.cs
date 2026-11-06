@@ -33,16 +33,18 @@ namespace RoboRougelike.R3
         }
         public void TuneChassis()
         {
-            int alive = Parts.Count(p => p != null && p.Operational && p.transform.IsChildOf(transform));
-            float original = Model.Design.Parts.Sum(R4WeaponDefinition.PartMass);
-            float mass=Parts.Where(p=>p!=null&&p.Operational).Sum(p=>RoboRougelike.R6.R6VehicleDrive.PartMass(p.Damageable));
-            float weightFactor = Mathf.Clamp(Mathf.Sqrt(original / Mathf.Max(1,mass)), 0.65f, 1.15f);
-            float wheelBonus = Mathf.Clamp(1 + (Model.Parts.Count(p => p.Kind == R3PartKind.Wheel) -
-                Model.Design.Parts.Count(p => p.Kind == R3PartKind.Wheel)) * 0.025f, 0.8f, 1.15f);
-            controller.ConfigureChassis(Model.Design.Speed * weightFactor * wheelBonus, Model.Design.TurnSpeed,
-                mass);
+            var active=Parts.Where(p=>p!=null&&p.Operational&&p.transform.IsChildOf(transform)).ToArray();
+            float mass=active.Sum(p=>RoboRougelike.R6.R6VehicleDrive.PartMass(p.Damageable));
+            int wheels=active.Count(p=>p.Kind==R3PartKind.Wheel);
+            controller.ConfigureChassis(SpeedFor(mass,wheels),TurnFor(mass),mass);
         }
-        public void AimGuns(Vector3 point)
+        public static float SpeedFor(float mass,int wheels)
+        {
+            float weight=Mathf.Clamp(Mathf.Sqrt(350f/Mathf.Max(1f,mass)),.6f,1.35f);
+            float support=Mathf.Clamp(Mathf.Sqrt(Mathf.Max(0,wheels)/4f),.7f,1.3f);
+            return Mathf.Clamp(7.5f*weight*support,2f,14f);
+        }
+        public static float TurnFor(float mass)=>Mathf.Clamp(82f*Mathf.Clamp(Mathf.Sqrt(350f/Mathf.Max(1f,mass)),.6f,1.35f),35f,130f);        public void AimGuns(Vector3 point)
         {
             foreach(var part in Parts)
                 if(part!=null && part.Kind==R3PartKind.Gun && part.Operational && part.GunPivot!=null&&!RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))

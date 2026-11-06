@@ -74,7 +74,8 @@ public sealed class MapgenRC1IntegrationTests
         foreach(var enemy in run.Encounter.Enemies)
             Assert.That(world.EnemySpawns.Any(p=>Vector2.Distance(new Vector2(p.x,p.z),new Vector2(enemy.transform.position.x,enemy.transform.position.z))<.5f),Is.True);
         Assert.That(run.Player.GetComponent<Rigidbody>().constraints,Is.EqualTo(RigidbodyConstraints.None));
-        yield return new WaitForSeconds(.8f);
+        float settledAt=Time.time+.8f;
+        while(Time.time<settledAt)yield return null;
         Assert.That(run.Player.GetComponent<R6VehicleDrive>().GroundedWheels,Is.GreaterThan(0));
         Assert.That(Physics.RaycastAll(run.Player.transform.position+Vector3.up*4,Vector3.down,15).Any(h=>h.collider.transform.IsChildOf(world.GeneratedRoot.transform)),Is.True);
         Assert.That(run.ReactorActive,Is.False);

@@ -75,6 +75,26 @@ public sealed class R1RunCheckpointIntegrationTests
         Assert.That(run.LoadRunCheckpoint(),Is.False,"A correctly checksummed save with duplicate IDs is still invalid");
         Assert.That(run.VehicleModel,Is.Null);yield return null;
     }
+    [UnityTest] public IEnumerator LegacyWideBridgeLoadsWithNoticeAndDoesNotOverwriteTheOriginalFile()
+    {
+        var progress=new R1RunProgress(6,true);Assert.That(progress.Start(),Is.True);Assert.That(progress.PrepareGarage(),Is.True);
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));var saved=model.MakeCheckpoint(Time.time);
+        saved.energyVersion=0;saved.hasA=saved.hasB=false;
+        var core=new R3PartState(Vector3Int.zero,R3PartKind.Core){DefenseRechargeAge=float.MaxValue};
+        var shield=new R3PartState(Vector3Int.right,R3PartKind.DirectionalShield,.8f){DefenseRechargeAge=float.MaxValue};
+        var armor=new R3PartState(new Vector3Int(3,0,0),R3PartKind.Armor,.55f){DefenseRechargeAge=float.MaxValue};
+        saved.mounted=new[]{core,shield,armor};saved.inventory=new R3PartState[0];
+        saved.wheels=new R3WheelCheckpoint[0];saved.groups=new R3GroupCheckpoint[0];
+        R1RunCheckpointStorage.Write(path,new R1RunCheckpoint{vehicle=(int)R3VehicleKind.Light,runId=Guid.NewGuid().ToString("N"),
+            progress=progress.MakeGarageCheckpoint(),model=saved});
+        string original=File.ReadAllText(path);
+        Assert.That(run.LoadRunCheckpoint(),Is.True,run.RunSaveMessage);
+        Assert.That(run.RunSaveMessage,Does.Contain("magazynu"));
+        Assert.That(run.VehicleModel.Inventory.Single(p=>p.Id==armor.Id).Health,Is.EqualTo(.55f));
+        Assert.That(run.VehicleModel.Parts.Select(p=>p.Id),Is.EquivalentTo(new[]{core.Id,shield.Id}));
+        Assert.That(File.ReadAllText(path),Is.EqualTo(original),"Loading must not modify the original save.");
+        yield return null;
+    }
     [UnityTearDown] public IEnumerator Cleanup()
     {
         if(File.Exists(path))File.Delete(path);R1RunCheckpointStorage.TestPath=null;

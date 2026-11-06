@@ -27,7 +27,7 @@ public class RRLW6ReloadInputTests
     [UnityTest] public IEnumerator KeyboardBufferTReachesActualRangeReloadController()
     {
         var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);
-        Assert.That(run.GarageBuyWeapon(new Vector3Int(1,2,0),R4WeaponKind.Shotgun),Is.True);
+        Assert.That(run.GarageBuyWeapon(new Vector3Int(0,2,2),R4WeaponKind.Shotgun),Is.True);
         Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
         yield return null;
         var gun=run.Player.GetComponentInChildren<RRLShotgunBinding>();
@@ -47,7 +47,7 @@ public class RRLW6ReloadInputTests
     [UnityTest] public IEnumerator GuiKeyboardTUsesSameReloadWithPauseAndOwnerGates()
     {
         var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);
-        Assert.That(run.GarageBuyWeapon(new Vector3Int(1,2,0),R4WeaponKind.Shotgun),Is.True);
+        Assert.That(run.GarageBuyWeapon(new Vector3Int(0,2,2),R4WeaponKind.Shotgun),Is.True);
         Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;yield return null;
         var controls=run.Player.GetComponent<RRLWeaponControls>();var gun=run.Player.GetComponentInChildren<RRLShotgunBinding>();
         var handler=typeof(RRLWeaponControls).GetMethod("HandleGuiInput");

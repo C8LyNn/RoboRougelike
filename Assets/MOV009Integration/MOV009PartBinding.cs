@@ -11,6 +11,7 @@ namespace RoboRougelike.MOV009Integration
         ActiveSuspensionModule module;
         public void Configure(R3MountedPart mounted,ActiveSuspensionModule support)
         {
+            if(part!=null&&part.Damageable!=null)part.Damageable.Died-=DisableSupport;
             part=mounted;module=support;part.Damageable.Died+=DisableSupport;
             module.SetAvailabilityFilter(()=>part!=null&&part.Operational&&!RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject));
             module.SetGroundFilter(IsTerrain);
@@ -19,6 +20,13 @@ namespace RoboRougelike.MOV009Integration
             collider.GetComponentInParent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>()==null &&
             collider.GetComponentInParent<R3Debris>()==null;
         void DisableSupport(){if(module!=null)module.SetOperational(false);}
+        void OnTransformParentChanged()
+        {
+            // The sensor is a child of this part: rebind its controller when the
+            // part itself is detached or transferred to a different vehicle.
+            if(module==null||!module.enabled)return;
+            module.enabled=false;module.enabled=true;
+        }
         void OnDestroy(){if(part!=null&&part.Damageable!=null)part.Damageable.Died-=DisableSupport;}
     }
 }

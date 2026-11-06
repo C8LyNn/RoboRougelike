@@ -54,7 +54,7 @@ public class RRLW6BeamPhysicalTests
         Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));
         Assert.That(run.ConfirmRewards(Array.Empty<string>(),new[]{0}),Is.True);run.VehicleModel.Award(200);
         Assert.That(Time.timeScale,Is.Zero);
-        Assert.That(run.GarageBuyWeapon(new Vector3Int(1,2,0),R4WeaponKind.BeamCutter),Is.True);
+        Assert.That(run.GarageBuyWeapon(new Vector3Int(0,2,2),R4WeaponKind.BeamCutter),Is.True);
         int ready=Time.frameCount+3;while(Time.frameCount<ready)yield return null;
         var beam=run.Player.GetComponentInChildren<BeamCutterModule>();Assert.That(beam,Is.Not.Null);
         Assert.That(beam.GetComponentInChildren<LineRenderer>().enabled,Is.False,"An idle beam is already hidden by the source module");

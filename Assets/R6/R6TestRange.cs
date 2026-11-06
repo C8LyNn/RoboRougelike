@@ -34,6 +34,13 @@ namespace RoboRougelike.R6
             Box("Ściana zderzeniowa",new Vector3(23,2,-4),new Vector3(3,4,18));
             for(int i=0;i<4;i++)Box("Slalom "+(i+1),new Vector3(i%2==0?-6:6,1,-10+i*7),new Vector3(2,2,2));
             for(int i=0;i<3;i++)Target(new Vector3((i-1)*13,.65f,22));
+            foreach(int side in new[]{-1,1})
+            {
+                var ramp=GameObject.CreatePrimitive(PrimitiveType.Cube);ramp.name="Rampa terenu • poligon";
+                ramp.transform.SetParent(Layout,false);ramp.transform.localPosition=new Vector3(side*18,1.53f,10);
+                ramp.transform.localRotation=Quaternion.Euler(18,0,0);ramp.transform.localScale=new Vector3(8,.35f,11);
+                ramp.GetComponent<Renderer>().sharedMaterial=material;
+            }
             RoboRougelike.MOV009Integration.MOV009TerrainCourse.BuildPracticeCourse(Layout,material);
             RoboRougelike.MOVSeries.MOVSeriesRange.Build(Layout,palette);
             var dummy=R3VehicleAssembly.Build(new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard)),new R1RunStats(),palette,new Vector3(-18,.7f,-5),Quaternion.identity);

@@ -45,6 +45,8 @@ namespace RoboRougelike.R1
         private Vector3 playerSpawn;
         private Quaternion playerRotation;
         private int lastEscapeFrame=-1;
+        float pickupGraceDeadline=-1;
+        public float PickupGraceRemaining=>pickupGraceDeadline<0?0:Mathf.Max(0,pickupGraceDeadline-Time.time);
 
         private void Awake() { Instance = this; }
 
@@ -147,6 +149,8 @@ namespace RoboRougelike.R1
             if(Transitioning||VehicleModel==null||!VehicleModel.CanDeploy||!Progress.LeaveGarage())return false;
             Garage.Close();SetSimulation(false);return true;
         }
+        public bool GaragePurchase(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic) =>
+            !Transitioning&&Progress?.State==R1RunState.Garage&&VehicleModel!=null&&VehicleModel.PurchaseToInventory(kind,weapon);
         public bool GarageBuy(Vector3Int cell,R3PartKind kind,Vector3Int rotation=default) =>
             EditGarage(()=>VehicleModel.Buy(cell,kind,R4WeaponKind.Basic,rotation));
         public bool GarageBuyWeapon(Vector3Int cell,R4WeaponKind kind,Vector3Int rotation=default) =>
@@ -217,12 +221,14 @@ namespace RoboRougelike.R1
         private IEnumerator BeginEncounter()
         {
             Transitioning = true; Paused = false; SetSimulation(false);
+            pickupGraceDeadline=-1;
             Encounter.Clear();
             if(ld02Requested)playerSpawn=ActivateLD02Arena();
             else if(roadRequested)playerSpawn=ActivateRoadWorld();
             else if(mapgenRequested)playerSpawn=ActivateGeneratedArena();
             else {Arena.Build(CurrentEncounter.Arena);playerSpawn=Arena.PlayerSpawn;}
             var encounterRotation=ld02Requested?Quaternion.Euler(0,90,0):playerRotation;
+            VehicleModel.PrepareInitialEnergy();
             if(Player==null)Player=R3VehicleAssembly.Build(VehicleModel,Progress.Stats,palette,playerSpawn,encounterRotation);
             else Player.MoveTo(playerSpawn,encounterRotation);
             Player.Controller.SetGameplayInputEnabled(false);
@@ -270,6 +276,12 @@ namespace RoboRougelike.R1
             else if(!UpdateFullActivity())return;
             else if (Encounter.Cleared||CheckpointRace?.Won==true||RoadChallenge?.Status==RoboRougelike.MapSystemR4.MapR4Status.Completed)
             {
+                if(Encounter.Cleared&&CheckpointRace?.Won!=true&&RoadChallenge?.Status!=RoboRougelike.MapSystemR4.MapR4Status.Completed)
+                {
+                    bool drops=FindObjectsByType<EnergyPickup>(FindObjectsSortMode.None).Length>0;
+                    if(drops&&pickupGraceDeadline<0)pickupGraceDeadline=Time.time+8f;
+                    if(drops&&Time.time<pickupGraceDeadline)return;
+                }
                 Player.GetComponent<R3VehicleAssembly>().Capture();
                 // The victory transition validates and creates its offers first.
                 // A malformed catalog must never pay the wallet while the run
@@ -304,6 +316,7 @@ namespace RoboRougelike.R1
 #if ENABLE_INPUT_SYSTEM
             var keyboard = Keyboard.current;
             if (keyboard == null) return;
+            if(PickupGraceRemaining>0&&keyboard.enterKey.wasPressedThisFrame){pickupGraceDeadline=Time.time;return;}
             if (Progress.State == R1RunState.Ready && keyboard.enterKey.wasPressedThisFrame) PrepareUnifiedRun();
             else if(Progress.State==R1RunState.Salvage)GetComponent<R1RunHUD>()?.ReadRewardInput(keyboard);
             else if (Progress.State == R1RunState.UpgradeChoice)
@@ -329,7 +342,9 @@ namespace RoboRougelike.R1
         public void HandleEscape()
         {
             if(lastEscapeFrame==Time.frameCount)return;
-            lastEscapeFrame=Time.frameCount;TogglePause();
+            lastEscapeFrame=Time.frameCount;
+            if(GetComponent<R1RunHUD>()?.ClosePartCatalog()==true)return;
+            TogglePause();
         }
 
         private void SetSimulation(bool active)

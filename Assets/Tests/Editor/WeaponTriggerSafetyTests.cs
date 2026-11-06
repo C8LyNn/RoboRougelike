@@ -18,9 +18,11 @@ public sealed class WeaponTriggerSafetyTests
         EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);yield return new EnterPlayMode();
         var until=Time.realtimeSinceStartup+15;while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<until)yield return null;
         var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);
-        var old=run.VehicleModel.Parts.First(p=>p.Kind==R3PartKind.Gun);
-        Assert.That(run.GarageBuyWeapon(new Vector3Int(1,2,0),R4WeaponKind.BeamCutter),Is.True);
-        Assert.That(run.GarageRemove(old.Cell),Is.True);Assert.That(run.EnterTestRange(),Is.True);
+        var old=run.VehicleModel.Parts.Where(p=>p.Kind==R3PartKind.Gun).ToArray();
+        Assert.That(old.Length,Is.EqualTo(2));
+        Assert.That(run.GarageBuyWeapon(new Vector3Int(0,2,2),R4WeaponKind.BeamCutter),Is.True);
+        foreach(var gun in old)Assert.That(run.GarageRemove(gun.Cell),Is.True);
+        Assert.That(run.EnterTestRange(),Is.True);
         while(run.Transitioning)yield return null;yield return null;
         var controller=run.Player.Controller;var assembly=run.Player.GetComponent<R3VehicleAssembly>();
         var beam=assembly.Parts.Single(p=>p.Kind==R3PartKind.Gun).GetComponent<RRLBeamBinding>();

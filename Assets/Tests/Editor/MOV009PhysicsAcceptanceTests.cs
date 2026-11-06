@@ -83,10 +83,22 @@ public class MOV009PhysicsAcceptanceTests
     [UnityTest] public IEnumerator IncreasedRealConstructionMassSettlesAndLosesOneThenTwoSupports()
     {
         Floor(100);var model=Model(R3VehicleKind.Standard);
-        for(int x=-2;x<=2;x++)for(int z=-2;z<=2;z++)if(x!=0||z!=0)Assert.That(model.Buy(new Vector3Int(x,2,z),R3PartKind.Armor),Is.True);
+        float baseMass=model.Parts.Sum(p=>RoboRougelike.R4.R4WeaponDefinition.PartMass(p));
+        var originalIds=model.Parts.Select(p=>p.Id).ToArray();
+        for(int x=-2;x<=2;x++)for(int z=-2;z<=2;z++)
+        {
+            var cell=new Vector3Int(x,2,z);
+            if((x==0&&z==0)||model.At(cell)!=null)continue;
+            Assert.That(model.Buy(cell,R3PartKind.Armor),Is.True,"Armor at "+cell);
+        }
         var vehicle=Build(model,100);var body=vehicle.GetComponent<Rigidbody>();var adapter=vehicle.GetComponent<MOV009VehicleAdapter>();
-        Assert.That(body.mass,Is.EqualTo(968).Within(.1));
-        var parts=vehicle.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p.Kind==R3PartKind.Suspension).ToArray();
+        var mounted=vehicle.GetComponent<R3VehicleAssembly>().Parts;
+        var added=mounted.Where(p=>!originalIds.Contains(p.Id)).ToArray();
+        Assert.That(added.Length,Is.EqualTo(22));
+        float addedMass=added.Sum(p=>RoboRougelike.R6.R6VehicleDrive.PartMass(p.Damageable));
+        Assert.That(addedMass,Is.GreaterThan(150));
+        Assert.That(body.mass,Is.EqualTo(baseMass+addedMass).Within(.1));
+        var parts=mounted.Where(p=>p.Kind==R3PartKind.Suspension).ToArray();
         for(int lost=0;lost<=2;lost++)
         {
             if(lost>0)parts[lost-1].Damageable.ApplyDamage(10000,parts[lost-1].transform.position,Vector3.zero);

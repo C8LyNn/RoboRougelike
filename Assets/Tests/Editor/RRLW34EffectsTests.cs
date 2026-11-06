@@ -37,7 +37,7 @@ public class RRLW34EffectsTests
         var d=ScriptableObject.CreateInstance<R1UpgradeDefinition>();d.Id=Guid.NewGuid().ToString("N");
         d.Title=effect.ToString();d.Effect=effect;d.Amount=amount;definitions.Add(d);return d;
     }
-    static Vector3Int Slot(int i)=>i<6?new Vector3Int(i<3?1:-2,2,(i%3)*2):new Vector3Int(1,3,(i-6)*2);
+    static Vector3Int Slot(int i)=>new Vector3Int((i%5)-2,2,i<5?-2:2);
     R3VehicleModel Model(params R1UpgradeDefinition[] bonuses)
     {
         var m=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
@@ -130,7 +130,7 @@ public class RRLW34EffectsTests
         Assert.That(run.OpenSandboxGarage(),Is.True);
         Assert.That(run.VehicleModel.ReceiveBonuses(new[]{Upgrade(R1UpgradeEffect.Damage)}),Is.True);
         string id=run.VehicleModel.Inventory.Single().Id;
-        Assert.That(run.GarageMount(id,new Vector3Int(1,2,0)),Is.True);
+        Assert.That(run.GarageMount(id,new Vector3Int(2,2,-2)),Is.True);
         Assert.That(run.ActiveStats.Damage,Is.EqualTo(1.25f).Within(.001));
         Assert.That(run.EnterTestRange(),Is.True);yield return Until(()=>!run.Transitioning,"Range entry");
         var module=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==id);
@@ -152,7 +152,7 @@ public class RRLW34EffectsTests
         Assert.That(ids.Length,Is.EqualTo(3));Assert.That(run.ConfirmRewards(ids,new[]{0}),Is.True);
         Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(4));
         var bonus=run.VehicleModel.Inventory.Single(p=>p.Kind==R3PartKind.BonusModule);string id=bonus.Id;
-        Assert.That(run.GarageMount(id,new Vector3Int(1,2,0)),Is.True);
+        Assert.That(run.GarageMount(id,new Vector3Int(2,2,-2)),Is.True);
         var expected=run.ActiveStats.Copy();Assert.That(run.StartNextEncounter(),Is.True);
         Assert.That(run.ChooseRoute(0),Is.True);yield return Until(()=>!run.Transitioning,"Next map");run.Encounter.SetCombatActive(false);
         Assert.That(run.ActiveStats.Damage,Is.EqualTo(expected.Damage));Assert.That(run.ActiveStats.Hull,Is.EqualTo(expected.Hull));
@@ -165,7 +165,7 @@ public class RRLW34EffectsTests
         var state=run.VehicleModel.Parts.Single(p=>p.Id==id);Assert.That(state.Health,Is.Zero);
         run.VehicleModel.Award(100);int before=run.VehicleModel.Scrap;
         Assert.That(run.GarageRepair(state.Cell),Is.True);Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before-21));
-        Assert.That(run.GarageRemove(state.Cell),Is.True);Assert.That(run.GarageMount(id,new Vector3Int(1,2,0)),Is.True);
+        Assert.That(run.GarageRemove(state.Cell),Is.True);Assert.That(run.GarageMount(id,new Vector3Int(2,2,-2)),Is.True);
         Assert.That(run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==id).Operational,Is.True);
         Assert.That(run.ActiveStats.Damage,Is.EqualTo(expected.Damage));Assert.That(run.ActiveStats.Hull,Is.EqualTo(expected.Hull));
     }
@@ -173,7 +173,7 @@ public class RRLW34EffectsTests
     {
         foreach(var turns in new[]{new Vector3Int(0,1,0),new Vector3Int(1,0,0),new Vector3Int(0,0,1),new Vector3Int(-1,2,1)})
         {
-            var m=Model();m.Parts.Add(new R3PartState(new Vector3Int(1,2,0),R3PartKind.Booster){RotationQuarterTurns=turns});
+            var m=Model();m.Parts.Add(new R3PartState(new Vector3Int(0,2,2),R3PartKind.Booster){RotationQuarterTurns=turns});
             var v=Build(m);var body=v.GetComponent<Rigidbody>();body.constraints=RigidbodyConstraints.FreezeRotation;body.useGravity=false;
             v.Controller.SetGameplayInputEnabled(true);
             var part=v.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Kind==R3PartKind.Booster);

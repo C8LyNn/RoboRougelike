@@ -9,7 +9,7 @@ public class MOV009ModelTests
     public static Vector3Int[] Cells(R3VehicleKind kind)
     {
         int w=kind==R3VehicleKind.Light?1:kind==R3VehicleKind.Heavy?3:2;
-        int z=kind==R3VehicleKind.Light?3:kind==R3VehicleKind.Heavy?5:4;
+        int z=kind==R3VehicleKind.Light?3:kind==R3VehicleKind.Heavy?4:3;
         return new[]{new Vector3Int(-w,0,-z),new Vector3Int(w,0,-z),new Vector3Int(-w,0,z),new Vector3Int(w,0,z)};
     }
     [Test] public void SuspensionPurchaseUsesOwnPriceAndMountingRules()

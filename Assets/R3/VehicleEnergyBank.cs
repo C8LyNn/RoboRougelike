@@ -66,7 +66,7 @@ namespace RoboRougelike.R3
             }
         }
 
-        void FixedUpdate(){Refresh();state.Advance(Time.fixedDeltaTime);}
+        void FixedUpdate(){Refresh();var body=GetComponent<Rigidbody>();bool stopped=assembly!=null&&body!=null&&body.linearVelocity.sqrMagnitude<.0025f&&body.angularVelocity.sqrMagnitude<.01f;state.AdvanceWithMotion(Time.fixedDeltaTime,stopped);}
         public bool CanSpend(float amount){Refresh();return !float.IsNaN(amount)&&!float.IsInfinity(amount)&&amount>=0&&amount<=state.Current;}
         public bool TrySpend(float amount){Refresh();return state.TrySpend(amount);}
         public bool TryConsume(float amount)=>TrySpend(amount);
@@ -75,6 +75,8 @@ namespace RoboRougelike.R3
         public void Refund(float amount)=>state.Recharge(amount);
         public void RefundEnergy(float amount)=>state.Recharge(amount);
         public void Recharge(float amount){Refresh();state.Recharge(amount);}
+        public void ApplyFieldCharge(){Refresh();state.ApplyFieldCharge();}
+        public void ApplyEnergyPickup(){Refresh();state.ApplyEnergyPickup();}
     }
 
     /// <summary>Marks an enemy's real damageable battery, not a second energy pool.</summary>

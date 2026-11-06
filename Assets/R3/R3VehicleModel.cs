@@ -69,6 +69,8 @@ namespace RoboRougelike.R3
         public IReadOnlyList<R3PartState> Inventory => inventory;
         public int Scrap { get; private set; }
         public VehicleEnergyState Energy { get; } = new VehicleEnergyState();
+        internal bool InitialEnergyPrepared;
+        public void PrepareInitialEnergy(){if(InitialEnergyPrepared)return;RefreshEnergyLayout();Energy.Fill();InitialEnergyPrepared=true;}
         private Func<R3PartState,string> installationGate;
         internal void SetInstallationGate(Func<R3PartState,string> gate) { installationGate=gate; }
         private Func<IReadOnlyList<R3PartState>,bool> restorationGate;
@@ -123,7 +125,7 @@ namespace RoboRougelike.R3
         public R3GarageEconomy Economy { get; }
         public R3VehicleModel(R3VehicleDesign design, R3GarageEconomy economy = null)
         { Design = design; Parts = design.Parts.Select(p => {var part=p.Copy();part.Id=Guid.NewGuid().ToString("N");return part;}).ToList(); Economy = economy ?? new R3GarageEconomy();
-            foreach(var part in Parts.Where(p=>p.Kind==R3PartKind.Wheel))factoryWheels.Add(part.Id,new FactoryWheelPose(part)); }
+            foreach(var part in Parts.Where(p=>p.Kind==R3PartKind.Wheel))factoryWheels.Add(part.Id,new FactoryWheelPose(part)); RefreshEnergyLayout(); Energy.Fill(); }
         public static readonly Vector3Int[] Neighbours = { Vector3Int.left, Vector3Int.right, Vector3Int.up,
             Vector3Int.down, Vector3Int.forward, Vector3Int.back };
         public R3VehicleModel DeepCopy()
@@ -134,7 +136,7 @@ namespace RoboRougelike.R3
             copy.Parts.Clear();copy.Parts.AddRange(Parts.Select(p=>p.Copy()));copy.inventory.AddRange(inventory.Select(p=>p.Copy()));copy.Scrap=Scrap;
             copy.factoryWheels.Clear();foreach(var item in factoryWheels)copy.factoryWheels.Add(item.Key,item.Value);
             copy.SuspensionEnabled=SuspensionEnabled;copy.SuspensionMode=SuspensionMode;copy.SuspensionHeightOffset=SuspensionHeightOffset;
-            copy.RefreshEnergyLayout();copy.Energy.Restore(Energy.Current);
+            copy.RefreshEnergyLayout();copy.Energy.Restore(Energy.Current);copy.InitialEnergyPrepared=InitialEnergyPrepared;
             copy.SelectedDrive=SelectedDrive;copy.GyroEnabled=GyroEnabled;copy.BoosterThrustNewtons=BoosterThrustNewtons;
             copy.BoosterDurationSeconds=BoosterDurationSeconds;copy.GrappleReadyAt=GrappleReadyAt;
             copy.HoverHeightMeters=HoverHeightMeters;
@@ -244,7 +246,12 @@ namespace RoboRougelike.R3
             Parts.Add(new R3PartState(cell,kind){Weapon=weapon,RotationQuarterTurns=rotation});
             return true;
         }
-        public int RepairCost(R3PartState part)
+        public bool PurchaseToInventory(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic)
+        {
+            if(kind==R3PartKind.Core||kind==R3PartKind.BonusModule||!ValidEconomicKind(kind,weapon)||inventory.Count>=InventoryCapacity)return false;
+            int price=Price(kind,weapon);if(price<=0||Scrap<price)return false;
+            Scrap-=price;inventory.Add(new R3PartState(default,kind){Weapon=weapon});return true;
+        }        public int RepairCost(R3PartState part)
         {
             if (!ValidEconomicPart(part) || part.Health >= 1f) return 0;
             // Apply the existing proportional repair rate continuously to owned wrecks.

@@ -41,9 +41,19 @@ public class R41GarageTests
     }
     private Ray TopRay(Vector3Int cell)
     {var root=Run.Player.transform;return new Ray(root.TransformPoint((Vector3)cell*0.55f+Vector3.up*4),-root.up);}
+    private string PurchasePart(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic)
+    {
+        int funds=Run.VehicleModel.Scrap;int count=Run.VehicleModel.Inventory.Count;
+        Assert.That(Run.GaragePurchase(kind,weapon),Is.True);
+        Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(funds-Run.VehicleModel.Price(kind,weapon)));
+        Assert.That(Run.VehicleModel.Inventory.Count,Is.EqualTo(count+1));
+        var part=Run.VehicleModel.Inventory.Last();Assert.That(part.Kind,Is.EqualTo(kind));Assert.That(part.Weapon,Is.EqualTo(weapon));
+        return part.Id;
+    }
     [UnityTest] public IEnumerator DirectFaceClickMountsExactlyAtGhostWithoutMovingTheVehicle()
     {
         var garage=Run.Garage;var anchor=new Vector3Int(2,1,2);var target=anchor+Vector3Int.up;
+        string id=PurchasePart(R3PartKind.Armor);garage.ChooseInventory(id);
         Assert.That(garage.Point(TopRay(anchor)),Is.True);Assert.That(garage.Cell,Is.EqualTo(target));
         Assert.That(garage.PreviewValid,Is.True);Vector3 ghost=garage.Preview.position;
         var validColor=garage.Preview.GetComponent<Renderer>().sharedMaterial.GetColor("_BaseColor");Assert.That(validColor.g,Is.GreaterThan(validColor.r));
@@ -51,16 +61,21 @@ public class R41GarageTests
         Assert.That(garage.ClickTarget(),Is.True);var mounted=Run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Cell==target);
         Assert.That(Vector3.Distance(mounted.transform.position,ghost),Is.LessThan(0.001f),"Część po kliknięciu musi pokrywać się z ghostem w świecie.");
         Assert.That(Quaternion.Angle(Run.Player.transform.rotation,rotation),Is.LessThan(0.001));
-        Assert.That(Run.Player.transform.position,Is.EqualTo(position));Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(funds-5));
+        Assert.That(Run.Player.transform.position,Is.EqualTo(position));Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(funds));
+        string secondId=PurchasePart(R3PartKind.Armor);garage.ChooseInventory(secondId);garage.Select(target);funds=Run.VehicleModel.Scrap;
+        Assert.That(garage.PlacementIssue,Does.Contain("Zajęte pole"));
         Assert.That(garage.PreviewValid,Is.False,"Zajęta komórka blokuje ponowny montaż.");
         var invalidColor=garage.Preview.GetComponent<Renderer>().sharedMaterial.GetColor("_BaseColor");Assert.That(invalidColor.r,Is.GreaterThan(invalidColor.g));
-        Assert.That(garage.ClickTarget(),Is.False);Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(funds-5));
+        Assert.That(garage.ClickTarget(),Is.False);Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(funds));
+        Assert.That(Run.VehicleModel.Inventory.Any(p=>p.Id==secondId),Is.True);
         yield return null;
     }
     [UnityTest] public IEnumerator PointedRepairRemovalAndInventoryMountUseActualPartAndSurviveNextFight()
     {
-        var garage=Run.Garage;var cell=new Vector3Int(2,2,2);garage.Point(TopRay(cell-Vector3Int.up));garage.ClickTarget();
+        var garage=Run.Garage;var cell=new Vector3Int(2,2,2);string purchased=PurchasePart(R3PartKind.Armor);garage.ChooseInventory(purchased);
+        Assert.That(garage.Point(TopRay(cell-Vector3Int.up)),Is.True);Assert.That(garage.Cell,Is.EqualTo(cell));Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);
         var mounted=Run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Cell==cell);string id=mounted.Id;
+        Assert.That(id,Is.EqualTo(purchased));
         mounted.Damageable.ApplyDamage(mounted.Damageable.MaxHp*0.4f,mounted.transform.position,Vector3.up);
         Run.Player.GetComponent<R3VehicleAssembly>().Capture();garage.SetTool(R41GarageTool.Repair);
         Assert.That(garage.Point(TopRay(cell)),Is.True);Assert.That(garage.Cell,Is.EqualTo(cell));
@@ -68,7 +83,7 @@ public class R41GarageTests
         Assert.That(Run.VehicleModel.At(cell).Health,Is.EqualTo(1));Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(funds-1),"ceil(armor5 * missing0.4 * 0.35) = 1.");
         garage.SetTool(R41GarageTool.Remove);Assert.That(garage.Point(TopRay(cell)),Is.True);Assert.That(garage.ClickTarget(),Is.True);
         Assert.That(Run.VehicleModel.At(cell),Is.Null);Assert.That(Run.VehicleModel.Inventory.Single(p=>p.Id==id).Health,Is.EqualTo(1));
-        garage.SelectedInventoryId=id;garage.SetTool(R41GarageTool.Mount);Assert.That(garage.Point(TopRay(cell-Vector3Int.up)),Is.True);
+        garage.ChooseInventory(id);Assert.That(garage.Point(TopRay(cell-Vector3Int.up)),Is.True);
         funds=Run.VehicleModel.Scrap;Assert.That(garage.ClickTarget(),Is.True);Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(funds));
         Assert.That(Run.VehicleModel.At(cell).Id,Is.EqualTo(id));Assert.That(Run.StartNextEncounter(),Is.True);
         yield return Until(()=>!Run.Transitioning,"Następne starcie");Run.Encounter.SetCombatActive(false);
@@ -88,17 +103,19 @@ public class R41GarageTests
         Run.Garage.SetTool(R41GarageTool.Repair);
         Assert.That(Run.Garage.Point(TopRay(cell)),Is.True);Assert.That(Run.Garage.Cell,Is.EqualTo(cell));
         Assert.That(Run.VehicleModel.At(cell).Health,Is.Zero);Assert.That(Run.Garage.ClickTarget(),Is.True);
-        Assert.That(Run.VehicleModel.At(cell).Health,Is.EqualTo(1));Assert.That(Run.Player.Modules.ActiveWheelCount,Is.EqualTo(12));
+        Assert.That(Run.VehicleModel.At(cell).Health,Is.EqualTo(1));Assert.That(Run.Player.Modules.ActiveWheelCount,Is.EqualTo(6));
         Assert.That(Run.Garage.Preview.GetComponentsInChildren<Collider>().All(c=>!c.enabled),Is.True);
         yield return null;
     }
     [UnityTest] public IEnumerator WeaponGhostGeometryAndOrientationMatchMountedHeavyCannon()
     {
-        Run.VehicleModel.Award(100);var garage=Run.Garage;garage.SelectedPart=R3PartKind.Gun;garage.SelectedWeapon=R4WeaponKind.Heavy;
-        garage.SetTool(R41GarageTool.Mount);garage.Point(TopRay(new Vector3Int(2,1,2)));
+        Run.VehicleModel.Award(100);var garage=Run.Garage;string id=PurchasePart(R3PartKind.Gun,R4WeaponKind.Heavy);garage.ChooseInventory(id);
+        Assert.That(garage.Point(TopRay(new Vector3Int(2,1,2))),Is.True);Assert.That(garage.Cell,Is.EqualTo(new Vector3Int(2,2,2)));
+        Assert.That(garage.PreviewValid,Is.True,garage.PlacementIssue);
         var ghostBarrel=garage.Preview.Find("Obrót broni/Lufa");var size=ghostBarrel.localScale;var local=ghostBarrel.localPosition;
         var localRotation=garage.Preview.localRotation;var cell=garage.Cell;
-        Assert.That(garage.ClickTarget(),Is.True);var barrel=Run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Cell==cell).GunPivot.Find("Lufa");
+        int mountFunds=Run.VehicleModel.Scrap;Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(mountFunds));
+        var mounted=Run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Cell==cell);Assert.That(mounted.Id,Is.EqualTo(id));var barrel=mounted.GunPivot.Find("Lufa");
         Assert.That(barrel.localScale,Is.EqualTo(size));Assert.That(barrel.localPosition,Is.EqualTo(local));
         Assert.That(localRotation,Is.EqualTo(Quaternion.identity));
         Assert.That(garage.Preview.GetComponentsInChildren<Collider>().All(c=>!c.enabled),Is.True);
@@ -138,14 +155,16 @@ public class R41GarageTests
     }
     [UnityTest] public IEnumerator SpentInventorySelectionNeverFallsBackToPaidPurchase()
     {
-        var garage=Run.Garage;var cell=new Vector3Int(2,2,2);Assert.That(garage.Point(TopRay(cell-Vector3Int.up)),Is.True);garage.ClickTarget();
-        string id=Run.VehicleModel.At(cell).Id;Run.GarageRemove(cell);
-        garage.SelectedInventoryId=id;garage.SetTool(R41GarageTool.Mount);garage.Point(TopRay(cell-Vector3Int.up));
+        var garage=Run.Garage;var cell=new Vector3Int(2,2,2);string id=PurchasePart(R3PartKind.Armor);garage.ChooseInventory(id);
+        Assert.That(garage.Point(TopRay(cell-Vector3Int.up)),Is.True);Assert.That(garage.Cell,Is.EqualTo(cell));Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);
+        Assert.That(Run.VehicleModel.At(cell).Id,Is.EqualTo(id));Assert.That(Run.GarageRemove(cell),Is.True);
+        garage.ChooseInventory(id);Assert.That(garage.Point(TopRay(cell-Vector3Int.up)),Is.True);
         int funds=Run.VehicleModel.Scrap;Assert.That(garage.ClickTarget(),Is.True);Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(funds));
-        garage.Point(TopRay(new Vector3Int(-2,1,2)));
+        Assert.That(garage.Point(TopRay(new Vector3Int(-2,1,2))),Is.True);
+        Assert.That(garage.Cell,Is.EqualTo(new Vector3Int(-2,2,2)));Assert.That(garage.PlacementIssue,Does.Contain("Wybierz kolejną część"));
         Assert.That(garage.ClickTarget(),Is.False,"Po zużyciu przedmiotu klik nie może kupić części bez świadomego wyboru zakupu.");
         Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(funds));
-        garage.UseInventory=true;garage.SelectedInventoryId=null;garage.Point(TopRay(new Vector3Int(-2,1,2)));
+        garage.UseInventory=true;garage.SelectedInventoryId=null;Assert.That(garage.Point(TopRay(new Vector3Int(-2,1,2))),Is.True);
         Assert.That(garage.ClickTarget(),Is.False,"Pusty wybór w otwartym magazynie również nie jest zakupem.");
         Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(funds));
         yield return null;

@@ -41,7 +41,38 @@ public class R6DrivingTests
         foreach(var vehicle in vehicles)Assert.That(vehicle.GetComponent<Rigidbody>().linearVelocity.z,Is.LessThan(.3f),"Opposite throttle must brake.");
         yield return Seconds(.7f);foreach(var vehicle in vehicles)Assert.That(vehicle.GetComponent<Rigidbody>().linearVelocity.z,Is.LessThan(-.5f));
     }
-    [UnityTest] public IEnumerator RealVehicleContactTransfersMomentumWithoutExplosiveBounce()
+    [UnityTest] public IEnumerator LightStarterRemainsUprightDuringForwardBraking()
+    {
+        var palette=Object.FindFirstObjectByType<R3VisualPalette>();
+        var vehicle=R3VehicleAssembly.Build(new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light)),new R1RunStats(),palette,new Vector3(-20,.7f,-30),Quaternion.identity);
+        vehicle.Controller.SetGameplayInputEnabled(true);var body=vehicle.GetComponent<Rigidbody>();
+        yield return Seconds(.5f);InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.W));yield return Seconds(1.5f);
+        Assert.That(body.linearVelocity.z,Is.GreaterThan(1f),"The actual light vehicle must be moving before braking.");
+        InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.S));
+        float until=Time.time+1f,peak=0;
+        while(Time.time<until){peak=Mathf.Max(peak,Vector3.Angle(body.rotation*Vector3.up,Vector3.up));yield return null;}
+        Debug.Log($"Light braking maximum tilt: {peak:F2} degrees");
+        Assert.That(peak,Is.LessThan(20f),"The light vehicle should remain stable during braking.");
+    }    [UnityTest] public IEnumerator LosingAHeavyGunRecalculatesPerformanceFromRemainingMass()
+    {
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();var drive=run.Player.GetComponent<R6VehicleDrive>();
+        var gun=assembly.Parts.First(p=>p.Kind==R3PartKind.Gun);float before=run.Player.Controller.EffectiveForwardSpeed;
+        gun.Damageable.ApplyDamage(100000,gun.transform.position,Vector3.up);run.Player.Structure.EvaluateStructure();drive.RefreshMass();
+        Assert.That(run.Player.Controller.EffectiveForwardSpeed,Is.GreaterThan(before+.01f),"Less surviving mass must update speed in the same vehicle.");
+        yield return null;
+    }    [UnityTest] public IEnumerator StarterVehiclesCanDriveUpRealBattleRamps()
+    {
+        var palette=Object.FindFirstObjectByType<R3VisualPalette>();
+        var vehicles=new[]{R3VehicleKind.Light,R3VehicleKind.Heavy}.Select((kind,i)=>
+            R3VehicleAssembly.Build(new R3VehicleModel(R3VehicleCatalog.Create(kind)),new R1RunStats(),palette,new Vector3(i==0?-28:28,.7f,37),Quaternion.Euler(0,180,0))).ToArray();
+        foreach(var vehicle in vehicles)vehicle.Controller.SetGameplayInputEnabled(true);
+        yield return Seconds(.5f);InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.W));
+        float until=Time.time+3f;var highest=new float[vehicles.Length];
+        while(Time.time<until){for(int i=0;i<vehicles.Length;i++)highest[i]=Mathf.Max(highest[i],vehicles[i].transform.position.y);yield return null;}
+        Debug.Log("R6 real ramp peak heights: "+string.Join(", ",highest));
+        foreach(var v in vehicles){var rb=v.GetComponent<Rigidbody>();var d=v.GetComponent<R6VehicleDrive>();Debug.Log($"Ramp diagnostic {v.GetComponent<R3VehicleAssembly>().Model.Design.Name} pos={rb.position} rot={rb.rotation.eulerAngles} velocity={rb.linearVelocity} contacts={d.GroundedWheels} speed={v.Controller.EffectiveForwardSpeed}");}
+        for(int i=0;i<vehicles.Length;i++){Assert.That(highest[i],Is.GreaterThan(1.3f),"Vehicle must physically ascend ramp.");Assert.That(vehicles[i].transform.position.z,Is.LessThan(35f));}
+    }    [UnityTest] public IEnumerator RealVehicleContactTransfersMomentumWithoutExplosiveBounce()
     {
         var enemy=run.Encounter.Enemies.First();var other=enemy.GetComponent<Rigidbody>();
         other.position=new Vector3(0,0,-21);run.Player.MoveTo(new Vector3(0,.7f,-25.5f),Quaternion.identity);Physics.SyncTransforms();

@@ -35,7 +35,8 @@ public class RRLW2GameplayTests
         Assert.That(run.ConfirmRewards(Array.Empty<string>(),new[]{index}),Is.True);
         Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage));Assert.That(run.Progress.Acquired.Count,Is.EqualTo(1));
         Assert.That(run.Player.Controller.EffectiveDamage,Is.EqualTo(damage));
-        Assert.That(run.GarageMount(run.VehicleModel.Inventory.Single().Id,new Vector3Int(1,2,0)),Is.True);
+        var bonusId=run.VehicleModel.Inventory.Single().Id;var bonusCell=new Vector3Int(0,2,-2);
+        Assert.That(run.GarageMount(bonusId,bonusCell),Is.True,run.VehicleModel.OwnedPlacementError(bonusId,bonusCell,Vector3Int.zero));
         Assert.That(run.Player.Controller.EffectiveDamage,Is.EqualTo(damage*(1+bonus)).Within(.001));
         int scrap=run.VehicleModel.Scrap;
         Assert.That(run.ConfirmRewards(Array.Empty<string>(),new[]{0,1,2}),Is.False);Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));
@@ -50,10 +51,11 @@ public class RRLW2GameplayTests
         var wheel=run.Salvage.Items.First(p=>p.Kind==R3PartKind.Wheel&&p.Health>0);
         Assert.That(run.ConfirmRewards(new[]{wreck.Id,wheel.Id},new[]{0}),Is.True);
         Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(3));Assert.That(run.VehicleModel.Inventory.Single(p=>p.Id==wreck.Id).Health,Is.Zero);
-        var cell=new Vector3Int(1,2,0);int before=run.VehicleModel.Scrap;
+        var cell=new Vector3Int(0,2,-2);int before=run.VehicleModel.Scrap;
+        Assert.That(run.VehicleModel.At(cell),Is.Null);Assert.That(run.VehicleModel.OwnedPlacementError(wreck.Id,cell,Vector3Int.zero),Does.Contain("zniszczoną część"));
         Assert.That(run.GarageMount(wreck.Id,cell),Is.False);Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before));
         Assert.That(run.GarageRepairInventory(wreck.Id),Is.True);Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before-13));
-        Assert.That(run.GarageRepairInventory(wreck.Id),Is.False);Assert.That(run.GarageMount(wreck.Id,cell),Is.True);
+        Assert.That(run.GarageRepairInventory(wreck.Id),Is.False);Assert.That(run.GarageMount(wreck.Id,cell),Is.True,run.VehicleModel.OwnedPlacementError(wreck.Id,cell,Vector3Int.zero));
         var mounted=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==wreck.Id);
         Assert.That(mounted.Damageable.CurrentHp,Is.EqualTo(mounted.Damageable.MaxHp));
     }
@@ -77,7 +79,8 @@ public class RRLW2GameplayTests
             // Every physically mounted defense is loot in addition to legacy guns/wheels.
             int defenses=foes.Sum(e=>e.GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLShieldBinding>().Length+
                 e.GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLPointDefenseBinding>().Length);
-            int expected=foes.Sum(e=>e.InitialWheelCount+Math.Max(1,e.VariantWeapons.Count))+defenses;
+            int expected=foes.Sum(e=>e.InitialWheelCount+Math.Max(1,e.VariantWeapons.Count)+e.AdditionalWeapons.Count+
+                e.GetComponentsInChildren<VehicleEnergyBattery>().Length)+defenses;
             RRLW2TestFlow.DefeatAll(run);yield return Until(()=>run.Progress.State==R1RunState.Salvage,"Full encounter victory");
             Assert.That(run.Salvage.Items.Count,Is.EqualTo(expected));Assert.That(run.Salvage.Items.Select(p=>p.Id).Distinct().Count(),Is.EqualTo(expected));
             Assert.That(run.ConfirmRewards(Array.Empty<string>(),new[]{0}),Is.True);

@@ -265,9 +265,10 @@ namespace RogueMachine.P12PipelineSafe
 
         public P12PipelineSafeDamageable Core => core;
         public bool IsDefeated => defeated || core == null || core.IsDead;
-        public bool WeaponOnline => variantGuns.Count>0?variantGuns.Any(g=>g.Online(transform)):weaponBlock != null && !weaponBlock.IsDead &&
+        bool PrimaryWeaponOnline => variantGuns.Count>0?variantGuns.Any(g=>g.Online(transform)):weaponBlock != null && !weaponBlock.IsDead &&
             turretSupport != null && !turretSupport.IsDead && yawPivot != null && muzzle != null &&
             (turretAnchor==null||!turretAnchor.IsDead&&turretAnchor.transform.IsChildOf(transform));
+        public bool WeaponOnline => PrimaryWeaponOnline||additionalGuns.Any(g=>g.Online(transform));
 
         public void ConfigureMovement(float speed, float distance, float strafe)
         {
@@ -378,7 +379,7 @@ namespace RogueMachine.P12PipelineSafe
         // A physically missing module still yields a repairable 0-HP salvage item.
         private static float SalvageDisruption(P12PipelineSafeDamageable part) =>
             part!=null?part.GetComponent<RoboRougelike.Mechanics.EMP.EmpReceiver>()?.RemainingSeconds??0:0;
-        private void HandleCoreDeath(){CaptureSalvage();DropTurret();}
+        private void HandleCoreDeath(){CaptureSalvage();if(combatActive&&playerRoot!=null)RoboRougelike.R3.EnergyPickup.Spawn(core.transform.position);DropTurret();}
         private void CaptureSalvage()
         {
             if(snapshotTaken||salvage==null)return;snapshotTaken=true;
@@ -401,7 +402,12 @@ namespace RogueMachine.P12PipelineSafe
                 float condition=Mathf.Min(Condition(weaponBlock),Condition(turretSupport));
                 items.Add(state!=null?new R4SalvageItem(state,condition):new R4SalvageItem(new R3PartState(default,R3PartKind.Gun){Id=EquipmentInstanceId("gun"),Source=name+" / uzbrojenie",Weapon=WeaponKind,DisruptionRemaining=SalvageDisruption(weaponBlock)},condition));
             }
-            for(int i=0;i<driveWheels.Count;i++)items.Add(new R4SalvageItem(new R3PartState(default,R3PartKind.Wheel)
+            for(int i=0;i<additionalGuns.Count;i++)
+            {
+                var gun=additionalGuns[i];
+                var state=new R3PartState(default,R3PartKind.Gun){Id=EquipmentInstanceId("extra-gun/"+i),Source=name+" / dodatkowe działo",Weapon=gun.Kind,DisruptionRemaining=SalvageDisruption(gun.Block)};
+                items.Add(new R4SalvageItem(state,gun.Online(transform)?Condition(gun.Block):0));
+            }            for(int i=0;i<driveWheels.Count;i++)items.Add(new R4SalvageItem(new R3PartState(default,R3PartKind.Wheel)
                 {Id=EquipmentInstanceId("wheel/"+i),Source=name+" / koło "+(i+1),DisruptionRemaining=SalvageDisruption(driveWheels[i])},Condition(driveWheels[i])));
             if(packageBatteryState!=null)
                 items.Add(new R4SalvageItem(packageBatteryState,packageBattery!=null&&packageBattery.transform.IsChildOf(transform)?Condition(packageBattery):0));
@@ -460,8 +466,9 @@ namespace RogueMachine.P12PipelineSafe
             if(packageBeam!=null)packageBeam.SetTriggerHeld(false);
             if (IsDefeated) { DropTurret(); defeated = true; enabled=false; return; }
             if (!combatActive) return;
-            if(variantGuns.Count>0){UpdateVariantWeapons();return;}
-            if (!WeaponOnline)
+            if(variantGuns.Count>0){UpdateVariantWeapons(variantGuns,"gun/");return;}
+            if(additionalGuns.Count>0)UpdateVariantWeapons(additionalGuns,"extra-gun/");
+            if (!PrimaryWeaponOnline)
             {
                 DropTurret();
                 return;
@@ -582,7 +589,10 @@ namespace RogueMachine.P12PipelineSafe
                 throw new System.ArgumentException("Invalid encounter movement bounds");
             movementBounds=bounds;
         }
-        private void FixedUpdate()
+        public static bool ShouldRam(bool weaponOnline,R3EnemyArchetype archetype,float distance,float cycleTime)
+        {
+            return !weaponOnline||archetype==R3EnemyArchetype.Bruiser||distance<8f||Mathf.Repeat(cycleTime,12f)<5f;
+        }        private void FixedUpdate()
         {
             var drive=GetComponent<RoboRougelike.R6.R6VehicleDrive>();
             if(drive!=null)drive.StepWorld(Vector3.zero,0);
@@ -593,7 +603,7 @@ namespace RogueMachine.P12PipelineSafe
             toward /= distance;
             // A mobile enemy with no working gun can still physically ram the
             // player. Keep the original R6 wheel solver and ally/world avoidance.
-            bool ramming=!WeaponOnline;
+            bool ramming=ShouldRam(WeaponOnline,Archetype,distance,Time.time+Mathf.Abs(GetInstanceID()%997)*.033f);
             if(profiled&&Time.time>=nextStrafeChange&&Time.time>=navigationUntil)
             { strafeDirection=-strafeDirection;nextStrafeChange=Time.time+(Archetype==R3EnemyArchetype.Flanker?2:4.5f); }
             Vector3 sideways = Vector3.Cross(Vector3.up, toward) * strafeDirection;
@@ -630,14 +640,66 @@ namespace RogueMachine.P12PipelineSafe
             }
             else if(Time.time<navigationUntil&&CanMove(obstacleTangent,step+.08f,ramming))desired=obstacleTangent;
             Vector3 next = movementBody.position + desired * step;
-            if((next.x<movementBounds.min.x&&desired.x<0)||(next.x>movementBounds.max.x&&desired.x>0))desired.x=0;
-            if((next.z<movementBounds.min.z&&desired.z<0)||(next.z>movementBounds.max.z&&desired.z>0))desired.z=0;
+            bool cutX=(next.x<movementBounds.min.x&&desired.x<0)||(next.x>movementBounds.max.x&&desired.x>0);
+            bool cutZ=(next.z<movementBounds.min.z&&desired.z<0)||(next.z>movementBounds.max.z&&desired.z>0);
+            if(cutX)desired.x=0;
+            if(cutZ)desired.z=0;
+            if(ramming&&(cutX||cutZ)&&desired.sqrMagnitude<0.001f)
+            {
+                // A target outside the arena can otherwise make an unarmed robot
+                // alternate between driving outward and back toward the centre.
+                // Retain an unobstructed boundary tangent using the existing R6 drive.
+                if(TryBoundaryTangent(cutX,cutZ,step,ramming,out var tangent))
+                {
+                    desired=tangent;obstacleTangent=tangent;navigationUntil=Time.time+1.1f;
+                }
+                else
+                {
+                    // If both sides are obstructed, keep backing away long enough
+                    // to clear the obstacle instead of immediately ramming outward.
+                    var inward=Vector3.ProjectOnPlane(movementBounds.center-movementBody.position,Vector3.up).normalized;
+                    if(inward.sqrMagnitude<.001f||!CanMove(inward,step+.08f,ramming))return;
+                    desired=inward;obstacleTangent=inward;navigationUntil=Time.time+2.5f;
+                }
+            }
             if(desired.sqrMagnitude<0.001f)desired=Vector3.ProjectOnPlane(movementBounds.center-movementBody.position,Vector3.up).normalized;
             desired.Normalize();
+            next=movementBody.position+desired*step;
+            bool outwardX=(next.x<movementBounds.min.x&&desired.x<0)||(next.x>movementBounds.max.x&&desired.x>0);
+            bool outwardZ=(next.z<movementBounds.min.z&&desired.z<0)||(next.z>movementBounds.max.z&&desired.z>0);
+            if(ramming&&(outwardX||outwardZ))
+            {
+                if(!TryBoundaryTangent(outwardX,outwardZ,step,ramming,out var safeTangent))return;
+                desired=safeTangent;obstacleTangent=safeTangent;navigationUntil=Time.time+1.1f;
+            }
             if (!CanMove(desired, step + 0.08f,ramming)) return;
             next=movementBody.position+desired*step;
             next.x=Mathf.Clamp(next.x,movementBounds.min.x,movementBounds.max.x);next.z=Mathf.Clamp(next.z,movementBounds.min.z,movementBounds.max.z);
             if(drive!=null)drive.StepWorld(desired,moveSpeed * Mathf.Lerp(0.3f,1,wheelFactor));
+        }
+
+        private bool TryBoundaryTangent(bool cutX,bool cutZ,float step,bool ramming,out Vector3 tangent)
+        {
+            // Pick a stable side and try the opposite side when terrain blocks it.
+            // At a corner also try the other axis; never direct the wheels outward.
+            for(int axis=0;axis<2;axis++)
+            {
+                if((axis==0&&!cutX)||(axis==1&&!cutZ))continue;
+                Vector3 direction=axis==0?Vector3.forward:Vector3.right;
+                float offset=axis==0?movementBody.position.z-movementBounds.center.z:movementBody.position.x-movementBounds.center.x;
+                float previous=Vector3.Dot(obstacleTangent,direction);
+                if(previous<-.5f||(Mathf.Abs(previous)<=.5f&&
+                    (offset>0.001f||(Mathf.Abs(offset)<=0.001f&&strafeDirection<0))))direction=-direction;
+                for(int side=0;side<2;side++,direction=-direction)
+                {
+                    Vector3 candidate=movementBody.position+direction*step;
+                    if((candidate.x<movementBounds.min.x&&direction.x<0)||(candidate.x>movementBounds.max.x&&direction.x>0)||
+                       (candidate.z<movementBounds.min.z&&direction.z<0)||(candidate.z>movementBounds.max.z&&direction.z>0))continue;
+                    if(!CanMove(direction,step+.08f,ramming))continue;
+                    tangent=direction;return true;
+                }
+            }
+            tangent=Vector3.zero;return false;
         }
 
         private bool FriendlyInLine(Vector3 point)
@@ -979,11 +1041,31 @@ namespace RogueMachine.P12PipelineSafe
                 Support!=null&&!Support.IsDead&&Support.transform.IsChildOf(owner)&&Pivot!=null&&Muzzle!=null;
         }
         private readonly List<VariantGun> variantGuns=new List<VariantGun>();
+        private readonly List<VariantGun> additionalGuns=new List<VariantGun>();
+        public IReadOnlyList<VariantGun> AdditionalWeapons=>additionalGuns.AsReadOnly();
         private float configuredProjectileSpeed=1;
         private readonly List<Material> variantMaterials=new List<Material>();
         public IReadOnlyList<VariantGun> VariantWeapons => variantGuns.AsReadOnly();
         public R5EnemyVariant Variant { get; private set; }
 
+        public bool EquipAdditionalGun()
+        {
+            if(Variant!=R5EnemyVariant.Normal||additionalGuns.Count>0||core==null)return false;
+            var gun=GameObject.CreatePrimitive(PrimitiveType.Cube);gun.name="Dodatkowe działo przeciwnika";
+            gun.transform.SetParent(transform,false);gun.transform.localPosition=new Vector3(-.8f,1f,-.6f);
+            gun.transform.localScale=Vector3.one*R41PartGeometry.BlockSize;
+            var material=core.GetComponent<Renderer>().sharedMaterial;gun.GetComponent<Renderer>().sharedMaterial=material;
+            var state=new R3PartState(default,R3PartKind.Gun){Weapon=R4WeaponKind.Automatic};
+            RoboRougelike.WeaponIntegration.RRLEnemyDeviceMount.Attach(gun,transform,state);
+            var support=gun.transform.parent.GetComponent<P12PipelineSafeDamageable>();
+            if(support==null){Destroy(gun);return false;}
+            var hp=gun.AddComponent<P12PipelineSafeDamageable>();hp.Configure(R4WeaponDefinition.Get(state.Weapon).Hp,true);
+            var pivot=R41PartGeometry.Payload(gun.transform,R3PartKind.Gun,state.Weapon,material,true,out var barrel);
+            var block=gun.AddComponent<P12_PipelineSafePlayerBlock>();
+            var module=gun.AddComponent<P12PipelineSafeFunctionalModule>();module.Configure(P12FunctionalModuleType.Weapon,0,block,pivot,transform);
+            additionalGuns.Add(new VariantGun{Block=hp,Support=support,Kind=state.Weapon,Pivot=pivot,Muzzle=barrel,NextShot=Time.time+2.2f});
+            return true;
+        }
         public void ConfigureVariant(R5EnemyVariant variant)
         {
             Variant=variant;if(variant==R5EnemyVariant.Normal)return;
@@ -1039,13 +1121,13 @@ namespace RogueMachine.P12PipelineSafe
             preferredDistance=Variant==R5EnemyVariant.EliteBruiser?10:18;strafeStrength=Variant==R5EnemyVariant.EliteGunner?.25f:.1f;
             movementBody.mass=GetComponentsInChildren<P12PipelineSafeDamageable>().Length*8;
         }
-        private void UpdateVariantWeapons()
+        private void UpdateVariantWeapons(List<VariantGun> guns,string idPrefix)
         {
             if(playerRoot==null)return;
             if(!ValidTarget(currentTarget)||Time.time>=nextTargetTime){currentTarget=SelectTargetCollider();nextTargetTime=Time.time+.8f;}
             if(currentTarget==null)return;
             var point=currentTarget.bounds.center;
-            foreach(var gun in variantGuns)
+            foreach(var gun in guns)
             {
                 if(!gun.Online(transform)||RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(gun.Block.gameObject))continue;
                 var delta=point-gun.Pivot.position;
@@ -1066,7 +1148,7 @@ namespace RogueMachine.P12PipelineSafe
                 shell.GetComponent<Renderer>().sharedMaterial=runtimeProjectileMaterial;
                 var body=shell.AddComponent<Rigidbody>();body.mass=profile.ProjectileMass;body.useGravity=false;
                 body.collisionDetectionMode=CollisionDetectionMode.ContinuousDynamic;body.linearVelocity=direction*profile.Speed*.8f*configuredProjectileSpeed;
-                var origin=shell.AddComponent<R4ProjectileOrigin>();origin.Weapon=gun.Kind;origin.PartId=EquipmentInstanceId("gun/"+variantGuns.IndexOf(gun));
+                var origin=shell.AddComponent<R4ProjectileOrigin>();origin.Weapon=gun.Kind;origin.PartId=EquipmentInstanceId(idPrefix+guns.IndexOf(gun));
                 shell.AddComponent<P17PhysicalShell>().Configure(transform,profile.Damage*(damage/R4WeaponDefinition.Get(WeaponKind).Damage),6,direction,playerRoot);
             }
         }

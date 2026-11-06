@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using RoboRougelike.R4;
@@ -27,6 +28,62 @@ namespace RoboRougelike.R3
     }
     public sealed partial class R3VehicleModel
     {
+        // This is an in-memory load notice, not an additional save format or writer.
+        public int LegacyPartsMovedToInventory { get; private set; }
+
+        static bool LegacyWidePart(R3PartKind kind) => kind==R3PartKind.BonusModule||
+            kind==R3PartKind.DirectionalShield||kind==R3PartKind.PointDefense||
+            kind==R3PartKind.StructuralScanner||kind==R3PartKind.ScannerPulse||
+            kind==R3PartKind.IndependentSteering;
+
+        static IEnumerable<Vector3Int> LegacyCells(R3PartState part)
+        {
+            yield return part.Cell;
+            if(!LegacyWidePart(part.Kind))yield break;
+            yield return part.Cell+R3MountingGrid.Rotate(Vector3Int.right,part.RotationQuarterTurns);
+            yield return part.Cell+R3MountingGrid.Rotate(Vector3Int.forward,part.RotationQuarterTurns);
+            yield return part.Cell+R3MountingGrid.Rotate(Vector3Int.right+Vector3Int.forward,part.RotationQuarterTurns);
+        }
+
+        // Reproduce the former grid/socket validation before attempting migration.
+        // A disconnected or overlapping legacy construction is never repaired implicitly.
+        static bool LegacyConnected(IEnumerable<R3PartState> parts)
+        {
+            var cells=new Dictionary<Vector3Int,R3PartState>();
+            foreach(var part in parts)foreach(var cell in LegacyCells(part))
+                if(!cells.TryAdd(cell,part))return false;
+            var core=cells.Values.FirstOrDefault(p=>p.Kind==R3PartKind.Core);
+            if(core==null)return false;
+            var visited=new HashSet<Vector3Int>{core.Cell};var queue=new Queue<Vector3Int>();queue.Enqueue(core.Cell);
+            while(queue.Count>0)
+            {
+                var current=queue.Dequeue();
+                foreach(var direction in R3MountingGrid.FaceDirections)
+                {
+                    var next=current+direction;
+                    if(cells.TryGetValue(next,out var other)&&!visited.Contains(next)&&
+                        R3MountingGrid.Compatible(cells[current],other,direction))
+                    {visited.Add(next);queue.Enqueue(next);}
+                }
+            }
+            return visited.Count==cells.Count;
+        }
+
+        static HashSet<string> ReachableCheckpointParts(R3PartState[] parts,HashSet<string> initial,bool deadOnly)
+        {
+            var cells=parts.ToDictionary(p=>p.Cell);
+            var reached=new HashSet<string>(initial,StringComparer.Ordinal);
+            var queue=new Queue<R3PartState>(parts.Where(p=>reached.Contains(p.Id)));
+            while(queue.Count>0)
+            {
+                var current=queue.Dequeue();
+                foreach(var direction in R3MountingGrid.FaceDirections)
+                    if(cells.TryGetValue(current.Cell+direction,out var next)&&!reached.Contains(next.Id)&&
+                        (!deadOnly||next.Health<=0)&&R3MountingGrid.Compatible(current,next,direction))
+                    {reached.Add(next.Id);queue.Enqueue(next);}
+            }
+            return reached;
+        }
         static float Remaining(float at,float now)=>at>now?at-now:0;
         static R3PartState SavePart(R3PartState source,float now)
         {
@@ -82,8 +139,23 @@ namespace RoboRougelike.R3
             if(all.Any(p=>!ValidCheckpointPart(p))||all.Select(p=>p.Id).Distinct(StringComparer.Ordinal).Count()!=all.Length||
                 data.mounted.Count(p=>p.Kind==R3PartKind.Core)!=1||data.inventory.Any(p=>p.Kind==R3PartKind.Core)||
                 data.mounted.Where(p=>p.Kind==R3PartKind.Gun).Select(p=>p.Weapon).Distinct().Count()>2||
-                data.mounted.SelectMany(OccupiedCells).GroupBy(c=>c).Any(g=>g.Count()>1)||
-                !Connected(data.mounted)||!Connected(data.mounted.Where(p=>p.Health>0)))return false;
+                data.mounted.SelectMany(OccupiedCells).GroupBy(c=>c).Any(g=>g.Count()>1))return false;
+            var mounted=data.mounted;var inventory=data.inventory;int migratedCount=0;
+            if(!Connected(mounted)||!Connected(mounted.Where(p=>p.Health>0)))
+            {
+                // Only a valid pre-energy checkpoint can use the former footprint.
+                if(data.energyVersion!=0||!LegacyConnected(mounted)||!LegacyConnected(mounted.Where(p=>p.Health>0)))return false;
+                var alive=mounted.Where(p=>p.Health>0).ToArray();
+                var core=alive.Single(p=>p.Kind==R3PartKind.Core);
+                var reachable=ReachableCheckpointParts(alive,new HashSet<string>{core.Id},false);
+                reachable=ReachableCheckpointParts(mounted,reachable,true);
+                var detached=mounted.Where(p=>!reachable.Contains(p.Id)).ToArray();
+                if(inventory.Length+detached.Length>InventoryCapacity)
+                {error="Stary zapis wymaga przeniesienia części do magazynu, ale brakuje w nim miejsca. Zapis pozostaje bez zmian.";return false;}
+                mounted=mounted.Where(p=>reachable.Contains(p.Id)).ToArray();
+                inventory=inventory.Concat(detached).ToArray();migratedCount=detached.Length;
+                if(!Connected(mounted)||!Connected(mounted.Where(p=>p.Health>0)))return false;
+            }
             if(data.wheels.Any(p=>p==null||string.IsNullOrWhiteSpace(p.id)||p.contacts<0||p.contacts>63)||
                 data.wheels.Select(p=>p.id).Distinct(StringComparer.Ordinal).Count()!=data.wheels.Length||
                 data.groups.Any(p=>p==null||string.IsNullOrWhiteSpace(p.id))||
@@ -92,8 +164,9 @@ namespace RoboRougelike.R3
                 (data.hasA&&data.hasB&&data.groupA==data.groupB))return false;
             var restored=new R3VehicleModel(R3VehicleCatalog.Create(kind),economy);
             restored.Parts.Clear();restored.inventory.Clear();
-            foreach(var source in data.mounted){var p=source.Copy();p.DeviceReadyAt=p.DeviceReadyAt>0?now+p.DeviceReadyAt:0;p.ReloadReadyAt=p.ReloadReadyAt>0?now+p.ReloadReadyAt:0;restored.Parts.Add(p);}
-            foreach(var source in data.inventory){var p=source.Copy();p.DeviceReadyAt=p.DeviceReadyAt>0?now+p.DeviceReadyAt:0;p.ReloadReadyAt=p.ReloadReadyAt>0?now+p.ReloadReadyAt:0;restored.inventory.Add(p);}
+            foreach(var source in mounted){var p=source.Copy();p.DeviceReadyAt=p.DeviceReadyAt>0?now+p.DeviceReadyAt:0;p.ReloadReadyAt=p.ReloadReadyAt>0?now+p.ReloadReadyAt:0;restored.Parts.Add(p);}
+            foreach(var source in inventory){var p=source.Copy();p.DeviceReadyAt=p.DeviceReadyAt>0?now+p.DeviceReadyAt:0;p.ReloadReadyAt=p.ReloadReadyAt>0?now+p.ReloadReadyAt:0;restored.inventory.Add(p);}
+            restored.LegacyPartsMovedToInventory=migratedCount;
             restored.factoryWheels.Clear();foreach(var wheel in data.wheels)
                 restored.factoryWheels.Add(wheel.id,new FactoryWheelPose(new R3PartState(wheel.cell,R3PartKind.Wheel){RotationQuarterTurns=wheel.rotation,ContactMask=wheel.contacts}));
             restored.weaponGroupPreference.Clear();foreach(var group in data.groups)restored.weaponGroupPreference.Add(group.id,group.secondary);
@@ -106,6 +179,7 @@ namespace RoboRougelike.R3
                 (data.energyVersion==1&&(!Finite(data.energy)||data.energy<0)))return false;
             restored.RefreshEnergyLayout();
             restored.Energy.Restore(data.energyVersion==0?VehicleEnergyState.CoreCapacity:data.energy);
+            restored.InitialEnergyPrepared=true;
             model=restored;error=null;return true;
         }
     }

@@ -53,7 +53,25 @@ public sealed class FullMergeRuntimeQA : MonoBehaviour
     void Save()=>File.WriteAllText(Path.Combine(output,"result.json"),JsonUtility.ToJson(result,true));
     void Require(bool value,string text){if(!value)throw new InvalidOperationException(text);result.checks.Add(text);Save();}
     void Go(int next){phase=next;entered=Time.realtimeSinceStartup;Save();}
-    void Capture(string name)=>ScreenCapture.CaptureScreenshot(Path.Combine(output,name+".png"));
+    void Capture(string name)
+    {
+        ScreenCapture.CaptureScreenshot(Path.Combine(output,name+".png"));
+        // Hidden batch-mode screenshots can be black even with an active GPU.
+        // Record the actual game camera separately; this image excludes IMGUI.
+        if(!Application.isBatchMode||!(name=="00-garage"||name=="01-activity-0"))return;
+        var camera=Camera.main;if(camera==null)return;
+        var previousTarget=camera.targetTexture;var previousActive=RenderTexture.active;
+        var target=new RenderTexture(1280,720,24);Texture2D image=null;
+        try
+        {
+            target.Create();camera.targetTexture=target;camera.Render();RenderTexture.active=target;
+            image=new Texture2D(target.width,target.height,TextureFormat.RGB24,false);
+            image.ReadPixels(new Rect(0,0,target.width,target.height),0,0);image.Apply();
+            File.WriteAllBytes(Path.Combine(output,name+"-camera.png"),image.EncodeToPNG());
+        }
+        catch(Exception e){Debug.LogWarning("Offscreen QA camera capture failed: "+e.Message);}
+        finally{camera.targetTexture=previousTarget;RenderTexture.active=previousActive;if(image!=null)Destroy(image);target.Release();Destroy(target);}
+    }
     bool Live=>run!=null&&!run.Transitioning&&run.Player!=null&&(run.Progress.State==R1RunState.Combat||run.Progress.State==R1RunState.TestDrive);
     void Bind(){body=run.Player.GetComponent<Rigidbody>();drive=body.GetComponent<R6VehicleDrive>();assembly=body.GetComponent<R3VehicleAssembly>();previous=body.position;
         run.Player.Controller.enabled=mode=="Camera";follow=FindFirstObjectByType<P12PipelineSafeCamera>();Require(follow.ReceiverRig!=null&&!follow.ReceiverRig.enabled,"One delegated camera owner");
@@ -77,9 +95,10 @@ public sealed class FullMergeRuntimeQA : MonoBehaviour
             if(phase==99){if(Time.realtimeSinceStartup-entered>.6f){finished=true;result.finishedUtc=DateTime.UtcNow.ToString("o");Save();trace.Dispose();aim.Dispose();File.WriteAllText(Path.Combine(output,"aim-timeline.csv"),timeline.ToCsv());Application.Quit(result.status=="Passed"?0:1);}return;}
             if(Time.realtimeSinceStartup>deadline)throw new TimeoutException("Finite QA phase "+phase+" activity "+activity);
             if(phase==0){if(R1RunController.Instance?.Progress==null)return;run=R1RunController.Instance;result.width=Screen.width;result.height=Screen.height;
-                Require(run.SelectVehicle(vehicle=="Heavy"?R3VehicleKind.Heavy:R3VehicleKind.Light),"Vehicle selected");
-                run.RequestedSeed=7;Require(mode=="Camera"?run.OpenSandboxGarage():run.PrepareUnifiedRun(),"Actual preparation garage");Capture("00-garage");Go(1);}
+                Require(run.SelectVehicle(vehicle=="Heavy"?R3VehicleKind.Heavy:vehicle=="Standard"?R3VehicleKind.Standard:R3VehicleKind.Light),"Vehicle selected");
+                run.RequestedSeed=7;Require(mode=="Camera"?run.OpenSandboxGarage():run.PrepareUnifiedRun(),"Actual preparation garage");Go(1);}
             else if(phase==1){if(Time.realtimeSinceStartup-entered<.4f)return;
+                Capture("00-garage");
                 if(mode=="Camera"){
                     if(vehicle=="Tall")for(int y=1;y<=5;y++)Require(run.GarageBuy(new Vector3Int(1,y,0),R3PartKind.Armor),"Tall real structural part "+y);
                     if(vehicle=="Wide")foreach(int side in new[]{-1,1})for(int x=1;x<=6;x++)Require(run.GarageBuy(new Vector3Int(side*x,1,0),R3PartKind.Armor),"Wide real structural part "+(side*x));

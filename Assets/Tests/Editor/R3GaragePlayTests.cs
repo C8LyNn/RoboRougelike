@@ -82,6 +82,122 @@ public class R3GaragePlayTests
         Assert.That(Mathf.Abs(body.position.x), Is.LessThanOrEqualTo(38.01f));
     }
 
+    [UnityTest] public IEnumerator DisarmedEnemyRamsAlongArenaBoundaryWithGroundedWheels()
+    {
+        var enemy = Run.Encounter.Enemies.First();
+        int wheels = enemy.ActiveWheelCount;
+        Assert.That(wheels, Is.GreaterThan(0));
+        var weapon = enemy.WeaponBlock;
+        Assert.That(weapon, Is.Not.Null);
+        weapon.ApplyDamage(100000, weapon.transform.position, Vector3.up);
+        foreach (var gun in enemy.AdditionalWeapons)
+            if (gun.Block != null && !gun.Block.IsDead) gun.Block.ApplyDamage(100000, gun.Block.transform.position, Vector3.up);
+        yield return null;
+        Assert.That(enemy.IsDefeated, Is.False);
+        Assert.That(enemy.WeaponOnline, Is.False);
+        Assert.That(enemy.ActiveWheelCount, Is.EqualTo(wheels));
+        var body = enemy.GetComponent<Rigidbody>();
+        var drive = enemy.GetComponent<RoboRougelike.R6.R6VehicleDrive>();
+        body.position = new Vector3(37.99f, 0, 0);
+        Run.Player.MoveTo(new Vector3(60, 0.7f, 0), Quaternion.identity);
+        Physics.SyncTransforms();
+        Vector3 before = body.position;
+        float end = Time.time + 3.2f;
+        int grounded = 0;
+        while (Time.time < end)
+        {
+            yield return MOVSeriesDeviceTests.FixedStep();
+            if (drive.GroundedWheels > 0) grounded++;
+            Assert.That(body.position.x, Is.LessThanOrEqualTo(38.01f), "Przeciwnik przekroczył granicę areny.");
+        }
+        Assert.That(grounded, Is.GreaterThan(0), "Ruch wymaga kontaktu kół z podłożem.");
+        Assert.That(Mathf.Abs(body.position.z - before.z), Is.GreaterThan(0.3f), "Rozbrojony przeciwnik powinien poruszać się wzdłuż granicy.");
+        Assert.That(Mathf.Abs(body.position.x), Is.LessThanOrEqualTo(38.01f));
+    }
+
+    [UnityTest] public IEnumerator DisarmedEnemyRetreatsWhenBothBoundaryTangentsAreBlocked()
+    {
+        var enemy = Run.Encounter.Enemies.First();
+        enemy.SetCombatActive(false);
+        var weapon = enemy.WeaponBlock;
+        Assert.That(weapon, Is.Not.Null);
+        weapon.ApplyDamage(100000, weapon.transform.position, Vector3.up);
+        foreach (var gun in enemy.AdditionalWeapons)
+            if (gun.Block != null && !gun.Block.IsDead) gun.Block.ApplyDamage(100000, gun.Block.transform.position, Vector3.up);
+        yield return null;
+        Assert.That(enemy.WeaponOnline, Is.False);
+        var body = enemy.GetComponent<Rigidbody>();
+        var drive = enemy.GetComponent<RoboRougelike.R6.R6VehicleDrive>();
+        // Isolate a measured lane from the arena's own obstacles, with a real
+        // floor, rigidbody, wheels and colliders on both sides.
+        var center = new Vector3(1000, 0, 1000);
+        var floor = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        floor.transform.position = center + Vector3.down * .5f;
+        floor.transform.localScale = new Vector3(40, 1, 40);
+        enemy.ConfigureMovementBounds(new Bounds(center, new Vector3(10, 100, 10)));
+        body.position = center + new Vector3(4.99f, 0, 0); body.rotation = Quaternion.identity;
+        body.linearVelocity = Vector3.zero; body.angularVelocity = Vector3.zero;
+        var target = Run.Player.GetComponent<Rigidbody>(); target.isKinematic = true;
+        target.position = center + new Vector3(10, .7f, 0); target.rotation = Quaternion.identity;
+        Physics.SyncTransforms(); body.WakeUp();
+        yield return Until(() => { drive.RefreshMass(); return drive.GroundedWheels > 0; }, "Koła przeciwnika muszą dotykać podłoża.", 5);
+        foreach (float offset in new[] { -1.05f, 1.05f })
+        {
+            var wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            wall.transform.position = center + new Vector3(5, 1.5f, offset);
+            wall.transform.localScale = new Vector3(5, 3, .2f);
+        }
+        Physics.SyncTransforms();
+        var before = body.position;
+        enemy.SetCombatActive(true);
+        float end = Time.time + 2;
+        int grounded = 0;
+        while (Time.time < end)
+        {
+            yield return MOVSeriesDeviceTests.FixedStep();
+            if (drive.GroundedWheels > 0) grounded++;
+        }
+        Assert.That(grounded, Is.GreaterThan(0));
+        Assert.That(body.position.x - before.x, Is.LessThan(-.3f), "Przy zablokowanych stycznych przeciwnik powinien wycofać się do środka areny.");
+    }
+
+    [UnityTest] public IEnumerator EnemyMovesTangentiallyAlongInnerBoundaryWithGroundedWheels()
+    {
+        var enemy = Run.Encounter.Enemies.First();
+        var body = enemy.GetComponent<Rigidbody>();
+        var drive = enemy.GetComponent<RoboRougelike.R6.R6VehicleDrive>();
+        Assert.That(drive, Is.Not.Null);
+        // Put the logical boundary inside the physical arena: the player can exert
+        // outward pressure without being teleported through the arena wall.
+        enemy.ConfigureMovementBounds(new Bounds(Vector3.zero, new Vector3(48, 100, 76)));
+        enemy.enabled = false;
+        body.position = new Vector3(23.99f, 0, -22);
+        body.linearVelocity = Vector3.zero; body.angularVelocity = Vector3.zero;
+        Run.Player.MoveTo(new Vector3(34, 0.7f, -14), Quaternion.identity);
+        var playerBody = Run.Player.GetComponent<Rigidbody>();
+        playerBody.linearVelocity = Vector3.zero; playerBody.angularVelocity = Vector3.zero;
+        Physics.SyncTransforms();
+        yield return Until(() => { drive.RefreshMass(); return drive.GroundedWheels > 0; }, "Koła przeciwnika muszą mieć rzeczywisty kontakt z podłożem.", 5);
+        Vector3 before = body.position;
+        enemy.enabled = true;
+        float end = Time.time + 1.5f;
+        int groundedSamples = 0, samples = 0;
+        while (Time.time < end)
+        {
+            yield return MOVSeriesDeviceTests.FixedStep();
+            samples++;
+            if (drive.GroundedWheels > 0) groundedSamples++;
+            Assert.That(body.position.x, Is.LessThanOrEqualTo(24.01f), "Przeciwnik przekroczył granicę logiczną.");
+            Assert.That(body.position.x, Is.GreaterThanOrEqualTo(23f), "Przeciwnik powinien pozostać blisko granicy.");
+            Assert.That(Mathf.Abs(body.position.z), Is.LessThanOrEqualTo(38.01f));
+        }
+        Assert.That(groundedSamples, Is.GreaterThan(0), "Ruch wymaga rzeczywistego kontaktu kół podczas próby.");
+        Assert.That(samples, Is.GreaterThan(0));
+        Assert.That(Vector3.Distance(before, body.position), Is.GreaterThan(0.3f));
+        Assert.That(Mathf.Abs(body.position.z - before.z), Is.GreaterThan(0.3f), "Przeciwnik powinien poruszyć się stycznie do granicy.");
+        Assert.That(Mathf.Abs(body.position.x), Is.LessThanOrEqualTo(38.01f));
+    }
+
     [UnityTest] public IEnumerator AllThreeVehiclesMoveFireTakeDamageAndReset()
     {
         VirtualInput();
@@ -135,28 +251,38 @@ public class R3GaragePlayTests
         Assert.That(Run.GarageRepair(Vector3Int.zero),Is.True);
         Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(reward-1));
         Assert.That(Run.GarageRepair(wheelCell),Is.True);Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(reward-7));
-        Assert.That(Run.Player.Modules.ActiveWheelCount,Is.EqualTo(12));
+        Assert.That(Run.Player.Modules.ActiveWheelCount,Is.EqualTo(6));
         Assert.That(Run.GarageRepair(armorCell),Is.True);Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(reward-8));
         Assert.That(Run.GarageBuy(new Vector3Int(0,2,-2),R3PartKind.Armor),Is.True,Run.VehicleModel.PlacementError(new Vector3Int(0,2,-2),R3PartKind.Armor));
-        Assert.That(Run.GarageBuy(new Vector3Int(1,2,0),R3PartKind.Gun),Is.True);
-        Assert.That(Run.GarageBuy(new Vector3Int(0,0,4),R3PartKind.Wheel,new Vector3Int(0,1,0)),Is.True);
-        Assert.That(Run.Player.Modules.ActiveWheelCount,Is.EqualTo(13));Assert.That(Run.Player.Modules.ActiveWeaponCount,Is.EqualTo(2));
+        var extraGunCell=new Vector3Int(2,2,-2);var extraWheelCell=new Vector3Int(0,0,3);
+        Assert.That(Run.GarageBuy(extraGunCell,R3PartKind.Gun),Is.True,Run.VehicleModel.PlacementError(extraGunCell,R3PartKind.Gun));
+        Assert.That(Run.GarageBuy(extraWheelCell,R3PartKind.Wheel,new Vector3Int(0,1,0)),Is.True,Run.VehicleModel.PlacementError(extraWheelCell,R3PartKind.Wheel,false,default,new Vector3Int(0,1,0)));
+        Assert.That(Run.Player.Modules.ActiveWheelCount,Is.EqualTo(7));Assert.That(Run.Player.Modules.ActiveWeaponCount,Is.EqualTo(3));
         Assert.That(Run.GarageBuy(new Vector3Int(0,3,-2),R3PartKind.Armor),Is.True);
         Assert.That(Run.GarageRemove(new Vector3Int(0,2,-2)),Is.False,"Usunięcie mostu jest blokowane.");
         Assert.That(Run.GarageRemove(new Vector3Int(0,3,-2)),Is.True);
         Assert.That(Run.GarageRemove(Vector3Int.zero),Is.False);
-        int funds=Run.VehicleModel.Scrap;
-        Assert.That(Run.GarageBuy(new Vector3Int(1,2,0),R3PartKind.Gun),Is.False);
-        Assert.That(Run.GarageBuy(new Vector3Int(-1,2,0),R3PartKind.Blink),Is.False,"Brak środków.");
+        int beforePurchase=Run.VehicleModel.Scrap;
+        Assert.That(Run.GaragePurchase(R3PartKind.Battery),Is.True);
+        int funds=Run.VehicleModel.Scrap;Assert.That(funds,Is.EqualTo(beforePurchase-Run.VehicleModel.Price(R3PartKind.Battery)));
+        Assert.That(Run.GarageBuy(extraGunCell,R3PartKind.Gun),Is.False);
+        var blinkCell=new Vector3Int(0,2,-1);
+        Assert.That(funds,Is.LessThan(Run.VehicleModel.Price(R3PartKind.Blink)));
+        Assert.That(Run.VehicleModel.PlacementError(blinkCell,R3PartKind.Blink),Does.Contain("Za mało Złomu"));
+        Assert.That(Run.GarageBuy(blinkCell,R3PartKind.Blink),Is.False,"Brak środków.");
         Assert.That(Run.GarageBuy(new Vector3Int(6,5,7),R3PartKind.Armor),Is.False);
         Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(funds));
         assembly=Run.Player.GetComponent<R3VehicleAssembly>();R1EncounterManager.ClearTransientObjects();
-        assembly.FireGuns();Assert.That(UnityEngine.Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None).Length,Is.EqualTo(2));
-        var extraGun=assembly.Parts.Single(p=>p.Cell==new Vector3Int(1,2,0));
+        foreach(var gun in assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun))gun.GunPivot.rotation=Quaternion.Euler(-70,0,0);
+        Physics.SyncTransforms();
+        Assert.That(assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun).All(assembly.ClearProjectilePath),Is.True,"Każde działo musi mieć wolny tor strzału.");
+        Assert.That(Run.Player.GetComponent<VehicleEnergyBank>().Current,Is.GreaterThanOrEqualTo(3*VehicleEnergyCosts.BasicShot),"Każdy strzał wymaga energii.");
+        assembly.FireGuns();Assert.That(UnityEngine.Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None).Length,Is.EqualTo(3));
+        var extraGun=assembly.Parts.Single(p=>p.Cell==extraGunCell);
         extraGun.Damageable.ApplyDamage(1000,extraGun.transform.position,Vector3.forward);assembly.Capture();
-        Assert.That(Run.Player.Modules.ActiveWeaponCount,Is.EqualTo(1));
+        Assert.That(Run.Player.Modules.ActiveWeaponCount,Is.EqualTo(2));
         Assert.That(Run.StartNextEncounter(),Is.True);yield return Until(()=>!Run.Transitioning,"Druga walka.");
-        Assert.That(Run.Player.Modules.ActiveWeaponCount,Is.EqualTo(1));Assert.That(Run.VehicleModel.Parts.Count,Is.EqualTo(86));
+        Assert.That(Run.Player.Modules.ActiveWeaponCount,Is.EqualTo(2));Assert.That(Run.VehicleModel.Parts.Count,Is.EqualTo(62));
         Assert.That(Run.Encounter.AliveCount,Is.EqualTo(3));
         var positions=Run.Encounter.Enemies.Select(e=>e.transform.position).ToArray();
         float moveUntil=Time.time+0.9f;yield return Until(()=>Time.time>=moveUntil,"Ruch dwóch AI.");
@@ -166,15 +292,15 @@ public class R3GaragePlayTests
         float end=Time.time+0.2f;yield return Until(()=>Time.time>=end,"Niezależna śmierć jednego AI.");
         Assert.That(Run.Encounter.AliveCount,Is.EqualTo(2));Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Combat));
         KillEnemies();yield return Until(()=>Run.Progress.State==R1RunState.Garage,"Drugie zwycięstwo.");
-        Assert.That(Run.GarageRepair(new Vector3Int(1,2,0)),Is.True);
-        Assert.That(Run.Player.Modules.ActiveWeaponCount,Is.EqualTo(2));
+        Assert.That(Run.GarageRepair(extraGunCell),Is.True);
+        Assert.That(Run.Player.Modules.ActiveWeaponCount,Is.EqualTo(3));
         Assert.That(Run.StartNextEncounter(),Is.True);yield return Until(()=>!Run.Transitioning,"Trzecia walka.");
         Assert.That(Run.Encounter.AliveCount,Is.EqualTo(4));
         positions=Run.Encounter.Enemies.Select(e=>e.transform.position).ToArray();
         moveUntil=Time.time+0.9f;yield return Until(()=>Time.time>=moveUntil,"Ruch trzech AI.");
         for(int i=0;i<4;i++){Assert.That(Vector3.Distance(positions[i],Run.Encounter.Enemies[i].transform.position),Is.GreaterThan(0.1f));profiles.Add(Run.Encounter.Enemies[i].Archetype);}
         Assert.That(profiles.Count,Is.EqualTo(4));
-        Assert.That(Run.Player.Modules.ActiveWheelCount,Is.EqualTo(13));Assert.That(Run.Progress.Acquired.Count,Is.EqualTo(2));
+        Assert.That(Run.Player.Modules.ActiveWheelCount,Is.EqualTo(7));Assert.That(Run.Progress.Acquired.Count,Is.EqualTo(2));
         KillEnemies();yield return Until(()=>Run.Progress.State==R1RunState.Garage,"Trzecie starcie.");
         while(Run.Progress.State==R1RunState.Garage)
         {
@@ -184,17 +310,20 @@ public class R3GaragePlayTests
         Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Won));
         var previous=Run;Run.RestartRun();yield return Until(()=>Run!=null&&Run!=previous&&Run.Progress!=null,"Nowa próba.");
         Run.StartRun();yield return Until(()=>!Run.Transitioning,"Nienaruszony wzorzec.");
-        Assert.That(Run.VehicleModel.Scrap,Is.Zero);Assert.That(Run.VehicleModel.Parts.Count,Is.EqualTo(83));Assert.That(Run.Progress.Acquired,Is.Empty);
+        Assert.That(Run.VehicleModel.Scrap,Is.Zero);Assert.That(Run.VehicleModel.Parts.Count,Is.EqualTo(59));Assert.That(Run.Progress.Acquired,Is.Empty);
     }
 
     [UnityTest] public IEnumerator TurretSupportLossDropsEntireRemainingWeapon()
     {
         var enemy=Run.Encounter.Enemies.First();var yaw=enemy.transform.Find("Enemy_Yaw");
         yaw.GetChild(0).GetComponent<P12PipelineSafeDamageable>().ApplyDamage(1000,yaw.position,Vector3.up);
-        yield return Until(()=>!enemy.WeaponOnline,"Rozbrojenie.");
+        yield return Until(()=>!yaw.IsChildOf(enemy.transform),"Odłączenie głównej wieżyczki.");
         yield return null;
         Assert.That(yaw.IsChildOf(enemy.transform),Is.False);Assert.That(yaw.GetComponent<Rigidbody>(),Is.Not.Null);
         Assert.That(enemy.IsDefeated,Is.False);Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Combat));
+        Assert.That(enemy.AdditionalWeapons,Is.Not.Empty);Assert.That(enemy.WeaponOnline,Is.True,"Dodatkowa broń nadal działa po utracie wieżyczki.");
+        foreach(var gun in enemy.AdditionalWeapons)gun.Block.ApplyDamage(1000,gun.Block.transform.position,Vector3.up);
+        yield return Until(()=>!enemy.WeaponOnline,"Rozbrojenie wszystkich broni.");
     }
 
     [UnityTest] public IEnumerator EmergencyRebuildPaysForEssentialModulesWithoutFullReset()
@@ -208,7 +337,7 @@ public class R3GaragePlayTests
         Assert.That(Run.GarageEmergencyRepair(),Is.True);
         Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(scrap-23));
         Assert.That(Run.Player.Modules.ActiveWheelCount,Is.EqualTo(2));Assert.That(Run.Player.Modules.ActiveWeaponCount,Is.EqualTo(1));
-        Assert.That(Run.VehicleModel.Parts.Count(p=>p.Kind==R3PartKind.Wheel&&p.Health<=0),Is.EqualTo(10));
+        Assert.That(Run.VehicleModel.Parts.Count(p=>p.Kind==R3PartKind.Wheel&&p.Health<=0),Is.EqualTo(4));
         foreach(var part in Run.Player.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p.Kind==R3PartKind.Gun||p.Kind==R3PartKind.Wheel))
             Assert.That(part.Damageable.CurrentHp/part.Damageable.MaxHp,Is.EqualTo(1f).Within(0.001));
         Assert.That(Run.StartNextEncounter(),Is.True);yield return Until(()=>!Run.Transitioning,"Walka po pomocy awaryjnej.");

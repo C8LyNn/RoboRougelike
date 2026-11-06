@@ -54,9 +54,22 @@ public class MOV009IntegrationTests
     [UnityTest] public IEnumerator DetachedFlagImmediatelyDisablesSupportBeforeReparenting()
     {
         yield return RangeWithSupports();var part=run.Player.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Kind==R3PartKind.Suspension);
-        var module=part.GetComponent<ActiveSuspensionModule>();var body=run.Player.GetComponent<Rigidbody>();
+        var module=part.GetComponentInChildren<ActiveSuspensionModule>();var body=run.Player.GetComponent<Rigidbody>();
         Assert.That(module.IsAvailableFor(body),Is.True);part.Block.MarkDetached();
         Assert.That(module.IsAvailableFor(body),Is.False,"Structural detachment must be effective before transform hierarchy changes.");
+    }
+    [UnityTest] public IEnumerator ReconfiguringDoesNotDuplicateSuspensionModules()
+    {
+        yield return RangeWithSupports();
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();
+        var adapter=run.Player.GetComponent<MOV009VehicleAdapter>();
+        adapter.Configure(assembly);
+        Assert.That(adapter.Controller.RegisteredModuleCount,Is.EqualTo(4));
+        foreach(var part in assembly.Parts.Where(p=>p.Kind==R3PartKind.Suspension))
+        {
+            Assert.That(part.GetComponentsInChildren<ActiveSuspensionModule>().Length,Is.EqualTo(1));
+            Assert.That(part.GetComponents<MOV009PartBinding>().Length,Is.EqualTo(1));
+        }
     }
     [UnityTest] public IEnumerator StaticDamageablePartIsNotMistakenForArenaGround()
     {
@@ -77,7 +90,8 @@ public class MOV009IntegrationTests
         for(int i=0;i<4;i++)
         {
             parts[i].Damageable.ApplyDamage(10000,parts[i].transform.position,Vector3.zero);
-            Assert.That(parts[i].GetComponent<ActiveSuspensionModule>().IsAvailableFor(body),Is.False);
+            Assert.That(parts[i].GetComponentInChildren<ActiveSuspensionModule>().IsAvailableFor(body),Is.False);
+            Assert.That(adapter.Controller.RegisteredModuleCount,Is.EqualTo(3-i),"Detached support must unregister from its old controller.");
             yield return Seconds(.15f);
             Assert.That(adapter.OperationalSupports,Is.EqualTo(3-i));
             Assert.That(adapter.StiffnessPerModule,Is.EqualTo(stiffness));Assert.That(adapter.MaximumForcePerModule,Is.EqualTo(limit));

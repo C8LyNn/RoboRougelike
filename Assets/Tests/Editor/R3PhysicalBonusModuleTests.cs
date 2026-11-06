@@ -54,7 +54,7 @@ public sealed class R3PhysicalBonusModuleTests
             Assert.AreEqual("bonus-test",module.UpgradeId);
             Assert.AreEqual(1,model.Inventory.Count);
             Assert.AreEqual(initial,model.Parts.Count);
-            var anchor=new Vector3Int(1,2,0);
+            var anchor=new Vector3Int(0,2,-2);
             Assert.IsNull(model.PlacementError(anchor,R3PartKind.BonusModule,true));
             Assert.IsTrue(model.Mount(module.Id,anchor));
             Assert.AreEqual(initial+1,model.Parts.Count);

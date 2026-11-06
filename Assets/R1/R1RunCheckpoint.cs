@@ -103,7 +103,10 @@ namespace RoboRougelike.R1
                 Progress=restoredProgress;VehicleModel=restoredModel;Plan=restoredPlan;SelectedVehicle=kind;RequestedSeed=data.seed;runId=data.runId;
                 DefeatedEnemies=data.defeated;EarnedScrap=data.earned;RecoveredModules=data.recovered;LastScrapReward=data.lastReward;
                 Player=player;followCamera.Configure(Player.transform,Player.CameraPivot);SetSimulation(false);Garage.Open();
-                RunSaveMessage="Wczytano wyprawę.";Garage.Message=RunSaveMessage;return true;
+                RunSaveMessage=restoredModel.LegacyPartsMovedToInventory>0?
+                    $"Wczytano starszy zapis. Po zmianie rozmiaru modułów przeniesiono {restoredModel.LegacyPartsMovedToInventory} odłączonych części do magazynu. Sprawdź konstrukcję.":
+                    "Wczytano wyprawę.";
+                Garage.Message=RunSaveMessage;return true;
             }
             catch(Exception e){RunSaveMessage="Nie wczytano wyprawy: "+e.Message;return false;}
         }

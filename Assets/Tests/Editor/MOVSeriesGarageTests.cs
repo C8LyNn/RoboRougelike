@@ -41,11 +41,11 @@ public class MOVSeriesGarageTests
     void FullConstruction(bool keepGunClear=false)
     {
         Corners(R3PartKind.HoverEngine);
-        foreach(int x in new[]{-2,2})foreach(int z in new[]{-3,3})Buy(new Vector3Int(x,0,z),R3PartKind.Suspension);
-        foreach(int x in new[]{-1,1})Buy(new Vector3Int(x*3,0,-3),R3PartKind.CrawlerTrack);
+        foreach(int x in new[]{-1,1})foreach(int z in new[]{-2,2})Buy(new Vector3Int(x,1,z),R3PartKind.Suspension);
+        foreach(int x in new[]{-1,1})Buy(new Vector3Int(x*2,0,0),R3PartKind.CrawlerTrack);
         Buy(new Vector3Int(-1,1,0),R3PartKind.Booster);Buy(new Vector3Int(0,0,-3),R3PartKind.JumpDrive);
         Buy(new Vector3Int(keepGunClear?1:0,1,1),R3PartKind.Blink);Buy(new Vector3Int(0,1,-1),R3PartKind.Gyroscope);
-        Buy(new Vector3Int(-1,1,2),R3PartKind.MagneticGrapple);Buy(new Vector3Int(0,0,3),R3PartKind.OmniDrive);
+        Buy(new Vector3Int(0,1,2),R3PartKind.MagneticGrapple);Buy(new Vector3Int(0,0,3),R3PartKind.OmniDrive);
         Assert.That(run.VehicleModel.Scrap,Is.EqualTo(15));
         foreach(var part in run.Player.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p.Kind>=R3PartKind.Booster))
         {
@@ -113,10 +113,21 @@ public class MOVSeriesGarageTests
         yield return MOVSeriesDeviceTests.Seconds(1.4f);yield return KeyPress(Key.E);Assert.That(run.Player.GetComponent<MOVSeriesVehicleAdapter>().GrappleAttached,Is.True);
         yield return KeyPress(Key.E);Assert.That(run.Player.GetComponent<MOVSeriesVehicleAdapter>().GrappleAttached,Is.False);
         var assembly=run.Player.GetComponent<R3VehicleAssembly>();
+        // The real aiming loop follows its camera every frame. Point a dedicated test
+        // camera into open sky so it does not turn the barrel back into the grapple.
+        var aimObject=new GameObject("MOV input test aim camera");aimObject.transform.SetParent(run.Player.transform,false);
+        aimObject.transform.localPosition=new Vector3(0,4,-5);aimObject.transform.localRotation=Quaternion.Euler(-45,0,0);
+        var aimCamera=aimObject.AddComponent<Camera>();aimCamera.enabled=false;
+        var aimField=typeof(P12PipelineSafeTankController).GetField("aimCamera",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+        Assert.That(aimField,Is.Not.Null);int aimStartFrame=Time.frameCount;aimField.SetValue(run.Player.Controller,aimCamera);
+        yield return Until(()=>run.Player.Controller.LastConsumedAimFrame>aimStartFrame&&
+            assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun).Any(p=>
+                Vector3.Dot(p.Muzzle.forward,(run.Player.Controller.LastConsumedAimPoint-p.GunPivot.position).normalized)>.99f&&assembly.ClearProjectilePath(p)));
         Assert.That(assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun).Any(assembly.ClearProjectilePath),Is.True,"The input fixture must leave a physical path for the shot.");
         InputSystem.QueueStateEvent(mouse,new MouseState().WithButton(MouseButton.Left));
         yield return Until(()=>UnityEngine.Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None).Any(s=>s.name=="P17_PlayerPhysicalShell"));
         InputSystem.QueueStateEvent(mouse,new MouseState());
+        UnityEngine.Object.Destroy(aimObject);
     }
     [UnityTest] public IEnumerator NoWheelOmniUsesWasdStrafeIndependentYawAndKeepsWeaponOnline()
     {
@@ -135,7 +146,7 @@ public class MOVSeriesGarageTests
     [UnityTest] public IEnumerator HoverKeyboardMovesTurnsAndSuppressesRequestedSuspension()
     {
         Corners(R3PartKind.HoverEngine);Buy(new Vector3Int(-1,1,0),R3PartKind.Gyroscope);
-        foreach(int x in new[]{-2,2})foreach(int z in new[]{-3,3})Buy(new Vector3Int(x,0,z),R3PartKind.Suspension);
+        foreach(int x in new[]{-1,1})foreach(int z in new[]{-2,2})Buy(new Vector3Int(x,1,z),R3PartKind.Suspension);
         Assert.That(run.ConfigureSuspension(true,ActiveSuspensionSupportMode.FullSupport,.3f),Is.True);
         Assert.That(Invoke("ConfigureDrive",R3DriveKind.Hover),Is.True);VirtualInput();
         Assert.That(run.EnterTestRange(),Is.True);yield return Until(()=>!run.Transitioning);yield return MOVSeriesDeviceTests.Seconds(1.5f);

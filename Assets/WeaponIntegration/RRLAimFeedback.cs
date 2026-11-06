@@ -72,7 +72,7 @@ namespace RoboRougelike.WeaponIntegration
             if(assembly==null)return result;
             foreach(var part in assembly.Parts)
             {
-                if(part==null||part.Kind!=R3PartKind.Gun||!part.Operational||!part.transform.IsChildOf(assembly.transform)||
+                if(part==null||part.Kind!=R3PartKind.Gun||!part.Operational||!part.gameObject.activeInHierarchy||!part.transform.IsChildOf(assembly.transform)||
                     part.Muzzle==null||RRLEmpPartState.IsBlocked(part.gameObject))continue;
                 result.Guns++;
                 Vector3 origin=part.Weapon==R4WeaponKind.EmpEmitter?part.transform.position:part.Muzzle.position;

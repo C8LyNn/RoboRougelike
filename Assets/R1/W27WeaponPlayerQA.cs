@@ -11,7 +11,7 @@ namespace RoboRougelike.R1
     // Explicit batch-only Player test. It never opens or writes the save slot.
     public sealed class W27WeaponPlayerQA:MonoBehaviour
     {
-        [Serializable] sealed class Result { public string status="RUNNING",error="";public int blocked,unblocked;public string method="actual R3 assembled guns and PhysX; API-driven, not human gameplay"; }
+        [Serializable] sealed class Result { public string status="RUNNING",error="";public int blocked,unblocked,energyChecks;public string method="actual R3 assembled guns and PhysX; API-driven, not human gameplay"; }
         readonly Result report=new Result();string directory;
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)] static void Install()
         {
@@ -45,10 +45,13 @@ namespace RoboRougelike.R1
                 var blocker=GameObject.CreatePrimitive(PrimitiveType.Cube);blocker.name="W27 owned armor";blocker.transform.SetParent(rig.transform,true);
                 blocker.transform.position=gun.Muzzle.position+gun.Muzzle.forward*.6f;blocker.transform.rotation=gun.Muzzle.rotation;blocker.transform.localScale=Vector3.one*.3f;
                 Physics.SyncTransforms();int before=state.Ammo;float cooldown=gun.NextFireTime,deviceReady=state.DeviceReadyAt;
+                var energy=rig.GetComponent<VehicleEnergyBank>();Require(energy!=null,"shared energy bank");float beforeEnergy=energy.Current;
                 assembly.FireGroup(false);
-                Require(state.Ammo==before&&gun.NextFireTime==cooldown&&state.DeviceReadyAt==deviceReady,kinds[i]+" blocked spent resources");report.blocked++;
+                Require(state.Ammo==before&&gun.NextFireTime==cooldown&&state.DeviceReadyAt==deviceReady&&Mathf.Abs(energy.Current-beforeEnergy)<.01f,kinds[i]+" blocked spent resources");report.blocked++;
                 blocker.SetActive(false);Physics.SyncTransforms();assembly.FireGroup(false);
                 Require(gun.NextFireTime>cooldown,kinds[i]+" clear did not fire");
+                float cost=kinds[i]==R4WeaponKind.Basic?VehicleEnergyCosts.BasicShot:kinds[i]==R4WeaponKind.Shotgun?VehicleEnergyCosts.Shotgun:kinds[i]==R4WeaponKind.Railgun?VehicleEnergyCosts.Railgun:VehicleEnergyCosts.Rocket;
+                Require(Mathf.Abs(energy.Current-(beforeEnergy-cost))<.02f,kinds[i]+" wrong energy cost");report.energyChecks++;
                 if(kinds[i]!=R4WeaponKind.Basic)Require(state.Ammo==before-1,kinds[i]+" clear ammo");report.unblocked++;
                 Destroy(rig.gameObject);R1EncounterManager.ClearTransientObjects();yield return null;
             }

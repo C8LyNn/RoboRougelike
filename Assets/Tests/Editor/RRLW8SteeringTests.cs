@@ -23,6 +23,21 @@ public class RRLW8SteeringTests
     IEnumerator Build(R3VehicleKind chassis=R3VehicleKind.Light,bool withSuspension=false)
     {
         Assert.That(run.SelectVehicle(chassis),Is.True);Assert.That(run.OpenSandboxGarage(),Is.True);
+        // Build twelve separate ground-level wheels on connected hull extensions.
+        // This test covers steering fallback, not garage purchase validation.
+        if(chassis==R3VehicleKind.Standard)
+        {
+            run.VehicleModel.Parts.RemoveAll(p=>p.Kind==R3PartKind.Wheel);
+            foreach(int side in new[]{-1,1})
+            {
+                foreach(int z in new[]{-5,-4,-3,3,4,5})
+                    run.VehicleModel.Parts.Add(new R3PartState(new Vector3Int(side*2,0,z),R3PartKind.Armor));
+                foreach(int z in new[]{-5,-3,-1,1,3,5})
+                    run.VehicleModel.Parts.Add(new R3PartState(new Vector3Int(side*3,0,z),R3PartKind.Wheel));
+            }
+            Assert.That(run.VehicleModel.Parts.Select(p=>p.Cell).Distinct().Count(),Is.EqualTo(run.VehicleModel.Parts.Count));
+            Assert.That(R3VehicleModel.Connected(run.VehicleModel.Parts),Is.True);
+        }
         Assert.That(run.GarageBuy(new Vector3Int(0,chassis==R3VehicleKind.Light?1:2,-2),kind),Is.True);
         if(withSuspension)foreach(var cell in MOV009ModelTests.Cells(chassis))Assert.That(run.GarageBuy(cell,R3PartKind.Suspension),Is.True);
         Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
@@ -52,7 +67,7 @@ public class RRLW8SteeringTests
         Assert.That(wheels.Length,Is.EqualTo(4));foreach(var wheel in wheels)Assert.That(wheel.GetComponent<SteeringWheelModule>(),Is.Not.Null);
         var payload=wheels[0].transform.Find("Koło");var collider=payload.GetComponent<Collider>();var physicalPose=payload.localRotation;
         drive.Step(1,1,10,5,105);
-        var expected=SteeringMath.Solve(source.CurrentSolution.frontCenterDegrees,source.CurrentSolution.rearCenterDegrees,new SteeringGeometry{wheelbaseMeters=1.1f,trackMeters=2.2f});
+        var expected=SteeringMath.Solve(source.CurrentSolution.frontCenterDegrees,source.CurrentSolution.rearCenterDegrees,new SteeringGeometry{wheelbaseMeters=(wheels.Max(w=>w.Cell.z)-wheels.Min(w=>w.Cell.z))*.55f,trackMeters=(wheels.Max(w=>w.Cell.x)-wheels.Min(w=>w.Cell.x))*.55f});
         Assert.That(source.CurrentSolution.curvatureInverseMeters,Is.EqualTo(expected.curvatureInverseMeters).Within(.0001));
         Assert.That(source.CurrentSolution.frontRightDegrees,Is.GreaterThan(source.CurrentSolution.frontLeftDegrees));
         Assert.That(collider.enabled,Is.True);Assert.That(payload.localRotation,Is.EqualTo(physicalPose));Assert.That(payload.GetComponent<MeshRenderer>().enabled,Is.False);
@@ -108,7 +123,17 @@ public class RRLW8SteeringTests
     [UnityTest] public IEnumerator TwelveWheelLayoutAndAlternateDriveKeepFallbackWithoutCompetingSolver()
     {
         Assert.That(Enum.TryParse("IndependentSteering",out kind),Is.True);yield return Build(R3VehicleKind.Standard);
+        var wheels=run.Player.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p.Kind==R3PartKind.Wheel).ToArray();
+        Assert.That(wheels.Length,Is.EqualTo(12));Physics.SyncTransforms();
+        for(int i=0;i<wheels.Length;i++)for(int j=i+1;j<wheels.Length;j++)
+            foreach(var a in wheels[i].GetComponentsInChildren<Collider>().Where(c=>c.enabled&&!c.isTrigger))
+            foreach(var b in wheels[j].GetComponentsInChildren<Collider>().Where(c=>c.enabled&&!c.isTrigger))
+                Assert.That(Physics.ComputePenetration(a,a.transform.position,a.transform.rotation,b,b.transform.position,b.transform.rotation,out _,out float depth)&&depth>.001f,Is.False,"Wheel colliders overlap: "+wheels[i].Cell+" / "+wheels[j].Cell);
+        drive.RefreshMass();
+        Debug.Log($"MOV011 fallback before: wheels={drive.Wheels}, grounded={drive.GroundedWheels}, mass={body.mass:F1}, inertia={body.inertiaTensor}, position={body.position}");
+        Assert.That(drive.Wheels,Is.EqualTo(12));Assert.That(drive.GroundedWheels,Is.EqualTo(12),"Every fixture wheel must contact real terrain.");
         Assert.That(Supported,Is.False);Assert.That(SetMode(SteeringMode.Crab),Is.False);yield return Drive(.3f);
+        Debug.Log($"MOV011 fallback after: wheels={drive.Wheels}, grounded={drive.GroundedWheels}, velocity={body.linearVelocity}, yawRate={body.angularVelocity.y:F4}, position={body.position}");
         Assert.That(source.CurrentSolution.curvatureInverseMeters,Is.Zero);Assert.That(body.angularVelocity.y,Is.GreaterThan(.1f),"Standard R6 fallback remains playable");
         run.VehicleModel.SelectedDrive=R3DriveKind.Hover;drive.Step(1,1,10,5,105);Assert.That(source.CurrentSolution.curvatureInverseMeters,Is.Zero);
         Assert.That(run.Player.GetComponentsInChildren<Rigidbody>().Length,Is.EqualTo(1));

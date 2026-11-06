@@ -29,7 +29,7 @@ namespace RoboRougelike.R1
                 foreach(var hit in Physics.RaycastAll(origin,Vector3.down,30f,~0,QueryTriggerInteraction.Ignore))
                 {
                     if(hit.collider==null||hit.collider.attachedRigidbody!=null||hit.normal.y<.7f)continue;
-                    var host=new GameObject("Pole ładowania • 25 energii/s");host.transform.SetParent(transform,false);
+                    var host=new GameObject("Pole ładowania energii");host.transform.SetParent(transform,false);
                     host.transform.position=hit.point;field=host.AddComponent<EnergyChargingField>();return;
                 }
             }

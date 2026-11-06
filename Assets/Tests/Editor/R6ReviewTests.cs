@@ -8,6 +8,30 @@ using RoboRougelike.R1;
 using RoboRougelike.R3;
 using RoboRougelike.R6;
 using RogueMachine.P12PipelineSafe;
+public sealed class R6BarrierContactProbe : MonoBehaviour
+{
+    public Rigidbody Target;
+    public bool Contacted;
+    public float ApproachSpeed;
+    void OnCollisionEnter(Collision collision)=>Record(collision,"enter");
+    void OnCollisionStay(Collision collision)=>Record(collision,"stay");
+    void Record(Collision collision,string phase)
+    {
+        if(collision.rigidbody!=Target)return;
+        Contacted=true;
+        Debug.Log($"R6 barrier contact speed={ApproachSpeed:F2} phase={phase} fixedTime={Time.fixedTime:F4} " +
+            $"contacts={collision.contactCount} impulse={collision.impulse.ToString("F4")} relativeVelocity={collision.relativeVelocity.ToString("F4")} " +
+            $"mass={Target.mass:F3} com={Target.worldCenterOfMass.ToString("F4")} v={Target.linearVelocity.ToString("F4")} omega={Target.angularVelocity.ToString("F4")}");
+        for(int i=0;i<collision.contactCount;i++)
+        {
+            var contact=collision.GetContact(i);
+            var owner=contact.otherCollider.GetComponentInParent<R3MountedPart>()??contact.thisCollider.GetComponentInParent<R3MountedPart>();
+            Debug.Log($"R6 barrier point speed={ApproachSpeed:F2} phase={phase} index={i} " +
+                $"pair={contact.thisCollider.name} / {contact.otherCollider.name} owner={(owner!=null?owner.name:"none")} " +
+                $"point={contact.point.ToString("F4")} normal={contact.normal.ToString("F4")} separation={contact.separation:F4}");
+        }
+    }
+}
 public class R6ReviewTests
 {
     R1RunController run;
@@ -85,19 +109,47 @@ public class R6ReviewTests
     [UnityTest] public IEnumerator LowAndHighSpeedBarrierContactsStayBounded()
     {
         yield return Combat();var body=run.Player.GetComponent<Rigidbody>();
-        foreach(float speed in new[]{.6f,9f})
+        const float floorY=50;
+        var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.name="R6 isolated barrier floor";
+        floor.transform.position=new Vector3(200,floorY-.5f,200);floor.transform.localScale=new Vector3(30,1,40);
+        GameObject wall=null;
+        try
         {
-            run.Player.MoveTo(new Vector3(-27,.7f,-30),Quaternion.identity);Physics.SyncTransforms();
-            yield return Seconds(.5f);
-            var bounds=run.Player.GetComponent<BoxCollider>().bounds;
-            foreach(var c in run.Player.GetComponentsInChildren<Collider>())if(c.enabled&&!c.isTrigger&&c.attachedRigidbody==body)bounds.Encapsulate(c.bounds);
-            var wall=GameObject.CreatePrimitive(PrimitiveType.Cube);wall.transform.position=new Vector3(-27,2,bounds.max.z+.52f);wall.transform.localScale=new Vector3(12,4,1);Physics.SyncTransforms();
-            body.linearVelocity=Vector3.forward*speed;float until=Time.time+.8f,peak=0,spin=0;
-            while(Time.time<until){peak=Mathf.Max(peak,body.linearVelocity.magnitude);spin=Mathf.Max(spin,body.angularVelocity.magnitude);Assert.That(body.position.y,Is.InRange(.55f,.85f));yield return null;}
-            Debug.Log($"R6 barrier {speed}m/s: peak={peak:0.00}, spin={spin:0.00}, final={body.linearVelocity}");
-            Assert.That(peak,Is.LessThan(speed+.3f));Assert.That(spin,Is.LessThan(1));Assert.That(body.linearVelocity.z,Is.GreaterThan(-1.6f));
-            wall.SetActive(false);Object.Destroy(wall);
+            foreach(float speed in new[]{.6f,9f})
+            {
+                body.linearVelocity=Vector3.zero;body.angularVelocity=Vector3.zero;
+                run.Player.MoveTo(new Vector3(200,floorY+.7f,200),Quaternion.identity);Physics.SyncTransforms();body.WakeUp();
+                yield return Seconds(1.5f);
+                Assert.That(body.linearVelocity.magnitude,Is.LessThan(.3f),"Vehicle must settle before the impact.");
+                Assert.That(body.angularVelocity.magnitude,Is.LessThan(.5f),"Vehicle must stop rotating before the impact.");
+                var drive=run.Player.GetComponent<R6VehicleDrive>();drive.RefreshMass();
+                Assert.That(drive.GroundedWheels,Is.GreaterThan(0),"The vehicle must be supported by the test floor.");
+                var colliders=run.Player.GetComponentsInChildren<Collider>().Where(c=>c.enabled&&!c.isTrigger&&c.attachedRigidbody==body).ToArray();
+                Assert.That(colliders,Is.Not.Empty);var bounds=colliders[0].bounds;
+                foreach(var c in colliders)bounds.Encapsulate(c.bounds);
+                wall=GameObject.CreatePrimitive(PrimitiveType.Cube);wall.name="R6 isolated barrier";
+                wall.transform.position=new Vector3(200,floorY+2,bounds.max.z+.505f);wall.transform.localScale=new Vector3(12,4,1);Physics.SyncTransforms();
+                var barrier=wall.GetComponent<Collider>();
+                var contactProbe=wall.AddComponent<R6BarrierContactProbe>();contactProbe.Target=body;contactProbe.ApproachSpeed=speed;
+                foreach(var c in colliders)
+                    Assert.That(Physics.ComputePenetration(c,c.transform.position,c.transform.rotation,barrier,barrier.transform.position,barrier.transform.rotation,out _,out _),Is.False,"Vehicle starts inside the barrier: "+c.name);
+                body.angularVelocity=Vector3.zero;body.linearVelocity=Vector3.forward*speed;
+                Debug.Log($"R6 barrier pre-impact speed={speed:F2} mass={body.mass:F3} com={body.worldCenterOfMass.ToString("F4")} v={body.linearVelocity.ToString("F4")} omega={body.angularVelocity.ToString("F4")}");
+                float until=Time.time+.8f,peak=0,spin=0,minY=float.PositiveInfinity,maxY=float.NegativeInfinity;
+                while(Time.time<until)
+                {
+                    peak=Mathf.Max(peak,body.linearVelocity.magnitude);spin=Mathf.Max(spin,body.angularVelocity.magnitude);
+                    minY=Mathf.Min(minY,body.position.y);maxY=Mathf.Max(maxY,body.position.y);yield return new WaitForFixedUpdate();
+                }
+                bool contacted=contactProbe.Contacted;
+                Debug.Log($"R6 barrier {speed}m/s: contact={contacted}, peak={peak:0.00}, spin={spin:0.00}, y=[{minY:0.0000},{maxY:0.0000}], final={body.linearVelocity}");
+                Assert.That(contacted,Is.True,"The vehicle must actually contact the barrier at "+speed+" m/s.");
+                Assert.That(minY,Is.GreaterThanOrEqualTo(floorY+.55f));Assert.That(maxY,Is.LessThanOrEqualTo(floorY+.85f));
+                Assert.That(peak,Is.LessThan(speed+.3f));Assert.That(spin,Is.LessThan(1));Assert.That(body.linearVelocity.z,Is.GreaterThan(-1.6f));
+                wall.SetActive(false);Object.Destroy(wall);wall=null;
+            }
         }
+        finally{if(wall!=null){wall.SetActive(false);Object.Destroy(wall);}floor.SetActive(false);Object.Destroy(floor);}
     }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }

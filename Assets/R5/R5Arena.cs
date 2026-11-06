@@ -42,6 +42,8 @@ namespace RoboRougelike.R5
                 Box("Łącznik zachodni",new Vector3(-31,1.5f,0),new Vector3(3,3,14),true);
                 Box("Łącznik wschodni",new Vector3(31,1.5f,0),new Vector3(3,3,14),true);
             }
+            foreach(int side in new[]{-1,1})foreach(int row in new[]{-1,1})
+                Ramp(new Vector3(side*28,1.53f,row*30),row>0?18f:-18f);
             Hazard(new Vector3(-6,0,-6));Hazard(new Vector3(6,0,8));
             // W29: one real physical jump pad in the EXISTING playable Salvage Yard.
             // New levels may place this modular node through the future map generator.
@@ -57,7 +59,13 @@ namespace RoboRougelike.R5
             obj.transform.localPosition=position;obj.transform.localScale=size;obj.GetComponent<Renderer>().sharedMaterial=material;
             if(destructible)obj.AddComponent<RoboRougelike.PackageIntegration.RRLCoverAdapter>();
         }
-        private void JumpPad(Vector3 position)
+        private void Ramp(Vector3 position,float pitch)
+        {
+            var obj=GameObject.CreatePrimitive(PrimitiveType.Cube);obj.name="Rampa terenu • przejazd";
+            obj.transform.SetParent(Layout,false);obj.transform.localPosition=position;
+            obj.transform.localRotation=Quaternion.Euler(pitch,0,0);obj.transform.localScale=new Vector3(8,.35f,11);
+            obj.GetComponent<Renderer>().sharedMaterial=material;
+        }        private void JumpPad(Vector3 position)
         {
             var pad=new GameObject("MAP-JUMPPAD-001 • fizyczne wybicie");
             pad.transform.SetParent(Layout,false);pad.transform.localPosition=position;

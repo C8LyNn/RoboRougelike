@@ -25,7 +25,7 @@ public class RRLW34GarageTests
     }
     [UnityTest] public IEnumerator SixShortcutsRotateOnlyTheirAxisAndInverseUndoesWithoutSpending()
     {
-        var garage=run.Garage;garage.ChooseInventory(Receive());garage.Select(new Vector3Int(1,2,0));
+        var garage=run.Garage;garage.ChooseInventory(Receive());garage.Select(new Vector3Int(0,2,-2));
         int funds=run.VehicleModel.Scrap;
         var keys=new[]{KeyCode.Q,KeyCode.E,KeyCode.R,KeyCode.F,KeyCode.Z,KeyCode.X};
         var expected=new[]{new Vector3Int(0,3,0),Vector3Int.zero,new Vector3Int(1,0,0),Vector3Int.zero,new Vector3Int(0,0,3),Vector3Int.zero};
@@ -45,7 +45,7 @@ public class RRLW34GarageTests
     {
         run.Player.transform.rotation=Quaternion.Euler(0,37,0);
         var garage=run.Garage;string id=Receive();garage.ChooseInventory(id);garage.RotateSelected(0,1);
-        garage.Select(new Vector3Int(1,3,0));Assert.That(garage.PreviewValid,Is.True,garage.PlacementIssue);
+        garage.Select(new Vector3Int(0,2,-2));Assert.That(garage.PreviewValid,Is.True,garage.PlacementIssue);
         var ghost=garage.Preview;var position=ghost.position;var rotation=ghost.rotation;
         Assert.That(ghost.GetComponentsInChildren<Renderer>().Length,Is.GreaterThan(4),"Footprint mounting ports must be visible.");
         int funds=run.VehicleModel.Scrap;Assert.That(garage.ClickTarget(),Is.True);
@@ -59,11 +59,11 @@ public class RRLW34GarageTests
     [UnityTest] public IEnumerator ZeroHpBoundsAndMismatchedPortsNeverShowGreenOrSpend()
     {
         var garage=run.Garage;int funds=run.VehicleModel.Scrap;
-        string dead=Receive(0);garage.ChooseInventory(dead);garage.Select(new Vector3Int(1,2,0));
+        string dead=Receive(0);garage.ChooseInventory(dead);garage.Select(new Vector3Int(0,2,-2));
         Assert.That(garage.PreviewValid,Is.False);Assert.That(garage.PlacementIssue,Does.Contain("odbudowy"));
         Assert.That(garage.ClickTarget(),Is.False);Assert.That(run.GarageMount(dead,garage.Cell),Is.False);
-        string blocked=Receive(ports:0);garage.ChooseInventory(blocked);garage.Select(new Vector3Int(1,2,0));
-        Assert.That(garage.PreviewValid,Is.False);Assert.That(garage.ClickTarget(),Is.False);
+        string blocked=Receive(ports:0);garage.ChooseInventory(blocked);garage.Select(new Vector3Int(0,2,-2));
+        Assert.That(garage.PreviewValid,Is.False);Assert.That(garage.PlacementIssue,Does.Contain("Brak zgodnych punktów mocowania"));Assert.That(garage.ClickTarget(),Is.False);
         string healthy=Receive();garage.ChooseInventory(healthy);garage.Select(new Vector3Int(6,2,0));
         Assert.That(garage.PreviewValid,Is.False);Assert.That(garage.ClickTarget(),Is.False);
         garage.Select(new Vector3Int(0,1,0));Assert.That(garage.PreviewValid,Is.False);
@@ -72,11 +72,11 @@ public class RRLW34GarageTests
     }
     [UnityTest] public IEnumerator ControllerRemountPreservesStoredOrientationIdPortsAndHp()
     {
-        var turns=new Vector3Int(0,1,0);string id=Receive(.4f,turns);
-        Assert.That(run.GarageMount(id,new Vector3Int(1,2,0),turns),Is.True);
-        Assert.That(run.GarageRemove(new Vector3Int(1,2,0)),Is.True);
+        var turns=new Vector3Int(0,1,0);var cell=new Vector3Int(0,2,-2);string id=Receive(.4f,turns);
+        Assert.That(run.GarageMount(id,cell,turns),Is.True,run.VehicleModel.OwnedPlacementError(id,cell,turns));
+        Assert.That(run.GarageRemove(cell),Is.True);
         Assert.That(run.VehicleModel.Inventory.Single(p=>p.Id==id).RotationQuarterTurns,Is.EqualTo(turns));
-        Assert.That(run.GarageMount(id,new Vector3Int(1,2,0)),Is.True);
+        Assert.That(run.GarageMount(id,cell),Is.True,run.VehicleModel.OwnedPlacementError(id,cell,turns));
         var part=run.VehicleModel.Parts.Single(p=>p.Id==id);
         Assert.That(part.RotationQuarterTurns,Is.EqualTo(turns));Assert.That(part.Health,Is.EqualTo(.4f).Within(.001));
         Assert.That(part.ContactMask,Is.EqualTo(R3MountingGrid.AllFaces));
@@ -86,9 +86,9 @@ public class RRLW34GarageTests
     [UnityTest] public IEnumerator SwitchingIdenticalShapesRefreshesTheirDifferentContactMarkers()
     {
         var garage=run.Garage;string open=Receive();string closed=Receive(ports:0);
-        garage.ChooseInventory(open);garage.Select(new Vector3Int(1,2,0));
-        Assert.That(garage.Preview.GetComponentsInChildren<Transform>(true).Count(t=>t.name.StartsWith("Punkt mocowania ")),Is.EqualTo(16));
-        garage.ChooseInventory(closed);garage.Select(new Vector3Int(1,2,0));
+        garage.ChooseInventory(open);garage.Select(new Vector3Int(0,2,-2));
+        Assert.That(garage.Preview.GetComponentsInChildren<Transform>(true).Count(t=>t.name.StartsWith("Punkt mocowania ")),Is.EqualTo(6),"One 1x1x1 cell exposes six face contacts.");
+        garage.ChooseInventory(closed);garage.Select(new Vector3Int(0,2,-2));
         Assert.That(garage.Preview.GetComponentsInChildren<Transform>(true).Count(t=>t.name.StartsWith("Punkt mocowania ")),Is.Zero,
             "Switching equal shapes must display the selected item's own ports, not the preceding item's ports.");
         Assert.That(garage.PreviewValid,Is.False);yield return null;

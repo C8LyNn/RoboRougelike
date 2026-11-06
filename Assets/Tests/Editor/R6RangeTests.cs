@@ -62,11 +62,28 @@ public class R6RangeTests
     {
         run.SelectVehicle(R3VehicleKind.Heavy);Assert.That(Action("OpenSandboxGarage"),Is.True);
         var model=run.VehicleModel;
-        for(int y=0;y<=5&&model.Parts.Count<180;y++)for(int x=-6;x<=6&&model.Parts.Count<180;x++)for(int z=-7;z<=7&&model.Parts.Count<180;z++)
-            model.Buy(new Vector3Int(x,y,z),R3PartKind.Armor);
+        // Build outward through the real garage, leaving the upper gun lanes clear.
+        // Each successful purchase rebuilds the physical assembly used by the next validation.
+        var candidates=(from y in Enumerable.Range(0,2)
+                        from x in Enumerable.Range(-6,13)
+                        from z in Enumerable.Range(-7,15)
+                        orderby y,Math.Abs(x)+Math.Abs(z)
+                        select new Vector3Int(x,y,z)).ToArray();
+        bool progress;
+        do
+        {
+            progress=false;
+            foreach(var cell in candidates)
+            {
+                if(model.Parts.Count==180)break;
+                if(model.At(cell)!=null)continue;
+                if(run.GarageBuy(cell,R3PartKind.Armor)){progress=true;yield return null;}
+            }
+        }while(progress&&model.Parts.Count<180);
         Assert.That(model.Parts.Count,Is.EqualTo(180));Assert.That(model.CanDeploy,Is.True);
-        run.SendMessage("RebuildGarageVehicle");int budget=model.Scrap;
-        run.EnterTestRange();while(run.Transitioning)yield return null;
+        Assert.That(model.PlacementError(new Vector3Int(0,5,0),R3PartKind.Armor),Is.EqualTo("Limit 180 pól części."));
+        int budget=model.Scrap;
+        Assert.That(run.EnterTestRange(),Is.True,"Maximum construction must be deployable to the test range.");while(run.Transitioning)yield return null;
         Assert.That(run.Player.GetComponent<R3VehicleAssembly>().Parts.Count,Is.EqualTo(180));
         var target=GameObject.Find("Poligon R6").GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().First(p=>p.name=="Rdzeń celu"&&Mathf.Abs(p.transform.position.x)<.1f);
         var gun=run.Player.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Kind==R3PartKind.Gun);gun.Muzzle.LookAt(target.transform.position);

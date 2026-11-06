@@ -27,6 +27,7 @@ namespace RoboRougelike.R1
         {
             if(Transitioning||Progress?.State!=R1RunState.Garage||VehicleModel==null||!VehicleModel.CanDeploy)return false;
             Player.GetComponent<R3VehicleAssembly>().Capture();
+            VehicleModel.PrepareInitialEnergy();
             if(!VehicleModel.CanDeploy)return false;
             workshopModel=VehicleModel;testStats=Progress.Stats.Copy();workshopPosition=Player.transform.position;workshopRotation=Player.transform.rotation;
             Garage.Close();Progress.BeginTest();StartCoroutine(BuildTestRange());return true;

@@ -92,10 +92,12 @@ public sealed class R3ContactAndRewardTests
         {
             Assert.IsTrue(model.ReceiveBonuses(new[]{bonus}));
             var item=model.Inventory.Single();
+            var cell=new Vector3Int(1,1,0);
+            Assert.IsNull(model.PlacementError(cell,R3PartKind.BonusModule,true,R4WeaponKind.Basic,default,item.ContactMask));
             item.ContactMask=0;
-            Assert.IsNotNull(model.PlacementError(new Vector3Int(1,2,0),
+            Assert.AreEqual("Brak zgodnych punktów mocowania ze sprawną konstrukcją.",model.PlacementError(cell,
                 R3PartKind.BonusModule,true,R4WeaponKind.Basic,default,item.ContactMask));
-            Assert.IsFalse(model.Mount(item.Id,new Vector3Int(1,2,0)));
+            Assert.IsFalse(model.Mount(item.Id,cell));
         }
         finally {UnityEngine.Object.DestroyImmediate(bonus);}
     }

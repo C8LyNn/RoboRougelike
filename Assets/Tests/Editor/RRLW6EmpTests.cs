@@ -24,7 +24,9 @@ public class RRLW6EmpPhysicalTests
     }
     R3VehicleAssembly Build(R4WeaponKind kind,out R3VehicleModel model,int index=0)
     {
-        model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));model.Parts.First(p=>p.Kind==R3PartKind.Gun).Weapon=kind;
+        model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
+        var gun=model.Parts.First(p=>p.Kind==R3PartKind.Gun);
+        model.Parts.RemoveAll(p=>p.Kind==R3PartKind.Gun&&p.Id!=gun.Id);gun.Weapon=kind;
         return R3VehicleAssembly.Build(model,new R1RunStats(),R1RunController.Instance.GetComponent<R3VisualPalette>(),new Vector3(100+index*20,4,100),Quaternion.identity).GetComponent<R3VehicleAssembly>();
     }
     static bool Fire(R3MountedPart gun)

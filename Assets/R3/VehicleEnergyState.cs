@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace RoboRougelike.R3
 {
@@ -8,8 +9,10 @@ namespace RoboRougelike.R3
         public const float CoreCapacity = 500f;
         public const float BatteryCapacity = 100f;
         public const float PassiveReservation = 25f;
-        public const float RegenerationPerSecond = 5f;
+        public const float RegenerationPerSecond = 10f;
 
+        float fieldRemaining;
+        readonly List<float> pickups = new List<float>();
         public float Maximum { get; private set; } = CoreCapacity;
         public float Current { get; private set; } = CoreCapacity;
 
@@ -31,11 +34,29 @@ namespace RoboRougelike.R3
             return true;
         }
 
-        public void Advance(float seconds)
+        public void Advance(float seconds) => AdvanceWithMotion(seconds, false);
+
+        public void AdvanceWithMotion(float seconds, bool stationary)
         {
             if (float.IsNaN(seconds) || float.IsInfinity(seconds) || seconds <= 0f) return;
-            Recharge(RegenerationPerSecond * seconds);
+            double charge=RegenerationPerSecond*(stationary?4d:1d)*seconds;
+            charge+=Maximum*.05d*Math.Min(seconds,fieldRemaining);
+            fieldRemaining=Math.Max(0f,fieldRemaining-seconds);
+            for(int i=pickups.Count-1;i>=0;i--)
+            {
+                charge+=Maximum*.1d*Math.Min(seconds,pickups[i]);
+                pickups[i]-=seconds;
+                if(pickups[i]<=0)pickups.RemoveAt(i);
+            }
+            Recharge((float)Math.Min(float.MaxValue,charge));
         }
+
+        public void ApplyFieldCharge()
+        {
+            Recharge((Maximum-Current)*.5f);
+            fieldRemaining=10f;
+        }
+        public void ApplyEnergyPickup() => pickups.Add(5f);
 
         public void Recharge(float amount)
         {
@@ -54,8 +75,8 @@ namespace RoboRougelike.R3
 
     public static class VehicleEnergyCosts
     {
-        public const float BasicShot=5f, Shotgun=10f, Railgun=18f, Rocket=15f, Emp=25f;
-        public const float ContinuousWeaponPerSecond=12f, BoosterActivation=15f;
-        public const float Jump=25f, Blink=30f, Grapple=12f;
+        public const float BasicShot=2.5f, Shotgun=5f, Railgun=9f, Rocket=7.5f, Emp=12.5f;
+        public const float ContinuousWeaponPerSecond=6f, BoosterActivation=7.5f;
+        public const float Jump=12.5f, Blink=15f, Grapple=6f;
     }
 }
