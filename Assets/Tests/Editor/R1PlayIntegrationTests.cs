@@ -170,7 +170,8 @@ public class R1PlayIntegrationTests
         DefeatAllEnemies();
         yield return Until(() => Run.Progress.State == R1RunState.Salvage, "Pierwsza nagroda.");
         Run.ConfirmRewards(Array.Empty<string>(),new[]{Run.Progress.Offers.ToList().FindIndex(item => item.Effect == R1UpgradeEffect.Damage)});
-        Assert.That(Run.GarageMount(Run.VehicleModel.Inventory.Single(p=>p.Kind==R3PartKind.BonusModule).Id,new Vector3Int(1,2,0)),Is.True);
+        var bonusId=Run.VehicleModel.Inventory.Single(p=>p.Kind==R3PartKind.BonusModule).Id;var bonusCell=new Vector3Int(0,2,-2);
+        Assert.That(Run.GarageMount(bonusId,bonusCell),Is.True,Run.VehicleModel.OwnedPlacementError(bonusId,bonusCell,Vector3Int.zero));
         Run.StartNextEncounter();
         yield return Until(() => !Run.Transitioning, "Druga walka.");
         float upgradedDamage = Run.Player.Controller.EffectiveDamage;

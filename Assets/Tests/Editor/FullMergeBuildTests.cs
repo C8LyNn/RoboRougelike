@@ -23,6 +23,7 @@ public sealed class FullMergeBuildTests
         var model=run.VehicleModel;var gun=model.Parts.First(p=>p.Kind==R3PartKind.Gun);
         var cell=gun.Cell+Vector3Int.up;Assert.That(model.At(cell),Is.Null);
         int money=model.Scrap;var ids=model.Parts.Select(p=>p.Id).ToArray();
+        Assert.That(model.PlacementError(cell,R3PartKind.Armor),Is.EqualTo("Brak zgodnego, połączonego z rdzeniem mocowania. Koło i broń nie są podporą konstrukcji."));
         Assert.That(model.Buy(cell,R3PartKind.Armor),Is.False,"Direct model API must respect the actual bound garage validator");
         Assert.That(model.Scrap,Is.EqualTo(money));Assert.That(model.Parts.Select(p=>p.Id),Is.EqualTo(ids));
         yield return null;
@@ -33,6 +34,7 @@ public sealed class FullMergeBuildTests
         Assert.That(model.ReceiveSalvage(new[]{stored}),Is.True);
         var cell=model.Parts.First(p=>p.Kind==R3PartKind.Gun).Cell+Vector3Int.up;
         int money=model.Scrap;var ids=model.Parts.Select(p=>p.Id).ToArray();
+        Assert.That(model.OwnedPlacementError(stored.Id,cell,default),Is.EqualTo("Brak zgodnego, połączonego z rdzeniem mocowania. Koło i broń nie są podporą konstrukcji."));
         Assert.That(model.Mount(stored.Id,cell),Is.False);
         Assert.That(model.Inventory.Single().Id,Is.EqualTo(stored.Id));Assert.That(model.Scrap,Is.EqualTo(money));
         Assert.That(model.Parts.Select(p=>p.Id),Is.EqualTo(ids));yield return null;
@@ -73,7 +75,7 @@ public sealed class FullMergeBuildTests
         var model=run.VehicleModel;var part=new R3PartState(default,R3PartKind.BonusModule)
             {UpgradeId="fm270-wide",UpgradeEffect=R1UpgradeEffect.Damage,UpgradeAmount=.25f};
         Assert.That(model.ReceiveSalvage(new[]{part}),Is.True);int money=model.Scrap;
-        Assert.That(run.GarageMount(part.Id,new Vector3Int(1,2,0),new Vector3Int(1,0,0)),Is.True);
+        Assert.That(run.GarageMount(part.Id,new Vector3Int(2,2,-2),new Vector3Int(1,0,0)),Is.True);
         yield return null;var mounted=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==part.Id);
         Assert.That(model.Inventory,Is.Empty);Assert.That(model.Parts.Count(p=>p.Id==part.Id),Is.EqualTo(1));
         Assert.That(mounted.GetComponentsInChildren<R3MountedPart>().Length,Is.EqualTo(1));

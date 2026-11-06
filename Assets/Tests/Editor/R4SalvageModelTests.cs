@@ -27,7 +27,7 @@ public class R4SalvageModelTests
     [Test] public void FreeMountRemovalRepairAndDismantleAreAtomicAndCannotPrintScrap()
     {
         var model=Model();var ledger=new R4SalvageLedger();ledger.Record("enemy",new[]{Item("gun",0.4f)});
-        ledger.Claim(model,new[]{"gun"});var cell=new Vector3Int(1,2,0);
+        ledger.Claim(model,new[]{"gun"});var cell=new Vector3Int(0,2,-2);
         Assert.That(model.Mount("gun",new Vector3Int(6,5,7)),Is.False);
         Assert.That(model.Mount("gun",cell),Is.True);Assert.That(model.Scrap,Is.Zero);
         Assert.That(model.At(cell).Health,Is.EqualTo(0.4f));Assert.That(model.Inventory,Is.Empty);
