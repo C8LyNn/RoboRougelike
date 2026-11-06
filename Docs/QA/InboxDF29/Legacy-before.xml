@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="3" result="Failed(Child)" total="3" passed="2" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-06 13:36:58Z" end-time="2026-11-06 13:36:58Z" duration="0,0655461">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1389" result="Failed" site="Child" start-time="2026-11-06 13:36:58Z" end-time="2026-11-06 13:36:58Z" duration="0.065546" total="3" passed="2" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1727" name="Assembly-CSharp-Editor.dll" fullname="[USER_HOME]/Desktop/Prototypy/RoboRougelike-W27-Saw/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="596" result="Failed" site="Child" start-time="2026-11-06 13:36:58Z" end-time="2026-11-06 13:36:58Z" duration="0.050940" total="3" passed="2" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="43196" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestFixture" id="1159" name="LegacyFootprintCheckpointTests" fullname="LegacyFootprintCheckpointTests" classname="LegacyFootprintCheckpointTests" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-11-06 13:36:58Z" end-time="2026-11-06 13:36:58Z" duration="0.045383" total="3" passed="2" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-case id="1161" name="InvalidOldDisconnectedConstructionIsNotAcceptedAsMigration" fullname="LegacyFootprintCheckpointTests.InvalidOldDisconnectedConstructionIsNotAcceptedAsMigration" methodname="InvalidOldDisconnectedConstructionIsNotAcceptedAsMigration" classname="LegacyFootprintCheckpointTests" runstate="Runnable" seed="1357273018" result="Passed" start-time="2026-11-06 13:36:58Z" end-time="2026-11-06 13:36:58Z" duration="0.026880" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1162" name="MigrationWithFullInventoryRejectsWithoutLosingAnything" fullname="LegacyFootprintCheckpointTests.MigrationWithFullInventoryRejectsWithoutLosingAnything" methodname="MigrationWithFullInventoryRejectsWithoutLosingAnything" classname="LegacyFootprintCheckpointTests" runstate="Runnable" seed="1340356583" result="Passed" start-time="2026-11-06 13:36:58Z" end-time="2026-11-06 13:36:58Z" duration="0.003209" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1160" name="OldWideModuleBridgeMovesOnlyDisconnectedPartToInventoryWithoutLosingData" fullname="LegacyFootprintCheckpointTests.OldWideModuleBridgeMovesOnlyDisconnectedPartToInventoryWithoutLosingData" methodname="OldWideModuleBridgeMovesOnlyDisconnectedPartToInventoryWithoutLosingData" classname="LegacyFootprintCheckpointTests" runstate="Runnable" seed="1793870441" result="Failed" start-time="2026-11-06 13:36:58Z" end-time="2026-11-06 13:36:58Z" duration="0.004365" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <failure>
+            <message><![CDATA[  Niepoprawny zapis konstrukcji.
+  Expected: True
+  But was:  False
+]]></message>
+            <stack-trace><![CDATA[at LegacyFootprintCheckpointTests.OldWideModuleBridgeMovesOnlyDisconnectedPartToInventoryWithoutLosingData () [0x0007e] in [USER_HOME]\Desktop\Prototypy\RoboRougelike-W27-Saw\Assets\Tests\Editor\LegacyFootprintCheckpointTests.cs:32
+]]></stack-trace>
+          </failure>
+          <output><![CDATA[Saving results to: [USER_HOME]/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

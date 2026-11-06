@@ -8,3 +8,10 @@ Player-cold-load.log original_sha256=3fa87225dbcb3bba93123ae186b39f0264de8d14ebf
 Player-drive-Light.log original_sha256=c794894326047410b15ad16d80fbf0d54a65d43f62f84cb199ece500f239e03d (published copy redacts user path/session metadata)
 Player-drive-Standard.log original_sha256=9b9f84ee5329a9b5739574b488836ddd7eebad30407079d872e0d171c02b581c (published copy redacts user path/session metadata)
 Player-drive-Heavy.log original_sha256=f1a3d238130fe5ead9cdf053709c96fefcd999048e9bc78fbc0b422c7f043b77 (published copy redacts user path/session metadata)
+
+EditMode.xml original_sha256=8c98a06a7d54efbbe8877ceb81e383da06cc069752fc3e8d2223295c0cda515d (published copy redacts user path/session metadata)
+EditMode-Editor.log original_sha256=52061896ecfb385227a5ce1dbbb06d635100d5ebf2c7885dc6e5c72be78a75e1 (published copy redacts user path/session metadata)
+Broad101-before.xml original_sha256=b29e55f68ca77993f567d91fb40bae15b3804a1808ab743b7e6a9bced07bb127 (published copy redacts user path/session metadata)
+Broad104-after.xml original_sha256=84e8fca0468bb1eb478c27441971cd9057b41e2beaa58fe93734a8eb31538e3a (published copy redacts user path/session metadata)
+Legacy-before.xml original_sha256=4488dc1fd030e8b0cba80509e01cd24d8af14d0730c02eecd5146e14b654b3d0 (published copy redacts user path/session metadata)
+Checkpoint-focused.xml original_sha256=d70ac1448cd8ede80f6b6252ed48d8304b412ea1e93ea45d9e68c8cd8579dd54 (published copy redacts user path/session metadata)
