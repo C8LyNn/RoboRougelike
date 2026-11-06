@@ -118,6 +118,26 @@ public sealed class EnergyCombatRefinementTests
         Assert.That(light.Speed,Is.EqualTo(medium.Speed));Assert.That(medium.Speed,Is.EqualTo(heavy.Speed));
         Assert.That(light.CoreHp,Is.EqualTo(heavy.CoreHp));
     }
+    [UnityTest] public IEnumerator StandardStarterCanFireBothRealGunsWithoutHittingItsOwnConstruction()
+    {
+        EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);yield return new EnterPlayMode();
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
+        var paletteObject=new GameObject("starter gun QA palette");var palette=paletteObject.AddComponent<R3VisualPalette>();
+        var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
+        for(int i=0;i<palette.Parts.Length;i++)palette.Parts[i]=material;
+        for(int i=0;i<palette.Weapons.Length;i++)palette.Weapons[i]=material;
+        var rig=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(0,20,0),Quaternion.identity);
+        yield return null;
+        var assembly=rig.GetComponent<R3VehicleAssembly>();
+        var guns=assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun).ToArray();
+        Assert.That(guns.Length,Is.EqualTo(2),"The standard starter carries two physical guns.");
+        R1EncounterManager.ClearTransientObjects();Physics.SyncTransforms();assembly.FireGuns();
+        Assert.That(guns.All(g=>g.NextFireTime>0),Is.True,"Both guns must have unobstructed firing lanes.");
+        var shots=UnityEngine.Object.FindObjectsByType<RoboRougelike.R4.R4ProjectileOrigin>(FindObjectsSortMode.None);
+        Assert.That(shots.Select(s=>s.PartId).Distinct().Count(),Is.EqualTo(2),"Both owned guns must spawn their own physical shot.");
+        UnityEngine.Object.Destroy(rig.gameObject);UnityEngine.Object.Destroy(paletteObject);UnityEngine.Object.Destroy(material);
+        yield return new ExitPlayMode();
+    }
     [UnityTest] public IEnumerator EscapeClosesCatalogBeforeOpeningPause()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);yield return new EnterPlayMode();
