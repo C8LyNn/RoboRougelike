@@ -24,3 +24,4 @@ BoundaryBeforeFix-Editor.log original_sha256=02497e69fa1ff831ee1637821b77ce89ed8
 PriorFailuresRetest-results.xml original_sha256=047fcae605d602bda949ff41ca6963540705861306868e561d7d7897cd676c47; published copy redacts user path and session metadata
 PriorFailuresRetest-exit.txt original_sha256=5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9; published copy redacts user path and session metadata
 PriorFailuresRetest-Editor.log original_sha256=ec228a3d0e676462d883cf6074857a6aea7b2d75ff5950cf64261c9c3f6187ec; published copy redacts user path and session metadata
+FullEdit-Editor.log.zip original_log_sha256=613387a9236fb1b1505c44de0d6234a5d5f241f5a3639971914dec2a47d51e72; published copy redacts user path and session metadata
