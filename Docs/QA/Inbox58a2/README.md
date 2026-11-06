@@ -14,3 +14,6 @@ Full PlayMode on exact commit 0738ac37c8a7251b6b03a7bcb8a0c9224d1b8491: 478/478 
 DriveFixture: 34/34 PASS on working state committed as fdf290a406cd93adfea1e3d73667f03d7352c9d7. Includes corrected non-overlapping drive/device assemblies, hover, tracks, special movement, camera and physical weapons. This retests the invalid Standard fixture described above. Full suites at fdf are running.
 
 Full PlayMode on exact fdf290a406cd93adfea1e3d73667f03d7352c9d7: 478 passed, 0 failed, 0 skipped, exit 0. Full EditMode at this SHA is running; no final result yet.
+
+An experimental virtual-WASD six-fight pilot was attempted in a separate worktree; Unity failed licensing initialization and crashed before reaching the test, exit -536870911, no XML. Status NOT_RUN, no game result. Pilot changes remain unverified and are not in fdf.
+
