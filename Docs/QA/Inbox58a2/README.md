@@ -31,3 +31,6 @@ BarrierContacts: the first high-speed wall contacts were both front wheel collid
 
 BumperExperiment: 3/3 PASS on isolated fdf working tree with two Armor parts at (-1,1,3) and (1,1,3), moving-pilot test patch present but not selected, and telemetry barrier test copied from f104. Both actual guns fired, 18 terrain traversals passed, and barrier impacts passed: 0.6 m/s peak=.60 spin=.00 y=50.6500–50.6500; 9 m/s peak=9 spin=.01 y=50.6500–50.6506. First contacts were the Armor blocks, not the wheels. This is a focused experiment, not a complete release regression.
 
+
+BumperRegression: 20 PASS / 2 FAIL on working tree f104 plus two armor blocks and 2 count fixture changes. Failed: moving virtual-input pilot lost weapons on stage 3, and .6s acceleration Standard=1.9668 m/s versus Heavy=1.7694 (ordering correct, gap .1974 below existing .25 threshold). This supersedes no prior six-victory claim: different working state and independent pilot run. Two-block solution remains under evaluation and was not yet committed.
+
