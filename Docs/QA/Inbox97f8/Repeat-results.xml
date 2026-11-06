@@ -1,0 +1,542 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="4" result="Passed" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-06 18:36:52Z" end-time="2026-11-06 18:36:53Z" duration="1,7016257">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1394" result="Passed" start-time="2026-11-06 18:36:52Z" end-time="2026-11-06 18:36:53Z" duration="1.701626" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1732" name="Assembly-CSharp-Editor.dll" fullname="[USER_HOME]/Desktop/Prototypy/RoboRougelike-W27-Saw/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="601" result="Passed" start-time="2026-11-06 18:36:52Z" end-time="2026-11-06 18:36:53Z" duration="1.637052" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="53232" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="1128" name="GarageEditFreedomTests" fullname="GarageEditFreedomTests" classname="GarageEditFreedomTests" runstate="Runnable" testcasecount="13" result="Passed" start-time="2026-11-06 18:36:35Z" end-time="2026-11-06 18:36:36Z" duration="0.534178" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1136" name="RealGarageRejectsOwnedSawDiscPenetrationBeforeInventoryMutation" fullname="GarageEditFreedomTests.RealGarageRejectsOwnedSawDiscPenetrationBeforeInventoryMutation" methodname="RealGarageRejectsOwnedSawDiscPenetrationBeforeInventoryMutation" classname="GarageEditFreedomTests" runstate="Runnable" seed="633410046" result="Passed" start-time="2026-11-06 18:36:32Z" end-time="2026-11-06 18:36:36Z" duration="3.345039" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1451" name="R6DrivingTests" fullname="R6DrivingTests" classname="R6DrivingTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-11-06 18:36:39Z" end-time="2026-11-06 18:36:41Z" duration="2.562731" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1452" name="PhysicalMassSetsAccelerationAndBrakingWhileReverseRemainsUsable" fullname="R6DrivingTests.PhysicalMassSetsAccelerationAndBrakingWhileReverseRemainsUsable" methodname="PhysicalMassSetsAccelerationAndBrakingWhileReverseRemainsUsable" classname="R6DrivingTests" runstate="Runnable" seed="9445619" result="Passed" start-time="2026-11-06 18:36:36Z" end-time="2026-11-06 18:36:41Z" duration="5.466478" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 85 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 85 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 85 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 85 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+R6 0.6s acceleration Light/Standard/Heavy m/s: 4,078174, 2,019628, 1,769371
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1469" name="R6ReviewTests" fullname="R6ReviewTests" classname="R6ReviewTests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-11-06 18:36:44Z" end-time="2026-11-06 18:36:49Z" duration="4.965796" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1477" name="LowAndHighSpeedBarrierContactsStayBounded" fullname="R6ReviewTests.LowAndHighSpeedBarrierContactsStayBounded" methodname="LowAndHighSpeedBarrierContactsStayBounded" classname="R6ReviewTests" runstate="Runnable" seed="1264779597" result="Passed" start-time="2026-11-06 18:36:41Z" end-time="2026-11-06 18:36:49Z" duration="7.772446" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+R6 barrier pre-impact speed=0,60 mass=528,000 com=(200.0000, 50.9667, 200.0250) v=(0.0000, 0.0000, 0.6000) omega=(0.0000, 0.0000, 0.0000)
+R6 barrier contact speed=0,60 phase=enter fixedTime=1,5200 contacts=4 impulse=(0.0000, 0.0000, -194.3912) relativeVelocity=(0.0000, 0.0000, 0.6000) mass=528,000 com=(199.9999, 50.9667, 200.0289) v=(-0.0057, 0.0002, 0.1982) omega=(0.0001, 0.0031, 0.0009)
+R6 barrier point speed=0,60 phase=enter index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0050
+R6 barrier point speed=0,60 phase=enter index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0050
+R6 barrier point speed=0,60 phase=enter index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0050
+R6 barrier point speed=0,60 phase=enter index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0050
+R6 barrier contact speed=0,60 phase=stay fixedTime=1,5400 contacts=4 impulse=(0.0000, 0.0000, -47.6737) relativeVelocity=(-0.0057, 0.0002, 0.1982) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(-0.0005, -0.0008, 0.0400) omega=(-0.0004, 0.0001, -0.0006)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0010
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0011
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0010
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0010
+R6 barrier contact speed=0,60 phase=stay fixedTime=1,5600 contacts=4 impulse=(0.0000, 0.0000, -2.4496) relativeVelocity=(-0.0005, -0.0008, 0.0400) mass=528,000 com=(199.9999, 50.9666, 200.0298) v=(0.0005, -0.0023, 0.0088) omega=(0.0070, -0.0007, -0.0014)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier contact speed=0,60 phase=stay fixedTime=1,5800 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0005, -0.0023, 0.0088) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(-0.0002, -0.0012, -0.0044) omega=(-0.0044, 0.0001, 0.0005)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0001
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0001
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0001
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0001
+R6 barrier contact speed=0,60 phase=stay fixedTime=1,6000 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(-0.0002, -0.0012, -0.0044) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(-0.0004, -0.0004, -0.0018) omega=(-0.0017, 0.0000, 0.0005)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0002
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0002
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0002
+R6 barrier contact speed=0,60 phase=stay fixedTime=1,6200 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(-0.0004, -0.0004, -0.0018) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(-0.0001, -0.0002, -0.0006) omega=(-0.0007, 0.0000, 0.0002)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier contact speed=0,60 phase=stay fixedTime=1,6400 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(-0.0001, -0.0002, -0.0006) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(-0.0001, 0.0000, -0.0002) omega=(-0.0002, 0.0000, 0.0001)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier contact speed=0,60 phase=stay fixedTime=1,6600 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(-0.0001, 0.0000, -0.0002) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(0.0000, 0.0001, -0.0001) omega=(-0.0001, 0.0000, 0.0001)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier contact speed=0,60 phase=stay fixedTime=1,6800 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, 0.0001, -0.0001) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(0.0000, -0.0001, -0.0004) omega=(-0.0003, 0.0000, 0.0000)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier contact speed=0,60 phase=stay fixedTime=1,7000 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, -0.0001, -0.0004) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(-0.0001, 0.0000, 0.0003) omega=(0.0002, 0.0000, 0.0001)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier contact speed=0,60 phase=stay fixedTime=1,7200 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(-0.0001, 0.0000, 0.0003) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(0.0000, -0.0001, 0.0002) omega=(0.0001, 0.0000, 0.0000)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier contact speed=0,60 phase=stay fixedTime=1,7400 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, -0.0001, 0.0002) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(-0.0001, -0.0001, 0.0000) omega=(0.0000, 0.0000, 0.0001)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier contact speed=0,60 phase=stay fixedTime=1,7600 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(-0.0001, -0.0001, 0.0000) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(0.0000, -0.0001, 0.0000) omega=(0.0000, 0.0000, 0.0000)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier contact speed=0,60 phase=stay fixedTime=1,7800 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, -0.0001, 0.0000) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(-0.0001, 0.0000, 0.0000) omega=(0.0000, 0.0000, 0.0001)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier contact speed=0,60 phase=stay fixedTime=1,8000 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(-0.0001, 0.0000, 0.0000) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(0.0000, 0.0000, 0.0000) omega=(0.0000, 0.0000, 0.0000)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier contact speed=0,60 phase=stay fixedTime=1,8200 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, 0.0000, 0.0000) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(-0.0001, -0.0001, 0.0000) omega=(0.0000, 0.0000, 0.0001)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier contact speed=0,60 phase=stay fixedTime=1,8400 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(-0.0001, -0.0001, 0.0000) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(0.0000, -0.0001, -0.0001) omega=(-0.0001, 0.0000, 0.0000)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier contact speed=0,60 phase=stay fixedTime=1,8600 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, -0.0001, -0.0001) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(0.0000, 0.0000, 0.0000) omega=(0.0000, 0.0000, 0.0000)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier contact speed=0,60 phase=stay fixedTime=1,8800 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, 0.0000, 0.0000) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(0.0000, 0.0000, 0.0000) omega=(0.0000, 0.0000, 0.0000)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier contact speed=0,60 phase=stay fixedTime=1,9000 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, 0.0000, 0.0000) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(0.0000, 0.0000, 0.0000) omega=(0.0000, 0.0000, 0.0000)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier contact speed=0,60 phase=stay fixedTime=1,9200 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, 0.0000, 0.0000) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(0.0000, 0.0000, 0.0000) omega=(0.0000, 0.0000, 0.0000)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier contact speed=0,60 phase=stay fixedTime=1,9400 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, 0.0000, 0.0000) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(0.0001, 0.0000, 0.0001) omega=(0.0000, 0.0000, 0.0000)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier contact speed=0,60 phase=stay fixedTime=1,9600 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0001, 0.0000, 0.0001) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(-0.0001, -0.0001, 0.0000) omega=(-0.0001, 0.0000, 0.0001)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier contact speed=0,60 phase=stay fixedTime=1,9800 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(-0.0001, -0.0001, 0.0000) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(0.0000, 0.0000, 0.0000) omega=(0.0000, 0.0000, 0.0000)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier contact speed=0,60 phase=stay fixedTime=2,0000 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, 0.0000, 0.0000) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(0.0000, 0.0000, 0.0001) omega=(0.0000, 0.0000, 0.0000)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier contact speed=0,60 phase=stay fixedTime=2,0200 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, 0.0000, 0.0001) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(-0.0001, -0.0001, 0.0000) omega=(0.0000, 0.0000, 0.0001)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier contact speed=0,60 phase=stay fixedTime=2,0400 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(-0.0001, -0.0001, 0.0000) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(-0.0001, 0.0000, -0.0001) omega=(-0.0001, 0.0000, 0.0001)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier contact speed=0,60 phase=stay fixedTime=2,0600 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(-0.0001, 0.0000, -0.0001) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(0.0000, 0.0000, 0.0000) omega=(0.0000, 0.0000, 0.0000)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier contact speed=0,60 phase=stay fixedTime=2,0800 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, 0.0000, 0.0000) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(0.0000, -0.0001, 0.0000) omega=(0.0000, 0.0000, 0.0001)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier contact speed=0,60 phase=stay fixedTime=2,1000 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, -0.0001, 0.0000) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(0.0000, 0.0000, 0.0000) omega=(0.0000, 0.0000, 0.0000)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier contact speed=0,60 phase=stay fixedTime=2,1200 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, 0.0000, 0.0000) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(0.0000, 0.0000, 0.0000) omega=(0.0000, 0.0000, 0.0000)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier contact speed=0,60 phase=stay fixedTime=2,1400 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, 0.0000, 0.0000) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(0.0000, -0.0001, 0.0001) omega=(0.0001, 0.0000, 0.0000)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier contact speed=0,60 phase=stay fixedTime=2,1600 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, -0.0001, 0.0001) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(-0.0001, -0.0001, 0.0000) omega=(0.0000, 0.0000, 0.0001)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier contact speed=0,60 phase=stay fixedTime=2,1800 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(-0.0001, -0.0001, 0.0000) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(-0.0001, -0.0001, 0.0000) omega=(0.0000, 0.0000, 0.0001)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier contact speed=0,60 phase=stay fixedTime=2,2000 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(-0.0001, -0.0001, 0.0000) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(0.0000, -0.0001, 0.0001) omega=(0.0000, 0.0000, 0.0000)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier contact speed=0,60 phase=stay fixedTime=2,2200 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, -0.0001, 0.0001) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(-0.0001, -0.0001, 0.0000) omega=(0.0000, 0.0000, 0.0001)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier contact speed=0,60 phase=stay fixedTime=2,2400 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(-0.0001, -0.0001, 0.0000) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(-0.0001, -0.0001, -0.0001) omega=(-0.0001, 0.0000, 0.0001)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier contact speed=0,60 phase=stay fixedTime=2,2600 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(-0.0001, -0.0001, -0.0001) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(0.0000, 0.0000, 0.0000) omega=(0.0000, 0.0000, 0.0000)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier contact speed=0,60 phase=stay fixedTime=2,2800 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, 0.0000, 0.0000) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(0.0000, 0.0000, 0.0000) omega=(0.0000, 0.0000, 0.0000)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier contact speed=0,60 phase=stay fixedTime=2,3000 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, 0.0000, 0.0000) mass=528,000 com=(199.9999, 50.9667, 200.0297) v=(0.0000, -0.0001, 0.0000) omega=(0.0000, 0.0000, 0.0000)
+R6 barrier point speed=0,60 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=0,60 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier 0,6m/s: contact=True, peak=0,60, spin=0,01, y=[50,6500,50,6500], final=(0.00, 0.00, 0.00)
+R6 barrier pre-impact speed=9,00 mass=528,000 com=(200.0000, 50.9667, 200.0250) v=(0.0000, 0.0000, 9.0000) omega=(0.0000, 0.0000, 0.0000)
+R6 barrier contact speed=9,00 phase=enter fixedTime=3,8200 contacts=4 impulse=(0.0000, 0.0000, -4661.0970) relativeVelocity=(0.0000, 0.0000, 9.0000) mass=528,000 com=(199.9941, 50.9693, 200.0280) v=(-0.2866, 0.0663, 0.1569) omega=(0.0356, 0.1505, -0.0186)
+R6 barrier point speed=9,00 phase=enter index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0050
+R6 barrier point speed=9,00 phase=enter index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0050
+R6 barrier point speed=9,00 phase=enter index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0050
+R6 barrier point speed=9,00 phase=enter index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0050
+R6 barrier contact speed=9,00 phase=stay fixedTime=3,8400 contacts=4 impulse=(0.0000, 0.0000, -11.3296) relativeVelocity=(-0.2866, 0.0663, 0.1569) mass=528,000 com=(199.9892, 50.9675, 200.0282) v=(-0.2422, -0.0958, 0.0100) omega=(-0.0422, 0.1247, -0.0087)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0022
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0028
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0012
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0005
+R6 barrier contact speed=9,00 phase=stay fixedTime=3,8600 contacts=4 impulse=(0.0000, 0.0000, -4.2323) relativeVelocity=(-0.2422, -0.0958, 0.0100) mass=528,000 com=(199.9854, 50.9669, 200.0281) v=(-0.1908, -0.0311, -0.0069) omega=(-0.0194, 0.0776, -0.0018)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0030
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0033
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0003
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0001
+R6 barrier contact speed=9,00 phase=stay fixedTime=3,8800 contacts=4 impulse=(0.0000, 0.0000, -4.7978) relativeVelocity=(-0.1908, -0.0311, -0.0069) mass=528,000 com=(199.9825, 50.9667, 200.0279) v=(-0.1484, -0.0075, -0.0080) omega=(-0.0045, 0.0439, 0.0013)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0038
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0038
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0001
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier contact speed=9,00 phase=stay fixedTime=3,9000 contacts=4 impulse=(0.0000, 0.0000, -2.0189) relativeVelocity=(-0.1484, -0.0075, -0.0080) mass=528,000 com=(199.9802, 50.9668, 200.0278) v=(-0.1125, 0.0007, -0.0029) omega=(-0.0002, 0.0137, -0.0010)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0042
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2600, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0042
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7400, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier contact speed=9,00 phase=stay fixedTime=3,9200 contacts=4 impulse=(0.0000, 0.0000, -2.2196) relativeVelocity=(-0.1125, 0.0007, -0.0029) mass=528,000 com=(199.9786, 50.9667, 200.0278) v=(-0.0817, -0.0054, 0.0004) omega=(-0.0007, 0.0000, 0.0027)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2560, 51.4601, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2560, 50.9401, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7360, 50.9401, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7361, 51.4601, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier contact speed=9,00 phase=stay fixedTime=3,9400 contacts=4 impulse=(0.0000, 0.0000, -1.9743) relativeVelocity=(-0.0817, -0.0054, 0.0004) mass=528,000 com=(199.9775, 50.9667, 200.0278) v=(-0.0531, -0.0023, 0.0003) omega=(-0.0003, 0.0000, 0.0011)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2560, 51.4601, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2560, 50.9401, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7360, 50.9401, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7361, 51.4601, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier contact speed=9,00 phase=stay fixedTime=3,9600 contacts=4 impulse=(0.0000, 0.0000, -1.3044) relativeVelocity=(-0.0531, -0.0023, 0.0003) mass=528,000 com=(199.9770, 50.9667, 200.0279) v=(-0.0278, -0.0017, 0.0007) omega=(0.0001, 0.0000, 0.0007)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2560, 51.4601, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2560, 50.9401, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7360, 50.9401, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7361, 51.4601, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier contact speed=9,00 phase=stay fixedTime=3,9800 contacts=4 impulse=(0.0000, 0.0000, -1.8106) relativeVelocity=(-0.0278, -0.0017, 0.0007) mass=528,000 com=(199.9769, 50.9667, 200.0278) v=(-0.0055, -0.0010, 0.0000) omega=(-0.0005, 0.0009, 0.0024)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2560, 51.4601, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0043
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2560, 50.9401, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7360, 50.9401, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7361, 51.4601, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier contact speed=9,00 phase=stay fixedTime=4,0000 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(-0.0055, -0.0010, 0.0000) mass=528,000 com=(199.9769, 50.9667, 200.0278) v=(0.0005, -0.0022, -0.0004) omega=(-0.0001, -0.0001, -0.0006)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2560, 51.4601, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2560, 50.9401, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7360, 50.9401, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7361, 51.4601, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier contact speed=9,00 phase=stay fixedTime=4,0200 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0005, -0.0022, -0.0004) mass=528,000 com=(199.9769, 50.9667, 200.0278) v=(0.0006, -0.0011, -0.0003) omega=(-0.0003, 0.0000, -0.0006)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier contact speed=9,00 phase=stay fixedTime=4,0400 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0006, -0.0011, -0.0003) mass=528,000 com=(199.9769, 50.9667, 200.0278) v=(0.0001, -0.0003, -0.0002) omega=(-0.0002, 0.0000, -0.0001)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier contact speed=9,00 phase=stay fixedTime=4,0600 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0001, -0.0003, -0.0002) mass=528,000 com=(199.9769, 50.9667, 200.0278) v=(0.0000, 0.0000, -0.0004) omega=(-0.0003, 0.0000, 0.0000)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier contact speed=9,00 phase=stay fixedTime=4,0800 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, 0.0000, -0.0004) mass=528,000 com=(199.9769, 50.9667, 200.0278) v=(0.0000, -0.0001, 0.0000) omega=(0.0000, 0.0000, 0.0000)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier contact speed=9,00 phase=stay fixedTime=4,1000 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, -0.0001, 0.0000) mass=528,000 com=(199.9769, 50.9667, 200.0278) v=(0.0000, 0.0000, 0.0000) omega=(0.0000, 0.0000, 0.0000)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier contact speed=9,00 phase=stay fixedTime=4,1200 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, 0.0000, 0.0000) mass=528,000 com=(199.9769, 50.9667, 200.0278) v=(0.0000, -0.0001, 0.0000) omega=(0.0000, 0.0000, 0.0000)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier contact speed=9,00 phase=stay fixedTime=4,1400 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, -0.0001, 0.0000) mass=528,000 com=(199.9769, 50.9667, 200.0278) v=(0.0000, 0.0000, 0.0000) omega=(0.0000, 0.0000, 0.0000)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier contact speed=9,00 phase=stay fixedTime=4,1600 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, 0.0000, 0.0000) mass=528,000 com=(199.9769, 50.9667, 200.0278) v=(0.0001, -0.0001, -0.0001) omega=(0.0000, 0.0000, -0.0001)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier contact speed=9,00 phase=stay fixedTime=4,1800 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0001, -0.0001, -0.0001) mass=528,000 com=(199.9769, 50.9667, 200.0278) v=(0.0000, 0.0000, 0.0000) omega=(0.0000, 0.0000, 0.0000)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier contact speed=9,00 phase=stay fixedTime=4,2000 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, 0.0000, 0.0000) mass=528,000 com=(199.9769, 50.9667, 200.0278) v=(0.0000, 0.0000, 0.0000) omega=(0.0000, 0.0000, 0.0000)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier contact speed=9,00 phase=stay fixedTime=4,2200 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, 0.0000, 0.0000) mass=528,000 com=(199.9769, 50.9667, 200.0278) v=(-0.0001, 0.0000, 0.0000) omega=(0.0000, 0.0000, 0.0000)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier contact speed=9,00 phase=stay fixedTime=4,2400 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(-0.0001, 0.0000, 0.0000) mass=528,000 com=(199.9769, 50.9667, 200.0278) v=(0.0001, 0.0000, 0.0000) omega=(0.0000, 0.0000, -0.0001)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier contact speed=9,00 phase=stay fixedTime=4,2600 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0001, 0.0000, 0.0000) mass=528,000 com=(199.9769, 50.9667, 200.0278) v=(0.0000, 0.0000, 0.0000) omega=(0.0000, 0.0000, 0.0000)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier contact speed=9,00 phase=stay fixedTime=4,2800 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, 0.0000, 0.0000) mass=528,000 com=(199.9769, 50.9667, 200.0278) v=(0.0001, -0.0001, -0.0001) omega=(0.0000, 0.0000, -0.0001)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier contact speed=9,00 phase=stay fixedTime=4,3000 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0001, -0.0001, -0.0001) mass=528,000 com=(199.9769, 50.9667, 200.0278) v=(0.0000, 0.0000, 0.0000) omega=(0.0000, 0.0000, 0.0000)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier contact speed=9,00 phase=stay fixedTime=4,3200 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, 0.0000, 0.0000) mass=528,000 com=(199.9769, 50.9667, 200.0278) v=(0.0001, -0.0001, -0.0001) omega=(0.0000, 0.0000, -0.0001)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier contact speed=9,00 phase=stay fixedTime=4,3400 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0001, -0.0001, -0.0001) mass=528,000 com=(199.9769, 50.9667, 200.0278) v=(0.0000, -0.0001, -0.0001) omega=(-0.0001, 0.0000, 0.0000)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier contact speed=9,00 phase=stay fixedTime=4,3600 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, -0.0001, -0.0001) mass=528,000 com=(199.9769, 50.9667, 200.0278) v=(0.0000, -0.0001, 0.0000) omega=(0.0000, 0.0000, -0.0001)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier contact speed=9,00 phase=stay fixedTime=4,3800 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, -0.0001, 0.0000) mass=528,000 com=(199.9769, 50.9667, 200.0278) v=(0.0000, -0.0001, -0.0001) omega=(0.0000, 0.0000, 0.0000)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier contact speed=9,00 phase=stay fixedTime=4,4000 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, -0.0001, -0.0001) mass=528,000 com=(199.9769, 50.9667, 200.0278) v=(0.0001, -0.0001, 0.0000) omega=(0.0000, 0.0000, -0.0001)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier contact speed=9,00 phase=stay fixedTime=4,4200 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0001, -0.0001, 0.0000) mass=528,000 com=(199.9769, 50.9667, 200.0278) v=(0.0000, -0.0001, 0.0000) omega=(0.0000, 0.0000, 0.0000)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier contact speed=9,00 phase=stay fixedTime=4,4400 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, -0.0001, 0.0000) mass=528,000 com=(199.9769, 50.9667, 200.0278) v=(0.0001, 0.0000, 0.0000) omega=(0.0000, 0.0000, -0.0001)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier contact speed=9,00 phase=stay fixedTime=4,4600 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0001, 0.0000, 0.0000) mass=528,000 com=(199.9769, 50.9667, 200.0278) v=(0.0000, 0.0000, 0.0000) omega=(0.0000, 0.0000, 0.0000)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier contact speed=9,00 phase=stay fixedTime=4,4800 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, 0.0000, 0.0000) mass=528,000 com=(199.9769, 50.9667, 200.0278) v=(0.0001, -0.0001, 0.0000) omega=(0.0000, 0.0000, -0.0001)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier contact speed=9,00 phase=stay fixedTime=4,5000 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0001, -0.0001, 0.0000) mass=528,000 com=(199.9769, 50.9667, 200.0278) v=(0.0001, -0.0001, -0.0001) omega=(0.0000, 0.0000, -0.0001)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier contact speed=9,00 phase=stay fixedTime=4,5200 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0001, -0.0001, -0.0001) mass=528,000 com=(199.9769, 50.9667, 200.0278) v=(0.0000, 0.0000, 0.0000) omega=(0.0000, 0.0000, 0.0000)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier contact speed=9,00 phase=stay fixedTime=4,5400 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, 0.0000, 0.0000) mass=528,000 com=(199.9769, 50.9667, 200.0278) v=(0.0000, 0.0000, 0.0000) omega=(0.0000, 0.0000, 0.0000)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier contact speed=9,00 phase=stay fixedTime=4,5600 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, 0.0000, 0.0000) mass=528,000 com=(199.9769, 50.9667, 200.0278) v=(0.0000, -0.0001, 0.0000) omega=(0.0000, 0.0000, 0.0000)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier contact speed=9,00 phase=stay fixedTime=4,5800 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0000, -0.0001, 0.0000) mass=528,000 com=(199.9769, 50.9667, 200.0278) v=(0.0001, -0.0001, 0.0000) omega=(0.0000, 0.0000, -0.0001)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier contact speed=9,00 phase=stay fixedTime=4,6000 contacts=4 impulse=(0.0000, 0.0000, 0.0000) relativeVelocity=(0.0001, -0.0001, 0.0000) mass=528,000 com=(199.9769, 50.9667, 200.0278) v=(0.0000, -0.0001, 0.0000) omega=(0.0000, 0.0000, 0.0000)
+R6 barrier point speed=9,00 phase=stay index=0 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=1 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(200.2527, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0044
+R6 barrier point speed=9,00 phase=stay index=2 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 50.9400, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier point speed=9,00 phase=stay index=3 pair=R6 isolated barrier / Armor (0, 1, 3) owner=Armor (0, 1, 3) point=(199.7327, 51.4600, 201.9150) normal=(0.0000, 0.0000, 1.0000) separation=0,0000
+R6 barrier 9m/s: contact=True, peak=9,00, spin=0,16, y=[50,6500,50,6527], final=(0.00, 0.00, 0.00)
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1601" name="RRLW6SawPhysicalTests" fullname="RRLW6SawPhysicalTests" classname="RRLW6SawPhysicalTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-06 18:36:52Z" end-time="2026-11-06 18:36:53Z" duration="1.610631" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1602" name="ActualSawCutsOneLogicalPartJamsOnHardWallAndPreservesHeat" fullname="RRLW6SawPhysicalTests.ActualSawCutsOneLogicalPartJamsOnHardWallAndPreservesHeat" methodname="ActualSawCutsOneLogicalPartJamsOnHardWallAndPreservesHeat" classname="RRLW6SawPhysicalTests" runstate="Runnable" seed="1997353265" result="Passed" start-time="2026-11-06 18:36:49Z" end-time="2026-11-06 18:36:53Z" duration="4.475546" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+Saving results to: [USER_HOME]/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
