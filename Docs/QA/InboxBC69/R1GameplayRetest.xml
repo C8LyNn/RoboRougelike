@@ -1,0 +1,911 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="15" result="Failed(Child)" total="15" passed="13" failed="2" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-06 15:33:48Z" end-time="2026-11-06 15:33:49Z" duration="0,7415946">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1392" result="Failed" site="Child" start-time="2026-11-06 15:33:48Z" end-time="2026-11-06 15:33:49Z" duration="0.741595" total="15" passed="13" failed="2" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1730" name="Assembly-CSharp-Editor.dll" fullname="[USER_HOME]/Desktop/Prototypy/RoboRougelike-W27-Saw/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="599" result="Failed" site="Child" start-time="2026-11-06 15:33:48Z" end-time="2026-11-06 15:33:49Z" duration="0.688237" total="15" passed="13" failed="2" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="21824" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestFixture" id="1337" name="R1PlayIntegrationTests" fullname="R1PlayIntegrationTests" classname="R1PlayIntegrationTests" runstate="Runnable" testcasecount="15" result="Failed" site="Child" start-time="2026-11-06 15:33:48Z" end-time="2026-11-06 15:33:49Z" duration="0.682259" total="15" passed="13" failed="2" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-case id="1352" name="ActualEnemyUsesDesignatedCoreAndDetachesSeveredBaseCorner" fullname="R1PlayIntegrationTests.ActualEnemyUsesDesignatedCoreAndDetachesSeveredBaseCorner" methodname="ActualEnemyUsesDesignatedCoreAndDetachesSeveredBaseCorner" classname="R1PlayIntegrationTests" runstate="Runnable" seed="22296882" result="Failed" start-time="2026-11-06 15:26:24Z" end-time="2026-11-06 15:26:27Z" duration="3.218096" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <failure>
+            <message><![CDATA[  Expected: 22
+  But was:  23
+]]></message>
+            <stack-trace><![CDATA[at R1PlayIntegrationTests+<ActualEnemyUsesDesignatedCoreAndDetachesSeveredBaseCorner>d__26.MoveNext () [0x0004f] in [USER_HOME]\Desktop\Prototypy\RoboRougelike-W27-Saw\Assets\Tests\Editor\R1PlayIntegrationTests.cs:433
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+          </failure>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1350" name="CoreLossCanEndEachStageAndFreshAttemptHasNoBonuses" fullname="R1PlayIntegrationTests.CoreLossCanEndEachStageAndFreshAttemptHasNoBonuses" methodname="CoreLossCanEndEachStageAndFreshAttemptHasNoBonuses" classname="R1PlayIntegrationTests" runstate="Runnable" seed="1564074535" result="Passed" start-time="2026-11-06 15:26:27Z" end-time="2026-11-06 15:28:33Z" duration="125.937429" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[Pack 18] Detached structural chunk: 57 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R1] Porażka: Rdzeń pojazdu został zniszczony.
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 70 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 70 structural block(s).
+[Pack 12] Hull local origin OK.
+[Pack 12] Wheels local origin OK.
+[Pack 16] Integrated weapon bound successfully.
+[Pack 19] Functional Modules ready. Wheels=12 | Weapon=True
+[R5] Gotowość: sześć etapów, trasy, garaż i odzysk.
+[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[Pack 18] Detached structural chunk: 22 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 23 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=66
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 57 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 57 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 2: przeciwników=3
+[Pack 18] Detached structural chunk: 57 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R1] Porażka: Rdzeń pojazdu został zniszczony.
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 70 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 70 structural block(s).
+[Pack 12] Hull local origin OK.
+[Pack 12] Wheels local origin OK.
+[Pack 16] Integrated weapon bound successfully.
+[Pack 19] Functional Modules ready. Wheels=12 | Weapon=True
+[R5] Gotowość: sześć etapów, trasy, garaż i odzysk.
+[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[Pack 18] Detached structural chunk: 22 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 23 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=66
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 57 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 57 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 2: przeciwników=3
+[Pack 18] Detached structural chunk: 56 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 35 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 23 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R3] Wygrano starcie 2; Złom +92; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=127
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 38 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 38 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 3: przeciwników=4
+[Pack 18] Detached structural chunk: 57 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R1] Porażka: Rdzeń pojazdu został zniszczony.
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 70 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 70 structural block(s).
+[Pack 12] Hull local origin OK.
+[Pack 12] Wheels local origin OK.
+[Pack 16] Integrated weapon bound successfully.
+[Pack 19] Functional Modules ready. Wheels=12 | Weapon=True
+[R5] Gotowość: sześć etapów, trasy, garaż i odzysk.
+[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[Pack 18] Detached structural chunk: 22 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 23 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=66
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 57 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 57 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 2: przeciwników=3
+[Pack 18] Detached structural chunk: 56 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 35 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 23 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R3] Wygrano starcie 2; Złom +92; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=127
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 38 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 38 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 3: przeciwników=4
+[Pack 18] Detached structural chunk: 22 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 35 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 37 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 23 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R3] Wygrano starcie 3; Złom +82; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=171
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 72 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 72 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 4: przeciwników=2
+[Pack 18] Detached structural chunk: 57 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R1] Porażka: Rdzeń pojazdu został zniszczony.
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 70 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 70 structural block(s).
+[Pack 12] Hull local origin OK.
+[Pack 12] Wheels local origin OK.
+[Pack 16] Integrated weapon bound successfully.
+[Pack 19] Functional Modules ready. Wheels=12 | Weapon=True
+[R5] Gotowość: sześć etapów, trasy, garaż i odzysk.
+[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[Pack 18] Detached structural chunk: 22 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 23 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=66
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 57 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 57 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 2: przeciwników=3
+[Pack 18] Detached structural chunk: 56 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 35 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 23 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R3] Wygrano starcie 2; Złom +92; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=127
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 38 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 38 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 3: przeciwników=4
+[Pack 18] Detached structural chunk: 22 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 35 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 37 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 23 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R3] Wygrano starcie 3; Złom +82; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=171
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 72 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 72 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 4: przeciwników=2
+[Pack 18] Detached structural chunk: 71 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 23 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R3] Wygrano starcie 4; Złom +96; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=86
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 57 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 57 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 44 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 44 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 5: przeciwników=3
+[Pack 18] Detached structural chunk: 57 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R1] Porażka: Rdzeń pojazdu został zniszczony.
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 70 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 70 structural block(s).
+[Pack 12] Hull local origin OK.
+[Pack 12] Wheels local origin OK.
+[Pack 16] Integrated weapon bound successfully.
+[Pack 19] Functional Modules ready. Wheels=12 | Weapon=True
+[R5] Gotowość: sześć etapów, trasy, garaż i odzysk.
+[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[Pack 18] Detached structural chunk: 22 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 23 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=66
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 57 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 57 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 2: przeciwników=3
+[Pack 18] Detached structural chunk: 56 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 35 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 23 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R3] Wygrano starcie 2; Złom +92; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=127
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 38 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 38 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 3: przeciwników=4
+[Pack 18] Detached structural chunk: 22 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 35 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 37 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 23 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R3] Wygrano starcie 3; Złom +82; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=171
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 72 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 72 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 4: przeciwników=2
+[Pack 18] Detached structural chunk: 71 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 23 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R3] Wygrano starcie 4; Złom +96; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=86
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 57 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 57 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 44 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 44 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 5: przeciwników=3
+[Pack 18] Detached structural chunk: 56 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 43 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 23 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R3] Wygrano starcie 5; Złom +99; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=127
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 118 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 118 structural block(s).
+[R1] Starcie 6: przeciwników=1
+[Pack 18] Detached structural chunk: 57 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R1] Porażka: Rdzeń pojazdu został zniszczony.
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 70 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 70 structural block(s).
+[Pack 12] Hull local origin OK.
+[Pack 12] Wheels local origin OK.
+[Pack 16] Integrated weapon bound successfully.
+[Pack 19] Functional Modules ready. Wheels=12 | Weapon=True
+[R5] Gotowość: sześć etapów, trasy, garaż i odzysk.
+[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1343" name="CoreProtectionReloadAndMobilityReachActualVehicleComponents" fullname="R1PlayIntegrationTests.CoreProtectionReloadAndMobilityReachActualVehicleComponents" methodname="CoreProtectionReloadAndMobilityReachActualVehicleComponents" classname="R1PlayIntegrationTests" runstate="Runnable" seed="1360816521" result="Passed" start-time="2026-11-06 15:28:33Z" end-time="2026-11-06 15:28:36Z" duration="3.330890" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1342" name="DestroyedPlayerCoreEndsRunAndRestartClearsState" fullname="R1PlayIntegrationTests.DestroyedPlayerCoreEndsRunAndRestartClearsState" methodname="DestroyedPlayerCoreEndsRunAndRestartClearsState" classname="R1PlayIntegrationTests" runstate="Runnable" seed="1231366459" result="Passed" start-time="2026-11-06 15:28:36Z" end-time="2026-11-06 15:28:40Z" duration="3.570048" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[Pack 18] Detached structural chunk: 57 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R1] Porażka: Rdzeń pojazdu został zniszczony.
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 70 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 70 structural block(s).
+[Pack 12] Hull local origin OK.
+[Pack 12] Wheels local origin OK.
+[Pack 16] Integrated weapon bound successfully.
+[Pack 19] Functional Modules ready. Wheels=12 | Weapon=True
+[R5] Gotowość: sześć etapów, trasy, garaż i odzysk.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1348" name="DestroyingEnemyBarrelStopsFireButOnlyCoreDestructionWins" fullname="R1PlayIntegrationTests.DestroyingEnemyBarrelStopsFireButOnlyCoreDestructionWins" methodname="DestroyingEnemyBarrelStopsFireButOnlyCoreDestructionWins" classname="R1PlayIntegrationTests" runstate="Runnable" seed="916071201" result="Passed" start-time="2026-11-06 15:28:40Z" end-time="2026-11-06 15:28:53Z" duration="13.313250" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[Pack 18] Detached structural chunk: 21 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 23 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=50
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1349" name="EnemyMovesFiresAndStopsDuringPause" fullname="R1PlayIntegrationTests.EnemyMovesFiresAndStopsDuringPause" methodname="EnemyMovesFiresAndStopsDuringPause" classname="R1PlayIntegrationTests" runstate="Runnable" seed="1837459252" result="Passed" start-time="2026-11-06 15:28:53Z" end-time="2026-11-06 15:28:59Z" duration="5.800963" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1344" name="KeyboardEnterStartsRunWithoutPrematureDefeat" fullname="R1PlayIntegrationTests.KeyboardEnterStartsRunWithoutPrematureDefeat" methodname="KeyboardEnterStartsRunWithoutPrematureDefeat" classname="R1PlayIntegrationTests" runstate="Runnable" seed="682924647" result="Passed" start-time="2026-11-06 15:28:59Z" end-time="2026-11-06 15:29:03Z" duration="3.837616" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 70 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 70 structural block(s).
+[Pack 12] Hull local origin OK.
+[Pack 12] Wheels local origin OK.
+[Pack 16] Integrated weapon bound successfully.
+[Pack 19] Functional Modules ready. Wheels=12 | Weapon=True
+[R5] Gotowość: sześć etapów, trasy, garaż i odzysk.
+[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1339" name="KeyboardMovementMouseFireAndPauseUseRealController" fullname="R1PlayIntegrationTests.KeyboardMovementMouseFireAndPauseUseRealController" methodname="KeyboardMovementMouseFireAndPauseUseRealController" classname="R1PlayIntegrationTests" runstate="Runnable" seed="842837446" result="Passed" start-time="2026-11-06 15:29:03Z" end-time="2026-11-06 15:29:07Z" duration="4.531376" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1345" name="KeyboardUpgradeChoiceWaitsForNewVehicleInitialization" fullname="R1PlayIntegrationTests.KeyboardUpgradeChoiceWaitsForNewVehicleInitialization" methodname="KeyboardUpgradeChoiceWaitsForNewVehicleInitialization" classname="R1PlayIntegrationTests" runstate="Runnable" seed="1900691577" result="Passed" start-time="2026-11-06 15:29:07Z" end-time="2026-11-06 15:29:19Z" duration="11.417779" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[Pack 18] Detached structural chunk: 22 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 23 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=66
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 57 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 57 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 2: przeciwników=3
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1347" name="LosingEveryWheelEndsRunWithoutWaitingForCoreDestruction" fullname="R1PlayIntegrationTests.LosingEveryWheelEndsRunWithoutWaitingForCoreDestruction" methodname="LosingEveryWheelEndsRunWithoutWaitingForCoreDestruction" classname="R1PlayIntegrationTests" runstate="Runnable" seed="1769015164" result="Passed" start-time="2026-11-06 15:29:19Z" end-time="2026-11-06 15:29:22Z" duration="3.446190" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[R1] Porażka: Utracono wszystkie koła.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1346" name="LosingPlayerWeaponEndsRunWhileCoreIsAlive" fullname="R1PlayIntegrationTests.LosingPlayerWeaponEndsRunWhileCoreIsAlive" methodname="LosingPlayerWeaponEndsRunWhileCoreIsAlive" classname="R1PlayIntegrationTests" runstate="Runnable" seed="2060667435" result="Passed" start-time="2026-11-06 15:29:22Z" end-time="2026-11-06 15:29:25Z" duration="3.330590" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[R1] Porażka: Utracono uzbrojenie.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1341" name="PaidGarageRestoresConstructionAndKeepsEarnedDamageBonus" fullname="R1PlayIntegrationTests.PaidGarageRestoresConstructionAndKeepsEarnedDamageBonus" methodname="PaidGarageRestoresConstructionAndKeepsEarnedDamageBonus" classname="R1PlayIntegrationTests" runstate="Runnable" seed="1972155437" result="Passed" start-time="2026-11-06 15:29:25Z" end-time="2026-11-06 15:29:45Z" duration="19.712682" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[Pack 18] Detached structural chunk: 22 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 23 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=66
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 57 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 57 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 2: przeciwników=3
+[Pack 18] Detached structural chunk: 56 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 35 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 23 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R3] Wygrano starcie 2; Złom +92; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=127
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 38 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 38 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 3: przeciwników=4
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1351" name="SixEncountersCanBeWonWithActualPlayerGunAndPhysicalHits" fullname="R1PlayIntegrationTests.SixEncountersCanBeWonWithActualPlayerGunAndPhysicalHits" methodname="SixEncountersCanBeWonWithActualPlayerGunAndPhysicalHits" classname="R1PlayIntegrationTests" runstate="Runnable" seed="1327369491" result="Failed" start-time="2026-11-06 15:29:45Z" end-time="2026-11-06 15:32:53Z" duration="188.035369" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="Timeout" value="720000" />
+          </properties>
+          <failure>
+            <message><![CDATA[  Fizyczna broń powinna pozwalać wygrać pojedynek 3
+  Expected: Garage
+  But was:  Combat
+]]></message>
+            <stack-trace><![CDATA[at R1PlayIntegrationTests+<SixEncountersCanBeWonWithActualPlayerGunAndPhysicalHits>d__25.MoveNext () [0x0037f] in [USER_HOME]\Desktop\Prototypy\RoboRougelike-W27-Saw\Assets\Tests\Editor\R1PlayIntegrationTests.cs:413
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+          </failure>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[Pack 18] Detached structural chunk: 1 block(s).
+[Pack 18] Detached structural chunk: 17 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 19 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=27
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 57 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 57 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 2: przeciwników=3
+[Pack 18] Detached structural chunk: 19 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 51 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 30 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R3] Wygrano starcie 2; Złom +92; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=94
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 38 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 38 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 3: przeciwników=4
+[Pack 18] Detached structural chunk: 32 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 14 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 17 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1338" name="SixRealEncountersRewardsFinaleAndRestart" fullname="R1PlayIntegrationTests.SixRealEncountersRewardsFinaleAndRestart" methodname="SixRealEncountersRewardsFinaleAndRestart" classname="R1PlayIntegrationTests" runstate="Runnable" seed="1538616071" result="Passed" start-time="2026-11-06 15:32:53Z" end-time="2026-11-06 15:33:45Z" duration="52.158701" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[Pack 18] Detached structural chunk: 22 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 23 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=66
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 57 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 57 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 2: przeciwników=3
+[Pack 18] Detached structural chunk: 56 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 35 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 23 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R3] Wygrano starcie 2; Złom +92; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=127
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 38 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 38 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 3: przeciwników=4
+[Pack 18] Detached structural chunk: 22 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 35 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 37 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 23 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R3] Wygrano starcie 3; Złom +82; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=171
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 72 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 72 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 4: przeciwników=2
+[Pack 18] Detached structural chunk: 71 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 23 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R3] Wygrano starcie 4; Złom +96; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=86
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 57 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 57 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 44 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 44 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 5: przeciwników=3
+[Pack 18] Detached structural chunk: 56 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 43 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 23 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R3] Wygrano starcie 5; Złom +99; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=127
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 118 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 118 structural block(s).
+[R1] Starcie 6: przeciwników=1
+[Pack 18] Detached structural chunk: 117 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R3] Wygrano starcie 6; Złom +134; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=56
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 70 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 70 structural block(s).
+[Pack 12] Hull local origin OK.
+[Pack 12] Wheels local origin OK.
+[Pack 16] Integrated weapon bound successfully.
+[Pack 19] Functional Modules ready. Wheels=12 | Weapon=True
+[R5] Gotowość: sześć etapów, trasy, garaż i odzysk.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1340" name="UpgradeDoesNotReviveDestroyedWheelAndPreservesDamageRatio" fullname="R1PlayIntegrationTests.UpgradeDoesNotReviveDestroyedWheelAndPreservesDamageRatio" methodname="UpgradeDoesNotReviveDestroyedWheelAndPreservesDamageRatio" classname="R1PlayIntegrationTests" runstate="Runnable" seed="1994252915" result="Passed" start-time="2026-11-06 15:33:45Z" end-time="2026-11-06 15:33:49Z" duration="3.790235" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[EXIT273] Shutdown prepared: NativeClose
+Saving results to: [USER_HOME]/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

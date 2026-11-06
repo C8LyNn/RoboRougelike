@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Failed(Child)" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-06 15:20:22Z" end-time="2026-11-06 15:20:23Z" duration="0,4550213">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1392" result="Failed" site="Child" start-time="2026-11-06 15:20:22Z" end-time="2026-11-06 15:20:23Z" duration="0.455021" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1730" name="Assembly-CSharp-Editor.dll" fullname="[USER_HOME]/Desktop/Prototypy/RoboRougelike-W27-Saw/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="599" result="Failed" site="Child" start-time="2026-11-06 15:20:22Z" end-time="2026-11-06 15:20:23Z" duration="0.401707" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="7320" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestFixture" id="1069" name="EnergyCombatRefinementTests" fullname="EnergyCombatRefinementTests" classname="EnergyCombatRefinementTests" runstate="Runnable" testcasecount="19" result="Failed" site="Child" start-time="2026-11-06 15:20:22Z" end-time="2026-11-06 15:20:23Z" duration="0.395269" total="1" passed="0" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-case id="1080" name="StandardStarterCanFireBothRealGunsWithoutHittingItsOwnConstruction" fullname="EnergyCombatRefinementTests.StandardStarterCanFireBothRealGunsWithoutHittingItsOwnConstruction" methodname="StandardStarterCanFireBothRealGunsWithoutHittingItsOwnConstruction" classname="EnergyCombatRefinementTests" runstate="Runnable" seed="1685703954" result="Failed" start-time="2026-11-06 15:20:20Z" end-time="2026-11-06 15:20:23Z" duration="3.142223" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <failure>
+            <message><![CDATA[  Both guns must have unobstructed firing lanes.
+  Expected: True
+  But was:  False
+]]></message>
+            <stack-trace><![CDATA[at EnergyCombatRefinementTests+<StandardStarterCanFireBothRealGunsWithoutHittingItsOwnConstruction>d__11.MoveNext () [0x0017e] in [USER_HOME]\Desktop\Prototypy\RoboRougelike-W27-Saw\Assets\Tests\Editor\EnergyCombatRefinementTests.cs:135
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+          </failure>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+Saving results to: [USER_HOME]/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

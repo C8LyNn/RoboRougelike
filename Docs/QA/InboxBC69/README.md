@@ -1,0 +1,9 @@
+# Candidate BC69 evidence — HOLD, not final acceptance
+
+Candidate game SHA `bc6919ee088dda23cd1bf4ab9f2fb2aabde83f2b`, Draft PR #937. Full Unity EditMode and PlayMode have **not** yet been run on this SHA. Historical full EditMode at `df294b8e` was 1308 pass / 82 fail / 1 skip; its unabridged results are in the sibling InboxDF29 directory.
+
+The Windows x64 ZIP from BC69 built successfully and was extracted and run. Its SHA256 is `8ade6bbfff4c0b5644c9aaa8bcd63ff6255b0e28a924caf9259cfb4e13e3e444` (39,651,298 bytes). All four weapon/energy checks, two API-settled encounters and rewards, and separate-process cold save/load preserved battery, energy, IDs, HP, inventory and scrap; Player exits were 0. Three real R3/R6 drive probes exited 0. These are automatic tests, not human gameplay.
+
+The game-camera screenshots are real offscreen GPU renders but exclude IMGUI, and cannot establish UI readability. Published text has user-path and Unity session metadata redacted; original SHA256 hashes are recorded separately.
+
+Other XML files record *targeted runs on successive pre-commit working states*, not a full test result at BC69. StandardGuns-before reproduced the stock gun blockage; StandardGuns-after verifies both physical guns and unique projectiles. Across targeted retests, 57 of 82 original failures passed, 24 were not yet rerun, and the physical six-encounter test remained red after two wins. R1GameplayRetest and R1PhysicalDiagnosis include that failure and must not be reported as a complete real-play victory. B01-24 owns one old-signature test fixture; no policy approval or second save writer was implied.
