@@ -11,6 +11,18 @@ namespace RoboRougelike.R3
     {
         public static Rect Viewport => new Rect(0.265f,0.11f,0.465f,0.88f);
         public static readonly Rect BuildArea=new Rect(340,95,595,430);
+        public static readonly Rect ActivityOverlay=new Rect(350,80,580,126);
+        public static readonly Rect LegendOverlay=new Rect(350,418,560,29);
+        public static readonly Rect WeaponGroupsOverlay=new Rect(350,452,560,76);
+        public static Rect ViewportForScreen(int width,int height)
+        {
+            if(width<=0||height<=0)return new Rect(0,0,0,0);
+            float scale=Mathf.Min(width/1280f,height/720f);
+            float left=(width-1280*scale)/2, bottom=(height-720*scale)/2;
+            var viewport=Viewport;
+            return new Rect((left+viewport.x*1280*scale)/width,(bottom+viewport.y*720*scale)/height,
+                viewport.width*1280*scale/width,viewport.height*720*scale/height);
+        }
         private R1RunController run;
         private Camera view;
         private P12PipelineSafeCamera follow;
@@ -53,7 +65,7 @@ namespace RoboRougelike.R3
         public void Open()
         {
             if(!isOpen)previousNear=view.nearClipPlane;isOpen=true;
-            HideArena();follow.enabled=false;view.nearClipPlane=0.05f;view.rect=Viewport;
+            HideArena();follow.enabled=false;view.nearClipPlane=0.05f;view.rect=ViewportForScreen(Screen.width,Screen.height);
             foreach(var part in run.Player.GetComponent<R3VehicleAssembly>().Parts)
                 if(part!=null&&part.Operational&&part.GunPivot!=null&&part.transform.IsChildOf(run.Player.transform))part.GunPivot.localRotation=Quaternion.identity;
             Physics.SyncTransforms();
@@ -305,8 +317,13 @@ namespace RoboRougelike.R3
         }
         public static bool InBuildArea(Vector2 screen,int width,int height)
         {
+            if(width<=0||height<=0)return false;
             float scale=Mathf.Min(width/1280f,height/720f);var offset=new Vector2((width-1280*scale)/2,(height-720*scale)/2);
-            return BuildArea.Contains((new Vector2(screen.x,height-screen.y)-offset)/scale);
+            var point=(new Vector2(screen.x,height-screen.y)-offset)/scale;
+            var viewport=Viewport;
+            var opening=new Rect(viewport.x*1280,(1-viewport.yMax)*720,viewport.width*1280,viewport.height*720);
+            return BuildArea.Contains(point)&&opening.Contains(point)&&!ActivityOverlay.Contains(point)&&
+                !LegendOverlay.Contains(point)&&!WeaponGroupsOverlay.Contains(point);
         }
         public bool ClickScreen(Vector2 screen)
         {return InBuildArea(screen,Screen.width,Screen.height)&&Point(view.ScreenPointToRay(screen))&&ClickTarget();}
@@ -341,6 +358,7 @@ namespace RoboRougelike.R3
         private void LateUpdate()
         {
             if(!isOpen||run.Progress?.State!=R1RunState.Garage||run.Player==null)return;
+            view.rect=ViewportForScreen(Screen.width,Screen.height);
             var pivot=run.Player.transform.TransformPoint(pivotLocal);var rotation=Quaternion.Euler(pitch,yaw,0);
             view.transform.SetPositionAndRotation(pivot+rotation*Vector3.back*distance,rotation);
         }

@@ -39,8 +39,18 @@ namespace RoboRougelike.R1
             var rawPointer=Event.current.mousePosition;
             var previous = GUI.matrix;
             float scale = Mathf.Min(Screen.width / 1280f, Screen.height / 720f);
-            GUI.matrix = Matrix4x4.TRS(new Vector3((Screen.width - 1280 * scale) / 2,
-                (Screen.height - 720 * scale) / 2), Quaternion.identity, Vector3.one * scale);
+            float offsetX=(Screen.width-1280*scale)/2,offsetY=(Screen.height-720*scale)/2;
+            if(run.Progress?.State==R1RunState.Garage&&!run.Transitioning)
+            {
+                // A partial garage camera does not clear pixels outside the
+                // letterboxed HUD. Cover those margins without covering the vehicle.
+                GUI.matrix=Matrix4x4.identity;
+                var color=GUI.color;GUI.color=new Color(.04f,.06f,.08f,1);
+                if(offsetX>0){GUI.DrawTexture(new Rect(0,0,offsetX,Screen.height),Texture2D.whiteTexture);GUI.DrawTexture(new Rect(Screen.width-offsetX,0,offsetX,Screen.height),Texture2D.whiteTexture);}
+                if(offsetY>0){GUI.DrawTexture(new Rect(0,0,Screen.width,offsetY),Texture2D.whiteTexture);GUI.DrawTexture(new Rect(0,Screen.height-offsetY,Screen.width,offsetY),Texture2D.whiteTexture);}
+                GUI.color=color;
+            }
+            GUI.matrix = Matrix4x4.TRS(new Vector3(offsetX,offsetY), Quaternion.identity, Vector3.one * scale);
             try
             {
                 Draw(run);
@@ -255,9 +265,9 @@ namespace RoboRougelike.R1
             if(!run.ReactorPrepared&&!run.SandboxWorkshop&&!run.MapEditorSession)
                 if(GUI.Button(new Rect(650,168,265,38),"Zapisz wyprawę",compactButton))run.SaveRunCheckpoint();
             DrawFullActivityGarageActions(run);
-            Panel(new Rect(350,418,560,29));
+            Panel(R3GarageView.LegendOverlay);
             GUI.Label(new Rect(360,422,540,22),"Czerwone linie: zajęte pola  •  Niebieski: obrys części",small);
-            Panel(new Rect(350,452,560,76));
+            Panel(R3GarageView.WeaponGroupsOverlay);
             GUI.Label(new Rect(363,458,370,24),"A / LPM: "+WeaponGroupName(model.WeaponGroupA),small);
             GUI.Label(new Rect(363,485,370,24),"B / PPM: "+WeaponGroupName(model.WeaponGroupB),small);
             if(GUI.Button(new Rect(740,465,155,48),"Zamień A / B",compactButton))model.SwapWeaponGroups();
