@@ -1,8 +1,8 @@
 
 import subprocess, json, sys
 def run_weapon(nm, script):
-    W = r"C:\Users\kubap\Desktop\Blender_Modele\wynik\R4_Weapons_938\scripts"
-    OUTD = r"C:\Users\kubap\Desktop\Blender_Modele\wynik\R4_Weapons_938" + "\\" + nm
+    W = r"%USERPROFILE%\Desktop\Blender_Modele\wynik\R4_Weapons_938\scripts"
+    OUTD = r"%USERPROFILE%\Desktop\Blender_Modele\wynik\R4_Weapons_938" + "\\" + nm
     B = r"C:\Program Files (x86)\Steam\steamapps\common\Blender\blender.exe"
     r = subprocess.run([B, "-b", "--factory-startup", "--python", W + "\\" + script, "--", OUTD], capture_output=True, text=True, timeout=900)
     try:

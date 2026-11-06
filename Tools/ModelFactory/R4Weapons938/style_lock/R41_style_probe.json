@@ -1,7 +1,7 @@
 {
- "fbx": "C:\\Users\\kubap\\Desktop\\Blender_Modele\\wynik\\v6_1_wiezyczka\\R41_Turret_v6.1.fbx",
+ "fbx": "%USERPROFILE%\\Desktop\\Blender_Modele\\wynik\\v6_1_wiezyczka\\R41_Turret_v6.1.fbx",
  "fbx_sha256": "03c60486a6af5890f1106bc090d70bb3c09a67f8278e02c2942cab8e77845d6a",
- "blend": "C:\\Users\\kubap\\Desktop\\Blender_Modele\\wynik\\v6_wiezyczka\\R41_Turret_v6.blend",
+ "blend": "%USERPROFILE%\\Desktop\\Blender_Modele\\wynik\\v6_wiezyczka\\R41_Turret_v6.blend",
  "blend_sha256": "bafc1552d7dbc8feec0bccd707dd88be294fadb78535c7fb168628a367ce95db",
  "blender": "5.2.3 LTS",
  "fbx_survey": {
