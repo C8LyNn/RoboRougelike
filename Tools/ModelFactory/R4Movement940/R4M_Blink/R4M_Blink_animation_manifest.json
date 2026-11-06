@@ -1,0 +1,53 @@
+{
+ "id": "R4M_Blink",
+ "kind": "R3PartKind.Blink",
+ "fps": 24,
+ "frame_range": [
+  1,
+  119
+ ],
+ "note": "One baked take in FBX/GLB (master timeline). Unity: split into clips by these frame ranges; loop=true clips are seamless.",
+ "clips": [
+  {
+   "name": "Idle",
+   "start": 1,
+   "end": 49,
+   "loop": true,
+   "desc": "standby: petals closed, crystal turns 60 deg (6-fold, seamless)"
+  },
+  {
+   "name": "Charge",
+   "start": 51,
+   "end": 75,
+   "loop": false,
+   "desc": "charge: petals open to 22 deg, crystal rises 50 mm spinning up, glow grows"
+  },
+  {
+   "name": "Activate",
+   "start": 77,
+   "end": 87,
+   "loop": false,
+   "desc": "activation: flash + phase ring expands, petals kick to 30 deg and settle"
+  },
+  {
+   "name": "Recover",
+   "start": 89,
+   "end": 119,
+   "loop": false,
+   "desc": "recover: petals close, crystal lowers and coasts to 480 deg (= rest, 6-fold)"
+  }
+ ],
+ "animated_nodes": [
+  "Blink_ChargeGlow",
+  "Blink_Flash",
+  "Blink_PhaseRing",
+  "R4M_Blink_Crystal",
+  "R4M_Blink_Petal_1",
+  "R4M_Blink_Petal_2",
+  "R4M_Blink_Petal_3",
+  "R4M_Blink_Petal_4",
+  "R4M_Blink_Petal_5",
+  "R4M_Blink_Petal_6"
+ ],
+ "gameplay": "Animation is visual only: it adds no gameplay capability, shot count or timing authority."
+}

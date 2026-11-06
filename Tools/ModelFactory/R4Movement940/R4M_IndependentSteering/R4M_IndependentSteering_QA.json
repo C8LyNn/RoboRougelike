@@ -1,0 +1,801 @@
+{
+ "id": "R4M_IndependentSteering",
+ "kind": "R3PartKind.IndependentSteering",
+ "game_name": "Moduł niezależnego skrętu (MOV011)",
+ "blender": "5.2.3 LTS",
+ "started": "2026-11-06 19:25:51",
+ "failures": [],
+ "notes": [
+  "No runtime placeholder geometry exists for IndependentSteering (block only); yaw limit is visual - SteeringMode / IndependentYaw stay runtime."
+ ],
+ "meshes": [
+  {
+   "object": "R4M_IndependentSteering_ServoDrum",
+   "verts": 1613,
+   "triangles": 3222,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.017614,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.003,
+    0.003,
+    0.992,
+    0.997
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Armor_Plate_Light",
+    "Steel_Light",
+    "TeamColor_Red",
+    "Hazard_Yellow"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_IndependentSteering_Pinion",
+   "verts": 218,
+   "triangles": 432,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 7e-05,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.003,
+    0.003,
+    0.99,
+    0.997
+   ],
+   "materials": [
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_IndependentSteering_Knuckle",
+   "verts": 1111,
+   "triangles": 2158,
+   "shells": 16,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.003375,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.005,
+    0.005,
+    0.992,
+    0.995
+   ],
+   "materials": [
+    "Steel_Light",
+    "Armor_Dark",
+    "Armor_Gunmetal",
+    "Hazard_Yellow",
+    "TeamColor_Red"
+   ],
+   "ok": true
+  }
+ ],
+ "fx_meshes": [],
+ "triangles_total": 5812,
+ "triangles_fx": 0,
+ "triangles_r41_reference": 11452,
+ "topology_PASS": true,
+ "palette": {
+  "material_area_share": {
+   "Armor_Gunmetal": 0.5223,
+   "Armor_Dark": 0.2369,
+   "Steel_Light": 0.1453,
+   "Armor_Plate_Light": 0.0522,
+   "TeamColor_Red": 0.0408,
+   "Hazard_Yellow": 0.0025
+  },
+  "family_share": {
+   "1_dark_gunmetal": 0.7592,
+   "2_light_steel": 0.1975,
+   "3_team_red": 0.0408,
+   "4_hazard_yellow": 0.0025
+  },
+  "r41_family_share": {
+   "1_dark_gunmetal": 0.7913,
+   "2_light_steel": 0.1229,
+   "3_team_red": 0.0247,
+   "4_hazard_yellow": 0.0015,
+   "T_technical": 0.0595
+  },
+  "bands": {
+   "1_dark_gunmetal": [
+    0.62,
+    0.88
+   ],
+   "2_light_steel": [
+    0.06,
+    0.24
+   ],
+   "3_team_red": [
+    0.012,
+    0.07
+   ],
+   "4_hazard_yellow": [
+    0.001,
+    0.03
+   ],
+   "T_technical": [
+    0.0,
+    0.16
+   ]
+  },
+  "in_band": {
+   "1_dark_gunmetal": true,
+   "2_light_steel": true,
+   "3_team_red": true,
+   "4_hazard_yellow": true,
+   "T_technical": true
+  },
+  "violations": [],
+  "PASS": true,
+  "PASS_policy": "movement: locked materials/PBR enforced, family bands reported (not enforced, issue #940)"
+ },
+ "contract": {
+  "R4M_IndependentSteering_ROOT": {
+   "position_file": [
+    0.0,
+    0.0,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    1.0,
+    -0.0
+   ],
+   "parent": null
+  },
+  "Socket_Mount": {
+   "position_file": [
+    0.0,
+    0.275,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    1.0,
+    -0.0
+   ],
+   "parent": "R4M_IndependentSteering_ROOT"
+  },
+  "Steer_Kingpin": {
+   "position_file": [
+    0.0,
+    0.0,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    -0.0,
+    -1.0
+   ],
+   "parent": "R4M_IndependentSteering_ROOT"
+  },
+  "Hub_Mount": {
+   "position_file": [
+    0.166,
+    -0.18,
+    -0.0
+   ],
+   "forward_file": [
+    1.0,
+    -0.0,
+    -0.0
+   ],
+   "parent": "R4M_IndependentSteering_Knuckle"
+  },
+  "unity_axes": "file/Unity: +Z forward, +Y up, meters; Yaw about local Y, Pitch about local X"
+ },
+ "sweep": {
+  "failures": [],
+  "mount_cell": [
+   0,
+   0,
+   0
+  ],
+  "static_bounds_file": [
+   [
+    -0.2015,
+    -0.26,
+    -0.2015
+   ],
+   [
+    0.2015,
+    0.272,
+    0.2015
+   ]
+  ],
+  "static_cells": [
+   [
+    0,
+    0,
+    0
+   ]
+  ],
+  "housing_bounds_file": [
+   [
+    -0.2015,
+    0.1,
+    -0.2015
+   ],
+   [
+    0.2015,
+    0.272,
+    0.2015
+   ]
+  ],
+  "housing_inside_mount_cell": true,
+  "housing_policy": "strict: static housing must stay inside the 0.55 m mount cell",
+  "moving_sweep": {
+   "bounds_file": [
+    [
+     -0.2015,
+     -0.26,
+     -0.2015
+    ],
+    [
+     0.2015,
+     0.272,
+     0.2015
+    ]
+   ],
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "neighbour_cells_entered": [],
+   "frames": 117
+  },
+  "ground_contact": {
+   "note": "no ground contact: the steered wheel/part on Hub_Mount touches the ground"
+  },
+  "clearance_min_mm": {
+   "R4M_IndependentSteering_Knuckle|R4M_IndependentSteering_ServoDrum": 1.28,
+   "R4M_IndependentSteering_Pinion|R4M_IndependentSteering_Knuckle": 3.22
+  },
+  "quarter_turns": {
+   "X90": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "X180": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "X270": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "Y90": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "Y180": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "Y270": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "Z90": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "Z180": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "Z270": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   }
+  },
+  "mirror_X": {
+   "static_bounds_file": [
+    [
+     -0.2015,
+     -0.26,
+     -0.2015
+    ],
+    [
+     0.2015,
+     0.272,
+     0.2015
+    ]
+   ],
+   "socket_file": [
+    0.0,
+    0.275,
+    -0.0
+   ],
+   "socket_mirrored_file": [
+    -0.0,
+    0.275,
+    -0.0
+   ],
+   "note": "L/R variant = parent scale X -1 (Unity flips winding for negative scale); geometry is closed so lighting stays correct"
+  },
+  "floating_shells": {
+   "R4M_IndependentSteering_ServoDrum": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_IndependentSteering_Pinion": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_IndependentSteering_Knuckle": {
+    "shells": 16,
+    "isolated": 0
+   }
+  },
+  "nodes_file": {
+   "R4M_IndependentSteering_ROOT": {
+    "position": [
+     0.0,
+     0.0,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     1.0,
+     -0.0
+    ]
+   },
+   "Socket_Mount": {
+    "position": [
+     0.0,
+     0.275,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     1.0,
+     -0.0
+    ]
+   },
+   "Steer_Kingpin": {
+    "position": [
+     0.0,
+     0.0,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     -0.0,
+     -1.0
+    ]
+   },
+   "Hub_Mount": {
+    "position": [
+     0.166,
+     -0.18,
+     -0.0
+    ],
+    "z_axis": [
+     1.0,
+     -0.0,
+     -0.0
+    ]
+   }
+  }
+ },
+ "animation_clash": {
+  "frames_checked": 117,
+  "pairs": [
+   [
+    "R4M_IndependentSteering_Knuckle",
+    "R4M_IndependentSteering_ServoDrum"
+   ],
+   [
+    "R4M_IndependentSteering_Pinion",
+    "R4M_IndependentSteering_ServoDrum"
+   ],
+   [
+    "R4M_IndependentSteering_Pinion",
+    "R4M_IndependentSteering_Knuckle"
+   ]
+  ],
+  "collisions": 0,
+  "samples": [],
+  "per_pair": {},
+  "PASS": true
+ },
+ "extra_checks": {},
+ "renders": [
+  "R4M_IndependentSteering_front.png",
+  "R4M_IndependentSteering_back.png",
+  "R4M_IndependentSteering_side.png",
+  "R4M_IndependentSteering_top.png",
+  "R4M_IndependentSteering_34front.png",
+  "R4M_IndependentSteering_34rear.png",
+  "R4M_IndependentSteering_34front_wireframe.png",
+  "R4M_IndependentSteering_side_wireframe.png",
+  "R4M_IndependentSteering_colliders_sweep.png",
+  "poses/R4M_IndependentSteering_Idle_f013.png",
+  "poses/R4M_IndependentSteering_SteerLeft_f039.png",
+  "poses/R4M_IndependentSteering_SteerRight_f053.png",
+  "poses/R4M_IndependentSteering_Slew_f079.png",
+  "poses/R4M_IndependentSteering_Return_f111.png",
+  "R4M_IndependentSteering_HERO_eevee.png",
+  "R4M_IndependentSteering_HERO2_eevee.png",
+  "R4M_IndependentSteering_vs_R41_34front.png",
+  "R4M_IndependentSteering_vs_R41_side.png"
+ ],
+ "silhouettes": [
+  "R4M_IndependentSteering_sil_side.png",
+  "R4M_IndependentSteering_sil_front.png",
+  "R4M_IndependentSteering_sil_top.png",
+  "R4M_IndependentSteering_sil_gameplay.png"
+ ],
+ "video": "R4M_IndependentSteering_timeline.mp4",
+ "lod1": {
+  "file": "R4M_IndependentSteering_LOD1.fbx",
+  "triangles": 2904,
+  "method": "DECIMATE collapse 0.5 (automatic, not hand-authored)"
+ },
+ "fbx_reimport": {
+  "frames": [
+   1,
+   13,
+   25,
+   27,
+   33,
+   39,
+   41,
+   47,
+   53,
+   55,
+   79,
+   103,
+   105,
+   111,
+   117
+  ],
+  "worst": {
+   "pos_mm": 0.0,
+   "rot_deg": 0.0,
+   "geom_mm": 0.0001,
+   "scale_err": 0.0,
+   "missing": [],
+   "parent_bad": []
+  },
+  "per_frame": {
+   "1": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "13": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "25": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "27": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "33": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "39": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "41": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "47": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "53": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "55": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "79": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "103": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "105": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "111": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "117": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   }
+  },
+  "nodes_as_imported": {
+   "R4M_IndependentSteering_ROOT": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     -0.0,
+     0.0,
+     0.0
+    ],
+    "parent": null
+   },
+   "R4M_IndependentSteering_ServoDrum": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_IndependentSteering_ROOT"
+   },
+   "R4M_IndependentSteering_Pinion": {
+    "loc": [
+     0.1265,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_IndependentSteering_ROOT"
+   },
+   "R4M_IndependentSteering_Knuckle": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_IndependentSteering_ROOT"
+   },
+   "Socket_Mount": {
+    "loc": [
+     0.0,
+     0.0,
+     0.275
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_IndependentSteering_ROOT"
+   },
+   "Steer_Kingpin": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     -90.0,
+     0.0,
+     0.0
+    ],
+    "parent": "R4M_IndependentSteering_ROOT"
+   },
+   "Hub_Mount": {
+    "loc": [
+     0.166,
+     0.0,
+     -0.18
+    ],
+    "rot_deg": [
+     -0.0,
+     90.0,
+     0.0
+    ],
+    "parent": "R4M_IndependentSteering_Knuckle"
+   }
+  },
+  "PASS": true,
+  "thresholds": "pos<0.05mm rot<0.01deg geom<0.05mm, 0 missing, 0 parent changes (R41 v6.1 QA)"
+ },
+ "r41_compare": "rendered from real R41_Turret_v6.1.fbx (SHA verified)",
+ "glb_reimport": {
+  "rest_frame_worst": {
+   "pos_mm": 0.0,
+   "rot_deg": 0.0,
+   "scale_err": 0.0,
+   "geom_mm": 0.0,
+   "missing": [],
+   "parent_bad": []
+  },
+  "actions_imported": 2,
+  "PASS": true,
+  "note": "glTF importer; world-space comparison at frame 1"
+ },
+ "files": {
+  "R4M_IndependentSteering.blend": {
+   "sha256": "aa93ad2ef2a84ac924cb1eacaa3e7aade41a646833213ead72dc8823ee955f55",
+   "bytes": 1171262,
+   "sha256_before_path_sanitize": "a0739a2a16b48727dd073f46805a60c12e1eb279046ecb318a000e5668320faa",
+   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length; file re-opened headless in Blender 5.2.3 after patch (rc 0, frame range and objects unchanged)"
+  },
+  "R4M_IndependentSteering.fbx": {
+   "sha256": "ac476f97e5bc24e0e230450c4dee382866afb787c58766a4e83be9ebd78ea78c",
+   "bytes": 309644
+  },
+  "R4M_IndependentSteering.glb": {
+   "sha256": "71b1efced1feba2133ae284136e88d6b9a8a000d1366434f1e7511c97392464c",
+   "bytes": 274436
+  },
+  "R4M_IndependentSteering_colliders.glb": {
+   "sha256": "f3ba98462b7ac57e4b620a9adde71ffff2928f3b20196b3040c57fea46a32ec5",
+   "bytes": 272280
+  },
+  "R4M_IndependentSteering_LOD1.fbx": {
+   "sha256": "b9581d72358a4f6b256ee1c1891229ad376109932485eda9416d7961e2867b93",
+   "bytes": 146828
+  }
+ },
+ "unity_import_test": "UNITY_NOT_RUN (Unity not available in this session)",
+ "unity_import_settings": "Scale Factor 1, Convert Units ON, Bake Axis Conversion ON, Animation: split clips by animation_manifest.json frame ranges (24 fps)",
+ "status": "BLENDER_PASS",
+ "seconds": 6.6
+}

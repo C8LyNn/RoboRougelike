@@ -1,0 +1,52 @@
+{
+ "id": "R4M_IndependentSteering",
+ "kind": "R3PartKind.IndependentSteering",
+ "fps": 24,
+ "frame_range": [
+  1,
+  117
+ ],
+ "note": "One baked take in FBX/GLB (master timeline). Unity: split into clips by these frame ranges; loop=true clips are seamless.",
+ "clips": [
+  {
+   "name": "Idle",
+   "start": 1,
+   "end": 25,
+   "loop": true,
+   "desc": "centred"
+  },
+  {
+   "name": "SteerLeft",
+   "start": 27,
+   "end": 39,
+   "loop": false,
+   "desc": "slew to +35 deg and hold"
+  },
+  {
+   "name": "SteerRight",
+   "start": 41,
+   "end": 53,
+   "loop": false,
+   "desc": "slew to -35 deg and hold"
+  },
+  {
+   "name": "Slew",
+   "start": 55,
+   "end": 103,
+   "loop": true,
+   "desc": "lock-to-lock sweep +-35 deg (seamless sine)"
+  },
+  {
+   "name": "Return",
+   "start": 105,
+   "end": 117,
+   "loop": false,
+   "desc": "self-centre from +35 deg"
+  }
+ ],
+ "animated_nodes": [
+  "R4M_IndependentSteering_Knuckle",
+  "R4M_IndependentSteering_Pinion"
+ ],
+ "gameplay": "Animation is visual only: it adds no gameplay capability, shot count or timing authority."
+}

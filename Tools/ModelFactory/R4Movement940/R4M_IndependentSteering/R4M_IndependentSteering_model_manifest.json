@@ -1,0 +1,51 @@
+{
+ "id": "R4M_IndependentSteering",
+ "kind": "R3PartKind.IndependentSteering",
+ "game_name": "Modu\u0142 niezale\u017cnego skr\u0119tu (MOV011)",
+ "units": "meter 1:1",
+ "axes": "file/Unity +Z forward, +Y up",
+ "cell": "logical 1x1x1 on 0.55 m grid; mount = Socket_Mount_Bottom",
+ "hierarchy": {
+  "R4M_IndependentSteering_ROOT": null,
+  "R4M_IndependentSteering_ServoDrum": "R4M_IndependentSteering_ROOT",
+  "R4M_IndependentSteering_Pinion": "R4M_IndependentSteering_ROOT",
+  "R4M_IndependentSteering_Knuckle": "R4M_IndependentSteering_ROOT",
+  "Socket_Mount": "R4M_IndependentSteering_ROOT",
+  "Steer_Kingpin": "R4M_IndependentSteering_ROOT",
+  "Hub_Mount": "R4M_IndependentSteering_Knuckle"
+ },
+ "node_roles": {
+  "R4M_IndependentSteering_ROOT": {
+   "unity_up": "+Y",
+   "unity_forward": "+Z",
+   "unit": "meter",
+   "version": "v1",
+   "weapon_kind": "R3PartKind.IndependentSteering",
+   "style": "R41_Turret_v6.1 standard (heavy industrial armour + team colour)",
+   "issue": "#938"
+  },
+  "R4M_IndependentSteering_ServoDrum": {
+   "role": "static servo drum, motor, pinion bearing, yaw scale ring"
+  },
+  "R4M_IndependentSteering_Pinion": {
+   "role": "servo pinion: rotates about local Y (Unity up); ratio 2.65 : 1 to the knuckle"
+  },
+  "R4M_IndependentSteering_Knuckle": {
+   "role": "steering knuckle: yaws about local Y (kingpin through the cell centre), visual limit +-35 deg"
+  },
+  "Socket_Mount": {
+   "role": "cap top face, normal +Y"
+  },
+  "Steer_Kingpin": {
+   "role": "steering axis marker (file +Y)"
+  },
+  "Hub_Mount": {
+   "role": "hub flange face (+X) for the steered wheel/part"
+  }
+ },
+ "muzzles": [],
+ "visible_exits_note": "",
+ "notes": [
+  "No runtime placeholder geometry exists for IndependentSteering (block only); yaw limit is visual - SteeringMode / IndependentYaw stay runtime."
+ ]
+}

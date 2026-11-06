@@ -1,0 +1,912 @@
+{
+ "id": "R4M_JumpDrive",
+ "kind": "R3PartKind.JumpDrive",
+ "game_name": "Napęd skoku (MOV002)",
+ "blender": "5.2.3 LTS",
+ "started": "2026-11-06 19:25:09",
+ "failures": [],
+ "notes": [
+  "Impulse stroke 0.10 m is visual; the jump force/height stay in JumpDrive runtime settings."
+ ],
+ "meshes": [
+  {
+   "object": "R4M_JumpDrive_Housing",
+   "verts": 2596,
+   "triangles": 5240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.038302,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.006,
+    0.006,
+    0.994,
+    0.992
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Plate_Light",
+    "Steel_Light",
+    "Armor_Dark",
+    "TeamColor_Red",
+    "Energy_Hot",
+    "Hazard_Yellow"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_JumpDrive_Piston",
+   "verts": 790,
+   "triangles": 1576,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.007398,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.003,
+    0.003,
+    0.997,
+    0.996
+   ],
+   "materials": [
+    "Steel_Light",
+    "Armor_Gunmetal",
+    "Hazard_Yellow",
+    "Armor_Dark",
+    "TeamColor_Red"
+   ],
+   "ok": true
+  }
+ ],
+ "fx_meshes": [
+  {
+   "object": "Jump_TankGlow_1",
+   "verts": 96,
+   "triangles": 192,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 8.1e-05,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.895,
+    0.998
+   ],
+   "materials": [
+    "Energy_Hot"
+   ],
+   "ok": true
+  },
+  {
+   "object": "Jump_TankGlow_2",
+   "verts": 96,
+   "triangles": 192,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 8.1e-05,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.998,
+    0.751
+   ],
+   "materials": [
+    "Energy_Hot"
+   ],
+   "ok": true
+  },
+  {
+   "object": "Jump_TankGlow_3",
+   "verts": 96,
+   "triangles": 192,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 8.1e-05,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.998,
+    0.751
+   ],
+   "materials": [
+    "Energy_Hot"
+   ],
+   "ok": true
+  },
+  {
+   "object": "Jump_BlastRing",
+   "verts": 192,
+   "triangles": 384,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.001034,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.001,
+    0.001,
+    0.546,
+    0.999
+   ],
+   "materials": [
+    "Muzzle_Flash"
+   ],
+   "ok": true
+  }
+ ],
+ "triangles_total": 6816,
+ "triangles_fx": 960,
+ "triangles_r41_reference": 11452,
+ "topology_PASS": true,
+ "palette": {
+  "material_area_share": {
+   "Armor_Gunmetal": 0.4035,
+   "Armor_Dark": 0.3092,
+   "Armor_Plate_Light": 0.1595,
+   "Steel_Light": 0.0556,
+   "Hazard_Yellow": 0.0387,
+   "Energy_Hot": 0.0255,
+   "TeamColor_Red": 0.008
+  },
+  "family_share": {
+   "1_dark_gunmetal": 0.7127,
+   "2_light_steel": 0.2151,
+   "3_team_red": 0.008,
+   "4_hazard_yellow": 0.0387,
+   "T_technical": 0.0255
+  },
+  "r41_family_share": {
+   "1_dark_gunmetal": 0.7913,
+   "2_light_steel": 0.1229,
+   "3_team_red": 0.0247,
+   "4_hazard_yellow": 0.0015,
+   "T_technical": 0.0595
+  },
+  "bands": {
+   "1_dark_gunmetal": [
+    0.62,
+    0.88
+   ],
+   "2_light_steel": [
+    0.06,
+    0.24
+   ],
+   "3_team_red": [
+    0.012,
+    0.07
+   ],
+   "4_hazard_yellow": [
+    0.001,
+    0.03
+   ],
+   "T_technical": [
+    0.0,
+    0.16
+   ]
+  },
+  "in_band": {
+   "1_dark_gunmetal": true,
+   "2_light_steel": true,
+   "3_team_red": false,
+   "4_hazard_yellow": false,
+   "T_technical": true
+  },
+  "violations": [],
+  "PASS": false,
+  "PASS_policy": "movement: locked materials/PBR enforced, family bands reported (not enforced, issue #940)"
+ },
+ "contract": {
+  "R4M_JumpDrive_ROOT": {
+   "position_file": [
+    0.0,
+    0.0,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    1.0,
+    -0.0
+   ],
+   "parent": null
+  },
+  "Socket_Mount": {
+   "position_file": [
+    0.0,
+    0.275,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    1.0,
+    -0.0
+   ],
+   "parent": "R4M_JumpDrive_ROOT"
+  },
+  "GroundProbe": {
+   "position_file": [
+    0.0,
+    -0.317,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    -1.0,
+    -0.0
+   ],
+   "parent": "R4M_JumpDrive_ROOT"
+  },
+  "unity_axes": "file/Unity: +Z forward, +Y up, meters; Yaw about local Y, Pitch about local X"
+ },
+ "sweep": {
+  "failures": [],
+  "mount_cell": [
+   0,
+   0,
+   0
+  ],
+  "static_bounds_file": [
+   [
+    -0.242,
+    -0.317,
+    -0.2485
+   ],
+   [
+    0.242,
+    0.272,
+    0.242
+   ]
+  ],
+  "static_cells": [
+   [
+    0,
+    -1,
+    0
+   ],
+   [
+    0,
+    0,
+    0
+   ]
+  ],
+  "housing_bounds_file": [
+   [
+    -0.2217,
+    -0.25,
+    -0.2485
+   ],
+   [
+    0.2217,
+    0.272,
+    0.16
+   ]
+  ],
+  "housing_inside_mount_cell": true,
+  "housing_policy": "strict: static housing must stay inside the 0.55 m mount cell",
+  "moving_sweep": {
+   "bounds_file": [
+    [
+     -0.242,
+     -0.417,
+     -0.2485
+    ],
+    [
+     0.242,
+     0.272,
+     0.242
+    ]
+   ],
+   "cells": [
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "neighbour_cells_entered": [
+    [
+     0,
+     -1,
+     0
+    ]
+   ],
+   "frames": 105
+  },
+  "ground_contact": {
+   "runtime_y": -0.317,
+   "model_y_rest": -0.317,
+   "model_y_min_over_clips": -0.417,
+   "deviation_mm": 0.0,
+   "tolerance_mm": 3.0,
+   "source": "R41PartGeometry.Payload jump disc bottom"
+  },
+  "collision_envelope": {
+   "runtime": "Unity cylinder d 0.52, h 0.166 at (0,-0.234,0)",
+   "pad_radius_m": 0.242,
+   "pad_bottom_y": -0.317,
+   "impulse_stroke_m": 0.1,
+   "game_target_jump_height_m": 1.2,
+   "bottom_dev_mm": 0.0,
+   "PASS": true
+  },
+  "clearance_min_mm": {
+   "R4M_JumpDrive_Piston|R4M_JumpDrive_Housing": 3.98
+  },
+  "quarter_turns": {
+   "X90": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      0,
+      -1
+     ],
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "X180": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      1,
+      0
+     ]
+    ]
+   },
+   "X270": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      1
+     ]
+    ]
+   },
+   "Y90": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      -1,
+      0
+     ],
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "Y180": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      -1,
+      0
+     ],
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "Y270": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      -1,
+      0
+     ],
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "Z90": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      -1,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "Z180": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      1,
+      0
+     ]
+    ]
+   },
+   "Z270": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      1,
+      0,
+      0
+     ]
+    ]
+   }
+  },
+  "mirror_X": {
+   "static_bounds_file": [
+    [
+     -0.242,
+     -0.317,
+     -0.2485
+    ],
+    [
+     0.242,
+     0.272,
+     0.242
+    ]
+   ],
+   "socket_file": [
+    0.0,
+    0.275,
+    -0.0
+   ],
+   "socket_mirrored_file": [
+    -0.0,
+    0.275,
+    -0.0
+   ],
+   "note": "L/R variant = parent scale X -1 (Unity flips winding for negative scale); geometry is closed so lighting stays correct"
+  },
+  "floating_shells": {
+   "R4M_JumpDrive_Housing": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_JumpDrive_Piston": {
+    "shells": 1,
+    "isolated": 0
+   }
+  },
+  "nodes_file": {
+   "R4M_JumpDrive_ROOT": {
+    "position": [
+     0.0,
+     0.0,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     1.0,
+     -0.0
+    ]
+   },
+   "Socket_Mount": {
+    "position": [
+     0.0,
+     0.275,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     1.0,
+     -0.0
+    ]
+   },
+   "GroundProbe": {
+    "position": [
+     0.0,
+     -0.317,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     -1.0,
+     -0.0
+    ]
+   }
+  }
+ },
+ "animation_clash": {
+  "frames_checked": 105,
+  "pairs": [
+   [
+    "R4M_JumpDrive_Piston",
+    "R4M_JumpDrive_Housing"
+   ]
+  ],
+  "collisions": 0,
+  "samples": [],
+  "per_pair": {},
+  "PASS": true
+ },
+ "extra_checks": {},
+ "renders": [
+  "R4M_JumpDrive_front.png",
+  "R4M_JumpDrive_back.png",
+  "R4M_JumpDrive_side.png",
+  "R4M_JumpDrive_top.png",
+  "R4M_JumpDrive_34front.png",
+  "R4M_JumpDrive_34rear.png",
+  "R4M_JumpDrive_34front_wireframe.png",
+  "R4M_JumpDrive_side_wireframe.png",
+  "R4M_JumpDrive_colliders_sweep.png",
+  "poses/R4M_JumpDrive_Idle_f013.png",
+  "poses/R4M_JumpDrive_Charge_f061.png",
+  "poses/R4M_JumpDrive_Impulse_f068.png",
+  "poses/R4M_JumpDrive_Recovery_f085.png",
+  "R4M_JumpDrive_HERO_eevee.png",
+  "R4M_JumpDrive_HERO2_eevee.png",
+  "R4M_JumpDrive_vs_R41_34front.png",
+  "R4M_JumpDrive_vs_R41_side.png"
+ ],
+ "silhouettes": [
+  "R4M_JumpDrive_sil_side.png",
+  "R4M_JumpDrive_sil_front.png",
+  "R4M_JumpDrive_sil_top.png",
+  "R4M_JumpDrive_sil_gameplay.png"
+ ],
+ "video": "R4M_JumpDrive_timeline.mp4",
+ "lod1": {
+  "file": "R4M_JumpDrive_LOD1.fbx",
+  "triangles": 3408,
+  "method": "DECIMATE collapse 0.5 (automatic, not hand-authored)"
+ },
+ "fbx_reimport": {
+  "frames": [
+   1,
+   13,
+   25,
+   27,
+   45,
+   63,
+   65,
+   69,
+   73,
+   75,
+   90,
+   105
+  ],
+  "worst": {
+   "pos_mm": 0.0001,
+   "rot_deg": 0.0,
+   "geom_mm": 0.0001,
+   "scale_err": 0.0,
+   "missing": [],
+   "parent_bad": []
+  },
+  "per_frame": {
+   "1": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "13": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "25": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "27": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "45": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "63": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "65": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "69": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "73": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "75": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "90": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "105": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   }
+  },
+  "nodes_as_imported": {
+   "R4M_JumpDrive_ROOT": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     -0.0,
+     0.0,
+     0.0
+    ],
+    "parent": null
+   },
+   "R4M_JumpDrive_Housing": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_JumpDrive_ROOT"
+   },
+   "R4M_JumpDrive_Piston": {
+    "loc": [
+     0.0,
+     0.0,
+     -0.13
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_JumpDrive_ROOT"
+   },
+   "Jump_TankGlow_1": {
+    "loc": [
+     0.0,
+     0.2,
+     -0.02
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_JumpDrive_ROOT"
+   },
+   "Jump_TankGlow_2": {
+    "loc": [
+     -0.17321,
+     -0.1,
+     -0.02
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_JumpDrive_ROOT"
+   },
+   "Jump_TankGlow_3": {
+    "loc": [
+     0.17321,
+     -0.1,
+     -0.02
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_JumpDrive_ROOT"
+   },
+   "Jump_BlastRing": {
+    "loc": [
+     0.0,
+     0.0,
+     -0.417
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_JumpDrive_ROOT"
+   },
+   "Socket_Mount": {
+    "loc": [
+     0.0,
+     0.0,
+     0.275
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_JumpDrive_ROOT"
+   },
+   "GroundProbe": {
+    "loc": [
+     0.0,
+     0.0,
+     -0.317
+    ],
+    "rot_deg": [
+     -180.0,
+     0.0,
+     0.0
+    ],
+    "parent": "R4M_JumpDrive_ROOT"
+   }
+  },
+  "PASS": true,
+  "thresholds": "pos<0.05mm rot<0.01deg geom<0.05mm, 0 missing, 0 parent changes (R41 v6.1 QA)"
+ },
+ "r41_compare": "rendered from real R41_Turret_v6.1.fbx (SHA verified)",
+ "glb_reimport": {
+  "rest_frame_worst": {
+   "pos_mm": 0.0,
+   "rot_deg": 0.0,
+   "scale_err": 0.0,
+   "geom_mm": 0.0,
+   "missing": [],
+   "parent_bad": []
+  },
+  "actions_imported": 5,
+  "PASS": true,
+  "note": "glTF importer; world-space comparison at frame 1"
+ },
+ "files": {
+  "R4M_JumpDrive.blend": {
+   "sha256": "7db17a2550b1f7ddde8f5c4bd30b5626b150cf87af23a0b4ecb66ba3d615ddee",
+   "bytes": 1364077,
+   "sha256_before_path_sanitize": "ffa17e5a64c5f79adb5dd71619097d0cdaf409d87d12b2216be9dbd0c5187264",
+   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length; file re-opened headless in Blender 5.2.3 after patch (rc 0, frame range and objects unchanged)"
+  },
+  "R4M_JumpDrive.fbx": {
+   "sha256": "334a92312ec386e954acb6f3b536328bedae5e65f6f58f4fd3bab37f1f869727",
+   "bytes": 384956
+  },
+  "R4M_JumpDrive.glb": {
+   "sha256": "10dd977d385fe93d9bc621d9d649c53cb5fccc6a0f510ee96605061511723d39",
+   "bytes": 347144
+  },
+  "R4M_JumpDrive_colliders.glb": {
+   "sha256": "7ad2ee96361c6b7a717355d5fc497853b57187e112c0b384fed085d3697531e4",
+   "bytes": 301684
+  },
+  "R4M_JumpDrive_LOD1.fbx": {
+   "sha256": "fdfab1b0fa0495121f25cfb1ed271f6f09c04e95954e71cb5aec199b5cef2f88",
+   "bytes": 159532
+  }
+ },
+ "unity_import_test": "UNITY_NOT_RUN (Unity not available in this session)",
+ "unity_import_settings": "Scale Factor 1, Convert Units ON, Bake Axis Conversion ON, Animation: split clips by animation_manifest.json frame ranges (24 fps)",
+ "status": "BLENDER_PASS",
+ "seconds": 6.4
+}

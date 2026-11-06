@@ -1,0 +1,50 @@
+{
+ "id": "R4M_MagneticGrapple",
+ "kind": "R3PartKind.MagneticGrapple",
+ "fps": 24,
+ "frame_range": [
+  1,
+  81
+ ],
+ "note": "One baked take in FBX/GLB (master timeline). Unity: split into clips by these frame ranges; loop=true clips are seamless.",
+ "clips": [
+  {
+   "name": "Idle",
+   "start": 1,
+   "end": 25,
+   "loop": true,
+   "desc": "stowed: head seated in the tube mouth, claws closed"
+  },
+  {
+   "name": "Deploy",
+   "start": 27,
+   "end": 37,
+   "loop": false,
+   "desc": "arm: head eases out 30 mm, claws open to 38 deg, magnet glow on"
+  },
+  {
+   "name": "Fire",
+   "start": 39,
+   "end": 49,
+   "loop": false,
+   "desc": "shot: head flies 0.90 m in 4 f, cable pays out, spool unwinds"
+  },
+  {
+   "name": "Retract",
+   "start": 51,
+   "end": 81,
+   "loop": false,
+   "desc": "spool winds in, head returns and seats, claws close, glow off (spool ends at rest angle)"
+  }
+ ],
+ "animated_nodes": [
+  "Grapple_MagnetGlow",
+  "R4M_MagneticGrapple_Cable",
+  "R4M_MagneticGrapple_Claw_1",
+  "R4M_MagneticGrapple_Claw_2",
+  "R4M_MagneticGrapple_Claw_3",
+  "R4M_MagneticGrapple_Head",
+  "R4M_MagneticGrapple_Spool"
+ ],
+ "gameplay": "Animation is visual only: it adds no gameplay capability, shot count or timing authority."
+}

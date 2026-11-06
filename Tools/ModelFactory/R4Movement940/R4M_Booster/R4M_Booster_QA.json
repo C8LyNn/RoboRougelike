@@ -1,0 +1,1553 @@
+{
+ "id": "R4M_Booster",
+ "kind": "R3PartKind.Booster",
+ "game_name": "Booster (MOV001)",
+ "blender": "5.2.3 LTS",
+ "started": "2026-11-06 19:24:59",
+ "failures": [],
+ "notes": [
+  "Force direction: exhaust along file -Z, thrust +Z (matches the runtime booster placed behind the block)."
+ ],
+ "meshes": [
+  {
+   "object": "R4M_Booster_Housing",
+   "verts": 2088,
+   "triangles": 4148,
+   "shells": 7,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.040965,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.005,
+    0.005,
+    0.992,
+    0.995
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Plate_Light",
+    "Armor_Dark",
+    "Steel_Light",
+    "Barrel_Heat",
+    "TeamColor_Red",
+    "Hazard_Yellow"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_Booster_Turbine",
+   "verts": 312,
+   "triangles": 620,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.0002,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.003,
+    0.003,
+    0.997,
+    0.994
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Steel_Light",
+    "TeamColor_Red"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_Booster_Petal_1",
+   "verts": 59,
+   "triangles": 114,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 4e-05,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.001,
+    0.001,
+    0.999,
+    0.994
+   ],
+   "materials": [
+    "Armor_Plate_Light",
+    "Steel_Light",
+    "Armor_Dark"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_Booster_Petal_2",
+   "verts": 59,
+   "triangles": 114,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 4e-05,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.001,
+    0.001,
+    0.999,
+    0.994
+   ],
+   "materials": [
+    "Armor_Plate_Light",
+    "Steel_Light",
+    "Armor_Dark"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_Booster_Petal_3",
+   "verts": 59,
+   "triangles": 114,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 4e-05,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.001,
+    0.001,
+    0.999,
+    0.994
+   ],
+   "materials": [
+    "Armor_Plate_Light",
+    "Steel_Light",
+    "Armor_Dark"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_Booster_Petal_4",
+   "verts": 59,
+   "triangles": 114,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 4e-05,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.001,
+    0.001,
+    0.999,
+    0.994
+   ],
+   "materials": [
+    "Armor_Plate_Light",
+    "Steel_Light",
+    "Armor_Dark"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_Booster_Petal_5",
+   "verts": 59,
+   "triangles": 114,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 4e-05,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.001,
+    0.001,
+    0.999,
+    0.994
+   ],
+   "materials": [
+    "Armor_Plate_Light",
+    "Steel_Light",
+    "Armor_Dark"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_Booster_Petal_6",
+   "verts": 59,
+   "triangles": 114,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 4e-05,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.001,
+    0.001,
+    0.999,
+    0.994
+   ],
+   "materials": [
+    "Armor_Plate_Light",
+    "Steel_Light",
+    "Armor_Dark"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_Booster_Petal_7",
+   "verts": 59,
+   "triangles": 114,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 4e-05,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.001,
+    0.001,
+    0.999,
+    0.994
+   ],
+   "materials": [
+    "Armor_Plate_Light",
+    "Steel_Light",
+    "Armor_Dark"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_Booster_Petal_8",
+   "verts": 59,
+   "triangles": 114,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 4e-05,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.001,
+    0.001,
+    0.999,
+    0.994
+   ],
+   "materials": [
+    "Armor_Plate_Light",
+    "Steel_Light",
+    "Armor_Dark"
+   ],
+   "ok": true
+  }
+ ],
+ "fx_meshes": [
+  {
+   "object": "Booster_Flame",
+   "verts": 48,
+   "triangles": 92,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.005404,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.001,
+    0.001,
+    0.912,
+    0.999
+   ],
+   "materials": [
+    "Muzzle_Flash"
+   ],
+   "ok": true
+  },
+  {
+   "object": "Booster_Core",
+   "verts": 48,
+   "triangles": 92,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.003439,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.001,
+    0.001,
+    0.931,
+    0.999
+   ],
+   "materials": [
+    "Energy_Hot"
+   ],
+   "ok": true
+  }
+ ],
+ "triangles_total": 5680,
+ "triangles_fx": 184,
+ "triangles_r41_reference": 11452,
+ "topology_PASS": true,
+ "palette": {
+  "material_area_share": {
+   "Armor_Dark": 0.2927,
+   "Barrel_Heat": 0.2649,
+   "Armor_Gunmetal": 0.2071,
+   "Steel_Light": 0.0941,
+   "Armor_Plate_Light": 0.0786,
+   "TeamColor_Red": 0.0525,
+   "Hazard_Yellow": 0.0103
+  },
+  "family_share": {
+   "1_dark_gunmetal": 0.4997,
+   "2_light_steel": 0.1727,
+   "3_team_red": 0.0525,
+   "4_hazard_yellow": 0.0103,
+   "T_technical": 0.2649
+  },
+  "r41_family_share": {
+   "1_dark_gunmetal": 0.7913,
+   "2_light_steel": 0.1229,
+   "3_team_red": 0.0247,
+   "4_hazard_yellow": 0.0015,
+   "T_technical": 0.0595
+  },
+  "bands": {
+   "1_dark_gunmetal": [
+    0.62,
+    0.88
+   ],
+   "2_light_steel": [
+    0.06,
+    0.24
+   ],
+   "3_team_red": [
+    0.012,
+    0.07
+   ],
+   "4_hazard_yellow": [
+    0.001,
+    0.03
+   ],
+   "T_technical": [
+    0.0,
+    0.16
+   ]
+  },
+  "in_band": {
+   "1_dark_gunmetal": false,
+   "2_light_steel": true,
+   "3_team_red": true,
+   "4_hazard_yellow": true,
+   "T_technical": false
+  },
+  "violations": [],
+  "PASS": false,
+  "PASS_policy": "movement: locked materials/PBR enforced, family bands reported (not enforced, issue #940)"
+ },
+ "contract": {
+  "R4M_Booster_ROOT": {
+   "position_file": [
+    0.0,
+    0.0,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    1.0,
+    -0.0
+   ],
+   "parent": null
+  },
+  "PetalHinge_1": {
+   "position_file": [
+    0.06506,
+    0.15706,
+    -0.518
+   ],
+   "forward_file": [
+    0.3827,
+    0.9239,
+    -0.0
+   ],
+   "parent": "R4M_Booster_ROOT"
+  },
+  "PetalHinge_2": {
+   "position_file": [
+    0.15706,
+    0.06506,
+    -0.518
+   ],
+   "forward_file": [
+    0.9239,
+    0.3827,
+    -0.0
+   ],
+   "parent": "R4M_Booster_ROOT"
+  },
+  "PetalHinge_3": {
+   "position_file": [
+    0.15706,
+    -0.06506,
+    -0.518
+   ],
+   "forward_file": [
+    0.9239,
+    -0.3827,
+    -0.0
+   ],
+   "parent": "R4M_Booster_ROOT"
+  },
+  "PetalHinge_4": {
+   "position_file": [
+    0.06506,
+    -0.15706,
+    -0.518
+   ],
+   "forward_file": [
+    0.3827,
+    -0.9239,
+    -0.0
+   ],
+   "parent": "R4M_Booster_ROOT"
+  },
+  "PetalHinge_5": {
+   "position_file": [
+    -0.06506,
+    -0.15706,
+    -0.518
+   ],
+   "forward_file": [
+    -0.3827,
+    -0.9239,
+    -0.0
+   ],
+   "parent": "R4M_Booster_ROOT"
+  },
+  "PetalHinge_6": {
+   "position_file": [
+    -0.15706,
+    -0.06506,
+    -0.518
+   ],
+   "forward_file": [
+    -0.9239,
+    -0.3827,
+    -0.0
+   ],
+   "parent": "R4M_Booster_ROOT"
+  },
+  "PetalHinge_7": {
+   "position_file": [
+    -0.15706,
+    0.06506,
+    -0.518
+   ],
+   "forward_file": [
+    -0.9239,
+    0.3827,
+    -0.0
+   ],
+   "parent": "R4M_Booster_ROOT"
+  },
+  "PetalHinge_8": {
+   "position_file": [
+    -0.06506,
+    0.15706,
+    -0.518
+   ],
+   "forward_file": [
+    -0.3827,
+    0.9239,
+    -0.0
+   ],
+   "parent": "R4M_Booster_ROOT"
+  },
+  "Socket_Mount": {
+   "position_file": [
+    0.0,
+    0.275,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    1.0,
+    -0.0
+   ],
+   "parent": "R4M_Booster_ROOT"
+  },
+  "Thruster_Nozzle": {
+   "position_file": [
+    0.0,
+    0.0,
+    -0.52
+   ],
+   "forward_file": [
+    0.0,
+    -0.0,
+    -1.0
+   ],
+   "parent": "R4M_Booster_ROOT"
+  },
+  "unity_axes": "file/Unity: +Z forward, +Y up, meters; Yaw about local Y, Pitch about local X"
+ },
+ "sweep": {
+  "failures": [],
+  "mount_cell": [
+   0,
+   0,
+   0
+  ],
+  "static_bounds_file": [
+   [
+    -0.1783,
+    -0.1783,
+    -0.5876
+   ],
+   [
+    0.1783,
+    0.27,
+    0.222
+   ]
+  ],
+  "static_cells": [
+   [
+    0,
+    0,
+    -1
+   ],
+   [
+    0,
+    0,
+    0
+   ]
+  ],
+  "housing_bounds_file": [
+   [
+    -0.174,
+    -0.1697,
+    -0.522
+   ],
+   [
+    0.174,
+    0.27,
+    0.222
+   ]
+  ],
+  "housing_inside_mount_cell": false,
+  "housing_policy": "bell nozzle reaches 0.52 m behind the cell centre (runtime engine cylinder ends there)",
+  "moving_sweep": {
+   "bounds_file": [
+    [
+     -0.1997,
+     -0.1997,
+     -0.5882
+    ],
+    [
+     0.1997,
+     0.27,
+     0.222
+    ]
+   ],
+   "cells": [
+    [
+     0,
+     0,
+     -1
+    ],
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "neighbour_cells_entered": [
+    [
+     0,
+     0,
+     -1
+    ]
+   ],
+   "frames": 79
+  },
+  "ground_contact": {
+   "note": "no ground contact (thrust device)"
+  },
+  "collision_envelope": {
+   "runtime": "Unity cylinder d 0.338, length 0.416 along Z, centre (0,0,-0.312)",
+   "engine_radius_m": 0.1741,
+   "rear_end_file_z": -0.522,
+   "front_end_file_z": 0.222,
+   "runtime_rear_end_file_z": -0.52,
+   "thrust_dir_file": [
+    0,
+    0,
+    1
+   ],
+   "exhaust_dir_file": [
+    0,
+    0,
+    -1
+   ],
+   "rear_dev_mm": -2.0,
+   "PASS": true
+  },
+  "clearance_min_mm": {
+   "R4M_Booster_Turbine|R4M_Booster_Housing": 9.73,
+   "R4M_Booster_Petal_1|R4M_Booster_Housing": 9.73
+  },
+  "quarter_turns": {
+   "X90": {
+    "housing_inside_cell": false,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      1,
+      0
+     ]
+    ]
+   },
+   "X180": {
+    "housing_inside_cell": false,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      1
+     ]
+    ]
+   },
+   "X270": {
+    "housing_inside_cell": false,
+    "static_cells": [
+     [
+      0,
+      -1,
+      0
+     ],
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "Y90": {
+    "housing_inside_cell": false,
+    "static_cells": [
+     [
+      -1,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "Y180": {
+    "housing_inside_cell": false,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      1
+     ]
+    ]
+   },
+   "Y270": {
+    "housing_inside_cell": false,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      1,
+      0,
+      0
+     ]
+    ]
+   },
+   "Z90": {
+    "housing_inside_cell": false,
+    "static_cells": [
+     [
+      0,
+      0,
+      -1
+     ],
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "Z180": {
+    "housing_inside_cell": false,
+    "static_cells": [
+     [
+      0,
+      0,
+      -1
+     ],
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "Z270": {
+    "housing_inside_cell": false,
+    "static_cells": [
+     [
+      0,
+      0,
+      -1
+     ],
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   }
+  },
+  "mirror_X": {
+   "static_bounds_file": [
+    [
+     -0.1783,
+     -0.1783,
+     -0.5876
+    ],
+    [
+     0.1783,
+     0.27,
+     0.222
+    ]
+   ],
+   "socket_file": [
+    0.0,
+    0.275,
+    -0.0
+   ],
+   "socket_mirrored_file": [
+    -0.0,
+    0.275,
+    -0.0
+   ],
+   "note": "L/R variant = parent scale X -1 (Unity flips winding for negative scale); geometry is closed so lighting stays correct"
+  },
+  "floating_shells": {
+   "R4M_Booster_Housing": {
+    "shells": 7,
+    "isolated": 0
+   },
+   "R4M_Booster_Turbine": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_Booster_Petal_1": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_Booster_Petal_2": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_Booster_Petal_3": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_Booster_Petal_4": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_Booster_Petal_5": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_Booster_Petal_6": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_Booster_Petal_7": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_Booster_Petal_8": {
+    "shells": 1,
+    "isolated": 0
+   }
+  },
+  "nodes_file": {
+   "R4M_Booster_ROOT": {
+    "position": [
+     0.0,
+     0.0,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     1.0,
+     -0.0
+    ]
+   },
+   "PetalHinge_1": {
+    "position": [
+     0.06506,
+     0.15706,
+     -0.518
+    ],
+    "z_axis": [
+     0.3827,
+     0.9239,
+     -0.0
+    ]
+   },
+   "PetalHinge_2": {
+    "position": [
+     0.15706,
+     0.06506,
+     -0.518
+    ],
+    "z_axis": [
+     0.9239,
+     0.3827,
+     -0.0
+    ]
+   },
+   "PetalHinge_3": {
+    "position": [
+     0.15706,
+     -0.06506,
+     -0.518
+    ],
+    "z_axis": [
+     0.9239,
+     -0.3827,
+     -0.0
+    ]
+   },
+   "PetalHinge_4": {
+    "position": [
+     0.06506,
+     -0.15706,
+     -0.518
+    ],
+    "z_axis": [
+     0.3827,
+     -0.9239,
+     -0.0
+    ]
+   },
+   "PetalHinge_5": {
+    "position": [
+     -0.06506,
+     -0.15706,
+     -0.518
+    ],
+    "z_axis": [
+     -0.3827,
+     -0.9239,
+     -0.0
+    ]
+   },
+   "PetalHinge_6": {
+    "position": [
+     -0.15706,
+     -0.06506,
+     -0.518
+    ],
+    "z_axis": [
+     -0.9239,
+     -0.3827,
+     -0.0
+    ]
+   },
+   "PetalHinge_7": {
+    "position": [
+     -0.15706,
+     0.06506,
+     -0.518
+    ],
+    "z_axis": [
+     -0.9239,
+     0.3827,
+     -0.0
+    ]
+   },
+   "PetalHinge_8": {
+    "position": [
+     -0.06506,
+     0.15706,
+     -0.518
+    ],
+    "z_axis": [
+     -0.3827,
+     0.9239,
+     -0.0
+    ]
+   },
+   "Socket_Mount": {
+    "position": [
+     0.0,
+     0.275,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     1.0,
+     -0.0
+    ]
+   },
+   "Thruster_Nozzle": {
+    "position": [
+     0.0,
+     0.0,
+     -0.52
+    ],
+    "z_axis": [
+     0.0,
+     -0.0,
+     -1.0
+    ]
+   }
+  }
+ },
+ "animation_clash": {
+  "frames_checked": 79,
+  "pairs": [
+   [
+    "R4M_Booster_Turbine",
+    "R4M_Booster_Housing"
+   ],
+   [
+    "R4M_Booster_Petal_1",
+    "R4M_Booster_Housing"
+   ],
+   [
+    "R4M_Booster_Petal_2",
+    "R4M_Booster_Housing"
+   ],
+   [
+    "R4M_Booster_Petal_3",
+    "R4M_Booster_Housing"
+   ],
+   [
+    "R4M_Booster_Petal_4",
+    "R4M_Booster_Housing"
+   ],
+   [
+    "R4M_Booster_Petal_5",
+    "R4M_Booster_Housing"
+   ],
+   [
+    "R4M_Booster_Petal_6",
+    "R4M_Booster_Housing"
+   ],
+   [
+    "R4M_Booster_Petal_7",
+    "R4M_Booster_Housing"
+   ],
+   [
+    "R4M_Booster_Petal_8",
+    "R4M_Booster_Housing"
+   ],
+   [
+    "R4M_Booster_Petal_1",
+    "R4M_Booster_Petal_2"
+   ],
+   [
+    "R4M_Booster_Petal_2",
+    "R4M_Booster_Petal_3"
+   ],
+   [
+    "R4M_Booster_Petal_3",
+    "R4M_Booster_Petal_4"
+   ],
+   [
+    "R4M_Booster_Petal_4",
+    "R4M_Booster_Petal_5"
+   ],
+   [
+    "R4M_Booster_Petal_5",
+    "R4M_Booster_Petal_6"
+   ],
+   [
+    "R4M_Booster_Petal_6",
+    "R4M_Booster_Petal_7"
+   ],
+   [
+    "R4M_Booster_Petal_7",
+    "R4M_Booster_Petal_8"
+   ],
+   [
+    "R4M_Booster_Petal_8",
+    "R4M_Booster_Petal_1"
+   ]
+  ],
+  "collisions": 0,
+  "samples": [],
+  "per_pair": {},
+  "PASS": true
+ },
+ "extra_checks": {},
+ "renders": [
+  "R4M_Booster_front.png",
+  "R4M_Booster_back.png",
+  "R4M_Booster_side.png",
+  "R4M_Booster_top.png",
+  "R4M_Booster_34front.png",
+  "R4M_Booster_34rear.png",
+  "R4M_Booster_34front_wireframe.png",
+  "R4M_Booster_side_wireframe.png",
+  "R4M_Booster_colliders_sweep.png",
+  "poses/R4M_Booster_Idle_f013.png",
+  "poses/R4M_Booster_Ignition_f033.png",
+  "poses/R4M_Booster_ThrustLoop_f047.png",
+  "poses/R4M_Booster_SpoolDown_f063.png",
+  "R4M_Booster_HERO_eevee.png",
+  "R4M_Booster_vs_R41_34front.png",
+  "R4M_Booster_vs_R41_side.png"
+ ],
+ "silhouettes": [
+  "R4M_Booster_sil_side.png",
+  "R4M_Booster_sil_front.png",
+  "R4M_Booster_sil_top.png",
+  "R4M_Booster_sil_gameplay.png"
+ ],
+ "video": "R4M_Booster_timeline.mp4",
+ "lod1": {
+  "file": "R4M_Booster_LOD1.fbx",
+  "triangles": 2832,
+  "method": "DECIMATE collapse 0.5 (automatic, not hand-authored)"
+ },
+ "fbx_reimport": {
+  "frames": [
+   1,
+   13,
+   25,
+   27,
+   33,
+   39,
+   41,
+   47,
+   53,
+   55,
+   67,
+   79
+  ],
+  "worst": {
+   "pos_mm": 0.0001,
+   "rot_deg": 0.0,
+   "geom_mm": 0.0002,
+   "scale_err": 0.0,
+   "missing": [],
+   "parent_bad": []
+  },
+  "per_frame": {
+   "1": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "13": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "25": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "27": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "33": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0002,
+    "missing": [],
+    "parent_bad": []
+   },
+   "39": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0002,
+    "missing": [],
+    "parent_bad": []
+   },
+   "41": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0002,
+    "missing": [],
+    "parent_bad": []
+   },
+   "47": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0002,
+    "missing": [],
+    "parent_bad": []
+   },
+   "53": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0002,
+    "missing": [],
+    "parent_bad": []
+   },
+   "55": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0002,
+    "missing": [],
+    "parent_bad": []
+   },
+   "67": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "79": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   }
+  },
+  "nodes_as_imported": {
+   "R4M_Booster_ROOT": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     -0.0,
+     0.0,
+     0.0
+    ],
+    "parent": null
+   },
+   "R4M_Booster_Housing": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_Booster_ROOT"
+   },
+   "R4M_Booster_Turbine": {
+    "loc": [
+     0.0,
+     -0.17,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     98.182,
+     0.0
+    ],
+    "parent": "R4M_Booster_ROOT"
+   },
+   "PetalHinge_1": {
+    "loc": [
+     0.06506,
+     0.518,
+     0.15706
+    ],
+    "rot_deg": [
+     0.0,
+     22.5,
+     0.0
+    ],
+    "parent": "R4M_Booster_ROOT"
+   },
+   "PetalHinge_2": {
+    "loc": [
+     0.15706,
+     0.518,
+     0.06506
+    ],
+    "rot_deg": [
+     0.0,
+     67.5,
+     0.0
+    ],
+    "parent": "R4M_Booster_ROOT"
+   },
+   "PetalHinge_3": {
+    "loc": [
+     0.15706,
+     0.518,
+     -0.06506
+    ],
+    "rot_deg": [
+     -0.0,
+     112.5,
+     -0.0
+    ],
+    "parent": "R4M_Booster_ROOT"
+   },
+   "PetalHinge_4": {
+    "loc": [
+     0.06506,
+     0.518,
+     -0.15706
+    ],
+    "rot_deg": [
+     -0.0,
+     157.5,
+     -0.0
+    ],
+    "parent": "R4M_Booster_ROOT"
+   },
+   "PetalHinge_5": {
+    "loc": [
+     -0.06506,
+     0.518,
+     -0.15706
+    ],
+    "rot_deg": [
+     -0.0,
+     -157.5,
+     -0.0
+    ],
+    "parent": "R4M_Booster_ROOT"
+   },
+   "PetalHinge_6": {
+    "loc": [
+     -0.15706,
+     0.518,
+     -0.06506
+    ],
+    "rot_deg": [
+     -0.0,
+     -112.5,
+     -0.0
+    ],
+    "parent": "R4M_Booster_ROOT"
+   },
+   "PetalHinge_7": {
+    "loc": [
+     -0.15706,
+     0.518,
+     0.06506
+    ],
+    "rot_deg": [
+     0.0,
+     -67.5,
+     0.0
+    ],
+    "parent": "R4M_Booster_ROOT"
+   },
+   "PetalHinge_8": {
+    "loc": [
+     -0.06506,
+     0.518,
+     0.15706
+    ],
+    "rot_deg": [
+     0.0,
+     -22.5,
+     0.0
+    ],
+    "parent": "R4M_Booster_ROOT"
+   },
+   "R4M_Booster_Petal_1": {
+    "loc": [
+     -0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     -12.0,
+     0.0,
+     0.0
+    ],
+    "parent": "PetalHinge_1"
+   },
+   "R4M_Booster_Petal_2": {
+    "loc": [
+     -0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     -12.0,
+     0.0,
+     0.0
+    ],
+    "parent": "PetalHinge_2"
+   },
+   "R4M_Booster_Petal_3": {
+    "loc": [
+     -0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     -12.0,
+     0.0,
+     0.0
+    ],
+    "parent": "PetalHinge_3"
+   },
+   "R4M_Booster_Petal_4": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     -12.0,
+     -0.0,
+     -0.0
+    ],
+    "parent": "PetalHinge_4"
+   },
+   "R4M_Booster_Petal_5": {
+    "loc": [
+     -0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     -12.0,
+     0.0,
+     0.0
+    ],
+    "parent": "PetalHinge_5"
+   },
+   "R4M_Booster_Petal_6": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     -12.0,
+     -0.0,
+     -0.0
+    ],
+    "parent": "PetalHinge_6"
+   },
+   "R4M_Booster_Petal_7": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     -12.0,
+     0.0,
+     0.0
+    ],
+    "parent": "PetalHinge_7"
+   },
+   "R4M_Booster_Petal_8": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     -12.0,
+     -0.0,
+     -0.0
+    ],
+    "parent": "PetalHinge_8"
+   },
+   "Booster_Flame": {
+    "loc": [
+     0.0,
+     0.52,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_Booster_ROOT"
+   },
+   "Booster_Core": {
+    "loc": [
+     0.0,
+     0.3,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_Booster_ROOT"
+   },
+   "Socket_Mount": {
+    "loc": [
+     0.0,
+     0.0,
+     0.275
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_Booster_ROOT"
+   },
+   "Thruster_Nozzle": {
+    "loc": [
+     0.0,
+     0.52,
+     0.0
+    ],
+    "rot_deg": [
+     -90.0,
+     0.0,
+     0.0
+    ],
+    "parent": "R4M_Booster_ROOT"
+   }
+  },
+  "PASS": true,
+  "thresholds": "pos<0.05mm rot<0.01deg geom<0.05mm, 0 missing, 0 parent changes (R41 v6.1 QA)"
+ },
+ "r41_compare": "rendered from real R41_Turret_v6.1.fbx (SHA verified)",
+ "glb_reimport": {
+  "rest_frame_worst": {
+   "pos_mm": 0.0,
+   "rot_deg": 0.0,
+   "scale_err": 0.0,
+   "geom_mm": 0.0001,
+   "missing": [],
+   "parent_bad": []
+  },
+  "actions_imported": 11,
+  "PASS": true,
+  "note": "glTF importer; world-space comparison at frame 1"
+ },
+ "files": {
+  "R4M_Booster.blend": {
+   "sha256": "f8ab198fd46da7721023ef6fb06eba5f2883976860d8d7341bf756013c0ea688",
+   "bytes": 1371552,
+   "sha256_before_path_sanitize": "cabf5111e6111f44086530a33423b6b7fea6beb8709e276dc017faa6e3917863",
+   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length; file re-opened headless in Blender 5.2.3 after patch (rc 0, frame range and objects unchanged)"
+  },
+  "R4M_Booster.fbx": {
+   "sha256": "b044323574c56063a23e98d1cbb582b6d478fc4b9cb433ad3f78916c12918b47",
+   "bytes": 483052
+  },
+  "R4M_Booster.glb": {
+   "sha256": "706ae5d7af6fc63d1036f4b09e7dcd215e25f0e2fea70549d90678666748426f",
+   "bytes": 300268
+  },
+  "R4M_Booster_colliders.glb": {
+   "sha256": "a299d4509e41f97b5182c88d3693cb97267ad39584b7798be732d920669d1d85",
+   "bytes": 285024
+  },
+  "R4M_Booster_LOD1.fbx": {
+   "sha256": "95fc2a0e1e7bfc727feb334b6971825aeb80a4c15fb8b2099e86fbb043cedafc",
+   "bytes": 166812
+  }
+ },
+ "unity_import_test": "UNITY_NOT_RUN (Unity not available in this session)",
+ "unity_import_settings": "Scale Factor 1, Convert Units ON, Bake Axis Conversion ON, Animation: split clips by animation_manifest.json frame ranges (24 fps)",
+ "status": "BLENDER_PASS",
+ "seconds": 6.3
+}

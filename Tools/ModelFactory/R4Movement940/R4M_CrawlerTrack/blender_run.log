@@ -1,0 +1,217 @@
+00:00.031  color_management | Using OCIO=C:\Program Files (x86)\Steam\steamapps\common\Blender\5.2\datafiles\colormanagement\config.ocio
+00:36.078  render           | Video append frame 1
+00:36.109  render           | Video append frame 2
+00:36.125  render           | Video append frame 3
+00:36.140  render           | Video append frame 4
+00:36.171  render           | Video append frame 5
+00:36.187  render           | Video append frame 6
+00:36.218  render           | Video append frame 7
+00:36.234  render           | Video append frame 8
+00:36.250  render           | Video append frame 9
+00:36.281  render           | Video append frame 10
+00:36.296  render           | Video append frame 11
+00:36.312  render           | Video append frame 12
+00:36.343  render           | Video append frame 13
+00:36.359  render           | Video append frame 14
+00:36.375  render           | Video append frame 15
+00:36.390  render           | Video append frame 16
+00:36.421  render           | Video append frame 17
+00:36.437  render           | Video append frame 18
+00:36.453  render           | Video append frame 19
+00:36.484  render           | Video append frame 20
+00:36.500  render           | Video append frame 21
+00:36.515  render           | Video append frame 22
+00:36.546  render           | Video append frame 23
+00:36.562  render           | Video append frame 24
+00:36.578  render           | Video append frame 25
+00:36.593  render           | Video append frame 26
+00:36.625  render           | Video append frame 27
+00:36.640  render           | Video append frame 28
+00:36.656  render           | Video append frame 29
+00:36.671  render           | Video append frame 30
+00:36.703  render           | Video append frame 31
+00:36.718  render           | Video append frame 32
+00:36.734  render           | Video append frame 33
+00:36.765  render           | Video append frame 34
+00:36.781  render           | Video append frame 35
+00:36.796  render           | Video append frame 36
+00:36.812  render           | Video append frame 37
+00:36.828  render           | Video append frame 38
+00:36.859  render           | Video append frame 39
+00:36.875  render           | Video append frame 40
+00:36.890  render           | Video append frame 41
+00:36.906  render           | Video append frame 42
+00:36.937  render           | Video append frame 43
+00:36.953  render           | Video append frame 44
+00:36.968  render           | Video append frame 45
+00:36.984  render           | Video append frame 46
+00:37.000  render           | Video append frame 47
+00:37.015  render           | Video append frame 48
+00:37.046  render           | Video append frame 49
+00:37.062  render           | Video append frame 50
+00:37.078  render           | Video append frame 51
+00:37.109  render           | Video append frame 52
+00:37.125  render           | Video append frame 53
+00:37.140  render           | Video append frame 54
+00:37.171  render           | Video append frame 55
+00:37.187  render           | Video append frame 56
+00:37.203  render           | Video append frame 57
+00:37.218  render           | Video append frame 58
+00:37.250  render           | Video append frame 59
+00:37.265  render           | Video append frame 60
+00:37.281  render           | Video append frame 61
+00:37.312  render           | Video append frame 62
+00:37.328  render           | Video append frame 63
+00:37.343  render           | Video append frame 64
+00:37.375  render           | Video append frame 65
+00:37.390  render           | Video append frame 66
+00:37.406  render           | Video append frame 67
+00:37.421  render           | Video append frame 68
+00:37.453  render           | Video append frame 69
+00:37.468  render           | Video append frame 70
+00:37.484  render           | Video append frame 71
+00:37.500  render           | Video append frame 72
+00:37.531  render           | Video append frame 73
+00:37.546  render           | Video append frame 74
+00:37.562  render           | Video append frame 75
+00:37.578  render           | Video append frame 76
+00:37.609  render           | Video append frame 77
+00:37.625  render           | Video append frame 78
+00:37.640  render           | Video append frame 79
+Info: Saved copy as "R4M_CrawlerTrack.blend"
+
+FBX export starting... '%USERPROFILE%\\Desktop\\Blender_Modele\\wynik\\R4_Movement_940\\R4M_CrawlerTrack\\R4M_CrawlerTrack.fbx'
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_02' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_02' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_02' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_03' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_03' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_03' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_04' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_04' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_04' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_05' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_05' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_05' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_06' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_06' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_06' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_07' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_07' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_07' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_08' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_08' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_08' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_09' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_09' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_09' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_10' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_10' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_10' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_11' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_11' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_11' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_12' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_12' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_12' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_13' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_13' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_13' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_14' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_14' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_14' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_15' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_15' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_15' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_16' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_16' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_16' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_17' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_17' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_17' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_18' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_18' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_18' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_19' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_19' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_19' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_20' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_20' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_20' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_21' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_21' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_21' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_22' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_22' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_22' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_23' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_23' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_23' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_24' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_24' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_24' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_25' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_25' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_25' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_26' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_26' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_26' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_27' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_27' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_27' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_28' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_28' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_28' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_29' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_29' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_29' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_30' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_30' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_30' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_31' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_31' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_31' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_32' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_32' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_32' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_33' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_33' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_33' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_34' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_34' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_34' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_35' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_35' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_35' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_36' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_36' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_36' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_37' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_37' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_37' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_38' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_38' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_38' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_39' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_39' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_39' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Gunmetal' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_40' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Armor_Dark' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_40' object. Most likely, different objects using the same mesh, but different material slots layouts.
+WARNING: Cannot register a valid material index for 'Steel_Light' from 'R4M_CrawlerTrack_Link_01' mesh, 'R4M_CrawlerTrack_Link_40' object. Most likely, different objects using the same mesh, but different material slots layouts.
+export finished in 0.1415 sec.
+INFO Draco is available, use library at C:\Program Files (x86)\Steam\steamapps\common\Blender\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_draco_bridge.dll
+INFO MeshOptimizer is available, use library at C:\Program Files (x86)\Steam\steamapps\common\Blender\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_meshopt_bridge.dll
+
+00:38.546  blend            | Read blend: "%USERPROFILE%\Desktop\Blender_Modele\wynik\R4_Movement_940\R4M_CrawlerTrack\R4M_CrawlerTrack.blend"
+
+
+FBX export starting... '%USERPROFILE%\\Desktop\\Blender_Modele\\wynik\\R4_Movement_940\\R4M_CrawlerTrack\\R4M_CrawlerTrack_LOD1.fbx'
+export finished in 0.0531 sec.
+FBX version: 7400
+FBX version: 7400
+R4QA_DONE R4M_CrawlerTrack BLENDER_PASS []
+Blender 5.2.3 LTS (hash e13b728c6880 built 2026-10-22 01:37:16)
+
+Blender quit
+
+STDERR

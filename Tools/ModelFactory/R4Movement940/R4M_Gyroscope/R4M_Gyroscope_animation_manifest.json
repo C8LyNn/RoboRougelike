@@ -1,0 +1,53 @@
+{
+ "id": "R4M_Gyroscope",
+ "kind": "R3PartKind.Gyroscope",
+ "fps": 24,
+ "frame_range": [
+  1,
+  165
+ ],
+ "note": "One baked take in FBX/GLB (master timeline). Unity: split into clips by these frame ranges; loop=true clips are seamless.",
+ "clips": [
+  {
+   "name": "Idle",
+   "start": 1,
+   "end": 25,
+   "loop": true,
+   "desc": "stopped"
+  },
+  {
+   "name": "SpinUp",
+   "start": 27,
+   "end": 51,
+   "loop": false,
+   "desc": "rotor spins up to working speed (ends at 90 deg = 3 web holes)"
+  },
+  {
+   "name": "Stabilize",
+   "start": 53,
+   "end": 101,
+   "loop": true,
+   "desc": "stabilising: rotor 90 deg / 12 f (12-fold, seamless) with counter-rotating ring sway: outer +-12 deg, inner -+8 deg"
+  },
+  {
+   "name": "Correct",
+   "start": 103,
+   "end": 127,
+   "loop": false,
+   "desc": "precession correction after a hit: outer ring 25 deg, inner -20 deg, back to level"
+  },
+  {
+   "name": "SpinDown",
+   "start": 129,
+   "end": 165,
+   "loop": false,
+   "desc": "rotor runs down (ends 135 deg = rest-equivalent, 12-fold)"
+  }
+ ],
+ "animated_nodes": [
+  "R4M_Gyroscope_InnerRing",
+  "R4M_Gyroscope_OuterRing",
+  "R4M_Gyroscope_Rotor"
+ ],
+ "gameplay": "Animation is visual only: it adds no gameplay capability, shot count or timing authority."
+}

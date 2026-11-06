@@ -1,0 +1,59 @@
+{
+ "id": "R4M_JumpDrive",
+ "kind": "R3PartKind.JumpDrive",
+ "game_name": "Nap\u0119d skoku (MOV002)",
+ "units": "meter 1:1",
+ "axes": "file/Unity +Z forward, +Y up",
+ "cell": "logical 1x1x1 on 0.55 m grid; mount = Socket_Mount_Bottom",
+ "hierarchy": {
+  "R4M_JumpDrive_ROOT": null,
+  "R4M_JumpDrive_Housing": "R4M_JumpDrive_ROOT",
+  "R4M_JumpDrive_Piston": "R4M_JumpDrive_ROOT",
+  "Jump_TankGlow_1": "R4M_JumpDrive_ROOT",
+  "Jump_TankGlow_2": "R4M_JumpDrive_ROOT",
+  "Jump_TankGlow_3": "R4M_JumpDrive_ROOT",
+  "Jump_BlastRing": "R4M_JumpDrive_ROOT",
+  "Socket_Mount": "R4M_JumpDrive_ROOT",
+  "GroundProbe": "R4M_JumpDrive_ROOT"
+ },
+ "node_roles": {
+  "R4M_JumpDrive_ROOT": {
+   "unity_up": "+Y",
+   "unity_forward": "+Z",
+   "unit": "meter",
+   "version": "v1",
+   "weapon_kind": "R3PartKind.JumpDrive",
+   "style": "R41_Turret_v6.1 standard (heavy industrial armour + team colour)",
+   "issue": "#938"
+  },
+  "R4M_JumpDrive_Housing": {
+   "role": "static: octagonal column, 3 pressure tanks, piston sleeve"
+  },
+  "R4M_JumpDrive_Piston": {
+   "role": "piston rod + foot pad: translates along local -Y on Impulse (0.10 m), draws up 0.025 m on Charge"
+  },
+  "Jump_TankGlow_1": {
+   "role": "tank charge glow FX - idle scale 0.001"
+  },
+  "Jump_TankGlow_2": {
+   "role": "tank charge glow FX - idle scale 0.001"
+  },
+  "Jump_TankGlow_3": {
+   "role": "tank charge glow FX - idle scale 0.001"
+  },
+  "Jump_BlastRing": {
+   "role": "ground blast ring FX on Impulse - idle scale 0.001"
+  },
+  "Socket_Mount": {
+   "role": "top flange face, normal +Y"
+  },
+  "GroundProbe": {
+   "role": "pad underside at rest (0,-0.317,0); game ground probe distance 0.3 m"
+  }
+ },
+ "muzzles": [],
+ "visible_exits_note": "",
+ "notes": [
+  "Impulse stroke 0.10 m is visual; the jump force/height stay in JumpDrive runtime settings."
+ ]
+}

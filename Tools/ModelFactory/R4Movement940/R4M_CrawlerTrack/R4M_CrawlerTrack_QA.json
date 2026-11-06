@@ -1,0 +1,4159 @@
+{
+ "id": "R4M_CrawlerTrack",
+ "kind": "R3PartKind.CrawlerTrack",
+ "game_name": "Gąsienica (MOV008)",
+ "blender": "5.2.3 LTS",
+ "started": "2026-11-06 19:23:48",
+ "failures": [],
+ "notes": [
+  "Wheel radii chosen so each turns exactly 360/n per link pitch (sprocket 14, idler 12, road 10, return 4) -> seamless loops."
+ ],
+ "meshes": [
+  {
+   "object": "R4M_CrawlerTrack_Housing",
+   "verts": 2280,
+   "triangles": 4576,
+   "shells": 2,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.044145,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.005,
+    0.005,
+    0.995,
+    0.995
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Armor_Plate_Light",
+    "TeamColor_Red",
+    "Energy_Hot",
+    "Steel_Light",
+    "Hazard_Yellow"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Sprocket",
+   "verts": 1636,
+   "triangles": 3380,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.003115,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.006,
+    0.006,
+    0.992,
+    0.994
+   ],
+   "materials": [
+    "Armor_Dark",
+    "Armor_Gunmetal",
+    "Steel_Light",
+    "Barrel_Heat",
+    "TeamColor_Red"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Idler",
+   "verts": 1725,
+   "triangles": 3638,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.002461,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.005,
+    0.005,
+    0.989,
+    0.995
+   ],
+   "materials": [
+    "Armor_Dark",
+    "Armor_Gunmetal",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_ReturnRoller",
+   "verts": 183,
+   "triangles": 362,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.000177,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.859,
+    0.998
+   ],
+   "materials": [
+    "Armor_Dark",
+    "Armor_Gunmetal",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_RoadWheel_1",
+   "verts": 1469,
+   "triangles": 3094,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.001878,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.005,
+    0.005,
+    0.991,
+    0.995
+   ],
+   "materials": [
+    "Armor_Dark",
+    "Armor_Gunmetal",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_RoadWheel_2",
+   "verts": 1469,
+   "triangles": 3094,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.001878,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.005,
+    0.005,
+    0.991,
+    0.995
+   ],
+   "materials": [
+    "Armor_Dark",
+    "Armor_Gunmetal",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_RoadWheel_3",
+   "verts": 1469,
+   "triangles": 3094,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.001878,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.005,
+    0.005,
+    0.991,
+    0.995
+   ],
+   "materials": [
+    "Armor_Dark",
+    "Armor_Gunmetal",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_01",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_02",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_03",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_04",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_05",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_06",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_07",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_08",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_09",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_10",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_11",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_12",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_13",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_14",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_15",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_16",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_17",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_18",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_19",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_20",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_21",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_22",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_23",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_24",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_25",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_26",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_27",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_28",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_29",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_30",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_31",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_32",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_33",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_34",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_35",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_36",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_37",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_38",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_39",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_CrawlerTrack_Link_40",
+   "verts": 122,
+   "triangles": 240,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00035,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.514,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Steel_Light"
+   ],
+   "ok": true
+  }
+ ],
+ "fx_meshes": [],
+ "triangles_total": 30838,
+ "triangles_fx": 0,
+ "triangles_r41_reference": 11452,
+ "topology_PASS": true,
+ "palette": {
+  "material_area_share": {
+   "Armor_Gunmetal": 0.5278,
+   "Armor_Dark": 0.2526,
+   "Steel_Light": 0.1633,
+   "Armor_Plate_Light": 0.0298,
+   "TeamColor_Red": 0.0108,
+   "Barrel_Heat": 0.0101,
+   "Energy_Hot": 0.0047,
+   "Hazard_Yellow": 0.0009
+  },
+  "family_share": {
+   "1_dark_gunmetal": 0.7804,
+   "2_light_steel": 0.1931,
+   "3_team_red": 0.0108,
+   "4_hazard_yellow": 0.0009,
+   "T_technical": 0.0148
+  },
+  "r41_family_share": {
+   "1_dark_gunmetal": 0.7913,
+   "2_light_steel": 0.1229,
+   "3_team_red": 0.0247,
+   "4_hazard_yellow": 0.0015,
+   "T_technical": 0.0595
+  },
+  "bands": {
+   "1_dark_gunmetal": [
+    0.62,
+    0.88
+   ],
+   "2_light_steel": [
+    0.06,
+    0.24
+   ],
+   "3_team_red": [
+    0.012,
+    0.07
+   ],
+   "4_hazard_yellow": [
+    0.001,
+    0.03
+   ],
+   "T_technical": [
+    0.0,
+    0.16
+   ]
+  },
+  "in_band": {
+   "1_dark_gunmetal": true,
+   "2_light_steel": true,
+   "3_team_red": false,
+   "4_hazard_yellow": false,
+   "T_technical": true
+  },
+  "violations": [],
+  "PASS": false,
+  "PASS_policy": "movement: locked materials/PBR enforced, family bands reported (not enforced, issue #940)"
+ },
+ "contract": {
+  "R4M_CrawlerTrack_ROOT": {
+   "position_file": [
+    0.0,
+    0.0,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    1.0,
+    -0.0
+   ],
+   "parent": null
+  },
+  "Track_L": {
+   "position_file": [
+    0.0,
+    0.0,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    1.0,
+    -0.0
+   ],
+   "parent": "R4M_CrawlerTrack_ROOT"
+  },
+  "Socket_Mount": {
+   "position_file": [
+    0.0,
+    0.275,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    1.0,
+    -0.0
+   ],
+   "parent": "R4M_CrawlerTrack_ROOT"
+  },
+  "Mount_Inner_+X": {
+   "position_file": [
+    0.24,
+    -0.14,
+    -0.0
+   ],
+   "forward_file": [
+    1.0,
+    -0.0,
+    -0.0
+   ],
+   "parent": "R4M_CrawlerTrack_ROOT"
+  },
+  "GroundProbe": {
+   "position_file": [
+    0.0,
+    -0.416,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    -1.0,
+    -0.0
+   ],
+   "parent": "R4M_CrawlerTrack_ROOT"
+  },
+  "unity_axes": "file/Unity: +Z forward, +Y up, meters; Yaw about local Y, Pitch about local X"
+ },
+ "sweep": {
+  "failures": [],
+  "mount_cell": [
+   0,
+   0,
+   0
+  ],
+  "static_bounds_file": [
+   [
+    -0.2315,
+    -0.416,
+    -0.4664
+   ],
+   [
+    0.242,
+    0.268,
+    0.4664
+   ]
+  ],
+  "static_cells": [
+   [
+    0,
+    -1,
+    -1
+   ],
+   [
+    0,
+    -1,
+    0
+   ],
+   [
+    0,
+    -1,
+    1
+   ],
+   [
+    0,
+    0,
+    -1
+   ],
+   [
+    0,
+    0,
+    0
+   ],
+   [
+    0,
+    0,
+    1
+   ]
+  ],
+  "housing_bounds_file": [
+   [
+    -0.2315,
+    -0.3497,
+    -0.4514
+   ],
+   [
+    0.242,
+    0.268,
+    0.4514
+   ]
+  ],
+  "housing_inside_mount_cell": false,
+  "housing_policy": "inner frame/skirt span the track length (0.936 m) into the front/rear cells (PARTSIZE #141); mount box itself is inside the cell",
+  "moving_sweep": {
+   "bounds_file": [
+    [
+     -0.2315,
+     -0.4161,
+     -0.4681
+    ],
+    [
+     0.242,
+     0.268,
+     0.4681
+    ]
+   ],
+   "cells": [
+    [
+     0,
+     -1,
+     -1
+    ],
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     0,
+     -1,
+     1
+    ],
+    [
+     0,
+     0,
+     -1
+    ],
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "neighbour_cells_entered": [
+    [
+     0,
+     -1,
+     -1
+    ],
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     0,
+     -1,
+     1
+    ],
+    [
+     0,
+     0,
+     -1
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "frames": 79
+  },
+  "ground_contact": {
+   "runtime_y": -0.416,
+   "model_y_rest": -0.416,
+   "model_y_min_over_clips": -0.4161,
+   "deviation_mm": -0.0,
+   "tolerance_mm": 3.0,
+   "source": "R41PartGeometry.Payload track box"
+  },
+  "collision_envelope": {
+   "runtime": "Unity box 0.442 x 0.260 x 0.936 at (0,-0.286,0)",
+   "track_loop_length_m": 0.9328,
+   "track_loop_height_m": 0.26,
+   "track_width_m": 0.4,
+   "length_dev_mm": -3.21,
+   "height_dev_mm": 0.0,
+   "centre_z_dev_mm": -0.0,
+   "link_pitch_mm": 51.71,
+   "links": 40,
+   "PASS": true
+  },
+  "clearance_min_mm": {
+   "R4M_CrawlerTrack_Link_01|R4M_CrawlerTrack_Housing": 6.0,
+   "R4M_CrawlerTrack_Link_01|R4M_CrawlerTrack_Sprocket": 515.99,
+   "R4M_CrawlerTrack_Link_21|R4M_CrawlerTrack_RoadWheel_2": 200.27
+  },
+  "quarter_turns": {
+   "X90": {
+    "housing_inside_cell": false,
+    "static_cells": [
+     [
+      0,
+      -1,
+      -1
+     ],
+     [
+      0,
+      -1,
+      0
+     ],
+     [
+      0,
+      0,
+      -1
+     ],
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      1,
+      -1
+     ],
+     [
+      0,
+      1,
+      0
+     ]
+    ]
+   },
+   "X180": {
+    "housing_inside_cell": false,
+    "static_cells": [
+     [
+      0,
+      0,
+      -1
+     ],
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      1,
+      -1
+     ],
+     [
+      0,
+      1,
+      0
+     ],
+     [
+      0,
+      1,
+      1
+     ]
+    ]
+   },
+   "X270": {
+    "housing_inside_cell": false,
+    "static_cells": [
+     [
+      0,
+      -1,
+      0
+     ],
+     [
+      0,
+      -1,
+      1
+     ],
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      1,
+      0
+     ],
+     [
+      0,
+      1,
+      1
+     ]
+    ]
+   },
+   "Y90": {
+    "housing_inside_cell": false,
+    "static_cells": [
+     [
+      -1,
+      -1,
+      0
+     ],
+     [
+      -1,
+      0,
+      0
+     ],
+     [
+      0,
+      -1,
+      0
+     ],
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      1,
+      -1,
+      0
+     ],
+     [
+      1,
+      0,
+      0
+     ]
+    ]
+   },
+   "Y180": {
+    "housing_inside_cell": false,
+    "static_cells": [
+     [
+      0,
+      -1,
+      -1
+     ],
+     [
+      0,
+      -1,
+      0
+     ],
+     [
+      0,
+      -1,
+      1
+     ],
+     [
+      0,
+      0,
+      -1
+     ],
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      1
+     ]
+    ]
+   },
+   "Y270": {
+    "housing_inside_cell": false,
+    "static_cells": [
+     [
+      -1,
+      -1,
+      0
+     ],
+     [
+      -1,
+      0,
+      0
+     ],
+     [
+      0,
+      -1,
+      0
+     ],
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      1,
+      -1,
+      0
+     ],
+     [
+      1,
+      0,
+      0
+     ]
+    ]
+   },
+   "Z90": {
+    "housing_inside_cell": false,
+    "static_cells": [
+     [
+      -1,
+      0,
+      -1
+     ],
+     [
+      -1,
+      0,
+      0
+     ],
+     [
+      -1,
+      0,
+      1
+     ],
+     [
+      0,
+      0,
+      -1
+     ],
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      1
+     ]
+    ]
+   },
+   "Z180": {
+    "housing_inside_cell": false,
+    "static_cells": [
+     [
+      0,
+      0,
+      -1
+     ],
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      1,
+      -1
+     ],
+     [
+      0,
+      1,
+      0
+     ],
+     [
+      0,
+      1,
+      1
+     ]
+    ]
+   },
+   "Z270": {
+    "housing_inside_cell": false,
+    "static_cells": [
+     [
+      0,
+      0,
+      -1
+     ],
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      1,
+      0,
+      -1
+     ],
+     [
+      1,
+      0,
+      0
+     ],
+     [
+      1,
+      0,
+      1
+     ]
+    ]
+   }
+  },
+  "mirror_X": {
+   "static_bounds_file": [
+    [
+     -0.242,
+     -0.416,
+     -0.4664
+    ],
+    [
+     0.2315,
+     0.268,
+     0.4664
+    ]
+   ],
+   "socket_file": [
+    0.0,
+    0.275,
+    -0.0
+   ],
+   "socket_mirrored_file": [
+    -0.0,
+    0.275,
+    -0.0
+   ],
+   "note": "L/R variant = parent scale X -1 (Unity flips winding for negative scale); geometry is closed so lighting stays correct"
+  },
+  "floating_shells": {
+   "R4M_CrawlerTrack_Housing": {
+    "shells": 2,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Sprocket": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Idler": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_ReturnRoller": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_RoadWheel_1": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_RoadWheel_2": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_RoadWheel_3": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_01": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_02": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_03": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_04": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_05": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_06": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_07": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_08": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_09": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_10": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_11": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_12": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_13": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_14": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_15": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_16": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_17": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_18": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_19": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_20": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_21": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_22": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_23": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_24": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_25": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_26": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_27": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_28": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_29": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_30": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_31": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_32": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_33": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_34": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_35": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_36": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_37": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_38": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_39": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_CrawlerTrack_Link_40": {
+    "shells": 1,
+    "isolated": 0
+   }
+  },
+  "nodes_file": {
+   "R4M_CrawlerTrack_ROOT": {
+    "position": [
+     0.0,
+     0.0,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     1.0,
+     -0.0
+    ]
+   },
+   "Track_L": {
+    "position": [
+     0.0,
+     0.0,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     1.0,
+     -0.0
+    ]
+   },
+   "Socket_Mount": {
+    "position": [
+     0.0,
+     0.275,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     1.0,
+     -0.0
+    ]
+   },
+   "Mount_Inner_+X": {
+    "position": [
+     0.24,
+     -0.14,
+     -0.0
+    ],
+    "z_axis": [
+     1.0,
+     -0.0,
+     -0.0
+    ]
+   },
+   "GroundProbe": {
+    "position": [
+     0.0,
+     -0.416,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     -1.0,
+     -0.0
+    ]
+   }
+  }
+ },
+ "animation_clash": {
+  "frames_checked": 79,
+  "pairs": [
+   [
+    "R4M_CrawlerTrack_Link_01",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_01",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_01",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_01",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_01",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_01",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_01",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_02",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_02",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_02",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_02",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_02",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_02",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_02",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_03",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_03",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_03",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_03",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_03",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_03",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_03",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_04",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_04",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_04",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_04",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_04",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_04",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_04",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_05",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_05",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_05",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_05",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_05",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_05",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_05",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_06",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_06",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_06",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_06",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_06",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_06",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_06",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_07",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_07",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_07",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_07",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_07",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_07",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_07",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_08",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_08",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_08",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_08",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_08",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_08",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_08",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_09",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_09",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_09",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_09",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_09",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_09",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_09",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_10",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_10",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_10",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_10",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_10",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_10",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_10",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_11",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_11",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_11",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_11",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_11",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_11",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_11",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_12",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_12",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_12",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_12",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_12",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_12",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_12",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_13",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_13",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_13",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_13",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_13",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_13",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_13",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_14",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_14",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_14",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_14",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_14",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_14",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_14",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_15",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_15",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_15",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_15",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_15",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_15",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_15",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_16",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_16",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_16",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_16",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_16",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_16",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_16",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_17",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_17",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_17",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_17",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_17",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_17",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_17",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_18",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_18",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_18",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_18",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_18",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_18",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_18",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_19",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_19",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_19",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_19",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_19",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_19",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_19",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_20",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_20",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_20",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_20",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_20",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_20",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_20",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_21",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_21",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_21",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_21",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_21",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_21",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_21",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_22",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_22",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_22",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_22",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_22",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_22",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_22",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_23",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_23",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_23",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_23",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_23",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_23",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_23",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_24",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_24",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_24",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_24",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_24",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_24",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_24",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_25",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_25",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_25",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_25",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_25",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_25",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_25",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_26",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_26",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_26",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_26",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_26",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_26",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_26",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_27",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_27",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_27",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_27",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_27",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_27",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_27",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_28",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_28",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_28",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_28",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_28",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_28",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_28",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_29",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_29",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_29",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_29",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_29",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_29",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_29",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_30",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_30",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_30",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_30",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_30",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_30",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_30",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_31",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_31",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_31",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_31",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_31",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_31",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_31",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_32",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_32",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_32",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_32",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_32",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_32",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_32",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_33",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_33",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_33",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_33",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_33",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_33",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_33",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_34",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_34",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_34",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_34",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_34",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_34",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_34",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_35",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_35",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_35",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_35",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_35",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_35",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_35",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_36",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_36",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_36",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_36",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_36",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_36",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_36",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_37",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_37",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_37",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_37",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_37",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_37",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_37",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_38",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_38",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_38",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_38",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_38",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_38",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_38",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_39",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_39",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_39",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_39",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_39",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_39",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_39",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_40",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_40",
+    "R4M_CrawlerTrack_Sprocket"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_40",
+    "R4M_CrawlerTrack_Idler"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_40",
+    "R4M_CrawlerTrack_ReturnRoller"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_40",
+    "R4M_CrawlerTrack_RoadWheel_1"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_40",
+    "R4M_CrawlerTrack_RoadWheel_2"
+   ],
+   [
+    "R4M_CrawlerTrack_Link_40",
+    "R4M_CrawlerTrack_RoadWheel_3"
+   ],
+   [
+    "R4M_CrawlerTrack_Sprocket",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_Idler",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_ReturnRoller",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_RoadWheel_1",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_RoadWheel_2",
+    "R4M_CrawlerTrack_Housing"
+   ],
+   [
+    "R4M_CrawlerTrack_RoadWheel_3",
+    "R4M_CrawlerTrack_Housing"
+   ]
+  ],
+  "collisions": 0,
+  "samples": [],
+  "per_pair": {},
+  "PASS": true
+ },
+ "extra_checks": {},
+ "renders": [
+  "R4M_CrawlerTrack_front.png",
+  "R4M_CrawlerTrack_back.png",
+  "R4M_CrawlerTrack_side.png",
+  "R4M_CrawlerTrack_top.png",
+  "R4M_CrawlerTrack_34front.png",
+  "R4M_CrawlerTrack_34rear.png",
+  "R4M_CrawlerTrack_34front_wireframe.png",
+  "R4M_CrawlerTrack_side_wireframe.png",
+  "R4M_CrawlerTrack_colliders_sweep.png",
+  "poses/R4M_CrawlerTrack_Idle_f013.png",
+  "poses/R4M_CrawlerTrack_Travel_f033.png",
+  "poses/R4M_CrawlerTrack_Reverse_f047.png",
+  "poses/R4M_CrawlerTrack_Stop_f063.png",
+  "R4M_CrawlerTrack_HERO_eevee.png",
+  "R4M_CrawlerTrack_vs_R41_34front.png",
+  "R4M_CrawlerTrack_vs_R41_side.png"
+ ],
+ "silhouettes": [
+  "R4M_CrawlerTrack_sil_side.png",
+  "R4M_CrawlerTrack_sil_front.png",
+  "R4M_CrawlerTrack_sil_top.png",
+  "R4M_CrawlerTrack_sil_gameplay.png"
+ ],
+ "video": "R4M_CrawlerTrack_timeline.mp4",
+ "lod1": {
+  "file": "R4M_CrawlerTrack_LOD1.fbx",
+  "triangles": 15414,
+  "method": "DECIMATE collapse 0.5 (automatic, not hand-authored)"
+ },
+ "fbx_reimport": {
+  "frames": [
+   1,
+   13,
+   25,
+   27,
+   33,
+   39,
+   41,
+   47,
+   53,
+   55,
+   67,
+   79
+  ],
+  "worst": {
+   "pos_mm": 0.0001,
+   "rot_deg": 0.0,
+   "geom_mm": 0.0001,
+   "scale_err": 0.0,
+   "missing": [],
+   "parent_bad": []
+  },
+  "per_frame": {
+   "1": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "13": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "25": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "27": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "33": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "39": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "41": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "47": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "53": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "55": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "67": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "79": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   }
+  },
+  "nodes_as_imported": {
+   "R4M_CrawlerTrack_ROOT": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     -0.0,
+     0.0,
+     0.0
+    ],
+    "parent": null
+   },
+   "R4M_CrawlerTrack_Housing": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_CrawlerTrack_ROOT"
+   },
+   "Track_L": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_CrawlerTrack_ROOT"
+   },
+   "R4M_CrawlerTrack_Sprocket": {
+    "loc": [
+     0.0,
+     -0.338,
+     -0.286
+    ],
+    "rot_deg": [
+     25.714,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_CrawlerTrack_ROOT"
+   },
+   "R4M_CrawlerTrack_Idler": {
+    "loc": [
+     0.0,
+     0.338,
+     -0.286
+    ],
+    "rot_deg": [
+     30.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_CrawlerTrack_ROOT"
+   },
+   "R4M_CrawlerTrack_ReturnRoller": {
+    "loc": [
+     0.0,
+     0.0,
+     -0.21292
+    ],
+    "rot_deg": [
+     90.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_CrawlerTrack_ROOT"
+   },
+   "R4M_CrawlerTrack_RoadWheel_1": {
+    "loc": [
+     0.0,
+     -0.17,
+     -0.30971
+    ],
+    "rot_deg": [
+     36.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_CrawlerTrack_ROOT"
+   },
+   "R4M_CrawlerTrack_RoadWheel_2": {
+    "loc": [
+     0.0,
+     0.0,
+     -0.30971
+    ],
+    "rot_deg": [
+     36.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_CrawlerTrack_ROOT"
+   },
+   "R4M_CrawlerTrack_RoadWheel_3": {
+    "loc": [
+     0.0,
+     0.17,
+     -0.30971
+    ],
+    "rot_deg": [
+     36.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_CrawlerTrack_ROOT"
+   },
+   "R4M_CrawlerTrack_Link_01": {
+    "loc": [
+     0.0,
+     0.28629,
+     -0.172
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_02": {
+    "loc": [
+     0.0,
+     0.23459,
+     -0.172
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_03": {
+    "loc": [
+     0.0,
+     0.18288,
+     -0.172
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_04": {
+    "loc": [
+     0.0,
+     0.13117,
+     -0.172
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_05": {
+    "loc": [
+     0.0,
+     0.07946,
+     -0.172
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_06": {
+    "loc": [
+     0.0,
+     0.02776,
+     -0.172
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_07": {
+    "loc": [
+     0.0,
+     -0.02395,
+     -0.172
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_08": {
+    "loc": [
+     0.0,
+     -0.07566,
+     -0.172
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_09": {
+    "loc": [
+     0.0,
+     -0.12736,
+     -0.172
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_10": {
+    "loc": [
+     0.0,
+     -0.17907,
+     -0.172
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_11": {
+    "loc": [
+     0.0,
+     -0.23078,
+     -0.172
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_12": {
+    "loc": [
+     0.0,
+     -0.28248,
+     -0.172
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_13": {
+    "loc": [
+     0.0,
+     -0.33419,
+     -0.172
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_14": {
+    "loc": [
+     0.0,
+     -0.3845,
+     -0.18192
+    ],
+    "rot_deg": [
+     24.074,
+     -0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_15": {
+    "loc": [
+     0.0,
+     -0.42541,
+     -0.21282
+    ],
+    "rot_deg": [
+     50.062,
+     -0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_16": {
+    "loc": [
+     0.0,
+     -0.44864,
+     -0.25852
+    ],
+    "rot_deg": [
+     76.049,
+     -0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_17": {
+    "loc": [
+     0.0,
+     -0.44949,
+     -0.30977
+    ],
+    "rot_deg": [
+     102.037,
+     -0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_18": {
+    "loc": [
+     0.0,
+     -0.4278,
+     -0.35622
+    ],
+    "rot_deg": [
+     128.025,
+     -0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_19": {
+    "loc": [
+     0.0,
+     -0.38795,
+     -0.38847
+    ],
+    "rot_deg": [
+     154.012,
+     -0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_20": {
+    "loc": [
+     0.0,
+     -0.338,
+     -0.4
+    ],
+    "rot_deg": [
+     180.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_21": {
+    "loc": [
+     0.0,
+     -0.28629,
+     -0.4
+    ],
+    "rot_deg": [
+     -180.0,
+     0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_22": {
+    "loc": [
+     0.0,
+     -0.23459,
+     -0.4
+    ],
+    "rot_deg": [
+     -180.0,
+     0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_23": {
+    "loc": [
+     0.0,
+     -0.18288,
+     -0.4
+    ],
+    "rot_deg": [
+     -180.0,
+     0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_24": {
+    "loc": [
+     0.0,
+     -0.13117,
+     -0.4
+    ],
+    "rot_deg": [
+     -180.0,
+     0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_25": {
+    "loc": [
+     0.0,
+     -0.07946,
+     -0.4
+    ],
+    "rot_deg": [
+     -180.0,
+     0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_26": {
+    "loc": [
+     0.0,
+     -0.02776,
+     -0.4
+    ],
+    "rot_deg": [
+     -180.0,
+     0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_27": {
+    "loc": [
+     0.0,
+     0.02395,
+     -0.4
+    ],
+    "rot_deg": [
+     -180.0,
+     0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_28": {
+    "loc": [
+     0.0,
+     0.07566,
+     -0.4
+    ],
+    "rot_deg": [
+     -180.0,
+     0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_29": {
+    "loc": [
+     0.0,
+     0.12736,
+     -0.4
+    ],
+    "rot_deg": [
+     -180.0,
+     0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_30": {
+    "loc": [
+     0.0,
+     0.17907,
+     -0.4
+    ],
+    "rot_deg": [
+     -180.0,
+     0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_31": {
+    "loc": [
+     0.0,
+     0.23078,
+     -0.4
+    ],
+    "rot_deg": [
+     -180.0,
+     0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_32": {
+    "loc": [
+     0.0,
+     0.28248,
+     -0.4
+    ],
+    "rot_deg": [
+     -180.0,
+     0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_33": {
+    "loc": [
+     0.0,
+     0.33419,
+     -0.4
+    ],
+    "rot_deg": [
+     -180.0,
+     0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_34": {
+    "loc": [
+     0.0,
+     0.3845,
+     -0.39008
+    ],
+    "rot_deg": [
+     -155.926,
+     0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_35": {
+    "loc": [
+     0.0,
+     0.42541,
+     -0.35918
+    ],
+    "rot_deg": [
+     -129.938,
+     0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_36": {
+    "loc": [
+     0.0,
+     0.44864,
+     -0.31348
+    ],
+    "rot_deg": [
+     -103.951,
+     0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_37": {
+    "loc": [
+     0.0,
+     0.44949,
+     -0.26223
+    ],
+    "rot_deg": [
+     -77.963,
+     0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_38": {
+    "loc": [
+     0.0,
+     0.4278,
+     -0.21578
+    ],
+    "rot_deg": [
+     -51.975,
+     0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_39": {
+    "loc": [
+     0.0,
+     0.38795,
+     -0.18353
+    ],
+    "rot_deg": [
+     -25.988,
+     0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "R4M_CrawlerTrack_Link_40": {
+    "loc": [
+     0.0,
+     0.338,
+     -0.172
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "parent": "Track_L"
+   },
+   "Socket_Mount": {
+    "loc": [
+     0.0,
+     0.0,
+     0.275
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_CrawlerTrack_ROOT"
+   },
+   "Mount_Inner_+X": {
+    "loc": [
+     0.24,
+     0.0,
+     -0.14
+    ],
+    "rot_deg": [
+     -0.0,
+     90.0,
+     0.0
+    ],
+    "parent": "R4M_CrawlerTrack_ROOT"
+   },
+   "GroundProbe": {
+    "loc": [
+     0.0,
+     0.0,
+     -0.416
+    ],
+    "rot_deg": [
+     -180.0,
+     0.0,
+     0.0
+    ],
+    "parent": "R4M_CrawlerTrack_ROOT"
+   }
+  },
+  "PASS": true,
+  "thresholds": "pos<0.05mm rot<0.01deg geom<0.05mm, 0 missing, 0 parent changes (R41 v6.1 QA)"
+ },
+ "r41_compare": "rendered from real R41_Turret_v6.1.fbx (SHA verified)",
+ "glb_reimport": {
+  "rest_frame_worst": {
+   "pos_mm": 0.0,
+   "rot_deg": 0.0,
+   "scale_err": 0.0,
+   "geom_mm": 0.0,
+   "missing": [],
+   "parent_bad": []
+  },
+  "actions_imported": 46,
+  "PASS": true,
+  "note": "glTF importer; world-space comparison at frame 1"
+ },
+ "files": {
+  "R4M_CrawlerTrack.blend": {
+   "sha256": "f45cc1f75f2795c97b9d22129648015cb8e04207b4f7b2ac4cefe3f09510ade0",
+   "bytes": 3485077,
+   "sha256_before_path_sanitize": "d18f0123b0cc12b070b17a68c24c4a01040dafac0be0c513516b262e2fbaf597",
+   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length; file re-opened headless in Blender 5.2.3 after patch (rc 0, frame range and objects unchanged)"
+  },
+  "R4M_CrawlerTrack.fbx": {
+   "sha256": "7638a1eaeec767599907ad03e555becd130d75dd7b93728c890a4fe52815e2bc",
+   "bytes": 1254988
+  },
+  "R4M_CrawlerTrack.glb": {
+   "sha256": "582bfcf915e852ae590e033918e8af6185e91682d4fe852982ac6188b6fcbed2",
+   "bytes": 1043944
+  },
+  "R4M_CrawlerTrack_colliders.glb": {
+   "sha256": "14f2050b70dc37b9330bfb6a75c68cbf90f34dadfe4b15ea01f37a1e2472527e",
+   "bytes": 1017316
+  },
+  "R4M_CrawlerTrack_LOD1.fbx": {
+   "sha256": "a354e022cf1d1d6515abf8ff263e19daebbacbeb67e9ce645c5ac2afea754246",
+   "bytes": 757740
+  }
+ },
+ "unity_import_test": "UNITY_NOT_RUN (Unity not available in this session)",
+ "unity_import_settings": "Scale Factor 1, Convert Units ON, Bake Axis Conversion ON, Animation: split clips by animation_manifest.json frame ranges (24 fps)",
+ "status": "BLENDER_PASS",
+ "seconds": 33.1
+}

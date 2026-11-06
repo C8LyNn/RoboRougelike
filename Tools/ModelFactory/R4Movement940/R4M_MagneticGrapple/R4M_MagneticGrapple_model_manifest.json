@@ -1,0 +1,70 @@
+{
+ "id": "R4M_MagneticGrapple",
+ "kind": "R3PartKind.MagneticGrapple",
+ "game_name": "Hak magnetyczny (MOV006)",
+ "units": "meter 1:1",
+ "axes": "file/Unity +Z forward, +Y up",
+ "cell": "logical 1x1x1 on 0.55 m grid; mount = Socket_Mount_Bottom",
+ "hierarchy": {
+  "R4M_MagneticGrapple_ROOT": null,
+  "R4M_MagneticGrapple_Housing": "R4M_MagneticGrapple_ROOT",
+  "R4M_MagneticGrapple_Spool": "R4M_MagneticGrapple_ROOT",
+  "R4M_MagneticGrapple_Head": "R4M_MagneticGrapple_ROOT",
+  "ClawHinge_1": "R4M_MagneticGrapple_Head",
+  "ClawHinge_2": "R4M_MagneticGrapple_Head",
+  "ClawHinge_3": "R4M_MagneticGrapple_Head",
+  "R4M_MagneticGrapple_Claw_1": "ClawHinge_1",
+  "R4M_MagneticGrapple_Claw_2": "ClawHinge_2",
+  "R4M_MagneticGrapple_Claw_3": "ClawHinge_3",
+  "R4M_MagneticGrapple_Cable": "R4M_MagneticGrapple_ROOT",
+  "Grapple_MagnetGlow": "R4M_MagneticGrapple_Head",
+  "Socket_Mount": "R4M_MagneticGrapple_ROOT",
+  "Grapple_Muzzle": "R4M_MagneticGrapple_ROOT"
+ },
+ "node_roles": {
+  "R4M_MagneticGrapple_ROOT": {
+   "unity_up": "+Y",
+   "unity_forward": "+Z",
+   "unit": "meter",
+   "version": "v1",
+   "weapon_kind": "R3PartKind.MagneticGrapple",
+   "style": "R41_Turret_v6.1 standard (heavy industrial armour + team colour)",
+   "issue": "#938"
+  },
+  "R4M_MagneticGrapple_Housing": {
+   "role": "static launcher body, saddle, launch tube, spool cheeks"
+  },
+  "R4M_MagneticGrapple_Spool": {
+   "role": "cable spool: rotates about local X"
+  },
+  "R4M_MagneticGrapple_Head": {
+   "role": "electromagnet head: translates along local +Z (file forward) on Fire"
+  },
+  "R4M_MagneticGrapple_Claw_1": {
+   "role": "claw jaw: rotates about local X (ClawHinge_k): 0 deg closed, -38 deg open (outward)"
+  },
+  "R4M_MagneticGrapple_Claw_2": {
+   "role": "claw jaw: rotates about local X (ClawHinge_k): 0 deg closed, -38 deg open (outward)"
+  },
+  "R4M_MagneticGrapple_Claw_3": {
+   "role": "claw jaw: rotates about local X (ClawHinge_k): 0 deg closed, -38 deg open (outward)"
+  },
+  "R4M_MagneticGrapple_Cable": {
+   "role": "cable visual: local Y scale = paid-out length / 1 m"
+  },
+  "Grapple_MagnetGlow": {
+   "role": "magnet glow FX"
+  },
+  "Socket_Mount": {
+   "role": "saddle top face, normal +Y"
+  },
+  "Grapple_Muzzle": {
+   "role": "launch tube mouth, +Z = launch direction"
+  }
+ },
+ "muzzles": [],
+ "visible_exits_note": "",
+ "notes": [
+  "Cable object is a visual stretched along file +Z; no rope physics or new grapple mechanic."
+ ]
+}

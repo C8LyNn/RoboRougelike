@@ -1,0 +1,126 @@
+00:00.031  color_management | Using OCIO=C:\Program Files (x86)\Steam\steamapps\common\Blender\5.2\datafiles\colormanagement\config.ocio
+00:06.515  render           | Video append frame 1
+00:06.531  render           | Video append frame 2
+00:06.547  render           | Video append frame 3
+00:06.562  render           | Video append frame 4
+00:06.578  render           | Video append frame 5
+00:06.594  render           | Video append frame 6
+00:06.609  render           | Video append frame 7
+00:06.625  render           | Video append frame 8
+00:06.640  render           | Video append frame 9
+00:06.656  render           | Video append frame 10
+00:06.672  render           | Video append frame 11
+00:06.687  render           | Video append frame 12
+00:06.703  render           | Video append frame 13
+00:06.734  render           | Video append frame 14
+00:06.750  render           | Video append frame 15
+00:06.765  render           | Video append frame 16
+00:06.781  render           | Video append frame 17
+00:06.797  render           | Video append frame 18
+00:06.812  render           | Video append frame 19
+00:06.828  render           | Video append frame 20
+00:06.844  render           | Video append frame 21
+00:06.859  render           | Video append frame 22
+00:06.875  render           | Video append frame 23
+00:06.890  render           | Video append frame 24
+00:06.906  render           | Video append frame 25
+00:06.937  render           | Video append frame 26
+00:06.953  render           | Video append frame 27
+00:06.969  render           | Video append frame 28
+00:06.984  render           | Video append frame 29
+00:07.000  render           | Video append frame 30
+00:07.015  render           | Video append frame 31
+00:07.031  render           | Video append frame 32
+00:07.047  render           | Video append frame 33
+00:07.062  render           | Video append frame 34
+00:07.078  render           | Video append frame 35
+00:07.094  render           | Video append frame 36
+00:07.109  render           | Video append frame 37
+00:07.125  render           | Video append frame 38
+00:07.140  render           | Video append frame 39
+00:07.156  render           | Video append frame 40
+00:07.172  render           | Video append frame 41
+00:07.187  render           | Video append frame 42
+00:07.203  render           | Video append frame 43
+00:07.219  render           | Video append frame 44
+00:07.234  render           | Video append frame 45
+00:07.250  render           | Video append frame 46
+00:07.265  render           | Video append frame 47
+00:07.281  render           | Video append frame 48
+00:07.297  render           | Video append frame 49
+00:07.312  render           | Video append frame 50
+00:07.328  render           | Video append frame 51
+00:07.359  render           | Video append frame 52
+00:07.375  render           | Video append frame 53
+00:07.390  render           | Video append frame 54
+00:07.406  render           | Video append frame 55
+00:07.422  render           | Video append frame 56
+00:07.437  render           | Video append frame 57
+00:07.469  render           | Video append frame 58
+00:07.484  render           | Video append frame 59
+00:07.500  render           | Video append frame 60
+00:07.515  render           | Video append frame 61
+00:07.531  render           | Video append frame 62
+00:07.562  render           | Video append frame 63
+00:07.578  render           | Video append frame 64
+00:07.594  render           | Video append frame 65
+00:07.625  render           | Video append frame 66
+00:07.640  render           | Video append frame 67
+00:07.656  render           | Video append frame 68
+00:07.672  render           | Video append frame 69
+00:07.687  render           | Video append frame 70
+00:07.703  render           | Video append frame 71
+00:07.719  render           | Video append frame 72
+00:07.750  render           | Video append frame 73
+00:07.765  render           | Video append frame 74
+00:07.781  render           | Video append frame 75
+00:07.797  render           | Video append frame 76
+00:07.812  render           | Video append frame 77
+00:07.828  render           | Video append frame 78
+00:07.844  render           | Video append frame 79
+00:07.859  render           | Video append frame 80
+00:07.890  render           | Video append frame 81
+00:07.906  render           | Video append frame 82
+00:07.922  render           | Video append frame 83
+00:07.937  render           | Video append frame 84
+00:07.953  render           | Video append frame 85
+00:07.969  render           | Video append frame 86
+00:07.984  render           | Video append frame 87
+00:08.000  render           | Video append frame 88
+00:08.015  render           | Video append frame 89
+00:08.031  render           | Video append frame 90
+00:08.062  render           | Video append frame 91
+00:08.078  render           | Video append frame 92
+00:08.094  render           | Video append frame 93
+00:08.109  render           | Video append frame 94
+00:08.125  render           | Video append frame 95
+00:08.156  render           | Video append frame 96
+00:08.172  render           | Video append frame 97
+00:08.187  render           | Video append frame 98
+00:08.203  render           | Video append frame 99
+00:08.219  render           | Video append frame 100
+00:08.234  render           | Video append frame 101
+00:08.250  render           | Video append frame 102
+00:08.265  render           | Video append frame 103
+00:08.281  render           | Video append frame 104
+00:08.297  render           | Video append frame 105
+Info: Saved copy as "R4M_JumpDrive.blend"
+
+FBX export starting... '%USERPROFILE%\\Desktop\\Blender_Modele\\wynik\\R4_Movement_940\\R4M_JumpDrive\\R4M_JumpDrive.fbx'
+export finished in 0.0439 sec.
+INFO Draco is available, use library at C:\Program Files (x86)\Steam\steamapps\common\Blender\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_draco_bridge.dll
+INFO MeshOptimizer is available, use library at C:\Program Files (x86)\Steam\steamapps\common\Blender\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_meshopt_bridge.dll
+
+00:08.609  blend            | Read blend: "%USERPROFILE%\Desktop\Blender_Modele\wynik\R4_Movement_940\R4M_JumpDrive\R4M_JumpDrive.blend"
+
+
+FBX export starting... '%USERPROFILE%\\Desktop\\Blender_Modele\\wynik\\R4_Movement_940\\R4M_JumpDrive\\R4M_JumpDrive_LOD1.fbx'
+export finished in 0.0105 sec.
+FBX version: 7400
+FBX version: 7400
+R4QA_DONE R4M_JumpDrive BLENDER_PASS []
+Blender 5.2.3 LTS (hash e13b728c6880 built 2026-10-22 01:37:16)
+
+Blender quit
+
+STDERR

@@ -1,0 +1,47 @@
+{
+ "id": "R4M_Gyroscope",
+ "kind": "R3PartKind.Gyroscope",
+ "game_name": "\u017byroskop (MOV004)",
+ "units": "meter 1:1",
+ "axes": "file/Unity +Z forward, +Y up",
+ "cell": "logical 1x1x1 on 0.55 m grid; mount = Socket_Mount_Bottom",
+ "hierarchy": {
+  "R4M_Gyroscope_ROOT": null,
+  "R4M_Gyroscope_Yoke": "R4M_Gyroscope_ROOT",
+  "R4M_Gyroscope_OuterRing": "R4M_Gyroscope_ROOT",
+  "R4M_Gyroscope_InnerRing": "R4M_Gyroscope_OuterRing",
+  "R4M_Gyroscope_Rotor": "R4M_Gyroscope_InnerRing",
+  "Socket_Mount": "R4M_Gyroscope_ROOT"
+ },
+ "node_roles": {
+  "R4M_Gyroscope_ROOT": {
+   "unity_up": "+Y",
+   "unity_forward": "+Z",
+   "unit": "meter",
+   "version": "v1",
+   "weapon_kind": "R3PartKind.Gyroscope",
+   "style": "R41_Turret_v6.1 standard (heavy industrial armour + team colour)",
+   "issue": "#938"
+  },
+  "R4M_Gyroscope_Yoke": {
+   "role": "static U-yoke hanging from the round top mount"
+  },
+  "R4M_Gyroscope_OuterRing": {
+   "role": "outer gimbal ring: rotates about local X (file X)"
+  },
+  "R4M_Gyroscope_InnerRing": {
+   "role": "inner gimbal ring (child of outer): rotates about file Z (Blender Y)"
+  },
+  "R4M_Gyroscope_Rotor": {
+   "role": "flywheel rotor (child of inner): spins about its axle, file Y at rest"
+  },
+  "Socket_Mount": {
+   "role": "top mount face, normal +Y"
+  }
+ },
+ "muzzles": [],
+ "visible_exits_note": "",
+ "notes": [
+  "Runtime placeholder ring is d 0.598 (outside the 0.55 cell); the visual gimbal keeps every part inside the cell."
+ ]
+}

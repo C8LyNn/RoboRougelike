@@ -1,0 +1,786 @@
+{
+ "id": "R4M_Gyroscope",
+ "kind": "R3PartKind.Gyroscope",
+ "game_name": "Żyroskop (MOV004)",
+ "blender": "5.2.3 LTS",
+ "started": "2026-11-06 19:25:29",
+ "failures": [],
+ "notes": [
+  "Runtime placeholder ring is d 0.598 (outside the 0.55 cell); the visual gimbal keeps every part inside the cell."
+ ],
+ "meshes": [
+  {
+   "object": "R4M_Gyroscope_Yoke",
+   "verts": 1281,
+   "triangles": 2550,
+   "shells": 3,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.003769,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.003,
+    0.003,
+    0.997,
+    0.959
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Plate_Light",
+    "Armor_Dark",
+    "TeamColor_Red",
+    "Energy_Hot",
+    "Hazard_Yellow",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_Gyroscope_OuterRing",
+   "verts": 1016,
+   "triangles": 2040,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.000908,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.004,
+    0.004,
+    0.987,
+    0.996
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Steel_Light",
+    "Armor_Dark"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_Gyroscope_InnerRing",
+   "verts": 796,
+   "triangles": 1600,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.000529,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.004,
+    0.004,
+    0.996,
+    0.986
+   ],
+   "materials": [
+    "Armor_Plate_Light",
+    "Steel_Light",
+    "Armor_Dark",
+    "TeamColor_Red"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_Gyroscope_Rotor",
+   "verts": 1320,
+   "triangles": 2684,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.001884,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.003,
+    0.003,
+    0.997,
+    0.981
+   ],
+   "materials": [
+    "Steel_Light",
+    "Armor_Dark",
+    "TeamColor_Red"
+   ],
+   "ok": true
+  }
+ ],
+ "fx_meshes": [],
+ "triangles_total": 8874,
+ "triangles_fx": 0,
+ "triangles_r41_reference": 11452,
+ "topology_PASS": true,
+ "palette": {
+  "material_area_share": {
+   "Armor_Gunmetal": 0.3079,
+   "Armor_Dark": 0.3042,
+   "Steel_Light": 0.1737,
+   "Armor_Plate_Light": 0.1447,
+   "TeamColor_Red": 0.0564,
+   "Hazard_Yellow": 0.0085,
+   "Energy_Hot": 0.0047
+  },
+  "family_share": {
+   "1_dark_gunmetal": 0.612,
+   "2_light_steel": 0.3184,
+   "3_team_red": 0.0564,
+   "4_hazard_yellow": 0.0085,
+   "T_technical": 0.0047
+  },
+  "r41_family_share": {
+   "1_dark_gunmetal": 0.7913,
+   "2_light_steel": 0.1229,
+   "3_team_red": 0.0247,
+   "4_hazard_yellow": 0.0015,
+   "T_technical": 0.0595
+  },
+  "bands": {
+   "1_dark_gunmetal": [
+    0.62,
+    0.88
+   ],
+   "2_light_steel": [
+    0.06,
+    0.24
+   ],
+   "3_team_red": [
+    0.012,
+    0.07
+   ],
+   "4_hazard_yellow": [
+    0.001,
+    0.03
+   ],
+   "T_technical": [
+    0.0,
+    0.16
+   ]
+  },
+  "in_band": {
+   "1_dark_gunmetal": false,
+   "2_light_steel": false,
+   "3_team_red": true,
+   "4_hazard_yellow": true,
+   "T_technical": true
+  },
+  "violations": [],
+  "PASS": false,
+  "PASS_policy": "movement: locked materials/PBR enforced, family bands reported (not enforced, issue #940)"
+ },
+ "contract": {
+  "R4M_Gyroscope_ROOT": {
+   "position_file": [
+    0.0,
+    0.0,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    1.0,
+    -0.0
+   ],
+   "parent": null
+  },
+  "Socket_Mount": {
+   "position_file": [
+    0.0,
+    0.275,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    1.0,
+    -0.0
+   ],
+   "parent": "R4M_Gyroscope_ROOT"
+  },
+  "unity_axes": "file/Unity: +Z forward, +Y up, meters; Yaw about local Y, Pitch about local X"
+ },
+ "sweep": {
+  "failures": [],
+  "mount_cell": [
+   0,
+   0,
+   0
+  ],
+  "static_bounds_file": [
+   [
+    -0.2705,
+    -0.184,
+    -0.234
+   ],
+   [
+    0.2705,
+    0.27,
+    0.234
+   ]
+  ],
+  "static_cells": [
+   [
+    0,
+    0,
+    0
+   ]
+  ],
+  "housing_bounds_file": [
+   [
+    -0.2705,
+    -0.034,
+    -0.1515
+   ],
+   [
+    0.2705,
+    0.27,
+    0.1515
+   ]
+  ],
+  "housing_inside_mount_cell": true,
+  "housing_policy": "strict: static housing must stay inside the 0.55 m mount cell",
+  "moving_sweep": {
+   "bounds_file": [
+    [
+     -0.2705,
+     -0.1851,
+     -0.2349
+    ],
+    [
+     0.2705,
+     0.27,
+     0.2349
+    ]
+   ],
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "neighbour_cells_entered": [],
+   "frames": 165
+  },
+  "ground_contact": {
+   "note": "no ground contact (stabiliser inside the block volume; runtime placeholder sphere d 0.442 + ring d 0.598)"
+  },
+  "clearance_min_mm": {
+   "R4M_Gyroscope_OuterRing|R4M_Gyroscope_Yoke": 1.24,
+   "R4M_Gyroscope_InnerRing|R4M_Gyroscope_OuterRing": 0.18,
+   "R4M_Gyroscope_Rotor|R4M_Gyroscope_InnerRing": 0.18
+  },
+  "quarter_turns": {
+   "X90": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "X180": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "X270": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "Y90": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "Y180": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "Y270": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "Z90": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "Z180": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "Z270": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   }
+  },
+  "mirror_X": {
+   "static_bounds_file": [
+    [
+     -0.2705,
+     -0.184,
+     -0.234
+    ],
+    [
+     0.2705,
+     0.27,
+     0.234
+    ]
+   ],
+   "socket_file": [
+    0.0,
+    0.275,
+    -0.0
+   ],
+   "socket_mirrored_file": [
+    -0.0,
+    0.275,
+    -0.0
+   ],
+   "note": "L/R variant = parent scale X -1 (Unity flips winding for negative scale); geometry is closed so lighting stays correct"
+  },
+  "floating_shells": {
+   "R4M_Gyroscope_Yoke": {
+    "shells": 3,
+    "isolated": 0
+   },
+   "R4M_Gyroscope_OuterRing": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_Gyroscope_InnerRing": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_Gyroscope_Rotor": {
+    "shells": 1,
+    "isolated": 0
+   }
+  },
+  "nodes_file": {
+   "R4M_Gyroscope_ROOT": {
+    "position": [
+     0.0,
+     0.0,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     1.0,
+     -0.0
+    ]
+   },
+   "Socket_Mount": {
+    "position": [
+     0.0,
+     0.275,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     1.0,
+     -0.0
+    ]
+   }
+  }
+ },
+ "animation_clash": {
+  "frames_checked": 165,
+  "pairs": [
+   [
+    "R4M_Gyroscope_OuterRing",
+    "R4M_Gyroscope_Yoke"
+   ],
+   [
+    "R4M_Gyroscope_InnerRing",
+    "R4M_Gyroscope_Yoke"
+   ],
+   [
+    "R4M_Gyroscope_Rotor",
+    "R4M_Gyroscope_Yoke"
+   ],
+   [
+    "R4M_Gyroscope_InnerRing",
+    "R4M_Gyroscope_OuterRing"
+   ],
+   [
+    "R4M_Gyroscope_Rotor",
+    "R4M_Gyroscope_OuterRing"
+   ],
+   [
+    "R4M_Gyroscope_Rotor",
+    "R4M_Gyroscope_InnerRing"
+   ]
+  ],
+  "collisions": 0,
+  "samples": [],
+  "per_pair": {},
+  "PASS": true
+ },
+ "extra_checks": {},
+ "renders": [
+  "R4M_Gyroscope_front.png",
+  "R4M_Gyroscope_back.png",
+  "R4M_Gyroscope_side.png",
+  "R4M_Gyroscope_top.png",
+  "R4M_Gyroscope_34front.png",
+  "R4M_Gyroscope_34rear.png",
+  "R4M_Gyroscope_34front_wireframe.png",
+  "R4M_Gyroscope_side_wireframe.png",
+  "R4M_Gyroscope_colliders_sweep.png",
+  "poses/R4M_Gyroscope_Idle_f013.png",
+  "poses/R4M_Gyroscope_SpinUp_f045.png",
+  "poses/R4M_Gyroscope_Stabilize_f065.png",
+  "poses/R4M_Gyroscope_Stabilize_f089.png",
+  "poses/R4M_Gyroscope_Correct_f109.png",
+  "poses/R4M_Gyroscope_SpinDown_f139.png",
+  "R4M_Gyroscope_HERO_eevee.png",
+  "R4M_Gyroscope_HERO2_eevee.png",
+  "R4M_Gyroscope_vs_R41_34front.png",
+  "R4M_Gyroscope_vs_R41_side.png"
+ ],
+ "silhouettes": [
+  "R4M_Gyroscope_sil_side.png",
+  "R4M_Gyroscope_sil_front.png",
+  "R4M_Gyroscope_sil_top.png",
+  "R4M_Gyroscope_sil_gameplay.png"
+ ],
+ "video": "R4M_Gyroscope_timeline.mp4",
+ "lod1": {
+  "file": "R4M_Gyroscope_LOD1.fbx",
+  "triangles": 4436,
+  "method": "DECIMATE collapse 0.5 (automatic, not hand-authored)"
+ },
+ "fbx_reimport": {
+  "frames": [
+   1,
+   13,
+   25,
+   27,
+   39,
+   51,
+   53,
+   77,
+   101,
+   103,
+   115,
+   127,
+   129,
+   147,
+   165
+  ],
+  "worst": {
+   "pos_mm": 0.0,
+   "rot_deg": 0.0,
+   "geom_mm": 0.0001,
+   "scale_err": 0.0,
+   "missing": [],
+   "parent_bad": []
+  },
+  "per_frame": {
+   "1": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "13": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "25": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "27": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "39": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "51": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "53": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "77": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "101": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "103": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "115": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "127": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "129": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "147": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "165": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   }
+  },
+  "nodes_as_imported": {
+   "R4M_Gyroscope_ROOT": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     -0.0,
+     0.0,
+     0.0
+    ],
+    "parent": null
+   },
+   "R4M_Gyroscope_Yoke": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_Gyroscope_ROOT"
+   },
+   "R4M_Gyroscope_OuterRing": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_Gyroscope_ROOT"
+   },
+   "R4M_Gyroscope_InnerRing": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_Gyroscope_OuterRing"
+   },
+   "R4M_Gyroscope_Rotor": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     495.0
+    ],
+    "parent": "R4M_Gyroscope_InnerRing"
+   },
+   "Socket_Mount": {
+    "loc": [
+     0.0,
+     0.0,
+     0.275
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_Gyroscope_ROOT"
+   }
+  },
+  "PASS": true,
+  "thresholds": "pos<0.05mm rot<0.01deg geom<0.05mm, 0 missing, 0 parent changes (R41 v6.1 QA)"
+ },
+ "r41_compare": "rendered from real R41_Turret_v6.1.fbx (SHA verified)",
+ "glb_reimport": {
+  "rest_frame_worst": {
+   "pos_mm": 0.0,
+   "rot_deg": 0.0,
+   "scale_err": 0.0,
+   "geom_mm": 0.0,
+   "missing": [],
+   "parent_bad": []
+  },
+  "actions_imported": 3,
+  "PASS": true,
+  "note": "glTF importer; world-space comparison at frame 1"
+ },
+ "files": {
+  "R4M_Gyroscope.blend": {
+   "sha256": "ce79bd7d23e8532885acf13cbfe610de8f253a89a148e05257cb274e90b95d41",
+   "bytes": 1445755,
+   "sha256_before_path_sanitize": "37ccf4dc0feb542401b6eb63428d2d0849ca11ac8ee8148a8ef6fd3b43c859df",
+   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length; file re-opened headless in Blender 5.2.3 after patch (rc 0, frame range and objects unchanged)"
+  },
+  "R4M_Gyroscope.fbx": {
+   "sha256": "8809703bfa575265aa4c524144edaa8ac74f0bb70a9f83dc9e4e94604c6207e7",
+   "bytes": 407100
+  },
+  "R4M_Gyroscope.glb": {
+   "sha256": "e4bfe5de54873fdd1186e081f74dc3f525bcad26048737ff89d9b979fb2b6984",
+   "bytes": 396168
+  },
+  "R4M_Gyroscope_colliders.glb": {
+   "sha256": "96964805f753da0a7087b4bb3a07fa6cca6b41a1115f7cf0c7154cdbf8ca2f1f",
+   "bytes": 390724
+  },
+  "R4M_Gyroscope_LOD1.fbx": {
+   "sha256": "3f4572e1ba9383144cd1dbcc7aae3073019b04d77a7dd2621f4ef5913edcd316",
+   "bytes": 201260
+  }
+ },
+ "unity_import_test": "UNITY_NOT_RUN (Unity not available in this session)",
+ "unity_import_settings": "Scale Factor 1, Convert Units ON, Bake Axis Conversion ON, Animation: split clips by animation_manifest.json frame ranges (24 fps)",
+ "status": "BLENDER_PASS",
+ "seconds": 9.9
+}

@@ -1,0 +1,140 @@
+00:00.032  color_management | Using OCIO=C:\Program Files (x86)\Steam\steamapps\common\Blender\5.2\datafiles\colormanagement\config.ocio
+00:05.625  render           | Video append frame 1
+00:05.641  render           | Video append frame 2
+00:05.657  render           | Video append frame 3
+00:05.672  render           | Video append frame 4
+00:05.688  render           | Video append frame 5
+00:05.719  render           | Video append frame 6
+00:05.735  render           | Video append frame 7
+00:05.750  render           | Video append frame 8
+00:05.766  render           | Video append frame 9
+00:05.782  render           | Video append frame 10
+00:05.813  render           | Video append frame 11
+00:05.828  render           | Video append frame 12
+00:05.844  render           | Video append frame 13
+00:05.860  render           | Video append frame 14
+00:05.875  render           | Video append frame 15
+00:05.907  render           | Video append frame 16
+00:05.922  render           | Video append frame 17
+00:05.938  render           | Video append frame 18
+00:05.953  render           | Video append frame 19
+00:05.969  render           | Video append frame 20
+00:05.985  render           | Video append frame 21
+00:06.016  render           | Video append frame 22
+00:06.032  render           | Video append frame 23
+00:06.047  render           | Video append frame 24
+00:06.063  render           | Video append frame 25
+00:06.078  render           | Video append frame 26
+00:06.094  render           | Video append frame 27
+00:06.110  render           | Video append frame 28
+00:06.141  render           | Video append frame 29
+00:06.157  render           | Video append frame 30
+00:06.172  render           | Video append frame 31
+00:06.188  render           | Video append frame 32
+00:06.203  render           | Video append frame 33
+00:06.219  render           | Video append frame 34
+00:06.250  render           | Video append frame 35
+00:06.266  render           | Video append frame 36
+00:06.282  render           | Video append frame 37
+00:06.297  render           | Video append frame 38
+00:06.328  render           | Video append frame 39
+00:06.344  render           | Video append frame 40
+00:06.360  render           | Video append frame 41
+00:06.391  render           | Video append frame 42
+00:06.407  render           | Video append frame 43
+00:06.422  render           | Video append frame 44
+00:06.438  render           | Video append frame 45
+00:06.453  render           | Video append frame 46
+00:06.485  render           | Video append frame 47
+00:06.500  render           | Video append frame 48
+00:06.516  render           | Video append frame 49
+00:06.532  render           | Video append frame 50
+00:06.547  render           | Video append frame 51
+00:06.563  render           | Video append frame 52
+00:06.594  render           | Video append frame 53
+00:06.610  render           | Video append frame 54
+00:06.625  render           | Video append frame 55
+00:06.641  render           | Video append frame 56
+00:06.657  render           | Video append frame 57
+00:06.688  render           | Video append frame 58
+00:06.703  render           | Video append frame 59
+00:06.719  render           | Video append frame 60
+00:06.735  render           | Video append frame 61
+00:06.750  render           | Video append frame 62
+00:06.766  render           | Video append frame 63
+00:06.782  render           | Video append frame 64
+00:06.813  render           | Video append frame 65
+00:06.828  render           | Video append frame 66
+00:06.844  render           | Video append frame 67
+00:06.860  render           | Video append frame 68
+00:06.875  render           | Video append frame 69
+00:06.891  render           | Video append frame 70
+00:06.907  render           | Video append frame 71
+00:06.922  render           | Video append frame 72
+00:06.938  render           | Video append frame 73
+00:06.969  render           | Video append frame 74
+00:06.985  render           | Video append frame 75
+00:07.000  render           | Video append frame 76
+00:07.016  render           | Video append frame 77
+00:07.032  render           | Video append frame 78
+00:07.047  render           | Video append frame 79
+00:07.063  render           | Video append frame 80
+00:07.094  render           | Video append frame 81
+00:07.110  render           | Video append frame 82
+00:07.125  render           | Video append frame 83
+00:07.141  render           | Video append frame 84
+00:07.157  render           | Video append frame 85
+00:07.188  render           | Video append frame 86
+00:07.203  render           | Video append frame 87
+00:07.219  render           | Video append frame 88
+00:07.235  render           | Video append frame 89
+00:07.250  render           | Video append frame 90
+00:07.282  render           | Video append frame 91
+00:07.297  render           | Video append frame 92
+00:07.313  render           | Video append frame 93
+00:07.328  render           | Video append frame 94
+00:07.360  render           | Video append frame 95
+00:07.375  render           | Video append frame 96
+00:07.391  render           | Video append frame 97
+00:07.407  render           | Video append frame 98
+00:07.422  render           | Video append frame 99
+00:07.438  render           | Video append frame 100
+00:07.453  render           | Video append frame 101
+00:07.485  render           | Video append frame 102
+00:07.500  render           | Video append frame 103
+00:07.516  render           | Video append frame 104
+00:07.532  render           | Video append frame 105
+00:07.547  render           | Video append frame 106
+00:07.563  render           | Video append frame 107
+00:07.578  render           | Video append frame 108
+00:07.610  render           | Video append frame 109
+00:07.625  render           | Video append frame 110
+00:07.641  render           | Video append frame 111
+00:07.657  render           | Video append frame 112
+00:07.672  render           | Video append frame 113
+00:07.688  render           | Video append frame 114
+00:07.719  render           | Video append frame 115
+00:07.735  render           | Video append frame 116
+00:07.750  render           | Video append frame 117
+00:07.766  render           | Video append frame 118
+00:07.782  render           | Video append frame 119
+Info: Saved copy as "R4M_Blink.blend"
+
+FBX export starting... '%USERPROFILE%\\Desktop\\Blender_Modele\\wynik\\R4_Movement_940\\R4M_Blink\\R4M_Blink.fbx'
+export finished in 0.0646 sec.
+INFO Draco is available, use library at C:\Program Files (x86)\Steam\steamapps\common\Blender\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_draco_bridge.dll
+INFO MeshOptimizer is available, use library at C:\Program Files (x86)\Steam\steamapps\common\Blender\5.2\scripts\addons_core\io_scene_gltf2\bf_intern_meshopt_bridge.dll
+
+00:08.157  blend            | Read blend: "%USERPROFILE%\Desktop\Blender_Modele\wynik\R4_Movement_940\R4M_Blink\R4M_Blink.blend"
+
+
+FBX export starting... '%USERPROFILE%\\Desktop\\Blender_Modele\\wynik\\R4_Movement_940\\R4M_Blink\\R4M_Blink_LOD1.fbx'
+export finished in 0.0127 sec.
+FBX version: 7400
+FBX version: 7400
+R4QA_DONE R4M_Blink BLENDER_PASS []
+Blender 5.2.3 LTS (hash e13b728c6880 built 2026-10-22 01:37:16)
+
+Blender quit
+
+STDERR

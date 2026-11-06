@@ -1,0 +1,1445 @@
+{
+ "id": "R4M_Blink",
+ "kind": "R3PartKind.Blink",
+ "game_name": "Blink (MOV003)",
+ "blender": "5.2.3 LTS",
+ "started": "2026-11-06 19:25:18",
+ "failures": [],
+ "notes": [
+  "Petal knuckles sit 3 mm above the hinge blocks (pin clearance so the petal root clears the drum when opening).",
+  "Mounted from below (cell -Y face) so the petals have the free upper half of the cell; all moving parts stay inside the cell."
+ ],
+ "meshes": [
+  {
+   "object": "R4M_Blink_Housing",
+   "verts": 1352,
+   "triangles": 2700,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.031901,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.005,
+    0.005,
+    0.995,
+    0.995
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Plate_Light",
+    "Armor_Dark",
+    "Steel_Light",
+    "Energy_Hot",
+    "TeamColor_Red",
+    "Hazard_Yellow"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_Blink_Crystal",
+   "verts": 62,
+   "triangles": 120,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.000909,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.998,
+    0.992
+   ],
+   "materials": [
+    "Energy_Hot",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_Blink_Petal_1",
+   "verts": 76,
+   "triangles": 148,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.000164,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.001,
+    0.001,
+    0.999,
+    0.982
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Steel_Light",
+    "Energy_Hot",
+    "TeamColor_Red"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_Blink_Petal_2",
+   "verts": 76,
+   "triangles": 148,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.000164,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.001,
+    0.001,
+    0.999,
+    0.982
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Steel_Light",
+    "Energy_Hot",
+    "TeamColor_Red"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_Blink_Petal_3",
+   "verts": 76,
+   "triangles": 148,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.000164,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.001,
+    0.001,
+    0.999,
+    0.982
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Steel_Light",
+    "Energy_Hot",
+    "TeamColor_Red"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_Blink_Petal_4",
+   "verts": 76,
+   "triangles": 148,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.000164,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.001,
+    0.001,
+    0.999,
+    0.982
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Steel_Light",
+    "Energy_Hot",
+    "TeamColor_Red"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_Blink_Petal_5",
+   "verts": 76,
+   "triangles": 148,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.000164,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.001,
+    0.001,
+    0.999,
+    0.982
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Steel_Light",
+    "Energy_Hot",
+    "TeamColor_Red"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_Blink_Petal_6",
+   "verts": 76,
+   "triangles": 148,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.000164,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.001,
+    0.001,
+    0.999,
+    0.982
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Steel_Light",
+    "Energy_Hot",
+    "TeamColor_Red"
+   ],
+   "ok": true
+  }
+ ],
+ "fx_meshes": [
+  {
+   "object": "Blink_PhaseRing",
+   "verts": 192,
+   "triangles": 384,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.000106,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.001,
+    0.001,
+    0.59,
+    0.999
+   ],
+   "materials": [
+    "Muzzle_Flash"
+   ],
+   "ok": true
+  },
+  {
+   "object": "Blink_Flash",
+   "verts": 50,
+   "triangles": 96,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00237,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.001,
+    0.001,
+    0.999,
+    0.752
+   ],
+   "materials": [
+    "Muzzle_Flash"
+   ],
+   "ok": true
+  },
+  {
+   "object": "Blink_ChargeGlow",
+   "verts": 34,
+   "triangles": 64,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.000934,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.001,
+    0.001,
+    0.999,
+    0.764
+   ],
+   "materials": [
+    "Energy_Hot"
+   ],
+   "ok": true
+  }
+ ],
+ "triangles_total": 3708,
+ "triangles_fx": 544,
+ "triangles_r41_reference": 11452,
+ "topology_PASS": true,
+ "palette": {
+  "material_area_share": {
+   "Armor_Gunmetal": 0.3508,
+   "Armor_Plate_Light": 0.2813,
+   "Armor_Dark": 0.2423,
+   "Energy_Hot": 0.0848,
+   "Steel_Light": 0.0311,
+   "TeamColor_Red": 0.0064,
+   "Hazard_Yellow": 0.0032
+  },
+  "family_share": {
+   "1_dark_gunmetal": 0.5931,
+   "2_light_steel": 0.3124,
+   "3_team_red": 0.0064,
+   "4_hazard_yellow": 0.0032,
+   "T_technical": 0.0848
+  },
+  "r41_family_share": {
+   "1_dark_gunmetal": 0.7913,
+   "2_light_steel": 0.1229,
+   "3_team_red": 0.0247,
+   "4_hazard_yellow": 0.0015,
+   "T_technical": 0.0595
+  },
+  "bands": {
+   "1_dark_gunmetal": [
+    0.62,
+    0.88
+   ],
+   "2_light_steel": [
+    0.06,
+    0.24
+   ],
+   "3_team_red": [
+    0.012,
+    0.07
+   ],
+   "4_hazard_yellow": [
+    0.001,
+    0.03
+   ],
+   "T_technical": [
+    0.0,
+    0.16
+   ]
+  },
+  "in_band": {
+   "1_dark_gunmetal": false,
+   "2_light_steel": false,
+   "3_team_red": false,
+   "4_hazard_yellow": true,
+   "T_technical": true
+  },
+  "violations": [],
+  "PASS": false,
+  "PASS_policy": "movement: locked materials/PBR enforced, family bands reported (not enforced, issue #940)"
+ },
+ "contract": {
+  "R4M_Blink_ROOT": {
+   "position_file": [
+    0.0,
+    0.0,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    1.0,
+    -0.0
+   ],
+   "parent": null
+  },
+  "PetalHinge_1": {
+   "position_file": [
+    0.168,
+    0.046,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    1.0,
+    -0.0
+   ],
+   "parent": "R4M_Blink_ROOT"
+  },
+  "PetalHinge_2": {
+   "position_file": [
+    0.084,
+    0.046,
+    -0.14549
+   ],
+   "forward_file": [
+    0.0,
+    1.0,
+    -0.0
+   ],
+   "parent": "R4M_Blink_ROOT"
+  },
+  "PetalHinge_3": {
+   "position_file": [
+    -0.084,
+    0.046,
+    -0.14549
+   ],
+   "forward_file": [
+    0.0,
+    1.0,
+    -0.0
+   ],
+   "parent": "R4M_Blink_ROOT"
+  },
+  "PetalHinge_4": {
+   "position_file": [
+    -0.168,
+    0.046,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    1.0,
+    -0.0
+   ],
+   "parent": "R4M_Blink_ROOT"
+  },
+  "PetalHinge_5": {
+   "position_file": [
+    -0.084,
+    0.046,
+    0.14549
+   ],
+   "forward_file": [
+    0.0,
+    1.0,
+    -0.0
+   ],
+   "parent": "R4M_Blink_ROOT"
+  },
+  "PetalHinge_6": {
+   "position_file": [
+    0.084,
+    0.046,
+    0.14549
+   ],
+   "forward_file": [
+    0.0,
+    1.0,
+    -0.0
+   ],
+   "parent": "R4M_Blink_ROOT"
+  },
+  "Socket_Mount": {
+   "position_file": [
+    0.0,
+    -0.275,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    -1.0,
+    -0.0
+   ],
+   "parent": "R4M_Blink_ROOT"
+  },
+  "Blink_Emitter": {
+   "position_file": [
+    0.0,
+    0.18,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    1.0,
+    -0.0
+   ],
+   "parent": "R4M_Blink_ROOT"
+  },
+  "unity_axes": "file/Unity: +Z forward, +Y up, meters; Yaw about local Y, Pitch about local X"
+ },
+ "sweep": {
+  "failures": [],
+  "mount_cell": [
+   0,
+   0,
+   0
+  ],
+  "static_bounds_file": [
+   [
+    -0.219,
+    -0.275,
+    -0.215
+   ],
+   [
+    0.219,
+    0.2125,
+    0.215
+   ]
+  ],
+  "static_cells": [
+   [
+    0,
+    -1,
+    0
+   ],
+   [
+    0,
+    0,
+    0
+   ]
+  ],
+  "housing_bounds_file": [
+   [
+    -0.219,
+    -0.275,
+    -0.215
+   ],
+   [
+    0.219,
+    0.046,
+    0.215
+   ]
+  ],
+  "housing_inside_mount_cell": true,
+  "housing_policy": "strict: static housing must stay inside the 0.55 m mount cell",
+  "moving_sweep": {
+   "bounds_file": [
+    [
+     -0.2756,
+     -0.275,
+     -0.2441
+    ],
+    [
+     0.2756,
+     0.225,
+     0.2441
+    ]
+   ],
+   "cells": [
+    [
+     -1,
+     0,
+     0
+    ],
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     1,
+     0,
+     0
+    ]
+   ],
+   "neighbour_cells_entered": [
+    [
+     -1,
+     0,
+     0
+    ],
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     1,
+     0,
+     0
+    ]
+   ],
+   "frames": 119
+  },
+  "ground_contact": {
+   "note": "no ground contact (blink device inside the block volume; runtime placeholder = sphere d 0.442 at the block centre)"
+  },
+  "clearance_min_mm": {
+   "R4M_Blink_Crystal|R4M_Blink_Housing": 19.7,
+   "R4M_Blink_Petal_1|R4M_Blink_Housing": 0.15,
+   "R4M_Blink_Petal_1|R4M_Blink_Crystal": 104.42
+  },
+  "quarter_turns": {
+   "X90": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      0,
+      -1
+     ],
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "X180": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      1,
+      0
+     ]
+    ]
+   },
+   "X270": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      1
+     ]
+    ]
+   },
+   "Y90": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      -1,
+      0
+     ],
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "Y180": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      -1,
+      0
+     ],
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "Y270": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      -1,
+      0
+     ],
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "Z90": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      -1,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "Z180": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      1,
+      0
+     ]
+    ]
+   },
+   "Z270": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      1,
+      0,
+      0
+     ]
+    ]
+   }
+  },
+  "mirror_X": {
+   "static_bounds_file": [
+    [
+     -0.219,
+     -0.275,
+     -0.215
+    ],
+    [
+     0.219,
+     0.2125,
+     0.215
+    ]
+   ],
+   "socket_file": [
+    0.0,
+    -0.275,
+    -0.0
+   ],
+   "socket_mirrored_file": [
+    -0.0,
+    -0.275,
+    -0.0
+   ],
+   "note": "L/R variant = parent scale X -1 (Unity flips winding for negative scale); geometry is closed so lighting stays correct"
+  },
+  "floating_shells": {
+   "R4M_Blink_Housing": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_Blink_Crystal": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_Blink_Petal_1": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_Blink_Petal_2": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_Blink_Petal_3": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_Blink_Petal_4": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_Blink_Petal_5": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_Blink_Petal_6": {
+    "shells": 1,
+    "isolated": 0
+   }
+  },
+  "nodes_file": {
+   "R4M_Blink_ROOT": {
+    "position": [
+     0.0,
+     0.0,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     1.0,
+     -0.0
+    ]
+   },
+   "PetalHinge_1": {
+    "position": [
+     0.168,
+     0.046,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     1.0,
+     -0.0
+    ]
+   },
+   "PetalHinge_2": {
+    "position": [
+     0.084,
+     0.046,
+     -0.14549
+    ],
+    "z_axis": [
+     0.0,
+     1.0,
+     -0.0
+    ]
+   },
+   "PetalHinge_3": {
+    "position": [
+     -0.084,
+     0.046,
+     -0.14549
+    ],
+    "z_axis": [
+     0.0,
+     1.0,
+     -0.0
+    ]
+   },
+   "PetalHinge_4": {
+    "position": [
+     -0.168,
+     0.046,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     1.0,
+     -0.0
+    ]
+   },
+   "PetalHinge_5": {
+    "position": [
+     -0.084,
+     0.046,
+     0.14549
+    ],
+    "z_axis": [
+     0.0,
+     1.0,
+     -0.0
+    ]
+   },
+   "PetalHinge_6": {
+    "position": [
+     0.084,
+     0.046,
+     0.14549
+    ],
+    "z_axis": [
+     0.0,
+     1.0,
+     -0.0
+    ]
+   },
+   "Socket_Mount": {
+    "position": [
+     0.0,
+     -0.275,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     -1.0,
+     -0.0
+    ]
+   },
+   "Blink_Emitter": {
+    "position": [
+     0.0,
+     0.18,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     1.0,
+     -0.0
+    ]
+   }
+  }
+ },
+ "animation_clash": {
+  "frames_checked": 119,
+  "pairs": [
+   [
+    "R4M_Blink_Crystal",
+    "R4M_Blink_Housing"
+   ],
+   [
+    "R4M_Blink_Petal_1",
+    "R4M_Blink_Housing"
+   ],
+   [
+    "R4M_Blink_Petal_2",
+    "R4M_Blink_Housing"
+   ],
+   [
+    "R4M_Blink_Petal_3",
+    "R4M_Blink_Housing"
+   ],
+   [
+    "R4M_Blink_Petal_4",
+    "R4M_Blink_Housing"
+   ],
+   [
+    "R4M_Blink_Petal_5",
+    "R4M_Blink_Housing"
+   ],
+   [
+    "R4M_Blink_Petal_6",
+    "R4M_Blink_Housing"
+   ],
+   [
+    "R4M_Blink_Petal_1",
+    "R4M_Blink_Crystal"
+   ],
+   [
+    "R4M_Blink_Petal_2",
+    "R4M_Blink_Crystal"
+   ],
+   [
+    "R4M_Blink_Petal_3",
+    "R4M_Blink_Crystal"
+   ],
+   [
+    "R4M_Blink_Petal_4",
+    "R4M_Blink_Crystal"
+   ],
+   [
+    "R4M_Blink_Petal_5",
+    "R4M_Blink_Crystal"
+   ],
+   [
+    "R4M_Blink_Petal_6",
+    "R4M_Blink_Crystal"
+   ],
+   [
+    "R4M_Blink_Petal_1",
+    "R4M_Blink_Petal_2"
+   ],
+   [
+    "R4M_Blink_Petal_2",
+    "R4M_Blink_Petal_3"
+   ],
+   [
+    "R4M_Blink_Petal_3",
+    "R4M_Blink_Petal_4"
+   ],
+   [
+    "R4M_Blink_Petal_4",
+    "R4M_Blink_Petal_5"
+   ],
+   [
+    "R4M_Blink_Petal_5",
+    "R4M_Blink_Petal_6"
+   ],
+   [
+    "R4M_Blink_Petal_6",
+    "R4M_Blink_Petal_1"
+   ]
+  ],
+  "collisions": 0,
+  "samples": [],
+  "per_pair": {},
+  "PASS": true
+ },
+ "extra_checks": {},
+ "renders": [
+  "R4M_Blink_front.png",
+  "R4M_Blink_back.png",
+  "R4M_Blink_side.png",
+  "R4M_Blink_top.png",
+  "R4M_Blink_34front.png",
+  "R4M_Blink_34rear.png",
+  "R4M_Blink_34front_wireframe.png",
+  "R4M_Blink_side_wireframe.png",
+  "R4M_Blink_colliders_sweep.png",
+  "poses/R4M_Blink_Idle_f025.png",
+  "poses/R4M_Blink_Charge_f073.png",
+  "poses/R4M_Blink_Activate_f079.png",
+  "poses/R4M_Blink_Recover_f099.png",
+  "R4M_Blink_HERO_eevee.png",
+  "R4M_Blink_HERO2_eevee.png",
+  "R4M_Blink_vs_R41_34front.png",
+  "R4M_Blink_vs_R41_side.png"
+ ],
+ "silhouettes": [
+  "R4M_Blink_sil_side.png",
+  "R4M_Blink_sil_front.png",
+  "R4M_Blink_sil_top.png",
+  "R4M_Blink_sil_gameplay.png"
+ ],
+ "video": "R4M_Blink_timeline.mp4",
+ "lod1": {
+  "file": "R4M_Blink_LOD1.fbx",
+  "triangles": 1854,
+  "method": "DECIMATE collapse 0.5 (automatic, not hand-authored)"
+ },
+ "fbx_reimport": {
+  "frames": [
+   1,
+   25,
+   49,
+   51,
+   63,
+   75,
+   77,
+   82,
+   87,
+   89,
+   104,
+   119
+  ],
+  "worst": {
+   "pos_mm": 0.0,
+   "rot_deg": 0.0,
+   "geom_mm": 0.0001,
+   "scale_err": 0.0,
+   "missing": [],
+   "parent_bad": []
+  },
+  "per_frame": {
+   "1": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "25": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "49": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "51": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "63": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "75": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "77": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "82": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "87": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "89": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "104": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "119": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   }
+  },
+  "nodes_as_imported": {
+   "R4M_Blink_ROOT": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     -0.0,
+     0.0,
+     0.0
+    ],
+    "parent": null
+   },
+   "R4M_Blink_Housing": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_Blink_ROOT"
+   },
+   "R4M_Blink_Crystal": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     480.0
+    ],
+    "parent": "R4M_Blink_ROOT"
+   },
+   "PetalHinge_1": {
+    "loc": [
+     0.168,
+     0.0,
+     0.046
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     90.0
+    ],
+    "parent": "R4M_Blink_ROOT"
+   },
+   "PetalHinge_2": {
+    "loc": [
+     0.084,
+     0.14549,
+     0.046
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     150.0
+    ],
+    "parent": "R4M_Blink_ROOT"
+   },
+   "PetalHinge_3": {
+    "loc": [
+     -0.084,
+     0.14549,
+     0.046
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     -150.0
+    ],
+    "parent": "R4M_Blink_ROOT"
+   },
+   "PetalHinge_4": {
+    "loc": [
+     -0.168,
+     0.0,
+     0.046
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     -90.0
+    ],
+    "parent": "R4M_Blink_ROOT"
+   },
+   "PetalHinge_5": {
+    "loc": [
+     -0.084,
+     -0.14549,
+     0.046
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     -30.0
+    ],
+    "parent": "R4M_Blink_ROOT"
+   },
+   "PetalHinge_6": {
+    "loc": [
+     0.084,
+     -0.14549,
+     0.046
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     30.0
+    ],
+    "parent": "R4M_Blink_ROOT"
+   },
+   "R4M_Blink_Petal_1": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     -16.0,
+     0.0,
+     0.0
+    ],
+    "parent": "PetalHinge_1"
+   },
+   "R4M_Blink_Petal_2": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     -16.0,
+     0.0,
+     0.0
+    ],
+    "parent": "PetalHinge_2"
+   },
+   "R4M_Blink_Petal_3": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     -16.0,
+     0.0,
+     0.0
+    ],
+    "parent": "PetalHinge_3"
+   },
+   "R4M_Blink_Petal_4": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     -16.0,
+     0.0,
+     0.0
+    ],
+    "parent": "PetalHinge_4"
+   },
+   "R4M_Blink_Petal_5": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     -16.0,
+     0.0,
+     0.0
+    ],
+    "parent": "PetalHinge_5"
+   },
+   "R4M_Blink_Petal_6": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     -16.0,
+     0.0,
+     0.0
+    ],
+    "parent": "PetalHinge_6"
+   },
+   "Blink_PhaseRing": {
+    "loc": [
+     0.0,
+     0.0,
+     0.12
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_Blink_ROOT"
+   },
+   "Blink_Flash": {
+    "loc": [
+     0.0,
+     0.0,
+     0.11
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_Blink_ROOT"
+   },
+   "Blink_ChargeGlow": {
+    "loc": [
+     0.0,
+     0.0,
+     0.06
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_Blink_ROOT"
+   },
+   "Socket_Mount": {
+    "loc": [
+     0.0,
+     0.0,
+     -0.275
+    ],
+    "rot_deg": [
+     -180.0,
+     0.0,
+     0.0
+    ],
+    "parent": "R4M_Blink_ROOT"
+   },
+   "Blink_Emitter": {
+    "loc": [
+     0.0,
+     0.0,
+     0.18
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_Blink_ROOT"
+   }
+  },
+  "PASS": true,
+  "thresholds": "pos<0.05mm rot<0.01deg geom<0.05mm, 0 missing, 0 parent changes (R41 v6.1 QA)"
+ },
+ "r41_compare": "rendered from real R41_Turret_v6.1.fbx (SHA verified)",
+ "glb_reimport": {
+  "rest_frame_worst": {
+   "pos_mm": 0.0,
+   "rot_deg": 0.0,
+   "scale_err": 0.0,
+   "geom_mm": 0.0,
+   "missing": [],
+   "parent_bad": []
+  },
+  "actions_imported": 10,
+  "PASS": true,
+  "note": "glTF importer; world-space comparison at frame 1"
+ },
+ "files": {
+  "R4M_Blink.blend": {
+   "sha256": "f8f492acc8e3e7cf8cc849d82f066a0df2c3993e4355b154f7d28d638e0498ed",
+   "bytes": 1197499,
+   "sha256_before_path_sanitize": "a83141323f2750e908e772c694067b2faf12dd780dd46f849adfb97c4fe27367",
+   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length; file re-opened headless in Blender 5.2.3 after patch (rc 0, frame range and objects unchanged)"
+  },
+  "R4M_Blink.fbx": {
+   "sha256": "354b7f4dc0da02e9baa44866667fa4791d05bdc767d6f6190860d3d4f61a49ed",
+   "bytes": 433660
+  },
+  "R4M_Blink.glb": {
+   "sha256": "11bb303eeac0f9c7d040a029623ffb6a079515e288c7ecedcfebdfbb93906b7d",
+   "bytes": 255552
+  },
+  "R4M_Blink_colliders.glb": {
+   "sha256": "0476f3fdc8989b00c15ce1d21fe9d5b06543b849e559d7a0b4236ef72a97e712",
+   "bytes": 218148
+  },
+  "R4M_Blink_LOD1.fbx": {
+   "sha256": "9074a369abb14176ff49edc03f674610f80855dc9888a16defbbf7c338419272",
+   "bytes": 121580
+  }
+ },
+ "unity_import_test": "UNITY_NOT_RUN (Unity not available in this session)",
+ "unity_import_settings": "Scale Factor 1, Convert Units ON, Bake Axis Conversion ON, Animation: split clips by animation_manifest.json frame ranges (24 fps)",
+ "status": "BLENDER_PASS",
+ "seconds": 7.1
+}

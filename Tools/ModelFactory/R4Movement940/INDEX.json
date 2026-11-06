@@ -1,0 +1,837 @@
+{
+ "issue": 940,
+ "library": "Tools/ModelFactory/R4Movement940",
+ "standard": "R41_Turret_v6.1",
+ "blender": "5.2.3 LTS",
+ "fps": 24,
+ "export": {
+  "fbx": "Unity 6 URP, -Z forward, Y up, FBX_SCALE_UNITS, bake_space_transform=False",
+  "glb": "glTF 2.0 binary, per-node animations on one master timeline"
+ },
+ "unity_status": "UNITY_NOT_RUN for all models (no Unity in this session)",
+ "silhouette_method": "black silhouettes from 4 cameras (gameplay 3/4, side, front, top), cropped to bbox, 64 px, IoU per view; pair flagged if mean IoU > 0.85",
+ "silhouette_flagged_pairs": [],
+ "models": [
+  {
+   "id": "R4M_Wheel",
+   "part_kind": "R3PartKind.Wheel",
+   "game_name": "Koło",
+   "source_blend": "R4M_Wheel/R4M_Wheel.blend",
+   "sha256_blend": "3faef090642565c9230be8232051c7101462858257f52b269d70ab2e5e50bd1d",
+   "sha256_fbx": "4b1e0f289451c68fa9281d283b440fc0e96b8332fe27b8609bedd44de113d6f7",
+   "sha256_glb": "864d06c87868ec3de3000e9a732812ae4a1feda2c5d62d36cf5f53bb0ba7103b",
+   "clips": [
+    {
+     "name": "Idle",
+     "start": 1,
+     "end": 25,
+     "loop": true
+    },
+    {
+     "name": "Roll",
+     "start": 27,
+     "end": 51,
+     "loop": true
+    },
+    {
+     "name": "Reverse",
+     "start": 53,
+     "end": 77,
+     "loop": true
+    },
+    {
+     "name": "Brake",
+     "start": 79,
+     "end": 103,
+     "loop": false
+    }
+   ],
+   "fps": 24,
+   "silhouette": {
+    "closest_pair": "Wheel ↔ CrawlerTrack",
+    "mean_iou": 0.684,
+    "flagged": false
+   },
+   "triangles": 10858,
+   "topology_PASS": true,
+   "mount_cell": [
+    0,
+    0,
+    0
+   ],
+   "housing_inside_mount_cell": false,
+   "housing_policy": "fork legs/axle bosses reach 0.305 m below the cell centre because the runtime axle sits 0.26 m below it (PARTSIZE #141)",
+   "moving_sweep_cells": 6,
+   "ground_contact": {
+    "runtime_y": -0.65,
+    "deviation_mm": 0.04
+   },
+   "collision_envelope_PASS": true,
+   "animation_clash": 0,
+   "fbx_reimport_worst": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "geom_mm": 0.0002,
+    "scale_err": 0.0,
+    "missing": [],
+    "parent_bad": []
+   },
+   "glb_reimport_PASS": true,
+   "palette_PASS": true,
+   "blender_qa": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "risks": [
+    "fork legs reach below the cell (runtime axle is 0.26 m below cell centre) - documented, non-strict housing"
+   ]
+  },
+  {
+   "id": "R4M_CrawlerTrack",
+   "part_kind": "R3PartKind.CrawlerTrack",
+   "game_name": "Gąsienica (MOV008)",
+   "source_blend": "R4M_CrawlerTrack/R4M_CrawlerTrack.blend",
+   "sha256_blend": "f45cc1f75f2795c97b9d22129648015cb8e04207b4f7b2ac4cefe3f09510ade0",
+   "sha256_fbx": "7638a1eaeec767599907ad03e555becd130d75dd7b93728c890a4fe52815e2bc",
+   "sha256_glb": "582bfcf915e852ae590e033918e8af6185e91682d4fe852982ac6188b6fcbed2",
+   "clips": [
+    {
+     "name": "Idle",
+     "start": 1,
+     "end": 25,
+     "loop": true
+    },
+    {
+     "name": "Travel",
+     "start": 27,
+     "end": 39,
+     "loop": true
+    },
+    {
+     "name": "Reverse",
+     "start": 41,
+     "end": 53,
+     "loop": true
+    },
+    {
+     "name": "Stop",
+     "start": 55,
+     "end": 79,
+     "loop": false
+    }
+   ],
+   "fps": 24,
+   "silhouette": {
+    "closest_pair": "Wheel ↔ CrawlerTrack",
+    "mean_iou": 0.684,
+    "flagged": false
+   },
+   "triangles": 30838,
+   "topology_PASS": true,
+   "mount_cell": [
+    0,
+    0,
+    0
+   ],
+   "housing_inside_mount_cell": false,
+   "housing_policy": "inner frame/skirt span the track length (0.936 m) into the front/rear cells (PARTSIZE #141); mount box itself is inside the cell",
+   "moving_sweep_cells": 6,
+   "ground_contact": {
+    "runtime_y": -0.416,
+    "deviation_mm": -0.0
+   },
+   "collision_envelope_PASS": true,
+   "animation_clash": 0,
+   "fbx_reimport_worst": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "geom_mm": 0.0001,
+    "scale_err": 0.0,
+    "missing": [],
+    "parent_bad": []
+   },
+   "glb_reimport_PASS": true,
+   "palette_PASS": false,
+   "blender_qa": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "risks": [
+    "left track only; right side = mirror transform (scale X -1)",
+    "~30.8k tris, highest in the set (budget 32k)",
+    "track spans front/rear cells like the runtime 0.936 m box"
+   ]
+  },
+  {
+   "id": "R4M_HoverEngine",
+   "part_kind": "R3PartKind.HoverEngine",
+   "game_name": "Hover (MOV007)",
+   "source_blend": "R4M_HoverEngine/R4M_HoverEngine.blend",
+   "sha256_blend": "4a5e080342e3eb725c406a9a54cbd679c5966f9fc0e4e51e28f909ddeaa6669b",
+   "sha256_fbx": "5986de57c84a0311c719695e0cb077284b766c10f884171c345722e40194bb98",
+   "sha256_glb": "0a2f1105b4e2fb168bed3728c46a463b87fb7a017c65b35ee9e74bee013c397d",
+   "clips": [
+    {
+     "name": "Idle",
+     "start": 1,
+     "end": 25,
+     "loop": true
+    },
+    {
+     "name": "SpinUp",
+     "start": 27,
+     "end": 51,
+     "loop": false
+    },
+    {
+     "name": "Lift",
+     "start": 53,
+     "end": 65,
+     "loop": true
+    },
+    {
+     "name": "Pulse",
+     "start": 67,
+     "end": 79,
+     "loop": false
+    },
+    {
+     "name": "Cooldown",
+     "start": 81,
+     "end": 113,
+     "loop": false
+    }
+   ],
+   "fps": 24,
+   "silhouette": {
+    "closest_pair": "HoverEngine ↔ JumpDrive",
+    "mean_iou": 0.673,
+    "flagged": false
+   },
+   "triangles": 6600,
+   "topology_PASS": true,
+   "mount_cell": [
+    0,
+    0,
+    0
+   ],
+   "housing_inside_mount_cell": false,
+   "housing_policy": "duct shroud bottom at -0.317 m (runtime pod disc reaches below the cell; PARTSIZE #141)",
+   "moving_sweep_cells": 2,
+   "ground_contact": {
+    "runtime_y": null,
+    "deviation_mm": null
+   },
+   "collision_envelope_PASS": true,
+   "animation_clash": 0,
+   "fbx_reimport_worst": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "geom_mm": 0.0001,
+    "scale_err": 0.0,
+    "missing": [],
+    "parent_bad": []
+   },
+   "glb_reimport_PASS": true,
+   "palette_PASS": false,
+   "blender_qa": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "risks": [
+    "duct bottom at -0.317 m (runtime disc) - non-strict housing"
+   ]
+  },
+  {
+   "id": "R4M_OmniDrive",
+   "part_kind": "R3PartKind.OmniDrive",
+   "game_name": "Napęd omni (MOV005)",
+   "source_blend": "R4M_OmniDrive/R4M_OmniDrive.blend",
+   "sha256_blend": "3a73fa935ab1ab1fe2d3e3bca7f2ec299cf0d0c11ffad367fd46e3da9f5d8ee0",
+   "sha256_fbx": "5864ad02603455343075c86d54e8608612914e86dc3230b73a770a3702f611d2",
+   "sha256_glb": "88c4a447660b488d502b39c46c8f8c7f1aa4c258b8155c01ae4ac1b8273606ba",
+   "clips": [
+    {
+     "name": "Idle",
+     "start": 1,
+     "end": 25,
+     "loop": true
+    },
+    {
+     "name": "Forward",
+     "start": 27,
+     "end": 39,
+     "loop": true
+    },
+    {
+     "name": "Strafe",
+     "start": 41,
+     "end": 53,
+     "loop": true
+    },
+    {
+     "name": "Diagonal",
+     "start": 55,
+     "end": 67,
+     "loop": true
+    }
+   ],
+   "fps": 24,
+   "silhouette": {
+    "closest_pair": "Wheel ↔ OmniDrive",
+    "mean_iou": 0.591,
+    "flagged": false
+   },
+   "triangles": 10494,
+   "topology_PASS": true,
+   "mount_cell": [
+    0,
+    0,
+    0
+   ],
+   "housing_inside_mount_cell": false,
+   "housing_policy": "motor pod sits on the axle 0.208 m below the cell centre and reaches -0.33 m (PARTSIZE #141)",
+   "moving_sweep_cells": 2,
+   "ground_contact": {
+    "runtime_y": -0.442,
+    "deviation_mm": -0.0
+   },
+   "collision_envelope_PASS": true,
+   "animation_clash": 0,
+   "fbx_reimport_worst": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "geom_mm": 0.0001,
+    "scale_err": 0.0,
+    "missing": [],
+    "parent_bad": []
+   },
+   "glb_reimport_PASS": true,
+   "palette_PASS": false,
+   "blender_qa": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "risks": [
+    "socket offset x 0.16 (motor pod on +X); mount on the outer face",
+    "roller spin is visual; strafe stays runtime"
+   ]
+  },
+  {
+   "id": "R4M_Suspension",
+   "part_kind": "R3PartKind.Suspension",
+   "game_name": "Aktywne zawieszenie (MOV009)",
+   "source_blend": "R4M_Suspension/R4M_Suspension.blend",
+   "sha256_blend": "1009eb858b23319ee97f2fdd617f3825387d7eaa7f672cffb1baa49e94f8c836",
+   "sha256_fbx": "c25be0f79d87ee329769fe60f90df6d1284c502e55a909f19bc753cbe7c09e93",
+   "sha256_glb": "82cdf172e26d1c887062753db93ece62a44e9b4bdb69520c50f6afa0e889e37c",
+   "clips": [
+    {
+     "name": "Idle",
+     "start": 1,
+     "end": 25,
+     "loop": true
+    },
+    {
+     "name": "Compress",
+     "start": 27,
+     "end": 43,
+     "loop": false
+    },
+    {
+     "name": "Rebound",
+     "start": 45,
+     "end": 61,
+     "loop": false
+    },
+    {
+     "name": "ActiveLift",
+     "start": 63,
+     "end": 87,
+     "loop": false
+    },
+    {
+     "name": "Cycle",
+     "start": 89,
+     "end": 137,
+     "loop": true
+    }
+   ],
+   "fps": 24,
+   "silhouette": {
+    "closest_pair": "Wheel ↔ Suspension",
+    "mean_iou": 0.582,
+    "flagged": false
+   },
+   "triangles": 6330,
+   "topology_PASS": true,
+   "mount_cell": [
+    0,
+    0,
+    0
+   ],
+   "housing_inside_mount_cell": true,
+   "housing_policy": "trailing arm/hub reach 0.35 m below the cell centre (runtime piston reaches -0.52 m)",
+   "moving_sweep_cells": 2,
+   "ground_contact": {
+    "runtime_y": null,
+    "deviation_mm": null
+   },
+   "collision_envelope_PASS": true,
+   "animation_clash": 0,
+   "fbx_reimport_worst": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "geom_mm": 0.0001,
+    "scale_err": 0.0,
+    "missing": [],
+    "parent_bad": []
+   },
+   "glb_reimport_PASS": true,
+   "palette_PASS": true,
+   "blender_qa": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "risks": [
+    "damper/spring follow the arm by baked keys (no constraints)",
+    "SWEEP_WheelEnvelope is a QA helper, not exported as visible geometry"
+   ]
+  },
+  {
+   "id": "R4M_Booster",
+   "part_kind": "R3PartKind.Booster",
+   "game_name": "Booster (MOV001)",
+   "source_blend": "R4M_Booster/R4M_Booster.blend",
+   "sha256_blend": "f8ab198fd46da7721023ef6fb06eba5f2883976860d8d7341bf756013c0ea688",
+   "sha256_fbx": "b044323574c56063a23e98d1cbb582b6d478fc4b9cb433ad3f78916c12918b47",
+   "sha256_glb": "706ae5d7af6fc63d1036f4b09e7dcd215e25f0e2fea70549d90678666748426f",
+   "clips": [
+    {
+     "name": "Idle",
+     "start": 1,
+     "end": 25,
+     "loop": true
+    },
+    {
+     "name": "Ignition",
+     "start": 27,
+     "end": 39,
+     "loop": false
+    },
+    {
+     "name": "ThrustLoop",
+     "start": 41,
+     "end": 53,
+     "loop": true
+    },
+    {
+     "name": "SpoolDown",
+     "start": 55,
+     "end": 79,
+     "loop": false
+    }
+   ],
+   "fps": 24,
+   "silhouette": {
+    "closest_pair": "CrawlerTrack ↔ Booster",
+    "mean_iou": 0.63,
+    "flagged": false
+   },
+   "triangles": 5680,
+   "topology_PASS": true,
+   "mount_cell": [
+    0,
+    0,
+    0
+   ],
+   "housing_inside_mount_cell": false,
+   "housing_policy": "bell nozzle reaches 0.52 m behind the cell centre (runtime engine cylinder ends there)",
+   "moving_sweep_cells": 2,
+   "ground_contact": {
+    "runtime_y": null,
+    "deviation_mm": null
+   },
+   "collision_envelope_PASS": true,
+   "animation_clash": 0,
+   "fbx_reimport_worst": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "geom_mm": 0.0002,
+    "scale_err": 0.0,
+    "missing": [],
+    "parent_bad": []
+   },
+   "glb_reimport_PASS": true,
+   "palette_PASS": false,
+   "blender_qa": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "risks": [
+    "bell nozzle reaches 0.52 m behind the cell (runtime engine cylinder)"
+   ]
+  },
+  {
+   "id": "R4M_JumpDrive",
+   "part_kind": "R3PartKind.JumpDrive",
+   "game_name": "Napęd skoku (MOV002)",
+   "source_blend": "R4M_JumpDrive/R4M_JumpDrive.blend",
+   "sha256_blend": "7db17a2550b1f7ddde8f5c4bd30b5626b150cf87af23a0b4ecb66ba3d615ddee",
+   "sha256_fbx": "334a92312ec386e954acb6f3b536328bedae5e65f6f58f4fd3bab37f1f869727",
+   "sha256_glb": "10dd977d385fe93d9bc621d9d649c53cb5fccc6a0f510ee96605061511723d39",
+   "clips": [
+    {
+     "name": "Idle",
+     "start": 1,
+     "end": 25,
+     "loop": true
+    },
+    {
+     "name": "Charge",
+     "start": 27,
+     "end": 63,
+     "loop": false
+    },
+    {
+     "name": "Impulse",
+     "start": 65,
+     "end": 73,
+     "loop": false
+    },
+    {
+     "name": "Recovery",
+     "start": 75,
+     "end": 105,
+     "loop": false
+    }
+   ],
+   "fps": 24,
+   "silhouette": {
+    "closest_pair": "JumpDrive ↔ Blink",
+    "mean_iou": 0.735,
+    "flagged": false
+   },
+   "triangles": 6816,
+   "topology_PASS": true,
+   "mount_cell": [
+    0,
+    0,
+    0
+   ],
+   "housing_inside_mount_cell": true,
+   "housing_policy": "strict: static housing must stay inside the 0.55 m mount cell",
+   "moving_sweep_cells": 2,
+   "ground_contact": {
+    "runtime_y": -0.317,
+    "deviation_mm": 0.0
+   },
+   "collision_envelope_PASS": true,
+   "animation_clash": 0,
+   "fbx_reimport_worst": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "geom_mm": 0.0001,
+    "scale_err": 0.0,
+    "missing": [],
+    "parent_bad": []
+   },
+   "glb_reimport_PASS": true,
+   "palette_PASS": false,
+   "blender_qa": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "risks": [
+    "0.10 m stroke is visual; jump height/cooldown remain runtime (1.2 m / 6 s)"
+   ]
+  },
+  {
+   "id": "R4M_Blink",
+   "part_kind": "R3PartKind.Blink",
+   "game_name": "Blink (MOV003)",
+   "source_blend": "R4M_Blink/R4M_Blink.blend",
+   "sha256_blend": "f8f492acc8e3e7cf8cc849d82f066a0df2c3993e4355b154f7d28d638e0498ed",
+   "sha256_fbx": "354b7f4dc0da02e9baa44866667fa4791d05bdc767d6f6190860d3d4f61a49ed",
+   "sha256_glb": "11bb303eeac0f9c7d040a029623ffb6a079515e288c7ecedcfebdfbb93906b7d",
+   "clips": [
+    {
+     "name": "Idle",
+     "start": 1,
+     "end": 49,
+     "loop": true
+    },
+    {
+     "name": "Charge",
+     "start": 51,
+     "end": 75,
+     "loop": false
+    },
+    {
+     "name": "Activate",
+     "start": 77,
+     "end": 87,
+     "loop": false
+    },
+    {
+     "name": "Recover",
+     "start": 89,
+     "end": 119,
+     "loop": false
+    }
+   ],
+   "fps": 24,
+   "silhouette": {
+    "closest_pair": "JumpDrive ↔ Blink",
+    "mean_iou": 0.735,
+    "flagged": false
+   },
+   "triangles": 3708,
+   "topology_PASS": true,
+   "mount_cell": [
+    0,
+    0,
+    0
+   ],
+   "housing_inside_mount_cell": true,
+   "housing_policy": "strict: static housing must stay inside the 0.55 m mount cell",
+   "moving_sweep_cells": 4,
+   "ground_contact": {
+    "runtime_y": null,
+    "deviation_mm": null
+   },
+   "collision_envelope_PASS": null,
+   "animation_clash": 0,
+   "fbx_reimport_worst": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "geom_mm": 0.0001,
+    "scale_err": 0.0,
+    "missing": [],
+    "parent_bad": []
+   },
+   "glb_reimport_PASS": true,
+   "palette_PASS": false,
+   "blender_qa": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "risks": [
+    "3 mm petal knuckle pin gap (documented)",
+    "silhouette closest pair is JumpDrive|Blink (IoU 0.735, below 0.85)"
+   ]
+  },
+  {
+   "id": "R4M_Gyroscope",
+   "part_kind": "R3PartKind.Gyroscope",
+   "game_name": "Żyroskop (MOV004)",
+   "source_blend": "R4M_Gyroscope/R4M_Gyroscope.blend",
+   "sha256_blend": "ce79bd7d23e8532885acf13cbfe610de8f253a89a148e05257cb274e90b95d41",
+   "sha256_fbx": "8809703bfa575265aa4c524144edaa8ac74f0bb70a9f83dc9e4e94604c6207e7",
+   "sha256_glb": "e4bfe5de54873fdd1186e081f74dc3f525bcad26048737ff89d9b979fb2b6984",
+   "clips": [
+    {
+     "name": "Idle",
+     "start": 1,
+     "end": 25,
+     "loop": true
+    },
+    {
+     "name": "SpinUp",
+     "start": 27,
+     "end": 51,
+     "loop": false
+    },
+    {
+     "name": "Stabilize",
+     "start": 53,
+     "end": 101,
+     "loop": true
+    },
+    {
+     "name": "Correct",
+     "start": 103,
+     "end": 127,
+     "loop": false
+    },
+    {
+     "name": "SpinDown",
+     "start": 129,
+     "end": 165,
+     "loop": false
+    }
+   ],
+   "fps": 24,
+   "silhouette": {
+    "closest_pair": "Wheel ↔ Gyroscope",
+    "mean_iou": 0.415,
+    "flagged": false
+   },
+   "triangles": 8874,
+   "topology_PASS": true,
+   "mount_cell": [
+    0,
+    0,
+    0
+   ],
+   "housing_inside_mount_cell": true,
+   "housing_policy": "strict: static housing must stay inside the 0.55 m mount cell",
+   "moving_sweep_cells": 1,
+   "ground_contact": {
+    "runtime_y": null,
+    "deviation_mm": null
+   },
+   "collision_envelope_PASS": null,
+   "animation_clash": 0,
+   "fbx_reimport_worst": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "geom_mm": 0.0001,
+    "scale_err": 0.0,
+    "missing": [],
+    "parent_bad": []
+   },
+   "glb_reimport_PASS": true,
+   "palette_PASS": false,
+   "blender_qa": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "risks": [
+    "runtime placeholder ring d 0.598 exceeds the cell; the model stays inside"
+   ]
+  },
+  {
+   "id": "R4M_MagneticGrapple",
+   "part_kind": "R3PartKind.MagneticGrapple",
+   "game_name": "Hak magnetyczny (MOV006)",
+   "source_blend": "R4M_MagneticGrapple/R4M_MagneticGrapple.blend",
+   "sha256_blend": "510aa7206d97eba8164f7406f376aaa609954eb96efc37aad459e5dd6b649214",
+   "sha256_fbx": "2b882392299906bdbebe2d802d10fdfc0ea21251c18fa3c956b4d17ce4a235a6",
+   "sha256_glb": "6c00a6fa5b3c50108e4bb1875792e6f290f69e61b218963d9e356466f144eb54",
+   "clips": [
+    {
+     "name": "Idle",
+     "start": 1,
+     "end": 25,
+     "loop": true
+    },
+    {
+     "name": "Deploy",
+     "start": 27,
+     "end": 37,
+     "loop": false
+    },
+    {
+     "name": "Fire",
+     "start": 39,
+     "end": 49,
+     "loop": false
+    },
+    {
+     "name": "Retract",
+     "start": 51,
+     "end": 81,
+     "loop": false
+    }
+   ],
+   "fps": 24,
+   "silhouette": {
+    "closest_pair": "CrawlerTrack ↔ MagneticGrapple",
+    "mean_iou": 0.553,
+    "flagged": false
+   },
+   "triangles": 6758,
+   "topology_PASS": true,
+   "mount_cell": [
+    0,
+    0,
+    0
+   ],
+   "housing_inside_mount_cell": false,
+   "housing_policy": "launch tube reaches 0.36 m forward (runtime grapple cylinder ends 0.416 m forward)",
+   "moving_sweep_cells": 5,
+   "ground_contact": {
+    "runtime_y": null,
+    "deviation_mm": null
+   },
+   "collision_envelope_PASS": true,
+   "animation_clash": 0,
+   "fbx_reimport_worst": {
+    "pos_mm": 0.0002,
+    "rot_deg": 0.0,
+    "geom_mm": 0.0003,
+    "scale_err": 0.0,
+    "missing": [],
+    "parent_bad": []
+   },
+   "glb_reimport_PASS": true,
+   "palette_PASS": true,
+   "blender_qa": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "risks": [
+    "cable is a scaled visual, no rope physics; head travel visual only"
+   ]
+  },
+  {
+   "id": "R4M_IndependentSteering",
+   "part_kind": "R3PartKind.IndependentSteering",
+   "game_name": "Moduł niezależnego skrętu (MOV011)",
+   "source_blend": "R4M_IndependentSteering/R4M_IndependentSteering.blend",
+   "sha256_blend": "aa93ad2ef2a84ac924cb1eacaa3e7aade41a646833213ead72dc8823ee955f55",
+   "sha256_fbx": "ac476f97e5bc24e0e230450c4dee382866afb787c58766a4e83be9ebd78ea78c",
+   "sha256_glb": "71b1efced1feba2133ae284136e88d6b9a8a000d1366434f1e7511c97392464c",
+   "clips": [
+    {
+     "name": "Idle",
+     "start": 1,
+     "end": 25,
+     "loop": true
+    },
+    {
+     "name": "SteerLeft",
+     "start": 27,
+     "end": 39,
+     "loop": false
+    },
+    {
+     "name": "SteerRight",
+     "start": 41,
+     "end": 53,
+     "loop": false
+    },
+    {
+     "name": "Slew",
+     "start": 55,
+     "end": 103,
+     "loop": true
+    },
+    {
+     "name": "Return",
+     "start": 105,
+     "end": 117,
+     "loop": false
+    }
+   ],
+   "fps": 24,
+   "silhouette": {
+    "closest_pair": "JumpDrive ↔ IndependentSteering",
+    "mean_iou": 0.599,
+    "flagged": false
+   },
+   "triangles": 5812,
+   "topology_PASS": true,
+   "mount_cell": [
+    0,
+    0,
+    0
+   ],
+   "housing_inside_mount_cell": true,
+   "housing_policy": "strict: static housing must stay inside the 0.55 m mount cell",
+   "moving_sweep_cells": 1,
+   "ground_contact": {
+    "runtime_y": null,
+    "deviation_mm": null
+   },
+   "collision_envelope_PASS": null,
+   "animation_clash": 0,
+   "fbx_reimport_worst": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "geom_mm": 0.0001,
+    "scale_err": 0.0,
+    "missing": [],
+    "parent_bad": []
+   },
+   "glb_reimport_PASS": true,
+   "palette_PASS": true,
+   "blender_qa": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "risks": [
+    "no runtime placeholder exists for this kind; yaw limit visual only"
+   ]
+  }
+ ]
+}

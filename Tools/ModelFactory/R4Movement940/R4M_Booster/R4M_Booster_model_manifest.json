@@ -1,0 +1,91 @@
+{
+ "id": "R4M_Booster",
+ "kind": "R3PartKind.Booster",
+ "game_name": "Booster (MOV001)",
+ "units": "meter 1:1",
+ "axes": "file/Unity +Z forward, +Y up",
+ "cell": "logical 1x1x1 on 0.55 m grid; mount = Socket_Mount_Bottom",
+ "hierarchy": {
+  "R4M_Booster_ROOT": null,
+  "R4M_Booster_Housing": "R4M_Booster_ROOT",
+  "R4M_Booster_Turbine": "R4M_Booster_ROOT",
+  "PetalHinge_1": "R4M_Booster_ROOT",
+  "PetalHinge_2": "R4M_Booster_ROOT",
+  "PetalHinge_3": "R4M_Booster_ROOT",
+  "PetalHinge_4": "R4M_Booster_ROOT",
+  "PetalHinge_5": "R4M_Booster_ROOT",
+  "PetalHinge_6": "R4M_Booster_ROOT",
+  "PetalHinge_7": "R4M_Booster_ROOT",
+  "PetalHinge_8": "R4M_Booster_ROOT",
+  "R4M_Booster_Petal_1": "PetalHinge_1",
+  "R4M_Booster_Petal_2": "PetalHinge_2",
+  "R4M_Booster_Petal_3": "PetalHinge_3",
+  "R4M_Booster_Petal_4": "PetalHinge_4",
+  "R4M_Booster_Petal_5": "PetalHinge_5",
+  "R4M_Booster_Petal_6": "PetalHinge_6",
+  "R4M_Booster_Petal_7": "PetalHinge_7",
+  "R4M_Booster_Petal_8": "PetalHinge_8",
+  "Booster_Flame": "R4M_Booster_ROOT",
+  "Booster_Core": "R4M_Booster_ROOT",
+  "Socket_Mount": "R4M_Booster_ROOT",
+  "Thruster_Nozzle": "R4M_Booster_ROOT"
+ },
+ "node_roles": {
+  "R4M_Booster_ROOT": {
+   "unity_up": "+Y",
+   "unity_forward": "+Z",
+   "unit": "meter",
+   "version": "v1",
+   "weapon_kind": "R3PartKind.Booster",
+   "style": "R41_Turret_v6.1 standard (heavy industrial armour + team colour)",
+   "issue": "#938"
+  },
+  "R4M_Booster_Housing": {
+   "role": "static: pylon, saddle bands, combustion chamber, bell nozzle, intake grille"
+  },
+  "R4M_Booster_Turbine": {
+   "role": "intake turbine: rotates about local Z (file forward axis)"
+  },
+  "R4M_Booster_Petal_1": {
+   "role": "iris petal: rotates about local X (PetalHinge_k); -12 deg closed, +24 deg open"
+  },
+  "R4M_Booster_Petal_2": {
+   "role": "iris petal: rotates about local X (PetalHinge_k); -12 deg closed, +24 deg open"
+  },
+  "R4M_Booster_Petal_3": {
+   "role": "iris petal: rotates about local X (PetalHinge_k); -12 deg closed, +24 deg open"
+  },
+  "R4M_Booster_Petal_4": {
+   "role": "iris petal: rotates about local X (PetalHinge_k); -12 deg closed, +24 deg open"
+  },
+  "R4M_Booster_Petal_5": {
+   "role": "iris petal: rotates about local X (PetalHinge_k); -12 deg closed, +24 deg open"
+  },
+  "R4M_Booster_Petal_6": {
+   "role": "iris petal: rotates about local X (PetalHinge_k); -12 deg closed, +24 deg open"
+  },
+  "R4M_Booster_Petal_7": {
+   "role": "iris petal: rotates about local X (PetalHinge_k); -12 deg closed, +24 deg open"
+  },
+  "R4M_Booster_Petal_8": {
+   "role": "iris petal: rotates about local X (PetalHinge_k); -12 deg closed, +24 deg open"
+  },
+  "Booster_Flame": {
+   "role": "exhaust flame FX (rear, file -Z) - idle scale 0.001"
+  },
+  "Booster_Core": {
+   "role": "chamber glow FX seen through the throat"
+  },
+  "Socket_Mount": {
+   "role": "pylon top face, normal +Y"
+  },
+  "Thruster_Nozzle": {
+   "role": "nozzle exit; local +Z = exhaust (file -Z) -> thrust +Z forward"
+  }
+ },
+ "muzzles": [],
+ "visible_exits_note": "",
+ "notes": [
+  "Force direction: exhaust along file -Z, thrust +Z (matches the runtime booster placed behind the block)."
+ ]
+}
