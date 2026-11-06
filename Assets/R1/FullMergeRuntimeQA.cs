@@ -53,7 +53,25 @@ public sealed class FullMergeRuntimeQA : MonoBehaviour
     void Save()=>File.WriteAllText(Path.Combine(output,"result.json"),JsonUtility.ToJson(result,true));
     void Require(bool value,string text){if(!value)throw new InvalidOperationException(text);result.checks.Add(text);Save();}
     void Go(int next){phase=next;entered=Time.realtimeSinceStartup;Save();}
-    void Capture(string name)=>ScreenCapture.CaptureScreenshot(Path.Combine(output,name+".png"));
+    void Capture(string name)
+    {
+        ScreenCapture.CaptureScreenshot(Path.Combine(output,name+".png"));
+        // Hidden batch-mode screenshots can be black even with an active GPU.
+        // Record the actual game camera separately; this image excludes IMGUI.
+        if(!Application.isBatchMode||!(name=="00-garage"||name=="01-activity-0"))return;
+        var camera=Camera.main;if(camera==null)return;
+        var previousTarget=camera.targetTexture;var previousActive=RenderTexture.active;
+        var target=new RenderTexture(1280,720,24);Texture2D image=null;
+        try
+        {
+            target.Create();camera.targetTexture=target;camera.Render();RenderTexture.active=target;
+            image=new Texture2D(target.width,target.height,TextureFormat.RGB24,false);
+            image.ReadPixels(new Rect(0,0,target.width,target.height),0,0);image.Apply();
+            File.WriteAllBytes(Path.Combine(output,name+"-camera.png"),image.EncodeToPNG());
+        }
+        catch(Exception e){Debug.LogWarning("Offscreen QA camera capture failed: "+e.Message);}
+        finally{camera.targetTexture=previousTarget;RenderTexture.active=previousActive;if(image!=null)Destroy(image);target.Release();Destroy(target);}
+    }
     bool Live=>run!=null&&!run.Transitioning&&run.Player!=null&&(run.Progress.State==R1RunState.Combat||run.Progress.State==R1RunState.TestDrive);
     void Bind(){body=run.Player.GetComponent<Rigidbody>();drive=body.GetComponent<R6VehicleDrive>();assembly=body.GetComponent<R3VehicleAssembly>();previous=body.position;
         run.Player.Controller.enabled=mode=="Camera";follow=FindFirstObjectByType<P12PipelineSafeCamera>();Require(follow.ReceiverRig!=null&&!follow.ReceiverRig.enabled,"One delegated camera owner");
