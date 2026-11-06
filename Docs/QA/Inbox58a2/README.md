@@ -17,3 +17,5 @@ Full PlayMode on exact fdf290a406cd93adfea1e3d73667f03d7352c9d7: 478 passed, 0 f
 
 An experimental virtual-WASD six-fight pilot was attempted in a separate worktree; Unity failed licensing initialization and crashed before reaching the test, exit -536870911, no XML. Status NOT_RUN, no game result. Pilot changes remain unverified and are not in fdf.
 
+
+Full EditMode at exact fdf290a406cd93adfea1e3d73667f03d7352c9d7: 1386 PASS / 6 FAIL / 1 SKIP, exit 2. Full XML, sanitized compressed Editor log and original hashes included. Failures: B01-24 stale reflection signature; keyboard-device firing fixture; stationary automatic six-fight pilot lost all wheels at fight 4; enemy boundary movement; barrier contact; and W8 wheel fallback. The skipped case depends on an unresolved cover policy. Investigation and focused retests continue.
