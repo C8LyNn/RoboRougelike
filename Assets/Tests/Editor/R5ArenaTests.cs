@@ -21,7 +21,14 @@ public class R5ArenaTests
         {
             run.Arena.Build(kind);yield return null;
             var colliders=run.Arena.Layout.GetComponentsInChildren<Collider>();Assert.That(colliders.Length,Is.GreaterThanOrEqualTo(6));
-            Assert.That(colliders.All(c=>c.enabled&&!c.isTrigger),Is.True);
+            var pads=run.Arena.Layout.GetComponentsInChildren<B01.MapJumpPad001.MapJumpPad>();
+            Assert.That(pads.Length,Is.EqualTo(kind==R5ArenaKind.SalvageYard?1:0),
+                "only Salvage Yard enables the new gameplay jump pad");
+            Assert.That(colliders.Count(c=>c.isTrigger),Is.EqualTo(pads.Length),
+                "no unexpected trigger besides the intentional physical pad");
+            Assert.That(colliders.Where(c=>c.GetComponent<B01.MapJumpPad001.MapJumpPad>()==null)
+                .All(c=>c.enabled&&!c.isTrigger),Is.True,
+                "walls/cover remain real solid colliders, not new invisible triggers");
             foreach(var c in colliders){Assert.That(c.bounds.Contains(run.Arena.PlayerSpawn),Is.False);Assert.That(c.bounds.Contains(new Vector3(0,.8f,17)),Is.False);}
         }
         run.Player.MoveTo(new Vector3(-17,.7f,23),Quaternion.identity);

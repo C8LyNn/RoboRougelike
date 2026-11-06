@@ -43,6 +43,9 @@ namespace RoboRougelike.R5
                 Box("Łącznik wschodni",new Vector3(31,1.5f,0),new Vector3(3,3,14),true);
             }
             Hazard(new Vector3(-6,0,-6));Hazard(new Vector3(6,0,8));
+            // W29: one real physical jump pad in the EXISTING playable Salvage Yard.
+            // New levels may place this modular node through the future map generator.
+            if(kind==R5ArenaKind.SalvageYard)JumpPad(new Vector3(7f,0f,-16f));
             // Floor tint is an instance property, never a modification to the scene asset.
             var floor=GameObject.Find("P12_Ground")?.GetComponent<Renderer>();
             if(floor!=null){var properties=new MaterialPropertyBlock();properties.SetColor("_BaseColor",color*.6f);floor.SetPropertyBlock(properties);}
@@ -53,6 +56,24 @@ namespace RoboRougelike.R5
             var obj=GameObject.CreatePrimitive(PrimitiveType.Cube);obj.name=name;obj.transform.SetParent(Layout,false);
             obj.transform.localPosition=position;obj.transform.localScale=size;obj.GetComponent<Renderer>().sharedMaterial=material;
             if(destructible)obj.AddComponent<RoboRougelike.PackageIntegration.RRLCoverAdapter>();
+        }
+        private void JumpPad(Vector3 position)
+        {
+            var pad=new GameObject("MAP-JUMPPAD-001 • fizyczne wybicie");
+            pad.transform.SetParent(Layout,false);pad.transform.localPosition=position;
+            var area=pad.AddComponent<BoxCollider>();area.isTrigger=true;
+            area.center=new Vector3(0f,.28f,0f);area.size=new Vector3(1f,.55f,1f);
+            var launch=pad.AddComponent<B01.MapJumpPad001.MapJumpPad>();
+            launch.Configure(8.5f,2f,1.25f);
+            var visual=GameObject.CreatePrimitive(PrimitiveType.Cube);
+            visual.name="Podest jump pad • tylko wizualny";
+            visual.transform.SetParent(pad.transform,false);
+            visual.transform.localPosition=new Vector3(0f,.08f,0f);
+            visual.transform.localScale=new Vector3(1f,.16f,1f);
+            visual.GetComponent<Renderer>().sharedMaterial=material;
+            // The parent's trigger alone is authoritative. No accidental solid lip.
+            var visualCollider=visual.GetComponent<Collider>();
+            visualCollider.enabled=false;Destroy(visualCollider);
         }
         private void Hazard(Vector3 position)
         {
