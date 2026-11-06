@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="5" result="Passed" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-06 16:27:31Z" end-time="2026-11-06 16:27:31Z" duration="0,4934166">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1393" result="Passed" start-time="2026-11-06 16:27:31Z" end-time="2026-11-06 16:27:31Z" duration="0.493417" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1731" name="Assembly-CSharp-Editor.dll" fullname="[USER_HOME]/Desktop/Prototypy/RoboRougelike-W27-Saw/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="600" result="Passed" start-time="2026-11-06 16:27:31Z" end-time="2026-11-06 16:27:31Z" duration="0.423903" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="51448" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="1069" name="EnergyCombatRefinementTests" fullname="EnergyCombatRefinementTests" classname="EnergyCombatRefinementTests" runstate="Runnable" testcasecount="19" result="Passed" start-time="2026-11-06 16:26:13Z" end-time="2026-11-06 16:26:13Z" duration="0.371277" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1080" name="StandardStarterCanFireBothRealGunsWithoutHittingItsOwnConstruction" fullname="EnergyCombatRefinementTests.StandardStarterCanFireBothRealGunsWithoutHittingItsOwnConstruction" methodname="StandardStarterCanFireBothRealGunsWithoutHittingItsOwnConstruction" classname="EnergyCombatRefinementTests" runstate="Runnable" seed="1105407869" result="Passed" start-time="2026-11-06 16:26:10Z" end-time="2026-11-06 16:26:13Z" duration="3.016195" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1184" name="MOV009PhysicsAcceptanceTests" fullname="MOV009PhysicsAcceptanceTests" classname="MOV009PhysicsAcceptanceTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-11-06 16:26:16Z" end-time="2026-11-06 16:27:05Z" duration="48.394453" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1188" name="ActualWasdDrivesEveryStarterAcrossSixBlockTerrainCases" fullname="MOV009PhysicsAcceptanceTests.ActualWasdDrivesEveryStarterAcrossSixBlockTerrainCases" methodname="ActualWasdDrivesEveryStarterAcrossSixBlockTerrainCases" classname="MOV009PhysicsAcceptanceTests" runstate="Runnable" seed="1003070312" result="Passed" start-time="2026-11-06 16:26:13Z" end-time="2026-11-06 16:27:05Z" duration="51.318578" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 62 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 62 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 89 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 89 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 62 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 62 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 89 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 89 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+MOV009 TERRAIN Flat Light z=57,64 maxY=0,67 maxVy=0,07 maxTilt=0,81
+MOV009 TERRAIN Flat Standard z=44,22 maxY=0,66 maxVy=0,05 maxTilt=0,67
+MOV009 TERRAIN Flat Heavy z=39,59 maxY=0,66 maxVy=0,04 maxTilt=0,40
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 62 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 62 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 89 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 89 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 62 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 62 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 89 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 89 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+MOV009 TERRAIN LowSteps Light z=55,70 maxY=1,06 maxVy=2,05 maxTilt=12,95
+MOV009 TERRAIN LowSteps Standard z=41,82 maxY=0,97 maxVy=1,94 maxTilt=9,72
+MOV009 TERRAIN LowSteps Heavy z=37,38 maxY=0,94 maxVy=1,41 maxTilt=4,51
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 62 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 62 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 89 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 89 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 62 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 62 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 89 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 89 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+MOV009 TERRAIN Uneven Light z=49,16 maxY=1,04 maxVy=2,45 maxTilt=11,60
+MOV009 TERRAIN Uneven Standard z=41,23 maxY=1,05 maxVy=2,27 maxTilt=12,46
+MOV009 TERRAIN Uneven Heavy z=38,01 maxY=0,90 maxVy=1,53 maxTilt=5,89
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 62 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 62 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 89 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 89 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 62 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 62 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 89 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 89 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+MOV009 TERRAIN Slope Light z=54,42 maxY=1,37 maxVy=1,95 maxTilt=14,49
+MOV009 TERRAIN Slope Standard z=37,58 maxY=1,39 maxVy=1,93 maxTilt=12,20
+MOV009 TERRAIN Slope Heavy z=32,68 maxY=1,39 maxVy=2,04 maxTilt=11,85
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 62 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 62 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 89 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 89 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 62 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 62 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 89 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 89 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+MOV009 TERRAIN Edge Light z=54,80 maxY=1,21 maxVy=1,97 maxTilt=12,55
+MOV009 TERRAIN Edge Standard z=38,32 maxY=1,23 maxVy=1,77 maxTilt=8,99
+MOV009 TERRAIN Edge Heavy z=31,35 maxY=1,22 maxVy=1,68 maxTilt=8,72
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 62 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 62 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 89 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 89 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 62 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 62 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 89 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 89 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+MOV009 TERRAIN Adjacent Light z=49,72 maxY=1,65 maxVy=4,42 maxTilt=14,18
+MOV009 TERRAIN Adjacent Standard z=36,59 maxY=0,95 maxVy=2,22 maxTilt=3,20
+MOV009 TERRAIN Adjacent Heavy z=38,05 maxY=0,90 maxVy=1,50 maxTilt=5,71
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1211" name="MOVSeriesDriveTests" fullname="MOVSeriesDriveTests" classname="MOVSeriesDriveTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-11-06 16:27:08Z" end-time="2026-11-06 16:27:21Z" duration="13.382764" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1214" name="HoverLiftsAndStrafesOnAllClassesWithoutSuspensionDoubleLift" fullname="MOVSeriesDriveTests.HoverLiftsAndStrafesOnAllClassesWithoutSuspensionDoubleLift" methodname="HoverLiftsAndStrafesOnAllClassesWithoutSuspensionDoubleLift" classname="MOVSeriesDriveTests" runstate="Runnable" seed="375649191" result="Passed" start-time="2026-11-06 16:27:05Z" end-time="2026-11-06 16:27:21Z" duration="16.327674" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 28 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 28 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 28 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 28 structural block(s).
+MOV007 actual Light mass=322 height=1,000 pods=4
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 64 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 64 structural block(s).
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 64 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 64 structural block(s).
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+MOV007 actual Standard mass=626 height=1,000 pods=4
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (-1, 2, 0). Keeping the first block.
+[Pack 18] Duplicate structural grid coordinate (1, 2, 0). Keeping the first block.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 89 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 89 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 89 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 89 structural block(s).
+MOV007 actual Heavy mass=842 height=1,000 pods=4
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1218" name="MOVSeriesGarageTests" fullname="MOVSeriesGarageTests" classname="MOVSeriesGarageTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-11-06 16:27:24Z" end-time="2026-11-06 16:27:28Z" duration="4.063431" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1223" name="HoverKeyboardMovesTurnsAndSuppressesRequestedSuspension" fullname="MOVSeriesGarageTests.HoverKeyboardMovesTurnsAndSuppressesRequestedSuspension" methodname="HoverKeyboardMovesTurnsAndSuppressesRequestedSuspension" classname="MOVSeriesGarageTests" runstate="Runnable" seed="896692260" result="Passed" start-time="2026-11-06 16:27:21Z" end-time="2026-11-06 16:27:28Z" duration="7.103275" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 21 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 21 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 25 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 25 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 26 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 26 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 27 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 27 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 28 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 28 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 29 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 29 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 29 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 29 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 29 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 29 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+MOV007 input state=TestDrive paused=False scale=1 mode=Hover control=True enabled=True supports=4 gravity=True constraints=None y=1,000
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1522" name="RRLW34EffectsTests" fullname="RRLW34EffectsTests" classname="RRLW34EffectsTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-11-06 16:27:31Z" end-time="2026-11-06 16:27:31Z" duration="0.390562" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1523" name="InventoryIsInactiveAndAllMountedEffectsReachLiveWeaponsHpAndOmni" fullname="RRLW34EffectsTests.InventoryIsInactiveAndAllMountedEffectsReachLiveWeaponsHpAndOmni" methodname="InventoryIsInactiveAndAllMountedEffectsReachLiveWeaponsHpAndOmni" classname="RRLW34EffectsTests" runstate="Runnable" seed="814376943" result="Passed" start-time="2026-11-06 16:27:28Z" end-time="2026-11-06 16:27:31Z" duration="3.196642" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 65 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 65 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 65 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 65 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 65 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 65 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+Saving results to: [USER_HOME]/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

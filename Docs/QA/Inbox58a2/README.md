@@ -1,0 +1,9 @@
+# Windows candidate 58a22184 and targeted tests — HOLD
+
+Windows build source `58a22184662bc1829007481b61a84b1d450276ae`; Draft #937. Downloadable ZIP 39,663,834 bytes; local SHA256 `f010342fc1100e328bd044a7ebc55f76cc1278ebcfadb5aaa706ade581ae8360`. Build exit 0; extracted executable matches build. Player weapons/energy, API-controlled combat/rewards and cold save/load in separate processes exit 0. Three actual force-driven R3/R6 Player probes Light/Standard/Heavy exit 0 with contacts 4/6/8. Activities selected/settled through API, not human play or a full physical run. Offscreen images exclude IMGUI.
+
+Focused.xml: 5/5 real Unity EditMode PASS on source working tree immediately before commit 58a22184, including both physical gun projectiles, six types of terrain for three starters, hover-to-wheels actual lift and keyboard controls. BeforeBalance.xml documents 4/5 before centering the guns, including repeatable 54.9-degree Standard peak on steps; afterward peak was 9.72 degrees with the same 45-degree limit. EarlierSuspension.xml records 21/23 tests on an earlier working state; one stale mass fixture and one terrain failure existed then. Do not add counts from overlapping runs. Fixture-results.xml: 19/19 PASS after additional test-only adjustments later committed as 4ab28e59; not a final full-suite result.
+
+Full PlayMode 478/478 PASS is from prior 7e37e1e0 (see sibling Inbox7e37), not 58a22184 or 4ab28e59. The complete EditMode suite is not yet PASS. Several older fixtures, one B01-24 fixture, a 180-part construction scenario, and a full six-encounter physical pilot need further investigation. Human testing is NOT_RUN. No G1 or release approval.
+
+Original hashes are recorded; logs redact local home paths and Unity session metadata. Screenshots are diagnostic render textures, not UI captures.
