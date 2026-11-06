@@ -13,7 +13,18 @@ public sealed class WeaponTypeLimitTests
 {
     static R3VehicleModel Model()
     {
-        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Heavy));
+        // A deliberately spacious, connected vehicle isolates the weapon-type
+        // rule from the evolving starter catalog and its mounted guns.
+        var design=new R3VehicleDesign {Name="Weapon limit fixture",Speed=7.5f,TurnSpeed=82,CoreHp=100};
+        for(int x=-6;x<=6;x++)
+        {
+            design.Parts.Add(new R3PartState(new Vector3Int(x,0,0),x==0?R3PartKind.Core:R3PartKind.Armor));
+            for(int z=-4;z<=4;z++)design.Parts.Add(new R3PartState(new Vector3Int(x,1,z),R3PartKind.Armor));
+        }
+        design.Parts.Add(new R3PartState(new Vector3Int(-4,0,1),R3PartKind.Wheel));
+        design.Parts.Add(new R3PartState(new Vector3Int(4,0,1),R3PartKind.Wheel));
+        design.Parts.Add(new R3PartState(new Vector3Int(0,2,-4),R3PartKind.Gun));
+        var model=new R3VehicleModel(design);
         model.Award(10000);
         return model;
     }
@@ -99,7 +110,8 @@ public sealed class WeaponTypeLimitTests
         R1VehicleState rig=null;
         try
         {
-            var cells=(from z in new[]{-4,-2,2,4} from x in new[]{-3,-1,1,3} select new Vector3Int(x,2,z)).Take(11).ToArray();
+            // One forward-facing row gives each gun a real unobstructed lane.
+            var cells=Enumerable.Range(-6,12).Where(x=>x!=0).Select(x=>new Vector3Int(x,2,-4)).ToArray();
             for(int i=0;i<cells.Length;i++)
             {
                 rig=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(0,20,0),Quaternion.identity);
@@ -111,7 +123,7 @@ public sealed class WeaponTypeLimitTests
             }
             rig=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(0,20,0),Quaternion.identity);
             Assert.That(rig.GetComponent<R3VehicleAssembly>().Parts.Count(p=>p.Kind==R3PartKind.Gun),Is.EqualTo(12));
-            Assert.That(model.PlacementError(new Vector3Int(3,2,4),R3PartKind.Gun,false,R4WeaponKind.Heavy),Is.Not.Null);
+            Assert.That(model.PlacementError(new Vector3Int(6,2,-4),R3PartKind.Gun,false,R4WeaponKind.Heavy),Is.Not.Null);
         }
         finally
         {

@@ -20,8 +20,11 @@ public sealed class GarageEditFreedomTests
     [Test] public void ModelCanRemoveLastGunAndEveryWheelButCannotDeploy()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
-        var gun=model.Parts.First(p=>p.Kind==R3PartKind.Gun);
-        Assert.That(model.Remove(gun.Cell),Is.True,"removing the last gun is a valid garage edit");
+        var guns=model.Parts.Where(p=>p.Kind==R3PartKind.Gun).ToArray();
+        Assert.That(guns.Length,Is.EqualTo(2));
+        Assert.That(model.Remove(guns[0].Cell),Is.True);
+        Assert.That(model.CanDeploy,Is.True,"one working gun is sufficient");
+        Assert.That(model.Remove(guns[1].Cell),Is.True,"removing the last gun is a valid garage edit");
         Assert.That(model.CanDeploy,Is.False);Assert.That(model.DeployError,Does.Contain("broni"));
         foreach(var wheel in model.Parts.Where(p=>p.Kind==R3PartKind.Wheel).ToArray())
             Assert.That(model.Remove(wheel.Cell),Is.True,"every wheel can be removed");
@@ -92,7 +95,7 @@ public sealed class GarageEditFreedomTests
         Assert.That(run.VehicleModel.Parts.Count,Is.EqualTo(beforeParts));
         Assert.That(QaSinglePart(run.VehicleModel.Inventory,id).Id,Is.EqualTo(id));
         // Exterior attachment remains available, never disable the saw globally.
-        var exterior=new Vector3Int(0,1,4);
+        var exterior=new Vector3Int(0,1,3);
         // Real physical 260-collider stress for the 256-hit fail-closed query.
         var realPlayer=run.Player.transform;
         var blade=realPlayer.TransformPoint((Vector3)exterior*.55f+
@@ -141,7 +144,7 @@ public sealed class GarageEditFreedomTests
         Assert.That(run.GarageRemove(oldGun.Cell),Is.True);
         // The original right-front wheel's protruding tire overlaps the new
         // side-mount cell. Remove it legitimately; do not disable any Collider.
-        var wheel=QaWheelAt(run.VehicleModel,new Vector3Int(2,0,1));
+        var wheel=QaWheelAt(run.VehicleModel,new Vector3Int(2,0,2));
         Assert.That(run.GarageRemove(wheel.Cell),Is.True);
         var owned=QaSinglePart(run.VehicleModel.Inventory,sawId);
         owned.Weapon=RoboRougelike.R4.R4WeaponKind.RotarySaw;
@@ -192,6 +195,8 @@ public sealed class GarageEditFreedomTests
         Assert.That(run.SelectVehicle(R3VehicleKind.Standard),Is.True);
         Assert.That(run.OpenSandboxGarage(),Is.True);
         var model=run.VehicleModel;
+        var extraGun=model.Parts.Where(p=>p.Kind==R3PartKind.Gun).Skip(1).Single();
+        Assert.That(run.GarageRemove(extraGun.Cell),Is.True,"isolate the legacy saw as the last mounted gun");
         var gun=QaFirstGun(model);
         string id=gun.Id;
         // Physically consistent legacy/stale damaged mount fixture: the old
@@ -223,9 +228,10 @@ public sealed class GarageEditFreedomTests
         EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);yield return new EnterPlayMode();
         var until=Time.realtimeSinceStartup+15;while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<until)yield return null;
         var run=R1RunController.Instance;Assert.That(run.PrepareUnifiedRun(),Is.True);
-        var gun=run.VehicleModel.Parts.First(p=>p.Kind==R3PartKind.Gun);Assert.That(run.GarageRemove(gun.Cell),Is.True);
+        var guns=run.VehicleModel.Parts.Where(p=>p.Kind==R3PartKind.Gun).ToArray();
+        Assert.That(guns.Length,Is.EqualTo(2));foreach(var gun in guns)Assert.That(run.GarageRemove(gun.Cell),Is.True);
         Assert.That(run.StartNextEncounter(),Is.False);Assert.That(run.CanChooseReactorDefense,Is.False);
-        Assert.That(run.GarageMount(gun.Id,gun.Cell,gun.RotationQuarterTurns),Is.True);
+        foreach(var gun in guns)Assert.That(run.GarageMount(gun.Id,gun.Cell,gun.RotationQuarterTurns),Is.True);
         Assert.That(run.VehicleModel.CanDeploy,Is.True);Assert.That(run.StartNextEncounter(),Is.True);
         yield return new ExitPlayMode();
     }
@@ -234,7 +240,8 @@ public sealed class GarageEditFreedomTests
         EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);yield return new EnterPlayMode();
         var until=Time.realtimeSinceStartup+15;while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<until)yield return null;
         var run=R1RunController.Instance;Assert.That(run.OpenMapEditor(),Is.True);run.MapEditorGarage();
-        var gun=run.VehicleModel.Parts.First(p=>p.Kind==R3PartKind.Gun);Assert.That(run.GarageRemove(gun.Cell),Is.True);
+        var guns=run.VehicleModel.Parts.Where(p=>p.Kind==R3PartKind.Gun).ToArray();
+        Assert.That(guns.Length,Is.EqualTo(2));foreach(var gun in guns)Assert.That(run.GarageRemove(gun.Cell),Is.True);
         Assert.That(run.ReturnToMapEditorFromGarage(),Is.True);Assert.That(run.MapEditing,Is.True);
         run.ToggleMapFloor();
         Assert.That(run.EditorDraft.Place(RoboRougelike.MapEditor.MapItemKind.Spawn,0,-3,0),Is.True);
@@ -265,9 +272,10 @@ public sealed class GarageEditFreedomTests
         var until=Time.realtimeSinceStartup+15;
         while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<until)yield return null;
         var run=R1RunController.Instance;Assert.That(run,Is.Not.Null);Assert.That(run.OpenSandboxGarage(),Is.True);
-        var gun=run.VehicleModel.Parts.First(p=>p.Kind==R3PartKind.Gun);
+        var guns=run.VehicleModel.Parts.Where(p=>p.Kind==R3PartKind.Gun).ToArray();
+        Assert.That(guns.Length,Is.EqualTo(2));
         var wheels=run.VehicleModel.Parts.Where(p=>p.Kind==R3PartKind.Wheel).ToArray();int scrap=run.VehicleModel.Scrap;
-        Assert.That(run.GarageRemove(gun.Cell),Is.True,"last gun removed with live garage rebuild");
+        foreach(var gun in guns)Assert.That(run.GarageRemove(gun.Cell),Is.True,"guns removed with live garage rebuild");
         Assert.That(run.Player,Is.Not.Null);Assert.That(run.VehicleModel.CanDeploy,Is.False);
         foreach(var wheel in wheels)
             Assert.That(run.GarageRemove(wheel.Cell),Is.True,"wheel removed with live garage rebuild");
@@ -275,7 +283,7 @@ public sealed class GarageEditFreedomTests
         Assert.That(run.VehicleModel.Parts.Any(p=>p.Kind==R3PartKind.Gun||p.Kind==R3PartKind.Wheel),Is.False);
         R1EncounterManager.ClearTransientObjects();run.Player.GetComponent<R3VehicleAssembly>().FireGuns();
         Assert.That(Object.FindObjectsByType<RoboRougelike.R4.R4ProjectileOrigin>(FindObjectsSortMode.None),Is.Empty,"no phantom gun");
-        Assert.That(run.GarageMount(gun.Id,gun.Cell,gun.RotationQuarterTurns),Is.True,"remount owned gun");
+        foreach(var gun in guns)Assert.That(run.GarageMount(gun.Id,gun.Cell,gun.RotationQuarterTurns),Is.True,"remount owned gun");
         foreach(var wheel in wheels)Assert.That(run.GarageMount(wheel.Id,wheel.Cell,wheel.RotationQuarterTurns),Is.True,"remount owned wheel "+wheel.Cell);
         Assert.That(run.VehicleModel.CanDeploy,Is.True);Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));
         Assert.That(run.EnterTestRange(),Is.True);yield return null;
