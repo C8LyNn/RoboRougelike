@@ -1,0 +1,16 @@
+{
+  "source_pr": 939,
+  "source_commit": "db2e0c3e1213341c87443c96643ca8f2be708648",
+  "source_branch": "art/938-r4-weapon-models",
+  "models": {
+    "Basic": "30d3eb779681cebc57f25460feaee3f021836709",
+    "Heavy": "342962bdb928c0c5755e0243454c3a52319c1720",
+    "Shotgun": "bf9083d052bb7abaa8a5209e14bc0105e7f7ac5f",
+    "Railgun": "7272c5ac1807faea7f126c621989eea6caa24c5e",
+    "BeamCutter": "5065f5d559b44ddd188fadb592b5bdd75d5d69f3",
+    "RocketLauncher": "06e41fb49a0a43c1d3b8da2f4e0ea77477b49dce",
+    "RotarySaw": "26a1d07ab3d10f618be5cb538340e7c0235df781",
+    "EmpEmitter": "9bb0fb10ed6f0c2c86b770f4c72a69cfdb9a3056"
+  },
+  "status": "BLENDER_PASS x8; UNITY_NOT_RUN"
+}

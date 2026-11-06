@@ -1,2 +1,0 @@
-R4W_RocketLauncher_Rocket_3: filling 12 boundary edges
-R4W_RocketLauncher_Rocket_4: filling 12 boundary edges

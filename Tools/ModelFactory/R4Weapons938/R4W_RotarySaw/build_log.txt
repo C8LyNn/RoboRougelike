@@ -1,2 +1,0 @@
-R4W_RotarySaw_Pitch: filling 5 boundary edges
-R4W_RotarySaw_Blade: filling 6 boundary edges
