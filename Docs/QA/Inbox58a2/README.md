@@ -37,3 +37,6 @@ BumperRegression: 20 PASS / 2 FAIL on working tree f104 plus two armor blocks an
 
 SingleBumper experiment: 4/4 PASS, exit 0 on isolated fdf working tree with one Armor at (0,1,3). 9 m/s barrier peak speed 9, spin .16 rad/s, height 50.6500–50.6527, first impact on Armor; acceleration Light/Standard/Heavy 4.078174/2.019628/1.769371, Standard's .250257 m/s lead was very close to the existing .25 threshold. Twin physical gun shots and all 18 terrain traversals passed. This is not a full release regression.
 
+
+SingleBumperGameplay: 1 PASS / 3 FAIL, exit 2 on a working tree with one bumper and updated starter counts. The automated moving pilot did NOT complete fight 3 within 110 seconds (still Combat with 2 enemies), despite six victories in a separate API-damage garage regression; do not confuse these runs. Two saw tests failed because their previous fixture cell is occupied by the bumper; relocation under test. Single-bumper production is uncommitted and not present in Drive build 58a.
+
