@@ -25,7 +25,9 @@ public class RRLW6SawPhysicalTests
         Assert.That(Enum.TryParse("RotarySaw",out R4WeaponKind kind),Is.True,"WPN005 missing actual weapon");
         var run=R1RunController.Instance;var palette=run.GetComponent<R3VisualPalette>();
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
-        var state=model.Parts.First(p=>p.Kind==R3PartKind.Gun);state.Weapon=kind;
+        var state=model.Parts.First(p=>p.Kind==R3PartKind.Gun);
+        Assert.That(model.Remove(state.Cell),Is.True);state.Weapon=kind;
+        Assert.That(model.Mount(state.Id,new Vector3Int(0,1,3)),Is.True,"The saw needs a connected exterior mount with clear disc space.");
         var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(100,4,100),Quaternion.identity);
         // A static cutting target needs a supported rig; gravity must remain enabled.
         var platform=GameObject.CreatePrimitive(PrimitiveType.Cube);platform.transform.position=new Vector3(100,2.85f,100);platform.transform.localScale=new Vector3(12,1,12);

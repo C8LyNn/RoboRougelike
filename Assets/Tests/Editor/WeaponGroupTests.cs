@@ -35,7 +35,7 @@ public sealed class WeaponGroupTests
     {
         EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);yield return new EnterPlayMode();
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
-        model.Parts.Add(new R3PartState(new Vector3Int(1,2,0),R3PartKind.Gun){Weapon=R4WeaponKind.Automatic});
+        model.Parts.Add(new R3PartState(new Vector3Int(0,2,2),R3PartKind.Gun){Weapon=R4WeaponKind.Automatic});
         var paletteObject=new GameObject("palette");var palette=paletteObject.AddComponent<R3VisualPalette>();var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
         for(int i=0;i<palette.Parts.Length;i++)palette.Parts[i]=material;
         for(int i=0;i<palette.Weapons.Length;i++)palette.Weapons[i]=material;
@@ -59,19 +59,23 @@ public sealed class WeaponGroupTests
     {
         EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);yield return new EnterPlayMode();
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Heavy));
-        // Keep all guns attached to a structural row with clear firing lanes.
-        // The old staggered rows put barrels directly behind other guns.
+        // Build exactly twelve guns in a supported row with clear firing lanes.
+        // The heavy starter itself now contains three guns, rather than one.
+        model.Parts.RemoveAll(p=>p.Kind==R3PartKind.Gun);
         for(int x=-6;x<=5;x++)
-            if(x!=0) {
-                if(x < -3 || x > 3)model.Parts.Add(new R3PartState(new Vector3Int(x,1,-3),R3PartKind.Armor));
-                int index=x<0?x+6:x+5;
-                model.Parts.Add(new R3PartState(new Vector3Int(x,2,-3),R3PartKind.Gun){Weapon=index%2==0?R4WeaponKind.Automatic:R4WeaponKind.Basic});
-            }
+        {
+            if(x < -3 || x > 3)model.Parts.Add(new R3PartState(new Vector3Int(x,0,-2),R3PartKind.Armor));
+            if(x < -2 || x > 2)model.Parts.Add(new R3PartState(new Vector3Int(x,1,-2),R3PartKind.Armor));
+            int index=x+6;
+            model.Parts.Add(new R3PartState(new Vector3Int(x,2,-2),R3PartKind.Gun){Weapon=index%2==0?R4WeaponKind.Automatic:R4WeaponKind.Basic});
+        }
         var paletteObject=new GameObject("palette");var palette=paletteObject.AddComponent<R3VisualPalette>();var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
         for(int i=0;i<palette.Parts.Length;i++)palette.Parts[i]=material;
         for(int i=0;i<palette.Weapons.Length;i++)palette.Weapons[i]=material;
         var rig=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(0,20,0),Quaternion.identity);yield return null;
         var assembly=rig.GetComponent<R3VehicleAssembly>();R1EncounterManager.ClearTransientObjects();
+        if(model.WeaponGroupA!=R4WeaponKind.Basic)model.SwapWeaponGroups();
+        Assert.That(model.WeaponGroupA,Is.EqualTo(R4WeaponKind.Basic));Assert.That(model.WeaponGroupB,Is.EqualTo(R4WeaponKind.Automatic));
         assembly.FireGroup(false);
         Assert.That(Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Count(p=>p.Weapon==R4WeaponKind.Basic),Is.EqualTo(6));
         Assert.That(Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Count(p=>p.Weapon==R4WeaponKind.Automatic),Is.Zero);
@@ -86,7 +90,7 @@ public sealed class WeaponGroupTests
         EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
         yield return new EnterPlayMode();
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
-        model.Parts.Add(new R3PartState(new Vector3Int(1,2,0),R3PartKind.Gun){Weapon=R4WeaponKind.Automatic});
+        model.Parts.Add(new R3PartState(new Vector3Int(0,2,2),R3PartKind.Gun){Weapon=R4WeaponKind.Automatic});
         var paletteObject=new GameObject("palette");var palette=paletteObject.AddComponent<R3VisualPalette>();
         var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
         for(int i=0;i<palette.Parts.Length;i++)palette.Parts[i]=material;

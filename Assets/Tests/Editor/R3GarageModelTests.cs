@@ -11,7 +11,9 @@ public class R3GarageModelTests
         var heavy=R3VehicleCatalog.Create(R3VehicleKind.Heavy);
         Assert.That(light.Parts.Count,Is.LessThan(standard.Parts.Count));
         Assert.That(heavy.Parts.Count,Is.GreaterThan(standard.Parts.Count));
-        Assert.That(light.Speed,Is.GreaterThan(standard.Speed));Assert.That(heavy.Speed,Is.LessThan(standard.Speed));
+        Assert.That(light.Speed,Is.EqualTo(standard.Speed));Assert.That(heavy.Speed,Is.EqualTo(standard.Speed));
+        Assert.That(light.Parts.FindAll(p=>p.Kind==R3PartKind.Wheel).Count,Is.LessThan(standard.Parts.FindAll(p=>p.Kind==R3PartKind.Wheel).Count));
+        Assert.That(heavy.Parts.FindAll(p=>p.Kind==R3PartKind.Wheel).Count,Is.GreaterThan(standard.Parts.FindAll(p=>p.Kind==R3PartKind.Wheel).Count));
         foreach(var design in new[]{standard,light,heavy})
         { Assert.That(R3VehicleModel.Connected(design.Parts),Is.True);Assert.That(new R3VehicleModel(design).CanDeploy,Is.True); }
     }

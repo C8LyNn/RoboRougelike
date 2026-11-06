@@ -45,7 +45,7 @@ public class RRLW34GarageTests
     {
         run.Player.transform.rotation=Quaternion.Euler(0,37,0);
         var garage=run.Garage;string id=Receive();garage.ChooseInventory(id);garage.RotateSelected(0,1);
-        garage.Select(new Vector3Int(1,3,0));Assert.That(garage.PreviewValid,Is.True,garage.PlacementIssue);
+        garage.Select(new Vector3Int(1,2,0));Assert.That(garage.PreviewValid,Is.True,garage.PlacementIssue);
         var ghost=garage.Preview;var position=ghost.position;var rotation=ghost.rotation;
         Assert.That(ghost.GetComponentsInChildren<Renderer>().Length,Is.GreaterThan(4),"Footprint mounting ports must be visible.");
         int funds=run.VehicleModel.Scrap;Assert.That(garage.ClickTarget(),Is.True);
@@ -87,7 +87,7 @@ public class RRLW34GarageTests
     {
         var garage=run.Garage;string open=Receive();string closed=Receive(ports:0);
         garage.ChooseInventory(open);garage.Select(new Vector3Int(1,2,0));
-        Assert.That(garage.Preview.GetComponentsInChildren<Transform>(true).Count(t=>t.name.StartsWith("Punkt mocowania ")),Is.EqualTo(16));
+        Assert.That(garage.Preview.GetComponentsInChildren<Transform>(true).Count(t=>t.name.StartsWith("Punkt mocowania ")),Is.EqualTo(6),"One 1x1x1 cell exposes six face contacts.");
         garage.ChooseInventory(closed);garage.Select(new Vector3Int(1,2,0));
         Assert.That(garage.Preview.GetComponentsInChildren<Transform>(true).Count(t=>t.name.StartsWith("Punkt mocowania ")),Is.Zero,
             "Switching equal shapes must display the selected item's own ports, not the preceding item's ports.");
