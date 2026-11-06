@@ -1,33 +1,19 @@
 # R4WeaponKind.Railgun - "WPN-002 Railgun" - long rail pair through 5 accelerator coils, separate deployable emitter,
 # capacitor bank on the yaw, charge -> shot -> cool cycle (visual only; game timing and penetration unchanged).
 import sys, os, math; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import importlib, bpy, r4lib as L, r4qa as Q; importlib.reload(L); importlib.reload(Q)
+import importlib, bpy, r4lib as L, r4qa as Q, r4base as BS, r4heads as H; importlib.reload(L); importlib.reload(Q); importlib.reload(BS); importlib.reload(H)
 from r4lib import F, P, M, box, cyl, tube, hull, prism_x, hexbolt, Part, new_col
 OUT = sys.argv[sys.argv.index("--") + 1]
 L.reset_scene(); L.init_palette(); scn = bpy.context.scene
 work = new_col("_build_tmp"); ID = "R4W_Railgun"
 RECOIL = 0.040; RAIL_END = 0.745; MUZZLE_F = 0.840; DEPLOY = 0.025; DN, UP = 10.0, 35.0
 COILS = [0.270, 0.360, 0.450, 0.540, 0.630]
-base, _ = L.build_base(ID + "_Base", work, vents=5, hazard_corners=True, glacis_top=0.190)
+BASE_STYLE, HEAD = "column", "thin tall fork + capacitor spires"
+base, _ = BS.build_base_style(ID + "_Base", work, BASE_STYLE)
 yaw = L.turntable(ID + "_Yaw", work)
 y = Part(work, "y")
-L.yoke(y, 0.112, 0.152, [(0.150, 0.035), (0.200, 0.090), (0.062, 0.222), (-0.095, 0.230), (-0.160, 0.165), (-0.160, 0.035)],
-       [(0.118, 0.060), (0.165, 0.098), (0.054, 0.200), (-0.074, 0.208), (-0.130, 0.155), (-0.130, 0.060)],
-       [(-0.112, 0.166), (0.088, 0.166), (0.068, 0.184), (-0.096, 0.184)], bolts=((0.105, 0.082), (-0.118, 0.068), (-0.030, 0.196)))
-box("cap_bank", -0.108, 0.108, F(-0.148), F(-0.236), 0.035, 0.150, M["Armor_Dark"], y.U, bevel=0.010)
-box("cap_lid", -0.096, 0.096, F(-0.156), F(-0.228), 0.145, 0.1555, M["TeamColor_Red"], y.U, bevel=0.004)
-for f_ in (-0.166, -0.186, -0.206, -0.226):
-    cyl("cap_tube", 0.0090, (-0.092, F(f_), 0.1665), (0.092, F(f_), 0.1665), M["Energy_Hot"], y.U, seg=12)
-    for xx in (-0.072, 0.0, 0.072):
-        tube("cap_clamp", 0.0125, 0.0060, (xx - 0.005, F(f_), 0.1665), (xx + 0.005, F(f_), 0.1665), M["Steel_Light"], y.U, seg=8)
-for s in (-1, 1):
-    for k in range(5):
-        zz = 0.050 + 0.020*k
-        box(f"sink{s}{k}", s*0.106, s*0.118, F(-0.155), F(-0.230), zz, zz + 0.007, M["Steel_Light"], y.U, bevel=0.0015)
-for xx in (-0.06, -0.02, 0.02, 0.06):
-    box("bank_vent", xx - 0.008, xx + 0.008, F(-0.229), F(-0.245), 0.062, 0.124, M["Armor_Dark"], y.D)
-    box("bank_glow", xx - 0.006, xx + 0.006, 0.2295, 0.2330, 0.065, 0.121, M["Energy_Hot"], y.Pc)
-box("bank_haz", -0.100, 0.100, F(-0.2365), F(-0.2375), 0.037, 0.050, M["Hazard_Yellow"], y.Pc)
+H.fork(y)
+H.cap_spires(y)
 y.build(yaw)
 # ---- pitch: breech housing with rail aperture, mantlet frame, vent-flap recesses, sensor
 p = Part(work, "p")
@@ -101,7 +87,7 @@ arc.scale = (0.001,)*3
 for fl, s in zip(flaps, (-1, 1)): L.attach(fl, pitch, (s*0.080, 0, 0.1995))
 flash.parent = pitch; flash.location = (0, F(RAIL_END + 0.062), 0); flash.scale = (0.001,)*3
 muzzle = L.empty("Muzzle", pitch, (0, F(MUZZLE_F), 0), col, 'SINGLE_ARROW', 0.06, L.UP90)
-L.root_props(root, "R4WeaponKind.Railgun")
+L.root_props(root, "R4WeaponKind.Railgun", version="v2")
 L.set_props({pivot: {"role": "game-driven pivot", "physical": "(0,0.135,0)"}, yaw: {"role": "Yaw: rotate around local Y only"},
              pitch: {"role": "Pitch: rotate around local X only", "pitch_range_deg": f"-{DN:.0f}..+{UP:.0f}"},
              rails: {"role": "rail carriage + 5 accelerator coils: recoils back along local -Z", "recoil_m": RECOIL},
@@ -147,4 +133,6 @@ S = dict(id=ID, kind="R4WeaponKind.Railgun", game_name="WPN-002 Railgun", out=OU
                       (flaps[0], rails), (flaps[1], rails), (pitch, yaw), (pitch, base), (yaw, base)],
          hero_frame=HERO, hero_frame2=HERO2, tri_budget=22000, exits_note="1 emitter = 1 Muzzle (penetration up to 6 parts is gameplay, unchanged)",
          notes=["Charge glow is mesh FX (scale) so it survives FBX; emission strength itself is not animated."])
+S["notes"] = list(S.get("notes", [])) + [f"v2 silhouette pass (#939 follow-up): base style {BASE_STYLE}, head {HEAD}; rig, pivot, muzzle contract and clips unchanged."]
+S["base_style"], S["head_style"] = BASE_STYLE, HEAD
 Q.run(S)

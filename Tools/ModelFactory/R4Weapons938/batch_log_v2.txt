@@ -1,0 +1,10 @@
+# v2 silhouette pass - final consistent batch (all 7 rebuilt weapons in one run, Blender 5.2.3, --factory-startup)
+BATCH_START 2026-11-06 22:14:44 None
+R4W_Heavy rc=0 14.2s ('BLENDER_PASS', [])
+R4W_Shotgun rc=0 14.0s ('BLENDER_PASS', [])
+R4W_Railgun rc=0 20.0s ('BLENDER_PASS', [])
+R4W_BeamCutter rc=0 16.7s ('BLENDER_PASS', [])
+R4W_RocketLauncher rc=0 18.0s ('BLENDER_PASS', [])
+R4W_RotarySaw rc=0 19.5s ('BLENDER_PASS', [])
+R4W_EmpEmitter rc=0 17.8s ('BLENDER_PASS', [])
+BATCH_DONE

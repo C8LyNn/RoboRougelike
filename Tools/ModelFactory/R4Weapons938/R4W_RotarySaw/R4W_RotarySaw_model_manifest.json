@@ -22,10 +22,13 @@
    "unity_up": "+Y",
    "unity_forward": "+Z",
    "unit": "meter",
-   "version": "v1",
+   "version": "v2",
    "weapon_kind": "R4WeaponKind.RotarySaw",
    "style": "R41_Turret_v6.1 standard (heavy industrial armour + team colour)",
    "issue": "#938"
+  },
+  "R4W_RotarySaw_Base": {
+   "base_style": "crab"
   },
   "Socket_Mount_Bottom": {
    "role": "mounting face centre, normal -Y, connects to cell (0,-1,0)"
@@ -64,6 +67,7 @@
  "visible_exits_note": "contact weapon: Muzzle = disc centre (no projectile)",
  "notes": [
   "Blade 0.60 m diameter on a +X side arm; disc centre 0.620 m forward of the pivot.",
-  "Runtime placeholder rotor (R41PartGeometry.SawRotor) and RotarySawConfiguration are NOT changed (see extra_checks.game_contact_disc)."
+  "Runtime placeholder rotor (R41PartGeometry.SawRotor) and RotarySawConfiguration are NOT changed (see extra_checks.game_contact_disc).",
+  "v2 silhouette pass (#939 follow-up): base style crab, head unchanged v1 saw arm; rig, pivot, muzzle contract and clips unchanged."
  ]
 }

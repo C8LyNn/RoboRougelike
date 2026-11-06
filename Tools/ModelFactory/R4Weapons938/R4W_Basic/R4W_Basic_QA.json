@@ -1139,8 +1139,10 @@
  },
  "files": {
   "R4W_Basic.blend": {
-   "sha256": "65e6d0db89b877b9d8272b404eab41093fcbee4babf3350094af0723424abcf0",
-   "bytes": 1677647
+   "sha256": "7ea4ca655e83e4cffb0d49c09f256acbf50fb0abb8011eb7ee4b8451eb168e03",
+   "bytes": 1677647,
+   "sha256_before_path_sanitize": "65e6d0db89b877b9d8272b404eab41093fcbee4babf3350094af0723424abcf0",
+   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length; re-opened headless in Blender 5.2.3 after patch (rc 0, objects/actions/frame range unchanged)"
   },
   "R4W_Basic.fbx": {
    "sha256": "a3d4c11490fe7f990641ad0e3e845bcc5fdf84e34be8bcefa81e9439a0ed68b7",

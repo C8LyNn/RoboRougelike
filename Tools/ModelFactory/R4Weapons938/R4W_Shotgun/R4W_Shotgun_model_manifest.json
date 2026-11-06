@@ -23,10 +23,13 @@
    "unity_up": "+Y",
    "unity_forward": "+Z",
    "unit": "meter",
-   "version": "v1",
+   "version": "v2",
    "weapon_kind": "R4WeaponKind.Shotgun",
    "style": "R41_Turret_v6.1 standard (heavy industrial armour + team colour)",
    "issue": "#938"
+  },
+  "R4W_Shotgun_Base": {
+   "base_style": "box"
   },
   "Socket_Mount_Bottom": {
    "role": "mounting face centre, normal -Y, connects to cell (0,-1,0)"
@@ -67,6 +70,7 @@
  ],
  "visible_exits_note": "6 visible bores in one choke block = 1 logical Muzzle; gameplay pellets (8) are NOT tied to bore count",
  "notes": [
-  "Choke block front 0.410 m, Muzzle 0.450 m forward of the pivot."
+  "Choke block front 0.410 m, Muzzle 0.450 m forward of the pivot.",
+  "v2 silhouette pass (#939 follow-up): base style box, head single cantilever arm + side drum magazine; rig, pivot, muzzle contract and clips unchanged."
  ]
 }

@@ -3,37 +3,38 @@
  "kind": "R4WeaponKind.Railgun",
  "game_name": "WPN-002 Railgun",
  "blender": "5.2.3 LTS",
- "started": "2026-11-06 15:35:11",
+ "started": "2026-11-06 22:15:18",
  "failures": [],
  "notes": [
-  "Charge glow is mesh FX (scale) so it survives FBX; emission strength itself is not animated."
+  "Charge glow is mesh FX (scale) so it survives FBX; emission strength itself is not animated.",
+  "v2 silhouette pass (#939 follow-up): base style column, head thin tall fork + capacitor spires; rig, pivot, muzzle contract and clips unchanged."
  ],
  "meshes": [
   {
    "object": "R4W_Railgun_Base",
-   "verts": 1580,
-   "triangles": 3188,
-   "shells": 1,
+   "verts": 1825,
+   "triangles": 3630,
+   "shells": 5,
    "non_manifold_edges": 0,
    "boundary_edges": 0,
    "zero_area_faces": 0,
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.051764,
+   "signed_volume_m3": 0.015285,
    "uv_layers": 1,
    "uv_bounds": [
-    0.005,
-    0.005,
-    0.995,
-    0.995
+    0.004,
+    0.004,
+    0.996,
+    0.996
    ],
    "materials": [
     "Armor_Dark",
     "Armor_Gunmetal",
-    "Energy_Hot",
-    "Armor_Plate_Light",
     "Steel_Light",
+    "Armor_Plate_Light",
+    "Energy_Hot",
     "TeamColor_Red",
     "Hazard_Yellow"
    ],
@@ -41,22 +42,22 @@
   },
   {
    "object": "R4W_Railgun_Yaw",
-   "verts": 2907,
-   "triangles": 5898,
-   "shells": 6,
+   "verts": 3829,
+   "triangles": 7678,
+   "shells": 7,
    "non_manifold_edges": 0,
    "boundary_edges": 0,
    "zero_area_faces": 0,
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.009985,
+   "signed_volume_m3": 0.006354,
    "uv_layers": 1,
    "uv_bounds": [
-    0.005,
-    0.005,
-    0.995,
-    0.995
+    0.006,
+    0.006,
+    0.994,
+    0.994
    ],
    "materials": [
     "Armor_Dark",
@@ -379,28 +380,28 @@
    "ok": true
   }
  ],
- "triangles_total": 14882,
+ "triangles_total": 17104,
  "triangles_fx": 1138,
  "triangles_r41_reference": 11452,
  "topology_PASS": true,
  "palette": {
   "material_area_share": {
-   "Armor_Dark": 0.488,
-   "Armor_Gunmetal": 0.2588,
-   "Armor_Plate_Light": 0.1188,
-   "Energy_Hot": 0.0586,
-   "Steel_Light": 0.0385,
-   "TeamColor_Red": 0.0256,
-   "Hazard_Yellow": 0.006,
-   "Barrel_Heat": 0.0052,
+   "Armor_Dark": 0.4845,
+   "Armor_Gunmetal": 0.2645,
+   "Armor_Plate_Light": 0.13,
+   "Steel_Light": 0.046,
+   "Energy_Hot": 0.0332,
+   "Hazard_Yellow": 0.0196,
+   "TeamColor_Red": 0.0159,
+   "Barrel_Heat": 0.0058,
    "Sensor_Eye_Red": 0.0005
   },
   "family_share": {
-   "1_dark_gunmetal": 0.7469,
-   "2_light_steel": 0.1573,
-   "3_team_red": 0.0256,
-   "4_hazard_yellow": 0.006,
-   "T_technical": 0.0643
+   "1_dark_gunmetal": 0.749,
+   "2_light_steel": 0.176,
+   "3_team_red": 0.0159,
+   "4_hazard_yellow": 0.0196,
+   "T_technical": 0.0395
   },
   "r41_family_share": {
    "1_dark_gunmetal": 0.7913,
@@ -513,14 +514,14 @@
    ],
    "bounds_file": [
     [
-     -0.2565,
+     -0.2505,
      -0.26,
-     -0.2565
+     -0.2505
     ],
     [
-     0.2565,
+     0.2505,
      0.016,
-     0.2565
+     0.2505
     ]
    ],
    "inside_own_cell": true
@@ -536,17 +537,22 @@
      0,
      0,
      1
+    ],
+    [
+     0,
+     1,
+     0
     ]
    ],
    "bounds_file": [
     [
-     -0.2565,
+     -0.2505,
      -0.26,
-     -0.2565
+     -0.2505
     ],
     [
-     0.2565,
-     0.2297,
+     0.2505,
+     0.292,
      0.803
     ]
    ]
@@ -745,7 +751,7 @@
     ]
    ]
   },
-  "yaw_body_max_radius_m": 0.2578,
+  "yaw_body_max_radius_m": 0.2552,
   "yaw_body_inside_cell_all_yaw": true,
   "mount_socket": {
    "position_file": [
@@ -1077,7 +1083,7 @@
  ],
  "lod1": {
   "file": "R4W_Railgun_LOD1.fbx",
-  "triangles": 7440,
+  "triangles": 8550,
   "method": "DECIMATE collapse 0.5 (automatic, not hand-authored)"
  },
  "fbx_reimport": {
@@ -1510,28 +1516,30 @@
  },
  "files": {
   "R4W_Railgun.blend": {
-   "sha256": "0ac354705e96be4e2138ad38c0dfc0edc95037fb9ef1420841b7d699a49e2719",
-   "bytes": 2134586
+   "sha256": "4a6e3e3e6f62fc9cb6ed352b90e0cebea9c0598956860761d8aa27baa1831a5b",
+   "bytes": 2303410,
+   "sha256_before_path_sanitize": "2500559e3c77678399eb7fbc70472cfe92ba92a708289fea0c58e677167d00e6",
+   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length; re-opened headless in Blender 5.2.3 after patch (rc 0, objects/actions/frame range unchanged)"
   },
   "R4W_Railgun.fbx": {
-   "sha256": "6504dade19ebf1b296091eb9536f9048f6ac1c0b53bab5a57ec3ef54adfe0e73",
-   "bytes": 825372
+   "sha256": "86051bc5f381838274c73713dffc590d82803999318486c7b3e8e444803e1f03",
+   "bytes": 911468
   },
   "R4W_Railgun.glb": {
-   "sha256": "2638278c54919d4782731bb98a2e580b6862f543a70b729a60310df60bacfd91",
-   "bytes": 821876
+   "sha256": "2d7ab30459a0677d674a5c1514a34a909f76fc6307d64d1b6d9f2da287968657",
+   "bytes": 875128
   },
   "R4W_Railgun_colliders.glb": {
-   "sha256": "12ebc14c66117a51033ae8380c00a728e2782924e56cf32c4f364abdf11257ad",
-   "bytes": 740816
+   "sha256": "1c8fbaeb40c04cebd088e35edc831449cb45280efbd1abaac121d8fba6a9f713",
+   "bytes": 794040
   },
   "R4W_Railgun_LOD1.fbx": {
-   "sha256": "616dc960982e322243f786d5c0855600244b053b458b1f6c95d4baf325ab5633",
-   "bytes": 342044
+   "sha256": "e04212c12361cb037e5a91e44d17097cdac3f37e8e78c68c828356be4a445dbd",
+   "bytes": 387420
   }
  },
  "unity_import_test": "UNITY_NOT_RUN (Unity not available in this session)",
  "unity_import_settings": "Scale Factor 1, Convert Units ON, Bake Axis Conversion ON, Animation: split clips by animation_manifest.json frame ranges (24 fps)",
  "status": "BLENDER_PASS",
- "seconds": 11.1
+ "seconds": 12.9
 }

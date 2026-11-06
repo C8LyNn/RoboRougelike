@@ -131,7 +131,7 @@ def hull(name, pts, mat, col, bevel=0.0, seg=1):
     bm = bmesh.new()
     vs = [bm.verts.new(p) for p in pts]
     res = bmesh.ops.convex_hull(bm, input=vs)
-    junk = [g for g in res.get("geom_interior", []) + res.get("geom_unused", []) if isinstance(g, bmesh.types.BMVert)]
+    junk = list({g for g in res.get("geom_interior", []) + res.get("geom_unused", []) if isinstance(g, bmesh.types.BMVert) and g.is_valid})
     if junk: bmesh.ops.delete(bm, geom=junk, context='VERTS')
     bmesh.ops.dissolve_limit(bm, angle_limit=math.radians(0.5), verts=list(bm.verts), edges=list(bm.edges))
     if bevel > 0:

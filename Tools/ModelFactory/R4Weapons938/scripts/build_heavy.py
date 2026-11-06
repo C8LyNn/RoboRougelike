@@ -1,23 +1,17 @@
 # R4WeaponKind.Heavy - "Ciężka armata" - heavy base, thick barrel with bore evacuator, slow long recoil, sliding-wedge breech cycle.
 import sys, os, math; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import importlib, bpy, r4lib as L, r4qa as Q; importlib.reload(L); importlib.reload(Q)
+import importlib, bpy, r4lib as L, r4qa as Q, r4base as BS, r4heads as H; importlib.reload(L); importlib.reload(Q); importlib.reload(BS); importlib.reload(H)
 from r4lib import F, P, M, box, cyl, cone, tube, hull, prism_x, hexbolt, Part, new_col
 OUT = sys.argv[sys.argv.index("--") + 1]
 L.reset_scene(); L.init_palette(); scn = bpy.context.scene
 work = new_col("_build_tmp"); ID = "R4W_Heavy"
-BR = 0.040; RECOIL = 0.075; BARREL_END = 0.660; MUZZLE_F = 0.700; DN, UP = 8.0, 30.0; BDROP = 0.030
-base, _ = L.build_base(ID + "_Base", work, vents=6, skirts=True, extra_plates=True, glacis_top=0.196)
+BR = 0.040; RECOIL = 0.075; BARREL_END = 0.560; MUZZLE_F = 0.600; DN, UP = 8.0, 30.0; BDROP = 0.030
+BASE_STYLE, HEAD = "stepped", "low sponsons + drum mantlet + wide sloped gun shield + stubby howitzer barrel"
+base, _ = BS.build_base_style(ID + "_Base", work, BASE_STYLE)
 # ---- yaw: wide tall cheeks with double applique, heavy rear counterweight with team lid
 yaw = L.turntable(ID + "_Yaw", work, r=0.192)
 y = Part(work, "y")
-L.yoke(y, 0.118, 0.160, [(0.150, 0.035), (0.200, 0.090), (0.075, 0.236), (-0.095, 0.244), (-0.160, 0.175), (-0.160, 0.035)],
-       [(0.120, 0.060), (0.168, 0.100), (0.064, 0.212), (-0.072, 0.220), (-0.130, 0.165), (-0.130, 0.060)],
-       [(-0.112, 0.176), (0.090, 0.176), (0.072, 0.193), (-0.098, 0.193)], boss_r=0.050,
-       bolts=((0.105, 0.082), (-0.118, 0.070), (0.020, 0.203), (-0.060, 0.203)), vents=((-0.120, -0.110), (-0.100, -0.090), (-0.080, -0.070)), vent_z=(0.075, 0.150))
-for s in (-1, 1):
-    prism_x(f"cheek_skirt{s}", s*0.1675, s*0.1745, [(0.130, 0.040), (0.150, 0.060), (0.150, 0.095), (-0.140, 0.095), (-0.140, 0.040)], M["Armor_Gunmetal"], y.U, bevel=0.002)
-    for f_ in (0.110, 0.020, -0.070):
-        hexbolt(f"skirt_bolt{s}", (s*0.174, F(f_), 0.078), (s*0.179, F(f_), 0.078), M["Steel_Light"], y.Pc)
+H.sponsons(y)
 box("counterweight", -0.112, 0.112, F(-0.150), F(-0.238), 0.035, 0.172, M["Armor_Dark"], y.U, bevel=0.012)
 box("cw_plate", -0.100, 0.100, F(-0.236), F(-0.2445), 0.050, 0.158, M["Armor_Plate_Light"], y.U, bevel=0.003)
 box("cw_lid", -0.098, 0.098, F(-0.160), F(-0.228), 0.167, 0.180, M["TeamColor_Red"], y.U, bevel=0.004)
@@ -32,10 +26,10 @@ box("cw_haz", -0.100, 0.100, F(-0.2445), F(-0.2455), 0.038, 0.046, M["Hazard_Yel
 y.build(yaw)
 # ---- pitch: heavy trunnion, massive receiver with breech slot open underneath, thick mantlet, cradle sleeve, rangefinder
 p = Part(work, "p")
-pitch = L.trunnion(ID + "_Pitch", work, p, half=0.112, r=0.056, axle=0.150)
+pitch = H.drum_trunnion(ID + "_Pitch", work, p, half=0.140, r=0.088, axle=0.172)
 hull("receiver", [(x, F(f), z) for (f, xw, z0, z1) in ((-0.100, 0.100, 0.092, 0.212), (0.100, 0.108, 0.076, 0.222), (0.200, 0.092, 0.088, 0.184))
                   for x in (-xw, xw) for z in (z0, z1)], M["Armor_Gunmetal"], p.U, bevel=0.006)
-hull("mantlet", [(x, F(f), z) for (f, xw, z0, z1) in ((0.170, 0.100, 0.082, 0.194), (0.218, 0.084, 0.092, 0.182)) for x in (-xw, xw) for z in (z0, z1)],
+hull("mantlet", [(x, F(f), z) for (f, xw, z0, z1) in ((0.150, 0.128, 0.072, 0.212), (0.212, 0.112, 0.082, 0.198)) for x in (-xw, xw) for z in (z0, z1)],
      M["Armor_Dark"], p.U, bevel=0.005)
 for s in (-1, 1):
     prism_x(f"rcv_appl{s}", s*0.1075, s*0.1115, [(-0.080, 0.100), (0.140, 0.092), (0.170, 0.150), (0.120, 0.206), (-0.080, 0.200)], M["Armor_Plate_Light"], p.U, bevel=0.002)
@@ -57,21 +51,22 @@ box("top_haz", 0.010, 0.080, F(0.090), F(0.035), 0.2180, 0.2235, M["Hazard_Yello
 for i in range(4):
     x0 = 0.010 + i*0.0175
     hull(f"top_chev{i}", [(xx, F(ff), zz) for zz in (0.2190, 0.2245) for (xx, ff) in ((x0, 0.0355), (x0 + 0.007, 0.0355), (x0 + 0.016, 0.0895), (x0 + 0.009, 0.0895))], M["Armor_Dark"], p.Pc)
+H.gun_shield(p)
 p.build(pitch)
 # ---- barrel (recoils) with evacuator, thermal sleeves, double-baffle brake
-barrel = cyl(ID + "_Barrel", BR, (0, F(0.098), P), (0, F(0.600), P), M["Armor_Dark"], work, seg=20)
+barrel = cyl(ID + "_Barrel", BR, (0, F(0.098), P), (0, F(0.520), P), M["Armor_Dark"], work, seg=20)
 b = Part(work, "b")
 cone("evac_r", 0.041, 0.055, (0, F(0.415), P), (0, F(0.430), P), M["Armor_Gunmetal"], b.U, seg=20)
 cyl("evac", 0.055, (0, F(0.429), P), (0, F(0.474), P), M["Armor_Gunmetal"], b.U, seg=20)
 cone("evac_f", 0.055, 0.041, (0, F(0.473), P), (0, F(0.488), P), M["Armor_Gunmetal"], b.U, seg=20)
 tube("evac_band", 0.0565, 0.050, (0, F(0.444), P), (0, F(0.458), P), M["Steel_Light"], b.U, seg=20)
-for (f0, f1) in ((0.344, 0.374), (0.378, 0.408), (0.496, 0.524), (0.528, 0.558)):
+for (f0, f1) in ((0.344, 0.374), (0.378, 0.408)):
     cyl("sleeve", 0.045, (0, F(f0), P), (0, F(f1), P), M["Armor_Plate_Light"], b.U, seg=8, bevel=0.003)
-box("brake", -0.062, 0.062, F(0.580), F(BARREL_END), P - 0.046, P + 0.046, M["Barrel_Heat"], b.U, bevel=0.006)
-cyl("mz_bore", 0.023, (0, F(0.500), P), (0, F(BARREL_END + 0.02), P), M["Armor_Dark"], b.D, seg=20)
+box("brake", -0.074, 0.074, F(0.492), F(BARREL_END), P - 0.056, P + 0.056, M["Barrel_Heat"], b.U, bevel=0.006)
+cyl("mz_bore", 0.023, (0, F(0.420), P), (0, F(BARREL_END + 0.02), P), M["Armor_Dark"], b.D, seg=20)
 tube("mz_groove", 0.034, 0.028, (0, F(BARREL_END - 0.006), P), (0, F(BARREL_END + 0.02), P), M["Armor_Dark"], b.D, seg=20)
-for (p0, p1) in ((0.592, 0.610), (0.620, 0.638)):
-    box("baffle", -0.070, 0.070, F(p0), F(p1), P - 0.022, P + 0.022, M["Armor_Dark"], b.D)
+for (p0, p1) in ((0.504, 0.522), (0.532, 0.550)):
+    box("baffle", -0.084, 0.084, F(p0), F(p1), P - 0.022, P + 0.022, M["Armor_Dark"], b.D)
 tube("mz_glow", 0.0335, 0.0285, (0, F(BARREL_END - 0.0065), P), (0, F(BARREL_END - 0.0012), P), M["Energy_Hot"], b.Pc, seg=20)
 b.build(barrel)
 breech = box(ID + "_Breech", -0.040, 0.040, F(0.060), F(0.099), P - 0.034, P + 0.034, M["Steel_Light"], work, bevel=0.004)
@@ -87,7 +82,7 @@ scn.frame_set(1); bpy.context.view_layer.update()
 L.attach(barrel, pitch, (0, 0, P)); bpy.context.view_layer.update(); L.attach(breech, barrel, (0, 0, P))
 flash.parent = pitch; flash.location = (0, F(BARREL_END + 0.005), 0); flash.scale = (0.001,)*3
 muzzle = L.empty("Muzzle", pitch, (0, F(MUZZLE_F), 0), col, 'SINGLE_ARROW', 0.06, L.UP90)
-L.root_props(root, "R4WeaponKind.Heavy")
+L.root_props(root, "R4WeaponKind.Heavy", version="v2")
 L.set_props({pivot: {"role": "game-driven pivot", "physical": "(0,0.135,0)"}, yaw: {"role": "Yaw: rotate around local Y only"},
              pitch: {"role": "Pitch: rotate around local X only", "pitch_range_deg": f"-{DN:.0f}..+{UP:.0f}"},
              barrel: {"role": "recoiling barrel: slides back along local -Z", "recoil_m": RECOIL},
@@ -123,4 +118,6 @@ S = dict(id=ID, kind="R4WeaponKind.Heavy", game_name="Ciężka armata", out=OUT,
          clash_pairs=[(barrel, pitch), (breech, pitch), (barrel, yaw), (breech, yaw), (barrel, base), (pitch, yaw), (pitch, base), (yaw, base)],
          hero_frame=HERO, hero_frame2=HERO2, tri_budget=22000, exits_note="1 visible barrel = 1 Muzzle",
          notes=["Pitch range -8..+30 deg (heavier mass; R41 -10..+35). Runtime pitch limits are not changed by this asset."])
+S["notes"] = list(S.get("notes", [])) + [f"v2 silhouette pass (#939 follow-up): base style {BASE_STYLE}, head {HEAD}; rig, pivot, muzzle contract and clips unchanged."]
+S["base_style"], S["head_style"] = BASE_STYLE, HEAD
 Q.run(S)

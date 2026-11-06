@@ -1,7 +1,7 @@
 # R4WeaponKind.Shotgun - "WPN-001 Shotgun" - short wide recoiling 6-bore block, pump fore-end, top loading gate.
 # 6 visible bores are a visual choke block; gameplay keeps 8 pellets from one logical Muzzle.
 import sys, os, math; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import importlib, bpy, r4lib as L, r4qa as Q; importlib.reload(L); importlib.reload(Q)
+import importlib, bpy, r4lib as L, r4qa as Q, r4base as BS, r4heads as H; importlib.reload(L); importlib.reload(Q); importlib.reload(BS); importlib.reload(H)
 from mathutils import Vector
 from r4lib import F, P, M, box, cyl, tube, hull, prism_x, hexbolt, Part, new_col
 OUT = sys.argv[sys.argv.index("--") + 1]
@@ -9,12 +9,11 @@ L.reset_scene(); L.init_palette(); scn = bpy.context.scene
 work = new_col("_build_tmp"); ID = "R4W_Shotgun"
 RECOIL = 0.030; PUMP = 0.060; FRONT = 0.410; MUZZLE_F = 0.450; DN, UP = 10.0, 35.0
 BORES = [(x, z) for x in (-0.050, 0.0, 0.050) for z in (P - 0.022, P + 0.022)]
-base, _ = L.build_base(ID + "_Base", work, vents=5, glacis_top=0.190)
+BASE_STYLE, HEAD = "box", "single cantilever arm + side drum magazine"
+base, _ = BS.build_base_style(ID + "_Base", work, BASE_STYLE)
 yaw = L.turntable(ID + "_Yaw", work)
 y = Part(work, "y")
-L.yoke(y, 0.122, 0.162, [(0.140, 0.035), (0.180, 0.080), (0.070, 0.196), (-0.085, 0.200), (-0.150, 0.150), (-0.150, 0.035)],
-       [(0.112, 0.058), (0.152, 0.092), (0.060, 0.178), (-0.066, 0.182), (-0.124, 0.140), (-0.124, 0.058)],
-       [(-0.100, 0.143), (0.082, 0.143), (0.066, 0.158), (-0.086, 0.158)], bolts=((0.098, 0.078), (-0.112, 0.066)))
+H.single_arm(y, 1, 0.122, 0.170)
 # rear shell magazine with brass shell heads in a window, team lid
 box("magazine", -0.104, 0.104, F(-0.148), F(-0.236), 0.035, 0.152, M["Armor_Dark"], y.U, bevel=0.010)
 box("mag_lid", -0.094, 0.094, F(-0.156), F(-0.226), 0.147, 0.160, M["TeamColor_Red"], y.U, bevel=0.004)
@@ -48,6 +47,7 @@ for k in range(3):
     f0 = -0.058 + 0.024*k
     box(f"top_slot{k}", -0.090, -0.010, F(f0 + 0.009), F(f0), 0.186, 0.210, M["Armor_Dark"], p.D)
     box(f"top_glow{k}", -0.088, -0.012, F(f0 + 0.008), F(f0 + 0.001), 0.185, 0.189, M["Energy_Hot"], p.Pc)
+H.side_drum(p, -1, 0.110, 0.204, 0.080)
 p.build(pitch)
 # ---- recoiling 6-bore block with heat shield and choke plate
 blk = box(ID + "_Barrels", -0.082, 0.082, F(0.150), F(0.384), P - 0.044, P + 0.044, M["Armor_Dark"], work, bevel=0.008)
@@ -99,7 +99,7 @@ L.attach(blk, pitch, (0, 0, P)); bpy.context.view_layer.update(); L.attach(pump,
 L.attach(gate, pitch, (0.090, F(0.045), 0.200))
 flash.parent = pitch; flash.location = (0, F(FRONT + 0.004), 0); flash.scale = (0.001,)*3
 muzzle = L.empty("Muzzle", pitch, (0, F(MUZZLE_F), 0), col, 'SINGLE_ARROW', 0.06, L.UP90)
-L.root_props(root, "R4WeaponKind.Shotgun")
+L.root_props(root, "R4WeaponKind.Shotgun", version="v2")
 L.set_props({pivot: {"role": "game-driven pivot", "physical": "(0,0.135,0)"}, yaw: {"role": "Yaw: rotate around local Y only"},
              pitch: {"role": "Pitch: rotate around local X only", "pitch_range_deg": f"-{DN:.0f}..+{UP:.0f}"},
              blk: {"role": "recoiling 6-bore choke block: slides back along local -Z", "recoil_m": RECOIL, "visible_bores": 6},
@@ -136,4 +136,6 @@ S = dict(id=ID, kind="R4WeaponKind.Shotgun", game_name="WPN-001 Shotgun", out=OU
          hero_frame=HERO, hero_frame2=HERO2, tri_budget=20000,
          exits_note="6 visible bores in one choke block = 1 logical Muzzle; gameplay pellets (8) are NOT tied to bore count",
          notes=["Choke block front 0.410 m, Muzzle 0.450 m forward of the pivot."])
+S["notes"] = list(S.get("notes", [])) + [f"v2 silhouette pass (#939 follow-up): base style {BASE_STYLE}, head {HEAD}; rig, pivot, muzzle contract and clips unchanged."]
+S["base_style"], S["head_style"] = BASE_STYLE, HEAD
 Q.run(S)

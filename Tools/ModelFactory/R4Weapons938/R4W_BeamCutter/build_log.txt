@@ -1,1 +1,1 @@
-R4W_BeamCutter_Pitch: filling 3 boundary edges
+R4W_BeamCutter_Pitch: filling 6 boundary edges

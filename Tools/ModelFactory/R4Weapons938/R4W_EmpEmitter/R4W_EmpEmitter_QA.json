@@ -3,17 +3,18 @@
  "kind": "R4WeaponKind.EmpEmitter",
  "game_name": "WPN-006 EMP Emitter",
  "blender": "5.2.3 LTS",
- "started": "2026-11-06 15:35:59",
+ "started": "2026-11-06 22:16:33",
  "failures": [],
  "notes": [
   "Pitch intentionally absent: EMP acts radially; Yaw only orients the LOS sensor.",
-  "Ring angles at clip ends are multiples of 120 deg (3-fold symmetric pods)."
+  "Ring angles at clip ends are multiples of 120 deg (3-fold symmetric pods).",
+  "v2 silhouette pass (#939 follow-up): base style drum, head unchanged v1 pulse head; rig, pivot, muzzle contract and clips unchanged."
  ],
  "meshes": [
   {
    "object": "R4W_EmpEmitter_Base",
-   "verts": 1612,
-   "triangles": 3252,
+   "verts": 4793,
+   "triangles": 9646,
    "shells": 1,
    "non_manifold_edges": 0,
    "boundary_edges": 0,
@@ -21,20 +22,20 @@
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.051763,
+   "signed_volume_m3": 0.041441,
    "uv_layers": 1,
    "uv_bounds": [
-    0.005,
-    0.005,
-    0.993,
-    0.995
+    0.006,
+    0.006,
+    0.994,
+    0.991
    ],
    "materials": [
     "Armor_Dark",
     "Armor_Gunmetal",
-    "Energy_Hot",
     "Armor_Plate_Light",
     "Steel_Light",
+    "Energy_Hot",
     "TeamColor_Red",
     "Hazard_Yellow"
    ],
@@ -310,27 +311,27 @@
    "ok": true
   }
  ],
- "triangles_total": 12536,
+ "triangles_total": 18930,
  "triangles_fx": 864,
  "triangles_r41_reference": 11452,
  "topology_PASS": true,
  "palette": {
   "material_area_share": {
-   "Armor_Dark": 0.5335,
-   "Armor_Gunmetal": 0.2556,
-   "Armor_Plate_Light": 0.1004,
-   "Energy_Hot": 0.0569,
-   "Steel_Light": 0.0256,
-   "TeamColor_Red": 0.0228,
-   "Hazard_Yellow": 0.0037,
-   "Sensor_Eye_Red": 0.0014
+   "Armor_Dark": 0.5308,
+   "Armor_Gunmetal": 0.2657,
+   "Steel_Light": 0.0628,
+   "Armor_Plate_Light": 0.0625,
+   "Energy_Hot": 0.0339,
+   "TeamColor_Red": 0.0255,
+   "Hazard_Yellow": 0.0175,
+   "Sensor_Eye_Red": 0.0015
   },
   "family_share": {
-   "1_dark_gunmetal": 0.7892,
-   "2_light_steel": 0.1259,
-   "3_team_red": 0.0228,
-   "4_hazard_yellow": 0.0037,
-   "T_technical": 0.0583
+   "1_dark_gunmetal": 0.7964,
+   "2_light_steel": 0.1253,
+   "3_team_red": 0.0255,
+   "4_hazard_yellow": 0.0175,
+   "T_technical": 0.0354
   },
   "r41_family_share": {
    "1_dark_gunmetal": 0.7913,
@@ -443,14 +444,14 @@
    ],
    "bounds_file": [
     [
-     -0.2565,
+     -0.252,
      -0.26,
-     -0.2565
+     -0.252
     ],
     [
-     0.2565,
+     0.252,
      0.016,
-     0.2565
+     0.252
     ]
    ],
    "inside_own_cell": true
@@ -470,14 +471,14 @@
    ],
    "bounds_file": [
     [
-     -0.2565,
+     -0.252,
      -0.26,
-     -0.2565
+     -0.252
     ],
     [
-     0.2565,
+     0.252,
      0.304,
-     0.2565
+     0.252
     ]
    ]
   },
@@ -679,7 +680,7 @@
  ],
  "lod1": {
   "file": "R4W_EmpEmitter_LOD1.fbx",
-  "triangles": 6264,
+  "triangles": 9460,
   "method": "DECIMATE collapse 0.5 (automatic, not hand-authored)"
  },
  "fbx_reimport": {
@@ -1046,28 +1047,30 @@
  },
  "files": {
   "R4W_EmpEmitter.blend": {
-   "sha256": "7f48cbec4efe17ffcf52283d015df0873aa27f5d55ebd7b7966e598b5f06890f",
-   "bytes": 1899459
+   "sha256": "752721026834bac91b9f6edcd915a7133add0d574eb66750502679293db3d72f",
+   "bytes": 2382403,
+   "sha256_before_path_sanitize": "a1467437ecae6856b1b7c0998eca666fea210e68191f455f82e99d83f7b32226",
+   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length; re-opened headless in Blender 5.2.3 after patch (rc 0, objects/actions/frame range unchanged)"
   },
   "R4W_EmpEmitter.fbx": {
-   "sha256": "5b50beea4e8734b4bc200bff03749eb04dd6f70643c9351fb0d26fa9b23c1922",
-   "bytes": 712076
+   "sha256": "34cb81a18687d6e139e1e4d578579fdc7a1f66fb02b7e7ae2b1280db54386fd4",
+   "bytes": 931292
   },
   "R4W_EmpEmitter.glb": {
-   "sha256": "ad24075fee8f19b774b25e2674311e43c70f560d4ee427c1cbeaab5cd9dd3676",
-   "bytes": 668540
+   "sha256": "179f33b8a94f0b76ee9e978118e0cab7b3df4ed7764a27f9d914a31781dcc1eb",
+   "bytes": 942484
   },
   "R4W_EmpEmitter_colliders.glb": {
-   "sha256": "092fba4fa997ea71e3bdd931bda1c538d2ac9770bcb9bb04938a344dbb5eb639",
-   "bytes": 602224
+   "sha256": "edd9a795e4f8bc8662c593ff965e1bbec6276f89488372bea07f4db231734914",
+   "bytes": 876144
   },
   "R4W_EmpEmitter_LOD1.fbx": {
-   "sha256": "ec72c9af822acad67b1d60ccd6110d4c638ef789601809109e7dded43adfd43a",
-   "bytes": 300124
+   "sha256": "812c913ca579b9af4dd343dab873293df026129cdd17a6425ebc535afe436c5c",
+   "bytes": 420604
   }
  },
  "unity_import_test": "UNITY_NOT_RUN (Unity not available in this session)",
  "unity_import_settings": "Scale Factor 1, Convert Units ON, Bake Axis Conversion ON, Animation: split clips by animation_manifest.json frame ranges (24 fps)",
  "status": "BLENDER_PASS",
- "seconds": 8.1
+ "seconds": 10.2
 }

@@ -27,10 +27,13 @@
    "unity_up": "+Y",
    "unity_forward": "+Z",
    "unit": "meter",
-   "version": "v1",
+   "version": "v2",
    "weapon_kind": "R4WeaponKind.EmpEmitter",
    "style": "R41_Turret_v6.1 standard (heavy industrial armour + team colour)",
    "issue": "#938"
+  },
+  "R4W_EmpEmitter_Base": {
+   "base_style": "drum"
   },
   "Socket_Mount_Bottom": {
    "role": "mounting face centre, normal -Y, connects to cell (0,-1,0)"
@@ -80,6 +83,7 @@
  "visible_exits_note": "no barrel, no projectile: one radial pulse origin (Muzzle, +Y up)",
  "notes": [
   "Pitch intentionally absent: EMP acts radially; Yaw only orients the LOS sensor.",
-  "Ring angles at clip ends are multiples of 120 deg (3-fold symmetric pods)."
+  "Ring angles at clip ends are multiples of 120 deg (3-fold symmetric pods).",
+  "v2 silhouette pass (#939 follow-up): base style drum, head unchanged v1 pulse head; rig, pivot, muzzle contract and clips unchanged."
  ]
 }

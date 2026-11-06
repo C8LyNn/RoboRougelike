@@ -1,0 +1,577 @@
+{
+ "method": "black silhouettes of the rest-pose GLB, 4 orthographic cameras (gameplay 3/4 high, side, front, top), cropped to the silhouette bbox, squared, 64x64, IoU per view, mean of 4; pair flagged when mean IoU > 0.85",
+ "threshold": 0.85,
+ "v1": {
+  "pairs": {
+   "R4W_Basic|R4W_Heavy": {
+    "gameplay": 0.909,
+    "side": 0.889,
+    "front": 0.905,
+    "top": 0.908,
+    "mean": 0.903
+   },
+   "R4W_Basic|R4W_Shotgun": {
+    "gameplay": 0.836,
+    "side": 0.563,
+    "front": 0.918,
+    "top": 0.577,
+    "mean": 0.723
+   },
+   "R4W_Basic|R4W_Railgun": {
+    "gameplay": 0.764,
+    "side": 0.653,
+    "front": 0.927,
+    "top": 0.674,
+    "mean": 0.754
+   },
+   "R4W_Basic|R4W_BeamCutter": {
+    "gameplay": 0.841,
+    "side": 0.587,
+    "front": 0.942,
+    "top": 0.623,
+    "mean": 0.748
+   },
+   "R4W_Basic|R4W_RocketLauncher": {
+    "gameplay": 0.8,
+    "side": 0.484,
+    "front": 0.897,
+    "top": 0.546,
+    "mean": 0.681
+   },
+   "R4W_Basic|R4W_RotarySaw": {
+    "gameplay": 0.672,
+    "side": 0.356,
+    "front": 0.484,
+    "top": 0.569,
+    "mean": 0.52
+   },
+   "R4W_Basic|R4W_EmpEmitter": {
+    "gameplay": 0.695,
+    "side": 0.286,
+    "front": 0.724,
+    "top": 0.378,
+    "mean": 0.521
+   },
+   "R4W_Heavy|R4W_Shotgun": {
+    "gameplay": 0.774,
+    "side": 0.556,
+    "front": 0.898,
+    "top": 0.557,
+    "mean": 0.696
+   },
+   "R4W_Heavy|R4W_Railgun": {
+    "gameplay": 0.818,
+    "side": 0.707,
+    "front": 0.9,
+    "top": 0.706,
+    "mean": 0.783
+   },
+   "R4W_Heavy|R4W_BeamCutter": {
+    "gameplay": 0.778,
+    "side": 0.571,
+    "front": 0.889,
+    "top": 0.601,
+    "mean": 0.71
+   },
+   "R4W_Heavy|R4W_RocketLauncher": {
+    "gameplay": 0.739,
+    "side": 0.477,
+    "front": 0.927,
+    "top": 0.527,
+    "mean": 0.668
+   },
+   "R4W_Heavy|R4W_RotarySaw": {
+    "gameplay": 0.687,
+    "side": 0.369,
+    "front": 0.475,
+    "top": 0.597,
+    "mean": 0.532
+   },
+   "R4W_Heavy|R4W_EmpEmitter": {
+    "gameplay": 0.675,
+    "side": 0.286,
+    "front": 0.712,
+    "top": 0.365,
+    "mean": 0.509
+   },
+   "R4W_Shotgun|R4W_Railgun": {
+    "gameplay": 0.671,
+    "side": 0.405,
+    "front": 0.937,
+    "top": 0.406,
+    "mean": 0.605
+   },
+   "R4W_Shotgun|R4W_BeamCutter": {
+    "gameplay": 0.972,
+    "side": 0.915,
+    "front": 0.943,
+    "top": 0.926,
+    "mean": 0.939
+   },
+   "R4W_Shotgun|R4W_RocketLauncher": {
+    "gameplay": 0.922,
+    "side": 0.811,
+    "front": 0.888,
+    "top": 0.948,
+    "mean": 0.892
+   },
+   "R4W_Shotgun|R4W_RotarySaw": {
+    "gameplay": 0.648,
+    "side": 0.423,
+    "front": 0.463,
+    "top": 0.339,
+    "mean": 0.468
+   },
+   "R4W_Shotgun|R4W_EmpEmitter": {
+    "gameplay": 0.687,
+    "side": 0.463,
+    "front": 0.688,
+    "top": 0.655,
+    "mean": 0.624
+   },
+   "R4W_Railgun|R4W_BeamCutter": {
+    "gameplay": 0.669,
+    "side": 0.422,
+    "front": 0.968,
+    "top": 0.439,
+    "mean": 0.625
+   },
+   "R4W_Railgun|R4W_RocketLauncher": {
+    "gameplay": 0.654,
+    "side": 0.345,
+    "front": 0.876,
+    "top": 0.385,
+    "mean": 0.565
+   },
+   "R4W_Railgun|R4W_RotarySaw": {
+    "gameplay": 0.702,
+    "side": 0.321,
+    "front": 0.466,
+    "top": 0.775,
+    "mean": 0.566
+   },
+   "R4W_Railgun|R4W_EmpEmitter": {
+    "gameplay": 0.622,
+    "side": 0.21,
+    "front": 0.701,
+    "top": 0.266,
+    "mean": 0.45
+   },
+   "R4W_BeamCutter|R4W_RocketLauncher": {
+    "gameplay": 0.908,
+    "side": 0.758,
+    "front": 0.873,
+    "top": 0.877,
+    "mean": 0.854
+   },
+   "R4W_BeamCutter|R4W_RotarySaw": {
+    "gameplay": 0.649,
+    "side": 0.414,
+    "front": 0.468,
+    "top": 0.366,
+    "mean": 0.474
+   },
+   "R4W_BeamCutter|R4W_EmpEmitter": {
+    "gameplay": 0.687,
+    "side": 0.433,
+    "front": 0.699,
+    "top": 0.607,
+    "mean": 0.606
+   },
+   "R4W_RocketLauncher|R4W_RotarySaw": {
+    "gameplay": 0.62,
+    "side": 0.405,
+    "front": 0.498,
+    "top": 0.321,
+    "mean": 0.461
+   },
+   "R4W_RocketLauncher|R4W_EmpEmitter": {
+    "gameplay": 0.672,
+    "side": 0.514,
+    "front": 0.742,
+    "top": 0.691,
+    "mean": 0.655
+   },
+   "R4W_RotarySaw|R4W_EmpEmitter": {
+    "gameplay": 0.586,
+    "side": 0.342,
+    "front": 0.658,
+    "top": 0.222,
+    "mean": 0.452
+   }
+  },
+  "flagged": [
+   "R4W_Shotgun|R4W_BeamCutter",
+   "R4W_Basic|R4W_Heavy",
+   "R4W_Shotgun|R4W_RocketLauncher",
+   "R4W_BeamCutter|R4W_RocketLauncher"
+  ],
+  "most_similar": [
+   [
+    "R4W_Shotgun|R4W_BeamCutter",
+    {
+     "gameplay": 0.972,
+     "side": 0.915,
+     "front": 0.943,
+     "top": 0.926,
+     "mean": 0.939
+    }
+   ],
+   [
+    "R4W_Basic|R4W_Heavy",
+    {
+     "gameplay": 0.909,
+     "side": 0.889,
+     "front": 0.905,
+     "top": 0.908,
+     "mean": 0.903
+    }
+   ],
+   [
+    "R4W_Shotgun|R4W_RocketLauncher",
+    {
+     "gameplay": 0.922,
+     "side": 0.811,
+     "front": 0.888,
+     "top": 0.948,
+     "mean": 0.892
+    }
+   ],
+   [
+    "R4W_BeamCutter|R4W_RocketLauncher",
+    {
+     "gameplay": 0.908,
+     "side": 0.758,
+     "front": 0.873,
+     "top": 0.877,
+     "mean": 0.854
+    }
+   ],
+   [
+    "R4W_Heavy|R4W_Railgun",
+    {
+     "gameplay": 0.818,
+     "side": 0.707,
+     "front": 0.9,
+     "top": 0.706,
+     "mean": 0.783
+    }
+   ],
+   [
+    "R4W_Basic|R4W_Railgun",
+    {
+     "gameplay": 0.764,
+     "side": 0.653,
+     "front": 0.927,
+     "top": 0.674,
+     "mean": 0.754
+    }
+   ],
+   [
+    "R4W_Basic|R4W_BeamCutter",
+    {
+     "gameplay": 0.841,
+     "side": 0.587,
+     "front": 0.942,
+     "top": 0.623,
+     "mean": 0.748
+    }
+   ],
+   [
+    "R4W_Basic|R4W_Shotgun",
+    {
+     "gameplay": 0.836,
+     "side": 0.563,
+     "front": 0.918,
+     "top": 0.577,
+     "mean": 0.723
+    }
+   ]
+  ],
+  "mean_of_all_pairs": 0.642
+ },
+ "v2": {
+  "pairs": {
+   "R4W_Basic|R4W_Heavy": {
+    "gameplay": 0.783,
+    "side": 0.779,
+    "front": 0.845,
+    "top": 0.808,
+    "mean": 0.804
+   },
+   "R4W_Basic|R4W_Shotgun": {
+    "gameplay": 0.821,
+    "side": 0.555,
+    "front": 0.763,
+    "top": 0.585,
+    "mean": 0.681
+   },
+   "R4W_Basic|R4W_Railgun": {
+    "gameplay": 0.602,
+    "side": 0.501,
+    "front": 0.582,
+    "top": 0.555,
+    "mean": 0.56
+   },
+   "R4W_Basic|R4W_BeamCutter": {
+    "gameplay": 0.786,
+    "side": 0.567,
+    "front": 0.776,
+    "top": 0.712,
+    "mean": 0.71
+   },
+   "R4W_Basic|R4W_RocketLauncher": {
+    "gameplay": 0.632,
+    "side": 0.499,
+    "front": 0.589,
+    "top": 0.432,
+    "mean": 0.538
+   },
+   "R4W_Basic|R4W_RotarySaw": {
+    "gameplay": 0.677,
+    "side": 0.303,
+    "front": 0.393,
+    "top": 0.57,
+    "mean": 0.486
+   },
+   "R4W_Basic|R4W_EmpEmitter": {
+    "gameplay": 0.695,
+    "side": 0.287,
+    "front": 0.718,
+    "top": 0.446,
+    "mean": 0.537
+   },
+   "R4W_Heavy|R4W_Shotgun": {
+    "gameplay": 0.746,
+    "side": 0.655,
+    "front": 0.797,
+    "top": 0.604,
+    "mean": 0.701
+   },
+   "R4W_Heavy|R4W_Railgun": {
+    "gameplay": 0.67,
+    "side": 0.443,
+    "front": 0.587,
+    "top": 0.555,
+    "mean": 0.564
+   },
+   "R4W_Heavy|R4W_BeamCutter": {
+    "gameplay": 0.797,
+    "side": 0.685,
+    "front": 0.777,
+    "top": 0.803,
+    "mean": 0.766
+   },
+   "R4W_Heavy|R4W_RocketLauncher": {
+    "gameplay": 0.683,
+    "side": 0.588,
+    "front": 0.642,
+    "top": 0.453,
+    "mean": 0.592
+   },
+   "R4W_Heavy|R4W_RotarySaw": {
+    "gameplay": 0.627,
+    "side": 0.353,
+    "front": 0.389,
+    "top": 0.537,
+    "mean": 0.476
+   },
+   "R4W_Heavy|R4W_EmpEmitter": {
+    "gameplay": 0.72,
+    "side": 0.344,
+    "front": 0.701,
+    "top": 0.484,
+    "mean": 0.562
+   },
+   "R4W_Shotgun|R4W_Railgun": {
+    "gameplay": 0.537,
+    "side": 0.324,
+    "front": 0.566,
+    "top": 0.342,
+    "mean": 0.442
+   },
+   "R4W_Shotgun|R4W_BeamCutter": {
+    "gameplay": 0.803,
+    "side": 0.802,
+    "front": 0.684,
+    "top": 0.739,
+    "mean": 0.757
+   },
+   "R4W_Shotgun|R4W_RocketLauncher": {
+    "gameplay": 0.64,
+    "side": 0.591,
+    "front": 0.609,
+    "top": 0.551,
+    "mean": 0.598
+   },
+   "R4W_Shotgun|R4W_RotarySaw": {
+    "gameplay": 0.655,
+    "side": 0.371,
+    "front": 0.393,
+    "top": 0.344,
+    "mean": 0.441
+   },
+   "R4W_Shotgun|R4W_EmpEmitter": {
+    "gameplay": 0.704,
+    "side": 0.458,
+    "front": 0.597,
+    "top": 0.728,
+    "mean": 0.622
+   },
+   "R4W_Railgun|R4W_BeamCutter": {
+    "gameplay": 0.592,
+    "side": 0.32,
+    "front": 0.676,
+    "top": 0.462,
+    "mean": 0.512
+   },
+   "R4W_Railgun|R4W_RocketLauncher": {
+    "gameplay": 0.566,
+    "side": 0.291,
+    "front": 0.643,
+    "top": 0.298,
+    "mean": 0.45
+   },
+   "R4W_Railgun|R4W_RotarySaw": {
+    "gameplay": 0.569,
+    "side": 0.301,
+    "front": 0.596,
+    "top": 0.766,
+    "mean": 0.558
+   },
+   "R4W_Railgun|R4W_EmpEmitter": {
+    "gameplay": 0.557,
+    "side": 0.188,
+    "front": 0.622,
+    "top": 0.275,
+    "mean": 0.411
+   },
+   "R4W_BeamCutter|R4W_RocketLauncher": {
+    "gameplay": 0.642,
+    "side": 0.641,
+    "front": 0.648,
+    "top": 0.506,
+    "mean": 0.609
+   },
+   "R4W_BeamCutter|R4W_RotarySaw": {
+    "gameplay": 0.634,
+    "side": 0.336,
+    "front": 0.491,
+    "top": 0.445,
+    "mean": 0.477
+   },
+   "R4W_BeamCutter|R4W_EmpEmitter": {
+    "gameplay": 0.791,
+    "side": 0.427,
+    "front": 0.797,
+    "top": 0.594,
+    "mean": 0.652
+   },
+   "R4W_RocketLauncher|R4W_RotarySaw": {
+    "gameplay": 0.552,
+    "side": 0.311,
+    "front": 0.493,
+    "top": 0.29,
+    "mean": 0.411
+   },
+   "R4W_RocketLauncher|R4W_EmpEmitter": {
+    "gameplay": 0.557,
+    "side": 0.432,
+    "front": 0.616,
+    "top": 0.604,
+    "mean": 0.552
+   },
+   "R4W_RotarySaw|R4W_EmpEmitter": {
+    "gameplay": 0.57,
+    "side": 0.328,
+    "front": 0.543,
+    "top": 0.269,
+    "mean": 0.427
+   }
+  },
+  "flagged": [],
+  "most_similar": [
+   [
+    "R4W_Basic|R4W_Heavy",
+    {
+     "gameplay": 0.783,
+     "side": 0.779,
+     "front": 0.845,
+     "top": 0.808,
+     "mean": 0.804
+    }
+   ],
+   [
+    "R4W_Heavy|R4W_BeamCutter",
+    {
+     "gameplay": 0.797,
+     "side": 0.685,
+     "front": 0.777,
+     "top": 0.803,
+     "mean": 0.766
+    }
+   ],
+   [
+    "R4W_Shotgun|R4W_BeamCutter",
+    {
+     "gameplay": 0.803,
+     "side": 0.802,
+     "front": 0.684,
+     "top": 0.739,
+     "mean": 0.757
+    }
+   ],
+   [
+    "R4W_Basic|R4W_BeamCutter",
+    {
+     "gameplay": 0.786,
+     "side": 0.567,
+     "front": 0.776,
+     "top": 0.712,
+     "mean": 0.71
+    }
+   ],
+   [
+    "R4W_Heavy|R4W_Shotgun",
+    {
+     "gameplay": 0.746,
+     "side": 0.655,
+     "front": 0.797,
+     "top": 0.604,
+     "mean": 0.701
+    }
+   ],
+   [
+    "R4W_Basic|R4W_Shotgun",
+    {
+     "gameplay": 0.821,
+     "side": 0.555,
+     "front": 0.763,
+     "top": 0.585,
+     "mean": 0.681
+    }
+   ],
+   [
+    "R4W_BeamCutter|R4W_EmpEmitter",
+    {
+     "gameplay": 0.791,
+     "side": 0.427,
+     "front": 0.797,
+     "top": 0.594,
+     "mean": 0.652
+    }
+   ],
+   [
+    "R4W_Shotgun|R4W_EmpEmitter",
+    {
+     "gameplay": 0.704,
+     "side": 0.458,
+     "front": 0.597,
+     "top": 0.728,
+     "mean": 0.622
+    }
+   ]
+  ],
+  "mean_of_all_pairs": 0.568
+ }
+}

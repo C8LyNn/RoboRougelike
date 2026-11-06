@@ -30,10 +30,13 @@
    "unity_up": "+Y",
    "unity_forward": "+Z",
    "unit": "meter",
-   "version": "v1",
+   "version": "v2",
    "weapon_kind": "R4WeaponKind.Railgun",
    "style": "R41_Turret_v6.1 standard (heavy industrial armour + team colour)",
    "issue": "#938"
+  },
+  "R4W_Railgun_Base": {
+   "base_style": "column"
   },
   "Socket_Mount_Bottom": {
    "role": "mounting face centre, normal -Y, connects to cell (0,-1,0)"
@@ -94,6 +97,7 @@
  ],
  "visible_exits_note": "1 emitter = 1 Muzzle (penetration up to 6 parts is gameplay, unchanged)",
  "notes": [
-  "Charge glow is mesh FX (scale) so it survives FBX; emission strength itself is not animated."
+  "Charge glow is mesh FX (scale) so it survives FBX; emission strength itself is not animated.",
+  "v2 silhouette pass (#939 follow-up): base style column, head thin tall fork + capacitor spires; rig, pivot, muzzle contract and clips unchanged."
  ]
 }

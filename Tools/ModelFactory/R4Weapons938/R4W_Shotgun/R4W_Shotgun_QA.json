@@ -3,45 +3,47 @@
  "kind": "R4WeaponKind.Shotgun",
  "game_name": "WPN-001 Shotgun",
  "blender": "5.2.3 LTS",
- "started": "2026-11-06 15:34:56",
+ "started": "2026-11-06 22:15:02",
  "failures": [],
  "notes": [
-  "Choke block front 0.410 m, Muzzle 0.450 m forward of the pivot."
+  "Choke block front 0.410 m, Muzzle 0.450 m forward of the pivot.",
+  "v2 silhouette pass (#939 follow-up): base style box, head single cantilever arm + side drum magazine; rig, pivot, muzzle contract and clips unchanged."
  ],
  "meshes": [
   {
    "object": "R4W_Shotgun_Base",
-   "verts": 1508,
-   "triangles": 3044,
-   "shells": 1,
+   "verts": 1226,
+   "triangles": 2448,
+   "shells": 3,
    "non_manifold_edges": 0,
    "boundary_edges": 0,
    "zero_area_faces": 0,
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.051758,
+   "signed_volume_m3": 0.040675,
    "uv_layers": 1,
    "uv_bounds": [
-    0.005,
-    0.005,
-    0.995,
-    0.989
+    0.004,
+    0.004,
+    0.996,
+    0.987
    ],
    "materials": [
     "Armor_Dark",
     "Armor_Gunmetal",
-    "Energy_Hot",
     "Armor_Plate_Light",
     "Steel_Light",
-    "TeamColor_Red"
+    "Energy_Hot",
+    "TeamColor_Red",
+    "Hazard_Yellow"
    ],
    "ok": true
   },
   {
    "object": "R4W_Shotgun_Yaw",
-   "verts": 1848,
-   "triangles": 3668,
+   "verts": 1505,
+   "triangles": 2982,
    "shells": 7,
    "non_manifold_edges": 0,
    "boundary_edges": 0,
@@ -49,13 +51,13 @@
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.008683,
+   "signed_volume_m3": 0.007572,
    "uv_layers": 1,
    "uv_bounds": [
     0.004,
     0.004,
     0.996,
-    0.99
+    0.991
    ],
    "materials": [
     "Armor_Dark",
@@ -70,8 +72,8 @@
   },
   {
    "object": "R4W_Shotgun_Pitch",
-   "verts": 582,
-   "triangles": 1168,
+   "verts": 1342,
+   "triangles": 2688,
    "shells": 1,
    "non_manifold_edges": 0,
    "boundary_edges": 0,
@@ -79,13 +81,13 @@
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.00487,
+   "signed_volume_m3": 0.006751,
    "uv_layers": 1,
    "uv_bounds": [
     0.004,
     0.004,
     0.996,
-    0.996
+    0.995
    ],
    "materials": [
     "Armor_Dark",
@@ -94,7 +96,8 @@
     "Armor_Plate_Light",
     "Sensor_Eye_Red",
     "TeamColor_Red",
-    "Energy_Hot"
+    "Energy_Hot",
+    "Hazard_Yellow"
    ],
    "ok": true
   },
@@ -210,28 +213,28 @@
    "ok": true
   }
  ],
- "triangles_total": 11302,
+ "triangles_total": 11540,
  "triangles_fx": 128,
  "triangles_r41_reference": 11452,
  "topology_PASS": true,
  "palette": {
   "material_area_share": {
-   "Armor_Dark": 0.5612,
-   "Armor_Gunmetal": 0.2314,
-   "Armor_Plate_Light": 0.1113,
-   "Energy_Hot": 0.0395,
-   "TeamColor_Red": 0.0283,
-   "Steel_Light": 0.0126,
-   "Barrel_Heat": 0.0124,
-   "Hazard_Yellow": 0.003,
+   "Armor_Dark": 0.5939,
+   "Armor_Gunmetal": 0.242,
+   "Armor_Plate_Light": 0.0877,
+   "Energy_Hot": 0.0253,
+   "TeamColor_Red": 0.0217,
+   "Barrel_Heat": 0.0121,
+   "Steel_Light": 0.0112,
+   "Hazard_Yellow": 0.0058,
    "Sensor_Eye_Red": 0.0003
   },
   "family_share": {
-   "1_dark_gunmetal": 0.7926,
-   "2_light_steel": 0.1238,
-   "3_team_red": 0.0283,
-   "4_hazard_yellow": 0.003,
-   "T_technical": 0.0522
+   "1_dark_gunmetal": 0.836,
+   "2_light_steel": 0.0988,
+   "3_team_red": 0.0217,
+   "4_hazard_yellow": 0.0058,
+   "T_technical": 0.0377
   },
   "r41_family_share": {
    "1_dark_gunmetal": 0.7913,
@@ -344,14 +347,14 @@
    ],
    "bounds_file": [
     [
-     -0.2565,
+     -0.255,
      -0.26,
-     -0.2565
+     -0.255
     ],
     [
-     0.2565,
+     0.255,
      0.016,
-     0.2565
+     0.255
     ]
    ],
    "inside_own_cell": true
@@ -371,12 +374,12 @@
    ],
    "bounds_file": [
     [
-     -0.2565,
+     -0.255,
      -0.26,
-     -0.2565
+     -0.255
     ],
     [
-     0.2565,
+     0.255,
      0.226,
      0.413
     ]
@@ -851,7 +854,7 @@
  ],
  "lod1": {
   "file": "R4W_Shotgun_LOD1.fbx",
-  "triangles": 5650,
+  "triangles": 5768,
   "method": "DECIMATE collapse 0.5 (automatic, not hand-authored)"
  },
  "fbx_reimport": {
@@ -1193,28 +1196,30 @@
  },
  "files": {
   "R4W_Shotgun.blend": {
-   "sha256": "3e9c9d2fcd83f75a7d926da6f4c4c3e039c0f1dc366cf66d9aa6d97038faeca4",
-   "bytes": 1738760
+   "sha256": "05824449755847e600db93843e51b5c1f731c53598d7b52f1373e34da938c6e5",
+   "bytes": 1757343,
+   "sha256_before_path_sanitize": "dbb034a240bb0364aed9ad9755cff6fd11fa907b0255e08a8e3ed56155491c0f",
+   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length; re-opened headless in Blender 5.2.3 after patch (rc 0, objects/actions/frame range unchanged)"
   },
   "R4W_Shotgun.fbx": {
-   "sha256": "bdfe1f743ae87fdf7833c36d17b23967029bf977a94bf03918a9f1180e752889",
-   "bytes": 567884
+   "sha256": "933194592c44d8fe0fcc52d2e7e77753f4a9c25374743a6bca26d0c4ada30bba",
+   "bytes": 576156
   },
   "R4W_Shotgun.glb": {
-   "sha256": "037b57662fe9327dc3c4f74d24efda49601e94bb1f844f7bf127ba825718a8b0",
-   "bytes": 596104
+   "sha256": "babe66916d8daa5f53fa6182869bc9f9233775a3ef7faceb5dda2d2f5ebc2442",
+   "bytes": 609176
   },
   "R4W_Shotgun_colliders.glb": {
-   "sha256": "c6f78cc5364e41c5ec92e8a62bfb6d46567c1f2a73f0abec2a1e4f693530384f",
-   "bytes": 577036
+   "sha256": "05bd265801fad2a2544d0e9dfe39d159f2787af14bf9bbb46d3754d1442b8ff8",
+   "bytes": 590080
   },
   "R4W_Shotgun_LOD1.fbx": {
-   "sha256": "5c4b33eb857b6598c78d3be7fcf9c037c6fa5bdf9c05b339f0a8a54e756d4584",
-   "bytes": 268332
+   "sha256": "7e1bdb77ea0500f0b2a91a60bf87d54938773b83adcb1fb458f5f1d3e3b2522b",
+   "bytes": 271964
   }
  },
  "unity_import_test": "UNITY_NOT_RUN (Unity not available in this session)",
  "unity_import_settings": "Scale Factor 1, Convert Units ON, Bake Axis Conversion ON, Animation: split clips by animation_manifest.json frame ranges (24 fps)",
  "status": "BLENDER_PASS",
- "seconds": 8.8
+ "seconds": 9.5
 }

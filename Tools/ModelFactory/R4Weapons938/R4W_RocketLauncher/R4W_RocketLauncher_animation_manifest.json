@@ -34,14 +34,14 @@
    "start": 115,
    "end": 139,
    "loop": false,
-   "desc": "launch tube 1: left hatch opens, rocket leaves (0.9 m in 3 f) with flash + backblast, pod kick, hatch closes; tube 1 stays empty"
+   "desc": "launch tube 1 (left pod, inner): left hatch opens, rocket leaves (0.9 m in 3 f) with flash + backblast, pods kick, hatch closes; tube 1 stays empty"
   },
   {
    "name": "Reload",
    "start": 141,
    "end": 177,
    "loop": false,
-   "desc": "rear cover opens 110 deg (top hinge), rocket 1 slides in from behind the pod, cover closes"
+   "desc": "left rear cover opens 110 deg (top hinge), rocket 1 slides in from behind the pod, cover closes"
   }
  ],
  "animated_nodes": [
@@ -49,7 +49,8 @@
   "R4W_RocketLauncher_Hatch_L",
   "R4W_RocketLauncher_Hatch_R",
   "R4W_RocketLauncher_Pitch",
-  "R4W_RocketLauncher_RearCover",
+  "R4W_RocketLauncher_RearCover_L",
+  "R4W_RocketLauncher_RearCover_R",
   "R4W_RocketLauncher_Rocket_1",
   "R4W_RocketLauncher_Yaw",
   "Rocket_Backblast"

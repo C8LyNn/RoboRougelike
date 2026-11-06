@@ -3,17 +3,18 @@
  "kind": "R4WeaponKind.RotarySaw",
  "game_name": "WPN-005 Rotary Saw",
  "blender": "5.2.3 LTS",
- "started": "2026-11-06 15:34:26",
+ "started": "2026-11-06 22:16:12",
  "failures": [],
  "notes": [
   "Blade 0.60 m diameter on a +X side arm; disc centre 0.620 m forward of the pivot.",
-  "Runtime placeholder rotor (R41PartGeometry.SawRotor) and RotarySawConfiguration are NOT changed (see extra_checks.game_contact_disc)."
+  "Runtime placeholder rotor (R41PartGeometry.SawRotor) and RotarySawConfiguration are NOT changed (see extra_checks.game_contact_disc).",
+  "v2 silhouette pass (#939 follow-up): base style crab, head unchanged v1 saw arm; rig, pivot, muzzle contract and clips unchanged."
  ],
  "meshes": [
   {
    "object": "R4W_RotarySaw_Base",
-   "verts": 1828,
-   "triangles": 3668,
+   "verts": 1113,
+   "triangles": 2222,
    "shells": 5,
    "non_manifold_edges": 0,
    "boundary_edges": 0,
@@ -21,20 +22,20 @@
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.052049,
+   "signed_volume_m3": 0.028273,
    "uv_layers": 1,
    "uv_bounds": [
-    0.005,
-    0.005,
-    0.995,
-    0.994
+    0.003,
+    0.003,
+    0.997,
+    0.996
    ],
    "materials": [
     "Armor_Dark",
     "Armor_Gunmetal",
-    "Energy_Hot",
     "Armor_Plate_Light",
     "Steel_Light",
+    "Energy_Hot",
     "TeamColor_Red",
     "Hazard_Yellow"
    ],
@@ -180,28 +181,28 @@
    "ok": true
   }
  ],
- "triangles_total": 17464,
+ "triangles_total": 16018,
  "triangles_fx": 826,
  "triangles_r41_reference": 11452,
  "topology_PASS": true,
  "palette": {
   "material_area_share": {
-   "Armor_Gunmetal": 0.4199,
-   "Armor_Dark": 0.3703,
-   "Armor_Plate_Light": 0.0831,
-   "Steel_Light": 0.0453,
-   "Energy_Hot": 0.0398,
-   "Barrel_Heat": 0.0192,
-   "TeamColor_Red": 0.0178,
-   "Hazard_Yellow": 0.0044,
+   "Armor_Gunmetal": 0.4232,
+   "Armor_Dark": 0.4051,
+   "Armor_Plate_Light": 0.0564,
+   "Steel_Light": 0.0458,
+   "Energy_Hot": 0.0316,
+   "Barrel_Heat": 0.0207,
+   "TeamColor_Red": 0.0135,
+   "Hazard_Yellow": 0.0036,
    "Sensor_Eye_Red": 0.0002
   },
   "family_share": {
-   "1_dark_gunmetal": 0.7902,
-   "2_light_steel": 0.1284,
-   "3_team_red": 0.0178,
-   "4_hazard_yellow": 0.0044,
-   "T_technical": 0.0592
+   "1_dark_gunmetal": 0.8283,
+   "2_light_steel": 0.1022,
+   "3_team_red": 0.0135,
+   "4_hazard_yellow": 0.0036,
+   "T_technical": 0.0524
   },
   "r41_family_share": {
    "1_dark_gunmetal": 0.7913,
@@ -314,14 +315,14 @@
    ],
    "bounds_file": [
     [
-     -0.257,
+     -0.255,
      -0.26,
-     -0.257
+     -0.255
     ],
     [
-     0.257,
+     0.255,
      0.016,
-     0.257
+     0.255
     ]
    ],
    "inside_own_cell": true
@@ -356,12 +357,12 @@
    ],
    "bounds_file": [
     [
-     -0.257,
+     -0.255,
      -0.26,
-     -0.257
+     -0.255
     ],
     [
-     0.257,
+     0.255,
      0.4736,
      0.9191
     ]
@@ -997,7 +998,7 @@
    "game_bladeRadius_m": 0.9,
    "game_halfThickness_m": 0.14,
    "nearest_own_armour_vertex_to_disc_centre_m": 0.0293,
-   "own_vertices_inside_game_contact_disc": 3468,
+   "own_vertices_inside_game_contact_disc": 3680,
    "own_vertices_inside_visual_blade_disc": 0,
    "PASS": true,
    "risk": "game contact disc (r=0.9 m, +-0.14 m) is larger than the visual blade; it is a runtime value - integration (B01) decides; not changed here"
@@ -1028,7 +1029,7 @@
  ],
  "lod1": {
   "file": "R4W_RotarySaw_LOD1.fbx",
-  "triangles": 8730,
+  "triangles": 8006,
   "method": "DECIMATE collapse 0.5 (automatic, not hand-authored)"
  },
  "fbx_reimport": {
@@ -1384,28 +1385,30 @@
  },
  "files": {
   "R4W_RotarySaw.blend": {
-   "sha256": "032660b8b78584a6fa21472f0035ca0d8fad7859d52910b62c3b24e618681694",
-   "bytes": 2263634
+   "sha256": "eb00f04175ca4bff8a2d76d9a8740f60f46543c7b11865eb50820bdf302652ef",
+   "bytes": 2154946,
+   "sha256_before_path_sanitize": "0f4cdff6a4ebe60931d09355469b0b200e3fa6bfce151a32d1a347e2715e5b5c",
+   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length; re-opened headless in Blender 5.2.3 after patch (rc 0, objects/actions/frame range unchanged)"
   },
   "R4W_RotarySaw.fbx": {
-   "sha256": "e68d84e3063932de52836f9dcdc99f16fd1a04898a2637a5e550df268b8c586d",
-   "bytes": 835612
+   "sha256": "5c2443a25a417b44c6167e2f1e3b377f23314dd24f0de119c7b8a6b6669f5ba8",
+   "bytes": 788348
   },
   "R4W_RotarySaw.glb": {
-   "sha256": "b65fdbc9990676a1ddd970bf7a29211cf0c6ea8ccafc9cc963636349ca0ebc7d",
-   "bytes": 878356
+   "sha256": "15d3cfdd21c5f7cd197225cd1f5dd5ea63fc8a098fa9550f9172687aa5c389d8",
+   "bytes": 785444
   },
   "R4W_RotarySaw_colliders.glb": {
-   "sha256": "58e03c1f93f94de5170ec0d7e374d7465973b8fd7499600e3a28e4fc7beb6c3a",
-   "bytes": 836984
+   "sha256": "1dd742c4ef7072d82236ce621692c161a50bf25fe2e5cb0f815f67e67b05430f",
+   "bytes": 744036
   },
   "R4W_RotarySaw_LOD1.fbx": {
-   "sha256": "26864e97bafd4039311ce71426afcd0b0f340c0ce9035d2982f16d416c9eb8ad",
-   "bytes": 388220
+   "sha256": "bc0fd4a1c353398d58def7e043a183da7356a70e930ee47f2d7e9dc8e825e639",
+   "bytes": 353452
   }
  },
  "unity_import_test": "UNITY_NOT_RUN (Unity not available in this session)",
  "unity_import_settings": "Scale Factor 1, Convert Units ON, Bake Axis Conversion ON, Animation: split clips by animation_manifest.json frame ranges (24 fps)",
  "status": "BLENDER_PASS",
- "seconds": 12.3
+ "seconds": 13.0
 }

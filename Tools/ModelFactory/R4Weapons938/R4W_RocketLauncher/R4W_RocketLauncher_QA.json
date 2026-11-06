@@ -3,16 +3,17 @@
  "kind": "R4WeaponKind.RocketLauncher",
  "game_name": "WPN-004 Rocket Launcher",
  "blender": "5.2.3 LTS",
- "started": "2026-11-06 15:35:42",
+ "started": "2026-11-06 22:15:54",
  "failures": [],
  "notes": [
-  "Fire clip launches tube 1 only; tube 1 is empty until Reload (master timeline: Fire is followed by Reload)."
+  "Fire clip launches tube 1 only; tube 1 is empty until Reload (master timeline: Fire is followed by Reload).",
+  "v2 silhouette pass (#939 follow-up): base style tripod, head central radar tower + twin side pods; rig, pivot, muzzle contract and clips unchanged (second rear cover added, rest in clips)."
  ],
  "meshes": [
   {
    "object": "R4W_RocketLauncher_Base",
-   "verts": 1604,
-   "triangles": 3236,
+   "verts": 2036,
+   "triangles": 4104,
    "shells": 1,
    "non_manifold_edges": 0,
    "boundary_edges": 0,
@@ -20,7 +21,7 @@
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.051777,
+   "signed_volume_m3": 0.013536,
    "uv_layers": 1,
    "uv_bounds": [
     0.005,
@@ -30,32 +31,33 @@
    ],
    "materials": [
     "Armor_Dark",
-    "Armor_Gunmetal",
-    "Energy_Hot",
     "Armor_Plate_Light",
+    "Armor_Gunmetal",
     "Steel_Light",
-    "TeamColor_Red"
+    "Energy_Hot",
+    "TeamColor_Red",
+    "Hazard_Yellow"
    ],
    "ok": true
   },
   {
    "object": "R4W_RocketLauncher_Yaw",
-   "verts": 1787,
-   "triangles": 3570,
-   "shells": 1,
+   "verts": 1480,
+   "triangles": 2944,
+   "shells": 5,
    "non_manifold_edges": 0,
    "boundary_edges": 0,
    "zero_area_faces": 0,
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.007743,
+   "signed_volume_m3": 0.00785,
    "uv_layers": 1,
    "uv_bounds": [
     0.004,
     0.004,
     0.996,
-    0.995
+    0.996
    ],
    "materials": [
     "Armor_Dark",
@@ -63,6 +65,7 @@
     "Steel_Light",
     "Armor_Gunmetal",
     "Armor_Plate_Light",
+    "Sensor_Eye_Red",
     "TeamColor_Red",
     "Hazard_Yellow"
    ],
@@ -70,8 +73,38 @@
   },
   {
    "object": "R4W_RocketLauncher_Pitch",
-   "verts": 1921,
-   "triangles": 3866,
+   "verts": 1942,
+   "triangles": 3896,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.007474,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.006,
+    0.006,
+    0.994,
+    0.994
+   ],
+   "materials": [
+    "Steel_Light",
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Armor_Plate_Light",
+    "TeamColor_Red",
+    "Hazard_Yellow",
+    "Energy_Hot"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4W_RocketLauncher_RearCover_L",
+   "verts": 212,
+   "triangles": 416,
    "shells": 2,
    "non_manifold_edges": 0,
    "boundary_edges": 0,
@@ -79,30 +112,27 @@
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.008825,
+   "signed_volume_m3": 0.000153,
    "uv_layers": 1,
    "uv_bounds": [
-    0.005,
-    0.005,
-    0.995,
-    0.995
+    0.002,
+    0.002,
+    0.991,
+    0.998
    ],
    "materials": [
-    "Armor_Dark",
-    "Steel_Light",
     "Armor_Gunmetal",
     "Armor_Plate_Light",
-    "Sensor_Eye_Red",
-    "TeamColor_Red",
-    "Energy_Hot",
+    "Armor_Dark",
+    "Steel_Light",
     "Hazard_Yellow"
    ],
    "ok": true
   },
   {
-   "object": "R4W_RocketLauncher_RearCover",
-   "verts": 336,
-   "triangles": 664,
+   "object": "R4W_RocketLauncher_RearCover_R",
+   "verts": 212,
+   "triangles": 416,
    "shells": 2,
    "non_manifold_edges": 0,
    "boundary_edges": 0,
@@ -110,12 +140,12 @@
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.00038,
+   "signed_volume_m3": 0.000153,
    "uv_layers": 1,
    "uv_bounds": [
     0.002,
     0.002,
-    0.899,
+    0.995,
     0.998
    ],
    "materials": [
@@ -138,13 +168,13 @@
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.000186,
+   "signed_volume_m3": 0.000162,
    "uv_layers": 1,
    "uv_bounds": [
     0.002,
     0.002,
-    0.998,
-    0.937
+    0.925,
+    0.998
    ],
    "materials": [
     "Armor_Gunmetal",
@@ -165,13 +195,13 @@
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.000186,
+   "signed_volume_m3": 0.000162,
    "uv_layers": 1,
    "uv_bounds": [
     0.002,
     0.002,
-    0.998,
-    0.937
+    0.925,
+    0.998
    ],
    "materials": [
     "Armor_Gunmetal",
@@ -183,8 +213,8 @@
   },
   {
    "object": "R4W_RocketLauncher_Rocket_1",
-   "verts": 290,
-   "triangles": 576,
+   "verts": 287,
+   "triangles": 570,
    "shells": 1,
    "non_manifold_edges": 0,
    "boundary_edges": 0,
@@ -192,13 +222,13 @@
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.000553,
+   "signed_volume_m3": 0.000452,
    "uv_layers": 1,
    "uv_bounds": [
     0.003,
     0.003,
     0.997,
-    0.994
+    0.979
    ],
    "materials": [
     "Armor_Plate_Light",
@@ -212,8 +242,8 @@
   },
   {
    "object": "R4W_RocketLauncher_Rocket_2",
-   "verts": 290,
-   "triangles": 576,
+   "verts": 287,
+   "triangles": 570,
    "shells": 1,
    "non_manifold_edges": 0,
    "boundary_edges": 0,
@@ -221,13 +251,13 @@
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.000553,
+   "signed_volume_m3": 0.000452,
    "uv_layers": 1,
    "uv_bounds": [
     0.003,
     0.003,
     0.997,
-    0.994
+    0.979
    ],
    "materials": [
     "Armor_Plate_Light",
@@ -241,8 +271,8 @@
   },
   {
    "object": "R4W_RocketLauncher_Rocket_3",
-   "verts": 279,
-   "triangles": 554,
+   "verts": 287,
+   "triangles": 570,
    "shells": 1,
    "non_manifold_edges": 0,
    "boundary_edges": 0,
@@ -250,13 +280,13 @@
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.000553,
+   "signed_volume_m3": 0.000452,
    "uv_layers": 1,
    "uv_bounds": [
     0.003,
     0.003,
-    0.996,
-    0.997
+    0.997,
+    0.993
    ],
    "materials": [
     "Armor_Plate_Light",
@@ -270,8 +300,8 @@
   },
   {
    "object": "R4W_RocketLauncher_Rocket_4",
-   "verts": 279,
-   "triangles": 554,
+   "verts": 287,
+   "triangles": 570,
    "shells": 1,
    "non_manifold_edges": 0,
    "boundary_edges": 0,
@@ -279,13 +309,13 @@
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.000553,
+   "signed_volume_m3": 0.000452,
    "uv_layers": 1,
    "uv_bounds": [
     0.003,
     0.003,
     0.997,
-    0.988
+    0.993
    ],
    "materials": [
     "Armor_Plate_Light",
@@ -310,12 +340,12 @@
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.000228,
+   "signed_volume_m3": 0.000185,
    "uv_layers": 1,
    "uv_bounds": [
     0.002,
     0.002,
-    0.851,
+    0.898,
     0.998
    ],
    "materials": [
@@ -325,8 +355,8 @@
   },
   {
    "object": "Rocket_Backblast",
-   "verts": 66,
-   "triangles": 128,
+   "verts": 114,
+   "triangles": 224,
    "shells": 1,
    "non_manifold_edges": 0,
    "boundary_edges": 0,
@@ -334,13 +364,13 @@
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.00066,
+   "signed_volume_m3": 0.000546,
    "uv_layers": 1,
    "uv_bounds": [
     0.002,
     0.002,
     0.998,
-    0.816
+    0.988
    ],
    "materials": [
     "Muzzle_Flash"
@@ -348,28 +378,28 @@
    "ok": true
   }
  ],
- "triangles_total": 13988,
- "triangles_fx": 308,
+ "triangles_total": 14448,
+ "triangles_fx": 404,
  "triangles_r41_reference": 11452,
  "topology_PASS": true,
  "palette": {
   "material_area_share": {
-   "Armor_Dark": 0.499,
-   "Armor_Gunmetal": 0.2567,
-   "Armor_Plate_Light": 0.164,
-   "Energy_Hot": 0.0313,
-   "TeamColor_Red": 0.025,
-   "Steel_Light": 0.0135,
-   "Hazard_Yellow": 0.0064,
-   "Barrel_Heat": 0.0039,
-   "Sensor_Eye_Red": 0.0002
+   "Armor_Dark": 0.5314,
+   "Armor_Gunmetal": 0.2666,
+   "Armor_Plate_Light": 0.1103,
+   "TeamColor_Red": 0.0267,
+   "Steel_Light": 0.0239,
+   "Energy_Hot": 0.0189,
+   "Hazard_Yellow": 0.0176,
+   "Barrel_Heat": 0.0044,
+   "Sensor_Eye_Red": 0.0003
   },
   "family_share": {
-   "1_dark_gunmetal": 0.7557,
-   "2_light_steel": 0.1774,
-   "3_team_red": 0.025,
-   "4_hazard_yellow": 0.0064,
-   "T_technical": 0.0355
+   "1_dark_gunmetal": 0.7979,
+   "2_light_steel": 0.1341,
+   "3_team_red": 0.0267,
+   "4_hazard_yellow": 0.0176,
+   "T_technical": 0.0236
   },
   "r41_family_share": {
    "1_dark_gunmetal": 0.7913,
@@ -453,8 +483,8 @@
   "Muzzle": {
    "position_file": [
     0.0,
-    0.1585,
-    0.402
+    0.135,
+    0.382
    ],
    "forward_file": [
     0.0,
@@ -465,9 +495,9 @@
   },
   "Muzzle_1": {
    "position_file": [
-    -0.05,
-    0.194,
-    0.402
+    -0.13,
+    0.135,
+    0.382
    ],
    "forward_file": [
     0.0,
@@ -478,9 +508,9 @@
   },
   "Muzzle_2": {
    "position_file": [
-    0.05,
-    0.194,
-    0.402
+    -0.2,
+    0.135,
+    0.382
    ],
    "forward_file": [
     0.0,
@@ -491,9 +521,9 @@
   },
   "Muzzle_3": {
    "position_file": [
-    -0.05,
-    0.123,
-    0.402
+    0.13,
+    0.135,
+    0.382
    ],
    "forward_file": [
     0.0,
@@ -504,9 +534,9 @@
   },
   "Muzzle_4": {
    "position_file": [
-    0.05,
-    0.123,
-    0.402
+    0.2,
+    0.135,
+    0.382
    ],
    "forward_file": [
     0.0,
@@ -534,14 +564,14 @@
    ],
    "bounds_file": [
     [
-     -0.2565,
+     -0.2277,
      -0.26,
-     -0.2565
+     -0.2545
     ],
     [
-     0.2565,
+     0.2277,
      0.016,
-     0.2565
+     0.1691
     ]
    ],
    "inside_own_cell": true
@@ -557,18 +587,23 @@
      0,
      0,
      1
+    ],
+    [
+     0,
+     1,
+     0
     ]
    ],
    "bounds_file": [
     [
-     -0.2565,
+     -0.2485,
      -0.26,
-     -0.2565
+     -0.2545
     ],
     [
-     0.2565,
-     0.263,
-     0.3955
+     0.2485,
+     0.2915,
+     0.3755
     ]
    ]
   },
@@ -592,7 +627,17 @@
     [
      -1,
      1,
+     -1
+    ],
+    [
+     -1,
+     1,
      0
+    ],
+    [
+     -1,
+     1,
+     1
     ],
     [
      0,
@@ -642,22 +687,32 @@
     [
      1,
      1,
+     -1
+    ],
+    [
+     1,
+     1,
      0
+    ],
+    [
+     1,
+     1,
+     1
     ]
    ],
    "bounds_file": [
     [
-     -0.4146,
-     0.0162,
-     -0.4146
+     -0.4434,
+     0.018,
+     -0.4434
     ],
     [
-     0.4146,
-     0.4338,
-     0.4146
+     0.4434,
+     0.3795,
+     0.4434
     ]
    ],
-   "max_radius_from_pivot_axis_m": 0.416,
+   "max_radius_from_pivot_axis_m": 0.4441,
    "neighbour_cells_entered": [
     [
      -1,
@@ -677,7 +732,17 @@
     [
      -1,
      1,
+     -1
+    ],
+    [
+     -1,
+     1,
      0
+    ],
+    [
+     -1,
+     1,
+     1
     ],
     [
      0,
@@ -722,11 +787,21 @@
     [
      1,
      1,
+     -1
+    ],
+    [
+     1,
+     1,
      0
+    ],
+    [
+     1,
+     1,
+     1
     ]
    ]
   },
-  "yaw_body_max_radius_m": 0.2508,
+  "yaw_body_max_radius_m": 0.2124,
   "yaw_body_inside_cell_all_yaw": true,
   "mount_socket": {
    "position_file": [
@@ -747,8 +822,8 @@
     "elevation": -10,
     "origin_file": [
      0.0,
-     0.08834,
-     0.39997
+     0.06867,
+     0.3762
     ],
     "dir_file": [
      0.0,
@@ -800,8 +875,8 @@
     "elevation": 0,
     "origin_file": [
      0.0,
-     0.1585,
-     0.402
+     0.135,
+     0.382
     ],
     "dir_file": [
      0.0,
@@ -848,8 +923,8 @@
     "elevation": 15,
     "origin_file": [
      0.0,
-     0.26174,
-     0.38222
+     0.23387,
+     0.36898
     ],
     "dir_file": [
      0.0,
@@ -883,6 +958,11 @@
       0,
       1,
       4
+     ],
+     [
+      0,
+      1,
+      5
      ],
      [
       0,
@@ -901,8 +981,8 @@
     "elevation": 34,
     "origin_file": [
      0.0,
-     0.37928,
-     0.32013
+     0.34861,
+     0.31669
     ],
     "dir_file": [
      0.0,
@@ -958,9 +1038,9 @@
     "muzzle": "Muzzle_1",
     "elevation": -10,
     "origin_file": [
-     -0.05,
-     0.1233,
-     0.40614
+     -0.13,
+     0.06867,
+     0.3762
     ],
     "dir_file": [
      0.0,
@@ -970,6 +1050,11 @@
     "own_hit_within_6m": null,
     "exit_clear": true,
     "cells": [
+     [
+      0,
+      -1,
+      4
+     ],
      [
       0,
       -1,
@@ -999,11 +1084,6 @@
       0,
       0,
       4
-     ],
-     [
-      0,
-      0,
-      5
      ]
     ]
    },
@@ -1011,9 +1091,9 @@
     "muzzle": "Muzzle_1",
     "elevation": 0,
     "origin_file": [
-     -0.05,
-     0.194,
-     0.402
+     -0.13,
+     0.135,
+     0.382
     ],
     "dir_file": [
      0.0,
@@ -1059,9 +1139,9 @@
     "muzzle": "Muzzle_1",
     "elevation": 15,
     "origin_file": [
-     -0.05,
-     0.29603,
-     0.37303
+     -0.13,
+     0.23387,
+     0.36898
     ],
     "dir_file": [
      0.0,
@@ -1071,6 +1151,11 @@
     "own_hit_within_6m": null,
     "exit_clear": true,
     "cells": [
+     [
+      0,
+      0,
+      1
+     ],
      [
       0,
       1,
@@ -1093,8 +1178,8 @@
      ],
      [
       0,
-      2,
-      4
+      1,
+      5
      ],
      [
       0,
@@ -1112,9 +1197,9 @@
     "muzzle": "Muzzle_1",
     "elevation": 34,
     "origin_file": [
-     -0.05,
-     0.40871,
-     0.30028
+     -0.13,
+     0.34861,
+     0.31669
     ],
     "dir_file": [
      0.0,
@@ -1170,9 +1255,9 @@
     "muzzle": "Muzzle_2",
     "elevation": -10,
     "origin_file": [
-     0.05,
-     0.1233,
-     0.40614
+     -0.2,
+     0.06867,
+     0.3762
     ],
     "dir_file": [
      0.0,
@@ -1182,6 +1267,11 @@
     "own_hit_within_6m": null,
     "exit_clear": true,
     "cells": [
+     [
+      0,
+      -1,
+      4
+     ],
      [
       0,
       -1,
@@ -1211,11 +1301,6 @@
       0,
       0,
       4
-     ],
-     [
-      0,
-      0,
-      5
      ]
     ]
    },
@@ -1223,9 +1308,9 @@
     "muzzle": "Muzzle_2",
     "elevation": 0,
     "origin_file": [
-     0.05,
-     0.194,
-     0.402
+     -0.2,
+     0.135,
+     0.382
     ],
     "dir_file": [
      0.0,
@@ -1271,9 +1356,9 @@
     "muzzle": "Muzzle_2",
     "elevation": 15,
     "origin_file": [
-     0.05,
-     0.29603,
-     0.37303
+     -0.2,
+     0.23387,
+     0.36898
     ],
     "dir_file": [
      0.0,
@@ -1283,6 +1368,11 @@
     "own_hit_within_6m": null,
     "exit_clear": true,
     "cells": [
+     [
+      0,
+      0,
+      1
+     ],
      [
       0,
       1,
@@ -1305,8 +1395,8 @@
      ],
      [
       0,
-      2,
-      4
+      1,
+      5
      ],
      [
       0,
@@ -1324,9 +1414,9 @@
     "muzzle": "Muzzle_2",
     "elevation": 34,
     "origin_file": [
-     0.05,
-     0.40871,
-     0.30028
+     -0.2,
+     0.34861,
+     0.31669
     ],
     "dir_file": [
      0.0,
@@ -1382,9 +1472,9 @@
     "muzzle": "Muzzle_3",
     "elevation": -10,
     "origin_file": [
-     -0.05,
-     0.05338,
-     0.39381
+     0.13,
+     0.06867,
+     0.3762
     ],
     "dir_file": [
      0.0,
@@ -1435,9 +1525,9 @@
     "muzzle": "Muzzle_3",
     "elevation": 0,
     "origin_file": [
-     -0.05,
-     0.123,
-     0.402
+     0.13,
+     0.135,
+     0.382
     ],
     "dir_file": [
      0.0,
@@ -1483,9 +1573,9 @@
     "muzzle": "Muzzle_3",
     "elevation": 15,
     "origin_file": [
-     -0.05,
-     0.22745,
-     0.39141
+     0.13,
+     0.23387,
+     0.36898
     ],
     "dir_file": [
      0.0,
@@ -1541,9 +1631,9 @@
     "muzzle": "Muzzle_3",
     "elevation": 34,
     "origin_file": [
-     -0.05,
-     0.34985,
-     0.33998
+     0.13,
+     0.34861,
+     0.31669
     ],
     "dir_file": [
      0.0,
@@ -1599,9 +1689,9 @@
     "muzzle": "Muzzle_4",
     "elevation": -10,
     "origin_file": [
-     0.05,
-     0.05338,
-     0.39381
+     0.2,
+     0.06867,
+     0.3762
     ],
     "dir_file": [
      0.0,
@@ -1652,9 +1742,9 @@
     "muzzle": "Muzzle_4",
     "elevation": 0,
     "origin_file": [
-     0.05,
-     0.123,
-     0.402
+     0.2,
+     0.135,
+     0.382
     ],
     "dir_file": [
      0.0,
@@ -1700,9 +1790,9 @@
     "muzzle": "Muzzle_4",
     "elevation": 15,
     "origin_file": [
-     0.05,
-     0.22745,
-     0.39141
+     0.2,
+     0.23387,
+     0.36898
     ],
     "dir_file": [
      0.0,
@@ -1758,9 +1848,9 @@
     "muzzle": "Muzzle_4",
     "elevation": 34,
     "origin_file": [
-     0.05,
-     0.34985,
-     0.33998
+     0.2,
+     0.34861,
+     0.31669
     ],
     "dir_file": [
      0.0,
@@ -1829,19 +1919,23 @@
    ],
    [
     "R4W_RocketLauncher_Rocket_1",
-    "R4W_RocketLauncher_RearCover"
+    "R4W_RocketLauncher_RearCover_L"
    ],
    [
     "R4W_RocketLauncher_Rocket_1",
     "R4W_RocketLauncher_Yaw"
    ],
    [
-    "R4W_RocketLauncher_RearCover",
+    "R4W_RocketLauncher_RearCover_L",
     "R4W_RocketLauncher_Pitch"
    ],
    [
-    "R4W_RocketLauncher_RearCover",
+    "R4W_RocketLauncher_RearCover_L",
     "R4W_RocketLauncher_Yaw"
+   ],
+   [
+    "R4W_RocketLauncher_RearCover_R",
+    "R4W_RocketLauncher_Pitch"
    ],
    [
     "R4W_RocketLauncher_Hatch_L",
@@ -1913,7 +2007,7 @@
  ],
  "lod1": {
   "file": "R4W_RocketLauncher_LOD1.fbx",
-  "triangles": 6990,
+  "triangles": 7220,
   "method": "DECIMATE collapse 0.5 (automatic, not hand-authored)"
  },
  "fbx_reimport": {
@@ -2143,11 +2237,24 @@
     ],
     "parent": "R4W_RocketLauncher_Yaw"
    },
-   "R4W_RocketLauncher_RearCover": {
+   "R4W_RocketLauncher_RearCover_L": {
     "loc": [
-     0.0,
+     -0.165,
      0.006,
-     0.098
+     0.046
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_RocketLauncher_Pitch"
+   },
+   "R4W_RocketLauncher_RearCover_R": {
+    "loc": [
+     0.165,
+     0.006,
+     0.046
     ],
     "rot_deg": [
      0.0,
@@ -2158,8 +2265,8 @@
    },
    "R4W_RocketLauncher_Hatch_L": {
     "loc": [
-     -0.11,
-     -0.386,
+     -0.24,
+     -0.366,
      0.0
     ],
     "rot_deg": [
@@ -2171,8 +2278,8 @@
    },
    "R4W_RocketLauncher_Hatch_R": {
     "loc": [
-     0.11,
-     -0.386,
+     0.24,
+     -0.366,
      0.0
     ],
     "rot_deg": [
@@ -2184,9 +2291,9 @@
    },
    "R4W_RocketLauncher_Rocket_1": {
     "loc": [
-     -0.05,
+     -0.13,
      -0.16,
-     0.059
+     0.0
     ],
     "rot_deg": [
      0.0,
@@ -2197,9 +2304,9 @@
    },
    "R4W_RocketLauncher_Rocket_2": {
     "loc": [
-     0.05,
+     -0.2,
      -0.16,
-     0.059
+     0.0
     ],
     "rot_deg": [
      0.0,
@@ -2210,9 +2317,9 @@
    },
    "R4W_RocketLauncher_Rocket_3": {
     "loc": [
-     -0.05,
+     0.13,
      -0.16,
-     -0.012
+     0.0
     ],
     "rot_deg": [
      0.0,
@@ -2223,9 +2330,9 @@
    },
    "R4W_RocketLauncher_Rocket_4": {
     "loc": [
-     0.05,
+     0.2,
      -0.16,
-     -0.012
+     0.0
     ],
     "rot_deg": [
      0.0,
@@ -2236,9 +2343,9 @@
    },
    "MuzzleFlash": {
     "loc": [
-     -0.05,
-     -0.396,
-     0.059
+     -0.13,
+     -0.376,
+     0.0
     ],
     "rot_deg": [
      0.0,
@@ -2249,9 +2356,9 @@
    },
    "Rocket_Backblast": {
     "loc": [
-     -0.05,
+     -0.13,
      0.02,
-     0.059
+     0.0
     ],
     "rot_deg": [
      0.0,
@@ -2263,8 +2370,8 @@
    "Muzzle": {
     "loc": [
      0.0,
-     -0.402,
-     0.0235
+     -0.382,
+     0.0
     ],
     "rot_deg": [
      90.0,
@@ -2275,9 +2382,9 @@
    },
    "Muzzle_1": {
     "loc": [
-     -0.05,
-     -0.402,
-     0.059
+     -0.13,
+     -0.382,
+     0.0
     ],
     "rot_deg": [
      90.0,
@@ -2288,9 +2395,9 @@
    },
    "Muzzle_2": {
     "loc": [
-     0.05,
-     -0.402,
-     0.059
+     -0.2,
+     -0.382,
+     0.0
     ],
     "rot_deg": [
      90.0,
@@ -2301,9 +2408,9 @@
    },
    "Muzzle_3": {
     "loc": [
-     -0.05,
-     -0.402,
-     -0.012
+     0.13,
+     -0.382,
+     0.0
     ],
     "rot_deg": [
      90.0,
@@ -2314,9 +2421,9 @@
    },
    "Muzzle_4": {
     "loc": [
-     0.05,
-     -0.402,
-     -0.012
+     0.2,
+     -0.382,
+     0.0
     ],
     "rot_deg": [
      90.0,
@@ -2345,28 +2452,30 @@
  },
  "files": {
   "R4W_RocketLauncher.blend": {
-   "sha256": "9523773ff7db3a2c1b9a0c26619aa0a5dbb3b606da87edcb3f3ace9d22db15a6",
-   "bytes": 2021246
+   "sha256": "fbf907754be0753755cb4cfa79422de7902f5206b6dbd43909753a4a4261312d",
+   "bytes": 2077388,
+   "sha256_before_path_sanitize": "88077340675a06dc64b60790d5cc409fb7cdb6395a0620ab65aaaef1c960cbf4",
+   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length; re-opened headless in Blender 5.2.3 after patch (rc 0, objects/actions/frame range unchanged)"
   },
   "R4W_RocketLauncher.fbx": {
-   "sha256": "c476488221fde3b47f08b622a7d8368c9ccede8b7714088cab08d96bbe97d65b",
-   "bytes": 814492
+   "sha256": "c0cbcf2a46580013137455f8396fb71503a540646317a7ccacade9badaaa32a1",
+   "bytes": 859324
   },
   "R4W_RocketLauncher.glb": {
-   "sha256": "8b76f7e226aadab7292eb308887fb32395b98d90da4428f68909744fbe4e5064",
-   "bytes": 747024
+   "sha256": "93c16dfdce983ea90225d95637d30feaa929213757d8055216f167e195929362",
+   "bytes": 767948
   },
   "R4W_RocketLauncher_colliders.glb": {
-   "sha256": "70c2914bad0e9f16f92fa90a9dc3ccd15f3560a2989585dad8136e1db6229296",
-   "bytes": 716460
+   "sha256": "bbefc2db637ba11d66766dfb6859909b8687f4251e5f4b75fac4a3922b319ccc",
+   "bytes": 734148
   },
   "R4W_RocketLauncher_LOD1.fbx": {
-   "sha256": "34fbb4f06f932130cf2ee1ee63fe3e784528550c49c35c6a911e75210e16b2c8",
-   "bytes": 332316
+   "sha256": "bfe829919c5db3e6d74c577b9265451d1da71fafea52671ca386a86183809a74",
+   "bytes": 346956
   }
  },
  "unity_import_test": "UNITY_NOT_RUN (Unity not available in this session)",
  "unity_import_settings": "Scale Factor 1, Convert Units ON, Bake Axis Conversion ON, Animation: split clips by animation_manifest.json frame ranges (24 fps)",
  "status": "BLENDER_PASS",
- "seconds": 11.9
+ "seconds": 12.4
 }

@@ -1,18 +1,17 @@
 # R4WeaponKind.BeamCutter - "WPN-003 Beam Cutter" - emitter head with focus ring, hinged radiator fin banks,
 # coolant tank on the yaw; warm-up / continuous fire / heat / cooldown (beam length in game is drawn by the runtime).
 import sys, os, math; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import importlib, bpy, r4lib as L, r4qa as Q; importlib.reload(L); importlib.reload(Q)
+import importlib, bpy, r4lib as L, r4qa as Q, r4base as BS, r4heads as H; importlib.reload(L); importlib.reload(Q); importlib.reload(BS); importlib.reload(H)
 from r4lib import F, P, M, box, cyl, cone, tube, hull, prism_x, revolve, hexbolt, Part, new_col
 OUT = sys.argv[sys.argv.index("--") + 1]
 L.reset_scene(); L.init_palette(); scn = bpy.context.scene
 work = new_col("_build_tmp"); ID = "R4W_BeamCutter"
 LENS_F = 0.432; MUZZLE_F = 0.440; DN, UP = 10.0, 35.0; FIN_OPEN = 35.0
-base, _ = L.build_base(ID + "_Base", work, vents=4, glacis_top=0.190)
+BASE_STYLE, HEAD = "finned", "ball head in a gimbal ring"
+base, _ = BS.build_base_style(ID + "_Base", work, BASE_STYLE)
 yaw = L.turntable(ID + "_Yaw", work)
 y = Part(work, "y")
-L.yoke(y, 0.108, 0.150, [(0.140, 0.035), (0.188, 0.085), (0.062, 0.212), (-0.090, 0.220), (-0.150, 0.160), (-0.150, 0.035)],
-       [(0.112, 0.060), (0.158, 0.098), (0.052, 0.192), (-0.070, 0.198), (-0.122, 0.150), (-0.122, 0.060)],
-       [(-0.108, 0.158), (0.080, 0.158), (0.060, 0.1745), (-0.090, 0.1745)])
+H.gimbal(y)
 TF, TZ = -0.192, 0.104
 cyl("tank", 0.052, (-0.090, F(TF), TZ), (0.090, F(TF), TZ), M["Armor_Gunmetal"], y.U, seg=32, bevel=0.005)
 for s in (-1, 1):
@@ -36,13 +35,8 @@ for i in range(5):
 y.build(yaw)
 # ---- pitch: receiver, emitter housing with collars, lens cone, sensor
 p = Part(work, "p")
-pitch = L.trunnion(ID + "_Pitch", work, p, half=0.100, r=0.048, axle=0.140)
-hull("receiver", [(x, F(f), z) for (f, xw, z0, z1) in ((-0.075, 0.088, 0.092, 0.194), (0.090, 0.094, 0.086, 0.204), (0.170, 0.074, 0.098, 0.172))
-                  for x in (-xw, xw) for z in (z0, z1)], M["Armor_Gunmetal"], p.U, bevel=0.005)
-for s in (-1, 1):
-    prism_x(f"rcv_appl{s}", s*0.0935, s*0.0985, [(-0.055, 0.100), (0.135, 0.100), (0.155, 0.140), (0.110, 0.190), (-0.055, 0.184)], M["Armor_Plate_Light"], p.U, bevel=0.002)
-    box(f"rcv_team{s}", s*0.0978, s*0.0994, F(-0.040), F(0.110), 0.150, 0.162, M["TeamColor_Red"], p.Pc)
-cyl("housing", 0.052, (0, F(0.150), P), (0, F(0.400), P), M["Armor_Gunmetal"], p.U, seg=24, bevel=0.004)
+pitch = H.ball(ID + "_Pitch", work, p)
+cyl("housing", 0.052, (0, F(0.062), P), (0, F(0.400), P), M["Armor_Gunmetal"], p.U, seg=24, bevel=0.004)
 for (f0, f1) in ((0.160, 0.182), (0.376, 0.398)):
     cyl("collar", 0.059, (0, F(f0), P), (0, F(f1), P), M["Armor_Plate_Light"], p.U, seg=24, bevel=0.003)
 cyl("lens_neck", 0.036, (0, F(0.398), P), (0, F(LENS_F), P), M["Armor_Dark"], p.U, seg=24)
@@ -54,12 +48,6 @@ for s in (-1, 1):
 for k in range(8):
     a = 2*math.pi*(k + 0.5)/8
     hexbolt(f"collar_bolt{k}", (0.059*math.cos(a), F(0.372), P + 0.059*math.sin(a)), (0.059*math.cos(a), F(0.368), P + 0.059*math.sin(a)), M["Steel_Light"], p.Pc, r=0.0045)
-box("sensor", -0.070, -0.030, F(0.150), F(0.060), 0.196, 0.222, M["Armor_Dark"], p.U, bevel=0.004)
-box("sensor_eye", -0.064, -0.036, F(0.1515), F(0.1485), 0.202, 0.216, M["Sensor_Eye_Red"], p.U)
-for k in range(3):
-    f0 = -0.050 + 0.030*k
-    box(f"top_slot{k}", -0.010, 0.075, F(f0 + 0.010), F(f0), 0.190, 0.212, M["Armor_Dark"], p.D)
-    box(f"top_glow{k}", -0.008, 0.073, F(f0 + 0.009), F(f0 + 0.001), 0.189, 0.193, M["Energy_Hot"], p.Pc)
 p.build(pitch)
 # ---- focus ring (rotates about the fire axis)
 ring = L.tube(ID + "_FocusRing", 0.058, 0.0385, (0, F(0.404), P), (0, F(0.420), P), M["Steel_Light"], work, seg=36)
@@ -93,7 +81,7 @@ for fb, s in zip(fins, (-1, 1)): L.attach(fb, pitch, (s*0.057, F(0.280), P + 0.0
 for o in (core, shell, eglow): L.attach(o, pitch, (0, F(LENS_F), P)); o.scale = (0.001,)*3
 L.attach(hglow, pitch, (0, F(0.282), P)); hglow.scale = (0.001,)*3
 muzzle = L.empty("Muzzle", pitch, (0, F(MUZZLE_F), 0), col, 'SINGLE_ARROW', 0.05, L.UP90)
-L.root_props(root, "R4WeaponKind.BeamCutter")
+L.root_props(root, "R4WeaponKind.BeamCutter", version="v2")
 L.set_props({pivot: {"role": "game-driven pivot", "physical": "(0,0.135,0)"}, yaw: {"role": "Yaw: rotate around local Y only"},
              pitch: {"role": "Pitch: rotate around local X only", "pitch_range_deg": f"-{DN:.0f}..+{UP:.0f}"},
              ring: {"role": "focus ring: rotates about local Z (fire axis) during warm-up / fire"},
@@ -146,4 +134,6 @@ S = dict(id=ID, kind="R4WeaponKind.BeamCutter", game_name="WPN-003 Beam Cutter",
          hero_frame=HERO, hero_frame2=HERO2, tri_budget=20000, exits_note="1 lens = 1 beam origin (Muzzle)",
          anim_extra={"beam_note": "Beam_Core is a 0.70 m visual stub; the gameplay beam (16 m, heat, cooling on release) stays in runtime code"},
          notes=["Focus ring end angle in Cooldown is 180 deg (6-fold symmetric: identical to rest)."])
+S["notes"] = list(S.get("notes", [])) + [f"v2 silhouette pass (#939 follow-up): base style {BASE_STYLE}, head {HEAD}; rig, pivot, muzzle contract and clips unchanged."]
+S["base_style"], S["head_style"] = BASE_STYLE, HEAD
 Q.run(S)

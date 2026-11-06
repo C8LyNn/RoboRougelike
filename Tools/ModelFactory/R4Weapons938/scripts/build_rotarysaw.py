@@ -1,7 +1,7 @@
 # R4WeaponKind.RotarySaw - "WPN-005 Rotary Saw" - exposed physical blade on a side arm, guard, motor pack, spin/jam.
 # blender -b --factory-startup --python build_rotarysaw.py -- <out_dir>
 import sys, os, math; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import importlib, bpy, r4lib as L, r4qa as Q; importlib.reload(L); importlib.reload(Q)
+import importlib, bpy, r4lib as L, r4qa as Q, r4base as BS, r4heads as H; importlib.reload(L); importlib.reload(Q); importlib.reload(BS); importlib.reload(H)
 from mathutils import Matrix, Vector
 from r4lib import F, P, M, box, cyl, tube, hull, prism_x, revolve, hexbolt, Part, new_col
 OUT = sys.argv[sys.argv.index("--") + 1]
@@ -18,7 +18,8 @@ def ring_pt(r, phi, x, f0=BF, z0=P):
 def sector(name, r0, r1, a0, a1, x0, x1, mat, col, step=None):
     return L.arc_plate(name, r0, r1, a0, a1, x0, x1, mat, col, (0, BF, P))
 # ---- base: hazard-cornered heavy variant with skirts (contact weapon)
-base, _ = L.build_base(ID + "_Base", work, vents=4, skirts=True, hazard_corners=True, glacis_top=0.186)
+BASE_STYLE, HEAD = "crab", "unchanged v1 saw arm"
+base, _ = BS.build_base_style(ID + "_Base", work, BASE_STYLE)
 # ---- yaw: turntable + low raked cheeks + rear motor pack with radiator and fan
 yaw = L.turntable(ID + "_Yaw", work)
 y = Part(work, "y")
@@ -147,7 +148,7 @@ sp = ring_pt(RB + 0.004, CUT_PH, 0.0)
 sparks.parent = pitch; sparks.location = Vector(sp) - Vector((0, 0, P)); sparks.scale = (0.001,)*3
 sparks.rotation_euler = (math.radians(125.0), 0, 0)   # along the tooth path at the cut point (down-cut)
 muzzle = L.empty("Muzzle", pitch, (0, F(BF), 0), col, 'SINGLE_ARROW', 0.06, L.UP90)
-L.set_props({root: {"unity_up": "+Y", "unity_forward": "+Z", "unit": "meter", "version": "v1", "weapon_kind": "R4WeaponKind.RotarySaw",
+L.set_props({root: {"unity_up": "+Y", "unity_forward": "+Z", "unit": "meter", "version": "v2", "weapon_kind": "R4WeaponKind.RotarySaw",
                     "style": "R41_Turret_v6.1 standard (heavy industrial armour + team colour)", "issue": "#938"},
              pivot: {"role": "game-driven pivot", "physical": "(0,0.135,0)"},
              yaw: {"role": "Yaw: rotate around local Y only"}, pitch: {"role": "Pitch: rotate around local X only (arm + guard)", "pitch_range_deg": f"-{DN:.0f}..+{UP:.0f}"},
@@ -222,4 +223,6 @@ S = dict(id=ID, kind="R4WeaponKind.RotarySaw", game_name="WPN-005 Rotary Saw", o
          exits_note="contact weapon: Muzzle = disc centre (no projectile)",
          notes=["Blade 0.60 m diameter on a +X side arm; disc centre 0.620 m forward of the pivot.",
                 "Runtime placeholder rotor (R41PartGeometry.SawRotor) and RotarySawConfiguration are NOT changed (see extra_checks.game_contact_disc)."])
+S["notes"] = list(S.get("notes", [])) + [f"v2 silhouette pass (#939 follow-up): base style {BASE_STYLE}, head {HEAD}; rig, pivot, muzzle contract and clips unchanged."]
+S["base_style"], S["head_style"] = BASE_STYLE, HEAD
 Q.run(S)

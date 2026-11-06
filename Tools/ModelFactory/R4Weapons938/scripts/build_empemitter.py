@@ -1,14 +1,15 @@
 # R4WeaponKind.EmpEmitter - "WPN-006 EMP Emitter" - radial pulse head: core in a cage, counter-rotating charge rings,
 # 4 hinged antennas, LOS sensor on the yaw. No barrel and no projectile: EMP is an area effect (game: 9 m, LOS, 12 s cooldown).
 import sys, os, math; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import importlib, bpy, r4lib as L, r4qa as Q; importlib.reload(L); importlib.reload(Q)
+import importlib, bpy, r4lib as L, r4qa as Q, r4base as BS, r4heads as H; importlib.reload(L); importlib.reload(Q); importlib.reload(BS); importlib.reload(H)
 from mathutils import Vector, Matrix
 from r4lib import F, P, M, box, cyl, cone, tube, hull, prism_x, revolve, hexbolt, Part, new_col
 OUT = sys.argv[sys.argv.index("--") + 1]
 L.reset_scene(); L.init_palette(); scn = bpy.context.scene
 work = new_col("_build_tmp"); ID = "R4W_EmpEmitter"
 CZ = 0.232; ANT_R = 0.118; ANT_Z = 0.122; PED_Z = 0.108; ANT_A = [45.0, 135.0, 225.0, 315.0]; RL0, RU0 = 0.142, 0.186; SLIDE = 0.006
-base, _ = L.build_base(ID + "_Base", work, vents=4, hazard_corners=True, extra_plates=True, glacis_top=0.190)
+BASE_STYLE, HEAD = "drum", "unchanged v1 pulse head"
+base, _ = BS.build_base_style(ID + "_Base", work, BASE_STYLE)
 # ---- yaw: turntable, chamfered pedestal, LOS sensor head, core column, cage, top cap
 yaw = L.turntable(ID + "_Yaw", work)
 y = Part(work, "y")
@@ -88,7 +89,7 @@ for a_, ang in zip(ants, ANT_A):
 for o, z in ((pulse, CZ), (cflash, CZ), (cglow, (RL0 + RU0)/2)):
     o.parent = yaw; o.location = (0, 0, z - P); o.scale = (0.001,)*3
 muzzle = L.empty("Muzzle", yaw, (0, 0, CZ + 0.080 - P), col, 'SINGLE_ARROW', 0.06, (0, 0, 0))
-L.root_props(root, "R4WeaponKind.EmpEmitter")
+L.root_props(root, "R4WeaponKind.EmpEmitter", version="v2")
 L.set_props({pivot: {"role": "game-driven pivot", "physical": "(0,0.135,0)"},
              yaw: {"role": "Yaw: rotate around local Y only (turns the LOS sensor; the pulse itself is radial)"},
              ring_lo: {"role": "lower charge ring: rotates about local Y, slides up when charging"}, ring_up: {"role": "upper charge ring: counter-rotates, slides down when charging"},
@@ -150,4 +151,6 @@ S = dict(id=ID, kind="R4WeaponKind.EmpEmitter", game_name="WPN-006 EMP Emitter",
          exits_note="no barrel, no projectile: one radial pulse origin (Muzzle, +Y up)",
          anim_extra={"area_note": "EMP_PulseRing is a visual 0.5 m ring; game effect radius 9 m, LOS ('widoczny cel') and 12 s cooldown stay in runtime"},
          notes=["Pitch intentionally absent: EMP acts radially; Yaw only orients the LOS sensor.", "Ring angles at clip ends are multiples of 120 deg (3-fold symmetric pods)."])
+S["notes"] = list(S.get("notes", [])) + [f"v2 silhouette pass (#939 follow-up): base style {BASE_STYLE}, head {HEAD}; rig, pivot, muzzle contract and clips unchanged."]
+S["base_style"], S["head_style"] = BASE_STYLE, HEAD
 Q.run(S)

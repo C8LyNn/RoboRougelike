@@ -26,10 +26,13 @@
    "unity_up": "+Y",
    "unity_forward": "+Z",
    "unit": "meter",
-   "version": "v1",
+   "version": "v2",
    "weapon_kind": "R4WeaponKind.BeamCutter",
    "style": "R41_Turret_v6.1 standard (heavy industrial armour + team colour)",
    "issue": "#938"
+  },
+  "R4W_BeamCutter_Base": {
+   "base_style": "finned"
   },
   "Socket_Mount_Bottom": {
    "role": "mounting face centre, normal -Y, connects to cell (0,-1,0)"
@@ -76,6 +79,7 @@
  ],
  "visible_exits_note": "1 lens = 1 beam origin (Muzzle)",
  "notes": [
-  "Focus ring end angle in Cooldown is 180 deg (6-fold symmetric: identical to rest)."
+  "Focus ring end angle in Cooldown is 180 deg (6-fold symmetric: identical to rest).",
+  "v2 silhouette pass (#939 follow-up): base style finned, head ball head in a gimbal ring; rig, pivot, muzzle contract and clips unchanged."
  ]
 }
