@@ -82,6 +82,43 @@ public class R3GaragePlayTests
         Assert.That(Mathf.Abs(body.position.x), Is.LessThanOrEqualTo(38.01f));
     }
 
+    [UnityTest] public IEnumerator EnemyMovesTangentiallyAlongInnerBoundaryWithGroundedWheels()
+    {
+        var enemy = Run.Encounter.Enemies.First();
+        var body = enemy.GetComponent<Rigidbody>();
+        var drive = enemy.GetComponent<RoboRougelike.R6.R6VehicleDrive>();
+        Assert.That(drive, Is.Not.Null);
+        // Put the logical boundary inside the physical arena: the player can exert
+        // outward pressure without being teleported through the arena wall.
+        enemy.ConfigureMovementBounds(new Bounds(Vector3.zero, new Vector3(48, 100, 76)));
+        enemy.enabled = false;
+        body.position = new Vector3(23.99f, 0, -22);
+        body.linearVelocity = Vector3.zero; body.angularVelocity = Vector3.zero;
+        Run.Player.MoveTo(new Vector3(34, 0.7f, -14), Quaternion.identity);
+        var playerBody = Run.Player.GetComponent<Rigidbody>();
+        playerBody.linearVelocity = Vector3.zero; playerBody.angularVelocity = Vector3.zero;
+        Physics.SyncTransforms();
+        yield return Until(() => { drive.RefreshMass(); return drive.GroundedWheels > 0; }, "Koła przeciwnika muszą mieć rzeczywisty kontakt z podłożem.", 5);
+        Vector3 before = body.position;
+        enemy.enabled = true;
+        float end = Time.time + 1.5f;
+        int groundedSamples = 0, samples = 0;
+        while (Time.time < end)
+        {
+            yield return MOVSeriesDeviceTests.FixedStep();
+            samples++;
+            if (drive.GroundedWheels > 0) groundedSamples++;
+            Assert.That(body.position.x, Is.LessThanOrEqualTo(24.01f), "Przeciwnik przekroczył granicę logiczną.");
+            Assert.That(body.position.x, Is.GreaterThanOrEqualTo(23f), "Przeciwnik powinien pozostać blisko granicy.");
+            Assert.That(Mathf.Abs(body.position.z), Is.LessThanOrEqualTo(38.01f));
+        }
+        Assert.That(groundedSamples, Is.GreaterThan(0), "Ruch wymaga rzeczywistego kontaktu kół podczas próby.");
+        Assert.That(samples, Is.GreaterThan(0));
+        Assert.That(Vector3.Distance(before, body.position), Is.GreaterThan(0.3f));
+        Assert.That(Mathf.Abs(body.position.z - before.z), Is.GreaterThan(0.3f), "Przeciwnik powinien poruszyć się stycznie do granicy.");
+        Assert.That(Mathf.Abs(body.position.x), Is.LessThanOrEqualTo(38.01f));
+    }
+
     [UnityTest] public IEnumerator AllThreeVehiclesMoveFireTakeDamageAndReset()
     {
         VirtualInput();
