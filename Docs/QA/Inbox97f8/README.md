@@ -12,3 +12,6 @@ Full EditMode shard 2 at exact 97f8: 711 PASS / 1 FAIL / 0 SKIP, exit 2. Zoom sm
 
 Full EditMode at exact 97f8, split by class: 1390 PASS / 4 FAIL / 0 SKIP across 1394 distinct cases, no missing previous names or duplicates. WARNING: class selection explicitly ran a B01 policy-conditional NUnit Explicit test that an unfiltered run skips; it failed and the policy remains unapproved. See FullEdit-coverage.txt and both shard XMLs; isolated camera/boundary retests pending.
 
+
+Unchanged isolated retest at exact 97f8 after both EditMode shards ended: zoom PASS; enemy-at-arena-boundary FAIL, displacement .0308129m vs >.3m. The zoom pass does not prove why the concurrent shard had failed. Original full shard outcomes are preserved; B01 explicit policy test was unintentionally run because class selection made NUnit treat it as explicit selection.
+
