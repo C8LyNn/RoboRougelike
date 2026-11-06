@@ -640,14 +640,58 @@ namespace RogueMachine.P12PipelineSafe
             }
             else if(Time.time<navigationUntil&&CanMove(obstacleTangent,step+.08f,ramming))desired=obstacleTangent;
             Vector3 next = movementBody.position + desired * step;
-            if((next.x<movementBounds.min.x&&desired.x<0)||(next.x>movementBounds.max.x&&desired.x>0))desired.x=0;
-            if((next.z<movementBounds.min.z&&desired.z<0)||(next.z>movementBounds.max.z&&desired.z>0))desired.z=0;
+            bool cutX=(next.x<movementBounds.min.x&&desired.x<0)||(next.x>movementBounds.max.x&&desired.x>0);
+            bool cutZ=(next.z<movementBounds.min.z&&desired.z<0)||(next.z>movementBounds.max.z&&desired.z>0);
+            if(cutX)desired.x=0;
+            if(cutZ)desired.z=0;
+            if(ramming&&(cutX||cutZ)&&desired.sqrMagnitude<0.001f)
+            {
+                // A target outside the arena can otherwise make an unarmed robot
+                // alternate between driving outward and back toward the centre.
+                // Retain an unobstructed boundary tangent using the existing R6 drive.
+                if(TryBoundaryTangent(cutX,cutZ,step,ramming,out var tangent))
+                {
+                    desired=tangent;obstacleTangent=tangent;navigationUntil=Time.time+1.1f;
+                }
+            }
             if(desired.sqrMagnitude<0.001f)desired=Vector3.ProjectOnPlane(movementBounds.center-movementBody.position,Vector3.up).normalized;
             desired.Normalize();
+            next=movementBody.position+desired*step;
+            bool outwardX=(next.x<movementBounds.min.x&&desired.x<0)||(next.x>movementBounds.max.x&&desired.x>0);
+            bool outwardZ=(next.z<movementBounds.min.z&&desired.z<0)||(next.z>movementBounds.max.z&&desired.z>0);
+            if(ramming&&(outwardX||outwardZ))
+            {
+                if(!TryBoundaryTangent(outwardX,outwardZ,step,ramming,out var safeTangent))return;
+                desired=safeTangent;obstacleTangent=safeTangent;navigationUntil=Time.time+1.1f;
+            }
             if (!CanMove(desired, step + 0.08f,ramming)) return;
             next=movementBody.position+desired*step;
             next.x=Mathf.Clamp(next.x,movementBounds.min.x,movementBounds.max.x);next.z=Mathf.Clamp(next.z,movementBounds.min.z,movementBounds.max.z);
             if(drive!=null)drive.StepWorld(desired,moveSpeed * Mathf.Lerp(0.3f,1,wheelFactor));
+        }
+
+        private bool TryBoundaryTangent(bool cutX,bool cutZ,float step,bool ramming,out Vector3 tangent)
+        {
+            // Pick a stable side and try the opposite side when terrain blocks it.
+            // At a corner also try the other axis; never direct the wheels outward.
+            for(int axis=0;axis<2;axis++)
+            {
+                if((axis==0&&!cutX)||(axis==1&&!cutZ))continue;
+                Vector3 direction=axis==0?Vector3.forward:Vector3.right;
+                float offset=axis==0?movementBody.position.z-movementBounds.center.z:movementBody.position.x-movementBounds.center.x;
+                float previous=Vector3.Dot(obstacleTangent,direction);
+                if(previous<-.5f||(Mathf.Abs(previous)<=.5f&&
+                    (offset>0.001f||(Mathf.Abs(offset)<=0.001f&&strafeDirection<0))))direction=-direction;
+                for(int side=0;side<2;side++,direction=-direction)
+                {
+                    Vector3 candidate=movementBody.position+direction*step;
+                    if((candidate.x<movementBounds.min.x&&direction.x<0)||(candidate.x>movementBounds.max.x&&direction.x>0)||
+                       (candidate.z<movementBounds.min.z&&direction.z<0)||(candidate.z>movementBounds.max.z&&direction.z>0))continue;
+                    if(!CanMove(direction,step+.08f,ramming))continue;
+                    tangent=direction;return true;
+                }
+            }
+            tangent=Vector3.zero;return false;
         }
 
         private bool FriendlyInLine(Vector3 point)

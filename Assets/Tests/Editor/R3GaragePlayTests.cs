@@ -82,6 +82,39 @@ public class R3GaragePlayTests
         Assert.That(Mathf.Abs(body.position.x), Is.LessThanOrEqualTo(38.01f));
     }
 
+    [UnityTest] public IEnumerator DisarmedEnemyRamsAlongArenaBoundaryWithGroundedWheels()
+    {
+        var enemy = Run.Encounter.Enemies.First();
+        int wheels = enemy.ActiveWheelCount;
+        Assert.That(wheels, Is.GreaterThan(0));
+        var weapon = enemy.WeaponBlock;
+        Assert.That(weapon, Is.Not.Null);
+        weapon.ApplyDamage(100000, weapon.transform.position, Vector3.up);
+        foreach (var gun in enemy.AdditionalWeapons)
+            if (gun.Block != null && !gun.Block.IsDead) gun.Block.ApplyDamage(100000, gun.Block.transform.position, Vector3.up);
+        yield return null;
+        Assert.That(enemy.IsDefeated, Is.False);
+        Assert.That(enemy.WeaponOnline, Is.False);
+        Assert.That(enemy.ActiveWheelCount, Is.EqualTo(wheels));
+        var body = enemy.GetComponent<Rigidbody>();
+        var drive = enemy.GetComponent<RoboRougelike.R6.R6VehicleDrive>();
+        body.position = new Vector3(37.99f, 0, 0);
+        Run.Player.MoveTo(new Vector3(60, 0.7f, 0), Quaternion.identity);
+        Physics.SyncTransforms();
+        Vector3 before = body.position;
+        float end = Time.time + 3.2f;
+        int grounded = 0;
+        while (Time.time < end)
+        {
+            yield return MOVSeriesDeviceTests.FixedStep();
+            if (drive.GroundedWheels > 0) grounded++;
+            Assert.That(body.position.x, Is.LessThanOrEqualTo(38.01f), "Przeciwnik przekroczył granicę areny.");
+        }
+        Assert.That(grounded, Is.GreaterThan(0), "Ruch wymaga kontaktu kół z podłożem.");
+        Assert.That(Mathf.Abs(body.position.z - before.z), Is.GreaterThan(0.3f), "Rozbrojony przeciwnik powinien poruszać się wzdłuż granicy.");
+        Assert.That(Mathf.Abs(body.position.x), Is.LessThanOrEqualTo(38.01f));
+    }
+
     [UnityTest] public IEnumerator EnemyMovesTangentiallyAlongInnerBoundaryWithGroundedWheels()
     {
         var enemy = Run.Encounter.Enemies.First();
