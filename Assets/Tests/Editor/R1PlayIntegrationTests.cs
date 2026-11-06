@@ -62,7 +62,7 @@ public class R1PlayIntegrationTests
         Assert.That(Run.Progress.State, Is.EqualTo(R1RunState.Ready));
         Assert.That(Run.StartRun(), Is.True);
         yield return Until(() => !Run.Transitioning && Run.Player != null, "Pojazd powinien być gotowy.");
-        Assert.That(Run.Player.Modules.ActiveWheelCount, Is.EqualTo(12));
+        Assert.That(Run.Player.Modules.ActiveWheelCount, Is.EqualTo(6),"Standard starter has six real wheels.");
     }
     [UnityTearDown]
     public IEnumerator Cleanup()
@@ -147,7 +147,7 @@ public class R1PlayIntegrationTests
         var wheelPart = wheel.GetComponent<P12PipelineSafeDamageable>();
         wheelPart.ApplyDamage(10000, wheel.transform.position, Vector3.right);
         yield return Simulate(0.15f);
-        Assert.That(Run.Player.Modules.ActiveWheelCount, Is.EqualTo(11));
+        Assert.That(Run.Player.Modules.ActiveWheelCount, Is.EqualTo(5));
         var part = Run.Player.GetComponentsInChildren<P12_PipelineSafePlayerBlock>()
             .First(block => !block.IsCore).GetComponent<P12PipelineSafeDamageable>();
         part.ApplyDamage(20, part.transform.position, Vector3.forward);
@@ -155,7 +155,7 @@ public class R1PlayIntegrationTests
         Run.Player.Apply(Run.Progress.Stats);
         yield return Simulate(0.1f);
         Assert.That(wheelPart.IsDead, Is.True);
-        Assert.That(Run.Player.Modules.ActiveWheelCount, Is.EqualTo(11));
+        Assert.That(Run.Player.Modules.ActiveWheelCount, Is.EqualTo(5));
         Assert.That(part.MaxHp, Is.EqualTo(120).Within(0.001));
         Assert.That(part.CurrentHp, Is.EqualTo(96).Within(0.001));
     }
@@ -178,20 +178,20 @@ public class R1PlayIntegrationTests
             .First(module => module.ModuleType == P12FunctionalModuleType.Wheel);
         wheel.GetComponent<P12PipelineSafeDamageable>().ApplyDamage(10000, wheel.transform.position, Vector3.right);
         yield return Simulate(0.15f);
-        Assert.That(Run.Player.Modules.ActiveWheelCount, Is.EqualTo(11));
+        Assert.That(Run.Player.Modules.ActiveWheelCount, Is.EqualTo(5));
         DefeatAllEnemies();
         yield return Until(() => Run.Progress.State == R1RunState.Salvage, "Druga nagroda.");
         var oldPlayer = Run.Player;
         Run.ConfirmRewards(Array.Empty<string>(),new[]{Run.Progress.Offers.ToList().FindIndex(item => item.Effect == R1UpgradeEffect.Hull)});
         Assert.That(Run.Player,Is.EqualTo(oldPlayer),"Nagroda sama nie odbudowuje konstrukcji.");
-        Assert.That(Run.Player.Modules.ActiveWheelCount,Is.EqualTo(11));
+        Assert.That(Run.Player.Modules.ActiveWheelCount,Is.EqualTo(5));
         int scrapBefore=Run.VehicleModel.Scrap;
         Assert.That(Run.GarageRepairAffordable(),Is.True);
         Assert.That(Run.VehicleModel.Scrap,Is.LessThan(scrapBefore));
         Run.StartNextEncounter();
         yield return Until(() => !Run.Transitioning, "Naprawa i trzecia walka.");
         Assert.That(Run.Player, Is.Not.EqualTo(oldPlayer));
-        Assert.That(Run.Player.Modules.ActiveWheelCount, Is.EqualTo(12));
+        Assert.That(Run.Player.Modules.ActiveWheelCount, Is.EqualTo(6));
         Assert.That(Run.Player.Modules.WeaponOnline, Is.True);
         Assert.That(Run.Player.Structure.ConnectedBlockCount, Is.EqualTo(Run.VehicleModel.Parts.Count));
         Assert.That(Run.Player.Controller.EffectiveDamage, Is.EqualTo(upgradedDamage));
@@ -269,7 +269,7 @@ public class R1PlayIntegrationTests
         InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Enter));
         yield return Until(()=>Run.Progress.State==R1RunState.Garage,"Confirm unified keyboard rewards",5,automaticRewards:false);
         InputSystem.QueueStateEvent(keyboard,new KeyboardState());
-        Assert.That(Run.Progress.Acquired.Count,Is.EqualTo(1));Assert.That(Run.Player.Modules.ActiveWheelCount,Is.EqualTo(12));
+        Assert.That(Run.Progress.Acquired.Count,Is.EqualTo(1));Assert.That(Run.Player.Modules.ActiveWheelCount,Is.EqualTo(6));
         Assert.That(Run.StartNextEncounter(),Is.True);yield return Until(()=>!Run.Transitioning,"Combat initialization");
         Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Combat));
     }
@@ -277,9 +277,11 @@ public class R1PlayIntegrationTests
     [UnityTest]
     public IEnumerator LosingPlayerWeaponEndsRunWhileCoreIsAlive()
     {
-        var weapon = Run.Player.GetComponentsInChildren<P12PipelineSafeFunctionalModule>()
-            .Single(module => module.ModuleType == P12FunctionalModuleType.Weapon);
-        weapon.GetComponent<P12PipelineSafeDamageable>().ApplyDamage(10000, weapon.transform.position, Vector3.right);
+        var weapons = Run.Player.GetComponentsInChildren<P12PipelineSafeFunctionalModule>()
+            .Where(module => module.ModuleType == P12FunctionalModuleType.Weapon).ToArray();
+        Assert.That(weapons.Length,Is.EqualTo(2),"The standard starter has two real guns.");
+        foreach(var weapon in weapons)
+            weapon.GetComponent<P12PipelineSafeDamageable>().ApplyDamage(10000, weapon.transform.position, Vector3.right);
         yield return Until(() => Run.Progress.State == R1RunState.Lost, "Utrata broni powinna zakończyć próbę.");
         Assert.That(Run.Player.Structure.CoreAlive, Is.True);
         Assert.That(Run.Player.Modules.WeaponOnline, Is.False);
@@ -305,6 +307,8 @@ public class R1PlayIntegrationTests
         var barrel = enemy.transform.Find("Enemy_Yaw").GetChild(1).GetComponent<P12PipelineSafeDamageable>();
         Assert.That(barrel, Is.Not.Null);
         barrel.ApplyDamage(10000, barrel.transform.position, Vector3.forward);
+        foreach(var extra in enemy.AdditionalWeapons)
+            extra.Block.ApplyDamage(10000,extra.Block.transform.position,Vector3.forward);
         R1EncounterManager.ClearTransientObjects();
         yield return Simulate(2);
         Assert.That(Run.Progress.State, Is.EqualTo(R1RunState.Combat), "Rozbrojenie nie zastępuje zniszczenia rdzenia.");
@@ -360,7 +364,7 @@ public class R1PlayIntegrationTests
             Run.StartRun();
             yield return Until(() => !Run.Transitioning, "Start nowej próby.");
             Assert.That(Run.Progress.Stats.Damage, Is.EqualTo(1));
-            Assert.That(Run.Player.Modules.ActiveWheelCount, Is.EqualTo(12));
+            Assert.That(Run.Player.Modules.ActiveWheelCount, Is.EqualTo(6));
         }
     }
 
@@ -406,6 +410,20 @@ public class R1PlayIntegrationTests
                 yield return null;
             }
             if(Run.Progress.State==R1RunState.Salvage)Assert.That(RRLW2TestFlow.Claim(Run,Array.Empty<string>()),Is.True);
+            if(Run.Progress.State!=R1RunState.Garage&&Run.Progress.State!=R1RunState.Won&&Run.Player!=null)
+            {
+                var assembly=Run.Player.GetComponent<R3VehicleAssembly>();
+                var bank=Run.Player.GetComponent<VehicleEnergyBank>();
+                var remaining=Run.Encounter.Enemies.Where(e=>e!=null&&!e.IsDefeated).ToArray();
+                var guns=assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun)
+                    .Select(p=>$"{p.Id}:{p.Weapon} hp={p.Damageable.CurrentHp:0.0} active={p.Operational} readyAt={p.NextFireTime:0.00}");
+                var targets=remaining.Select(e=>$"{e.name} pos={e.transform.position} coreHp={e.Core.CurrentHp:0.0} distance={Vector3.Distance(e.transform.position,Run.Player.transform.position):0.0}");
+                var hits=Physics.RaycastAll(camera.transform.position,camera.transform.forward,200,~0,QueryTriggerInteraction.Ignore)
+                    .OrderBy(h=>h.distance).Take(8).Select(h=>$"{h.collider.name}@{h.distance:0.0}");
+                Debug.LogWarning($"[R1_PHYSICAL_TRIAGE] stage={stage+1} seed={Run.Seed} state={Run.Progress.State} reason={Run.Progress.DefeatReason} player={Run.Player.transform.position} " +
+                    $"energy={bank?.Current:0.0}/{bank?.Maximum:0.0} now={Time.time:0.00} guns=[{string.Join(",",guns)}] " +
+                    $"alive=[{string.Join(";",targets)}] cameraRay=[{string.Join(",",hits)}]");
+            }
             Assert.That(Run.Progress.State, Is.EqualTo(stage == 5 ? R1RunState.Won : R1RunState.Garage),
                 "Fizyczna broń powinna pozwalać wygrać pojedynek " + (stage + 1));
             if (stage == 5) break;
@@ -426,7 +444,8 @@ public class R1PlayIntegrationTests
         Run.Encounter.SetCombatActive(false);
         var enemy = Run.Encounter.Enemies.First();
         var structure = enemy.GetComponent<P12PipelineSafeVehicleStructure>();
-        Assert.That(structure.ConnectedBlockCount, Is.EqualTo(22));
+        int initialParts=structure.ConnectedBlockCount;
+        Assert.That(initialParts, Is.EqualTo(23),"The current enemy has one additional physical weapon.");
         var parts = enemy.GetComponentsInChildren<P12_PipelineSafePlayerBlock>();
         Assert.That(parts.Single(part => part.IsCore).gameObject, Is.EqualTo(enemy.Core.gameObject));
         var corner = parts.Single(part => part.LogicalGridPosition == new Vector3Int(-1, 0, -1));
@@ -440,7 +459,7 @@ public class R1PlayIntegrationTests
         Assert.That(corner.transform.IsChildOf(enemy.transform), Is.False);
         Assert.That(corner.GetComponentInParent<Rigidbody>(), Is.Not.Null);
         Assert.That(structure.CoreAlive, Is.True);
-        Assert.That(structure.ConnectedBlockCount, Is.EqualTo(17));
+        Assert.That(structure.ConnectedBlockCount, Is.EqualTo(17),"The severed corner and its newly added weapon must detach without disturbing the remaining structure.");
         yield return null;
     }
 }

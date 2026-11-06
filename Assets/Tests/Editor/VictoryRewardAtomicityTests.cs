@@ -27,6 +27,11 @@ public sealed class VictoryRewardAtomicityTests
         RRLW2TestFlow.DefeatAll(run);Assert.That(run.Encounter.Cleared,Is.True);
         var update=typeof(R1RunController).GetMethod("Update",BindingFlags.NonPublic|BindingFlags.Instance);
         Exception exception=null;try{update.Invoke(run,null);}catch(Exception e){exception=e;}
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(wallet),"The energy collection window must not pay early.");
+        // Defeated enemies now drop energy and the real game gives eight seconds
+        // to collect it before entering the ordinary reward transaction.
+        float ready=Time.time+8.1f;while(Time.time<ready)yield return null;
+        try{update.Invoke(run,null);}catch(Exception e){exception=e;}
         Assert.That(run.VehicleModel.Scrap,Is.EqualTo(wallet),"invalid catalog must not pay before victory can be recorded");
         Assert.That(exception,Is.Null,"invalid catalog must not throw during victory");Assert.That(run.EarnedScrap,Is.EqualTo(earned));
         Assert.That(run.Progress.CompletedEncounters,Is.EqualTo(completed));Assert.That(run.Error,Is.Not.Null.And.Not.Empty);
