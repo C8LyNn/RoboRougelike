@@ -45,6 +45,12 @@ public class R5BossPilotTests
         int peakShells=0;long peakMemory=0;
         while(Run.Progress.State==R1RunState.Combat&&Time.realtimeSinceStartup<deadline)
         {
+            // Enemy destruction now leaves a short energy-pickup window before salvage.
+            if(boss==null||boss.Core==null||boss.IsDefeated)
+            {
+                InputSystem.QueueStateEvent(mouse,new MouseState());InputSystem.QueueStateEvent(keyboard,new KeyboardState());
+                yield return null;continue;
+            }
             var current=body.position;if(Time.deltaTime>0)velocity=Vector3.Lerp(velocity,(current-previous)/Time.deltaTime,.25f);previous=current;
             Vector3 muzzle=Run.Player.transform.Find("Turret_Yaw/Cannon_Pitch/Muzzle").position;
             Vector3 aim=boss.Core.transform.position+velocity*(Vector3.Distance(muzzle,boss.Core.transform.position)/34);

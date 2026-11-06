@@ -41,11 +41,11 @@ public class MOVSeriesGarageTests
     void FullConstruction(bool keepGunClear=false)
     {
         Corners(R3PartKind.HoverEngine);
-        foreach(int x in new[]{-2,2})foreach(int z in new[]{-3,3})Buy(new Vector3Int(x,0,z),R3PartKind.Suspension);
-        foreach(int x in new[]{-1,1})Buy(new Vector3Int(x*3,0,-3),R3PartKind.CrawlerTrack);
+        foreach(int x in new[]{-1,1})foreach(int z in new[]{-2,2})Buy(new Vector3Int(x,1,z),R3PartKind.Suspension);
+        foreach(int x in new[]{-1,1})Buy(new Vector3Int(x*2,0,0),R3PartKind.CrawlerTrack);
         Buy(new Vector3Int(-1,1,0),R3PartKind.Booster);Buy(new Vector3Int(0,0,-3),R3PartKind.JumpDrive);
         Buy(new Vector3Int(keepGunClear?1:0,1,1),R3PartKind.Blink);Buy(new Vector3Int(0,1,-1),R3PartKind.Gyroscope);
-        Buy(new Vector3Int(-1,1,2),R3PartKind.MagneticGrapple);Buy(new Vector3Int(0,0,3),R3PartKind.OmniDrive);
+        Buy(new Vector3Int(0,1,2),R3PartKind.MagneticGrapple);Buy(new Vector3Int(0,0,3),R3PartKind.OmniDrive);
         Assert.That(run.VehicleModel.Scrap,Is.EqualTo(15));
         foreach(var part in run.Player.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p.Kind>=R3PartKind.Booster))
         {
@@ -135,7 +135,7 @@ public class MOVSeriesGarageTests
     [UnityTest] public IEnumerator HoverKeyboardMovesTurnsAndSuppressesRequestedSuspension()
     {
         Corners(R3PartKind.HoverEngine);Buy(new Vector3Int(-1,1,0),R3PartKind.Gyroscope);
-        foreach(int x in new[]{-2,2})foreach(int z in new[]{-3,3})Buy(new Vector3Int(x,0,z),R3PartKind.Suspension);
+        foreach(int x in new[]{-1,1})foreach(int z in new[]{-2,2})Buy(new Vector3Int(x,1,z),R3PartKind.Suspension);
         Assert.That(run.ConfigureSuspension(true,ActiveSuspensionSupportMode.FullSupport,.3f),Is.True);
         Assert.That(Invoke("ConfigureDrive",R3DriveKind.Hover),Is.True);VirtualInput();
         Assert.That(run.EnterTestRange(),Is.True);yield return Until(()=>!run.Transitioning);yield return MOVSeriesDeviceTests.Seconds(1.5f);

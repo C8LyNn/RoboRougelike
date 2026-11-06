@@ -27,15 +27,26 @@ public class MOVSeriesDriveTests
     }
     R1VehicleState Build(R3VehicleKind kind,float x,R3PartKind module,bool suspension=false)
     {
-        var m=new R3VehicleModel(R3VehicleCatalog.Create(kind));int w=kind==R3VehicleKind.Light?1:kind==R3VehicleKind.Standard?2:3;
-        int l=kind==R3VehicleKind.Light?2:kind==R3VehicleKind.Standard?3:4;
-        int back=kind==R3VehicleKind.Standard?-4:-l;
-        foreach(int side in new[]{-1,1})foreach(int z in new[]{back,l})m.Parts.Add(new R3PartState(new Vector3Int(side*(w+1),0,z),module));
+        var m=new R3VehicleModel(R3VehicleCatalog.Create(kind));m.Award(1000);
+        var wheels=m.Parts.Where(p=>p.Kind==R3PartKind.Wheel).ToArray();
+        var corners=wheels.GroupBy(p=>p.Cell.x<0).SelectMany(side=>new[]{side.OrderBy(p=>p.Cell.z).First().Cell,side.OrderByDescending(p=>p.Cell.z).First().Cell}).ToArray();
+        foreach(var wheel in wheels)Assert.That(m.Remove(wheel.Cell),Is.True);
+        foreach(var cell in corners)Assert.That(m.Buy(cell,module),Is.True,module+" at "+cell+" / "+m.PlacementError(cell,module));
+        if(suspension)
+            foreach(int side in new[]{-1,1})
+            {
+                var wheelCell=new Vector3Int(side*(kind==R3VehicleKind.Light?2:kind==R3VehicleKind.Standard?3:4),0,0);
+                Assert.That(m.Buy(wheelCell,R3PartKind.Wheel),Is.True,"Wheel at "+wheelCell+" / "+m.PlacementError(wheelCell,R3PartKind.Wheel));
+            }
         m.Parts.Add(new R3PartState(new Vector3Int(-1,kind==R3VehicleKind.Light?1:2,0),R3PartKind.Gyroscope));
         m.Parts.Add(new R3PartState(new Vector3Int(1,kind==R3VehicleKind.Light?1:2,0),R3PartKind.Booster));
         if(suspension)
         {
-            foreach(int side in new[]{-1,1})foreach(int z in new[]{-l-1,l+1})m.Parts.Add(new R3PartState(new Vector3Int(side,0,z),R3PartKind.Suspension));
+            foreach(int side in new[]{-1,1})foreach(int z in new[]{-1,1})
+            {
+                var cell=new Vector3Int(side*(kind==R3VehicleKind.Light?1:2),kind==R3VehicleKind.Light?1:2,z);
+                Assert.That(m.Buy(cell,R3PartKind.Suspension),Is.True,"Suspension at "+cell+" / "+m.PlacementError(cell,R3PartKind.Suspension));
+            }
             m.SuspensionHeightOffset=.3f;
         }
         var v=R3VehicleAssembly.Build(m,new R1RunStats(),palette,new Vector3(x,.7f,1000),Quaternion.identity);

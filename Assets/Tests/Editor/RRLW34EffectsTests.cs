@@ -37,7 +37,7 @@ public class RRLW34EffectsTests
         var d=ScriptableObject.CreateInstance<R1UpgradeDefinition>();d.Id=Guid.NewGuid().ToString("N");
         d.Title=effect.ToString();d.Effect=effect;d.Amount=amount;definitions.Add(d);return d;
     }
-    static Vector3Int Slot(int i)=>i<6?new Vector3Int(i<3?1:-2,2,(i%3)*2):new Vector3Int(1,3,(i-6)*2);
+    static Vector3Int Slot(int i)=>new Vector3Int((i%5)-2,2,i/5);
     R3VehicleModel Model(params R1UpgradeDefinition[] bonuses)
     {
         var m=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));

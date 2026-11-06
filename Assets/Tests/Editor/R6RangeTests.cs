@@ -66,7 +66,7 @@ public class R6RangeTests
             model.Buy(new Vector3Int(x,y,z),R3PartKind.Armor);
         Assert.That(model.Parts.Count,Is.EqualTo(180));Assert.That(model.CanDeploy,Is.True);
         run.SendMessage("RebuildGarageVehicle");int budget=model.Scrap;
-        run.EnterTestRange();while(run.Transitioning)yield return null;
+        Assert.That(run.EnterTestRange(),Is.True,"Maximum construction must be deployable to the test range.");while(run.Transitioning)yield return null;
         Assert.That(run.Player.GetComponent<R3VehicleAssembly>().Parts.Count,Is.EqualTo(180));
         var target=GameObject.Find("Poligon R6").GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>().First(p=>p.name=="Rdzeń celu"&&Mathf.Abs(p.transform.position.x)<.1f);
         var gun=run.Player.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Kind==R3PartKind.Gun);gun.Muzzle.LookAt(target.transform.position);
