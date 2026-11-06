@@ -84,11 +84,15 @@ public sealed class Camera275ConstructionTests
     {
         yield return Prepare(R3VehicleKind.Standard);
         var assembly=run.Player.GetComponent<R3VehicleAssembly>();var gun=assembly.Parts.First(p=>p.Kind==R3PartKind.Gun);
+        // The current standard starter carries two guns. Isolate the muzzle
+        // under test so the other gun cannot affect the aggregate counts.
+        foreach(var other in assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun&&p!=gun))other.gameObject.SetActive(false);
         gun.GunPivot.rotation=Quaternion.identity;
         var point=gun.Muzzle.position+gun.Muzzle.forward*30;
         wall=GameObject.CreatePrimitive(PrimitiveType.Cube);wall.name="CAM275 enclosing muzzle wall";
         wall.transform.position=gun.Muzzle.position;wall.transform.localScale=Vector3.one*.5f;Physics.SyncTransforms();
         var snapshot=RRLAimFeedback.Evaluate(assembly,run.Player.Controller,point,null);
+        Assert.That(snapshot.Guns,Is.EqualTo(1),"Inactive guns must not be advertised by aim feedback.");
         Assert.That(snapshot.InRange,Is.EqualTo(1));Assert.That(snapshot.Aligned,Is.EqualTo(1));
         Assert.That(snapshot.Clear,Is.Zero,"A ray starting inside an obstruction must not advertise a clear muzzle");
     }
