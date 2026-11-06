@@ -96,8 +96,9 @@ public sealed class FullMergeRuntimeQA : MonoBehaviour
             if(Time.realtimeSinceStartup>deadline)throw new TimeoutException("Finite QA phase "+phase+" activity "+activity);
             if(phase==0){if(R1RunController.Instance?.Progress==null)return;run=R1RunController.Instance;result.width=Screen.width;result.height=Screen.height;
                 Require(run.SelectVehicle(vehicle=="Heavy"?R3VehicleKind.Heavy:vehicle=="Standard"?R3VehicleKind.Standard:R3VehicleKind.Light),"Vehicle selected");
-                run.RequestedSeed=7;Require(mode=="Camera"?run.OpenSandboxGarage():run.PrepareUnifiedRun(),"Actual preparation garage");Capture("00-garage");Go(1);}
+                run.RequestedSeed=7;Require(mode=="Camera"?run.OpenSandboxGarage():run.PrepareUnifiedRun(),"Actual preparation garage");Go(1);}
             else if(phase==1){if(Time.realtimeSinceStartup-entered<.4f)return;
+                Capture("00-garage");
                 if(mode=="Camera"){
                     if(vehicle=="Tall")for(int y=1;y<=5;y++)Require(run.GarageBuy(new Vector3Int(1,y,0),R3PartKind.Armor),"Tall real structural part "+y);
                     if(vehicle=="Wide")foreach(int side in new[]{-1,1})for(int x=1;x<=6;x++)Require(run.GarageBuy(new Vector3Int(side*x,1,0),R3PartKind.Armor),"Wide real structural part "+(side*x));
