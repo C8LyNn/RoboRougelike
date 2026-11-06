@@ -10,3 +10,5 @@ Original hashes are recorded; logs redact local home paths and Unity session met
 Later fixture review found that the MOVSeriesDriveTests helper directly placed gyro and booster on the Standard starter gun cells. Its apparent hover PASS is therefore not sufficient evidence for a valid Standard construction; the separate actual-garage hover test passed, and the invalid fixture is being corrected and retested.
 
 Full PlayMode on exact commit 0738ac37c8a7251b6b03a7bcb8a0c9224d1b8491: 478/478 PASS, exit 0. GarageRange: 11/11 PASS on working state subsequently committed as 0738, including maximum 180-part physical garage build, real projectile, workshop repair/remount and damaged suspension support checks. Later commits may only update test fixtures; verify full suites at final SHA.
+
+DriveFixture: 34/34 PASS on working state committed as fdf290a406cd93adfea1e3d73667f03d7352c9d7. Includes corrected non-overlapping drive/device assemblies, hover, tracks, special movement, camera and physical weapons. This retests the invalid Standard fixture described above. Full suites at fdf are running.
