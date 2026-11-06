@@ -22,3 +22,6 @@ Full EditMode at exact fdf290a406cd93adfea1e3d73667f03d7352c9d7: 1386 PASS / 6 F
 
 MovingPilot: 1/1 PASS, exit 0, all six fights including final with active AI and real projectiles. Source was fdf plus the included test-only patch: virtual WASD and directly positioned aim camera, not human gameplay or actual mouse movement. Rewards/garage actions use APIs; no enemy damage/HP APIs. The unchanged fdf full-suite stationary pilot still failed in fight 4. Do not conflate these results.
 
+
+FiveFollowups: 4 PASS / 1 FAIL on an intermediate working state; original boundary and additional inner-boundary diagnostic both passed, as did mixed-device physical shot and 12-grounded-wheel steering fallback. Isolated barrier test failed at 9 m/s. BarrierTelemetry independently reproduced 0.6 m/s PASS values (peak .60 m/s, spin .03, height 50.6500–50.6510), but high-speed contact hit peak 9.00 m/s, spin 1.85 rad/s and height 50.6500–51.0125; existing height and spin limits were not weakened. Further product-physics diagnosis is required. Tests and moving pilot subsequently committed as 57da43ded274e128305f20f8247dfe22951f7d9e; full suites have not been rerun at that SHA.
+
