@@ -28,3 +28,6 @@ FiveFollowups: 4 PASS / 1 FAIL on an intermediate working state; original bounda
 
 BarrierContacts: the first high-speed wall contacts were both front wheel colliders at y=50.3900 versus COM y=50.9631; normal impulse -2248 and -1834 N s, linear velocity after first step y=2.3679 m/s and angular velocity x=1.7074 rad/s. Test FAIL, peak height 51.0137; full contact and telemetry logs preserved. This supports a geometric torque cause, but safe product correction remains under investigation.
 
+
+BumperExperiment: 3/3 PASS on isolated fdf working tree with two Armor parts at (-1,1,3) and (1,1,3), moving-pilot test patch present but not selected, and telemetry barrier test copied from f104. Both actual guns fired, 18 terrain traversals passed, and barrier impacts passed: 0.6 m/s peak=.60 spin=.00 y=50.6500–50.6500; 9 m/s peak=9 spin=.01 y=50.6500–50.6506. First contacts were the Armor blocks, not the wheels. This is a focused experiment, not a complete release regression.
+
