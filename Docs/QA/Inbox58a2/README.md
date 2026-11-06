@@ -25,3 +25,6 @@ MovingPilot: 1/1 PASS, exit 0, all six fights including final with active AI and
 
 FiveFollowups: 4 PASS / 1 FAIL on an intermediate working state; original boundary and additional inner-boundary diagnostic both passed, as did mixed-device physical shot and 12-grounded-wheel steering fallback. Isolated barrier test failed at 9 m/s. BarrierTelemetry independently reproduced 0.6 m/s PASS values (peak .60 m/s, spin .03, height 50.6500–50.6510), but high-speed contact hit peak 9.00 m/s, spin 1.85 rad/s and height 50.6500–51.0125; existing height and spin limits were not weakened. Further product-physics diagnosis is required. Tests and moving pilot subsequently committed as 57da43ded274e128305f20f8247dfe22951f7d9e; full suites have not been rerun at that SHA.
 
+
+BarrierContacts: the first high-speed wall contacts were both front wheel colliders at y=50.3900 versus COM y=50.9631; normal impulse -2248 and -1834 N s, linear velocity after first step y=2.3679 m/s and angular velocity x=1.7074 rad/s. Test FAIL, peak height 51.0137; full contact and telemetry logs preserved. This supports a geometric torque cause, but safe product correction remains under investigation.
+
