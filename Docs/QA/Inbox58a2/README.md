@@ -19,3 +19,6 @@ An experimental virtual-WASD six-fight pilot was attempted in a separate worktre
 
 
 Full EditMode at exact fdf290a406cd93adfea1e3d73667f03d7352c9d7: 1386 PASS / 6 FAIL / 1 SKIP, exit 2. Full XML, sanitized compressed Editor log and original hashes included. Failures: B01-24 stale reflection signature; keyboard-device firing fixture; stationary automatic six-fight pilot lost all wheels at fight 4; enemy boundary movement; barrier contact; and W8 wheel fallback. The skipped case depends on an unresolved cover policy. Investigation and focused retests continue.
+
+MovingPilot: 1/1 PASS, exit 0, all six fights including final with active AI and real projectiles. Source was fdf plus the included test-only patch: virtual WASD and directly positioned aim camera, not human gameplay or actual mouse movement. Rewards/garage actions use APIs; no enemy damage/HP APIs. The unchanged fdf full-suite stationary pilot still failed in fight 4. Do not conflate these results.
+

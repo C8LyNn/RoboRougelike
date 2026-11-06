@@ -1,0 +1,37 @@
+diff --git a/Assets/Tests/Editor/R1PlayIntegrationTests.cs b/Assets/Tests/Editor/R1PlayIntegrationTests.cs
+index c66aa936..b8903678 100644
+--- a/Assets/Tests/Editor/R1PlayIntegrationTests.cs
++++ b/Assets/Tests/Editor/R1PlayIntegrationTests.cs
+@@ -389,7 +389,7 @@ public IEnumerator SixEncountersCanBeWonWithActualPlayerGunAndPhysicalHits()
+             float deadline = Time.realtimeSinceStartup + 110;
+             while (Run.Progress.State == R1RunState.Combat && Time.realtimeSinceStartup < deadline)
+             {
+-                // Test pilot controls only camera aim and LMB. No damage API, HP edits or disabled AI.
++                // Automated pilot uses WASD, camera aim and LMB with live AI and physical rounds.
+                 if(enemy==null||enemy.IsDefeated)
+                 {
+                     enemy=Run.Encounter.Enemies.Where(e=>e!=null&&!e.IsDefeated)
+@@ -407,9 +407,23 @@ public IEnumerator SixEncountersCanBeWonWithActualPlayerGunAndPhysicalHits()
+                     Vector3 target = enemy.Core.transform.position + velocity * flight;
+                     camera.transform.position = Run.Player.transform.position + new Vector3(0, 3, -6);
+                     camera.transform.rotation = Quaternion.LookRotation(target - camera.transform.position);
++
++                    Vector3 away = Vector3.ProjectOnPlane(Run.Player.transform.position - position, Vector3.up);
++                    float distance = away.magnitude;
++                    Vector3 waypoint = distance < 16
++                        ? position + away.normalized * 11 + Vector3.Cross(Vector3.up, away.normalized) * 7
++                        : position;
++                    Vector3 direction = Vector3.ProjectOnPlane(waypoint - Run.Player.transform.position, Vector3.up);
++                    float angle = Vector3.SignedAngle(Run.Player.transform.forward, direction, Vector3.up);
++                    var keys = new System.Collections.Generic.List<Key>();
++                    if (angle > 4) keys.Add(Key.D); else if (angle < -4) keys.Add(Key.A);
++                    if (distance < 6) keys.Add(Key.S); else if (Mathf.Abs(angle) < 65) keys.Add(Key.W);
++                    InputSystem.QueueStateEvent(keyboard, new KeyboardState(keys.ToArray()));
+                 }
++                else InputSystem.QueueStateEvent(keyboard, new KeyboardState());
+                 yield return null;
+             }
++            InputSystem.QueueStateEvent(keyboard, new KeyboardState());
+             if(Run.Progress.State==R1RunState.Salvage)Assert.That(RRLW2TestFlow.Claim(Run,Array.Empty<string>()),Is.True);
+             if(Run.Progress.State!=R1RunState.Garage&&Run.Progress.State!=R1RunState.Won&&Run.Player!=null)
+             {
