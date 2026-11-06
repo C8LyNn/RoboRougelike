@@ -12,8 +12,25 @@ public sealed class R6BarrierContactProbe : MonoBehaviour
 {
     public Rigidbody Target;
     public bool Contacted;
-    void OnCollisionEnter(Collision collision){if(collision.rigidbody==Target)Contacted=true;}
-    void OnCollisionStay(Collision collision){if(collision.rigidbody==Target)Contacted=true;}
+    public float ApproachSpeed;
+    void OnCollisionEnter(Collision collision)=>Record(collision,"enter");
+    void OnCollisionStay(Collision collision)=>Record(collision,"stay");
+    void Record(Collision collision,string phase)
+    {
+        if(collision.rigidbody!=Target)return;
+        Contacted=true;
+        Debug.Log($"R6 barrier contact speed={ApproachSpeed:F2} phase={phase} fixedTime={Time.fixedTime:F4} " +
+            $"contacts={collision.contactCount} impulse={collision.impulse.ToString("F4")} relativeVelocity={collision.relativeVelocity.ToString("F4")} " +
+            $"mass={Target.mass:F3} com={Target.worldCenterOfMass.ToString("F4")} v={Target.linearVelocity.ToString("F4")} omega={Target.angularVelocity.ToString("F4")}");
+        for(int i=0;i<collision.contactCount;i++)
+        {
+            var contact=collision.GetContact(i);
+            var owner=contact.otherCollider.GetComponentInParent<R3MountedPart>()??contact.thisCollider.GetComponentInParent<R3MountedPart>();
+            Debug.Log($"R6 barrier point speed={ApproachSpeed:F2} phase={phase} index={i} " +
+                $"pair={contact.thisCollider.name} / {contact.otherCollider.name} owner={(owner!=null?owner.name:"none")} " +
+                $"point={contact.point.ToString("F4")} normal={contact.normal.ToString("F4")} separation={contact.separation:F4}");
+        }
+    }
 }
 public class R6ReviewTests
 {
@@ -113,10 +130,11 @@ public class R6ReviewTests
                 wall=GameObject.CreatePrimitive(PrimitiveType.Cube);wall.name="R6 isolated barrier";
                 wall.transform.position=new Vector3(200,floorY+2,bounds.max.z+.505f);wall.transform.localScale=new Vector3(12,4,1);Physics.SyncTransforms();
                 var barrier=wall.GetComponent<Collider>();
-                var contactProbe=wall.AddComponent<R6BarrierContactProbe>();contactProbe.Target=body;
+                var contactProbe=wall.AddComponent<R6BarrierContactProbe>();contactProbe.Target=body;contactProbe.ApproachSpeed=speed;
                 foreach(var c in colliders)
                     Assert.That(Physics.ComputePenetration(c,c.transform.position,c.transform.rotation,barrier,barrier.transform.position,barrier.transform.rotation,out _,out _),Is.False,"Vehicle starts inside the barrier: "+c.name);
                 body.angularVelocity=Vector3.zero;body.linearVelocity=Vector3.forward*speed;
+                Debug.Log($"R6 barrier pre-impact speed={speed:F2} mass={body.mass:F3} com={body.worldCenterOfMass.ToString("F4")} v={body.linearVelocity.ToString("F4")} omega={body.angularVelocity.ToString("F4")}");
                 float until=Time.time+.8f,peak=0,spin=0,minY=float.PositiveInfinity,maxY=float.NegativeInfinity;
                 while(Time.time<until)
                 {
