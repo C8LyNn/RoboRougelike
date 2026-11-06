@@ -31,7 +31,14 @@ public class MOVSeriesDeviceTests
         var model=new R3VehicleModel(R3VehicleCatalog.Create(kind));
         // Real plans on contiguous top hull cells, without a second damage/ownership model.
         int y=kind==R3VehicleKind.Light?1:2;
-        for(int i=0;i<devices.Length;i++)model.Parts.Add(new R3PartState(new Vector3Int(i%2==0?-1:1,y,i/2),devices[i]));
+        for(int i=0;i<devices.Length;i++)
+        {
+            var cell=kind==R3VehicleKind.Standard?new Vector3Int(i%2==0?-2:2,y,i<2?-1:1):new Vector3Int(i%2==0?-1:1,y,i/2);
+            Assert.That(model.At(cell),Is.Null,"Device fixture cell must be free: "+cell);
+            Assert.That(model.At(cell+Vector3Int.down),Is.Not.Null,"Device fixture needs hull support: "+cell);
+            model.Parts.Add(new R3PartState(cell,devices[i]));
+        }
+        Assert.That(model.Parts.Select(p=>p.Cell).Distinct().Count(),Is.EqualTo(model.Parts.Count),"Fixture parts must not share a cell.");
         var v=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(x,.7f,1000),Quaternion.identity);
         v.transform.SetParent(fixtures.transform,true);v.Controller.SetGameplayInputEnabled(true);return v;
     }

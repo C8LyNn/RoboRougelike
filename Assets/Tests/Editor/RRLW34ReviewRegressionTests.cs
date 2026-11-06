@@ -124,9 +124,9 @@ public class RRLW34ReviewRegressionTests
     [UnityTest] public IEnumerator SidewaysHoverProbesItsNozzleAxisAndAppliesActualLateralForce()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));model.SelectedDrive=R3DriveKind.Hover;
-        model.Parts.Add(new R3PartState(new Vector3Int(1,2,0),R3PartKind.HoverEngine){RotationQuarterTurns=new Vector3Int(0,0,1)});
+        model.Parts.Add(new R3PartState(new Vector3Int(2,2,-2),R3PartKind.HoverEngine){RotationQuarterTurns=new Vector3Int(0,0,1)});
         var v=Build(model);var body=v.GetComponent<Rigidbody>();body.constraints|=RigidbodyConstraints.FreezePositionY|RigidbodyConstraints.FreezePositionZ;
-        Surface(new Vector3(1.45f,21.1f,1000),new Vector3(.2f,.2f,10));Physics.SyncTransforms();yield return Fixed(.15f);
+        Surface(new Vector3(2f,21.1f,1000),new Vector3(.2f,.2f,10));Physics.SyncTransforms();yield return Fixed(.15f);
         var pod=v.GetComponentInChildren<HoverLiftPod>();
         Assert.That(pod.HasGroundContact,Is.True,"Probe follows -mount.up to the wall, not world-down into empty air.");
         Assert.That(pod.LastLiftForceNewtons,Is.GreaterThan(0));Assert.That(body.linearVelocity.x,Is.LessThan(-.05f));
@@ -135,7 +135,7 @@ public class RRLW34ReviewRegressionTests
     [UnityTest] public IEnumerator InvertedHoverDoesNotProduceUpwardLiftFromTheFloorBelow()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));model.SelectedDrive=R3DriveKind.Hover;model.HoverHeightMeters=2;
-        model.Parts.Add(new R3PartState(new Vector3Int(1,2,0),R3PartKind.HoverEngine){RotationQuarterTurns=new Vector3Int(2,0,0)});
+        model.Parts.Add(new R3PartState(new Vector3Int(2,2,-2),R3PartKind.HoverEngine){RotationQuarterTurns=new Vector3Int(2,0,0)});
         var v=Build(model);Surface(new Vector3(0,19.1f,1000),new Vector3(50,.2f,50));Physics.SyncTransforms();yield return Fixed(.15f);
         var pod=v.GetComponentInChildren<HoverLiftPod>();
         Assert.That(pod.HasGroundContact,Is.False);Assert.That(pod.LastLiftForceNewtons,Is.Zero);

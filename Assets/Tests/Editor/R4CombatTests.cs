@@ -65,7 +65,11 @@ public class R4CombatTests
         var gun=Run.Salvage.Items.First(p=>p.Kind==R3PartKind.Gun);Assert.That(gun.Recoverable,Is.False);
         int before=Run.VehicleModel.Scrap;Assert.That(RRLW2TestFlow.Claim(Run,new[]{gun.Id}),Is.True);
         Assert.That(Run.VehicleModel.Inventory.Single(p=>p.Id==gun.Id).Health,Is.Zero);
-        int after=Run.VehicleModel.Scrap;Assert.That(after,Is.GreaterThan(before));Assert.That(Run.GarageMount(gun.Id,new Vector3Int(1,2,0)),Is.False);
+        int after=Run.VehicleModel.Scrap;Assert.That(after,Is.GreaterThan(before));
+        var cell=new Vector3Int(0,2,2);
+        Assert.That(Run.VehicleModel.PlacementError(cell,R3PartKind.Gun,true,gun.Weapon),Is.Null,"The wreck must have a valid free mounting position.");
+        Assert.That(Run.VehicleModel.OwnedPlacementError(gun.Id,cell,default),Is.EqualTo("Odtwórz zniszczoną część przed montażem."));
+        Assert.That(Run.GarageMount(gun.Id,cell),Is.False);
         Assert.That(Run.GarageRepairInventory(gun.Id),Is.True);Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(after-13));
         after=Run.VehicleModel.Scrap;
         Assert.That(RRLW2TestFlow.Claim(Run,Array.Empty<string>()),Is.False);
@@ -85,7 +89,8 @@ public class R4CombatTests
             yield return Until(()=>Run.Progress.State==R1RunState.Salvage,"Odzysk");
             var loot=Run.Salvage.Items.First(p=>p.Kind==R3PartKind.Gun);Assert.That(loot.Health,Is.EqualTo(0.8f).Within(0.01));
             Assert.That(RRLW2TestFlow.Claim(Run,new[]{loot.Id}),Is.True);
-            int funds=Run.VehicleModel.Scrap;int y=chassis==1?1:2;var cell=new Vector3Int(1,y,0);
+            int funds=Run.VehicleModel.Scrap;int y=chassis==1?1:2;
+            var cell=chassis==0?new Vector3Int(0,2,2):new Vector3Int(1,y,0);
             Assert.That(Run.GarageMount(loot.Id,cell),Is.True);Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(funds));
             var mounted=Run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==loot.Id);
             Assert.That(mounted.Damageable.CurrentHp/mounted.Damageable.MaxHp,Is.EqualTo(0.8f).Within(0.01));
@@ -148,7 +153,7 @@ public class R4CombatTests
         var enemy=Run.Encounter.Enemies.First();enemy.Core.ApplyDamage(10000,enemy.Core.transform.position,Vector3.up);RRLW2TestFlow.DefeatAll(Run);
         yield return Until(()=>Run.Progress.State==R1RunState.Salvage,"Loot");RRLW2TestFlow.Claim(Run,Array.Empty<string>());
         var spareStarterGun=Run.VehicleModel.Parts.First(p=>p.Kind==R3PartKind.Gun);Assert.That(Run.GarageRemove(spareStarterGun.Cell),Is.True);
-        Run.VehicleModel.Award(100);Assert.That(Run.GarageBuyWeapon(new Vector3Int(1,2,0),R4WeaponKind.Automatic),Is.True);
+        Run.VehicleModel.Award(100);Assert.That(Run.GarageBuyWeapon(spareStarterGun.Cell,R4WeaponKind.Automatic),Is.True);
         Assert.That(Run.StartNextEncounter(),Is.True);yield return Until(()=>!Run.Transitioning,"Fight");Run.Encounter.SetCombatActive(false);
         VirtualInput();InputSystem.QueueStateEvent(mouse,new MouseState());yield return null;yield return null;
         R1EncounterManager.ClearTransientObjects();
@@ -173,8 +178,8 @@ public class R4CombatTests
         var enemy=Run.Encounter.Enemies.First();enemy.Core.ApplyDamage(10000,enemy.Core.transform.position,Vector3.up);RRLW2TestFlow.DefeatAll(Run);
         yield return Until(()=>Run.Progress.State==R1RunState.Salvage,"Łupy");RRLW2TestFlow.Claim(Run,Array.Empty<string>());
         var spareStarterGun=Run.VehicleModel.Parts.First(p=>p.Kind==R3PartKind.Gun);Assert.That(Run.GarageRemove(spareStarterGun.Cell),Is.True);
-        Run.VehicleModel.Award(100);Assert.That(Run.GarageBuyWeapon(new Vector3Int(1,2,0),R4WeaponKind.Automatic),Is.True);
-        Assert.That(Run.GarageBuyWeapon(new Vector3Int(-1,2,0),R4WeaponKind.Automatic),Is.True);
+        Run.VehicleModel.Award(100);Assert.That(Run.GarageBuyWeapon(spareStarterGun.Cell,R4WeaponKind.Automatic),Is.True);
+        Assert.That(Run.GarageBuyWeapon(new Vector3Int(0,2,2),R4WeaponKind.Automatic),Is.True);
         var damage=Run.Definition.Upgrades.Single(p=>p.Effect==R1UpgradeEffect.Damage);
         var reload=Run.Definition.Upgrades.Single(p=>p.Effect==R1UpgradeEffect.Reload);
         Assert.That(Run.VehicleModel.ReceiveBonuses(new[]{damage,reload}),Is.True);

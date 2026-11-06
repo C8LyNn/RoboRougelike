@@ -31,8 +31,10 @@ public class MOVSeriesCombinationTests
             foreach(int side in new[]{-1,1})foreach(int z in new[]{kind==R3VehicleKind.Standard?-4:-l,l})model.Parts.Add(new R3PartState(new Vector3Int(side*(w+1),0,z),drive));
             model.SelectedDrive=drive==R3PartKind.CrawlerTrack?R3DriveKind.Tracks:drive==R3PartKind.OmniDrive?R3DriveKind.Omni:R3DriveKind.Hover;
         }
-        model.Parts.Add(new R3PartState(new Vector3Int(-1,y,0),R3PartKind.Booster));
-        model.Parts.Add(new R3PartState(new Vector3Int(1,y,0),R3PartKind.Gyroscope));
+        var booster=kind==R3VehicleKind.Standard?new Vector3Int(-1,2,-2):new Vector3Int(-1,y,0);
+        var gyro=kind==R3VehicleKind.Standard?new Vector3Int(1,2,-2):new Vector3Int(1,y,0);
+        model.Parts.Add(new R3PartState(booster,R3PartKind.Booster));
+        model.Parts.Add(new R3PartState(gyro,R3PartKind.Gyroscope));
         model.Parts.Add(new R3PartState(new Vector3Int(-1,y,1),R3PartKind.JumpDrive));
         if(noWheels)foreach(var wheel in model.Parts.Where(p=>p.Kind==R3PartKind.Wheel).ToArray())Assert.That(model.Remove(wheel.Cell),Is.True);
         var v=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(x,.7f,1000),Quaternion.identity);

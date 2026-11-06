@@ -23,7 +23,7 @@ public sealed class Camera275ConstructionTests
     IEnumerator Prepare(R3VehicleKind kind,string extra="")
     {
         Assert.That(run.SelectVehicle(kind)&&run.OpenSandboxGarage(),Is.True);
-        if(extra=="Tall")for(int y=2;y<=5;y++)Assert.That(run.GarageBuy(new Vector3Int(1,y,0),R3PartKind.Armor),Is.True,"Tall added cell "+y);
+        if(extra=="Tall")for(int y=2;y<=5;y++)Assert.That(run.GarageBuy(new Vector3Int(2,y,-2),R3PartKind.Armor),Is.True,"Tall added cell "+y);
         if(extra=="Wide")foreach(int sign in new[]{-1,1})for(int x=3;x<=6;x++)Assert.That(run.GarageBuy(new Vector3Int(sign*x,1,0),R3PartKind.Armor),Is.True,"Wide added cell "+sign*x);
         Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
         run.GetComponent<R6TestRange>().Layout.gameObject.SetActive(false);

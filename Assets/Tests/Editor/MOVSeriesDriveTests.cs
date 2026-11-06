@@ -38,8 +38,15 @@ public class MOVSeriesDriveTests
                 var wheelCell=new Vector3Int(side*(kind==R3VehicleKind.Light?2:kind==R3VehicleKind.Standard?3:4),0,0);
                 Assert.That(m.Buy(wheelCell,R3PartKind.Wheel),Is.True,"Wheel at "+wheelCell+" / "+m.PlacementError(wheelCell,R3PartKind.Wheel));
             }
-        m.Parts.Add(new R3PartState(new Vector3Int(-1,kind==R3VehicleKind.Light?1:2,0),R3PartKind.Gyroscope));
-        m.Parts.Add(new R3PartState(new Vector3Int(1,kind==R3VehicleKind.Light?1:2,0),R3PartKind.Booster));
+        var gyroCell=kind==R3VehicleKind.Standard?new Vector3Int(0,2,-2):new Vector3Int(-1,kind==R3VehicleKind.Light?1:2,0);
+        var boosterCell=kind==R3VehicleKind.Standard?new Vector3Int(0,2,2):new Vector3Int(1,kind==R3VehicleKind.Light?1:2,0);
+        foreach(var cell in new[]{gyroCell,boosterCell})
+        {
+            Assert.That(m.At(cell),Is.Null,"Device fixture cell must be free: "+cell);
+            Assert.That(m.At(cell+Vector3Int.down),Is.Not.Null,"Device fixture needs hull support: "+cell);
+        }
+        m.Parts.Add(new R3PartState(gyroCell,R3PartKind.Gyroscope));
+        m.Parts.Add(new R3PartState(boosterCell,R3PartKind.Booster));
         if(suspension)
         {
             foreach(int side in new[]{-1,1})foreach(int z in new[]{-1,1})
@@ -49,6 +56,7 @@ public class MOVSeriesDriveTests
             }
             m.SuspensionHeightOffset=.3f;
         }
+        Assert.That(m.Parts.Select(p=>p.Cell).Distinct().Count(),Is.EqualTo(m.Parts.Count),"Fixture parts must not share a cell.");
         var v=R3VehicleAssembly.Build(m,new R1RunStats(),palette,new Vector3(x,.7f,1000),Quaternion.identity);
         v.transform.SetParent(fixtures.transform,true);v.Controller.SetGameplayInputEnabled(true);v.Controller.enabled=false;return v;
     }
