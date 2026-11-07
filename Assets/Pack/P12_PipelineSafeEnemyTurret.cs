@@ -62,6 +62,7 @@ namespace RogueMachine.P12PipelineSafe
         private RoboRougelike.WeaponIntegration.RRLShieldBinding packageShield;
         // Equipment data belongs to the enemy, independently of temporary debris views.
         private R3PartState packageWeaponState,packageShieldState,packagePointDefenseState,packageBatteryState;
+        private readonly Dictionary<string,R3PartState> equipmentStates=new Dictionary<string,R3PartState>();
         private P12PipelineSafeDamageable packageBattery;
         // All enemy guns, including package bindings, share physical part state with salvage.
         public bool SetPrimaryWeaponTier(int tier)
@@ -94,6 +95,8 @@ namespace RogueMachine.P12PipelineSafe
                 hp.Configure(max,true);hp.RestoreHealthRatio(condition);
                 state.Tier=tier;
             }
+            // Keep the canonical data even when a detached physical wreck expires.
+            equipmentStates[slot]=state;
             return state;
         }
         public void SetOtherWeaponTiers(int tier)
@@ -499,7 +502,8 @@ namespace RogueMachine.P12PipelineSafe
                 {
                     var gun=variantGuns[i];
                     var device=gun.Block!=null?gun.Block.GetComponent<RoboRougelike.WeaponIntegration.RRLDeviceBinding>():null;
-                    var state=(device!=null?device.State:null)??
+                    equipmentStates.TryGetValue("gun/"+i,out var saved);
+                    var state=(device!=null?device.State:null)??saved??
                         new R3PartState(default,R3PartKind.Gun){Id=EquipmentInstanceId("gun/"+i),Source=name+" / bateria "+(i+1),Weapon=gun.Kind};
                     state.DisruptionRemaining=SalvageDisruption(gun.Block);
                     items.Add(new R4SalvageItem(state,gun.Online(transform)?Condition(gun.Block):0));
@@ -516,7 +520,8 @@ namespace RogueMachine.P12PipelineSafe
             {
                 var gun=additionalGuns[i];
                 var device=gun.Block!=null?gun.Block.GetComponent<RoboRougelike.WeaponIntegration.RRLDeviceBinding>():null;
-                var state=(device!=null?device.State:null)??
+                equipmentStates.TryGetValue("extra-gun/"+i,out var saved);
+                var state=(device!=null?device.State:null)??saved??
                     new R3PartState(default,R3PartKind.Gun){Id=EquipmentInstanceId("extra-gun/"+i),Source=name+" / dodatkowe działo",Weapon=gun.Kind};
                 state.DisruptionRemaining=SalvageDisruption(gun.Block);
                 items.Add(new R4SalvageItem(state,gun.Online(transform)?Condition(gun.Block):0));
@@ -525,7 +530,8 @@ namespace RogueMachine.P12PipelineSafe
             {
                 var wheel=driveWheels[i];
                 var device=wheel!=null?wheel.GetComponent<RoboRougelike.WeaponIntegration.RRLDeviceBinding>():null;
-                var state=(device!=null?device.State:null)??
+                equipmentStates.TryGetValue("wheel/"+i,out var saved);
+                var state=(device!=null?device.State:null)??saved??
                     new R3PartState(default,R3PartKind.Wheel){Id=EquipmentInstanceId("wheel/"+i),Source=name+" / koło "+(i+1)};
                 state.DisruptionRemaining=SalvageDisruption(wheel);
                 items.Add(new R4SalvageItem(state,Condition(wheel)));
