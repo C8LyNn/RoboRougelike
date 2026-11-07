@@ -1,0 +1,271 @@
+{
+ "id": "R4B_Arch",
+ "block_kind": "Arch",
+ "description": "1x1x1 arch (tunnel under the block)",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "bonds": [],
+ "note": "arch: semicircular tunnel r 0.17 m along Y under the block; mounts from the top (Socket_Mount on the up face)",
+ "contact_mask_local_anchor": 55,
+ "contact_mask_bits": "R3MountingGrid.FaceDirections order: right, left, up, down, forward, back (Unity)",
+ "ports": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "up",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "right",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "forward",
+   "kind": "partial",
+   "center": [
+    0.0,
+    -0.26,
+    0.085
+   ],
+   "half": [
+    0.45,
+    0.15
+   ],
+   "offset": [
+    0.0,
+    0.1545
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "partial",
+   "center": [
+    0.0,
+    0.26,
+    0.085
+   ],
+   "half": [
+    0.45,
+    0.15
+   ],
+   "offset": [
+    0.0,
+    0.1545
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "up",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "right",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 96.3,
+   "recessed_pct": 3.7,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "forward",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 96.3,
+   "recessed_pct": 3.7,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "mesh": {
+  "object": "R4B_Arch",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 4564,
+  "uv": true,
+  "ok": true
+ },
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_cells": true,
+ "materials": [
+  "Armor_Dark",
+  "Armor_Gunmetal",
+  "Steel_Light"
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 2284,
+   "empties": [
+    "Port_back_000_part.001",
+    "Port_forward_000_part.001",
+    "Port_left_000.001",
+    "Port_right_000.001",
+    "Port_up_000.001",
+    "R4B_Arch_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 5132,
+   "empties": [
+    "Port_back_000_part.001",
+    "Port_forward_000_part.001",
+    "Port_left_000.001",
+    "Port_right_000.001",
+    "Port_up_000.001",
+    "R4B_Arch_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  }
+ },
+ "renders": [
+  "R4B_Arch_34front.png",
+  "R4B_Arch_34rear.png",
+  "R4B_Arch_under.png"
+ ],
+ "files": {
+  "R4B_Arch.blend": {
+   "sha256": "8eeabc8025d258408e44e8a2f187c67c0287b16adea8fd995f7af7807cbe5c36",
+   "bytes": 242437
+  },
+  "R4B_Arch.fbx": {
+   "sha256": "dd6eb39ac3ddd8341ee7fc4858b9aff4dc86000f07532e9f08215056167af51c",
+   "bytes": 162204
+  },
+  "R4B_Arch.glb": {
+   "sha256": "29d347996d114e2223e1d4a4ac1b140ac5c3abd70b8b54bca21b07978a81ee04",
+   "bytes": 195532
+  },
+  "R4B_Arch_colliders.glb": {
+   "sha256": "c3b4537599cd0b464be5253fc21fce208395b2df492e28b090e590b00b9f329b",
+   "bytes": 4200
+  }
+ },
+ "seconds": 2.2,
+ "blender": "5.2.3 LTS"
+}

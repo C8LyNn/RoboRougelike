@@ -1,0 +1,531 @@
+{
+ "layout": [
+  {
+   "part": "wedge_L",
+   "glb": "R4B_Wedge/R4B_Wedge.glb",
+   "cell": [
+    -1,
+    -2,
+    0
+   ],
+   "quarter_turns_z": 0
+  },
+  {
+   "part": "wedge_C",
+   "glb": "R4B_Wedge/R4B_Wedge.glb",
+   "cell": [
+    0,
+    -2,
+    0
+   ],
+   "quarter_turns_z": 0
+  },
+  {
+   "part": "wedge_R",
+   "glb": "R4B_Wedge/R4B_Wedge.glb",
+   "cell": [
+    1,
+    -2,
+    0
+   ],
+   "quarter_turns_z": 0
+  },
+  {
+   "part": "cube_L1",
+   "glb": "R4B_Cube/R4B_Cube.glb",
+   "cell": [
+    -1,
+    -1,
+    0
+   ],
+   "quarter_turns_z": 0
+  },
+  {
+   "part": "cube_C1",
+   "glb": "R4B_Cube/R4B_Cube.glb",
+   "cell": [
+    0,
+    -1,
+    0
+   ],
+   "quarter_turns_z": 0
+  },
+  {
+   "part": "cube_R1",
+   "glb": "R4B_Cube/R4B_Cube.glb",
+   "cell": [
+    1,
+    -1,
+    0
+   ],
+   "quarter_turns_z": 0
+  },
+  {
+   "part": "truss_L0",
+   "glb": "R4B_TrussCube/R4B_TrussCube.glb",
+   "cell": [
+    -1,
+    0,
+    0
+   ],
+   "quarter_turns_z": 0
+  },
+  {
+   "part": "half_C0",
+   "glb": "R4B_Cube/R4B_Cube.glb",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "quarter_turns_z": 0
+  },
+  {
+   "part": "truss_R0",
+   "glb": "R4B_TrussCube/R4B_TrussCube.glb",
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "quarter_turns_z": 0
+  },
+  {
+   "part": "beam_rear",
+   "glb": "R4B_Beam3/R4B_Beam3.glb",
+   "cell": [
+    -1,
+    1,
+    0
+   ],
+   "quarter_turns_z": 0
+  },
+  {
+   "part": "round_L",
+   "glb": "R4B_RoundEdge/R4B_RoundEdge.glb",
+   "cell": [
+    -1,
+    1,
+    1
+   ],
+   "quarter_turns_z": 2
+  },
+  {
+   "part": "cyl_C",
+   "glb": "R4B_Cylinder/R4B_Cylinder.glb",
+   "cell": [
+    0,
+    1,
+    1
+   ],
+   "quarter_turns_z": 0
+  },
+  {
+   "part": "round_R",
+   "glb": "R4B_RoundEdge/R4B_RoundEdge.glb",
+   "cell": [
+    1,
+    1,
+    1
+   ],
+   "quarter_turns_z": 2
+  },
+  {
+   "part": "half_L",
+   "glb": "R4B_HalfBlock/R4B_HalfBlock.glb",
+   "cell": [
+    -1,
+    0,
+    1
+   ],
+   "quarter_turns_z": 0
+  },
+  {
+   "part": "halfw_C",
+   "glb": "R4B_HalfWedge/R4B_HalfWedge.glb",
+   "cell": [
+    0,
+    0,
+    1
+   ],
+   "quarter_turns_z": 0
+  },
+  {
+   "part": "half_R",
+   "glb": "R4B_HalfBlock/R4B_HalfBlock.glb",
+   "cell": [
+    1,
+    0,
+    1
+   ],
+   "quarter_turns_z": 0
+  },
+  {
+   "part": "rc_L",
+   "glb": "R4B_RoundCorner/R4B_RoundCorner.glb",
+   "cell": [
+    -1,
+    -1,
+    1
+   ],
+   "quarter_turns_z": 0
+  },
+  {
+   "part": "rc_R",
+   "glb": "R4B_RoundCorner/R4B_RoundCorner.glb",
+   "cell": [
+    1,
+    -1,
+    1
+   ],
+   "quarter_turns_z": 3
+  },
+  {
+   "part": "gun",
+   "glb": "PR #939 Tools/ModelFactory/R4Weapons938/R4W_Basic/R4W_Basic.glb",
+   "cell": [
+    0,
+    -1,
+    1
+   ],
+   "quarter_turns_z": 0,
+   "glb_sha256": "9535f7deb4e52b998e5d2f663d77807bddf295cdba014fafb6c38851d1262631"
+  },
+  {
+   "part": "wheel_FL",
+   "glb": "PR #941 Tools/ModelFactory/R4Movement940/R4M_Wheel/R4M_Wheel.glb",
+   "cell": [
+    -1,
+    -1,
+    -1
+   ],
+   "quarter_turns_z": 2,
+   "glb_sha256": "97aa6ded79f0388c3651489ccf3a5a28fbe1788ca7ca27ecc2dd1b427a1562a9"
+  },
+  {
+   "part": "wheel_FR",
+   "glb": "PR #941 Tools/ModelFactory/R4Movement940/R4M_Wheel/R4M_Wheel.glb",
+   "cell": [
+    1,
+    -1,
+    -1
+   ],
+   "quarter_turns_z": 0,
+   "glb_sha256": "97aa6ded79f0388c3651489ccf3a5a28fbe1788ca7ca27ecc2dd1b427a1562a9"
+  },
+  {
+   "part": "wheel_RL",
+   "glb": "PR #941 Tools/ModelFactory/R4Movement940/R4M_Wheel/R4M_Wheel.glb",
+   "cell": [
+    -1,
+    1,
+    -1
+   ],
+   "quarter_turns_z": 2,
+   "glb_sha256": "97aa6ded79f0388c3651489ccf3a5a28fbe1788ca7ca27ecc2dd1b427a1562a9"
+  },
+  {
+   "part": "wheel_RR",
+   "glb": "PR #941 Tools/ModelFactory/R4Movement940/R4M_Wheel/R4M_Wheel.glb",
+   "cell": [
+    1,
+    1,
+    -1
+   ],
+   "quarter_turns_z": 0,
+   "glb_sha256": "97aa6ded79f0388c3651489ccf3a5a28fbe1788ca7ca27ecc2dd1b427a1562a9"
+  },
+  {
+   "part": "booster",
+   "glb": "PR #941 Tools/ModelFactory/R4Movement940/R4M_Booster/R4M_Booster.glb",
+   "cell": [
+    0,
+    1,
+    -1
+   ],
+   "quarter_turns_z": 0,
+   "glb_sha256": "b40c63a7a126778db0fdb3afd518beddc97102333944f73a52a87de7dee54952"
+  }
+ ],
+ "port_pairs": [
+  {
+   "a": "wedge_L:Port_back_000",
+   "b": "cube_L1:Port_forward_000",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "wedge_L:Port_right_000_part",
+   "b": "wedge_C:Port_left_000_part",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "wedge_C:Port_back_000",
+   "b": "cube_C1:Port_forward_000",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "wedge_C:Port_right_000_part",
+   "b": "wedge_R:Port_left_000_part",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "wedge_R:Port_back_000",
+   "b": "cube_R1:Port_forward_000",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "cube_L1:Port_back_000",
+   "b": "truss_L0:Port_forward_000_part",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "cube_L1:Port_down_000",
+   "b": "wheel_FL:Socket_Mount",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "cube_L1:Port_right_000",
+   "b": "cube_C1:Port_left_000",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "cube_L1:Port_up_000",
+   "b": "rc_L:Socket_Mount",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "cube_L1:Socket_Mount",
+   "b": "wheel_FL:Socket_Mount",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "cube_C1:Port_back_000",
+   "b": "half_C0:Port_forward_000",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "cube_C1:Port_right_000",
+   "b": "cube_R1:Port_left_000",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "cube_C1:Port_up_000",
+   "b": "gun:Socket_Mount_Bottom",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "cube_R1:Port_back_000",
+   "b": "truss_R0:Port_forward_000_part",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "cube_R1:Port_down_000",
+   "b": "wheel_FR:Socket_Mount",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "cube_R1:Port_up_000",
+   "b": "rc_R:Socket_Mount",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "cube_R1:Socket_Mount",
+   "b": "wheel_FR:Socket_Mount",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "truss_L0:Port_back_000_part",
+   "b": "beam_rear:Port_forward_000",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "truss_L0:Port_right_000_part",
+   "b": "half_C0:Port_left_000",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "truss_L0:Port_up_000_part",
+   "b": "half_L:Port_down_000",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "truss_L0:Port_up_000_part",
+   "b": "half_L:Socket_Mount",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "half_C0:Port_back_000",
+   "b": "beam_rear:Port_forward_100",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "half_C0:Port_right_000",
+   "b": "truss_R0:Port_left_000_part",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "half_C0:Port_up_000",
+   "b": "halfw_C:Port_down_000",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "half_C0:Port_up_000",
+   "b": "halfw_C:Socket_Mount",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "truss_R0:Port_back_000_part",
+   "b": "beam_rear:Port_forward_200",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "truss_R0:Port_up_000_part",
+   "b": "half_R:Port_down_000",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "truss_R0:Port_up_000_part",
+   "b": "half_R:Socket_Mount",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "beam_rear:Port_down_000",
+   "b": "wheel_RL:Socket_Mount",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "beam_rear:Port_down_100",
+   "b": "booster:Socket_Mount",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "beam_rear:Port_down_200",
+   "b": "wheel_RR:Socket_Mount",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "beam_rear:Port_up_000",
+   "b": "round_L:Port_down_000",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "beam_rear:Port_up_000",
+   "b": "round_L:Socket_Mount",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "beam_rear:Port_up_100",
+   "b": "cyl_C:Port_down_000_part",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "beam_rear:Port_up_100",
+   "b": "cyl_C:Socket_Mount",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "beam_rear:Port_up_200",
+   "b": "round_R:Port_down_000",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "beam_rear:Port_up_200",
+   "b": "round_R:Socket_Mount",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  },
+  {
+   "a": "beam_rear:Socket_Mount",
+   "b": "wheel_RL:Socket_Mount",
+   "gap_mm": 30.0,
+   "tangential_mm": 0.0,
+   "PASS": true
+  }
+ ],
+ "pairs_pass": true,
+ "n_pairs": 38,
+ "modules_on_ports": {
+  "gun": true,
+  "wheel_FL": true,
+  "wheel_FR": true,
+  "wheel_RL": true,
+  "wheel_RR": true,
+  "booster": true
+ },
+ "overlaps": [],
+ "PASS": true,
+ "note": "Test vehicle on the 0.55 m grid: R4 blocks + the real exported R4W_Basic (PR #939 @23718ab), R4M_Wheel x4 and R4M_Booster (PR #941 @c6b655d). Every pair of touching ports must be exactly 0.030 m apart along the face normal (two 0.52 m blocks on a 0.55 m grid) with 0 mm tangential offset; every weapon/movement module must sit on a block port; no two parts may overlap."
+}

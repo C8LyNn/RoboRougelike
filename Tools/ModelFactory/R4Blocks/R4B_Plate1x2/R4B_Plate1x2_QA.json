@@ -1,0 +1,256 @@
+{
+ "id": "R4B_Plate1x2",
+ "block_kind": "Plate1x2",
+ "description": "1x2x1/2 plate",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ],
+  [
+   1,
+   0,
+   0
+  ]
+ ],
+ "bonds": [
+  [
+   [
+    0,
+    0,
+    0
+   ],
+   [
+    1,
+    0,
+    0
+   ]
+  ]
+ ],
+ "note": "half-height 1x2 plate; top face at -0.015 m",
+ "contact_mask_local_anchor": 10,
+ "contact_mask_bits": "R3MountingGrid.FaceDirections order: right, left, up, down, forward, back (Unity)",
+ "ports": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "partial",
+   "center": [
+    -0.26,
+    0.0,
+    -0.1375
+   ],
+   "half": [
+    0.45,
+    0.22
+   ],
+   "offset": [
+    0.0,
+    -0.25
+   ]
+  },
+  {
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "right",
+   "kind": "partial",
+   "center": [
+    0.81,
+    0.0,
+    -0.1375
+   ],
+   "half": [
+    0.45,
+    0.22
+   ],
+   "offset": [
+    0.0,
+    -0.25
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 98.8,
+   "recessed_pct": 1.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 98.8,
+   "recessed_pct": 1.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "right",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "mesh": {
+  "object": "R4B_Plate1x2",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 4752,
+  "uv": true,
+  "ok": true
+ },
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.81,
+   0.26,
+   -0.015
+  ]
+ ],
+ "inside_cells": true,
+ "materials": [
+  "Armor_Dark",
+  "Armor_Gunmetal",
+  "Steel_Light"
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 2378,
+   "empties": [
+    "Port_down_000.001",
+    "Port_down_100.001",
+    "Port_left_000_part.001",
+    "Port_right_100_part.001",
+    "R4B_Plate1x2_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 5364,
+   "empties": [
+    "Port_down_000.001",
+    "Port_down_100.001",
+    "Port_left_000_part.001",
+    "Port_right_100_part.001",
+    "R4B_Plate1x2_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  }
+ },
+ "renders": [
+  "R4B_Plate1x2_34front.png",
+  "R4B_Plate1x2_34rear.png",
+  "R4B_Plate1x2_under.png"
+ ],
+ "files": {
+  "R4B_Plate1x2.blend": {
+   "sha256": "c8454a3e6340ca5f2ecda842d8c7e9d65187ee7e429b82f9784bc383058858c4",
+   "bytes": 243898
+  },
+  "R4B_Plate1x2.fbx": {
+   "sha256": "54b996a1cf06c202e91a2b318f6920e3c2a7d0699172bde25e30547dc55afbca",
+   "bytes": 166236
+  },
+  "R4B_Plate1x2.glb": {
+   "sha256": "502338fc33d5297933dd6eb2c8922db81fafc6efdb10aa09dac3bccce18f79d7",
+   "bytes": 204000
+  },
+  "R4B_Plate1x2_colliders.glb": {
+   "sha256": "08834ba4b93df6c4782326e099cf0817428e32712606722626402119e17944ff",
+   "bytes": 1780
+  }
+ },
+ "seconds": 2.2,
+ "blender": "5.2.3 LTS"
+}

@@ -1,0 +1,134 @@
+{
+ "id": "R4B_Cone",
+ "block_kind": "Cone",
+ "description": "1x1x1 nose cone (round base)",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "bonds": [],
+ "note": "nose cone; round base: contact patch limited to the inscribed square (half 0.30 cell)",
+ "contact_mask_local_anchor": 8,
+ "contact_mask_bits": "R3MountingGrid.FaceDirections order: right, left, up, down, forward, back (Unity)",
+ "ports": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "partial",
+   "center": [
+    0.0,
+    0.0,
+    -0.26
+   ],
+   "half": [
+    0.3,
+    0.3
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "mesh": {
+  "object": "R4B_Cone",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 1700,
+  "uv": true,
+  "ok": true
+ },
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_cells": true,
+ "materials": [
+  "Armor_Dark",
+  "Armor_Gunmetal",
+  "Steel_Light"
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 852,
+   "empties": [
+    "Port_down_000_part.001",
+    "R4B_Cone_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 1864,
+   "empties": [
+    "Port_down_000_part.001",
+    "R4B_Cone_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  }
+ },
+ "renders": [
+  "R4B_Cone_34front.png",
+  "R4B_Cone_34rear.png",
+  "R4B_Cone_under.png"
+ ],
+ "files": {
+  "R4B_Cone.blend": {
+   "sha256": "b89915c8297ba97dbc8fa81dbd5fc54f42a36ce94fd0e85a38bee60c2fba014e",
+   "bytes": 153245
+  },
+  "R4B_Cone.fbx": {
+   "sha256": "a3879c3fd13dffd7ce92273a4c2899d40e03c425080d4f3048c428f141f948ce",
+   "bytes": 75244
+  },
+  "R4B_Cone.glb": {
+   "sha256": "f4beaf22dbbb8dc0e0aa729cc388890bccf3d5c7a34e63ed80547cf75cbd5c12",
+   "bytes": 73292
+  },
+  "R4B_Cone_colliders.glb": {
+   "sha256": "4993cb18b6877b4c781e7ea43e0d4f5eaba73667e0f4bbc1f2a515b7a22a311a",
+   "bytes": 4576
+  }
+ },
+ "seconds": 1.5,
+ "blender": "5.2.3 LTS"
+}
