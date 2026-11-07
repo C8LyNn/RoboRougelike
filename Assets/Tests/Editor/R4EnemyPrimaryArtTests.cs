@@ -41,6 +41,27 @@ public sealed class R4EnemyPrimaryArtTests
             var root=gun.GetComponentsInChildren<Transform>(true).Single(t=>t.name=="R4W_"+enemy.WeaponKind+"_ROOT");
             Assert.That(root.GetComponentsInChildren<Collider>(true),Is.Empty);
         }
+        foreach(var other in run.Encounter.Enemies.Where(e=>e!=heavy))other.gameObject.SetActive(false);
+        R1EncounterManager.ClearTransientObjects();
+        var yaw=heavy.transform.Find("Enemy_Yaw");yaw.rotation=Quaternion.identity;
+        var heavyArt=heavy.WeaponBlock.GetComponentInChildren<R4WeaponArt>(true);heavyArt.Sync();
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.SetParent(run.Player.transform,true);
+        target.transform.position=heavyArt.Muzzle.position+Vector3.forward*12;target.transform.localScale=Vector3.one*2;
+        var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(1000,false);
+        run.Player.GetComponent<Rigidbody>().isKinematic=true;Physics.SyncTransforms();
+        var type=typeof(P12PipelineSafeEnemyTurret);var targetCollider=target.GetComponent<Collider>();
+        type.GetField("currentTarget",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(heavy,targetCollider);
+        type.GetField("nextTargetTime",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(heavy,Time.time+30);
+        type.GetField("nextFireTime",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(heavy,0f);
+        heavy.SetCombatActive(true);type.GetMethod("Update",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(heavy,null);
+        var shell=Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Single(p=>p.PartId==heavy.EquipmentInstanceId("gun"));
+        var diameter=(float)type.GetField("projectileDiameter",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(heavy);
+        var expected=heavyArt.Muzzle.position+(targetCollider.bounds.center-heavyArt.Muzzle.position).normalized*Mathf.Max(.14f,diameter*.75f);
+        Assert.That(Vector3.Distance(shell.transform.position,expected),Is.LessThan(.001f),"Primary shot starts at the visible muzzle.");
+        end=Time.realtimeSinceStartup+5;while(hp.CurrentHp>=1000&&Time.realtimeSinceStartup<end)yield return new WaitForFixedUpdate();
+        Assert.That(hp.CurrentHp,Is.LessThan(1000),"The physical primary shell must hit its target.");
+        if(shell!=null)Object.Destroy(shell.gameObject);Object.Destroy(target);heavy.SetCombatActive(false);
+        basic.gameObject.SetActive(true);
         var originalMuzzle=basic.transform.Find("Enemy_Yaw/Enemy_Muzzle");Assert.That(originalMuzzle,Is.Not.Null);
         Assert.That(basic.EquipShotgun(),Is.True,"A later equipment switch remains valid.");
         var binding=basic.WeaponBlock.GetComponent<RRLShotgunBinding>();Assert.That(binding,Is.Not.Null);
