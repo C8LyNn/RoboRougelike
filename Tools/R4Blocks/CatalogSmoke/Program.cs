@@ -7,6 +7,21 @@ namespace UnityEngine
 {
     public struct Vector3Int { public int x,y,z; public Vector3Int(int x,int y,int z){this.x=x;this.y=y;this.z=z;} }
     public struct Vector2 { public float x,y; public Vector2(float x,float y){this.x=x;this.y=y;} }
+    public struct Vector3 { public float x,y,z; public Vector3(float x,float y,float z){this.x=x;this.y=y;this.z=z;} }
+    public class Object
+    {
+        public static int Destroyed;
+        public static void Destroy(Object value){if(value!=null)Destroyed++;}
+        public static void DestroyImmediate(Object value){if(value!=null)Destroyed++;}
+    }
+    public sealed class Mesh : Object
+    {
+        public static int FailAfter=-1;
+        public string name;public Vector3[] vertices;public int[] triangles;
+        public void RecalculateBounds(){if(FailAfter==0)throw new InvalidOperationException("Simulated mesh error");if(FailAfter>0)FailAfter--;}
+    }
+    public static class Application { public static bool isPlaying; }
+    public static class JsonUtility { public static T FromJson<T>(string json)=>JsonSerializer.Deserialize<T>(json,new JsonSerializerOptions{IncludeFields=true}); }
 }
 namespace B01.BUILD001
 {
@@ -48,8 +63,19 @@ internal static class Program
         string pieceName=piece.name;piece.name="wrong";Expect(!bundle.Validate(out _),"Foreign piece name must fail");piece.name=pieceName;
         string revision=bundle.sourceRevision;bundle.sourceRevision="wrong";Expect(!bundle.Validate(out _),"Wrong source revision must fail");bundle.sourceRevision=revision;
         Expect(bundle.Validate(out _),"Restored bundle must pass");
+        Expect(R4ColliderMeshFactory.TryCreate(json,"R4B_Arch",out var meshes,out _),"Trusted arch mesh factory call must pass");
+        Expect(meshes.Length==3,"Arch must create three separate meshes");
+        var arch=Array.Find(bundle.shapes,s=>s.id=="R4B_Arch");
+        Expect(meshes[0].name==arch.pieces[0].name && meshes[0].vertices.Length*3==arch.pieces[0].positions.Length &&
+            meshes[0].triangles.Length==arch.pieces[0].indices.Length && meshes[0].vertices[0].x==arch.pieces[0].positions[0],"Factory must preserve names and mesh data");
+        Expect(!R4ColliderMeshFactory.TryCreate(json+" ","R4B_Arch",out _,out _),"Changed raw bundle must not create meshes");
+        Expect(!R4ColliderMeshFactory.TryCreate(json,"missing",out _,out _),"Unknown shape must not create meshes");
+        UnityEngine.Object.Destroyed=0;UnityEngine.Mesh.FailAfter=1;
+        Expect(!R4ColliderMeshFactory.TryCreate(json,"R4B_Arch",out _,out _),"Failed mesh creation must return false");
+        Expect(UnityEngine.Object.Destroyed==2,"Every partially created mesh must be released");UnityEngine.Mesh.FailAfter=-1;
         Console.WriteLine("Catalog smoke PASS: 30 entries, valid full ports, partial and quarantined ports, invalid input.");
         Console.WriteLine("Bundle smoke PASS: pinned source, 30 shapes, geometry structure and six corruption cases.");
+        Console.WriteLine("Mesh factory smoke PASS: arch pieces, data, fail-closed inputs and partial cleanup.");
         return 0;
         }
         catch(Exception error) { Console.Error.WriteLine("Catalog smoke FAIL: "+error.Message); return 1; }
