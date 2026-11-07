@@ -23,7 +23,7 @@ namespace RoboRougelike.WeaponIntegration
             Module=gameObject.AddComponent<BeamCutterModule>();Module.SetAutomaticSimulation(false);
             Module.Bind(Device.Body,muzzle,owner,this);Module.RestoreThermalState(state.ThermalHeat,state.ThermalLocked);
             var energy=owner.GetComponent<VehicleEnergyBank>();
-            if(energy!=null){Module.Configure(new BeamCutterSettings{energyPerSecond=VehicleEnergyCosts.ContinuousWeaponPerSecond});Module.RestoreThermalState(state.ThermalHeat,state.ThermalLocked);Module.SetEnergySource(energy);}
+            if(energy!=null){Module.Configure(new BeamCutterSettings{energyPerSecond=VehicleEnergyCosts.ContinuousWeaponPerSecond*R3VehicleModel.TierActivationCost(state.Tier)});Module.RestoreThermalState(state.ThermalHeat,state.ThermalLocked);Module.SetEnergySource(energy);}
             Module.SetOwnColliderFilter(c=>!RRLHitRouter.CanHit(c,owner));
             var visual=new GameObject("WPN003 beam visual");visual.transform.SetParent(transform,false);
             var line=visual.AddComponent<LineRenderer>();line.sharedMaterial=GetComponent<Renderer>().sharedMaterial;
@@ -48,7 +48,7 @@ namespace RoboRougelike.WeaponIntegration
         public void ApplyBeamHit(in BeamHitRequest hit)
         {
             if(!Device.Available||hit.ShooterBody!=Device.Body)return;
-            RRLHitRouter.Apply(hit.Collider,hit.Damage*(tank!=null?tank.PackageDamageScale:damageScale),hit.Point,hit.Direction,Device.Owner);
+            RRLHitRouter.Apply(hit.Collider,hit.Damage*(tank!=null?tank.PackageDamageScale:damageScale)*R3VehicleModel.TierEffectUnits(State.Tier),hit.Point,hit.Direction,Device.Owner);
         }
         void Stop(){held=false;if(Module!=null){Module.SetTriggerHeld(false);Module.SetOperational(false);}CaptureState();}
         void OnDisable()=>Stop();

@@ -21,7 +21,7 @@ namespace RoboRougelike.WeaponIntegration
             Module=gameObject.AddComponent<RotarySawModule>();Module.SetAutomaticSimulation(false);
             Module.Bind(Device.Body,owner,center);Module.SetDamageSink(this);
             var energy=owner.GetComponent<VehicleEnergyBank>();
-            if(energy!=null){Module.Configure(new RotarySawConfiguration{energyPerSecond=VehicleEnergyCosts.ContinuousWeaponPerSecond});Module.SetEnergySource(energy);}
+            if(energy!=null){Module.Configure(new RotarySawConfiguration{energyPerSecond=VehicleEnergyCosts.ContinuousWeaponPerSecond*R3VehicleModel.TierActivationCost(state.Tier)});Module.SetEnergySource(energy);}
             foreach(var collider in owner.GetComponentsInChildren<Collider>())Module.RegisterOwnerCollider(collider);
             Module.Motor.RestoreState(state.ThermalHeat,state.ThermalLocked,Mathf.Max(0,state.DeviceReadyAt-Time.time));
             rotor=RoboRougelike.R4_1.R41PartGeometry.SawRotor(center,GetComponent<Renderer>().sharedMaterial);
@@ -43,7 +43,7 @@ namespace RoboRougelike.WeaponIntegration
         {
             if(!TryResolve(hit.contactCollider,out var part)||part.partId!=hit.partId)return;
             var direction=(hit.worldPoint-blade.position).normalized;
-            RRLHitRouter.Apply(hit.contactCollider,hit.damage*(tank!=null?tank.PackageDamageScale:damageScale),hit.worldPoint,direction,Device.Owner);
+            RRLHitRouter.Apply(hit.contactCollider,hit.damage*(tank!=null?tank.PackageDamageScale:damageScale)*R3VehicleModel.TierEffectUnits(State.Tier),hit.worldPoint,direction,Device.Owner);
         }
         void Stop(){requested=false;if(Module!=null)Module.SetOperational(false);CaptureState();}
         void OnDisable()=>Stop();

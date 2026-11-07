@@ -74,7 +74,7 @@ namespace RoboRougelike.R3
         public static float TierActivationCost(int tier)=>NormalizedTier(tier)==3?1.4f:NormalizedTier(tier)==2?1.2f:1f;
         public static bool SupportsFusion(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic)=>kind==R3PartKind.Armor||kind==R3PartKind.Wheel||
             kind==R3PartKind.Battery||kind==R3PartKind.RepairPulse||kind==R3PartKind.DrivePower||kind==R3PartKind.EnergyRegenerator||
-            (kind==R3PartKind.Gun&&((weapon>=R4WeaponKind.Basic&&weapon<=R4WeaponKind.Railgun)||weapon==R4WeaponKind.RocketLauncher));
+            (kind==R3PartKind.Gun&&weapon>=R4WeaponKind.Basic&&weapon<=R4WeaponKind.RotarySaw);
         public R3VehicleDesign Design { get; }
         public List<R3PartState> Parts { get; }
         private readonly List<R3PartState> inventory=new List<R3PartState>();
@@ -380,7 +380,8 @@ namespace RoboRougelike.R3
             if(parts.Any(p=>!ValidEconomicPart(p))||!SupportsFusion(parts[0].Kind,parts[0].Weapon))return false;
             if(parts.Any(p=>float.IsNaN(p.DeviceReadyAt)||float.IsInfinity(p.DeviceReadyAt)||p.DeviceReadyAt<0||
                 float.IsNaN(p.ReloadReadyAt)||float.IsInfinity(p.ReloadReadyAt)||p.ReloadReadyAt<0||
-                float.IsNaN(p.DisruptionRemaining)||float.IsInfinity(p.DisruptionRemaining)||p.DisruptionRemaining<0))return false;
+                float.IsNaN(p.DisruptionRemaining)||float.IsInfinity(p.DisruptionRemaining)||p.DisruptionRemaining<0||
+                float.IsNaN(p.ThermalHeat)||float.IsInfinity(p.ThermalHeat)||p.ThermalHeat<0))return false;
             int tier=NormalizedTier(parts[0].Tier);
             if(tier>=3||parts.Any(p=>p.Kind!=parts[0].Kind||NormalizedTier(p.Tier)!=tier||
                 (p.Kind==R3PartKind.Gun&&p.Weapon!=parts[0].Weapon)))return false;
@@ -390,6 +391,7 @@ namespace RoboRougelike.R3
             result.Health=parts.Average(p=>p.Health);result.Source="Fuzja trzech części T"+tier;
             result.DeviceReadyAt=parts.Max(p=>p.DeviceReadyAt);result.ReloadReadyAt=parts.Max(p=>p.ReloadReadyAt);
             result.DisruptionRemaining=parts.Max(p=>p.DisruptionRemaining);
+            result.ThermalHeat=parts.Max(p=>p.ThermalHeat);result.ThermalLocked=parts.Any(p=>p.ThermalLocked);
             if(result.Kind==R3PartKind.Gun)
             {
                 int capacity=result.Weapon==R4WeaponKind.Shotgun?RoboRougelike.WeaponIntegration.RRLShotgunBinding.MagazineSalvos:

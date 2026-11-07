@@ -26,8 +26,8 @@ public sealed class BacklogWeaponTierTests
         Assert.That(model.PurchaseToInventory(R3PartKind.Gun,R4WeaponKind.Heavy),Is.True);
         var mixed=model.Inventory.Select(p=>p.Id).ToArray();
         Assert.That(model.FuseInventory(mixed),Is.False);Assert.That(model.Inventory.Select(p=>p.Id),Is.EqualTo(mixed));
-        for(int i=0;i<3;i++)Assert.That(model.PurchaseToInventory(R3PartKind.Gun,R4WeaponKind.BeamCutter),Is.True);
-        Assert.That(model.FuseInventory(model.Inventory.Where(p=>p.Weapon==R4WeaponKind.BeamCutter).Select(p=>p.Id).ToArray()),Is.False);
+        for(int i=0;i<3;i++)Assert.That(model.PurchaseToInventory(R3PartKind.Gun,R4WeaponKind.EmpEmitter),Is.True);
+        Assert.That(model.FuseInventory(model.Inventory.Where(p=>p.Weapon==R4WeaponKind.EmpEmitter).Select(p=>p.Id).ToArray()),Is.False);
     }
 }
 
