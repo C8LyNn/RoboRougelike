@@ -11,6 +11,10 @@ namespace RoboRougelike.R1
         private GUIStyle title, heading, body, small, button, compactButton;
 
         private readonly Color panel = new Color(0.04f, 0.06f, 0.08f, 0.94f);
+        private static bool UsePortraitReady(int width,int height,bool ready,bool overlay)
+            => width>0&&height>width&&ready&&!overlay;
+        private static Rect PortraitVehicleCard(int index)=>new Rect(24,150+index*180,720,166);
+        private static Rect PortraitActionRect(int index)=>new Rect(24+(index%2)*370,index<2?790:855,350,index<2?54:48);
         internal bool ClosePartCatalog(){if(!catalogOpen)return false;catalogOpen=false;return true;}
         private void Setup()
         {
@@ -38,8 +42,11 @@ namespace RoboRougelike.R1
             {run.HandleEscape();Event.current.Use();}
             var rawPointer=Event.current.mousePosition;
             var previous = GUI.matrix;
-            float scale = Mathf.Min(Screen.width / 1280f, Screen.height / 720f);
-            float offsetX=(Screen.width-1280*scale)/2,offsetY=(Screen.height-720*scale)/2;
+            bool portraitReady=UsePortraitReady(Screen.width,Screen.height,run.Progress?.State==R1RunState.Ready&&!run.MapEditing,
+                sessionOverlay||run.Error!=null||run.Transitioning);
+            float canvasWidth=portraitReady?768:1280,canvasHeight=portraitReady?1024:720;
+            float scale = Mathf.Min(Screen.width/canvasWidth,Screen.height/canvasHeight);
+            float offsetX=(Screen.width-canvasWidth*scale)/2,offsetY=(Screen.height-canvasHeight*scale)/2;
             if(run.Progress?.State==R1RunState.Garage&&!run.Transitioning)
             {
                 // A partial garage camera does not clear pixels outside the
@@ -53,13 +60,13 @@ namespace RoboRougelike.R1
             GUI.matrix = Matrix4x4.TRS(new Vector3(offsetX,offsetY), Quaternion.identity, Vector3.one * scale);
             try
             {
-                Draw(run);
+                Draw(run,portraitReady);
                 if(!sessionOverlay&&run.MapEditing)run.MapEditorPointer(Event.current,rawPointer);
                 else if(!sessionOverlay&&!catalogOpen&&run.Progress?.State==R1RunState.Garage&&!run.Transitioning&&!run.Paused&&!run.QuitRequested)run.Garage.HandleGuiPointer(Event.current,rawPointer);
             }
             finally { GUI.matrix = previous; GUI.enabled = true; }
         }
-        private void Draw(R1RunController run)
+        private void Draw(R1RunController run,bool portraitReady)
         {
             if (run.QuitRequested)
             { Panel(new Rect(0,0,1280,720)); GUI.Label(new Rect(350,300,650,80),"Zamykanie gry…",title); return; }
@@ -115,13 +122,14 @@ namespace RoboRougelike.R1
                     return;
                 }
             }
-            Panel(new Rect(0, 0, 1280, 720));
+            Panel(new Rect(0,0,portraitReady?768:1280,portraitReady?1024:720));
             if (run.Transitioning)
             { GUI.Label(new Rect(360, 310, 600, 80), "Przygotowanie starcia…", title); return; }
             if(progress.State==R1RunState.Salvage){DrawSalvage(run);return;}
             if(progress.State==R1RunState.Route){DrawRoute(run);return;}
             if (progress.State == R1RunState.Ready)
             {
+                if(portraitReady){DrawPortraitReady(run);return;}
                 GUI.Label(new Rect(90, 55, 1100, 60), "ROBOROGUELIKE • PEŁNA INTEGRACJA", title);
                 GUI.Label(new Rect(90, 125, 1100, 45), "Wybierz pojazd do Gauntletu", heading);
                 GUI.Label(new Rect(90,173,1100,28),"Jeden pojazd, wspólny garaż i nagrody. Aktywność wybierzesz po przygotowaniu.",small);
@@ -173,6 +181,34 @@ namespace RoboRougelike.R1
                 GUI.Label(new Rect(160, 325, 960, 200), $"Walki: {progress.CompletedEncounters}/{progress.TotalEncounters}  •  Pojazd: {run.VehicleModel.Design.Name}\nPokonani: {run.DefeatedEnemies}  •  Zdobyty Złom: {run.EarnedScrap}  •  Saldo: {run.VehicleModel.Scrap}\nOdzyskane moduły: {run.RecoveredModules}  •  Części końcowe: {run.VehicleModel.Parts.FindAll(p=>p.Health>0).Count}\nZdobyte moduły bonusów: {progress.Acquired.Count}  •  Seed: {run.Seed}\nNowa próba przywróci bazowy pojazd, 0 Złomu i brak bonusów.", body);
                 if (GUI.Button(new Rect(160, 535, 500, 70), won ? "Zagraj ponownie  [Enter]" : "Spróbuj ponownie  [Enter]", button)) run.RestartRun();
             }
+        }
+
+        private void DrawPortraitReady(R1RunController run)
+        {
+            GUI.Label(new Rect(24,20,720,48),"ROBOROGUELIKE",title);
+            GUI.Label(new Rect(24,74,720,38),"Wybierz pojazd do Gauntletu",heading);
+            GUI.Label(new Rect(24,113,720,28),"Jeden pojazd, wspólny garaż i nagrody.",small);
+            for(int i=0;i<3;i++)
+            {
+                var kind=(R3VehicleKind)i;var design=R3VehicleCatalog.Create(kind);var card=PortraitVehicleCard(i);
+                Panel(card);
+                GUI.Label(new Rect(card.x+16,card.y+8,440,34),design.Name,heading);
+                GUI.Label(new Rect(card.x+16,card.y+44,440,62),design.Description,body);
+                float speed=R3VehicleAssembly.SpeedFor(design.Parts.Sum(R4WeaponDefinition.PartMass),design.Parts.Count(p=>p.Kind==R3PartKind.Wheel));
+                GUI.Label(new Rect(card.x+16,card.y+112,430,42),$"Części: {design.Parts.Count} • Jazda: {speed:0.0} m/s\nRdzeń: {design.CoreHp:0} HP",small);
+                if(GUI.Button(new Rect(card.x+475,card.y+96,225,52),run.SelectedVehicle==kind?"WYBRANY":"Wybierz",button))run.SelectVehicle(kind);
+            }
+            GUI.Label(new Rect(24,704,75,30),"Seed:",body);
+            seedText=GUI.TextField(new Rect(105,704,205,32),seedText,11);
+            if(int.TryParse(seedText,out int seed))run.RequestedSeed=seed;
+            if(GUI.Button(new Rect(340,700,250,40),"Wczytaj wyprawę",compactButton))run.LoadRunCheckpoint();
+            if(!string.IsNullOrEmpty(run.RunSaveMessage))GUI.Label(new Rect(24,744,720,34),run.RunSaveMessage,small);
+            if(GUI.Button(PortraitActionRect(0),"Przygotuj pojazd  [Enter]",button))run.PrepareUnifiedRun();
+            if(GUI.Button(PortraitActionRect(1),"Garaż i poligon testowy",button))run.OpenSandboxGarage();
+            if(GUI.Button(PortraitActionRect(2),"Edytor map",compactButton))run.OpenMapEditor();
+            if(GUI.Button(PortraitActionRect(3),"Wyjdź z gry",compactButton))run.RequestQuit();
+            GUI.Label(new Rect(24,920,720,43),"6 starć • nagrody • garaż\nPo walce wybierz moduł i części z wraków.",small);
+            GUI.Label(new Rect(24,975,720,40),"WASD — jazda • Mysz — celowanie • LPM/PPM — ogień • Esc — pauza",small);
         }
 
         private void DrawSessionPause(R1RunController run)
