@@ -85,9 +85,9 @@ namespace RoboRougelike.R1
             int bulk=model.AffordableRepairCost;GUI.enabled=bulk>0;
             if(GUI.Button(new Rect(394,782,350,42),$"Napraw możliwe — {bulk} Z",compactButton))garage.Message=run.GarageRepairAffordable()?"Naprawiono dostępne części.":"Nie można naprawić części.";
             int emergency=model.EmergencyRepairCost;GUI.enabled=emergency>0&&model.Scrap>=emergency;
-            if(GUI.Button(new Rect(394,830,350,42),$"Odbudowa awaryjna — {emergency} Z",compactButton))garage.Message=run.GarageEmergencyRepair()?"Odbudowano niezbędne moduły.":"Nie można odbudować części.";
+            if(GUI.Button(new Rect(394,826,350,38),$"Odbudowa awaryjna — {emergency} Z",compactButton))garage.Message=run.GarageEmergencyRepair()?"Odbudowano niezbędne moduły.":"Nie można odbudować części.";
             GUI.enabled=true;
-            GUI.Label(new Rect(394,875,250,28),"A / LPM: "+WeaponGroupName(model.WeaponGroupA)+" • B / PPM: "+WeaponGroupName(model.WeaponGroupB),small);
+            GUI.Label(new Rect(394,868,250,36),"A / LPM: "+WeaponGroupName(model.WeaponGroupA)+"\nB / PPM: "+WeaponGroupName(model.WeaponGroupB),small);
             if(GUI.Button(new Rect(650,875,94,28),"Zamień",compactButton))model.SwapWeaponGroups();
         }
 
