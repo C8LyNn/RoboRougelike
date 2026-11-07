@@ -59,4 +59,14 @@ node .\Tools\R4Blocks\export-unity-colliders.js 'PATH_TO_SOURCE\R4Blocks' 'NEW_O
 
 This bundle is under `Tools`, not `Assets` or `Resources`. Nothing in the game reads it yet; it does not add shapes or colliders to a build.
 
+## Socket surface preflight
+
+```powershell
+node .\Tools\R4Blocks\test-socket-surface.js
+node .\Tools\R4Blocks\test-socket-source-baseline.js 'PATH_TO_SOURCE\R4Blocks'
+node .\Tools\R4Blocks\verify-socket-surface.js 'PATH_TO_SOURCE\R4Blocks'
+```
+
+This samples the corners, edge midpoints and center of each source socket patch against coplanar collider triangles. The baseline test passes only when the exact known four mismatches are reproduced; it does not treat them as fixed. The verifier itself produces a nonzero result while those patches remain uncovered. Details, coordinates and limitations are in `Docs/R4_BLOCK_SOCKET_SURFACE_QA.md`. Nine covered samples do not prove the whole patch is covered or replace Unity physics checks.
+
 This is a source-data check, not a Unity test or proof of physical geometry, gameplay integration, collision behavior or save compatibility. As of this change the shape catalog and socket policy remain disconnected from the actual garage and saved vehicles.
