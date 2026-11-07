@@ -79,7 +79,7 @@ namespace RoboRougelike.R1
             if(GUI.Button(PortraitCatalogBuyRect(),unlocked?$"Kup do magazynu — {price} Z":"Pokonaj wroga z tą bronią",compactButton))PortraitCatalogPurchase(run,selectedKind,selectedWeapon);
             GUI.enabled=true;
             var selected=items.FirstOrDefault(p=>p.Id==run.Garage.SelectedInventoryId);
-            if(selected!=null&&R3VehicleModel.SupportsFusion(selected.Kind))DrawFusionButton(run,selected,new Rect(390,875,354,52));
+            if(selected!=null&&R3VehicleModel.SupportsFusion(selected.Kind,selected.Weapon))DrawFusionButton(run,selected,new Rect(390,875,354,52));
             else GUI.Label(new Rect(390,875,354,82),"Wybierz egzemplarz, aby wrócić do garażu i zamontować go na pojeździe.",small);
         }
 
