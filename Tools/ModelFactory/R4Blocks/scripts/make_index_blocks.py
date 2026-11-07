@@ -36,6 +36,16 @@ def main():
            "compat_test": {"PASS": cj["PASS"], "port_pairs": cj["n_pairs"], "overlaps": len(cj["overlaps"]), "modules_on_ports": cj["modules_on_ports"],
                            "note": cj["note"], "file": "compat/compat_assembly.json"},
            "blocks": rows}
+    mp = os.path.join(ROOT, "compat", "compat_matrix.json")
+    if os.path.exists(mp):
+        cm = json.load(open(mp, encoding="utf-8")); S = cm["summary"]
+        idx["compat_matrix"] = {"PASS": cm["PASS"], "file": "compat/compat_matrix.json", "method": cm["method"],
+                                "modules": len(S), "mountings_tested": sum(v["ports"] for v in S.values()),
+                                "contact_fail": sum(v["contact_fail"] for v in S.values()),
+                                "ports_all_rolls_clear": sum(v["ports_all_rolls"] for v in S.values()),
+                                "ports_some_rolls_blocked": sum(v["ports_some_rolls"] for v in S.values()),
+                                "ports_fully_blocked": sum(v["ports_blocked"] for v in S.values()),
+                                "blocks_without_full_port": cm["blocks_without_full_port"]}
     json.dump(idx, open(os.path.join(ROOT, "INDEX.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
     lines = []
     for p in sorted(glob.glob(os.path.join(ROOT, "**", "*"), recursive=True)):

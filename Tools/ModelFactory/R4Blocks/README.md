@@ -94,6 +94,26 @@ Sprawdzane są trzy rzeczy:
 
 Rendery: `compat/compat_assembly_{34front,side,34rear}.jpg`. Statyczny model: `compat/R4_Compat_Vehicle.glb`.
 
+## Macierz zgodności: wszystkie bronie i moduły ruchu na wszystkich klockach (`compat/compat_matrix.json`)
+
+Skrypt `scripts/compat_matrix.py` bierze aktualne pliki GLB, których SHA-256 zgadza się z HEAD PR-ów:
+- 8 broni z PR #939 @23718ab,
+- 11 modułów ruchu z PR #941 @c6b655d.
+
+Każdy moduł jest montowany na każdym pełnym porcie każdego z 30 klocków, w 4 obrotach wokół osi portu. To razem 137 portów × 19 modułów = 2 603 montaże.
+
+Dla każdego montażu sprawdzane są dwie rzeczy:
+- **Styk:** 13×13 promieni w szczelinie. Obie powierzchnie muszą leżeć płasko w odległości 30 mm od siebie i nic nie może wchodzić w szczelinę.
+- **Przenikanie:** test BVH całego modułu (bez efektów FX) w 10 klatkach całej osi animacji z całym klockiem, we wszystkich jego komórkach.
+
+**Wynik: PASS.**
+- Styk: 2 603 z 2 603 montaży poprawnych. Najsłabszy wynik to 94,7% płaskiej powierzchni (resztę stanowią wpuszczone rowki portu). Nic nie wystaje i nic nie brakuje.
+- Przenikanie: 2 537 portów jest wolnych we wszystkich 4 obrotach, a 66 w części obrotów. Żaden port nie jest zablokowany całkowicie.
+- Zablokowane obroty występują tylko na wewnętrznych ścianach CornerL3 (2 porty) i Tee4 (4 porty). Moduł wystający w bok (lufa, piła, gąsienica, koło, booster, hak) uderza tam w drugie ramię tego samego klocka. Na tych portach trzeba wybrać obrót, w którym moduł jest skierowany od ramienia. EMP, Blink, żyroskop, hover, omni, zawieszenie, skok i skręt pasują tam w każdym obrocie.
+- Bronie i moduły nie montują się na klockach bez pełnego portu: Cone, Cylinder, HexColumn, RoundCorner, Tetra i TrussCube. Ich porty częściowe są mniejsze niż płyta 0,509 m, więc są przeznaczone tylko do łączenia klocków.
+
+Rendery z prawdziwymi modelami: `compat/compat_matrix_{weapons,movement}_{34front,side}.jpg` (skrypt `scripts/compat_showcase.py`, raport w `compat_showcase.json`). Każdy montaż ma odstęp 30 mm i przesunięcie 0 mm.
+
 ## Co sprawdzono w Blenderze 5.2.3 (każdy klocek)
 
 - Topologia: manifold, spójne normalne, brak zdegenerowanych ścian, UV.

@@ -4830,5 +4830,24 @@
    },
    "note": "2-wide wedge (one rigid piece over two bonded cells)"
   }
- ]
+ ],
+ "compat_matrix": {
+  "PASS": true,
+  "file": "compat/compat_matrix.json",
+  "method": "Each module GLB is mounted on every full R4 port of every block: module socket 30 mm off the port centre along the port normal (two 0.52 m blocks on the 0.55 m grid), socket direction against the normal, 4 rolls (0/90/180/270 deg). contact: 13x13 rays over 0.42 m in the gap, both faces flush at 15 mm +-0.6 mm from the mid-plane, nothing protruding or missing (PASS >= 70% flush, recesses allowed). overlap: BVH overlap of all non-FX module meshes at 10 sampled frames of the whole animation timeline with the whole block (all cells).",
+  "modules": 19,
+  "mountings_tested": 2603,
+  "contact_fail": 0,
+  "ports_all_rolls_clear": 2537,
+  "ports_some_rolls_blocked": 66,
+  "ports_fully_blocked": 0,
+  "blocks_without_full_port": [
+   "R4B_Cone",
+   "R4B_Cylinder",
+   "R4B_HexColumn",
+   "R4B_RoundCorner",
+   "R4B_Tetra",
+   "R4B_TrussCube"
+  ]
+ }
 }
