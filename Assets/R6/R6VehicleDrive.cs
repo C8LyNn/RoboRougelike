@@ -14,7 +14,7 @@ namespace RoboRougelike.R6
         Rigidbody body;
         P12PipelineSafeDamageable[] parts;
         PhysicsMaterial material;
-        float nextMassRefresh, traction, left, right, track;
+        float nextMassRefresh, traction, left, right, track, powerUnits;
         readonly R6WheelContacts contacts=new R6WheelContacts();
         public int GroundedWheels=>contacts.Count;
         public Vector3 GroundNormal=>contacts.Normal;
@@ -29,7 +29,12 @@ namespace RoboRougelike.R6
             // R6's planar mode never loaded them with vehicle weight.
             material.staticFriction=material.dynamicFriction=Mathf.Clamp(contactFriction,0,R6Tuning.Current.ContactFriction);
         }
-        public float AvailableForce => traction*R6Tuning.Current.WheelForce;
+        // Motor output rises with installed working devices; the cap represents
+        // finite tire traction rather than a limit on how many blocks can be fitted.
+        public static float MotorMultiplier(float units)=>Mathf.Min(2f,1f+.2f*Mathf.Max(0,units));
+        float BaseTractionForce=>traction*R6Tuning.Current.WheelForce;
+        public float AvailableForce => BaseTractionForce*MotorMultiplier(powerUnits);
+        public float ActivePowerUnits=>powerUnits;
         public float ForwardSpeed => Vector3.Dot(body.linearVelocity,transform.forward);
         public float WheelImbalance => (right-left)/Mathf.Max(1,right+left);
 
@@ -76,12 +81,16 @@ namespace RoboRougelike.R6
         {
             if(parts==null)return;
             float mass=0,yaw=0;Vector3 center=Vector3.zero;
-            traction=left=right=track=0;Wheels=0;
+            traction=left=right=track=powerUnits=0;Wheels=0;
             foreach(var part in parts)
             {
                 if(!BelongsToBody(part))continue;
                 float m=PartMass(part);var local=transform.InverseTransformPoint(part.transform.position);
                 mass+=m;center+=local*m;
+                var mounted=part.GetComponent<R3MountedPart>();
+                if(mounted!=null&&mounted.Kind==R3PartKind.DrivePower&&
+                    !RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))
+                    powerUnits+=Mathf.Clamp01(part.CurrentHp/Mathf.Max(1,part.MaxHp));
                 if(!IsWheel(part)||RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))continue;
                 float condition=Mathf.Lerp(R6Tuning.Current.DamageTractionFloor,1,part.CurrentHp/part.MaxHp);
                 traction+=condition;Wheels++;track+=Mathf.Abs(local.x);
@@ -127,10 +136,10 @@ namespace RoboRougelike.R6
                 if(braking)force=throttle*traction*tune.BrakeForce;
                 else if(Mathf.Abs(speed)<(throttle>0?forwardLimit:reverseLimit))force=throttle*AvailableForce;
             }
-            else force=-Mathf.Sign(speed)*Mathf.Min(Mathf.Abs(speed)*body.mass/Time.fixedDeltaTime,AvailableForce*tune.CoastFraction+body.mass*.08f);
+            else force=-Mathf.Sign(speed)*Mathf.Min(Mathf.Abs(speed)*body.mass/Time.fixedDeltaTime,BaseTractionForce*tune.CoastFraction+body.mass*.08f);
             body.AddForceAtPosition(forward*force,contacts.CenterOfTraction,ForceMode.Force);
             float lateral=Vector3.Dot(body.linearVelocity,rightDirection);
-            float grip=Mathf.Min(Mathf.Abs(lateral)*body.mass*5,AvailableForce*tune.LateralGrip+body.mass*.1f);
+            float grip=Mathf.Min(Mathf.Abs(lateral)*body.mass*5,BaseTractionForce*tune.LateralGrip+body.mass*.1f);
             body.AddForce(-rightDirection*Mathf.Sign(lateral)*grip,ForceMode.Force);
             float reverse=speed<-.2f?-1:1;
             float coverage=Wheels==0?0:Mathf.Clamp01(Mathf.Min(left,right)/Mathf.Max(1,Mathf.Max(left,right)));

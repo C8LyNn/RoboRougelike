@@ -36,8 +36,12 @@ namespace RoboRougelike.R3
             var active=Parts.Where(p=>p!=null&&p.Operational&&p.transform.IsChildOf(transform)).ToArray();
             float mass=active.Sum(p=>RoboRougelike.R6.R6VehicleDrive.PartMass(p.Damageable));
             int wheels=active.Count(p=>p.Kind==R3PartKind.Wheel);
-            controller.ConfigureChassis(SpeedFor(mass,wheels),TurnFor(mass),mass);
+            float power=ModelWheelPower(active);
+            controller.ConfigureChassis(SpeedFor(mass,wheels),Mathf.Min(130f,TurnFor(mass)*Mathf.Min(1.6f,1f+.12f*power)),mass);
         }
+        float ModelWheelPower(R3MountedPart[] active)=>Model.SelectedDrive!=R3DriveKind.Wheels?0:
+            active.Where(p=>p.Kind==R3PartKind.DrivePower&&!RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(p.gameObject))
+                .Sum(p=>Mathf.Clamp01(p.Damageable.CurrentHp/Mathf.Max(1,p.Damageable.MaxHp)));
         public static float SpeedFor(float mass,int wheels)
         {
             float weight=Mathf.Clamp(Mathf.Sqrt(350f/Mathf.Max(1f,mass)),.6f,1.35f);
