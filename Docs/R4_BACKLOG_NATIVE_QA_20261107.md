@@ -12,7 +12,7 @@ the stacked drafts through #1025. Unity `6000.3.14f1`, Windows x64.
 | Extracted Windows Player API fixture | PASS | exit 0; JSON SHA-256 `f3b4b5ad9b5dbb77ff421adfdccd13de64bca512d5e39e19ef9cda190f6a5c85` |
 | Human gameplay / visual acceptance | NOT RUN | batch fixture is API-driven |
 | Full EditMode / standalone PlayMode regression | NOT RUN | targeted suite only |
-| Interactive close after UI automation | NOT RUN | a prior automated interactive Player exit crashed; no cause established |
+| Interactive close after UI automation | FAIL | window closed, but a crash dump recorded `0xC0000005` in UnityPlayer; process exit code was not captured |
 
 The targeted Unity result comprises `BacklogEnemyWheelTierTests` 3/3,
 `R4EnemySawEmpArtTests` 4/4, `R4MountDefinitionAdapterTests` 6/6 and
@@ -29,6 +29,23 @@ fixtures, including explicitly advanced weapon simulation; it is not a manual
 playthrough. Player.log SHA-256 `d037a2e35de99cb158972743a7148c37e1f54ac3fd4aa388f5028ccf75036284`;
 no exception/error/crash text was found in this batch log. Exit 0 here does
 not establish a fix for the historical interactive automated-exit issue.
+
+An additional windowed GUI-automation check reached the main menu, garage,
+route selection, first combat and pause. The view was initially extremely far
+away; after several zoom inputs the vehicle became visible. The reason for the
+initial distance was not established. Real screenshots show the view
+[after two zoom inputs](QA/R4-backlog-20261107/Battle-wide-after-two-scrolls.png)
+and [after further zooming](QA/R4-backlog-20261107/Battle-after-zoom.png).
+This is not a full gameplay or model-art acceptance check.
+
+Exit via the pause menu closed the window, but `Interactive-Player.log` records
+`Crash!!!` after `[EXIT273] Shutdown prepared: MenuOrShortcut` and Input System
+shutdown. The accompanying Windows minidump exception stream reports
+`0xC0000005` at an address in `UnityPlayer.dll`. The interactive log SHA-256 is
+`04e4cc6a7825a72dcdb92b0ba7ea31465461ac1347ce46f715101b7f37d19a1e`.
+The GUI automation helper had attached during this run; causation, behavior
+without automation, and a remedy remain unverified. The minidump and full
+interactive log are retained locally rather than attached to the PR.
 
 Artifact:
 `C:\Users\kubap\Desktop\Prototypy\RoboRougelike_R4_EnemySawEmp_a3d37d30_Windows_x64.zip`
