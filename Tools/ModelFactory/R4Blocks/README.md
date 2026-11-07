@@ -1,9 +1,9 @@
-# R4Blocks — podstawowe klocki konstrukcyjne (15 kształtów)
+# R4Blocks — podstawowe klocki konstrukcyjne (30 kształtów)
 
 Biblioteka art-only: zestaw klocków budulcowych w stylu R4/R41, na tej samej siatce i z tym samym portem co bronie z PR #939 i moduły ruchu z PR #941.
 Biblioteka niczego nie podpina do gry. Nie zmienia `Assets/`, scen, prefabów, runtime, fizyki, Save/Load ani ekonomii.
 
-**Status: BLENDER_PASS 15/15 · test zgodności PASS · UNITY_NOT_RUN 15/15.** Unity nie był dostępny, więc żaden import do Unity nie został wykonany.
+**Status: BLENDER_PASS 30/30 · test zgodności PASS · UNITY_NOT_RUN 30/30.** Unity nie był dostępny, więc żaden import do Unity nie został wykonany.
 
 Dane maszynowe są w [INDEX.json](INDEX.json), a sumy kontrolne w [SHA256SUMS.txt](SHA256SUMS.txt).
 
@@ -40,8 +40,25 @@ Geometria, faktura i detale są własne, w stylu R4: ciemny i jasny pancerz, wpu
 | R4B_LongWedge | długi klin 1×2 (łagodny skos) | 2 | 3 + 2 | 43 | 4 030 |
 | R4B_Plate2x2 | płyta 2×2×½ | 4 | 4 + 0 (spód) | 8 | 6 284 |
 | R4B_TrussCube | ażurowa kratownica 1×1×1 | 1 | 0 + 6 (kwadratowe piasty ±0,17) | 63 | 7 140 |
+| R4B_Pyramid | piramida o kwadratowej podstawie | 1 | 1 + 0 | 8 | 972 |
+| R4B_Dome | kopuła na płycie (osłona sensora / kokpitu) | 1 | 1 + 0 | 8 | 3 270 |
+| R4B_Cone | stożek (nos), okrągła podstawa | 1 | 0 + 1 | 8 | 1 700 |
+| R4B_HexColumn | kolumna sześciokątna | 1 | 0 + 2 | 12 | 1 764 |
+| R4B_OctColumn | kolumna ośmiokątna (ścięte pionowe krawędzie) | 1 | 2 + 4 | 63 | 4 844 |
+| R4B_RoundTop | półklocek z półwalcem na górze | 1 | 1 + 4 | 59 | 4 190 |
+| R4B_Arch | łuk (tunel r 0,17 m pod klockiem), mocowanie od góry | 1 | 3 + 2 | 55 | 4 564 |
+| R4B_Step | stopień schodów | 1 | 2 + 4 | 63 | 4 966 |
+| R4B_CoveEdge | wklęsła krawędź (odwrotność zaokrąglenia, r 0,40 m) | 1 | 2 + 2 | 43 | 3 344 |
+| R4B_CornerL3 | narożnik L, 3 komórki | 3 | 14 + 0 | 46 | 11 764 |
+| R4B_Tee4 | trójnik T, 4 komórki | 4 | 18 + 0 | 44 | 15 142 |
+| R4B_Slab2x2 | blok 2×2×1 | 4 | 16 + 0 | 46 | 13 356 |
+| R4B_BigCube2 | duży sześcian 2×2×2 | 8 | 24 + 0 | 42 | 20 012 |
+| R4B_Plate1x2 | płyta 1×2×½ | 2 | 2 + 2 | 10 | 4 752 |
+| R4B_WideWedge | szeroki klin 2×1×1 | 2 | 4 + 2 | 42 | 4 812 |
 
 Dokładna lista portów (komórka, kierunek, rodzaj, offset i połowa łaty) jest w `R4B_*/R4B_*_QA.json` oraz w `INDEX.json`.
+
+Zestaw 2 (15 kolejnych kształtów od Pyramid do WideWedge) zbudowano tym samym skryptem i tym samym QA. Arch nie ma portu od spodu (tunel), dlatego jego `Socket_Mount` stoi na górnej ścianie.
 
 ## Siatka i porty — zgodność z bronią i ruchem
 
@@ -53,7 +70,7 @@ Dokładna lista portów (komórka, kierunek, rodzaj, offset i połowa łaty) jes
   Moduł z portem R4 pasuje więc na każdą pełną ścianę klocka.
 - Porty częściowe to ściany trójkątne lub połówkowe. Są opisane jako łaty `BuildSocket` (offset i half ≤ 0,5).
 - `ContactMask` liczony jest dla komórki kotwicy, w kolejności `R3MountingGrid`: right, left, up, down, forward, back (bity 0–5, osie Unity).
-- Klocki wielokomórkowe (Beam2, Beam3, LongWedge, Plate2x2) mają listę komórek i `bonds` (`BuildCellBond`).
+- Klocki wielokomórkowe (Beam2, Beam3, LongWedge, Plate2x2, CornerL3, Tee4, Slab2x2, BigCube2, Plate1x2, WideWedge) mają listę komórek i `bonds` (`BuildCellBond`).
 - Empties w każdym pliku:
   - `Port_<kierunek>_<komórka>[_part]`,
   - `Socket_Mount` (spód),
@@ -90,7 +107,7 @@ Rendery: `compat/compat_assembly_{34front,side,34rear}.jpg`. Statyczny model: `c
 ## Podgląd
 
 Plik `preview/BLOCKS_PREVIEW.zip` zawiera podgląd. Po rozpakowaniu otwórz `index.html`:
-- 15 klocków i pojazd testowy (prawdziwe GLB osadzone w `models.js`),
+- 30 klocków i pojazd testowy (prawdziwe GLB osadzone w `models.js`),
 - orbit i zoom, komórka 0,55 m, porty,
 - szereg wszystkich klocków.
 

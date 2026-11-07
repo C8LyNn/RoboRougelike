@@ -1,4 +1,4 @@
-BLOCKS_PREVIEW — podgląd klocków R4 (15 klocków + pojazd testowy)
+BLOCKS_PREVIEW — podgląd klocków R4 (30 klocków + pojazd testowy)
 =================================================================
 
 JAK OTWORZYĆ
@@ -29,5 +29,5 @@ CO JEST W ŚRODKU
 - renders/, compare/, thumbs/
 
 STATUS
-- Blender QA: BLENDER_PASS 15/15; test zgodności z bronią i kołami: PASS.  Unity: UNITY_NOT_RUN (nie testowano w Unity).
+- Blender QA: BLENDER_PASS 30/30; test zgodności z bronią i kołami: PASS.  Unity: UNITY_NOT_RUN (nie testowano w Unity).
 - Źródła .blend/.fbx i pełne raporty: Tools/ModelFactory/R4Blocks/ w Draft PR.

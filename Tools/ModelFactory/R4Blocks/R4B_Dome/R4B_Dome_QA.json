@@ -1,0 +1,129 @@
+{
+ "id": "R4B_Dome",
+ "block_kind": "Dome",
+ "description": "1x1x1 dome on a base plate",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "bonds": [],
+ "note": "low base plate + elliptic dome (sensor / cockpit cap)",
+ "contact_mask_local_anchor": 8,
+ "contact_mask_bits": "R3MountingGrid.FaceDirections order: right, left, up, down, forward, back (Unity)",
+ "ports": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "mesh": {
+  "object": "R4B_Dome",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 3270,
+  "uv": true,
+  "ok": true
+ },
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.254
+  ]
+ ],
+ "inside_cells": true,
+ "materials": [
+  "Armor_Dark",
+  "Armor_Gunmetal",
+  "Steel_Light"
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 1637,
+   "empties": [
+    "Port_down_000.001",
+    "R4B_Dome_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 2897,
+   "empties": [
+    "Port_down_000.001",
+    "R4B_Dome_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  }
+ },
+ "renders": [
+  "R4B_Dome_34front.png",
+  "R4B_Dome_34rear.png",
+  "R4B_Dome_under.png"
+ ],
+ "files": {
+  "R4B_Dome.blend": {
+   "sha256": "5df1711760afac423c25be808ad441d55e4714dd3301739c41e4d988bf7b6409",
+   "bytes": 201037
+  },
+  "R4B_Dome.fbx": {
+   "sha256": "62e4040b01080560d66eac29641cb81a27cd63b8a31ab496d15e2d424d8091fb",
+   "bytes": 123676
+  },
+  "R4B_Dome.glb": {
+   "sha256": "e68f5d89fe6fd3cd1f088e0eb58f65d6654483bb68e698c31191b292b5a20b4e",
+   "bytes": 115780
+  },
+  "R4B_Dome_colliders.glb": {
+   "sha256": "36173b1c40245a0021b47b6e2ae857d7cc4ee73c7bb3e0d8386762db2b731d28",
+   "bytes": 3032
+  }
+ },
+ "seconds": 2.4,
+ "blender": "5.2.3 LTS"
+}

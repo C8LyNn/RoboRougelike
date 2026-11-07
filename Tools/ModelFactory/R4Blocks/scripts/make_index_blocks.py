@@ -3,7 +3,9 @@ import glob, hashlib, json, os, sys
 
 ROOT = os.path.abspath(sys.argv[1] if len(sys.argv) > 1 else os.path.join(os.path.dirname(__file__), ".."))
 ORDER = ["Cube", "Wedge", "Tetra", "InnerCorner", "CornerWedge", "RoundEdge", "RoundCorner", "HalfBlock",
-         "HalfWedge", "Cylinder", "Beam2", "Beam3", "LongWedge", "Plate2x2", "TrussCube"]
+         "HalfWedge", "Cylinder", "Beam2", "Beam3", "LongWedge", "Plate2x2", "TrussCube",
+         "Pyramid", "Dome", "Cone", "HexColumn", "OctColumn", "RoundTop", "Arch", "Step", "CoveEdge",
+         "CornerL3", "Tee4", "Slab2x2", "BigCube2", "Plate1x2", "WideWedge"]
 
 
 def sha(p):

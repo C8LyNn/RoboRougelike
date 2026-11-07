@@ -9,7 +9,7 @@ import bpy, bmesh
 from mathutils import Vector, Matrix
 from mathutils.bvhtree import BVHTree
 import r4lib as L
-from r4lib import M, box, cyl, tube, hull, Part, new_col
+from r4lib import M, box, cyl, cone, revolve, tube, hull, Part, new_col
 
 G, H = 0.55, 0.26          # grid pitch, block half-size (BlockSize 0.52)
 HT = -0.015                # top of half-height blocks (half cell minus half gap)
@@ -302,6 +302,200 @@ BLOCKS = [("Cube", b_cube, "1x1x1 cube - all six faces are ports"), ("Wedge", b_
           ("LongWedge", b_longwedge, "1x2x1 long wedge (gentle slope over two cells)"), ("Plate2x2", b_plate, "2x2x1/2 plate"),
           ("TrussCube", b_truss, "1x1x1 open lattice block")]
 
+# ------------------------------------------------------------------------------------------------ set 2 (more shapes)
+def tri_normal(a, b, c, outward_from=(0, 0, 0)):
+    n = (Vector(b) - Vector(a)).cross(Vector(c) - Vector(a)).normalized()
+    if n.dot((Vector(a) + Vector(b) + Vector(c))/3 - Vector(outward_from)) < 0: n = -n
+    return n
+
+
+def b_pyramid(work, nm):
+    apex = (0, 0, H); base = [(-H, -H, -H), (H, -H, -H), (H, H, -H), (-H, H, -H)]
+    pts = corners(-H, H, -H, H, -H, -H) + [apex]
+    ob = hull(nm, pts, M["Armor_Gunmetal"], work, bevel=BEV); pt = Part(work, "py")
+    full_face_ports(pt, -H, H, -H, H, -H, H, ["down"])
+    for i in range(4):
+        a, b = base[i], base[(i + 1) % 4]; panel(pt, [a, b, apex], tri_normal(a, b, apex, (0, 0, -0.1)), inset=0.06)
+    pt.build(ob)
+    return ob, pts, {"cells": [[0, 0, 0]], "ports": [P_full([0, 0, 0], "down")], "note": "square pyramid, apex at the top-face centre"}
+
+
+def b_dome(work, nm):
+    z0 = -H + 0.070
+    ob = hull(nm, corners(-H, H, -H, H, -H, z0), M["Armor_Gunmetal"], work, bevel=BEV); pt = Part(work, "dm")
+    prof = [(0, z0 - 0.010)] + [((H - 0.012)*math.cos(math.radians(90*i/16)), z0 + (H - 0.012 - z0)*math.sin(math.radians(90*i/16))) for i in range(16)] + [(0, H - 0.012)]
+    revolve("dome", prof, M["Armor_Gunmetal"], pt.U, 48, local=True)
+    for zr in (0.45, 0.80):   # two seam rings on the shell
+        t = math.asin(zr); r = (H - 0.012)*math.cos(t); z = z0 + (H - 0.012 - z0)*zr
+        tube("dome_seam", r + 0.012, r - 0.0035, (0, 0, z - 0.0016), (0, 0, z + 0.0016), M["Armor_Dark"], pt.D, seg=48)
+    cyl("dome_cap", 0.040, (0, 0, H - 0.020), (0, 0, H - 0.006), M["Steel_Light"], pt.Pc, seg=24)
+    full_face_ports(pt, -H, H, -H, H, -H, H, ["down"])
+    pt.build(ob)
+    return ob, [(x, y, z) for x in (-H, H) for y in (-H, H) for z in (-H, z0)] + [(0, 0, H - 0.006)] + [(H*math.cos(a), H*math.sin(a), 0.05) for a in [k*math.pi/4 for k in range(8)]], \
+        {"cells": [[0, 0, 0]], "ports": [P_full([0, 0, 0], "down")], "note": "low base plate + elliptic dome (sensor / cockpit cap)"}
+
+
+def b_cone(work, nm):
+    ob = cyl(nm, H, (0, 0, -H), (0, 0, -H + 0.050), M["Armor_Gunmetal"], work, seg=48, bevel=0.006); pt = Part(work, "cn")
+    cone("cone", H - 0.012, 0.032, (0, 0, -H + 0.049), (0, 0, H - 0.012), M["Armor_Gunmetal"], pt.U, seg=48)
+    cyl("cone_tip", 0.034, (0, 0, H - 0.030), (0, 0, H), M["Steel_Light"], pt.U, seg=24, bevel=0.004)
+    tube("cone_seam", H + 0.01, H - 0.0035, (0, 0, -H + 0.049 - 0.0016), (0, 0, -H + 0.049 + 0.0016), M["Armor_Dark"], pt.D, seg=48)
+    port_pattern(pt, (0, 0, -H), (0, 0, -1))
+    pt.build(ob)
+    return ob, [(H*math.cos(a), H*math.sin(a), z) for a in [k*math.pi/8 for k in range(16)] for z in (-H, -H + 0.05)] + [(0, 0, H)], \
+        {"cells": [[0, 0, 0]], "ports": [P_part([0, 0, 0], "down", (0, 0, -H), [0.3, 0.3])], "note": "nose cone; round base: contact patch limited to the inscribed square (half 0.30 cell)"}
+
+
+def ngon(n, r, rot=0.0): return [(r*math.cos(rot + 2*math.pi*i/n), r*math.sin(rot + 2*math.pi*i/n)) for i in range(n)]
+
+
+def b_hex(work, nm):
+    P = ngon(6, H); pts = [(x, y, z) for (x, y) in P for z in (-H, H)]
+    ob = hull(nm, pts, M["Armor_Gunmetal"], work, bevel=BEV); pt = Part(work, "hx")
+    for sz in (-1, 1): port_pattern(pt, (0, 0, sz*H), (0, 0, sz), 0.8)
+    for i in range(6):
+        a, b = P[i], P[(i + 1) % 6]; n = Vector(((a[0] + b[0])/2, (a[1] + b[1])/2, 0)).normalized()
+        panel(pt, [(a[0], a[1], -H), (b[0], b[1], -H), (b[0], b[1], H), (a[0], a[1], H)], n, inset=0.035)
+    pt.build(ob)
+    return ob, pts, {"cells": [[0, 0, 0]], "ports": [P_part([0, 0, 0], d, tuple(Vector(DIRS[d])*H), [0.3, 0.3]) for d in ("up", "down")],
+                     "note": "hexagonal column (vertex on +-X, flats 0.225 m from the axis); ports on the end faces only"}
+
+
+def b_oct(work, nm):
+    c = 0.060; P = [(H, -H + c), (H, H - c), (H - c, H), (-H + c, H), (-H, H - c), (-H, -H + c), (-H + c, -H), (H - c, -H)]
+    pts = [(x, y, z) for (x, y) in P for z in (-H, H)]
+    ob = hull(nm, pts, M["Armor_Gunmetal"], work, bevel=BEV); pt = Part(work, "oc")
+    for sz in (-1, 1): port_pattern(pt, (0, 0, sz*H), (0, 0, sz)); seam_frame(pt, (0, 0, sz*H), (0, 0, sz), H - c*0.6, H - c*0.6)
+    for d in ("right", "left", "forward", "back"):
+        n = Vector(DIRS[d]); port_pattern(pt, tuple(n*H), n, 0.7)
+    for i in (1, 3, 5, 7):
+        a, b = P[i], P[(i + 1) % 8]; n = Vector(((a[0] + b[0])/2, (a[1] + b[1])/2, 0)).normalized()
+        box("chamfer_seam", -H + 0.04, H - 0.04, -0.0016, 0.0016, -0.0015, 0.010, M["Armor_Dark"], pt.D).data.transform(fmat(((a[0] + b[0])/2, (a[1] + b[1])/2, 0), n, (0, 0, 1)))
+    pt.build(ob)
+    return ob, pts, {"cells": [[0, 0, 0]], "ports": [P_full([0, 0, 0], d) for d in ("up", "down")] + [P_part([0, 0, 0], d, tuple(Vector(DIRS[d])*H), [0.33, 0.45]) for d in ("right", "left", "forward", "back")],
+                     "note": "octagonal column (0.06 m chamfered vertical edges); side faces 0.40 m wide carry a reduced patch"}
+
+
+def b_roundtop(work, nm):
+    prof = [(-H, -H), (H, -H)] + [(H*math.cos(math.radians(180*i/20)), H*math.sin(math.radians(180*i/20))) for i in range(21)]
+    pts = [(x, y, z) for x in (-H, H) for (y, z) in prof]
+    ob = hull(nm, pts, M["Armor_Gunmetal"], work, bevel=BEV); pt = Part(work, "rt")
+    full_face_ports(pt, -H, H, -H, H, -H, H, ["down"])
+    for sx in (-1, 1): port_pattern(pt, (sx*H, 0, -0.05), (sx, 0, 0), 0.8)
+    for sy in (-1, 1): port_pattern(pt, (0, sy*H, -0.13), (0, sy, 0), 0.45)
+    for k in (1, 2, 3, 4, 5):
+        a = math.radians(30*k); nn = Vector((0, math.cos(a), math.sin(a)))
+        box("arc_seam", -H + 0.03, H - 0.03, -0.0016, 0.0016, -0.0015, 0.010, M["Armor_Dark"], pt.D).data.transform(fmat((0, H*math.cos(a), H*math.sin(a)), nn, (1, 0, 0)))
+    pt.build(ob)
+    return ob, pts, {"cells": [[0, 0, 0]], "ports": [P_full([0, 0, 0], "down")] + [P_part([0, 0, 0], d, (s_*H, 0, -0.05), [0.3, 0.3]) for (d, s_) in (("left", -1), ("right", 1))] +
+                     [P_part([0, 0, 0], d, (0, s_*H, -0.13), [0.45, 0.22]) for (d, s_) in (("forward", -1), ("back", 1))], "note": "half block + half cylinder top (axis X)"}
+
+
+def b_arch(work, nm):
+    R = 0.170
+    ob = hull(nm, corners(-H, H, -H, H, -H, H), M["Armor_Gunmetal"], work, bevel=BEV); pt = Part(work, "ar")
+    cyl("arch_cut", R, (0, -H - 0.03, -H), (0, H + 0.03, -H), M["Armor_Gunmetal"], pt.D, seg=48)
+    box("arch_cut_lo", -R, R, -H - 0.03, H + 0.03, -H - 0.05, -H, M["Armor_Gunmetal"], pt.D)
+    full_face_ports(pt, -H, H, -H, H, -H, H, ["up", "left", "right"])
+    for sy in (-1, 1): port_pattern(pt, (0, sy*H, 0.085), (0, sy, 0), 0.45)
+    tube("arch_rim", R + 0.022, R + 0.0185, (0, -H - 0.01, -H), (0, -H + 0.0025, -H), M["Armor_Dark"], pt.D, seg=48)
+    tube("arch_rim", R + 0.022, R + 0.0185, (0, H - 0.0025, -H), (0, H + 0.01, -H), M["Armor_Dark"], pt.D, seg=48)
+    pt.build(ob)
+    return ob, ("boxes", [(-H, -R, -H, H, -H, H), (R, H, -H, H, -H, H), (-R, R, -H, H, -H + R, H)]), \
+        {"cells": [[0, 0, 0]], "ports": [P_full([0, 0, 0], d) for d in ("up", "left", "right")] + [P_part([0, 0, 0], d, (0, s_*H, 0.085), [0.45, 0.15]) for (d, s_) in (("forward", -1), ("back", 1))],
+         "socket": ((0, 0, H), (0, 0, 0)), "note": "arch: semicircular tunnel r 0.17 m along Y under the block; mounts from the top (Socket_Mount on the up face)"}
+
+
+def b_step(work, nm):
+    ob = hull(nm, corners(-H, H, -H, H, -H, HT), M["Armor_Gunmetal"], work, bevel=BEV); pt = Part(work, "st")
+    box("step_upper", -H, H, 0.0, H, HT - 0.010, H, M["Armor_Gunmetal"], pt.U, bevel=BEV)
+    full_face_ports(pt, -H, H, -H, H, -H, H, ["down", "back"])
+    for d in ("right", "left", "forward"):
+        n = Vector(DIRS[d]); c = (n.x*H, n.y*H if d == "forward" else -0.13 + 0.0, (-H + HT)/2)
+        if d != "forward": c = (n.x*H, -0.0, (-H + HT)/2)
+        port_pattern(pt, c, n, 0.45)
+    port_pattern(pt, (0, H/2, H), (0, 0, 1), 0.45)
+    seam_frame(pt, (0, -H/2, HT), (0, 0, 1), H/2, H)
+    pt.build(ob)
+    return ob, ("boxes", [(-H, H, -H, H, -H, HT), (-H, H, 0.0, H, HT, H)]), \
+        {"cells": [[0, 0, 0]], "ports": [P_full([0, 0, 0], "down"), P_full([0, 0, 0], "back")] +
+         [P_part([0, 0, 0], d, (Vector(DIRS[d]).x*H, -H if d == "forward" else 0.0, (-H + HT)/2), [0.45, 0.22]) for d in ("right", "left", "forward")] +
+         [P_part([0, 0, 0], "up", (0, H/2, H), [0.2, 0.45])], "note": "stair step: full-width lower half + upper half at the back; the tread at -0.015 m is not a grid port"}
+
+
+def b_cove(work, nm):
+    R = 0.400
+    ob = hull(nm, corners(-H, H, -H, H, -H, H), M["Armor_Gunmetal"], work, bevel=BEV); pt = Part(work, "cv")
+    cyl("cove_cut", R, (-H - 0.03, -H, H), (H + 0.03, -H, H), M["Armor_Gunmetal"], pt.D, seg=64)
+    full_face_ports(pt, -H, H, -H, H, -H, H, ["down", "back"])
+    for sx in (-1, 1): port_pattern(pt, (sx*H, 0.15, -0.15), (sx, 0, 0), 0.5)
+    for k in (1, 2, 3):
+        a = math.radians(22.5*k); y = -H + R*math.sin(a); z = H - R*math.cos(a); nn = Vector((0, -math.sin(a), math.cos(a)))
+        box("cove_seam", -H + 0.03, H - 0.03, -0.0016, 0.0016, -0.0015, 0.010, M["Armor_Dark"], pt.D).data.transform(fmat((0, y, z), nn, (1, 0, 0)))
+    pt.build(ob)
+    return ob, ("boxes", [(-H, H, -H + R*0.72, H, -H, H), (-H, H, -H, H, -H, H - R*0.72)]), \
+        {"cells": [[0, 0, 0]], "ports": [P_full([0, 0, 0], "down"), P_full([0, 0, 0], "back")] + [P_part([0, 0, 0], d, (s_*H, 0.15, -0.15), [0.2, 0.2]) for (d, s_) in (("left", -1), ("right", 1))],
+         "note": "inverted round edge (concave fillet r 0.40 m along X) - fills the inside of a rounded corner"}
+
+
+def b_poly(cells, boxes, desc_note):
+    """polycube: union of full-height boxes given in cell index ranges (i0, i1, j0, j1, k0, k1); a full R4 port on every exposed cell face"""
+    def f(work, nm):
+        def co(b): return (b[0]*G - H, b[1]*G + H, b[2]*G - H, b[3]*G + H, b[4]*G - H, b[5]*G + H)
+        b0 = co(boxes[0]); ob = hull(nm, corners(*b0), M["Armor_Gunmetal"], work, bevel=BEV); pt = Part(work, "pc")
+        for b in boxes[1:]: box("poly_box", *co(b), M["Armor_Gunmetal"], pt.U, bevel=BEV)
+        S = {tuple(c) for c in cells}; ports = []
+        for c in cells:
+            for d, n in DIRS.items():
+                nb = (c[0] + n[0], c[1] + n[1], c[2] + n[2])
+                if nb in S: continue
+                ctr = tuple(Vector(c)*G + Vector(n)*H); port_pattern(pt, ctr, n); seam_frame(pt, ctr, n, H, H)
+                ports.append(P_full(list(c), d))
+        pt.build(ob)
+        bonds = [[list(a), list(b)] for a in sorted(S) for b in sorted(S) if a < b and sum(abs(a[i] - b[i]) for i in range(3)) == 1]
+        return ob, ("boxes", [co(b) for b in boxes]), {"cells": [list(c) for c in cells], "ports": ports, "bonds": bonds, "note": desc_note}
+    return f
+
+
+def b_plate12(work, nm):
+    x1 = G + H
+    ob = hull(nm, corners(-H, x1, -H, H, -H, HT), M["Armor_Gunmetal"], work, bevel=BEV); pt = Part(work, "p2")
+    full_face_ports(pt, -H, x1, -H, H, -H, H, ["down"])
+    for cx in (0, G): port_pattern(pt, (cx, 0, HT), (0, 0, 1))
+    seam_frame(pt, (G/2, 0, HT), (0, 0, 1), G/2 + H, H)
+    for sx, x in ((-1, -H), (1, x1)): port_pattern(pt, (x, 0, (-H + HT)/2), (sx, 0, 0), 0.45)
+    pt.build(ob)
+    cells = [[0, 0, 0], [1, 0, 0]]
+    return ob, None, {"cells": cells, "ports": [P_full(c, "down") for c in cells] + [P_part([0, 0, 0], "left", (-H, 0, (-H + HT)/2), [0.45, 0.22]), P_part([1, 0, 0], "right", (G + H, 0, (-H + HT)/2), [0.45, 0.22])],
+                      "bonds": [[cells[0], cells[1]]], "note": "half-height 1x2 plate; top face at -0.015 m"}
+
+
+def b_widewedge(work, nm):
+    x1 = G + H
+    pts = corners(-H, x1, -H, H, -H, -H) + [(x, H, H) for x in (-H, x1)]
+    ob = hull(nm, pts, M["Armor_Gunmetal"], work, bevel=BEV); pt = Part(work, "ww")
+    full_face_ports(pt, -H, x1, -H, H, -H, H, ["down", "back"])
+    s = 1/math.sqrt(2)
+    for cx in (0, G): panel(pt, [(cx - H, -H, -H), (cx + H, -H, -H), (cx + H, H, H), (cx - H, H, H)], (0, -s, s))
+    for sx, x in ((-1, -H), (1, x1)):
+        panel(pt, [(x, -H, -H), (x, H, -H), (x, H, H)], (sx, 0, 0)); port_pattern(pt, (x, H*0.5, -H*0.5), (sx, 0, 0), 0.5)
+    pt.build(ob)
+    cells = [[0, 0, 0], [1, 0, 0]]
+    return ob, pts, {"cells": cells, "ports": [P_full(c, d) for c in cells for d in ("down", "back")] + [P_part([0, 0, 0], "left", (-H, H*0.5, -H*0.5), [0.2, 0.2]), P_part([1, 0, 0], "right", (x1, H*0.5, -H*0.5), [0.2, 0.2])],
+                     "bonds": [[cells[0], cells[1]]], "note": "2-wide wedge (one rigid piece over two bonded cells)"}
+
+
+BLOCKS2 = [("Pyramid", b_pyramid, "1x1x1 square pyramid"), ("Dome", b_dome, "1x1x1 dome on a base plate"), ("Cone", b_cone, "1x1x1 nose cone (round base)"),
+           ("HexColumn", b_hex, "1x1x1 hexagonal column (axis up)"), ("OctColumn", b_oct, "1x1x1 octagonal column (chamfered vertical edges)"),
+           ("RoundTop", b_roundtop, "1x1x1 half block with a half-cylinder top"), ("Arch", b_arch, "1x1x1 arch (tunnel under the block)"),
+           ("Step", b_step, "1x1x1 stair step"), ("CoveEdge", b_cove, "1x1x1 inverted round edge (concave fillet)"),
+           ("CornerL3", b_poly([(0, 0, 0), (1, 0, 0), (0, -1, 0)], [(0, 1, 0, 0, 0, 0), (0, 0, -1, 0, 0, 0)], "L corner piece over three bonded cells"), "L-shaped corner 3 cells"),
+           ("Tee4", b_poly([(-1, 0, 0), (0, 0, 0), (1, 0, 0), (0, -1, 0)], [(-1, 1, 0, 0, 0, 0), (0, 0, -1, 0, 0, 0)], "T junction over four bonded cells"), "T junction 4 cells"),
+           ("Slab2x2", b_poly([(0, 0, 0), (1, 0, 0), (0, -1, 0), (1, -1, 0)], [(0, 1, -1, 0, 0, 0)], "2x2x1 full-height slab, one rigid piece"), "2x2x1 slab"),
+           ("BigCube2", b_poly([(i, j, k) for i in (0, 1) for j in (0, -1) for k in (0, 1)], [(0, 1, -1, 0, 0, 1)], "2x2x2 large cube, one rigid piece over eight bonded cells"), "2x2x2 large cube"),
+           ("Plate1x2", b_plate12, "1x2x1/2 plate"), ("WideWedge", b_widewedge, "2x1x1 wide wedge")]
+BLOCKS = BLOCKS + BLOCKS2
+
 
 # ------------------------------------------------------------------------------------------------ QA helpers
 def mesh_report(o):
@@ -393,7 +587,10 @@ for (name, fn, desc) in BLOCKS:
     t0 = time.time(); ID = "R4B_" + name; od = os.path.join(OUT, ID); os.makedirs(os.path.join(od, "renders"), exist_ok=True)
     L.reset_scene(); L.init_palette(); scn = bpy.context.scene
     work = new_col("_build_" + name)
-    ob, cpts, meta = fn(work, ID)
+    try:
+        ob, cpts, meta = fn(work, ID)
+    except Exception as ex:
+        import traceback; traceback.print_exc(); summary[ID] = ("ERROR", [repr(ex)], 0); print("BLOCK", ID, "ERROR", repr(ex), flush=True); continue
     for p in meta["ports"]:
         if "center" in p:
             n_ = Vector(DIRS[p["dir"]]); u_, v_, _ = frame(n_); dc = Vector(p["center"]) - n_*H
@@ -415,6 +612,7 @@ for (name, fn, desc) in BLOCKS:
     sock = [p for p in meta["ports"] if p["dir"] == "down" and p["cell"] == [0, 0, 0]]
     s = bpy.data.objects.new("Socket_Mount", None); col.objects.link(s); s.parent = root; s.empty_display_type = 'SINGLE_ARROW'; s.empty_display_size = 0.08
     s.location = (0, 0, -H); s.rotation_euler = (math.pi, 0, 0); empties.append(s)
+    if meta.get("socket"): s.location, s.rotation_euler = meta["socket"]
     cmask = contact_mask(meta["ports"])
     for k, v in {"block_kind": name, "description": desc, "grid_m": G, "block_m": 2*H, "cells": json.dumps(meta["cells"]), "contact_mask_local": cmask,
                  "unity_up": "+Y", "unity_forward": "+Z", "style": "R4 / R41 industrial", "port": "R4 Robocraft-style port"}.items(): root[k] = v
@@ -422,8 +620,10 @@ for (name, fn, desc) in BLOCKS:
     cc = new_col(ID + "_Colliders")
     if cpts is None:
         xs = [c[0] for c in meta["cells"]]; ys = [c[1] for c in meta["cells"]]; zs = [c[2] for c in meta["cells"]]
-        z1 = HT if name in ("HalfBlock", "Plate2x2") else max(zs)*G + H
+        z1 = HT if name in ("HalfBlock", "Plate2x2", "Plate1x2") else max(zs)*G + H
         coll = hull("UCX_" + ID, corners(min(xs)*G - H, max(xs)*G + H, min(ys)*G - H, max(ys)*G + H, min(zs)*G - H, z1), M["Armor_Dark"], cc)
+    elif isinstance(cpts, tuple) and cpts[0] == "boxes":
+        colls = [hull(f"UCX_{ID}_{i:02d}", corners(*b), M["Armor_Dark"], cc) for i, b in enumerate(cpts[1])]; coll = colls[0]
     elif cpts == "cyl":
         coll = cyl("UCX_" + ID, H, (0, 0, -H), (0, 0, H), M["Armor_Dark"], cc, seg=16)
     else:
@@ -447,7 +647,9 @@ for (name, fn, desc) in BLOCKS:
     base = os.path.join(od, ID)
     export(root, [root, ob] + empties[1:], base)
     bpy.ops.export_scene.gltf(filepath=base + "_colliders.glb", export_format='GLB', use_selection=False, export_yup=True) if False else None
-    bpy.ops.object.select_all(action='DESELECT'); coll.select_set(True); bpy.context.view_layer.objects.active = coll
+    bpy.ops.object.select_all(action='DESELECT')
+    for o_ in cc.objects: o_.select_set(True)
+    bpy.context.view_layer.objects.active = coll
     bpy.ops.export_scene.gltf(filepath=base + "_colliders.glb", export_format='GLB', use_selection=True, export_yup=True)
     re_ = reimport_check(base, (lo, hi))
     failures = []
