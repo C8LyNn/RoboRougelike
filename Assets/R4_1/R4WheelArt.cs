@@ -28,14 +28,14 @@ namespace RoboRougelike.R4_1
             var socket=Array.Find(visual.GetComponentsInChildren<Transform>(true),t=>t.name=="Socket_Mount");
             var renderer=physicalWheel.GetComponent<Renderer>();
             if(spinning==null||socket==null||renderer==null){Destroy(visual);return null;}
-'            visual.transform.localScale/=scale.x;
+            visual.transform.localScale/=scale.x;
             if(side)
             {
                 // Source has its port on -X; mirror for the left side.
                 if(mirrorSide){var v=visual.transform.localScale;v.x=-v.x;visual.transform.localScale=v;}
                 // Match the authored axle to the collider; do not move physics.
                 visual.transform.position+=physicalWheel.position-spinning.position;
-            }'
+            }
             var view=block.gameObject.AddComponent<R4WheelArt>();view.rotor=spinning;view.visualRoot=visual.transform;
             view.owner=block.GetComponentInParent<Rigidbody>(true);renderer.enabled=false;R41PartGeometry.HideMountingShell(block,visual);
             return view;
