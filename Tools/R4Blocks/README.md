@@ -12,4 +12,13 @@ From the repository root:
 
 The wrapper also runs in-memory negative checks for changed module permission, contact mask, cell and socket size. To validate a deliberately selected newer source revision, call `Verify-R4BlockCatalog.ps1` directly with its exact `-ExpectedSourceSha256`.
 
+To check all 30 source collider files against the exact catalog and source manifest without importing them into Unity:
+
+```powershell
+& .\Tools\R4Blocks\Test-R4ColliderSourceVerifier.ps1 `
+  -SourceRoot 'PATH_TO_SOURCE\R4Blocks'
+```
+
+This checks the pinned catalog and manifest hashes, rejects duplicate or escaping paths, and hashes each referenced collider. Its self-test rejects an intentionally incorrect collider hash. A newer source requires explicitly providing its verified catalog and manifest hashes to `Verify-R4ColliderSources.ps1`.
+
 This is a source-data check, not a Unity test or proof of physical geometry, gameplay integration, collision behavior or save compatibility. As of this change the shape catalog and socket policy remain disconnected from the actual garage and saved vehicles.
