@@ -74,6 +74,21 @@ public class RRLW8SteeringTests
         Assert.That(wheels[0].transform.Find("MOV011 visual yaw").GetComponentsInChildren<Collider>(),Is.Empty);
         Assert.That(R3VehicleModel.OccupiedCells(run.VehicleModel.Parts.Single(p=>p.Id==module.Id)).Count(),Is.EqualTo(1));
     }
+    [UnityTest] public IEnumerator ImportedWheelsFollowIndependentSteeringWithoutDuplicatePrimitive()
+    {
+        Assert.That(Enum.TryParse("IndependentSteering",out kind),Is.True);yield return Build();
+        var wheels=run.Player.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p.Kind==R3PartKind.Wheel).ToArray();
+        foreach(var wheel in wheels)
+        {
+            var pivot=wheel.transform.Find("MOV011 visual yaw");Assert.That(pivot,Is.Not.Null);
+            Assert.That(pivot.GetComponentsInChildren<Transform>(true).Any(t=>t.name=="R4M_Wheel_Rotor"),Is.True,"The imported wheel must be under the steering pivot.");
+            Assert.That(pivot.Find("Existing wheel mesh"),Is.Null,"A primitive duplicate must not be drawn when the imported wheel exists.");
+            Assert.That(wheel.transform.Find("Koło").GetComponent<Collider>().enabled,Is.True);
+        }
+        var front=wheels.OrderByDescending(p=>p.Cell.z).First();var frontPivot=front.transform.Find("MOV011 visual yaw");
+        var before=frontPivot.localRotation;drive.Step(1,1,10,5,105);
+        Assert.That(Quaternion.Angle(before,frontPivot.localRotation),Is.GreaterThan(.01f),"The real steering solution rotates the imported visual.");
+    }
     [UnityTest] public IEnumerator CrabAndCounterPhaseChangeActualR6TravelThroughTheSameForcePath()
     {
         Assert.That(Enum.TryParse("IndependentSteering",out kind),Is.True);yield return Build();Assert.That(SetMode(SteeringMode.Crab),Is.True);
