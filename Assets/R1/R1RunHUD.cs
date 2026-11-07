@@ -96,7 +96,7 @@ namespace RoboRougelike.R1
             var progress = run.Progress;
             if(run.MapEditing&&!run.Paused){DrawMapEditor(run);return;}
             if(progress.State==R1RunState.TestDrive){DrawTestRange(run);return;}
-            if(progress.State==R1RunState.Garage&&!run.Transitioning){if(catalogOpen){if(portraitGarage)DrawPortraitCatalog(run);else DrawFullCatalog(run);}else if(portraitGarage)DrawPortraitGarage(run);else DrawSimpleGarage(run);return;}
+            if(progress.State==R1RunState.Garage&&!run.Transitioning){if(catalogOpen){if(portraitGarage)DrawPortraitCatalog(run);else DrawFullCatalog(run);}else if(portraitGarage)DrawSimplePortraitGarage(run);else DrawSimpleGarage(run);return;}
             catalogOpen=false;garageOptionsOpen=false;
             if (progress.State == R1RunState.Combat && !run.Transitioning)
             {

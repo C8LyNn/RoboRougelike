@@ -42,7 +42,7 @@ public sealed class UI943GarageLayoutTests
             float x=(width-768*portraitScale)/2, y=(height-1024*portraitScale)/2;
             Vector2 PortraitPoint(float px,float py)=>new Vector2(x+px*portraitScale,height-(y+py*portraitScale));
             Assert.That(R3GarageView.InBuildArea(PortraitPoint(384,300),width,height),Is.True);
-            foreach(var p in new[]{new Vector2(384,60),new Vector2(384,530),new Vector2(10,300)})
+            foreach(var p in new[]{new Vector2(384,60),new Vector2(384,610),new Vector2(10,300)})
                 Assert.That(R3GarageView.InBuildArea(PortraitPoint(p.x,p.y),width,height),Is.False);
             return;
         }

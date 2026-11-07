@@ -10,7 +10,7 @@ namespace RoboRougelike.R3
     public sealed class R3GarageView : MonoBehaviour
     {
         public static Rect Viewport => new Rect(0.215625f,0.10f,0.7765625f,0.78f);
-        public static readonly Rect PortraitOpening=new Rect(24,76,720,420);
+        public static readonly Rect PortraitOpening=new Rect(24,76,720,500);
         public static readonly Rect BuildArea=new Rect(276,86,994,562);
         public static readonly Rect ActivityOverlay=new Rect(350,80,580,126);
         public static readonly Rect LegendOverlay=new Rect(350,418,560,29);
