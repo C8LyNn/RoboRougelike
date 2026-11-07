@@ -1,0 +1,86 @@
+{
+ "R4M_WheelS_Fork_Road": {
+  "block": "R4B_Cube",
+  "port": "down_000",
+  "roll_deg": 0,
+  "socket_to_port_gap_mm": 30.0,
+  "tangential_mm": 0.0
+ },
+ "R4M_WheelS_Caster_Slick": {
+  "block": "R4B_Cube",
+  "port": "down_000",
+  "roll_deg": 0,
+  "socket_to_port_gap_mm": 30.0,
+  "tangential_mm": 0.0
+ },
+ "R4M_WheelM_Steer_Road": {
+  "block": "R4B_Cube",
+  "port": "down_000",
+  "roll_deg": 0,
+  "socket_to_port_gap_mm": 30.0,
+  "tangential_mm": 0.0
+ },
+ "R4M_WheelM_SwingArm_Offroad": {
+  "block": "R4B_Cube",
+  "port": "down_000",
+  "roll_deg": 0,
+  "socket_to_port_gap_mm": 30.0,
+  "tangential_mm": 0.0
+ },
+ "R4M_WheelM_Twin_Road": {
+  "block": "R4B_Cube",
+  "port": "down_000",
+  "roll_deg": 0,
+  "socket_to_port_gap_mm": 30.0,
+  "tangential_mm": 0.0
+ },
+ "R4M_WheelM_Fork_Spiked": {
+  "block": "R4B_Cube",
+  "port": "down_000",
+  "roll_deg": 0,
+  "socket_to_port_gap_mm": 30.0,
+  "tangential_mm": 0.0
+ },
+ "R4M_WheelL_Fork_Balloon": {
+  "block": "R4B_Cube",
+  "port": "down_000",
+  "roll_deg": 0,
+  "socket_to_port_gap_mm": 30.0,
+  "tangential_mm": 0.0
+ },
+ "R4M_WheelL_Steer_Offroad": {
+  "block": "R4B_Cube",
+  "port": "down_000",
+  "roll_deg": 0,
+  "socket_to_port_gap_mm": 30.0,
+  "tangential_mm": 0.0
+ },
+ "R4M_WheelM_Side_Slick": {
+  "block": "R4B_Cube",
+  "port": "right_000",
+  "roll_deg": 0,
+  "socket_to_port_gap_mm": 30.001,
+  "tangential_mm": 0.0
+ },
+ "R4M_WheelM_Side_Offroad": {
+  "block": "R4B_Cube",
+  "port": "right_000",
+  "roll_deg": 0,
+  "socket_to_port_gap_mm": 30.001,
+  "tangential_mm": 0.0
+ },
+ "R4M_WheelL_Side_Offroad": {
+  "block": "R4B_Cube",
+  "port": "right_000",
+  "roll_deg": 0,
+  "socket_to_port_gap_mm": 30.001,
+  "tangential_mm": 0.0
+ },
+ "R4M_WheelXL_Side_Monster": {
+  "block": "R4B_Cube",
+  "port": "right_000",
+  "roll_deg": 0,
+  "socket_to_port_gap_mm": 30.001,
+  "tangential_mm": 0.0
+ }
+}

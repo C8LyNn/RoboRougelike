@@ -1,0 +1,63 @@
+{
+ "id": "R4M_WheelL_Steer_Offroad",
+ "kind": "R3PartKind.Wheel",
+ "game_name": "Du\u017ce ko\u0142o skr\u0119tne terenowe",
+ "units": "meter 1:1",
+ "axes": "file/Unity +Z forward, +Y up",
+ "cell": "logical 1x1x1 on 0.55 m grid; mount = Socket_Mount_Bottom",
+ "hierarchy": {
+  "R4M_WheelL_Steer_Offroad_ROOT": null,
+  "R4M_WheelL_Steer_Offroad_Mount": "R4M_WheelL_Steer_Offroad_ROOT",
+  "R4M_WheelL_Steer_Offroad_Knuckle": "R4M_WheelL_Steer_Offroad_ROOT",
+  "R4M_WheelL_Steer_Offroad_Rotor": "R4M_WheelL_Steer_Offroad_Knuckle",
+  "Wheel_Axle": "R4M_WheelL_Steer_Offroad_Knuckle",
+  "Socket_Mount": "R4M_WheelL_Steer_Offroad_ROOT",
+  "GroundProbe": "R4M_WheelL_Steer_Offroad_ROOT"
+ },
+ "node_roles": {
+  "R4M_WheelL_Steer_Offroad_ROOT": {
+   "unity_up": "+Y",
+   "unity_forward": "+Z",
+   "unit": "meter",
+   "version": "r4-wheel-variant",
+   "weapon_kind": "R3PartKind.Wheel",
+   "style": "R41_Turret_v6.1 standard (heavy industrial armour + team colour)",
+   "issue": "wheel variants (R4)",
+   "wheel_variant": "R4M_WheelL_Steer_Offroad",
+   "wheel_size": "L",
+   "mount_type": "steer",
+   "tread": "offroad",
+   "rim": "spoke6",
+   "tyre_radius_m": "0.48",
+   "tyre_width_m": "0.34"
+  },
+  "R4M_WheelL_Steer_Offroad_Mount": {
+   "mount_port": "R4 Robocraft-style port: 0.509 m square, outer face +0.260 m (block face), face-centre coupling",
+   "role": "static steer mount; R4 port on the top (+Y) face = Socket_Mount"
+  },
+  "R4M_WheelL_Steer_Offroad_Knuckle": {
+   "role": "steering knuckle: yaw about local Y (Unity), +angle = right, limit +-30 deg"
+  },
+  "R4M_WheelL_Steer_Offroad_Rotor": {
+   "role": "rolling rotor: rotates about local X only; +X angle = rolling forward (+Z)",
+   "tyre_radius_m": "0.48",
+   "tyre_width_m": "0.34"
+  },
+  "Wheel_Axle": {
+   "role": "axle axis marker: local +Z = file +X (axle)"
+  },
+  "Socket_Mount": {
+   "role": "mount face centre (R4 port)"
+  },
+  "GroundProbe": {
+   "role": "ground contact point at rest",
+   "ground_y_m": "-0.935"
+  }
+ },
+ "muzzles": [],
+ "visible_exits_note": "",
+ "notes": [
+  "variant R4M_WheelL_Steer_Offroad: size L, mount steer, tread offroad, rim spoke6, tyre r 0.48 m, width 0.340 m",
+  "L/R variant: mirror by transform (scale X -1)."
+ ]
+}

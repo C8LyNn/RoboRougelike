@@ -1,0 +1,798 @@
+{
+ "R4M_WheelL_Fork_Balloon": {
+  "weapon": false,
+  "static": [
+   "R4M_WheelL_Fork_Balloon_Mount"
+  ],
+  "moving": [
+   "R4M_WheelL_Fork_Balloon_Rotor"
+  ],
+  "failures": [],
+  "socket": {
+   "name": "Socket_Mount",
+   "pos": [
+    0.0,
+    0.0,
+    0.26
+   ],
+   "axis": "z",
+   "sign": 1.0,
+   "on_block_face": true
+  },
+  "contact_patch": {
+   "grid": "13x13 over 0.42 x 0.42 m",
+   "flush_pct": 94.7,
+   "recessed_pct": 5.3,
+   "protruding": 0,
+   "missing": 0
+  },
+  "static_bounds": [
+   [
+    -0.281,
+    -0.2563,
+    -0.42
+   ],
+   [
+    0.281,
+    0.2563,
+    0.26
+   ]
+  ],
+  "static_in_cell": true,
+  "static_out": [],
+  "crosses_mount_plane": [],
+  "n_cross": 0,
+  "moving_bounds": [
+   [
+    -0.215,
+    -0.4993,
+    -0.8698
+   ],
+   [
+    0.215,
+    0.4993,
+    0.1298
+   ]
+  ],
+  "moving_out": [],
+  "frames_checked": 1,
+  "allowance": {
+   "xmin": -2.0,
+   "xmax": 2.0,
+   "ymin": -2.0,
+   "ymax": 2.0,
+   "zmin": -2.0
+  },
+  "PASS": true
+ },
+ "R4M_WheelL_Side_Offroad": {
+  "weapon": false,
+  "static": [
+   "R4M_WheelL_Side_Offroad_Mount"
+  ],
+  "moving": [
+   "R4M_WheelL_Side_Offroad_Rotor"
+  ],
+  "failures": [],
+  "socket": {
+   "name": "Socket_Mount",
+   "pos": [
+    -0.26,
+    0.0,
+    0.0
+   ],
+   "axis": "x",
+   "sign": -1.0,
+   "on_block_face": true
+  },
+  "contact_patch": {
+   "grid": "13x13 over 0.42 x 0.42 m",
+   "flush_pct": 94.7,
+   "recessed_pct": 5.3,
+   "protruding": 0,
+   "missing": 0
+  },
+  "static_bounds": [
+   [
+    -0.26,
+    -0.2563,
+    -0.2563
+   ],
+   [
+    0.102,
+    0.2563,
+    0.2563
+   ]
+  ],
+  "static_in_cell": true,
+  "static_out": [],
+  "crosses_mount_plane": [],
+  "n_cross": 0,
+  "moving_bounds": [
+   [
+    -0.148,
+    -0.56,
+    -0.56
+   ],
+   [
+    0.272,
+    0.56,
+    0.56
+   ]
+  ],
+  "moving_out": [],
+  "frames_checked": 1,
+  "allowance": {
+   "xmax": 2.0,
+   "ymin": -2.0,
+   "ymax": 2.0,
+   "zmin": -2.0,
+   "zmax": 2.0
+  },
+  "PASS": true
+ },
+ "R4M_WheelL_Steer_Offroad": {
+  "weapon": false,
+  "static": [
+   "R4M_WheelL_Steer_Offroad_Mount"
+  ],
+  "moving": [
+   "R4M_WheelL_Steer_Offroad_Knuckle",
+   "R4M_WheelL_Steer_Offroad_Rotor"
+  ],
+  "failures": [],
+  "socket": {
+   "name": "Socket_Mount",
+   "pos": [
+    0.0,
+    0.0,
+    0.26
+   ],
+   "axis": "z",
+   "sign": 1.0,
+   "on_block_face": true
+  },
+  "contact_patch": {
+   "grid": "13x13 over 0.42 x 0.42 m",
+   "flush_pct": 94.7,
+   "recessed_pct": 5.3,
+   "protruding": 0,
+   "missing": 0
+  },
+  "static_bounds": [
+   [
+    -0.2563,
+    -0.2563,
+    0.1215
+   ],
+   [
+    0.2563,
+    0.2563,
+    0.26
+   ]
+  ],
+  "static_in_cell": true,
+  "static_out": [],
+  "crosses_mount_plane": [],
+  "n_cross": 0,
+  "moving_bounds": [
+   [
+    -0.232,
+    -0.48,
+    -0.935
+   ],
+   [
+    0.232,
+    0.48,
+    0.119
+   ]
+  ],
+  "moving_out": [],
+  "frames_checked": 1,
+  "allowance": {
+   "xmin": -2.0,
+   "xmax": 2.0,
+   "ymin": -2.0,
+   "ymax": 2.0,
+   "zmin": -2.0
+  },
+  "PASS": true
+ },
+ "R4M_WheelM_Fork_Spiked": {
+  "weapon": false,
+  "static": [
+   "R4M_WheelM_Fork_Spiked_Mount"
+  ],
+  "moving": [
+   "R4M_WheelM_Fork_Spiked_Rotor"
+  ],
+  "failures": [],
+  "socket": {
+   "name": "Socket_Mount",
+   "pos": [
+    0.0,
+    0.0,
+    0.26
+   ],
+   "axis": "z",
+   "sign": 1.0,
+   "on_block_face": true
+  },
+  "contact_patch": {
+   "grid": "13x13 over 0.42 x 0.42 m",
+   "flush_pct": 94.7,
+   "recessed_pct": 5.3,
+   "protruding": 0,
+   "missing": 0
+  },
+  "static_bounds": [
+   [
+    -0.2563,
+    -0.2563,
+    -0.29
+   ],
+   [
+    0.2563,
+    0.2563,
+    0.26
+   ]
+  ],
+  "static_in_cell": true,
+  "static_out": [],
+  "crosses_mount_plane": [],
+  "n_cross": 0,
+  "moving_bounds": [
+   [
+    -0.15,
+    -0.37,
+    -0.6081
+   ],
+   [
+    0.15,
+    0.37,
+    0.1281
+   ]
+  ],
+  "moving_out": [],
+  "frames_checked": 1,
+  "allowance": {
+   "xmin": -2.0,
+   "xmax": 2.0,
+   "ymin": -2.0,
+   "ymax": 2.0,
+   "zmin": -2.0
+  },
+  "PASS": true
+ },
+ "R4M_WheelM_Side_Offroad": {
+  "weapon": false,
+  "static": [
+   "R4M_WheelM_Side_Offroad_Mount"
+  ],
+  "moving": [
+   "R4M_WheelM_Side_Offroad_Rotor"
+  ],
+  "failures": [],
+  "socket": {
+   "name": "Socket_Mount",
+   "pos": [
+    -0.26,
+    0.0,
+    0.0
+   ],
+   "axis": "x",
+   "sign": -1.0,
+   "on_block_face": true
+  },
+  "contact_patch": {
+   "grid": "13x13 over 0.42 x 0.42 m",
+   "flush_pct": 94.7,
+   "recessed_pct": 5.3,
+   "protruding": 0,
+   "missing": 0
+  },
+  "static_bounds": [
+   [
+    -0.26,
+    -0.2563,
+    -0.2563
+   ],
+   [
+    0.062,
+    0.2563,
+    0.2563
+   ]
+  ],
+  "static_in_cell": true,
+  "static_out": [],
+  "crosses_mount_plane": [],
+  "n_cross": 0,
+  "moving_bounds": [
+   [
+    -0.148,
+    -0.39,
+    -0.39
+   ],
+   [
+    0.192,
+    0.39,
+    0.39
+   ]
+  ],
+  "moving_out": [],
+  "frames_checked": 1,
+  "allowance": {
+   "xmax": 2.0,
+   "ymin": -2.0,
+   "ymax": 2.0,
+   "zmin": -2.0,
+   "zmax": 2.0
+  },
+  "PASS": true
+ },
+ "R4M_WheelM_Side_Slick": {
+  "weapon": false,
+  "static": [
+   "R4M_WheelM_Side_Slick_Mount"
+  ],
+  "moving": [
+   "R4M_WheelM_Side_Slick_Rotor"
+  ],
+  "failures": [],
+  "socket": {
+   "name": "Socket_Mount",
+   "pos": [
+    -0.26,
+    0.0,
+    0.0
+   ],
+   "axis": "x",
+   "sign": -1.0,
+   "on_block_face": true
+  },
+  "contact_patch": {
+   "grid": "13x13 over 0.42 x 0.42 m",
+   "flush_pct": 94.7,
+   "recessed_pct": 5.3,
+   "protruding": 0,
+   "missing": 0
+  },
+  "static_bounds": [
+   [
+    -0.26,
+    -0.2563,
+    -0.2563
+   ],
+   [
+    0.042,
+    0.2563,
+    0.2563
+   ]
+  ],
+  "static_in_cell": true,
+  "static_out": [],
+  "crosses_mount_plane": [],
+  "n_cross": 0,
+  "moving_bounds": [
+   [
+    -0.1498,
+    -0.37,
+    -0.37
+   ],
+   [
+    0.1538,
+    0.37,
+    0.37
+   ]
+  ],
+  "moving_out": [],
+  "frames_checked": 1,
+  "allowance": {
+   "xmax": 2.0,
+   "ymin": -2.0,
+   "ymax": 2.0,
+   "zmin": -2.0,
+   "zmax": 2.0
+  },
+  "PASS": true
+ },
+ "R4M_WheelM_Steer_Road": {
+  "weapon": false,
+  "static": [
+   "R4M_WheelM_Steer_Road_Mount"
+  ],
+  "moving": [
+   "R4M_WheelM_Steer_Road_Knuckle",
+   "R4M_WheelM_Steer_Road_Rotor"
+  ],
+  "failures": [],
+  "socket": {
+   "name": "Socket_Mount",
+   "pos": [
+    0.0,
+    0.0,
+    0.26
+   ],
+   "axis": "z",
+   "sign": 1.0,
+   "on_block_face": true
+  },
+  "contact_patch": {
+   "grid": "13x13 over 0.42 x 0.42 m",
+   "flush_pct": 94.7,
+   "recessed_pct": 5.3,
+   "protruding": 0,
+   "missing": 0
+  },
+  "static_bounds": [
+   [
+    -0.2563,
+    -0.2563,
+    0.1215
+   ],
+   [
+    0.2563,
+    0.2563,
+    0.26
+   ]
+  ],
+  "static_in_cell": true,
+  "static_out": [],
+  "crosses_mount_plane": [],
+  "n_cross": 0,
+  "moving_bounds": [
+   [
+    -0.192,
+    -0.34,
+    -0.655
+   ],
+   [
+    0.192,
+    0.34,
+    0.119
+   ]
+  ],
+  "moving_out": [],
+  "frames_checked": 1,
+  "allowance": {
+   "xmin": -2.0,
+   "xmax": 2.0,
+   "ymin": -2.0,
+   "ymax": 2.0,
+   "zmin": -2.0
+  },
+  "PASS": true
+ },
+ "R4M_WheelM_SwingArm_Offroad": {
+  "weapon": false,
+  "static": [
+   "R4M_WheelM_SwingArm_Offroad_Mount"
+  ],
+  "moving": [
+   "R4M_WheelM_SwingArm_Offroad_Arm",
+   "R4M_WheelM_SwingArm_Offroad_Rotor"
+  ],
+  "failures": [],
+  "socket": {
+   "name": "Socket_Mount",
+   "pos": [
+    0.0,
+    0.0,
+    0.26
+   ],
+   "axis": "z",
+   "sign": 1.0,
+   "on_block_face": true
+  },
+  "contact_patch": {
+   "grid": "13x13 over 0.42 x 0.42 m",
+   "flush_pct": 94.7,
+   "recessed_pct": 5.3,
+   "protruding": 0,
+   "missing": 0
+  },
+  "static_bounds": [
+   [
+    -0.2563,
+    -0.2645,
+    0.0505
+   ],
+   [
+    0.2563,
+    0.2563,
+    0.26
+   ]
+  ],
+  "static_in_cell": true,
+  "static_out": [],
+  "crosses_mount_plane": [],
+  "n_cross": 0,
+  "moving_bounds": [
+   [
+    -0.175,
+    -0.33,
+    -0.63
+   ],
+   [
+    0.198,
+    0.33,
+    0.17
+   ]
+  ],
+  "moving_out": [],
+  "frames_checked": 1,
+  "allowance": {
+   "xmin": -2.0,
+   "xmax": 2.0,
+   "ymin": -2.0,
+   "ymax": 2.0,
+   "zmin": -2.0
+  },
+  "PASS": true
+ },
+ "R4M_WheelM_Twin_Road": {
+  "weapon": false,
+  "static": [
+   "R4M_WheelM_Twin_Road_Mount"
+  ],
+  "moving": [
+   "R4M_WheelM_Twin_Road_Rotor"
+  ],
+  "failures": [],
+  "socket": {
+   "name": "Socket_Mount",
+   "pos": [
+    0.0,
+    0.0,
+    0.26
+   ],
+   "axis": "z",
+   "sign": 1.0,
+   "on_block_face": true
+  },
+  "contact_patch": {
+   "grid": "13x13 over 0.42 x 0.42 m",
+   "flush_pct": 94.7,
+   "recessed_pct": 5.3,
+   "protruding": 0,
+   "missing": 0
+  },
+  "static_bounds": [
+   [
+    -0.2563,
+    -0.2563,
+    -0.25
+   ],
+   [
+    0.2563,
+    0.2563,
+    0.26
+   ]
+  ],
+  "static_in_cell": true,
+  "static_out": [],
+  "crosses_mount_plane": [],
+  "n_cross": 0,
+  "moving_bounds": [
+   [
+    -0.17,
+    -0.33,
+    -0.53
+   ],
+   [
+    0.17,
+    0.33,
+    0.13
+   ]
+  ],
+  "moving_out": [],
+  "frames_checked": 1,
+  "allowance": {
+   "xmin": -2.0,
+   "xmax": 2.0,
+   "ymin": -2.0,
+   "ymax": 2.0,
+   "zmin": -2.0
+  },
+  "PASS": true
+ },
+ "R4M_WheelS_Caster_Slick": {
+  "weapon": false,
+  "static": [
+   "R4M_WheelS_Caster_Slick_Mount"
+  ],
+  "moving": [
+   "R4M_WheelS_Caster_Slick_Swivel",
+   "R4M_WheelS_Caster_Slick_Rotor"
+  ],
+  "failures": [],
+  "socket": {
+   "name": "Socket_Mount",
+   "pos": [
+    0.0,
+    0.0,
+    0.26
+   ],
+   "axis": "z",
+   "sign": 1.0,
+   "on_block_face": true
+  },
+  "contact_patch": {
+   "grid": "13x13 over 0.42 x 0.42 m",
+   "flush_pct": 94.7,
+   "recessed_pct": 5.3,
+   "protruding": 0,
+   "missing": 0
+  },
+  "static_bounds": [
+   [
+    -0.2563,
+    -0.2563,
+    0.1215
+   ],
+   [
+    0.2563,
+    0.2563,
+    0.26
+   ]
+  ],
+  "static_in_cell": true,
+  "static_out": [],
+  "crosses_mount_plane": [],
+  "n_cross": 0,
+  "moving_bounds": [
+   [
+    -0.122,
+    -0.0972,
+    -0.3
+   ],
+   [
+    0.122,
+    0.245,
+    0.119
+   ]
+  ],
+  "moving_out": [],
+  "frames_checked": 1,
+  "allowance": {
+   "xmin": -2.0,
+   "xmax": 2.0,
+   "ymin": -2.0,
+   "ymax": 2.0,
+   "zmin": -2.0
+  },
+  "PASS": true
+ },
+ "R4M_WheelS_Fork_Road": {
+  "weapon": false,
+  "static": [
+   "R4M_WheelS_Fork_Road_Mount"
+  ],
+  "moving": [
+   "R4M_WheelS_Fork_Road_Rotor"
+  ],
+  "failures": [],
+  "socket": {
+   "name": "Socket_Mount",
+   "pos": [
+    0.0,
+    0.0,
+    0.26
+   ],
+   "axis": "z",
+   "sign": 1.0,
+   "on_block_face": true
+  },
+  "contact_patch": {
+   "grid": "13x13 over 0.42 x 0.42 m",
+   "flush_pct": 94.7,
+   "recessed_pct": 5.3,
+   "protruding": 0,
+   "missing": 0
+  },
+  "static_bounds": [
+   [
+    -0.2563,
+    -0.2563,
+    -0.125
+   ],
+   [
+    0.2563,
+    0.2563,
+    0.26
+   ]
+  ],
+  "static_in_cell": true,
+  "static_out": [],
+  "crosses_mount_plane": [],
+  "n_cross": 0,
+  "moving_bounds": [
+   [
+    -0.075,
+    -0.205,
+    -0.28
+   ],
+   [
+    0.075,
+    0.205,
+    0.13
+   ]
+  ],
+  "moving_out": [],
+  "frames_checked": 1,
+  "allowance": {
+   "xmin": -2.0,
+   "xmax": 2.0,
+   "ymin": -2.0,
+   "ymax": 2.0,
+   "zmin": -2.0
+  },
+  "PASS": true
+ },
+ "R4M_WheelXL_Side_Monster": {
+  "weapon": false,
+  "static": [
+   "R4M_WheelXL_Side_Monster_Mount"
+  ],
+  "moving": [
+   "R4M_WheelXL_Side_Monster_Rotor"
+  ],
+  "failures": [],
+  "socket": {
+   "name": "Socket_Mount",
+   "pos": [
+    -0.26,
+    0.0,
+    0.0
+   ],
+   "axis": "x",
+   "sign": -1.0,
+   "on_block_face": true
+  },
+  "contact_patch": {
+   "grid": "13x13 over 0.42 x 0.42 m",
+   "flush_pct": 94.7,
+   "recessed_pct": 5.3,
+   "protruding": 0,
+   "missing": 0
+  },
+  "static_bounds": [
+   [
+    -0.26,
+    -0.2563,
+    -0.2563
+   ],
+   [
+    0.182,
+    0.2563,
+    0.2563
+   ]
+  ],
+  "static_in_cell": true,
+  "static_out": [],
+  "crosses_mount_plane": [],
+  "n_cross": 0,
+  "moving_bounds": [
+   [
+    -0.148,
+    -0.798,
+    -0.798
+   ],
+   [
+    0.432,
+    0.798,
+    0.798
+   ]
+  ],
+  "moving_out": [],
+  "frames_checked": 1,
+  "allowance": {
+   "xmax": 2.0,
+   "ymin": -2.0,
+   "ymax": 2.0,
+   "zmin": -2.0,
+   "zmax": 2.0
+  },
+  "PASS": true
+ }
+}

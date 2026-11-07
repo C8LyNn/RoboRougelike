@@ -1,0 +1,2445 @@
+{
+ "library": "Tools/ModelFactory/R4Wheels",
+ "standard": "R41_Turret_v6.1 palette + R4 Robocraft-style port (same as PR #939 / #941 / #963)",
+ "blender": "5.2.3 LTS",
+ "fps": 24,
+ "export": {
+  "fbx": "Unity 6 URP, -Z forward, Y up, FBX_SCALE_UNITS, bake_space_transform=False",
+  "glb": "glTF 2.0 binary"
+ },
+ "unity_status": "UNITY_NOT_RUN for all variants (no Unity in this session)",
+ "runtime_kind": "all variants are R3PartKind.Wheel visuals; runtime has one wheel placeholder (r 0.39 fork)",
+ "silhouette_method": "black silhouettes from 4 cameras (gameplay 3/4, side, front, top), cropped to bbox, 64 px, IoU per view; pair flagged if mean IoU > 0.85",
+ "silhouette_flagged_pairs": [
+  "R4M_WheelM_Side_Offroad|R4M_WheelM_Side_Slick",
+  "R4M_WheelM_Steer_Road|R4M_WheelM_SwingArm_Offroad",
+  "R4M_WheelL_Side_Offroad|R4M_WheelXL_Side_Monster"
+ ],
+ "models": [
+  {
+   "id": "R4M_WheelS_Fork_Road",
+   "part_kind": "R3PartKind.Wheel",
+   "variant": "WheelS_Fork_Road",
+   "game_name": "Małe koło drogowe (widelec)",
+   "size": "S",
+   "mount_type": "fork",
+   "mount_pl": "widelec (port na górze)",
+   "tread": "road",
+   "rim": "disc6",
+   "tyre_radius_m": "0.205",
+   "tyre_width_m": "0.15",
+   "socket": {
+    "position": [
+     0.0,
+     0.26,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     1.0,
+     -0.0
+    ]
+   },
+   "ground_probe": {
+    "position": [
+     0.0,
+     -0.28,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     -1.0,
+     -0.0
+    ]
+   },
+   "wheel_axle": {
+    "position": [
+     0.0,
+     -0.075,
+     -0.0
+    ],
+    "z_axis": [
+     1.0,
+     -0.0,
+     -0.0
+    ]
+   },
+   "clips": [
+    {
+     "name": "Idle",
+     "start": 1,
+     "end": 25,
+     "loop": true
+    },
+    {
+     "name": "Roll",
+     "start": 27,
+     "end": 51,
+     "loop": true
+    },
+    {
+     "name": "Reverse",
+     "start": 53,
+     "end": 77,
+     "loop": true
+    },
+    {
+     "name": "Brake",
+     "start": 79,
+     "end": 103,
+     "loop": false
+    }
+   ],
+   "fps": 24,
+   "triangles": 9376,
+   "topology_PASS": true,
+   "animation_clash": 0,
+   "clearance_min_mm": {
+    "R4M_WheelS_Fork_Road_Rotor|R4M_WheelS_Fork_Road_Mount": 3.19
+   },
+   "moving_sweep_cells": [
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "static_cells": [
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "fbx_reimport_worst": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "geom_mm": 0.0001,
+    "scale_err": 0.0,
+    "missing": [],
+    "parent_bad": []
+   },
+   "glb_reimport_PASS": true,
+   "silhouette": {
+    "closest_pair": "WheelS_Fork_Road ↔ WheelS_Caster_Slick",
+    "mean_iou": 0.792,
+    "flagged": false
+   },
+   "grid_fit_PASS": true,
+   "compat_blocks": {
+    "blocks_with_full_port": 24,
+    "ports": 137,
+    "ports_all_rolls": 137,
+    "ports_some_rolls": 0,
+    "ports_blocked": 0,
+    "contact_fail": 0
+   },
+   "sha256": {
+    "R4M_WheelS_Fork_Road.blend": "b9eb2bb842eedd2a2e7fc5e82fa9393069ace9cc2c2deda6898555941e22e29e",
+    "R4M_WheelS_Fork_Road.fbx": "f67c3da798c533180e2ec1813cbf515c50f09d680c5bd1d1cfcb66a1ef604b7c",
+    "R4M_WheelS_Fork_Road.glb": "2e69de703335dcea1d7b66157ca3f877cf1d603fb9e66a4c5a8412413e01d9a3",
+    "R4M_WheelS_Fork_Road_colliders.glb": "0d3db6b06e95b686dbd5e9977f473f70aa6aefc21ed61548ceac95e62ecee479",
+    "R4M_WheelS_Fork_Road_LOD1.fbx": "f9353f2ca9b2b418db1c7999967812eb245236be1c3f270f1320c9d3970b137b"
+   },
+   "blender_qa": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN"
+  },
+  {
+   "id": "R4M_WheelS_Caster_Slick",
+   "part_kind": "R3PartKind.Wheel",
+   "variant": "WheelS_Caster_Slick",
+   "game_name": "Kółko samonastawne (caster)",
+   "size": "S",
+   "mount_type": "caster",
+   "mount_pl": "obrotnica samonastawna (port na górze)",
+   "tread": "slick",
+   "rim": "spoke5",
+   "tyre_radius_m": "0.17",
+   "tyre_width_m": "0.12",
+   "socket": {
+    "position": [
+     0.0,
+     0.26,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     1.0,
+     -0.0
+    ]
+   },
+   "ground_probe": {
+    "position": [
+     0.0,
+     -0.3,
+     -0.075
+    ],
+    "z_axis": [
+     0.0,
+     -1.0,
+     -0.0
+    ]
+   },
+   "wheel_axle": {
+    "position": [
+     0.0,
+     -0.13,
+     -0.075
+    ],
+    "z_axis": [
+     1.0,
+     -0.0,
+     -0.0
+    ]
+   },
+   "clips": [
+    {
+     "name": "Idle",
+     "start": 1,
+     "end": 25,
+     "loop": true
+    },
+    {
+     "name": "Roll",
+     "start": 27,
+     "end": 51,
+     "loop": true
+    },
+    {
+     "name": "Reverse",
+     "start": 53,
+     "end": 77,
+     "loop": true
+    },
+    {
+     "name": "Brake",
+     "start": 79,
+     "end": 103,
+     "loop": false
+    },
+    {
+     "name": "Swivel",
+     "start": 105,
+     "end": 129,
+     "loop": false
+    },
+    {
+     "name": "Return",
+     "start": 131,
+     "end": 155,
+     "loop": false
+    }
+   ],
+   "fps": 24,
+   "triangles": 8548,
+   "topology_PASS": true,
+   "animation_clash": 0,
+   "clearance_min_mm": {
+    "R4M_WheelS_Caster_Slick_Rotor|R4M_WheelS_Caster_Slick_Mount": 81.54,
+    "R4M_WheelS_Caster_Slick_Rotor|R4M_WheelS_Caster_Slick_Swivel": 3.19,
+    "R4M_WheelS_Caster_Slick_Swivel|R4M_WheelS_Caster_Slick_Mount": 3.0
+   },
+   "moving_sweep_cells": [
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "static_cells": [
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "fbx_reimport_worst": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "geom_mm": 0.0002,
+    "scale_err": 0.0,
+    "missing": [],
+    "parent_bad": []
+   },
+   "glb_reimport_PASS": true,
+   "silhouette": {
+    "closest_pair": "WheelS_Fork_Road ↔ WheelS_Caster_Slick",
+    "mean_iou": 0.792,
+    "flagged": false
+   },
+   "grid_fit_PASS": true,
+   "compat_blocks": {
+    "blocks_with_full_port": 24,
+    "ports": 137,
+    "ports_all_rolls": 137,
+    "ports_some_rolls": 0,
+    "ports_blocked": 0,
+    "contact_fail": 0
+   },
+   "sha256": {
+    "R4M_WheelS_Caster_Slick.blend": "6c55783b82bec0309857255499db3decc7d28a261562b235fe88f112aff9c055",
+    "R4M_WheelS_Caster_Slick.fbx": "063848ebbed93767e2f4cd868de7e16c7e87cc6972e4d102b5d2553b9db9e98e",
+    "R4M_WheelS_Caster_Slick.glb": "33c3fd5d204d5ed3dec9210c325c3bb615091c6c8d2f2c06a2a89a8cd9d6790f",
+    "R4M_WheelS_Caster_Slick_colliders.glb": "350bd749e6f82613865cf1ea3abd0d248b3ebc3dc58b5c545c584dd080f9e9dd",
+    "R4M_WheelS_Caster_Slick_LOD1.fbx": "b6f2758e50cd0a5e7a9b58c2beebf4bb2445538121c5ea1d08d8c808f8addc52"
+   },
+   "blender_qa": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN"
+  },
+  {
+   "id": "R4M_WheelM_Side_Offroad",
+   "part_kind": "R3PartKind.Wheel",
+   "variant": "WheelM_Side_Offroad",
+   "game_name": "Koło terenowe, montaż boczny",
+   "size": "M",
+   "mount_type": "side",
+   "mount_pl": "piasta boczna (port na ścianie -X)",
+   "tread": "offroad",
+   "rim": "spoke6",
+   "tyre_radius_m": "0.39",
+   "tyre_width_m": "0.34",
+   "socket": {
+    "position": [
+     -0.26,
+     0.0,
+     -0.0
+    ],
+    "z_axis": [
+     -1.0,
+     -0.0,
+     -0.0
+    ]
+   },
+   "ground_probe": {
+    "position": [
+     0.022,
+     -0.39,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     -1.0,
+     -0.0
+    ]
+   },
+   "wheel_axle": {
+    "position": [
+     0.022,
+     0.0,
+     -0.0
+    ],
+    "z_axis": [
+     1.0,
+     -0.0,
+     -0.0
+    ]
+   },
+   "clips": [
+    {
+     "name": "Idle",
+     "start": 1,
+     "end": 25,
+     "loop": true
+    },
+    {
+     "name": "Roll",
+     "start": 27,
+     "end": 51,
+     "loop": true
+    },
+    {
+     "name": "Reverse",
+     "start": 53,
+     "end": 77,
+     "loop": true
+    },
+    {
+     "name": "Brake",
+     "start": 79,
+     "end": 103,
+     "loop": false
+    }
+   ],
+   "fps": 24,
+   "triangles": 9110,
+   "topology_PASS": true,
+   "animation_clash": 0,
+   "clearance_min_mm": {
+    "R4M_WheelM_Side_Offroad_Rotor|R4M_WheelM_Side_Offroad_Mount": 3.5
+   },
+   "moving_sweep_cells": [
+    [
+     0,
+     -1,
+     -1
+    ],
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     0,
+     -1,
+     1
+    ],
+    [
+     0,
+     0,
+     -1
+    ],
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ],
+    [
+     0,
+     1,
+     -1
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     1,
+     1
+    ]
+   ],
+   "static_cells": [
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     0,
+     0,
+     -1
+    ],
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ],
+    [
+     0,
+     1,
+     0
+    ]
+   ],
+   "fbx_reimport_worst": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "geom_mm": 0.0002,
+    "scale_err": 0.0,
+    "missing": [],
+    "parent_bad": []
+   },
+   "glb_reimport_PASS": true,
+   "silhouette": {
+    "closest_pair": "WheelM_Side_Offroad ↔ WheelM_Side_Slick",
+    "mean_iou": 0.944,
+    "flagged": true
+   },
+   "grid_fit_PASS": true,
+   "compat_blocks": {
+    "blocks_with_full_port": 24,
+    "ports": 137,
+    "ports_all_rolls": 131,
+    "ports_some_rolls": 0,
+    "ports_blocked": 6,
+    "contact_fail": 0
+   },
+   "sha256": {
+    "R4M_WheelM_Side_Offroad.blend": "1dbdb85c30a6a7d26f9b428eb03710e844ac950ed257f0fc02ea0e597dc02fba",
+    "R4M_WheelM_Side_Offroad.fbx": "8473be4d43262a104cc27d6d5fe334eb9b5922ad5b937033a9b902d21dbed41c",
+    "R4M_WheelM_Side_Offroad.glb": "6f5fb68eab1dc4e61917c0f6de9db1cb65ea7e3e6ce8eedffefd1ed09a079ca6",
+    "R4M_WheelM_Side_Offroad_colliders.glb": "2dba577102e4b698c3d1f5bd9cddfa05b272d5580795f9aa18a55649a16e35cb",
+    "R4M_WheelM_Side_Offroad_LOD1.fbx": "390895844e6782d842ca6803cfda480cf3aa39841671893cb3cd9da41286b2cb"
+   },
+   "blender_qa": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN"
+  },
+  {
+   "id": "R4M_WheelM_Side_Slick",
+   "part_kind": "R3PartKind.Wheel",
+   "variant": "WheelM_Side_Slick",
+   "game_name": "Koło wyścigowe slick, montaż boczny",
+   "size": "M",
+   "mount_type": "side",
+   "mount_pl": "piasta boczna (port na ścianie -X)",
+   "tread": "slick",
+   "rim": "spoke5",
+   "tyre_radius_m": "0.37",
+   "tyre_width_m": "0.3",
+   "socket": {
+    "position": [
+     -0.26,
+     0.0,
+     -0.0
+    ],
+    "z_axis": [
+     -1.0,
+     -0.0,
+     -0.0
+    ]
+   },
+   "ground_probe": {
+    "position": [
+     0.002,
+     -0.37,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     -1.0,
+     -0.0
+    ]
+   },
+   "wheel_axle": {
+    "position": [
+     0.002,
+     0.0,
+     -0.0
+    ],
+    "z_axis": [
+     1.0,
+     -0.0,
+     -0.0
+    ]
+   },
+   "clips": [
+    {
+     "name": "Idle",
+     "start": 1,
+     "end": 25,
+     "loop": true
+    },
+    {
+     "name": "Roll",
+     "start": 27,
+     "end": 51,
+     "loop": true
+    },
+    {
+     "name": "Reverse",
+     "start": 53,
+     "end": 77,
+     "loop": true
+    },
+    {
+     "name": "Brake",
+     "start": 79,
+     "end": 103,
+     "loop": false
+    }
+   ],
+   "fps": 24,
+   "triangles": 7778,
+   "topology_PASS": true,
+   "animation_clash": 0,
+   "clearance_min_mm": {
+    "R4M_WheelM_Side_Slick_Rotor|R4M_WheelM_Side_Slick_Mount": 3.5
+   },
+   "moving_sweep_cells": [
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     0,
+     0,
+     -1
+    ],
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ],
+    [
+     0,
+     1,
+     0
+    ]
+   ],
+   "static_cells": [
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     0,
+     0,
+     -1
+    ],
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ],
+    [
+     0,
+     1,
+     0
+    ]
+   ],
+   "fbx_reimport_worst": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "geom_mm": 0.0002,
+    "scale_err": 0.0,
+    "missing": [],
+    "parent_bad": []
+   },
+   "glb_reimport_PASS": true,
+   "silhouette": {
+    "closest_pair": "WheelM_Side_Offroad ↔ WheelM_Side_Slick",
+    "mean_iou": 0.944,
+    "flagged": true
+   },
+   "grid_fit_PASS": true,
+   "compat_blocks": {
+    "blocks_with_full_port": 24,
+    "ports": 137,
+    "ports_all_rolls": 131,
+    "ports_some_rolls": 0,
+    "ports_blocked": 6,
+    "contact_fail": 0
+   },
+   "sha256": {
+    "R4M_WheelM_Side_Slick.blend": "6f77bf5cfa0922e124e8b688636049db4aec9a665aa5753f216953761426d904",
+    "R4M_WheelM_Side_Slick.fbx": "ec3ac77d283752f2d1f2f745fda9a23addfb87ef8f6d77008ca901855bd8a6ca",
+    "R4M_WheelM_Side_Slick.glb": "5400ccf9b876c90cb676aa64b937aa82ba74ed271cd879c0e06574eb5b32e03a",
+    "R4M_WheelM_Side_Slick_colliders.glb": "392b309dae150c81b0c82d8c30649676331b2a8f0586492de7cc7a4e063e2ff9",
+    "R4M_WheelM_Side_Slick_LOD1.fbx": "d6dcd01e00ddf51a395ea422716a182aa0f0f07aaad215710e44130cff4850c3"
+   },
+   "blender_qa": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN"
+  },
+  {
+   "id": "R4M_WheelM_Steer_Road",
+   "part_kind": "R3PartKind.Wheel",
+   "variant": "WheelM_Steer_Road",
+   "game_name": "Koło skrętne drogowe",
+   "size": "M",
+   "mount_type": "steer",
+   "mount_pl": "zwrotnica skrętna (port na górze)",
+   "tread": "road",
+   "rim": "spoke8",
+   "tyre_radius_m": "0.34",
+   "tyre_width_m": "0.26",
+   "socket": {
+    "position": [
+     0.0,
+     0.26,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     1.0,
+     -0.0
+    ]
+   },
+   "ground_probe": {
+    "position": [
+     0.0,
+     -0.655,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     -1.0,
+     -0.0
+    ]
+   },
+   "wheel_axle": {
+    "position": [
+     0.0,
+     -0.315,
+     -0.0
+    ],
+    "z_axis": [
+     1.0,
+     -0.0,
+     -0.0
+    ]
+   },
+   "clips": [
+    {
+     "name": "Idle",
+     "start": 1,
+     "end": 25,
+     "loop": true
+    },
+    {
+     "name": "Roll",
+     "start": 27,
+     "end": 51,
+     "loop": true
+    },
+    {
+     "name": "Reverse",
+     "start": 53,
+     "end": 77,
+     "loop": true
+    },
+    {
+     "name": "Brake",
+     "start": 79,
+     "end": 103,
+     "loop": false
+    },
+    {
+     "name": "SteerLeft",
+     "start": 105,
+     "end": 141,
+     "loop": false
+    },
+    {
+     "name": "SteerRight",
+     "start": 143,
+     "end": 179,
+     "loop": false
+    },
+    {
+     "name": "Slalom",
+     "start": 181,
+     "end": 229,
+     "loop": true
+    }
+   ],
+   "fps": 24,
+   "triangles": 10584,
+   "topology_PASS": true,
+   "animation_clash": 0,
+   "clearance_min_mm": {
+    "R4M_WheelM_Steer_Road_Rotor|R4M_WheelM_Steer_Road_Mount": 97.0,
+    "R4M_WheelM_Steer_Road_Rotor|R4M_WheelM_Steer_Road_Knuckle": 3.5,
+    "R4M_WheelM_Steer_Road_Knuckle|R4M_WheelM_Steer_Road_Mount": 3.0
+   },
+   "moving_sweep_cells": [
+    [
+     0,
+     -1,
+     -1
+    ],
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     0,
+     -1,
+     1
+    ],
+    [
+     0,
+     0,
+     -1
+    ],
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "static_cells": [
+    [
+     0,
+     -1,
+     -1
+    ],
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     0,
+     -1,
+     1
+    ],
+    [
+     0,
+     0,
+     -1
+    ],
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "fbx_reimport_worst": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "geom_mm": 0.0003,
+    "scale_err": 0.0,
+    "missing": [],
+    "parent_bad": []
+   },
+   "glb_reimport_PASS": true,
+   "silhouette": {
+    "closest_pair": "WheelM_Steer_Road ↔ WheelM_SwingArm_Offroad",
+    "mean_iou": 0.883,
+    "flagged": true
+   },
+   "grid_fit_PASS": true,
+   "compat_blocks": {
+    "blocks_with_full_port": 24,
+    "ports": 137,
+    "ports_all_rolls": 131,
+    "ports_some_rolls": 6,
+    "ports_blocked": 0,
+    "contact_fail": 0
+   },
+   "sha256": {
+    "R4M_WheelM_Steer_Road.blend": "5db047b0b398321ae5cec87b1f4f19317f119441f1935148cf733dd667f76b7b",
+    "R4M_WheelM_Steer_Road.fbx": "1af692974ddb82a6d2cfc1b23222ded040739867ad36c89f1be899f46628a249",
+    "R4M_WheelM_Steer_Road.glb": "d632c92b30aad290766a9e7d6f4d6f977961634cc37f00f7c3ace90c00c5a629",
+    "R4M_WheelM_Steer_Road_colliders.glb": "442b9f4beda76a97c8e9f7019704f4d9592eed743f72ef6fd134ca163161efac",
+    "R4M_WheelM_Steer_Road_LOD1.fbx": "a6e31c8fe440f3e5d79498663fd2553a957db311c8b5c0f78d996f661f387fae"
+   },
+   "blender_qa": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN"
+  },
+  {
+   "id": "R4M_WheelM_SwingArm_Offroad",
+   "part_kind": "R3PartKind.Wheel",
+   "variant": "WheelM_SwingArm_Offroad",
+   "game_name": "Koło terenowe na wahaczu",
+   "size": "M",
+   "mount_type": "swing",
+   "mount_pl": "wahacz wleczony z drążkiem skrętnym (port na górze)",
+   "tread": "offroad",
+   "rim": "spoke6",
+   "tyre_radius_m": "0.33",
+   "tyre_width_m": "0.26",
+   "socket": {
+    "position": [
+     0.0,
+     0.26,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     1.0,
+     -0.0
+    ]
+   },
+   "ground_probe": {
+    "position": [
+     0.0,
+     -0.63,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     -1.0,
+     -0.0
+    ]
+   },
+   "wheel_axle": {
+    "position": [
+     0.0,
+     -0.3,
+     -0.0
+    ],
+    "z_axis": [
+     1.0,
+     -0.0,
+     -0.0
+    ]
+   },
+   "clips": [
+    {
+     "name": "Idle",
+     "start": 1,
+     "end": 25,
+     "loop": true
+    },
+    {
+     "name": "Roll",
+     "start": 27,
+     "end": 51,
+     "loop": true
+    },
+    {
+     "name": "Reverse",
+     "start": 53,
+     "end": 77,
+     "loop": true
+    },
+    {
+     "name": "Brake",
+     "start": 79,
+     "end": 103,
+     "loop": false
+    },
+    {
+     "name": "Compress",
+     "start": 105,
+     "end": 129,
+     "loop": false
+    },
+    {
+     "name": "Rebound",
+     "start": 131,
+     "end": 155,
+     "loop": false
+    },
+    {
+     "name": "Bump",
+     "start": 157,
+     "end": 205,
+     "loop": true
+    }
+   ],
+   "fps": 24,
+   "triangles": 9800,
+   "topology_PASS": true,
+   "animation_clash": 0,
+   "clearance_min_mm": {
+    "R4M_WheelM_SwingArm_Offroad_Rotor|R4M_WheelM_SwingArm_Offroad_Mount": 69.65,
+    "R4M_WheelM_SwingArm_Offroad_Rotor|R4M_WheelM_SwingArm_Offroad_Arm": 3.5,
+    "R4M_WheelM_SwingArm_Offroad_Arm|R4M_WheelM_SwingArm_Offroad_Mount": 4.47
+   },
+   "moving_sweep_cells": [
+    [
+     0,
+     -1,
+     -1
+    ],
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     0,
+     -1,
+     1
+    ],
+    [
+     0,
+     0,
+     -1
+    ],
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "static_cells": [
+    [
+     0,
+     -1,
+     -1
+    ],
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     0,
+     -1,
+     1
+    ],
+    [
+     0,
+     0,
+     -1
+    ],
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "fbx_reimport_worst": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "geom_mm": 0.0002,
+    "scale_err": 0.0,
+    "missing": [],
+    "parent_bad": []
+   },
+   "glb_reimport_PASS": true,
+   "silhouette": {
+    "closest_pair": "WheelM_Steer_Road ↔ WheelM_SwingArm_Offroad",
+    "mean_iou": 0.883,
+    "flagged": true
+   },
+   "grid_fit_PASS": true,
+   "compat_blocks": {
+    "blocks_with_full_port": 24,
+    "ports": 137,
+    "ports_all_rolls": 131,
+    "ports_some_rolls": 6,
+    "ports_blocked": 0,
+    "contact_fail": 0
+   },
+   "sha256": {
+    "R4M_WheelM_SwingArm_Offroad.blend": "e0895160cdd46a916fa5f785e593eef2b980405e548d1d0d29312ce15f025845",
+    "R4M_WheelM_SwingArm_Offroad.fbx": "ea7931360e9af8ebedb26c86fa7eda16f0b8b1e882b4ca1dd784741200518d8c",
+    "R4M_WheelM_SwingArm_Offroad.glb": "78aa5f7994ca7d53b97460c367fd2f064dabc50f54c84c7ca5bd53925b5c89ce",
+    "R4M_WheelM_SwingArm_Offroad_colliders.glb": "31a71af1e36f8af7121ea8544ab3c1c3c4921f92f2aec19cc099de69aa90aa12",
+    "R4M_WheelM_SwingArm_Offroad_LOD1.fbx": "948cdf88bf6089907c60f6ebe1a9e3d0c470811dd84aea37b87e81ee07497bb6"
+   },
+   "blender_qa": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN"
+  },
+  {
+   "id": "R4M_WheelM_Twin_Road",
+   "part_kind": "R3PartKind.Wheel",
+   "variant": "WheelM_Twin_Road",
+   "game_name": "Koło bliźniacze (ciężarowe)",
+   "size": "M",
+   "mount_type": "twin",
+   "mount_pl": "widelec, koła bliźniacze (port na górze)",
+   "tread": "road",
+   "rim": "disc8",
+   "tyre_radius_m": "0.33",
+   "tyre_width_m": "0.16",
+   "socket": {
+    "position": [
+     0.0,
+     0.26,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     1.0,
+     -0.0
+    ]
+   },
+   "ground_probe": {
+    "position": [
+     0.0,
+     -0.53,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     -1.0,
+     -0.0
+    ]
+   },
+   "wheel_axle": {
+    "position": [
+     0.0,
+     -0.2,
+     -0.0
+    ],
+    "z_axis": [
+     1.0,
+     -0.0,
+     -0.0
+    ]
+   },
+   "clips": [
+    {
+     "name": "Idle",
+     "start": 1,
+     "end": 25,
+     "loop": true
+    },
+    {
+     "name": "Roll",
+     "start": 27,
+     "end": 51,
+     "loop": true
+    },
+    {
+     "name": "Reverse",
+     "start": 53,
+     "end": 77,
+     "loop": true
+    },
+    {
+     "name": "Brake",
+     "start": 79,
+     "end": 103,
+     "loop": false
+    }
+   ],
+   "fps": 24,
+   "triangles": 17782,
+   "topology_PASS": true,
+   "animation_clash": 0,
+   "clearance_min_mm": {
+    "R4M_WheelM_Twin_Road_Rotor|R4M_WheelM_Twin_Road_Mount": 3.5
+   },
+   "moving_sweep_cells": [
+    [
+     0,
+     -1,
+     -1
+    ],
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     0,
+     -1,
+     1
+    ],
+    [
+     0,
+     0,
+     -1
+    ],
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "static_cells": [
+    [
+     0,
+     -1,
+     -1
+    ],
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     0,
+     -1,
+     1
+    ],
+    [
+     0,
+     0,
+     -1
+    ],
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "fbx_reimport_worst": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "geom_mm": 0.0002,
+    "scale_err": 0.0,
+    "missing": [],
+    "parent_bad": []
+   },
+   "glb_reimport_PASS": true,
+   "silhouette": {
+    "closest_pair": "WheelM_Twin_Road ↔ WheelM_Fork_Spiked",
+    "mean_iou": 0.824,
+    "flagged": false
+   },
+   "grid_fit_PASS": true,
+   "compat_blocks": {
+    "blocks_with_full_port": 24,
+    "ports": 137,
+    "ports_all_rolls": 131,
+    "ports_some_rolls": 6,
+    "ports_blocked": 0,
+    "contact_fail": 0
+   },
+   "sha256": {
+    "R4M_WheelM_Twin_Road.blend": "d80bcf0fbcea0c6bc9160de4a960786e29518bc7610980fe15c7731656161272",
+    "R4M_WheelM_Twin_Road.fbx": "d517b0074789c1ebd597aa13f95b6370a4bfe6f90e5540478e6840cf604e9f86",
+    "R4M_WheelM_Twin_Road.glb": "4b4b0cebcb9ad6b8281871203c9b466574b59d5bb0e588a5f4d9afd58fbe034e",
+    "R4M_WheelM_Twin_Road_colliders.glb": "8a46cf7a047a24d516f079ec7b5d6fc18c9b95ad9af32c8953174f6aaec8de5f",
+    "R4M_WheelM_Twin_Road_LOD1.fbx": "4897067e68132f8be986e856ee01d51395215c4d6e5dbaa14d2a52cd86e50963"
+   },
+   "blender_qa": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN"
+  },
+  {
+   "id": "R4M_WheelM_Fork_Spiked",
+   "part_kind": "R3PartKind.Wheel",
+   "variant": "WheelM_Fork_Spiked",
+   "game_name": "Koło z kolcami (widelec)",
+   "size": "M",
+   "mount_type": "fork",
+   "mount_pl": "widelec (port na górze)",
+   "tread": "spiked",
+   "rim": "spoke6",
+   "tyre_radius_m": "0.37",
+   "tyre_width_m": "0.3",
+   "socket": {
+    "position": [
+     0.0,
+     0.26,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     1.0,
+     -0.0
+    ]
+   },
+   "ground_probe": {
+    "position": [
+     0.0,
+     -0.61,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     -1.0,
+     -0.0
+    ]
+   },
+   "wheel_axle": {
+    "position": [
+     0.0,
+     -0.24,
+     -0.0
+    ],
+    "z_axis": [
+     1.0,
+     -0.0,
+     -0.0
+    ]
+   },
+   "clips": [
+    {
+     "name": "Idle",
+     "start": 1,
+     "end": 25,
+     "loop": true
+    },
+    {
+     "name": "Roll",
+     "start": 27,
+     "end": 51,
+     "loop": true
+    },
+    {
+     "name": "Reverse",
+     "start": 53,
+     "end": 77,
+     "loop": true
+    },
+    {
+     "name": "Brake",
+     "start": 79,
+     "end": 103,
+     "loop": false
+    }
+   ],
+   "fps": 24,
+   "triangles": 11436,
+   "topology_PASS": true,
+   "animation_clash": 0,
+   "clearance_min_mm": {
+    "R4M_WheelM_Fork_Spiked_Rotor|R4M_WheelM_Fork_Spiked_Mount": 3.5
+   },
+   "moving_sweep_cells": [
+    [
+     0,
+     -1,
+     -1
+    ],
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     0,
+     -1,
+     1
+    ],
+    [
+     0,
+     0,
+     -1
+    ],
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "static_cells": [
+    [
+     0,
+     -1,
+     -1
+    ],
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     0,
+     -1,
+     1
+    ],
+    [
+     0,
+     0,
+     -1
+    ],
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "fbx_reimport_worst": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "geom_mm": 0.0002,
+    "scale_err": 0.0,
+    "missing": [],
+    "parent_bad": []
+   },
+   "glb_reimport_PASS": true,
+   "silhouette": {
+    "closest_pair": "WheelM_Fork_Spiked ↔ WheelL_Fork_Balloon",
+    "mean_iou": 0.842,
+    "flagged": false
+   },
+   "grid_fit_PASS": true,
+   "compat_blocks": {
+    "blocks_with_full_port": 24,
+    "ports": 137,
+    "ports_all_rolls": 131,
+    "ports_some_rolls": 6,
+    "ports_blocked": 0,
+    "contact_fail": 0
+   },
+   "sha256": {
+    "R4M_WheelM_Fork_Spiked.blend": "3d5305b126b40c20cd281cf7a0911786f920dc81c13fe6159a97c76decb918af",
+    "R4M_WheelM_Fork_Spiked.fbx": "5c2c72e88de7a75e1ad8579637bf48cfe6537ea3f9e340b000c0bbcd43b8f911",
+    "R4M_WheelM_Fork_Spiked.glb": "c3313e0215e44118679f28836bfa29b8d164cb2877cf7fc863bd7b02f37d5f1c",
+    "R4M_WheelM_Fork_Spiked_colliders.glb": "ade8bbcf4a77d1cd997ecc3808deea67ce7274d18709c30e98ebd8a3d41d9ab8",
+    "R4M_WheelM_Fork_Spiked_LOD1.fbx": "b7bbfe70b5fd23ca9dd5edd0c29356bf9645ea32b553b16690887fc4616eebfe"
+   },
+   "blender_qa": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN"
+  },
+  {
+   "id": "R4M_WheelL_Side_Offroad",
+   "part_kind": "R3PartKind.Wheel",
+   "variant": "WheelL_Side_Offroad",
+   "game_name": "Duże koło terenowe, montaż boczny",
+   "size": "L",
+   "mount_type": "side",
+   "mount_pl": "piasta boczna (port na ścianie -X)",
+   "tread": "offroad",
+   "rim": "spoke8",
+   "tyre_radius_m": "0.56",
+   "tyre_width_m": "0.42",
+   "socket": {
+    "position": [
+     -0.26,
+     0.0,
+     -0.0
+    ],
+    "z_axis": [
+     -1.0,
+     -0.0,
+     -0.0
+    ]
+   },
+   "ground_probe": {
+    "position": [
+     0.062,
+     -0.56,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     -1.0,
+     -0.0
+    ]
+   },
+   "wheel_axle": {
+    "position": [
+     0.062,
+     0.0,
+     -0.0
+    ],
+    "z_axis": [
+     1.0,
+     -0.0,
+     -0.0
+    ]
+   },
+   "clips": [
+    {
+     "name": "Idle",
+     "start": 1,
+     "end": 25,
+     "loop": true
+    },
+    {
+     "name": "Roll",
+     "start": 27,
+     "end": 51,
+     "loop": true
+    },
+    {
+     "name": "Reverse",
+     "start": 53,
+     "end": 77,
+     "loop": true
+    },
+    {
+     "name": "Brake",
+     "start": 79,
+     "end": 103,
+     "loop": false
+    }
+   ],
+   "fps": 24,
+   "triangles": 10710,
+   "topology_PASS": true,
+   "animation_clash": 0,
+   "clearance_min_mm": {
+    "R4M_WheelL_Side_Offroad_Rotor|R4M_WheelL_Side_Offroad_Mount": 3.5
+   },
+   "moving_sweep_cells": [
+    [
+     0,
+     -1,
+     -1
+    ],
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     0,
+     -1,
+     1
+    ],
+    [
+     0,
+     0,
+     -1
+    ],
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ],
+    [
+     0,
+     1,
+     -1
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     1,
+     1
+    ]
+   ],
+   "static_cells": [
+    [
+     0,
+     -1,
+     -1
+    ],
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     0,
+     -1,
+     1
+    ],
+    [
+     0,
+     0,
+     -1
+    ],
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ],
+    [
+     0,
+     1,
+     -1
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     1,
+     1
+    ]
+   ],
+   "fbx_reimport_worst": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "geom_mm": 0.0003,
+    "scale_err": 0.0,
+    "missing": [],
+    "parent_bad": []
+   },
+   "glb_reimport_PASS": true,
+   "silhouette": {
+    "closest_pair": "WheelL_Side_Offroad ↔ WheelXL_Side_Monster",
+    "mean_iou": 0.881,
+    "flagged": true
+   },
+   "grid_fit_PASS": true,
+   "compat_blocks": {
+    "blocks_with_full_port": 24,
+    "ports": 137,
+    "ports_all_rolls": 131,
+    "ports_some_rolls": 0,
+    "ports_blocked": 6,
+    "contact_fail": 0
+   },
+   "sha256": {
+    "R4M_WheelL_Side_Offroad.blend": "a4c3ab3395049af3da0beb6d67de5a17f9073f02474afa87efe99d9816f5c8d2",
+    "R4M_WheelL_Side_Offroad.fbx": "ec6961c0ac764441ac469912c5b6c17308acc5e9effc38ba413f03d8f5ccd2cf",
+    "R4M_WheelL_Side_Offroad.glb": "f9d3108bcd3912e55fe850a804c94b06345a8ab7edfc96ed01c6e74724ef8220",
+    "R4M_WheelL_Side_Offroad_colliders.glb": "9b994b9939eba6e635930dae39a965e87d19d5bc299ab9ac8e29ab434c757f7b",
+    "R4M_WheelL_Side_Offroad_LOD1.fbx": "6843656b7326cb190c03547eb8932a88d7ea24ff7c08284364eb5ff621a61cab"
+   },
+   "blender_qa": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN"
+  },
+  {
+   "id": "R4M_WheelL_Fork_Balloon",
+   "part_kind": "R3PartKind.Wheel",
+   "variant": "WheelL_Fork_Balloon",
+   "game_name": "Duże koło balonowe (widelec)",
+   "size": "L",
+   "mount_type": "fork",
+   "mount_pl": "widelec (port na górze)",
+   "tread": "balloon",
+   "rim": "disc8",
+   "tyre_radius_m": "0.5",
+   "tyre_width_m": "0.43",
+   "socket": {
+    "position": [
+     0.0,
+     0.26,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     1.0,
+     -0.0
+    ]
+   },
+   "ground_probe": {
+    "position": [
+     0.0,
+     -0.87,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     -1.0,
+     -0.0
+    ]
+   },
+   "wheel_axle": {
+    "position": [
+     0.0,
+     -0.37,
+     -0.0
+    ],
+    "z_axis": [
+     1.0,
+     -0.0,
+     -0.0
+    ]
+   },
+   "clips": [
+    {
+     "name": "Idle",
+     "start": 1,
+     "end": 25,
+     "loop": true
+    },
+    {
+     "name": "Roll",
+     "start": 27,
+     "end": 51,
+     "loop": true
+    },
+    {
+     "name": "Reverse",
+     "start": 53,
+     "end": 77,
+     "loop": true
+    },
+    {
+     "name": "Brake",
+     "start": 79,
+     "end": 103,
+     "loop": false
+    }
+   ],
+   "fps": 24,
+   "triangles": 10490,
+   "topology_PASS": true,
+   "animation_clash": 0,
+   "clearance_min_mm": {
+    "R4M_WheelL_Fork_Balloon_Rotor|R4M_WheelL_Fork_Balloon_Mount": 3.5
+   },
+   "moving_sweep_cells": [
+    [
+     -1,
+     -1,
+     0
+    ],
+    [
+     -1,
+     0,
+     0
+    ],
+    [
+     0,
+     -2,
+     0
+    ],
+    [
+     0,
+     -1,
+     -1
+    ],
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     0,
+     -1,
+     1
+    ],
+    [
+     0,
+     0,
+     -1
+    ],
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ],
+    [
+     1,
+     -1,
+     0
+    ],
+    [
+     1,
+     0,
+     0
+    ]
+   ],
+   "static_cells": [
+    [
+     -1,
+     -1,
+     0
+    ],
+    [
+     -1,
+     0,
+     0
+    ],
+    [
+     0,
+     -2,
+     0
+    ],
+    [
+     0,
+     -1,
+     -1
+    ],
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     0,
+     -1,
+     1
+    ],
+    [
+     0,
+     0,
+     -1
+    ],
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ],
+    [
+     1,
+     -1,
+     0
+    ],
+    [
+     1,
+     0,
+     0
+    ]
+   ],
+   "fbx_reimport_worst": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "geom_mm": 0.0003,
+    "scale_err": 0.0,
+    "missing": [],
+    "parent_bad": []
+   },
+   "glb_reimport_PASS": true,
+   "silhouette": {
+    "closest_pair": "WheelM_Fork_Spiked ↔ WheelL_Fork_Balloon",
+    "mean_iou": 0.842,
+    "flagged": false
+   },
+   "grid_fit_PASS": true,
+   "compat_blocks": {
+    "blocks_with_full_port": 24,
+    "ports": 137,
+    "ports_all_rolls": 131,
+    "ports_some_rolls": 6,
+    "ports_blocked": 0,
+    "contact_fail": 0
+   },
+   "sha256": {
+    "R4M_WheelL_Fork_Balloon.blend": "1a1351811c63e025ba1eae9041546a660401a3c7e7c766beb3a67cd0719fde4a",
+    "R4M_WheelL_Fork_Balloon.fbx": "b7a768b8627a0098c0a3305b939c7a4fc6f243102cc0c618a0749b31e84739ab",
+    "R4M_WheelL_Fork_Balloon.glb": "2158ffe10d5610ec9ecd1acdcb0ece272b5655230a5e4739cba07a4f6df47145",
+    "R4M_WheelL_Fork_Balloon_colliders.glb": "1ccf5fe91fd5a87f378bb95a3ed342ec62969f1dfbf62dca85824a2026aa7194",
+    "R4M_WheelL_Fork_Balloon_LOD1.fbx": "f882565bdb979932033316b721d9f72c041265a6963838d162ec0cb6fefda9fb"
+   },
+   "blender_qa": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN"
+  },
+  {
+   "id": "R4M_WheelL_Steer_Offroad",
+   "part_kind": "R3PartKind.Wheel",
+   "variant": "WheelL_Steer_Offroad",
+   "game_name": "Duże koło skrętne terenowe",
+   "size": "L",
+   "mount_type": "steer",
+   "mount_pl": "zwrotnica skrętna (port na górze)",
+   "tread": "offroad",
+   "rim": "spoke6",
+   "tyre_radius_m": "0.48",
+   "tyre_width_m": "0.34",
+   "socket": {
+    "position": [
+     0.0,
+     0.26,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     1.0,
+     -0.0
+    ]
+   },
+   "ground_probe": {
+    "position": [
+     0.0,
+     -0.935,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     -1.0,
+     -0.0
+    ]
+   },
+   "wheel_axle": {
+    "position": [
+     0.0,
+     -0.455,
+     -0.0
+    ],
+    "z_axis": [
+     1.0,
+     -0.0,
+     -0.0
+    ]
+   },
+   "clips": [
+    {
+     "name": "Idle",
+     "start": 1,
+     "end": 25,
+     "loop": true
+    },
+    {
+     "name": "Roll",
+     "start": 27,
+     "end": 51,
+     "loop": true
+    },
+    {
+     "name": "Reverse",
+     "start": 53,
+     "end": 77,
+     "loop": true
+    },
+    {
+     "name": "Brake",
+     "start": 79,
+     "end": 103,
+     "loop": false
+    },
+    {
+     "name": "SteerLeft",
+     "start": 105,
+     "end": 141,
+     "loop": false
+    },
+    {
+     "name": "SteerRight",
+     "start": 143,
+     "end": 179,
+     "loop": false
+    },
+    {
+     "name": "Slalom",
+     "start": 181,
+     "end": 229,
+     "loop": true
+    }
+   ],
+   "fps": 24,
+   "triangles": 11372,
+   "topology_PASS": true,
+   "animation_clash": 0,
+   "clearance_min_mm": {
+    "R4M_WheelL_Steer_Offroad_Rotor|R4M_WheelL_Steer_Offroad_Mount": 97.1,
+    "R4M_WheelL_Steer_Offroad_Rotor|R4M_WheelL_Steer_Offroad_Knuckle": 3.5,
+    "R4M_WheelL_Steer_Offroad_Knuckle|R4M_WheelL_Steer_Offroad_Mount": 3.0
+   },
+   "moving_sweep_cells": [
+    [
+     -1,
+     -2,
+     0
+    ],
+    [
+     -1,
+     -1,
+     -1
+    ],
+    [
+     -1,
+     -1,
+     0
+    ],
+    [
+     -1,
+     -1,
+     1
+    ],
+    [
+     -1,
+     0,
+     -1
+    ],
+    [
+     -1,
+     0,
+     0
+    ],
+    [
+     -1,
+     0,
+     1
+    ],
+    [
+     0,
+     -2,
+     -1
+    ],
+    [
+     0,
+     -2,
+     0
+    ],
+    [
+     0,
+     -2,
+     1
+    ],
+    [
+     0,
+     -1,
+     -1
+    ],
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     0,
+     -1,
+     1
+    ],
+    [
+     0,
+     0,
+     -1
+    ],
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ],
+    [
+     1,
+     -2,
+     0
+    ],
+    [
+     1,
+     -1,
+     -1
+    ],
+    [
+     1,
+     -1,
+     0
+    ],
+    [
+     1,
+     -1,
+     1
+    ],
+    [
+     1,
+     0,
+     -1
+    ],
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     1,
+     0,
+     1
+    ]
+   ],
+   "static_cells": [
+    [
+     0,
+     -2,
+     -1
+    ],
+    [
+     0,
+     -2,
+     0
+    ],
+    [
+     0,
+     -2,
+     1
+    ],
+    [
+     0,
+     -1,
+     -1
+    ],
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     0,
+     -1,
+     1
+    ],
+    [
+     0,
+     0,
+     -1
+    ],
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "fbx_reimport_worst": {
+    "pos_mm": 0.0002,
+    "rot_deg": 0.0,
+    "geom_mm": 0.0003,
+    "scale_err": 0.0,
+    "missing": [],
+    "parent_bad": []
+   },
+   "glb_reimport_PASS": true,
+   "silhouette": {
+    "closest_pair": "WheelL_Fork_Balloon ↔ WheelL_Steer_Offroad",
+    "mean_iou": 0.831,
+    "flagged": false
+   },
+   "grid_fit_PASS": true,
+   "compat_blocks": {
+    "blocks_with_full_port": 24,
+    "ports": 137,
+    "ports_all_rolls": 131,
+    "ports_some_rolls": 0,
+    "ports_blocked": 6,
+    "contact_fail": 0
+   },
+   "sha256": {
+    "R4M_WheelL_Steer_Offroad.blend": "0b735d38238578ffa853f2160e7ebf413c9db565b6bdd08556c8fd64d2ec255a",
+    "R4M_WheelL_Steer_Offroad.fbx": "70575a90663cbd902f040d5d73fa63f7c46ac3ffb9834fb8fce9c383bc1d5d55",
+    "R4M_WheelL_Steer_Offroad.glb": "76cd6616ed02814fc7949055269be001b7f50c0879fa1af5a64cd7bd30a4d6e4",
+    "R4M_WheelL_Steer_Offroad_colliders.glb": "615d60b2af4834ecd8f24ba88a368f2145141af3ebe309c4d5659a796a8ed5e4",
+    "R4M_WheelL_Steer_Offroad_LOD1.fbx": "ae34bc61e53361cb31d7c4c86ff02270817e3c02406eeba983acdcb248efbc02"
+   },
+   "blender_qa": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN"
+  },
+  {
+   "id": "R4M_WheelXL_Side_Monster",
+   "part_kind": "R3PartKind.Wheel",
+   "variant": "WheelXL_Side_Monster",
+   "game_name": "Koło monster XL, montaż boczny",
+   "size": "XL",
+   "mount_type": "side",
+   "mount_pl": "piasta boczna (port na ścianie -X)",
+   "tread": "monster",
+   "rim": "spoke8",
+   "tyre_radius_m": "0.8",
+   "tyre_width_m": "0.58",
+   "socket": {
+    "position": [
+     -0.26,
+     0.0,
+     -0.0
+    ],
+    "z_axis": [
+     -1.0,
+     -0.0,
+     -0.0
+    ]
+   },
+   "ground_probe": {
+    "position": [
+     0.142,
+     -0.8,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     -1.0,
+     -0.0
+    ]
+   },
+   "wheel_axle": {
+    "position": [
+     0.142,
+     0.0,
+     -0.0
+    ],
+    "z_axis": [
+     1.0,
+     -0.0,
+     -0.0
+    ]
+   },
+   "clips": [
+    {
+     "name": "Idle",
+     "start": 1,
+     "end": 25,
+     "loop": true
+    },
+    {
+     "name": "Roll",
+     "start": 27,
+     "end": 51,
+     "loop": true
+    },
+    {
+     "name": "Reverse",
+     "start": 53,
+     "end": 77,
+     "loop": true
+    },
+    {
+     "name": "Brake",
+     "start": 79,
+     "end": 103,
+     "loop": false
+    }
+   ],
+   "fps": 24,
+   "triangles": 7400,
+   "topology_PASS": true,
+   "animation_clash": 0,
+   "clearance_min_mm": {
+    "R4M_WheelXL_Side_Monster_Rotor|R4M_WheelXL_Side_Monster_Mount": 3.5
+   },
+   "moving_sweep_cells": [
+    [
+     0,
+     -1,
+     -1
+    ],
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     0,
+     -1,
+     1
+    ],
+    [
+     0,
+     0,
+     -1
+    ],
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ],
+    [
+     0,
+     1,
+     -1
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     1,
+     1
+    ],
+    [
+     1,
+     -1,
+     -1
+    ],
+    [
+     1,
+     -1,
+     0
+    ],
+    [
+     1,
+     -1,
+     1
+    ],
+    [
+     1,
+     0,
+     -1
+    ],
+    [
+     1,
+     0,
+     1
+    ],
+    [
+     1,
+     1,
+     -1
+    ],
+    [
+     1,
+     1,
+     0
+    ],
+    [
+     1,
+     1,
+     1
+    ]
+   ],
+   "static_cells": [
+    [
+     0,
+     -1,
+     -1
+    ],
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     0,
+     -1,
+     1
+    ],
+    [
+     0,
+     0,
+     -1
+    ],
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ],
+    [
+     0,
+     1,
+     -1
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     1,
+     1
+    ],
+    [
+     1,
+     -1,
+     -1
+    ],
+    [
+     1,
+     -1,
+     0
+    ],
+    [
+     1,
+     -1,
+     1
+    ],
+    [
+     1,
+     0,
+     -1
+    ],
+    [
+     1,
+     0,
+     1
+    ],
+    [
+     1,
+     1,
+     -1
+    ],
+    [
+     1,
+     1,
+     0
+    ],
+    [
+     1,
+     1,
+     1
+    ]
+   ],
+   "fbx_reimport_worst": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "geom_mm": 0.0004,
+    "scale_err": 0.0,
+    "missing": [],
+    "parent_bad": []
+   },
+   "glb_reimport_PASS": true,
+   "silhouette": {
+    "closest_pair": "WheelL_Side_Offroad ↔ WheelXL_Side_Monster",
+    "mean_iou": 0.881,
+    "flagged": true
+   },
+   "grid_fit_PASS": true,
+   "compat_blocks": {
+    "blocks_with_full_port": 24,
+    "ports": 137,
+    "ports_all_rolls": 131,
+    "ports_some_rolls": 0,
+    "ports_blocked": 6,
+    "contact_fail": 0
+   },
+   "sha256": {
+    "R4M_WheelXL_Side_Monster.blend": "38b61879cfc8424de010568a3f1067d2a56ef3a1ca5154926af03a9c6e525781",
+    "R4M_WheelXL_Side_Monster.fbx": "ebf87984232c71a465b1cc2f885c03d05bea08b007f74a722bfd393f6a62cf71",
+    "R4M_WheelXL_Side_Monster.glb": "bedfca1b2cb04b1d0dc1641d53c6c04c1d8f7069c2e850d9c7ca8a75677557ac",
+    "R4M_WheelXL_Side_Monster_colliders.glb": "b1ad9b3b37e4f6f438b2b596af3f5dec792fdf290de3aea149a2ad8daaa53c0b",
+    "R4M_WheelXL_Side_Monster_LOD1.fbx": "a139c8d6455144114f39cfeba894855f02f5c8ba5cc0b88977cd40dc1dd89c00"
+   },
+   "blender_qa": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN"
+  }
+ ],
+ "compat_blocks": {
+  "PASS": true,
+  "file": "compat/compat_wheels.json",
+  "method": "Each wheel GLB is mounted on every full R4 port of the 30 R4 blocks (PR #963): socket 30 mm off the port centre along the port normal, 4 rolls; contact = 13x13 rays in the gap, both faces flush (PASS >= 70% flush, recesses allowed, nothing protruding or missing); overlap = BVH of all wheel meshes at 10 sampled frames vs the whole block."
+ }
+}

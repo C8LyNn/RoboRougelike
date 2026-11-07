@@ -1,0 +1,59 @@
+{
+ "id": "R4M_WheelM_Fork_Spiked",
+ "kind": "R3PartKind.Wheel",
+ "game_name": "Ko\u0142o z kolcami (widelec)",
+ "units": "meter 1:1",
+ "axes": "file/Unity +Z forward, +Y up",
+ "cell": "logical 1x1x1 on 0.55 m grid; mount = Socket_Mount_Bottom",
+ "hierarchy": {
+  "R4M_WheelM_Fork_Spiked_ROOT": null,
+  "R4M_WheelM_Fork_Spiked_Mount": "R4M_WheelM_Fork_Spiked_ROOT",
+  "R4M_WheelM_Fork_Spiked_Rotor": "R4M_WheelM_Fork_Spiked_ROOT",
+  "Wheel_Axle": "R4M_WheelM_Fork_Spiked_ROOT",
+  "Socket_Mount": "R4M_WheelM_Fork_Spiked_ROOT",
+  "GroundProbe": "R4M_WheelM_Fork_Spiked_ROOT"
+ },
+ "node_roles": {
+  "R4M_WheelM_Fork_Spiked_ROOT": {
+   "unity_up": "+Y",
+   "unity_forward": "+Z",
+   "unit": "meter",
+   "version": "r4-wheel-variant",
+   "weapon_kind": "R3PartKind.Wheel",
+   "style": "R41_Turret_v6.1 standard (heavy industrial armour + team colour)",
+   "issue": "wheel variants (R4)",
+   "wheel_variant": "R4M_WheelM_Fork_Spiked",
+   "wheel_size": "M",
+   "mount_type": "fork",
+   "tread": "spiked",
+   "rim": "spoke6",
+   "tyre_radius_m": "0.37",
+   "tyre_width_m": "0.3"
+  },
+  "R4M_WheelM_Fork_Spiked_Mount": {
+   "mount_port": "R4 Robocraft-style port: 0.509 m square, outer face +0.260 m (block face), face-centre coupling",
+   "role": "static fork mount; R4 port on the top (+Y) face = Socket_Mount"
+  },
+  "R4M_WheelM_Fork_Spiked_Rotor": {
+   "role": "rolling rotor: rotates about local X only; +X angle = rolling forward (+Z)",
+   "tyre_radius_m": "0.37",
+   "tyre_width_m": "0.3"
+  },
+  "Wheel_Axle": {
+   "role": "axle axis marker: local +Z = file +X (axle)"
+  },
+  "Socket_Mount": {
+   "role": "mount face centre (R4 port)"
+  },
+  "GroundProbe": {
+   "role": "ground contact point at rest",
+   "ground_y_m": "-0.61"
+  }
+ },
+ "muzzles": [],
+ "visible_exits_note": "",
+ "notes": [
+  "variant R4M_WheelM_Fork_Spiked: size M, mount fork, tread spiked, rim spoke6, tyre r 0.37 m, width 0.300 m",
+  "L/R variant: mirror by transform (scale X -1)."
+ ]
+}

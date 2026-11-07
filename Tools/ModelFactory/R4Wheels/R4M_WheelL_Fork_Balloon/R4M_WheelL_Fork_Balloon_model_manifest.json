@@ -1,0 +1,59 @@
+{
+ "id": "R4M_WheelL_Fork_Balloon",
+ "kind": "R3PartKind.Wheel",
+ "game_name": "Du\u017ce ko\u0142o balonowe (widelec)",
+ "units": "meter 1:1",
+ "axes": "file/Unity +Z forward, +Y up",
+ "cell": "logical 1x1x1 on 0.55 m grid; mount = Socket_Mount_Bottom",
+ "hierarchy": {
+  "R4M_WheelL_Fork_Balloon_ROOT": null,
+  "R4M_WheelL_Fork_Balloon_Mount": "R4M_WheelL_Fork_Balloon_ROOT",
+  "R4M_WheelL_Fork_Balloon_Rotor": "R4M_WheelL_Fork_Balloon_ROOT",
+  "Wheel_Axle": "R4M_WheelL_Fork_Balloon_ROOT",
+  "Socket_Mount": "R4M_WheelL_Fork_Balloon_ROOT",
+  "GroundProbe": "R4M_WheelL_Fork_Balloon_ROOT"
+ },
+ "node_roles": {
+  "R4M_WheelL_Fork_Balloon_ROOT": {
+   "unity_up": "+Y",
+   "unity_forward": "+Z",
+   "unit": "meter",
+   "version": "r4-wheel-variant",
+   "weapon_kind": "R3PartKind.Wheel",
+   "style": "R41_Turret_v6.1 standard (heavy industrial armour + team colour)",
+   "issue": "wheel variants (R4)",
+   "wheel_variant": "R4M_WheelL_Fork_Balloon",
+   "wheel_size": "L",
+   "mount_type": "fork",
+   "tread": "balloon",
+   "rim": "disc8",
+   "tyre_radius_m": "0.5",
+   "tyre_width_m": "0.43"
+  },
+  "R4M_WheelL_Fork_Balloon_Mount": {
+   "mount_port": "R4 Robocraft-style port: 0.509 m square, outer face +0.260 m (block face), face-centre coupling",
+   "role": "static fork mount; R4 port on the top (+Y) face = Socket_Mount"
+  },
+  "R4M_WheelL_Fork_Balloon_Rotor": {
+   "role": "rolling rotor: rotates about local X only; +X angle = rolling forward (+Z)",
+   "tyre_radius_m": "0.5",
+   "tyre_width_m": "0.43"
+  },
+  "Wheel_Axle": {
+   "role": "axle axis marker: local +Z = file +X (axle)"
+  },
+  "Socket_Mount": {
+   "role": "mount face centre (R4 port)"
+  },
+  "GroundProbe": {
+   "role": "ground contact point at rest",
+   "ground_y_m": "-0.87"
+  }
+ },
+ "muzzles": [],
+ "visible_exits_note": "",
+ "notes": [
+  "variant R4M_WheelL_Fork_Balloon: size L, mount fork, tread balloon, rim disc8, tyre r 0.5 m, width 0.430 m",
+  "L/R variant: mirror by transform (scale X -1)."
+ ]
+}

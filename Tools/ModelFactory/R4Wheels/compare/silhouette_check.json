@@ -1,0 +1,554 @@
+{
+ "method": "black silhouettes from 4 cameras (gameplay 3/4, side, front, top), cropped to bbox, 64 px, IoU per view; pair flagged if mean IoU > 0.85",
+ "most_similar": [
+  [
+   "R4M_WheelM_Side_Offroad|R4M_WheelM_Side_Slick",
+   {
+    "gameplay": 0.939,
+    "side": 0.935,
+    "front": 0.956,
+    "top": 0.944,
+    "mean": 0.944
+   }
+  ],
+  [
+   "R4M_WheelM_Steer_Road|R4M_WheelM_SwingArm_Offroad",
+   {
+    "gameplay": 0.912,
+    "side": 0.836,
+    "front": 0.835,
+    "top": 0.948,
+    "mean": 0.883
+   }
+  ],
+  [
+   "R4M_WheelL_Side_Offroad|R4M_WheelXL_Side_Monster",
+   {
+    "gameplay": 0.929,
+    "side": 0.827,
+    "front": 0.885,
+    "top": 0.885,
+    "mean": 0.881
+   }
+  ],
+  [
+   "R4M_WheelM_Fork_Spiked|R4M_WheelL_Fork_Balloon",
+   {
+    "gameplay": 0.911,
+    "side": 0.867,
+    "front": 0.842,
+    "top": 0.748,
+    "mean": 0.842
+   }
+  ],
+  [
+   "R4M_WheelL_Fork_Balloon|R4M_WheelL_Steer_Offroad",
+   {
+    "gameplay": 0.896,
+    "side": 0.818,
+    "front": 0.71,
+    "top": 0.898,
+    "mean": 0.831
+   }
+  ],
+  [
+   "R4M_WheelM_Side_Slick|R4M_WheelL_Side_Offroad",
+   {
+    "gameplay": 0.806,
+    "side": 0.918,
+    "front": 0.802,
+    "top": 0.792,
+    "mean": 0.83
+   }
+  ],
+  [
+   "R4M_WheelM_Side_Offroad|R4M_WheelL_Side_Offroad",
+   {
+    "gameplay": 0.842,
+    "side": 0.908,
+    "front": 0.778,
+    "top": 0.773,
+    "mean": 0.825
+   }
+  ],
+  [
+   "R4M_WheelM_Twin_Road|R4M_WheelM_Fork_Spiked",
+   {
+    "gameplay": 0.897,
+    "side": 0.917,
+    "front": 0.677,
+    "top": 0.805,
+    "mean": 0.824
+   }
+  ]
+ ],
+ "flagged": [
+  "R4M_WheelM_Side_Offroad|R4M_WheelM_Side_Slick",
+  "R4M_WheelM_Steer_Road|R4M_WheelM_SwingArm_Offroad",
+  "R4M_WheelL_Side_Offroad|R4M_WheelXL_Side_Monster"
+ ],
+ "pairs": {
+  "R4M_WheelS_Fork_Road|R4M_WheelS_Caster_Slick": {
+   "gameplay": 0.854,
+   "side": 0.651,
+   "front": 0.663,
+   "top": 1.0,
+   "mean": 0.792
+  },
+  "R4M_WheelS_Fork_Road|R4M_WheelM_Side_Offroad": {
+   "gameplay": 0.719,
+   "side": 0.672,
+   "front": 0.639,
+   "top": 0.486,
+   "mean": 0.629
+  },
+  "R4M_WheelS_Fork_Road|R4M_WheelM_Side_Slick": {
+   "gameplay": 0.717,
+   "side": 0.669,
+   "front": 0.66,
+   "top": 0.49,
+   "mean": 0.634
+  },
+  "R4M_WheelS_Fork_Road|R4M_WheelM_Steer_Road": {
+   "gameplay": 0.758,
+   "side": 0.836,
+   "front": 0.653,
+   "top": 0.658,
+   "mean": 0.726
+  },
+  "R4M_WheelS_Fork_Road|R4M_WheelM_SwingArm_Offroad": {
+   "gameplay": 0.759,
+   "side": 0.736,
+   "front": 0.69,
+   "top": 0.683,
+   "mean": 0.717
+  },
+  "R4M_WheelS_Fork_Road|R4M_WheelM_Twin_Road": {
+   "gameplay": 0.75,
+   "side": 0.815,
+   "front": 0.569,
+   "top": 0.701,
+   "mean": 0.709
+  },
+  "R4M_WheelS_Fork_Road|R4M_WheelM_Fork_Spiked": {
+   "gameplay": 0.761,
+   "side": 0.794,
+   "front": 0.681,
+   "top": 0.585,
+   "mean": 0.705
+  },
+  "R4M_WheelS_Fork_Road|R4M_WheelL_Side_Offroad": {
+   "gameplay": 0.726,
+   "side": 0.658,
+   "front": 0.648,
+   "top": 0.391,
+   "mean": 0.606
+  },
+  "R4M_WheelS_Fork_Road|R4M_WheelL_Fork_Balloon": {
+   "gameplay": 0.72,
+   "side": 0.758,
+   "front": 0.636,
+   "top": 0.46,
+   "mean": 0.643
+  },
+  "R4M_WheelS_Fork_Road|R4M_WheelL_Steer_Offroad": {
+   "gameplay": 0.708,
+   "side": 0.778,
+   "front": 0.599,
+   "top": 0.448,
+   "mean": 0.633
+  },
+  "R4M_WheelS_Fork_Road|R4M_WheelXL_Side_Monster": {
+   "gameplay": 0.718,
+   "side": 0.672,
+   "front": 0.632,
+   "top": 0.377,
+   "mean": 0.6
+  },
+  "R4M_WheelS_Caster_Slick|R4M_WheelM_Side_Offroad": {
+   "gameplay": 0.643,
+   "side": 0.471,
+   "front": 0.539,
+   "top": 0.486,
+   "mean": 0.535
+  },
+  "R4M_WheelS_Caster_Slick|R4M_WheelM_Side_Slick": {
+   "gameplay": 0.643,
+   "side": 0.478,
+   "front": 0.559,
+   "top": 0.49,
+   "mean": 0.542
+  },
+  "R4M_WheelS_Caster_Slick|R4M_WheelM_Steer_Road": {
+   "gameplay": 0.722,
+   "side": 0.557,
+   "front": 0.589,
+   "top": 0.658,
+   "mean": 0.631
+  },
+  "R4M_WheelS_Caster_Slick|R4M_WheelM_SwingArm_Offroad": {
+   "gameplay": 0.731,
+   "side": 0.495,
+   "front": 0.609,
+   "top": 0.683,
+   "mean": 0.629
+  },
+  "R4M_WheelS_Caster_Slick|R4M_WheelM_Twin_Road": {
+   "gameplay": 0.698,
+   "side": 0.549,
+   "front": 0.569,
+   "top": 0.701,
+   "mean": 0.629
+  },
+  "R4M_WheelS_Caster_Slick|R4M_WheelM_Fork_Spiked": {
+   "gameplay": 0.713,
+   "side": 0.538,
+   "front": 0.599,
+   "top": 0.585,
+   "mean": 0.609
+  },
+  "R4M_WheelS_Caster_Slick|R4M_WheelL_Side_Offroad": {
+   "gameplay": 0.659,
+   "side": 0.469,
+   "front": 0.621,
+   "top": 0.391,
+   "mean": 0.535
+  },
+  "R4M_WheelS_Caster_Slick|R4M_WheelL_Fork_Balloon": {
+   "gameplay": 0.677,
+   "side": 0.507,
+   "front": 0.588,
+   "top": 0.46,
+   "mean": 0.558
+  },
+  "R4M_WheelS_Caster_Slick|R4M_WheelL_Steer_Offroad": {
+   "gameplay": 0.662,
+   "side": 0.523,
+   "front": 0.545,
+   "top": 0.448,
+   "mean": 0.544
+  },
+  "R4M_WheelS_Caster_Slick|R4M_WheelXL_Side_Monster": {
+   "gameplay": 0.658,
+   "side": 0.472,
+   "front": 0.632,
+   "top": 0.377,
+   "mean": 0.535
+  },
+  "R4M_WheelM_Side_Offroad|R4M_WheelM_Side_Slick": {
+   "gameplay": 0.939,
+   "side": 0.935,
+   "front": 0.956,
+   "top": 0.944,
+   "mean": 0.944
+  },
+  "R4M_WheelM_Side_Offroad|R4M_WheelM_Steer_Road": {
+   "gameplay": 0.661,
+   "side": 0.611,
+   "front": 0.581,
+   "top": 0.679,
+   "mean": 0.633
+  },
+  "R4M_WheelM_Side_Offroad|R4M_WheelM_SwingArm_Offroad": {
+   "gameplay": 0.647,
+   "side": 0.574,
+   "front": 0.609,
+   "top": 0.654,
+   "mean": 0.621
+  },
+  "R4M_WheelM_Side_Offroad|R4M_WheelM_Twin_Road": {
+   "gameplay": 0.8,
+   "side": 0.757,
+   "front": 0.647,
+   "top": 0.65,
+   "mean": 0.714
+  },
+  "R4M_WheelM_Side_Offroad|R4M_WheelM_Fork_Spiked": {
+   "gameplay": 0.728,
+   "side": 0.706,
+   "front": 0.662,
+   "top": 0.721,
+   "mean": 0.704
+  },
+  "R4M_WheelM_Side_Offroad|R4M_WheelL_Side_Offroad": {
+   "gameplay": 0.842,
+   "side": 0.908,
+   "front": 0.778,
+   "top": 0.773,
+   "mean": 0.825
+  },
+  "R4M_WheelM_Side_Offroad|R4M_WheelL_Fork_Balloon": {
+   "gameplay": 0.713,
+   "side": 0.784,
+   "front": 0.664,
+   "top": 0.752,
+   "mean": 0.728
+  },
+  "R4M_WheelM_Side_Offroad|R4M_WheelL_Steer_Offroad": {
+   "gameplay": 0.648,
+   "side": 0.65,
+   "front": 0.564,
+   "top": 0.769,
+   "mean": 0.658
+  },
+  "R4M_WheelM_Side_Offroad|R4M_WheelXL_Side_Monster": {
+   "gameplay": 0.814,
+   "side": 0.828,
+   "front": 0.755,
+   "top": 0.748,
+   "mean": 0.786
+  },
+  "R4M_WheelM_Side_Slick|R4M_WheelM_Steer_Road": {
+   "gameplay": 0.642,
+   "side": 0.604,
+   "front": 0.599,
+   "top": 0.683,
+   "mean": 0.632
+  },
+  "R4M_WheelM_Side_Slick|R4M_WheelM_SwingArm_Offroad": {
+   "gameplay": 0.623,
+   "side": 0.559,
+   "front": 0.621,
+   "top": 0.659,
+   "mean": 0.616
+  },
+  "R4M_WheelM_Side_Slick|R4M_WheelM_Twin_Road": {
+   "gameplay": 0.775,
+   "side": 0.749,
+   "front": 0.65,
+   "top": 0.653,
+   "mean": 0.707
+  },
+  "R4M_WheelM_Side_Slick|R4M_WheelM_Fork_Spiked": {
+   "gameplay": 0.702,
+   "side": 0.692,
+   "front": 0.68,
+   "top": 0.724,
+   "mean": 0.7
+  },
+  "R4M_WheelM_Side_Slick|R4M_WheelL_Side_Offroad": {
+   "gameplay": 0.806,
+   "side": 0.918,
+   "front": 0.802,
+   "top": 0.792,
+   "mean": 0.83
+  },
+  "R4M_WheelM_Side_Slick|R4M_WheelL_Fork_Balloon": {
+   "gameplay": 0.684,
+   "side": 0.771,
+   "front": 0.685,
+   "top": 0.78,
+   "mean": 0.73
+  },
+  "R4M_WheelM_Side_Slick|R4M_WheelL_Steer_Offroad": {
+   "gameplay": 0.623,
+   "side": 0.638,
+   "front": 0.582,
+   "top": 0.798,
+   "mean": 0.66
+  },
+  "R4M_WheelM_Side_Slick|R4M_WheelXL_Side_Monster": {
+   "gameplay": 0.775,
+   "side": 0.815,
+   "front": 0.771,
+   "top": 0.758,
+   "mean": 0.78
+  },
+  "R4M_WheelM_Steer_Road|R4M_WheelM_SwingArm_Offroad": {
+   "gameplay": 0.912,
+   "side": 0.836,
+   "front": 0.835,
+   "top": 0.948,
+   "mean": 0.883
+  },
+  "R4M_WheelM_Steer_Road|R4M_WheelM_Twin_Road": {
+   "gameplay": 0.817,
+   "side": 0.798,
+   "front": 0.607,
+   "top": 0.904,
+   "mean": 0.781
+  },
+  "R4M_WheelM_Steer_Road|R4M_WheelM_Fork_Spiked": {
+   "gameplay": 0.901,
+   "side": 0.798,
+   "front": 0.681,
+   "top": 0.871,
+   "mean": 0.813
+  },
+  "R4M_WheelM_Steer_Road|R4M_WheelL_Side_Offroad": {
+   "gameplay": 0.732,
+   "side": 0.601,
+   "front": 0.682,
+   "top": 0.567,
+   "mean": 0.645
+  },
+  "R4M_WheelM_Steer_Road|R4M_WheelL_Fork_Balloon": {
+   "gameplay": 0.847,
+   "side": 0.755,
+   "front": 0.694,
+   "top": 0.689,
+   "mean": 0.746
+  },
+  "R4M_WheelM_Steer_Road|R4M_WheelL_Steer_Offroad": {
+   "gameplay": 0.866,
+   "side": 0.827,
+   "front": 0.787,
+   "top": 0.677,
+   "mean": 0.789
+  },
+  "R4M_WheelM_Steer_Road|R4M_WheelXL_Side_Monster": {
+   "gameplay": 0.746,
+   "side": 0.613,
+   "front": 0.74,
+   "top": 0.558,
+   "mean": 0.664
+  },
+  "R4M_WheelM_SwingArm_Offroad|R4M_WheelM_Twin_Road": {
+   "gameplay": 0.8,
+   "side": 0.706,
+   "front": 0.564,
+   "top": 0.948,
+   "mean": 0.754
+  },
+  "R4M_WheelM_SwingArm_Offroad|R4M_WheelM_Fork_Spiked": {
+   "gameplay": 0.862,
+   "side": 0.706,
+   "front": 0.666,
+   "top": 0.838,
+   "mean": 0.768
+  },
+  "R4M_WheelM_SwingArm_Offroad|R4M_WheelL_Side_Offroad": {
+   "gameplay": 0.719,
+   "side": 0.56,
+   "front": 0.699,
+   "top": 0.543,
+   "mean": 0.63
+  },
+  "R4M_WheelM_SwingArm_Offroad|R4M_WheelL_Fork_Balloon": {
+   "gameplay": 0.819,
+   "side": 0.67,
+   "front": 0.67,
+   "top": 0.663,
+   "mean": 0.706
+  },
+  "R4M_WheelM_SwingArm_Offroad|R4M_WheelL_Steer_Offroad": {
+   "gameplay": 0.841,
+   "side": 0.732,
+   "front": 0.736,
+   "top": 0.655,
+   "mean": 0.741
+  },
+  "R4M_WheelM_SwingArm_Offroad|R4M_WheelXL_Side_Monster": {
+   "gameplay": 0.732,
+   "side": 0.565,
+   "front": 0.778,
+   "top": 0.534,
+   "mean": 0.652
+  },
+  "R4M_WheelM_Twin_Road|R4M_WheelM_Fork_Spiked": {
+   "gameplay": 0.897,
+   "side": 0.917,
+   "front": 0.677,
+   "top": 0.805,
+   "mean": 0.824
+  },
+  "R4M_WheelM_Twin_Road|R4M_WheelL_Side_Offroad": {
+   "gameplay": 0.84,
+   "side": 0.742,
+   "front": 0.6,
+   "top": 0.531,
+   "mean": 0.678
+  },
+  "R4M_WheelM_Twin_Road|R4M_WheelL_Fork_Balloon": {
+   "gameplay": 0.867,
+   "side": 0.906,
+   "front": 0.627,
+   "top": 0.627,
+   "mean": 0.757
+  },
+  "R4M_WheelM_Twin_Road|R4M_WheelL_Steer_Offroad": {
+   "gameplay": 0.79,
+   "side": 0.838,
+   "front": 0.553,
+   "top": 0.617,
+   "mean": 0.7
+  },
+  "R4M_WheelM_Twin_Road|R4M_WheelXL_Side_Monster": {
+   "gameplay": 0.849,
+   "side": 0.749,
+   "front": 0.632,
+   "top": 0.511,
+   "mean": 0.685
+  },
+  "R4M_WheelM_Fork_Spiked|R4M_WheelL_Side_Offroad": {
+   "gameplay": 0.8,
+   "side": 0.693,
+   "front": 0.701,
+   "top": 0.602,
+   "mean": 0.699
+  },
+  "R4M_WheelM_Fork_Spiked|R4M_WheelL_Fork_Balloon": {
+   "gameplay": 0.911,
+   "side": 0.867,
+   "front": 0.842,
+   "top": 0.748,
+   "mean": 0.842
+  },
+  "R4M_WheelM_Fork_Spiked|R4M_WheelL_Steer_Offroad": {
+   "gameplay": 0.866,
+   "side": 0.851,
+   "front": 0.639,
+   "top": 0.728,
+   "mean": 0.771
+  },
+  "R4M_WheelM_Fork_Spiked|R4M_WheelXL_Side_Monster": {
+   "gameplay": 0.812,
+   "side": 0.716,
+   "front": 0.701,
+   "top": 0.593,
+   "mean": 0.706
+  },
+  "R4M_WheelL_Side_Offroad|R4M_WheelL_Fork_Balloon": {
+   "gameplay": 0.817,
+   "side": 0.771,
+   "front": 0.715,
+   "top": 0.766,
+   "mean": 0.767
+  },
+  "R4M_WheelL_Side_Offroad|R4M_WheelL_Steer_Offroad": {
+   "gameplay": 0.748,
+   "side": 0.642,
+   "front": 0.665,
+   "top": 0.773,
+   "mean": 0.707
+  },
+  "R4M_WheelL_Side_Offroad|R4M_WheelXL_Side_Monster": {
+   "gameplay": 0.929,
+   "side": 0.827,
+   "front": 0.885,
+   "top": 0.885,
+   "mean": 0.881
+  },
+  "R4M_WheelL_Fork_Balloon|R4M_WheelL_Steer_Offroad": {
+   "gameplay": 0.896,
+   "side": 0.818,
+   "front": 0.71,
+   "top": 0.898,
+   "mean": 0.831
+  },
+  "R4M_WheelL_Fork_Balloon|R4M_WheelXL_Side_Monster": {
+   "gameplay": 0.836,
+   "side": 0.795,
+   "front": 0.725,
+   "top": 0.767,
+   "mean": 0.781
+  },
+  "R4M_WheelL_Steer_Offroad|R4M_WheelXL_Side_Monster": {
+   "gameplay": 0.765,
+   "side": 0.67,
+   "front": 0.736,
+   "top": 0.777,
+   "mean": 0.737
+  }
+ }
+}
