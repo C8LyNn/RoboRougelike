@@ -29,6 +29,10 @@ public sealed class R4EnemyWheelArtTests
         Assert.That(rotor.GetComponentsInChildren<Collider>(true),Is.Empty,"Visual art must not create physics colliders.");
         Assert.That(collider,Is.Not.Null);Assert.That(collider.enabled,Is.True);
         Assert.That(Vector3.Distance(rotor.position,wheel.transform.position),Is.LessThan(.005f),"Rotor center must match the existing physical wheel.");
+        var renderers=rotor.GetComponentsInChildren<Renderer>(true);Assert.That(renderers,Is.Not.Empty);
+        var visibleBounds=renderers[0].bounds;
+        foreach(var item in renderers.Skip(1))visibleBounds.Encapsulate(item.bounds);
+        Debug.Log("R4_ENEMY_WHEEL_BOUNDS visual="+visibleBounds.size.ToString("F4")+" collider="+collider.bounds.size.ToString("F4"));
         var oldWheel=wheel.GetComponentInChildren<P12EnemyWheelVisual>(true);
         Assert.That(oldWheel,Is.Not.Null,"The original visual remains as a fallback.");
         Assert.That(oldWheel.GetComponent<Renderer>().enabled,Is.False,"Do not draw both old and new wheel art.");

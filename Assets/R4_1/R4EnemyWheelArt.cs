@@ -17,7 +17,7 @@ namespace RoboRougelike.R4_1
 
         public static bool TryAttach(Transform wheel,Renderer source,Renderer fallback,float wheelRadius)
         {
-            if(wheel==null||wheel.parent==null||source==null||fallback==null||wheelRadius<=0||
+            if(wheel==null||wheel.parent==null||source==null||fallback==null||wheel.GetComponent<R4EnemyWheelArt>()!=null||wheelRadius<=0||
                float.IsNaN(wheelRadius)||float.IsInfinity(wheelRadius))return false;
             var parentScale=wheel.parent.lossyScale;var scale=wheel.lossyScale;
             if(!PositiveUniform(parentScale)||!Positive(scale.x)||!Positive(scale.y)||!Positive(scale.z)||
