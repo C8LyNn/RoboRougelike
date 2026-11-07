@@ -56,6 +56,8 @@ namespace RoboRougelike.R3
                 state.Refresh(alive.Count(p=>p.Kind==R3PartKind.Battery),
                     alive.Count(p=>R3VehicleModel.IsPassiveEnergyPart(p.Kind)),
                     alive.Any(p=>p.Kind==R3PartKind.Core));
+                state.SetRegeneratorCount(alive.Count(p=>p.Kind==R3PartKind.EnergyRegenerator&&
+                    !RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(p.gameObject)));
             }
             else if(enemyCore!=null)
             {
@@ -63,6 +65,7 @@ namespace RoboRougelike.R3
                 var passive=GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLShieldBinding>()
                     .Count(s=>s.Device!=null&&s.Device.HardwareAvailable);
                 state.Refresh(batteries,passive,!enemyCore.IsDead&&enemyCore.transform.IsChildOf(transform));
+                state.SetRegeneratorCount(0);
             }
         }
 

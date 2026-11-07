@@ -10,8 +10,11 @@ namespace RoboRougelike.R3
         public const float BatteryCapacity = 100f;
         public const float PassiveReservation = 25f;
         public const float RegenerationPerSecond = 10f;
+        public const float RegenerationPerModule = 5f;
 
         float fieldRemaining;
+        int regeneratorCount;
+        public void SetRegeneratorCount(int count)=>regeneratorCount=Math.Max(0,count);
         readonly List<float> pickups = new List<float>();
         public float Maximum { get; private set; } = CoreCapacity;
         public float Current { get; private set; } = CoreCapacity;
@@ -39,7 +42,7 @@ namespace RoboRougelike.R3
         public void AdvanceWithMotion(float seconds, bool stationary)
         {
             if (float.IsNaN(seconds) || float.IsInfinity(seconds) || seconds <= 0f) return;
-            double charge=RegenerationPerSecond*(stationary?4d:1d)*seconds;
+            double charge=(RegenerationPerSecond+(double)regeneratorCount*RegenerationPerModule)*(stationary?4d:1d)*seconds;
             charge+=Maximum*.05d*Math.Min(seconds,fieldRemaining);
             fieldRemaining=Math.Max(0f,fieldRemaining-seconds);
             for(int i=pickups.Count-1;i>=0;i--)
