@@ -24,7 +24,9 @@ namespace RoboRougelike.WeaponIntegration
             if(energy!=null){Module.Configure(new RotarySawConfiguration{energyPerSecond=VehicleEnergyCosts.ContinuousWeaponPerSecond*R3VehicleModel.TierActivationCost(state.Tier)});Module.SetEnergySource(energy);}
             foreach(var collider in owner.GetComponentsInChildren<Collider>())Module.RegisterOwnerCollider(collider);
             Module.Motor.RestoreState(state.ThermalHeat,state.ThermalLocked,Mathf.Max(0,state.DeviceReadyAt-Time.time));
-            var art=GetComponentInChildren<RoboRougelike.R4_1.R4WeaponArt>(true);
+            // The previous visual may be inactive until Unity destroys it at
+            // frame end. Bind only the active replacement, not that old model.
+            var art=GetComponentInChildren<RoboRougelike.R4_1.R4WeaponArt>();
             rotor=art!=null?art.SawRotor:null;artRotor=rotor!=null;
             if(rotor==null)rotor=RoboRougelike.R4_1.R41PartGeometry.SawRotor(center,GetComponent<Renderer>().sharedMaterial);
             Device.Damageable.Died+=Stop;Module.SetOperational(Device.Available);

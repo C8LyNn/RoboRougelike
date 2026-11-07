@@ -7,7 +7,7 @@ public static class R4GaragePreviewBuild
 {
     public static void Build()
     {
-        const string output="Builds/R4-Enemy-RocketBeam-Art-Windows/RoboRougelike.exe";
+        const string output="Builds/R4-Enemy-SawEmp-Art-Windows/RoboRougelike.exe";
         if (Directory.Exists(Path.GetDirectoryName(output)))
             throw new InvalidOperationException("Refusing to overwrite an existing preview build directory.");
         var report=BuildPipeline.BuildPlayer(new BuildPlayerOptions {

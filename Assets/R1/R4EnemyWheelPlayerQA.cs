@@ -9,6 +9,7 @@ using RoboRougelike.R4;
 using RoboRougelike.R4_1;
 using RoboRougelike.R5;
 using RoboRougelike.R6;
+using RoboRougelike.Mechanics.EMP;
 using RogueMachine.P12PipelineSafe;
 using UnityEngine;
 
@@ -27,6 +28,7 @@ namespace RoboRougelike.R1
             public bool shotgunHit;
             public bool railgunArt,railgunMuzzle,railgunHit;
             public bool rocketArt,rocketHit,beamArt,beamHit;
+            public bool sawArt,sawHit,empArt,empPulse;
         }
         string directory;
         readonly Result result=new Result();
@@ -193,6 +195,40 @@ namespace RoboRougelike.R1
             for(int i=0;i<30&&beamHp.CurrentHp>=500;i++){beam.SetTriggerHeld(true);beamStep.Invoke(beam,null);yield return null;}
             result.beamHit=beamHp.CurrentHp<500;Require(result.beamHit,"Actual beam damages target");
             beamEnemy.SetCombatActive(false);Destroy(beamTarget);
+
+            run.Encounter.Spawn(template,run.Player.transform,primaryDef,run.Salvage,"r4-enemy-saw-player");
+            run.Encounter.SetCombatActive(false);yield return null;
+            var sawEnemy=run.Encounter.Enemies.First(e=>e.WeaponKind==R4WeaponKind.Basic);
+            var sawCenter=sawEnemy.transform.Find("Enemy_Yaw/Enemy_Muzzle");Require(sawEnemy.EquipSaw(),"Equip enemy saw");
+            var saw=sawEnemy.WeaponBlock.GetComponent<RoboRougelike.WeaponIntegration.RRLSawBinding>();
+            var sawVisual=sawEnemy.WeaponBlock.GetComponentsInChildren<R4WeaponArt>(false).SingleOrDefault();
+            result.sawArt=sawVisual!=null&&sawVisual.SawRotor!=null&&
+                typeof(RoboRougelike.WeaponIntegration.RRLSawBinding).GetField("rotor",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(saw)==sawVisual.SawRotor&&
+                typeof(RoboRougelike.WeaponIntegration.RRLSawBinding).GetField("blade",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(saw)==sawCenter;
+            Require(result.sawArt,"Saw switch binds active visual and original physical center");
+            sawEnemy.GetComponent<Rigidbody>().isKinematic=true;sawEnemy.transform.SetPositionAndRotation(new Vector3(100,4,100),Quaternion.identity);Physics.SyncTransforms();sawVisual.Sync();
+            var sawTarget=GameObject.CreatePrimitive(PrimitiveType.Cube);sawTarget.transform.position=sawCenter.position+sawCenter.forward*.45f;
+            sawTarget.transform.localScale=Vector3.one*.2f;var sawHp=sawTarget.AddComponent<P12PipelineSafeDamageable>();sawHp.Configure(500,false);
+            sawEnemy.GetComponent<VehicleEnergyBank>()?.Recharge(1000);Physics.SyncTransforms();sawEnemy.SetCombatActive(true);
+            var sawStep=typeof(RoboRougelike.WeaponIntegration.RRLSawBinding).GetMethod("FixedUpdate",BindingFlags.Instance|BindingFlags.NonPublic);
+            for(int i=0;i<80&&sawHp.CurrentHp>=500;i++){saw.SetMotorRequested(true);sawStep.Invoke(saw,null);yield return null;}
+            result.sawHit=sawHp.CurrentHp<500;Require(result.sawHit,"Actual saw damages target");
+            sawEnemy.SetCombatActive(false);Destroy(sawTarget);
+
+            run.Encounter.Spawn(template,run.Player.transform,railDef,run.Salvage,"r4-enemy-emp-player");
+            run.Encounter.SetCombatActive(false);yield return null;
+            var empEnemy=run.Encounter.Enemies.First();var empLegacy=empEnemy.transform.Find("Enemy_Yaw/Enemy_Muzzle");Require(empEnemy.EquipEmp(),"Equip enemy EMP");
+            var emp=empEnemy.WeaponBlock.GetComponent<RoboRougelike.WeaponIntegration.RRLEmpBinding>();
+            var empVisual=empEnemy.WeaponBlock.GetComponentInChildren<R4WeaponArt>();
+            result.empArt=empVisual!=null&&empVisual.GetComponentsInChildren<Transform>(true).Any(t=>t.name=="R4W_EmpEmitter_ROOT")&&
+                primaryMuzzleField.GetValue(empEnemy)==empLegacy&&emp.Module.GetType().GetField("pulseOrigin",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(emp.Module)==empEnemy.WeaponBlock.transform;
+            Require(result.empArt,"EMP art preserves pulse origin");
+            empEnemy.GetComponent<Rigidbody>().isKinematic=true;empEnemy.transform.position=new Vector3(100,4,100);Physics.SyncTransforms();
+            var empTarget=GameObject.CreatePrimitive(PrimitiveType.Cube);empTarget.transform.position=empEnemy.WeaponBlock.transform.position+Vector3.up*4;
+            var receiver=empTarget.AddComponent<EmpReceiver>();receiver.ConfigureOwnership(empTarget.transform,1234,1);
+            empEnemy.GetComponent<VehicleEnergyBank>()?.Recharge(1000);Physics.SyncTransforms();empEnemy.SetCombatActive(true);
+            result.empPulse=emp.Fire()&&receiver.IsDisrupted&&!emp.Fire();Require(result.empPulse,"EMP disrupts target and respects cooldown");
+            empEnemy.SetCombatActive(false);Destroy(empTarget);
 
             var def=new R1EncounterDefinition{EnemyCount=1,Roster=new[]{R3EnemyArchetype.Gunner},Variants=new[]{R5EnemyVariant.EliteGunner}};
             run.Encounter.Spawn(template,run.Player.transform,def,run.Salvage,"r4-enemy-art-player");
