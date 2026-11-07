@@ -113,10 +113,16 @@ public class R41GarageTests
         Assert.That(garage.Point(TopRay(new Vector3Int(2,1,2))),Is.True);Assert.That(garage.Cell,Is.EqualTo(new Vector3Int(2,2,2)));
         Assert.That(garage.PreviewValid,Is.True,garage.PlacementIssue);
         var ghostBarrel=garage.Preview.Find("Obrót broni/Lufa");var size=ghostBarrel.localScale;var local=ghostBarrel.localPosition;
+        var ghostArt=garage.Preview.GetComponentsInChildren<Transform>(true).Single(t=>t.name=="R4W_Heavy_ROOT");
+        var artPosition=ghostArt.position;var artRotation=ghostArt.rotation;var artScale=ghostArt.lossyScale;
         var localRotation=garage.Preview.localRotation;var cell=garage.Cell;
         int mountFunds=Run.VehicleModel.Scrap;Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(mountFunds));
         var mounted=Run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Cell==cell);Assert.That(mounted.Id,Is.EqualTo(id));var barrel=mounted.GunPivot.Find("Lufa");
         Assert.That(barrel.localScale,Is.EqualTo(size));Assert.That(barrel.localPosition,Is.EqualTo(local));
+        var mountedArt=mounted.GetComponentsInChildren<Transform>(true).Single(t=>t.name=="R4W_Heavy_ROOT");
+        Assert.That(Vector3.Distance(artPosition,mountedArt.position),Is.LessThan(.001f),"Mounted art must start at the ghost position.");
+        Assert.That(Quaternion.Angle(artRotation,mountedArt.rotation),Is.LessThan(.01f),"Mounted art must start at the ghost rotation.");
+        Assert.That(Vector3.Distance(artScale,mountedArt.lossyScale),Is.LessThan(.001f),"Mounted art must match the ghost scale.");
         Assert.That(localRotation,Is.EqualTo(Quaternion.identity));
         Assert.That(garage.Preview.GetComponentsInChildren<Collider>().All(c=>!c.enabled),Is.True);
         garage.Select(new Vector3Int(6,5,7));Assert.That(garage.PreviewValid,Is.False);
