@@ -1,0 +1,11 @@
+# R4 enemy elite weapon art QA
+
+Elite and boss variant guns now use the existing R4 visual adapter when a supplied model exists. The Heavy variant retains its existing damageable block, physical gun collider, tier, energy costs and shell system, but uses the model's visible muzzle as the shell origin. Its visual aim is synchronized immediately after the physical pivot moves and before line-of-fire checks or shooting. Automatic has no supplied model and keeps the existing appearance and muzzle. Standard-enemy primary weapons and other enemy devices are unchanged.
+
+- Native red test at `d5d144832420c4e1118d8e7992507fa498e4e194`: 0/1 because the elite Heavy had no supplied model. Evidence `Artifacts/Local/RC2-R4-EnemyVariant-Red-20261107T173135Z/`.
+- Native Unity 6000.3.14f1 targeted EditMode at `4e6d75b7db37ddd39f6f874077c29535ec74bdf1`: **18/18 PASS**, exit 0, covering elite weapon art, real shell origin and target hit, gun detachment, Automatic fallback, enemy/player wheel behavior, enemy tiers and salvage, and R5 encounters including the boss. Evidence `Artifacts/Local/RC2-R4-EnemyElite-Final-4e6d75b7-20261107T173740Z/`.
+- Windows x64 build at that SHA: **PASS**, exit 0, `Artifacts/Local/R4-EnemyElite-Build-4e6d75b7/`.
+- Extracted Windows Player batch QA: **PASS**, exit 0: actual combat with two enemies and eight physical wheels, wheel damage and detachment, elite Heavy visual and muzzle, Automatic fallback and a physical Heavy shell hitting a target. API-driven, not a human playthrough. Evidence `C:/Users/kubap/Desktop/Prototypy/R4-enemy-elite-4e6d75b7-player-qa/`.
+- ZIP: `C:/Users/kubap/Desktop/Prototypy/RoboRougelike_R4_EnemyEliteArt_4e6d75b7_Windows_x64.zip`, 43,540,797 bytes, SHA-256 `b4f12cb4259de11be2e20edc7426ff0d4d87b6d5a2e73afd1d54bb23f10dacf6`. Extracted EXE matched build EXE SHA-256 `17ad8b27359b94eac8d2f44a0052d8789dc3ff5328f44ccb8c2740be4a375eb8`.
+
+NOT RUN: full regression, human visual review, long combat and interactive shutdown on this build. A prior automated GUI exit crashed with `0xC000041D`; batch exit 0 does not prove it fixed. Four raw FBX-axis tests are still failing as described in `R4_NATIVE_VERIFICATION_20261107.md`. New shaped blocks and the remaining enemy weapon/device appearances are not enabled by this change.
