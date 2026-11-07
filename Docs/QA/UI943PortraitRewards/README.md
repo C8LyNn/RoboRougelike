@@ -1,3 +1,5 @@
 # UI #943 — portrait rewards and inventory
 
 Source 86ec5561855eaec643f4a5367a6671cabe5d0d76, PR #954 based on #953. Native Unity 6000.3.14f1 targeted EditMode: 56/56 PASS, exit 0. Tests exercise reward ledger and inventory via API/reflection, including IDs, page change, selection limit, bonus requirement, full capacity, double-confirmed dismantle and single settlement. Sanitized log/XML; original hashes recorded. Windows Player render, actual mouse/keyboard interaction and full PlayMode NOT RUN. No merge.
+
+Actual instrumented Windows Player at 86ec and 768x1024 rendered rewards and reward inventory (two PNGs). Fixture used real ledger, added an enemy shotgun, applied API damage and selected via reflection; no manual clicks were tested. In this scenario names, HP, ammunition, costs, buttons and summary are readable. The screenshot exposed outdated 1x2x2 bonus text despite one-cell mounting; a separate correction is being prepared. Automated shutdown returned C000041D after capture, cause unconfirmed.
