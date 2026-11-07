@@ -97,6 +97,31 @@ public sealed class R4MountDefinitionAdapterTests
         Assert.That(orientations.Count,Is.EqualTo(24));
     }
 
+    [Test] public void RotatedGunBasesCannotUsePartialStructuralPatches()
+    {
+        Assert.That(Create("R4B_Wedge",false,out var structural),Is.True);
+        Assert.That(Create("R4B_Wedge",true,out var module),Is.True);
+        Assert.That(Create("R4B_Cube",true,out var cube),Is.True);
+        var gun=new BuildDefinition("gun",BuildRole.Gun,new[]{Vector3Int.zero},
+            new[]{new BuildSocket(Vector3Int.zero,Vector3Int.right,BuildSocketKind.WeaponBase,
+                new Vector2(.47f,.47f))},false);
+        var orientations=new HashSet<string>();
+        for(int x=0;x<4;x++)for(int y=0;y<4;y++)for(int z=0;z<4;z++)
+        {
+            var turns=new Vector3Int(x,y,z);
+            orientations.Add(BuildSocketGeometry.Rotate(Vector3Int.right,turns)+"/"+BuildSocketGeometry.Rotate(Vector3Int.up,turns));
+            var support=new BuildPose(Vector3Int.zero,turns);
+            var attached=new BuildPose(BuildSocketGeometry.Rotate(Vector3Int.left,turns),turns);
+            Assert.That(BuildSocketGeometry.Touches(structural,support,gun,attached,out _),Is.True,
+                "Structural overlap alone is not authorization for a gun: "+turns);
+            Assert.That(BuildSocketGeometry.Touches(module,support,gun,attached,out _),Is.False,
+                "A rotated partial port must not authorize a gun: "+turns);
+            Assert.That(BuildSocketGeometry.Touches(cube,support,gun,attached,out _),Is.True,
+                "A rotated full port can support a gun: "+turns);
+        }
+        Assert.That(orientations.Count,Is.EqualTo(24));
+    }
+
     [Test] public void EveryAuthoredShapeKeepsOneOwnerAndBlocksEachRotatedOccupiedCell()
     {
         var catalog=Type.GetType("R4BlockCatalog, Assembly-CSharp");Assert.That(catalog,Is.Not.Null);
