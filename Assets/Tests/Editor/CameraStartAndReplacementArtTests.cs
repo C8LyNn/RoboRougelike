@@ -140,11 +140,13 @@ public sealed class CameraStartAndReplacementArtTests
         var actual=props.GetColor("_BaseColor");
         Assert.That(actual.r,Is.EqualTo(expected.r).Within(.02f),"The replacement model must still show damage.");
         Assert.That(actual.g,Is.EqualTo(expected.g).Within(.02f));Assert.That(actual.b,Is.EqualTo(expected.b).Within(.02f));
-        var rootCollider=wheel.GetComponent<Collider>();float detachedAt=Time.time;
+        var rootCollider=wheel.GetComponent<Collider>();Assert.That(rootCollider.enabled,Is.True);float detachedAt=Time.time;
         hp.ApplyDamage(100000,wheel.transform.position,Vector3.up);yield return null;
         Assert.That(hp.IsDead,Is.True);Assert.That(model.IsChildOf(wheel.transform),Is.True,"Replacement stays with the detached wreck.");
         // Existing debris deliberately suspends contact for .45 s to separate.
-        yield return new WaitForSeconds(.6f);
+        var separationDeadline=Time.realtimeSinceStartup+5f;
+        while(Time.time-detachedAt<.6f&&Time.realtimeSinceStartup<separationDeadline)yield return null;
+        Assert.That(Time.time-detachedAt,Is.GreaterThanOrEqualTo(.6f),"The real separation window must elapse.");
         Debug.Log($"ART_DEBRIS_QA elapsed={Time.time-detachedAt} scale={Time.timeScale} enabled={rootCollider.enabled} active={wheel.gameObject.activeInHierarchy} debris={wheel.GetComponent<R3Debris>()!=null}");
         Assert.That(rootCollider.enabled,Is.True);
     }
