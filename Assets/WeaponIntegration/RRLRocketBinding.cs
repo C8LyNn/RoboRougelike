@@ -45,10 +45,11 @@ namespace RoboRougelike.WeaponIntegration
             if(assembly!=null&&!assembly.ClearProjectilePath(GetComponent<R3MountedPart>()))return false;
             int live=0;foreach(var rocket in Object.FindObjectsByType<RocketProjectile>(FindObjectsSortMode.None))if(rocket.IsInitialized&&!rocket.IsResolved)live++;
             if(live>=32)return false;
-            Module.SetConfig(new RocketConfig{damageAtCenter=60*(tank!=null?tank.PackageDamageScale:damageScale),cooldown=1.7f*(tank!=null?tank.PackageIntervalScale:intervalScale)});
+            Module.SetConfig(new RocketConfig{damageAtCenter=60*(tank!=null?tank.PackageDamageScale:damageScale)*R3VehicleModel.TierEffectUnits(State.Tier),cooldown=1.7f*(tank!=null?tank.PackageIntervalScale:intervalScale)});
             var energy=Device.Owner.GetComponent<VehicleEnergyBank>();
-            if(energy!=null&&!energy.TrySpend(VehicleEnergyCosts.Rocket))return false;
-            if(Module.TryFire()!=RocketFireResult.Fired){if(energy!=null)energy.Refund(VehicleEnergyCosts.Rocket);return false;}
+            float cost=VehicleEnergyCosts.Rocket*R3VehicleModel.TierActivationCost(State.Tier);
+            if(energy!=null&&!energy.TrySpend(cost))return false;
+            if(Module.TryFire()!=RocketFireResult.Fired){if(energy!=null)energy.Refund(cost);return false;}
             State.DeviceReadyAt=Module.NextReadyTime;
             RoboRougelike.R6.R6CombatFeedback.Muzzle(muzzle,R4WeaponKind.RocketLauncher);return true;
         }

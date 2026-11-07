@@ -56,9 +56,10 @@ namespace RoboRougelike.WeaponIntegration
             Module.SetOperational(true);
             Module.Configure(new ShotgunConfig{cooldownSeconds=.85f*(tank!=null?tank.PackageIntervalScale:intervalScale)});
             var energy=Owner.GetComponent<VehicleEnergyBank>();
-            if(energy!=null&&!energy.TrySpend(VehicleEnergyCosts.Shotgun))return false;
+            float cost=VehicleEnergyCosts.Shotgun*R3VehicleModel.TierActivationCost(State.Tier);
+            if(energy!=null&&!energy.TrySpend(cost))return false;
             bool result=Module.TryFire();
-            if(!result&&energy!=null)energy.Refund(VehicleEnergyCosts.Shotgun);
+            if(!result&&energy!=null)energy.Refund(cost);
             if(result)State.DeviceReadyAt=Module.NextReadyTime;
             return result;
         }
@@ -117,7 +118,7 @@ namespace RoboRougelike.WeaponIntegration
                     var rb=shell.AddComponent<Rigidbody>();rb.mass=.2f;rb.useGravity=false;
                     rb.interpolation=RigidbodyInterpolation.Interpolate;rb.collisionDetectionMode=CollisionDetectionMode.ContinuousDynamic;
                     rb.linearVelocity=pellet.Direction*pellet.ProjectileSpeed+pellet.InheritedVelocity;
-                    shell.AddComponent<P17PhysicalShell>().Configure(Owner,pellet.Damage*(tank!=null?tank.PackageDamageScale:damageScale),pellet.Lifetime,pellet.Direction,null,pellet.MaxDistance);
+                    shell.AddComponent<P17PhysicalShell>().Configure(Owner,pellet.Damage*(tank!=null?tank.PackageDamageScale:damageScale)*R3VehicleModel.TierEffectUnits(State.Tier),pellet.Lifetime,pellet.Direction,null,pellet.MaxDistance);
                 }
                 debitPending=false;
                 RoboRougelike.R6.R6CombatFeedback.Muzzle(muzzle,R4WeaponKind.Shotgun);
