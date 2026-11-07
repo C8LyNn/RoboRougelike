@@ -59,7 +59,7 @@ namespace RoboRougelike.R1
         {
             var feedback=run.Player.Controller.AimFeedback;
             DrawWeaponReticles(run.Player.Controller);
-            if(aimCrossStyle==null)aimCrossStyle=new GUIStyle(heading){alignment=TextAnchor.MiddleCenter};
+            if(aimCrossStyle==null)aimCrossStyle=new GUIStyle(body){fontSize=20,fontStyle=FontStyle.Normal,alignment=TextAnchor.MiddleCenter};
             if(aimCaptionStyle==null)aimCaptionStyle=new GUIStyle(small){alignment=TextAnchor.UpperLeft};
             aimCrossStyle.normal.textColor=feedback.Clear>0?new Color(.2f,.85f,.85f):new Color(1,.72f,.3f);
             GUI.Label(new Rect(624,344,32,32),"+",aimCrossStyle);
@@ -77,7 +77,7 @@ namespace RoboRougelike.R1
                 var marker=markers[i];var point=RoboRougelike.WeaponIntegration.RRLWeaponReticles.MarkerHudPoint(marker.Viewport,camera.pixelRect,new Vector2(Screen.width,Screen.height),marker.Offscreen);
                 float x=point.x,y=point.y;
 
-                float radius=8+Mathf.Min(i,3)*4,stroke=2,length=5;
+                float radius=8+Mathf.Min(i,3)*4,stroke=1,length=5;
                 GUI.color=marker.Disabled?new Color(.55f,.55f,.55f,.9f):
                     marker.Obstructed||marker.OutOfRange||marker.Offscreen?new Color(1,.7f,.25f,.95f):new Color(.35f,.95f,.95f,.9f);
                 for(int xi=0;xi<2;xi++)for(int yi=0;yi<2;yi++)

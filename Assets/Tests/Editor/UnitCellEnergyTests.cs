@@ -148,7 +148,7 @@ public sealed class UnitCellEnergyTests
     }
 
     [UnityTest]
-    public IEnumerator RealBasicGunSpendsEnergyAndCannotFireWhenEmpty()
+    public IEnumerator RealBasicGunFiresWithoutEnergyEvenWhenBankIsEmpty()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity", OpenSceneMode.Single);
         yield return new EnterPlayMode();
@@ -165,10 +165,10 @@ public sealed class UnitCellEnergyTests
         Assert.That(assembly.ClearProjectilePath(gun),Is.True,"The actual muzzle must be unobstructed.");
         float before=bank.Current;assembly.FireGuns();
         Assert.That(gun.NextFireTime,Is.GreaterThan(Time.time));
-        Assert.That(bank.Current,Is.EqualTo(before-VehicleEnergyCosts.BasicShot).Within(.01f));
+        Assert.That(bank.Current,Is.EqualTo(before).Within(.01f));
         Assert.That(bank.TrySpend(bank.Current),Is.True);gun.NextFireTime=0;
         assembly.FireGuns();
-        Assert.That(gun.NextFireTime,Is.Zero,"An empty bank must not fire or start cooldown.");
+        Assert.That(gun.NextFireTime,Is.GreaterThan(Time.time),"The basic gun remains usable when the bank is empty.");
         Assert.That(bank.Current,Is.Zero);
         yield return new ExitPlayMode();
     }
@@ -183,7 +183,7 @@ public sealed class UnitCellEnergyTests
         var run=R1RunController.Instance;Assert.That(run,Is.Not.Null);
         Assert.That(run.SelectVehicle(R3VehicleKind.Light),Is.True);Assert.That(run.OpenSandboxGarage(),Is.True);
         var palette=run.GetComponent<R3VisualPalette>();Assert.That(palette,Is.Not.Null);
-        var kinds=new[]{R4WeaponKind.Basic,R4WeaponKind.Automatic,R4WeaponKind.Heavy,R4WeaponKind.Shotgun,
+        var kinds=new[]{R4WeaponKind.Automatic,R4WeaponKind.Heavy,R4WeaponKind.Shotgun,
             R4WeaponKind.Railgun,R4WeaponKind.RocketLauncher,R4WeaponKind.EmpEmitter};
         for(int i=0;i<kinds.Length;i++)
         {

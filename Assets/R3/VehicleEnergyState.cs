@@ -75,7 +75,9 @@ namespace RoboRougelike.R3
 
     public static class VehicleEnergyCosts
     {
-        public const float BasicShot=2.5f, Shotgun=5f, Railgun=9f, Rocket=7.5f, Emp=12.5f;
+        public const float BasicShot=0f, OtherConventionalShot=2.5f, Shotgun=5f, Railgun=9f, Rocket=7.5f, Emp=12.5f;
+        public static float ConventionalShot(RoboRougelike.R4.R4WeaponKind weapon) =>
+            weapon==RoboRougelike.R4.R4WeaponKind.Basic?BasicShot:OtherConventionalShot;
         public const float ContinuousWeaponPerSecond=6f, BoosterActivation=7.5f;
         public const float Jump=12.5f, Blink=15f, Grapple=6f;
     }

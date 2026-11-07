@@ -51,7 +51,7 @@ namespace RoboRougelike.R3
                 {
                     var direction = point - part.GunPivot.position;
                     if(direction.sqrMagnitude>0.001f) part.GunPivot.rotation = Quaternion.RotateTowards(
-                        part.GunPivot.rotation,Quaternion.LookRotation(direction),170*Time.deltaTime);
+                        part.GunPivot.rotation,Quaternion.LookRotation(direction),140*Time.deltaTime);
                 }
         }
         public void SetContinuousFireHeld(bool held)
@@ -150,7 +150,7 @@ namespace RoboRougelike.R3
                         continue;
                     }
                     var energy=GetComponent<VehicleEnergyBank>();
-                    if(energy!=null&&!energy.TrySpend(VehicleEnergyCosts.BasicShot))continue;
+                    if(energy!=null&&!energy.TrySpend(VehicleEnergyCosts.ConventionalShot(part.Weapon)))continue;
                     part.NextFireTime=Time.time+controller.WeaponInterval(part.Weapon);
                     controller.FireFrom(part.Muzzle,part.Weapon,part.Id);
                 }

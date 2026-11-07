@@ -12,8 +12,8 @@ namespace RogueMachine.P12PipelineSafe
         [SerializeField] private Camera aimCamera;
 
         [Header("Tracking")]
-        [SerializeField] private float yawSpeed = 165f;
-        [SerializeField] private float pitchSpeed = 120f;
+        [SerializeField] private float yawSpeed = 140f;
+        [SerializeField] private float pitchSpeed = 105f;
         [SerializeField] private float minPitch = -12f;
         [SerializeField] private float maxPitch = 26f;
         [SerializeField] private float aimRange = 150f;

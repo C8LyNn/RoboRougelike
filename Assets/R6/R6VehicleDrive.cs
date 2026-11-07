@@ -160,6 +160,40 @@ namespace RoboRougelike.R6
             if(wish.sqrMagnitude<.001f)force=Vector3.ClampMagnitude(-Vector3.ProjectOnPlane(body.linearVelocity,contacts.Normal)*body.mass,AvailableForce*.15f);
             body.AddForceAtPosition(force,contacts.CenterOfTraction,ForceMode.Force);
         }
+
+        // Wheeled AI steers its chassis before driving instead of applying a
+        // sideways world-space motor force. Omni/hover retain their own drives.
+        public void StepToward(Vector3 wish,float speed,float turnLimit)
+        {
+            if(body.isKinematic)return;
+            Prepare();
+            var movement=GetComponent<RoboRougelike.MOVSeries.MOVSeriesVehicleAdapter>();
+            if(movement!=null&&movement.TryDriveWorld(wish,speed))return;
+            if(GroundedWheels==0)return;
+            var input=WorldSteering(transform.forward,wish,contacts.Normal,ForwardSpeed);
+            Step(input.x,input.y,Mathf.Max(0,speed),Mathf.Max(0,speed),turnLimit);
+        }
+
+        // x = throttle, y = steering. Reverse when the target is behind so a
+        // wheeled robot can escape corners without driving sideways.
+        public static Vector2 WorldSteering(Vector3 forward,Vector3 wish,Vector3 normal,float forwardSpeed=0)
+        {
+            if(normal.sqrMagnitude<.0001f)normal=Vector3.up;
+            normal.Normalize();
+            forward=Vector3.ProjectOnPlane(forward,normal);
+            wish=Vector3.ProjectOnPlane(wish,normal);
+            if(forward.sqrMagnitude<.0001f||wish.sqrMagnitude<.0001f)return Vector2.zero;
+            float angle=Vector3.SignedAngle(forward,wish,normal);
+            float direction=1;
+            if(Mathf.Abs(angle)>100f)
+            {
+                angle=Mathf.DeltaAngle(0,angle+(angle>0?-180f:180f));
+                direction=-1;
+            }
+            float throttle=direction*Mathf.Clamp01(Mathf.Cos(angle*Mathf.Deg2Rad));
+            float steering=(forwardSpeed<-.2f?-1:1)*Mathf.Clamp(angle/45f,-1,1);
+            return new Vector2(throttle,steering);
+        }
         void OnDestroy(){if(material!=null)Destroy(material);}
     }
 }

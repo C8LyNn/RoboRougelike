@@ -259,8 +259,17 @@ namespace RogueMachine.P12PipelineSafe
             part.transform.localPosition=new Vector3(cell.x*0.55f,0.275f+cell.y*0.55f,cell.z*0.55f);
             part.transform.localScale=wheel?new Vector3(0.53f,0.15f,0.53f):Vector3.one*0.53f;
             if(wheel)part.transform.localRotation=Quaternion.Euler(0,0,90);
-            part.GetComponent<Renderer>().sharedMaterial=material;
-            var hp=part.AddComponent<P12PipelineSafeDamageable>();hp.Configure(wheel?75:100,true);return hp;
+            var renderer=part.GetComponent<Renderer>();renderer.sharedMaterial=material;
+            var hp=part.AddComponent<P12PipelineSafeDamageable>();hp.Configure(wheel?75:100,true);
+            if(wheel)
+            {
+                var visual=new GameObject("Obrót koła");visual.transform.SetParent(part.transform,false);
+                visual.AddComponent<MeshFilter>().sharedMesh=part.GetComponent<MeshFilter>().sharedMesh;
+                visual.AddComponent<MeshRenderer>().sharedMaterial=material;
+                visual.AddComponent<P12EnemyWheelVisual>().Configure(renderer,.265f);
+                renderer.enabled=false;
+            }
+            return hp;
         }
 
         public P12PipelineSafeDamageable Core => core;
@@ -553,7 +562,7 @@ namespace RogueMachine.P12PipelineSafe
             if(FriendlyInLine(aimPoint))return;
 
             if(packageEmp==null&&packageRocket==null&&packageRailgun==null&&packageShotgun==null)
-            {var energy=GetComponent<VehicleEnergyBank>();if(energy!=null&&!energy.TrySpend(VehicleEnergyCosts.BasicShot))return;}
+            {var energy=GetComponent<VehicleEnergyBank>();if(energy!=null&&!energy.TrySpend(VehicleEnergyCosts.ConventionalShot(WeaponKind)))return;}
 
             nextFireTime =
                 Time.time +
@@ -675,7 +684,7 @@ namespace RogueMachine.P12PipelineSafe
             if (!CanMove(desired, step + 0.08f,ramming)) return;
             next=movementBody.position+desired*step;
             next.x=Mathf.Clamp(next.x,movementBounds.min.x,movementBounds.max.x);next.z=Mathf.Clamp(next.z,movementBounds.min.z,movementBounds.max.z);
-            if(drive!=null)drive.StepWorld(desired,moveSpeed * Mathf.Lerp(0.3f,1,wheelFactor));
+            if(drive!=null)drive.StepToward(desired,moveSpeed * Mathf.Lerp(0.3f,1,wheelFactor),turnSpeed);
         }
 
         private bool TryBoundaryTangent(bool cutX,bool cutZ,float step,bool ramming,out Vector3 tangent)
@@ -1138,7 +1147,7 @@ namespace RogueMachine.P12PipelineSafe
                 bool ally=false;for(int i=0;i<count;i++){var other=movementHits[i].collider.GetComponentInParent<P12PipelineSafeEnemyTurret>();if(other!=null&&other!=this&&!other.IsDefeated)ally=true;}
                 if(ally)continue;
                 var energy=GetComponent<VehicleEnergyBank>();
-                if(energy!=null&&!energy.TrySpend(VehicleEnergyCosts.BasicShot))continue;
+                if(energy!=null&&!energy.TrySpend(VehicleEnergyCosts.ConventionalShot(gun.Kind)))continue;
                 var profile=R4WeaponDefinition.Get(gun.Kind);
                 RoboRougelike.R6.R6CombatFeedback.Muzzle(gun.Muzzle,gun.Kind);
                 gun.NextShot=Time.time+profile.Interval*(fireInterval/R4WeaponDefinition.Get(WeaponKind).Interval);

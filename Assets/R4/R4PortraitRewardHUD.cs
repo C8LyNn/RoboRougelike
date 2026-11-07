@@ -32,8 +32,8 @@ namespace RoboRougelike.R1
         {
             var ledger=run.Salvage;TrackRewardLedger(ledger);
             if(rewardInventoryOpen){DrawPortraitRewardInventory(run);return;}
-            GUI.Label(new Rect(24,20,720,42),"WYBÓR NAGRÓD",title);
-            GUI.Label(new Rect(24,68,720,28),$"{(run.LastActivityWasReactor?"Reaktor obroniony":"Zwycięstwo")} • +{run.LastScrapReward} Z za walkę",body);
+            GUI.Label(new Rect(24,20,720,42),"ZWYCIĘSTWO",title);
+            GUI.Label(new Rect(24,68,720,28),$"{(run.LastActivityWasReactor?"Reaktor obroniony":$"Starcie {run.Progress.CompletedEncounters}/{run.Progress.TotalEncounters}")} • +{run.LastScrapReward} Z • wybierz nagrody",body);
             GUI.Label(new Rect(24,100,720,28),"MODUŁ BONUSOWY • WYBIERZ 1 Z 3",heading);
             var offers=run.Progress.Offers.ToArray();
             for(int i=0;i<offers.Length;i++)
