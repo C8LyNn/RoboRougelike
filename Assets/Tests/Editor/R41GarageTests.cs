@@ -150,6 +150,38 @@ public class R41GarageTests
         Assert.That(garage.Preview.GetComponentsInChildren<Collider>(true).All(c=>!c.enabled),Is.True);
         yield return null;
     }
+    [UnityTest] public IEnumerator MovementGhostsUseSuppliedModelsAndMirrorByVehicleSide()
+    {
+        var garage=Run.Garage;garage.UseInventory=false;garage.SelectedInventoryId=null;
+        var cases=new[]{
+            (R3PartKind.Suspension,"R4M_Suspension_ROOT"),
+            (R3PartKind.Booster,"R4M_Booster_ROOT"),
+            (R3PartKind.JumpDrive,"R4M_JumpDrive_ROOT"),
+            (R3PartKind.Blink,"R4M_Blink_ROOT"),
+            (R3PartKind.Gyroscope,"R4M_Gyroscope_ROOT"),
+            (R3PartKind.OmniDrive,"R4M_OmniDrive_ROOT"),
+            (R3PartKind.MagneticGrapple,"R4M_MagneticGrapple_ROOT"),
+            (R3PartKind.HoverEngine,"R4M_HoverEngine_ROOT"),
+            (R3PartKind.CrawlerTrack,"R4M_CrawlerTrack_ROOT"),
+            (R3PartKind.IndependentSteering,"R4M_IndependentSteering_ROOT")
+        };
+        foreach(var (kind,name) in cases)
+        {
+            garage.SelectedPart=kind;garage.SetTool(R41GarageTool.Mount);garage.Select(new Vector3Int(-2,2,2));
+            Assert.That(garage.Preview.GetComponentsInChildren<Transform>(true).Any(t=>t.name==name),Is.True,kind+" preview");
+            Assert.That(garage.Preview.GetComponentsInChildren<Collider>(true).All(c=>!c.enabled),Is.True,kind+" preview must stay nonphysical");
+        }
+        foreach(var kind in new[]{R3PartKind.OmniDrive,R3PartKind.CrawlerTrack})
+        {
+            var name=kind==R3PartKind.OmniDrive?"R4M_OmniDrive_ROOT":"R4M_CrawlerTrack_ROOT";
+            garage.SelectedPart=kind;garage.SetTool(R41GarageTool.Mount);garage.Select(new Vector3Int(-2,2,2));
+            var left=garage.Preview.GetComponentsInChildren<Transform>(true).Single(t=>t.name==name).parent.localScale.x;
+            garage.Select(new Vector3Int(2,2,2));
+            var right=garage.Preview.GetComponentsInChildren<Transform>(true).Single(t=>t.name==name).parent.localScale.x;
+            Assert.That(left*right,Is.LessThan(0),kind+" ghost should mirror when moving between sides");
+        }
+        yield return null;
+    }
     [UnityTest] public IEnumerator IndustrialGarageKeepsVehicleVisibleAndRestoresArenaWithoutChangingVehicle()
     {
         var garage=Run.Garage;garage.Close();float near=Camera.main.nearClipPlane;Run.Arena.Build(RoboRougelike.R5.R5ArenaKind.Industrial);
