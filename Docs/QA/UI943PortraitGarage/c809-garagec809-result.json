@@ -1,0 +1,32 @@
+{
+    "status": "CAPTURED",
+    "sourceCommit": "c809bfb31479ba27ed3e369034c2b05d8bef58f3",
+    "method": "QA fixture calls PrepareUnifiedRun; real garage, no simulated human input or visual verdict",
+    "error": "",
+    "persistentDataPath": "[USER_HOME]/AppData/LocalLow/RRL_GarageC809_CleanQA_20261107/GarageC809PortraitFixture",
+    "graphics": "Direct3D12 / NVIDIA GeForce RTX 5080",
+    "screenshot": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-UI945-QA-4c25\\Artifacts\\Local\\GarageC809PortraitCapture\\garagec809-screen.png",
+    "vehicle": "Standard",
+    "screenWidth": 768,
+    "screenHeight": 1024,
+    "captureWidth": 768,
+    "captureHeight": 1024,
+    "partCount": 59,
+    "garageReady": true,
+    "canDeploy": true,
+    "correctResolution": true,
+    "cameraRect": {
+        "serializedVersion": "2",
+        "x": 0.03125,
+        "y": 0.515625,
+        "width": 0.9375,
+        "height": 0.41015625
+    },
+    "cameraPixelRect": {
+        "serializedVersion": "2",
+        "x": 24.0,
+        "y": 528.0,
+        "width": 720.0,
+        "height": 420.0
+    }
+}
