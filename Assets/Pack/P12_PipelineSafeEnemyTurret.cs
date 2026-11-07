@@ -498,7 +498,8 @@ namespace RogueMachine.P12PipelineSafe
                 for(int i=0;i<variantGuns.Count;i++)
                 {
                     var gun=variantGuns[i];
-                    var state=gun.Block?.GetComponent<RoboRougelike.WeaponIntegration.RRLDeviceBinding>()?.State??
+                    var device=gun.Block!=null?gun.Block.GetComponent<RoboRougelike.WeaponIntegration.RRLDeviceBinding>():null;
+                    var state=(device!=null?device.State:null)??
                         new R3PartState(default,R3PartKind.Gun){Id=EquipmentInstanceId("gun/"+i),Source=name+" / bateria "+(i+1),Weapon=gun.Kind};
                     state.DisruptionRemaining=SalvageDisruption(gun.Block);
                     items.Add(new R4SalvageItem(state,gun.Online(transform)?Condition(gun.Block):0));
@@ -514,7 +515,8 @@ namespace RogueMachine.P12PipelineSafe
             for(int i=0;i<additionalGuns.Count;i++)
             {
                 var gun=additionalGuns[i];
-                var state=gun.Block?.GetComponent<RoboRougelike.WeaponIntegration.RRLDeviceBinding>()?.State??
+                var device=gun.Block!=null?gun.Block.GetComponent<RoboRougelike.WeaponIntegration.RRLDeviceBinding>():null;
+                var state=(device!=null?device.State:null)??
                     new R3PartState(default,R3PartKind.Gun){Id=EquipmentInstanceId("extra-gun/"+i),Source=name+" / dodatkowe działo",Weapon=gun.Kind};
                 state.DisruptionRemaining=SalvageDisruption(gun.Block);
                 items.Add(new R4SalvageItem(state,gun.Online(transform)?Condition(gun.Block):0));
@@ -522,7 +524,8 @@ namespace RogueMachine.P12PipelineSafe
             for(int i=0;i<driveWheels.Count;i++)
             {
                 var wheel=driveWheels[i];
-                var state=wheel?.GetComponent<RoboRougelike.WeaponIntegration.RRLDeviceBinding>()?.State??
+                var device=wheel!=null?wheel.GetComponent<RoboRougelike.WeaponIntegration.RRLDeviceBinding>():null;
+                var state=(device!=null?device.State:null)??
                     new R3PartState(default,R3PartKind.Wheel){Id=EquipmentInstanceId("wheel/"+i),Source=name+" / koło "+(i+1)};
                 state.DisruptionRemaining=SalvageDisruption(wheel);
                 items.Add(new R4SalvageItem(state,Condition(wheel)));

@@ -41,6 +41,7 @@ public sealed class R4EnemySawEmpArtTests
         var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(500,false);enemy.GetComponent<VehicleEnergyBank>()?.Recharge(1000);Physics.SyncTransforms();enemy.SetCombatActive(true);
         var step=typeof(RRLSawBinding).GetMethod("FixedUpdate",BindingFlags.Instance|BindingFlags.NonPublic);
         for(int i=0;i<80&&hp.CurrentHp>=500;i++){binding.SetMotorRequested(true);step.Invoke(binding,null);yield return null;}
+        Debug.Log($"R4_SAW_DIAGNOSTIC hp={hp.CurrentHp} rpm={binding.Module.Motor.Rpm} canCut={binding.Module.Motor.CanCut} jam={binding.Module.Motor.JamRemaining} available={binding.Device.Available} requested={binding.Module.IsMotorRequested} contacts={binding.Module.DamageEventsLastTick} center={center.position} target={target.transform.position} energy={enemy.GetComponent<VehicleEnergyBank>()?.Current}");
         Assert.That(hp.CurrentHp,Is.LessThan(500),"Actual saw contact must damage the target.");Object.Destroy(target);
     }
     [UnityTest] public IEnumerator EnemyEmpModelKeepsPhysicalPulseOriginAndDisruptsTarget()
