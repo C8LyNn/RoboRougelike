@@ -1321,6 +1321,38 @@ public float CurrentForwardSpeed =>
         public Vector3 FlightVelocity=>railgun!=null?railgun.Velocity:GetComponent<Rigidbody>().linearVelocity;
         public bool Intercept(float amount)
         {if(!IsActiveProjectile||amount<=0||float.IsNaN(amount)||float.IsInfinity(amount))return false;spent=true;gameObject.SetActive(false);Destroy(gameObject);return true;}
+        private static Mesh shellVisualMesh;
+        private Transform shellVisual;
+        private Rigidbody shellBody;
+        private void CreateShellVisual()
+        {
+            var original=GetComponent<Renderer>();
+            if(original==null||original.sharedMaterial==null)return;
+            if(shellVisualMesh==null)
+            {
+                var template=GameObject.CreatePrimitive(PrimitiveType.Capsule);template.SetActive(false);
+                shellVisualMesh=template.GetComponent<MeshFilter>().sharedMesh;Destroy(template);
+            }
+            if(shellVisualMesh==null)return;
+            var visual=new GameObject("P17 shell visual");visual.transform.SetParent(transform,false);
+            visual.transform.localScale=new Vector3(.72f,1.6f,.72f);
+            visual.AddComponent<MeshFilter>().sharedMesh=shellVisualMesh;
+            var renderer=visual.AddComponent<MeshRenderer>();renderer.sharedMaterial=original.sharedMaterial;
+            renderer.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;renderer.receiveShadows=false;
+            shellVisual=visual.transform;shellBody=GetComponent<Rigidbody>();original.enabled=false;
+            OrientShellVisual(launchDirection);
+        }
+        private void OrientShellVisual(Vector3 direction)
+        {
+            if(shellVisual==null||direction.sqrMagnitude<.000001f)return;
+            shellVisual.rotation=Quaternion.LookRotation(direction)*Quaternion.Euler(90,0,0);
+        }
+        private void LateUpdate()
+        {
+            if(shellVisual==null)return;
+            var direction=railgun!=null?railgun.Velocity:shellBody!=null?shellBody.linearVelocity:launchDirection;
+            OrientShellVisual(direction);
+        }
         private Transform targetRoot;
         private float damage;
         private Vector3 launchDirection;
@@ -1353,6 +1385,7 @@ public float CurrentForwardSpeed =>
 
             launchDirection =
                 initialDirection.normalized;
+            CreateShellVisual();
 
             Destroy(
                 gameObject,
