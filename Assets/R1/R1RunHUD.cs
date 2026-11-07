@@ -47,7 +47,7 @@ namespace RoboRougelike.R1
             bool portraitReady=UsePortraitReady(Screen.width,Screen.height,run.Progress?.State==R1RunState.Ready&&!run.MapEditing,
                 sessionOverlay||run.Error!=null||run.Transitioning);
             bool portraitGarage=UsePortraitGarage(Screen.width,Screen.height,run.Progress?.State==R1RunState.Garage,
-                run.MapEditing,run.Transitioning||sessionOverlay||run.Error!=null||catalogOpen);
+                run.MapEditing,run.Transitioning||sessionOverlay||run.Error!=null);
             float canvasWidth=portraitReady||portraitGarage?768:1280,canvasHeight=portraitReady||portraitGarage?1024:720;
             float scale = Mathf.Min(Screen.width/canvasWidth,Screen.height/canvasHeight);
             float offsetX=(Screen.width-canvasWidth*scale)/2,offsetY=(Screen.height-canvasHeight*scale)/2;
@@ -87,7 +87,7 @@ namespace RoboRougelike.R1
             var progress = run.Progress;
             if(run.MapEditing&&!run.Paused){DrawMapEditor(run);return;}
             if(progress.State==R1RunState.TestDrive){DrawTestRange(run);return;}
-            if(progress.State==R1RunState.Garage&&!run.Transitioning){if(catalogOpen)DrawFullCatalog(run);else if(portraitGarage)DrawPortraitGarage(run);else DrawGarage(run);return;}
+            if(progress.State==R1RunState.Garage&&!run.Transitioning){if(catalogOpen){if(portraitGarage)DrawPortraitCatalog(run);else DrawFullCatalog(run);}else if(portraitGarage)DrawPortraitGarage(run);else DrawGarage(run);return;}
             catalogOpen=false;
             if (progress.State == R1RunState.Combat && !run.Transitioning)
             {
