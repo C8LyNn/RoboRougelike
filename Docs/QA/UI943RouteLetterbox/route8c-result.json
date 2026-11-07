@@ -1,0 +1,38 @@
+{
+    "status": "CAPTURED",
+    "sourceCommit": "8c480f4a9df6eb31d6f5b09f12582527d3bfc3de",
+    "method": "QA fixture: PrepareUnifiedRun, ChooseRoute(0), disable enemy combat and apply API damage to cores, ConfirmRewards, StartNextEncounter; real stage 2 route screen; no simulated clicks or human victory",
+    "error": "",
+    "persistentDataPath": "[USER_HOME]/AppData/LocalLow/RRL_Route8c_CleanQA_20261107/Route8cStage2Fixture",
+    "graphics": "Direct3D12 / NVIDIA GeForce RTX 5080",
+    "screenshot": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-Route8c-QA\\Artifacts\\Local\\Route8cStage2Capture-1024x768\\route8c-screen.png",
+    "vehicle": "Standard",
+    "route0": "Otwarty konwój",
+    "route1": "Zasadzka na złomowisku",
+    "screenWidth": 1024,
+    "screenHeight": 768,
+    "captureWidth": 1024,
+    "captureHeight": 768,
+    "partCount": 59,
+    "offerCount": 2,
+    "seed": 2026,
+    "routeReady": true,
+    "canDeploy": true,
+    "correctResolution": true,
+    "apiEnemyDefeat": true,
+    "actualRewardsConfirmed": true,
+    "cameraRect": {
+        "serializedVersion": "2",
+        "x": 0.0,
+        "y": 0.0,
+        "width": 1.0,
+        "height": 1.0
+    },
+    "cameraPixelRect": {
+        "serializedVersion": "2",
+        "x": 0.0,
+        "y": 0.0,
+        "width": 1024.0,
+        "height": 768.0
+    }
+}
