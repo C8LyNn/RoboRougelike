@@ -5,7 +5,7 @@ using UnityEngine;
 
 public sealed class UI943CombatHudLayoutTests
 {
-    [TestCase(1)] [TestCase(4)]
+    [TestCase(1)] [TestCase(4)] [TestCase(9)]
     public void DefenseHeadingAndRowsFitInsideTheirPanel(int count)
     {
         var flags=BindingFlags.NonPublic|BindingFlags.Static;
@@ -28,6 +28,7 @@ public sealed class UI943CombatHudLayoutTests
     [TestCase(768,1024,1)] [TestCase(3840,2160,1)]
     [TestCase(1920,1080,4)] [TestCase(1366,768,4)] [TestCase(1024,768,4)]
     [TestCase(768,1024,4)] [TestCase(3840,2160,4)]
+    [TestCase(1920,1080,10)] [TestCase(1024,768,10)] [TestCase(768,1024,180)]
     public void DefensePanelDoesNotCoverStatusOrMovement(int width,int height,int count)
     {
         var method=typeof(R1RunHUD).GetMethod("DefensePanelRect",BindingFlags.NonPublic|BindingFlags.Static);
