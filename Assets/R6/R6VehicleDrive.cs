@@ -61,7 +61,7 @@ namespace RoboRougelike.R6
             var device=part.GetComponent<RoboRougelike.WeaponIntegration.RRLDeviceBinding>();
             if(device?.State!=null)return R4WeaponDefinition.PartMass(device.State);
             var mounted=part.GetComponent<R3MountedPart>();
-            if(mounted!=null)return R4WeaponDefinition.PartMass(mounted.Kind,mounted.Weapon);
+            if(mounted!=null)return R4WeaponDefinition.PartMass(mounted.Kind,mounted.Weapon)*R3VehicleModel.TierMass(mounted.Tier);
             var module=part.GetComponent<P12PipelineSafeFunctionalModule>();
             return module!=null&&module.ModuleType==P12FunctionalModuleType.Weapon?32:IsWheel(part)?12:8;
         }

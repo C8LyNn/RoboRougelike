@@ -216,7 +216,23 @@ namespace RoboRougelike.R1
             GUI.enabled=true;
             if(GUI.Button(new Rect(970,535,280,42),dismantleConfirmation==selected.Id?"Potwierdź rozmontowanie":$"Rozmontuj → {model.DismantleValue(selected)} Z",compactButton))
             {if(dismantleConfirmation==selected.Id){run.GarageDismantle(selected.Id);dismantleConfirmation=null;return;}dismantleConfirmation=selected.Id;}
-            GUI.Label(new Rect(970,590,280,100),garage.PlacementIssue??"Zielony podgląd: kliknij, aby zamontować.",small);
+            DrawFusionButton(run,selected,new Rect(970,590,280,42));
+            GUI.Label(new Rect(970,640,280,52),garage.PlacementIssue??"Zielony podgląd: kliknij, aby zamontować.",small);
+        }
+        private void DrawFusionButton(R1RunController run,R3PartState selected,Rect rect)
+        {
+            if(selected==null||!R3VehicleModel.SupportsFusion(selected.Kind))return;
+            int tier=R3VehicleModel.NormalizedTier(selected.Tier);
+            var others=run.VehicleModel.Inventory.Where(p=>p.Id!=selected.Id&&p.Kind==selected.Kind&&
+                R3VehicleModel.NormalizedTier(p.Tier)==tier).OrderBy(p=>p.Health).Take(2).ToArray();
+            var group=new[]{selected}.Concat(others).ToArray();
+            bool available=tier<3&&group.Length==3;
+            string label=tier>=3?"Maksymalny poziom T3":!available?$"Połącz T{tier} — potrzeba 3":
+                $"3×T{tier} → T{tier+1} • HP "+string.Join("/",group.Select(p=>(p.Health*100).ToString("0")))+"%";
+            GUI.enabled=available;
+            if(GUI.Button(rect,label,compactButton))
+            {if(!run.GarageFuse(group.Select(p=>p.Id)))run.Garage.Message="Nie udało się połączyć części.";}
+            GUI.enabled=true;
         }
     }
 }

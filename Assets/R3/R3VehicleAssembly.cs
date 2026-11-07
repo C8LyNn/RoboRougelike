@@ -181,14 +181,15 @@ namespace RoboRougelike.R3
                     palette.Parts[bonus?(int)R3PartKind.Gyroscope:(int)state.Kind];
                 if(wide)R3BonusModuleGeometry.ConfigureCube(item,true);
                 var hp=item.AddComponent<P12PipelineSafeDamageable>();
-                hp.Configure(state.Kind==R3PartKind.Core?model.Design.CoreHp:state.Kind==R3PartKind.Gun?R4WeaponDefinition.Get(state.Weapon).Hp:
-                    state.Kind==R3PartKind.BonusModule?250:state.Kind==R3PartKind.DirectionalShield?180:state.Kind==R3PartKind.PointDefense?160:state.Kind==R3PartKind.Wheel?80:state.Kind==R3PartKind.CrawlerTrack?140:100,true);
+                float baseHp=state.Kind==R3PartKind.Core?model.Design.CoreHp:state.Kind==R3PartKind.Gun?R4WeaponDefinition.Get(state.Weapon).Hp:
+                    state.Kind==R3PartKind.BonusModule?250:state.Kind==R3PartKind.DirectionalShield?180:state.Kind==R3PartKind.PointDefense?160:state.Kind==R3PartKind.Wheel?80:state.Kind==R3PartKind.CrawlerTrack?140:100;
+                hp.Configure(baseHp*R3VehicleModel.TierHealth(state.Tier),true);
                 var block=item.AddComponent<P12_PipelineSafePlayerBlock>();
                 item.AddComponent<R3BlockMountPoints>().Configure(state.Id,
                     R3MountingGrid.WorldPortMask(state.RotationQuarterTurns,state.ContactMask));
                 if(wide)R3BonusModuleGeometry.AddStructuralSockets(item.transform,state);
                 if(state.Kind==R3PartKind.Core)core=block;
-                var part=item.AddComponent<R3MountedPart>(); part.Cell=state.Cell;part.Kind=state.Kind;part.Damageable=hp;part.Block=block;
+                var part=item.AddComponent<R3MountedPart>(); part.Cell=state.Cell;part.Kind=state.Kind;part.Tier=R3VehicleModel.NormalizedTier(state.Tier);part.Damageable=hp;part.Block=block;
                 part.Id=state.Id;part.Weapon=state.Weapon;
                 part.UpgradeEffect=state.UpgradeEffect;part.UpgradeAmount=state.UpgradeAmount;
                 assembly.Parts.Add(part);

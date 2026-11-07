@@ -113,6 +113,7 @@ namespace RoboRougelike.R3
         static bool ValidCheckpointPart(R3PartState p)
         {
             return p!=null&&!string.IsNullOrWhiteSpace(p.Id)&&p.Id.Length<=128&&ValidEconomicKind(p.Kind,p.Weapon)&&
+                p.Tier>=0&&p.Tier<=3&&(p.Tier<=1||SupportsFusion(p.Kind))&&
                 Finite(p.Health)&&p.Health>=0&&p.Health<=1&&Finite(p.DeviceReadyAt)&&p.DeviceReadyAt>=0&&
                 Finite(p.ReloadReadyAt)&&p.ReloadReadyAt>=0&&Finite(p.DisruptionRemaining)&&p.DisruptionRemaining>=0&&
                 Finite(p.ThermalHeat)&&p.ThermalHeat>=0&&Finite(p.DefenseCharge)&&Finite(p.DefenseRechargeAge)&&
@@ -164,8 +165,8 @@ namespace RoboRougelike.R3
                 (data.hasA&&data.hasB&&data.groupA==data.groupB))return false;
             var restored=new R3VehicleModel(R3VehicleCatalog.Create(kind),economy);
             restored.Parts.Clear();restored.inventory.Clear();
-            foreach(var source in mounted){var p=source.Copy();p.DeviceReadyAt=p.DeviceReadyAt>0?now+p.DeviceReadyAt:0;p.ReloadReadyAt=p.ReloadReadyAt>0?now+p.ReloadReadyAt:0;restored.Parts.Add(p);}
-            foreach(var source in inventory){var p=source.Copy();p.DeviceReadyAt=p.DeviceReadyAt>0?now+p.DeviceReadyAt:0;p.ReloadReadyAt=p.ReloadReadyAt>0?now+p.ReloadReadyAt:0;restored.inventory.Add(p);}
+            foreach(var source in mounted){var p=source.Copy();p.Tier=NormalizedTier(p.Tier);p.DeviceReadyAt=p.DeviceReadyAt>0?now+p.DeviceReadyAt:0;p.ReloadReadyAt=p.ReloadReadyAt>0?now+p.ReloadReadyAt:0;restored.Parts.Add(p);}
+            foreach(var source in inventory){var p=source.Copy();p.Tier=NormalizedTier(p.Tier);p.DeviceReadyAt=p.DeviceReadyAt>0?now+p.DeviceReadyAt:0;p.ReloadReadyAt=p.ReloadReadyAt>0?now+p.ReloadReadyAt:0;restored.inventory.Add(p);}
             restored.LegacyPartsMovedToInventory=migratedCount;
             restored.factoryWheels.Clear();foreach(var wheel in data.wheels)
                 restored.factoryWheels.Add(wheel.id,new FactoryWheelPose(new R3PartState(wheel.cell,R3PartKind.Wheel){RotationQuarterTurns=wheel.rotation,ContactMask=wheel.contacts}));

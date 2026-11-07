@@ -16,6 +16,8 @@ namespace RoboRougelike.R3
     {
         public Vector3Int Cell;
         public R3PartKind Kind;
+        // 0 is accepted only as a legacy serialized tier and normalized to T1.
+        public int Tier = 1;
         public float Health = 1;
         public string Id = Guid.NewGuid().ToString("N");
         public string Source = "Zakup / pojazd startowy";
@@ -38,7 +40,7 @@ namespace RoboRougelike.R3
         public bool ThermalLocked;
         public float DefenseCharge=-1,DefenseRechargeAge=float.PositiveInfinity;
         public R3PartState(Vector3Int cell, R3PartKind kind, float health = 1) { Cell = cell; Kind = kind; Health = health; }
-        public R3PartState Copy() => new R3PartState(Cell, Kind, Health){Id=Id,Source=Source,Weapon=Weapon,SteeringMode=SteeringMode,DeviceReadyAt=DeviceReadyAt,Ammo=Ammo,ReloadReadyAt=ReloadReadyAt,ThermalHeat=ThermalHeat,ThermalLocked=ThermalLocked,DisruptionRemaining=DisruptionRemaining,DefenseCharge=DefenseCharge,DefenseRechargeAge=DefenseRechargeAge,
+        public R3PartState Copy() => new R3PartState(Cell, Kind, Health){Id=Id,Source=Source,Weapon=Weapon,Tier=Tier,SteeringMode=SteeringMode,DeviceReadyAt=DeviceReadyAt,Ammo=Ammo,ReloadReadyAt=ReloadReadyAt,ThermalHeat=ThermalHeat,ThermalLocked=ThermalLocked,DisruptionRemaining=DisruptionRemaining,DefenseCharge=DefenseCharge,DefenseRechargeAge=DefenseRechargeAge,
             UpgradeId=UpgradeId,UpgradeTitle=UpgradeTitle,UpgradeDescription=UpgradeDescription,
             UpgradeEffect=UpgradeEffect,UpgradeAmount=UpgradeAmount,
             RotationQuarterTurns=RotationQuarterTurns,ContactMask=ContactMask};
@@ -63,6 +65,11 @@ namespace RoboRougelike.R3
     public sealed partial class R3VehicleModel
     {
         public const int InventoryCapacity=200;
+        public static int NormalizedTier(int tier)=>tier<=0?1:Math.Min(3,tier);
+        public static float TierHealth(int tier)=>NormalizedTier(tier)==3?3.6f:NormalizedTier(tier)==2?2f:1f;
+        public static float TierMass(int tier)=>NormalizedTier(tier)==3?1.3f:NormalizedTier(tier)==2?1.15f:1f;
+        public static float TierWheelTraction(int tier)=>NormalizedTier(tier)==3?1.8f:NormalizedTier(tier)==2?1.35f:1f;
+        public static bool SupportsFusion(R3PartKind kind)=>kind==R3PartKind.Armor||kind==R3PartKind.Wheel;
         public R3VehicleDesign Design { get; }
         public List<R3PartState> Parts { get; }
         private readonly List<R3PartState> inventory=new List<R3PartState>();
@@ -186,7 +193,8 @@ namespace RoboRougelike.R3
         public static bool ValidEconomicKind(R3PartKind kind,R4WeaponKind weapon) =>
             Enum.IsDefined(typeof(R3PartKind),kind) &&
             (kind!=R3PartKind.Gun||Enum.IsDefined(typeof(R4WeaponKind),weapon));
-        public static bool ValidEconomicPart(R3PartState part) => part!=null && ValidEconomicKind(part.Kind,part.Weapon) &&
+        public static bool ValidEconomicPart(R3PartState part) => part!=null && ValidEconomicKind(part.Kind,part.Weapon) && part.Tier>=0&&part.Tier<=3&&
+            (part.Tier<=1||SupportsFusion(part.Kind))&&
             !float.IsNaN(part.Health)&&!float.IsInfinity(part.Health)&&part.Health>=0&&part.Health<=1;
         public int Price(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic) => !ValidEconomicKind(kind,weapon)?0:Math.Max(1,
             kind==R3PartKind.Gun&&weapon!=R4WeaponKind.Basic?R4WeaponDefinition.Get(weapon).Price:Economy.Price(kind));
@@ -264,7 +272,7 @@ namespace RoboRougelike.R3
             // Apply the existing proportional repair rate continuously to owned wrecks.
             // A one-scrap purchase has no positive, strictly lower integer price;
             // fail closed instead of giving away an owned part or charging full price.
-            int purchase=Price(part.Kind,part.Weapon);
+            int purchase=OwnedPartValue(part);
             if(part.Health<=0&&purchase<=1)return 0;
             int quote=Math.Max(1,Mathf.CeilToInt((1-part.Health)*purchase*0.35f));
             return part.Health<=0?Math.Min(purchase-1,quote):quote;
@@ -355,7 +363,24 @@ namespace RoboRougelike.R3
             if(part==null||cost<=0||Scrap<cost)return false;
             Scrap-=cost;part.Health=1;return true;
         }
-        public int DismantleValue(R3PartState part) => !ValidEconomicPart(part)?0:Mathf.FloorToInt(Price(part.Kind,part.Weapon)*0.25f*Mathf.Clamp01(part.Health));
+        int OwnedPartValue(R3PartState part)=>Price(part.Kind,part.Weapon)*(NormalizedTier(part.Tier)==3?9:NormalizedTier(part.Tier)==2?3:1);
+        public int DismantleValue(R3PartState part) => !ValidEconomicPart(part)?0:Mathf.FloorToInt(OwnedPartValue(part)*0.25f*Mathf.Clamp01(part.Health));
+        public bool FuseInventory(IEnumerable<string> ids)
+        {
+            if(ids==null)return false;
+            var requested=ids.ToArray();
+            if(requested.Length!=3||requested.Any(string.IsNullOrWhiteSpace)||requested.Distinct(StringComparer.Ordinal).Count()!=3)return false;
+            var parts=requested.Select(id=>inventory.FirstOrDefault(p=>p.Id==id)).ToArray();
+            if(parts.Any(p=>!ValidEconomicPart(p))||!SupportsFusion(parts[0].Kind))return false;
+            int tier=NormalizedTier(parts[0].Tier);
+            if(tier>=3||parts.Any(p=>p.Kind!=parts[0].Kind||NormalizedTier(p.Tier)!=tier))return false;
+            // A new physical item represents all three inputs. Preserve average
+            // condition so fusion never repairs damaged items for free.
+            var result=parts[0].Copy();result.Id=Guid.NewGuid().ToString("N");result.Tier=tier+1;
+            result.Health=parts.Average(p=>p.Health);result.Source="Fuzja trzech części T"+tier;
+            foreach(var part in parts)inventory.Remove(part);
+            inventory.Add(result);return true;
+        }
         public bool Dismantle(string id)
         {
             var part=inventory.FirstOrDefault(p=>p.Id==id);if(!ValidEconomicPart(part))return false;

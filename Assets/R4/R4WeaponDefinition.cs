@@ -46,14 +46,18 @@ namespace RoboRougelike.R4
             if(index<0||index>=definitions.Length)throw new System.ArgumentOutOfRangeException(nameof(kind));
             return definitions[index];
         }
-        public static float PartMass(R3PartState part) => PartMass(part.Kind,part.Weapon);
+        public static float PartMass(R3PartState part) => PartMass(part.Kind,part.Weapon)*R3VehicleModel.TierMass(part.Tier);
         public static float PartMass(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic) => kind switch {
             R3PartKind.Gun=>Get(weapon).Mass,R3PartKind.Wheel=>12,R3PartKind.Suspension=>12,
             R3PartKind.Booster=>18,R3PartKind.JumpDrive=>24,R3PartKind.Blink=>28,R3PartKind.Gyroscope=>16,
             R3PartKind.OmniDrive=>22,R3PartKind.MagneticGrapple=>24,R3PartKind.HoverEngine=>18,R3PartKind.CrawlerTrack=>40,R3PartKind.BonusModule=>32,R3PartKind.DirectionalShield=>32,R3PartKind.PointDefense=>35,R3PartKind.StructuralScanner=>16,R3PartKind.ScannerPulse=>12,R3PartKind.IndependentSteering=>14,R3PartKind.RepairPulse=>18,R3PartKind.DrivePower=>18,R3PartKind.EnergyRegenerator=>16,_=>8};
-        public static string PartName(R3PartState part) => part.Kind==R3PartKind.BonusModule?
-            (string.IsNullOrWhiteSpace(part.UpgradeTitle)?"Moduł bonusu 1×1×1":part.UpgradeTitle+" [1×1×1]"):
-            PartName(part.Kind,part.Weapon);
+        public static string PartName(R3PartState part)
+        {
+            string name=part.Kind==R3PartKind.BonusModule?
+                (string.IsNullOrWhiteSpace(part.UpgradeTitle)?"Moduł bonusu 1×1×1":part.UpgradeTitle+" [1×1×1]"):
+                PartName(part.Kind,part.Weapon);
+            return part.Tier>1?name+" T"+part.Tier:name;
+        }
         public static string PartName(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic) => kind==R3PartKind.Gun?Get(weapon).Name:
             kind switch {R3PartKind.Wheel=>"Koło",R3PartKind.Suspension=>"Aktywne zawieszenie",R3PartKind.Core=>"Rdzeń",
                 R3PartKind.Booster=>"Booster",R3PartKind.JumpDrive=>"Napęd skokowy",R3PartKind.Blink=>"Blink",
