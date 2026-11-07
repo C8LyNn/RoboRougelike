@@ -14,6 +14,8 @@ namespace RoboRougelike.R1
     public sealed partial class R1RunHUD
     {
         private readonly HashSet<string> lootSelection=new HashSet<string>();
+        private IReadOnlyList<R4SalvageBasket> rewardBaskets=System.Array.Empty<R4SalvageBasket>();
+        private int selectedBasket=-1;
         private int selectedBonus=-1;
         private R4SalvageLedger displayedLedger;
         private int lootPage,inventoryPage;
@@ -42,8 +44,20 @@ namespace RoboRougelike.R1
         {
             if(displayedLedger==ledger)return;
             displayedLedger=ledger;lootSelection.Clear();selectedBonus=-1;lootPage=0;
+            var run=R1RunController.Instance;
+            rewardBaskets=ledger?.CreateBasketOffers((run?.Seed??0)^((run?.Progress?.EncounterIndex??0)*397),run?.Progress?.EncounterIndex??0)
+                ??System.Array.Empty<R4SalvageBasket>();
+            selectedBasket=-1;
             rewardInventoryOpen=false;rewardInventoryPage=0;rewardDismantleConfirmation=null;
         }
+        private void ChooseRewardBasket(int index)
+        {
+            if(index<0||index>=rewardBaskets.Count)return;
+            selectedBasket=index;lootSelection.Clear();
+            foreach(var item in rewardBaskets[index].Items)lootSelection.Add(item.Id);
+        }
+        private static Color BasketColor(R4SalvageBasket basket)=>basket.Percent>=66?new Color(.48f,.9f,.55f):
+            basket.Percent>=33?new Color(.45f,.82f,.95f):Color.white;
 #if ENABLE_INPUT_SYSTEM
         public void ReadRewardInput(Keyboard keyboard)
         {
@@ -56,7 +70,7 @@ namespace RoboRougelike.R1
             {
                 selectedBonus=index;
             }
-            if(keyboard.enterKey.wasPressedThisFrame)run.ConfirmRewards(lootSelection,selectedBonus>=0?new[]{selectedBonus}:System.Array.Empty<int>());
+            if(keyboard.enterKey.wasPressedThisFrame&&(selectedBasket>=0||rewardBaskets.Count==0))run.ConfirmRewards(lootSelection,selectedBonus>=0?new[]{selectedBonus}:System.Array.Empty<int>());
         }
 #endif
         private void DrawSalvage(R1RunController run)
@@ -64,12 +78,11 @@ namespace RoboRougelike.R1
             var ledger=run.Salvage;
             TrackRewardLedger(ledger);
             if(rewardInventoryOpen){DrawRewardInventory(run);return;}
-            const int partsLimit=3;
             GUI.Label(new Rect(45,30,1190,60),run.LastActivityWasReactor?"ZWYCIĘSTWO • REAKTOR OBRONIONY":"ZWYCIĘSTWO • WYBÓR NAGRÓD",title);
             GUI.Label(new Rect(45,97,1190,50),
-                $"DWA NIEZALEŻNE WYBORY: 1 z 3 modułów bonusowych + do 3 części z wraków. +{run.LastScrapReward} Z za walkę.",body);
+                $"Wybierz moduł i jeden zestaw z wraków. +{run.LastScrapReward} Z za walkę.",body);
             GUI.Label(new Rect(45,155,355,32),"MODUŁ BONUSOWY • 1 Z 3",heading);
-            GUI.Label(new Rect(455,155,765,32),"CZĘŚCI PRZECIWNIKÓW • DO 3",heading);
+            GUI.Label(new Rect(455,155,765,32),"ODZYSK • WYBIERZ 1 ZESTAW",heading);
 
             var offers=run.Progress.Offers.ToArray();
             for(int i=0;i<offers.Length;i++)
@@ -87,47 +100,29 @@ namespace RoboRougelike.R1
             if(offers.Length==0)
                 GUI.Label(new Rect(55,205,345,80),"Brak propozycji modułów bonusowych.",small);
 
-            var items=ledger.Items.Where(item=>item.Selectable).ToArray();
-            int pages=Mathf.Max(1,Mathf.CeilToInt(items.Length/6f));
-            lootPage=Mathf.Clamp(lootPage,0,pages-1);
-            var visible=items.Skip(lootPage*6).Take(6).ToArray();
-            for(int i=0;i<visible.Length;i++)
+            for(int i=0;i<rewardBaskets.Count;i++)
             {
-                var item=visible[i];
-                float x=455+(i%2)*390,y=197+(i/2)*116;
-                Panel(new Rect(x,y,375,104));
-                var part=item.ToPart();
-                var lootTitle=new GUIStyle(body){fontSize=17,wordWrap=true};
-                var lootDetail=new GUIStyle(small){fontSize=13,wordWrap=true};
-                GUI.Label(new Rect(x+10,y+5,252,26),R4WeaponDefinition.PartName(part),lootTitle);
-                string type=item.Kind==R3PartKind.Gun?"Broń":R4WeaponDefinition.PartName(item.Kind);
-                GUI.Label(new Rect(x+10,y+30,252,32),type+" • "+item.Source,lootDetail);
-                GUI.Label(new Rect(x+10,y+64,255,37),
-                    $"HP wraku: {item.Health*100:0}%\nOdbiór: 100% HP",lootDetail);
-                bool chosen=lootSelection.Contains(item.Id);
-                GUI.enabled=chosen||lootSelection.Count<partsLimit;
+                var basket=rewardBaskets[i];float x=455,y=197+i*116;
+                Panel(new Rect(x,y,765,104));
+                GUI.contentColor=BasketColor(basket);
+                GUI.Label(new Rect(x+10,y+6,520,28),$"{R3EnemyProfiles.Name(basket.Archetype)} • {basket.Items.Count}/{basket.AvailableParts} części",body);
+                GUI.contentColor=Color.white;
+                GUI.Label(new Rect(x+10,y+39,535,54),string.Join(", ",basket.Items.Select(p=>R4WeaponDefinition.PartName(p.ToPart())))+"\nWszystkie części sprawne (100% HP)",small);
+                bool chosen=selectedBasket==i;
                 GUI.backgroundColor=chosen?new Color(.35f,.85f,.65f):Color.white;
-                if(GUI.Button(new Rect(x+268,y+26,97,48),chosen?"Wybrano ✓":"Zatrzymaj",compactButton))
-                {if(chosen)lootSelection.Remove(item.Id);else lootSelection.Add(item.Id);}
-                GUI.enabled=true;GUI.backgroundColor=Color.white;
-                string ammo=SalvageAmmoLabel(part);
-                if(ammo!=null)GUI.Label(SalvageAmmoRect(x,y),ammo,lootDetail);
+                if(GUI.Button(new Rect(x+570,y+25,180,50),chosen?"Wybrano ✓":"Wybierz",compactButton))ChooseRewardBasket(i);
+                GUI.backgroundColor=Color.white;
             }
-            GUI.enabled=lootPage>0;
-            if(GUI.Button(new Rect(465,556,90,35),"←",compactButton))lootPage=Mathf.Max(0,lootPage-1);
-            GUI.Label(new Rect(562,559,185,32),$"Strona {lootPage+1}/{pages}",small);
-            GUI.enabled=lootPage<pages-1;
-            if(GUI.Button(new Rect(730,556,90,35),"→",compactButton))lootPage=Mathf.Min(pages-1,lootPage+1);
-            GUI.enabled=true;
+            if(rewardBaskets.Count==0)GUI.Label(new Rect(465,205,735,60),"Brak części do odzyskania.",small);
 
             if(GUI.Button(new Rect(850,556,375,35),$"Magazyn {run.VehicleModel.Inventory.Count}/{R3VehicleModel.InventoryCapacity} • zwolnij miejsce",compactButton))
                 rewardInventoryOpen=true;
             bool room=run.VehicleModel.Inventory.Count+lootSelection.Count+1<=R3VehicleModel.InventoryCapacity;
             GUI.Label(new Rect(45,603,685,87),
-                $"Moduł bonusowy: {(selectedBonus>=0?"1/1":"0/1 (WYMAGANY)")}  •  Części z wraków: {lootSelection.Count}/{partsLimit}\n" +
+                $"Moduł: {(selectedBonus>=0?"wybrany":"wymagany")}  •  Zestaw: {(selectedBasket>=0?lootSelection.Count+" części":rewardBaskets.Count==0?"brak łupów":"wymagany")}\n" +
                 $"Niewybrane części → +{ledger.PreviewScrap(run.VehicleModel,lootSelection)} Z.\n" +
                 "Bonusy trafiają do magazynu i pozostają NIEAKTYWNE do montażu.",small);
-            GUI.enabled=selectedBonus>=0&&room;
+            GUI.enabled=selectedBonus>=0&&room&&(selectedBasket>=0||rewardBaskets.Count==0);
             if(GUI.Button(new Rect(805,610,420,68),"Zatwierdź oba wybory i kontynuuj",button))
                 run.ConfirmRewards(lootSelection,selectedBonus>=0?new[]{selectedBonus}:System.Array.Empty<int>());
             GUI.enabled=true;

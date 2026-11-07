@@ -68,6 +68,21 @@ public sealed class RewardRC2IntegrationTests
         int scrap=run.VehicleModel.Scrap;Assert.That(run.ConfirmRewards(choices.Select(x=>x.Id),new[]{0}),Is.False);
         Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(4));
     }
+    [UnityTest] public IEnumerator WinningEncounterOffersBasketAndClaimsTheChosenPhysicalParts()
+    {
+        yield return Win();
+        var hud=run.GetComponent<R1RunHUD>();
+        var flags=BindingFlags.Instance|BindingFlags.NonPublic;
+        typeof(R1RunHUD).GetMethod("TrackRewardLedger",flags).Invoke(hud,new object[]{run.Salvage});
+        var baskets=(System.Collections.Generic.IReadOnlyList<R4SalvageBasket>)typeof(R1RunHUD).GetField("rewardBaskets",flags).GetValue(hud);
+        Assert.That(baskets.Count,Is.EqualTo(3));
+        typeof(R1RunHUD).GetMethod("ChooseRewardBasket",flags).Invoke(hud,new object[]{0});
+        var selected=(System.Collections.Generic.HashSet<string>)typeof(R1RunHUD).GetField("lootSelection",flags).GetValue(hud);
+        Assert.That(selected,Is.EquivalentTo(baskets[0].Items.Select(p=>p.Id)));
+        Assert.That(run.ConfirmRewards(selected,new[]{0}),Is.True);
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage));
+        foreach(var id in selected)Assert.That(run.VehicleModel.Inventory.Single(p=>p.Id==id).Health,Is.EqualTo(1));
+    }
     [UnityTest] public IEnumerator FourthOrOwnedSelectionCannotMutateCanonicalRewardState()
     {
         yield return Win();var ids=run.Salvage.Items.Where(x=>x.Selectable).Take(4).Select(x=>x.Id).ToArray();Assert.That(ids.Length,Is.EqualTo(4));

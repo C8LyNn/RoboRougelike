@@ -6,6 +6,15 @@ using RoboRougelike.R3;
 
 namespace RoboRougelike.R4
 {
+    public sealed class R4SalvageBasket
+    {
+        public R3EnemyArchetype Archetype { get; }
+        public int Percent { get; }
+        public int AvailableParts { get; }
+        public IReadOnlyList<R4SalvageItem> Items { get; }
+        internal R4SalvageBasket(R3EnemyArchetype archetype,int available,R4SalvageItem[] parts)
+        { Archetype=archetype;AvailableParts=available;Percent=parts.Length*100/available;Items=Array.AsReadOnly(parts); }
+    }
     public sealed class R4SalvageItem
     {
         public readonly string Id, Source;
@@ -42,19 +51,48 @@ namespace RoboRougelike.R4
         private readonly List<R4SalvageItem> items=new List<R4SalvageItem>();
         private readonly HashSet<string> enemies=new HashSet<string>();
         private readonly HashSet<string> ids=new HashSet<string>();
+        private readonly List<(R3EnemyArchetype Type,R4SalvageItem[] Parts)> basketSources=new List<(R3EnemyArchetype,R4SalvageItem[])>();
         public IReadOnlyList<R4SalvageItem> Items => items.AsReadOnly();
         public int Limit { get; }
         public bool Closed { get; private set; }
         public int DismantledScrap { get; private set; }
         public R4SalvageLedger(int limit=2){Limit=Math.Max(0,Math.Min(8,limit));}
-        public bool Record(string enemyId,IEnumerable<R4SalvageItem> equipment)
+        public bool Record(string enemyId,IEnumerable<R4SalvageItem> equipment) => RecordCore(enemyId,equipment,null);
+        public bool Record(string enemyId,IEnumerable<R4SalvageItem> equipment,R3EnemyArchetype archetype)
+            => RecordCore(enemyId,equipment,archetype);
+        private bool RecordCore(string enemyId,IEnumerable<R4SalvageItem> equipment,R3EnemyArchetype? archetype)
         {
             if(Closed||string.IsNullOrWhiteSpace(enemyId)||enemies.Contains(enemyId)||equipment==null)return false;
             var batch=equipment.ToArray();
             if(batch.Any(p=>p==null||string.IsNullOrWhiteSpace(p.Id)||ids.Contains(p.Id)||p.Kind==R3PartKind.Core||
                 !R3VehicleModel.ValidEconomicPart(p.ToPart()))||
                 batch.Select(p=>p.Id).Distinct().Count()!=batch.Length)return false;
-            enemies.Add(enemyId);foreach(var item in batch){ids.Add(item.Id);items.Add(item);}return true;
+            enemies.Add(enemyId);foreach(var item in batch){ids.Add(item.Id);items.Add(item);}
+            if(archetype.HasValue)basketSources.Add((archetype.Value,batch));
+            return true;
+        }
+        public IReadOnlyList<R4SalvageBasket> CreateBasketOffers(int seed,int stage)
+        {
+            // Select among the most common archetypes that actually appeared.
+            // Every offer draws from one real defeated robot; armor stays excluded.
+            var groups=basketSources.Where(s=>s.Parts.Any(p=>p.Selectable)).GroupBy(s=>s.Type)
+                .OrderByDescending(g=>g.Count()).ThenBy(g=>g.Key).Take(3).ToArray();
+            if(groups.Length==0||Limit==0)return Array.Empty<R4SalvageBasket>();
+            var random=new System.Random(seed);
+            var result=new List<R4SalvageBasket>();
+            for(int i=0;i<3;i++)
+            {
+                var group=groups[i%groups.Length].ToArray();
+                var source=group[random.Next(group.Length)];
+                var pool=source.Parts.Where(p=>p.Selectable).OrderBy(p=>p.Id,StringComparer.Ordinal).ToArray();
+                int tier=Math.Max(0,Math.Min(5,stage));
+                int percent=random.Next(30+tier*5,61+tier*5);
+                int count=Math.Min(Limit,Math.Max(1,(int)Math.Ceiling(pool.Length*percent/100d)));
+                // Partial Fisher-Yates: no duplicated physical instance inside a basket.
+                for(int j=0;j<count;j++){int k=random.Next(j,pool.Length);var swap=pool[j];pool[j]=pool[k];pool[k]=swap;}
+                result.Add(new R4SalvageBasket(source.Type,pool.Length,pool.Take(count).ToArray()));
+            }
+            return result.AsReadOnly();
         }
         public int PreviewScrap(R3VehicleModel model,IEnumerable<string> selected)
         {
