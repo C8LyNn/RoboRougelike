@@ -73,7 +73,7 @@ namespace RoboRougelike.R3
         public static float TierPassiveExtra(int tier)=>NormalizedTier(tier)==3?10:NormalizedTier(tier)==2?5:0;
         public static float TierActivationCost(int tier)=>NormalizedTier(tier)==3?1.4f:NormalizedTier(tier)==2?1.2f:1f;
         public static bool SupportsFusion(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic)=>kind==R3PartKind.Armor||kind==R3PartKind.Wheel||
-            kind==R3PartKind.Battery||kind==R3PartKind.RepairPulse||kind==R3PartKind.DrivePower||kind==R3PartKind.EnergyRegenerator||
+            kind==R3PartKind.Battery||kind==R3PartKind.RepairPulse||kind==R3PartKind.DrivePower||kind==R3PartKind.EnergyRegenerator||kind==R3PartKind.BonusModule||
             (kind==R3PartKind.Gun&&weapon>=R4WeaponKind.Basic&&weapon<=R4WeaponKind.EmpEmitter);
         public R3VehicleDesign Design { get; }
         public List<R3PartState> Parts { get; }
@@ -371,6 +371,12 @@ namespace RoboRougelike.R3
         }
         int OwnedPartValue(R3PartState part)=>Price(part.Kind,part.Weapon)*(NormalizedTier(part.Tier)==3?9:NormalizedTier(part.Tier)==2?3:1);
         public int DismantleValue(R3PartState part) => !ValidEconomicPart(part)?0:Mathf.FloorToInt(OwnedPartValue(part)*0.25f*Mathf.Clamp01(part.Health));
+        public static bool SameFusionType(R3PartState a,R3PartState b) => a!=null&&b!=null&&a.Kind==b.Kind&&
+            NormalizedTier(a.Tier)==NormalizedTier(b.Tier)&&
+            (a.Kind!=R3PartKind.Gun||a.Weapon==b.Weapon)&&
+            (a.Kind!=R3PartKind.BonusModule||(!string.IsNullOrWhiteSpace(a.UpgradeId)&&a.UpgradeId==b.UpgradeId&&
+                Enum.IsDefined(typeof(R1UpgradeEffect),a.UpgradeEffect)&&a.UpgradeEffect==b.UpgradeEffect&&
+                !float.IsNaN(a.UpgradeAmount)&&!float.IsInfinity(a.UpgradeAmount)&&a.UpgradeAmount>=0&&a.UpgradeAmount<=1&&a.UpgradeAmount==b.UpgradeAmount));
         public bool FuseInventory(IEnumerable<string> ids)
         {
             if(ids==null)return false;
@@ -383,8 +389,7 @@ namespace RoboRougelike.R3
                 float.IsNaN(p.DisruptionRemaining)||float.IsInfinity(p.DisruptionRemaining)||p.DisruptionRemaining<0||
                 float.IsNaN(p.ThermalHeat)||float.IsInfinity(p.ThermalHeat)||p.ThermalHeat<0))return false;
             int tier=NormalizedTier(parts[0].Tier);
-            if(tier>=3||parts.Any(p=>p.Kind!=parts[0].Kind||NormalizedTier(p.Tier)!=tier||
-                (p.Kind==R3PartKind.Gun&&p.Weapon!=parts[0].Weapon)))return false;
+            if(tier>=3||parts.Any(p=>!SameFusionType(parts[0],p)))return false;
             // A new physical item represents all three inputs. Preserve average
             // condition so fusion never repairs damaged items for free.
             var result=parts[0].Copy();result.Id=Guid.NewGuid().ToString("N");result.Tier=tier+1;
