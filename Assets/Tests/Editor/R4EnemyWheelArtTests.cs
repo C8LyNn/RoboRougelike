@@ -18,7 +18,8 @@ public sealed class R4EnemyWheelArtTests
 
     [UnityTest] public IEnumerator SourceWheelArtMovesAndDetachesWithOriginalPhysicalWheel()
     {
-        var root=new GameObject("enemy visual test");var body=root.AddComponent<Rigidbody>();body.useGravity=false;
+        var root=new GameObject("enemy visual test");root.transform.rotation=Quaternion.Euler(0,37,0);
+        var body=root.AddComponent<Rigidbody>();body.useGravity=false;
         var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
         var method=typeof(P12PipelineSafeEnemyTurret).GetMethod("MakeProfileBlock",BindingFlags.NonPublic|BindingFlags.Static);
         Assert.That(method,Is.Not.Null);
@@ -29,14 +30,17 @@ public sealed class R4EnemyWheelArtTests
         Assert.That(rotor.GetComponentsInChildren<Collider>(true),Is.Empty,"Visual art must not create physics colliders.");
         Assert.That(collider,Is.Not.Null);Assert.That(collider.enabled,Is.True);
         Assert.That(Vector3.Distance(rotor.position,wheel.transform.position),Is.LessThan(.005f),"Rotor center must match the existing physical wheel.");
+        Physics.SyncTransforms();
+        Assert.That(Mathf.Abs(Vector3.Dot(rotor.right,wheel.transform.up)),Is.GreaterThan(.99f),"The visible axle must align with the physical wheel axle.");
         var renderers=rotor.GetComponentsInChildren<Renderer>(true);Assert.That(renderers,Is.Not.Empty);
         var visibleBounds=renderers[0].bounds;
         foreach(var item in renderers.Skip(1))visibleBounds.Encapsulate(item.bounds);
         Debug.Log("R4_ENEMY_WHEEL_BOUNDS visual="+visibleBounds.size.ToString("F4")+" collider="+collider.bounds.size.ToString("F4"));
+        Assert.That(visibleBounds.size.y,Is.EqualTo(.53f).Within(.04f),"Visual diameter must match the intended wheel diameter.");
         var oldWheel=wheel.GetComponentInChildren<P12EnemyWheelVisual>(true);
         Assert.That(oldWheel,Is.Not.Null,"The original visual remains as a fallback.");
         Assert.That(oldWheel.GetComponent<Renderer>().enabled,Is.False,"Do not draw both old and new wheel art.");
-        var start=rotor.localRotation;body.linearVelocity=Vector3.forward*4;
+        var start=rotor.localRotation;body.linearVelocity=root.transform.forward*4;
         yield return null;yield return null;
         Assert.That(Quaternion.Angle(start,rotor.localRotation),Is.GreaterThan(.01f),"Visual rotor must roll with motion.");
         Assert.That(Quaternion.Angle(originalRotation,wheel.transform.localRotation),Is.LessThan(.01f),"Visual animation must not rotate the collider.");
