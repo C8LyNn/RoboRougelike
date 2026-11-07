@@ -12,7 +12,7 @@ public sealed class R4WeaponArtCatalogTests
     {
         EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);yield return new EnterPlayMode();
     }
-    [UnityTest] public IEnumerator CatalogLoadsEightRealModelsAndLeavesAutomaticAsFallback()
+    [UnityTest] public IEnumerator CatalogLoadsNineRealWeaponModels()
     {
         var type=Type.GetType("RoboRougelike.R4_1.R4WeaponArtCatalog, Assembly-CSharp");
         Assert.That(type,Is.Not.Null,"A runtime catalog is required for the Player to load the models.");
@@ -25,7 +25,7 @@ public sealed class R4WeaponArtCatalogTests
             Assert.That(model,Is.Not.Null,weapon.ToString());
             Assert.That(model.name,Is.EqualTo("R4W_"+weapon),weapon.ToString());
         }
-        Assert.That(lookup.Invoke(catalog,new object[]{R4WeaponKind.Automatic}),Is.Null,"No Automatic model was supplied.");
+        Assert.That((GameObject)lookup.Invoke(catalog,new object[]{R4WeaponKind.Automatic}),Is.Not.Null,"Automatic model must be available in Player.");
         yield return null;
     }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying)yield return new ExitPlayMode();}

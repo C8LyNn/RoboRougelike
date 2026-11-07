@@ -20,7 +20,7 @@ public sealed class R4EnemyVariantArtTests
         float end=Time.realtimeSinceStartup+20;
         while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<end)yield return null;
     }
-    [UnityTest] public IEnumerator EliteHeavyUsesVisibleMuzzleAndAutomaticKeepsFallback()
+    [UnityTest] public IEnumerator EliteWeaponsUseTheirVisibleMuzzles()
     {
         var run=R1RunController.Instance;Assert.That(run.StartRun()&&run.ChooseRoute(0),Is.True);
         float end=Time.realtimeSinceStartup+20;while(run.Transitioning&&Time.realtimeSinceStartup<end)yield return null;
@@ -38,8 +38,8 @@ public sealed class R4EnemyVariantArtTests
         Assert.That(heavy.Pivot.GetComponentsInChildren<Collider>(true).Any(c=>c.enabled),Is.True,"The physical gun collider remains.");
         var visualRoot=heavy.Block.GetComponentsInChildren<Transform>(true).Single(t=>t.name=="R4W_Heavy_ROOT");
         Assert.That(visualRoot.GetComponentsInChildren<Collider>(true),Is.Empty);
-        Assert.That(automatic.Block.GetComponent<R4WeaponArt>(),Is.Null,"No Automatic source model was supplied.");
-        Assert.That(automatic.Pivot.GetComponentsInChildren<Renderer>(true).Any(r=>r.enabled),Is.True);
+        var automaticArt=automatic.Block.GetComponent<R4WeaponArt>();Assert.That(automaticArt,Is.Not.Null,"Elite automatic must use supplied model.");Assert.That(automatic.Muzzle,Is.SameAs(automaticArt.Muzzle));
+        Assert.That(automatic.Block.GetComponentsInChildren<Transform>(true).Any(t=>t.name=="R41_AutomaticGun_ROOT"),Is.True);
         var direction=new Vector3(.4f,.15f,1).normalized;heavy.Pivot.rotation=Quaternion.LookRotation(direction);
         art.Sync();Assert.That(Vector3.Dot(heavy.Muzzle.forward,direction),Is.GreaterThan(.99f),"Visible muzzle follows the real turret aim.");
         // Invoke the existing firing path immediately after moving the physical

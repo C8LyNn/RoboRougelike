@@ -41,7 +41,7 @@ public sealed class R4BasicArtGameplayTests
         Assert.That(hp.CurrentHp,Is.EqualTo(960).Within(.01),"The real gun's projectile must hit.");
         Object.Destroy(vehicle.gameObject);Object.Destroy(target);Object.Destroy(paletteObject);Object.Destroy(material);
     }
-    [UnityTest] public IEnumerator AutomaticGunKeepsItsExistingVisualAndMuzzle()
+    [UnityTest] public IEnumerator AutomaticGunUsesSuppliedVisualAndMuzzle()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
         var state=model.Parts.First(p=>p.Kind==R3PartKind.Gun);state.Weapon=R4WeaponKind.Automatic;
@@ -52,8 +52,8 @@ public sealed class R4BasicArtGameplayTests
         var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(0,20,0),Quaternion.identity);
         var gun=vehicle.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==state.Id);
         var type=Type.GetType("RoboRougelike.R4_1.R4ArtWeaponAxisAdapter, Assembly-CSharp");
-        Assert.That(gun.GetComponent(type),Is.Null);Assert.That(gun.Muzzle,Is.Not.Null);
-        Assert.That(gun.GunPivot.GetComponentsInChildren<Renderer>().Any(r=>r.enabled),Is.True);
+        var adapter=gun.GetComponent(type);Assert.That(adapter,Is.Not.Null);Assert.That(gun.Muzzle,Is.SameAs((Transform)type.GetProperty("Muzzle").GetValue(adapter)));Assert.That(gun.GetComponentsInChildren<Transform>(true).Any(t=>t.name=="R41_AutomaticGun_ROOT"),Is.True);
+        Assert.That(gun.GunPivot.GetComponentsInChildren<Collider>(true).Any(c=>c.enabled),Is.True);Assert.That(gun.GunPivot.GetComponentsInChildren<Renderer>().Any(r=>r.enabled),Is.False);
         Object.Destroy(vehicle.gameObject);Object.Destroy(paletteObject);Object.Destroy(material);yield return null;
     }
     [UnityTest] public IEnumerator RotatedPhysicalMountAimsTheVisualAndStillBlocksOwnArmor()
