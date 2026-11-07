@@ -91,5 +91,52 @@ public sealed class CameraStartAndReplacementArtTests
         }
         Object.Destroy(material);yield return null;
     }
+    [UnityTest] public IEnumerator MissingModelsLeaveOldMountAndPayloadVisible()
+    {
+        var movement=Resources.Load<R4MovementArtCatalog>("R4Art/MovementCatalog");
+        var weapons=Resources.Load<R4WeaponArtCatalog>("R4Art/WeaponCatalog");
+        Assert.That(movement,Is.Not.Null);Assert.That(weapons,Is.Not.Null);
+        var oldMovement=movement.Models;var oldWeapons=weapons.Models;
+        movement.Models=(R4MovementArtEntry[])oldMovement.Clone();weapons.Models=(R4WeaponArtEntry[])oldWeapons.Clone();
+        var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
+        try
+        {
+            for(int i=0;i<movement.Models.Length;i++)if(movement.Models[i].Kind==R3PartKind.Wheel||movement.Models[i].Kind==R3PartKind.Booster)
+                movement.Models[i]=new R4MovementArtEntry{Kind=movement.Models[i].Kind,Model=null};
+            for(int i=0;i<weapons.Models.Length;i++)if(weapons.Models[i].Kind==R4WeaponKind.Basic)
+                weapons.Models[i]=new R4WeaponArtEntry{Kind=R4WeaponKind.Basic,Model=null};
+            foreach(var kind in new[]{R3PartKind.Wheel,R3PartKind.Gun,R3PartKind.Booster})
+            {
+                var block=GameObject.CreatePrimitive(PrimitiveType.Cube);block.transform.localScale=Vector3.one*R41PartGeometry.BlockSize;
+                var payload=R41PartGeometry.Payload(block.transform,kind,R4WeaponKind.Basic,material,true,out var muzzle);
+                bool attached=kind==R3PartKind.Wheel?R4WheelArt.TryAttach(block.transform,payload)!=null:
+                    kind==R3PartKind.Gun?R4WeaponArt.TryAttach(block.transform,payload,muzzle,R4WeaponKind.Basic)!=null:
+                    R4BoosterArt.TryAttach(block.transform)!=null;
+                Assert.That(attached,Is.False,kind+" should use fallback if the model is unavailable.");
+                Assert.That(block.GetComponent<Renderer>().enabled,Is.True,kind+" fallback cube must remain visible.");
+                Assert.That(block.GetComponent<Collider>().enabled,Is.True);Object.Destroy(block);
+            }
+        }
+        finally{movement.Models=oldMovement;weapons.Models=oldWeapons;Object.Destroy(material);}
+        yield return null;
+    }
+    [UnityTest] public IEnumerator ReplacementModelStillShowsDamageAndFollowsDetachedPart()
+    {
+        var run=R1RunController.Instance;Assert.That(run.PrepareUnifiedRun(),Is.True);yield return null;
+        var wheel=run.Player.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Kind==R3PartKind.Wheel);
+        var model=wheel.GetComponentsInChildren<Transform>(true).First(t=>t.name=="R4M_Wheel_Rotor");
+        var renderer=model.GetComponentsInChildren<Renderer>(true).First(r=>r.sharedMaterials.Length>0&&r.sharedMaterials[0]!=null&&r.sharedMaterials[0].HasProperty("_BaseColor"));
+        var original=renderer.sharedMaterials[0].GetColor("_BaseColor");var hp=wheel.Damageable;
+        Time.timeScale=1;hp.ApplyDamage(hp.MaxHp*.5f,wheel.transform.position,Vector3.up);
+        yield return new WaitForSeconds(.15f);
+        var props=new MaterialPropertyBlock();renderer.GetPropertyBlock(props,0);
+        var expected=Color.Lerp(original,new Color(.16f,.09f,.06f,original.a),.4f);
+        var actual=props.GetColor("_BaseColor");
+        Assert.That(actual.r,Is.EqualTo(expected.r).Within(.02f),"The replacement model must still show damage.");
+        Assert.That(actual.g,Is.EqualTo(expected.g).Within(.02f));Assert.That(actual.b,Is.EqualTo(expected.b).Within(.02f));
+        hp.ApplyDamage(100000,wheel.transform.position,Vector3.up);yield return null;
+        Assert.That(hp.IsDead,Is.True);Assert.That(model.IsChildOf(wheel.transform),Is.True,"Replacement stays with the detached wreck.");
+        Assert.That(wheel.GetComponent<Collider>().enabled,Is.True);
+    }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }
