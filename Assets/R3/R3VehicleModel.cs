@@ -9,6 +9,7 @@ namespace RoboRougelike.R3
 {
     // Append new values: checkpoints store these numeric IDs.
     public enum R3PartKind { Armor, Wheel, Gun, Core, Suspension, Booster, JumpDrive, Blink, Gyroscope, OmniDrive, MagneticGrapple, HoverEngine, CrawlerTrack, BonusModule, DirectionalShield, PointDefense, StructuralScanner, ScannerPulse, IndependentSteering, Battery, RepairPulse, DrivePower, EnergyRegenerator }
+    public enum R3WheelStyle { Offroad, Slick }
     public enum R3DriveKind { Wheels, Tracks, Omni, Hover }
     public enum R3VehicleKind { Standard, Light, Heavy }
     [Serializable]
@@ -22,6 +23,7 @@ namespace RoboRougelike.R3
         public string Id = Guid.NewGuid().ToString("N");
         public string Source = "Zakup / pojazd startowy";
         public R4WeaponKind Weapon;
+        public R3WheelStyle WheelStyle;
         // A bonus is a physical, single inventory item occupying one grid cell.
         public string UpgradeId, UpgradeTitle, UpgradeDescription;
         public R1UpgradeEffect UpgradeEffect;
@@ -40,7 +42,7 @@ namespace RoboRougelike.R3
         public bool ThermalLocked;
         public float DefenseCharge=-1,DefenseRechargeAge=float.PositiveInfinity;
         public R3PartState(Vector3Int cell, R3PartKind kind, float health = 1) { Cell = cell; Kind = kind; Health = health; }
-        public R3PartState Copy() => new R3PartState(Cell, Kind, Health){Id=Id,Source=Source,Weapon=Weapon,Tier=Tier,SteeringMode=SteeringMode,DeviceReadyAt=DeviceReadyAt,Ammo=Ammo,ReloadReadyAt=ReloadReadyAt,ThermalHeat=ThermalHeat,ThermalLocked=ThermalLocked,DisruptionRemaining=DisruptionRemaining,DefenseCharge=DefenseCharge,DefenseRechargeAge=DefenseRechargeAge,
+        public R3PartState Copy() => new R3PartState(Cell, Kind, Health){Id=Id,Source=Source,Weapon=Weapon,WheelStyle=WheelStyle,Tier=Tier,SteeringMode=SteeringMode,DeviceReadyAt=DeviceReadyAt,Ammo=Ammo,ReloadReadyAt=ReloadReadyAt,ThermalHeat=ThermalHeat,ThermalLocked=ThermalLocked,DisruptionRemaining=DisruptionRemaining,DefenseCharge=DefenseCharge,DefenseRechargeAge=DefenseRechargeAge,
             UpgradeId=UpgradeId,UpgradeTitle=UpgradeTitle,UpgradeDescription=UpgradeDescription,
             UpgradeEffect=UpgradeEffect,UpgradeAmount=UpgradeAmount,
             RotationQuarterTurns=RotationQuarterTurns,ContactMask=ContactMask};
@@ -199,7 +201,7 @@ namespace RoboRougelike.R3
         public static bool ValidEconomicKind(R3PartKind kind,R4WeaponKind weapon) =>
             Enum.IsDefined(typeof(R3PartKind),kind) &&
             (kind!=R3PartKind.Gun||Enum.IsDefined(typeof(R4WeaponKind),weapon));
-        public static bool ValidEconomicPart(R3PartState part) => part!=null && ValidEconomicKind(part.Kind,part.Weapon) && part.Tier>=0&&part.Tier<=3&&
+        public static bool ValidEconomicPart(R3PartState part) => part!=null && ValidEconomicKind(part.Kind,part.Weapon) && Enum.IsDefined(typeof(R3WheelStyle),part.WheelStyle) && part.Tier>=0&&part.Tier<=3&&
             (part.Tier<=1||SupportsFusion(part.Kind,part.Weapon))&&
             !float.IsNaN(part.Health)&&!float.IsInfinity(part.Health)&&part.Health>=0&&part.Health<=1;
         public int Price(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic) => !ValidEconomicKind(kind,weapon)?0:Math.Max(1,
@@ -374,6 +376,7 @@ namespace RoboRougelike.R3
         public static bool SameFusionType(R3PartState a,R3PartState b) => a!=null&&b!=null&&a.Kind==b.Kind&&
             NormalizedTier(a.Tier)==NormalizedTier(b.Tier)&&
             (a.Kind!=R3PartKind.Gun||a.Weapon==b.Weapon)&&
+            (a.Kind!=R3PartKind.Wheel||a.WheelStyle==b.WheelStyle)&&
             (a.Kind!=R3PartKind.BonusModule||(!string.IsNullOrWhiteSpace(a.UpgradeId)&&a.UpgradeId==b.UpgradeId&&
                 Enum.IsDefined(typeof(R1UpgradeEffect),a.UpgradeEffect)&&a.UpgradeEffect==b.UpgradeEffect&&
                 !float.IsNaN(a.UpgradeAmount)&&!float.IsInfinity(a.UpgradeAmount)&&a.UpgradeAmount>=0&&a.UpgradeAmount<=1&&a.UpgradeAmount==b.UpgradeAmount));

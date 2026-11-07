@@ -214,6 +214,13 @@ namespace RoboRougelike.R1
             return true;
         }
         public bool GarageRepair(Vector3Int cell) => EditGarage(()=>VehicleModel.Repair(cell));
+        public bool GarageToggleWheelStyle(Vector3Int cell) => EditGarage(()=>
+        {
+            var part=VehicleModel.At(cell);
+            if(part==null||part.Kind!=R3PartKind.Wheel||part.Health<=0)return false;
+            part.WheelStyle=part.WheelStyle==R3WheelStyle.Offroad?R3WheelStyle.Slick:R3WheelStyle.Offroad;
+            return true;
+        });
         public bool GarageRemove(Vector3Int cell) => EditGarage(()=>VehicleModel.Remove(cell));
         public bool GarageRepairAffordable() => EditGarage(()=>VehicleModel.RepairAffordable()>0);
         public bool GarageEmergencyRepair() => EditGarage(()=>VehicleModel.EmergencyRepair());
