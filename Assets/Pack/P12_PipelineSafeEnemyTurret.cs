@@ -316,6 +316,7 @@ namespace RogueMachine.P12PipelineSafe
                 visual.AddComponent<MeshFilter>().sharedMesh=part.GetComponent<MeshFilter>().sharedMesh;
                 visual.AddComponent<MeshRenderer>().sharedMaterial=material;
                 visual.AddComponent<P12EnemyWheelVisual>().Configure(renderer,.265f);
+                R4EnemyWheelArt.TryAttach(part.transform,renderer,visual.GetComponent<Renderer>(),.265f);
                 renderer.enabled=false;
             }
             return hp;
