@@ -6,6 +6,11 @@ namespace RoboRougelike.R1
     public sealed partial class R1RunHUD
     {
         GUIStyle aimCrossStyle,aimCaptionStyle,weaponMarkerStyle;
+        int weaponStatusPage;
+        private static int WeaponStatusPageCount(int count)=>Mathf.Max(1,(Mathf.Max(0,count)+1)/2);
+        private static int WeaponStatusPageStart(int count,int page)=>Mathf.Clamp(page,0,WeaponStatusPageCount(count)-1)*2;
+        private void AdvanceWeaponStatusPage(int count)
+        {int pages=WeaponStatusPageCount(count);weaponStatusPage=(Mathf.Clamp(weaponStatusPage,0,pages-1)+1)%pages;}
         void DrawTestRange(R1RunController run)
         {
             if(run.MapEditorTesting){DrawMapTest(run);return;}
@@ -100,17 +105,26 @@ namespace RoboRougelike.R1
                 Panel(new Rect(925,190,335,158));GUI.Label(new Rect(940,195,305,30),"UZBROJENIE",heading);
                 var assembly=run.Player.GetComponent<RoboRougelike.R3.R3VehicleAssembly>();
                 var a=run.VehicleModel.WeaponGroupA;var b=run.VehicleModel.WeaponGroupB;
-                int countA=0,countB=0;
+                int countA=0,countB=0,totalGuns=0;
                 foreach(var part in assembly.Parts)
                     if(part!=null&&part.Kind==RoboRougelike.R3.R3PartKind.Gun&&part.Operational&&part.transform.IsChildOf(assembly.transform))
-                    {if(a==part.Weapon)countA++;if(b==part.Weapon)countB++;}
+                    {totalGuns++;if(a==part.Weapon)countA++;if(b==part.Weapon)countB++;}
+                int pages=WeaponStatusPageCount(totalGuns);
+                weaponStatusPage=Mathf.Clamp(weaponStatusPage,0,pages-1);
+                if(pages>1)
+                {
+                    if(Event.current.type==EventType.KeyDown&&Event.current.keyCode==KeyCode.Tab)
+                    {AdvanceWeaponStatusPage(totalGuns);Event.current.Use();}
+                    GUI.Label(new Rect(1112,199,130,25),$"Tab: {weaponStatusPage+1}/{pages}",small);
+                }
                 GUI.Label(new Rect(940,228,305,24),$"A / LPM: {WeaponGroupName(a)} ({countA})",small);
                 GUI.Label(new Rect(940,252,305,24),$"B / PPM: {WeaponGroupName(b)} ({countB})",small);
-                int row=0;
+                int row=0,index=0,start=WeaponStatusPageStart(totalGuns,weaponStatusPage);
                 foreach(var gun in assembly.Parts)
                 {
                     if(gun==null||gun.Kind!=RoboRougelike.R3.R3PartKind.Gun||!gun.Operational||!gun.transform.IsChildOf(run.Player.transform))continue;
-                    if(row>=2)break; // Group counts stay bounded even on large builds.
+                    if(index++<start)continue;
+                    if(row>=2)break;
                     float reload=Mathf.Max(0,gun.NextFireTime-Time.time);
                     var shotgun=gun.GetComponent<RoboRougelike.WeaponIntegration.RRLShotgunBinding>();
                     var rail=gun.GetComponent<RoboRougelike.WeaponIntegration.RRLRailgunBinding>();
@@ -123,7 +137,7 @@ namespace RoboRougelike.R1
                     if(emp!=null)status=$"{emp.Module.CooldownRemaining:0.0}s • impuls {emp.LastReport.ReceiversAffected} modułów";
                     var disrupted=gun.GetComponent<RoboRougelike.Mechanics.EMP.EmpReceiver>();
                     if(disrupted!=null&&disrupted.IsDisrupted)status=$"EMP {disrupted.RemainingSeconds:0.0}s";
-                    GUI.Label(new Rect(940,278+row*26,305,26),(row+1)+". "+RoboRougelike.R4.R4WeaponDefinition.Get(gun.Weapon).ShortName+" • "+status,small);row++;
+                    GUI.Label(new Rect(940,278+row*26,305,26),(start+row+1)+". "+RoboRougelike.R4.R4WeaponDefinition.Get(gun.Weapon).ShortName+" • "+status,small);row++;
                 }
                 var defenses=run.Player.GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLPointDefenseBinding>();
                 var shields=run.Player.GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLShieldBinding>();
