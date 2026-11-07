@@ -1,0 +1,214 @@
+{
+ "id": "R4B_RoundCorner",
+ "block_kind": "RoundCorner",
+ "description": "1x1x1 rounded corner (sphere octant)",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "bonds": [],
+ "note": null,
+ "contact_mask_local_anchor": 42,
+ "contact_mask_bits": "R3MountingGrid.FaceDirections order: right, left, up, down, forward, back (Unity)",
+ "ports": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "partial",
+   "center": [
+    -0.143,
+    0.143,
+    -0.26
+   ],
+   "half": [
+    0.2,
+    0.2
+   ],
+   "offset": [
+    0.26,
+    -0.26
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "partial",
+   "center": [
+    -0.143,
+    0.26,
+    -0.143
+   ],
+   "half": [
+    0.2,
+    0.2
+   ],
+   "offset": [
+    0.26,
+    -0.26
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "partial",
+   "center": [
+    -0.26,
+    0.143,
+    -0.143
+   ],
+   "half": [
+    0.2,
+    0.2
+   ],
+   "offset": [
+    -0.26,
+    -0.26
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "mesh": {
+  "object": "R4B_RoundCorner",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 2782,
+  "uv": true,
+  "ok": true
+ },
+ "bounds_m": [
+  [
+   -0.26,
+   -0.2582,
+   -0.26
+  ],
+  [
+   0.2582,
+   0.26,
+   0.2509
+  ]
+ ],
+ "inside_cells": true,
+ "materials": [
+  "Armor_Dark",
+  "Armor_Gunmetal",
+  "Steel_Light"
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 1393,
+   "empties": [
+    "Port_back_000_part.001",
+    "Port_down_000_part.001",
+    "Port_left_000_part.001",
+    "R4B_RoundCorner_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 2915,
+   "empties": [
+    "Port_back_000_part.001",
+    "Port_down_000_part.001",
+    "Port_left_000_part.001",
+    "R4B_RoundCorner_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  }
+ },
+ "renders": [
+  "R4B_RoundCorner_34front.png",
+  "R4B_RoundCorner_34rear.png",
+  "R4B_RoundCorner_under.png"
+ ],
+ "files": {
+  "R4B_RoundCorner.blend": {
+   "sha256": "e586dc52c3709ab6e65f69541c9163270000d97002dae8743a1a62d92f11bfce",
+   "bytes": 191657
+  },
+  "R4B_RoundCorner.blend1": {
+   "sha256": "414d7e467d624bc68ae1712a20c7949e5986509e8b5a73b2513115ed143c61a3",
+   "bytes": 191664
+  },
+  "R4B_RoundCorner.fbx": {
+   "sha256": "bdc750a81dc65cb62ff2bb556543b338044302d8128cd63390592a046f7514ed",
+   "bytes": 113388
+  },
+  "R4B_RoundCorner.glb": {
+   "sha256": "7a35097889ffe6f005957dfebc59a0878ba6518861fa37802167a233d68fc726",
+   "bytes": 113824
+  },
+  "R4B_RoundCorner_colliders.glb": {
+   "sha256": "630fe04b8236490b421a2eb1a4bf49f7ab2c0faaa123246fd25f28e8eceb6add",
+   "bytes": 8680
+  }
+ },
+ "seconds": 1.7,
+ "blender": "5.2.3 LTS"
+}
