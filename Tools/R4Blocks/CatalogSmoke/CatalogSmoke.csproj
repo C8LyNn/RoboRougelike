@@ -9,5 +9,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="../../../Assets/R4_1/R4BlockCatalog.cs" Link="R4BlockCatalog.cs" />
     <Compile Include="../../../Assets/R4_1/R4ColliderBundle.cs" Link="R4ColliderBundle.cs" />
+    <Compile Include="../../../Assets/R4_1/R4ColliderMeshFactory.cs" Link="R4ColliderMeshFactory.cs" />
   </ItemGroup>
 </Project>
