@@ -56,5 +56,33 @@ public sealed class CameraStartAndReplacementArtTests
             Assert.That(part.GetComponentsInChildren<Renderer>().Any(r=>r!=part.GetComponent<Renderer>()&&r.enabled),Is.True,"Replacement model must be visible.");
         }
     }
+    [UnityTest] public IEnumerator MovementModelsReplaceCubesWithoutRemovingPhysicalColliders()
+    {
+        var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
+        foreach(var kind in new[]{R3PartKind.Suspension,R3PartKind.Booster,R3PartKind.JumpDrive,R3PartKind.Blink,
+            R3PartKind.Gyroscope,R3PartKind.MagneticGrapple,R3PartKind.HoverEngine,R3PartKind.OmniDrive,
+            R3PartKind.CrawlerTrack,R3PartKind.IndependentSteering})
+        {
+            var block=GameObject.CreatePrimitive(PrimitiveType.Cube);block.transform.localScale=Vector3.one*R41PartGeometry.BlockSize;
+            R41PartGeometry.Payload(block.transform,kind,R4WeaponKind.Basic,material,true,out _);
+            bool attached=kind switch {
+                R3PartKind.Suspension=>R4SuspensionArt.TryAttach(block.transform),
+                R3PartKind.Booster=>R4BoosterArt.TryAttach(block.transform)!=null,
+                R3PartKind.JumpDrive=>R4JumpArt.TryAttach(block.transform)!=null,
+                R3PartKind.Blink=>R4BlinkArt.TryAttach(block.transform)!=null,
+                R3PartKind.Gyroscope=>R4GyroArt.TryAttach(block.transform)!=null,
+                R3PartKind.MagneticGrapple=>R4GrappleArt.TryAttach(block.transform),
+                R3PartKind.HoverEngine=>R4HoverArt.TryAttach(block.transform)!=null,
+                R3PartKind.OmniDrive=>R4OmniArt.TryAttach(block.transform,false)!=null,
+                R3PartKind.CrawlerTrack=>R4TracksArt.TryAttach(block.transform,false)!=null,
+                R3PartKind.IndependentSteering=>R4IndependentSteeringArt.TryAttach(block.transform),_=>false};
+            Assert.That(attached,Is.True,kind+" must have its supplied model.");
+            Assert.That(block.GetComponent<Renderer>().enabled,Is.False,kind+" must not render the old cube.");
+            Assert.That(block.GetComponent<Collider>().enabled,Is.True,kind+" keeps its collision and mount cell.");
+            Assert.That(block.GetComponentsInChildren<Renderer>().Any(r=>r!=block.GetComponent<Renderer>()&&r.enabled),Is.True,kind+" replacement remains visible.");
+            Object.Destroy(block);
+        }
+        Object.Destroy(material);yield return null;
+    }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }
