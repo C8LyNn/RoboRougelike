@@ -50,7 +50,9 @@ namespace RoboRougelike.R1
                 run.MapEditing,run.Transitioning||sessionOverlay||run.Error!=null);
             bool portraitRoute=UsePortraitRoute(Screen.width,Screen.height,run.Progress?.State==R1RunState.Route,
                 run.Transitioning||sessionOverlay||run.Error!=null||run.MapEditing);
-            float canvasWidth=portraitReady||portraitGarage||portraitRoute?768:1280,canvasHeight=portraitReady||portraitGarage||portraitRoute?1024:720;
+            bool portraitSalvage=UsePortraitSalvage(Screen.width,Screen.height,run.Progress?.State==R1RunState.Salvage,
+                run.Transitioning||sessionOverlay||run.Error!=null||run.MapEditing);
+            float canvasWidth=portraitReady||portraitGarage||portraitRoute||portraitSalvage?768:1280,canvasHeight=portraitReady||portraitGarage||portraitRoute||portraitSalvage?1024:720;
             float scale = Mathf.Min(Screen.width/canvasWidth,Screen.height/canvasHeight);
             float offsetX=(Screen.width-canvasWidth*scale)/2,offsetY=(Screen.height-canvasHeight*scale)/2;
             if((run.Progress?.State==R1RunState.Garage||run.Progress?.State==R1RunState.Route)&&!run.Transitioning)
@@ -66,13 +68,13 @@ namespace RoboRougelike.R1
             GUI.matrix = Matrix4x4.TRS(new Vector3(offsetX,offsetY), Quaternion.identity, Vector3.one * scale);
             try
             {
-                Draw(run,portraitReady,portraitGarage,portraitRoute);
+                Draw(run,portraitReady,portraitGarage,portraitRoute,portraitSalvage);
                 if(!sessionOverlay&&run.MapEditing)run.MapEditorPointer(Event.current,rawPointer);
                 else if(!sessionOverlay&&!catalogOpen&&run.Progress?.State==R1RunState.Garage&&!run.Transitioning&&!run.Paused&&!run.QuitRequested)run.Garage.HandleGuiPointer(Event.current,rawPointer);
             }
             finally { GUI.matrix = previous; GUI.enabled = true; }
         }
-        private void Draw(R1RunController run,bool portraitReady,bool portraitGarage,bool portraitRoute)
+        private void Draw(R1RunController run,bool portraitReady,bool portraitGarage,bool portraitRoute,bool portraitSalvage)
         {
             if (run.QuitRequested)
             { Panel(new Rect(0,0,1280,720)); GUI.Label(new Rect(350,300,650,80),"Zamykanie gry…",title); return; }
@@ -128,10 +130,10 @@ namespace RoboRougelike.R1
                     return;
                 }
             }
-            Panel(new Rect(0,0,portraitReady||portraitRoute?768:1280,portraitReady||portraitRoute?1024:720));
+            Panel(new Rect(0,0,portraitReady||portraitRoute||portraitSalvage?768:1280,portraitReady||portraitRoute||portraitSalvage?1024:720));
             if (run.Transitioning)
             { GUI.Label(new Rect(360, 310, 600, 80), "Przygotowanie starcia…", title); return; }
-            if(progress.State==R1RunState.Salvage){DrawSalvage(run);return;}
+            if(progress.State==R1RunState.Salvage){if(portraitSalvage)DrawPortraitSalvage(run);else DrawSalvage(run);return;}
             if(progress.State==R1RunState.Route){if(portraitRoute)DrawPortraitRoute(run);else DrawRoute(run);return;}
             if (progress.State == R1RunState.Ready)
             {
