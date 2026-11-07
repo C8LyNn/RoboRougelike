@@ -95,6 +95,8 @@ namespace RoboRougelike.R6
                     powerUnits+=Mathf.Clamp01(part.CurrentHp/Mathf.Max(1,part.MaxHp))*R3VehicleModel.TierEffectUnits(mounted.Tier);
                 if(!IsWheel(part)||RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))continue;
                 float condition=Mathf.Lerp(R6Tuning.Current.DamageTractionFloor,1,part.CurrentHp/part.MaxHp);
+                condition*=R3VehicleModel.TierWheelTraction(mounted!=null?mounted.Tier:
+                    part.GetComponent<RoboRougelike.WeaponIntegration.RRLDeviceBinding>()?.State?.Tier??1);
                 traction+=condition;Wheels++;track+=Mathf.Abs(local.x);
                 if(local.x<0)left+=condition;else right+=condition;
             }
