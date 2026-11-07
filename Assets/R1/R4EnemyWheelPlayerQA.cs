@@ -116,9 +116,11 @@ namespace RoboRougelike.R1
             var legacyMuzzle=basic.transform.Find("Enemy_Yaw/Enemy_Muzzle");
             bool swapped=basic.EquipShotgun();
             var shotgun=basic.WeaponBlock.GetComponent<RoboRougelike.WeaponIntegration.RRLShotgunBinding>();
-            result.primarySwap=swapped&&legacyMuzzle!=null&&shotgun!=null&&
-                typeof(RoboRougelike.WeaponIntegration.RRLShotgunBinding).GetField("muzzle",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(shotgun)==legacyMuzzle;
-            Require(result.primarySwap,"Switching weapon restores legacy physical muzzle");
+            var shotgunArt=basic.WeaponBlock.GetComponentsInChildren<R4WeaponArt>(false).SingleOrDefault();
+            result.primarySwap=swapped&&legacyMuzzle!=null&&shotgun!=null&&shotgunArt!=null&&
+                shotgunArt.GetComponentsInChildren<Transform>(true).Any(t=>t.name=="R4W_Shotgun_ROOT")&&
+                typeof(RoboRougelike.WeaponIntegration.RRLShotgunBinding).GetField("muzzle",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(shotgun)==shotgunArt.Muzzle;
+            Require(result.primarySwap,"Switching to shotgun binds its visible muzzle");
 
             var def=new R1EncounterDefinition{EnemyCount=1,Roster=new[]{R3EnemyArchetype.Gunner},Variants=new[]{R5EnemyVariant.EliteGunner}};
             run.Encounter.Spawn(template,run.Player.transform,def,run.Salvage,"r4-enemy-art-player");
