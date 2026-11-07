@@ -51,10 +51,13 @@ public sealed class R4WheelVariantsTests
     {
         var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
         var model=run.VehicleModel;model.Award(1000);
+        Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
+        var support=model.Inventory.Last();var garage=run.Garage;garage.ChooseInventory(support.Id);
+        garage.Select(new Vector3Int(2,2,2));Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);yield return null;
         Assert.That(run.GaragePurchase(R3PartKind.Wheel),Is.True);var offroad=model.Inventory.Last();
         Assert.That(run.GaragePurchase(R3PartKind.Wheel,default,R3WheelStyle.Slick),Is.True);var slick=model.Inventory.Last();
         Assert.That(run.GaragePurchase(R3PartKind.Wheel,default,R3WheelStyle.Slick),Is.True);var nextSlick=model.Inventory.Last();
-        var garage=run.Garage;garage.ChooseInventory(offroad.Id);garage.Select(Vector3Int.zero);
+        garage.ChooseInventory(offroad.Id);garage.Select(Vector3Int.zero);
         Assert.That(garage.Preview.GetComponentsInChildren<Transform>(true).Any(t=>t.name=="R4M_WheelM_Side_Offroad_Rotor"),Is.True);
         garage.ChooseInventory(slick.Id);garage.Select(Vector3Int.zero);
         Assert.That(garage.Preview.GetComponentsInChildren<Transform>(true).Any(t=>t.name=="R4M_WheelM_Side_Slick_Rotor"),Is.True);
