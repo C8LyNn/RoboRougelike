@@ -1,0 +1,2 @@
+ui943-rewards-letterbox.xml original_sha256=ba32bb360a9e42102cc738b4c4abe00239df3202d153471767c44b8d70492d9f
+ui943-rewards-letterbox.log original_sha256=98be611754ee89298c7328c9ec0cd4647732e68f3a8e1b8f1547b13cee50f384
