@@ -64,7 +64,7 @@ public sealed class RewardRC2IntegrationTests
         Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage));Assert.That(run.Salvage.Closed,Is.True);
         Assert.That(Window.HasOpenWindow,Is.False);Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(4));
         foreach(var original in choices)
-        {var part=run.VehicleModel.Inventory.Single(x=>x.Id==original.Id);Assert.That(part.Health,Is.EqualTo(original.Health));Assert.That(part.Ammo,Is.EqualTo(original.Ammo));Assert.That(part.Weapon,Is.EqualTo(original.Weapon));Assert.That(part.RotationQuarterTurns,Is.EqualTo(original.Rotation));Assert.That(part.ContactMask,Is.EqualTo(original.Contacts));}
+        {var part=run.VehicleModel.Inventory.Single(x=>x.Id==original.Id);Assert.That(part.Health,Is.EqualTo(1));Assert.That(part.Ammo,Is.EqualTo(original.Ammo));Assert.That(part.Weapon,Is.EqualTo(original.Weapon));Assert.That(part.RotationQuarterTurns,Is.EqualTo(original.Rotation));Assert.That(part.ContactMask,Is.EqualTo(original.Contacts));}
         int scrap=run.VehicleModel.Scrap;Assert.That(run.ConfirmRewards(choices.Select(x=>x.Id),new[]{0}),Is.False);
         Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(4));
     }

@@ -102,9 +102,8 @@ namespace RoboRougelike.R1
                 GUI.Label(new Rect(x+10,y+5,252,26),R4WeaponDefinition.PartName(part),lootTitle);
                 string type=item.Kind==R3PartKind.Gun?"Broń":R4WeaponDefinition.PartName(item.Kind);
                 GUI.Label(new Rect(x+10,y+30,252,32),type+" • "+item.Source,lootDetail);
-                string condition=item.Health<=0?"ZNISZCZONA":item.Health<1?"USZKODZONA":"NIENARUSZONA";
                 GUI.Label(new Rect(x+10,y+64,255,37),
-                    $"{condition} • HP: {item.Health*100:0}%\n{(item.Health<=0?"Odbudowa":"Naprawa")}: {run.VehicleModel.RepairCost(part)} Z",lootDetail);
+                    $"HP wraku: {item.Health*100:0}%\nOdbiór: 100% HP",lootDetail);
                 bool chosen=lootSelection.Contains(item.Id);
                 GUI.enabled=chosen||lootSelection.Count<partsLimit;
                 GUI.backgroundColor=chosen?new Color(.35f,.85f,.65f):Color.white;

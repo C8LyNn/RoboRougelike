@@ -84,7 +84,9 @@ public class RRLW6PointDefenseTests
         enemy.Core.ApplyDamage(100000,enemy.Core.transform.position,Vector3.up);
         var salvage=run.Salvage.Items.Single(p=>p.Id==id);Assert.That(salvage.Selectable,Is.True);Assert.That(salvage.Health,Is.Zero);
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));model.Award(1000);
-        Assert.That(ledgerClaim(run.Salvage,model,id),Is.True);Assert.That(model.RepairInventory(id),Is.True);
+        Assert.That(ledgerClaim(run.Salvage,model,id),Is.True);
+        Assert.That(model.Inventory.Single().Health,Is.EqualTo(1));model.Inventory.Single().Health=0; // Subsequent own damage.
+        Assert.That(model.RepairInventory(id),Is.True);
         var recovered=model.DeepCopy().Inventory.Single();Assert.That(recovered.Ammo,Is.EqualTo(7));
         Assert.That(recovered.DeviceReadyAt,Is.EqualTo(ready));yield return null;
     }

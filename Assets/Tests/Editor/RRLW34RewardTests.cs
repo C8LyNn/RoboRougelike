@@ -40,7 +40,7 @@ public sealed class RRLW34RewardTests
         Assert.That(m.Scrap,Is.EqualTo(scrap));Assert.That(l.DismantledScrap,Is.EqualTo(scrap));Assert.That(l.Closed,Is.True);
         Assert.That(p.Stats.Damage,Is.EqualTo(1));Assert.That(p.Stats.Hull,Is.EqualTo(1));Assert.That(p.Stats.Mobility,Is.EqualTo(1));
         Assert.That(p.Acquired.Count,Is.EqualTo(1));Assert.That(p.State,Is.EqualTo(R1RunState.Garage));
-        if(count>=2)Assert.That(m.Inventory.Single(x=>x.Id=="p1").Health,Is.Zero);
+        if(count>=2)Assert.That(m.Inventory.Single(x=>x.Id=="p1").Health,Is.EqualTo(1));
         string before=Snapshot(m);Assert.That(R4RewardSettlement.TryClaim(p,l,m,ids,new[]{0}),Is.False);Assert.That(Snapshot(m),Is.EqualTo(before));Assert.That(p.Acquired.Count,Is.EqualTo(1));
     }
     [TestCase(0)][TestCase(2)][TestCase(3)]

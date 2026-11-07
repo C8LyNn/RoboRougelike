@@ -153,6 +153,8 @@ public class RRLW6EmpPhysicalTests
             Assert.That(ledger.Items.Single(p=>p.Id==wheelId).Health,Is.Zero);
             var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
             Assert.That(ledger.Claim(model,new[]{gunId,wheelId}),Is.True);model.Award(500);
+            Assert.That(model.Inventory.Where(p=>p.Id==gunId||p.Id==wheelId).All(p=>p.Health==1),Is.True);
+            foreach(var owned in model.Inventory.Where(p=>p.Id==gunId||p.Id==wheelId))owned.Health=0;
             Assert.That(model.RepairInventory(gunId),Is.True);Assert.That(model.RepairInventory(wheelId),Is.True);
             Assert.That(model.Inventory.Where(p=>p.Id==gunId||p.Id==wheelId).All(p=>p.Health==1),Is.True);verified++;
         }
@@ -178,6 +180,8 @@ public class RRLW6EmpPhysicalTests
         Assert.That(run.Salvage.Items.Single(p=>p.Id==defenseId).Ammo,Is.EqualTo(7));
         Assert.That(new[]{shot,shieldLoot,run.Salvage.Items.Single(p=>p.Id==defenseId)}.All(p=>p.Health==0),Is.True);
         Assert.That(run.Salvage.Claim(run.VehicleModel,new[]{gunId,shieldId,defenseId}),Is.True);run.VehicleModel.Award(500);
+        Assert.That(run.VehicleModel.Inventory.Where(p=>p.Id==gunId||p.Id==shieldId||p.Id==defenseId).All(p=>p.Health==1),Is.True);
+        foreach(var owned in run.VehicleModel.Inventory.Where(p=>p.Id==gunId||p.Id==shieldId||p.Id==defenseId))owned.Health=0;
         foreach(var id in new[]{gunId,shieldId,defenseId})Assert.That(run.VehicleModel.RepairInventory(id),Is.True);
         var saved=run.VehicleModel.DeepCopy();Assert.That(saved.Inventory.Single(p=>p.Id==gunId).Ammo,Is.EqualTo(ammo));
         Assert.That(saved.Inventory.Single(p=>p.Id==shieldId).DefenseCharge,Is.EqualTo(40).Within(.001));Assert.That(saved.Inventory.Single(p=>p.Id==defenseId).Ammo,Is.EqualTo(7));

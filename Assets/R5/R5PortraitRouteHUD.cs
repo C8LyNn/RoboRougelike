@@ -27,7 +27,7 @@ namespace RoboRougelike.R1
                 GUI.Label(new Rect(card.x+20,card.y+55,680,146),$"{R5RunPlan.ArenaName(item.Arena)}\nRyzyko: {item.Risk} • Zagrożenie {R5RunPlan.Threat(item):0.0}\nWrogowie: {item.SpawnCount} • Złom: {item.ScrapReward}\nŁupy: {item.Loot}\n{item.Rule}",body);
                 if(GUI.Button(PortraitRouteButton(i),"Wyrusz — "+item.Title,button)){run.ChooseRoute(i);break;}
             }
-            GUI.Label(new Rect(24,840,720,90),"Łupy zależą od stanu modułów. Strzelaj w rdzeń albo odcinaj uzbrojenie. Wybór jest ostateczny dla tego etapu.",small);
+            GUI.Label(new Rect(24,840,720,90),"Odebrane części są sprawne; złom za niewybrane zależy od stanu wraków. Wybór jest ostateczny dla tego etapu.",small);
         }
     }
 }

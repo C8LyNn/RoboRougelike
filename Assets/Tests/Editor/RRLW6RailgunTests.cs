@@ -21,7 +21,9 @@ public class RRLW6RailgunModelTests
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
         var ledger=new R4SalvageLedger(3);
         ledger.Record("rail-enemy",new[]{new R4SalvageItem("rail-id","enemy rail",R3PartKind.Gun,kind,0,4)});
-        Assert.That(ledger.Claim(model,new[]{"rail-id"}),Is.True);model.Award(500);int before=model.Scrap;
+        Assert.That(ledger.Claim(model,new[]{"rail-id"}),Is.True);
+        Assert.That(model.Inventory.Single().Health,Is.EqualTo(1));model.Inventory.Single().Health=0; // Subsequent own damage.
+        model.Award(500);int before=model.Scrap;
         Assert.That(model.RepairInventory("rail-id"),Is.True);
         Assert.That(model.Scrap,Is.EqualTo(before-23));
         var copy=model.DeepCopy().Inventory.Single();Assert.That(copy.Weapon,Is.EqualTo(kind));
