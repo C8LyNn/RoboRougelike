@@ -24,6 +24,7 @@ namespace RoboRougelike.R1
             public bool enteredCombat,modelsPresent,originalColliders,detachedVisual;
             public bool eliteArt,eliteVisibleMuzzle,eliteHit,automaticFallback;
             public bool primaryArt,primaryVisibleMuzzle,primaryHit,primarySwap;
+            public bool shotgunHit;
         }
         string directory;
         readonly Result result=new Result();
@@ -121,6 +122,18 @@ namespace RoboRougelike.R1
                 shotgunArt.GetComponentsInChildren<Transform>(true).Any(t=>t.name=="R4W_Shotgun_ROOT")&&
                 typeof(RoboRougelike.WeaponIntegration.RRLShotgunBinding).GetField("muzzle",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(shotgun)==shotgunArt.Muzzle;
             Require(result.primarySwap,"Switching to shotgun binds its visible muzzle");
+            var enemyBody=basic.GetComponent<Rigidbody>();enemyBody.isKinematic=true;
+            enemyBody.position=new Vector3(100,4,100);basic.transform.rotation=Quaternion.identity;shotgunArt.Sync();
+            var shotgunTarget=GameObject.CreatePrimitive(PrimitiveType.Cube);
+            shotgunTarget.transform.position=shotgunArt.Muzzle.position+shotgunArt.Muzzle.forward*6;
+            shotgunTarget.transform.localScale=new Vector3(4,4,1);
+            var shotgunHp=shotgunTarget.AddComponent<P12PipelineSafeDamageable>();shotgunHp.Configure(500,false);
+            basic.GetComponent<VehicleEnergyBank>()?.Recharge(1000);Physics.SyncTransforms();basic.SetCombatActive(true);
+            Require(shotgun.Fire(),"Shotgun fires from its visible muzzle");
+            deadline=Time.realtimeSinceStartup+5;
+            while(shotgunHp.CurrentHp>=500&&Time.realtimeSinceStartup<deadline)yield return new WaitForFixedUpdate();
+            result.shotgunHit=shotgunHp.CurrentHp<500;Require(result.shotgunHit,"Physical shotgun pellets hit target");
+            basic.SetCombatActive(false);Destroy(shotgunTarget);
 
             var def=new R1EncounterDefinition{EnemyCount=1,Roster=new[]{R3EnemyArchetype.Gunner},Variants=new[]{R5EnemyVariant.EliteGunner}};
             run.Encounter.Spawn(template,run.Player.transform,def,run.Salvage,"r4-enemy-art-player");
