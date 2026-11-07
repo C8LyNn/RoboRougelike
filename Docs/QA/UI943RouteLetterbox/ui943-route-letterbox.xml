@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="30" result="Passed" total="30" passed="30" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-07 08:23:17Z" end-time="2026-11-07 08:23:18Z" duration="0,1221151">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1453" result="Passed" start-time="2026-11-07 08:23:17Z" end-time="2026-11-07 08:23:18Z" duration="0.122115" total="30" passed="30" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1809" name="Assembly-CSharp-Editor.dll" fullname="[USER_HOME]/Desktop/Prototypy/RoboRougelike-PlayQA-97f8/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="660" result="Passed" start-time="2026-11-07 08:23:17Z" end-time="2026-11-07 08:23:18Z" duration="0.082739" total="30" passed="30" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="60828" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="1688" name="UI943GarageLayoutTests" fullname="UI943GarageLayoutTests" classname="UI943GarageLayoutTests" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-11-07 08:23:17Z" end-time="2026-11-07 08:23:17Z" duration="0.036669" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="ParameterizedMethod" id="1694" name="CameraViewportMatchesLetterboxedGarageOpening" fullname="UI943GarageLayoutTests.CameraViewportMatchesLetterboxedGarageOpening" classname="UI943GarageLayoutTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-07 08:23:17Z" end-time="2026-11-07 08:23:17Z" duration="0.026064" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1689" name="CameraViewportMatchesLetterboxedGarageOpening(1920,1080)" fullname="UI943GarageLayoutTests.CameraViewportMatchesLetterboxedGarageOpening(1920,1080)" methodname="CameraViewportMatchesLetterboxedGarageOpening" classname="UI943GarageLayoutTests" runstate="Runnable" seed="1824659993" result="Passed" start-time="2026-11-07 08:23:17Z" end-time="2026-11-07 08:23:17Z" duration="0.014799" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1690" name="CameraViewportMatchesLetterboxedGarageOpening(1366,768)" fullname="UI943GarageLayoutTests.CameraViewportMatchesLetterboxedGarageOpening(1366,768)" methodname="CameraViewportMatchesLetterboxedGarageOpening" classname="UI943GarageLayoutTests" runstate="Runnable" seed="1554170101" result="Passed" start-time="2026-11-07 08:23:17Z" end-time="2026-11-07 08:23:17Z" duration="0.000171" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1691" name="CameraViewportMatchesLetterboxedGarageOpening(1024,768)" fullname="UI943GarageLayoutTests.CameraViewportMatchesLetterboxedGarageOpening(1024,768)" methodname="CameraViewportMatchesLetterboxedGarageOpening" classname="UI943GarageLayoutTests" runstate="Runnable" seed="1036136654" result="Passed" start-time="2026-11-07 08:23:17Z" end-time="2026-11-07 08:23:17Z" duration="0.000117" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1692" name="CameraViewportMatchesLetterboxedGarageOpening(768,1024)" fullname="UI943GarageLayoutTests.CameraViewportMatchesLetterboxedGarageOpening(768,1024)" methodname="CameraViewportMatchesLetterboxedGarageOpening" classname="UI943GarageLayoutTests" runstate="Runnable" seed="1272932105" result="Passed" start-time="2026-11-07 08:23:17Z" end-time="2026-11-07 08:23:17Z" duration="0.000091" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1693" name="CameraViewportMatchesLetterboxedGarageOpening(3840,2160)" fullname="UI943GarageLayoutTests.CameraViewportMatchesLetterboxedGarageOpening(3840,2160)" methodname="CameraViewportMatchesLetterboxedGarageOpening" classname="UI943GarageLayoutTests" runstate="Runnable" seed="751174907" result="Passed" start-time="2026-11-07 08:23:17Z" end-time="2026-11-07 08:23:17Z" duration="0.000066" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+        </test-suite>
+        <test-suite type="ParameterizedMethod" id="1700" name="GarageOverlaysCannotReceivePlacementClicks" fullname="UI943GarageLayoutTests.GarageOverlaysCannotReceivePlacementClicks" classname="UI943GarageLayoutTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-07 08:23:17Z" end-time="2026-11-07 08:23:17Z" duration="0.006567" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1695" name="GarageOverlaysCannotReceivePlacementClicks(1920,1080)" fullname="UI943GarageLayoutTests.GarageOverlaysCannotReceivePlacementClicks(1920,1080)" methodname="GarageOverlaysCannotReceivePlacementClicks" classname="UI943GarageLayoutTests" runstate="Runnable" seed="1720143623" result="Passed" start-time="2026-11-07 08:23:17Z" end-time="2026-11-07 08:23:17Z" duration="0.001431" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1696" name="GarageOverlaysCannotReceivePlacementClicks(1366,768)" fullname="UI943GarageLayoutTests.GarageOverlaysCannotReceivePlacementClicks(1366,768)" methodname="GarageOverlaysCannotReceivePlacementClicks" classname="UI943GarageLayoutTests" runstate="Runnable" seed="577416099" result="Passed" start-time="2026-11-07 08:23:17Z" end-time="2026-11-07 08:23:17Z" duration="0.000082" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1697" name="GarageOverlaysCannotReceivePlacementClicks(1024,768)" fullname="UI943GarageLayoutTests.GarageOverlaysCannotReceivePlacementClicks(1024,768)" methodname="GarageOverlaysCannotReceivePlacementClicks" classname="UI943GarageLayoutTests" runstate="Runnable" seed="1517995399" result="Passed" start-time="2026-11-07 08:23:17Z" end-time="2026-11-07 08:23:17Z" duration="0.000062" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1698" name="GarageOverlaysCannotReceivePlacementClicks(768,1024)" fullname="UI943GarageLayoutTests.GarageOverlaysCannotReceivePlacementClicks(768,1024)" methodname="GarageOverlaysCannotReceivePlacementClicks" classname="UI943GarageLayoutTests" runstate="Runnable" seed="2047975140" result="Passed" start-time="2026-11-07 08:23:17Z" end-time="2026-11-07 08:23:17Z" duration="0.000116" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1699" name="GarageOverlaysCannotReceivePlacementClicks(3840,2160)" fullname="UI943GarageLayoutTests.GarageOverlaysCannotReceivePlacementClicks(3840,2160)" methodname="GarageOverlaysCannotReceivePlacementClicks" classname="UI943GarageLayoutTests" runstate="Runnable" seed="2064047630" result="Passed" start-time="2026-11-07 08:23:17Z" end-time="2026-11-07 08:23:17Z" duration="0.000045" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+        </test-suite>
+      </test-suite>
+      <test-suite type="TestFixture" id="1713" name="UI943PortraitGarageTests" fullname="UI943PortraitGarageTests" classname="UI943PortraitGarageTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-07 08:23:17Z" end-time="2026-11-07 08:23:17Z" duration="0.002366" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1714" name="MapEditorAndOverlaysKeepTheirOwnLayout" fullname="UI943PortraitGarageTests.MapEditorAndOverlaysKeepTheirOwnLayout" methodname="MapEditorAndOverlaysKeepTheirOwnLayout" classname="UI943PortraitGarageTests" runstate="Runnable" seed="1390027760" result="Passed" start-time="2026-11-07 08:23:17Z" end-time="2026-11-07 08:23:17Z" duration="0.000653" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1716" name="PortraitPlacementIsConfinedToVehicleOpening" fullname="UI943PortraitGarageTests.PortraitPlacementIsConfinedToVehicleOpening" methodname="PortraitPlacementIsConfinedToVehicleOpening" classname="UI943PortraitGarageTests" runstate="Runnable" seed="810705523" result="Passed" start-time="2026-11-07 08:23:17Z" end-time="2026-11-07 08:23:17Z" duration="0.000157" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1715" name="PortraitViewportUsesLargeDedicatedVehicleOpening" fullname="UI943PortraitGarageTests.PortraitViewportUsesLargeDedicatedVehicleOpening" methodname="PortraitViewportUsesLargeDedicatedVehicleOpening" classname="UI943PortraitGarageTests" runstate="Runnable" seed="1287449682" result="Passed" start-time="2026-11-07 08:23:17Z" end-time="2026-11-07 08:23:17Z" duration="0.000335" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1717" name="UI943PortraitMenuTests" fullname="UI943PortraitMenuTests" classname="UI943PortraitMenuTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-11-07 08:23:17Z" end-time="2026-11-07 08:23:18Z" duration="0.005367" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1724" name="PortraitCardsAndActionsStayInsideCanvasWithoutCollisions" fullname="UI943PortraitMenuTests.PortraitCardsAndActionsStayInsideCanvasWithoutCollisions" methodname="PortraitCardsAndActionsStayInsideCanvasWithoutCollisions" classname="UI943PortraitMenuTests" runstate="Runnable" seed="933359186" result="Passed" start-time="2026-11-07 08:23:17Z" end-time="2026-11-07 08:23:17Z" duration="0.001177" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="1723" name="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu" fullname="UI943PortraitMenuTests.PortraitLayoutIsSelectedOnlyForPortraitReadyMenu" classname="UI943PortraitMenuTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-07 08:23:17Z" end-time="2026-11-07 08:23:18Z" duration="0.003187" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1718" name="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(768,1024,True)" fullname="UI943PortraitMenuTests.PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(768,1024,True)" methodname="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu" classname="UI943PortraitMenuTests" runstate="Runnable" seed="1524259620" result="Passed" start-time="2026-11-07 08:23:17Z" end-time="2026-11-07 08:23:18Z" duration="0.001551" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1719" name="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(1024,768,False)" fullname="UI943PortraitMenuTests.PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(1024,768,False)" methodname="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu" classname="UI943PortraitMenuTests" runstate="Runnable" seed="1179629714" result="Passed" start-time="2026-11-07 08:23:18Z" end-time="2026-11-07 08:23:18Z" duration="0.000068" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1720" name="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(1366,768,False)" fullname="UI943PortraitMenuTests.PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(1366,768,False)" methodname="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu" classname="UI943PortraitMenuTests" runstate="Runnable" seed="288070429" result="Passed" start-time="2026-11-07 08:23:18Z" end-time="2026-11-07 08:23:18Z" duration="0.000086" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1721" name="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(1920,1080,False)" fullname="UI943PortraitMenuTests.PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(1920,1080,False)" methodname="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu" classname="UI943PortraitMenuTests" runstate="Runnable" seed="1594378384" result="Passed" start-time="2026-11-07 08:23:18Z" end-time="2026-11-07 08:23:18Z" duration="0.000052" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1722" name="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(3840,2160,False)" fullname="UI943PortraitMenuTests.PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(3840,2160,False)" methodname="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu" classname="UI943PortraitMenuTests" runstate="Runnable" seed="172292440" result="Passed" start-time="2026-11-07 08:23:18Z" end-time="2026-11-07 08:23:18Z" duration="0.000044" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+        </test-suite>
+      </test-suite>
+      <test-suite type="TestFixture" id="1725" name="UI943PortraitRouteTests" fullname="UI943PortraitRouteTests" classname="UI943PortraitRouteTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-07 08:23:18Z" end-time="2026-11-07 08:23:18Z" duration="0.003328" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1727" name="BothRouteChoicesFitWithoutOverlapAndHaveReadableButtons" fullname="UI943PortraitRouteTests.BothRouteChoicesFitWithoutOverlapAndHaveReadableButtons" methodname="BothRouteChoicesFitWithoutOverlapAndHaveReadableButtons" classname="UI943PortraitRouteTests" runstate="Runnable" seed="846279179" result="Passed" start-time="2026-11-07 08:23:18Z" end-time="2026-11-07 08:23:18Z" duration="0.002404" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1726" name="PortraitRouteIsLimitedToItsOwnUnobscuredScreen" fullname="UI943PortraitRouteTests.PortraitRouteIsLimitedToItsOwnUnobscuredScreen" methodname="PortraitRouteIsLimitedToItsOwnUnobscuredScreen" classname="UI943PortraitRouteTests" runstate="Runnable" seed="222470985" result="Passed" start-time="2026-11-07 08:23:18Z" end-time="2026-11-07 08:23:18Z" duration="0.000286" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1728" name="UI943SalvageAmmoTests" fullname="UI943SalvageAmmoTests" classname="UI943SalvageAmmoTests" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-11-07 08:23:18Z" end-time="2026-11-07 08:23:18Z" duration="0.006547" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1738" name="AmmoLabelDoesNotOverlapSelectionHpOrRepairOnAnyCard" fullname="UI943SalvageAmmoTests.AmmoLabelDoesNotOverlapSelectionHpOrRepairOnAnyCard" methodname="AmmoLabelDoesNotOverlapSelectionHpOrRepairOnAnyCard" classname="UI943SalvageAmmoTests" runstate="Runnable" seed="814536145" result="Passed" start-time="2026-11-07 08:23:18Z" end-time="2026-11-07 08:23:18Z" duration="0.000799" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1737" name="NoAmmoIsShownForWeaponsAndPartsWithoutMagazines" fullname="UI943SalvageAmmoTests.NoAmmoIsShownForWeaponsAndPartsWithoutMagazines" methodname="NoAmmoIsShownForWeaponsAndPartsWithoutMagazines" classname="UI943SalvageAmmoTests" runstate="Runnable" seed="1476630226" result="Passed" start-time="2026-11-07 08:23:18Z" end-time="2026-11-07 08:23:18Z" duration="0.000767" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1736" name="PointDefenseUsesItsOwnFortyRoundMagazine" fullname="UI943SalvageAmmoTests.PointDefenseUsesItsOwnFortyRoundMagazine" methodname="PointDefenseUsesItsOwnFortyRoundMagazine" classname="UI943SalvageAmmoTests" runstate="Runnable" seed="846390453" result="Passed" start-time="2026-11-07 08:23:18Z" end-time="2026-11-07 08:23:18Z" duration="0.000241" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="1735" name="RealWeaponMagazineAndUninitializedSentinelAreDisplayed" fullname="UI943SalvageAmmoTests.RealWeaponMagazineAndUninitializedSentinelAreDisplayed" classname="UI943SalvageAmmoTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-11-07 08:23:18Z" end-time="2026-11-07 08:23:18Z" duration="0.002921" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1729" name="RealWeaponMagazineAndUninitializedSentinelAreDisplayed(Shotgun,-1,&quot;12/12 salw&quot;)" fullname="UI943SalvageAmmoTests.RealWeaponMagazineAndUninitializedSentinelAreDisplayed(Shotgun,-1,&quot;12/12 salw&quot;)" methodname="RealWeaponMagazineAndUninitializedSentinelAreDisplayed" classname="UI943SalvageAmmoTests" runstate="Runnable" seed="486213814" result="Passed" start-time="2026-11-07 08:23:18Z" end-time="2026-11-07 08:23:18Z" duration="0.000598" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1730" name="RealWeaponMagazineAndUninitializedSentinelAreDisplayed(Shotgun,5,&quot;5/12 salw&quot;)" fullname="UI943SalvageAmmoTests.RealWeaponMagazineAndUninitializedSentinelAreDisplayed(Shotgun,5,&quot;5/12 salw&quot;)" methodname="RealWeaponMagazineAndUninitializedSentinelAreDisplayed" classname="UI943SalvageAmmoTests" runstate="Runnable" seed="29772574" result="Passed" start-time="2026-11-07 08:23:18Z" end-time="2026-11-07 08:23:18Z" duration="0.000066" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1731" name="RealWeaponMagazineAndUninitializedSentinelAreDisplayed(Railgun,4,&quot;4/12 nab.&quot;)" fullname="UI943SalvageAmmoTests.RealWeaponMagazineAndUninitializedSentinelAreDisplayed(Railgun,4,&quot;4/12 nab.&quot;)" methodname="RealWeaponMagazineAndUninitializedSentinelAreDisplayed" classname="UI943SalvageAmmoTests" runstate="Runnable" seed="1816983098" result="Passed" start-time="2026-11-07 08:23:18Z" end-time="2026-11-07 08:23:18Z" duration="0.000051" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1732" name="RealWeaponMagazineAndUninitializedSentinelAreDisplayed(Railgun,0,&quot;0/12 nab.&quot;)" fullname="UI943SalvageAmmoTests.RealWeaponMagazineAndUninitializedSentinelAreDisplayed(Railgun,0,&quot;0/12 nab.&quot;)" methodname="RealWeaponMagazineAndUninitializedSentinelAreDisplayed" classname="UI943SalvageAmmoTests" runstate="Runnable" seed="1111269520" result="Passed" start-time="2026-11-07 08:23:18Z" end-time="2026-11-07 08:23:18Z" duration="0.000051" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1733" name="RealWeaponMagazineAndUninitializedSentinelAreDisplayed(RocketLauncher,-1,&quot;10/10 rak.&quot;)" fullname="UI943SalvageAmmoTests.RealWeaponMagazineAndUninitializedSentinelAreDisplayed(RocketLauncher,-1,&quot;10/10 rak.&quot;)" methodname="RealWeaponMagazineAndUninitializedSentinelAreDisplayed" classname="UI943SalvageAmmoTests" runstate="Runnable" seed="1988749330" result="Passed" start-time="2026-11-07 08:23:18Z" end-time="2026-11-07 08:23:18Z" duration="0.000051" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1734" name="RealWeaponMagazineAndUninitializedSentinelAreDisplayed(RocketLauncher,0,&quot;0/10 rak.&quot;)" fullname="UI943SalvageAmmoTests.RealWeaponMagazineAndUninitializedSentinelAreDisplayed(RocketLauncher,0,&quot;0/10 rak.&quot;)" methodname="RealWeaponMagazineAndUninitializedSentinelAreDisplayed" classname="UI943SalvageAmmoTests" runstate="Runnable" seed="147926716" result="Passed" start-time="2026-11-07 08:23:18Z" end-time="2026-11-07 08:23:18Z" duration="0.000063" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <output><![CDATA[Saving results to: [USER_HOME]/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+          </test-case>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
