@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><EnableDefaultCompileItems>false</EnableDefaultCompileItems><UseSharedCompilation>false</UseSharedCompilation></PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="UnityStubs.cs" />
+    <Compile Include="../../../Assets/B01Construction/BUILD001/Runtime/BuildSocketGeometry.cs" Link="BuildSocketGeometry.cs" />
+    <Compile Include="../../../Assets/R4_1/R4BlockCatalog.cs" Link="R4BlockCatalog.cs" />
+    <Compile Include="../../../Assets/R4_1/R4MountDefinitionAdapter.cs" Link="R4MountDefinitionAdapter.cs" />
+  </ItemGroup>
+</Project>
