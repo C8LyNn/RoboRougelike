@@ -42,7 +42,7 @@ namespace RoboRougelike.R4_1
             flame.localScale=Vector3.one;
             flame.gameObject.SetActive(false);
             var view=block.gameObject.AddComponent<R4BoosterArt>();view.flame=flame;view.turbine=turbine;
-            oldRenderer.enabled=false;
+            oldRenderer.enabled=false;R41PartGeometry.HideMountingShell(block,visual);
             return view;
         }
 

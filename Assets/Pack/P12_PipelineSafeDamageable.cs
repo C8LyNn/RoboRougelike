@@ -27,6 +27,8 @@ namespace RogueMachine.P12PipelineSafe
             return baseColor;
         }
         private Coroutine flashRoutine;
+        public bool VisualFlashing { get; private set; }
+        public event System.Action VisualDamageChanged;
         private bool dead;
         private float baseMaxHp;
         public event System.Action Died;
@@ -117,6 +119,7 @@ namespace RogueMachine.P12PipelineSafe
 
         private IEnumerator DamageFlash()
         {
+            VisualFlashing=true;
             SetColor(
                 Color.Lerp(
                     ReadBaseColor(),
@@ -127,6 +130,7 @@ namespace RogueMachine.P12PipelineSafe
 
             yield return new WaitForSeconds(0.09f);
 
+            VisualFlashing=false;
             SetColor(DamagedColor());
             flashRoutine = null;
         }
@@ -143,6 +147,7 @@ namespace RogueMachine.P12PipelineSafe
             propertyBlock.SetColor("_Color", color);
 
             cachedRenderer.SetPropertyBlock(propertyBlock);
+            VisualDamageChanged?.Invoke();
         }
 
         private void Die(
@@ -158,6 +163,7 @@ namespace RogueMachine.P12PipelineSafe
                     releasedMass+=RoboRougelike.R6.R6VehicleDrive.PartMass(part);
             dead = true;
             if(flashRoutine!=null)StopCoroutine(flashRoutine);
+            VisualFlashing=false;
             SetColor(new Color(.12f,.1f,.09f));
             // Reward snapshots must observe equipment before structural callbacks detach it.
             Died?.Invoke();

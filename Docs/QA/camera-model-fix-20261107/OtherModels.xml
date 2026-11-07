@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="11" result="Passed" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-07 21:57:48Z" end-time="2026-11-07 21:57:50Z" duration="2,2577293">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1728" result="Passed" start-time="2026-11-07 21:57:48Z" end-time="2026-11-07 21:57:50Z" duration="2.257729" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="2169" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-PlayQA-97f8/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="935" result="Passed" start-time="2026-11-07 21:57:48Z" end-time="2026-11-07 21:57:50Z" duration="2.154833" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="94552" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="1569" name="R4BlinkArtGameplayTests" fullname="R4BlinkArtGameplayTests" classname="R4BlinkArtGameplayTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-11-07 21:57:08Z" end-time="2026-11-07 21:57:10Z" duration="1.383858" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1570" name="BlinkEffectOnlyFollowsSuccessfulPhysicalActivation" fullname="R4BlinkArtGameplayTests.BlinkEffectOnlyFollowsSuccessfulPhysicalActivation" methodname="BlinkEffectOnlyFollowsSuccessfulPhysicalActivation" classname="R4BlinkArtGameplayTests" runstate="Runnable" seed="583614579" result="Passed" start-time="2026-11-07 21:57:05Z" end-time="2026-11-07 21:57:10Z" duration="4.539286" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 21 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 21 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 21 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 21 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1614" name="R4GrappleArtGameplayTests" fullname="R4GrappleArtGameplayTests" classname="R4GrappleArtGameplayTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-11-07 21:57:13Z" end-time="2026-11-07 21:57:14Z" duration="0.910045" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1615" name="RealGrappleKeepsItsMuzzleAndRopeWhileUsingSuppliedModel" fullname="R4GrappleArtGameplayTests.RealGrappleKeepsItsMuzzleAndRopeWhileUsingSuppliedModel" methodname="RealGrappleKeepsItsMuzzleAndRopeWhileUsingSuppliedModel" classname="R4GrappleArtGameplayTests" runstate="Runnable" seed="1513516157" result="Passed" start-time="2026-11-07 21:57:10Z" end-time="2026-11-07 21:57:14Z" duration="4.189852" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 21 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 21 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 21 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 21 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1616" name="R4GyroArtGameplayTests" fullname="R4GyroArtGameplayTests" classname="R4GyroArtGameplayTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-11-07 21:57:17Z" end-time="2026-11-07 21:57:18Z" duration="0.827286" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1617" name="ModelFollowsRealGyroOperationalStateWithoutAddingColliders" fullname="R4GyroArtGameplayTests.ModelFollowsRealGyroOperationalStateWithoutAddingColliders" methodname="ModelFollowsRealGyroOperationalStateWithoutAddingColliders" classname="R4GyroArtGameplayTests" runstate="Runnable" seed="2008977504" result="Passed" start-time="2026-11-07 21:57:14Z" end-time="2026-11-07 21:57:18Z" duration="3.972746" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 21 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 21 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 21 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 21 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1618" name="R4HoverArtGameplayTests" fullname="R4HoverArtGameplayTests" classname="R4HoverArtGameplayTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-11-07 21:57:21Z" end-time="2026-11-07 21:57:21Z" duration="0.482579" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1619" name="HoverAppearanceShowsRealLiftAndKeepsOriginalPhysics" fullname="R4HoverArtGameplayTests.HoverAppearanceShowsRealLiftAndKeepsOriginalPhysics" methodname="HoverAppearanceShowsRealLiftAndKeepsOriginalPhysics" classname="R4HoverArtGameplayTests" runstate="Runnable" seed="562767038" result="Passed" start-time="2026-11-07 21:57:18Z" end-time="2026-11-07 21:57:21Z" duration="3.624461" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 22 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1620" name="R4JumpArtGameplayTests" fullname="R4JumpArtGameplayTests" classname="R4JumpArtGameplayTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-11-07 21:57:25Z" end-time="2026-11-07 21:57:26Z" duration="1.400543" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1621" name="RealJumpTriggersVisualOnceAndKeepsOriginalPhysics" fullname="R4JumpArtGameplayTests.RealJumpTriggersVisualOnceAndKeepsOriginalPhysics" methodname="RealJumpTriggersVisualOnceAndKeepsOriginalPhysics" classname="R4JumpArtGameplayTests" runstate="Runnable" seed="583046971" result="Passed" start-time="2026-11-07 21:57:21Z" end-time="2026-11-07 21:57:26Z" duration="4.564786" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 60 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 60 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 60 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 60 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1714" name="R4OmniArtGameplayTests" fullname="R4OmniArtGameplayTests" classname="R4OmniArtGameplayTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-11-07 21:57:29Z" end-time="2026-11-07 21:57:31Z" duration="1.799731" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1715" name="OmniArtKeepsPhysicalStrafeAndRollsOnBothSides" fullname="R4OmniArtGameplayTests.OmniArtKeepsPhysicalStrafeAndRollsOnBothSides" methodname="OmniArtKeepsPhysicalStrafeAndRollsOnBothSides" classname="R4OmniArtGameplayTests" runstate="Runnable" seed="1252650648" result="Passed" start-time="2026-11-07 21:57:26Z" end-time="2026-11-07 21:57:31Z" duration="5.116872" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1716" name="R4RangedArtGameplayTests" fullname="R4RangedArtGameplayTests" classname="R4RangedArtGameplayTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-07 21:57:38Z" end-time="2026-11-07 21:57:38Z" duration="0.431787" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1718" name="HeavyArtUsesVisibleMuzzleForActualProjectileAndEnergy" fullname="R4RangedArtGameplayTests.HeavyArtUsesVisibleMuzzleForActualProjectileAndEnergy" methodname="HeavyArtUsesVisibleMuzzleForActualProjectileAndEnergy" classname="R4RangedArtGameplayTests" runstate="Runnable" seed="188930609" result="Passed" start-time="2026-11-07 21:57:31Z" end-time="2026-11-07 21:57:35Z" duration="3.357870" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+        <test-case id="1717" name="SuppliedRangedModelsAttachToRealVehicleAndKeepPhysicalColliders" fullname="R4RangedArtGameplayTests.SuppliedRangedModelsAttachToRealVehicleAndKeepPhysicalColliders" methodname="SuppliedRangedModelsAttachToRealVehicleAndKeepPhysicalColliders" classname="R4RangedArtGameplayTests" runstate="Runnable" seed="1694640943" result="Passed" start-time="2026-11-07 21:57:35Z" end-time="2026-11-07 21:57:38Z" duration="3.499226" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1724" name="R4SawArtGameplayTests" fullname="R4SawArtGameplayTests" classname="R4SawArtGameplayTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-11-07 21:57:41Z" end-time="2026-11-07 21:57:41Z" duration="0.446514" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1725" name="ImportedBladeUsesExistingPhysicalCenterSizeAndMotor" fullname="R4SawArtGameplayTests.ImportedBladeUsesExistingPhysicalCenterSizeAndMotor" methodname="ImportedBladeUsesExistingPhysicalCenterSizeAndMotor" classname="R4SawArtGameplayTests" runstate="Runnable" seed="1424486288" result="Passed" start-time="2026-11-07 21:57:38Z" end-time="2026-11-07 21:57:41Z" duration="3.366098" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1726" name="R4SuspensionArtGameplayTests" fullname="R4SuspensionArtGameplayTests" classname="R4SuspensionArtGameplayTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-11-07 21:57:45Z" end-time="2026-11-07 21:57:45Z" duration="0.439571" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1727" name="ModelPreservesTheExistingPhysicalSupportAndMount" fullname="R4SuspensionArtGameplayTests.ModelPreservesTheExistingPhysicalSupportAndMount" methodname="ModelPreservesTheExistingPhysicalSupportAndMount" classname="R4SuspensionArtGameplayTests" runstate="Runnable" seed="324111994" result="Passed" start-time="2026-11-07 21:57:41Z" end-time="2026-11-07 21:57:45Z" duration="3.629294" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 21 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 21 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 21 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 21 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1728" name="R4TracksArtGameplayTests" fullname="R4TracksArtGameplayTests" classname="R4TracksArtGameplayTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-11-07 21:57:49Z" end-time="2026-11-07 21:57:50Z" duration="1.797441" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1729" name="RealTracksDriveAndAnimateWithoutAddingPhysicalColliders" fullname="R4TracksArtGameplayTests.RealTracksDriveAndAnimateWithoutAddingPhysicalColliders" methodname="RealTracksDriveAndAnimateWithoutAddingPhysicalColliders" classname="R4TracksArtGameplayTests" runstate="Runnable" seed="737101805" result="Passed" start-time="2026-11-07 21:57:45Z" end-time="2026-11-07 21:57:50Z" duration="5.331345" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[EXIT273] Shutdown prepared: NativeClose
+Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

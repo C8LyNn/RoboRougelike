@@ -213,8 +213,9 @@ namespace RoboRougelike.R3
         }
         private void ShowOccupiedCells()
         {
-            // Use exactly the cells that the model's placement check reserves,
-            // including destroyed plans and rotated, multi-cell modules.
+            // Keep the construction grid for visible blocks and missing plans.
+            // Replaced modules already show their real shape; a cubic outline
+            // would visually recreate the old placeholder around that model.
             float half=R41PartGeometry.Grid*.5f;
             var corners=new[]{new Vector3(-half,-half,-half),new Vector3(half,-half,-half),
                 new Vector3(half,-half,half),new Vector3(-half,-half,half),
@@ -222,7 +223,13 @@ namespace RoboRougelike.R3
                 new Vector3(half,half,half),new Vector3(-half,half,half)};
             var path=new[]{0,1,2,3,0,4,5,1,5,6,2,6,7,3,7,4};
             var points=new Vector3[path.Length];for(int i=0;i<path.Length;i++)points[i]=corners[path[i]];
-            foreach(var cell in run.VehicleModel.Parts.SelectMany(R3VehicleModel.OccupiedCells).Distinct())
+            var assembly=run.Player.GetComponent<R3VehicleAssembly>();
+            var visibleParts=run.VehicleModel.Parts.Where(p=>{
+                var mounted=assembly.Parts.FirstOrDefault(m=>m!=null&&m.Id==p.Id);
+                var renderer=mounted!=null?mounted.GetComponent<Renderer>():null;
+                return p.Health<=0||renderer==null||renderer.enabled;
+            });
+            foreach(var cell in visibleParts.SelectMany(R3VehicleModel.OccupiedCells).Distinct())
             {
                 var zone=new GameObject("W27 occupied cell");zone.transform.SetParent(previewRoot.transform,false);
                 zone.transform.localPosition=(Vector3)cell*R41PartGeometry.Grid;
@@ -264,7 +271,6 @@ namespace RoboRougelike.R3
                     else if(kind==R3PartKind.IndependentSteering)
                     {
                         R4IndependentSteeringArt.TryAttach(item.transform);
-                        item.GetComponent<Renderer>().enabled=true; // retain the colored ghost cell
                     }
                 }
             }
@@ -309,8 +315,10 @@ namespace RoboRougelike.R3
             }
             marker.SetActive(HasTarget);marker.transform.localPosition=(Vector3)Cell*R41PartGeometry.Grid;
             var material=Tool==R41GarageTool.Mount?(PreviewValid?palette.Valid:palette.Invalid):palette.Selection;
+            var rootRenderer=marker.GetComponent<Renderer>();
+            bool replacementOnly=rootRenderer!=null&&!rootRenderer.enabled;
             foreach(var renderer in marker.GetComponentsInChildren<Renderer>())
-                renderer.sharedMaterial=payloadRenderers.Contains(renderer)?palette.Payload:material;
+                renderer.sharedMaterial=!replacementOnly&&payloadRenderers.Contains(renderer)?palette.Payload:material;
         }
         public static Vector3Int LocalFace(Transform vehicle,Vector3 worldNormal)
         {

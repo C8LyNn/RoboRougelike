@@ -67,6 +67,9 @@ namespace RoboRougelike.R1
             controller.SetGameplayInputEnabled(false);
             var body = GetComponent<Rigidbody>();
             body.position = position; body.rotation = rotation;
+            // Interpolation may retain the old render pose while physics is
+            // paused. Camera framing must see the destination immediately.
+            transform.SetPositionAndRotation(position,rotation);
             Physics.SyncTransforms();
         }
     }

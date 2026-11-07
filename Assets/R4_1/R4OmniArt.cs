@@ -36,7 +36,7 @@ namespace RoboRougelike.R4_1
             var view=block.gameObject.AddComponent<R4OmniArt>();view.hub=hub;view.rollers=rollers;
             view.radius=Mathf.Max(.05f,Mathf.Abs(Vector3.Dot(probe.position-hub.position,block.up)));
             view.sideSign=mirror?-1:1;view.owner=block.GetComponentInParent<Rigidbody>(true);
-            renderer.enabled=false;return view;
+            renderer.enabled=false;R41PartGeometry.HideMountingShell(block,visual);return view;
         }
         void LateUpdate()
         {

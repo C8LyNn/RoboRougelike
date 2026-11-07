@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="11" result="Passed" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-07 21:52:28Z" end-time="2026-11-07 21:52:28Z" duration="0,6552286">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1728" result="Passed" start-time="2026-11-07 21:52:28Z" end-time="2026-11-07 21:52:28Z" duration="0.655229" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="2169" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-PlayQA-97f8/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="935" result="Passed" start-time="2026-11-07 21:52:28Z" end-time="2026-11-07 21:52:28Z" duration="0.601949" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="53884" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="1155" name="CameraStartAndReplacementArtTests" fullname="CameraStartAndReplacementArtTests" classname="CameraStartAndReplacementArtTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-11-07 21:52:14Z" end-time="2026-11-07 21:52:14Z" duration="0.416092" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1162" name="GhostModelShowsInvalidPlacementTintWithoutAnOpaqueCube" fullname="CameraStartAndReplacementArtTests.GhostModelShowsInvalidPlacementTintWithoutAnOpaqueCube" methodname="GhostModelShowsInvalidPlacementTintWithoutAnOpaqueCube" classname="CameraStartAndReplacementArtTests" runstate="Runnable" seed="618068775" result="Passed" start-time="2026-11-07 21:51:50Z" end-time="2026-11-07 21:51:53Z" duration="3.659448" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1160" name="MissingModelsLeaveOldMountAndPayloadVisible" fullname="CameraStartAndReplacementArtTests.MissingModelsLeaveOldMountAndPayloadVisible" methodname="MissingModelsLeaveOldMountAndPayloadVisible" classname="CameraStartAndReplacementArtTests" runstate="Runnable" seed="1566141140" result="Passed" start-time="2026-11-07 21:51:53Z" end-time="2026-11-07 21:51:56Z" duration="3.265632" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1159" name="MovementModelsReplaceCubesWithoutRemovingPhysicalColliders" fullname="CameraStartAndReplacementArtTests.MovementModelsReplaceCubesWithoutRemovingPhysicalColliders" methodname="MovementModelsReplaceCubesWithoutRemovingPhysicalColliders" classname="CameraStartAndReplacementArtTests" runstate="Runnable" seed="1068015833" result="Passed" start-time="2026-11-07 21:51:56Z" end-time="2026-11-07 21:52:00Z" duration="3.404241" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1161" name="ReplacementModelStillShowsDamageAndFollowsDetachedPart" fullname="CameraStartAndReplacementArtTests.ReplacementModelStillShowsDamageAndFollowsDetachedPart" methodname="ReplacementModelStillShowsDamageAndFollowsDetachedPart" classname="CameraStartAndReplacementArtTests" runstate="Runnable" seed="49555038" result="Passed" start-time="2026-11-07 21:52:00Z" end-time="2026-11-07 21:52:04Z" duration="3.992903" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+ART_DEBRIS_QA elapsed=0,6001089 scale=1 enabled=True active=True debris=True
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1157" name="StartingBattleFramesTheActualVehicleWithoutWaitingForCameraToTravelFromGarage" fullname="CameraStartAndReplacementArtTests.StartingBattleFramesTheActualVehicleWithoutWaitingForCameraToTravelFromGarage" methodname="StartingBattleFramesTheActualVehicleWithoutWaitingForCameraToTravelFromGarage" classname="CameraStartAndReplacementArtTests" runstate="Runnable" seed="1719685437" result="Passed" start-time="2026-11-07 21:52:04Z" end-time="2026-11-07 21:52:07Z" duration="3.532692" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+CAM_START_QA camera=(0.00, 7.82, -31.43) body=(0.00, 0.70, -22.00) transform=(0.00, 0.70, -22.00) distance=11,81526 requested=7,8 fit=13,75989 bounds=Center: (0.00, 1.49, -21.79), Extents: (1.91, 1.44, 1.70)
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1158" name="SuppliedModelsReplaceTheOldVisibleMountingCubes" fullname="CameraStartAndReplacementArtTests.SuppliedModelsReplaceTheOldVisibleMountingCubes" methodname="SuppliedModelsReplaceTheOldVisibleMountingCubes" classname="CameraStartAndReplacementArtTests" runstate="Runnable" seed="813496406" result="Passed" start-time="2026-11-07 21:52:07Z" end-time="2026-11-07 21:52:11Z" duration="3.425565" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1156" name="TeleportSynchronizesVisualTransformWhilePhysicsIsPaused" fullname="CameraStartAndReplacementArtTests.TeleportSynchronizesVisualTransformWhilePhysicsIsPaused" methodname="TeleportSynchronizesVisualTransformWhilePhysicsIsPaused" classname="CameraStartAndReplacementArtTests" runstate="Runnable" seed="982674198" result="Passed" start-time="2026-11-07 21:52:11Z" end-time="2026-11-07 21:52:14Z" duration="3.400331" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1602" name="R4EnemySawEmpArtTests" fullname="R4EnemySawEmpArtTests" classname="R4EnemySawEmpArtTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-07 21:52:28Z" end-time="2026-11-07 21:52:28Z" duration="0.581076" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1606" name="EnemyEmpModelKeepsPhysicalPulseOriginAndDisruptsTarget" fullname="R4EnemySawEmpArtTests.EnemyEmpModelKeepsPhysicalPulseOriginAndDisruptsTarget" methodname="EnemyEmpModelKeepsPhysicalPulseOriginAndDisruptsTarget" classname="R4EnemySawEmpArtTests" runstate="Runnable" seed="1348834616" result="Passed" start-time="2026-11-07 21:52:14Z" end-time="2026-11-07 21:52:18Z" duration="3.542343" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1603" name="EnemySawModelSharesExistingPhysicalCuttingCenter" fullname="R4EnemySawEmpArtTests.EnemySawModelSharesExistingPhysicalCuttingCenter" methodname="EnemySawModelSharesExistingPhysicalCuttingCenter" classname="R4EnemySawEmpArtTests" runstate="Runnable" seed="667782010" result="Passed" start-time="2026-11-07 21:52:18Z" end-time="2026-11-07 21:52:21Z" duration="3.420298" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1605" name="MissingEmpModelPreservesLegacyRenderAndPulseOrigin" fullname="R4EnemySawEmpArtTests.MissingEmpModelPreservesLegacyRenderAndPulseOrigin" methodname="MissingEmpModelPreservesLegacyRenderAndPulseOrigin" classname="R4EnemySawEmpArtTests" runstate="Runnable" seed="1609314499" result="Passed" start-time="2026-11-07 21:52:21Z" end-time="2026-11-07 21:52:25Z" duration="3.577126" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1604" name="SwitchingToSawBindsActiveRotorAndMissingModelsKeepLegacyGeometry" fullname="R4EnemySawEmpArtTests.SwitchingToSawBindsActiveRotorAndMissingModelsKeepLegacyGeometry" methodname="SwitchingToSawBindsActiveRotorAndMissingModelsKeepLegacyGeometry" classname="R4EnemySawEmpArtTests" runstate="Runnable" seed="1240177803" result="Passed" start-time="2026-11-07 21:52:25Z" end-time="2026-11-07 21:52:28Z" duration="3.612718" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 38 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 38 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 57 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 57 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[EXIT273] Shutdown prepared: NativeClose
+Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

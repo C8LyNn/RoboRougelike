@@ -32,7 +32,7 @@ namespace RoboRougelike.R4_1
             visual.transform.position+=block.TransformPoint(Vector3.up*.5f)-socket.position;
             // The game already draws the actual attached rope; keep the FBX cable hidden.
             cable.gameObject.SetActive(false);glow.gameObject.SetActive(false);
-            renderer.enabled=false;return true;
+            renderer.enabled=false;R41PartGeometry.HideMountingShell(block,visual);return true;
         }
     }
 }

@@ -38,7 +38,7 @@ namespace RoboRougelike.R4_1
                Vector3.Dot(nozzle.position-socket.position,block.up)>=0){Destroy(visual);return null;}
             glow.localScale=Vector3.one;glow.gameObject.SetActive(false);ring.gameObject.SetActive(false);
             var view=block.gameObject.AddComponent<R4HoverArt>();view.rotor=rotor;view.glow=glow;
-            renderer.enabled=false;return view;
+            renderer.enabled=false;R41PartGeometry.HideMountingShell(block,visual);return view;
         }
         void LateUpdate()
         {
