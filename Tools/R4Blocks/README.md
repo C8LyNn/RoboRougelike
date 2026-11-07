@@ -69,4 +69,13 @@ node .\Tools\R4Blocks\verify-socket-surface.js 'PATH_TO_SOURCE\R4Blocks'
 
 This samples the corners, edge midpoints and center of each source socket patch against coplanar collider triangles. The baseline test passes only when the exact known four mismatches are reproduced; it does not treat them as fixed. The verifier itself produces a nonzero result while those patches remain uncovered. Details, coordinates and limitations are in `Docs/R4_BLOCK_SOCKET_SURFACE_QA.md`. Nine covered samples do not prove the whole patch is covered or replace Unity physics checks.
 
+`CatalogSmoke` is a small offline .NET 8 project that compiles the actual `R4BlockCatalog.cs` using minimal Unity value-type stand-ins. Its package sources are cleared; it requires an already installed .NET 8 reference pack. It checks the temporary OctColumn module-port quarantine and surrounding catalog policy, but is not a Unity, placement or gameplay test. See `Docs/R4_SOCKET_QUARANTINE_QA.md`.
+
+```powershell
+$env:DOTNET_PROCESSOR_COUNT = '1'
+dotnet restore .\Tools\R4Blocks\CatalogSmoke\CatalogSmoke.csproj --configfile .\Tools\R4Blocks\CatalogSmoke\NuGet.Config --disable-parallel
+dotnet build .\Tools\R4Blocks\CatalogSmoke\CatalogSmoke.csproj -c Release --no-restore --disable-build-servers -m:1
+dotnet .\Tools\R4Blocks\CatalogSmoke\bin\Release\net8.0\CatalogSmoke.dll
+```
+
 This is a source-data check, not a Unity test or proof of physical geometry, gameplay integration, collision behavior or save compatibility. As of this change the shape catalog and socket policy remain disconnected from the actual garage and saved vehicles.

@@ -37,6 +37,10 @@ public sealed class R4BlockCatalogTests
         bool Can(string id,int index)=>(bool)method.Invoke(null,new object[]{id,index});
         Assert.That(Can("R4B_Cube",0),Is.True);Assert.That(Can("R4B_Wedge",0),Is.True);
         Assert.That(Can("R4B_Wedge",2),Is.False);Assert.That(Can("R4B_Tetra",0),Is.False);
+        Assert.That(Can("R4B_OctColumn",0),Is.False,"Top port overstates its physical face and must be quarantined.");
+        Assert.That(Can("R4B_OctColumn",1),Is.False,"Bottom port overstates its physical face and must be quarantined.");
+        Assert.That(Can("R4B_OctColumn",2),Is.False,"A partial side port cannot mount a module either.");
+        Assert.That(Can("R4B_Wedge",1),Is.True,"A different full port remains usable.");
         Assert.That(Can("missing",0),Is.False);Assert.That(Can("R4B_Cube",99),Is.False);
     }
 }

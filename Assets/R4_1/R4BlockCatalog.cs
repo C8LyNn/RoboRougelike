@@ -103,7 +103,13 @@ public static class R4BlockCatalog
     {
         foreach(var entry in All)
             if(entry.Id==id)
-                return entry.MountModules && entry.PartialSocket!=null && socketIndex>=0 && socketIndex<entry.PartialSocket.Length && !entry.PartialSocket[socketIndex];
+                return entry.MountModules && entry.PartialSocket!=null && socketIndex>=0 && socketIndex<entry.PartialSocket.Length &&
+                    !entry.PartialSocket[socketIndex] && !IsQuarantinedModulePort(id,socketIndex);
         return false;
     }
+    // The source calls these octagonal end patches full, but their corners lie
+    // beyond the verified collider. Keep source metadata intact and fail closed
+    // for module mounting until the source geometry/patch decision is resolved.
+    public static bool IsQuarantinedModulePort(string id,int socketIndex) =>
+        id=="R4B_OctColumn" && (socketIndex==0 || socketIndex==1);
 }
