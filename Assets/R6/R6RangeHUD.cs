@@ -7,6 +7,11 @@ namespace RoboRougelike.R1
     {
         GUIStyle aimCrossStyle,aimCaptionStyle,weaponMarkerStyle;
         int weaponStatusPage;
+        private static string RocketWeaponStatus(int ammo,float reloadReadyAt,float readyAt,float now)
+        {
+            string state=ammo<=0||reloadReadyAt>now?"ładowanie":readyAt>now?$"{readyAt-now:0.0} s":"gotowa";
+            return $"{ammo}/10 • {state}";
+        }
         private static int WeaponStatusPageCount(int count)=>Mathf.Max(1,(Mathf.Max(0,count)+1)/2);
         private static int WeaponStatusPageStart(int count,int page)=>Mathf.Clamp(page,0,WeaponStatusPageCount(count)-1)*2;
         private void AdvanceWeaponStatusPage(int count)
@@ -164,7 +169,7 @@ namespace RoboRougelike.R1
                     var beam=gun.GetComponent<RoboRougelike.WeaponIntegration.RRLBeamBinding>();
                     var rocket=gun.GetComponent<RoboRougelike.WeaponIntegration.RRLRocketBinding>();
                     var saw=gun.GetComponent<RoboRougelike.WeaponIntegration.RRLSawBinding>();
-                    string status=saw!=null?($"{saw.Module.Motor.Rpm:0} RPM • {saw.Module.Motor.Heat:0}%"+(saw.Module.Motor.JamRemaining>0?" • blokada":"")):rocket!=null?($"{rocket.State.Ammo}/10 • "+(rocket.State.ReloadReadyAt>Time.time?"ładowanie":"T przeładuj")):beam!=null?($"temperatura {beam.Module.HeatFraction*100:0}%"+(beam.Module.IsOverheated?" • przegrzana":"")):rail!=null?($"{rail.State.Ammo}/12 • "+(rail.State.ReloadReadyAt>Time.time?"ładowanie":"T przeładuj")):shotgun!=null?($"{shotgun.State.Ammo}/12 • "+(shotgun.State.ReloadReadyAt>Time.time?"ładowanie":"T przeładuj")):
+                    string status=saw!=null?($"{saw.Module.Motor.Rpm:0} RPM • {saw.Module.Motor.Heat:0}%"+(saw.Module.Motor.JamRemaining>0?" • blokada":"")):rocket!=null?RocketWeaponStatus(rocket.State.Ammo,rocket.State.ReloadReadyAt,rocket.State.DeviceReadyAt,Time.time):beam!=null?($"temperatura {beam.Module.HeatFraction*100:0}%"+(beam.Module.IsOverheated?" • przegrzana":"")):rail!=null?($"{rail.State.Ammo}/12 • "+(rail.State.ReloadReadyAt>Time.time?"ładowanie":"T przeładuj")):shotgun!=null?($"{shotgun.State.Ammo}/12 • "+(shotgun.State.ReloadReadyAt>Time.time?"ładowanie":"T przeładuj")):
                         (reload>0?$"{reload:0.0} s":"gotowa");
                     var emp=gun.GetComponent<RoboRougelike.WeaponIntegration.RRLEmpBinding>();
                     if(emp!=null)status=$"{emp.Module.CooldownRemaining:0.0}s • impuls {emp.LastReport.ReceiversAffected} modułów";
