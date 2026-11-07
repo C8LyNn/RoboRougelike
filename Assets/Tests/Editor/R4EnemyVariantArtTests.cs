@@ -42,6 +42,25 @@ public sealed class R4EnemyVariantArtTests
         Assert.That(automatic.Pivot.GetComponentsInChildren<Renderer>(true).Any(r=>r.enabled),Is.True);
         var direction=new Vector3(.4f,.15f,1).normalized;heavy.Pivot.rotation=Quaternion.LookRotation(direction);
         art.Sync();Assert.That(Vector3.Dot(heavy.Muzzle.forward,direction),Is.GreaterThan(.99f),"Visible muzzle follows the real turret aim.");
+        // Invoke the existing firing path immediately after moving the physical
+        // pivot, before LateUpdate, so a one-frame-old visual muzzle cannot pass.
+        foreach(var other in run.Encounter.Enemies.Where(e=>e!=enemy))other.gameObject.SetActive(false);
+        R1EncounterManager.ClearTransientObjects();
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.SetParent(run.Player.transform,true);
+        target.transform.position=heavy.Pivot.position+direction*12;
+        var targetCollider=target.GetComponent<Collider>();Physics.SyncTransforms();
+        var type=typeof(P12PipelineSafeEnemyTurret);
+        type.GetField("currentTarget",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(enemy,targetCollider);
+        type.GetField("nextTargetTime",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(enemy,Time.time+30);
+        heavy.Pivot.rotation=Quaternion.LookRotation(-direction);art.Sync();
+        heavy.Pivot.rotation=Quaternion.LookRotation(direction);heavy.NextShot=0;
+        var selected=new System.Collections.Generic.List<P12PipelineSafeEnemyTurret.VariantGun>{heavy};
+        type.GetMethod("UpdateVariantWeapons",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(enemy,new object[]{selected,"gun/"});
+        var shell=Object.FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Single(p=>p.PartId==enemy.EquipmentInstanceId("gun/0"));
+        var expected=heavy.Muzzle.position+(targetCollider.bounds.center-heavy.Muzzle.position).normalized*.25f;
+        Assert.That(Vector3.Distance(shell.transform.position,expected),Is.LessThan(.001f),"Real shell starts at the current visible muzzle.");
+        Assert.That(Vector3.Dot(heavy.Muzzle.forward,direction),Is.GreaterThan(.99f),"Firing path synchronizes visual aim immediately.");
+        Object.Destroy(shell.gameObject);Object.Destroy(target);
         var rotor=visualRoot;heavy.Block.ApplyDamage(10000,heavy.Block.transform.position,Vector3.up);yield return null;
         Assert.That(heavy.Block.IsDead,Is.True);Assert.That(rotor.IsChildOf(heavy.Block.transform),Is.True,"The appearance follows the damaged part.");
         Assert.That(heavy.Online(enemy.transform),Is.False);
