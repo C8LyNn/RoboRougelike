@@ -1,6 +1,6 @@
 'use strict';
 const assert = require('node:assert/strict');
-const { analyzeMesh, parseGlb } = require('./verify-collider-geometry.js');
+const { analyzeMesh, parseGlb, withinFootprintEnvelope } = require('./verify-collider-geometry.js');
 
 const cube = [
   [-1,-1,-1], [1,-1,-1], [1,1,-1], [-1,1,-1],
@@ -20,4 +20,8 @@ assert.equal(analyzeMesh(cube, invalid).ok, false, 'an out-of-range triangle ind
 const dented = cube.map(point => point.slice()); dented[6]=[0,0,0];
 assert.equal(analyzeMesh(dented, faces).ok, false, 'a dented mesh must not pass the convexity check');
 assert.throws(() => parseGlb(Buffer.from('not a GLB')), /GLB/i);
-console.log('Geometry self-test PASS: convex cube accepted; open, degenerate, reversed, invalid-index, dented and malformed cases rejected.');
+assert.equal(withinFootprintEnvelope([[-.26,0,0],[.26,0,0]],[[0,0,0]]),true,'a single-cell envelope must include its faces');
+assert.equal(withinFootprintEnvelope([[.28,0,0]],[[0,0,0]]),false,'a vertex outside the cell envelope must fail');
+assert.equal(withinFootprintEnvelope([[.275,0,0]],[[0,0,0],[1,0,0]]),true,'a two-cell rigid part may bridge the grid gap');
+assert.equal(withinFootprintEnvelope([[.55,.55,0]],[[0,0,0],[1,0,0],[0,1,0]]),true,'the coarse envelope intentionally does not detect an empty L-shape corner');
+console.log('Geometry self-test PASS: convex cube and valid footprint envelopes accepted; malformed topology, GLB and outside-envelope cases rejected.');

@@ -82,6 +82,15 @@ function analyzeMesh(vertices, indices) {
   return {ok:errors.length===0, errors, vertices:unique.size, triangles:indices.length/3};
 }
 
+// Necessary coarse check only: an AABB cannot detect holes in an L-shaped footprint.
+function withinFootprintEnvelope(vertices, cells) {
+  if (!Array.isArray(vertices) || !vertices.length || !Array.isArray(cells) || !cells.length ||
+      cells.some(c=>!Array.isArray(c) || c.length!==3 || c.some(n=>!Number.isInteger(n)))) return false;
+  const min=[0,1,2].map(axis=>Math.min(...cells.map(c=>c[axis]))*.55-.26-.001);
+  const max=[0,1,2].map(axis=>Math.max(...cells.map(c=>c[axis]))*.55+.26+.001);
+  return vertices.every(v=>Array.isArray(v) && v.length===3 && v.every((n,axis)=>Number.isFinite(n) && n>=min[axis] && n<=max[axis]));
+}
+
 function verifySource(root) {
   const catalogBytes=fs.readFileSync(path.join(root,'integration','R4_BLOCKS_UNITY.json'));
   const manifestBytes=fs.readFileSync(path.join(root,'SHA256SUMS.txt'));
@@ -109,7 +118,10 @@ function verifySource(root) {
       const mesh=glb.json.meshes?.[node.mesh]; if (!mesh?.primitives?.length) throw new Error(`Missing primitives: ${node.name}`);
       for (const primitive of mesh.primitives) {
         if ((primitive.mode ?? 4)!==4 || primitive.indices==null || primitive.attributes?.POSITION==null) throw new Error(`Unsupported primitive: ${node.name}`);
-        results.push({name:node.name,...analyzeMesh(readAccessor(glb,primitive.attributes.POSITION,'position'),readAccessor(glb,primitive.indices,'index'))});
+        const vertices=readAccessor(glb,primitive.attributes.POSITION,'position');
+        const result=analyzeMesh(vertices,readAccessor(glb,primitive.indices,'index'));
+        if (!withinFootprintEnvelope(vertices,block.cells)) { result.ok=false; result.errors.push('vertices exceed the coarse declared footprint envelope'); }
+        results.push({name:node.name,...result});
       }
     }
   }
@@ -125,4 +137,4 @@ if (require.main===module) {
     if (failed.length) process.exitCode=1;
   } catch (error) { console.error(error.message); process.exitCode=1; }
 }
-module.exports={analyzeMesh,parseGlb,verifySource};
+module.exports={analyzeMesh,parseGlb,verifySource,withinFootprintEnvelope};
