@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="37" result="Passed" total="37" passed="37" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-07 08:15:02Z" end-time="2026-11-07 08:15:03Z" duration="0,6184592">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1453" result="Passed" start-time="2026-11-07 08:15:02Z" end-time="2026-11-07 08:15:03Z" duration="0.618459" total="37" passed="37" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1809" name="Assembly-CSharp-Editor.dll" fullname="[USER_HOME]/Desktop/Prototypy/RoboRougelike-PlayQA-97f8/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="660" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.541692" total="37" passed="37" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="65152" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="1424" name="R4SalvageModelTests" fullname="R4SalvageModelTests" classname="R4SalvageModelTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-07 08:14:38Z" end-time="2026-11-07 08:14:38Z" duration="0.045971" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1426" name="FreeMountRemovalRepairAndDismantleAreAtomicAndCannotPrintScrap" fullname="R4SalvageModelTests.FreeMountRemovalRepairAndDismantleAreAtomicAndCannotPrintScrap" methodname="FreeMountRemovalRepairAndDismantleAreAtomicAndCannotPrintScrap" classname="R4SalvageModelTests" runstate="Runnable" seed="1095270299" result="Passed" start-time="2026-11-07 08:14:38Z" end-time="2026-11-07 08:14:38Z" duration="0.032471" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1427" name="RunOwnershipAndLedgerIdsDoNotSurviveNewModel" fullname="R4SalvageModelTests.RunOwnershipAndLedgerIdsDoNotSurviveNewModel" methodname="RunOwnershipAndLedgerIdsDoNotSurviveNewModel" classname="R4SalvageModelTests" runstate="Runnable" seed="412198833" result="Passed" start-time="2026-11-07 08:14:38Z" end-time="2026-11-07 08:14:38Z" duration="0.000936" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1425" name="SnapshotLimitAndAtomicClaimPreserveHpAndRejectReplay" fullname="R4SalvageModelTests.SnapshotLimitAndAtomicClaimPreserveHpAndRejectReplay" methodname="SnapshotLimitAndAtomicClaimPreserveHpAndRejectReplay" classname="R4SalvageModelTests" runstate="Runnable" seed="462801045" result="Passed" start-time="2026-11-07 08:14:38Z" end-time="2026-11-07 08:14:38Z" duration="0.001055" asserts="0">
+          <properties />
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1661" name="RewardRC2IntegrationTests" fullname="RewardRC2IntegrationTests" classname="RewardRC2IntegrationTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.456479" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1666" name="FourthOrOwnedSelectionCannotMutateCanonicalRewardState" fullname="RewardRC2IntegrationTests.FourthOrOwnedSelectionCannotMutateCanonicalRewardState" methodname="FourthOrOwnedSelectionCannotMutateCanonicalRewardState" classname="RewardRC2IntegrationTests" runstate="Runnable" seed="1788697920" result="Passed" start-time="2026-11-07 08:14:38Z" end-time="2026-11-07 08:14:42Z" duration="3.511284" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=66
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1667" name="FullInventoryRefusalKeepsTheSameWindowAndCanRetry" fullname="RewardRC2IntegrationTests.FullInventoryRefusalKeepsTheSameWindowAndCanRetry" methodname="FullInventoryRefusalKeepsTheSameWindowAndCanRetry" classname="RewardRC2IntegrationTests" runstate="Runnable" seed="845123028" result="Passed" start-time="2026-11-07 08:14:42Z" end-time="2026-11-07 08:14:45Z" duration="3.558528" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=66
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1662" name="KilledEnemyDropsUseCanonicalPhysicalIds" fullname="RewardRC2IntegrationTests.KilledEnemyDropsUseCanonicalPhysicalIds" methodname="KilledEnemyDropsUseCanonicalPhysicalIds" classname="RewardRC2IntegrationTests" runstate="Runnable" seed="1594348818" result="Passed" start-time="2026-11-07 08:14:45Z" end-time="2026-11-07 08:14:49Z" duration="3.496406" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1665" name="LiveVictoryUsesOneKeep3WindowAndOriginalAtomicSettlement" fullname="RewardRC2IntegrationTests.LiveVictoryUsesOneKeep3WindowAndOriginalAtomicSettlement" methodname="LiveVictoryUsesOneKeep3WindowAndOriginalAtomicSettlement" classname="RewardRC2IntegrationTests" runstate="Runnable" seed="1549669010" result="Passed" start-time="2026-11-07 08:14:49Z" end-time="2026-11-07 08:14:52Z" duration="3.496128" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=3; złom z demontażu=45
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1664" name="NoRecoveryWindowBeforeAuthenticatedVictory" fullname="RewardRC2IntegrationTests.NoRecoveryWindowBeforeAuthenticatedVictory" methodname="NoRecoveryWindowBeforeAuthenticatedVictory" classname="RewardRC2IntegrationTests" runstate="Runnable" seed="1678434934" result="Passed" start-time="2026-11-07 08:14:52Z" end-time="2026-11-07 08:14:56Z" duration="3.560794" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1668" name="RawServiceCannotBypassTheControllerSettlementBoundary" fullname="RewardRC2IntegrationTests.RawServiceCannotBypassTheControllerSettlementBoundary" methodname="RawServiceCannotBypassTheControllerSettlementBoundary" classname="RewardRC2IntegrationTests" runstate="Runnable" seed="2107169527" result="Passed" start-time="2026-11-07 08:14:56Z" end-time="2026-11-07 08:14:59Z" duration="3.466842" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=66
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1663" name="SlotIdentityIsStableAcrossRepeatedSalvageBinding" fullname="RewardRC2IntegrationTests.SlotIdentityIsStableAcrossRepeatedSalvageBinding" methodname="SlotIdentityIsStableAcrossRepeatedSalvageBinding" classname="RewardRC2IntegrationTests" runstate="Runnable" seed="1843673820" result="Passed" start-time="2026-11-07 08:14:59Z" end-time="2026-11-07 08:15:03Z" duration="3.590994" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1549" name="RRLW34RewardTests" fullname="RRLW34RewardTests" classname="RRLW34RewardTests" runstate="Runnable" testcasecount="13" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.034861" total="13" passed="13" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1566" name="FinalEncounterAlsoAwardsOneInactiveModuleAndThreePartsBeforeWon" fullname="RRLW34RewardTests.FinalEncounterAlsoAwardsOneInactiveModuleAndThreePartsBeforeWon" methodname="FinalEncounterAlsoAwardsOneInactiveModuleAndThreePartsBeforeWon" classname="RRLW34RewardTests" runstate="Runnable" seed="1135329078" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.010079" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="1562" name="InvalidPhysicalBonusCannotPartiallyPayOrClaimSalvage" fullname="RRLW34RewardTests.InvalidPhysicalBonusCannotPartiallyPayOrClaimSalvage" classname="RRLW34RewardTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.004621" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1559" name="InvalidPhysicalBonusCannotPartiallyPayOrClaimSalvage(&quot;nan&quot;)" fullname="RRLW34RewardTests.InvalidPhysicalBonusCannotPartiallyPayOrClaimSalvage(&quot;nan&quot;)" methodname="InvalidPhysicalBonusCannotPartiallyPayOrClaimSalvage" classname="RRLW34RewardTests" runstate="Runnable" seed="816642022" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.002024" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1560" name="InvalidPhysicalBonusCannotPartiallyPayOrClaimSalvage(&quot;infinite&quot;)" fullname="RRLW34RewardTests.InvalidPhysicalBonusCannotPartiallyPayOrClaimSalvage(&quot;infinite&quot;)" methodname="InvalidPhysicalBonusCannotPartiallyPayOrClaimSalvage" classname="RRLW34RewardTests" runstate="Runnable" seed="1822575674" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.000796" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1561" name="InvalidPhysicalBonusCannotPartiallyPayOrClaimSalvage(&quot;effect&quot;)" fullname="RRLW34RewardTests.InvalidPhysicalBonusCannotPartiallyPayOrClaimSalvage(&quot;effect&quot;)" methodname="InvalidPhysicalBonusCannotPartiallyPayOrClaimSalvage" classname="RRLW34RewardTests" runstate="Runnable" seed="808314176" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.000762" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+        </test-suite>
+        <test-suite type="ParameterizedMethod" id="1565" name="InventoryCapacityPreflightIncludesBonusAndAllThreeParts" fullname="RRLW34RewardTests.InventoryCapacityPreflightIncludesBonusAndAllThreeParts" classname="RRLW34RewardTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.007004" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1563" name="InventoryCapacityPreflightIncludesBonusAndAllThreeParts(196,True)" fullname="RRLW34RewardTests.InventoryCapacityPreflightIncludesBonusAndAllThreeParts(196,True)" methodname="InventoryCapacityPreflightIncludesBonusAndAllThreeParts" classname="RRLW34RewardTests" runstate="Runnable" seed="2122923858" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.003268" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1564" name="InventoryCapacityPreflightIncludesBonusAndAllThreeParts(197,False)" fullname="RRLW34RewardTests.InventoryCapacityPreflightIncludesBonusAndAllThreeParts(197,False)" methodname="InventoryCapacityPreflightIncludesBonusAndAllThreeParts" classname="RRLW34RewardTests" runstate="Runnable" seed="846995691" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.003064" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+        </test-suite>
+        <test-suite type="ParameterizedMethod" id="1554" name="OnePhysicalBonusAndIndependentPartsSettleExactlyOnce" fullname="RRLW34RewardTests.OnePhysicalBonusAndIndependentPartsSettleExactlyOnce" classname="RRLW34RewardTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.007059" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1550" name="OnePhysicalBonusAndIndependentPartsSettleExactlyOnce(0,9)" fullname="RRLW34RewardTests.OnePhysicalBonusAndIndependentPartsSettleExactlyOnce(0,9)" methodname="OnePhysicalBonusAndIndependentPartsSettleExactlyOnce" classname="RRLW34RewardTests" runstate="Runnable" seed="1849150992" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.002887" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1551" name="OnePhysicalBonusAndIndependentPartsSettleExactlyOnce(1,6)" fullname="RRLW34RewardTests.OnePhysicalBonusAndIndependentPartsSettleExactlyOnce(1,6)" methodname="OnePhysicalBonusAndIndependentPartsSettleExactlyOnce" classname="RRLW34RewardTests" runstate="Runnable" seed="435218521" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.001242" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1552" name="OnePhysicalBonusAndIndependentPartsSettleExactlyOnce(2,5)" fullname="RRLW34RewardTests.OnePhysicalBonusAndIndependentPartsSettleExactlyOnce(2,5)" methodname="OnePhysicalBonusAndIndependentPartsSettleExactlyOnce" classname="RRLW34RewardTests" runstate="Runnable" seed="1596226382" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.001022" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1553" name="OnePhysicalBonusAndIndependentPartsSettleExactlyOnce(3,4)" fullname="RRLW34RewardTests.OnePhysicalBonusAndIndependentPartsSettleExactlyOnce(3,4)" methodname="OnePhysicalBonusAndIndependentPartsSettleExactlyOnce" classname="RRLW34RewardTests" runstate="Runnable" seed="572395056" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.000813" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+        </test-suite>
+        <test-suite type="ParameterizedMethod" id="1558" name="RequiredExactlyOneBonusRejectsWithoutAnySalvageMutation" fullname="RRLW34RewardTests.RequiredExactlyOneBonusRejectsWithoutAnySalvageMutation" classname="RRLW34RewardTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.003657" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1555" name="RequiredExactlyOneBonusRejectsWithoutAnySalvageMutation(0)" fullname="RRLW34RewardTests.RequiredExactlyOneBonusRejectsWithoutAnySalvageMutation(0)" methodname="RequiredExactlyOneBonusRejectsWithoutAnySalvageMutation" classname="RRLW34RewardTests" runstate="Runnable" seed="1953928735" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.001282" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1556" name="RequiredExactlyOneBonusRejectsWithoutAnySalvageMutation(2)" fullname="RRLW34RewardTests.RequiredExactlyOneBonusRejectsWithoutAnySalvageMutation(2)" methodname="RequiredExactlyOneBonusRejectsWithoutAnySalvageMutation" classname="RRLW34RewardTests" runstate="Runnable" seed="2065821684" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.000821" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1557" name="RequiredExactlyOneBonusRejectsWithoutAnySalvageMutation(3)" fullname="RRLW34RewardTests.RequiredExactlyOneBonusRejectsWithoutAnySalvageMutation(3)" methodname="RequiredExactlyOneBonusRejectsWithoutAnySalvageMutation" classname="RRLW34RewardTests" runstate="Runnable" seed="1743669955" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.000689" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+        </test-suite>
+      </test-suite>
+      <test-suite type="TestFixture" id="1594" name="RRLW6RailgunModelTests" fullname="RRLW6RailgunModelTests" classname="RRLW6RailgunModelTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.003101" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1595" name="RailgunCatalogAndRecoveredResourcesUseExistingPaidRepair" fullname="RRLW6RailgunModelTests.RailgunCatalogAndRecoveredResourcesUseExistingPaidRepair" methodname="RailgunCatalogAndRecoveredResourcesUseExistingPaidRepair" classname="RRLW6RailgunModelTests" runstate="Runnable" seed="1014817826" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.002500" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1615" name="RRLW6WeaponRegistryTests" fullname="RRLW6WeaponRegistryTests" classname="RRLW6WeaponRegistryTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.002149" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1617" name="RecoveredShotgunRetainsIdentityAndAmmoThroughPaidRebuildAndCopy" fullname="RRLW6WeaponRegistryTests.RecoveredShotgunRetainsIdentityAndAmmoThroughPaidRebuildAndCopy" methodname="RecoveredShotgunRetainsIdentityAndAmmoThroughPaidRebuildAndCopy" classname="RRLW6WeaponRegistryTests" runstate="Runnable" seed="1307904885" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.000509" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1616" name="ShotgunIsAnExplicitProfileAfterUnchangedLegacyOrdinals" fullname="RRLW6WeaponRegistryTests.ShotgunIsAnExplicitProfileAfterUnchangedLegacyOrdinals" methodname="ShotgunIsAnExplicitProfileAfterUnchangedLegacyOrdinals" classname="RRLW6WeaponRegistryTests" runstate="Runnable" seed="526943178" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.000944" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1725" name="UI943PortraitRouteTests" fullname="UI943PortraitRouteTests" classname="UI943PortraitRouteTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.003673" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1727" name="BothRouteChoicesFitWithoutOverlapAndHaveReadableButtons" fullname="UI943PortraitRouteTests.BothRouteChoicesFitWithoutOverlapAndHaveReadableButtons" methodname="BothRouteChoicesFitWithoutOverlapAndHaveReadableButtons" classname="UI943PortraitRouteTests" runstate="Runnable" seed="1512659027" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.002537" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1726" name="PortraitRouteIsLimitedToItsOwnUnobscuredScreen" fullname="UI943PortraitRouteTests.PortraitRouteIsLimitedToItsOwnUnobscuredScreen" methodname="PortraitRouteIsLimitedToItsOwnUnobscuredScreen" classname="UI943PortraitRouteTests" runstate="Runnable" seed="1696864314" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.000366" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1728" name="UI943SalvageAmmoTests" fullname="UI943SalvageAmmoTests" classname="UI943SalvageAmmoTests" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.003639" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1738" name="AmmoLabelDoesNotOverlapSelectionHpOrRepairOnAnyCard" fullname="UI943SalvageAmmoTests.AmmoLabelDoesNotOverlapSelectionHpOrRepairOnAnyCard" methodname="AmmoLabelDoesNotOverlapSelectionHpOrRepairOnAnyCard" classname="UI943SalvageAmmoTests" runstate="Runnable" seed="257718250" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.000707" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1737" name="NoAmmoIsShownForWeaponsAndPartsWithoutMagazines" fullname="UI943SalvageAmmoTests.NoAmmoIsShownForWeaponsAndPartsWithoutMagazines" methodname="NoAmmoIsShownForWeaponsAndPartsWithoutMagazines" classname="UI943SalvageAmmoTests" runstate="Runnable" seed="1343282119" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.000552" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1736" name="PointDefenseUsesItsOwnFortyRoundMagazine" fullname="UI943SalvageAmmoTests.PointDefenseUsesItsOwnFortyRoundMagazine" methodname="PointDefenseUsesItsOwnFortyRoundMagazine" classname="UI943SalvageAmmoTests" runstate="Runnable" seed="1221915104" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.000147" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="1735" name="RealWeaponMagazineAndUninitializedSentinelAreDisplayed" fullname="UI943SalvageAmmoTests.RealWeaponMagazineAndUninitializedSentinelAreDisplayed" classname="UI943SalvageAmmoTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.001470" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1729" name="RealWeaponMagazineAndUninitializedSentinelAreDisplayed(Shotgun,-1,&quot;12/12 salw&quot;)" fullname="UI943SalvageAmmoTests.RealWeaponMagazineAndUninitializedSentinelAreDisplayed(Shotgun,-1,&quot;12/12 salw&quot;)" methodname="RealWeaponMagazineAndUninitializedSentinelAreDisplayed" classname="UI943SalvageAmmoTests" runstate="Runnable" seed="677776029" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.000306" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1730" name="RealWeaponMagazineAndUninitializedSentinelAreDisplayed(Shotgun,5,&quot;5/12 salw&quot;)" fullname="UI943SalvageAmmoTests.RealWeaponMagazineAndUninitializedSentinelAreDisplayed(Shotgun,5,&quot;5/12 salw&quot;)" methodname="RealWeaponMagazineAndUninitializedSentinelAreDisplayed" classname="UI943SalvageAmmoTests" runstate="Runnable" seed="1517713125" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.000058" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1731" name="RealWeaponMagazineAndUninitializedSentinelAreDisplayed(Railgun,4,&quot;4/12 nab.&quot;)" fullname="UI943SalvageAmmoTests.RealWeaponMagazineAndUninitializedSentinelAreDisplayed(Railgun,4,&quot;4/12 nab.&quot;)" methodname="RealWeaponMagazineAndUninitializedSentinelAreDisplayed" classname="UI943SalvageAmmoTests" runstate="Runnable" seed="478504415" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.000045" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1732" name="RealWeaponMagazineAndUninitializedSentinelAreDisplayed(Railgun,0,&quot;0/12 nab.&quot;)" fullname="UI943SalvageAmmoTests.RealWeaponMagazineAndUninitializedSentinelAreDisplayed(Railgun,0,&quot;0/12 nab.&quot;)" methodname="RealWeaponMagazineAndUninitializedSentinelAreDisplayed" classname="UI943SalvageAmmoTests" runstate="Runnable" seed="1818338158" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.000040" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1733" name="RealWeaponMagazineAndUninitializedSentinelAreDisplayed(RocketLauncher,-1,&quot;10/10 rak.&quot;)" fullname="UI943SalvageAmmoTests.RealWeaponMagazineAndUninitializedSentinelAreDisplayed(RocketLauncher,-1,&quot;10/10 rak.&quot;)" methodname="RealWeaponMagazineAndUninitializedSentinelAreDisplayed" classname="UI943SalvageAmmoTests" runstate="Runnable" seed="307651325" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.000041" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1734" name="RealWeaponMagazineAndUninitializedSentinelAreDisplayed(RocketLauncher,0,&quot;0/10 rak.&quot;)" fullname="UI943SalvageAmmoTests.RealWeaponMagazineAndUninitializedSentinelAreDisplayed(RocketLauncher,0,&quot;0/10 rak.&quot;)" methodname="RealWeaponMagazineAndUninitializedSentinelAreDisplayed" classname="UI943SalvageAmmoTests" runstate="Runnable" seed="844638282" result="Passed" start-time="2026-11-07 08:15:03Z" end-time="2026-11-07 08:15:03Z" duration="0.000040" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <output><![CDATA[Saving results to: [USER_HOME]/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+          </test-case>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
