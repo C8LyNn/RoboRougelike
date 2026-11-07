@@ -66,9 +66,26 @@ public sealed class R4EnemyPrimaryArtTests
         Assert.That(basic.EquipShotgun(),Is.True,"A later equipment switch remains valid.");
         var binding=basic.WeaponBlock.GetComponent<RRLShotgunBinding>();Assert.That(binding,Is.Not.Null);
         var boundMuzzle=typeof(RRLShotgunBinding).GetField("muzzle",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(binding);
-        Assert.That(boundMuzzle,Is.SameAs(originalMuzzle),"The new weapon may not reference a destroyed visual muzzle.");
-        Assert.That(muzzleField.GetValue(basic),Is.SameAs(originalMuzzle));
-        Assert.That(basic.WeaponBlock.GetComponent<Renderer>().enabled,Is.True,"Fallback appears when replacing the model.");
+        var shotgunArt=basic.WeaponBlock.GetComponentsInChildren<R4WeaponArt>(false).Single();
+        Assert.That(boundMuzzle,Is.SameAs(shotgunArt.Muzzle),"The new package binds to its own visible muzzle.");
+        Assert.That(muzzleField.GetValue(basic),Is.SameAs(shotgunArt.Muzzle));
+        Assert.That(shotgunArt.GetComponentsInChildren<Transform>(true).Any(t=>t.name=="R4W_Shotgun_ROOT"),Is.True);
+        Assert.That(basicArtStillActive(),Is.False,"The previous gun visual must be disabled immediately.");
+
+        bool basicArtStillActive()=>basic.WeaponBlock.GetComponentsInChildren<Transform>(false).Any(t=>t.name=="R4W_Basic_ROOT");
+        // A missing model must fall back to the original muzzle and renderer.
+        var catalog=Resources.Load<R4WeaponArtCatalog>("R4Art/WeaponCatalog");Assert.That(catalog,Is.Not.Null);
+        var originalEntries=catalog.Models;catalog.Models=(R4WeaponArtEntry[])originalEntries.Clone();
+        try
+        {
+            for(int i=0;i<catalog.Models.Length;i++)if(catalog.Models[i].Kind==R4WeaponKind.Shotgun)
+                catalog.Models[i]=new R4WeaponArtEntry{Kind=R4WeaponKind.Shotgun,Model=null};
+            var fallbackMuzzle=heavy.transform.Find("Enemy_Yaw/Enemy_Muzzle");
+            Assert.That(heavy.EquipShotgun(),Is.True);var fallbackBinding=heavy.WeaponBlock.GetComponent<RRLShotgunBinding>();
+            Assert.That(typeof(RRLShotgunBinding).GetField("muzzle",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(fallbackBinding),Is.SameAs(fallbackMuzzle));
+            Assert.That(heavy.WeaponBlock.GetComponent<Renderer>().enabled,Is.True);
+        }
+        finally{catalog.Models=originalEntries;}
         yield return null;
     }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}

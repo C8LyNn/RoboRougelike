@@ -165,6 +165,7 @@ namespace RogueMachine.P12PipelineSafe
             weaponBlock.Configure(profile.Hp*durability,true);weaponBlock.RestoreHealthRatio(condition);
             var state=new RoboRougelike.R3.R3PartState(default,RoboRougelike.R3.R3PartKind.Gun)
                 {Id=EquipmentInstanceId("gun"),Weapon=WeaponKind,Source=name+" / uzbrojenie"};
+            AttachPrimaryGunArt();
             packageShotgun=weaponBlock.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLShotgunBinding>();
             packageShotgun.Bind(state,transform,muzzle,ds,cadence);packageWeaponState=state;return true;
         }
@@ -437,11 +438,11 @@ namespace RogueMachine.P12PipelineSafe
 
         // The legacy primary barrel is nonuniformly scaled. A neutral child
         // cancels its scale and remains attached when the physical part breaks.
-        // Package weapons keep their own original muzzle and appearance for now.
+        // Supported package weapons bind after the optional visual is prepared.
         public bool AttachPrimaryGunArt()
         {
             if(primaryVisual!=null||variantGuns.Count>0||weaponBlock==null||weaponBlock.IsDead||muzzle==null||
-               (WeaponKind!=R4WeaponKind.Basic&&WeaponKind!=R4WeaponKind.Heavy))return false;
+               (WeaponKind!=R4WeaponKind.Basic&&WeaponKind!=R4WeaponKind.Heavy&&WeaponKind!=R4WeaponKind.Shotgun))return false;
             var renderer=weaponBlock.GetComponent<Renderer>();var scale=weaponBlock.transform.lossyScale;
             if(renderer==null||float.IsNaN(scale.x)||float.IsNaN(scale.y)||float.IsNaN(scale.z)||
                float.IsInfinity(scale.x)||float.IsInfinity(scale.y)||float.IsInfinity(scale.z)||
