@@ -4,6 +4,7 @@ using UnityEngine;
 using RoboRougelike.R3;
 using RoboRougelike.R4;
 using RoboRougelike.R4_1;
+using RoboRougelike.WeaponIntegration;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
@@ -21,6 +22,22 @@ namespace RoboRougelike.R1
         private bool rewardInventoryOpen;
         private int rewardInventoryPage;
         private string rewardDismantleConfirmation;
+        private static Rect SalvageAmmoRect(float x,float y)=>new Rect(x+268,y+77,97,23);
+        private static string SalvageAmmoLabel(R3PartState part)
+        {
+            int capacity=0;string unit=null;
+            if(part.Kind==R3PartKind.PointDefense){capacity=40;unit="poc.";}
+            else if(part.Kind==R3PartKind.Gun)
+            {
+                switch(part.Weapon)
+                {
+                    case R4WeaponKind.Shotgun:capacity=RRLShotgunBinding.MagazineSalvos;unit="salw";break;
+                    case R4WeaponKind.Railgun:capacity=RRLRailgunBinding.Magazine;unit="nab.";break;
+                    case R4WeaponKind.RocketLauncher:capacity=RRLRocketBinding.Magazine;unit="rak.";break;
+                }
+            }
+            return capacity==0?null:$"{(part.Ammo<0?capacity:part.Ammo)}/{capacity} {unit}";
+        }
         private void TrackRewardLedger(R4SalvageLedger ledger)
         {
             if(displayedLedger==ledger)return;
@@ -94,6 +111,8 @@ namespace RoboRougelike.R1
                 if(GUI.Button(new Rect(x+268,y+26,97,48),chosen?"Wybrano ✓":"Zatrzymaj",compactButton))
                 {if(chosen)lootSelection.Remove(item.Id);else lootSelection.Add(item.Id);}
                 GUI.enabled=true;GUI.backgroundColor=Color.white;
+                string ammo=SalvageAmmoLabel(part);
+                if(ammo!=null)GUI.Label(SalvageAmmoRect(x,y),ammo,lootDetail);
             }
             GUI.enabled=lootPage>0;
             if(GUI.Button(new Rect(465,556,90,35),"←",compactButton))lootPage=Mathf.Max(0,lootPage-1);
