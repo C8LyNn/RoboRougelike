@@ -52,6 +52,24 @@ public sealed class R4MountDefinitionAdapterTests
         Assert.That(second.Cells[0], Is.EqualTo(Vector3Int.zero));
     }
 
+    [Test] public void UncoveredColumnEndPatchesCannotProvideStructuralSupport()
+    {
+        Assert.That(Create("R4B_HexColumn",false,out _),Is.False,
+            "Both declared hexagonal patches are quarantined until the source is corrected.");
+        Assert.That(Create("R4B_OctColumn",false,out var oct),Is.True);
+        Assert.That(oct.Sockets.Length,Is.EqualTo(4),"Only the four covered side patches remain.");
+        Assert.That(oct.Sockets.All(s=>s.Face.y==0),Is.True);
+        var cube=BuildFixtureCatalog.ArmorCube();
+        for(int x=0;x<4;x++)for(int y=0;y<4;y++)for(int z=0;z<4;z++)
+        {
+            var turns=new Vector3Int(x,y,z);var support=new BuildPose(Vector3Int.zero,turns);
+            var above=new BuildPose(BuildSocketGeometry.Rotate(Vector3Int.up,turns),turns);
+            var side=new BuildPose(BuildSocketGeometry.Rotate(Vector3Int.right,turns),turns);
+            Assert.That(BuildSocketGeometry.Touches(oct,support,cube,above,out _),Is.False,"Quarantined end: "+turns);
+            Assert.That(BuildSocketGeometry.Touches(oct,support,cube,side,out _),Is.True,"Covered side remains usable: "+turns);
+        }
+    }
+
     [Test] public void RotatedWheelSupportsUseOnlyFullPatchesInAllOrientations()
     {
         Assert.That(Create("R4B_Wedge", false, out var structural), Is.True);
@@ -86,6 +104,10 @@ public sealed class R4MountDefinitionAdapterTests
         foreach(var entry in entries)
         {
             string id=(string)entry.GetType().GetField("Id").GetValue(entry);
+            if(id=="R4B_HexColumn")
+            {
+                Assert.That(Create(id,false,out _),Is.False,"All hex ports remain quarantined.");count++;continue;
+            }
             Assert.That(Create(id,false,out var shape),Is.True,id);
             Assert.That(BuildSocketGeometry.Valid(shape,out var reason),Is.True,id+": "+reason);
             var rotations=new HashSet<string>();

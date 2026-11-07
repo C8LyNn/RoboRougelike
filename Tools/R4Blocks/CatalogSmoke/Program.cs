@@ -78,7 +78,8 @@ internal static class Program
         Expect(wedge.Sockets.Length==4 && wedge.Cells.Length==1 && wedge.SupportsOtherParts,"Structural definition must preserve full and partial ports");
         Expect(R4MountDefinitionAdapter.TryCreate("R4B_Wedge",true,out var moduleWedge) && moduleWedge.Sockets.Length==2,"Module support must contain only full safe ports");
         Expect(!R4MountDefinitionAdapter.TryCreate("R4B_OctColumn",true,out _) && !R4MountDefinitionAdapter.TryCreate("R4B_Tetra",true,out _),"No safe module ports must fail closed");
-        Expect(R4MountDefinitionAdapter.TryCreate("R4B_OctColumn",false,out var oct) && oct.Sockets.Length>0,"Quarantine must not remove structural ports");
+        Expect(R4MountDefinitionAdapter.TryCreate("R4B_OctColumn",false,out var oct) && oct.Sockets.Length==4,"Quarantine must remove only the two unsafe octagonal end patches");
+        Expect(!R4MountDefinitionAdapter.TryCreate("R4B_HexColumn",false,out _),"Shape with no remaining safe ports must fail closed");
         Expect(R4MountDefinitionAdapter.TryCreate("R4B_Beam3",false,out var beam) && beam.Cells.Length==3 && beam.CellBonds.Length==2,"Multi-cell definition must preserve authored bonds");
         Expect(!R4MountDefinitionAdapter.TryCreate("missing",false,out _),"Unknown shape must fail closed");
         wedge.Cells[0]=new UnityEngine.Vector3Int(88,88,88);
