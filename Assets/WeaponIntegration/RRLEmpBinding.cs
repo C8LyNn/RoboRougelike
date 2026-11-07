@@ -30,8 +30,8 @@ namespace RoboRougelike.WeaponIntegration
         public bool Fire()
         {
             RefreshAvailability();if(!Device.Available||Time.time<State.DeviceReadyAt)return false;
-            RRLEmpPartState.RefreshEligibility();Module.Configure(9,3,12*(tank!=null?tank.PackageIntervalScale:intervalScale),
-                Device.Owner.GetComponent<VehicleEnergyBank>()!=null?VehicleEnergyCosts.Emp:0f);
+            RRLEmpPartState.RefreshEligibility();Module.Configure(9,3*R3VehicleModel.TierEffectUnits(State.Tier),12*(tank!=null?tank.PackageIntervalScale:intervalScale),
+                Device.Owner.GetComponent<VehicleEnergyBank>()!=null?VehicleEnergyCosts.Emp*R3VehicleModel.TierActivationCost(State.Tier):0f);
             if(!Module.TryPulse(out var report)){LastReport=report;return false;}
             LastReport=report;CaptureState();RoboRougelike.R6.R6CombatFeedback.Muzzle(transform,RoboRougelike.R4.R4WeaponKind.EmpEmitter);return true;
         }

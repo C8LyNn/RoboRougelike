@@ -18,7 +18,7 @@ public sealed class BacklogWeaponTierTests
         Assert.That(model.FuseInventory(model.Inventory.Select(p=>p.Id).ToArray()),Is.True);
         var gun=model.Inventory.Single();Assert.That(gun.Weapon,Is.EqualTo(R4WeaponKind.Basic));Assert.That(gun.Tier,Is.EqualTo(2));
     }
-    [Test] public void DifferentWeaponsAndUnsupportedWeaponsNeverFuse()
+    [Test] public void DifferentWeaponsAndUnsupportedPartsNeverFuse()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(1000);
         Assert.That(model.PurchaseToInventory(R3PartKind.Gun,R4WeaponKind.Basic),Is.True);
@@ -26,8 +26,7 @@ public sealed class BacklogWeaponTierTests
         Assert.That(model.PurchaseToInventory(R3PartKind.Gun,R4WeaponKind.Heavy),Is.True);
         var mixed=model.Inventory.Select(p=>p.Id).ToArray();
         Assert.That(model.FuseInventory(mixed),Is.False);Assert.That(model.Inventory.Select(p=>p.Id),Is.EqualTo(mixed));
-        for(int i=0;i<3;i++)Assert.That(model.PurchaseToInventory(R3PartKind.Gun,R4WeaponKind.EmpEmitter),Is.True);
-        Assert.That(model.FuseInventory(model.Inventory.Where(p=>p.Weapon==R4WeaponKind.EmpEmitter).Select(p=>p.Id).ToArray()),Is.False);
+        Assert.That(R3VehicleModel.SupportsFusion(R3PartKind.StructuralScanner),Is.False);
     }
 }
 
