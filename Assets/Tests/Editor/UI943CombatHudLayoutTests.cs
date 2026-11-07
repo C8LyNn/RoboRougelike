@@ -5,6 +5,25 @@ using UnityEngine;
 
 public sealed class UI943CombatHudLayoutTests
 {
+    [TestCase(1)] [TestCase(4)]
+    public void DefenseHeadingAndRowsFitInsideTheirPanel(int count)
+    {
+        var flags=BindingFlags.NonPublic|BindingFlags.Static;
+        var panelMethod=typeof(R1RunHUD).GetMethod("DefensePanelRect",flags);
+        var titleMethod=typeof(R1RunHUD).GetMethod("DefenseTitleRect",flags);
+        var rowMethod=typeof(R1RunHUD).GetMethod("DefenseRowRect",flags);
+        Assert.That(panelMethod,Is.Not.Null);Assert.That(titleMethod,Is.Not.Null);Assert.That(rowMethod,Is.Not.Null);
+        var panel=(Rect)panelMethod.Invoke(null,new object[]{count});
+        var title=(Rect)titleMethod.Invoke(null,null);
+        Assert.That(title.height,Is.GreaterThanOrEqualTo(30),"Nagłówek 24 px nie może być ucięty przez niski prostokąt.");
+        Assert.That(title.yMin,Is.GreaterThanOrEqualTo(panel.yMin));Assert.That(title.yMax,Is.LessThanOrEqualTo(panel.yMax));
+        for(int i=0;i<count;i++)
+        {
+            var row=(Rect)rowMethod.Invoke(null,new object[]{i});
+            Assert.That(row.Overlaps(title),Is.False);
+            Assert.That(row.yMin,Is.GreaterThanOrEqualTo(panel.yMin));Assert.That(row.yMax,Is.LessThanOrEqualTo(panel.yMax));
+        }
+    }
     [TestCase(1920,1080,1)] [TestCase(1366,768,1)] [TestCase(1024,768,1)]
     [TestCase(768,1024,1)] [TestCase(3840,2160,1)]
     [TestCase(1920,1080,4)] [TestCase(1366,768,4)] [TestCase(1024,768,4)]
