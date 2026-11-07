@@ -28,7 +28,8 @@
    "issue": "#938"
   },
   "R4W_RotarySaw_Base": {
-   "base_style": "crab"
+   "base_style": "crab",
+   "mount_port": "R4 Robocraft-style port: 0.509 m square, outer face -0.260 m (block face), face-centre coupling"
   },
   "Socket_Mount_Bottom": {
    "role": "mounting face centre, normal -Y, connects to cell (0,-1,0)"

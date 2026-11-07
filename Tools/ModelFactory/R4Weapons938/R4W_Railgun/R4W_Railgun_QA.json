@@ -3,7 +3,7 @@
  "kind": "R4WeaponKind.Railgun",
  "game_name": "WPN-002 Railgun",
  "blender": "5.2.3 LTS",
- "started": "2026-11-06 22:15:18",
+ "started": "2026-11-07 10:52:44",
  "failures": [],
  "notes": [
   "Charge glow is mesh FX (scale) so it survives FBX; emission strength itself is not animated.",
@@ -12,22 +12,22 @@
  "meshes": [
   {
    "object": "R4W_Railgun_Base",
-   "verts": 1825,
-   "triangles": 3630,
-   "shells": 5,
+   "verts": 2554,
+   "triangles": 5068,
+   "shells": 11,
    "non_manifold_edges": 0,
    "boundary_edges": 0,
    "zero_area_faces": 0,
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.015285,
+   "signed_volume_m3": 0.016381,
    "uv_layers": 1,
    "uv_bounds": [
-    0.004,
-    0.004,
-    0.996,
-    0.996
+    0.005,
+    0.005,
+    0.995,
+    0.995
    ],
    "materials": [
     "Armor_Dark",
@@ -380,28 +380,28 @@
    "ok": true
   }
  ],
- "triangles_total": 17104,
+ "triangles_total": 18542,
  "triangles_fx": 1138,
  "triangles_r41_reference": 11452,
  "topology_PASS": true,
  "palette": {
   "material_area_share": {
-   "Armor_Dark": 0.4845,
-   "Armor_Gunmetal": 0.2645,
-   "Armor_Plate_Light": 0.13,
-   "Steel_Light": 0.046,
-   "Energy_Hot": 0.0332,
-   "Hazard_Yellow": 0.0196,
-   "TeamColor_Red": 0.0159,
-   "Barrel_Heat": 0.0058,
+   "Armor_Dark": 0.4918,
+   "Armor_Gunmetal": 0.2613,
+   "Armor_Plate_Light": 0.1207,
+   "Steel_Light": 0.0465,
+   "Energy_Hot": 0.0386,
+   "Hazard_Yellow": 0.0201,
+   "TeamColor_Red": 0.0151,
+   "Barrel_Heat": 0.0054,
    "Sensor_Eye_Red": 0.0005
   },
   "family_share": {
-   "1_dark_gunmetal": 0.749,
-   "2_light_steel": 0.176,
-   "3_team_red": 0.0159,
-   "4_hazard_yellow": 0.0196,
-   "T_technical": 0.0395
+   "1_dark_gunmetal": 0.7531,
+   "2_light_steel": 0.1672,
+   "3_team_red": 0.0151,
+   "4_hazard_yellow": 0.0201,
+   "T_technical": 0.0445
   },
   "r41_family_share": {
    "1_dark_gunmetal": 0.7913,
@@ -514,14 +514,14 @@
    ],
    "bounds_file": [
     [
-     -0.2505,
+     -0.2563,
      -0.26,
-     -0.2505
+     -0.2563
     ],
     [
-     0.2505,
+     0.2563,
      0.016,
-     0.2505
+     0.2563
     ]
    ],
    "inside_own_cell": true
@@ -546,12 +546,12 @@
    ],
    "bounds_file": [
     [
-     -0.2505,
+     -0.2563,
      -0.26,
-     -0.2505
+     -0.2563
     ],
     [
-     0.2505,
+     0.2563,
      0.292,
      0.803
     ]
@@ -1083,7 +1083,7 @@
  ],
  "lod1": {
   "file": "R4W_Railgun_LOD1.fbx",
-  "triangles": 8550,
+  "triangles": 9270,
   "method": "DECIMATE collapse 0.5 (automatic, not hand-authored)"
  },
  "fbx_reimport": {
@@ -1516,30 +1516,30 @@
  },
  "files": {
   "R4W_Railgun.blend": {
-   "sha256": "4a6e3e3e6f62fc9cb6ed352b90e0cebea9c0598956860761d8aa27baa1831a5b",
-   "bytes": 2303410,
-   "sha256_before_path_sanitize": "2500559e3c77678399eb7fbc70472cfe92ba92a708289fea0c58e677167d00e6",
-   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length; re-opened headless in Blender 5.2.3 after patch (rc 0, objects/actions/frame range unchanged)"
+   "sha256": "1583a7846066eba170d713281449bd30bb23ded3a1a721eb66b56f6429349221",
+   "bytes": 2412403,
+   "sha256_before_path_sanitize": "527283dec1a857e94923ec8314661f6604c0a25940fc61f7b5a45beca40c3316",
+   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length (scripts/sanitize_blend_paths.py)"
   },
   "R4W_Railgun.fbx": {
-   "sha256": "86051bc5f381838274c73713dffc590d82803999318486c7b3e8e444803e1f03",
-   "bytes": 911468
+   "sha256": "5ec771ac7b3caedfa35538e17e3506de46f98099d47805e28bd48f8afad27423",
+   "bytes": 960972
   },
   "R4W_Railgun.glb": {
-   "sha256": "2d7ab30459a0677d674a5c1514a34a909f76fc6307d64d1b6d9f2da287968657",
-   "bytes": 875128
+   "sha256": "290caa5d164d2138bc4885e5f569a74355a53751d8e20af63da5a324d8dd0b65",
+   "bytes": 945372
   },
   "R4W_Railgun_colliders.glb": {
-   "sha256": "1c8fbaeb40c04cebd088e35edc831449cb45280efbd1abaac121d8fba6a9f713",
-   "bytes": 794040
+   "sha256": "7abb2f9098a4e3cfa31e2f4830ff2de816bb6b86ca0b7f23e249951ad693ac45",
+   "bytes": 864168
   },
   "R4W_Railgun_LOD1.fbx": {
-   "sha256": "e04212c12361cb037e5a91e44d17097cdac3f37e8e78c68c828356be4a445dbd",
-   "bytes": 387420
+   "sha256": "710edef40c311320750191c54b05d71e4dfafdc51e512abd633602ebb8450e36",
+   "bytes": 417276
   }
  },
  "unity_import_test": "UNITY_NOT_RUN (Unity not available in this session)",
  "unity_import_settings": "Scale Factor 1, Convert Units ON, Bake Axis Conversion ON, Animation: split clips by animation_manifest.json frame ranges (24 fps)",
  "status": "BLENDER_PASS",
- "seconds": 12.9
+ "seconds": 14.4
 }

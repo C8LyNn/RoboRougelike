@@ -3,7 +3,7 @@
  "kind": "R4WeaponKind.Heavy",
  "game_name": "Ci\u0119\u017cka armata",
  "blender": "5.2.3 LTS",
- "started": "2026-11-06 22:14:48",
+ "started": "2026-11-07 10:52:07",
  "failures": [],
  "notes": [
   "Pitch range -8..+30 deg (heavier mass; R41 -10..+35). Runtime pitch limits are not changed by this asset.",
@@ -12,22 +12,22 @@
  "meshes": [
   {
    "object": "R4W_Heavy_Base",
-   "verts": 1277,
-   "triangles": 2534,
-   "shells": 5,
+   "verts": 2057,
+   "triangles": 4074,
+   "shells": 11,
    "non_manifold_edges": 0,
    "boundary_edges": 0,
    "zero_area_faces": 0,
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.042844,
+   "signed_volume_m3": 0.043572,
    "uv_layers": 1,
    "uv_bounds": [
-    0.004,
-    0.004,
-    0.996,
-    0.986
+    0.005,
+    0.005,
+    0.995,
+    0.995
    ],
    "materials": [
     "Armor_Dark",
@@ -86,8 +86,8 @@
    "uv_bounds": [
     0.005,
     0.005,
-    0.995,
-    0.994
+    0.993,
+    0.995
    ],
    "materials": [
     "Armor_Dark",
@@ -184,28 +184,28 @@
    "ok": true
   }
  ],
- "triangles_total": 12442,
+ "triangles_total": 13982,
  "triangles_fx": 128,
  "triangles_r41_reference": 11452,
  "topology_PASS": true,
  "palette": {
   "material_area_share": {
-   "Armor_Dark": 0.5844,
-   "Armor_Gunmetal": 0.2182,
-   "Armor_Plate_Light": 0.1025,
-   "TeamColor_Red": 0.025,
-   "Barrel_Heat": 0.0227,
-   "Energy_Hot": 0.0219,
-   "Steel_Light": 0.0185,
-   "Hazard_Yellow": 0.0059,
-   "Sensor_Eye_Red": 0.0009
+   "Armor_Dark": 0.5815,
+   "Armor_Gunmetal": 0.2179,
+   "Armor_Plate_Light": 0.097,
+   "Energy_Hot": 0.0285,
+   "TeamColor_Red": 0.024,
+   "Barrel_Heat": 0.0215,
+   "Steel_Light": 0.0212,
+   "Hazard_Yellow": 0.0075,
+   "Sensor_Eye_Red": 0.0008
   },
   "family_share": {
-   "1_dark_gunmetal": 0.8026,
-   "2_light_steel": 0.121,
-   "3_team_red": 0.025,
-   "4_hazard_yellow": 0.0059,
-   "T_technical": 0.0455
+   "1_dark_gunmetal": 0.7994,
+   "2_light_steel": 0.1183,
+   "3_team_red": 0.024,
+   "4_hazard_yellow": 0.0075,
+   "T_technical": 0.0508
   },
   "r41_family_share": {
    "1_dark_gunmetal": 0.7913,
@@ -859,7 +859,7 @@
  ],
  "lod1": {
   "file": "R4W_Heavy_LOD1.fbx",
-  "triangles": 6218,
+  "triangles": 6988,
   "method": "DECIMATE collapse 0.5 (automatic, not hand-authored)"
  },
  "fbx_reimport": {
@@ -1188,30 +1188,30 @@
  },
  "files": {
   "R4W_Heavy.blend": {
-   "sha256": "7a0803aa9f39160e4823584dca1b880dd4b62e71f93b289abb4ee87795fb1f84",
-   "bytes": 1811261,
-   "sha256_before_path_sanitize": "7db81992079a7c3a67124ca48bbae36b556f301be7ac6b7e4cda0788936cb398",
-   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length; re-opened headless in Blender 5.2.3 after patch (rc 0, objects/actions/frame range unchanged)"
+   "sha256": "c79ea4c72027d9b13ca79ae81a5a32aeeb48bf299952ba5feed12206f2bd4fed",
+   "bytes": 1927955,
+   "sha256_before_path_sanitize": "08c2a97d4312d0bdcbbef504e4d3a7e1ec0f151578890feb06deac18a5b490a5",
+   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length (scripts/sanitize_blend_paths.py)"
   },
   "R4W_Heavy.fbx": {
-   "sha256": "3d55b3f961f0069f139b5cdf5e8dbdea203883bb3b59b275acbb2915e63b1669",
-   "bytes": 615052
+   "sha256": "796d89bb2efb90ee23836721fd58949995a64818a3c37614f9e93fd655fe19b2",
+   "bytes": 667356
   },
   "R4W_Heavy.glb": {
-   "sha256": "24e579a910c654c8e94e9b552266c4274991091c122a4f3025068fdba08dd5cc",
-   "bytes": 638392
+   "sha256": "0a55a5df6f1b6bcbfc8a21b860bf4f58f4c01dbf9f909db55dfa9f0d275792d1",
+   "bytes": 712424
   },
   "R4W_Heavy_colliders.glb": {
-   "sha256": "384008f9329226df37143a84749c7b2c3a7052108609ffeafe7dbddcbc0af161",
-   "bytes": 621396
+   "sha256": "c39bc58437bf975de4aa17698c4c5362829e398f9727f482aac98ea226ba139b",
+   "bytes": 695316
   },
   "R4W_Heavy_LOD1.fbx": {
-   "sha256": "d9e5edc1f87188b25970d381449bdb1c94fb45b16d14277bb977902b6df63db9",
-   "bytes": 291212
+   "sha256": "7bed280cf4f75b11802890318e1af8f2a543b00116e643fb28f190fb3197b21c",
+   "bytes": 323708
   }
  },
  "unity_import_test": "UNITY_NOT_RUN (Unity not available in this session)",
  "unity_import_settings": "Scale Factor 1, Convert Units ON, Bake Axis Conversion ON, Animation: split clips by animation_manifest.json frame ranges (24 fps)",
  "status": "BLENDER_PASS",
- "seconds": 9.4
+ "seconds": 10.4
 }

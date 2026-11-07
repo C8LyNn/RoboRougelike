@@ -9,7 +9,7 @@ with zipfile.ZipFile(ZIP, "w", zipfile.ZIP_DEFLATED) as z:
         for f in sorted(fs):
             p = os.path.join(dp, f); rel = os.path.relpath(p, SRC)
             if f.endswith((".blend1", ".pyc")) or f == "blender_stdout.log": continue
-            if f.lower().endswith(".png") and "renders" in rel:
+            if f.lower().endswith(".png") and "renders" in rel and "silhouette" not in rel:
                 im = bpy.data.images.load(p, check_existing=False)
                 if im.size[0] > 1100: im.scale(1100, int(im.size[1]*1100/im.size[0]))
                 q = os.path.join(tmp, rel[:-4].replace(os.sep, "__") + ".jpg"); im.save_render(q, scene=sc); bpy.data.images.remove(im)

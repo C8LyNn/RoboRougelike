@@ -7,6 +7,19 @@ Status paczki: **BLENDER_PASS ×8 · UNITY_NOT_RUN** (v2: 7 broni przebudowanych
 - Blender 5.2.3 LTS, uruchamiany naprawdę (background, `--factory-startup`). Każdy PASS pochodzi z faktycznego eksportu i reimportu.
 - Intake: na `main` i gałęzi kanonu nie ma modeli dla tych 8 `R4WeaponKind` (wcześniejsze M01 to inne assety) — brak duplikatu.
 
+## Mocowanie i siatka — standard portu R4 (aktualizacja)
+
+Wszystkie 8 broni mają teraz takie samo mocowanie w stylu Robocraft: **kwadratowy port 0,509 m** na dolnej ścianie komórki. Jego zewnętrzna powierzchnia leży równo ze ścianą bloku gry (−0,26 m; BlockSize 0,52 na siatce 0,55). Port jest wyśrodkowany na ścianie, jak porty środka ściany w `R3MountingGrid`. `Socket_Mount_Bottom` stoi w środku tej powierzchni. Powierzchnia styku jest płaska; złącze, pierścień i 4 otwory ustalające są wpuszczone. Od góry port ma ramkę, 4 śruby, żółte znaczniki narożników i czerwony znacznik przodu. Okrągłe, trójkątne i ośmiokątne podstawy z v2 stoją teraz na tym porcie.
+
+- Niezależny test na wyeksportowanych GLB (`scripts/r4gridqa.py`, wynik w `compare/grid_fit.json`):
+  - socket w środku ściany bloku,
+  - płaska łata styku 0,42 × 0,42 m,
+  - nic nie przechodzi przez płaszczyznę mocowania w żadnej klatce,
+  - podstawa w komórce 0,55 m.
+- Wynik: **przed zmianą 3/8** (Basic, RotarySaw i Shotgun miały kwadratową płytę; Heavy, Railgun, BeamCutter, RocketLauncher i EmpEmitter nie), **po zmianie 8/8 PASS**. Pełne QA w Blenderze: BLENDER_PASS 8/8 w jednym przebiegu (`batch_log_port.txt`).
+- Kwadratowy port upodabnia do siebie widok z góry. Sylwetki po zmianie: nadal 0 par powyżej progu 0,85. Najbliższe pary to Basic↔Heavy 0,84 i Shotgun↔BeamCutter 0,83 (w v2 było 0,80 i 0,76).
+- EmpEmitter: budżet trójkątów 20k → 22k (port dodaje ok. 1,5k trójkątów); izolatory podstawy przesunięte o 2 mm.
+
 ## Wersja v2 — zróżnicowane sylwetki (po uwadze właściciela)
 
 Właściciel ocenił 8 broni jako zbyt podobne: wszystkie stały na tej samej podstawie R41 i miały tę samą głowicę z policzkami. W v2 **7 broni dostało własny typ podstawy i własną architekturę głowicy**; `Basic` zostaje wzorcem R41 bez zmian. Paleta R41, pivot `GunPivot` (0; 0,135; 0), `Socket_Mount_Bottom`, osie Yaw/Pitch i listy klipów są bez zmian.
@@ -39,14 +52,14 @@ Odtworzenie v2: `scripts/make_v2.py` generuje `build_<broń>.py` z kodu v1 (`bui
 
 | weapon_kind | model | klipy (24 fps, zakresy w `*_animation_manifest.json`) | 4 rodziny barw dark / light / team / hazard (+tech) | tris (LOD1) | Blender QA | Unity |
 |---|---|---|---|---|---|---|
-| `Basic` | `R4W_Basic/R4W_Basic.fbx` | Idle, AimYaw, AimPitch, Fire, Recoil, Return | 76.8 / 15.6 / 2.4 / 0.4 (+4.7) % | 10 834 (5 416) | PASS | NOT_RUN |
-| `RotarySaw` (WPN-005) | `R4W_RotarySaw/…fbx` | Idle, AimYaw, AimPitch, SpinUp, Spin (loop), SpinDown, Jam | 82.8 / 10.2 / 1.4 / 0.4 (+5.2) % | 16 018 (8 006) | PASS | NOT_RUN |
-| `Heavy` | `R4W_Heavy/…fbx` | Idle, AimYaw, AimPitch, Fire, Recoil, Return (cykl zamka klinowego) | 80.3 / 12.1 / 2.5 / 0.6 (+4.5) % | 12 442 (6 218) | PASS | NOT_RUN |
-| `Shotgun` (WPN-001) | `R4W_Shotgun/…fbx` | Idle, AimYaw, AimPitch, Fire, Pump, Reload | 83.6 / 9.9 / 2.2 / 0.6 (+3.8) % | 11 540 (5 768) | PASS | NOT_RUN |
-| `Railgun` (WPN-002) | `R4W_Railgun/…fbx` | Idle, AimYaw, AimPitch, Charge, Fire, Cool | 74.9 / 17.6 / 1.6 / 2.0 (+4.0) % | 17 104 (8 550) | PASS | NOT_RUN |
-| `BeamCutter` (WPN-003) | `R4W_BeamCutter/…fbx` | Idle, AimYaw, AimPitch, WarmUp, Fire (loop), Heat, Cooldown | 79.7 / 16.0 / 1.2 / 1.1 (+2.0) % | 16 120 (8 060) | PASS | NOT_RUN |
-| `RocketLauncher` (WPN-004) | `R4W_RocketLauncher/…fbx` | Idle, AimYaw, AimPitch, Fire, Reload | 79.8 / 13.4 / 2.7 / 1.8 (+2.4) % | 14 448 (7 220) | PASS | NOT_RUN |
-| `EmpEmitter` (WPN-006) | `R4W_EmpEmitter/…fbx` | Idle (loop), AimYaw, Charge, EMP, Recovery | 79.6 / 12.5 / 2.5 / 1.8 (+3.5) % | 18 930 (9 460) | PASS | NOT_RUN |
+| `Basic` | `R4W_Basic/R4W_Basic.fbx` | Idle, AimYaw, AimPitch, Fire, Recoil, Return | 75.9 / 15.7 / 2.4 / 0.5 (+5.5) % | 12 572 (6 284) | PASS | NOT_RUN |
+| `RotarySaw` (WPN-005) | `R4W_RotarySaw/…fbx` | Idle, AimYaw, AimPitch, SpinUp, Spin (loop), SpinDown, Jam | 82.0 / 10.3 / 1.4 / 0.5 (+5.8) % | 17 596 (8 796) | PASS | NOT_RUN |
+| `Heavy` | `R4W_Heavy/…fbx` | Idle, AimYaw, AimPitch, Fire, Recoil, Return (cykl zamka klinowego) | 79.9 / 11.8 / 2.4 / 0.8 (+5.1) % | 13 982 (6 988) | PASS | NOT_RUN |
+| `Shotgun` (WPN-001) | `R4W_Shotgun/…fbx` | Idle, AimYaw, AimPitch, Fire, Pump, Reload | 82.5 / 10.1 / 2.2 / 0.8 (+4.5) % | 13 124 (6 560) | PASS | NOT_RUN |
+| `Railgun` (WPN-002) | `R4W_Railgun/…fbx` | Idle, AimYaw, AimPitch, Charge, Fire, Cool | 75.3 / 16.7 / 1.5 / 2.0 (+4.5) % | 18 542 (9 270) | PASS | NOT_RUN |
+| `BeamCutter` (WPN-003) | `R4W_BeamCutter/…fbx` | Idle, AimYaw, AimPitch, WarmUp, Fire (loop), Heat, Cooldown | 79.7 / 15.2 / 1.2 / 1.2 (+2.6) % | 17 546 (8 772) | PASS | NOT_RUN |
+| `RocketLauncher` (WPN-004) | `R4W_RocketLauncher/…fbx` | Idle, AimYaw, AimPitch, Fire, Reload | 81.3 / 11.9 / 2.3 / 1.7 (+2.8) % | 15 842 (7 916) | PASS | NOT_RUN |
+| `EmpEmitter` (WPN-006) | `R4W_EmpEmitter/…fbx` | Idle (loop), AimYaw, Charge, EMP, Recovery | 79.8 / 11.7 / 2.4 / 1.8 (+4.3) % | 20 286 (10 138) | PASS | NOT_RUN |
 
 R41 v6.1 (zmierzone): 79.1 / 12.3 / 2.5 / 0.15 (+6.0) %, 11 452 tris. SHA-256 wszystkich plików: `SHA256SUMS.txt`, zbiorczo: `INDEX.json`.
 

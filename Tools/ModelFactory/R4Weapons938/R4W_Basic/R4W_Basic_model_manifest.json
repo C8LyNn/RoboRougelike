@@ -26,6 +26,9 @@
    "style": "R41_Turret_v6.1 standard (heavy industrial armour + team colour)",
    "issue": "#938"
   },
+  "R4W_Basic_Base": {
+   "mount_port": "R4 Robocraft-style port: 0.509 m square, outer face -0.260 m (block face), face-centre coupling"
+  },
   "Socket_Mount_Bottom": {
    "role": "mounting face centre, normal -Y, connects to cell (0,-1,0)"
   },

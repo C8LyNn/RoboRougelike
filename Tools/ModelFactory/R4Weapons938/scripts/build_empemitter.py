@@ -147,7 +147,7 @@ S = dict(id=ID, kind="R4WeaponKind.EmpEmitter", game_name="WPN-006 EMP Emitter",
          export=[root, base, socket, pivot, yaw, ring_lo, ring_up] + ants + FX + [muzzle], parts=PARTS, fx=FX, muzzles=[muzzle], muzzle_forward=[0, 1, 0],
          static=[base], yawparts=[yaw, ring_lo, ring_up] + ants, gun=[], pitch_range=(0.0, 0.0), frame_end=T.end, clips=T.clips,
          clash_pairs=[(ring_lo, yaw), (ring_up, yaw), (ring_lo, ring_up)] + [(a_, yaw) for a_ in ants] + [(a_, r_) for a_ in ants for r_ in (ring_lo, ring_up)] + [(yaw, base)],
-         hero_frame=HERO, hero_frame2=HERO2, tri_budget=20000, lof_pose_note="rest pose; ray straight up from the pulse origin",
+         hero_frame=HERO, hero_frame2=HERO2, tri_budget=22000, lof_pose_note="rest pose; ray straight up from the pulse origin",
          exits_note="no barrel, no projectile: one radial pulse origin (Muzzle, +Y up)",
          anim_extra={"area_note": "EMP_PulseRing is a visual 0.5 m ring; game effect radius 9 m, LOS ('widoczny cel') and 12 s cooldown stay in runtime"},
          notes=["Pitch intentionally absent: EMP acts radially; Yaw only orients the LOS sensor.", "Ring angles at clip ends are multiples of 120 deg (3-fold symmetric pods)."])

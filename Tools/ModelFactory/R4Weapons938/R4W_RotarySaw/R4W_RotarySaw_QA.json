@@ -3,7 +3,7 @@
  "kind": "R4WeaponKind.RotarySaw",
  "game_name": "WPN-005 Rotary Saw",
  "blender": "5.2.3 LTS",
- "started": "2026-11-06 22:16:12",
+ "started": "2026-11-07 10:51:47",
  "failures": [],
  "notes": [
   "Blade 0.60 m diameter on a +X side arm; disc centre 0.620 m forward of the pivot.",
@@ -13,22 +13,22 @@
  "meshes": [
   {
    "object": "R4W_RotarySaw_Base",
-   "verts": 1113,
-   "triangles": 2222,
-   "shells": 5,
+   "verts": 1904,
+   "triangles": 3800,
+   "shells": 7,
    "non_manifold_edges": 0,
    "boundary_edges": 0,
    "zero_area_faces": 0,
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.028273,
+   "signed_volume_m3": 0.028231,
    "uv_layers": 1,
    "uv_bounds": [
-    0.003,
-    0.003,
-    0.997,
-    0.996
+    0.004,
+    0.004,
+    0.996,
+    0.993
    ],
    "materials": [
     "Armor_Dark",
@@ -181,28 +181,28 @@
    "ok": true
   }
  ],
- "triangles_total": 16018,
+ "triangles_total": 17596,
  "triangles_fx": 826,
  "triangles_r41_reference": 11452,
  "topology_PASS": true,
  "palette": {
   "material_area_share": {
-   "Armor_Gunmetal": 0.4232,
-   "Armor_Dark": 0.4051,
-   "Armor_Plate_Light": 0.0564,
-   "Steel_Light": 0.0458,
-   "Energy_Hot": 0.0316,
-   "Barrel_Heat": 0.0207,
-   "TeamColor_Red": 0.0135,
-   "Hazard_Yellow": 0.0036,
+   "Armor_Gunmetal": 0.4181,
+   "Armor_Dark": 0.4013,
+   "Armor_Plate_Light": 0.0557,
+   "Steel_Light": 0.0479,
+   "Energy_Hot": 0.0378,
+   "Barrel_Heat": 0.0204,
+   "TeamColor_Red": 0.0136,
+   "Hazard_Yellow": 0.005,
    "Sensor_Eye_Red": 0.0002
   },
   "family_share": {
-   "1_dark_gunmetal": 0.8283,
-   "2_light_steel": 0.1022,
-   "3_team_red": 0.0135,
-   "4_hazard_yellow": 0.0036,
-   "T_technical": 0.0524
+   "1_dark_gunmetal": 0.8195,
+   "2_light_steel": 0.1035,
+   "3_team_red": 0.0136,
+   "4_hazard_yellow": 0.005,
+   "T_technical": 0.0584
   },
   "r41_family_share": {
    "1_dark_gunmetal": 0.7913,
@@ -315,14 +315,14 @@
    ],
    "bounds_file": [
     [
-     -0.255,
+     -0.2563,
      -0.26,
-     -0.255
+     -0.2563
     ],
     [
-     0.255,
+     0.2563,
      0.016,
-     0.255
+     0.2563
     ]
    ],
    "inside_own_cell": true
@@ -357,12 +357,12 @@
    ],
    "bounds_file": [
     [
-     -0.255,
+     -0.2563,
      -0.26,
-     -0.255
+     -0.2563
     ],
     [
-     0.255,
+     0.2563,
      0.4736,
      0.9191
     ]
@@ -998,7 +998,7 @@
    "game_bladeRadius_m": 0.9,
    "game_halfThickness_m": 0.14,
    "nearest_own_armour_vertex_to_disc_centre_m": 0.0293,
-   "own_vertices_inside_game_contact_disc": 3680,
+   "own_vertices_inside_game_contact_disc": 4022,
    "own_vertices_inside_visual_blade_disc": 0,
    "PASS": true,
    "risk": "game contact disc (r=0.9 m, +-0.14 m) is larger than the visual blade; it is a runtime value - integration (B01) decides; not changed here"
@@ -1029,7 +1029,7 @@
  ],
  "lod1": {
   "file": "R4W_RotarySaw_LOD1.fbx",
-  "triangles": 8006,
+  "triangles": 8796,
   "method": "DECIMATE collapse 0.5 (automatic, not hand-authored)"
  },
  "fbx_reimport": {
@@ -1385,30 +1385,30 @@
  },
  "files": {
   "R4W_RotarySaw.blend": {
-   "sha256": "eb00f04175ca4bff8a2d76d9a8740f60f46543c7b11865eb50820bdf302652ef",
-   "bytes": 2154946,
-   "sha256_before_path_sanitize": "0f4cdff6a4ebe60931d09355469b0b200e3fa6bfce151a32d1a347e2715e5b5c",
-   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length; re-opened headless in Blender 5.2.3 after patch (rc 0, objects/actions/frame range unchanged)"
+   "sha256": "6f14c65c5036252af37b590a8672e31b80699eeef81dfb4595409e277da42956",
+   "bytes": 2274413,
+   "sha256_before_path_sanitize": "44344d1be19431beac7413e657bfbfa6448ba219073c863a1bb367ca0b6b5d59",
+   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length (scripts/sanitize_blend_paths.py)"
   },
   "R4W_RotarySaw.fbx": {
-   "sha256": "5c2443a25a417b44c6167e2f1e3b377f23314dd24f0de119c7b8a6b6669f5ba8",
-   "bytes": 788348
+   "sha256": "61603bdba18c42fcbbf03764f207a0acd24f74638cf6769cc657fe0ebc7071b5",
+   "bytes": 842172
   },
   "R4W_RotarySaw.glb": {
-   "sha256": "15d3cfdd21c5f7cd197225cd1f5dd5ea63fc8a098fa9550f9172687aa5c389d8",
-   "bytes": 785444
+   "sha256": "2a31043c7e3b2a3b45de520918ee2c8af60eb5b8cf6845cede4956827b17b24d",
+   "bytes": 857596
   },
   "R4W_RotarySaw_colliders.glb": {
-   "sha256": "1dd742c4ef7072d82236ce621692c161a50bf25fe2e5cb0f815f67e67b05430f",
-   "bytes": 744036
+   "sha256": "94d4cefcef9bb9b438a67d69ede884fc653403bcf81a95c60ebc4cf2bceac837",
+   "bytes": 816076
   },
   "R4W_RotarySaw_LOD1.fbx": {
-   "sha256": "bc0fd4a1c353398d58def7e043a183da7356a70e930ee47f2d7e9dc8e825e639",
-   "bytes": 353452
+   "sha256": "f8ef72cc913f39f0a0019bcdb3ab0b69b6409963b26f5410606181da7596d42a",
+   "bytes": 383948
   }
  },
  "unity_import_test": "UNITY_NOT_RUN (Unity not available in this session)",
  "unity_import_settings": "Scale Factor 1, Convert Units ON, Bake Axis Conversion ON, Animation: split clips by animation_manifest.json frame ranges (24 fps)",
  "status": "BLENDER_PASS",
- "seconds": 13.0
+ "seconds": 13.3
 }

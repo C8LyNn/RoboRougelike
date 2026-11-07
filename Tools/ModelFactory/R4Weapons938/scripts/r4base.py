@@ -150,11 +150,11 @@ def base_drum(name, work):
         _rot([box("rib", 0.212, 0.228, -0.006, 0.006, Z_PL1 - 0.001, -0.046, M["Armor_Dark"], pt.U, bevel=0.002)], a)
     for k in range(4):
         a = 2*math.pi*k/4 + math.pi/4
-        made = [cyl("ins_post", 0.010, (0.236, 0, Z_PL1 - 0.001), (0.236, 0, -0.096), M["Armor_Dark"], pt.U, seg=12)]
+        made = [cyl("ins_post", 0.010, (0.234, 0, Z_PL1 - 0.001), (0.234, 0, -0.096), M["Armor_Dark"], pt.U, seg=12)]
         for j in range(5):
             z = -0.214 + 0.022*j
-            made.append(cyl("ins_disc", 0.022, (0.236, 0, z), (0.236, 0, z + 0.008), M["Steel_Light"], pt.U, seg=16, bevel=0.002))
-        made.append(cyl("ins_cap", 0.014, (0.236, 0, -0.098), (0.236, 0, -0.088), M["Energy_Hot"], pt.U, seg=12))
+            made.append(cyl("ins_disc", 0.022, (0.234, 0, z), (0.234, 0, z + 0.008), M["Steel_Light"], pt.U, seg=16, bevel=0.002))
+        made.append(cyl("ins_cap", 0.014, (0.234, 0, -0.098), (0.234, 0, -0.088), M["Energy_Hot"], pt.U, seg=12))
         made.append(hull("ins_bracket", [(r, s*0.010, z) for r in (0.206, 0.238) for s in (-1, 1) for z in (-0.104, -0.096)], M["Armor_Dark"], pt.U))
         _rot(made, a)
     _slot_glow(pt, 0.214, -0.108, -0.082, 0.020, 8, math.pi/8, depth=0.010)
@@ -250,4 +250,5 @@ def build_base_style(name, work, style, **kw):
     fn = {"column": base_column, "tripod": base_tripod, "stepped": base_stepped, "drum": base_drum, "crab": base_crab,
           "box": base_box, "finned": base_finned}[style]
     ob = fn(name, work); ob["base_style"] = style
+    import r4port as P4; P4.port(ob, work, -1)
     return ob, Z_TOP + 0.020

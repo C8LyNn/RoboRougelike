@@ -3,7 +3,7 @@
  "kind": "R4WeaponKind.RocketLauncher",
  "game_name": "WPN-004 Rocket Launcher",
  "blender": "5.2.3 LTS",
- "started": "2026-11-06 22:15:54",
+ "started": "2026-11-07 10:53:29",
  "failures": [],
  "notes": [
   "Fire clip launches tube 1 only; tube 1 is empty until Reload (master timeline: Fire is followed by Reload).",
@@ -12,22 +12,22 @@
  "meshes": [
   {
    "object": "R4W_RocketLauncher_Base",
-   "verts": 2036,
-   "triangles": 4104,
-   "shells": 1,
+   "verts": 2743,
+   "triangles": 5498,
+   "shells": 7,
    "non_manifold_edges": 0,
    "boundary_edges": 0,
    "zero_area_faces": 0,
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.013536,
+   "signed_volume_m3": 0.016064,
    "uv_layers": 1,
    "uv_bounds": [
     0.005,
     0.005,
     0.995,
-    0.995
+    0.994
    ],
    "materials": [
     "Armor_Dark",
@@ -378,28 +378,28 @@
    "ok": true
   }
  ],
- "triangles_total": 14448,
+ "triangles_total": 15842,
  "triangles_fx": 404,
  "triangles_r41_reference": 11452,
  "topology_PASS": true,
  "palette": {
   "material_area_share": {
-   "Armor_Dark": 0.5314,
-   "Armor_Gunmetal": 0.2666,
-   "Armor_Plate_Light": 0.1103,
-   "TeamColor_Red": 0.0267,
-   "Steel_Light": 0.0239,
-   "Energy_Hot": 0.0189,
-   "Hazard_Yellow": 0.0176,
-   "Barrel_Heat": 0.0044,
-   "Sensor_Eye_Red": 0.0003
+   "Armor_Dark": 0.56,
+   "Armor_Gunmetal": 0.2528,
+   "Armor_Plate_Light": 0.0947,
+   "Steel_Light": 0.0242,
+   "Energy_Hot": 0.024,
+   "TeamColor_Red": 0.0233,
+   "Hazard_Yellow": 0.017,
+   "Barrel_Heat": 0.0038,
+   "Sensor_Eye_Red": 0.0002
   },
   "family_share": {
-   "1_dark_gunmetal": 0.7979,
-   "2_light_steel": 0.1341,
-   "3_team_red": 0.0267,
-   "4_hazard_yellow": 0.0176,
-   "T_technical": 0.0236
+   "1_dark_gunmetal": 0.8129,
+   "2_light_steel": 0.1189,
+   "3_team_red": 0.0233,
+   "4_hazard_yellow": 0.017,
+   "T_technical": 0.028
   },
   "r41_family_share": {
    "1_dark_gunmetal": 0.7913,
@@ -564,14 +564,14 @@
    ],
    "bounds_file": [
     [
-     -0.2277,
+     -0.2563,
      -0.26,
-     -0.2545
+     -0.2563
     ],
     [
-     0.2277,
+     0.2563,
      0.016,
-     0.1691
+     0.2563
     ]
    ],
    "inside_own_cell": true
@@ -596,12 +596,12 @@
    ],
    "bounds_file": [
     [
-     -0.2485,
+     -0.2563,
      -0.26,
-     -0.2545
+     -0.2563
     ],
     [
-     0.2485,
+     0.2563,
      0.2915,
      0.3755
     ]
@@ -2007,7 +2007,7 @@
  ],
  "lod1": {
   "file": "R4W_RocketLauncher_LOD1.fbx",
-  "triangles": 7220,
+  "triangles": 7916,
   "method": "DECIMATE collapse 0.5 (automatic, not hand-authored)"
  },
  "fbx_reimport": {
@@ -2452,30 +2452,30 @@
  },
  "files": {
   "R4W_RocketLauncher.blend": {
-   "sha256": "fbf907754be0753755cb4cfa79422de7902f5206b6dbd43909753a4a4261312d",
-   "bytes": 2077388,
-   "sha256_before_path_sanitize": "88077340675a06dc64b60790d5cc409fb7cdb6395a0620ab65aaaef1c960cbf4",
-   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length; re-opened headless in Blender 5.2.3 after patch (rc 0, objects/actions/frame range unchanged)"
+   "sha256": "cc1087a44c96f96b29fad90d29add9ba25c54d954529afc1496f6abeda7c1407",
+   "bytes": 2183059,
+   "sha256_before_path_sanitize": "a6b6b715dc9d393de85b3b40e9008d7cb81263fb4bcb85928ee2a4aa376e02d0",
+   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length (scripts/sanitize_blend_paths.py)"
   },
   "R4W_RocketLauncher.fbx": {
-   "sha256": "c0cbcf2a46580013137455f8396fb71503a540646317a7ccacade9badaaa32a1",
-   "bytes": 859324
+   "sha256": "21d7561c854e69fbfce83103cd85098957a21f4ece601811b64d048d82cc4df9",
+   "bytes": 907308
   },
   "R4W_RocketLauncher.glb": {
-   "sha256": "93c16dfdce983ea90225d95637d30feaa929213757d8055216f167e195929362",
-   "bytes": 767948
+   "sha256": "91062bbdc89972fe293199777a5f62c03d8ce3ea6ef4ec2e6912a66a7e346d34",
+   "bytes": 834796
   },
   "R4W_RocketLauncher_colliders.glb": {
-   "sha256": "bbefc2db637ba11d66766dfb6859909b8687f4251e5f4b75fac4a3922b319ccc",
-   "bytes": 734148
+   "sha256": "3cdfd3b8e8ae3c5b78b3fa73232ae344d236f4188387673fceaf3cdf31c79bc6",
+   "bytes": 800880
   },
   "R4W_RocketLauncher_LOD1.fbx": {
-   "sha256": "bfe829919c5db3e6d74c577b9265451d1da71fafea52671ca386a86183809a74",
-   "bytes": 346956
+   "sha256": "78a98a8f522e55fcf340d5a447db220ff92616ea7466f6b93d5633ca6cd0f6dc",
+   "bytes": 376476
   }
  },
  "unity_import_test": "UNITY_NOT_RUN (Unity not available in this session)",
  "unity_import_settings": "Scale Factor 1, Convert Units ON, Bake Axis Conversion ON, Animation: split clips by animation_manifest.json frame ranges (24 fps)",
  "status": "BLENDER_PASS",
- "seconds": 12.4
+ "seconds": 13.0
 }

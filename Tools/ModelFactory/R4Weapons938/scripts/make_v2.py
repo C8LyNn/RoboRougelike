@@ -59,7 +59,10 @@ def beamcutter(s):
     return s
 
 def rotarysaw(s): return common(s, "crab", "unchanged v1 saw arm")
-def empemitter(s): return common(s, "drum", "unchanged v1 pulse head")
+def empemitter(s):
+    s = common(s, "drum", "unchanged v1 pulse head")
+    # R4 port plate adds ~1.5k tris: same 22k budget as Heavy/Railgun/Rocket/Saw
+    return rep(s, "hero_frame=HERO, hero_frame2=HERO2, tri_budget=20000, lof_pose_note", "hero_frame=HERO, hero_frame2=HERO2, tri_budget=22000, lof_pose_note")
 
 JOBS = {"build_heavy.py": heavy, "build_shotgun.py": shotgun, "build_railgun.py": railgun, "build_beamcutter.py": beamcutter,
         "build_rotarysaw.py": rotarysaw, "build_empemitter.py": empemitter}

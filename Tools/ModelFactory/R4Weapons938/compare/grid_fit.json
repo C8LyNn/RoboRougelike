@@ -1,0 +1,865 @@
+{
+ "check": "scripts/r4gridqa.py on the exported GLB (independent of the build QA): socket at the block-face centre (0.26 m), flush square contact patch (13x13 rays over 0.42 m), nothing crosses the mount plane in any animation frame, static geometry inside the 0.55 m anchor cell (+ runtime device direction for movement), moving movement parts inside cell + device direction",
+ "before": {
+  "R4W_Basic": {
+   "PASS": true,
+   "failures": [],
+   "socket": {
+    "name": "Socket_Mount_Bottom",
+    "pos": [
+     0.0,
+     0.0,
+     -0.26
+    ],
+    "axis": "z",
+    "sign": -1.0,
+    "on_block_face": true
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 100.0,
+    "recessed_pct": 0.0,
+    "protruding": 0,
+    "missing": 0
+   },
+   "static_bounds": [
+    [
+     -0.2565,
+     -0.2565,
+     -0.26
+    ],
+    [
+     0.2565,
+     0.2565,
+     0.016
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 0,
+   "crosses_mount_plane": [],
+   "moving_bounds": [
+    [
+     -0.1911,
+     -0.62,
+     0.018
+    ],
+    [
+     0.1911,
+     0.257,
+     0.236
+    ]
+   ],
+   "moving_out": [],
+   "allowance": {},
+   "frames_checked": 1
+  },
+  "R4W_RotarySaw": {
+   "PASS": true,
+   "failures": [],
+   "socket": {
+    "name": "Socket_Mount_Bottom",
+    "pos": [
+     0.0,
+     0.0,
+     -0.26
+    ],
+    "axis": "z",
+    "sign": -1.0,
+    "on_block_face": true
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 100.0,
+    "recessed_pct": 0.0,
+    "protruding": 0,
+    "missing": 0
+   },
+   "static_bounds": [
+    [
+     -0.255,
+     -0.255,
+     -0.26
+    ],
+    [
+     0.255,
+     0.255,
+     0.016
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 0,
+   "crosses_mount_plane": [],
+   "moving_bounds": [
+    [
+     -0.1911,
+     -0.9191,
+     -0.1641
+    ],
+    [
+     0.1911,
+     0.252,
+     0.4736
+    ]
+   ],
+   "moving_out": [],
+   "allowance": {},
+   "frames_checked": 1
+  },
+  "R4W_Heavy": {
+   "PASS": false,
+   "failures": [
+    "mount face not a flush square contact patch"
+   ],
+   "socket": {
+    "name": "Socket_Mount_Bottom",
+    "pos": [
+     0.0,
+     0.0,
+     -0.26
+    ],
+    "axis": "z",
+    "sign": -1.0,
+    "on_block_face": true
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 92.9,
+    "recessed_pct": 1.2,
+    "protruding": 0,
+    "missing": 10
+   },
+   "static_bounds": [
+    [
+     -0.2575,
+     -0.2575,
+     -0.26
+    ],
+    [
+     0.2575,
+     0.2575,
+     0.016
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 0,
+   "crosses_mount_plane": [],
+   "moving_bounds": [
+    [
+     -0.224,
+     -0.56,
+     0.018
+    ],
+    [
+     0.224,
+     0.2495,
+     0.25
+    ]
+   ],
+   "moving_out": [],
+   "allowance": {},
+   "frames_checked": 1
+  },
+  "R4W_Shotgun": {
+   "PASS": true,
+   "failures": [],
+   "socket": {
+    "name": "Socket_Mount_Bottom",
+    "pos": [
+     0.0,
+     0.0,
+     -0.26
+    ],
+    "axis": "z",
+    "sign": -1.0,
+    "on_block_face": true
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 100.0,
+    "recessed_pct": 0.0,
+    "protruding": 0,
+    "missing": 0
+   },
+   "static_bounds": [
+    [
+     -0.255,
+     -0.255,
+     -0.26
+    ],
+    [
+     0.255,
+     0.255,
+     0.016
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 0,
+   "crosses_mount_plane": [],
+   "moving_bounds": [
+    [
+     -0.218,
+     -0.413,
+     0.018
+    ],
+    [
+     0.1925,
+     0.2405,
+     0.226
+    ]
+   ],
+   "moving_out": [],
+   "allowance": {},
+   "frames_checked": 1
+  },
+  "R4W_Railgun": {
+   "PASS": false,
+   "failures": [
+    "mount face not a flush square contact patch"
+   ],
+   "socket": {
+    "name": "Socket_Mount_Bottom",
+    "pos": [
+     0.0,
+     0.0,
+     -0.26
+    ],
+    "axis": "z",
+    "sign": -1.0,
+    "on_block_face": true
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 85.8,
+    "recessed_pct": 2.4,
+    "protruding": 0,
+    "missing": 20
+   },
+   "static_bounds": [
+    [
+     -0.2505,
+     -0.2505,
+     -0.26
+    ],
+    [
+     0.2505,
+     0.2505,
+     0.016
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 0,
+   "crosses_mount_plane": [],
+   "moving_bounds": [
+    [
+     -0.1911,
+     -0.803,
+     0.018
+    ],
+    [
+     0.1911,
+     0.238,
+     0.292
+    ]
+   ],
+   "moving_out": [],
+   "allowance": {},
+   "frames_checked": 1
+  },
+  "R4W_BeamCutter": {
+   "PASS": false,
+   "failures": [
+    "mount face not a flush square contact patch"
+   ],
+   "socket": {
+    "name": "Socket_Mount_Bottom",
+    "pos": [
+     0.0,
+     0.0,
+     -0.26
+    ],
+    "axis": "z",
+    "sign": -1.0,
+    "on_block_face": true
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 85.8,
+    "recessed_pct": 2.4,
+    "protruding": 0,
+    "missing": 20
+   },
+   "static_bounds": [
+    [
+     -0.25,
+     -0.25,
+     -0.26
+    ],
+    [
+     0.25,
+     0.25,
+     0.016
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 0,
+   "crosses_mount_plane": [],
+   "moving_bounds": [
+    [
+     -0.1911,
+     -0.432,
+     0.018
+    ],
+    [
+     0.1911,
+     0.248,
+     0.255
+    ]
+   ],
+   "moving_out": [],
+   "allowance": {},
+   "frames_checked": 1
+  },
+  "R4W_RocketLauncher": {
+   "PASS": false,
+   "failures": [
+    "mount face not a flush square contact patch"
+   ],
+   "socket": {
+    "name": "Socket_Mount_Bottom",
+    "pos": [
+     0.0,
+     0.0,
+     -0.26
+    ],
+    "axis": "z",
+    "sign": -1.0,
+    "on_block_face": true
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 53.8,
+    "recessed_pct": 24.3,
+    "protruding": 0,
+    "missing": 37
+   },
+   "static_bounds": [
+    [
+     -0.2277,
+     -0.1691,
+     -0.26
+    ],
+    [
+     0.2277,
+     0.2545,
+     0.016
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 0,
+   "crosses_mount_plane": [],
+   "moving_bounds": [
+    [
+     -0.2485,
+     -0.3755,
+     0.018
+    ],
+    [
+     0.2485,
+     0.2005,
+     0.2915
+    ]
+   ],
+   "moving_out": [],
+   "allowance": {},
+   "frames_checked": 1
+  },
+  "R4W_EmpEmitter": {
+   "PASS": false,
+   "failures": [
+    "mount face not a flush square contact patch"
+   ],
+   "socket": {
+    "name": "Socket_Mount_Bottom",
+    "pos": [
+     0.0,
+     0.0,
+     -0.26
+    ],
+    "axis": "z",
+    "sign": -1.0,
+    "on_block_face": true
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 85.8,
+    "recessed_pct": 2.4,
+    "protruding": 0,
+    "missing": 20
+   },
+   "static_bounds": [
+    [
+     -0.252,
+     -0.252,
+     -0.26
+    ],
+    [
+     0.252,
+     0.252,
+     0.016
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 0,
+   "crosses_mount_plane": [],
+   "moving_bounds": [
+    [
+     -0.1911,
+     -0.1911,
+     0.018
+    ],
+    [
+     0.1911,
+     0.1911,
+     0.304
+    ]
+   ],
+   "moving_out": [],
+   "allowance": {},
+   "frames_checked": 1
+  }
+ },
+ "after": {
+  "R4W_Basic": {
+   "PASS": true,
+   "failures": [],
+   "socket": {
+    "name": "Socket_Mount_Bottom",
+    "pos": [
+     0.0,
+     0.0,
+     -0.26
+    ],
+    "axis": "z",
+    "sign": -1.0,
+    "on_block_face": true
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 94.7,
+    "recessed_pct": 5.3,
+    "protruding": 0,
+    "missing": 0
+   },
+   "static_bounds": [
+    [
+     -0.2565,
+     -0.2565,
+     -0.26
+    ],
+    [
+     0.2565,
+     0.2565,
+     0.016
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 0,
+   "crosses_mount_plane": [],
+   "moving_bounds": [
+    [
+     -0.1911,
+     -0.62,
+     0.018
+    ],
+    [
+     0.1911,
+     0.257,
+     0.236
+    ]
+   ],
+   "moving_out": [],
+   "allowance": {},
+   "frames_checked": 1
+  },
+  "R4W_RotarySaw": {
+   "PASS": true,
+   "failures": [],
+   "socket": {
+    "name": "Socket_Mount_Bottom",
+    "pos": [
+     0.0,
+     0.0,
+     -0.26
+    ],
+    "axis": "z",
+    "sign": -1.0,
+    "on_block_face": true
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 94.7,
+    "recessed_pct": 5.3,
+    "protruding": 0,
+    "missing": 0
+   },
+   "static_bounds": [
+    [
+     -0.2563,
+     -0.2563,
+     -0.26
+    ],
+    [
+     0.2563,
+     0.2563,
+     0.016
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 0,
+   "crosses_mount_plane": [],
+   "moving_bounds": [
+    [
+     -0.1911,
+     -0.9191,
+     -0.1641
+    ],
+    [
+     0.1911,
+     0.252,
+     0.4736
+    ]
+   ],
+   "moving_out": [],
+   "allowance": {},
+   "frames_checked": 1
+  },
+  "R4W_Heavy": {
+   "PASS": true,
+   "failures": [],
+   "socket": {
+    "name": "Socket_Mount_Bottom",
+    "pos": [
+     0.0,
+     0.0,
+     -0.26
+    ],
+    "axis": "z",
+    "sign": -1.0,
+    "on_block_face": true
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 94.7,
+    "recessed_pct": 5.3,
+    "protruding": 0,
+    "missing": 0
+   },
+   "static_bounds": [
+    [
+     -0.2575,
+     -0.2575,
+     -0.26
+    ],
+    [
+     0.2575,
+     0.2575,
+     0.016
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 0,
+   "crosses_mount_plane": [],
+   "moving_bounds": [
+    [
+     -0.224,
+     -0.56,
+     0.018
+    ],
+    [
+     0.224,
+     0.2495,
+     0.25
+    ]
+   ],
+   "moving_out": [],
+   "allowance": {},
+   "frames_checked": 1
+  },
+  "R4W_Shotgun": {
+   "PASS": true,
+   "failures": [],
+   "socket": {
+    "name": "Socket_Mount_Bottom",
+    "pos": [
+     0.0,
+     0.0,
+     -0.26
+    ],
+    "axis": "z",
+    "sign": -1.0,
+    "on_block_face": true
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 94.7,
+    "recessed_pct": 5.3,
+    "protruding": 0,
+    "missing": 0
+   },
+   "static_bounds": [
+    [
+     -0.2563,
+     -0.2563,
+     -0.26
+    ],
+    [
+     0.2563,
+     0.2563,
+     0.016
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 0,
+   "crosses_mount_plane": [],
+   "moving_bounds": [
+    [
+     -0.218,
+     -0.413,
+     0.018
+    ],
+    [
+     0.1925,
+     0.2405,
+     0.226
+    ]
+   ],
+   "moving_out": [],
+   "allowance": {},
+   "frames_checked": 1
+  },
+  "R4W_Railgun": {
+   "PASS": true,
+   "failures": [],
+   "socket": {
+    "name": "Socket_Mount_Bottom",
+    "pos": [
+     0.0,
+     0.0,
+     -0.26
+    ],
+    "axis": "z",
+    "sign": -1.0,
+    "on_block_face": true
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 94.7,
+    "recessed_pct": 5.3,
+    "protruding": 0,
+    "missing": 0
+   },
+   "static_bounds": [
+    [
+     -0.2563,
+     -0.2563,
+     -0.26
+    ],
+    [
+     0.2563,
+     0.2563,
+     0.016
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 0,
+   "crosses_mount_plane": [],
+   "moving_bounds": [
+    [
+     -0.1911,
+     -0.803,
+     0.018
+    ],
+    [
+     0.1911,
+     0.238,
+     0.292
+    ]
+   ],
+   "moving_out": [],
+   "allowance": {},
+   "frames_checked": 1
+  },
+  "R4W_BeamCutter": {
+   "PASS": true,
+   "failures": [],
+   "socket": {
+    "name": "Socket_Mount_Bottom",
+    "pos": [
+     0.0,
+     0.0,
+     -0.26
+    ],
+    "axis": "z",
+    "sign": -1.0,
+    "on_block_face": true
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 94.7,
+    "recessed_pct": 5.3,
+    "protruding": 0,
+    "missing": 0
+   },
+   "static_bounds": [
+    [
+     -0.2563,
+     -0.2563,
+     -0.26
+    ],
+    [
+     0.2563,
+     0.2563,
+     0.016
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 0,
+   "crosses_mount_plane": [],
+   "moving_bounds": [
+    [
+     -0.1911,
+     -0.432,
+     0.018
+    ],
+    [
+     0.1911,
+     0.248,
+     0.255
+    ]
+   ],
+   "moving_out": [],
+   "allowance": {},
+   "frames_checked": 1
+  },
+  "R4W_RocketLauncher": {
+   "PASS": true,
+   "failures": [],
+   "socket": {
+    "name": "Socket_Mount_Bottom",
+    "pos": [
+     0.0,
+     0.0,
+     -0.26
+    ],
+    "axis": "z",
+    "sign": -1.0,
+    "on_block_face": true
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 94.7,
+    "recessed_pct": 5.3,
+    "protruding": 0,
+    "missing": 0
+   },
+   "static_bounds": [
+    [
+     -0.2563,
+     -0.2563,
+     -0.26
+    ],
+    [
+     0.2563,
+     0.2563,
+     0.016
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 0,
+   "crosses_mount_plane": [],
+   "moving_bounds": [
+    [
+     -0.2485,
+     -0.3755,
+     0.018
+    ],
+    [
+     0.2485,
+     0.2005,
+     0.2915
+    ]
+   ],
+   "moving_out": [],
+   "allowance": {},
+   "frames_checked": 1
+  },
+  "R4W_EmpEmitter": {
+   "PASS": true,
+   "failures": [],
+   "socket": {
+    "name": "Socket_Mount_Bottom",
+    "pos": [
+     0.0,
+     0.0,
+     -0.26
+    ],
+    "axis": "z",
+    "sign": -1.0,
+    "on_block_face": true
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 94.7,
+    "recessed_pct": 5.3,
+    "protruding": 0,
+    "missing": 0
+   },
+   "static_bounds": [
+    [
+     -0.2563,
+     -0.2563,
+     -0.26
+    ],
+    [
+     0.2563,
+     0.2563,
+     0.016
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 0,
+   "crosses_mount_plane": [],
+   "moving_bounds": [
+    [
+     -0.1911,
+     -0.1911,
+     0.018
+    ],
+    [
+     0.1911,
+     0.1911,
+     0.304
+    ]
+   ],
+   "moving_out": [],
+   "allowance": {},
+   "frames_checked": 1
+  }
+ }
+}

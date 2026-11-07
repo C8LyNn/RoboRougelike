@@ -3,6 +3,7 @@
  "canon": "feature/energy-combat-garage-refinement @ 90021b6f29197581d8a65831fdb0e6fa8bf32215 (R4WeaponKind, 9 kinds)",
  "reference": "R41_Turret_v6.1.fbx sha256 03c60486a6af5890f1106bc090d70bb3c09a67f8278e02c2942cab8e77845d6a (verified; binary NOT committed)",
  "blender": "5.2.3 LTS",
+ "revision_port": "Standard R4 Robocraft-style mounting port on all 8 bases (square 0.509 m plate flush with the block face, face-centre coupling); independent GLB grid-fit check compare/grid_fit.json: before 3/8, after 8/8.",
  "revision": "v2 silhouette diversity pass (owner feedback: the 8 weapons looked too similar). 7 weapons rebuilt with distinct base and head architectures; Basic keeps the R41 look as the reference. Rig contract, pivot, socket, palette and clip lists unchanged.",
  "silhouette_check": {
   "method": "black silhouettes of the rest-pose GLB, 4 orthographic cameras (gameplay 3/4 high, side, front, top), cropped to the silhouette bbox, squared, 64x64, IoU per view, mean of 4; pair flagged when mean IoU > 0.85",
@@ -18,36 +19,41 @@
   },
   "v2": {
    "flagged": [],
-   "mean_of_all_pairs": 0.568,
+   "mean_of_all_pairs": 0.568
+  },
+  "current": "v3_port",
+  "current_result": {
+   "flagged": [],
+   "mean_of_all_pairs": 0.583,
    "most_similar": [
     [
      "R4W_Basic|R4W_Heavy",
      {
-      "gameplay": 0.783,
+      "gameplay": 0.88,
       "side": 0.779,
       "front": 0.845,
-      "top": 0.808,
-      "mean": 0.804
-     }
-    ],
-    [
-     "R4W_Heavy|R4W_BeamCutter",
-     {
-      "gameplay": 0.797,
-      "side": 0.685,
-      "front": 0.777,
-      "top": 0.803,
-      "mean": 0.766
+      "top": 0.855,
+      "mean": 0.84
      }
     ],
     [
      "R4W_Shotgun|R4W_BeamCutter",
      {
-      "gameplay": 0.803,
-      "side": 0.802,
-      "front": 0.684,
-      "top": 0.739,
-      "mean": 0.757
+      "gameplay": 0.91,
+      "side": 0.803,
+      "front": 0.683,
+      "top": 0.929,
+      "mean": 0.831
+     }
+    ],
+    [
+     "R4W_Heavy|R4W_BeamCutter",
+     {
+      "gameplay": 0.851,
+      "side": 0.676,
+      "front": 0.78,
+      "top": 0.727,
+      "mean": 0.758
      }
     ]
    ]
@@ -58,7 +64,7 @@
    "id": "R4W_Basic",
    "weapon_kind": "R4WeaponKind.Basic",
    "game_name": "Działo podstawowe",
-   "version": "v1",
+   "version": "v1+port",
    "base_style": "r41",
    "head": "R41 cheek yoke (reference look, unchanged)",
    "status": "BLENDER_PASS",
@@ -67,11 +73,11 @@
    "glb": "R4W_Basic/R4W_Basic.glb",
    "blend": "R4W_Basic/R4W_Basic.blend",
    "sha256": {
-    "R4W_Basic.blend": "7ea4ca655e83e4cffb0d49c09f256acbf50fb0abb8011eb7ee4b8451eb168e03",
-    "R4W_Basic.fbx": "a3d4c11490fe7f990641ad0e3e845bcc5fdf84e34be8bcefa81e9439a0ed68b7",
-    "R4W_Basic.glb": "f9fda0dead09694a1141b78feb1697d026fbc3a54f6e75edfbc8c3d2fe586326",
-    "R4W_Basic_colliders.glb": "e1aa29e4ac1037d8b20c7f5a7f46f66b6ed211af144b9d4e343125bd4df0793f",
-    "R4W_Basic_LOD1.fbx": "2fd198139648167c1c8813a935e59e65f9e52735919142c9d6793bd7062da87a"
+    "R4W_Basic.blend": "352a517534c4aaa9346a66ad6ba358bd0731913153e68f11f138539ee048c93f",
+    "R4W_Basic.fbx": "4edd6d28e77a34dfc726c99c503799184e385743a5d189eb932f754855e714dd",
+    "R4W_Basic.glb": "9535f7deb4e52b998e5d2f663d77807bddf295cdba014fafb6c38851d1262631",
+    "R4W_Basic_colliders.glb": "cd0e5fec31a10927dfba6d408bc9ef2b9c53766c728a5c7fdd99c681ebdabbce",
+    "R4W_Basic_LOD1.fbx": "4950a96aea197fca9d10e281511cc3a03409616cccc4fb098919f79fd05a1335"
    },
    "clips": [
     [
@@ -106,16 +112,16 @@
     ]
    ],
    "materials_4_palette": {
-    "1_dark_gunmetal": 0.7684,
-    "2_light_steel": 0.1562,
-    "3_team_red": 0.0242,
-    "4_hazard_yellow": 0.0041,
-    "T_technical": 0.047
+    "1_dark_gunmetal": 0.7589,
+    "2_light_steel": 0.1568,
+    "3_team_red": 0.0241,
+    "4_hazard_yellow": 0.0055,
+    "T_technical": 0.0547
    },
    "palette_in_band": true,
-   "triangles": 10834,
+   "triangles": 12572,
    "triangles_fx": 180,
-   "lod1_triangles": 5416,
+   "lod1_triangles": 6284,
    "topology_PASS": true,
    "aim_sweep_collisions": 0,
    "animation_clash": 0,
@@ -150,9 +156,44 @@
    "r41_compare": "rendered from real R41_Turret_v6.1.fbx (SHA verified)",
    "unity": "UNITY_NOT_RUN (Unity not available in this session)",
    "extra": {},
+   "mount_port": "R4 Robocraft-style port: 0.509 m square plate on the bottom face, outer face flush with the block face (-0.26 m), face-centre coupling; Socket_Mount_Bottom on that face",
+   "grid_fit_PASS": true,
+   "grid_fit": {
+    "socket": {
+     "name": "Socket_Mount_Bottom",
+     "pos": [
+      0.0,
+      0.0,
+      -0.26
+     ],
+     "axis": "z",
+     "sign": -1.0,
+     "on_block_face": true
+    },
+    "contact_patch": {
+     "grid": "13x13 over 0.42 x 0.42 m",
+     "flush_pct": 94.7,
+     "recessed_pct": 5.3,
+     "protruding": 0,
+     "missing": 0
+    },
+    "static_bounds": [
+     [
+      -0.2565,
+      -0.2565,
+      -0.26
+     ],
+     [
+      0.2565,
+      0.2565,
+      0.016
+     ]
+    ],
+    "n_cross": 0
+   },
    "silhouette_closest": {
     "pair": "Basic|Heavy",
-    "mean_iou": 0.804
+    "mean_iou": 0.84
    },
    "notes": [
     "Visual muzzle 0.660 m forward of the pivot (R41 v6.1: 0.700). Runtime placeholder positions are not changed."
@@ -162,7 +203,7 @@
    "id": "R4W_RotarySaw",
    "weapon_kind": "R4WeaponKind.RotarySaw",
    "game_name": "WPN-005 Rotary Saw",
-   "version": "v2",
+   "version": "v2+port",
    "base_style": "crab",
    "head": "v1 saw arm",
    "status": "BLENDER_PASS",
@@ -171,11 +212,11 @@
    "glb": "R4W_RotarySaw/R4W_RotarySaw.glb",
    "blend": "R4W_RotarySaw/R4W_RotarySaw.blend",
    "sha256": {
-    "R4W_RotarySaw.blend": "eb00f04175ca4bff8a2d76d9a8740f60f46543c7b11865eb50820bdf302652ef",
-    "R4W_RotarySaw.fbx": "5c2443a25a417b44c6167e2f1e3b377f23314dd24f0de119c7b8a6b6669f5ba8",
-    "R4W_RotarySaw.glb": "15d3cfdd21c5f7cd197225cd1f5dd5ea63fc8a098fa9550f9172687aa5c389d8",
-    "R4W_RotarySaw_colliders.glb": "1dd742c4ef7072d82236ce621692c161a50bf25fe2e5cb0f815f67e67b05430f",
-    "R4W_RotarySaw_LOD1.fbx": "bc0fd4a1c353398d58def7e043a183da7356a70e930ee47f2d7e9dc8e825e639"
+    "R4W_RotarySaw.blend": "6f14c65c5036252af37b590a8672e31b80699eeef81dfb4595409e277da42956",
+    "R4W_RotarySaw.fbx": "61603bdba18c42fcbbf03764f207a0acd24f74638cf6769cc657fe0ebc7071b5",
+    "R4W_RotarySaw.glb": "2a31043c7e3b2a3b45de520918ee2c8af60eb5b8cf6845cede4956827b17b24d",
+    "R4W_RotarySaw_colliders.glb": "94d4cefcef9bb9b438a67d69ede884fc653403bcf81a95c60ebc4cf2bceac837",
+    "R4W_RotarySaw_LOD1.fbx": "f8ef72cc913f39f0a0019bcdb3ab0b69b6409963b26f5410606181da7596d42a"
    },
    "clips": [
     [
@@ -215,16 +256,16 @@
     ]
    ],
    "materials_4_palette": {
-    "1_dark_gunmetal": 0.8283,
-    "2_light_steel": 0.1022,
-    "3_team_red": 0.0135,
-    "4_hazard_yellow": 0.0036,
-    "T_technical": 0.0524
+    "1_dark_gunmetal": 0.8195,
+    "2_light_steel": 0.1035,
+    "3_team_red": 0.0136,
+    "4_hazard_yellow": 0.005,
+    "T_technical": 0.0584
    },
    "palette_in_band": true,
-   "triangles": 16018,
+   "triangles": 17596,
    "triangles_fx": 826,
-   "lod1_triangles": 8006,
+   "lod1_triangles": 8796,
    "topology_PASS": true,
    "aim_sweep_collisions": 0,
    "animation_clash": 0,
@@ -264,15 +305,50 @@
      "game_bladeRadius_m": 0.9,
      "game_halfThickness_m": 0.14,
      "nearest_own_armour_vertex_to_disc_centre_m": 0.0293,
-     "own_vertices_inside_game_contact_disc": 3680,
+     "own_vertices_inside_game_contact_disc": 4022,
      "own_vertices_inside_visual_blade_disc": 0,
      "PASS": true,
      "risk": "game contact disc (r=0.9 m, +-0.14 m) is larger than the visual blade; it is a runtime value - integration (B01) decides; not changed here"
     }
    },
+   "mount_port": "R4 Robocraft-style port: 0.509 m square plate on the bottom face, outer face flush with the block face (-0.26 m), face-centre coupling; Socket_Mount_Bottom on that face",
+   "grid_fit_PASS": true,
+   "grid_fit": {
+    "socket": {
+     "name": "Socket_Mount_Bottom",
+     "pos": [
+      0.0,
+      0.0,
+      -0.26
+     ],
+     "axis": "z",
+     "sign": -1.0,
+     "on_block_face": true
+    },
+    "contact_patch": {
+     "grid": "13x13 over 0.42 x 0.42 m",
+     "flush_pct": 94.7,
+     "recessed_pct": 5.3,
+     "protruding": 0,
+     "missing": 0
+    },
+    "static_bounds": [
+     [
+      -0.2563,
+      -0.2563,
+      -0.26
+     ],
+     [
+      0.2563,
+      0.2563,
+      0.016
+     ]
+    ],
+    "n_cross": 0
+   },
    "silhouette_closest": {
     "pair": "Railgun|RotarySaw",
-    "mean_iou": 0.558
+    "mean_iou": 0.572
    },
    "notes": [
     "Blade 0.60 m diameter on a +X side arm; disc centre 0.620 m forward of the pivot.",
@@ -284,7 +360,7 @@
    "id": "R4W_Heavy",
    "weapon_kind": "R4WeaponKind.Heavy",
    "game_name": "Ciężka armata",
-   "version": "v2",
+   "version": "v2+port",
    "base_style": "stepped",
    "head": "low sponsons + drum mantlet + wide gun shield + stubby barrel",
    "status": "BLENDER_PASS",
@@ -293,11 +369,11 @@
    "glb": "R4W_Heavy/R4W_Heavy.glb",
    "blend": "R4W_Heavy/R4W_Heavy.blend",
    "sha256": {
-    "R4W_Heavy.blend": "7a0803aa9f39160e4823584dca1b880dd4b62e71f93b289abb4ee87795fb1f84",
-    "R4W_Heavy.fbx": "3d55b3f961f0069f139b5cdf5e8dbdea203883bb3b59b275acbb2915e63b1669",
-    "R4W_Heavy.glb": "24e579a910c654c8e94e9b552266c4274991091c122a4f3025068fdba08dd5cc",
-    "R4W_Heavy_colliders.glb": "384008f9329226df37143a84749c7b2c3a7052108609ffeafe7dbddcbc0af161",
-    "R4W_Heavy_LOD1.fbx": "d9e5edc1f87188b25970d381449bdb1c94fb45b16d14277bb977902b6df63db9"
+    "R4W_Heavy.blend": "c79ea4c72027d9b13ca79ae81a5a32aeeb48bf299952ba5feed12206f2bd4fed",
+    "R4W_Heavy.fbx": "796d89bb2efb90ee23836721fd58949995a64818a3c37614f9e93fd655fe19b2",
+    "R4W_Heavy.glb": "0a55a5df6f1b6bcbfc8a21b860bf4f58f4c01dbf9f909db55dfa9f0d275792d1",
+    "R4W_Heavy_colliders.glb": "c39bc58437bf975de4aa17698c4c5362829e398f9727f482aac98ea226ba139b",
+    "R4W_Heavy_LOD1.fbx": "7bed280cf4f75b11802890318e1af8f2a543b00116e643fb28f190fb3197b21c"
    },
    "clips": [
     [
@@ -332,16 +408,16 @@
     ]
    ],
    "materials_4_palette": {
-    "1_dark_gunmetal": 0.8026,
-    "2_light_steel": 0.121,
-    "3_team_red": 0.025,
-    "4_hazard_yellow": 0.0059,
-    "T_technical": 0.0455
+    "1_dark_gunmetal": 0.7994,
+    "2_light_steel": 0.1183,
+    "3_team_red": 0.024,
+    "4_hazard_yellow": 0.0075,
+    "T_technical": 0.0508
    },
    "palette_in_band": true,
-   "triangles": 12442,
+   "triangles": 13982,
    "triangles_fx": 128,
-   "lod1_triangles": 6218,
+   "lod1_triangles": 6988,
    "topology_PASS": true,
    "aim_sweep_collisions": 0,
    "animation_clash": 0,
@@ -376,9 +452,44 @@
    "r41_compare": "rendered from real R41_Turret_v6.1.fbx (SHA verified)",
    "unity": "UNITY_NOT_RUN (Unity not available in this session)",
    "extra": {},
+   "mount_port": "R4 Robocraft-style port: 0.509 m square plate on the bottom face, outer face flush with the block face (-0.26 m), face-centre coupling; Socket_Mount_Bottom on that face",
+   "grid_fit_PASS": true,
+   "grid_fit": {
+    "socket": {
+     "name": "Socket_Mount_Bottom",
+     "pos": [
+      0.0,
+      0.0,
+      -0.26
+     ],
+     "axis": "z",
+     "sign": -1.0,
+     "on_block_face": true
+    },
+    "contact_patch": {
+     "grid": "13x13 over 0.42 x 0.42 m",
+     "flush_pct": 94.7,
+     "recessed_pct": 5.3,
+     "protruding": 0,
+     "missing": 0
+    },
+    "static_bounds": [
+     [
+      -0.2575,
+      -0.2575,
+      -0.26
+     ],
+     [
+      0.2575,
+      0.2575,
+      0.016
+     ]
+    ],
+    "n_cross": 0
+   },
    "silhouette_closest": {
     "pair": "Basic|Heavy",
-    "mean_iou": 0.804
+    "mean_iou": 0.84
    },
    "notes": [
     "Pitch range -8..+30 deg (heavier mass; R41 -10..+35). Runtime pitch limits are not changed by this asset.",
@@ -390,7 +501,7 @@
    "id": "R4W_Shotgun",
    "weapon_kind": "R4WeaponKind.Shotgun",
    "game_name": "WPN-001 Shotgun",
-   "version": "v2",
+   "version": "v2+port",
    "base_style": "box",
    "head": "single cantilever arm + side drum magazine",
    "status": "BLENDER_PASS",
@@ -399,11 +510,11 @@
    "glb": "R4W_Shotgun/R4W_Shotgun.glb",
    "blend": "R4W_Shotgun/R4W_Shotgun.blend",
    "sha256": {
-    "R4W_Shotgun.blend": "05824449755847e600db93843e51b5c1f731c53598d7b52f1373e34da938c6e5",
-    "R4W_Shotgun.fbx": "933194592c44d8fe0fcc52d2e7e77753f4a9c25374743a6bca26d0c4ada30bba",
-    "R4W_Shotgun.glb": "babe66916d8daa5f53fa6182869bc9f9233775a3ef7faceb5dda2d2f5ebc2442",
-    "R4W_Shotgun_colliders.glb": "05bd265801fad2a2544d0e9dfe39d159f2787af14bf9bbb46d3754d1442b8ff8",
-    "R4W_Shotgun_LOD1.fbx": "7e1bdb77ea0500f0b2a91a60bf87d54938773b83adcb1fb458f5f1d3e3b2522b"
+    "R4W_Shotgun.blend": "f42682a0e3e72de75c62a95ab95d778226ff7924f74a314c06ef400411b90b45",
+    "R4W_Shotgun.fbx": "e5b8705b9505225357a713fdf2baa291ed9c43217047ada6378a8a64f5eea0ed",
+    "R4W_Shotgun.glb": "73870ed6989c38e48627c6f548ad23c297e78279b20917022974a22c377be8e9",
+    "R4W_Shotgun_colliders.glb": "65bff879e90b872a20f00369078adf130c201bf6470bdaf9a89e916d0cdbb647",
+    "R4W_Shotgun_LOD1.fbx": "ad59798f0ce58deab70a8414d0272ee052c4900abfd2c702998c087b90122b8d"
    },
    "clips": [
     [
@@ -438,16 +549,16 @@
     ]
    ],
    "materials_4_palette": {
-    "1_dark_gunmetal": 0.836,
-    "2_light_steel": 0.0988,
+    "1_dark_gunmetal": 0.8247,
+    "2_light_steel": 0.1005,
     "3_team_red": 0.0217,
-    "4_hazard_yellow": 0.0058,
-    "T_technical": 0.0377
+    "4_hazard_yellow": 0.0076,
+    "T_technical": 0.0454
    },
    "palette_in_band": true,
-   "triangles": 11540,
+   "triangles": 13124,
    "triangles_fx": 128,
-   "lod1_triangles": 5768,
+   "lod1_triangles": 6560,
    "topology_PASS": true,
    "aim_sweep_collisions": 0,
    "animation_clash": 0,
@@ -482,9 +593,44 @@
    "r41_compare": "rendered from real R41_Turret_v6.1.fbx (SHA verified)",
    "unity": "UNITY_NOT_RUN (Unity not available in this session)",
    "extra": {},
+   "mount_port": "R4 Robocraft-style port: 0.509 m square plate on the bottom face, outer face flush with the block face (-0.26 m), face-centre coupling; Socket_Mount_Bottom on that face",
+   "grid_fit_PASS": true,
+   "grid_fit": {
+    "socket": {
+     "name": "Socket_Mount_Bottom",
+     "pos": [
+      0.0,
+      0.0,
+      -0.26
+     ],
+     "axis": "z",
+     "sign": -1.0,
+     "on_block_face": true
+    },
+    "contact_patch": {
+     "grid": "13x13 over 0.42 x 0.42 m",
+     "flush_pct": 94.7,
+     "recessed_pct": 5.3,
+     "protruding": 0,
+     "missing": 0
+    },
+    "static_bounds": [
+     [
+      -0.2563,
+      -0.2563,
+      -0.26
+     ],
+     [
+      0.2563,
+      0.2563,
+      0.016
+     ]
+    ],
+    "n_cross": 0
+   },
    "silhouette_closest": {
     "pair": "Shotgun|BeamCutter",
-    "mean_iou": 0.757
+    "mean_iou": 0.831
    },
    "notes": [
     "Choke block front 0.410 m, Muzzle 0.450 m forward of the pivot.",
@@ -495,7 +641,7 @@
    "id": "R4W_Railgun",
    "weapon_kind": "R4WeaponKind.Railgun",
    "game_name": "WPN-002 Railgun",
-   "version": "v2",
+   "version": "v2+port",
    "base_style": "column",
    "head": "thin tall fork + capacitor spires",
    "status": "BLENDER_PASS",
@@ -504,11 +650,11 @@
    "glb": "R4W_Railgun/R4W_Railgun.glb",
    "blend": "R4W_Railgun/R4W_Railgun.blend",
    "sha256": {
-    "R4W_Railgun.blend": "4a6e3e3e6f62fc9cb6ed352b90e0cebea9c0598956860761d8aa27baa1831a5b",
-    "R4W_Railgun.fbx": "86051bc5f381838274c73713dffc590d82803999318486c7b3e8e444803e1f03",
-    "R4W_Railgun.glb": "2d7ab30459a0677d674a5c1514a34a909f76fc6307d64d1b6d9f2da287968657",
-    "R4W_Railgun_colliders.glb": "1c8fbaeb40c04cebd088e35edc831449cb45280efbd1abaac121d8fba6a9f713",
-    "R4W_Railgun_LOD1.fbx": "e04212c12361cb037e5a91e44d17097cdac3f37e8e78c68c828356be4a445dbd"
+    "R4W_Railgun.blend": "1583a7846066eba170d713281449bd30bb23ded3a1a721eb66b56f6429349221",
+    "R4W_Railgun.fbx": "5ec771ac7b3caedfa35538e17e3506de46f98099d47805e28bd48f8afad27423",
+    "R4W_Railgun.glb": "290caa5d164d2138bc4885e5f569a74355a53751d8e20af63da5a324d8dd0b65",
+    "R4W_Railgun_colliders.glb": "7abb2f9098a4e3cfa31e2f4830ff2de816bb6b86ca0b7f23e249951ad693ac45",
+    "R4W_Railgun_LOD1.fbx": "710edef40c311320750191c54b05d71e4dfafdc51e512abd633602ebb8450e36"
    },
    "clips": [
     [
@@ -543,16 +689,16 @@
     ]
    ],
    "materials_4_palette": {
-    "1_dark_gunmetal": 0.749,
-    "2_light_steel": 0.176,
-    "3_team_red": 0.0159,
-    "4_hazard_yellow": 0.0196,
-    "T_technical": 0.0395
+    "1_dark_gunmetal": 0.7531,
+    "2_light_steel": 0.1672,
+    "3_team_red": 0.0151,
+    "4_hazard_yellow": 0.0201,
+    "T_technical": 0.0445
    },
    "palette_in_band": true,
-   "triangles": 17104,
+   "triangles": 18542,
    "triangles_fx": 1138,
-   "lod1_triangles": 8550,
+   "lod1_triangles": 9270,
    "topology_PASS": true,
    "aim_sweep_collisions": 0,
    "animation_clash": 0,
@@ -587,9 +733,44 @@
    "r41_compare": "rendered from real R41_Turret_v6.1.fbx (SHA verified)",
    "unity": "UNITY_NOT_RUN (Unity not available in this session)",
    "extra": {},
+   "mount_port": "R4 Robocraft-style port: 0.509 m square plate on the bottom face, outer face flush with the block face (-0.26 m), face-centre coupling; Socket_Mount_Bottom on that face",
+   "grid_fit_PASS": true,
+   "grid_fit": {
+    "socket": {
+     "name": "Socket_Mount_Bottom",
+     "pos": [
+      0.0,
+      0.0,
+      -0.26
+     ],
+     "axis": "z",
+     "sign": -1.0,
+     "on_block_face": true
+    },
+    "contact_patch": {
+     "grid": "13x13 over 0.42 x 0.42 m",
+     "flush_pct": 94.7,
+     "recessed_pct": 5.3,
+     "protruding": 0,
+     "missing": 0
+    },
+    "static_bounds": [
+     [
+      -0.2563,
+      -0.2563,
+      -0.26
+     ],
+     [
+      0.2563,
+      0.2563,
+      0.016
+     ]
+    ],
+    "n_cross": 0
+   },
    "silhouette_closest": {
-    "pair": "Heavy|Railgun",
-    "mean_iou": 0.564
+    "pair": "Basic|Railgun",
+    "mean_iou": 0.6
    },
    "notes": [
     "Charge glow is mesh FX (scale) so it survives FBX; emission strength itself is not animated.",
@@ -600,7 +781,7 @@
    "id": "R4W_BeamCutter",
    "weapon_kind": "R4WeaponKind.BeamCutter",
    "game_name": "WPN-003 Beam Cutter",
-   "version": "v2",
+   "version": "v2+port",
    "base_style": "finned",
    "head": "ball head in a gimbal ring",
    "status": "BLENDER_PASS",
@@ -609,11 +790,11 @@
    "glb": "R4W_BeamCutter/R4W_BeamCutter.glb",
    "blend": "R4W_BeamCutter/R4W_BeamCutter.blend",
    "sha256": {
-    "R4W_BeamCutter.blend": "20293347890c5755103ec7cf49adf15f6d33e1d044988588e4505f08a6bd0d68",
-    "R4W_BeamCutter.fbx": "346ee19f51157032af5927816a82946470820d35cae67f3bf1779e194e54d615",
-    "R4W_BeamCutter.glb": "221b0e1ec5e971ae08e5943d47136ba29557545804145f8d0ac365e146b1c246",
-    "R4W_BeamCutter_colliders.glb": "7a3badd2bf0b697e93d1418b9550de70afd10dd97016771ad65156fd81b9ecdd",
-    "R4W_BeamCutter_LOD1.fbx": "794a80522743e8fd77d8a6191d58f7d2c7a8c77eefc4a77d298da2471a338cd0"
+    "R4W_BeamCutter.blend": "bd362fbd1cdabe80b1d04e8c18c38aab5bfb9a1911de865a6cb7b20f10aab82e",
+    "R4W_BeamCutter.fbx": "dc28bba199f60c7c4cef3690a4efcc239be7fe7024e4d1c247864a27f033955b",
+    "R4W_BeamCutter.glb": "12acb3cb53b55f5c7b5e7bfc25b1f360c2d2f259f65bd75403617a27efcd0b4c",
+    "R4W_BeamCutter_colliders.glb": "cc6380b2cc3066c69cbb206d93e1a8fcdd9fefae725255b007344c3894ec901a",
+    "R4W_BeamCutter_LOD1.fbx": "68863a4df22cd1d00ba2a46ca6d3fc42db429b526d2d2523b587e331f35744de"
    },
    "clips": [
     [
@@ -653,16 +834,16 @@
     ]
    ],
    "materials_4_palette": {
-    "1_dark_gunmetal": 0.7965,
-    "2_light_steel": 0.1601,
-    "3_team_red": 0.0125,
-    "4_hazard_yellow": 0.011,
-    "T_technical": 0.0199
+    "1_dark_gunmetal": 0.7972,
+    "2_light_steel": 0.1522,
+    "3_team_red": 0.012,
+    "4_hazard_yellow": 0.0121,
+    "T_technical": 0.0265
    },
    "palette_in_band": true,
-   "triangles": 16120,
+   "triangles": 17546,
    "triangles_fx": 392,
-   "lod1_triangles": 8060,
+   "lod1_triangles": 8772,
    "topology_PASS": true,
    "aim_sweep_collisions": 0,
    "animation_clash": 0,
@@ -697,9 +878,44 @@
    "r41_compare": "rendered from real R41_Turret_v6.1.fbx (SHA verified)",
    "unity": "UNITY_NOT_RUN (Unity not available in this session)",
    "extra": {},
+   "mount_port": "R4 Robocraft-style port: 0.509 m square plate on the bottom face, outer face flush with the block face (-0.26 m), face-centre coupling; Socket_Mount_Bottom on that face",
+   "grid_fit_PASS": true,
+   "grid_fit": {
+    "socket": {
+     "name": "Socket_Mount_Bottom",
+     "pos": [
+      0.0,
+      0.0,
+      -0.26
+     ],
+     "axis": "z",
+     "sign": -1.0,
+     "on_block_face": true
+    },
+    "contact_patch": {
+     "grid": "13x13 over 0.42 x 0.42 m",
+     "flush_pct": 94.7,
+     "recessed_pct": 5.3,
+     "protruding": 0,
+     "missing": 0
+    },
+    "static_bounds": [
+     [
+      -0.2563,
+      -0.2563,
+      -0.26
+     ],
+     [
+      0.2563,
+      0.2563,
+      0.016
+     ]
+    ],
+    "n_cross": 0
+   },
    "silhouette_closest": {
-    "pair": "Heavy|BeamCutter",
-    "mean_iou": 0.766
+    "pair": "Shotgun|BeamCutter",
+    "mean_iou": 0.831
    },
    "notes": [
     "Focus ring end angle in Cooldown is 180 deg (6-fold symmetric: identical to rest).",
@@ -710,7 +926,7 @@
    "id": "R4W_RocketLauncher",
    "weapon_kind": "R4WeaponKind.RocketLauncher",
    "game_name": "WPN-004 Rocket Launcher",
-   "version": "v2",
+   "version": "v2+port",
    "base_style": "tripod",
    "head": "radar tower + twin side pods",
    "status": "BLENDER_PASS",
@@ -719,11 +935,11 @@
    "glb": "R4W_RocketLauncher/R4W_RocketLauncher.glb",
    "blend": "R4W_RocketLauncher/R4W_RocketLauncher.blend",
    "sha256": {
-    "R4W_RocketLauncher.blend": "fbf907754be0753755cb4cfa79422de7902f5206b6dbd43909753a4a4261312d",
-    "R4W_RocketLauncher.fbx": "c0cbcf2a46580013137455f8396fb71503a540646317a7ccacade9badaaa32a1",
-    "R4W_RocketLauncher.glb": "93c16dfdce983ea90225d95637d30feaa929213757d8055216f167e195929362",
-    "R4W_RocketLauncher_colliders.glb": "bbefc2db637ba11d66766dfb6859909b8687f4251e5f4b75fac4a3922b319ccc",
-    "R4W_RocketLauncher_LOD1.fbx": "bfe829919c5db3e6d74c577b9265451d1da71fafea52671ca386a86183809a74"
+    "R4W_RocketLauncher.blend": "cc1087a44c96f96b29fad90d29add9ba25c54d954529afc1496f6abeda7c1407",
+    "R4W_RocketLauncher.fbx": "21d7561c854e69fbfce83103cd85098957a21f4ece601811b64d048d82cc4df9",
+    "R4W_RocketLauncher.glb": "91062bbdc89972fe293199777a5f62c03d8ce3ea6ef4ec2e6912a66a7e346d34",
+    "R4W_RocketLauncher_colliders.glb": "3cdfd3b8e8ae3c5b78b3fa73232ae344d236f4188387673fceaf3cdf31c79bc6",
+    "R4W_RocketLauncher_LOD1.fbx": "78a98a8f522e55fcf340d5a447db220ff92616ea7466f6b93d5633ca6cd0f6dc"
    },
    "clips": [
     [
@@ -753,16 +969,16 @@
     ]
    ],
    "materials_4_palette": {
-    "1_dark_gunmetal": 0.7979,
-    "2_light_steel": 0.1341,
-    "3_team_red": 0.0267,
-    "4_hazard_yellow": 0.0176,
-    "T_technical": 0.0236
+    "1_dark_gunmetal": 0.8129,
+    "2_light_steel": 0.1189,
+    "3_team_red": 0.0233,
+    "4_hazard_yellow": 0.017,
+    "T_technical": 0.028
    },
    "palette_in_band": true,
-   "triangles": 14448,
+   "triangles": 15842,
    "triangles_fx": 404,
-   "lod1_triangles": 7220,
+   "lod1_triangles": 7916,
    "topology_PASS": true,
    "aim_sweep_collisions": 0,
    "animation_clash": 0,
@@ -797,9 +1013,44 @@
    "r41_compare": "rendered from real R41_Turret_v6.1.fbx (SHA verified)",
    "unity": "UNITY_NOT_RUN (Unity not available in this session)",
    "extra": {},
+   "mount_port": "R4 Robocraft-style port: 0.509 m square plate on the bottom face, outer face flush with the block face (-0.26 m), face-centre coupling; Socket_Mount_Bottom on that face",
+   "grid_fit_PASS": true,
+   "grid_fit": {
+    "socket": {
+     "name": "Socket_Mount_Bottom",
+     "pos": [
+      0.0,
+      0.0,
+      -0.26
+     ],
+     "axis": "z",
+     "sign": -1.0,
+     "on_block_face": true
+    },
+    "contact_patch": {
+     "grid": "13x13 over 0.42 x 0.42 m",
+     "flush_pct": 94.7,
+     "recessed_pct": 5.3,
+     "protruding": 0,
+     "missing": 0
+    },
+    "static_bounds": [
+     [
+      -0.2563,
+      -0.2563,
+      -0.26
+     ],
+     [
+      0.2563,
+      0.2563,
+      0.016
+     ]
+    ],
+    "n_cross": 0
+   },
    "silhouette_closest": {
     "pair": "BeamCutter|RocketLauncher",
-    "mean_iou": 0.609
+    "mean_iou": 0.691
    },
    "notes": [
     "Fire clip launches tube 1 only; tube 1 is empty until Reload (master timeline: Fire is followed by Reload).",
@@ -811,7 +1062,7 @@
    "id": "R4W_EmpEmitter",
    "weapon_kind": "R4WeaponKind.EmpEmitter",
    "game_name": "WPN-006 EMP Emitter",
-   "version": "v2",
+   "version": "v2+port",
    "base_style": "drum",
    "head": "v1 pulse head",
    "status": "BLENDER_PASS",
@@ -820,11 +1071,11 @@
    "glb": "R4W_EmpEmitter/R4W_EmpEmitter.glb",
    "blend": "R4W_EmpEmitter/R4W_EmpEmitter.blend",
    "sha256": {
-    "R4W_EmpEmitter.blend": "752721026834bac91b9f6edcd915a7133add0d574eb66750502679293db3d72f",
-    "R4W_EmpEmitter.fbx": "34cb81a18687d6e139e1e4d578579fdc7a1f66fb02b7e7ae2b1280db54386fd4",
-    "R4W_EmpEmitter.glb": "179f33b8a94f0b76ee9e978118e0cab7b3df4ed7764a27f9d914a31781dcc1eb",
-    "R4W_EmpEmitter_colliders.glb": "edd9a795e4f8bc8662c593ff965e1bbec6276f89488372bea07f4db231734914",
-    "R4W_EmpEmitter_LOD1.fbx": "812c913ca579b9af4dd343dab873293df026129cdd17a6425ebc535afe436c5c"
+    "R4W_EmpEmitter.blend": "913ec5f23c850c02251ba8b27550fa5a174fdc4095cb1aaa8532fdf4c791360a",
+    "R4W_EmpEmitter.fbx": "a0ced6cee910faebac94656da8a81b61db1941e7eb3099537c18eb34acb16700",
+    "R4W_EmpEmitter.glb": "c6b14ebd9a8974592dd9f22062fadb50126378854e8ce0c0914987ad00105ba2",
+    "R4W_EmpEmitter_colliders.glb": "eaeaf521543668a0d94f9d304295e51acf3e111732552d7f8b83d2ab0af2c739",
+    "R4W_EmpEmitter_LOD1.fbx": "73f0193b331515d780927af0a877cd7fb59cbd44c7f0a6d2862070bd78d0c785"
    },
    "clips": [
     [
@@ -854,16 +1105,16 @@
     ]
    ],
    "materials_4_palette": {
-    "1_dark_gunmetal": 0.7964,
-    "2_light_steel": 0.1253,
-    "3_team_red": 0.0255,
-    "4_hazard_yellow": 0.0175,
-    "T_technical": 0.0354
+    "1_dark_gunmetal": 0.7979,
+    "2_light_steel": 0.1169,
+    "3_team_red": 0.0236,
+    "4_hazard_yellow": 0.0185,
+    "T_technical": 0.0431
    },
    "palette_in_band": true,
-   "triangles": 18930,
+   "triangles": 20286,
    "triangles_fx": 864,
-   "lod1_triangles": 9460,
+   "lod1_triangles": 10138,
    "topology_PASS": true,
    "aim_sweep_collisions": 0,
    "animation_clash": 0,
@@ -898,9 +1149,44 @@
    "r41_compare": "rendered from real R41_Turret_v6.1.fbx (SHA verified)",
    "unity": "UNITY_NOT_RUN (Unity not available in this session)",
    "extra": {},
+   "mount_port": "R4 Robocraft-style port: 0.509 m square plate on the bottom face, outer face flush with the block face (-0.26 m), face-centre coupling; Socket_Mount_Bottom on that face",
+   "grid_fit_PASS": true,
+   "grid_fit": {
+    "socket": {
+     "name": "Socket_Mount_Bottom",
+     "pos": [
+      0.0,
+      0.0,
+      -0.26
+     ],
+     "axis": "z",
+     "sign": -1.0,
+     "on_block_face": true
+    },
+    "contact_patch": {
+     "grid": "13x13 over 0.42 x 0.42 m",
+     "flush_pct": 94.7,
+     "recessed_pct": 5.3,
+     "protruding": 0,
+     "missing": 0
+    },
+    "static_bounds": [
+     [
+      -0.2563,
+      -0.2563,
+      -0.26
+     ],
+     [
+      0.2563,
+      0.2563,
+      0.016
+     ]
+    ],
+    "n_cross": 0
+   },
    "silhouette_closest": {
     "pair": "BeamCutter|EmpEmitter",
-    "mean_iou": 0.652
+    "mean_iou": 0.63
    },
    "notes": [
     "Pitch intentionally absent: EMP acts radially; Yaw only orients the LOS sensor.",

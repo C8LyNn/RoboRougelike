@@ -3,7 +3,7 @@
  "kind": "R4WeaponKind.Shotgun",
  "game_name": "WPN-001 Shotgun",
  "blender": "5.2.3 LTS",
- "started": "2026-11-06 22:15:02",
+ "started": "2026-11-07 10:52:24",
  "failures": [],
  "notes": [
   "Choke block front 0.410 m, Muzzle 0.450 m forward of the pivot.",
@@ -12,22 +12,22 @@
  "meshes": [
   {
    "object": "R4W_Shotgun_Base",
-   "verts": 1226,
-   "triangles": 2448,
-   "shells": 3,
+   "verts": 2020,
+   "triangles": 4032,
+   "shells": 5,
    "non_manifold_edges": 0,
    "boundary_edges": 0,
    "zero_area_faces": 0,
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.040675,
+   "signed_volume_m3": 0.040632,
    "uv_layers": 1,
    "uv_bounds": [
-    0.004,
-    0.004,
-    0.996,
-    0.987
+    0.005,
+    0.005,
+    0.995,
+    0.995
    ],
    "materials": [
     "Armor_Dark",
@@ -213,28 +213,28 @@
    "ok": true
   }
  ],
- "triangles_total": 11540,
+ "triangles_total": 13124,
  "triangles_fx": 128,
  "triangles_r41_reference": 11452,
  "topology_PASS": true,
  "palette": {
   "material_area_share": {
-   "Armor_Dark": 0.5939,
-   "Armor_Gunmetal": 0.242,
-   "Armor_Plate_Light": 0.0877,
-   "Energy_Hot": 0.0253,
+   "Armor_Dark": 0.5861,
+   "Armor_Gunmetal": 0.2387,
+   "Armor_Plate_Light": 0.0862,
+   "Energy_Hot": 0.0333,
    "TeamColor_Red": 0.0217,
-   "Barrel_Heat": 0.0121,
-   "Steel_Light": 0.0112,
-   "Hazard_Yellow": 0.0058,
+   "Steel_Light": 0.0143,
+   "Barrel_Heat": 0.0118,
+   "Hazard_Yellow": 0.0076,
    "Sensor_Eye_Red": 0.0003
   },
   "family_share": {
-   "1_dark_gunmetal": 0.836,
-   "2_light_steel": 0.0988,
+   "1_dark_gunmetal": 0.8247,
+   "2_light_steel": 0.1005,
    "3_team_red": 0.0217,
-   "4_hazard_yellow": 0.0058,
-   "T_technical": 0.0377
+   "4_hazard_yellow": 0.0076,
+   "T_technical": 0.0454
   },
   "r41_family_share": {
    "1_dark_gunmetal": 0.7913,
@@ -347,14 +347,14 @@
    ],
    "bounds_file": [
     [
-     -0.255,
+     -0.2563,
      -0.26,
-     -0.255
+     -0.2563
     ],
     [
-     0.255,
+     0.2563,
      0.016,
-     0.255
+     0.2563
     ]
    ],
    "inside_own_cell": true
@@ -374,12 +374,12 @@
    ],
    "bounds_file": [
     [
-     -0.255,
+     -0.2563,
      -0.26,
-     -0.255
+     -0.2563
     ],
     [
-     0.255,
+     0.2563,
      0.226,
      0.413
     ]
@@ -854,7 +854,7 @@
  ],
  "lod1": {
   "file": "R4W_Shotgun_LOD1.fbx",
-  "triangles": 5768,
+  "triangles": 6560,
   "method": "DECIMATE collapse 0.5 (automatic, not hand-authored)"
  },
  "fbx_reimport": {
@@ -1196,30 +1196,30 @@
  },
  "files": {
   "R4W_Shotgun.blend": {
-   "sha256": "05824449755847e600db93843e51b5c1f731c53598d7b52f1373e34da938c6e5",
-   "bytes": 1757343,
-   "sha256_before_path_sanitize": "dbb034a240bb0364aed9ad9755cff6fd11fa907b0255e08a8e3ed56155491c0f",
-   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length; re-opened headless in Blender 5.2.3 after patch (rc 0, objects/actions/frame range unchanged)"
+   "sha256": "f42682a0e3e72de75c62a95ab95d778226ff7924f74a314c06ef400411b90b45",
+   "bytes": 1877263,
+   "sha256_before_path_sanitize": "7f69087f3b40f798cf6e16ffc5895b50c925e56311039b3790929c81bbf83622",
+   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length (scripts/sanitize_blend_paths.py)"
   },
   "R4W_Shotgun.fbx": {
-   "sha256": "933194592c44d8fe0fcc52d2e7e77753f4a9c25374743a6bca26d0c4ada30bba",
-   "bytes": 576156
+   "sha256": "e5b8705b9505225357a713fdf2baa291ed9c43217047ada6378a8a64f5eea0ed",
+   "bytes": 631324
   },
   "R4W_Shotgun.glb": {
-   "sha256": "babe66916d8daa5f53fa6182869bc9f9233775a3ef7faceb5dda2d2f5ebc2442",
-   "bytes": 609176
+   "sha256": "73870ed6989c38e48627c6f548ad23c297e78279b20917022974a22c377be8e9",
+   "bytes": 679916
   },
   "R4W_Shotgun_colliders.glb": {
-   "sha256": "05bd265801fad2a2544d0e9dfe39d159f2787af14bf9bbb46d3754d1442b8ff8",
-   "bytes": 590080
+   "sha256": "65bff879e90b872a20f00369078adf130c201bf6470bdaf9a89e916d0cdbb647",
+   "bytes": 660712
   },
   "R4W_Shotgun_LOD1.fbx": {
-   "sha256": "7e1bdb77ea0500f0b2a91a60bf87d54938773b83adcb1fb458f5f1d3e3b2522b",
-   "bytes": 271964
+   "sha256": "ad59798f0ce58deab70a8414d0272ee052c4900abfd2c702998c087b90122b8d",
+   "bytes": 302332
   }
  },
  "unity_import_test": "UNITY_NOT_RUN (Unity not available in this session)",
  "unity_import_settings": "Scale Factor 1, Convert Units ON, Bake Axis Conversion ON, Animation: split clips by animation_manifest.json frame ranges (24 fps)",
  "status": "BLENDER_PASS",
- "seconds": 9.5
+ "seconds": 10.7
 }

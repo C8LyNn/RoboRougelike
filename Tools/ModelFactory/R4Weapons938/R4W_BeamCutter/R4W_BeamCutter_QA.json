@@ -3,7 +3,7 @@
  "kind": "R4WeaponKind.BeamCutter",
  "game_name": "WPN-003 Beam Cutter",
  "blender": "5.2.3 LTS",
- "started": "2026-11-06 22:15:36",
+ "started": "2026-11-07 10:53:07",
  "failures": [],
  "notes": [
   "Focus ring end angle in Cooldown is 180 deg (6-fold symmetric: identical to rest).",
@@ -12,21 +12,21 @@
  "meshes": [
   {
    "object": "R4W_BeamCutter_Base",
-   "verts": 1982,
-   "triangles": 4008,
-   "shells": 7,
+   "verts": 2705,
+   "triangles": 5434,
+   "shells": 13,
    "non_manifold_edges": 0,
    "boundary_edges": 0,
    "zero_area_faces": 0,
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.0228,
+   "signed_volume_m3": 0.023896,
    "uv_layers": 1,
    "uv_bounds": [
-    0.004,
-    0.004,
-    0.996,
+    0.005,
+    0.005,
+    0.995,
     0.995
    ],
    "materials": [
@@ -277,27 +277,27 @@
    "ok": true
   }
  ],
- "triangles_total": 16120,
+ "triangles_total": 17546,
  "triangles_fx": 392,
  "triangles_r41_reference": 11452,
  "topology_PASS": true,
  "palette": {
   "material_area_share": {
-   "Armor_Dark": 0.5246,
-   "Armor_Gunmetal": 0.2719,
-   "Armor_Plate_Light": 0.1116,
-   "Steel_Light": 0.0485,
-   "Energy_Hot": 0.0195,
-   "TeamColor_Red": 0.0125,
-   "Hazard_Yellow": 0.011,
-   "Sensor_Eye_Red": 0.0004
+   "Armor_Dark": 0.5292,
+   "Armor_Gunmetal": 0.268,
+   "Armor_Plate_Light": 0.1034,
+   "Steel_Light": 0.0488,
+   "Energy_Hot": 0.0262,
+   "Hazard_Yellow": 0.0121,
+   "TeamColor_Red": 0.012,
+   "Sensor_Eye_Red": 0.0003
   },
   "family_share": {
-   "1_dark_gunmetal": 0.7965,
-   "2_light_steel": 0.1601,
-   "3_team_red": 0.0125,
-   "4_hazard_yellow": 0.011,
-   "T_technical": 0.0199
+   "1_dark_gunmetal": 0.7972,
+   "2_light_steel": 0.1522,
+   "3_team_red": 0.012,
+   "4_hazard_yellow": 0.0121,
+   "T_technical": 0.0265
   },
   "r41_family_share": {
    "1_dark_gunmetal": 0.7913,
@@ -410,14 +410,14 @@
    ],
    "bounds_file": [
     [
-     -0.25,
+     -0.2563,
      -0.26,
-     -0.25
+     -0.2563
     ],
     [
-     0.25,
+     0.2563,
      0.016,
-     0.25
+     0.2563
     ]
    ],
    "inside_own_cell": true
@@ -437,12 +437,12 @@
    ],
    "bounds_file": [
     [
-     -0.25,
+     -0.2563,
      -0.26,
-     -0.25
+     -0.2563
     ],
     [
-     0.25,
+     0.2563,
      0.255,
      0.432
     ]
@@ -910,7 +910,7 @@
  ],
  "lod1": {
   "file": "R4W_BeamCutter_LOD1.fbx",
-  "triangles": 8060,
+  "triangles": 8772,
   "method": "DECIMATE collapse 0.5 (automatic, not hand-authored)"
  },
  "fbx_reimport": {
@@ -1318,30 +1318,30 @@
  },
  "files": {
   "R4W_BeamCutter.blend": {
-   "sha256": "20293347890c5755103ec7cf49adf15f6d33e1d044988588e4505f08a6bd0d68",
-   "bytes": 2128931,
-   "sha256_before_path_sanitize": "0d365c9426c226922b5d74b2e0248a0d24bee495108063874e4cfef7dd8d53c6",
-   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length; re-opened headless in Blender 5.2.3 after patch (rc 0, objects/actions/frame range unchanged)"
+   "sha256": "bd362fbd1cdabe80b1d04e8c18c38aab5bfb9a1911de865a6cb7b20f10aab82e",
+   "bytes": 2237018,
+   "sha256_before_path_sanitize": "a4b93700660c3d946583f71024ea7b8ccaa3ef53ffab9294ebeba33cbcbb4757",
+   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length (scripts/sanitize_blend_paths.py)"
   },
   "R4W_BeamCutter.fbx": {
-   "sha256": "346ee19f51157032af5927816a82946470820d35cae67f3bf1779e194e54d615",
-   "bytes": 834764
+   "sha256": "dc28bba199f60c7c4cef3690a4efcc239be7fe7024e4d1c247864a27f033955b",
+   "bytes": 883084
   },
   "R4W_BeamCutter.glb": {
-   "sha256": "221b0e1ec5e971ae08e5943d47136ba29557545804145f8d0ac365e146b1c246",
-   "bytes": 797388
+   "sha256": "12acb3cb53b55f5c7b5e7bfc25b1f360c2d2f259f65bd75403617a27efcd0b4c",
+   "bytes": 867572
   },
   "R4W_BeamCutter_colliders.glb": {
-   "sha256": "7a3badd2bf0b697e93d1418b9550de70afd10dd97016771ad65156fd81b9ecdd",
-   "bytes": 749496
+   "sha256": "cc6380b2cc3066c69cbb206d93e1a8fcdd9fefae725255b007344c3894ec901a",
+   "bytes": 819628
   },
   "R4W_BeamCutter_LOD1.fbx": {
-   "sha256": "794a80522743e8fd77d8a6191d58f7d2c7a8c77eefc4a77d298da2471a338cd0",
-   "bytes": 349436
+   "sha256": "68863a4df22cd1d00ba2a46ca6d3fc42db429b526d2d2523b587e331f35744de",
+   "bytes": 379580
   }
  },
  "unity_import_test": "UNITY_NOT_RUN (Unity not available in this session)",
  "unity_import_settings": "Scale Factor 1, Convert Units ON, Bake Axis Conversion ON, Animation: split clips by animation_manifest.json frame ranges (24 fps)",
  "status": "BLENDER_PASS",
- "seconds": 11.7
+ "seconds": 13.7
 }

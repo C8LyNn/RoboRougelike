@@ -268,6 +268,7 @@ def build_base(name, work, glacis_top=0.190, glacis_mid=0.228, z_top=-0.004, ven
                          M["Hazard_Yellow"], pt.Pc)]
             rot_z(made, k)
     pt.build(base)
+    import r4port as P4; P4.port(base, work, -1)
     return base, z_top + 0.020
 
 def turntable(name, work, z0=0.018, z1=0.042, r=0.190):
