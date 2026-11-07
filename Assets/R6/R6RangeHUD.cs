@@ -93,7 +93,36 @@ namespace RoboRougelike.R1
             }
             GUI.color=original;
         }
-        private static Rect DefensePanelRect(int count) => new Rect(18,206,610,44+25*count);
+        private const int DefensePageSize=9;
+        private int defenseStatusPage;
+        private static int DefensePageCount(int count)=>Mathf.Max(1,(Mathf.Max(0,count)+DefensePageSize-1)/DefensePageSize);
+        private static int DefensePageStart(int count,int page)=>Mathf.Clamp(page,0,DefensePageCount(count)-1)*DefensePageSize;
+        private void UpdateDefensePaging(Event evt,int count)
+        {
+            int pages=DefensePageCount(count);defenseStatusPage=Mathf.Clamp(defenseStatusPage,0,pages-1);
+            if(pages>1&&evt!=null&&evt.type==EventType.KeyDown&&evt.keyCode==KeyCode.P)
+            {defenseStatusPage=(defenseStatusPage+1)%pages;evt.Use();}
+        }
+        private static string[] DefensePageRows(RoboRougelike.WeaponIntegration.RRLShieldBinding[] shields,
+            RoboRougelike.WeaponIntegration.RRLPointDefenseBinding[] defenses,int page)
+        {
+            int start=DefensePageStart(shields.Length+defenses.Length,page),index=0;
+            var rows=new System.Collections.Generic.List<string>();
+            foreach(var shield in shields)
+            {
+                if(index>=start&&rows.Count<DefensePageSize)
+                    rows.Add($"DEF-001 • {shield.Generator.Charge:0}/100 • "+(shield.Generator.Operational?"ON":"OFF"));
+                index++;
+            }
+            foreach(var defense in defenses)
+            {
+                if(index>=start&&rows.Count<DefensePageSize)
+                    rows.Add($"DEF-002 • {defense.State.Ammo}/40 • "+(defense.Controller.IsOperational?"ON":"OFF")+" • T przeładuj");
+                index++;
+            }
+            return rows.ToArray();
+        }
+        private static Rect DefensePanelRect(int count) => new Rect(18,206,610,44+25*Mathf.Clamp(count,0,DefensePageSize));
         private static Rect DefenseTitleRect() => new Rect(33,210,580,30);
         private static Rect DefenseRowRect(int index) => new Rect(33,246+index*25,580,25);
         private static Rect DamageNoticePanelRect(int index) => new Rect(925,516+index*36,335,35);
@@ -143,15 +172,16 @@ namespace RoboRougelike.R1
                 }
                 var defenses=run.Player.GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLPointDefenseBinding>();
                 var shields=run.Player.GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLShieldBinding>();
-                int defenseRow=0;
-                if(defenses.Length+shields.Length>0)
+                int defenseCount=defenses.Length+shields.Length;
+                UpdateDefensePaging(Event.current,defenseCount);
+                if(defenseCount>0)
                 {
-                    var defensePanel=DefensePanelRect(defenses.Length+shields.Length);
+                    var defensePanel=DefensePanelRect(defenseCount);
                     Panel(defensePanel);GUI.Label(DefenseTitleRect(),"OBRONA",heading);
-                    foreach(var shield in shields)
-                    {GUI.Label(DefenseRowRect(defenseRow),$"DEF-001 • {shield.Generator.Charge:0}/100 • "+(shield.Generator.Operational?"ON":"OFF"),small);defenseRow++;}
-                    foreach(var defense in defenses)
-                    {GUI.Label(DefenseRowRect(defenseRow),$"DEF-002 • {defense.State.Ammo}/40 • "+(defense.Controller.IsOperational?"ON":"OFF")+" • T przeładuj",small);defenseRow++;}
+                    if(DefensePageCount(defenseCount)>1)
+                        GUI.Label(new Rect(435,211,175,25),$"P: zmień {defenseStatusPage+1}/{DefensePageCount(defenseCount)}",small);
+                    var rows=DefensePageRows(shields,defenses,defenseStatusPage);
+                    for(int defenseRow=0;defenseRow<rows.Length;defenseRow++)GUI.Label(DefenseRowRect(defenseRow),rows[defenseRow],small);
                 }
             }
             var feedback=Object.FindFirstObjectByType<R6CombatFeedback>();if(feedback==null)return;
