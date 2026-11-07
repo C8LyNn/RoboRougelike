@@ -61,6 +61,11 @@ namespace RoboRougelike.R1
             if(buttonHover!=null)Destroy(buttonHover);
             if(buttonPressed!=null)Destroy(buttonPressed);
         }
+        private void UpdateCombatDetails(Event input)
+        {
+            if(input!=null&&input.type==EventType.KeyDown&&input.keyCode==KeyCode.I)
+            {combatDetailsOpen=!combatDetailsOpen;input.Use();}
+        }
         private void Panel(Rect rect)
         {
             var before = GUI.color; GUI.color = panel; GUI.DrawTexture(rect, Texture2D.whiteTexture); GUI.color = before;
@@ -126,6 +131,7 @@ namespace RoboRougelike.R1
             catalogOpen=false;garageOptionsOpen=false;
             if (progress.State == R1RunState.Combat && !run.Transitioning)
             {
+                UpdateCombatDetails(Event.current);
                 Panel(new Rect(20,18,660,(combatDetailsOpen?180:125)+(run.PickupGraceRemaining>0?25:0)));
                 GUI.Label(new Rect(36, 27, 630, 30), $"STARCIE {progress.EncounterIndex + 1}/{progress.TotalEncounters}   •   Wrogowie: {run.Encounter.AliveCount}   •   Złom: {run.VehicleModel.Scrap}", body);
                 var player = run.Player;
@@ -137,7 +143,7 @@ namespace RoboRougelike.R1
                     var repairPulse=player.GetComponent<R3RepairPulse>();
                     if(energy!=null)GUI.Label(new Rect(36,90,480,25),$"Energia: {energy.Current:0}/{energy.Maximum:0}"+
                         (repairPulse!=null?$" • V — naprawa: {repairPulse.Status}":""),small);
-                    if(GUI.Button(new Rect(535,88,130,30),combatDetailsOpen?"Mniej":"Szczegóły",compactButton))combatDetailsOpen=!combatDetailsOpen;
+                    if(GUI.Button(new Rect(535,88,130,30),combatDetailsOpen?"Mniej [I]":"Szczegóły [I]",compactButton))combatDetailsOpen=!combatDetailsOpen;
                     if(combatDetailsOpen)
                     {
                         int plannedGuns=run.VehicleModel.Parts.FindAll(p=>p.Kind==R3PartKind.Gun).Count;
