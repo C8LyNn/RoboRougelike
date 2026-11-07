@@ -29,7 +29,7 @@ namespace RoboRougelike.R4_1
             var ring=Array.Find(nodes,t=>t.name=="Jump_BlastRing");
             if(socket==null||ring==null){Destroy(visual);return null;}
             visual.transform.localScale/=scale.x;
-            visual.transform.position+=block.position-socket.position;
+            visual.transform.position+=block.TransformPoint(Vector3.up*.5f)-socket.position;
             ring.localScale=Vector3.one;ring.gameObject.SetActive(false);
             foreach(var node in nodes)if(node.name.StartsWith("Jump_TankGlow_",StringComparison.Ordinal))node.gameObject.SetActive(false);
             var view=block.gameObject.AddComponent<R4JumpArt>();view.ring=ring;renderer.enabled=false;

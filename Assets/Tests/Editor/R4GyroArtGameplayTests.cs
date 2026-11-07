@@ -25,6 +25,7 @@ public sealed class R4GyroArtGameplayTests
         var art=part.GetComponentsInChildren<Transform>(true).FirstOrDefault(t=>t.name=="R4M_Gyroscope_ROOT");Assert.That(art,Is.Not.Null);
         var rotor=art.GetComponentsInChildren<Transform>(true).First(t=>t.name=="R4M_Gyroscope_Rotor");
         var socket=art.GetComponentsInChildren<Transform>(true).First(t=>t.name=="Socket_Mount");
+        Assert.That(Vector3.Distance(socket.position,part.transform.TransformPoint(Vector3.up*.5f)),Is.LessThan(.001f));
         Assert.That(Vector3.Dot(-socket.forward,part.transform.up),Is.GreaterThan(.9f),"Imported mount normal must follow the block.");
         Assert.That(art.GetComponentsInChildren<Collider>(true),Is.Empty);
         Assert.That(part.transform.Find("MOV • Gyroscope").GetComponent<Collider>().enabled,Is.True);
