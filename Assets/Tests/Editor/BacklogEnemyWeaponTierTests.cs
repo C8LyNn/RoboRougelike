@@ -5,6 +5,7 @@ using NUnit.Framework;
 using RoboRougelike.R1;
 using RoboRougelike.R3;
 using RoboRougelike.R4;
+using RoboRougelike.R4_1;
 using RoboRougelike.R6;
 using RoboRougelike.WeaponIntegration;
 using RogueMachine.P12PipelineSafe;
@@ -29,6 +30,10 @@ public sealed class BacklogEnemyWeaponTierTests
         Assert.That(enemy.EquipShotgun(), Is.True);
         var shotgun = enemy.GetComponentInChildren<RRLShotgunBinding>();
         Assert.That(shotgun, Is.Not.Null);
+        var shotgunArt=shotgun.GetComponentInChildren<R4WeaponArt>(true);
+        Assert.That(shotgunArt,Is.Not.Null,"Enemy shotgun must display its supplied model.");
+        Assert.That(typeof(RRLShotgunBinding).GetField("muzzle",BindingFlags.NonPublic|BindingFlags.Instance).GetValue(shotgun),Is.SameAs(shotgunArt.Muzzle),
+            "The physical shotgun must use the visible muzzle.");
         var hp = shotgun.GetComponent<P12PipelineSafeDamageable>();
         float initialMax = hp.MaxHp;
         hp.RestoreHealthRatio(.7f);
