@@ -16,6 +16,26 @@ namespace RoboRougelike.R4_1
             if(renderer!=null)renderer.enabled=false;
             R4ReplacementDamageVisual.Attach(visual,block);
         }
+        // The authored cube replaces appearance only: original HP and collider remain authoritative.
+        public static bool TryAttachArmorCube(Transform block)
+        {
+            if(block==null)return false;
+            var renderer=block.GetComponent<Renderer>();var scale=block.lossyScale;
+            if(renderer==null||scale.x<=.0001f||Mathf.Abs(scale.x-scale.y)>.0001f||Mathf.Abs(scale.x-scale.z)>.0001f)return false;
+            var prefab=Resources.Load<GameObject>("R4Art/ArmorCube");if(prefab==null)return false;
+            var visual=Object.Instantiate(prefab,block,false);
+            var renderers=visual.GetComponentsInChildren<Renderer>(true);
+            if(renderers.Length==0||visual.GetComponentsInChildren<Collider>(true).Length!=0){Object.Destroy(visual);return false;}
+            visual.transform.localScale/=scale.x;
+            foreach(var part in renderers)
+            {
+                var materials=part.sharedMaterials;
+                for(int i=0;i<materials.Length;i++)
+                    if(materials[i]!=null&&materials[i].name.Contains("Armor_Gunmetal"))materials[i]=renderer.sharedMaterial;
+                part.sharedMaterials=materials;
+            }
+            HideMountingShell(block,visual);return true;
+        }
         private static GameObject Primitive(PrimitiveType type,Transform parent,Material material,bool solid,string name)
         {
             var item=GameObject.CreatePrimitive(type);item.name=name;item.transform.SetParent(parent,false);
