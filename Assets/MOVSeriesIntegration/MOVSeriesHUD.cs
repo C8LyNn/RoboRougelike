@@ -56,7 +56,7 @@ namespace RoboRougelike.R1
             int count=run.VehicleModel.Inventory.Count(p=>InCatalogGroup(p,kind,weapon,bonus));
             bool chosen=catalogGroup==kind&&(kind!=R3PartKind.Gun||catalogWeapon==weapon)&&(kind!=R3PartKind.BonusModule||catalogBonusId==bonus);
             GUI.backgroundColor=chosen?new Color(.3f,.9f,.9f):Color.white;
-            if(GUI.Button(new Rect((row%3)*290,(row/3)*55,280,49),$"{name}  × {count}",compactButton))
+            if(GUI.Button(new Rect((row%3)*290,(row/3)*55,280,49),$"{name}  × {count}"+(run.CanBuyTechnology(kind,weapon)?"":" • blokada"),compactButton))
             {
                 catalogGroup=kind;catalogWeapon=weapon;catalogBonusId=bonus;stackScroll=Vector2.zero;
                 var garage=run.Garage;garage.SelectedPart=kind;garage.SelectedWeapon=weapon;

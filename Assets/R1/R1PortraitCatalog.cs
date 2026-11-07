@@ -74,8 +74,9 @@ namespace RoboRougelike.R1
             }
             GUI.EndScrollView();
             int price=model.Price(selectedKind,selectedWeapon);
-            GUI.enabled=selectedKind!=R3PartKind.BonusModule&&model.Scrap>=price&&model.Inventory.Count<R3VehicleModel.InventoryCapacity;
-            if(GUI.Button(PortraitCatalogBuyRect(),$"Kup do magazynu — {price} Z",compactButton))PortraitCatalogPurchase(run,selectedKind,selectedWeapon);
+            bool unlocked=run.CanBuyTechnology(selectedKind,selectedWeapon);
+            GUI.enabled=unlocked&&selectedKind!=R3PartKind.BonusModule&&model.Scrap>=price&&model.Inventory.Count<R3VehicleModel.InventoryCapacity;
+            if(GUI.Button(PortraitCatalogBuyRect(),unlocked?$"Kup do magazynu — {price} Z":"Pokonaj wroga z tą bronią",compactButton))PortraitCatalogPurchase(run,selectedKind,selectedWeapon);
             GUI.enabled=true;
             GUI.Label(new Rect(390,875,354,82),"Wybierz egzemplarz, aby wrócić do garażu i zamontować go na pojeździe.",small);
         }
@@ -85,7 +86,7 @@ namespace RoboRougelike.R1
             int count=run.VehicleModel.Inventory.Count(p=>InCatalogGroup(p,kind,weapon,bonus));
             bool chosen=catalogGroup==kind&&(kind!=R3PartKind.Gun||catalogWeapon==weapon)&&(kind!=R3PartKind.BonusModule||catalogBonusId==bonus);
             GUI.backgroundColor=chosen?new Color(.3f,.9f,.9f):Color.white;
-            if(GUI.Button(PortraitCatalogGroupRow(row),$"{name} × {count}",compactButton))PortraitCatalogSelectGroup(run,kind,weapon,bonus);
+            if(GUI.Button(PortraitCatalogGroupRow(row),$"{name} × {count}"+(run.CanBuyTechnology(kind,weapon)?"":" • blokada"),compactButton))PortraitCatalogSelectGroup(run,kind,weapon,bonus);
         }
 
         private void PortraitCatalogSelectGroup(R1RunController run,R3PartKind kind,R4WeaponKind weapon,string bonus)

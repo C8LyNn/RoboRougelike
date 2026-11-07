@@ -432,7 +432,8 @@ namespace RogueMachine.P12PipelineSafe
                 float condition=packagePointDefense!=null&&packagePointDefense.transform.IsChildOf(transform)?Condition(packagePointDefense.Device.Damageable):0;
                 items.Add(new R4SalvageItem(packagePointDefenseState,condition));
             }
-            salvage.Record(salvageId,items,Archetype);
+            if(salvage.Record(salvageId,items,Archetype))
+                RoboRougelike.R1.R1RunController.Instance?.DiscoverEnemyTechnology(items);
         }
 
         private void RepairReferences()
