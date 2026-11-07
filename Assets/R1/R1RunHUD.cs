@@ -10,6 +10,7 @@ namespace RoboRougelike.R1
     {
         private GUIStyle title, heading, body, small, button, compactButton;
         private Texture2D buttonNormal,buttonHover,buttonPressed;
+        private bool combatDetailsOpen;
 
         private readonly Color panel = new Color(0.04f, 0.06f, 0.08f, 0.94f);
         private static bool UsePortraitReady(int width,int height,bool ready,bool overlay)
@@ -59,6 +60,11 @@ namespace RoboRougelike.R1
             if(buttonNormal!=null)Destroy(buttonNormal);
             if(buttonHover!=null)Destroy(buttonHover);
             if(buttonPressed!=null)Destroy(buttonPressed);
+        }
+        private void UpdateCombatDetails(Event input)
+        {
+            if(input!=null&&input.type==EventType.KeyDown&&input.keyCode==KeyCode.I)
+            {combatDetailsOpen=!combatDetailsOpen;input.Use();}
         }
         private void Panel(Rect rect)
         {
@@ -125,24 +131,29 @@ namespace RoboRougelike.R1
             catalogOpen=false;garageOptionsOpen=false;
             if (progress.State == R1RunState.Combat && !run.Transitioning)
             {
-                Panel(new Rect(20, 18, 660, 180));
+                UpdateCombatDetails(Event.current);
+                Panel(new Rect(20,18,660,(combatDetailsOpen?180:125)+(run.PickupGraceRemaining>0?25:0)));
                 GUI.Label(new Rect(36, 27, 630, 30), $"STARCIE {progress.EncounterIndex + 1}/{progress.TotalEncounters}   •   Wrogowie: {run.Encounter.AliveCount}   •   Złom: {run.VehicleModel.Scrap}", body);
                 var player = run.Player;
                 if (player != null)
                 {
                     var core = player.Core;
                     GUI.Label(new Rect(36, 58, 630, 28), $"RDZEŃ: {(core != null ? core.CurrentHp : 0):0}/{(core != null ? core.MaxHp : 0):0} HP   •   {ActivityGoal(run)}", body);
-                    int plannedGuns=run.VehicleModel.Parts.FindAll(p=>p.Kind==R3PartKind.Gun).Count;
-                    GUI.Label(new Rect(36, 93, 630, 26), $"Konstrukcja: {player.Structure.ConnectedBlockCount}/{player.Structure.InitialStructuralBlockCount}    Koła: {player.Modules.ActiveWheelCount}/{player.Modules.InitialWheelCount}    Bronie: {player.Modules.ActiveWeaponCount}/{plannedGuns}", small);
-                    var physicsBody=player.GetComponent<Rigidbody>();
-                    GUI.Label(new Rect(36, 126, 630, 25), $"Masa: {physicsBody.mass:0} kg • Prędkość: {physicsBody.linearVelocity.magnitude:0.0} m/s • Esc — pauza", small);
                     var energy=player.GetComponent<VehicleEnergyBank>();
                     var repairPulse=player.GetComponent<R3RepairPulse>();
-                    if(energy!=null)GUI.Label(new Rect(36,151,630,25),$"Energia: {energy.Current:0}/{energy.Maximum:0}"+
+                    if(energy!=null)GUI.Label(new Rect(36,90,480,25),$"Energia: {energy.Current:0}/{energy.Maximum:0}"+
                         (repairPulse!=null?$" • V — naprawa: {repairPulse.Status}":""),small);
+                    if(GUI.Button(new Rect(535,88,130,30),combatDetailsOpen?"Mniej [I]":"Szczegóły [I]",compactButton))combatDetailsOpen=!combatDetailsOpen;
+                    if(combatDetailsOpen)
+                    {
+                        int plannedGuns=run.VehicleModel.Parts.FindAll(p=>p.Kind==R3PartKind.Gun).Count;
+                        GUI.Label(new Rect(36,120,630,26),$"Konstrukcja: {player.Structure.ConnectedBlockCount}/{player.Structure.InitialStructuralBlockCount} • Koła: {player.Modules.ActiveWheelCount}/{player.Modules.InitialWheelCount} • Bronie: {player.Modules.ActiveWeaponCount}/{plannedGuns}",small);
+                        var physicsBody=player.GetComponent<Rigidbody>();
+                        GUI.Label(new Rect(36,148,630,25),$"Masa: {physicsBody.mass:0} kg • Prędkość: {physicsBody.linearVelocity.magnitude:0.0} m/s • Esc — pauza",small);
+                    }
                     if(run.PickupGraceRemaining>0)
                     {
-                        GUI.Label(new Rect(36,174,630,22),$"Zbierz energię: {run.PickupGraceRemaining:0.0} s • Enter — nagrody",small);
+                        GUI.Label(new Rect(36,combatDetailsOpen?174:121,630,22),$"Zbierz energię: {run.PickupGraceRemaining:0.0} s • Enter — nagrody",small);
                         GUI.Label(new Rect(640,210,285,55),"ZWYCIĘSTWO",title);
                     }
                 }
