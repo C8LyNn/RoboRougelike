@@ -200,6 +200,8 @@ namespace RoboRougelike.R3
                 Transform payload=null;Transform partMuzzle=null;
                 if(!wide)payload=R41PartGeometry.Payload(item.transform,state.Kind,state.Weapon,
                     state.Kind==R3PartKind.Gun?palette.Weapons[(int)state.Weapon]:palette.Parts[(int)state.Kind],true,out partMuzzle);
+                if(state.Kind==R3PartKind.Wheel&&payload!=null)
+                    RoboRougelike.R4_1.R4WheelArt.TryAttach(item.transform,payload);
                 if(state.Kind==R3PartKind.Gun&&payload!=null)
                 {
                     var art=RoboRougelike.R4_1.R4WeaponArt.TryAttach(item.transform,payload,partMuzzle,state.Weapon);
