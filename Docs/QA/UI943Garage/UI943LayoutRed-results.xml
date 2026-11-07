@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="10" result="Failed(Child)" total="10" passed="0" failed="10" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-06 21:27:40Z" end-time="2026-11-06 21:27:40Z" duration="0,059996">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1406" result="Failed" site="Child" start-time="2026-11-06 21:27:40Z" end-time="2026-11-06 21:27:40Z" duration="0.059996" total="10" passed="0" failed="10" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1747" name="Assembly-CSharp-Editor.dll" fullname="[USER_HOME]/Desktop/Prototypy/RoboRougelike-PlayQA-97f8/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="613" result="Failed" site="Child" start-time="2026-11-06 21:27:40Z" end-time="2026-11-06 21:27:40Z" duration="0.035103" total="10" passed="0" failed="10" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="40268" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestFixture" id="1672" name="UI943GarageLayoutTests" fullname="UI943GarageLayoutTests" classname="UI943GarageLayoutTests" runstate="Runnable" testcasecount="10" result="Failed" site="Child" start-time="2026-11-06 21:27:40Z" end-time="2026-11-06 21:27:40Z" duration="0.029184" total="10" passed="0" failed="10" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="ParameterizedMethod" id="1678" name="CameraViewportMatchesLetterboxedGarageOpening" fullname="UI943GarageLayoutTests.CameraViewportMatchesLetterboxedGarageOpening" classname="UI943GarageLayoutTests" runstate="Runnable" testcasecount="5" result="Failed" site="Child" start-time="2026-11-06 21:27:40Z" end-time="2026-11-06 21:27:40Z" duration="0.022370" total="5" passed="0" failed="5" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-case id="1673" name="CameraViewportMatchesLetterboxedGarageOpening(1920,1080)" fullname="UI943GarageLayoutTests.CameraViewportMatchesLetterboxedGarageOpening(1920,1080)" methodname="CameraViewportMatchesLetterboxedGarageOpening" classname="UI943GarageLayoutTests" runstate="Runnable" seed="1764202570" result="Failed" start-time="2026-11-06 21:27:40Z" end-time="2026-11-06 21:27:40Z" duration="0.012780" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <failure>
+              <message><![CDATA[  Kamera i HUD potrzebują wspólnej transformacji.
+  Expected: not null
+  But was:  null
+]]></message>
+              <stack-trace><![CDATA[at UI943GarageLayoutTests.CameraViewportMatchesLetterboxedGarageOpening (System.Int32 width, System.Int32 height) [0x00016] in [USER_HOME]\Desktop\Prototypy\RoboRougelike-PlayQA-97f8\Assets\Tests\Editor\UI943GarageLayoutTests.cs:13
+]]></stack-trace>
+            </failure>
+          </test-case>
+          <test-case id="1674" name="CameraViewportMatchesLetterboxedGarageOpening(1366,768)" fullname="UI943GarageLayoutTests.CameraViewportMatchesLetterboxedGarageOpening(1366,768)" methodname="CameraViewportMatchesLetterboxedGarageOpening" classname="UI943GarageLayoutTests" runstate="Runnable" seed="62153989" result="Failed" start-time="2026-11-06 21:27:40Z" end-time="2026-11-06 21:27:40Z" duration="0.000323" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <failure>
+              <message><![CDATA[  Kamera i HUD potrzebują wspólnej transformacji.
+  Expected: not null
+  But was:  null
+]]></message>
+              <stack-trace><![CDATA[at UI943GarageLayoutTests.CameraViewportMatchesLetterboxedGarageOpening (System.Int32 width, System.Int32 height) [0x00016] in [USER_HOME]\Desktop\Prototypy\RoboRougelike-PlayQA-97f8\Assets\Tests\Editor\UI943GarageLayoutTests.cs:13
+]]></stack-trace>
+            </failure>
+          </test-case>
+          <test-case id="1675" name="CameraViewportMatchesLetterboxedGarageOpening(1024,768)" fullname="UI943GarageLayoutTests.CameraViewportMatchesLetterboxedGarageOpening(1024,768)" methodname="CameraViewportMatchesLetterboxedGarageOpening" classname="UI943GarageLayoutTests" runstate="Runnable" seed="768702719" result="Failed" start-time="2026-11-06 21:27:40Z" end-time="2026-11-06 21:27:40Z" duration="0.000101" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <failure>
+              <message><![CDATA[  Kamera i HUD potrzebują wspólnej transformacji.
+  Expected: not null
+  But was:  null
+]]></message>
+              <stack-trace><![CDATA[at UI943GarageLayoutTests.CameraViewportMatchesLetterboxedGarageOpening (System.Int32 width, System.Int32 height) [0x00016] in [USER_HOME]\Desktop\Prototypy\RoboRougelike-PlayQA-97f8\Assets\Tests\Editor\UI943GarageLayoutTests.cs:13
+]]></stack-trace>
+            </failure>
+          </test-case>
+          <test-case id="1676" name="CameraViewportMatchesLetterboxedGarageOpening(768,1024)" fullname="UI943GarageLayoutTests.CameraViewportMatchesLetterboxedGarageOpening(768,1024)" methodname="CameraViewportMatchesLetterboxedGarageOpening" classname="UI943GarageLayoutTests" runstate="Runnable" seed="364548221" result="Failed" start-time="2026-11-06 21:27:40Z" end-time="2026-11-06 21:27:40Z" duration="0.000074" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <failure>
+              <message><![CDATA[  Kamera i HUD potrzebują wspólnej transformacji.
+  Expected: not null
+  But was:  null
+]]></message>
+              <stack-trace><![CDATA[at UI943GarageLayoutTests.CameraViewportMatchesLetterboxedGarageOpening (System.Int32 width, System.Int32 height) [0x00016] in [USER_HOME]\Desktop\Prototypy\RoboRougelike-PlayQA-97f8\Assets\Tests\Editor\UI943GarageLayoutTests.cs:13
+]]></stack-trace>
+            </failure>
+          </test-case>
+          <test-case id="1677" name="CameraViewportMatchesLetterboxedGarageOpening(3840,2160)" fullname="UI943GarageLayoutTests.CameraViewportMatchesLetterboxedGarageOpening(3840,2160)" methodname="CameraViewportMatchesLetterboxedGarageOpening" classname="UI943GarageLayoutTests" runstate="Runnable" seed="1809863839" result="Failed" start-time="2026-11-06 21:27:40Z" end-time="2026-11-06 21:27:40Z" duration="0.000070" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <failure>
+              <message><![CDATA[  Kamera i HUD potrzebują wspólnej transformacji.
+  Expected: not null
+  But was:  null
+]]></message>
+              <stack-trace><![CDATA[at UI943GarageLayoutTests.CameraViewportMatchesLetterboxedGarageOpening (System.Int32 width, System.Int32 height) [0x00016] in [USER_HOME]\Desktop\Prototypy\RoboRougelike-PlayQA-97f8\Assets\Tests\Editor\UI943GarageLayoutTests.cs:13
+]]></stack-trace>
+            </failure>
+          </test-case>
+        </test-suite>
+        <test-suite type="ParameterizedMethod" id="1684" name="GarageOverlaysCannotReceivePlacementClicks" fullname="UI943GarageLayoutTests.GarageOverlaysCannotReceivePlacementClicks" classname="UI943GarageLayoutTests" runstate="Runnable" testcasecount="5" result="Failed" site="Child" start-time="2026-11-06 21:27:40Z" end-time="2026-11-06 21:27:40Z" duration="0.003239" total="5" passed="0" failed="5" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-case id="1679" name="GarageOverlaysCannotReceivePlacementClicks(1920,1080)" fullname="UI943GarageLayoutTests.GarageOverlaysCannotReceivePlacementClicks(1920,1080)" methodname="GarageOverlaysCannotReceivePlacementClicks" classname="UI943GarageLayoutTests" runstate="Runnable" seed="2017458028" result="Failed" start-time="2026-11-06 21:27:40Z" end-time="2026-11-06 21:27:40Z" duration="0.001274" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <failure>
+              <message><![CDATA[  Nakładka przy (500.00, 100.00) nie może montować części.
+  Expected: False
+  But was:  True
+]]></message>
+              <stack-trace><![CDATA[at UI943GarageLayoutTests.GarageOverlaysCannotReceivePlacementClicks (System.Int32 width, System.Int32 height) [0x000e7] in [USER_HOME]\Desktop\Prototypy\RoboRougelike-PlayQA-97f8\Assets\Tests\Editor\UI943GarageLayoutTests.cs:32
+]]></stack-trace>
+            </failure>
+          </test-case>
+          <test-case id="1680" name="GarageOverlaysCannotReceivePlacementClicks(1366,768)" fullname="UI943GarageLayoutTests.GarageOverlaysCannotReceivePlacementClicks(1366,768)" methodname="GarageOverlaysCannotReceivePlacementClicks" classname="UI943GarageLayoutTests" runstate="Runnable" seed="956429187" result="Failed" start-time="2026-11-06 21:27:40Z" end-time="2026-11-06 21:27:40Z" duration="0.000095" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <failure>
+              <message><![CDATA[  Nakładka przy (500.00, 100.00) nie może montować części.
+  Expected: False
+  But was:  True
+]]></message>
+              <stack-trace><![CDATA[at UI943GarageLayoutTests.GarageOverlaysCannotReceivePlacementClicks (System.Int32 width, System.Int32 height) [0x000e7] in [USER_HOME]\Desktop\Prototypy\RoboRougelike-PlayQA-97f8\Assets\Tests\Editor\UI943GarageLayoutTests.cs:32
+]]></stack-trace>
+            </failure>
+          </test-case>
+          <test-case id="1681" name="GarageOverlaysCannotReceivePlacementClicks(1024,768)" fullname="UI943GarageLayoutTests.GarageOverlaysCannotReceivePlacementClicks(1024,768)" methodname="GarageOverlaysCannotReceivePlacementClicks" classname="UI943GarageLayoutTests" runstate="Runnable" seed="806143960" result="Failed" start-time="2026-11-06 21:27:40Z" end-time="2026-11-06 21:27:40Z" duration="0.000140" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <failure>
+              <message><![CDATA[  Nakładka przy (500.00, 100.00) nie może montować części.
+  Expected: False
+  But was:  True
+]]></message>
+              <stack-trace><![CDATA[at UI943GarageLayoutTests.GarageOverlaysCannotReceivePlacementClicks (System.Int32 width, System.Int32 height) [0x000e7] in [USER_HOME]\Desktop\Prototypy\RoboRougelike-PlayQA-97f8\Assets\Tests\Editor\UI943GarageLayoutTests.cs:32
+]]></stack-trace>
+            </failure>
+          </test-case>
+          <test-case id="1682" name="GarageOverlaysCannotReceivePlacementClicks(768,1024)" fullname="UI943GarageLayoutTests.GarageOverlaysCannotReceivePlacementClicks(768,1024)" methodname="GarageOverlaysCannotReceivePlacementClicks" classname="UI943GarageLayoutTests" runstate="Runnable" seed="1740276199" result="Failed" start-time="2026-11-06 21:27:40Z" end-time="2026-11-06 21:27:40Z" duration="0.000075" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <failure>
+              <message><![CDATA[  Nakładka przy (500.00, 100.00) nie może montować części.
+  Expected: False
+  But was:  True
+]]></message>
+              <stack-trace><![CDATA[at UI943GarageLayoutTests.GarageOverlaysCannotReceivePlacementClicks (System.Int32 width, System.Int32 height) [0x000e7] in [USER_HOME]\Desktop\Prototypy\RoboRougelike-PlayQA-97f8\Assets\Tests\Editor\UI943GarageLayoutTests.cs:32
+]]></stack-trace>
+            </failure>
+          </test-case>
+          <test-case id="1683" name="GarageOverlaysCannotReceivePlacementClicks(3840,2160)" fullname="UI943GarageLayoutTests.GarageOverlaysCannotReceivePlacementClicks(3840,2160)" methodname="GarageOverlaysCannotReceivePlacementClicks" classname="UI943GarageLayoutTests" runstate="Runnable" seed="1985275949" result="Failed" start-time="2026-11-06 21:27:40Z" end-time="2026-11-06 21:27:40Z" duration="0.000068" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <failure>
+              <message><![CDATA[  Nakładka przy (500.00, 100.00) nie może montować części.
+  Expected: False
+  But was:  True
+]]></message>
+              <stack-trace><![CDATA[at UI943GarageLayoutTests.GarageOverlaysCannotReceivePlacementClicks (System.Int32 width, System.Int32 height) [0x000e7] in [USER_HOME]\Desktop\Prototypy\RoboRougelike-PlayQA-97f8\Assets\Tests\Editor\UI943GarageLayoutTests.cs:32
+]]></stack-trace>
+            </failure>
+            <output><![CDATA[Saving results to: [USER_HOME]/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+          </test-case>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

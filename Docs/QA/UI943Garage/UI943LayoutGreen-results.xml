@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="10" result="Passed" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-06 21:28:43Z" end-time="2026-11-06 21:28:43Z" duration="0,0494483">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1406" result="Passed" start-time="2026-11-06 21:28:43Z" end-time="2026-11-06 21:28:43Z" duration="0.049448" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1747" name="Assembly-CSharp-Editor.dll" fullname="[USER_HOME]/Desktop/Prototypy/RoboRougelike-PlayQA-97f8/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="613" result="Passed" start-time="2026-11-06 21:28:43Z" end-time="2026-11-06 21:28:43Z" duration="0.030020" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="58728" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="1672" name="UI943GarageLayoutTests" fullname="UI943GarageLayoutTests" classname="UI943GarageLayoutTests" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-11-06 21:28:43Z" end-time="2026-11-06 21:28:43Z" duration="0.023663" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="ParameterizedMethod" id="1678" name="CameraViewportMatchesLetterboxedGarageOpening" fullname="UI943GarageLayoutTests.CameraViewportMatchesLetterboxedGarageOpening" classname="UI943GarageLayoutTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-06 21:28:43Z" end-time="2026-11-06 21:28:43Z" duration="0.018772" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1673" name="CameraViewportMatchesLetterboxedGarageOpening(1920,1080)" fullname="UI943GarageLayoutTests.CameraViewportMatchesLetterboxedGarageOpening(1920,1080)" methodname="CameraViewportMatchesLetterboxedGarageOpening" classname="UI943GarageLayoutTests" runstate="Runnable" seed="774970923" result="Passed" start-time="2026-11-06 21:28:43Z" end-time="2026-11-06 21:28:43Z" duration="0.010829" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1674" name="CameraViewportMatchesLetterboxedGarageOpening(1366,768)" fullname="UI943GarageLayoutTests.CameraViewportMatchesLetterboxedGarageOpening(1366,768)" methodname="CameraViewportMatchesLetterboxedGarageOpening" classname="UI943GarageLayoutTests" runstate="Runnable" seed="34699328" result="Passed" start-time="2026-11-06 21:28:43Z" end-time="2026-11-06 21:28:43Z" duration="0.000095" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1675" name="CameraViewportMatchesLetterboxedGarageOpening(1024,768)" fullname="UI943GarageLayoutTests.CameraViewportMatchesLetterboxedGarageOpening(1024,768)" methodname="CameraViewportMatchesLetterboxedGarageOpening" classname="UI943GarageLayoutTests" runstate="Runnable" seed="1789866283" result="Passed" start-time="2026-11-06 21:28:43Z" end-time="2026-11-06 21:28:43Z" duration="0.000039" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1676" name="CameraViewportMatchesLetterboxedGarageOpening(768,1024)" fullname="UI943GarageLayoutTests.CameraViewportMatchesLetterboxedGarageOpening(768,1024)" methodname="CameraViewportMatchesLetterboxedGarageOpening" classname="UI943GarageLayoutTests" runstate="Runnable" seed="2088768600" result="Passed" start-time="2026-11-06 21:28:43Z" end-time="2026-11-06 21:28:43Z" duration="0.000033" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1677" name="CameraViewportMatchesLetterboxedGarageOpening(3840,2160)" fullname="UI943GarageLayoutTests.CameraViewportMatchesLetterboxedGarageOpening(3840,2160)" methodname="CameraViewportMatchesLetterboxedGarageOpening" classname="UI943GarageLayoutTests" runstate="Runnable" seed="2036644508" result="Passed" start-time="2026-11-06 21:28:43Z" end-time="2026-11-06 21:28:43Z" duration="0.000030" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+        </test-suite>
+        <test-suite type="ParameterizedMethod" id="1684" name="GarageOverlaysCannotReceivePlacementClicks" fullname="UI943GarageLayoutTests.GarageOverlaysCannotReceivePlacementClicks" classname="UI943GarageLayoutTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-06 21:28:43Z" end-time="2026-11-06 21:28:43Z" duration="0.001886" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1679" name="GarageOverlaysCannotReceivePlacementClicks(1920,1080)" fullname="UI943GarageLayoutTests.GarageOverlaysCannotReceivePlacementClicks(1920,1080)" methodname="GarageOverlaysCannotReceivePlacementClicks" classname="UI943GarageLayoutTests" runstate="Runnable" seed="1794250028" result="Passed" start-time="2026-11-06 21:28:43Z" end-time="2026-11-06 21:28:43Z" duration="0.000948" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1680" name="GarageOverlaysCannotReceivePlacementClicks(1366,768)" fullname="UI943GarageLayoutTests.GarageOverlaysCannotReceivePlacementClicks(1366,768)" methodname="GarageOverlaysCannotReceivePlacementClicks" classname="UI943GarageLayoutTests" runstate="Runnable" seed="513252428" result="Passed" start-time="2026-11-06 21:28:43Z" end-time="2026-11-06 21:28:43Z" duration="0.000046" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1681" name="GarageOverlaysCannotReceivePlacementClicks(1024,768)" fullname="UI943GarageLayoutTests.GarageOverlaysCannotReceivePlacementClicks(1024,768)" methodname="GarageOverlaysCannotReceivePlacementClicks" classname="UI943GarageLayoutTests" runstate="Runnable" seed="2095380174" result="Passed" start-time="2026-11-06 21:28:43Z" end-time="2026-11-06 21:28:43Z" duration="0.000034" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1682" name="GarageOverlaysCannotReceivePlacementClicks(768,1024)" fullname="UI943GarageLayoutTests.GarageOverlaysCannotReceivePlacementClicks(768,1024)" methodname="GarageOverlaysCannotReceivePlacementClicks" classname="UI943GarageLayoutTests" runstate="Runnable" seed="1057181040" result="Passed" start-time="2026-11-06 21:28:43Z" end-time="2026-11-06 21:28:43Z" duration="0.000030" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1683" name="GarageOverlaysCannotReceivePlacementClicks(3840,2160)" fullname="UI943GarageLayoutTests.GarageOverlaysCannotReceivePlacementClicks(3840,2160)" methodname="GarageOverlaysCannotReceivePlacementClicks" classname="UI943GarageLayoutTests" runstate="Runnable" seed="1704012378" result="Passed" start-time="2026-11-06 21:28:43Z" end-time="2026-11-06 21:28:43Z" duration="0.000029" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <output><![CDATA[Saving results to: [USER_HOME]/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+          </test-case>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
