@@ -1,0 +1,13 @@
+# R4 standard enemy weapon art QA
+
+Standard Flanker/Basic and Bruiser or Gunner/Heavy primary guns now use the supplied R4 weapon model. A neutral visual mount compensates the legacy barrel's nonuniform scale and remains attached to the damageable weapon block. Original collider, HP, tier, energy and projectile systems remain in place; the shell origin follows the visible muzzle. The visual aim is synchronized before aiming checks and shooting. If the mount or source is unavailable, the original appearance remains.
+
+When an enemy switches to a package weapon, the visual is disabled and the original muzzle restored before the package binds. Automatic, Shotgun, Railgun, Rocket, Beam, Saw and EMP do not receive new primary models in this change; Automatic has no supplied model. Elite/boss Heavy art is covered separately by `R4_ENEMY_ELITE_WEAPON_ART_QA.md`.
+
+- Native red test at `fff1e67b21c2134cd4141414150f51773ff8a56d`: 0/1; Basic enemy lacked the supplied model. Evidence `Artifacts/Local/RC2-R4-EnemyPrimary-Red-20261107T174130Z/`.
+- Unity 6000.3.14f1 targeted EditMode at `af7af099e19d5c0d59515451a7f0eb62020e2c4d`: **17/17 PASS**, exit 0. Covers Basic/Heavy model, original colliders, actual physical Heavy shell origin and hit, safe switch to Shotgun's original muzzle, elite art, enemy wheels, weapon tiers, boss/encounter and salvage regression. Evidence `Artifacts/Local/RC2-R4-EnemyPrimary-Final-af7af099-20261107T174706Z/`.
+- Windows x64 build at that SHA: **PASS**, exit 0. Evidence `Artifacts/Local/R4-EnemyPrimary-Build-af7af099/`.
+- Extracted Windows Player batch API QA: **PASS**, exit 0. Checked two enemies/eight wheel models, wheel detachment, standard Basic/Heavy models, Heavy physical hit, Shotgun swap, elite Heavy model and hit, and Automatic fallback. This is API-driven, not a human playthrough. Evidence `C:/Users/kubap/Desktop/Prototypy/R4-enemy-primary-af7af099-player-qa/`.
+- ZIP `C:/Users/kubap/Desktop/Prototypy/RoboRougelike_R4_EnemyPrimaryArt_af7af099_Windows_x64.zip`, 43,542,045 bytes, SHA-256 `53891bd347948f2ed326e6b41fef4edfdf5cf2605d55a0d987c6cd195b1955b6`. EXE matched the built EXE after extraction, SHA-256 `17ad8b27359b94eac8d2f44a0052d8789dc3ff5328f44ccb8c2740be4a375eb8`.
+
+NOT RUN: full regression, human visual/game-feel review, long combat and interactive shutdown on this build. A previous automated GUI exit crashed with `0xC000041D`; the successful batch exit does not prove that issue fixed. Four raw FBX-axis tests still fail as recorded in `R4_NATIVE_VERIFICATION_20261107.md`. New shaped blocks and package-weapon enemy appearances remain pending.
