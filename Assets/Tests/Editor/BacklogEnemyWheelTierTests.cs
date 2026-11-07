@@ -1,9 +1,11 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 using RoboRougelike.R1;
 using RoboRougelike.R3;
+using RoboRougelike.R4;
 using RoboRougelike.R6;
 using RoboRougelike.WeaponIntegration;
 using RogueMachine.P12PipelineSafe;
@@ -63,6 +65,28 @@ public sealed class BacklogEnemyWheelTierTests
         enemy.SetWheelTiers(3);drive.RefreshMass();
         Assert.That(drive.AvailableForce,Is.EqualTo(firstTier*1.8f).Within(.05),"Existing R6 contact solver must apply T3 traction.");
         Object.Destroy(floor);
+    }
+    [UnityTest] public IEnumerator ExpiredEliteWheelAndWeaponKeepTierAndIdentityInSalvage()
+    {
+        var run=R1RunController.Instance;Assert.That(run.StartRun()&&run.ChooseRoute(0),Is.True);
+        for(int i=0;i<300&&run.Transitioning;i++)yield return null;
+        var template=(P12PipelineSafeEnemyTurret)typeof(R1RunController).GetField("enemyTemplate",BindingFlags.NonPublic|BindingFlags.Instance).GetValue(run);
+        var ledger=new R4SalvageLedger(3);
+        var def=new R1EncounterDefinition{EnemyCount=1,Roster=new[]{R3EnemyArchetype.Gunner},Variants=new[]{RoboRougelike.R5.R5EnemyVariant.EliteGunner}};
+        run.Encounter.Spawn(template,run.Player.transform,def,ledger,"tier-expiry");run.Encounter.SetCombatActive(false);yield return null;
+        var enemy=run.Encounter.Enemies.First();enemy.SetWheelTiers(3);enemy.SetOtherWeaponTiers(3);
+        var wheels=(List<P12PipelineSafeDamageable>)typeof(P12PipelineSafeEnemyTurret).GetField("driveWheels",BindingFlags.NonPublic|BindingFlags.Instance).GetValue(enemy);
+        var wheel=wheels[0];var gun=enemy.VariantWeapons[0].Block;
+        var wheelState=wheel.GetComponent<RRLDeviceBinding>().State;var gunState=gun.GetComponent<RRLDeviceBinding>().State;
+        Assert.That(wheelState.Tier,Is.EqualTo(3));Assert.That(gunState.Tier,Is.EqualTo(3));
+        string wheelId=wheelState.Id,gunId=gunState.Id;
+        wheel.ApplyDamage(100000,wheel.transform.position,Vector3.up);gun.ApplyDamage(100000,gun.transform.position,Vector3.up);
+        Object.Destroy(wheel.gameObject);Object.Destroy(gun.gameObject);yield return null;yield return null;
+        Assert.That(wheel==null&&gun==null,Is.True);Assert.That(enemy.IsDefeated,Is.False);
+        enemy.Core.ApplyDamage(100000,enemy.Core.transform.position,Vector3.up);
+        var wheelLoot=ledger.Items.Single(p=>p.Id==wheelId).ToPart();var gunLoot=ledger.Items.Single(p=>p.Id==gunId).ToPart();
+        Assert.That(wheelLoot.Health,Is.Zero);Assert.That(wheelLoot.Tier,Is.EqualTo(3));
+        Assert.That(gunLoot.Health,Is.Zero);Assert.That(gunLoot.Tier,Is.EqualTo(3));
     }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }
