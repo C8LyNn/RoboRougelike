@@ -10,5 +10,6 @@
     <Compile Include="../../../Assets/R4_1/R4BlockCatalog.cs" Link="R4BlockCatalog.cs" />
     <Compile Include="../../../Assets/R4_1/R4ColliderBundle.cs" Link="R4ColliderBundle.cs" />
     <Compile Include="../../../Assets/R4_1/R4ColliderMeshFactory.cs" Link="R4ColliderMeshFactory.cs" />
+    <Compile Include="../../../Assets/R4_1/R4ColliderMeshCache.cs" Link="R4ColliderMeshCache.cs" />
   </ItemGroup>
 </Project>
