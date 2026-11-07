@@ -142,6 +142,8 @@ public sealed class CameraStartAndReplacementArtTests
         Assert.That(actual.g,Is.EqualTo(expected.g).Within(.02f));Assert.That(actual.b,Is.EqualTo(expected.b).Within(.02f));
         hp.ApplyDamage(100000,wheel.transform.position,Vector3.up);yield return null;
         Assert.That(hp.IsDead,Is.True);Assert.That(model.IsChildOf(wheel.transform),Is.True,"Replacement stays with the detached wreck.");
+        // Existing debris deliberately suspends contact for .45 s to separate.
+        yield return new WaitForSeconds(.6f);
         Assert.That(wheel.GetComponent<Collider>().enabled,Is.True);
     }
     [UnityTest] public IEnumerator GhostModelShowsInvalidPlacementTintWithoutAnOpaqueCube()
