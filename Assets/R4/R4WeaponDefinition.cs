@@ -29,6 +29,7 @@ namespace RoboRougelike.R4
         public static int Count => definitions.Length;
         public static string Brief(R3PartState part,float damageScale=1,float intervalScale=1)
         {
+            damageScale*=R3VehicleModel.TierEffectUnits(part.Tier);
             var profile=Get(part.Weapon);
             string Ammo(int capacity)=>$"{(part.Ammo<0?capacity:part.Ammo)}/{capacity}";
             return part.Weapon switch {

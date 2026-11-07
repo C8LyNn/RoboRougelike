@@ -221,10 +221,10 @@ namespace RoboRougelike.R1
         }
         private void DrawFusionButton(R1RunController run,R3PartState selected,Rect rect)
         {
-            if(selected==null||!R3VehicleModel.SupportsFusion(selected.Kind))return;
+            if(selected==null||!R3VehicleModel.SupportsFusion(selected.Kind,selected.Weapon))return;
             int tier=R3VehicleModel.NormalizedTier(selected.Tier);
             var others=run.VehicleModel.Inventory.Where(p=>p.Id!=selected.Id&&p.Kind==selected.Kind&&
-                R3VehicleModel.NormalizedTier(p.Tier)==tier).OrderBy(p=>p.Health).Take(2).ToArray();
+                R3VehicleModel.NormalizedTier(p.Tier)==tier&&(p.Kind!=R3PartKind.Gun||p.Weapon==selected.Weapon)).OrderBy(p=>p.Health).Take(2).ToArray();
             var group=new[]{selected}.Concat(others).ToArray();
             bool available=tier<3&&group.Length==3;
             string label=tier>=3?"Maksymalny poziom T3":!available?$"Połącz T{tier} — potrzeba 3":

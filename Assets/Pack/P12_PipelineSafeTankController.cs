@@ -565,7 +565,10 @@ public float CurrentForwardSpeed =>
         public void FireFrom(Transform barrel,RoboRougelike.R4.R4WeaponKind kind,string partId)
         {
             var profile=RoboRougelike.R4.R4WeaponDefinition.Get(kind);
-            SpawnPhysicalShell(barrel,profile.Damage*damageModifier,profile.Speed,profile.Diameter,profile.ProjectileMass,kind,partId);
+            var mounted=barrel!=null?barrel.GetComponentInParent<RoboRougelike.R3.R3MountedPart>():null;
+            float tier=mounted!=null&&mounted.Kind==RoboRougelike.R3.R3PartKind.Gun&&mounted.Id==partId?
+                RoboRougelike.R3.R3VehicleModel.TierEffectUnits(mounted.Tier):1f;
+            SpawnPhysicalShell(barrel,profile.Damage*damageModifier*tier,profile.Speed,profile.Diameter,profile.ProjectileMass,kind,partId);
         }
         public float WeaponInterval(RoboRougelike.R4.R4WeaponKind kind) => RoboRougelike.R4.R4WeaponDefinition.Get(kind).Interval*intervalModifier;
         public float PackageDamageScale => damageModifier;

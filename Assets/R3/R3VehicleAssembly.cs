@@ -154,7 +154,7 @@ namespace RoboRougelike.R3
                         continue;
                     }
                     var energy=GetComponent<VehicleEnergyBank>();
-                    if(energy!=null&&!energy.TrySpend(VehicleEnergyCosts.ConventionalShot(part.Weapon)))continue;
+                    if(energy!=null&&!energy.TrySpend(VehicleEnergyCosts.ConventionalShot(part.Weapon)*R3VehicleModel.TierActivationCost(part.Tier)))continue;
                     part.NextFireTime=Time.time+controller.WeaponInterval(part.Weapon);
                     controller.FireFrom(part.Muzzle,part.Weapon,part.Id);
                 }

@@ -72,8 +72,9 @@ namespace RoboRougelike.R3
         public static int TierEffectUnits(int tier)=>NormalizedTier(tier)==3?4:NormalizedTier(tier)==2?2:1;
         public static float TierPassiveExtra(int tier)=>NormalizedTier(tier)==3?10:NormalizedTier(tier)==2?5:0;
         public static float TierActivationCost(int tier)=>NormalizedTier(tier)==3?1.4f:NormalizedTier(tier)==2?1.2f:1f;
-        public static bool SupportsFusion(R3PartKind kind)=>kind==R3PartKind.Armor||kind==R3PartKind.Wheel||
-            kind==R3PartKind.Battery||kind==R3PartKind.RepairPulse||kind==R3PartKind.DrivePower||kind==R3PartKind.EnergyRegenerator;
+        public static bool SupportsFusion(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic)=>kind==R3PartKind.Armor||kind==R3PartKind.Wheel||
+            kind==R3PartKind.Battery||kind==R3PartKind.RepairPulse||kind==R3PartKind.DrivePower||kind==R3PartKind.EnergyRegenerator||
+            (kind==R3PartKind.Gun&&weapon>=R4WeaponKind.Basic&&weapon<=R4WeaponKind.Heavy);
         public R3VehicleDesign Design { get; }
         public List<R3PartState> Parts { get; }
         private readonly List<R3PartState> inventory=new List<R3PartState>();
@@ -199,7 +200,7 @@ namespace RoboRougelike.R3
             Enum.IsDefined(typeof(R3PartKind),kind) &&
             (kind!=R3PartKind.Gun||Enum.IsDefined(typeof(R4WeaponKind),weapon));
         public static bool ValidEconomicPart(R3PartState part) => part!=null && ValidEconomicKind(part.Kind,part.Weapon) && part.Tier>=0&&part.Tier<=3&&
-            (part.Tier<=1||SupportsFusion(part.Kind))&&
+            (part.Tier<=1||SupportsFusion(part.Kind,part.Weapon))&&
             !float.IsNaN(part.Health)&&!float.IsInfinity(part.Health)&&part.Health>=0&&part.Health<=1;
         public int Price(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic) => !ValidEconomicKind(kind,weapon)?0:Math.Max(1,
             kind==R3PartKind.Gun&&weapon!=R4WeaponKind.Basic?R4WeaponDefinition.Get(weapon).Price:Economy.Price(kind));
@@ -376,12 +377,13 @@ namespace RoboRougelike.R3
             var requested=ids.ToArray();
             if(requested.Length!=3||requested.Any(string.IsNullOrWhiteSpace)||requested.Distinct(StringComparer.Ordinal).Count()!=3)return false;
             var parts=requested.Select(id=>inventory.FirstOrDefault(p=>p.Id==id)).ToArray();
-            if(parts.Any(p=>!ValidEconomicPart(p))||!SupportsFusion(parts[0].Kind))return false;
+            if(parts.Any(p=>!ValidEconomicPart(p))||!SupportsFusion(parts[0].Kind,parts[0].Weapon))return false;
             if(parts.Any(p=>float.IsNaN(p.DeviceReadyAt)||float.IsInfinity(p.DeviceReadyAt)||p.DeviceReadyAt<0||
                 float.IsNaN(p.ReloadReadyAt)||float.IsInfinity(p.ReloadReadyAt)||p.ReloadReadyAt<0||
                 float.IsNaN(p.DisruptionRemaining)||float.IsInfinity(p.DisruptionRemaining)||p.DisruptionRemaining<0))return false;
             int tier=NormalizedTier(parts[0].Tier);
-            if(tier>=3||parts.Any(p=>p.Kind!=parts[0].Kind||NormalizedTier(p.Tier)!=tier))return false;
+            if(tier>=3||parts.Any(p=>p.Kind!=parts[0].Kind||NormalizedTier(p.Tier)!=tier||
+                (p.Kind==R3PartKind.Gun&&p.Weapon!=parts[0].Weapon)))return false;
             // A new physical item represents all three inputs. Preserve average
             // condition so fusion never repairs damaged items for free.
             var result=parts[0].Copy();result.Id=Guid.NewGuid().ToString("N");result.Tier=tier+1;
