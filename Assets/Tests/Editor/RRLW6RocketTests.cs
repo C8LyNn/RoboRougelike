@@ -9,6 +9,7 @@ using RoboRougelike.R1;
 using RoboRougelike.R3;
 using RoboRougelike.R4;
 using RoboRougelike.Mechanics.Rockets;
+using RoboRougelike.WeaponIntegration;
 using RogueMachine.P12PipelineSafe;
 
 public class RRLW6RocketPhysicalTests
@@ -33,6 +34,17 @@ public class RRLW6RocketPhysicalTests
         var binding=gun.GetComponents<MonoBehaviour>().Single(p=>p.GetType().Name=="RRLRocketBinding");
         return (bool)binding.GetType().GetMethod("Fire").Invoke(binding,null);
     }
+    [UnityTest] public IEnumerator EmptyPlayerLauncherAutomaticallyReloadsWithoutInput()
+    {
+        var gun=Build(out var state);var binding=gun.GetComponent<RRLRocketBinding>();
+        Assert.That(binding,Is.Not.Null);state.Ammo=0;state.ReloadReadyAt=0;
+        yield return null;
+        Assert.That(state.ReloadReadyAt,Is.GreaterThan(Time.time),"An empty player launcher must start its own timed reload.");
+        Assert.That(state.Ammo,Is.Zero);Assert.That(binding.Fire(),Is.False,"Cannot fire while reloading.");
+        float until=Time.realtimeSinceStartup+8;
+        while(state.ReloadReadyAt>0&&Time.realtimeSinceStartup<until)yield return null;
+        Assert.That(state.ReloadReadyAt,Is.Zero);Assert.That(state.Ammo,Is.EqualTo(RRLRocketBinding.Magazine));
+    }
     [UnityTest] public IEnumerator MountedRocketDamagesRealHpOncePerPartAndConsumesOneRound()
     {
         var gun=Build(out var state);var launcher=gun.GetComponent<RocketLauncher>();Assert.That(launcher,Is.Not.Null);
@@ -50,6 +62,10 @@ public class RRLW6RocketPhysicalTests
         Assert.That(Fire(gun),Is.False);Assert.That(state.Ammo,Is.EqualTo(9));
         var rocket=UnityEngine.Object.FindObjectsByType<RocketProjectile>(FindObjectsSortMode.None).Single(p=>p.IsInitialized);
         Assert.That(rocket.gameObject.activeInHierarchy,Is.True,"A real rocket must run physics, not merely be instantiated inactive");
+        var visual=rocket.transform.Find("Rocket visual");Assert.That(visual,Is.Not.Null);
+        Assert.That(visual.localScale.y,Is.GreaterThan(visual.localScale.x*2),"Rocket body should be elongated.");
+        Assert.That(rocket.transform.Find("Rocket fin 0"),Is.Not.Null,"Rocket must have visible fins.");
+        Assert.That(rocket.GetComponentsInChildren<Collider>().Count(c=>c.enabled),Is.EqualTo(1),"Only the existing rocket physics collider may be active.");
         float end=Time.time+.6f;while(Time.time<end)yield return null;
         Assert.That(500-targets[0].CurrentHp,Is.InRange(50f,60f),"One original AOE budget per logical P12 part");
         Assert.That(500-targets[1].CurrentHp,Is.GreaterThan(0).And.LessThan(500-targets[0].CurrentHp));

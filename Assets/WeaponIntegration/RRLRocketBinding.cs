@@ -15,20 +15,28 @@ namespace RoboRougelike.WeaponIntegration
         public R3PartState State=>Device.State;
         public RocketLauncher Module {get;private set;}
         P12PipelineSafeTankController tank;
-        P12PipelineSafeEnemyTurret enemy;
         Transform muzzle;
         float damageScale=1,intervalScale=1;
         public void Bind(R3PartState state,Transform owner,Transform barrel,float damageMultiplier=1,float intervalMultiplier=1)
         {
             Device=GetComponent<RRLDeviceBinding>();if(Device==null)Device=gameObject.AddComponent<RRLDeviceBinding>();Device.Bind(state,owner);
-            tank=owner.GetComponent<P12PipelineSafeTankController>();enemy=owner.GetComponent<P12PipelineSafeEnemyTurret>();
+            tank=owner.GetComponent<P12PipelineSafeTankController>();
             muzzle=barrel;damageScale=damageMultiplier;intervalScale=intervalMultiplier;if(state.Ammo<0)state.Ammo=Magazine;
             var template=new GameObject("WPN004 inactive projectile template");template.SetActive(false);template.transform.SetParent(transform,false);
             var rb=template.AddComponent<Rigidbody>();rb.useGravity=false;rb.isKinematic=true;template.AddComponent<SphereCollider>().isTrigger=true;
             var prefab=template.AddComponent<RocketProjectile>();template.AddComponent<RRLPointDefenseThreat>();
-            var visual=GameObject.CreatePrimitive(PrimitiveType.Sphere);visual.name="Rocket visual";visual.transform.SetParent(template.transform,false);visual.transform.localScale=Vector3.one*.24f;
+            var visual=GameObject.CreatePrimitive(PrimitiveType.Capsule);visual.name="Rocket visual";visual.transform.SetParent(template.transform,false);
+            visual.transform.localRotation=Quaternion.Euler(90,0,0);visual.transform.localScale=new Vector3(.16f,.36f,.16f);
             var col=visual.GetComponent<Collider>();col.enabled=false;Destroy(col);
-            visual.GetComponent<Renderer>().sharedMaterial=GetComponent<Renderer>().sharedMaterial;
+            var material=GetComponent<Renderer>().sharedMaterial;visual.GetComponent<Renderer>().sharedMaterial=material;
+            for(int i=0;i<4;i++)
+            {
+                var fin=GameObject.CreatePrimitive(PrimitiveType.Cube);fin.name="Rocket fin "+i;fin.transform.SetParent(template.transform,false);
+                float angle=i*90f;fin.transform.localRotation=Quaternion.Euler(0,0,angle);
+                fin.transform.localPosition=Quaternion.Euler(0,0,angle)*new Vector3(.1f,0,-.21f);
+                fin.transform.localScale=new Vector3(.14f,.025f,.22f);fin.GetComponent<Renderer>().sharedMaterial=material;
+                var finCollider=fin.GetComponent<Collider>();finCollider.enabled=false;Destroy(finCollider);
+            }
             var origin=template.AddComponent<R4ProjectileOrigin>();origin.Weapon=R4WeaponKind.RocketLauncher;origin.PartId=state.Id;
             Module=gameObject.AddComponent<RocketLauncher>();Module.Bind(Device.Body,owner,muzzle);Module.SetAmmoSource(this);Module.SetPrefab(prefab);
             Device.Damageable.Died+=Stop;Refresh();
@@ -60,7 +68,7 @@ namespace RoboRougelike.WeaponIntegration
             State.Ammo-=units;return true;
         }
         public void RefundAmmo(int units){if(units>0)State.Ammo=Mathf.Min(Magazine,State.Ammo+units);}
-        void Update(){Refresh();if(enemy!=null&&Device.Available&&State.Ammo==0)BeginReload();}
+        void Update(){Refresh();if(Device.Available&&State.Ammo==0)BeginReload();}
         void Stop(){if(Module!=null)Module.SetOperational(false);}
         void OnDisable()=>Stop();
         void OnDestroy(){if(Device?.Damageable!=null)Device.Damageable.Died-=Stop;}
