@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="45" result="Passed" total="45" passed="45" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0,6675079">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1436" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.667508" total="45" passed="45" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1786" name="Assembly-CSharp-Editor.dll" fullname="[USER_HOME]/Desktop/Prototypy/RoboRougelike-PlayQA-97f8/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="643" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.584214" total="45" passed="45" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="8444" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="1069" name="EnergyCombatRefinementTests" fullname="EnergyCombatRefinementTests" classname="EnergyCombatRefinementTests" runstate="Runnable" testcasecount="19" result="Passed" start-time="2026-11-07 07:40:33Z" end-time="2026-11-07 07:40:34Z" duration="0.376909" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1081" name="EscapeClosesCatalogBeforeOpeningPause" fullname="EnergyCombatRefinementTests.EscapeClosesCatalogBeforeOpeningPause" methodname="EscapeClosesCatalogBeforeOpeningPause" classname="EnergyCombatRefinementTests" runstate="Runnable" seed="1045257487" result="Passed" start-time="2026-11-07 07:40:30Z" end-time="2026-11-07 07:40:34Z" duration="3.473523" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1089" name="Exit273PauseTests" fullname="Exit273PauseTests" classname="Exit273PauseTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-07 07:40:48Z" end-time="2026-11-07 07:40:48Z" duration="0.390481" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1091" name="CombatPauseReturnsToMenuAndCleansActivity" fullname="Exit273PauseTests.CombatPauseReturnsToMenuAndCleansActivity" methodname="CombatPauseReturnsToMenuAndCleansActivity" classname="Exit273PauseTests" runstate="Runnable" seed="1900987207" result="Passed" start-time="2026-11-07 07:40:34Z" end-time="2026-11-07 07:40:37Z" duration="3.808753" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[R1] Starcie 1: przeciwników=0
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 70 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 70 structural block(s).
+[Pack 12] Hull local origin OK.
+[Pack 12] Wheels local origin OK.
+[Pack 16] Integrated weapon bound successfully.
+[Pack 19] Functional Modules ready. Wheels=12 | Weapon=True
+[R5] Gotowość: sześć etapów, trasy, garaż i odzysk.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1090" name="GaragePauseResumesWithoutStartingSimulation" fullname="Exit273PauseTests.GaragePauseResumesWithoutStartingSimulation" methodname="GaragePauseResumesWithoutStartingSimulation" classname="Exit273PauseTests" runstate="Runnable" seed="2001922507" result="Passed" start-time="2026-11-07 07:40:37Z" end-time="2026-11-07 07:40:41Z" duration="3.405099" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1093" name="RKeyStillResetsPausedTestRange" fullname="Exit273PauseTests.RKeyStillResetsPausedTestRange" methodname="RKeyStillResetsPausedTestRange" classname="Exit273PauseTests" runstate="Runnable" seed="1789264097" result="Passed" start-time="2026-11-07 07:40:41Z" end-time="2026-11-07 07:40:44Z" duration="3.559600" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1092" name="ShutdownPreparationIsIdempotentAndReleasesCursor" fullname="Exit273PauseTests.ShutdownPreparationIsIdempotentAndReleasesCursor" methodname="ShutdownPreparationIsIdempotentAndReleasesCursor" classname="Exit273PauseTests" runstate="Runnable" seed="1822334470" result="Passed" start-time="2026-11-07 07:40:44Z" end-time="2026-11-07 07:40:48Z" duration="3.482218" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeTest
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1275" name="MapEditorIntegrationTests" fullname="MapEditorIntegrationTests" classname="MapEditorIntegrationTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.517705" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1276" name="MenuEditorGarageVehicleTestAndReturnPreserveMap" fullname="MapEditorIntegrationTests.MenuEditorGarageVehicleTestAndReturnPreserveMap" methodname="MenuEditorGarageVehicleTestAndReturnPreserveMap" classname="MapEditorIntegrationTests" runstate="Runnable" seed="516040062" result="Passed" start-time="2026-11-07 07:40:48Z" end-time="2026-11-07 07:40:51Z" duration="3.536310" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1673" name="UI943CombatHudLayoutTests" fullname="UI943CombatHudLayoutTests" classname="UI943CombatHudLayoutTests" runstate="Runnable" testcasecount="12" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.008636" total="12" passed="12" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="ParameterizedMethod" id="1676" name="DefenseHeadingAndRowsFitInsideTheirPanel" fullname="UI943CombatHudLayoutTests.DefenseHeadingAndRowsFitInsideTheirPanel" classname="UI943CombatHudLayoutTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.004635" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1674" name="DefenseHeadingAndRowsFitInsideTheirPanel(1)" fullname="UI943CombatHudLayoutTests.DefenseHeadingAndRowsFitInsideTheirPanel(1)" methodname="DefenseHeadingAndRowsFitInsideTheirPanel" classname="UI943CombatHudLayoutTests" runstate="Runnable" seed="1247341398" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.003482" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1675" name="DefenseHeadingAndRowsFitInsideTheirPanel(4)" fullname="UI943CombatHudLayoutTests.DefenseHeadingAndRowsFitInsideTheirPanel(4)" methodname="DefenseHeadingAndRowsFitInsideTheirPanel" classname="UI943CombatHudLayoutTests" runstate="Runnable" seed="1211613747" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.000089" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+        </test-suite>
+        <test-suite type="ParameterizedMethod" id="1687" name="DefensePanelDoesNotCoverStatusOrMovement" fullname="UI943CombatHudLayoutTests.DefensePanelDoesNotCoverStatusOrMovement" classname="UI943CombatHudLayoutTests" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.003073" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1677" name="DefensePanelDoesNotCoverStatusOrMovement(1920,1080,1)" fullname="UI943CombatHudLayoutTests.DefensePanelDoesNotCoverStatusOrMovement(1920,1080,1)" methodname="DefensePanelDoesNotCoverStatusOrMovement" classname="UI943CombatHudLayoutTests" runstate="Runnable" seed="2007685552" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.000689" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1678" name="DefensePanelDoesNotCoverStatusOrMovement(1366,768,1)" fullname="UI943CombatHudLayoutTests.DefensePanelDoesNotCoverStatusOrMovement(1366,768,1)" methodname="DefensePanelDoesNotCoverStatusOrMovement" classname="UI943CombatHudLayoutTests" runstate="Runnable" seed="1067154001" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.000058" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1679" name="DefensePanelDoesNotCoverStatusOrMovement(1024,768,1)" fullname="UI943CombatHudLayoutTests.DefensePanelDoesNotCoverStatusOrMovement(1024,768,1)" methodname="DefensePanelDoesNotCoverStatusOrMovement" classname="UI943CombatHudLayoutTests" runstate="Runnable" seed="1787499977" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.000041" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1680" name="DefensePanelDoesNotCoverStatusOrMovement(768,1024,1)" fullname="UI943CombatHudLayoutTests.DefensePanelDoesNotCoverStatusOrMovement(768,1024,1)" methodname="DefensePanelDoesNotCoverStatusOrMovement" classname="UI943CombatHudLayoutTests" runstate="Runnable" seed="976904536" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.000036" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1681" name="DefensePanelDoesNotCoverStatusOrMovement(3840,2160,1)" fullname="UI943CombatHudLayoutTests.DefensePanelDoesNotCoverStatusOrMovement(3840,2160,1)" methodname="DefensePanelDoesNotCoverStatusOrMovement" classname="UI943CombatHudLayoutTests" runstate="Runnable" seed="942450748" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.000036" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1682" name="DefensePanelDoesNotCoverStatusOrMovement(1920,1080,4)" fullname="UI943CombatHudLayoutTests.DefensePanelDoesNotCoverStatusOrMovement(1920,1080,4)" methodname="DefensePanelDoesNotCoverStatusOrMovement" classname="UI943CombatHudLayoutTests" runstate="Runnable" seed="1582773153" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.000033" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1683" name="DefensePanelDoesNotCoverStatusOrMovement(1366,768,4)" fullname="UI943CombatHudLayoutTests.DefensePanelDoesNotCoverStatusOrMovement(1366,768,4)" methodname="DefensePanelDoesNotCoverStatusOrMovement" classname="UI943CombatHudLayoutTests" runstate="Runnable" seed="664429484" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.000032" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1684" name="DefensePanelDoesNotCoverStatusOrMovement(1024,768,4)" fullname="UI943CombatHudLayoutTests.DefensePanelDoesNotCoverStatusOrMovement(1024,768,4)" methodname="DefensePanelDoesNotCoverStatusOrMovement" classname="UI943CombatHudLayoutTests" runstate="Runnable" seed="782782115" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.000033" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1685" name="DefensePanelDoesNotCoverStatusOrMovement(768,1024,4)" fullname="UI943CombatHudLayoutTests.DefensePanelDoesNotCoverStatusOrMovement(768,1024,4)" methodname="DefensePanelDoesNotCoverStatusOrMovement" classname="UI943CombatHudLayoutTests" runstate="Runnable" seed="2075476122" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.000032" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1686" name="DefensePanelDoesNotCoverStatusOrMovement(3840,2160,4)" fullname="UI943CombatHudLayoutTests.DefensePanelDoesNotCoverStatusOrMovement(3840,2160,4)" methodname="DefensePanelDoesNotCoverStatusOrMovement" classname="UI943CombatHudLayoutTests" runstate="Runnable" seed="1244092560" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.000034" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+        </test-suite>
+      </test-suite>
+      <test-suite type="TestFixture" id="1688" name="UI943GarageLayoutTests" fullname="UI943GarageLayoutTests" classname="UI943GarageLayoutTests" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.005259" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="ParameterizedMethod" id="1694" name="CameraViewportMatchesLetterboxedGarageOpening" fullname="UI943GarageLayoutTests.CameraViewportMatchesLetterboxedGarageOpening" classname="UI943GarageLayoutTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.001840" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1689" name="CameraViewportMatchesLetterboxedGarageOpening(1920,1080)" fullname="UI943GarageLayoutTests.CameraViewportMatchesLetterboxedGarageOpening(1920,1080)" methodname="CameraViewportMatchesLetterboxedGarageOpening" classname="UI943GarageLayoutTests" runstate="Runnable" seed="169834688" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.000707" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1690" name="CameraViewportMatchesLetterboxedGarageOpening(1366,768)" fullname="UI943GarageLayoutTests.CameraViewportMatchesLetterboxedGarageOpening(1366,768)" methodname="CameraViewportMatchesLetterboxedGarageOpening" classname="UI943GarageLayoutTests" runstate="Runnable" seed="1619695325" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.000051" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1691" name="CameraViewportMatchesLetterboxedGarageOpening(1024,768)" fullname="UI943GarageLayoutTests.CameraViewportMatchesLetterboxedGarageOpening(1024,768)" methodname="CameraViewportMatchesLetterboxedGarageOpening" classname="UI943GarageLayoutTests" runstate="Runnable" seed="670500101" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.000032" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1692" name="CameraViewportMatchesLetterboxedGarageOpening(768,1024)" fullname="UI943GarageLayoutTests.CameraViewportMatchesLetterboxedGarageOpening(768,1024)" methodname="CameraViewportMatchesLetterboxedGarageOpening" classname="UI943GarageLayoutTests" runstate="Runnable" seed="1039742118" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.000030" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1693" name="CameraViewportMatchesLetterboxedGarageOpening(3840,2160)" fullname="UI943GarageLayoutTests.CameraViewportMatchesLetterboxedGarageOpening(3840,2160)" methodname="CameraViewportMatchesLetterboxedGarageOpening" classname="UI943GarageLayoutTests" runstate="Runnable" seed="231820894" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.000049" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+        </test-suite>
+        <test-suite type="ParameterizedMethod" id="1700" name="GarageOverlaysCannotReceivePlacementClicks" fullname="UI943GarageLayoutTests.GarageOverlaysCannotReceivePlacementClicks" classname="UI943GarageLayoutTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.002587" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1695" name="GarageOverlaysCannotReceivePlacementClicks(1920,1080)" fullname="UI943GarageLayoutTests.GarageOverlaysCannotReceivePlacementClicks(1920,1080)" methodname="GarageOverlaysCannotReceivePlacementClicks" classname="UI943GarageLayoutTests" runstate="Runnable" seed="1221293249" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.001277" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1696" name="GarageOverlaysCannotReceivePlacementClicks(1366,768)" fullname="UI943GarageLayoutTests.GarageOverlaysCannotReceivePlacementClicks(1366,768)" methodname="GarageOverlaysCannotReceivePlacementClicks" classname="UI943GarageLayoutTests" runstate="Runnable" seed="99409321" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.000048" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1697" name="GarageOverlaysCannotReceivePlacementClicks(1024,768)" fullname="UI943GarageLayoutTests.GarageOverlaysCannotReceivePlacementClicks(1024,768)" methodname="GarageOverlaysCannotReceivePlacementClicks" classname="UI943GarageLayoutTests" runstate="Runnable" seed="365916195" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.000032" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1698" name="GarageOverlaysCannotReceivePlacementClicks(768,1024)" fullname="UI943GarageLayoutTests.GarageOverlaysCannotReceivePlacementClicks(768,1024)" methodname="GarageOverlaysCannotReceivePlacementClicks" classname="UI943GarageLayoutTests" runstate="Runnable" seed="1362647342" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.000031" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1699" name="GarageOverlaysCannotReceivePlacementClicks(3840,2160)" fullname="UI943GarageLayoutTests.GarageOverlaysCannotReceivePlacementClicks(3840,2160)" methodname="GarageOverlaysCannotReceivePlacementClicks" classname="UI943GarageLayoutTests" runstate="Runnable" seed="1115223983" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.000049" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+        </test-suite>
+      </test-suite>
+      <test-suite type="TestFixture" id="1701" name="UI943NoticeLayoutTests" fullname="UI943NoticeLayoutTests" classname="UI943NoticeLayoutTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.001882" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="ParameterizedMethod" id="1707" name="ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls" fullname="UI943NoticeLayoutTests.ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls" classname="UI943NoticeLayoutTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.001478" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1702" name="ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls(1920,1080)" fullname="UI943NoticeLayoutTests.ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls(1920,1080)" methodname="ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls" classname="UI943NoticeLayoutTests" runstate="Runnable" seed="355346962" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.000573" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1703" name="ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls(1366,768)" fullname="UI943NoticeLayoutTests.ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls(1366,768)" methodname="ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls" classname="UI943NoticeLayoutTests" runstate="Runnable" seed="1620047586" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.000043" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1704" name="ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls(1024,768)" fullname="UI943NoticeLayoutTests.ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls(1024,768)" methodname="ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls" classname="UI943NoticeLayoutTests" runstate="Runnable" seed="1255601009" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.000032" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1705" name="ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls(768,1024)" fullname="UI943NoticeLayoutTests.ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls(768,1024)" methodname="ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls" classname="UI943NoticeLayoutTests" runstate="Runnable" seed="1486744334" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.000031" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1706" name="ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls(3840,2160)" fullname="UI943NoticeLayoutTests.ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls(3840,2160)" methodname="ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls" classname="UI943NoticeLayoutTests" runstate="Runnable" seed="690978373" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.000037" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+        </test-suite>
+      </test-suite>
+      <test-suite type="TestFixture" id="1708" name="UI943PortraitMenuTests" fullname="UI943PortraitMenuTests" classname="UI943PortraitMenuTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.003093" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1715" name="PortraitCardsAndActionsStayInsideCanvasWithoutCollisions" fullname="UI943PortraitMenuTests.PortraitCardsAndActionsStayInsideCanvasWithoutCollisions" methodname="PortraitCardsAndActionsStayInsideCanvasWithoutCollisions" classname="UI943PortraitMenuTests" runstate="Runnable" seed="2017509881" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.001104" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="1714" name="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu" fullname="UI943PortraitMenuTests.PortraitLayoutIsSelectedOnlyForPortraitReadyMenu" classname="UI943PortraitMenuTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.001520" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1709" name="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(768,1024,True)" fullname="UI943PortraitMenuTests.PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(768,1024,True)" methodname="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu" classname="UI943PortraitMenuTests" runstate="Runnable" seed="458067753" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.000743" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1710" name="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(1024,768,False)" fullname="UI943PortraitMenuTests.PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(1024,768,False)" methodname="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu" classname="UI943PortraitMenuTests" runstate="Runnable" seed="1018267240" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.000072" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1711" name="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(1366,768,False)" fullname="UI943PortraitMenuTests.PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(1366,768,False)" methodname="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu" classname="UI943PortraitMenuTests" runstate="Runnable" seed="149262711" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.000058" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1712" name="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(1920,1080,False)" fullname="UI943PortraitMenuTests.PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(1920,1080,False)" methodname="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu" classname="UI943PortraitMenuTests" runstate="Runnable" seed="1395155054" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.000040" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1713" name="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(3840,2160,False)" fullname="UI943PortraitMenuTests.PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(3840,2160,False)" methodname="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu" classname="UI943PortraitMenuTests" runstate="Runnable" seed="1471424193" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.000034" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+        </test-suite>
+      </test-suite>
+      <test-suite type="TestFixture" id="1716" name="UI943WeaponStatusTests" fullname="UI943WeaponStatusTests" classname="UI943WeaponStatusTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.003247" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="ParameterizedMethod" id="1723" name="EveryMountedWeaponCanBeReachedByPaging" fullname="UI943WeaponStatusTests.EveryMountedWeaponCanBeReachedByPaging" classname="UI943WeaponStatusTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.001937" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1718" name="EveryMountedWeaponCanBeReachedByPaging(0,1)" fullname="UI943WeaponStatusTests.EveryMountedWeaponCanBeReachedByPaging(0,1)" methodname="EveryMountedWeaponCanBeReachedByPaging" classname="UI943WeaponStatusTests" runstate="Runnable" seed="132443385" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.000597" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1719" name="EveryMountedWeaponCanBeReachedByPaging(1,1)" fullname="UI943WeaponStatusTests.EveryMountedWeaponCanBeReachedByPaging(1,1)" methodname="EveryMountedWeaponCanBeReachedByPaging" classname="UI943WeaponStatusTests" runstate="Runnable" seed="828067403" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.000378" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1720" name="EveryMountedWeaponCanBeReachedByPaging(2,1)" fullname="UI943WeaponStatusTests.EveryMountedWeaponCanBeReachedByPaging(2,1)" methodname="EveryMountedWeaponCanBeReachedByPaging" classname="UI943WeaponStatusTests" runstate="Runnable" seed="1209530334" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.000048" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1721" name="EveryMountedWeaponCanBeReachedByPaging(4,2)" fullname="UI943WeaponStatusTests.EveryMountedWeaponCanBeReachedByPaging(4,2)" methodname="EveryMountedWeaponCanBeReachedByPaging" classname="UI943WeaponStatusTests" runstate="Runnable" seed="1582822595" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.000144" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1722" name="EveryMountedWeaponCanBeReachedByPaging(12,6)" fullname="UI943WeaponStatusTests.EveryMountedWeaponCanBeReachedByPaging(12,6)" methodname="EveryMountedWeaponCanBeReachedByPaging" classname="UI943WeaponStatusTests" runstate="Runnable" seed="376900320" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.000049" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+        </test-suite>
+        <test-case id="1717" name="PagingCyclesAndClampsAfterWeaponsAreLost" fullname="UI943WeaponStatusTests.PagingCyclesAndClampsAfterWeaponsAreLost" methodname="PagingCyclesAndClampsAfterWeaponsAreLost" classname="UI943WeaponStatusTests" runstate="Runnable" seed="686906644" result="Passed" start-time="2026-11-07 07:40:51Z" end-time="2026-11-07 07:40:51Z" duration="0.000715" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[Saving results to: [USER_HOME]/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

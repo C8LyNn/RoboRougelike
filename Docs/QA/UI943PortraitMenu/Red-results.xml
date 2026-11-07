@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="6" result="Failed(Child)" total="6" passed="0" failed="6" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-07 07:37:01Z" end-time="2026-11-07 07:37:01Z" duration="0,0425174">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1436" result="Failed" site="Child" start-time="2026-11-07 07:37:01Z" end-time="2026-11-07 07:37:01Z" duration="0.042517" total="6" passed="0" failed="6" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1786" name="Assembly-CSharp-Editor.dll" fullname="[USER_HOME]/Desktop/Prototypy/RoboRougelike-PlayQA-97f8/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="643" result="Failed" site="Child" start-time="2026-11-07 07:37:01Z" end-time="2026-11-07 07:37:01Z" duration="0.026858" total="6" passed="0" failed="6" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="68232" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestFixture" id="1708" name="UI943PortraitMenuTests" fullname="UI943PortraitMenuTests" classname="UI943PortraitMenuTests" runstate="Runnable" testcasecount="6" result="Failed" site="Child" start-time="2026-11-07 07:37:01Z" end-time="2026-11-07 07:37:01Z" duration="0.021969" total="6" passed="0" failed="6" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-case id="1715" name="PortraitCardsAndActionsStayInsideCanvasWithoutCollisions" fullname="UI943PortraitMenuTests.PortraitCardsAndActionsStayInsideCanvasWithoutCollisions" methodname="PortraitCardsAndActionsStayInsideCanvasWithoutCollisions" classname="UI943PortraitMenuTests" runstate="Runnable" seed="1421339297" result="Failed" start-time="2026-11-07 07:37:01Z" end-time="2026-11-07 07:37:01Z" duration="0.009750" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <failure>
+            <message><![CDATA[  Expected: not null
+  But was:  null
+]]></message>
+            <stack-trace><![CDATA[at UI943PortraitMenuTests.PortraitCardsAndActionsStayInsideCanvasWithoutCollisions () [0x0002f] in [USER_HOME]\Desktop\Prototypy\RoboRougelike-PlayQA-97f8\Assets\Tests\Editor\UI943PortraitMenuTests.cs:24
+]]></stack-trace>
+          </failure>
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="1714" name="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu" fullname="UI943PortraitMenuTests.PortraitLayoutIsSelectedOnlyForPortraitReadyMenu" classname="UI943PortraitMenuTests" runstate="Runnable" testcasecount="5" result="Failed" site="Child" start-time="2026-11-07 07:37:01Z" end-time="2026-11-07 07:37:01Z" duration="0.002753" total="5" passed="0" failed="5" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-case id="1709" name="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(768,1024,True)" fullname="UI943PortraitMenuTests.PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(768,1024,True)" methodname="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu" classname="UI943PortraitMenuTests" runstate="Runnable" seed="317016935" result="Failed" start-time="2026-11-07 07:37:01Z" end-time="2026-11-07 07:37:01Z" duration="0.000632" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <failure>
+              <message><![CDATA[  Pionowe menu potrzebuje czytelnego układu.
+  Expected: not null
+  But was:  null
+]]></message>
+              <stack-trace><![CDATA[at UI943PortraitMenuTests.PortraitLayoutIsSelectedOnlyForPortraitReadyMenu (System.Int32 width, System.Int32 height, System.Boolean expected) [0x00017] in [USER_HOME]\Desktop\Prototypy\RoboRougelike-PlayQA-97f8\Assets\Tests\Editor\UI943PortraitMenuTests.cs:13
+]]></stack-trace>
+            </failure>
+          </test-case>
+          <test-case id="1710" name="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(1024,768,False)" fullname="UI943PortraitMenuTests.PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(1024,768,False)" methodname="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu" classname="UI943PortraitMenuTests" runstate="Runnable" seed="102609823" result="Failed" start-time="2026-11-07 07:37:01Z" end-time="2026-11-07 07:37:01Z" duration="0.000097" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <failure>
+              <message><![CDATA[  Pionowe menu potrzebuje czytelnego układu.
+  Expected: not null
+  But was:  null
+]]></message>
+              <stack-trace><![CDATA[at UI943PortraitMenuTests.PortraitLayoutIsSelectedOnlyForPortraitReadyMenu (System.Int32 width, System.Int32 height, System.Boolean expected) [0x00017] in [USER_HOME]\Desktop\Prototypy\RoboRougelike-PlayQA-97f8\Assets\Tests\Editor\UI943PortraitMenuTests.cs:13
+]]></stack-trace>
+            </failure>
+          </test-case>
+          <test-case id="1711" name="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(1366,768,False)" fullname="UI943PortraitMenuTests.PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(1366,768,False)" methodname="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu" classname="UI943PortraitMenuTests" runstate="Runnable" seed="1931190525" result="Failed" start-time="2026-11-07 07:37:01Z" end-time="2026-11-07 07:37:01Z" duration="0.000071" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <failure>
+              <message><![CDATA[  Pionowe menu potrzebuje czytelnego układu.
+  Expected: not null
+  But was:  null
+]]></message>
+              <stack-trace><![CDATA[at UI943PortraitMenuTests.PortraitLayoutIsSelectedOnlyForPortraitReadyMenu (System.Int32 width, System.Int32 height, System.Boolean expected) [0x00017] in [USER_HOME]\Desktop\Prototypy\RoboRougelike-PlayQA-97f8\Assets\Tests\Editor\UI943PortraitMenuTests.cs:13
+]]></stack-trace>
+            </failure>
+          </test-case>
+          <test-case id="1712" name="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(1920,1080,False)" fullname="UI943PortraitMenuTests.PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(1920,1080,False)" methodname="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu" classname="UI943PortraitMenuTests" runstate="Runnable" seed="390943376" result="Failed" start-time="2026-11-07 07:37:01Z" end-time="2026-11-07 07:37:01Z" duration="0.000065" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <failure>
+              <message><![CDATA[  Pionowe menu potrzebuje czytelnego układu.
+  Expected: not null
+  But was:  null
+]]></message>
+              <stack-trace><![CDATA[at UI943PortraitMenuTests.PortraitLayoutIsSelectedOnlyForPortraitReadyMenu (System.Int32 width, System.Int32 height, System.Boolean expected) [0x00017] in [USER_HOME]\Desktop\Prototypy\RoboRougelike-PlayQA-97f8\Assets\Tests\Editor\UI943PortraitMenuTests.cs:13
+]]></stack-trace>
+            </failure>
+          </test-case>
+          <test-case id="1713" name="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(3840,2160,False)" fullname="UI943PortraitMenuTests.PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(3840,2160,False)" methodname="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu" classname="UI943PortraitMenuTests" runstate="Runnable" seed="262677650" result="Failed" start-time="2026-11-07 07:37:01Z" end-time="2026-11-07 07:37:01Z" duration="0.000065" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <failure>
+              <message><![CDATA[  Pionowe menu potrzebuje czytelnego układu.
+  Expected: not null
+  But was:  null
+]]></message>
+              <stack-trace><![CDATA[at UI943PortraitMenuTests.PortraitLayoutIsSelectedOnlyForPortraitReadyMenu (System.Int32 width, System.Int32 height, System.Boolean expected) [0x00017] in [USER_HOME]\Desktop\Prototypy\RoboRougelike-PlayQA-97f8\Assets\Tests\Editor\UI943PortraitMenuTests.cs:13
+]]></stack-trace>
+            </failure>
+            <output><![CDATA[Saving results to: [USER_HOME]/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+          </test-case>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
