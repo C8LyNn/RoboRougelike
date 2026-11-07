@@ -5,6 +5,22 @@ using UnityEngine;
 
 public sealed class R4ColliderStageTests
 {
+    [Test] public void DiagnoseDisabledChildColliderRigidbodyAssociation()
+    {
+        var owner=new GameObject("disabled collider diagnostic");
+        var child=new GameObject("child");child.transform.SetParent(owner.transform,false);
+        var body=owner.AddComponent<Rigidbody>();var collider=child.AddComponent<BoxCollider>();
+        try
+        {
+            Assert.That(collider.attachedRigidbody,Is.SameAs(body),"Enabled baseline");
+            collider.enabled=false;
+            TestContext.WriteLine("Disabled attached Rigidbody: "+(collider.attachedRigidbody==null?"null":"present"));
+            Assert.That(child.GetComponentInParent<Rigidbody>(),Is.SameAs(body),"Transform parent remains correct");
+            collider.enabled=true;
+            Assert.That(collider.attachedRigidbody,Is.SameAs(body),"Re-enabled association");
+        }
+        finally{Object.DestroyImmediate(owner);}
+    }
     [Test] public void StagedArchCollidersRemainDisabledAndKeepOriginalCollider()
     {
         var json=File.ReadAllText("Tools/R4Blocks/generated/R4BlockColliderMeshes.json");
@@ -20,7 +36,12 @@ public sealed class R4ColliderStageTests
             {
                 Assert.That(item.enabled,Is.False);Assert.That(item.convex,Is.True);
                 Assert.That(item.sharedMesh,Is.Not.Null);Assert.That(item.transform.parent,Is.SameAs(owner.transform));
+                // Unity does not associate a disabled collider with a physics body.
+                // Verify the association only while this test temporarily enables it.
+                Assert.That(item.GetComponentInParent<Rigidbody>(),Is.SameAs(body));
+                item.enabled=true;
                 Assert.That(item.attachedRigidbody,Is.SameAs(body));
+                item.enabled=false;
             }
             stage.Dispose();Assert.That(stage.IsDisposed,Is.True);Assert.That(original.enabled,Is.True);
         }

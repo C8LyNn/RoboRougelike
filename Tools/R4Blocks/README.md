@@ -79,3 +79,5 @@ dotnet .\Tools\R4Blocks\CatalogSmoke\bin\Release\net8.0\CatalogSmoke.dll
 ```
 
 This is a source-data check, not a Unity test or proof of physical geometry, gameplay integration, collision behavior or save compatibility. As of this change the shape catalog and socket policy remain disconnected from the actual garage and saved vehicles.
+
+`GeometrySmoke` separately compiles the real BUILD001 socket geometry and R4 adapter using lightweight identity-pose stand-ins. It exercises source definitions and selected full/partial wheel contacts. It deliberately rejects nonidentity rotations and does not run Unity or physics. Native results are recorded in `Docs/R4_NATIVE_VERIFICATION_20261107.md`.
