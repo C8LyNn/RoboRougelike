@@ -19,8 +19,8 @@ namespace RoboRougelike.R1
         GUIStyle garageTabStyle;
         static readonly R3PartKind[] shopKinds={R3PartKind.Armor,R3PartKind.Wheel,R3PartKind.Gun,R3PartKind.Suspension,
             R3PartKind.Booster,R3PartKind.JumpDrive,R3PartKind.Blink,R3PartKind.Gyroscope,
-            R3PartKind.OmniDrive,R3PartKind.MagneticGrapple,R3PartKind.HoverEngine,R3PartKind.CrawlerTrack,R3PartKind.DirectionalShield,R3PartKind.PointDefense,R3PartKind.StructuralScanner,R3PartKind.ScannerPulse,R3PartKind.IndependentSteering,R3PartKind.Battery,R3PartKind.RepairPulse,R3PartKind.DrivePower};
-        static readonly string[] shopNames={"Pancerz","Koło","Broń","Zawieszenie","Booster","Skok","Blink","Żyroskop","Omni","Zaczep","Hover","Gąsienica","Tarcza","Obrona pkt.","Skan struktury","Impuls skanera","Skręt osi","Bateria +100","Impuls naprawczy","Silnik kół"};
+            R3PartKind.OmniDrive,R3PartKind.MagneticGrapple,R3PartKind.HoverEngine,R3PartKind.CrawlerTrack,R3PartKind.DirectionalShield,R3PartKind.PointDefense,R3PartKind.StructuralScanner,R3PartKind.ScannerPulse,R3PartKind.IndependentSteering,R3PartKind.Battery,R3PartKind.RepairPulse,R3PartKind.DrivePower,R3PartKind.EnergyRegenerator};
+        static readonly string[] shopNames={"Pancerz","Koło","Broń","Zawieszenie","Booster","Skok","Blink","Żyroskop","Omni","Zaczep","Hover","Gąsienica","Tarcza","Obrona pkt.","Skan struktury","Impuls skanera","Skręt osi","Bateria +100","Impuls naprawczy","Silnik kół","Regenerator energii"};
         static readonly string[] driveNames={"Koła","Gąsienice","Omni","Hover"};
         void DrawMovementCatalog(R1RunController run)
         {
@@ -112,6 +112,8 @@ namespace RoboRougelike.R1
                 GUI.Label(new Rect(30,355,280,100),"V — impuls naprawczy\n15 energii • działa 5 s • odnowienie 15 s\nLeczy uszkodzone części,\nnie odbudowuje zniszczonych.",small);
             else if(selected==R3PartKind.DrivePower)
                 GUI.Label(new Rect(30,355,280,100),"Silnik kół wspomaga\nprzyspieszanie i skręcanie.\nZajmuje 25 maks. energii.\nPotrzebuje kół na podłożu.",small);
+            else if(selected==R3PartKind.EnergyRegenerator)
+                GUI.Label(new Rect(30,355,280,100),"Regenerator: +5 energii/s.\nNa postoju regeneracja ×4.\nZajmuje 25 maks. energii.\nDziała po zamontowaniu.",small);
             else if(selected==R3PartKind.PointDefense)
                 GUI.Label(new Rect(30,355,280,100),"Obrona 1×1×1 • automat 24 m\n40 nabojów • T przeładuj (3 s)\nChroni przed pociskami i rakietami.\nWymaga wolnej linii strzału.",small);
             else if(selected==R3PartKind.DirectionalShield)

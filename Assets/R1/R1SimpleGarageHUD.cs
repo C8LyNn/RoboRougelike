@@ -22,11 +22,13 @@ namespace RoboRougelike.R1
                 .OrderByDescending(p=>p.Health).FirstOrDefault();
             if(part!=null){garage.ChooseInventory(part.Id);garage.Message=kind==R3PartKind.RepairPulse?
                 "Kliknij pojazd, aby zamontować. Podczas jazdy V naprawia żywe części: 15 energii, 5 s.":
-                kind==R3PartKind.DrivePower?"Silnik wspomaga koła i zajmuje 25 maks. energii. Kliknij pojazd, aby zamontować.":"Kliknij pojazd, aby zamontować część.";}
+                kind==R3PartKind.DrivePower?"Silnik wspomaga koła i zajmuje 25 maks. energii. Kliknij pojazd, aby zamontować.":
+                kind==R3PartKind.EnergyRegenerator?"Regenerator: +5 energii/s, −25 maks. energii. Kliknij pojazd, aby zamontować.":"Kliknij pojazd, aby zamontować część.";}
             else {garage.SelectedInventoryId=null;garage.SetTool(R41GarageTool.Mount);
                 garage.Message=kind==R3PartKind.RepairPulse?
                     "Impuls naprawczy: V, 15 energii, 5 s. Kup część lub otwórz szczegóły.":
-                    kind==R3PartKind.DrivePower?"Silnik wspomaga koła; zajmuje 25 maks. energii. Kup część lub otwórz szczegóły.":"Brak sprawnej części w magazynie. Kup nową lub otwórz szczegóły.";}
+                    kind==R3PartKind.DrivePower?"Silnik wspomaga koła; zajmuje 25 maks. energii. Kup część lub otwórz szczegóły.":
+                    kind==R3PartKind.EnergyRegenerator?"Regenerator: +5 energii/s, −25 maks. energii. Kup część lub otwórz szczegóły.":"Brak sprawnej części w magazynie. Kup nową lub otwórz szczegóły.";}
         }
 
         void DrawQuickPartRow(R1RunController run,R3PartKind kind,R4WeaponKind weapon,string bonus,string name,int row,float width)
