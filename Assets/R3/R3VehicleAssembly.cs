@@ -223,6 +223,8 @@ namespace RoboRougelike.R3
             if(model.Parts.Any(p=>p.Kind>=R3PartKind.Booster&&p.Kind<=R3PartKind.CrawlerTrack))
                 root.AddComponent<RoboRougelike.MOVSeries.MOVSeriesVehicleAdapter>().Configure(assembly);
             root.AddComponent<R3MountedBonusEffects>().Configure(assembly,vehicle,stats);
+            if(assembly.Parts.Any(p=>p.Kind==R3PartKind.RepairPulse))
+                root.AddComponent<R3RepairPulse>().Configure(assembly);
             foreach(var part in assembly.Parts)
                 if(part.Kind==R3PartKind.Gun&&part.Weapon==R4WeaponKind.Shotgun)
                     part.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLShotgunBinding>()

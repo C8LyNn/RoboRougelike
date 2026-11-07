@@ -8,7 +8,7 @@ using RoboRougelike.R1;
 namespace RoboRougelike.R3
 {
     // Append new values: checkpoints store these numeric IDs.
-    public enum R3PartKind { Armor, Wheel, Gun, Core, Suspension, Booster, JumpDrive, Blink, Gyroscope, OmniDrive, MagneticGrapple, HoverEngine, CrawlerTrack, BonusModule, DirectionalShield, PointDefense, StructuralScanner, ScannerPulse, IndependentSteering, Battery }
+    public enum R3PartKind { Armor, Wheel, Gun, Core, Suspension, Booster, JumpDrive, Blink, Gyroscope, OmniDrive, MagneticGrapple, HoverEngine, CrawlerTrack, BonusModule, DirectionalShield, PointDefense, StructuralScanner, ScannerPulse, IndependentSteering, Battery, RepairPulse }
     public enum R3DriveKind { Wheels, Tracks, Omni, Hover }
     public enum R3VehicleKind { Standard, Light, Heavy }
     [Serializable]
@@ -58,7 +58,7 @@ namespace RoboRougelike.R3
             R3PartKind.Booster=>35, R3PartKind.JumpDrive=>45, R3PartKind.Blink=>60,
             R3PartKind.Gyroscope=>30, R3PartKind.OmniDrive=>40, R3PartKind.MagneticGrapple=>45,
             R3PartKind.HoverEngine=>35, R3PartKind.CrawlerTrack=>45,
-            R3PartKind.BonusModule=>60,R3PartKind.DirectionalShield=>60,R3PartKind.PointDefense=>70,R3PartKind.StructuralScanner=>40,R3PartKind.ScannerPulse=>30,R3PartKind.IndependentSteering=>45,R3PartKind.Battery=>25, _=>ArmorCost };
+            R3PartKind.BonusModule=>60,R3PartKind.DirectionalShield=>60,R3PartKind.PointDefense=>70,R3PartKind.StructuralScanner=>40,R3PartKind.ScannerPulse=>30,R3PartKind.IndependentSteering=>45,R3PartKind.Battery=>25,R3PartKind.RepairPulse=>50, _=>ArmorCost };
     }
     public sealed partial class R3VehicleModel
     {
@@ -233,7 +233,7 @@ namespace RoboRougelike.R3
             if (kind == R3PartKind.Suspension && Parts.Count(p => p.Kind == kind) >= 8) return "Limit 8 modułów zawieszenia.";
             int limit=kind switch {R3PartKind.Booster=>4,R3PartKind.JumpDrive=>2,R3PartKind.Blink=>1,
                 R3PartKind.Gyroscope=>2,R3PartKind.MagneticGrapple=>2,R3PartKind.DirectionalShield=>2,R3PartKind.PointDefense=>2,R3PartKind.StructuralScanner=>1,R3PartKind.ScannerPulse=>1,R3PartKind.IndependentSteering=>1,_=>8};
-            if(kind>=R3PartKind.Booster&&kind!=R3PartKind.Battery&&Parts.Count(p=>p.Kind==kind)>=limit)return "Limit modułów: "+limit+".";
+            if(kind>=R3PartKind.Booster&&kind!=R3PartKind.Battery&&kind!=R3PartKind.RepairPulse&&Parts.Count(p=>p.Kind==kind)>=limit)return "Limit modułów: "+limit+".";
             if(kind==R3PartKind.CrawlerTrack&&cell.x==0)return "Gąsienicę zamontuj po lewej lub prawej stronie.";
             if (!HasAliveExternalNeighbour(cell,kind,rotation,contactMask))
                 return "Brak zgodnych punktów mocowania ze sprawną konstrukcją.";
