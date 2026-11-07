@@ -89,6 +89,7 @@ namespace RoboRougelike.R1
             }
             GUI.color=original;
         }
+        private static Rect DefensePanelRect(int count) => new Rect(18,206,610,38+25*count);
         void DrawFeedback()
         {
             var run=R1RunController.Instance;
@@ -129,11 +130,12 @@ namespace RoboRougelike.R1
                 int defenseRow=0;
                 if(defenses.Length+shields.Length>0)
                 {
-                    Panel(new Rect(18,184,610,38+25*(defenses.Length+shields.Length)));GUI.Label(new Rect(33,188,580,25),"OBRONA",heading);
+                    var defensePanel=DefensePanelRect(defenses.Length+shields.Length);
+                    Panel(defensePanel);GUI.Label(new Rect(33,defensePanel.y+4,580,25),"OBRONA",heading);
                     foreach(var shield in shields)
-                    {GUI.Label(new Rect(33,219+defenseRow*25,580,25),$"DEF-001 • {shield.Generator.Charge:0}/100 • "+(shield.Generator.Operational?"ON":"OFF"),small);defenseRow++;}
+                    {GUI.Label(new Rect(33,defensePanel.y+35+defenseRow*25,580,25),$"DEF-001 • {shield.Generator.Charge:0}/100 • "+(shield.Generator.Operational?"ON":"OFF"),small);defenseRow++;}
                     foreach(var defense in defenses)
-                    {GUI.Label(new Rect(33,219+defenseRow*25,580,25),$"DEF-002 • {defense.State.Ammo}/40 • "+(defense.Controller.IsOperational?"ON":"OFF")+" • T przeładuj",small);defenseRow++;}
+                    {GUI.Label(new Rect(33,defensePanel.y+35+defenseRow*25,580,25),$"DEF-002 • {defense.State.Ammo}/40 • "+(defense.Controller.IsOperational?"ON":"OFF")+" • T przeładuj",small);defenseRow++;}
                 }
             }
             var feedback=Object.FindFirstObjectByType<R6CombatFeedback>();if(feedback==null)return;
