@@ -24,6 +24,8 @@ namespace RoboRougelike.R1
         public bool Paused { get; private set; }
         public string Error { get; private set; }
         public R3VehicleModel VehicleModel { get; private set; }
+        public R1TechnologyProgress Technology { get; private set; }
+        public string TechnologyMessage { get; private set; }
         public R1RunStats ActiveStats => Player?.GetComponent<R3MountedBonusEffects>()?.EffectiveStats??Progress?.Stats;
         public R3VehicleKind SelectedVehicle { get; private set; }
         public R3GarageView Garage { get; private set; }
@@ -52,6 +54,7 @@ namespace RoboRougelike.R1
 
         private void Start()
         {
+            Technology=new R1TechnologyProgress(R1TechnologyProgress.DefaultPath);
             RoboRougelike.VFX001Integration.Vfx001R6LiveBridge.EnsureFor(this);
             var sourceDefinition = Resources.Load<R1RunDefinition>("R1/Run");
             Definition = sourceDefinition != null ? Instantiate(sourceDefinition) : null;
@@ -149,12 +152,22 @@ namespace RoboRougelike.R1
             if(Transitioning||VehicleModel==null||!VehicleModel.CanDeploy||!Progress.LeaveGarage())return false;
             Garage.Close();SetSimulation(false);return true;
         }
+        public bool CanBuyTechnology(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic) =>
+            SandboxWorkshop||Technology==null||Technology.IsUnlocked(kind,weapon)||
+            (VehicleModel!=null&&VehicleModel.Parts.Concat(VehicleModel.Inventory).Any(p=>p.Kind==kind&&(kind!=R3PartKind.Gun||p.Weapon==weapon)));
+        public void DiscoverEnemyTechnology(System.Collections.Generic.IEnumerable<R4SalvageItem> parts)
+        {
+            if(SandboxWorkshop||Progress?.State!=R1RunState.Combat||Technology==null||parts==null)return;
+            int count=Technology.Discover(parts.Select(p=>p.ToPart()));
+            if(count>0)TechnologyMessage=$"Odkryto {count} nowych technologii broni.";
+            if(Technology.Error!=null)TechnologyMessage=Technology.Error;
+        }
         public bool GaragePurchase(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic) =>
-            !Transitioning&&Progress?.State==R1RunState.Garage&&VehicleModel!=null&&VehicleModel.PurchaseToInventory(kind,weapon);
+            !Transitioning&&Progress?.State==R1RunState.Garage&&VehicleModel!=null&&CanBuyTechnology(kind,weapon)&&VehicleModel.PurchaseToInventory(kind,weapon);
         public bool GarageBuy(Vector3Int cell,R3PartKind kind,Vector3Int rotation=default) =>
-            EditGarage(()=>VehicleModel.Buy(cell,kind,R4WeaponKind.Basic,rotation));
+            CanBuyTechnology(kind)&&EditGarage(()=>VehicleModel.Buy(cell,kind,R4WeaponKind.Basic,rotation));
         public bool GarageBuyWeapon(Vector3Int cell,R4WeaponKind kind,Vector3Int rotation=default) =>
-            EditGarage(()=>VehicleModel.Buy(cell,R3PartKind.Gun,kind,rotation));
+            CanBuyTechnology(R3PartKind.Gun,kind)&&EditGarage(()=>VehicleModel.Buy(cell,R3PartKind.Gun,kind,rotation));
         public bool GarageMount(string id,Vector3Int cell) =>
             EditGarage(()=>VehicleModel.Mount(id,cell));
         public bool GarageMount(string id,Vector3Int cell,Vector3Int rotation) =>
@@ -238,7 +251,7 @@ namespace RoboRougelike.R1
             yield return null;
             // Preserve only modifiers from currently mounted, operational bonus modules.
             Player.Apply(ActiveStats??Progress.Stats);
-            ResetRecoveryForEncounter();Salvage=new R4SalvageLedger(3);
+            ResetRecoveryForEncounter();TechnologyMessage=Technology?.Error;Salvage=new R4SalvageLedger(3);
             if(raceRequested)BeginCheckpointRace();
             else if(roadRequested)BeginRoadChallenge();
             else if(reactorRequested)BeginReactorActivity();

@@ -80,7 +80,8 @@ namespace RoboRougelike.R1
             if(rewardInventoryOpen){DrawRewardInventory(run);return;}
             GUI.Label(new Rect(45,30,1190,60),run.LastActivityWasReactor?"ZWYCIĘSTWO • REAKTOR OBRONIONY":"ZWYCIĘSTWO • WYBÓR NAGRÓD",title);
             GUI.Label(new Rect(45,97,1190,50),
-                $"Wybierz moduł i jeden zestaw z wraków. +{run.LastScrapReward} Z za walkę.",body);
+                $"Wybierz moduł i jeden zestaw z wraków. +{run.LastScrapReward} Z za walkę."+
+                (string.IsNullOrEmpty(run.TechnologyMessage)?"":"\n"+run.TechnologyMessage),body);
             GUI.Label(new Rect(45,155,355,32),"MODUŁ BONUSOWY • 1 Z 3",heading);
             GUI.Label(new Rect(455,155,765,32),"ODZYSK • WYBIERZ 1 ZESTAW",heading);
 
@@ -196,8 +197,9 @@ namespace RoboRougelike.R1
             }
             GUI.EndScrollView();GUI.backgroundColor=Color.white;
             int price=model.Price(kind,weapon);
-            GUI.enabled=kind!=R3PartKind.BonusModule&&model.Scrap>=price&&model.Inventory.Count<R3VehicleModel.InventoryCapacity;
-            if(GUI.Button(new Rect(970,340,280,40),$"Kup do magazynu — {price} Z",compactButton))
+            bool unlocked=run.CanBuyTechnology(kind,weapon);
+            GUI.enabled=unlocked&&kind!=R3PartKind.BonusModule&&model.Scrap>=price&&model.Inventory.Count<R3VehicleModel.InventoryCapacity;
+            if(GUI.Button(new Rect(970,340,280,40),unlocked?$"Kup do magazynu — {price} Z":"Pokonaj wroga z tą bronią",compactButton))
             {
                 if(run.GaragePurchase(kind,weapon))
                 {var purchased=model.Inventory.Last();garage.ChooseInventory(purchased.Id);catalogOpen=false;garage.Message="Kupiono część. Kliknij pojazd, aby ją zamontować.";}

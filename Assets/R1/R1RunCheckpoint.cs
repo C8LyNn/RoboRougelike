@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using UnityEngine;
@@ -43,11 +44,16 @@ namespace RoboRougelike.R1
         public static void Write(string path,R1RunCheckpoint document)
         {
             if(string.IsNullOrWhiteSpace(path)||document==null)throw new ArgumentException("Niepoprawny zapis.");
+            WritePayload(path,JsonUtility.ToJson(document));
+        }
+        // Meta progression shares this same atomic, checksummed disk writer.
+        internal static void WritePayload(string path,string payload)
+        {
+            if(string.IsNullOrWhiteSpace(path)||string.IsNullOrEmpty(payload))throw new ArgumentException("Niepoprawny zapis.");
             string directory=Path.GetDirectoryName(path);Directory.CreateDirectory(directory);
             string temporary=path+"."+Guid.NewGuid().ToString("N")+".tmp";
             try
             {
-                string payload=JsonUtility.ToJson(document);
                 File.WriteAllText(temporary,JsonUtility.ToJson(new Envelope{payload=payload,sha256=Hash(payload)}));
                 if(File.Exists(path))File.Replace(temporary,path,null);else File.Move(temporary,path);
             }
@@ -55,15 +61,19 @@ namespace RoboRougelike.R1
         }
         public static R1RunCheckpoint Read(string path)
         {
+            var document=JsonUtility.FromJson<R1RunCheckpoint>(ReadPayload(path));
+            if(document==null||document.version!=1)throw new InvalidDataException("Nieobsługiwana wersja zapisu.");
+            return document;
+        }
+        internal static string ReadPayload(string path)
+        {
             var file=new FileInfo(path);
             if(!file.Exists||file.Length<=0||file.Length>4*1024*1024)throw new InvalidDataException("Brak zapisu lub niepoprawny rozmiar.");
             var envelope=JsonUtility.FromJson<Envelope>(File.ReadAllText(path));
             if(envelope==null||string.IsNullOrEmpty(envelope.payload)||string.IsNullOrEmpty(envelope.sha256)||
                 !string.Equals(Hash(envelope.payload),envelope.sha256,StringComparison.Ordinal))
                 throw new InvalidDataException("Uszkodzony zapis lub niezgodna suma kontrolna.");
-            var document=JsonUtility.FromJson<R1RunCheckpoint>(envelope.payload);
-            if(document==null||document.version!=1)throw new InvalidDataException("Nieobsługiwana wersja zapisu.");
-            return document;
+            return envelope.payload;
         }
     }
     public sealed partial class R1RunController
@@ -98,6 +108,9 @@ namespace RoboRougelike.R1
                 var kind=(R3VehicleKind)data.vehicle;
                 if(!R3VehicleModel.TryRestoreCheckpoint(data.model,kind,Definition.GaragePrices,Time.time,out var restoredModel,out var error))
                     throw new InvalidDataException(error);
+                // Legacy owned weapons remain purchasable after loading old saves.
+                Technology?.Discover(restoredModel.Parts.Concat(restoredModel.Inventory));
+                if(Technology?.Error!=null)TechnologyMessage=Technology.Error;
                 var restoredPlan=new R5RunPlan(Definition.RouteStages,data.seed);
                 var player=R3VehicleAssembly.Build(restoredModel,restoredProgress.Stats,palette,new Vector3(0,.7f,-22),Quaternion.identity);
                 Progress=restoredProgress;VehicleModel=restoredModel;Plan=restoredPlan;SelectedVehicle=kind;RequestedSeed=data.seed;runId=data.runId;
