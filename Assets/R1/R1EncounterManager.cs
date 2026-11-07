@@ -13,7 +13,7 @@ namespace RoboRougelike.R1
         public bool Cleared => enemies.Count > 0 && AliveCount == 0;
 
         public void Spawn(P12PipelineSafeEnemyTurret template, Transform player,
-            R1EncounterDefinition definition,RoboRougelike.R4.R4SalvageLedger salvage=null,string encounterId="",Vector3[] spawnPositions=null)
+            R1EncounterDefinition definition,RoboRougelike.R4.R4SalvageLedger salvage=null,string encounterId="",Vector3[] spawnPositions=null,int batteryTier=1)
         {
             if(spawnPositions!=null&&spawnPositions.Length<definition.SpawnCount)
                 throw new System.ArgumentException("Insufficient generated enemy spawn positions");
@@ -38,7 +38,7 @@ namespace RoboRougelike.R1
                 var energy=enemy.GetComponent<RoboRougelike.R3.VehicleEnergyBank>();
                 if(energy==null)energy=enemy.gameObject.AddComponent<RoboRougelike.R3.VehicleEnergyBank>();
                 energy.ConfigureEnemy(enemy.Core);
-                if(i==count-1)enemy.EquipBattery();
+                if(i==count-1)enemy.EquipBattery(batteryTier);
                 enemy.ConfigureMovement(definition.MoveSpeed, definition.PreferredDistance, definition.StrafeStrength);
                 enemy.gameObject.AddComponent<EnemySelfDestruct>().Configure(enemy,player);
                 // One real shotgun escort on larger encounters; its actual equipment enters salvage.
@@ -61,6 +61,7 @@ namespace RoboRougelike.R1
                 if(definition.SpawnVariant(i)==RoboRougelike.R5.R5EnemyVariant.Normal&&enemy.EquipAdditionalGun())
                     enemy.GetComponent<RoboRougelike.R6.R6VehicleDrive>()?.RefreshParts();
                 RoboRougelike.WeaponIntegration.RRLEmpVehicleAdapter.Configure(enemy.transform);
+                energy.Refresh();energy.Recharge(energy.Maximum);
                 enemies.Add(enemy);
             }
         }

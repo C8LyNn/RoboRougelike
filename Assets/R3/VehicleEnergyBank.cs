@@ -64,7 +64,7 @@ namespace RoboRougelike.R3
             }
             else if(enemyCore!=null)
             {
-                var batteries=GetComponentsInChildren<VehicleEnergyBattery>().Count(b=>b.IsAvailable(transform));
+                var batteries=GetComponentsInChildren<VehicleEnergyBattery>().Where(b=>b.IsAvailable(transform)).Sum(b=>R3VehicleModel.TierEffectUnits(b.Tier));
                 var passive=GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLShieldBinding>()
                     .Count(s=>s.Device!=null&&s.Device.HardwareAvailable);
                 state.SetAdditionalPassiveReservation(0);
@@ -89,6 +89,8 @@ namespace RoboRougelike.R3
     /// <summary>Marks an enemy's real damageable battery, not a second energy pool.</summary>
     public sealed class VehicleEnergyBattery : MonoBehaviour
     {
+        public int Tier {get;private set;}=1;
+        public void Configure(R3PartState state){Tier=R3VehicleModel.NormalizedTier(state?.Tier??1);}
         public bool IsAvailable(Transform owner)
         {
             var hp=GetComponent<P12PipelineSafeDamageable>();

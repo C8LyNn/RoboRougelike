@@ -60,18 +60,20 @@ namespace RogueMachine.P12PipelineSafe
         // Equipment data belongs to the enemy, independently of temporary debris views.
         private R3PartState packageWeaponState,packageShieldState,packagePointDefenseState,packageBatteryState;
         private P12PipelineSafeDamageable packageBattery;
-        public bool EquipBattery()
+        public bool EquipBattery() => EquipBattery(1);
+        public bool EquipBattery(int tier)
         {
-            if(packageBattery!=null||IsDefeated||weaponBlock==null)return false;
+            if(tier<1||tier>3||packageBattery!=null||IsDefeated||weaponBlock==null)return false;
             var item=GameObject.CreatePrimitive(PrimitiveType.Cube);item.name="Bateria przeciwnika +100";
             item.transform.SetParent(transform,false);item.transform.localPosition=new Vector3(0,1.65f,-1.65f);
             item.transform.localScale=Vector3.one*R41PartGeometry.BlockSize;
             item.GetComponent<Renderer>().sharedMaterial=weaponBlock.GetComponent<Renderer>().sharedMaterial;
             packageBatteryState=new R3PartState(new Vector3Int(0,3,-3),R3PartKind.Battery)
-                {Id=EquipmentInstanceId("battery"),Source=name+" / bateria"};
+                {Id=EquipmentInstanceId("battery"),Source=name+" / bateria",Tier=tier};
             RoboRougelike.WeaponIntegration.RRLEnemyDeviceMount.Attach(item,transform,packageBatteryState);
-            packageBattery=item.AddComponent<P12PipelineSafeDamageable>();packageBattery.Configure(100,true);
-            packageBattery.SetBaseTint(new Color(.2f,.9f,.35f));item.AddComponent<VehicleEnergyBattery>();
+            packageBattery=item.AddComponent<P12PipelineSafeDamageable>();packageBattery.Configure(100*R3VehicleModel.TierHealth(tier),true);
+            packageBattery.SetBaseTint(new Color(.2f,.9f,.35f));item.AddComponent<VehicleEnergyBattery>().Configure(packageBatteryState);
+            GetComponent<RoboRougelike.R6.R6VehicleDrive>()?.RefreshParts();
             GetComponent<VehicleEnergyBank>()?.Refresh();return true;
         }
         public bool EquipDirectionalShield()
