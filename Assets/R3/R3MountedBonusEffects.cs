@@ -41,7 +41,8 @@ namespace RoboRougelike.R3
             if(!force&&signature==lastSignature)return;
             lastSignature=signature;active.Clear();active.AddRange(online);
             var stats=baseStats.Copy();
-            foreach(var module in active)stats.Apply(module.UpgradeEffect,module.UpgradeAmount);
+            foreach(var module in active)
+                for(int i=0;i<R3VehicleModel.TierEffectUnits(module.Tier);i++)stats.Apply(module.UpgradeEffect,module.UpgradeAmount);
             EffectiveStats=stats;
             player.Apply(stats);
         }
@@ -51,7 +52,7 @@ namespace RoboRougelike.R3
             lastRepairPulse=Time.time;
             // The legacy 'field repair' bonus had no actual stat implementation.
             // As a physical module it regenerates ALIVE connected parts while operational.
-            int repairModules=active.Count(p=>p.UpgradeEffect==R1UpgradeEffect.Repair);
+            int repairModules=active.Where(p=>p.UpgradeEffect==R1UpgradeEffect.Repair).Sum(p=>R3VehicleModel.TierEffectUnits(p.Tier));
             if(repairModules==0||elapsed<=0)return;
             var state=R1RunController.Instance?.Progress?.State;
             if(state!=R1RunState.Combat&&state!=R1RunState.TestDrive)return;
