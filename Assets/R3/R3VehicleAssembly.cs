@@ -56,7 +56,7 @@ namespace RoboRougelike.R3
                     var direction = point - part.GunPivot.position;
                     if(direction.sqrMagnitude>0.001f) part.GunPivot.rotation = Quaternion.RotateTowards(
                         part.GunPivot.rotation,Quaternion.LookRotation(direction),140*Time.deltaTime);
-                    part.GetComponent<RoboRougelike.R4_1.R4BasicWeaponArt>()?.Sync();
+                    part.GetComponent<RoboRougelike.R4_1.R4WeaponArt>()?.Sync();
                 }
         }
         public void SetContinuousFireHeld(bool held)
@@ -89,7 +89,7 @@ namespace RoboRougelike.R3
         public bool ClearProjectilePath(R3MountedPart part)
         {
             if(part==null||part.Muzzle==null)return false;
-            part.GetComponent<RoboRougelike.R4_1.R4BasicWeaponArt>()?.Sync();
+            part.GetComponent<RoboRougelike.R4_1.R4WeaponArt>()?.Sync();
             float radius=Mathf.Max(.025f,RoboRougelike.WeaponIntegration.RRLAimFeedback.ProjectileRadius(part));
             float range=RoboRougelike.WeaponIntegration.RRLAimFeedback.Range(part,controller);
             return ClearProjectilePath(part,part.Muzzle.forward,range,radius);
@@ -99,7 +99,7 @@ namespace RoboRougelike.R3
             if(part==null||part.Muzzle==null||direction.sqrMagnitude<.000001f||
                range<=0||float.IsNaN(range)||float.IsInfinity(range)||
                radius<=0||float.IsNaN(radius)||float.IsInfinity(radius))return false;
-            part.GetComponent<RoboRougelike.R4_1.R4BasicWeaponArt>()?.Sync();
+            part.GetComponent<RoboRougelike.R4_1.R4WeaponArt>()?.Sync();
             var origin=part.Muzzle.position;
             bool IsGun(Collider c)=>c!=null&&c.transform.IsChildOf(part.transform);
             bool IsOwner(Collider c)=>c!=null&&c.transform.IsChildOf(transform);
@@ -129,7 +129,7 @@ namespace RoboRougelike.R3
             foreach(var part in Parts)
                 if(part!=null && part.Kind==R3PartKind.Gun && part.Weapon==kind.Value && part.Operational && part.gameObject.activeInHierarchy && part.transform.IsChildOf(transform)&&Time.time>=part.NextFireTime)
                 {
-                    part.GetComponent<RoboRougelike.R4_1.R4BasicWeaponArt>()?.Sync();
+                    part.GetComponent<RoboRougelike.R4_1.R4WeaponArt>()?.Sync();
                     if(RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))continue;
                     if(part.Weapon==R4WeaponKind.EmpEmitter)
                     {
@@ -202,7 +202,7 @@ namespace RoboRougelike.R3
                     state.Kind==R3PartKind.Gun?palette.Weapons[(int)state.Weapon]:palette.Parts[(int)state.Kind],true,out partMuzzle);
                 if(state.Kind==R3PartKind.Gun&&payload!=null)
                 {
-                    var art=RoboRougelike.R4_1.R4BasicWeaponArt.TryAttach(item.transform,payload,state.Weapon);
+                    var art=RoboRougelike.R4_1.R4WeaponArt.TryAttach(item.transform,payload,state.Weapon);
                     if(art!=null)partMuzzle=art.Muzzle;
                 }
                 if(state.Kind==R3PartKind.Gun){part.GunPivot=payload;part.Muzzle=partMuzzle;}
