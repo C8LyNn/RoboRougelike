@@ -53,7 +53,8 @@ namespace RoboRougelike.R3
             foreach(var part in Parts)
                 if(part!=null && part.Kind==R3PartKind.Gun && part.Operational && part.GunPivot!=null&&!RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))
                 {
-                    var direction = point - part.GunPivot.position;
+                    // Aim from the actual firing point, not the turret pivot. The muzzle moves with the barrel, so this converges while the turret turns.
+                    var direction = point - (part.Muzzle!=null?part.Muzzle.position:part.GunPivot.position);
                     if(direction.sqrMagnitude>0.001f) part.GunPivot.rotation = Quaternion.RotateTowards(
                         part.GunPivot.rotation,Quaternion.LookRotation(direction),140*Time.deltaTime);
                     part.GetComponent<RoboRougelike.R4_1.R4WeaponArt>()?.Sync();
