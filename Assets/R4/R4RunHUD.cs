@@ -134,6 +134,15 @@ namespace RoboRougelike.R1
             GUI.enabled=true;
             if(!room)GUI.Label(new Rect(45,685,1180,30),"Brak miejsca na wybrane nagrody. Otwórz magazyn i rozmontuj posiadane części, aby zwolnić miejsce.",small);
         }
+        private static Rect RewardInventoryDetailsRect(int index)=>new Rect(60,187+index*76,475,57);
+        private static Rect RewardInventoryStatusRect(int index)=>new Rect(550,187+index*76,280,57);
+        private static string RewardInventoryItemText(R3PartState item) =>
+            $"{R4WeaponDefinition.PartName(item)} • HP {item.Health*100:0}%\nŹródło: {item.Source}";
+        private static string RewardInventoryStatusText(R3VehicleModel model,R3PartState item)
+        {
+            string ammo=SalvageAmmoLabel(item);
+            return $"{(item.Health<=0?"Odbudowa":"Naprawa")}: {model.RepairCost(item)} Z"+(ammo==null?"":"\n"+ammo);
+        }
         private void DrawRewardInventory(R1RunController run)
         {
             var model=run.VehicleModel;
@@ -147,7 +156,8 @@ namespace RoboRougelike.R1
             {
                 var item=visible[i];float y=180+i*76;
                 Panel(new Rect(45,y,1180,68));
-                GUI.Label(new Rect(60,y+7,760,57),$"{R4WeaponDefinition.PartName(item)} • HP {item.Health*100:0}%\nŹródło: {item.Source}",small);
+                GUI.Label(RewardInventoryDetailsRect(i),RewardInventoryItemText(item),small);
+                GUI.Label(RewardInventoryStatusRect(i),RewardInventoryStatusText(model,item),small);
                 if(GUI.Button(new Rect(860,y+10,350,48),rewardDismantleConfirmation==item.Id?"Potwierdź rozmontowanie":$"Rozmontuj → {model.DismantleValue(item)} Z",compactButton))
                 {
                     if(rewardDismantleConfirmation==item.Id){run.DismantleRewardInventoryItem(item.Id);rewardDismantleConfirmation=null;return;}
