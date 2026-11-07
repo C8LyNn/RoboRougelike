@@ -96,7 +96,10 @@ namespace RoboRougelike.MOVSeries
                 if(Time.time<state.DeviceReadyAt)continue;
                 var result=blink.TryActivate(direction);Feedback="Blink: "+result;
                 if(result!=BlinkResult.Activated)continue;
-                state.DeviceReadyAt=Time.time+6;return true;
+                state.DeviceReadyAt=Time.time+6;
+                var visual=blink.GetComponent<RoboRougelike.R4_1.R4BlinkArt>();
+                if(visual!=null)visual.PlayActivation();
+                return true;
             }
             return false;
         }
