@@ -14,7 +14,10 @@ namespace RoboRougelike.R3
 
         float fieldRemaining;
         int regeneratorCount;
+        float additionalPassiveReservation;
         public void SetRegeneratorCount(int count)=>regeneratorCount=Math.Max(0,count);
+        public void SetAdditionalPassiveReservation(float amount)=>additionalPassiveReservation=
+            float.IsNaN(amount)||float.IsInfinity(amount)?0:Math.Max(0,amount);
         readonly List<float> pickups = new List<float>();
         public float Maximum { get; private set; } = CoreCapacity;
         public float Current { get; private set; } = CoreCapacity;
@@ -23,7 +26,7 @@ namespace RoboRougelike.R3
         {
             var available = coreAlive
                 ? CoreCapacity + Math.Max(0, (double)batteries) * BatteryCapacity
-                    - Math.Max(0, (double)passiveModules) * PassiveReservation
+                    - Math.Max(0, (double)passiveModules) * PassiveReservation-additionalPassiveReservation
                 : 0d;
             Maximum = (float)Math.Min(float.MaxValue, Math.Max(0d, available));
             Current = Math.Min(Current, Maximum);
