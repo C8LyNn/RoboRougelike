@@ -89,6 +89,18 @@ public class RRLW8SteeringTests
         var before=frontPivot.localRotation;drive.Step(1,1,10,5,105);
         Assert.That(Quaternion.Angle(before,frontPivot.localRotation),Is.GreaterThan(.01f),"The real steering solution rotates the imported visual.");
     }
+    [UnityTest] public IEnumerator IndependentSteeringModelKeepsOneCellAndRealSteering()
+    {
+        Assert.That(Enum.TryParse("IndependentSteering",out kind),Is.True);yield return Build();
+        var art=module.GetComponentsInChildren<Transform>(true).FirstOrDefault(t=>t.name=="R4M_IndependentSteering_ROOT");Assert.That(art,Is.Not.Null);
+        var socket=art.GetComponentsInChildren<Transform>(true).First(t=>t.name=="Socket_Mount");
+        Assert.That(Vector3.Distance(socket.position,module.transform.TransformPoint(Vector3.up*.5f)),Is.LessThan(.001f));
+        Assert.That(Vector3.Dot(-socket.forward,module.transform.up),Is.GreaterThan(.9f));
+        Assert.That(art.GetComponentsInChildren<Collider>(true),Is.Empty);
+        Assert.That(module.GetComponent<Collider>().enabled,Is.True);
+        Assert.That(R3VehicleModel.OccupiedCells(run.VehicleModel.Parts.Single(p=>p.Id==module.Id)).Count(),Is.EqualTo(1));
+        drive.Step(1,1,10,5,105);Assert.That(source.CurrentSolution.frontCenterDegrees,Is.GreaterThan(0));
+    }
     [UnityTest] public IEnumerator CrabAndCounterPhaseChangeActualR6TravelThroughTheSameForcePath()
     {
         Assert.That(Enum.TryParse("IndependentSteering",out kind),Is.True);yield return Build();Assert.That(SetMode(SteeringMode.Crab),Is.True);
