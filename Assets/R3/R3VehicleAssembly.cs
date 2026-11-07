@@ -204,6 +204,8 @@ namespace RoboRougelike.R3
                     RoboRougelike.R4_1.R4WheelArt.TryAttach(item.transform,payload);
                 if(state.Kind==R3PartKind.Booster&&!wide)
                     RoboRougelike.R4_1.R4BoosterArt.TryAttach(item.transform);
+                if(state.Kind==R3PartKind.Gyroscope&&!wide)
+                    RoboRougelike.R4_1.R4GyroArt.TryAttach(item.transform);
                 if(state.Kind==R3PartKind.Gun&&payload!=null)
                 {
                     var art=RoboRougelike.R4_1.R4WeaponArt.TryAttach(item.transform,payload,partMuzzle,state.Weapon);

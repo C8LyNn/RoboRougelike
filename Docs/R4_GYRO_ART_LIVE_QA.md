@@ -1,0 +1,7 @@
+# R4 gyroscope appearance
+
+The R4 gyroscope from movement PR #941 `c6b655d67c90ef91d7799460a0c0101756c4b975` is attached to the existing R3 Gyroscope block. The original cylinder and decorative ring renderers are hidden only when the supplied model and nodes exist; their existing colliders and the GyroStabilizer physics remain in place. Its visual rotor spins while the real module is operational and requested active, then stops when the module is disabled. The primitive remains a fallback.
+
+Unity 6000.3.14f1: **4/4 targeted tests PASS**, exit 0 (`r4-gyro-retest.xml`). These exercise real module state and its visual rotor, original collider preservation, one-body module integration, existing booster mass/cooldown behavior and the booster visual regression. The first run passed 3/4; the new test did not enable player control, so the existing coordinator correctly disabled the gyro. The fixture was corrected to use the normal enabled input and floor; the initial result remains in `r4-gyro-final.xml`.
+
+**NOT RUN:** Windows Player at this revision, manual visual review, source animation clips and gimbal motion, full Unity suites, enemy/garage ghost appearance, and independent confirmation of the gyro mount and rotor axes after FBX import. Visual proportions and rotor axis need human review. No change or fix to the unresolved automated shutdown C0000005 is claimed.
