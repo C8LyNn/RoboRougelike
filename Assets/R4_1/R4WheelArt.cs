@@ -12,7 +12,7 @@ namespace RoboRougelike.R4_1
         Transform rotor,visualRoot;
         Rigidbody owner;
 
-        public static R4WheelArt TryAttach(Transform block,Transform physicalWheel)
+        public static R4WheelArt TryAttach(Transform block,Transform physicalWheel,bool mirrorSide=false)
         {
             if(block==null||physicalWheel==null)return null;
             var scale=block.lossyScale;
@@ -20,14 +20,22 @@ namespace RoboRougelike.R4_1
                 float.IsNaN(scale.z)||float.IsInfinity(scale.z)||scale.x<=.0001f||
                 Mathf.Abs(scale.x-scale.y)>.0001f||Mathf.Abs(scale.x-scale.z)>.0001f)return null;
             var catalog=Resources.Load<R4MovementArtCatalog>("R4Art/MovementCatalog");
-            var prefab=catalog!=null?catalog.ModelFor(R3PartKind.Wheel):null;
+            var side=catalog!=null&&catalog.SideWheel!=null;
+            var prefab=side?catalog.SideWheel:catalog!=null?catalog.ModelFor(R3PartKind.Wheel):null;
             if(prefab==null)return null;
             var visual=Instantiate(prefab,block,false);
-            var spinning=Array.Find(visual.GetComponentsInChildren<Transform>(true),t=>t.name=="R4M_Wheel_Rotor");
+            var spinning=Array.Find(visual.GetComponentsInChildren<Transform>(true),t=>t.name==(side?"R4M_WheelM_Side_Offroad_Rotor":"R4M_Wheel_Rotor"));
             var socket=Array.Find(visual.GetComponentsInChildren<Transform>(true),t=>t.name=="Socket_Mount");
             var renderer=physicalWheel.GetComponent<Renderer>();
             if(spinning==null||socket==null||renderer==null){Destroy(visual);return null;}
-            visual.transform.localScale/=scale.x;
+'            visual.transform.localScale/=scale.x;
+            if(side)
+            {
+                // Source has its port on -X; mirror for the left side.
+                if(mirrorSide){var v=visual.transform.localScale;v.x=-v.x;visual.transform.localScale=v;}
+                // Match the authored axle to the collider; do not move physics.
+                visual.transform.position+=physicalWheel.position-spinning.position;
+            }'
             var view=block.gameObject.AddComponent<R4WheelArt>();view.rotor=spinning;view.visualRoot=visual.transform;
             view.owner=block.GetComponentInParent<Rigidbody>(true);renderer.enabled=false;R41PartGeometry.HideMountingShell(block,visual);
             return view;

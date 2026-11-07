@@ -201,7 +201,7 @@ namespace RoboRougelike.R3
                 if(!wide)payload=R41PartGeometry.Payload(item.transform,state.Kind,state.Weapon,
                     state.Kind==R3PartKind.Gun?palette.Weapons[(int)state.Weapon]:palette.Parts[(int)state.Kind],true,out partMuzzle);
                 if(state.Kind==R3PartKind.Wheel&&payload!=null)
-                    RoboRougelike.R4_1.R4WheelArt.TryAttach(item.transform,payload);
+                    RoboRougelike.R4_1.R4WheelArt.TryAttach(item.transform,payload,state.Cell.x<0);
                 if(state.Kind==R3PartKind.Booster&&!wide)
                     RoboRougelike.R4_1.R4BoosterArt.TryAttach(item.transform);
                 if(state.Kind==R3PartKind.Gyroscope&&!wide)
