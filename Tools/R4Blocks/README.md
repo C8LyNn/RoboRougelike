@@ -41,4 +41,22 @@ The first command tests the checker using closed convex examples and deliberatel
 
 The envelope is a coarse bounding box. A separate convex-mesh/box separating-axis test checks the interior of unoccupied grid cells inside that box; each empty-cell box is shrunk by 1 mm, and surface contact is not treated as penetration. Synthetic cube and sloped tetrahedron cases cover intersection, separation and boundary contact. The checks permit the gaps between cells of one rigid part and do not check sub-millimetre intrusion, all possible rotated placements or spaces outside the source footprint envelope. These numerical tests are useful preflight checks, not a proof that Unity's collider cooking, orientation, scale, mounting, contact geometry or game behavior is correct. They do not create or install any collider.
 
+## Prepared mesh bundle
+
+`generated/R4BlockColliderMeshes.json` is a deterministic, flat-array export of the 30 source GLBs (36 separate mesh pieces). Each shape retains its ID and source SHA-256; each piece retains its name, positions and triangle indices. Coordinates and winding are copied from the source GLB without an axis conversion; negative zero is normalized to zero because JSON cannot preserve its sign. Native Unity orientation, winding, scale and collider cooking still require verification.
+
+To recheck the committed bundle against the exact source and exercise five corruption cases:
+
+```powershell
+node .\Tools\R4Blocks\test-export-colliders.js 'PATH_TO_SOURCE\R4Blocks' '.\Tools\R4Blocks\generated\R4BlockColliderMeshes.json'
+```
+
+To create a new bundle, pass a **new** output path; the exporter refuses to overwrite any existing file:
+
+```powershell
+node .\Tools\R4Blocks\export-unity-colliders.js 'PATH_TO_SOURCE\R4Blocks' 'NEW_OUTPUT.json'
+```
+
+This bundle is under `Tools`, not `Assets` or `Resources`. Nothing in the game reads it yet; it does not add shapes or colliders to a build.
+
 This is a source-data check, not a Unity test or proof of physical geometry, gameplay integration, collision behavior or save compatibility. As of this change the shape catalog and socket policy remain disconnected from the actual garage and saved vehicles.
