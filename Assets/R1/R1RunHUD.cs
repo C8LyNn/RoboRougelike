@@ -13,6 +13,8 @@ namespace RoboRougelike.R1
         private readonly Color panel = new Color(0.04f, 0.06f, 0.08f, 0.94f);
         private static bool UsePortraitReady(int width,int height,bool ready,bool overlay)
             => width>0&&height>width&&ready&&!overlay;
+        private static bool UsePortraitGarage(int width,int height,bool garage,bool mapEditing,bool overlay)
+            =>width>0&&height>width&&garage&&!mapEditing&&!overlay;
         private static Rect PortraitVehicleCard(int index)=>new Rect(24,150+index*180,720,166);
         private static Rect PortraitActionRect(int index)=>new Rect(24+(index%2)*370,index<2?790:855,350,index<2?54:48);
         internal bool ClosePartCatalog(){if(!catalogOpen)return false;catalogOpen=false;return true;}
@@ -44,7 +46,9 @@ namespace RoboRougelike.R1
             var previous = GUI.matrix;
             bool portraitReady=UsePortraitReady(Screen.width,Screen.height,run.Progress?.State==R1RunState.Ready&&!run.MapEditing,
                 sessionOverlay||run.Error!=null||run.Transitioning);
-            float canvasWidth=portraitReady?768:1280,canvasHeight=portraitReady?1024:720;
+            bool portraitGarage=UsePortraitGarage(Screen.width,Screen.height,run.Progress?.State==R1RunState.Garage,
+                run.MapEditing,run.Transitioning||sessionOverlay||run.Error!=null||catalogOpen);
+            float canvasWidth=portraitReady||portraitGarage?768:1280,canvasHeight=portraitReady||portraitGarage?1024:720;
             float scale = Mathf.Min(Screen.width/canvasWidth,Screen.height/canvasHeight);
             float offsetX=(Screen.width-canvasWidth*scale)/2,offsetY=(Screen.height-canvasHeight*scale)/2;
             if(run.Progress?.State==R1RunState.Garage&&!run.Transitioning)
@@ -60,13 +64,13 @@ namespace RoboRougelike.R1
             GUI.matrix = Matrix4x4.TRS(new Vector3(offsetX,offsetY), Quaternion.identity, Vector3.one * scale);
             try
             {
-                Draw(run,portraitReady);
+                Draw(run,portraitReady,portraitGarage);
                 if(!sessionOverlay&&run.MapEditing)run.MapEditorPointer(Event.current,rawPointer);
                 else if(!sessionOverlay&&!catalogOpen&&run.Progress?.State==R1RunState.Garage&&!run.Transitioning&&!run.Paused&&!run.QuitRequested)run.Garage.HandleGuiPointer(Event.current,rawPointer);
             }
             finally { GUI.matrix = previous; GUI.enabled = true; }
         }
-        private void Draw(R1RunController run,bool portraitReady)
+        private void Draw(R1RunController run,bool portraitReady,bool portraitGarage)
         {
             if (run.QuitRequested)
             { Panel(new Rect(0,0,1280,720)); GUI.Label(new Rect(350,300,650,80),"Zamykanie gry…",title); return; }
@@ -83,7 +87,7 @@ namespace RoboRougelike.R1
             var progress = run.Progress;
             if(run.MapEditing&&!run.Paused){DrawMapEditor(run);return;}
             if(progress.State==R1RunState.TestDrive){DrawTestRange(run);return;}
-            if(progress.State==R1RunState.Garage&&!run.Transitioning){if(catalogOpen)DrawFullCatalog(run);else DrawGarage(run);return;}
+            if(progress.State==R1RunState.Garage&&!run.Transitioning){if(catalogOpen)DrawFullCatalog(run);else if(portraitGarage)DrawPortraitGarage(run);else DrawGarage(run);return;}
             catalogOpen=false;
             if (progress.State == R1RunState.Combat && !run.Transitioning)
             {
