@@ -1,0 +1,9 @@
+{
+  "pid": 64860,
+  "startedUtc": "2026-11-07T08:22:28.6519761Z",
+  "finishedUtc": "2026-11-07T08:22:36.5365276Z",
+  "timedOut": false,
+  "exitCode": -1073741819,
+  "requestedWidth": 3840,
+  "requestedHeight": 2160
+}
