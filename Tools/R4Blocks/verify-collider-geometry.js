@@ -179,4 +179,4 @@ if (require.main===module) {
     if (failed.length) process.exitCode=1;
   } catch (error) { console.error(error.message); process.exitCode=1; }
 }
-module.exports={analyzeMesh,parseGlb,verifySource,withinFootprintEnvelope,convexIntersectsBox};
+module.exports={analyzeMesh,parseGlb,readAccessor,verifySource,withinFootprintEnvelope,convexIntersectsBox};
