@@ -1,0 +1,23 @@
+{
+    "status": "CAPTURED",
+    "method": "QA FIXTURE: API funds, garage purchase and enemy core damage; time frozen after real pickup grace begins",
+    "error": "",
+    "persistentDataPath": "[USER_HOME]/AppData/LocalLow/RoboRougelike_UI945_QA_Only/UI945_Fixture_Do_Not_Use_For_Play",
+    "graphics": "Direct3D12 / NVIDIA GeForce RTX 5080",
+    "screenshot": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-UI945-QA-4c25\\Artifacts\\Local\\UI945Capture-6a-AutoQuit\\ui945-screen.png",
+    "width": 1280,
+    "height": 720,
+    "pickups": 2,
+    "cleared": true,
+    "combat": true,
+    "physicalCollider": true,
+    "deviceAvailable": true,
+    "generatorOperational": true,
+    "absorbedTest": true,
+    "pickupGraceRemaining": 8.0,
+    "chargeBefore": 100.0,
+    "chargeAfter": 95.0,
+    "hpBefore": 100.0,
+    "hpAfter": 100.0,
+    "shieldCell": "(-2, 0, -3)"
+}
