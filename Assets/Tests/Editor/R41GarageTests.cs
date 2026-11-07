@@ -153,6 +153,26 @@ public class R41GarageTests
         Assert.That(R3GarageView.InBuildArea(new Vector2(width*0.85f,height*0.5f),width,height),Is.False);
         Assert.That(R3GarageView.InBuildArea(new Vector2(width*0.5f,height*0.5f),width,height),Is.True);
     }
+    [UnityTest] public IEnumerator GarageOverlaysDoNotChangeSelectionOrMountParts()
+    {
+        var garage=Run.Garage;
+        var chosen=new Vector3Int(0,2,1);garage.Select(chosen);
+        int funds=Run.VehicleModel.Scrap, parts=Run.VehicleModel.Parts.Count, inventory=Run.VehicleModel.Inventory.Count;
+        float scale=Mathf.Min(Screen.width/1280f,Screen.height/720f);
+        var offset=new Vector2((Screen.width-1280*scale)/2,(Screen.height-720*scale)/2);
+        foreach(var point in new[]{new Vector2(500,140),new Vector2(500,430),new Vector2(500,480)})
+        {
+            var raw=offset+point*scale;
+            garage.HandleGuiPointer(new Event{type=EventType.MouseDown,button=0,mousePosition=raw},raw);
+            Assert.That(garage.HasTarget,Is.True,"Klik nakładki nie powinien zmieniać celu montażu.");
+            Assert.That(garage.Cell,Is.EqualTo(chosen));
+            Assert.That(Run.VehicleModel.Parts.Count,Is.EqualTo(parts));
+            Assert.That(Run.VehicleModel.Inventory.Count,Is.EqualTo(inventory));
+            Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(funds));
+        }
+        Assert.That(Camera.main.rect,Is.EqualTo(R3GarageView.ViewportForScreen(Screen.width,Screen.height)));
+        yield return null;
+    }
     [UnityTest] public IEnumerator SpentInventorySelectionNeverFallsBackToPaidPurchase()
     {
         var garage=Run.Garage;var cell=new Vector3Int(2,2,2);string id=PurchasePart(R3PartKind.Armor);garage.ChooseInventory(id);
