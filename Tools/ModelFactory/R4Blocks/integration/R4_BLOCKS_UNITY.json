@@ -1,0 +1,5277 @@
+{
+ "axis_mapping": "Unity(x,y,z) = Blender(x,z,-y); right=+X, up=+Y, forward=+Z",
+ "tangents": "BUILD001: u = face.x!=0 ? up : right; v = Cross(face,u)",
+ "units": "cells (1 = 0.55 m); face plane = cell + face*0.5",
+ "blocks": [
+  {
+   "id": "R4B_Cube",
+   "kind": "Cube",
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "bonds": [],
+   "contact_mask_anchor": 63,
+   "full_ports": 6,
+   "sockets": [
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      1,
+      0,
+      0
+     ],
+     "dir": "right",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      -1,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      1,
+      0
+     ],
+     "dir": "up",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      1
+     ],
+     "dir": "forward",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    }
+   ],
+   "mount_modules": true,
+   "note": null,
+   "fbx": "R4B_Cube/R4B_Cube.fbx",
+   "colliders": "R4B_Cube/R4B_Cube_colliders.glb"
+  },
+  {
+   "id": "R4B_Wedge",
+   "kind": "Wedge",
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "bonds": [],
+   "contact_mask_anchor": 43,
+   "full_ports": 2,
+   "sockets": [
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      -1,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "partial",
+     "offset": [
+      -0.2364,
+      0.2364
+     ],
+     "half": [
+      0.2,
+      0.2
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      1,
+      0,
+      0
+     ],
+     "dir": "right",
+     "kind": "partial",
+     "offset": [
+      -0.2364,
+      -0.2364
+     ],
+     "half": [
+      0.2,
+      0.2
+     ]
+    }
+   ],
+   "mount_modules": true,
+   "note": null,
+   "fbx": "R4B_Wedge/R4B_Wedge.fbx",
+   "colliders": "R4B_Wedge/R4B_Wedge_colliders.glb"
+  },
+  {
+   "id": "R4B_Tetra",
+   "kind": "Tetra",
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "bonds": [],
+   "contact_mask_anchor": 42,
+   "full_ports": 0,
+   "sockets": [
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "partial",
+     "offset": [
+      -0.2364,
+      -0.2364
+     ],
+     "half": [
+      0.2,
+      0.2
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "partial",
+     "offset": [
+      -0.2364,
+      0.2364
+     ],
+     "half": [
+      0.2,
+      0.2
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      -1,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "partial",
+     "offset": [
+      -0.2364,
+      0.2364
+     ],
+     "half": [
+      0.2,
+      0.2
+     ]
+    }
+   ],
+   "mount_modules": false,
+   "note": null,
+   "fbx": "R4B_Tetra/R4B_Tetra.fbx",
+   "colliders": "R4B_Tetra/R4B_Tetra_colliders.glb"
+  },
+  {
+   "id": "R4B_InnerCorner",
+   "kind": "InnerCorner",
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "bonds": [],
+   "contact_mask_anchor": 63,
+   "full_ports": 3,
+   "sockets": [
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      -1,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      1,
+      0
+     ],
+     "dir": "up",
+     "kind": "partial",
+     "offset": [
+      -0.2364,
+      0.2364
+     ],
+     "half": [
+      0.2,
+      0.2
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      1
+     ],
+     "dir": "forward",
+     "kind": "partial",
+     "offset": [
+      -0.2364,
+      -0.2364
+     ],
+     "half": [
+      0.2,
+      0.2
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      1,
+      0,
+      0
+     ],
+     "dir": "right",
+     "kind": "partial",
+     "offset": [
+      -0.2364,
+      -0.2364
+     ],
+     "half": [
+      0.2,
+      0.2
+     ]
+    }
+   ],
+   "mount_modules": true,
+   "note": null,
+   "fbx": "R4B_InnerCorner/R4B_InnerCorner.fbx",
+   "colliders": "R4B_InnerCorner/R4B_InnerCorner_colliders.glb"
+  },
+  {
+   "id": "R4B_CornerWedge",
+   "kind": "CornerWedge",
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "bonds": [],
+   "contact_mask_anchor": 42,
+   "full_ports": 1,
+   "sockets": [
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "partial",
+     "offset": [
+      -0.2364,
+      0.2364
+     ],
+     "half": [
+      0.2,
+      0.2
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      -1,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "partial",
+     "offset": [
+      -0.2364,
+      0.2364
+     ],
+     "half": [
+      0.2,
+      0.2
+     ]
+    }
+   ],
+   "mount_modules": true,
+   "note": null,
+   "fbx": "R4B_CornerWedge/R4B_CornerWedge.fbx",
+   "colliders": "R4B_CornerWedge/R4B_CornerWedge_colliders.glb"
+  },
+  {
+   "id": "R4B_RoundEdge",
+   "kind": "RoundEdge",
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "bonds": [],
+   "contact_mask_anchor": 43,
+   "full_ports": 2,
+   "sockets": [
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      -1,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "partial",
+     "offset": [
+      -0.2127,
+      0.2127
+     ],
+     "half": [
+      0.2,
+      0.2
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      1,
+      0,
+      0
+     ],
+     "dir": "right",
+     "kind": "partial",
+     "offset": [
+      -0.2127,
+      -0.2127
+     ],
+     "half": [
+      0.2,
+      0.2
+     ]
+    }
+   ],
+   "mount_modules": true,
+   "note": null,
+   "fbx": "R4B_RoundEdge/R4B_RoundEdge.fbx",
+   "colliders": "R4B_RoundEdge/R4B_RoundEdge_colliders.glb"
+  },
+  {
+   "id": "R4B_RoundCorner",
+   "kind": "RoundCorner",
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "bonds": [],
+   "contact_mask_anchor": 42,
+   "full_ports": 0,
+   "sockets": [
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "partial",
+     "offset": [
+      -0.26,
+      -0.26
+     ],
+     "half": [
+      0.2,
+      0.2
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "partial",
+     "offset": [
+      -0.26,
+      0.26
+     ],
+     "half": [
+      0.2,
+      0.2
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      -1,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "partial",
+     "offset": [
+      -0.26,
+      0.26
+     ],
+     "half": [
+      0.2,
+      0.2
+     ]
+    }
+   ],
+   "mount_modules": false,
+   "note": null,
+   "fbx": "R4B_RoundCorner/R4B_RoundCorner.fbx",
+   "colliders": "R4B_RoundCorner/R4B_RoundCorner_colliders.glb"
+  },
+  {
+   "id": "R4B_HalfBlock",
+   "kind": "HalfBlock",
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "bonds": [],
+   "contact_mask_anchor": 59,
+   "full_ports": 1,
+   "sockets": [
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      1,
+      0,
+      0
+     ],
+     "dir": "right",
+     "kind": "partial",
+     "offset": [
+      -0.25,
+      0.0
+     ],
+     "half": [
+      0.22,
+      0.45
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      -1,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "partial",
+     "offset": [
+      -0.25,
+      0.0
+     ],
+     "half": [
+      0.22,
+      0.45
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      1
+     ],
+     "dir": "forward",
+     "kind": "partial",
+     "offset": [
+      0.0,
+      -0.25
+     ],
+     "half": [
+      0.45,
+      0.22
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "partial",
+     "offset": [
+      0.0,
+      0.25
+     ],
+     "half": [
+      0.45,
+      0.22
+     ]
+    }
+   ],
+   "mount_modules": true,
+   "note": "top face at -0.015 m (half cell); stack-on-top is a half-cell offset, not a grid port",
+   "fbx": "R4B_HalfBlock/R4B_HalfBlock.fbx",
+   "colliders": "R4B_HalfBlock/R4B_HalfBlock_colliders.glb"
+  },
+  {
+   "id": "R4B_HalfWedge",
+   "kind": "HalfWedge",
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "bonds": [],
+   "contact_mask_anchor": 40,
+   "full_ports": 1,
+   "sockets": [
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "partial",
+     "offset": [
+      0.0,
+      0.25
+     ],
+     "half": [
+      0.45,
+      0.22
+     ]
+    }
+   ],
+   "mount_modules": true,
+   "note": null,
+   "fbx": "R4B_HalfWedge/R4B_HalfWedge.fbx",
+   "colliders": "R4B_HalfWedge/R4B_HalfWedge_colliders.glb"
+  },
+  {
+   "id": "R4B_Cylinder",
+   "kind": "Cylinder",
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "bonds": [],
+   "contact_mask_anchor": 12,
+   "full_ports": 0,
+   "sockets": [
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      1,
+      0
+     ],
+     "dir": "up",
+     "kind": "partial",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.3,
+      0.3
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "partial",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.3,
+      0.3
+     ]
+    }
+   ],
+   "mount_modules": false,
+   "note": "round end faces: contact patch limited to the inscribed square (half 0.30 cell)",
+   "fbx": "R4B_Cylinder/R4B_Cylinder.fbx",
+   "colliders": "R4B_Cylinder/R4B_Cylinder_colliders.glb"
+  },
+  {
+   "id": "R4B_Beam2",
+   "kind": "Beam2",
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     1,
+     0,
+     0
+    ]
+   ],
+   "bonds": [
+    [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      1,
+      0,
+      0
+     ]
+    ]
+   ],
+   "contact_mask_anchor": 62,
+   "full_ports": 10,
+   "sockets": [
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      -1,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      1,
+      0
+     ],
+     "dir": "up",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      1
+     ],
+     "dir": "forward",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "face": [
+      1,
+      0,
+      0
+     ],
+     "dir": "right",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      1,
+      0
+     ],
+     "dir": "up",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      1
+     ],
+     "dir": "forward",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    }
+   ],
+   "mount_modules": true,
+   "note": null,
+   "fbx": "R4B_Beam2/R4B_Beam2.fbx",
+   "colliders": "R4B_Beam2/R4B_Beam2_colliders.glb"
+  },
+  {
+   "id": "R4B_Beam3",
+   "kind": "Beam3",
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     2,
+     0,
+     0
+    ]
+   ],
+   "bonds": [
+    [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      1,
+      0,
+      0
+     ]
+    ],
+    [
+     [
+      1,
+      0,
+      0
+     ],
+     [
+      2,
+      0,
+      0
+     ]
+    ]
+   ],
+   "contact_mask_anchor": 62,
+   "full_ports": 14,
+   "sockets": [
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      -1,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      1,
+      0
+     ],
+     "dir": "up",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      1
+     ],
+     "dir": "forward",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      1,
+      0
+     ],
+     "dir": "up",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      1
+     ],
+     "dir": "forward",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      2,
+      0,
+      0
+     ],
+     "face": [
+      1,
+      0,
+      0
+     ],
+     "dir": "right",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      2,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      1,
+      0
+     ],
+     "dir": "up",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      2,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      2,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      1
+     ],
+     "dir": "forward",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      2,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    }
+   ],
+   "mount_modules": true,
+   "note": null,
+   "fbx": "R4B_Beam3/R4B_Beam3.fbx",
+   "colliders": "R4B_Beam3/R4B_Beam3_colliders.glb"
+  },
+  {
+   "id": "R4B_LongWedge",
+   "kind": "LongWedge",
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "bonds": [
+    [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      1
+     ]
+    ]
+   ],
+   "contact_mask_anchor": 43,
+   "full_ports": 3,
+   "sockets": [
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      1
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      -1,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "partial",
+     "offset": [
+      -0.1818,
+      0.1455
+     ],
+     "half": [
+      0.2,
+      0.2
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      1,
+      0,
+      0
+     ],
+     "dir": "right",
+     "kind": "partial",
+     "offset": [
+      -0.1818,
+      -0.1455
+     ],
+     "half": [
+      0.2,
+      0.2
+     ]
+    }
+   ],
+   "mount_modules": true,
+   "note": null,
+   "fbx": "R4B_LongWedge/R4B_LongWedge.fbx",
+   "colliders": "R4B_LongWedge/R4B_LongWedge_colliders.glb"
+  },
+  {
+   "id": "R4B_Plate2x2",
+   "kind": "Plate2x2",
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ],
+    [
+     1,
+     0,
+     1
+    ]
+   ],
+   "bonds": [
+    [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      1,
+      0,
+      0
+     ]
+    ],
+    [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      1
+     ]
+    ],
+    [
+     [
+      1,
+      0,
+      0
+     ],
+     [
+      1,
+      0,
+      1
+     ]
+    ]
+   ],
+   "contact_mask_anchor": 8,
+   "full_ports": 4,
+   "sockets": [
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      1
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      1
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    }
+   ],
+   "mount_modules": true,
+   "note": "half-height 2x2 plate; top face at -0.015 m",
+   "fbx": "R4B_Plate2x2/R4B_Plate2x2.fbx",
+   "colliders": "R4B_Plate2x2/R4B_Plate2x2_colliders.glb"
+  },
+  {
+   "id": "R4B_TrussCube",
+   "kind": "TrussCube",
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "bonds": [],
+   "contact_mask_anchor": 63,
+   "full_ports": 0,
+   "sockets": [
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      1,
+      0,
+      0
+     ],
+     "dir": "right",
+     "kind": "partial",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.3,
+      0.3
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      -1,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "partial",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.3,
+      0.3
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      1,
+      0
+     ],
+     "dir": "up",
+     "kind": "partial",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.3,
+      0.3
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "partial",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.3,
+      0.3
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      1
+     ],
+     "dir": "forward",
+     "kind": "partial",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.3,
+      0.3
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "partial",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.3,
+      0.3
+     ]
+    }
+   ],
+   "mount_modules": false,
+   "note": "open lattice block (light, cheap): each face contacts through a 0.34 m square hub carrying the standard coupling; collider = full cube",
+   "fbx": "R4B_TrussCube/R4B_TrussCube.fbx",
+   "colliders": "R4B_TrussCube/R4B_TrussCube_colliders.glb"
+  },
+  {
+   "id": "R4B_Pyramid",
+   "kind": "Pyramid",
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "bonds": [],
+   "contact_mask_anchor": 8,
+   "full_ports": 1,
+   "sockets": [
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    }
+   ],
+   "mount_modules": true,
+   "note": "square pyramid, apex at the top-face centre",
+   "fbx": "R4B_Pyramid/R4B_Pyramid.fbx",
+   "colliders": "R4B_Pyramid/R4B_Pyramid_colliders.glb"
+  },
+  {
+   "id": "R4B_Dome",
+   "kind": "Dome",
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "bonds": [],
+   "contact_mask_anchor": 8,
+   "full_ports": 1,
+   "sockets": [
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    }
+   ],
+   "mount_modules": true,
+   "note": "low base plate + elliptic dome (sensor / cockpit cap)",
+   "fbx": "R4B_Dome/R4B_Dome.fbx",
+   "colliders": "R4B_Dome/R4B_Dome_colliders.glb"
+  },
+  {
+   "id": "R4B_Cone",
+   "kind": "Cone",
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "bonds": [],
+   "contact_mask_anchor": 8,
+   "full_ports": 0,
+   "sockets": [
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "partial",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.3,
+      0.3
+     ]
+    }
+   ],
+   "mount_modules": false,
+   "note": "nose cone; round base: contact patch limited to the inscribed square (half 0.30 cell)",
+   "fbx": "R4B_Cone/R4B_Cone.fbx",
+   "colliders": "R4B_Cone/R4B_Cone_colliders.glb"
+  },
+  {
+   "id": "R4B_HexColumn",
+   "kind": "HexColumn",
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "bonds": [],
+   "contact_mask_anchor": 12,
+   "full_ports": 0,
+   "sockets": [
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      1,
+      0
+     ],
+     "dir": "up",
+     "kind": "partial",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.3,
+      0.3
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "partial",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.3,
+      0.3
+     ]
+    }
+   ],
+   "mount_modules": false,
+   "note": "hexagonal column (vertex on +-X, flats 0.225 m from the axis); ports on the end faces only",
+   "fbx": "R4B_HexColumn/R4B_HexColumn.fbx",
+   "colliders": "R4B_HexColumn/R4B_HexColumn_colliders.glb"
+  },
+  {
+   "id": "R4B_OctColumn",
+   "kind": "OctColumn",
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "bonds": [],
+   "contact_mask_anchor": 63,
+   "full_ports": 2,
+   "sockets": [
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      1,
+      0
+     ],
+     "dir": "up",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      1,
+      0,
+      0
+     ],
+     "dir": "right",
+     "kind": "partial",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.45,
+      0.33
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      -1,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "partial",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.45,
+      0.33
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      1
+     ],
+     "dir": "forward",
+     "kind": "partial",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.33,
+      0.45
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "partial",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.33,
+      0.45
+     ]
+    }
+   ],
+   "mount_modules": true,
+   "note": "octagonal column (0.06 m chamfered vertical edges); side faces 0.40 m wide carry a reduced patch",
+   "fbx": "R4B_OctColumn/R4B_OctColumn.fbx",
+   "colliders": "R4B_OctColumn/R4B_OctColumn_colliders.glb"
+  },
+  {
+   "id": "R4B_RoundTop",
+   "kind": "RoundTop",
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "bonds": [],
+   "contact_mask_anchor": 59,
+   "full_ports": 1,
+   "sockets": [
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      -1,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "partial",
+     "offset": [
+      -0.0909,
+      0.0
+     ],
+     "half": [
+      0.3,
+      0.3
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      1,
+      0,
+      0
+     ],
+     "dir": "right",
+     "kind": "partial",
+     "offset": [
+      -0.0909,
+      0.0
+     ],
+     "half": [
+      0.3,
+      0.3
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      1
+     ],
+     "dir": "forward",
+     "kind": "partial",
+     "offset": [
+      0.0,
+      -0.2364
+     ],
+     "half": [
+      0.45,
+      0.22
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "partial",
+     "offset": [
+      0.0,
+      0.2364
+     ],
+     "half": [
+      0.45,
+      0.22
+     ]
+    }
+   ],
+   "mount_modules": true,
+   "note": "half block + half cylinder top (axis X)",
+   "fbx": "R4B_RoundTop/R4B_RoundTop.fbx",
+   "colliders": "R4B_RoundTop/R4B_RoundTop_colliders.glb"
+  },
+  {
+   "id": "R4B_Arch",
+   "kind": "Arch",
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "bonds": [],
+   "contact_mask_anchor": 55,
+   "full_ports": 3,
+   "sockets": [
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      1,
+      0
+     ],
+     "dir": "up",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      -1,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      1,
+      0,
+      0
+     ],
+     "dir": "right",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      1
+     ],
+     "dir": "forward",
+     "kind": "partial",
+     "offset": [
+      0.0,
+      0.1545
+     ],
+     "half": [
+      0.45,
+      0.15
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "partial",
+     "offset": [
+      0.0,
+      -0.1545
+     ],
+     "half": [
+      0.45,
+      0.15
+     ]
+    }
+   ],
+   "mount_modules": true,
+   "note": "arch: semicircular tunnel r 0.17 m along Y under the block; mounts from the top (Socket_Mount on the up face)",
+   "fbx": "R4B_Arch/R4B_Arch.fbx",
+   "colliders": "R4B_Arch/R4B_Arch_colliders.glb"
+  },
+  {
+   "id": "R4B_Step",
+   "kind": "Step",
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "bonds": [],
+   "contact_mask_anchor": 63,
+   "full_ports": 2,
+   "sockets": [
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      1,
+      0,
+      0
+     ],
+     "dir": "right",
+     "kind": "partial",
+     "offset": [
+      -0.25,
+      0.0
+     ],
+     "half": [
+      0.22,
+      0.45
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      -1,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "partial",
+     "offset": [
+      -0.25,
+      0.0
+     ],
+     "half": [
+      0.22,
+      0.45
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      1
+     ],
+     "dir": "forward",
+     "kind": "partial",
+     "offset": [
+      0.0,
+      -0.25
+     ],
+     "half": [
+      0.45,
+      0.22
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      1,
+      0
+     ],
+     "dir": "up",
+     "kind": "partial",
+     "offset": [
+      0.0,
+      0.2364
+     ],
+     "half": [
+      0.45,
+      0.2
+     ]
+    }
+   ],
+   "mount_modules": true,
+   "note": "stair step: full-width lower half + upper half at the back; the tread at -0.015 m is not a grid port",
+   "fbx": "R4B_Step/R4B_Step.fbx",
+   "colliders": "R4B_Step/R4B_Step_colliders.glb"
+  },
+  {
+   "id": "R4B_CoveEdge",
+   "kind": "CoveEdge",
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "bonds": [],
+   "contact_mask_anchor": 43,
+   "full_ports": 2,
+   "sockets": [
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      -1,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "partial",
+     "offset": [
+      -0.2727,
+      0.2727
+     ],
+     "half": [
+      0.2,
+      0.2
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      1,
+      0,
+      0
+     ],
+     "dir": "right",
+     "kind": "partial",
+     "offset": [
+      -0.2727,
+      -0.2727
+     ],
+     "half": [
+      0.2,
+      0.2
+     ]
+    }
+   ],
+   "mount_modules": true,
+   "note": "inverted round edge (concave fillet r 0.40 m along X) - fills the inside of a rounded corner",
+   "fbx": "R4B_CoveEdge/R4B_CoveEdge.fbx",
+   "colliders": "R4B_CoveEdge/R4B_CoveEdge_colliders.glb"
+  },
+  {
+   "id": "R4B_CornerL3",
+   "kind": "CornerL3",
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "bonds": [
+    [
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      0,
+      0
+     ]
+    ],
+    [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      1,
+      0,
+      0
+     ]
+    ]
+   ],
+   "contact_mask_anchor": 46,
+   "full_ports": 14,
+   "sockets": [
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      -1,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      1,
+      0
+     ],
+     "dir": "up",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "face": [
+      1,
+      0,
+      0
+     ],
+     "dir": "right",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      1,
+      0
+     ],
+     "dir": "up",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      1
+     ],
+     "dir": "forward",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      1
+     ],
+     "face": [
+      1,
+      0,
+      0
+     ],
+     "dir": "right",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      1
+     ],
+     "face": [
+      -1,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      1
+     ],
+     "face": [
+      0,
+      1,
+      0
+     ],
+     "dir": "up",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      1
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      1
+     ],
+     "face": [
+      0,
+      0,
+      1
+     ],
+     "dir": "forward",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    }
+   ],
+   "mount_modules": true,
+   "note": "L corner piece over three bonded cells",
+   "fbx": "R4B_CornerL3/R4B_CornerL3.fbx",
+   "colliders": "R4B_CornerL3/R4B_CornerL3_colliders.glb"
+  },
+  {
+   "id": "R4B_Tee4",
+   "kind": "Tee4",
+   "cells": [
+    [
+     -1,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "bonds": [
+    [
+     [
+      -1,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      0
+     ]
+    ],
+    [
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      0,
+      0
+     ]
+    ],
+    [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      1,
+      0,
+      0
+     ]
+    ]
+   ],
+   "contact_mask_anchor": 44,
+   "full_ports": 18,
+   "sockets": [
+    {
+     "cell": [
+      -1,
+      0,
+      0
+     ],
+     "face": [
+      -1,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      -1,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      1,
+      0
+     ],
+     "dir": "up",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      -1,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      -1,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      1
+     ],
+     "dir": "forward",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      -1,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      1,
+      0
+     ],
+     "dir": "up",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "face": [
+      1,
+      0,
+      0
+     ],
+     "dir": "right",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      1,
+      0
+     ],
+     "dir": "up",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      1
+     ],
+     "dir": "forward",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      1
+     ],
+     "face": [
+      1,
+      0,
+      0
+     ],
+     "dir": "right",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      1
+     ],
+     "face": [
+      -1,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      1
+     ],
+     "face": [
+      0,
+      1,
+      0
+     ],
+     "dir": "up",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      1
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      1
+     ],
+     "face": [
+      0,
+      0,
+      1
+     ],
+     "dir": "forward",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    }
+   ],
+   "mount_modules": true,
+   "note": "T junction over four bonded cells",
+   "fbx": "R4B_Tee4/R4B_Tee4.fbx",
+   "colliders": "R4B_Tee4/R4B_Tee4_colliders.glb"
+  },
+  {
+   "id": "R4B_Slab2x2",
+   "kind": "Slab2x2",
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ],
+    [
+     1,
+     0,
+     1
+    ]
+   ],
+   "bonds": [
+    [
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      0,
+      0
+     ]
+    ],
+    [
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      1,
+      0,
+      1
+     ]
+    ],
+    [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      1,
+      0,
+      0
+     ]
+    ],
+    [
+     [
+      1,
+      0,
+      1
+     ],
+     [
+      1,
+      0,
+      0
+     ]
+    ]
+   ],
+   "contact_mask_anchor": 46,
+   "full_ports": 16,
+   "sockets": [
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      -1,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      1,
+      0
+     ],
+     "dir": "up",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "face": [
+      1,
+      0,
+      0
+     ],
+     "dir": "right",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      1,
+      0
+     ],
+     "dir": "up",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      1
+     ],
+     "face": [
+      -1,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      1
+     ],
+     "face": [
+      0,
+      1,
+      0
+     ],
+     "dir": "up",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      1
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      1
+     ],
+     "face": [
+      0,
+      0,
+      1
+     ],
+     "dir": "forward",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      1
+     ],
+     "face": [
+      1,
+      0,
+      0
+     ],
+     "dir": "right",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      1
+     ],
+     "face": [
+      0,
+      1,
+      0
+     ],
+     "dir": "up",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      1
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      1
+     ],
+     "face": [
+      0,
+      0,
+      1
+     ],
+     "dir": "forward",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    }
+   ],
+   "mount_modules": true,
+   "note": "2x2x1 full-height slab, one rigid piece",
+   "fbx": "R4B_Slab2x2/R4B_Slab2x2.fbx",
+   "colliders": "R4B_Slab2x2/R4B_Slab2x2_colliders.glb"
+  },
+  {
+   "id": "R4B_BigCube2",
+   "kind": "BigCube2",
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ],
+    [
+     0,
+     1,
+     1
+    ],
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     1,
+     1,
+     0
+    ],
+    [
+     1,
+     0,
+     1
+    ],
+    [
+     1,
+     1,
+     1
+    ]
+   ],
+   "bonds": [
+    [
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      1,
+      1
+     ]
+    ],
+    [
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      0,
+      0
+     ]
+    ],
+    [
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      1,
+      0,
+      1
+     ]
+    ],
+    [
+     [
+      0,
+      1,
+      1
+     ],
+     [
+      0,
+      1,
+      0
+     ]
+    ],
+    [
+     [
+      0,
+      1,
+      1
+     ],
+     [
+      1,
+      1,
+      1
+     ]
+    ],
+    [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      1,
+      0
+     ]
+    ],
+    [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      1,
+      0,
+      0
+     ]
+    ],
+    [
+     [
+      0,
+      1,
+      0
+     ],
+     [
+      1,
+      1,
+      0
+     ]
+    ],
+    [
+     [
+      1,
+      0,
+      1
+     ],
+     [
+      1,
+      1,
+      1
+     ]
+    ],
+    [
+     [
+      1,
+      0,
+      1
+     ],
+     [
+      1,
+      0,
+      0
+     ]
+    ],
+    [
+     [
+      1,
+      1,
+      1
+     ],
+     [
+      1,
+      1,
+      0
+     ]
+    ],
+    [
+     [
+      1,
+      0,
+      0
+     ],
+     [
+      1,
+      1,
+      0
+     ]
+    ]
+   ],
+   "contact_mask_anchor": 42,
+   "full_ports": 24,
+   "sockets": [
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      -1,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      1,
+      0
+     ],
+     "face": [
+      -1,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      1,
+      0
+     ],
+     "face": [
+      0,
+      1,
+      0
+     ],
+     "dir": "up",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      1,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      1
+     ],
+     "face": [
+      -1,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      1
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      1
+     ],
+     "face": [
+      0,
+      0,
+      1
+     ],
+     "dir": "forward",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      1,
+      1
+     ],
+     "face": [
+      -1,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      1,
+      1
+     ],
+     "face": [
+      0,
+      1,
+      0
+     ],
+     "dir": "up",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      1,
+      1
+     ],
+     "face": [
+      0,
+      0,
+      1
+     ],
+     "dir": "forward",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "face": [
+      1,
+      0,
+      0
+     ],
+     "dir": "right",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      1,
+      0
+     ],
+     "face": [
+      1,
+      0,
+      0
+     ],
+     "dir": "right",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      1,
+      0
+     ],
+     "face": [
+      0,
+      1,
+      0
+     ],
+     "dir": "up",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      1,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      1
+     ],
+     "face": [
+      1,
+      0,
+      0
+     ],
+     "dir": "right",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      1
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      1
+     ],
+     "face": [
+      0,
+      0,
+      1
+     ],
+     "dir": "forward",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      1,
+      1
+     ],
+     "face": [
+      1,
+      0,
+      0
+     ],
+     "dir": "right",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      1,
+      1
+     ],
+     "face": [
+      0,
+      1,
+      0
+     ],
+     "dir": "up",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      1,
+      1
+     ],
+     "face": [
+      0,
+      0,
+      1
+     ],
+     "dir": "forward",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    }
+   ],
+   "mount_modules": true,
+   "note": "2x2x2 large cube, one rigid piece over eight bonded cells",
+   "fbx": "R4B_BigCube2/R4B_BigCube2.fbx",
+   "colliders": "R4B_BigCube2/R4B_BigCube2_colliders.glb"
+  },
+  {
+   "id": "R4B_Plate1x2",
+   "kind": "Plate1x2",
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     1,
+     0,
+     0
+    ]
+   ],
+   "bonds": [
+    [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      1,
+      0,
+      0
+     ]
+    ]
+   ],
+   "contact_mask_anchor": 10,
+   "full_ports": 2,
+   "sockets": [
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      -1,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "partial",
+     "offset": [
+      -0.25,
+      0.0
+     ],
+     "half": [
+      0.22,
+      0.45
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "face": [
+      1,
+      0,
+      0
+     ],
+     "dir": "right",
+     "kind": "partial",
+     "offset": [
+      -0.25,
+      0.0
+     ],
+     "half": [
+      0.22,
+      0.45
+     ]
+    }
+   ],
+   "mount_modules": true,
+   "note": "half-height 1x2 plate; top face at -0.015 m",
+   "fbx": "R4B_Plate1x2/R4B_Plate1x2.fbx",
+   "colliders": "R4B_Plate1x2/R4B_Plate1x2_colliders.glb"
+  },
+  {
+   "id": "R4B_WideWedge",
+   "kind": "WideWedge",
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     1,
+     0,
+     0
+    ]
+   ],
+   "bonds": [
+    [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      1,
+      0,
+      0
+     ]
+    ]
+   ],
+   "contact_mask_anchor": 42,
+   "full_ports": 4,
+   "sockets": [
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      -1,
+      0
+     ],
+     "dir": "down",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "face": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "full",
+     "offset": [
+      0.0,
+      0.0
+     ],
+     "half": [
+      0.47,
+      0.47
+     ]
+    },
+    {
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "face": [
+      -1,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "partial",
+     "offset": [
+      -0.2364,
+      0.2364
+     ],
+     "half": [
+      0.2,
+      0.2
+     ]
+    },
+    {
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "face": [
+      1,
+      0,
+      0
+     ],
+     "dir": "right",
+     "kind": "partial",
+     "offset": [
+      -0.2364,
+      -0.2364
+     ],
+     "half": [
+      0.2,
+      0.2
+     ]
+    }
+   ],
+   "mount_modules": true,
+   "note": "2-wide wedge (one rigid piece over two bonded cells)",
+   "fbx": "R4B_WideWedge/R4B_WideWedge.fbx",
+   "colliders": "R4B_WideWedge/R4B_WideWedge_colliders.glb"
+  }
+ ]
+}

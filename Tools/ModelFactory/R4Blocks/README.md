@@ -5,6 +5,8 @@ Biblioteka niczego nie podpina do gry. Nie zmienia `Assets/`, scen, prefabów, r
 
 **Status: BLENDER_PASS 30/30 · test zgodności PASS · UNITY_NOT_RUN 30/30.** Unity nie był dostępny, więc żaden import do Unity nie został wykonany.
 
+**Wdrożenie do gry (dla Codexa): [CODEX_INTEGRATION.md](CODEX_INTEGRATION.md)**, dane w osiach Unity: `integration/R4_BLOCKS_UNITY.json`.
+
 Dane maszynowe są w [INDEX.json](INDEX.json), a sumy kontrolne w [SHA256SUMS.txt](SHA256SUMS.txt).
 
 ## Skąd te kształty
