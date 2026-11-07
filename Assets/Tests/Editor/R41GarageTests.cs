@@ -128,12 +128,14 @@ public class R41GarageTests
         var garage=Run.Garage;garage.Close();float near=Camera.main.nearClipPlane;Run.Arena.Build(RoboRougelike.R5.R5ArenaKind.Industrial);
         Run.Player.GetComponent<Rigidbody>().interpolation=RigidbodyInterpolation.None;
         Run.Player.transform.SetPositionAndRotation(new Vector3(-17,.7f,0),Quaternion.identity);Physics.SyncTransforms();
-        var position=Run.Player.transform.position;var rotation=Run.Player.transform.rotation;
+        var oldPosition=Run.Player.transform.position;
         var model=Run.VehicleModel;string before=string.Join("|",model.Parts.Concat(model.Inventory).Select(p=>JsonUtility.ToJson(p)));int funds=model.Scrap;
         var arena=Run.Arena.Layout.gameObject;var colliders=arena.GetComponentsInChildren<Collider>();
         garage.Open();garage.Tilt(-100);yield return null;yield return null;
         var camera=Camera.main;var target=Run.Player.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Kind==R3PartKind.Core).transform.position;
-        Assert.That(target.x,Is.EqualTo(-17).Within(.1f),"The fixture must actually move the paused vehicle beside the industrial hall.");
+        var workshopPosition=Run.Player.transform.position;
+        Assert.That(Vector3.Distance(workshopPosition,oldPosition),Is.GreaterThan(100),"Garaż ma być oddzielony od areny.");
+        Assert.That(Quaternion.Angle(Run.Player.transform.rotation,Quaternion.identity),Is.LessThan(.01f),"Po wejściu pojazd ma neutralny obrót.");
         var direction=target-camera.transform.position;
         Debug.Log("[W2 Garage fixture] camera="+camera.transform.position+" target="+target+" arena="+arena.transform.position);
         var sight=new Ray(target,-direction.normalized);
@@ -142,7 +144,7 @@ public class R41GarageTests
         garage.Open();garage.Close();
         Assert.That(arena.activeSelf,Is.True,"Repeated Open must preserve the original combat arena state.");
         Assert.That(colliders.All(c=>c.enabled&&c.gameObject.activeInHierarchy),Is.True,"Combat cover must return on leaving the garage.");
-        Assert.That(Run.Player.transform.position,Is.EqualTo(position));Assert.That(Run.Player.transform.rotation,Is.EqualTo(rotation));
+        Assert.That(Run.Player.transform.position,Is.EqualTo(workshopPosition));Assert.That(Quaternion.Angle(Run.Player.transform.rotation,Quaternion.identity),Is.LessThan(.01f));
         Assert.That(Run.VehicleModel,Is.SameAs(model));Assert.That(string.Join("|",model.Parts.Concat(model.Inventory).Select(p=>JsonUtility.ToJson(p))),Is.EqualTo(before));
         Assert.That(Camera.main.nearClipPlane,Is.EqualTo(near));Assert.That(model.Scrap,Is.EqualTo(funds));
         arena.SetActive(false);garage.Open();garage.Close();Assert.That(arena.activeSelf,Is.False,"An already hidden arena must stay hidden.");
