@@ -8,7 +8,8 @@ namespace UnityEngine
 {
     public struct Vector3Int { public int x,y,z; public Vector3Int(int x,int y,int z){this.x=x;this.y=y;this.z=z;} }
     public struct Vector2 { public float x,y; public Vector2(float x,float y){this.x=x;this.y=y;} }
-    public struct Vector3 { public float x,y,z; public Vector3(float x,float y,float z){this.x=x;this.y=y;this.z=z;} }
+    public struct Vector3 { public float x,y,z; public Vector3(float x,float y,float z){this.x=x;this.y=y;this.z=z;} public static Vector3 zero=>new Vector3(0,0,0);public static Vector3 one=>new Vector3(1,1,1); }
+    public struct Quaternion { public static Quaternion identity=>new Quaternion(); }
     public class Object
     {
         public static int Destroyed;
@@ -21,6 +22,21 @@ namespace UnityEngine
         public string name;public Vector3[] vertices;public int[] triangles;
         public void RecalculateBounds(){if(FailAfter==0)throw new InvalidOperationException("Simulated mesh error");if(FailAfter>0)FailAfter--;}
     }
+    public class Component : Object { public GameObject gameObject; }
+    public sealed class Transform : Component
+    {
+        public Transform parent;public Vector3 localPosition,localScale=Vector3.one;public Quaternion localRotation;
+        public Vector3 lossyScale=>localScale;
+        public void SetParent(Transform value,bool worldPositionStays){parent=value;}
+    }
+    public sealed class GameObject : Object
+    {
+        public static int FailAfter=-1;public string name;public int layer;public Transform transform;
+        public GameObject(string value){if(FailAfter==0)throw new InvalidOperationException("Simulated GameObject error");if(FailAfter>0)FailAfter--;name=value;transform=new Transform{gameObject=this};}
+        public T AddComponent<T>() where T:Component,new(){var result=new T{gameObject=this};return result;}
+    }
+    public class Collider : Component { public bool enabled=true; }
+    public sealed class MeshCollider : Collider { public bool convex;public Mesh sharedMesh; }
     public static class Application { public static bool isPlaying; }
     public static class JsonUtility { public static T FromJson<T>(string json)=>JsonSerializer.Deserialize<T>(json,new JsonSerializerOptions{IncludeFields=true}); }
 }
@@ -88,10 +104,28 @@ internal static class Program
         Expect(!failureCache.TryGet("R4B_Arch",out _,out _) && UnityEngine.Object.Destroyed==2,"Failed lazy creation must release partial meshes");
         UnityEngine.Mesh.FailAfter=-1;Expect(failureCache.TryGet("R4B_Arch",out _,out _),"Failed shape creation must be retryable");
         failureCache.Dispose();Expect(UnityEngine.Object.Destroyed==5,"Retry meshes must be released on dispose");
+        UnityEngine.Object.Destroyed=0;Expect(R4ColliderMeshCache.TryOpen(json,out var stageCache,out _),"Trusted bundle must open");
+        var owner=new UnityEngine.GameObject("owner"){layer=7};owner.transform.localScale=new UnityEngine.Vector3(.52f,.52f,.52f);
+        var original=owner.AddComponent<UnityEngine.Collider>();
+        Expect(R4ColliderStage.TryCreate(owner,stageCache,"R4B_Arch",out var stage,out _),"Arch collider stage must be created");
+        Expect(stage.Colliders.Count==3 && original.enabled,"Staging must preserve the original collider");
+        foreach(var collider in stage.Colliders)
+            Expect(!collider.enabled&&collider.convex&&collider.sharedMesh!=null&&collider.gameObject.layer==7&&
+                ReferenceEquals(collider.gameObject.transform.parent,owner.transform)&&Math.Abs(collider.gameObject.transform.localScale.x-1/.52f)<.0001f,
+                "Staged colliders must be disabled children with original-scale meshes");
+        stage.Dispose();Expect(stage.IsDisposed && UnityEngine.Object.Destroyed==3 && original.enabled,"Stage disposal must remove only staged children");
+        stage.Dispose();Expect(UnityEngine.Object.Destroyed==3,"Stage disposal must be idempotent");
+        UnityEngine.GameObject.FailAfter=1;
+        Expect(!R4ColliderStage.TryCreate(owner,stageCache,"R4B_Arch",out _,out _) && UnityEngine.Object.Destroyed==4 && original.enabled,
+            "A partial child failure must clean up and leave the original collider unchanged");
+        UnityEngine.GameObject.FailAfter=-1;owner.transform.localScale=new UnityEngine.Vector3(.52f,.7f,.52f);
+        Expect(!R4ColliderStage.TryCreate(owner,stageCache,"R4B_Arch",out _,out _),"Nonuniform scale must fail closed");
+        stageCache.Dispose();Expect(UnityEngine.Object.Destroyed==7,"Cache meshes must be released after staged children");
         Console.WriteLine("Catalog smoke PASS: 30 entries, valid full ports, partial and quarantined ports, invalid input.");
         Console.WriteLine("Bundle smoke PASS: pinned source, 30 shapes, geometry structure and six corruption cases.");
         Console.WriteLine("Mesh factory smoke PASS: arch pieces, data, fail-closed inputs and partial cleanup.");
         Console.WriteLine("Mesh cache smoke PASS: reuse, fail-closed inputs, retry and idempotent disposal.");
+        Console.WriteLine("Collider staging smoke PASS: disabled children, original preservation, failure cleanup and scaling guard.");
         return 0;
         }
         catch(Exception error) { Console.Error.WriteLine("Catalog smoke FAIL: "+error.Message); return 1; }
