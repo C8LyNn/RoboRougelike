@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88267985948aef5449d3612a59c1b73d, type: 3}
+  m_Name: WeaponCatalog
+  m_EditorClassIdentifier: Assembly-CSharp::RoboRougelike.R4_1.R4WeaponArtCatalog
+  Models:
+  - Kind: 0
+    Model: {fileID: 919132149155446097, guid: b4bedfff5f885df46baebbf849ed5a1f, type: 3}
+  - Kind: 2
+    Model: {fileID: 919132149155446097, guid: d1f65db4ce2b9d247895e89ec64d324a, type: 3}
+  - Kind: 3
+    Model: {fileID: 919132149155446097, guid: ac5b87d7bf8e8e040837e247c823518c, type: 3}
+  - Kind: 4
+    Model: {fileID: 919132149155446097, guid: 1bae20fac908d3f4e935509349f1323b, type: 3}
+  - Kind: 5
+    Model: {fileID: 919132149155446097, guid: cf800360c9a34fe4cbb90717f0bb3abd, type: 3}
+  - Kind: 6
+    Model: {fileID: 919132149155446097, guid: a267f50f7b0fcc84195eeb32c57509d0, type: 3}
+  - Kind: 7
+    Model: {fileID: 919132149155446097, guid: 8caee4dd9c3a42744a71b4c25e7fb99e, type: 3}
+  - Kind: 8
+    Model: {fileID: 919132149155446097, guid: b8daaa8faab20504c8e2d1dc301a556f, type: 3}
