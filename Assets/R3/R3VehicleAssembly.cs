@@ -197,6 +197,7 @@ namespace RoboRougelike.R3
                 part.Id=state.Id;part.Weapon=state.Weapon;
                 part.UpgradeEffect=state.UpgradeEffect;part.UpgradeAmount=state.UpgradeAmount;
                 assembly.Parts.Add(part);
+                if(state.Kind==R3PartKind.Armor&&!wide)RoboRougelike.R4_1.R41PartGeometry.TryAttachArmorCube(item.transform);
                 Transform payload=null;Transform partMuzzle=null;
                 if(!wide)payload=R41PartGeometry.Payload(item.transform,state.Kind,state.Weapon,
                     state.Kind==R3PartKind.Gun?palette.Weapons[(int)state.Weapon]:palette.Parts[(int)state.Kind],true,out partMuzzle);

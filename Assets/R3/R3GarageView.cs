@@ -250,6 +250,7 @@ namespace RoboRougelike.R3
             item.GetComponent<Renderer>().sharedMaterial=material;
             if(R3VehicleModel.UsesWideFootprint(kind))R3BonusModuleGeometry.ConfigureCube(item,false);
             var collider=item.GetComponent<Collider>();collider.enabled=false;Destroy(collider);
+            if(kind==R3PartKind.Armor&&!plan&&Tool==R41GarageTool.Mount)R41PartGeometry.TryAttachArmorCube(item.transform);
             if(!R3VehicleModel.UsesWideFootprint(kind)&&(Tool==R41GarageTool.Mount||plan))
             {
                 var payload=R41PartGeometry.Payload(item.transform,kind,weapon,material,false,out var muzzle);
