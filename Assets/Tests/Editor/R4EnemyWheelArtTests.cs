@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 using RogueMachine.P12PipelineSafe;
+using RoboRougelike.R4_1;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -40,6 +41,24 @@ public sealed class R4EnemyWheelArtTests
         Assert.That(rotor.IsChildOf(wheel.transform),Is.True,"Art must follow the detached debris.");
         Assert.That(wheel.GetComponent<Collider>(),Is.SameAs(collider));
         Object.Destroy(wheel.gameObject);Object.Destroy(root);Object.Destroy(material);
+    }
+
+    [UnityTest] public IEnumerator InvalidMountKeepsFallbackAndDuplicateAttachIsRejected()
+    {
+        var parent=new GameObject("visual parent");
+        var wheel=GameObject.CreatePrimitive(PrimitiveType.Cylinder);wheel.transform.SetParent(parent.transform,false);
+        wheel.transform.localScale=new Vector3(.53f,.15f,.53f);
+        var source=wheel.GetComponent<Renderer>();
+        var old=GameObject.CreatePrimitive(PrimitiveType.Cube);old.transform.SetParent(wheel.transform,false);
+        var fallback=old.GetComponent<Renderer>();
+        Assert.That(R4EnemyWheelArt.TryAttach(wheel.transform,source,fallback,.265f),Is.False,"Unrotated mount must fail safely.");
+        Assert.That(fallback.enabled,Is.True,"A failed attach must preserve the old appearance.");
+        wheel.transform.localRotation=Quaternion.Euler(0,0,90);
+        Assert.That(R4EnemyWheelArt.TryAttach(wheel.transform,source,fallback,.265f),Is.True);
+        Assert.That(R4EnemyWheelArt.TryAttach(wheel.transform,source,fallback,.265f),Is.False,"A second attach cannot duplicate the model.");
+        Assert.That(wheel.GetComponents<R4EnemyWheelArt>().Length,Is.EqualTo(1));
+        Assert.That(wheel.GetComponentsInChildren<Transform>(true).Count(t=>t.name=="R4M_Wheel_Rotor"),Is.EqualTo(1));
+        Object.Destroy(parent);yield return null;
     }
 
     [UnityTearDown] public IEnumerator Cleanup()
