@@ -43,5 +43,22 @@ public sealed class R4EnemyRailgunArtTests
         Assert.That(rotor.IsChildOf(enemy.WeaponBlock.transform),Is.True,"Visual follows detached weapon.");
         Assert.That(binding.Device.Available,Is.False);Object.Destroy(target);
     }
+    [UnityTest] public IEnumerator MissingRailgunModelKeepsOriginalMuzzleAndRenderer()
+    {
+        var run=R1RunController.Instance;Assert.That(run.StartRun()&&run.ChooseRoute(0),Is.True);
+        float end=Time.realtimeSinceStartup+20;while(run.Transitioning&&Time.realtimeSinceStartup<end)yield return null;
+        var enemy=run.Encounter.Enemies.First();var legacy=enemy.transform.Find("Enemy_Yaw/Enemy_Muzzle");
+        var catalog=Resources.Load<R4WeaponArtCatalog>("R4Art/WeaponCatalog");Assert.That(catalog,Is.Not.Null);
+        var original=catalog.Models;catalog.Models=(R4WeaponArtEntry[])original.Clone();
+        try
+        {
+            for(int i=0;i<catalog.Models.Length;i++)if(catalog.Models[i].Kind==R4WeaponKind.Railgun)
+                catalog.Models[i]=new R4WeaponArtEntry{Kind=R4WeaponKind.Railgun,Model=null};
+            Assert.That(enemy.EquipRailgun(),Is.True);var binding=enemy.WeaponBlock.GetComponent<RRLRailgunBinding>();
+            Assert.That(typeof(RRLRailgunBinding).GetField("muzzle",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(binding),Is.SameAs(legacy));
+            Assert.That(enemy.WeaponBlock.GetComponent<Renderer>().enabled,Is.True);
+        }
+        finally{catalog.Models=original;}
+    }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }

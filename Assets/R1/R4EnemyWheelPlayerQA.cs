@@ -25,6 +25,7 @@ namespace RoboRougelike.R1
             public bool eliteArt,eliteVisibleMuzzle,eliteHit,automaticFallback;
             public bool primaryArt,primaryVisibleMuzzle,primaryHit,primarySwap;
             public bool shotgunHit;
+            public bool railgunArt,railgunMuzzle,railgunHit;
         }
         string directory;
         readonly Result result=new Result();
@@ -134,6 +135,27 @@ namespace RoboRougelike.R1
             while(shotgunHp.CurrentHp>=500&&Time.realtimeSinceStartup<deadline)yield return new WaitForFixedUpdate();
             result.shotgunHit=shotgunHp.CurrentHp<500;Require(result.shotgunHit,"Physical shotgun pellets hit target");
             basic.SetCombatActive(false);Destroy(shotgunTarget);
+
+            var railDef=new R1EncounterDefinition{EnemyCount=1,Roster=new[]{R3EnemyArchetype.Scout},Variants=new[]{R5EnemyVariant.Normal}};
+            run.Encounter.Spawn(template,run.Player.transform,railDef,run.Salvage,"r4-enemy-rail-player");
+            run.Encounter.SetCombatActive(false);yield return null;
+            var railEnemy=run.Encounter.Enemies.First();Require(railEnemy.EquipRailgun(),"Equip enemy railgun");
+            var rail=railEnemy.WeaponBlock.GetComponent<RoboRougelike.WeaponIntegration.RRLRailgunBinding>();
+            var railArt=railEnemy.WeaponBlock.GetComponentInChildren<R4WeaponArt>(true);
+            result.railgunArt=railArt!=null&&railArt.GetComponentsInChildren<Transform>(true).Any(t=>t.name=="R4W_Railgun_ROOT");
+            result.railgunMuzzle=rail!=null&&railArt!=null&&
+                typeof(RoboRougelike.WeaponIntegration.RRLRailgunBinding).GetField("muzzle",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(rail)==railArt.Muzzle;
+            Require(result.railgunArt&&result.railgunMuzzle,"Railgun model and visible muzzle");
+            var railBody=railEnemy.GetComponent<Rigidbody>();railBody.isKinematic=true;
+            railBody.position=new Vector3(100,4,100);railEnemy.transform.rotation=Quaternion.identity;railArt.Sync();
+            var railTarget=GameObject.CreatePrimitive(PrimitiveType.Cube);railTarget.transform.position=railArt.Muzzle.position+railArt.Muzzle.forward*6;
+            railTarget.transform.localScale=new Vector3(4,4,1);var railHp=railTarget.AddComponent<P12PipelineSafeDamageable>();railHp.Configure(500,false);
+            railEnemy.GetComponent<VehicleEnergyBank>()?.Recharge(1000);Physics.SyncTransforms();railEnemy.SetCombatActive(true);
+            Require(rail.Fire(),"Railgun fires from its visible muzzle");
+            deadline=Time.realtimeSinceStartup+5;
+            while(railHp.CurrentHp>=500&&Time.realtimeSinceStartup<deadline)yield return new WaitForFixedUpdate();
+            result.railgunHit=railHp.CurrentHp<500;Require(result.railgunHit,"Physical railgun projectile hits target");
+            railEnemy.SetCombatActive(false);Destroy(railTarget);
 
             var def=new R1EncounterDefinition{EnemyCount=1,Roster=new[]{R3EnemyArchetype.Gunner},Variants=new[]{R5EnemyVariant.EliteGunner}};
             run.Encounter.Spawn(template,run.Player.transform,def,run.Salvage,"r4-enemy-art-player");
