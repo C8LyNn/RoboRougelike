@@ -35,3 +35,4 @@ MonoBehaviour:
     Model: {fileID: 919132149155446097, guid: 08f5de2eb333a244da99011fdfbf739f, type: 3}
   - Kind: 18
     Model: {fileID: 919132149155446097, guid: 8dd6125acbe633446ba818056380ecd7, type: 3}
+  CrawlerTravel: {fileID: -1609281748187839663, guid: e7eb410ec9128ba4cb6762163719902d, type: 3}
