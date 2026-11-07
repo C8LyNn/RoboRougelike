@@ -11,5 +11,6 @@
     <Compile Include="../../../Assets/R4_1/R4ColliderBundle.cs" Link="R4ColliderBundle.cs" />
     <Compile Include="../../../Assets/R4_1/R4ColliderMeshFactory.cs" Link="R4ColliderMeshFactory.cs" />
     <Compile Include="../../../Assets/R4_1/R4ColliderMeshCache.cs" Link="R4ColliderMeshCache.cs" />
+    <Compile Include="../../../Assets/R4_1/R4ColliderStage.cs" Link="R4ColliderStage.cs" />
   </ItemGroup>
 </Project>
