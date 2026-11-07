@@ -58,6 +58,7 @@ namespace RoboRougelike.R1
                 }
                 if(count>=4&&i==0&&definition.SpawnVariant(i)==RoboRougelike.R5.R5EnemyVariant.Normal)
                     enemy.EquipPointDefense();
+                enemy.AttachPrimaryGunArt();
                 enemy.SetPrimaryWeaponTier(equipmentTier);
                 if(definition.SpawnVariant(i)==RoboRougelike.R5.R5EnemyVariant.Normal&&enemy.EquipAdditionalGun())
                     enemy.GetComponent<RoboRougelike.R6.R6VehicleDrive>()?.RefreshParts();

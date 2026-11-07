@@ -30,6 +30,9 @@ namespace RogueMachine.P12PipelineSafe
 
         private float nextFireTime;
         private Material runtimeProjectileMaterial;
+        private R4WeaponArt primaryVisual;
+        private Transform primaryVisualMount,primaryLegacyMuzzle;
+        private Renderer primaryBarrelRenderer;
         private bool defeated;
         private bool combatActive = true;
         private P12PipelineSafeDamageable weaponBlock;
@@ -154,6 +157,7 @@ namespace RogueMachine.P12PipelineSafe
         public bool EquipShotgun()
         {
             if(variantGuns.Count>0||weaponBlock==null||weaponBlock.IsDead||muzzle==null)return false;
+            ClearPrimaryGunArt();
             var old=R4WeaponDefinition.Get(WeaponKind);float ds=damage/Mathf.Max(.001f,old.Damage);
             float cadence=fireInterval/Mathf.Max(.001f,old.Interval),durability=weaponBlock.MaxHp/old.Hp;
             float condition=Condition(weaponBlock);WeaponKind=R4WeaponKind.Shotgun;
@@ -167,6 +171,7 @@ namespace RogueMachine.P12PipelineSafe
         public bool EquipRailgun()
         {
             if(variantGuns.Count>0||weaponBlock==null||weaponBlock.IsDead||muzzle==null)return false;
+            ClearPrimaryGunArt();
             var old=R4WeaponDefinition.Get(WeaponKind);float ds=damage/Mathf.Max(.001f,old.Damage);
             float cadence=fireInterval/Mathf.Max(.001f,old.Interval),durability=weaponBlock.MaxHp/old.Hp;
             float condition=Condition(weaponBlock);WeaponKind=R4WeaponKind.Railgun;
@@ -180,6 +185,7 @@ namespace RogueMachine.P12PipelineSafe
         public bool EquipRocket()
         {
             if(variantGuns.Count>0||weaponBlock==null||weaponBlock.IsDead||muzzle==null)return false;
+            ClearPrimaryGunArt();
             var old=R4WeaponDefinition.Get(WeaponKind);float ds=damage/Mathf.Max(.001f,old.Damage);
             float cadence=fireInterval/Mathf.Max(.001f,old.Interval),durability=weaponBlock.MaxHp/old.Hp;
             float condition=Condition(weaponBlock);WeaponKind=R4WeaponKind.RocketLauncher;
@@ -193,6 +199,7 @@ namespace RogueMachine.P12PipelineSafe
         public bool EquipBeam()
         {
             if(variantGuns.Count>0||weaponBlock==null||weaponBlock.IsDead||muzzle==null)return false;
+            ClearPrimaryGunArt();
             var old=R4WeaponDefinition.Get(WeaponKind);float ds=damage/Mathf.Max(.001f,old.Damage);
             float cadence=fireInterval/Mathf.Max(.001f,old.Interval),durability=weaponBlock.MaxHp/old.Hp;
             float condition=Condition(weaponBlock);WeaponKind=R4WeaponKind.BeamCutter;
@@ -206,6 +213,7 @@ namespace RogueMachine.P12PipelineSafe
         public bool EquipEmp()
         {
             if(variantGuns.Count>0||weaponBlock==null||weaponBlock.IsDead||muzzle==null)return false;
+            ClearPrimaryGunArt();
             var old=R4WeaponDefinition.Get(WeaponKind);float ds=damage/Mathf.Max(.001f,old.Damage);
             float cadence=fireInterval/Mathf.Max(.001f,old.Interval),durability=weaponBlock.MaxHp/old.Hp;
             float condition=Condition(weaponBlock);WeaponKind=R4WeaponKind.EmpEmitter;
@@ -219,6 +227,7 @@ namespace RogueMachine.P12PipelineSafe
         public bool EquipSaw()
         {
             if(variantGuns.Count>0||weaponBlock==null||weaponBlock.IsDead||muzzle==null)return false;
+            ClearPrimaryGunArt();
             var old=R4WeaponDefinition.Get(WeaponKind);float ds=damage/Mathf.Max(.001f,old.Damage);
             float cadence=fireInterval/Mathf.Max(.001f,old.Interval),durability=weaponBlock.MaxHp/old.Hp;
             float condition=Condition(weaponBlock);WeaponKind=R4WeaponKind.RotarySaw;
@@ -262,6 +271,7 @@ namespace RogueMachine.P12PipelineSafe
 
         public void ConfigureArchetype(R3EnemyArchetype kind)
         {
+            ClearPrimaryGunArt();
             Archetype=kind;profiled=true;
             WeaponKind=kind==R3EnemyArchetype.Scout?R4WeaponKind.Automatic:
                 kind==R3EnemyArchetype.Flanker?R4WeaponKind.Basic:R4WeaponKind.Heavy;
@@ -425,6 +435,35 @@ namespace RogueMachine.P12PipelineSafe
             }
         }
 
+        // The legacy primary barrel is nonuniformly scaled. A neutral child
+        // cancels its scale and remains attached when the physical part breaks.
+        // Package weapons keep their own original muzzle and appearance for now.
+        public bool AttachPrimaryGunArt()
+        {
+            if(primaryVisual!=null||variantGuns.Count>0||weaponBlock==null||weaponBlock.IsDead||muzzle==null||
+               (WeaponKind!=R4WeaponKind.Basic&&WeaponKind!=R4WeaponKind.Heavy))return false;
+            var renderer=weaponBlock.GetComponent<Renderer>();var scale=weaponBlock.transform.lossyScale;
+            if(renderer==null||float.IsNaN(scale.x)||float.IsNaN(scale.y)||float.IsNaN(scale.z)||
+               float.IsInfinity(scale.x)||float.IsInfinity(scale.y)||float.IsInfinity(scale.z)||
+               scale.x<=.0001f||scale.y<=.0001f||scale.z<=.0001f)return false;
+            var mount=new GameObject("R4 primary gun art mount");mount.transform.SetParent(weaponBlock.transform,false);
+            mount.transform.localScale=new Vector3(1/scale.x,1/scale.y,1/scale.z);
+            var proxy=new GameObject("R4 primary gun aim").transform;proxy.SetParent(mount.transform,false);
+            var art=R4WeaponArt.TryAttach(mount.transform,proxy,muzzle,WeaponKind);
+            if(art==null){mount.SetActive(false);Destroy(mount);return false;}
+            primaryVisual=art;primaryVisualMount=mount.transform;primaryLegacyMuzzle=muzzle;
+            primaryBarrelRenderer=renderer;renderer.enabled=false;muzzle=art.Muzzle;
+            return true;
+        }
+        private void ClearPrimaryGunArt()
+        {
+            if(primaryVisual==null)return;
+            if(primaryLegacyMuzzle!=null)muzzle=primaryLegacyMuzzle;
+            if(primaryBarrelRenderer!=null)primaryBarrelRenderer.enabled=true;
+            if(primaryVisualMount!=null){primaryVisualMount.gameObject.SetActive(false);Destroy(primaryVisualMount.gameObject);}
+            primaryVisual=null;primaryVisualMount=null;primaryLegacyMuzzle=null;primaryBarrelRenderer=null;
+        }
+
         private void OnDestroy()
         {
             if(core!=null)core.Died-=HandleCoreDeath;
@@ -578,6 +617,7 @@ namespace RogueMachine.P12PipelineSafe
             RotateToward(
                 aimPoint
             );
+            if(primaryVisual!=null)primaryVisual.Sync();
 
             float distance =
                 Vector3.Distance(
