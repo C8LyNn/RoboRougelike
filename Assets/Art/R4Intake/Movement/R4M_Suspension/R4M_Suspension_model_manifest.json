@@ -1,0 +1,56 @@
+{
+ "id": "R4M_Suspension",
+ "kind": "R3PartKind.Suspension",
+ "game_name": "Aktywne zawieszenie (MOV009)",
+ "units": "meter 1:1",
+ "axes": "file/Unity +Z forward, +Y up",
+ "cell": "logical 1x1x1 on 0.55 m grid; mount = Socket_Mount_Bottom",
+ "hierarchy": {
+  "R4M_Suspension_ROOT": null,
+  "R4M_Suspension_Tower": "R4M_Suspension_ROOT",
+  "R4M_Suspension_Arm": "R4M_Suspension_ROOT",
+  "R4M_Suspension_ShockBody": "R4M_Suspension_ROOT",
+  "R4M_Suspension_ShockRod": "R4M_Suspension_ROOT",
+  "R4M_Suspension_Spring": "R4M_Suspension_ShockBody",
+  "Socket_Mount": "R4M_Suspension_ROOT",
+  "Wheel_Axle": "R4M_Suspension_Arm"
+ },
+ "node_roles": {
+  "R4M_Suspension_ROOT": {
+   "unity_up": "+Y",
+   "unity_forward": "+Z",
+   "unit": "meter",
+   "version": "v2-port",
+   "weapon_kind": "R3PartKind.Suspension",
+   "style": "R41_Turret_v6.1 standard (heavy industrial armour + team colour)",
+   "issue": "#938"
+  },
+  "R4M_Suspension_Tower": {
+   "mount_port": "R4 Robocraft-style port: 0.509 m square, outer face +0.260 m (block face), face-centre coupling",
+   "role": "static tower bracket with arm pivot lugs, damper ear, bump stop"
+  },
+  "R4M_Suspension_Arm": {
+   "role": "trailing arm: rotates about local X at the pivot; +14 deg = bump (hub up), -10 deg = droop"
+  },
+  "R4M_Suspension_ShockBody": {
+   "role": "damper body: rotates about local X at the upper eye, follows the rod"
+  },
+  "R4M_Suspension_ShockRod": {
+   "role": "damper rod: positioned at the arm's lower eye, slides into the body"
+  },
+  "R4M_Suspension_Spring": {
+   "role": "coil rings (child of body): local Z scale = spring length ratio"
+  },
+  "Socket_Mount": {
+   "role": "top plate face, normal +Y"
+  },
+  "Wheel_Axle": {
+   "role": "wheel mounting face on the stub axle, local +Z = file +X"
+  }
+ },
+ "muzzles": [],
+ "visible_exits_note": "",
+ "notes": [
+  "Damper body/rod/spring follow the arm analytically each frame (no constraints needed in Unity)."
+ ]
+}

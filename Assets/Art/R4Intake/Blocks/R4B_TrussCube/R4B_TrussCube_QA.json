@@ -1,0 +1,329 @@
+{
+ "id": "R4B_TrussCube",
+ "block_kind": "TrussCube",
+ "description": "1x1x1 open lattice block",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "bonds": [],
+ "note": "open lattice block (light, cheap): each face contacts through a 0.34 m square hub carrying the standard coupling; collider = full cube",
+ "contact_mask_local_anchor": 63,
+ "contact_mask_bits": "R3MountingGrid.FaceDirections order: right, left, up, down, forward, back (Unity)",
+ "ports": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "right",
+   "kind": "partial",
+   "center": [
+    0.26,
+    0.0,
+    0.0
+   ],
+   "half": [
+    0.3,
+    0.3
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "partial",
+   "center": [
+    -0.26,
+    0.0,
+    0.0
+   ],
+   "half": [
+    0.3,
+    0.3
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "up",
+   "kind": "partial",
+   "center": [
+    0.0,
+    0.0,
+    0.26
+   ],
+   "half": [
+    0.3,
+    0.3
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "partial",
+   "center": [
+    0.0,
+    0.0,
+    -0.26
+   ],
+   "half": [
+    0.3,
+    0.3
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "forward",
+   "kind": "partial",
+   "center": [
+    0.0,
+    -0.26,
+    0.0
+   ],
+   "half": [
+    0.3,
+    0.3
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "partial",
+   "center": [
+    0.0,
+    0.26,
+    0.0
+   ],
+   "half": [
+    0.3,
+    0.3
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "right",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "up",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "forward",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "mesh": {
+  "object": "R4B_TrussCube",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 7140,
+  "uv": true,
+  "ok": true
+ },
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_cells": true,
+ "materials": [
+  "Armor_Dark",
+  "Armor_Gunmetal",
+  "Armor_Plate_Light",
+  "Steel_Light"
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 3526,
+   "empties": [
+    "Port_back_000_part.001",
+    "Port_down_000_part.001",
+    "Port_forward_000_part.001",
+    "Port_left_000_part.001",
+    "Port_right_000_part.001",
+    "Port_up_000_part.001",
+    "R4B_TrussCube_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 8026,
+   "empties": [
+    "Port_back_000_part.001",
+    "Port_down_000_part.001",
+    "Port_forward_000_part.001",
+    "Port_left_000_part.001",
+    "Port_right_000_part.001",
+    "Port_up_000_part.001",
+    "R4B_TrussCube_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  }
+ },
+ "renders": [
+  "R4B_TrussCube_34front.png",
+  "R4B_TrussCube_34rear.png",
+  "R4B_TrussCube_under.png"
+ ],
+ "files": {
+  "R4B_TrussCube.blend": {
+   "sha256": "6460205e5173196b01c7d71e7f63715b8224c9514ab9a70a8b9c862fa1a29cb7",
+   "bytes": 316970
+  },
+  "R4B_TrussCube.blend1": {
+   "sha256": "126faf1d579ff067ef176f1379b9f8a4d0a1bd0fd2a96697765b4a9ec5f596e3",
+   "bytes": 316966
+  },
+  "R4B_TrussCube.fbx": {
+   "sha256": "451407fb71c7da9a864115f6b8d0e38431395d97894f4c5905135ae37cf23785",
+   "bytes": 231276
+  },
+  "R4B_TrussCube.glb": {
+   "sha256": "0de33a9acba825e4c0042af5365428915ef808f9c9add20221b34845f6fd336c",
+   "bytes": 304728
+  },
+  "R4B_TrussCube_colliders.glb": {
+   "sha256": "6cda682d855196fd3a5d9cb4ca2c8284b83c54c878289c678a0ed4189c657f37",
+   "bytes": 1780
+  }
+ },
+ "seconds": 4.9,
+ "blender": "5.2.3 LTS"
+}

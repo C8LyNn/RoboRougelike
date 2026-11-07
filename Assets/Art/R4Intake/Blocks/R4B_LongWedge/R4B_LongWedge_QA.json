@@ -1,0 +1,293 @@
+{
+ "id": "R4B_LongWedge",
+ "block_kind": "LongWedge",
+ "description": "1x2x1 long wedge (gentle slope over two cells)",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ],
+  [
+   0,
+   -1,
+   0
+  ]
+ ],
+ "bonds": [
+  [
+   [
+    0,
+    0,
+    0
+   ],
+   [
+    0,
+    -1,
+    0
+   ]
+  ]
+ ],
+ "note": null,
+ "contact_mask_local_anchor": 43,
+ "contact_mask_bits": "R3MountingGrid.FaceDirections order: right, left, up, down, forward, back (Unity)",
+ "ports": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    -1,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "partial",
+   "center": [
+    -0.26,
+    0.08,
+    -0.1
+   ],
+   "half": [
+    0.2,
+    0.2
+   ],
+   "offset": [
+    -0.1455,
+    -0.1818
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "right",
+   "kind": "partial",
+   "center": [
+    0.26,
+    0.08,
+    -0.1
+   ],
+   "half": [
+    0.2,
+    0.2
+   ],
+   "offset": [
+    0.1455,
+    -0.1818
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    -1,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "right",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "mesh": {
+  "object": "R4B_LongWedge",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 4030,
+  "uv": true,
+  "ok": true
+ },
+ "bounds_m": [
+  [
+   -0.26,
+   -0.801,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.2556
+  ]
+ ],
+ "inside_cells": true,
+ "materials": [
+  "Armor_Dark",
+  "Armor_Gunmetal",
+  "Steel_Light"
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0001,
+   "verts": 2037,
+   "empties": [
+    "Port_back_000.001",
+    "Port_down_0-10.001",
+    "Port_down_000.001",
+    "Port_left_000_part.001",
+    "Port_right_000_part.001",
+    "R4B_LongWedge_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 4602,
+   "empties": [
+    "Port_back_000.001",
+    "Port_down_0-10.001",
+    "Port_down_000.001",
+    "Port_left_000_part.001",
+    "Port_right_000_part.001",
+    "R4B_LongWedge_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  }
+ },
+ "renders": [
+  "R4B_LongWedge_34front.png",
+  "R4B_LongWedge_34rear.png",
+  "R4B_LongWedge_under.png"
+ ],
+ "files": {
+  "R4B_LongWedge.blend": {
+   "sha256": "52c1cecdbd49e4bb3ecd7bc63dc826219249d6f323a1037f90df309ed6898443",
+   "bytes": 226183
+  },
+  "R4B_LongWedge.blend1": {
+   "sha256": "07551e40367cf39ac6e11b5d3063e750adf99f4a725173105dcea0bd3e0e6ecc",
+   "bytes": 229478
+  },
+  "R4B_LongWedge.fbx": {
+   "sha256": "603bb5e711336f639363b92e54fdd5e20f95a13cca8f0e48848880cc2fe7aa7b",
+   "bytes": 149020
+  },
+  "R4B_LongWedge.glb": {
+   "sha256": "23f8811c2cd92f29f6f141cf1afe7944ce2fa3ee7d8936fd6275d902c7bb69db",
+   "bytes": 175464
+  },
+  "R4B_LongWedge_colliders.glb": {
+   "sha256": "adea6565ee5d7fa6c7d4648c83c372f280cb37e87a0e3c0b9a33924b917c2c4b",
+   "bytes": 1612
+  }
+ },
+ "seconds": 2.3,
+ "blender": "5.2.3 LTS"
+}

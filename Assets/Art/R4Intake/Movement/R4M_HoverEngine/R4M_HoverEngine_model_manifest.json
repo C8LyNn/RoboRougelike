@@ -1,0 +1,76 @@
+{
+ "id": "R4M_HoverEngine",
+ "kind": "R3PartKind.HoverEngine",
+ "game_name": "Hover (MOV007)",
+ "units": "meter 1:1",
+ "axes": "file/Unity +Z forward, +Y up",
+ "cell": "logical 1x1x1 on 0.55 m grid; mount = Socket_Mount_Bottom",
+ "hierarchy": {
+  "R4M_HoverEngine_ROOT": null,
+  "R4M_HoverEngine_Housing": "R4M_HoverEngine_ROOT",
+  "R4M_HoverEngine_Rotor": "R4M_HoverEngine_ROOT",
+  "R4M_HoverEngine_Vane_1": "R4M_HoverEngine_ROOT",
+  "R4M_HoverEngine_Vane_2": "R4M_HoverEngine_ROOT",
+  "R4M_HoverEngine_Vane_3": "R4M_HoverEngine_ROOT",
+  "R4M_HoverEngine_Vane_4": "R4M_HoverEngine_ROOT",
+  "R4M_HoverEngine_Vane_5": "R4M_HoverEngine_ROOT",
+  "Hover_ThrustGlow": "R4M_HoverEngine_ROOT",
+  "Hover_PulseRing": "R4M_HoverEngine_ROOT",
+  "Socket_Mount": "R4M_HoverEngine_ROOT",
+  "Thruster_Nozzle": "R4M_HoverEngine_ROOT",
+  "GroundProbe": "R4M_HoverEngine_ROOT"
+ },
+ "node_roles": {
+  "R4M_HoverEngine_ROOT": {
+   "unity_up": "+Y",
+   "unity_forward": "+Z",
+   "unit": "meter",
+   "version": "v2-port",
+   "weapon_kind": "R3PartKind.HoverEngine",
+   "style": "R41_Turret_v6.1 standard (heavy industrial armour + team colour)",
+   "issue": "#938"
+  },
+  "R4M_HoverEngine_Housing": {
+   "mount_port": "R4 Robocraft-style port: 0.509 m square, outer face +0.260 m (block face), face-centre coupling",
+   "role": "static: mount plate, tapered pylon, tripod struts, duct shroud, stator + motor nacelle"
+  },
+  "R4M_HoverEngine_Rotor": {
+   "role": "lift fan rotor (7 blades): rotates about local Y (Unity up)"
+  },
+  "R4M_HoverEngine_Vane_1": {
+   "role": "outlet louvre vane: rotates about local X; 0 = closed, 70 deg = open"
+  },
+  "R4M_HoverEngine_Vane_2": {
+   "role": "outlet louvre vane: rotates about local X; 0 = closed, 70 deg = open"
+  },
+  "R4M_HoverEngine_Vane_3": {
+   "role": "outlet louvre vane: rotates about local X; 0 = closed, 70 deg = open"
+  },
+  "R4M_HoverEngine_Vane_4": {
+   "role": "outlet louvre vane: rotates about local X; 0 = closed, 70 deg = open"
+  },
+  "R4M_HoverEngine_Vane_5": {
+   "role": "outlet louvre vane: rotates about local X; 0 = closed, 70 deg = open"
+  },
+  "Hover_ThrustGlow": {
+   "role": "thrust glow FX at the outlet - idle scale 0.001"
+  },
+  "Hover_PulseRing": {
+   "role": "thrust pulse ring FX - idle scale 0.001"
+  },
+  "Socket_Mount": {
+   "role": "mount face centre on the cell top, normal +Y"
+  },
+  "Thruster_Nozzle": {
+   "role": "outlet centre; local +Z = exhaust direction (down) -> lift force +Y"
+  },
+  "GroundProbe": {
+   "role": "lowest point of the pod (hover height measured from here by HoverLiftPod)"
+  }
+ },
+ "muzzles": [],
+ "visible_exits_note": "",
+ "notes": [
+  "Thrust direction: exhaust -Y (down), lift +Y; louvres are visual vanes, not a vectoring mechanic."
+ ]
+}

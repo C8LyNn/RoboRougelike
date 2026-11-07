@@ -1,0 +1,448 @@
+{
+ "id": "R4B_Beam2",
+ "block_kind": "Beam2",
+ "description": "2x1x1 beam - one rigid piece over two bonded cells",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ],
+  [
+   1,
+   0,
+   0
+  ]
+ ],
+ "bonds": [
+  [
+   [
+    0,
+    0,
+    0
+   ],
+   [
+    1,
+    0,
+    0
+   ]
+  ]
+ ],
+ "note": null,
+ "contact_mask_local_anchor": 62,
+ "contact_mask_bits": "R3MountingGrid.FaceDirections order: right, left, up, down, forward, back (Unity)",
+ "ports": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "up",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "forward",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "right",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "up",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "forward",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "up",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "forward",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "right",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "up",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "forward",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "mesh": {
+  "object": "R4B_Beam2",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 8184,
+  "uv": true,
+  "ok": true
+ },
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.81,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_cells": true,
+ "materials": [
+  "Armor_Dark",
+  "Armor_Gunmetal",
+  "Steel_Light"
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 4094,
+   "empties": [
+    "Port_back_000.001",
+    "Port_back_100.001",
+    "Port_down_000.001",
+    "Port_down_100.001",
+    "Port_forward_000.001",
+    "Port_forward_100.001",
+    "Port_left_000.001",
+    "Port_right_100.001",
+    "Port_up_000.001",
+    "Port_up_100.001",
+    "R4B_Beam2_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 9220,
+   "empties": [
+    "Port_back_000.001",
+    "Port_back_100.001",
+    "Port_down_000.001",
+    "Port_down_100.001",
+    "Port_forward_000.001",
+    "Port_forward_100.001",
+    "Port_left_000.001",
+    "Port_right_100.001",
+    "Port_up_000.001",
+    "Port_up_100.001",
+    "R4B_Beam2_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  }
+ },
+ "renders": [
+  "R4B_Beam2_34front.png",
+  "R4B_Beam2_34rear.png",
+  "R4B_Beam2_under.png"
+ ],
+ "files": {
+  "R4B_Beam2.blend": {
+   "sha256": "4bfbea70d0eba03494365b9ee34c5fc91444ae8a8e304bd37aac6d3dc9f133dc",
+   "bytes": 346664
+  },
+  "R4B_Beam2.blend1": {
+   "sha256": "e7f63f37ca0f0b10665d04512eca4b582a04420c43b9beab8078f34a2a7daf1d",
+   "bytes": 346650
+  },
+  "R4B_Beam2.fbx": {
+   "sha256": "87723b9a85d1b77fb4b6684d4a72cf9aeb83b156e91bb0644c37815815d61eb9",
+   "bytes": 267628
+  },
+  "R4B_Beam2.glb": {
+   "sha256": "be95c8fe08077af33a3fbec94a60d6441b17bacc27fdecb210f7368f11289ee4",
+   "bytes": 348732
+  },
+  "R4B_Beam2_colliders.glb": {
+   "sha256": "4e738e9b00af4166137163b928401f426dd148b79479432eb2771660377da965",
+   "bytes": 1772
+  }
+ },
+ "seconds": 3.5,
+ "blender": "5.2.3 LTS"
+}

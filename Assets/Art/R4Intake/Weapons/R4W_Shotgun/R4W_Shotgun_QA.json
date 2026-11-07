@@ -1,0 +1,1225 @@
+{
+ "id": "R4W_Shotgun",
+ "kind": "R4WeaponKind.Shotgun",
+ "game_name": "WPN-001 Shotgun",
+ "blender": "5.2.3 LTS",
+ "started": "2026-11-07 10:52:24",
+ "failures": [],
+ "notes": [
+  "Choke block front 0.410 m, Muzzle 0.450 m forward of the pivot.",
+  "v2 silhouette pass (#939 follow-up): base style box, head single cantilever arm + side drum magazine; rig, pivot, muzzle contract and clips unchanged."
+ ],
+ "meshes": [
+  {
+   "object": "R4W_Shotgun_Base",
+   "verts": 2020,
+   "triangles": 4032,
+   "shells": 5,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.040632,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.005,
+    0.005,
+    0.995,
+    0.995
+   ],
+   "materials": [
+    "Armor_Dark",
+    "Armor_Gunmetal",
+    "Armor_Plate_Light",
+    "Steel_Light",
+    "Energy_Hot",
+    "TeamColor_Red",
+    "Hazard_Yellow"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4W_Shotgun_Yaw",
+   "verts": 1505,
+   "triangles": 2982,
+   "shells": 7,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.007572,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.004,
+    0.004,
+    0.996,
+    0.991
+   ],
+   "materials": [
+    "Armor_Dark",
+    "Energy_Hot",
+    "Steel_Light",
+    "Armor_Gunmetal",
+    "Armor_Plate_Light",
+    "TeamColor_Red",
+    "Hazard_Yellow"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4W_Shotgun_Pitch",
+   "verts": 1342,
+   "triangles": 2688,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.006751,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.004,
+    0.004,
+    0.996,
+    0.995
+   ],
+   "materials": [
+    "Armor_Dark",
+    "Steel_Light",
+    "Armor_Gunmetal",
+    "Armor_Plate_Light",
+    "Sensor_Eye_Red",
+    "TeamColor_Red",
+    "Energy_Hot",
+    "Hazard_Yellow"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4W_Shotgun_Barrels",
+   "verts": 1492,
+   "triangles": 3004,
+   "shells": 7,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.003797,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.005,
+    0.005,
+    0.995,
+    0.995
+   ],
+   "materials": [
+    "Armor_Dark",
+    "Barrel_Heat",
+    "Armor_Plate_Light",
+    "Armor_Gunmetal",
+    "Energy_Hot",
+    "TeamColor_Red",
+    "Steel_Light",
+    "Hazard_Yellow"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4W_Shotgun_Pump",
+   "verts": 120,
+   "triangles": 236,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.000315,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.003,
+    0.003,
+    0.982,
+    0.997
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Steel_Light",
+    "Armor_Dark",
+    "TeamColor_Red"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4W_Shotgun_LoadingGate",
+   "verts": 93,
+   "triangles": 182,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 6.1e-05,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.993,
+    0.998
+   ],
+   "materials": [
+    "Armor_Plate_Light",
+    "Steel_Light",
+    "Hazard_Yellow",
+    "Armor_Dark"
+   ],
+   "ok": true
+  }
+ ],
+ "fx_meshes": [
+  {
+   "object": "MuzzleFlash",
+   "verts": 66,
+   "triangles": 128,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.000955,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.998,
+    0.818
+   ],
+   "materials": [
+    "Muzzle_Flash"
+   ],
+   "ok": true
+  }
+ ],
+ "triangles_total": 13124,
+ "triangles_fx": 128,
+ "triangles_r41_reference": 11452,
+ "topology_PASS": true,
+ "palette": {
+  "material_area_share": {
+   "Armor_Dark": 0.5861,
+   "Armor_Gunmetal": 0.2387,
+   "Armor_Plate_Light": 0.0862,
+   "Energy_Hot": 0.0333,
+   "TeamColor_Red": 0.0217,
+   "Steel_Light": 0.0143,
+   "Barrel_Heat": 0.0118,
+   "Hazard_Yellow": 0.0076,
+   "Sensor_Eye_Red": 0.0003
+  },
+  "family_share": {
+   "1_dark_gunmetal": 0.8247,
+   "2_light_steel": 0.1005,
+   "3_team_red": 0.0217,
+   "4_hazard_yellow": 0.0076,
+   "T_technical": 0.0454
+  },
+  "r41_family_share": {
+   "1_dark_gunmetal": 0.7913,
+   "2_light_steel": 0.1229,
+   "3_team_red": 0.0247,
+   "4_hazard_yellow": 0.0015,
+   "T_technical": 0.0595
+  },
+  "bands": {
+   "1_dark_gunmetal": [
+    0.62,
+    0.88
+   ],
+   "2_light_steel": [
+    0.06,
+    0.24
+   ],
+   "3_team_red": [
+    0.012,
+    0.07
+   ],
+   "4_hazard_yellow": [
+    0.001,
+    0.03
+   ],
+   "T_technical": [
+    0.0,
+    0.16
+   ]
+  },
+  "in_band": {
+   "1_dark_gunmetal": true,
+   "2_light_steel": true,
+   "3_team_red": true,
+   "4_hazard_yellow": true,
+   "T_technical": true
+  },
+  "violations": [],
+  "PASS": true
+ },
+ "contract": {
+  "R4W_Shotgun_ROOT": {
+   "position_file": [
+    0.0,
+    0.0,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    1.0,
+    -0.0
+   ],
+   "parent": null
+  },
+  "Socket_Mount_Bottom": {
+   "position_file": [
+    0.0,
+    -0.26,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    -1.0,
+    -0.0
+   ],
+   "parent": "R4W_Shotgun_ROOT"
+  },
+  "GunPivot": {
+   "position_file": [
+    0.0,
+    0.135,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    1.0,
+    -0.0
+   ],
+   "parent": "R4W_Shotgun_ROOT"
+  },
+  "Muzzle": {
+   "position_file": [
+    0.0,
+    0.135,
+    0.45
+   ],
+   "forward_file": [
+    0.0,
+    -0.0,
+    1.0
+   ],
+   "parent": "R4W_Shotgun_Pitch"
+  },
+  "unity_axes": "file/Unity: +Z forward, +Y up, meters; Yaw about local Y, Pitch about local X"
+ },
+ "sweep": {
+  "aim_sweep": {
+   "yaw_deg": "0..350 step 10",
+   "elevation_deg": "-10.0..35.0 step 2",
+   "collisions": 0,
+   "samples": []
+  },
+  "static_occupied": {
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "bounds_file": [
+    [
+     -0.2563,
+     -0.26,
+     -0.2563
+    ],
+    [
+     0.2563,
+     0.016,
+     0.2563
+    ]
+   ],
+   "inside_own_cell": true
+  },
+  "rest_pose": {
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "bounds_file": [
+    [
+     -0.2563,
+     -0.26,
+     -0.2563
+    ],
+    [
+     0.2563,
+     0.226,
+     0.413
+    ]
+   ]
+  },
+  "moving_sweep": {
+   "cells": [
+    [
+     -1,
+     0,
+     -1
+    ],
+    [
+     -1,
+     0,
+     0
+    ],
+    [
+     -1,
+     0,
+     1
+    ],
+    [
+     -1,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     -1
+    ],
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ],
+    [
+     0,
+     1,
+     -1
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     1,
+     1
+    ],
+    [
+     1,
+     0,
+     -1
+    ],
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     1,
+     0,
+     1
+    ],
+    [
+     1,
+     1,
+     0
+    ]
+   ],
+   "bounds_file": [
+    [
+     -0.4197,
+     0.0077,
+     -0.4197
+    ],
+    [
+     0.4197,
+     0.4044,
+     0.4197
+    ]
+   ],
+   "max_radius_from_pivot_axis_m": 0.4199,
+   "neighbour_cells_entered": [
+    [
+     -1,
+     0,
+     -1
+    ],
+    [
+     -1,
+     0,
+     0
+    ],
+    [
+     -1,
+     0,
+     1
+    ],
+    [
+     -1,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     -1
+    ],
+    [
+     0,
+     0,
+     1
+    ],
+    [
+     0,
+     1,
+     -1
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     1,
+     1
+    ],
+    [
+     1,
+     0,
+     -1
+    ],
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     1,
+     0,
+     1
+    ],
+    [
+     1,
+     1,
+     0
+    ]
+   ]
+  },
+  "yaw_body_max_radius_m": 0.255,
+  "yaw_body_inside_cell_all_yaw": true,
+  "mount_socket": {
+   "position_file": [
+    0.0,
+    -0.26,
+    -0.0
+   ],
+   "normal_file": [
+    0.0,
+    -1.0,
+    -0.0
+   ],
+   "on_cell_bottom_face": true
+  },
+  "line_of_fire": [
+   {
+    "muzzle": "Muzzle",
+    "elevation": -10,
+    "origin_file": [
+     0.0,
+     0.05686,
+     0.44316
+    ],
+    "dir_file": [
+     0.0,
+     -0.1736,
+     0.9848
+    ],
+    "own_hit_within_6m": null,
+    "exit_clear": true,
+    "cells": [
+     [
+      0,
+      -1,
+      4
+     ],
+     [
+      0,
+      -1,
+      5
+     ],
+     [
+      0,
+      -1,
+      6
+     ],
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      0,
+      2
+     ],
+     [
+      0,
+      0,
+      3
+     ],
+     [
+      0,
+      0,
+      4
+     ]
+    ]
+   },
+   {
+    "muzzle": "Muzzle",
+    "elevation": 0,
+    "origin_file": [
+     0.0,
+     0.135,
+     0.45
+    ],
+    "dir_file": [
+     0.0,
+     -0.0,
+     1.0
+    ],
+    "own_hit_within_6m": null,
+    "exit_clear": true,
+    "cells": [
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      0,
+      2
+     ],
+     [
+      0,
+      0,
+      3
+     ],
+     [
+      0,
+      0,
+      4
+     ],
+     [
+      0,
+      0,
+      5
+     ],
+     [
+      0,
+      0,
+      6
+     ]
+    ]
+   },
+   {
+    "muzzle": "Muzzle",
+    "elevation": 15,
+    "origin_file": [
+     0.0,
+     0.25147,
+     0.43467
+    ],
+    "dir_file": [
+     0.0,
+     0.2588,
+     0.9659
+    ],
+    "own_hit_within_6m": null,
+    "exit_clear": true,
+    "cells": [
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      1,
+      1
+     ],
+     [
+      0,
+      1,
+      2
+     ],
+     [
+      0,
+      1,
+      3
+     ],
+     [
+      0,
+      1,
+      4
+     ],
+     [
+      0,
+      1,
+      5
+     ],
+     [
+      0,
+      2,
+      5
+     ],
+     [
+      0,
+      2,
+      6
+     ]
+    ]
+   },
+   {
+    "muzzle": "Muzzle",
+    "elevation": 34,
+    "origin_file": [
+     0.0,
+     0.38664,
+     0.37307
+    ],
+    "dir_file": [
+     0.0,
+     0.5592,
+     0.829
+    ],
+    "own_hit_within_6m": null,
+    "exit_clear": true,
+    "cells": [
+     [
+      0,
+      1,
+      1
+     ],
+     [
+      0,
+      1,
+      2
+     ],
+     [
+      0,
+      2,
+      2
+     ],
+     [
+      0,
+      2,
+      3
+     ],
+     [
+      0,
+      3,
+      3
+     ],
+     [
+      0,
+      3,
+      4
+     ],
+     [
+      0,
+      3,
+      5
+     ],
+     [
+      0,
+      4,
+      5
+     ]
+    ]
+   }
+  ],
+  "line_of_fire_pose": "rest pose",
+  "fire_exit_clear_all": true
+ },
+ "animation_clash": {
+  "frames_checked": 179,
+  "pairs": [
+   [
+    "R4W_Shotgun_Barrels",
+    "R4W_Shotgun_Pitch"
+   ],
+   [
+    "R4W_Shotgun_Pump",
+    "R4W_Shotgun_Pitch"
+   ],
+   [
+    "R4W_Shotgun_LoadingGate",
+    "R4W_Shotgun_Pitch"
+   ],
+   [
+    "R4W_Shotgun_Barrels",
+    "R4W_Shotgun_Yaw"
+   ],
+   [
+    "R4W_Shotgun_Pump",
+    "R4W_Shotgun_Yaw"
+   ],
+   [
+    "R4W_Shotgun_LoadingGate",
+    "R4W_Shotgun_Yaw"
+   ],
+   [
+    "R4W_Shotgun_Pump",
+    "R4W_Shotgun_Base"
+   ],
+   [
+    "R4W_Shotgun_Barrels",
+    "R4W_Shotgun_Base"
+   ],
+   [
+    "R4W_Shotgun_Pitch",
+    "R4W_Shotgun_Yaw"
+   ],
+   [
+    "R4W_Shotgun_Pitch",
+    "R4W_Shotgun_Base"
+   ],
+   [
+    "R4W_Shotgun_Yaw",
+    "R4W_Shotgun_Base"
+   ]
+  ],
+  "collisions": 0,
+  "samples": [],
+  "per_pair": {},
+  "PASS": true
+ },
+ "extra_checks": {},
+ "renders": [
+  "R4W_Shotgun_front.png",
+  "R4W_Shotgun_back.png",
+  "R4W_Shotgun_side.png",
+  "R4W_Shotgun_top.png",
+  "R4W_Shotgun_34front.png",
+  "R4W_Shotgun_34rear.png",
+  "R4W_Shotgun_34front_wireframe.png",
+  "R4W_Shotgun_side_wireframe.png",
+  "R4W_Shotgun_colliders_sweep.png",
+  "poses/R4W_Shotgun_Idle_f013.png",
+  "poses/R4W_Shotgun_AimYaw_f039.png",
+  "poses/R4W_Shotgun_AimPitch_f089.png",
+  "poses/R4W_Shotgun_AimPitch_f101.png",
+  "poses/R4W_Shotgun_Fire_f115.png",
+  "poses/R4W_Shotgun_Pump_f131.png",
+  "poses/R4W_Shotgun_Reload_f151.png",
+  "R4W_Shotgun_HERO_eevee.png",
+  "R4W_Shotgun_HERO2_eevee.png",
+  "R4W_Shotgun_vs_R41_34front.png",
+  "R4W_Shotgun_vs_R41_side.png"
+ ],
+ "lod1": {
+  "file": "R4W_Shotgun_LOD1.fbx",
+  "triangles": 6560,
+  "method": "DECIMATE collapse 0.5 (automatic, not hand-authored)"
+ },
+ "fbx_reimport": {
+  "frames": [
+   1,
+   13,
+   25,
+   27,
+   51,
+   75,
+   77,
+   95,
+   113,
+   115,
+   119,
+   123,
+   125,
+   131,
+   137,
+   139,
+   159,
+   179
+  ],
+  "worst": {
+   "pos_mm": 0.0001,
+   "rot_deg": 0.0,
+   "geom_mm": 0.0001,
+   "scale_err": 0.0,
+   "missing": [],
+   "parent_bad": []
+  },
+  "per_frame": {
+   "1": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "13": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "25": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "27": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "51": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "75": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "77": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "95": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "113": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "115": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "119": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "123": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "125": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "131": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "137": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "139": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "159": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "179": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   }
+  },
+  "nodes_as_imported": {
+   "R4W_Shotgun_ROOT": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     -0.0,
+     0.0,
+     0.0
+    ],
+    "parent": null
+   },
+   "R4W_Shotgun_Base": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_Shotgun_ROOT"
+   },
+   "Socket_Mount_Bottom": {
+    "loc": [
+     0.0,
+     0.0,
+     -0.26
+    ],
+    "rot_deg": [
+     -180.0,
+     0.0,
+     0.0
+    ],
+    "parent": "R4W_Shotgun_ROOT"
+   },
+   "GunPivot": {
+    "loc": [
+     0.0,
+     0.0,
+     0.135
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_Shotgun_ROOT"
+   },
+   "R4W_Shotgun_Yaw": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "GunPivot"
+   },
+   "R4W_Shotgun_Pitch": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_Shotgun_Yaw"
+   },
+   "R4W_Shotgun_Barrels": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_Shotgun_Pitch"
+   },
+   "R4W_Shotgun_Pump": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_Shotgun_Barrels"
+   },
+   "R4W_Shotgun_LoadingGate": {
+    "loc": [
+     0.09,
+     -0.045,
+     0.065
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_Shotgun_Pitch"
+   },
+   "MuzzleFlash": {
+    "loc": [
+     0.0,
+     -0.414,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_Shotgun_Pitch"
+   },
+   "Muzzle": {
+    "loc": [
+     0.0,
+     -0.45,
+     0.0
+    ],
+    "rot_deg": [
+     90.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_Shotgun_Pitch"
+   }
+  },
+  "PASS": true,
+  "thresholds": "pos<0.05mm rot<0.01deg geom<0.05mm, 0 missing, 0 parent changes (R41 v6.1 QA)"
+ },
+ "r41_compare": "rendered from real R41_Turret_v6.1.fbx (SHA verified)",
+ "glb_reimport": {
+  "rest_frame_worst": {
+   "pos_mm": 0.0,
+   "rot_deg": 0.0,
+   "scale_err": 0.0,
+   "geom_mm": 0.0,
+   "missing": [],
+   "parent_bad": []
+  },
+  "actions_imported": 6,
+  "PASS": true,
+  "note": "glTF importer; world-space comparison at frame 1"
+ },
+ "files": {
+  "R4W_Shotgun.blend": {
+   "sha256": "f42682a0e3e72de75c62a95ab95d778226ff7924f74a314c06ef400411b90b45",
+   "bytes": 1877263,
+   "sha256_before_path_sanitize": "7f69087f3b40f798cf6e16ffc5895b50c925e56311039b3790929c81bbf83622",
+   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length (scripts/sanitize_blend_paths.py)"
+  },
+  "R4W_Shotgun.fbx": {
+   "sha256": "e5b8705b9505225357a713fdf2baa291ed9c43217047ada6378a8a64f5eea0ed",
+   "bytes": 631324
+  },
+  "R4W_Shotgun.glb": {
+   "sha256": "73870ed6989c38e48627c6f548ad23c297e78279b20917022974a22c377be8e9",
+   "bytes": 679916
+  },
+  "R4W_Shotgun_colliders.glb": {
+   "sha256": "65bff879e90b872a20f00369078adf130c201bf6470bdaf9a89e916d0cdbb647",
+   "bytes": 660712
+  },
+  "R4W_Shotgun_LOD1.fbx": {
+   "sha256": "ad59798f0ce58deab70a8414d0272ee052c4900abfd2c702998c087b90122b8d",
+   "bytes": 302332
+  }
+ },
+ "unity_import_test": "UNITY_NOT_RUN (Unity not available in this session)",
+ "unity_import_settings": "Scale Factor 1, Convert Units ON, Bake Axis Conversion ON, Animation: split clips by animation_manifest.json frame ranges (24 fps)",
+ "status": "BLENDER_PASS",
+ "seconds": 10.7
+}

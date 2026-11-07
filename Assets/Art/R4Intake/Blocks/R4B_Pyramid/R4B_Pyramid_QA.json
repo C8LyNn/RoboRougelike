@@ -1,0 +1,129 @@
+{
+ "id": "R4B_Pyramid",
+ "block_kind": "Pyramid",
+ "description": "1x1x1 square pyramid",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "bonds": [],
+ "note": "square pyramid, apex at the top-face centre",
+ "contact_mask_local_anchor": 8,
+ "contact_mask_bits": "R3MountingGrid.FaceDirections order: right, left, up, down, forward, back (Unity)",
+ "ports": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "mesh": {
+  "object": "R4B_Pyramid",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 972,
+  "uv": true,
+  "ok": true
+ },
+ "bounds_m": [
+  [
+   -0.2555,
+   -0.2555,
+   -0.26
+  ],
+  [
+   0.2555,
+   0.2555,
+   0.2381
+  ]
+ ],
+ "inside_cells": true,
+ "materials": [
+  "Armor_Dark",
+  "Armor_Gunmetal",
+  "Steel_Light"
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 488,
+   "empties": [
+    "Port_down_000.001",
+    "R4B_Pyramid_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 1168,
+   "empties": [
+    "Port_down_000.001",
+    "R4B_Pyramid_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  }
+ },
+ "renders": [
+  "R4B_Pyramid_34front.png",
+  "R4B_Pyramid_34rear.png",
+  "R4B_Pyramid_under.png"
+ ],
+ "files": {
+  "R4B_Pyramid.blend": {
+   "sha256": "33ddb5f6685143354e8af386f677eb109fa1973bb68ed9b5aac071fe4ae12c3c",
+   "bytes": 131211
+  },
+  "R4B_Pyramid.fbx": {
+   "sha256": "2b5fb0cf513f2645525773face44c08da6f7fa403d914fdf5a0577f9a5f3cf6b",
+   "bytes": 50988
+  },
+  "R4B_Pyramid.glb": {
+   "sha256": "1db7edc7eba6130567145966ab0f92e1f765bb55e4e15772300db3eb0790354e",
+   "bytes": 46640
+  },
+  "R4B_Pyramid_colliders.glb": {
+   "sha256": "31b6511b3bc5cfaebd813c24d6291a6b7896ef37861bce92a83667ad16846fbb",
+   "bytes": 1548
+  }
+ },
+ "seconds": 1.9,
+ "blender": "5.2.3 LTS"
+}

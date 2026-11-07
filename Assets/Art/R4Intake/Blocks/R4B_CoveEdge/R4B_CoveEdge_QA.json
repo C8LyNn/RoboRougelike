@@ -1,0 +1,238 @@
+{
+ "id": "R4B_CoveEdge",
+ "block_kind": "CoveEdge",
+ "description": "1x1x1 inverted round edge (concave fillet)",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "bonds": [],
+ "note": "inverted round edge (concave fillet r 0.40 m along X) - fills the inside of a rounded corner",
+ "contact_mask_local_anchor": 43,
+ "contact_mask_bits": "R3MountingGrid.FaceDirections order: right, left, up, down, forward, back (Unity)",
+ "ports": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "partial",
+   "center": [
+    -0.26,
+    0.15,
+    -0.15
+   ],
+   "half": [
+    0.2,
+    0.2
+   ],
+   "offset": [
+    -0.2727,
+    -0.2727
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "right",
+   "kind": "partial",
+   "center": [
+    0.26,
+    0.15,
+    -0.15
+   ],
+   "half": [
+    0.2,
+    0.2
+   ],
+   "offset": [
+    0.2727,
+    -0.2727
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "right",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "mesh": {
+  "object": "R4B_CoveEdge",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 3344,
+  "uv": true,
+  "ok": true
+ },
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_cells": true,
+ "materials": [
+  "Armor_Dark",
+  "Armor_Gunmetal",
+  "Steel_Light"
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 1674,
+   "empties": [
+    "Port_back_000.001",
+    "Port_down_000.001",
+    "Port_left_000_part.001",
+    "Port_right_000_part.001",
+    "R4B_CoveEdge_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 3788,
+   "empties": [
+    "Port_back_000.001",
+    "Port_down_000.001",
+    "Port_left_000_part.001",
+    "Port_right_000_part.001",
+    "R4B_CoveEdge_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  }
+ },
+ "renders": [
+  "R4B_CoveEdge_34front.png",
+  "R4B_CoveEdge_34rear.png",
+  "R4B_CoveEdge_under.png"
+ ],
+ "files": {
+  "R4B_CoveEdge.blend": {
+   "sha256": "ecbd141440a1953d56da6bf2dfafb1a7f913a7a0caa010136b47948f90d3844b",
+   "bytes": 204246
+  },
+  "R4B_CoveEdge.fbx": {
+   "sha256": "d30c6354c5c627391e74adb5e8a0ca23787bb0a03f2e3d194af08a0732b9f04a",
+   "bytes": 124492
+  },
+  "R4B_CoveEdge.glb": {
+   "sha256": "6933cfa381246bcdab2362fb34fecdd3dbd50e2af5385ae68db4fa82eb59756d",
+   "bytes": 145168
+  },
+  "R4B_CoveEdge_colliders.glb": {
+   "sha256": "1d2e37f6b68a449c37eaf1a948e04765905cb33760fcf6fb0ea4d72706ca6ef4",
+   "bytes": 3104
+  }
+ },
+ "seconds": 1.8,
+ "blender": "5.2.3 LTS"
+}

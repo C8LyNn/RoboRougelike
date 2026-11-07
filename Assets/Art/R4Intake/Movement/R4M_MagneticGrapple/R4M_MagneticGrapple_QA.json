@@ -1,0 +1,1147 @@
+{
+ "id": "R4M_MagneticGrapple",
+ "kind": "R3PartKind.MagneticGrapple",
+ "game_name": "Hak magnetyczny (MOV006)",
+ "blender": "5.2.3 LTS",
+ "started": "2026-11-07 10:56:50",
+ "failures": [],
+ "notes": [
+  "Cable object is a visual stretched along file +Z; no rope physics or new grapple mechanic."
+ ],
+ "meshes": [
+  {
+   "object": "R4M_MagneticGrapple_Housing",
+   "verts": 1498,
+   "triangles": 2968,
+   "shells": 9,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.039051,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.005,
+    0.005,
+    0.995,
+    0.995
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Armor_Plate_Light",
+    "Steel_Light",
+    "TeamColor_Red",
+    "Hazard_Yellow",
+    "Energy_Hot"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_MagneticGrapple_Spool",
+   "verts": 1226,
+   "triangles": 2448,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.001336,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.003,
+    0.003,
+    0.997,
+    0.994
+   ],
+   "materials": [
+    "Armor_Dark",
+    "Armor_Gunmetal",
+    "Steel_Light",
+    "TeamColor_Red"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_MagneticGrapple_Head",
+   "verts": 932,
+   "triangles": 1860,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.000802,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.003,
+    0.003,
+    0.997,
+    0.988
+   ],
+   "materials": [
+    "Armor_Dark",
+    "Barrel_Heat",
+    "Steel_Light",
+    "TeamColor_Red",
+    "Armor_Gunmetal"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_MagneticGrapple_Claw_1",
+   "verts": 64,
+   "triangles": 124,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 3.8e-05,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.998,
+    0.898
+   ],
+   "materials": [
+    "Steel_Light",
+    "Armor_Dark"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_MagneticGrapple_Claw_2",
+   "verts": 64,
+   "triangles": 124,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 3.8e-05,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.998,
+    0.898
+   ],
+   "materials": [
+    "Steel_Light",
+    "Armor_Dark"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_MagneticGrapple_Claw_3",
+   "verts": 64,
+   "triangles": 124,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 3.8e-05,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.998,
+    0.898
+   ],
+   "materials": [
+    "Steel_Light",
+    "Armor_Dark"
+   ],
+   "ok": true
+  }
+ ],
+ "fx_meshes": [
+  {
+   "object": "Grapple_MagnetGlow",
+   "verts": 64,
+   "triangles": 124,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 2.4e-05,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.001,
+    0.001,
+    0.548,
+    0.999
+   ],
+   "materials": [
+    "Energy_Hot"
+   ],
+   "ok": true
+  }
+ ],
+ "triangles_total": 7648,
+ "triangles_fx": 124,
+ "triangles_r41_reference": 11452,
+ "topology_PASS": true,
+ "palette": {
+  "material_area_share": {
+   "Armor_Dark": 0.5123,
+   "Armor_Gunmetal": 0.3153,
+   "Steel_Light": 0.0791,
+   "TeamColor_Red": 0.0361,
+   "Armor_Plate_Light": 0.0247,
+   "Energy_Hot": 0.0191,
+   "Hazard_Yellow": 0.0084,
+   "Barrel_Heat": 0.005
+  },
+  "family_share": {
+   "1_dark_gunmetal": 0.8276,
+   "2_light_steel": 0.1038,
+   "3_team_red": 0.0361,
+   "4_hazard_yellow": 0.0084,
+   "T_technical": 0.0241
+  },
+  "r41_family_share": {
+   "1_dark_gunmetal": 0.7913,
+   "2_light_steel": 0.1229,
+   "3_team_red": 0.0247,
+   "4_hazard_yellow": 0.0015,
+   "T_technical": 0.0595
+  },
+  "bands": {
+   "1_dark_gunmetal": [
+    0.62,
+    0.88
+   ],
+   "2_light_steel": [
+    0.06,
+    0.24
+   ],
+   "3_team_red": [
+    0.012,
+    0.07
+   ],
+   "4_hazard_yellow": [
+    0.001,
+    0.03
+   ],
+   "T_technical": [
+    0.0,
+    0.16
+   ]
+  },
+  "in_band": {
+   "1_dark_gunmetal": true,
+   "2_light_steel": true,
+   "3_team_red": true,
+   "4_hazard_yellow": true,
+   "T_technical": true
+  },
+  "violations": [],
+  "PASS": true,
+  "PASS_policy": "movement: locked materials/PBR enforced, family bands reported (not enforced, issue #940)"
+ },
+ "contract": {
+  "R4M_MagneticGrapple_ROOT": {
+   "position_file": [
+    0.0,
+    0.0,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    1.0,
+    -0.0
+   ],
+   "parent": null
+  },
+  "ClawHinge_1": {
+   "position_file": [
+    0.0,
+    0.084,
+    0.374
+   ],
+   "forward_file": [
+    0.0,
+    1.0,
+    -0.0
+   ],
+   "parent": "R4M_MagneticGrapple_Head"
+  },
+  "ClawHinge_2": {
+   "position_file": [
+    -0.07275,
+    -0.042,
+    0.374
+   ],
+   "forward_file": [
+    -0.866,
+    -0.5,
+    -0.0
+   ],
+   "parent": "R4M_MagneticGrapple_Head"
+  },
+  "ClawHinge_3": {
+   "position_file": [
+    0.07275,
+    -0.042,
+    0.374
+   ],
+   "forward_file": [
+    0.866,
+    -0.5,
+    -0.0
+   ],
+   "parent": "R4M_MagneticGrapple_Head"
+  },
+  "Socket_Mount": {
+   "position_file": [
+    0.0,
+    0.26,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    1.0,
+    -0.0
+   ],
+   "parent": "R4M_MagneticGrapple_ROOT"
+  },
+  "Grapple_Muzzle": {
+   "position_file": [
+    0.0,
+    0.0,
+    0.362
+   ],
+   "forward_file": [
+    0.0,
+    -0.0,
+    1.0
+   ],
+   "parent": "R4M_MagneticGrapple_ROOT"
+  },
+  "unity_axes": "file/Unity: +Z forward, +Y up, meters; Yaw about local Y, Pitch about local X"
+ },
+ "sweep": {
+  "failures": [],
+  "mount_cell": [
+   0,
+   0,
+   0
+  ],
+  "static_bounds_file": [
+   [
+    -0.266,
+    -0.15,
+    -0.2563
+   ],
+   [
+    0.2563,
+    0.26,
+    0.4631
+   ]
+  ],
+  "static_cells": [
+   [
+    0,
+    0,
+    0
+   ],
+   [
+    0,
+    0,
+    1
+   ]
+  ],
+  "housing_bounds_file": [
+   [
+    -0.258,
+    -0.15,
+    -0.2563
+   ],
+   [
+    0.2563,
+    0.26,
+    0.358
+   ]
+  ],
+  "housing_inside_mount_cell": false,
+  "housing_policy": "launch tube reaches 0.36 m forward (runtime grapple cylinder ends 0.416 m forward)",
+  "moving_sweep": {
+   "bounds_file": [
+    [
+     -0.266,
+     -0.15,
+     -0.2563
+    ],
+    [
+     0.2563,
+     0.26,
+     1.3834
+    ]
+   ],
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ],
+    [
+     0,
+     0,
+     2
+    ],
+    [
+     0,
+     0,
+     3
+    ]
+   ],
+   "neighbour_cells_entered": [
+    [
+     0,
+     0,
+     1
+    ],
+    [
+     0,
+     0,
+     2
+    ],
+    [
+     0,
+     0,
+     3
+    ]
+   ],
+   "frames": 81
+  },
+  "ground_contact": {
+   "note": "no ground contact (front device)"
+  },
+  "collision_envelope": {
+   "runtime": "Unity cylinder d 0.338, length 0.208 along Z, centre (0,0,+0.312)",
+   "front_end_file_z": 0.416,
+   "runtime_front_end_file_z": 0.416,
+   "shot_length_m": 0.9,
+   "launch_dir_file": [
+    0,
+    0,
+    1
+   ],
+   "front_dev_mm": 0.0,
+   "PASS": true
+  },
+  "clearance_min_mm": {
+   "R4M_MagneticGrapple_Spool|R4M_MagneticGrapple_Housing": 1.22,
+   "R4M_MagneticGrapple_Head|R4M_MagneticGrapple_Housing": 8.0
+  },
+  "quarter_turns": {
+   "X90": {
+    "housing_inside_cell": false,
+    "static_cells": [
+     [
+      0,
+      -1,
+      0
+     ],
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "X180": {
+    "housing_inside_cell": false,
+    "static_cells": [
+     [
+      0,
+      0,
+      -1
+     ],
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "X270": {
+    "housing_inside_cell": false,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      1,
+      0
+     ]
+    ]
+   },
+   "Y90": {
+    "housing_inside_cell": false,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      1,
+      0,
+      0
+     ]
+    ]
+   },
+   "Y180": {
+    "housing_inside_cell": false,
+    "static_cells": [
+     [
+      0,
+      0,
+      -1
+     ],
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "Y270": {
+    "housing_inside_cell": false,
+    "static_cells": [
+     [
+      -1,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "Z90": {
+    "housing_inside_cell": false,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      1
+     ]
+    ]
+   },
+   "Z180": {
+    "housing_inside_cell": false,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      1
+     ]
+    ]
+   },
+   "Z270": {
+    "housing_inside_cell": false,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      1
+     ]
+    ]
+   }
+  },
+  "mirror_X": {
+   "static_bounds_file": [
+    [
+     -0.2563,
+     -0.15,
+     -0.2563
+    ],
+    [
+     0.266,
+     0.26,
+     0.4631
+    ]
+   ],
+   "socket_file": [
+    0.0,
+    0.26,
+    -0.0
+   ],
+   "socket_mirrored_file": [
+    -0.0,
+    0.26,
+    -0.0
+   ],
+   "note": "L/R variant = parent scale X -1 (Unity flips winding for negative scale); geometry is closed so lighting stays correct"
+  },
+  "floating_shells": {
+   "R4M_MagneticGrapple_Housing": {
+    "shells": 9,
+    "isolated": 0
+   },
+   "R4M_MagneticGrapple_Spool": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_MagneticGrapple_Head": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_MagneticGrapple_Claw_1": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_MagneticGrapple_Claw_2": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_MagneticGrapple_Claw_3": {
+    "shells": 1,
+    "isolated": 0
+   }
+  },
+  "nodes_file": {
+   "R4M_MagneticGrapple_ROOT": {
+    "position": [
+     0.0,
+     0.0,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     1.0,
+     -0.0
+    ]
+   },
+   "ClawHinge_1": {
+    "position": [
+     0.0,
+     0.084,
+     0.374
+    ],
+    "z_axis": [
+     0.0,
+     1.0,
+     -0.0
+    ]
+   },
+   "ClawHinge_2": {
+    "position": [
+     -0.07275,
+     -0.042,
+     0.374
+    ],
+    "z_axis": [
+     -0.866,
+     -0.5,
+     -0.0
+    ]
+   },
+   "ClawHinge_3": {
+    "position": [
+     0.07275,
+     -0.042,
+     0.374
+    ],
+    "z_axis": [
+     0.866,
+     -0.5,
+     -0.0
+    ]
+   },
+   "Socket_Mount": {
+    "position": [
+     0.0,
+     0.26,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     1.0,
+     -0.0
+    ]
+   },
+   "Grapple_Muzzle": {
+    "position": [
+     0.0,
+     0.0,
+     0.362
+    ],
+    "z_axis": [
+     0.0,
+     -0.0,
+     1.0
+    ]
+   }
+  }
+ },
+ "animation_clash": {
+  "frames_checked": 81,
+  "pairs": [
+   [
+    "R4M_MagneticGrapple_Spool",
+    "R4M_MagneticGrapple_Housing"
+   ],
+   [
+    "R4M_MagneticGrapple_Head",
+    "R4M_MagneticGrapple_Housing"
+   ],
+   [
+    "R4M_MagneticGrapple_Claw_1",
+    "R4M_MagneticGrapple_Housing"
+   ],
+   [
+    "R4M_MagneticGrapple_Claw_2",
+    "R4M_MagneticGrapple_Housing"
+   ],
+   [
+    "R4M_MagneticGrapple_Claw_3",
+    "R4M_MagneticGrapple_Housing"
+   ],
+   [
+    "R4M_MagneticGrapple_Claw_1",
+    "R4M_MagneticGrapple_Head"
+   ],
+   [
+    "R4M_MagneticGrapple_Claw_2",
+    "R4M_MagneticGrapple_Head"
+   ],
+   [
+    "R4M_MagneticGrapple_Claw_3",
+    "R4M_MagneticGrapple_Head"
+   ]
+  ],
+  "collisions": 0,
+  "samples": [],
+  "per_pair": {},
+  "PASS": true
+ },
+ "extra_checks": {},
+ "renders": [
+  "R4M_MagneticGrapple_front.png",
+  "R4M_MagneticGrapple_back.png",
+  "R4M_MagneticGrapple_side.png",
+  "R4M_MagneticGrapple_top.png",
+  "R4M_MagneticGrapple_34front.png",
+  "R4M_MagneticGrapple_34rear.png",
+  "R4M_MagneticGrapple_34front_wireframe.png",
+  "R4M_MagneticGrapple_side_wireframe.png",
+  "R4M_MagneticGrapple_colliders_sweep.png",
+  "poses/R4M_MagneticGrapple_Idle_f013.png",
+  "poses/R4M_MagneticGrapple_Deploy_f037.png",
+  "poses/R4M_MagneticGrapple_Fire_f044.png",
+  "poses/R4M_MagneticGrapple_Retract_f061.png",
+  "R4M_MagneticGrapple_HERO_eevee.png",
+  "R4M_MagneticGrapple_HERO2_eevee.png",
+  "R4M_MagneticGrapple_vs_R41_34front.png",
+  "R4M_MagneticGrapple_vs_R41_side.png"
+ ],
+ "silhouettes": [
+  "R4M_MagneticGrapple_sil_side.png",
+  "R4M_MagneticGrapple_sil_front.png",
+  "R4M_MagneticGrapple_sil_top.png",
+  "R4M_MagneticGrapple_sil_gameplay.png"
+ ],
+ "video": "R4M_MagneticGrapple_timeline.mp4",
+ "lod1": {
+  "file": "R4M_MagneticGrapple_LOD1.fbx",
+  "triangles": 3824,
+  "method": "DECIMATE collapse 0.5 (automatic, not hand-authored)"
+ },
+ "fbx_reimport": {
+  "frames": [
+   1,
+   13,
+   25,
+   27,
+   32,
+   37,
+   39,
+   44,
+   49,
+   51,
+   66,
+   81
+  ],
+  "worst": {
+   "pos_mm": 0.0002,
+   "rot_deg": 0.0,
+   "geom_mm": 0.0003,
+   "scale_err": 0.0,
+   "missing": [],
+   "parent_bad": []
+  },
+  "per_frame": {
+   "1": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "13": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "25": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "27": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "32": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "37": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "39": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "44": {
+    "pos_mm": 0.0002,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0003,
+    "missing": [],
+    "parent_bad": []
+   },
+   "49": {
+    "pos_mm": 0.0002,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0003,
+    "missing": [],
+    "parent_bad": []
+   },
+   "51": {
+    "pos_mm": 0.0002,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0003,
+    "missing": [],
+    "parent_bad": []
+   },
+   "66": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "81": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   }
+  },
+  "nodes_as_imported": {
+   "R4M_MagneticGrapple_ROOT": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     -0.0,
+     0.0,
+     0.0
+    ],
+    "parent": null
+   },
+   "R4M_MagneticGrapple_Housing": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_MagneticGrapple_ROOT"
+   },
+   "R4M_MagneticGrapple_Spool": {
+    "loc": [
+     0.0,
+     0.04,
+     -0.04
+    ],
+    "rot_deg": [
+     720.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_MagneticGrapple_ROOT"
+   },
+   "R4M_MagneticGrapple_Head": {
+    "loc": [
+     0.0,
+     -0.364,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_MagneticGrapple_ROOT"
+   },
+   "ClawHinge_1": {
+    "loc": [
+     0.0,
+     -0.01,
+     0.084
+    ],
+    "rot_deg": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "parent": "R4M_MagneticGrapple_Head"
+   },
+   "ClawHinge_2": {
+    "loc": [
+     -0.07275,
+     -0.01,
+     -0.042
+    ],
+    "rot_deg": [
+     -0.0,
+     -120.0,
+     -0.0
+    ],
+    "parent": "R4M_MagneticGrapple_Head"
+   },
+   "ClawHinge_3": {
+    "loc": [
+     0.07275,
+     -0.01,
+     -0.042
+    ],
+    "rot_deg": [
+     -0.0,
+     120.0,
+     -0.0
+    ],
+    "parent": "R4M_MagneticGrapple_Head"
+   },
+   "R4M_MagneticGrapple_Claw_1": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "ClawHinge_1"
+   },
+   "R4M_MagneticGrapple_Claw_2": {
+    "loc": [
+     0.0,
+     0.0,
+     -0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "ClawHinge_2"
+   },
+   "R4M_MagneticGrapple_Claw_3": {
+    "loc": [
+     0.0,
+     0.0,
+     -0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "ClawHinge_3"
+   },
+   "R4M_MagneticGrapple_Cable": {
+    "loc": [
+     0.0,
+     -0.3,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_MagneticGrapple_ROOT"
+   },
+   "Grapple_MagnetGlow": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_MagneticGrapple_Head"
+   },
+   "Socket_Mount": {
+    "loc": [
+     0.0,
+     0.0,
+     0.26
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_MagneticGrapple_ROOT"
+   },
+   "Grapple_Muzzle": {
+    "loc": [
+     0.0,
+     -0.362,
+     0.0
+    ],
+    "rot_deg": [
+     90.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_MagneticGrapple_ROOT"
+   }
+  },
+  "PASS": true,
+  "thresholds": "pos<0.05mm rot<0.01deg geom<0.05mm, 0 missing, 0 parent changes (R41 v6.1 QA)"
+ },
+ "r41_compare": "rendered from real R41_Turret_v6.1.fbx (SHA verified)",
+ "glb_reimport": {
+  "rest_frame_worst": {
+   "pos_mm": 0.0,
+   "rot_deg": 0.0,
+   "scale_err": 0.0,
+   "geom_mm": 0.0,
+   "missing": [],
+   "parent_bad": []
+  },
+  "actions_imported": 7,
+  "PASS": true,
+  "note": "glTF importer; world-space comparison at frame 1"
+ },
+ "files": {
+  "R4M_MagneticGrapple.blend": {
+   "sha256": "fdfe8231d76f53054ae8f9c0fefea683f49c9c595d93c2d626a2ebe9f3c60e19",
+   "bytes": 1428207,
+   "sha256_before_path_sanitize": "153afb3d8b279ab6b1a00b5fad9df6c24505339bc0483d161890e5f7cc50a0e1",
+   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length (scripts/sanitize_blend_paths.py)"
+  },
+  "R4M_MagneticGrapple.fbx": {
+   "sha256": "375803c9ca97d2b2b06e37f644c700d7ba0944cfa19ddd5c43069550600b777c",
+   "bytes": 431916
+  },
+  "R4M_MagneticGrapple.glb": {
+   "sha256": "50158908553c7bc06e5e0c5e6fd94d6ab0d1ae05c9e07a4e328282da6bf092bb",
+   "bytes": 373928
+  },
+  "R4M_MagneticGrapple_colliders.glb": {
+   "sha256": "93bc5bb664f81445a717370b87074888d5345774f66b3f6ce181fc02c10e0636",
+   "bytes": 362920
+  },
+  "R4M_MagneticGrapple_LOD1.fbx": {
+   "sha256": "45254d9ae04c614a43f25307bfcd55cd81fcc8a6cae69dfb86edd52b370e0da4",
+   "bytes": 188764
+  }
+ },
+ "unity_import_test": "UNITY_NOT_RUN (Unity not available in this session)",
+ "unity_import_settings": "Scale Factor 1, Convert Units ON, Bake Axis Conversion ON, Animation: split clips by animation_manifest.json frame ranges (24 fps)",
+ "status": "BLENDER_PASS",
+ "seconds": 7.6
+}

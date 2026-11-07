@@ -1,0 +1,58 @@
+{
+ "id": "R4M_HoverEngine",
+ "kind": "R3PartKind.HoverEngine",
+ "fps": 24,
+ "frame_range": [
+  1,
+  113
+ ],
+ "note": "One baked take in FBX/GLB (master timeline). Unity: split into clips by these frame ranges; loop=true clips are seamless.",
+ "clips": [
+  {
+   "name": "Idle",
+   "start": 1,
+   "end": 25,
+   "loop": true,
+   "desc": "off: rotor stopped, louvres closed"
+  },
+  {
+   "name": "SpinUp",
+   "start": 27,
+   "end": 51,
+   "loop": false,
+   "desc": "start: rotor accelerates to lift speed, louvres open to 70 deg, outlet glow rises"
+  },
+  {
+   "name": "Lift",
+   "start": 53,
+   "end": 65,
+   "loop": true,
+   "desc": "hovering: steady spin 3 blades / 12 f (seamless, 7-fold), louvres open, glow on"
+  },
+  {
+   "name": "Pulse",
+   "start": 67,
+   "end": 79,
+   "loop": false,
+   "desc": "thrust pulse: louvres snap to 85 deg, pulse ring expands, glow flares, rotor at speed"
+  },
+  {
+   "name": "Cooldown",
+   "start": 81,
+   "end": 113,
+   "loop": false,
+   "desc": "shutdown: rotor spins down, louvres close, glow fades (ends 4 blades on = rest-equivalent)"
+  }
+ ],
+ "animated_nodes": [
+  "Hover_PulseRing",
+  "Hover_ThrustGlow",
+  "R4M_HoverEngine_Rotor",
+  "R4M_HoverEngine_Vane_1",
+  "R4M_HoverEngine_Vane_2",
+  "R4M_HoverEngine_Vane_3",
+  "R4M_HoverEngine_Vane_4",
+  "R4M_HoverEngine_Vane_5"
+ ],
+ "gameplay": "Animation is visual only: it adds no gameplay capability, shot count or timing authority."
+}

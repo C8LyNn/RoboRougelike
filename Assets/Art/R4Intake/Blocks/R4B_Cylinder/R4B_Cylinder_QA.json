@@ -1,0 +1,176 @@
+{
+ "id": "R4B_Cylinder",
+ "block_kind": "Cylinder",
+ "description": "1x1x1 round column (axis up)",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "bonds": [],
+ "note": "round end faces: contact patch limited to the inscribed square (half 0.30 cell)",
+ "contact_mask_local_anchor": 12,
+ "contact_mask_bits": "R3MountingGrid.FaceDirections order: right, left, up, down, forward, back (Unity)",
+ "ports": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "up",
+   "kind": "partial",
+   "center": [
+    0.0,
+    0.0,
+    0.26
+   ],
+   "half": [
+    0.3,
+    0.3
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "partial",
+   "center": [
+    0.0,
+    0.0,
+    -0.26
+   ],
+   "half": [
+    0.3,
+    0.3
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "up",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "mesh": {
+  "object": "R4B_Cylinder",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 3202,
+  "uv": true,
+  "ok": true
+ },
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_cells": true,
+ "materials": [
+  "Armor_Dark",
+  "Armor_Gunmetal",
+  "Steel_Light"
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 1603,
+   "empties": [
+    "Port_down_000_part.001",
+    "Port_up_000_part.001",
+    "R4B_Cylinder_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 3502,
+   "empties": [
+    "Port_down_000_part.001",
+    "Port_up_000_part.001",
+    "R4B_Cylinder_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  }
+ },
+ "renders": [
+  "R4B_Cylinder_34front.png",
+  "R4B_Cylinder_34rear.png",
+  "R4B_Cylinder_under.png"
+ ],
+ "files": {
+  "R4B_Cylinder.blend": {
+   "sha256": "ffc1b21baa7883d33ba98b4a81f01b26edce01e6942806520a3a1c8ef8ef612c",
+   "bytes": 193761
+  },
+  "R4B_Cylinder.blend1": {
+   "sha256": "294311b57ffe137de620ce2a12582f1c183723eb3689152d91646581c6cd22f3",
+   "bytes": 197190
+  },
+  "R4B_Cylinder.fbx": {
+   "sha256": "828deb900ac0fc855f233b8f7392b5c37d7d27b25bafd849030fbb6490d877e5",
+   "bytes": 115212
+  },
+  "R4B_Cylinder.glb": {
+   "sha256": "6f60150690800b3edfc68cb098581311dda6d191dc52b23f4644fefe5923f4f4",
+   "bytes": 134864
+  },
+  "R4B_Cylinder_colliders.glb": {
+   "sha256": "32be8d6cef711d245a28ce86081995525b360cae9c63a8e3fe4809e423600611",
+   "bytes": 3800
+  }
+ },
+ "seconds": 2.0,
+ "blender": "5.2.3 LTS"
+}

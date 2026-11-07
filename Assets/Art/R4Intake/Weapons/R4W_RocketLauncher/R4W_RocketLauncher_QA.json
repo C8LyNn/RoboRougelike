@@ -1,0 +1,2481 @@
+{
+ "id": "R4W_RocketLauncher",
+ "kind": "R4WeaponKind.RocketLauncher",
+ "game_name": "WPN-004 Rocket Launcher",
+ "blender": "5.2.3 LTS",
+ "started": "2026-11-07 10:53:29",
+ "failures": [],
+ "notes": [
+  "Fire clip launches tube 1 only; tube 1 is empty until Reload (master timeline: Fire is followed by Reload).",
+  "v2 silhouette pass (#939 follow-up): base style tripod, head central radar tower + twin side pods; rig, pivot, muzzle contract and clips unchanged (second rear cover added, rest in clips)."
+ ],
+ "meshes": [
+  {
+   "object": "R4W_RocketLauncher_Base",
+   "verts": 2743,
+   "triangles": 5498,
+   "shells": 7,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.016064,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.005,
+    0.005,
+    0.995,
+    0.994
+   ],
+   "materials": [
+    "Armor_Dark",
+    "Armor_Plate_Light",
+    "Armor_Gunmetal",
+    "Steel_Light",
+    "Energy_Hot",
+    "TeamColor_Red",
+    "Hazard_Yellow"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4W_RocketLauncher_Yaw",
+   "verts": 1480,
+   "triangles": 2944,
+   "shells": 5,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00785,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.004,
+    0.004,
+    0.996,
+    0.996
+   ],
+   "materials": [
+    "Armor_Dark",
+    "Energy_Hot",
+    "Steel_Light",
+    "Armor_Gunmetal",
+    "Armor_Plate_Light",
+    "Sensor_Eye_Red",
+    "TeamColor_Red",
+    "Hazard_Yellow"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4W_RocketLauncher_Pitch",
+   "verts": 1942,
+   "triangles": 3896,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.007474,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.006,
+    0.006,
+    0.994,
+    0.994
+   ],
+   "materials": [
+    "Steel_Light",
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "Armor_Plate_Light",
+    "TeamColor_Red",
+    "Hazard_Yellow",
+    "Energy_Hot"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4W_RocketLauncher_RearCover_L",
+   "verts": 212,
+   "triangles": 416,
+   "shells": 2,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.000153,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.991,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Plate_Light",
+    "Armor_Dark",
+    "Steel_Light",
+    "Hazard_Yellow"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4W_RocketLauncher_RearCover_R",
+   "verts": 212,
+   "triangles": 416,
+   "shells": 2,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.000153,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.995,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Plate_Light",
+    "Armor_Dark",
+    "Steel_Light",
+    "Hazard_Yellow"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4W_RocketLauncher_Hatch_L",
+   "verts": 100,
+   "triangles": 196,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.000162,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.925,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Plate_Light",
+    "Steel_Light",
+    "TeamColor_Red"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4W_RocketLauncher_Hatch_R",
+   "verts": 100,
+   "triangles": 196,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.000162,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.925,
+    0.998
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Plate_Light",
+    "Steel_Light",
+    "TeamColor_Red"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4W_RocketLauncher_Rocket_1",
+   "verts": 287,
+   "triangles": 570,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.000452,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.003,
+    0.003,
+    0.997,
+    0.979
+   ],
+   "materials": [
+    "Armor_Plate_Light",
+    "Armor_Gunmetal",
+    "TeamColor_Red",
+    "Hazard_Yellow",
+    "Barrel_Heat",
+    "Armor_Dark"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4W_RocketLauncher_Rocket_2",
+   "verts": 287,
+   "triangles": 570,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.000452,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.003,
+    0.003,
+    0.997,
+    0.979
+   ],
+   "materials": [
+    "Armor_Plate_Light",
+    "Armor_Gunmetal",
+    "TeamColor_Red",
+    "Hazard_Yellow",
+    "Barrel_Heat",
+    "Armor_Dark"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4W_RocketLauncher_Rocket_3",
+   "verts": 287,
+   "triangles": 570,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.000452,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.003,
+    0.003,
+    0.997,
+    0.993
+   ],
+   "materials": [
+    "Armor_Plate_Light",
+    "Armor_Gunmetal",
+    "TeamColor_Red",
+    "Hazard_Yellow",
+    "Barrel_Heat",
+    "Armor_Dark"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4W_RocketLauncher_Rocket_4",
+   "verts": 287,
+   "triangles": 570,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.000452,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.003,
+    0.003,
+    0.997,
+    0.993
+   ],
+   "materials": [
+    "Armor_Plate_Light",
+    "Armor_Gunmetal",
+    "TeamColor_Red",
+    "Hazard_Yellow",
+    "Barrel_Heat",
+    "Armor_Dark"
+   ],
+   "ok": true
+  }
+ ],
+ "fx_meshes": [
+  {
+   "object": "MuzzleFlash",
+   "verts": 92,
+   "triangles": 180,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.000185,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.898,
+    0.998
+   ],
+   "materials": [
+    "Muzzle_Flash"
+   ],
+   "ok": true
+  },
+  {
+   "object": "Rocket_Backblast",
+   "verts": 114,
+   "triangles": 224,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.000546,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.002,
+    0.002,
+    0.998,
+    0.988
+   ],
+   "materials": [
+    "Muzzle_Flash"
+   ],
+   "ok": true
+  }
+ ],
+ "triangles_total": 15842,
+ "triangles_fx": 404,
+ "triangles_r41_reference": 11452,
+ "topology_PASS": true,
+ "palette": {
+  "material_area_share": {
+   "Armor_Dark": 0.56,
+   "Armor_Gunmetal": 0.2528,
+   "Armor_Plate_Light": 0.0947,
+   "Steel_Light": 0.0242,
+   "Energy_Hot": 0.024,
+   "TeamColor_Red": 0.0233,
+   "Hazard_Yellow": 0.017,
+   "Barrel_Heat": 0.0038,
+   "Sensor_Eye_Red": 0.0002
+  },
+  "family_share": {
+   "1_dark_gunmetal": 0.8129,
+   "2_light_steel": 0.1189,
+   "3_team_red": 0.0233,
+   "4_hazard_yellow": 0.017,
+   "T_technical": 0.028
+  },
+  "r41_family_share": {
+   "1_dark_gunmetal": 0.7913,
+   "2_light_steel": 0.1229,
+   "3_team_red": 0.0247,
+   "4_hazard_yellow": 0.0015,
+   "T_technical": 0.0595
+  },
+  "bands": {
+   "1_dark_gunmetal": [
+    0.62,
+    0.88
+   ],
+   "2_light_steel": [
+    0.06,
+    0.24
+   ],
+   "3_team_red": [
+    0.012,
+    0.07
+   ],
+   "4_hazard_yellow": [
+    0.001,
+    0.03
+   ],
+   "T_technical": [
+    0.0,
+    0.16
+   ]
+  },
+  "in_band": {
+   "1_dark_gunmetal": true,
+   "2_light_steel": true,
+   "3_team_red": true,
+   "4_hazard_yellow": true,
+   "T_technical": true
+  },
+  "violations": [],
+  "PASS": true
+ },
+ "contract": {
+  "R4W_RocketLauncher_ROOT": {
+   "position_file": [
+    0.0,
+    0.0,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    1.0,
+    -0.0
+   ],
+   "parent": null
+  },
+  "Socket_Mount_Bottom": {
+   "position_file": [
+    0.0,
+    -0.26,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    -1.0,
+    -0.0
+   ],
+   "parent": "R4W_RocketLauncher_ROOT"
+  },
+  "GunPivot": {
+   "position_file": [
+    0.0,
+    0.135,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    1.0,
+    -0.0
+   ],
+   "parent": "R4W_RocketLauncher_ROOT"
+  },
+  "Muzzle": {
+   "position_file": [
+    0.0,
+    0.135,
+    0.382
+   ],
+   "forward_file": [
+    0.0,
+    -0.0,
+    1.0
+   ],
+   "parent": "R4W_RocketLauncher_Pitch"
+  },
+  "Muzzle_1": {
+   "position_file": [
+    -0.13,
+    0.135,
+    0.382
+   ],
+   "forward_file": [
+    0.0,
+    -0.0,
+    1.0
+   ],
+   "parent": "R4W_RocketLauncher_Pitch"
+  },
+  "Muzzle_2": {
+   "position_file": [
+    -0.2,
+    0.135,
+    0.382
+   ],
+   "forward_file": [
+    0.0,
+    -0.0,
+    1.0
+   ],
+   "parent": "R4W_RocketLauncher_Pitch"
+  },
+  "Muzzle_3": {
+   "position_file": [
+    0.13,
+    0.135,
+    0.382
+   ],
+   "forward_file": [
+    0.0,
+    -0.0,
+    1.0
+   ],
+   "parent": "R4W_RocketLauncher_Pitch"
+  },
+  "Muzzle_4": {
+   "position_file": [
+    0.2,
+    0.135,
+    0.382
+   ],
+   "forward_file": [
+    0.0,
+    -0.0,
+    1.0
+   ],
+   "parent": "R4W_RocketLauncher_Pitch"
+  },
+  "unity_axes": "file/Unity: +Z forward, +Y up, meters; Yaw about local Y, Pitch about local X"
+ },
+ "sweep": {
+  "aim_sweep": {
+   "yaw_deg": "0..350 step 10",
+   "elevation_deg": "-10.0..35.0 step 2",
+   "collisions": 0,
+   "samples": []
+  },
+  "static_occupied": {
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "bounds_file": [
+    [
+     -0.2563,
+     -0.26,
+     -0.2563
+    ],
+    [
+     0.2563,
+     0.016,
+     0.2563
+    ]
+   ],
+   "inside_own_cell": true
+  },
+  "rest_pose": {
+   "cells": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ],
+    [
+     0,
+     1,
+     0
+    ]
+   ],
+   "bounds_file": [
+    [
+     -0.2563,
+     -0.26,
+     -0.2563
+    ],
+    [
+     0.2563,
+     0.2915,
+     0.3755
+    ]
+   ]
+  },
+  "moving_sweep": {
+   "cells": [
+    [
+     -1,
+     0,
+     -1
+    ],
+    [
+     -1,
+     0,
+     0
+    ],
+    [
+     -1,
+     0,
+     1
+    ],
+    [
+     -1,
+     1,
+     -1
+    ],
+    [
+     -1,
+     1,
+     0
+    ],
+    [
+     -1,
+     1,
+     1
+    ],
+    [
+     0,
+     0,
+     -1
+    ],
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ],
+    [
+     0,
+     1,
+     -1
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     1,
+     1
+    ],
+    [
+     1,
+     0,
+     -1
+    ],
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     1,
+     0,
+     1
+    ],
+    [
+     1,
+     1,
+     -1
+    ],
+    [
+     1,
+     1,
+     0
+    ],
+    [
+     1,
+     1,
+     1
+    ]
+   ],
+   "bounds_file": [
+    [
+     -0.4434,
+     0.018,
+     -0.4434
+    ],
+    [
+     0.4434,
+     0.3795,
+     0.4434
+    ]
+   ],
+   "max_radius_from_pivot_axis_m": 0.4441,
+   "neighbour_cells_entered": [
+    [
+     -1,
+     0,
+     -1
+    ],
+    [
+     -1,
+     0,
+     0
+    ],
+    [
+     -1,
+     0,
+     1
+    ],
+    [
+     -1,
+     1,
+     -1
+    ],
+    [
+     -1,
+     1,
+     0
+    ],
+    [
+     -1,
+     1,
+     1
+    ],
+    [
+     0,
+     0,
+     -1
+    ],
+    [
+     0,
+     0,
+     1
+    ],
+    [
+     0,
+     1,
+     -1
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     1,
+     1
+    ],
+    [
+     1,
+     0,
+     -1
+    ],
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     1,
+     0,
+     1
+    ],
+    [
+     1,
+     1,
+     -1
+    ],
+    [
+     1,
+     1,
+     0
+    ],
+    [
+     1,
+     1,
+     1
+    ]
+   ]
+  },
+  "yaw_body_max_radius_m": 0.2124,
+  "yaw_body_inside_cell_all_yaw": true,
+  "mount_socket": {
+   "position_file": [
+    0.0,
+    -0.26,
+    -0.0
+   ],
+   "normal_file": [
+    0.0,
+    -1.0,
+    -0.0
+   ],
+   "on_cell_bottom_face": true
+  },
+  "line_of_fire": [
+   {
+    "muzzle": "Muzzle",
+    "elevation": -10,
+    "origin_file": [
+     0.0,
+     0.06867,
+     0.3762
+    ],
+    "dir_file": [
+     0.0,
+     -0.1736,
+     0.9848
+    ],
+    "own_hit_within_6m": null,
+    "exit_clear": true,
+    "cells": [
+     [
+      0,
+      -1,
+      4
+     ],
+     [
+      0,
+      -1,
+      5
+     ],
+     [
+      0,
+      -1,
+      6
+     ],
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      0,
+      2
+     ],
+     [
+      0,
+      0,
+      3
+     ],
+     [
+      0,
+      0,
+      4
+     ]
+    ]
+   },
+   {
+    "muzzle": "Muzzle",
+    "elevation": 0,
+    "origin_file": [
+     0.0,
+     0.135,
+     0.382
+    ],
+    "dir_file": [
+     0.0,
+     -0.0,
+     1.0
+    ],
+    "own_hit_within_6m": null,
+    "exit_clear": true,
+    "cells": [
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      0,
+      2
+     ],
+     [
+      0,
+      0,
+      3
+     ],
+     [
+      0,
+      0,
+      4
+     ],
+     [
+      0,
+      0,
+      5
+     ],
+     [
+      0,
+      0,
+      6
+     ]
+    ]
+   },
+   {
+    "muzzle": "Muzzle",
+    "elevation": 15,
+    "origin_file": [
+     0.0,
+     0.23387,
+     0.36898
+    ],
+    "dir_file": [
+     0.0,
+     0.2588,
+     0.9659
+    ],
+    "own_hit_within_6m": null,
+    "exit_clear": true,
+    "cells": [
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      1,
+      1
+     ],
+     [
+      0,
+      1,
+      2
+     ],
+     [
+      0,
+      1,
+      3
+     ],
+     [
+      0,
+      1,
+      4
+     ],
+     [
+      0,
+      1,
+      5
+     ],
+     [
+      0,
+      2,
+      5
+     ],
+     [
+      0,
+      2,
+      6
+     ]
+    ]
+   },
+   {
+    "muzzle": "Muzzle",
+    "elevation": 34,
+    "origin_file": [
+     0.0,
+     0.34861,
+     0.31669
+    ],
+    "dir_file": [
+     0.0,
+     0.5592,
+     0.829
+    ],
+    "own_hit_within_6m": null,
+    "exit_clear": true,
+    "cells": [
+     [
+      0,
+      1,
+      1
+     ],
+     [
+      0,
+      1,
+      2
+     ],
+     [
+      0,
+      2,
+      2
+     ],
+     [
+      0,
+      2,
+      3
+     ],
+     [
+      0,
+      3,
+      3
+     ],
+     [
+      0,
+      3,
+      4
+     ],
+     [
+      0,
+      3,
+      5
+     ],
+     [
+      0,
+      4,
+      5
+     ]
+    ]
+   },
+   {
+    "muzzle": "Muzzle_1",
+    "elevation": -10,
+    "origin_file": [
+     -0.13,
+     0.06867,
+     0.3762
+    ],
+    "dir_file": [
+     0.0,
+     -0.1736,
+     0.9848
+    ],
+    "own_hit_within_6m": null,
+    "exit_clear": true,
+    "cells": [
+     [
+      0,
+      -1,
+      4
+     ],
+     [
+      0,
+      -1,
+      5
+     ],
+     [
+      0,
+      -1,
+      6
+     ],
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      0,
+      2
+     ],
+     [
+      0,
+      0,
+      3
+     ],
+     [
+      0,
+      0,
+      4
+     ]
+    ]
+   },
+   {
+    "muzzle": "Muzzle_1",
+    "elevation": 0,
+    "origin_file": [
+     -0.13,
+     0.135,
+     0.382
+    ],
+    "dir_file": [
+     0.0,
+     -0.0,
+     1.0
+    ],
+    "own_hit_within_6m": null,
+    "exit_clear": true,
+    "cells": [
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      0,
+      2
+     ],
+     [
+      0,
+      0,
+      3
+     ],
+     [
+      0,
+      0,
+      4
+     ],
+     [
+      0,
+      0,
+      5
+     ],
+     [
+      0,
+      0,
+      6
+     ]
+    ]
+   },
+   {
+    "muzzle": "Muzzle_1",
+    "elevation": 15,
+    "origin_file": [
+     -0.13,
+     0.23387,
+     0.36898
+    ],
+    "dir_file": [
+     0.0,
+     0.2588,
+     0.9659
+    ],
+    "own_hit_within_6m": null,
+    "exit_clear": true,
+    "cells": [
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      1,
+      1
+     ],
+     [
+      0,
+      1,
+      2
+     ],
+     [
+      0,
+      1,
+      3
+     ],
+     [
+      0,
+      1,
+      4
+     ],
+     [
+      0,
+      1,
+      5
+     ],
+     [
+      0,
+      2,
+      5
+     ],
+     [
+      0,
+      2,
+      6
+     ]
+    ]
+   },
+   {
+    "muzzle": "Muzzle_1",
+    "elevation": 34,
+    "origin_file": [
+     -0.13,
+     0.34861,
+     0.31669
+    ],
+    "dir_file": [
+     0.0,
+     0.5592,
+     0.829
+    ],
+    "own_hit_within_6m": null,
+    "exit_clear": true,
+    "cells": [
+     [
+      0,
+      1,
+      1
+     ],
+     [
+      0,
+      1,
+      2
+     ],
+     [
+      0,
+      2,
+      2
+     ],
+     [
+      0,
+      2,
+      3
+     ],
+     [
+      0,
+      3,
+      3
+     ],
+     [
+      0,
+      3,
+      4
+     ],
+     [
+      0,
+      3,
+      5
+     ],
+     [
+      0,
+      4,
+      5
+     ]
+    ]
+   },
+   {
+    "muzzle": "Muzzle_2",
+    "elevation": -10,
+    "origin_file": [
+     -0.2,
+     0.06867,
+     0.3762
+    ],
+    "dir_file": [
+     0.0,
+     -0.1736,
+     0.9848
+    ],
+    "own_hit_within_6m": null,
+    "exit_clear": true,
+    "cells": [
+     [
+      0,
+      -1,
+      4
+     ],
+     [
+      0,
+      -1,
+      5
+     ],
+     [
+      0,
+      -1,
+      6
+     ],
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      0,
+      2
+     ],
+     [
+      0,
+      0,
+      3
+     ],
+     [
+      0,
+      0,
+      4
+     ]
+    ]
+   },
+   {
+    "muzzle": "Muzzle_2",
+    "elevation": 0,
+    "origin_file": [
+     -0.2,
+     0.135,
+     0.382
+    ],
+    "dir_file": [
+     0.0,
+     -0.0,
+     1.0
+    ],
+    "own_hit_within_6m": null,
+    "exit_clear": true,
+    "cells": [
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      0,
+      2
+     ],
+     [
+      0,
+      0,
+      3
+     ],
+     [
+      0,
+      0,
+      4
+     ],
+     [
+      0,
+      0,
+      5
+     ],
+     [
+      0,
+      0,
+      6
+     ]
+    ]
+   },
+   {
+    "muzzle": "Muzzle_2",
+    "elevation": 15,
+    "origin_file": [
+     -0.2,
+     0.23387,
+     0.36898
+    ],
+    "dir_file": [
+     0.0,
+     0.2588,
+     0.9659
+    ],
+    "own_hit_within_6m": null,
+    "exit_clear": true,
+    "cells": [
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      1,
+      1
+     ],
+     [
+      0,
+      1,
+      2
+     ],
+     [
+      0,
+      1,
+      3
+     ],
+     [
+      0,
+      1,
+      4
+     ],
+     [
+      0,
+      1,
+      5
+     ],
+     [
+      0,
+      2,
+      5
+     ],
+     [
+      0,
+      2,
+      6
+     ]
+    ]
+   },
+   {
+    "muzzle": "Muzzle_2",
+    "elevation": 34,
+    "origin_file": [
+     -0.2,
+     0.34861,
+     0.31669
+    ],
+    "dir_file": [
+     0.0,
+     0.5592,
+     0.829
+    ],
+    "own_hit_within_6m": null,
+    "exit_clear": true,
+    "cells": [
+     [
+      0,
+      1,
+      1
+     ],
+     [
+      0,
+      1,
+      2
+     ],
+     [
+      0,
+      2,
+      2
+     ],
+     [
+      0,
+      2,
+      3
+     ],
+     [
+      0,
+      3,
+      3
+     ],
+     [
+      0,
+      3,
+      4
+     ],
+     [
+      0,
+      3,
+      5
+     ],
+     [
+      0,
+      4,
+      5
+     ]
+    ]
+   },
+   {
+    "muzzle": "Muzzle_3",
+    "elevation": -10,
+    "origin_file": [
+     0.13,
+     0.06867,
+     0.3762
+    ],
+    "dir_file": [
+     0.0,
+     -0.1736,
+     0.9848
+    ],
+    "own_hit_within_6m": null,
+    "exit_clear": true,
+    "cells": [
+     [
+      0,
+      -1,
+      4
+     ],
+     [
+      0,
+      -1,
+      5
+     ],
+     [
+      0,
+      -1,
+      6
+     ],
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      0,
+      2
+     ],
+     [
+      0,
+      0,
+      3
+     ],
+     [
+      0,
+      0,
+      4
+     ]
+    ]
+   },
+   {
+    "muzzle": "Muzzle_3",
+    "elevation": 0,
+    "origin_file": [
+     0.13,
+     0.135,
+     0.382
+    ],
+    "dir_file": [
+     0.0,
+     -0.0,
+     1.0
+    ],
+    "own_hit_within_6m": null,
+    "exit_clear": true,
+    "cells": [
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      0,
+      2
+     ],
+     [
+      0,
+      0,
+      3
+     ],
+     [
+      0,
+      0,
+      4
+     ],
+     [
+      0,
+      0,
+      5
+     ],
+     [
+      0,
+      0,
+      6
+     ]
+    ]
+   },
+   {
+    "muzzle": "Muzzle_3",
+    "elevation": 15,
+    "origin_file": [
+     0.13,
+     0.23387,
+     0.36898
+    ],
+    "dir_file": [
+     0.0,
+     0.2588,
+     0.9659
+    ],
+    "own_hit_within_6m": null,
+    "exit_clear": true,
+    "cells": [
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      1,
+      1
+     ],
+     [
+      0,
+      1,
+      2
+     ],
+     [
+      0,
+      1,
+      3
+     ],
+     [
+      0,
+      1,
+      4
+     ],
+     [
+      0,
+      1,
+      5
+     ],
+     [
+      0,
+      2,
+      5
+     ],
+     [
+      0,
+      2,
+      6
+     ]
+    ]
+   },
+   {
+    "muzzle": "Muzzle_3",
+    "elevation": 34,
+    "origin_file": [
+     0.13,
+     0.34861,
+     0.31669
+    ],
+    "dir_file": [
+     0.0,
+     0.5592,
+     0.829
+    ],
+    "own_hit_within_6m": null,
+    "exit_clear": true,
+    "cells": [
+     [
+      0,
+      1,
+      1
+     ],
+     [
+      0,
+      1,
+      2
+     ],
+     [
+      0,
+      2,
+      2
+     ],
+     [
+      0,
+      2,
+      3
+     ],
+     [
+      0,
+      3,
+      3
+     ],
+     [
+      0,
+      3,
+      4
+     ],
+     [
+      0,
+      3,
+      5
+     ],
+     [
+      0,
+      4,
+      5
+     ]
+    ]
+   },
+   {
+    "muzzle": "Muzzle_4",
+    "elevation": -10,
+    "origin_file": [
+     0.2,
+     0.06867,
+     0.3762
+    ],
+    "dir_file": [
+     0.0,
+     -0.1736,
+     0.9848
+    ],
+    "own_hit_within_6m": null,
+    "exit_clear": true,
+    "cells": [
+     [
+      0,
+      -1,
+      4
+     ],
+     [
+      0,
+      -1,
+      5
+     ],
+     [
+      0,
+      -1,
+      6
+     ],
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      0,
+      2
+     ],
+     [
+      0,
+      0,
+      3
+     ],
+     [
+      0,
+      0,
+      4
+     ]
+    ]
+   },
+   {
+    "muzzle": "Muzzle_4",
+    "elevation": 0,
+    "origin_file": [
+     0.2,
+     0.135,
+     0.382
+    ],
+    "dir_file": [
+     0.0,
+     -0.0,
+     1.0
+    ],
+    "own_hit_within_6m": null,
+    "exit_clear": true,
+    "cells": [
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      0,
+      2
+     ],
+     [
+      0,
+      0,
+      3
+     ],
+     [
+      0,
+      0,
+      4
+     ],
+     [
+      0,
+      0,
+      5
+     ],
+     [
+      0,
+      0,
+      6
+     ]
+    ]
+   },
+   {
+    "muzzle": "Muzzle_4",
+    "elevation": 15,
+    "origin_file": [
+     0.2,
+     0.23387,
+     0.36898
+    ],
+    "dir_file": [
+     0.0,
+     0.2588,
+     0.9659
+    ],
+    "own_hit_within_6m": null,
+    "exit_clear": true,
+    "cells": [
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      1,
+      1
+     ],
+     [
+      0,
+      1,
+      2
+     ],
+     [
+      0,
+      1,
+      3
+     ],
+     [
+      0,
+      1,
+      4
+     ],
+     [
+      0,
+      1,
+      5
+     ],
+     [
+      0,
+      2,
+      5
+     ],
+     [
+      0,
+      2,
+      6
+     ]
+    ]
+   },
+   {
+    "muzzle": "Muzzle_4",
+    "elevation": 34,
+    "origin_file": [
+     0.2,
+     0.34861,
+     0.31669
+    ],
+    "dir_file": [
+     0.0,
+     0.5592,
+     0.829
+    ],
+    "own_hit_within_6m": null,
+    "exit_clear": true,
+    "cells": [
+     [
+      0,
+      1,
+      1
+     ],
+     [
+      0,
+      1,
+      2
+     ],
+     [
+      0,
+      2,
+      2
+     ],
+     [
+      0,
+      2,
+      3
+     ],
+     [
+      0,
+      3,
+      3
+     ],
+     [
+      0,
+      3,
+      4
+     ],
+     [
+      0,
+      3,
+      5
+     ],
+     [
+      0,
+      4,
+      5
+     ]
+    ]
+   }
+  ],
+  "line_of_fire_pose": "hatches open (launch pose); rockets in tubes",
+  "fire_exit_clear_all": true
+ },
+ "animation_clash": {
+  "frames_checked": 177,
+  "pairs": [
+   [
+    "R4W_RocketLauncher_Rocket_1",
+    "R4W_RocketLauncher_Pitch"
+   ],
+   [
+    "R4W_RocketLauncher_Rocket_1",
+    "R4W_RocketLauncher_Hatch_L"
+   ],
+   [
+    "R4W_RocketLauncher_Rocket_1",
+    "R4W_RocketLauncher_RearCover_L"
+   ],
+   [
+    "R4W_RocketLauncher_Rocket_1",
+    "R4W_RocketLauncher_Yaw"
+   ],
+   [
+    "R4W_RocketLauncher_RearCover_L",
+    "R4W_RocketLauncher_Pitch"
+   ],
+   [
+    "R4W_RocketLauncher_RearCover_L",
+    "R4W_RocketLauncher_Yaw"
+   ],
+   [
+    "R4W_RocketLauncher_RearCover_R",
+    "R4W_RocketLauncher_Pitch"
+   ],
+   [
+    "R4W_RocketLauncher_Hatch_L",
+    "R4W_RocketLauncher_Pitch"
+   ],
+   [
+    "R4W_RocketLauncher_Hatch_R",
+    "R4W_RocketLauncher_Pitch"
+   ],
+   [
+    "R4W_RocketLauncher_Hatch_L",
+    "R4W_RocketLauncher_Yaw"
+   ],
+   [
+    "R4W_RocketLauncher_Hatch_R",
+    "R4W_RocketLauncher_Yaw"
+   ],
+   [
+    "R4W_RocketLauncher_Pitch",
+    "R4W_RocketLauncher_Yaw"
+   ],
+   [
+    "R4W_RocketLauncher_Pitch",
+    "R4W_RocketLauncher_Base"
+   ],
+   [
+    "R4W_RocketLauncher_Yaw",
+    "R4W_RocketLauncher_Base"
+   ],
+   [
+    "R4W_RocketLauncher_Rocket_2",
+    "R4W_RocketLauncher_Pitch"
+   ],
+   [
+    "R4W_RocketLauncher_Rocket_3",
+    "R4W_RocketLauncher_Pitch"
+   ],
+   [
+    "R4W_RocketLauncher_Rocket_4",
+    "R4W_RocketLauncher_Pitch"
+   ]
+  ],
+  "collisions": 0,
+  "samples": [],
+  "per_pair": {},
+  "PASS": true
+ },
+ "extra_checks": {},
+ "renders": [
+  "R4W_RocketLauncher_front.png",
+  "R4W_RocketLauncher_back.png",
+  "R4W_RocketLauncher_side.png",
+  "R4W_RocketLauncher_top.png",
+  "R4W_RocketLauncher_34front.png",
+  "R4W_RocketLauncher_34rear.png",
+  "R4W_RocketLauncher_34front_wireframe.png",
+  "R4W_RocketLauncher_side_wireframe.png",
+  "R4W_RocketLauncher_colliders_sweep.png",
+  "poses/R4W_RocketLauncher_Idle_f013.png",
+  "poses/R4W_RocketLauncher_AimYaw_f039.png",
+  "poses/R4W_RocketLauncher_AimPitch_f089.png",
+  "poses/R4W_RocketLauncher_AimPitch_f101.png",
+  "poses/R4W_RocketLauncher_Fire_f122.png",
+  "poses/R4W_RocketLauncher_Reload_f157.png",
+  "R4W_RocketLauncher_HERO_eevee.png",
+  "R4W_RocketLauncher_HERO2_eevee.png",
+  "R4W_RocketLauncher_vs_R41_34front.png",
+  "R4W_RocketLauncher_vs_R41_side.png"
+ ],
+ "lod1": {
+  "file": "R4W_RocketLauncher_LOD1.fbx",
+  "triangles": 7916,
+  "method": "DECIMATE collapse 0.5 (automatic, not hand-authored)"
+ },
+ "fbx_reimport": {
+  "frames": [
+   1,
+   13,
+   25,
+   27,
+   51,
+   75,
+   77,
+   95,
+   113,
+   115,
+   127,
+   139,
+   141,
+   159,
+   177
+  ],
+  "worst": {
+   "pos_mm": 0.0001,
+   "rot_deg": 0.0,
+   "geom_mm": 0.0001,
+   "scale_err": 0.0,
+   "missing": [],
+   "parent_bad": []
+  },
+  "per_frame": {
+   "1": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "13": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "25": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "27": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "51": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "75": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "77": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "95": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "113": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "115": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "127": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "139": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "141": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "159": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "177": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   }
+  },
+  "nodes_as_imported": {
+   "R4W_RocketLauncher_ROOT": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     -0.0,
+     0.0,
+     0.0
+    ],
+    "parent": null
+   },
+   "R4W_RocketLauncher_Base": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_RocketLauncher_ROOT"
+   },
+   "Socket_Mount_Bottom": {
+    "loc": [
+     0.0,
+     0.0,
+     -0.26
+    ],
+    "rot_deg": [
+     -180.0,
+     0.0,
+     0.0
+    ],
+    "parent": "R4W_RocketLauncher_ROOT"
+   },
+   "GunPivot": {
+    "loc": [
+     0.0,
+     0.0,
+     0.135
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_RocketLauncher_ROOT"
+   },
+   "R4W_RocketLauncher_Yaw": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "GunPivot"
+   },
+   "R4W_RocketLauncher_Pitch": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_RocketLauncher_Yaw"
+   },
+   "R4W_RocketLauncher_RearCover_L": {
+    "loc": [
+     -0.165,
+     0.006,
+     0.046
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_RocketLauncher_Pitch"
+   },
+   "R4W_RocketLauncher_RearCover_R": {
+    "loc": [
+     0.165,
+     0.006,
+     0.046
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_RocketLauncher_Pitch"
+   },
+   "R4W_RocketLauncher_Hatch_L": {
+    "loc": [
+     -0.24,
+     -0.366,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_RocketLauncher_Pitch"
+   },
+   "R4W_RocketLauncher_Hatch_R": {
+    "loc": [
+     0.24,
+     -0.366,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_RocketLauncher_Pitch"
+   },
+   "R4W_RocketLauncher_Rocket_1": {
+    "loc": [
+     -0.13,
+     -0.16,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_RocketLauncher_Pitch"
+   },
+   "R4W_RocketLauncher_Rocket_2": {
+    "loc": [
+     -0.2,
+     -0.16,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_RocketLauncher_Pitch"
+   },
+   "R4W_RocketLauncher_Rocket_3": {
+    "loc": [
+     0.13,
+     -0.16,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_RocketLauncher_Pitch"
+   },
+   "R4W_RocketLauncher_Rocket_4": {
+    "loc": [
+     0.2,
+     -0.16,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_RocketLauncher_Pitch"
+   },
+   "MuzzleFlash": {
+    "loc": [
+     -0.13,
+     -0.376,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_RocketLauncher_Pitch"
+   },
+   "Rocket_Backblast": {
+    "loc": [
+     -0.13,
+     0.02,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     -180.0
+    ],
+    "parent": "R4W_RocketLauncher_Pitch"
+   },
+   "Muzzle": {
+    "loc": [
+     0.0,
+     -0.382,
+     0.0
+    ],
+    "rot_deg": [
+     90.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_RocketLauncher_Pitch"
+   },
+   "Muzzle_1": {
+    "loc": [
+     -0.13,
+     -0.382,
+     0.0
+    ],
+    "rot_deg": [
+     90.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_RocketLauncher_Pitch"
+   },
+   "Muzzle_2": {
+    "loc": [
+     -0.2,
+     -0.382,
+     0.0
+    ],
+    "rot_deg": [
+     90.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_RocketLauncher_Pitch"
+   },
+   "Muzzle_3": {
+    "loc": [
+     0.13,
+     -0.382,
+     0.0
+    ],
+    "rot_deg": [
+     90.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_RocketLauncher_Pitch"
+   },
+   "Muzzle_4": {
+    "loc": [
+     0.2,
+     -0.382,
+     0.0
+    ],
+    "rot_deg": [
+     90.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4W_RocketLauncher_Pitch"
+   }
+  },
+  "PASS": true,
+  "thresholds": "pos<0.05mm rot<0.01deg geom<0.05mm, 0 missing, 0 parent changes (R41 v6.1 QA)"
+ },
+ "r41_compare": "rendered from real R41_Turret_v6.1.fbx (SHA verified)",
+ "glb_reimport": {
+  "rest_frame_worst": {
+   "pos_mm": 0.0,
+   "rot_deg": 0.0,
+   "scale_err": 0.0,
+   "geom_mm": 0.0,
+   "missing": [],
+   "parent_bad": []
+  },
+  "actions_imported": 7,
+  "PASS": true,
+  "note": "glTF importer; world-space comparison at frame 1"
+ },
+ "files": {
+  "R4W_RocketLauncher.blend": {
+   "sha256": "cc1087a44c96f96b29fad90d29add9ba25c54d954529afc1496f6abeda7c1407",
+   "bytes": 2183059,
+   "sha256_before_path_sanitize": "a6b6b715dc9d393de85b3b40e9008d7cb81263fb4bcb85928ee2a4aa376e02d0",
+   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length (scripts/sanitize_blend_paths.py)"
+  },
+  "R4W_RocketLauncher.fbx": {
+   "sha256": "21d7561c854e69fbfce83103cd85098957a21f4ece601811b64d048d82cc4df9",
+   "bytes": 907308
+  },
+  "R4W_RocketLauncher.glb": {
+   "sha256": "91062bbdc89972fe293199777a5f62c03d8ce3ea6ef4ec2e6912a66a7e346d34",
+   "bytes": 834796
+  },
+  "R4W_RocketLauncher_colliders.glb": {
+   "sha256": "3cdfd3b8e8ae3c5b78b3fa73232ae344d236f4188387673fceaf3cdf31c79bc6",
+   "bytes": 800880
+  },
+  "R4W_RocketLauncher_LOD1.fbx": {
+   "sha256": "78a98a8f522e55fcf340d5a447db220ff92616ea7466f6b93d5633ca6cd0f6dc",
+   "bytes": 376476
+  }
+ },
+ "unity_import_test": "UNITY_NOT_RUN (Unity not available in this session)",
+ "unity_import_settings": "Scale Factor 1, Convert Units ON, Bake Axis Conversion ON, Animation: split clips by animation_manifest.json frame ranges (24 fps)",
+ "status": "BLENDER_PASS",
+ "seconds": 13.0
+}

@@ -1,0 +1,314 @@
+{
+ "id": "R4B_OctColumn",
+ "block_kind": "OctColumn",
+ "description": "1x1x1 octagonal column (chamfered vertical edges)",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "bonds": [],
+ "note": "octagonal column (0.06 m chamfered vertical edges); side faces 0.40 m wide carry a reduced patch",
+ "contact_mask_local_anchor": 63,
+ "contact_mask_bits": "R3MountingGrid.FaceDirections order: right, left, up, down, forward, back (Unity)",
+ "ports": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "up",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "right",
+   "kind": "partial",
+   "center": [
+    0.26,
+    0.0,
+    0.0
+   ],
+   "half": [
+    0.33,
+    0.45
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "partial",
+   "center": [
+    -0.26,
+    0.0,
+    0.0
+   ],
+   "half": [
+    0.33,
+    0.45
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "forward",
+   "kind": "partial",
+   "center": [
+    0.0,
+    -0.26,
+    0.0
+   ],
+   "half": [
+    0.33,
+    0.45
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "partial",
+   "center": [
+    0.0,
+    0.26,
+    0.0
+   ],
+   "half": [
+    0.33,
+    0.45
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "up",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 96.3,
+   "recessed_pct": 3.7,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "right",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 96.3,
+   "recessed_pct": 3.7,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 96.3,
+   "recessed_pct": 3.7,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "forward",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 96.3,
+   "recessed_pct": 3.7,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "mesh": {
+  "object": "R4B_OctColumn",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 4844,
+  "uv": true,
+  "ok": true
+ },
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_cells": true,
+ "materials": [
+  "Armor_Dark",
+  "Armor_Gunmetal",
+  "Steel_Light"
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 2424,
+   "empties": [
+    "Port_back_000_part.001",
+    "Port_down_000.001",
+    "Port_forward_000_part.001",
+    "Port_left_000_part.001",
+    "Port_right_000_part.001",
+    "Port_up_000.001",
+    "R4B_OctColumn_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 5418,
+   "empties": [
+    "Port_back_000_part.001",
+    "Port_down_000.001",
+    "Port_forward_000_part.001",
+    "Port_left_000_part.001",
+    "Port_right_000_part.001",
+    "Port_up_000.001",
+    "R4B_OctColumn_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  }
+ },
+ "renders": [
+  "R4B_OctColumn_34front.png",
+  "R4B_OctColumn_34rear.png",
+  "R4B_OctColumn_under.png"
+ ],
+ "files": {
+  "R4B_OctColumn.blend": {
+   "sha256": "16b46683e27f912f7cc3cd211d4eff843f393963b9d3dd4aec31056bcc8fe799",
+   "bytes": 244203
+  },
+  "R4B_OctColumn.fbx": {
+   "sha256": "a1f281ad9f405978a3fcb516acd6d0ce2edccf98c68e5c997523ee9eaee9f1b8",
+   "bytes": 164748
+  },
+  "R4B_OctColumn.glb": {
+   "sha256": "556ca3682feab7a189b1ad1cfb5212a6620f4c6c3183032fdd18651debc7f768",
+   "bytes": 206504
+  },
+  "R4B_OctColumn_colliders.glb": {
+   "sha256": "56603d9b0d2262926d817d2999d8a81fd6c7dd32672383d51f18dd60cf00758c",
+   "bytes": 2456
+  }
+ },
+ "seconds": 2.3,
+ "blender": "5.2.3 LTS"
+}
