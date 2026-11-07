@@ -9,9 +9,9 @@ namespace RoboRougelike.R3
 {
     public sealed class R3GarageView : MonoBehaviour
     {
-        public static Rect Viewport => new Rect(0.265f,0.11f,0.465f,0.88f);
+        public static Rect Viewport => new Rect(0.215625f,0.10f,0.7765625f,0.78f);
         public static readonly Rect PortraitOpening=new Rect(24,76,720,420);
-        public static readonly Rect BuildArea=new Rect(340,95,595,430);
+        public static readonly Rect BuildArea=new Rect(276,86,994,562);
         public static readonly Rect ActivityOverlay=new Rect(350,80,580,126);
         public static readonly Rect LegendOverlay=new Rect(350,418,560,29);
         public static readonly Rect WeaponGroupsOverlay=new Rect(350,452,560,76);
@@ -311,10 +311,21 @@ namespace RoboRougelike.R3
             if(Tool==R41GarageTool.Mount)
             {
                 string error=PlacementIssue;if(error!=null){Message=error;return false;}
-                result=Owned!=null?run.GarageMount(SelectedInventoryId,Cell,SelectedRotation):
+                var mounted=Owned;
+                result=mounted!=null?run.GarageMount(SelectedInventoryId,Cell,SelectedRotation):
                     MountKind==R3PartKind.Gun?run.GarageBuyWeapon(Cell,MountWeapon,SelectedRotation):
                     run.GarageBuy(Cell,MountKind,SelectedRotation);
                 Message=result?"Zamontowano dokładnie w miejscu podglądu.":"Montaż nieudany.";
+                if(result&&mounted!=null)
+                {
+                    // Keep building from the same owned stack, without purchasing or
+                    // silently substituting a different weapon or bonus.
+                    var next=run.VehicleModel.Inventory.Where(p=>p.Kind==mounted.Kind&&p.Health>0&&
+                        (p.Kind!=R3PartKind.Gun||p.Weapon==mounted.Weapon)&&
+                        (p.Kind!=R3PartKind.BonusModule||p.UpgradeId==mounted.UpgradeId))
+                        .OrderByDescending(p=>p.Health).FirstOrDefault();
+                    SelectedInventoryId=next?.Id;
+                }
             }
             else if(Tool==R41GarageTool.Repair)
             {result=run.GarageRepair(Cell);Message=result?"Naprawiono wskazaną część.":"Brak uszkodzeń, Złomu lub sprawnego połączenia.";}
@@ -338,8 +349,7 @@ namespace RoboRougelike.R3
             var point=(new Vector2(screen.x,height-screen.y)-offset)/scale;
             var viewport=Viewport;
             var opening=new Rect(viewport.x*1280,(1-viewport.yMax)*720,viewport.width*1280,viewport.height*720);
-            return BuildArea.Contains(point)&&opening.Contains(point)&&!ActivityOverlay.Contains(point)&&
-                !LegendOverlay.Contains(point)&&!WeaponGroupsOverlay.Contains(point);
+            return BuildArea.Contains(point)&&opening.Contains(point);
         }
         public bool ClickScreen(Vector2 screen)
         {return InBuildArea(screen,Screen.width,Screen.height)&&Point(view.ScreenPointToRay(screen))&&ClickTarget();}

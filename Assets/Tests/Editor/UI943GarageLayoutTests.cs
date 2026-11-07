@@ -49,9 +49,10 @@ public sealed class UI943GarageLayoutTests
         float scale=Mathf.Min(width/1280f,height/720f);
         float left=(width-1280*scale)/2, top=(height-720*scale)/2;
         Vector2 ScreenPoint(float x,float y)=>new Vector2(left+x*scale,height-(top+y*scale));
-        foreach(var p in new[]{new Vector2(500,100),new Vector2(500,140),new Vector2(500,180),new Vector2(500,430),new Vector2(500,480)})
+        foreach(var p in new[]{new Vector2(100,300),new Vector2(500,40),new Vector2(500,680),new Vector2(270,300)})
             Assert.That(R3GarageView.InBuildArea(ScreenPoint(p.x,p.y),width,height),Is.False,$"Nakładka przy {p} nie może montować części.");
         Assert.That(R3GarageView.InBuildArea(ScreenPoint(640,300),width,height),Is.True,"Odsłonięty środek nadal służy do montażu.");
-        Assert.That(R3GarageView.InBuildArea(ScreenPoint(934.8f,300),width,height),Is.False,"Nie klikaj poza obrazem kamery.");
+        Assert.That(R3GarageView.InBuildArea(ScreenPoint(1200,300),width,height),Is.True,"Powiększony widok po prawej pozostaje interaktywny.");
+        Assert.That(R3GarageView.InBuildArea(ScreenPoint(1275,300),width,height),Is.False,"Nie klikaj poza obrazem kamery.");
     }
 }

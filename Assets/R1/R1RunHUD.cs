@@ -17,7 +17,12 @@ namespace RoboRougelike.R1
             =>width>0&&height>width&&garage&&!mapEditing&&!overlay;
         private static Rect PortraitVehicleCard(int index)=>new Rect(24,150+index*180,720,166);
         private static Rect PortraitActionRect(int index)=>new Rect(24+(index%2)*370,index<2?790:855,350,index<2?54:48);
-        internal bool ClosePartCatalog(){if(!catalogOpen)return false;catalogOpen=false;return true;}
+        internal bool ClosePartCatalog()
+        {
+            if(catalogOpen){catalogOpen=false;return true;}
+            if(garageOptionsOpen){garageOptionsOpen=false;return true;}
+            return false;
+        }
         private void Setup()
         {
             if (title != null) return;
@@ -70,7 +75,7 @@ namespace RoboRougelike.R1
             {
                 Draw(run,portraitReady,portraitGarage,portraitRoute,portraitSalvage);
                 if(!sessionOverlay&&run.MapEditing)run.MapEditorPointer(Event.current,rawPointer);
-                else if(!sessionOverlay&&!catalogOpen&&run.Progress?.State==R1RunState.Garage&&!run.Transitioning&&!run.Paused&&!run.QuitRequested)run.Garage.HandleGuiPointer(Event.current,rawPointer);
+                else if(!sessionOverlay&&!catalogOpen&&!garageOptionsOpen&&run.Progress?.State==R1RunState.Garage&&!run.Transitioning&&!run.Paused&&!run.QuitRequested)run.Garage.HandleGuiPointer(Event.current,rawPointer);
             }
             finally { GUI.matrix = previous; GUI.enabled = true; }
         }
@@ -91,8 +96,8 @@ namespace RoboRougelike.R1
             var progress = run.Progress;
             if(run.MapEditing&&!run.Paused){DrawMapEditor(run);return;}
             if(progress.State==R1RunState.TestDrive){DrawTestRange(run);return;}
-            if(progress.State==R1RunState.Garage&&!run.Transitioning){if(catalogOpen){if(portraitGarage)DrawPortraitCatalog(run);else DrawFullCatalog(run);}else if(portraitGarage)DrawPortraitGarage(run);else DrawGarage(run);return;}
-            catalogOpen=false;
+            if(progress.State==R1RunState.Garage&&!run.Transitioning){if(catalogOpen){if(portraitGarage)DrawPortraitCatalog(run);else DrawFullCatalog(run);}else if(portraitGarage)DrawPortraitGarage(run);else DrawSimpleGarage(run);return;}
+            catalogOpen=false;garageOptionsOpen=false;
             if (progress.State == R1RunState.Combat && !run.Transitioning)
             {
                 Panel(new Rect(20, 18, 660, 180));

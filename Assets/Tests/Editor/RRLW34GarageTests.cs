@@ -98,7 +98,7 @@ public class RRLW34GarageTests
     public void BothRequiredResolutionsKeepPanelsOutsidePlacement(int width,int height)
     {
         Assert.That(R3GarageView.InBuildArea(new Vector2(width*.1f,height*.5f),width,height),Is.False);
-        Assert.That(R3GarageView.InBuildArea(new Vector2(width*.85f,height*.5f),width,height),Is.False);
+        Assert.That(R3GarageView.InBuildArea(new Vector2(width*.5f,height*.05f),width,height),Is.False);
         Assert.That(R3GarageView.InBuildArea(new Vector2(width*.5f,height*.5f),width,height),Is.True);
     }
     [UnityTearDown] public IEnumerator Cleanup()

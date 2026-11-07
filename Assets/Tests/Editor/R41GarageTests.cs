@@ -150,7 +150,7 @@ public class R41GarageTests
     [TestCase(1280,720)] [TestCase(1024,768)] public void PanelsCannotClickThroughAtBothAspectRatios(int width,int height)
     {
         Assert.That(R3GarageView.InBuildArea(new Vector2(width*0.1f,height*0.5f),width,height),Is.False);
-        Assert.That(R3GarageView.InBuildArea(new Vector2(width*0.85f,height*0.5f),width,height),Is.False);
+        Assert.That(R3GarageView.InBuildArea(new Vector2(width*0.5f,height*0.05f),width,height),Is.False);
         Assert.That(R3GarageView.InBuildArea(new Vector2(width*0.5f,height*0.5f),width,height),Is.True);
     }
     [UnityTest] public IEnumerator GarageOverlaysDoNotChangeSelectionOrMountParts()
@@ -160,7 +160,7 @@ public class R41GarageTests
         int funds=Run.VehicleModel.Scrap, parts=Run.VehicleModel.Parts.Count, inventory=Run.VehicleModel.Inventory.Count;
         float scale=Mathf.Min(Screen.width/1280f,Screen.height/720f);
         var offset=new Vector2((Screen.width-1280*scale)/2,(Screen.height-720*scale)/2);
-        foreach(var point in new[]{new Vector2(500,140),new Vector2(500,430),new Vector2(500,480)})
+        foreach(var point in new[]{new Vector2(100,300),new Vector2(500,40),new Vector2(500,680)})
         {
             var raw=offset+point*scale;
             garage.HandleGuiPointer(new Event{type=EventType.MouseDown,button=0,mousePosition=raw},raw);
@@ -187,6 +187,21 @@ public class R41GarageTests
         garage.UseInventory=true;garage.SelectedInventoryId=null;Assert.That(garage.Point(TopRay(new Vector3Int(-2,1,2))),Is.True);
         Assert.That(garage.ClickTarget(),Is.False,"Pusty wybór w otwartym magazynie również nie jest zakupem.");
         Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(funds));
+        yield return null;
+    }
+    [UnityTest] public IEnumerator RepeatedMountUsesNextOwnedItemWithoutBuying()
+    {
+        var garage=Run.Garage;string first=PurchasePart(R3PartKind.Armor),second=PurchasePart(R3PartKind.Armor);
+        garage.ChooseInventory(first);int funds=Run.VehicleModel.Scrap;
+        Assert.That(garage.Point(TopRay(new Vector3Int(2,1,2))),Is.True);
+        Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);
+        Assert.That(garage.SelectedInventoryId,Is.EqualTo(second),"Następny egzemplarz stosu powinien być gotowy do montażu.");
+        Assert.That(garage.Point(TopRay(new Vector3Int(-2,1,2))),Is.True);
+        Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);
+        Assert.That(Run.VehicleModel.At(new Vector3Int(2,2,2)).Id,Is.EqualTo(first));
+        Assert.That(Run.VehicleModel.At(new Vector3Int(-2,2,2)).Id,Is.EqualTo(second));
+        Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(funds),"Powtarzanie montażu nie może nic automatycznie kupić.");
+        Assert.That(garage.SelectedInventoryId,Is.Null);
         yield return null;
     }
     [UnityTest] public IEnumerator GuiPointerEventsOrbitZoomAndNeverBuyThroughPanels()
