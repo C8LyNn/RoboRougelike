@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using B01.BUILD001;
 using NUnit.Framework;
 using UnityEngine;
@@ -75,5 +77,37 @@ public sealed class R4MountDefinitionAdapterTests
                 "A rotated full port should support a wheel: "+turns);
         }
         Assert.That(orientations.Count,Is.EqualTo(24));
+    }
+
+    [Test] public void EveryAuthoredShapeKeepsOneOwnerAndBlocksEachRotatedOccupiedCell()
+    {
+        var catalog=Type.GetType("R4BlockCatalog, Assembly-CSharp");Assert.That(catalog,Is.Not.Null);
+        var entries=(IEnumerable)catalog.GetField("All").GetValue(null);int count=0;
+        foreach(var entry in entries)
+        {
+            string id=(string)entry.GetType().GetField("Id").GetValue(entry);
+            Assert.That(Create(id,false,out var shape),Is.True,id);
+            Assert.That(BuildSocketGeometry.Valid(shape,out var reason),Is.True,id+": "+reason);
+            var rotations=new HashSet<string>();
+            for(int x=0;x<4;x++)for(int y=0;y<4;y++)for(int z=0;z<4;z++)
+            {
+                var turns=new Vector3Int(x,y,z);
+                rotations.Add(BuildSocketGeometry.Rotate(Vector3Int.right,turns)+"/"+BuildSocketGeometry.Rotate(Vector3Int.up,turns));
+                var offsets=shape.Cells.Select(c=>BuildSocketGeometry.Rotate(c,turns)).ToArray();
+                var anchor=new Vector3Int(0,-offsets.Min(c=>c.y),0);
+                var pose=new BuildPose(anchor,turns);
+                var cells=BuildSocketGeometry.Occupied(shape,pose).ToArray();
+                Assert.That(cells.Distinct().Count(),Is.EqualTo(shape.Cells.Length),id+" "+turns);
+                Assert.That(cells.All(c=>Math.Abs(c.x)<=6&&Math.Abs(c.z)<=7&&c.y>=0&&c.y<=5),Is.True,id+" "+turns);
+                var installed=new[]{new BuildInstalledPart("one-owner",shape,pose)};
+                foreach(var cell in cells)
+                {
+                    var collision=new BuildInstalledPart("another-part",BuildFixtureCatalog.ArmorCube(),new BuildPose(cell,Vector3Int.zero));
+                    Assert.That(BuildPlacementRules.Check(installed,collision,out _),Is.EqualTo(BuildPlacementResult.OccupiedCells),id+" "+turns+" "+cell);
+                }
+            }
+            Assert.That(rotations.Count,Is.EqualTo(24),id);count++;
+        }
+        Assert.That(count,Is.EqualTo(30));
     }
 }
