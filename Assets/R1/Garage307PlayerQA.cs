@@ -50,19 +50,21 @@ namespace RoboRougelike.R1
             var run=R1RunController.Instance;Require(run!=null&&run.Progress!=null,"Game bootstrap");
             Require(run.PrepareUnifiedRun(),"Main menu to actual garage");report.garage=true;
             var model=run.VehicleModel;int scrap=model.Scrap;
-            var gun=model.Parts.First(p=>p.Kind==R3PartKind.Gun);
+            var guns=model.Parts.Where(p=>p.Kind==R3PartKind.Gun).ToArray();
+            Require(guns.Length>0,"Starter needs at least one gun for the removal test");
             var wheels=model.Parts.Where(p=>p.Kind==R3PartKind.Wheel).ToArray();
-            Require(run.GarageRemove(gun.Cell),"Remove last gun and rebuild garage");report.removedGun=true;
+            foreach(var gun in guns)Require(run.GarageRemove(gun.Cell),"Remove gun "+gun.Cell);
+            report.removedGun=!model.Parts.Any(p=>p.Kind==R3PartKind.Gun);
             foreach(var wheel in wheels){Require(run.GarageRemove(wheel.Cell),"Remove wheel "+wheel.Cell);report.removedWheels++;}
             report.removedAllWheels=!model.Parts.Any(p=>p.Kind==R3PartKind.Wheel);
             report.blockedStart=!model.CanDeploy&&!run.StartNextEncounter()&&!run.EnterTestRange();
             report.protectedCore=!run.GarageRemove(Vector3Int.zero);
             R1EncounterManager.ClearTransientObjects();run.Player.GetComponent<R3VehicleAssembly>().FireGuns();
             report.noPhantomShot=FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).Length==0;
-            Require(report.removedAllWheels&&report.blockedStart&&report.protectedCore&&report.noPhantomShot,"Incomplete build protections");
-            Require(run.GarageMount(gun.Id,gun.Cell,gun.RotationQuarterTurns),"Remount the owned gun");
+            Require(report.removedGun&&report.removedAllWheels&&report.blockedStart&&report.protectedCore&&report.noPhantomShot,"Incomplete build protections");
+            foreach(var gun in guns)Require(run.GarageMount(gun.Id,gun.Cell,gun.RotationQuarterTurns),"Remount owned gun "+gun.Cell);
             foreach(var wheel in wheels)Require(run.GarageMount(wheel.Id,wheel.Cell,wheel.RotationQuarterTurns),"Remount owned wheel "+wheel.Cell);
-            report.restoredSameParts=model.Parts.Any(p=>p.Id==gun.Id)&&wheels.All(w=>model.Parts.Any(p=>p.Id==w.Id));
+            report.restoredSameParts=guns.All(g=>model.Parts.Any(p=>p.Id==g.Id))&&wheels.All(w=>model.Parts.Any(p=>p.Id==w.Id));
             report.unchangedScrap=model.Scrap==scrap;report.validDeployment=model.CanDeploy;
             Require(report.restoredSameParts&&report.unchangedScrap&&report.validDeployment,"Restore vehicle without purchases");
             Require(run.StartNextEncounter()&&run.ChooseRoute(0),"Start activity after restore");
