@@ -23,7 +23,8 @@ namespace RoboRougelike.R1
             if(part!=null){garage.ChooseInventory(part.Id);garage.Message=kind==R3PartKind.RepairPulse?
                 $"Impuls T{R3VehicleModel.NormalizedTier(part.Tier)}: V, {R3RepairPulse.EnergyCost*R3VehicleModel.TierActivationCost(part.Tier):0} energii, 5 s. Kliknij, aby zamontować.":
                 kind==R3PartKind.DrivePower?$"Silnik T{R3VehicleModel.NormalizedTier(part.Tier)} wspomaga koła; rezerwuje {25+R3VehicleModel.TierPassiveExtra(part.Tier):0} energii.":
-                kind==R3PartKind.EnergyRegenerator?$"Regenerator T{R3VehicleModel.NormalizedTier(part.Tier)}: +{5*R3VehicleModel.TierEffectUnits(part.Tier)} energii/s, rezerwa {25+R3VehicleModel.TierPassiveExtra(part.Tier):0}.":"Kliknij pojazd, aby zamontować część.";}
+                kind==R3PartKind.EnergyRegenerator?$"Regenerator T{R3VehicleModel.NormalizedTier(part.Tier)}: +{5*R3VehicleModel.TierEffectUnits(part.Tier)} energii/s, rezerwa {25+R3VehicleModel.TierPassiveExtra(part.Tier):0}.":
+                kind==R3PartKind.Wheel?"Wariant wyglądu; właściwości jezdne obu kół są takie same. Kliknij pojazd, aby zamontować.":"Kliknij pojazd, aby zamontować część.";}
             else {garage.SelectedInventoryId=null;garage.SetTool(R41GarageTool.Mount);
                 garage.Message=!run.CanBuyTechnology(kind,weapon)?"Zablokowane: pokonaj przeciwnika z tą bronią, aby odkryć technologię.":kind==R3PartKind.RepairPulse?
                     "Impuls naprawczy: V, 15 energii, 5 s. Kup część lub otwórz szczegóły.":
@@ -35,7 +36,7 @@ namespace RoboRougelike.R1
         {
             int count=run.VehicleModel.Inventory.Count(p=>InCatalogGroup(p,kind,weapon,bonus));
             bool selected=catalogGroup==kind&&(kind!=R3PartKind.Gun||catalogWeapon==weapon)&&
-                (kind!=R3PartKind.BonusModule||catalogBonusId==bonus);
+                (kind!=R3PartKind.BonusModule&&kind!=R3PartKind.Wheel||catalogBonusId==bonus);
             compactButton.normal.background=selected?buttonPressed:buttonNormal;GUI.backgroundColor=Color.white;
             bool locked=!run.CanBuyTechnology(kind,weapon);
             if(GUI.Button(new Rect(0,row*38,width,34),$"{name}  × {count}"+(locked?" • blokada":""),compactButton))
@@ -47,11 +48,13 @@ namespace RoboRougelike.R1
         {
             var model=run.VehicleModel;
             var bonuses=model.Inventory.Where(p=>p.Kind==R3PartKind.BonusModule).Select(p=>p.UpgradeId).Distinct().ToArray();
-            int count=shopKinds.Length-1+R4WeaponDefinition.Count+bonuses.Length;
+            int count=shopKinds.Length+R4WeaponDefinition.Count+bonuses.Length;
             quickPartsScroll=GUI.BeginScrollView(area,quickPartsScroll,new Rect(0,0,rowWidth,Mathf.Max(area.height,count*38)));
             int row=0;
             for(int i=0;i<shopKinds.Length;i++)
-            {var kind=shopKinds[i];if(kind!=R3PartKind.Gun)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,null,shopNames[i],row++,rowWidth);}
+            {var kind=shopKinds[i];if(kind==R3PartKind.Gun)continue;
+                DrawQuickPartRow(run,kind,R4WeaponKind.Basic,null,kind==R3PartKind.Wheel?"Koło terenowe":shopNames[i],row++,rowWidth);
+                if(kind==R3PartKind.Wheel)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,SlickWheelGroup,"Koło szosowe",row++,rowWidth);}
             for(int i=0;i<R4WeaponDefinition.Count;i++)
             {var weapon=(R4WeaponKind)i;DrawQuickPartRow(run,R3PartKind.Gun,weapon,null,R4WeaponDefinition.Get(weapon).Name,row++,rowWidth);}
             foreach(var bonus in bonuses)
@@ -63,7 +66,7 @@ namespace RoboRougelike.R1
         void BuyQuickPart(R1RunController run)
         {
             if(!catalogGroup.HasValue)return;
-            if(run.GaragePurchase(catalogGroup.Value,catalogWeapon))
+            if(run.GaragePurchase(catalogGroup.Value,catalogWeapon,catalogGroup.Value==R3PartKind.Wheel?CatalogWheelStyle(catalogBonusId):R3WheelStyle.Offroad))
             {var item=run.VehicleModel.Inventory.Last();run.Garage.ChooseInventory(item.Id);run.Garage.Message="Kupiono część. Kliknij pojazd, aby ją zamontować.";}
             else run.Garage.Message="Nie udało się kupić części.";
         }

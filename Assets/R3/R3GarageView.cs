@@ -52,6 +52,9 @@ namespace RoboRougelike.R3
         private Vector3Int shownRotation;
         private int shownContacts=-1;
         private bool shownMirrored;
+        private R3WheelStyle shownWheelStyle;
+        private bool shownWheelMirrored;
+        private readonly R3PartState previewWheel=new R3PartState(default,R3PartKind.Wheel);
         public Vector3Int SelectedRotation {get;private set;}
         public int SelectedContactMask=>Owned?.ContactMask??R3MountingGrid.AllFaces;
         public Vector3Int Cell = new Vector3Int(0,2,1);
@@ -303,8 +306,12 @@ namespace RoboRougelike.R3
         public void RefreshMarker()
         {
             if(previewRoot==null||run.VehicleModel==null)return;
+            var wheelStyle=Owned?.WheelStyle??R3WheelStyle.Offroad;
+            previewWheel.Cell=Cell;previewWheel.RotationQuarterTurns=SelectedRotation;previewWheel.ContactMask=SelectedContactMask;
+            bool wheelMirrored=MountKind==R3PartKind.Wheel&&R4WheelArt.MirrorForMount(run.VehicleModel,previewWheel);
             if(marker==null||shownKind!=MountKind||shownWeapon!=MountWeapon||
                shownTool!=Tool||shownRotation!=SelectedRotation||shownContacts!=SelectedContactMask||
+               (MountKind==R3PartKind.Wheel&&(shownWheelStyle!=wheelStyle||shownWheelMirrored!=wheelMirrored))||
                ((MountKind==R3PartKind.OmniDrive||MountKind==R3PartKind.CrawlerTrack)&&shownMirrored!=(Cell.x>0)))
             {
                 if(marker!=null){marker.SetActive(false);Destroy(marker);}
@@ -313,6 +320,7 @@ namespace RoboRougelike.R3
                     SelectedRotation,SelectedContactMask);
                 shownKind=MountKind;shownWeapon=MountWeapon;shownTool=Tool;shownRotation=SelectedRotation;
                 shownContacts=SelectedContactMask;shownMirrored=Cell.x>0;
+                shownWheelStyle=wheelStyle;shownWheelMirrored=wheelMirrored;
             }
             marker.SetActive(HasTarget);marker.transform.localPosition=(Vector3)Cell*R41PartGeometry.Grid;
             var material=Tool==R41GarageTool.Mount?(PreviewValid?palette.Valid:palette.Invalid):palette.Selection;
@@ -397,6 +405,7 @@ namespace RoboRougelike.R3
                     // silently substituting a different weapon or bonus.
                     var next=run.VehicleModel.Inventory.Where(p=>p.Kind==mounted.Kind&&p.Health>0&&
                         (p.Kind!=R3PartKind.Gun||p.Weapon==mounted.Weapon)&&
+                        (p.Kind!=R3PartKind.Wheel||p.WheelStyle==mounted.WheelStyle)&&
                         (p.Kind!=R3PartKind.BonusModule||p.UpgradeId==mounted.UpgradeId))
                         .OrderByDescending(p=>p.Health).FirstOrDefault();
                     SelectedInventoryId=next?.Id;
