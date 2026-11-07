@@ -53,10 +53,10 @@ namespace RoboRougelike.R1
             float canvasWidth=portraitReady||portraitGarage||portraitRoute?768:1280,canvasHeight=portraitReady||portraitGarage||portraitRoute?1024:720;
             float scale = Mathf.Min(Screen.width/canvasWidth,Screen.height/canvasHeight);
             float offsetX=(Screen.width-canvasWidth*scale)/2,offsetY=(Screen.height-canvasHeight*scale)/2;
-            if(run.Progress?.State==R1RunState.Garage&&!run.Transitioning)
+            if((run.Progress?.State==R1RunState.Garage||run.Progress?.State==R1RunState.Route)&&!run.Transitioning)
             {
-                // A partial garage camera does not clear pixels outside the
-                // letterboxed HUD. Cover those margins without covering the vehicle.
+                // Cover letterbox margins so the scene cannot show through outside
+                // the garage or route interface at non-matching aspect ratios.
                 GUI.matrix=Matrix4x4.identity;
                 var color=GUI.color;GUI.color=new Color(.04f,.06f,.08f,1);
                 if(offsetX>0){GUI.DrawTexture(new Rect(0,0,offsetX,Screen.height),Texture2D.whiteTexture);GUI.DrawTexture(new Rect(Screen.width-offsetX,0,offsetX,Screen.height),Texture2D.whiteTexture);}
