@@ -10,6 +10,7 @@ namespace RoboRougelike.R3
     public sealed class R3GarageView : MonoBehaviour
     {
         public static Rect Viewport => new Rect(0.265f,0.11f,0.465f,0.88f);
+        public static readonly Rect PortraitOpening=new Rect(24,76,720,420);
         public static readonly Rect BuildArea=new Rect(340,95,595,430);
         public static readonly Rect ActivityOverlay=new Rect(350,80,580,126);
         public static readonly Rect LegendOverlay=new Rect(350,418,560,29);
@@ -17,6 +18,14 @@ namespace RoboRougelike.R3
         public static Rect ViewportForScreen(int width,int height)
         {
             if(width<=0||height<=0)return new Rect(0,0,0,0);
+            if(height>width)
+            {
+                float portraitScale=Mathf.Min(width/768f,height/1024f);
+                float x=(width-768*portraitScale)/2, y=(height-1024*portraitScale)/2;
+                return new Rect((x+PortraitOpening.x*portraitScale)/width,
+                    (height-y-PortraitOpening.yMax*portraitScale)/height,
+                    PortraitOpening.width*portraitScale/width,PortraitOpening.height*portraitScale/height);
+            }
             float scale=Mathf.Min(width/1280f,height/720f);
             float left=(width-1280*scale)/2, bottom=(height-720*scale)/2;
             var viewport=Viewport;
@@ -318,6 +327,13 @@ namespace RoboRougelike.R3
         public static bool InBuildArea(Vector2 screen,int width,int height)
         {
             if(width<=0||height<=0)return false;
+            if(height>width)
+            {
+                float portraitScale=Mathf.Min(width/768f,height/1024f);
+                var portraitOffset=new Vector2((width-768*portraitScale)/2,(height-1024*portraitScale)/2);
+                var portraitPoint=(new Vector2(screen.x,height-screen.y)-portraitOffset)/portraitScale;
+                return PortraitOpening.Contains(portraitPoint);
+            }
             float scale=Mathf.Min(width/1280f,height/720f);var offset=new Vector2((width-1280*scale)/2,(height-720*scale)/2);
             var point=(new Vector2(screen.x,height-screen.y)-offset)/scale;
             var viewport=Viewport;
