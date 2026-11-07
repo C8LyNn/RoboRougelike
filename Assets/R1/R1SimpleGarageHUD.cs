@@ -103,7 +103,11 @@ namespace RoboRougelike.R1
             {
                 GUI.enabled=!garageOptionsOpen&&inspectedWheel.Health>0;
                 string next=inspectedWheel.WheelStyle==R3WheelStyle.Offroad?"szosowe":"terenowe";
-                if(GUI.Button(new Rect(12,560,245,42),"Wzór koła: "+next,compactButton))run.GarageToggleWheelStyle(inspectedWheel.Cell);
+                if(GUI.Button(new Rect(12,560,245,42),"Zmień na: "+next,compactButton))
+                {
+                    if(run.GarageToggleWheelStyle(inspectedWheel.Cell))
+                        garage.Message="Wzór koła: "+(inspectedWheel.WheelStyle==R3WheelStyle.Slick?"szosowe":"terenowe")+". Właściwości jezdne są takie same.";
+                }
                 GUI.enabled=!garageOptionsOpen;
             }
             else if(catalogGroup.HasValue)
@@ -159,7 +163,11 @@ namespace RoboRougelike.R1
             {
                 GUI.enabled=!garageOptionsOpen&&inspectedWheel.Health>0;
                 string next=inspectedWheel.WheelStyle==R3WheelStyle.Offroad?"szosowe":"terenowe";
-                if(GUI.Button(new Rect(458,690,286,40),"Wzór koła: "+next,compactButton))run.GarageToggleWheelStyle(inspectedWheel.Cell);
+                if(GUI.Button(new Rect(458,690,286,40),"Zmień na: "+next,compactButton))
+                {
+                    if(run.GarageToggleWheelStyle(inspectedWheel.Cell))
+                        garage.Message="Wzór koła: "+(inspectedWheel.WheelStyle==R3WheelStyle.Slick?"szosowe":"terenowe")+". Właściwości jezdne są takie same.";
+                }
                 GUI.enabled=!garageOptionsOpen;
             }
             else if(catalogGroup.HasValue)
