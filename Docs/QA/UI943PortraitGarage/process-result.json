@@ -1,0 +1,9 @@
+{
+  "pid": 52104,
+  "startedUtc": "2026-11-07T07:59:01.8409135Z",
+  "finishedUtc": "2026-11-07T07:59:17.5084106Z",
+  "timedOut": false,
+  "exitCode": -1073741819,
+  "requestedWidth": 768,
+  "requestedHeight": 1024
+}
