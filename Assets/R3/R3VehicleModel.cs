@@ -299,9 +299,9 @@ namespace RoboRougelike.R3
             if (part == null || part.Kind == R3PartKind.Core) return false;
             var rest = Parts.Where(p => p != part).ToList();
             // Edits may temporarily be undeployable; keep the core, structure and inventory safe.
-            if ((part.Health>0&&inventory.Count>=InventoryCapacity) ||
+            if (inventory.Count>=InventoryCapacity ||
                 !Connected(rest) || !Connected(rest.Where(p => p.Health > 0))) return false;
-            Parts.Remove(part); if(part.Health>0)inventory.Add(part); return true;
+            Parts.Remove(part); inventory.Add(part); return true;
         }
         public bool ReceiveSalvage(IEnumerable<R3PartState> recovered)
         {
