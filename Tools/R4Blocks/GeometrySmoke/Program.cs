@@ -33,8 +33,12 @@ internal static class Program
         Expect(!BuildSocketGeometry.Touches(wedgeModule,supportPose,wheel,wheelPose,out _),"partial geometry must not support a module");
         Expect(R4MountDefinitionAdapter.TryCreate("R4B_Cube",true,out var cube),"cube module");
         Expect(BuildSocketGeometry.Touches(cube,supportPose,wheel,wheelPose,out _),"full cube should support wheel");
+        var gun=new BuildDefinition("gun",BuildRole.Gun,new[]{Vector3Int.zero},new[]{new BuildSocket(Vector3Int.zero,Vector3Int.right,BuildSocketKind.WeaponBase,new Vector2(.47f,.47f))},false);
+        Expect(BuildSocketGeometry.Touches(wedge,supportPose,gun,wheelPose,out _),"partial structural overlap exists for gun");
+        Expect(!BuildSocketGeometry.Touches(wedgeModule,supportPose,gun,wheelPose,out _),"partial geometry must not support gun");
+        Expect(BuildSocketGeometry.Touches(cube,supportPose,gun,wheelPose,out _),"full cube should support gun");
         Expect(!R4MountDefinitionAdapter.TryCreate("R4B_OctColumn",true,out _),"octagon quarantine");
         Expect(structuralDefinitions==29,"expected 29 permitted structural definitions");
-        Console.WriteLine("Actual BUILD001 geometry smoke PASS: 29 structural definitions, one quarantined shape, "+moduleDefinitions+" module definitions, partial/full wheel contacts and column quarantine; identity poses only.");
+        Console.WriteLine("Actual BUILD001 geometry smoke PASS: 29 structural definitions, one quarantined shape, "+moduleDefinitions+" module definitions, partial/full wheel and gun contacts and column quarantine; identity poses only.");
     }
 }
