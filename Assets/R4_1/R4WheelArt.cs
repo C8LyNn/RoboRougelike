@@ -29,7 +29,7 @@ namespace RoboRougelike.R4_1
             if(spinning==null||socket==null||renderer==null){Destroy(visual);return null;}
             visual.transform.localScale/=scale.x;
             var view=block.gameObject.AddComponent<R4WheelArt>();view.rotor=spinning;view.visualRoot=visual.transform;
-            view.owner=block.GetComponentInParent<Rigidbody>(true);renderer.enabled=false;R41PartGeometry.HideMountingShell(block);
+            view.owner=block.GetComponentInParent<Rigidbody>(true);renderer.enabled=false;R41PartGeometry.HideMountingShell(block,visual);
             return view;
         }
 

@@ -33,7 +33,7 @@ namespace RoboRougelike.R4_1
             ring.localScale=Vector3.one;flash.localScale=Vector3.one;
             ring.gameObject.SetActive(false);flash.gameObject.SetActive(false);glow.gameObject.SetActive(false);
             var view=block.gameObject.AddComponent<R4BlinkArt>();view.ring=ring;view.flash=flash;
-            renderer.enabled=false;R41PartGeometry.HideMountingShell(block);return view;
+            renderer.enabled=false;R41PartGeometry.HideMountingShell(block,visual);return view;
         }
         public void PlayActivation()
         {

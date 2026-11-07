@@ -34,7 +34,7 @@ namespace RoboRougelike.R4_1
             }
             var view=block.gameObject.AddComponent<R4WeaponArt>();view.physicalPivot=pivot;view.physicalMuzzle=muzzle;
             view.adapter=axes;view.SawRotor=sawRotor;
-            R41PartGeometry.HideMountingShell(block);
+            R41PartGeometry.HideMountingShell(block,visual);
             foreach(var renderer in pivot.GetComponentsInChildren<Renderer>(true))renderer.enabled=false;
             view.Sync();return view;
         }

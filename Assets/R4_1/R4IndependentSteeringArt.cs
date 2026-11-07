@@ -23,7 +23,7 @@ namespace RoboRougelike.R4_1
             if(socket==null||knuckle==null){UnityEngine.Object.Destroy(visual);return false;}
             visual.transform.localScale/=scale.x;
             visual.transform.position+=block.TransformPoint(Vector3.up*.5f)-socket.position;
-            renderer.enabled=false;return true;
+            renderer.enabled=false;R41PartGeometry.HideMountingShell(block,visual);return true;
         }
     }
 }
