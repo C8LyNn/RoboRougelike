@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="2" result="Failed(Child)" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-07 07:30:44Z" end-time="2026-11-07 07:30:44Z" duration="0,0441817">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1430" result="Failed" site="Child" start-time="2026-11-07 07:30:44Z" end-time="2026-11-07 07:30:44Z" duration="0.044182" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1778" name="Assembly-CSharp-Editor.dll" fullname="[USER_HOME]/Desktop/Prototypy/RoboRougelike-PlayQA-97f8/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="637" result="Failed" site="Child" start-time="2026-11-07 07:30:44Z" end-time="2026-11-07 07:30:44Z" duration="0.026688" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="61564" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestFixture" id="1673" name="UI943CombatHudLayoutTests" fullname="UI943CombatHudLayoutTests" classname="UI943CombatHudLayoutTests" runstate="Runnable" testcasecount="12" result="Failed" site="Child" start-time="2026-11-07 07:30:44Z" end-time="2026-11-07 07:30:44Z" duration="0.020842" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="ParameterizedMethod" id="1676" name="DefenseHeadingAndRowsFitInsideTheirPanel" fullname="UI943CombatHudLayoutTests.DefenseHeadingAndRowsFitInsideTheirPanel" classname="UI943CombatHudLayoutTests" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-11-07 07:30:44Z" end-time="2026-11-07 07:30:44Z" duration="0.017929" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-case id="1674" name="DefenseHeadingAndRowsFitInsideTheirPanel(1)" fullname="UI943CombatHudLayoutTests.DefenseHeadingAndRowsFitInsideTheirPanel(1)" methodname="DefenseHeadingAndRowsFitInsideTheirPanel" classname="UI943CombatHudLayoutTests" runstate="Runnable" seed="964020695" result="Failed" start-time="2026-11-07 07:30:44Z" end-time="2026-11-07 07:30:44Z" duration="0.010204" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <failure>
+              <message><![CDATA[  Expected: not null
+  But was:  null
+]]></message>
+              <stack-trace><![CDATA[at UI943CombatHudLayoutTests.DefenseHeadingAndRowsFitInsideTheirPanel (System.Int32 count) [0x00055] in [USER_HOME]\Desktop\Prototypy\RoboRougelike-PlayQA-97f8\Assets\Tests\Editor\UI943CombatHudLayoutTests.cs:15
+]]></stack-trace>
+            </failure>
+          </test-case>
+          <test-case id="1675" name="DefenseHeadingAndRowsFitInsideTheirPanel(4)" fullname="UI943CombatHudLayoutTests.DefenseHeadingAndRowsFitInsideTheirPanel(4)" methodname="DefenseHeadingAndRowsFitInsideTheirPanel" classname="UI943CombatHudLayoutTests" runstate="Runnable" seed="1090986984" result="Failed" start-time="2026-11-07 07:30:44Z" end-time="2026-11-07 07:30:44Z" duration="0.000188" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <failure>
+              <message><![CDATA[  Expected: not null
+  But was:  null
+]]></message>
+              <stack-trace><![CDATA[at UI943CombatHudLayoutTests.DefenseHeadingAndRowsFitInsideTheirPanel (System.Int32 count) [0x00055] in [USER_HOME]\Desktop\Prototypy\RoboRougelike-PlayQA-97f8\Assets\Tests\Editor\UI943CombatHudLayoutTests.cs:15
+]]></stack-trace>
+            </failure>
+            <output><![CDATA[Saving results to: [USER_HOME]/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+          </test-case>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

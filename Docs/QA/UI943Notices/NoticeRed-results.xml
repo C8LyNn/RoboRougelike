@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="5" result="Failed(Child)" total="5" passed="0" failed="5" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-07 02:58:51Z" end-time="2026-11-07 02:58:51Z" duration="0,0531776">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1428" result="Failed" site="Child" start-time="2026-11-07 02:58:51Z" end-time="2026-11-07 02:58:51Z" duration="0.053178" total="5" passed="0" failed="5" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1775" name="Assembly-CSharp-Editor.dll" fullname="[USER_HOME]/Desktop/Prototypy/RoboRougelike-PlayQA-97f8/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="635" result="Failed" site="Child" start-time="2026-11-07 02:58:51Z" end-time="2026-11-07 02:58:51Z" duration="0.033768" total="5" passed="0" failed="5" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="66164" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestFixture" id="1698" name="UI943NoticeLayoutTests" fullname="UI943NoticeLayoutTests" classname="UI943NoticeLayoutTests" runstate="Runnable" testcasecount="5" result="Failed" site="Child" start-time="2026-11-07 02:58:51Z" end-time="2026-11-07 02:58:51Z" duration="0.027379" total="5" passed="0" failed="5" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="ParameterizedMethod" id="1704" name="ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls" fullname="UI943NoticeLayoutTests.ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls" classname="UI943NoticeLayoutTests" runstate="Runnable" testcasecount="5" result="Failed" site="Child" start-time="2026-11-07 02:58:51Z" end-time="2026-11-07 02:58:51Z" duration="0.023663" total="5" passed="0" failed="5" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-case id="1699" name="ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls(1920,1080)" fullname="UI943NoticeLayoutTests.ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls(1920,1080)" methodname="ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls" classname="UI943NoticeLayoutTests" runstate="Runnable" seed="1869710669" result="Failed" start-time="2026-11-07 02:58:51Z" end-time="2026-11-07 02:58:51Z" duration="0.012896" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <failure>
+              <message><![CDATA[  Powiadomienia wymagają bezpiecznego obszaru.
+  Expected: not null
+  But was:  null
+]]></message>
+              <stack-trace><![CDATA[at UI943NoticeLayoutTests.ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls (System.Int32 width, System.Int32 height) [0x00017] in [USER_HOME]\Desktop\Prototypy\RoboRougelike-PlayQA-97f8\Assets\Tests\Editor\UI943NoticeLayoutTests.cs:13
+]]></stack-trace>
+            </failure>
+          </test-case>
+          <test-case id="1700" name="ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls(1366,768)" fullname="UI943NoticeLayoutTests.ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls(1366,768)" methodname="ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls" classname="UI943NoticeLayoutTests" runstate="Runnable" seed="672313317" result="Failed" start-time="2026-11-07 02:58:51Z" end-time="2026-11-07 02:58:51Z" duration="0.000493" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <failure>
+              <message><![CDATA[  Powiadomienia wymagają bezpiecznego obszaru.
+  Expected: not null
+  But was:  null
+]]></message>
+              <stack-trace><![CDATA[at UI943NoticeLayoutTests.ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls (System.Int32 width, System.Int32 height) [0x00017] in [USER_HOME]\Desktop\Prototypy\RoboRougelike-PlayQA-97f8\Assets\Tests\Editor\UI943NoticeLayoutTests.cs:13
+]]></stack-trace>
+            </failure>
+          </test-case>
+          <test-case id="1701" name="ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls(1024,768)" fullname="UI943NoticeLayoutTests.ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls(1024,768)" methodname="ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls" classname="UI943NoticeLayoutTests" runstate="Runnable" seed="126564900" result="Failed" start-time="2026-11-07 02:58:51Z" end-time="2026-11-07 02:58:51Z" duration="0.000133" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <failure>
+              <message><![CDATA[  Powiadomienia wymagają bezpiecznego obszaru.
+  Expected: not null
+  But was:  null
+]]></message>
+              <stack-trace><![CDATA[at UI943NoticeLayoutTests.ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls (System.Int32 width, System.Int32 height) [0x00017] in [USER_HOME]\Desktop\Prototypy\RoboRougelike-PlayQA-97f8\Assets\Tests\Editor\UI943NoticeLayoutTests.cs:13
+]]></stack-trace>
+            </failure>
+          </test-case>
+          <test-case id="1702" name="ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls(768,1024)" fullname="UI943NoticeLayoutTests.ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls(768,1024)" methodname="ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls" classname="UI943NoticeLayoutTests" runstate="Runnable" seed="2025238185" result="Failed" start-time="2026-11-07 02:58:51Z" end-time="2026-11-07 02:58:51Z" duration="0.000089" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <failure>
+              <message><![CDATA[  Powiadomienia wymagają bezpiecznego obszaru.
+  Expected: not null
+  But was:  null
+]]></message>
+              <stack-trace><![CDATA[at UI943NoticeLayoutTests.ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls (System.Int32 width, System.Int32 height) [0x00017] in [USER_HOME]\Desktop\Prototypy\RoboRougelike-PlayQA-97f8\Assets\Tests\Editor\UI943NoticeLayoutTests.cs:13
+]]></stack-trace>
+            </failure>
+          </test-case>
+          <test-case id="1703" name="ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls(3840,2160)" fullname="UI943NoticeLayoutTests.ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls(3840,2160)" methodname="ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls" classname="UI943NoticeLayoutTests" runstate="Runnable" seed="920824804" result="Failed" start-time="2026-11-07 02:58:51Z" end-time="2026-11-07 02:58:51Z" duration="0.000073" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <failure>
+              <message><![CDATA[  Powiadomienia wymagają bezpiecznego obszaru.
+  Expected: not null
+  But was:  null
+]]></message>
+              <stack-trace><![CDATA[at UI943NoticeLayoutTests.ThreeDamageNoticesDoNotCoverSuspensionOrRangeControls (System.Int32 width, System.Int32 height) [0x00017] in [USER_HOME]\Desktop\Prototypy\RoboRougelike-PlayQA-97f8\Assets\Tests\Editor\UI943NoticeLayoutTests.cs:13
+]]></stack-trace>
+            </failure>
+            <output><![CDATA[Saving results to: [USER_HOME]/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+          </test-case>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
