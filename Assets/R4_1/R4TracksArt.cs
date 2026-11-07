@@ -32,7 +32,7 @@ namespace RoboRougelike.R4_1
             if(mirror)model.transform.localScale=Vector3.Scale(model.transform.localScale,new Vector3(-1,1,1));
             model.transform.position+=block.TransformPoint(Vector3.up*.5f)-socket.position;
             var view=block.gameObject.AddComponent<R4TracksArt>();view.visual=model;view.travel=catalog.CrawlerTravel;
-            view.owner=block.GetComponentInParent<Rigidbody>(true);renderer.enabled=false;R41PartGeometry.HideMountingShell(block,visual);return view;
+            view.owner=block.GetComponentInParent<Rigidbody>(true);renderer.enabled=false;R41PartGeometry.HideMountingShell(block,model);return view;
         }
         void LateUpdate()
         {
