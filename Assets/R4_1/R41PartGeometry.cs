@@ -8,6 +8,13 @@ namespace RoboRougelike.R4_1
     public static class R41PartGeometry
     {
         public const float Grid=0.55f, BlockSize=0.52f;
+        // The mounting cube remains the collider and damage owner; only its
+        // legacy renderer disappears once replacement art is ready.
+        public static void HideMountingShell(Transform block)
+        {
+            var renderer=block!=null?block.GetComponent<Renderer>():null;
+            if(renderer!=null)renderer.enabled=false;
+        }
         private static GameObject Primitive(PrimitiveType type,Transform parent,Material material,bool solid,string name)
         {
             var item=GameObject.CreatePrimitive(type);item.name=name;item.transform.SetParent(parent,false);

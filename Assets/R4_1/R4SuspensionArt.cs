@@ -25,7 +25,7 @@ namespace RoboRougelike.R4_1
             if(socket==null||arm==null){UnityEngine.Object.Destroy(visual);return false;}
             visual.transform.localScale/=scale.x;
             visual.transform.position+=block.TransformPoint(Vector3.up*.5f)-socket.position;
-            oldRenderer.enabled=false;
+            oldRenderer.enabled=false;R41PartGeometry.HideMountingShell(block);
             return true;
         }
     }

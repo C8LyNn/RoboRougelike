@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Linq;
+using System.Reflection;
 using NUnit.Framework;
 using RoboRougelike.R1;
 using RoboRougelike.R3;
@@ -55,6 +56,12 @@ public sealed class CameraStartAndReplacementArtTests
             Assert.That(part.GetComponent<Collider>().enabled,Is.True,"Original collider is retained for construction and damage.");
             Assert.That(part.GetComponentsInChildren<Renderer>().Any(r=>r!=part.GetComponent<Renderer>()&&r.enabled),Is.True,"Replacement model must be visible.");
         }
+        var preview=(GameObject)typeof(R3GarageView).GetField("previewRoot",BindingFlags.NonPublic|BindingFlags.Instance).GetValue(run.Garage);
+        var outlines=preview.GetComponentsInChildren<Transform>().Where(t=>t.name=="W27 occupied cell").ToArray();
+        Assert.That(outlines.Length,Is.GreaterThan(0),"Armor grid remains visible.");
+        foreach(var part in wheels.Concat(guns))
+            Assert.That(outlines.Any(t=>Vector3.Distance(t.localPosition,(Vector3)part.Cell*R41PartGeometry.Grid)<.001f),Is.False,
+                "The garage must not draw an old cubic outline over replacement art.");
     }
     [UnityTest] public IEnumerator MovementModelsReplaceCubesWithoutRemovingPhysicalColliders()
     {

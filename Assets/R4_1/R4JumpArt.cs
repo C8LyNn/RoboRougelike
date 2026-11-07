@@ -32,7 +32,7 @@ namespace RoboRougelike.R4_1
             visual.transform.position+=block.TransformPoint(Vector3.up*.5f)-socket.position;
             ring.localScale=Vector3.one;ring.gameObject.SetActive(false);
             foreach(var node in nodes)if(node.name.StartsWith("Jump_TankGlow_",StringComparison.Ordinal))node.gameObject.SetActive(false);
-            var view=block.gameObject.AddComponent<R4JumpArt>();view.ring=ring;renderer.enabled=false;
+            var view=block.gameObject.AddComponent<R4JumpArt>();view.ring=ring;renderer.enabled=false;R41PartGeometry.HideMountingShell(block);
             return view;
         }
         void Start(){Bind();}
