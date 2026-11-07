@@ -11,6 +11,16 @@ using RoboRougelike.R1;
 
 public sealed class UI943WeaponStatusTests
 {
+    [TestCase(10,0f,0f,10f,"10/10 • gotowa")]
+    [TestCase(2,0f,10.5f,10f,"2/10 • 0,5 s")]
+    [TestCase(0,0f,0f,10f,"0/10 • ładowanie")]
+    [TestCase(0,11f,0f,10f,"0/10 • ładowanie")]
+    public void RocketStatusReflectsAutomaticReload(int ammo,float reload,float ready,float now,string expected)
+    {
+        var method=typeof(R1RunHUD).GetMethod("RocketWeaponStatus",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);string actual=(string)method.Invoke(null,new object[]{ammo,reload,ready,now});
+        Assert.That(actual.Replace('.',','),Is.EqualTo(expected));
+    }
     [TestCase(0,1)] [TestCase(1,1)] [TestCase(9,1)] [TestCase(10,2)] [TestCase(180,20)]
     public void DefensePagesAreBoundedAndAllEntriesReachable(int count,int expectedPages)
     {
