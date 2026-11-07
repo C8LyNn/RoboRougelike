@@ -29,6 +29,7 @@ namespace RoboRougelike.R1
             public bool railgunArt,railgunMuzzle,railgunHit;
             public bool rocketArt,rocketHit,beamArt,beamHit;
             public bool sawArt,sawHit,empArt,empPulse;
+            public bool playerCameraStart,playerReplacementArt,playerColliders,playerDamageTint;
         }
         string directory;
         readonly Result result=new Result();
@@ -69,6 +70,26 @@ namespace RoboRougelike.R1
             while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
             result.enteredCombat=!run.Transitioning&&run.Progress.State==R1RunState.Combat;
             Require(result.enteredCombat,"Entered combat");run.Encounter.SetCombatActive(false);
+            yield return null; // Observe the first rendered battle-camera update.
+            var playerBody=run.Player.GetComponent<Rigidbody>();var camera=Camera.main;
+            result.playerCameraStart=camera!=null&&Vector3.Distance(camera.transform.position,playerBody.position)<35&&
+                Vector3.Distance(run.Player.transform.position,playerBody.position)<.1f;
+            Require(result.playerCameraStart,"Battle camera must start by the actual vehicle, not the workshop");
+            var playerParts=run.Player.GetComponent<R3VehicleAssembly>().Parts;
+            var playerWheels=playerParts.Where(p=>p!=null&&p.Kind==R3PartKind.Wheel).ToArray();
+            var playerGuns=playerParts.Where(p=>p!=null&&p.Kind==R3PartKind.Gun&&p.Weapon==R4WeaponKind.Basic).ToArray();
+            result.playerReplacementArt=playerWheels.Length>0&&playerGuns.Length>0&&
+                playerWheels.All(p=>p.GetComponent<R4WheelArt>()!=null&&!p.GetComponent<Renderer>().enabled)&&
+                playerGuns.All(p=>p.GetComponent<R4WeaponArt>()!=null&&!p.GetComponent<Renderer>().enabled);
+            result.playerColliders=playerWheels.Concat(playerGuns).All(p=>p.GetComponent<Collider>()!=null&&p.GetComponent<Collider>().enabled);
+            Require(result.playerReplacementArt&&result.playerColliders,"Replacement models hide old shells but retain physics");
+            var playerWheel=playerWheels[0];var rotor=playerWheel.GetComponentsInChildren<Transform>(true).First(t=>t.name=="R4M_Wheel_Rotor");
+            var modelRenderer=rotor.GetComponentsInChildren<Renderer>(true).First(r=>r.sharedMaterials.Length>0&&r.sharedMaterials[0]!=null&&r.sharedMaterials[0].HasProperty("_BaseColor"));
+            var originalColor=modelRenderer.sharedMaterials[0].GetColor("_BaseColor");
+            playerWheel.Damageable.RestoreHealthRatio(.5f);var props=new MaterialPropertyBlock();modelRenderer.GetPropertyBlock(props,0);
+            var actualColor=props.GetColor("_BaseColor");var expectedColor=Color.Lerp(originalColor,new Color(.16f,.09f,.06f,originalColor.a),.4f);
+            result.playerDamageTint=Mathf.Abs(actualColor.r-expectedColor.r)<.02f&&Mathf.Abs(actualColor.g-expectedColor.g)<.02f&&Mathf.Abs(actualColor.b-expectedColor.b)<.02f;
+            playerWheel.Damageable.RestoreHealthRatio(1);Require(result.playerDamageTint,"Replacement model follows real HP damage state");
             var enemies=run.Encounter.Enemies.Where(e=>e!=null).ToArray();result.enemies=enemies.Length;
             var wheels=enemies.SelectMany(e=>e.GetComponentsInChildren<P12PipelineSafeDamageable>())
                 .Where(R6VehicleDrive.IsWheel).ToArray();result.wheels=wheels.Length;
@@ -77,10 +98,10 @@ namespace RoboRougelike.R1
             result.originalColliders=wheels.Length>0&&wheels.All(w=>w.GetComponent<Collider>()!=null&&w.GetComponent<Collider>().enabled);
             Require(result.modelsPresent&&result.originalColliders,"Enemy wheel visuals and original colliders");
             var wheel=wheels[0];var collider=wheel.GetComponent<Collider>();
-            var rotor=wheel.GetComponentsInChildren<Transform>(true).First(t=>t.name=="R4M_Wheel_Rotor");
+            var enemyRotor=wheel.GetComponentsInChildren<Transform>(true).First(t=>t.name=="R4M_Wheel_Rotor");
             wheel.ApplyDamage(100000,wheel.transform.position,Vector3.forward);yield return null;
             result.detachedVisual=wheel!=null&&wheel.IsDead&&wheel.transform.parent==null&&
-                rotor!=null&&rotor.IsChildOf(wheel.transform)&&wheel.GetComponent<Collider>()==collider;
+                enemyRotor!=null&&enemyRotor.IsChildOf(wheel.transform)&&wheel.GetComponent<Collider>()==collider;
             Require(result.detachedVisual,"Enemy wheel visual follows physical debris");
 
             var template=(P12PipelineSafeEnemyTurret)typeof(R1RunController)
