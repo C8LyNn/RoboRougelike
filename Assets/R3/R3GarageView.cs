@@ -243,7 +243,16 @@ namespace RoboRougelike.R3
             if(R3VehicleModel.UsesWideFootprint(kind))R3BonusModuleGeometry.ConfigureCube(item,false);
             var collider=item.GetComponent<Collider>();collider.enabled=false;Destroy(collider);
             if(!R3VehicleModel.UsesWideFootprint(kind)&&(Tool==R41GarageTool.Mount||plan))
-                R41PartGeometry.Payload(item.transform,kind,weapon,material,false,out _);
+            {
+                var payload=R41PartGeometry.Payload(item.transform,kind,weapon,material,false,out var muzzle);
+                // Reuse the player's model and axis adapter, but keep the
+                // original ghost geometry and do not create physical colliders.
+                if(!plan&&Tool==R41GarageTool.Mount&&payload!=null)
+                {
+                    if(kind==R3PartKind.Gun)R4WeaponArt.TryAttach(item.transform,payload,muzzle,weapon);
+                    else if(kind==R3PartKind.Wheel)R4WheelArt.TryAttach(item.transform,payload);
+                }
+            }
             if(!plan&&Tool==R41GarageTool.Mount)
                 foreach(var renderer in item.GetComponentsInChildren<Renderer>())
                     if(renderer.transform!=item.transform)payloadRenderers.Add(renderer);
