@@ -1,0 +1,14 @@
+{
+    "status": "CAPTURED",
+    "sourceCommit": "ad7fc84c295b79ed0155589044b60f869b3750f1",
+    "method": "QA fixture: actual Unity menu, full ScreenCapture; no simulated input",
+    "error": "",
+    "persistentDataPath": "[USER_HOME]/AppData/LocalLow/RoboRougelike_MenuAD7_QA_Only/MenuAD7_Capture_Fixture",
+    "graphics": "Direct3D12 / NVIDIA GeForce RTX 5080",
+    "screenshot": "C:\\Users\\kubap\\Desktop\\Prototypy\\RoboRougelike-UI945-QA-4c25\\Artifacts\\Local\\MenuAD7Capture-768x1024\\menu-ad7-screen.png",
+    "screenWidth": 768,
+    "screenHeight": 1024,
+    "captureWidth": 768,
+    "captureHeight": 1024,
+    "menuReady": true
+}
