@@ -12,6 +12,7 @@ namespace RoboRougelike.R4_1
     public sealed class R4MovementArtCatalog : ScriptableObject
     {
         public R4MovementArtEntry[] Models=Array.Empty<R4MovementArtEntry>();
+        public AnimationClip CrawlerTravel;
         public GameObject ModelFor(R3PartKind kind)
         {
             if(Models==null)return null;
