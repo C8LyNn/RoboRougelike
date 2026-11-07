@@ -371,7 +371,7 @@ namespace RoboRougelike.R3
             else if(Tool==R41GarageTool.Repair)
             {result=run.GarageRepair(Cell);Message=result?"Naprawiono wskazaną część.":"Brak uszkodzeń, Złomu lub sprawnego połączenia.";}
             else if(Tool==R41GarageTool.Remove)
-            {result=run.GarageRemove(Cell);Message=result?"Żywa część wróciła do magazynu; utracony plan usunięty.":"Chroniony rdzeń, most lub pełny magazyn.";}
+            {result=run.GarageRemove(Cell);Message=result?"Część wróciła do magazynu w obecnym stanie.":"Chroniony rdzeń, most lub pełny magazyn.";}
             else {result=run.VehicleModel.At(Cell)!=null;Message="Zaznaczono część na pojeździe. Jej HP i koszt w warsztacie.";}
             if(result&&Tool==R41GarageTool.Remove)HasTarget=false;
             RefreshMarker();return result;
