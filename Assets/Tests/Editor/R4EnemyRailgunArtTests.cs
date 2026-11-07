@@ -35,7 +35,7 @@ public sealed class R4EnemyRailgunArtTests
         var body=enemy.GetComponent<Rigidbody>();body.isKinematic=true;body.position=new Vector3(100,4,100);enemy.transform.rotation=Quaternion.identity;art.Sync();
         var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=art.Muzzle.position+art.Muzzle.forward*6;
         target.transform.localScale=new Vector3(4,4,1);var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(500,false);
-        var bank=enemy.GetComponent<VehicleEnergyBank>();bank.Recharge(1000);float before=bank.Current;Physics.SyncTransforms();
+        var bank=enemy.GetComponent<VehicleEnergyBank>();bank.Recharge(1000);float before=bank.Current;Physics.SyncTransforms();enemy.SetCombatActive(true);
         Assert.That(binding.Fire(),Is.True);Assert.That(bank.Current,Is.LessThan(before),"Railgun spends the existing energy cost.");
         end=Time.realtimeSinceStartup+5;while(hp.CurrentHp>=500&&Time.realtimeSinceStartup<end)yield return new WaitForFixedUpdate();
         Assert.That(hp.CurrentHp,Is.LessThan(500),"Actual railgun projectile must hit the target.");
