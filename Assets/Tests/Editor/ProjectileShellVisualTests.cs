@@ -21,6 +21,8 @@ public sealed class ProjectileShellVisualTests
         Assert.That(visual.localScale.y,Is.GreaterThan(visual.localScale.x*2));
         yield return null;
         Assert.That(Vector3.Dot(visual.up.normalized,Vector3.forward),Is.GreaterThan(.99f));
+        body.linearVelocity=Vector3.right*10;yield return null;yield return null;
+        Assert.That(Vector3.Dot(visual.up.normalized,Vector3.right),Is.GreaterThan(.99f),"Appearance tracks real flight direction.");
         Object.Destroy(shell);
     }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
