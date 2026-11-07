@@ -112,8 +112,9 @@ namespace RoboRougelike.R1
                     var physicsBody=player.GetComponent<Rigidbody>();
                     GUI.Label(new Rect(36, 126, 630, 25), $"Masa: {physicsBody.mass:0} kg • Prędkość: {physicsBody.linearVelocity.magnitude:0.0} m/s • Esc — pauza", small);
                     var energy=player.GetComponent<VehicleEnergyBank>();
+                    var repairPulse=player.GetComponent<R3RepairPulse>();
                     if(energy!=null)GUI.Label(new Rect(36,151,630,25),$"Energia: {energy.Current:0}/{energy.Maximum:0}"+
-                        (player.GetComponent<R3RepairPulse>()!=null?" • V — impuls naprawczy":""),small);
+                        (repairPulse!=null?$" • V — naprawa: {repairPulse.Status}":""),small);
                     if(run.PickupGraceRemaining>0)
                     {
                         GUI.Label(new Rect(36,174,630,22),$"Zbierz energię: {run.PickupGraceRemaining:0.0} s • Enter — nagrody",small);

@@ -56,14 +56,17 @@ public sealed class BacklogRepairPulseIntegrationTests
         Assert.That(energy,Is.Not.Null);
         var armor=assembly.Parts.First(p=>p.Kind==R3PartKind.Armor&&p.Operational);
         float fullEnergy=energy.Current;
+        Assert.That(pulse.Status,Is.EqualTo("brak uszkodzeń"));
         Assert.That(pulse.TryActivate(),Is.Zero,"No damaged target means no cost or cooldown.");
         Assert.That(energy.Current,Is.EqualTo(fullEnergy).Within(.001f));
         Assert.That(energy.TrySpend(energy.Current-1),Is.True);
         armor.Damageable.RestoreHealthRatio(.5f);
+        Assert.That(pulse.Status,Is.EqualTo("brak energii"));
         Assert.That(pulse.TryActivate(),Is.Zero,"Insufficient energy must not activate repair.");
         Assert.That(energy.Current,Is.EqualTo(1).Within(.001f));
         energy.Recharge(100);float energyBefore=energy.Current;
         Assert.That(pulse.TryActivate(),Is.EqualTo(1));
+        Assert.That(pulse.Status,Is.EqualTo("naprawia"));
         Assert.That(energy.Current,Is.EqualTo(energyBefore-R3RepairPulse.EnergyCost).Within(.001f));
         Assert.That(pulse.TryActivate(),Is.Zero);
         Assert.That(run.VehicleModel.Parts.Single(p=>p.Id==part.Id).DeviceReadyAt,Is.GreaterThan(Time.time));
@@ -74,6 +77,7 @@ public sealed class BacklogRepairPulseIntegrationTests
         device.Damageable.ApplyDamage(100000,device.transform.position,Vector3.up);
         tick.Invoke(pulse,new object[]{1f});
         Assert.That(pulse.ActiveCount,Is.Zero);
+        Assert.That(pulse.Status,Is.EqualTo("nieaktywny"));
         Assert.That(armor.Damageable.CurrentHp/armor.Damageable.MaxHp,Is.EqualTo(.6f).Within(.001f));
         yield return null;
     }

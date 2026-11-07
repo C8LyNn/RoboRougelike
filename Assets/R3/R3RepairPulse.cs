@@ -18,6 +18,23 @@ namespace RoboRougelike.R3
         R3VehicleAssembly assembly;
         VehicleEnergyBank energy;
         public int ActiveCount=>active.Count;
+        public string Status
+        {
+            get
+            {
+                if(assembly==null||energy==null)return "niedostępny";
+                if(active.Any(p=>Live(p.Device)))return "naprawia";
+                var devices=assembly.Parts.Where(p=>Live(p)&&p.Kind==R3PartKind.RepairPulse&&
+                    !RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(p.gameObject)).ToArray();
+                if(devices.Length==0)return "nieaktywny";
+                var states=devices.Select(p=>assembly.Model.Parts.FirstOrDefault(s=>s.Id==p.Id)).Where(s=>s!=null).ToArray();
+                if(states.Length==0)return "nieaktywny";
+                float remaining=states.Min(s=>Mathf.Max(0,s.DeviceReadyAt-Time.time));
+                if(remaining>0)return $"odnowienie {Mathf.CeilToInt(remaining)} s";
+                if(!assembly.Parts.Any(Damaged))return "brak uszkodzeń";
+                return energy.CanSpend(EnergyCost)?"gotowy":"brak energii";
+            }
+        }
         public void Configure(R3VehicleAssembly owner){assembly=owner;energy=GetComponent<VehicleEnergyBank>();}
         bool Live(R3MountedPart part)=>part!=null&&part.Operational&&part.transform.IsChildOf(transform);
         bool Damaged(R3MountedPart part)=>Live(part)&&part.Damageable.MaxHp>0&&
