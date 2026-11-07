@@ -12,7 +12,7 @@ namespace RoboRougelike.WeaponIntegration
         public RRLDeviceBinding Device {get;private set;}
         public RotarySawModule Module {get;private set;}
         public R3PartState State=>Device.State;
-        Transform blade,rotor;bool requested;
+        Transform blade,rotor;bool requested,artRotor;
         P12PipelineSafeTankController tank;float damageScale=1;
         public void Bind(R3PartState state,Transform owner,Transform center,float damageMultiplier=1)
         {
@@ -24,12 +24,15 @@ namespace RoboRougelike.WeaponIntegration
             if(energy!=null){Module.Configure(new RotarySawConfiguration{energyPerSecond=VehicleEnergyCosts.ContinuousWeaponPerSecond*R3VehicleModel.TierActivationCost(state.Tier)});Module.SetEnergySource(energy);}
             foreach(var collider in owner.GetComponentsInChildren<Collider>())Module.RegisterOwnerCollider(collider);
             Module.Motor.RestoreState(state.ThermalHeat,state.ThermalLocked,Mathf.Max(0,state.DeviceReadyAt-Time.time));
-            rotor=RoboRougelike.R4_1.R41PartGeometry.SawRotor(center,GetComponent<Renderer>().sharedMaterial);
+            var art=GetComponent<RoboRougelike.R4_1.R4WeaponArt>();
+            rotor=art!=null?art.SawRotor:null;artRotor=rotor!=null;
+            if(rotor==null)rotor=RoboRougelike.R4_1.R41PartGeometry.SawRotor(center,GetComponent<Renderer>().sharedMaterial);
             Device.Damageable.Died+=Stop;Module.SetOperational(Device.Available);
         }
         public void SetMotorRequested(bool value){requested=value;if(!value&&Module!=null)Module.SetMotorRequested(false);}
         void FixedUpdate(){bool active=Device.Available;Module.SetOperational(active);Module.SetMotorRequested(active&&requested);Module.Advance(Time.fixedDeltaTime);CaptureState();}
-        void LateUpdate(){if(rotor!=null)rotor.Rotate(Vector3.up,Module.Motor.Rpm*6*Time.deltaTime,Space.Self);}
+        void LateUpdate(){if(rotor!=null){if(artRotor&&blade!=null)rotor.position=blade.position;
+            rotor.Rotate(artRotor?Vector3.right:Vector3.up,Module.Motor.Rpm*6*Time.deltaTime,Space.Self);}}
         public void CaptureState(){if(Module==null||Device?.State==null)return;State.ThermalHeat=Module.Motor.Heat;State.ThermalLocked=Module.Motor.Overheated;State.DeviceReadyAt=Time.time+Module.Motor.JamRemaining;}
         public bool TryResolve(Collider collider,out SawTarget target)
         {
