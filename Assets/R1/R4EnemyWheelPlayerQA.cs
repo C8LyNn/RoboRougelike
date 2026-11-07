@@ -261,8 +261,8 @@ namespace RoboRougelike.R1
             var art=heavy.Block.GetComponent<R4WeaponArt>();
             result.eliteArt=art!=null&&heavy.Block.GetComponentsInChildren<Transform>(true).Any(t=>t.name=="R4W_Heavy_ROOT");
             result.eliteVisibleMuzzle=art!=null&&heavy.Muzzle==art.Muzzle;
-            result.automaticFallback=automatic.Block.GetComponent<R4WeaponArt>()==null&&automatic.Pivot.GetComponentsInChildren<Renderer>(true).Any(r=>r.enabled);
-            Require(result.eliteArt&&result.eliteVisibleMuzzle&&result.automaticFallback,"Elite heavy art and automatic fallback");
+            result.automaticFallback=automatic.Block.GetComponent<R4WeaponArt>()!=null&&automatic.Muzzle==automatic.Block.GetComponent<R4WeaponArt>().Muzzle;
+            Require(result.eliteArt&&result.eliteVisibleMuzzle&&result.automaticFallback,"Elite heavy and automatic art and visible muzzles");
             R1EncounterManager.ClearTransientObjects();
             var direction=new Vector3(.4f,.15f,1).normalized;
             var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.SetParent(run.Player.transform,true);
