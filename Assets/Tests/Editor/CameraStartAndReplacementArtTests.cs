@@ -125,6 +125,7 @@ public sealed class CameraStartAndReplacementArtTests
         var run=R1RunController.Instance;Assert.That(run.PrepareUnifiedRun(),Is.True);yield return null;
         var wheel=run.Player.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Kind==R3PartKind.Wheel);
         var model=wheel.GetComponentsInChildren<Transform>(true).First(t=>t.name=="R4M_Wheel_Rotor");
+        Assert.That(wheel.GetComponentsInChildren<R4ReplacementDamageVisual>(true).Length,Is.EqualTo(1),"The model must track its real damage owner.");
         var renderer=model.GetComponentsInChildren<Renderer>(true).First(r=>r.sharedMaterials.Length>0&&r.sharedMaterials[0]!=null&&r.sharedMaterials[0].HasProperty("_BaseColor"));
         var original=renderer.sharedMaterials[0].GetColor("_BaseColor");var hp=wheel.Damageable;
         Time.timeScale=1;hp.ApplyDamage(hp.MaxHp*.5f,wheel.transform.position,Vector3.up);
@@ -137,6 +138,20 @@ public sealed class CameraStartAndReplacementArtTests
         hp.ApplyDamage(100000,wheel.transform.position,Vector3.up);yield return null;
         Assert.That(hp.IsDead,Is.True);Assert.That(model.IsChildOf(wheel.transform),Is.True,"Replacement stays with the detached wreck.");
         Assert.That(wheel.GetComponent<Collider>().enabled,Is.True);
+    }
+    [UnityTest] public IEnumerator GhostModelShowsInvalidPlacementTintWithoutAnOpaqueCube()
+    {
+        var run=R1RunController.Instance;Assert.That(run.PrepareUnifiedRun(),Is.True);yield return null;
+        run.Garage.UseInventory=false;run.Garage.SelectedPart=R3PartKind.Wheel;
+        run.Garage.Select(run.VehicleModel.Parts.First().Cell);
+        Assert.That(run.Garage.PreviewValid,Is.False);
+        var marker=(GameObject)typeof(R3GarageView).GetField("marker",BindingFlags.NonPublic|BindingFlags.Instance).GetValue(run.Garage);
+        var palette=(R3VisualPalette)typeof(R3GarageView).GetField("palette",BindingFlags.NonPublic|BindingFlags.Instance).GetValue(run.Garage);
+        Assert.That(marker.GetComponent<Renderer>().enabled,Is.False);
+        var rotor=marker.GetComponentsInChildren<Transform>(true).First(t=>t.name=="R4M_Wheel_Rotor");
+        var renderers=rotor.GetComponentsInChildren<Renderer>(true).Where(r=>r.enabled).ToArray();
+        Assert.That(renderers.Length,Is.GreaterThan(0));
+        Assert.That(renderers.All(r=>r.sharedMaterial==palette.Invalid),Is.True,"Invalid placement must tint the model, not a hidden cube.");
     }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }

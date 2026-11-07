@@ -22,7 +22,9 @@ namespace RoboRougelike.R4_1
         public static void Attach(GameObject visual,Transform block)
         {
             if(visual==null||block==null)return;
-            var hp=block.GetComponentInParent<P12PipelineSafeDamageable>();
+            // The player vehicle is assembled while inactive; its HP owner
+            // must still be found before the completed vehicle is enabled.
+            var hp=block.GetComponentInParent<P12PipelineSafeDamageable>(true);
             if(hp==null)return; // Garage ghosts have no HP and retain their own tint.
             var view=visual.AddComponent<R4ReplacementDamageVisual>();view.Bind(hp);
         }

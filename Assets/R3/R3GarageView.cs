@@ -315,8 +315,10 @@ namespace RoboRougelike.R3
             }
             marker.SetActive(HasTarget);marker.transform.localPosition=(Vector3)Cell*R41PartGeometry.Grid;
             var material=Tool==R41GarageTool.Mount?(PreviewValid?palette.Valid:palette.Invalid):palette.Selection;
+            var rootRenderer=marker.GetComponent<Renderer>();
+            bool replacementOnly=rootRenderer!=null&&!rootRenderer.enabled;
             foreach(var renderer in marker.GetComponentsInChildren<Renderer>())
-                renderer.sharedMaterial=payloadRenderers.Contains(renderer)?palette.Payload:material;
+                renderer.sharedMaterial=!replacementOnly&&payloadRenderers.Contains(renderer)?palette.Payload:material;
         }
         public static Vector3Int LocalFace(Transform vehicle,Vector3 worldNormal)
         {
