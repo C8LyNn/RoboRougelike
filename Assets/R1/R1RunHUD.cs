@@ -9,6 +9,7 @@ namespace RoboRougelike.R1
     public sealed partial class R1RunHUD : MonoBehaviour
     {
         private GUIStyle title, heading, body, small, button, compactButton;
+        private Texture2D buttonNormal,buttonHover,buttonPressed;
 
         private readonly Color panel = new Color(0.04f, 0.06f, 0.08f, 0.94f);
         private static bool UsePortraitReady(int width,int height,bool ready,bool overlay)
@@ -34,6 +35,30 @@ namespace RoboRougelike.R1
             heading.normal.textColor = new Color(0.45f, 0.88f, 0.88f);
             button = new GUIStyle(GUI.skin.button) { fontSize = 20, wordWrap = true };
             compactButton = new GUIStyle(GUI.skin.button) { fontSize = 15, wordWrap = true };
+            buttonNormal=ButtonTile(new Color(.075f,.12f,.145f),new Color(.22f,.39f,.43f));
+            buttonHover=ButtonTile(new Color(.11f,.23f,.26f),new Color(.36f,.77f,.78f));
+            buttonPressed=ButtonTile(new Color(.08f,.29f,.30f),new Color(.50f,.93f,.90f));
+            StyleButton(button);StyleButton(compactButton);
+        }
+        private static Texture2D ButtonTile(Color fill,Color edge)
+        {
+            var texture=new Texture2D(3,3,TextureFormat.RGBA32,false){name="RRL HUD button",hideFlags=HideFlags.HideAndDontSave,filterMode=FilterMode.Point};
+            var pixels=new Color[9];for(int y=0;y<3;y++)for(int x=0;x<3;x++)pixels[y*3+x]=(x==0||x==2||y==0||y==2)?edge:fill;
+            texture.SetPixels(pixels);texture.Apply(false,true);return texture;
+        }
+        private void StyleButton(GUIStyle style)
+        {
+            style.border=new RectOffset(1,1,1,1);
+            style.normal.background=buttonNormal;style.hover.background=buttonHover;style.active.background=buttonPressed;
+            style.focused.background=buttonHover;style.onNormal.background=buttonPressed;style.onHover.background=buttonHover;style.onActive.background=buttonPressed;
+            var text=new Color(.91f,.96f,.97f);style.normal.textColor=text;style.hover.textColor=Color.white;
+            style.active.textColor=Color.white;style.focused.textColor=Color.white;style.onNormal.textColor=text;style.onHover.textColor=Color.white;style.onActive.textColor=Color.white;
+        }
+        private void OnDestroy()
+        {
+            if(buttonNormal!=null)Destroy(buttonNormal);
+            if(buttonHover!=null)Destroy(buttonHover);
+            if(buttonPressed!=null)Destroy(buttonPressed);
         }
         private void Panel(Rect rect)
         {

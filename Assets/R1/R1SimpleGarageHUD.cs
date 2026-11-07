@@ -36,10 +36,11 @@ namespace RoboRougelike.R1
             int count=run.VehicleModel.Inventory.Count(p=>InCatalogGroup(p,kind,weapon,bonus));
             bool selected=catalogGroup==kind&&(kind!=R3PartKind.Gun||catalogWeapon==weapon)&&
                 (kind!=R3PartKind.BonusModule||catalogBonusId==bonus);
-            GUI.backgroundColor=selected?new Color(.3f,.9f,.9f):Color.white;
+            compactButton.normal.background=selected?buttonPressed:buttonNormal;GUI.backgroundColor=Color.white;
             bool locked=!run.CanBuyTechnology(kind,weapon);
             if(GUI.Button(new Rect(0,row*38,width,34),$"{name}  × {count}"+(locked?" • blokada":""),compactButton))
                 SelectQuickPart(run,kind,weapon,bonus);
+            compactButton.normal.background=buttonNormal;
         }
 
         void DrawQuickParts(R1RunController run,Rect area,float rowWidth)
@@ -84,8 +85,9 @@ namespace RoboRougelike.R1
             string[] labels={"Montuj","Zaznacz","Napraw","Zdejmij"};
             for(int i=0;i<labels.Length;i++)
             {
-                GUI.backgroundColor=garage.Tool==(R41GarageTool)i?new Color(.3f,.9f,.9f):Color.white;
+                compactButton.normal.background=garage.Tool==(R41GarageTool)i?buttonPressed:buttonNormal;GUI.backgroundColor=Color.white;
                 if(GUI.Button(new Rect(284+i*116,15,108,42),labels[i],compactButton))garage.SetTool((R41GarageTool)i);
+                compactButton.normal.background=buttonNormal;
             }
             GUI.backgroundColor=Color.white;
             if(GUI.Button(new Rect(760,15,145,42),"Ustawienia",compactButton)){garageOptionsOpen=true;garageOptionsTab=0;}
@@ -101,7 +103,11 @@ namespace RoboRougelike.R1
             {
                 GUI.enabled=!garageOptionsOpen&&inspectedWheel.Health>0;
                 string next=inspectedWheel.WheelStyle==R3WheelStyle.Offroad?"szosowe":"terenowe";
-                if(GUI.Button(new Rect(12,560,245,42),"Wzór koła: "+next,compactButton))run.GarageToggleWheelStyle(inspectedWheel.Cell);
+                if(GUI.Button(new Rect(12,560,245,42),"Zmień na: "+next,compactButton))
+                {
+                    if(run.GarageToggleWheelStyle(inspectedWheel.Cell))
+                        garage.Message="Wzór koła: "+(inspectedWheel.WheelStyle==R3WheelStyle.Slick?"szosowe":"terenowe")+". Właściwości jezdne są takie same.";
+                }
                 GUI.enabled=!garageOptionsOpen;
             }
             else if(catalogGroup.HasValue)
@@ -142,8 +148,9 @@ namespace RoboRougelike.R1
             string[] labels={"Montuj","Zaznacz","Napraw","Zdejmij"};
             for(int i=0;i<labels.Length;i++)
             {
-                GUI.backgroundColor=garage.Tool==(R41GarageTool)i?new Color(.3f,.9f,.9f):Color.white;
+                compactButton.normal.background=garage.Tool==(R41GarageTool)i?buttonPressed:buttonNormal;GUI.backgroundColor=Color.white;
                 if(GUI.Button(new Rect(24+i*183,584,171,42),labels[i],compactButton))garage.SetTool((R41GarageTool)i);
+                compactButton.normal.background=buttonNormal;
             }
             GUI.backgroundColor=Color.white;
             GUI.Label(new Rect(24,632,420,24),"CZĘŚCI • kliknij, aby wybrać",small);
@@ -156,7 +163,11 @@ namespace RoboRougelike.R1
             {
                 GUI.enabled=!garageOptionsOpen&&inspectedWheel.Health>0;
                 string next=inspectedWheel.WheelStyle==R3WheelStyle.Offroad?"szosowe":"terenowe";
-                if(GUI.Button(new Rect(458,690,286,40),"Wzór koła: "+next,compactButton))run.GarageToggleWheelStyle(inspectedWheel.Cell);
+                if(GUI.Button(new Rect(458,690,286,40),"Zmień na: "+next,compactButton))
+                {
+                    if(run.GarageToggleWheelStyle(inspectedWheel.Cell))
+                        garage.Message="Wzór koła: "+(inspectedWheel.WheelStyle==R3WheelStyle.Slick?"szosowe":"terenowe")+". Właściwości jezdne są takie same.";
+                }
                 GUI.enabled=!garageOptionsOpen;
             }
             else if(catalogGroup.HasValue)
