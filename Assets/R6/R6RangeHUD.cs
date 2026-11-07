@@ -94,7 +94,10 @@ namespace RoboRougelike.R1
             }
             GUI.color=original;
         }
-        private static Rect DefensePanelRect(int count) => new Rect(18,206,610,38+25*count);
+        private static Rect DefensePanelRect(int count) => new Rect(18,206,610,44+25*count);
+        private static Rect DefenseTitleRect() => new Rect(33,210,580,30);
+        private static Rect DefenseRowRect(int index) => new Rect(33,246+index*25,580,25);
+        private static Rect DamageNoticePanelRect(int index) => new Rect(925,516+index*36,335,35);
         void DrawFeedback()
         {
             var run=R1RunController.Instance;
@@ -145,17 +148,17 @@ namespace RoboRougelike.R1
                 if(defenses.Length+shields.Length>0)
                 {
                     var defensePanel=DefensePanelRect(defenses.Length+shields.Length);
-                    Panel(defensePanel);GUI.Label(new Rect(33,defensePanel.y+4,580,25),"OBRONA",heading);
+                    Panel(defensePanel);GUI.Label(DefenseTitleRect(),"OBRONA",heading);
                     foreach(var shield in shields)
-                    {GUI.Label(new Rect(33,defensePanel.y+35+defenseRow*25,580,25),$"DEF-001 • {shield.Generator.Charge:0}/100 • "+(shield.Generator.Operational?"ON":"OFF"),small);defenseRow++;}
+                    {GUI.Label(DefenseRowRect(defenseRow),$"DEF-001 • {shield.Generator.Charge:0}/100 • "+(shield.Generator.Operational?"ON":"OFF"),small);defenseRow++;}
                     foreach(var defense in defenses)
-                    {GUI.Label(new Rect(33,defensePanel.y+35+defenseRow*25,580,25),$"DEF-002 • {defense.State.Ammo}/40 • "+(defense.Controller.IsOperational?"ON":"OFF")+" • T przeładuj",small);defenseRow++;}
+                    {GUI.Label(DefenseRowRect(defenseRow),$"DEF-002 • {defense.State.Ammo}/40 • "+(defense.Controller.IsOperational?"ON":"OFF")+" • T przeładuj",small);defenseRow++;}
                 }
             }
             var feedback=Object.FindFirstObjectByType<R6CombatFeedback>();if(feedback==null)return;
             var lines=feedback.Notices();
             for(int i=0;i<lines.Length;i++)
-            {Panel(new Rect(660,490+i*39,600,35));GUI.Label(new Rect(675,492+i*39,565,32),lines[i],small);}
+            {var notice=DamageNoticePanelRect(i);Panel(notice);GUI.Label(new Rect(notice.x+15,notice.y+1,305,33),lines[i],small);}
         }
     }
 }
