@@ -70,9 +70,10 @@ public sealed class WeaponSpacingTests
         var legacy=R3VehicleCatalog.Create(R3VehicleKind.Light);
         var neighbour=new R3PartState(new Vector3Int(1,1,0),R3PartKind.Gun,0){Weapon=R4WeaponKind.Basic};
         legacy.Parts.Add(neighbour);
-        var model=new R3VehicleModel(legacy);model.Award(10000);var saved=model.MakeCheckpoint(0);
+        var model=new R3VehicleModel(legacy);model.Award(10000);
+        string savedId=model.At(neighbour.Cell).Id;var saved=model.MakeCheckpoint(0);
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(saved,R3VehicleKind.Light,new R3GarageEconomy(),0,out var restored,out var error),Is.True,error);
-        Assert.That(restored.Parts.Any(p=>p.Id==neighbour.Id),Is.True);
+        Assert.That(restored.Parts.Any(p=>p.Id==savedId),Is.True);
         Assert.That(restored.Repair(neighbour.Cell),Is.True);
         Assert.That(restored.At(neighbour.Cell).Health,Is.EqualTo(1));
     }

@@ -81,6 +81,9 @@ namespace RoboRougelike.R3
             // Combat/range can end with the body tilted, spinning or far from spawn.
             // Normalize its world frame once on entry, before sockets or ghost are built.
             run.Player.MoveTo(WorkshopOrigin+Vector3.up*.7f,Quaternion.identity);
+            // Rigidbody interpolation can leave Transform at its pre-teleport pose
+            // while simulation is paused; synchronize the visible and physics frames.
+            run.Player.transform.SetPositionAndRotation(WorkshopOrigin+Vector3.up*.7f,Quaternion.identity);
             var body=run.Player.GetComponent<Rigidbody>();
             if(body!=null&&!body.isKinematic){body.linearVelocity=Vector3.zero;body.angularVelocity=Vector3.zero;}
             follow.enabled=false;view.nearClipPlane=0.05f;view.rect=ViewportForScreen(Screen.width,Screen.height);
@@ -417,7 +420,16 @@ namespace RoboRougelike.R3
             if(!inside)return;
             if(current.type==EventType.ScrollWheel){Zoom(current.delta.y*0.4f);current.Use();return;}
             if(current.type==EventType.Repaint&&!orbitDragging)Point(view.ScreenPointToRay(screen));
-            if(current.type==EventType.MouseDown&&current.button==0&&!orbitDragging){ClickScreen(screen);current.Use();}
+            if(current.type==EventType.MouseDown&&current.button==0&&!orbitDragging)
+            {
+                // Direct actions avoid switching tools for each isolated edit.
+                var prior=Tool;
+                if(current.shift)Tool=R41GarageTool.Remove;
+                else if(current.control||current.command)Tool=R41GarageTool.Repair;
+                ClickScreen(screen);
+                if(Tool!=prior)SetTool(prior);
+                current.Use();
+            }
         }
         private void LateUpdate()
         {
