@@ -38,8 +38,9 @@ namespace RoboRougelike.WeaponIntegration
             var assembly=Device.Owner.GetComponent<R3VehicleAssembly>();
             if(assembly!=null&&!assembly.ClearProjectilePath(GetComponent<R3MountedPart>()))return false;
             var energy=Device.Owner.GetComponent<VehicleEnergyBank>();
-            if(energy!=null&&!energy.TrySpend(VehicleEnergyCosts.Railgun))return false;
-            bool fired=Module.TryFire();if(!fired&&energy!=null)energy.Refund(VehicleEnergyCosts.Railgun);
+            float cost=VehicleEnergyCosts.Railgun*R3VehicleModel.TierActivationCost(State.Tier);
+            if(energy!=null&&!energy.TrySpend(cost))return false;
+            bool fired=Module.TryFire();if(!fired&&energy!=null)energy.Refund(cost);
             return fired;}
         public bool BeginReload()
         {Refresh();if(!Device.Available||State.Ammo>=Magazine||State.ReloadReadyAt>0)return false;State.ReloadReadyAt=Time.time+2;return true;}
@@ -65,7 +66,7 @@ namespace RoboRougelike.WeaponIntegration
                 var rb=shell.AddComponent<Rigidbody>();rb.useGravity=false;rb.isKinematic=true;rb.interpolation=RigidbodyInterpolation.Interpolate;
                 var origin=shell.AddComponent<R4ProjectileOrigin>();origin.Weapon=R4WeaponKind.Railgun;origin.PartId=State.Id;
                 var projectile=shell.AddComponent<P17PhysicalShell>();projectile.Configure(Device.Owner,0,30,shot.Direction,null,shot.Spec.Range);
-                projectile.ConfigureRailgun(shot,tank!=null?tank.PackageDamageScale:damageScale);
+                projectile.ConfigureRailgun(shot,(tank!=null?tank.PackageDamageScale:damageScale)*R3VehicleModel.TierEffectUnits(State.Tier));
                 State.DeviceReadyAt=Time.time+shot.Spec.Cooldown;debitPending=false;
                 RoboRougelike.R6.R6CombatFeedback.Muzzle(muzzle,R4WeaponKind.Railgun);return true;
             }
