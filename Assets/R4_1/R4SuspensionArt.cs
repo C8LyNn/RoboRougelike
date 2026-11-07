@@ -24,7 +24,7 @@ namespace RoboRougelike.R4_1
             var arm=Array.Find(nodes,t=>t.name=="R4M_Suspension_Arm");
             if(socket==null||arm==null){UnityEngine.Object.Destroy(visual);return false;}
             visual.transform.localScale/=scale.x;
-            visual.transform.position+=block.position-socket.position;
+            visual.transform.position+=block.TransformPoint(Vector3.up*.5f)-socket.position;
             oldRenderer.enabled=false;
             return true;
         }

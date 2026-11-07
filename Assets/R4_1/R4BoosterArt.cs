@@ -38,7 +38,7 @@ namespace RoboRougelike.R4_1
             var source=Quaternion.LookRotation(nozzle.forward,mountNormal);
             var target=Quaternion.LookRotation(-block.forward,block.up);
             visual.transform.rotation=target*Quaternion.Inverse(source)*visual.transform.rotation;
-            visual.transform.position+=block.position-socket.position;
+            visual.transform.position+=block.TransformPoint(Vector3.up*.5f)-socket.position;
             flame.localScale=Vector3.one;
             flame.gameObject.SetActive(false);
             var view=block.gameObject.AddComponent<R4BoosterArt>();view.flame=flame;view.turbine=turbine;

@@ -27,6 +27,7 @@ public sealed class R4BoosterArtGameplayTests
         var flame=art.GetComponentsInChildren<Transform>(true).First(t=>t.name=="Booster_Flame");
         var nozzle=art.GetComponentsInChildren<Transform>(true).First(t=>t.name=="Thruster_Nozzle");
         var socket=art.GetComponentsInChildren<Transform>(true).First(t=>t.name=="Socket_Mount");
+        Assert.That(Vector3.Distance(socket.position,part.transform.TransformPoint(Vector3.up*.5f)),Is.LessThan(.001f));
         Assert.That(art.GetComponentsInChildren<Collider>(true),Is.Empty,"Visual must not change physical collisions.");
         Assert.That(part.transform.Find("MOV • Booster").GetComponent<Collider>().enabled,Is.True);
         Assert.That(Vector3.Dot(nozzle.forward,part.transform.forward),Is.LessThan(-.9f),"Exhaust points opposite existing thrust.");

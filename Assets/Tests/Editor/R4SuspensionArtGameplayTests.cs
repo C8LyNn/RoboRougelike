@@ -25,7 +25,7 @@ public sealed class R4SuspensionArtGameplayTests
         Assert.That(part.GetComponentsInChildren<ActiveSuspensionModule>(true).Length,Is.EqualTo(1));
         var art=part.GetComponentsInChildren<Transform>(true).FirstOrDefault(t=>t.name=="R4M_Suspension_ROOT");Assert.That(art,Is.Not.Null);
         var socket=art.GetComponentsInChildren<Transform>(true).First(t=>t.name=="Socket_Mount");
-        Assert.That(Vector3.Distance(socket.position,part.transform.position),Is.LessThan(.001f));
+        Assert.That(Vector3.Distance(socket.position,part.transform.TransformPoint(Vector3.up*.5f)),Is.LessThan(.001f),"The mount belongs on the top face, not the center.");
         Assert.That(Vector3.Dot(-socket.forward,part.transform.up),Is.GreaterThan(.9f));
         Assert.That(art.GetComponentsInChildren<Collider>(true),Is.Empty);
         Assert.That(part.GetComponent<Collider>().enabled,Is.True,"The physical block collider remains active.");

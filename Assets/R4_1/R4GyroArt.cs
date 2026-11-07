@@ -29,7 +29,7 @@ namespace RoboRougelike.R4_1
             var bodyRenderer=body.GetComponent<Renderer>();var ringRenderer=ring.GetComponent<Renderer>();
             if(rotor==null||socket==null||bodyRenderer==null||ringRenderer==null){Destroy(visual);return null;}
             visual.transform.localScale/=scale.x;
-            visual.transform.position+=block.position-socket.position;
+            visual.transform.position+=block.TransformPoint(Vector3.up*.5f)-socket.position;
             var view=block.gameObject.AddComponent<R4GyroArt>();view.rotor=rotor;
             bodyRenderer.enabled=false;ringRenderer.enabled=false;
             return view;
