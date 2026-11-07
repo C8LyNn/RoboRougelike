@@ -29,7 +29,7 @@ public sealed class WeaponTypeLimitTests
         return model;
     }
 
-    static Vector3Int Cell(int index) => new Vector3Int(index%7-3,2,index/7-3);
+    static Vector3Int Cell(int index) => new Vector3Int((index%6)*2-5,2,(index/6)*2-2);
 
     [TestCase(1)] [TestCase(2)] [TestCase(4)] [TestCase(12)]
     public void TwoTypesPermitRequestedNumberOfGuns(int count)
@@ -110,20 +110,24 @@ public sealed class WeaponTypeLimitTests
         R1VehicleState rig=null;
         try
         {
-            // One forward-facing row gives each gun a real unobstructed lane.
-            var cells=Enumerable.Range(-6,12).Where(x=>x!=0).Select(x=>new Vector3Int(x,2,-4)).ToArray();
+            // Two outward-facing rows leave a cell between guns and preserve
+            // a physically unobstructed firing lane for every weapon.
+            var front=new[]{-6,-4,-2,2,4,6}.Select(x=>new Vector3Int(x,2,-4));
+            var back=new[]{-4,-2,0,2,4}.Select(x=>new Vector3Int(x,2,4));
+            var cells=front.Concat(back).ToArray();
             for(int i=0;i<cells.Length;i++)
             {
                 rig=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(0,20,0),Quaternion.identity);
                 var kind=i%2==0?R4WeaponKind.Automatic:R4WeaponKind.Basic;
-                Assert.That(model.PlacementError(cells[i],R3PartKind.Gun,false,kind),Is.Null,$"physical gate gun {i+2}");
-                Assert.That(model.Buy(cells[i],R3PartKind.Gun,kind),Is.True,$"buy gun {i+2}");
+                var rotation=i<6?Vector3Int.zero:new Vector3Int(0,2,0);
+                Assert.That(model.PlacementError(cells[i],R3PartKind.Gun,false,kind,rotation),Is.Null,$"physical gate gun {i+2}");
+                Assert.That(model.Buy(cells[i],R3PartKind.Gun,kind,rotation),Is.True,$"buy gun {i+2}");
                 rig.gameObject.SetActive(false);Object.Destroy(rig.gameObject);rig=null;
                 yield return null;
             }
             rig=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(0,20,0),Quaternion.identity);
             Assert.That(rig.GetComponent<R3VehicleAssembly>().Parts.Count(p=>p.Kind==R3PartKind.Gun),Is.EqualTo(12));
-            Assert.That(model.PlacementError(new Vector3Int(6,2,-4),R3PartKind.Gun,false,R4WeaponKind.Heavy),Is.Not.Null);
+            Assert.That(model.PlacementError(new Vector3Int(6,2,4),R3PartKind.Gun,false,R4WeaponKind.Heavy,new Vector3Int(0,2,0)),Does.Contain("2 różne typy"));
         }
         finally
         {

@@ -35,7 +35,7 @@ namespace RoboRougelike.R3
             for(int side=-1;side<=1;side+=2)foreach(int z in positions)
                 design.Parts.Add(new R3PartState(new Vector3Int(side*(width+1),0,z),R3PartKind.Wheel));
             if(light)design.Parts.Add(new R3PartState(new Vector3Int(0,1,0),R3PartKind.Gun));
-            else if(heavy)for(int x=-1;x<=1;x++)design.Parts.Add(new R3PartState(new Vector3Int(x,2,-2),R3PartKind.Gun));
+            else if(heavy)for(int x=-2;x<=2;x+=2)design.Parts.Add(new R3PartState(new Vector3Int(x,2,-2),R3PartKind.Gun));
             else for(int x=-1;x<=1;x+=2)design.Parts.Add(new R3PartState(new Vector3Int(x,2,0),R3PartKind.Gun));
             return design;
         }
