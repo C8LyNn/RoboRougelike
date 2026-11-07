@@ -173,6 +173,14 @@ namespace RoboRougelike.R1
         public bool GarageMount(string id,Vector3Int cell,Vector3Int rotation) =>
             EditGarage(()=>VehicleModel.Mount(id,cell,rotation));
         public bool GarageRepairInventory(string id) => EditGarage(()=>VehicleModel.RepairInventory(id));
+        public bool GarageFuse(System.Collections.Generic.IEnumerable<string> ids)
+        {
+            if(Transitioning||Progress?.State!=R1RunState.Garage||VehicleModel==null||Garage==null)return false;
+            if(!VehicleModel.FuseInventory(ids))return false;
+            var result=VehicleModel.Inventory.Last();Garage.ChooseInventory(result.Id);
+            Garage.Message=$"Połączono trzy części. Otrzymano T{result.Tier} • HP {result.Health*100:0}%.";
+            return true;
+        }
         public bool GarageDismantle(string id)
         {
             if(VehicleModel==null)return false;

@@ -78,7 +78,9 @@ namespace RoboRougelike.R1
             GUI.enabled=unlocked&&selectedKind!=R3PartKind.BonusModule&&model.Scrap>=price&&model.Inventory.Count<R3VehicleModel.InventoryCapacity;
             if(GUI.Button(PortraitCatalogBuyRect(),unlocked?$"Kup do magazynu — {price} Z":"Pokonaj wroga z tą bronią",compactButton))PortraitCatalogPurchase(run,selectedKind,selectedWeapon);
             GUI.enabled=true;
-            GUI.Label(new Rect(390,875,354,82),"Wybierz egzemplarz, aby wrócić do garażu i zamontować go na pojeździe.",small);
+            var selected=items.FirstOrDefault(p=>p.Id==run.Garage.SelectedInventoryId);
+            if(selected!=null&&R3VehicleModel.SupportsFusion(selected.Kind))DrawFusionButton(run,selected,new Rect(390,875,354,52));
+            else GUI.Label(new Rect(390,875,354,82),"Wybierz egzemplarz, aby wrócić do garażu i zamontować go na pojeździe.",small);
         }
 
         private void DrawPortraitCatalogGroup(R1RunController run,R3PartKind kind,R4WeaponKind weapon,string bonus,string name,int row)

@@ -62,7 +62,7 @@ namespace RoboRougelike.R1
         public static R1RunCheckpoint Read(string path)
         {
             var document=JsonUtility.FromJson<R1RunCheckpoint>(ReadPayload(path));
-            if(document==null||document.version!=1)throw new InvalidDataException("Nieobsługiwana wersja zapisu.");
+            if(document==null||(document.version!=1&&document.version!=2))throw new InvalidDataException("Nieobsługiwana wersja zapisu.");
             return document;
         }
         internal static string ReadPayload(string path)
@@ -85,7 +85,7 @@ namespace RoboRougelike.R1
             try
             {
                 Player?.GetComponent<R3VehicleAssembly>()?.Capture();
-                var document=new R1RunCheckpoint{seed=Seed,vehicle=(int)SelectedVehicle,runId=runId,
+                var document=new R1RunCheckpoint{version=VehicleModel.Parts.Concat(VehicleModel.Inventory).Any(p=>p.Tier>1)?2:1,seed=Seed,vehicle=(int)SelectedVehicle,runId=runId,
                     defeated=DefeatedEnemies,earned=EarnedScrap,recovered=RecoveredModules,lastReward=LastScrapReward,
                     progress=Progress.MakeGarageCheckpoint(),model=VehicleModel.MakeCheckpoint(Time.time)};
                 if(!R3VehicleModel.TryRestoreCheckpoint(document.model,SelectedVehicle,Definition.GaragePrices,Time.time,out _,out var error))

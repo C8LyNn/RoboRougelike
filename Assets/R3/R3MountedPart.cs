@@ -7,6 +7,7 @@ namespace RoboRougelike.R3
     {
         public Vector3Int Cell;
         public R3PartKind Kind;
+        public int Tier=1;
         public RoboRougelike.R4.R4WeaponKind Weapon;
         public string Id;
         // One physical reward module carries its own independently switchable stat modifier.
