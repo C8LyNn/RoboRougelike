@@ -12,7 +12,7 @@ namespace RoboRougelike.R4_1
         Transform rotor,visualRoot;
         Rigidbody owner;
 
-        public static R4WheelArt TryAttach(Transform block,Transform physicalWheel,bool mirrorSide=false)
+        public static R4WheelArt TryAttach(Transform block,Transform physicalWheel,bool mirrorSide=false,R3WheelStyle style=R3WheelStyle.Offroad)
         {
             if(block==null||physicalWheel==null)return null;
             var scale=block.lossyScale;
@@ -20,15 +20,17 @@ namespace RoboRougelike.R4_1
                 float.IsNaN(scale.z)||float.IsInfinity(scale.z)||scale.x<=.0001f||
                 Mathf.Abs(scale.x-scale.y)>.0001f||Mathf.Abs(scale.x-scale.z)>.0001f)return null;
             var catalog=Resources.Load<R4MovementArtCatalog>("R4Art/MovementCatalog");
-            var side=catalog!=null&&catalog.SideWheel!=null;
-            var prefab=side?catalog.SideWheel:catalog!=null?catalog.ModelFor(R3PartKind.Wheel):null;
+            var slick=style==R3WheelStyle.Slick&&catalog!=null&&catalog.SideWheelSlick!=null;
+            var side=catalog!=null&&(slick||catalog.SideWheel!=null);
+            var prefab=side?(slick?catalog.SideWheelSlick:catalog.SideWheel):catalog!=null?catalog.ModelFor(R3PartKind.Wheel):null;
             if(prefab==null)return null;
             var visual=Instantiate(prefab,block,false);
-            var spinning=Array.Find(visual.GetComponentsInChildren<Transform>(true),t=>t.name==(side?"R4M_WheelM_Side_Offroad_Rotor":"R4M_Wheel_Rotor"));
+            var spinning=Array.Find(visual.GetComponentsInChildren<Transform>(true),t=>t.name==(slick?"R4M_WheelM_Side_Slick_Rotor":side?"R4M_WheelM_Side_Offroad_Rotor":"R4M_Wheel_Rotor"));
             var socket=Array.Find(visual.GetComponentsInChildren<Transform>(true),t=>t.name=="Socket_Mount");
             var renderer=physicalWheel.GetComponent<Renderer>();
             if(spinning==null||socket==null||renderer==null){Destroy(visual);return null;}
             visual.transform.localScale/=scale.x;
+            if(slick)visual.transform.localScale*=.39f/.37f;
             if(side)
             {
                 // Source has its port on -X; mirror for the left side.

@@ -259,7 +259,7 @@ namespace RoboRougelike.R3
                 if(!plan&&Tool==R41GarageTool.Mount)
                 {
                     if(kind==R3PartKind.Gun&&payload!=null)R4WeaponArt.TryAttach(item.transform,payload,muzzle,weapon);
-                    else if(kind==R3PartKind.Wheel&&payload!=null)R4WheelArt.TryAttach(item.transform,payload,cell.x<0);
+                    else if(kind==R3PartKind.Wheel&&payload!=null)R4WheelArt.TryAttach(item.transform,payload,cell.x<0,Owned?.WheelStyle??R3WheelStyle.Offroad);
                     else if(kind==R3PartKind.Suspension)R4SuspensionArt.TryAttach(item.transform);
                     else if(kind==R3PartKind.Booster)R4BoosterArt.TryAttach(item.transform);
                     else if(kind==R3PartKind.JumpDrive)R4JumpArt.TryAttach(item.transform);

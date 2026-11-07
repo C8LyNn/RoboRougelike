@@ -96,7 +96,15 @@ namespace RoboRougelike.R1
             var owned=model.Inventory.FirstOrDefault(p=>p.Id==garage.SelectedInventoryId);
             GUI.Label(new Rect(12,511,245,43),owned!=null?$"Wybrano: {R4WeaponDefinition.PartName(owned)} • HP {owned.Health*100:0}%":
                 catalogGroup.HasValue?"Wybierz egzemplarz lub kup część.":"Wybierz część z listy.",small);
-            if(catalogGroup.HasValue)
+            var inspectedWheel=garage.Tool==R41GarageTool.Inspect&&garage.HasTarget?model.At(garage.Cell):null;
+            if(inspectedWheel!=null&&inspectedWheel.Kind==R3PartKind.Wheel)
+            {
+                GUI.enabled=!garageOptionsOpen&&inspectedWheel.Health>0;
+                string next=inspectedWheel.WheelStyle==R3WheelStyle.Offroad?"szosowe":"terenowe";
+                if(GUI.Button(new Rect(12,560,245,42),"Wzór koła: "+next,compactButton))run.GarageToggleWheelStyle(inspectedWheel.Cell);
+                GUI.enabled=!garageOptionsOpen;
+            }
+            else if(catalogGroup.HasValue)
             {
                 var kind=catalogGroup.Value;int price=model.Price(kind,catalogWeapon);
                 bool unlocked=run.CanBuyTechnology(kind,catalogWeapon);
@@ -143,7 +151,15 @@ namespace RoboRougelike.R1
             var owned=model.Inventory.FirstOrDefault(p=>p.Id==garage.SelectedInventoryId);
             GUI.Label(new Rect(458,637,286,50),owned!=null?$"{R4WeaponDefinition.PartName(owned)} • HP {owned.Health*100:0}%":
                 "Wybierz część z listy.",small);
-            if(catalogGroup.HasValue)
+            var inspectedWheel=garage.Tool==R41GarageTool.Inspect&&garage.HasTarget?model.At(garage.Cell):null;
+            if(inspectedWheel!=null&&inspectedWheel.Kind==R3PartKind.Wheel)
+            {
+                GUI.enabled=!garageOptionsOpen&&inspectedWheel.Health>0;
+                string next=inspectedWheel.WheelStyle==R3WheelStyle.Offroad?"szosowe":"terenowe";
+                if(GUI.Button(new Rect(458,690,286,40),"Wzór koła: "+next,compactButton))run.GarageToggleWheelStyle(inspectedWheel.Cell);
+                GUI.enabled=!garageOptionsOpen;
+            }
+            else if(catalogGroup.HasValue)
             {
                 var kind=catalogGroup.Value;int price=model.Price(kind,catalogWeapon);
                 bool unlocked=run.CanBuyTechnology(kind,catalogWeapon);

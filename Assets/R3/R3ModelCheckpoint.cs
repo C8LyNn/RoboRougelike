@@ -112,7 +112,7 @@ namespace RoboRougelike.R3
         static bool Finite(float value)=>!float.IsNaN(value)&&!float.IsInfinity(value);
         static bool ValidCheckpointPart(R3PartState p)
         {
-            return p!=null&&!string.IsNullOrWhiteSpace(p.Id)&&p.Id.Length<=128&&ValidEconomicKind(p.Kind,p.Weapon)&&
+            return p!=null&&!string.IsNullOrWhiteSpace(p.Id)&&p.Id.Length<=128&&ValidEconomicKind(p.Kind,p.Weapon)&&Enum.IsDefined(typeof(R3WheelStyle),p.WheelStyle)&&
                 p.Tier>=0&&p.Tier<=3&&(p.Tier<=1||SupportsFusion(p.Kind,p.Weapon))&&
                 Finite(p.Health)&&p.Health>=0&&p.Health<=1&&Finite(p.DeviceReadyAt)&&p.DeviceReadyAt>=0&&
                 Finite(p.ReloadReadyAt)&&p.ReloadReadyAt>=0&&Finite(p.DisruptionRemaining)&&p.DisruptionRemaining>=0&&
