@@ -1,0 +1,2 @@
+ui943-portrait-catalog-integrated.xml original_sha256=a4d8384cae11739048d09d3dafd14cef91112142b1e3e2fcded61d156e3caab9
+ui943-portrait-catalog-integrated.log original_sha256=99d39d64d53e5d13aa7b2cab9092b829d38ef6d4e01e78876bc03e5b6591870d
