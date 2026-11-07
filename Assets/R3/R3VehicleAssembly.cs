@@ -210,6 +210,8 @@ namespace RoboRougelike.R3
                     RoboRougelike.R4_1.R4SuspensionArt.TryAttach(item.transform);
                 if(state.Kind==R3PartKind.JumpDrive&&!wide)
                     RoboRougelike.R4_1.R4JumpArt.TryAttach(item.transform);
+                if(state.Kind==R3PartKind.Blink&&!wide)
+                    RoboRougelike.R4_1.R4BlinkArt.TryAttach(item.transform);
                 if(state.Kind==R3PartKind.Gun&&payload!=null)
                 {
                     var art=RoboRougelike.R4_1.R4WeaponArt.TryAttach(item.transform,payload,partMuzzle,state.Weapon);
