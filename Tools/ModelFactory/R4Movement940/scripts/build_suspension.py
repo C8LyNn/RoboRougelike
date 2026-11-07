@@ -83,9 +83,10 @@ arm.data.transform(Matrix.Translation(-PV)); arm.parent = root; arm.location = P
 body.parent = root; body.location = UP; rod.parent = root
 spring.parent = body; spring.location = (0, 0, -COLLAR - 0.006)
 env.parent = arm; env.location = HUB - PV; env.display_type = 'WIRE'; env.hide_render = True
-socket = L.empty("Socket_Mount", root, (0, 0, L.CELL_HALF), col, 'SINGLE_ARROW', 0.08)
+import r4port as P4; P4.port(hous, work, 1)
+socket = L.empty("Socket_Mount", root, (0, 0, P4.FACE), col, 'SINGLE_ARROW', 0.08)
 hubm = L.empty("Wheel_Axle", arm, HUB - PV + Vector((0.192, 0, 0)), col, 'SINGLE_ARROW', 0.06, (0, math.radians(90), 0))
-L.root_props(root, "R3PartKind.Suspension")
+L.root_props(root, "R3PartKind.Suspension", version="v2-port")
 L.set_props({hous: {"role": "static tower bracket with arm pivot lugs, damper ear, bump stop"},
              arm: {"role": "trailing arm: rotates about local X at the pivot; +14 deg = bump (hub up), -10 deg = droop"},
              body: {"role": "damper body: rotates about local X at the upper eye, follows the rod"}, rod: {"role": "damper rod: positioned at the arm's lower eye, slides into the body"},

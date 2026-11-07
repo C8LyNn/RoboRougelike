@@ -75,10 +75,11 @@ for o, piv in [(rotor, (0, 0, ZR))] + [(v, (0, yv, ZV)) for v, yv in zip(vanes, 
     o.data.transform(Matrix.Translation(-Vector(piv))); o.parent = root; o.location = piv
 pulse.parent = root; pulse.location = (0, 0, ZB - 0.020)
 glow.scale = (0.001,)*3; pulse.scale = (0.001,)*3
-socket = L.empty("Socket_Mount", root, (0, 0, L.CELL_HALF), col, 'SINGLE_ARROW', 0.08)
+import r4port as P4; P4.port(hous, work, 1)
+socket = L.empty("Socket_Mount", root, (0, 0, P4.FACE), col, 'SINGLE_ARROW', 0.08)
 nozzle = L.empty("Thruster_Nozzle", root, (0, 0, ZB), col, 'SINGLE_ARROW', 0.08, (math.pi, 0, 0))
 probe = L.empty("GroundProbe", root, (0, 0, ZB - 0.002), col, 'SINGLE_ARROW', 0.05, (math.pi, 0, 0))
-L.root_props(root, "R3PartKind.HoverEngine")
+L.root_props(root, "R3PartKind.HoverEngine", version="v2-port")
 L.set_props({hous: {"role": "static: mount plate, tapered pylon, tripod struts, duct shroud, stator + motor nacelle"},
              rotor: {"role": f"lift fan rotor ({BLADES} blades): rotates about local Y (Unity up)"},
              glow: {"role": "thrust glow FX at the outlet - idle scale 0.001"}, pulse: {"role": "thrust pulse ring FX - idle scale 0.001"},

@@ -12,19 +12,33 @@ Pełna tabela: [INDEX.md](INDEX.md) · dane maszynowe: [INDEX.json](INDEX.json) 
 
 | Model | part_kind | Klipy (⟲ = pętla) | Tri | Charakter sylwetki |
 |---|---|---|---|---|
-| R4M_Wheel | Wheel | Idle⟲, Roll⟲, Reverse⟲, Brake | 10 858 | widelec z poprzeczką, opona r 0,39 z 20 klockami, 6 szprych |
-| R4M_CrawlerTrack | CrawlerTrack | Idle⟲, Travel⟲, Reverse⟲, Stop | 30 838 | niski sponson, 40 ogniw, koło napędowe 14 zębów |
-| R4M_HoverEngine | HoverEngine | Idle⟲, SpinUp, Lift⟲, Pulse, Cooldown | 6 600 | okrągła czapa, pylon, kanał r 0,26 z wirnikiem 7 łopat |
-| R4M_OmniDrive | OmniDrive | Idle⟲, Forward⟲, Strafe⟲, Diagonal⟲ | 10 494 | koło z 10 rolkami 45°, boczny moduł silnika, prowadnica |
-| R4M_Suspension | Suspension | Idle⟲, Compress, Rebound, ActiveLift, Cycle⟲ | 6 330 | wieża, wahacz wleczony, amortyzator ze sprężyną |
-| R4M_Booster | Booster | Idle⟲, Ignition, ThrustLoop⟲, SpoolDown | 5 680 | dysza dzwonowa z 8-płatkową przysłoną, turbina wlotu |
-| R4M_JumpDrive | JumpDrive | Idle⟲, Charge, Impulse, Recovery | 6 816 | ośmiokątna kolumna, 3 zbiorniki, tłok ze stopą |
-| R4M_Blink | Blink | Idle⟲, Charge, Activate, Recover | 3 708 | heksagonalny bęben od spodu, 6 płatków, kryształ |
-| R4M_Gyroscope | Gyroscope | Idle⟲, SpinUp, Stabilize⟲, Correct, SpinDown | 8 874 | wiszące jarzmo U, dwa pierścienie gimbala, wirnik |
-| R4M_MagneticGrapple | MagneticGrapple | Idle⟲, Deploy, Fire, Retract | 6 758 | wyrzutnia skrzynkowa, szpula, głowica z 3 szponami |
-| R4M_IndependentSteering | IndependentSteering | Idle⟲, SteerLeft, SteerRight, Slew⟲, Return | 5 812 | bęben serwa, zębnik + wieniec, zwrotnica z piastą |
+| R4M_Wheel | Wheel | Idle⟲, Roll⟲, Reverse⟲, Brake | 12 078 | widelec z poprzeczką, opona r 0,39 z 20 klockami, 6 szprych |
+| R4M_CrawlerTrack | CrawlerTrack | Idle⟲, Travel⟲, Reverse⟲, Stop | 31 842 | niski sponson, 40 ogniw, koło napędowe 14 zębów |
+| R4M_HoverEngine | HoverEngine | Idle⟲, SpinUp, Lift⟲, Pulse, Cooldown | 7 228 | okrągła czapa, pylon, kanał r 0,26 z wirnikiem 7 łopat |
+| R4M_OmniDrive | OmniDrive | Idle⟲, Forward⟲, Strafe⟲, Diagonal⟲ | 11 818 | koło z 10 rolkami 45°, boczny moduł silnika, prowadnica |
+| R4M_Suspension | Suspension | Idle⟲, Compress, Rebound, ActiveLift, Cycle⟲ | 7 670 | wieża, wahacz wleczony, amortyzator ze sprężyną |
+| R4M_Booster | Booster | Idle⟲, Ignition, ThrustLoop⟲, SpoolDown | 6 976 | dysza dzwonowa z 8-płatkową przysłoną, turbina wlotu |
+| R4M_JumpDrive | JumpDrive | Idle⟲, Charge, Impulse, Recovery | 8 020 | ośmiokątna kolumna, 3 zbiorniki, tłok ze stopą |
+| R4M_Blink | Blink | Idle⟲, Charge, Activate, Recover | 4 880 | heksagonalny bęben od spodu, 6 płatków, kryształ |
+| R4M_Gyroscope | Gyroscope | Idle⟲, SpinUp, Stabilize⟲, Correct, SpinDown | 9 658 | wiszące jarzmo U, dwa pierścienie gimbala, wirnik |
+| R4M_MagneticGrapple | MagneticGrapple | Idle⟲, Deploy, Fire, Retract | 7 648 | wyrzutnia skrzynkowa, szpula, głowica z 3 szponami |
+| R4M_IndependentSteering | IndependentSteering | Idle⟲, SteerLeft, SteerRight, Slew⟲, Return | 6 730 | bęben serwa, zębnik + wieniec, zwrotnica z piastą |
 
 Dokładne zakresy klatek i opisy: `R4M_*/R4M_*_animation_manifest.json`.
+
+## Mocowanie i siatka — standard portu R4 (aktualizacja)
+
+Każdy model ma teraz takie samo mocowanie w stylu Robocraft: **kwadratowy port 0,509 m** na jednej ścianie komórki montażowej. Jego zewnętrzna powierzchnia leży równo ze ścianą bloku gry (0,26 m od środka komórki; BlockSize 0,52 na siatce 0,55). Port jest wyśrodkowany na ścianie, tak jak porty środka ściany w `R3MountingGrid`. `Socket_Mount` stoi w środku tej powierzchni. Powierzchnia styku jest płaska; złącze centralne, pierścień i 4 otwory ustalające są wpuszczone. Od strony modelu port ma ramkę, 4 śruby, żółte znaczniki narożników i czerwony znacznik przodu.
+
+- Port na górze: Wheel, CrawlerTrack, HoverEngine, OmniDrive, Suspension, Booster, JumpDrive, Gyroscope, MagneticGrapple, IndependentSteering. Port na dole: Blink.
+- OmniDrive: socket przeniesiony z x 0,16 na środek ściany.
+- MagneticGrapple: szpula zwężona (x −0,240…−0,150, 5 zwojów), bo wcześniej wystawała 1 mm poza komórkę.
+- Niezależny test na wyeksportowanych GLB (`scripts/r4gridqa.py`, wynik w `compare/grid_fit.json`):
+  - socket w środku ściany bloku,
+  - płaska łata styku (13×13 promieni na 0,42 m),
+  - nic nie wystaje za płaszczyznę mocowania w żadnej klatce animacji,
+  - część stała w komórce 0,55 m, poza nią tylko urządzenie w kierunku z kontraktu runtime (koło, gąsienica, hover, omni, zawieszenie i skok w dół; booster do tyłu; hak do przodu).
+- Wynik: **przed zmianą 0/11, po zmianie 11/11 PASS**. Pełne QA w Blenderze po przebudowie: BLENDER_PASS 11/11 (`batch_log.txt`).
 
 ## Co sprawdzono w Blenderze 5.2.3 (każdy model, jeden spójny batch — `batch_log.txt`)
 

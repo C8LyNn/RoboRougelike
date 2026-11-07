@@ -102,10 +102,11 @@ for w, (y, z) in ((sprocket, (-YC, ZC)), (idler, (YC, ZC)), (rws[0], (-0.170, zr
     w.parent = root; w.location = (0, y, z)
 for i, lk in enumerate(links):
     p, phi = path(i*PITCH); lk.parent = track; lk.location = p; lk.rotation_euler = (math.radians(phi), 0, 0)
-socket = L.empty("Socket_Mount", root, (0, 0, L.CELL_HALF), col, 'SINGLE_ARROW', 0.08)
+import r4port as P4; P4.port(hous, work, 1)
+socket = L.empty("Socket_Mount", root, (0, 0, P4.FACE), col, 'SINGLE_ARROW', 0.08)
 inner = L.empty("Mount_Inner_+X", root, (0.240, 0, -0.140), col, 'SINGLE_ARROW', 0.06, (0, math.radians(90), 0))
 probe = L.empty("GroundProbe", root, (0, 0, ZC - 0.130), col, 'SINGLE_ARROW', 0.06, (math.pi, 0, 0))
-L.root_props(root, "R3PartKind.CrawlerTrack")
+L.root_props(root, "R3PartKind.CrawlerTrack", version="v2-port")
 root["side"] = "LEFT (inner frame +X). Track_R = parent scale X -1."
 L.set_props({hous: {"role": "static housing: mount box, inner frame (+X), outer skirt (-X)"},
              sprocket: {"role": "drive sprocket (front), 14 teeth = 1 tooth per link pitch, rotates about local X"},

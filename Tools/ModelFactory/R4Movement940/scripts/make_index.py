@@ -8,13 +8,13 @@ RISKS = {
     "Wheel": ["fork legs reach below the cell (runtime axle is 0.26 m below cell centre) - documented, non-strict housing"],
     "CrawlerTrack": ["left track only; right side = mirror transform (scale X -1)", "~30.8k tris, highest in the set (budget 32k)", "track spans front/rear cells like the runtime 0.936 m box"],
     "HoverEngine": ["duct bottom at -0.317 m (runtime disc) - non-strict housing"],
-    "OmniDrive": ["socket offset x 0.16 (motor pod on +X); mount on the outer face", "roller spin is visual; strafe stays runtime"],
+    "OmniDrive": ["motor pod on +X under a centred port plate (plate cantilevers over the roller wheel)", "roller spin is visual; strafe stays runtime"],
     "Suspension": ["damper/spring follow the arm by baked keys (no constraints)", "SWEEP_WheelEnvelope is a QA helper, not exported as visible geometry"],
     "Booster": ["bell nozzle reaches 0.52 m behind the cell (runtime engine cylinder)"],
     "JumpDrive": ["0.10 m stroke is visual; jump height/cooldown remain runtime (1.2 m / 6 s)"],
     "Blink": ["3 mm petal knuckle pin gap (documented)", "silhouette closest pair is JumpDrive|Blink (IoU 0.735, below 0.85)"],
     "Gyroscope": ["runtime placeholder ring d 0.598 exceeds the cell; the model stays inside"],
-    "MagneticGrapple": ["cable is a scaled visual, no rope physics; head travel visual only"],
+    "MagneticGrapple": ["cable is a scaled visual, no rope physics; head travel visual only", "spool narrowed (x -0.240..-0.150, 5 wraps) so it stays inside the anchor cell"],
     "IndependentSteering": ["no runtime placeholder exists for this kind; yaw limit visual only"],
 }
 
@@ -25,6 +25,8 @@ def sha(p):
 
 def main():
     sil = json.load(open(os.path.join(ROOT, "compare", "silhouette_check.json")))
+    gpath = os.path.join(ROOT, "compare", "grid_fit.json")
+    grid = json.load(open(gpath))["after"] if os.path.exists(gpath) else {}
     best = {}
     for pair, v in sil["pairs"].items():
         for a in pair.split("|"):
@@ -57,6 +59,8 @@ def main():
             "fbx_reimport_worst": qa["fbx_reimport"].get("worst"),
             "glb_reimport_PASS": qa["glb_reimport"].get("PASS"),
             "palette_PASS": qa["palette"].get("PASS"),
+            "mount_port": "R4 Robocraft-style port: 0.509 m square plate, outer face flush with the block face (0.26 m), face-centre coupling; Socket_Mount on that face",
+            "grid_fit_PASS": (grid.get(mid) or {}).get("PASS"), "grid_fit": {k: (grid.get(mid) or {}).get(k) for k in ("socket", "contact_patch", "static_bounds", "n_cross", "moving_out")},
             "blender_qa": qa["status"], "unity": "UNITY_NOT_RUN",
             "risks": RISKS[k],
         })

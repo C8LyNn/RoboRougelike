@@ -58,9 +58,10 @@ for k, pt in enumerate(petals):
     em = L.empty(f"PetalHinge_{k + 1}", root, (0, 0, 0), col, 'SINGLE_ARROW', 0.03); em.matrix_basis = Mh
     pt.parent = em; pt.location = (0, 0, 0); pt.rotation_euler = (math.radians(REST), 0, 0); hinges.append(em)
 for o, z in ((ring, 0.120), (flash, 0.110), (cglow, 0.060)): o.parent = root; o.location = (0, 0, z); o.scale = (0.001,)*3
-socket = L.empty("Socket_Mount", root, (0, 0, -L.CELL_HALF), col, 'SINGLE_ARROW', 0.08, (math.pi, 0, 0))
+import r4port as P4; P4.port(hous, work, -1)
+socket = L.empty("Socket_Mount", root, (0, 0, -P4.FACE), col, 'SINGLE_ARROW', 0.08, (math.pi, 0, 0))
 emit = L.empty("Blink_Emitter", root, (0, 0, 0.180), col, 'SINGLE_ARROW', 0.06)
-L.root_props(root, "R3PartKind.Blink")
+L.root_props(root, "R3PartKind.Blink", version="v2-port")
 L.set_props({hous: {"role": "static hex reactor drum; mounts from BELOW (Socket_Mount on the -Y face)"},
              crys: {"role": "phase crystal: translates along local Y and spins about local Y"},
              ring: {"role": "phase ring FX on activation"}, flash: {"role": "activation flash FX"}, cglow: {"role": "charge glow FX"},

@@ -56,9 +56,10 @@ pis.data.transform(Matrix.Translation((0, 0, 0.130))); pis.parent = root; pis.lo
 for g, (cx, cy) in zip(glows, TANKS):
     g.data.transform(Matrix.Translation((-cx, -cy, 0.020))); g.parent = root; g.location = (cx, cy, -0.020); g.scale = (0.001,)*3
 blast.parent = root; blast.location = (0, 0, ZB - STROKE); blast.scale = (0.001,)*3
-socket = L.empty("Socket_Mount", root, (0, 0, L.CELL_HALF), col, 'SINGLE_ARROW', 0.08)
+import r4port as P4; P4.port(hous, work, 1)
+socket = L.empty("Socket_Mount", root, (0, 0, P4.FACE), col, 'SINGLE_ARROW', 0.08)
 probe = L.empty("GroundProbe", root, (0, 0, ZB), col, 'SINGLE_ARROW', 0.06, (math.pi, 0, 0))
-L.root_props(root, "R3PartKind.JumpDrive")
+L.root_props(root, "R3PartKind.JumpDrive", version="v2-port")
 L.set_props({hous: {"role": "static: octagonal column, 3 pressure tanks, piston sleeve"},
              pis: {"role": "piston rod + foot pad: translates along local -Y on Impulse (0.10 m), draws up 0.025 m on Charge"},
              blast: {"role": "ground blast ring FX on Impulse - idle scale 0.001"}, socket: {"role": "top flange face, normal +Y"},

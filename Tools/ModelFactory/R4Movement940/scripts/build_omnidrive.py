@@ -67,9 +67,10 @@ for i, ro in enumerate(rollers):
     em.matrix_parent_inverse = Matrix.Identity(4); em.matrix_basis = Mr
     ro.parent = em; ro.location = (0, 0, 0); mounts.append(em)
 axle_e = L.empty("Wheel_Axle", root, (0, 0, AZ), col, 'SINGLE_ARROW', 0.08, (0, math.radians(90), 0))
-socket = L.empty("Socket_Mount", root, (0.160, 0, L.CELL_HALF), col, 'SINGLE_ARROW', 0.08)
+import r4port as P4; P4.port(hous, work, 1)
+socket = L.empty("Socket_Mount", root, (0, 0, P4.FACE), col, 'SINGLE_ARROW', 0.08)
 probe = L.empty("GroundProbe", root, (0, 0, AZ - RT), col, 'SINGLE_ARROW', 0.06, (math.pi, 0, 0))
-L.root_props(root, "R3PartKind.OmniDrive")
+L.root_props(root, "R3PartKind.OmniDrive", version="v2-port")
 root["side"] = "motor pod on +X (inner side when mounted on the LEFT); right side = parent scale X -1"
 L.set_props({hous: {"role": "static motor pod (+X) with fins, bracket and dovetail mount rail"},
              hub: {"role": "driven hub + side plates: rotates about local X (Wheel_Axle)"},

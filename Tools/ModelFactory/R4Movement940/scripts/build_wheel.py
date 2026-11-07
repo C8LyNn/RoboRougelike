@@ -82,9 +82,10 @@ rotor.data.transform(Matrix.Translation((0, 0, -AZ))); rotor.parent = axle_e
 bpy.context.view_layer.update()
 # rotor must stay unrotated in world: give it the inverse of the axle empty's rotation as its rest transform
 rotor.parent = root; rotor.location = (0, 0, AZ)
-socket = L.empty("Socket_Mount", root, (0, 0, L.CELL_HALF), col, 'SINGLE_ARROW', 0.08)
+import r4port as P4; P4.port(mount, work, 1)
+socket = L.empty("Socket_Mount", root, (0, 0, P4.FACE), col, 'SINGLE_ARROW', 0.08)
 probe = L.empty("GroundProbe", root, (0, 0, AZ - RT), col, 'SINGLE_ARROW', 0.06, (math.pi, 0, 0))
-L.root_props(root, "R3PartKind.Wheel")
+L.root_props(root, "R3PartKind.Wheel", version="v2-port")
 L.set_props({mount: {"role": "static fork mount (top plate = Socket_Mount face +Y)"},
              rotor: {"role": "rolling rotor: rotates about local X only (Wheel_Axle); +X angle = rolling forward (+Z)", "tyre_radius_m": RT, "tyre_width_m": 2*HW},
              axle_e: {"role": "axle axis marker: local +Z = file +X (axle)"}, socket: {"role": "mount face centre on the cell top, normal +Y; other faces per ContactMask"},

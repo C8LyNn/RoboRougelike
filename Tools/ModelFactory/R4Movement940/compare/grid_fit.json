@@ -1,0 +1,1238 @@
+{
+ "check": "scripts/r4gridqa.py on the exported GLB (independent of the build QA): socket at the block-face centre (0.26 m), flush square contact patch (13x13 rays over 0.42 m), nothing crosses the mount plane in any animation frame, static geometry inside the 0.55 m anchor cell (+ runtime device direction for movement), moving movement parts inside cell + device direction",
+ "before": {
+  "R4M_Wheel": {
+   "PASS": false,
+   "failures": [
+    "socket not at block-face centre",
+    "mount face not a flush square contact patch",
+    "geometry crosses the mount face plane"
+   ],
+   "socket": {
+    "name": "Socket_Mount",
+    "pos": [
+     0.0,
+     0.0,
+     0.275
+    ],
+    "axis": "z",
+    "sign": 1.0,
+    "on_block_face": false
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 0.0,
+    "recessed_pct": 39.1,
+    "protruding": 91,
+    "missing": 12
+   },
+   "static_bounds": [
+    [
+     -0.2545,
+     -0.126,
+     -0.312
+    ],
+    [
+     0.2545,
+     0.126,
+     0.2735
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 1,
+   "crosses_mount_plane": [
+    [
+     "R4M_Wheel_Mount",
+     1,
+     0.2735
+    ]
+   ],
+   "moving_bounds": [
+    [
+     -0.184,
+     -0.39,
+     -0.65
+    ],
+    [
+     0.184,
+     0.39,
+     0.13
+    ]
+   ],
+   "moving_out": [],
+   "allowance": {
+    "zmin": -0.66,
+    "ymin": -0.4,
+    "ymax": 0.4
+   },
+   "frames_checked": 1
+  },
+  "R4M_CrawlerTrack": {
+   "PASS": false,
+   "failures": [
+    "socket not at block-face centre",
+    "mount face not a flush square contact patch",
+    "geometry crosses the mount face plane"
+   ],
+   "socket": {
+    "name": "Socket_Mount",
+    "pos": [
+     0.0,
+     0.0,
+     0.275
+    ],
+    "axis": "z",
+    "sign": 1.0,
+    "on_block_face": false
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 0.0,
+    "recessed_pct": 63.9,
+    "protruding": 61,
+    "missing": 0
+   },
+   "static_bounds": [
+    [
+     -0.2315,
+     -0.4664,
+     -0.416
+    ],
+    [
+     0.242,
+     0.4664,
+     0.268
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 1,
+   "crosses_mount_plane": [
+    [
+     "R4M_CrawlerTrack_Housing",
+     1,
+     0.268
+    ]
+   ],
+   "moving_bounds": [
+    [
+     -0.112,
+     0.2402,
+     -0.3838
+    ],
+    [
+     0.232,
+     0.4358,
+     -0.1882
+    ]
+   ],
+   "moving_out": [],
+   "allowance": {
+    "zmin": -0.43,
+    "ymin": -0.48,
+    "ymax": 0.48
+   },
+   "frames_checked": 1
+  },
+  "R4M_HoverEngine": {
+   "PASS": false,
+   "failures": [
+    "socket not at block-face centre",
+    "mount face not a flush square contact patch",
+    "geometry crosses the mount face plane"
+   ],
+   "socket": {
+    "name": "Socket_Mount",
+    "pos": [
+     0.0,
+     0.0,
+     0.275
+    ],
+    "axis": "z",
+    "sign": 1.0,
+    "on_block_face": false
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 0.0,
+    "recessed_pct": 39.6,
+    "protruding": 57,
+    "missing": 45
+   },
+   "static_bounds": [
+    [
+     -0.262,
+     -0.262,
+     -0.319
+    ],
+    [
+     0.262,
+     0.262,
+     0.27
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 1,
+   "crosses_mount_plane": [
+    [
+     "R4M_HoverEngine_Housing",
+     1,
+     0.27
+    ]
+   ],
+   "moving_bounds": null,
+   "moving_out": [],
+   "allowance": {
+    "zmin": -0.33
+   },
+   "frames_checked": 1
+  },
+  "R4M_OmniDrive": {
+   "PASS": false,
+   "failures": [
+    "socket not at block-face centre",
+    "mount face not a flush square contact patch",
+    "geometry crosses the mount face plane"
+   ],
+   "socket": {
+    "name": "Socket_Mount",
+    "pos": [
+     0.16,
+     0.0,
+     0.275
+    ],
+    "axis": "z",
+    "sign": 1.0,
+    "on_block_face": false
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 0.0,
+    "recessed_pct": 34.9,
+    "protruding": 23,
+    "missing": 87
+   },
+   "static_bounds": [
+    [
+     0.06,
+     -0.123,
+     -0.3298
+    ],
+    [
+     0.266,
+     0.1218,
+     0.2735
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 1,
+   "crosses_mount_plane": [
+    [
+     "R4M_OmniDrive_MotorPod",
+     1,
+     0.2735
+    ]
+   ],
+   "moving_bounds": [
+    [
+     -0.108,
+     -0.2284,
+     -0.442
+    ],
+    [
+     0.14,
+     0.2284,
+     0.026
+    ]
+   ],
+   "moving_out": [],
+   "allowance": {
+    "zmin": -0.45
+   },
+   "frames_checked": 1
+  },
+  "R4M_Suspension": {
+   "PASS": false,
+   "failures": [
+    "socket not at block-face centre",
+    "mount face not a flush square contact patch",
+    "geometry crosses the mount face plane"
+   ],
+   "socket": {
+    "name": "Socket_Mount",
+    "pos": [
+     0.0,
+     0.0,
+     0.275
+    ],
+    "axis": "z",
+    "sign": 1.0,
+    "on_block_face": false
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 0.0,
+    "recessed_pct": 2.4,
+    "protruding": 99,
+    "missing": 66
+   },
+   "static_bounds": [
+    [
+     -0.1515,
+     -0.2099,
+     -0.2499
+    ],
+    [
+     0.1515,
+     0.2072,
+     0.27
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 1,
+   "crosses_mount_plane": [
+    [
+     "R4M_Suspension_Tower",
+     1,
+     0.27
+    ]
+   ],
+   "moving_bounds": [
+    [
+     -0.124,
+     -0.176,
+     -0.385
+    ],
+    [
+     0.192,
+     0.235,
+     -0.124
+    ]
+   ],
+   "moving_out": [],
+   "allowance": {
+    "zmin": -0.4
+   },
+   "frames_checked": 1
+  },
+  "R4M_Booster": {
+   "PASS": false,
+   "failures": [
+    "socket not at block-face centre",
+    "mount face not a flush square contact patch",
+    "geometry crosses the mount face plane"
+   ],
+   "socket": {
+    "name": "Socket_Mount",
+    "pos": [
+     0.0,
+     0.0,
+     0.275
+    ],
+    "axis": "z",
+    "sign": 1.0,
+    "on_block_face": false
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 0.0,
+    "recessed_pct": 40.2,
+    "protruding": 49,
+    "missing": 52
+   },
+   "static_bounds": [
+    [
+     -0.1783,
+     -0.222,
+     -0.1783
+    ],
+    [
+     0.1783,
+     0.5876,
+     0.27
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 1,
+   "crosses_mount_plane": [
+    [
+     "R4M_Booster_Housing",
+     1,
+     0.27
+    ]
+   ],
+   "moving_bounds": null,
+   "moving_out": [],
+   "allowance": {
+    "ymax": 0.6
+   },
+   "frames_checked": 1
+  },
+  "R4M_JumpDrive": {
+   "PASS": false,
+   "failures": [
+    "socket not at block-face centre",
+    "mount face not a flush square contact patch",
+    "geometry crosses the mount face plane"
+   ],
+   "socket": {
+    "name": "Socket_Mount",
+    "pos": [
+     0.0,
+     0.0,
+     0.275
+    ],
+    "axis": "z",
+    "sign": 1.0,
+    "on_block_face": false
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 0.0,
+    "recessed_pct": 59.2,
+    "protruding": 45,
+    "missing": 24
+   },
+   "static_bounds": [
+    [
+     -0.242,
+     -0.242,
+     -0.317
+    ],
+    [
+     0.242,
+     0.2485,
+     0.272
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 1,
+   "crosses_mount_plane": [
+    [
+     "R4M_JumpDrive_Housing",
+     1,
+     0.272
+    ]
+   ],
+   "moving_bounds": null,
+   "moving_out": [],
+   "allowance": {
+    "zmin": -0.43
+   },
+   "frames_checked": 1
+  },
+  "R4M_Blink": {
+   "PASS": false,
+   "failures": [
+    "socket not at block-face centre",
+    "mount face not a flush square contact patch",
+    "geometry crosses the mount face plane"
+   ],
+   "socket": {
+    "name": "Socket_Mount",
+    "pos": [
+     0.0,
+     0.0,
+     -0.275
+    ],
+    "axis": "z",
+    "sign": -1.0,
+    "on_block_face": false
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 0.0,
+    "recessed_pct": 5.9,
+    "protruding": 99,
+    "missing": 60
+   },
+   "static_bounds": [
+    [
+     -0.219,
+     -0.215,
+     -0.275
+    ],
+    [
+     0.219,
+     0.215,
+     0.2125
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 1,
+   "crosses_mount_plane": [
+    [
+     "R4M_Blink_Housing",
+     1,
+     0.275
+    ]
+   ],
+   "moving_bounds": null,
+   "moving_out": [],
+   "allowance": {},
+   "frames_checked": 1
+  },
+  "R4M_Gyroscope": {
+   "PASS": false,
+   "failures": [
+    "socket not at block-face centre",
+    "mount face not a flush square contact patch",
+    "geometry crosses the mount face plane"
+   ],
+   "socket": {
+    "name": "Socket_Mount",
+    "pos": [
+     0.0,
+     0.0,
+     0.275
+    ],
+    "axis": "z",
+    "sign": 1.0,
+    "on_block_face": false
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 0.0,
+    "recessed_pct": 21.3,
+    "protruding": 57,
+    "missing": 76
+   },
+   "static_bounds": [
+    [
+     -0.2705,
+     -0.1515,
+     -0.034
+    ],
+    [
+     0.2705,
+     0.1515,
+     0.27
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 1,
+   "crosses_mount_plane": [
+    [
+     "R4M_Gyroscope_Yoke",
+     1,
+     0.27
+    ]
+   ],
+   "moving_bounds": [
+    [
+     -0.246,
+     -0.234,
+     -0.184
+    ],
+    [
+     0.246,
+     0.234,
+     0.184
+    ]
+   ],
+   "moving_out": [],
+   "allowance": {},
+   "frames_checked": 1
+  },
+  "R4M_MagneticGrapple": {
+   "PASS": false,
+   "failures": [
+    "socket not at block-face centre",
+    "mount face not a flush square contact patch",
+    "static geometry leaves the anchor cell: xmin",
+    "geometry crosses the mount face plane"
+   ],
+   "socket": {
+    "name": "Socket_Mount",
+    "pos": [
+     0.0,
+     0.0,
+     0.275
+    ],
+    "axis": "z",
+    "sign": 1.0,
+    "on_block_face": false
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 1.2,
+    "recessed_pct": 39.1,
+    "protruding": 40,
+    "missing": 61
+   },
+   "static_bounds": [
+    [
+     -0.284,
+     -0.4631,
+     -0.15
+    ],
+    [
+     0.14,
+     0.15,
+     0.27
+    ]
+   ],
+   "static_in_cell": false,
+   "static_out": [
+    "xmin"
+   ],
+   "n_cross": 1,
+   "crosses_mount_plane": [
+    [
+     "R4M_MagneticGrapple_Housing",
+     1,
+     0.27
+    ]
+   ],
+   "moving_bounds": [
+    [
+     -0.0055,
+     -0.301,
+     -0.0055
+    ],
+    [
+     0.0055,
+     -0.3,
+     0.0055
+    ]
+   ],
+   "moving_out": [],
+   "allowance": {
+    "ymin": -1.4
+   },
+   "frames_checked": 1
+  },
+  "R4M_IndependentSteering": {
+   "PASS": false,
+   "failures": [
+    "socket not at block-face centre",
+    "mount face not a flush square contact patch",
+    "geometry crosses the mount face plane"
+   ],
+   "socket": {
+    "name": "Socket_Mount",
+    "pos": [
+     0.0,
+     0.0,
+     0.275
+    ],
+    "axis": "z",
+    "sign": 1.0,
+    "on_block_face": false
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 0.0,
+    "recessed_pct": 26.0,
+    "protruding": 61,
+    "missing": 64
+   },
+   "static_bounds": [
+    [
+     -0.2015,
+     -0.2015,
+     0.07
+    ],
+    [
+     0.2015,
+     0.2015,
+     0.272
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 1,
+   "crosses_mount_plane": [
+    [
+     "R4M_IndependentSteering_ServoDrum",
+     1,
+     0.272
+    ]
+   ],
+   "moving_bounds": [
+    [
+     -0.186,
+     -0.08,
+     -0.26
+    ],
+    [
+     0.166,
+     0.147,
+     0.132
+    ]
+   ],
+   "moving_out": [],
+   "allowance": {},
+   "frames_checked": 1
+  }
+ },
+ "after": {
+  "R4M_Wheel": {
+   "PASS": true,
+   "failures": [],
+   "socket": {
+    "name": "Socket_Mount",
+    "pos": [
+     0.0,
+     0.0,
+     0.26
+    ],
+    "axis": "z",
+    "sign": 1.0,
+    "on_block_face": true
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 94.7,
+    "recessed_pct": 5.3,
+    "protruding": 0,
+    "missing": 0
+   },
+   "static_bounds": [
+    [
+     -0.2563,
+     -0.2563,
+     -0.312
+    ],
+    [
+     0.2563,
+     0.2563,
+     0.26
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 0,
+   "crosses_mount_plane": [],
+   "moving_bounds": [
+    [
+     -0.184,
+     -0.39,
+     -0.65
+    ],
+    [
+     0.184,
+     0.39,
+     0.13
+    ]
+   ],
+   "moving_out": [],
+   "allowance": {
+    "zmin": -0.66,
+    "ymin": -0.4,
+    "ymax": 0.4
+   },
+   "frames_checked": 1
+  },
+  "R4M_CrawlerTrack": {
+   "PASS": true,
+   "failures": [],
+   "socket": {
+    "name": "Socket_Mount",
+    "pos": [
+     0.0,
+     0.0,
+     0.26
+    ],
+    "axis": "z",
+    "sign": 1.0,
+    "on_block_face": true
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 94.7,
+    "recessed_pct": 5.3,
+    "protruding": 0,
+    "missing": 0
+   },
+   "static_bounds": [
+    [
+     -0.2563,
+     -0.4664,
+     -0.416
+    ],
+    [
+     0.2563,
+     0.4664,
+     0.26
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 0,
+   "crosses_mount_plane": [],
+   "moving_bounds": [
+    [
+     -0.112,
+     0.2402,
+     -0.3838
+    ],
+    [
+     0.232,
+     0.4358,
+     -0.1882
+    ]
+   ],
+   "moving_out": [],
+   "allowance": {
+    "zmin": -0.43,
+    "ymin": -0.48,
+    "ymax": 0.48
+   },
+   "frames_checked": 1
+  },
+  "R4M_HoverEngine": {
+   "PASS": true,
+   "failures": [],
+   "socket": {
+    "name": "Socket_Mount",
+    "pos": [
+     0.0,
+     0.0,
+     0.26
+    ],
+    "axis": "z",
+    "sign": 1.0,
+    "on_block_face": true
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 94.7,
+    "recessed_pct": 5.3,
+    "protruding": 0,
+    "missing": 0
+   },
+   "static_bounds": [
+    [
+     -0.262,
+     -0.262,
+     -0.319
+    ],
+    [
+     0.262,
+     0.262,
+     0.26
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 0,
+   "crosses_mount_plane": [],
+   "moving_bounds": null,
+   "moving_out": [],
+   "allowance": {
+    "zmin": -0.33
+   },
+   "frames_checked": 1
+  },
+  "R4M_OmniDrive": {
+   "PASS": true,
+   "failures": [],
+   "socket": {
+    "name": "Socket_Mount",
+    "pos": [
+     0.0,
+     0.0,
+     0.26
+    ],
+    "axis": "z",
+    "sign": 1.0,
+    "on_block_face": true
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 94.7,
+    "recessed_pct": 5.3,
+    "protruding": 0,
+    "missing": 0
+   },
+   "static_bounds": [
+    [
+     -0.2563,
+     -0.2563,
+     -0.3298
+    ],
+    [
+     0.266,
+     0.2563,
+     0.26
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 0,
+   "crosses_mount_plane": [],
+   "moving_bounds": [
+    [
+     -0.108,
+     -0.2284,
+     -0.442
+    ],
+    [
+     0.14,
+     0.2284,
+     0.026
+    ]
+   ],
+   "moving_out": [],
+   "allowance": {
+    "zmin": -0.45
+   },
+   "frames_checked": 1
+  },
+  "R4M_Suspension": {
+   "PASS": true,
+   "failures": [],
+   "socket": {
+    "name": "Socket_Mount",
+    "pos": [
+     0.0,
+     0.0,
+     0.26
+    ],
+    "axis": "z",
+    "sign": 1.0,
+    "on_block_face": true
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 94.7,
+    "recessed_pct": 5.3,
+    "protruding": 0,
+    "missing": 0
+   },
+   "static_bounds": [
+    [
+     -0.2563,
+     -0.2563,
+     -0.2499
+    ],
+    [
+     0.2563,
+     0.2563,
+     0.26
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 0,
+   "crosses_mount_plane": [],
+   "moving_bounds": [
+    [
+     -0.124,
+     -0.176,
+     -0.385
+    ],
+    [
+     0.192,
+     0.235,
+     -0.124
+    ]
+   ],
+   "moving_out": [],
+   "allowance": {
+    "zmin": -0.4
+   },
+   "frames_checked": 1
+  },
+  "R4M_Booster": {
+   "PASS": true,
+   "failures": [],
+   "socket": {
+    "name": "Socket_Mount",
+    "pos": [
+     0.0,
+     0.0,
+     0.26
+    ],
+    "axis": "z",
+    "sign": 1.0,
+    "on_block_face": true
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 94.7,
+    "recessed_pct": 5.3,
+    "protruding": 0,
+    "missing": 0
+   },
+   "static_bounds": [
+    [
+     -0.2563,
+     -0.2563,
+     -0.1783
+    ],
+    [
+     0.2563,
+     0.5876,
+     0.26
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 0,
+   "crosses_mount_plane": [],
+   "moving_bounds": null,
+   "moving_out": [],
+   "allowance": {
+    "ymax": 0.6
+   },
+   "frames_checked": 1
+  },
+  "R4M_JumpDrive": {
+   "PASS": true,
+   "failures": [],
+   "socket": {
+    "name": "Socket_Mount",
+    "pos": [
+     0.0,
+     0.0,
+     0.26
+    ],
+    "axis": "z",
+    "sign": 1.0,
+    "on_block_face": true
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 94.7,
+    "recessed_pct": 5.3,
+    "protruding": 0,
+    "missing": 0
+   },
+   "static_bounds": [
+    [
+     -0.2563,
+     -0.2563,
+     -0.317
+    ],
+    [
+     0.2563,
+     0.2563,
+     0.26
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 0,
+   "crosses_mount_plane": [],
+   "moving_bounds": null,
+   "moving_out": [],
+   "allowance": {
+    "zmin": -0.43
+   },
+   "frames_checked": 1
+  },
+  "R4M_Blink": {
+   "PASS": true,
+   "failures": [],
+   "socket": {
+    "name": "Socket_Mount",
+    "pos": [
+     0.0,
+     0.0,
+     -0.26
+    ],
+    "axis": "z",
+    "sign": -1.0,
+    "on_block_face": true
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 94.7,
+    "recessed_pct": 5.3,
+    "protruding": 0,
+    "missing": 0
+   },
+   "static_bounds": [
+    [
+     -0.2563,
+     -0.2563,
+     -0.26
+    ],
+    [
+     0.2563,
+     0.2563,
+     0.2125
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 0,
+   "crosses_mount_plane": [],
+   "moving_bounds": null,
+   "moving_out": [],
+   "allowance": {},
+   "frames_checked": 1
+  },
+  "R4M_Gyroscope": {
+   "PASS": true,
+   "failures": [],
+   "socket": {
+    "name": "Socket_Mount",
+    "pos": [
+     0.0,
+     0.0,
+     0.26
+    ],
+    "axis": "z",
+    "sign": 1.0,
+    "on_block_face": true
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 94.7,
+    "recessed_pct": 5.3,
+    "protruding": 0,
+    "missing": 0
+   },
+   "static_bounds": [
+    [
+     -0.2705,
+     -0.2563,
+     -0.034
+    ],
+    [
+     0.2705,
+     0.2563,
+     0.26
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 0,
+   "crosses_mount_plane": [],
+   "moving_bounds": [
+    [
+     -0.246,
+     -0.234,
+     -0.184
+    ],
+    [
+     0.246,
+     0.234,
+     0.184
+    ]
+   ],
+   "moving_out": [],
+   "allowance": {},
+   "frames_checked": 1
+  },
+  "R4M_MagneticGrapple": {
+   "PASS": true,
+   "failures": [],
+   "socket": {
+    "name": "Socket_Mount",
+    "pos": [
+     0.0,
+     0.0,
+     0.26
+    ],
+    "axis": "z",
+    "sign": 1.0,
+    "on_block_face": true
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 94.7,
+    "recessed_pct": 5.3,
+    "protruding": 0,
+    "missing": 0
+   },
+   "static_bounds": [
+    [
+     -0.266,
+     -0.4631,
+     -0.15
+    ],
+    [
+     0.2563,
+     0.2563,
+     0.26
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 0,
+   "crosses_mount_plane": [],
+   "moving_bounds": [
+    [
+     -0.0055,
+     -0.301,
+     -0.0055
+    ],
+    [
+     0.0055,
+     -0.3,
+     0.0055
+    ]
+   ],
+   "moving_out": [],
+   "allowance": {
+    "ymin": -1.4
+   },
+   "frames_checked": 1
+  },
+  "R4M_IndependentSteering": {
+   "PASS": true,
+   "failures": [],
+   "socket": {
+    "name": "Socket_Mount",
+    "pos": [
+     0.0,
+     0.0,
+     0.26
+    ],
+    "axis": "z",
+    "sign": 1.0,
+    "on_block_face": true
+   },
+   "contact_patch": {
+    "grid": "13x13 over 0.42 x 0.42 m",
+    "flush_pct": 94.7,
+    "recessed_pct": 5.3,
+    "protruding": 0,
+    "missing": 0
+   },
+   "static_bounds": [
+    [
+     -0.2563,
+     -0.2563,
+     0.07
+    ],
+    [
+     0.2563,
+     0.2563,
+     0.26
+    ]
+   ],
+   "static_in_cell": true,
+   "static_out": [],
+   "n_cross": 0,
+   "crosses_mount_plane": [],
+   "moving_bounds": [
+    [
+     -0.186,
+     -0.08,
+     -0.26
+    ],
+    [
+     0.166,
+     0.147,
+     0.132
+    ]
+   ],
+   "moving_out": [],
+   "allowance": {},
+   "frames_checked": 1
+  }
+ }
+}

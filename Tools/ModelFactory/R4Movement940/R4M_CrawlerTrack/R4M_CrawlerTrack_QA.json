@@ -1,9 +1,9 @@
 {
  "id": "R4M_CrawlerTrack",
  "kind": "R3PartKind.CrawlerTrack",
- "game_name": "Gąsienica (MOV008)",
+ "game_name": "G\u0105sienica (MOV008)",
  "blender": "5.2.3 LTS",
- "started": "2026-11-06 19:23:48",
+ "started": "2026-11-07 10:54:29",
  "failures": [],
  "notes": [
   "Wheel radii chosen so each turns exactly 360/n per link pitch (sprocket 14, idler 12, road 10, return 4) -> seamless loops."
@@ -11,21 +11,21 @@
  "meshes": [
   {
    "object": "R4M_CrawlerTrack_Housing",
-   "verts": 2280,
-   "triangles": 4576,
-   "shells": 2,
+   "verts": 2792,
+   "triangles": 5580,
+   "shells": 8,
    "non_manifold_edges": 0,
    "boundary_edges": 0,
    "zero_area_faces": 0,
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.044145,
+   "signed_volume_m3": 0.047038,
    "uv_layers": 1,
    "uv_bounds": [
     0.005,
     0.005,
-    0.995,
+    0.994,
     0.995
    ],
    "materials": [
@@ -1239,27 +1239,27 @@
   }
  ],
  "fx_meshes": [],
- "triangles_total": 30838,
+ "triangles_total": 31842,
  "triangles_fx": 0,
  "triangles_r41_reference": 11452,
  "topology_PASS": true,
  "palette": {
   "material_area_share": {
-   "Armor_Gunmetal": 0.5278,
-   "Armor_Dark": 0.2526,
-   "Steel_Light": 0.1633,
-   "Armor_Plate_Light": 0.0298,
-   "TeamColor_Red": 0.0108,
-   "Barrel_Heat": 0.0101,
-   "Energy_Hot": 0.0047,
-   "Hazard_Yellow": 0.0009
+   "Armor_Gunmetal": 0.4994,
+   "Armor_Dark": 0.3066,
+   "Steel_Light": 0.1524,
+   "Armor_Plate_Light": 0.0151,
+   "Barrel_Heat": 0.0093,
+   "TeamColor_Red": 0.0078,
+   "Energy_Hot": 0.0077,
+   "Hazard_Yellow": 0.0016
   },
   "family_share": {
-   "1_dark_gunmetal": 0.7804,
-   "2_light_steel": 0.1931,
-   "3_team_red": 0.0108,
-   "4_hazard_yellow": 0.0009,
-   "T_technical": 0.0148
+   "1_dark_gunmetal": 0.806,
+   "2_light_steel": 0.1676,
+   "3_team_red": 0.0078,
+   "4_hazard_yellow": 0.0016,
+   "T_technical": 0.017
   },
   "r41_family_share": {
    "1_dark_gunmetal": 0.7913,
@@ -1294,7 +1294,7 @@
    "1_dark_gunmetal": true,
    "2_light_steel": true,
    "3_team_red": false,
-   "4_hazard_yellow": false,
+   "4_hazard_yellow": true,
    "T_technical": true
   },
   "violations": [],
@@ -1331,7 +1331,7 @@
   "Socket_Mount": {
    "position_file": [
     0.0,
-    0.275,
+    0.26,
     -0.0
    ],
    "forward_file": [
@@ -1378,13 +1378,13 @@
   ],
   "static_bounds_file": [
    [
-    -0.2315,
+    -0.2563,
     -0.416,
     -0.4664
    ],
    [
-    0.242,
-    0.268,
+    0.2563,
+    0.26,
     0.4664
    ]
   ],
@@ -1422,13 +1422,13 @@
   ],
   "housing_bounds_file": [
    [
-    -0.2315,
+    -0.2563,
     -0.3497,
     -0.4514
    ],
    [
-    0.242,
-    0.268,
+    0.2563,
+    0.26,
     0.4514
    ]
   ],
@@ -1437,13 +1437,13 @@
   "moving_sweep": {
    "bounds_file": [
     [
-     -0.2315,
+     -0.2563,
      -0.4161,
      -0.4681
     ],
     [
-     0.242,
-     0.268,
+     0.2563,
+     0.26,
      0.4681
     ]
    ],
@@ -1853,31 +1853,31 @@
   "mirror_X": {
    "static_bounds_file": [
     [
-     -0.242,
+     -0.2563,
      -0.416,
      -0.4664
     ],
     [
-     0.2315,
-     0.268,
+     0.2563,
+     0.26,
      0.4664
     ]
    ],
    "socket_file": [
     0.0,
-    0.275,
+    0.26,
     -0.0
    ],
    "socket_mirrored_file": [
     -0.0,
-    0.275,
+    0.26,
     -0.0
    ],
    "note": "L/R variant = parent scale X -1 (Unity flips winding for negative scale); geometry is closed so lighting stays correct"
   },
   "floating_shells": {
    "R4M_CrawlerTrack_Housing": {
-    "shells": 2,
+    "shells": 8,
     "isolated": 0
    },
    "R4M_CrawlerTrack_Sprocket": {
@@ -2093,7 +2093,7 @@
    "Socket_Mount": {
     "position": [
      0.0,
-     0.275,
+     0.26,
      -0.0
     ],
     "z_axis": [
@@ -3309,7 +3309,7 @@
  "video": "R4M_CrawlerTrack_timeline.mp4",
  "lod1": {
   "file": "R4M_CrawlerTrack_LOD1.fbx",
-  "triangles": 15414,
+  "triangles": 15916,
   "method": "DECIMATE collapse 0.5 (automatic, not hand-authored)"
  },
  "fbx_reimport": {
@@ -4075,7 +4075,7 @@
     "loc": [
      0.0,
      0.0,
-     0.275
+     0.26
     ],
     "rot_deg": [
      0.0,
@@ -4130,30 +4130,30 @@
  },
  "files": {
   "R4M_CrawlerTrack.blend": {
-   "sha256": "f45cc1f75f2795c97b9d22129648015cb8e04207b4f7b2ac4cefe3f09510ade0",
-   "bytes": 3485077,
-   "sha256_before_path_sanitize": "d18f0123b0cc12b070b17a68c24c4a01040dafac0be0c513516b262e2fbaf597",
-   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length; file re-opened headless in Blender 5.2.3 after patch (rc 0, frame range and objects unchanged)"
+   "sha256": "87b08d0f575c0e2f62ceb8e971f30dae21c057b195a8a52fab23ecb6bdd09d32",
+   "bytes": 3561308,
+   "sha256_before_path_sanitize": "baaf1442b8bcce1d3c84cca69543615bfa8db410edb558b597cd791be90bcf8a",
+   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length (scripts/sanitize_blend_paths.py)"
   },
   "R4M_CrawlerTrack.fbx": {
-   "sha256": "7638a1eaeec767599907ad03e555becd130d75dd7b93728c890a4fe52815e2bc",
-   "bytes": 1254988
+   "sha256": "36273367275c25de8c9b0aad058e71adac117a10a77bf69b64f2acc3980af314",
+   "bytes": 1288204
   },
   "R4M_CrawlerTrack.glb": {
-   "sha256": "582bfcf915e852ae590e033918e8af6185e91682d4fe852982ac6188b6fcbed2",
-   "bytes": 1043944
+   "sha256": "1dbeb8783e92d0d866b506378fb54435fbe33c087890900dd2615d69f673435e",
+   "bytes": 1093024
   },
   "R4M_CrawlerTrack_colliders.glb": {
-   "sha256": "14f2050b70dc37b9330bfb6a75c68cbf90f34dadfe4b15ea01f37a1e2472527e",
-   "bytes": 1017316
+   "sha256": "78a23997976d0524e7bf054b0e0d8c15dc6c4823c15e6f923162ced2061565a3",
+   "bytes": 1066264
   },
   "R4M_CrawlerTrack_LOD1.fbx": {
-   "sha256": "a354e022cf1d1d6515abf8ff263e19daebbacbeb67e9ce645c5ac2afea754246",
-   "bytes": 757740
+   "sha256": "e1d92ba020f5dbff623426ba2e79f5626a80a2ba54f4a916f358e392793a7c5e",
+   "bytes": 776876
   }
  },
  "unity_import_test": "UNITY_NOT_RUN (Unity not available in this session)",
  "unity_import_settings": "Scale Factor 1, Convert Units ON, Bake Axis Conversion ON, Animation: split clips by animation_manifest.json frame ranges (24 fps)",
  "status": "BLENDER_PASS",
- "seconds": 33.1
+ "seconds": 36.2
 }

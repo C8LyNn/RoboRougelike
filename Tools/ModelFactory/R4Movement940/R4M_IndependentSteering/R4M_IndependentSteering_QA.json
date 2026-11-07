@@ -1,9 +1,9 @@
 {
  "id": "R4M_IndependentSteering",
  "kind": "R3PartKind.IndependentSteering",
- "game_name": "Moduł niezależnego skrętu (MOV011)",
+ "game_name": "Modu\u0142 niezale\u017cnego skr\u0119tu (MOV011)",
  "blender": "5.2.3 LTS",
- "started": "2026-11-06 19:25:51",
+ "started": "2026-11-07 10:57:02",
  "failures": [],
  "notes": [
   "No runtime placeholder geometry exists for IndependentSteering (block only); yaw limit is visual - SteeringMode / IndependentYaw stay runtime."
@@ -11,22 +11,22 @@
  "meshes": [
   {
    "object": "R4M_IndependentSteering_ServoDrum",
-   "verts": 1613,
-   "triangles": 3222,
-   "shells": 1,
+   "verts": 2082,
+   "triangles": 4140,
+   "shells": 7,
    "non_manifold_edges": 0,
    "boundary_edges": 0,
    "zero_area_faces": 0,
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.017614,
+   "signed_volume_m3": 0.02011,
    "uv_layers": 1,
    "uv_bounds": [
-    0.003,
-    0.003,
-    0.992,
-    0.997
+    0.004,
+    0.004,
+    0.996,
+    0.991
    ],
    "materials": [
     "Armor_Gunmetal",
@@ -34,7 +34,8 @@
     "Armor_Plate_Light",
     "Steel_Light",
     "TeamColor_Red",
-    "Hazard_Yellow"
+    "Hazard_Yellow",
+    "Energy_Hot"
    ],
    "ok": true
   },
@@ -92,24 +93,25 @@
   }
  ],
  "fx_meshes": [],
- "triangles_total": 5812,
+ "triangles_total": 6730,
  "triangles_fx": 0,
  "triangles_r41_reference": 11452,
  "topology_PASS": true,
  "palette": {
   "material_area_share": {
-   "Armor_Gunmetal": 0.5223,
-   "Armor_Dark": 0.2369,
-   "Steel_Light": 0.1453,
-   "Armor_Plate_Light": 0.0522,
-   "TeamColor_Red": 0.0408,
-   "Hazard_Yellow": 0.0025
+   "Armor_Dark": 0.4786,
+   "Armor_Gunmetal": 0.3769,
+   "Steel_Light": 0.0958,
+   "TeamColor_Red": 0.0259,
+   "Energy_Hot": 0.0171,
+   "Hazard_Yellow": 0.0056
   },
   "family_share": {
-   "1_dark_gunmetal": 0.7592,
-   "2_light_steel": 0.1975,
-   "3_team_red": 0.0408,
-   "4_hazard_yellow": 0.0025
+   "1_dark_gunmetal": 0.8556,
+   "2_light_steel": 0.0958,
+   "3_team_red": 0.0259,
+   "4_hazard_yellow": 0.0056,
+   "T_technical": 0.0171
   },
   "r41_family_share": {
    "1_dark_gunmetal": 0.7913,
@@ -168,7 +170,7 @@
   "Socket_Mount": {
    "position_file": [
     0.0,
-    0.275,
+    0.26,
     -0.0
    ],
    "forward_file": [
@@ -215,14 +217,14 @@
   ],
   "static_bounds_file": [
    [
-    -0.2015,
+    -0.2563,
     -0.26,
-    -0.2015
+    -0.2563
    ],
    [
-    0.2015,
-    0.272,
-    0.2015
+    0.2563,
+    0.26,
+    0.2563
    ]
   ],
   "static_cells": [
@@ -234,14 +236,14 @@
   ],
   "housing_bounds_file": [
    [
-    -0.2015,
+    -0.2563,
     0.1,
-    -0.2015
+    -0.2563
    ],
    [
-    0.2015,
-    0.272,
-    0.2015
+    0.2563,
+    0.26,
+    0.2563
    ]
   ],
   "housing_inside_mount_cell": true,
@@ -249,14 +251,14 @@
   "moving_sweep": {
    "bounds_file": [
     [
-     -0.2015,
+     -0.2563,
      -0.26,
-     -0.2015
+     -0.2563
     ],
     [
-     0.2015,
-     0.272,
-     0.2015
+     0.2563,
+     0.26,
+     0.2563
     ]
    ],
    "cells": [
@@ -371,31 +373,31 @@
   "mirror_X": {
    "static_bounds_file": [
     [
-     -0.2015,
+     -0.2563,
      -0.26,
-     -0.2015
+     -0.2563
     ],
     [
-     0.2015,
-     0.272,
-     0.2015
+     0.2563,
+     0.26,
+     0.2563
     ]
    ],
    "socket_file": [
     0.0,
-    0.275,
+    0.26,
     -0.0
    ],
    "socket_mirrored_file": [
     -0.0,
-    0.275,
+    0.26,
     -0.0
    ],
    "note": "L/R variant = parent scale X -1 (Unity flips winding for negative scale); geometry is closed so lighting stays correct"
   },
   "floating_shells": {
    "R4M_IndependentSteering_ServoDrum": {
-    "shells": 1,
+    "shells": 7,
     "isolated": 0
    },
    "R4M_IndependentSteering_Pinion": {
@@ -423,7 +425,7 @@
    "Socket_Mount": {
     "position": [
      0.0,
-     0.275,
+     0.26,
      -0.0
     ],
     "z_axis": [
@@ -509,7 +511,7 @@
  "video": "R4M_IndependentSteering_timeline.mp4",
  "lod1": {
   "file": "R4M_IndependentSteering_LOD1.fbx",
-  "triangles": 2904,
+  "triangles": 3364,
   "method": "DECIMATE collapse 0.5 (automatic, not hand-authored)"
  },
  "fbx_reimport": {
@@ -717,7 +719,7 @@
     "loc": [
      0.0,
      0.0,
-     0.275
+     0.26
     ],
     "rot_deg": [
      0.0,
@@ -772,30 +774,30 @@
  },
  "files": {
   "R4M_IndependentSteering.blend": {
-   "sha256": "aa93ad2ef2a84ac924cb1eacaa3e7aade41a646833213ead72dc8823ee955f55",
-   "bytes": 1171262,
-   "sha256_before_path_sanitize": "a0739a2a16b48727dd073f46805a60c12e1eb279046ecb318a000e5668320faa",
-   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length; file re-opened headless in Blender 5.2.3 after patch (rc 0, frame range and objects unchanged)"
+   "sha256": "18be390e4215e5c25b19dc07739d8170ec8cba40f932e3f588b9139d57a87625",
+   "bytes": 1263482,
+   "sha256_before_path_sanitize": "97cdec19a00ea1cb7fee30a4fd92eb5f8595883c9f63ce8d220f7ccee09294bc",
+   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length (scripts/sanitize_blend_paths.py)"
   },
   "R4M_IndependentSteering.fbx": {
-   "sha256": "ac476f97e5bc24e0e230450c4dee382866afb787c58766a4e83be9ebd78ea78c",
-   "bytes": 309644
+   "sha256": "fa2c32a55c16da1e70b53bd1717ba3369cc812c34915b6cad24337d86e6c7881",
+   "bytes": 339436
   },
   "R4M_IndependentSteering.glb": {
-   "sha256": "71b1efced1feba2133ae284136e88d6b9a8a000d1366434f1e7511c97392464c",
-   "bytes": 274436
+   "sha256": "26c09c2e954e2b437a34b8ab9be3c363c5fd4226c7d60b4ed8eed9e971c76f8e",
+   "bytes": 319304
   },
   "R4M_IndependentSteering_colliders.glb": {
-   "sha256": "f3ba98462b7ac57e4b620a9adde71ffff2928f3b20196b3040c57fea46a32ec5",
-   "bytes": 272280
+   "sha256": "8e229407d70a065405b61bb21fdd29bfd00ce9470ad1afb75d0606550779813c",
+   "bytes": 317028
   },
   "R4M_IndependentSteering_LOD1.fbx": {
-   "sha256": "b9581d72358a4f6b256ee1c1891229ad376109932485eda9416d7961e2867b93",
-   "bytes": 146828
+   "sha256": "3df1af4adb23366c370a94f1b4b6cebb52d2d6b7add88828877a23f4b2acb610",
+   "bytes": 164604
   }
  },
  "unity_import_test": "UNITY_NOT_RUN (Unity not available in this session)",
  "unity_import_settings": "Scale Factor 1, Convert Units ON, Bake Axis Conversion ON, Animation: split clips by animation_manifest.json frame ranges (24 fps)",
  "status": "BLENDER_PASS",
- "seconds": 6.6
+ "seconds": 8.1
 }

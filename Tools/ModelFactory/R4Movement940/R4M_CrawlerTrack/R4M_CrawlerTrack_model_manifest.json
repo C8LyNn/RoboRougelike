@@ -64,13 +64,14 @@
    "unity_up": "+Y",
    "unity_forward": "+Z",
    "unit": "meter",
-   "version": "v1",
+   "version": "v2-port",
    "weapon_kind": "R3PartKind.CrawlerTrack",
    "style": "R41_Turret_v6.1 standard (heavy industrial armour + team colour)",
    "issue": "#938",
    "side": "LEFT (inner frame +X). Track_R = parent scale X -1."
   },
   "R4M_CrawlerTrack_Housing": {
+   "mount_port": "R4 Robocraft-style port: 0.509 m square, outer face +0.260 m (block face), face-centre coupling",
    "role": "static housing: mount box, inner frame (+X), outer skirt (-X)"
   },
   "Track_L": {

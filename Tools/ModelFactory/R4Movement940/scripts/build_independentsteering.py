@@ -62,10 +62,11 @@ root = L.empty(ID + "_ROOT", None, (0, 0, 0), col, 'PLAIN_AXES', 0.1)
 hous.parent = root
 pin.parent = root; pin.location = (CX, 0, 0)   # pinion geometry is built around its own axis
 kn.parent = root
-socket = L.empty("Socket_Mount", root, (0, 0, L.CELL_HALF), col, 'SINGLE_ARROW', 0.08)
+import r4port as P4; P4.port(hous, work, 1)
+socket = L.empty("Socket_Mount", root, (0, 0, P4.FACE), col, 'SINGLE_ARROW', 0.08)
 kingpin = L.empty("Steer_Kingpin", root, (0, 0, 0), col, 'SINGLE_ARROW', 0.08, (math.radians(-90), 0, 0))
 hubm = L.empty("Hub_Mount", kn, (0.166, 0, HZ), col, 'SINGLE_ARROW', 0.06, (0, math.radians(90), 0))
-L.root_props(root, "R3PartKind.IndependentSteering")
+L.root_props(root, "R3PartKind.IndependentSteering", version="v2-port")
 L.set_props({hous: {"role": "static servo drum, motor, pinion bearing, yaw scale ring"},
              pin: {"role": f"servo pinion: rotates about local Y (Unity up); ratio {RATIO:.2f} : 1 to the knuckle"},
              kn: {"role": f"steering knuckle: yaws about local Y (kingpin through the cell centre), visual limit +-{YAW:.0f} deg"},

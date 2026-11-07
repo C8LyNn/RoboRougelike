@@ -3,7 +3,7 @@
  "kind": "R3PartKind.MagneticGrapple",
  "game_name": "Hak magnetyczny (MOV006)",
  "blender": "5.2.3 LTS",
- "started": "2026-11-06 19:25:42",
+ "started": "2026-11-07 10:56:50",
  "failures": [],
  "notes": [
   "Cable object is a visual stretched along file +Z; no rope physics or new grapple mechanic."
@@ -11,22 +11,22 @@
  "meshes": [
   {
    "object": "R4M_MagneticGrapple_Housing",
-   "verts": 850,
-   "triangles": 1692,
-   "shells": 3,
+   "verts": 1498,
+   "triangles": 2968,
+   "shells": 9,
    "non_manifold_edges": 0,
    "boundary_edges": 0,
    "zero_area_faces": 0,
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.035832,
+   "signed_volume_m3": 0.039051,
    "uv_layers": 1,
    "uv_bounds": [
-    0.004,
-    0.004,
-    0.996,
-    0.982
+    0.005,
+    0.005,
+    0.995,
+    0.995
    ],
    "materials": [
     "Armor_Gunmetal",
@@ -41,8 +41,8 @@
   },
   {
    "object": "R4M_MagneticGrapple_Spool",
-   "verts": 1419,
-   "triangles": 2834,
+   "verts": 1226,
+   "triangles": 2448,
    "shells": 1,
    "non_manifold_edges": 0,
    "boundary_edges": 0,
@@ -50,13 +50,13 @@
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.00156,
+   "signed_volume_m3": 0.001336,
    "uv_layers": 1,
    "uv_bounds": [
-    0.004,
-    0.004,
-    0.996,
-    0.995
+    0.003,
+    0.003,
+    0.997,
+    0.994
    ],
    "materials": [
     "Armor_Dark",
@@ -196,27 +196,27 @@
    "ok": true
   }
  ],
- "triangles_total": 6758,
+ "triangles_total": 7648,
  "triangles_fx": 124,
  "triangles_r41_reference": 11452,
  "topology_PASS": true,
  "palette": {
   "material_area_share": {
-   "Armor_Gunmetal": 0.3845,
-   "Armor_Dark": 0.3592,
-   "Steel_Light": 0.1148,
-   "Armor_Plate_Light": 0.0674,
-   "TeamColor_Red": 0.0487,
-   "Energy_Hot": 0.0109,
-   "Hazard_Yellow": 0.0078,
-   "Barrel_Heat": 0.0068
+   "Armor_Dark": 0.5123,
+   "Armor_Gunmetal": 0.3153,
+   "Steel_Light": 0.0791,
+   "TeamColor_Red": 0.0361,
+   "Armor_Plate_Light": 0.0247,
+   "Energy_Hot": 0.0191,
+   "Hazard_Yellow": 0.0084,
+   "Barrel_Heat": 0.005
   },
   "family_share": {
-   "1_dark_gunmetal": 0.7437,
-   "2_light_steel": 0.1822,
-   "3_team_red": 0.0487,
-   "4_hazard_yellow": 0.0078,
-   "T_technical": 0.0177
+   "1_dark_gunmetal": 0.8276,
+   "2_light_steel": 0.1038,
+   "3_team_red": 0.0361,
+   "4_hazard_yellow": 0.0084,
+   "T_technical": 0.0241
   },
   "r41_family_share": {
    "1_dark_gunmetal": 0.7913,
@@ -314,7 +314,7 @@
   "Socket_Mount": {
    "position_file": [
     0.0,
-    0.275,
+    0.26,
     -0.0
    ],
    "forward_file": [
@@ -348,22 +348,17 @@
   ],
   "static_bounds_file": [
    [
-    -0.284,
+    -0.266,
     -0.15,
-    -0.15
+    -0.2563
    ],
    [
-    0.14,
-    0.27,
+    0.2563,
+    0.26,
     0.4631
    ]
   ],
   "static_cells": [
-   [
-    -1,
-    0,
-    0
-   ],
    [
     0,
     0,
@@ -377,13 +372,13 @@
   ],
   "housing_bounds_file": [
    [
-    -0.276,
+    -0.258,
     -0.15,
-    -0.15
+    -0.2563
    ],
    [
-    0.14,
-    0.27,
+    0.2563,
+    0.26,
     0.358
    ]
   ],
@@ -392,22 +387,17 @@
   "moving_sweep": {
    "bounds_file": [
     [
-     -0.284,
+     -0.266,
      -0.15,
-     -0.15
+     -0.2563
     ],
     [
-     0.14,
-     0.27,
+     0.2563,
+     0.26,
      1.3834
     ]
    ],
    "cells": [
-    [
-     -1,
-     0,
-     0
-    ],
     [
      0,
      0,
@@ -430,11 +420,6 @@
     ]
    ],
    "neighbour_cells_entered": [
-    [
-     -1,
-     0,
-     0
-    ],
     [
      0,
      0,
@@ -478,11 +463,6 @@
     "housing_inside_cell": false,
     "static_cells": [
      [
-      -1,
-      0,
-      0
-     ],
-     [
       0,
       -1,
       0
@@ -498,11 +478,6 @@
     "housing_inside_cell": false,
     "static_cells": [
      [
-      -1,
-      0,
-      0
-     ],
-     [
       0,
       0,
       -1
@@ -517,11 +492,6 @@
    "X270": {
     "housing_inside_cell": false,
     "static_cells": [
-     [
-      -1,
-      0,
-      0
-     ],
      [
       0,
       0,
@@ -543,11 +513,6 @@
       0
      ],
      [
-      0,
-      0,
-      1
-     ],
-     [
       1,
       0,
       0
@@ -566,11 +531,6 @@
       0,
       0,
       0
-     ],
-     [
-      1,
-      0,
-      0
      ]
     ]
    },
@@ -581,11 +541,6 @@
       -1,
       0,
       0
-     ],
-     [
-      0,
-      0,
-      -1
      ],
      [
       0,
@@ -606,11 +561,6 @@
       0,
       0,
       1
-     ],
-     [
-      0,
-      1,
-      0
      ]
     ]
    },
@@ -626,22 +576,12 @@
       0,
       0,
       1
-     ],
-     [
-      1,
-      0,
-      0
      ]
     ]
    },
    "Z270": {
     "housing_inside_cell": false,
     "static_cells": [
-     [
-      0,
-      -1,
-      0
-     ],
      [
       0,
       0,
@@ -658,31 +598,31 @@
   "mirror_X": {
    "static_bounds_file": [
     [
-     -0.14,
+     -0.2563,
      -0.15,
-     -0.15
+     -0.2563
     ],
     [
-     0.284,
-     0.27,
+     0.266,
+     0.26,
      0.4631
     ]
    ],
    "socket_file": [
     0.0,
-    0.275,
+    0.26,
     -0.0
    ],
    "socket_mirrored_file": [
     -0.0,
-    0.275,
+    0.26,
     -0.0
    ],
    "note": "L/R variant = parent scale X -1 (Unity flips winding for negative scale); geometry is closed so lighting stays correct"
   },
   "floating_shells": {
    "R4M_MagneticGrapple_Housing": {
-    "shells": 3,
+    "shells": 9,
     "isolated": 0
    },
    "R4M_MagneticGrapple_Spool": {
@@ -758,7 +698,7 @@
    "Socket_Mount": {
     "position": [
      0.0,
-     0.275,
+     0.26,
      -0.0
     ],
     "z_axis": [
@@ -851,7 +791,7 @@
  "video": "R4M_MagneticGrapple_timeline.mp4",
  "lod1": {
   "file": "R4M_MagneticGrapple_LOD1.fbx",
-  "triangles": 3378,
+  "triangles": 3824,
   "method": "DECIMATE collapse 0.5 (automatic, not hand-authored)"
  },
  "fbx_reimport": {
@@ -1136,7 +1076,7 @@
     "loc": [
      0.0,
      0.0,
-     0.275
+     0.26
     ],
     "rot_deg": [
      0.0,
@@ -1178,30 +1118,30 @@
  },
  "files": {
   "R4M_MagneticGrapple.blend": {
-   "sha256": "510aa7206d97eba8164f7406f376aaa609954eb96efc37aad459e5dd6b649214",
-   "bytes": 1360583,
-   "sha256_before_path_sanitize": "77f6acf64ede46ab01e41990f8bb0baeb70a51deecbf150e733ffa21e19acc0e",
-   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length; file re-opened headless in Blender 5.2.3 after patch (rc 0, frame range and objects unchanged)"
+   "sha256": "fdfe8231d76f53054ae8f9c0fefea683f49c9c595d93c2d626a2ebe9f3c60e19",
+   "bytes": 1428207,
+   "sha256_before_path_sanitize": "153afb3d8b279ab6b1a00b5fad9df6c24505339bc0483d161890e5f7cc50a0e1",
+   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length (scripts/sanitize_blend_paths.py)"
   },
   "R4M_MagneticGrapple.fbx": {
-   "sha256": "2b882392299906bdbebe2d802d10fdfc0ea21251c18fa3c956b4d17ce4a235a6",
-   "bytes": 398668
+   "sha256": "375803c9ca97d2b2b06e37f644c700d7ba0944cfa19ddd5c43069550600b777c",
+   "bytes": 431916
   },
   "R4M_MagneticGrapple.glb": {
-   "sha256": "6c00a6fa5b3c50108e4bb1875792e6f290f69e61b218963d9e356466f144eb54",
-   "bytes": 328424
+   "sha256": "50158908553c7bc06e5e0c5e6fd94d6ab0d1ae05c9e07a4e328282da6bf092bb",
+   "bytes": 373928
   },
   "R4M_MagneticGrapple_colliders.glb": {
-   "sha256": "55c6770221d2a9e5c1e8791c8af50c79b5a4195304122a8e64b9c6021c25e055",
-   "bytes": 317532
+   "sha256": "93bc5bb664f81445a717370b87074888d5345774f66b3f6ce181fc02c10e0636",
+   "bytes": 362920
   },
   "R4M_MagneticGrapple_LOD1.fbx": {
-   "sha256": "868acc202576a6a13df38be19feeb6da6b52bcaff15e1bfbed1ab7f3ae5c4e5b",
-   "bytes": 169676
+   "sha256": "45254d9ae04c614a43f25307bfcd55cd81fcc8a6cae69dfb86edd52b370e0da4",
+   "bytes": 188764
   }
  },
  "unity_import_test": "UNITY_NOT_RUN (Unity not available in this session)",
  "unity_import_settings": "Scale Factor 1, Convert Units ON, Bake Axis Conversion ON, Animation: split clips by animation_manifest.json frame ranges (24 fps)",
  "status": "BLENDER_PASS",
- "seconds": 6.1
+ "seconds": 7.6
 }

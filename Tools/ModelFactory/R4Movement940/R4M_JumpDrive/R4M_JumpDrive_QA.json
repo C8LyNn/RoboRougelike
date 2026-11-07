@@ -1,9 +1,9 @@
 {
  "id": "R4M_JumpDrive",
  "kind": "R3PartKind.JumpDrive",
- "game_name": "Napęd skoku (MOV002)",
+ "game_name": "Nap\u0119d skoku (MOV002)",
  "blender": "5.2.3 LTS",
- "started": "2026-11-06 19:25:09",
+ "started": "2026-11-07 10:56:05",
  "failures": [],
  "notes": [
   "Impulse stroke 0.10 m is visual; the jump force/height stay in JumpDrive runtime settings."
@@ -11,22 +11,22 @@
  "meshes": [
   {
    "object": "R4M_JumpDrive_Housing",
-   "verts": 2596,
-   "triangles": 5240,
-   "shells": 1,
+   "verts": 3208,
+   "triangles": 6444,
+   "shells": 7,
    "non_manifold_edges": 0,
    "boundary_edges": 0,
    "zero_area_faces": 0,
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.038302,
+   "signed_volume_m3": 0.041135,
    "uv_layers": 1,
    "uv_bounds": [
     0.006,
     0.006,
     0.994,
-    0.992
+    0.994
    ],
    "materials": [
     "Armor_Gunmetal",
@@ -166,26 +166,26 @@
    "ok": true
   }
  ],
- "triangles_total": 6816,
+ "triangles_total": 8020,
  "triangles_fx": 960,
  "triangles_r41_reference": 11452,
  "topology_PASS": true,
  "palette": {
   "material_area_share": {
-   "Armor_Gunmetal": 0.4035,
-   "Armor_Dark": 0.3092,
-   "Armor_Plate_Light": 0.1595,
-   "Steel_Light": 0.0556,
-   "Hazard_Yellow": 0.0387,
-   "Energy_Hot": 0.0255,
-   "TeamColor_Red": 0.008
+   "Armor_Dark": 0.4401,
+   "Armor_Gunmetal": 0.3346,
+   "Armor_Plate_Light": 0.1082,
+   "Steel_Light": 0.0483,
+   "Hazard_Yellow": 0.0331,
+   "Energy_Hot": 0.029,
+   "TeamColor_Red": 0.0068
   },
   "family_share": {
-   "1_dark_gunmetal": 0.7127,
-   "2_light_steel": 0.2151,
-   "3_team_red": 0.008,
-   "4_hazard_yellow": 0.0387,
-   "T_technical": 0.0255
+   "1_dark_gunmetal": 0.7747,
+   "2_light_steel": 0.1565,
+   "3_team_red": 0.0068,
+   "4_hazard_yellow": 0.0331,
+   "T_technical": 0.029
   },
   "r41_family_share": {
    "1_dark_gunmetal": 0.7913,
@@ -244,7 +244,7 @@
   "Socket_Mount": {
    "position_file": [
     0.0,
-    0.275,
+    0.26,
     -0.0
    ],
    "forward_file": [
@@ -278,14 +278,14 @@
   ],
   "static_bounds_file": [
    [
-    -0.242,
+    -0.2563,
     -0.317,
-    -0.2485
+    -0.2563
    ],
    [
-    0.242,
-    0.272,
-    0.242
+    0.2563,
+    0.26,
+    0.2563
    ]
   ],
   "static_cells": [
@@ -302,14 +302,14 @@
   ],
   "housing_bounds_file": [
    [
-    -0.2217,
+    -0.2563,
     -0.25,
-    -0.2485
+    -0.2563
    ],
    [
-    0.2217,
-    0.272,
-    0.16
+    0.2563,
+    0.26,
+    0.2563
    ]
   ],
   "housing_inside_mount_cell": true,
@@ -317,14 +317,14 @@
   "moving_sweep": {
    "bounds_file": [
     [
-     -0.242,
+     -0.2563,
      -0.417,
-     -0.2485
+     -0.2563
     ],
     [
-     0.242,
-     0.272,
-     0.242
+     0.2563,
+     0.26,
+     0.2563
     ]
    ],
    "cells": [
@@ -508,31 +508,31 @@
   "mirror_X": {
    "static_bounds_file": [
     [
-     -0.242,
+     -0.2563,
      -0.317,
-     -0.2485
+     -0.2563
     ],
     [
-     0.242,
-     0.272,
-     0.242
+     0.2563,
+     0.26,
+     0.2563
     ]
    ],
    "socket_file": [
     0.0,
-    0.275,
+    0.26,
     -0.0
    ],
    "socket_mirrored_file": [
     -0.0,
-    0.275,
+    0.26,
     -0.0
    ],
    "note": "L/R variant = parent scale X -1 (Unity flips winding for negative scale); geometry is closed so lighting stays correct"
   },
   "floating_shells": {
    "R4M_JumpDrive_Housing": {
-    "shells": 1,
+    "shells": 7,
     "isolated": 0
    },
    "R4M_JumpDrive_Piston": {
@@ -556,7 +556,7 @@
    "Socket_Mount": {
     "position": [
      0.0,
-     0.275,
+     0.26,
      -0.0
     ],
     "z_axis": [
@@ -621,7 +621,7 @@
  "video": "R4M_JumpDrive_timeline.mp4",
  "lod1": {
   "file": "R4M_JumpDrive_LOD1.fbx",
-  "triangles": 3408,
+  "triangles": 4010,
   "method": "DECIMATE collapse 0.5 (automatic, not hand-authored)"
  },
  "fbx_reimport": {
@@ -841,7 +841,7 @@
     "loc": [
      0.0,
      0.0,
-     0.275
+     0.26
     ],
     "rot_deg": [
      0.0,
@@ -883,30 +883,30 @@
  },
  "files": {
   "R4M_JumpDrive.blend": {
-   "sha256": "7db17a2550b1f7ddde8f5c4bd30b5626b150cf87af23a0b4ecb66ba3d615ddee",
-   "bytes": 1364077,
-   "sha256_before_path_sanitize": "ffa17e5a64c5f79adb5dd71619097d0cdaf409d87d12b2216be9dbd0c5187264",
-   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length; file re-opened headless in Blender 5.2.3 after patch (rc 0, frame range and objects unchanged)"
+   "sha256": "05d11cffc09feaac19b5bf2b60735f24aa32e81c7c12635378c9cb6c03d5d6cd",
+   "bytes": 1455408,
+   "sha256_before_path_sanitize": "4e83e81e3ab42ce4cf0cfafedc4dd3e6c84fa6f1f6d75e3775a66250163b9e09",
+   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length (scripts/sanitize_blend_paths.py)"
   },
   "R4M_JumpDrive.fbx": {
-   "sha256": "334a92312ec386e954acb6f3b536328bedae5e65f6f58f4fd3bab37f1f869727",
-   "bytes": 384956
+   "sha256": "73ef3be8d6a5075ebdde3064f60614f7272aec46afce97f88c8861fbb8ac77fb",
+   "bytes": 420252
   },
   "R4M_JumpDrive.glb": {
-   "sha256": "10dd977d385fe93d9bc621d9d649c53cb5fccc6a0f510ee96605061511723d39",
-   "bytes": 347144
+   "sha256": "1b69bfdfbd58343ca91a980eead8346833f64e963dfc3eb28e134cf874522e4c",
+   "bytes": 405656
   },
   "R4M_JumpDrive_colliders.glb": {
-   "sha256": "7ad2ee96361c6b7a717355d5fc497853b57187e112c0b384fed085d3697531e4",
-   "bytes": 301684
+   "sha256": "398a363a06ce5ef17d14ab56893144c8f9abf01debb7dae2dfab6509eda86d62",
+   "bytes": 360064
   },
   "R4M_JumpDrive_LOD1.fbx": {
-   "sha256": "fdfab1b0fa0495121f25cfb1ed271f6f09c04e95954e71cb5aec199b5cef2f88",
-   "bytes": 159532
+   "sha256": "9163d1c3bb7aed24cafcea8482f0a994dd15846bfa7910d6de0764cb42c9c0a3",
+   "bytes": 181820
   }
  },
  "unity_import_test": "UNITY_NOT_RUN (Unity not available in this session)",
  "unity_import_settings": "Scale Factor 1, Convert Units ON, Bake Axis Conversion ON, Animation: split clips by animation_manifest.json frame ranges (24 fps)",
  "status": "BLENDER_PASS",
- "seconds": 6.4
+ "seconds": 8.1
 }

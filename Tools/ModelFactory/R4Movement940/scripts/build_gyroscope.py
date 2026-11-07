@@ -63,8 +63,9 @@ r_.build(rotor)
 col = L.gather(ID, [hous, outer, inner, rotor])
 root = L.empty(ID + "_ROOT", None, (0, 0, 0), col, 'PLAIN_AXES', 0.1)
 hous.parent = root; outer.parent = root; inner.parent = outer; rotor.parent = inner
-socket = L.empty("Socket_Mount", root, (0, 0, L.CELL_HALF), col, 'SINGLE_ARROW', 0.08)
-L.root_props(root, "R3PartKind.Gyroscope")
+import r4port as P4; P4.port(hous, work, 1)
+socket = L.empty("Socket_Mount", root, (0, 0, P4.FACE), col, 'SINGLE_ARROW', 0.08)
+L.root_props(root, "R3PartKind.Gyroscope", version="v2-port")
 L.set_props({hous: {"role": "static U-yoke hanging from the round top mount"},
              outer: {"role": "outer gimbal ring: rotates about local X (file X)"}, inner: {"role": "inner gimbal ring (child of outer): rotates about file Z (Blender Y)"},
              rotor: {"role": "flywheel rotor (child of inner): spins about its axle, file Y at rest"}, socket: {"role": "top mount face, normal +Y"}})

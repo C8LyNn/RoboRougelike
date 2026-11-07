@@ -3,7 +3,7 @@
  "kind": "R3PartKind.Suspension",
  "game_name": "Aktywne zawieszenie (MOV009)",
  "blender": "5.2.3 LTS",
- "started": "2026-11-06 19:24:47",
+ "started": "2026-11-07 10:55:36",
  "failures": [],
  "notes": [
   "Damper body/rod/spring follow the arm analytically each frame (no constraints needed in Unity)."
@@ -11,22 +11,22 @@
  "meshes": [
   {
    "object": "R4M_Suspension_Tower",
-   "verts": 775,
-   "triangles": 1542,
-   "shells": 4,
+   "verts": 1455,
+   "triangles": 2882,
+   "shells": 10,
    "non_manifold_edges": 0,
    "boundary_edges": 0,
    "zero_area_faces": 0,
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.027037,
+   "signed_volume_m3": 0.028504,
    "uv_layers": 1,
    "uv_bounds": [
-    0.003,
-    0.003,
-    0.997,
-    0.97
+    0.004,
+    0.004,
+    0.996,
+    0.909
    ],
    "materials": [
     "Armor_Gunmetal",
@@ -34,7 +34,8 @@
     "Armor_Dark",
     "TeamColor_Red",
     "Energy_Hot",
-    "Steel_Light"
+    "Steel_Light",
+    "Hazard_Yellow"
    ],
    "ok": true
   },
@@ -146,26 +147,25 @@
   }
  ],
  "fx_meshes": [],
- "triangles_total": 6330,
+ "triangles_total": 7670,
  "triangles_fx": 0,
  "triangles_r41_reference": 11452,
  "topology_PASS": true,
  "palette": {
   "material_area_share": {
-   "Armor_Gunmetal": 0.4547,
-   "Armor_Dark": 0.263,
-   "Steel_Light": 0.1371,
-   "Armor_Plate_Light": 0.071,
-   "TeamColor_Red": 0.0571,
-   "Hazard_Yellow": 0.0148,
-   "Energy_Hot": 0.0023
+   "Armor_Dark": 0.4506,
+   "Armor_Gunmetal": 0.36,
+   "Steel_Light": 0.1147,
+   "TeamColor_Red": 0.0459,
+   "Hazard_Yellow": 0.0147,
+   "Energy_Hot": 0.0141
   },
   "family_share": {
-   "1_dark_gunmetal": 0.7176,
-   "2_light_steel": 0.2082,
-   "3_team_red": 0.0571,
-   "4_hazard_yellow": 0.0148,
-   "T_technical": 0.0023
+   "1_dark_gunmetal": 0.8106,
+   "2_light_steel": 0.1147,
+   "3_team_red": 0.0459,
+   "4_hazard_yellow": 0.0147,
+   "T_technical": 0.0141
   },
   "r41_family_share": {
    "1_dark_gunmetal": 0.7913,
@@ -224,7 +224,7 @@
   "Socket_Mount": {
    "position_file": [
     0.0,
-    0.275,
+    0.26,
     -0.0
    ],
    "forward_file": [
@@ -258,14 +258,14 @@
   ],
   "static_bounds_file": [
    [
-    -0.1515,
+    -0.2563,
     -0.385,
-    -0.235
+    -0.2563
    ],
    [
-    0.192,
-    0.27,
-    0.2099
+    0.2563,
+    0.26,
+    0.2563
    ]
   ],
   "static_cells": [
@@ -282,14 +282,14 @@
   ],
   "housing_bounds_file": [
    [
-    -0.1515,
+    -0.2563,
     -0.182,
-    -0.2072
+    -0.2563
    ],
    [
-    0.1515,
-    0.27,
-    0.2099
+    0.2563,
+    0.26,
+    0.2563
    ]
   ],
   "housing_inside_mount_cell": true,
@@ -297,14 +297,14 @@
   "moving_sweep": {
    "bounds_file": [
     [
-     -0.1515,
+     -0.2563,
      -0.4348,
      -0.2622
     ],
     [
-     0.192,
-     0.27,
-     0.2099
+     0.2563,
+     0.26,
+     0.2563
     ]
    ],
    "cells": [
@@ -498,31 +498,31 @@
   "mirror_X": {
    "static_bounds_file": [
     [
-     -0.192,
+     -0.2563,
      -0.385,
-     -0.235
+     -0.2563
     ],
     [
-     0.1515,
-     0.27,
-     0.2099
+     0.2563,
+     0.26,
+     0.2563
     ]
    ],
    "socket_file": [
     0.0,
-    0.275,
+    0.26,
     -0.0
    ],
    "socket_mirrored_file": [
     -0.0,
-    0.275,
+    0.26,
     -0.0
    ],
    "note": "L/R variant = parent scale X -1 (Unity flips winding for negative scale); geometry is closed so lighting stays correct"
   },
   "floating_shells": {
    "R4M_Suspension_Tower": {
-    "shells": 4,
+    "shells": 10,
     "isolated": 0
    },
    "R4M_Suspension_Arm": {
@@ -558,7 +558,7 @@
    "Socket_Mount": {
     "position": [
      0.0,
-     0.275,
+     0.26,
      -0.0
     ],
     "z_axis": [
@@ -648,7 +648,7 @@
  "video": "R4M_Suspension_timeline.mp4",
  "lod1": {
   "file": "R4M_Suspension_LOD1.fbx",
-  "triangles": 3162,
+  "triangles": 3832,
   "method": "DECIMATE collapse 0.5 (automatic, not hand-authored)"
  },
  "fbx_reimport": {
@@ -882,7 +882,7 @@
     "loc": [
      0.0,
      0.0,
-     0.275
+     0.26
     ],
     "rot_deg": [
      0.0,
@@ -924,30 +924,30 @@
  },
  "files": {
   "R4M_Suspension.blend": {
-   "sha256": "1009eb858b23319ee97f2fdd617f3825387d7eaa7f672cffb1baa49e94f8c836",
-   "bytes": 1359394,
-   "sha256_before_path_sanitize": "7e547e88d6311879703ca0ff9ea4b3751a3792c18edd1ccc38125a98619ad880",
-   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length; file re-opened headless in Blender 5.2.3 after patch (rc 0, frame range and objects unchanged)"
+   "sha256": "6c1c90b0b174b888e7d5086838bf66c54bd9f23b00269ee2af76b06f31bc1af3",
+   "bytes": 1461010,
+   "sha256_before_path_sanitize": "5f14d2f510ffb7d34f6f99187af724a8602cd9a1b43fe1085c7d193fba65f2c1",
+   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length (scripts/sanitize_blend_paths.py)"
   },
   "R4M_Suspension.fbx": {
-   "sha256": "c25be0f79d87ee329769fe60f90df6d1284c502e55a909f19bc753cbe7c09e93",
-   "bytes": 327388
+   "sha256": "d596114fb04729ef99aa3daef9673043acc7123382add58d281d755ce4dc4e12",
+   "bytes": 370716
   },
   "R4M_Suspension.glb": {
-   "sha256": "82cdf172e26d1c887062753db93ece62a44e9b4bdb69520c50f6afa0e889e37c",
-   "bytes": 298080
+   "sha256": "2c8cf8869e179a368af3cf4580f718a04dd877c9583944665807f58395d39d06",
+   "bytes": 361088
   },
   "R4M_Suspension_colliders.glb": {
-   "sha256": "60709d7b67297f5df4e0f67c131aca216dd56ad6ae29d63dcbbb1d65a2a58849",
-   "bytes": 299660
+   "sha256": "cfc5c1c7e71e66bf255bec0de5d27c3fdfa02d31ddbdc76c6294c1a201da6a9c",
+   "bytes": 362548
   },
   "R4M_Suspension_LOD1.fbx": {
-   "sha256": "818c822d7f417df0eda86896f7255cab2dc4cf5be4b8e653dffed5460a087ea8",
-   "bytes": 153692
+   "sha256": "351f705eb3e28e3660914db034e124ec7128f26539c1e2efc8840d4edea5edce",
+   "bytes": 179084
   }
  },
  "unity_import_test": "UNITY_NOT_RUN (Unity not available in this session)",
  "unity_import_settings": "Scale Factor 1, Convert Units ON, Bake Axis Conversion ON, Animation: split clips by animation_manifest.json frame ranges (24 fps)",
  "status": "BLENDER_PASS",
- "seconds": 8.1
+ "seconds": 10.0
 }

@@ -51,6 +51,21 @@
    "metal": 0.3,
    "rough": 0.58
   },
+  "Energy_Hot": {
+   "rgb": [
+    1.0,
+    0.38,
+    0.06
+   ],
+   "metal": 0.0,
+   "rough": 0.25,
+   "emit": [
+    1.0,
+    0.22,
+    0.02
+   ],
+   "estr": 3.5
+  },
   "Hazard_Yellow": {
    "rgb": [
     0.95,

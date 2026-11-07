@@ -3,7 +3,7 @@
  "kind": "R3PartKind.Booster",
  "game_name": "Booster (MOV001)",
  "blender": "5.2.3 LTS",
- "started": "2026-11-06 19:24:59",
+ "started": "2026-11-07 10:55:51",
  "failures": [],
  "notes": [
   "Force direction: exhaust along file -Z, thrust +Z (matches the runtime booster placed behind the block)."
@@ -11,21 +11,21 @@
  "meshes": [
   {
    "object": "R4M_Booster_Housing",
-   "verts": 2088,
-   "triangles": 4148,
-   "shells": 7,
+   "verts": 2746,
+   "triangles": 5444,
+   "shells": 13,
    "non_manifold_edges": 0,
    "boundary_edges": 0,
    "zero_area_faces": 0,
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.040965,
+   "signed_volume_m3": 0.043916,
    "uv_layers": 1,
    "uv_bounds": [
     0.005,
     0.005,
-    0.992,
+    0.993,
     0.995
    ],
    "materials": [
@@ -35,7 +35,8 @@
     "Steel_Light",
     "Barrel_Heat",
     "TeamColor_Red",
-    "Hazard_Yellow"
+    "Hazard_Yellow",
+    "Energy_Hot"
    ],
    "ok": true
   },
@@ -324,26 +325,27 @@
    "ok": true
   }
  ],
- "triangles_total": 5680,
+ "triangles_total": 6976,
  "triangles_fx": 184,
  "triangles_r41_reference": 11452,
  "topology_PASS": true,
  "palette": {
   "material_area_share": {
-   "Armor_Dark": 0.2927,
-   "Barrel_Heat": 0.2649,
-   "Armor_Gunmetal": 0.2071,
-   "Steel_Light": 0.0941,
-   "Armor_Plate_Light": 0.0786,
-   "TeamColor_Red": 0.0525,
-   "Hazard_Yellow": 0.0103
+   "Armor_Dark": 0.4445,
+   "Barrel_Heat": 0.2045,
+   "Armor_Gunmetal": 0.1754,
+   "Steel_Light": 0.0773,
+   "TeamColor_Red": 0.041,
+   "Armor_Plate_Light": 0.0377,
+   "Hazard_Yellow": 0.0102,
+   "Energy_Hot": 0.0095
   },
   "family_share": {
-   "1_dark_gunmetal": 0.4997,
-   "2_light_steel": 0.1727,
-   "3_team_red": 0.0525,
-   "4_hazard_yellow": 0.0103,
-   "T_technical": 0.2649
+   "1_dark_gunmetal": 0.6199,
+   "2_light_steel": 0.115,
+   "3_team_red": 0.041,
+   "4_hazard_yellow": 0.0102,
+   "T_technical": 0.214
   },
   "r41_family_share": {
    "1_dark_gunmetal": 0.7913,
@@ -506,7 +508,7 @@
   "Socket_Mount": {
    "position_file": [
     0.0,
-    0.275,
+    0.26,
     -0.0
    ],
    "forward_file": [
@@ -540,14 +542,14 @@
   ],
   "static_bounds_file": [
    [
-    -0.1783,
+    -0.2563,
     -0.1783,
     -0.5876
    ],
    [
-    0.1783,
-    0.27,
-    0.222
+    0.2563,
+    0.26,
+    0.2563
    ]
   ],
   "static_cells": [
@@ -564,14 +566,14 @@
   ],
   "housing_bounds_file": [
    [
-    -0.174,
+    -0.2563,
     -0.1697,
     -0.522
    ],
    [
-    0.174,
-    0.27,
-    0.222
+    0.2563,
+    0.26,
+    0.2563
    ]
   ],
   "housing_inside_mount_cell": false,
@@ -579,14 +581,14 @@
   "moving_sweep": {
    "bounds_file": [
     [
-     -0.1997,
+     -0.2563,
      -0.1997,
      -0.5882
     ],
     [
-     0.1997,
-     0.27,
-     0.222
+     0.2563,
+     0.26,
+     0.2563
     ]
    ],
    "cells": [
@@ -776,31 +778,31 @@
   "mirror_X": {
    "static_bounds_file": [
     [
-     -0.1783,
+     -0.2563,
      -0.1783,
      -0.5876
     ],
     [
-     0.1783,
-     0.27,
-     0.222
+     0.2563,
+     0.26,
+     0.2563
     ]
    ],
    "socket_file": [
     0.0,
-    0.275,
+    0.26,
     -0.0
    ],
    "socket_mirrored_file": [
     -0.0,
-    0.275,
+    0.26,
     -0.0
    ],
    "note": "L/R variant = parent scale X -1 (Unity flips winding for negative scale); geometry is closed so lighting stays correct"
   },
   "floating_shells": {
    "R4M_Booster_Housing": {
-    "shells": 7,
+    "shells": 13,
     "isolated": 0
    },
    "R4M_Booster_Turbine": {
@@ -952,7 +954,7 @@
    "Socket_Mount": {
     "position": [
      0.0,
-     0.275,
+     0.26,
      -0.0
     ],
     "z_axis": [
@@ -1080,7 +1082,7 @@
  "video": "R4M_Booster_timeline.mp4",
  "lod1": {
   "file": "R4M_Booster_LOD1.fbx",
-  "triangles": 2832,
+  "triangles": 3480,
   "method": "DECIMATE collapse 0.5 (automatic, not hand-authored)"
  },
  "fbx_reimport": {
@@ -1482,7 +1484,7 @@
     "loc": [
      0.0,
      0.0,
-     0.275
+     0.26
     ],
     "rot_deg": [
      0.0,
@@ -1524,30 +1526,30 @@
  },
  "files": {
   "R4M_Booster.blend": {
-   "sha256": "f8ab198fd46da7721023ef6fb06eba5f2883976860d8d7341bf756013c0ea688",
-   "bytes": 1371552,
-   "sha256_before_path_sanitize": "cabf5111e6111f44086530a33423b6b7fea6beb8709e276dc017faa6e3917863",
-   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length; file re-opened headless in Blender 5.2.3 after patch (rc 0, frame range and objects unchanged)"
+   "sha256": "d58d7ecd3a02ac3933f9802614008648f67bcb752e07b4c7f58831866621ac44",
+   "bytes": 1469846,
+   "sha256_before_path_sanitize": "b9f1598328f3333bb59ec8975d30188e9bcfede80da7fd4037f727869faf0592",
+   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length (scripts/sanitize_blend_paths.py)"
   },
   "R4M_Booster.fbx": {
-   "sha256": "b044323574c56063a23e98d1cbb582b6d478fc4b9cb433ad3f78916c12918b47",
-   "bytes": 483052
+   "sha256": "d9b00fabb3f627c080863f88e2306497b33acdcdb00ba409ce26ff477cb31f7f",
+   "bytes": 522300
   },
   "R4M_Booster.glb": {
-   "sha256": "706ae5d7af6fc63d1036f4b09e7dcd215e25f0e2fea70549d90678666748426f",
-   "bytes": 300268
+   "sha256": "b40c63a7a126778db0fdb3afd518beddc97102333944f73a52a87de7dee54952",
+   "bytes": 361804
   },
   "R4M_Booster_colliders.glb": {
-   "sha256": "a299d4509e41f97b5182c88d3693cb97267ad39584b7798be732d920669d1d85",
-   "bytes": 285024
+   "sha256": "a1f921a08f2e2a2aafc23bae1d9e055c45c2f51a2f0327d0975bfa34b09cd556",
+   "bytes": 346800
   },
   "R4M_Booster_LOD1.fbx": {
-   "sha256": "95fc2a0e1e7bfc727feb334b6971825aeb80a4c15fb8b2099e86fbb043cedafc",
-   "bytes": 166812
+   "sha256": "3d00f7b402f05299fb6995b248e3f7dad1e6f07aa05f0e196e40ef90c992a1db",
+   "bytes": 192348
   }
  },
  "unity_import_test": "UNITY_NOT_RUN (Unity not available in this session)",
  "unity_import_settings": "Scale Factor 1, Convert Units ON, Bake Axis Conversion ON, Animation: split clips by animation_manifest.json frame ranges (24 fps)",
  "status": "BLENDER_PASS",
- "seconds": 6.3
+ "seconds": 8.0
 }

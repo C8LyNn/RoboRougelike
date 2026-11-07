@@ -3,7 +3,7 @@
  "kind": "R3PartKind.Blink",
  "game_name": "Blink (MOV003)",
  "blender": "5.2.3 LTS",
- "started": "2026-11-06 19:25:18",
+ "started": "2026-11-07 10:56:17",
  "failures": [],
  "notes": [
   "Petal knuckles sit 3 mm above the hinge blocks (pin clearance so the petal root clears the drum when opening).",
@@ -12,16 +12,16 @@
  "meshes": [
   {
    "object": "R4M_Blink_Housing",
-   "verts": 1352,
-   "triangles": 2700,
-   "shells": 1,
+   "verts": 1948,
+   "triangles": 3872,
+   "shells": 7,
    "non_manifold_edges": 0,
    "boundary_edges": 0,
    "zero_area_faces": 0,
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.031901,
+   "signed_volume_m3": 0.032711,
    "uv_layers": 1,
    "uv_bounds": [
     0.005,
@@ -302,26 +302,26 @@
    "ok": true
   }
  ],
- "triangles_total": 3708,
+ "triangles_total": 4880,
  "triangles_fx": 544,
  "triangles_r41_reference": 11452,
  "topology_PASS": true,
  "palette": {
   "material_area_share": {
-   "Armor_Gunmetal": 0.3508,
-   "Armor_Plate_Light": 0.2813,
-   "Armor_Dark": 0.2423,
-   "Energy_Hot": 0.0848,
-   "Steel_Light": 0.0311,
-   "TeamColor_Red": 0.0064,
-   "Hazard_Yellow": 0.0032
+   "Armor_Dark": 0.4746,
+   "Armor_Gunmetal": 0.3024,
+   "Armor_Plate_Light": 0.1015,
+   "Energy_Hot": 0.0794,
+   "Steel_Light": 0.0305,
+   "Hazard_Yellow": 0.0059,
+   "TeamColor_Red": 0.0056
   },
   "family_share": {
-   "1_dark_gunmetal": 0.5931,
-   "2_light_steel": 0.3124,
-   "3_team_red": 0.0064,
-   "4_hazard_yellow": 0.0032,
-   "T_technical": 0.0848
+   "1_dark_gunmetal": 0.7771,
+   "2_light_steel": 0.1321,
+   "3_team_red": 0.0056,
+   "4_hazard_yellow": 0.0059,
+   "T_technical": 0.0794
   },
   "r41_family_share": {
    "1_dark_gunmetal": 0.7913,
@@ -353,8 +353,8 @@
    ]
   },
   "in_band": {
-   "1_dark_gunmetal": false,
-   "2_light_steel": false,
+   "1_dark_gunmetal": true,
+   "2_light_steel": true,
    "3_team_red": false,
    "4_hazard_yellow": true,
    "T_technical": true
@@ -458,7 +458,7 @@
   "Socket_Mount": {
    "position_file": [
     0.0,
-    -0.275,
+    -0.26,
     -0.0
    ],
    "forward_file": [
@@ -492,22 +492,17 @@
   ],
   "static_bounds_file": [
    [
-    -0.219,
-    -0.275,
-    -0.215
+    -0.2563,
+    -0.26,
+    -0.2563
    ],
    [
-    0.219,
+    0.2563,
     0.2125,
-    0.215
+    0.2563
    ]
   ],
   "static_cells": [
-   [
-    0,
-    -1,
-    0
-   ],
    [
     0,
     0,
@@ -516,14 +511,14 @@
   ],
   "housing_bounds_file": [
    [
-    -0.219,
-    -0.275,
-    -0.215
+    -0.2563,
+    -0.26,
+    -0.2563
    ],
    [
-    0.219,
+    0.2563,
     0.046,
-    0.215
+    0.2563
    ]
   ],
   "housing_inside_mount_cell": true,
@@ -532,24 +527,19 @@
    "bounds_file": [
     [
      -0.2756,
-     -0.275,
-     -0.2441
+     -0.26,
+     -0.2563
     ],
     [
      0.2756,
      0.225,
-     0.2441
+     0.2563
     ]
    ],
    "cells": [
     [
      -1,
      0,
-     0
-    ],
-    [
-     0,
-     -1,
      0
     ],
     [
@@ -567,11 +557,6 @@
     [
      -1,
      0,
-     0
-    ],
-    [
-     0,
-     -1,
      0
     ],
     [
@@ -597,11 +582,6 @@
      [
       0,
       0,
-      -1
-     ],
-     [
-      0,
-      0,
       0
      ]
     ]
@@ -613,11 +593,6 @@
       0,
       0,
       0
-     ],
-     [
-      0,
-      1,
-      0
      ]
     ]
    },
@@ -628,22 +603,12 @@
       0,
       0,
       0
-     ],
-     [
-      0,
-      0,
-      1
      ]
     ]
    },
    "Y90": {
     "housing_inside_cell": true,
     "static_cells": [
-     [
-      0,
-      -1,
-      0
-     ],
      [
       0,
       0,
@@ -656,11 +621,6 @@
     "static_cells": [
      [
       0,
-      -1,
-      0
-     ],
-     [
-      0,
       0,
       0
      ]
@@ -671,11 +631,6 @@
     "static_cells": [
      [
       0,
-      -1,
-      0
-     ],
-     [
-      0,
       0,
       0
      ]
@@ -684,11 +639,6 @@
    "Z90": {
     "housing_inside_cell": true,
     "static_cells": [
-     [
-      -1,
-      0,
-      0
-     ],
      [
       0,
       0,
@@ -703,11 +653,6 @@
       0,
       0,
       0
-     ],
-     [
-      0,
-      1,
-      0
      ]
     ]
    },
@@ -718,11 +663,6 @@
       0,
       0,
       0
-     ],
-     [
-      1,
-      0,
-      0
      ]
     ]
    }
@@ -730,31 +670,31 @@
   "mirror_X": {
    "static_bounds_file": [
     [
-     -0.219,
-     -0.275,
-     -0.215
+     -0.2563,
+     -0.26,
+     -0.2563
     ],
     [
-     0.219,
+     0.2563,
      0.2125,
-     0.215
+     0.2563
     ]
    ],
    "socket_file": [
     0.0,
-    -0.275,
+    -0.26,
     -0.0
    ],
    "socket_mirrored_file": [
     -0.0,
-    -0.275,
+    -0.26,
     -0.0
    ],
    "note": "L/R variant = parent scale X -1 (Unity flips winding for negative scale); geometry is closed so lighting stays correct"
   },
   "floating_shells": {
    "R4M_Blink_Housing": {
-    "shells": 1,
+    "shells": 7,
     "isolated": 0
    },
    "R4M_Blink_Crystal": {
@@ -874,7 +814,7 @@
    "Socket_Mount": {
     "position": [
      0.0,
-     -0.275,
+     -0.26,
      -0.0
     ],
     "z_axis": [
@@ -1011,7 +951,7 @@
  "video": "R4M_Blink_timeline.mp4",
  "lod1": {
   "file": "R4M_Blink_LOD1.fbx",
-  "triangles": 1854,
+  "triangles": 2440,
   "method": "DECIMATE collapse 0.5 (automatic, not hand-authored)"
  },
  "fbx_reimport": {
@@ -1374,7 +1314,7 @@
     "loc": [
      0.0,
      0.0,
-     -0.275
+     -0.26
     ],
     "rot_deg": [
      -180.0,
@@ -1416,30 +1356,30 @@
  },
  "files": {
   "R4M_Blink.blend": {
-   "sha256": "f8f492acc8e3e7cf8cc849d82f066a0df2c3993e4355b154f7d28d638e0498ed",
-   "bytes": 1197499,
-   "sha256_before_path_sanitize": "a83141323f2750e908e772c694067b2faf12dd780dd46f849adfb97c4fe27367",
-   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length; file re-opened headless in Blender 5.2.3 after patch (rc 0, frame range and objects unchanged)"
+   "sha256": "147a0f7a8eca52011d1e98bbaa6f0fd681c251466244a02315fc35b23a0a24f6",
+   "bytes": 1286414,
+   "sha256_before_path_sanitize": "061799b7f29b6ed75319189ea75b1016d4485909fe58a1c8ebea4f001b95eb43",
+   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length (scripts/sanitize_blend_paths.py)"
   },
   "R4M_Blink.fbx": {
-   "sha256": "354b7f4dc0da02e9baa44866667fa4791d05bdc767d6f6190860d3d4f61a49ed",
-   "bytes": 433660
+   "sha256": "3c3d7f2ad53178285117383aab21c6b2c9c2bf02543c510e5cace0ea2b545c07",
+   "bytes": 470236
   },
   "R4M_Blink.glb": {
-   "sha256": "11bb303eeac0f9c7d040a029623ffb6a079515e288c7ecedcfebdfbb93906b7d",
-   "bytes": 255552
+   "sha256": "e4a65c12040aefd21171810ec39b1644166bc8544045919aa6a4890f818f2a6c",
+   "bytes": 307048
   },
   "R4M_Blink_colliders.glb": {
-   "sha256": "0476f3fdc8989b00c15ce1d21fe9d5b06543b849e559d7a0b4236ef72a97e712",
-   "bytes": 218148
+   "sha256": "0fd26f62cc049abd31e477c2147b14501a9b5f2559d84c935d718f2b3c25f437",
+   "bytes": 269524
   },
   "R4M_Blink_LOD1.fbx": {
-   "sha256": "9074a369abb14176ff49edc03f674610f80855dc9888a16defbbf7c338419272",
-   "bytes": 121580
+   "sha256": "e2a43cc3ba17717f6f6046f20bb395f3d6fcdd797be8091ec8c602534f7a8493",
+   "bytes": 144428
   }
  },
  "unity_import_test": "UNITY_NOT_RUN (Unity not available in this session)",
  "unity_import_settings": "Scale Factor 1, Convert Units ON, Bake Axis Conversion ON, Animation: split clips by animation_manifest.json frame ranges (24 fps)",
  "status": "BLENDER_PASS",
- "seconds": 7.1
+ "seconds": 10.1
 }

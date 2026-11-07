@@ -35,12 +35,13 @@
    "unity_up": "+Y",
    "unity_forward": "+Z",
    "unit": "meter",
-   "version": "v1",
+   "version": "v2-port",
    "weapon_kind": "R3PartKind.Booster",
    "style": "R41_Turret_v6.1 standard (heavy industrial armour + team colour)",
    "issue": "#938"
   },
   "R4M_Booster_Housing": {
+   "mount_port": "R4 Robocraft-style port: 0.509 m square, outer face +0.260 m (block face), face-centre coupling",
    "role": "static: pylon, saddle bands, combustion chamber, bell nozzle, intake grille"
   },
   "R4M_Booster_Turbine": {

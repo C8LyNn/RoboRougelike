@@ -1,9 +1,9 @@
 {
  "id": "R4M_Gyroscope",
  "kind": "R3PartKind.Gyroscope",
- "game_name": "Żyroskop (MOV004)",
+ "game_name": "\u017byroskop (MOV004)",
  "blender": "5.2.3 LTS",
- "started": "2026-11-06 19:25:29",
+ "started": "2026-11-07 10:56:33",
  "failures": [],
  "notes": [
   "Runtime placeholder ring is d 0.598 (outside the 0.55 cell); the visual gimbal keeps every part inside the cell."
@@ -11,22 +11,22 @@
  "meshes": [
   {
    "object": "R4M_Gyroscope_Yoke",
-   "verts": 1281,
-   "triangles": 2550,
-   "shells": 3,
+   "verts": 1679,
+   "triangles": 3334,
+   "shells": 7,
    "non_manifold_edges": 0,
    "boundary_edges": 0,
    "zero_area_faces": 0,
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.003769,
+   "signed_volume_m3": 0.006488,
    "uv_layers": 1,
    "uv_bounds": [
-    0.003,
-    0.003,
-    0.997,
-    0.959
+    0.004,
+    0.004,
+    0.996,
+    0.994
    ],
    "materials": [
     "Armor_Gunmetal",
@@ -120,26 +120,26 @@
   }
  ],
  "fx_meshes": [],
- "triangles_total": 8874,
+ "triangles_total": 9658,
  "triangles_fx": 0,
  "triangles_r41_reference": 11452,
  "topology_PASS": true,
  "palette": {
   "material_area_share": {
-   "Armor_Gunmetal": 0.3079,
-   "Armor_Dark": 0.3042,
-   "Steel_Light": 0.1737,
-   "Armor_Plate_Light": 0.1447,
-   "TeamColor_Red": 0.0564,
-   "Hazard_Yellow": 0.0085,
-   "Energy_Hot": 0.0047
+   "Armor_Dark": 0.5538,
+   "Armor_Gunmetal": 0.2188,
+   "Steel_Light": 0.1171,
+   "Armor_Plate_Light": 0.0557,
+   "TeamColor_Red": 0.026,
+   "Energy_Hot": 0.0193,
+   "Hazard_Yellow": 0.0093
   },
   "family_share": {
-   "1_dark_gunmetal": 0.612,
-   "2_light_steel": 0.3184,
-   "3_team_red": 0.0564,
-   "4_hazard_yellow": 0.0085,
-   "T_technical": 0.0047
+   "1_dark_gunmetal": 0.7727,
+   "2_light_steel": 0.1728,
+   "3_team_red": 0.026,
+   "4_hazard_yellow": 0.0093,
+   "T_technical": 0.0193
   },
   "r41_family_share": {
    "1_dark_gunmetal": 0.7913,
@@ -171,14 +171,14 @@
    ]
   },
   "in_band": {
-   "1_dark_gunmetal": false,
-   "2_light_steel": false,
+   "1_dark_gunmetal": true,
+   "2_light_steel": true,
    "3_team_red": true,
    "4_hazard_yellow": true,
    "T_technical": true
   },
   "violations": [],
-  "PASS": false,
+  "PASS": true,
   "PASS_policy": "movement: locked materials/PBR enforced, family bands reported (not enforced, issue #940)"
  },
  "contract": {
@@ -198,7 +198,7 @@
   "Socket_Mount": {
    "position_file": [
     0.0,
-    0.275,
+    0.26,
     -0.0
    ],
    "forward_file": [
@@ -221,12 +221,12 @@
    [
     -0.2705,
     -0.184,
-    -0.234
+    -0.2563
    ],
    [
     0.2705,
-    0.27,
-    0.234
+    0.26,
+    0.2563
    ]
   ],
   "static_cells": [
@@ -240,12 +240,12 @@
    [
     -0.2705,
     -0.034,
-    -0.1515
+    -0.2563
    ],
    [
     0.2705,
-    0.27,
-    0.1515
+    0.26,
+    0.2563
    ]
   ],
   "housing_inside_mount_cell": true,
@@ -255,12 +255,12 @@
     [
      -0.2705,
      -0.1851,
-     -0.2349
+     -0.2563
     ],
     [
      0.2705,
-     0.27,
-     0.2349
+     0.26,
+     0.2563
     ]
    ],
    "cells": [
@@ -378,29 +378,29 @@
     [
      -0.2705,
      -0.184,
-     -0.234
+     -0.2563
     ],
     [
      0.2705,
-     0.27,
-     0.234
+     0.26,
+     0.2563
     ]
    ],
    "socket_file": [
     0.0,
-    0.275,
+    0.26,
     -0.0
    ],
    "socket_mirrored_file": [
     -0.0,
-    0.275,
+    0.26,
     -0.0
    ],
    "note": "L/R variant = parent scale X -1 (Unity flips winding for negative scale); geometry is closed so lighting stays correct"
   },
   "floating_shells": {
    "R4M_Gyroscope_Yoke": {
-    "shells": 3,
+    "shells": 7,
     "isolated": 0
    },
    "R4M_Gyroscope_OuterRing": {
@@ -432,7 +432,7 @@
    "Socket_Mount": {
     "position": [
      0.0,
-     0.275,
+     0.26,
      -0.0
     ],
     "z_axis": [
@@ -507,7 +507,7 @@
  "video": "R4M_Gyroscope_timeline.mp4",
  "lod1": {
   "file": "R4M_Gyroscope_LOD1.fbx",
-  "triangles": 4436,
+  "triangles": 4828,
   "method": "DECIMATE collapse 0.5 (automatic, not hand-authored)"
  },
  "fbx_reimport": {
@@ -728,7 +728,7 @@
     "loc": [
      0.0,
      0.0,
-     0.275
+     0.26
     ],
     "rot_deg": [
      0.0,
@@ -757,30 +757,30 @@
  },
  "files": {
   "R4M_Gyroscope.blend": {
-   "sha256": "ce79bd7d23e8532885acf13cbfe610de8f253a89a148e05257cb274e90b95d41",
-   "bytes": 1445755,
-   "sha256_before_path_sanitize": "37ccf4dc0feb542401b6eb63428d2d0849ca11ac8ee8148a8ef6fd3b43c859df",
-   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length; file re-opened headless in Blender 5.2.3 after patch (rc 0, frame range and objects unchanged)"
+   "sha256": "83af57429fb81a2a805a2a27ac9c26c0e8f2e84fd067c63e78fe1061f739212b",
+   "bytes": 1505328,
+   "sha256_before_path_sanitize": "438b0378cd69920d92f9c73ad047ab639855807d1b9d87d81647aadbc32cbc6d",
+   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length (scripts/sanitize_blend_paths.py)"
   },
   "R4M_Gyroscope.fbx": {
-   "sha256": "8809703bfa575265aa4c524144edaa8ac74f0bb70a9f83dc9e4e94604c6207e7",
-   "bytes": 407100
+   "sha256": "400657e28aea88256b76c1398dd44257db678c1a47c4c62ee14b1bc7e1683d35",
+   "bytes": 433276
   },
   "R4M_Gyroscope.glb": {
-   "sha256": "e4bfe5de54873fdd1186e081f74dc3f525bcad26048737ff89d9b979fb2b6984",
-   "bytes": 396168
+   "sha256": "a49673e3aabc607b860963340dc398af482dbe30f6a2fb98b699313d12753999",
+   "bytes": 435896
   },
   "R4M_Gyroscope_colliders.glb": {
-   "sha256": "96964805f753da0a7087b4bb3a07fa6cca6b41a1115f7cf0c7154cdbf8ca2f1f",
-   "bytes": 390724
+   "sha256": "1952aefda83b738e6409c2dc2d4363813fd5e6e6e242654220efd287badadd10",
+   "bytes": 430332
   },
   "R4M_Gyroscope_LOD1.fbx": {
-   "sha256": "3f4572e1ba9383144cd1dbcc7aae3073019b04d77a7dd2621f4ef5913edcd316",
-   "bytes": 201260
+   "sha256": "b0b49d0ba6cb4db73a321ed1d7aa1ef52a09c95fcc06cb6555e8a50bbcbf70cd",
+   "bytes": 216972
   }
  },
  "unity_import_test": "UNITY_NOT_RUN (Unity not available in this session)",
  "unity_import_settings": "Scale Factor 1, Convert Units ON, Bake Axis Conversion ON, Animation: split clips by animation_manifest.json frame ranges (24 fps)",
  "status": "BLENDER_PASS",
- "seconds": 9.9
+ "seconds": 13.1
 }

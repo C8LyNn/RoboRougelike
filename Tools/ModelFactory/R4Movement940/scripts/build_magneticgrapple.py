@@ -8,7 +8,7 @@ from r4lib import F, M, box, cyl, cone, tube, hull, prism_x, revolve, hexbolt, P
 OUT = sys.argv[sys.argv.index("--") + 1]
 L.reset_scene(); L.init_palette(); scn = bpy.context.scene
 work = new_col("_build_tmp"); ID = "R4M_MagneticGrapple"
-YM = -0.360; HEAD_F = 0.414; RH = 0.070; SPX0, SPX1, SPY, SPZ, SPR = -0.258, -0.150, 0.040, -0.040, 0.085; SHOT = 0.90
+YM = -0.360; HEAD_F = 0.414; RH = 0.070; SPX0, SPX1, SPY, SPZ, SPR = -0.240, -0.150, 0.040, -0.040, 0.085; SHOT = 0.90
 # ---- static launcher: body, top mount saddle, launch tube, spool cheeks + cover
 hous = hull(ID + "_Housing", [(x, F(f), z) for x in (-0.140, 0.140) for (f, z) in ((0.250, -0.120), (0.250, 0.120), (-0.150, -0.120), (-0.150, 0.150), (0.100, 0.150))], M["Armor_Gunmetal"], work, bevel=0.008)
 h = Part(work, "h")
@@ -36,7 +36,7 @@ spool = cyl(ID + "_Spool", 0.055, (SPX0, 0, 0), (SPX1, 0, 0), M["Armor_Dark"], w
 sp = Part(work, "s")
 for x in (SPX0, SPX1 - 0.008):
     cyl("flange", SPR, (x, 0, 0), (x + 0.008, 0, 0), M["Armor_Gunmetal"], sp.U, seg=40, bevel=0.002)
-for k in range(6):
+for k in range(5):
     x0 = SPX0 + 0.012 + k*0.0145
     tube(f"wrap{k}", 0.066, 0.054, (x0, 0, 0), (x0 + 0.0125, 0, 0), M["Steel_Light"], sp.U, seg=32)
 for k in range(4):
@@ -80,9 +80,10 @@ for k, c in enumerate(claws):
     em = L.empty(f"ClawHinge_{k + 1}", head, (0, 0, 0), col, 'SINGLE_ARROW', 0.02); em.matrix_basis = Mh
     c.parent = em; c.location = (0, 0, 0); c.rotation_euler = (0.0, 0, 0); hinges.append(em)
 cable.parent = root; cable.location = (0, F(0.300), 0); cable.scale = (1, 0.001, 1)
-socket = L.empty("Socket_Mount", root, (0, 0, L.CELL_HALF), col, 'SINGLE_ARROW', 0.08)
+import r4port as P4; P4.port(hous, work, 1)
+socket = L.empty("Socket_Mount", root, (0, 0, P4.FACE), col, 'SINGLE_ARROW', 0.08)
 muzzle = L.empty("Grapple_Muzzle", root, (0, F(0.362), 0), col, 'SINGLE_ARROW', 0.06, L.UP90)
-L.root_props(root, "R3PartKind.MagneticGrapple")
+L.root_props(root, "R3PartKind.MagneticGrapple", version="v2-port")
 L.set_props({hous: {"role": "static launcher body, saddle, launch tube, spool cheeks"}, spool: {"role": "cable spool: rotates about local X"},
              head: {"role": "electromagnet head: translates along local +Z (file forward) on Fire"}, cable: {"role": "cable visual: local Y scale = paid-out length / 1 m"},
              glow: {"role": "magnet glow FX"}, socket: {"role": "saddle top face, normal +Y"}, muzzle: {"role": "launch tube mouth, +Z = launch direction"}})

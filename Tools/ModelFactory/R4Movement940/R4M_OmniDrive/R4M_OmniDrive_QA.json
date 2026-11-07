@@ -1,9 +1,9 @@
 {
  "id": "R4M_OmniDrive",
  "kind": "R3PartKind.OmniDrive",
- "game_name": "Napęd omni (MOV005)",
+ "game_name": "Nap\u0119d omni (MOV005)",
  "blender": "5.2.3 LTS",
- "started": "2026-11-06 19:24:37",
+ "started": "2026-11-07 10:55:24",
  "failures": [],
  "notes": [
   "Rollers are separate free bodies on RollerAxle_xx empties at 45 deg; strafe = roller spin with the hub held."
@@ -11,22 +11,22 @@
  "meshes": [
   {
    "object": "R4M_OmniDrive_MotorPod",
-   "verts": 804,
-   "triangles": 1592,
-   "shells": 4,
+   "verts": 1472,
+   "triangles": 2916,
+   "shells": 8,
    "non_manifold_edges": 0,
    "boundary_edges": 0,
    "zero_area_faces": 0,
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.011574,
+   "signed_volume_m3": 0.015216,
    "uv_layers": 1,
    "uv_bounds": [
-    0.004,
-    0.004,
-    0.996,
-    0.98
+    0.005,
+    0.005,
+    0.995,
+    0.995
    ],
    "materials": [
     "Armor_Dark",
@@ -34,7 +34,8 @@
     "Armor_Gunmetal",
     "Armor_Plate_Light",
     "TeamColor_Red",
-    "Hazard_Yellow"
+    "Hazard_Yellow",
+    "Energy_Hot"
    ],
    "ok": true
   },
@@ -328,24 +329,26 @@
   }
  ],
  "fx_meshes": [],
- "triangles_total": 10494,
+ "triangles_total": 11818,
  "triangles_fx": 0,
  "triangles_r41_reference": 11452,
  "topology_PASS": true,
  "palette": {
   "material_area_share": {
-   "Armor_Plate_Light": 0.3673,
-   "Armor_Dark": 0.325,
-   "Armor_Gunmetal": 0.214,
-   "Steel_Light": 0.06,
-   "TeamColor_Red": 0.0263,
-   "Hazard_Yellow": 0.0074
+   "Armor_Dark": 0.4882,
+   "Armor_Plate_Light": 0.2422,
+   "Armor_Gunmetal": 0.1846,
+   "Steel_Light": 0.0475,
+   "TeamColor_Red": 0.0194,
+   "Energy_Hot": 0.0104,
+   "Hazard_Yellow": 0.0078
   },
   "family_share": {
-   "1_dark_gunmetal": 0.539,
-   "2_light_steel": 0.4273,
-   "3_team_red": 0.0263,
-   "4_hazard_yellow": 0.0074
+   "1_dark_gunmetal": 0.6728,
+   "2_light_steel": 0.2897,
+   "3_team_red": 0.0194,
+   "4_hazard_yellow": 0.0078,
+   "T_technical": 0.0104
   },
   "r41_family_share": {
    "1_dark_gunmetal": 0.7913,
@@ -377,7 +380,7 @@
    ]
   },
   "in_band": {
-   "1_dark_gunmetal": false,
+   "1_dark_gunmetal": true,
    "2_light_steel": false,
    "3_team_red": true,
    "4_hazard_yellow": true,
@@ -546,8 +549,8 @@
   },
   "Socket_Mount": {
    "position_file": [
-    0.16,
-    0.275,
+    0.0,
+    0.26,
     -0.0
    ],
    "forward_file": [
@@ -581,14 +584,14 @@
   ],
   "static_bounds_file": [
    [
-    -0.108,
+    -0.2563,
     -0.442,
-    -0.2284
+    -0.2563
    ],
    [
     0.266,
-    0.2735,
-    0.2284
+    0.26,
+    0.2563
    ]
   ],
   "static_cells": [
@@ -605,14 +608,14 @@
   ],
   "housing_bounds_file": [
    [
-    0.06,
+    -0.2563,
     -0.3298,
-    -0.1218
+    -0.2563
    ],
    [
     0.266,
-    0.2735,
-    0.123
+    0.26,
+    0.2563
    ]
   ],
   "housing_inside_mount_cell": false,
@@ -620,14 +623,14 @@
   "moving_sweep": {
    "bounds_file": [
     [
-     -0.108,
+     -0.2563,
      -0.4422,
-     -0.2342
+     -0.2563
     ],
     [
      0.266,
-     0.2735,
-     0.2342
+     0.26,
+     0.2563
     ]
    ],
    "cells": [
@@ -813,29 +816,29 @@
     [
      -0.266,
      -0.442,
-     -0.2284
+     -0.2563
     ],
     [
-     0.108,
-     0.2735,
-     0.2284
+     0.2563,
+     0.26,
+     0.2563
     ]
    ],
    "socket_file": [
-    0.16,
-    0.275,
+    0.0,
+    0.26,
     -0.0
    ],
    "socket_mirrored_file": [
-    -0.16,
-    0.275,
+    -0.0,
+    0.26,
     -0.0
    ],
    "note": "L/R variant = parent scale X -1 (Unity flips winding for negative scale); geometry is closed so lighting stays correct"
   },
   "floating_shells": {
    "R4M_OmniDrive_MotorPod": {
-    "shells": 4,
+    "shells": 8,
     "isolated": 0
    },
    "R4M_OmniDrive_Hub": {
@@ -1030,8 +1033,8 @@
    },
    "Socket_Mount": {
     "position": [
-     0.16,
-     0.275,
+     0.0,
+     0.26,
      -0.0
     ],
     "z_axis": [
@@ -1215,7 +1218,7 @@
  "video": "R4M_OmniDrive_timeline.mp4",
  "lod1": {
   "file": "R4M_OmniDrive_LOD1.fbx",
-  "triangles": 5246,
+  "triangles": 5908,
   "method": "DECIMATE collapse 0.5 (automatic, not hand-authored)"
  },
  "fbx_reimport": {
@@ -1654,9 +1657,9 @@
    },
    "Socket_Mount": {
     "loc": [
-     0.16,
      0.0,
-     0.275
+     0.0,
+     0.26
     ],
     "rot_deg": [
      0.0,
@@ -1698,30 +1701,30 @@
  },
  "files": {
   "R4M_OmniDrive.blend": {
-   "sha256": "3a73fa935ab1ab1fe2d3e3bca7f2ec299cf0d0c11ffad367fd46e3da9f5d8ee0",
-   "bytes": 1669311,
-   "sha256_before_path_sanitize": "e72724d0d87060d42a90f4ff011ca9ff2da0118357c58eaaa7bb2825bdaf2576",
-   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length; file re-opened headless in Blender 5.2.3 after patch (rc 0, frame range and objects unchanged)"
+   "sha256": "7a53ba32485b26b9fccf48b847a5669dcd1adf272015ecc002161708839c3484",
+   "bytes": 1792136,
+   "sha256_before_path_sanitize": "e18fe182b9c92e78b13900058b3cdab920e0bb84cd0e75bf3d49e2f58ef5ac0f",
+   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length (scripts/sanitize_blend_paths.py)"
   },
   "R4M_OmniDrive.fbx": {
-   "sha256": "5864ad02603455343075c86d54e8608612914e86dc3230b73a770a3702f611d2",
-   "bytes": 630828
+   "sha256": "b83f731598a10d8417f343d08f965fadb68266f2b7cd88c52bc31b6a69fef177",
+   "bytes": 674988
   },
   "R4M_OmniDrive.glb": {
-   "sha256": "88c4a447660b488d502b39c46c8f8c7f1aa4c258b8155c01ae4ac1b8273606ba",
-   "bytes": 443704
+   "sha256": "86f3969c443abbd59d374468589e4e93d91a4d8d3ba4fe491e2f981f80427469",
+   "bytes": 508768
   },
   "R4M_OmniDrive_colliders.glb": {
-   "sha256": "7dcbb8a84302e6ca4c81b439bab302bcb0cffebc6df72aef5e02d2e165585b03",
-   "bytes": 439616
+   "sha256": "4a5af2456f0808ebdf129c49544c1e2cbd68327b861fdc00bdd8b598d0ef58ee",
+   "bytes": 504576
   },
   "R4M_OmniDrive_LOD1.fbx": {
-   "sha256": "dac8c3eb922dfcd8dee3d52bf96134e311346098ac44d9b6cf58526bfca40b78",
-   "bytes": 266044
+   "sha256": "24e72c049dd3a3055f3961fc990791206aa2bd8a643e720b233f475ac409cc19",
+   "bytes": 293900
   }
  },
  "unity_import_test": "UNITY_NOT_RUN (Unity not available in this session)",
  "unity_import_settings": "Scale Factor 1, Convert Units ON, Bake Axis Conversion ON, Animation: split clips by animation_manifest.json frame ranges (24 fps)",
  "status": "BLENDER_PASS",
- "seconds": 7.3
+ "seconds": 8.5
 }

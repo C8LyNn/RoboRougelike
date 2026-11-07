@@ -1,9 +1,9 @@
 {
  "id": "R4M_Wheel",
  "kind": "R3PartKind.Wheel",
- "game_name": "Koło",
+ "game_name": "Ko\u0142o",
  "blender": "5.2.3 LTS",
- "started": "2026-11-06 19:23:34",
+ "started": "2026-11-07 10:54:11",
  "failures": [],
  "notes": [
   "L/R variant: mirror by transform (scale X -1); geometry is closed and axle-symmetric."
@@ -11,21 +11,21 @@
  "meshes": [
   {
    "object": "R4M_Wheel_Mount",
-   "verts": 1058,
-   "triangles": 2116,
-   "shells": 1,
+   "verts": 1678,
+   "triangles": 3336,
+   "shells": 7,
    "non_manifold_edges": 0,
    "boundary_edges": 0,
    "zero_area_faces": 0,
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.020486,
+   "signed_volume_m3": 0.02254,
    "uv_layers": 1,
    "uv_bounds": [
     0.004,
     0.004,
-    0.989,
+    0.942,
     0.996
    ],
    "materials": [
@@ -69,26 +69,26 @@
   }
  ],
  "fx_meshes": [],
- "triangles_total": 10858,
+ "triangles_total": 12078,
  "triangles_fx": 0,
  "triangles_r41_reference": 11452,
  "topology_PASS": true,
  "palette": {
   "material_area_share": {
-   "Armor_Dark": 0.5797,
-   "Armor_Gunmetal": 0.2385,
-   "Steel_Light": 0.0975,
-   "Armor_Plate_Light": 0.0502,
-   "TeamColor_Red": 0.0286,
-   "Hazard_Yellow": 0.0039,
-   "Energy_Hot": 0.0017
+   "Armor_Dark": 0.6301,
+   "Armor_Gunmetal": 0.2069,
+   "Steel_Light": 0.0908,
+   "Armor_Plate_Light": 0.0348,
+   "TeamColor_Red": 0.0262,
+   "Energy_Hot": 0.0065,
+   "Hazard_Yellow": 0.0047
   },
   "family_share": {
-   "1_dark_gunmetal": 0.8182,
-   "2_light_steel": 0.1477,
-   "3_team_red": 0.0286,
-   "4_hazard_yellow": 0.0039,
-   "T_technical": 0.0017
+   "1_dark_gunmetal": 0.837,
+   "2_light_steel": 0.1256,
+   "3_team_red": 0.0262,
+   "4_hazard_yellow": 0.0047,
+   "T_technical": 0.0065
   },
   "r41_family_share": {
    "1_dark_gunmetal": 0.7913,
@@ -160,7 +160,7 @@
   "Socket_Mount": {
    "position_file": [
     0.0,
-    0.275,
+    0.26,
     -0.0
    ],
    "forward_file": [
@@ -194,13 +194,13 @@
   ],
   "static_bounds_file": [
    [
-    -0.2545,
+    -0.2563,
     -0.65,
     -0.39
    ],
    [
-    0.2545,
-    0.2735,
+    0.2563,
+    0.26,
     0.39
    ]
   ],
@@ -238,14 +238,14 @@
   ],
   "housing_bounds_file": [
    [
-    -0.2545,
+    -0.2563,
     -0.312,
-    -0.126
+    -0.2563
    ],
    [
-    0.2545,
-    0.2735,
-    0.126
+    0.2563,
+    0.26,
+    0.2563
    ]
   ],
   "housing_inside_mount_cell": false,
@@ -253,13 +253,13 @@
   "moving_sweep": {
    "bounds_file": [
     [
-     -0.2545,
+     -0.2563,
      -0.65,
      -0.39
     ],
     [
-     0.2545,
-     0.2735,
+     0.2563,
+     0.26,
      0.39
     ]
    ],
@@ -663,31 +663,31 @@
   "mirror_X": {
    "static_bounds_file": [
     [
-     -0.2545,
+     -0.2563,
      -0.65,
      -0.39
     ],
     [
-     0.2545,
-     0.2735,
+     0.2563,
+     0.26,
      0.39
     ]
    ],
    "socket_file": [
     0.0,
-    0.275,
+    0.26,
     -0.0
    ],
    "socket_mirrored_file": [
     -0.0,
-    0.275,
+    0.26,
     -0.0
    ],
    "note": "L/R variant = parent scale X -1 (Unity flips winding for negative scale); geometry is closed so lighting stays correct"
   },
   "floating_shells": {
    "R4M_Wheel_Mount": {
-    "shells": 1,
+    "shells": 7,
     "isolated": 0
    },
    "R4M_Wheel_Rotor": {
@@ -723,7 +723,7 @@
    "Socket_Mount": {
     "position": [
      0.0,
-     0.275,
+     0.26,
      -0.0
     ],
     "z_axis": [
@@ -787,7 +787,7 @@
  "video": "R4M_Wheel_timeline.mp4",
  "lod1": {
   "file": "R4M_Wheel_LOD1.fbx",
-  "triangles": 5428,
+  "triangles": 6038,
   "method": "DECIMATE collapse 0.5 (automatic, not hand-authored)"
  },
  "fbx_reimport": {
@@ -968,7 +968,7 @@
     "loc": [
      0.0,
      0.0,
-     0.275
+     0.26
     ],
     "rot_deg": [
      0.0,
@@ -1010,30 +1010,30 @@
  },
  "files": {
   "R4M_Wheel.blend": {
-   "sha256": "3faef090642565c9230be8232051c7101462858257f52b269d70ab2e5e50bd1d",
-   "bytes": 1562170,
-   "sha256_before_path_sanitize": "af2fd1705acb86657a2dd29b14a7edbdea7dfa25e557ebcb74b5b04afc134029",
-   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length; file re-opened headless in Blender 5.2.3 after patch (rc 0, frame range and objects unchanged)"
+   "sha256": "64ebde092137adc54f0fa889d54472a7a1b2204d2a5d064cedde50e72fcb435e",
+   "bytes": 1654709,
+   "sha256_before_path_sanitize": "7f3d23ace5f70b8061736a9cd435ff4498020427d7aea59cbbac9c20a9cec225",
+   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length (scripts/sanitize_blend_paths.py)"
   },
   "R4M_Wheel.fbx": {
-   "sha256": "4b1e0f289451c68fa9281d283b440fc0e96b8332fe27b8609bedd44de113d6f7",
-   "bytes": 487484
+   "sha256": "da8c8680cceed2915c29bc8ac24fe9882f0b450751e7fc8e7970b37c64621329",
+   "bytes": 529804
   },
   "R4M_Wheel.glb": {
-   "sha256": "864d06c87868ec3de3000e9a732812ae4a1feda2c5d62d36cf5f53bb0ba7103b",
-   "bytes": 491820
+   "sha256": "97aa6ded79f0388c3651489ccf3a5a28fbe1788ca7ca27ecc2dd1b427a1562a9",
+   "bytes": 551212
   },
   "R4M_Wheel_colliders.glb": {
-   "sha256": "ebe9d11af38e376534d85be73f6f7d08a57f0f6f5e1b82027318b867cd3f1f0a",
-   "bytes": 490980
+   "sha256": "010902f5f9093b9cb2d5370fcf810555a0a1a2d4b9984d55631d5d0586a0593d",
+   "bytes": 550252
   },
   "R4M_Wheel_LOD1.fbx": {
-   "sha256": "44a4d30891c715be8d318516c633da7c2db2ad648af7d40e920be827439634f1",
-   "bytes": 251148
+   "sha256": "268c5f0f61c03b2119325b0c133b8070184d5e372de2df9511d98356f72454a2",
+   "bytes": 275580
   }
  },
  "unity_import_test": "UNITY_NOT_RUN (Unity not available in this session)",
  "unity_import_settings": "Scale Factor 1, Convert Units ON, Bake Axis Conversion ON, Animation: split clips by animation_manifest.json frame ranges (24 fps)",
  "status": "BLENDER_PASS",
- "seconds": 6.5
+ "seconds": 7.9
 }

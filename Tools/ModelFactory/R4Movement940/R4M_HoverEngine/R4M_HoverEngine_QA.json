@@ -3,7 +3,7 @@
  "kind": "R3PartKind.HoverEngine",
  "game_name": "Hover (MOV007)",
  "blender": "5.2.3 LTS",
- "started": "2026-11-06 19:24:24",
+ "started": "2026-11-07 10:55:10",
  "failures": [],
  "notes": [
   "Thrust direction: exhaust -Y (down), lift +Y; louvres are visual vanes, not a vectoring mechanic."
@@ -11,16 +11,16 @@
  "meshes": [
   {
    "object": "R4M_HoverEngine_Housing",
-   "verts": 2487,
-   "triangles": 4982,
-   "shells": 5,
+   "verts": 2811,
+   "triangles": 5610,
+   "shells": 11,
    "non_manifold_edges": 0,
    "boundary_edges": 0,
    "zero_area_faces": 0,
    "duplicate_verts": 0,
    "nonmanifold_samples_blender": [],
    "inconsistent_normals": 0,
-   "signed_volume_m3": 0.024705,
+   "signed_volume_m3": 0.02746,
    "uv_layers": 1,
    "uv_bounds": [
     0.005,
@@ -246,26 +246,26 @@
    "ok": true
   }
  ],
- "triangles_total": 6600,
+ "triangles_total": 7228,
  "triangles_fx": 572,
  "triangles_r41_reference": 11452,
  "topology_PASS": true,
  "palette": {
   "material_area_share": {
-   "Armor_Gunmetal": 0.4562,
-   "Armor_Plate_Light": 0.1982,
-   "Armor_Dark": 0.1927,
-   "Steel_Light": 0.0778,
-   "TeamColor_Red": 0.0542,
-   "Energy_Hot": 0.0171,
-   "Hazard_Yellow": 0.0037
+   "Armor_Dark": 0.3713,
+   "Armor_Gunmetal": 0.3639,
+   "Armor_Plate_Light": 0.1318,
+   "Steel_Light": 0.0637,
+   "TeamColor_Red": 0.0408,
+   "Energy_Hot": 0.0232,
+   "Hazard_Yellow": 0.0053
   },
   "family_share": {
-   "1_dark_gunmetal": 0.6489,
-   "2_light_steel": 0.276,
-   "3_team_red": 0.0542,
-   "4_hazard_yellow": 0.0037,
-   "T_technical": 0.0171
+   "1_dark_gunmetal": 0.7352,
+   "2_light_steel": 0.1955,
+   "3_team_red": 0.0408,
+   "4_hazard_yellow": 0.0053,
+   "T_technical": 0.0232
   },
   "r41_family_share": {
    "1_dark_gunmetal": 0.7913,
@@ -298,13 +298,13 @@
   },
   "in_band": {
    "1_dark_gunmetal": true,
-   "2_light_steel": false,
+   "2_light_steel": true,
    "3_team_red": true,
    "4_hazard_yellow": true,
    "T_technical": true
   },
   "violations": [],
-  "PASS": false,
+  "PASS": true,
   "PASS_policy": "movement: locked materials/PBR enforced, family bands reported (not enforced, issue #940)"
  },
  "contract": {
@@ -324,7 +324,7 @@
   "Socket_Mount": {
    "position_file": [
     0.0,
-    0.275,
+    0.26,
     -0.0
    ],
    "forward_file": [
@@ -377,7 +377,7 @@
    ],
    [
     0.262,
-    0.27,
+    0.26,
     0.262
    ]
   ],
@@ -401,7 +401,7 @@
    ],
    [
     0.262,
-    0.27,
+    0.26,
     0.262
    ]
   ],
@@ -416,7 +416,7 @@
     ],
     [
      0.262,
-     0.27,
+     0.26,
      0.262
     ]
    ],
@@ -604,25 +604,25 @@
     ],
     [
      0.262,
-     0.27,
+     0.26,
      0.262
     ]
    ],
    "socket_file": [
     0.0,
-    0.275,
+    0.26,
     -0.0
    ],
    "socket_mirrored_file": [
     -0.0,
-    0.275,
+    0.26,
     -0.0
    ],
    "note": "L/R variant = parent scale X -1 (Unity flips winding for negative scale); geometry is closed so lighting stays correct"
   },
   "floating_shells": {
    "R4M_HoverEngine_Housing": {
-    "shells": 5,
+    "shells": 11,
     "isolated": 0
    },
    "R4M_HoverEngine_Rotor": {
@@ -666,7 +666,7 @@
    "Socket_Mount": {
     "position": [
      0.0,
-     0.275,
+     0.26,
      -0.0
     ],
     "z_axis": [
@@ -800,7 +800,7 @@
  "video": "R4M_HoverEngine_timeline.mp4",
  "lod1": {
   "file": "R4M_HoverEngine_LOD1.fbx",
-  "triangles": 3298,
+  "triangles": 3612,
   "method": "DECIMATE collapse 0.5 (automatic, not hand-authored)"
  },
  "fbx_reimport": {
@@ -1086,7 +1086,7 @@
     "loc": [
      0.0,
      0.0,
-     0.275
+     0.26
     ],
     "rot_deg": [
      0.0,
@@ -1141,30 +1141,30 @@
  },
  "files": {
   "R4M_HoverEngine.blend": {
-   "sha256": "4a5e080342e3eb725c406a9a54cbd679c5966f9fc0e4e51e28f909ddeaa6669b",
-   "bytes": 1387497,
-   "sha256_before_path_sanitize": "af57c6d1c3cb17ecb10bdbffe7f2fdb3ff5e135e1936763c99f5ca0efe7f2c88",
-   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length; file re-opened headless in Blender 5.2.3 after patch (rc 0, frame range and objects unchanged)"
+   "sha256": "e03f736e89f459495958d0a49573863d1795a5fa589627ba9247af69685083d8",
+   "bytes": 1435340,
+   "sha256_before_path_sanitize": "680026df841de307a25b94324aac95c7c2d34c879b1ed5fa8a6ed666e40b43c3",
+   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length (scripts/sanitize_blend_paths.py)"
   },
   "R4M_HoverEngine.fbx": {
-   "sha256": "5986de57c84a0311c719695e0cb077284b766c10f884171c345722e40194bb98",
-   "bytes": 431276
+   "sha256": "90a83cb1187b1e4bb5ee610ef499e45a12b07459e6255f39a9056242bfa1a48c",
+   "bytes": 449676
   },
   "R4M_HoverEngine.glb": {
-   "sha256": "0a2f1105b4e2fb168bed3728c46a463b87fb7a017c65b35ee9e74bee013c397d",
-   "bytes": 351876
+   "sha256": "106f47c230c67e7c47eafbd324335e0f4a66bd37f6171b72f2ce92985903e2f3",
+   "bytes": 385624
   },
   "R4M_HoverEngine_colliders.glb": {
-   "sha256": "b6a23fc8b1c6253cbb11f4690cee0b0df228fc5a89e845a35f4ef3dd5ddd885f",
-   "bytes": 322860
+   "sha256": "873dc75fb7348ca8dee489e6e93b671141c7fdb398b7003abbae382df8cea911",
+   "bytes": 356492
   },
   "R4M_HoverEngine_LOD1.fbx": {
-   "sha256": "4d037795cc72f5416fe6e319f019831ea040d5710d25b0c634c70c5f7f70ca94",
-   "bytes": 177580
+   "sha256": "ca0fab68261a6f536246eb9a1a82779816022ba5add590c0881143ab86161373",
+   "bytes": 189644
   }
  },
  "unity_import_test": "UNITY_NOT_RUN (Unity not available in this session)",
  "unity_import_settings": "Scale Factor 1, Convert Units ON, Bake Axis Conversion ON, Animation: split clips by animation_manifest.json frame ranges (24 fps)",
  "status": "BLENDER_PASS",
- "seconds": 8.4
+ "seconds": 9.3
 }

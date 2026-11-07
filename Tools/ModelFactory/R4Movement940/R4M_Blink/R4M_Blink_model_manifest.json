@@ -32,12 +32,13 @@
    "unity_up": "+Y",
    "unity_forward": "+Z",
    "unit": "meter",
-   "version": "v1",
+   "version": "v2-port",
    "weapon_kind": "R3PartKind.Blink",
    "style": "R41_Turret_v6.1 standard (heavy industrial armour + team colour)",
    "issue": "#938"
   },
   "R4M_Blink_Housing": {
+   "mount_port": "R4 Robocraft-style port: 0.509 m square, outer face -0.260 m (block face), face-centre coupling",
    "role": "static hex reactor drum; mounts from BELOW (Socket_Mount on the -Y face)"
   },
   "R4M_Blink_Crystal": {

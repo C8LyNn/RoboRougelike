@@ -75,9 +75,10 @@ for k, pt in enumerate(petals):
     em = L.empty(f"PetalHinge_{k + 1}", root, (0, 0, 0), col, 'SINGLE_ARROW', 0.03); em.matrix_basis = Mh
     pt.parent = em; pt.location = (0, 0, 0); hinges.append(em)
 for o, y0 in ((flame, YE), (core, 0.300)): o.data.transform(Matrix.Translation((0, -y0, 0))); o.parent = root; o.location = (0, y0, 0); o.scale = (0.001,)*3
-socket = L.empty("Socket_Mount", root, (0, 0, L.CELL_HALF), col, 'SINGLE_ARROW', 0.08)
+import r4port as P4; P4.port(hous, work, 1)
+socket = L.empty("Socket_Mount", root, (0, 0, P4.FACE), col, 'SINGLE_ARROW', 0.08)
 nozzle = L.empty("Thruster_Nozzle", root, (0, YE, 0), col, 'SINGLE_ARROW', 0.08, (math.radians(-90), 0, 0))
-L.root_props(root, "R3PartKind.Booster")
+L.root_props(root, "R3PartKind.Booster", version="v2-port")
 L.set_props({hous: {"role": "static: pylon, saddle bands, combustion chamber, bell nozzle, intake grille"},
              tur: {"role": "intake turbine: rotates about local Z (file forward axis)"},
              flame: {"role": "exhaust flame FX (rear, file -Z) - idle scale 0.001"}, core: {"role": "chamber glow FX seen through the throat"},
