@@ -9,7 +9,7 @@ namespace RoboRougelike.R4_1
     public sealed class R4WheelArt : MonoBehaviour
     {
         const float RadiusMeters=.39f;
-        Transform rotor;
+        Transform rotor,visualRoot;
         Rigidbody owner;
 
         public static R4WheelArt TryAttach(Transform block,Transform physicalWheel)
@@ -28,9 +28,16 @@ namespace RoboRougelike.R4_1
             var renderer=physicalWheel.GetComponent<Renderer>();
             if(spinning==null||socket==null||renderer==null){Destroy(visual);return null;}
             visual.transform.localScale/=scale.x;
-            var view=block.gameObject.AddComponent<R4WheelArt>();view.rotor=spinning;
+            var view=block.gameObject.AddComponent<R4WheelArt>();view.rotor=spinning;view.visualRoot=visual.transform;
             view.owner=block.GetComponentInParent<Rigidbody>(true);renderer.enabled=false;
             return view;
+        }
+
+        public bool AttachToSteeringPivot(Transform pivot)
+        {
+            if(visualRoot==null||pivot==null)return false;
+            visualRoot.SetParent(pivot,true);
+            return true;
         }
 
         void LateUpdate()
