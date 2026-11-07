@@ -1,0 +1,36 @@
+{
+    "status": "FAIL",
+    "sourceCommit": "2af5ba7a3c3476fd48dff8d391e6103c752f7847",
+    "method": "QA fixture calls PrepareUnifiedRun and StartNextEncounter; real route menu, no simulated clicks",
+    "error": "System.InvalidOperationException: Expected two actual route offers\r\n  at RoboRougelike.R1.Route2af5QACapture+<Capture>d__8.MoveNext () [0x00556] in <aa00a88ad6cb4122a4535a3f57cac120>:0 \r\n  at RoboRougelike.R1.Route2af5QACapture+<Run>d__7.MoveNext () [0x00033] in <aa00a88ad6cb4122a4535a3f57cac120>:0 ",
+    "persistentDataPath": "[USER_HOME]/AppData/LocalLow/RRL_Route2af5_CleanQA_20261107/Route2af5PortraitFixture",
+    "graphics": "Direct3D12 / NVIDIA GeForce RTX 5080",
+    "screenshot": "",
+    "vehicle": "",
+    "route0": "",
+    "route1": "",
+    "screenWidth": 0,
+    "screenHeight": 0,
+    "captureWidth": 0,
+    "captureHeight": 0,
+    "partCount": 0,
+    "offerCount": 1,
+    "seed": 2026,
+    "routeReady": true,
+    "canDeploy": false,
+    "correctResolution": false,
+    "cameraRect": {
+        "serializedVersion": "2",
+        "x": 0.0,
+        "y": 0.0,
+        "width": 0.0,
+        "height": 0.0
+    },
+    "cameraPixelRect": {
+        "serializedVersion": "2",
+        "x": 0.0,
+        "y": 0.0,
+        "width": 0.0,
+        "height": 0.0
+    }
+}
