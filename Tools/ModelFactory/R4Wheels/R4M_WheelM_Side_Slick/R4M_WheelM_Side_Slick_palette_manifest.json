@@ -1,0 +1,98 @@
+{
+ "id": "R4M_WheelM_Side_Slick",
+ "source": "R41_Turret_v6.1 locked palette (values read from the real FBX by r4_style_probe.py)",
+ "four_dominant_families": {
+  "1_dark_gunmetal": [
+   "Armor_Dark",
+   "Armor_Gunmetal"
+  ],
+  "2_light_steel": [
+   "Armor_Plate_Light",
+   "Steel_Light"
+  ],
+  "3_team_red": [
+   "TeamColor_Red"
+  ],
+  "4_hazard_yellow": [
+   "Hazard_Yellow"
+  ]
+ },
+ "technical_slots": [
+  "Energy_Hot",
+  "Barrel_Heat",
+  "Sensor_Eye_Red",
+  "Muzzle_Flash"
+ ],
+ "materials_used": {
+  "Armor_Dark": {
+   "rgb": [
+    0.035,
+    0.038,
+    0.045
+   ],
+   "metal": 0.55,
+   "rough": 0.45
+  },
+  "Armor_Gunmetal": {
+   "rgb": [
+    0.16,
+    0.17,
+    0.18
+   ],
+   "metal": 0.35,
+   "rough": 0.55
+  },
+  "Armor_Plate_Light": {
+   "rgb": [
+    0.27,
+    0.28,
+    0.285
+   ],
+   "metal": 0.3,
+   "rough": 0.58
+  },
+  "Energy_Hot": {
+   "rgb": [
+    1.0,
+    0.38,
+    0.06
+   ],
+   "metal": 0.0,
+   "rough": 0.25,
+   "emit": [
+    1.0,
+    0.22,
+    0.02
+   ],
+   "estr": 3.5
+  },
+  "Hazard_Yellow": {
+   "rgb": [
+    0.95,
+    0.6,
+    0.03
+   ],
+   "metal": 0.15,
+   "rough": 0.5
+  },
+  "Steel_Light": {
+   "rgb": [
+    0.55,
+    0.62,
+    0.68
+   ],
+   "metal": 0.9,
+   "rough": 0.25
+  },
+  "TeamColor_Red": {
+   "rgb": [
+    0.6,
+    0.035,
+    0.025
+   ],
+   "metal": 0.35,
+   "rough": 0.38
+  }
+ },
+ "team_colour_note": "TeamColor_Red is the only per-team tint slot (as R41)."
+}

@@ -1,0 +1,44 @@
+{
+ "id": "R4M_WheelL_Side_Offroad",
+ "kind": "R3PartKind.Wheel",
+ "fps": 24,
+ "frame_range": [
+  1,
+  103
+ ],
+ "note": "One baked take in FBX/GLB (master timeline). Unity: split into clips by these frame ranges; loop=true clips are seamless.",
+ "clips": [
+  {
+   "name": "Idle",
+   "start": 1,
+   "end": 25,
+   "loop": true,
+   "desc": "parked"
+  },
+  {
+   "name": "Roll",
+   "start": 27,
+   "end": 51,
+   "loop": true,
+   "desc": "rolling forward, 1 rev / 24 f (drive from wheel angular velocity)"
+  },
+  {
+   "name": "Reverse",
+   "start": 53,
+   "end": 77,
+   "loop": true,
+   "desc": "rolling backwards, 1 rev / 24 f"
+  },
+  {
+   "name": "Brake",
+   "start": 79,
+   "end": 103,
+   "loop": false,
+   "desc": "braking from loop speed to stop"
+  }
+ ],
+ "animated_nodes": [
+  "R4M_WheelL_Side_Offroad_Rotor"
+ ],
+ "gameplay": "Animation is visual only: it adds no gameplay capability, shot count or timing authority."
+}

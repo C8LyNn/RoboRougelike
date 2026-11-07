@@ -1,0 +1,17 @@
+["R4M_WheelS_Fork_Road", "BLENDER_PASS", [], 9376, ""]
+["R4M_WheelS_Caster_Slick", "BLENDER_PASS", [], 8548, ""]
+["R4M_WheelM_Side_Offroad", "BLENDER_PASS", [], 9110, ""]
+["R4M_WheelM_Side_Slick", "BLENDER_PASS", [], 7778, ""]
+["R4M_WheelM_Steer_Road", "BLENDER_PASS", [], 10584, ""]
+["R4M_WheelM_SwingArm_Offroad", "BLENDER_PASS", [], 9800, ""]
+["R4M_WheelM_Twin_Road", "BLENDER_PASS", [], 17782, ""]
+["R4M_WheelM_Fork_Spiked", "HOLD", ["topology"], 11710, ""]
+["R4M_WheelL_Side_Offroad", "BLENDER_PASS", [], 10710, ""]
+["R4M_WheelL_Fork_Balloon", "BLENDER_PASS", [], 10490, ""]
+["R4M_WheelL_Steer_Offroad", "BLENDER_PASS", [], 11372, ""]
+["R4M_WheelXL_Side_Monster", "BLENDER_PASS", [], 7400, ""]
+BATCH_DONE R4M_WheelS_Fork_Road,R4M_WheelS_Caster_Slick,R4M_WheelM_Side_Offroad,R4M_WheelM_Side_Slick,R4M_WheelM_Steer_Road,R4M_WheelM_SwingArm_Offroad,R4M_WheelM_Twin_Road,R4M_WheelM_Fork_Spiked,R4M_WheelL_Side_Offroad,R4M_WheelL_Fork_Balloon,R4M_WheelL_Steer_Offroad,R4M_WheelXL_Side_Monster
+["R4M_WheelM_Fork_Spiked", "HOLD", ["topology"], 11750, ""]
+BATCH_DONE R4M_WheelM_Fork_Spiked
+["R4M_WheelM_Fork_Spiked", "BLENDER_PASS", [], 11436, ""]
+BATCH_DONE R4M_WheelM_Fork_Spiked
