@@ -263,7 +263,7 @@ namespace RoboRougelike.R1
             if(raceRequested)BeginCheckpointRace();
             else if(roadRequested)BeginRoadChallenge();
             else if(reactorRequested)BeginReactorActivity();
-            else Encounter.Spawn(enemyTemplate, Player.transform, Definition.Encounters[Progress.EncounterIndex],Salvage,runId+"/encounter/"+Progress.EncounterIndex,ld02Requested?LD02EnemySpawns:mapgenRequested?GeneratedWorld.EnemySpawns:null);
+            else Encounter.Spawn(enemyTemplate, Player.transform, Definition.Encounters[Progress.EncounterIndex],Salvage,runId+"/encounter/"+Progress.EncounterIndex,ld02Requested?LD02EnemySpawns:mapgenRequested?GeneratedWorld.EnemySpawns:null,Mathf.Clamp(1+Progress.EncounterIndex/2,1,3));
             yield return null;
             Transitioning = false; SetSimulation(true);
             Debug.Log("[R1] Starcie " + (Progress.EncounterIndex + 1) + ": przeciwników=" + Encounter.AliveCount);
