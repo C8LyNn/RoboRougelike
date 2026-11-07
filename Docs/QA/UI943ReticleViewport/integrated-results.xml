@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="27" result="Passed" total="27" passed="27" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-07 08:42:54Z" end-time="2026-11-07 08:42:56Z" duration="1,4212439">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1475" result="Passed" start-time="2026-11-07 08:42:54Z" end-time="2026-11-07 08:42:56Z" duration="1.421244" total="27" passed="27" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1839" name="Assembly-CSharp-Editor.dll" fullname="[USER_HOME]/Desktop/Prototypy/RoboRougelike-PlayQA-97f8/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="682" result="Passed" start-time="2026-11-07 08:42:54Z" end-time="2026-11-07 08:42:56Z" duration="1.346836" total="27" passed="27" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="55492" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="1050" name="Camera275ConstructionTests" fullname="Camera275ConstructionTests" classname="Camera275ConstructionTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-11-07 08:42:54Z" end-time="2026-11-07 08:42:56Z" duration="1.043022" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1057" name="LosingLastWeaponClearsReticleState" fullname="Camera275ConstructionTests.LosingLastWeaponClearsReticleState" methodname="LosingLastWeaponClearsReticleState" classname="Camera275ConstructionTests" runstate="Runnable" seed="501579093" result="Passed" start-time="2026-11-07 08:42:45Z" end-time="2026-11-07 08:42:51Z" duration="6.420957" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1056" name="OverlappedMuzzleIsNotReportedClear" fullname="Camera275ConstructionTests.OverlappedMuzzleIsNotReportedClear" methodname="OverlappedMuzzleIsNotReportedClear" classname="Camera275ConstructionTests" runstate="Runnable" seed="1617458297" result="Passed" start-time="2026-11-07 08:42:51Z" end-time="2026-11-07 08:42:56Z" duration="4.489054" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1325" name="PerWeaponReticleTests" fullname="PerWeaponReticleTests" classname="PerWeaponReticleTests" runstate="Runnable" testcasecount="22" result="Passed" start-time="2026-11-07 08:42:56Z" end-time="2026-11-07 08:42:56Z" duration="0.269235" total="22" passed="22" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1330" name="AreaWeaponsAndBarrelsFacingAwayStillHaveDistinctIndicators" fullname="PerWeaponReticleTests.AreaWeaponsAndBarrelsFacingAwayStillHaveDistinctIndicators" methodname="AreaWeaponsAndBarrelsFacingAwayStillHaveDistinctIndicators" classname="PerWeaponReticleTests" runstate="Runnable" seed="727741245" result="Passed" start-time="2026-11-07 08:42:56Z" end-time="2026-11-07 08:42:56Z" duration="0.022515" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="1341" name="CameraProjectionUsesItsActualPixelRectangle" fullname="PerWeaponReticleTests.CameraProjectionUsesItsActualPixelRectangle" classname="PerWeaponReticleTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-07 08:42:56Z" end-time="2026-11-07 08:42:56Z" duration="0.036687" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1338" name="CameraProjectionUsesItsActualPixelRectangle(1024,768,128,96,512,384,0.2f,0.8f)" fullname="PerWeaponReticleTests.CameraProjectionUsesItsActualPixelRectangle(1024,768,128,96,512,384,0.2f,0.8f)" methodname="CameraProjectionUsesItsActualPixelRectangle" classname="PerWeaponReticleTests" runstate="Runnable" seed="1267209536" result="Passed" start-time="2026-11-07 08:42:56Z" end-time="2026-11-07 08:42:56Z" duration="0.013133" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1339" name="CameraProjectionUsesItsActualPixelRectangle(768,1024,96,192,576,640,0.8f,0.2f)" fullname="PerWeaponReticleTests.CameraProjectionUsesItsActualPixelRectangle(768,1024,96,192,576,640,0.8f,0.2f)" methodname="CameraProjectionUsesItsActualPixelRectangle" classname="PerWeaponReticleTests" runstate="Runnable" seed="352934915" result="Passed" start-time="2026-11-07 08:42:56Z" end-time="2026-11-07 08:42:56Z" duration="0.010025" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1340" name="CameraProjectionUsesItsActualPixelRectangle(1920,1080,200,90,1280,720,0.01f,0.99f)" fullname="PerWeaponReticleTests.CameraProjectionUsesItsActualPixelRectangle(1920,1080,200,90,1280,720,0.01f,0.99f)" methodname="CameraProjectionUsesItsActualPixelRectangle" classname="PerWeaponReticleTests" runstate="Runnable" seed="1628895608" result="Passed" start-time="2026-11-07 08:42:56Z" end-time="2026-11-07 08:42:56Z" duration="0.012330" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+        </test-suite>
+        <test-case id="1328" name="DetachedOrDestroyedWeaponsDoNotLeaveStaleMarkers" fullname="PerWeaponReticleTests.DetachedOrDestroyedWeaponsDoNotLeaveStaleMarkers" methodname="DetachedOrDestroyedWeaponsDoNotLeaveStaleMarkers" classname="PerWeaponReticleTests" runstate="Runnable" seed="418968989" result="Passed" start-time="2026-11-07 08:42:56Z" end-time="2026-11-07 08:42:56Z" duration="0.011574" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1327" name="EachLiveGunHasItsOwnMarkerThatConvergesAsItsBarrelTurns" fullname="PerWeaponReticleTests.EachLiveGunHasItsOwnMarkerThatConvergesAsItsBarrelTurns" methodname="EachLiveGunHasItsOwnMarkerThatConvergesAsItsBarrelTurns" classname="PerWeaponReticleTests" runstate="Runnable" seed="1199969279" result="Passed" start-time="2026-11-07 08:42:56Z" end-time="2026-11-07 08:42:56Z" duration="0.012084" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1329" name="ObstacleAndOutOfRangeAreReportedForTheSpecificWeapon" fullname="PerWeaponReticleTests.ObstacleAndOutOfRangeAreReportedForTheSpecificWeapon" methodname="ObstacleAndOutOfRangeAreReportedForTheSpecificWeapon" classname="PerWeaponReticleTests" runstate="Runnable" seed="1660520706" result="Passed" start-time="2026-11-07 08:42:56Z" end-time="2026-11-07 08:42:56Z" duration="0.011816" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="1348" name="OffscreenMarkersClampToVisibleCameraViewport" fullname="PerWeaponReticleTests.OffscreenMarkersClampToVisibleCameraViewport" classname="PerWeaponReticleTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-11-07 08:42:56Z" end-time="2026-11-07 08:42:56Z" duration="0.063933" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1342" name="OffscreenMarkersClampToVisibleCameraViewport(768,1024,0,0,768,1024,0.5f,-0.1f,384.0f,996.4f)" fullname="PerWeaponReticleTests.OffscreenMarkersClampToVisibleCameraViewport(768,1024,0,0,768,1024,0.5f,-0.1f,384.0f,996.4f)" methodname="OffscreenMarkersClampToVisibleCameraViewport" classname="PerWeaponReticleTests" runstate="Runnable" seed="1943481282" result="Passed" start-time="2026-11-07 08:42:56Z" end-time="2026-11-07 08:42:56Z" duration="0.011811" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1343" name="OffscreenMarkersClampToVisibleCameraViewport(1024,768,128,96,512,384,-0.2f,0.5f,164.8f,480.0f)" fullname="PerWeaponReticleTests.OffscreenMarkersClampToVisibleCameraViewport(1024,768,128,96,512,384,-0.2f,0.5f,164.8f,480.0f)" methodname="OffscreenMarkersClampToVisibleCameraViewport" classname="PerWeaponReticleTests" runstate="Runnable" seed="130020112" result="Passed" start-time="2026-11-07 08:42:56Z" end-time="2026-11-07 08:42:56Z" duration="0.010607" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1344" name="OffscreenMarkersClampToVisibleCameraViewport(1024,768,128,96,512,384,1.2f,0.5f,603.2f,480.0f)" fullname="PerWeaponReticleTests.OffscreenMarkersClampToVisibleCameraViewport(1024,768,128,96,512,384,1.2f,0.5f,603.2f,480.0f)" methodname="OffscreenMarkersClampToVisibleCameraViewport" classname="PerWeaponReticleTests" runstate="Runnable" seed="1327942609" result="Passed" start-time="2026-11-07 08:42:56Z" end-time="2026-11-07 08:42:56Z" duration="0.010666" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1345" name="OffscreenMarkersClampToVisibleCameraViewport(1024,768,-100,0,500,768,-0.2f,0.5f,36.8f,384.0f)" fullname="PerWeaponReticleTests.OffscreenMarkersClampToVisibleCameraViewport(1024,768,-100,0,500,768,-0.2f,0.5f,36.8f,384.0f)" methodname="OffscreenMarkersClampToVisibleCameraViewport" classname="PerWeaponReticleTests" runstate="Runnable" seed="582192081" result="Passed" start-time="2026-11-07 08:42:56Z" end-time="2026-11-07 08:42:56Z" duration="0.010112" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1346" name="OffscreenMarkersClampToVisibleCameraViewport(1024,768,100,100,40,50,-0.2f,0.5f,120.0f,643.0f)" fullname="PerWeaponReticleTests.OffscreenMarkersClampToVisibleCameraViewport(1024,768,100,100,40,50,-0.2f,0.5f,120.0f,643.0f)" methodname="OffscreenMarkersClampToVisibleCameraViewport" classname="PerWeaponReticleTests" runstate="Runnable" seed="1726761992" result="Passed" start-time="2026-11-07 08:42:56Z" end-time="2026-11-07 08:42:56Z" duration="0.009613" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1347" name="OffscreenMarkersClampToVisibleCameraViewport(1920,1080,200,90,1280,720,0.5f,1.2f,840.0f,339.0f)" fullname="PerWeaponReticleTests.OffscreenMarkersClampToVisibleCameraViewport(1920,1080,200,90,1280,720,0.5f,1.2f,840.0f,339.0f)" methodname="OffscreenMarkersClampToVisibleCameraViewport" classname="PerWeaponReticleTests" runstate="Runnable" seed="428259925" result="Passed" start-time="2026-11-07 08:42:56Z" end-time="2026-11-07 08:42:56Z" duration="0.009417" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+        </test-suite>
+        <test-suite type="ParameterizedMethod" id="1351" name="OnscreenLabelCanRemainInScreenLetterboxMargin" fullname="PerWeaponReticleTests.OnscreenLabelCanRemainInScreenLetterboxMargin" classname="PerWeaponReticleTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-07 08:42:56Z" end-time="2026-11-07 08:42:56Z" duration="0.022736" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1349" name="OnscreenLabelCanRemainInScreenLetterboxMargin(1024,768,0.5f,0.1f)" fullname="PerWeaponReticleTests.OnscreenLabelCanRemainInScreenLetterboxMargin(1024,768,0.5f,0.1f)" methodname="OnscreenLabelCanRemainInScreenLetterboxMargin" classname="PerWeaponReticleTests" runstate="Runnable" seed="2078474143" result="Passed" start-time="2026-11-07 08:42:56Z" end-time="2026-11-07 08:42:56Z" duration="0.010900" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1350" name="OnscreenLabelCanRemainInScreenLetterboxMargin(768,1024,0.5f,0.1f)" fullname="PerWeaponReticleTests.OnscreenLabelCanRemainInScreenLetterboxMargin(768,1024,0.5f,0.1f)" methodname="OnscreenLabelCanRemainInScreenLetterboxMargin" classname="PerWeaponReticleTests" runstate="Runnable" seed="132545811" result="Passed" start-time="2026-11-07 08:42:56Z" end-time="2026-11-07 08:42:56Z" duration="0.010957" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+        </test-suite>
+        <test-suite type="ParameterizedMethod" id="1337" name="OnscreenMarkerRemainsAtCameraProjection" fullname="PerWeaponReticleTests.OnscreenMarkerRemainsAtCameraProjection" classname="PerWeaponReticleTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-07 08:42:56Z" end-time="2026-11-07 08:42:56Z" duration="0.046521" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1333" name="OnscreenMarkerRemainsAtCameraProjection(1920,1080,0.5f,0.5f)" fullname="PerWeaponReticleTests.OnscreenMarkerRemainsAtCameraProjection(1920,1080,0.5f,0.5f)" methodname="OnscreenMarkerRemainsAtCameraProjection" classname="PerWeaponReticleTests" runstate="Runnable" seed="1549698906" result="Passed" start-time="2026-11-07 08:42:56Z" end-time="2026-11-07 08:42:56Z" duration="0.011717" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1334" name="OnscreenMarkerRemainsAtCameraProjection(1920,1080,0.01f,0.5f)" fullname="PerWeaponReticleTests.OnscreenMarkerRemainsAtCameraProjection(1920,1080,0.01f,0.5f)" methodname="OnscreenMarkerRemainsAtCameraProjection" classname="PerWeaponReticleTests" runstate="Runnable" seed="776645186" result="Passed" start-time="2026-11-07 08:42:56Z" end-time="2026-11-07 08:42:56Z" duration="0.011136" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1335" name="OnscreenMarkerRemainsAtCameraProjection(1024,768,0.5f,0.1f)" fullname="PerWeaponReticleTests.OnscreenMarkerRemainsAtCameraProjection(1024,768,0.5f,0.1f)" methodname="OnscreenMarkerRemainsAtCameraProjection" classname="PerWeaponReticleTests" runstate="Runnable" seed="1316793315" result="Passed" start-time="2026-11-07 08:42:56Z" end-time="2026-11-07 08:42:56Z" duration="0.010473" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1336" name="OnscreenMarkerRemainsAtCameraProjection(768,1024,0.5f,0.1f)" fullname="PerWeaponReticleTests.OnscreenMarkerRemainsAtCameraProjection(768,1024,0.5f,0.1f)" methodname="OnscreenMarkerRemainsAtCameraProjection" classname="PerWeaponReticleTests" runstate="Runnable" seed="1764306924" result="Passed" start-time="2026-11-07 08:42:56Z" end-time="2026-11-07 08:42:56Z" duration="0.011757" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+        </test-suite>
+        <test-case id="1331" name="RocketIndicatorAvoidsOwnProjectileFlickerButRecognizesSolidDebris" fullname="PerWeaponReticleTests.RocketIndicatorAvoidsOwnProjectileFlickerButRecognizesSolidDebris" methodname="RocketIndicatorAvoidsOwnProjectileFlickerButRecognizesSolidDebris" classname="PerWeaponReticleTests" runstate="Runnable" seed="484516842" result="Passed" start-time="2026-11-07 08:42:56Z" end-time="2026-11-07 08:42:56Z" duration="0.014177" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1326" name="TwelveConvergedWeaponsHaveDistinctReadableLabelOffsets" fullname="PerWeaponReticleTests.TwelveConvergedWeaponsHaveDistinctReadableLabelOffsets" methodname="TwelveConvergedWeaponsHaveDistinctReadableLabelOffsets" classname="PerWeaponReticleTests" runstate="Runnable" seed="54145422" result="Passed" start-time="2026-11-07 08:42:56Z" end-time="2026-11-07 08:42:56Z" duration="0.013275" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1332" name="ViewportMarkersMapCorrectlyToLetterboxedHud" fullname="PerWeaponReticleTests.ViewportMarkersMapCorrectlyToLetterboxedHud" methodname="ViewportMarkersMapCorrectlyToLetterboxedHud" classname="PerWeaponReticleTests" runstate="Runnable" seed="612954706" result="Passed" start-time="2026-11-07 08:42:56Z" end-time="2026-11-07 08:42:56Z" duration="0.011012" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1692" name="UI943BonusDescriptionTests" fullname="UI943BonusDescriptionTests" classname="UI943BonusDescriptionTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-11-07 08:42:56Z" end-time="2026-11-07 08:42:56Z" duration="0.006497" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1693" name="LoadedBonusDescriptionsMatchTheActualSingleCellReward" fullname="UI943BonusDescriptionTests.LoadedBonusDescriptionsMatchTheActualSingleCellReward" methodname="LoadedBonusDescriptionsMatchTheActualSingleCellReward" classname="UI943BonusDescriptionTests" runstate="Runnable" seed="7481362" result="Passed" start-time="2026-11-07 08:42:56Z" end-time="2026-11-07 08:42:56Z" duration="0.005507" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1755" name="UI943PortraitRouteTests" fullname="UI943PortraitRouteTests" classname="UI943PortraitRouteTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-07 08:42:56Z" end-time="2026-11-07 08:42:56Z" duration="0.002308" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1757" name="BothRouteChoicesFitWithoutOverlapAndHaveReadableButtons" fullname="UI943PortraitRouteTests.BothRouteChoicesFitWithoutOverlapAndHaveReadableButtons" methodname="BothRouteChoicesFitWithoutOverlapAndHaveReadableButtons" classname="UI943PortraitRouteTests" runstate="Runnable" seed="778600792" result="Passed" start-time="2026-11-07 08:42:56Z" end-time="2026-11-07 08:42:56Z" duration="0.000958" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1756" name="PortraitRouteIsLimitedToItsOwnUnobscuredScreen" fullname="UI943PortraitRouteTests.PortraitRouteIsLimitedToItsOwnUnobscuredScreen" methodname="PortraitRouteIsLimitedToItsOwnUnobscuredScreen" classname="UI943PortraitRouteTests" runstate="Runnable" seed="1033375055" result="Passed" start-time="2026-11-07 08:42:56Z" end-time="2026-11-07 08:42:56Z" duration="0.000468" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[Saving results to: [USER_HOME]/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
