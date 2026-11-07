@@ -41,7 +41,10 @@ public sealed class EnemyWheelDriveInputTests
             Assert.That(visual,Is.Not.Null);Assert.That(visual.GetComponent<Collider>(),Is.Null);
             Assert.That(part.GetComponent<Collider>(),Is.Not.Null);
             Assert.That(part.GetComponent<Renderer>().enabled,Is.False);
-            Assert.That(visual.GetComponent<Renderer>().enabled,Is.True);
+            var art=part.GetComponent<RoboRougelike.R4_1.R4EnemyWheelArt>();
+            Assert.That(art,Is.Not.Null,"The supplied model replaces the old tread rendering.");
+            Assert.That(visual.GetComponent<Renderer>().enabled,Is.False,"Fallback is retained but not drawn twice.");
+            Assert.That(art.GetComponentsInChildren<Renderer>().Length,Is.GreaterThan(0));
         }
         finally{Object.DestroyImmediate(root);}
     }
