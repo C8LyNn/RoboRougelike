@@ -180,6 +180,7 @@ namespace RogueMachine.P12PipelineSafe
             weaponBlock.Configure(profile.Hp*durability,true);weaponBlock.RestoreHealthRatio(condition);
             var state=new RoboRougelike.R3.R3PartState(default,RoboRougelike.R3.R3PartKind.Gun)
                 {Id=EquipmentInstanceId("gun"),Weapon=WeaponKind,Source=name+" / uzbrojenie"};
+            AttachPrimaryGunArt();
             packageRailgun=weaponBlock.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLRailgunBinding>();
             packageRailgun.Bind(state,transform,muzzle,ds,cadence);packageWeaponState=state;return true;
         }
@@ -442,7 +443,7 @@ namespace RogueMachine.P12PipelineSafe
         public bool AttachPrimaryGunArt()
         {
             if(primaryVisual!=null||variantGuns.Count>0||weaponBlock==null||weaponBlock.IsDead||muzzle==null||
-               (WeaponKind!=R4WeaponKind.Basic&&WeaponKind!=R4WeaponKind.Heavy&&WeaponKind!=R4WeaponKind.Shotgun))return false;
+               (WeaponKind!=R4WeaponKind.Basic&&WeaponKind!=R4WeaponKind.Heavy&&WeaponKind!=R4WeaponKind.Shotgun&&WeaponKind!=R4WeaponKind.Railgun))return false;
             var renderer=weaponBlock.GetComponent<Renderer>();var scale=weaponBlock.transform.lossyScale;
             if(renderer==null||float.IsNaN(scale.x)||float.IsNaN(scale.y)||float.IsNaN(scale.z)||
                float.IsInfinity(scale.x)||float.IsInfinity(scale.y)||float.IsInfinity(scale.z)||

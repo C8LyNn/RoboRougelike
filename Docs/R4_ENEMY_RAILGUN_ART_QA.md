@@ -1,0 +1,11 @@
+# R4 enemy Railgun art QA
+
+Enemies using the existing Railgun package now use the supplied R4 Railgun appearance. The package binds to its own visible muzzle before firing. When the source model is unavailable, the original barrel renderer and muzzle remain usable. The physical HP, tier, ammunition, penetration, damage and energy systems remain authoritative.
+
+- Native red test at `4275bcea4e8bcf89c721efb3c11138e33cc81169`: 0/1 because the Railgun model was missing. A later fixture at `9b046fa035c1b693d4f549b3eb6301692049423d` failed because combat was disabled: `RRLDeviceBinding.Available` correctly forbids enemy weapons firing then. The test was corrected to enable combat before firing, without relaxing its hit or energy assertions. Evidence `Artifacts/Local/RC2-R4-EnemyRailgun-Red-20261107T175746Z/` and `RC2-R4-EnemyRailgun-Green-20261107T175831Z/`.
+- Unity 6000.3.14f1 targeted EditMode at `c3ab46ec7e2b8c7f6ae232d0fae26cddcb721e7e`: **10/10 PASS**, exit 0. Includes enemy physical Railgun hit, energy consumption, model detachment, missing-model fallback, physical penetration, technology unlock and earlier Shotgun/primary/elite/wheel tests. Evidence `Artifacts/Local/RC2-R4-EnemyRailgun-Final-20261107T180121Z/`.
+- Windows x64 build at that SHA: **PASS**, exit 0. Evidence `Artifacts/Local/R4-EnemyRailgun-Build-c3ab46ec/`.
+- Extracted Windows Player batch API QA: **PASS**, exit 0, including Railgun model, visible muzzle and physical hit, plus prior Shotgun, primary/elite guns, enemy wheel and fallback checks. API-driven, not a human playthrough. Evidence `C:/Users/kubap/Desktop/Prototypy/R4-enemy-railgun-c3ab46ec-player-qa/`.
+- ZIP `C:/Users/kubap/Desktop/Prototypy/RoboRougelike_R4_EnemyRailgunArt_c3ab46ec_Windows_x64.zip`, 43,542,729 bytes, SHA-256 `48b2d7e6fd9c75e8aeb091fabc79a973b1605607df09653d48b225efcdb7d59d`. EXE matched build EXE after extraction, SHA-256 `17ad8b27359b94eac8d2f44a0052d8789dc3ff5328f44ccb8c2740be4a375eb8`.
+
+NOT RUN: full regression, human visual/game-feel review and interactive shutdown on this build. A previous automated GUI exit crashed with `0xC000041D`; batch exit 0 does not establish it fixed. Four raw FBX-axis tests remain failing. Enemy Rocket, Beam, Saw, EMP and other device appearances, and new shaped blocks, remain pending.
