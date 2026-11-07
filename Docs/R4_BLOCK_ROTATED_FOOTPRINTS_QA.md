@@ -4,7 +4,9 @@
 enumerates all 30 staged block definitions and all 64 Euler quarter-turn
 combinations representing 24 distinct orientations. It checks that rotated
 occupied cells remain distinct and each occupied cell is rejected when another
-part attempts to use it in the standalone BUILD001 placement rules.
+part attempts to use it in the standalone BUILD001 placement rules. HexColumn
+is checked separately as unavailable because all its declared sockets are
+quarantined; the remaining 29 shapes receive the rotation checks.
 
 The assertions were added while the user requested no Unity runs or builds.
 **NOT RUN**: Unity compilation and execution, physical collider cooking,

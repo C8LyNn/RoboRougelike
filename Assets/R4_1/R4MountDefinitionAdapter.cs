@@ -6,12 +6,19 @@ namespace RoboRougelike.R4_1
 {
     /// <summary>
     /// Opt-in conversion of source block metadata to existing BUILD001 definitions.
-    /// Structural connections may use partial patches. Weapon and mobility
+    /// Structural connections may use partial patches except quarantined source
+    /// discrepancies. Weapon and mobility
     /// support must use the separate full, non-quarantined patch definition.
     /// This adapter is not connected to placement or the runtime graph.
     /// </summary>
     public static class R4MountDefinitionAdapter
     {
+        // The pinned #963 source's sampled collider does not cover these
+        // patches. Keep the source catalogue intact, but do not authorize
+        // structural or device support until its owner resolves the geometry.
+        private static bool QuarantinedPatch(string id,int socketIndex) =>
+            (id=="R4B_HexColumn"||id=="R4B_OctColumn") && (socketIndex==0||socketIndex==1);
+
         public static bool TryCreate(string id, bool moduleSupport, out BuildDefinition definition)
         {
             definition = null;
@@ -24,7 +31,7 @@ namespace RoboRougelike.R4_1
 
                 var sockets = new List<BuildSocket>();
                 for (int i = 0; i < entry.Sockets.Length; i++)
-                    if (!moduleSupport || R4BlockCatalog.CanMountModule(id, i))
+                    if (!QuarantinedPatch(id,i) && (!moduleSupport || R4BlockCatalog.CanMountModule(id, i)))
                         sockets.Add(entry.Sockets[i]);
                 if (sockets.Count == 0) return false;
 

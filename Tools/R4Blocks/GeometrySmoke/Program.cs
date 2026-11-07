@@ -7,11 +7,17 @@ internal static class Program
     static void Expect(bool ok,string message){if(!ok)throw new Exception(message);}
     static void Main()
     {
-        int moduleDefinitions=0;
+        int moduleDefinitions=0,structuralDefinitions=0;
         foreach(var entry in R4BlockCatalog.All)
         {
+            if(entry.Id=="R4B_HexColumn")
+            {
+                Expect(!R4MountDefinitionAdapter.TryCreate(entry.Id,false,out _),"hexagonal ports quarantined");
+                continue;
+            }
             Expect(R4MountDefinitionAdapter.TryCreate(entry.Id,false,out var structural),entry.Id+" structural");
             Expect(BuildSocketGeometry.Valid(structural,out var reason),entry.Id+" structural: "+reason);
+            structuralDefinitions++;
             if(R4MountDefinitionAdapter.TryCreate(entry.Id,true,out var module))
             {
                 Expect(BuildSocketGeometry.Valid(module,out reason),entry.Id+" module: "+reason);
@@ -28,6 +34,7 @@ internal static class Program
         Expect(R4MountDefinitionAdapter.TryCreate("R4B_Cube",true,out var cube),"cube module");
         Expect(BuildSocketGeometry.Touches(cube,supportPose,wheel,wheelPose,out _),"full cube should support wheel");
         Expect(!R4MountDefinitionAdapter.TryCreate("R4B_OctColumn",true,out _),"octagon quarantine");
-        Console.WriteLine("Actual BUILD001 geometry smoke PASS: 30 structural definitions, "+moduleDefinitions+" module definitions, partial/full wheel contacts and octagon quarantine; identity poses only.");
+        Expect(structuralDefinitions==29,"expected 29 permitted structural definitions");
+        Console.WriteLine("Actual BUILD001 geometry smoke PASS: 29 structural definitions, one quarantined shape, "+moduleDefinitions+" module definitions, partial/full wheel contacts and column quarantine; identity poses only.");
     }
 }
