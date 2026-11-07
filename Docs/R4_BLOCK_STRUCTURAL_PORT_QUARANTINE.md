@@ -1,5 +1,8 @@
 # R4 column structural-port quarantine
 
+Follow-up: [native QA on a3d37d30](R4_BACKLOG_NATIVE_QA_20261107.md) passed
+the targeted adapter tests; physical/game integration remains pending.
+
 The pinned #963 source has four collider/socket discrepancies already recorded
 in `R4_BLOCK_SOCKET_SURFACE_QA.md`: both HexColumn end patches and both
 OctColumn end patches contain uncovered sampled points. Previously the adapter

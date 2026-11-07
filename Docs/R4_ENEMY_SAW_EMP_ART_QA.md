@@ -1,5 +1,8 @@
 # R4 enemy saw and EMP — integration in progress
 
+Follow-up: [native QA on a3d37d30](R4_BACKLOG_NATIVE_QA_20261107.md) supersedes
+the interrupted-run status below for targeted EditMode and batch Windows Player.
+
 This branch builds on the rocket/beam integration. Enemy saw and EMP use the
 supplied R4 visual models while retaining the original physical saw centre and
 EMP pulse origin. If an asset is absent, the legacy geometry remains available.

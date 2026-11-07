@@ -1,5 +1,8 @@
 # Enemy salvage after tiered wreck expiry
 
+Follow-up: [native QA on a3d37d30](R4_BACKLOG_NATIVE_QA_20261107.md) passed
+the targeted tier/expiry tests; Windows save/load and full regression remain pending.
+
 The tier state for enemy wheels and secondary/elite weapons was attached to a
 physical object that can be destroyed before the enemy's Core. The previous
 fallback recreated a default state, losing that tier. The enemy now keeps the
