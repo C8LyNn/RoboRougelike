@@ -96,7 +96,7 @@ public sealed class CameraStartAndReplacementArtTests
         var movement=Resources.Load<R4MovementArtCatalog>("R4Art/MovementCatalog");
         var weapons=Resources.Load<R4WeaponArtCatalog>("R4Art/WeaponCatalog");
         Assert.That(movement,Is.Not.Null);Assert.That(weapons,Is.Not.Null);
-        var oldMovement=movement.Models;var oldWeapons=weapons.Models;
+        var oldMovement=movement.Models;var oldSideWheel=movement.SideWheel;var oldWeapons=weapons.Models;movement.SideWheel=null;
         movement.Models=(R4MovementArtEntry[])oldMovement.Clone();weapons.Models=(R4WeaponArtEntry[])oldWeapons.Clone();
         var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
         try
@@ -117,14 +117,14 @@ public sealed class CameraStartAndReplacementArtTests
                 Assert.That(block.GetComponent<Collider>().enabled,Is.True);Object.Destroy(block);
             }
         }
-        finally{movement.Models=oldMovement;weapons.Models=oldWeapons;Object.Destroy(material);}
+        finally{movement.Models=oldMovement;movement.SideWheel=oldSideWheel;weapons.Models=oldWeapons;Object.Destroy(material);}
         yield return null;
     }
     [UnityTest] public IEnumerator ReplacementModelStillShowsDamageAndFollowsDetachedPart()
     {
         var run=R1RunController.Instance;Assert.That(run.PrepareUnifiedRun(),Is.True);yield return null;
         var wheel=run.Player.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Kind==R3PartKind.Wheel);
-        var model=wheel.GetComponentsInChildren<Transform>(true).First(t=>t.name=="R4M_Wheel_Rotor");
+        var model=wheel.GetComponentsInChildren<Transform>(true).First(t=>t.name=="R4M_WheelM_Side_Offroad_Rotor");
         Assert.That(wheel.GetComponentsInChildren<R4ReplacementDamageVisual>(true).Length,Is.EqualTo(1),"The model must track its real damage owner.");
         var renderer=model.GetComponentsInChildren<Renderer>(true).First(r=>r.sharedMaterials.Length>0&&r.sharedMaterials[0]!=null&&r.sharedMaterials[0].HasProperty("_BaseColor"));
         var original=renderer.sharedMaterials[0].GetColor("_BaseColor");var hp=wheel.Damageable;
@@ -159,7 +159,7 @@ public sealed class CameraStartAndReplacementArtTests
         var marker=(GameObject)typeof(R3GarageView).GetField("marker",BindingFlags.NonPublic|BindingFlags.Instance).GetValue(run.Garage);
         var palette=(R3VisualPalette)typeof(R3GarageView).GetField("palette",BindingFlags.NonPublic|BindingFlags.Instance).GetValue(run.Garage);
         Assert.That(marker.GetComponent<Renderer>().enabled,Is.False);
-        var rotor=marker.GetComponentsInChildren<Transform>(true).First(t=>t.name=="R4M_Wheel_Rotor");
+        var rotor=marker.GetComponentsInChildren<Transform>(true).First(t=>t.name=="R4M_WheelM_Side_Offroad_Rotor");
         var renderers=rotor.GetComponentsInChildren<Renderer>(true).Where(r=>r.enabled).ToArray();
         Assert.That(renderers.Length,Is.GreaterThan(0));
         Assert.That(renderers.All(r=>r.sharedMaterial==palette.Invalid),Is.True,"Invalid placement must tint the model, not a hidden cube.");

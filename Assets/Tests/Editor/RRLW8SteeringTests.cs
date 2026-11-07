@@ -81,7 +81,7 @@ public class RRLW8SteeringTests
         foreach(var wheel in wheels)
         {
             var pivot=wheel.transform.Find("MOV011 visual yaw");Assert.That(pivot,Is.Not.Null);
-            Assert.That(pivot.GetComponentsInChildren<Transform>(true).Any(t=>t.name=="R4M_Wheel_Rotor"),Is.True,"The imported wheel must be under the steering pivot.");
+            Assert.That(pivot.GetComponentsInChildren<Transform>(true).Any(t=>t.name=="R4M_WheelM_Side_Offroad_Rotor"),Is.True,"The imported wheel must be under the steering pivot.");
             Assert.That(pivot.Find("Existing wheel mesh"),Is.Null,"A primitive duplicate must not be drawn when the imported wheel exists.");
             Assert.That(wheel.transform.Find("Koło").GetComponent<Collider>().enabled,Is.True);
         }

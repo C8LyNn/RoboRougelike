@@ -83,7 +83,7 @@ namespace RoboRougelike.R1
                 playerGuns.All(p=>p.GetComponent<R4WeaponArt>()!=null&&!p.GetComponent<Renderer>().enabled);
             result.playerColliders=playerWheels.Concat(playerGuns).All(p=>p.GetComponent<Collider>()!=null&&p.GetComponent<Collider>().enabled);
             Require(result.playerReplacementArt&&result.playerColliders,"Replacement models hide old shells but retain physics");
-            var playerWheel=playerWheels[0];var rotor=playerWheel.GetComponentsInChildren<Transform>(true).First(t=>t.name=="R4M_Wheel_Rotor");
+            var playerWheel=playerWheels[0];var rotor=playerWheel.GetComponentsInChildren<Transform>(true).First(t=>t.name=="R4M_WheelM_Side_Offroad_Rotor");
             var modelRenderer=rotor.GetComponentsInChildren<Renderer>(true).First(r=>r.sharedMaterials.Length>0&&r.sharedMaterials[0]!=null&&r.sharedMaterials[0].HasProperty("_BaseColor"));
             var originalColor=modelRenderer.sharedMaterials[0].GetColor("_BaseColor");
             playerWheel.Damageable.RestoreHealthRatio(.5f);var props=new MaterialPropertyBlock();modelRenderer.GetPropertyBlock(props,0);
@@ -94,11 +94,11 @@ namespace RoboRougelike.R1
             var wheels=enemies.SelectMany(e=>e.GetComponentsInChildren<P12PipelineSafeDamageable>())
                 .Where(R6VehicleDrive.IsWheel).ToArray();result.wheels=wheels.Length;
             result.modelsPresent=wheels.Length>0&&wheels.All(w=>w.GetComponent<R4EnemyWheelArt>()!=null&&
-                w.GetComponentsInChildren<Transform>(true).Any(t=>t.name=="R4M_Wheel_Rotor"));
+                w.GetComponentsInChildren<Transform>(true).Any(t=>t.name=="R4M_WheelM_Side_Offroad_Rotor"));
             result.originalColliders=wheels.Length>0&&wheels.All(w=>w.GetComponent<Collider>()!=null&&w.GetComponent<Collider>().enabled);
             Require(result.modelsPresent&&result.originalColliders,"Enemy wheel visuals and original colliders");
             var wheel=wheels[0];var collider=wheel.GetComponent<Collider>();
-            var enemyRotor=wheel.GetComponentsInChildren<Transform>(true).First(t=>t.name=="R4M_Wheel_Rotor");
+            var enemyRotor=wheel.GetComponentsInChildren<Transform>(true).First(t=>t.name=="R4M_WheelM_Side_Offroad_Rotor");
             wheel.ApplyDamage(100000,wheel.transform.position,Vector3.forward);yield return null;
             result.detachedVisual=wheel!=null&&wheel.IsDead&&wheel.transform.parent==null&&
                 enemyRotor!=null&&enemyRotor.IsChildOf(wheel.transform)&&wheel.GetComponent<Collider>()==collider;

@@ -25,7 +25,7 @@ public sealed class R4EnemyWheelArtTests
         Assert.That(method,Is.Not.Null);
         var wheel=(P12PipelineSafeDamageable)method.Invoke(null,new object[]{root.transform,new Vector3Int(-2,0,1),material,true});
         var collider=wheel.GetComponent<Collider>();var originalRotation=wheel.transform.localRotation;
-        var rotor=wheel.GetComponentsInChildren<Transform>(true).FirstOrDefault(t=>t.name=="R4M_Wheel_Rotor");
+        var rotor=wheel.GetComponentsInChildren<Transform>(true).FirstOrDefault(t=>t.name=="R4M_WheelM_Side_Offroad_Rotor");
         Assert.That(rotor,Is.Not.Null,"Every profiled enemy wheel should display the supplied model.");
         Assert.That(rotor.GetComponentsInChildren<Collider>(true),Is.Empty,"Visual art must not create physics colliders.");
         Assert.That(collider,Is.Not.Null);Assert.That(collider.enabled,Is.True);
@@ -65,7 +65,7 @@ public sealed class R4EnemyWheelArtTests
         Assert.That(R4EnemyWheelArt.TryAttach(wheel.transform,source,fallback,.265f),Is.True);
         Assert.That(R4EnemyWheelArt.TryAttach(wheel.transform,source,fallback,.265f),Is.False,"A second attach cannot duplicate the model.");
         Assert.That(wheel.GetComponents<R4EnemyWheelArt>().Length,Is.EqualTo(1));
-        Assert.That(wheel.GetComponentsInChildren<Transform>(true).Count(t=>t.name=="R4M_Wheel_Rotor"),Is.EqualTo(1));
+        Assert.That(wheel.GetComponentsInChildren<Transform>(true).Count(t=>t.name=="R4M_WheelM_Side_Offroad_Rotor"),Is.EqualTo(1));
         Object.Destroy(parent);yield return null;
     }
 

@@ -23,11 +23,12 @@ namespace RoboRougelike.R4_1
             if(!PositiveUniform(parentScale)||!Positive(scale.x)||!Positive(scale.y)||!Positive(scale.z)||
                Quaternion.Angle(wheel.localRotation,Quaternion.Euler(0,0,90))>.01f)return false;
             var catalog=Resources.Load<R4MovementArtCatalog>("R4Art/MovementCatalog");
-            var prefab=catalog!=null?catalog.ModelFor(R3PartKind.Wheel):null;
+            var side=catalog!=null&&catalog.SideWheel!=null;
+            var prefab=side?catalog.SideWheel:catalog!=null?catalog.ModelFor(R3PartKind.Wheel):null;
             if(prefab==null)return false;
             var art=Instantiate(prefab,wheel,false);
             var nodes=art.GetComponentsInChildren<Transform>(true);
-            var rotor=Array.Find(nodes,t=>t.name=="R4M_Wheel_Rotor");
+            var rotor=Array.Find(nodes,t=>t.name==(side?"R4M_WheelM_Side_Offroad_Rotor":"R4M_Wheel_Rotor"));
             var socket=Array.Find(nodes,t=>t.name=="Socket_Mount");
             var renderers=art.GetComponentsInChildren<Renderer>(true);
             if(rotor==null||socket==null||renderers.Length==0||art.GetComponentsInChildren<Collider>(true).Length!=0)
@@ -38,7 +39,7 @@ namespace RoboRougelike.R4_1
             // keeping the imported wheel in the chassis frame and physical size.
             float desired=wheelRadius*parentScale.x/SourceRadius;
             art.transform.localRotation=Quaternion.Inverse(wheel.localRotation);
-            art.transform.localScale=new Vector3(desired/scale.y,desired/scale.x,desired/scale.z);
+            art.transform.localScale=new Vector3(side&&wheel.localPosition.x<0?-desired/scale.y:desired/scale.y,desired/scale.x,desired/scale.z);
             art.transform.position+=wheel.position-rotor.position;
             var view=wheel.gameObject.AddComponent<R4EnemyWheelArt>();
             view.rotor=rotor;view.source=source;view.visuals=renderers;view.radius=wheelRadius*parentScale.x;

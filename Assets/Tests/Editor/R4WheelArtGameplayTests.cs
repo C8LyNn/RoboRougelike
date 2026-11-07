@@ -31,17 +31,17 @@ public sealed class R4WheelArtGameplayTests
         var wheels=assembly.Parts.Where(p=>p.Kind==R3PartKind.Wheel).ToArray();Assert.That(wheels.Length,Is.EqualTo(4));
         foreach(var wheel in wheels)
         {
-            var rotor=wheel.GetComponentsInChildren<Transform>(true).FirstOrDefault(t=>t.name=="R4M_Wheel_Rotor");
+            var rotor=wheel.GetComponentsInChildren<Transform>(true).FirstOrDefault(t=>t.name=="R4M_WheelM_Side_Offroad_Rotor");
             Assert.That(rotor,Is.Not.Null,"Every physical wheel has the supplied visual.");
             Assert.That(rotor.GetComponentsInChildren<Collider>(true).Length,Is.Zero,"The art does not add colliders.");
             var original=wheel.transform.Find("Koło");Assert.That(original,Is.Not.Null);
             Assert.That(original.GetComponent<Renderer>().enabled,Is.False);
-            Assert.That(original.GetComponent<MeshCollider>().enabled,Is.True,"The existing tire collider must stay active.");
+            Assert.That(original.GetComponent<MeshCollider>().enabled,Is.True,"The existing tire collider must stay active.");Assert.That(Vector3.Distance(rotor.position,original.position),Is.LessThan(.05f),"Wheel art must match physical axle.");var socket=wheel.GetComponentsInChildren<Transform>(true).Single(t=>t.name=="Socket_Mount");var towardChassis=wheel.Cell.x<0?vehicle.transform.right:-vehicle.transform.right;Assert.That(Vector3.Dot((socket.position-rotor.position).normalized,towardChassis),Is.GreaterThan(.9f),"Mount faces the chassis on both sides.");
         }
         float deadline=Time.realtimeSinceStartup+8;
         while(drive.GroundedWheels<4&&Time.realtimeSinceStartup<deadline){drive.Step(0,0,10,5,90);yield return MOVSeriesDeviceTests.FixedStep();}
         Assert.That(drive.GroundedWheels,Is.EqualTo(4));
-        var actualRotor=wheels[0].GetComponentsInChildren<Transform>(true).First(t=>t.name=="R4M_Wheel_Rotor");
+        var actualRotor=wheels[0].GetComponentsInChildren<Transform>(true).First(t=>t.name=="R4M_WheelM_Side_Offroad_Rotor");
         var rotation=actualRotor.localRotation;float maxAngle=0;float startZ=vehicle.transform.position.z;
         float end=Time.time+1f;
         while(Time.time<end)
