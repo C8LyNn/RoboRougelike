@@ -129,7 +129,12 @@ public sealed class CameraStartAndReplacementArtTests
         var renderer=model.GetComponentsInChildren<Renderer>(true).First(r=>r.sharedMaterials.Length>0&&r.sharedMaterials[0]!=null&&r.sharedMaterials[0].HasProperty("_BaseColor"));
         var original=renderer.sharedMaterials[0].GetColor("_BaseColor");var hp=wheel.Damageable;
         Time.timeScale=1;hp.ApplyDamage(hp.MaxHp*.5f,wheel.transform.position,Vector3.up);
-        yield return new WaitForSeconds(.15f);
+        Assert.That(hp.VisualFlashing,Is.True,"Damage flash must begin on the real part.");
+        var flashProps=new MaterialPropertyBlock();renderer.GetPropertyBlock(flashProps,0);
+        Assert.That(flashProps.GetColor("_BaseColor").r,Is.EqualTo(Color.Lerp(original,Color.red,.72f).r).Within(.02f));
+        var deadline=Time.realtimeSinceStartup+4f;
+        while(hp.VisualFlashing&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(hp.VisualFlashing,Is.False,"Damage flash must complete.");
         var props=new MaterialPropertyBlock();renderer.GetPropertyBlock(props,0);
         var expected=Color.Lerp(original,new Color(.16f,.09f,.06f,original.a),.4f);
         var actual=props.GetColor("_BaseColor");
