@@ -36,7 +36,12 @@ public sealed class R4ColliderStageTests
             {
                 Assert.That(item.enabled,Is.False);Assert.That(item.convex,Is.True);
                 Assert.That(item.sharedMesh,Is.Not.Null);Assert.That(item.transform.parent,Is.SameAs(owner.transform));
+                // Unity does not associate a disabled collider with a physics body.
+                // Verify the association only while this test temporarily enables it.
+                Assert.That(item.GetComponentInParent<Rigidbody>(),Is.SameAs(body));
+                item.enabled=true;
                 Assert.That(item.attachedRigidbody,Is.SameAs(body));
+                item.enabled=false;
             }
             stage.Dispose();Assert.That(stage.IsDisposed,Is.True);Assert.That(original.enabled,Is.True);
         }
