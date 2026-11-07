@@ -4,6 +4,7 @@ using System.Reflection;
 using NUnit.Framework;
 using RoboRougelike.R1;
 using RoboRougelike.R3;
+using RoboRougelike.R4;
 using RoboRougelike.R4_1;
 using RoboRougelike.WeaponIntegration;
 using RogueMachine.P12PipelineSafe;
@@ -59,6 +60,26 @@ public sealed class R4EnemyRocketBeamArtTests
         for(int i=0;i<30&&hp.CurrentHp>=500;i++){binding.SetTriggerHeld(true);step.Invoke(binding,null);yield return null;}
         Assert.That(hp.CurrentHp,Is.LessThan(500),"Real beam ray must damage its target.");
         Assert.That(bank.Current,Is.LessThan(before),"Beam must spend existing energy.");Object.Destroy(target);
+    }
+    [UnityTest] public IEnumerator MissingModelsPreserveLegacyMuzzlesAndRenderers()
+    {
+        yield return StartCombat();var run=R1RunController.Instance;var enemies=run.Encounter.Enemies.Take(2).ToArray();Assert.That(enemies.Length,Is.EqualTo(2));
+        var catalog=Resources.Load<R4WeaponArtCatalog>("R4Art/WeaponCatalog");Assert.That(catalog,Is.Not.Null);
+        var original=catalog.Models;catalog.Models=(R4WeaponArtEntry[])original.Clone();
+        try
+        {
+            for(int i=0;i<catalog.Models.Length;i++)if(catalog.Models[i].Kind==R4WeaponKind.RocketLauncher||catalog.Models[i].Kind==R4WeaponKind.BeamCutter)
+                catalog.Models[i]=new R4WeaponArtEntry{Kind=catalog.Models[i].Kind,Model=null};
+            var rocketMuzzle=enemies[0].transform.Find("Enemy_Yaw/Enemy_Muzzle");
+            Assert.That(enemies[0].EquipRocket(),Is.True);var rocket=enemies[0].WeaponBlock.GetComponent<RRLRocketBinding>();
+            Assert.That(typeof(RRLRocketBinding).GetField("muzzle",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(rocket),Is.SameAs(rocketMuzzle));
+            Assert.That(enemies[0].WeaponBlock.GetComponent<Renderer>().enabled,Is.True);
+            var beamMuzzle=enemies[1].transform.Find("Enemy_Yaw/Enemy_Muzzle");
+            Assert.That(enemies[1].EquipBeam(),Is.True);var beam=enemies[1].WeaponBlock.GetComponent<RRLBeamBinding>();
+            Assert.That(beam.Module.GetType().GetField("muzzle",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(beam.Module),Is.SameAs(beamMuzzle));
+            Assert.That(enemies[1].WeaponBlock.GetComponent<Renderer>().enabled,Is.True);
+        }
+        finally{catalog.Models=original;}
     }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }
