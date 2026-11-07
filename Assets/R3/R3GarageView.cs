@@ -51,6 +51,7 @@ namespace RoboRougelike.R3
         private R41GarageTool shownTool;
         private Vector3Int shownRotation;
         private int shownContacts=-1;
+        private bool shownMirrored;
         public Vector3Int SelectedRotation {get;private set;}
         public int SelectedContactMask=>Owned?.ContactMask??R3MountingGrid.AllFaces;
         public Vector3Int Cell = new Vector3Int(0,2,1);
@@ -247,10 +248,24 @@ namespace RoboRougelike.R3
                 var payload=R41PartGeometry.Payload(item.transform,kind,weapon,material,false,out var muzzle);
                 // Reuse the player's model and axis adapter, but keep the
                 // original ghost geometry and do not create physical colliders.
-                if(!plan&&Tool==R41GarageTool.Mount&&payload!=null)
+                if(!plan&&Tool==R41GarageTool.Mount)
                 {
-                    if(kind==R3PartKind.Gun)R4WeaponArt.TryAttach(item.transform,payload,muzzle,weapon);
-                    else if(kind==R3PartKind.Wheel)R4WheelArt.TryAttach(item.transform,payload);
+                    if(kind==R3PartKind.Gun&&payload!=null)R4WeaponArt.TryAttach(item.transform,payload,muzzle,weapon);
+                    else if(kind==R3PartKind.Wheel&&payload!=null)R4WheelArt.TryAttach(item.transform,payload);
+                    else if(kind==R3PartKind.Suspension)R4SuspensionArt.TryAttach(item.transform);
+                    else if(kind==R3PartKind.Booster)R4BoosterArt.TryAttach(item.transform);
+                    else if(kind==R3PartKind.JumpDrive)R4JumpArt.TryAttach(item.transform);
+                    else if(kind==R3PartKind.Blink)R4BlinkArt.TryAttach(item.transform);
+                    else if(kind==R3PartKind.Gyroscope)R4GyroArt.TryAttach(item.transform);
+                    else if(kind==R3PartKind.MagneticGrapple)R4GrappleArt.TryAttach(item.transform);
+                    else if(kind==R3PartKind.HoverEngine)R4HoverArt.TryAttach(item.transform);
+                    else if(kind==R3PartKind.OmniDrive)R4OmniArt.TryAttach(item.transform,cell.x>0);
+                    else if(kind==R3PartKind.CrawlerTrack)R4TracksArt.TryAttach(item.transform,cell.x>0);
+                    else if(kind==R3PartKind.IndependentSteering)
+                    {
+                        R4IndependentSteeringArt.TryAttach(item.transform);
+                        item.GetComponent<Renderer>().enabled=true; // retain the colored ghost cell
+                    }
                 }
             }
             if(!plan&&Tool==R41GarageTool.Mount)
@@ -282,14 +297,15 @@ namespace RoboRougelike.R3
         {
             if(previewRoot==null||run.VehicleModel==null)return;
             if(marker==null||shownKind!=MountKind||shownWeapon!=MountWeapon||
-               shownTool!=Tool||shownRotation!=SelectedRotation||shownContacts!=SelectedContactMask)
+               shownTool!=Tool||shownRotation!=SelectedRotation||shownContacts!=SelectedContactMask||
+               ((MountKind==R3PartKind.OmniDrive||MountKind==R3PartKind.CrawlerTrack)&&shownMirrored!=(Cell.x>0)))
             {
                 if(marker!=null){marker.SetActive(false);Destroy(marker);}
                 payloadRenderers.Clear();
                 marker=CreateGhost(Cell,MountKind,MountWeapon,palette.Valid,false,
                     SelectedRotation,SelectedContactMask);
                 shownKind=MountKind;shownWeapon=MountWeapon;shownTool=Tool;shownRotation=SelectedRotation;
-                shownContacts=SelectedContactMask;
+                shownContacts=SelectedContactMask;shownMirrored=Cell.x>0;
             }
             marker.SetActive(HasTarget);marker.transform.localPosition=(Vector3)Cell*R41PartGeometry.Grid;
             var material=Tool==R41GarageTool.Mount?(PreviewValid?palette.Valid:palette.Invalid):palette.Selection;
