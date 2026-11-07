@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections;
 using NUnit.Framework;
 using RoboRougelike.R3;
+using RoboRougelike.R4;
 using UnityEngine;
 using UnityEditor.SceneManagement;
 using UnityEngine.TestTools;
@@ -59,7 +60,9 @@ public sealed class EnergyCombatRefinementTests
     }
     [Test] public void ActiveCostsAreHalvedAndPassiveReservationRemainsTwentyFive()
     {
-        Assert.That(VehicleEnergyCosts.BasicShot,Is.EqualTo(2.5f));
+        Assert.That(VehicleEnergyCosts.BasicShot,Is.Zero);
+        Assert.That(VehicleEnergyCosts.ConventionalShot(R4WeaponKind.Automatic),Is.EqualTo(2.5f));
+        Assert.That(VehicleEnergyCosts.ConventionalShot(R4WeaponKind.Heavy),Is.EqualTo(2.5f));
         Assert.That(VehicleEnergyCosts.Shotgun,Is.EqualTo(5f));
         Assert.That(VehicleEnergyCosts.BoosterActivation,Is.EqualTo(7.5f));
         Assert.That(VehicleEnergyState.PassiveReservation,Is.EqualTo(25f));

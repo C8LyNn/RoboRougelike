@@ -17,7 +17,12 @@ namespace RoboRougelike.R1
             =>width>0&&height>width&&garage&&!mapEditing&&!overlay;
         private static Rect PortraitVehicleCard(int index)=>new Rect(24,150+index*180,720,166);
         private static Rect PortraitActionRect(int index)=>new Rect(24+(index%2)*370,index<2?790:855,350,index<2?54:48);
-        internal bool ClosePartCatalog(){if(!catalogOpen)return false;catalogOpen=false;return true;}
+        internal bool ClosePartCatalog()
+        {
+            if(catalogOpen){catalogOpen=false;return true;}
+            if(garageOptionsOpen){garageOptionsOpen=false;return true;}
+            return false;
+        }
         private void Setup()
         {
             if (title != null) return;
@@ -70,7 +75,7 @@ namespace RoboRougelike.R1
             {
                 Draw(run,portraitReady,portraitGarage,portraitRoute,portraitSalvage);
                 if(!sessionOverlay&&run.MapEditing)run.MapEditorPointer(Event.current,rawPointer);
-                else if(!sessionOverlay&&!catalogOpen&&run.Progress?.State==R1RunState.Garage&&!run.Transitioning&&!run.Paused&&!run.QuitRequested)run.Garage.HandleGuiPointer(Event.current,rawPointer);
+                else if(!sessionOverlay&&!catalogOpen&&!garageOptionsOpen&&run.Progress?.State==R1RunState.Garage&&!run.Transitioning&&!run.Paused&&!run.QuitRequested)run.Garage.HandleGuiPointer(Event.current,rawPointer);
             }
             finally { GUI.matrix = previous; GUI.enabled = true; }
         }
@@ -91,8 +96,8 @@ namespace RoboRougelike.R1
             var progress = run.Progress;
             if(run.MapEditing&&!run.Paused){DrawMapEditor(run);return;}
             if(progress.State==R1RunState.TestDrive){DrawTestRange(run);return;}
-            if(progress.State==R1RunState.Garage&&!run.Transitioning){if(catalogOpen){if(portraitGarage)DrawPortraitCatalog(run);else DrawFullCatalog(run);}else if(portraitGarage)DrawPortraitGarage(run);else DrawGarage(run);return;}
-            catalogOpen=false;
+            if(progress.State==R1RunState.Garage&&!run.Transitioning){if(catalogOpen){if(portraitGarage)DrawPortraitCatalog(run);else DrawFullCatalog(run);}else if(portraitGarage)DrawSimplePortraitGarage(run);else DrawSimpleGarage(run);return;}
+            catalogOpen=false;garageOptionsOpen=false;
             if (progress.State == R1RunState.Combat && !run.Transitioning)
             {
                 Panel(new Rect(20, 18, 660, 180));
@@ -108,7 +113,11 @@ namespace RoboRougelike.R1
                     GUI.Label(new Rect(36, 126, 630, 25), $"Masa: {physicsBody.mass:0} kg • Prędkość: {physicsBody.linearVelocity.magnitude:0.0} m/s • Esc — pauza", small);
                     var energy=player.GetComponent<VehicleEnergyBank>();
                     if(energy!=null)GUI.Label(new Rect(36,151,630,25),$"Energia: {energy.Current:0}/{energy.Maximum:0}  •  Pole: 50% brakującej + 5%/s przez 10 s",small);
-                    if(run.PickupGraceRemaining>0)GUI.Label(new Rect(36,174,630,22),$"Zbierz energię: {run.PickupGraceRemaining:0.0} s • Enter — nagrody",small);
+                    if(run.PickupGraceRemaining>0)
+                    {
+                        GUI.Label(new Rect(36,174,630,22),$"Zbierz energię: {run.PickupGraceRemaining:0.0} s • Enter — nagrody",small);
+                        GUI.Label(new Rect(640,210,285,55),"ZWYCIĘSTWO",title);
+                    }
                 }
                 if (!run.Paused)
                 {
@@ -184,7 +193,7 @@ namespace RoboRougelike.R1
             else
             {
                 bool won = progress.State == R1RunState.Won;
-                GUI.Label(new Rect(160, 130, 1050, 80), won ? "Gauntlet ukończony" : "Porażka", title);
+                GUI.Label(new Rect(160, 130, 1050, 80), won ? "ZWYCIĘSTWO" : "PORAŻKA", title);
                 GUI.Label(new Rect(160, 235, 960, 70), won ? "Oblężnik pokonany. Wyprawa ukończona." : progress.DefeatReason, heading);
                 GUI.Label(new Rect(160, 325, 960, 200), $"Walki: {progress.CompletedEncounters}/{progress.TotalEncounters}  •  Pojazd: {run.VehicleModel.Design.Name}\nPokonani: {run.DefeatedEnemies}  •  Zdobyty Złom: {run.EarnedScrap}  •  Saldo: {run.VehicleModel.Scrap}\nOdzyskane moduły: {run.RecoveredModules}  •  Części końcowe: {run.VehicleModel.Parts.FindAll(p=>p.Health>0).Count}\nZdobyte moduły bonusów: {progress.Acquired.Count}  •  Seed: {run.Seed}\nNowa próba przywróci bazowy pojazd, 0 Złomu i brak bonusów.", body);
                 if (GUI.Button(new Rect(160, 535, 500, 70), won ? "Zagraj ponownie  [Enter]" : "Spróbuj ponownie  [Enter]", button)) run.RestartRun();

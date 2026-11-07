@@ -66,7 +66,7 @@ public class RRLW2ModelTests
         Assert.That(p.Stats.Damage,Is.EqualTo(1));Assert.That(p.Stats.Hull,Is.EqualTo(1));Assert.That(p.Stats.Core,Is.EqualTo(1));
         Assert.That(m.Inventory.Where(x=>x.Kind!=R3PartKind.BonusModule).Select(x=>x.Id),Is.EquivalentTo(ids));
         Assert.That(m.Inventory.Count(x=>x.Kind==R3PartKind.BonusModule),Is.EqualTo(1));Assert.That(m.Scrap,Is.EqualTo(expectedScrap));
-        if(parts==3)Assert.That(m.Inventory.Single(x=>x.Id=="destroyed").Health,Is.Zero);
+        if(parts==3)Assert.That(m.Inventory.Single(x=>x.Id=="destroyed").Health,Is.EqualTo(1));
         var stats=p.Stats.Copy();
         Assert.That(Claim(p,l,m,ids,Enumerable.Range(0,bonuses).ToArray()),Is.False);
         Assert.That(m.Scrap,Is.EqualTo(expectedScrap));Assert.That(p.Stats.Damage,Is.EqualTo(stats.Damage));

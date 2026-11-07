@@ -276,8 +276,9 @@ public class R3GaragePlayTests
         foreach(var gun in assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun))gun.GunPivot.rotation=Quaternion.Euler(-70,0,0);
         Physics.SyncTransforms();
         Assert.That(assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun).All(assembly.ClearProjectilePath),Is.True,"Każde działo musi mieć wolny tor strzału.");
-        Assert.That(Run.Player.GetComponent<VehicleEnergyBank>().Current,Is.GreaterThanOrEqualTo(3*VehicleEnergyCosts.BasicShot),"Każdy strzał wymaga energii.");
+        float energyBefore=Run.Player.GetComponent<VehicleEnergyBank>().Current;
         assembly.FireGuns();Assert.That(UnityEngine.Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None).Length,Is.EqualTo(3));
+        Assert.That(Run.Player.GetComponent<VehicleEnergyBank>().Current,Is.EqualTo(energyBefore).Within(.01f),"Podstawowe działa nie zużywają energii.");
         var extraGun=assembly.Parts.Single(p=>p.Cell==extraGunCell);
         extraGun.Damageable.ApplyDamage(1000,extraGun.transform.position,Vector3.forward);assembly.Capture();
         Assert.That(Run.Player.Modules.ActiveWeaponCount,Is.EqualTo(2));

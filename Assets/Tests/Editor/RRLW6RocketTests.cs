@@ -64,7 +64,9 @@ public class RRLW6RocketPhysicalTests
         Assert.That(UnityEngine.Object.FindObjectsByType<RocketProjectile>(FindObjectsSortMode.None).Any(p=>p.IsInitialized),Is.False);
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
         var ledger=new R4SalvageLedger(3);ledger.Record("rocket-enemy",new[]{new R4SalvageItem("rocket-salvage","enemy",R3PartKind.Gun,state.Weapon,0,0)});
-        Assert.That(ledger.Claim(model,new[]{"rocket-salvage"}),Is.True);model.Award(500);
+        Assert.That(ledger.Claim(model,new[]{"rocket-salvage"}),Is.True);
+        Assert.That(model.Inventory.Single().Health,Is.EqualTo(1));model.Inventory.Single().Health=0; // Subsequent own damage.
+        model.Award(500);
         Assert.That(model.RepairInventory("rocket-salvage"),Is.True);
         var item=model.DeepCopy().Inventory.Single();Assert.That(item.Id,Is.EqualTo("rocket-salvage"));Assert.That(item.Ammo,Is.Zero);
         yield return null;

@@ -9,9 +9,9 @@ namespace RoboRougelike.R3
 {
     public sealed class R3GarageView : MonoBehaviour
     {
-        public static Rect Viewport => new Rect(0.265f,0.11f,0.465f,0.88f);
-        public static readonly Rect PortraitOpening=new Rect(24,76,720,420);
-        public static readonly Rect BuildArea=new Rect(340,95,595,430);
+        public static Rect Viewport => new Rect(0.215625f,0.10f,0.7765625f,0.78f);
+        public static readonly Rect PortraitOpening=new Rect(24,76,720,500);
+        public static readonly Rect BuildArea=new Rect(276,86,994,562);
         public static readonly Rect ActivityOverlay=new Rect(350,80,580,126);
         public static readonly Rect LegendOverlay=new Rect(350,418,560,29);
         public static readonly Rect WeaponGroupsOverlay=new Rect(350,452,560,76);
@@ -42,7 +42,10 @@ namespace RoboRougelike.R3
         private float yaw=35,pitch=32,distance=9,previousNear;
         private Vector3 pivotLocal;
         private bool orbitDragging,isOpen,arenaWasActive;
-        private GameObject hiddenArena;
+        private GameObject hiddenArena,workshopSpace;
+        // A separate, non-gameplay workspace: safely away from arenas, authored maps,
+        // projectiles and other physical entities which remain at ground level.
+        private static readonly Vector3 WorkshopOrigin=new Vector3(0,500,0);
         private R3PartKind shownKind;
         private R4WeaponKind shownWeapon;
         private R41GarageTool shownTool;
@@ -74,7 +77,16 @@ namespace RoboRougelike.R3
         public void Open()
         {
             if(!isOpen)previousNear=view.nearClipPlane;isOpen=true;
-            HideArena();follow.enabled=false;view.nearClipPlane=0.05f;view.rect=ViewportForScreen(Screen.width,Screen.height);
+            HideArena();EnsureWorkshopSpace();
+            // Combat/range can end with the body tilted, spinning or far from spawn.
+            // Normalize its world frame once on entry, before sockets or ghost are built.
+            run.Player.MoveTo(WorkshopOrigin+Vector3.up*.7f,Quaternion.identity);
+            // Rigidbody interpolation can leave Transform at its pre-teleport pose
+            // while simulation is paused; synchronize the visible and physics frames.
+            run.Player.transform.SetPositionAndRotation(WorkshopOrigin+Vector3.up*.7f,Quaternion.identity);
+            var body=run.Player.GetComponent<Rigidbody>();
+            if(body!=null&&!body.isKinematic){body.linearVelocity=Vector3.zero;body.angularVelocity=Vector3.zero;}
+            follow.enabled=false;view.nearClipPlane=0.05f;view.rect=ViewportForScreen(Screen.width,Screen.height);
             foreach(var part in run.Player.GetComponent<R3VehicleAssembly>().Parts)
                 if(part!=null&&part.Operational&&part.GunPivot!=null&&part.transform.IsChildOf(run.Player.transform))part.GunPivot.localRotation=Quaternion.identity;
             Physics.SyncTransforms();
@@ -88,6 +100,7 @@ namespace RoboRougelike.R3
             if(run.Player!=null)R3BuildValidation.SetGarageSockets(run.Player.GetComponent<R3VehicleAssembly>(),false);
             if(previewRoot!=null){previewRoot.SetActive(false);Destroy(previewRoot);}
             previewRoot=null;marker=null;payloadRenderers.Clear();HasTarget=false;orbitDragging=false;
+            DestroyWorkshopSpace();
             RestoreArena();
             if(isOpen){view.nearClipPlane=previousNear;view.rect=new Rect(0,0,1,1);follow.enabled=true;}
             isOpen=false;
@@ -105,6 +118,34 @@ namespace RoboRougelike.R3
         {
             if(hiddenArena!=null)hiddenArena.SetActive(arenaWasActive);
             hiddenArena=null;
+        }
+        private void EnsureWorkshopSpace()
+        {
+            if(workshopSpace!=null)return;
+            workshopSpace=new GameObject("Garaż — osobna przestrzeń");
+            workshopSpace.transform.position=WorkshopOrigin;
+            WorkshopSurface("Podłoga warsztatu",new Vector3(0,-.1f,0),new Vector3(80,.2f,80),new Color(.19f,.22f,.24f));
+            var wallColor=new Color(.12f,.15f,.17f);
+            WorkshopSurface("Ściana północna",new Vector3(0,8,39),new Vector3(80,16,.3f),wallColor);
+            WorkshopSurface("Ściana południowa",new Vector3(0,8,-39),new Vector3(80,16,.3f),wallColor);
+            WorkshopSurface("Ściana wschodnia",new Vector3(39,8,0),new Vector3(.3f,16,80),wallColor);
+            WorkshopSurface("Ściana zachodnia",new Vector3(-39,8,0),new Vector3(.3f,16,80),wallColor);
+        }
+        private void WorkshopSurface(string name,Vector3 localPosition,Vector3 localScale,Color color)
+        {
+            var surface=GameObject.CreatePrimitive(PrimitiveType.Cube);
+            surface.name=name;surface.transform.SetParent(workshopSpace.transform,false);
+            surface.transform.localPosition=localPosition;surface.transform.localScale=localScale;
+            // Decoration only: it must never interfere with the canonical physical
+            // placement gate or the cursor's vehicle-part raycasts.
+            surface.GetComponent<Collider>().enabled=false;
+            var renderer=surface.GetComponent<Renderer>();renderer.sharedMaterial=palette.Parts[(int)R3PartKind.Wheel];
+            var tint=new MaterialPropertyBlock();tint.SetColor("_BaseColor",color);renderer.SetPropertyBlock(tint);
+        }
+        private void DestroyWorkshopSpace()
+        {
+            if(workshopSpace==null)return;
+            workshopSpace.SetActive(false);Destroy(workshopSpace);workshopSpace=null;
         }
         public void Orbit(float degrees){yaw+=degrees;}
         public void Tilt(float degrees){pitch=Mathf.Clamp(pitch+degrees,5,75);}
@@ -311,10 +352,21 @@ namespace RoboRougelike.R3
             if(Tool==R41GarageTool.Mount)
             {
                 string error=PlacementIssue;if(error!=null){Message=error;return false;}
-                result=Owned!=null?run.GarageMount(SelectedInventoryId,Cell,SelectedRotation):
+                var mounted=Owned;
+                result=mounted!=null?run.GarageMount(SelectedInventoryId,Cell,SelectedRotation):
                     MountKind==R3PartKind.Gun?run.GarageBuyWeapon(Cell,MountWeapon,SelectedRotation):
                     run.GarageBuy(Cell,MountKind,SelectedRotation);
                 Message=result?"Zamontowano dokładnie w miejscu podglądu.":"Montaż nieudany.";
+                if(result&&mounted!=null)
+                {
+                    // Keep building from the same owned stack, without purchasing or
+                    // silently substituting a different weapon or bonus.
+                    var next=run.VehicleModel.Inventory.Where(p=>p.Kind==mounted.Kind&&p.Health>0&&
+                        (p.Kind!=R3PartKind.Gun||p.Weapon==mounted.Weapon)&&
+                        (p.Kind!=R3PartKind.BonusModule||p.UpgradeId==mounted.UpgradeId))
+                        .OrderByDescending(p=>p.Health).FirstOrDefault();
+                    SelectedInventoryId=next?.Id;
+                }
             }
             else if(Tool==R41GarageTool.Repair)
             {result=run.GarageRepair(Cell);Message=result?"Naprawiono wskazaną część.":"Brak uszkodzeń, Złomu lub sprawnego połączenia.";}
@@ -338,8 +390,7 @@ namespace RoboRougelike.R3
             var point=(new Vector2(screen.x,height-screen.y)-offset)/scale;
             var viewport=Viewport;
             var opening=new Rect(viewport.x*1280,(1-viewport.yMax)*720,viewport.width*1280,viewport.height*720);
-            return BuildArea.Contains(point)&&opening.Contains(point)&&!ActivityOverlay.Contains(point)&&
-                !LegendOverlay.Contains(point)&&!WeaponGroupsOverlay.Contains(point);
+            return BuildArea.Contains(point)&&opening.Contains(point);
         }
         public bool ClickScreen(Vector2 screen)
         {return InBuildArea(screen,Screen.width,Screen.height)&&Point(view.ScreenPointToRay(screen))&&ClickTarget();}
@@ -369,7 +420,16 @@ namespace RoboRougelike.R3
             if(!inside)return;
             if(current.type==EventType.ScrollWheel){Zoom(current.delta.y*0.4f);current.Use();return;}
             if(current.type==EventType.Repaint&&!orbitDragging)Point(view.ScreenPointToRay(screen));
-            if(current.type==EventType.MouseDown&&current.button==0&&!orbitDragging){ClickScreen(screen);current.Use();}
+            if(current.type==EventType.MouseDown&&current.button==0&&!orbitDragging)
+            {
+                // Direct actions avoid switching tools for each isolated edit.
+                var prior=Tool;
+                if(current.shift)Tool=R41GarageTool.Remove;
+                else if(current.control||current.command)Tool=R41GarageTool.Repair;
+                ClickScreen(screen);
+                if(Tool!=prior)SetTool(prior);
+                current.Use();
+            }
         }
         private void LateUpdate()
         {
@@ -378,6 +438,6 @@ namespace RoboRougelike.R3
             var pivot=run.Player.transform.TransformPoint(pivotLocal);var rotation=Quaternion.Euler(pitch,yaw,0);
             view.transform.SetPositionAndRotation(pivot+rotation*Vector3.back*distance,rotation);
         }
-        private void OnDestroy(){RestoreArena();if(previewRoot!=null)Destroy(previewRoot);}
+        private void OnDestroy(){DestroyWorkshopSpace();RestoreArena();if(previewRoot!=null)Destroy(previewRoot);}
     }
 }

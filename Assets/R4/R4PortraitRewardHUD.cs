@@ -32,8 +32,8 @@ namespace RoboRougelike.R1
         {
             var ledger=run.Salvage;TrackRewardLedger(ledger);
             if(rewardInventoryOpen){DrawPortraitRewardInventory(run);return;}
-            GUI.Label(new Rect(24,20,720,42),"WYBÓR NAGRÓD",title);
-            GUI.Label(new Rect(24,68,720,28),$"{(run.LastActivityWasReactor?"Reaktor obroniony":"Zwycięstwo")} • +{run.LastScrapReward} Z za walkę",body);
+            GUI.Label(new Rect(24,20,720,42),"ZWYCIĘSTWO",title);
+            GUI.Label(new Rect(24,68,720,28),$"{(run.LastActivityWasReactor?"Reaktor obroniony":$"Starcie {run.Progress.CompletedEncounters}/{run.Progress.TotalEncounters}")} • +{run.LastScrapReward} Z • wybierz nagrody",body);
             GUI.Label(new Rect(24,100,720,28),"MODUŁ BONUSOWY • WYBIERZ 1 Z 3",heading);
             var offers=run.Progress.Offers.ToArray();
             for(int i=0;i<offers.Length;i++)
@@ -54,10 +54,9 @@ namespace RoboRougelike.R1
             {
                 var item=visible[i];var part=item.ToPart();var card=PortraitRewardLootCard(i);var detail=PortraitRewardLootDetails(i);Panel(card);
                 GUI.Label(new Rect(detail.x,card.y+3,detail.width,22),R4WeaponDefinition.PartName(part),small);
-                string condition=item.Health<=0?"ZNISZCZONA":item.Health<1?"USZKODZONA":"NIENARUSZONA";
-                GUI.Label(new Rect(detail.x,card.y+26,detail.width,19),$"{condition} • HP {item.Health*100:0}%",small);
+                GUI.Label(new Rect(detail.x,card.y+26,detail.width,19),$"HP wraku: {item.Health*100:0}%",small);
                 string ammo=SalvageAmmoLabel(part);
-                GUI.Label(new Rect(detail.x,card.y+48,detail.width,20),$"{(item.Health<=0?"Odbudowa":"Naprawa")}: {run.VehicleModel.RepairCost(part)} Z{(ammo==null?"":" • "+ammo)}",small);
+                GUI.Label(new Rect(detail.x,card.y+48,detail.width,20),$"Odbiór: 100% HP{(ammo==null?"":" • "+ammo)}",small);
                 GUI.Label(PortraitRewardLootSource(i),item.Source,small);
                 bool chosen=lootSelection.Contains(item.Id);GUI.enabled=chosen||lootSelection.Count<3;
                 GUI.backgroundColor=chosen?new Color(.35f,.85f,.65f):Color.white;

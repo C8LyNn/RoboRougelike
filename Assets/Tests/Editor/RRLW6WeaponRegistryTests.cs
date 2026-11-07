@@ -33,7 +33,8 @@ public class RRLW6WeaponRegistryTests
         Assert.That(ledger.Record("enemy",new[]{new R4SalvageItem("real-shotgun","enemy gun",R3PartKind.Gun,R4WeaponKind.Shotgun,0,5)}),Is.True);
         Assert.That(ledger.Claim(model,new[]{"real-shotgun"}),Is.True);
         var recovered=model.Inventory.Single();
-        Assert.That(recovered.Ammo,Is.EqualTo(5));Assert.That(recovered.Health,Is.Zero);
+        Assert.That(recovered.Ammo,Is.EqualTo(5));Assert.That(recovered.Health,Is.EqualTo(1));
+        recovered.Health=0; // Subsequent own damage continues to require paid repair.
         model.Award(45);int before=model.Scrap;
         Assert.That(model.RepairInventory(recovered.Id),Is.True);
         Assert.That(model.Scrap,Is.EqualTo(before-16));

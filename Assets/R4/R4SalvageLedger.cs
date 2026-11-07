@@ -19,7 +19,7 @@ namespace RoboRougelike.R4
         public readonly Vector3Int Rotation;
         public readonly int Contacts;
         public bool Recoverable => Health>0;
-        // Wrecks are selectable too; armor and cores are not reward choices.
+        // Wrecks are selectable too; selected enemy parts arrive in working condition.
         public bool Selectable => Kind!=R3PartKind.Armor&&Kind!=R3PartKind.Core;
         public R4SalvageItem(string id,string source,R3PartKind kind,R4WeaponKind weapon,float health,int ammo=-1,
             float defenseCharge=-1,float defenseAge=float.PositiveInfinity,Vector3Int rotation=default,int contacts=R3MountingGrid.AllFaces,float thermalHeat=0,bool thermalLocked=false)
@@ -73,7 +73,9 @@ namespace RoboRougelike.R4
             if(Closed||model==null||selected==null||items.Any(p=>p==null||!R3VehicleModel.ValidEconomicPart(p.ToPart())))return false;
             var chosen=selected.ToArray();var keep=new HashSet<string>(chosen);
             if(chosen.Length!=keep.Count||keep.Count>Limit||keep.Any(id=>!items.Any(p=>p.Id==id&&p.Selectable)||model.Owns(id)))return false;
-            var recovered=items.Where(p=>keep.Contains(p.Id)).Select(p=>p.ToPart()).ToArray();
+            // Repair only the copies selected as rewards. The immutable wreck
+            // snapshots remain intact for condition-based scrap calculation.
+            var recovered=items.Where(p=>keep.Contains(p.Id)).Select(p=>{var copy=p.ToPart();copy.Health=1;return copy;}).ToArray();
             int scrap=PreviewScrap(model,keep);
             // Validate and store all incoming items together before closing or paying the ledger.
             var incoming=bonus==null?recovered:recovered.Concat(new[]{bonus}).ToArray();

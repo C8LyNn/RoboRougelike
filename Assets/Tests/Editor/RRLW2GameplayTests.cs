@@ -42,7 +42,7 @@ public class RRLW2GameplayTests
         Assert.That(run.ConfirmRewards(Array.Empty<string>(),new[]{0,1,2}),Is.False);Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));
         Assert.That(run.StartNextEncounter(),Is.True);yield return Until(()=>run.Progress.State==R1RunState.Route,"Next route");
     }
-    [UnityTest] public IEnumerator RealDestroyedEnemyGunIsStoredRebuiltAtDiscountAndMounted()
+    [UnityTest] public IEnumerator RealDestroyedEnemyGunIsStoredHealthyAndMountedWithoutRepair()
     {
         yield return Combat();var enemy=run.Encounter.Enemies[0];
         enemy.WeaponBlock.ApplyDamage(100000,enemy.WeaponBlock.transform.position,Vector3.up);
@@ -50,12 +50,11 @@ public class RRLW2GameplayTests
         var wreck=run.Salvage.Items.Single(p=>p.Kind==R3PartKind.Gun&&p.Health==0);
         var wheel=run.Salvage.Items.First(p=>p.Kind==R3PartKind.Wheel&&p.Health>0);
         Assert.That(run.ConfirmRewards(new[]{wreck.Id,wheel.Id},new[]{0}),Is.True);
-        Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(3));Assert.That(run.VehicleModel.Inventory.Single(p=>p.Id==wreck.Id).Health,Is.Zero);
+        Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(3));Assert.That(run.VehicleModel.Inventory.Single(p=>p.Id==wreck.Id).Health,Is.EqualTo(1));
         var cell=new Vector3Int(0,2,-2);int before=run.VehicleModel.Scrap;
-        Assert.That(run.VehicleModel.At(cell),Is.Null);Assert.That(run.VehicleModel.OwnedPlacementError(wreck.Id,cell,Vector3Int.zero),Does.Contain("zniszczoną część"));
-        Assert.That(run.GarageMount(wreck.Id,cell),Is.False);Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before));
-        Assert.That(run.GarageRepairInventory(wreck.Id),Is.True);Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before-13));
-        Assert.That(run.GarageRepairInventory(wreck.Id),Is.False);Assert.That(run.GarageMount(wreck.Id,cell),Is.True,run.VehicleModel.OwnedPlacementError(wreck.Id,cell,Vector3Int.zero));
+        Assert.That(run.VehicleModel.At(cell),Is.Null);Assert.That(run.VehicleModel.OwnedPlacementError(wreck.Id,cell,Vector3Int.zero),Is.Null);
+        Assert.That(run.GarageRepairInventory(wreck.Id),Is.False);Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before));
+        Assert.That(run.GarageMount(wreck.Id,cell),Is.True,run.VehicleModel.OwnedPlacementError(wreck.Id,cell,Vector3Int.zero));
         var mounted=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==wreck.Id);
         Assert.That(mounted.Damageable.CurrentHp,Is.EqualTo(mounted.Damageable.MaxHp));
     }

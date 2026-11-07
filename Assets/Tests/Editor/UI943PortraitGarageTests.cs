@@ -22,9 +22,9 @@ public sealed class UI943PortraitGarageTests
     {
         var viewport=R3GarageView.ViewportForScreen(768,1024);
         Assert.That(viewport.x*768,Is.EqualTo(24).Within(.1f));
-        Assert.That(viewport.y*1024,Is.EqualTo(528).Within(.1f));
+        Assert.That(viewport.y*1024,Is.EqualTo(448).Within(.1f));
         Assert.That(viewport.width*768,Is.EqualTo(720).Within(.1f));
-        Assert.That(viewport.height*1024,Is.EqualTo(420).Within(.1f));
+        Assert.That(viewport.height*1024,Is.EqualTo(500).Within(.1f));
     }
 
     [Test]
@@ -32,7 +32,7 @@ public sealed class UI943PortraitGarageTests
     {
         bool Hit(float x,float y)=>R3GarageView.InBuildArea(new Vector2(x,1024-y),768,1024);
         Assert.That(Hit(384,300),Is.True);
-        Assert.That(Hit(384,530),Is.False,"Przyciski narzędzi nie mogą montować części.");
+        Assert.That(Hit(384,610),Is.False,"Przyciski narzędzi nie mogą montować części.");
         Assert.That(Hit(384,60),Is.False);
         Assert.That(Hit(10,300),Is.False);
     }

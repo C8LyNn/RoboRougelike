@@ -222,6 +222,12 @@ namespace RoboRougelike.R3
             {
                 var types=MountedWeaponTypes();
                 if(types.Count>MaxWeaponTypes||(types.Count==MaxWeaponTypes&&!types.Contains(weapon)))return WeaponTypeLimitError;
+                // A gun has a one-cell clearance around its own 1x1x1 mounting
+                // cell. Existing constructions remain loadable and repairable;
+                // the rule applies to each new placement, including inventory.
+                if(Parts.Any(p=>p.Kind==R3PartKind.Gun&&
+                    Math.Abs((long)p.Cell.x-cell.x)<=1&&Math.Abs((long)p.Cell.y-cell.y)<=1&&Math.Abs((long)p.Cell.z-cell.z)<=1))
+                    return "Zachowaj co najmniej jedno wolne pole odstępu między broniami.";
             }
             if (kind == R3PartKind.Wheel && Parts.Count(p => p.Kind == kind) >= 16) return "Limit 16 kół.";
             if (kind == R3PartKind.Suspension && Parts.Count(p => p.Kind == kind) >= 8) return "Limit 8 modułów zawieszenia.";

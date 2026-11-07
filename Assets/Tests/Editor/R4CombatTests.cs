@@ -57,20 +57,18 @@ public class R4CombatTests
         Assert.That(Run.Encounter.Enemies,Is.Empty);Assert.That(ledger.Items.Count,Is.EqualTo(13));
         Assert.That(ledger.Items.Count(p=>p.Kind==R3PartKind.Battery),Is.EqualTo(1));
     }
-    [UnityTest] public IEnumerator DestroyedGunCanBeRebuiltAndDuplicateRewardIsRejected()
+    [UnityTest] public IEnumerator DestroyedEnemyGunArrivesHealthyAndDuplicateRewardIsRejected()
     {
         var enemy=Run.Encounter.Enemies.First();enemy.WeaponBlock.ApplyDamage(10000,enemy.WeaponBlock.transform.position,Vector3.up);
         enemy.Core.ApplyDamage(10000,enemy.Core.transform.position,Vector3.up);RRLW2TestFlow.DefeatAll(Run);
         yield return Until(()=>Run.Progress.State==R1RunState.Salvage,"Łupy");
         var gun=Run.Salvage.Items.First(p=>p.Kind==R3PartKind.Gun);Assert.That(gun.Recoverable,Is.False);
         int before=Run.VehicleModel.Scrap;Assert.That(RRLW2TestFlow.Claim(Run,new[]{gun.Id}),Is.True);
-        Assert.That(Run.VehicleModel.Inventory.Single(p=>p.Id==gun.Id).Health,Is.Zero);
+        Assert.That(Run.VehicleModel.Inventory.Single(p=>p.Id==gun.Id).Health,Is.EqualTo(1));
         int after=Run.VehicleModel.Scrap;Assert.That(after,Is.GreaterThan(before));
         var cell=new Vector3Int(0,2,2);
         Assert.That(Run.VehicleModel.PlacementError(cell,R3PartKind.Gun,true,gun.Weapon),Is.Null,"The wreck must have a valid free mounting position.");
-        Assert.That(Run.VehicleModel.OwnedPlacementError(gun.Id,cell,default),Is.EqualTo("Odtwórz zniszczoną część przed montażem."));
-        Assert.That(Run.GarageMount(gun.Id,cell),Is.False);
-        Assert.That(Run.GarageRepairInventory(gun.Id),Is.True);Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(after-13));
+        Assert.That(Run.GarageRepairInventory(gun.Id),Is.False);Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(after));
         after=Run.VehicleModel.Scrap;
         Assert.That(RRLW2TestFlow.Claim(Run,Array.Empty<string>()),Is.False);
         Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(after));
@@ -93,7 +91,7 @@ public class R4CombatTests
             var cell=chassis==0?new Vector3Int(0,2,2):new Vector3Int(1,y,0);
             Assert.That(Run.GarageMount(loot.Id,cell),Is.True);Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(funds));
             var mounted=Run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==loot.Id);
-            Assert.That(mounted.Damageable.CurrentHp/mounted.Damageable.MaxHp,Is.EqualTo(0.8f).Within(0.01));
+            Assert.That(mounted.Damageable.CurrentHp/mounted.Damageable.MaxHp,Is.EqualTo(1f).Within(0.01));
             Assert.That(Run.StartNextEncounter(),Is.True);yield return Until(()=>!Run.Transitioning,"Następna walka");
             Run.Encounter.SetCombatActive(false);R1EncounterManager.ClearTransientObjects();
             var enemy=Run.Encounter.Enemies.First();var target=enemy.GetComponentsInChildren<P12PipelineSafeDamageable>()

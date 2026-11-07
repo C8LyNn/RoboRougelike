@@ -1,0 +1,97 @@
+using System.Collections;
+using System.Linq;
+using System.Reflection;
+using NUnit.Framework;
+using RoboRougelike.R1;
+using RoboRougelike.R3;
+using RoboRougelike.R6;
+using RogueMachine.P12PipelineSafe;
+using UnityEditor.SceneManagement;
+using UnityEngine;
+using UnityEngine.TestTools;
+
+// Diagnostic only: it drives the real player with R6 forces on the existing
+// range ramp. It does not modify the camera package or replace the vehicle.
+public sealed class CameraRamp18DiagnosticTests
+{
+    R1RunController run;
+
+    [UnityTest]
+    public IEnumerator RealLightVehicleOnRangeRampRecordsCameraAndAimCollision()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);
+        yield return new EnterPlayMode();
+        float deadline=Time.realtimeSinceStartup+30;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<deadline)yield return null;
+        run=R1RunController.Instance;Assert.That(run,Is.Not.Null);
+        Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);
+        Assert.That(run.EnterTestRange(),Is.True);
+        while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(run.Transitioning,Is.False,"The actual test range must load.");
+        var range=run.GetComponent<R6TestRange>();Assert.That(range?.Layout,Is.Not.Null);
+        var ramp=range.Layout.GetComponentsInChildren<BoxCollider>()
+            .FirstOrDefault(c=>c.name.StartsWith("Rampa terenu • poligon"));
+        Assert.That(ramp,Is.Not.Null,"Use the real, solid range ramp.");
+        Assert.That(ramp.enabled&&!ramp.isTrigger,Is.True);
+        Assert.That(Vector3.Angle(ramp.transform.up,Vector3.up),Is.EqualTo(18).Within(.1f));
+
+        var vehicle=run.Player;var body=vehicle.GetComponent<Rigidbody>();
+        var drive=vehicle.GetComponent<R6VehicleDrive>();
+        var follow=Object.FindFirstObjectByType<P12PipelineSafeCamera>();
+        Assert.That(body,Is.Not.Null);Assert.That(drive,Is.Not.Null);Assert.That(follow,Is.Not.Null);
+        Assert.That(body.isKinematic,Is.False);Assert.That(body.useGravity,Is.True);
+        Assert.That(follow.TargetRoot,Is.EqualTo(vehicle.transform));
+
+        // Initial setup only: the rest of the trial uses the actual R6 force
+        // solver, contacts, Rigidbody and the enabled LateUpdate camera adapter.
+        vehicle.Controller.SetGameplayInputEnabled(true);vehicle.Controller.enabled=false;
+        var up=ramp.transform.up;var uphill=-ramp.transform.forward;
+        var surface=ramp.transform.TransformPoint(new Vector3(0,.5f,.27f));
+        var pose=Quaternion.LookRotation(uphill,up);
+        body.interpolation=RigidbodyInterpolation.None;
+        body.transform.SetPositionAndRotation(surface+up*.65f,pose);
+        body.position=surface+up*.65f;body.rotation=pose;
+        body.linearVelocity=Vector3.zero;body.angularVelocity=Vector3.zero;
+        Physics.SyncTransforms();body.WakeUp();body.interpolation=RigidbodyInterpolation.Interpolate;
+        // A low viewing angle with the camera looking downhill puts terrain
+        // between the subject and the desired zoom position. This is an
+        // explicit fixture input, not a claim about the player's exact input.
+        SetFollowField(follow,"yaw",0f);SetFollowField(follow,"pitch",-5f);
+        SetFollowField(follow,"distance",20f);SetFollowField(follow,"renderedDistance",20f);
+        SetFollowField(follow,"zoomInitialized",true);follow.ReceiverRig.ResetSmoothing();
+
+        for(int i=0;i<15;i++){drive.Step(0,0,10,4,90);yield return new WaitForFixedUpdate();}
+        var start=body.position;int grounded=0,aimOverlaps=0,worldClips=0,cameraOverlaps=0;
+        float maxDistance=0,maxDesiredGap=0;var rig=follow.ReceiverRig;
+        for(int i=0;i<100;i++)
+        {
+            drive.Step(1,0,10,4,90);yield return new WaitForFixedUpdate();
+            if(drive.GroundedWheels>0)grounded++;
+            if(rig.WorldOverlapAtAim)aimOverlaps++;
+            if(rig.WorldClipped)worldClips++;
+            if(rig.WorldOverlapAtCamera)cameraOverlaps++;
+            var camera=follow.transform;var aim=rig.LastSolution.AimWorld;
+            float targetDistance=Vector3.Distance(camera.position,body.position);
+            float desiredGap=Vector3.Distance(camera.position,rig.LastSolution.DesiredCameraWorld);
+            maxDistance=Mathf.Max(maxDistance,targetDistance);maxDesiredGap=Mathf.Max(maxDesiredGap,desiredGap);
+            if(i%5==0)Debug.Log($"[CAMERA-RAMP18] fixed={i} t={Time.fixedTime:F2} body={body.position.ToString("F3")} velocity={body.linearVelocity.ToString("F3")} bodyRotation={body.rotation.eulerAngles.ToString("F2")} contacts={drive.GroundedWheels} camera={camera.position.ToString("F3")} cameraRotation={camera.rotation.eulerAngles.ToString("F2")} aim={aim.ToString("F3")} cameraToBody={targetDistance:F3} cameraToAim={Vector3.Distance(camera.position,aim):F3} desiredGap={desiredGap:F3} overlapAim={rig.WorldOverlapAtAim} clipped={rig.WorldClipped} overlapCamera={rig.WorldOverlapAtCamera}");
+        }
+        float progress=Vector3.Dot(body.position-start,uphill);
+        Debug.Log($"[CAMERA-RAMP18 SUMMARY] progress={progress:F3} groundedFrames={grounded}/100 overlapAimFrames={aimOverlaps} clippedFrames={worldClips} overlapCameraFrames={cameraOverlaps} maxCameraToBody={maxDistance:F3} maxDesiredGap={maxDesiredGap:F3}");
+        Assert.That(grounded,Is.GreaterThan(0),"The real wheels must contact the ramp during this diagnostic.");
+        Assert.That(progress,Is.GreaterThan(.05f),"R6 forces must actually move the vehicle uphill; otherwise the camera result is inconclusive.");
+        Assert.That(cameraOverlaps,Is.Zero,"The actual camera volume must not penetrate the world during the sampled traverse.");
+    }
+
+    static void SetFollowField(P12PipelineSafeCamera camera,string name,object value)
+    {
+        var field=typeof(P12PipelineSafeCamera).GetField(name,BindingFlags.Instance|BindingFlags.NonPublic);
+        Assert.That(field,Is.Not.Null,$"Camera diagnostic field {name} is unavailable.");field.SetValue(camera,value);
+    }
+
+    [UnityTearDown]
+    public IEnumerator Cleanup()
+    {
+        if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}
+    }
+}

@@ -31,8 +31,8 @@ namespace RogueMachine.P12PipelineSafe
         [SerializeField] private float wheelLocalY = -0.27f;
 
         [Header("Integrated turret")]
-        [SerializeField] private float turretYawSpeed = 170f;
-        [SerializeField] private float cannonPitchSpeed = 125f;
+        [SerializeField] private float turretYawSpeed = 140f;
+        [SerializeField] private float cannonPitchSpeed = 105f;
         [SerializeField] private float minCannonPitch = -12f;
         [SerializeField] private float maxCannonPitch = 26f;
         [SerializeField] private float aimRange = 160f;
