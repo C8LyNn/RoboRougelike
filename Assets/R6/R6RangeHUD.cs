@@ -74,10 +74,9 @@ namespace RoboRougelike.R1
             var original=GUI.color;var markers=controller.WeaponReticles;
             for(int i=0;i<markers.Count;i++)
             {
-                var marker=markers[i];var point=RoboRougelike.WeaponIntegration.RRLWeaponReticles.ToHudPoint(marker.Viewport,camera.pixelRect,new Vector2(Screen.width,Screen.height));
+                var marker=markers[i];var point=RoboRougelike.WeaponIntegration.RRLWeaponReticles.MarkerHudPoint(marker.Viewport,camera.pixelRect,new Vector2(Screen.width,Screen.height),marker.Offscreen);
                 float x=point.x,y=point.y;
-                // Leave room for the outermost of four brackets and its number.
-                x=Mathf.Clamp(x,46,1234);y=Mathf.Clamp(y,46,674);
+
                 float radius=8+Mathf.Min(i,3)*4,stroke=2,length=5;
                 GUI.color=marker.Disabled?new Color(.55f,.55f,.55f,.9f):
                     marker.Obstructed||marker.OutOfRange||marker.Offscreen?new Color(1,.7f,.25f,.95f):new Color(.35f,.95f,.95f,.9f);
@@ -89,8 +88,8 @@ namespace RoboRougelike.R1
                     GUI.DrawTexture(new Rect(cx-stroke*.5f,cy-(sy<0?0:length),stroke,length),Texture2D.whiteTexture);
                 }
                 var offset=RoboRougelike.WeaponIntegration.RRLWeaponReticles.LabelOffset(i);
-                float labelX=Mathf.Clamp(x+offset.x,10,1270),labelY=Mathf.Clamp(y+offset.y,10,710);
-                GUI.Label(new Rect(labelX-10,labelY-10,20,20),(i+1).ToString(),weaponMarkerStyle);
+                var label=RoboRougelike.WeaponIntegration.RRLWeaponReticles.ClampHudToViewport(new Vector2(x,y)+offset,camera.pixelRect,new Vector2(Screen.width,Screen.height),10);
+                GUI.Label(new Rect(label.x-10,label.y-10,20,20),(i+1).ToString(),weaponMarkerStyle);
             }
             GUI.color=original;
         }

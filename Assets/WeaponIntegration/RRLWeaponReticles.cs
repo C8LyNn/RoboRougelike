@@ -52,6 +52,26 @@ namespace RoboRougelike.WeaponIntegration
                 (screen.y-(pixelRect.y+viewport.y*pixelRect.height)-top)/scale);
         }
 
+        // Visible markers must stay at the real projection, including letterbox margins.
+        // Only offscreen indicators are brought inside the visible camera rectangle.
+        public static Vector2 MarkerHudPoint(Vector2 viewport,Rect pixelRect,Vector2 screen,bool offscreen)
+        {
+            var point=ToHudPoint(viewport,pixelRect,screen);
+            return offscreen?ClampHudToViewport(point,pixelRect,screen,46):point;
+        }
+
+        public static Vector2 ClampHudToViewport(Vector2 point,Rect pixelRect,Vector2 screen,float inset)
+        {
+            if(screen.x<=0||screen.y<=0)return Vector2.zero;
+            var visible=Rect.MinMaxRect(Mathf.Clamp(pixelRect.xMin,0,screen.x),Mathf.Clamp(pixelRect.yMin,0,screen.y),
+                Mathf.Clamp(pixelRect.xMax,0,screen.x),Mathf.Clamp(pixelRect.yMax,0,screen.y));
+            var topLeft=ToHudPoint(new Vector2(0,1),visible,screen);
+            var bottomRight=ToHudPoint(new Vector2(1,0),visible,screen);
+            float padX=Mathf.Min(Mathf.Max(0,inset),Mathf.Max(0,(bottomRight.x-topLeft.x)*.5f));
+            float padY=Mathf.Min(Mathf.Max(0,inset),Mathf.Max(0,(bottomRight.y-topLeft.y)*.5f));
+            return new Vector2(Mathf.Clamp(point.x,topLeft.x+padX,bottomRight.x-padX),
+                Mathf.Clamp(point.y,topLeft.y+padY,bottomRight.y-padY));
+        }
         public static void Collect(Camera camera,R3VehicleAssembly assembly,P12PipelineSafeTankController controller,
             Vector3 aimPoint,List<Marker> output)
         {

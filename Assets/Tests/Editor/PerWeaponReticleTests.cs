@@ -127,6 +127,58 @@ public sealed class PerWeaponReticleTests
         var wide=Map(new Vector2(.25f,.5f),new Vector2(2560,1080));
         Assert.That(wide.x,Is.EqualTo(213.3333f).Within(.02f));Assert.That(wide.y,Is.EqualTo(360).Within(.01f));
     }
+    [TestCase(1920,1080,.5f,.5f)]
+    [TestCase(1920,1080,.01f,.5f)]
+    [TestCase(1024,768,.5f,.1f)]
+    [TestCase(768,1024,.5f,.1f)]
+    public void OnscreenMarkerRemainsAtCameraProjection(int width,int height,float vx,float vy)
+    {
+        var screen=new Vector2(width,height);var pixelRect=new Rect(0,0,width,height);
+        var viewport=new Vector2(vx,vy);
+        var drawn=RoboRougelike.WeaponIntegration.RRLWeaponReticles.MarkerHudPoint(viewport,pixelRect,screen,false);
+        float scale=Mathf.Min(width/1280f,height/720f);
+        var pixel=new Vector2((width-1280*scale)*.5f+drawn.x*scale,
+            (height-720*scale)*.5f+drawn.y*scale);
+        Assert.That(pixel.x,Is.EqualTo(vx*width).Within(.01f));
+        Assert.That(pixel.y,Is.EqualTo((1-vy)*height).Within(.01f));
+    }
+    [TestCase(1024,768,128,96,512,384,.2f,.8f)]
+    [TestCase(768,1024,96,192,576,640,.8f,.2f)]
+    [TestCase(1920,1080,200,90,1280,720,.01f,.99f)]
+    public void CameraProjectionUsesItsActualPixelRectangle(int width,int height,float rx,float ry,float rw,float rh,float vx,float vy)
+    {
+        var screen=new Vector2(width,height);var rect=new Rect(rx,ry,rw,rh);
+        view.aspect=rw/rh;
+        var projected=view.WorldToViewportPoint(view.ViewportToWorldPoint(new Vector3(vx,vy,10)));
+        var point=RoboRougelike.WeaponIntegration.RRLWeaponReticles.MarkerHudPoint(projected,rect,screen,false);
+        float scale=Mathf.Min(width/1280f,height/720f);
+        var pixel=new Vector2((width-1280*scale)*.5f+point.x*scale,(height-720*scale)*.5f+point.y*scale);
+        Assert.That(pixel.x,Is.EqualTo(rx+projected.x*rw).Within(.01f));
+        Assert.That(pixel.y,Is.EqualTo(height-(ry+projected.y*rh)).Within(.01f));
+    }
+    [TestCase(768,1024,0,0,768,1024,.5f,-.1f,384f,996.4f)]
+    [TestCase(1024,768,128,96,512,384,-.2f,.5f,164.8f,480f)]
+    [TestCase(1024,768,128,96,512,384,1.2f,.5f,603.2f,480f)]
+    [TestCase(1024,768,-100,0,500,768,-.2f,.5f,36.8f,384f)]
+    [TestCase(1024,768,100,100,40,50,-.2f,.5f,120f,643f)]
+    [TestCase(1920,1080,200,90,1280,720,.5f,1.2f,840f,339f)]
+    public void OffscreenMarkersClampToVisibleCameraViewport(int width,int height,float rx,float ry,float rw,float rh,float vx,float vy,float expectedX,float expectedY)
+    {
+        var screen=new Vector2(width,height);var rect=new Rect(rx,ry,rw,rh);
+        var point=RoboRougelike.WeaponIntegration.RRLWeaponReticles.MarkerHudPoint(new Vector2(vx,vy),rect,screen,true);
+        float scale=Mathf.Min(width/1280f,height/720f);
+        var pixel=new Vector2((width-1280*scale)*.5f+point.x*scale,(height-720*scale)*.5f+point.y*scale);
+        Assert.That(pixel.x,Is.EqualTo(expectedX).Within(.02f));Assert.That(pixel.y,Is.EqualTo(expectedY).Within(.02f));
+    }
+    [TestCase(1024,768,.5f,.1f)]
+    [TestCase(768,1024,.5f,.1f)]
+    public void OnscreenLabelCanRemainInScreenLetterboxMargin(int width,int height,float vx,float vy)
+    {
+        var screen=new Vector2(width,height);var rect=new Rect(0,0,width,height);
+        var point=RoboRougelike.WeaponIntegration.RRLWeaponReticles.ToHudPoint(new Vector2(vx,vy),rect,screen);
+        var label=RoboRougelike.WeaponIntegration.RRLWeaponReticles.ClampHudToViewport(point,rect,screen,10);
+        Assert.That(label.x,Is.EqualTo(point.x).Within(.001f));Assert.That(label.y,Is.EqualTo(point.y).Within(.001f));
+    }
     [TearDown]public void Cleanup()
     {
         if(wall!=null)UnityEngine.Object.DestroyImmediate(wall);
