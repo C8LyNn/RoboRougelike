@@ -1,0 +1,597 @@
+{
+ "id": "R4B_Beam3",
+ "block_kind": "Beam3",
+ "description": "3x1x1 beam - one rigid piece over three bonded cells",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ],
+  [
+   1,
+   0,
+   0
+  ],
+  [
+   2,
+   0,
+   0
+  ]
+ ],
+ "bonds": [
+  [
+   [
+    0,
+    0,
+    0
+   ],
+   [
+    1,
+    0,
+    0
+   ]
+  ],
+  [
+   [
+    1,
+    0,
+    0
+   ],
+   [
+    2,
+    0,
+    0
+   ]
+  ]
+ ],
+ "note": null,
+ "contact_mask_local_anchor": 62,
+ "contact_mask_bits": "R3MountingGrid.FaceDirections order: right, left, up, down, forward, back (Unity)",
+ "ports": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "up",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "forward",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "up",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "forward",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    2,
+    0,
+    0
+   ],
+   "dir": "right",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    2,
+    0,
+    0
+   ],
+   "dir": "up",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    2,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    2,
+    0,
+    0
+   ],
+   "dir": "forward",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    2,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "up",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "forward",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "up",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "forward",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    2,
+    0,
+    0
+   ],
+   "dir": "right",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    2,
+    0,
+    0
+   ],
+   "dir": "up",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    2,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    2,
+    0,
+    0
+   ],
+   "dir": "forward",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    2,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "mesh": {
+  "object": "R4B_Beam3",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 11296,
+  "uv": true,
+  "ok": true
+ },
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   1.36,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_cells": true,
+ "materials": [
+  "Armor_Dark",
+  "Armor_Gunmetal",
+  "Steel_Light"
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 5650,
+   "empties": [
+    "Port_back_000.001",
+    "Port_back_100.001",
+    "Port_back_200.001",
+    "Port_down_000.001",
+    "Port_down_100.001",
+    "Port_down_200.001",
+    "Port_forward_000.001",
+    "Port_forward_100.001",
+    "Port_forward_200.001",
+    "Port_left_000.001",
+    "Port_right_200.001",
+    "Port_up_000.001",
+    "Port_up_100.001",
+    "Port_up_200.001",
+    "R4B_Beam3_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 12700,
+   "empties": [
+    "Port_back_000.001",
+    "Port_back_100.001",
+    "Port_back_200.001",
+    "Port_down_000.001",
+    "Port_down_100.001",
+    "Port_down_200.001",
+    "Port_forward_000.001",
+    "Port_forward_100.001",
+    "Port_forward_200.001",
+    "Port_left_000.001",
+    "Port_right_200.001",
+    "Port_up_000.001",
+    "Port_up_100.001",
+    "Port_up_200.001",
+    "R4B_Beam3_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  }
+ },
+ "renders": [
+  "R4B_Beam3_34front.png",
+  "R4B_Beam3_34rear.png",
+  "R4B_Beam3_under.png"
+ ],
+ "files": {
+  "R4B_Beam3.blend": {
+   "sha256": "fb0a9cbd2fdd1a23adb5244c8340cb72300b5fc502a0ff532f73a7a04b4ff63d",
+   "bytes": 442676
+  },
+  "R4B_Beam3.blend1": {
+   "sha256": "4055616ce8026022e5bdcd0c0cb60d61aaee465e7a0feb97630b79bcbfd8b497",
+   "bytes": 442620
+  },
+  "R4B_Beam3.fbx": {
+   "sha256": "8f384688bf02c0097641b6aee6c9e8049667cb81047e5992f5194b8b8894dfe5",
+   "bytes": 360396
+  },
+  "R4B_Beam3.glb": {
+   "sha256": "744247829480de9acee1ca46da82a0f9cf7c0edd22acb272fd1c14ee34b7b01c",
+   "bytes": 479312
+  },
+  "R4B_Beam3_colliders.glb": {
+   "sha256": "4ed10e048d1372c432063c592a9f113346b1c2e1858cca5c5a72b162e0e68929",
+   "bytes": 1772
+  }
+ },
+ "seconds": 4.3,
+ "blender": "5.2.3 LTS"
+}

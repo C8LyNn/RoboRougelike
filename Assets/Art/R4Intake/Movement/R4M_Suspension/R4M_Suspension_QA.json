@@ -1,0 +1,953 @@
+{
+ "id": "R4M_Suspension",
+ "kind": "R3PartKind.Suspension",
+ "game_name": "Aktywne zawieszenie (MOV009)",
+ "blender": "5.2.3 LTS",
+ "started": "2026-11-07 10:55:36",
+ "failures": [],
+ "notes": [
+  "Damper body/rod/spring follow the arm analytically each frame (no constraints needed in Unity)."
+ ],
+ "meshes": [
+  {
+   "object": "R4M_Suspension_Tower",
+   "verts": 1455,
+   "triangles": 2882,
+   "shells": 10,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.028504,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.004,
+    0.004,
+    0.996,
+    0.909
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Plate_Light",
+    "Armor_Dark",
+    "TeamColor_Red",
+    "Energy_Hot",
+    "Steel_Light",
+    "Hazard_Yellow"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_Suspension_Arm",
+   "verts": 715,
+   "triangles": 1422,
+   "shells": 3,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.00384,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.004,
+    0.004,
+    0.996,
+    0.994
+   ],
+   "materials": [
+    "Steel_Light",
+    "Armor_Dark",
+    "Armor_Gunmetal",
+    "TeamColor_Red",
+    "Hazard_Yellow"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_Suspension_ShockBody",
+   "verts": 398,
+   "triangles": 796,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.000575,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.003,
+    0.003,
+    0.981,
+    0.997
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Dark",
+    "TeamColor_Red",
+    "Steel_Light"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_Suspension_ShockRod",
+   "verts": 309,
+   "triangles": 618,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.000229,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.003,
+    0.003,
+    0.997,
+    0.958
+   ],
+   "materials": [
+    "Steel_Light",
+    "Armor_Dark",
+    "Armor_Gunmetal"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_Suspension_Spring",
+   "verts": 960,
+   "triangles": 1952,
+   "shells": 1,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.000138,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.004,
+    0.004,
+    0.962,
+    0.996
+   ],
+   "materials": [
+    "Hazard_Yellow",
+    "Steel_Light"
+   ],
+   "ok": true
+  }
+ ],
+ "fx_meshes": [],
+ "triangles_total": 7670,
+ "triangles_fx": 0,
+ "triangles_r41_reference": 11452,
+ "topology_PASS": true,
+ "palette": {
+  "material_area_share": {
+   "Armor_Dark": 0.4506,
+   "Armor_Gunmetal": 0.36,
+   "Steel_Light": 0.1147,
+   "TeamColor_Red": 0.0459,
+   "Hazard_Yellow": 0.0147,
+   "Energy_Hot": 0.0141
+  },
+  "family_share": {
+   "1_dark_gunmetal": 0.8106,
+   "2_light_steel": 0.1147,
+   "3_team_red": 0.0459,
+   "4_hazard_yellow": 0.0147,
+   "T_technical": 0.0141
+  },
+  "r41_family_share": {
+   "1_dark_gunmetal": 0.7913,
+   "2_light_steel": 0.1229,
+   "3_team_red": 0.0247,
+   "4_hazard_yellow": 0.0015,
+   "T_technical": 0.0595
+  },
+  "bands": {
+   "1_dark_gunmetal": [
+    0.62,
+    0.88
+   ],
+   "2_light_steel": [
+    0.06,
+    0.24
+   ],
+   "3_team_red": [
+    0.012,
+    0.07
+   ],
+   "4_hazard_yellow": [
+    0.001,
+    0.03
+   ],
+   "T_technical": [
+    0.0,
+    0.16
+   ]
+  },
+  "in_band": {
+   "1_dark_gunmetal": true,
+   "2_light_steel": true,
+   "3_team_red": true,
+   "4_hazard_yellow": true,
+   "T_technical": true
+  },
+  "violations": [],
+  "PASS": true,
+  "PASS_policy": "movement: locked materials/PBR enforced, family bands reported (not enforced, issue #940)"
+ },
+ "contract": {
+  "R4M_Suspension_ROOT": {
+   "position_file": [
+    0.0,
+    0.0,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    1.0,
+    -0.0
+   ],
+   "parent": null
+  },
+  "Socket_Mount": {
+   "position_file": [
+    0.0,
+    0.26,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    1.0,
+    -0.0
+   ],
+   "parent": "R4M_Suspension_ROOT"
+  },
+  "Wheel_Axle": {
+   "position_file": [
+    0.192,
+    -0.3,
+    -0.15
+   ],
+   "forward_file": [
+    1.0,
+    -0.0,
+    -0.0
+   ],
+   "parent": "R4M_Suspension_Arm"
+  },
+  "unity_axes": "file/Unity: +Z forward, +Y up, meters; Yaw about local Y, Pitch about local X"
+ },
+ "sweep": {
+  "failures": [],
+  "mount_cell": [
+   0,
+   0,
+   0
+  ],
+  "static_bounds_file": [
+   [
+    -0.2563,
+    -0.385,
+    -0.2563
+   ],
+   [
+    0.2563,
+    0.26,
+    0.2563
+   ]
+  ],
+  "static_cells": [
+   [
+    0,
+    -1,
+    0
+   ],
+   [
+    0,
+    0,
+    0
+   ]
+  ],
+  "housing_bounds_file": [
+   [
+    -0.2563,
+    -0.182,
+    -0.2563
+   ],
+   [
+    0.2563,
+    0.26,
+    0.2563
+   ]
+  ],
+  "housing_inside_mount_cell": true,
+  "housing_policy": "trailing arm/hub reach 0.35 m below the cell centre (runtime piston reaches -0.52 m)",
+  "moving_sweep": {
+   "bounds_file": [
+    [
+     -0.2563,
+     -0.4348,
+     -0.2622
+    ],
+    [
+     0.2563,
+     0.26,
+     0.2563
+    ]
+   ],
+   "cells": [
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   "neighbour_cells_entered": [
+    [
+     0,
+     -1,
+     0
+    ]
+   ],
+   "frames": 137
+  },
+  "ground_contact": {
+   "note": "no direct ground contact: the wheel bolted to Wheel_Axle touches the ground"
+  },
+  "collision_envelope": {
+   "runtime": "decorative piston (cylinder d 0.156, l 0.468 at (0,-0.286,0)); support = MOV009 runtime",
+   "positions": {
+    "arm_-10deg": {
+     "damper_length_m": 0.3802,
+     "rod_insertion_m": 0.0348
+    },
+    "arm_+0deg": {
+     "damper_length_m": 0.3433,
+     "rod_insertion_m": 0.0717
+    },
+    "arm_+14deg": {
+     "damper_length_m": 0.2892,
+     "rod_insertion_m": 0.1258
+    }
+   },
+   "min_rod_insertion_m": 0.0348,
+   "hub_vertical_travel_m": 0.1268,
+   "wheel_envelope": "SWEEP_WheelEnvelope r 0.39 w 0.364 on the hub (QA clash vs tower over all clips)",
+   "PASS": true
+  },
+  "clearance_min_mm": {
+   "R4M_Suspension_Arm|R4M_Suspension_Tower": 2.0,
+   "R4M_Suspension_ShockBody|R4M_Suspension_Tower": 0.5,
+   "R4M_Suspension_Spring|R4M_Suspension_Tower": 27.34,
+   "SWEEP_WheelEnvelope|R4M_Suspension_Tower": 52.98
+  },
+  "quarter_turns": {
+   "X90": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      0,
+      -1
+     ],
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "X180": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      1,
+      0
+     ]
+    ]
+   },
+   "X270": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      1
+     ]
+    ]
+   },
+   "Y90": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      -1,
+      0
+     ],
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "Y180": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      -1,
+      0
+     ],
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "Y270": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      -1,
+      0
+     ],
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "Z90": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      -1,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      0
+     ]
+    ]
+   },
+   "Z180": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      1,
+      0
+     ]
+    ]
+   },
+   "Z270": {
+    "housing_inside_cell": true,
+    "static_cells": [
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      1,
+      0,
+      0
+     ]
+    ]
+   }
+  },
+  "mirror_X": {
+   "static_bounds_file": [
+    [
+     -0.2563,
+     -0.385,
+     -0.2563
+    ],
+    [
+     0.2563,
+     0.26,
+     0.2563
+    ]
+   ],
+   "socket_file": [
+    0.0,
+    0.26,
+    -0.0
+   ],
+   "socket_mirrored_file": [
+    -0.0,
+    0.26,
+    -0.0
+   ],
+   "note": "L/R variant = parent scale X -1 (Unity flips winding for negative scale); geometry is closed so lighting stays correct"
+  },
+  "floating_shells": {
+   "R4M_Suspension_Tower": {
+    "shells": 10,
+    "isolated": 0
+   },
+   "R4M_Suspension_Arm": {
+    "shells": 3,
+    "isolated": 0
+   },
+   "R4M_Suspension_ShockBody": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_Suspension_ShockRod": {
+    "shells": 1,
+    "isolated": 0
+   },
+   "R4M_Suspension_Spring": {
+    "shells": 1,
+    "isolated": 0
+   }
+  },
+  "nodes_file": {
+   "R4M_Suspension_ROOT": {
+    "position": [
+     0.0,
+     0.0,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     1.0,
+     -0.0
+    ]
+   },
+   "Socket_Mount": {
+    "position": [
+     0.0,
+     0.26,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     1.0,
+     -0.0
+    ]
+   },
+   "Wheel_Axle": {
+    "position": [
+     0.192,
+     -0.3,
+     -0.15
+    ],
+    "z_axis": [
+     1.0,
+     -0.0,
+     -0.0
+    ]
+   }
+  }
+ },
+ "animation_clash": {
+  "frames_checked": 137,
+  "pairs": [
+   [
+    "R4M_Suspension_Arm",
+    "R4M_Suspension_Tower"
+   ],
+   [
+    "R4M_Suspension_ShockBody",
+    "R4M_Suspension_Tower"
+   ],
+   [
+    "R4M_Suspension_ShockRod",
+    "R4M_Suspension_Tower"
+   ],
+   [
+    "R4M_Suspension_Spring",
+    "R4M_Suspension_Tower"
+   ],
+   [
+    "SWEEP_WheelEnvelope",
+    "R4M_Suspension_Tower"
+   ],
+   [
+    "R4M_Suspension_ShockBody",
+    "R4M_Suspension_Arm"
+   ],
+   [
+    "R4M_Suspension_Spring",
+    "R4M_Suspension_Arm"
+   ]
+  ],
+  "collisions": 0,
+  "samples": [],
+  "per_pair": {},
+  "PASS": true
+ },
+ "extra_checks": {},
+ "renders": [
+  "R4M_Suspension_front.png",
+  "R4M_Suspension_back.png",
+  "R4M_Suspension_side.png",
+  "R4M_Suspension_top.png",
+  "R4M_Suspension_34front.png",
+  "R4M_Suspension_34rear.png",
+  "R4M_Suspension_34front_wireframe.png",
+  "R4M_Suspension_side_wireframe.png",
+  "R4M_Suspension_colliders_sweep.png",
+  "poses/R4M_Suspension_Idle_f013.png",
+  "poses/R4M_Suspension_Compress_f035.png",
+  "poses/R4M_Suspension_Rebound_f053.png",
+  "poses/R4M_Suspension_ActiveLift_f087.png",
+  "poses/R4M_Suspension_Cycle_f113.png",
+  "R4M_Suspension_HERO_eevee.png",
+  "R4M_Suspension_HERO2_eevee.png",
+  "R4M_Suspension_vs_R41_34front.png",
+  "R4M_Suspension_vs_R41_side.png"
+ ],
+ "silhouettes": [
+  "R4M_Suspension_sil_side.png",
+  "R4M_Suspension_sil_front.png",
+  "R4M_Suspension_sil_top.png",
+  "R4M_Suspension_sil_gameplay.png"
+ ],
+ "video": "R4M_Suspension_timeline.mp4",
+ "lod1": {
+  "file": "R4M_Suspension_LOD1.fbx",
+  "triangles": 3832,
+  "method": "DECIMATE collapse 0.5 (automatic, not hand-authored)"
+ },
+ "fbx_reimport": {
+  "frames": [
+   1,
+   13,
+   25,
+   27,
+   35,
+   43,
+   45,
+   53,
+   61,
+   63,
+   75,
+   87,
+   89,
+   113,
+   137
+  ],
+  "worst": {
+   "pos_mm": 0.0001,
+   "rot_deg": 0.0,
+   "geom_mm": 0.0001,
+   "scale_err": 0.0,
+   "missing": [],
+   "parent_bad": []
+  },
+  "per_frame": {
+   "1": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "13": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "25": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "27": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "35": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "43": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "45": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "53": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "61": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "63": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "75": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "87": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "89": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "113": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "137": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   }
+  },
+  "nodes_as_imported": {
+   "R4M_Suspension_ROOT": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     -0.0,
+     0.0,
+     0.0
+    ],
+    "parent": null
+   },
+   "R4M_Suspension_Tower": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_Suspension_ROOT"
+   },
+   "R4M_Suspension_Arm": {
+    "loc": [
+     0.0,
+     -0.15,
+     -0.15
+    ],
+    "rot_deg": [
+     -0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_Suspension_ROOT"
+   },
+   "R4M_Suspension_ShockBody": {
+    "loc": [
+     0.0,
+     0.09,
+     0.11
+    ],
+    "rot_deg": [
+     -5.013,
+     0.0,
+     0.0
+    ],
+    "parent": "R4M_Suspension_ROOT"
+   },
+   "R4M_Suspension_ShockRod": {
+    "loc": [
+     0.0,
+     0.06,
+     -0.232
+    ],
+    "rot_deg": [
+     -5.013,
+     0.0,
+     0.0
+    ],
+    "parent": "R4M_Suspension_ROOT"
+   },
+   "R4M_Suspension_Spring": {
+    "loc": [
+     0.0,
+     -0.0,
+     -0.116
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_Suspension_ShockBody"
+   },
+   "Socket_Mount": {
+    "loc": [
+     0.0,
+     0.0,
+     0.26
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_Suspension_ROOT"
+   },
+   "Wheel_Axle": {
+    "loc": [
+     0.192,
+     0.3,
+     -0.15
+    ],
+    "rot_deg": [
+     -0.0,
+     90.0,
+     0.0
+    ],
+    "parent": "R4M_Suspension_Arm"
+   }
+  },
+  "PASS": true,
+  "thresholds": "pos<0.05mm rot<0.01deg geom<0.05mm, 0 missing, 0 parent changes (R41 v6.1 QA)"
+ },
+ "r41_compare": "rendered from real R41_Turret_v6.1.fbx (SHA verified)",
+ "glb_reimport": {
+  "rest_frame_worst": {
+   "pos_mm": 0.0,
+   "rot_deg": 0.0,
+   "scale_err": 0.0,
+   "geom_mm": 0.0,
+   "missing": [],
+   "parent_bad": []
+  },
+  "actions_imported": 4,
+  "PASS": true,
+  "note": "glTF importer; world-space comparison at frame 1"
+ },
+ "files": {
+  "R4M_Suspension.blend": {
+   "sha256": "6c1c90b0b174b888e7d5086838bf66c54bd9f23b00269ee2af76b06f31bc1af3",
+   "bytes": 1461010,
+   "sha256_before_path_sanitize": "5f14d2f510ffb7d34f6f99187af724a8602cd9a1b43fe1085c7d193fba65f2c1",
+   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length (scripts/sanitize_blend_paths.py)"
+  },
+  "R4M_Suspension.fbx": {
+   "sha256": "d596114fb04729ef99aa3daef9673043acc7123382add58d281d755ce4dc4e12",
+   "bytes": 370716
+  },
+  "R4M_Suspension.glb": {
+   "sha256": "2c8cf8869e179a368af3cf4580f718a04dd877c9583944665807f58395d39d06",
+   "bytes": 361088
+  },
+  "R4M_Suspension_colliders.glb": {
+   "sha256": "cfc5c1c7e71e66bf255bec0de5d27c3fdfa02d31ddbdc76c6294c1a201da6a9c",
+   "bytes": 362548
+  },
+  "R4M_Suspension_LOD1.fbx": {
+   "sha256": "351f705eb3e28e3660914db034e124ec7128f26539c1e2efc8840d4edea5edce",
+   "bytes": 179084
+  }
+ },
+ "unity_import_test": "UNITY_NOT_RUN (Unity not available in this session)",
+ "unity_import_settings": "Scale Factor 1, Convert Units ON, Bake Axis Conversion ON, Animation: split clips by animation_manifest.json frame ranges (24 fps)",
+ "status": "BLENDER_PASS",
+ "seconds": 10.0
+}

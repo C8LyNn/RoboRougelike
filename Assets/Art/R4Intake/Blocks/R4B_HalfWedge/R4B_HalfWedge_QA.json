@@ -1,0 +1,171 @@
+{
+ "id": "R4B_HalfWedge",
+ "block_kind": "HalfWedge",
+ "description": "1x1x1/2 low wedge",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "bonds": [],
+ "note": null,
+ "contact_mask_local_anchor": 40,
+ "contact_mask_bits": "R3MountingGrid.FaceDirections order: right, left, up, down, forward, back (Unity)",
+ "ports": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "partial",
+   "center": [
+    0.0,
+    0.26,
+    -0.1375
+   ],
+   "half": [
+    0.45,
+    0.22
+   ],
+   "offset": [
+    0.0,
+    -0.25
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 98.8,
+   "recessed_pct": 1.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "mesh": {
+  "object": "R4B_HalfWedge",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 1652,
+  "uv": true,
+  "ok": true
+ },
+ "bounds_m": [
+  [
+   -0.26,
+   -0.251,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   -0.0193
+  ]
+ ],
+ "inside_cells": true,
+ "materials": [
+  "Armor_Dark",
+  "Armor_Gunmetal",
+  "Steel_Light"
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 828,
+   "empties": [
+    "Port_back_000_part.001",
+    "Port_down_000.001",
+    "R4B_HalfWedge_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 1894,
+   "empties": [
+    "Port_back_000_part.001",
+    "Port_down_000.001",
+    "R4B_HalfWedge_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  }
+ },
+ "renders": [
+  "R4B_HalfWedge_34front.png",
+  "R4B_HalfWedge_34rear.png",
+  "R4B_HalfWedge_under.png"
+ ],
+ "files": {
+  "R4B_HalfWedge.blend": {
+   "sha256": "3719549606ef028617e4035b0474a1b466f9bb84e41a93956186449adb79631d",
+   "bytes": 152024
+  },
+  "R4B_HalfWedge.blend1": {
+   "sha256": "d2d372af993f5ed685464f9b015ea685b346ef8f4c622cc088299a971f08005e",
+   "bytes": 155221
+  },
+  "R4B_HalfWedge.fbx": {
+   "sha256": "02b7f3bb6103aa5897b6e7a7b32327aee153dd8783a39449d2e31c246f812bae",
+   "bytes": 73228
+  },
+  "R4B_HalfWedge.glb": {
+   "sha256": "4c1c09a214bfe22325c3f745284e6d80b435703080efd9d9988de47c6da492a1",
+   "bytes": 74148
+  },
+  "R4B_HalfWedge_colliders.glb": {
+   "sha256": "966b143a3b57611658dc7c19aa34c64c6aff3c8d0c4ee3da4087dfa30cbe08f3",
+   "bytes": 1612
+  }
+ },
+ "seconds": 1.5,
+ "blender": "5.2.3 LTS"
+}

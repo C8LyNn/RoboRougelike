@@ -1,0 +1,59 @@
+{
+ "id": "R4W_RocketLauncher",
+ "kind": "R4WeaponKind.RocketLauncher",
+ "fps": 24,
+ "frame_range": [
+  1,
+  177
+ ],
+ "note": "One baked take in FBX/GLB (master timeline). Unity: split into clips by these frame ranges; loop=true clips are seamless.",
+ "clips": [
+  {
+   "name": "Idle",
+   "start": 1,
+   "end": 25,
+   "loop": true,
+   "desc": "rest hold, loopable, 4 rockets loaded"
+  },
+  {
+   "name": "AimYaw",
+   "start": 27,
+   "end": 75,
+   "loop": false,
+   "desc": "yaw 0 -> +90 -> -90 -> 0 about local Y (Unity)"
+  },
+  {
+   "name": "AimPitch",
+   "start": 77,
+   "end": 113,
+   "loop": false,
+   "desc": "pitch 0 -> +35.0 -> -10.0 -> 0 about local X (Unity)"
+  },
+  {
+   "name": "Fire",
+   "start": 115,
+   "end": 139,
+   "loop": false,
+   "desc": "launch tube 1 (left pod, inner): left hatch opens, rocket leaves (0.9 m in 3 f) with flash + backblast, pods kick, hatch closes; tube 1 stays empty"
+  },
+  {
+   "name": "Reload",
+   "start": 141,
+   "end": 177,
+   "loop": false,
+   "desc": "left rear cover opens 110 deg (top hinge), rocket 1 slides in from behind the pod, cover closes"
+  }
+ ],
+ "animated_nodes": [
+  "MuzzleFlash",
+  "R4W_RocketLauncher_Hatch_L",
+  "R4W_RocketLauncher_Hatch_R",
+  "R4W_RocketLauncher_Pitch",
+  "R4W_RocketLauncher_RearCover_L",
+  "R4W_RocketLauncher_RearCover_R",
+  "R4W_RocketLauncher_Rocket_1",
+  "R4W_RocketLauncher_Yaw",
+  "Rocket_Backblast"
+ ],
+ "gameplay": "Animation is visual only: it adds no gameplay capability, shot count or timing authority."
+}

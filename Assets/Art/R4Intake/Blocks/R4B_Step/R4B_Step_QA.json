@@ -1,0 +1,314 @@
+{
+ "id": "R4B_Step",
+ "block_kind": "Step",
+ "description": "1x1x1 stair step",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "bonds": [],
+ "note": "stair step: full-width lower half + upper half at the back; the tread at -0.015 m is not a grid port",
+ "contact_mask_local_anchor": 63,
+ "contact_mask_bits": "R3MountingGrid.FaceDirections order: right, left, up, down, forward, back (Unity)",
+ "ports": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "right",
+   "kind": "partial",
+   "center": [
+    0.26,
+    0.0,
+    -0.1375
+   ],
+   "half": [
+    0.45,
+    0.22
+   ],
+   "offset": [
+    0.0,
+    -0.25
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "partial",
+   "center": [
+    -0.26,
+    0.0,
+    -0.1375
+   ],
+   "half": [
+    0.45,
+    0.22
+   ],
+   "offset": [
+    0.0,
+    -0.25
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "forward",
+   "kind": "partial",
+   "center": [
+    0.0,
+    -0.26,
+    -0.1375
+   ],
+   "half": [
+    0.45,
+    0.22
+   ],
+   "offset": [
+    0.0,
+    -0.25
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "up",
+   "kind": "partial",
+   "center": [
+    0.0,
+    0.13,
+    0.26
+   ],
+   "half": [
+    0.2,
+    0.45
+   ],
+   "offset": [
+    -0.2364,
+    0.0
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 98.8,
+   "recessed_pct": 1.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "right",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 98.8,
+   "recessed_pct": 1.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 98.8,
+   "recessed_pct": 1.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "forward",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 98.8,
+   "recessed_pct": 1.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "up",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "mesh": {
+  "object": "R4B_Step",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 4966,
+  "uv": true,
+  "ok": true
+ },
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_cells": true,
+ "materials": [
+  "Armor_Dark",
+  "Armor_Gunmetal",
+  "Steel_Light"
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 2481,
+   "empties": [
+    "Port_back_000.001",
+    "Port_down_000.001",
+    "Port_forward_000_part.001",
+    "Port_left_000_part.001",
+    "Port_right_000_part.001",
+    "Port_up_000_part.001",
+    "R4B_Step_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 5684,
+   "empties": [
+    "Port_back_000.001",
+    "Port_down_000.001",
+    "Port_forward_000_part.001",
+    "Port_left_000_part.001",
+    "Port_right_000_part.001",
+    "Port_up_000_part.001",
+    "R4B_Step_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  }
+ },
+ "renders": [
+  "R4B_Step_34front.png",
+  "R4B_Step_34rear.png",
+  "R4B_Step_under.png"
+ ],
+ "files": {
+  "R4B_Step.blend": {
+   "sha256": "435440137d31018fb67ba40862ee5c4eeadabd5383ad0c745048cd1c8cafaae8",
+   "bytes": 254216
+  },
+  "R4B_Step.fbx": {
+   "sha256": "6c02a8a5d5cb78e542d3e5245600f24cd429df716a98e05afd5f156d7900a705",
+   "bytes": 178204
+  },
+  "R4B_Step.glb": {
+   "sha256": "f70ab8f6d92524a601fbc68f9fb846098283dfb206211dba837ab963a43d5cb5",
+   "bytes": 215816
+  },
+  "R4B_Step_colliders.glb": {
+   "sha256": "1572a23f64633e911c1985689746a2d1257f46b6b1958a34cacf3bd340eaaa42",
+   "bytes": 3072
+  }
+ },
+ "seconds": 2.1,
+ "blender": "5.2.3 LTS"
+}

@@ -1,0 +1,322 @@
+{
+ "id": "R4B_WideWedge",
+ "block_kind": "WideWedge",
+ "description": "2x1x1 wide wedge",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ],
+  [
+   1,
+   0,
+   0
+  ]
+ ],
+ "bonds": [
+  [
+   [
+    0,
+    0,
+    0
+   ],
+   [
+    1,
+    0,
+    0
+   ]
+  ]
+ ],
+ "note": "2-wide wedge (one rigid piece over two bonded cells)",
+ "contact_mask_local_anchor": 42,
+ "contact_mask_bits": "R3MountingGrid.FaceDirections order: right, left, up, down, forward, back (Unity)",
+ "ports": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "partial",
+   "center": [
+    -0.26,
+    0.13,
+    -0.13
+   ],
+   "half": [
+    0.2,
+    0.2
+   ],
+   "offset": [
+    -0.2364,
+    -0.2364
+   ]
+  },
+  {
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "right",
+   "kind": "partial",
+   "center": [
+    0.81,
+    0.13,
+    -0.13
+   ],
+   "half": [
+    0.2,
+    0.2
+   ],
+   "offset": [
+    0.2364,
+    -0.2364
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "right",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "mesh": {
+  "object": "R4B_WideWedge",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 4812,
+  "uv": true,
+  "ok": true
+ },
+ "bounds_m": [
+  [
+   -0.26,
+   -0.2529,
+   -0.26
+  ],
+  [
+   0.81,
+   0.26,
+   0.2529
+  ]
+ ],
+ "inside_cells": true,
+ "materials": [
+  "Armor_Dark",
+  "Armor_Gunmetal",
+  "Steel_Light"
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 2428,
+   "empties": [
+    "Port_back_000.001",
+    "Port_back_100.001",
+    "Port_down_000.001",
+    "Port_down_100.001",
+    "Port_left_000_part.001",
+    "Port_right_100_part.001",
+    "R4B_WideWedge_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 5472,
+   "empties": [
+    "Port_back_000.001",
+    "Port_back_100.001",
+    "Port_down_000.001",
+    "Port_down_100.001",
+    "Port_left_000_part.001",
+    "Port_right_100_part.001",
+    "R4B_WideWedge_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  }
+ },
+ "renders": [
+  "R4B_WideWedge_34front.png",
+  "R4B_WideWedge_34rear.png",
+  "R4B_WideWedge_under.png"
+ ],
+ "files": {
+  "R4B_WideWedge.blend": {
+   "sha256": "ba7c30ade1bc479adcd1a1599b935acbca06a72511e4e9ee32b03888984dbe0f",
+   "bytes": 247099
+  },
+  "R4B_WideWedge.fbx": {
+   "sha256": "f6c4279b954e64f62612b363d1a51c5f2555636ab932c8bf909237bda812cc26",
+   "bytes": 167724
+  },
+  "R4B_WideWedge.glb": {
+   "sha256": "b4d911cca86b096a7278ec85b223daa1d59d11f772a149357abd6dbb1283e182",
+   "bytes": 208160
+  },
+  "R4B_WideWedge_colliders.glb": {
+   "sha256": "8e7f9611783fefaf94f0ef5c8fbfcfc051c6004c8409e8a34e98bc98a5b07b51",
+   "bytes": 1612
+  }
+ },
+ "seconds": 2.5,
+ "blender": "5.2.3 LTS"
+}

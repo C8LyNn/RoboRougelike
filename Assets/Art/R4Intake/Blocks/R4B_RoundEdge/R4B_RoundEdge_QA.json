@@ -1,0 +1,242 @@
+{
+ "id": "R4B_RoundEdge",
+ "block_kind": "RoundEdge",
+ "description": "1x1x1 rounded edge (quarter cylinder)",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "bonds": [],
+ "note": null,
+ "contact_mask_local_anchor": 43,
+ "contact_mask_bits": "R3MountingGrid.FaceDirections order: right, left, up, down, forward, back (Unity)",
+ "ports": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "partial",
+   "center": [
+    -0.26,
+    0.117,
+    -0.117
+   ],
+   "half": [
+    0.2,
+    0.2
+   ],
+   "offset": [
+    -0.2127,
+    -0.2127
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "right",
+   "kind": "partial",
+   "center": [
+    0.26,
+    0.117,
+    -0.117
+   ],
+   "half": [
+    0.2,
+    0.2
+   ],
+   "offset": [
+    0.2127,
+    -0.2127
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "right",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "mesh": {
+  "object": "R4B_RoundEdge",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 3428,
+  "uv": true,
+  "ok": true
+ },
+ "bounds_m": [
+  [
+   -0.26,
+   -0.2595,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.2595
+  ]
+ ],
+ "inside_cells": true,
+ "materials": [
+  "Armor_Dark",
+  "Armor_Gunmetal",
+  "Steel_Light"
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 1716,
+   "empties": [
+    "Port_back_000.001",
+    "Port_down_000.001",
+    "Port_left_000_part.001",
+    "Port_right_000_part.001",
+    "R4B_RoundEdge_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 3896,
+   "empties": [
+    "Port_back_000.001",
+    "Port_down_000.001",
+    "Port_left_000_part.001",
+    "Port_right_000_part.001",
+    "R4B_RoundEdge_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  }
+ },
+ "renders": [
+  "R4B_RoundEdge_34front.png",
+  "R4B_RoundEdge_34rear.png",
+  "R4B_RoundEdge_under.png"
+ ],
+ "files": {
+  "R4B_RoundEdge.blend": {
+   "sha256": "9891c99efe22bcf0e6dcf953ef2298de5922adce294b79603efcd5c3ceabfa0a",
+   "bytes": 207691
+  },
+  "R4B_RoundEdge.blend1": {
+   "sha256": "a93d2485b383dacbdf2f86caae09dda1ea1b50725fbd1798911c5139483a6374",
+   "bytes": 207701
+  },
+  "R4B_RoundEdge.fbx": {
+   "sha256": "96eea2f390fe8fc60864a6cd69732a102bc9875fc4da70345274e6bd0be1184e",
+   "bytes": 129420
+  },
+  "R4B_RoundEdge.glb": {
+   "sha256": "a022f0c19bac41435652415fb574698dbdfaedd7f302cf56998d960e0e82801b",
+   "bytes": 149132
+  },
+  "R4B_RoundEdge_colliders.glb": {
+   "sha256": "3c5c96ca95b1fc8f4bb6b34ad7b5ca75c492c83bb425beda5f3f4180e5c4ebbd",
+   "bytes": 4140
+  }
+ },
+ "seconds": 1.9,
+ "blender": "5.2.3 LTS"
+}

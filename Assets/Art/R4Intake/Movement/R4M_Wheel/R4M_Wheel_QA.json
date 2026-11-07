@@ -1,0 +1,1039 @@
+{
+ "id": "R4M_Wheel",
+ "kind": "R3PartKind.Wheel",
+ "game_name": "Ko\u0142o",
+ "blender": "5.2.3 LTS",
+ "started": "2026-11-07 10:54:11",
+ "failures": [],
+ "notes": [
+  "L/R variant: mirror by transform (scale X -1); geometry is closed and axle-symmetric."
+ ],
+ "meshes": [
+  {
+   "object": "R4M_Wheel_Mount",
+   "verts": 1678,
+   "triangles": 3336,
+   "shells": 7,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.02254,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.004,
+    0.004,
+    0.942,
+    0.996
+   ],
+   "materials": [
+    "Armor_Gunmetal",
+    "Armor_Plate_Light",
+    "Armor_Dark",
+    "Steel_Light",
+    "TeamColor_Red",
+    "Hazard_Yellow",
+    "Energy_Hot"
+   ],
+   "ok": true
+  },
+  {
+   "object": "R4M_Wheel_Rotor",
+   "verts": 4351,
+   "triangles": 8742,
+   "shells": 9,
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "duplicate_verts": 0,
+   "nonmanifold_samples_blender": [],
+   "inconsistent_normals": 0,
+   "signed_volume_m3": 0.106821,
+   "uv_layers": 1,
+   "uv_bounds": [
+    0.006,
+    0.006,
+    0.994,
+    0.993
+   ],
+   "materials": [
+    "Armor_Dark",
+    "Armor_Gunmetal",
+    "Steel_Light",
+    "Armor_Plate_Light",
+    "TeamColor_Red"
+   ],
+   "ok": true
+  }
+ ],
+ "fx_meshes": [],
+ "triangles_total": 12078,
+ "triangles_fx": 0,
+ "triangles_r41_reference": 11452,
+ "topology_PASS": true,
+ "palette": {
+  "material_area_share": {
+   "Armor_Dark": 0.6301,
+   "Armor_Gunmetal": 0.2069,
+   "Steel_Light": 0.0908,
+   "Armor_Plate_Light": 0.0348,
+   "TeamColor_Red": 0.0262,
+   "Energy_Hot": 0.0065,
+   "Hazard_Yellow": 0.0047
+  },
+  "family_share": {
+   "1_dark_gunmetal": 0.837,
+   "2_light_steel": 0.1256,
+   "3_team_red": 0.0262,
+   "4_hazard_yellow": 0.0047,
+   "T_technical": 0.0065
+  },
+  "r41_family_share": {
+   "1_dark_gunmetal": 0.7913,
+   "2_light_steel": 0.1229,
+   "3_team_red": 0.0247,
+   "4_hazard_yellow": 0.0015,
+   "T_technical": 0.0595
+  },
+  "bands": {
+   "1_dark_gunmetal": [
+    0.62,
+    0.88
+   ],
+   "2_light_steel": [
+    0.06,
+    0.24
+   ],
+   "3_team_red": [
+    0.012,
+    0.07
+   ],
+   "4_hazard_yellow": [
+    0.001,
+    0.03
+   ],
+   "T_technical": [
+    0.0,
+    0.16
+   ]
+  },
+  "in_band": {
+   "1_dark_gunmetal": true,
+   "2_light_steel": true,
+   "3_team_red": true,
+   "4_hazard_yellow": true,
+   "T_technical": true
+  },
+  "violations": [],
+  "PASS": true,
+  "PASS_policy": "movement: locked materials/PBR enforced, family bands reported (not enforced, issue #940)"
+ },
+ "contract": {
+  "R4M_Wheel_ROOT": {
+   "position_file": [
+    0.0,
+    0.0,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    1.0,
+    -0.0
+   ],
+   "parent": null
+  },
+  "Wheel_Axle": {
+   "position_file": [
+    0.0,
+    -0.26,
+    -0.0
+   ],
+   "forward_file": [
+    1.0,
+    -0.0,
+    -0.0
+   ],
+   "parent": "R4M_Wheel_ROOT"
+  },
+  "Socket_Mount": {
+   "position_file": [
+    0.0,
+    0.26,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    1.0,
+    -0.0
+   ],
+   "parent": "R4M_Wheel_ROOT"
+  },
+  "GroundProbe": {
+   "position_file": [
+    0.0,
+    -0.65,
+    -0.0
+   ],
+   "forward_file": [
+    0.0,
+    -1.0,
+    -0.0
+   ],
+   "parent": "R4M_Wheel_ROOT"
+  },
+  "unity_axes": "file/Unity: +Z forward, +Y up, meters; Yaw about local Y, Pitch about local X"
+ },
+ "sweep": {
+  "failures": [],
+  "mount_cell": [
+   0,
+   0,
+   0
+  ],
+  "static_bounds_file": [
+   [
+    -0.2563,
+    -0.65,
+    -0.39
+   ],
+   [
+    0.2563,
+    0.26,
+    0.39
+   ]
+  ],
+  "static_cells": [
+   [
+    0,
+    -1,
+    -1
+   ],
+   [
+    0,
+    -1,
+    0
+   ],
+   [
+    0,
+    -1,
+    1
+   ],
+   [
+    0,
+    0,
+    -1
+   ],
+   [
+    0,
+    0,
+    0
+   ],
+   [
+    0,
+    0,
+    1
+   ]
+  ],
+  "housing_bounds_file": [
+   [
+    -0.2563,
+    -0.312,
+    -0.2563
+   ],
+   [
+    0.2563,
+    0.26,
+    0.2563
+   ]
+  ],
+  "housing_inside_mount_cell": false,
+  "housing_policy": "fork legs/axle bosses reach 0.305 m below the cell centre because the runtime axle sits 0.26 m below it (PARTSIZE #141)",
+  "moving_sweep": {
+   "bounds_file": [
+    [
+     -0.2563,
+     -0.65,
+     -0.39
+    ],
+    [
+     0.2563,
+     0.26,
+     0.39
+    ]
+   ],
+   "cells": [
+    [
+     0,
+     -1,
+     -1
+    ],
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     0,
+     -1,
+     1
+    ],
+    [
+     0,
+     0,
+     -1
+    ],
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "neighbour_cells_entered": [
+    [
+     0,
+     -1,
+     -1
+    ],
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     0,
+     -1,
+     1
+    ],
+    [
+     0,
+     0,
+     -1
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "frames": 103
+  },
+  "ground_contact": {
+   "runtime_y": -0.65,
+   "model_y_rest": -0.65,
+   "model_y_min_over_clips": -0.65,
+   "deviation_mm": 0.04,
+   "tolerance_mm": 3.0,
+   "source": "R41PartGeometry.Payload wheel cylinder"
+  },
+  "collision_envelope": {
+   "runtime": "Unity cylinder r 0.390, width 0.364, centre (0,-0.26,0), convex MeshCollider",
+   "visual_tyre_radius_m": 0.39,
+   "visual_tyre_half_width_m": 0.184,
+   "radius_dev_mm": 0.0,
+   "width_dev_mm": 4.0,
+   "PASS": true
+  },
+  "clearance_min_mm": {
+   "R4M_Wheel_Rotor|R4M_Wheel_Mount": 3.5
+  },
+  "quarter_turns": {
+   "X90": {
+    "housing_inside_cell": false,
+    "static_cells": [
+     [
+      0,
+      -1,
+      -1
+     ],
+     [
+      0,
+      -1,
+      0
+     ],
+     [
+      0,
+      0,
+      -1
+     ],
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      1,
+      -1
+     ],
+     [
+      0,
+      1,
+      0
+     ]
+    ]
+   },
+   "X180": {
+    "housing_inside_cell": false,
+    "static_cells": [
+     [
+      0,
+      0,
+      -1
+     ],
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      1,
+      -1
+     ],
+     [
+      0,
+      1,
+      0
+     ],
+     [
+      0,
+      1,
+      1
+     ]
+    ]
+   },
+   "X270": {
+    "housing_inside_cell": false,
+    "static_cells": [
+     [
+      0,
+      -1,
+      0
+     ],
+     [
+      0,
+      -1,
+      1
+     ],
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      1,
+      0
+     ],
+     [
+      0,
+      1,
+      1
+     ]
+    ]
+   },
+   "Y90": {
+    "housing_inside_cell": false,
+    "static_cells": [
+     [
+      -1,
+      -1,
+      0
+     ],
+     [
+      -1,
+      0,
+      0
+     ],
+     [
+      0,
+      -1,
+      0
+     ],
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      1,
+      -1,
+      0
+     ],
+     [
+      1,
+      0,
+      0
+     ]
+    ]
+   },
+   "Y180": {
+    "housing_inside_cell": false,
+    "static_cells": [
+     [
+      0,
+      -1,
+      -1
+     ],
+     [
+      0,
+      -1,
+      0
+     ],
+     [
+      0,
+      -1,
+      1
+     ],
+     [
+      0,
+      0,
+      -1
+     ],
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      1
+     ]
+    ]
+   },
+   "Y270": {
+    "housing_inside_cell": false,
+    "static_cells": [
+     [
+      -1,
+      -1,
+      0
+     ],
+     [
+      -1,
+      0,
+      0
+     ],
+     [
+      0,
+      -1,
+      0
+     ],
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      1,
+      -1,
+      0
+     ],
+     [
+      1,
+      0,
+      0
+     ]
+    ]
+   },
+   "Z90": {
+    "housing_inside_cell": false,
+    "static_cells": [
+     [
+      -1,
+      0,
+      -1
+     ],
+     [
+      -1,
+      0,
+      0
+     ],
+     [
+      -1,
+      0,
+      1
+     ],
+     [
+      0,
+      0,
+      -1
+     ],
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      1
+     ]
+    ]
+   },
+   "Z180": {
+    "housing_inside_cell": false,
+    "static_cells": [
+     [
+      0,
+      0,
+      -1
+     ],
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      0,
+      1,
+      -1
+     ],
+     [
+      0,
+      1,
+      0
+     ],
+     [
+      0,
+      1,
+      1
+     ]
+    ]
+   },
+   "Z270": {
+    "housing_inside_cell": false,
+    "static_cells": [
+     [
+      0,
+      0,
+      -1
+     ],
+     [
+      0,
+      0,
+      0
+     ],
+     [
+      0,
+      0,
+      1
+     ],
+     [
+      1,
+      0,
+      -1
+     ],
+     [
+      1,
+      0,
+      0
+     ],
+     [
+      1,
+      0,
+      1
+     ]
+    ]
+   }
+  },
+  "mirror_X": {
+   "static_bounds_file": [
+    [
+     -0.2563,
+     -0.65,
+     -0.39
+    ],
+    [
+     0.2563,
+     0.26,
+     0.39
+    ]
+   ],
+   "socket_file": [
+    0.0,
+    0.26,
+    -0.0
+   ],
+   "socket_mirrored_file": [
+    -0.0,
+    0.26,
+    -0.0
+   ],
+   "note": "L/R variant = parent scale X -1 (Unity flips winding for negative scale); geometry is closed so lighting stays correct"
+  },
+  "floating_shells": {
+   "R4M_Wheel_Mount": {
+    "shells": 7,
+    "isolated": 0
+   },
+   "R4M_Wheel_Rotor": {
+    "shells": 9,
+    "isolated": 0
+   }
+  },
+  "nodes_file": {
+   "R4M_Wheel_ROOT": {
+    "position": [
+     0.0,
+     0.0,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     1.0,
+     -0.0
+    ]
+   },
+   "Wheel_Axle": {
+    "position": [
+     0.0,
+     -0.26,
+     -0.0
+    ],
+    "z_axis": [
+     1.0,
+     -0.0,
+     -0.0
+    ]
+   },
+   "Socket_Mount": {
+    "position": [
+     0.0,
+     0.26,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     1.0,
+     -0.0
+    ]
+   },
+   "GroundProbe": {
+    "position": [
+     0.0,
+     -0.65,
+     -0.0
+    ],
+    "z_axis": [
+     0.0,
+     -1.0,
+     -0.0
+    ]
+   }
+  }
+ },
+ "animation_clash": {
+  "frames_checked": 103,
+  "pairs": [
+   [
+    "R4M_Wheel_Rotor",
+    "R4M_Wheel_Mount"
+   ]
+  ],
+  "collisions": 0,
+  "samples": [],
+  "per_pair": {},
+  "PASS": true
+ },
+ "extra_checks": {},
+ "renders": [
+  "R4M_Wheel_front.png",
+  "R4M_Wheel_back.png",
+  "R4M_Wheel_side.png",
+  "R4M_Wheel_top.png",
+  "R4M_Wheel_34front.png",
+  "R4M_Wheel_34rear.png",
+  "R4M_Wheel_34front_wireframe.png",
+  "R4M_Wheel_side_wireframe.png",
+  "R4M_Wheel_colliders_sweep.png",
+  "poses/R4M_Wheel_Idle_f013.png",
+  "poses/R4M_Wheel_Roll_f030.png",
+  "poses/R4M_Wheel_Reverse_f065.png",
+  "poses/R4M_Wheel_Brake_f085.png",
+  "R4M_Wheel_HERO_eevee.png",
+  "R4M_Wheel_vs_R41_34front.png",
+  "R4M_Wheel_vs_R41_side.png"
+ ],
+ "silhouettes": [
+  "R4M_Wheel_sil_side.png",
+  "R4M_Wheel_sil_front.png",
+  "R4M_Wheel_sil_top.png",
+  "R4M_Wheel_sil_gameplay.png"
+ ],
+ "video": "R4M_Wheel_timeline.mp4",
+ "lod1": {
+  "file": "R4M_Wheel_LOD1.fbx",
+  "triangles": 6038,
+  "method": "DECIMATE collapse 0.5 (automatic, not hand-authored)"
+ },
+ "fbx_reimport": {
+  "frames": [
+   1,
+   13,
+   25,
+   27,
+   39,
+   51,
+   53,
+   65,
+   77,
+   79,
+   91,
+   103
+  ],
+  "worst": {
+   "pos_mm": 0.0001,
+   "rot_deg": 0.0,
+   "geom_mm": 0.0002,
+   "scale_err": 0.0,
+   "missing": [],
+   "parent_bad": []
+  },
+  "per_frame": {
+   "1": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "13": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "25": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "27": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "39": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0002,
+    "missing": [],
+    "parent_bad": []
+   },
+   "51": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "53": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "65": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0002,
+    "missing": [],
+    "parent_bad": []
+   },
+   "77": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0001,
+    "missing": [],
+    "parent_bad": []
+   },
+   "79": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0002,
+    "missing": [],
+    "parent_bad": []
+   },
+   "91": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0002,
+    "missing": [],
+    "parent_bad": []
+   },
+   "103": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "scale_err": 0.0,
+    "geom_mm": 0.0002,
+    "missing": [],
+    "parent_bad": []
+   }
+  },
+  "nodes_as_imported": {
+   "R4M_Wheel_ROOT": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     -0.0,
+     0.0,
+     0.0
+    ],
+    "parent": null
+   },
+   "R4M_Wheel_Mount": {
+    "loc": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_Wheel_ROOT"
+   },
+   "R4M_Wheel_Rotor": {
+    "loc": [
+     0.0,
+     0.0,
+     -0.26
+    ],
+    "rot_deg": [
+     180.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_Wheel_ROOT"
+   },
+   "Wheel_Axle": {
+    "loc": [
+     0.0,
+     0.0,
+     -0.26
+    ],
+    "rot_deg": [
+     -0.0,
+     90.0,
+     0.0
+    ],
+    "parent": "R4M_Wheel_ROOT"
+   },
+   "Socket_Mount": {
+    "loc": [
+     0.0,
+     0.0,
+     0.26
+    ],
+    "rot_deg": [
+     0.0,
+     -0.0,
+     0.0
+    ],
+    "parent": "R4M_Wheel_ROOT"
+   },
+   "GroundProbe": {
+    "loc": [
+     0.0,
+     0.0,
+     -0.65
+    ],
+    "rot_deg": [
+     -180.0,
+     0.0,
+     0.0
+    ],
+    "parent": "R4M_Wheel_ROOT"
+   }
+  },
+  "PASS": true,
+  "thresholds": "pos<0.05mm rot<0.01deg geom<0.05mm, 0 missing, 0 parent changes (R41 v6.1 QA)"
+ },
+ "r41_compare": "rendered from real R41_Turret_v6.1.fbx (SHA verified)",
+ "glb_reimport": {
+  "rest_frame_worst": {
+   "pos_mm": 0.0,
+   "rot_deg": 0.0,
+   "scale_err": 0.0,
+   "geom_mm": 0.0,
+   "missing": [],
+   "parent_bad": []
+  },
+  "actions_imported": 1,
+  "PASS": true,
+  "note": "glTF importer; world-space comparison at frame 1"
+ },
+ "files": {
+  "R4M_Wheel.blend": {
+   "sha256": "64ebde092137adc54f0fa889d54472a7a1b2204d2a5d064cedde50e72fcb435e",
+   "bytes": 1654709,
+   "sha256_before_path_sanitize": "7f3d23ace5f70b8061736a9cd435ff4498020427d7aea59cbbac9c20a9cec225",
+   "note": "local absolute paths (render output, user Documents) replaced in place by // relative paths, same length (scripts/sanitize_blend_paths.py)"
+  },
+  "R4M_Wheel.fbx": {
+   "sha256": "da8c8680cceed2915c29bc8ac24fe9882f0b450751e7fc8e7970b37c64621329",
+   "bytes": 529804
+  },
+  "R4M_Wheel.glb": {
+   "sha256": "97aa6ded79f0388c3651489ccf3a5a28fbe1788ca7ca27ecc2dd1b427a1562a9",
+   "bytes": 551212
+  },
+  "R4M_Wheel_colliders.glb": {
+   "sha256": "010902f5f9093b9cb2d5370fcf810555a0a1a2d4b9984d55631d5d0586a0593d",
+   "bytes": 550252
+  },
+  "R4M_Wheel_LOD1.fbx": {
+   "sha256": "268c5f0f61c03b2119325b0c133b8070184d5e372de2df9511d98356f72454a2",
+   "bytes": 275580
+  }
+ },
+ "unity_import_test": "UNITY_NOT_RUN (Unity not available in this session)",
+ "unity_import_settings": "Scale Factor 1, Convert Units ON, Bake Axis Conversion ON, Animation: split clips by animation_manifest.json frame ranges (24 fps)",
+ "status": "BLENDER_PASS",
+ "seconds": 7.9
+}

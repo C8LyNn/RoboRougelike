@@ -1,0 +1,242 @@
+{
+ "id": "R4B_Wedge",
+ "block_kind": "Wedge",
+ "description": "1x1x1 wedge (prism): slope from front-bottom to back-top",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "bonds": [],
+ "note": null,
+ "contact_mask_local_anchor": 43,
+ "contact_mask_bits": "R3MountingGrid.FaceDirections order: right, left, up, down, forward, back (Unity)",
+ "ports": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "partial",
+   "center": [
+    -0.26,
+    0.13,
+    -0.13
+   ],
+   "half": [
+    0.2,
+    0.2
+   ],
+   "offset": [
+    -0.2364,
+    -0.2364
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "right",
+   "kind": "partial",
+   "center": [
+    0.26,
+    0.13,
+    -0.13
+   ],
+   "half": [
+    0.2,
+    0.2
+   ],
+   "offset": [
+    0.2364,
+    -0.2364
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "right",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "mesh": {
+  "object": "R4B_Wedge",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 3252,
+  "uv": true,
+  "ok": true
+ },
+ "bounds_m": [
+  [
+   -0.26,
+   -0.2529,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.2529
+  ]
+ ],
+ "inside_cells": true,
+ "materials": [
+  "Armor_Dark",
+  "Armor_Gunmetal",
+  "Steel_Light"
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 1648,
+   "empties": [
+    "Port_back_000.001",
+    "Port_down_000.001",
+    "Port_left_000_part.001",
+    "Port_right_000_part.001",
+    "R4B_Wedge_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 3740,
+   "empties": [
+    "Port_back_000.001",
+    "Port_down_000.001",
+    "Port_left_000_part.001",
+    "Port_right_000_part.001",
+    "R4B_Wedge_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  }
+ },
+ "renders": [
+  "R4B_Wedge_34front.png",
+  "R4B_Wedge_34rear.png",
+  "R4B_Wedge_under.png"
+ ],
+ "files": {
+  "R4B_Wedge.blend": {
+   "sha256": "c7d7e192b1902a756270ae32130d182ea1195ab3f43f5b7cb1c5d414f5c7b194",
+   "bytes": 198034
+  },
+  "R4B_Wedge.blend1": {
+   "sha256": "1a6b6fd537b171c746662c35c967510099b3bf105cb682f59b3dc6ecc3a53e63",
+   "bytes": 201185
+  },
+  "R4B_Wedge.fbx": {
+   "sha256": "51cdc639a953c71431f94222d5afd54250ceeaecf4ae42ecb4ce83cf79a487f8",
+   "bytes": 119340
+  },
+  "R4B_Wedge.glb": {
+   "sha256": "eae3de19ebbc1be9527c2f1b59f46a2b9893da33e59e2d329c0127bb2fa6daa6",
+   "bytes": 143068
+  },
+  "R4B_Wedge_colliders.glb": {
+   "sha256": "301ccdb3e58d60f8016b0eea31603a354fb064f3e03e8961d93e0238439b6f73",
+   "bytes": 1604
+  }
+ },
+ "seconds": 2.2,
+ "blender": "5.2.3 LTS"
+}

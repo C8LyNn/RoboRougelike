@@ -1,0 +1,172 @@
+{
+ "id": "R4B_HexColumn",
+ "block_kind": "HexColumn",
+ "description": "1x1x1 hexagonal column (axis up)",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "bonds": [],
+ "note": "hexagonal column (vertex on +-X, flats 0.225 m from the axis); ports on the end faces only",
+ "contact_mask_local_anchor": 12,
+ "contact_mask_bits": "R3MountingGrid.FaceDirections order: right, left, up, down, forward, back (Unity)",
+ "ports": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "up",
+   "kind": "partial",
+   "center": [
+    0.0,
+    0.0,
+    0.26
+   ],
+   "half": [
+    0.3,
+    0.3
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "partial",
+   "center": [
+    0.0,
+    0.0,
+    -0.26
+   ],
+   "half": [
+    0.3,
+    0.3
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "up",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "mesh": {
+  "object": "R4B_HexColumn",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 1764,
+  "uv": true,
+  "ok": true
+ },
+ "bounds_m": [
+  [
+   -0.255,
+   -0.2252,
+   -0.26
+  ],
+  [
+   0.255,
+   0.2252,
+   0.26
+  ]
+ ],
+ "inside_cells": true,
+ "materials": [
+  "Armor_Dark",
+  "Armor_Gunmetal",
+  "Steel_Light"
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 884,
+   "empties": [
+    "Port_down_000_part.001",
+    "Port_up_000_part.001",
+    "R4B_HexColumn_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 2052,
+   "empties": [
+    "Port_down_000_part.001",
+    "Port_up_000_part.001",
+    "R4B_HexColumn_ROOT.001",
+    "Socket_Mount.001"
+   ]
+  }
+ },
+ "renders": [
+  "R4B_HexColumn_34front.png",
+  "R4B_HexColumn_34rear.png",
+  "R4B_HexColumn_under.png"
+ ],
+ "files": {
+  "R4B_HexColumn.blend": {
+   "sha256": "0f97adb67fba9feb650e887d8c8391fb60a9800705cb7a6421fb5be8a6fc64d9",
+   "bytes": 150657
+  },
+  "R4B_HexColumn.fbx": {
+   "sha256": "44fafa47c2f9f5f1e5106b45c14b647be821b8bda512c703a8ba21e8fb76f745",
+   "bytes": 73260
+  },
+  "R4B_HexColumn.glb": {
+   "sha256": "491b11076d188326cc24693c106e516f62e4b0b84a94fbdb31538ce69deee37e",
+   "bytes": 79820
+  },
+  "R4B_HexColumn_colliders.glb": {
+   "sha256": "96f07c81a2895ad9c07efe30de2b6a26bac44d7bf33a3bd37066347aadc64db9",
+   "bytes": 2116
+  }
+ },
+ "seconds": 1.3,
+ "blender": "5.2.3 LTS"
+}
