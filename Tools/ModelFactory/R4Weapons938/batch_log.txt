@@ -1,0 +1,9 @@
+R4W_Basic rc=0 11.8s ('BLENDER_PASS', [], 'rendered from real R41_Turret_v6.1.fbx (SHA verified)')
+R4W_RotarySaw rc=0 19.0s ('BLENDER_PASS', [], 'rendered from real R41_Turret_v6.1.fbx (SHA verified)')
+R4W_Heavy rc=0 13.6s ('BLENDER_PASS', [], 'rendered from real R41_Turret_v6.1.fbx (SHA verified)')
+R4W_Shotgun rc=0 13.6s ('BLENDER_PASS', [], 'rendered from real R41_Turret_v6.1.fbx (SHA verified)')
+R4W_Railgun rc=0 17.0s ('BLENDER_PASS', [], 'rendered from real R41_Turret_v6.1.fbx (SHA verified)')
+R4W_BeamCutter rc=0 14.7s ('BLENDER_PASS', [], 'rendered from real R41_Turret_v6.1.fbx (SHA verified)')
+R4W_RocketLauncher rc=0 17.4s ('BLENDER_PASS', [], 'rendered from real R41_Turret_v6.1.fbx (SHA verified)')
+R4W_EmpEmitter rc=0 13.2s ('BLENDER_PASS', [], 'rendered from real R41_Turret_v6.1.fbx (SHA verified)')
+BATCH_DONE

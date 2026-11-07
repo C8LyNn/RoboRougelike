@@ -1,0 +1,105 @@
+"""Builds the WEAPONS_8 owner preview (v2) from the real exported assets.
+
+Usage:  python3 build_preview_938.py <R4Weapons938 dir> <silhouette png dir (v2)> <out dir>
+Writes <out>/WEAPONS_8_PREVIEW/ and <out>/WEAPONS_8_PREVIEW.zip, plus <out>/artifact/ (CDN variant of the page).
+models.js embeds every GLB as base64; the viewer parses it in memory (GLTFLoader.parse), so it works from file://.
+"""
+import base64, glob, hashlib, io, json, os, shutil, sys, zipfile
+from PIL import Image
+
+ORDER = ["R4W_Basic", "R4W_Heavy", "R4W_Shotgun", "R4W_Railgun", "R4W_BeamCutter", "R4W_RocketLauncher", "R4W_RotarySaw", "R4W_EmpEmitter"]
+VIEWS = ["gameplay", "side", "front", "top"]
+
+
+def sha(p):
+    return hashlib.sha256(open(p, "rb").read()).hexdigest()
+
+
+def img_uri(path, w, sil=False):
+    im = Image.open(path)
+    if sil:
+        g = im.convert("L")
+        box = g.point(lambda v: 255 if v < 128 else 0).getbbox()
+        if box:
+            pad = 6
+            g = g.crop((max(box[0] - pad, 0), max(box[1] - pad, 0), min(box[2] + pad, g.width), min(box[3] + pad, g.height)))
+        s = max(g.size); sq = Image.new("L", (s, s), 255); sq.paste(g, ((s - g.width)//2, (s - g.height)//2))
+        a = sq.point(lambda v: 255 if v < 128 else 0).resize((w, w), Image.LANCZOS)
+        out = Image.new("RGBA", (w, w), (0, 0, 0, 0)); out.putalpha(a)
+        b = io.BytesIO(); out.save(b, "PNG", optimize=True); return "data:image/png;base64," + base64.b64encode(b.getvalue()).decode()
+    im = im.convert("RGB"); im.thumbnail((w, w*2), Image.LANCZOS)
+    b = io.BytesIO(); im.save(b, "JPEG", quality=82); return "data:image/jpeg;base64," + base64.b64encode(b.getvalue()).decode()
+
+
+def main(src, sildir, out):
+    root = os.path.join(out, "WEAPONS_8_PREVIEW")
+    if os.path.isdir(root): shutil.rmtree(root)
+    for d in ["glb", "manifests", "thumbs", "silhouettes", "renders", "compare"]: os.makedirs(os.path.join(root, d))
+    idx = json.load(open(os.path.join(src, "INDEX.json"), encoding="utf-8")); rows = {r["id"]: r for r in idx["weapons"]}
+    silj = json.load(open(os.path.join(src, "compare", "silhouette_check.json"), encoding="utf-8"))
+    models = []
+    for mid in ORDER:
+        d = os.path.join(src, mid); rd = os.path.join(d, "renders"); r = rows[mid]
+        qa = json.load(open(os.path.join(d, mid + "_QA.json"), encoding="utf-8"))
+        am = json.load(open(os.path.join(d, mid + "_animation_manifest.json"), encoding="utf-8"))
+        glb = os.path.join(d, mid + ".glb")
+        shutil.copy(glb, os.path.join(root, "glb"))
+        for f in (mid + "_animation_manifest.json", mid + "_QA.json"): shutil.copy(os.path.join(d, f), os.path.join(root, "manifests"))
+        shutil.copy(os.path.join(rd, mid + "_HERO_eevee.jpg"), os.path.join(root, "renders"))
+        poses = []
+        for p in sorted(glob.glob(os.path.join(rd, "poses", "*.jpg"))):
+            shutil.copy(p, os.path.join(root, "renders")); poses.append(os.path.basename(p))
+        t = Image.open(os.path.join(rd, mid + "_34front.jpg")).convert("RGB")
+        t.crop(((t.width - t.height)//2, 0, (t.width + t.height)//2, t.height)).resize((128, 128), Image.LANCZOS).save(os.path.join(root, "thumbs", mid + "_128.png"))
+        for v in VIEWS: shutil.copy(os.path.join(sildir, f"{mid}_sil_{v}.png"), os.path.join(root, "silhouettes"))
+        sw = qa["sweep"]
+        models.append({
+            "id": mid, "key": mid.replace("R4W_", ""), "kind": qa["kind"], "game": qa["game_name"], "version": r["version"],
+            "style": f"podstawa: {r['base_style']} · głowica: {r['head']}",
+            "tris": qa["triangles_total"], "status": qa["status"], "unity": "UNITY_NOT_RUN", "glb_sha": sha(glb), "glb_bytes": os.path.getsize(glb),
+            "fps": am["fps"], "range": am["frame_range"], "clips": am["clips"],
+            "nodes": [n for n in qa["contract"] if n != "unity_axes" and not n.endswith("_ROOT")],
+            "ground_y": None, "ground_dev_mm": None,
+            "housing_in_cell": sw["static_occupied"]["inside_own_cell"], "housing_note": None,
+            "cells": len(sw["moving_sweep"]["cells"]), "clash": qa["animation_clash"]["collisions"],
+            "fbx_worst": qa["fbx_reimport"]["worst"], "glb_pass": qa["glb_reimport"]["PASS"], "notes": r["notes"],
+            "poses": poses,
+            "thumb": img_uri(os.path.join(rd, mid + "_34front.jpg"), 160), "hero": img_uri(os.path.join(rd, mid + "_HERO_eevee.jpg"), 640),
+            "sil": {v: img_uri(os.path.join(sildir, f"{mid}_sil_{v}.png"), 112, sil=True) for v in VIEWS},
+            "glb": base64.b64encode(open(glb, "rb").read()).decode(),
+        })
+    pairs = [{"a": p.split("|")[0], "b": p.split("|")[1], **v} for p, v in silj["v2"]["most_similar"]]
+    data = {"models": models, "similar": pairs, "flagged": silj["v2"]["flagged"], "method": silj["method"]}
+    with open(os.path.join(root, "models.js"), "w", encoding="utf-8") as f:
+        f.write("/* generated by build_preview_938.py from the real R4W_*.glb exports (v2) */\nwindow.R4M_DATA=")
+        json.dump(data, f, separators=(",", ":"), ensure_ascii=False); f.write(";\n")
+    for c in ("before_after_34front.jpg", "silhouettes_v1_v2_128.png", "silhouette_check.json"):
+        shutil.copy(os.path.join(src, "compare", c), os.path.join(root, "compare"))
+    here = os.path.dirname(os.path.abspath(__file__))
+    for n in ["index.html", "offline.html", "README.txt", "start_preview.bat", "start_preview.sh"]:
+        shutil.copy(os.path.join(here, "preview_src", n), root)
+    shutil.copytree(os.path.join(here, "preview_src", "lib"), os.path.join(root, "lib"))
+    html = open(os.path.join(root, "index.html"), encoding="utf-8").read()
+    cdn = "https://cdn.jsdelivr.net/npm/three@0.128.0/"
+    art = (html.replace('src="lib/three.min.js"', 'src="' + cdn + 'build/three.min.js"')
+           .replace('src="lib/GLTFLoader.js"', 'src="' + cdn + 'examples/js/loaders/GLTFLoader.js"')
+           .replace('src="lib/OrbitControls.js"', 'src="' + cdn + 'examples/js/controls/OrbitControls.js"')
+           .replace("three.js r128 · lokalnie", "three.js r128 · CDN"))
+    art = art[art.index("<title>"):].replace("</head>\n<body>\n", "").replace("</body>\n</html>\n", "")
+    os.makedirs(os.path.join(out, "artifact"), exist_ok=True)
+    open(os.path.join(out, "artifact", "index.html"), "w", encoding="utf-8").write(art)
+    shutil.copy(os.path.join(root, "models.js"), os.path.join(out, "artifact"))
+    z = os.path.join(out, "WEAPONS_8_PREVIEW.zip")
+    if os.path.exists(z): os.remove(z)
+    with zipfile.ZipFile(z, "w", zipfile.ZIP_DEFLATED, compresslevel=9) as zf:
+        for dp, _, fs in os.walk(root):
+            for fn in sorted(fs):
+                p = os.path.join(dp, fn); zi = zipfile.ZipInfo(os.path.relpath(p, out), date_time=(2026, 11, 6, 0, 0, 0))
+                zi.compress_type = zipfile.ZIP_DEFLATED
+                if fn.endswith(".sh"): zi.external_attr = 0o755 << 16
+                zf.writestr(zi, open(p, "rb").read())
+    print("models", len(models), "models.js", os.path.getsize(os.path.join(root, "models.js")), "zip", os.path.getsize(z), sha(z))
+
+
+if __name__ == "__main__":
+    main(sys.argv[1], sys.argv[2], sys.argv[3])

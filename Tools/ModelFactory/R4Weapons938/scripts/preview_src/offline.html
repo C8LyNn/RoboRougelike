@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>R4 Weapons Offline</title>
+<style>
+:root{--bg:#101215;--panel:#171a1e;--line:#2b3037;--fg:#e3e6ea;--muted:#8d949d;--dim:#626973;--red:#d7262e;--hazard:#f2c230;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.45 "Segoe UI",system-ui,sans-serif;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
+h1{font:700 22px/1.1 "Bahnschrift","Segoe UI",sans-serif;letter-spacing:.05em;text-transform:uppercase;margin:0 0 6px}
+h2{font:600 17px "Bahnschrift","Segoe UI",sans-serif;letter-spacing:.03em;margin:28px 0 8px}
+p{margin:0 0 18px;color:var(--muted);max-width:76ch}
+a{color:var(--hazard)}
+img{max-width:100%;display:block}
+.cmp{display:grid;gap:10px}
+.w{background:var(--panel);border:1px solid var(--line);padding:12px;margin-top:14px}
+.w b{font:600 16px "Bahnschrift","Segoe UI",sans-serif}
+.w small{color:var(--dim);font:12px Consolas,monospace;display:block;margin-bottom:8px}
+.strip{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px}
+.strip figure{margin:0}
+.strip figcaption{font:11px Consolas,monospace;color:var(--muted);padding-top:2px}
+</style>
+</head>
+<body>
+<h1>R4 Weapons v2 · podgląd offline</h1>
+<p>Ta strona działa bez internetu i bez WebGL: rendery z Blendera (hero i kluczowe pozy każdego klipu) z tych samych plików .blend, z których powstały GLB/FBX, oraz porównanie sylwetek v1 → v2. Interaktywny podgląd 3D: <a href="index.html">index.html</a>.</p>
+<h2>v1 → v2</h2>
+<div class="cmp"><img src="compare/before_after_34front.jpg" alt="Porównanie v1 i v2, widok 3/4"><img src="compare/silhouettes_v1_v2_128.png" alt="Sylwetki v1 i v2"></div>
+<div id="g"></div>
+<script src="models.js"></script>
+<script>
+(function(){
+  var g = document.getElementById("g"), D = window.R4M_DATA; if (!D) return;
+  D.models.forEach(function(m){
+    var el = document.createElement("div"); el.className = "w";
+    var poses = (m.poses || []).map(function(p){ return '<figure><img loading="lazy" src="renders/' + p + '" alt=""><figcaption>' + p.replace(m.id + "_", "").replace(".jpg", "") + '</figcaption></figure>'; }).join("");
+    el.innerHTML = '<b>' + m.key + '</b><small>' + m.game + ' · ' + (m.version || '') + ' · ' + m.tris + ' tri · ' + (m.style || '') + '</small>' +
+      '<img loading="lazy" src="renders/' + m.id + '_HERO_eevee.jpg" alt="' + m.key + ' hero"><div class="strip" style="margin-top:6px">' + poses + '</div>';
+    g.appendChild(el);
+  });
+})();
+</script>
+</body>
+</html>

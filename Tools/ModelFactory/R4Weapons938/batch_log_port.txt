@@ -1,0 +1,11 @@
+# port/grid update - final consistent batch of all 8 weapons (Blender 5.2.3, --factory-startup)
+BATCH_START 2026-11-07 10:51:24 None
+R4W_Basic rc=0 14.6s ('BLENDER_PASS', [])
+R4W_RotarySaw rc=0 21.5s ('BLENDER_PASS', [])
+R4W_Heavy rc=0 16.9s ('BLENDER_PASS', [])
+R4W_Shotgun rc=0 17.2s ('BLENDER_PASS', [])
+R4W_Railgun rc=0 24.4s ('BLENDER_PASS', [])
+R4W_BeamCutter rc=0 21.6s ('BLENDER_PASS', [])
+R4W_RocketLauncher rc=0 21.3s ('BLENDER_PASS', [])
+R4W_EmpEmitter rc=0 23.1s ('BLENDER_PASS', [])
+BATCH_DONE
