@@ -21,9 +21,9 @@ namespace RoboRougelike.R1
             var part=run.VehicleModel.Inventory.Where(p=>InCatalogGroup(p,kind,weapon,bonus)&&p.Health>0)
                 .OrderByDescending(p=>p.Health).FirstOrDefault();
             if(part!=null){garage.ChooseInventory(part.Id);garage.Message=kind==R3PartKind.RepairPulse?
-                "Kliknij pojazd, aby zamontować. Podczas jazdy V naprawia żywe części: 15 energii, 5 s.":
-                kind==R3PartKind.DrivePower?"Silnik wspomaga koła i zajmuje 25 maks. energii. Kliknij pojazd, aby zamontować.":
-                kind==R3PartKind.EnergyRegenerator?"Regenerator: +5 energii/s, −25 maks. energii. Kliknij pojazd, aby zamontować.":"Kliknij pojazd, aby zamontować część.";}
+                $"Impuls T{R3VehicleModel.NormalizedTier(part.Tier)}: V, {R3RepairPulse.EnergyCost*R3VehicleModel.TierActivationCost(part.Tier):0} energii, 5 s. Kliknij, aby zamontować.":
+                kind==R3PartKind.DrivePower?$"Silnik T{R3VehicleModel.NormalizedTier(part.Tier)} wspomaga koła; rezerwuje {25+R3VehicleModel.TierPassiveExtra(part.Tier):0} energii.":
+                kind==R3PartKind.EnergyRegenerator?$"Regenerator T{R3VehicleModel.NormalizedTier(part.Tier)}: +{5*R3VehicleModel.TierEffectUnits(part.Tier)} energii/s, rezerwa {25+R3VehicleModel.TierPassiveExtra(part.Tier):0}.":"Kliknij pojazd, aby zamontować część.";}
             else {garage.SelectedInventoryId=null;garage.SetTool(R41GarageTool.Mount);
                 garage.Message=!run.CanBuyTechnology(kind,weapon)?"Zablokowane: pokonaj przeciwnika z tą bronią, aby odkryć technologię.":kind==R3PartKind.RepairPulse?
                     "Impuls naprawczy: V, 15 energii, 5 s. Kup część lub otwórz szczegóły.":

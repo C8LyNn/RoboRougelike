@@ -32,7 +32,7 @@ namespace RoboRougelike.R3
                 float remaining=states.Min(s=>Mathf.Max(0,s.DeviceReadyAt-Time.time));
                 if(remaining>0)return $"odnowienie {Mathf.CeilToInt(remaining)} s";
                 if(!assembly.Parts.Any(Damaged))return "brak uszkodzeń";
-                return energy.CanSpend(EnergyCost)?"gotowy":"brak energii";
+                return states.Any(s=>s.DeviceReadyAt<=Time.time&&energy.CanSpend(EnergyCost*R3VehicleModel.TierActivationCost(s.Tier)))?"gotowy":"brak energii";
             }
         }
         public void Configure(R3VehicleAssembly owner){assembly=owner;energy=GetComponent<VehicleEnergyBank>();}
@@ -55,7 +55,7 @@ namespace RoboRougelike.R3
                 if(state==null||state.DeviceReadyAt>Time.time||active.Any(p=>p.Device==module)||
                     RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(module.gameObject))continue;
                 var target=RandomTarget();
-                if(target==null||!energy.TrySpend(EnergyCost))continue;
+                if(target==null||!energy.TrySpend(EnergyCost*R3VehicleModel.TierActivationCost(state.Tier)))continue;
                 state.DeviceReadyAt=Time.time+Cooldown;
                 active.Add(new Pulse{Device=module,Target=target,Remaining=Duration});count++;
             }
@@ -87,9 +87,10 @@ namespace RoboRougelike.R3
                     if(pulse.Target==null)break;
                     var hp=pulse.Target.Damageable;
                     float ratio=hp.CurrentHp/hp.MaxHp;
-                    float needed=(1f-ratio)/RepairRatioPerSecond;
+                    float rate=RepairRatioPerSecond*R3VehicleModel.TierEffectUnits(pulse.Device.Tier);
+                    float needed=(1f-ratio)/rate;
                     float used=Mathf.Min(frame,needed);
-                    hp.RestoreHealthRatio(Mathf.Min(1f,ratio+used*RepairRatioPerSecond));
+                    hp.RestoreHealthRatio(Mathf.Min(1f,ratio+used*rate));
                     frame-=used;
                     if(used<=.000001f){pulse.Target=null;break;}
                 }

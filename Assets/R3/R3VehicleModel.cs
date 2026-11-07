@@ -69,7 +69,11 @@ namespace RoboRougelike.R3
         public static float TierHealth(int tier)=>NormalizedTier(tier)==3?3.6f:NormalizedTier(tier)==2?2f:1f;
         public static float TierMass(int tier)=>NormalizedTier(tier)==3?1.3f:NormalizedTier(tier)==2?1.15f:1f;
         public static float TierWheelTraction(int tier)=>NormalizedTier(tier)==3?1.8f:NormalizedTier(tier)==2?1.35f:1f;
-        public static bool SupportsFusion(R3PartKind kind)=>kind==R3PartKind.Armor||kind==R3PartKind.Wheel;
+        public static int TierEffectUnits(int tier)=>NormalizedTier(tier)==3?4:NormalizedTier(tier)==2?2:1;
+        public static float TierPassiveExtra(int tier)=>NormalizedTier(tier)==3?10:NormalizedTier(tier)==2?5:0;
+        public static float TierActivationCost(int tier)=>NormalizedTier(tier)==3?1.4f:NormalizedTier(tier)==2?1.2f:1f;
+        public static bool SupportsFusion(R3PartKind kind)=>kind==R3PartKind.Armor||kind==R3PartKind.Wheel||
+            kind==R3PartKind.Battery||kind==R3PartKind.RepairPulse||kind==R3PartKind.DrivePower||kind==R3PartKind.EnergyRegenerator;
         public R3VehicleDesign Design { get; }
         public List<R3PartState> Parts { get; }
         private readonly List<R3PartState> inventory=new List<R3PartState>();
@@ -158,9 +162,10 @@ namespace RoboRougelike.R3
         public void RefreshEnergyLayout()
         {
             var alive=Parts.Where(p=>p.Health>0).ToArray();
-            Energy.Refresh(alive.Count(p=>p.Kind==R3PartKind.Battery),
+            Energy.SetAdditionalPassiveReservation(alive.Where(p=>IsPassiveEnergyPart(p.Kind)).Sum(p=>TierPassiveExtra(p.Tier)));
+            Energy.Refresh(alive.Where(p=>p.Kind==R3PartKind.Battery).Sum(p=>TierEffectUnits(p.Tier)),
                 alive.Count(p=>IsPassiveEnergyPart(p.Kind)),alive.Any(p=>p.Kind==R3PartKind.Core));
-            Energy.SetRegeneratorCount(alive.Count(p=>p.Kind==R3PartKind.EnergyRegenerator));
+            Energy.SetRegeneratorCount(alive.Where(p=>p.Kind==R3PartKind.EnergyRegenerator).Sum(p=>TierEffectUnits(p.Tier)));
         }
         // Every part reserves one structural cell. Rotation changes ports and
         // functional geometry, but never the size of its mounting footprint.
@@ -372,12 +377,17 @@ namespace RoboRougelike.R3
             if(requested.Length!=3||requested.Any(string.IsNullOrWhiteSpace)||requested.Distinct(StringComparer.Ordinal).Count()!=3)return false;
             var parts=requested.Select(id=>inventory.FirstOrDefault(p=>p.Id==id)).ToArray();
             if(parts.Any(p=>!ValidEconomicPart(p))||!SupportsFusion(parts[0].Kind))return false;
+            if(parts.Any(p=>float.IsNaN(p.DeviceReadyAt)||float.IsInfinity(p.DeviceReadyAt)||p.DeviceReadyAt<0||
+                float.IsNaN(p.ReloadReadyAt)||float.IsInfinity(p.ReloadReadyAt)||p.ReloadReadyAt<0||
+                float.IsNaN(p.DisruptionRemaining)||float.IsInfinity(p.DisruptionRemaining)||p.DisruptionRemaining<0))return false;
             int tier=NormalizedTier(parts[0].Tier);
             if(tier>=3||parts.Any(p=>p.Kind!=parts[0].Kind||NormalizedTier(p.Tier)!=tier))return false;
             // A new physical item represents all three inputs. Preserve average
             // condition so fusion never repairs damaged items for free.
             var result=parts[0].Copy();result.Id=Guid.NewGuid().ToString("N");result.Tier=tier+1;
             result.Health=parts.Average(p=>p.Health);result.Source="Fuzja trzech części T"+tier;
+            result.DeviceReadyAt=parts.Max(p=>p.DeviceReadyAt);result.ReloadReadyAt=parts.Max(p=>p.ReloadReadyAt);
+            result.DisruptionRemaining=parts.Max(p=>p.DisruptionRemaining);
             foreach(var part in parts)inventory.Remove(part);
             inventory.Add(result);return true;
         }

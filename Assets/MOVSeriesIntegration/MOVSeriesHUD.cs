@@ -107,13 +107,13 @@ namespace RoboRougelike.R1
                 if(GUI.Button(new Rect(175,420,135,31),"Wyżej + 0,1 m",compactButton))ChangeMovement(run,m.BoosterThrustNewtons,m.BoosterDurationSeconds,m.GyroEnabled,m.HoverHeightMeters+.1f);
             }
             else if(selected==R3PartKind.Battery)
-                GUI.Label(new Rect(30,355,280,95),"Bateria: +100 maks. energii.\nDziała po zamontowaniu.\nEnergia odnawia się powoli;\nturkusowe pole ładuje szybciej.",small);
+                GUI.Label(new Rect(30,355,280,95),"Bateria: T1 +100, T2 +200, T3 +400 maks. energii.\nDziała po zamontowaniu.\nPole ładowania przyspiesza regenerację.",small);
             else if(selected==R3PartKind.RepairPulse)
-                GUI.Label(new Rect(30,355,280,100),"V — impuls naprawczy\n15 energii • działa 5 s • odnowienie 15 s\nLeczy uszkodzone części,\nnie odbudowuje zniszczonych.",small);
+                GUI.Label(new Rect(30,355,280,100),"V — impuls naprawczy\nDziała 5 s • odnowienie 15 s\nWyższy tier leczy szybciej.\nNie odbudowuje zniszczonych.",small);
             else if(selected==R3PartKind.DrivePower)
-                GUI.Label(new Rect(30,355,280,100),"Silnik kół wspomaga\nprzyspieszanie i skręcanie.\nZajmuje 25 maks. energii.\nPotrzebuje kół na podłożu.",small);
+                GUI.Label(new Rect(30,355,280,100),"Silnik kół wspomaga\nprzyspieszanie i skręcanie.\nT1/T2/T3: rezerwa 25/30/35.\nPotrzebuje kół na podłożu.",small);
             else if(selected==R3PartKind.EnergyRegenerator)
-                GUI.Label(new Rect(30,355,280,100),"Regenerator: +5 energii/s.\nNa postoju regeneracja ×4.\nZajmuje 25 maks. energii.\nDziała po zamontowaniu.",small);
+                GUI.Label(new Rect(30,355,280,100),"Regenerator T1/T2/T3: +5/+10/+20 energii/s.\nNa postoju regeneracja ×4.\nRezerwa: 25/30/35 energii.",small);
             else if(selected==R3PartKind.PointDefense)
                 GUI.Label(new Rect(30,355,280,100),"Obrona 1×1×1 • automat 24 m\n40 nabojów • T przeładuj (3 s)\nChroni przed pociskami i rakietami.\nWymaga wolnej linii strzału.",small);
             else if(selected==R3PartKind.DirectionalShield)

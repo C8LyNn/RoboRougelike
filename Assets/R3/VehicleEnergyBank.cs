@@ -53,17 +53,21 @@ namespace RoboRougelike.R3
             if(assembly!=null)
             {
                 var alive=assembly.Parts.Where(p=>p!=null&&p.Operational&&p.transform.IsChildOf(transform)).ToArray();
-                state.Refresh(alive.Count(p=>p.Kind==R3PartKind.Battery),
+                state.SetAdditionalPassiveReservation(alive.Where(p=>R3VehicleModel.IsPassiveEnergyPart(p.Kind))
+                    .Sum(p=>R3VehicleModel.TierPassiveExtra(p.Tier)));
+                state.Refresh(alive.Where(p=>p.Kind==R3PartKind.Battery).Sum(p=>R3VehicleModel.TierEffectUnits(p.Tier)),
                     alive.Count(p=>R3VehicleModel.IsPassiveEnergyPart(p.Kind)),
                     alive.Any(p=>p.Kind==R3PartKind.Core));
-                state.SetRegeneratorCount(alive.Count(p=>p.Kind==R3PartKind.EnergyRegenerator&&
-                    !RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(p.gameObject)));
+                state.SetRegeneratorCount(alive.Where(p=>p.Kind==R3PartKind.EnergyRegenerator&&
+                    !RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(p.gameObject))
+                    .Sum(p=>R3VehicleModel.TierEffectUnits(p.Tier)));
             }
             else if(enemyCore!=null)
             {
                 var batteries=GetComponentsInChildren<VehicleEnergyBattery>().Count(b=>b.IsAvailable(transform));
                 var passive=GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLShieldBinding>()
                     .Count(s=>s.Device!=null&&s.Device.HardwareAvailable);
+                state.SetAdditionalPassiveReservation(0);
                 state.Refresh(batteries,passive,!enemyCore.IsDead&&enemyCore.transform.IsChildOf(transform));
                 state.SetRegeneratorCount(0);
             }
