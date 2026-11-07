@@ -1,0 +1,2 @@
+ui943-bonus-description-integrated.xml original_sha256=e4f71c920285ae57f0cc25054a8471d5d7b85c38c903997b808ad2e8941c40db
+ui943-bonus-description-integrated.log original_sha256=7231cb65dbd13d814f6784afbfb1564dc22d90fe04eacd13df9c9d150281555f

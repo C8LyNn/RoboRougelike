@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="34" result="Passed" total="34" passed="34" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-07 08:38:57Z" end-time="2026-11-07 08:38:57Z" duration="0,6925034">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1460" result="Passed" start-time="2026-11-07 08:38:57Z" end-time="2026-11-07 08:38:57Z" duration="0.692503" total="34" passed="34" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1820" name="Assembly-CSharp-Editor.dll" fullname="[USER_HOME]/Desktop/Prototypy/RoboRougelike-PlayQA-97f8/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="667" result="Passed" start-time="2026-11-07 08:38:57Z" end-time="2026-11-07 08:38:57Z" duration="0.595565" total="34" passed="34" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="47544" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="1396" name="R3PhysicalBonusModuleTests" fullname="R3PhysicalBonusModuleTests" classname="R3PhysicalBonusModuleTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.042451" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1400" name="CopyPreservesUpgradeIdentityAndSingleModuleCondition" fullname="R3PhysicalBonusModuleTests.CopyPreservesUpgradeIdentityAndSingleModuleCondition" methodname="CopyPreservesUpgradeIdentityAndSingleModuleCondition" classname="R3PhysicalBonusModuleTests" runstate="Runnable" seed="1392326118" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.018506" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1399" name="FootprintMustFitBoundsAndNotOverlapExistingParts" fullname="R3PhysicalBonusModuleTests.FootprintMustFitBoundsAndNotOverlapExistingParts" methodname="FootprintMustFitBoundsAndNotOverlapExistingParts" classname="R3PhysicalBonusModuleTests" runstate="Runnable" seed="1427626867" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.003677" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1398" name="ModuleOccupiesOneCellAndIsOnePart" fullname="R3PhysicalBonusModuleTests.ModuleOccupiesOneCellAndIsOnePart" methodname="ModuleOccupiesOneCellAndIsOnePart" classname="R3PhysicalBonusModuleTests" runstate="Runnable" seed="524091197" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.006156" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1397" name="RewardIsOneInventoryItemAndDoesNotApplyPermanentStats" fullname="R3PhysicalBonusModuleTests.RewardIsOneInventoryItemAndDoesNotApplyPermanentStats" methodname="RewardIsOneInventoryItemAndDoesNotApplyPermanentStats" classname="R3PhysicalBonusModuleTests" runstate="Runnable" seed="363551467" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.003638" asserts="0">
+          <properties />
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1549" name="RRLW34RewardTests" fullname="RRLW34RewardTests" classname="RRLW34RewardTests" runstate="Runnable" testcasecount="13" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.037962" total="13" passed="13" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1566" name="FinalEncounterAlsoAwardsOneInactiveModuleAndThreePartsBeforeWon" fullname="RRLW34RewardTests.FinalEncounterAlsoAwardsOneInactiveModuleAndThreePartsBeforeWon" methodname="FinalEncounterAlsoAwardsOneInactiveModuleAndThreePartsBeforeWon" classname="RRLW34RewardTests" runstate="Runnable" seed="446161118" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.007344" asserts="0">
+          <properties />
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="1562" name="InvalidPhysicalBonusCannotPartiallyPayOrClaimSalvage" fullname="RRLW34RewardTests.InvalidPhysicalBonusCannotPartiallyPayOrClaimSalvage" classname="RRLW34RewardTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.005377" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1559" name="InvalidPhysicalBonusCannotPartiallyPayOrClaimSalvage(&quot;nan&quot;)" fullname="RRLW34RewardTests.InvalidPhysicalBonusCannotPartiallyPayOrClaimSalvage(&quot;nan&quot;)" methodname="InvalidPhysicalBonusCannotPartiallyPayOrClaimSalvage" classname="RRLW34RewardTests" runstate="Runnable" seed="1236234991" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.002520" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1560" name="InvalidPhysicalBonusCannotPartiallyPayOrClaimSalvage(&quot;infinite&quot;)" fullname="RRLW34RewardTests.InvalidPhysicalBonusCannotPartiallyPayOrClaimSalvage(&quot;infinite&quot;)" methodname="InvalidPhysicalBonusCannotPartiallyPayOrClaimSalvage" classname="RRLW34RewardTests" runstate="Runnable" seed="2034023327" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.000883" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1561" name="InvalidPhysicalBonusCannotPartiallyPayOrClaimSalvage(&quot;effect&quot;)" fullname="RRLW34RewardTests.InvalidPhysicalBonusCannotPartiallyPayOrClaimSalvage(&quot;effect&quot;)" methodname="InvalidPhysicalBonusCannotPartiallyPayOrClaimSalvage" classname="RRLW34RewardTests" runstate="Runnable" seed="1334611373" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.000880" asserts="0">
+            <properties />
+          </test-case>
+        </test-suite>
+        <test-suite type="ParameterizedMethod" id="1565" name="InventoryCapacityPreflightIncludesBonusAndAllThreeParts" fullname="RRLW34RewardTests.InventoryCapacityPreflightIncludesBonusAndAllThreeParts" classname="RRLW34RewardTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.007803" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1563" name="InventoryCapacityPreflightIncludesBonusAndAllThreeParts(196,True)" fullname="RRLW34RewardTests.InventoryCapacityPreflightIncludesBonusAndAllThreeParts(196,True)" methodname="InventoryCapacityPreflightIncludesBonusAndAllThreeParts" classname="RRLW34RewardTests" runstate="Runnable" seed="1779368507" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.003738" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1564" name="InventoryCapacityPreflightIncludesBonusAndAllThreeParts(197,False)" fullname="RRLW34RewardTests.InventoryCapacityPreflightIncludesBonusAndAllThreeParts(197,False)" methodname="InventoryCapacityPreflightIncludesBonusAndAllThreeParts" classname="RRLW34RewardTests" runstate="Runnable" seed="1611474296" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.003480" asserts="0">
+            <properties />
+          </test-case>
+        </test-suite>
+        <test-suite type="ParameterizedMethod" id="1554" name="OnePhysicalBonusAndIndependentPartsSettleExactlyOnce" fullname="RRLW34RewardTests.OnePhysicalBonusAndIndependentPartsSettleExactlyOnce" classname="RRLW34RewardTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.010436" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1550" name="OnePhysicalBonusAndIndependentPartsSettleExactlyOnce(0,9)" fullname="RRLW34RewardTests.OnePhysicalBonusAndIndependentPartsSettleExactlyOnce(0,9)" methodname="OnePhysicalBonusAndIndependentPartsSettleExactlyOnce" classname="RRLW34RewardTests" runstate="Runnable" seed="95941038" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.003069" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1551" name="OnePhysicalBonusAndIndependentPartsSettleExactlyOnce(1,6)" fullname="RRLW34RewardTests.OnePhysicalBonusAndIndependentPartsSettleExactlyOnce(1,6)" methodname="OnePhysicalBonusAndIndependentPartsSettleExactlyOnce" classname="RRLW34RewardTests" runstate="Runnable" seed="1312177031" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.004501" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1552" name="OnePhysicalBonusAndIndependentPartsSettleExactlyOnce(2,5)" fullname="RRLW34RewardTests.OnePhysicalBonusAndIndependentPartsSettleExactlyOnce(2,5)" methodname="OnePhysicalBonusAndIndependentPartsSettleExactlyOnce" classname="RRLW34RewardTests" runstate="Runnable" seed="475948178" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.001040" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1553" name="OnePhysicalBonusAndIndependentPartsSettleExactlyOnce(3,4)" fullname="RRLW34RewardTests.OnePhysicalBonusAndIndependentPartsSettleExactlyOnce(3,4)" methodname="OnePhysicalBonusAndIndependentPartsSettleExactlyOnce" classname="RRLW34RewardTests" runstate="Runnable" seed="1559527359" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.000844" asserts="0">
+            <properties />
+          </test-case>
+        </test-suite>
+        <test-suite type="ParameterizedMethod" id="1558" name="RequiredExactlyOneBonusRejectsWithoutAnySalvageMutation" fullname="RRLW34RewardTests.RequiredExactlyOneBonusRejectsWithoutAnySalvageMutation" classname="RRLW34RewardTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.004499" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1555" name="RequiredExactlyOneBonusRejectsWithoutAnySalvageMutation(0)" fullname="RRLW34RewardTests.RequiredExactlyOneBonusRejectsWithoutAnySalvageMutation(0)" methodname="RequiredExactlyOneBonusRejectsWithoutAnySalvageMutation" classname="RRLW34RewardTests" runstate="Runnable" seed="2001445555" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.001383" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1556" name="RequiredExactlyOneBonusRejectsWithoutAnySalvageMutation(2)" fullname="RRLW34RewardTests.RequiredExactlyOneBonusRejectsWithoutAnySalvageMutation(2)" methodname="RequiredExactlyOneBonusRejectsWithoutAnySalvageMutation" classname="RRLW34RewardTests" runstate="Runnable" seed="795680481" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.001136" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1557" name="RequiredExactlyOneBonusRejectsWithoutAnySalvageMutation(3)" fullname="RRLW34RewardTests.RequiredExactlyOneBonusRejectsWithoutAnySalvageMutation(3)" methodname="RequiredExactlyOneBonusRejectsWithoutAnySalvageMutation" classname="RRLW34RewardTests" runstate="Runnable" seed="1447829076" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.001059" asserts="0">
+            <properties />
+          </test-case>
+        </test-suite>
+      </test-suite>
+      <test-suite type="TestFixture" id="1673" name="UI943BonusDescriptionTests" fullname="UI943BonusDescriptionTests" classname="UI943BonusDescriptionTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.012518" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1674" name="LoadedBonusDescriptionsMatchTheActualSingleCellReward" fullname="UI943BonusDescriptionTests.LoadedBonusDescriptionsMatchTheActualSingleCellReward" methodname="LoadedBonusDescriptionsMatchTheActualSingleCellReward" classname="UI943BonusDescriptionTests" runstate="Runnable" seed="264512198" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.011859" asserts="0">
+          <properties />
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1690" name="UI943GarageLayoutTests" fullname="UI943GarageLayoutTests" classname="UI943GarageLayoutTests" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.010378" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="ParameterizedMethod" id="1696" name="CameraViewportMatchesLetterboxedGarageOpening" fullname="UI943GarageLayoutTests.CameraViewportMatchesLetterboxedGarageOpening" classname="UI943GarageLayoutTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.003776" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1691" name="CameraViewportMatchesLetterboxedGarageOpening(1920,1080)" fullname="UI943GarageLayoutTests.CameraViewportMatchesLetterboxedGarageOpening(1920,1080)" methodname="CameraViewportMatchesLetterboxedGarageOpening" classname="UI943GarageLayoutTests" runstate="Runnable" seed="1483161375" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.001234" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1692" name="CameraViewportMatchesLetterboxedGarageOpening(1366,768)" fullname="UI943GarageLayoutTests.CameraViewportMatchesLetterboxedGarageOpening(1366,768)" methodname="CameraViewportMatchesLetterboxedGarageOpening" classname="UI943GarageLayoutTests" runstate="Runnable" seed="2059551914" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.000093" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1693" name="CameraViewportMatchesLetterboxedGarageOpening(1024,768)" fullname="UI943GarageLayoutTests.CameraViewportMatchesLetterboxedGarageOpening(1024,768)" methodname="CameraViewportMatchesLetterboxedGarageOpening" classname="UI943GarageLayoutTests" runstate="Runnable" seed="1234433009" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.000056" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1694" name="CameraViewportMatchesLetterboxedGarageOpening(768,1024)" fullname="UI943GarageLayoutTests.CameraViewportMatchesLetterboxedGarageOpening(768,1024)" methodname="CameraViewportMatchesLetterboxedGarageOpening" classname="UI943GarageLayoutTests" runstate="Runnable" seed="678218505" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.000086" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1695" name="CameraViewportMatchesLetterboxedGarageOpening(3840,2160)" fullname="UI943GarageLayoutTests.CameraViewportMatchesLetterboxedGarageOpening(3840,2160)" methodname="CameraViewportMatchesLetterboxedGarageOpening" classname="UI943GarageLayoutTests" runstate="Runnable" seed="622142521" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.000277" asserts="0">
+            <properties />
+          </test-case>
+        </test-suite>
+        <test-suite type="ParameterizedMethod" id="1702" name="GarageOverlaysCannotReceivePlacementClicks" fullname="UI943GarageLayoutTests.GarageOverlaysCannotReceivePlacementClicks" classname="UI943GarageLayoutTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.004371" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1697" name="GarageOverlaysCannotReceivePlacementClicks(1920,1080)" fullname="UI943GarageLayoutTests.GarageOverlaysCannotReceivePlacementClicks(1920,1080)" methodname="GarageOverlaysCannotReceivePlacementClicks" classname="UI943GarageLayoutTests" runstate="Runnable" seed="1964327377" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.001042" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1698" name="GarageOverlaysCannotReceivePlacementClicks(1366,768)" fullname="UI943GarageLayoutTests.GarageOverlaysCannotReceivePlacementClicks(1366,768)" methodname="GarageOverlaysCannotReceivePlacementClicks" classname="UI943GarageLayoutTests" runstate="Runnable" seed="294863593" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.000071" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1699" name="GarageOverlaysCannotReceivePlacementClicks(1024,768)" fullname="UI943GarageLayoutTests.GarageOverlaysCannotReceivePlacementClicks(1024,768)" methodname="GarageOverlaysCannotReceivePlacementClicks" classname="UI943GarageLayoutTests" runstate="Runnable" seed="1577180728" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.000083" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1700" name="GarageOverlaysCannotReceivePlacementClicks(768,1024)" fullname="UI943GarageLayoutTests.GarageOverlaysCannotReceivePlacementClicks(768,1024)" methodname="GarageOverlaysCannotReceivePlacementClicks" classname="UI943GarageLayoutTests" runstate="Runnable" seed="1107599053" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.000112" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1701" name="GarageOverlaysCannotReceivePlacementClicks(3840,2160)" fullname="UI943GarageLayoutTests.GarageOverlaysCannotReceivePlacementClicks(3840,2160)" methodname="GarageOverlaysCannotReceivePlacementClicks" classname="UI943GarageLayoutTests" runstate="Runnable" seed="1207818047" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:53Z" duration="0.000099" asserts="0">
+            <properties />
+          </test-case>
+        </test-suite>
+      </test-suite>
+      <test-suite type="TestFixture" id="1727" name="UI943PortraitRewardsActionsTests" fullname="UI943PortraitRewardsActionsTests" classname="UI943PortraitRewardsActionsTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-11-07 08:38:57Z" end-time="2026-11-07 08:38:57Z" duration="0.542985" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1728" name="PagesCapacityDismantleAndConfirmUseRealLedgerAndInventory" fullname="UI943PortraitRewardsActionsTests.PagesCapacityDismantleAndConfirmUseRealLedgerAndInventory" methodname="PagesCapacityDismantleAndConfirmUseRealLedgerAndInventory" classname="UI943PortraitRewardsActionsTests" runstate="Runnable" seed="601827814" result="Passed" start-time="2026-11-07 08:38:53Z" end-time="2026-11-07 08:38:57Z" duration="3.696453" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=3; złom z demontażu=39
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1729" name="UI943PortraitRewardsLayoutTests" fullname="UI943PortraitRewardsLayoutTests" classname="UI943PortraitRewardsLayoutTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-07 08:38:57Z" end-time="2026-11-07 08:38:57Z" duration="0.006310" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1735" name="InventoryCardsPagerAndReturnFitWithoutOverlap" fullname="UI943PortraitRewardsLayoutTests.InventoryCardsPagerAndReturnFitWithoutOverlap" methodname="InventoryCardsPagerAndReturnFitWithoutOverlap" classname="UI943PortraitRewardsLayoutTests" runstate="Runnable" seed="1420156839" result="Passed" start-time="2026-11-07 08:38:57Z" end-time="2026-11-07 08:38:57Z" duration="0.002426" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="1733" name="PortraitIsOnlyUsedForUnobscuredSalvage" fullname="UI943PortraitRewardsLayoutTests.PortraitIsOnlyUsedForUnobscuredSalvage" classname="UI943PortraitRewardsLayoutTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-07 08:38:57Z" end-time="2026-11-07 08:38:57Z" duration="0.001521" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1730" name="PortraitIsOnlyUsedForUnobscuredSalvage(768,1024,True)" fullname="UI943PortraitRewardsLayoutTests.PortraitIsOnlyUsedForUnobscuredSalvage(768,1024,True)" methodname="PortraitIsOnlyUsedForUnobscuredSalvage" classname="UI943PortraitRewardsLayoutTests" runstate="Runnable" seed="323365667" result="Passed" start-time="2026-11-07 08:38:57Z" end-time="2026-11-07 08:38:57Z" duration="0.000746" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1731" name="PortraitIsOnlyUsedForUnobscuredSalvage(1024,768,False)" fullname="UI943PortraitRewardsLayoutTests.PortraitIsOnlyUsedForUnobscuredSalvage(1024,768,False)" methodname="PortraitIsOnlyUsedForUnobscuredSalvage" classname="UI943PortraitRewardsLayoutTests" runstate="Runnable" seed="601226811" result="Passed" start-time="2026-11-07 08:38:57Z" end-time="2026-11-07 08:38:57Z" duration="0.000062" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="1732" name="PortraitIsOnlyUsedForUnobscuredSalvage(1920,1080,False)" fullname="UI943PortraitRewardsLayoutTests.PortraitIsOnlyUsedForUnobscuredSalvage(1920,1080,False)" methodname="PortraitIsOnlyUsedForUnobscuredSalvage" classname="UI943PortraitRewardsLayoutTests" runstate="Runnable" seed="831915993" result="Passed" start-time="2026-11-07 08:38:57Z" end-time="2026-11-07 08:38:57Z" duration="0.000037" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+        </test-suite>
+        <test-case id="1734" name="RewardCardsAndControlsFitWithoutOverlap" fullname="UI943PortraitRewardsLayoutTests.RewardCardsAndControlsFitWithoutOverlap" methodname="RewardCardsAndControlsFitWithoutOverlap" classname="UI943PortraitRewardsLayoutTests" runstate="Runnable" seed="1817694651" result="Passed" start-time="2026-11-07 08:38:57Z" end-time="2026-11-07 08:38:57Z" duration="0.001237" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[Saving results to: [USER_HOME]/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
