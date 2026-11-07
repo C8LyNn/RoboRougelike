@@ -1,5 +1,8 @@
 # R4 block footprint rotation checks — prepared, not executed
 
+Follow-up: [native QA on a3d37d30](R4_BACKLOG_NATIVE_QA_20261107.md) passed
+these adapter checks. The original status below describes their initial preparation.
+
 `R4MountDefinitionAdapterTests.EveryAuthoredShapeKeepsOneOwnerAndBlocksEachRotatedOccupiedCell`
 enumerates all 30 staged block definitions and all 64 Euler quarter-turn
 combinations representing 24 distinct orientations. It checks that rotated
