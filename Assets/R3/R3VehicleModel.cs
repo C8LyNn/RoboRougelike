@@ -10,6 +10,8 @@ namespace RoboRougelike.R3
     // Append new values: checkpoints store these numeric IDs.
     public enum R3PartKind { Armor, Wheel, Gun, Core, Suspension, Booster, JumpDrive, Blink, Gyroscope, OmniDrive, MagneticGrapple, HoverEngine, CrawlerTrack, BonusModule, DirectionalShield, PointDefense, StructuralScanner, ScannerPulse, IndependentSteering, Battery, RepairPulse, DrivePower, EnergyRegenerator }
     public enum R3WheelStyle { Offroad, Slick }
+    // Zero preserves the shape of every pre-existing checkpoint.
+    public enum R3ArmorShape { Cube, Wedge }
     public enum R3DriveKind { Wheels, Tracks, Omni, Hover }
     public enum R3VehicleKind { Standard, Light, Heavy }
     [Serializable]
@@ -24,6 +26,7 @@ namespace RoboRougelike.R3
         public string Source = "Zakup / pojazd startowy";
         public R4WeaponKind Weapon;
         public R3WheelStyle WheelStyle;
+        public R3ArmorShape ArmorShape;
         // A bonus is a physical, single inventory item occupying one grid cell.
         public string UpgradeId, UpgradeTitle, UpgradeDescription;
         public R1UpgradeEffect UpgradeEffect;
@@ -42,7 +45,7 @@ namespace RoboRougelike.R3
         public bool ThermalLocked;
         public float DefenseCharge=-1,DefenseRechargeAge=float.PositiveInfinity;
         public R3PartState(Vector3Int cell, R3PartKind kind, float health = 1) { Cell = cell; Kind = kind; Health = health; }
-        public R3PartState Copy() => new R3PartState(Cell, Kind, Health){Id=Id,Source=Source,Weapon=Weapon,WheelStyle=WheelStyle,Tier=Tier,SteeringMode=SteeringMode,DeviceReadyAt=DeviceReadyAt,Ammo=Ammo,ReloadReadyAt=ReloadReadyAt,ThermalHeat=ThermalHeat,ThermalLocked=ThermalLocked,DisruptionRemaining=DisruptionRemaining,DefenseCharge=DefenseCharge,DefenseRechargeAge=DefenseRechargeAge,
+        public R3PartState Copy() => new R3PartState(Cell, Kind, Health){Id=Id,Source=Source,Weapon=Weapon,WheelStyle=WheelStyle,ArmorShape=ArmorShape,Tier=Tier,SteeringMode=SteeringMode,DeviceReadyAt=DeviceReadyAt,Ammo=Ammo,ReloadReadyAt=ReloadReadyAt,ThermalHeat=ThermalHeat,ThermalLocked=ThermalLocked,DisruptionRemaining=DisruptionRemaining,DefenseCharge=DefenseCharge,DefenseRechargeAge=DefenseRechargeAge,
             UpgradeId=UpgradeId,UpgradeTitle=UpgradeTitle,UpgradeDescription=UpgradeDescription,
             UpgradeEffect=UpgradeEffect,UpgradeAmount=UpgradeAmount,
             RotationQuarterTurns=RotationQuarterTurns,ContactMask=ContactMask};
@@ -201,7 +204,9 @@ namespace RoboRougelike.R3
         public static bool ValidEconomicKind(R3PartKind kind,R4WeaponKind weapon) =>
             Enum.IsDefined(typeof(R3PartKind),kind) &&
             (kind!=R3PartKind.Gun||Enum.IsDefined(typeof(R4WeaponKind),weapon));
-        public static bool ValidEconomicPart(R3PartState part) => part!=null && ValidEconomicKind(part.Kind,part.Weapon) && Enum.IsDefined(typeof(R3WheelStyle),part.WheelStyle) && part.Tier>=0&&part.Tier<=3&&
+        public static bool ValidArmorShape(R3PartState part)=>part!=null&&Enum.IsDefined(typeof(R3ArmorShape),part.ArmorShape)&&
+            (part.ArmorShape==R3ArmorShape.Cube||(part.Kind==R3PartKind.Armor&&part.ContactMask==R4_1.R41PartGeometry.WedgeFullContacts));
+        public static bool ValidEconomicPart(R3PartState part) => part!=null && ValidEconomicKind(part.Kind,part.Weapon) && Enum.IsDefined(typeof(R3WheelStyle),part.WheelStyle) && ValidArmorShape(part) && part.Tier>=0&&part.Tier<=3&&
             (part.Tier<=1||SupportsFusion(part.Kind,part.Weapon))&&
             !float.IsNaN(part.Health)&&!float.IsInfinity(part.Health)&&part.Health>=0&&part.Health<=1;
         public int Price(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic) => !ValidEconomicKind(kind,weapon)?0:Math.Max(1,
@@ -222,7 +227,7 @@ namespace RoboRougelike.R3
         public string OwnedPlacementError(string id,Vector3Int cell,Vector3Int rotation)
         {
             var part=inventory.FirstOrDefault(p=>p.Id==id);
-            return part==null?"Brak części w magazynie.":part.Health<=0?"Odtwórz zniszczoną część przed montażem.":
+            return part==null?"Brak części w magazynie.":!ValidEconomicPart(part)?"Nieprawidłowe dane części.":part.Health<=0?"Odtwórz zniszczoną część przed montażem.":
                 CheckPlacement(cell,part.Kind,true,part.Weapon,rotation,part.ContactMask,part.Id);
         }
         string CheckPlacement(Vector3Int cell,R3PartKind kind,bool owned,R4WeaponKind weapon,Vector3Int rotation,int contactMask,string ownedId)
@@ -257,7 +262,7 @@ namespace RoboRougelike.R3
             if (!owned && Scrap < Price(kind,weapon)) return "Za mało Złomu.";
             if(installationGate==null)return null;
             var candidate=new R3PartState(cell,kind){Weapon=weapon,RotationQuarterTurns=rotation,ContactMask=contactMask};
-            if(ownedId!=null)candidate.Id=ownedId;
+            if(ownedId!=null){candidate.Id=ownedId;var stored=inventory.FirstOrDefault(p=>p.Id==ownedId);if(stored!=null)candidate.ArmorShape=stored.ArmorShape;}
             return installationGate(candidate);
         }
         public bool Buy(Vector3Int cell,R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic,
@@ -269,12 +274,15 @@ namespace RoboRougelike.R3
             Parts.Add(new R3PartState(cell,kind){Weapon=weapon,RotationQuarterTurns=rotation});
             return true;
         }
-        public bool PurchaseToInventory(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic,R3WheelStyle wheelStyle=R3WheelStyle.Offroad)
+        public bool PurchaseToInventory(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic,R3WheelStyle wheelStyle=R3WheelStyle.Offroad,R3ArmorShape armorShape=R3ArmorShape.Cube)
         {
             if(kind==R3PartKind.Core||kind==R3PartKind.BonusModule||!ValidEconomicKind(kind,weapon)||inventory.Count>=InventoryCapacity||
-                !Enum.IsDefined(typeof(R3WheelStyle),wheelStyle)||(kind!=R3PartKind.Wheel&&wheelStyle!=R3WheelStyle.Offroad))return false;
+                !Enum.IsDefined(typeof(R3WheelStyle),wheelStyle)||(kind!=R3PartKind.Wheel&&wheelStyle!=R3WheelStyle.Offroad)||
+                !Enum.IsDefined(typeof(R3ArmorShape),armorShape)||(kind!=R3PartKind.Armor&&armorShape!=R3ArmorShape.Cube)||
+                (armorShape==R3ArmorShape.Wedge&&!R4_1.R41PartGeometry.WedgeAvailable))return false;
             int price=Price(kind,weapon);if(price<=0||Scrap<price)return false;
-            Scrap-=price;inventory.Add(new R3PartState(default,kind){Weapon=weapon,WheelStyle=wheelStyle});return true;
+            Scrap-=price;inventory.Add(new R3PartState(default,kind){Weapon=weapon,WheelStyle=wheelStyle,ArmorShape=armorShape,
+                ContactMask=armorShape==R3ArmorShape.Wedge?R4_1.R41PartGeometry.WedgeFullContacts:R3MountingGrid.AllFaces});return true;
         }        public int RepairCost(R3PartState part)
         {
             if (!ValidEconomicPart(part) || part.Health >= 1f) return 0;
@@ -378,6 +386,7 @@ namespace RoboRougelike.R3
             NormalizedTier(a.Tier)==NormalizedTier(b.Tier)&&
             (a.Kind!=R3PartKind.Gun||a.Weapon==b.Weapon)&&
             (a.Kind!=R3PartKind.Wheel||a.WheelStyle==b.WheelStyle)&&
+            (a.Kind!=R3PartKind.Armor||a.ArmorShape==b.ArmorShape)&&
             (a.Kind!=R3PartKind.BonusModule||(!string.IsNullOrWhiteSpace(a.UpgradeId)&&a.UpgradeId==b.UpgradeId&&
                 Enum.IsDefined(typeof(R1UpgradeEffect),a.UpgradeEffect)&&a.UpgradeEffect==b.UpgradeEffect&&
                 !float.IsNaN(a.UpgradeAmount)&&!float.IsInfinity(a.UpgradeAmount)&&a.UpgradeAmount>=0&&a.UpgradeAmount<=1&&a.UpgradeAmount==b.UpgradeAmount));

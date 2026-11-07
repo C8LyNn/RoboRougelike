@@ -8,6 +8,35 @@ namespace RoboRougelike.R4_1
     public static class R41PartGeometry
     {
         public const float Grid=0.55f, BlockSize=0.52f;
+        // Conservative first integration: only the two full source sockets are
+        // active. Partial triangular faces never support guns or wheels.
+        public const int WedgeFullContacts=(1<<3)|(1<<5);
+        private static Mesh wedgeMesh;
+        private static Mesh WedgeMesh
+        {
+            get
+            {
+                if(wedgeMesh!=null)return wedgeMesh;
+                var source=Resources.Load<TextAsset>("R4Art/BlockColliders");
+                if(source==null||!R4ColliderMeshFactory.TryCreate(source.text,"R4B_Wedge",out var meshes,out _))return null;
+                if(meshes.Length!=1){foreach(var mesh in meshes)if(mesh!=null)Object.Destroy(mesh);return null;}
+                wedgeMesh=meshes[0];var vertices=wedgeMesh.vertices;
+                // Block transforms have the legacy .52 scale. Source vertices
+                // are in meters, so compensate once in the shared mesh.
+                for(int i=0;i<vertices.Length;i++)vertices[i]/=BlockSize;
+                wedgeMesh.vertices=vertices;wedgeMesh.RecalculateBounds();
+                wedgeMesh.name="R4 wedge physical collider";return wedgeMesh;
+            }
+        }
+        public static bool WedgeAvailable=>WedgeMesh!=null&&Resources.Load<GameObject>("R4Art/ArmorWedge")!=null;
+        public static GameObject CreateMountingBlock(R3ArmorShape shape)
+        {
+            if(shape==R3ArmorShape.Cube)return GameObject.CreatePrimitive(PrimitiveType.Cube);
+            if(shape!=R3ArmorShape.Wedge||!WedgeAvailable)throw new System.InvalidOperationException("R4 wedge geometry is unavailable or invalid.");
+            var item=new GameObject("R4 wedge");item.AddComponent<MeshFilter>().sharedMesh=WedgeMesh;
+            item.AddComponent<MeshRenderer>();var collider=item.AddComponent<MeshCollider>();collider.sharedMesh=WedgeMesh;collider.convex=true;
+            return item;
+        }
         // The mounting cube remains the collider and damage owner; only its
         // legacy renderer disappears once replacement art is ready.
         public static void HideMountingShell(Transform block,GameObject visual)
@@ -17,12 +46,15 @@ namespace RoboRougelike.R4_1
             R4ReplacementDamageVisual.Attach(visual,block);
         }
         // The authored cube replaces appearance only: original HP and collider remain authoritative.
-        public static bool TryAttachArmorCube(Transform block)
+        public static bool TryAttachArmorCube(Transform block)=>TryAttachArmor(block,R3ArmorShape.Cube);
+        public static bool TryAttachArmor(Transform block,R3ArmorShape shape)
         {
             if(block==null)return false;
             var renderer=block.GetComponent<Renderer>();var scale=block.lossyScale;
             if(renderer==null||scale.x<=.0001f||Mathf.Abs(scale.x-scale.y)>.0001f||Mathf.Abs(scale.x-scale.z)>.0001f)return false;
-            var prefab=Resources.Load<GameObject>("R4Art/ArmorCube");if(prefab==null)return false;
+            var path=shape==R3ArmorShape.Cube?"R4Art/ArmorCube":shape==R3ArmorShape.Wedge?"R4Art/ArmorWedge":null;
+            if(path==null)return false;
+            var prefab=Resources.Load<GameObject>(path);if(prefab==null)return false;
             var visual=Object.Instantiate(prefab,block,false);
             var renderers=visual.GetComponentsInChildren<Renderer>(true);
             if(renderers.Length==0||visual.GetComponentsInChildren<Collider>(true).Length!=0){Object.Destroy(visual);return false;}

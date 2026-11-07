@@ -54,7 +54,8 @@ namespace RoboRougelike.R4
             R3PartKind.OmniDrive=>22,R3PartKind.MagneticGrapple=>24,R3PartKind.HoverEngine=>18,R3PartKind.CrawlerTrack=>40,R3PartKind.BonusModule=>32,R3PartKind.DirectionalShield=>32,R3PartKind.PointDefense=>35,R3PartKind.StructuralScanner=>16,R3PartKind.ScannerPulse=>12,R3PartKind.IndependentSteering=>14,R3PartKind.RepairPulse=>18,R3PartKind.DrivePower=>18,R3PartKind.EnergyRegenerator=>16,_=>8};
         public static string PartName(R3PartState part)
         {
-            string name=part.Kind==R3PartKind.Wheel?(part.WheelStyle==R3WheelStyle.Slick?"Koło szosowe":"Koło terenowe"):
+            string name=part.Kind==R3PartKind.Armor&&part.ArmorShape==R3ArmorShape.Wedge?"Pancerz • klin":
+                part.Kind==R3PartKind.Wheel?(part.WheelStyle==R3WheelStyle.Slick?"Koło szosowe":"Koło terenowe"):
                 part.Kind==R3PartKind.BonusModule?
                 (string.IsNullOrWhiteSpace(part.UpgradeTitle)?"Moduł bonusu 1×1×1":part.UpgradeTitle+" [1×1×1]"):
                 PartName(part.Kind,part.Weapon);

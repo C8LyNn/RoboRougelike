@@ -28,7 +28,7 @@ namespace RoboRougelike.R1
 
             var model=run.VehicleModel;
             var bonuses=model.Inventory.Where(p=>p.Kind==R3PartKind.BonusModule).Select(p=>p.UpgradeId).Distinct().ToArray();
-            int count=shopKinds.Length+R4WeaponDefinition.Count+bonuses.Length;
+            int count=shopKinds.Length+1+R4WeaponDefinition.Count+bonuses.Length;
             var groups=PortraitCatalogGroupsViewport();
             catalogScroll=GUI.BeginScrollView(groups,catalogScroll,new Rect(0,0,320,Mathf.Max(groups.height,count*56)));
             int row=0;
@@ -36,6 +36,7 @@ namespace RoboRougelike.R1
             {
                 var kind=shopKinds[i];if(kind==R3PartKind.Gun)continue;
                 DrawPortraitCatalogGroup(run,kind,R4WeaponKind.Basic,null,kind==R3PartKind.Wheel?"Koło terenowe":shopNames[i],row++);
+                if(kind==R3PartKind.Armor)DrawPortraitCatalogGroup(run,kind,R4WeaponKind.Basic,WedgeArmorGroup,"Pancerz • klin",row++);
                 if(kind==R3PartKind.Wheel)DrawPortraitCatalogGroup(run,kind,R4WeaponKind.Basic,SlickWheelGroup,"Koło szosowe",row++);
             }
             for(int i=0;i<R4WeaponDefinition.Count;i++)
@@ -57,7 +58,8 @@ namespace RoboRougelike.R1
             }
             var selectedKind=catalogGroup.Value;var selectedWeapon=catalogWeapon;
             var items=model.Inventory.Where(p=>InCatalogGroup(p,selectedKind,selectedWeapon,catalogBonusId)).ToArray();
-            string name=selectedKind==R3PartKind.Wheel?(CatalogWheelStyle(catalogBonusId)==R3WheelStyle.Slick?"Koło szosowe":"Koło terenowe"):
+            string name=selectedKind==R3PartKind.Armor&&CatalogArmorShape(catalogBonusId)==R3ArmorShape.Wedge?"Pancerz • klin":
+                selectedKind==R3PartKind.Wheel?(CatalogWheelStyle(catalogBonusId)==R3WheelStyle.Slick?"Koło szosowe":"Koło terenowe"):
                 selectedKind==R3PartKind.BonusModule&&items.Length>0?R4WeaponDefinition.PartName(items[0]):R4WeaponDefinition.PartName(selectedKind,selectedWeapon);
             GUI.Label(new Rect(390,145,354,28),$"{name} × {items.Length}",small);
             var viewport=PortraitCatalogItemsViewport();
@@ -89,7 +91,7 @@ namespace RoboRougelike.R1
         {
             int count=run.VehicleModel.Inventory.Count(p=>InCatalogGroup(p,kind,weapon,bonus));
             bool chosen=catalogGroup==kind&&(kind!=R3PartKind.Gun||catalogWeapon==weapon)&&
-                (kind!=R3PartKind.BonusModule&&kind!=R3PartKind.Wheel||catalogBonusId==bonus);
+                (kind!=R3PartKind.BonusModule&&kind!=R3PartKind.Wheel&&kind!=R3PartKind.Armor||catalogBonusId==bonus);
             GUI.backgroundColor=chosen?new Color(.3f,.9f,.9f):Color.white;
             if(GUI.Button(PortraitCatalogGroupRow(row),$"{name} × {count}"+(run.CanBuyTechnology(kind,weapon)?"":" • blokada"),compactButton))PortraitCatalogSelectGroup(run,kind,weapon,bonus);
         }
@@ -104,7 +106,8 @@ namespace RoboRougelike.R1
         {run.Garage.ChooseInventory(id);dismantleConfirmation=null;catalogOpen=false;}
         private void PortraitCatalogPurchase(R1RunController run,R3PartKind kind,R4WeaponKind weapon)
         {
-            if(run.GaragePurchase(kind,weapon,kind==R3PartKind.Wheel?CatalogWheelStyle(catalogBonusId):R3WheelStyle.Offroad))
+            if(run.GaragePurchase(kind,weapon,kind==R3PartKind.Wheel?CatalogWheelStyle(catalogBonusId):R3WheelStyle.Offroad,
+                kind==R3PartKind.Armor?CatalogArmorShape(catalogBonusId):R3ArmorShape.Cube))
             {
                 var purchased=run.VehicleModel.Inventory.Last();run.Garage.ChooseInventory(purchased.Id);catalogOpen=false;
                 run.Garage.Message="Kupiono część. Kliknij pojazd, aby ją zamontować.";
