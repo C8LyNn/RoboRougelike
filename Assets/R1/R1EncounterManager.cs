@@ -62,6 +62,7 @@ namespace RoboRougelike.R1
                 if(definition.SpawnVariant(i)==RoboRougelike.R5.R5EnemyVariant.Normal&&enemy.EquipAdditionalGun())
                     enemy.GetComponent<RoboRougelike.R6.R6VehicleDrive>()?.RefreshParts();
                 enemy.SetOtherWeaponTiers(equipmentTier);
+                enemy.SetWheelTiers(equipmentTier);
                 RoboRougelike.WeaponIntegration.RRLEmpVehicleAdapter.Configure(enemy.transform);
                 energy.Refresh();energy.Recharge(energy.Maximum);
                 enemies.Add(enemy);
