@@ -1,0 +1,1234 @@
+{
+ "issue": 940,
+ "library": "Tools/ModelFactory/R4Movement940",
+ "standard": "R41_Turret_v6.1",
+ "blender": "5.2.3 LTS",
+ "fps": 24,
+ "export": {
+  "fbx": "Unity 6 URP, -Z forward, Y up, FBX_SCALE_UNITS, bake_space_transform=False",
+  "glb": "glTF 2.0 binary, per-node animations on one master timeline"
+ },
+ "unity_status": "UNITY_NOT_RUN for all models (no Unity in this session)",
+ "silhouette_method": "black silhouettes from 4 cameras (gameplay 3/4, side, front, top), cropped to bbox, 64 px, IoU per view; pair flagged if mean IoU > 0.85",
+ "silhouette_flagged_pairs": [],
+ "models": [
+  {
+   "id": "R4M_Wheel",
+   "part_kind": "R3PartKind.Wheel",
+   "game_name": "Koło",
+   "source_blend": "R4M_Wheel/R4M_Wheel.blend",
+   "sha256_blend": "64ebde092137adc54f0fa889d54472a7a1b2204d2a5d064cedde50e72fcb435e",
+   "sha256_fbx": "da8c8680cceed2915c29bc8ac24fe9882f0b450751e7fc8e7970b37c64621329",
+   "sha256_glb": "97aa6ded79f0388c3651489ccf3a5a28fbe1788ca7ca27ecc2dd1b427a1562a9",
+   "clips": [
+    {
+     "name": "Idle",
+     "start": 1,
+     "end": 25,
+     "loop": true
+    },
+    {
+     "name": "Roll",
+     "start": 27,
+     "end": 51,
+     "loop": true
+    },
+    {
+     "name": "Reverse",
+     "start": 53,
+     "end": 77,
+     "loop": true
+    },
+    {
+     "name": "Brake",
+     "start": 79,
+     "end": 103,
+     "loop": false
+    }
+   ],
+   "fps": 24,
+   "silhouette": {
+    "closest_pair": "Wheel ↔ CrawlerTrack",
+    "mean_iou": 0.712,
+    "flagged": false
+   },
+   "triangles": 12078,
+   "topology_PASS": true,
+   "mount_cell": [
+    0,
+    0,
+    0
+   ],
+   "housing_inside_mount_cell": false,
+   "housing_policy": "fork legs/axle bosses reach 0.305 m below the cell centre because the runtime axle sits 0.26 m below it (PARTSIZE #141)",
+   "moving_sweep_cells": 6,
+   "ground_contact": {
+    "runtime_y": -0.65,
+    "deviation_mm": 0.04
+   },
+   "collision_envelope_PASS": true,
+   "animation_clash": 0,
+   "fbx_reimport_worst": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "geom_mm": 0.0002,
+    "scale_err": 0.0,
+    "missing": [],
+    "parent_bad": []
+   },
+   "glb_reimport_PASS": true,
+   "palette_PASS": true,
+   "mount_port": "R4 Robocraft-style port: 0.509 m square plate, outer face flush with the block face (0.26 m), face-centre coupling; Socket_Mount on that face",
+   "grid_fit_PASS": true,
+   "grid_fit": {
+    "socket": {
+     "name": "Socket_Mount",
+     "pos": [
+      0.0,
+      0.0,
+      0.26
+     ],
+     "axis": "z",
+     "sign": 1.0,
+     "on_block_face": true
+    },
+    "contact_patch": {
+     "grid": "13x13 over 0.42 x 0.42 m",
+     "flush_pct": 94.7,
+     "recessed_pct": 5.3,
+     "protruding": 0,
+     "missing": 0
+    },
+    "static_bounds": [
+     [
+      -0.2563,
+      -0.2563,
+      -0.312
+     ],
+     [
+      0.2563,
+      0.2563,
+      0.26
+     ]
+    ],
+    "n_cross": 0,
+    "moving_out": []
+   },
+   "blender_qa": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "risks": [
+    "fork legs reach below the cell (runtime axle is 0.26 m below cell centre) - documented, non-strict housing"
+   ]
+  },
+  {
+   "id": "R4M_CrawlerTrack",
+   "part_kind": "R3PartKind.CrawlerTrack",
+   "game_name": "Gąsienica (MOV008)",
+   "source_blend": "R4M_CrawlerTrack/R4M_CrawlerTrack.blend",
+   "sha256_blend": "87b08d0f575c0e2f62ceb8e971f30dae21c057b195a8a52fab23ecb6bdd09d32",
+   "sha256_fbx": "36273367275c25de8c9b0aad058e71adac117a10a77bf69b64f2acc3980af314",
+   "sha256_glb": "1dbeb8783e92d0d866b506378fb54435fbe33c087890900dd2615d69f673435e",
+   "clips": [
+    {
+     "name": "Idle",
+     "start": 1,
+     "end": 25,
+     "loop": true
+    },
+    {
+     "name": "Travel",
+     "start": 27,
+     "end": 39,
+     "loop": true
+    },
+    {
+     "name": "Reverse",
+     "start": 41,
+     "end": 53,
+     "loop": true
+    },
+    {
+     "name": "Stop",
+     "start": 55,
+     "end": 79,
+     "loop": false
+    }
+   ],
+   "fps": 24,
+   "silhouette": {
+    "closest_pair": "Wheel ↔ CrawlerTrack",
+    "mean_iou": 0.712,
+    "flagged": false
+   },
+   "triangles": 31842,
+   "topology_PASS": true,
+   "mount_cell": [
+    0,
+    0,
+    0
+   ],
+   "housing_inside_mount_cell": false,
+   "housing_policy": "inner frame/skirt span the track length (0.936 m) into the front/rear cells (PARTSIZE #141); mount box itself is inside the cell",
+   "moving_sweep_cells": 6,
+   "ground_contact": {
+    "runtime_y": -0.416,
+    "deviation_mm": -0.0
+   },
+   "collision_envelope_PASS": true,
+   "animation_clash": 0,
+   "fbx_reimport_worst": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "geom_mm": 0.0001,
+    "scale_err": 0.0,
+    "missing": [],
+    "parent_bad": []
+   },
+   "glb_reimport_PASS": true,
+   "palette_PASS": false,
+   "mount_port": "R4 Robocraft-style port: 0.509 m square plate, outer face flush with the block face (0.26 m), face-centre coupling; Socket_Mount on that face",
+   "grid_fit_PASS": true,
+   "grid_fit": {
+    "socket": {
+     "name": "Socket_Mount",
+     "pos": [
+      0.0,
+      0.0,
+      0.26
+     ],
+     "axis": "z",
+     "sign": 1.0,
+     "on_block_face": true
+    },
+    "contact_patch": {
+     "grid": "13x13 over 0.42 x 0.42 m",
+     "flush_pct": 94.7,
+     "recessed_pct": 5.3,
+     "protruding": 0,
+     "missing": 0
+    },
+    "static_bounds": [
+     [
+      -0.2563,
+      -0.4664,
+      -0.416
+     ],
+     [
+      0.2563,
+      0.4664,
+      0.26
+     ]
+    ],
+    "n_cross": 0,
+    "moving_out": []
+   },
+   "blender_qa": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "risks": [
+    "left track only; right side = mirror transform (scale X -1)",
+    "~30.8k tris, highest in the set (budget 32k)",
+    "track spans front/rear cells like the runtime 0.936 m box"
+   ]
+  },
+  {
+   "id": "R4M_HoverEngine",
+   "part_kind": "R3PartKind.HoverEngine",
+   "game_name": "Hover (MOV007)",
+   "source_blend": "R4M_HoverEngine/R4M_HoverEngine.blend",
+   "sha256_blend": "e03f736e89f459495958d0a49573863d1795a5fa589627ba9247af69685083d8",
+   "sha256_fbx": "90a83cb1187b1e4bb5ee610ef499e45a12b07459e6255f39a9056242bfa1a48c",
+   "sha256_glb": "106f47c230c67e7c47eafbd324335e0f4a66bd37f6171b72f2ce92985903e2f3",
+   "clips": [
+    {
+     "name": "Idle",
+     "start": 1,
+     "end": 25,
+     "loop": true
+    },
+    {
+     "name": "SpinUp",
+     "start": 27,
+     "end": 51,
+     "loop": false
+    },
+    {
+     "name": "Lift",
+     "start": 53,
+     "end": 65,
+     "loop": true
+    },
+    {
+     "name": "Pulse",
+     "start": 67,
+     "end": 79,
+     "loop": false
+    },
+    {
+     "name": "Cooldown",
+     "start": 81,
+     "end": 113,
+     "loop": false
+    }
+   ],
+   "fps": 24,
+   "silhouette": {
+    "closest_pair": "HoverEngine ↔ JumpDrive",
+    "mean_iou": 0.742,
+    "flagged": false
+   },
+   "triangles": 7228,
+   "topology_PASS": true,
+   "mount_cell": [
+    0,
+    0,
+    0
+   ],
+   "housing_inside_mount_cell": false,
+   "housing_policy": "duct shroud bottom at -0.317 m (runtime pod disc reaches below the cell; PARTSIZE #141)",
+   "moving_sweep_cells": 2,
+   "ground_contact": {
+    "runtime_y": null,
+    "deviation_mm": null
+   },
+   "collision_envelope_PASS": true,
+   "animation_clash": 0,
+   "fbx_reimport_worst": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "geom_mm": 0.0001,
+    "scale_err": 0.0,
+    "missing": [],
+    "parent_bad": []
+   },
+   "glb_reimport_PASS": true,
+   "palette_PASS": true,
+   "mount_port": "R4 Robocraft-style port: 0.509 m square plate, outer face flush with the block face (0.26 m), face-centre coupling; Socket_Mount on that face",
+   "grid_fit_PASS": true,
+   "grid_fit": {
+    "socket": {
+     "name": "Socket_Mount",
+     "pos": [
+      0.0,
+      0.0,
+      0.26
+     ],
+     "axis": "z",
+     "sign": 1.0,
+     "on_block_face": true
+    },
+    "contact_patch": {
+     "grid": "13x13 over 0.42 x 0.42 m",
+     "flush_pct": 94.7,
+     "recessed_pct": 5.3,
+     "protruding": 0,
+     "missing": 0
+    },
+    "static_bounds": [
+     [
+      -0.262,
+      -0.262,
+      -0.319
+     ],
+     [
+      0.262,
+      0.262,
+      0.26
+     ]
+    ],
+    "n_cross": 0,
+    "moving_out": []
+   },
+   "blender_qa": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "risks": [
+    "duct bottom at -0.317 m (runtime disc) - non-strict housing"
+   ]
+  },
+  {
+   "id": "R4M_OmniDrive",
+   "part_kind": "R3PartKind.OmniDrive",
+   "game_name": "Napęd omni (MOV005)",
+   "source_blend": "R4M_OmniDrive/R4M_OmniDrive.blend",
+   "sha256_blend": "7a53ba32485b26b9fccf48b847a5669dcd1adf272015ecc002161708839c3484",
+   "sha256_fbx": "b83f731598a10d8417f343d08f965fadb68266f2b7cd88c52bc31b6a69fef177",
+   "sha256_glb": "86f3969c443abbd59d374468589e4e93d91a4d8d3ba4fe491e2f981f80427469",
+   "clips": [
+    {
+     "name": "Idle",
+     "start": 1,
+     "end": 25,
+     "loop": true
+    },
+    {
+     "name": "Forward",
+     "start": 27,
+     "end": 39,
+     "loop": true
+    },
+    {
+     "name": "Strafe",
+     "start": 41,
+     "end": 53,
+     "loop": true
+    },
+    {
+     "name": "Diagonal",
+     "start": 55,
+     "end": 67,
+     "loop": true
+    }
+   ],
+   "fps": 24,
+   "silhouette": {
+    "closest_pair": "OmniDrive ↔ JumpDrive",
+    "mean_iou": 0.678,
+    "flagged": false
+   },
+   "triangles": 11818,
+   "topology_PASS": true,
+   "mount_cell": [
+    0,
+    0,
+    0
+   ],
+   "housing_inside_mount_cell": false,
+   "housing_policy": "motor pod sits on the axle 0.208 m below the cell centre and reaches -0.33 m (PARTSIZE #141)",
+   "moving_sweep_cells": 2,
+   "ground_contact": {
+    "runtime_y": -0.442,
+    "deviation_mm": -0.0
+   },
+   "collision_envelope_PASS": true,
+   "animation_clash": 0,
+   "fbx_reimport_worst": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "geom_mm": 0.0001,
+    "scale_err": 0.0,
+    "missing": [],
+    "parent_bad": []
+   },
+   "glb_reimport_PASS": true,
+   "palette_PASS": false,
+   "mount_port": "R4 Robocraft-style port: 0.509 m square plate, outer face flush with the block face (0.26 m), face-centre coupling; Socket_Mount on that face",
+   "grid_fit_PASS": true,
+   "grid_fit": {
+    "socket": {
+     "name": "Socket_Mount",
+     "pos": [
+      0.0,
+      0.0,
+      0.26
+     ],
+     "axis": "z",
+     "sign": 1.0,
+     "on_block_face": true
+    },
+    "contact_patch": {
+     "grid": "13x13 over 0.42 x 0.42 m",
+     "flush_pct": 94.7,
+     "recessed_pct": 5.3,
+     "protruding": 0,
+     "missing": 0
+    },
+    "static_bounds": [
+     [
+      -0.2563,
+      -0.2563,
+      -0.3298
+     ],
+     [
+      0.266,
+      0.2563,
+      0.26
+     ]
+    ],
+    "n_cross": 0,
+    "moving_out": []
+   },
+   "blender_qa": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "risks": [
+    "motor pod on +X under a centred port plate (plate cantilevers over the roller wheel)",
+    "roller spin is visual; strafe stays runtime"
+   ]
+  },
+  {
+   "id": "R4M_Suspension",
+   "part_kind": "R3PartKind.Suspension",
+   "game_name": "Aktywne zawieszenie (MOV009)",
+   "source_blend": "R4M_Suspension/R4M_Suspension.blend",
+   "sha256_blend": "6c1c90b0b174b888e7d5086838bf66c54bd9f23b00269ee2af76b06f31bc1af3",
+   "sha256_fbx": "d596114fb04729ef99aa3daef9673043acc7123382add58d281d755ce4dc4e12",
+   "sha256_glb": "2c8cf8869e179a368af3cf4580f718a04dd877c9583944665807f58395d39d06",
+   "clips": [
+    {
+     "name": "Idle",
+     "start": 1,
+     "end": 25,
+     "loop": true
+    },
+    {
+     "name": "Compress",
+     "start": 27,
+     "end": 43,
+     "loop": false
+    },
+    {
+     "name": "Rebound",
+     "start": 45,
+     "end": 61,
+     "loop": false
+    },
+    {
+     "name": "ActiveLift",
+     "start": 63,
+     "end": 87,
+     "loop": false
+    },
+    {
+     "name": "Cycle",
+     "start": 89,
+     "end": 137,
+     "loop": true
+    }
+   ],
+   "fps": 24,
+   "silhouette": {
+    "closest_pair": "HoverEngine ↔ Suspension",
+    "mean_iou": 0.653,
+    "flagged": false
+   },
+   "triangles": 7670,
+   "topology_PASS": true,
+   "mount_cell": [
+    0,
+    0,
+    0
+   ],
+   "housing_inside_mount_cell": true,
+   "housing_policy": "trailing arm/hub reach 0.35 m below the cell centre (runtime piston reaches -0.52 m)",
+   "moving_sweep_cells": 2,
+   "ground_contact": {
+    "runtime_y": null,
+    "deviation_mm": null
+   },
+   "collision_envelope_PASS": true,
+   "animation_clash": 0,
+   "fbx_reimport_worst": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "geom_mm": 0.0001,
+    "scale_err": 0.0,
+    "missing": [],
+    "parent_bad": []
+   },
+   "glb_reimport_PASS": true,
+   "palette_PASS": true,
+   "mount_port": "R4 Robocraft-style port: 0.509 m square plate, outer face flush with the block face (0.26 m), face-centre coupling; Socket_Mount on that face",
+   "grid_fit_PASS": true,
+   "grid_fit": {
+    "socket": {
+     "name": "Socket_Mount",
+     "pos": [
+      0.0,
+      0.0,
+      0.26
+     ],
+     "axis": "z",
+     "sign": 1.0,
+     "on_block_face": true
+    },
+    "contact_patch": {
+     "grid": "13x13 over 0.42 x 0.42 m",
+     "flush_pct": 94.7,
+     "recessed_pct": 5.3,
+     "protruding": 0,
+     "missing": 0
+    },
+    "static_bounds": [
+     [
+      -0.2563,
+      -0.2563,
+      -0.2499
+     ],
+     [
+      0.2563,
+      0.2563,
+      0.26
+     ]
+    ],
+    "n_cross": 0,
+    "moving_out": []
+   },
+   "blender_qa": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "risks": [
+    "damper/spring follow the arm by baked keys (no constraints)",
+    "SWEEP_WheelEnvelope is a QA helper, not exported as visible geometry"
+   ]
+  },
+  {
+   "id": "R4M_Booster",
+   "part_kind": "R3PartKind.Booster",
+   "game_name": "Booster (MOV001)",
+   "source_blend": "R4M_Booster/R4M_Booster.blend",
+   "sha256_blend": "d58d7ecd3a02ac3933f9802614008648f67bcb752e07b4c7f58831866621ac44",
+   "sha256_fbx": "d9b00fabb3f627c080863f88e2306497b33acdcdb00ba409ce26ff477cb31f7f",
+   "sha256_glb": "b40c63a7a126778db0fdb3afd518beddc97102333944f73a52a87de7dee54952",
+   "clips": [
+    {
+     "name": "Idle",
+     "start": 1,
+     "end": 25,
+     "loop": true
+    },
+    {
+     "name": "Ignition",
+     "start": 27,
+     "end": 39,
+     "loop": false
+    },
+    {
+     "name": "ThrustLoop",
+     "start": 41,
+     "end": 53,
+     "loop": true
+    },
+    {
+     "name": "SpoolDown",
+     "start": 55,
+     "end": 79,
+     "loop": false
+    }
+   ],
+   "fps": 24,
+   "silhouette": {
+    "closest_pair": "CrawlerTrack ↔ Booster",
+    "mean_iou": 0.648,
+    "flagged": false
+   },
+   "triangles": 6976,
+   "topology_PASS": true,
+   "mount_cell": [
+    0,
+    0,
+    0
+   ],
+   "housing_inside_mount_cell": false,
+   "housing_policy": "bell nozzle reaches 0.52 m behind the cell centre (runtime engine cylinder ends there)",
+   "moving_sweep_cells": 2,
+   "ground_contact": {
+    "runtime_y": null,
+    "deviation_mm": null
+   },
+   "collision_envelope_PASS": true,
+   "animation_clash": 0,
+   "fbx_reimport_worst": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "geom_mm": 0.0002,
+    "scale_err": 0.0,
+    "missing": [],
+    "parent_bad": []
+   },
+   "glb_reimport_PASS": true,
+   "palette_PASS": false,
+   "mount_port": "R4 Robocraft-style port: 0.509 m square plate, outer face flush with the block face (0.26 m), face-centre coupling; Socket_Mount on that face",
+   "grid_fit_PASS": true,
+   "grid_fit": {
+    "socket": {
+     "name": "Socket_Mount",
+     "pos": [
+      0.0,
+      0.0,
+      0.26
+     ],
+     "axis": "z",
+     "sign": 1.0,
+     "on_block_face": true
+    },
+    "contact_patch": {
+     "grid": "13x13 over 0.42 x 0.42 m",
+     "flush_pct": 94.7,
+     "recessed_pct": 5.3,
+     "protruding": 0,
+     "missing": 0
+    },
+    "static_bounds": [
+     [
+      -0.2563,
+      -0.2563,
+      -0.1783
+     ],
+     [
+      0.2563,
+      0.5876,
+      0.26
+     ]
+    ],
+    "n_cross": 0,
+    "moving_out": []
+   },
+   "blender_qa": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "risks": [
+    "bell nozzle reaches 0.52 m behind the cell (runtime engine cylinder)"
+   ]
+  },
+  {
+   "id": "R4M_JumpDrive",
+   "part_kind": "R3PartKind.JumpDrive",
+   "game_name": "Napęd skoku (MOV002)",
+   "source_blend": "R4M_JumpDrive/R4M_JumpDrive.blend",
+   "sha256_blend": "05d11cffc09feaac19b5bf2b60735f24aa32e81c7c12635378c9cb6c03d5d6cd",
+   "sha256_fbx": "73ef3be8d6a5075ebdde3064f60614f7272aec46afce97f88c8861fbb8ac77fb",
+   "sha256_glb": "1b69bfdfbd58343ca91a980eead8346833f64e963dfc3eb28e134cf874522e4c",
+   "clips": [
+    {
+     "name": "Idle",
+     "start": 1,
+     "end": 25,
+     "loop": true
+    },
+    {
+     "name": "Charge",
+     "start": 27,
+     "end": 63,
+     "loop": false
+    },
+    {
+     "name": "Impulse",
+     "start": 65,
+     "end": 73,
+     "loop": false
+    },
+    {
+     "name": "Recovery",
+     "start": 75,
+     "end": 105,
+     "loop": false
+    }
+   ],
+   "fps": 24,
+   "silhouette": {
+    "closest_pair": "HoverEngine ↔ JumpDrive",
+    "mean_iou": 0.742,
+    "flagged": false
+   },
+   "triangles": 8020,
+   "topology_PASS": true,
+   "mount_cell": [
+    0,
+    0,
+    0
+   ],
+   "housing_inside_mount_cell": true,
+   "housing_policy": "strict: static housing must stay inside the 0.55 m mount cell",
+   "moving_sweep_cells": 2,
+   "ground_contact": {
+    "runtime_y": -0.317,
+    "deviation_mm": 0.0
+   },
+   "collision_envelope_PASS": true,
+   "animation_clash": 0,
+   "fbx_reimport_worst": {
+    "pos_mm": 0.0001,
+    "rot_deg": 0.0,
+    "geom_mm": 0.0001,
+    "scale_err": 0.0,
+    "missing": [],
+    "parent_bad": []
+   },
+   "glb_reimport_PASS": true,
+   "palette_PASS": false,
+   "mount_port": "R4 Robocraft-style port: 0.509 m square plate, outer face flush with the block face (0.26 m), face-centre coupling; Socket_Mount on that face",
+   "grid_fit_PASS": true,
+   "grid_fit": {
+    "socket": {
+     "name": "Socket_Mount",
+     "pos": [
+      0.0,
+      0.0,
+      0.26
+     ],
+     "axis": "z",
+     "sign": 1.0,
+     "on_block_face": true
+    },
+    "contact_patch": {
+     "grid": "13x13 over 0.42 x 0.42 m",
+     "flush_pct": 94.7,
+     "recessed_pct": 5.3,
+     "protruding": 0,
+     "missing": 0
+    },
+    "static_bounds": [
+     [
+      -0.2563,
+      -0.2563,
+      -0.317
+     ],
+     [
+      0.2563,
+      0.2563,
+      0.26
+     ]
+    ],
+    "n_cross": 0,
+    "moving_out": []
+   },
+   "blender_qa": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "risks": [
+    "0.10 m stroke is visual; jump height/cooldown remain runtime (1.2 m / 6 s)"
+   ]
+  },
+  {
+   "id": "R4M_Blink",
+   "part_kind": "R3PartKind.Blink",
+   "game_name": "Blink (MOV003)",
+   "source_blend": "R4M_Blink/R4M_Blink.blend",
+   "sha256_blend": "147a0f7a8eca52011d1e98bbaa6f0fd681c251466244a02315fc35b23a0a24f6",
+   "sha256_fbx": "3c3d7f2ad53178285117383aab21c6b2c9c2bf02543c510e5cace0ea2b545c07",
+   "sha256_glb": "e4a65c12040aefd21171810ec39b1644166bc8544045919aa6a4890f818f2a6c",
+   "clips": [
+    {
+     "name": "Idle",
+     "start": 1,
+     "end": 49,
+     "loop": true
+    },
+    {
+     "name": "Charge",
+     "start": 51,
+     "end": 75,
+     "loop": false
+    },
+    {
+     "name": "Activate",
+     "start": 77,
+     "end": 87,
+     "loop": false
+    },
+    {
+     "name": "Recover",
+     "start": 89,
+     "end": 119,
+     "loop": false
+    }
+   ],
+   "fps": 24,
+   "silhouette": {
+    "closest_pair": "JumpDrive ↔ Blink",
+    "mean_iou": 0.704,
+    "flagged": false
+   },
+   "triangles": 4880,
+   "topology_PASS": true,
+   "mount_cell": [
+    0,
+    0,
+    0
+   ],
+   "housing_inside_mount_cell": true,
+   "housing_policy": "strict: static housing must stay inside the 0.55 m mount cell",
+   "moving_sweep_cells": 3,
+   "ground_contact": {
+    "runtime_y": null,
+    "deviation_mm": null
+   },
+   "collision_envelope_PASS": null,
+   "animation_clash": 0,
+   "fbx_reimport_worst": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "geom_mm": 0.0001,
+    "scale_err": 0.0,
+    "missing": [],
+    "parent_bad": []
+   },
+   "glb_reimport_PASS": true,
+   "palette_PASS": false,
+   "mount_port": "R4 Robocraft-style port: 0.509 m square plate, outer face flush with the block face (0.26 m), face-centre coupling; Socket_Mount on that face",
+   "grid_fit_PASS": true,
+   "grid_fit": {
+    "socket": {
+     "name": "Socket_Mount",
+     "pos": [
+      0.0,
+      0.0,
+      -0.26
+     ],
+     "axis": "z",
+     "sign": -1.0,
+     "on_block_face": true
+    },
+    "contact_patch": {
+     "grid": "13x13 over 0.42 x 0.42 m",
+     "flush_pct": 94.7,
+     "recessed_pct": 5.3,
+     "protruding": 0,
+     "missing": 0
+    },
+    "static_bounds": [
+     [
+      -0.2563,
+      -0.2563,
+      -0.26
+     ],
+     [
+      0.2563,
+      0.2563,
+      0.2125
+     ]
+    ],
+    "n_cross": 0,
+    "moving_out": []
+   },
+   "blender_qa": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "risks": [
+    "3 mm petal knuckle pin gap (documented)",
+    "silhouette closest pair is JumpDrive|Blink (IoU 0.735, below 0.85)"
+   ]
+  },
+  {
+   "id": "R4M_Gyroscope",
+   "part_kind": "R3PartKind.Gyroscope",
+   "game_name": "Żyroskop (MOV004)",
+   "source_blend": "R4M_Gyroscope/R4M_Gyroscope.blend",
+   "sha256_blend": "83af57429fb81a2a805a2a27ac9c26c0e8f2e84fd067c63e78fe1061f739212b",
+   "sha256_fbx": "400657e28aea88256b76c1398dd44257db678c1a47c4c62ee14b1bc7e1683d35",
+   "sha256_glb": "a49673e3aabc607b860963340dc398af482dbe30f6a2fb98b699313d12753999",
+   "clips": [
+    {
+     "name": "Idle",
+     "start": 1,
+     "end": 25,
+     "loop": true
+    },
+    {
+     "name": "SpinUp",
+     "start": 27,
+     "end": 51,
+     "loop": false
+    },
+    {
+     "name": "Stabilize",
+     "start": 53,
+     "end": 101,
+     "loop": true
+    },
+    {
+     "name": "Correct",
+     "start": 103,
+     "end": 127,
+     "loop": false
+    },
+    {
+     "name": "SpinDown",
+     "start": 129,
+     "end": 165,
+     "loop": false
+    }
+   ],
+   "fps": 24,
+   "silhouette": {
+    "closest_pair": "OmniDrive ↔ Gyroscope",
+    "mean_iou": 0.506,
+    "flagged": false
+   },
+   "triangles": 9658,
+   "topology_PASS": true,
+   "mount_cell": [
+    0,
+    0,
+    0
+   ],
+   "housing_inside_mount_cell": true,
+   "housing_policy": "strict: static housing must stay inside the 0.55 m mount cell",
+   "moving_sweep_cells": 1,
+   "ground_contact": {
+    "runtime_y": null,
+    "deviation_mm": null
+   },
+   "collision_envelope_PASS": null,
+   "animation_clash": 0,
+   "fbx_reimport_worst": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "geom_mm": 0.0001,
+    "scale_err": 0.0,
+    "missing": [],
+    "parent_bad": []
+   },
+   "glb_reimport_PASS": true,
+   "palette_PASS": true,
+   "mount_port": "R4 Robocraft-style port: 0.509 m square plate, outer face flush with the block face (0.26 m), face-centre coupling; Socket_Mount on that face",
+   "grid_fit_PASS": true,
+   "grid_fit": {
+    "socket": {
+     "name": "Socket_Mount",
+     "pos": [
+      0.0,
+      0.0,
+      0.26
+     ],
+     "axis": "z",
+     "sign": 1.0,
+     "on_block_face": true
+    },
+    "contact_patch": {
+     "grid": "13x13 over 0.42 x 0.42 m",
+     "flush_pct": 94.7,
+     "recessed_pct": 5.3,
+     "protruding": 0,
+     "missing": 0
+    },
+    "static_bounds": [
+     [
+      -0.2705,
+      -0.2563,
+      -0.034
+     ],
+     [
+      0.2705,
+      0.2563,
+      0.26
+     ]
+    ],
+    "n_cross": 0,
+    "moving_out": []
+   },
+   "blender_qa": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "risks": [
+    "runtime placeholder ring d 0.598 exceeds the cell; the model stays inside"
+   ]
+  },
+  {
+   "id": "R4M_MagneticGrapple",
+   "part_kind": "R3PartKind.MagneticGrapple",
+   "game_name": "Hak magnetyczny (MOV006)",
+   "source_blend": "R4M_MagneticGrapple/R4M_MagneticGrapple.blend",
+   "sha256_blend": "fdfe8231d76f53054ae8f9c0fefea683f49c9c595d93c2d626a2ebe9f3c60e19",
+   "sha256_fbx": "375803c9ca97d2b2b06e37f644c700d7ba0944cfa19ddd5c43069550600b777c",
+   "sha256_glb": "50158908553c7bc06e5e0c5e6fd94d6ab0d1ae05c9e07a4e328282da6bf092bb",
+   "clips": [
+    {
+     "name": "Idle",
+     "start": 1,
+     "end": 25,
+     "loop": true
+    },
+    {
+     "name": "Deploy",
+     "start": 27,
+     "end": 37,
+     "loop": false
+    },
+    {
+     "name": "Fire",
+     "start": 39,
+     "end": 49,
+     "loop": false
+    },
+    {
+     "name": "Retract",
+     "start": 51,
+     "end": 81,
+     "loop": false
+    }
+   ],
+   "fps": 24,
+   "silhouette": {
+    "closest_pair": "Wheel ↔ MagneticGrapple",
+    "mean_iou": 0.609,
+    "flagged": false
+   },
+   "triangles": 7648,
+   "topology_PASS": true,
+   "mount_cell": [
+    0,
+    0,
+    0
+   ],
+   "housing_inside_mount_cell": false,
+   "housing_policy": "launch tube reaches 0.36 m forward (runtime grapple cylinder ends 0.416 m forward)",
+   "moving_sweep_cells": 4,
+   "ground_contact": {
+    "runtime_y": null,
+    "deviation_mm": null
+   },
+   "collision_envelope_PASS": true,
+   "animation_clash": 0,
+   "fbx_reimport_worst": {
+    "pos_mm": 0.0002,
+    "rot_deg": 0.0,
+    "geom_mm": 0.0003,
+    "scale_err": 0.0,
+    "missing": [],
+    "parent_bad": []
+   },
+   "glb_reimport_PASS": true,
+   "palette_PASS": true,
+   "mount_port": "R4 Robocraft-style port: 0.509 m square plate, outer face flush with the block face (0.26 m), face-centre coupling; Socket_Mount on that face",
+   "grid_fit_PASS": true,
+   "grid_fit": {
+    "socket": {
+     "name": "Socket_Mount",
+     "pos": [
+      0.0,
+      0.0,
+      0.26
+     ],
+     "axis": "z",
+     "sign": 1.0,
+     "on_block_face": true
+    },
+    "contact_patch": {
+     "grid": "13x13 over 0.42 x 0.42 m",
+     "flush_pct": 94.7,
+     "recessed_pct": 5.3,
+     "protruding": 0,
+     "missing": 0
+    },
+    "static_bounds": [
+     [
+      -0.266,
+      -0.4631,
+      -0.15
+     ],
+     [
+      0.2563,
+      0.2563,
+      0.26
+     ]
+    ],
+    "n_cross": 0,
+    "moving_out": []
+   },
+   "blender_qa": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "risks": [
+    "cable is a scaled visual, no rope physics; head travel visual only",
+    "spool narrowed (x -0.240..-0.150, 5 wraps) so it stays inside the anchor cell"
+   ]
+  },
+  {
+   "id": "R4M_IndependentSteering",
+   "part_kind": "R3PartKind.IndependentSteering",
+   "game_name": "Moduł niezależnego skrętu (MOV011)",
+   "source_blend": "R4M_IndependentSteering/R4M_IndependentSteering.blend",
+   "sha256_blend": "18be390e4215e5c25b19dc07739d8170ec8cba40f932e3f588b9139d57a87625",
+   "sha256_fbx": "fa2c32a55c16da1e70b53bd1717ba3369cc812c34915b6cad24337d86e6c7881",
+   "sha256_glb": "26c09c2e954e2b437a34b8ab9be3c363c5fd4226c7d60b4ed8eed9e971c76f8e",
+   "clips": [
+    {
+     "name": "Idle",
+     "start": 1,
+     "end": 25,
+     "loop": true
+    },
+    {
+     "name": "SteerLeft",
+     "start": 27,
+     "end": 39,
+     "loop": false
+    },
+    {
+     "name": "SteerRight",
+     "start": 41,
+     "end": 53,
+     "loop": false
+    },
+    {
+     "name": "Slew",
+     "start": 55,
+     "end": 103,
+     "loop": true
+    },
+    {
+     "name": "Return",
+     "start": 105,
+     "end": 117,
+     "loop": false
+    }
+   ],
+   "fps": 24,
+   "silhouette": {
+    "closest_pair": "JumpDrive ↔ IndependentSteering",
+    "mean_iou": 0.643,
+    "flagged": false
+   },
+   "triangles": 6730,
+   "topology_PASS": true,
+   "mount_cell": [
+    0,
+    0,
+    0
+   ],
+   "housing_inside_mount_cell": true,
+   "housing_policy": "strict: static housing must stay inside the 0.55 m mount cell",
+   "moving_sweep_cells": 1,
+   "ground_contact": {
+    "runtime_y": null,
+    "deviation_mm": null
+   },
+   "collision_envelope_PASS": null,
+   "animation_clash": 0,
+   "fbx_reimport_worst": {
+    "pos_mm": 0.0,
+    "rot_deg": 0.0,
+    "geom_mm": 0.0001,
+    "scale_err": 0.0,
+    "missing": [],
+    "parent_bad": []
+   },
+   "glb_reimport_PASS": true,
+   "palette_PASS": true,
+   "mount_port": "R4 Robocraft-style port: 0.509 m square plate, outer face flush with the block face (0.26 m), face-centre coupling; Socket_Mount on that face",
+   "grid_fit_PASS": true,
+   "grid_fit": {
+    "socket": {
+     "name": "Socket_Mount",
+     "pos": [
+      0.0,
+      0.0,
+      0.26
+     ],
+     "axis": "z",
+     "sign": 1.0,
+     "on_block_face": true
+    },
+    "contact_patch": {
+     "grid": "13x13 over 0.42 x 0.42 m",
+     "flush_pct": 94.7,
+     "recessed_pct": 5.3,
+     "protruding": 0,
+     "missing": 0
+    },
+    "static_bounds": [
+     [
+      -0.2563,
+      -0.2563,
+      0.07
+     ],
+     [
+      0.2563,
+      0.2563,
+      0.26
+     ]
+    ],
+    "n_cross": 0,
+    "moving_out": []
+   },
+   "blender_qa": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "risks": [
+    "no runtime placeholder exists for this kind; yaw limit visual only"
+   ]
+  }
+ ]
+}

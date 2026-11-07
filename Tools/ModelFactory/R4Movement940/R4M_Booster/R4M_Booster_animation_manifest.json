@@ -1,0 +1,54 @@
+{
+ "id": "R4M_Booster",
+ "kind": "R3PartKind.Booster",
+ "fps": 24,
+ "frame_range": [
+  1,
+  79
+ ],
+ "note": "One baked take in FBX/GLB (master timeline). Unity: split into clips by these frame ranges; loop=true clips are seamless.",
+ "clips": [
+  {
+   "name": "Idle",
+   "start": 1,
+   "end": 25,
+   "loop": true,
+   "desc": "cold: iris closed (-12 deg), turbine stopped"
+  },
+  {
+   "name": "Ignition",
+   "start": 27,
+   "end": 39,
+   "loop": false,
+   "desc": "ignition: iris snaps open, turbine spools up, chamber glow, flame lights (flicker)"
+  },
+  {
+   "name": "ThrustLoop",
+   "start": 41,
+   "end": 53,
+   "loop": true,
+   "desc": "sustained thrust: turbine 3 blades / 12 f (11-fold, seamless), flame pulses, iris open"
+  },
+  {
+   "name": "SpoolDown",
+   "start": 55,
+   "end": 79,
+   "loop": false,
+   "desc": "cut-off: flame out, glow fades, iris closes, turbine runs down (ends 3 blades on)"
+  }
+ ],
+ "animated_nodes": [
+  "Booster_Core",
+  "Booster_Flame",
+  "R4M_Booster_Petal_1",
+  "R4M_Booster_Petal_2",
+  "R4M_Booster_Petal_3",
+  "R4M_Booster_Petal_4",
+  "R4M_Booster_Petal_5",
+  "R4M_Booster_Petal_6",
+  "R4M_Booster_Petal_7",
+  "R4M_Booster_Petal_8",
+  "R4M_Booster_Turbine"
+ ],
+ "gameplay": "Animation is visual only: it adds no gameplay capability, shot count or timing authority."
+}

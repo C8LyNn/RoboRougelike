@@ -1,0 +1,99 @@
+{
+ "id": "R4M_OmniDrive",
+ "kind": "R3PartKind.OmniDrive",
+ "game_name": "Nap\u0119d omni (MOV005)",
+ "units": "meter 1:1",
+ "axes": "file/Unity +Z forward, +Y up",
+ "cell": "logical 1x1x1 on 0.55 m grid; mount = Socket_Mount_Bottom",
+ "hierarchy": {
+  "R4M_OmniDrive_ROOT": null,
+  "R4M_OmniDrive_MotorPod": "R4M_OmniDrive_ROOT",
+  "R4M_OmniDrive_Hub": "R4M_OmniDrive_ROOT",
+  "RollerAxle_01": "R4M_OmniDrive_Hub",
+  "RollerAxle_02": "R4M_OmniDrive_Hub",
+  "RollerAxle_03": "R4M_OmniDrive_Hub",
+  "RollerAxle_04": "R4M_OmniDrive_Hub",
+  "RollerAxle_05": "R4M_OmniDrive_Hub",
+  "RollerAxle_06": "R4M_OmniDrive_Hub",
+  "RollerAxle_07": "R4M_OmniDrive_Hub",
+  "RollerAxle_08": "R4M_OmniDrive_Hub",
+  "RollerAxle_09": "R4M_OmniDrive_Hub",
+  "RollerAxle_10": "R4M_OmniDrive_Hub",
+  "R4M_OmniDrive_Roller_01": "RollerAxle_01",
+  "R4M_OmniDrive_Roller_02": "RollerAxle_02",
+  "R4M_OmniDrive_Roller_03": "RollerAxle_03",
+  "R4M_OmniDrive_Roller_04": "RollerAxle_04",
+  "R4M_OmniDrive_Roller_05": "RollerAxle_05",
+  "R4M_OmniDrive_Roller_06": "RollerAxle_06",
+  "R4M_OmniDrive_Roller_07": "RollerAxle_07",
+  "R4M_OmniDrive_Roller_08": "RollerAxle_08",
+  "R4M_OmniDrive_Roller_09": "RollerAxle_09",
+  "R4M_OmniDrive_Roller_10": "RollerAxle_10",
+  "Wheel_Axle": "R4M_OmniDrive_ROOT",
+  "Socket_Mount": "R4M_OmniDrive_ROOT",
+  "GroundProbe": "R4M_OmniDrive_ROOT"
+ },
+ "node_roles": {
+  "R4M_OmniDrive_ROOT": {
+   "unity_up": "+Y",
+   "unity_forward": "+Z",
+   "unit": "meter",
+   "version": "v2-port",
+   "weapon_kind": "R3PartKind.OmniDrive",
+   "style": "R41_Turret_v6.1 standard (heavy industrial armour + team colour)",
+   "issue": "#938",
+   "side": "motor pod on +X (inner side when mounted on the LEFT); right side = parent scale X -1"
+  },
+  "R4M_OmniDrive_MotorPod": {
+   "mount_port": "R4 Robocraft-style port: 0.509 m square, outer face +0.260 m (block face), face-centre coupling",
+   "role": "static motor pod (+X) with fins, bracket and dovetail mount rail"
+  },
+  "R4M_OmniDrive_Hub": {
+   "role": "driven hub + side plates: rotates about local X (Wheel_Axle)"
+  },
+  "R4M_OmniDrive_Roller_01": {
+   "role": "free roller at 45 deg: spins about its own local X (RollerAxle_xx)"
+  },
+  "R4M_OmniDrive_Roller_02": {
+   "role": "free roller at 45 deg: spins about its own local X (RollerAxle_xx)"
+  },
+  "R4M_OmniDrive_Roller_03": {
+   "role": "free roller at 45 deg: spins about its own local X (RollerAxle_xx)"
+  },
+  "R4M_OmniDrive_Roller_04": {
+   "role": "free roller at 45 deg: spins about its own local X (RollerAxle_xx)"
+  },
+  "R4M_OmniDrive_Roller_05": {
+   "role": "free roller at 45 deg: spins about its own local X (RollerAxle_xx)"
+  },
+  "R4M_OmniDrive_Roller_06": {
+   "role": "free roller at 45 deg: spins about its own local X (RollerAxle_xx)"
+  },
+  "R4M_OmniDrive_Roller_07": {
+   "role": "free roller at 45 deg: spins about its own local X (RollerAxle_xx)"
+  },
+  "R4M_OmniDrive_Roller_08": {
+   "role": "free roller at 45 deg: spins about its own local X (RollerAxle_xx)"
+  },
+  "R4M_OmniDrive_Roller_09": {
+   "role": "free roller at 45 deg: spins about its own local X (RollerAxle_xx)"
+  },
+  "R4M_OmniDrive_Roller_10": {
+   "role": "free roller at 45 deg: spins about its own local X (RollerAxle_xx)"
+  },
+  "Wheel_Axle": {
+   "role": "axle axis marker: local +Z = file +X"
+  },
+  "Socket_Mount": {
+   "role": "dovetail rail top face, normal +Y"
+  },
+  "GroundProbe": {
+   "role": "ground contact (lowest roller) at rest (0,-0.442,0)"
+  }
+ },
+ "muzzles": [],
+ "visible_exits_note": "",
+ "notes": [
+  "Rollers are separate free bodies on RollerAxle_xx empties at 45 deg; strafe = roller spin with the hub held."
+ ]
+}

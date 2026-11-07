@@ -1,0 +1,113 @@
+{
+ "id": "R4M_CrawlerTrack",
+ "kind": "R3PartKind.CrawlerTrack",
+ "game_name": "G\u0105sienica (MOV008)",
+ "units": "meter 1:1",
+ "axes": "file/Unity +Z forward, +Y up",
+ "cell": "logical 1x1x1 on 0.55 m grid; mount = Socket_Mount_Bottom",
+ "hierarchy": {
+  "R4M_CrawlerTrack_ROOT": null,
+  "R4M_CrawlerTrack_Housing": "R4M_CrawlerTrack_ROOT",
+  "Track_L": "R4M_CrawlerTrack_ROOT",
+  "R4M_CrawlerTrack_Sprocket": "R4M_CrawlerTrack_ROOT",
+  "R4M_CrawlerTrack_Idler": "R4M_CrawlerTrack_ROOT",
+  "R4M_CrawlerTrack_ReturnRoller": "R4M_CrawlerTrack_ROOT",
+  "R4M_CrawlerTrack_RoadWheel_1": "R4M_CrawlerTrack_ROOT",
+  "R4M_CrawlerTrack_RoadWheel_2": "R4M_CrawlerTrack_ROOT",
+  "R4M_CrawlerTrack_RoadWheel_3": "R4M_CrawlerTrack_ROOT",
+  "R4M_CrawlerTrack_Link_01": "Track_L",
+  "R4M_CrawlerTrack_Link_02": "Track_L",
+  "R4M_CrawlerTrack_Link_03": "Track_L",
+  "R4M_CrawlerTrack_Link_04": "Track_L",
+  "R4M_CrawlerTrack_Link_05": "Track_L",
+  "R4M_CrawlerTrack_Link_06": "Track_L",
+  "R4M_CrawlerTrack_Link_07": "Track_L",
+  "R4M_CrawlerTrack_Link_08": "Track_L",
+  "R4M_CrawlerTrack_Link_09": "Track_L",
+  "R4M_CrawlerTrack_Link_10": "Track_L",
+  "R4M_CrawlerTrack_Link_11": "Track_L",
+  "R4M_CrawlerTrack_Link_12": "Track_L",
+  "R4M_CrawlerTrack_Link_13": "Track_L",
+  "R4M_CrawlerTrack_Link_14": "Track_L",
+  "R4M_CrawlerTrack_Link_15": "Track_L",
+  "R4M_CrawlerTrack_Link_16": "Track_L",
+  "R4M_CrawlerTrack_Link_17": "Track_L",
+  "R4M_CrawlerTrack_Link_18": "Track_L",
+  "R4M_CrawlerTrack_Link_19": "Track_L",
+  "R4M_CrawlerTrack_Link_20": "Track_L",
+  "R4M_CrawlerTrack_Link_21": "Track_L",
+  "R4M_CrawlerTrack_Link_22": "Track_L",
+  "R4M_CrawlerTrack_Link_23": "Track_L",
+  "R4M_CrawlerTrack_Link_24": "Track_L",
+  "R4M_CrawlerTrack_Link_25": "Track_L",
+  "R4M_CrawlerTrack_Link_26": "Track_L",
+  "R4M_CrawlerTrack_Link_27": "Track_L",
+  "R4M_CrawlerTrack_Link_28": "Track_L",
+  "R4M_CrawlerTrack_Link_29": "Track_L",
+  "R4M_CrawlerTrack_Link_30": "Track_L",
+  "R4M_CrawlerTrack_Link_31": "Track_L",
+  "R4M_CrawlerTrack_Link_32": "Track_L",
+  "R4M_CrawlerTrack_Link_33": "Track_L",
+  "R4M_CrawlerTrack_Link_34": "Track_L",
+  "R4M_CrawlerTrack_Link_35": "Track_L",
+  "R4M_CrawlerTrack_Link_36": "Track_L",
+  "R4M_CrawlerTrack_Link_37": "Track_L",
+  "R4M_CrawlerTrack_Link_38": "Track_L",
+  "R4M_CrawlerTrack_Link_39": "Track_L",
+  "R4M_CrawlerTrack_Link_40": "Track_L",
+  "Socket_Mount": "R4M_CrawlerTrack_ROOT",
+  "Mount_Inner_+X": "R4M_CrawlerTrack_ROOT",
+  "GroundProbe": "R4M_CrawlerTrack_ROOT"
+ },
+ "node_roles": {
+  "R4M_CrawlerTrack_ROOT": {
+   "unity_up": "+Y",
+   "unity_forward": "+Z",
+   "unit": "meter",
+   "version": "v2-port",
+   "weapon_kind": "R3PartKind.CrawlerTrack",
+   "style": "R41_Turret_v6.1 standard (heavy industrial armour + team colour)",
+   "issue": "#938",
+   "side": "LEFT (inner frame +X). Track_R = parent scale X -1."
+  },
+  "R4M_CrawlerTrack_Housing": {
+   "mount_port": "R4 Robocraft-style port: 0.509 m square, outer face +0.260 m (block face), face-centre coupling",
+   "role": "static housing: mount box, inner frame (+X), outer skirt (-X)"
+  },
+  "Track_L": {
+   "role": "track loop: 40 links, pitch 51.7 mm; links follow the loop path"
+  },
+  "R4M_CrawlerTrack_Sprocket": {
+   "role": "drive sprocket (front), 14 teeth = 1 tooth per link pitch, rotates about local X"
+  },
+  "R4M_CrawlerTrack_Idler": {
+   "role": "idler / tensioner wheel (rear), rotates about local X"
+  },
+  "R4M_CrawlerTrack_ReturnRoller": {
+   "role": "return roller, rotates about local X"
+  },
+  "R4M_CrawlerTrack_RoadWheel_1": {
+   "role": "road wheel pair, rotates about local X"
+  },
+  "R4M_CrawlerTrack_RoadWheel_2": {
+   "role": "road wheel pair, rotates about local X"
+  },
+  "R4M_CrawlerTrack_RoadWheel_3": {
+   "role": "road wheel pair, rotates about local X"
+  },
+  "Socket_Mount": {
+   "role": "mount face centre on the cell top, normal +Y"
+  },
+  "Mount_Inner_+X": {
+   "role": "inner side (toward the hull) for LEFT mounting"
+  },
+  "GroundProbe": {
+   "role": "ground contact at rest (0,-0.416,0)"
+  }
+ },
+ "muzzles": [],
+ "visible_exits_note": "",
+ "notes": [
+  "Wheel radii chosen so each turns exactly 360/n per link pitch (sprocket 14, idler 12, road 10, return 4) -> seamless loops."
+ ]
+}

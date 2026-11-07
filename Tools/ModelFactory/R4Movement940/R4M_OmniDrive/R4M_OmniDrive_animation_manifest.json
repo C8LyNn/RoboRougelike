@@ -1,0 +1,54 @@
+{
+ "id": "R4M_OmniDrive",
+ "kind": "R3PartKind.OmniDrive",
+ "fps": 24,
+ "frame_range": [
+  1,
+  67
+ ],
+ "note": "One baked take in FBX/GLB (master timeline). Unity: split into clips by these frame ranges; loop=true clips are seamless.",
+ "clips": [
+  {
+   "name": "Idle",
+   "start": 1,
+   "end": 25,
+   "loop": true,
+   "desc": "parked"
+  },
+  {
+   "name": "Forward",
+   "start": 27,
+   "end": 39,
+   "loop": true,
+   "desc": "drive forward: hub turns 1 roller pitch (36 deg) / 12 f, rollers idle; seamless"
+  },
+  {
+   "name": "Strafe",
+   "start": 41,
+   "end": 53,
+   "loop": true,
+   "desc": "sideways: hub holds, rollers spin 180 deg / 12 f (bodies of revolution: seamless)"
+  },
+  {
+   "name": "Diagonal",
+   "start": 55,
+   "end": 67,
+   "loop": true,
+   "desc": "diagonal: hub 1 pitch / 12 f and rollers 90 deg / 12 f together"
+  }
+ ],
+ "animated_nodes": [
+  "R4M_OmniDrive_Hub",
+  "R4M_OmniDrive_Roller_01",
+  "R4M_OmniDrive_Roller_02",
+  "R4M_OmniDrive_Roller_03",
+  "R4M_OmniDrive_Roller_04",
+  "R4M_OmniDrive_Roller_05",
+  "R4M_OmniDrive_Roller_06",
+  "R4M_OmniDrive_Roller_07",
+  "R4M_OmniDrive_Roller_08",
+  "R4M_OmniDrive_Roller_09",
+  "R4M_OmniDrive_Roller_10"
+ ],
+ "gameplay": "Animation is visual only: it adds no gameplay capability, shot count or timing authority."
+}

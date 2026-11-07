@@ -1,0 +1,87 @@
+{
+ "id": "R4M_Blink",
+ "kind": "R3PartKind.Blink",
+ "game_name": "Blink (MOV003)",
+ "units": "meter 1:1",
+ "axes": "file/Unity +Z forward, +Y up",
+ "cell": "logical 1x1x1 on 0.55 m grid; mount = Socket_Mount_Bottom",
+ "hierarchy": {
+  "R4M_Blink_ROOT": null,
+  "R4M_Blink_Housing": "R4M_Blink_ROOT",
+  "R4M_Blink_Crystal": "R4M_Blink_ROOT",
+  "PetalHinge_1": "R4M_Blink_ROOT",
+  "PetalHinge_2": "R4M_Blink_ROOT",
+  "PetalHinge_3": "R4M_Blink_ROOT",
+  "PetalHinge_4": "R4M_Blink_ROOT",
+  "PetalHinge_5": "R4M_Blink_ROOT",
+  "PetalHinge_6": "R4M_Blink_ROOT",
+  "R4M_Blink_Petal_1": "PetalHinge_1",
+  "R4M_Blink_Petal_2": "PetalHinge_2",
+  "R4M_Blink_Petal_3": "PetalHinge_3",
+  "R4M_Blink_Petal_4": "PetalHinge_4",
+  "R4M_Blink_Petal_5": "PetalHinge_5",
+  "R4M_Blink_Petal_6": "PetalHinge_6",
+  "Blink_PhaseRing": "R4M_Blink_ROOT",
+  "Blink_Flash": "R4M_Blink_ROOT",
+  "Blink_ChargeGlow": "R4M_Blink_ROOT",
+  "Socket_Mount": "R4M_Blink_ROOT",
+  "Blink_Emitter": "R4M_Blink_ROOT"
+ },
+ "node_roles": {
+  "R4M_Blink_ROOT": {
+   "unity_up": "+Y",
+   "unity_forward": "+Z",
+   "unit": "meter",
+   "version": "v2-port",
+   "weapon_kind": "R3PartKind.Blink",
+   "style": "R41_Turret_v6.1 standard (heavy industrial armour + team colour)",
+   "issue": "#938"
+  },
+  "R4M_Blink_Housing": {
+   "mount_port": "R4 Robocraft-style port: 0.509 m square, outer face -0.260 m (block face), face-centre coupling",
+   "role": "static hex reactor drum; mounts from BELOW (Socket_Mount on the -Y face)"
+  },
+  "R4M_Blink_Crystal": {
+   "role": "phase crystal: translates along local Y and spins about local Y"
+  },
+  "R4M_Blink_Petal_1": {
+   "role": "emitter petal: rotates about local X (PetalHinge_k): -16 deg closed bud, 22 deg open"
+  },
+  "R4M_Blink_Petal_2": {
+   "role": "emitter petal: rotates about local X (PetalHinge_k): -16 deg closed bud, 22 deg open"
+  },
+  "R4M_Blink_Petal_3": {
+   "role": "emitter petal: rotates about local X (PetalHinge_k): -16 deg closed bud, 22 deg open"
+  },
+  "R4M_Blink_Petal_4": {
+   "role": "emitter petal: rotates about local X (PetalHinge_k): -16 deg closed bud, 22 deg open"
+  },
+  "R4M_Blink_Petal_5": {
+   "role": "emitter petal: rotates about local X (PetalHinge_k): -16 deg closed bud, 22 deg open"
+  },
+  "R4M_Blink_Petal_6": {
+   "role": "emitter petal: rotates about local X (PetalHinge_k): -16 deg closed bud, 22 deg open"
+  },
+  "Blink_PhaseRing": {
+   "role": "phase ring FX on activation"
+  },
+  "Blink_Flash": {
+   "role": "activation flash FX"
+  },
+  "Blink_ChargeGlow": {
+   "role": "charge glow FX"
+  },
+  "Socket_Mount": {
+   "role": "mount face centre on the cell BOTTOM, normal -Y"
+  },
+  "Blink_Emitter": {
+   "role": "effect origin (visual)"
+  }
+ },
+ "muzzles": [],
+ "visible_exits_note": "",
+ "notes": [
+  "Petal knuckles sit 3 mm above the hinge blocks (pin clearance so the petal root clears the drum when opening).",
+  "Mounted from below (cell -Y face) so the petals have the free upper half of the cell; all moving parts stay inside the cell."
+ ]
+}

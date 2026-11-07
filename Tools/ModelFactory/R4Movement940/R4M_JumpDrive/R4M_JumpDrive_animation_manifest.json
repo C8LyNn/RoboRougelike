@@ -1,0 +1,48 @@
+{
+ "id": "R4M_JumpDrive",
+ "kind": "R3PartKind.JumpDrive",
+ "fps": 24,
+ "frame_range": [
+  1,
+  105
+ ],
+ "note": "One baked take in FBX/GLB (master timeline). Unity: split into clips by these frame ranges; loop=true clips are seamless.",
+ "clips": [
+  {
+   "name": "Idle",
+   "start": 1,
+   "end": 25,
+   "loop": true,
+   "desc": "ready"
+  },
+  {
+   "name": "Charge",
+   "start": 27,
+   "end": 63,
+   "loop": false,
+   "desc": "pressurise: foot pad draws up 25 mm, tank glow rises (game cooldown 6 s)"
+  },
+  {
+   "name": "Impulse",
+   "start": 65,
+   "end": 73,
+   "loop": false,
+   "desc": "release: piston slams 100 mm below rest in 2 f, blast ring, tanks dump"
+  },
+  {
+   "name": "Recovery",
+   "start": 75,
+   "end": 105,
+   "loop": false,
+   "desc": "retract: piston returns to rest, column vents"
+  }
+ ],
+ "animated_nodes": [
+  "Jump_BlastRing",
+  "Jump_TankGlow_1",
+  "Jump_TankGlow_2",
+  "Jump_TankGlow_3",
+  "R4M_JumpDrive_Piston"
+ ],
+ "gameplay": "Animation is visual only: it adds no gameplay capability, shot count or timing authority."
+}

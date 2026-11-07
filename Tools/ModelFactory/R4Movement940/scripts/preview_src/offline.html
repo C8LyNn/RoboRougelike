@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>R4 Movement Offline</title>
+<style>
+:root{--bg:#101215;--panel:#171a1e;--line:#2b3037;--fg:#e3e6ea;--muted:#8d949d;--dim:#626973;--red:#d7262e;--hazard:#f2c230;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.45 "Segoe UI",system-ui,sans-serif;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
+h1{font:700 22px/1.1 "Bahnschrift","Segoe UI",sans-serif;letter-spacing:.05em;text-transform:uppercase;margin:0 0 6px}
+p{margin:0 0 18px;color:var(--muted);max-width:76ch}
+a{color:var(--hazard)}
+.g{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.c{background:var(--panel);border:1px solid var(--line);min-width:0}
+.c video{display:block;width:100%;aspect-ratio:4/3;background:#000}
+.c div{padding:10px 12px}
+.c b{font:600 15px "Bahnschrift","Segoe UI",sans-serif;letter-spacing:.03em}
+.c small{display:block;color:var(--dim);font:12px/1.5 Consolas,monospace}
+.c ol{margin:6px 0 0;padding-left:18px;font:12px/1.55 Consolas,monospace;color:var(--muted)}
+.c ol span{color:var(--hazard)}
+</style>
+</head>
+<body>
+<h1>R4 Movement · podgląd offline</h1>
+<p>Ta strona działa bez internetu: odtwarza nagrania MP4 (H.264, 24 fps) całej osi czasu każdego modelu, wyrenderowane w Blenderze z tych samych plików .blend, z których powstały GLB/FBX. Klipy są ułożone kolejno; zakresy klatek podano pod filmem. Interaktywny podgląd 3D jest w <a href="index.html">index.html</a> (wymaga WebGL; three.js dołączony lokalnie). Rendery i kluczowe pozy są w folderze <code>renders/</code>.</p>
+<div class="g" id="g"></div>
+<script src="models.js"></script>
+<script>
+(function(){
+  var g = document.getElementById("g"), D = window.R4M_DATA;
+  var ids = D ? D.models : ["Wheel","CrawlerTrack","HoverEngine","OmniDrive","Suspension","Booster","JumpDrive","Blink","Gyroscope","MagneticGrapple","IndependentSteering"].map(function(k){ return { id: "R4M_" + k, key: k, clips: [], game: "" }; });
+  ids.forEach(function(m){
+    var el = document.createElement("div"); el.className = "c";
+    var cl = (m.clips || []).map(function(c){ return "<li>" + c.name + " — " + c.start + "–" + c.end + (c.loop ? " <span>⟲</span>" : "") + "</li>"; }).join("");
+    el.innerHTML = '<video src="video/' + m.id + '_timeline.mp4" controls loop muted autoplay playsinline preload="metadata"></video><div><b>' + m.key + '</b><small>' + (m.game || "") + (m.tris ? " · " + m.tris + " tri" : "") + '</small><ol>' + cl + '</ol></div>';
+    g.appendChild(el);
+  });
+})();
+</script>
+</body>
+</html>

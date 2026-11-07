@@ -1,0 +1,89 @@
+{
+ "id": "R4M_CrawlerTrack",
+ "kind": "R3PartKind.CrawlerTrack",
+ "fps": 24,
+ "frame_range": [
+  1,
+  79
+ ],
+ "note": "One baked take in FBX/GLB (master timeline). Unity: split into clips by these frame ranges; loop=true clips are seamless.",
+ "clips": [
+  {
+   "name": "Idle",
+   "start": 1,
+   "end": 25,
+   "loop": true,
+   "desc": "parked"
+  },
+  {
+   "name": "Travel",
+   "start": 27,
+   "end": 39,
+   "loop": true,
+   "desc": "driving forward: track advances 1 link pitch / 12 f (top run forward, ground run backward); seamless"
+  },
+  {
+   "name": "Reverse",
+   "start": 41,
+   "end": 53,
+   "loop": true,
+   "desc": "driving backwards, 1 pitch / 12 f, seamless"
+  },
+  {
+   "name": "Stop",
+   "start": 55,
+   "end": 79,
+   "loop": false,
+   "desc": "braking from Travel speed to standstill: exactly 1 pitch travelled (rest-equivalent end)"
+  }
+ ],
+ "animated_nodes": [
+  "R4M_CrawlerTrack_Idler",
+  "R4M_CrawlerTrack_Link_01",
+  "R4M_CrawlerTrack_Link_02",
+  "R4M_CrawlerTrack_Link_03",
+  "R4M_CrawlerTrack_Link_04",
+  "R4M_CrawlerTrack_Link_05",
+  "R4M_CrawlerTrack_Link_06",
+  "R4M_CrawlerTrack_Link_07",
+  "R4M_CrawlerTrack_Link_08",
+  "R4M_CrawlerTrack_Link_09",
+  "R4M_CrawlerTrack_Link_10",
+  "R4M_CrawlerTrack_Link_11",
+  "R4M_CrawlerTrack_Link_12",
+  "R4M_CrawlerTrack_Link_13",
+  "R4M_CrawlerTrack_Link_14",
+  "R4M_CrawlerTrack_Link_15",
+  "R4M_CrawlerTrack_Link_16",
+  "R4M_CrawlerTrack_Link_17",
+  "R4M_CrawlerTrack_Link_18",
+  "R4M_CrawlerTrack_Link_19",
+  "R4M_CrawlerTrack_Link_20",
+  "R4M_CrawlerTrack_Link_21",
+  "R4M_CrawlerTrack_Link_22",
+  "R4M_CrawlerTrack_Link_23",
+  "R4M_CrawlerTrack_Link_24",
+  "R4M_CrawlerTrack_Link_25",
+  "R4M_CrawlerTrack_Link_26",
+  "R4M_CrawlerTrack_Link_27",
+  "R4M_CrawlerTrack_Link_28",
+  "R4M_CrawlerTrack_Link_29",
+  "R4M_CrawlerTrack_Link_30",
+  "R4M_CrawlerTrack_Link_31",
+  "R4M_CrawlerTrack_Link_32",
+  "R4M_CrawlerTrack_Link_33",
+  "R4M_CrawlerTrack_Link_34",
+  "R4M_CrawlerTrack_Link_35",
+  "R4M_CrawlerTrack_Link_36",
+  "R4M_CrawlerTrack_Link_37",
+  "R4M_CrawlerTrack_Link_38",
+  "R4M_CrawlerTrack_Link_39",
+  "R4M_CrawlerTrack_Link_40",
+  "R4M_CrawlerTrack_ReturnRoller",
+  "R4M_CrawlerTrack_RoadWheel_1",
+  "R4M_CrawlerTrack_RoadWheel_2",
+  "R4M_CrawlerTrack_RoadWheel_3",
+  "R4M_CrawlerTrack_Sprocket"
+ ],
+ "gameplay": "Animation is visual only: it adds no gameplay capability, shot count or timing authority."
+}
