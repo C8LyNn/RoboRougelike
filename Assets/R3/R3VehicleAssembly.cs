@@ -220,6 +220,8 @@ namespace RoboRougelike.R3
                     RoboRougelike.R4_1.R4OmniArt.TryAttach(item.transform,state.Cell.x>0);
                 if(state.Kind==R3PartKind.CrawlerTrack&&!wide)
                     RoboRougelike.R4_1.R4TracksArt.TryAttach(item.transform,state.Cell.x>0);
+                if(state.Kind==R3PartKind.IndependentSteering&&!wide)
+                    RoboRougelike.R4_1.R4IndependentSteeringArt.TryAttach(item.transform);
                 if(state.Kind==R3PartKind.Gun&&payload!=null)
                 {
                     var art=RoboRougelike.R4_1.R4WeaponArt.TryAttach(item.transform,payload,partMuzzle,state.Weapon);
