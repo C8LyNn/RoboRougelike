@@ -46,38 +46,28 @@ namespace RoboRougelike.R1
                 GUI.backgroundColor=Color.white;
             }
             if(offers.Length==0)GUI.Label(new Rect(36,145,680,50),"Brak propozycji modułów bonusowych.",small);
-            GUI.Label(new Rect(24,442,720,30),"CZĘŚCI Z WRAKÓW • WYBIERZ DO 3",heading);
-            var items=ledger.Items.Where(item=>item.Selectable).ToArray();
-            int pages=Mathf.Max(1,Mathf.CeilToInt(items.Length/6f));lootPage=Mathf.Clamp(lootPage,0,pages-1);
-            var visible=items.Skip(lootPage*6).Take(6).ToArray();
-            for(int i=0;i<visible.Length;i++)
+            GUI.Label(new Rect(24,442,720,30),"ODZYSK • WYBIERZ 1 ZESTAW",heading);
+            for(int i=0;i<rewardBaskets.Count;i++)
             {
-                var item=visible[i];var part=item.ToPart();var card=PortraitRewardLootCard(i);var detail=PortraitRewardLootDetails(i);Panel(card);
-                GUI.Label(new Rect(detail.x,card.y+3,detail.width,22),R4WeaponDefinition.PartName(part),small);
-                GUI.Label(new Rect(detail.x,card.y+26,detail.width,19),$"HP wraku: {item.Health*100:0}%",small);
-                string ammo=SalvageAmmoLabel(part);
-                GUI.Label(new Rect(detail.x,card.y+48,detail.width,20),$"Odbiór: 100% HP{(ammo==null?"":" • "+ammo)}",small);
-                GUI.Label(PortraitRewardLootSource(i),item.Source,small);
-                bool chosen=lootSelection.Contains(item.Id);GUI.enabled=chosen||lootSelection.Count<3;
+                var basket=rewardBaskets[i];var card=new Rect(24,480+i*103,720,98);Panel(card);
+                GUI.contentColor=BasketColor(basket);
+                GUI.Label(new Rect(card.x+10,card.y+5,510,24),$"{R3EnemyProfiles.Name(basket.Archetype)} • {basket.Items.Count}/{basket.AvailableParts} części",small);
+                GUI.contentColor=Color.white;
+                GUI.Label(new Rect(card.x+10,card.y+31,510,58),string.Join(", ",basket.Items.Select(p=>R4WeaponDefinition.PartName(p.ToPart())))+"\nOdbiór: 100% HP",small);
+                bool chosen=selectedBasket==i;
                 GUI.backgroundColor=chosen?new Color(.35f,.85f,.65f):Color.white;
-                if(GUI.Button(PortraitRewardLootButton(i),chosen?"Wybrano ✓":"Zatrzymaj",compactButton))PortraitRewardToggleLoot(item);
-                GUI.enabled=true;GUI.backgroundColor=Color.white;
+                if(GUI.Button(new Rect(card.x+555,card.y+23,150,52),chosen?"Wybrano ✓":"Wybierz",compactButton))ChooseRewardBasket(i);
+                GUI.backgroundColor=Color.white;
             }
-            if(items.Length==0)GUI.Label(new Rect(36,495,680,50),"Brak części do odzyskania.",small);
+            if(rewardBaskets.Count==0)GUI.Label(new Rect(36,495,680,50),"Brak części do odzyskania.",small);
             var pager=PortraitRewardPager();
-            GUI.enabled=lootPage>0;
-            if(GUI.Button(new Rect(pager.x,pager.y,100,44),"←",compactButton))PortraitRewardMoveLootPage(-1,items.Length);
-            GUI.Label(new Rect(pager.x+112,pager.y+10,135,27),$"Strona {lootPage+1}/{pages}",small);
-            GUI.enabled=lootPage<pages-1;
-            if(GUI.Button(new Rect(pager.x+250,pager.y,100,44),"→",compactButton))PortraitRewardMoveLootPage(1,items.Length);
-            GUI.enabled=true;
             if(GUI.Button(new Rect(pager.x+370,pager.y,350,44),$"Magazyn {run.VehicleModel.Inventory.Count}/{R3VehicleModel.InventoryCapacity}",compactButton))rewardInventoryOpen=true;
             bool room=run.VehicleModel.Inventory.Count+lootSelection.Count+1<=R3VehicleModel.InventoryCapacity;
             GUI.Label(PortraitRewardSummary(),
-                $"Bonus: {(selectedBonus>=0?"1/1":"0/1 (WYMAGANY)")} • Części: {lootSelection.Count}/3\n"+
+                $"Bonus: {(selectedBonus>=0?"wybrany":"wymagany")} • Zestaw: {(selectedBasket>=0?lootSelection.Count+" części":rewardBaskets.Count==0?"brak łupów":"wymagany")}\n"+
                 $"Niewybrane części → +{ledger.PreviewScrap(run.VehicleModel,lootSelection)} Z. Bonus jest nieaktywny do montażu.\n"+
                 (room?"":"Brak miejsca na nagrody. Otwórz magazyn i rozmontuj część."),small);
-            GUI.enabled=selectedBonus>=0&&room;
+            GUI.enabled=selectedBonus>=0&&room&&(selectedBasket>=0||rewardBaskets.Count==0);
             if(GUI.Button(PortraitRewardConfirm(),"Zatwierdź oba wybory i kontynuuj",button))PortraitRewardConfirm(run);
             GUI.enabled=true;
         }
