@@ -1,6 +1,6 @@
 'use strict';
 const assert = require('node:assert/strict');
-const { analyzeMesh, parseGlb, withinFootprintEnvelope } = require('./verify-collider-geometry.js');
+const { analyzeMesh, parseGlb, withinFootprintEnvelope, convexIntersectsBox } = require('./verify-collider-geometry.js');
 
 const cube = [
   [-1,-1,-1], [1,-1,-1], [1,1,-1], [-1,1,-1],
@@ -24,4 +24,10 @@ assert.equal(withinFootprintEnvelope([[-.26,0,0],[.26,0,0]],[[0,0,0]]),true,'a s
 assert.equal(withinFootprintEnvelope([[.28,0,0]],[[0,0,0]]),false,'a vertex outside the cell envelope must fail');
 assert.equal(withinFootprintEnvelope([[.275,0,0]],[[0,0,0],[1,0,0]]),true,'a two-cell rigid part may bridge the grid gap');
 assert.equal(withinFootprintEnvelope([[.55,.55,0]],[[0,0,0],[1,0,0],[0,1,0]]),true,'the coarse envelope intentionally does not detect an empty L-shape corner');
+assert.equal(convexIntersectsBox(cube,faces,[0,0,0],[.1,.1,.1]),true,'an enclosed box intersects the convex collider');
+assert.equal(convexIntersectsBox(cube,faces,[2,0,0],[.1,.1,.1]),false,'a separated box must not intersect');
+assert.equal(convexIntersectsBox(cube,faces,[1.1,0,0],[.1,.1,.1]),false,'surface contact alone is not penetration');
+const tetra=[[0,0,0],[1,0,0],[0,1,0],[0,0,1]], tetraFaces=[0,2,1,0,1,3,0,3,2,1,2,3];
+assert.equal(convexIntersectsBox(tetra,tetraFaces,[.1,.1,.1],[.02,.02,.02]),true,'a box inside a convex tetrahedron must intersect');
+assert.equal(convexIntersectsBox(tetra,tetraFaces,[.8,.8,.8],[.05,.05,.05]),false,'an AABB-overlapping box outside the sloped face must not intersect');
 console.log('Geometry self-test PASS: convex cube and valid footprint envelopes accepted; malformed topology, GLB and outside-envelope cases rejected.');

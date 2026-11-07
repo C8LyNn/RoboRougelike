@@ -91,6 +91,40 @@ function withinFootprintEnvelope(vertices, cells) {
   return vertices.every(v=>Array.isArray(v) && v.length===3 && v.every((n,axis)=>Number.isFinite(n) && n>=min[axis] && n<=max[axis]));
 }
 
+// Separating-axis test for a convex triangle mesh and an axis-aligned box.
+// Call only after the closed/convex numerical checks have passed.
+function convexIntersectsBox(vertices, indices, center, half) {
+  const dot=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2];
+  const sub=(a,b)=>[a[0]-b[0],a[1]-b[1],a[2]-b[2]];
+  const cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
+  const boxAxes=[[1,0,0],[0,1,0],[0,0,1]], axes=boxAxes.slice();
+  for(let i=0;i<indices.length;i+=3) {
+    const a=vertices[indices[i]],b=vertices[indices[i+1]],c=vertices[indices[i+2]];
+    const edges=[sub(b,a),sub(c,b),sub(a,c)];
+    axes.push(cross(edges[0],sub(c,a)));
+    for(const edge of edges)for(const boxAxis of boxAxes)axes.push(cross(edge,boxAxis));
+  }
+  for(const raw of axes) {
+    const length=Math.hypot(...raw);if(length<1e-12)continue;
+    const axis=raw.map(n=>n/length), projected=vertices.map(v=>dot(v,axis));
+    const min=Math.min(...projected),max=Math.max(...projected),middle=dot(center,axis);
+    const radius=half.reduce((sum,n,i)=>sum+n*Math.abs(axis[i]),0);
+    // Contact at the numerical boundary is not a penetration into the box interior.
+    if(max<=middle-radius+1e-7 || middle+radius<=min+1e-7)return false;
+  }
+  return true;
+}
+
+function emptyFootprintCells(cells) {
+  const min=[0,1,2].map(axis=>Math.min(...cells.map(c=>c[axis])));
+  const max=[0,1,2].map(axis=>Math.max(...cells.map(c=>c[axis])));
+  if(max.some((n,i)=>n-min[i]>10))throw new Error('Unreasonably large source footprint');
+  const occupied=new Set(cells.map(c=>c.join(','))),empty=[];
+  for(let x=min[0];x<=max[0];x++)for(let y=min[1];y<=max[1];y++)for(let z=min[2];z<=max[2];z++)
+    if(!occupied.has([x,y,z].join(',')))empty.push([x,y,z]);
+  return empty;
+}
+
 function verifySource(root) {
   const catalogBytes=fs.readFileSync(path.join(root,'integration','R4_BLOCKS_UNITY.json'));
   const manifestBytes=fs.readFileSync(path.join(root,'SHA256SUMS.txt'));
@@ -119,8 +153,16 @@ function verifySource(root) {
       for (const primitive of mesh.primitives) {
         if ((primitive.mode ?? 4)!==4 || primitive.indices==null || primitive.attributes?.POSITION==null) throw new Error(`Unsupported primitive: ${node.name}`);
         const vertices=readAccessor(glb,primitive.attributes.POSITION,'position');
-        const result=analyzeMesh(vertices,readAccessor(glb,primitive.indices,'index'));
+        const indices=readAccessor(glb,primitive.indices,'index');
+        const result=analyzeMesh(vertices,indices);
         if (!withinFootprintEnvelope(vertices,block.cells)) { result.ok=false; result.errors.push('vertices exceed the coarse declared footprint envelope'); }
+        result.emptyCellChecks=0;
+        if (result.ok)for(const cell of emptyFootprintCells(block.cells)) {
+          result.emptyCellChecks++;
+          if(convexIntersectsBox(vertices,indices,cell.map(n=>n*.55),[.259,.259,.259])) {
+            result.ok=false; result.errors.push(`collider penetrates empty footprint cell (${cell.join(',')})`);
+          }
+        }
         results.push({name:node.name,...result});
       }
     }
@@ -132,9 +174,9 @@ if (require.main===module) {
   try {
     if (process.argv.length!==3) throw new Error('Usage: node verify-collider-geometry.js PATH_TO_R4Blocks');
     const results=verifySource(process.argv[2]), failed=results.filter(r=>!r.ok);
-    console.log(`Numerical mesh checks: ${results.length-failed.length}/${results.length} passed; ${failed.length} failed.`);
+    console.log(`Numerical mesh checks: ${results.length-failed.length}/${results.length} passed; ${failed.length} failed; ${results.reduce((sum,r)=>sum+r.emptyCellChecks,0)} mesh/empty-cell checks.`);
     for (const item of failed) console.log(`${item.name}: ${item.errors.join('; ')}`);
     if (failed.length) process.exitCode=1;
   } catch (error) { console.error(error.message); process.exitCode=1; }
 }
-module.exports={analyzeMesh,parseGlb,verifySource,withinFootprintEnvelope};
+module.exports={analyzeMesh,parseGlb,verifySource,withinFootprintEnvelope,convexIntersectsBox};
