@@ -23,6 +23,7 @@ namespace RoboRougelike.R1
             public int enemies,wheels;
             public bool enteredCombat,modelsPresent,originalColliders,detachedVisual;
             public bool eliteArt,eliteVisibleMuzzle,eliteHit,automaticFallback;
+            public bool primaryArt,primaryVisibleMuzzle,primaryHit,primarySwap;
         }
         string directory;
         readonly Result result=new Result();
@@ -79,6 +80,46 @@ namespace RoboRougelike.R1
 
             var template=(P12PipelineSafeEnemyTurret)typeof(R1RunController)
                 .GetField("enemyTemplate",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(run);
+            var primaryDef=new R1EncounterDefinition{EnemyCount=2,Roster=new[]{R3EnemyArchetype.Flanker,R3EnemyArchetype.Bruiser},Variants=new[]{R5EnemyVariant.Normal,R5EnemyVariant.Normal}};
+            run.Encounter.Spawn(template,run.Player.transform,primaryDef,run.Salvage,"r4-enemy-primary-player");
+            run.Encounter.SetCombatActive(false);yield return null;
+            var basic=run.Encounter.Enemies.First(e=>e.WeaponKind==R4WeaponKind.Basic);
+            var primary=run.Encounter.Enemies.First(e=>e.WeaponKind==R4WeaponKind.Heavy);
+            var primaryMuzzleField=typeof(P12PipelineSafeEnemyTurret).GetField("muzzle",BindingFlags.Instance|BindingFlags.NonPublic);
+            var basicArt=basic.WeaponBlock.GetComponentInChildren<R4WeaponArt>(true);
+            var primaryVisual=primary.WeaponBlock.GetComponentInChildren<R4WeaponArt>(true);
+            result.primaryArt=basicArt!=null&&primaryVisual!=null;
+            result.primaryVisibleMuzzle=result.primaryArt&&primaryMuzzleField.GetValue(basic)==basicArt.Muzzle&&primaryMuzzleField.GetValue(primary)==primaryVisual.Muzzle;
+            Require(result.primaryArt&&result.primaryVisibleMuzzle,"Standard Basic and Heavy art and muzzle");
+            foreach(var other in run.Encounter.Enemies.Where(e=>e!=primary))other.gameObject.SetActive(false);
+            R1EncounterManager.ClearTransientObjects();
+            var yaw=primary.transform.Find("Enemy_Yaw");yaw.rotation=Quaternion.identity;primaryVisual.Sync();
+            var primaryTarget=GameObject.CreatePrimitive(PrimitiveType.Cube);primaryTarget.transform.SetParent(run.Player.transform,true);
+            primaryTarget.transform.position=primaryVisual.Muzzle.position+Vector3.forward*12;primaryTarget.transform.localScale=Vector3.one*2;
+            var primaryHp=primaryTarget.AddComponent<P12PipelineSafeDamageable>();primaryHp.Configure(1000,false);
+            run.Player.GetComponent<Rigidbody>().isKinematic=true;Physics.SyncTransforms();
+            var enemyType=typeof(P12PipelineSafeEnemyTurret);var primaryCollider=primaryTarget.GetComponent<Collider>();
+            enemyType.GetField("currentTarget",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(primary,primaryCollider);
+            enemyType.GetField("nextTargetTime",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(primary,Time.time+30);
+            enemyType.GetField("nextFireTime",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(primary,0f);
+            primary.SetCombatActive(true);enemyType.GetMethod("Update",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(primary,null);
+            var primaryShell=FindObjectsByType<R4ProjectileOrigin>(FindObjectsSortMode.None).SingleOrDefault(p=>p.PartId==primary.EquipmentInstanceId("gun"));
+            Require(primaryShell!=null,"Standard Heavy fired a physical shell");
+            var diameter=(float)enemyType.GetField("projectileDiameter",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(primary);
+            var primaryExpected=primaryVisual.Muzzle.position+(primaryCollider.bounds.center-primaryVisual.Muzzle.position).normalized*Mathf.Max(.14f,diameter*.75f);
+            Require(Vector3.Distance(primaryShell.transform.position,primaryExpected)<.001f,"Standard shell starts at visible muzzle");
+            deadline=Time.realtimeSinceStartup+5;
+            while(primaryHp.CurrentHp>=1000&&Time.realtimeSinceStartup<deadline)yield return new WaitForFixedUpdate();
+            result.primaryHit=primaryHp.CurrentHp<1000;Require(result.primaryHit,"Standard Heavy hits target");
+            if(primaryShell!=null)Destroy(primaryShell.gameObject);Destroy(primaryTarget);primary.SetCombatActive(false);
+            basic.gameObject.SetActive(true);
+            var legacyMuzzle=basic.transform.Find("Enemy_Yaw/Enemy_Muzzle");
+            bool swapped=basic.EquipShotgun();
+            var shotgun=basic.WeaponBlock.GetComponent<RoboRougelike.WeaponIntegration.RRLShotgunBinding>();
+            result.primarySwap=swapped&&legacyMuzzle!=null&&shotgun!=null&&
+                typeof(RoboRougelike.WeaponIntegration.RRLShotgunBinding).GetField("muzzle",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(shotgun)==legacyMuzzle;
+            Require(result.primarySwap,"Switching weapon restores legacy physical muzzle");
+
             var def=new R1EncounterDefinition{EnemyCount=1,Roster=new[]{R3EnemyArchetype.Gunner},Variants=new[]{R5EnemyVariant.EliteGunner}};
             run.Encounter.Spawn(template,run.Player.transform,def,run.Salvage,"r4-enemy-art-player");
             run.Encounter.SetCombatActive(false);yield return null;
