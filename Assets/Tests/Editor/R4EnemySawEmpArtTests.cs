@@ -59,13 +59,31 @@ public sealed class R4EnemySawEmpArtTests
         var catalog=Resources.Load<R4WeaponArtCatalog>("R4Art/WeaponCatalog");var original=catalog.Models;catalog.Models=(R4WeaponArtEntry[])original.Clone();
         try
         {
-            for(int i=0;i<catalog.Models.Length;i++)if(catalog.Models[i].Kind==R4WeaponKind.RotarySaw||catalog.Models[i].Kind==R4WeaponKind.EmpEmitter)
+            for(int i=0;i<catalog.Models.Length;i++)if(catalog.Models[i].Kind==R4WeaponKind.RotarySaw)
                 catalog.Models[i]=new R4WeaponArtEntry{Kind=catalog.Models[i].Kind,Model=null};
             var other=enemies.First(e=>e!=enemy);var legacy=other.transform.Find("Enemy_Yaw/Enemy_Muzzle");
             Assert.That(other.EquipSaw(),Is.True);var fallback=other.WeaponBlock.GetComponent<RRLSawBinding>();
             Assert.That(typeof(RRLSawBinding).GetField("blade",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(fallback),Is.SameAs(legacy));
             Assert.That(typeof(RRLSawBinding).GetField("rotor",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(fallback),Is.Not.Null);
             Assert.That(other.WeaponBlock.GetComponent<Renderer>().enabled,Is.True);
+        }
+        finally{catalog.Models=original;}
+        yield return null;
+    }
+    [UnityTest] public IEnumerator MissingEmpModelPreservesLegacyRenderAndPulseOrigin()
+    {
+        yield return StartCombat();var enemy=R1RunController.Instance.Encounter.Enemies.First();
+        var catalog=Resources.Load<R4WeaponArtCatalog>("R4Art/WeaponCatalog");Assert.That(catalog,Is.Not.Null);
+        var original=catalog.Models;catalog.Models=(R4WeaponArtEntry[])original.Clone();
+        try
+        {
+            for(int i=0;i<catalog.Models.Length;i++)if(catalog.Models[i].Kind==R4WeaponKind.EmpEmitter)
+                catalog.Models[i]=new R4WeaponArtEntry{Kind=R4WeaponKind.EmpEmitter,Model=null};
+            var legacy=enemy.transform.Find("Enemy_Yaw/Enemy_Muzzle");Assert.That(enemy.EquipEmp(),Is.True);
+            var binding=enemy.WeaponBlock.GetComponent<RRLEmpBinding>();
+            Assert.That(typeof(P12PipelineSafeEnemyTurret).GetField("muzzle",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(enemy),Is.SameAs(legacy));
+            Assert.That(binding.Module.GetType().GetField("pulseOrigin",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(binding.Module),Is.SameAs(enemy.WeaponBlock.transform));
+            Assert.That(enemy.WeaponBlock.GetComponent<Renderer>().enabled,Is.True);
         }
         finally{catalog.Models=original;}
         yield return null;
