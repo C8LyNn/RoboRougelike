@@ -1,0 +1,6 @@
+{
+  "abnormalExit": true,
+  "timeout": false,
+  "exitCode": -1073740771,
+  "note": "Nonzero exit or timeout indicates failure; Player.log and any Unity crash reports contain details."
+}
