@@ -42,6 +42,13 @@ namespace UnityEngine
 }
 namespace B01.BUILD001
 {
+    public enum BuildRole { Armor }
+    public struct BuildCellBond { public UnityEngine.Vector3Int A,B;public BuildCellBond(UnityEngine.Vector3Int a,UnityEngine.Vector3Int b){A=a;B=b;} }
+    public class BuildDefinition
+    {
+        public string Id;public BuildRole Role;public UnityEngine.Vector3Int[] Cells;public BuildSocket[] Sockets;public bool SupportsOtherParts;public BuildCellBond[] CellBonds;
+        public BuildDefinition(string id,BuildRole role,UnityEngine.Vector3Int[] cells,BuildSocket[] sockets,bool support,BuildCellBond[] bonds){Id=id;Role=role;Cells=cells;Sockets=sockets;SupportsOtherParts=support;CellBonds=bonds;}
+    }
     public enum BuildSocketKind { Structural }
     public struct BuildSocket
     {
@@ -67,6 +74,15 @@ internal static class Program
         Expect(R4BlockCatalog.CanMountModule("R4B_Wedge",1),"Other full wedge port must remain allowed");
         Expect(!R4BlockCatalog.CanMountModule("missing",0),"Unknown shape must fail closed");
         Expect(!R4BlockCatalog.CanMountModule("R4B_Cube",99),"Invalid socket index must fail closed");
+        Expect(R4MountDefinitionAdapter.TryCreate("R4B_Wedge",false,out var wedge),"Wedge structural definition must exist");
+        Expect(wedge.Sockets.Length==4 && wedge.Cells.Length==1 && wedge.SupportsOtherParts,"Structural definition must preserve full and partial ports");
+        Expect(R4MountDefinitionAdapter.TryCreate("R4B_Wedge",true,out var moduleWedge) && moduleWedge.Sockets.Length==2,"Module support must contain only full safe ports");
+        Expect(!R4MountDefinitionAdapter.TryCreate("R4B_OctColumn",true,out _) && !R4MountDefinitionAdapter.TryCreate("R4B_Tetra",true,out _),"No safe module ports must fail closed");
+        Expect(R4MountDefinitionAdapter.TryCreate("R4B_OctColumn",false,out var oct) && oct.Sockets.Length>0,"Quarantine must not remove structural ports");
+        Expect(R4MountDefinitionAdapter.TryCreate("R4B_Beam3",false,out var beam) && beam.Cells.Length==3 && beam.CellBonds.Length==2,"Multi-cell definition must preserve authored bonds");
+        Expect(!R4MountDefinitionAdapter.TryCreate("missing",false,out _),"Unknown shape must fail closed");
+        wedge.Cells[0]=new UnityEngine.Vector3Int(88,88,88);
+        Expect(R4MountDefinitionAdapter.TryCreate("R4B_Wedge",false,out var freshWedge) && freshWedge.Cells[0].x==0,"Definitions must not mutate catalog cells");
         string json=File.ReadAllText("Tools/R4Blocks/generated/R4BlockColliderMeshes.json");
         Expect(R4ColliderBundle.IsTrustedSource(json),"Pinned raw bundle hash must match");
         Expect(!R4ColliderBundle.IsTrustedSource(json+" "),"Changed raw bundle must fail its hash");
@@ -126,6 +142,7 @@ internal static class Program
         Console.WriteLine("Mesh factory smoke PASS: arch pieces, data, fail-closed inputs and partial cleanup.");
         Console.WriteLine("Mesh cache smoke PASS: reuse, fail-closed inputs, retry and idempotent disposal.");
         Console.WriteLine("Collider staging smoke PASS: disabled children, original preservation, failure cleanup and scaling guard.");
+        Console.WriteLine("Mount definition smoke PASS: structural ports, safe module ports, bonds and defensive copies.");
         return 0;
         }
         catch(Exception error) { Console.Error.WriteLine("Catalog smoke FAIL: "+error.Message); return 1; }
