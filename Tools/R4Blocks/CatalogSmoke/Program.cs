@@ -1,5 +1,6 @@
 // Minimal value-type stubs: this verifies real catalog C# logic, not Unity behavior.
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using RoboRougelike.R4_1;
@@ -73,9 +74,24 @@ internal static class Program
         UnityEngine.Object.Destroyed=0;UnityEngine.Mesh.FailAfter=1;
         Expect(!R4ColliderMeshFactory.TryCreate(json,"R4B_Arch",out _,out _),"Failed mesh creation must return false");
         Expect(UnityEngine.Object.Destroyed==2,"Every partially created mesh must be released");UnityEngine.Mesh.FailAfter=-1;
+        UnityEngine.Object.Destroyed=0;
+        Expect(R4ColliderMeshCache.TryOpen(json,out var cache,out _),"Trusted bundle must open a cache");
+        Expect(cache.TryGet("R4B_Arch",out var cachedFirst,out _),"Arch must build once");
+        Expect(cache.TryGet("R4B_Arch",out var cachedSecond,out _) && ReferenceEquals(cachedFirst,cachedSecond),"Repeated shape must share cached meshes");
+        Expect(cachedFirst.Count==3 && ((IList<UnityEngine.Mesh>)cachedFirst).IsReadOnly && !cache.TryGet("missing",out _,out _),"Cache must expose a read-only collection and reject unknown shape");
+        Expect(cache.TryGet("R4B_Cube",out var cubeMeshes,out _) && cubeMeshes.Count==1 && !ReferenceEquals(cachedFirst,cubeMeshes),"Different shapes must keep separate meshes");
+        cache.Dispose();Expect(UnityEngine.Object.Destroyed==4,"Dispose must release each cached mesh once");
+        cache.Dispose();Expect(UnityEngine.Object.Destroyed==4 && !cache.TryGet("R4B_Arch",out _,out _),"Disposed cache must stay closed and idempotent");
+        Expect(!R4ColliderMeshCache.TryOpen(json+" ",out _,out _),"Changed bundle must not open a cache");
+        UnityEngine.Object.Destroyed=0;UnityEngine.Mesh.FailAfter=1;
+        Expect(R4ColliderMeshCache.TryOpen(json,out var failureCache,out _),"Trusted bundle must open a fresh cache");
+        Expect(!failureCache.TryGet("R4B_Arch",out _,out _) && UnityEngine.Object.Destroyed==2,"Failed lazy creation must release partial meshes");
+        UnityEngine.Mesh.FailAfter=-1;Expect(failureCache.TryGet("R4B_Arch",out _,out _),"Failed shape creation must be retryable");
+        failureCache.Dispose();Expect(UnityEngine.Object.Destroyed==5,"Retry meshes must be released on dispose");
         Console.WriteLine("Catalog smoke PASS: 30 entries, valid full ports, partial and quarantined ports, invalid input.");
         Console.WriteLine("Bundle smoke PASS: pinned source, 30 shapes, geometry structure and six corruption cases.");
         Console.WriteLine("Mesh factory smoke PASS: arch pieces, data, fail-closed inputs and partial cleanup.");
+        Console.WriteLine("Mesh cache smoke PASS: reuse, fail-closed inputs, retry and idempotent disposal.");
         return 0;
         }
         catch(Exception error) { Console.Error.WriteLine("Catalog smoke FAIL: "+error.Message); return 1; }

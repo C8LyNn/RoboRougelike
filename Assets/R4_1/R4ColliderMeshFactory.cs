@@ -11,18 +11,35 @@ namespace RoboRougelike.R4_1
         public static bool TryCreate(string json,string shapeId,out Mesh[] meshes,out string error)
         {
             meshes=Array.Empty<Mesh>();error=null;
-            if(!R4ColliderBundle.IsTrustedSource(json)){error="Untrusted collider bundle.";return false;}
+            if(!TryReadBundle(json,out var bundle,out error))return false;
+            R4ColliderShape shape=null;
+            foreach(var candidate in bundle.shapes)if(candidate.id==shapeId){shape=candidate;break;}
+            if(shape==null){error="Unknown collider shape.";return false;}
+            return TryBuildShape(shape,out meshes,out error);
+        }
+        internal static bool TryReadBundle(string json,out R4ColliderBundle bundle,out string error)
+        {
+            bundle=null;error=null;
+            try
+            {
+                if(!R4ColliderBundle.IsTrustedSource(json)){error="Untrusted collider bundle.";return false;}
+                // Deserialize the exact text that was just hashed; never trust a
+                // separately supplied or previously mutable parsed object.
+                bundle=JsonUtility.FromJson<R4ColliderBundle>(json);
+                if(bundle==null){error="Collider bundle could not be parsed.";return false;}
+                if(!bundle.Validate(out error))return false;
+                return true;
+            }
+            catch(Exception exception){bundle=null;error="Collider bundle loading failed: "+exception.Message;return false;}
+        }
+        // Internal consumers must supply a shape from a freshly validated private bundle.
+        internal static bool TryBuildShape(R4ColliderShape shape,out Mesh[] meshes,out string error)
+        {
+            meshes=Array.Empty<Mesh>();error=null;
+            if(shape==null){error="Unknown collider shape.";return false;}
             var created=new List<Mesh>();
             try
             {
-                // Deserialize the exact text that was just hashed; never trust a
-                // separately supplied or previously mutable parsed object.
-                var bundle=JsonUtility.FromJson<R4ColliderBundle>(json);
-                if(bundle==null){error="Collider bundle could not be parsed.";return false;}
-                if(!bundle.Validate(out error))return false;
-                R4ColliderShape shape=null;
-                foreach(var candidate in bundle.shapes)if(candidate.id==shapeId){shape=candidate;break;}
-                if(shape==null){error="Unknown collider shape.";return false;}
                 foreach(var piece in shape.pieces)
                     if(piece.positions.Length/3>65535){error="Collider mesh exceeds supported vertex count.";return false;}
                 foreach(var piece in shape.pieces)
