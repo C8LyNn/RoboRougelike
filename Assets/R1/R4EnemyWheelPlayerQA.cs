@@ -26,6 +26,7 @@ namespace RoboRougelike.R1
             public bool primaryArt,primaryVisibleMuzzle,primaryHit,primarySwap;
             public bool shotgunHit;
             public bool railgunArt,railgunMuzzle,railgunHit;
+            public bool rocketArt,rocketHit,beamArt,beamHit;
         }
         string directory;
         readonly Result result=new Result();
@@ -156,6 +157,42 @@ namespace RoboRougelike.R1
             while(railHp.CurrentHp>=500&&Time.realtimeSinceStartup<deadline)yield return new WaitForFixedUpdate();
             result.railgunHit=railHp.CurrentHp<500;Require(result.railgunHit,"Physical railgun projectile hits target");
             railEnemy.SetCombatActive(false);Destroy(railTarget);
+
+            run.Encounter.Spawn(template,run.Player.transform,railDef,run.Salvage,"r4-enemy-rocket-player");
+            run.Encounter.SetCombatActive(false);yield return null;
+            var rocketEnemy=run.Encounter.Enemies.First();Require(rocketEnemy.EquipRocket(),"Equip enemy rocket launcher");
+            var rocket=rocketEnemy.WeaponBlock.GetComponent<RoboRougelike.WeaponIntegration.RRLRocketBinding>();
+            var rocketVisual=rocketEnemy.WeaponBlock.GetComponentInChildren<R4WeaponArt>(true);
+            result.rocketArt=rocketVisual!=null&&rocketVisual.GetComponentsInChildren<Transform>(true).Any(t=>t.name=="R4W_RocketLauncher_ROOT")&&
+                typeof(RoboRougelike.WeaponIntegration.RRLRocketBinding).GetField("muzzle",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(rocket)==rocketVisual.Muzzle;
+            Require(result.rocketArt,"Rocket model and visible muzzle");
+            var rocketBody=rocketEnemy.GetComponent<Rigidbody>();rocketBody.isKinematic=true;
+            rocketBody.position=new Vector3(100,4,100);rocketEnemy.transform.rotation=Quaternion.identity;rocketVisual.Sync();
+            var rocketTarget=GameObject.CreatePrimitive(PrimitiveType.Cube);rocketTarget.transform.position=rocketVisual.Muzzle.position+rocketVisual.Muzzle.forward*6;
+            rocketTarget.transform.localScale=new Vector3(3,3,1);var rocketHp=rocketTarget.AddComponent<P12PipelineSafeDamageable>();rocketHp.Configure(500,false);
+            rocketEnemy.GetComponent<VehicleEnergyBank>()?.Recharge(1000);Physics.SyncTransforms();rocketEnemy.SetCombatActive(true);
+            Require(rocket.Fire(),"Rocket fires from visible muzzle");deadline=Time.realtimeSinceStartup+6;
+            while(rocketHp.CurrentHp>=500&&Time.realtimeSinceStartup<deadline)yield return new WaitForFixedUpdate();
+            result.rocketHit=rocketHp.CurrentHp<500;Require(result.rocketHit,"Physical rocket damages target");
+            rocketEnemy.SetCombatActive(false);Destroy(rocketTarget);
+
+            run.Encounter.Spawn(template,run.Player.transform,railDef,run.Salvage,"r4-enemy-beam-player");
+            run.Encounter.SetCombatActive(false);yield return null;
+            var beamEnemy=run.Encounter.Enemies.First();Require(beamEnemy.EquipBeam(),"Equip enemy beam");
+            var beam=beamEnemy.WeaponBlock.GetComponent<RoboRougelike.WeaponIntegration.RRLBeamBinding>();
+            var beamVisual=beamEnemy.WeaponBlock.GetComponentInChildren<R4WeaponArt>(true);
+            result.beamArt=beamVisual!=null&&beamVisual.GetComponentsInChildren<Transform>(true).Any(t=>t.name=="R4W_BeamCutter_ROOT")&&
+                beam.Module.GetType().GetField("muzzle",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(beam.Module)==beamVisual.Muzzle;
+            Require(result.beamArt,"Beam model and visible muzzle");
+            var beamBody=beamEnemy.GetComponent<Rigidbody>();beamBody.isKinematic=true;
+            beamBody.position=new Vector3(100,4,100);beamEnemy.transform.rotation=Quaternion.identity;beamVisual.Sync();
+            var beamTarget=GameObject.CreatePrimitive(PrimitiveType.Cube);beamTarget.transform.position=beamVisual.Muzzle.position+beamVisual.Muzzle.forward*6;
+            beamTarget.transform.localScale=new Vector3(3,3,1);var beamHp=beamTarget.AddComponent<P12PipelineSafeDamageable>();beamHp.Configure(500,false);
+            beamEnemy.GetComponent<VehicleEnergyBank>()?.Recharge(1000);Physics.SyncTransforms();beamEnemy.SetCombatActive(true);
+            var beamStep=typeof(RoboRougelike.WeaponIntegration.RRLBeamBinding).GetMethod("FixedUpdate",BindingFlags.Instance|BindingFlags.NonPublic);
+            for(int i=0;i<30&&beamHp.CurrentHp>=500;i++){beam.SetTriggerHeld(true);beamStep.Invoke(beam,null);yield return null;}
+            result.beamHit=beamHp.CurrentHp<500;Require(result.beamHit,"Actual beam damages target");
+            beamEnemy.SetCombatActive(false);Destroy(beamTarget);
 
             var def=new R1EncounterDefinition{EnemyCount=1,Roster=new[]{R3EnemyArchetype.Gunner},Variants=new[]{R5EnemyVariant.EliteGunner}};
             run.Encounter.Spawn(template,run.Player.transform,def,run.Salvage,"r4-enemy-art-player");
