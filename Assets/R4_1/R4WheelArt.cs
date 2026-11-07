@@ -12,6 +12,19 @@ namespace RoboRougelike.R4_1
         Transform rotor,visualRoot;
         Rigidbody owner;
 
+        // Select the model's side from the wheel's rotated mounting axis and
+        // the connected neighbor; world X alone fails for rotated builds.
+        public static bool MirrorForMount(R3VehicleModel model,R3PartState wheel)
+        {
+            if(model==null||wheel==null)return false;
+            var axis=R3MountingGrid.Rotate(Vector3Int.right,wheel.RotationQuarterTurns);
+            var plus=model.At(wheel.Cell+axis);var minus=model.At(wheel.Cell-axis);
+            bool positive=plus!=null&&plus.Health>0&&R3MountingGrid.Compatible(wheel,plus,axis);
+            bool negative=minus!=null&&minus.Health>0&&R3MountingGrid.Compatible(wheel,minus,-axis);
+            if(positive!=negative)return positive;
+            // Ambiguous or unattached ghosts retain the nearest sensible side.
+            return wheel.Cell.x<0?axis.x>0:axis.x<0;
+        }
         public static R4WheelArt TryAttach(Transform block,Transform physicalWheel,bool mirrorSide=false,R3WheelStyle style=R3WheelStyle.Offroad)
         {
             if(block==null||physicalWheel==null)return null;
