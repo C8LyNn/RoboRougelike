@@ -29,3 +29,5 @@ MonoBehaviour:
     Model: {fileID: 919132149155446097, guid: 8caee4dd9c3a42744a71b4c25e7fb99e, type: 3}
   - Kind: 8
     Model: {fileID: 919132149155446097, guid: b8daaa8faab20504c8e2d1dc301a556f, type: 3}
+  - Kind: 1
+    Model: {fileID: 919132149155446097, guid: 8f6f7babb1d283343b4e71e79c228ca0, type: 3}

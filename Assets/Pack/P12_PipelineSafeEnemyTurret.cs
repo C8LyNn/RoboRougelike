@@ -450,7 +450,7 @@ namespace RogueMachine.P12PipelineSafe
         public bool AttachPrimaryGunArt()
         {
             if(primaryVisual!=null||variantGuns.Count>0||weaponBlock==null||weaponBlock.IsDead||muzzle==null||
-               (WeaponKind!=R4WeaponKind.Basic&&WeaponKind!=R4WeaponKind.Heavy&&WeaponKind!=R4WeaponKind.Shotgun&&
+               (WeaponKind!=R4WeaponKind.Basic&&WeaponKind!=R4WeaponKind.Automatic&&WeaponKind!=R4WeaponKind.Heavy&&WeaponKind!=R4WeaponKind.Shotgun&&
                 WeaponKind!=R4WeaponKind.Railgun&&WeaponKind!=R4WeaponKind.RocketLauncher&&WeaponKind!=R4WeaponKind.BeamCutter&&
                 WeaponKind!=R4WeaponKind.RotarySaw&&WeaponKind!=R4WeaponKind.EmpEmitter))return false;
             var renderer=weaponBlock.GetComponent<Renderer>();var scale=weaponBlock.transform.lossyScale;

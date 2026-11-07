@@ -15,14 +15,14 @@ namespace RoboRougelike.R4_1
 
         public static R4WeaponArt TryAttach(Transform block,Transform pivot,Transform muzzle,R4WeaponKind weapon)
         {
-            // Automatic has no supplied model.
-            if(block==null||pivot==null||weapon==R4WeaponKind.Automatic)return null;
+
+            if(block==null||pivot==null)return null;
             var catalog=Resources.Load<R4WeaponArtCatalog>("R4Art/WeaponCatalog");
             var prefab=catalog!=null?catalog.ModelFor(weapon):null;
             if(prefab==null)return null;
             var visual=Instantiate(prefab,block,false);
             var axes=block.gameObject.AddComponent<R4ArtWeaponAxisAdapter>();
-            if(!axes.Bind(visual.transform,"R4W_"+weapon))
+            if(!axes.Bind(visual.transform,weapon==R4WeaponKind.Automatic?"R41":"R4W_"+weapon))
             {Destroy(visual);Destroy(axes);return null;}
             Transform sawRotor=null;
             if(weapon==R4WeaponKind.RotarySaw)
