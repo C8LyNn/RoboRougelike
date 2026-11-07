@@ -1178,6 +1178,8 @@ namespace RogueMachine.P12PipelineSafe
                 var kind=variant==R5EnemyVariant.EliteGunner&&side==1?R4WeaponKind.Automatic:R4WeaponKind.Heavy;
                 var profile=R4WeaponDefinition.Get(kind);gun.Configure(profile.Hp,true);
                 var pivot=R41PartGeometry.Payload(gun.transform,R3PartKind.Gun,kind,accent,true,out var barrel);
+                var art=R4WeaponArt.TryAttach(gun.transform,pivot,barrel,kind);
+                if(art!=null)barrel=art.Muzzle;
                 var block=gun.gameObject.AddComponent<P12_PipelineSafePlayerBlock>();
                 var module=gun.gameObject.AddComponent<P12PipelineSafeFunctionalModule>();module.Configure(P12FunctionalModuleType.Weapon,side,block,pivot,transform);
                 variantGuns.Add(new VariantGun{Block=gun,Support=support,Kind=kind,Pivot=pivot,Muzzle=barrel,NextShot=Time.time+1.8f+variantGuns.Count*.7f});
@@ -1202,6 +1204,7 @@ namespace RogueMachine.P12PipelineSafe
                 if(!gun.Online(transform)||RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(gun.Block.gameObject))continue;
                 var delta=point-gun.Pivot.position;
                 gun.Pivot.rotation=Quaternion.RotateTowards(gun.Pivot.rotation,Quaternion.LookRotation(delta),85*Time.deltaTime);
+                gun.Block.GetComponent<R4WeaponArt>()?.Sync();
                 if(delta.magnitude>maxRange||Vector3.Angle(gun.Pivot.forward,delta)>9||Time.time<gun.NextShot)continue;
                 var ray=point-gun.Muzzle.position;
                 int count=Physics.RaycastNonAlloc(gun.Muzzle.position,ray.normalized,movementHits,ray.magnitude,~0,QueryTriggerInteraction.Ignore);
