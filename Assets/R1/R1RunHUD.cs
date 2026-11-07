@@ -66,6 +66,17 @@ namespace RoboRougelike.R1
             if(input!=null&&input.type==EventType.KeyDown&&input.keyCode==KeyCode.I)
             {combatDetailsOpen=!combatDetailsOpen;input.Use();}
         }
+        private static float BarFraction(float current,float maximum)
+        {
+            if(float.IsNaN(current)||float.IsInfinity(current)||float.IsNaN(maximum)||float.IsInfinity(maximum)||maximum<=0)return 0;
+            return Mathf.Clamp01(current/maximum);
+        }
+        private static void DrawResourceBar(Rect rect,float current,float maximum,Color color)
+        {
+            var before=GUI.color;GUI.color=new Color(.11f,.17f,.19f,1);GUI.DrawTexture(rect,Texture2D.whiteTexture);
+            var inner=new Rect(rect.x+1,rect.y+1,Mathf.Max(0,rect.width-2)*BarFraction(current,maximum),Mathf.Max(0,rect.height-2));
+            GUI.color=color;GUI.DrawTexture(inner,Texture2D.whiteTexture);GUI.color=before;
+        }
         private void Panel(Rect rect)
         {
             var before = GUI.color; GUI.color = panel; GUI.DrawTexture(rect, Texture2D.whiteTexture); GUI.color = before;
@@ -138,11 +149,18 @@ namespace RoboRougelike.R1
                 if (player != null)
                 {
                     var core = player.Core;
-                    GUI.Label(new Rect(36, 58, 630, 28), $"RDZEŃ: {(core != null ? core.CurrentHp : 0):0}/{(core != null ? core.MaxHp : 0):0} HP   •   {ActivityGoal(run)}", body);
+                    float hp=core!=null?core.CurrentHp:0,maxHp=core!=null?core.MaxHp:0;
+                    GUI.Label(new Rect(36,58,175,28),$"RDZEŃ: {hp:0}/{maxHp:0}",body);
+                    DrawResourceBar(new Rect(215,65,110,12),hp,maxHp,new Color(.35f,.85f,.67f));
+                    GUI.Label(new Rect(340,58,325,28),ActivityGoal(run),small);
                     var energy=player.GetComponent<VehicleEnergyBank>();
                     var repairPulse=player.GetComponent<R3RepairPulse>();
-                    if(energy!=null)GUI.Label(new Rect(36,90,480,25),$"Energia: {energy.Current:0}/{energy.Maximum:0}"+
-                        (repairPulse!=null?$" • V — naprawa: {repairPulse.Status}":""),small);
+                    if(energy!=null)
+                    {
+                        GUI.Label(new Rect(36,90,175,25),$"Energia: {energy.Current:0}/{energy.Maximum:0}",small);
+                        DrawResourceBar(new Rect(215,95,110,12),energy.Current,energy.Maximum,new Color(.25f,.65f,.95f));
+                        if(repairPulse!=null)GUI.Label(new Rect(340,90,190,25),$"V — naprawa: {repairPulse.Status}",small);
+                    }
                     if(GUI.Button(new Rect(535,88,130,30),combatDetailsOpen?"Mniej [I]":"Szczegóły [I]",compactButton))combatDetailsOpen=!combatDetailsOpen;
                     if(combatDetailsOpen)
                     {
