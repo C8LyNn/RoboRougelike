@@ -58,11 +58,10 @@ namespace RoboRougelike.R1
                 }
                 if(count>=4&&i==0&&definition.SpawnVariant(i)==RoboRougelike.R5.R5EnemyVariant.Normal)
                     enemy.EquipPointDefense();
-                // Only integrated package weapons have a persistent tier-aware state.
-                // Conventional and variant guns stay T1 until their own integration.
                 enemy.SetPrimaryWeaponTier(equipmentTier);
                 if(definition.SpawnVariant(i)==RoboRougelike.R5.R5EnemyVariant.Normal&&enemy.EquipAdditionalGun())
                     enemy.GetComponent<RoboRougelike.R6.R6VehicleDrive>()?.RefreshParts();
+                enemy.SetOtherWeaponTiers(equipmentTier);
                 RoboRougelike.WeaponIntegration.RRLEmpVehicleAdapter.Configure(enemy.transform);
                 energy.Refresh();energy.Recharge(energy.Maximum);
                 enemies.Add(enemy);

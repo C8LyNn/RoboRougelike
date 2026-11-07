@@ -60,15 +60,42 @@ namespace RogueMachine.P12PipelineSafe
         // Equipment data belongs to the enemy, independently of temporary debris views.
         private R3PartState packageWeaponState,packageShieldState,packagePointDefenseState,packageBatteryState;
         private P12PipelineSafeDamageable packageBattery;
-        // Package bindings and salvage share this actual physical part state.
+        // All enemy guns, including package bindings, share physical part state with salvage.
         public bool SetPrimaryWeaponTier(int tier)
         {
-            if(tier<1||tier>3||IsDefeated||packageWeaponState==null||weaponBlock==null||weaponBlock.IsDead||
+            if(tier<1||tier>3||IsDefeated||variantGuns.Count>0||weaponBlock==null||weaponBlock.IsDead||
                 !weaponBlock.transform.IsChildOf(transform))return false;
-            packageWeaponState.Tier=tier;
-            weaponBlock.SetDurabilityMultiplier(R3VehicleModel.TierHealth(tier));
+            packageWeaponState=SetGunTier(weaponBlock,WeaponKind,"gun",tier);
             GetComponent<RoboRougelike.R6.R6VehicleDrive>()?.RefreshMass();
-            return true;
+            return packageWeaponState!=null;
+        }
+        R3PartState SetGunTier(P12PipelineSafeDamageable hp,R4WeaponKind kind,string slot,int tier)
+        {
+            if(hp==null||hp.IsDead||!hp.transform.IsChildOf(transform)||tier<1||tier>3)return null;
+            var device=hp.GetComponent<RoboRougelike.WeaponIntegration.RRLDeviceBinding>();
+            var state=device!=null?device.State:null;
+            if(state==null)
+            {
+                state=new R3PartState(default,R3PartKind.Gun){Id=EquipmentInstanceId(slot),Weapon=kind,Source=name+" / uzbrojenie"};
+                if(device==null)device=hp.gameObject.AddComponent<RoboRougelike.WeaponIntegration.RRLDeviceBinding>();
+                device.Bind(state,transform);
+            }
+            int oldTier=R3VehicleModel.NormalizedTier(state.Tier);
+            if(oldTier!=tier)
+            {
+                float condition=Condition(hp);
+                float max=hp.MaxHp/R3VehicleModel.TierHealth(oldTier)*R3VehicleModel.TierHealth(tier);
+                hp.Configure(max,true);hp.RestoreHealthRatio(condition);
+                state.Tier=tier;
+            }
+            return state;
+        }
+        public void SetOtherWeaponTiers(int tier)
+        {
+            if(tier<1||tier>3)return;
+            for(int i=0;i<variantGuns.Count;i++)SetGunTier(variantGuns[i].Block,variantGuns[i].Kind,"gun/"+i,tier);
+            for(int i=0;i<additionalGuns.Count;i++)SetGunTier(additionalGuns[i].Block,additionalGuns[i].Kind,"extra-gun/"+i,tier);
+            GetComponent<RoboRougelike.R6.R6VehicleDrive>()?.RefreshMass();
         }
         public bool EquipBattery() => EquipBattery(1);
         public bool EquipBattery(int tier)
@@ -411,8 +438,9 @@ namespace RogueMachine.P12PipelineSafe
                 for(int i=0;i<variantGuns.Count;i++)
                 {
                     var gun=variantGuns[i];
-                    var state=new R3PartState(default,R3PartKind.Gun){Id=EquipmentInstanceId("gun/"+i),Source=name+" / bateria "+(i+1),Weapon=gun.Kind,
-                        DisruptionRemaining=SalvageDisruption(gun.Block)};
+                    var state=gun.Block?.GetComponent<RoboRougelike.WeaponIntegration.RRLDeviceBinding>()?.State??
+                        new R3PartState(default,R3PartKind.Gun){Id=EquipmentInstanceId("gun/"+i),Source=name+" / bateria "+(i+1),Weapon=gun.Kind};
+                    state.DisruptionRemaining=SalvageDisruption(gun.Block);
                     items.Add(new R4SalvageItem(state,gun.Online(transform)?Condition(gun.Block):0));
                 }
             else
@@ -426,7 +454,9 @@ namespace RogueMachine.P12PipelineSafe
             for(int i=0;i<additionalGuns.Count;i++)
             {
                 var gun=additionalGuns[i];
-                var state=new R3PartState(default,R3PartKind.Gun){Id=EquipmentInstanceId("extra-gun/"+i),Source=name+" / dodatkowe działo",Weapon=gun.Kind,DisruptionRemaining=SalvageDisruption(gun.Block)};
+                var state=gun.Block?.GetComponent<RoboRougelike.WeaponIntegration.RRLDeviceBinding>()?.State??
+                    new R3PartState(default,R3PartKind.Gun){Id=EquipmentInstanceId("extra-gun/"+i),Source=name+" / dodatkowe działo",Weapon=gun.Kind};
+                state.DisruptionRemaining=SalvageDisruption(gun.Block);
                 items.Add(new R4SalvageItem(state,gun.Online(transform)?Condition(gun.Block):0));
             }            for(int i=0;i<driveWheels.Count;i++)items.Add(new R4SalvageItem(new R3PartState(default,R3PartKind.Wheel)
                 {Id=EquipmentInstanceId("wheel/"+i),Source=name+" / koło "+(i+1),DisruptionRemaining=SalvageDisruption(driveWheels[i])},Condition(driveWheels[i])));
@@ -575,7 +605,7 @@ namespace RogueMachine.P12PipelineSafe
             if(FriendlyInLine(aimPoint))return;
 
             if(packageEmp==null&&packageRocket==null&&packageRailgun==null&&packageShotgun==null)
-            {var energy=GetComponent<VehicleEnergyBank>();if(energy!=null&&!energy.TrySpend(VehicleEnergyCosts.ConventionalShot(WeaponKind)))return;}
+            {var energy=GetComponent<VehicleEnergyBank>();if(energy!=null&&!energy.TrySpend(VehicleEnergyCosts.ConventionalShot(WeaponKind)*R3VehicleModel.TierActivationCost(packageWeaponState?.Tier??1)))return;}
 
             nextFireTime =
                 Time.time +
@@ -956,7 +986,7 @@ namespace RogueMachine.P12PipelineSafe
 
             projectile.Configure(
                 enemyRoot,
-                damage,
+                damage*R3VehicleModel.TierEffectUnits(packageWeaponState?.Tier??1),
                 projectileLifetime,
                 direction,
                 playerRoot
@@ -1160,7 +1190,8 @@ namespace RogueMachine.P12PipelineSafe
                 bool ally=false;for(int i=0;i<count;i++){var other=movementHits[i].collider.GetComponentInParent<P12PipelineSafeEnemyTurret>();if(other!=null&&other!=this&&!other.IsDefeated)ally=true;}
                 if(ally)continue;
                 var energy=GetComponent<VehicleEnergyBank>();
-                if(energy!=null&&!energy.TrySpend(VehicleEnergyCosts.ConventionalShot(gun.Kind)))continue;
+                int tier=gun.Block.GetComponent<RoboRougelike.WeaponIntegration.RRLDeviceBinding>()?.State?.Tier??1;
+                if(energy!=null&&!energy.TrySpend(VehicleEnergyCosts.ConventionalShot(gun.Kind)*R3VehicleModel.TierActivationCost(tier)))continue;
                 var profile=R4WeaponDefinition.Get(gun.Kind);
                 RoboRougelike.R6.R6CombatFeedback.Muzzle(gun.Muzzle,gun.Kind);
                 gun.NextShot=Time.time+profile.Interval*(fireInterval/R4WeaponDefinition.Get(WeaponKind).Interval);
@@ -1171,7 +1202,7 @@ namespace RogueMachine.P12PipelineSafe
                 var body=shell.AddComponent<Rigidbody>();body.mass=profile.ProjectileMass;body.useGravity=false;
                 body.collisionDetectionMode=CollisionDetectionMode.ContinuousDynamic;body.linearVelocity=direction*profile.Speed*.8f*configuredProjectileSpeed;
                 var origin=shell.AddComponent<R4ProjectileOrigin>();origin.Weapon=gun.Kind;origin.PartId=EquipmentInstanceId(idPrefix+guns.IndexOf(gun));
-                shell.AddComponent<P17PhysicalShell>().Configure(transform,profile.Damage*(damage/R4WeaponDefinition.Get(WeaponKind).Damage),6,direction,playerRoot);
+                shell.AddComponent<P17PhysicalShell>().Configure(transform,profile.Damage*(damage/R4WeaponDefinition.Get(WeaponKind).Damage)*R3VehicleModel.TierEffectUnits(tier),6,direction,playerRoot);
             }
         }
 
