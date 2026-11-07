@@ -21,4 +21,13 @@ To check all 30 source collider files against the exact catalog and source manif
 
 This checks the pinned catalog and manifest hashes, rejects duplicate or escaping paths, and hashes each referenced collider. Its self-test rejects an intentionally incorrect collider hash. A newer source requires explicitly providing its verified catalog and manifest hashes to `Verify-R4ColliderSources.ps1`.
 
+For a lightweight inspection of the verified GLB containers and their declared mesh/index structure:
+
+```powershell
+& .\Tools\R4Blocks\Test-R4ColliderStructure.ps1 `
+  -SourceRoot 'PATH_TO_SOURCE\R4Blocks'
+```
+
+The structure check validates GLB 2 headers and chunk bounds, embedded buffers, UCX node names, mesh/accessor references and triangle counts. Its self-test rejects deliberately corrupt headers. It reads metadata, not triangle coordinates or mesh topology: it cannot prove convexity, geometry alignment, nonintersection or suitability for Unity MeshCollider.
+
 This is a source-data check, not a Unity test or proof of physical geometry, gameplay integration, collision behavior or save compatibility. As of this change the shape catalog and socket policy remain disconnected from the actual garage and saved vehicles.
