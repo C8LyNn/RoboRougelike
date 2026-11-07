@@ -60,6 +60,16 @@ namespace RogueMachine.P12PipelineSafe
         // Equipment data belongs to the enemy, independently of temporary debris views.
         private R3PartState packageWeaponState,packageShieldState,packagePointDefenseState,packageBatteryState;
         private P12PipelineSafeDamageable packageBattery;
+        // Package bindings and salvage share this actual physical part state.
+        public bool SetPrimaryWeaponTier(int tier)
+        {
+            if(tier<1||tier>3||IsDefeated||packageWeaponState==null||weaponBlock==null||weaponBlock.IsDead||
+                !weaponBlock.transform.IsChildOf(transform))return false;
+            packageWeaponState.Tier=tier;
+            weaponBlock.SetDurabilityMultiplier(R3VehicleModel.TierHealth(tier));
+            GetComponent<RoboRougelike.R6.R6VehicleDrive>()?.RefreshMass();
+            return true;
+        }
         public bool EquipBattery() => EquipBattery(1);
         public bool EquipBattery(int tier)
         {
