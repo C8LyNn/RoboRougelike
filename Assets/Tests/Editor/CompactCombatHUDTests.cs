@@ -5,6 +5,17 @@ using UnityEngine;
 
 public sealed class CompactCombatHUDTests
 {
+    [TestCase(0f,100f,0f)]
+    [TestCase(50f,100f,.5f)]
+    [TestCase(110f,100f,1f)]
+    [TestCase(-1f,100f,0f)]
+    [TestCase(1f,0f,0f)]
+    public void ResourceBarsClampToSafeFractions(float value,float maximum,float expected)
+    {
+        var method=typeof(R1RunHUD).GetMethod("BarFraction",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);Assert.That((float)method.Invoke(null,new object[]{value,maximum}),Is.EqualTo(expected).Within(.0001f));
+        Assert.That((float)method.Invoke(null,new object[]{float.NaN,maximum}),Is.Zero);
+    }
     [Test] public void DetailsShortcutTogglesWithoutConsumingMovementOrMouse()
     {
         var go=new GameObject("HUD shortcut test");
