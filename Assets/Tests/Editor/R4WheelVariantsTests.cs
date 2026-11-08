@@ -283,6 +283,26 @@ public sealed class R4WheelVariantsTests
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Standard,model.Economy,Time.time,out var restored,out var error),Is.True,error);
         Assert.That(restored.Parts.Single(p=>p.Id==wheel.Id).WheelStyle,Is.EqualTo(style));
     }
+    [UnityTest]public IEnumerator TwinRoadHasTwoActualTyreCollidersAndOneItem()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
+        var model=run.VehicleModel;model.Award(1000);var style=(R3WheelStyle)7;
+        Assert.That(run.GaragePurchase(R3PartKind.Wheel,default,style),Is.True);
+        var part=model.Inventory.Last();Assert.That(part.ContactMask,Is.EqualTo(R3MountingGrid.FaceBit(Vector3Int.up)));
+        Assert.That(R3VehicleModel.WheelRadius(style),Is.EqualTo(.33f).Within(.001f));
+        Assert.That(R3VehicleModel.WheelWidth(style),Is.EqualTo(.16f).Within(.001f));
+        var block=GameObject.CreatePrimitive(PrimitiveType.Cube);block.transform.localScale=Vector3.one*R41PartGeometry.BlockSize;
+        var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
+        R41PartGeometry.ConfigureWheelMount(block,style);
+        var wheel=R41PartGeometry.Payload(block.transform,R3PartKind.Wheel,default,material,true,out _,style);
+        yield return null;Physics.SyncTransforms();
+        var tires=wheel.GetComponentsInChildren<Collider>().Where(c=>c.enabled).ToArray();
+        Assert.That(tires.Length,Is.EqualTo(2),"Both tyres need distinct physical contact surfaces.");
+        Assert.That(Mathf.Abs(tires[0].bounds.center.x-tires[1].bounds.center.x),Is.EqualTo(.18f).Within(.01f));
+        Assert.That(R4WheelArt.TryAttach(block.transform,wheel,false,style),Is.Not.Null);
+        Assert.That(block.GetComponentsInChildren<Transform>().Any(t=>t.name=="R4M_WheelM_Twin_Road_Rotor"),Is.True);
+        Object.Destroy(block);Object.Destroy(material);
+    }
     [UnityTest]public IEnumerator LargeWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.LargeOffroad);}
     [UnityTest]public IEnumerator MonsterWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.Monster);}
     [UnityTest]public IEnumerator SmallForkWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.SmallFork);}
