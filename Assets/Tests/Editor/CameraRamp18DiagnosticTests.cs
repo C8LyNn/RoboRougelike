@@ -16,15 +16,17 @@ public sealed class CameraRamp18DiagnosticTests
 {
     R1RunController run;
 
-    [UnityTest]
-    public IEnumerator RealLightVehicleOnRangeRampRecordsCameraAndAimCollision()
+    [UnityTest] public IEnumerator RealLightVehicleOnRangeRampRecordsCameraAndAimCollision()=>DriveRamp(R3VehicleKind.Light);
+    [UnityTest] public IEnumerator RealHeavyVehicleOnRangeRampRecordsCameraAndAimCollision()=>DriveRamp(R3VehicleKind.Heavy);
+
+    IEnumerator DriveRamp(R3VehicleKind kind)
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);
         yield return new EnterPlayMode();
         float deadline=Time.realtimeSinceStartup+30;
         while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<deadline)yield return null;
         run=R1RunController.Instance;Assert.That(run,Is.Not.Null);
-        Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);
+        Assert.That(run.SelectVehicle(kind)&&run.OpenSandboxGarage(),Is.True);
         Assert.That(run.EnterTestRange(),Is.True);
         while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
         Assert.That(run.Transitioning,Is.False,"The actual test range must load.");
@@ -79,7 +81,7 @@ public sealed class CameraRamp18DiagnosticTests
             if(i%5==0)Debug.Log($"[CAMERA-RAMP18] fixed={i} t={Time.fixedTime:F2} body={body.position.ToString("F3")} velocity={body.linearVelocity.ToString("F3")} bodyRotation={body.rotation.eulerAngles.ToString("F2")} contacts={drive.GroundedWheels} camera={camera.position.ToString("F3")} cameraRotation={camera.rotation.eulerAngles.ToString("F2")} aim={aim.ToString("F3")} cameraToBody={targetDistance:F3} cameraToAim={Vector3.Distance(camera.position,aim):F3} desiredGap={desiredGap:F3} overlapAim={rig.WorldOverlapAtAim} clipped={rig.WorldClipped} overlapCamera={rig.WorldOverlapAtCamera}");
         }
         float progress=Vector3.Dot(body.position-start,uphill);
-        Debug.Log($"[CAMERA-RAMP18 SUMMARY] progress={progress:F3} groundedFrames={grounded}/100 overlapAimFrames={aimOverlaps} clippedFrames={worldClips} overlapCameraFrames={cameraOverlaps} maxCameraToBody={maxDistance:F3} maxDesiredGap={maxDesiredGap:F3}");
+        Debug.Log($"[CAMERA-RAMP18 SUMMARY] kind={kind} progress={progress:F3} groundedFrames={grounded}/100 overlapAimFrames={aimOverlaps} clippedFrames={worldClips} overlapCameraFrames={cameraOverlaps} maxCameraToBody={maxDistance:F3} maxDesiredGap={maxDesiredGap:F3}");
         Assert.That(Time.fixedTime-firstFixedTime,Is.GreaterThanOrEqualTo(99*Time.fixedDeltaTime),"Samples must represent real physics steps.");
         Assert.That(grounded,Is.GreaterThan(0),"The real wheels must contact the ramp during this diagnostic.");
         Assert.That(progress,Is.GreaterThan(.05f),"R6 forces must actually move the vehicle uphill; otherwise the camera result is inconclusive.");
