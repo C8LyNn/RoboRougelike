@@ -52,4 +52,21 @@ public sealed class WheelMountOrientationTests
         Assert.That(method,Is.Not.Null,"Visual mount must consider the actual support and rotation.");
         Assert.That((bool)method.Invoke(null,new object[]{model,wheel}),Is.EqualTo(mirror));
     }
+    [UnityTest] public IEnumerator SmallForkSocketMatchesTheRotatedTopFace()
+    {
+        yield return new EnterPlayMode();var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
+        foreach(var turns in new[]{Vector3Int.zero,new Vector3Int(0,0,1),new Vector3Int(1,0,0)})
+        {
+            var block=GameObject.CreatePrimitive(PrimitiveType.Cube);block.transform.localScale=Vector3.one*R41PartGeometry.BlockSize;
+            block.transform.rotation=R3MountingGrid.Rotation(turns);R41PartGeometry.ConfigureWheelMount(block,R3WheelStyle.SmallFork);
+            var physical=R41PartGeometry.Payload(block.transform,R3PartKind.Wheel,R4WeaponKind.Basic,material,true,out _,R3WheelStyle.SmallFork);
+            Assert.That(R4WheelArt.TryAttach(block.transform,physical,false,R3WheelStyle.SmallFork),Is.Not.Null);
+            var socket=block.GetComponentsInChildren<Transform>(true).Single(t=>t.name=="Socket_Mount");
+            var rotor=block.GetComponentsInChildren<Transform>(true).Single(t=>t.name=="R4M_WheelS_Fork_Road_Rotor");
+            Assert.That(Vector3.Distance(rotor.position,physical.position),Is.LessThan(.01f));
+            Assert.That(Vector3.Distance(socket.position,block.transform.position+block.transform.up*.26f),Is.LessThan(.015f));
+            Object.Destroy(block);
+        }
+        Object.Destroy(material);yield return null;yield return new ExitPlayMode();
+    }
 }

@@ -217,7 +217,7 @@ namespace RoboRougelike.R1
         public bool GarageToggleWheelStyle(Vector3Int cell) => EditGarage(()=>
         {
             var part=VehicleModel.At(cell);
-            if(part==null||part.Kind!=R3PartKind.Wheel||part.Health<=0||R3VehicleModel.HasSizedSideWheel(part.WheelStyle))return false;
+            if(part==null||part.Kind!=R3PartKind.Wheel||part.Health<=0||!R3VehicleModel.CanSwapWheelAppearance(part.WheelStyle))return false;
             part.WheelStyle=part.WheelStyle==R3WheelStyle.Offroad?R3WheelStyle.Slick:R3WheelStyle.Offroad;
             return true;
         });

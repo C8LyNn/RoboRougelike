@@ -149,8 +149,57 @@ public sealed class R4WheelVariantsTests
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Standard,model.Economy,Time.time,out var restored,out var error),Is.True,error);
         Assert.That(restored.Parts.Single(p=>p.Id==monster.Id).WheelStyle,Is.EqualTo(R3WheelStyle.Monster));
     }
+    [UnityTest]public IEnumerator SmallForkNeedsUpperSupportAndUsesItsOwnTire()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
+        var model=run.VehicleModel;model.Award(1000);var garage=run.Garage;
+        foreach(var cell in new[]{new Vector3Int(2,2,2),new Vector3Int(2,3,2)})
+        {
+            Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);var support=model.Inventory.Last();
+            garage.ChooseInventory(support.Id);garage.Select(cell);Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);yield return null;
+        }
+        Assert.That(run.GaragePurchase(R3PartKind.Wheel,default,R3WheelStyle.SmallFork),Is.True);var wheel=model.Inventory.Last();
+        Assert.That(wheel.ContactMask,Is.EqualTo(R3MountingGrid.FaceBit(Vector3Int.up)));
+        var target=new Vector3Int(3,2,2);
+        Assert.That(model.OwnedPlacementError(wheel.Id,target,Vector3Int.zero),Is.Not.Null,"Side support must not replace the upper socket.");
+        Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);var shelf=model.Inventory.Last();
+        garage.ChooseInventory(shelf.Id);garage.Select(new Vector3Int(3,3,2));Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);yield return null;
+        garage.ChooseInventory(wheel.Id);garage.HandleGuiPointer(new Event{type=EventType.KeyDown,keyCode=KeyCode.U},Vector2.zero);
+        typeof(R3GarageView).GetMethod("LateUpdate",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(garage,null);
+        var camera=(Camera)typeof(R3GarageView).GetField("view",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(garage);
+        var workshopFloor=GameObject.Find("Podłoga warsztatu").GetComponent<Renderer>();
+        Assert.That(camera.transform.position.y,Is.LessThan(workshopFloor.transform.position.y+.1f));
+        Assert.That(workshopFloor.enabled,Is.False,"The floor must not hide the underside view.");
+        var shelfPosition=run.Player.transform.TransformPoint(new Vector3(3,3,2)*.55f);
+        Assert.That(garage.Point(new Ray(shelfPosition-Vector3.up*.4f,Vector3.up)),Is.True,"The real underside socket must be pointable.");
+        Assert.That(garage.Cell,Is.EqualTo(target));Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);yield return null;
+        garage.HandleGuiPointer(new Event{type=EventType.KeyDown,keyCode=KeyCode.U},Vector2.zero);
+        typeof(R3GarageView).GetMethod("LateUpdate",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(garage,null);
+        Assert.That(workshopFloor.enabled,Is.True,"Restore the floor when looking from above.");
+        var part=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==wheel.Id);
+        var tire=part.transform.Find("Koło").GetComponent<Collider>();Assert.That(tire.bounds.extents.y,Is.EqualTo(.205f).Within(.015f));
+        Assert.That(part.GetComponent<BoxCollider>().bounds.min.y,Is.GreaterThan(tire.bounds.min.y+.1f),"The hub must not be a full-cell cube touching the ground first.");
+        Assert.That(part.GetComponentsInChildren<Transform>(true).Any(t=>t.name=="R4M_WheelS_Fork_Road_Rotor"),Is.True);
+        Assert.That(R6VehicleDrive.PartMass(part.Damageable),Is.EqualTo(6).Within(.01f));
+        Assert.That(run.GarageToggleWheelStyle(target),Is.False);
+        var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.localScale=new Vector3(.3f,.2f,.3f);
+        floor.transform.position=new Vector3(tire.bounds.center.x,tire.bounds.min.y-.1f,tire.bounds.center.z);Physics.SyncTransforms();
+        var contacts=new R6WheelContacts();contacts.Refresh(run.Player.GetComponent<Rigidbody>(),new[]{part.Damageable});
+        Assert.That(contacts.Count,Is.EqualTo(1));Assert.That(contacts.Traction,Is.EqualTo(.65f).Within(.01f));Object.Destroy(floor);
+        var data=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(Time.time)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Standard,model.Economy,Time.time,out var restored,out var error),Is.True,error);
+        Assert.That(restored.Parts.Single(p=>p.Id==wheel.Id).WheelStyle,Is.EqualTo(R3WheelStyle.SmallFork));
+        data.mounted.Single(p=>p.Id==wheel.Id).ContactMask=R3MountingGrid.AllFaces;
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Standard,model.Economy,Time.time,out _,out _),Is.False);
+        var recovered=wheel.Copy();recovered.Id=System.Guid.NewGuid().ToString("N");recovered.Health=.4f;
+        Assert.That(model.ReceiveSalvage(new[]{recovered}),Is.True);
+        Assert.That(model.Inventory.Single(p=>p.Id==recovered.Id).WheelStyle,Is.EqualTo(R3WheelStyle.SmallFork));
+        var invalid=recovered.Copy();invalid.Id=System.Guid.NewGuid().ToString("N");invalid.ContactMask=R3MountingGrid.AllFaces;
+        Assert.That(model.ReceiveSalvage(new[]{invalid}),Is.False,"Recovered parts must not bypass their mounting restrictions.");
+    }
     [UnityTest]public IEnumerator LargeWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.LargeOffroad);}
     [UnityTest]public IEnumerator MonsterWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.Monster);}
+    [UnityTest]public IEnumerator SmallForkWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.SmallFork);}
     IEnumerator DriveSizedWheels(R3WheelStyle style)
     {
         var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
@@ -158,13 +207,19 @@ public sealed class R4WheelVariantsTests
         while(run.Transitioning)yield return null;
         var palette=(R3VisualPalette)typeof(R1RunController).GetField("palette",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(run);
         var design=new R3VehicleDesign{Name="Large wheel drive QA",Speed=7,TurnSpeed=90,CoreHp=100};
-        design.Parts.Add(new R3PartState(Vector3Int.zero,R3PartKind.Core));
-        for(int z=1;z<=4;z++)design.Parts.Add(new R3PartState(new Vector3Int(0,0,z),R3PartKind.Armor));
+        bool small=style==R3WheelStyle.SmallFork;int frameY=small?1:0;
+        design.Parts.Add(new R3PartState(new Vector3Int(0,frameY,0),R3PartKind.Core));
+        for(int z=1;z<=4;z++)design.Parts.Add(new R3PartState(new Vector3Int(0,frameY,z),R3PartKind.Armor));
         foreach(int x in new[]{-1,1})foreach(int z in new[]{0,4})
-            design.Parts.Add(new R3PartState(new Vector3Int(x,0,z),R3PartKind.Wheel){WheelStyle=style});
+        {
+            if(small)design.Parts.Add(new R3PartState(new Vector3Int(x,1,z),R3PartKind.Armor));
+            design.Parts.Add(new R3PartState(new Vector3Int(x,0,z),R3PartKind.Wheel){WheelStyle=style,
+                ContactMask=small?R3MountingGrid.FaceBit(Vector3Int.up):R3MountingGrid.AllFaces});
+        }
         var model=new R3VehicleModel(design);var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);
         floor.transform.position=new Vector3(1000,-.1f,1000);floor.transform.localScale=new Vector3(30,.2f,30);
-        var vehicle=R3VehicleAssembly.Build(model,run.Progress.Stats,palette,new Vector3(1000,R3VehicleModel.WheelRadius(style),1000),Quaternion.identity);
+        float spawnHeight=R3VehicleModel.WheelRadius(style)+(small ? .075f : 0);
+        var vehicle=R3VehicleAssembly.Build(model,run.Progress.Stats,palette,new Vector3(1000,spawnHeight,1000),Quaternion.identity);
         var tank=vehicle.GetComponent<P12PipelineSafeTankController>();tank.enabled=false;
         var drive=vehicle.GetComponent<R6VehicleDrive>();Assert.That(drive,Is.Not.Null);Time.timeScale=1;
         try

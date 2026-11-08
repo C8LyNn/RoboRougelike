@@ -40,3 +40,4 @@ MonoBehaviour:
   SideWheelSlick: {fileID: 919132149155446097, guid: b9d1d562af1f8fe4c86b73290d0a6ac3, type: 3}
   SideWheelLarge: {fileID: 919132149155446097, guid: 5a806d2ed9da42de8fb9539f4cbe6cf0, type: 3}
   SideWheelMonster: {fileID: 919132149155446097, guid: f853081bdd03412fb61cf922c73751ae, type: 3}
+  SmallForkWheel: {fileID: 919132149155446097, guid: c47921ad05d347d0914c4b5613828649, type: 3}

@@ -180,6 +180,7 @@ namespace RoboRougelike.R3
                 item.transform.localPosition=(Vector3)state.Cell*0.55f;
                 item.transform.localRotation=R3MountingGrid.Rotation(state.RotationQuarterTurns);
                 item.transform.localScale=Vector3.one*0.52f;
+                if(state.Kind==R3PartKind.Wheel)R41PartGeometry.ConfigureWheelMount(item,state.WheelStyle);
                 bool bonus=state.Kind==R3PartKind.BonusModule;
                 bool wide=R3VehicleModel.UsesWideFootprint(state.Kind);
                 item.GetComponent<Renderer>().sharedMaterial=state.Kind==R3PartKind.Gun?palette.Weapons[(int)state.Weapon]:

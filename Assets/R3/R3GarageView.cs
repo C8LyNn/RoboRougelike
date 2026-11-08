@@ -43,6 +43,7 @@ namespace RoboRougelike.R3
         private Vector3 pivotLocal;
         private bool orbitDragging,isOpen,arenaWasActive;
         private GameObject hiddenArena,workshopSpace;
+        private Renderer workshopFloor;
         // A separate, non-gameplay workspace: safely away from arenas, authored maps,
         // projectiles and other physical entities which remain at ground level.
         private static readonly Vector3 WorkshopOrigin=new Vector3(0,500,0);
@@ -129,14 +130,14 @@ namespace RoboRougelike.R3
             if(workshopSpace!=null)return;
             workshopSpace=new GameObject("Garaż — osobna przestrzeń");
             workshopSpace.transform.position=WorkshopOrigin;
-            WorkshopSurface("Podłoga warsztatu",new Vector3(0,-.1f,0),new Vector3(80,.2f,80),new Color(.19f,.22f,.24f));
+            workshopFloor=WorkshopSurface("Podłoga warsztatu",new Vector3(0,-.1f,0),new Vector3(80,.2f,80),new Color(.19f,.22f,.24f));
             var wallColor=new Color(.12f,.15f,.17f);
             WorkshopSurface("Ściana północna",new Vector3(0,8,39),new Vector3(80,16,.3f),wallColor);
             WorkshopSurface("Ściana południowa",new Vector3(0,8,-39),new Vector3(80,16,.3f),wallColor);
             WorkshopSurface("Ściana wschodnia",new Vector3(39,8,0),new Vector3(.3f,16,80),wallColor);
             WorkshopSurface("Ściana zachodnia",new Vector3(-39,8,0),new Vector3(.3f,16,80),wallColor);
         }
-        private void WorkshopSurface(string name,Vector3 localPosition,Vector3 localScale,Color color)
+        private Renderer WorkshopSurface(string name,Vector3 localPosition,Vector3 localScale,Color color)
         {
             var surface=GameObject.CreatePrimitive(PrimitiveType.Cube);
             surface.name=name;surface.transform.SetParent(workshopSpace.transform,false);
@@ -146,14 +147,16 @@ namespace RoboRougelike.R3
             surface.GetComponent<Collider>().enabled=false;
             var renderer=surface.GetComponent<Renderer>();renderer.sharedMaterial=palette.Parts[(int)R3PartKind.Wheel];
             var tint=new MaterialPropertyBlock();tint.SetColor("_BaseColor",color);renderer.SetPropertyBlock(tint);
+            return renderer;
         }
         private void DestroyWorkshopSpace()
         {
             if(workshopSpace==null)return;
-            workshopSpace.SetActive(false);Destroy(workshopSpace);workshopSpace=null;
+            workshopSpace.SetActive(false);Destroy(workshopSpace);workshopSpace=null;workshopFloor=null;
         }
         public void Orbit(float degrees){yaw+=degrees;}
-        public void Tilt(float degrees){pitch=Mathf.Clamp(pitch+degrees,5,75);}
+        public void Tilt(float degrees){pitch=Mathf.Clamp(pitch+degrees,-65,75);}
+        public void ToggleUndersideView(){pitch=pitch<0?32:-40;}
         public void Zoom(float amount){distance=Mathf.Clamp(distance+amount,3,22);}
         public void RotateSelected(int axis,int quarterTurns)
         {
@@ -448,6 +451,8 @@ namespace RoboRougelike.R3
         {
             if(run.Progress?.State!=R1RunState.Garage||run.Transitioning||run.Paused||run.QuitRequested)return;
             var screen=new Vector2(rawTopLeft.x,Screen.height-rawTopLeft.y);bool inside=InBuildArea(screen,Screen.width,Screen.height);
+            if(current.type==EventType.KeyDown&&current.keyCode==KeyCode.U)
+            {ToggleUndersideView();current.Use();return;}
             if(current.type==EventType.KeyDown&&Tool==R41GarageTool.Mount)
             {
                 int axis=-1,step=1;
@@ -487,6 +492,7 @@ namespace RoboRougelike.R3
             view.rect=ViewportForScreen(Screen.width,Screen.height);
             var pivot=run.Player.transform.TransformPoint(pivotLocal);var rotation=Quaternion.Euler(pitch,yaw,0);
             view.transform.SetPositionAndRotation(pivot+rotation*Vector3.back*distance,rotation);
+            if(workshopFloor!=null)workshopFloor.enabled=view.transform.position.y>=WorkshopOrigin.y+.01f;
         }
         private void OnDestroy(){DestroyWorkshopSpace();RestoreArena();if(previewRoot!=null)Destroy(previewRoot);}
     }
