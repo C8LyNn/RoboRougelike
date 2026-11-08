@@ -6,6 +6,7 @@ using NUnit.Framework;
 using RoboRougelike.R1;
 using RoboRougelike.R3;
 using RoboRougelike.R4;
+using RoboRougelike.R4_1;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -439,6 +440,30 @@ public sealed class UI943PortraitCatalogActionsTests
         Assert.That(run.Player,Is.SameAs(player),"Inventory repairs must not rebuild the vehicle.");
         Assert.That((string)Field(hud,"catalogFeedback"),Does.Contain("2").And.Contain(quote+" Z"));
         Assert.That(run.Garage.Message,Does.Contain("2").And.Contain(quote+" Z"),"A quick garage repair must show its result without opening the catalog.");
+        yield return null;
+    }
+
+    [UnityTest] public IEnumerator QuickRepairSelectsRecoveredWreckOnlyWhenMounting()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float timeout=Time.realtimeSinceStartup+15;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<timeout)yield return null;
+        var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        Assert.That(run.OpenSandboxGarage(),Is.True);run.VehicleModel.Award(100);
+        Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
+        var item=run.VehicleModel.Inventory.Last();item.Health=0;
+        var hud=run.GetComponent<R1RunHUD>();Field(hud,"catalogOpen",false);
+        Invoke(hud,"SelectQuickPart",run,R3PartKind.Armor,R4WeaponKind.Basic,null);
+        Assert.That(run.Garage.SelectedInventoryId,Is.Null);
+        Invoke(hud,"RepairCatalogStack",run,new[]{item});
+        Assert.That(item.Health,Is.EqualTo(1));Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(item.Id));
+        Assert.That(run.Garage.Tool,Is.EqualTo(R41GarageTool.Mount));
+        Assert.That(run.Garage.Message,Does.Contain("miejsce montażu"));
+
+        item.Health=0;run.Garage.SelectedInventoryId=null;run.Garage.SetTool(R41GarageTool.Inspect);
+        Invoke(hud,"RepairCatalogStack",run,new[]{item});
+        Assert.That(item.Health,Is.EqualTo(1));Assert.That(run.Garage.SelectedInventoryId,Is.Null);
+        Assert.That(run.Garage.Tool,Is.EqualTo(R41GarageTool.Inspect),"Repair must not replace the player's current tool.");
         yield return null;
     }
 
