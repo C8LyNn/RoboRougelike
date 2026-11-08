@@ -60,12 +60,14 @@ public sealed class CameraRamp18DiagnosticTests
         SetFollowField(follow,"distance",20f);SetFollowField(follow,"renderedDistance",20f);
         SetFollowField(follow,"zoomInitialized",true);follow.ReceiverRig.ResetSmoothing();
 
-        for(int i=0;i<15;i++){drive.Step(0,0,10,4,90);yield return new WaitForFixedUpdate();}
+        // EnterPlayMode under the EditMode runner can ignore WaitForFixedUpdate;
+        // wait for actual fixed-time progress before counting a sample.
+        for(int i=0;i<15;i++){drive.Step(0,0,10,4,90);yield return MOVSeriesDeviceTests.FixedStep();}
         var start=body.position;int grounded=0,aimOverlaps=0,worldClips=0,cameraOverlaps=0;
-        float maxDistance=0,maxDesiredGap=0;var rig=follow.ReceiverRig;
+        float maxDistance=0,maxDesiredGap=0,firstFixedTime=Time.fixedTime;var rig=follow.ReceiverRig;
         for(int i=0;i<100;i++)
         {
-            drive.Step(1,0,10,4,90);yield return new WaitForFixedUpdate();
+            drive.Step(1,0,10,4,90);yield return MOVSeriesDeviceTests.FixedStep();
             if(drive.GroundedWheels>0)grounded++;
             if(rig.WorldOverlapAtAim)aimOverlaps++;
             if(rig.WorldClipped)worldClips++;
@@ -78,6 +80,7 @@ public sealed class CameraRamp18DiagnosticTests
         }
         float progress=Vector3.Dot(body.position-start,uphill);
         Debug.Log($"[CAMERA-RAMP18 SUMMARY] progress={progress:F3} groundedFrames={grounded}/100 overlapAimFrames={aimOverlaps} clippedFrames={worldClips} overlapCameraFrames={cameraOverlaps} maxCameraToBody={maxDistance:F3} maxDesiredGap={maxDesiredGap:F3}");
+        Assert.That(Time.fixedTime-firstFixedTime,Is.GreaterThanOrEqualTo(99*Time.fixedDeltaTime),"Samples must represent real physics steps.");
         Assert.That(grounded,Is.GreaterThan(0),"The real wheels must contact the ramp during this diagnostic.");
         Assert.That(progress,Is.GreaterThan(.05f),"R6 forces must actually move the vehicle uphill; otherwise the camera result is inconclusive.");
         Assert.That(cameraOverlaps,Is.Zero,"The actual camera volume must not penetrate the world during the sampled traverse.");
