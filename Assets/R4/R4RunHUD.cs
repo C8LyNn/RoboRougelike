@@ -239,7 +239,7 @@ namespace RoboRougelike.R1
             int price=model.Price(kind,weapon);
             bool unlocked=run.CanBuyTechnology(kind,weapon);
             GUI.enabled=unlocked&&kind!=R3PartKind.BonusModule&&model.Scrap>=price&&model.Inventory.Count<R3VehicleModel.InventoryCapacity;
-            if(GUI.Button(new Rect(970,340,280,40),GaragePurchaseCaption(kind,unlocked,price,model.Scrap,model.Inventory.Count>=R3VehicleModel.InventoryCapacity,true),compactButton))
+            if(GUI.Button(new Rect(970,340,136,40),GaragePurchaseCaption(kind,unlocked,price,model.Scrap,model.Inventory.Count>=R3VehicleModel.InventoryCapacity),compactButton))
             {
                 dismantleConfirmation=null;
                 if(run.GaragePurchase(kind,weapon,kind==R3PartKind.Wheel?CatalogWheelStyle(catalogBonusId):R3WheelStyle.Offroad,
@@ -247,6 +247,7 @@ namespace RoboRougelike.R1
                 {var purchased=model.Inventory.Last();garage.ChooseInventory(purchased.Id);DismissCatalog();garage.Message="Kupiono część. Kliknij pojazd, aby ją zamontować.";}
                 else catalogFeedback=garage.Message="Nie udało się kupić części.";
             }
+            DrawBuyFive(run,kind,weapon,new Rect(1112,340,138,40));
             GUI.enabled=true;
             var selected=items.FirstOrDefault(p=>p.Id==garage.SelectedInventoryId);
             if(selected==null)
