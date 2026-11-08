@@ -8,6 +8,10 @@ namespace RoboRougelike.R1
     public sealed partial class R1RunHUD
     {
         int portraitGarageTab;
+        string activitySaveFeedback;
+        static string ActivitySaveResult(bool saved,string previous,string current)=>saved?
+            (string.IsNullOrEmpty(current)?"Zapisano wyprawę.":current):
+            (!string.IsNullOrEmpty(current)&&current!=previous?current:"Nie udało się zapisać wyprawy.");
 
         void DrawPortraitGarage(R1RunController run)
         {
@@ -34,7 +38,8 @@ namespace RoboRougelike.R1
             for(int i=0;i<tabs.Length;i++)
             {
                 GUI.backgroundColor=portraitGarageTab==i?new Color(.3f,.9f,.9f):Color.white;
-                if(GUI.Button(new Rect(24+i*244,558,232,42),tabs[i],compactButton))portraitGarageTab=i;
+                if(GUI.Button(new Rect(24+i*244,558,232,42),tabs[i],compactButton))
+                {if(portraitGarageTab!=i)activitySaveFeedback=null;portraitGarageTab=i;}
             }
             GUI.backgroundColor=Color.white;
             if(portraitGarageTab==0)DrawPortraitWorkshop(run,selected);
@@ -107,7 +112,12 @@ namespace RoboRougelike.R1
             GUI.enabled=run.CanChooseLD02Arena;
             if(GUI.Button(new Rect(24,740,350,50),"Arena LD02 • walka",compactButton))run.ChooseLD02Arena();
             GUI.enabled=true;
-            if(!run.MapEditorSession&&GUI.Button(new Rect(394,740,350,50),"Zapisz wyprawę",compactButton))run.SaveRunCheckpoint();
+            if(!run.MapEditorSession&&GUI.Button(new Rect(394,740,350,50),"Zapisz wyprawę",compactButton))
+            {
+                string previous=run.RunSaveMessage;bool saved=run.SaveRunCheckpoint();
+                activitySaveFeedback=ActivitySaveResult(saved,previous,run.RunSaveMessage);
+            }
+            if(!string.IsNullOrEmpty(activitySaveFeedback))GUI.Label(new Rect(24,800,720,70),activitySaveFeedback,small);
         }
     }
 }

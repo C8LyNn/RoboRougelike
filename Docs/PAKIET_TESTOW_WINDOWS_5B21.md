@@ -70,3 +70,5 @@ Na ekranie wyboru pojazdu wyczyść pole seeda lub wpisz wartość spoza zakresu
 Na ekranie nagród otwórz magazyn, rozpocznij potwierdzanie rozmontowania i naciśnij Esc. Powinien zamknąć się magazyn, a potwierdzenie zostać anulowane; kolejne Esc powinno otworzyć pauzę. Sprawdź również przycisk powrotu i oba układy ekranu. Przygotowany test Unity oraz ręczne sprawdzenie: NOT RUN. ZIP 5b21 nie zawiera tej zmiany.
 
 Bezokiennie sprawdzono 16 przypadków czystych funkcji napisów i mapowania klawiszy na skompilowanym kodzie: 16/16 PASS. Nie obejmuje to wejścia klawiatury, logiki Esc ani obrazu gry. Szczegóły i ograniczenia: `Docs/HUD_OFFLINE_PURE_QA.md`; wymienione wyżej testy Unity i ręczne nadal pozostają do wykonania.
+
+W wyborze aktywności zapisz wyprawę i sprawdź, czy wynik pojawia się bez zamykania okna; po ponownym otwarciu nie powinien sugerować nowego zapisu. Przed sprawdzaniem wykonaj kopię istniejącego `checkpoint.json`, ponieważ udany zapis go zastępuje. Przygotowany test formatu komunikatu i ręczna kontrola zapisu: NOT RUN. ZIP 5b21 nie zawiera tej zmiany.
