@@ -52,6 +52,7 @@ public sealed class UI943PortraitCatalogActionsTests
         var item=run.VehicleModel.Inventory.Last();var hud=run.GetComponent<R1RunHUD>();Field(hud,"catalogOpen",true);
         int scrap=run.VehicleModel.Scrap;
         Invoke(hud,"PortraitCatalogDismantle",run,item.Id);
+        Assert.That((string)Field(hud,"catalogFeedback"),Does.Contain("Kliknij ponownie"));
         Invoke(hud,"PortraitCatalogSelectGroup",run,R3PartKind.Armor,R4WeaponKind.Basic,null);
         Invoke(hud,"PortraitCatalogDismantle",run,item.Id);
         Assert.That(ContainsId(run.VehicleModel,item.Id),Is.True,"Changing group must cancel a previous confirmation.");
@@ -63,6 +64,7 @@ public sealed class UI943PortraitCatalogActionsTests
         item.Health=.5f;int repair=run.VehicleModel.RepairCost(item);
         Invoke(hud,"PortraitCatalogRepair",run,item.Id);
         Assert.That(item.Health,Is.EqualTo(1));scrap-=repair;
+        Assert.That((string)Field(hud,"catalogFeedback"),Does.Contain("Naprawiono").And.Contain(repair+" Z"));
         Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));
         Invoke(hud,"PortraitCatalogDismantle",run,item.Id);
         Assert.That(ContainsId(run.VehicleModel,item.Id),Is.True,"Repair must cancel a previous dismantle confirmation.");
@@ -71,6 +73,7 @@ public sealed class UI943PortraitCatalogActionsTests
         Invoke(hud,"PortraitCatalogDismantle",run,item.Id);
         Assert.That(ContainsId(run.VehicleModel,item.Id),Is.False);
         Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap+value));
+        Assert.That((string)Field(hud,"catalogFeedback"),Does.Contain("Rozmontowano").And.Contain(value+" Z"));
     }
 
     [UnityTest] public IEnumerator DestroyedItemKeepsCatalogOpenUntilRepaired()

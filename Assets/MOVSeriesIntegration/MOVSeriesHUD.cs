@@ -89,6 +89,7 @@ namespace RoboRougelike.R1
             {var item=model.Inventory.First(p=>p.Kind==R3PartKind.BonusModule&&p.UpgradeId==bonus);DrawCatalogRow(run,R3PartKind.BonusModule,R4WeaponKind.Basic,bonus,R4WeaponDefinition.PartName(item),row++);}
             GUI.EndScrollView();GUI.backgroundColor=Color.white;
             DrawInventory(run);
+            if(!string.IsNullOrEmpty(catalogFeedback))GUI.Label(new Rect(25,675,900,30),catalogFeedback,small);
         }
         bool InCatalogGroup(R3PartState item,R3PartKind kind,R4WeaponKind weapon,string bonus) =>
             item.Kind==kind&&(kind!=R3PartKind.Gun||item.Weapon==weapon)&&(kind!=R3PartKind.BonusModule||item.UpgradeId==bonus)&&
@@ -102,7 +103,7 @@ namespace RoboRougelike.R1
             GUI.backgroundColor=chosen?new Color(.3f,.9f,.9f):Color.white;
             if(GUI.Button(new Rect((row%3)*290,(row/3)*55,280,49),$"{name}  × {count}"+(run.CanBuyTechnology(kind,weapon)?"":" • blokada"),compactButton))
             {
-                catalogGroup=kind;catalogWeapon=weapon;catalogBonusId=bonus;stackScroll=Vector2.zero;dismantleConfirmation=null;
+                catalogGroup=kind;catalogWeapon=weapon;catalogBonusId=bonus;stackScroll=Vector2.zero;dismantleConfirmation=null;catalogFeedback=null;
                 var garage=run.Garage;garage.SelectedPart=kind;garage.SelectedWeapon=weapon;
                 garage.SelectedInventoryId=null;garage.UseInventory=true;garage.SetTool(R41GarageTool.Mount);
                 inventoryOpen=true;
