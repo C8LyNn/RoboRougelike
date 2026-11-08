@@ -813,10 +813,10 @@ namespace RogueMachine.P12PipelineSafe
         void ConstrainOutwardBoundaryVelocity()
         {
             const float margin=.05f;
-            var p=movementBody.position;var v=movementBody.linearVelocity;
+            var p=movementBody.position;var v=movementBody.linearVelocity;var before=v;
             if((p.x>=movementBounds.max.x-margin&&v.x>0)||(p.x<=movementBounds.min.x+margin&&v.x<0))v.x=0;
             if((p.z>=movementBounds.max.z-margin&&v.z>0)||(p.z<=movementBounds.min.z+margin&&v.z<0))v.z=0;
-            movementBody.linearVelocity=v;
+            if(v!=before)movementBody.linearVelocity=v;
         }
 
         private bool TryBoundaryTangent(bool cutX,bool cutZ,float step,bool ramming,out Vector3 tangent)
