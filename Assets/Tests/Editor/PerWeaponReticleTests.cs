@@ -98,6 +98,42 @@ public sealed class PerWeaponReticleTests
         Assert.That(feedback.Aligned,Is.EqualTo(1));
         Assert.That(feedback.Clear,Is.Zero,"The aim caption must not advertise a clear path.");
     }
+    [Test]public void TwelveGunAimFeedbackDiagnostic()
+    {
+        view.transform.position=new Vector3(0,2,-10);
+        var aim=new Vector3(0,2,50);
+        for(int i=0;i<10;i++)Gun("extra "+i,Vector3.zero);
+        for(int i=0;i<assembly.Parts.Count;i++)
+        {
+            var gun=assembly.Parts[i];gun.transform.position=new Vector3(i-5.5f,2,0);
+            gun.Muzzle.forward=(aim-gun.Muzzle.position).normalized;
+            gun.gameObject.AddComponent<BoxCollider>().size=Vector3.one*.3f;
+        }
+        for(int x=0;x<10;x++)for(int z=0;z<8;z++)
+        {
+            var block=GameObject.CreatePrimitive(PrimitiveType.Cube);block.transform.SetParent(root.transform);
+            block.transform.position=new Vector3((x-4.5f)*.6f,0,(z-3.5f)*.6f);block.transform.localScale=Vector3.one*.5f;
+        }
+        wall=GameObject.CreatePrimitive(PrimitiveType.Cube);wall.name="Diagnostic target";
+        wall.transform.position=aim;wall.transform.localScale=new Vector3(30,10,1);
+        var targetCollider=wall.GetComponent<Collider>();
+        Physics.SyncTransforms();
+        var markers=new System.Collections.Generic.List<RoboRougelike.WeaponIntegration.RRLWeaponReticles.Marker>(12);
+        RoboRougelike.WeaponIntegration.RRLAimFeedback.Snapshot feedback=default;
+        void Sample()
+        {
+            feedback=RoboRougelike.WeaponIntegration.RRLAimFeedback.Evaluate(assembly,controller,aim,targetCollider);
+            RoboRougelike.WeaponIntegration.RRLWeaponReticles.Collect(view,assembly,controller,aim,markers);
+        }
+        for(int i=0;i<3;i++)Sample();
+        const int iterations=100;long before=GC.GetAllocatedBytesForCurrentThread();
+        var watch=System.Diagnostics.Stopwatch.StartNew();
+        for(int i=0;i<iterations;i++)Sample();
+        watch.Stop();long bytes=GC.GetAllocatedBytesForCurrentThread()-before;
+        Debug.Log($"[RETICLE_PERF] guns=12 armor=80 iterations={iterations} elapsed_ms={watch.Elapsed.TotalMilliseconds:F2} allocated_bytes={bytes}");
+        Assert.That(feedback.Guns,Is.EqualTo(12));Assert.That(feedback.Clear,Is.EqualTo(12));
+        Assert.That(markers.Count,Is.EqualTo(12));
+    }
     [Test]public void AreaWeaponsAndBarrelsFacingAwayStillHaveDistinctIndicators()
     {
         left.Weapon=R4WeaponKind.EmpEmitter;right.Weapon=R4WeaponKind.RotarySaw;
