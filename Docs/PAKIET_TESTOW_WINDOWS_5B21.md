@@ -72,3 +72,5 @@ Na ekranie nagród otwórz magazyn, rozpocznij potwierdzanie rozmontowania i nac
 Bezokiennie sprawdzono 16 przypadków czystych funkcji napisów i mapowania klawiszy na skompilowanym kodzie: 16/16 PASS. Nie obejmuje to wejścia klawiatury, logiki Esc ani obrazu gry. Szczegóły i ograniczenia: `Docs/HUD_OFFLINE_PURE_QA.md`; wymienione wyżej testy Unity i ręczne nadal pozostają do wykonania.
 
 W wyborze aktywności zapisz wyprawę i sprawdź, czy wynik pojawia się bez zamykania okna; po ponownym otwarciu nie powinien sugerować nowego zapisu. Przed sprawdzaniem wykonaj kopię istniejącego `checkpoint.json`, ponieważ udany zapis go zastępuje. Pięć bezokiennych przypadków funkcji komunikatu: PASS; test Unity oraz rzeczywisty zapis i ręczna kontrola: NOT RUN. Szczegóły: `Docs/ACTIVITY_SAVE_FEEDBACK_QA.md`. ZIP 5b21 nie zawiera tej zmiany.
+
+W poziomym menu sprawdź komunikat po nieudanym wczytaniu: powinien mieć osobny szerszy wiersz, bez nachodzenia na opis wyprawy i ostrzeżenie o seedzie. Test geometrii przygotowany w kodzie; Unity i widoczność długich komunikatów w Playerze: NOT RUN. ZIP 5b21 nie zawiera zmiany.
