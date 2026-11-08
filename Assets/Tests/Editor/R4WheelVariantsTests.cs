@@ -237,7 +237,7 @@ public sealed class R4WheelVariantsTests
         {
             if(small)design.Parts.Add(new R3PartState(new Vector3Int(x,1,z),R3PartKind.Armor));
             design.Parts.Add(new R3PartState(new Vector3Int(x,0,z),R3PartKind.Wheel){WheelStyle=style,
-                ContactMask=small?R3MountingGrid.FaceBit(Vector3Int.up):R3MountingGrid.AllFaces});
+                ContactMask=small?R3MountingGrid.FaceBit(Vector3Int.up):3});
         }
         var model=new R3VehicleModel(design);var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);
         floor.transform.position=new Vector3(1000,-.1f,1000);floor.transform.localScale=new Vector3(30,.2f,30);
