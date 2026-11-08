@@ -144,6 +144,7 @@ public class R3GaragePlayTests
         foreach (float offset in new[] { -1.05f, 1.05f })
         {
             var wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            wall.name=offset<0?"Boundary wall south":"Boundary wall north";
             wall.transform.position = center + new Vector3(5, 1.5f, offset);
             wall.transform.localScale = new Vector3(5, 3, .2f);
         }
@@ -162,7 +163,9 @@ public class R3GaragePlayTests
                 var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
                 var tangent=(Vector3)enemy.GetType().GetField("obstacleTangent",flags).GetValue(enemy);
                 var until=(float)enemy.GetType().GetField("navigationUntil",flags).GetValue(enemy);
-                Debug.Log($"Boundary retreat trace t={Time.time:F2} pos={body.position} vel={body.linearVelocity} yaw={body.rotation.eulerAngles.y:F1} spin={body.angularVelocity.y:F2} grounded={drive.GroundedWheels} tangent={tangent} nav={until-Time.time:F2} dead={enemy.IsDefeated}");
+                var contacts=new ContactPoint[64];int n=body.GetContacts(contacts);
+                var surfaces=string.Join(",",contacts.Take(n).Select(c=>c.otherCollider!=null?c.otherCollider.name:"null").Distinct());
+                Debug.Log($"Boundary retreat trace t={Time.time:F2} pos={body.position} vel={body.linearVelocity} yaw={body.rotation.eulerAngles.y:F1} spin={body.angularVelocity.y:F2} grounded={drive.GroundedWheels} tangent={tangent} nav={until-Time.time:F2} dead={enemy.IsDefeated} contacts={surfaces}");
             }
         }
         Assert.That(grounded, Is.GreaterThan(0));
