@@ -35,7 +35,7 @@ namespace RoboRougelike.R1
             GUI.Label(new Rect(24,20,720,42),"ZWYCIĘSTWO",title);
             GUI.Label(new Rect(24,68,720,28),$"{(run.LastActivityWasReactor?"Reaktor obroniony":$"Starcie {run.Progress.CompletedEncounters}/{run.Progress.TotalEncounters}")} • +{run.LastScrapReward} Z"+
                 (string.IsNullOrEmpty(run.TechnologyMessage)?" • wybierz nagrody":run.Technology?.Error!=null?" • problem zapisu technologii":" • nowa technologia"),body);
-            GUI.Label(new Rect(24,100,720,28),"MODUŁ BONUSOWY • WYBIERZ 1 Z 3",heading);
+            GUI.Label(new Rect(24,100,720,28),"BONUS • [1 / 2 / 3]",heading);
             var offers=run.Progress.Offers.ToArray();
             for(int i=0;i<offers.Length;i++)
             {
@@ -43,11 +43,11 @@ namespace RoboRougelike.R1
                 GUI.Label(new Rect(card.x+12,card.y+5,530,24),upgrade.Title,body);
                 GUI.Label(new Rect(card.x+12,card.y+30,530,60),upgrade.Description,small);
                 bool chosen=selectedBonus==i;GUI.backgroundColor=chosen?new Color(.35f,.85f,.65f):Color.white;
-                if(GUI.Button(new Rect(card.x+555,card.y+22,150,52),chosen?"Wybrano ✓":"Wybierz",compactButton))PortraitRewardSelectBonus(i);
+                if(GUI.Button(new Rect(card.x+555,card.y+22,150,52),chosen?"Wybrano ✓":$"Wybierz [{i+1}]",compactButton))PortraitRewardSelectBonus(i);
                 GUI.backgroundColor=Color.white;
             }
             if(offers.Length==0)GUI.Label(new Rect(36,145,680,50),"Brak propozycji modułów bonusowych.",small);
-            GUI.Label(new Rect(24,442,720,30),"ODZYSK • WYBIERZ 1 ZESTAW",heading);
+            GUI.Label(new Rect(24,442,720,30),"ZESTAW • [Q / W / E]",heading);
             for(int i=0;i<rewardBaskets.Count;i++)
             {
                 var basket=rewardBaskets[i];var card=new Rect(24,480+i*103,720,98);Panel(card);
@@ -57,7 +57,8 @@ namespace RoboRougelike.R1
                 GUI.Label(new Rect(card.x+10,card.y+31,510,58),string.Join(", ",basket.Items.Select(p=>R4WeaponDefinition.PartName(p.ToPart())))+"\nOdbiór: 100% HP",small);
                 bool chosen=selectedBasket==i;
                 GUI.backgroundColor=chosen?new Color(.35f,.85f,.65f):Color.white;
-                if(GUI.Button(new Rect(card.x+555,card.y+23,150,52),chosen?"Wybrano ✓":"Wybierz",compactButton))ChooseRewardBasket(i);
+                string key=i<3?"QWE"[i].ToString():null;
+                if(GUI.Button(new Rect(card.x+555,card.y+23,150,52),chosen?"Wybrano ✓":key!=null?$"Wybierz [{key}]":"Wybierz",compactButton))ChooseRewardBasket(i);
                 GUI.backgroundColor=Color.white;
             }
             if(rewardBaskets.Count==0)GUI.Label(new Rect(36,495,680,50),"Brak części do odzyskania.",small);
@@ -69,7 +70,7 @@ namespace RoboRougelike.R1
                 $"Niewybrane części → +{ledger.PreviewScrap(run.VehicleModel,lootSelection)} Z. Bonus jest nieaktywny do montażu.\n"+
                 (room?"":"Brak miejsca na nagrody. Otwórz magazyn i rozmontuj część."),small);
             GUI.enabled=selectedBonus>=0&&room&&(selectedBasket>=0||rewardBaskets.Count==0);
-            if(GUI.Button(PortraitRewardConfirm(),"Zatwierdź oba wybory i kontynuuj",button))PortraitRewardConfirm(run);
+            if(GUI.Button(PortraitRewardConfirm(),"Zatwierdź oba wybory [Enter]",button))PortraitRewardConfirm(run);
             GUI.enabled=true;
         }
 

@@ -10,6 +10,10 @@ using RoboRougelike.R4;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.TestTools;
+#if ENABLE_INPUT_SYSTEM
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
+#endif
 
 public sealed class UI943PortraitRewardsActionsTests
 {
@@ -61,5 +65,36 @@ public sealed class UI943PortraitRewardsActionsTests
         Assert.That(ContainsId(run.VehicleModel,choices[7].Id),Is.False);
         Assert.That((bool)Call("PortraitRewardConfirm",run),Is.False,"Nie wolno wypłacić nagród dwukrotnie.");
     }
+#if ENABLE_INPUT_SYSTEM
+    [UnityTest] public IEnumerator BasketKeysSelectWithoutClaimAndAreIgnoredInInventory()
+    {
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        for(int i=0;i<300&&run.Progress.State==R1RunState.Combat&&run.PickupGraceRemaining<=0;i++)yield return null;
+        if(run.PickupGraceRemaining>0)
+            typeof(R1RunController).GetField("pickupGraceDeadline",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(run,Time.time);
+        for(int i=0;i<300&&run.Progress.State!=R1RunState.Salvage;i++)yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));Call("TrackRewardLedger",run.Salvage);
+        var baskets=(IReadOnlyList<R4SalvageBasket>)Field("rewardBaskets");
+        Assert.That(baskets.Count,Is.GreaterThan(1));
+        var oldSettings=InputSystem.settings;var settings=UnityEngine.Object.Instantiate(oldSettings);
+        InputSystem.settings=settings;settings.backgroundBehavior=InputSettings.BackgroundBehavior.IgnoreFocus;
+        settings.editorInputBehaviorInPlayMode=InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
+        var keyboard=InputSystem.AddDevice<Keyboard>();
+        try
+        {
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.W));InputSystem.Update();
+            hud.ReadRewardInput(keyboard);
+            Assert.That((int)Field("selectedBasket"),Is.EqualTo(1));
+            Assert.That((HashSet<string>)Field("lootSelection"),Is.EquivalentTo(baskets[1].Items.Select(p=>p.Id)));
+            Assert.That(run.Salvage.Closed,Is.False,"Selecting a basket must not claim the rewards.");
+            Field("rewardInventoryOpen",true);
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState());InputSystem.Update();
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Q));InputSystem.Update();
+            hud.ReadRewardInput(keyboard);
+            Assert.That((int)Field("selectedBasket"),Is.EqualTo(1),"Inventory must own its input.");
+        }
+        finally {if(keyboard.added)InputSystem.RemoveDevice(keyboard);InputSystem.settings=oldSettings;UnityEngine.Object.Destroy(settings);}
+    }
+#endif
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }
