@@ -22,6 +22,28 @@ public sealed class UI943PortraitCatalogActionsTests
     static object Field(R1RunHUD hud,string name)=>typeof(R1RunHUD).GetField(name,BindingFlags.Instance|BindingFlags.NonPublic).GetValue(hud);
     static bool ContainsId(R3VehicleModel model,string id)=>model.Inventory.Any(p=>p.Id==id);
 
+    [UnityTest] public IEnumerator DestroyedItemKeepsCatalogOpenUntilRepaired()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float timeout=Time.realtimeSinceStartup+15;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<timeout)yield return null;
+        var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        Assert.That(run.OpenSandboxGarage(),Is.True);run.VehicleModel.Award(100);
+        Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
+        var item=run.VehicleModel.Inventory.Last();item.Health=0;
+        var hud=run.GetComponent<R1RunHUD>();Field(hud,"catalogOpen",true);
+        int scrap=run.VehicleModel.Scrap,quote=run.VehicleModel.RepairCost(item);
+        Invoke(hud,"PortraitCatalogSelectItem",run,item.Id);
+        Assert.That((bool)Field(hud,"catalogOpen"),Is.True,"A wreck cannot be mounted yet; retain access to repair and fusion.");
+        Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(item.Id));
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));Assert.That(item.Health,Is.Zero);
+        Invoke(hud,"PortraitCatalogRepair",run,item.Id);
+        Assert.That(item.Health,Is.EqualTo(1));Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap-quote));
+        Assert.That(run.VehicleModel.Inventory.Any(p=>p.Id==item.Id),Is.True,"Repair must retain the owned instance.");
+        Invoke(hud,"PortraitCatalogSelectItem",run,item.Id);
+        Assert.That((bool)Field(hud,"catalogOpen"),Is.False,"The repaired part can now be selected for mounting.");
+    }
+
     [UnityTest] public IEnumerator IncompleteGarageKeepsActionFeedbackAlongsideDeploymentWarning()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();

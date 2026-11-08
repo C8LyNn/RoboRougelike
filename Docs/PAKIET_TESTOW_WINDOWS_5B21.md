@@ -32,3 +32,5 @@ Zmiana opisów modułów bonusowych powstała **po buildzie 5b21** i nie znajduj
 Na kolejnym buildzie sprawdź też opis baterii: lista grup powinna mówić ogólnie „Bateria”, a poszczególne egzemplarze pokazywać pojemność właściwą dla poziomu: T1 +100, T2 +200, T3 +400. Sama pojemność energii nie była zmieniana.
 
 W następnym buildzie sprawdź również, czy garaż wyjaśnia brak złomu lub pełny magazyn, czy naprawa sprawnej części jest oznaczona jako niepotrzebna oraz czy uszkodzony egzemplarz można znaleźć i naprawić. Porównaj masę i nominalną siłę tego samego koła na różnych poziomach; wartości dotyczą pełnego HP. Zweryfikuj czytelność długich nazw w poziomym i pionowym układzie. Te zmiany nie są w ZIP-ie 5b21.
+
+W kolejnym buildzie sprawdź nową szybką naprawę obok każdej części w poziomym katalogu. Wybierz wrak z zerowym HP: katalog powinien pozostać otwarty, aby można było go naprawić, rozmontować lub wybrać do łączenia. Po naprawie wybór części powinien wrócić do montażu. Sprawdź czytelność długich nazw i ceny w wąskim wierszu. Ta zmiana również nie jest w ZIP-ie 5b21.

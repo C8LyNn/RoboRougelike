@@ -84,7 +84,7 @@ namespace RoboRougelike.R1
                 var item=items[i];var rect=PortraitCatalogItemRow(i);
                 GUI.Label(new Rect(rect.x,rect.y,rect.width,28),$"{R4WeaponDefinition.PartName(item)} • HP {item.Health*100:0}%",small);
                 GUI.backgroundColor=run.Garage.SelectedInventoryId==item.Id?new Color(.3f,.9f,.9f):Color.white;
-                if(GUI.Button(new Rect(rect.x,rect.y+31,102,60),"Wybierz\ndo montażu",compactButton))PortraitCatalogSelectItem(run,item.Id);
+                if(GUI.Button(new Rect(rect.x,rect.y+31,102,60),item.Health<=0?"Szczegóły\nwraku":"Wybierz\ndo montażu",compactButton))PortraitCatalogSelectItem(run,item.Id);
                 GUI.backgroundColor=Color.white;
                 int repair=model.RepairCost(item);GUI.enabled=repair>0&&model.Scrap>=repair;
                 if(GUI.Button(new Rect(rect.x+108,rect.y+31,102,60),GarageRepairCaption(item,repair,model.Scrap),compactButton))PortraitCatalogRepair(run,item.Id);
@@ -117,8 +117,7 @@ namespace RoboRougelike.R1
             var garage=run.Garage;garage.SelectedPart=kind;garage.SelectedWeapon=weapon;
             garage.SelectedInventoryId=null;garage.UseInventory=true;garage.SetTool(R41GarageTool.Mount);inventoryOpen=true;
         }
-        private void PortraitCatalogSelectItem(R1RunController run,string id)
-        {run.Garage.ChooseInventory(id);dismantleConfirmation=null;catalogOpen=false;}
+        private void PortraitCatalogSelectItem(R1RunController run,string id)=>SelectCatalogItem(run,id);
         private void PortraitCatalogPurchase(R1RunController run,R3PartKind kind,R4WeaponKind weapon)
         {
             if(run.GaragePurchase(kind,weapon,kind==R3PartKind.Wheel?CatalogWheelStyle(catalogBonusId):R3WheelStyle.Offroad,
