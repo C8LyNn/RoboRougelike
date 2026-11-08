@@ -726,6 +726,7 @@ namespace RogueMachine.P12PipelineSafe
             var drive=GetComponent<RoboRougelike.R6.R6VehicleDrive>();
             if(drive!=null)drive.StepWorld(Vector3.zero,0);
             if (!combatActive || IsDefeated || movementBody == null || playerRoot == null || moveSpeed <= 0) return;
+            ConstrainOutwardBoundaryVelocity();
             Vector3 toward = Vector3.ProjectOnPlane(playerRoot.position - movementBody.position, Vector3.up);
             float distance = toward.magnitude;
             if (distance < 0.01f) return;
@@ -805,6 +806,17 @@ namespace RogueMachine.P12PipelineSafe
             next=movementBody.position+desired*step;
             next.x=Mathf.Clamp(next.x,movementBounds.min.x,movementBounds.max.x);next.z=Mathf.Clamp(next.z,movementBounds.min.z,movementBounds.max.z);
             if(drive!=null)drive.StepToward(desired,moveSpeed * Mathf.Lerp(0.3f,1,wheelFactor),turnSpeed);
+        }
+
+        // Steering toward a boundary tangent does not remove existing outward
+        // momentum. Cancel only that component before it carries the body out.
+        void ConstrainOutwardBoundaryVelocity()
+        {
+            const float margin=.05f;
+            var p=movementBody.position;var v=movementBody.linearVelocity;var before=v;
+            if((p.x>=movementBounds.max.x-margin&&v.x>0)||(p.x<=movementBounds.min.x+margin&&v.x<0))v.x=0;
+            if((p.z>=movementBounds.max.z-margin&&v.z>0)||(p.z<=movementBounds.min.z+margin&&v.z<0))v.z=0;
+            if(v!=before)movementBody.linearVelocity=v;
         }
 
         private bool TryBoundaryTangent(bool cutX,bool cutZ,float step,bool ramming,out Vector3 tangent)
