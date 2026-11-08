@@ -33,6 +33,7 @@ namespace RoboRougelike.R1
             if(MapQuitPending&&mapQuitWarningFrame==Time.frameCount)return false;
             if(ConfirmMapEditorExit(true))return true;
             mapQuitWarningFrame=Time.frameCount;
+            EditorMessage="Niezapisane zmiany mapy zostaną utracone. Zamknij okno ponownie lub potwierdź wyjście w menu.";
             if(!Paused)TogglePause();
             return false;
         }

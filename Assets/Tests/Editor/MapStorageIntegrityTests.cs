@@ -142,6 +142,7 @@ public sealed class MapStorageIntegrityTests
         Assert.That((bool)handler.Invoke(run,null),Is.False);
         Assert.That(run.MapQuitPending,Is.True);Assert.That(run.Paused,Is.True);
         Assert.That(run.QuitRequested,Is.False);Assert.That(run.EditorMessage,Does.Contain("Niezapisane"));
+        Assert.That(run.EditorMessage,Does.Contain("Zamknij okno ponownie"));
         Assert.That((bool)handler.Invoke(run,null),Is.False,"Duplicate close events in one frame must not confirm.");
         yield return null;
         Assert.That(run.EditorDraft.Place(MapItemKind.Ground,1,0,0),Is.True);
