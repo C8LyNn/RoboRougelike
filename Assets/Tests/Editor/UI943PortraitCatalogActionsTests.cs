@@ -105,6 +105,14 @@ public sealed class UI943PortraitCatalogActionsTests
         var wedge=model.Inventory.Last();Assert.That(wedge.ArmorShape,Is.EqualTo(R3ArmorShape.Wedge));
         Assert.That((bool)Invoke(hud,"InCatalogGroup",wedge,R3PartKind.Armor,R4WeaponKind.Basic,"armor:wedge"),Is.True);
         Assert.That((bool)Invoke(hud,"InCatalogGroup",wedge,R3PartKind.Armor,R4WeaponKind.Basic,null),Is.False);
+        foreach(var pair in new[]{("armor:half",R3ArmorShape.HalfBlock),("armor:pyramid",R3ArmorShape.Pyramid)})
+        {
+            Invoke(hud,"PortraitCatalogSelectGroup",run,R3PartKind.Armor,R4WeaponKind.Basic,pair.Item1);
+            Invoke(hud,"PortraitCatalogPurchase",run,R3PartKind.Armor,R4WeaponKind.Basic);
+            var item=model.Inventory.Last();Assert.That(item.ArmorShape,Is.EqualTo(pair.Item2));
+            Assert.That((bool)Invoke(hud,"InCatalogGroup",item,R3PartKind.Armor,R4WeaponKind.Basic,pair.Item1),Is.True);
+            Assert.That((bool)Invoke(hud,"InCatalogGroup",item,R3PartKind.Armor,R4WeaponKind.Basic,"armor:wedge"),Is.False);
+        }
         yield return null;
     }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying)yield return new ExitPlayMode();}

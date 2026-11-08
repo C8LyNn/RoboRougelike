@@ -186,7 +186,7 @@ namespace RoboRougelike.R1
             {GUI.Label(new Rect(970,85,280,120),"Wybierz stos części z listy po lewej. Zobaczysz tu każdy egzemplarz i jego HP.",small);return;}
             var kind=catalogGroup.Value;var weapon=catalogWeapon;
             var items=model.Inventory.Where(p=>InCatalogGroup(p,kind,weapon,catalogBonusId)).ToArray();
-            string name=kind==R3PartKind.Armor&&CatalogArmorShape(catalogBonusId)==R3ArmorShape.Wedge?"Pancerz • klin":
+            string name=kind==R3PartKind.Armor?R4WeaponDefinition.ArmorName(CatalogArmorShape(catalogBonusId)):
                 kind==R3PartKind.Wheel?(CatalogWheelStyle(catalogBonusId)==R3WheelStyle.Slick?"Koło szosowe":"Koło terenowe"):
                 kind==R3PartKind.BonusModule&&items.Length>0?R4WeaponDefinition.PartName(items[0]):R4WeaponDefinition.PartName(kind,weapon);
             GUI.Label(new Rect(970,70,280,48),$"{name}  × {items.Length}",body);
