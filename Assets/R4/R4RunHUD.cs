@@ -268,7 +268,7 @@ namespace RoboRougelike.R1
             var item=run.VehicleModel.Inventory.FirstOrDefault(p=>p.Id==id);
             if(item==null)return;
             SelectCatalogDetails(run,id);
-            if(item.Health<=0){run.Garage.Message="Zniszczoną część napraw przed montażem.";return;}
+            if(item.Health<=0){catalogFeedback=run.Garage.Message="Zniszczoną część napraw przed montażem.";return;}
             DismissCatalog();
         }
         private void DrawFusionButton(R1RunController run,R3PartState selected,Rect rect)

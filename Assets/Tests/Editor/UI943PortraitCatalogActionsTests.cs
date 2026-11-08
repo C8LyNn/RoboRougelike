@@ -196,6 +196,7 @@ public sealed class UI943PortraitCatalogActionsTests
         int scrap=run.VehicleModel.Scrap,quote=run.VehicleModel.RepairCost(item);
         Invoke(hud,"PortraitCatalogSelectItem",run,item.Id);
         Assert.That((bool)Field(hud,"catalogOpen"),Is.True,"A wreck cannot be mounted yet; retain access to repair and fusion.");
+        Assert.That((string)Field(hud,"catalogFeedback"),Does.Contain("napraw"),"Repair guidance must be visible in the still-open catalog.");
         Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(item.Id));
         Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));Assert.That(item.Health,Is.Zero);
         var playerBeforeRepair=run.Player;
