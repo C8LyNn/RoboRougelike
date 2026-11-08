@@ -22,6 +22,17 @@ public sealed class UI943PortraitCatalogActionsTests
     static object Field(R1RunHUD hud,string name)=>typeof(R1RunHUD).GetField(name,BindingFlags.Instance|BindingFlags.NonPublic).GetValue(hud);
     static bool ContainsId(R3VehicleModel model,string id)=>model.Inventory.Any(p=>p.Id==id);
 
+    [TestCase(false,"Brak sprawnej broni.",R3DriveKind.Wheels,"Start zablokowany: Brak sprawnej broni.")]
+    [TestCase(false,null,R3DriveKind.Omni,"Start zablokowany: Sprawdź konstrukcję.")]
+    [TestCase(true,null,R3DriveKind.Omni,"Wyścig, tryby drogowe i generowana arena wymagają kół.")]
+    [TestCase(true,null,R3DriveKind.Wheels,null)]
+    public void ActivityHintExplainsExistingAvailability(bool ready,string reason,R3DriveKind drive,string expected)
+    {
+        var method=typeof(R1RunHUD).GetMethod("ActivityReadinessHint",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        Assert.That((string)method.Invoke(null,new object[]{ready,reason,drive}),Is.EqualTo(expected));
+    }
+
     [TestCase(true,null,"Zapisano wyprawę w garażu.","Zapisano wyprawę w garażu.")]
     [TestCase(false,"stary","Nie zapisano wyprawy: brak miejsca.","Nie zapisano wyprawy: brak miejsca.")]
     [TestCase(false,"Zapisano wyprawę.","Zapisano wyprawę.","Nie udało się zapisać wyprawy.")]
