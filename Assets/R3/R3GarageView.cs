@@ -53,6 +53,7 @@ namespace RoboRougelike.R3
         private int shownContacts=-1;
         private bool shownMirrored;
         private R3WheelStyle shownWheelStyle;
+        private R3ArmorShape shownArmorShape;
         private bool shownWheelMirrored;
         private readonly R3PartState previewWheel=new R3PartState(default,R3PartKind.Wheel);
         public Vector3Int SelectedRotation {get;private set;}
@@ -253,7 +254,7 @@ namespace RoboRougelike.R3
             item.GetComponent<Renderer>().sharedMaterial=material;
             if(R3VehicleModel.UsesWideFootprint(kind))R3BonusModuleGeometry.ConfigureCube(item,false);
             var collider=item.GetComponent<Collider>();collider.enabled=false;Destroy(collider);
-            if(kind==R3PartKind.Armor&&!plan&&Tool==R41GarageTool.Mount)R41PartGeometry.TryAttachArmorCube(item.transform);
+            if(kind==R3PartKind.Armor&&!plan&&Tool==R41GarageTool.Mount)R41PartGeometry.TryAttachArmor(item.transform,Owned?.ArmorShape??R3ArmorShape.Cube);
             if(!R3VehicleModel.UsesWideFootprint(kind)&&(Tool==R41GarageTool.Mount||plan))
             {
                 var payload=R41PartGeometry.Payload(item.transform,kind,weapon,material,false,out var muzzle);
@@ -307,11 +308,13 @@ namespace RoboRougelike.R3
         {
             if(previewRoot==null||run.VehicleModel==null)return;
             var wheelStyle=Owned?.WheelStyle??R3WheelStyle.Offroad;
+            var armorShape=Owned?.ArmorShape??R3ArmorShape.Cube;
             previewWheel.Cell=Cell;previewWheel.RotationQuarterTurns=SelectedRotation;previewWheel.ContactMask=SelectedContactMask;
             bool wheelMirrored=MountKind==R3PartKind.Wheel&&R4WheelArt.MirrorForMount(run.VehicleModel,previewWheel);
             if(marker==null||shownKind!=MountKind||shownWeapon!=MountWeapon||
                shownTool!=Tool||shownRotation!=SelectedRotation||shownContacts!=SelectedContactMask||
                (MountKind==R3PartKind.Wheel&&(shownWheelStyle!=wheelStyle||shownWheelMirrored!=wheelMirrored))||
+               (MountKind==R3PartKind.Armor&&shownArmorShape!=armorShape)||
                ((MountKind==R3PartKind.OmniDrive||MountKind==R3PartKind.CrawlerTrack)&&shownMirrored!=(Cell.x>0)))
             {
                 if(marker!=null){marker.SetActive(false);Destroy(marker);}
@@ -321,6 +324,7 @@ namespace RoboRougelike.R3
                 shownKind=MountKind;shownWeapon=MountWeapon;shownTool=Tool;shownRotation=SelectedRotation;
                 shownContacts=SelectedContactMask;shownMirrored=Cell.x>0;
                 shownWheelStyle=wheelStyle;shownWheelMirrored=wheelMirrored;
+                shownArmorShape=armorShape;
             }
             marker.SetActive(HasTarget);marker.transform.localPosition=(Vector3)Cell*R41PartGeometry.Grid;
             var material=Tool==R41GarageTool.Mount?(PreviewValid?palette.Valid:palette.Invalid):palette.Selection;
@@ -406,6 +410,7 @@ namespace RoboRougelike.R3
                     var next=run.VehicleModel.Inventory.Where(p=>p.Kind==mounted.Kind&&p.Health>0&&
                         (p.Kind!=R3PartKind.Gun||p.Weapon==mounted.Weapon)&&
                         (p.Kind!=R3PartKind.Wheel||p.WheelStyle==mounted.WheelStyle)&&
+                        (p.Kind!=R3PartKind.Armor||p.ArmorShape==mounted.ArmorShape)&&
                         (p.Kind!=R3PartKind.BonusModule||p.UpgradeId==mounted.UpgradeId))
                         .OrderByDescending(p=>p.Health).FirstOrDefault();
                     SelectedInventoryId=next?.Id;

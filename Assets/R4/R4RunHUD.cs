@@ -186,7 +186,8 @@ namespace RoboRougelike.R1
             {GUI.Label(new Rect(970,85,280,120),"Wybierz stos części z listy po lewej. Zobaczysz tu każdy egzemplarz i jego HP.",small);return;}
             var kind=catalogGroup.Value;var weapon=catalogWeapon;
             var items=model.Inventory.Where(p=>InCatalogGroup(p,kind,weapon,catalogBonusId)).ToArray();
-            string name=kind==R3PartKind.Wheel?(CatalogWheelStyle(catalogBonusId)==R3WheelStyle.Slick?"Koło szosowe":"Koło terenowe"):
+            string name=kind==R3PartKind.Armor&&CatalogArmorShape(catalogBonusId)==R3ArmorShape.Wedge?"Pancerz • klin":
+                kind==R3PartKind.Wheel?(CatalogWheelStyle(catalogBonusId)==R3WheelStyle.Slick?"Koło szosowe":"Koło terenowe"):
                 kind==R3PartKind.BonusModule&&items.Length>0?R4WeaponDefinition.PartName(items[0]):R4WeaponDefinition.PartName(kind,weapon);
             GUI.Label(new Rect(970,70,280,48),$"{name}  × {items.Length}",body);
             stackScroll=GUI.BeginScrollView(new Rect(970,118,280,210),stackScroll,new Rect(0,0,255,Mathf.Max(210,items.Length*40)));
@@ -202,7 +203,8 @@ namespace RoboRougelike.R1
             GUI.enabled=unlocked&&kind!=R3PartKind.BonusModule&&model.Scrap>=price&&model.Inventory.Count<R3VehicleModel.InventoryCapacity;
             if(GUI.Button(new Rect(970,340,280,40),unlocked?$"Kup do magazynu — {price} Z":"Pokonaj wroga z tą bronią",compactButton))
             {
-                if(run.GaragePurchase(kind,weapon,kind==R3PartKind.Wheel?CatalogWheelStyle(catalogBonusId):R3WheelStyle.Offroad))
+                if(run.GaragePurchase(kind,weapon,kind==R3PartKind.Wheel?CatalogWheelStyle(catalogBonusId):R3WheelStyle.Offroad,
+                    kind==R3PartKind.Armor?CatalogArmorShape(catalogBonusId):R3ArmorShape.Cube))
                 {var purchased=model.Inventory.Last();garage.ChooseInventory(purchased.Id);catalogOpen=false;garage.Message="Kupiono część. Kliknij pojazd, aby ją zamontować.";}
                 else garage.Message="Nie udało się kupić części.";
             }

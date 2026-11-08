@@ -175,7 +175,7 @@ namespace RoboRougelike.R3
             P12_PipelineSafePlayerBlock core=null;
             foreach(var state in model.Parts.Where(p=>p.Health>0))
             {
-                var item=GameObject.CreatePrimitive(PrimitiveType.Cube);
+                var item=R41PartGeometry.CreateMountingBlock(state.Kind==R3PartKind.Armor?state.ArmorShape:R3ArmorShape.Cube);
                 item.name=state.Kind+" "+state.Cell; item.transform.SetParent(root.transform,false);
                 item.transform.localPosition=(Vector3)state.Cell*0.55f;
                 item.transform.localRotation=R3MountingGrid.Rotation(state.RotationQuarterTurns);
@@ -198,7 +198,7 @@ namespace RoboRougelike.R3
                 part.Id=state.Id;part.Weapon=state.Weapon;
                 part.UpgradeEffect=state.UpgradeEffect;part.UpgradeAmount=state.UpgradeAmount;
                 assembly.Parts.Add(part);
-                if(state.Kind==R3PartKind.Armor&&!wide)RoboRougelike.R4_1.R41PartGeometry.TryAttachArmorCube(item.transform);
+                if(state.Kind==R3PartKind.Armor&&!wide)R41PartGeometry.TryAttachArmor(item.transform,state.ArmorShape);
                 Transform payload=null;Transform partMuzzle=null;
                 if(!wide)payload=R41PartGeometry.Payload(item.transform,state.Kind,state.Weapon,
                     state.Kind==R3PartKind.Gun?palette.Weapons[(int)state.Weapon]:palette.Parts[(int)state.Kind],true,out partMuzzle);
