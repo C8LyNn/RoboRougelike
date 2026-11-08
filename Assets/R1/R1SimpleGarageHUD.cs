@@ -317,7 +317,7 @@ namespace RoboRougelike.R1
             Panel(new Rect(0,0,1280,76));Panel(new Rect(0,76,270,644));
             GUI.Label(new Rect(14,10,150,34),"GARAŻ",heading);
             GUI.Label(new Rect(14,43,245,25),$"Złom: {model.Scrap} • {model.Design.Name}",small);
-            string[] labels={"Montuj","Zaznacz","Napraw","Zdejmij"};
+            string[] labels={"1 Montuj","2 Zaznacz","3 Napraw","4 Zdejmij"};
             for(int i=0;i<labels.Length;i++)
             {
                 compactButton.normal.background=garage.Tool==(R41GarageTool)i?buttonPressed:buttonNormal;GUI.backgroundColor=Color.white;
@@ -384,7 +384,7 @@ namespace RoboRougelike.R1
             var garage=run.Garage;var model=run.VehicleModel;GUI.enabled=!garageOptionsOpen;
             GUI.Label(new Rect(24,12,185,40),"GARAŻ",heading);
             GUI.Label(new Rect(210,18,530,35),$"{model.Design.Name} • Złom: {model.Scrap}",body);
-            string[] labels={"Montuj","Zaznacz","Napraw","Zdejmij"};
+            string[] labels={"1 Montuj","2 Zaznacz","3 Napraw","4 Zdejmij"};
             for(int i=0;i<labels.Length;i++)
             {
                 compactButton.normal.background=garage.Tool==(R41GarageTool)i?buttonPressed:buttonNormal;GUI.backgroundColor=Color.white;
