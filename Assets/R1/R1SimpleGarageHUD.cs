@@ -20,10 +20,17 @@ namespace RoboRougelike.R1
         static string GarageDriveSummary(R1RunController run)
         {
             if(run?.VehicleModel==null||run.Player==null)return "Dane napędu są niedostępne.";
-            if(run.VehicleModel.SelectedDrive!=R3DriveKind.Wheels)return "Wskaźniki poniżej dotyczą napędu kołowego.";
-            var drive=run.Player.GetComponent<RoboRougelike.R6.R6VehicleDrive>();
             var body=run.Player.GetComponent<Rigidbody>();
-            if(drive==null||body==null)return "Dane napędu są niedostępne.";
+            if(body==null)return "Dane napędu są niedostępne.";
+            if(run.VehicleModel.SelectedDrive!=R3DriveKind.Wheels)
+            {
+                string name=run.VehicleModel.SelectedDrive==R3DriveKind.Tracks?"Gąsienice":
+                    run.VehicleModel.SelectedDrive==R3DriveKind.Omni?"Omni":
+                    run.VehicleModel.SelectedDrive==R3DriveKind.Hover?"Hover":"Nieznany";
+                return $"Masa: {body.mass:0} kg • Napęd: {name}\nSilniki kół wspomagają wyłącznie napęd kołowy.";
+            }
+            var drive=run.Player.GetComponent<RoboRougelike.R6.R6VehicleDrive>();
+            if(drive==null)return "Dane napędu są niedostępne.";
             float bonus=(RoboRougelike.R6.R6VehicleDrive.MotorMultiplier(drive.ActivePowerUnits)-1)*100;
             return $"Masa: {body.mass:0} kg • Sprawne koła: {drive.Wheels}\n"+
                 $"Moc silników kół: +{bonus:0}%\n"+
