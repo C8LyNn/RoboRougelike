@@ -1,0 +1,7 @@
+# Dostęp do akcji części w katalogu garażu
+
+Wybór sprawnej części w katalogu zamykał go, aby można było natychmiast montować. Dostęp do łączenia i rozmontowania wybranego zdrowego egzemplarza wymagał przez to ponownego otwarcia katalogu. Teraz przy każdym egzemplarzu jest przycisk „Akcje”, który wybiera go bez zamykania katalogu. Osobny wybór do montażu nadal zamyka katalog jednym kliknięciem; wrak nadal zostaje w katalogu do naprawy. Zmiana jest wspólna dla obu układów. W poziomym wierszu pokazano poziom i HP zamiast powtarzać nazwę wspólną dla stosu.
+
+Przygotowano celowany test Unity sprawdzający wybór sprawnej części bez wydawania złomu oraz zachowanie jednoklikowego wyboru do montażu. **Test Unity: NOT RUN.** Lokalna kompilacja C# kodu gry i testów na dostępnych referencjach: exit 0/0; logi w `Artifacts/Local/CSharpCompile-CatalogActions-20261108` i `Artifacts/Local/CSharpEditorCompile-CatalogActions-20261108`. To nie jest kompilacja w edytorze Unity ani test renderowania. Windows Player i ręczna kontrola klikania: NOT RUN.
+
+Do sprawdzenia w kolejnym buildzie: w obu układach wybierz stos zawierający zdrowe i uszkodzone egzemplarze, użyj „Akcje”, sprawdź łączenie oraz dwuetapowe rozmontowanie właściwego ID, następnie wybierz inny egzemplarz bezpośrednio do montażu. Oceń widoczność przycisków i długich nazw; ZIP 5b21 nie zawiera zmiany.
