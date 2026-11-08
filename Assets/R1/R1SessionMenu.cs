@@ -50,9 +50,13 @@ namespace RoboRougelike.R1
 #if ENABLE_INPUT_SYSTEM
             var keys = Keyboard.current;
             var pad = Gamepad.current;
+#if UNITY_EDITOR || !UNITY_STANDALONE_WIN
+            // Windows Player receives Alt+F4 through wantsToQuit. Handling it
+            // here too could count a single press as two confirmations.
             if (keys != null && keys.f4Key.wasPressedThisFrame &&
                 (keys.leftAltKey.isPressed || keys.rightAltKey.isPressed))
             { RequestQuitByShortcut(); return true; }
+#endif
             if ((keys != null && keys.escapeKey.wasPressedThisFrame) ||
                 (pad != null && pad.startButton.wasPressedThisFrame))
             { HandleEscape(); return true; }
@@ -76,8 +80,10 @@ namespace RoboRougelike.R1
             }
             return true;
 #else
+#if UNITY_EDITOR || !UNITY_STANDALONE_WIN
             if (Input.GetKeyDown(KeyCode.F4) && (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)))
             { RequestQuitByShortcut(); return true; }
+#endif
             if (Input.GetKeyDown(KeyCode.Escape)) { HandleEscape(); return true; }
             return Paused;
 #endif
