@@ -95,7 +95,7 @@ namespace RoboRougelike.R1
             int price=model.Price(selectedKind,selectedWeapon);
             bool unlocked=run.CanBuyTechnology(selectedKind,selectedWeapon);
             GUI.enabled=unlocked&&selectedKind!=R3PartKind.BonusModule&&model.Scrap>=price&&model.Inventory.Count<R3VehicleModel.InventoryCapacity;
-            if(GUI.Button(PortraitCatalogBuyRect(),unlocked?$"Kup do magazynu — {price} Z":"Pokonaj wroga z tą bronią",compactButton))PortraitCatalogPurchase(run,selectedKind,selectedWeapon);
+            if(GUI.Button(PortraitCatalogBuyRect(),GaragePurchaseCaption(selectedKind,unlocked,price,true),compactButton))PortraitCatalogPurchase(run,selectedKind,selectedWeapon);
             GUI.enabled=true;
             var selected=items.FirstOrDefault(p=>p.Id==run.Garage.SelectedInventoryId);
             if(selected!=null&&R3VehicleModel.SupportsFusion(selected.Kind,selected.Weapon))DrawFusionButton(run,selected,new Rect(390,875,354,52));

@@ -17,6 +17,10 @@ namespace RoboRougelike.R1
             category==1?kind==R3PartKind.Wheel:category==2?kind==R3PartKind.Gun:
             category==3&&kind!=R3PartKind.Armor&&kind!=R3PartKind.Wheel&&kind!=R3PartKind.Gun;
 
+        static string GaragePurchaseCaption(R3PartKind kind,bool unlocked,int price,bool toInventory=false)=>
+            kind==R3PartKind.BonusModule?"Tylko z nagród":
+            !unlocked?"Pokonaj wroga z tą bronią":toInventory?$"Kup do magazynu — {price} Z":$"Kup — {price} Z";
+
         string SimpleGarageFeedback(R1RunController run)
         {
             var model=run.VehicleModel;
@@ -73,7 +77,8 @@ namespace RoboRougelike.R1
                 kind==R3PartKind.Wheel&&part.WheelStyle==R3WheelStyle.LargeOffroad?"Duże koło: 18 kg i +25% siły przyczepności. Potrzebuje więcej miejsca.":
                 kind==R3PartKind.Wheel?"Średnie terenowe i szosowe mają takie same właściwości jezdne. Kliknij pojazd, aby zamontować.":"Kliknij pojazd, aby zamontować część.";}
             else {garage.SelectedInventoryId=null;garage.SetTool(R41GarageTool.Mount);
-                garage.Message=!run.CanBuyTechnology(kind,weapon)?"Zablokowane: pokonaj przeciwnika z tą bronią, aby odkryć technologię.":kind==R3PartKind.RepairPulse?
+                garage.Message=kind==R3PartKind.BonusModule?"Brak sprawnego bonusu. Otwórz egzemplarze i napraw część.":
+                    !run.CanBuyTechnology(kind,weapon)?"Zablokowane: pokonaj przeciwnika z tą bronią, aby odkryć technologię.":kind==R3PartKind.RepairPulse?
                     "Impuls naprawczy: V, 15 energii, 5 s. Kup część lub otwórz szczegóły.":
                     kind==R3PartKind.DrivePower?"Silnik wspomaga koła; zajmuje 25 maks. energii. Kup część lub otwórz szczegóły.":
                     kind==R3PartKind.EnergyRegenerator?"Regenerator: +5 energii/s, −25 maks. energii. Kup część lub otwórz szczegóły.":
@@ -207,7 +212,7 @@ namespace RoboRougelike.R1
                 var kind=catalogGroup.Value;int price=model.Price(kind,catalogWeapon);
                 bool unlocked=run.CanBuyTechnology(kind,catalogWeapon);
                 GUI.enabled=!garageOptionsOpen&&unlocked&&kind!=R3PartKind.BonusModule&&model.Scrap>=price&&model.Inventory.Count<R3VehicleModel.InventoryCapacity;
-                if(GUI.Button(new Rect(12,560,245,42),unlocked?$"Kup — {price} Z":"Pokonaj wroga z tą bronią",compactButton))BuyQuickPart(run);
+                if(GUI.Button(new Rect(12,560,245,42),GaragePurchaseCaption(kind,unlocked,price),compactButton))BuyQuickPart(run);
                 GUI.enabled=!garageOptionsOpen;
             }
             if(GUI.Button(new Rect(12,610,245,42),"Egzemplarze i naprawy",compactButton))
@@ -267,7 +272,7 @@ namespace RoboRougelike.R1
                 var kind=catalogGroup.Value;int price=model.Price(kind,catalogWeapon);
                 bool unlocked=run.CanBuyTechnology(kind,catalogWeapon);
                 GUI.enabled=!garageOptionsOpen&&unlocked&&kind!=R3PartKind.BonusModule&&model.Scrap>=price&&model.Inventory.Count<R3VehicleModel.InventoryCapacity;
-                if(GUI.Button(new Rect(458,690,286,40),unlocked?$"Kup — {price} Z":"Pokonaj wroga z tą bronią",compactButton))BuyQuickPart(run);
+                if(GUI.Button(new Rect(458,690,286,40),GaragePurchaseCaption(kind,unlocked,price),compactButton))BuyQuickPart(run);
                 GUI.enabled=!garageOptionsOpen;
             }
             if(GUI.Button(new Rect(458,737,286,40),"Egzemplarze i naprawy",compactButton))
