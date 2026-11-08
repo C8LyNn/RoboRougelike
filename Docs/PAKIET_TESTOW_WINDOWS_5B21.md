@@ -44,3 +44,5 @@ Na kolejnym buildzie rozpocznij potwierdzenie rozmontowania, ale zamknij katalog
 Kod gry i kod testów do zmian garażu skompilowano lokalnie w C# na stanie `f62ce4f9`; testy Unity nie zostały uruchomione. Szczegóły i ograniczenia tej kontroli: `Docs/GARAGE_LOCAL_CSHARP_COMPILE_QA.md`.
 
 W kolejnym buildzie sprawdź też magazyn dostępny z ekranu nagród: sprawny egzemplarz powinien wskazywać, że naprawa jest niepotrzebna, a uszkodzony — jej rzeczywisty koszt; amunicja pozostaje widoczna. Dotyczy obu układów ekranu. Kompilacja lokalna C# kodu gry i testów: exit 0; testy Unity oraz ręczne sprawdzenie interfejsu: NOT RUN. ZIP 5b21 nie zawiera tej zmiany.
+
+W informacjach garażu o napędzie kołowym sprawdź komunikat o aktualnym wzmocnieniu silników, jego limicie oraz koszcie energii. Sprawny silnik T1 daje nominalnie +20% siły i rezerwuje 25 maksymalnej energii; łączny bonus siły ma limit +100%. To opis istniejącej mechaniki, a nie zmiana fizyki. Czytelność w oknie informacji i rzeczywista jazda po dołożeniu silnika wymagają sprawdzenia w nowym buildzie; ZIP 5b21 tego opisu nie zawiera.
