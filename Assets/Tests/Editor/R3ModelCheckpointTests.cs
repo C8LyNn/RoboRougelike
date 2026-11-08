@@ -5,6 +5,30 @@ using RoboRougelike.R3;
 
 public sealed class R3ModelCheckpointTests
 {
+    [Test] public void FirstDeploymentAfterSaveFillsBatteryAddedInGarage()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
+        var saved=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(0)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(saved,R3VehicleKind.Standard,model.Economy,0,out var loaded,out var error),Is.True,error);
+        loaded.Award(100);
+        var cell=loaded.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>loaded.PlacementError(c,R3PartKind.Battery)==null);
+        Assert.That(loaded.Buy(cell,R3PartKind.Battery),Is.True);
+        loaded.PrepareInitialEnergy();
+        Assert.That(loaded.Energy.Maximum,Is.EqualTo(700).Within(.01f));
+        Assert.That(loaded.Energy.Current,Is.EqualTo(700).Within(.01f));
+    }
+    [Test] public void DepletedAndLegacyCheckpointsDoNotRefillOnDeployment()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
+        model.PrepareInitialEnergy();Assert.That(model.Energy.TrySpend(100),Is.True);
+        var saved=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(0)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(saved,R3VehicleKind.Standard,model.Economy,0,out var loaded,out var error),Is.True,error);
+        loaded.PrepareInitialEnergy();Assert.That(loaded.Energy.Current,Is.EqualTo(500).Within(.01f));
+        saved.hasInitialEnergyPrepared=false;saved.initialEnergyPrepared=false;
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(saved,R3VehicleKind.Standard,model.Economy,0,out loaded,out error),Is.True,error);
+        loaded.PrepareInitialEnergy();Assert.That(loaded.Energy.Current,Is.EqualTo(500).Within(.01f),"Legacy saves must not receive a free refill.");
+    }
     [Test] public void JsonRoundTripPreservesOwnedIdsConditionInventoryAndResources()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));

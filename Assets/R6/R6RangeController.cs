@@ -27,7 +27,6 @@ namespace RoboRougelike.R1
         {
             if(Transitioning||Progress?.State!=R1RunState.Garage||VehicleModel==null||!VehicleModel.CanDeploy)return false;
             Player.GetComponent<R3VehicleAssembly>().Capture();
-            VehicleModel.PrepareInitialEnergy();
             if(!VehicleModel.CanDeploy)return false;
             workshopModel=VehicleModel;testStats=Progress.Stats.Copy();workshopPosition=Player.transform.position;workshopRotation=Player.transform.rotation;
             Garage.Close();Progress.BeginTest();StartCoroutine(BuildTestRange());return true;
@@ -45,6 +44,10 @@ namespace RoboRougelike.R1
             R1EncounterManager.ClearTransientObjects();
             if(Arena.Layout!=null)Arena.Layout.gameObject.SetActive(false);
             VehicleModel=workshopModel.DeepCopy();
+            // The range is a disposable copy. Initial charging here must not
+            // consume the real vehicle's first-deployment charge before the
+            // player finishes building and enters the first encounter.
+            VehicleModel.PrepareInitialEnergy();
             if(testRange==null)testRange=gameObject.AddComponent<R6TestRange>();
             testRange.Build(palette);
             Player=R3VehicleAssembly.Build(VehicleModel,testStats,palette,new Vector3(0,.7f,-26),Quaternion.identity);

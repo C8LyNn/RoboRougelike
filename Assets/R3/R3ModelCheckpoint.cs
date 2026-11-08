@@ -24,6 +24,8 @@ namespace RoboRougelike.R3
         // Version 0 checkpoints predate energy and start with the core's charge.
         public int energyVersion;
         public float energy;
+        // Old saves lack this marker and keep their historical no-refill behavior.
+        public bool hasInitialEnergyPrepared,initialEnergyPrepared;
         public R3DriveKind drive;
     }
     public sealed partial class R3VehicleModel
@@ -102,7 +104,7 @@ namespace RoboRougelike.R3
                 mounted=Parts.Select(p=>SavePart(p,now)).ToArray(),inventory=inventory.Select(p=>SavePart(p,now)).ToArray(),
                 wheels=factoryWheels.Select(p=>new R3WheelCheckpoint{id=p.Key,cell=p.Value.Cell,rotation=p.Value.Rotation,contacts=p.Value.Contacts}).ToArray(),
                 groups=weaponGroupPreference.Select(p=>new R3GroupCheckpoint{id=p.Key,secondary=p.Value}).ToArray(),scrap=Scrap,
-                energyVersion=1,energy=Energy.Current,
+                energyVersion=1,energy=Energy.Current,hasInitialEnergyPrepared=true,initialEnergyPrepared=InitialEnergyPrepared,
                 suspensionEnabled=SuspensionEnabled,suspensionMode=SuspensionMode,suspensionHeight=SuspensionHeightOffset,
                 gyroEnabled=GyroEnabled,drive=SelectedDrive,boosterThrust=BoosterThrustNewtons,boosterDuration=BoosterDurationSeconds,
                 hoverHeight=HoverHeightMeters,grappleRemaining=Remaining(GrappleReadyAt,now),
@@ -180,7 +182,7 @@ namespace RoboRougelike.R3
                 (data.energyVersion==1&&(!Finite(data.energy)||data.energy<0)))return false;
             restored.RefreshEnergyLayout();
             restored.Energy.Restore(data.energyVersion==0?VehicleEnergyState.CoreCapacity:data.energy);
-            restored.InitialEnergyPrepared=true;
+            restored.InitialEnergyPrepared=!data.hasInitialEnergyPrepared||data.initialEnergyPrepared;
             model=restored;error=null;return true;
         }
     }
