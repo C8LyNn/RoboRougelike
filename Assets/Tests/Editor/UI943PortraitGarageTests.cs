@@ -7,6 +7,15 @@ using UnityEngine;
 
 public sealed class UI943PortraitGarageTests
 {
+    [TestCase(2,true,"kolejnej części")]
+    [TestCase(1,false,"zniszczone")]
+    [TestCase(0,false,"Brak kolejnych")]
+    public void MountedStackFeedbackExplainsWhatRemains(int remaining,bool usable,string expected)
+    {
+        var method=typeof(R3GarageView).GetMethod("MountedStackFeedback",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        Assert.That((string)method.Invoke(null,new object[]{remaining,usable}),Does.Contain(expected));
+    }
     [TestCase(KeyCode.Alpha1,false,R41GarageTool.Mount)]
     [TestCase(KeyCode.Alpha2,false,R41GarageTool.Inspect)]
     [TestCase(KeyCode.Alpha3,false,R41GarageTool.Repair)]
