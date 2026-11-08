@@ -11,7 +11,7 @@ namespace RoboRougelike.R1
     // Two separate batch processes, explicit temporary slot; never touches the player's save.
     public sealed class ColdCheckpointPlayerQA : MonoBehaviour
     {
-        [Serializable] sealed class Result { public string status="RUNNING", phase, error, method="Two separate Windows Player processes, API-driven; not human gameplay"; public bool isolated, technologyIsolated, battery, inventory, ids, hp, energy, scrap; }
+        [Serializable] sealed class Result { public string status="RUNNING", phase, error, method="Two separate Windows Player processes, API-driven; not human gameplay"; public bool isolated, technologyIsolated, technologyWritten, battery, inventory, ids, hp, energy, scrap; }
         readonly Result result=new Result(); string folder,phase;
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)] static void Install()
         {
@@ -42,6 +42,11 @@ namespace RoboRougelike.R1
             if(phase=="save")
             {
                 Require(!File.Exists(slot),"isolated slot must start empty");
+                var technology=new R3PartState(default,R3PartKind.Gun){Weapon=RoboRougelike.R4.R4WeaponKind.Railgun};
+                Require(run.Technology.Discover(new[]{technology})==1,"new technology must be discovered in the isolated profile");
+                result.technologyWritten=File.Exists(R1TechnologyProgress.DefaultPath)&&
+                    new R1TechnologyProgress(R1TechnologyProgress.DefaultPath).IsUnlocked(R3PartKind.Gun,technology.Weapon);
+                Require(result.technologyWritten,"technology discovery must be written and readable in the isolated profile");
                 Require(run.SelectVehicle(R3VehicleKind.Light)&&run.PrepareUnifiedRun(),"prepare actual garage");yield return null;
                 var model=run.VehicleModel;model.Award(200);
                 Require(run.GaragePurchase(R3PartKind.Wheel),"purchase wheel to inventory");
