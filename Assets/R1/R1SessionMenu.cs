@@ -40,7 +40,7 @@ namespace RoboRougelike.R1
                 if (PauseSelection == 0) TogglePause();
                 else if (PauseSelection == 1 && MapEditorTesting) ReturnFromEditedMapTest();
                 else if (PauseSelection == 1 || (PauseSelection == 2 && MapEditorTesting)) RestartRun();
-                else RequestQuit();
+                else RequestQuitFromMenu();
             }
             return true;
 #else
@@ -49,6 +49,12 @@ namespace RoboRougelike.R1
             if (Input.GetKeyDown(KeyCode.Escape)) { HandleEscape(); return true; }
             return Paused;
 #endif
+        }
+
+        public void RequestQuitFromMenu()
+        {
+            if(QuitRequested||!ConfirmMapEditorExit(true))return;
+            RequestQuit();
         }
 
         public void RequestQuit()

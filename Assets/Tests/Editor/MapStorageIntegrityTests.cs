@@ -114,4 +114,18 @@ public sealed class MapStorageIntegrityTests
         run.RestartRun();Assert.That(run.MapExitPending,Is.True);Assert.That(run.EditorDraft.Items.Count,Is.EqualTo(2));
         yield return new ExitPlayMode();
     }
+    [UnityTest] public IEnumerator QuitAndReturnRequireSeparateConfirmationForUnsavedMap()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);yield return new EnterPlayMode();
+        var until=Time.realtimeSinceStartup+15;while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<until)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenMapEditor(),Is.True);
+        Assert.That(run.EditorDraft.Place(MapItemKind.Ground,0,0,0),Is.True);
+        run.MapEditorGarage();run.RestartRun();
+        Assert.That(run.MapReturnPending,Is.True);Assert.That(run.QuitRequested,Is.False);
+        run.RequestQuitFromMenu();Assert.That(run.MapQuitPending,Is.True);Assert.That(run.QuitRequested,Is.False);
+        run.RestartRun();Assert.That(run.MapReturnPending,Is.True);Assert.That(run.QuitRequested,Is.False);
+        run.RequestQuitFromMenu();Assert.That(run.MapQuitPending,Is.True);Assert.That(run.QuitRequested,Is.False);
+        run.TogglePause();run.TogglePause();Assert.That(run.MapExitPending,Is.False);
+        yield return new ExitPlayMode();
+    }
 }

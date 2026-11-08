@@ -26,8 +26,11 @@ namespace RoboRougelike.R1
         public string EditorName="Moja mapa",EditorMessage="Wybierz element i kliknij siatkę.";
         string pendingMapOverwrite,pendingMapOverwriteSnapshot;
         string savedMapSnapshot,pendingMapLoadPath,pendingMapLoadSnapshot,pendingMapExitSnapshot;
+        bool pendingMapQuit;
         public bool MapLoadPending=>pendingMapLoadPath!=null;
         public bool MapExitPending=>pendingMapExitSnapshot!=null;
+        public bool MapReturnPending=>MapExitPending&&!pendingMapQuit;
+        public bool MapQuitPending=>MapExitPending&&pendingMapQuit;
         void CancelMapLoad(){pendingMapLoadPath=null;pendingMapLoadSnapshot=null;pendingMapExitSnapshot=null;}
         public bool MapOverwritePending => pendingMapOverwrite!=null;
         public void CancelMapOverwrite(){pendingMapOverwrite=null;pendingMapOverwriteSnapshot=null;CancelMapLoad();}
@@ -107,14 +110,17 @@ namespace RoboRougelike.R1
             if(!MapEditing||Transitioning||EditorDraft==null)return;
             RestartRun();
         }
-        bool ConfirmMapEditorMenuExit()
+        static bool NeedsMapExitConfirmation(string current,string saved,string pending,bool pendingQuit,bool quit)
+            =>current!=saved&&(pending!=current||pendingQuit!=quit);
+        bool ConfirmMapEditorExit(bool quit)
         {
             if(!MapEditorSession||EditorDraft==null)return true;
             string current=EditorDraft.ToJson();
-            if(current!=savedMapSnapshot&&pendingMapExitSnapshot!=current)
+            if(NeedsMapExitConfirmation(current,savedMapSnapshot,pendingMapExitSnapshot,pendingMapQuit,quit))
             {
-                pendingMapExitSnapshot=current;
-                EditorMessage="Niezapisane zmiany mapy zostaną utracone. Wybierz ponownie powrót do menu, aby potwierdzić.";
+                pendingMapExitSnapshot=current;pendingMapQuit=quit;
+                EditorMessage=quit?"Niezapisane zmiany mapy zostaną utracone. Wybierz ponownie wyjście z gry, aby potwierdzić.":
+                    "Niezapisane zmiany mapy zostaną utracone. Wybierz ponownie powrót do menu, aby potwierdzić.";
                 return false;
             }
             pendingMapExitSnapshot=null;return true;

@@ -403,7 +403,7 @@ namespace RoboRougelike.R1
         public void RestartRun()
         {
             if (QuitRequested || returningToMenu) return;
-            if (!ConfirmMapEditorMenuExit()) return;
+            if (!ConfirmMapEditorExit(false)) return;
             returningToMenu = true;
             Transitioning = true;
             StopAllCoroutines();
