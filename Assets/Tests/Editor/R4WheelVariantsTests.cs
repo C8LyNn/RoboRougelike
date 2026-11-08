@@ -472,7 +472,7 @@ public sealed class R4WheelVariantsTests
         var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));R41PartGeometry.ConfigureWheelMount(block,R3WheelStyle.SwingOffroad);
         var wheel=R41PartGeometry.Payload(block.transform,R3PartKind.Wheel,default,material,true,out _,R3WheelStyle.SwingOffroad);
         Assert.That(R4WheelArt.TryAttach(block.transform,wheel,false,R3WheelStyle.SwingOffroad),Is.Not.Null);
-        var tire=wheel.GetComponent<Collider>();var armor=GameObject.CreatePrimitive(PrimitiveType.Cube);
+        var tire=wheel.GetComponents<Collider>().Single(c=>c.enabled);var armor=GameObject.CreatePrimitive(PrimitiveType.Cube);
         armor.transform.SetParent(owner.transform,true);armor.transform.localScale=new Vector3(.5f,.1f,.5f);
         armor.transform.position=wheel.position+Vector3.up*(.33f+.01f+.05f);
         var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.localScale=new Vector3(2,.1f,2);
