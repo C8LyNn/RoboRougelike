@@ -87,7 +87,8 @@ namespace RoboRougelike.R3
         public static float WheelTraction(R3WheelStyle style)=>style==R3WheelStyle.CasterSlick ? .5f : style==R3WheelStyle.SmallFork ? .65f : style==R3WheelStyle.BalloonFork||style==R3WheelStyle.SteerOffroad?1.15f:style==R3WheelStyle.Monster?1.5f:style==R3WheelStyle.LargeOffroad?1.25f:1f;
         public static float WheelMass(R3WheelStyle style)=>style==R3WheelStyle.CasterSlick ? 1f/3f : style==R3WheelStyle.SmallFork ? .5f : style==R3WheelStyle.BalloonFork||style==R3WheelStyle.SteerOffroad?4f/3f:style==R3WheelStyle.Monster?2f:style==R3WheelStyle.LargeOffroad?1.5f:1f;
         public static int TierEffectUnits(int tier)=>NormalizedTier(tier)==3?4:NormalizedTier(tier)==2?2:1;
-        public static float TierPassiveExtra(int tier)=>NormalizedTier(tier)==3?10:NormalizedTier(tier)==2?5:0;
+        // Passive capacity is reserved per physical module, independently of tier.
+        public static float TierPassiveExtra(int tier)=>0f;
         public static float TierActivationCost(int tier)=>NormalizedTier(tier)==3?1.4f:NormalizedTier(tier)==2?1.2f:1f;
         public static bool SupportsFusion(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic)=>kind==R3PartKind.Armor||kind==R3PartKind.Wheel||
             kind==R3PartKind.Battery||kind==R3PartKind.RepairPulse||kind==R3PartKind.DrivePower||kind==R3PartKind.EnergyRegenerator||kind==R3PartKind.BonusModule||
