@@ -33,6 +33,8 @@ public sealed class R4WedgeArmorTests
         Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);yield return null;
         var part=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==id);
         var collider=part.GetComponent<MeshCollider>();Assert.That(collider,Is.Not.Null);Assert.That(collider.convex,Is.True);
+        Assert.That(part.GetComponent<Renderer>().enabled,Is.False,"The supplied wedge model replaces the temporary shell.");
+        Assert.That(part.GetComponentsInChildren<Renderer>().Any(r=>r.enabled),Is.True,"The authored model must actually render.");
         Assert.That(part.GetComponent<BoxCollider>(),Is.Null,"The wedge must not retain a cube collider.");
         var t=part.transform;
         var highRay=new Ray(t.TransformPoint(new Vector3(0,2,-.38f)), -t.up);
@@ -45,6 +47,24 @@ public sealed class R4WedgeArmorTests
         Assert.That(restored.Parts.Single(p=>p.Id==id).ArmorShape,Is.EqualTo(R3ArmorShape.Wedge));
         data.mounted.Single(p=>p.Id==id).ContactMask=R3MountingGrid.AllFaces;
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Standard,model.Economy,Time.time,out _,out _),Is.False);
+    }
+
+    [UnityTest] public IEnumerator RotatedWedgeCanBeDamagedRepairedAndReturnedToInventory()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
+        var model=run.VehicleModel;model.Award(1000);
+        Assert.That(run.GaragePurchase(R3PartKind.Armor,default,R3WheelStyle.Offroad,R3ArmorShape.Wedge),Is.True);
+        var owned=model.Inventory.Last();string id=owned.Id;var cell=new Vector3Int(2,2,2);
+        var garage=run.Garage;garage.ChooseInventory(id);garage.RotateSelected(1,1);garage.Select(cell);
+        Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);yield return null;
+        var mounted=model.At(cell);Assert.That(mounted.RotationQuarterTurns.y,Is.EqualTo(1));
+        Assert.That(R3MountingGrid.PortOnFace(mounted,R3MountingGrid.Rotate(Vector3Int.back,mounted.RotationQuarterTurns)),Is.True);
+        Assert.That(R3MountingGrid.PortOnFace(mounted,R3MountingGrid.Rotate(Vector3Int.right,mounted.RotationQuarterTurns)),Is.False);
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();var part=assembly.Parts.Single(p=>p.Id==id);
+        part.Damageable.ApplyDamage(part.Damageable.MaxHp*.4f,part.transform.position,Vector3.up);assembly.Capture();
+        Assert.That(model.At(cell).Health,Is.LessThan(1));Assert.That(run.GarageRepair(cell),Is.True);
+        Assert.That(model.At(cell).Health,Is.EqualTo(1));Assert.That(run.GarageRemove(cell),Is.True);
+        Assert.That(model.Inventory.Single(p=>p.Id==id).ArmorShape,Is.EqualTo(R3ArmorShape.Wedge));
     }
 
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
