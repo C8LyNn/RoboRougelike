@@ -151,11 +151,19 @@ public class R3GaragePlayTests
         var before = body.position;
         enemy.SetCombatActive(true);
         float end = Time.time + 2;
-        int grounded = 0;
+        int grounded = 0;float nextTrace=Time.time;
         while (Time.time < end)
         {
             yield return MOVSeriesDeviceTests.FixedStep();
             if (drive.GroundedWheels > 0) grounded++;
+            if(Time.time>=nextTrace)
+            {
+                nextTrace=Time.time+.3f;
+                var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+                var tangent=(Vector3)enemy.GetType().GetField("obstacleTangent",flags).GetValue(enemy);
+                var until=(float)enemy.GetType().GetField("navigationUntil",flags).GetValue(enemy);
+                Debug.Log($"Boundary retreat trace t={Time.time:F2} pos={body.position} vel={body.linearVelocity} yaw={body.rotation.eulerAngles.y:F1} spin={body.angularVelocity.y:F2} grounded={drive.GroundedWheels} tangent={tangent} nav={until-Time.time:F2} dead={enemy.IsDefeated}");
+            }
         }
         Assert.That(grounded, Is.GreaterThan(0));
         Assert.That(body.position.x - before.x, Is.LessThan(-.3f), "Przy zablokowanych stycznych przeciwnik powinien wycofać się do środka areny.");
