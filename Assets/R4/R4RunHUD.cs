@@ -194,8 +194,13 @@ namespace RoboRougelike.R1
             for(int i=0;i<items.Length;i++)
             {
                 var item=items[i];GUI.backgroundColor=garage.SelectedInventoryId==item.Id?new Color(.3f,.9f,.9f):Color.white;
-                if(GUI.Button(new Rect(0,i*40,250,36),$"{R4WeaponDefinition.PartName(item)} • HP {item.Health*100:0}%",compactButton))
-                {garage.ChooseInventory(item.Id);dismantleConfirmation=null;catalogOpen=false;}
+                if(GUI.Button(new Rect(0,i*40,164,36),$"{R4WeaponDefinition.PartName(item)} • HP {item.Health*100:0}%",compactButton))
+                    SelectCatalogItem(run,item.Id);
+                GUI.backgroundColor=Color.white;
+                int itemRepair=model.RepairCost(item);GUI.enabled=itemRepair>0&&model.Scrap>=itemRepair;
+                if(GUI.Button(new Rect(168,i*40,82,36),GarageRepairCaption(item,itemRepair,model.Scrap),compactButton))
+                    run.GarageRepairInventory(item.Id);
+                GUI.enabled=true;
             }
             GUI.EndScrollView();GUI.backgroundColor=Color.white;
             int price=model.Price(kind,weapon);
@@ -212,7 +217,8 @@ namespace RoboRougelike.R1
             var selected=items.FirstOrDefault(p=>p.Id==garage.SelectedInventoryId);
             if(selected==null)
             {GUI.Label(new Rect(970,400,280,100),"Wybierz egzemplarz z listy. Zielony podgląd oznacza poprawne miejsce montażu.",small);return;}
-            GUI.Label(new Rect(970,395,280,70),$"{R4WeaponDefinition.PartName(selected)} • HP {selected.Health*100:0}%\nKliknij pojazd, aby zamontować.",small);
+            GUI.Label(new Rect(970,395,280,70),$"{R4WeaponDefinition.PartName(selected)} • HP {selected.Health*100:0}%\n"+
+                (selected.Health<=0?"Najpierw napraw część.":"Kliknij pojazd, aby zamontować."),small);
             int repairQuote=model.RepairCost(selected);
             GUI.enabled=repairQuote>0&&model.Scrap>=repairQuote;
             if(GUI.Button(new Rect(970,480,280,42),GarageRepairCaption(selected,repairQuote,model.Scrap),compactButton))run.GarageRepairInventory(selected.Id);
@@ -221,6 +227,14 @@ namespace RoboRougelike.R1
             {if(dismantleConfirmation==selected.Id){run.GarageDismantle(selected.Id);dismantleConfirmation=null;return;}dismantleConfirmation=selected.Id;}
             DrawFusionButton(run,selected,new Rect(970,590,280,42));
             GUI.Label(new Rect(970,640,280,52),garage.PlacementIssue??"Zielony podgląd: kliknij, aby zamontować.",small);
+        }
+        private void SelectCatalogItem(R1RunController run,string id)
+        {
+            var item=run.VehicleModel.Inventory.FirstOrDefault(p=>p.Id==id);
+            if(item==null)return;
+            run.Garage.ChooseInventory(id);dismantleConfirmation=null;
+            if(item.Health<=0){run.Garage.Message="Zniszczoną część napraw przed montażem.";return;}
+            catalogOpen=false;
         }
         private void DrawFusionButton(R1RunController run,R3PartState selected,Rect rect)
         {
