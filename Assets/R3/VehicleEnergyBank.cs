@@ -52,15 +52,21 @@ namespace RoboRougelike.R3
         {
             if(assembly!=null)
             {
-                var alive=assembly.Parts.Where(p=>p!=null&&p.Operational&&p.transform.IsChildOf(transform)).ToArray();
-                state.SetAdditionalPassiveReservation(alive.Where(p=>R3VehicleModel.IsPassiveEnergyPart(p.Kind))
-                    .Sum(p=>R3VehicleModel.TierPassiveExtra(p.Tier)));
-                state.Refresh(alive.Where(p=>p.Kind==R3PartKind.Battery).Sum(p=>R3VehicleModel.TierEffectUnits(p.Tier)),
-                    alive.Count(p=>R3VehicleModel.IsPassiveEnergyPart(p.Kind)),
-                    alive.Any(p=>p.Kind==R3PartKind.Core));
-                state.SetRegeneratorCount(alive.Where(p=>p.Kind==R3PartKind.EnergyRegenerator&&
-                    !RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(p.gameObject))
-                    .Sum(p=>R3VehicleModel.TierEffectUnits(p.Tier)));
+                int batteries=0,passive=0,regenerators=0;float extra=0;bool coreAlive=false;
+                foreach(var part in assembly.Parts)
+                {
+                    if(part==null||!part.Operational||!part.transform.IsChildOf(transform))continue;
+                    if(R3VehicleModel.IsPassiveEnergyPart(part.Kind))
+                    {passive++;extra+=R3VehicleModel.TierPassiveExtra(part.Tier);}
+                    if(part.Kind==R3PartKind.Core)coreAlive=true;
+                    if(part.Kind==R3PartKind.Battery)batteries+=R3VehicleModel.TierEffectUnits(part.Tier);
+                    if(part.Kind==R3PartKind.EnergyRegenerator&&
+                       !RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))
+                        regenerators+=R3VehicleModel.TierEffectUnits(part.Tier);
+                }
+                state.SetAdditionalPassiveReservation(extra);
+                state.Refresh(batteries,passive,coreAlive);
+                state.SetRegeneratorCount(regenerators);
             }
             else if(enemyCore!=null)
             {
