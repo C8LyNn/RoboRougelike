@@ -1,0 +1,90 @@
+name: B01-50 W28 real R3 detached VFX spark budget exact-source CSharp
+on:
+  pull_request:
+    paths:
+      - 'Assets/B01Performance/B0150DebrisSparkBudget001/**'
+      - 'Tools/B01/B01-50/W28DebrisVfxBudget001/**'
+      - '.github/workflows/b01-50-w28-debris-spark-budget.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-production-core-and-guid:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Exact original owned Git blob pins + fresh own MonoImporter GUIDs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p ci-evidence
+          count=0
+          while IFS=$'\t' read -r sha path; do
+            test -n "$sha" || continue
+            got="$(git hash-object --no-filters "$path")"
+            test "$got" = "$sha" || { echo "ORIGINAL_W28_BLOB_BAD $path expected=$sha got=$got"; exit 1; }
+            echo "ORIGINAL_W28_GIT_BLOB_PASS $path"
+            count=$((count+1))
+          done < Tools/B01/B01-50/W28DebrisVfxBudget001/MANIFEST-GIT-BLOBS.tsv
+          test "$count" -eq 10 || { echo "W28_EXPECTED_OWN_BLOBS_10 got=$count"; exit 1; }
+          python - <<'PY' | tee ci-evidence/owned_guids_source_and_native_fixture.txt
+          from pathlib import Path
+          import re
+          folder=Path('Assets/B01Performance/B0150DebrisSparkBudget001')
+          metas=list(folder.rglob('*.meta'))
+          assert len(metas)==3,len(metas)
+          ids=[]
+          for p in metas:
+            assert Path(str(p)[:-5]).is_file(),p
+            text=p.read_text()
+            m=re.search(r'^guid: ([0-9a-f]{32})$',text,re.M)
+            assert m,p
+            ids.append(m.group(1))
+          assert len(set(ids))==3
+          count=0
+          for p in Path('Assets').rglob('*.meta'):
+            if p in metas:continue
+            count+=1
+            text=p.read_text(errors='replace')
+            assert not any(('guid: '+g) in text for g in ids),p
+          runtime=(folder/'Runtime/B0150DetachedDebrisSparkBudget.cs').read_text()
+          old=(Path('Assets/R3/R3Debris.cs').read_text())
+          vfx=(Path('Assets/RoboRougelikePackages/VFX001/Runtime/Vehicle/DetachedModuleVfxController.cs').read_text())
+          assert 'public static event System.Action<R3Debris> Separated' in old
+          assert 'R3Debris.Separated += Observe' in runtime
+          assert 'GetComponentInChildren<DetachedModuleVfxController>' in runtime
+          assert 'void SetDetachedMotion(bool detached, float speedMetersPerSecond)' in vfx
+          assert 'GetComponent<Rigidbody>()' in runtime
+          assert 'SetActive(false)' not in runtime and 'WakeUp(' not in runtime and '.Sleep(' not in runtime
+          native=(folder/'Editor/B0150W28DebrisVfxBudgetPlayModeTests.cs').read_text()
+          assert native.count('[UnityTest]')==3
+          print('B0150_W28_ORIGINAL_UNITY_GUID_3_PASS; prior meta checked',count)
+          print('B0150_W28_R3_REAL_EVENT_VFX_ABI_PRESENT; THREE_NATIVE_TESTS_SOURCE_ONLY')
+          PY
+      - name: Compile unchanged actual CSharp product selection code and run 18 tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet --version | tee ci-evidence/dotnet_version.txt
+          dotnet run --configuration Release --project Tools/B01/B01-50/W28DebrisVfxBudget001/tests/DebrisBudgetCore.Tests.csproj 2>&1 | tee ci-evidence/original_18_core_source_tests.log
+          grep -F 'ORIGINAL_W28_DEBRIS_CORE_TESTS 18/18 PASS, 0 FAIL; NATIVE_UNITY_NOT_RUN' ci-evidence/original_18_core_source_tests.log
+          git rev-parse HEAD > ci-evidence/exact_git_sha.txt
+          sha256sum Assets/B01Performance/B0150DebrisSparkBudget001/Runtime/*.cs > ci-evidence/production_source_sha256.txt
+      - name: Preserve original source stdout and exact source receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: B01-50-W28-DEBRISSPARK-${{ matrix.os }}-${{ github.run_id }}
+          path: ci-evidence/
+          retention-days: 14
+          if-no-files-found: warn
