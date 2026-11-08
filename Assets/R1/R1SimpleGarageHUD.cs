@@ -214,10 +214,10 @@ namespace RoboRougelike.R1
             GUI.Label(new Rect(12,79,240,24),"CZĘŚCI • kliknij, aby wybrać",small);
             DrawQuickParts(run,new Rect(12,105,246,397),225);
             var owned=model.Inventory.FirstOrDefault(p=>p.Id==garage.SelectedInventoryId);
-            var inspected=garage.Tool==R41GarageTool.Inspect&&garage.HasTarget?model.At(garage.Cell):null;
+            var inspected=garage.Tool!=R41GarageTool.Mount&&garage.HasTarget?model.At(garage.Cell):null;
             GUI.Label(new Rect(12,511,245,43),inspected!=null?GarageInspectionSummary(model,inspected):owned!=null?$"Wybrano: {R4WeaponDefinition.PartName(owned)} • HP {owned.Health*100:0}%":
                 catalogGroup.HasValue?"Wybierz egzemplarz lub kup część.":"Wybierz część z listy.",small);
-            var inspectedWheel=inspected;
+            var inspectedWheel=garage.Tool==R41GarageTool.Inspect?inspected:null;
             if(inspectedWheel!=null&&inspectedWheel.Kind==R3PartKind.Wheel&&!R3VehicleModel.CanSwapWheelAppearance(inspectedWheel.WheelStyle))
                 GUI.Label(new Rect(12,560,245,42),GarageWheelStats(inspectedWheel),small);
             else if(inspectedWheel!=null&&inspectedWheel.Kind==R3PartKind.Wheel)
@@ -275,10 +275,10 @@ namespace RoboRougelike.R1
             GUI.Label(new Rect(24,632,420,24),"CZĘŚCI • kliknij, aby wybrać",small);
             DrawQuickParts(run,new Rect(24,658,414,220),392);
             var owned=model.Inventory.FirstOrDefault(p=>p.Id==garage.SelectedInventoryId);
-            var inspected=garage.Tool==R41GarageTool.Inspect&&garage.HasTarget?model.At(garage.Cell):null;
+            var inspected=garage.Tool!=R41GarageTool.Mount&&garage.HasTarget?model.At(garage.Cell):null;
             GUI.Label(new Rect(458,637,286,50),inspected!=null?GarageInspectionSummary(model,inspected):owned!=null?$"{R4WeaponDefinition.PartName(owned)} • HP {owned.Health*100:0}%":
                 "Wybierz część z listy.",small);
-            var inspectedWheel=inspected;
+            var inspectedWheel=garage.Tool==R41GarageTool.Inspect?inspected:null;
             if(inspectedWheel!=null&&inspectedWheel.Kind==R3PartKind.Wheel&&!R3VehicleModel.CanSwapWheelAppearance(inspectedWheel.WheelStyle))
                 GUI.Label(new Rect(458,690,286,40),GarageWheelStats(inspectedWheel),small);
             else if(inspectedWheel!=null&&inspectedWheel.Kind==R3PartKind.Wheel)

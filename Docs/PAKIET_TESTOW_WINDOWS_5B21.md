@@ -52,3 +52,5 @@ W informacjach garażu o napędzie kołowym sprawdź komunikat o aktualnym wzmoc
 W katalogu garażu użyj „Akcje” przy sprawnym egzemplarzu: katalog ma zostać otwarty, a łączenie i rozmontowanie mają dotyczyć tej konkretnej części. Bezpośredni wybór do montażu nadal powinien zamykać katalog. Sprawdź oba układy i czytelność opisów; szczegóły w `Docs/GARAGE_CATALOG_ITEM_ACTIONS_QA.md`. Test Unity i Windows: NOT RUN; ZIP 5b21 nie zawiera tej zmiany.
 
 W kolejnym buildzie wybierz w garażu „Zaznacz” i wskaż sprawny, a następnie uszkodzony pancerz lub inne części pojazdu. Panel powinien pokazać nazwę, HP i koszt naprawy wskazanej części zamiast poprzedniego wyboru z magazynu. Sprawdź też wskazanie koła w obu układach ekranu. Przygotowany test formatu informacji, test Unity, wizualna kontrola i ręczne kliknięcia: NOT RUN. Kod gry i testów skompilowano lokalnie w C# (exit 0/0); ta zmiana nie jest w ZIP-ie 5b21.
+
+Ten sam podgląd powinien pojawić się również przed kliknięciem części w trybach „Napraw” i „Zdejmij”, aby można było sprawdzić jej stan. Zamiana wyglądu koła pozostaje dostępna tylko przy „Zaznacz”. Oba przypadki wymagają ręcznej kontroli w nowym buildzie.
