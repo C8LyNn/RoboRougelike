@@ -90,7 +90,7 @@ namespace RoboRougelike.R4_1
             if(!solid){var collider=item.GetComponent<Collider>();collider.enabled=false;Object.Destroy(collider);}
             return item;
         }
-        public static Transform Payload(Transform block,R3PartKind kind,R4WeaponKind weapon,Material material,bool solid,out Transform muzzle)
+        public static Transform Payload(Transform block,R3PartKind kind,R4WeaponKind weapon,Material material,bool solid,out Transform muzzle,R3WheelStyle wheelStyle=R3WheelStyle.Offroad)
         {
             muzzle=null;
             if(kind>=R3PartKind.Booster&&kind<=R3PartKind.CrawlerTrack)
@@ -129,7 +129,8 @@ namespace RoboRougelike.R4_1
             {
                 var wheel=Primitive(PrimitiveType.Cylinder,block,material,solid,"Koło").transform;
                 wheel.localPosition=new Vector3(0,-0.5f,0);wheel.localRotation=Quaternion.Euler(0,0,90);
-                wheel.localScale=new Vector3(1.5f,0.35f,1.5f);
+                float diameterScale=R3VehicleModel.WheelRadius(wheelStyle)/(.5f*BlockSize);
+                wheel.localScale=new Vector3(diameterScale,wheelStyle==R3WheelStyle.LargeOffroad ? .42f/(2*BlockSize) : .35f,diameterScale);
                 if(solid){
                     // A short CapsuleCollider becomes a sphere under this axle
                     // scale and penetrates the supporting armor by ~10cm.

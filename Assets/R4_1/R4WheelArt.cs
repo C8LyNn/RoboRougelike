@@ -8,9 +8,11 @@ namespace RoboRougelike.R4_1
     [DisallowMultipleComponent]
     public sealed class R4WheelArt : MonoBehaviour
     {
-        const float RadiusMeters=.39f;
+        float radiusMeters=.39f;
         Transform rotor,visualRoot;
         Rigidbody owner;
+        public static bool LargeWheelAvailable
+        {get{var catalog=Resources.Load<R4MovementArtCatalog>("R4Art/MovementCatalog");return catalog!=null&&catalog.SideWheelLarge!=null;}}
 
         // Select the model's side from the wheel's rotated mounting axis and
         // the connected neighbor; world X alone fails for rotated builds.
@@ -33,12 +35,14 @@ namespace RoboRougelike.R4_1
                 float.IsNaN(scale.z)||float.IsInfinity(scale.z)||scale.x<=.0001f||
                 Mathf.Abs(scale.x-scale.y)>.0001f||Mathf.Abs(scale.x-scale.z)>.0001f)return null;
             var catalog=Resources.Load<R4MovementArtCatalog>("R4Art/MovementCatalog");
+            bool large=style==R3WheelStyle.LargeOffroad;
+            if(large&&(catalog==null||catalog.SideWheelLarge==null))return null;
             var slick=style==R3WheelStyle.Slick&&catalog!=null&&catalog.SideWheelSlick!=null;
-            var side=catalog!=null&&(slick||catalog.SideWheel!=null);
-            var prefab=side?(slick?catalog.SideWheelSlick:catalog.SideWheel):catalog!=null?catalog.ModelFor(R3PartKind.Wheel):null;
+            var side=catalog!=null&&(large||slick||catalog.SideWheel!=null);
+            var prefab=side?(large?catalog.SideWheelLarge:slick?catalog.SideWheelSlick:catalog.SideWheel):catalog!=null?catalog.ModelFor(R3PartKind.Wheel):null;
             if(prefab==null)return null;
             var visual=Instantiate(prefab,block,false);
-            var spinning=Array.Find(visual.GetComponentsInChildren<Transform>(true),t=>t.name==(slick?"R4M_WheelM_Side_Slick_Rotor":side?"R4M_WheelM_Side_Offroad_Rotor":"R4M_Wheel_Rotor"));
+            var spinning=Array.Find(visual.GetComponentsInChildren<Transform>(true),t=>t.name==(large?"R4M_WheelL_Side_Offroad_Rotor":slick?"R4M_WheelM_Side_Slick_Rotor":side?"R4M_WheelM_Side_Offroad_Rotor":"R4M_Wheel_Rotor"));
             var socket=Array.Find(visual.GetComponentsInChildren<Transform>(true),t=>t.name=="Socket_Mount");
             var renderer=physicalWheel.GetComponent<Renderer>();
             if(spinning==null||socket==null||renderer==null){Destroy(visual);return null;}
@@ -52,6 +56,7 @@ namespace RoboRougelike.R4_1
                 visual.transform.position+=physicalWheel.position-spinning.position;
             }
             var view=block.gameObject.AddComponent<R4WheelArt>();view.rotor=spinning;view.visualRoot=visual.transform;
+            view.radiusMeters=R3VehicleModel.WheelRadius(style);
             view.owner=block.GetComponentInParent<Rigidbody>(true);renderer.enabled=false;R41PartGeometry.HideMountingShell(block,visual);
             return view;
         }
@@ -72,7 +77,7 @@ namespace RoboRougelike.R4_1
             if(direction.sqrMagnitude<.0001f)return;
             float speed=Vector3.Dot(owner.GetPointVelocity(rotor.position),direction.normalized);
             if(float.IsNaN(speed)||float.IsInfinity(speed))return;
-            rotor.Rotate(Vector3.right,speed/RadiusMeters*Mathf.Rad2Deg*Time.deltaTime,Space.Self);
+            rotor.Rotate(Vector3.right,speed/radiusMeters*Mathf.Rad2Deg*Time.deltaTime,Space.Self);
         }
     }
 }

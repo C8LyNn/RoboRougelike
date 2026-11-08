@@ -25,13 +25,15 @@ namespace RoboRougelike.R1
                 kind==R3PartKind.DrivePower?$"Silnik T{R3VehicleModel.NormalizedTier(part.Tier)} wspomaga koła; rezerwuje {25+R3VehicleModel.TierPassiveExtra(part.Tier):0} energii.":
                 kind==R3PartKind.EnergyRegenerator?$"Regenerator T{R3VehicleModel.NormalizedTier(part.Tier)}: +{5*R3VehicleModel.TierEffectUnits(part.Tier)} energii/s, rezerwa {25+R3VehicleModel.TierPassiveExtra(part.Tier):0}.":
                 kind==R3PartKind.Armor&&part.ArmorShape==R3ArmorShape.Wedge?"Klin: montaż od spodu lub od tylnej płaskiej ściany. Obracaj Q/E, R/F, Z/X.":
-                kind==R3PartKind.Wheel?"Wariant wyglądu; właściwości jezdne obu kół są takie same. Kliknij pojazd, aby zamontować.":"Kliknij pojazd, aby zamontować część.";}
+                kind==R3PartKind.Wheel&&part.WheelStyle==R3WheelStyle.LargeOffroad?"Duże koło: 18 kg i +25% siły przyczepności. Potrzebuje więcej miejsca.":
+                kind==R3PartKind.Wheel?"Średnie terenowe i szosowe mają takie same właściwości jezdne. Kliknij pojazd, aby zamontować.":"Kliknij pojazd, aby zamontować część.";}
             else {garage.SelectedInventoryId=null;garage.SetTool(R41GarageTool.Mount);
                 garage.Message=!run.CanBuyTechnology(kind,weapon)?"Zablokowane: pokonaj przeciwnika z tą bronią, aby odkryć technologię.":kind==R3PartKind.RepairPulse?
                     "Impuls naprawczy: V, 15 energii, 5 s. Kup część lub otwórz szczegóły.":
                     kind==R3PartKind.DrivePower?"Silnik wspomaga koła; zajmuje 25 maks. energii. Kup część lub otwórz szczegóły.":
                     kind==R3PartKind.EnergyRegenerator?"Regenerator: +5 energii/s, −25 maks. energii. Kup część lub otwórz szczegóły.":
-                    kind==R3PartKind.Armor&&CatalogArmorShape(bonus)==R3ArmorShape.Wedge?"Klin 1×1×1: mocowanie od spodu i z tyłu. Kup część.":"Brak sprawnej części w magazynie. Kup nową lub otwórz szczegóły.";}
+                    kind==R3PartKind.Armor&&CatalogArmorShape(bonus)==R3ArmorShape.Wedge?"Klin 1×1×1: mocowanie od spodu i z tyłu. Kup część.":
+                    kind==R3PartKind.Wheel&&CatalogWheelStyle(bonus)==R3WheelStyle.LargeOffroad?"Duże koło: 18 kg, +25% siły przyczepności. Kup część.":"Brak sprawnej części w magazynie. Kup nową lub otwórz szczegóły.";}
         }
 
         void DrawQuickPartRow(R1RunController run,R3PartKind kind,R4WeaponKind weapon,string bonus,string name,int row,float width)
@@ -50,7 +52,7 @@ namespace RoboRougelike.R1
         {
             var model=run.VehicleModel;
             var bonuses=model.Inventory.Where(p=>p.Kind==R3PartKind.BonusModule).Select(p=>p.UpgradeId).Distinct().ToArray();
-            int count=shopKinds.Length+6+R4WeaponDefinition.Count+bonuses.Length;
+            int count=shopKinds.Length+7+R4WeaponDefinition.Count+bonuses.Length;
             quickPartsScroll=GUI.BeginScrollView(area,quickPartsScroll,new Rect(0,0,rowWidth,Mathf.Max(area.height,count*38)));
             int row=0;
             for(int i=0;i<shopKinds.Length;i++)
@@ -62,7 +64,8 @@ namespace RoboRougelike.R1
                 if(kind==R3PartKind.Armor)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,RoundArmorGroup,"Pancerz • zaokrąglenie",row++,rowWidth);
                 if(kind==R3PartKind.Armor)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,HalfWedgeArmorGroup,"Pancerz • półklin",row++,rowWidth);
                 if(kind==R3PartKind.Armor)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,DomeArmorGroup,"Pancerz • kopuła",row++,rowWidth);
-                if(kind==R3PartKind.Wheel)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,SlickWheelGroup,"Koło szosowe",row++,rowWidth);}
+                if(kind==R3PartKind.Wheel)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,SlickWheelGroup,"Koło szosowe",row++,rowWidth);
+                if(kind==R3PartKind.Wheel)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,LargeWheelGroup,"Duże koło terenowe",row++,rowWidth);}
             for(int i=0;i<R4WeaponDefinition.Count;i++)
             {var weapon=(R4WeaponKind)i;DrawQuickPartRow(run,R3PartKind.Gun,weapon,null,R4WeaponDefinition.Get(weapon).Name,row++,rowWidth);}
             foreach(var bonus in bonuses)
@@ -111,7 +114,9 @@ namespace RoboRougelike.R1
             GUI.Label(new Rect(12,511,245,43),owned!=null?$"Wybrano: {R4WeaponDefinition.PartName(owned)} • HP {owned.Health*100:0}%":
                 catalogGroup.HasValue?"Wybierz egzemplarz lub kup część.":"Wybierz część z listy.",small);
             var inspectedWheel=garage.Tool==R41GarageTool.Inspect&&garage.HasTarget?model.At(garage.Cell):null;
-            if(inspectedWheel!=null&&inspectedWheel.Kind==R3PartKind.Wheel)
+            if(inspectedWheel!=null&&inspectedWheel.Kind==R3PartKind.Wheel&&inspectedWheel.WheelStyle==R3WheelStyle.LargeOffroad)
+                GUI.Label(new Rect(12,560,245,42),"Duże koło • 18 kg • +25% napędu",small);
+            else if(inspectedWheel!=null&&inspectedWheel.Kind==R3PartKind.Wheel)
             {
                 GUI.enabled=!garageOptionsOpen&&inspectedWheel.Health>0;
                 string next=inspectedWheel.WheelStyle==R3WheelStyle.Offroad?"szosowe":"terenowe";
@@ -171,7 +176,9 @@ namespace RoboRougelike.R1
             GUI.Label(new Rect(458,637,286,50),owned!=null?$"{R4WeaponDefinition.PartName(owned)} • HP {owned.Health*100:0}%":
                 "Wybierz część z listy.",small);
             var inspectedWheel=garage.Tool==R41GarageTool.Inspect&&garage.HasTarget?model.At(garage.Cell):null;
-            if(inspectedWheel!=null&&inspectedWheel.Kind==R3PartKind.Wheel)
+            if(inspectedWheel!=null&&inspectedWheel.Kind==R3PartKind.Wheel&&inspectedWheel.WheelStyle==R3WheelStyle.LargeOffroad)
+                GUI.Label(new Rect(458,690,286,40),"Duże koło • 18 kg • +25% napędu",small);
+            else if(inspectedWheel!=null&&inspectedWheel.Kind==R3PartKind.Wheel)
             {
                 GUI.enabled=!garageOptionsOpen&&inspectedWheel.Health>0;
                 string next=inspectedWheel.WheelStyle==R3WheelStyle.Offroad?"szosowe":"terenowe";

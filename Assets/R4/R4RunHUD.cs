@@ -187,7 +187,7 @@ namespace RoboRougelike.R1
             var kind=catalogGroup.Value;var weapon=catalogWeapon;
             var items=model.Inventory.Where(p=>InCatalogGroup(p,kind,weapon,catalogBonusId)).ToArray();
             string name=kind==R3PartKind.Armor?R4WeaponDefinition.ArmorName(CatalogArmorShape(catalogBonusId)):
-                kind==R3PartKind.Wheel?(CatalogWheelStyle(catalogBonusId)==R3WheelStyle.Slick?"Koło szosowe":"Koło terenowe"):
+                kind==R3PartKind.Wheel?R4WeaponDefinition.WheelName(CatalogWheelStyle(catalogBonusId)):
                 kind==R3PartKind.BonusModule&&items.Length>0?R4WeaponDefinition.PartName(items[0]):R4WeaponDefinition.PartName(kind,weapon);
             GUI.Label(new Rect(970,70,280,48),$"{name}  × {items.Length}",body);
             stackScroll=GUI.BeginScrollView(new Rect(970,118,280,210),stackScroll,new Rect(0,0,255,Mathf.Max(210,items.Length*40)));

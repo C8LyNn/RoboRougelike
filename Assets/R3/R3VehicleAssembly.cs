@@ -195,13 +195,13 @@ namespace RoboRougelike.R3
                 if(wide)R3BonusModuleGeometry.AddStructuralSockets(item.transform,state);
                 if(state.Kind==R3PartKind.Core)core=block;
                 var part=item.AddComponent<R3MountedPart>(); part.Cell=state.Cell;part.Kind=state.Kind;part.Tier=R3VehicleModel.NormalizedTier(state.Tier);part.Damageable=hp;part.Block=block;
-                part.Id=state.Id;part.Weapon=state.Weapon;
+                part.Id=state.Id;part.Weapon=state.Weapon;part.WheelStyle=state.WheelStyle;
                 part.UpgradeEffect=state.UpgradeEffect;part.UpgradeAmount=state.UpgradeAmount;
                 assembly.Parts.Add(part);
                 if(state.Kind==R3PartKind.Armor&&!wide)R41PartGeometry.TryAttachArmor(item.transform,state.ArmorShape);
                 Transform payload=null;Transform partMuzzle=null;
                 if(!wide)payload=R41PartGeometry.Payload(item.transform,state.Kind,state.Weapon,
-                    state.Kind==R3PartKind.Gun?palette.Weapons[(int)state.Weapon]:palette.Parts[(int)state.Kind],true,out partMuzzle);
+                    state.Kind==R3PartKind.Gun?palette.Weapons[(int)state.Weapon]:palette.Parts[(int)state.Kind],true,out partMuzzle,state.WheelStyle);
                 if(state.Kind==R3PartKind.Wheel&&payload!=null)
                     RoboRougelike.R4_1.R4WheelArt.TryAttach(item.transform,payload,RoboRougelike.R4_1.R4WheelArt.MirrorForMount(model,state),state.WheelStyle);
                 if(state.Kind==R3PartKind.Booster&&!wide)

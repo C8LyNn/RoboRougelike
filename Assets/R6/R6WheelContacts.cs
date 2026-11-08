@@ -38,6 +38,7 @@ namespace RoboRougelike.R6
                 float weight=Mathf.Lerp(R6Tuning.Current.DamageTractionFloor,1,Mathf.Clamp01(part.CurrentHp/part.MaxHp));
                 int tier=mounted!=null?mounted.Tier:part.GetComponent<RRLDeviceBinding>()?.State?.Tier??1;
                 weight*=R3VehicleModel.TierWheelTraction(tier);
+                if(mounted!=null)weight*=R3VehicleModel.WheelTraction(mounted.WheelStyle);
                 float x=body.transform.InverseTransformPoint(part.transform.position).x;
                 Count++;Traction+=weight;if(x<0)Left+=weight;else Right+=weight;Track+=Mathf.Abs(x)*weight;normals+=normal*weight;CenterOfTraction+=point*weight;
             }

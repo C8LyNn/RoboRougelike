@@ -17,13 +17,15 @@ namespace RoboRougelike.R1
         R4WeaponKind catalogWeapon;
         string catalogBonusId;
         const string SlickWheelGroup="wheel:slick";
+        const string LargeWheelGroup="wheel:large";
         const string WedgeArmorGroup="armor:wedge";
         const string HalfArmorGroup="armor:half";
         const string PyramidArmorGroup="armor:pyramid";
         const string RoundArmorGroup="armor:round";
         const string HalfWedgeArmorGroup="armor:half-wedge";
         const string DomeArmorGroup="armor:dome";
-        static R3WheelStyle CatalogWheelStyle(string group)=>group==SlickWheelGroup?R3WheelStyle.Slick:R3WheelStyle.Offroad;
+        static R3WheelStyle CatalogWheelStyle(string group)=>group==SlickWheelGroup?R3WheelStyle.Slick:
+            group==LargeWheelGroup?R3WheelStyle.LargeOffroad:R3WheelStyle.Offroad;
         static R3ArmorShape CatalogArmorShape(string group)=>group switch {
             WedgeArmorGroup=>R3ArmorShape.Wedge,HalfArmorGroup=>R3ArmorShape.HalfBlock,
             PyramidArmorGroup=>R3ArmorShape.Pyramid,RoundArmorGroup=>R3ArmorShape.RoundEdge,
@@ -46,7 +48,7 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(1080,20,175,40),"Wróć do garażu",compactButton)){catalogOpen=false;return;}
             var model=run.VehicleModel;
             var bonuses=model.Inventory.Where(p=>p.Kind==R3PartKind.BonusModule).Select(p=>p.UpgradeId).Distinct().ToArray();
-            int rows=shopKinds.Length+6+R4WeaponDefinition.Count+bonuses.Length;
+            int rows=shopKinds.Length+7+R4WeaponDefinition.Count+bonuses.Length;
             catalogScroll=GUI.BeginScrollView(new Rect(25,98,900,570),catalogScroll,new Rect(0,0,875,Mathf.Max(570,Mathf.CeilToInt(rows/3f)*55)));
             int row=0;
             for(int i=0;i<shopKinds.Length;i++)
@@ -60,6 +62,7 @@ namespace RoboRougelike.R1
                 if(kind==R3PartKind.Armor)DrawCatalogRow(run,kind,R4WeaponKind.Basic,HalfWedgeArmorGroup,"Pancerz • półklin",row++);
                 if(kind==R3PartKind.Armor)DrawCatalogRow(run,kind,R4WeaponKind.Basic,DomeArmorGroup,"Pancerz • kopuła",row++);
                 if(kind==R3PartKind.Wheel)DrawCatalogRow(run,kind,R4WeaponKind.Basic,SlickWheelGroup,"Koło szosowe",row++);
+                if(kind==R3PartKind.Wheel)DrawCatalogRow(run,kind,R4WeaponKind.Basic,LargeWheelGroup,"Duże koło terenowe",row++);
             }
             for(int i=0;i<R4WeaponDefinition.Count;i++)
             {var weapon=(R4WeaponKind)i;DrawCatalogRow(run,R3PartKind.Gun,weapon,null,R4WeaponDefinition.Get(weapon).Name,row++);}

@@ -47,7 +47,8 @@ namespace RoboRougelike.R4
             if(index<0||index>=definitions.Length)throw new System.ArgumentOutOfRangeException(nameof(kind));
             return definitions[index];
         }
-        public static float PartMass(R3PartState part) => PartMass(part.Kind,part.Weapon)*R3VehicleModel.TierMass(part.Tier);
+        public static float PartMass(R3PartState part) => PartMass(part.Kind,part.Weapon)*R3VehicleModel.TierMass(part.Tier)*
+            (part.Kind==R3PartKind.Wheel?R3VehicleModel.WheelMass(part.WheelStyle):1);
         public static float PartMass(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic) => kind switch {
             R3PartKind.Gun=>Get(weapon).Mass,R3PartKind.Wheel=>12,R3PartKind.Suspension=>12,
             R3PartKind.Booster=>18,R3PartKind.JumpDrive=>24,R3PartKind.Blink=>28,R3PartKind.Gyroscope=>16,
@@ -56,10 +57,12 @@ namespace RoboRougelike.R4
             R3ArmorShape.Wedge=>"Pancerz • klin",R3ArmorShape.HalfBlock=>"Pancerz • półblok",
             R3ArmorShape.Pyramid=>"Pancerz • piramida",R3ArmorShape.RoundEdge=>"Pancerz • zaokrąglenie",
             R3ArmorShape.HalfWedge=>"Pancerz • półklin",R3ArmorShape.Dome=>"Pancerz • kopuła",_=>"Pancerz"};
+        public static string WheelName(R3WheelStyle style)=>style switch {
+            R3WheelStyle.Slick=>"Koło szosowe",R3WheelStyle.LargeOffroad=>"Duże koło terenowe",_=>"Koło terenowe"};
         public static string PartName(R3PartState part)
         {
             string name=part.Kind==R3PartKind.Armor?ArmorName(part.ArmorShape):
-                part.Kind==R3PartKind.Wheel?(part.WheelStyle==R3WheelStyle.Slick?"Koło szosowe":"Koło terenowe"):
+                part.Kind==R3PartKind.Wheel?WheelName(part.WheelStyle):
                 part.Kind==R3PartKind.BonusModule?
                 (string.IsNullOrWhiteSpace(part.UpgradeTitle)?"Moduł bonusu 1×1×1":part.UpgradeTitle+" [1×1×1]"):
                 PartName(part.Kind,part.Weapon);
