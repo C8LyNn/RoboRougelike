@@ -142,8 +142,8 @@ namespace RoboRougelike.R1
             {
                 Panel(new Rect(240, 190, 800, 340));
                 GUI.Label(new Rect(280, 230, 720, 60), "Nie udało się rozpocząć wyprawy", heading);
-                GUI.Label(new Rect(280, 310, 720, 100), run.Error, body);
-                if(GUI.Button(new Rect(280,440,720,55),"Wyjdź z gry",button))run.RequestQuit(); return;
+                GUI.Label(new Rect(280, 310, 720, 100), run.MapQuitPending?run.EditorMessage:run.Error, body);
+                if(GUI.Button(new Rect(280,440,720,55),run.MapQuitPending?"Potwierdź wyjście":"Wyjdź z gry",button))run.RequestQuitFromMenu(); return;
             }
             if (run.Progress == null) return;
             var progress = run.Progress;

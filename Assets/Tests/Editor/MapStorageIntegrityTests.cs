@@ -151,4 +151,16 @@ public sealed class MapStorageIntegrityTests
         Assert.That((bool)handler.Invoke(run,null),Is.True,"A repeated close may confirm the unchanged draft.");
         yield return new ExitPlayMode();
     }
+    [UnityTest] public IEnumerator QuitActionOutsidePauseShowsUnsavedMapWarningBeforeClosing()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);yield return new EnterPlayMode();
+        var until=Time.realtimeSinceStartup+15;while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<until)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenMapEditor(),Is.True);
+        Assert.That(run.EditorDraft.Place(MapItemKind.Ground,0,0,0),Is.True);
+        Assert.That(run.Paused,Is.False);run.RequestQuitFromMenu();
+        Assert.That(run.QuitRequested,Is.False);Assert.That(run.MapQuitPending,Is.True);
+        Assert.That(run.Paused,Is.True,"A quit action outside pause must make the warning visible.");
+        Assert.That(run.EditorMessage,Does.Contain("Niezapisane"));
+        yield return new ExitPlayMode();
+    }
 }

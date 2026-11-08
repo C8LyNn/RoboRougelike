@@ -91,7 +91,8 @@ namespace RoboRougelike.R1
 
         public void RequestQuitFromMenu()
         {
-            if(QuitRequested||!ConfirmMapEditorExit(true))return;
+            if(QuitRequested)return;
+            if(!ConfirmMapEditorExit(true)){if(!Paused)TogglePause();return;}
             RequestQuit();
         }
 
