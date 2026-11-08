@@ -63,6 +63,22 @@ public sealed class UI943PortraitCatalogActionsTests
         Assert.That(Field(hud,"garageOptionsFeedback"),Is.Null,"Reopening must not show the previous transaction as new.");
     }
 
+    [UnityTest] public IEnumerator GarageDriveSummarySuggestsPracticalUphillOptions()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float timeout=Time.realtimeSinceStartup+15;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<timeout)yield return null;
+        var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        Assert.That(run.SelectVehicle(R3VehicleKind.Heavy)&&run.OpenSandboxGarage(),Is.True);
+        var method=typeof(R1RunHUD).GetMethod("GarageDriveSummary",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        var text=(string)method.Invoke(null,new object[]{run});
+        Assert.That(text,Does.Contain("Podjazd").And.Contain("silnik kół").And.Contain("25"));
+        run.VehicleModel.SelectedDrive=R3DriveKind.Hover;
+        text=(string)method.Invoke(null,new object[]{run});
+        Assert.That(text,Does.Contain("Hover").And.Contain("wyłącznie napęd kołowy"));
+    }
+
     [Test] public void BonusStackNameDoesNotInheritFirstItemsTier()
     {
         var method=typeof(R1RunHUD).GetMethod("CatalogBonusGroupName",BindingFlags.Static|BindingFlags.NonPublic);
