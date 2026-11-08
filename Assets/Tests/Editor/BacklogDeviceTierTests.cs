@@ -31,21 +31,21 @@ public sealed class BacklogDeviceTierTests
         var model=Model();float baseline=model.Energy.Maximum;var part=FuseThree(model,R3PartKind.Battery);Mount(model,part);
         Assert.That(model.Energy.Maximum,Is.EqualTo(baseline+200));
     }
-    [Test] public void TierTwoRegeneratorImprovesRecoveryAndReservesThirty()
+    [Test] public void TierTwoRegeneratorImprovesRecoveryAndReservesTwentyFive()
     {
         var model=Model();float baseline=model.Energy.Maximum;var part=FuseThree(model,R3PartKind.EnergyRegenerator);Mount(model,part);
-        Assert.That(model.Energy.Maximum,Is.EqualTo(baseline-30));
+        Assert.That(model.Energy.Maximum,Is.EqualTo(baseline-25));
         Assert.That(model.Energy.TrySpend(model.Energy.Current),Is.True);model.Energy.Advance(1);
         Assert.That(model.Energy.Current,Is.EqualTo(20).Within(.001));
     }
-    [Test] public void TierThreeRegeneratorHasFourTimesTheEffectAndThirtyFiveReservation()
+    [Test] public void TierThreeRegeneratorHasFourTimesTheEffectAndTwentyFiveReservation()
     {
         var model=Model();model.Award(500);float baseline=model.Energy.Maximum;
         for(int i=0;i<9;i++)Assert.That(model.PurchaseToInventory(R3PartKind.EnergyRegenerator),Is.True);
         for(int i=0;i<3;i++)Assert.That(model.FuseInventory(model.Inventory.Where(p=>p.Kind==R3PartKind.EnergyRegenerator&&p.Tier==1).Take(3).Select(p=>p.Id).ToArray()),Is.True);
         Assert.That(model.FuseInventory(model.Inventory.Select(p=>p.Id).ToArray()),Is.True);
         var part=model.Inventory.Single();Assert.That(part.Tier,Is.EqualTo(3));Mount(model,part);
-        Assert.That(model.Energy.Maximum,Is.EqualTo(baseline-35));
+        Assert.That(model.Energy.Maximum,Is.EqualTo(baseline-25));
         Assert.That(model.Energy.TrySpend(model.Energy.Current),Is.True);model.Energy.Advance(1);
         Assert.That(model.Energy.Current,Is.EqualTo(30).Within(.001));
     }

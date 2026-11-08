@@ -11,7 +11,7 @@ Użyj Unity 6000.3.14f1 i zachowaj XML, Editor.log oraz kody zakończenia. Nie u
 - `UI943PortraitRewardsActionsTests`: `CollectedFinalPickupDoesNotConsumeRewardConfirmationKey`, `EscapeClosesRewardInventoryBeforePausingAndCancelsConfirmation`.
 - `UI943WeaponStatusTests`: `ManualReloadHintRespectsDeviceAvailability`, `DefenseRowsUseActualMountedDevicesInOrderAcrossPages`.
 - `RRLW34RewardTests`: `ScrapPreviewAndLedgerReportOnlyAmountActuallyCredited`, `DismantlePreviewMatchesWalletChangeAtTheLimit`.
-- `BacklogEnergyRegenTests`: `EveryPassiveTierReservesTwentyFiveAndDestructionReleasesIt`, `MixedPassiveTiersEachReserveTwentyFive`, `CheckpointPreservesTieredBatteryPassiveReservationAndCurrentCharge`; `BacklogDeviceTierTests`: `UpgradedMotorUsesTwoPowerUnitsAndTwentyFiveEnergyReservation`.
+- `BacklogEnergyRegenTests`: `EveryPassiveTierReservesTwentyFiveAndDestructionReleasesIt`, `MixedPassiveTiersEachReserveTwentyFive`, `CheckpointPreservesTieredBatteryPassiveReservationAndCurrentCharge`; `BacklogDeviceTierTests`: `TierTwoRegeneratorImprovesRecoveryAndReservesTwentyFive`, `TierThreeRegeneratorHasFourTimesTheEffectAndTwentyFiveReservation`; `BacklogDeviceTierGameplayTests`: `UpgradedMotorUsesTwoPowerUnitsAndTwentyFiveEnergyReservation`.
 - `RRLW6ShieldPhysicalTests`: `EnemyShieldKeepsPassiveReservationDuringEmpUntilDestroyed`.
 
 Przed testami sprawdź izolację danych. Testy map używają losowych nazw plików w katalogu map i usuwają własne pliki; testy w batch Editorze używają osobnego profilu technologii. Nie nadpisuj ani nie usuwaj zapisów gracza. Jeśli izolacji nie da się potwierdzić, oznacz odpowiedni przypadek NOT RUN.
@@ -23,7 +23,8 @@ Przed testami sprawdź izolację danych. Testy map używają losowych nazw plik�
 3. Po walce: zbierz ostatnią kostkę przed końcem odliczania; po wyborze nagród pierwszy Enter powinien je zatwierdzić. Podczas odliczania Enter nadal powinien je pominąć.
 4. Złom: tylko na odizolowanym profilu blisko limitu portfela porównaj podgląd, rzeczywistą wypłatę i podsumowanie.
 5. Strzelba, railgun i obrona punktowa: sprawdź komunikaty przy pełnym/pustym magazynku, przeładowaniu i blokadzie EMP.
-6. Energia modułów pasywnych: dla poziomów T1/T2/T3 sprawdź rezerwację 25 energii za każdy sprawny moduł, zgodnie z instrukcją użytkownika, oraz uwalnianie rezerwy po jego zniszczeniu. Starszy kod naliczał 25/30/35; obecna poprawka nie zmienia efektów poziomów. Test fizycznego pojazdu jest odłożony.
+6. Ustawienia pojazdu → Napęd: sprawdź czytelność wymagań kół, gąsienic, Omni i Hover oraz odblokowanie wyboru po montażu sprawnych części.
+7. Energia modułów pasywnych: dla poziomów T1/T2/T3 sprawdź rezerwację 25 energii za każdy sprawny moduł, zgodnie z instrukcją użytkownika, oraz uwalnianie rezerwy po jego zniszczeniu. Starszy kod naliczał 25/30/35; obecna poprawka nie zmienia efektów poziomów. Test fizycznego pojazdu jest odłożony.
 
 Oceń tekst i sterowanie także w pionowym i poziomym układzie. Nie traktuj przygotowanych testów ani kompilacji Roslyn jako PASS w Unity. Historyczny problem automatycznego zamykania C0000005 pozostaje niewyjaśniony.
 
