@@ -5,6 +5,18 @@ using UnityEngine;
 
 public sealed class UI943PortraitMenuTests
 {
+    [TestCase("",2026,"Błędny seed\nUżyty: 2026")]
+    [TestCase("abc",7,"Błędny seed\nUżyty: 7")]
+    [TestCase("2147483648",-4,"Błędny seed\nUżyty: -4")]
+    [TestCase("-2147483648",2026,null)]
+    [TestCase("42",2026,null)]
+    public void InvalidSeedReportsTheLastValidValue(string text,int lastValid,string expected)
+    {
+        var method=typeof(R1RunHUD).GetMethod("SeedInputWarning",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        Assert.That((string)method.Invoke(null,new object[]{text,lastValid}),Is.EqualTo(expected));
+    }
+
     [TestCase(768,1024,true)] [TestCase(1024,768,false)] [TestCase(1366,768,false)]
     [TestCase(1920,1080,false)] [TestCase(3840,2160,false)]
     public void PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(int width,int height,bool expected)

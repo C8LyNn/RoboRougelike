@@ -72,6 +72,13 @@ namespace RoboRougelike.R1
             if(float.IsNaN(current)||float.IsInfinity(current)||float.IsNaN(maximum)||float.IsInfinity(maximum)||maximum<=0)return 0;
             return Mathf.Clamp01(current/maximum);
         }
+        private static string SeedInputWarning(string text,int lastValid)=>
+            int.TryParse(text,out _)?null:$"Błędny seed\nUżyty: {lastValid}";
+        private void DrawSeedWarning(Rect area,int lastValid)
+        {
+            string warning=SeedInputWarning(seedText,lastValid);if(warning==null)return;
+            var before=GUI.color;GUI.color=new Color(1f,.72f,.35f);GUI.Label(area,warning,small);GUI.color=before;
+        }
         private static void DrawResourceBar(Rect rect,float current,float maximum,Color color)
         {
             var before=GUI.color;GUI.color=new Color(.11f,.17f,.19f,1);GUI.DrawTexture(rect,Texture2D.whiteTexture);
@@ -221,6 +228,7 @@ namespace RoboRougelike.R1
                 GUI.Label(new Rect(90,570,110,28),"Seed:",body);
                 seedText=GUI.TextField(new Rect(200,568,230,28),seedText,11);
                 if(int.TryParse(seedText,out int seed))run.RequestedSeed=seed;
+                DrawSeedWarning(new Rect(990,505,200,42),run.RequestedSeed);
                 if(GUI.Button(new Rect(450,548,170,38),"Wczytaj wyprawę",compactButton))run.LoadRunCheckpoint();
                 if(!string.IsNullOrEmpty(run.RunSaveMessage))GUI.Label(new Rect(90,545,340,24),run.RunSaveMessage,small);
                 if (GUI.Button(new Rect(90,600,500,65), "Przygotuj pojazd  [Enter]", button)) run.PrepareUnifiedRun();
@@ -275,6 +283,7 @@ namespace RoboRougelike.R1
             GUI.Label(new Rect(24,704,75,30),"Seed:",body);
             seedText=GUI.TextField(new Rect(105,704,205,32),seedText,11);
             if(int.TryParse(seedText,out int seed))run.RequestedSeed=seed;
+            DrawSeedWarning(new Rect(600,700,144,42),run.RequestedSeed);
             if(GUI.Button(new Rect(340,700,250,40),"Wczytaj wyprawę",compactButton))run.LoadRunCheckpoint();
             if(!string.IsNullOrEmpty(run.RunSaveMessage))GUI.Label(new Rect(24,744,720,34),run.RunSaveMessage,small);
             if(GUI.Button(PortraitActionRect(0),"Przygotuj pojazd  [Enter]",button))run.PrepareUnifiedRun();
