@@ -172,7 +172,16 @@ namespace RoboRougelike.R1
             EditGarage(()=>VehicleModel.Mount(id,cell));
         public bool GarageMount(string id,Vector3Int cell,Vector3Int rotation) =>
             EditGarage(()=>VehicleModel.Mount(id,cell,rotation));
-        public bool GarageRepairInventory(string id) => EditGarage(()=>VehicleModel.RepairInventory(id));
+        public bool GarageRepairInventory(string id)
+        {
+            if(Transitioning||Progress?.State!=R1RunState.Garage||VehicleModel==null||!VehicleModel.RepairInventory(id))return false;
+            // Inventory parts are not in the assembled vehicle. Refresh the
+            // ghost (a selected wreck may now be mountable) without replacing
+            // the vehicle and its camera every time the player repairs one.
+            if(Garage!=null&&Player!=null)Garage.RefreshPreview();
+            else RebuildGarageVehicle();
+            return true;
+        }
         public bool GarageFuse(System.Collections.Generic.IEnumerable<string> ids)
         {
             if(Transitioning||Progress?.State!=R1RunState.Garage||VehicleModel==null||Garage==null)return false;
