@@ -386,6 +386,45 @@ public sealed class R4WheelVariantsTests
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Standard,model.Economy,Time.time,out var restored,out var error),Is.True,error);
         Assert.That(restored.Parts.Single(p=>p.Id==purchased.Id).WheelStyle,Is.EqualTo(style));
     }
+    [UnityTest]public IEnumerator CasterFollowsVelocityAndKeepsTyreAlignedWithArt()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
+        var model=run.VehicleModel;model.Award(1000);var style=(R3WheelStyle)10;
+        Assert.That(run.GaragePurchase(R3PartKind.Wheel,default,style),Is.True);
+        Assert.That(model.Inventory.Last().ContactMask,Is.EqualTo(R3MountingGrid.FaceBit(Vector3Int.up)));
+        Assert.That(R3VehicleModel.WheelRadius(style),Is.EqualTo(.17f).Within(.001f));
+        var owner=new GameObject("caster QA");owner.transform.position=new Vector3(1000,50,1000);var body=owner.AddComponent<Rigidbody>();body.useGravity=false;
+        var block=GameObject.CreatePrimitive(PrimitiveType.Cube);block.transform.SetParent(owner.transform,false);block.transform.localScale=Vector3.one*R41PartGeometry.BlockSize;
+        var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));R41PartGeometry.ConfigureWheelMount(block,style);
+        var wheel=R41PartGeometry.Payload(block.transform,R3PartKind.Wheel,default,material,true,out _,style);
+        var art=R4WheelArt.TryAttach(block.transform,wheel,false,style);Assert.That(art,Is.Not.Null);
+        var socket=block.GetComponentsInChildren<Transform>(true).Single(t=>t.name=="Socket_Mount");
+        var swivel=block.GetComponentsInChildren<Transform>(true).Single(t=>t.name=="R4M_WheelS_Caster_Slick_Swivel");
+        var rotor=block.GetComponentsInChildren<Transform>(true).Single(t=>t.name=="R4M_WheelS_Caster_Slick_Rotor");
+        var before=swivel.localRotation;var fixedSocket=socket.localPosition;Time.timeScale=1;body.linearVelocity=Vector3.right*3;
+        float begin=Time.fixedTime,deadline=Time.realtimeSinceStartup+10;
+        while(Time.fixedTime-begin<.3f&&Time.realtimeSinceStartup<deadline)yield return new WaitForFixedUpdate();
+        Assert.That(Time.fixedTime-begin,Is.GreaterThanOrEqualTo(.3f),"Physics time must advance.");
+        Assert.That(Quaternion.Angle(swivel.localRotation,before),Is.GreaterThan(15),"Swivel must follow travel direction.");
+        Assert.That(Vector3.Distance(wheel.position,rotor.position),Is.LessThan(.01f),$"Collider and imported axle must move together. physical={block.transform.InverseTransformPoint(wheel.position)}, rotor={block.transform.InverseTransformPoint(rotor.position)}, swivel={block.transform.InverseTransformPoint(swivel.position)}");
+        Assert.That(Vector3.Distance(socket.localPosition,fixedSocket),Is.LessThan(.001f));
+        Object.Destroy(owner);Object.Destroy(material);
+    }
+    [UnityTest]public IEnumerator CasterCanBeMountedAndSaved()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
+        var model=run.VehicleModel;model.Award(1000);var garage=run.Garage;
+        foreach(var cell in new[]{new Vector3Int(2,2,2),new Vector3Int(2,3,2),new Vector3Int(3,3,2)})
+        {
+            Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);var support=model.Inventory.Last();
+            garage.ChooseInventory(support.Id);garage.Select(cell);Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);yield return null;
+        }
+        Assert.That(run.GaragePurchase(R3PartKind.Wheel,default,R3WheelStyle.CasterSlick),Is.True);var item=model.Inventory.Last();
+        garage.ChooseInventory(item.Id);garage.Select(new Vector3Int(3,2,2));Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);yield return null;
+        var data=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(Time.time)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Standard,model.Economy,Time.time,out var restored,out var error),Is.True,error);
+        Assert.That(restored.Parts.Single(p=>p.Id==item.Id).WheelStyle,Is.EqualTo(R3WheelStyle.CasterSlick));
+    }
     [UnityTest]public IEnumerator LargeWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.LargeOffroad);}
     [UnityTest]public IEnumerator MonsterWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.Monster);}
     [UnityTest]public IEnumerator SmallForkWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.SmallFork);}
@@ -394,6 +433,7 @@ public sealed class R4WheelVariantsTests
     [UnityTest]public IEnumerator TwinWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.TwinRoad);}
     [UnityTest]public IEnumerator RoadSteerWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.SteerRoad);}
     [UnityTest]public IEnumerator LargeSteerWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.SteerOffroad);}
+    [UnityTest]public IEnumerator CasterWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.CasterSlick);}
     [UnityTest]public IEnumerator RoadSteerArtUsesRealIndependentSteeringWithoutMovingMount(){yield return SteeringVariant(R3WheelStyle.SteerRoad,"R4M_WheelM_Steer_Road_Rotor");}
     [UnityTest]public IEnumerator LargeSteerArtUsesRealIndependentSteeringWithoutMovingMount(){yield return SteeringVariant(R3WheelStyle.SteerOffroad,"R4M_WheelL_Steer_Offroad_Rotor");}
     IEnumerator SteeringVariant(R3WheelStyle style,string rotorName)
