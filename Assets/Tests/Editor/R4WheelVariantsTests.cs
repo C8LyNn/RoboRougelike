@@ -308,6 +308,7 @@ public sealed class R4WheelVariantsTests
     [UnityTest]public IEnumerator SmallForkWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.SmallFork);}
     [UnityTest]public IEnumerator BalloonWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.BalloonFork);}
     [UnityTest]public IEnumerator SpikedWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.SpikedFork);}
+    [UnityTest]public IEnumerator TwinWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.TwinRoad);}
     IEnumerator DriveSizedWheels(R3WheelStyle style)
     {
         var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
