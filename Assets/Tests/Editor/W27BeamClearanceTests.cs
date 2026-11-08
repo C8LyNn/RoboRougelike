@@ -29,14 +29,25 @@ public class W27BeamClearanceTests
         var blocker=GameObject.CreatePrimitive(PrimitiveType.Cube);blocker.transform.SetParent(rig.transform,true);
         blocker.transform.position=gun.Muzzle.position+gun.Muzzle.forward*.6f;blocker.transform.localScale=Vector3.one*.3f;
         Physics.SyncTransforms();var beam=gun.GetComponent<RRLBeamBinding>();beam.SetTriggerHeld(true);
+        var cameraObject=new GameObject("QA beam camera");var camera=cameraObject.AddComponent<Camera>();
+        camera.transform.SetPositionAndRotation(gun.Muzzle.position-gun.Muzzle.forward*4,Quaternion.LookRotation(gun.Muzzle.forward));
+        var assembly=rig.GetComponent<R3VehicleAssembly>();var controller=rig.GetComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeTankController>();
+        var target=gun.Muzzle.position+gun.Muzzle.forward*12;
+        var markers=new System.Collections.Generic.List<RRLWeaponReticles.Marker>();
+        RRLWeaponReticles.Collect(camera,assembly,controller,target,markers);
+        Assert.That(markers.Count,Is.EqualTo(1));Assert.That(markers[0].Obstructed,Is.True,"Reticle must warn when the physical beam is blocked.");
+        Assert.That(RRLAimFeedback.Evaluate(assembly,controller,target,null).Clear,Is.Zero);
         beam.SendMessage("FixedUpdate");beam.SendMessage("FixedUpdate");
         Assert.That(beam.Module.Heat,Is.EqualTo(0).Within(.0001f),"blocked beam must not heat");
         blocker.SetActive(false);Physics.SyncTransforms();
         Assert.That(beam.Device.Available,Is.True,"beam device available");
         Assert.That(rig.GetComponent<R3VehicleAssembly>().ClearProjectilePath(gun,gun.Muzzle.forward,beam.Module.Settings.rangeMeters,.001f),Is.True,"beam line clear after removal");
+        RRLWeaponReticles.Collect(camera,assembly,controller,target,markers);
+        Assert.That(markers[0].Obstructed,Is.False,"Reticle must clear when the own armor is removed.");
+        Assert.That(RRLAimFeedback.Evaluate(assembly,controller,target,null).Clear,Is.EqualTo(1));
         beam.SetTriggerHeld(true);
         beam.SendMessage("FixedUpdate");beam.SendMessage("FixedUpdate");
         Assert.That(beam.Module.Heat,Is.GreaterThan(0),"beam resumes after armor is removed");
-        Object.Destroy(rig.gameObject);Object.Destroy(colors);Object.Destroy(material);
+        Object.Destroy(rig.gameObject);Object.Destroy(colors);Object.Destroy(cameraObject);Object.Destroy(material);
     }
 }

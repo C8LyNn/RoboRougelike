@@ -30,6 +30,17 @@ namespace RoboRougelike.WeaponIntegration
             if(part.Weapon==R4WeaponKind.BeamCutter||part.Weapon==R4WeaponKind.EmpEmitter||part.Weapon==R4WeaponKind.RotarySaw)return 0;
             return R4WeaponDefinition.Get(part.Weapon).Diameter*.5f;
         }
+        // Use the same own-hull rule as the actual firing path.
+        internal static bool OwnArmorBlocksShot(R3VehicleAssembly assembly,R3MountedPart part)
+        {
+            if(part.Weapon==R4WeaponKind.BeamCutter)
+            {
+                var module=part.GetComponent<RRLBeamBinding>()?.Module;
+                return module!=null&&!assembly.ClearProjectilePath(part,part.Muzzle.forward,module.Settings.rangeMeters,.001f);
+            }
+            if(part.Weapon>R4WeaponKind.Railgun&&part.Weapon!=R4WeaponKind.RocketLauncher)return false;
+            return !assembly.ClearProjectilePath(part);
+        }
         static bool Blocks(Collider c,Collider target,Transform owner)
         {
             if(c==null||c==target||c.transform.IsChildOf(owner)||c.GetComponentInParent<R3Debris>()!=null)return false;
@@ -91,7 +102,7 @@ namespace RoboRougelike.WeaponIntegration
                 blocked|=count>=hits.Length;
                 for(int i=0;i<count&&!blocked;i++)
                     blocked=Blocks(hits[i].collider,target,assembly.transform);
-                if(!blocked)result.Clear++;
+                if(!blocked&&!OwnArmorBlocksShot(assembly,part))result.Clear++;
             }
             return result;
         }
