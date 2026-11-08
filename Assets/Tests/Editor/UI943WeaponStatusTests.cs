@@ -82,7 +82,9 @@ public sealed class UI943WeaponStatusTests
             var rows=first.Concat(second).ToArray();
             for(int i=0;i<5;i++)Assert.That(rows[i],Is.EqualTo($"DEF-001 • {shields[i].Generator.Charge:0}/100 • "+(shields[i].Generator.Operational?"ON":"OFF")));
             for(int i=0;i<5;i++)Assert.That(rows[i+5],Is.EqualTo($"DEF-002 • {defenses[i].State.Ammo}/40 • "+(defenses[i].Controller.IsOperational?"ON":"OFF")+" • T przeładuj"));
-            defenses[4].State.Ammo=3;Assert.That(Page(1)[0],Does.Contain("3/40"));
+            defenses[4].State.Ammo=40;Assert.That(Page(1)[0],Does.Contain("40/40").And.Contain("pełny"));
+            defenses[4].State.Ammo=3;Assert.That(Page(1)[0],Does.Contain("3/40").And.Contain("T przeładuj"));
+            defenses[4].State.ReloadReadyAt=Time.time+10;Assert.That(Page(1)[0],Does.Contain("ładowanie"));
             var remaining=defenses.Take(3).ToArray();
             var clamped=(string[])method.Invoke(null,new object[]{shields,remaining,1});Assert.That(clamped.Length,Is.EqualTo(8));
         }
