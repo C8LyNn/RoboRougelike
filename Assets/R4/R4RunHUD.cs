@@ -51,6 +51,11 @@ namespace RoboRougelike.R1
             selectedBasket=-1;
             rewardInventoryOpen=false;rewardInventoryPage=0;rewardDismantleConfirmation=null;
         }
+        internal bool CloseRewardInventory()
+        {
+            if(!rewardInventoryOpen)return false;
+            rewardInventoryOpen=false;rewardDismantleConfirmation=null;return true;
+        }
         private void ChooseRewardBasket(int index)
         {
             if(index<0||index>=rewardBaskets.Count)return;
@@ -176,8 +181,8 @@ namespace RoboRougelike.R1
             GUI.enabled=rewardInventoryPage<pages-1;
             if(GUI.Button(new Rect(420,580,90,40),"→",compactButton)){rewardInventoryPage++;rewardDismantleConfirmation=null;}
             GUI.enabled=true;
-            if(GUI.Button(new Rect(805,630,420,60),"Wróć do wybranych nagród",button))
-            {rewardInventoryOpen=false;rewardDismantleConfirmation=null;}
+            if(GUI.Button(new Rect(805,630,420,60),"Wróć do nagród [Esc]",button))
+                CloseRewardInventory();
         }
         private static string BonusText(R3PartState item)
         {

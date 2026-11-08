@@ -104,8 +104,8 @@ namespace RoboRougelike.R1
             GUI.enabled=rewardInventoryPage<pages-1;
             if(GUI.Button(new Rect(pager.x+310,pager.y,110,48),"→",compactButton)){rewardInventoryPage++;rewardDismantleConfirmation=null;}
             GUI.enabled=true;
-            if(GUI.Button(PortraitRewardInventoryBack(),"Wróć do wybranych nagród",button))
-            {rewardInventoryOpen=false;rewardDismantleConfirmation=null;}
+            if(GUI.Button(PortraitRewardInventoryBack(),"Wróć do nagród [Esc]",button))
+                CloseRewardInventory();
         }
 
         private void PortraitRewardSelectBonus(int index)=>selectedBonus=index;
