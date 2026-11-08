@@ -72,13 +72,13 @@ public sealed class BacklogDeviceTierGameplayTests
         var cell=cells.First(c=>run.VehicleModel.OwnedPlacementError(part.Id,c,default)==null);
         Assert.That(run.GarageMount(part.Id,cell),Is.True);return part;
     }
-    [UnityTest] public IEnumerator UpgradedMotorUsesTwoPowerUnitsAndThirtyEnergyReservation()
+    [UnityTest] public IEnumerator UpgradedMotorUsesTwoPowerUnitsAndTwentyFiveEnergyReservation()
     {
         var part=FuseAndMount(R3PartKind.DrivePower);
         var drive=run.Player.GetComponent<R6VehicleDrive>();var bank=run.Player.GetComponent<VehicleEnergyBank>();
         drive.RefreshMass();bank.Refresh();
         Assert.That(part.Tier,Is.EqualTo(2));Assert.That(drive.ActivePowerUnits,Is.EqualTo(2).Within(.001));
-        Assert.That(bank.Maximum,Is.EqualTo(470));yield return null;
+        Assert.That(bank.Maximum,Is.EqualTo(475));yield return null;
     }
     [UnityTest] public IEnumerator UpgradedRepairUsesMoreEnergyAndHealsTwiceAsFast()
     {

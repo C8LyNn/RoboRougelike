@@ -10,6 +10,25 @@ using UnityEngine.TestTools;
 
 public sealed class BacklogEnergyRegenTests
 {
+    [TestCase(1)][TestCase(2)][TestCase(3)]
+    public void EveryPassiveTierReservesTwentyFiveAndDestructionReleasesIt(int tier)
+    {
+        foreach(var kind in new[]{R3PartKind.DrivePower,R3PartKind.EnergyRegenerator,R3PartKind.Gyroscope})
+        {
+            var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));float before=model.Energy.Maximum;
+            var module=new R3PartState(default,kind){Tier=tier};model.Parts.Add(module);model.RefreshEnergyLayout();
+            Assert.That(model.Energy.Maximum,Is.EqualTo(before-25),$"{kind} T{tier}");
+            module.Health=0;model.RefreshEnergyLayout();Assert.That(model.Energy.Maximum,Is.EqualTo(before),$"Destroyed {kind} T{tier}");
+        }
+    }
+    [Test] public void MixedPassiveTiersEachReserveTwentyFive()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));float before=model.Energy.Maximum;
+        model.Parts.Add(new R3PartState(default,R3PartKind.DrivePower){Tier=1});
+        model.Parts.Add(new R3PartState(default,R3PartKind.EnergyRegenerator){Tier=2});
+        model.Parts.Add(new R3PartState(default,R3PartKind.Gyroscope){Tier=3});model.RefreshEnergyLayout();
+        Assert.That(model.Energy.Maximum,Is.EqualTo(before-75));
+    }
     [Test]
     public void MountedRegeneratorReservesEnergyAndIncreasesRecovery()
     {
