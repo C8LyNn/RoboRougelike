@@ -27,19 +27,21 @@ namespace RoboRougelike.WeaponIntegration
         }
         public void RefreshAvailability()
         {foreach(var component in GetComponents<MonoBehaviour>())if(component!=null&&component is IRRLDeviceLifecycle device)device.RefreshAvailability();}
-        public bool HardwareAvailable
+        // Physical presence excludes temporary EMP disruption: mounted passive
+        // hardware keeps its energy reservation while it cannot operate.
+        public bool HardwarePresent
         {
             get
             {
                 if(!isActiveAndEnabled||State==null||Owner==null||Body==null||Damageable==null||Damageable.IsDead||
                     !Owner.gameObject.activeInHierarchy||!transform.IsChildOf(Owner)||GetComponentInParent<Rigidbody>()!=Body)return false;
-                if(RRLEmpPartState.IsBlocked(gameObject))return false;
                 if(part!=null&&!part.Operational)return false;
                 if(enemy!=null&&(!enemy.isActiveAndEnabled||enemy.IsDefeated))return false;
                 if(player!=null&&(player.Structure==null||!player.Structure.CoreAlive))return false;
                 return true;
             }
         }
+        public bool HardwareAvailable => HardwarePresent&&!RRLEmpPartState.IsBlocked(gameObject);
         public bool Available
         {
             get

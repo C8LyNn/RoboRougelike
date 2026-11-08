@@ -79,7 +79,7 @@ namespace RoboRougelike.R3
                 enemyBatteries.Clear();
                 GetComponentsInChildren(false,enemyShields);
                 foreach(var shield in enemyShields)
-                    if(shield!=null&&shield.Device!=null&&shield.Device.HardwareAvailable)passive++;
+                    if(shield!=null&&shield.Device!=null&&shield.Device.HardwarePresent)passive++;
                 enemyShields.Clear();
                 state.SetAdditionalPassiveReservation(0);
                 state.Refresh(batteries,passive,!enemyCore.IsDead&&enemyCore.transform.IsChildOf(transform));
