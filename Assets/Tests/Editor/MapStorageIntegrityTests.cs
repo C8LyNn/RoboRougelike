@@ -69,8 +69,11 @@ public sealed class MapStorageIntegrityTests
             Assert.That(run.EditorDraft.Place(MapItemKind.Ground,0,0,0),Is.True);run.SaveEditedMap();var before=File.ReadAllBytes(path);
             Assert.That(run.EditorDraft.Place(MapItemKind.Ground,1,0,0),Is.True);run.SaveEditedMap();
             Assert.That(run.MapOverwritePending,Is.True);Assert.That(File.ReadAllBytes(path),Is.EqualTo(before));
+            // A changed draft must not reuse the prior overwrite confirmation.
+            Assert.That(run.EditorDraft.Place(MapItemKind.Ground,2,0,0),Is.True);run.SaveEditedMap();
+            Assert.That(run.MapOverwritePending,Is.True);Assert.That(File.ReadAllBytes(path),Is.EqualTo(before));
             run.SaveEditedMap();Assert.That(run.MapOverwritePending,Is.False);Assert.That(File.ReadAllBytes(path),Is.Not.EqualTo(before));
-            var loaded=new MapDraft();Assert.That(MapStorage.Load(path,loaded,out var error),Is.True,error);Assert.That(loaded.Items.Count,Is.EqualTo(2));
+            var loaded=new MapDraft();Assert.That(MapStorage.Load(path,loaded,out var error),Is.True,error);Assert.That(loaded.Items.Count,Is.EqualTo(3));
         }
         finally{if(File.Exists(path))File.Delete(path);}
         yield return new ExitPlayMode();
