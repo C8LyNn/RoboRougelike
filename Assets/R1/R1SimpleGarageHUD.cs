@@ -14,7 +14,7 @@ namespace RoboRougelike.R1
         int quickPartCategory;
         GUIStyle quickCategoryButton;
         Vector2 quickPartsScroll;
-        void OpenSimpleGarageOptions(int tab){garageOptionsTab=tab;garageOptionsFeedback=null;garageOptionsOpen=true;}
+        void OpenSimpleGarageOptions(int tab){garageOptionsTab=tab;garageOptionsFeedback=null;activitySaveFeedback=null;garageOptionsOpen=true;}
         void RepairFromGarageOptions(R1RunController run,bool emergency)
         {
             int before=run.VehicleModel.Scrap;
