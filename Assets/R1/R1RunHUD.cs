@@ -19,7 +19,7 @@ namespace RoboRougelike.R1
             =>width>0&&height>width&&garage&&!mapEditing&&!overlay;
         private static Rect PortraitVehicleCard(int index)=>new Rect(24,150+index*180,720,166);
         private static Rect PortraitActionRect(int index)=>new Rect(24+(index%2)*370,index<2?790:855,350,index<2?54:48);
-        private void DismissCatalog(){catalogOpen=false;dismantleConfirmation=null;}
+        private void DismissCatalog(){catalogOpen=false;dismantleConfirmation=null;catalogFeedback=null;}
         internal bool ClosePartCatalog()
         {
             if(catalogOpen){DismissCatalog();return true;}

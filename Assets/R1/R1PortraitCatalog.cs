@@ -101,6 +101,7 @@ namespace RoboRougelike.R1
             var selected=items.FirstOrDefault(p=>p.Id==run.Garage.SelectedInventoryId);
             if(selected!=null&&R3VehicleModel.SupportsFusion(selected.Kind,selected.Weapon))DrawFusionButton(run,selected,new Rect(390,875,354,52));
             else GUI.Label(new Rect(390,875,354,82),"Wybierz egzemplarz, aby wrócić do garażu i zamontować go na pojeździe.",small);
+            if(!string.IsNullOrEmpty(catalogFeedback))GUI.Label(new Rect(24,940,720,52),catalogFeedback,small);
         }
 
         private void DrawPortraitCatalogGroup(R1RunController run,R3PartKind kind,R4WeaponKind weapon,string bonus,string name,int row)
@@ -114,7 +115,7 @@ namespace RoboRougelike.R1
 
         private void PortraitCatalogSelectGroup(R1RunController run,R3PartKind kind,R4WeaponKind weapon,string bonus)
         {
-            catalogGroup=kind;catalogWeapon=weapon;catalogBonusId=bonus;stackScroll=Vector2.zero;dismantleConfirmation=null;
+            catalogGroup=kind;catalogWeapon=weapon;catalogBonusId=bonus;stackScroll=Vector2.zero;dismantleConfirmation=null;catalogFeedback=null;
             var garage=run.Garage;garage.SelectedPart=kind;garage.SelectedWeapon=weapon;
             garage.SelectedInventoryId=null;garage.UseInventory=true;garage.SetTool(R41GarageTool.Mount);inventoryOpen=true;
         }
@@ -131,11 +132,8 @@ namespace RoboRougelike.R1
             else run.Garage.Message="Nie udało się kupić części.";
         }
         private void PortraitCatalogRepair(R1RunController run,string id)
-        {dismantleConfirmation=null;run.GarageRepairInventory(id);}
+        {RepairCatalogItem(run,id);}
         private void PortraitCatalogDismantle(R1RunController run,string id)
-        {
-            if(dismantleConfirmation==id){run.GarageDismantle(id);dismantleConfirmation=null;}
-            else dismantleConfirmation=id;
-        }
+        {DismantleCatalogItem(run,id);}
     }
 }

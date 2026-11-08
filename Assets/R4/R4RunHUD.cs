@@ -21,6 +21,7 @@ namespace RoboRougelike.R1
         private int lootPage,inventoryPage;
         private bool inventoryOpen;
         private string dismantleConfirmation;
+        private string catalogFeedback;
         private bool rewardInventoryOpen;
         private int rewardInventoryPage;
         private string rewardDismantleConfirmation;
@@ -206,7 +207,7 @@ namespace RoboRougelike.R1
                 if(GUI.Button(new Rect(104,i*40,55,36),"Akcje",compactButton))SelectCatalogDetails(run,item.Id);
                 int itemRepair=model.RepairCost(item);GUI.enabled=itemRepair>0&&model.Scrap>=itemRepair;
                 if(GUI.Button(new Rect(163,i*40,87,36),GarageRepairCaption(item,itemRepair,model.Scrap),compactButton))
-                {dismantleConfirmation=null;run.GarageRepairInventory(item.Id);}
+                    RepairCatalogItem(run,item.Id);
                 GUI.enabled=true;
             }
             GUI.EndScrollView();GUI.backgroundColor=Color.white;
@@ -228,7 +229,7 @@ namespace RoboRougelike.R1
             GUI.Label(new Rect(970,395,280,70),$"{R4WeaponDefinition.PartName(selected)} • HP {selected.Health*100:0}%\n"+
                 (selected.Health<=0?"Napraw w wierszu przed montażem.":"Kliknij HP w wierszu, aby montować."),small);
             if(GUI.Button(new Rect(970,480,280,42),dismantleConfirmation==selected.Id?"Potwierdź rozmontowanie":$"Rozmontuj → {model.DismantleValue(selected)} Z",compactButton))
-            {if(dismantleConfirmation==selected.Id){run.GarageDismantle(selected.Id);dismantleConfirmation=null;return;}dismantleConfirmation=selected.Id;}
+            {if(DismantleCatalogItem(run,selected.Id))return;}
             DrawFusionButton(run,selected,new Rect(970,535,280,42));
             GUI.Label(new Rect(970,590,280,52),"Po wyborze do montażu katalog się zamknie i pojawi się widmo.",small);
         }
@@ -236,7 +237,7 @@ namespace RoboRougelike.R1
         {
             var item=run.VehicleModel.Inventory.FirstOrDefault(p=>p.Id==id);
             if(item==null)return;
-            run.Garage.ChooseInventory(id);dismantleConfirmation=null;
+            run.Garage.ChooseInventory(id);dismantleConfirmation=null;catalogFeedback=null;
         }
         private void SelectCatalogItem(R1RunController run,string id)
         {
@@ -258,8 +259,25 @@ namespace RoboRougelike.R1
                 $"3×T{tier} → T{tier+1} • HP "+string.Join("/",group.Select(p=>(p.Health*100).ToString("0")))+"%";
             GUI.enabled=available;
             if(GUI.Button(rect,label,compactButton))
-            {dismantleConfirmation=null;if(!run.GarageFuse(group.Select(p=>p.Id)))run.Garage.Message="Nie udało się połączyć części.";}
+            {dismantleConfirmation=null;catalogFeedback=run.GarageFuse(group.Select(p=>p.Id))?run.Garage.Message:"Nie udało się połączyć części.";}
             GUI.enabled=true;
+        }
+        private void RepairCatalogItem(R1RunController run,string id)
+        {
+            dismantleConfirmation=null;
+            var item=run.VehicleModel.Inventory.FirstOrDefault(p=>p.Id==id);
+            int quote=run.VehicleModel.RepairCost(item);
+            catalogFeedback=run.GarageRepairInventory(id)?$"Naprawiono część • koszt {quote} Z.":"Nie udało się naprawić części.";
+        }
+        private bool DismantleCatalogItem(R1RunController run,string id)
+        {
+            if(dismantleConfirmation!=id){dismantleConfirmation=id;catalogFeedback="Kliknij ponownie, aby rozmontować wybraną część.";return false;}
+            dismantleConfirmation=null;
+            var item=run.VehicleModel.Inventory.FirstOrDefault(p=>p.Id==id);
+            int quote=run.VehicleModel.DismantleValue(item);
+            bool done=run.GarageDismantle(id);
+            catalogFeedback=done?$"Rozmontowano część • +{quote} Z.":"Nie udało się rozmontować części.";
+            return done;
         }
     }
 }
