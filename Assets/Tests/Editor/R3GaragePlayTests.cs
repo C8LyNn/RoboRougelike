@@ -163,8 +163,14 @@ public class R3GaragePlayTests
                 var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
                 var tangent=(Vector3)enemy.GetType().GetField("obstacleTangent",flags).GetValue(enemy);
                 var until=(float)enemy.GetType().GetField("navigationUntil",flags).GetValue(enemy);
-                var contacts=new ContactPoint[64];int n=body.GetContacts(contacts);
-                var surfaces=string.Join(",",contacts.Take(n).Select(c=>c.otherCollider!=null?c.otherCollider.name:"null").Distinct());
+                var contacts=new ContactPoint[64];var names=new System.Collections.Generic.HashSet<string>();
+                foreach(var collider in body.GetComponentsInChildren<Collider>())
+                {
+                    if(!collider.enabled||collider.isTrigger||collider.attachedRigidbody!=body)continue;
+                    int n=collider.GetContacts(contacts);
+                    foreach(var contact in contacts.Take(n))if(contact.otherCollider!=null)names.Add(contact.otherCollider.name);
+                }
+                var surfaces=string.Join(",",names);
                 Debug.Log($"Boundary retreat trace t={Time.time:F2} pos={body.position} vel={body.linearVelocity} yaw={body.rotation.eulerAngles.y:F1} spin={body.angularVelocity.y:F2} grounded={drive.GroundedWheels} tangent={tangent} nav={until-Time.time:F2} dead={enemy.IsDefeated} contacts={surfaces}");
             }
         }
