@@ -11,7 +11,7 @@ namespace RoboRougelike.R3
     public enum R3PartKind { Armor, Wheel, Gun, Core, Suspension, Booster, JumpDrive, Blink, Gyroscope, OmniDrive, MagneticGrapple, HoverEngine, CrawlerTrack, BonusModule, DirectionalShield, PointDefense, StructuralScanner, ScannerPulse, IndependentSteering, Battery, RepairPulse, DrivePower, EnergyRegenerator }
     public enum R3WheelStyle { Offroad, Slick }
     // Zero preserves the shape of every pre-existing checkpoint.
-    public enum R3ArmorShape { Cube, Wedge }
+    public enum R3ArmorShape { Cube, Wedge, HalfBlock, Pyramid }
     public enum R3DriveKind { Wheels, Tracks, Omni, Hover }
     public enum R3VehicleKind { Standard, Light, Heavy }
     [Serializable]
@@ -205,7 +205,8 @@ namespace RoboRougelike.R3
             Enum.IsDefined(typeof(R3PartKind),kind) &&
             (kind!=R3PartKind.Gun||Enum.IsDefined(typeof(R4WeaponKind),weapon));
         public static bool ValidArmorShape(R3PartState part)=>part!=null&&Enum.IsDefined(typeof(R3ArmorShape),part.ArmorShape)&&
-            (part.ArmorShape==R3ArmorShape.Cube||(part.Kind==R3PartKind.Armor&&part.ContactMask==R4_1.R41PartGeometry.WedgeFullContacts));
+            (part.ArmorShape==R3ArmorShape.Cube||(part.Kind==R3PartKind.Armor&&R4_1.R41PartGeometry.FullArmorContacts(part.ArmorShape)!=0&&
+                part.ContactMask==R4_1.R41PartGeometry.FullArmorContacts(part.ArmorShape)));
         public static bool ValidEconomicPart(R3PartState part) => part!=null && ValidEconomicKind(part.Kind,part.Weapon) && Enum.IsDefined(typeof(R3WheelStyle),part.WheelStyle) && ValidArmorShape(part) && part.Tier>=0&&part.Tier<=3&&
             (part.Tier<=1||SupportsFusion(part.Kind,part.Weapon))&&
             !float.IsNaN(part.Health)&&!float.IsInfinity(part.Health)&&part.Health>=0&&part.Health<=1;
@@ -279,10 +280,10 @@ namespace RoboRougelike.R3
             if(kind==R3PartKind.Core||kind==R3PartKind.BonusModule||!ValidEconomicKind(kind,weapon)||inventory.Count>=InventoryCapacity||
                 !Enum.IsDefined(typeof(R3WheelStyle),wheelStyle)||(kind!=R3PartKind.Wheel&&wheelStyle!=R3WheelStyle.Offroad)||
                 !Enum.IsDefined(typeof(R3ArmorShape),armorShape)||(kind!=R3PartKind.Armor&&armorShape!=R3ArmorShape.Cube)||
-                (armorShape==R3ArmorShape.Wedge&&!R4_1.R41PartGeometry.WedgeAvailable))return false;
+                (armorShape!=R3ArmorShape.Cube&&!R4_1.R41PartGeometry.ArmorShapeAvailable(armorShape)))return false;
             int price=Price(kind,weapon);if(price<=0||Scrap<price)return false;
             Scrap-=price;inventory.Add(new R3PartState(default,kind){Weapon=weapon,WheelStyle=wheelStyle,ArmorShape=armorShape,
-                ContactMask=armorShape==R3ArmorShape.Wedge?R4_1.R41PartGeometry.WedgeFullContacts:R3MountingGrid.AllFaces});return true;
+                ContactMask=armorShape==R3ArmorShape.Cube?R3MountingGrid.AllFaces:R4_1.R41PartGeometry.FullArmorContacts(armorShape)});return true;
         }        public int RepairCost(R3PartState part)
         {
             if (!ValidEconomicPart(part) || part.Health >= 1f) return 0;

@@ -11,30 +11,42 @@ namespace RoboRougelike.R4_1
         // Conservative first integration: only the two full source sockets are
         // active. Partial triangular faces never support guns or wheels.
         public const int WedgeFullContacts=(1<<3)|(1<<5);
-        private static Mesh wedgeMesh;
-        private static Mesh WedgeMesh
+        private static readonly System.Collections.Generic.Dictionary<R3ArmorShape,Mesh> armorMeshes=new System.Collections.Generic.Dictionary<R3ArmorShape,Mesh>();
+        private static readonly System.Collections.Generic.Dictionary<R3ArmorShape,int> armorContacts=new System.Collections.Generic.Dictionary<R3ArmorShape,int>();
+        private static string ArmorId(R3ArmorShape shape)=>shape switch {
+            R3ArmorShape.Wedge=>"R4B_Wedge",R3ArmorShape.HalfBlock=>"R4B_HalfBlock",
+            R3ArmorShape.Pyramid=>"R4B_Pyramid",_=>null};
+        private static string ArmorPrefab(R3ArmorShape shape)=>shape switch {
+            R3ArmorShape.Cube=>"R4Art/ArmorCube",R3ArmorShape.Wedge=>"R4Art/ArmorWedge",
+            R3ArmorShape.HalfBlock=>"R4Art/ArmorHalfBlock",R3ArmorShape.Pyramid=>"R4Art/ArmorPyramid",_=>null};
+        public static int FullArmorContacts(R3ArmorShape shape)
         {
-            get
-            {
-                if(wedgeMesh!=null)return wedgeMesh;
-                var source=Resources.Load<TextAsset>("R4Art/BlockColliders");
-                if(source==null||!R4ColliderMeshFactory.TryCreate(source.text,"R4B_Wedge",out var meshes,out _))return null;
-                if(meshes.Length!=1){foreach(var mesh in meshes)if(mesh!=null)Object.Destroy(mesh);return null;}
-                wedgeMesh=meshes[0];var vertices=wedgeMesh.vertices;
-                // Block transforms have the legacy .52 scale. Source vertices
-                // are in meters, so compensate once in the shared mesh.
-                for(int i=0;i<vertices.Length;i++)vertices[i]/=BlockSize;
-                wedgeMesh.vertices=vertices;wedgeMesh.RecalculateBounds();
-                wedgeMesh.name="R4 wedge physical collider";return wedgeMesh;
-            }
+            if(armorContacts.TryGetValue(shape,out var cached))return cached;
+            var id=ArmorId(shape);if(id==null||!R4MountDefinitionAdapter.TryCreate(id,true,out var definition))return 0;
+            int mask=0;foreach(var socket in definition.Sockets)mask|=R3MountingGrid.FaceBit(socket.Face);
+            armorContacts[shape]=mask;return mask;
         }
-        public static bool WedgeAvailable=>WedgeMesh!=null&&Resources.Load<GameObject>("R4Art/ArmorWedge")!=null;
+        private static Mesh ArmorMesh(R3ArmorShape shape)
+        {
+            if(armorMeshes.TryGetValue(shape,out var known)&&known!=null)return known;
+            var id=ArmorId(shape);var source=Resources.Load<TextAsset>("R4Art/BlockColliders");
+            if(id==null||source==null||!R4ColliderMeshFactory.TryCreate(source.text,id,out var meshes,out _))return null;
+            if(meshes.Length!=1){foreach(var mesh in meshes)if(mesh!=null)Object.Destroy(mesh);return null;}
+            var result=meshes[0];var vertices=result.vertices;
+            // Block transforms have the legacy .52 scale; source vertices are meters.
+            for(int i=0;i<vertices.Length;i++)vertices[i]/=BlockSize;
+            result.vertices=vertices;result.RecalculateBounds();result.name=id+" physical collider";
+            armorMeshes[shape]=result;return result;
+        }
+        public static bool ArmorShapeAvailable(R3ArmorShape shape)=>FullArmorContacts(shape)!=0&&ArmorMesh(shape)!=null&&
+            Resources.Load<GameObject>(ArmorPrefab(shape))!=null;
+        public static bool WedgeAvailable=>ArmorShapeAvailable(R3ArmorShape.Wedge);
         public static GameObject CreateMountingBlock(R3ArmorShape shape)
         {
             if(shape==R3ArmorShape.Cube)return GameObject.CreatePrimitive(PrimitiveType.Cube);
-            if(shape!=R3ArmorShape.Wedge||!WedgeAvailable)throw new System.InvalidOperationException("R4 wedge geometry is unavailable or invalid.");
-            var item=new GameObject("R4 wedge");item.AddComponent<MeshFilter>().sharedMesh=WedgeMesh;
-            item.AddComponent<MeshRenderer>();var collider=item.AddComponent<MeshCollider>();collider.sharedMesh=WedgeMesh;collider.convex=true;
+            if(!ArmorShapeAvailable(shape))throw new System.InvalidOperationException("R4 armor geometry is unavailable or invalid: "+shape);
+            var mesh=ArmorMesh(shape);var item=new GameObject("R4 "+shape);item.AddComponent<MeshFilter>().sharedMesh=mesh;
+            item.AddComponent<MeshRenderer>();var collider=item.AddComponent<MeshCollider>();collider.sharedMesh=mesh;collider.convex=true;
             return item;
         }
         // The mounting cube remains the collider and damage owner; only its
@@ -52,7 +64,7 @@ namespace RoboRougelike.R4_1
             if(block==null)return false;
             var renderer=block.GetComponent<Renderer>();var scale=block.lossyScale;
             if(renderer==null||scale.x<=.0001f||Mathf.Abs(scale.x-scale.y)>.0001f||Mathf.Abs(scale.x-scale.z)>.0001f)return false;
-            var path=shape==R3ArmorShape.Cube?"R4Art/ArmorCube":shape==R3ArmorShape.Wedge?"R4Art/ArmorWedge":null;
+            var path=ArmorPrefab(shape);
             if(path==null)return false;
             var prefab=Resources.Load<GameObject>(path);if(prefab==null)return false;
             var visual=Object.Instantiate(prefab,block,false);

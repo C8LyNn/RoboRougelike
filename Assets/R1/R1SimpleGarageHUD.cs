@@ -50,13 +50,15 @@ namespace RoboRougelike.R1
         {
             var model=run.VehicleModel;
             var bonuses=model.Inventory.Where(p=>p.Kind==R3PartKind.BonusModule).Select(p=>p.UpgradeId).Distinct().ToArray();
-            int count=shopKinds.Length+1+R4WeaponDefinition.Count+bonuses.Length;
+            int count=shopKinds.Length+3+R4WeaponDefinition.Count+bonuses.Length;
             quickPartsScroll=GUI.BeginScrollView(area,quickPartsScroll,new Rect(0,0,rowWidth,Mathf.Max(area.height,count*38)));
             int row=0;
             for(int i=0;i<shopKinds.Length;i++)
             {var kind=shopKinds[i];if(kind==R3PartKind.Gun)continue;
                 DrawQuickPartRow(run,kind,R4WeaponKind.Basic,null,kind==R3PartKind.Wheel?"Koło terenowe":shopNames[i],row++,rowWidth);
                 if(kind==R3PartKind.Armor)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,WedgeArmorGroup,"Pancerz • klin",row++,rowWidth);
+                if(kind==R3PartKind.Armor)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,HalfArmorGroup,"Pancerz • półblok",row++,rowWidth);
+                if(kind==R3PartKind.Armor)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,PyramidArmorGroup,"Pancerz • piramida",row++,rowWidth);
                 if(kind==R3PartKind.Wheel)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,SlickWheelGroup,"Koło szosowe",row++,rowWidth);}
             for(int i=0;i<R4WeaponDefinition.Count;i++)
             {var weapon=(R4WeaponKind)i;DrawQuickPartRow(run,R3PartKind.Gun,weapon,null,R4WeaponDefinition.Get(weapon).Name,row++,rowWidth);}
