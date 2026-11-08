@@ -257,13 +257,15 @@ namespace RoboRougelike.R3
             if(kind==R3PartKind.Armor&&!plan&&Tool==R41GarageTool.Mount)R41PartGeometry.TryAttachArmor(item.transform,Owned?.ArmorShape??R3ArmorShape.Cube);
             if(!R3VehicleModel.UsesWideFootprint(kind)&&(Tool==R41GarageTool.Mount||plan))
             {
-                var payload=R41PartGeometry.Payload(item.transform,kind,weapon,material,false,out var muzzle,Owned?.WheelStyle??R3WheelStyle.Offroad);
+                bool wheelMirror=kind==R3PartKind.Wheel&&R4WheelArt.MirrorForMount(run.VehicleModel,
+                    new R3PartState(cell,R3PartKind.Wheel){RotationQuarterTurns=rotation,ContactMask=contacts});
+                var payload=R41PartGeometry.Payload(item.transform,kind,weapon,material,false,out var muzzle,Owned?.WheelStyle??R3WheelStyle.Offroad,wheelMirror);
                 // Reuse the player's model and axis adapter, but keep the
                 // original ghost geometry and do not create physical colliders.
                 if(!plan&&Tool==R41GarageTool.Mount)
                 {
                     if(kind==R3PartKind.Gun&&payload!=null)R4WeaponArt.TryAttach(item.transform,payload,muzzle,weapon);
-                    else if(kind==R3PartKind.Wheel&&payload!=null)R4WheelArt.TryAttach(item.transform,payload,R4WheelArt.MirrorForMount(run.VehicleModel,new R3PartState(cell,R3PartKind.Wheel){RotationQuarterTurns=rotation,ContactMask=contacts}),Owned?.WheelStyle??R3WheelStyle.Offroad);
+                    else if(kind==R3PartKind.Wheel&&payload!=null)R4WheelArt.TryAttach(item.transform,payload,wheelMirror,Owned?.WheelStyle??R3WheelStyle.Offroad);
                     else if(kind==R3PartKind.Suspension)R4SuspensionArt.TryAttach(item.transform);
                     else if(kind==R3PartKind.Booster)R4BoosterArt.TryAttach(item.transform);
                     else if(kind==R3PartKind.JumpDrive)R4JumpArt.TryAttach(item.transform);

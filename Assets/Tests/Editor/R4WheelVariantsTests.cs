@@ -89,8 +89,9 @@ public sealed class R4WheelVariantsTests
         var target=candidates.FirstOrDefault(c=>model.OwnedPlacementError(large.Id,c,Vector3Int.zero)==null);
         Assert.That(model.OwnedPlacementError(large.Id,target,Vector3Int.zero),Is.Null,"Expected room for a large wheel.");
         Assert.That(model.OwnedPlacementError(medium.Id,target,Vector3Int.zero),Is.Null);
-        var body=run.Player.GetComponent<Rigidbody>();
-        var tireCenter=run.Player.transform.TransformPoint((Vector3)target*.55f+Vector3.down*.26f);
+        var pose=large.Copy();pose.Cell=target;
+        bool mirror=R4WheelArt.MirrorForMount(model,pose);
+        var tireCenter=run.Player.transform.TransformPoint((Vector3)target*.55f+new Vector3(mirror ? -.062f : .062f,0,0));
         var blocker=GameObject.CreatePrimitive(PrimitiveType.Cube);blocker.transform.position=tireCenter+run.Player.transform.forward*.48f;
         blocker.transform.localScale=Vector3.one*.06f;Physics.SyncTransforms();
         Assert.That(model.OwnedPlacementError(medium.Id,target,Vector3Int.zero),Is.Null,"The medium tire clears the obstacle.");
@@ -124,16 +125,20 @@ public sealed class R4WheelVariantsTests
             design.Parts.Add(new R3PartState(new Vector3Int(x,0,z),R3PartKind.Wheel){WheelStyle=R3WheelStyle.LargeOffroad});
         var model=new R3VehicleModel(design);var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);
         floor.transform.position=new Vector3(1000,-.1f,1000);floor.transform.localScale=new Vector3(30,.2f,30);
-        var vehicle=R3VehicleAssembly.Build(model,run.Progress.Stats,palette,new Vector3(1000,.82f,1000),Quaternion.identity);
+        var vehicle=R3VehicleAssembly.Build(model,run.Progress.Stats,palette,new Vector3(1000,.56f,1000),Quaternion.identity);
         var tank=vehicle.GetComponent<P12PipelineSafeTankController>();tank.enabled=false;
         var drive=vehicle.GetComponent<R6VehicleDrive>();Assert.That(drive,Is.Not.Null);Time.timeScale=1;
         try
         {
             for(int i=0;i<10;i++)yield return new WaitForFixedUpdate();
-            float start=vehicle.transform.position.z;int grounded=0;
-            for(int i=0;i<80;i++){drive.Step(1,0,7,4,90);grounded=Mathf.Max(grounded,drive.GroundedWheels);yield return new WaitForFixedUpdate();}
+            var body=vehicle.GetComponent<Rigidbody>();float start=body.position.z;int grounded=0;
+            var trace=new System.Text.StringBuilder();
+            for(int i=0;i<80;i++){drive.Step(1,0,7,4,90);grounded=Mathf.Max(grounded,drive.GroundedWheels);
+                if(i%20==0)trace.Append($"[{i}: p={body.position} v={body.linearVelocity} ground={drive.GroundedWheels} force={drive.AvailableForce:0}] ");
+                yield return new WaitForFixedUpdate();}
+            Debug.Log("Large wheel R6 trace "+trace+"final="+body.position);
             Assert.That(grounded,Is.GreaterThanOrEqualTo(2),"Real large tires must register ground support.");
-            Assert.That(vehicle.transform.position.z-start,Is.GreaterThan(.5f),"The actual R6 body must travel forward.");
+            Assert.That(body.position.z-start,Is.GreaterThan(.5f),"The actual R6 body must travel forward.");
         }
         finally{Object.Destroy(vehicle.gameObject);Object.Destroy(floor);}
     }

@@ -200,10 +200,11 @@ namespace RoboRougelike.R3
                 assembly.Parts.Add(part);
                 if(state.Kind==R3PartKind.Armor&&!wide)R41PartGeometry.TryAttachArmor(item.transform,state.ArmorShape);
                 Transform payload=null;Transform partMuzzle=null;
+                bool wheelMirror=state.Kind==R3PartKind.Wheel&&R4WheelArt.MirrorForMount(model,state);
                 if(!wide)payload=R41PartGeometry.Payload(item.transform,state.Kind,state.Weapon,
-                    state.Kind==R3PartKind.Gun?palette.Weapons[(int)state.Weapon]:palette.Parts[(int)state.Kind],true,out partMuzzle,state.WheelStyle);
+                    state.Kind==R3PartKind.Gun?palette.Weapons[(int)state.Weapon]:palette.Parts[(int)state.Kind],true,out partMuzzle,state.WheelStyle,wheelMirror);
                 if(state.Kind==R3PartKind.Wheel&&payload!=null)
-                    RoboRougelike.R4_1.R4WheelArt.TryAttach(item.transform,payload,RoboRougelike.R4_1.R4WheelArt.MirrorForMount(model,state),state.WheelStyle);
+                    R4WheelArt.TryAttach(item.transform,payload,wheelMirror,state.WheelStyle);
                 if(state.Kind==R3PartKind.Booster&&!wide)
                     RoboRougelike.R4_1.R4BoosterArt.TryAttach(item.transform);
                 if(state.Kind==R3PartKind.Gyroscope&&!wide)

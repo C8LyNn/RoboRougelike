@@ -90,7 +90,7 @@ namespace RoboRougelike.R4_1
             if(!solid){var collider=item.GetComponent<Collider>();collider.enabled=false;Object.Destroy(collider);}
             return item;
         }
-        public static Transform Payload(Transform block,R3PartKind kind,R4WeaponKind weapon,Material material,bool solid,out Transform muzzle,R3WheelStyle wheelStyle=R3WheelStyle.Offroad)
+        public static Transform Payload(Transform block,R3PartKind kind,R4WeaponKind weapon,Material material,bool solid,out Transform muzzle,R3WheelStyle wheelStyle=R3WheelStyle.Offroad,bool mirrorWheel=false)
         {
             muzzle=null;
             if(kind>=R3PartKind.Booster&&kind<=R3PartKind.CrawlerTrack)
@@ -128,7 +128,12 @@ namespace RoboRougelike.R4_1
             if(kind==R3PartKind.Wheel)
             {
                 var wheel=Primitive(PrimitiveType.Cylinder,block,material,solid,"Koło").transform;
-                wheel.localPosition=new Vector3(0,-0.5f,0);wheel.localRotation=Quaternion.Euler(0,0,90);
+                // The supplied L side wheel's axle is 62 mm outside its port.
+                // Place the physical axle there as well so its actual side socket
+                // remains centered against the neighboring block face.
+                wheel.localPosition=wheelStyle==R3WheelStyle.LargeOffroad?
+                    new Vector3((mirrorWheel ? -.062f : .062f)/BlockSize,0,0):new Vector3(0,-0.5f,0);
+                wheel.localRotation=Quaternion.Euler(0,0,90);
                 float diameterScale=R3VehicleModel.WheelRadius(wheelStyle)/(.5f*BlockSize);
                 wheel.localScale=new Vector3(diameterScale,wheelStyle==R3WheelStyle.LargeOffroad ? .42f/(2*BlockSize) : .35f,diameterScale);
                 if(solid){

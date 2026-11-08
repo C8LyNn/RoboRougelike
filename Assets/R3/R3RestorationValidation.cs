@@ -80,7 +80,8 @@ namespace RoboRougelike.R3
             probe.transform.localRotation=R3MountingGrid.Rotation(candidate.RotationQuarterTurns);probe.transform.localScale=Vector3.one*R41PartGeometry.BlockSize;
             if(R3VehicleModel.UsesWideFootprint(candidate.Kind))R3BonusModuleGeometry.ConfigureCube(probe,true);
             else {
-                var payload=R41PartGeometry.Payload(probe.transform,candidate.Kind,candidate.Weapon,null,true,out _,candidate.WheelStyle);
+                bool mirror=candidate.Kind==R3PartKind.Wheel&&R4WheelArt.MirrorForMount(model,candidate);
+                var payload=R41PartGeometry.Payload(probe.transform,candidate.Kind,candidate.Weapon,null,true,out _,candidate.WheelStyle,mirror);
                 var actual=assembly.Parts.FirstOrDefault(p=>p!=null&&p.Id==candidate.Id&&p.Operational&&p.transform.IsChildOf(transform));
                 if(payload!=null&&candidate.Kind==R3PartKind.Gun&&actual?.GunPivot!=null)payload.localRotation=actual.GunPivot.localRotation;
             }
