@@ -24,3 +24,7 @@ Przed próbami zapisu skopiuj obecny plik `%USERPROFILE%\AppData\LocalLow\Defaul
 ## Jak zapisać wynik
 
 Przy każdej usterce podaj numer próby, pojazd, mapę i krótki opis: co zrobiłeś, czego oczekiwałeś i co się stało. Przy kamerze dopisz rodzaj rampy, kierunek jazdy i przybliżenie; przy problemie z przeciwnikiem — czy miał broń i koła oraz czy był przy ścianie. Informacja „działa / przeszkadza” dla każdego punktu wystarczy do ustalenia kolejności kolejnych zmian.
+
+## Dodatkowo w kolejnym buildzie
+
+Zmiana opisów modułów bonusowych powstała **po buildzie 5b21** i nie znajduje się w ZIP-ie wskazanym wyżej. Gdy będzie nowy build, sprawdź uszkodzony bonus w magazynie: jego zakup powinien być opisany jako dostępny tylko z nagród, a garaż powinien wskazywać naprawę posiadanego egzemplarza. To zmiana napisów; sama naprawa i zasady nagród nie były zmieniane.
