@@ -339,7 +339,7 @@ namespace RoboRougelike.R1
                     Debug.LogWarning("[R1] "+Error);
                     return;
                 }
-                LastScrapReward=Definition.Encounters[Progress.EncounterIndex].ScrapReward;
+                LastScrapReward=VehicleModel.PreviewAward(Definition.Encounters[Progress.EncounterIndex].ScrapReward);
                 VehicleModel.Award(LastScrapReward);
                 EarnedScrap+=LastScrapReward;DefeatedEnemies+=Encounter.Enemies.Count(enemy=>enemy!=null&&enemy.IsDefeated);
                 Progress.OpenSalvage();

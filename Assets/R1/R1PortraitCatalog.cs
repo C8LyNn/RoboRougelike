@@ -90,7 +90,7 @@ namespace RoboRougelike.R1
                 int repair=model.RepairCost(item);GUI.enabled=repair>0&&model.Scrap>=repair;
                 if(GUI.Button(new Rect(rect.x+108,rect.y+31,102,60),GarageRepairCaption(item,repair,model.Scrap),compactButton))PortraitCatalogRepair(run,item.Id);
                 GUI.enabled=true;
-                if(GUI.Button(new Rect(rect.x+216,rect.y+31,114,60),dismantleConfirmation==item.Id?"Potwierdź\nrozmontowanie":$"Rozmontuj\n→ {model.DismantleValue(item)} Z",compactButton))PortraitCatalogDismantle(run,item.Id);
+                if(GUI.Button(new Rect(rect.x+216,rect.y+31,114,60),dismantleConfirmation==item.Id?"Potwierdź\nrozmontowanie":$"Rozmontuj\n→ {model.PreviewAward(model.DismantleValue(item))} Z",compactButton))PortraitCatalogDismantle(run,item.Id);
             }
             GUI.EndScrollView();
             int price=model.Price(selectedKind,selectedWeapon);
