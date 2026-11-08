@@ -1,0 +1,8 @@
+{
+  "started": "2026-11-08T22:37:31.9888373+01:00",
+  "filter": "UI943PortraitRewardsActionsTests.CollectedFinalPickupDoesNotConsumeRewardConfirmationKey",
+  "head": "950cc404 plus fixture patch",
+  "finished": "2026-11-08T22:37:50.1103885+01:00",
+  "mode": "Targeted EditMode UnityTest entering Play Mode; batch nographics",
+  "exitCode": 0
+}

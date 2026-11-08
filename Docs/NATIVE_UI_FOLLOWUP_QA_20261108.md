@@ -17,6 +17,16 @@ Wcześniejsza próba w sandboxie zakończyła się przed testami awarią edytora
 ## Pozostałe ograniczenia i kontrola ręczna
 
 - **NOT RUN:** Windows Player, ręczna jazda i sterowanie, wygląd i czytelność ekranów, zrzuty, pełna osobna sesja PlayMode. Nie przygotowano buildu: użytkownik poprosił o build dopiero na osobne żądanie.
-- Pozostają niewykonane pozostałe przypadki z [kolejki QA](PENDING_TARGETED_QA_20261108.md), w szczególności dotyczące zapisu mapy, broni, tarczy, energii i ostrzeżeń konstrukcji, o ile nie są wymienione w powyższych XML.
+- Część dalszych przypadków z [kolejki QA](PENDING_TARGETED_QA_20261108.md) wykonano w kontynuacji opisanej niżej. Nie należy uznawać za zaliczone przypadków, których nie wymieniają załączone pliki XML.
 - Gdy będzie dostępny odpowiedni build i użytkownik zechce przeprowadzić próbę: w garażu sprawdzić wyszukiwanie bez polskich znaków, filtr posiadanych części i wraki, zakup pięciu sztuk, koszt naprawy grupowej oraz skróty narzędzi; następnie sprawdzić czytelność komunikatu blokady aktywności.
 - Rozegrać wyścig lub trasę i sprawdzić ekran zwycięstwa bez łupów oraz porażkę i powrót do menu. Ocenić rzeczywisty układ i działanie myszy oraz klawiatury przy 1280×720 i 1920×1080. Nie modyfikować istniejących zapisów użytkownika na potrzeby prób bez zapewnienia ich izolacji.
+
+## Kontynuacja: energia, mapa i nagrody
+
+Na `950cc404` uruchomiono kolejne testy EditMode z wejściem części scenariuszy w Play Mode, nadal w batchmode bez widocznego okna:
+
+- **16/16 PASS, exit 0:** rezerwa 25 energii dla poziomów modułów, stan modelu z checkpointu, ulepszony silnik i regeneratory, EMP oraz zniszczenie tarczy i regeneratora, ostrzeżenia o napędzie i rdzeniu. [XML](QA/NativeUI-20261108/Energy-drive-shield.xml), [proces](QA/NativeUI-20261108/Energy-drive-shield-process.json). Checkpoint zweryfikowano w pamięci, nie przez restart Windows Playera.
+- **17/18 PASS, exit 2:** zapisywanie i wczytywanie mapy z potwierdzeniami, komunikaty broni, granice portfela i obsługa Esc w nagrodach. [XML](QA/NativeUI-20261108/Map-weapons-rewards-initial.xml), [proces](QA/NativeUI-20261108/Map-weapons-rewards-initial-process.json). Testy map używały losowych nazw i usuwały swoje pliki.
+- Nieudany przypadek `CollectedFinalPickupDoesNotConsumeRewardConfirmationKey` wymagał kostki energii, ale wspólna konfiguracja testu wyłączała walkę, przez co pokonany przeciwnik jej nie generował. Test aktywuje walkę wyłącznie na czas zadania obrażeń; jego asercje pozostają bez zmian. Powtórka po poprawce testu: **1/1 PASS, exit 0**. [XML](QA/NativeUI-20261108/Pickup-retest.xml), [proces](QA/NativeUI-20261108/Pickup-retest-process.json). Test dezaktywuje kostki programowo, więc nie dowodzi ręcznego zebrania.
+
+Powyższe wyniki nie stanowią testu faktycznej rozgrywki ani pełnego zestawu Unity. Lokalnie pozostawiono pełne Editor.log w katalogach `Artifacts/Local/QA-EnergyDriveShield-950cc404-20261108/`, `QA-MapWeaponsRewards-950cc404-20261108/` i `QA-PickupRetest-20261108/`.
