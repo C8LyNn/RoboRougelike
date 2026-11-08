@@ -22,6 +22,25 @@ public sealed class UI943PortraitCatalogActionsTests
     static object Field(R1RunHUD hud,string name)=>typeof(R1RunHUD).GetField(name,BindingFlags.Instance|BindingFlags.NonPublic).GetValue(hud);
     static bool ContainsId(R3VehicleModel model,string id)=>model.Inventory.Any(p=>p.Id==id);
 
+    [UnityTest] public IEnumerator GarageOptionsRepairReportsActualScrapSpent()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float timeout=Time.realtimeSinceStartup+15;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<timeout)yield return null;
+        var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        Assert.That(run.OpenSandboxGarage(),Is.True);run.VehicleModel.Award(100);
+        var part=run.VehicleModel.Parts.First(p=>p.Kind==R3PartKind.Armor);part.Health=.5f;
+        var hud=run.GetComponent<R1RunHUD>();int before=run.VehicleModel.Scrap;
+        int expected=run.VehicleModel.AffordableRepairCost;Assert.That(expected,Is.GreaterThan(0));
+        Invoke(hud,"OpenSimpleGarageOptions",0);
+        Invoke(hud,"RepairFromGarageOptions",run,false);
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before-expected));
+        Assert.That(part.Health,Is.EqualTo(1));
+        Assert.That((string)Field(hud,"garageOptionsFeedback"),Does.Contain("Naprawiono").And.Contain(expected+" Z"));
+        Invoke(hud,"OpenSimpleGarageOptions",0);
+        Assert.That(Field(hud,"garageOptionsFeedback"),Is.Null,"Reopening must not show the previous transaction as new.");
+    }
+
     [Test] public void BonusStackNameDoesNotInheritFirstItemsTier()
     {
         var method=typeof(R1RunHUD).GetMethod("CatalogBonusGroupName",BindingFlags.Static|BindingFlags.NonPublic);
