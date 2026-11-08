@@ -244,7 +244,7 @@ namespace RoboRougelike.R1
                 if(run.GaragePurchase(kind,weapon,kind==R3PartKind.Wheel?CatalogWheelStyle(catalogBonusId):R3WheelStyle.Offroad,
                     kind==R3PartKind.Armor?CatalogArmorShape(catalogBonusId):R3ArmorShape.Cube))
                 {var purchased=model.Inventory.Last();garage.ChooseInventory(purchased.Id);DismissCatalog();garage.Message="Kupiono część. Kliknij pojazd, aby ją zamontować.";}
-                else garage.Message="Nie udało się kupić części.";
+                else catalogFeedback=garage.Message="Nie udało się kupić części.";
             }
             GUI.enabled=true;
             var selected=items.FirstOrDefault(p=>p.Id==garage.SelectedInventoryId);

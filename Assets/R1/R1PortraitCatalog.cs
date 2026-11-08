@@ -128,7 +128,7 @@ namespace RoboRougelike.R1
                 var purchased=run.VehicleModel.Inventory.Last();run.Garage.ChooseInventory(purchased.Id);DismissCatalog();
                 run.Garage.Message="Kupiono część. Kliknij pojazd, aby ją zamontować.";
             }
-            else run.Garage.Message="Nie udało się kupić części.";
+            else catalogFeedback=run.Garage.Message="Nie udało się kupić części.";
         }
         private void PortraitCatalogRepair(R1RunController run,string id)
         {RepairCatalogItem(run,id);}
