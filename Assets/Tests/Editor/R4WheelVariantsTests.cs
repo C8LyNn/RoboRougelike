@@ -257,6 +257,18 @@ public sealed class R4WheelVariantsTests
         data.mounted.Single(p=>p.Id==wheel.Id).ContactMask=R3MountingGrid.AllFaces;
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Standard,model.Economy,Time.time,out _,out _),Is.False);
     }
+    [UnityTest]public IEnumerator SpikedForkIsAvailableWithTopMountAndSourceGeometry()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
+        var model=run.VehicleModel;model.Award(1000);
+        var style=(R3WheelStyle)6;
+        Assert.That(run.GaragePurchase(R3PartKind.Wheel,default,style),Is.True,"The new model must be purchasable.");
+        var wheel=model.Inventory.Last();
+        Assert.That(wheel.ContactMask,Is.EqualTo(R3MountingGrid.FaceBit(Vector3Int.up)));
+        Assert.That(R3VehicleModel.WheelRadius(style),Is.EqualTo(.37f).Within(.001f));
+        Assert.That(R3VehicleModel.WheelWidth(style),Is.EqualTo(.30f).Within(.001f));
+        Assert.That(R3VehicleModel.ForkAxleDrop(style),Is.EqualTo(.24f).Within(.001f));
+    }
     [UnityTest]public IEnumerator LargeWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.LargeOffroad);}
     [UnityTest]public IEnumerator MonsterWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.Monster);}
     [UnityTest]public IEnumerator SmallForkWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.SmallFork);}
