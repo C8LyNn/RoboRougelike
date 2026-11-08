@@ -10,7 +10,8 @@ namespace RoboRougelike.R1
     {
         // Coordinates are on the caller's 768 x 1024 portrait canvas.
         private static Rect PortraitCatalogGroupsViewport()=>new Rect(24,138,346,790);
-        private static Rect PortraitCatalogItemsViewport()=>new Rect(390,175,354,610);
+        private static Rect PortraitCatalogItemsViewport()=>new Rect(390,175,354,550);
+        private static Rect PortraitCatalogBulkRepairRect()=>new Rect(390,735,354,50);
         private static Rect PortraitCatalogBuyRect()=>new Rect(390,805,354,52);
         private static Rect PortraitCatalogBackRect()=>new Rect(560,20,184,52);
         private static Rect PortraitCatalogGroupRow(int index)=>new Rect(0,index*56,320,50);
@@ -62,6 +63,7 @@ namespace RoboRougelike.R1
                 if(GUI.Button(new Rect(rect.x+216,rect.y+31,114,60),dismantleConfirmation==item.Id?"Potwierdź\nrozmontowanie":$"Rozmontuj\n→ {model.PreviewAward(model.DismantleValue(item))} Z",compactButton))PortraitCatalogDismantle(run,item.Id);
             }
             GUI.EndScrollView();
+            DrawCatalogBulkRepair(run,items,PortraitCatalogBulkRepairRect());
             int price=model.Price(selectedKind,selectedWeapon);
             bool unlocked=run.CanBuyTechnology(selectedKind,selectedWeapon);
             GUI.enabled=unlocked&&selectedKind!=R3PartKind.BonusModule&&model.Scrap>=price&&model.Inventory.Count<R3VehicleModel.InventoryCapacity;
