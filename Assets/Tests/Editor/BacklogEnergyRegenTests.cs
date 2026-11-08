@@ -66,10 +66,46 @@ public sealed class BacklogEnergyRegenIntegrationTests
         Assert.That(bank.TrySpend(bank.Current),Is.True);model.Energy.Advance(1);
         Assert.That(bank.Current,Is.EqualTo(15).Within(.001f));
         var device=assembly.Parts.Single(p=>p.Kind==R3PartKind.EnergyRegenerator);
+        var receiver=device.GetComponent<RoboRougelike.Mechanics.EMP.EmpReceiver>();Assert.That(receiver,Is.Not.Null);
+        receiver.ApplyEmp(2);bank.Refresh();Assert.That(bank.Maximum,Is.EqualTo(475),"EMP must not remove passive reservation.");
+        Assert.That(bank.TrySpend(bank.Current),Is.True);model.Energy.Advance(1);
+        Assert.That(bank.Current,Is.EqualTo(10).Within(.001f),"EMP must pause the regenerator bonus.");
+        Assert.That(bank.TrySpend(bank.Current),Is.True);receiver.Advance(2);bank.Refresh();model.Energy.Advance(1);
+        Assert.That(bank.Current,Is.EqualTo(15).Within(.001f),"Regeneration bonus resumes after EMP.");
         device.Damageable.ApplyDamage(100000,device.transform.position,Vector3.up);bank.Refresh();
         Assert.That(bank.Maximum,Is.EqualTo(500));model.Energy.Advance(1);
         Assert.That(bank.Current,Is.EqualTo(25).Within(.001f));
         UnityEngine.Object.Destroy(vehicle.gameObject);UnityEngine.Object.Destroy(paletteObject);UnityEngine.Object.Destroy(material);
+        yield return null;
+    }
+    [UnityTest] public IEnumerator HeavyVehicleEnergyRefreshDiagnostic()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Heavy));
+        var paletteObject=new GameObject("Energy diagnostic palette");var palette=paletteObject.AddComponent<R3VisualPalette>();
+        var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
+        for(int i=0;i<palette.Parts.Length;i++)palette.Parts[i]=material;
+        for(int i=0;i<palette.Weapons.Length;i++)palette.Weapons[i]=material;
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(0,20,0),Quaternion.identity);
+        try
+        {
+            var bank=vehicle.GetComponent<VehicleEnergyBank>();var assembly=vehicle.GetComponent<R3VehicleAssembly>();
+            Assert.That(assembly.Parts.Count,Is.GreaterThan(50));
+            long probeBefore=GC.GetAllocatedBytesForCurrentThread();
+            long monoProbeBefore=UnityEngine.Profiling.Profiler.GetMonoUsedSizeLong();
+            var probe=new byte[1024*1024];GC.KeepAlive(probe);
+            Debug.Log($"[ENERGY_ALLOC_PROBE] thread_bytes={GC.GetAllocatedBytesForCurrentThread()-probeBefore} mono_delta={UnityEngine.Profiling.Profiler.GetMonoUsedSizeLong()-monoProbeBefore}");
+            for(int i=0;i<5;i++)bank.Refresh();
+            GC.Collect();int collections=GC.CollectionCount(0);
+            const int iterations=500;long before=UnityEngine.Profiling.Profiler.GetMonoUsedSizeLong();
+            var watch=System.Diagnostics.Stopwatch.StartNew();
+            for(int i=0;i<iterations;i++)bank.Refresh();
+            watch.Stop();long bytes=UnityEngine.Profiling.Profiler.GetMonoUsedSizeLong()-before;
+            Debug.Log($"[ENERGY_PERF] parts={assembly.Parts.Count} iterations={iterations} elapsed_ms={watch.Elapsed.TotalMilliseconds:F2} mono_delta={bytes} gc_collections={GC.CollectionCount(0)-collections}");
+            Assert.That(bank.Maximum,Is.GreaterThan(0));
+            Assert.That(GC.CollectionCount(0)-collections,Is.Zero,"A collection would make this allocation measurement inconclusive.");
+            Assert.That(bytes,Is.LessThan(128*1024),"Repeated energy refresh must not create hundreds of temporary per-vehicle lists.");
+        }
+        finally{UnityEngine.Object.Destroy(vehicle.gameObject);UnityEngine.Object.Destroy(paletteObject);UnityEngine.Object.Destroy(material);}
         yield return null;
     }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}

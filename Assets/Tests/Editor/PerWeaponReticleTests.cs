@@ -126,11 +126,12 @@ public sealed class PerWeaponReticleTests
             RoboRougelike.WeaponIntegration.RRLWeaponReticles.Collect(view,assembly,controller,aim,markers);
         }
         for(int i=0;i<3;i++)Sample();
-        const int iterations=100;long before=GC.GetAllocatedBytesForCurrentThread();
+        GC.Collect();int collections=GC.CollectionCount(0);
+        const int iterations=100;long before=UnityEngine.Profiling.Profiler.GetMonoUsedSizeLong();
         var watch=System.Diagnostics.Stopwatch.StartNew();
         for(int i=0;i<iterations;i++)Sample();
-        watch.Stop();long bytes=GC.GetAllocatedBytesForCurrentThread()-before;
-        Debug.Log($"[RETICLE_PERF] guns=12 armor=80 iterations={iterations} elapsed_ms={watch.Elapsed.TotalMilliseconds:F2} allocated_bytes={bytes}");
+        watch.Stop();long bytes=UnityEngine.Profiling.Profiler.GetMonoUsedSizeLong()-before;
+        Debug.Log($"[RETICLE_PERF] guns=12 armor=80 iterations={iterations} elapsed_ms={watch.Elapsed.TotalMilliseconds:F2} mono_delta={bytes} gc_collections={GC.CollectionCount(0)-collections}");
         Assert.That(feedback.Guns,Is.EqualTo(12));Assert.That(feedback.Clear,Is.EqualTo(12));
         Assert.That(markers.Count,Is.EqualTo(12));
     }
