@@ -23,6 +23,41 @@ public sealed class UI943PortraitCatalogActionsTests
     static object Field(R1RunHUD hud,string name)=>typeof(R1RunHUD).GetField(name,BindingFlags.Instance|BindingFlags.NonPublic).GetValue(hud);
     static bool ContainsId(R3VehicleModel model,string id)=>model.Inventory.Any(p=>p.Id==id);
 
+    [TestCase(R3PartKind.Armor,true,5,25,195,true)]
+    [TestCase(R3PartKind.Armor,true,5,24,195,false)]
+    [TestCase(R3PartKind.Armor,true,5,25,196,false)]
+    [TestCase(R3PartKind.Armor,false,5,100,0,false)]
+    [TestCase(R3PartKind.BonusModule,true,5,100,0,false)]
+    [TestCase(R3PartKind.Armor,true,int.MaxValue,100000,0,false)]
+    public void FivePurchaseRequiresFundsCapacityAndUnlockedType(R3PartKind kind,bool unlocked,int price,int scrap,int count,bool expected)
+    {
+        var method=typeof(R1RunHUD).GetMethod("CanBuyFive",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        Assert.That((bool)method.Invoke(null,new object[]{kind,unlocked,price,scrap,count}),Is.EqualTo(expected));
+    }
+
+    [UnityTest] public IEnumerator BuyFiveUsesIndividualPurchaseRulesAndSelectsOwnedInstance()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float timeout=Time.realtimeSinceStartup+15;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<timeout)yield return null;
+        var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        Assert.That(run.OpenSandboxGarage(),Is.True);run.VehicleModel.Award(100);
+        var hud=run.GetComponent<R1RunHUD>();Field(hud,"catalogOpen",true);
+        Invoke(hud,"PortraitCatalogSelectGroup",run,R3PartKind.Armor,R4WeaponKind.Basic,null);
+        int before=run.VehicleModel.Scrap,count=run.VehicleModel.Inventory.Count;
+        int price=run.VehicleModel.Price(R3PartKind.Armor);
+        Invoke(hud,"BuyFiveParts",run,R3PartKind.Armor,R4WeaponKind.Basic);
+        var added=run.VehicleModel.Inventory.Skip(count).ToArray();
+        Assert.That(added.Length,Is.EqualTo(5));Assert.That(added.All(part=>part.Kind==R3PartKind.Armor),Is.True);
+        Assert.That(added.Select(part=>part.Id).Distinct().Count(),Is.EqualTo(5));
+        Assert.That(before-run.VehicleModel.Scrap,Is.EqualTo(price*5));
+        Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(added.Last().Id));
+        Assert.That((bool)Field(hud,"catalogOpen"),Is.False);
+        Assert.That(run.Garage.Message,Does.Contain("5").And.Contain((price*5)+" Z"));
+        yield return null;
+    }
+
     [TestCase(false,"Brak sprawnej broni.",R3DriveKind.Wheels,"Start zablokowany: Brak sprawnej broni.")]
     [TestCase(false,null,R3DriveKind.Omni,"Start zablokowany: Sprawdź konstrukcję.")]
     [TestCase(true,null,R3DriveKind.Omni,"Wyścig, tryby drogowe i generowana arena wymagają kół.")]
