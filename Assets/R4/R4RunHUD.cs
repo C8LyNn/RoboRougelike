@@ -226,16 +226,11 @@ namespace RoboRougelike.R1
             if(selected==null)
             {GUI.Label(new Rect(970,400,280,100),"Wybierz egzemplarz z listy. Zielony podgląd oznacza poprawne miejsce montażu.",small);return;}
             GUI.Label(new Rect(970,395,280,70),$"{R4WeaponDefinition.PartName(selected)} • HP {selected.Health*100:0}%\n"+
-                (selected.Health<=0?"Najpierw napraw część.":"Kliknij pojazd, aby zamontować."),small);
-            int repairQuote=model.RepairCost(selected);
-            GUI.enabled=repairQuote>0&&model.Scrap>=repairQuote;
-            if(GUI.Button(new Rect(970,480,280,42),GarageRepairCaption(selected,repairQuote,model.Scrap),compactButton))
-            {dismantleConfirmation=null;run.GarageRepairInventory(selected.Id);}
-            GUI.enabled=true;
-            if(GUI.Button(new Rect(970,535,280,42),dismantleConfirmation==selected.Id?"Potwierdź rozmontowanie":$"Rozmontuj → {model.DismantleValue(selected)} Z",compactButton))
+                (selected.Health<=0?"Napraw w wierszu przed montażem.":"Kliknij HP w wierszu, aby montować."),small);
+            if(GUI.Button(new Rect(970,480,280,42),dismantleConfirmation==selected.Id?"Potwierdź rozmontowanie":$"Rozmontuj → {model.DismantleValue(selected)} Z",compactButton))
             {if(dismantleConfirmation==selected.Id){run.GarageDismantle(selected.Id);dismantleConfirmation=null;return;}dismantleConfirmation=selected.Id;}
-            DrawFusionButton(run,selected,new Rect(970,590,280,42));
-            GUI.Label(new Rect(970,640,280,52),garage.PlacementIssue??"Zielony podgląd: kliknij, aby zamontować.",small);
+            DrawFusionButton(run,selected,new Rect(970,535,280,42));
+            GUI.Label(new Rect(970,590,280,52),"Po wyborze do montażu katalog się zamknie i pojawi się widmo.",small);
         }
         private void SelectCatalogDetails(R1RunController run,string id)
         {
