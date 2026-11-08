@@ -60,3 +60,5 @@ Sprawdź stos zawierający wyłącznie zniszczone egzemplarze: lista części po
 Jeżeli masz bonusy tego samego rodzaju na różnych poziomach, sprawdź ich stos: nazwa grupy nie powinna sugerować poziomu pierwszego egzemplarza, a poziomy poszczególnych części powinny pozostać widoczne w ich szczegółach. Test Unity i ręczna kontrola obu układów: NOT RUN; ZIP 5b21 nie zawiera tej zmiany.
 
 W ustawieniach garażu sprawdź naprawę zbiorczą oraz, jeśli jest dostępna, odbudowę awaryjną. Wynik i faktyczny koszt powinny pojawić się w otwartym oknie; po jego zamknięciu i ponownym otwarciu stary wynik nie powinien wyglądać na nową transakcję. Przygotowany test Unity i sprawdzenie obu układów: NOT RUN. ZIP 5b21 nie zawiera tej zmiany.
+
+Na ekranie wyboru pojazdu opis liczby w m/s mówi teraz „Limit napędu”: jest to wyliczona wartość bazowa, nie pomiar prędkości osiągniętej na każdej nawierzchni. Sprawdź czytelność podpisu w obu układach; renderowanie i ręczna gra: NOT RUN. ZIP 5b21 nie zawiera tej zmiany.

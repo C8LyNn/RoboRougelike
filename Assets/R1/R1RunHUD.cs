@@ -214,7 +214,7 @@ namespace RoboRougelike.R1
                     GUI.Label(new Rect(x+20,220,320,40),design.Name,heading);
                     GUI.Label(new Rect(x+20,270,320,90),design.Description,body);
                     float estimatedSpeed=R3VehicleAssembly.SpeedFor(design.Parts.Sum(R4WeaponDefinition.PartMass),design.Parts.Count(p=>p.Kind==R3PartKind.Wheel));
-                    GUI.Label(new Rect(x+20,365,320,45),$"Części: {design.Parts.Count}  •  Jazda: {estimatedSpeed:0.0} m/s\nRdzeń: {design.CoreHp:0} HP",small);
+                    GUI.Label(new Rect(x+20,365,320,45),$"Części: {design.Parts.Count}  •  Limit napędu: {estimatedSpeed:0.0} m/s\nRdzeń: {design.CoreHp:0} HP",small);
                     if(GUI.Button(new Rect(x+20,420,320,48),run.SelectedVehicle==kind?"WYBRANY":"Wybierz",button))run.SelectVehicle(kind);
                 }
                 GUI.Label(new Rect(90,505,900,62),"6 starć • 3 areny • elity • Oblężnik. Wybieraj ryzyko i zachowuj sprawne moduły. Po walce: jeden moduł z trzech + do 3 części z wraków → garaż.",body);
@@ -269,7 +269,7 @@ namespace RoboRougelike.R1
                 GUI.Label(new Rect(card.x+16,card.y+8,440,34),design.Name,heading);
                 GUI.Label(new Rect(card.x+16,card.y+44,440,62),design.Description,body);
                 float speed=R3VehicleAssembly.SpeedFor(design.Parts.Sum(R4WeaponDefinition.PartMass),design.Parts.Count(p=>p.Kind==R3PartKind.Wheel));
-                GUI.Label(new Rect(card.x+16,card.y+112,430,42),$"Części: {design.Parts.Count} • Jazda: {speed:0.0} m/s\nRdzeń: {design.CoreHp:0} HP",small);
+                GUI.Label(new Rect(card.x+16,card.y+112,430,42),$"Części: {design.Parts.Count} • Limit napędu: {speed:0.0} m/s\nRdzeń: {design.CoreHp:0} HP",small);
                 if(GUI.Button(new Rect(card.x+475,card.y+96,225,52),run.SelectedVehicle==kind?"WYBRANY":"Wybierz",button))run.SelectVehicle(kind);
             }
             GUI.Label(new Rect(24,704,75,30),"Seed:",body);
