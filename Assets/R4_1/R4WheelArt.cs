@@ -93,14 +93,14 @@ namespace RoboRougelike.R4_1
             if(owner==null)return;
             var velocity=transform.InverseTransformDirection(owner.GetPointVelocity(transform.position));velocity.y=0;
             if(velocity.sqrMagnitude>.04f)
-                casterAngle=Mathf.MoveTowardsAngle(casterAngle,Mathf.Atan2(velocity.x,velocity.z)*Mathf.Rad2Deg,360f*Time.fixedDeltaTime);
+                casterAngle=Mathf.MoveTowardsAngle(casterAngle,Mathf.Atan2(velocity.x,velocity.z)*Mathf.Rad2Deg+180f,360f*Time.fixedDeltaTime);
             var yaw=Quaternion.Euler(0,casterAngle,0);
             // The imported swivel has a converted FBX basis; rotate around the
             // block's real up axis, expressed in the swivel parent's space.
             var parentRotation=casterSwivel.parent.rotation;
             var localYaw=Quaternion.Inverse(parentRotation)*Quaternion.AngleAxis(casterAngle,transform.up)*parentRotation;
             casterSwivel.localRotation=localYaw*casterRest;
-            physicalCaster.localPosition=new Vector3(0,-.13f/R41PartGeometry.BlockSize,0)+yaw*(Vector3.back*(.075f/R41PartGeometry.BlockSize));
+            physicalCaster.localPosition=new Vector3(0,-.13f/R41PartGeometry.BlockSize,0)+yaw*(Vector3.forward*(.075f/R41PartGeometry.BlockSize));
             physicalCaster.localRotation=yaw*physicalCasterRest;
         }
 
