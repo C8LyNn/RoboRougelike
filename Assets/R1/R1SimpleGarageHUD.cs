@@ -11,6 +11,7 @@ namespace RoboRougelike.R1
         bool garageOptionsOpen;
         int garageOptionsTab;
         int quickPartCategory;
+        GUIStyle quickCategoryButton;
         Vector2 quickPartsScroll;
         static bool QuickCategoryIncludes(int category,R3PartKind kind)=>category==0?kind==R3PartKind.Armor:
             category==1?kind==R3PartKind.Wheel:category==2?kind==R3PartKind.Gun:
@@ -75,14 +76,15 @@ namespace RoboRougelike.R1
             var model=run.VehicleModel;
             var bonuses=model.Inventory.Where(p=>p.Kind==R3PartKind.BonusModule).Select(p=>p.UpgradeId).Distinct().ToArray();
             string[] categories={"Bloki","Koła","Broń","Moduły"};
+            if(quickCategoryButton==null)quickCategoryButton=new GUIStyle(compactButton){fontSize=13,wordWrap=false,padding=new RectOffset(1,1,2,2)};
             float categoryWidth=(area.width-12)/4;
             for(int i=0;i<categories.Length;i++)
             {
-                compactButton.normal.background=quickPartCategory==i?buttonPressed:buttonNormal;
-                if(GUI.Button(new Rect(area.x+i*(categoryWidth+4),area.y,categoryWidth,34),categories[i],compactButton))
+                quickCategoryButton.normal.background=quickPartCategory==i?buttonPressed:buttonNormal;
+                if(GUI.Button(new Rect(area.x+i*(categoryWidth+4),area.y,categoryWidth,34),categories[i],quickCategoryButton))
                 {quickPartCategory=i;quickPartsScroll=Vector2.zero;}
             }
-            compactButton.normal.background=buttonNormal;GUI.backgroundColor=Color.white;
+            GUI.backgroundColor=Color.white;
             var listArea=new Rect(area.x,area.y+40,area.width,area.height-40);
             int count=quickPartCategory==0?7:quickPartCategory==1?12:quickPartCategory==2?R4WeaponDefinition.Count:shopKinds.Length-3+bonuses.Length;
             quickPartsScroll=GUI.BeginScrollView(listArea,quickPartsScroll,new Rect(0,0,rowWidth,Mathf.Max(listArea.height,count*38)));
