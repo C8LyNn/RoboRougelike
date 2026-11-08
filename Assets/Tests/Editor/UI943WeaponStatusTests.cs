@@ -21,6 +21,17 @@ public sealed class UI943WeaponStatusTests
         Assert.That(method,Is.Not.Null);string actual=(string)method.Invoke(null,new object[]{ammo,reload,ready,now});
         Assert.That(actual.Replace('.',','),Is.EqualTo(expected));
     }
+    [TestCase(3,false,false,"niedostępne")]
+    [TestCase(40,false,false,"niedostępne")]
+    [TestCase(3,true,true,"ładowanie")]
+    [TestCase(40,true,false,"pełny")]
+    [TestCase(3,true,false,"T przeładuj")]
+    public void ManualReloadHintRespectsDeviceAvailability(int ammo,bool available,bool reloading,string expected)
+    {
+        var method=typeof(R1RunHUD).GetMethod("ManualReloadAction",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        Assert.That((string)method.Invoke(null,new object[]{ammo,40,reloading?11f:0f,10f,available}),Is.EqualTo(expected));
+    }
     [TestCase(0,1)] [TestCase(1,1)] [TestCase(9,1)] [TestCase(10,2)] [TestCase(180,20)]
     public void DefensePagesAreBoundedAndAllEntriesReachable(int count,int expectedPages)
     {
