@@ -28,6 +28,29 @@ namespace RoboRougelike.R1
             category==1?kind==R3PartKind.Wheel:category==2?kind==R3PartKind.Gun:
             category==3&&kind!=R3PartKind.Armor&&kind!=R3PartKind.Wheel&&kind!=R3PartKind.Gun;
 
+        static int QuickCategoryFor(R3PartKind kind)=>kind==R3PartKind.Armor?0:
+            kind==R3PartKind.Wheel?1:kind==R3PartKind.Gun?2:3;
+
+        void SelectQuickCategory(R1RunController run,int category)
+        {
+            if(category<0||category>3||category==quickPartCategory)return;
+            quickPartCategory=category;quickPartsScroll=Vector2.zero;
+            catalogGroup=null;catalogBonusId=null;dismantleConfirmation=null;catalogFeedback=null;
+            var garage=run?.Garage;
+            if(garage==null)return;
+            garage.SelectedInventoryId=null;garage.UseInventory=true;
+            if(garage.Tool==R41GarageTool.Mount)
+            {garage.SetTool(R41GarageTool.Mount);garage.Message="Wybierz część z listy.";}
+        }
+
+        void SyncQuickCategoryToCatalog()
+        {
+            if(!catalogGroup.HasValue)return;
+            int category=QuickCategoryFor(catalogGroup.Value);
+            if(category==quickPartCategory)return;
+            quickPartCategory=category;quickPartsScroll=Vector2.zero;
+        }
+
         static string GaragePurchaseCaption(R3PartKind kind,bool unlocked,int price,int scrap,bool full,bool toInventory=false)=>
             kind==R3PartKind.BonusModule?"Tylko z nagród":
             !unlocked?"Pokonaj wroga z tą bronią":full?"Magazyn pełny":
@@ -165,7 +188,7 @@ namespace RoboRougelike.R1
             {
                 quickCategoryButton.normal.background=quickPartCategory==i?buttonPressed:buttonNormal;
                 if(GUI.Button(new Rect(area.x+i*(categoryWidth+4),area.y,categoryWidth,34),categories[i],quickCategoryButton))
-                {quickPartCategory=i;quickPartsScroll=Vector2.zero;}
+                    SelectQuickCategory(run,i);
             }
             GUI.backgroundColor=Color.white;
             var listArea=new Rect(area.x,area.y+40,area.width,area.height-40);

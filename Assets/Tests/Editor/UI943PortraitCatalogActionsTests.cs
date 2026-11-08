@@ -236,6 +236,38 @@ public sealed class UI943PortraitCatalogActionsTests
         Assert.That((bool)method.Invoke(null,new object[]{1,R3PartKind.Wheel}),Is.True);
         Assert.That((bool)method.Invoke(null,new object[]{2,R3PartKind.Gun}),Is.True);
     }
+    [UnityTest] public IEnumerator CategorySwitchCannotBuyOrMountPreviousPartAndCatalogKeepsCategoryInSync()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float timeout=Time.realtimeSinceStartup+15;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<timeout)yield return null;
+        var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        Assert.That(run.OpenSandboxGarage(),Is.True);run.VehicleModel.Award(100);
+        Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
+        var hud=run.GetComponent<R1RunHUD>();Assert.That(hud,Is.Not.Null);
+        Invoke(hud,"SelectQuickPart",run,R3PartKind.Armor,R4WeaponKind.Basic,null);
+        Assert.That(run.Garage.SelectedInventoryId,Is.Not.Null);
+        int scrap=run.VehicleModel.Scrap;
+        Invoke(hud,"SelectQuickCategory",run,1);
+        Assert.That(Field(hud,"catalogGroup"),Is.Null,"A previous category must not remain purchasable.");
+        Assert.That(run.Garage.SelectedInventoryId,Is.Null,"The old part must not remain selected for placement.");
+        Assert.That(run.Garage.UseInventory,Is.True);
+        Assert.That(run.Garage.PlacementIssue,Does.Contain("Wybierz"));
+        int inventoryCount=run.VehicleModel.Inventory.Count;
+        Invoke(hud,"BuyQuickPart",run);
+        run.Garage.Select(Vector3Int.up);
+        Assert.That(run.Garage.ClickTarget(),Is.False,"Switching category must not mount the previous item.");
+        Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(inventoryCount));
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap),"Browsing categories must not purchase anything.");
+        Assert.That(run.GaragePurchase(R3PartKind.Wheel),Is.True);
+        Invoke(hud,"SelectQuickPart",run,R3PartKind.Wheel,R4WeaponKind.Basic,null);
+        string selected=run.Garage.SelectedInventoryId;
+        Invoke(hud,"SelectQuickCategory",run,1);
+        Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(selected),"Re-selecting the same category keeps the chosen item.");
+        Invoke(hud,"PortraitCatalogSelectGroup",run,R3PartKind.Gun,R4WeaponKind.Basic,null);
+        Invoke(hud,"DismissCatalog");
+        Assert.That((int)Field(hud,"quickPartCategory"),Is.EqualTo(2),"The compact list must follow the full catalog's selection.");
+    }
     [UnityTest] public IEnumerator SelectionPurchaseRepairAndConfirmedDismantleKeepRealInventorySemantics()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
