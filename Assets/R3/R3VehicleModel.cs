@@ -9,7 +9,7 @@ namespace RoboRougelike.R3
 {
     // Append new values: checkpoints store these numeric IDs.
     public enum R3PartKind { Armor, Wheel, Gun, Core, Suspension, Booster, JumpDrive, Blink, Gyroscope, OmniDrive, MagneticGrapple, HoverEngine, CrawlerTrack, BonusModule, DirectionalShield, PointDefense, StructuralScanner, ScannerPulse, IndependentSteering, Battery, RepairPulse, DrivePower, EnergyRegenerator }
-    public enum R3WheelStyle { Offroad, Slick, LargeOffroad, Monster }
+    public enum R3WheelStyle { Offroad, Slick, LargeOffroad, Monster, SmallFork }
     // Zero preserves the shape of every pre-existing checkpoint.
     public enum R3ArmorShape { Cube, Wedge, HalfBlock, Pyramid, RoundEdge, HalfWedge, Dome }
     public enum R3DriveKind { Wheels, Tracks, Omni, Hover }
@@ -75,11 +75,12 @@ namespace RoboRougelike.R3
         public static float TierMass(int tier)=>NormalizedTier(tier)==3?1.3f:NormalizedTier(tier)==2?1.15f:1f;
         public static float TierWheelTraction(int tier)=>NormalizedTier(tier)==3?1.8f:NormalizedTier(tier)==2?1.35f:1f;
         public static bool HasSizedSideWheel(R3WheelStyle style)=>style==R3WheelStyle.LargeOffroad||style==R3WheelStyle.Monster;
-        public static float WheelRadius(R3WheelStyle style)=>style==R3WheelStyle.Monster ? .8f : style==R3WheelStyle.LargeOffroad ? .56f : .39f;
-        public static float WheelWidth(R3WheelStyle style)=>style==R3WheelStyle.Monster ? .58f : .42f;
+        public static bool CanSwapWheelAppearance(R3WheelStyle style)=>style==R3WheelStyle.Offroad||style==R3WheelStyle.Slick;
+        public static float WheelRadius(R3WheelStyle style)=>style==R3WheelStyle.SmallFork ? .205f : style==R3WheelStyle.Monster ? .8f : style==R3WheelStyle.LargeOffroad ? .56f : .39f;
+        public static float WheelWidth(R3WheelStyle style)=>style==R3WheelStyle.SmallFork ? .15f : style==R3WheelStyle.Monster ? .58f : .42f;
         public static float WheelAxleOffset(R3WheelStyle style)=>style==R3WheelStyle.Monster ? .142f : .062f;
-        public static float WheelTraction(R3WheelStyle style)=>style==R3WheelStyle.Monster?1.5f:style==R3WheelStyle.LargeOffroad?1.25f:1f;
-        public static float WheelMass(R3WheelStyle style)=>style==R3WheelStyle.Monster?2f:style==R3WheelStyle.LargeOffroad?1.5f:1f;
+        public static float WheelTraction(R3WheelStyle style)=>style==R3WheelStyle.SmallFork ? .65f : style==R3WheelStyle.Monster?1.5f:style==R3WheelStyle.LargeOffroad?1.25f:1f;
+        public static float WheelMass(R3WheelStyle style)=>style==R3WheelStyle.SmallFork ? .5f : style==R3WheelStyle.Monster?2f:style==R3WheelStyle.LargeOffroad?1.5f:1f;
         public static int TierEffectUnits(int tier)=>NormalizedTier(tier)==3?4:NormalizedTier(tier)==2?2:1;
         public static float TierPassiveExtra(int tier)=>NormalizedTier(tier)==3?10:NormalizedTier(tier)==2?5:0;
         public static float TierActivationCost(int tier)=>NormalizedTier(tier)==3?1.4f:NormalizedTier(tier)==2?1.2f:1f;
@@ -213,7 +214,10 @@ namespace RoboRougelike.R3
         public static bool ValidArmorShape(R3PartState part)=>part!=null&&Enum.IsDefined(typeof(R3ArmorShape),part.ArmorShape)&&
             (part.ArmorShape==R3ArmorShape.Cube||(part.Kind==R3PartKind.Armor&&R4_1.R41PartGeometry.FullArmorContacts(part.ArmorShape)!=0&&
                 part.ContactMask==R4_1.R41PartGeometry.FullArmorContacts(part.ArmorShape)));
-        public static bool ValidEconomicPart(R3PartState part) => part!=null && ValidEconomicKind(part.Kind,part.Weapon) && Enum.IsDefined(typeof(R3WheelStyle),part.WheelStyle) && ValidArmorShape(part) && part.Tier>=0&&part.Tier<=3&&
+        public static bool ValidWheelStyle(R3PartState part)=>part!=null&&Enum.IsDefined(typeof(R3WheelStyle),part.WheelStyle)&&
+            (part.Kind==R3PartKind.Wheel?(part.WheelStyle!=R3WheelStyle.SmallFork||part.ContactMask==R3MountingGrid.FaceBit(Vector3Int.up)):
+                part.WheelStyle==R3WheelStyle.Offroad);
+        public static bool ValidEconomicPart(R3PartState part) => part!=null && ValidEconomicKind(part.Kind,part.Weapon) && ValidWheelStyle(part) && ValidArmorShape(part) && part.Tier>=0&&part.Tier<=3&&
             (part.Tier<=1||SupportsFusion(part.Kind,part.Weapon))&&
             !float.IsNaN(part.Health)&&!float.IsInfinity(part.Health)&&part.Health>=0&&part.Health<=1;
         public int Price(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic) => !ValidEconomicKind(kind,weapon)?0:Math.Max(1,
@@ -287,11 +291,13 @@ namespace RoboRougelike.R3
             if(kind==R3PartKind.Core||kind==R3PartKind.BonusModule||!ValidEconomicKind(kind,weapon)||inventory.Count>=InventoryCapacity||
                 !Enum.IsDefined(typeof(R3WheelStyle),wheelStyle)||(kind!=R3PartKind.Wheel&&wheelStyle!=R3WheelStyle.Offroad)||
                 (HasSizedSideWheel(wheelStyle)&&!R4_1.R4WheelArt.SizedWheelAvailable(wheelStyle))||
+                (wheelStyle==R3WheelStyle.SmallFork&&!R4_1.R4WheelArt.SmallForkAvailable)||
                 !Enum.IsDefined(typeof(R3ArmorShape),armorShape)||(kind!=R3PartKind.Armor&&armorShape!=R3ArmorShape.Cube)||
                 (armorShape!=R3ArmorShape.Cube&&!R4_1.R41PartGeometry.ArmorShapeAvailable(armorShape)))return false;
             int price=Price(kind,weapon);if(price<=0||Scrap<price)return false;
             Scrap-=price;inventory.Add(new R3PartState(default,kind){Weapon=weapon,WheelStyle=wheelStyle,ArmorShape=armorShape,
-                ContactMask=armorShape==R3ArmorShape.Cube?R3MountingGrid.AllFaces:R4_1.R41PartGeometry.FullArmorContacts(armorShape)});return true;
+                ContactMask=wheelStyle==R3WheelStyle.SmallFork?R3MountingGrid.FaceBit(Vector3Int.up):
+                    armorShape==R3ArmorShape.Cube?R3MountingGrid.AllFaces:R4_1.R41PartGeometry.FullArmorContacts(armorShape)});return true;
         }        public int RepairCost(R3PartState part)
         {
             if (!ValidEconomicPart(part) || part.Health >= 1f) return 0;

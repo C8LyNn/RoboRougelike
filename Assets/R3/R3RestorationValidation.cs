@@ -78,6 +78,7 @@ namespace RoboRougelike.R3
             var probe=R41PartGeometry.CreateMountingBlock(candidate.Kind==R3PartKind.Armor?candidate.ArmorShape:R3ArmorShape.Cube);probe.name="R3 temporary installation geometry";
             probe.transform.SetParent(transform,false);probe.transform.localPosition=(Vector3)candidate.Cell*R41PartGeometry.Grid;
             probe.transform.localRotation=R3MountingGrid.Rotation(candidate.RotationQuarterTurns);probe.transform.localScale=Vector3.one*R41PartGeometry.BlockSize;
+            if(candidate.Kind==R3PartKind.Wheel)R41PartGeometry.ConfigureWheelMount(probe,candidate.WheelStyle);
             if(R3VehicleModel.UsesWideFootprint(candidate.Kind))R3BonusModuleGeometry.ConfigureCube(probe,true);
             else {
                 bool mirror=candidate.Kind==R3PartKind.Wheel&&R4WheelArt.MirrorForMount(model,candidate);
