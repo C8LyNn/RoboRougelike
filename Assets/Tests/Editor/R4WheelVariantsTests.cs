@@ -401,7 +401,7 @@ public sealed class R4WheelVariantsTests
         var socket=block.GetComponentsInChildren<Transform>(true).Single(t=>t.name=="Socket_Mount");
         var swivel=block.GetComponentsInChildren<Transform>(true).Single(t=>t.name=="R4M_WheelS_Caster_Slick_Swivel");
         var rotor=block.GetComponentsInChildren<Transform>(true).Single(t=>t.name=="R4M_WheelS_Caster_Slick_Rotor");
-        var before=swivel.localRotation;var fixedSocket=socket.localPosition;body.linearVelocity=Vector3.right*3;
+        var before=swivel.localRotation;var fixedSocket=socket.localPosition;Time.timeScale=1;body.linearVelocity=Vector3.right*3;
         float begin=Time.fixedTime,deadline=Time.realtimeSinceStartup+10;
         while(Time.fixedTime-begin<.3f&&Time.realtimeSinceStartup<deadline)yield return new WaitForFixedUpdate();
         Assert.That(Time.fixedTime-begin,Is.GreaterThanOrEqualTo(.3f),"Physics time must advance.");
