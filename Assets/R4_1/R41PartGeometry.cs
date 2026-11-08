@@ -128,14 +128,15 @@ namespace RoboRougelike.R4_1
             if(kind==R3PartKind.Wheel)
             {
                 var wheel=Primitive(PrimitiveType.Cylinder,block,material,solid,"Koło").transform;
-                // The supplied L side wheel's axle is 62 mm outside its port.
+                // The supplied side wheel's axle is offset outside its port.
                 // Place the physical axle there as well so its actual side socket
                 // remains centered against the neighboring block face.
-                wheel.localPosition=wheelStyle==R3WheelStyle.LargeOffroad?
-                    new Vector3((mirrorWheel ? -.062f : .062f)/BlockSize,0,0):new Vector3(0,-0.5f,0);
+                float axle=R3VehicleModel.WheelAxleOffset(wheelStyle);
+                wheel.localPosition=R3VehicleModel.HasSizedSideWheel(wheelStyle)?
+                    new Vector3((mirrorWheel ? -axle : axle)/BlockSize,0,0):new Vector3(0,-0.5f,0);
                 wheel.localRotation=Quaternion.Euler(0,0,90);
                 float diameterScale=R3VehicleModel.WheelRadius(wheelStyle)/(.5f*BlockSize);
-                wheel.localScale=new Vector3(diameterScale,wheelStyle==R3WheelStyle.LargeOffroad ? .42f/(2*BlockSize) : .35f,diameterScale);
+                wheel.localScale=new Vector3(diameterScale,R3VehicleModel.HasSizedSideWheel(wheelStyle) ? R3VehicleModel.WheelWidth(wheelStyle)/(2*BlockSize) : .35f,diameterScale);
                 if(solid){
                     // A short CapsuleCollider becomes a sphere under this axle
                     // scale and penetrates the supporting armor by ~10cm.
