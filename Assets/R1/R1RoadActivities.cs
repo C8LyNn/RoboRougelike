@@ -27,8 +27,10 @@ namespace RoboRougelike.R1
         {
             if(!CanChooseRoadChallenge||!Enum.IsDefined(typeof(MapR4Mode),mode))return false;
             Physics.SyncTransforms();
-            if(!TryMeasureEnvelope(Player.GetComponent<Rigidbody>(),out var envelope))return false;
-            var source=Resources.Load<TextAsset>("MAP_R4_quarry_03");if(source==null)return false;
+            if(!TryMeasureEnvelope(Player.GetComponent<Rigidbody>(),out var envelope))
+            {if(Garage!=null)Garage.Message="Trasa: nie można zmierzyć fizycznego obrysu pojazdu.";return false;}
+            var source=Resources.Load<TextAsset>("MAP_R4_quarry_03");
+            if(source==null){if(Garage!=null)Garage.Message="Trasa: brak danych mapy drogowej.";return false;}
             var map=MapR4MapData.Parse(source.text);
             // Fit original source geometry to the measured assembled robot, not a demo cube.
             var profile=new MapR4VehicleProfile{id="R3/"+SelectedVehicle,width=envelope.x,height=envelope.y,length=envelope.z,

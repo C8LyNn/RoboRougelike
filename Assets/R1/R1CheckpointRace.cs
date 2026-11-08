@@ -20,7 +20,8 @@ namespace RoboRougelike.R1
         {
             if(!CanChooseCheckpointRace)return false;
             Physics.SyncTransforms();
-            if(!TryMeasureEnvelope(Player.GetComponent<Rigidbody>(),out var envelope))return false;
+            if(!TryMeasureEnvelope(Player.GetComponent<Rigidbody>(),out var envelope))
+                return RejectGeneratedArena("Wyścig: nie można zmierzyć fizycznego obrysu pojazdu.");
             var profile=SelectedVehicle==R3VehicleKind.Light?MapVehicleProfile.Light:MapVehicleProfile.Heavy;
             profile.Width=Mathf.Max(profile.Width,envelope.x);profile.Length=Mathf.Max(profile.Length,envelope.z);
             var config=MapGenConfig.Default;
@@ -32,7 +33,8 @@ namespace RoboRougelike.R1
                 string detail="";try{MapGenPlanner.Plan(MapRecipe.ObstacleCourse,RequestedSeed,config,profile);}catch(ArgumentException e){detail=e.Message;}
                 return RejectGeneratedArena("Wyścig: "+failure+" "+detail+" obrys="+envelope);
             }
-            if(world.Checkpoints.Length==0){generatedArena.ClearWorld();return false;}
+            if(world.Checkpoints.Length==0)
+            {generatedArena.ClearWorld();return RejectGeneratedArena("Wyścig: trasa nie zawiera punktów kontrolnych.");}
             if(Progress.State==R1RunState.Garage&&!StartNextEncounter()){generatedArena.ClearWorld();return false;}
             if(!Progress.ChooseRoute()){generatedArena.ClearWorld();return false;}
             CurrentEncounter=JsonUtility.FromJson<R1EncounterDefinition>(JsonUtility.ToJson(RouteOffers[0]));
