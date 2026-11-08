@@ -121,12 +121,10 @@ namespace RoboRougelike.R1
 
         void DrawQuickPartRow(R1RunController run,R3PartKind kind,R4WeaponKind weapon,string bonus,string name,int row,float width)
         {
-            int count=run.VehicleModel.Inventory.Count(p=>InCatalogGroup(p,kind,weapon,bonus));
             bool selected=catalogGroup==kind&&(kind!=R3PartKind.Gun||catalogWeapon==weapon)&&
                 (kind!=R3PartKind.BonusModule&&kind!=R3PartKind.Wheel&&kind!=R3PartKind.Armor||catalogBonusId==bonus);
             compactButton.normal.background=selected?buttonPressed:buttonNormal;GUI.backgroundColor=Color.white;
-            bool locked=!run.CanBuyTechnology(kind,weapon);
-            if(GUI.Button(new Rect(0,row*38,width,34),$"{name}  × {count}"+(locked?" • blokada":""),compactButton))
+            if(GUI.Button(new Rect(0,row*38,width,34),CatalogGroupCaption(run,kind,weapon,bonus,name),compactButton))
                 SelectQuickPart(run,kind,weapon,bonus);
             compactButton.normal.background=buttonNormal;
         }
