@@ -10,7 +10,11 @@ namespace RoboRougelike.R1
     {
         bool garageOptionsOpen;
         int garageOptionsTab;
+        int quickPartCategory;
         Vector2 quickPartsScroll;
+        static bool QuickCategoryIncludes(int category,R3PartKind kind)=>category==0?kind==R3PartKind.Armor:
+            category==1?kind==R3PartKind.Wheel:category==2?kind==R3PartKind.Gun:
+            category==3&&kind!=R3PartKind.Armor&&kind!=R3PartKind.Wheel&&kind!=R3PartKind.Gun;
 
         // One click chooses an owned instance; buying remains a separate, explicit action.
         void SelectQuickPart(R1RunController run,R3PartKind kind,R4WeaponKind weapon,string bonus)
@@ -66,11 +70,21 @@ namespace RoboRougelike.R1
         {
             var model=run.VehicleModel;
             var bonuses=model.Inventory.Where(p=>p.Kind==R3PartKind.BonusModule).Select(p=>p.UpgradeId).Distinct().ToArray();
-            int count=shopKinds.Length+14+R4WeaponDefinition.Count+bonuses.Length;
-            quickPartsScroll=GUI.BeginScrollView(area,quickPartsScroll,new Rect(0,0,rowWidth,Mathf.Max(area.height,count*38)));
+            string[] categories={"Bloki","Koła","Broń","Moduły"};
+            float categoryWidth=(area.width-12)/4;
+            for(int i=0;i<categories.Length;i++)
+            {
+                compactButton.normal.background=quickPartCategory==i?buttonPressed:buttonNormal;
+                if(GUI.Button(new Rect(area.x+i*(categoryWidth+4),area.y,categoryWidth,34),categories[i],compactButton))
+                {quickPartCategory=i;quickPartsScroll=Vector2.zero;}
+            }
+            compactButton.normal.background=buttonNormal;GUI.backgroundColor=Color.white;
+            var listArea=new Rect(area.x,area.y+40,area.width,area.height-40);
+            int count=quickPartCategory==0?7:quickPartCategory==1?10:quickPartCategory==2?R4WeaponDefinition.Count:shopKinds.Length-3+bonuses.Length;
+            quickPartsScroll=GUI.BeginScrollView(listArea,quickPartsScroll,new Rect(0,0,rowWidth,Mathf.Max(listArea.height,count*38)));
             int row=0;
             for(int i=0;i<shopKinds.Length;i++)
-            {var kind=shopKinds[i];if(kind==R3PartKind.Gun)continue;
+            {var kind=shopKinds[i];if(kind==R3PartKind.Gun||!QuickCategoryIncludes(quickPartCategory,kind))continue;
                 DrawQuickPartRow(run,kind,R4WeaponKind.Basic,null,kind==R3PartKind.Wheel?"Koło terenowe":shopNames[i],row++,rowWidth);
                 if(kind==R3PartKind.Armor)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,WedgeArmorGroup,"Pancerz • klin",row++,rowWidth);
                 if(kind==R3PartKind.Armor)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,HalfArmorGroup,"Pancerz • półblok",row++,rowWidth);
@@ -87,9 +101,9 @@ namespace RoboRougelike.R1
                 if(kind==R3PartKind.Wheel)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,TwinWheelGroup,"Koło bliźniacze",row++,rowWidth);
                 if(kind==R3PartKind.Wheel)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,SteerWheelGroup,"Koło skrętne drogowe",row++,rowWidth);
                 if(kind==R3PartKind.Wheel)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,LargeSteerWheelGroup,"Duże koło skrętne",row++,rowWidth);}
-            for(int i=0;i<R4WeaponDefinition.Count;i++)
+            if(QuickCategoryIncludes(quickPartCategory,R3PartKind.Gun))for(int i=0;i<R4WeaponDefinition.Count;i++)
             {var weapon=(R4WeaponKind)i;DrawQuickPartRow(run,R3PartKind.Gun,weapon,null,R4WeaponDefinition.Get(weapon).Name,row++,rowWidth);}
-            foreach(var bonus in bonuses)
+            if(QuickCategoryIncludes(quickPartCategory,R3PartKind.BonusModule))foreach(var bonus in bonuses)
             {var item=model.Inventory.First(p=>p.Kind==R3PartKind.BonusModule&&p.UpgradeId==bonus);
                 DrawQuickPartRow(run,R3PartKind.BonusModule,R4WeaponKind.Basic,bonus,R4WeaponDefinition.PartName(item),row++,rowWidth);}
             GUI.EndScrollView();GUI.backgroundColor=Color.white;

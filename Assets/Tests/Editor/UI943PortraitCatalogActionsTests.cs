@@ -22,6 +22,19 @@ public sealed class UI943PortraitCatalogActionsTests
     static object Field(R1RunHUD hud,string name)=>typeof(R1RunHUD).GetField(name,BindingFlags.Instance|BindingFlags.NonPublic).GetValue(hud);
     static bool ContainsId(R3VehicleModel model,string id)=>model.Inventory.Any(p=>p.Id==id);
 
+    [Test] public void QuickCategoriesCoverEveryCatalogKindWithoutOverlap()
+    {
+        var method=typeof(R1RunHUD).GetMethod("QuickCategoryIncludes",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        foreach(var kind in new[]{R3PartKind.Armor,R3PartKind.Wheel,R3PartKind.Gun,R3PartKind.Suspension,R3PartKind.Battery,R3PartKind.BonusModule})
+        {
+            int hits=Enumerable.Range(0,4).Count(category=>(bool)method.Invoke(null,new object[]{category,kind}));
+            Assert.That(hits,Is.EqualTo(1),kind.ToString());
+        }
+        Assert.That((bool)method.Invoke(null,new object[]{0,R3PartKind.Armor}),Is.True);
+        Assert.That((bool)method.Invoke(null,new object[]{1,R3PartKind.Wheel}),Is.True);
+        Assert.That((bool)method.Invoke(null,new object[]{2,R3PartKind.Gun}),Is.True);
+    }
     [UnityTest] public IEnumerator SelectionPurchaseRepairAndConfirmedDismantleKeepRealInventorySemantics()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
