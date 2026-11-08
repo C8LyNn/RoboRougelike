@@ -859,8 +859,11 @@ namespace RogueMachine.P12PipelineSafe
 
         private bool CanMove(Vector3 direction, float distance,bool allowPlayerContact=false)
         {
+            // Keep the probe upright but rotate its local footprint with the chassis.
+            // A world-aligned rectangle reports false walls after a 90-degree turn.
+            var yaw=Quaternion.Euler(0,movementBody.rotation.eulerAngles.y,0);
             int count = Physics.BoxCastNonAlloc(movementBody.position + Vector3.up * 0.75f,
-                movementHalfExtents, direction, movementHits, Quaternion.identity, distance,
+                movementHalfExtents, direction, movementHits, yaw, distance,
                 ~0, QueryTriggerInteraction.Ignore);
             for (int i = 0; i < count; i++)
             {
