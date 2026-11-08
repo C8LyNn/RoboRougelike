@@ -51,6 +51,29 @@ public sealed class R4WheelVariantsTests
         Assert.That(restored.Inventory.Single(p=>p.Id==offroad.Id).WheelStyle,Is.EqualTo(R3WheelStyle.Offroad));
         Assert.That(restored.Inventory.Single(p=>p.Id==slick.Id).WheelStyle,Is.EqualTo(R3WheelStyle.Slick));
     }
+    [UnityTest]public IEnumerator SideMountedWheelsUseSidePortsAndLegacyStoredWheelsMigrateSafely()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
+        foreach(var style in new[]{R3WheelStyle.Offroad,R3WheelStyle.Slick,R3WheelStyle.LargeOffroad,R3WheelStyle.Monster})
+        {
+            var design=new R3VehicleDesign{Name="Port QA"};design.Parts.Add(new R3PartState(Vector3Int.zero,R3PartKind.Core));
+            var model=new R3VehicleModel(design);model.Award(100);
+            Assert.That(model.PurchaseToInventory(R3PartKind.Wheel,default,style),Is.True);
+            var part=model.Inventory.Last();Assert.That(part.ContactMask,Is.EqualTo(3));
+            Assert.That(model.OwnedPlacementError(part.Id,Vector3Int.up,Vector3Int.zero),Is.Not.Null,style+" must not mount by its top face.");
+            Assert.That(model.OwnedPlacementError(part.Id,Vector3Int.right,Vector3Int.zero),Is.Null,style+" must mount by its side.");
+            Assert.That(model.Mount(part.Id,Vector3Int.right),Is.True);
+            Assert.That(model.At(Vector3Int.right).ContactMask,Is.EqualTo(3));
+        }
+        var current=run.VehicleModel;var original=current.Parts.First(p=>p.Kind==R3PartKind.Wheel);var originalId=original.Id;
+        Assert.That(run.GarageRemove(original.Cell),Is.True);Assert.That(current.Inventory.Single(p=>p.Id==originalId).ContactMask,Is.EqualTo(3));
+        var old=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(current.MakeCheckpoint(Time.time)));
+        old.inventory.Single(p=>p.Id==originalId).ContactMask=R3MountingGrid.AllFaces;
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(old,R3VehicleKind.Standard,current.Economy,Time.time,out var restored,out var error),Is.True,error);
+        Assert.That(restored.Inventory.Single(p=>p.Id==originalId).ContactMask,Is.EqualTo(3));
+        Assert.That(old.inventory.Single(p=>p.Id==originalId).ContactMask,Is.EqualTo(R3MountingGrid.AllFaces),"Reading must not mutate the source document.");
+        Assert.That(run.GarageMount(originalId,original.Cell,original.RotationQuarterTurns),Is.True,"Factory wheels remain remountable after port migration.");
+    }
     [UnityTest]public IEnumerator ChangingWheelStackUpdatesGhostAndRepeatedMountKeepsSameAppearance()
     {
         var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;

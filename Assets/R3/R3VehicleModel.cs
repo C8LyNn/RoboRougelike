@@ -75,6 +75,9 @@ namespace RoboRougelike.R3
         public static float TierMass(int tier)=>NormalizedTier(tier)==3?1.3f:NormalizedTier(tier)==2?1.15f:1f;
         public static float TierWheelTraction(int tier)=>NormalizedTier(tier)==3?1.8f:NormalizedTier(tier)==2?1.35f:1f;
         public static bool HasSizedSideWheel(R3WheelStyle style)=>style==R3WheelStyle.LargeOffroad||style==R3WheelStyle.Monster;
+        public static bool HasSideMount(R3WheelStyle style)=>style!=R3WheelStyle.SmallFork;
+        public static int StoredWheelContacts(R3PartState part)=>part!=null&&part.Kind==R3PartKind.Wheel&&HasSideMount(part.WheelStyle)?
+            R3MountingGrid.FaceBit(Vector3Int.right)|R3MountingGrid.FaceBit(Vector3Int.left):part?.ContactMask??R3MountingGrid.AllFaces;
         public static bool CanSwapWheelAppearance(R3WheelStyle style)=>style==R3WheelStyle.Offroad||style==R3WheelStyle.Slick;
         public static float WheelRadius(R3WheelStyle style)=>style==R3WheelStyle.SmallFork ? .205f : style==R3WheelStyle.Monster ? .8f : style==R3WheelStyle.LargeOffroad ? .56f : .39f;
         public static float WheelWidth(R3WheelStyle style)=>style==R3WheelStyle.SmallFork ? .15f : style==R3WheelStyle.Monster ? .58f : .42f;
@@ -105,7 +108,8 @@ namespace RoboRougelike.R3
         }
         readonly Dictionary<string,FactoryWheelPose> factoryWheels=new Dictionary<string,FactoryWheelPose>(StringComparer.Ordinal);
         internal bool IsFactoryWheel(R3PartState part)=>part!=null&&part.Kind==R3PartKind.Wheel&&
-            factoryWheels.TryGetValue(part.Id,out var pose)&&pose.Cell==part.Cell&&pose.Rotation==part.RotationQuarterTurns&&pose.Contacts==part.ContactMask;
+            factoryWheels.TryGetValue(part.Id,out var pose)&&pose.Cell==part.Cell&&pose.Rotation==part.RotationQuarterTurns&&
+            (pose.Contacts==part.ContactMask||(pose.Contacts==R3MountingGrid.AllFaces&&part.ContactMask==StoredWheelContacts(part)));
         public bool SuspensionEnabled = true;
         public RoboRougelike.Mechanics.MOV009.ActiveSuspensionSupportMode SuspensionMode = RoboRougelike.Mechanics.MOV009.ActiveSuspensionSupportMode.FullSupport;
         public float SuspensionHeightOffset;
@@ -239,7 +243,7 @@ namespace RoboRougelike.R3
         {
             var part=inventory.FirstOrDefault(p=>p.Id==id);
             return part==null?"Brak części w magazynie.":!ValidEconomicPart(part)?"Nieprawidłowe dane części.":part.Health<=0?"Odtwórz zniszczoną część przed montażem.":
-                CheckPlacement(cell,part.Kind,true,part.Weapon,rotation,part.ContactMask,part.Id);
+                CheckPlacement(cell,part.Kind,true,part.Weapon,rotation,StoredWheelContacts(part),part.Id);
         }
         string CheckPlacement(Vector3Int cell,R3PartKind kind,bool owned,R4WeaponKind weapon,Vector3Int rotation,int contactMask,string ownedId)
         {
@@ -296,7 +300,8 @@ namespace RoboRougelike.R3
                 (armorShape!=R3ArmorShape.Cube&&!R4_1.R41PartGeometry.ArmorShapeAvailable(armorShape)))return false;
             int price=Price(kind,weapon);if(price<=0||Scrap<price)return false;
             Scrap-=price;inventory.Add(new R3PartState(default,kind){Weapon=weapon,WheelStyle=wheelStyle,ArmorShape=armorShape,
-                ContactMask=wheelStyle==R3WheelStyle.SmallFork?R3MountingGrid.FaceBit(Vector3Int.up):
+                ContactMask=kind==R3PartKind.Wheel?(wheelStyle==R3WheelStyle.SmallFork?R3MountingGrid.FaceBit(Vector3Int.up):
+                    R3MountingGrid.FaceBit(Vector3Int.right)|R3MountingGrid.FaceBit(Vector3Int.left)):
                     armorShape==R3ArmorShape.Cube?R3MountingGrid.AllFaces:R4_1.R41PartGeometry.FullArmorContacts(armorShape)});return true;
         }        public int RepairCost(R3PartState part)
         {
@@ -342,7 +347,7 @@ namespace RoboRougelike.R3
             // Edits may temporarily be undeployable; keep the core, structure and inventory safe.
             if (inventory.Count>=InventoryCapacity ||
                 !Connected(rest) || !Connected(rest.Where(p => p.Health > 0))) return false;
-            Parts.Remove(part); inventory.Add(part); return true;
+            Parts.Remove(part);part.ContactMask=StoredWheelContacts(part);inventory.Add(part); return true;
         }
         public bool ReceiveSalvage(IEnumerable<R3PartState> recovered)
         {
@@ -356,7 +361,7 @@ namespace RoboRougelike.R3
                     float.IsInfinity(p.UpgradeAmount)||p.UpgradeAmount<0||p.UpgradeAmount>1))||
                 string.IsNullOrWhiteSpace(p.Id)||Owns(p.Id))||
                 batch.Select(p=>p.Id).Distinct().Count()!=batch.Length)return false;
-            inventory.AddRange(batch.Select(p=>p.Copy()));return true;
+            inventory.AddRange(batch.Select(p=>{var copy=p.Copy();copy.ContactMask=StoredWheelContacts(copy);return copy;}));return true;
         }
         public static R3PartState CreateBonusReward(R1UpgradeDefinition bonus)
         {
@@ -386,7 +391,7 @@ namespace RoboRougelike.R3
             rotation=R3MountingGrid.Normalize(rotation);
             if(part==null||part.Health<=0||
                 OwnedPlacementError(part.Id,cell,rotation)!=null)return false;
-            inventory.Remove(part);part.Cell=cell;part.RotationQuarterTurns=rotation;
+            inventory.Remove(part);part.Cell=cell;part.RotationQuarterTurns=rotation;part.ContactMask=StoredWheelContacts(part);
             Parts.Add(part);return true;
         }
         public bool RepairInventory(string id)
