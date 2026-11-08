@@ -691,6 +691,8 @@ namespace RogueMachine.P12PipelineSafe
             FirePhysicalShell(
                 aimPoint
             );
+            if(WeaponKind==R4WeaponKind.Automatic&&primaryVisual!=null)
+            {primaryVisual.AdvanceMuzzle();muzzle=primaryVisual.Muzzle;}
         }
 
         private void DropTurret()
@@ -1202,6 +1204,8 @@ namespace RogueMachine.P12PipelineSafe
             if(support==null){Destroy(gun);return false;}
             var hp=gun.AddComponent<P12PipelineSafeDamageable>();hp.Configure(R4WeaponDefinition.Get(state.Weapon).Hp,true);
             var pivot=R41PartGeometry.Payload(gun.transform,R3PartKind.Gun,state.Weapon,material,true,out var barrel);
+            var art=R4WeaponArt.TryAttach(gun.transform,pivot,barrel,state.Weapon);
+            if(art!=null)barrel=art.Muzzle;
             var block=gun.AddComponent<P12_PipelineSafePlayerBlock>();
             var module=gun.AddComponent<P12PipelineSafeFunctionalModule>();module.Configure(P12FunctionalModuleType.Weapon,0,block,pivot,transform);
             additionalGuns.Add(new VariantGun{Block=hp,Support=support,Kind=state.Weapon,Pivot=pivot,Muzzle=barrel,NextShot=Time.time+2.2f});
@@ -1295,6 +1299,8 @@ namespace RogueMachine.P12PipelineSafe
                 body.collisionDetectionMode=CollisionDetectionMode.ContinuousDynamic;body.linearVelocity=direction*profile.Speed*.8f*configuredProjectileSpeed;
                 var origin=shell.AddComponent<R4ProjectileOrigin>();origin.Weapon=gun.Kind;origin.PartId=EquipmentInstanceId(idPrefix+guns.IndexOf(gun));
                 shell.AddComponent<P17PhysicalShell>().Configure(transform,profile.Damage*(damage/R4WeaponDefinition.Get(WeaponKind).Damage)*R3VehicleModel.TierEffectUnits(tier),6,direction,playerRoot);
+                var art=gun.Block.GetComponent<R4WeaponArt>();
+                if(art!=null){art.AdvanceMuzzle();gun.Muzzle=art.Muzzle;}
             }
         }
 

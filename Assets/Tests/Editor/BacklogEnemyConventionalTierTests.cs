@@ -78,6 +78,10 @@ public sealed class BacklogEnemyConventionalTierTests
         Object.Destroy(target); yield return null;
 
         var gun=enemy.AdditionalWeapons.Single();
+        var gunArt=gun.Block.GetComponent<RoboRougelike.R4_1.R4WeaponArt>();
+        Assert.That(gunArt,Is.Not.Null,"The normal enemy's additional automatic weapon must use its supplied visual.");
+        Assert.That(gun.Muzzle,Is.SameAs(gunArt.Muzzle),"Its physical projectiles must use the visible muzzle.");
+        Assert.That(gun.Block.GetComponentsInChildren<Transform>(true).Any(t=>t.name=="R41_AutomaticGun_ROOT"),Is.True);
         var extraTarget=GameObject.CreatePrimitive(PrimitiveType.Cube);
         extraTarget.transform.position=gun.Muzzle.position+gun.Muzzle.forward*6;extraTarget.transform.localScale=new Vector3(3,3,1);
         var extraHp=extraTarget.AddComponent<P12PipelineSafeDamageable>();extraHp.Configure(1000,false);

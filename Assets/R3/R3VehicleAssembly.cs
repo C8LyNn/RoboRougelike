@@ -104,6 +104,13 @@ namespace RoboRougelike.R3
             var origin=part.Muzzle.position;
             bool IsGun(Collider c)=>c!=null&&c.transform.IsChildOf(part.transform);
             bool IsOwner(Collider c)=>c!=null&&c.transform.IsChildOf(transform);
+            bool IsOwnProjectile(Collider c)
+            {
+                var shell=c.GetComponentInParent<P17PhysicalShell>();
+                if(shell!=null&&shell.OwnerRoot==transform)return true;
+                var rocket=c.GetComponentInParent<RoboRougelike.Mechanics.Rockets.RocketProjectile>();
+                return rocket!=null&&rocket.OwnerRoot==transform;
+            }
             // The barrel itself can rotate into another part even if its tip
             // is already beyond that part. Inspect the whole muzzle segment.
             if(part.GunPivot==null)return false;
@@ -117,7 +124,7 @@ namespace RoboRougelike.R3
             float own=float.PositiveInfinity,other=float.PositiveInfinity;
             foreach(var hit in Physics.SphereCastAll(origin,radius,direction.normalized,range,~0,QueryTriggerInteraction.Ignore))
             {
-                if(hit.collider==null||IsGun(hit.collider))continue;
+                if(hit.collider==null||IsGun(hit.collider)||IsOwnProjectile(hit.collider))continue;
                 if(IsOwner(hit.collider))own=Mathf.Min(own,hit.distance);
                 else other=Mathf.Min(other,hit.distance);
             }
@@ -162,6 +169,8 @@ namespace RoboRougelike.R3
                     if(energy!=null&&!energy.TrySpend(VehicleEnergyCosts.ConventionalShot(part.Weapon)*R3VehicleModel.TierActivationCost(part.Tier)))continue;
                     part.NextFireTime=Time.time+controller.WeaponInterval(part.Weapon);
                     controller.FireFrom(part.Muzzle,part.Weapon,part.Id);
+                    var art=part.GetComponent<RoboRougelike.R4_1.R4WeaponArt>();
+                    if(art!=null){art.AdvanceMuzzle();part.Muzzle=art.Muzzle;}
                 }
         }
 
