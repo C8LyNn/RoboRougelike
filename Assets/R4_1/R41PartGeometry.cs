@@ -15,10 +15,13 @@ namespace RoboRougelike.R4_1
         private static readonly System.Collections.Generic.Dictionary<R3ArmorShape,int> armorContacts=new System.Collections.Generic.Dictionary<R3ArmorShape,int>();
         private static string ArmorId(R3ArmorShape shape)=>shape switch {
             R3ArmorShape.Wedge=>"R4B_Wedge",R3ArmorShape.HalfBlock=>"R4B_HalfBlock",
-            R3ArmorShape.Pyramid=>"R4B_Pyramid",_=>null};
+            R3ArmorShape.Pyramid=>"R4B_Pyramid",R3ArmorShape.RoundEdge=>"R4B_RoundEdge",
+            R3ArmorShape.HalfWedge=>"R4B_HalfWedge",R3ArmorShape.Dome=>"R4B_Dome",_=>null};
         private static string ArmorPrefab(R3ArmorShape shape)=>shape switch {
             R3ArmorShape.Cube=>"R4Art/ArmorCube",R3ArmorShape.Wedge=>"R4Art/ArmorWedge",
-            R3ArmorShape.HalfBlock=>"R4Art/ArmorHalfBlock",R3ArmorShape.Pyramid=>"R4Art/ArmorPyramid",_=>null};
+            R3ArmorShape.HalfBlock=>"R4Art/ArmorHalfBlock",R3ArmorShape.Pyramid=>"R4Art/ArmorPyramid",
+            R3ArmorShape.RoundEdge=>"R4Art/ArmorRoundEdge",R3ArmorShape.HalfWedge=>"R4Art/ArmorHalfWedge",
+            R3ArmorShape.Dome=>"R4Art/ArmorDome",_=>null};
         public static int FullArmorContacts(R3ArmorShape shape)
         {
             if(armorContacts.TryGetValue(shape,out var cached))return cached;

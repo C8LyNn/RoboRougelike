@@ -28,7 +28,7 @@ namespace RoboRougelike.R1
 
             var model=run.VehicleModel;
             var bonuses=model.Inventory.Where(p=>p.Kind==R3PartKind.BonusModule).Select(p=>p.UpgradeId).Distinct().ToArray();
-            int count=shopKinds.Length+3+R4WeaponDefinition.Count+bonuses.Length;
+            int count=shopKinds.Length+6+R4WeaponDefinition.Count+bonuses.Length;
             var groups=PortraitCatalogGroupsViewport();
             catalogScroll=GUI.BeginScrollView(groups,catalogScroll,new Rect(0,0,320,Mathf.Max(groups.height,count*56)));
             int row=0;
@@ -39,6 +39,9 @@ namespace RoboRougelike.R1
                 if(kind==R3PartKind.Armor)DrawPortraitCatalogGroup(run,kind,R4WeaponKind.Basic,WedgeArmorGroup,"Pancerz • klin",row++);
                 if(kind==R3PartKind.Armor)DrawPortraitCatalogGroup(run,kind,R4WeaponKind.Basic,HalfArmorGroup,"Pancerz • półblok",row++);
                 if(kind==R3PartKind.Armor)DrawPortraitCatalogGroup(run,kind,R4WeaponKind.Basic,PyramidArmorGroup,"Pancerz • piramida",row++);
+                if(kind==R3PartKind.Armor)DrawPortraitCatalogGroup(run,kind,R4WeaponKind.Basic,RoundArmorGroup,"Pancerz • zaokrąglenie",row++);
+                if(kind==R3PartKind.Armor)DrawPortraitCatalogGroup(run,kind,R4WeaponKind.Basic,HalfWedgeArmorGroup,"Pancerz • półklin",row++);
+                if(kind==R3PartKind.Armor)DrawPortraitCatalogGroup(run,kind,R4WeaponKind.Basic,DomeArmorGroup,"Pancerz • kopuła",row++);
                 if(kind==R3PartKind.Wheel)DrawPortraitCatalogGroup(run,kind,R4WeaponKind.Basic,SlickWheelGroup,"Koło szosowe",row++);
             }
             for(int i=0;i<R4WeaponDefinition.Count;i++)

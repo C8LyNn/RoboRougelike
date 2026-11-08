@@ -67,16 +67,17 @@ public sealed class R4WedgeArmorTests
         Assert.That(model.Inventory.Single(p=>p.Id==id).ArmorShape,Is.EqualTo(R3ArmorShape.Wedge));
     }
 
-    [UnityTest] public IEnumerator HalfBlockAndPyramidAreDistinctPhysicalOwnedParts()
+    [UnityTest] public IEnumerator AdditionalShapesAreDistinctPhysicalOwnedParts()
     {
         var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
         var model=run.VehicleModel;model.Award(1000);var cell=new Vector3Int(2,2,2);
-        foreach(var shape in new[]{R3ArmorShape.HalfBlock,R3ArmorShape.Pyramid})
+        foreach(var shape in new[]{R3ArmorShape.HalfBlock,R3ArmorShape.Pyramid,R3ArmorShape.RoundEdge,R3ArmorShape.HalfWedge,R3ArmorShape.Dome})
         {
             Assert.That(R41PartGeometry.ArmorShapeAvailable(shape),Is.True,shape.ToString());
             Assert.That(run.GaragePurchase(R3PartKind.Armor,default,R3WheelStyle.Offroad,shape),Is.True);
             var item=model.Inventory.Last();string id=item.Id;
-            Assert.That(item.ContactMask,Is.EqualTo(R3MountingGrid.FaceBit(Vector3Int.down)));
+            Assert.That(item.ContactMask,Is.EqualTo(R41PartGeometry.FullArmorContacts(shape)));
+            Assert.That(R3MountingGrid.PortOnFace(item,Vector3Int.down),Is.True);
             Assert.That(R3MountingGrid.PortOnFace(item,Vector3Int.right),Is.False);
             run.Garage.ChooseInventory(id);run.Garage.Select(cell);
             Assert.That(run.Garage.ClickTarget(),Is.True,run.Garage.PlacementIssue);yield return null;
@@ -85,7 +86,8 @@ public sealed class R4WedgeArmorTests
             Assert.That(collider.convex,Is.True);Assert.That(part.GetComponent<BoxCollider>(),Is.Null);
             Assert.That(part.GetComponent<Renderer>().enabled,Is.False);
             Assert.That(part.GetComponentsInChildren<Renderer>().Any(r=>r.enabled),Is.True);
-            Assert.That(collider.bounds.size.y,Is.EqualTo(shape==R3ArmorShape.HalfBlock ? .25f : .52f).Within(.02f));
+            float expectedHeight=shape==R3ArmorShape.HalfBlock ? .25f : shape==R3ArmorShape.HalfWedge ? .245f : .52f;
+            Assert.That(collider.bounds.size.y,Is.EqualTo(expectedHeight).Within(.02f));
             var data=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(Time.time)));
             Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Standard,model.Economy,Time.time,out var restored,out var error),Is.True,error);
             Assert.That(restored.Parts.Single(p=>p.Id==id).ArmorShape,Is.EqualTo(shape));
