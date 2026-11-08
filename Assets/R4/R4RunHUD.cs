@@ -195,7 +195,7 @@ namespace RoboRougelike.R1
             var items=model.Inventory.Where(p=>InCatalogGroup(p,kind,weapon,catalogBonusId)).ToArray();
             string name=kind==R3PartKind.Armor?R4WeaponDefinition.ArmorName(CatalogArmorShape(catalogBonusId)):
                 kind==R3PartKind.Wheel?R4WeaponDefinition.WheelName(CatalogWheelStyle(catalogBonusId)):
-                kind==R3PartKind.BonusModule&&items.Length>0?R4WeaponDefinition.PartName(items[0]):R4WeaponDefinition.PartName(kind,weapon);
+                kind==R3PartKind.BonusModule&&items.Length>0?CatalogBonusGroupName(items[0]):R4WeaponDefinition.PartName(kind,weapon);
             GUI.Label(new Rect(970,70,280,48),$"{name}  × {items.Length}\nHP — montaż • Akcje — łączenie i demontaż",small);
             stackScroll=GUI.BeginScrollView(new Rect(970,118,280,210),stackScroll,new Rect(0,0,255,Mathf.Max(210,items.Length*40)));
             for(int i=0;i<items.Length;i++)

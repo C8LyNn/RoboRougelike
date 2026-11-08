@@ -22,6 +22,19 @@ public sealed class UI943PortraitCatalogActionsTests
     static object Field(R1RunHUD hud,string name)=>typeof(R1RunHUD).GetField(name,BindingFlags.Instance|BindingFlags.NonPublic).GetValue(hud);
     static bool ContainsId(R3VehicleModel model,string id)=>model.Inventory.Any(p=>p.Id==id);
 
+    [Test] public void BonusStackNameDoesNotInheritFirstItemsTier()
+    {
+        var method=typeof(R1RunHUD).GetMethod("CatalogBonusGroupName",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        var bonus=new R3PartState(default,R3PartKind.BonusModule){UpgradeTitle="Osłona",Tier=2};
+        Assert.That((string)method.Invoke(null,new object[]{bonus}),Is.EqualTo("Osłona"));
+        Assert.That(R4WeaponDefinition.PartName(bonus),Does.Contain("T2"),"The individual item keeps its tier.");
+        bonus.Tier=3;
+        Assert.That((string)method.Invoke(null,new object[]{bonus}),Is.EqualTo("Osłona"));
+        bonus.UpgradeTitle=null;
+        Assert.That((string)method.Invoke(null,new object[]{bonus}),Is.EqualTo("Moduł bonusu"));
+    }
+
     [TestCase(5,false,true,"Koło × 5 • napraw")]
     [TestCase(5,true,true,"Koło × 5")]
     [TestCase(0,false,false,"Koło × 0 • blokada")]
