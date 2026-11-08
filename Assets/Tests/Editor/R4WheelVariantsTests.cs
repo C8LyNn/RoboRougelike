@@ -231,7 +231,16 @@ public sealed class R4WheelVariantsTests
         }
         Assert.That(run.GaragePurchase(R3PartKind.Wheel,default,R3WheelStyle.BalloonFork),Is.True);var wheel=model.Inventory.Last();
         Assert.That(wheel.ContactMask,Is.EqualTo(R3MountingGrid.FaceBit(Vector3Int.up)));
-        var target=new Vector3Int(3,2,2);garage.ChooseInventory(wheel.Id);garage.Select(target);
+        var crowded=new Vector3Int(3,2,2);garage.ChooseInventory(wheel.Id);garage.Select(crowded);
+        Assert.That(garage.ClickTarget(),Is.False,"The larger balloon tire must not overlap the existing lower wheel.");
+        Assert.That(model.Inventory.Any(p=>p.Id==wheel.Id),Is.True);
+        Assert.That(run.GarageRemove(new Vector3Int(3,3,2)),Is.True);yield return null;
+        foreach(var cell in new[]{new Vector3Int(2,4,2),new Vector3Int(3,4,2)})
+        {
+            Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);var support=model.Inventory.Last();
+            garage.ChooseInventory(support.Id);garage.Select(cell);Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);yield return null;
+        }
+        var target=new Vector3Int(3,3,2);garage.ChooseInventory(wheel.Id);garage.Select(target);
         Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);yield return null;
         var part=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==wheel.Id);
         var tire=part.transform.Find("Koło").GetComponent<Collider>();Assert.That(tire.bounds.extents.y,Is.EqualTo(.5f).Within(.02f));
