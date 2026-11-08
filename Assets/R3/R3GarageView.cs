@@ -451,10 +451,27 @@ namespace RoboRougelike.R3
         }
         public bool ClickScreen(Vector2 screen)
         {return InBuildArea(screen,Screen.width,Screen.height)&&Point(view.ScreenPointToRay(screen))&&ClickTarget();}
+        private static R41GarageTool? ToolShortcut(KeyCode key,bool modified)
+        {
+            if(modified)return null;
+            switch(key)
+            {
+                case KeyCode.Alpha1:case KeyCode.Keypad1:return R41GarageTool.Mount;
+                case KeyCode.Alpha2:case KeyCode.Keypad2:return R41GarageTool.Inspect;
+                case KeyCode.Alpha3:case KeyCode.Keypad3:return R41GarageTool.Repair;
+                case KeyCode.Alpha4:case KeyCode.Keypad4:return R41GarageTool.Remove;
+                default:return null;
+            }
+        }
         public void HandleGuiPointer(Event current,Vector2 rawTopLeft)
         {
             if(run.Progress?.State!=R1RunState.Garage||run.Transitioning||run.Paused||run.QuitRequested)return;
             var screen=new Vector2(rawTopLeft.x,Screen.height-rawTopLeft.y);bool inside=InBuildArea(screen,Screen.width,Screen.height);
+            if(current.type==EventType.KeyDown)
+            {
+                var tool=ToolShortcut(current.keyCode,current.shift||current.control||current.alt||current.command);
+                if(tool.HasValue){if(Tool!=tool.Value)SetTool(tool.Value);current.Use();return;}
+            }
             if(current.type==EventType.KeyDown&&current.keyCode==KeyCode.U)
             {ToggleUndersideView();current.Use();return;}
             if(current.type==EventType.KeyDown&&Tool==R41GarageTool.Mount)

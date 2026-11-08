@@ -2,10 +2,25 @@ using NUnit.Framework;
 using System.Reflection;
 using RoboRougelike.R1;
 using RoboRougelike.R3;
+using RoboRougelike.R4_1;
 using UnityEngine;
 
 public sealed class UI943PortraitGarageTests
 {
+    [TestCase(KeyCode.Alpha1,false,R41GarageTool.Mount)]
+    [TestCase(KeyCode.Alpha2,false,R41GarageTool.Inspect)]
+    [TestCase(KeyCode.Alpha3,false,R41GarageTool.Repair)]
+    [TestCase(KeyCode.Alpha4,false,R41GarageTool.Remove)]
+    [TestCase(KeyCode.Keypad1,false,R41GarageTool.Mount)]
+    [TestCase(KeyCode.Keypad4,false,R41GarageTool.Remove)]
+    [TestCase(KeyCode.Alpha1,true,null)]
+    [TestCase(KeyCode.A,false,null)]
+    public void ToolShortcutsIgnoreModifiersAndOtherKeys(KeyCode key,bool modified,object expected)
+    {
+        var method=typeof(R3GarageView).GetMethod("ToolShortcut",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        Assert.That(method.Invoke(null,new object[]{key,modified}),Is.EqualTo(expected));
+    }
     [Test]
     public void MapEditorAndOverlaysKeepTheirOwnLayout()
     {

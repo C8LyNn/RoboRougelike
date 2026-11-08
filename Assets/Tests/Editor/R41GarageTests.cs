@@ -265,6 +265,19 @@ public class R41GarageTests
         Assert.That(garage.SelectedInventoryId,Is.Null);
         yield return null;
     }
+    [UnityTest] public IEnumerator ToolShortcutsChangeToolWithoutPurchasingOrEditing()
+    {
+        var garage=Run.Garage;int wallet=Run.VehicleModel.Scrap,parts=Run.VehicleModel.Parts.Count;
+        garage.SetTool(R41GarageTool.Mount);
+        var repair=new Event{type=EventType.KeyDown,keyCode=KeyCode.Alpha3};
+        garage.HandleGuiPointer(repair,Vector2.zero);
+        Assert.That(garage.Tool,Is.EqualTo(R41GarageTool.Repair));
+        var modified=new Event{type=EventType.KeyDown,keyCode=KeyCode.Alpha4,modifiers=EventModifiers.Control};
+        garage.HandleGuiPointer(modified,Vector2.zero);
+        Assert.That(garage.Tool,Is.EqualTo(R41GarageTool.Repair));
+        Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(wallet));Assert.That(Run.VehicleModel.Parts.Count,Is.EqualTo(parts));
+        yield return null;
+    }
     [UnityTest] public IEnumerator GuiPointerEventsOrbitZoomAndNeverBuyThroughPanels()
     {
         var garage=Run.Garage;garage.Point(TopRay(new Vector3Int(2,1,2)));int funds=Run.VehicleModel.Scrap;
