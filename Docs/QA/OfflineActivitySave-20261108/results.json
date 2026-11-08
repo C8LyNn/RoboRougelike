@@ -1,0 +1,40 @@
+{
+  "assembly_sha256": "AC5375FC33D1E9DD5681EE1EE57E75B1E1B8E1A32D6BA6166C0A5D80279A7911",
+  "compiled_source": "61eb6a0da775d021c3421db1c52d9b11dcaeace8",
+  "cases": [
+    {
+      "expected": "Zapisano wyprawę w garażu.",
+      "status": "PASS",
+      "actual": "Zapisano wyprawę w garażu.",
+      "name": "save-success"
+    },
+    {
+      "expected": "Nie zapisano wyprawy: brak miejsca.",
+      "status": "PASS",
+      "actual": "Nie zapisano wyprawy: brak miejsca.",
+      "name": "save-new-error"
+    },
+    {
+      "expected": "Nie udało się zapisać wyprawy.",
+      "status": "PASS",
+      "actual": "Nie udało się zapisać wyprawy.",
+      "name": "save-stale-success"
+    },
+    {
+      "expected": "Nie udało się zapisać wyprawy.",
+      "status": "PASS",
+      "actual": "Nie udało się zapisać wyprawy.",
+      "name": "save-no-message"
+    },
+    {
+      "expected": "Nie udało się zapisać wyprawy.",
+      "status": "PASS",
+      "actual": "Nie udało się zapisać wyprawy.",
+      "name": "save-repeated-error"
+    }
+  ],
+  "failed": 0,
+  "worktree_head": "61eb6a0da775d021c3421db1c52d9b11dcaeace8",
+  "passed": 5,
+  "environment": "PowerShell/.NET; actual compiled game assembly; no Unity Editor, Player or save I/O"
+}
