@@ -68,3 +68,5 @@ Po walce sprawdź wybór nagród klawiaturą: 1/2/3 wybiera bonus, Q/W/E wybiera
 Na ekranie wyboru pojazdu wyczyść pole seeda lub wpisz wartość spoza zakresu liczby całkowitej. Komunikat powinien pokazać ostatnią poprawną wartość, która zostałaby użyta; po wpisaniu poprawnej liczby powinien zniknąć. Sprawdź również, czy pozostaje widoczny komunikat błędu wczytywania oraz czy ostrzeżenie nie nachodzi na inne elementy w obu układach. Przygotowany test formatowania i wizualna kontrola: NOT RUN. ZIP 5b21 nie zawiera tej zmiany.
 
 Na ekranie nagród otwórz magazyn, rozpocznij potwierdzanie rozmontowania i naciśnij Esc. Powinien zamknąć się magazyn, a potwierdzenie zostać anulowane; kolejne Esc powinno otworzyć pauzę. Sprawdź również przycisk powrotu i oba układy ekranu. Przygotowany test Unity oraz ręczne sprawdzenie: NOT RUN. ZIP 5b21 nie zawiera tej zmiany.
+
+Bezokiennie sprawdzono 16 przypadków czystych funkcji napisów i mapowania klawiszy na skompilowanym kodzie: 16/16 PASS. Nie obejmuje to wejścia klawiatury, logiki Esc ani obrazu gry. Szczegóły i ograniczenia: `Docs/HUD_OFFLINE_PURE_QA.md`; wymienione wyżej testy Unity i ręczne nadal pozostają do wykonania.

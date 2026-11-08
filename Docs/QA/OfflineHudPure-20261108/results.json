@@ -1,0 +1,106 @@
+{
+  "passed": 16,
+  "failed": 0,
+  "assembly_sha256": "AB34E5DD4FB951657955BDD3A04CEC41A34E62D2B12CC7E43A7CB0AE2F114903",
+  "worktree_head": "fa8fb66b56832f0558e393d115b34a4b8b897f66",
+  "environment": "PowerShell/.NET; actual compiled game assembly; no Unity Editor or Player",
+  "cases": [
+    {
+      "name": "seed-empty",
+      "status": "PASS",
+      "actual": "Błędny seed\nUżyty: 2026",
+      "expected": "Błędny seed\nUżyty: 2026"
+    },
+    {
+      "name": "seed-nonnumeric",
+      "status": "PASS",
+      "actual": "Błędny seed\nUżyty: 7",
+      "expected": "Błędny seed\nUżyty: 7"
+    },
+    {
+      "name": "seed-overflow",
+      "status": "PASS",
+      "actual": "Błędny seed\nUżyty: -4",
+      "expected": "Błędny seed\nUżyty: -4"
+    },
+    {
+      "name": "seed-min",
+      "status": "PASS",
+      "actual": null,
+      "expected": null
+    },
+    {
+      "name": "seed-valid",
+      "status": "PASS",
+      "actual": null,
+      "expected": null
+    },
+    {
+      "name": "shortcut-none",
+      "status": "PASS",
+      "actual": -1,
+      "expected": -1
+    },
+    {
+      "name": "shortcut-q",
+      "status": "PASS",
+      "actual": 0,
+      "expected": 0
+    },
+    {
+      "name": "shortcut-w",
+      "status": "PASS",
+      "actual": 1,
+      "expected": 1
+    },
+    {
+      "name": "shortcut-e",
+      "status": "PASS",
+      "actual": 2,
+      "expected": 2
+    },
+    {
+      "name": "stack-wreck",
+      "status": "PASS",
+      "actual": "Koło × 5 • napraw",
+      "expected": "Koło × 5 • napraw"
+    },
+    {
+      "name": "stack-usable",
+      "status": "PASS",
+      "actual": "Koło × 5",
+      "expected": "Koło × 5"
+    },
+    {
+      "name": "stack-locked",
+      "status": "PASS",
+      "actual": "Koło × 0 • blokada",
+      "expected": "Koło × 0 • blokada"
+    },
+    {
+      "name": "stack-empty",
+      "status": "PASS",
+      "actual": "Koło × 0",
+      "expected": "Koło × 0"
+    },
+    {
+      "name": "bonus-group-T2",
+      "status": "PASS",
+      "actual": "Osłona",
+      "expected": "Osłona"
+    },
+    {
+      "name": "bonus-group-T3",
+      "status": "PASS",
+      "actual": "Osłona",
+      "expected": "Osłona"
+    },
+    {
+      "name": "bonus-group-untitled",
+      "status": "PASS",
+      "actual": "Moduł bonusu",
+      "expected": "Moduł bonusu"
+    }
+  ],
+  "compiled_source": "fa8fb66b56832f0558e393d115b34a4b8b897f66"
+}
