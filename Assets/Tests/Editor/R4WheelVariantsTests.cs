@@ -393,7 +393,7 @@ public sealed class R4WheelVariantsTests
         Assert.That(run.GaragePurchase(R3PartKind.Wheel,default,style),Is.True);
         Assert.That(model.Inventory.Last().ContactMask,Is.EqualTo(R3MountingGrid.FaceBit(Vector3Int.up)));
         Assert.That(R3VehicleModel.WheelRadius(style),Is.EqualTo(.17f).Within(.001f));
-        var owner=new GameObject("caster QA");var body=owner.AddComponent<Rigidbody>();body.useGravity=false;
+        var owner=new GameObject("caster QA");owner.transform.position=new Vector3(1000,50,1000);var body=owner.AddComponent<Rigidbody>();body.useGravity=false;
         var block=GameObject.CreatePrimitive(PrimitiveType.Cube);block.transform.SetParent(owner.transform,false);block.transform.localScale=Vector3.one*R41PartGeometry.BlockSize;
         var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));R41PartGeometry.ConfigureWheelMount(block,style);
         var wheel=R41PartGeometry.Payload(block.transform,R3PartKind.Wheel,default,material,true,out _,style);
