@@ -81,6 +81,8 @@ namespace RoboRougelike.R1
         public string RunSaveMessage {get;private set;}
         public bool SaveRunCheckpoint()
         {
+            // A rejected attempt must not expose a previous save's result.
+            RunSaveMessage=null;
             if(Progress?.State!=R1RunState.Garage||Transitioning||SandboxWorkshop||MapEditorSession||ReactorPrepared||VehicleModel==null)return false;
             try
             {
