@@ -68,7 +68,7 @@ namespace RoboRougelike.R1
             GUI.Label(PortraitRewardSummary(),
                 $"Bonus: {(selectedBonus>=0?"wybrany":"wymagany")} • Zestaw: {(selectedBasket>=0?lootSelection.Count+" części":rewardBaskets.Count==0?"brak łupów":"wymagany")}\n"+
                 $"Niewybrane części → +{ledger.PreviewScrap(run.VehicleModel,lootSelection)} Z. Bonus jest nieaktywny do montażu.\n"+
-                (room?"":"Brak miejsca na nagrody. Otwórz magazyn i rozmontuj część."),small);
+                (!room?"Brak miejsca na nagrody. Otwórz magazyn i rozmontuj część.":rewardClaimFeedback??""),small);
             GUI.enabled=RewardSelectionReady(selectedBonus,offers.Length,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,lootSelection.Count);
             if(GUI.Button(PortraitRewardConfirm(),"Zatwierdź oba wybory [Enter]",button))PortraitRewardConfirm(run);
             GUI.enabled=true;
@@ -110,7 +110,7 @@ namespace RoboRougelike.R1
                 CloseRewardInventory();
         }
 
-        private void PortraitRewardSelectBonus(int index)=>selectedBonus=index;
+        private void PortraitRewardSelectBonus(int index)=>SelectRewardBonus(index);
         private void PortraitRewardMoveLootPage(int step,int itemCount)
         {lootPage=Mathf.Clamp(lootPage+step,0,Mathf.Max(1,Mathf.CeilToInt(itemCount/6f))-1);}
         private void PortraitRewardToggleLoot(R4SalvageItem item)
@@ -118,7 +118,7 @@ namespace RoboRougelike.R1
             if(lootSelection.Contains(item.Id))lootSelection.Remove(item.Id);
             else if(item.Selectable&&lootSelection.Count<3)lootSelection.Add(item.Id);
         }
-        private bool PortraitRewardConfirm(R1RunController run)=>run.ConfirmRewards(lootSelection,selectedBonus>=0?new[]{selectedBonus}:System.Array.Empty<int>());
+        private bool PortraitRewardConfirm(R1RunController run)=>ConfirmSelectedRewards(run);
         private bool PortraitRewardDismantle(R1RunController run,string id)
         {
             if(rewardDismantleConfirmation!=id){rewardDismantleConfirmation=id;rewardInventoryFeedback=null;return false;}
