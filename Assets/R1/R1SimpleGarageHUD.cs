@@ -17,6 +17,16 @@ namespace RoboRougelike.R1
             category==1?kind==R3PartKind.Wheel:category==2?kind==R3PartKind.Gun:
             category==3&&kind!=R3PartKind.Armor&&kind!=R3PartKind.Wheel&&kind!=R3PartKind.Gun;
 
+        string SimpleGarageFeedback(R1RunController run)
+        {
+            var model=run.VehicleModel;
+            string message=run.Garage.Message??string.Empty;
+            if(!model.CanDeploy)
+                message+="\nStart zablokowany: "+(model.CriticalReadinessMessage??model.DeployError);
+            if(run.Technology?.Error!=null)message+="\nBłąd zapisu lub odczytu technologii.";
+            return message.TrimStart('\n');
+        }
+
         static string GarageDriveSummary(R1RunController run)
         {
             if(run?.VehicleModel==null||run.Player==null)return "Dane napędu są niedostępne.";
@@ -203,9 +213,7 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(12,610,245,42),"Egzemplarze i naprawy",compactButton))
             {inventoryOpen=true;catalogOpen=true;stackScroll=Vector2.zero;}
             GUI.Label(new Rect(12,655,245,62),"PPM/kółko: widok • U: spód\nShift/Ctrl + LPM: zdejmij/napraw\nQ/E, R/F, Z/X: obrót części",small);
-            string garageFeedback=model.CanDeploy?garage.Message:
-                "Możesz budować dalej. " +(model.CriticalReadinessMessage??model.DeployError);
-            if(run.Technology?.Error!=null)garageFeedback+="\nBłąd zapisu lub odczytu technologii.";
+            string garageFeedback=SimpleGarageFeedback(run);
             GUI.Label(new Rect(286,655,570,58),garageFeedback,small);
             GUI.enabled=!garageOptionsOpen&&(run.MapEditorSession||model.CanDeploy);
             if(run.MapEditorSession){if(GUI.Button(new Rect(870,663,185,43),"Wróć do edytora",compactButton))run.ReturnToMapEditorFromGarage();}
@@ -267,9 +275,7 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(458,784,138,40),"Ustawienia",compactButton)){garageOptionsOpen=true;garageOptionsTab=0;}
             if(GUI.Button(new Rect(606,784,138,40),"Aktywności",compactButton)){garageOptionsOpen=true;garageOptionsTab=1;}
             if(GUI.Button(new Rect(458,831,286,40),"Dopasuj widok",compactButton))garage.FrameVehicle();
-            string garageFeedback=model.CanDeploy?garage.Message:
-                "Możesz budować dalej. "+(model.CriticalReadinessMessage??model.DeployError);
-            if(run.Technology?.Error!=null)garageFeedback+=" • błąd zapisu lub odczytu technologii";
+            string garageFeedback=SimpleGarageFeedback(run);
             GUI.Label(new Rect(24,884,720,55),garageFeedback+
                 "\nShift + LPM: zdejmij • Ctrl + LPM: napraw",small);
             GUI.enabled=!garageOptionsOpen&&(run.MapEditorSession||model.CanDeploy);

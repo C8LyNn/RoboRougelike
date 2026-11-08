@@ -22,6 +22,22 @@ public sealed class UI943PortraitCatalogActionsTests
     static object Field(R1RunHUD hud,string name)=>typeof(R1RunHUD).GetField(name,BindingFlags.Instance|BindingFlags.NonPublic).GetValue(hud);
     static bool ContainsId(R3VehicleModel model,string id)=>model.Inventory.Any(p=>p.Id==id);
 
+    [UnityTest] public IEnumerator IncompleteGarageKeepsActionFeedbackAlongsideDeploymentWarning()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance?.Progress==null)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);
+        foreach(var wheel in run.VehicleModel.Parts.Where(p=>p.Kind==R3PartKind.Wheel).ToArray())
+            Assert.That(run.GarageRemove(wheel.Cell),Is.True);
+        Assert.That(run.VehicleModel.CanDeploy,Is.False);
+        run.Garage.Message="Wybrane pole jest zajęte.";
+        var hud=run.GetComponent<R1RunHUD>();
+        var feedback=(string)Invoke(hud,"SimpleGarageFeedback",run);
+        Assert.That(feedback,Does.Contain("Wybrane pole jest zajęte."));
+        Assert.That(feedback,Does.Contain(run.VehicleModel.CriticalReadinessMessage??run.VehicleModel.DeployError));
+        yield return new ExitPlayMode();
+    }
+
     [Test] public void QuickCategoriesCoverEveryCatalogKindWithoutOverlap()
     {
         var method=typeof(R1RunHUD).GetMethod("QuickCategoryIncludes",BindingFlags.Static|BindingFlags.NonPublic);
