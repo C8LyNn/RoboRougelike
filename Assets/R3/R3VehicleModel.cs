@@ -9,7 +9,7 @@ namespace RoboRougelike.R3
 {
     // Append new values: checkpoints store these numeric IDs.
     public enum R3PartKind { Armor, Wheel, Gun, Core, Suspension, Booster, JumpDrive, Blink, Gyroscope, OmniDrive, MagneticGrapple, HoverEngine, CrawlerTrack, BonusModule, DirectionalShield, PointDefense, StructuralScanner, ScannerPulse, IndependentSteering, Battery, RepairPulse, DrivePower, EnergyRegenerator }
-    public enum R3WheelStyle { Offroad, Slick, LargeOffroad, Monster, SmallFork, BalloonFork, SpikedFork, TwinRoad, SteerRoad, SteerOffroad }
+    public enum R3WheelStyle { Offroad, Slick, LargeOffroad, Monster, SmallFork, BalloonFork, SpikedFork, TwinRoad, SteerRoad, SteerOffroad, CasterSlick }
     // Zero preserves the shape of every pre-existing checkpoint.
     public enum R3ArmorShape { Cube, Wedge, HalfBlock, Pyramid, RoundEdge, HalfWedge, Dome }
     public enum R3DriveKind { Wheels, Tracks, Omni, Hover }
@@ -75,17 +75,17 @@ namespace RoboRougelike.R3
         public static float TierMass(int tier)=>NormalizedTier(tier)==3?1.3f:NormalizedTier(tier)==2?1.15f:1f;
         public static float TierWheelTraction(int tier)=>NormalizedTier(tier)==3?1.8f:NormalizedTier(tier)==2?1.35f:1f;
         public static bool HasSizedSideWheel(R3WheelStyle style)=>style==R3WheelStyle.LargeOffroad||style==R3WheelStyle.Monster;
-        public static bool HasForkMount(R3WheelStyle style)=>style==R3WheelStyle.SmallFork||style==R3WheelStyle.BalloonFork||style==R3WheelStyle.SpikedFork||style==R3WheelStyle.TwinRoad||style==R3WheelStyle.SteerRoad||style==R3WheelStyle.SteerOffroad;
+        public static bool HasForkMount(R3WheelStyle style)=>style==R3WheelStyle.SmallFork||style==R3WheelStyle.BalloonFork||style==R3WheelStyle.SpikedFork||style==R3WheelStyle.TwinRoad||style==R3WheelStyle.SteerRoad||style==R3WheelStyle.SteerOffroad||style==R3WheelStyle.CasterSlick;
         public static bool HasSideMount(R3WheelStyle style)=>!HasForkMount(style);
         public static int StoredWheelContacts(R3PartState part)=>part!=null&&part.Kind==R3PartKind.Wheel&&HasSideMount(part.WheelStyle)?
             R3MountingGrid.FaceBit(Vector3Int.right)|R3MountingGrid.FaceBit(Vector3Int.left):part?.ContactMask??R3MountingGrid.AllFaces;
         public static bool CanSwapWheelAppearance(R3WheelStyle style)=>style==R3WheelStyle.Offroad||style==R3WheelStyle.Slick;
-        public static float WheelRadius(R3WheelStyle style)=>style==R3WheelStyle.SteerOffroad ? .48f : style==R3WheelStyle.SteerRoad ? .34f : style==R3WheelStyle.TwinRoad ? .33f : style==R3WheelStyle.SpikedFork ? .37f : style==R3WheelStyle.SmallFork ? .205f : style==R3WheelStyle.BalloonFork ? .5f : style==R3WheelStyle.Monster ? .8f : style==R3WheelStyle.LargeOffroad ? .56f : .39f;
-        public static float WheelWidth(R3WheelStyle style)=>style==R3WheelStyle.SteerOffroad ? .34f : style==R3WheelStyle.SteerRoad ? .26f : style==R3WheelStyle.TwinRoad ? .16f : style==R3WheelStyle.SpikedFork ? .30f : style==R3WheelStyle.SmallFork ? .15f : style==R3WheelStyle.BalloonFork ? .43f : style==R3WheelStyle.Monster ? .58f : .42f;
+        public static float WheelRadius(R3WheelStyle style)=>style==R3WheelStyle.CasterSlick ? .17f : style==R3WheelStyle.SteerOffroad ? .48f : style==R3WheelStyle.SteerRoad ? .34f : style==R3WheelStyle.TwinRoad ? .33f : style==R3WheelStyle.SpikedFork ? .37f : style==R3WheelStyle.SmallFork ? .205f : style==R3WheelStyle.BalloonFork ? .5f : style==R3WheelStyle.Monster ? .8f : style==R3WheelStyle.LargeOffroad ? .56f : .39f;
+        public static float WheelWidth(R3WheelStyle style)=>style==R3WheelStyle.CasterSlick ? .12f : style==R3WheelStyle.SteerOffroad ? .34f : style==R3WheelStyle.SteerRoad ? .26f : style==R3WheelStyle.TwinRoad ? .16f : style==R3WheelStyle.SpikedFork ? .30f : style==R3WheelStyle.SmallFork ? .15f : style==R3WheelStyle.BalloonFork ? .43f : style==R3WheelStyle.Monster ? .58f : .42f;
         public static float WheelAxleOffset(R3WheelStyle style)=>style==R3WheelStyle.Monster ? .142f : .062f;
-        public static float ForkAxleDrop(R3WheelStyle style)=>style==R3WheelStyle.SteerOffroad ? .455f : style==R3WheelStyle.SteerRoad ? .315f : style==R3WheelStyle.TwinRoad ? .20f : style==R3WheelStyle.SpikedFork ? .24f : style==R3WheelStyle.BalloonFork ? .37f : .075f;
-        public static float WheelTraction(R3WheelStyle style)=>style==R3WheelStyle.SmallFork ? .65f : style==R3WheelStyle.BalloonFork||style==R3WheelStyle.SteerOffroad?1.15f:style==R3WheelStyle.Monster?1.5f:style==R3WheelStyle.LargeOffroad?1.25f:1f;
-        public static float WheelMass(R3WheelStyle style)=>style==R3WheelStyle.SmallFork ? .5f : style==R3WheelStyle.BalloonFork||style==R3WheelStyle.SteerOffroad?4f/3f:style==R3WheelStyle.Monster?2f:style==R3WheelStyle.LargeOffroad?1.5f:1f;
+        public static float ForkAxleDrop(R3WheelStyle style)=>style==R3WheelStyle.CasterSlick ? .13f : style==R3WheelStyle.SteerOffroad ? .455f : style==R3WheelStyle.SteerRoad ? .315f : style==R3WheelStyle.TwinRoad ? .20f : style==R3WheelStyle.SpikedFork ? .24f : style==R3WheelStyle.BalloonFork ? .37f : .075f;
+        public static float WheelTraction(R3WheelStyle style)=>style==R3WheelStyle.CasterSlick ? .5f : style==R3WheelStyle.SmallFork ? .65f : style==R3WheelStyle.BalloonFork||style==R3WheelStyle.SteerOffroad?1.15f:style==R3WheelStyle.Monster?1.5f:style==R3WheelStyle.LargeOffroad?1.25f:1f;
+        public static float WheelMass(R3WheelStyle style)=>style==R3WheelStyle.CasterSlick ? 1f/3f : style==R3WheelStyle.SmallFork ? .5f : style==R3WheelStyle.BalloonFork||style==R3WheelStyle.SteerOffroad?4f/3f:style==R3WheelStyle.Monster?2f:style==R3WheelStyle.LargeOffroad?1.5f:1f;
         public static int TierEffectUnits(int tier)=>NormalizedTier(tier)==3?4:NormalizedTier(tier)==2?2:1;
         public static float TierPassiveExtra(int tier)=>NormalizedTier(tier)==3?10:NormalizedTier(tier)==2?5:0;
         public static float TierActivationCost(int tier)=>NormalizedTier(tier)==3?1.4f:NormalizedTier(tier)==2?1.2f:1f;

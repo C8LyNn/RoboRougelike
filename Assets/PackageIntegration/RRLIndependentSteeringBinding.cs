@@ -58,8 +58,9 @@ namespace RoboRougelike.PackageIntegration
         {
             var payload=part.transform.Find("Koło");if(payload==null)return null;
             var original=payload.GetComponent<MeshRenderer>();var mesh=payload.GetComponent<MeshFilter>();if(original==null||mesh==null)return null;
-            var pivot=new GameObject("MOV011 visual yaw").transform;pivot.SetParent(part.transform,false);pivot.localPosition=payload.localPosition;
             var art=part.GetComponent<RoboRougelike.R4_1.R4WheelArt>();
+            if(art!=null&&art.IsCaster)return null; // Free caster follows velocity, not a powered steering axle.
+            var pivot=new GameObject("MOV011 visual yaw").transform;pivot.SetParent(part.transform,false);pivot.localPosition=payload.localPosition;
             if(art!=null&&art.AttachToSteeringPivot(pivot))return pivot;
             var visual=new GameObject("Existing wheel mesh");visual.transform.SetParent(pivot,false);
             visual.transform.localRotation=payload.localRotation;visual.transform.localScale=payload.localScale;
