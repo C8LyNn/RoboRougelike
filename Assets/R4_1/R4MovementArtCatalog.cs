@@ -19,6 +19,7 @@ namespace RoboRougelike.R4_1
         public GameObject SideWheelMonster;
         public GameObject SmallForkWheel;
         public GameObject BalloonForkWheel;
+        public GameObject SpikedForkWheel;
         public GameObject ModelFor(R3PartKind kind)
         {
             if(Models==null)return null;
