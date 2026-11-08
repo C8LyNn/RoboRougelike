@@ -347,6 +347,34 @@ public sealed class R4WheelVariantsTests
     [UnityTest]public IEnumerator SpikedWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.SpikedFork);}
     [UnityTest]public IEnumerator TwinWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.TwinRoad);}
     [UnityTest]public IEnumerator RoadSteerWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.SteerRoad);}
+    [UnityTest]public IEnumerator RoadSteerArtUsesRealIndependentSteeringWithoutMovingMount()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
+        var palette=(R3VisualPalette)typeof(R1RunController).GetField("palette",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(run);
+        var design=new R3VehicleDesign{Name="Road steering QA",Speed=7,TurnSpeed=90,CoreHp=100};
+        design.Parts.Add(new R3PartState(new Vector3Int(0,1,0),R3PartKind.Core));
+        for(int z=1;z<=4;z++)design.Parts.Add(new R3PartState(new Vector3Int(0,1,z),R3PartKind.Armor));
+        design.Parts.Add(new R3PartState(new Vector3Int(0,2,0),R3PartKind.IndependentSteering));
+        foreach(int x in new[]{-1,1})foreach(int z in new[]{0,4})
+        {
+            design.Parts.Add(new R3PartState(new Vector3Int(x,1,z),R3PartKind.Armor));
+            design.Parts.Add(new R3PartState(new Vector3Int(x,0,z),R3PartKind.Wheel){WheelStyle=R3WheelStyle.SteerRoad,ContactMask=R3MountingGrid.FaceBit(Vector3Int.up)});
+        }
+        var model=new R3VehicleModel(design);var vehicle=R3VehicleAssembly.Build(model,run.Progress.Stats,palette,new Vector3(1000,1,1000),Quaternion.identity);
+        try
+        {
+            var binding=vehicle.GetComponentInChildren<RoboRougelike.PackageIntegration.RRLIndependentSteeringBinding>();
+            Assert.That(binding,Is.Not.Null);Assert.That(binding.GeometrySupported,Is.True);
+            var front=vehicle.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Kind==R3PartKind.Wheel&&p.Cell.z==4);
+            var socket=front.GetComponentsInChildren<Transform>(true).Single(t=>t.name=="Socket_Mount");
+            var rotor=front.GetComponentsInChildren<Transform>(true).Single(t=>t.name=="R4M_WheelM_Steer_Road_Rotor");
+            var beforeSocket=socket.localToWorldMatrix;var beforeRotor=rotor.rotation;
+            Assert.That(binding.TrySolve(1,.1f,out _),Is.True);
+            Assert.That(Vector3.Distance(socket.position,beforeSocket.GetColumn(3)),Is.LessThan(.001f));
+            Assert.That(Quaternion.Angle(rotor.rotation,beforeRotor),Is.GreaterThan(1f));
+        }
+        finally{Object.Destroy(vehicle.gameObject);}
+    }
     [UnityTest]public IEnumerator TwinWheelFindsEitherTireButNotEmptyCenter()
     {
         var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
