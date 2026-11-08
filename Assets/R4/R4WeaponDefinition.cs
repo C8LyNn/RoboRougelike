@@ -58,7 +58,8 @@ namespace RoboRougelike.R4
             R3ArmorShape.Pyramid=>"Pancerz • piramida",R3ArmorShape.RoundEdge=>"Pancerz • zaokrąglenie",
             R3ArmorShape.HalfWedge=>"Pancerz • półklin",R3ArmorShape.Dome=>"Pancerz • kopuła",_=>"Pancerz"};
         public static string WheelName(R3WheelStyle style)=>style switch {
-            R3WheelStyle.Slick=>"Koło szosowe",R3WheelStyle.LargeOffroad=>"Duże koło terenowe",_=>"Koło terenowe"};
+            R3WheelStyle.Slick=>"Koło szosowe",R3WheelStyle.LargeOffroad=>"Duże koło terenowe",
+            R3WheelStyle.Monster=>"Koło monster XL",_=>"Koło terenowe"};
         public static string PartName(R3PartState part)
         {
             string name=part.Kind==R3PartKind.Armor?ArmorName(part.ArmorShape):

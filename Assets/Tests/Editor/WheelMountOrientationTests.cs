@@ -14,7 +14,7 @@ public sealed class WheelMountOrientationTests
     {
         yield return new EnterPlayMode();
         var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
-        foreach(var style in new[]{R3WheelStyle.Offroad,R3WheelStyle.Slick,R3WheelStyle.LargeOffroad})
+        foreach(var style in new[]{R3WheelStyle.Offroad,R3WheelStyle.Slick,R3WheelStyle.LargeOffroad,R3WheelStyle.Monster})
         foreach(var turns in new[]{Vector3Int.zero,new Vector3Int(0,0,1)})
         foreach(var sign in new[]{-1,1})
         {
@@ -29,10 +29,10 @@ public sealed class WheelMountOrientationTests
             var physical=R41PartGeometry.Payload(block.transform,R3PartKind.Wheel,R4WeaponKind.Basic,material,true,out _,style,mirror);
             Assert.That(R4WheelArt.TryAttach(block.transform,physical,mirror,style),Is.Not.Null);
             var socket=block.GetComponentsInChildren<Transform>(true).Single(t=>t.name=="Socket_Mount");
-            var rotor=block.GetComponentsInChildren<Transform>(true).Single(t=>t.name==(style==R3WheelStyle.LargeOffroad?"R4M_WheelL_Side_Offroad_Rotor":style==R3WheelStyle.Slick?"R4M_WheelM_Side_Slick_Rotor":"R4M_WheelM_Side_Offroad_Rotor"));
+            var rotor=block.GetComponentsInChildren<Transform>(true).Single(t=>t.name==(style==R3WheelStyle.Monster?"R4M_WheelXL_Side_Monster_Rotor":style==R3WheelStyle.LargeOffroad?"R4M_WheelL_Side_Offroad_Rotor":style==R3WheelStyle.Slick?"R4M_WheelM_Side_Slick_Rotor":"R4M_WheelM_Side_Offroad_Rotor"));
             Assert.That(Vector3.Dot((socket.position-rotor.position).normalized,(Vector3)axis),Is.GreaterThan(.9f),style+" "+turns+" "+sign);
-            if(style==R3WheelStyle.LargeOffroad)
-                Assert.That(Vector3.Distance(socket.position,block.transform.position+(Vector3)axis*.26f),Is.LessThan(.015f),"Large wheel port must meet the support face.");
+            if(R3VehicleModel.HasSizedSideWheel(style))
+                Assert.That(Vector3.Distance(socket.position,block.transform.position+(Vector3)axis*.26f),Is.LessThan(.015f),style+" wheel port must meet the support face.");
             Object.Destroy(block);
         }
         Object.Destroy(material);yield return null;yield return new ExitPlayMode();

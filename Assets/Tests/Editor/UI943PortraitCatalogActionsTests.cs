@@ -92,6 +92,13 @@ public sealed class UI943PortraitCatalogActionsTests
         var offroad=model.Inventory.Last();Assert.That(offroad.WheelStyle,Is.EqualTo(R3WheelStyle.Offroad));
         Assert.That((bool)Invoke(hud,"InCatalogGroup",offroad,R3PartKind.Wheel,R4WeaponKind.Basic,null),Is.True);
         Assert.That((bool)Invoke(hud,"InCatalogGroup",offroad,R3PartKind.Wheel,R4WeaponKind.Basic,"wheel:slick"),Is.False);
+        foreach(var pair in new[]{("wheel:large",R3WheelStyle.LargeOffroad),("wheel:monster",R3WheelStyle.Monster)})
+        {
+            Invoke(hud,"PortraitCatalogSelectGroup",run,R3PartKind.Wheel,R4WeaponKind.Basic,pair.Item1);
+            Invoke(hud,"PortraitCatalogPurchase",run,R3PartKind.Wheel,R4WeaponKind.Basic);
+            var item=model.Inventory.Last();Assert.That(item.WheelStyle,Is.EqualTo(pair.Item2));
+            Assert.That((bool)Invoke(hud,"InCatalogGroup",item,R3PartKind.Wheel,R4WeaponKind.Basic,pair.Item1),Is.True);
+        }
         yield return null;
     }
     [UnityTest] public IEnumerator ArmorCatalogPurchasesWedgeAsSeparateOwnedStack()
