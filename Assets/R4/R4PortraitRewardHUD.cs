@@ -104,6 +104,8 @@ namespace RoboRougelike.R1
             GUI.enabled=rewardInventoryPage<pages-1;
             if(GUI.Button(new Rect(pager.x+310,pager.y,110,48),"→",compactButton)){rewardInventoryPage++;rewardDismantleConfirmation=null;}
             GUI.enabled=true;
+            if(!string.IsNullOrEmpty(rewardInventoryFeedback))
+                GUI.Label(new Rect(24,865,720,52),rewardInventoryFeedback,small);
             if(GUI.Button(PortraitRewardInventoryBack(),"Wróć do nagród [Esc]",button))
                 CloseRewardInventory();
         }
@@ -119,8 +121,13 @@ namespace RoboRougelike.R1
         private bool PortraitRewardConfirm(R1RunController run)=>run.ConfirmRewards(lootSelection,selectedBonus>=0?new[]{selectedBonus}:System.Array.Empty<int>());
         private bool PortraitRewardDismantle(R1RunController run,string id)
         {
-            if(rewardDismantleConfirmation!=id){rewardDismantleConfirmation=id;return false;}
-            bool changed=run.DismantleRewardInventoryItem(id);rewardDismantleConfirmation=null;return changed;
+            if(rewardDismantleConfirmation!=id){rewardDismantleConfirmation=id;rewardInventoryFeedback=null;return false;}
+            int before=run.VehicleModel.Scrap;
+            bool changed=run.DismantleRewardInventoryItem(id);rewardDismantleConfirmation=null;
+            rewardInventoryFeedback=RewardDismantleFeedback(changed,run.VehicleModel.Scrap-before);
+            return changed;
         }
+        private static string RewardDismantleFeedback(bool changed,int scrap)
+            =>changed?$"Rozmontowano część: +{scrap} Z.":"Nie udało się rozmontować części.";
     }
 }

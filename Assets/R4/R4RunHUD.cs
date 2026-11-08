@@ -25,6 +25,7 @@ namespace RoboRougelike.R1
         private bool rewardInventoryOpen;
         private int rewardInventoryPage;
         private string rewardDismantleConfirmation;
+        private string rewardInventoryFeedback;
         private static Rect SalvageAmmoRect(float x,float y)=>new Rect(x+268,y+77,97,23);
         private static string SalvageAmmoLabel(R3PartState part)
         {
@@ -49,12 +50,12 @@ namespace RoboRougelike.R1
             rewardBaskets=ledger?.CreateBasketOffers((run?.Seed??0)^((run?.Progress?.EncounterIndex??0)*397),run?.Progress?.EncounterIndex??0)
                 ??System.Array.Empty<R4SalvageBasket>();
             selectedBasket=-1;
-            rewardInventoryOpen=false;rewardInventoryPage=0;rewardDismantleConfirmation=null;
+            rewardInventoryOpen=false;rewardInventoryPage=0;rewardDismantleConfirmation=null;rewardInventoryFeedback=null;
         }
         internal bool CloseRewardInventory()
         {
             if(!rewardInventoryOpen)return false;
-            rewardInventoryOpen=false;rewardDismantleConfirmation=null;return true;
+            rewardInventoryOpen=false;rewardDismantleConfirmation=null;rewardInventoryFeedback=null;return true;
         }
         private void ChooseRewardBasket(int index)
         {
@@ -171,8 +172,9 @@ namespace RoboRougelike.R1
                 GUI.Label(RewardInventoryStatusRect(i),RewardInventoryStatusText(model,item),small);
                 if(GUI.Button(new Rect(860,y+10,350,48),rewardDismantleConfirmation==item.Id?"Potwierdź rozmontowanie":$"Rozmontuj → {model.DismantleValue(item)} Z",compactButton))
                 {
-                    if(rewardDismantleConfirmation==item.Id){run.DismantleRewardInventoryItem(item.Id);rewardDismantleConfirmation=null;return;}
-                    rewardDismantleConfirmation=item.Id;
+                    bool confirming=rewardDismantleConfirmation==item.Id;
+                    PortraitRewardDismantle(run,item.Id);
+                    if(confirming)return;
                 }
             }
             GUI.enabled=rewardInventoryPage>0;
@@ -181,6 +183,8 @@ namespace RoboRougelike.R1
             GUI.enabled=rewardInventoryPage<pages-1;
             if(GUI.Button(new Rect(420,580,90,40),"→",compactButton)){rewardInventoryPage++;rewardDismantleConfirmation=null;}
             GUI.enabled=true;
+            if(!string.IsNullOrEmpty(rewardInventoryFeedback))
+                GUI.Label(new Rect(530,580,680,40),rewardInventoryFeedback,small);
             if(GUI.Button(new Rect(805,630,420,60),"Wróć do nagród [Esc]",button))
                 CloseRewardInventory();
         }
