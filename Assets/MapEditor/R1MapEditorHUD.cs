@@ -33,7 +33,7 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(165,510,130,35),run.MapLoadPending?"Potwierdź":"Wczytaj",compactButton)){run.LoadEditedMap();GUI.FocusControl(null);}
             if(GUI.Button(new Rect(25,550,270,40),"Testuj mapę",button)){GUI.FocusControl(null);run.TestEditedMap();}
             if(GUI.Button(new Rect(25,595,270,35),"Dostosuj pojazd w garażu",compactButton))run.MapEditorGarage();
-            if(GUI.Button(new Rect(25,635,270,28),"Powrót do menu",compactButton))run.RestartRun();
+            if(GUI.Button(new Rect(25,635,270,28),run.MapExitPending?"Potwierdź powrót":"Powrót do menu",compactButton))run.ReturnFromMapEditorToMenu();
             Panel(new Rect(340,615,920,88));
             GUI.Label(new Rect(355,624,890,65),"LPM — postaw / usuń • PPM — obrót widoku • kółko — zoom • WASD — przesuwanie\nZielone widmo — można postawić • czerwone — pole zajęte / poza mapą • V — obrót\n"+run.EditorMessage,small);
         }
