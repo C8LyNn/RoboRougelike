@@ -86,6 +86,7 @@ namespace RoboRougelike.WeaponIntegration
                 float range=RRLAimFeedback.Range(part,controller);
                 var marker=new Marker{PartId=part.Id,Weapon=part.Weapon,Disabled=RRLEmpPartState.IsBlocked(part.gameObject),
                     AreaWeapon=emp||saw,OutOfRange=Vector3.Distance(origin,aimPoint)>range};
+                bool ownArmorBlocked=RRLAimFeedback.OwnArmorBlocksShot(assembly,part);
                 Vector3 visiblePoint;
                 if(emp)
                 {
@@ -108,7 +109,7 @@ namespace RoboRougelike.WeaponIntegration
                         Vector2 edge=new Vector2(local.x,local.y);
                         if(edge.sqrMagnitude<.0001f)edge=Vector2.up;
                         marker.Viewport=Vector2.one*.5f+edge.normalized*2;
-                        marker.Offscreen=true;output.Add(marker);continue;
+                        marker.Offscreen=true;marker.Obstructed=ownArmorBlocked;output.Add(marker);continue;
                     }
                     float distance=depth/facing;
                     visiblePoint=origin+direction*distance;
@@ -146,6 +147,7 @@ namespace RoboRougelike.WeaponIntegration
                     if(edge.sqrMagnitude<.0001f)edge=Vector2.up;
                     marker.Viewport=Vector2.one*.5f-edge.normalized*2;
                 }
+                marker.Obstructed|=ownArmorBlocked;
                 output.Add(marker);
             }
         }

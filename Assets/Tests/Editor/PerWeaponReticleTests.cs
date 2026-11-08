@@ -24,6 +24,7 @@ public sealed class PerWeaponReticleTests
         EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
         root=new GameObject("reticle test vehicle");assembly=root.AddComponent<R3VehicleAssembly>();
         controller=root.AddComponent<P12PipelineSafeTankController>();
+        typeof(R3VehicleAssembly).GetField("controller",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(assembly,controller);
         cameraObject=new GameObject("reticle test camera");view=cameraObject.AddComponent<Camera>();
         view.transform.position=new Vector3(0,0,-10);view.transform.rotation=Quaternion.identity;
         view.fieldOfView=60;view.aspect=16f/9;
@@ -80,11 +81,22 @@ public sealed class PerWeaponReticleTests
         right.Block.MarkDetached();left.Muzzle.position=Vector3.zero;left.Muzzle.forward=Vector3.forward;
         ownerCollider=GameObject.CreatePrimitive(PrimitiveType.Cube);ownerCollider.transform.SetParent(root.transform);
         ownerCollider.transform.position=new Vector3(0,0,2);Physics.SyncTransforms();
-        Assert.That(Field<bool>(Collect(target)[0],"Obstructed"),Is.False,"Own mounted blocks must not obstruct their owner's shells");
+        Assert.That(Field<bool>(Collect(target)[0],"Obstructed"),Is.True,"Own armor blocks the actual firing path and must be indicated.");
         wall=GameObject.CreatePrimitive(PrimitiveType.Cube);wall.transform.position=new Vector3(0,0,10);Physics.SyncTransforms();
         Assert.That(Field<bool>(Collect(target)[0],"Obstructed"),Is.True,"The actual barrel path hits a wall before the intended point");
         UnityEngine.Object.DestroyImmediate(wall);wall=null;Physics.SyncTransforms();
         Assert.That(Field<bool>(Collect(new Vector3(0,0,250))[0],"OutOfRange"),Is.True,"The basic shell's existing lifetime and speed bound its reach");
+    }
+    [Test]public void OwnArmorMustWarnWhenRealGunCannotFire()
+    {
+        right.Block.MarkDetached();left.Muzzle.position=Vector3.zero;left.Muzzle.forward=Vector3.forward;
+        ownerCollider=GameObject.CreatePrimitive(PrimitiveType.Cube);ownerCollider.transform.SetParent(root.transform);
+        ownerCollider.transform.position=new Vector3(0,0,2);Physics.SyncTransforms();
+        Assert.That(assembly.ClearProjectilePath(left),Is.False,"The real firing path must be blocked by this armor.");
+        Assert.That(Field<bool>(Collect(target)[0],"Obstructed"),Is.True,"The same gun's reticle must warn about its blocked shot.");
+        var feedback=RoboRougelike.WeaponIntegration.RRLAimFeedback.Evaluate(assembly,controller,target,null);
+        Assert.That(feedback.Aligned,Is.EqualTo(1));
+        Assert.That(feedback.Clear,Is.Zero,"The aim caption must not advertise a clear path.");
     }
     [Test]public void AreaWeaponsAndBarrelsFacingAwayStillHaveDistinctIndicators()
     {

@@ -42,6 +42,7 @@ namespace RoboRougelike.R1
                 $"Impuls T{R3VehicleModel.NormalizedTier(part.Tier)}: V, {R3RepairPulse.EnergyCost*R3VehicleModel.TierActivationCost(part.Tier):0} energii, 5 s. Kliknij, aby zamontować.":
                 kind==R3PartKind.DrivePower?$"Silnik T{R3VehicleModel.NormalizedTier(part.Tier)} wspomaga koła; rezerwuje {25+R3VehicleModel.TierPassiveExtra(part.Tier):0} energii.":
                 kind==R3PartKind.EnergyRegenerator?$"Regenerator T{R3VehicleModel.NormalizedTier(part.Tier)}: +{5*R3VehicleModel.TierEffectUnits(part.Tier)} energii/s, rezerwa {25+R3VehicleModel.TierPassiveExtra(part.Tier):0}.":
+                kind==R3PartKind.Gun&&weapon==R4WeaponKind.RocketLauncher?"Rakiety ładują się automatycznie po opróżnieniu. Kliknij, aby zamontować.":
                 kind==R3PartKind.Armor&&part.ArmorShape==R3ArmorShape.Wedge?"Klin: montaż od spodu lub od tylnej płaskiej ściany. Obracaj Q/E, R/F, Z/X.":
                 kind==R3PartKind.Wheel&&part.WheelStyle==R3WheelStyle.SwingOffroad?"Koło na wahaczu: 12 kg. Oś podąża za nierównościami.":
                 kind==R3PartKind.Wheel&&part.WheelStyle==R3WheelStyle.CasterSlick?"Kółko samonastawne: 4 kg, połowa napędu. Obraca się zgodnie z ruchem.":
@@ -59,6 +60,7 @@ namespace RoboRougelike.R1
                     "Impuls naprawczy: V, 15 energii, 5 s. Kup część lub otwórz szczegóły.":
                     kind==R3PartKind.DrivePower?"Silnik wspomaga koła; zajmuje 25 maks. energii. Kup część lub otwórz szczegóły.":
                     kind==R3PartKind.EnergyRegenerator?"Regenerator: +5 energii/s, −25 maks. energii. Kup część lub otwórz szczegóły.":
+                    kind==R3PartKind.Gun&&weapon==R4WeaponKind.RocketLauncher?"Rakiety ładują się automatycznie po opróżnieniu. Kup część.":
                     kind==R3PartKind.Armor&&CatalogArmorShape(bonus)==R3ArmorShape.Wedge?"Klin 1×1×1: mocowanie od spodu i z tyłu. Kup część.":
                     kind==R3PartKind.Wheel&&CatalogWheelStyle(bonus)==R3WheelStyle.SwingOffroad?"Koło na wahaczu: 12 kg. Mocowanie od góry.":
                     kind==R3PartKind.Wheel&&CatalogWheelStyle(bonus)==R3WheelStyle.CasterSlick?"Kółko samonastawne: 4 kg, połowa napędu. Mocowanie od góry.":
