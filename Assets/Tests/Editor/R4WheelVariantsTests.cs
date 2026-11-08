@@ -493,6 +493,7 @@ public sealed class R4WheelVariantsTests
     [UnityTest]public IEnumerator LargeSteerWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.SteerOffroad);}
     [UnityTest]public IEnumerator CasterWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.CasterSlick);}
     [UnityTest]public IEnumerator SwingWheelsDriveWithExistingSuspension(){yield return DriveSizedWheels(R3WheelStyle.SwingOffroad,true);}
+    [UnityTest]public IEnumerator SwingWheelsDriveOntoRamp(){yield return DriveSizedWheels(R3WheelStyle.SwingOffroad,true,true);}
     [UnityTest]public IEnumerator RoadSteerArtUsesRealIndependentSteeringWithoutMovingMount(){yield return SteeringVariant(R3WheelStyle.SteerRoad,"R4M_WheelM_Steer_Road_Rotor");}
     [UnityTest]public IEnumerator LargeSteerArtUsesRealIndependentSteeringWithoutMovingMount(){yield return SteeringVariant(R3WheelStyle.SteerOffroad,"R4M_WheelL_Steer_Offroad_Rotor");}
     IEnumerator SteeringVariant(R3WheelStyle style,string rotorName)
@@ -551,7 +552,7 @@ public sealed class R4WheelVariantsTests
         }
         finally{Object.Destroy(vehicle.gameObject);Object.Destroy(pad);}
     }
-    IEnumerator DriveSizedWheels(R3WheelStyle style,bool withSuspension=false)
+    IEnumerator DriveSizedWheels(R3WheelStyle style,bool withSuspension=false,bool withRamp=false)
     {
         var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
         Assert.That(run.EnterTestRange(),Is.True);
@@ -570,6 +571,15 @@ public sealed class R4WheelVariantsTests
         }
         var model=new R3VehicleModel(design);var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);
         floor.transform.position=new Vector3(1000,-.1f,1000);floor.transform.localScale=new Vector3(30,.2f,30);
+        GameObject ramp=null;
+        if(withRamp)
+        {
+            ramp=GameObject.CreatePrimitive(PrimitiveType.Cube);
+            ramp.transform.position=new Vector3(1000,.56f,1006);
+            ramp.transform.rotation=Quaternion.Euler(-10,0,0);
+            ramp.transform.localScale=new Vector3(5,.1f,7);
+            Physics.SyncTransforms();
+        }
         float spawnHeight=R3VehicleModel.WheelRadius(style)+(small ? R3VehicleModel.ForkAxleDrop(style) : 0);
         var vehicle=R3VehicleAssembly.Build(model,run.Progress.Stats,palette,new Vector3(1000,spawnHeight,1000),Quaternion.identity);
         var tank=vehicle.GetComponent<P12PipelineSafeTankController>();tank.enabled=false;
@@ -593,8 +603,9 @@ public sealed class R4WheelVariantsTests
             Assert.That(sample,Is.InRange(60,90),"Apply one input per actual physics step.");
             Assert.That(grounded,Is.GreaterThanOrEqualTo(2),"Real large tires must register ground support.");
             Assert.That(body.position.z-start,Is.GreaterThan(.5f),"The actual R6 body must travel forward.");
+            if(withRamp)Assert.That(body.position.y,Is.GreaterThan(spawnHeight+.05f),"The actual vehicle must rise onto the ramp.");
         }
-        finally{Object.Destroy(vehicle.gameObject);Object.Destroy(floor);}
+        finally{Object.Destroy(vehicle.gameObject);Object.Destroy(floor);if(ramp!=null)Object.Destroy(ramp);}
     }
     [UnityTearDown]public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }

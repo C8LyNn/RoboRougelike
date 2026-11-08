@@ -17,6 +17,19 @@ namespace RoboRougelike.R1
             category==1?kind==R3PartKind.Wheel:category==2?kind==R3PartKind.Gun:
             category==3&&kind!=R3PartKind.Armor&&kind!=R3PartKind.Wheel&&kind!=R3PartKind.Gun;
 
+        static string GarageDriveSummary(R1RunController run)
+        {
+            if(run?.VehicleModel==null||run.Player==null)return "Dane napędu są niedostępne.";
+            if(run.VehicleModel.SelectedDrive!=R3DriveKind.Wheels)return "Wskaźniki poniżej dotyczą napędu kołowego.";
+            var drive=run.Player.GetComponent<RoboRougelike.R6.R6VehicleDrive>();
+            var body=run.Player.GetComponent<Rigidbody>();
+            if(drive==null||body==null)return "Dane napędu są niedostępne.";
+            float bonus=(RoboRougelike.R6.R6VehicleDrive.MotorMultiplier(drive.ActivePowerUnits)-1)*100;
+            return $"Masa: {body.mass:0} kg • Sprawne koła: {drive.Wheels}\n"+
+                $"Moc silników kół: +{bonus:0}%\n"+
+                "Większa masa utrudnia jazdę i skręt. Koła potrzebują kontaktu z podłożem; silniki zwiększają dostępną siłę. Silnik T1 rezerwuje 25 energii.";
+        }
+
         // One click chooses an owned instance; buying remains a separate, explicit action.
         void SelectQuickPart(R1RunController run,R3PartKind kind,R4WeaponKind weapon,string bonus)
         {
@@ -280,6 +293,7 @@ namespace RoboRougelike.R1
                 if(GUI.Button(new Rect(350,363,380,48),$"Odbudowa awaryjna — {emergency} Z",compactButton))
                     run.Garage.Message=run.GarageEmergencyRepair()?"Odbudowano niezbędne moduły.":"Nie można odbudować części.";
                 GUI.enabled=true;
+                GUI.Label(new Rect(350,425,380,135),GarageDriveSummary(run),small);
             }
             else
             {
@@ -309,6 +323,7 @@ namespace RoboRougelike.R1
                 if(GUI.Button(new Rect(680,375,300,46),$"Odbudowa awaryjna — {emergency} Z",compactButton))
                     run.Garage.Message=run.GarageEmergencyRepair()?"Odbudowano niezbędne moduły.":"Nie można odbudować części.";
                 GUI.enabled=true;
+                GUI.Label(new Rect(680,435,350,145),GarageDriveSummary(run),small);
             }
             else
             {
