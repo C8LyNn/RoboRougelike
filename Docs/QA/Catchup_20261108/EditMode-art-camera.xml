@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="16" result="Passed" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-08 16:35:21Z" end-time="2026-11-08 16:35:22Z" duration="0,4458772">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1852" result="Passed" start-time="2026-11-08 16:35:21Z" end-time="2026-11-08 16:35:22Z" duration="0.445877" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="2309" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-PlayQA-97f8/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="1059" result="Passed" start-time="2026-11-08 16:35:21Z" end-time="2026-11-08 16:35:22Z" duration="0.381365" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="74016" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="1075" name="BacklogEnemyConventionalTierTests" fullname="BacklogEnemyConventionalTierTests" classname="BacklogEnemyConventionalTierTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-08 16:34:38Z" end-time="2026-11-08 16:34:39Z" duration="0.980757" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1077" name="EliteWeaponsUsePhysicalTierAndKeepDistinctLootIdentities" fullname="BacklogEnemyConventionalTierTests.EliteWeaponsUsePhysicalTierAndKeepDistinctLootIdentities" methodname="EliteWeaponsUsePhysicalTierAndKeepDistinctLootIdentities" classname="BacklogEnemyConventionalTierTests" runstate="Runnable" seed="1077490067" result="Passed" start-time="2026-11-08 16:34:28Z" end-time="2026-11-08 16:34:32Z" duration="3.585924" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 44 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 44 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1076" name="PrimaryAndExtraWeaponsGetRealTierAndPreserveItInSalvage" fullname="BacklogEnemyConventionalTierTests.PrimaryAndExtraWeaponsGetRealTierAndPreserveItInSalvage" methodname="PrimaryAndExtraWeaponsGetRealTierAndPreserveItInSalvage" classname="BacklogEnemyConventionalTierTests" runstate="Runnable" seed="1644610054" result="Passed" start-time="2026-11-08 16:34:32Z" end-time="2026-11-08 16:34:35Z" duration="3.647152" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1078" name="TierTwoConventionalGunsFireRealProjectilesWithTierDamageAndEnergy" fullname="BacklogEnemyConventionalTierTests.TierTwoConventionalGunsFireRealProjectilesWithTierDamageAndEnergy" methodname="TierTwoConventionalGunsFireRealProjectilesWithTierDamageAndEnergy" classname="BacklogEnemyConventionalTierTests" runstate="Runnable" seed="873846041" result="Passed" start-time="2026-11-08 16:34:35Z" end-time="2026-11-08 16:34:39Z" duration="3.990920" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 36 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1162" name="CameraStartAndReplacementArtTests" fullname="CameraStartAndReplacementArtTests" classname="CameraStartAndReplacementArtTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-11-08 16:35:03Z" end-time="2026-11-08 16:35:04Z" duration="0.407055" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1169" name="GhostModelShowsInvalidPlacementTintWithoutAnOpaqueCube" fullname="CameraStartAndReplacementArtTests.GhostModelShowsInvalidPlacementTintWithoutAnOpaqueCube" methodname="GhostModelShowsInvalidPlacementTintWithoutAnOpaqueCube" classname="CameraStartAndReplacementArtTests" runstate="Runnable" seed="1016761299" result="Passed" start-time="2026-11-08 16:34:39Z" end-time="2026-11-08 16:34:43Z" duration="3.311570" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1167" name="MissingModelsLeaveOldMountAndPayloadVisible" fullname="CameraStartAndReplacementArtTests.MissingModelsLeaveOldMountAndPayloadVisible" methodname="MissingModelsLeaveOldMountAndPayloadVisible" classname="CameraStartAndReplacementArtTests" runstate="Runnable" seed="1852565637" result="Passed" start-time="2026-11-08 16:34:43Z" end-time="2026-11-08 16:34:46Z" duration="3.230664" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1166" name="MovementModelsReplaceCubesWithoutRemovingPhysicalColliders" fullname="CameraStartAndReplacementArtTests.MovementModelsReplaceCubesWithoutRemovingPhysicalColliders" methodname="MovementModelsReplaceCubesWithoutRemovingPhysicalColliders" classname="CameraStartAndReplacementArtTests" runstate="Runnable" seed="1063931821" result="Passed" start-time="2026-11-08 16:34:46Z" end-time="2026-11-08 16:34:49Z" duration="3.203411" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1168" name="ReplacementModelStillShowsDamageAndFollowsDetachedPart" fullname="CameraStartAndReplacementArtTests.ReplacementModelStillShowsDamageAndFollowsDetachedPart" methodname="ReplacementModelStillShowsDamageAndFollowsDetachedPart" classname="CameraStartAndReplacementArtTests" runstate="Runnable" seed="1964024489" result="Passed" start-time="2026-11-08 16:34:49Z" end-time="2026-11-08 16:34:53Z" duration="4.097757" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+ART_DEBRIS_QA elapsed=0,6000383 scale=1 enabled=True active=True debris=True
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1164" name="StartingBattleFramesTheActualVehicleWithoutWaitingForCameraToTravelFromGarage" fullname="CameraStartAndReplacementArtTests.StartingBattleFramesTheActualVehicleWithoutWaitingForCameraToTravelFromGarage" methodname="StartingBattleFramesTheActualVehicleWithoutWaitingForCameraToTravelFromGarage" classname="CameraStartAndReplacementArtTests" runstate="Runnable" seed="1789472068" result="Passed" start-time="2026-11-08 16:34:53Z" end-time="2026-11-08 16:34:57Z" duration="3.515725" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+CAM_START_QA camera=(0.00, 7.82, -31.43) body=(0.00, 0.70, -22.00) transform=(0.00, 0.70, -22.00) distance=11,81526 requested=7,8 fit=13,75989 bounds=Center: (0.00, 1.49, -21.79), Extents: (1.91, 1.44, 1.70)
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1165" name="SuppliedModelsReplaceTheOldVisibleMountingCubes" fullname="CameraStartAndReplacementArtTests.SuppliedModelsReplaceTheOldVisibleMountingCubes" methodname="SuppliedModelsReplaceTheOldVisibleMountingCubes" classname="CameraStartAndReplacementArtTests" runstate="Runnable" seed="1898411518" result="Passed" start-time="2026-11-08 16:34:57Z" end-time="2026-11-08 16:35:00Z" duration="3.319773" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1163" name="TeleportSynchronizesVisualTransformWhilePhysicsIsPaused" fullname="CameraStartAndReplacementArtTests.TeleportSynchronizesVisualTransformWhilePhysicsIsPaused" methodname="TeleportSynchronizesVisualTransformWhilePhysicsIsPaused" classname="CameraStartAndReplacementArtTests" runstate="Runnable" seed="1762315766" result="Passed" start-time="2026-11-08 16:35:00Z" end-time="2026-11-08 16:35:04Z" duration="3.340798" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1600" name="R4BasicArtGameplayTests" fullname="R4BasicArtGameplayTests" classname="R4BasicArtGameplayTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-08 16:35:15Z" end-time="2026-11-08 16:35:16Z" duration="0.395558" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1602" name="AutomaticGunUsesSuppliedVisualAndMuzzle" fullname="R4BasicArtGameplayTests.AutomaticGunUsesSuppliedVisualAndMuzzle" methodname="AutomaticGunUsesSuppliedVisualAndMuzzle" classname="R4BasicArtGameplayTests" runstate="Runnable" seed="1328695274" result="Passed" start-time="2026-11-08 16:35:04Z" end-time="2026-11-08 16:35:07Z" duration="3.028813" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+        <test-case id="1603" name="AutomaticShotsAlternateBetweenActualBarrels" fullname="R4BasicArtGameplayTests.AutomaticShotsAlternateBetweenActualBarrels" methodname="AutomaticShotsAlternateBetweenActualBarrels" classname="R4BasicArtGameplayTests" runstate="Runnable" seed="686001488" result="Passed" start-time="2026-11-08 16:35:07Z" end-time="2026-11-08 16:35:10Z" duration="3.043450" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+        <test-case id="1601" name="BasicModelIsMountedOnRealVehicleAndFiresFromItsVisibleMuzzle" fullname="R4BasicArtGameplayTests.BasicModelIsMountedOnRealVehicleAndFiresFromItsVisibleMuzzle" methodname="BasicModelIsMountedOnRealVehicleAndFiresFromItsVisibleMuzzle" classname="R4BasicArtGameplayTests" runstate="Runnable" seed="72390361" result="Passed" start-time="2026-11-08 16:35:10Z" end-time="2026-11-08 16:35:13Z" duration="3.122471" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+R4_BASIC_MATERIAL Armor_Dark shader=Universal Render Pipeline/Lit
+R4_BASIC_MATERIAL Energy_Hot shader=Universal Render Pipeline/Lit
+R4_BASIC_MATERIAL Steel_Light shader=Universal Render Pipeline/Lit
+R4_BASIC_MATERIAL Armor_Gunmetal shader=Universal Render Pipeline/Lit
+R4_BASIC_MATERIAL Armor_Plate_Light shader=Universal Render Pipeline/Lit
+R4_BASIC_MATERIAL TeamColor_Red shader=Universal Render Pipeline/Lit
+R4_BASIC_MATERIAL Hazard_Yellow shader=Universal Render Pipeline/Lit
+R4_BASIC_MATERIAL Armor_Dark shader=Universal Render Pipeline/Lit
+R4_BASIC_MATERIAL Steel_Light shader=Universal Render Pipeline/Lit
+R4_BASIC_MATERIAL Armor_Gunmetal shader=Universal Render Pipeline/Lit
+R4_BASIC_MATERIAL Armor_Plate_Light shader=Universal Render Pipeline/Lit
+R4_BASIC_MATERIAL Sensor_Eye_Red shader=Universal Render Pipeline/Lit
+R4_BASIC_MATERIAL TeamColor_Red shader=Universal Render Pipeline/Lit
+R4_BASIC_MATERIAL Energy_Hot shader=Universal Render Pipeline/Lit
+R4_BASIC_MATERIAL Hazard_Yellow shader=Universal Render Pipeline/Lit
+R4_BASIC_MATERIAL Muzzle_Flash shader=Universal Render Pipeline/Lit
+R4_BASIC_MATERIAL Armor_Dark shader=Universal Render Pipeline/Lit
+R4_BASIC_MATERIAL Steel_Light shader=Universal Render Pipeline/Lit
+R4_BASIC_MATERIAL Barrel_Heat shader=Universal Render Pipeline/Lit
+R4_BASIC_MATERIAL Energy_Hot shader=Universal Render Pipeline/Lit
+R4_BASIC_MATERIAL Armor_Dark shader=Universal Render Pipeline/Lit
+R4_BASIC_MATERIAL Armor_Gunmetal shader=Universal Render Pipeline/Lit
+R4_BASIC_MATERIAL Energy_Hot shader=Universal Render Pipeline/Lit
+R4_BASIC_MATERIAL Armor_Plate_Light shader=Universal Render Pipeline/Lit
+R4_BASIC_MATERIAL Steel_Light shader=Universal Render Pipeline/Lit
+R4_BASIC_MATERIAL TeamColor_Red shader=Universal Render Pipeline/Lit
+R4_BASIC_MATERIAL Hazard_Yellow shader=Universal Render Pipeline/Lit
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+        <test-case id="1604" name="RotatedPhysicalMountAimsTheVisualAndStillBlocksOwnArmor" fullname="R4BasicArtGameplayTests.RotatedPhysicalMountAimsTheVisualAndStillBlocksOwnArmor" methodname="RotatedPhysicalMountAimsTheVisualAndStillBlocksOwnArmor" classname="R4BasicArtGameplayTests" runstate="Runnable" seed="1854631929" result="Passed" start-time="2026-11-08 16:35:13Z" end-time="2026-11-08 16:35:16Z" duration="3.078765" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1647" name="R4EnemyWheelArtTests" fullname="R4EnemyWheelArtTests" classname="R4EnemyWheelArtTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-08 16:35:21Z" end-time="2026-11-08 16:35:22Z" duration="0.343785" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1649" name="InvalidMountKeepsFallbackAndDuplicateAttachIsRejected" fullname="R4EnemyWheelArtTests.InvalidMountKeepsFallbackAndDuplicateAttachIsRejected" methodname="InvalidMountKeepsFallbackAndDuplicateAttachIsRejected" classname="R4EnemyWheelArtTests" runstate="Runnable" seed="797228922" result="Passed" start-time="2026-11-08 16:35:16Z" end-time="2026-11-08 16:35:19Z" duration="2.910098" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+        </test-case>
+        <test-case id="1648" name="SourceWheelArtMovesAndDetachesWithOriginalPhysicalWheel" fullname="R4EnemyWheelArtTests.SourceWheelArtMovesAndDetachesWithOriginalPhysicalWheel" methodname="SourceWheelArtMovesAndDetachesWithOriginalPhysicalWheel" classname="R4EnemyWheelArtTests" runstate="Runnable" seed="1968663371" result="Passed" start-time="2026-11-08 16:35:19Z" end-time="2026-11-08 16:35:22Z" duration="2.940819" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[R4_ENEMY_WHEEL_BOUNDS visual=(0.5034, 0.5299, 0.5623) collider=(0.5300, 0.5300, 0.5300)
+Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

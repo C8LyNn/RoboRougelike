@@ -88,7 +88,7 @@ namespace RoboRougelike.R1
             float firstMotor=(RoboRougelike.R6.R6VehicleDrive.MotorMultiplier(1)-1)*100;
             return $"Masa: {body.mass:0} kg • Sprawne koła: {drive.Wheels}\n"+
                 $"Siła silników kół: +{bonus:0}% (maks. +{maxBonus:0}%)\n"+
-                $"Większa masa utrudnia jazdę. Sprawny silnik T1: +{firstMotor:0}% siły i −{VehicleEnergyState.PassiveReservation:0} maks. energii. Koła muszą dotykać podłoża.";
+                $"Podjazd: dołóż silnik kół albo zmniejsz masę. T1: +{firstMotor:0}% siły, −{VehicleEnergyState.PassiveReservation:0} maks. energii. Koła muszą dotykać podłoża.";
         }
 
         // One click chooses an owned instance; buying remains a separate, explicit action.

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Passed" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-08 15:54:11Z" end-time="2026-11-08 15:54:12Z" duration="0,4695089">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1849" result="Passed" start-time="2026-11-08 15:54:11Z" end-time="2026-11-08 15:54:12Z" duration="0.469509" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="2306" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-PlayQA-97f8/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="1056" result="Passed" start-time="2026-11-08 15:54:11Z" end-time="2026-11-08 15:54:12Z" duration="0.411844" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="91580" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="2122" name="UI943PortraitCatalogActionsTests" fullname="UI943PortraitCatalogActionsTests" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" testcasecount="23" result="Passed" start-time="2026-11-08 15:54:12Z" end-time="2026-11-08 15:54:12Z" duration="0.401716" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="2143" name="DestroyedItemKeepsCatalogOpenUntilRepaired" fullname="UI943PortraitCatalogActionsTests.DestroyedItemKeepsCatalogOpenUntilRepaired" methodname="DestroyedItemKeepsCatalogOpenUntilRepaired" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" seed="1938193896" result="Passed" start-time="2026-11-08 15:54:09Z" end-time="2026-11-08 15:54:12Z" duration="3.348633" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

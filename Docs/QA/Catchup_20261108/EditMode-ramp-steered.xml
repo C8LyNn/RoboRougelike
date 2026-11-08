@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Passed" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-08 16:04:22Z" end-time="2026-11-08 16:04:36Z" duration="13,267374">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1852" result="Passed" start-time="2026-11-08 16:04:22Z" end-time="2026-11-08 16:04:36Z" duration="13.267374" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="2309" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-PlayQA-97f8/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="1059" result="Passed" start-time="2026-11-08 16:04:22Z" end-time="2026-11-08 16:04:36Z" duration="13.219239" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="50840" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="1156" name="CameraRamp18DiagnosticTests" fullname="CameraRamp18DiagnosticTests" classname="CameraRamp18DiagnosticTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-08 16:04:22Z" end-time="2026-11-08 16:04:36Z" duration="13.209768" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1161" name="HeavyWithPowerModuleAndSteeringApproachesRangeRampFromFlatGround" fullname="CameraRamp18DiagnosticTests.HeavyWithPowerModuleAndSteeringApproachesRangeRampFromFlatGround" methodname="HeavyWithPowerModuleAndSteeringApproachesRangeRampFromFlatGround" classname="CameraRamp18DiagnosticTests" runstate="Runnable" seed="2029227810" result="Passed" start-time="2026-11-08 16:04:19Z" end-time="2026-11-08 16:04:36Z" duration="16.123228" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 85 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 85 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 86 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 86 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 86 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 86 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 86 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 86 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[RAMP-APPROACH] power=True steering=True fixed=0 pos=(18.00, 0.65, 20.00) velocity=(0.00, 0.00, -0.08) contacts=8/8 force=3840 powerUnits=1,00
+[RAMP-APPROACH] power=True steering=True fixed=50 pos=(17.98, 0.71, 18.26) velocity=(-0.14, 0.00, -2.75) contacts=5/8 force=2400 powerUnits=1,00
+[RAMP-APPROACH] power=True steering=True fixed=100 pos=(17.74, 1.01, 15.37) velocity=(-0.22, 0.28, -2.03) contacts=2/8 force=960 powerUnits=1,00
+[RAMP-APPROACH] power=True steering=True fixed=150 pos=(17.65, 1.23, 13.77) velocity=(-0.13, 0.21, -1.54) contacts=5/8 force=2400 powerUnits=1,00
+[RAMP-APPROACH] power=True steering=True fixed=200 pos=(17.61, 1.83, 11.76) velocity=(-0.01, 0.80, -2.46) contacts=8/8 force=3840 powerUnits=1,00
+[RAMP-APPROACH] power=True steering=True fixed=250 pos=(17.61, 2.78, 8.82) velocity=(0.02, 1.10, -3.39) contacts=8/8 force=3840 powerUnits=1,00
+[RAMP-APPROACH] power=True steering=True fixed=300 pos=(17.71, 3.99, 5.07) velocity=(0.26, 1.15, -3.74) contacts=4/8 force=1920 powerUnits=1,00
+[RAMP-APPROACH] power=True steering=True fixed=350 pos=(18.08, 2.70, 1.70) velocity=(0.38, 1.52, -4.71) contacts=0/8 force=0 powerUnits=1,00
+[RAMP-APPROACH] power=True steering=True fixed=400 pos=(18.32, 2.39, -2.90) velocity=(0.55, -1.24, -4.69) contacts=0/8 force=0 powerUnits=1,00
+[RAMP-APPROACH] power=True steering=True fixed=450 pos=(18.58, 2.10, -7.58) velocity=(-0.43, -0.02, -4.19) contacts=0/8 force=0 powerUnits=1,00
+[RAMP-APPROACH] power=True steering=True fixed=500 pos=(18.25, 1.95, -11.23) velocity=(-0.53, -0.17, -3.25) contacts=0/8 force=0 powerUnits=1,00
+[RAMP-APPROACH] power=True steering=True fixed=550 pos=(17.29, 1.42, -14.06) velocity=(-0.12, 0.77, -1.05) contacts=0/8 force=0 powerUnits=1,00
+[RAMP-APPROACH SUMMARY] power=True steering=True start=(18.00, 0.65, 20.00) end=(17.46, 1.30, -13.85) progress=33,85 maxHeight=4,18 groundedFrames=337/600 reachedTop=True
+[EXIT273] Shutdown prepared: NativeClose
+Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
