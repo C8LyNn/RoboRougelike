@@ -62,3 +62,5 @@ Jeżeli masz bonusy tego samego rodzaju na różnych poziomach, sprawdź ich sto
 W ustawieniach garażu sprawdź naprawę zbiorczą oraz, jeśli jest dostępna, odbudowę awaryjną. Wynik i faktyczny koszt powinny pojawić się w otwartym oknie; po jego zamknięciu i ponownym otwarciu stary wynik nie powinien wyglądać na nową transakcję. Przygotowany test Unity i sprawdzenie obu układów: NOT RUN. ZIP 5b21 nie zawiera tej zmiany.
 
 Na ekranie wyboru pojazdu opis liczby w m/s mówi teraz „Limit napędu”: jest to wyliczona wartość bazowa, nie pomiar prędkości osiągniętej na każdej nawierzchni. Sprawdź czytelność podpisu w obu układach; renderowanie i ręczna gra: NOT RUN. ZIP 5b21 nie zawiera tej zmiany.
+
+Po walce sprawdź wybór nagród klawiaturą: 1/2/3 wybiera bonus, Q/W/E wybiera odpowiednio pierwszy/drugi/trzeci zestaw, a Enter zatwierdza prawidłowy wybór. Sam wybór nie powinien odbierać nagród; przy otwartym magazynie skróty zestawów powinny być ignorowane. Mysz i dotychczasowe warunki zatwierdzania pozostają dostępne. Przygotowane testy mapowania i wejścia są NOT RUN; sprawdzenie obu układów w Windows również NOT RUN. ZIP 5b21 nie zawiera skrótów.

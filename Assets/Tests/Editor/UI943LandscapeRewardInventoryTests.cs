@@ -9,6 +9,12 @@ public sealed class UI943LandscapeRewardInventoryTests
 {
     static object Call(string name,params object[] args)
     {var method=typeof(R1RunHUD).GetMethod(name,BindingFlags.NonPublic|BindingFlags.Static);Assert.That(method,Is.Not.Null,name);return method.Invoke(null,args);}
+    [TestCase(false,false,false,-1)]
+    [TestCase(true,false,false,0)]
+    [TestCase(false,true,false,1)]
+    [TestCase(false,false,true,2)]
+    public void RewardShortcutChoosesTheCorrespondingBasket(bool q,bool w,bool e,int expected)
+        =>Assert.That((int)Call("RewardShortcutIndex",q,w,e),Is.EqualTo(expected));
     [TestCase(R3PartKind.Gun,R4WeaponKind.Shotgun,.5f,5,"Naprawa","5/12 salw")]
     [TestCase(R3PartKind.Gun,R4WeaponKind.Railgun,0f,0,"Odbudowa","0/12 nab.")]
     [TestCase(R3PartKind.Gun,R4WeaponKind.RocketLauncher,1f,-1,"niepotrzebna","10/10 rak.")]
