@@ -37,8 +37,10 @@ public sealed class UI943PortraitCatalogActionsTests
         Assert.That((bool)Field(hud,"catalogOpen"),Is.True,"A wreck cannot be mounted yet; retain access to repair and fusion.");
         Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(item.Id));
         Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));Assert.That(item.Health,Is.Zero);
+        var playerBeforeRepair=run.Player;
         Invoke(hud,"PortraitCatalogRepair",run,item.Id);
         Assert.That(item.Health,Is.EqualTo(1));Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap-quote));
+        Assert.That(run.Player,Is.SameAs(playerBeforeRepair),"Repairing an inventory-only item must not rebuild the assembled vehicle.");
         Assert.That(run.VehicleModel.Inventory.Any(p=>p.Id==item.Id),Is.True,"Repair must retain the owned instance.");
         Invoke(hud,"PortraitCatalogSelectItem",run,item.Id);
         Assert.That((bool)Field(hud,"catalogOpen"),Is.False,"The repaired part can now be selected for mounting.");

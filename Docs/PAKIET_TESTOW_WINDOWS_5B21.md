@@ -34,3 +34,5 @@ Na kolejnym buildzie sprawdź też opis baterii: lista grup powinna mówić ogó
 W następnym buildzie sprawdź również, czy garaż wyjaśnia brak złomu lub pełny magazyn, czy naprawa sprawnej części jest oznaczona jako niepotrzebna oraz czy uszkodzony egzemplarz można znaleźć i naprawić. Porównaj masę i nominalną siłę tego samego koła na różnych poziomach; wartości dotyczą pełnego HP. Zweryfikuj czytelność długich nazw w poziomym i pionowym układzie. Te zmiany nie są w ZIP-ie 5b21.
 
 W kolejnym buildzie sprawdź nową szybką naprawę obok każdej części w poziomym katalogu. Wybierz wrak z zerowym HP: katalog powinien pozostać otwarty, aby można było go naprawić, rozmontować lub wybrać do łączenia. Po naprawie wybór części powinien wrócić do montażu. Sprawdź czytelność długich nazw i ceny w wąskim wierszu. Ta zmiana również nie jest w ZIP-ie 5b21.
+
+Po naprawie kilku egzemplarzy z magazynu sprawdź, czy widok nie przeskakuje, podgląd naprawionej części staje się dostępny, a złom zmniejsza się o podaną cenę tylko raz. Optymalizacja tej ścieżki i jej test Unity są przygotowane, ale jeszcze nieuruchomione; ZIP 5b21 ich nie zawiera.

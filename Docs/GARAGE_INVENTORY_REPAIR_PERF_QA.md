@@ -1,0 +1,5 @@
+# Inventory-only repair and vehicle rebuild
+
+`GarageRepairInventory` previously called the general edit path, which destroys and reconstructs the assembled player vehicle even though the repaired part remains in inventory. The new path retains the same transition/garage checks and the same `R3VehicleModel.RepairInventory` transaction, then refreshes the garage preview when a player and garage exist. The old rebuild path remains a fallback when the normal preview context is absent. Mounted-part edits still use the existing rebuild path.
+
+The queued Unity test `UI943PortraitCatalogActionsTests.DestroyedItemKeepsCatalogOpenUntilRepaired` now also checks that a successful inventory repair preserves the same player object in addition to the existing ID, HP and exact scrap cost checks. **It has not been run.** Unity semantic compilation, rendered ghost behavior, failure cases and performance measurements are **NOT RUN** under the requested lightweight mode. Roslyn syntax parsing returned zero errors for both changed files and `git diff --check` is clean. No performance claim is made until measured.
