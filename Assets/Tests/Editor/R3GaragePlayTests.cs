@@ -180,6 +180,26 @@ public class R3GaragePlayTests
         Assert.That(body.position.x - before.x, Is.LessThan(-.3f), "Przy zablokowanych stycznych przeciwnik powinien wycofać się do środka areny.");
     }
 
+    [UnityTest] public IEnumerator TrappedUnarmedEnemyUsesDelayedBlastWithoutSlidingThroughWalls()
+    {
+        var enemy=Run.Encounter.Enemies.First();enemy.SetCombatActive(false);
+        if(enemy.WeaponBlock!=null)enemy.WeaponBlock.ApplyDamage(100000,enemy.WeaponBlock.transform.position,Vector3.up);
+        foreach(var gun in enemy.AdditionalWeapons)if(gun.Block!=null&&!gun.Block.IsDead)gun.Block.ApplyDamage(100000,gun.Block.transform.position,Vector3.up);
+        yield return null;Assert.That(enemy.WeaponOnline,Is.False);
+        var center=new Vector3(1000,0,1000);var body=enemy.GetComponent<Rigidbody>();var drive=enemy.GetComponent<RoboRougelike.R6.R6VehicleDrive>();
+        var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.position=center+Vector3.down*.5f;floor.transform.localScale=new Vector3(40,1,40);
+        enemy.ConfigureMovementBounds(new Bounds(center,new Vector3(10,100,10)));body.position=center+new Vector3(4.99f,0,0);body.rotation=Quaternion.identity;
+        body.linearVelocity=Vector3.zero;body.angularVelocity=Vector3.zero;
+        var target=Run.Player.GetComponent<Rigidbody>();target.isKinematic=true;target.position=center+new Vector3(10,.7f,0);Physics.SyncTransforms();body.WakeUp();
+        yield return Until(()=>{drive.RefreshMass();return drive.GroundedWheels>0;},"Ground contact is required.",5);
+        foreach(float offset in new[]{-1.05f,1.05f})
+        {var wall=GameObject.CreatePrimitive(PrimitiveType.Cube);wall.transform.position=center+new Vector3(5,1.5f,offset);wall.transform.localScale=new Vector3(5,3,.2f);}
+        Physics.SyncTransforms();enemy.SetCombatActive(true);float started=Time.time,deadline=Time.realtimeSinceStartup+15;
+        while(Time.time-started<4.6f&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(enemy.IsDefeated,Is.False,"Do not skip the five-second warning.");
+        while(!enemy.IsDefeated&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(enemy.IsDefeated,Is.True,"An unarmed enemy trapped near the player must self-destruct.");
+    }
     [UnityTest] public IEnumerator EnemyMovesTangentiallyAlongInnerBoundaryWithGroundedWheels()
     {
         var enemy = Run.Encounter.Enemies.First();
