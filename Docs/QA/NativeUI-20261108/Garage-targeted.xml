@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="31" result="Passed" total="31" passed="31" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-08 21:13:57Z" end-time="2026-11-08 21:13:58Z" duration="0,9998452">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1929" result="Passed" start-time="2026-11-08 21:13:57Z" end-time="2026-11-08 21:13:58Z" duration="0.999845" total="31" passed="31" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="2398" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-PlayQA-97f8/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="1136" result="Passed" start-time="2026-11-08 21:13:57Z" end-time="2026-11-08 21:13:58Z" duration="0.877369" total="31" passed="31" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="61876" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="1580" name="R41GarageTests" fullname="R41GarageTests" classname="R41GarageTests" runstate="Runnable" testcasecount="16" result="Passed" start-time="2026-11-08 21:13:38Z" end-time="2026-11-08 21:13:39Z" duration="0.559797" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1595" name="MountingLastHealthyItemExplainsRemainingWreckWithoutBuying" fullname="R41GarageTests.MountingLastHealthyItemExplainsRemainingWreckWithoutBuying" methodname="MountingLastHealthyItemExplainsRemainingWreckWithoutBuying" classname="R41GarageTests" runstate="Runnable" seed="1944928340" result="Passed" start-time="2026-11-08 21:13:31Z" end-time="2026-11-08 21:13:35Z" duration="4.029763" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=66
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 60 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 60 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 60 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 60 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1596" name="ToolShortcutsChangeToolWithoutPurchasingOrEditing" fullname="R41GarageTests.ToolShortcutsChangeToolWithoutPurchasingOrEditing" methodname="ToolShortcutsChangeToolWithoutPurchasingOrEditing" classname="R41GarageTests" runstate="Runnable" seed="382374272" result="Passed" start-time="2026-11-08 21:13:35Z" end-time="2026-11-08 21:13:39Z" duration="3.875129" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=66
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="2151" name="UI943PortraitCatalogActionsTests" fullname="UI943PortraitCatalogActionsTests" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" testcasecount="51" result="Passed" start-time="2026-11-08 21:13:58Z" end-time="2026-11-08 21:13:58Z" duration="0.440614" total="12" passed="12" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="2206" name="BatchRepairOnlyChangesTheSelectedInventoryStack" fullname="UI943PortraitCatalogActionsTests.BatchRepairOnlyChangesTheSelectedInventoryStack" methodname="BatchRepairOnlyChangesTheSelectedInventoryStack" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" seed="1799276154" result="Passed" start-time="2026-11-08 21:13:39Z" end-time="2026-11-08 21:13:43Z" duration="3.673220" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="2205" name="BatchRepairPreviewPicksAffordablePartsAndMatchesRealCharges" fullname="UI943PortraitCatalogActionsTests.BatchRepairPreviewPicksAffordablePartsAndMatchesRealCharges" methodname="BatchRepairPreviewPicksAffordablePartsAndMatchesRealCharges" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" seed="719150199" result="Passed" start-time="2026-11-08 21:13:43Z" end-time="2026-11-08 21:13:43Z" duration="0.002229" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="2173" name="BuyFiveUsesIndividualPurchaseRulesAndSelectsOwnedInstance" fullname="UI943PortraitCatalogActionsTests.BuyFiveUsesIndividualPurchaseRulesAndSelectsOwnedInstance" methodname="BuyFiveUsesIndividualPurchaseRulesAndSelectsOwnedInstance" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" seed="1265205508" result="Passed" start-time="2026-11-08 21:13:43Z" end-time="2026-11-08 21:13:46Z" duration="3.745623" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="2172" name="FivePurchaseRequiresFundsCapacityAndUnlockedType" fullname="UI943PortraitCatalogActionsTests.FivePurchaseRequiresFundsCapacityAndUnlockedType" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-11-08 21:13:46Z" end-time="2026-11-08 21:13:46Z" duration="0.005837" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="2166" name="FivePurchaseRequiresFundsCapacityAndUnlockedType(Armor,True,5,25,195,True)" fullname="UI943PortraitCatalogActionsTests.FivePurchaseRequiresFundsCapacityAndUnlockedType(Armor,True,5,25,195,True)" methodname="FivePurchaseRequiresFundsCapacityAndUnlockedType" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" seed="793105860" result="Passed" start-time="2026-11-08 21:13:46Z" end-time="2026-11-08 21:13:46Z" duration="0.002012" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="2167" name="FivePurchaseRequiresFundsCapacityAndUnlockedType(Armor,True,5,24,195,False)" fullname="UI943PortraitCatalogActionsTests.FivePurchaseRequiresFundsCapacityAndUnlockedType(Armor,True,5,24,195,False)" methodname="FivePurchaseRequiresFundsCapacityAndUnlockedType" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" seed="2078819832" result="Passed" start-time="2026-11-08 21:13:46Z" end-time="2026-11-08 21:13:46Z" duration="0.000144" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="2168" name="FivePurchaseRequiresFundsCapacityAndUnlockedType(Armor,True,5,25,196,False)" fullname="UI943PortraitCatalogActionsTests.FivePurchaseRequiresFundsCapacityAndUnlockedType(Armor,True,5,25,196,False)" methodname="FivePurchaseRequiresFundsCapacityAndUnlockedType" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" seed="273009170" result="Passed" start-time="2026-11-08 21:13:46Z" end-time="2026-11-08 21:13:46Z" duration="0.000077" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="2169" name="FivePurchaseRequiresFundsCapacityAndUnlockedType(Armor,False,5,100,0,False)" fullname="UI943PortraitCatalogActionsTests.FivePurchaseRequiresFundsCapacityAndUnlockedType(Armor,False,5,100,0,False)" methodname="FivePurchaseRequiresFundsCapacityAndUnlockedType" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" seed="14748835" result="Passed" start-time="2026-11-08 21:13:46Z" end-time="2026-11-08 21:13:46Z" duration="0.000058" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="2170" name="FivePurchaseRequiresFundsCapacityAndUnlockedType(BonusModule,True,5,100,0,False)" fullname="UI943PortraitCatalogActionsTests.FivePurchaseRequiresFundsCapacityAndUnlockedType(BonusModule,True,5,100,0,False)" methodname="FivePurchaseRequiresFundsCapacityAndUnlockedType" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" seed="1136794906" result="Passed" start-time="2026-11-08 21:13:46Z" end-time="2026-11-08 21:13:46Z" duration="0.000052" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="2171" name="FivePurchaseRequiresFundsCapacityAndUnlockedType(Armor,True,int.MaxValue,100000,0,False)" fullname="UI943PortraitCatalogActionsTests.FivePurchaseRequiresFundsCapacityAndUnlockedType(Armor,True,int.MaxValue,100000,0,False)" methodname="FivePurchaseRequiresFundsCapacityAndUnlockedType" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" seed="693901492" result="Passed" start-time="2026-11-08 21:13:46Z" end-time="2026-11-08 21:13:46Z" duration="0.000052" asserts="0">
+            <properties />
+          </test-case>
+        </test-suite>
+        <test-case id="2208" name="OwnedFilterIncludesWrecksAndCannotKeepAnInvisiblePurchaseSelection" fullname="UI943PortraitCatalogActionsTests.OwnedFilterIncludesWrecksAndCannotKeepAnInvisiblePurchaseSelection" methodname="OwnedFilterIncludesWrecksAndCannotKeepAnInvisiblePurchaseSelection" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" seed="578644734" result="Passed" start-time="2026-11-08 21:13:46Z" end-time="2026-11-08 21:13:50Z" duration="3.787904" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="2207" name="QuickRepairSelectsRecoveredWreckOnlyWhenMounting" fullname="UI943PortraitCatalogActionsTests.QuickRepairSelectsRecoveredWreckOnlyWhenMounting" methodname="QuickRepairSelectsRecoveredWreckOnlyWhenMounting" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" seed="1915556789" result="Passed" start-time="2026-11-08 21:13:50Z" end-time="2026-11-08 21:13:54Z" duration="4.012913" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="2204" name="SearchClearsOldSelectionWithoutChangingInventoryOrWallet" fullname="UI943PortraitCatalogActionsTests.SearchClearsOldSelectionWithoutChangingInventoryOrWallet" methodname="SearchClearsOldSelectionWithoutChangingInventoryOrWallet" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" seed="1662929136" result="Passed" start-time="2026-11-08 21:13:54Z" end-time="2026-11-08 21:13:58Z" duration="4.031230" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="2209" name="UI943PortraitCatalogTests" fullname="UI943PortraitCatalogTests" classname="UI943PortraitCatalogTests" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-11-08 21:13:58Z" end-time="2026-11-08 21:13:58Z" duration="0.009879" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="ParameterizedMethod" id="2218" name="SearchMatchesNamesWithoutCaseOrPolishDiacritics" fullname="UI943PortraitCatalogTests.SearchMatchesNamesWithoutCaseOrPolishDiacritics" classname="UI943PortraitCatalogTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-11-08 21:13:58Z" end-time="2026-11-08 21:13:58Z" duration="0.004088" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="2212" name="SearchMatchesNamesWithoutCaseOrPolishDiacritics(&quot;Koło skrętne drogowe&quot;,&quot;kolo&quot;,True)" fullname="UI943PortraitCatalogTests.SearchMatchesNamesWithoutCaseOrPolishDiacritics(&quot;Koło skrętne drogowe&quot;,&quot;kolo&quot;,True)" methodname="SearchMatchesNamesWithoutCaseOrPolishDiacritics" classname="UI943PortraitCatalogTests" runstate="Runnable" seed="816800046" result="Passed" start-time="2026-11-08 21:13:58Z" end-time="2026-11-08 21:13:58Z" duration="0.003055" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="2213" name="SearchMatchesNamesWithoutCaseOrPolishDiacritics(&quot;Żyroskop&quot;,&quot;ZYRO&quot;,True)" fullname="UI943PortraitCatalogTests.SearchMatchesNamesWithoutCaseOrPolishDiacritics(&quot;Żyroskop&quot;,&quot;ZYRO&quot;,True)" methodname="SearchMatchesNamesWithoutCaseOrPolishDiacritics" classname="UI943PortraitCatalogTests" runstate="Runnable" seed="1726331934" result="Passed" start-time="2026-11-08 21:13:58Z" end-time="2026-11-08 21:13:58Z" duration="0.000081" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="2214" name="SearchMatchesNamesWithoutCaseOrPolishDiacritics(&quot;Pancerz • zaokrąglenie&quot;,&quot;okrag&quot;,True)" fullname="UI943PortraitCatalogTests.SearchMatchesNamesWithoutCaseOrPolishDiacritics(&quot;Pancerz • zaokrąglenie&quot;,&quot;okrag&quot;,True)" methodname="SearchMatchesNamesWithoutCaseOrPolishDiacritics" classname="UI943PortraitCatalogTests" runstate="Runnable" seed="1753736981" result="Passed" start-time="2026-11-08 21:13:58Z" end-time="2026-11-08 21:13:58Z" duration="0.000043" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="2215" name="SearchMatchesNamesWithoutCaseOrPolishDiacritics(&quot;Rocket Launcher&quot;,&quot;launcher&quot;,True)" fullname="UI943PortraitCatalogTests.SearchMatchesNamesWithoutCaseOrPolishDiacritics(&quot;Rocket Launcher&quot;,&quot;launcher&quot;,True)" methodname="SearchMatchesNamesWithoutCaseOrPolishDiacritics" classname="UI943PortraitCatalogTests" runstate="Runnable" seed="475056145" result="Passed" start-time="2026-11-08 21:13:58Z" end-time="2026-11-08 21:13:58Z" duration="0.000034" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="2216" name="SearchMatchesNamesWithoutCaseOrPolishDiacritics(&quot;Koło terenowe&quot;,&quot;laser&quot;,False)" fullname="UI943PortraitCatalogTests.SearchMatchesNamesWithoutCaseOrPolishDiacritics(&quot;Koło terenowe&quot;,&quot;laser&quot;,False)" methodname="SearchMatchesNamesWithoutCaseOrPolishDiacritics" classname="UI943PortraitCatalogTests" runstate="Runnable" seed="215954627" result="Passed" start-time="2026-11-08 21:13:58Z" end-time="2026-11-08 21:13:58Z" duration="0.000033" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="2217" name="SearchMatchesNamesWithoutCaseOrPolishDiacritics(&quot;Koło terenowe&quot;,&quot;   &quot;,True)" fullname="UI943PortraitCatalogTests.SearchMatchesNamesWithoutCaseOrPolishDiacritics(&quot;Koło terenowe&quot;,&quot;   &quot;,True)" methodname="SearchMatchesNamesWithoutCaseOrPolishDiacritics" classname="UI943PortraitCatalogTests" runstate="Runnable" seed="1916787118" result="Passed" start-time="2026-11-08 21:13:58Z" end-time="2026-11-08 21:13:58Z" duration="0.000032" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+        </test-suite>
+        <test-case id="2219" name="SharedCatalogContainsAllDistinctBaseGroups" fullname="UI943PortraitCatalogTests.SharedCatalogContainsAllDistinctBaseGroups" methodname="SharedCatalogContainsAllDistinctBaseGroups" classname="UI943PortraitCatalogTests" runstate="Runnable" seed="793862740" result="Passed" start-time="2026-11-08 21:13:58Z" end-time="2026-11-08 21:13:58Z" duration="0.004518" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="2220" name="UI943PortraitGarageTests" fullname="UI943PortraitGarageTests" classname="UI943PortraitGarageTests" runstate="Runnable" testcasecount="16" result="Passed" start-time="2026-11-08 21:13:58Z" end-time="2026-11-08 21:13:58Z" duration="0.008505" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="ParameterizedMethod" id="2239" name="QuickRepairDoesNotOverlapPartListOrVehicleView" fullname="UI943PortraitGarageTests.QuickRepairDoesNotOverlapPartListOrVehicleView" classname="UI943PortraitGarageTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-08 21:13:58Z" end-time="2026-11-08 21:13:58Z" duration="0.001918" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="2237" name="QuickRepairDoesNotOverlapPartListOrVehicleView(True,768,1024)" fullname="UI943PortraitGarageTests.QuickRepairDoesNotOverlapPartListOrVehicleView(True,768,1024)" methodname="QuickRepairDoesNotOverlapPartListOrVehicleView" classname="UI943PortraitGarageTests" runstate="Runnable" seed="1871597562" result="Passed" start-time="2026-11-08 21:13:58Z" end-time="2026-11-08 21:13:58Z" duration="0.000980" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="2238" name="QuickRepairDoesNotOverlapPartListOrVehicleView(False,1280,720)" fullname="UI943PortraitGarageTests.QuickRepairDoesNotOverlapPartListOrVehicleView(False,1280,720)" methodname="QuickRepairDoesNotOverlapPartListOrVehicleView" classname="UI943PortraitGarageTests" runstate="Runnable" seed="585272502" result="Passed" start-time="2026-11-08 21:13:58Z" end-time="2026-11-08 21:13:58Z" duration="0.000051" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+        </test-suite>
+        <test-suite type="ParameterizedMethod" id="2233" name="ToolShortcutsIgnoreModifiersAndOtherKeys" fullname="UI943PortraitGarageTests.ToolShortcutsIgnoreModifiersAndOtherKeys" classname="UI943PortraitGarageTests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-11-08 21:13:58Z" end-time="2026-11-08 21:13:58Z" duration="0.003438" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="2225" name="ToolShortcutsIgnoreModifiersAndOtherKeys(Alpha1,False,Mount)" fullname="UI943PortraitGarageTests.ToolShortcutsIgnoreModifiersAndOtherKeys(Alpha1,False,Mount)" methodname="ToolShortcutsIgnoreModifiersAndOtherKeys" classname="UI943PortraitGarageTests" runstate="Runnable" seed="51116804" result="Passed" start-time="2026-11-08 21:13:58Z" end-time="2026-11-08 21:13:58Z" duration="0.000488" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="2226" name="ToolShortcutsIgnoreModifiersAndOtherKeys(Alpha2,False,Inspect)" fullname="UI943PortraitGarageTests.ToolShortcutsIgnoreModifiersAndOtherKeys(Alpha2,False,Inspect)" methodname="ToolShortcutsIgnoreModifiersAndOtherKeys" classname="UI943PortraitGarageTests" runstate="Runnable" seed="545078256" result="Passed" start-time="2026-11-08 21:13:58Z" end-time="2026-11-08 21:13:58Z" duration="0.000064" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="2227" name="ToolShortcutsIgnoreModifiersAndOtherKeys(Alpha3,False,Repair)" fullname="UI943PortraitGarageTests.ToolShortcutsIgnoreModifiersAndOtherKeys(Alpha3,False,Repair)" methodname="ToolShortcutsIgnoreModifiersAndOtherKeys" classname="UI943PortraitGarageTests" runstate="Runnable" seed="1599233707" result="Passed" start-time="2026-11-08 21:13:58Z" end-time="2026-11-08 21:13:58Z" duration="0.000049" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="2228" name="ToolShortcutsIgnoreModifiersAndOtherKeys(Alpha4,False,Remove)" fullname="UI943PortraitGarageTests.ToolShortcutsIgnoreModifiersAndOtherKeys(Alpha4,False,Remove)" methodname="ToolShortcutsIgnoreModifiersAndOtherKeys" classname="UI943PortraitGarageTests" runstate="Runnable" seed="1340510631" result="Passed" start-time="2026-11-08 21:13:58Z" end-time="2026-11-08 21:13:58Z" duration="0.000046" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="2229" name="ToolShortcutsIgnoreModifiersAndOtherKeys(Keypad1,False,Mount)" fullname="UI943PortraitGarageTests.ToolShortcutsIgnoreModifiersAndOtherKeys(Keypad1,False,Mount)" methodname="ToolShortcutsIgnoreModifiersAndOtherKeys" classname="UI943PortraitGarageTests" runstate="Runnable" seed="1700101011" result="Passed" start-time="2026-11-08 21:13:58Z" end-time="2026-11-08 21:13:58Z" duration="0.000045" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="2230" name="ToolShortcutsIgnoreModifiersAndOtherKeys(Keypad4,False,Remove)" fullname="UI943PortraitGarageTests.ToolShortcutsIgnoreModifiersAndOtherKeys(Keypad4,False,Remove)" methodname="ToolShortcutsIgnoreModifiersAndOtherKeys" classname="UI943PortraitGarageTests" runstate="Runnable" seed="536182065" result="Passed" start-time="2026-11-08 21:13:58Z" end-time="2026-11-08 21:13:58Z" duration="0.000043" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="2231" name="ToolShortcutsIgnoreModifiersAndOtherKeys(Alpha1,True,null)" fullname="UI943PortraitGarageTests.ToolShortcutsIgnoreModifiersAndOtherKeys(Alpha1,True,null)" methodname="ToolShortcutsIgnoreModifiersAndOtherKeys" classname="UI943PortraitGarageTests" runstate="Runnable" seed="1966256083" result="Passed" start-time="2026-11-08 21:13:58Z" end-time="2026-11-08 21:13:58Z" duration="0.000043" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="2232" name="ToolShortcutsIgnoreModifiersAndOtherKeys(A,False,null)" fullname="UI943PortraitGarageTests.ToolShortcutsIgnoreModifiersAndOtherKeys(A,False,null)" methodname="ToolShortcutsIgnoreModifiersAndOtherKeys" classname="UI943PortraitGarageTests" runstate="Runnable" seed="2016663091" result="Passed" start-time="2026-11-08 21:13:58Z" end-time="2026-11-08 21:13:58Z" duration="0.000043" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <output><![CDATA[Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+          </test-case>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

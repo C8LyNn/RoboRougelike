@@ -1,0 +1,8 @@
+{
+  "head": "801a8c91889c6f256cb7b3edb80f36276887288b",
+  "started": "2026-11-08T22:06:00.2955411+01:00",
+  "finished": "2026-11-08T22:06:31.7815657+01:00",
+  "exitCode": 2,
+  "filter": "UI943PortraitCatalogActionsTests.ActivityLaunchFeedbackUsesOnlyCurrentResult;UI943PortraitCatalogActionsTests.FailedActivityLaunchDisplaysCurrentReasonWithoutReusingOldMessage;UI943PortraitRewardsLayoutTests.NoLootRequiresOnlyTheBonusAndExplainsIt;CriticalGarageWarningsTests.MissingSelectedDriveExplainsItsActualRequirement;CriticalGarageWarningsTests.DestroyedCoreIsReportedBeforeMissingConnectedEquipment;CriticalGarageWarningsTests.NoWeaponAndNoDriveAreBothVisibleWhileEditingRemainsAllowed",
+  "mode": "EditMode batch nographics"
+}

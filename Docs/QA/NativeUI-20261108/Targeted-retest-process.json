@@ -1,0 +1,8 @@
+{
+  "base": "801a8c91889c6f256cb7b3edb80f36276887288b",
+  "fixture": "initialization assertions and no captured coroutine local",
+  "started": "2026-11-08T22:10:03.0264954+01:00",
+  "finished": "2026-11-08T22:10:23.8344520+01:00",
+  "exitCode": 0,
+  "filter": "UI943PortraitCatalogActionsTests.ActivityLaunchFeedbackUsesOnlyCurrentResult;UI943PortraitCatalogActionsTests.FailedActivityLaunchDisplaysCurrentReasonWithoutReusingOldMessage;UI943PortraitRewardsLayoutTests.NoLootRequiresOnlyTheBonusAndExplainsIt;CriticalGarageWarningsTests.MissingSelectedDriveExplainsItsActualRequirement;CriticalGarageWarningsTests.DestroyedCoreIsReportedBeforeMissingConnectedEquipment;CriticalGarageWarningsTests.NoWeaponAndNoDriveAreBothVisibleWhileEditingRemainsAllowed"
+}

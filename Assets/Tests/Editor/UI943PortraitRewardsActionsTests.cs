@@ -84,7 +84,11 @@ public sealed class UI943PortraitRewardsActionsTests
 #if ENABLE_INPUT_SYSTEM
     [UnityTest] public IEnumerator CollectedFinalPickupDoesNotConsumeRewardConfirmationKey()
     {
+        // Defeated enemies only drop energy while combat is active. The shared
+        // fixture disables combat to keep other reward tests deterministic.
+        run.Encounter.SetCombatActive(true);
         foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        run.Encounter.SetCombatActive(false);
         for(int i=0;i<300&&run.Progress.State==R1RunState.Combat&&run.PickupGraceRemaining<=0;i++)yield return null;
         Assert.That(run.PickupGraceRemaining,Is.GreaterThan(0),"Expected the post-battle pickup window.");
         foreach(var pickup in UnityEngine.Object.FindObjectsByType<EnergyPickup>(FindObjectsSortMode.None))pickup.gameObject.SetActive(false);

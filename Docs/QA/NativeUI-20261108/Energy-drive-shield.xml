@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="16" result="Passed" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-08 21:35:25Z" end-time="2026-11-08 21:35:26Z" duration="0,802839">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1929" result="Passed" start-time="2026-11-08 21:35:25Z" end-time="2026-11-08 21:35:26Z" duration="0.802839" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="2398" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-PlayQA-97f8/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="1136" result="Passed" start-time="2026-11-08 21:35:25Z" end-time="2026-11-08 21:35:26Z" duration="0.702943" total="16" passed="16" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="68196" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="1059" name="BacklogDeviceTierGameplayTests" fullname="BacklogDeviceTierGameplayTests" classname="BacklogDeviceTierGameplayTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-08 21:35:18Z" end-time="2026-11-08 21:35:18Z" duration="0.481621" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1060" name="UpgradedMotorUsesTwoPowerUnitsAndTwentyFiveEnergyReservation" fullname="BacklogDeviceTierGameplayTests.UpgradedMotorUsesTwoPowerUnitsAndTwentyFiveEnergyReservation" methodname="UpgradedMotorUsesTwoPowerUnitsAndTwentyFiveEnergyReservation" classname="BacklogDeviceTierGameplayTests" runstate="Runnable" seed="943110776" result="Passed" start-time="2026-11-08 21:35:14Z" end-time="2026-11-08 21:35:18Z" duration="3.885909" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 21 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 21 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 21 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 21 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1055" name="BacklogDeviceTierTests" fullname="BacklogDeviceTierTests" classname="BacklogDeviceTierTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-08 21:35:18Z" end-time="2026-11-08 21:35:18Z" duration="0.004427" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1058" name="TierThreeRegeneratorHasFourTimesTheEffectAndTwentyFiveReservation" fullname="BacklogDeviceTierTests.TierThreeRegeneratorHasFourTimesTheEffectAndTwentyFiveReservation" methodname="TierThreeRegeneratorHasFourTimesTheEffectAndTwentyFiveReservation" classname="BacklogDeviceTierTests" runstate="Runnable" seed="2038145881" result="Passed" start-time="2026-11-08 21:35:18Z" end-time="2026-11-08 21:35:18Z" duration="0.002509" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="1057" name="TierTwoRegeneratorImprovesRecoveryAndReservesTwentyFive" fullname="BacklogDeviceTierTests.TierTwoRegeneratorImprovesRecoveryAndReservesTwentyFive" methodname="TierTwoRegeneratorImprovesRecoveryAndReservesTwentyFive" classname="BacklogDeviceTierTests" runstate="Runnable" seed="1359253945" result="Passed" start-time="2026-11-08 21:35:18Z" end-time="2026-11-08 21:35:18Z" duration="0.000530" asserts="0">
+          <properties />
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1095" name="BacklogEnergyRegenIntegrationTests" fullname="BacklogEnergyRegenIntegrationTests" classname="BacklogEnergyRegenIntegrationTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-08 21:35:21Z" end-time="2026-11-08 21:35:22Z" duration="0.456289" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1096" name="DestroyingRealRegeneratorRemovesItsRateAndReservation" fullname="BacklogEnergyRegenIntegrationTests.DestroyingRealRegeneratorRemovesItsRateAndReservation" methodname="DestroyingRealRegeneratorRemovesItsRateAndReservation" classname="BacklogEnergyRegenIntegrationTests" runstate="Runnable" seed="658257204" result="Passed" start-time="2026-11-08 21:35:18Z" end-time="2026-11-08 21:35:22Z" duration="3.708235" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 21 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 21 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1086" name="BacklogEnergyRegenTests" fullname="BacklogEnergyRegenTests" classname="BacklogEnergyRegenTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-11-08 21:35:22Z" end-time="2026-11-08 21:35:22Z" duration="0.015455" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1092" name="CheckpointPreservesTieredBatteryPassiveReservationAndCurrentCharge" fullname="BacklogEnergyRegenTests.CheckpointPreservesTieredBatteryPassiveReservationAndCurrentCharge" methodname="CheckpointPreservesTieredBatteryPassiveReservationAndCurrentCharge" classname="BacklogEnergyRegenTests" runstate="Runnable" seed="141651530" result="Passed" start-time="2026-11-08 21:35:22Z" end-time="2026-11-08 21:35:22Z" duration="0.011040" asserts="0">
+          <properties />
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="1090" name="EveryPassiveTierReservesTwentyFiveAndDestructionReleasesIt" fullname="BacklogEnergyRegenTests.EveryPassiveTierReservesTwentyFiveAndDestructionReleasesIt" classname="BacklogEnergyRegenTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-08 21:35:22Z" end-time="2026-11-08 21:35:22Z" duration="0.002261" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1087" name="EveryPassiveTierReservesTwentyFiveAndDestructionReleasesIt(1)" fullname="BacklogEnergyRegenTests.EveryPassiveTierReservesTwentyFiveAndDestructionReleasesIt(1)" methodname="EveryPassiveTierReservesTwentyFiveAndDestructionReleasesIt" classname="BacklogEnergyRegenTests" runstate="Runnable" seed="1946558830" result="Passed" start-time="2026-11-08 21:35:22Z" end-time="2026-11-08 21:35:22Z" duration="0.000896" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1088" name="EveryPassiveTierReservesTwentyFiveAndDestructionReleasesIt(2)" fullname="BacklogEnergyRegenTests.EveryPassiveTierReservesTwentyFiveAndDestructionReleasesIt(2)" methodname="EveryPassiveTierReservesTwentyFiveAndDestructionReleasesIt" classname="BacklogEnergyRegenTests" runstate="Runnable" seed="425206668" result="Passed" start-time="2026-11-08 21:35:22Z" end-time="2026-11-08 21:35:22Z" duration="0.000252" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1089" name="EveryPassiveTierReservesTwentyFiveAndDestructionReleasesIt(3)" fullname="BacklogEnergyRegenTests.EveryPassiveTierReservesTwentyFiveAndDestructionReleasesIt(3)" methodname="EveryPassiveTierReservesTwentyFiveAndDestructionReleasesIt" classname="BacklogEnergyRegenTests" runstate="Runnable" seed="177058658" result="Passed" start-time="2026-11-08 21:35:22Z" end-time="2026-11-08 21:35:22Z" duration="0.000221" asserts="0">
+            <properties />
+          </test-case>
+        </test-suite>
+        <test-case id="1091" name="MixedPassiveTiersEachReserveTwentyFive" fullname="BacklogEnergyRegenTests.MixedPassiveTiersEachReserveTwentyFive" methodname="MixedPassiveTiersEachReserveTwentyFive" classname="BacklogEnergyRegenTests" runstate="Runnable" seed="1173724897" result="Passed" start-time="2026-11-08 21:35:22Z" end-time="2026-11-08 21:35:22Z" duration="0.000295" asserts="0">
+          <properties />
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1186" name="CriticalGarageWarningsTests" fullname="CriticalGarageWarningsTests" classname="CriticalGarageWarningsTests" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-11-08 21:35:22Z" end-time="2026-11-08 21:35:22Z" duration="0.011663" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1195" name="DestroyedCoreIsReportedBeforeMissingConnectedEquipment" fullname="CriticalGarageWarningsTests.DestroyedCoreIsReportedBeforeMissingConnectedEquipment" methodname="DestroyedCoreIsReportedBeforeMissingConnectedEquipment" classname="CriticalGarageWarningsTests" runstate="Runnable" seed="536957110" result="Passed" start-time="2026-11-08 21:35:22Z" end-time="2026-11-08 21:35:22Z" duration="0.004314" asserts="0">
+          <properties />
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="1191" name="MissingSelectedDriveExplainsItsActualRequirement" fullname="CriticalGarageWarningsTests.MissingSelectedDriveExplainsItsActualRequirement" classname="CriticalGarageWarningsTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-08 21:35:22Z" end-time="2026-11-08 21:35:22Z" duration="0.003740" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1187" name="MissingSelectedDriveExplainsItsActualRequirement(Wheels,&quot;Koła&quot;)" fullname="CriticalGarageWarningsTests.MissingSelectedDriveExplainsItsActualRequirement(Wheels,&quot;Koła&quot;)" methodname="MissingSelectedDriveExplainsItsActualRequirement" classname="CriticalGarageWarningsTests" runstate="Runnable" seed="976148157" result="Passed" start-time="2026-11-08 21:35:22Z" end-time="2026-11-08 21:35:22Z" duration="0.001430" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1188" name="MissingSelectedDriveExplainsItsActualRequirement(Tracks,&quot;Gąsienice&quot;)" fullname="CriticalGarageWarningsTests.MissingSelectedDriveExplainsItsActualRequirement(Tracks,&quot;Gąsienice&quot;)" methodname="MissingSelectedDriveExplainsItsActualRequirement" classname="CriticalGarageWarningsTests" runstate="Runnable" seed="895882337" result="Passed" start-time="2026-11-08 21:35:22Z" end-time="2026-11-08 21:35:22Z" duration="0.000222" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1189" name="MissingSelectedDriveExplainsItsActualRequirement(Omni,&quot;Omni&quot;)" fullname="CriticalGarageWarningsTests.MissingSelectedDriveExplainsItsActualRequirement(Omni,&quot;Omni&quot;)" methodname="MissingSelectedDriveExplainsItsActualRequirement" classname="CriticalGarageWarningsTests" runstate="Runnable" seed="2133114326" result="Passed" start-time="2026-11-08 21:35:22Z" end-time="2026-11-08 21:35:22Z" duration="0.000213" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1190" name="MissingSelectedDriveExplainsItsActualRequirement(Hover,&quot;Hover&quot;)" fullname="CriticalGarageWarningsTests.MissingSelectedDriveExplainsItsActualRequirement(Hover,&quot;Hover&quot;)" methodname="MissingSelectedDriveExplainsItsActualRequirement" classname="CriticalGarageWarningsTests" runstate="Runnable" seed="1991988536" result="Passed" start-time="2026-11-08 21:35:22Z" end-time="2026-11-08 21:35:22Z" duration="0.000287" asserts="0">
+            <properties />
+          </test-case>
+        </test-suite>
+        <test-case id="1192" name="NoWeaponAndNoDriveAreBothVisibleWhileEditingRemainsAllowed" fullname="CriticalGarageWarningsTests.NoWeaponAndNoDriveAreBothVisibleWhileEditingRemainsAllowed" methodname="NoWeaponAndNoDriveAreBothVisibleWhileEditingRemainsAllowed" classname="CriticalGarageWarningsTests" runstate="Runnable" seed="2046541814" result="Passed" start-time="2026-11-08 21:35:22Z" end-time="2026-11-08 21:35:22Z" duration="0.001161" asserts="0">
+          <properties />
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="2029" name="RRLW6ShieldPhysicalTests" fullname="RRLW6ShieldPhysicalTests" classname="RRLW6ShieldPhysicalTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-08 21:35:25Z" end-time="2026-11-08 21:35:26Z" duration="0.526870" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="2031" name="EnemyShieldKeepsPassiveReservationDuringEmpUntilDestroyed" fullname="RRLW6ShieldPhysicalTests.EnemyShieldKeepsPassiveReservationDuringEmpUntilDestroyed" methodname="EnemyShieldKeepsPassiveReservationDuringEmpUntilDestroyed" classname="RRLW6ShieldPhysicalTests" runstate="Runnable" seed="1461228076" result="Passed" start-time="2026-11-08 21:35:22Z" end-time="2026-11-08 21:35:26Z" duration="3.813960" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[EXIT273] Shutdown prepared: NativeClose
+Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

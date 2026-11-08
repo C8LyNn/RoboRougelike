@@ -1,0 +1,8 @@
+{
+  "mode": "Targeted EditMode including UnityTests entering Play Mode; batch nographics",
+  "head": "950cc404",
+  "filter": "MapStorageIntegrityTests.RealEditorRequiresExplicitSecondSaveForOverwrite;MapStorageIntegrityTests.LoadingAStoredMapRequiresConfirmationForUnsavedChanges;MapStorageIntegrityTests.ReturningToMenuFromMapGarageWarnsAboutUnsavedDraft;MapStorageIntegrityTests.QuitAndReturnRequireSeparateConfirmationForUnsavedMap;UI943WeaponStatusTests.ManualReloadHintRespectsDeviceAvailability;UI943WeaponStatusTests.DefenseRowsUseActualMountedDevicesInOrderAcrossPages;RRLW34RewardTests.ScrapPreviewAndLedgerReportOnlyAmountActuallyCredited;RRLW34RewardTests.DismantlePreviewMatchesWalletChangeAtTheLimit;UI943PortraitRewardsActionsTests.CollectedFinalPickupDoesNotConsumeRewardConfirmationKey;UI943PortraitRewardsActionsTests.EscapeClosesRewardInventoryBeforePausingAndCancelsConfirmation",
+  "exitCode": 2,
+  "finished": "2026-11-08T22:36:43.7318145+01:00",
+  "started": "2026-11-08T22:36:00.9074032+01:00"
+}

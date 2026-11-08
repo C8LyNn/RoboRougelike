@@ -1,6 +1,6 @@
 # Celowany pakiet QA — zmiany po ostatnim buildzie
 
-Kod odniesienia dla początkowej kolejki: `b616c8722749031424445d90ea6b1240864589c1` (Draft PR #1124); późniejsze poprawki mogą zmieniać kod i rozszerzać tę listę. Przed uruchomieniem zapisz bieżący HEAD i potwierdź czystość plików `Assets`, `Packages` i `ProjectSettings`. Ten pakiet **nie został wykonany**. Roslyn i kontrole bez Unity opisane w poszczególnych raportach nie są natywną walidacją.
+Kod odniesienia dla początkowej kolejki: `b616c8722749031424445d90ea6b1240864589c1` (Draft PR #1124); późniejsze poprawki mogą zmieniać kod i rozszerzać tę listę. **Część przypadków wykonano** w Unity; dokładny zakres i wyniki podaje [raport QA](NATIVE_UI_FOLLOWUP_QA_20261108.md). Pozostałe przypadki z poniższej listy nie są przez to automatycznie zaliczone. Przed kolejnym uruchomieniem zapisz bieżący HEAD i potwierdź czystość plików `Assets`, `Packages` i `ProjectSettings`.
 
 ## Jedna celowana sesja Unity
 

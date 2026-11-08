@@ -1,0 +1,8 @@
+{
+  "mode": "Targeted EditMode including UnityTests entering Play Mode; batch nographics",
+  "head": "950cc404",
+  "exitCode": 0,
+  "started": "2026-11-08T22:35:01.1853025+01:00",
+  "finished": "2026-11-08T22:35:28.9230644+01:00",
+  "filter": "BacklogEnergyRegenTests.EveryPassiveTierReservesTwentyFiveAndDestructionReleasesIt;BacklogEnergyRegenTests.MixedPassiveTiersEachReserveTwentyFive;BacklogEnergyRegenTests.CheckpointPreservesTieredBatteryPassiveReservationAndCurrentCharge;BacklogDeviceTierTests.TierTwoRegeneratorImprovesRecoveryAndReservesTwentyFive;BacklogDeviceTierTests.TierThreeRegeneratorHasFourTimesTheEffectAndTwentyFiveReservation;BacklogDeviceTierGameplayTests.UpgradedMotorUsesTwoPowerUnitsAndTwentyFiveEnergyReservation;BacklogEnergyRegenIntegrationTests.DestroyingRealRegeneratorRemovesItsRateAndReservation;RRLW6ShieldPhysicalTests.EnemyShieldKeepsPassiveReservationDuringEmpUntilDestroyed;CriticalGarageWarningsTests.MissingSelectedDriveExplainsItsActualRequirement;CriticalGarageWarningsTests.DestroyedCoreIsReportedBeforeMissingConnectedEquipment;CriticalGarageWarningsTests.NoWeaponAndNoDriveAreBothVisibleWhileEditingRemainsAllowed"
+}

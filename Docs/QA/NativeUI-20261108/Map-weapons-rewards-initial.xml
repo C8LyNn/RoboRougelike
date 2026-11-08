@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="18" result="Failed(Child)" total="18" passed="17" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-08 21:36:40Z" end-time="2026-11-08 21:36:40Z" duration="0,7370632">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1929" result="Failed" site="Child" start-time="2026-11-08 21:36:40Z" end-time="2026-11-08 21:36:40Z" duration="0.737063" total="18" passed="17" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="2398" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-PlayQA-97f8/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="1136" result="Failed" site="Child" start-time="2026-11-08 21:36:40Z" end-time="2026-11-08 21:36:40Z" duration="0.641059" total="18" passed="17" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="52368" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestFixture" id="1428" name="MapStorageIntegrityTests" fullname="MapStorageIntegrityTests" classname="MapStorageIntegrityTests" runstate="Runnable" testcasecount="14" result="Passed" start-time="2026-11-08 21:36:29Z" end-time="2026-11-08 21:36:29Z" duration="0.497482" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1441" name="LoadingAStoredMapRequiresConfirmationForUnsavedChanges" fullname="MapStorageIntegrityTests.LoadingAStoredMapRequiresConfirmationForUnsavedChanges" methodname="LoadingAStoredMapRequiresConfirmationForUnsavedChanges" classname="MapStorageIntegrityTests" runstate="Runnable" seed="95745368" result="Passed" start-time="2026-11-08 21:36:14Z" end-time="2026-11-08 21:36:18Z" duration="3.955539" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1443" name="QuitAndReturnRequireSeparateConfirmationForUnsavedMap" fullname="MapStorageIntegrityTests.QuitAndReturnRequireSeparateConfirmationForUnsavedMap" methodname="QuitAndReturnRequireSeparateConfirmationForUnsavedMap" classname="MapStorageIntegrityTests" runstate="Runnable" seed="1680549644" result="Passed" start-time="2026-11-08 21:36:18Z" end-time="2026-11-08 21:36:22Z" duration="3.982183" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1440" name="RealEditorRequiresExplicitSecondSaveForOverwrite" fullname="MapStorageIntegrityTests.RealEditorRequiresExplicitSecondSaveForOverwrite" methodname="RealEditorRequiresExplicitSecondSaveForOverwrite" classname="MapStorageIntegrityTests" runstate="Runnable" seed="2086289285" result="Passed" start-time="2026-11-08 21:36:22Z" end-time="2026-11-08 21:36:25Z" duration="3.665123" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1442" name="ReturningToMenuFromMapGarageWarnsAboutUnsavedDraft" fullname="MapStorageIntegrityTests.ReturningToMenuFromMapGarageWarnsAboutUnsavedDraft" methodname="ReturningToMenuFromMapGarageWarnsAboutUnsavedDraft" classname="MapStorageIntegrityTests" runstate="Runnable" seed="1410462778" result="Passed" start-time="2026-11-08 21:36:25Z" end-time="2026-11-08 21:36:29Z" duration="3.770249" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1959" name="RRLW34RewardTests" fullname="RRLW34RewardTests" classname="RRLW34RewardTests" runstate="Runnable" testcasecount="19" result="Passed" start-time="2026-11-08 21:36:29Z" end-time="2026-11-08 21:36:29Z" duration="0.013026" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="ParameterizedMethod" id="1967" name="DismantlePreviewMatchesWalletChangeAtTheLimit" fullname="RRLW34RewardTests.DismantlePreviewMatchesWalletChangeAtTheLimit" classname="RRLW34RewardTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-08 21:36:29Z" end-time="2026-11-08 21:36:29Z" duration="0.005199" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1964" name="DismantlePreviewMatchesWalletChangeAtTheLimit(0)" fullname="RRLW34RewardTests.DismantlePreviewMatchesWalletChangeAtTheLimit(0)" methodname="DismantlePreviewMatchesWalletChangeAtTheLimit" classname="RRLW34RewardTests" runstate="Runnable" seed="1428809272" result="Passed" start-time="2026-11-08 21:36:29Z" end-time="2026-11-08 21:36:29Z" duration="0.003274" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1965" name="DismantlePreviewMatchesWalletChangeAtTheLimit(99999)" fullname="RRLW34RewardTests.DismantlePreviewMatchesWalletChangeAtTheLimit(99999)" methodname="DismantlePreviewMatchesWalletChangeAtTheLimit" classname="RRLW34RewardTests" runstate="Runnable" seed="1787409908" result="Passed" start-time="2026-11-08 21:36:29Z" end-time="2026-11-08 21:36:29Z" duration="0.000167" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1966" name="DismantlePreviewMatchesWalletChangeAtTheLimit(100000)" fullname="RRLW34RewardTests.DismantlePreviewMatchesWalletChangeAtTheLimit(100000)" methodname="DismantlePreviewMatchesWalletChangeAtTheLimit" classname="RRLW34RewardTests" runstate="Runnable" seed="102387682" result="Passed" start-time="2026-11-08 21:36:29Z" end-time="2026-11-08 21:36:29Z" duration="0.000120" asserts="0">
+            <properties />
+          </test-case>
+        </test-suite>
+        <test-suite type="ParameterizedMethod" id="1963" name="ScrapPreviewAndLedgerReportOnlyAmountActuallyCredited" fullname="RRLW34RewardTests.ScrapPreviewAndLedgerReportOnlyAmountActuallyCredited" classname="RRLW34RewardTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-08 21:36:29Z" end-time="2026-11-08 21:36:29Z" duration="0.004571" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="1960" name="ScrapPreviewAndLedgerReportOnlyAmountActuallyCredited(0,9)" fullname="RRLW34RewardTests.ScrapPreviewAndLedgerReportOnlyAmountActuallyCredited(0,9)" methodname="ScrapPreviewAndLedgerReportOnlyAmountActuallyCredited" classname="RRLW34RewardTests" runstate="Runnable" seed="1872648377" result="Passed" start-time="2026-11-08 21:36:29Z" end-time="2026-11-08 21:36:29Z" duration="0.003190" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1961" name="ScrapPreviewAndLedgerReportOnlyAmountActuallyCredited(99995,5)" fullname="RRLW34RewardTests.ScrapPreviewAndLedgerReportOnlyAmountActuallyCredited(99995,5)" methodname="ScrapPreviewAndLedgerReportOnlyAmountActuallyCredited" classname="RRLW34RewardTests" runstate="Runnable" seed="1807942828" result="Passed" start-time="2026-11-08 21:36:29Z" end-time="2026-11-08 21:36:29Z" duration="0.000198" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="1962" name="ScrapPreviewAndLedgerReportOnlyAmountActuallyCredited(100000,0)" fullname="RRLW34RewardTests.ScrapPreviewAndLedgerReportOnlyAmountActuallyCredited(100000,0)" methodname="ScrapPreviewAndLedgerReportOnlyAmountActuallyCredited" classname="RRLW34RewardTests" runstate="Runnable" seed="1027476548" result="Passed" start-time="2026-11-08 21:36:29Z" end-time="2026-11-08 21:36:29Z" duration="0.000152" asserts="0">
+            <properties />
+          </test-case>
+        </test-suite>
+      </test-suite>
+      <test-suite type="TestFixture" id="2255" name="UI943PortraitRewardsActionsTests" fullname="UI943PortraitRewardsActionsTests" classname="UI943PortraitRewardsActionsTests" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-11-08 21:36:36Z" end-time="2026-11-08 21:36:37Z" duration="0.552986" total="2" passed="1" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-case id="2258" name="CollectedFinalPickupDoesNotConsumeRewardConfirmationKey" fullname="UI943PortraitRewardsActionsTests.CollectedFinalPickupDoesNotConsumeRewardConfirmationKey" methodname="CollectedFinalPickupDoesNotConsumeRewardConfirmationKey" classname="UI943PortraitRewardsActionsTests" runstate="Runnable" seed="1684263883" result="Failed" start-time="2026-11-08 21:36:29Z" end-time="2026-11-08 21:36:33Z" duration="3.875242" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <failure>
+            <message><![CDATA[  Expected the post-battle pickup window.
+  Expected: greater than 0
+  But was:  0.0f
+]]></message>
+            <stack-trace><![CDATA[at UI943PortraitRewardsActionsTests+<CollectedFinalPickupDoesNotConsumeRewardConfirmationKey>d__10.MoveNext () [0x000e0] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-PlayQA-97f8\Assets\Tests\Editor\UI943PortraitRewardsActionsTests.cs:89
+at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44
+]]></stack-trace>
+          </failure>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="2257" name="EscapeClosesRewardInventoryBeforePausingAndCancelsConfirmation" fullname="UI943PortraitRewardsActionsTests.EscapeClosesRewardInventoryBeforePausingAndCancelsConfirmation" methodname="EscapeClosesRewardInventoryBeforePausingAndCancelsConfirmation" classname="UI943PortraitRewardsActionsTests" runstate="Runnable" seed="512646056" result="Passed" start-time="2026-11-08 21:36:33Z" end-time="2026-11-08 21:36:37Z" duration="3.961545" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="2282" name="UI943WeaponStatusTests" fullname="UI943WeaponStatusTests" classname="UI943WeaponStatusTests" runstate="Runnable" testcasecount="22" result="Passed" start-time="2026-11-08 21:36:40Z" end-time="2026-11-08 21:36:40Z" duration="0.470776" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="2301" name="DefenseRowsUseActualMountedDevicesInOrderAcrossPages" fullname="UI943WeaponStatusTests.DefenseRowsUseActualMountedDevicesInOrderAcrossPages" methodname="DefenseRowsUseActualMountedDevicesInOrderAcrossPages" classname="UI943WeaponStatusTests" runstate="Runnable" seed="1854560539" result="Passed" start-time="2026-11-08 21:36:37Z" end-time="2026-11-08 21:36:40Z" duration="3.478084" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 69 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 69 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+]]></output>
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="2293" name="ManualReloadHintRespectsDeviceAvailability" fullname="UI943WeaponStatusTests.ManualReloadHintRespectsDeviceAvailability" classname="UI943WeaponStatusTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-08 21:36:40Z" end-time="2026-11-08 21:36:40Z" duration="0.004770" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="2288" name="ManualReloadHintRespectsDeviceAvailability(3,False,False,&quot;niedostępne&quot;)" fullname="UI943WeaponStatusTests.ManualReloadHintRespectsDeviceAvailability(3,False,False,&quot;niedostępne&quot;)" methodname="ManualReloadHintRespectsDeviceAvailability" classname="UI943WeaponStatusTests" runstate="Runnable" seed="361567279" result="Passed" start-time="2026-11-08 21:36:40Z" end-time="2026-11-08 21:36:40Z" duration="0.001495" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="2289" name="ManualReloadHintRespectsDeviceAvailability(40,False,False,&quot;niedostępne&quot;)" fullname="UI943WeaponStatusTests.ManualReloadHintRespectsDeviceAvailability(40,False,False,&quot;niedostępne&quot;)" methodname="ManualReloadHintRespectsDeviceAvailability" classname="UI943WeaponStatusTests" runstate="Runnable" seed="821554836" result="Passed" start-time="2026-11-08 21:36:40Z" end-time="2026-11-08 21:36:40Z" duration="0.000108" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="2290" name="ManualReloadHintRespectsDeviceAvailability(3,True,True,&quot;ładowanie&quot;)" fullname="UI943WeaponStatusTests.ManualReloadHintRespectsDeviceAvailability(3,True,True,&quot;ładowanie&quot;)" methodname="ManualReloadHintRespectsDeviceAvailability" classname="UI943WeaponStatusTests" runstate="Runnable" seed="677762108" result="Passed" start-time="2026-11-08 21:36:40Z" end-time="2026-11-08 21:36:40Z" duration="0.000069" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="2291" name="ManualReloadHintRespectsDeviceAvailability(40,True,False,&quot;pełny&quot;)" fullname="UI943WeaponStatusTests.ManualReloadHintRespectsDeviceAvailability(40,True,False,&quot;pełny&quot;)" methodname="ManualReloadHintRespectsDeviceAvailability" classname="UI943WeaponStatusTests" runstate="Runnable" seed="127310855" result="Passed" start-time="2026-11-08 21:36:40Z" end-time="2026-11-08 21:36:40Z" duration="0.000051" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="2292" name="ManualReloadHintRespectsDeviceAvailability(3,True,False,&quot;T przeładuj&quot;)" fullname="UI943WeaponStatusTests.ManualReloadHintRespectsDeviceAvailability(3,True,False,&quot;T przeładuj&quot;)" methodname="ManualReloadHintRespectsDeviceAvailability" classname="UI943WeaponStatusTests" runstate="Runnable" seed="1844890616" result="Passed" start-time="2026-11-08 21:36:40Z" end-time="2026-11-08 21:36:40Z" duration="0.000046" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <output><![CDATA[Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+          </test-case>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
