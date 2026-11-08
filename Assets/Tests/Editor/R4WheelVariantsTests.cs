@@ -410,6 +410,21 @@ public sealed class R4WheelVariantsTests
         Assert.That(Vector3.Distance(socket.localPosition,fixedSocket),Is.LessThan(.001f));
         Object.Destroy(owner);Object.Destroy(material);
     }
+    [UnityTest]public IEnumerator CasterCanBeMountedAndSaved()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
+        var model=run.VehicleModel;model.Award(1000);var garage=run.Garage;
+        foreach(var cell in new[]{new Vector3Int(2,2,2),new Vector3Int(2,3,2),new Vector3Int(3,3,2)})
+        {
+            Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);var support=model.Inventory.Last();
+            garage.ChooseInventory(support.Id);garage.Select(cell);Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);yield return null;
+        }
+        Assert.That(run.GaragePurchase(R3PartKind.Wheel,default,R3WheelStyle.CasterSlick),Is.True);var item=model.Inventory.Last();
+        garage.ChooseInventory(item.Id);garage.Select(new Vector3Int(3,2,2));Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);yield return null;
+        var data=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(Time.time)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Standard,model.Economy,Time.time,out var restored,out var error),Is.True,error);
+        Assert.That(restored.Parts.Single(p=>p.Id==item.Id).WheelStyle,Is.EqualTo(R3WheelStyle.CasterSlick));
+    }
     [UnityTest]public IEnumerator LargeWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.LargeOffroad);}
     [UnityTest]public IEnumerator MonsterWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.Monster);}
     [UnityTest]public IEnumerator SmallForkWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.SmallFork);}
@@ -418,6 +433,7 @@ public sealed class R4WheelVariantsTests
     [UnityTest]public IEnumerator TwinWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.TwinRoad);}
     [UnityTest]public IEnumerator RoadSteerWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.SteerRoad);}
     [UnityTest]public IEnumerator LargeSteerWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.SteerOffroad);}
+    [UnityTest]public IEnumerator CasterWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.CasterSlick);}
     [UnityTest]public IEnumerator RoadSteerArtUsesRealIndependentSteeringWithoutMovingMount(){yield return SteeringVariant(R3WheelStyle.SteerRoad,"R4M_WheelM_Steer_Road_Rotor");}
     [UnityTest]public IEnumerator LargeSteerArtUsesRealIndependentSteeringWithoutMovingMount(){yield return SteeringVariant(R3WheelStyle.SteerOffroad,"R4M_WheelL_Steer_Offroad_Rotor");}
     IEnumerator SteeringVariant(R3WheelStyle style,string rotorName)
