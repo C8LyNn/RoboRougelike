@@ -7,6 +7,7 @@ using RoboRougelike.R3;
 using RoboRougelike.R4;
 using RogueMachine.P12PipelineSafe;
 using UnityEngine;
+using UnityEngine.TestTools;
 
 // Pure EditMode scene objects: no gameplay scene, OS window, cursor lock or input.
 public sealed class PerWeaponReticleTests
@@ -100,8 +101,30 @@ public sealed class PerWeaponReticleTests
     }
     [Test]public void TwelveGunAimFeedbackDiagnostic()
     {
+        BuildTwelveGunFixture(out var aim,out var targetCollider);
+        var markers=new System.Collections.Generic.List<RoboRougelike.WeaponIntegration.RRLWeaponReticles.Marker>(12);
+        RoboRougelike.WeaponIntegration.RRLAimFeedback.Snapshot feedback=default;
+        void Caption()=>feedback=RoboRougelike.WeaponIntegration.RRLAimFeedback.Evaluate(assembly,controller,aim,targetCollider);
+        void Markers()=>RoboRougelike.WeaponIntegration.RRLWeaponReticles.Collect(view,assembly,controller,aim,markers);
+        void Combined(){Caption();Markers();}
+        void Measure(string label,Action sample)
+        {
+            for(int i=0;i<3;i++)sample();
+            GC.Collect();int collections=GC.CollectionCount(0);
+            const int iterations=100;long before=UnityEngine.Profiling.Profiler.GetMonoUsedSizeLong();
+            var watch=System.Diagnostics.Stopwatch.StartNew();
+            for(int i=0;i<iterations;i++)sample();
+            watch.Stop();long bytes=UnityEngine.Profiling.Profiler.GetMonoUsedSizeLong()-before;
+            Debug.Log($"[RETICLE_PERF] {label} guns=12 armor=80 iterations={iterations} elapsed_ms={watch.Elapsed.TotalMilliseconds:F2} mono_delta={bytes} gc_collections={GC.CollectionCount(0)-collections}");
+        }
+        Measure("caption",Caption);Measure("markers",Markers);Measure("combined",Combined);
+        Assert.That(feedback.Guns,Is.EqualTo(12));Assert.That(feedback.Clear,Is.EqualTo(12));
+        Assert.That(markers.Count,Is.EqualTo(12));
+    }
+    void BuildTwelveGunFixture(out Vector3 aim,out Collider targetCollider)
+    {
         view.transform.position=new Vector3(0,2,-10);
-        var aim=new Vector3(0,2,50);
+        aim=new Vector3(0,2,50);
         for(int i=0;i<10;i++)Gun("extra "+i,Vector3.zero);
         for(int i=0;i<assembly.Parts.Count;i++)
         {
@@ -116,8 +139,12 @@ public sealed class PerWeaponReticleTests
         }
         wall=GameObject.CreatePrimitive(PrimitiveType.Cube);wall.name="Diagnostic target";
         wall.transform.position=aim;wall.transform.localScale=new Vector3(30,10,1);
-        var targetCollider=wall.GetComponent<Collider>();
+        targetCollider=wall.GetComponent<Collider>();
         Physics.SyncTransforms();
+    }
+    [UnityTest]public IEnumerator TwelveGunProfilerAllocationDiagnostic()
+    {
+        BuildTwelveGunFixture(out var aim,out var targetCollider);
         var markers=new System.Collections.Generic.List<RoboRougelike.WeaponIntegration.RRLWeaponReticles.Marker>(12);
         RoboRougelike.WeaponIntegration.RRLAimFeedback.Snapshot feedback=default;
         void Sample()
@@ -125,15 +152,63 @@ public sealed class PerWeaponReticleTests
             feedback=RoboRougelike.WeaponIntegration.RRLAimFeedback.Evaluate(assembly,controller,aim,targetCollider);
             RoboRougelike.WeaponIntegration.RRLWeaponReticles.Collect(view,assembly,controller,aim,markers);
         }
-        for(int i=0;i<3;i++)Sample();
-        GC.Collect();int collections=GC.CollectionCount(0);
-        const int iterations=100;long before=UnityEngine.Profiling.Profiler.GetMonoUsedSizeLong();
-        var watch=System.Diagnostics.Stopwatch.StartNew();
-        for(int i=0;i<iterations;i++)Sample();
-        watch.Stop();long bytes=UnityEngine.Profiling.Profiler.GetMonoUsedSizeLong()-before;
-        Debug.Log($"[RETICLE_PERF] guns=12 armor=80 iterations={iterations} elapsed_ms={watch.Elapsed.TotalMilliseconds:F2} mono_delta={bytes} gc_collections={GC.CollectionCount(0)-collections}");
-        Assert.That(feedback.Guns,Is.EqualTo(12));Assert.That(feedback.Clear,Is.EqualTo(12));
-        Assert.That(markers.Count,Is.EqualTo(12));
+        for(int i=0;i<5;i++)Sample();
+        using(var recorder=Unity.Profiling.ProfilerRecorder.StartNew(Unity.Profiling.ProfilerCategory.Memory,"GC Allocated In Frame",16))
+        {
+            Assert.That(recorder.Valid,Is.True);yield return null;yield return null;
+            long idle=recorder.LastValue;
+            const int iterations=100;
+            bool disrupted=false;
+            for(int i=0;i<iterations;i++)foreach(var part in assembly.Parts)
+                disrupted|=RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject);
+            yield return null;
+            long emp=recorder.LastValue;
+            for(int i=0;i<iterations;i++)foreach(var part in assembly.Parts)assembly.ClearProjectilePath(part);
+            yield return null;
+            long clearance=recorder.LastValue;
+            for(int i=0;i<iterations;i++)feedback=RoboRougelike.WeaponIntegration.RRLAimFeedback.Evaluate(assembly,controller,aim,targetCollider);
+            yield return null;
+            long caption=recorder.LastValue;
+            for(int i=0;i<iterations;i++)RoboRougelike.WeaponIntegration.RRLWeaponReticles.Collect(view,assembly,controller,aim,markers);
+            yield return null;
+            long reticles=recorder.LastValue;
+            for(int i=0;i<iterations;i++)Sample();
+            yield return null;
+            long sample=recorder.LastValue;
+            Debug.Log($"[RETICLE_FRAME_ALLOC] guns=12 iterations={iterations} idle_bytes={idle} emp_bytes={emp} clearance_bytes={clearance} caption_bytes={caption} reticles_bytes={reticles} combined_bytes={sample}");
+            Assert.That(disrupted,Is.False);
+            Assert.That(feedback.Guns,Is.EqualTo(12));Assert.That(feedback.Clear,Is.EqualTo(12));Assert.That(markers.Count,Is.EqualTo(12));
+        }
+    }
+    [Test]public void OwnArmorStillBlocksWhenThereAreManyOtherHitColliders()
+    {
+        right.Block.MarkDetached();left.Muzzle.position=Vector3.zero;left.Muzzle.forward=Vector3.forward;
+        ownerCollider=GameObject.CreatePrimitive(PrimitiveType.Cube);ownerCollider.transform.SetParent(root.transform);
+        ownerCollider.transform.position=new Vector3(0,0,2);
+        wall=new GameObject("many external colliders");
+        for(int i=0;i<150;i++)
+        {
+            var obstacle=GameObject.CreatePrimitive(PrimitiveType.Cube);obstacle.transform.SetParent(wall.transform);
+            obstacle.transform.position=new Vector3(0,0,5+i*.2f);obstacle.transform.localScale=Vector3.one*.1f;
+        }
+        Physics.SyncTransforms();
+        Assert.That(Physics.SphereCastAll(left.Muzzle.position,.1f,left.Muzzle.forward,100,~0,QueryTriggerInteraction.Ignore).Length,
+            Is.GreaterThan(128),"The fixture must actually exceed the initial hit-buffer capacity.");
+        Assert.That(assembly.ClearProjectilePath(left),Is.False,"Own armor must not be missed when many other colliders are hit.");
+    }
+    [UnityTest]public IEnumerator FrameAllocationRecorderDetectsKnownAllocation()
+    {
+        using(var recorder=Unity.Profiling.ProfilerRecorder.StartNew(Unity.Profiling.ProfilerCategory.Memory,"GC Allocated In Frame",16))
+        {
+            Assert.That(recorder.Valid,Is.True,"Unity must expose the requested profiler counter.");
+            yield return null;
+            var probe=new byte[1024*1024];probe[0]=1;
+            yield return null;
+            long maximum=0;foreach(var sample in recorder.ToArray())maximum=Math.Max(maximum,sample.Value);
+            Debug.Log($"[ALLOC_RECORDER_PROBE] samples={recorder.Count} max_bytes={maximum}");
+            GC.KeepAlive(probe);
+            Assert.That(maximum,Is.GreaterThanOrEqualTo(1024*1024),"A profiler control must observe a known allocation.");
+        }
     }
     [Test]public void AreaWeaponsAndBarrelsFacingAwayStillHaveDistinctIndicators()
     {
