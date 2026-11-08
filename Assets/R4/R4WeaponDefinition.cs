@@ -60,7 +60,7 @@ namespace RoboRougelike.R4
         public static string WheelName(R3WheelStyle style)=>style switch {
             R3WheelStyle.Slick=>"Koło szosowe",R3WheelStyle.LargeOffroad=>"Duże koło terenowe",
             R3WheelStyle.Monster=>"Koło monster XL",R3WheelStyle.SmallFork=>"Małe koło drogowe",
-            R3WheelStyle.BalloonFork=>"Koło balonowe",R3WheelStyle.SpikedFork=>"Koło z kolcami",R3WheelStyle.TwinRoad=>"Koło bliźniacze",R3WheelStyle.SteerRoad=>"Koło skrętne drogowe",R3WheelStyle.SteerOffroad=>"Duże koło skrętne",R3WheelStyle.CasterSlick=>"Kółko samonastawne",_=>"Koło terenowe"};
+            R3WheelStyle.BalloonFork=>"Koło balonowe",R3WheelStyle.SpikedFork=>"Koło z kolcami",R3WheelStyle.TwinRoad=>"Koło bliźniacze",R3WheelStyle.SteerRoad=>"Koło skrętne drogowe",R3WheelStyle.SteerOffroad=>"Duże koło skrętne",R3WheelStyle.CasterSlick=>"Kółko samonastawne",R3WheelStyle.SwingOffroad=>"Koło na wahaczu",_=>"Koło terenowe"};
         public static string PartName(R3PartState part)
         {
             string name=part.Kind==R3PartKind.Armor?ArmorName(part.ArmorShape):

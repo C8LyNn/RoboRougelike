@@ -29,6 +29,7 @@ namespace RoboRougelike.R1
                 kind==R3PartKind.DrivePower?$"Silnik T{R3VehicleModel.NormalizedTier(part.Tier)} wspomaga koła; rezerwuje {25+R3VehicleModel.TierPassiveExtra(part.Tier):0} energii.":
                 kind==R3PartKind.EnergyRegenerator?$"Regenerator T{R3VehicleModel.NormalizedTier(part.Tier)}: +{5*R3VehicleModel.TierEffectUnits(part.Tier)} energii/s, rezerwa {25+R3VehicleModel.TierPassiveExtra(part.Tier):0}.":
                 kind==R3PartKind.Armor&&part.ArmorShape==R3ArmorShape.Wedge?"Klin: montaż od spodu lub od tylnej płaskiej ściany. Obracaj Q/E, R/F, Z/X.":
+                kind==R3PartKind.Wheel&&part.WheelStyle==R3WheelStyle.SwingOffroad?"Koło na wahaczu: 12 kg. Oś podąża za nierównościami.":
                 kind==R3PartKind.Wheel&&part.WheelStyle==R3WheelStyle.CasterSlick?"Kółko samonastawne: 4 kg, połowa napędu. Obraca się zgodnie z ruchem.":
                 kind==R3PartKind.Wheel&&part.WheelStyle==R3WheelStyle.SteerOffroad?"Duże koło skrętne: 16 kg, +15% napędu. Zwrotnica z modułem skrętu osi.":
                 kind==R3PartKind.Wheel&&part.WheelStyle==R3WheelStyle.SteerRoad?"Koło skrętne: 12 kg. Ruch zwrotnicy z modułem skrętu osi. U: widok od spodu.":
@@ -45,6 +46,7 @@ namespace RoboRougelike.R1
                     kind==R3PartKind.DrivePower?"Silnik wspomaga koła; zajmuje 25 maks. energii. Kup część lub otwórz szczegóły.":
                     kind==R3PartKind.EnergyRegenerator?"Regenerator: +5 energii/s, −25 maks. energii. Kup część lub otwórz szczegóły.":
                     kind==R3PartKind.Armor&&CatalogArmorShape(bonus)==R3ArmorShape.Wedge?"Klin 1×1×1: mocowanie od spodu i z tyłu. Kup część.":
+                    kind==R3PartKind.Wheel&&CatalogWheelStyle(bonus)==R3WheelStyle.SwingOffroad?"Koło na wahaczu: 12 kg. Mocowanie od góry.":
                     kind==R3PartKind.Wheel&&CatalogWheelStyle(bonus)==R3WheelStyle.CasterSlick?"Kółko samonastawne: 4 kg, połowa napędu. Mocowanie od góry.":
                     kind==R3PartKind.Wheel&&CatalogWheelStyle(bonus)==R3WheelStyle.SteerOffroad?"Duże skrętne: 16 kg, +15% napędu. Zwrotnica z modułem skrętu osi.":
                     kind==R3PartKind.Wheel&&CatalogWheelStyle(bonus)==R3WheelStyle.SteerRoad?"Koło skrętne: 12 kg, mocowanie od góry. Zwrotnica wymaga modułu skrętu osi.":
@@ -82,7 +84,7 @@ namespace RoboRougelike.R1
             }
             compactButton.normal.background=buttonNormal;GUI.backgroundColor=Color.white;
             var listArea=new Rect(area.x,area.y+40,area.width,area.height-40);
-            int count=quickPartCategory==0?7:quickPartCategory==1?11:quickPartCategory==2?R4WeaponDefinition.Count:shopKinds.Length-3+bonuses.Length;
+            int count=quickPartCategory==0?7:quickPartCategory==1?12:quickPartCategory==2?R4WeaponDefinition.Count:shopKinds.Length-3+bonuses.Length;
             quickPartsScroll=GUI.BeginScrollView(listArea,quickPartsScroll,new Rect(0,0,rowWidth,Mathf.Max(listArea.height,count*38)));
             int row=0;
             for(int i=0;i<shopKinds.Length;i++)
@@ -103,7 +105,8 @@ namespace RoboRougelike.R1
                 if(kind==R3PartKind.Wheel)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,TwinWheelGroup,"Koło bliźniacze",row++,rowWidth);
                 if(kind==R3PartKind.Wheel)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,SteerWheelGroup,"Koło skrętne drogowe",row++,rowWidth);
                 if(kind==R3PartKind.Wheel)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,LargeSteerWheelGroup,"Duże koło skrętne",row++,rowWidth);
-                if(kind==R3PartKind.Wheel)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,CasterWheelGroup,"Kółko samonastawne",row++,rowWidth);}
+                if(kind==R3PartKind.Wheel)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,CasterWheelGroup,"Kółko samonastawne",row++,rowWidth);
+                if(kind==R3PartKind.Wheel)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,SwingWheelGroup,"Koło na wahaczu",row++,rowWidth);}
             if(QuickCategoryIncludes(quickPartCategory,R3PartKind.Gun))for(int i=0;i<R4WeaponDefinition.Count;i++)
             {var weapon=(R4WeaponKind)i;DrawQuickPartRow(run,R3PartKind.Gun,weapon,null,R4WeaponDefinition.Get(weapon).Name,row++,rowWidth);}
             if(QuickCategoryIncludes(quickPartCategory,R3PartKind.BonusModule))foreach(var bonus in bonuses)
@@ -153,7 +156,7 @@ namespace RoboRougelike.R1
                 catalogGroup.HasValue?"Wybierz egzemplarz lub kup część.":"Wybierz część z listy.",small);
             var inspectedWheel=garage.Tool==R41GarageTool.Inspect&&garage.HasTarget?model.At(garage.Cell):null;
             if(inspectedWheel!=null&&inspectedWheel.Kind==R3PartKind.Wheel&&!R3VehicleModel.CanSwapWheelAppearance(inspectedWheel.WheelStyle))
-                GUI.Label(new Rect(12,560,245,42),inspectedWheel.WheelStyle==R3WheelStyle.CasterSlick?"Samonastawne • 4 kg • połowa napędu":inspectedWheel.WheelStyle==R3WheelStyle.SteerOffroad?"Duże skrętne • 16 kg • +15% napędu":inspectedWheel.WheelStyle==R3WheelStyle.SteerRoad?"Skrętne • 12 kg • standardowy napęd":inspectedWheel.WheelStyle==R3WheelStyle.TwinRoad?"Bliźniacze • 12 kg • standardowy napęd":inspectedWheel.WheelStyle==R3WheelStyle.SpikedFork?"Kolce • 12 kg • standardowy napęd":inspectedWheel.WheelStyle==R3WheelStyle.SmallFork?"Małe koło • 6 kg • −35% napędu":inspectedWheel.WheelStyle==R3WheelStyle.BalloonFork?"Balonowe • 16 kg • +15% napędu":inspectedWheel.WheelStyle==R3WheelStyle.Monster?"Monster XL • 24 kg • +50% napędu":"Duże koło • 18 kg • +25% napędu",small);
+                GUI.Label(new Rect(12,560,245,42),inspectedWheel.WheelStyle==R3WheelStyle.SwingOffroad?"Wahacz • 12 kg • standardowy napęd":inspectedWheel.WheelStyle==R3WheelStyle.CasterSlick?"Samonastawne • 4 kg • połowa napędu":inspectedWheel.WheelStyle==R3WheelStyle.SteerOffroad?"Duże skrętne • 16 kg • +15% napędu":inspectedWheel.WheelStyle==R3WheelStyle.SteerRoad?"Skrętne • 12 kg • standardowy napęd":inspectedWheel.WheelStyle==R3WheelStyle.TwinRoad?"Bliźniacze • 12 kg • standardowy napęd":inspectedWheel.WheelStyle==R3WheelStyle.SpikedFork?"Kolce • 12 kg • standardowy napęd":inspectedWheel.WheelStyle==R3WheelStyle.SmallFork?"Małe koło • 6 kg • −35% napędu":inspectedWheel.WheelStyle==R3WheelStyle.BalloonFork?"Balonowe • 16 kg • +15% napędu":inspectedWheel.WheelStyle==R3WheelStyle.Monster?"Monster XL • 24 kg • +50% napędu":"Duże koło • 18 kg • +25% napędu",small);
             else if(inspectedWheel!=null&&inspectedWheel.Kind==R3PartKind.Wheel)
             {
                 GUI.enabled=!garageOptionsOpen&&inspectedWheel.Health>0;
@@ -215,7 +218,7 @@ namespace RoboRougelike.R1
                 "Wybierz część z listy.",small);
             var inspectedWheel=garage.Tool==R41GarageTool.Inspect&&garage.HasTarget?model.At(garage.Cell):null;
             if(inspectedWheel!=null&&inspectedWheel.Kind==R3PartKind.Wheel&&!R3VehicleModel.CanSwapWheelAppearance(inspectedWheel.WheelStyle))
-                GUI.Label(new Rect(458,690,286,40),inspectedWheel.WheelStyle==R3WheelStyle.CasterSlick?"Samonastawne • 4 kg • połowa napędu":inspectedWheel.WheelStyle==R3WheelStyle.SteerOffroad?"Duże skrętne • 16 kg • +15% napędu":inspectedWheel.WheelStyle==R3WheelStyle.SteerRoad?"Skrętne • 12 kg • standardowy napęd":inspectedWheel.WheelStyle==R3WheelStyle.TwinRoad?"Bliźniacze • 12 kg • standardowy napęd":inspectedWheel.WheelStyle==R3WheelStyle.SpikedFork?"Kolce • 12 kg • standardowy napęd":inspectedWheel.WheelStyle==R3WheelStyle.SmallFork?"Małe koło • 6 kg • −35% napędu":inspectedWheel.WheelStyle==R3WheelStyle.BalloonFork?"Balonowe • 16 kg • +15% napędu":inspectedWheel.WheelStyle==R3WheelStyle.Monster?"Monster XL • 24 kg • +50% napędu":"Duże koło • 18 kg • +25% napędu",small);
+                GUI.Label(new Rect(458,690,286,40),inspectedWheel.WheelStyle==R3WheelStyle.SwingOffroad?"Wahacz • 12 kg • standardowy napęd":inspectedWheel.WheelStyle==R3WheelStyle.CasterSlick?"Samonastawne • 4 kg • połowa napędu":inspectedWheel.WheelStyle==R3WheelStyle.SteerOffroad?"Duże skrętne • 16 kg • +15% napędu":inspectedWheel.WheelStyle==R3WheelStyle.SteerRoad?"Skrętne • 12 kg • standardowy napęd":inspectedWheel.WheelStyle==R3WheelStyle.TwinRoad?"Bliźniacze • 12 kg • standardowy napęd":inspectedWheel.WheelStyle==R3WheelStyle.SpikedFork?"Kolce • 12 kg • standardowy napęd":inspectedWheel.WheelStyle==R3WheelStyle.SmallFork?"Małe koło • 6 kg • −35% napędu":inspectedWheel.WheelStyle==R3WheelStyle.BalloonFork?"Balonowe • 16 kg • +15% napędu":inspectedWheel.WheelStyle==R3WheelStyle.Monster?"Monster XL • 24 kg • +50% napędu":"Duże koło • 18 kg • +25% napędu",small);
             else if(inspectedWheel!=null&&inspectedWheel.Kind==R3PartKind.Wheel)
             {
                 GUI.enabled=!garageOptionsOpen&&inspectedWheel.Health>0;
