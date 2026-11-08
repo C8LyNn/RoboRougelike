@@ -1,4 +1,4 @@
-using System.Linq;
+using System.Collections.Generic;
 using UnityEngine;
 using RogueMachine.P12PipelineSafe;
 using RoboRougelike.Mechanics.Booster;
@@ -31,6 +31,8 @@ namespace RoboRougelike.R3
     {
         R3VehicleAssembly assembly;
         P12PipelineSafeDamageable enemyCore;
+        readonly List<VehicleEnergyBattery> enemyBatteries=new List<VehicleEnergyBattery>();
+        readonly List<RoboRougelike.WeaponIntegration.RRLShieldBinding> enemyShields=new List<RoboRougelike.WeaponIntegration.RRLShieldBinding>();
         VehicleEnergyState state = new VehicleEnergyState();
         public float Current { get { Refresh(); return state.Current; } }
         public float Maximum { get { Refresh(); return state.Maximum; } }
@@ -70,9 +72,15 @@ namespace RoboRougelike.R3
             }
             else if(enemyCore!=null)
             {
-                var batteries=GetComponentsInChildren<VehicleEnergyBattery>().Where(b=>b.IsAvailable(transform)).Sum(b=>R3VehicleModel.TierEffectUnits(b.Tier));
-                var passive=GetComponentsInChildren<RoboRougelike.WeaponIntegration.RRLShieldBinding>()
-                    .Count(s=>s.Device!=null&&s.Device.HardwareAvailable);
+                int batteries=0,passive=0;
+                GetComponentsInChildren(false,enemyBatteries);
+                foreach(var battery in enemyBatteries)
+                    if(battery!=null&&battery.IsAvailable(transform))batteries+=R3VehicleModel.TierEffectUnits(battery.Tier);
+                enemyBatteries.Clear();
+                GetComponentsInChildren(false,enemyShields);
+                foreach(var shield in enemyShields)
+                    if(shield!=null&&shield.Device!=null&&shield.Device.HardwareAvailable)passive++;
+                enemyShields.Clear();
                 state.SetAdditionalPassiveReservation(0);
                 state.Refresh(batteries,passive,!enemyCore.IsDead&&enemyCore.transform.IsChildOf(transform));
                 state.SetRegeneratorCount(0);
