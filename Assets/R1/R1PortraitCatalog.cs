@@ -87,7 +87,7 @@ namespace RoboRougelike.R1
                 if(GUI.Button(new Rect(rect.x,rect.y+31,102,60),"Wybierz\ndo montażu",compactButton))PortraitCatalogSelectItem(run,item.Id);
                 GUI.backgroundColor=Color.white;
                 int repair=model.RepairCost(item);GUI.enabled=repair>0&&model.Scrap>=repair;
-                if(GUI.Button(new Rect(rect.x+108,rect.y+31,102,60),$"Napraw\n{repair} Z",compactButton))PortraitCatalogRepair(run,item.Id);
+                if(GUI.Button(new Rect(rect.x+108,rect.y+31,102,60),GarageRepairCaption(item,repair,model.Scrap),compactButton))PortraitCatalogRepair(run,item.Id);
                 GUI.enabled=true;
                 if(GUI.Button(new Rect(rect.x+216,rect.y+31,114,60),dismantleConfirmation==item.Id?"Potwierdź\nrozmontowanie":$"Rozmontuj\n→ {model.DismantleValue(item)} Z",compactButton))PortraitCatalogDismantle(run,item.Id);
             }
@@ -95,7 +95,7 @@ namespace RoboRougelike.R1
             int price=model.Price(selectedKind,selectedWeapon);
             bool unlocked=run.CanBuyTechnology(selectedKind,selectedWeapon);
             GUI.enabled=unlocked&&selectedKind!=R3PartKind.BonusModule&&model.Scrap>=price&&model.Inventory.Count<R3VehicleModel.InventoryCapacity;
-            if(GUI.Button(PortraitCatalogBuyRect(),GaragePurchaseCaption(selectedKind,unlocked,price,true),compactButton))PortraitCatalogPurchase(run,selectedKind,selectedWeapon);
+            if(GUI.Button(PortraitCatalogBuyRect(),GaragePurchaseCaption(selectedKind,unlocked,price,model.Scrap,model.Inventory.Count>=R3VehicleModel.InventoryCapacity,true),compactButton))PortraitCatalogPurchase(run,selectedKind,selectedWeapon);
             GUI.enabled=true;
             var selected=items.FirstOrDefault(p=>p.Id==run.Garage.SelectedInventoryId);
             if(selected!=null&&R3VehicleModel.SupportsFusion(selected.Kind,selected.Weapon))DrawFusionButton(run,selected,new Rect(390,875,354,52));
