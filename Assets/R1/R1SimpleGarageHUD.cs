@@ -25,7 +25,7 @@ namespace RoboRougelike.R1
                 kind==R3PartKind.DrivePower?$"Silnik T{R3VehicleModel.NormalizedTier(part.Tier)} wspomaga koła; rezerwuje {25+R3VehicleModel.TierPassiveExtra(part.Tier):0} energii.":
                 kind==R3PartKind.EnergyRegenerator?$"Regenerator T{R3VehicleModel.NormalizedTier(part.Tier)}: +{5*R3VehicleModel.TierEffectUnits(part.Tier)} energii/s, rezerwa {25+R3VehicleModel.TierPassiveExtra(part.Tier):0}.":
                 kind==R3PartKind.Armor&&part.ArmorShape==R3ArmorShape.Wedge?"Klin: montaż od spodu lub od tylnej płaskiej ściany. Obracaj Q/E, R/F, Z/X.":
-                kind==R3PartKind.Wheel&&part.WheelStyle==R3WheelStyle.SmallFork?"Małe koło: 6 kg, −35% siły przyczepności. Mocowanie od góry.":
+                kind==R3PartKind.Wheel&&part.WheelStyle==R3WheelStyle.SmallFork?"Małe koło: 6 kg, −35% siły przyczepności. PPM: spójrz pod pojazd i zamontuj od spodu.":
                 kind==R3PartKind.Wheel&&part.WheelStyle==R3WheelStyle.Monster?"Koło monster XL: 24 kg i +50% siły przyczepności. Potrzebuje dużo miejsca.":
                 kind==R3PartKind.Wheel&&part.WheelStyle==R3WheelStyle.LargeOffroad?"Duże koło: 18 kg i +25% siły przyczepności. Potrzebuje więcej miejsca.":
                 kind==R3PartKind.Wheel?"Średnie terenowe i szosowe mają takie same właściwości jezdne. Kliknij pojazd, aby zamontować.":"Kliknij pojazd, aby zamontować część.";}
