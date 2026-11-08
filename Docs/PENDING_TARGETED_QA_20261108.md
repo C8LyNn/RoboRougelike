@@ -21,6 +21,7 @@ Przed testami sprawdź izolację danych. Testy map używają losowych nazw plik�
 3. Po walce: zbierz ostatnią kostkę przed końcem odliczania; po wyborze nagród pierwszy Enter powinien je zatwierdzić. Podczas odliczania Enter nadal powinien je pominąć.
 4. Złom: tylko na odizolowanym profilu blisko limitu portfela porównaj podgląd, rzeczywistą wypłatę i podsumowanie.
 5. Strzelba, railgun i obrona punktowa: sprawdź komunikaty przy pełnym/pustym magazynku, przeładowaniu i blokadzie EMP.
+6. Energia modułów pasywnych: zanotuj spadek maksimum dla poziomów T1/T2/T3. Aktualne źródła naliczają odpowiednio 25/30/35, a wcześniejsza instrukcja użytkownika mówiła o 25 na moduł; zaakceptowany balans wyższych poziomów pozostaje do rozstrzygnięcia. Nie zmieniano naliczania.
 
 Oceń tekst i sterowanie także w pionowym i poziomym układzie. Nie traktuj przygotowanych testów ani kompilacji Roslyn jako PASS w Unity. Historyczny problem automatycznego zamykania C0000005 pozostaje niewyjaśniony.
 
