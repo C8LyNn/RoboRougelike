@@ -24,6 +24,7 @@ namespace RoboRougelike.R4_1
         public GameObject SteerRoadWheel;
         public GameObject SteerOffroadWheel;
         public GameObject CasterSlickWheel;
+        public GameObject SwingOffroadWheel;
         public GameObject ModelFor(R3PartKind kind)
         {
             if(Models==null)return null;

@@ -28,7 +28,7 @@ namespace RoboRougelike.R1
 
             var model=run.VehicleModel;
             var bonuses=model.Inventory.Where(p=>p.Kind==R3PartKind.BonusModule).Select(p=>p.UpgradeId).Distinct().ToArray();
-            int count=shopKinds.Length+15+R4WeaponDefinition.Count+bonuses.Length;
+            int count=shopKinds.Length+16+R4WeaponDefinition.Count+bonuses.Length;
             var groups=PortraitCatalogGroupsViewport();
             catalogScroll=GUI.BeginScrollView(groups,catalogScroll,new Rect(0,0,320,Mathf.Max(groups.height,count*56)));
             int row=0;
@@ -52,6 +52,7 @@ namespace RoboRougelike.R1
                 if(kind==R3PartKind.Wheel)DrawPortraitCatalogGroup(run,kind,R4WeaponKind.Basic,SteerWheelGroup,"Koło skrętne drogowe",row++);
                 if(kind==R3PartKind.Wheel)DrawPortraitCatalogGroup(run,kind,R4WeaponKind.Basic,LargeSteerWheelGroup,"Duże koło skrętne",row++);
                 if(kind==R3PartKind.Wheel)DrawPortraitCatalogGroup(run,kind,R4WeaponKind.Basic,CasterWheelGroup,"Kółko samonastawne",row++);
+                if(kind==R3PartKind.Wheel)DrawPortraitCatalogGroup(run,kind,R4WeaponKind.Basic,SwingWheelGroup,"Koło na wahaczu",row++);
             }
             for(int i=0;i<R4WeaponDefinition.Count;i++)
             {
