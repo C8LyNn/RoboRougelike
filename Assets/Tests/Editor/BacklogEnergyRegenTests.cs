@@ -29,6 +29,26 @@ public sealed class BacklogEnergyRegenTests
         model.Parts.Add(new R3PartState(default,R3PartKind.Gyroscope){Tier=3});model.RefreshEnergyLayout();
         Assert.That(model.Energy.Maximum,Is.EqualTo(before-75));
     }
+    [Test] public void CheckpointPreservesTieredBatteryPassiveReservationAndCurrentCharge()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(500);
+        foreach(var kind in new[]{R3PartKind.Battery,R3PartKind.DrivePower})
+        {
+            var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .First(c=>model.PlacementError(c,kind,false)==null);
+            Assert.That(model.Buy(cell,kind),Is.True);
+        }
+        var battery=model.Parts.Single(p=>p.Kind==R3PartKind.Battery);battery.Tier=2;
+        var motor=model.Parts.Single(p=>p.Kind==R3PartKind.DrivePower);motor.Tier=3;
+        model.PrepareInitialEnergy();Assert.That(model.Energy.Maximum,Is.EqualTo(675));
+        Assert.That(model.Energy.TrySpend(model.Energy.Current-123),Is.True);
+        var checkpoint=model.MakeCheckpoint(10);
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,10,out var restored,out var error),Is.True,error);
+        Assert.That(restored.Parts.Single(p=>p.Id==battery.Id).Tier,Is.EqualTo(2));
+        Assert.That(restored.Parts.Single(p=>p.Id==motor.Id).Tier,Is.EqualTo(3));
+        Assert.That(restored.Energy.Maximum,Is.EqualTo(675));Assert.That(restored.Energy.Current,Is.EqualTo(123));
+        restored.PrepareInitialEnergy();Assert.That(restored.Energy.Current,Is.EqualTo(123),"Loading a started run must not refill the battery.");
+    }
     [Test]
     public void MountedRegeneratorReservesEnergyAndIncreasesRecovery()
     {

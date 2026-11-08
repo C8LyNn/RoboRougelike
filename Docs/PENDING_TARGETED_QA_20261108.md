@@ -11,7 +11,7 @@ Użyj Unity 6000.3.14f1 i zachowaj XML, Editor.log oraz kody zakończenia. Nie u
 - `UI943PortraitRewardsActionsTests`: `CollectedFinalPickupDoesNotConsumeRewardConfirmationKey`, `EscapeClosesRewardInventoryBeforePausingAndCancelsConfirmation`.
 - `UI943WeaponStatusTests`: `ManualReloadHintRespectsDeviceAvailability`, `DefenseRowsUseActualMountedDevicesInOrderAcrossPages`.
 - `RRLW34RewardTests`: `ScrapPreviewAndLedgerReportOnlyAmountActuallyCredited`, `DismantlePreviewMatchesWalletChangeAtTheLimit`.
-- `BacklogEnergyRegenTests`: `EveryPassiveTierReservesTwentyFiveAndDestructionReleasesIt`, `MixedPassiveTiersEachReserveTwentyFive`; `BacklogDeviceTierTests`: `UpgradedMotorUsesTwoPowerUnitsAndTwentyFiveEnergyReservation`.
+- `BacklogEnergyRegenTests`: `EveryPassiveTierReservesTwentyFiveAndDestructionReleasesIt`, `MixedPassiveTiersEachReserveTwentyFive`, `CheckpointPreservesTieredBatteryPassiveReservationAndCurrentCharge`; `BacklogDeviceTierTests`: `UpgradedMotorUsesTwoPowerUnitsAndTwentyFiveEnergyReservation`.
 - `RRLW6ShieldPhysicalTests`: `EnemyShieldKeepsPassiveReservationDuringEmpUntilDestroyed`.
 
 Przed testami sprawdź izolację danych. Testy map używają losowych nazw plików w katalogu map i usuwają własne pliki; testy w batch Editorze używają osobnego profilu technologii. Nie nadpisuj ani nie usuwaj zapisów gracza. Jeśli izolacji nie da się potwierdzić, oznacz odpowiedni przypadek NOT RUN.
