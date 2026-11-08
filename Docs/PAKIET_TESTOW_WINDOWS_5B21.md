@@ -30,3 +30,5 @@ Przy każdej usterce podaj numer próby, pojazd, mapę i krótki opis: co zrobi�
 Zmiana opisów modułów bonusowych powstała **po buildzie 5b21** i nie znajduje się w ZIP-ie wskazanym wyżej. Gdy będzie nowy build, sprawdź uszkodzony bonus w magazynie: jego zakup powinien być opisany jako dostępny tylko z nagród, a garaż powinien wskazywać naprawę posiadanego egzemplarza. To zmiana napisów; sama naprawa i zasady nagród nie były zmieniane.
 
 Na kolejnym buildzie sprawdź też opis baterii: lista grup powinna mówić ogólnie „Bateria”, a poszczególne egzemplarze pokazywać pojemność właściwą dla poziomu: T1 +100, T2 +200, T3 +400. Sama pojemność energii nie była zmieniana.
+
+W następnym buildzie sprawdź również, czy garaż wyjaśnia brak złomu lub pełny magazyn, czy naprawa sprawnej części jest oznaczona jako niepotrzebna oraz czy uszkodzony egzemplarz można znaleźć i naprawić. Porównaj masę i nominalną siłę tego samego koła na różnych poziomach; wartości dotyczą pełnego HP. Zweryfikuj czytelność długich nazw w poziomym i pionowym układzie. Te zmiany nie są w ZIP-ie 5b21.

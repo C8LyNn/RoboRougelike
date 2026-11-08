@@ -17,9 +17,29 @@ namespace RoboRougelike.R1
             category==1?kind==R3PartKind.Wheel:category==2?kind==R3PartKind.Gun:
             category==3&&kind!=R3PartKind.Armor&&kind!=R3PartKind.Wheel&&kind!=R3PartKind.Gun;
 
-        static string GaragePurchaseCaption(R3PartKind kind,bool unlocked,int price,bool toInventory=false)=>
+        static string GaragePurchaseCaption(R3PartKind kind,bool unlocked,int price,int scrap,bool full,bool toInventory=false)=>
             kind==R3PartKind.BonusModule?"Tylko z nagród":
-            !unlocked?"Pokonaj wroga z tą bronią":toInventory?$"Kup do magazynu — {price} Z":$"Kup — {price} Z";
+            !unlocked?"Pokonaj wroga z tą bronią":full?"Magazyn pełny":
+            scrap<price?$"Brakuje {price-scrap} Z":toInventory?$"Kup do magazynu — {price} Z":$"Kup — {price} Z";
+
+        static string GarageRepairCaption(R3PartState part,int price,int scrap)=>
+            part.Health>=1?"Część sprawna":price<=0?"Nie można naprawić":
+            scrap<price?$"Brakuje {price-scrap} Z":$"Napraw — {price} Z";
+
+        static string GarageWheelStats(R3PartState part)=>
+            $"{R4WeaponDefinition.WheelName(part.WheelStyle)} T{R3VehicleModel.NormalizedTier(part.Tier)} • {R4WeaponDefinition.PartMass(part):0.#} kg\n"+
+            $"Siła {100*R3VehicleModel.WheelTraction(part.WheelStyle)*R3VehicleModel.TierWheelTraction(part.Tier):0}% przy 100% HP";
+
+        static string GarageWheelSelection(R3PartState part)
+        {
+            string hint=part.WheelStyle==R3WheelStyle.SwingOffroad?"Oś podąża za nierównościami.":
+                part.WheelStyle==R3WheelStyle.CasterSlick?"Koło obraca się zgodnie z ruchem.":
+                part.WheelStyle==R3WheelStyle.SteerOffroad||part.WheelStyle==R3WheelStyle.SteerRoad?"Zwrotnica wymaga modułu skrętu osi.":
+                part.WheelStyle==R3WheelStyle.SpikedFork?"Kolce są wizualne.":
+                part.WheelStyle==R3WheelStyle.Monster||part.WheelStyle==R3WheelStyle.LargeOffroad?"Potrzebuje więcej miejsca.":
+                R3VehicleModel.HasForkMount(part.WheelStyle)?"Mocowanie od góry.":"Kliknij pojazd, aby zamontować.";
+            return GarageWheelStats(part)+". "+hint+(R3VehicleModel.HasForkMount(part.WheelStyle)?" U: widok od spodu.":"");
+        }
 
         string SimpleGarageFeedback(R1RunController run)
         {
@@ -63,23 +83,14 @@ namespace RoboRougelike.R1
                 $"Bateria T{R3VehicleModel.NormalizedTier(part.Tier)}: +{VehicleEnergyState.BatteryCapacity*R3VehicleModel.TierEffectUnits(part.Tier):0} maks. energii. Kliknij, aby zamontować.":
                 kind==R3PartKind.RepairPulse?
                 $"Impuls T{R3VehicleModel.NormalizedTier(part.Tier)}: V, {R3RepairPulse.EnergyCost*R3VehicleModel.TierActivationCost(part.Tier):0} energii, 5 s. Kliknij, aby zamontować.":
-                kind==R3PartKind.DrivePower?$"Silnik T{R3VehicleModel.NormalizedTier(part.Tier)} wspomaga koła; rezerwuje {25+R3VehicleModel.TierPassiveExtra(part.Tier):0} energii.":
-                kind==R3PartKind.EnergyRegenerator?$"Regenerator T{R3VehicleModel.NormalizedTier(part.Tier)}: +{5*R3VehicleModel.TierEffectUnits(part.Tier)} energii/s, rezerwa {25+R3VehicleModel.TierPassiveExtra(part.Tier):0}.":
+                kind==R3PartKind.DrivePower?$"Silnik T{R3VehicleModel.NormalizedTier(part.Tier)} wspomaga koła; rezerwuje {VehicleEnergyState.PassiveReservation+R3VehicleModel.TierPassiveExtra(part.Tier):0} energii.":
+                kind==R3PartKind.EnergyRegenerator?$"Regenerator T{R3VehicleModel.NormalizedTier(part.Tier)}: +{VehicleEnergyState.RegenerationPerModule*R3VehicleModel.TierEffectUnits(part.Tier):0} energii/s, rezerwa {VehicleEnergyState.PassiveReservation+R3VehicleModel.TierPassiveExtra(part.Tier):0}.":
                 kind==R3PartKind.Gun&&weapon==R4WeaponKind.RocketLauncher?"Rakiety ładują się automatycznie po opróżnieniu. Kliknij, aby zamontować.":
                 kind==R3PartKind.Armor&&part.ArmorShape==R3ArmorShape.Wedge?"Klin: montaż od spodu lub od tylnej płaskiej ściany. Obracaj Q/E, R/F, Z/X.":
-                kind==R3PartKind.Wheel&&part.WheelStyle==R3WheelStyle.SwingOffroad?"Koło na wahaczu: 12 kg. Oś podąża za nierównościami.":
-                kind==R3PartKind.Wheel&&part.WheelStyle==R3WheelStyle.CasterSlick?"Kółko samonastawne: 4 kg, połowa napędu. Obraca się zgodnie z ruchem.":
-                kind==R3PartKind.Wheel&&part.WheelStyle==R3WheelStyle.SteerOffroad?"Duże koło skrętne: 16 kg, +15% napędu. Zwrotnica z modułem skrętu osi.":
-                kind==R3PartKind.Wheel&&part.WheelStyle==R3WheelStyle.SteerRoad?"Koło skrętne: 12 kg. Ruch zwrotnicy z modułem skrętu osi. U: widok od spodu.":
-                kind==R3PartKind.Wheel&&part.WheelStyle==R3WheelStyle.TwinRoad?"Koło bliźniacze: 12 kg, dwie opony. U: widok od spodu.":
-                kind==R3PartKind.Wheel&&part.WheelStyle==R3WheelStyle.SpikedFork?"Koło z kolcami: 12 kg. U: widok od spodu. Kolce są wizualne.":
-                kind==R3PartKind.Wheel&&part.WheelStyle==R3WheelStyle.BalloonFork?"Koło balonowe: 16 kg, +15% siły przyczepności. U: widok od spodu.":
-                kind==R3PartKind.Wheel&&part.WheelStyle==R3WheelStyle.SmallFork?"Małe koło: 6 kg, −35% siły przyczepności. PPM: spójrz pod pojazd i zamontuj od spodu.":
-                kind==R3PartKind.Wheel&&part.WheelStyle==R3WheelStyle.Monster?"Koło monster XL: 24 kg i +50% siły przyczepności. Potrzebuje dużo miejsca.":
-                kind==R3PartKind.Wheel&&part.WheelStyle==R3WheelStyle.LargeOffroad?"Duże koło: 18 kg i +25% siły przyczepności. Potrzebuje więcej miejsca.":
-                kind==R3PartKind.Wheel?"Średnie terenowe i szosowe mają takie same właściwości jezdne. Kliknij pojazd, aby zamontować.":"Kliknij pojazd, aby zamontować część.";}
+                kind==R3PartKind.Wheel?GarageWheelSelection(part):"Kliknij pojazd, aby zamontować część.";}
             else {garage.SelectedInventoryId=null;garage.SetTool(R41GarageTool.Mount);
                 garage.Message=kind==R3PartKind.BonusModule?"Brak sprawnego bonusu. Otwórz egzemplarze i napraw część.":
+                    run.VehicleModel.Inventory.Any(p=>InCatalogGroup(p,kind,weapon,bonus))?"Brak sprawnej części. Otwórz egzemplarze i napraw ją.":
                     !run.CanBuyTechnology(kind,weapon)?"Zablokowane: pokonaj przeciwnika z tą bronią, aby odkryć technologię.":kind==R3PartKind.Battery?
                     $"Bateria T1: +{VehicleEnergyState.BatteryCapacity:0} maks. energii. Kup część lub otwórz szczegóły.":kind==R3PartKind.RepairPulse?
                     "Impuls naprawczy: V, 15 energii, 5 s. Kup część lub otwórz szczegóły.":
@@ -198,7 +209,7 @@ namespace RoboRougelike.R1
                 catalogGroup.HasValue?"Wybierz egzemplarz lub kup część.":"Wybierz część z listy.",small);
             var inspectedWheel=garage.Tool==R41GarageTool.Inspect&&garage.HasTarget?model.At(garage.Cell):null;
             if(inspectedWheel!=null&&inspectedWheel.Kind==R3PartKind.Wheel&&!R3VehicleModel.CanSwapWheelAppearance(inspectedWheel.WheelStyle))
-                GUI.Label(new Rect(12,560,245,42),inspectedWheel.WheelStyle==R3WheelStyle.SwingOffroad?"Wahacz • 12 kg • standardowy napęd":inspectedWheel.WheelStyle==R3WheelStyle.CasterSlick?"Samonastawne • 4 kg • połowa napędu":inspectedWheel.WheelStyle==R3WheelStyle.SteerOffroad?"Duże skrętne • 16 kg • +15% napędu":inspectedWheel.WheelStyle==R3WheelStyle.SteerRoad?"Skrętne • 12 kg • standardowy napęd":inspectedWheel.WheelStyle==R3WheelStyle.TwinRoad?"Bliźniacze • 12 kg • standardowy napęd":inspectedWheel.WheelStyle==R3WheelStyle.SpikedFork?"Kolce • 12 kg • standardowy napęd":inspectedWheel.WheelStyle==R3WheelStyle.SmallFork?"Małe koło • 6 kg • −35% napędu":inspectedWheel.WheelStyle==R3WheelStyle.BalloonFork?"Balonowe • 16 kg • +15% napędu":inspectedWheel.WheelStyle==R3WheelStyle.Monster?"Monster XL • 24 kg • +50% napędu":"Duże koło • 18 kg • +25% napędu",small);
+                GUI.Label(new Rect(12,560,245,42),GarageWheelStats(inspectedWheel),small);
             else if(inspectedWheel!=null&&inspectedWheel.Kind==R3PartKind.Wheel)
             {
                 GUI.enabled=!garageOptionsOpen&&inspectedWheel.Health>0;
@@ -215,7 +226,7 @@ namespace RoboRougelike.R1
                 var kind=catalogGroup.Value;int price=model.Price(kind,catalogWeapon);
                 bool unlocked=run.CanBuyTechnology(kind,catalogWeapon);
                 GUI.enabled=!garageOptionsOpen&&unlocked&&kind!=R3PartKind.BonusModule&&model.Scrap>=price&&model.Inventory.Count<R3VehicleModel.InventoryCapacity;
-                if(GUI.Button(new Rect(12,560,245,42),GaragePurchaseCaption(kind,unlocked,price),compactButton))BuyQuickPart(run);
+                if(GUI.Button(new Rect(12,560,245,42),GaragePurchaseCaption(kind,unlocked,price,model.Scrap,model.Inventory.Count>=R3VehicleModel.InventoryCapacity),compactButton))BuyQuickPart(run);
                 GUI.enabled=!garageOptionsOpen;
             }
             if(GUI.Button(new Rect(12,610,245,42),"Egzemplarze i naprawy",compactButton))
@@ -258,7 +269,7 @@ namespace RoboRougelike.R1
                 "Wybierz część z listy.",small);
             var inspectedWheel=garage.Tool==R41GarageTool.Inspect&&garage.HasTarget?model.At(garage.Cell):null;
             if(inspectedWheel!=null&&inspectedWheel.Kind==R3PartKind.Wheel&&!R3VehicleModel.CanSwapWheelAppearance(inspectedWheel.WheelStyle))
-                GUI.Label(new Rect(458,690,286,40),inspectedWheel.WheelStyle==R3WheelStyle.SwingOffroad?"Wahacz • 12 kg • standardowy napęd":inspectedWheel.WheelStyle==R3WheelStyle.CasterSlick?"Samonastawne • 4 kg • połowa napędu":inspectedWheel.WheelStyle==R3WheelStyle.SteerOffroad?"Duże skrętne • 16 kg • +15% napędu":inspectedWheel.WheelStyle==R3WheelStyle.SteerRoad?"Skrętne • 12 kg • standardowy napęd":inspectedWheel.WheelStyle==R3WheelStyle.TwinRoad?"Bliźniacze • 12 kg • standardowy napęd":inspectedWheel.WheelStyle==R3WheelStyle.SpikedFork?"Kolce • 12 kg • standardowy napęd":inspectedWheel.WheelStyle==R3WheelStyle.SmallFork?"Małe koło • 6 kg • −35% napędu":inspectedWheel.WheelStyle==R3WheelStyle.BalloonFork?"Balonowe • 16 kg • +15% napędu":inspectedWheel.WheelStyle==R3WheelStyle.Monster?"Monster XL • 24 kg • +50% napędu":"Duże koło • 18 kg • +25% napędu",small);
+                GUI.Label(new Rect(458,690,286,40),GarageWheelStats(inspectedWheel),small);
             else if(inspectedWheel!=null&&inspectedWheel.Kind==R3PartKind.Wheel)
             {
                 GUI.enabled=!garageOptionsOpen&&inspectedWheel.Health>0;
@@ -275,7 +286,7 @@ namespace RoboRougelike.R1
                 var kind=catalogGroup.Value;int price=model.Price(kind,catalogWeapon);
                 bool unlocked=run.CanBuyTechnology(kind,catalogWeapon);
                 GUI.enabled=!garageOptionsOpen&&unlocked&&kind!=R3PartKind.BonusModule&&model.Scrap>=price&&model.Inventory.Count<R3VehicleModel.InventoryCapacity;
-                if(GUI.Button(new Rect(458,690,286,40),GaragePurchaseCaption(kind,unlocked,price),compactButton))BuyQuickPart(run);
+                if(GUI.Button(new Rect(458,690,286,40),GaragePurchaseCaption(kind,unlocked,price,model.Scrap,model.Inventory.Count>=R3VehicleModel.InventoryCapacity),compactButton))BuyQuickPart(run);
                 GUI.enabled=!garageOptionsOpen;
             }
             if(GUI.Button(new Rect(458,737,286,40),"Egzemplarze i naprawy",compactButton))

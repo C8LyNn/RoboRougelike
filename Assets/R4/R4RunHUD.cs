@@ -201,7 +201,7 @@ namespace RoboRougelike.R1
             int price=model.Price(kind,weapon);
             bool unlocked=run.CanBuyTechnology(kind,weapon);
             GUI.enabled=unlocked&&kind!=R3PartKind.BonusModule&&model.Scrap>=price&&model.Inventory.Count<R3VehicleModel.InventoryCapacity;
-            if(GUI.Button(new Rect(970,340,280,40),GaragePurchaseCaption(kind,unlocked,price,true),compactButton))
+            if(GUI.Button(new Rect(970,340,280,40),GaragePurchaseCaption(kind,unlocked,price,model.Scrap,model.Inventory.Count>=R3VehicleModel.InventoryCapacity,true),compactButton))
             {
                 if(run.GaragePurchase(kind,weapon,kind==R3PartKind.Wheel?CatalogWheelStyle(catalogBonusId):R3WheelStyle.Offroad,
                     kind==R3PartKind.Armor?CatalogArmorShape(catalogBonusId):R3ArmorShape.Cube))
@@ -215,7 +215,7 @@ namespace RoboRougelike.R1
             GUI.Label(new Rect(970,395,280,70),$"{R4WeaponDefinition.PartName(selected)} • HP {selected.Health*100:0}%\nKliknij pojazd, aby zamontować.",small);
             int repairQuote=model.RepairCost(selected);
             GUI.enabled=repairQuote>0&&model.Scrap>=repairQuote;
-            if(GUI.Button(new Rect(970,480,280,42),$"Napraw / odbuduj — {repairQuote} Z",compactButton))run.GarageRepairInventory(selected.Id);
+            if(GUI.Button(new Rect(970,480,280,42),GarageRepairCaption(selected,repairQuote,model.Scrap),compactButton))run.GarageRepairInventory(selected.Id);
             GUI.enabled=true;
             if(GUI.Button(new Rect(970,535,280,42),dismantleConfirmation==selected.Id?"Potwierdź rozmontowanie":$"Rozmontuj → {model.DismantleValue(selected)} Z",compactButton))
             {if(dismantleConfirmation==selected.Id){run.GarageDismantle(selected.Id);dismantleConfirmation=null;return;}dismantleConfirmation=selected.Id;}
