@@ -19,9 +19,10 @@ namespace RoboRougelike.R1
             =>width>0&&height>width&&garage&&!mapEditing&&!overlay;
         private static Rect PortraitVehicleCard(int index)=>new Rect(24,150+index*180,720,166);
         private static Rect PortraitActionRect(int index)=>new Rect(24+(index%2)*370,index<2?790:855,350,index<2?54:48);
+        private void DismissCatalog(){catalogOpen=false;dismantleConfirmation=null;}
         internal bool ClosePartCatalog()
         {
-            if(catalogOpen){catalogOpen=false;return true;}
+            if(catalogOpen){DismissCatalog();return true;}
             if(garageOptionsOpen){garageOptionsOpen=false;return true;}
             return false;
         }
@@ -139,7 +140,7 @@ namespace RoboRougelike.R1
             if(run.MapEditing&&!run.Paused){DrawMapEditor(run);return;}
             if(progress.State==R1RunState.TestDrive){DrawTestRange(run);return;}
             if(progress.State==R1RunState.Garage&&!run.Transitioning){if(catalogOpen){if(portraitGarage)DrawPortraitCatalog(run);else DrawFullCatalog(run);}else if(portraitGarage)DrawSimplePortraitGarage(run);else DrawSimpleGarage(run);return;}
-            catalogOpen=false;garageOptionsOpen=false;
+            DismissCatalog();garageOptionsOpen=false;
             if (progress.State == R1RunState.Combat && !run.Transitioning)
             {
                 UpdateCombatDetails(Event.current);

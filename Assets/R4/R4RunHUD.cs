@@ -199,7 +199,7 @@ namespace RoboRougelike.R1
                 GUI.backgroundColor=Color.white;
                 int itemRepair=model.RepairCost(item);GUI.enabled=itemRepair>0&&model.Scrap>=itemRepair;
                 if(GUI.Button(new Rect(168,i*40,82,36),GarageRepairCaption(item,itemRepair,model.Scrap),compactButton))
-                    run.GarageRepairInventory(item.Id);
+                {dismantleConfirmation=null;run.GarageRepairInventory(item.Id);}
                 GUI.enabled=true;
             }
             GUI.EndScrollView();GUI.backgroundColor=Color.white;
@@ -208,9 +208,10 @@ namespace RoboRougelike.R1
             GUI.enabled=unlocked&&kind!=R3PartKind.BonusModule&&model.Scrap>=price&&model.Inventory.Count<R3VehicleModel.InventoryCapacity;
             if(GUI.Button(new Rect(970,340,280,40),GaragePurchaseCaption(kind,unlocked,price,model.Scrap,model.Inventory.Count>=R3VehicleModel.InventoryCapacity,true),compactButton))
             {
+                dismantleConfirmation=null;
                 if(run.GaragePurchase(kind,weapon,kind==R3PartKind.Wheel?CatalogWheelStyle(catalogBonusId):R3WheelStyle.Offroad,
                     kind==R3PartKind.Armor?CatalogArmorShape(catalogBonusId):R3ArmorShape.Cube))
-                {var purchased=model.Inventory.Last();garage.ChooseInventory(purchased.Id);catalogOpen=false;garage.Message="Kupiono część. Kliknij pojazd, aby ją zamontować.";}
+                {var purchased=model.Inventory.Last();garage.ChooseInventory(purchased.Id);DismissCatalog();garage.Message="Kupiono część. Kliknij pojazd, aby ją zamontować.";}
                 else garage.Message="Nie udało się kupić części.";
             }
             GUI.enabled=true;
@@ -221,7 +222,8 @@ namespace RoboRougelike.R1
                 (selected.Health<=0?"Najpierw napraw część.":"Kliknij pojazd, aby zamontować."),small);
             int repairQuote=model.RepairCost(selected);
             GUI.enabled=repairQuote>0&&model.Scrap>=repairQuote;
-            if(GUI.Button(new Rect(970,480,280,42),GarageRepairCaption(selected,repairQuote,model.Scrap),compactButton))run.GarageRepairInventory(selected.Id);
+            if(GUI.Button(new Rect(970,480,280,42),GarageRepairCaption(selected,repairQuote,model.Scrap),compactButton))
+            {dismantleConfirmation=null;run.GarageRepairInventory(selected.Id);}
             GUI.enabled=true;
             if(GUI.Button(new Rect(970,535,280,42),dismantleConfirmation==selected.Id?"Potwierdź rozmontowanie":$"Rozmontuj → {model.DismantleValue(selected)} Z",compactButton))
             {if(dismantleConfirmation==selected.Id){run.GarageDismantle(selected.Id);dismantleConfirmation=null;return;}dismantleConfirmation=selected.Id;}
@@ -234,7 +236,7 @@ namespace RoboRougelike.R1
             if(item==null)return;
             run.Garage.ChooseInventory(id);dismantleConfirmation=null;
             if(item.Health<=0){run.Garage.Message="Zniszczoną część napraw przed montażem.";return;}
-            catalogOpen=false;
+            DismissCatalog();
         }
         private void DrawFusionButton(R1RunController run,R3PartState selected,Rect rect)
         {
@@ -248,7 +250,7 @@ namespace RoboRougelike.R1
                 $"3×T{tier} → T{tier+1} • HP "+string.Join("/",group.Select(p=>(p.Health*100).ToString("0")))+"%";
             GUI.enabled=available;
             if(GUI.Button(rect,label,compactButton))
-            {if(!run.GarageFuse(group.Select(p=>p.Id)))run.Garage.Message="Nie udało się połączyć części.";}
+            {dismantleConfirmation=null;if(!run.GarageFuse(group.Select(p=>p.Id)))run.Garage.Message="Nie udało się połączyć części.";}
             GUI.enabled=true;
         }
     }

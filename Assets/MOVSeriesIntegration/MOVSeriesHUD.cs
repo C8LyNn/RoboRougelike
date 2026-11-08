@@ -55,7 +55,7 @@ namespace RoboRougelike.R1
             Panel(new Rect(0,0,1280,720));
             GUI.Label(new Rect(25,20,870,48),"KATALOG CZĘŚCI • MAGAZYN",heading);
             GUI.Label(new Rect(25,60,870,25),$"Złom: {run.VehicleModel.Scrap}  •  wybierz stos, potem egzemplarz według HP",small);
-            if(GUI.Button(new Rect(1080,20,175,40),"Wróć do garażu",compactButton)){catalogOpen=false;return;}
+            if(GUI.Button(new Rect(1080,20,175,40),"Wróć do garażu",compactButton)){DismissCatalog();return;}
             var model=run.VehicleModel;
             var bonuses=model.Inventory.Where(p=>p.Kind==R3PartKind.BonusModule).Select(p=>p.UpgradeId).Distinct().ToArray();
             int rows=shopKinds.Length+16+R4WeaponDefinition.Count+bonuses.Length;
@@ -102,7 +102,7 @@ namespace RoboRougelike.R1
             GUI.backgroundColor=chosen?new Color(.3f,.9f,.9f):Color.white;
             if(GUI.Button(new Rect((row%3)*290,(row/3)*55,280,49),$"{name}  × {count}"+(run.CanBuyTechnology(kind,weapon)?"":" • blokada"),compactButton))
             {
-                catalogGroup=kind;catalogWeapon=weapon;catalogBonusId=bonus;stackScroll=Vector2.zero;
+                catalogGroup=kind;catalogWeapon=weapon;catalogBonusId=bonus;stackScroll=Vector2.zero;dismantleConfirmation=null;
                 var garage=run.Garage;garage.SelectedPart=kind;garage.SelectedWeapon=weapon;
                 garage.SelectedInventoryId=null;garage.UseInventory=true;garage.SetTool(R41GarageTool.Mount);
                 inventoryOpen=true;
