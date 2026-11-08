@@ -23,6 +23,7 @@ namespace RoboRougelike.R1
         const string BalloonWheelGroup="wheel:balloon";
         const string SpikedWheelGroup="wheel:spiked";
         const string TwinWheelGroup="wheel:twin";
+        const string SteerWheelGroup="wheel:steer-road";
         const string WedgeArmorGroup="armor:wedge";
         const string HalfArmorGroup="armor:half";
         const string PyramidArmorGroup="armor:pyramid";
@@ -31,7 +32,7 @@ namespace RoboRougelike.R1
         const string DomeArmorGroup="armor:dome";
         static R3WheelStyle CatalogWheelStyle(string group)=>group==SlickWheelGroup?R3WheelStyle.Slick:
             group==LargeWheelGroup?R3WheelStyle.LargeOffroad:group==MonsterWheelGroup?R3WheelStyle.Monster:
-            group==SmallWheelGroup?R3WheelStyle.SmallFork:group==BalloonWheelGroup?R3WheelStyle.BalloonFork:group==SpikedWheelGroup?R3WheelStyle.SpikedFork:group==TwinWheelGroup?R3WheelStyle.TwinRoad:R3WheelStyle.Offroad;
+            group==SmallWheelGroup?R3WheelStyle.SmallFork:group==BalloonWheelGroup?R3WheelStyle.BalloonFork:group==SpikedWheelGroup?R3WheelStyle.SpikedFork:group==TwinWheelGroup?R3WheelStyle.TwinRoad:group==SteerWheelGroup?R3WheelStyle.SteerRoad:R3WheelStyle.Offroad;
         static R3ArmorShape CatalogArmorShape(string group)=>group switch {
             WedgeArmorGroup=>R3ArmorShape.Wedge,HalfArmorGroup=>R3ArmorShape.HalfBlock,
             PyramidArmorGroup=>R3ArmorShape.Pyramid,RoundArmorGroup=>R3ArmorShape.RoundEdge,
@@ -54,7 +55,7 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(1080,20,175,40),"Wróć do garażu",compactButton)){catalogOpen=false;return;}
             var model=run.VehicleModel;
             var bonuses=model.Inventory.Where(p=>p.Kind==R3PartKind.BonusModule).Select(p=>p.UpgradeId).Distinct().ToArray();
-            int rows=shopKinds.Length+12+R4WeaponDefinition.Count+bonuses.Length;
+            int rows=shopKinds.Length+13+R4WeaponDefinition.Count+bonuses.Length;
             catalogScroll=GUI.BeginScrollView(new Rect(25,98,900,570),catalogScroll,new Rect(0,0,875,Mathf.Max(570,Mathf.CeilToInt(rows/3f)*55)));
             int row=0;
             for(int i=0;i<shopKinds.Length;i++)
@@ -74,6 +75,7 @@ namespace RoboRougelike.R1
                 if(kind==R3PartKind.Wheel)DrawCatalogRow(run,kind,R4WeaponKind.Basic,BalloonWheelGroup,"Koło balonowe",row++);
                 if(kind==R3PartKind.Wheel)DrawCatalogRow(run,kind,R4WeaponKind.Basic,SpikedWheelGroup,"Koło z kolcami",row++);
                 if(kind==R3PartKind.Wheel)DrawCatalogRow(run,kind,R4WeaponKind.Basic,TwinWheelGroup,"Koło bliźniacze",row++);
+                if(kind==R3PartKind.Wheel)DrawCatalogRow(run,kind,R4WeaponKind.Basic,SteerWheelGroup,"Koło skrętne drogowe",row++);
             }
             for(int i=0;i<R4WeaponDefinition.Count;i++)
             {var weapon=(R4WeaponKind)i;DrawCatalogRow(run,R3PartKind.Gun,weapon,null,R4WeaponDefinition.Get(weapon).Name,row++);}
