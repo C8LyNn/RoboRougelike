@@ -156,6 +156,7 @@ namespace RoboRougelike.R3
         }
         public void Orbit(float degrees){yaw+=degrees;}
         public void Tilt(float degrees){pitch=Mathf.Clamp(pitch+degrees,-65,75);}
+        public void ToggleUndersideView(){pitch=pitch<0?32:-40;}
         public void Zoom(float amount){distance=Mathf.Clamp(distance+amount,3,22);}
         public void RotateSelected(int axis,int quarterTurns)
         {
@@ -450,6 +451,8 @@ namespace RoboRougelike.R3
         {
             if(run.Progress?.State!=R1RunState.Garage||run.Transitioning||run.Paused||run.QuitRequested)return;
             var screen=new Vector2(rawTopLeft.x,Screen.height-rawTopLeft.y);bool inside=InBuildArea(screen,Screen.width,Screen.height);
+            if(current.type==EventType.KeyDown&&current.keyCode==KeyCode.U)
+            {ToggleUndersideView();current.Use();return;}
             if(current.type==EventType.KeyDown&&Tool==R41GarageTool.Mount)
             {
                 int axis=-1,step=1;

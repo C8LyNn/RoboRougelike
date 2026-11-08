@@ -164,7 +164,7 @@ public sealed class R4WheelVariantsTests
         Assert.That(model.OwnedPlacementError(wheel.Id,target,Vector3Int.zero),Is.Not.Null,"Side support must not replace the upper socket.");
         Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);var shelf=model.Inventory.Last();
         garage.ChooseInventory(shelf.Id);garage.Select(new Vector3Int(3,3,2));Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);yield return null;
-        garage.ChooseInventory(wheel.Id);garage.Tilt(-200);
+        garage.ChooseInventory(wheel.Id);garage.HandleGuiPointer(new Event{type=EventType.KeyDown,keyCode=KeyCode.U},Vector2.zero);
         typeof(R3GarageView).GetMethod("LateUpdate",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(garage,null);
         var camera=(Camera)typeof(R3GarageView).GetField("view",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(garage);
         var workshopFloor=GameObject.Find("Podłoga warsztatu").GetComponent<Renderer>();
@@ -173,7 +173,8 @@ public sealed class R4WheelVariantsTests
         var shelfPosition=run.Player.transform.TransformPoint(new Vector3(3,3,2)*.55f);
         Assert.That(garage.Point(new Ray(shelfPosition-Vector3.up*.4f,Vector3.up)),Is.True,"The real underside socket must be pointable.");
         Assert.That(garage.Cell,Is.EqualTo(target));Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);yield return null;
-        garage.Tilt(200);typeof(R3GarageView).GetMethod("LateUpdate",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(garage,null);
+        garage.HandleGuiPointer(new Event{type=EventType.KeyDown,keyCode=KeyCode.U},Vector2.zero);
+        typeof(R3GarageView).GetMethod("LateUpdate",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(garage,null);
         Assert.That(workshopFloor.enabled,Is.True,"Restore the floor when looking from above.");
         var part=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==wheel.Id);
         var tire=part.transform.Find("Koło").GetComponent<Collider>();Assert.That(tire.bounds.extents.y,Is.EqualTo(.205f).Within(.015f));

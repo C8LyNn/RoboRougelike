@@ -129,7 +129,7 @@ public class R41GarageTests
         int funds=Run.VehicleModel.Scrap;Assert.That(garage.ClickTarget(),Is.False);Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(funds));
         yield return null;
     }
-    [UnityTest] public IEnumerator GhostShowsSuppliedWeaponAndWheelArtWithoutPhysicsAndKeepsAutomaticFallback()
+    [UnityTest] public IEnumerator GhostShowsCurrentWeaponAndWheelModelsWithoutPhysics()
     {
         var garage=Run.Garage;
         garage.UseInventory=false;garage.SelectedInventoryId=null;
@@ -141,12 +141,12 @@ public class R41GarageTests
         Assert.That(gunGhost.GetComponentsInChildren<Collider>(true).All(c=>!c.enabled),Is.True);
         garage.SelectedPart=R3PartKind.Wheel;garage.Select(new Vector3Int(3,2,2));
         var wheelGhost=garage.Preview;
-        Assert.That(wheelGhost.GetComponentsInChildren<Transform>(true).Any(t=>t.name=="R4M_Wheel_ROOT"),Is.True,
-            "The preview should show the supplied wheel model.");
+        Assert.That(wheelGhost.GetComponentsInChildren<Transform>(true).Any(t=>t.name=="R4M_WheelM_Side_Offroad_ROOT"),Is.True,
+            "The preview should show the current side-mounted wheel model.");
         Assert.That(wheelGhost.GetComponentsInChildren<Collider>(true).All(c=>!c.enabled),Is.True);
         garage.SelectedPart=R3PartKind.Gun;garage.SelectedWeapon=R4WeaponKind.Automatic;garage.Select(new Vector3Int(3,2,2));
-        Assert.That(garage.Preview.GetComponentsInChildren<Renderer>(true).Any(r=>r.enabled&&r.name=="Lufa"),Is.True,
-            "Automatic has no supplied FBX and must keep its existing visible preview.");
+        Assert.That(garage.Preview.GetComponentsInChildren<Transform>(true).Any(t=>t.name=="R41_AutomaticGun_ROOT"),Is.True,
+            "Automatic must use its supplied turret model in the preview.");
         Assert.That(garage.Preview.GetComponentsInChildren<Collider>(true).All(c=>!c.enabled),Is.True);
         yield return null;
     }
