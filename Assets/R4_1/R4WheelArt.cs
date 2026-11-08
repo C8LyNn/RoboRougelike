@@ -13,6 +13,9 @@ namespace RoboRougelike.R4_1
         Quaternion casterRest,physicalCasterRest,swingRest,physicalSwingRest;
         float casterAngle,swingAngle,swingSign;
         readonly RaycastHit[] swingHits=new RaycastHit[32];
+        Rigidbody clearanceOwner;
+        Collider swingTire;
+        Collider[] ownColliders;
         public bool HasFreeArticulation=>casterSwivel!=null||swingArm!=null;
         Rigidbody owner;
         public static bool ForkWheelAvailable(R3WheelStyle style)
@@ -127,12 +130,37 @@ namespace RoboRougelike.R4_1
                 }
                 if(!float.IsInfinity(nearest))desired=Mathf.Clamp((.48f-nearest)/.205f*Mathf.Rad2Deg,-8f,10f);
             }
+            float previousAngle=swingAngle;
+            var previousPosition=physicalSwing.position;var previousRotation=physicalSwing.localRotation;
             swingAngle=Mathf.MoveTowards(swingAngle,desired,90f*Time.fixedDeltaTime);
             var parentRotation=swingArm.parent.rotation;
             var localRotation=Quaternion.Inverse(parentRotation)*Quaternion.AngleAxis(swingAngle*swingSign,transform.right)*parentRotation;
             swingArm.localRotation=localRotation*swingRest;
             physicalSwing.position=rotor.position;
             physicalSwing.localRotation=Quaternion.Euler(swingAngle*swingSign,0,0)*physicalSwingRest;
+            if(Mathf.Abs(swingAngle-previousAngle)>.0001f&&SwingHitsOwnVehicle())
+            {
+                swingAngle=previousAngle;
+                localRotation=Quaternion.Inverse(parentRotation)*Quaternion.AngleAxis(swingAngle*swingSign,transform.right)*parentRotation;
+                swingArm.localRotation=localRotation*swingRest;
+                physicalSwing.position=previousPosition;physicalSwing.localRotation=previousRotation;
+            }
+        }
+
+        bool SwingHitsOwnVehicle()
+        {
+            if(clearanceOwner!=owner||ownColliders==null)
+            {clearanceOwner=owner;ownColliders=owner.GetComponentsInChildren<Collider>();swingTire=physicalSwing.GetComponent<MeshCollider>();}
+            if(swingTire==null||!swingTire.enabled)return true;
+            foreach(var other in ownColliders)
+            {
+                if(other==null||!other.enabled||other.isTrigger||!other.gameObject.activeInHierarchy||
+                    other.attachedRigidbody!=owner||other.transform.IsChildOf(transform)||
+                    other.bounds.SqrDistance(physicalSwing.position)>.16f)continue;
+                if(Physics.ComputePenetration(swingTire,physicalSwing.position,physicalSwing.rotation,
+                    other,other.transform.position,other.transform.rotation,out _,out float depth)&&depth>.001f)return true;
+            }
+            return false;
         }
 
         void LateUpdate()
