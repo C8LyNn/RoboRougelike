@@ -11,7 +11,7 @@ namespace RoboRougelike.R3
     public enum R3PartKind { Armor, Wheel, Gun, Core, Suspension, Booster, JumpDrive, Blink, Gyroscope, OmniDrive, MagneticGrapple, HoverEngine, CrawlerTrack, BonusModule, DirectionalShield, PointDefense, StructuralScanner, ScannerPulse, IndependentSteering, Battery, RepairPulse, DrivePower, EnergyRegenerator }
     public enum R3WheelStyle { Offroad, Slick }
     // Zero preserves the shape of every pre-existing checkpoint.
-    public enum R3ArmorShape { Cube, Wedge, HalfBlock, Pyramid }
+    public enum R3ArmorShape { Cube, Wedge, HalfBlock, Pyramid, RoundEdge, HalfWedge, Dome }
     public enum R3DriveKind { Wheels, Tracks, Omni, Hover }
     public enum R3VehicleKind { Standard, Light, Heavy }
     [Serializable]
