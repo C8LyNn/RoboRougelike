@@ -133,10 +133,16 @@ namespace RoboRougelike.R1
         private static Rect RewardInventoryStatusRect(int index)=>new Rect(550,187+index*76,280,57);
         private static string RewardInventoryItemText(R3PartState item) =>
             $"{R4WeaponDefinition.PartName(item)} • HP {item.Health*100:0}%\nŹródło: {item.Source}";
+        private static string RewardInventoryRepairText(R3VehicleModel model,R3PartState item)
+        {
+            if(item.Health>=1f)return "Naprawa: niepotrzebna";
+            int price=model.RepairCost(item);
+            return price>0?$"{(item.Health<=0?"Odbudowa":"Naprawa")}: {price} Z":"Naprawa: niedostępna";
+        }
         private static string RewardInventoryStatusText(R3VehicleModel model,R3PartState item)
         {
             string ammo=SalvageAmmoLabel(item);
-            return $"{(item.Health<=0?"Odbudowa":"Naprawa")}: {model.RepairCost(item)} Z"+(ammo==null?"":"\n"+ammo);
+            return RewardInventoryRepairText(model,item)+(ammo==null?"":"\n"+ammo);
         }
         private void DrawRewardInventory(R1RunController run)
         {

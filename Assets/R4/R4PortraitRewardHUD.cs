@@ -88,7 +88,7 @@ namespace RoboRougelike.R1
                 GUI.Label(new Rect(detail.x,card.y+30,detail.width,28),$"Źródło: {item.Source}",small);
                 GUI.Label(new Rect(detail.x,card.y+59,detail.width,20),$"HP {item.Health*100:0}%",small);
                 string ammo=SalvageAmmoLabel(item);
-                GUI.Label(new Rect(detail.x,card.y+80,detail.width,21),$"{(item.Health<=0?"Odbudowa":"Naprawa")}: {model.RepairCost(item)} Z{(ammo==null?"":" • "+ammo)}",small);
+                GUI.Label(new Rect(detail.x,card.y+80,detail.width,21),RewardInventoryRepairText(model,item)+(ammo==null?"":" • "+ammo),small);
                 if(GUI.Button(PortraitRewardDismantleButton(i),rewardDismantleConfirmation==item.Id?"Potwierdź rozmontowanie":$"Rozmontuj → {model.DismantleValue(item)} Z",compactButton))
                 {
                     bool confirming=rewardDismantleConfirmation==item.Id;

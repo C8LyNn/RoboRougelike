@@ -42,3 +42,5 @@ Sprawdź też rozmontowanie egzemplarza: pierwsze kliknięcie ma poprosić o pot
 Na kolejnym buildzie rozpocznij potwierdzenie rozmontowania, ale zamknij katalog, zmień grupę lub napraw część. Po powrocie pierwsze kliknięcie rozmontowania powinno ponownie prosić o potwierdzenie. Ta poprawka również nie występuje w ZIP-ie 5b21.
 
 Kod gry i kod testów do zmian garażu skompilowano lokalnie w C# na stanie `f62ce4f9`; testy Unity nie zostały uruchomione. Szczegóły i ograniczenia tej kontroli: `Docs/GARAGE_LOCAL_CSHARP_COMPILE_QA.md`.
+
+W kolejnym buildzie sprawdź też magazyn dostępny z ekranu nagród: sprawny egzemplarz powinien wskazywać, że naprawa jest niepotrzebna, a uszkodzony — jej rzeczywisty koszt; amunicja pozostaje widoczna. Dotyczy obu układów ekranu. Kompilacja lokalna C# kodu gry i testów: exit 0; testy Unity oraz ręczne sprawdzenie interfejsu: NOT RUN. ZIP 5b21 nie zawiera tej zmiany.
