@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="9" result="Passed" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-08 16:54:49Z" end-time="2026-11-08 16:54:49Z" duration="0,4879661">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1853" result="Passed" start-time="2026-11-08 16:54:49Z" end-time="2026-11-08 16:54:49Z" duration="0.487966" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="2310" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-PlayQA-97f8/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="1060" result="Passed" start-time="2026-11-08 16:54:49Z" end-time="2026-11-08 16:54:49Z" duration="0.406750" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="15144" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="1789" name="R4WheelVariantsTests" fullname="R4WheelVariantsTests" classname="R4WheelVariantsTests" runstate="Runnable" testcasecount="31" result="Passed" start-time="2026-11-08 16:54:42Z" end-time="2026-11-08 16:54:43Z" duration="0.772830" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1803" name="CasterCanBeMountedAndSaved" fullname="R4WheelVariantsTests.CasterCanBeMountedAndSaved" methodname="CasterCanBeMountedAndSaved" classname="R4WheelVariantsTests" runstate="Runnable" seed="452489788" result="Passed" start-time="2026-11-08 16:54:32Z" end-time="2026-11-08 16:54:35Z" duration="3.881766" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 60 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 60 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 60 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 60 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 61 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 61 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 61 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 61 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 62 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 62 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 62 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 62 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 63 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 63 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 63 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 63 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1792" name="SideMountedWheelsUseSidePortsAndLegacyStoredWheelsMigrateSafely" fullname="R4WheelVariantsTests.SideMountedWheelsUseSidePortsAndLegacyStoredWheelsMigrateSafely" methodname="SideMountedWheelsUseSidePortsAndLegacyStoredWheelsMigrateSafely" classname="R4WheelVariantsTests" runstate="Runnable" seed="435630036" result="Passed" start-time="2026-11-08 16:54:35Z" end-time="2026-11-08 16:54:39Z" duration="3.623717" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1806" name="SwingArmCannotMoveTireThroughOwnArmor" fullname="R4WheelVariantsTests.SwingArmCannotMoveTireThroughOwnArmor" methodname="SwingArmCannotMoveTireThroughOwnArmor" classname="R4WheelVariantsTests" runstate="Runnable" seed="1449581342" result="Passed" start-time="2026-11-08 16:54:39Z" end-time="2026-11-08 16:54:43Z" duration="3.870830" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="2302" name="WheelMountOrientationTests" fullname="WheelMountOrientationTests" classname="WheelMountOrientationTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-11-08 16:54:49Z" end-time="2026-11-08 16:54:49Z" duration="0.360246" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="2309" name="ForkSocketsMatchTheRotatedTopFace" fullname="WheelMountOrientationTests.ForkSocketsMatchTheRotatedTopFace" methodname="ForkSocketsMatchTheRotatedTopFace" classname="WheelMountOrientationTests" runstate="Runnable" seed="1832559548" result="Passed" start-time="2026-11-08 16:54:43Z" end-time="2026-11-08 16:54:46Z" duration="3.003296" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="2308" name="MountFacesItsActualNeighbourAfterRotation" fullname="WheelMountOrientationTests.MountFacesItsActualNeighbourAfterRotation" classname="WheelMountOrientationTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-08 16:54:46Z" end-time="2026-11-08 16:54:46Z" duration="0.009276" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="2304" name="MountFacesItsActualNeighbourAfterRotation(0,0,0,1,0,0,True)" fullname="WheelMountOrientationTests.MountFacesItsActualNeighbourAfterRotation(0,0,0,1,0,0,True)" methodname="MountFacesItsActualNeighbourAfterRotation" classname="WheelMountOrientationTests" runstate="Runnable" seed="101632884" result="Passed" start-time="2026-11-08 16:54:46Z" end-time="2026-11-08 16:54:46Z" duration="0.007472" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="2305" name="MountFacesItsActualNeighbourAfterRotation(0,0,0,-1,0,0,False)" fullname="WheelMountOrientationTests.MountFacesItsActualNeighbourAfterRotation(0,0,0,-1,0,0,False)" methodname="MountFacesItsActualNeighbourAfterRotation" classname="WheelMountOrientationTests" runstate="Runnable" seed="234411629" result="Passed" start-time="2026-11-08 16:54:46Z" end-time="2026-11-08 16:54:46Z" duration="0.000095" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="2306" name="MountFacesItsActualNeighbourAfterRotation(0,0,1,0,1,0,True)" fullname="WheelMountOrientationTests.MountFacesItsActualNeighbourAfterRotation(0,0,1,0,1,0,True)" methodname="MountFacesItsActualNeighbourAfterRotation" classname="WheelMountOrientationTests" runstate="Runnable" seed="1542916249" result="Passed" start-time="2026-11-08 16:54:46Z" end-time="2026-11-08 16:54:46Z" duration="0.000043" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="2307" name="MountFacesItsActualNeighbourAfterRotation(0,0,1,0,-1,0,False)" fullname="WheelMountOrientationTests.MountFacesItsActualNeighbourAfterRotation(0,0,1,0,-1,0,False)" methodname="MountFacesItsActualNeighbourAfterRotation" classname="WheelMountOrientationTests" runstate="Runnable" seed="2132396369" result="Passed" start-time="2026-11-08 16:54:46Z" end-time="2026-11-08 16:54:46Z" duration="0.000045" asserts="0">
+            <properties />
+          </test-case>
+        </test-suite>
+        <test-case id="2303" name="RealVisualPortPointsToRotatedSupport" fullname="WheelMountOrientationTests.RealVisualPortPointsToRotatedSupport" methodname="RealVisualPortPointsToRotatedSupport" classname="WheelMountOrientationTests" runstate="Runnable" seed="131689433" result="Passed" start-time="2026-11-08 16:54:46Z" end-time="2026-11-08 16:54:49Z" duration="3.101118" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[[EXIT273] Shutdown prepared: NativeClose
+Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
