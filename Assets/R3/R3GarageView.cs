@@ -69,6 +69,8 @@ namespace RoboRougelike.R3
         public bool HasTarget { get; private set; }
         public Transform Preview => marker!=null?marker.transform:null;
         public bool PreviewValid => HasTarget&&PlacementIssue==null;
+        static bool MarkerVisible(bool hasTarget,R41GarageTool tool,bool needsOwned,bool hasOwned)=>
+            hasTarget&&(tool!=R41GarageTool.Mount||!needsOwned||hasOwned);
         public float Distance => distance;
         private R3PartState Owned => run.VehicleModel.Inventory.FirstOrDefault(p=>p.Id==SelectedInventoryId);
         public R3PartKind MountKind => Owned?.Kind??SelectedPart;
@@ -331,7 +333,9 @@ namespace RoboRougelike.R3
                 shownWheelStyle=wheelStyle;shownWheelMirrored=wheelMirrored;
                 shownArmorShape=armorShape;
             }
-            marker.SetActive(HasTarget);marker.transform.localPosition=(Vector3)Cell*R41PartGeometry.Grid;
+            bool needsOwned=UseInventory||!string.IsNullOrEmpty(SelectedInventoryId);
+            marker.SetActive(MarkerVisible(HasTarget,Tool,needsOwned,Owned!=null));
+            marker.transform.localPosition=(Vector3)Cell*R41PartGeometry.Grid;
             var material=Tool==R41GarageTool.Mount?(PreviewValid?palette.Valid:palette.Invalid):palette.Selection;
             var rootRenderer=marker.GetComponent<Renderer>();
             bool replacementOnly=rootRenderer!=null&&!rootRenderer.enabled;

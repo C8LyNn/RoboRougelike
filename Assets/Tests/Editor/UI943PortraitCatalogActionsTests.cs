@@ -256,11 +256,14 @@ public sealed class UI943PortraitCatalogActionsTests
         int inventoryCount=run.VehicleModel.Inventory.Count;
         Invoke(hud,"BuyQuickPart",run);
         run.Garage.Select(Vector3Int.up);
+        Assert.That(run.Garage.Preview.gameObject.activeSelf,Is.False,"No previous ghost should appear without a selected item.");
         Assert.That(run.Garage.ClickTarget(),Is.False,"Switching category must not mount the previous item.");
         Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(inventoryCount));
         Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap),"Browsing categories must not purchase anything.");
         Assert.That(run.GaragePurchase(R3PartKind.Wheel),Is.True);
         Invoke(hud,"SelectQuickPart",run,R3PartKind.Wheel,R4WeaponKind.Basic,null);
+        run.Garage.Select(Vector3Int.up);
+        Assert.That(run.Garage.Preview.gameObject.activeSelf,Is.True,"A selected item must still show its placement ghost.");
         string selected=run.Garage.SelectedInventoryId;
         Invoke(hud,"SelectQuickCategory",run,1);
         Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(selected),"Re-selecting the same category keeps the chosen item.");
