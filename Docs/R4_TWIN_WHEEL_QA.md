@@ -16,6 +16,12 @@ continue to use the existing R6 system. The normal wheel price applies.
 - Real garage mounting, both colliders and checkpoint roundtrip: **1/1 PASS**,
   exit 0 at `41c01b2961f9a964720d0446f256cf2e2292acf8`; evidence:
   `RC2-TwinGarage-20261108T082240Z`. All evidence is under `Artifacts/Local/`.
+- Narrow-pad R6 support: **1/1 PASS** at `617d0dae6fd394212ce1067c73d08a6d44a97b8b`;
+  each tire detects its own pad and the empty center does not produce support.
+  Initial run failed in the fixture because the vehicle constructor regenerates
+  part IDs; the corrected fixture uses the actual model ID. Evidence:
+  `RC2-TwinNarrowSupport-20261108T082610Z`,
+  `RC2-TwinNarrowSupportRetest-20261108T082705Z`.
 - Windows x64 build `d9daf17f`: Unity exit 0. Extracted ZIP launched; garage
   entry, selection and purchase observed, followed by normal exit. Manual
   mounting, uneven terrain, full campaign and standalone PlayMode suite:
