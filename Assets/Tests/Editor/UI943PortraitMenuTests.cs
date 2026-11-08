@@ -17,6 +17,27 @@ public sealed class UI943PortraitMenuTests
         Assert.That((string)method.Invoke(null,new object[]{text,lastValid}),Is.EqualTo(expected));
     }
 
+    [Test] public void LandscapeReadyMessagesDoNotOverlapControlsOrEachOther()
+    {
+        var flags=BindingFlags.Static|BindingFlags.NonPublic;
+        Rect Get(string name)
+        {
+            var method=typeof(R1RunHUD).GetMethod(name,flags);Assert.That(method,Is.Not.Null,name);
+            return (Rect)method.Invoke(null,null);
+        }
+        var messages=new[]{Get("ReadyIntroRect"),Get("ReadySaveMessageRect"),Get("ReadySeedWarningRect")};
+        var controls=new[]{new Rect(90,570,110,28),new Rect(200,568,230,28),new Rect(450,548,170,38),
+            new Rect(640,548,300,38),new Rect(960,552,230,38),new Rect(90,600,500,65),new Rect(640,600,550,65)};
+        var canvas=new Rect(0,0,1280,720);
+        for(int i=0;i<messages.Length;i++)
+        {
+            Assert.That(canvas.Contains(messages[i].min)&&canvas.Contains(messages[i].max-Vector2.one),Is.True);
+            for(int j=0;j<i;j++)Assert.That(messages[i].Overlaps(messages[j]),Is.False);
+            foreach(var control in controls)Assert.That(messages[i].Overlaps(control),Is.False);
+            for(int card=0;card<3;card++)Assert.That(messages[i].Overlaps(new Rect(80+card*380,205,360,280)),Is.False);
+        }
+    }
+
     [TestCase(768,1024,true)] [TestCase(1024,768,false)] [TestCase(1366,768,false)]
     [TestCase(1920,1080,false)] [TestCase(3840,2160,false)]
     public void PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(int width,int height,bool expected)

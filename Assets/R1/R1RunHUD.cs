@@ -19,6 +19,9 @@ namespace RoboRougelike.R1
             =>width>0&&height>width&&garage&&!mapEditing&&!overlay;
         private static Rect PortraitVehicleCard(int index)=>new Rect(24,150+index*180,720,166);
         private static Rect PortraitActionRect(int index)=>new Rect(24+(index%2)*370,index<2?790:855,350,index<2?54:48);
+        private static Rect ReadyIntroRect()=>new Rect(90,490,880,22);
+        private static Rect ReadySaveMessageRect()=>new Rect(90,515,880,30);
+        private static Rect ReadySeedWarningRect()=>new Rect(990,505,200,42);
         private void DismissCatalog(){catalogOpen=false;dismantleConfirmation=null;catalogFeedback=null;}
         internal bool ClosePartCatalog()
         {
@@ -224,13 +227,13 @@ namespace RoboRougelike.R1
                     GUI.Label(new Rect(x+20,365,320,45),$"Części: {design.Parts.Count}  •  Limit napędu: {estimatedSpeed:0.0} m/s\nRdzeń: {design.CoreHp:0} HP",small);
                     if(GUI.Button(new Rect(x+20,420,320,48),run.SelectedVehicle==kind?"WYBRANY":"Wybierz",button))run.SelectVehicle(kind);
                 }
-                GUI.Label(new Rect(90,505,900,62),"6 starć • 3 areny • elity • Oblężnik. Wybieraj ryzyko i zachowuj sprawne moduły. Po walce: jeden moduł z trzech + do 3 części z wraków → garaż.",body);
+                GUI.Label(ReadyIntroRect(),"6 starć • 3 areny • elity • Oblężnik • nagrody: 1 bonus i do 3 części",small);
                 GUI.Label(new Rect(90,570,110,28),"Seed:",body);
                 seedText=GUI.TextField(new Rect(200,568,230,28),seedText,11);
                 if(int.TryParse(seedText,out int seed))run.RequestedSeed=seed;
-                DrawSeedWarning(new Rect(990,505,200,42),run.RequestedSeed);
+                DrawSeedWarning(ReadySeedWarningRect(),run.RequestedSeed);
                 if(GUI.Button(new Rect(450,548,170,38),"Wczytaj wyprawę",compactButton))run.LoadRunCheckpoint();
-                if(!string.IsNullOrEmpty(run.RunSaveMessage))GUI.Label(new Rect(90,545,340,24),run.RunSaveMessage,small);
+                if(!string.IsNullOrEmpty(run.RunSaveMessage))GUI.Label(ReadySaveMessageRect(),run.RunSaveMessage,small);
                 if (GUI.Button(new Rect(90,600,500,65), "Przygotuj pojazd  [Enter]", button)) run.PrepareUnifiedRun();
                 if(GUI.Button(new Rect(640,600,550,65),"Garaż i poligon testowy",button))run.OpenSandboxGarage();
                 if(GUI.Button(new Rect(640,548,300,38),"Edytor map",compactButton))run.OpenMapEditor();
