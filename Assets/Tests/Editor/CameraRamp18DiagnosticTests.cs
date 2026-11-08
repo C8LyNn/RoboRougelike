@@ -67,6 +67,7 @@ public sealed class CameraRamp18DiagnosticTests
         for(int i=0;i<15;i++){drive.Step(0,0,10,4,90);yield return MOVSeriesDeviceTests.FixedStep();}
         var start=body.position;int grounded=0,aimOverlaps=0,worldClips=0,cameraOverlaps=0;
         float maxDistance=0,maxDesiredGap=0,firstFixedTime=Time.fixedTime;var rig=follow.ReceiverRig;
+        Debug.Log($"[RAMP-DRIVE SETUP] kind={kind} massKg={body.mass:F2} gravity={Physics.gravity.ToString("F3")} uphill={uphill.ToString("F3")} start={start.ToString("F3")} installedWheels={drive.Wheels} powerUnits={drive.ActivePowerUnits:F2}");
         for(int i=0;i<100;i++)
         {
             drive.Step(1,0,10,4,90);yield return MOVSeriesDeviceTests.FixedStep();
@@ -78,6 +79,10 @@ public sealed class CameraRamp18DiagnosticTests
             float targetDistance=Vector3.Distance(camera.position,body.position);
             float desiredGap=Vector3.Distance(camera.position,rig.LastSolution.DesiredCameraWorld);
             maxDistance=Mathf.Max(maxDistance,targetDistance);maxDesiredGap=Mathf.Max(maxDesiredGap,desiredGap);
+            // AvailableForce is a traction-dependent capacity, not proof of the
+            // actual applied force: braking, speed limits and other adapters can
+            // change it. Record it alongside observed motion and gravity.
+            if(i%5==0)Debug.Log($"[RAMP-DRIVE] kind={kind} fixed={i} progress={Vector3.Dot(body.position-start,uphill):F3} uphillSpeed={Vector3.Dot(body.linearVelocity,uphill):F3} forwardSpeed={drive.ForwardSpeed:F3} availableForceN={drive.AvailableForce:F1} gravityAlongRampN={Vector3.Dot(Physics.gravity*body.mass,uphill):F1} groundNormal={drive.GroundNormal.ToString("F3")} grounded={drive.GroundedWheels}/{drive.Wheels} powerUnits={drive.ActivePowerUnits:F2}");
             if(i%5==0)Debug.Log($"[CAMERA-RAMP18] fixed={i} t={Time.fixedTime:F2} body={body.position.ToString("F3")} velocity={body.linearVelocity.ToString("F3")} bodyRotation={body.rotation.eulerAngles.ToString("F2")} contacts={drive.GroundedWheels} camera={camera.position.ToString("F3")} cameraRotation={camera.rotation.eulerAngles.ToString("F2")} aim={aim.ToString("F3")} cameraToBody={targetDistance:F3} cameraToAim={Vector3.Distance(camera.position,aim):F3} desiredGap={desiredGap:F3} overlapAim={rig.WorldOverlapAtAim} clipped={rig.WorldClipped} overlapCamera={rig.WorldOverlapAtCamera}");
         }
         float progress=Vector3.Dot(body.position-start,uphill);
