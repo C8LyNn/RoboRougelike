@@ -16,6 +16,17 @@ namespace RoboRougelike.R1
         static string ActivityReadinessHint(bool canDeploy,string reason,R3DriveKind drive)=>!canDeploy?
             "Start zablokowany: "+(string.IsNullOrWhiteSpace(reason)?"Sprawdź konstrukcję.":reason):
             drive!=R3DriveKind.Wheels?"Wyścig, tryby drogowe i generowana arena wymagają kół.":null;
+        static string ActivityLaunchResult(bool started,string detail)=>started?null:
+            string.IsNullOrWhiteSpace(detail)?"Nie udało się uruchomić aktywności.":detail;
+        void AttemptGarageActivity(R1RunController run,System.Func<bool> start)
+        {
+            activitySaveFeedback=null;
+            var garage=run.Garage;
+            if(garage!=null)garage.Message=null;
+            bool started=start();
+            activitySaveFeedback=ActivityLaunchResult(started,garage!=null?garage.Message:null);
+            if(!started&&garage!=null)garage.Message=activitySaveFeedback;
+        }
 
         void DrawPortraitGarage(R1RunController run)
         {
@@ -105,17 +116,17 @@ namespace RoboRougelike.R1
             if(run.SandboxWorkshop){GUI.Label(new Rect(24,620,700,50),"Warsztat poligonu • wybierz Menu główne poniżej, aby wrócić.",body);return;}
             if(run.ReactorPrepared){GUI.Label(new Rect(24,620,700,50),"Obrona reaktora: przygotuj pojazd do trzech fal.",body);return;}
             GUI.enabled=run.CanChooseGeneratedArena;
-            if(GUI.Button(new Rect(24,620,350,50),"Generowana arena • seed "+run.RequestedSeed,compactButton))run.ChooseGeneratedArena();
+            if(GUI.Button(new Rect(24,620,350,50),"Generowana arena • seed "+run.RequestedSeed,compactButton))AttemptGarageActivity(run,run.ChooseGeneratedArena);
             GUI.enabled=run.CanChooseReactorDefense;
-            if(GUI.Button(new Rect(394,620,350,50),"Obrona reaktora",compactButton))run.ChooseReactorDefense();
+            if(GUI.Button(new Rect(394,620,350,50),"Obrona reaktora",compactButton))AttemptGarageActivity(run,run.ChooseReactorDefense);
             GUI.enabled=run.CanChooseCheckpointRace;
-            if(GUI.Button(new Rect(24,680,350,50),"Wyścig • checkpointy",compactButton))run.ChooseCheckpointRace();
+            if(GUI.Button(new Rect(24,680,350,50),"Wyścig • checkpointy",compactButton))AttemptGarageActivity(run,run.ChooseCheckpointRace);
             GUI.enabled=run.CanChooseRoadChallenge;
-            if(GUI.Button(new Rect(394,680,275,50),R1RunController.RoadModeName(roadSelection),compactButton))run.ChooseRoadChallenge(roadSelection);
+            if(GUI.Button(new Rect(394,680,275,50),R1RunController.RoadModeName(roadSelection),compactButton))AttemptGarageActivity(run,()=>run.ChooseRoadChallenge(roadSelection));
             GUI.enabled=true;
-            if(GUI.Button(new Rect(678,680,66,50),"›",compactButton))roadSelection=(MapR4Mode)(((int)roadSelection+1)%4);
+            if(GUI.Button(new Rect(678,680,66,50),"›",compactButton)){roadSelection=(MapR4Mode)(((int)roadSelection+1)%4);activitySaveFeedback=null;}
             GUI.enabled=run.CanChooseLD02Arena;
-            if(GUI.Button(new Rect(24,740,350,50),"Arena LD02 • walka",compactButton))run.ChooseLD02Arena();
+            if(GUI.Button(new Rect(24,740,350,50),"Arena LD02 • walka",compactButton))AttemptGarageActivity(run,run.ChooseLD02Arena);
             GUI.enabled=true;
             if(!run.MapEditorSession&&GUI.Button(new Rect(394,740,350,50),"Zapisz wyprawę",compactButton))
             {
