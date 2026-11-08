@@ -463,6 +463,26 @@ public sealed class R4WheelVariantsTests
         Assert.That(Vector3.Distance(wheel.position,rotor.position),Is.LessThan(.01f),"The physical tire must track the arm axle.");
         Object.Destroy(owner);Object.Destroy(floor);Object.Destroy(material);
     }
+    [UnityTest]public IEnumerator SwingArmCannotMoveTireThroughOwnArmor()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
+        var owner=new GameObject("swing clearance QA");owner.transform.position=new Vector3(1000,10,1000);
+        var body=owner.AddComponent<Rigidbody>();body.isKinematic=true;
+        var block=GameObject.CreatePrimitive(PrimitiveType.Cube);block.transform.SetParent(owner.transform,false);block.transform.localScale=Vector3.one*R41PartGeometry.BlockSize;
+        var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));R41PartGeometry.ConfigureWheelMount(block,R3WheelStyle.SwingOffroad);
+        var wheel=R41PartGeometry.Payload(block.transform,R3PartKind.Wheel,default,material,true,out _,R3WheelStyle.SwingOffroad);
+        Assert.That(R4WheelArt.TryAttach(block.transform,wheel,false,R3WheelStyle.SwingOffroad),Is.Not.Null);
+        var tire=wheel.GetComponent<Collider>();var armor=GameObject.CreatePrimitive(PrimitiveType.Cube);
+        armor.transform.SetParent(owner.transform,true);armor.transform.localScale=new Vector3(.5f,.1f,.5f);
+        armor.transform.position=wheel.position+Vector3.up*(.33f+.01f+.05f);
+        var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.localScale=new Vector3(2,.1f,2);
+        floor.transform.position=new Vector3(wheel.position.x,wheel.position.y-.33f-.05f+.045f,wheel.position.z);Physics.SyncTransforms();
+        Time.timeScale=1;float start=Time.fixedTime,deadline=Time.realtimeSinceStartup+10;
+        while(Time.fixedTime-start<.35f&&Time.realtimeSinceStartup<deadline)yield return new WaitForFixedUpdate();
+        Assert.That(Time.fixedTime-start,Is.GreaterThanOrEqualTo(.35f));
+        Assert.That(Physics.ComputePenetration(tire,tire.transform.position,tire.transform.rotation,armor.GetComponent<Collider>(),armor.transform.position,armor.transform.rotation,out _,out var depth)&&depth>.001f,Is.False,"The moving tire must not penetrate own armor.");
+        Object.Destroy(owner);Object.Destroy(floor);Object.Destroy(material);
+    }
     [UnityTest]public IEnumerator LargeWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.LargeOffroad);}
     [UnityTest]public IEnumerator MonsterWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.Monster);}
     [UnityTest]public IEnumerator SmallForkWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.SmallFork);}
