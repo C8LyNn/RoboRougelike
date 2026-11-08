@@ -11,14 +11,15 @@ public sealed class UI943LandscapeRewardInventoryTests
     {var method=typeof(R1RunHUD).GetMethod(name,BindingFlags.NonPublic|BindingFlags.Static);Assert.That(method,Is.Not.Null,name);return method.Invoke(null,args);}
     [TestCase(R3PartKind.Gun,R4WeaponKind.Shotgun,.5f,5,"Naprawa","5/12 salw")]
     [TestCase(R3PartKind.Gun,R4WeaponKind.Railgun,0f,0,"Odbudowa","0/12 nab.")]
-    [TestCase(R3PartKind.Gun,R4WeaponKind.RocketLauncher,1f,-1,"Naprawa","10/10 rak.")]
+    [TestCase(R3PartKind.Gun,R4WeaponKind.RocketLauncher,1f,-1,"niepotrzebna","10/10 rak.")]
     [TestCase(R3PartKind.PointDefense,R4WeaponKind.Basic,.5f,7,"Naprawa","7/40 poc.")]
     public void StatusShowsRealRepairQuoteAndApplicableAmmo(R3PartKind kind,R4WeaponKind weapon,float health,int ammo,string action,string ammoText)
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
         var item=new R3PartState(default,kind,health){Weapon=weapon,Ammo=ammo};
         var actual=(string)Call("RewardInventoryStatusText",model,item);
-        Assert.That(actual,Does.Contain(action+": "+model.RepairCost(item)+" Z"));
+        var expected=health>=1f?"Naprawa: niepotrzebna":action+": "+model.RepairCost(item)+" Z";
+        Assert.That(actual,Does.Contain(expected));
         Assert.That(actual,Does.Contain(ammoText));
     }
     [Test] public void NoMagazineLabelForWheelOrUnmeteredWeapon()
