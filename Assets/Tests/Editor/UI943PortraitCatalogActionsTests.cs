@@ -106,7 +106,7 @@ public sealed class UI943PortraitCatalogActionsTests
         Assert.That((bool)Invoke(hud,"InCatalogGroup",offroad,R3PartKind.Wheel,R4WeaponKind.Basic,null),Is.True);
         Assert.That((bool)Invoke(hud,"InCatalogGroup",offroad,R3PartKind.Wheel,R4WeaponKind.Basic,"wheel:slick"),Is.False);
         foreach(var pair in new[]{("wheel:large",R3WheelStyle.LargeOffroad),("wheel:monster",R3WheelStyle.Monster),
-            ("wheel:small",R3WheelStyle.SmallFork),("wheel:balloon",R3WheelStyle.BalloonFork),("wheel:spiked",R3WheelStyle.SpikedFork),("wheel:twin",R3WheelStyle.TwinRoad),("wheel:steer-road",R3WheelStyle.SteerRoad),("wheel:steer-offroad",R3WheelStyle.SteerOffroad),("wheel:caster",R3WheelStyle.CasterSlick)})
+            ("wheel:small",R3WheelStyle.SmallFork),("wheel:balloon",R3WheelStyle.BalloonFork),("wheel:spiked",R3WheelStyle.SpikedFork),("wheel:twin",R3WheelStyle.TwinRoad),("wheel:steer-road",R3WheelStyle.SteerRoad),("wheel:steer-offroad",R3WheelStyle.SteerOffroad),("wheel:caster",R3WheelStyle.CasterSlick),("wheel:swing",R3WheelStyle.SwingOffroad)})
         {
             Invoke(hud,"PortraitCatalogSelectGroup",run,R3PartKind.Wheel,R4WeaponKind.Basic,pair.Item1);
             Invoke(hud,"PortraitCatalogPurchase",run,R3PartKind.Wheel,R4WeaponKind.Basic);

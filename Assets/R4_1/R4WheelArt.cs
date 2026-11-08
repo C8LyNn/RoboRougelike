@@ -13,7 +13,7 @@ namespace RoboRougelike.R4_1
         Quaternion casterRest,physicalCasterRest,swingRest,physicalSwingRest;
         float casterAngle,swingAngle,swingSign;
         readonly RaycastHit[] swingHits=new RaycastHit[32];
-        public bool IsCaster=>casterSwivel!=null||swingArm!=null;
+        public bool HasFreeArticulation=>casterSwivel!=null||swingArm!=null;
         Rigidbody owner;
         public static bool ForkWheelAvailable(R3WheelStyle style)
         {var catalog=Resources.Load<R4MovementArtCatalog>("R4Art/MovementCatalog");return catalog!=null&&
