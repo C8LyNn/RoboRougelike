@@ -166,9 +166,9 @@ namespace RoboRougelike.R1
             else if(selected==R3PartKind.RepairPulse)
                 GUI.Label(new Rect(30,355,280,100),"V — impuls naprawczy\nDziała 5 s • odnowienie 15 s\nWyższy tier leczy szybciej.\nNie odbudowuje zniszczonych.",small);
             else if(selected==R3PartKind.DrivePower)
-                GUI.Label(new Rect(30,355,280,100),"Silnik kół wspomaga\nprzyspieszanie i skręcanie.\nT1/T2/T3: rezerwa 25/30/35.\nPotrzebuje kół na podłożu.",small);
+                GUI.Label(new Rect(30,355,280,100),$"Silnik kół wspomaga\nprzyspieszanie i skręcanie.\nRezerwa: {VehicleEnergyState.PassiveReservation:0} energii na moduł.\nPotrzebuje kół na podłożu.",small);
             else if(selected==R3PartKind.EnergyRegenerator)
-                GUI.Label(new Rect(30,355,280,100),"Regenerator T1/T2/T3: +5/+10/+20 energii/s.\nNa postoju regeneracja ×4.\nRezerwa: 25/30/35 energii.",small);
+                GUI.Label(new Rect(30,355,280,100),$"Regenerator T1/T2/T3: +{VehicleEnergyState.RegenerationPerModule*R3VehicleModel.TierEffectUnits(1):0}/+{VehicleEnergyState.RegenerationPerModule*R3VehicleModel.TierEffectUnits(2):0}/+{VehicleEnergyState.RegenerationPerModule*R3VehicleModel.TierEffectUnits(3):0} energii/s.\nNa postoju regeneracja ×4.\nRezerwa: {VehicleEnergyState.PassiveReservation:0} energii na moduł.",small);
             else if(selected==R3PartKind.PointDefense)
                 GUI.Label(new Rect(30,355,280,100),"Obrona 1×1×1 • automat 24 m\n40 nabojów • T przeładuj (3 s)\nChroni przed pociskami i rakietami.\nWymaga wolnej linii strzału.",small);
             else if(selected==R3PartKind.DirectionalShield)
