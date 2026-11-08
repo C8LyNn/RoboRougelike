@@ -23,6 +23,21 @@ public sealed class UI943PortraitCatalogActionsTests
     static object Field(R1RunHUD hud,string name)=>typeof(R1RunHUD).GetField(name,BindingFlags.Instance|BindingFlags.NonPublic).GetValue(hud);
     static bool ContainsId(R3VehicleModel model,string id)=>model.Inventory.Any(p=>p.Id==id);
 
+    [TestCase(false,R3PartKind.Armor,true,5,100,0,"chwilowo")]
+    [TestCase(true,R3PartKind.BonusModule,true,5,100,0,"nagród")]
+    [TestCase(true,R3PartKind.Gun,false,10,100,0,"Technologia")]
+    [TestCase(true,R3PartKind.Armor,true,5,100,200,"pełny")]
+    [TestCase(true,R3PartKind.Armor,true,0,100,0,"niedostępna")]
+    [TestCase(true,R3PartKind.Armor,true,5,3,0,"Brakuje 2 Z")]
+    [TestCase(true,R3PartKind.Armor,true,5,10,0,null)]
+    public void PurchaseFailureExplainsCommonBlocks(bool ready,R3PartKind kind,bool unlocked,int price,int scrap,int count,string expected)
+    {
+        var method=typeof(R1RunHUD).GetMethod("BasicPurchaseFailure",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        var actual=(string)method.Invoke(null,new object[]{ready,kind,unlocked,price,scrap,count});
+        if(expected==null)Assert.That(actual,Is.Null);else Assert.That(actual,Does.Contain(expected));
+    }
+
     [TestCase(R3PartKind.Armor,true,5,25,195,true)]
     [TestCase(R3PartKind.Armor,true,5,24,195,false)]
     [TestCase(R3PartKind.Armor,true,5,25,196,false)]

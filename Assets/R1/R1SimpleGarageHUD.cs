@@ -116,6 +116,39 @@ namespace RoboRougelike.R1
             return total>scrap?$"Brakuje {total-scrap} Z":$"Kup 5 • {total} Z";
         }
 
+        static string BasicPurchaseFailure(bool garageReady,R3PartKind kind,bool unlocked,int price,int scrap,int inventoryCount)
+        {
+            if(!garageReady)return "Garaż jest chwilowo niedostępny.";
+            if(kind==R3PartKind.BonusModule)return "Moduły bonusowe pochodzą z nagród.";
+            if(!unlocked)return "Technologia nie została odblokowana.";
+            if(inventoryCount>=R3VehicleModel.InventoryCapacity)return "Magazyn jest pełny.";
+            if(price<=0)return "Ta część jest niedostępna.";
+            if(scrap<price)return $"Brakuje {price-scrap} Z.";
+            return null;
+        }
+
+        string PurchaseFailure(R1RunController run,R3PartKind kind,R4WeaponKind weapon)
+        {
+            var model=run.VehicleModel;
+            string basic=BasicPurchaseFailure(!run.Transitioning&&run.Progress?.State==R1RunState.Garage,
+                kind,run.CanBuyTechnology(kind,weapon),model.Price(kind,weapon),model.Scrap,model.Inventory.Count);
+            if(basic!=null)return basic;
+            if(kind==R3PartKind.Wheel)
+            {
+                var style=CatalogWheelStyle(catalogBonusId);
+                if((R3VehicleModel.HasSizedSideWheel(style)&&!R4WheelArt.SizedWheelAvailable(style))||
+                   (R3VehicleModel.HasForkMount(style)&&!R4WheelArt.ForkWheelAvailable(style)))
+                    return "Model tego koła jest niedostępny.";
+            }
+            if(kind==R3PartKind.Armor)
+            {
+                var shape=CatalogArmorShape(catalogBonusId);
+                if(shape!=R3ArmorShape.Cube&&!R41PartGeometry.ArmorShapeAvailable(shape))
+                    return "Model tego pancerza jest niedostępny.";
+            }
+            return "Nie udało się kupić części.";
+        }
+
         void DrawBuyFive(R1RunController run,R3PartKind kind,R4WeaponKind weapon,Rect rect)
         {
             var model=run.VehicleModel;int price=model.Price(kind,weapon);bool unlocked=run.CanBuyTechnology(kind,weapon);
@@ -132,7 +165,7 @@ namespace RoboRougelike.R1
             bool catalogWasOpen=catalogOpen;
             dismantleConfirmation=null;
             if(!CanBuyFive(kind,run.CanBuyTechnology(kind,weapon),price,model.Scrap,model.Inventory.Count))
-            {catalogFeedback=run.Garage.Message="Nie udało się kupić pięciu części.";return;}
+            {catalogFeedback=run.Garage.Message="Nie kupiono pięciu: "+BuyFiveCaption(kind,run.CanBuyTechnology(kind,weapon),price,model.Scrap,model.Inventory.Count)+".";return;}
             int before=model.Scrap,bought=0;
             for(int i=0;i<5;i++)
             {
@@ -142,7 +175,7 @@ namespace RoboRougelike.R1
             }
             if(bought>0)run.Garage.ChooseInventory(model.Inventory.Last().Id);
             string message=bought==5?$"Kupiono 5 części • koszt {before-model.Scrap} Z. Wybierz miejsce montażu.":
-                $"Kupiono {bought}/5 części • koszt {before-model.Scrap} Z. Sprawdź dostępność.";
+                $"Kupiono {bought}/5 • {before-model.Scrap} Z. "+PurchaseFailure(run,kind,weapon);
             if(catalogWasOpen&&bought==5)DismissCatalog();
             run.Garage.Message=message;
             if(catalogOpen)catalogFeedback=message;
@@ -300,7 +333,7 @@ namespace RoboRougelike.R1
             if(run.GaragePurchase(catalogGroup.Value,catalogWeapon,catalogGroup.Value==R3PartKind.Wheel?CatalogWheelStyle(catalogBonusId):R3WheelStyle.Offroad,
                 catalogGroup.Value==R3PartKind.Armor?CatalogArmorShape(catalogBonusId):R3ArmorShape.Cube))
             {var item=run.VehicleModel.Inventory.Last();run.Garage.ChooseInventory(item.Id);run.Garage.Message="Kupiono część. Kliknij pojazd, aby ją zamontować.";}
-            else run.Garage.Message="Nie udało się kupić części.";
+            else run.Garage.Message=PurchaseFailure(run,catalogGroup.Value,catalogWeapon);
         }
 
         void DrawSimpleGarage(R1RunController run)
