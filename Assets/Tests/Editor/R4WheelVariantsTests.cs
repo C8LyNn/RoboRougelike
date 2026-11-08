@@ -353,6 +353,39 @@ public sealed class R4WheelVariantsTests
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Standard,model.Economy,Time.time,out var restored,out var error),Is.True,error);
         Assert.That(restored.Parts.Single(p=>p.Id==purchased.Id).WheelStyle,Is.EqualTo(style));
     }
+    [UnityTest]public IEnumerator LargeSteerUsesTopSocketAndRealArticulatedModel()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
+        var model=run.VehicleModel;model.Award(1000);var style=(R3WheelStyle)9;
+        Assert.That(run.GaragePurchase(R3PartKind.Wheel,default,style),Is.True);
+        Assert.That(model.Inventory.Last().ContactMask,Is.EqualTo(R3MountingGrid.FaceBit(Vector3Int.up)));
+        Assert.That(R3VehicleModel.WheelRadius(style),Is.EqualTo(.48f).Within(.001f));
+        Assert.That(R3VehicleModel.WheelWidth(style),Is.EqualTo(.34f).Within(.001f));
+        Assert.That(R3VehicleModel.ForkAxleDrop(style),Is.EqualTo(.455f).Within(.001f));
+        var block=GameObject.CreatePrimitive(PrimitiveType.Cube);block.transform.localScale=Vector3.one*R41PartGeometry.BlockSize;
+        var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));R41PartGeometry.ConfigureWheelMount(block,style);
+        var wheel=R41PartGeometry.Payload(block.transform,R3PartKind.Wheel,default,material,true,out _,style);
+        var art=R4WheelArt.TryAttach(block.transform,wheel,false,style);Assert.That(art,Is.Not.Null);
+        var socket=block.GetComponentsInChildren<Transform>(true).Single(t=>t.name=="Socket_Mount");
+        var knuckle=block.GetComponentsInChildren<Transform>(true).Single(t=>t.name=="R4M_WheelL_Steer_Offroad_Knuckle");
+        var rotor=block.GetComponentsInChildren<Transform>(true).Single(t=>t.name=="R4M_WheelL_Steer_Offroad_Rotor");
+        var pivot=new GameObject("test pivot").transform;pivot.SetParent(block.transform,false);pivot.position=knuckle.position;
+        Assert.That(art.AttachToSteeringPivot(pivot),Is.True);var socketPosition=socket.position;var before=rotor.rotation;
+        pivot.localRotation=Quaternion.Euler(0,25,0);
+        Assert.That(Vector3.Distance(socket.position,socketPosition),Is.LessThan(.001f));Assert.That(Quaternion.Angle(rotor.rotation,before),Is.GreaterThan(20));
+        Object.Destroy(block);Object.Destroy(material);yield return null;
+        var purchased=model.Inventory.Single(p=>p.Kind==R3PartKind.Wheel&&p.WheelStyle==style);var garage=run.Garage;
+        foreach(var cell in new[]{new Vector3Int(2,2,2),new Vector3Int(2,3,2),new Vector3Int(2,4,2),new Vector3Int(3,4,2)})
+        {
+            Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);var support=model.Inventory.Last();
+            garage.ChooseInventory(support.Id);garage.Select(cell);Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);yield return null;
+        }
+        var target=new Vector3Int(3,3,2);garage.ChooseInventory(purchased.Id);garage.Select(target);
+        Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);yield return null;
+        var data=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(Time.time)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Standard,model.Economy,Time.time,out var restored,out var error),Is.True,error);
+        Assert.That(restored.Parts.Single(p=>p.Id==purchased.Id).WheelStyle,Is.EqualTo(style));
+    }
     [UnityTest]public IEnumerator LargeWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.LargeOffroad);}
     [UnityTest]public IEnumerator MonsterWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.Monster);}
     [UnityTest]public IEnumerator SmallForkWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.SmallFork);}
@@ -360,7 +393,10 @@ public sealed class R4WheelVariantsTests
     [UnityTest]public IEnumerator SpikedWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.SpikedFork);}
     [UnityTest]public IEnumerator TwinWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.TwinRoad);}
     [UnityTest]public IEnumerator RoadSteerWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.SteerRoad);}
-    [UnityTest]public IEnumerator RoadSteerArtUsesRealIndependentSteeringWithoutMovingMount()
+    [UnityTest]public IEnumerator LargeSteerWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.SteerOffroad);}
+    [UnityTest]public IEnumerator RoadSteerArtUsesRealIndependentSteeringWithoutMovingMount(){yield return SteeringVariant(R3WheelStyle.SteerRoad,"R4M_WheelM_Steer_Road_Rotor");}
+    [UnityTest]public IEnumerator LargeSteerArtUsesRealIndependentSteeringWithoutMovingMount(){yield return SteeringVariant(R3WheelStyle.SteerOffroad,"R4M_WheelL_Steer_Offroad_Rotor");}
+    IEnumerator SteeringVariant(R3WheelStyle style,string rotorName)
     {
         var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
         var palette=(R3VisualPalette)typeof(R1RunController).GetField("palette",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(run);
@@ -371,7 +407,7 @@ public sealed class R4WheelVariantsTests
         foreach(int x in new[]{-1,1})foreach(int z in new[]{0,4})
         {
             design.Parts.Add(new R3PartState(new Vector3Int(x,1,z),R3PartKind.Armor));
-            design.Parts.Add(new R3PartState(new Vector3Int(x,0,z),R3PartKind.Wheel){WheelStyle=R3WheelStyle.SteerRoad,ContactMask=R3MountingGrid.FaceBit(Vector3Int.up)});
+            design.Parts.Add(new R3PartState(new Vector3Int(x,0,z),R3PartKind.Wheel){WheelStyle=style,ContactMask=R3MountingGrid.FaceBit(Vector3Int.up)});
         }
         var model=new R3VehicleModel(design);var vehicle=R3VehicleAssembly.Build(model,run.Progress.Stats,palette,new Vector3(1000,1,1000),Quaternion.identity);
         try
@@ -380,7 +416,7 @@ public sealed class R4WheelVariantsTests
             Assert.That(binding,Is.Not.Null);Assert.That(binding.GeometrySupported,Is.True);
             var front=vehicle.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Kind==R3PartKind.Wheel&&p.Cell.z==4);
             var socket=front.GetComponentsInChildren<Transform>(true).Single(t=>t.name=="Socket_Mount");
-            var rotor=front.GetComponentsInChildren<Transform>(true).Single(t=>t.name=="R4M_WheelM_Steer_Road_Rotor");
+            var rotor=front.GetComponentsInChildren<Transform>(true).Single(t=>t.name==rotorName);
             var beforeSocket=socket.localToWorldMatrix;var beforeRotor=rotor.rotation;
             Assert.That(binding.TrySolve(1,.1f,out _),Is.True);
             Assert.That(Vector3.Distance(socket.position,beforeSocket.GetColumn(3)),Is.LessThan(.001f));

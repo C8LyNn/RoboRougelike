@@ -45,3 +45,4 @@ MonoBehaviour:
   SpikedForkWheel: {fileID: 919132149155446097, guid: 4b28f2865d0b48818ec29027755ea5ad, type: 3}
   TwinRoadWheel: {fileID: 919132149155446097, guid: 349846f53dc241d48b82c95bb38612e1, type: 3}
   SteerRoadWheel: {fileID: 919132149155446097, guid: 7490a71571854e11a6bb9af92fb1a822, type: 3}
+  SteerOffroadWheel: {fileID: 919132149155446097, guid: 2d3058ab6c0e44feb987ca4094fbcd72, type: 3}
