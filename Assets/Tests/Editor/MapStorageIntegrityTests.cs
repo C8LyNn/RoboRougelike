@@ -107,6 +107,8 @@ public sealed class MapStorageIntegrityTests
         run.MapEditorGarage();Assert.That(run.MapEditing,Is.False);
         run.RestartRun();Assert.That(run.MapExitPending,Is.True);Assert.That(run.EditorDraft.Items.Count,Is.EqualTo(1));
         Assert.That(run.EditorMessage,Does.Contain("Niezapisane"));
+        run.TogglePause();run.TogglePause();Assert.That(run.MapExitPending,Is.False,"Resuming must cancel the warning.");
+        run.RestartRun();Assert.That(run.MapExitPending,Is.True);
         // A changed draft invalidates the confirmation even when modified outside the HUD.
         Assert.That(run.EditorDraft.Place(MapItemKind.Ground,1,0,0),Is.True);
         run.RestartRun();Assert.That(run.MapExitPending,Is.True);Assert.That(run.EditorDraft.Items.Count,Is.EqualTo(2));

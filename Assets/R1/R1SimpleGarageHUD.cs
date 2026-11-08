@@ -99,7 +99,8 @@ namespace RoboRougelike.R1
         string SimpleGarageFeedback(R1RunController run)
         {
             var model=run.VehicleModel;
-            string message=run.MapExitPending?run.EditorMessage:run.Garage.Message??string.Empty;
+            if(run.MapExitPending)return run.EditorMessage;
+            string message=run.Garage.Message??string.Empty;
             if(!model.CanDeploy)
                 message+="\nStart zablokowany: "+(model.CriticalReadinessMessage??model.DeployError);
             if(run.Technology?.Error!=null)message+="\nBłąd zapisu lub odczytu technologii.";
