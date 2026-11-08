@@ -1,0 +1,8 @@
+{
+  "head": "5d971b83f28587356cfc3b348b1520aa00af2f01",
+  "started": "2026-11-08T22:11:44.5747684+01:00",
+  "finished": "2026-11-08T22:12:17.0427203+01:00",
+  "exitCode": 0,
+  "filter": "FullMergeActivityTests.RaceUsesSameRobotWithoutEmptyEnemyAutoVictoryAndPausesItsClock;FullMergeActivityTests.RoadTimeAttackHasRealSourceWorldAndSharedVehicle;FullMergeActivityTests.RoadFailureDoesNotRewardAndRestartsWithoutActivityObjects;FullMergeActivityTests.ApiControlledRaceCompletionActuallySettlesOnce;FullMergeActivityTests.RoadResultUsesOneCanonicalRewardAndAllowsNextActivity",
+  "mode": "EditMode UnityTests with Play Mode, batch nographics; API-controlled"
+}
