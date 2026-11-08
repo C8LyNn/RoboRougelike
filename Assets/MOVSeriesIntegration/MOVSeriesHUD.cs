@@ -143,7 +143,10 @@ namespace RoboRougelike.R1
             GUI.backgroundColor=Color.white;
             if(settingsTab==0)
             {
-                GUI.Label(new Rect(30,355,280,25),m.SelectedDrive==R3DriveKind.Hover?"Hover • podparcie MOV009: OFF":"Jeden aktywny napęd • wybierz:",small);DrawDriveButtons(run,30,383,280);return;
+                GUI.Label(new Rect(30,355,280,25),m.SelectedDrive==R3DriveKind.Hover?"Hover • zawieszenie wyłączone":"Jeden aktywny napęd • wybierz:",small);
+                DrawDriveButtons(run,30,383,280);
+                GUI.Label(new Rect(30,455,280,95),"Aby odblokować napęd, zamontuj sprawne części:\nKoła lub gąsienice: po jednej z każdej strony.\nOmni lub Hover: co najmniej jeden moduł.",small);
+                return;
             }
             if(settingsTab==2){DrawSuspensionGarage(run);return;}
             var selected=run.Garage.SelectedPart;
