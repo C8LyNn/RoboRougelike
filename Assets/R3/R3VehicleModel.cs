@@ -174,7 +174,9 @@ namespace RoboRougelike.R3
             foreach(var preference in weaponGroupPreference)copy.weaponGroupPreference[preference.Key]=preference.Value;
             return copy;
         }
-        public void Award(int amount) { Scrap = (int)Math.Min(100000L, Scrap + (long)Math.Max(0, amount)); }
+        public const int MaxScrap=100000;
+        public int PreviewAward(int amount) => (int)Math.Min(Math.Max(0L,(long)MaxScrap-Scrap),Math.Max(0L,(long)amount));
+        public void Award(int amount) { Scrap = (int)Math.Min((long)MaxScrap, Scrap + (long)Math.Max(0, amount)); }
         public static bool IsPassiveEnergyPart(R3PartKind kind) =>
             kind==R3PartKind.Suspension||kind==R3PartKind.Gyroscope||kind==R3PartKind.BonusModule||
             kind==R3PartKind.DirectionalShield||kind==R3PartKind.IndependentSteering||kind==R3PartKind.DrivePower||kind==R3PartKind.EnergyRegenerator;

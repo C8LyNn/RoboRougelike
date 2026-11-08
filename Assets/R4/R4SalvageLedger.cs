@@ -118,7 +118,7 @@ namespace RoboRougelike.R4
             // Validate and store all incoming items together before closing or paying the ledger.
             var incoming=bonus==null?recovered:recovered.Concat(new[]{bonus}).ToArray();
             if(!model.ReceiveSalvage(incoming))return false;
-            Closed=true;DismantledScrap=scrap;model.Award(scrap);return true;
+            int before=model.Scrap;Closed=true;model.Award(scrap);DismantledScrap=model.Scrap-before;return true;
         }
     }
 }

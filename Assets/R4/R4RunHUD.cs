@@ -143,7 +143,7 @@ namespace RoboRougelike.R1
             bool room=run.VehicleModel.Inventory.Count+lootSelection.Count+1<=R3VehicleModel.InventoryCapacity;
             GUI.Label(new Rect(45,603,685,87),
                 $"Moduł: {(selectedBonus>=0?"wybrany":"wymagany")}  •  Zestaw: {(selectedBasket>=0?lootSelection.Count+" części":rewardBaskets.Count==0?"brak łupów":"wymagany")}\n" +
-                $"Niewybrane części → +{ledger.PreviewScrap(run.VehicleModel,lootSelection)} Z.\n" +
+                $"Niewybrane części → +{run.VehicleModel.PreviewAward(ledger.PreviewScrap(run.VehicleModel,lootSelection))} Z.\n" +
                 "Bonusy trafiają do magazynu i pozostają NIEAKTYWNE do montażu.",small);
             GUI.enabled=RewardSelectionReady(selectedBonus,offers.Length,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,lootSelection.Count);
             if(GUI.Button(new Rect(805,610,420,68),"Zatwierdź oba wybory [Enter]",button))
@@ -181,7 +181,7 @@ namespace RoboRougelike.R1
                 Panel(new Rect(45,y,1180,68));
                 GUI.Label(RewardInventoryDetailsRect(i),RewardInventoryItemText(item),small);
                 GUI.Label(RewardInventoryStatusRect(i),RewardInventoryStatusText(model,item),small);
-                if(GUI.Button(new Rect(860,y+10,350,48),rewardDismantleConfirmation==item.Id?"Potwierdź rozmontowanie":$"Rozmontuj → {model.DismantleValue(item)} Z",compactButton))
+                if(GUI.Button(new Rect(860,y+10,350,48),rewardDismantleConfirmation==item.Id?"Potwierdź rozmontowanie":$"Rozmontuj → {model.PreviewAward(model.DismantleValue(item))} Z",compactButton))
                 {
                     bool confirming=rewardDismantleConfirmation==item.Id;
                     PortraitRewardDismantle(run,item.Id);
@@ -252,7 +252,7 @@ namespace RoboRougelike.R1
             {GUI.Label(new Rect(970,400,280,100),"Wybierz egzemplarz z listy. Zielony podgląd oznacza poprawne miejsce montażu.",small);return;}
             GUI.Label(new Rect(970,395,280,70),$"{R4WeaponDefinition.PartName(selected)} • HP {selected.Health*100:0}%\n"+
                 (selected.Health<=0?"Napraw w wierszu przed montażem.":"Kliknij HP w wierszu, aby montować."),small);
-            if(GUI.Button(new Rect(970,480,280,42),dismantleConfirmation==selected.Id?"Potwierdź rozmontowanie":$"Rozmontuj → {model.DismantleValue(selected)} Z",compactButton))
+            if(GUI.Button(new Rect(970,480,280,42),dismantleConfirmation==selected.Id?"Potwierdź rozmontowanie":$"Rozmontuj → {model.PreviewAward(model.DismantleValue(selected))} Z",compactButton))
             {if(DismantleCatalogItem(run,selected.Id))return;}
             DrawFusionButton(run,selected,new Rect(970,535,280,42));
             GUI.Label(new Rect(970,590,280,52),"Po wyborze do montażu katalog się zamknie i pojawi się widmo.",small);
@@ -297,10 +297,10 @@ namespace RoboRougelike.R1
         {
             if(dismantleConfirmation!=id){dismantleConfirmation=id;catalogFeedback="Kliknij ponownie, aby rozmontować wybraną część.";return false;}
             dismantleConfirmation=null;
-            var item=run.VehicleModel.Inventory.FirstOrDefault(p=>p.Id==id);
-            int quote=run.VehicleModel.DismantleValue(item);
+            int before=run.VehicleModel.Scrap;
             bool done=run.GarageDismantle(id);
-            catalogFeedback=done?$"Rozmontowano część • +{quote} Z.":"Nie udało się rozmontować części.";
+            int credited=run.VehicleModel.Scrap-before;
+            catalogFeedback=done?$"Rozmontowano część • +{credited} Z.":"Nie udało się rozmontować części.";
             return done;
         }
     }

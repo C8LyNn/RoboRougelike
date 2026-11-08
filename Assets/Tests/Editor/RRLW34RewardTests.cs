@@ -29,6 +29,27 @@ public sealed class RRLW34RewardTests
         return l;
     }
     static string Snapshot(R3VehicleModel m)=>m.Scrap+"|"+string.Join(";",m.Parts.Concat(m.Inventory).Select(p=>JsonUtility.ToJson(p)));
+    [TestCase(0,9)][TestCase(99995,5)][TestCase(100000,0)]
+    public void ScrapPreviewAndLedgerReportOnlyAmountActuallyCredited(int initial,int expected)
+    {
+        var model=Model();var ledger=Ledger();model.Award(initial);
+        int nominal=ledger.PreviewScrap(model,Array.Empty<string>());
+        Assert.That(nominal,Is.EqualTo(9));
+        Assert.That(model.PreviewAward(nominal),Is.EqualTo(expected));
+        int before=model.Scrap;
+        Assert.That(ledger.Claim(model,Array.Empty<string>()),Is.True);
+        Assert.That(model.Scrap-before,Is.EqualTo(expected));
+        Assert.That(ledger.DismantledScrap,Is.EqualTo(expected));
+    }
+    [TestCase(0)][TestCase(99999)][TestCase(100000)]
+    public void DismantlePreviewMatchesWalletChangeAtTheLimit(int initial)
+    {
+        var model=Model();var part=new R3PartState(default,R3PartKind.Gun){Id="scrap-cap-part"};
+        Assert.That(model.ReceiveSalvage(new[]{part}),Is.True);model.Award(initial);
+        int before=model.Scrap;int preview=model.PreviewAward(model.DismantleValue(part));
+        Assert.That(model.Dismantle(part.Id),Is.True);
+        Assert.That(model.Scrap-before,Is.EqualTo(preview));
+    }
     [TestCase(0,9)][TestCase(1,6)][TestCase(2,5)][TestCase(3,4)]
     public void OnePhysicalBonusAndIndependentPartsSettleExactlyOnce(int count,int scrap)
     {
