@@ -117,6 +117,8 @@ public sealed class R4WheelVariantsTests
     [UnityTest]public IEnumerator LargeWheelsDriveActualRigidVehicleOnGround()
     {
         var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
+        Assert.That(run.EnterTestRange(),Is.True);
+        while(run.Transitioning)yield return null;
         var palette=(R3VisualPalette)typeof(R1RunController).GetField("palette",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(run);
         var design=new R3VehicleDesign{Name="Large wheel drive QA",Speed=7,TurnSpeed=90,CoreHp=100};
         design.Parts.Add(new R3PartState(Vector3Int.zero,R3PartKind.Core));
@@ -132,11 +134,14 @@ public sealed class R4WheelVariantsTests
         {
             for(int i=0;i<10;i++)yield return new WaitForFixedUpdate();
             var body=vehicle.GetComponent<Rigidbody>();float start=body.position.z;int grounded=0;
+            float fixedStart=Time.fixedTime;float deadline=Time.realtimeSinceStartup+10;
             var trace=new System.Text.StringBuilder();
-            for(int i=0;i<80;i++){drive.Step(1,0,7,4,90);grounded=Mathf.Max(grounded,drive.GroundedWheels);
-                if(i%20==0)trace.Append($"[{i}: p={body.position} v={body.linearVelocity} ground={drive.GroundedWheels} force={drive.AvailableForce:0}] ");
+            int i=0;
+            while(Time.fixedTime-fixedStart<1.6f&&Time.realtimeSinceStartup<deadline){drive.Step(1,0,7,4,90);grounded=Mathf.Max(grounded,drive.GroundedWheels);
+                if(i++%20==0)trace.Append($"[{i}: t={Time.fixedTime:F2} p={body.position} v={body.linearVelocity} ground={drive.GroundedWheels} force={drive.AvailableForce:0}] ");
                 yield return new WaitForFixedUpdate();}
             Debug.Log("Large wheel R6 trace "+trace+"final="+body.position);
+            Assert.That(Time.fixedTime-fixedStart,Is.GreaterThanOrEqualTo(1.6f),"The physics clock must really advance.");
             Assert.That(grounded,Is.GreaterThanOrEqualTo(2),"Real large tires must register ground support.");
             Assert.That(body.position.z-start,Is.GreaterThan(.5f),"The actual R6 body must travel forward.");
         }
