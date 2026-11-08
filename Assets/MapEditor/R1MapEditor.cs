@@ -105,13 +105,19 @@ namespace RoboRougelike.R1
         public void ReturnFromMapEditorToMenu()
         {
             if(!MapEditing||Transitioning||EditorDraft==null)return;
+            RestartRun();
+        }
+        bool ConfirmMapEditorMenuExit()
+        {
+            if(!MapEditorSession||EditorDraft==null)return true;
             string current=EditorDraft.ToJson();
             if(current!=savedMapSnapshot&&pendingMapExitSnapshot!=current)
             {
                 pendingMapExitSnapshot=current;
-                EditorMessage="Niezapisane zmiany zostaną utracone. Kliknij ponownie Powrót do menu, aby potwierdzić.";return;
+                EditorMessage="Niezapisane zmiany mapy zostaną utracone. Wybierz ponownie powrót do menu, aby potwierdzić.";
+                return false;
             }
-            pendingMapExitSnapshot=null;RestartRun();
+            pendingMapExitSnapshot=null;return true;
         }
         public void SaveEditedMap()
         {

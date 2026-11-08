@@ -98,4 +98,18 @@ public sealed class MapStorageIntegrityTests
         finally{if(File.Exists(path))File.Delete(path);}
         yield return new ExitPlayMode();
     }
+    [UnityTest] public IEnumerator ReturningToMenuFromMapGarageWarnsAboutUnsavedDraft()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);yield return new EnterPlayMode();
+        var until=Time.realtimeSinceStartup+15;while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<until)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenMapEditor(),Is.True);
+        Assert.That(run.EditorDraft.Place(MapItemKind.Ground,0,0,0),Is.True);
+        run.MapEditorGarage();Assert.That(run.MapEditing,Is.False);
+        run.RestartRun();Assert.That(run.MapExitPending,Is.True);Assert.That(run.EditorDraft.Items.Count,Is.EqualTo(1));
+        Assert.That(run.EditorMessage,Does.Contain("Niezapisane"));
+        // A changed draft invalidates the confirmation even when modified outside the HUD.
+        Assert.That(run.EditorDraft.Place(MapItemKind.Ground,1,0,0),Is.True);
+        run.RestartRun();Assert.That(run.MapExitPending,Is.True);Assert.That(run.EditorDraft.Items.Count,Is.EqualTo(2));
+        yield return new ExitPlayMode();
+    }
 }

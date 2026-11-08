@@ -302,9 +302,9 @@ namespace RoboRougelike.R1
             Panel(new Rect(0,0,1280,720));
             GUI.Label(new Rect(350,130,600,70),"Pauza",title);
             if(GUI.Button(new Rect(350,220,580,58),PauseCaption(run,0,"Wznów  [Esc]"),button))run.TogglePause();
-            if(GUI.Button(new Rect(350,290,580,58),PauseCaption(run,1,"Powrót do menu głównego"),button))run.RestartRun();
+            if(GUI.Button(new Rect(350,290,580,58),PauseCaption(run,1,run.MapExitPending?"Potwierdź powrót":"Powrót do menu głównego"),button))run.RestartRun();
             if(GUI.Button(new Rect(350,360,580,58),PauseCaption(run,2,"Wyjdź z gry"),button))run.RequestQuit();
-            GUI.Label(new Rect(350,430,580,40),"↑ / ↓ i Enter • pad: krzyżak, A, B / Start",small);
+            GUI.Label(new Rect(350,430,580,60),run.MapExitPending?run.EditorMessage:"↑ / ↓ i Enter • pad: krzyżak, A, B / Start",small);
             DrawMovementPause(run);DrawSuspensionPause(run);
         }
         private static string PauseCaption(R1RunController run,int index,string label)
