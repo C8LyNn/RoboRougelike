@@ -75,4 +75,24 @@ public sealed class MapStorageIntegrityTests
         finally{if(File.Exists(path))File.Delete(path);}
         yield return new ExitPlayMode();
     }
+    [UnityTest] public IEnumerator LoadingAStoredMapRequiresConfirmationForUnsavedChanges()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);yield return new EnterPlayMode();
+        var until=Time.realtimeSinceStartup+15;while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<until)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenMapEditor(),Is.True);
+        run.EditorName="loadconfirm"+Guid.NewGuid().ToString("N");Assert.That(MapStorage.TryPath(MapStorage.DirectoryPath,run.EditorName,out var path),Is.True);
+        try
+        {
+            Assert.That(run.EditorDraft.Place(MapItemKind.Ground,0,0,0),Is.True);run.SaveEditedMap();
+            Assert.That(run.EditorDraft.Place(MapItemKind.Ground,1,0,0),Is.True);
+            run.LoadEditedMap();Assert.That(run.MapLoadPending,Is.True);Assert.That(run.EditorDraft.Items.Count,Is.EqualTo(2));
+            // A changed draft is a different operation and must be confirmed again.
+            Assert.That(run.EditorDraft.Place(MapItemKind.Ground,2,0,0),Is.True);
+            run.LoadEditedMap();Assert.That(run.MapLoadPending,Is.True);Assert.That(run.EditorDraft.Items.Count,Is.EqualTo(3));
+            run.LoadEditedMap();Assert.That(run.MapLoadPending,Is.False);Assert.That(run.EditorDraft.Items.Count,Is.EqualTo(1));
+            run.LoadEditedMap();Assert.That(run.MapLoadPending,Is.False);
+        }
+        finally{if(File.Exists(path))File.Delete(path);}
+        yield return new ExitPlayMode();
+    }
 }
