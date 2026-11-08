@@ -325,7 +325,19 @@ namespace RoboRougelike.R1
             int repaired=run.GarageRepairInventoryBatch(plan.Select(item=>item.Id));
             int spent=before-run.VehicleModel.Scrap;
             catalogFeedback=repaired>0?$"Naprawiono {repaired} części • koszt {spent} Z.":"Nie udało się naprawić części.";
-            if(!catalogOpen&&run.Garage!=null)run.Garage.Message=catalogFeedback;
+            if(!catalogOpen&&run.Garage!=null)
+            {
+                if(repaired>0&&catalogGroup.HasValue&&run.Garage.Tool==R41GarageTool.Mount&&
+                   string.IsNullOrEmpty(run.Garage.SelectedInventoryId))
+                {
+                    var ready=plan.FirstOrDefault(part=>part.Health>=1&&
+                        InCatalogGroup(part,catalogGroup.Value,catalogWeapon,catalogBonusId)&&
+                        run.VehicleModel.Inventory.Any(owned=>owned.Id==part.Id));
+                    if(ready!=null)
+                    {run.Garage.ChooseInventory(ready.Id);catalogFeedback+=" Wybierz miejsce montażu.";}
+                }
+                run.Garage.Message=catalogFeedback;
+            }
         }
         private bool DismantleCatalogItem(R1RunController run,string id)
         {
