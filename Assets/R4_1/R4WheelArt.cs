@@ -13,7 +13,7 @@ namespace RoboRougelike.R4_1
         Rigidbody owner;
         public static bool ForkWheelAvailable(R3WheelStyle style)
         {var catalog=Resources.Load<R4MovementArtCatalog>("R4Art/MovementCatalog");return catalog!=null&&
-            (style==R3WheelStyle.SmallFork?catalog.SmallForkWheel!=null:style==R3WheelStyle.BalloonFork?catalog.BalloonForkWheel!=null:style==R3WheelStyle.SpikedFork?catalog.SpikedForkWheel!=null:style==R3WheelStyle.TwinRoad?catalog.TwinRoadWheel!=null:style==R3WheelStyle.SteerRoad&&catalog.SteerRoadWheel!=null);}
+            (style==R3WheelStyle.SmallFork?catalog.SmallForkWheel!=null:style==R3WheelStyle.BalloonFork?catalog.BalloonForkWheel!=null:style==R3WheelStyle.SpikedFork?catalog.SpikedForkWheel!=null:style==R3WheelStyle.TwinRoad?catalog.TwinRoadWheel!=null:style==R3WheelStyle.SteerRoad?catalog.SteerRoadWheel!=null:style==R3WheelStyle.SteerOffroad&&catalog.SteerOffroadWheel!=null);}
         public static bool SizedWheelAvailable(R3WheelStyle style)
         {
             var catalog=Resources.Load<R4MovementArtCatalog>("R4Art/MovementCatalog");
@@ -45,16 +45,16 @@ namespace RoboRougelike.R4_1
             bool large=style==R3WheelStyle.LargeOffroad;
             bool monster=style==R3WheelStyle.Monster;
             bool small=style==R3WheelStyle.SmallFork;
-            bool balloon=style==R3WheelStyle.BalloonFork;bool spiked=style==R3WheelStyle.SpikedFork;bool twin=style==R3WheelStyle.TwinRoad;bool steer=style==R3WheelStyle.SteerRoad;bool fork=small||balloon||spiked||twin||steer;
+            bool balloon=style==R3WheelStyle.BalloonFork;bool spiked=style==R3WheelStyle.SpikedFork;bool twin=style==R3WheelStyle.TwinRoad;bool largeSteer=style==R3WheelStyle.SteerOffroad;bool steer=style==R3WheelStyle.SteerRoad||largeSteer;bool fork=small||balloon||spiked||twin||steer;
             if((large||monster)&&!SizedWheelAvailable(style))return null;
             if(fork&&!ForkWheelAvailable(style))return null;
             var slick=style==R3WheelStyle.Slick&&catalog!=null&&catalog.SideWheelSlick!=null;
             var side=!fork&&catalog!=null&&(monster||large||slick||catalog.SideWheel!=null);
-            var prefab=fork?(small?catalog.SmallForkWheel:balloon?catalog.BalloonForkWheel:spiked?catalog.SpikedForkWheel:twin?catalog.TwinRoadWheel:catalog.SteerRoadWheel):side?(monster?catalog.SideWheelMonster:large?catalog.SideWheelLarge:slick?catalog.SideWheelSlick:catalog.SideWheel):catalog!=null?catalog.ModelFor(R3PartKind.Wheel):null;
+            var prefab=fork?(small?catalog.SmallForkWheel:balloon?catalog.BalloonForkWheel:spiked?catalog.SpikedForkWheel:twin?catalog.TwinRoadWheel:largeSteer?catalog.SteerOffroadWheel:catalog.SteerRoadWheel):side?(monster?catalog.SideWheelMonster:large?catalog.SideWheelLarge:slick?catalog.SideWheelSlick:catalog.SideWheel):catalog!=null?catalog.ModelFor(R3PartKind.Wheel):null;
             if(prefab==null)return null;
             var visual=Instantiate(prefab,block,false);
-            var spinning=Array.Find(visual.GetComponentsInChildren<Transform>(true),t=>t.name==(small?"R4M_WheelS_Fork_Road_Rotor":balloon?"R4M_WheelL_Fork_Balloon_Rotor":spiked?"R4M_WheelM_Fork_Spiked_Rotor":twin?"R4M_WheelM_Twin_Road_Rotor":steer?"R4M_WheelM_Steer_Road_Rotor":monster?"R4M_WheelXL_Side_Monster_Rotor":large?"R4M_WheelL_Side_Offroad_Rotor":slick?"R4M_WheelM_Side_Slick_Rotor":side?"R4M_WheelM_Side_Offroad_Rotor":"R4M_Wheel_Rotor"));
-            var knuckle=steer?Array.Find(visual.GetComponentsInChildren<Transform>(true),t=>t.name=="R4M_WheelM_Steer_Road_Knuckle"):null;
+            var spinning=Array.Find(visual.GetComponentsInChildren<Transform>(true),t=>t.name==(small?"R4M_WheelS_Fork_Road_Rotor":balloon?"R4M_WheelL_Fork_Balloon_Rotor":spiked?"R4M_WheelM_Fork_Spiked_Rotor":twin?"R4M_WheelM_Twin_Road_Rotor":largeSteer?"R4M_WheelL_Steer_Offroad_Rotor":steer?"R4M_WheelM_Steer_Road_Rotor":monster?"R4M_WheelXL_Side_Monster_Rotor":large?"R4M_WheelL_Side_Offroad_Rotor":slick?"R4M_WheelM_Side_Slick_Rotor":side?"R4M_WheelM_Side_Offroad_Rotor":"R4M_Wheel_Rotor"));
+            var knuckle=steer?Array.Find(visual.GetComponentsInChildren<Transform>(true),t=>t.name==(largeSteer?"R4M_WheelL_Steer_Offroad_Knuckle":"R4M_WheelM_Steer_Road_Knuckle")):null;
             var socket=Array.Find(visual.GetComponentsInChildren<Transform>(true),t=>t.name=="Socket_Mount");
             var renderer=physicalWheel.GetComponent<Renderer>();
             if(spinning==null||socket==null||renderer==null||(steer&&(knuckle==null||!spinning.IsChildOf(knuckle)))){Destroy(visual);return null;}
