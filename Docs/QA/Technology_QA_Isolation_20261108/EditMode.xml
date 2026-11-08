@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="5" result="Passed" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-08 16:49:31Z" end-time="2026-11-08 16:49:32Z" duration="0,6239364">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1853" result="Passed" start-time="2026-11-08 16:49:31Z" end-time="2026-11-08 16:49:32Z" duration="0.623936" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="2310" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-PlayQA-97f8/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="1060" result="Passed" start-time="2026-11-08 16:49:31Z" end-time="2026-11-08 16:49:32Z" duration="0.571227" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="66288" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="1124" name="BacklogTechnologyIntegrationTests" fullname="BacklogTechnologyIntegrationTests" classname="BacklogTechnologyIntegrationTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-11-08 16:49:31Z" end-time="2026-11-08 16:49:32Z" duration="0.535754" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1125" name="ActualEnemyDefeatUnlocksItsWeaponImmediatelyWithoutGrantingIt" fullname="BacklogTechnologyIntegrationTests.ActualEnemyDefeatUnlocksItsWeaponImmediatelyWithoutGrantingIt" methodname="ActualEnemyDefeatUnlocksItsWeaponImmediatelyWithoutGrantingIt" classname="BacklogTechnologyIntegrationTests" runstate="Runnable" seed="394132559" result="Passed" start-time="2026-11-08 16:49:28Z" end-time="2026-11-08 16:49:32Z" duration="3.559310" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[Pack 18] Detached structural chunk: 22 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[Pack 18] Detached structural chunk: 23 block(s).
+[Pack 18] CORE DESTROYED. Vehicle control disabled.
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[R4] Nagrody: bonusy=1; moduły=0; złom z demontażu=73
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1119" name="BacklogTechnologyTests" fullname="BacklogTechnologyTests" classname="BacklogTechnologyTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-08 16:49:32Z" end-time="2026-11-08 16:49:32Z" duration="0.019444" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1122" name="CorruptProfileIsPreservedAndDoesNotRevokeAccess" fullname="BacklogTechnologyTests.CorruptProfileIsPreservedAndDoesNotRevokeAccess" methodname="CorruptProfileIsPreservedAndDoesNotRevokeAccess" classname="BacklogTechnologyTests" runstate="Runnable" seed="1979495368" result="Passed" start-time="2026-11-08 16:49:32Z" end-time="2026-11-08 16:49:32Z" duration="0.008746" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1121" name="DiscoverySurvivesNewInstanceWithoutGrantingAPhysicalWeapon" fullname="BacklogTechnologyTests.DiscoverySurvivesNewInstanceWithoutGrantingAPhysicalWeapon" methodname="DiscoverySurvivesNewInstanceWithoutGrantingAPhysicalWeapon" classname="BacklogTechnologyTests" runstate="Runnable" seed="1847506009" result="Passed" start-time="2026-11-08 16:49:32Z" end-time="2026-11-08 16:49:32Z" duration="0.002804" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1123" name="LegacyOwnedWeaponsBecomePermanentlyAvailable" fullname="BacklogTechnologyTests.LegacyOwnedWeaponsBecomePermanentlyAvailable" methodname="LegacyOwnedWeaponsBecomePermanentlyAvailable" classname="BacklogTechnologyTests" runstate="Runnable" seed="694161215" result="Passed" start-time="2026-11-08 16:49:32Z" end-time="2026-11-08 16:49:32Z" duration="0.006501" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1120" name="PersistentTechnologyProgressUsesTheExistingGameAssembly" fullname="BacklogTechnologyTests.PersistentTechnologyProgressUsesTheExistingGameAssembly" methodname="PersistentTechnologyProgressUsesTheExistingGameAssembly" classname="BacklogTechnologyTests" runstate="Runnable" seed="880710076" result="Passed" start-time="2026-11-08 16:49:32Z" end-time="2026-11-08 16:49:32Z" duration="0.000227" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

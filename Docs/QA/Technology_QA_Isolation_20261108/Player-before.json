@@ -1,0 +1,14 @@
+{
+    "status": "FAIL",
+    "phase": "save",
+    "error": "System.InvalidOperationException: refuse to use the player's persistent technology profile\r\n  at RoboRougelike.R1.ColdCheckpointPlayerQA+<Exercise>d__8.MoveNext () [0x006e8] in <7b79302c18c24ff1bd47cf789cc756c9>:0 \r\n  at RoboRougelike.R1.ColdCheckpointPlayerQA+<Run>d__7.MoveNext () [0x00035] in <7b79302c18c24ff1bd47cf789cc756c9>:0 ",
+    "method": "Two separate Windows Player processes, API-driven; not human gameplay",
+    "isolated": true,
+    "technologyIsolated": false,
+    "battery": false,
+    "inventory": false,
+    "ids": false,
+    "hp": false,
+    "energy": false,
+    "scrap": false
+}

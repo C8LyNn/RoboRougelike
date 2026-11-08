@@ -11,7 +11,7 @@ namespace RoboRougelike.R1
     // Two separate batch processes, explicit temporary slot; never touches the player's save.
     public sealed class ColdCheckpointPlayerQA : MonoBehaviour
     {
-        [Serializable] sealed class Result { public string status="RUNNING", phase, error, method="Two separate Windows Player processes, API-driven; not human gameplay"; public bool isolated, battery, inventory, ids, hp, energy, scrap; }
+        [Serializable] sealed class Result { public string status="RUNNING", phase, error, method="Two separate Windows Player processes, API-driven; not human gameplay"; public bool isolated, technologyIsolated, battery, inventory, ids, hp, energy, scrap; }
         readonly Result result=new Result(); string folder,phase;
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)] static void Install()
         {
@@ -33,6 +33,9 @@ namespace RoboRougelike.R1
             string slot=Path.GetFullPath(Path.Combine(folder,"isolated-checkpoint.json"));
             result.isolated=string.Equals(Path.GetFullPath(R1RunCheckpointStorage.PathName),slot,StringComparison.OrdinalIgnoreCase);
             Require(result.isolated,"refuse to touch player save");
+            string temporaryRoot=Path.GetFullPath(Path.GetTempPath()).TrimEnd(Path.DirectorySeparatorChar,Path.AltDirectorySeparatorChar)+Path.DirectorySeparatorChar;
+            result.technologyIsolated=Path.GetFullPath(R1TechnologyProgress.DefaultPath).StartsWith(temporaryRoot,StringComparison.OrdinalIgnoreCase);
+            Require(result.technologyIsolated,"refuse to use the player's persistent technology profile");
             float deadline=Time.realtimeSinceStartup+45;
             while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<deadline)yield return null;
             var run=R1RunController.Instance;Require(run?.Progress!=null,"game bootstrap");
