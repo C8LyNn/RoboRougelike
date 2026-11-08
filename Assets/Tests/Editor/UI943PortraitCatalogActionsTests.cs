@@ -22,6 +22,20 @@ public sealed class UI943PortraitCatalogActionsTests
     static object Field(R1RunHUD hud,string name)=>typeof(R1RunHUD).GetField(name,BindingFlags.Instance|BindingFlags.NonPublic).GetValue(hud);
     static bool ContainsId(R3VehicleModel model,string id)=>model.Inventory.Any(p=>p.Id==id);
 
+    [Test] public void InspectionSummaryUsesMountedPartHealthAndRepairQuote()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        var part=model.Parts.First(p=>p.Kind==R3PartKind.Armor);part.Health=.5f;
+        var method=typeof(R1RunHUD).GetMethod("GarageInspectionSummary",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        var damaged=(string)method.Invoke(null,new object[]{model,part});
+        Assert.That(damaged,Does.Contain("HP 50%").And.Contain(model.RepairCost(part)+" Z"));
+        part.Health=1;
+        var healthy=(string)method.Invoke(null,new object[]{model,part});
+        Assert.That(healthy,Does.Contain("HP 100%").And.Contain("sprawna"));
+        Assert.That(healthy,Does.Not.Contain("0 Z"));
+    }
+
     [UnityTest] public IEnumerator CatalogDetailsSelectsHealthyPartWithoutClosingOrSpending()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();

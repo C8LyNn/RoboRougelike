@@ -26,6 +26,13 @@ namespace RoboRougelike.R1
             part.Health>=1?"Część sprawna":price<=0?"Nie można naprawić":
             scrap<price?$"Brakuje {price-scrap} Z":$"Napraw — {price} Z";
 
+        static string GarageInspectionSummary(R3VehicleModel model,R3PartState part)
+        {
+            int quote=model.RepairCost(part);
+            string repair=part.Health>=1?"sprawna":quote>0?$"naprawa: {quote} Z":"naprawa niedostępna";
+            return $"{R4WeaponDefinition.PartName(part)} • HP {part.Health*100:0}%\n{repair}";
+        }
+
         static string GarageWheelStats(R3PartState part)=>
             $"{R4WeaponDefinition.WheelName(part.WheelStyle)} T{R3VehicleModel.NormalizedTier(part.Tier)} • {R4WeaponDefinition.PartMass(part):0.#} kg\n"+
             $"Siła {100*R3VehicleModel.WheelTraction(part.WheelStyle)*R3VehicleModel.TierWheelTraction(part.Tier):0}% przy 100% HP";
@@ -207,9 +214,10 @@ namespace RoboRougelike.R1
             GUI.Label(new Rect(12,79,240,24),"CZĘŚCI • kliknij, aby wybrać",small);
             DrawQuickParts(run,new Rect(12,105,246,397),225);
             var owned=model.Inventory.FirstOrDefault(p=>p.Id==garage.SelectedInventoryId);
-            GUI.Label(new Rect(12,511,245,43),owned!=null?$"Wybrano: {R4WeaponDefinition.PartName(owned)} • HP {owned.Health*100:0}%":
+            var inspected=garage.Tool==R41GarageTool.Inspect&&garage.HasTarget?model.At(garage.Cell):null;
+            GUI.Label(new Rect(12,511,245,43),inspected!=null?GarageInspectionSummary(model,inspected):owned!=null?$"Wybrano: {R4WeaponDefinition.PartName(owned)} • HP {owned.Health*100:0}%":
                 catalogGroup.HasValue?"Wybierz egzemplarz lub kup część.":"Wybierz część z listy.",small);
-            var inspectedWheel=garage.Tool==R41GarageTool.Inspect&&garage.HasTarget?model.At(garage.Cell):null;
+            var inspectedWheel=inspected;
             if(inspectedWheel!=null&&inspectedWheel.Kind==R3PartKind.Wheel&&!R3VehicleModel.CanSwapWheelAppearance(inspectedWheel.WheelStyle))
                 GUI.Label(new Rect(12,560,245,42),GarageWheelStats(inspectedWheel),small);
             else if(inspectedWheel!=null&&inspectedWheel.Kind==R3PartKind.Wheel)
@@ -267,9 +275,10 @@ namespace RoboRougelike.R1
             GUI.Label(new Rect(24,632,420,24),"CZĘŚCI • kliknij, aby wybrać",small);
             DrawQuickParts(run,new Rect(24,658,414,220),392);
             var owned=model.Inventory.FirstOrDefault(p=>p.Id==garage.SelectedInventoryId);
-            GUI.Label(new Rect(458,637,286,50),owned!=null?$"{R4WeaponDefinition.PartName(owned)} • HP {owned.Health*100:0}%":
+            var inspected=garage.Tool==R41GarageTool.Inspect&&garage.HasTarget?model.At(garage.Cell):null;
+            GUI.Label(new Rect(458,637,286,50),inspected!=null?GarageInspectionSummary(model,inspected):owned!=null?$"{R4WeaponDefinition.PartName(owned)} • HP {owned.Health*100:0}%":
                 "Wybierz część z listy.",small);
-            var inspectedWheel=garage.Tool==R41GarageTool.Inspect&&garage.HasTarget?model.At(garage.Cell):null;
+            var inspectedWheel=inspected;
             if(inspectedWheel!=null&&inspectedWheel.Kind==R3PartKind.Wheel&&!R3VehicleModel.CanSwapWheelAppearance(inspectedWheel.WheelStyle))
                 GUI.Label(new Rect(458,690,286,40),GarageWheelStats(inspectedWheel),small);
             else if(inspectedWheel!=null&&inspectedWheel.Kind==R3PartKind.Wheel)
