@@ -332,7 +332,7 @@ public sealed class R4WheelVariantsTests
         var wheel=new R3PartState(new Vector3Int(1,0,0),R3PartKind.Wheel){WheelStyle=R3WheelStyle.TwinRoad,ContactMask=R3MountingGrid.FaceBit(Vector3Int.up)};
         design.Parts.Add(wheel);var model=new R3VehicleModel(design);
         var vehicle=R3VehicleAssembly.Build(model,run.Progress.Stats,palette,new Vector3(1000,.53f,1000),Quaternion.identity);
-        var part=vehicle.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==wheel.Id);
+        var part=vehicle.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==model.Parts.Single(s=>s.Kind==R3PartKind.Wheel).Id);
         var tires=part.transform.Find("Koło").GetComponentsInChildren<Collider>().Where(c=>c.enabled).OrderBy(c=>c.bounds.center.x).ToArray();
         Assert.That(tires.Length,Is.EqualTo(2));
         var pad=GameObject.CreatePrimitive(PrimitiveType.Cube);pad.transform.localScale=new Vector3(.04f,.1f,.4f);
