@@ -1,0 +1,88 @@
+name: B01-41 W29 real #826 sole Save + #792 Rig physical V7 combined managed G0
+on:
+  push:
+    branches: [ci/b01-41-p17w29-savev3-physical-composite-g0]
+    paths:
+      - 'Tools/B01/CI41/P17W29CompositeV3/**'
+      - '.github/workflows/b01-41-p17w29-v3-physical-composite.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  selected-original-source-abi-and-physical-qa:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch immutable real production and parent native-test Git commits
+        run: |
+          set -euo pipefail
+          for sha in \
+            99fb08619c78b3834bb4c0450499babf991f218a \
+            2b7983f0f9e09dd1d56906b379a3f7af7b02f21a \
+            16cb2a7b5158605b15191b6074f9e392e0d1ebd3 \
+            b4df10a7ad7e6c758f8331013f6b216b3a3689a3 \
+            b8ca29c7707cd6b4338d0b9772d74dee676d49d2 \
+            33094f154c7b91119b36d58aab285e6e83c5de57 \
+            d94400d95d13db7f27e1533df05c9292d5380431 \
+            60c73a6f9ed2585cbb9bf7aeaad8c62eef0629cb \
+            e66968408b583404cd50250f53e655ea75a085fc \
+            ed8cf4bcc131688b9a93968a89683d2496586683 \
+            f5db40bf293fe9582ec7c6fcb3515aeff6fcf937; do
+            git fetch --no-tags origin "$sha"
+            test "$(git rev-parse "$sha^{commit}")" = "$sha"
+          done
+      - name: Execute 10 independent mutation/writer-source tests
+        run: |
+          set -euo pipefail
+          mkdir -p ci41-w29-evidence
+          python -m unittest discover -s Tools/B01/CI41/P17W29CompositeV3 -p test_stage.py -v 2>&1 | tee ci41-w29-evidence/negative-unit.log
+          grep -q 'Ran 10 tests' ci41-w29-evidence/negative-unit.log
+          grep -q '^OK$' ci41-w29-evidence/negative-unit.log
+      - name: Physically stage exact #826/#792/#780 original code (never original Save)
+        run: |
+          set -euo pipefail
+          python Tools/B01/CI41/P17W29CompositeV3/stage.py ci41-w29-evidence/disposable-composite-project 2>&1 | tee ci41-w29-evidence/original-git-source.log
+          grep -q 'CI41_W29_IMMUTABLE_ORIGINAL_SOURCES_PASS 16' ci41-w29-evidence/original-git-source.log
+          grep -q 'CI41_W29_UNITY_API_V3_REPLACEMENT_SOURCE_POLICY_PASS' ci41-w29-evidence/original-git-source.log
+          python -c 'import json; p=json.load(open("ci41-w29-evidence/disposable-composite-project/composite-provenance.json")); assert p["selected_active_save"]=="99fb08619c78b3834bb4c0450499babf991f218a" and p["only_one_writer"] is True and p["Unity_G1"]=="NOT_RUN" and p["r5_fixture"]=="PINNED_ONLY_NATIVE_NOT_RUN"'
+      - name: Actual C#9 netstandard2.1 compilation of selected real combined source
+        run: |
+          set -euo pipefail
+          dotnet build ci41-w29-evidence/disposable-composite-project/Composite826PhysicalNetStandard21.csproj -c Release --nologo -v minimal 2>&1 | tee ci41-w29-evidence/actual-composite-netstandard21-compiler.log
+          grep -q 'Build succeeded' ci41-w29-evidence/actual-composite-netstandard21-compiler.log
+          echo 'CI41_W29_REAL_SELECTED_826_792_780_ONE_SOURCE_COMPILER_PASS_NOT_UNITY' | tee -a ci41-w29-evidence/actual-composite-netstandard21-compiler.log
+      - name: Execute original physical RigPort source and genuine ONE Save V3 disk OS operations
+        run: |
+          set -euo pipefail
+          dotnet run --project ci41-w29-evidence/disposable-composite-project/Composite826PhysicalSourceQA.csproj -c Release --nologo -v minimal 2>&1 | tee ci41-w29-evidence/actual-composite-physical-disk.log
+          grep -q 'B0162_W27_ORIGINAL_COMPOSITE_PHYSICAL_SOURCE_ABI_TOTAL 2 PASS 2 FAIL 0' ci41-w29-evidence/actual-composite-physical-disk.log
+          grep -q 'B0162_W27_UNITY_PHYSX_NATIVE_G1=NOT_RUN' ci41-w29-evidence/actual-composite-physical-disk.log
+          echo 'CI41_W29_V3_SELECTED_COMPOSITE_MANAGED_PHYSICAL_SOURCE_TESTS_2_OF_2_PASS_NOT_PHYSX' | tee -a ci41-w29-evidence/actual-composite-physical-disk.log
+      - name: Preserve exact original source inventory, compiler logs, real disk tests and negatives
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CI41-W29-EXACT-826-PHYSICAL-V7-SOURCE-NOT-UNITY-${{ runner.os }}
+          path: |
+            ci41-w29-evidence/*.log
+            ci41-w29-evidence/disposable-composite-project/composite-provenance.json
+            ci41-w29-evidence/disposable-composite-project/shim-change.log
+          if-no-files-found: warn
+          retention-days: 14
