@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Linq;
+using System.Reflection;
 using NUnit.Framework;
 using RoboRougelike.R1;
 using RoboRougelike.R3;
 using RoboRougelike.R6;
+using RoboRougelike.R4_1;
+using RogueMachine.P12PipelineSafe;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -109,6 +112,30 @@ public sealed class R4WheelVariantsTests
         var data=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(Time.time)));
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Standard,model.Economy,Time.time,out var restored,out var error),Is.True,error);
         Assert.That(restored.Parts.Single(p=>p.Id==large.Id).WheelStyle,Is.EqualTo(R3WheelStyle.LargeOffroad));
+    }
+    [UnityTest]public IEnumerator LargeWheelsDriveActualRigidVehicleOnGround()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
+        var palette=(R3VisualPalette)typeof(R1RunController).GetField("palette",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(run);
+        var design=new R3VehicleDesign{Name="Large wheel drive QA",Speed=7,TurnSpeed=90,CoreHp=100};
+        design.Parts.Add(new R3PartState(Vector3Int.zero,R3PartKind.Core));
+        for(int z=1;z<=3;z++)design.Parts.Add(new R3PartState(new Vector3Int(0,0,z),R3PartKind.Armor));
+        foreach(int x in new[]{-1,1})foreach(int z in new[]{0,3})
+            design.Parts.Add(new R3PartState(new Vector3Int(x,0,z),R3PartKind.Wheel){WheelStyle=R3WheelStyle.LargeOffroad});
+        var model=new R3VehicleModel(design);var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);
+        floor.transform.position=new Vector3(1000,-.1f,1000);floor.transform.localScale=new Vector3(30,.2f,30);
+        var vehicle=R3VehicleAssembly.Build(model,run.Progress.Stats,palette,new Vector3(1000,.82f,1000),Quaternion.identity);
+        var tank=vehicle.GetComponent<P12PipelineSafeTankController>();tank.enabled=false;
+        var drive=vehicle.GetComponent<R6VehicleDrive>();Assert.That(drive,Is.Not.Null);Time.timeScale=1;
+        try
+        {
+            for(int i=0;i<10;i++)yield return new WaitForFixedUpdate();
+            float start=vehicle.transform.position.z;int grounded=0;
+            for(int i=0;i<80;i++){drive.Step(1,0,7,4,90);grounded=Mathf.Max(grounded,drive.GroundedWheels);yield return new WaitForFixedUpdate();}
+            Assert.That(grounded,Is.GreaterThanOrEqualTo(2),"Real large tires must register ground support.");
+            Assert.That(vehicle.transform.position.z-start,Is.GreaterThan(.5f),"The actual R6 body must travel forward.");
+        }
+        finally{Object.Destroy(vehicle.gameObject);Object.Destroy(floor);}
     }
     [UnityTearDown]public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }
