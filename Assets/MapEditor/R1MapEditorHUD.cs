@@ -49,10 +49,10 @@ namespace RoboRougelike.R1
             if(run.Paused)
             {
                 Panel(new Rect(190,115,900,520));GUI.Label(new Rect(230,145,820,65),run.RangeDisabled?"Pojazd unieruchomiony":"TEST MAPY • PAUZA",title);
-                GUI.Label(new Rect(230,220,820,48),"Jazda próbna używa kopii pojazdu; mapa i konstrukcja w garażu pozostają zachowane.",body);
+                GUI.Label(new Rect(230,220,820,48),run.MapExitPending?run.EditorMessage:"Jazda próbna używa kopii pojazdu; mapa i konstrukcja w garażu pozostają zachowane.",body);
                 if(!run.RangeDisabled&&GUI.Button(new Rect(230,285,820,55),PauseCaption(run,0,"Wznów [Esc]"),button))run.TogglePause();
                 if(GUI.Button(new Rect(230,355,820,55),PauseCaption(run,1,"Wróć do edytora map"),button))run.ReturnFromEditedMapTest();
-                if(GUI.Button(new Rect(230,425,395,55),PauseCaption(run,2,"Powrót do menu"),button))run.RestartRun();
+                if(GUI.Button(new Rect(230,425,395,55),PauseCaption(run,2,run.MapExitPending?"Potwierdź powrót":"Powrót do menu"),button))run.RestartRun();
                 if(GUI.Button(new Rect(650,425,400,55),PauseCaption(run,3,"Wyjdź z gry"),button))run.RequestQuit();return;
             }
             Panel(new Rect(18,18,560,78));GUI.Label(new Rect(32,27,535,55),run.EditorWorld.Finished?"META OSIĄGNIĘTA • Esc — wróć do edytora":"TEST MAPY • Esc — pauza / powrót do edytora",small);
