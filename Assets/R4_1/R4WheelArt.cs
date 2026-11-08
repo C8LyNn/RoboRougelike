@@ -11,8 +11,9 @@ namespace RoboRougelike.R4_1
         float radiusMeters=.39f;
         Transform rotor,visualRoot;
         Rigidbody owner;
-        public static bool SmallForkAvailable
-        {get{var catalog=Resources.Load<R4MovementArtCatalog>("R4Art/MovementCatalog");return catalog!=null&&catalog.SmallForkWheel!=null;}}
+        public static bool ForkWheelAvailable(R3WheelStyle style)
+        {var catalog=Resources.Load<R4MovementArtCatalog>("R4Art/MovementCatalog");return catalog!=null&&
+            (style==R3WheelStyle.SmallFork?catalog.SmallForkWheel!=null:style==R3WheelStyle.BalloonFork&&catalog.BalloonForkWheel!=null);}
         public static bool SizedWheelAvailable(R3WheelStyle style)
         {
             var catalog=Resources.Load<R4MovementArtCatalog>("R4Art/MovementCatalog");
@@ -44,14 +45,15 @@ namespace RoboRougelike.R4_1
             bool large=style==R3WheelStyle.LargeOffroad;
             bool monster=style==R3WheelStyle.Monster;
             bool small=style==R3WheelStyle.SmallFork;
+            bool balloon=style==R3WheelStyle.BalloonFork;bool fork=small||balloon;
             if((large||monster)&&!SizedWheelAvailable(style))return null;
-            if(small&&!SmallForkAvailable)return null;
+            if(fork&&!ForkWheelAvailable(style))return null;
             var slick=style==R3WheelStyle.Slick&&catalog!=null&&catalog.SideWheelSlick!=null;
-            var side=!small&&catalog!=null&&(monster||large||slick||catalog.SideWheel!=null);
-            var prefab=small?catalog.SmallForkWheel:side?(monster?catalog.SideWheelMonster:large?catalog.SideWheelLarge:slick?catalog.SideWheelSlick:catalog.SideWheel):catalog!=null?catalog.ModelFor(R3PartKind.Wheel):null;
+            var side=!fork&&catalog!=null&&(monster||large||slick||catalog.SideWheel!=null);
+            var prefab=fork?(small?catalog.SmallForkWheel:catalog.BalloonForkWheel):side?(monster?catalog.SideWheelMonster:large?catalog.SideWheelLarge:slick?catalog.SideWheelSlick:catalog.SideWheel):catalog!=null?catalog.ModelFor(R3PartKind.Wheel):null;
             if(prefab==null)return null;
             var visual=Instantiate(prefab,block,false);
-            var spinning=Array.Find(visual.GetComponentsInChildren<Transform>(true),t=>t.name==(small?"R4M_WheelS_Fork_Road_Rotor":monster?"R4M_WheelXL_Side_Monster_Rotor":large?"R4M_WheelL_Side_Offroad_Rotor":slick?"R4M_WheelM_Side_Slick_Rotor":side?"R4M_WheelM_Side_Offroad_Rotor":"R4M_Wheel_Rotor"));
+            var spinning=Array.Find(visual.GetComponentsInChildren<Transform>(true),t=>t.name==(small?"R4M_WheelS_Fork_Road_Rotor":balloon?"R4M_WheelL_Fork_Balloon_Rotor":monster?"R4M_WheelXL_Side_Monster_Rotor":large?"R4M_WheelL_Side_Offroad_Rotor":slick?"R4M_WheelM_Side_Slick_Rotor":side?"R4M_WheelM_Side_Offroad_Rotor":"R4M_Wheel_Rotor"));
             var socket=Array.Find(visual.GetComponentsInChildren<Transform>(true),t=>t.name=="Socket_Mount");
             var renderer=physicalWheel.GetComponent<Renderer>();
             if(spinning==null||socket==null||renderer==null){Destroy(visual);return null;}
@@ -64,7 +66,7 @@ namespace RoboRougelike.R4_1
                 // Match the authored axle to the collider; do not move physics.
                 visual.transform.position+=physicalWheel.position-spinning.position;
             }
-            else if(small)visual.transform.position+=physicalWheel.position-spinning.position;
+            else if(fork)visual.transform.position+=physicalWheel.position-spinning.position;
             var view=block.gameObject.AddComponent<R4WheelArt>();view.rotor=spinning;view.visualRoot=visual.transform;
             view.radiusMeters=R3VehicleModel.WheelRadius(style);
             view.owner=block.GetComponentInParent<Rigidbody>(true);renderer.enabled=false;R41PartGeometry.HideMountingShell(block,visual);

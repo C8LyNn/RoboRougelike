@@ -220,9 +220,47 @@ public sealed class R4WheelVariantsTests
         var invalid=recovered.Copy();invalid.Id=System.Guid.NewGuid().ToString("N");invalid.ContactMask=R3MountingGrid.AllFaces;
         Assert.That(model.ReceiveSalvage(new[]{invalid}),Is.False,"Recovered parts must not bypass their mounting restrictions.");
     }
+    [UnityTest]public IEnumerator BalloonForkUsesTopMountAndActualGroundedSize()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
+        var model=run.VehicleModel;model.Award(1000);var garage=run.Garage;
+        foreach(var cell in new[]{new Vector3Int(2,2,2),new Vector3Int(2,3,2),new Vector3Int(3,3,2)})
+        {
+            Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);var support=model.Inventory.Last();
+            garage.ChooseInventory(support.Id);garage.Select(cell);Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);yield return null;
+        }
+        Assert.That(run.GaragePurchase(R3PartKind.Wheel,default,R3WheelStyle.BalloonFork),Is.True);var wheel=model.Inventory.Last();
+        Assert.That(wheel.ContactMask,Is.EqualTo(R3MountingGrid.FaceBit(Vector3Int.up)));
+        var crowded=new Vector3Int(3,2,2);garage.ChooseInventory(wheel.Id);garage.Select(crowded);
+        Assert.That(garage.ClickTarget(),Is.False,"The larger balloon tire must not overlap the existing lower wheel.");
+        Assert.That(model.Inventory.Any(p=>p.Id==wheel.Id),Is.True);
+        Assert.That(run.GarageRemove(new Vector3Int(3,3,2)),Is.True);yield return null;
+        foreach(var cell in new[]{new Vector3Int(2,4,2),new Vector3Int(3,4,2)})
+        {
+            Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);var support=model.Inventory.Last();
+            garage.ChooseInventory(support.Id);garage.Select(cell);Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);yield return null;
+        }
+        var target=new Vector3Int(3,3,2);garage.ChooseInventory(wheel.Id);garage.Select(target);
+        Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);yield return null;
+        var part=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==wheel.Id);
+        var tire=part.transform.Find("Koło").GetComponent<Collider>();Assert.That(tire.bounds.extents.y,Is.EqualTo(.5f).Within(.02f));
+        Assert.That(part.GetComponentsInChildren<Transform>(true).Any(t=>t.name=="R4M_WheelL_Fork_Balloon_Rotor"),Is.True);
+        Assert.That(R6VehicleDrive.PartMass(part.Damageable),Is.EqualTo(16).Within(.01f));
+        Assert.That(run.GarageToggleWheelStyle(target),Is.False);
+        var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.localScale=new Vector3(.4f,.2f,.4f);
+        floor.transform.position=new Vector3(tire.bounds.center.x,tire.bounds.min.y-.1f,tire.bounds.center.z);Physics.SyncTransforms();
+        var contacts=new R6WheelContacts();contacts.Refresh(run.Player.GetComponent<Rigidbody>(),new[]{part.Damageable});
+        Assert.That(contacts.Count,Is.EqualTo(1));Assert.That(contacts.Traction,Is.EqualTo(1.15f).Within(.01f));Object.Destroy(floor);
+        var data=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(Time.time)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Standard,model.Economy,Time.time,out var restored,out var error),Is.True,error);
+        Assert.That(restored.Parts.Single(p=>p.Id==wheel.Id).WheelStyle,Is.EqualTo(R3WheelStyle.BalloonFork));
+        data.mounted.Single(p=>p.Id==wheel.Id).ContactMask=R3MountingGrid.AllFaces;
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Standard,model.Economy,Time.time,out _,out _),Is.False);
+    }
     [UnityTest]public IEnumerator LargeWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.LargeOffroad);}
     [UnityTest]public IEnumerator MonsterWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.Monster);}
     [UnityTest]public IEnumerator SmallForkWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.SmallFork);}
+    [UnityTest]public IEnumerator BalloonWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.BalloonFork);}
     IEnumerator DriveSizedWheels(R3WheelStyle style)
     {
         var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
@@ -230,7 +268,7 @@ public sealed class R4WheelVariantsTests
         while(run.Transitioning)yield return null;
         var palette=(R3VisualPalette)typeof(R1RunController).GetField("palette",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(run);
         var design=new R3VehicleDesign{Name="Large wheel drive QA",Speed=7,TurnSpeed=90,CoreHp=100};
-        bool small=style==R3WheelStyle.SmallFork;int frameY=small?1:0;
+        bool small=R3VehicleModel.HasForkMount(style);int frameY=small?1:0;
         design.Parts.Add(new R3PartState(new Vector3Int(0,frameY,0),R3PartKind.Core));
         for(int z=1;z<=4;z++)design.Parts.Add(new R3PartState(new Vector3Int(0,frameY,z),R3PartKind.Armor));
         foreach(int x in new[]{-1,1})foreach(int z in new[]{0,4})
@@ -241,7 +279,7 @@ public sealed class R4WheelVariantsTests
         }
         var model=new R3VehicleModel(design);var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);
         floor.transform.position=new Vector3(1000,-.1f,1000);floor.transform.localScale=new Vector3(30,.2f,30);
-        float spawnHeight=R3VehicleModel.WheelRadius(style)+(small ? .075f : 0);
+        float spawnHeight=R3VehicleModel.WheelRadius(style)+(small ? R3VehicleModel.ForkAxleDrop(style) : 0);
         var vehicle=R3VehicleAssembly.Build(model,run.Progress.Stats,palette,new Vector3(1000,spawnHeight,1000),Quaternion.identity);
         var tank=vehicle.GetComponent<P12PipelineSafeTankController>();tank.enabled=false;
         var drive=vehicle.GetComponent<R6VehicleDrive>();Assert.That(drive,Is.Not.Null);Time.timeScale=1;

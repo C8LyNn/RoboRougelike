@@ -41,3 +41,4 @@ MonoBehaviour:
   SideWheelLarge: {fileID: 919132149155446097, guid: 5a806d2ed9da42de8fb9539f4cbe6cf0, type: 3}
   SideWheelMonster: {fileID: 919132149155446097, guid: f853081bdd03412fb61cf922c73751ae, type: 3}
   SmallForkWheel: {fileID: 919132149155446097, guid: c47921ad05d347d0914c4b5613828649, type: 3}
+  BalloonForkWheel: {fileID: 919132149155446097, guid: d2b57d1d2565428cbaf15fe6503e39ca, type: 3}
