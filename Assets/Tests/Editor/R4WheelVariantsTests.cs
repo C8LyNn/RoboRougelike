@@ -339,6 +339,19 @@ public sealed class R4WheelVariantsTests
         Assert.That(Vector3.Distance(socket.position,socketPosition),Is.LessThan(.001f));
         Assert.That(Quaternion.Angle(rotor.rotation,rotorRotation),Is.GreaterThan(20));
         Object.Destroy(block);Object.Destroy(material);yield return null;
+        var purchased=model.Inventory.Single(p=>p.Kind==R3PartKind.Wheel&&p.WheelStyle==style);var garage=run.Garage;
+        foreach(var cell in new[]{new Vector3Int(2,2,2),new Vector3Int(2,3,2),new Vector3Int(2,4,2),new Vector3Int(3,4,2)})
+        {
+            Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);var support=model.Inventory.Last();
+            garage.ChooseInventory(support.Id);garage.Select(cell);Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);yield return null;
+        }
+        var target=new Vector3Int(3,3,2);garage.ChooseInventory(purchased.Id);garage.Select(target);
+        Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);yield return null;
+        var mounted=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==purchased.Id);
+        Assert.That(mounted.GetComponentsInChildren<Transform>(true).Any(t=>t.name=="R4M_WheelM_Steer_Road_Rotor"),Is.True);
+        var data=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(Time.time)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Standard,model.Economy,Time.time,out var restored,out var error),Is.True,error);
+        Assert.That(restored.Parts.Single(p=>p.Id==purchased.Id).WheelStyle,Is.EqualTo(style));
     }
     [UnityTest]public IEnumerator LargeWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.LargeOffroad);}
     [UnityTest]public IEnumerator MonsterWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.Monster);}
