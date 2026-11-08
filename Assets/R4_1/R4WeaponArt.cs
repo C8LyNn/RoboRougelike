@@ -11,6 +11,7 @@ namespace RoboRougelike.R4_1
         Transform physicalPivot,physicalMuzzle;
         R4ArtWeaponAxisAdapter adapter;
         public Transform Muzzle=>adapter!=null?adapter.Muzzle:null;
+        public void AdvanceMuzzle()=>adapter?.AdvanceMuzzle();
         public Transform SawRotor {get;private set;}
 
         public static R4WeaponArt TryAttach(Transform block,Transform pivot,Transform muzzle,R4WeaponKind weapon)

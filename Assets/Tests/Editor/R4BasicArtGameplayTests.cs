@@ -56,6 +56,46 @@ public sealed class R4BasicArtGameplayTests
         Assert.That(gun.GunPivot.GetComponentsInChildren<Collider>(true).Any(c=>c.enabled),Is.True);Assert.That(gun.GunPivot.GetComponentsInChildren<Renderer>().Any(r=>r.enabled),Is.False);
         Object.Destroy(vehicle.gameObject);Object.Destroy(paletteObject);Object.Destroy(material);yield return null;
     }
+    [UnityTest] public IEnumerator AutomaticShotsAlternateBetweenActualBarrels()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        var state=model.Parts.First(p=>p.Kind==R3PartKind.Gun);state.Weapon=R4WeaponKind.Automatic;
+        var paletteObject=new GameObject("QA palette");var palette=paletteObject.AddComponent<R3VisualPalette>();
+        var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
+        for(int i=0;i<palette.Parts.Length;i++)palette.Parts[i]=material;
+        for(int i=0;i<palette.Weapons.Length;i++)palette.Weapons[i]=material;
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(0,20,0),Quaternion.identity);
+        try
+        {
+            vehicle.GetComponent<Rigidbody>().isKinematic=true;
+            var assembly=vehicle.GetComponent<R3VehicleAssembly>();var gun=assembly.Parts.Single(p=>p.Id==state.Id);
+            var nodes=gun.GetComponentsInChildren<Transform>(true);
+            var left=nodes.Single(t=>t.name=="Muzzle_L");var right=nodes.Single(t=>t.name=="Muzzle_R");
+            Assert.That(Vector3.Distance(left.position,right.position),Is.GreaterThan(.01f));
+            Physics.SyncTransforms();assembly.FireGroup(false);
+            var first=Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None).Single();
+            var profile=R4WeaponDefinition.Get(R4WeaponKind.Automatic);
+            Vector3 Offset(Transform muzzle)=>muzzle.position+gun.Muzzle.forward*Mathf.Max(.16f,profile.Diameter*.75f);
+            float firstLeft=Vector3.Distance(first.transform.position,Offset(left));
+            float firstRight=Vector3.Distance(first.transform.position,Offset(right));
+            Assert.That(Mathf.Min(firstLeft,firstRight),Is.LessThan(.005f),"A shot must originate from an actual barrel.");
+            gun.NextFireTime=0;Physics.SyncTransforms();assembly.FireGroup(false);
+            var second=Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None).Single(s=>s!=first);
+            Assert.That(Vector3.Distance(second.transform.position,Offset(firstLeft<firstRight?right:left)),Is.LessThan(.005f),"The next shot must use the other barrel.");
+            var nextMuzzle=gun.Muzzle;
+            var blocker=GameObject.CreatePrimitive(PrimitiveType.Cube);blocker.transform.SetParent(vehicle.transform,true);
+            blocker.transform.position=nextMuzzle.position+nextMuzzle.forward*1.4f;blocker.transform.localScale=Vector3.one*.5f;
+            gun.NextFireTime=0;Physics.SyncTransforms();assembly.FireGroup(false);
+            Assert.That(Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None).Length,Is.EqualTo(2),"Own armor must block the pending barrel.");
+            Assert.That(gun.Muzzle,Is.SameAs(nextMuzzle),"A blocked shot must not switch barrels.");
+            Object.DestroyImmediate(blocker);Physics.SyncTransforms();assembly.FireGroup(false);
+            var third=Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None).Single(s=>s!=first&&s!=second);
+            Assert.That(Vector3.Distance(third.transform.position,Offset(firstLeft<firstRight?left:right)),Is.LessThan(.005f));
+            Object.Destroy(first.gameObject);Object.Destroy(second.gameObject);Object.Destroy(third.gameObject);
+        }
+        finally{Object.Destroy(vehicle.gameObject);Object.Destroy(paletteObject);Object.Destroy(material);}
+        yield return null;
+    }
     [UnityTest] public IEnumerator RotatedPhysicalMountAimsTheVisualAndStillBlocksOwnArmor()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));

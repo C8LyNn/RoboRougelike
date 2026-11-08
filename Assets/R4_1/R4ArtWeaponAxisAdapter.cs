@@ -9,7 +9,7 @@ namespace RoboRougelike.R4_1
     [DisallowMultipleComponent]
     public sealed class R4ArtWeaponAxisAdapter : MonoBehaviour
     {
-        Transform yaw,pitch;
+        Transform yaw,pitch,alternateMuzzle;
         Quaternion yawRest,pitchRest;
         Vector3 yawAxis,pitchAxis;
         public Transform Muzzle {get;private set;}
@@ -43,11 +43,29 @@ namespace RoboRougelike.R4_1
 
             // The FBX muzzle's +Z can face away from its barrel. The child is
             // the direction used by gameplay while the original art stays intact.
-            var proxy=new GameObject("R4 Gameplay Muzzle").transform;
-            proxy.SetParent(sourceMuzzle,false);
-            proxy.rotation=Quaternion.LookRotation(transform.forward,transform.up);
-            Muzzle=proxy;
+            var left=nodes.FirstOrDefault(t=>t.name=="Muzzle_L");
+            var right=nodes.FirstOrDefault(t=>t.name=="Muzzle_R");
+            if(modelName=="R41"&&left!=null&&right!=null)
+            {
+                Muzzle=MakeMuzzle(left);
+                alternateMuzzle=MakeMuzzle(right);
+            }
+            else Muzzle=MakeMuzzle(sourceMuzzle);
             return true;
+        }
+
+        Transform MakeMuzzle(Transform source)
+        {
+            var proxy=new GameObject("R4 Gameplay Muzzle").transform;
+            proxy.SetParent(source,false);
+            proxy.rotation=Quaternion.LookRotation(transform.forward,transform.up);
+            return proxy;
+        }
+
+        public void AdvanceMuzzle()
+        {
+            if(alternateMuzzle==null)return;
+            var previous=Muzzle;Muzzle=alternateMuzzle;alternateMuzzle=previous;
         }
 
         public void SetAim(float yawDegrees,float pitchDegrees)
