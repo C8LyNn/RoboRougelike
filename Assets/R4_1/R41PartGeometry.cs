@@ -152,6 +152,19 @@ namespace RoboRougelike.R4_1
                     var capsule=wheel.GetComponent<Collider>();capsule.enabled=false;Object.Destroy(capsule);
                     var tire=wheel.gameObject.AddComponent<MeshCollider>();
                     tire.sharedMesh=wheel.GetComponent<MeshFilter>().sharedMesh;tire.convex=true;
+                    if(wheelStyle==R3WheelStyle.TwinRoad)
+                    {
+                        tire.enabled=false;Object.Destroy(tire);
+                        // Two independent tread shapes share one wheel module and one R6 drive unit.
+                        foreach(float sign in new[]{-1f,1f})
+                        {
+                            var tread=new GameObject(sign<0?"Lewa opona":"Prawa opona");
+                            tread.transform.SetParent(wheel,false);
+                            tread.transform.localPosition=Vector3.up*(sign*.09f/(R3VehicleModel.WheelWidth(wheelStyle)*.5f));
+                            var shape=tread.AddComponent<MeshCollider>();
+                            shape.sharedMesh=wheel.GetComponent<MeshFilter>().sharedMesh;shape.convex=true;
+                        }
+                    }
                 }
                 return wheel;
             }

@@ -43,3 +43,4 @@ MonoBehaviour:
   SmallForkWheel: {fileID: 919132149155446097, guid: c47921ad05d347d0914c4b5613828649, type: 3}
   BalloonForkWheel: {fileID: 919132149155446097, guid: d2b57d1d2565428cbaf15fe6503e39ca, type: 3}
   SpikedForkWheel: {fileID: 919132149155446097, guid: 4b28f2865d0b48818ec29027755ea5ad, type: 3}
+  TwinRoadWheel: {fileID: 919132149155446097, guid: 349846f53dc241d48b82c95bb38612e1, type: 3}

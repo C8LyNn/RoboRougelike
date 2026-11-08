@@ -55,7 +55,7 @@ public sealed class WheelMountOrientationTests
     [UnityTest] public IEnumerator ForkSocketsMatchTheRotatedTopFace()
     {
         yield return new EnterPlayMode();var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
-        foreach(var style in new[]{R3WheelStyle.SmallFork,R3WheelStyle.BalloonFork,R3WheelStyle.SpikedFork})
+        foreach(var style in new[]{R3WheelStyle.SmallFork,R3WheelStyle.BalloonFork,R3WheelStyle.SpikedFork,R3WheelStyle.TwinRoad})
         foreach(var turns in new[]{Vector3Int.zero,new Vector3Int(0,0,1),new Vector3Int(1,0,0)})
         {
             var block=GameObject.CreatePrimitive(PrimitiveType.Cube);block.transform.localScale=Vector3.one*R41PartGeometry.BlockSize;
@@ -63,7 +63,7 @@ public sealed class WheelMountOrientationTests
             var physical=R41PartGeometry.Payload(block.transform,R3PartKind.Wheel,R4WeaponKind.Basic,material,true,out _,style);
             Assert.That(R4WheelArt.TryAttach(block.transform,physical,false,style),Is.Not.Null);
             var socket=block.GetComponentsInChildren<Transform>(true).Single(t=>t.name=="Socket_Mount");
-            var rotor=block.GetComponentsInChildren<Transform>(true).Single(t=>t.name==(style==R3WheelStyle.SmallFork?"R4M_WheelS_Fork_Road_Rotor":style==R3WheelStyle.BalloonFork?"R4M_WheelL_Fork_Balloon_Rotor":"R4M_WheelM_Fork_Spiked_Rotor"));
+            var rotor=block.GetComponentsInChildren<Transform>(true).Single(t=>t.name==(style==R3WheelStyle.SmallFork?"R4M_WheelS_Fork_Road_Rotor":style==R3WheelStyle.BalloonFork?"R4M_WheelL_Fork_Balloon_Rotor":style==R3WheelStyle.SpikedFork?"R4M_WheelM_Fork_Spiked_Rotor":"R4M_WheelM_Twin_Road_Rotor"));
             Assert.That(Vector3.Distance(rotor.position,physical.position),Is.LessThan(.01f));
             Assert.That(Vector3.Distance(socket.position,block.transform.position+block.transform.up*.26f),Is.LessThan(.015f));
             Object.Destroy(block);
