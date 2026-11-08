@@ -302,6 +302,19 @@ public sealed class R4WheelVariantsTests
         Assert.That(R4WheelArt.TryAttach(block.transform,wheel,false,style),Is.Not.Null);
         Assert.That(block.GetComponentsInChildren<Transform>().Any(t=>t.name=="R4M_WheelM_Twin_Road_Rotor"),Is.True);
         Object.Destroy(block);Object.Destroy(material);
+        var garage=run.Garage;
+        foreach(var cell in new[]{new Vector3Int(2,2,2),new Vector3Int(2,3,2),new Vector3Int(2,4,2),new Vector3Int(3,4,2)})
+        {
+            Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);var support=model.Inventory.Last();
+            garage.ChooseInventory(support.Id);garage.Select(cell);Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);yield return null;
+        }
+        var target=new Vector3Int(3,3,2);garage.ChooseInventory(part.Id);garage.Select(target);
+        Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);yield return null;
+        var mounted=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==part.Id);
+        Assert.That(mounted.transform.Find("Koło").GetComponentsInChildren<Collider>().Count(c=>c.enabled),Is.EqualTo(2));
+        var data=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(Time.time)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Standard,model.Economy,Time.time,out var restored,out var error),Is.True,error);
+        Assert.That(restored.Parts.Single(p=>p.Id==part.Id).WheelStyle,Is.EqualTo(style));
     }
     [UnityTest]public IEnumerator LargeWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.LargeOffroad);}
     [UnityTest]public IEnumerator MonsterWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.Monster);}
