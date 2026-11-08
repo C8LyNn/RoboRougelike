@@ -13,6 +13,10 @@ namespace RoboRougelike.R3
         public readonly List<R3MountedPart> Parts = new List<R3MountedPart>();
         public R3VehicleModel Model { get; private set; }
         private P12PipelineSafeTankController controller;
+        RaycastHit[] shotPathHits=new RaycastHit[32];
+        Collider[] shotPathOverlaps=new Collider[32];
+        int previousShotPathOverlapCount;
+        const int MaxShotPathBuffer=8192;
         public void Bind(R3VehicleModel model, P12PipelineSafeTankController tank) { Model = model; controller = tank; R3BuildValidation.Bind(this,model); }
         public void Capture()
         {
@@ -84,13 +88,59 @@ namespace RoboRougelike.R3
         }
         public void FireGuns() => FireGroup(false);
 
+        RaycastHit[] ShotPathCast(Vector3 origin,float radius,Vector3 direction,float distance,out int count)
+        {
+            while(true)
+            {
+                count=Physics.SphereCastNonAlloc(origin,radius,direction,shotPathHits,distance,~0,QueryTriggerInteraction.Ignore);
+                if(count<shotPathHits.Length)return shotPathHits;
+                if(shotPathHits.Length>=MaxShotPathBuffer)
+                {
+                    var all=Physics.SphereCastAll(origin,radius,direction,distance,~0,QueryTriggerInteraction.Ignore);
+                    count=all.Length;return all;
+                }
+                System.Array.Resize(ref shotPathHits,Mathf.Min(shotPathHits.Length*2,MaxShotPathBuffer));
+            }
+        }
+        Collider[] ShotPathOverlap(Vector3 origin,float radius,out int count)
+        {
+            while(true)
+            {
+                count=Physics.OverlapSphereNonAlloc(origin,radius,shotPathOverlaps,~0,QueryTriggerInteraction.Ignore);
+                if(count<shotPathOverlaps.Length)
+                {
+                    if(previousShotPathOverlapCount>count)
+                        System.Array.Clear(shotPathOverlaps,count,previousShotPathOverlapCount-count);
+                    previousShotPathOverlapCount=count;
+                    return shotPathOverlaps;
+                }
+                if(shotPathOverlaps.Length>=MaxShotPathBuffer)
+                {
+                    System.Array.Clear(shotPathOverlaps,0,shotPathOverlaps.Length);
+                    previousShotPathOverlapCount=0;
+                    var all=Physics.OverlapSphere(origin,radius,~0,QueryTriggerInteraction.Ignore);
+                    count=all.Length;return all;
+                }
+                System.Array.Resize(ref shotPathOverlaps,Mathf.Min(shotPathOverlaps.Length*2,MaxShotPathBuffer));
+            }
+        }
+        static T FindShotComponent<T>(Transform current) where T:Component
+        {
+            while(current!=null)
+            {
+                if(current.TryGetComponent<T>(out var found))return found;
+                current=current.parent;
+            }
+            return null;
+        }
+
         // Projectiles intentionally ignore their owner after spawning. Check the
         // shot path first so that this does not allow firing through our armor.
         // Only the gun's own colliders are ignored; another gun is an obstacle.
         public bool ClearProjectilePath(R3MountedPart part)
         {
             if(part==null||part.Muzzle==null)return false;
-            part.GetComponent<RoboRougelike.R4_1.R4WeaponArt>()?.Sync();
+            if(part.TryGetComponent<RoboRougelike.R4_1.R4WeaponArt>(out var art))art.Sync();
             float radius=Mathf.Max(.025f,RoboRougelike.WeaponIntegration.RRLAimFeedback.ProjectileRadius(part));
             float range=RoboRougelike.WeaponIntegration.RRLAimFeedback.Range(part,controller);
             return ClearProjectilePath(part,part.Muzzle.forward,range,radius);
@@ -100,15 +150,15 @@ namespace RoboRougelike.R3
             if(part==null||part.Muzzle==null||direction.sqrMagnitude<.000001f||
                range<=0||float.IsNaN(range)||float.IsInfinity(range)||
                radius<=0||float.IsNaN(radius)||float.IsInfinity(radius))return false;
-            part.GetComponent<RoboRougelike.R4_1.R4WeaponArt>()?.Sync();
+            if(part.TryGetComponent<RoboRougelike.R4_1.R4WeaponArt>(out var art))art.Sync();
             var origin=part.Muzzle.position;
             bool IsGun(Collider c)=>c!=null&&c.transform.IsChildOf(part.transform);
             bool IsOwner(Collider c)=>c!=null&&c.transform.IsChildOf(transform);
             bool IsOwnProjectile(Collider c)
             {
-                var shell=c.GetComponentInParent<P17PhysicalShell>();
+                var shell=FindShotComponent<P17PhysicalShell>(c.transform);
                 if(shell!=null&&shell.OwnerRoot==transform)return true;
-                var rocket=c.GetComponentInParent<RoboRougelike.Mechanics.Rockets.RocketProjectile>();
+                var rocket=FindShotComponent<RoboRougelike.Mechanics.Rockets.RocketProjectile>(c.transform);
                 return rocket!=null&&rocket.OwnerRoot==transform;
             }
             // The barrel itself can rotate into another part even if its tip
@@ -116,14 +166,17 @@ namespace RoboRougelike.R3
             if(part.GunPivot==null)return false;
             var barrel=origin-part.GunPivot.position;
             if(barrel.sqrMagnitude>0.000001f)
-                foreach(var hit in Physics.SphereCastAll(part.GunPivot.position,radius,
-                    barrel.normalized,barrel.magnitude,~0,QueryTriggerInteraction.Ignore))
-                    if(IsOwner(hit.collider)&&!IsGun(hit.collider))return false;
-            foreach(var c in Physics.OverlapSphere(origin,radius,~0,QueryTriggerInteraction.Ignore))
-                if(IsOwner(c)&&!IsGun(c))return false;
-            float own=float.PositiveInfinity,other=float.PositiveInfinity;
-            foreach(var hit in Physics.SphereCastAll(origin,radius,direction.normalized,range,~0,QueryTriggerInteraction.Ignore))
             {
+                var barrelHits=ShotPathCast(part.GunPivot.position,radius,barrel.normalized,barrel.magnitude,out var barrelCount);
+                for(int i=0;i<barrelCount;i++)if(IsOwner(barrelHits[i].collider)&&!IsGun(barrelHits[i].collider))return false;
+            }
+            var overlaps=ShotPathOverlap(origin,radius,out var overlapCount);
+            for(int i=0;i<overlapCount;i++)if(IsOwner(overlaps[i])&&!IsGun(overlaps[i]))return false;
+            float own=float.PositiveInfinity,other=float.PositiveInfinity;
+            var hits=ShotPathCast(origin,radius,direction.normalized,range,out var hitCount);
+            for(int i=0;i<hitCount;i++)
+            {
+                var hit=hits[i];
                 if(hit.collider==null||IsGun(hit.collider)||IsOwnProjectile(hit.collider))continue;
                 if(IsOwner(hit.collider))own=Mathf.Min(own,hit.distance);
                 else other=Mathf.Min(other,hit.distance);

@@ -14,7 +14,7 @@ namespace RoboRougelike.WeaponIntegration
         Transform owner;Rigidbody body;P12PipelineSafeDamageable hp;R3MountedPart mounted;R3PartState canonical;
         bool endingView;
         R3PartState State=>canonical??GetComponent<RRLDeviceBinding>()?.State;
-        public static bool IsBlocked(GameObject part)=>part!=null&&part.GetComponent<EmpReceiver>()?.IsDisrupted==true;
+        public static bool IsBlocked(GameObject part)=>part!=null&&part.TryGetComponent<EmpReceiver>(out var receiver)&&receiver.IsDisrupted;
         public void Bind(Transform root,R3PartState state)
         {
             owner=root;body=root.GetComponent<Rigidbody>();hp=GetComponent<P12PipelineSafeDamageable>();mounted=GetComponent<R3MountedPart>();canonical=state;
