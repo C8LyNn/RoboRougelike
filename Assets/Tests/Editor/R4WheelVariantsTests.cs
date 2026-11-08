@@ -322,6 +322,34 @@ public sealed class R4WheelVariantsTests
     [UnityTest]public IEnumerator BalloonWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.BalloonFork);}
     [UnityTest]public IEnumerator SpikedWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.SpikedFork);}
     [UnityTest]public IEnumerator TwinWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.TwinRoad);}
+    [UnityTest]public IEnumerator TwinWheelFindsEitherTireButNotEmptyCenter()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
+        var palette=(R3VisualPalette)typeof(R1RunController).GetField("palette",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(run);
+        var design=new R3VehicleDesign{Name="Twin support QA",Speed=7,TurnSpeed=90,CoreHp=100};
+        design.Parts.Add(new R3PartState(new Vector3Int(0,1,0),R3PartKind.Core));
+        design.Parts.Add(new R3PartState(new Vector3Int(1,1,0),R3PartKind.Armor));
+        var wheel=new R3PartState(new Vector3Int(1,0,0),R3PartKind.Wheel){WheelStyle=R3WheelStyle.TwinRoad,ContactMask=R3MountingGrid.FaceBit(Vector3Int.up)};
+        design.Parts.Add(wheel);var model=new R3VehicleModel(design);
+        var vehicle=R3VehicleAssembly.Build(model,run.Progress.Stats,palette,new Vector3(1000,.53f,1000),Quaternion.identity);
+        var part=vehicle.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==wheel.Id);
+        var tires=part.transform.Find("Koło").GetComponentsInChildren<Collider>().Where(c=>c.enabled).OrderBy(c=>c.bounds.center.x).ToArray();
+        Assert.That(tires.Length,Is.EqualTo(2));
+        var pad=GameObject.CreatePrimitive(PrimitiveType.Cube);pad.transform.localScale=new Vector3(.04f,.1f,.4f);
+        try
+        {
+            var contacts=new R6WheelContacts();var body=vehicle.GetComponent<Rigidbody>();
+            foreach(var tire in tires)
+            {
+                pad.transform.position=new Vector3(tire.bounds.center.x,tire.bounds.min.y-.05f,tire.bounds.center.z);Physics.SyncTransforms();
+                contacts.Refresh(body,new[]{part.Damageable});Assert.That(contacts.Count,Is.EqualTo(1),"Each tire must detect ground independently.");
+            }
+            pad.transform.position=new Vector3((tires[0].bounds.center.x+tires[1].bounds.center.x)*.5f,tires[0].bounds.min.y-.05f,tires[0].bounds.center.z);
+            Physics.SyncTransforms();contacts.Refresh(body,new[]{part.Damageable});
+            Assert.That(contacts.Count,Is.EqualTo(0),"Empty space between the tires must not create support.");
+        }
+        finally{Object.Destroy(vehicle.gameObject);Object.Destroy(pad);}
+    }
     IEnumerator DriveSizedWheels(R3WheelStyle style)
     {
         var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
