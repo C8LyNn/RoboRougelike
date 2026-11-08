@@ -195,16 +195,17 @@ namespace RoboRougelike.R1
             string name=kind==R3PartKind.Armor?R4WeaponDefinition.ArmorName(CatalogArmorShape(catalogBonusId)):
                 kind==R3PartKind.Wheel?R4WeaponDefinition.WheelName(CatalogWheelStyle(catalogBonusId)):
                 kind==R3PartKind.BonusModule&&items.Length>0?R4WeaponDefinition.PartName(items[0]):R4WeaponDefinition.PartName(kind,weapon);
-            GUI.Label(new Rect(970,70,280,48),$"{name}  × {items.Length}",body);
+            GUI.Label(new Rect(970,70,280,48),$"{name}  × {items.Length}\nHP — montaż • Akcje — łączenie i demontaż",small);
             stackScroll=GUI.BeginScrollView(new Rect(970,118,280,210),stackScroll,new Rect(0,0,255,Mathf.Max(210,items.Length*40)));
             for(int i=0;i<items.Length;i++)
             {
                 var item=items[i];GUI.backgroundColor=garage.SelectedInventoryId==item.Id?new Color(.3f,.9f,.9f):Color.white;
-                if(GUI.Button(new Rect(0,i*40,164,36),$"{R4WeaponDefinition.PartName(item)} • HP {item.Health*100:0}%",compactButton))
+                if(GUI.Button(new Rect(0,i*40,100,36),$"T{R3VehicleModel.NormalizedTier(item.Tier)} • {item.Health*100:0}%",compactButton))
                     SelectCatalogItem(run,item.Id);
                 GUI.backgroundColor=Color.white;
+                if(GUI.Button(new Rect(104,i*40,55,36),"Akcje",compactButton))SelectCatalogDetails(run,item.Id);
                 int itemRepair=model.RepairCost(item);GUI.enabled=itemRepair>0&&model.Scrap>=itemRepair;
-                if(GUI.Button(new Rect(168,i*40,82,36),GarageRepairCaption(item,itemRepair,model.Scrap),compactButton))
+                if(GUI.Button(new Rect(163,i*40,87,36),GarageRepairCaption(item,itemRepair,model.Scrap),compactButton))
                 {dismantleConfirmation=null;run.GarageRepairInventory(item.Id);}
                 GUI.enabled=true;
             }
@@ -236,11 +237,17 @@ namespace RoboRougelike.R1
             DrawFusionButton(run,selected,new Rect(970,590,280,42));
             GUI.Label(new Rect(970,640,280,52),garage.PlacementIssue??"Zielony podgląd: kliknij, aby zamontować.",small);
         }
-        private void SelectCatalogItem(R1RunController run,string id)
+        private void SelectCatalogDetails(R1RunController run,string id)
         {
             var item=run.VehicleModel.Inventory.FirstOrDefault(p=>p.Id==id);
             if(item==null)return;
             run.Garage.ChooseInventory(id);dismantleConfirmation=null;
+        }
+        private void SelectCatalogItem(R1RunController run,string id)
+        {
+            var item=run.VehicleModel.Inventory.FirstOrDefault(p=>p.Id==id);
+            if(item==null)return;
+            SelectCatalogDetails(run,id);
             if(item.Health<=0){run.Garage.Message="Zniszczoną część napraw przed montażem.";return;}
             DismissCatalog();
         }
