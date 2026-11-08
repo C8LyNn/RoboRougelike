@@ -38,3 +38,5 @@ W kolejnym buildzie sprawdź nową szybką naprawę obok każdej części w pozi
 Po naprawie kilku egzemplarzy z magazynu sprawdź, czy widok nie przeskakuje, podgląd naprawionej części staje się dostępny, a złom zmniejsza się o podaną cenę tylko raz. Optymalizacja tej ścieżki i jej test Unity są przygotowane, ale jeszcze nieuruchomione; ZIP 5b21 ich nie zawiera.
 
 Sprawdź też rozmontowanie egzemplarza: pierwsze kliknięcie ma poprosić o potwierdzenie bez zmiany złomu, drugie usunąć właściwą część i raz przyznać wskazaną kwotę. Widok pojazdu nie powinien się przebudowywać. Ta optymalizacja również oczekuje testów Unity i nie występuje w ZIP-ie 5b21.
+
+Kod gry i kod testów do zmian garażu skompilowano lokalnie w C# na stanie `f62ce4f9`; testy Unity nie zostały uruchomione. Szczegóły i ograniczenia tej kontroli: `Docs/GARAGE_LOCAL_CSHARP_COMPILE_QA.md`.
