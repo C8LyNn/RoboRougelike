@@ -400,6 +400,10 @@ namespace RoboRougelike.R3
             }
             RefreshMarker();return HasTarget;
         }
+        private static string MountedStackFeedback(int remaining,bool usable)=>usable?
+            "Zamontowano. Wybierz miejsce dla kolejnej części.":remaining>0?
+            "Zamontowano. Pozostałe części są zniszczone — napraw je w magazynie.":
+            "Zamontowano. Brak kolejnych części tej grupy — kup lub odzyskaj nowe.";
         public bool ClickTarget()
         {
             if(!HasTarget||run.Progress?.State!=R1RunState.Garage||run.Transitioning)return false;
@@ -416,13 +420,14 @@ namespace RoboRougelike.R3
                 {
                     // Keep building from the same owned stack, without purchasing or
                     // silently substituting a different weapon or bonus.
-                    var next=run.VehicleModel.Inventory.Where(p=>p.Kind==mounted.Kind&&p.Health>0&&
+                    var remaining=run.VehicleModel.Inventory.Where(p=>p.Kind==mounted.Kind&&
                         (p.Kind!=R3PartKind.Gun||p.Weapon==mounted.Weapon)&&
                         (p.Kind!=R3PartKind.Wheel||p.WheelStyle==mounted.WheelStyle)&&
                         (p.Kind!=R3PartKind.Armor||p.ArmorShape==mounted.ArmorShape)&&
-                        (p.Kind!=R3PartKind.BonusModule||p.UpgradeId==mounted.UpgradeId))
-                        .OrderByDescending(p=>p.Health).FirstOrDefault();
+                        (p.Kind!=R3PartKind.BonusModule||p.UpgradeId==mounted.UpgradeId)).ToArray();
+                    var next=remaining.Where(p=>p.Health>0).OrderByDescending(p=>p.Health).FirstOrDefault();
                     SelectedInventoryId=next?.Id;
+                    Message=MountedStackFeedback(remaining.Length,next!=null);
                 }
             }
             else if(Tool==R41GarageTool.Repair)

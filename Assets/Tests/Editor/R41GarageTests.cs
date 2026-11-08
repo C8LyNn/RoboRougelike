@@ -265,6 +265,21 @@ public class R41GarageTests
         Assert.That(garage.SelectedInventoryId,Is.Null);
         yield return null;
     }
+    [UnityTest] public IEnumerator MountingLastHealthyItemExplainsRemainingWreckWithoutBuying()
+    {
+        Run.VehicleModel.Award(100);
+        string first=PurchasePart(R3PartKind.Armor),second=PurchasePart(R3PartKind.Armor);
+        Run.VehicleModel.Inventory.Single(part=>part.Id==second).Health=0;
+        var garage=Run.Garage;garage.ChooseInventory(first);
+        Assert.That(garage.Point(TopRay(new Vector3Int(2,1,2))),Is.True);
+        int wallet=Run.VehicleModel.Scrap;
+        Assert.That(garage.ClickTarget(),Is.True);
+        Assert.That(garage.SelectedInventoryId,Is.Null);
+        Assert.That(garage.Message,Does.Contain("zniszczone"));
+        Assert.That(Run.VehicleModel.Inventory.Any(part=>part.Id==second),Is.True);
+        Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(wallet),"Mounting must never auto-buy a replacement.");
+        yield return null;
+    }
     [UnityTest] public IEnumerator ToolShortcutsChangeToolWithoutPurchasingOrEditing()
     {
         var garage=Run.Garage;int wallet=Run.VehicleModel.Scrap,parts=Run.VehicleModel.Parts.Count;
