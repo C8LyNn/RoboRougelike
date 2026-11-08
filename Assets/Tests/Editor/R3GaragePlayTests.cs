@@ -141,12 +141,14 @@ public class R3GaragePlayTests
         target.position = center + new Vector3(10, .7f, 0); target.rotation = Quaternion.identity;
         Physics.SyncTransforms(); body.WakeUp();
         yield return Until(() => { drive.RefreshMass(); return drive.GroundedWheels > 0; }, "Koła przeciwnika muszą dotykać podłoża.", 5);
+        var walls=new System.Collections.Generic.List<Collider>();
         foreach (float offset in new[] { -1.05f, 1.05f })
         {
             var wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
             wall.name=offset<0?"Boundary wall south":"Boundary wall north";
             wall.transform.position = center + new Vector3(5, 1.5f, offset);
             wall.transform.localScale = new Vector3(5, 3, .2f);
+            walls.Add(wall.GetComponent<Collider>());
         }
         Physics.SyncTransforms();
         var before = body.position;
@@ -163,12 +165,12 @@ public class R3GaragePlayTests
                 var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
                 var tangent=(Vector3)enemy.GetType().GetField("obstacleTangent",flags).GetValue(enemy);
                 var until=(float)enemy.GetType().GetField("navigationUntil",flags).GetValue(enemy);
-                var contacts=new ContactPoint[64];var names=new System.Collections.Generic.HashSet<string>();
+                var names=new System.Collections.Generic.HashSet<string>();
                 foreach(var collider in body.GetComponentsInChildren<Collider>())
                 {
                     if(!collider.enabled||collider.isTrigger||collider.attachedRigidbody!=body)continue;
-                    int n=collider.GetContacts(contacts);
-                    foreach(var contact in contacts.Take(n))if(contact.otherCollider!=null)names.Add(contact.otherCollider.name);
+                    foreach(var wall in walls)
+                        if(Physics.ComputePenetration(collider,collider.transform.position,collider.transform.rotation,wall,wall.transform.position,wall.transform.rotation,out _,out _))names.Add(wall.name);
                 }
                 var surfaces=string.Join(",",names);
                 Debug.Log($"Boundary retreat trace t={Time.time:F2} pos={body.position} vel={body.linearVelocity} yaw={body.rotation.eulerAngles.y:F1} spin={body.angularVelocity.y:F2} grounded={drive.GroundedWheels} tangent={tangent} nav={until-Time.time:F2} dead={enemy.IsDefeated} contacts={surfaces}");
