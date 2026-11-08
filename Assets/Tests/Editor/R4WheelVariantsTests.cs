@@ -136,12 +136,16 @@ public sealed class R4WheelVariantsTests
             var body=vehicle.GetComponent<Rigidbody>();float start=body.position.z;int grounded=0;
             float fixedStart=Time.fixedTime;float deadline=Time.realtimeSinceStartup+10;
             var trace=new System.Text.StringBuilder();
-            int sample=0;
-            while(Time.fixedTime-fixedStart<1.6f&&Time.realtimeSinceStartup<deadline){drive.Step(1,0,7,4,90);grounded=Mathf.Max(grounded,drive.GroundedWheels);
-                if(sample++%20==0)trace.Append($"[{sample}: t={Time.fixedTime:F2} p={body.position} v={body.linearVelocity} ground={drive.GroundedWheels} force={drive.AvailableForce:0}] ");
+            int sample=0;float previousFixed=float.NegativeInfinity;
+            while(Time.fixedTime-fixedStart<1.6f&&Time.realtimeSinceStartup<deadline){
+                // The editor test runner can resume multiple times per physics tick.
+                // Never add more than one drive force per actual fixed-time step.
+                if(Time.fixedTime>previousFixed){previousFixed=Time.fixedTime;drive.Step(1,0,7,4,90);grounded=Mathf.Max(grounded,drive.GroundedWheels);
+                    if(sample++%20==0)trace.Append($"[{sample}: t={Time.fixedTime:F2} p={body.position} v={body.linearVelocity} ground={drive.GroundedWheels} force={drive.AvailableForce:0}] ");}
                 yield return new WaitForFixedUpdate();}
             Debug.Log("Large wheel R6 trace "+trace+"final="+body.position);
             Assert.That(Time.fixedTime-fixedStart,Is.GreaterThanOrEqualTo(1.6f),"The physics clock must really advance.");
+            Assert.That(sample,Is.InRange(60,90),"Apply one input per actual physics step.");
             Assert.That(grounded,Is.GreaterThanOrEqualTo(2),"Real large tires must register ground support.");
             Assert.That(body.position.z-start,Is.GreaterThan(.5f),"The actual R6 body must travel forward.");
         }
