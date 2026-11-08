@@ -23,8 +23,9 @@ namespace RoboRougelike.R1
         {
             get
             {
-#if UNITY_EDITOR
-                // Batch QA must never write to the player's retail profile.
+#if UNITY_EDITOR || B01_UNIFIED_RC2_ACCEPTANCE
+                // Batch Editor and explicit acceptance Players must never write
+                // discoveries to the player's retail profile.
                 if(Application.isBatchMode)return Path.Combine(Path.GetTempPath(),
                     "RoboRougelike-Technology-QA-"+System.Diagnostics.Process.GetCurrentProcess().Id,"technology.json");
 #endif

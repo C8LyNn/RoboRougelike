@@ -1,0 +1,11 @@
+# Izolacja technologii w Playerze QA
+
+Odnaleziono ryzyko: `R1TechnologyProgress.DefaultPath` izolował profil przy testach batch w edytorze, ale specjalny Player akceptacyjny wskazywał zwykły plik technologii gracza. Odkrycie nowej broni w takim teście mogło dopisać dane do prywatnego profilu.
+
+Kontrola w `ColdCheckpointPlayerQA` sprawdza teraz obie ścieżki, zanim test zapisze cokolwiek. Przed poprawką [zatrzymała test](QA/Technology_QA_Isolation_20261108/Player-before.json) z `technologyIsolated=false`, exit 1. Po zmianie tylko Player z `B01_UNIFIED_RC2_ACCEPTANCE` w trybie batch używa tymczasowego katalogu na proces, tak jak edytor batch. Zwykła gra nie otrzymuje tej gałęzi kodu i nadal używa swojego profilu.
+
+Unity 6000.3.14f1: diagnostyczny build Windows exit 0. Oddzielne procesy [Save](QA/Technology_QA_Isolation_20261108/Player-after-save.json) i [Load](QA/Technology_QA_Isolation_20261108/Player-after-load.json) wyszły z kodem 0, oba potwierdziły izolację profilu i slotu; odczyt zachował identyfikatory, HP, energię, złom, baterię oraz koło w magazynie. Testy EditMode technologii: [5/5 PASS](QA/Technology_QA_Isolation_20261108/EditMode.xml), exit 0, w tym rzeczywiste odkrycie wyposażenia w scenie i ponowny odczyt pliku testowego.
+
+Rozszerzona powtórka rzeczywiście odkryła Railgun, zapisała go do tymczasowego profilu i odczytała nową instancją rejestru: [zapis technologii](QA/Technology_QA_Isolation_20261108/Player-technology-write.json), exit 0. Kolejny osobny proces [wczytał wyprawę](QA/Technology_QA_Isolation_20261108/Player-technology-load.json), exit 0. Flaga `technologyWritten` dotyczy wyłącznie fazy Save; Load jej nie wykonuje. Katalogi profili są osobne dla każdego procesu, więc ten test nie dowodzi trwałości technologii między procesami QA; trwałość przy stałej testowej ścieżce sprawdza powyższy EditMode.
+
+Oryginalny plik technologii gracza miał przed i po kontroli ten sam czas modyfikacji: 7.11.2026 23:12:26. Odczytano metadane, nie zmieniono go ani nie zastąpiono. Poprzedni udany test cold save nie sprawdzał jeszcze izolacji profilu technologii i nie jest dowodem tej właściwości. Testy są sterowane API, nie stanowią ręcznej rozgrywki. Lokalne surowe logi i kody: `Artifacts/Local/NativeCatchup-Technology*`.
