@@ -178,9 +178,13 @@ namespace RoboRougelike.R1
             // Inventory parts are not in the assembled vehicle. Refresh the
             // ghost (a selected wreck may now be mountable) without replacing
             // the vehicle and its camera every time the player repairs one.
+            RefreshInventoryPreview();
+            return true;
+        }
+        private void RefreshInventoryPreview()
+        {
             if(Garage!=null&&Player!=null)Garage.RefreshPreview();
             else RebuildGarageVehicle();
-            return true;
         }
         public bool GarageFuse(System.Collections.Generic.IEnumerable<string> ids)
         {
@@ -192,9 +196,10 @@ namespace RoboRougelike.R1
         }
         public bool GarageDismantle(string id)
         {
-            if(VehicleModel==null)return false;
-            int before=VehicleModel.Scrap;bool changed=EditGarage(()=>VehicleModel.Dismantle(id));
-            if(changed)EarnedScrap+=VehicleModel.Scrap-before;return changed;
+            if(Transitioning||Progress?.State!=R1RunState.Garage||VehicleModel==null)return false;
+            int before=VehicleModel.Scrap;
+            if(!VehicleModel.Dismantle(id))return false;
+            RefreshInventoryPreview();EarnedScrap+=VehicleModel.Scrap-before;return true;
         }
         public bool ConfirmSalvage(System.Collections.Generic.IEnumerable<string> selected)
             => ConfirmRewards(selected,System.Array.Empty<int>());
