@@ -15,6 +15,8 @@ namespace RoboRougelike.R1
         bool quickOwnedOnly;
         GUIStyle quickCategoryButton;
         Vector2 quickPartsScroll;
+        static Rect QuickPartsArea(bool portrait)=>portrait?new Rect(24,658,414,178):new Rect(12,105,246,355);
+        static Rect QuickRepairArea(bool portrait)=>portrait?new Rect(24,840,414,38):new Rect(12,465,245,38);
         void OpenSimpleGarageOptions(int tab){garageOptionsTab=tab;garageOptionsFeedback=null;activitySaveFeedback=null;garageOptionsOpen=true;}
         void RepairFromGarageOptions(R1RunController run,bool emergency)
         {
@@ -81,6 +83,18 @@ namespace RoboRougelike.R1
         void DrawQuickOwnedFilter(R1RunController run,Rect rect)
         {
             if(GUI.Button(rect,quickOwnedOnly?"Filtr: posiadane":"Filtr: wszystkie",compactButton))ToggleQuickOwnedOnly(run);
+        }
+        void DrawQuickStackRepair(R1RunController run,Rect rect)
+        {
+            if(!catalogGroup.HasValue)
+            {
+                bool previouslyEnabled=GUI.enabled;GUI.enabled=false;
+                GUI.Button(rect,"Wybierz grupę części do naprawy",compactButton);
+                GUI.enabled=previouslyEnabled;return;
+            }
+            var items=run.VehicleModel.Inventory.Where(part=>
+                InCatalogGroup(part,catalogGroup.Value,catalogWeapon,catalogBonusId)).ToArray();
+            DrawCatalogBulkRepair(run,items,rect,true);
         }
 
         static string GaragePurchaseCaption(R3PartKind kind,bool unlocked,int price,int scrap,bool full,bool toInventory=false)=>
@@ -270,7 +284,8 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(1066,15,195,42),"Dopasuj widok",compactButton))garage.FrameVehicle();
             GUI.Label(new Rect(12,79,112,24),"CZĘŚCI",small);
             DrawQuickOwnedFilter(run,new Rect(130,78,127,25));
-            DrawQuickParts(run,new Rect(12,105,246,397),225);
+            DrawQuickParts(run,QuickPartsArea(false),225);
+            DrawQuickStackRepair(run,QuickRepairArea(false));
             var owned=model.Inventory.FirstOrDefault(p=>p.Id==garage.SelectedInventoryId);
             var inspected=garage.Tool!=R41GarageTool.Mount&&garage.HasTarget?model.At(garage.Cell):null;
             GUI.Label(new Rect(12,511,245,43),inspected!=null?GarageInspectionSummary(model,inspected):owned!=null?$"Wybrano: {R4WeaponDefinition.PartName(owned)} • HP {owned.Health*100:0}%":
@@ -332,7 +347,8 @@ namespace RoboRougelike.R1
             GUI.backgroundColor=Color.white;
             GUI.Label(new Rect(24,632,190,24),"CZĘŚCI",small);
             DrawQuickOwnedFilter(run,new Rect(240,628,190,27));
-            DrawQuickParts(run,new Rect(24,658,414,220),392);
+            DrawQuickParts(run,QuickPartsArea(true),392);
+            DrawQuickStackRepair(run,QuickRepairArea(true));
             var owned=model.Inventory.FirstOrDefault(p=>p.Id==garage.SelectedInventoryId);
             var inspected=garage.Tool!=R41GarageTool.Mount&&garage.HasTarget?model.At(garage.Cell):null;
             GUI.Label(new Rect(458,637,286,50),inspected!=null?GarageInspectionSummary(model,inspected):owned!=null?$"{R4WeaponDefinition.PartName(owned)} • HP {owned.Health*100:0}%":

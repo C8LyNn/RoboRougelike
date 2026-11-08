@@ -307,14 +307,15 @@ namespace RoboRougelike.R1
             }
             return selected.ToArray();
         }
-        private void DrawCatalogBulkRepair(R1RunController run,R3PartState[] items,Rect rect)
+        private void DrawCatalogBulkRepair(R1RunController run,R3PartState[] items,Rect rect,bool garageQuick=false)
         {
             var plan=CatalogRepairPlan(run.VehicleModel,items,out int eligible,out int total);
-            GUI.enabled=plan.Length>0;
+            bool previouslyEnabled=GUI.enabled;GUI.enabled=previouslyEnabled&&plan.Length>0;
             string label=eligible==0?"Brak części do naprawy":plan.Length==0?"Za mało złomu na naprawę":
                 $"Napraw {plan.Length}/{eligible} • {total} Z"+(plan.Length<eligible?" • najtaniej":"");
+            if(garageQuick)label="Magazyn: "+label;
             if(GUI.Button(rect,label,compactButton))RepairCatalogStack(run,items);
-            GUI.enabled=true;
+            GUI.enabled=previouslyEnabled;
         }
         private void RepairCatalogStack(R1RunController run,R3PartState[] items)
         {
@@ -324,6 +325,7 @@ namespace RoboRougelike.R1
             int repaired=run.GarageRepairInventoryBatch(plan.Select(item=>item.Id));
             int spent=before-run.VehicleModel.Scrap;
             catalogFeedback=repaired>0?$"Naprawiono {repaired} części • koszt {spent} Z.":"Nie udało się naprawić części.";
+            if(!catalogOpen&&run.Garage!=null)run.Garage.Message=catalogFeedback;
         }
         private bool DismantleCatalogItem(R1RunController run,string id)
         {

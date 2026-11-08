@@ -36,4 +36,16 @@ public sealed class UI943PortraitGarageTests
         Assert.That(Hit(384,60),Is.False);
         Assert.That(Hit(10,300),Is.False);
     }
+    [TestCase(true,768,1024)]
+    [TestCase(false,1280,720)]
+    public void QuickRepairDoesNotOverlapPartListOrVehicleView(bool portrait,int width,int height)
+    {
+        Rect For(string name)=>(Rect)typeof(R1RunHUD).GetMethod(name,BindingFlags.Static|BindingFlags.NonPublic)
+            .Invoke(null,new object[]{portrait});
+        var list=For("QuickPartsArea");var repair=For("QuickRepairArea");
+        var canvas=new Rect(0,0,width,height);
+        Assert.That(canvas.Contains(repair.min)&&canvas.Contains(repair.max-Vector2.one),Is.True);
+        Assert.That(repair.Overlaps(list),Is.False);
+        if(portrait)Assert.That(repair.Overlaps(R3GarageView.PortraitOpening),Is.False);
+    }
 }
