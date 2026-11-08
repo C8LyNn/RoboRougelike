@@ -1,0 +1,47 @@
+name: B01-61 W28 original Codex824 dynamic own-geometry Unity fixture exact-source QA (native NOT_RUN)
+on:
+  push:
+    branches: [qa/b01-61-p17w28-dynamic-own-clearance-824]
+  pull_request:
+    paths:
+      - 'Assets/Tests/Editor/B0161W28DynamicOwnClearanceRegressionTests.cs'
+      - 'Assets/Tests/Editor/B0161W28DynamicOwnClearanceRegressionTests.cs.meta'
+      - 'Tools/B01/B01-61/P17W28DynamicOwnClearanceQA/**'
+      - '.github/workflows/b01-61-w28-dynamic-own-clearance-824.yml'
+permissions:
+  contents: read
+jobs:
+  codex-original-source-and-test-asset-receipt:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2025, ubuntu-24.04]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Strict exact original #824 game source immutability + 3 new authored Unity physics tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile Tools/B01/B01-61/P17W28DynamicOwnClearanceQA/source_guard.py
+          python Tools/B01/B01-61/P17W28DynamicOwnClearanceQA/source_guard.py dist/b0161-w28/manifest.json | tee b0161-w28-original-source.log
+          grep -F 'B0161_W28_EXACT_824_7_PRODUCTION_BLOBS_UNTOUCHED=PASS' b0161-w28-original-source.log
+          grep -F 'B0161_W28_FIVE_NEW_QA_ONLY_FILES_ONE_UNIQUE_GUID=PASS' b0161-w28-original-source.log
+          grep -F 'B0161_W28_THREE_NATIVE_REAL_UNITY_EDITMODE_CASES=AUTHORED_NOT_RUN' b0161-w28-original-source.log
+      - name: Confirm native Unity was not run and record exact original parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -c 'import json,pathlib; d=json.loads(pathlib.Path("dist/b0161-w28/manifest.json").read_text()); assert d["native_unity_execution"]=="NOT_RUN"; assert d["native_unity_cases_authored"]==3; assert d["codex_original_gameplay_source_pr824"]=="e03d36f2b86f8c73a067e574b67237a8921f622a"; print("W28_NATIVE_G1=NOT_RUN_ORIGINAL_SOURCE_PROVENANCE_PASS")'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b0161-w28-codex824-dynamic-own-collision-source-only-${{ matrix.os }}
+          path: |
+            dist/b0161-w28/**
+            b0161-w28-original-source.log
+          if-no-files-found: warn
