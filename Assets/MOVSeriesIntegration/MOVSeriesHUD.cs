@@ -95,13 +95,21 @@ namespace RoboRougelike.R1
             item.Kind==kind&&(kind!=R3PartKind.Gun||item.Weapon==weapon)&&(kind!=R3PartKind.BonusModule||item.UpgradeId==bonus)&&
             (kind!=R3PartKind.Wheel||item.WheelStyle==CatalogWheelStyle(bonus))&&
             (kind!=R3PartKind.Armor||item.ArmorShape==CatalogArmorShape(bonus));
+        static string CatalogStackCaption(string name,int count,bool usable,bool unlocked) =>
+            $"{name} × {count}"+(count>0&&!usable?" • napraw":!unlocked?" • blokada":"");
+        string CatalogGroupCaption(R1RunController run,R3PartKind kind,R4WeaponKind weapon,string bonus,string name)
+        {
+            int count=0;bool usable=false;
+            foreach(var item in run.VehicleModel.Inventory)
+                if(InCatalogGroup(item,kind,weapon,bonus)){count++;if(item.Health>0)usable=true;}
+            return CatalogStackCaption(name,count,usable,run.CanBuyTechnology(kind,weapon));
+        }
         void DrawCatalogRow(R1RunController run,R3PartKind kind,R4WeaponKind weapon,string bonus,string name,int row)
         {
-            int count=run.VehicleModel.Inventory.Count(p=>InCatalogGroup(p,kind,weapon,bonus));
             bool chosen=catalogGroup==kind&&(kind!=R3PartKind.Gun||catalogWeapon==weapon)&&
                 (kind!=R3PartKind.BonusModule&&kind!=R3PartKind.Wheel&&kind!=R3PartKind.Armor||catalogBonusId==bonus);
             GUI.backgroundColor=chosen?new Color(.3f,.9f,.9f):Color.white;
-            if(GUI.Button(new Rect((row%3)*290,(row/3)*55,280,49),$"{name}  × {count}"+(run.CanBuyTechnology(kind,weapon)?"":" • blokada"),compactButton))
+            if(GUI.Button(new Rect((row%3)*290,(row/3)*55,280,49),CatalogGroupCaption(run,kind,weapon,bonus,name),compactButton))
             {
                 catalogGroup=kind;catalogWeapon=weapon;catalogBonusId=bonus;stackScroll=Vector2.zero;dismantleConfirmation=null;catalogFeedback=null;
                 var garage=run.Garage;garage.SelectedPart=kind;garage.SelectedWeapon=weapon;

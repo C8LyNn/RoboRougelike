@@ -106,11 +106,10 @@ namespace RoboRougelike.R1
 
         private void DrawPortraitCatalogGroup(R1RunController run,R3PartKind kind,R4WeaponKind weapon,string bonus,string name,int row)
         {
-            int count=run.VehicleModel.Inventory.Count(p=>InCatalogGroup(p,kind,weapon,bonus));
             bool chosen=catalogGroup==kind&&(kind!=R3PartKind.Gun||catalogWeapon==weapon)&&
                 (kind!=R3PartKind.BonusModule&&kind!=R3PartKind.Wheel&&kind!=R3PartKind.Armor||catalogBonusId==bonus);
             GUI.backgroundColor=chosen?new Color(.3f,.9f,.9f):Color.white;
-            if(GUI.Button(PortraitCatalogGroupRow(row),$"{name} × {count}"+(run.CanBuyTechnology(kind,weapon)?"":" • blokada"),compactButton))PortraitCatalogSelectGroup(run,kind,weapon,bonus);
+            if(GUI.Button(PortraitCatalogGroupRow(row),CatalogGroupCaption(run,kind,weapon,bonus,name),compactButton))PortraitCatalogSelectGroup(run,kind,weapon,bonus);
         }
 
         private void PortraitCatalogSelectGroup(R1RunController run,R3PartKind kind,R4WeaponKind weapon,string bonus)

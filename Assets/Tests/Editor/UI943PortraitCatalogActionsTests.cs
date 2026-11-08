@@ -22,6 +22,17 @@ public sealed class UI943PortraitCatalogActionsTests
     static object Field(R1RunHUD hud,string name)=>typeof(R1RunHUD).GetField(name,BindingFlags.Instance|BindingFlags.NonPublic).GetValue(hud);
     static bool ContainsId(R3VehicleModel model,string id)=>model.Inventory.Any(p=>p.Id==id);
 
+    [TestCase(5,false,true,"Koło × 5 • napraw")]
+    [TestCase(5,true,true,"Koło × 5")]
+    [TestCase(0,false,false,"Koło × 0 • blokada")]
+    [TestCase(0,false,true,"Koło × 0")]
+    public void StackCaptionDistinguishesWrecksFromUsableOrLockedParts(int count,bool usable,bool unlocked,string expected)
+    {
+        var method=typeof(R1RunHUD).GetMethod("CatalogStackCaption",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        Assert.That((string)method.Invoke(null,new object[]{"Koło",count,usable,unlocked}),Is.EqualTo(expected));
+    }
+
     [Test] public void InspectionSummaryUsesMountedPartHealthAndRepairQuote()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
