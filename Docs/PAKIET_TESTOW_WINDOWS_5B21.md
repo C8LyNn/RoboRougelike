@@ -76,3 +76,5 @@ W wyborze aktywności zapisz wyprawę i sprawdź, czy wynik pojawia się bez zam
 W poziomym menu sprawdź komunikat po nieudanym wczytaniu: powinien mieć osobny szerszy wiersz, bez nachodzenia na opis wyprawy i ostrzeżenie o seedzie. Bezokiennie wykonano 36 porównań geometrii — 36/36 PASS; test Unity i widoczność długich komunikatów w Playerze: NOT RUN. Szczegóły: `Docs/READY_MENU_MESSAGE_LAYOUT_QA.md`. ZIP 5b21 nie zawiera zmiany.
 
 Podczas przebudowy bez sprawnego napędu otwórz wybór aktywności: strzałka powinna pozwolić obejrzeć warianty trasy, ale przycisk uruchomienia nadal ma być niedostępny. Po przywróceniu wymaganego napędu i broni sprawdź możliwość rozpoczęcia. Test Unity i ręczne sprawdzenie: NOT RUN; ZIP 5b21 nie zawiera zmiany.
+
+W tym samym oknie sprawdź powód blokady dla brakującej broni lub napędu oraz informację o wyścigu, trybach drogowych i generowanej arenie po wybraniu działającego napędu innego niż koła. Komunikat opisuje istniejące wymagania; nie zmienia dostępności aktywności. Test Unity i czytelność w obu układach: NOT RUN; ZIP 5b21 nie zawiera zmiany.

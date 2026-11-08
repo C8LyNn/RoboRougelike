@@ -18,6 +18,74 @@ public sealed class CameraRamp18DiagnosticTests
 
     [UnityTest] public IEnumerator RealLightVehicleOnRangeRampRecordsCameraAndAimCollision()=>DriveRamp(R3VehicleKind.Light);
     [UnityTest] public IEnumerator RealHeavyVehicleOnRangeRampRecordsCameraAndAimCollision()=>DriveRamp(R3VehicleKind.Heavy);
+    [UnityTest] public IEnumerator HeavyApproachesRangeRampFromFlatGround()=>ApproachRamp(false,false);
+    [UnityTest] public IEnumerator HeavyWithPowerModuleApproachesRangeRampFromFlatGround()=>ApproachRamp(true,false);
+    [UnityTest] public IEnumerator HeavyWithPowerModuleAndSteeringApproachesRangeRampFromFlatGround()=>ApproachRamp(true,true);
+
+    static Vector3Int AvailableAttachment(R3VehicleModel model,string id)
+    {
+        var directions=new[]{Vector3Int.up,Vector3Int.right,Vector3Int.left,Vector3Int.forward,Vector3Int.back};
+        foreach(var part in model.Parts)
+            foreach(var direction in directions)
+            {
+                var cell=part.Cell+direction;
+                if(model.OwnedPlacementError(id,cell,Vector3Int.zero)==null)return cell;
+            }
+        Assert.Fail("No valid adjacent cell for the power module.");
+        return default;
+    }
+
+    IEnumerator ApproachRamp(bool addPower,bool correctSteering)
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);
+        yield return new EnterPlayMode();
+        float deadline=Time.realtimeSinceStartup+30;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<deadline)yield return null;
+        run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        Assert.That(run.SelectVehicle(R3VehicleKind.Heavy)&&run.OpenSandboxGarage(),Is.True);
+        if(addPower)
+        {
+            Assert.That(run.GaragePurchase(R3PartKind.DrivePower),Is.True);
+            var module=run.VehicleModel.Inventory.Last();
+            Assert.That(run.GarageMount(module.Id,AvailableAttachment(run.VehicleModel,module.Id),Vector3Int.zero),Is.True);
+        }
+        Assert.That(run.EnterTestRange(),Is.True);
+        while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(run.Transitioning,Is.False);
+        var range=run.GetComponent<R6TestRange>();
+        var ramp=range.Layout.GetComponentsInChildren<BoxCollider>().First(c=>c.name.StartsWith("Rampa terenu • poligon")&&c.transform.position.x>0);
+        var vehicle=run.Player;var body=vehicle.GetComponent<Rigidbody>();var drive=vehicle.GetComponent<R6VehicleDrive>();
+        vehicle.Controller.SetGameplayInputEnabled(true);vehicle.Controller.enabled=false;
+        // Initial placement on the real flat approach only. All subsequent motion
+        // is driven by the same R6 force solver and physical wheel contacts.
+        body.interpolation=RigidbodyInterpolation.None;
+        body.position=new Vector3(ramp.transform.position.x,.7f,20);body.rotation=Quaternion.Euler(0,180,0);
+        body.linearVelocity=Vector3.zero;body.angularVelocity=Vector3.zero;Physics.SyncTransforms();body.WakeUp();
+        body.interpolation=RigidbodyInterpolation.Interpolate;
+        for(int i=0;i<30;i++){drive.Step(0,0,10,4,90);yield return MOVSeriesDeviceTests.FixedStep();}
+        var start=body.position;float maxHeight=start.y;int grounded=0;bool reachedTop=false;
+        for(int i=0;i<600;i++)
+        {
+            float steering=0;
+            if(correctSteering)
+            {
+                var toward=new Vector3(ramp.transform.position.x-body.position.x,0,3-body.position.z);
+                float desiredYaw=Mathf.Atan2(toward.x,toward.z)*Mathf.Rad2Deg;
+                steering=Mathf.Clamp(Mathf.DeltaAngle(body.rotation.eulerAngles.y,desiredYaw)/45f,-1,1);
+            }
+            drive.Step(1,steering,10,4,90);yield return MOVSeriesDeviceTests.FixedStep();
+            if(drive.GroundedWheels>0)grounded++;
+            maxHeight=Mathf.Max(maxHeight,body.position.y);
+            if(body.position.z<4.5f&&body.position.y>2f)reachedTop=true;
+            if(i%50==0)Debug.Log($"[RAMP-APPROACH] power={addPower} steering={correctSteering} fixed={i} pos={body.position.ToString("F2")} velocity={body.linearVelocity.ToString("F2")} contacts={drive.GroundedWheels}/{drive.Wheels} force={drive.AvailableForce:F0} powerUnits={drive.ActivePowerUnits:F2}");
+        }
+        float progress=start.z-body.position.z;
+        Debug.Log($"[RAMP-APPROACH SUMMARY] power={addPower} steering={correctSteering} start={start.ToString("F2")} end={body.position.ToString("F2")} progress={progress:F2} maxHeight={maxHeight:F2} groundedFrames={grounded}/600 reachedTop={reachedTop}");
+        Assert.That(grounded,Is.GreaterThan(0),"The actual wheels must contact the terrain.");
+        Assert.That(progress,Is.GreaterThan(.5f),"The actual drive must move from the flat approach.");
+        // This diagnostic deliberately records the crest result instead of
+        // turning a short sample into an assertion about all driving skills.
+    }
 
     IEnumerator DriveRamp(R3VehicleKind kind)
     {

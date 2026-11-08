@@ -12,6 +12,9 @@ namespace RoboRougelike.R1
         static string ActivitySaveResult(bool saved,string previous,string current)=>saved?
             (string.IsNullOrEmpty(current)?"Zapisano wyprawę.":current):
             (!string.IsNullOrEmpty(current)&&current!=previous?current:"Nie udało się zapisać wyprawy.");
+        static string ActivityReadinessHint(bool canDeploy,string reason,R3DriveKind drive)=>!canDeploy?
+            "Start zablokowany: "+(string.IsNullOrWhiteSpace(reason)?"Sprawdź konstrukcję.":reason):
+            drive!=R3DriveKind.Wheels?"Wyścig, tryby drogowe i generowana arena wymagają kół.":null;
 
         void DrawPortraitGarage(R1RunController run)
         {
@@ -119,6 +122,10 @@ namespace RoboRougelike.R1
                 activitySaveFeedback=ActivitySaveResult(saved,previous,run.RunSaveMessage);
             }
             if(!string.IsNullOrEmpty(activitySaveFeedback))GUI.Label(new Rect(24,800,720,70),activitySaveFeedback,small);
+            bool ready=run.VehicleModel.CanDeploy;
+            string reason=ready?null:run.VehicleModel.CriticalReadinessMessage??run.VehicleModel.DeployError;
+            string hint=ActivityReadinessHint(ready,reason,run.VehicleModel.SelectedDrive);
+            if(hint!=null)GUI.Label(new Rect(24,875,720,25),hint,small);
         }
     }
 }
