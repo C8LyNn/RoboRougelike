@@ -13,7 +13,7 @@ public sealed class BacklogEnergyRegenTests
     [TestCase(1)][TestCase(2)][TestCase(3)]
     public void EveryPassiveTierReservesTwentyFiveAndDestructionReleasesIt(int tier)
     {
-        foreach(var kind in new[]{R3PartKind.DrivePower,R3PartKind.EnergyRegenerator,R3PartKind.Gyroscope})
+        foreach(var kind in new[]{R3PartKind.Suspension,R3PartKind.Gyroscope,R3PartKind.BonusModule,R3PartKind.DirectionalShield,R3PartKind.IndependentSteering,R3PartKind.DrivePower,R3PartKind.EnergyRegenerator})
         {
             var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));float before=model.Energy.Maximum;
             var module=new R3PartState(default,kind){Tier=tier};model.Parts.Add(module);model.RefreshEnergyLayout();
