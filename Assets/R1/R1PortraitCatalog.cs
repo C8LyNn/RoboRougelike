@@ -28,7 +28,7 @@ namespace RoboRougelike.R1
 
             var model=run.VehicleModel;
             var bonuses=model.Inventory.Where(p=>p.Kind==R3PartKind.BonusModule).Select(p=>p.UpgradeId).Distinct().ToArray();
-            int count=shopKinds.Length+6+R4WeaponDefinition.Count+bonuses.Length;
+            int count=shopKinds.Length+7+R4WeaponDefinition.Count+bonuses.Length;
             var groups=PortraitCatalogGroupsViewport();
             catalogScroll=GUI.BeginScrollView(groups,catalogScroll,new Rect(0,0,320,Mathf.Max(groups.height,count*56)));
             int row=0;
@@ -43,6 +43,7 @@ namespace RoboRougelike.R1
                 if(kind==R3PartKind.Armor)DrawPortraitCatalogGroup(run,kind,R4WeaponKind.Basic,HalfWedgeArmorGroup,"Pancerz • półklin",row++);
                 if(kind==R3PartKind.Armor)DrawPortraitCatalogGroup(run,kind,R4WeaponKind.Basic,DomeArmorGroup,"Pancerz • kopuła",row++);
                 if(kind==R3PartKind.Wheel)DrawPortraitCatalogGroup(run,kind,R4WeaponKind.Basic,SlickWheelGroup,"Koło szosowe",row++);
+                if(kind==R3PartKind.Wheel)DrawPortraitCatalogGroup(run,kind,R4WeaponKind.Basic,LargeWheelGroup,"Duże koło terenowe",row++);
             }
             for(int i=0;i<R4WeaponDefinition.Count;i++)
             {
@@ -64,7 +65,7 @@ namespace RoboRougelike.R1
             var selectedKind=catalogGroup.Value;var selectedWeapon=catalogWeapon;
             var items=model.Inventory.Where(p=>InCatalogGroup(p,selectedKind,selectedWeapon,catalogBonusId)).ToArray();
             string name=selectedKind==R3PartKind.Armor?R4WeaponDefinition.ArmorName(CatalogArmorShape(catalogBonusId)):
-                selectedKind==R3PartKind.Wheel?(CatalogWheelStyle(catalogBonusId)==R3WheelStyle.Slick?"Koło szosowe":"Koło terenowe"):
+                selectedKind==R3PartKind.Wheel?R4WeaponDefinition.WheelName(CatalogWheelStyle(catalogBonusId)):
                 selectedKind==R3PartKind.BonusModule&&items.Length>0?R4WeaponDefinition.PartName(items[0]):R4WeaponDefinition.PartName(selectedKind,selectedWeapon);
             GUI.Label(new Rect(390,145,354,28),$"{name} × {items.Length}",small);
             var viewport=PortraitCatalogItemsViewport();

@@ -1,8 +1,12 @@
 using System.Collections;
 using System.Linq;
+using System.Reflection;
 using NUnit.Framework;
 using RoboRougelike.R1;
 using RoboRougelike.R3;
+using RoboRougelike.R6;
+using RoboRougelike.R4_1;
+using RogueMachine.P12PipelineSafe;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -68,6 +72,84 @@ public sealed class R4WheelVariantsTests
             $" wheels={model.Parts.Count(p=>p.Kind==R3PartKind.Wheel)}");
         garage.Select(target);Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);
         Assert.That(garage.SelectedInventoryId,Is.EqualTo(nextSlick.Id));
+    }
+    [UnityTest]public IEnumerator LargeWheelUsesItsRealSizeContactAndOwnedStyle()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
+        var model=run.VehicleModel;model.Award(1000);var garage=run.Garage;
+        foreach(var cell in new[]{new Vector3Int(2,2,2),new Vector3Int(2,3,2)})
+        {
+            Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);var support=model.Inventory.Last();
+            garage.ChooseInventory(support.Id);garage.Select(cell);Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);yield return null;
+        }
+        Assert.That(run.GaragePurchase(R3PartKind.Wheel),Is.True);var medium=model.Inventory.Last();
+        Assert.That(run.GaragePurchase(R3PartKind.Wheel,default,R3WheelStyle.LargeOffroad),Is.True);var large=model.Inventory.Last();
+        Assert.That(R3VehicleModel.SameFusionType(medium,large),Is.False);
+        var candidates=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct().ToArray();
+        var target=candidates.FirstOrDefault(c=>model.OwnedPlacementError(large.Id,c,Vector3Int.zero)==null);
+        Assert.That(model.OwnedPlacementError(large.Id,target,Vector3Int.zero),Is.Null,"Expected room for a large wheel.");
+        Assert.That(model.OwnedPlacementError(medium.Id,target,Vector3Int.zero),Is.Null);
+        var pose=large.Copy();pose.Cell=target;
+        bool mirror=R4WheelArt.MirrorForMount(model,pose);
+        var tireCenter=run.Player.transform.TransformPoint((Vector3)target*.55f+new Vector3(mirror ? -.062f : .062f,0,0));
+        var blocker=GameObject.CreatePrimitive(PrimitiveType.Cube);blocker.transform.position=tireCenter+run.Player.transform.forward*.48f;
+        blocker.transform.localScale=Vector3.one*.06f;Physics.SyncTransforms();
+        Assert.That(model.OwnedPlacementError(medium.Id,target,Vector3Int.zero),Is.Null,"The medium tire clears the obstacle.");
+        Assert.That(model.OwnedPlacementError(large.Id,target,Vector3Int.zero),Is.Not.Null,"The real larger tire must not intersect the obstacle.");
+        Object.Destroy(blocker);yield return null;Physics.SyncTransforms();
+        garage.ChooseInventory(large.Id);garage.Select(target);Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);yield return null;
+        var part=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==large.Id);
+        var tire=part.transform.Find("Koło").GetComponent<Collider>();
+        Assert.That(tire.bounds.extents.y,Is.EqualTo(.56f).Within(.02f));
+        var rotor=part.GetComponentsInChildren<Transform>(true).Single(t=>t.name=="R4M_WheelL_Side_Offroad_Rotor");
+        Assert.That(Vector3.Distance(rotor.position,tire.bounds.center),Is.LessThan(.01f));
+        Assert.That(R6VehicleDrive.PartMass(part.Damageable),Is.EqualTo(18).Within(.01f));
+        Assert.That(run.GarageToggleWheelStyle(target),Is.False,"Changing geometry must require a validated remount.");
+        var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.localScale=new Vector3(.4f,.2f,.4f);
+        floor.transform.position=new Vector3(tire.bounds.center.x,tire.bounds.min.y-.1f,tire.bounds.center.z);Physics.SyncTransforms();
+        var contacts=new R6WheelContacts();contacts.Refresh(run.Player.GetComponent<Rigidbody>(),new[]{part.Damageable});
+        Assert.That(contacts.Count,Is.EqualTo(1));Assert.That(contacts.Traction,Is.EqualTo(1.25f).Within(.01f));
+        Object.Destroy(floor);
+        var data=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(Time.time)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Standard,model.Economy,Time.time,out var restored,out var error),Is.True,error);
+        Assert.That(restored.Parts.Single(p=>p.Id==large.Id).WheelStyle,Is.EqualTo(R3WheelStyle.LargeOffroad));
+    }
+    [UnityTest]public IEnumerator LargeWheelsDriveActualRigidVehicleOnGround()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
+        Assert.That(run.EnterTestRange(),Is.True);
+        while(run.Transitioning)yield return null;
+        var palette=(R3VisualPalette)typeof(R1RunController).GetField("palette",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(run);
+        var design=new R3VehicleDesign{Name="Large wheel drive QA",Speed=7,TurnSpeed=90,CoreHp=100};
+        design.Parts.Add(new R3PartState(Vector3Int.zero,R3PartKind.Core));
+        for(int z=1;z<=3;z++)design.Parts.Add(new R3PartState(new Vector3Int(0,0,z),R3PartKind.Armor));
+        foreach(int x in new[]{-1,1})foreach(int z in new[]{0,3})
+            design.Parts.Add(new R3PartState(new Vector3Int(x,0,z),R3PartKind.Wheel){WheelStyle=R3WheelStyle.LargeOffroad});
+        var model=new R3VehicleModel(design);var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);
+        floor.transform.position=new Vector3(1000,-.1f,1000);floor.transform.localScale=new Vector3(30,.2f,30);
+        var vehicle=R3VehicleAssembly.Build(model,run.Progress.Stats,palette,new Vector3(1000,.56f,1000),Quaternion.identity);
+        var tank=vehicle.GetComponent<P12PipelineSafeTankController>();tank.enabled=false;
+        var drive=vehicle.GetComponent<R6VehicleDrive>();Assert.That(drive,Is.Not.Null);Time.timeScale=1;
+        try
+        {
+            for(int i=0;i<10;i++)yield return new WaitForFixedUpdate();
+            var body=vehicle.GetComponent<Rigidbody>();float start=body.position.z;int grounded=0;
+            float fixedStart=Time.fixedTime;float deadline=Time.realtimeSinceStartup+10;
+            var trace=new System.Text.StringBuilder();
+            int sample=0;float previousFixed=float.NegativeInfinity;
+            while(Time.fixedTime-fixedStart<1.6f&&Time.realtimeSinceStartup<deadline){
+                // The editor test runner can resume multiple times per physics tick.
+                // Never add more than one drive force per actual fixed-time step.
+                if(Time.fixedTime>previousFixed){previousFixed=Time.fixedTime;drive.Step(1,0,7,4,90);grounded=Mathf.Max(grounded,drive.GroundedWheels);
+                    if(sample++%20==0)trace.Append($"[{sample}: t={Time.fixedTime:F2} p={body.position} v={body.linearVelocity} ground={drive.GroundedWheels} force={drive.AvailableForce:0}] ");}
+                yield return new WaitForFixedUpdate();}
+            Debug.Log("Large wheel R6 trace "+trace+"final="+body.position);
+            Assert.That(Time.fixedTime-fixedStart,Is.GreaterThanOrEqualTo(1.6f),"The physics clock must really advance.");
+            Assert.That(sample,Is.InRange(60,90),"Apply one input per actual physics step.");
+            Assert.That(grounded,Is.GreaterThanOrEqualTo(2),"Real large tires must register ground support.");
+            Assert.That(body.position.z-start,Is.GreaterThan(.5f),"The actual R6 body must travel forward.");
+        }
+        finally{Object.Destroy(vehicle.gameObject);Object.Destroy(floor);}
     }
     [UnityTearDown]public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }

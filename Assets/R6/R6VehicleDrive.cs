@@ -63,7 +63,8 @@ namespace RoboRougelike.R6
             var device=part.GetComponent<RoboRougelike.WeaponIntegration.RRLDeviceBinding>();
             if(device?.State!=null)return R4WeaponDefinition.PartMass(device.State);
             var mounted=part.GetComponent<R3MountedPart>();
-            if(mounted!=null)return R4WeaponDefinition.PartMass(mounted.Kind,mounted.Weapon)*R3VehicleModel.TierMass(mounted.Tier);
+            if(mounted!=null)return R4WeaponDefinition.PartMass(mounted.Kind,mounted.Weapon)*R3VehicleModel.TierMass(mounted.Tier)*
+                (mounted.Kind==R3PartKind.Wheel?R3VehicleModel.WheelMass(mounted.WheelStyle):1);
             var module=part.GetComponent<P12PipelineSafeFunctionalModule>();
             return module!=null&&module.ModuleType==P12FunctionalModuleType.Weapon?32:IsWheel(part)?12:8;
         }
@@ -97,6 +98,7 @@ namespace RoboRougelike.R6
                 float condition=Mathf.Lerp(R6Tuning.Current.DamageTractionFloor,1,part.CurrentHp/part.MaxHp);
                 condition*=R3VehicleModel.TierWheelTraction(mounted!=null?mounted.Tier:
                     part.GetComponent<RoboRougelike.WeaponIntegration.RRLDeviceBinding>()?.State?.Tier??1);
+                if(mounted!=null)condition*=R3VehicleModel.WheelTraction(mounted.WheelStyle);
                 traction+=condition;Wheels++;track+=Mathf.Abs(local.x);
                 if(local.x<0)left+=condition;else right+=condition;
             }
