@@ -16,6 +16,7 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(355,124,280,38),"Wyścig • checkpointy",compactButton))run.ChooseCheckpointRace();
             GUI.enabled=run.CanChooseRoadChallenge;
             if(GUI.Button(new Rect(650,124,235,38),R1RunController.RoadModeName(roadSelection),compactButton))run.ChooseRoadChallenge(roadSelection);
+            GUI.enabled=true;
             if(GUI.Button(new Rect(890,124,40,38),"›",compactButton))roadSelection=(MapR4Mode)(((int)roadSelection+1)%4);
             GUI.enabled=true;
         }
