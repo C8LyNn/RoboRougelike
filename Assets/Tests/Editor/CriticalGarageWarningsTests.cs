@@ -6,6 +6,20 @@ using UnityEngine;
 
 public sealed class CriticalGarageWarningsTests
 {
+    [TestCase(R3DriveKind.Wheels,"Koła")]
+    [TestCase(R3DriveKind.Tracks,"Gąsienice")]
+    [TestCase(R3DriveKind.Omni,"Omni")]
+    [TestCase(R3DriveKind.Hover,"Hover")]
+    public void MissingSelectedDriveExplainsItsActualRequirement(R3DriveKind drive,string expected)
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        if(drive==R3DriveKind.Wheels)
+            foreach(var wheel in model.Parts.Where(part=>part.Kind==R3PartKind.Wheel))wheel.Health=0;
+        model.SelectedDrive=drive;
+        Assert.That(model.CanDeploy,Is.False);
+        Assert.That(model.DeployError,Does.Contain(expected));
+        Assert.That(model.CriticalReadinessMessage,Does.Contain(expected));
+    }
     static string Warnings(R3VehicleModel model)
     {
         var p=typeof(R3VehicleModel).GetProperty("CriticalReadinessMessage",BindingFlags.Public|BindingFlags.Instance);
@@ -29,6 +43,13 @@ public sealed class CriticalGarageWarningsTests
     }
     [Test] public void OperationalVehicleHasNoCriticalWarning()
     {var m=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));Assert.That(Warnings(m),Is.Null.Or.Empty);}
+    [Test] public void DestroyedCoreIsReportedBeforeMissingConnectedEquipment()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        model.Parts.First(part=>part.Kind==R3PartKind.Core).Health=0;
+        Assert.That(model.CanDeploy,Is.False);
+        Assert.That(Warnings(model),Does.Contain("Rdzeń zniszczony"));
+    }
     [Test] public void UndamagedGunBeyondDestroyedBridgeIsNotOperational()
     {
         var design=new R3VehicleDesign();

@@ -473,6 +473,12 @@ namespace RoboRougelike.R3
             }
             return visited.Count == cells.Count;
         }
+        private static string MissingDriveRequirement(R3DriveKind drive)=>drive switch {
+            R3DriveKind.Wheels=>"Koła: po jednym z obu stron.",
+            R3DriveKind.Tracks=>"Gąsienice: po jednej z obu stron.",
+            R3DriveKind.Omni=>"Zamontuj sprawny moduł Omni.",
+            R3DriveKind.Hover=>"Zamontuj sprawny silnik Hover.",
+            _=>"Wybierz dostępny napęd."};
         public string DeployError
         {
             get
@@ -482,8 +488,7 @@ namespace RoboRougelike.R3
                 if (!alive.Any(p => p.Kind == R3PartKind.Core)) return "Rdzeń zniszczony.";
                 if (!Connected(alive)) return "Konstrukcja zawiera odłączone części.";
                 if (!alive.Any(p => p.Kind == R3PartKind.Gun)) return "Brak sprawnej broni.";
-                if(!HasMobility(alive,SelectedDrive))return SelectedDrive==R3DriveKind.Wheels?
-                    "Potrzebne co najmniej jedno koło na każdej stronie.":"Brak sprawnego wybranego napędu (gąsienice wymagają obu stron).";
+                if(!HasMobility(alive,SelectedDrive))return "Brak sprawnego napędu. "+MissingDriveRequirement(SelectedDrive);
                 return null;
             }
         }
@@ -496,6 +501,7 @@ namespace RoboRougelike.R3
             {
                 var alive=Parts.Where(p=>p!=null&&p.Health>0).ToList();
                 var core=alive.FirstOrDefault(p=>p.Kind==R3PartKind.Core);
+                if(core==null)return "Rdzeń zniszczony.";
                 var cells=new Dictionary<Vector3Int,R3PartState>();
                 foreach(var part in alive)foreach(var cell in OccupiedCells(part))cells.TryAdd(cell,part);
                 var visited=new HashSet<Vector3Int>();var queue=new Queue<Vector3Int>();
@@ -514,9 +520,9 @@ namespace RoboRougelike.R3
                 var operational=visited.Select(c=>cells[c]).Distinct().ToArray();
                 bool noWeapon=!operational.Any(p=>p.Kind==R3PartKind.Gun&&ValidEconomicKind(p.Kind,p.Weapon));
                 bool noDrive=!HasMobility(operational,SelectedDrive);
-                if(noWeapon&&noDrive)return "Brak sprawnej broni • Brak sprawnego napędu.";
+                if(noWeapon&&noDrive)return "Brak sprawnej broni • Brak sprawnego napędu. "+MissingDriveRequirement(SelectedDrive);
                 if(noWeapon)return "Brak sprawnej broni.";
-                return noDrive?"Brak sprawnego napędu.":null;
+                return noDrive?"Brak sprawnego napędu. "+MissingDriveRequirement(SelectedDrive):null;
             }
         }
         public static bool HasMobility(IEnumerable<R3PartState> source,R3DriveKind drive,bool healthy=true)

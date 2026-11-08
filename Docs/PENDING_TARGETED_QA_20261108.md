@@ -13,6 +13,7 @@ Użyj Unity 6000.3.14f1 i zachowaj XML, Editor.log oraz kody zakończenia. Nie u
 - `RRLW34RewardTests`: `ScrapPreviewAndLedgerReportOnlyAmountActuallyCredited`, `DismantlePreviewMatchesWalletChangeAtTheLimit`.
 - `BacklogEnergyRegenTests`: `EveryPassiveTierReservesTwentyFiveAndDestructionReleasesIt`, `MixedPassiveTiersEachReserveTwentyFive`, `CheckpointPreservesTieredBatteryPassiveReservationAndCurrentCharge`; `BacklogDeviceTierTests`: `TierTwoRegeneratorImprovesRecoveryAndReservesTwentyFive`, `TierThreeRegeneratorHasFourTimesTheEffectAndTwentyFiveReservation`; `BacklogDeviceTierGameplayTests`: `UpgradedMotorUsesTwoPowerUnitsAndTwentyFiveEnergyReservation`.
 - `RRLW6ShieldPhysicalTests`: `EnemyShieldKeepsPassiveReservationDuringEmpUntilDestroyed`.
+- `CriticalGarageWarningsTests`: `MissingSelectedDriveExplainsItsActualRequirement`, `DestroyedCoreIsReportedBeforeMissingConnectedEquipment`, `NoWeaponAndNoDriveAreBothVisibleWhileEditingRemainsAllowed`.
 
 Przed testami sprawdź izolację danych. Testy map używają losowych nazw plików w katalogu map i usuwają własne pliki; testy w batch Editorze używają osobnego profilu technologii. Nie nadpisuj ani nie usuwaj zapisów gracza. Jeśli izolacji nie da się potwierdzić, oznacz odpowiedni przypadek NOT RUN.
 
