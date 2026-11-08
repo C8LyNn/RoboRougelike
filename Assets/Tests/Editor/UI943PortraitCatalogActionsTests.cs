@@ -438,6 +438,7 @@ public sealed class UI943PortraitCatalogActionsTests
         Assert.That(before-run.VehicleModel.Scrap,Is.EqualTo(quote));
         Assert.That(run.Player,Is.SameAs(player),"Inventory repairs must not rebuild the vehicle.");
         Assert.That((string)Field(hud,"catalogFeedback"),Does.Contain("2").And.Contain(quote+" Z"));
+        Assert.That(run.Garage.Message,Does.Contain("2").And.Contain(quote+" Z"),"A quick garage repair must show its result without opening the catalog.");
         yield return null;
     }
 
