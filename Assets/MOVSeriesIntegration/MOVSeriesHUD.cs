@@ -44,7 +44,7 @@ namespace RoboRougelike.R1
         static readonly R3PartKind[] shopKinds={R3PartKind.Armor,R3PartKind.Wheel,R3PartKind.Gun,R3PartKind.Suspension,
             R3PartKind.Booster,R3PartKind.JumpDrive,R3PartKind.Blink,R3PartKind.Gyroscope,
             R3PartKind.OmniDrive,R3PartKind.MagneticGrapple,R3PartKind.HoverEngine,R3PartKind.CrawlerTrack,R3PartKind.DirectionalShield,R3PartKind.PointDefense,R3PartKind.StructuralScanner,R3PartKind.ScannerPulse,R3PartKind.IndependentSteering,R3PartKind.Battery,R3PartKind.RepairPulse,R3PartKind.DrivePower,R3PartKind.EnergyRegenerator};
-        static readonly string[] shopNames={"Pancerz","Koło","Broń","Zawieszenie","Booster","Skok","Blink","Żyroskop","Omni","Zaczep","Hover","Gąsienica","Tarcza","Obrona pkt.","Skan struktury","Impuls skanera","Skręt osi","Bateria +100","Impuls naprawczy","Silnik kół","Regenerator energii"};
+        static readonly string[] shopNames={"Pancerz","Koło","Broń","Zawieszenie","Booster","Skok","Blink","Żyroskop","Omni","Zaczep","Hover","Gąsienica","Tarcza","Obrona pkt.","Skan struktury","Impuls skanera","Skręt osi","Bateria","Impuls naprawczy","Silnik kół","Regenerator energii"};
         static readonly string[] driveNames={"Koła","Gąsienice","Omni","Hover"};
         void DrawMovementCatalog(R1RunController run)
         {

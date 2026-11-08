@@ -59,7 +59,9 @@ namespace RoboRougelike.R1
             garage.SelectedPart=kind;garage.SelectedWeapon=weapon;garage.UseInventory=true;
             var part=run.VehicleModel.Inventory.Where(p=>InCatalogGroup(p,kind,weapon,bonus)&&p.Health>0)
                 .OrderByDescending(p=>p.Health).FirstOrDefault();
-            if(part!=null){garage.ChooseInventory(part.Id);garage.Message=kind==R3PartKind.RepairPulse?
+            if(part!=null){garage.ChooseInventory(part.Id);garage.Message=kind==R3PartKind.Battery?
+                $"Bateria T{R3VehicleModel.NormalizedTier(part.Tier)}: +{VehicleEnergyState.BatteryCapacity*R3VehicleModel.TierEffectUnits(part.Tier):0} maks. energii. Kliknij, aby zamontować.":
+                kind==R3PartKind.RepairPulse?
                 $"Impuls T{R3VehicleModel.NormalizedTier(part.Tier)}: V, {R3RepairPulse.EnergyCost*R3VehicleModel.TierActivationCost(part.Tier):0} energii, 5 s. Kliknij, aby zamontować.":
                 kind==R3PartKind.DrivePower?$"Silnik T{R3VehicleModel.NormalizedTier(part.Tier)} wspomaga koła; rezerwuje {25+R3VehicleModel.TierPassiveExtra(part.Tier):0} energii.":
                 kind==R3PartKind.EnergyRegenerator?$"Regenerator T{R3VehicleModel.NormalizedTier(part.Tier)}: +{5*R3VehicleModel.TierEffectUnits(part.Tier)} energii/s, rezerwa {25+R3VehicleModel.TierPassiveExtra(part.Tier):0}.":
@@ -78,7 +80,8 @@ namespace RoboRougelike.R1
                 kind==R3PartKind.Wheel?"Średnie terenowe i szosowe mają takie same właściwości jezdne. Kliknij pojazd, aby zamontować.":"Kliknij pojazd, aby zamontować część.";}
             else {garage.SelectedInventoryId=null;garage.SetTool(R41GarageTool.Mount);
                 garage.Message=kind==R3PartKind.BonusModule?"Brak sprawnego bonusu. Otwórz egzemplarze i napraw część.":
-                    !run.CanBuyTechnology(kind,weapon)?"Zablokowane: pokonaj przeciwnika z tą bronią, aby odkryć technologię.":kind==R3PartKind.RepairPulse?
+                    !run.CanBuyTechnology(kind,weapon)?"Zablokowane: pokonaj przeciwnika z tą bronią, aby odkryć technologię.":kind==R3PartKind.Battery?
+                    $"Bateria T1: +{VehicleEnergyState.BatteryCapacity:0} maks. energii. Kup część lub otwórz szczegóły.":kind==R3PartKind.RepairPulse?
                     "Impuls naprawczy: V, 15 energii, 5 s. Kup część lub otwórz szczegóły.":
                     kind==R3PartKind.DrivePower?"Silnik wspomaga koła; zajmuje 25 maks. energii. Kup część lub otwórz szczegóły.":
                     kind==R3PartKind.EnergyRegenerator?"Regenerator: +5 energii/s, −25 maks. energii. Kup część lub otwórz szczegóły.":
