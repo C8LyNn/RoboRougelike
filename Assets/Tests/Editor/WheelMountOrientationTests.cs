@@ -20,7 +20,7 @@ public sealed class WheelMountOrientationTests
         {
             var axis=R3MountingGrid.Rotate(Vector3Int.right,turns)*sign;var cell=new Vector3Int(2,2,2);
             var design=new R3VehicleDesign{Name="Visual mount QA"};
-            design.Parts.Add(new R3PartState(cell,R3PartKind.Wheel){RotationQuarterTurns=turns,WheelStyle=style});
+            design.Parts.Add(new R3PartState(cell,R3PartKind.Wheel){RotationQuarterTurns=turns,WheelStyle=style,ContactMask=3});
             design.Parts.Add(new R3PartState(cell+axis,R3PartKind.Armor));
             var model=new R3VehicleModel(design);var state=model.At(cell);
             var block=GameObject.CreatePrimitive(PrimitiveType.Cube);block.transform.localScale=Vector3.one*R41PartGeometry.BlockSize;

@@ -58,7 +58,7 @@ namespace RoboRougelike.R3
         private bool shownWheelMirrored;
         private readonly R3PartState previewWheel=new R3PartState(default,R3PartKind.Wheel);
         public Vector3Int SelectedRotation {get;private set;}
-        public int SelectedContactMask=>Owned?.ContactMask??R3MountingGrid.AllFaces;
+        public int SelectedContactMask=>R3VehicleModel.StoredWheelContacts(Owned);
         public Vector3Int Cell = new Vector3Int(0,2,1);
         public R3PartKind SelectedPart = R3PartKind.Armor;
         public R4WeaponKind SelectedWeapon;
