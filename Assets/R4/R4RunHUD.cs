@@ -26,6 +26,7 @@ namespace RoboRougelike.R1
         private int rewardInventoryPage;
         private string rewardDismantleConfirmation;
         private string rewardInventoryFeedback;
+        private string rewardClaimFeedback;
         private static Rect SalvageAmmoRect(float x,float y)=>new Rect(x+268,y+77,97,23);
         private static string SalvageAmmoLabel(R3PartState part)
         {
@@ -50,7 +51,7 @@ namespace RoboRougelike.R1
             rewardBaskets=ledger?.CreateBasketOffers((run?.Seed??0)^((run?.Progress?.EncounterIndex??0)*397),run?.Progress?.EncounterIndex??0)
                 ??System.Array.Empty<R4SalvageBasket>();
             selectedBasket=-1;
-            rewardInventoryOpen=false;rewardInventoryPage=0;rewardDismantleConfirmation=null;rewardInventoryFeedback=null;
+            rewardInventoryOpen=false;rewardInventoryPage=0;rewardDismantleConfirmation=null;rewardInventoryFeedback=null;rewardClaimFeedback=null;
         }
         internal bool CloseRewardInventory()
         {
@@ -60,8 +61,15 @@ namespace RoboRougelike.R1
         private void ChooseRewardBasket(int index)
         {
             if(index<0||index>=rewardBaskets.Count)return;
-            selectedBasket=index;lootSelection.Clear();
+            selectedBasket=index;rewardClaimFeedback=null;lootSelection.Clear();
             foreach(var item in rewardBaskets[index].Items)lootSelection.Add(item.Id);
+        }
+        private void SelectRewardBonus(int index){selectedBonus=index;rewardClaimFeedback=null;}
+        private bool ConfirmSelectedRewards(R1RunController run)
+        {
+            bool accepted=run.ConfirmRewards(lootSelection,selectedBonus>=0?new[]{selectedBonus}:System.Array.Empty<int>());
+            rewardClaimFeedback=accepted?null:"Nie udało się odebrać nagród. Spróbuj ponownie.";
+            return accepted;
         }
         private static Color BasketColor(R4SalvageBasket basket)=>basket.Percent>=66?new Color(.48f,.9f,.55f):
             basket.Percent>=33?new Color(.45f,.82f,.95f):Color.white;
@@ -79,11 +87,11 @@ namespace RoboRougelike.R1
             int index=keyboard.digit1Key.wasPressedThisFrame?0:keyboard.digit2Key.wasPressedThisFrame?1:keyboard.digit3Key.wasPressedThisFrame?2:-1;
             if(index>=0&&index<run.Progress.Offers.Count)
             {
-                selectedBonus=index;
+                SelectRewardBonus(index);
             }
             int basket=RewardShortcutIndex(keyboard.qKey.wasPressedThisFrame,keyboard.wKey.wasPressedThisFrame,keyboard.eKey.wasPressedThisFrame);
             if(basket>=0&&basket<rewardBaskets.Count)ChooseRewardBasket(basket);
-            if(keyboard.enterKey.wasPressedThisFrame&&RewardSelectionReady(selectedBonus,run.Progress.Offers.Count,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,lootSelection.Count))run.ConfirmRewards(lootSelection,new[]{selectedBonus});
+            if(keyboard.enterKey.wasPressedThisFrame&&RewardSelectionReady(selectedBonus,run.Progress.Offers.Count,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,lootSelection.Count))ConfirmSelectedRewards(run);
         }
 #endif
         private void DrawSalvage(R1RunController run)
@@ -108,7 +116,7 @@ namespace RoboRougelike.R1
                 bool chosen=selectedBonus==i;
                 GUI.backgroundColor=chosen?new Color(.35f,.85f,.65f):Color.white;
                 if(GUI.Button(new Rect(308,y+25,97,50),chosen?"Wybrano ✓":$"Wybierz [{i+1}]",compactButton))
-                    selectedBonus=i;
+                    SelectRewardBonus(i);
                 GUI.enabled=true;GUI.backgroundColor=Color.white;
             }
             if(offers.Length==0)
@@ -139,9 +147,9 @@ namespace RoboRougelike.R1
                 "Bonusy trafiają do magazynu i pozostają NIEAKTYWNE do montażu.",small);
             GUI.enabled=RewardSelectionReady(selectedBonus,offers.Length,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,lootSelection.Count);
             if(GUI.Button(new Rect(805,610,420,68),"Zatwierdź oba wybory [Enter]",button))
-                run.ConfirmRewards(lootSelection,selectedBonus>=0?new[]{selectedBonus}:System.Array.Empty<int>());
+                ConfirmSelectedRewards(run);
             GUI.enabled=true;
-            if(!room)GUI.Label(new Rect(45,685,1180,30),"Brak miejsca na wybrane nagrody. Otwórz magazyn i rozmontuj posiadane części, aby zwolnić miejsce.",small);
+            if(!room||!string.IsNullOrEmpty(rewardClaimFeedback))GUI.Label(new Rect(45,685,1180,30),!room?"Brak miejsca na wybrane nagrody. Otwórz magazyn i rozmontuj posiadane części, aby zwolnić miejsce.":rewardClaimFeedback,small);
         }
         private static Rect RewardInventoryDetailsRect(int index)=>new Rect(60,187+index*76,475,57);
         private static Rect RewardInventoryStatusRect(int index)=>new Rect(550,187+index*76,280,57);
