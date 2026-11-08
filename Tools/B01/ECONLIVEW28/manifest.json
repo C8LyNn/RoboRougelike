@@ -1,0 +1,49 @@
+{
+  "package_id": "B01-22-W28-LIVE-R3-ECON-UNITY-ACCEPTANCE",
+  "revision": "R1",
+  "codex_base_sha": "e03d36f2b86f8c73a067e574b67237a8921f622a",
+  "package_blobs": {
+    "Assets/Tests/Editor/B0122W28LiveGarageRecoveryRegression.cs": "0c40e3d19e85f6ce74d3a4376d0d72774fc29712",
+    "Assets/Tests/Editor/B0122W28LiveGarageRecoveryRegression.cs.meta": "8454ae70d6b696d75554b28a82e6fb72d315ad89",
+    "Tools/B01/ECONLIVEW28/README.md": "0c2e5cc74bc997a1b4c49a94e8451a8242bb4d93",
+    "Tools/B01/ECONLIVEW28/verify_package.py": "f0e880ae52e2cc7eac7bf96f351c5869a9cad0cc",
+    ".github/workflows/b01-22-w28-live-game-economy-source.yml": "872a14992ccdfd61f3a7bb85ed854456da77ada7"
+  },
+  "package_paths": [
+    ".github/workflows/b01-22-w28-live-game-economy-source.yml",
+    "Assets/Tests/Editor/B0122W28LiveGarageRecoveryRegression.cs",
+    "Assets/Tests/Editor/B0122W28LiveGarageRecoveryRegression.cs.meta",
+    "Tools/B01/ECONLIVEW28/README.md",
+    "Tools/B01/ECONLIVEW28/manifest.json",
+    "Tools/B01/ECONLIVEW28/verify_package.py"
+  ],
+  "original_game_blobs": {
+    "Assets/R1/R1RunController.cs": "09a6776db67662e8960d1f446ba5c5168cd3e4b2",
+    "Assets/R3/R3VehicleModel.cs": "1d0f378dc598e08b3d7c16975f419d84231511bb",
+    "Assets/R3/R3VehicleCatalog.cs": "f76de5bbdcc1dbdb7ddb9fe9859c36c232fd8584",
+    "Assets/R1/R1RunCheckpoint.cs": "6eb8682c14329088d5698fc369009fb86b99b426"
+  },
+  "acceptance": {
+    "authored_native_unity_editmode_tests": 4,
+    "user_game_runtime": "#824 Codex branch exact SHA",
+    "asserts": "actual R3 readiness with dead drive vs optional armor, no money, nonmutating failure, legacy instant paid repair witness",
+    "original_v7_source": "#780 not integrated into current game",
+    "actual_797_save": "NOT_INSTALLED",
+    "actual_loaner": "NOT_INSTALLED",
+    "product_softlock": "P0_SOURCE_REPRO_ONLY; REAL_GAME_SCENARIO_NOT_REPRODUCIBLE_UNTIL_V7_AND_LOANER_WIRED"
+  },
+  "unity_native": "NOT_RUN",
+  "source_g0": "INDEPENDENT_PENDING",
+  "no_gameplay_integration": true,
+  "no_code_merge": true,
+  "receivers": [
+    "B01-00 owner decision",
+    "Codex W28 game integrator after independent G0",
+    "B01-20/23 physical & loaner",
+    "B01-62 Save API fix",
+    "B01-10 pricing",
+    "B01-40/41/61 G0",
+    "B01-60 Unity G1"
+  ],
+  "rollback": "Drop only this unmerged test-only Draft. No game run or save mutation."
+}
