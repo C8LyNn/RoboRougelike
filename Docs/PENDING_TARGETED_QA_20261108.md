@@ -7,7 +7,7 @@ Kod odniesienia dla początkowej kolejki: `b616c8722749031424445d90ea6b124086458
 Użyj Unity 6000.3.14f1 i zachowaj XML, Editor.log oraz kody zakończenia. Nie uruchamiaj dodatkowej pełnej regresji bez konkretnego powodu. Wybrane testy EditMode wykorzystują `[UnityTest]` z wejściem w Play Mode; nie stanowią pełnego zestawu PlayMode.
 
 - `MapStorageIntegrityTests`: `RealEditorRequiresExplicitSecondSaveForOverwrite`, `LoadingAStoredMapRequiresConfirmationForUnsavedChanges`, `ReturningToMenuFromMapGarageWarnsAboutUnsavedDraft`, `QuitAndReturnRequireSeparateConfirmationForUnsavedMap`.
-- `UI943PortraitCatalogActionsTests`: `CategorySwitchCannotBuyOrMountPreviousPartAndCatalogKeepsCategoryInSync`.
+- `UI943PortraitCatalogActionsTests`: `CategorySwitchCannotBuyOrMountPreviousPartAndCatalogKeepsCategoryInSync`, `DestroyedItemKeepsCatalogOpenUntilRepaired`.
 - `UI943PortraitRewardsActionsTests`: `CollectedFinalPickupDoesNotConsumeRewardConfirmationKey`, `EscapeClosesRewardInventoryBeforePausingAndCancelsConfirmation`.
 - `UI943WeaponStatusTests`: `ManualReloadHintRespectsDeviceAvailability`, `DefenseRowsUseActualMountedDevicesInOrderAcrossPages`.
 - `RRLW34RewardTests`: `ScrapPreviewAndLedgerReportOnlyAmountActuallyCredited`, `DismantlePreviewMatchesWalletChangeAtTheLimit`.
