@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="4" result="Passed" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-08 16:57:20Z" end-time="2026-11-08 16:57:21Z" duration="0,0806031">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1853" result="Passed" start-time="2026-11-08 16:57:20Z" end-time="2026-11-08 16:57:21Z" duration="0.080603" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="2310" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-PlayQA-97f8/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="1060" result="Passed" start-time="2026-11-08 16:57:21Z" end-time="2026-11-08 16:57:21Z" duration="0.044978" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="103184" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="2200" name="UI943WeaponStatusTests" fullname="UI943WeaponStatusTests" classname="UI943WeaponStatusTests" runstate="Runnable" testcasecount="17" result="Passed" start-time="2026-11-08 16:57:21Z" end-time="2026-11-08 16:57:21Z" duration="0.025562" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="ParameterizedMethod" id="2205" name="RocketStatusReflectsAutomaticReload" fullname="UI943WeaponStatusTests.RocketStatusReflectsAutomaticReload" classname="UI943WeaponStatusTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-08 16:57:21Z" end-time="2026-11-08 16:57:21Z" duration="0.021536" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="2201" name="RocketStatusReflectsAutomaticReload(10,0.0f,0.0f,10.0f,&quot;10/10 • gotowa&quot;)" fullname="UI943WeaponStatusTests.RocketStatusReflectsAutomaticReload(10,0.0f,0.0f,10.0f,&quot;10/10 • gotowa&quot;)" methodname="RocketStatusReflectsAutomaticReload" classname="UI943WeaponStatusTests" runstate="Runnable" seed="1190363315" result="Passed" start-time="2026-11-08 16:57:21Z" end-time="2026-11-08 16:57:21Z" duration="0.010915" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="2202" name="RocketStatusReflectsAutomaticReload(2,0.0f,10.5f,10.0f,&quot;2/10 • 0,5 s&quot;)" fullname="UI943WeaponStatusTests.RocketStatusReflectsAutomaticReload(2,0.0f,10.5f,10.0f,&quot;2/10 • 0,5 s&quot;)" methodname="RocketStatusReflectsAutomaticReload" classname="UI943WeaponStatusTests" runstate="Runnable" seed="733770685" result="Passed" start-time="2026-11-08 16:57:21Z" end-time="2026-11-08 16:57:21Z" duration="0.001638" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="2203" name="RocketStatusReflectsAutomaticReload(0,0.0f,0.0f,10.0f,&quot;0/10 • ładowanie&quot;)" fullname="UI943WeaponStatusTests.RocketStatusReflectsAutomaticReload(0,0.0f,0.0f,10.0f,&quot;0/10 • ładowanie&quot;)" methodname="RocketStatusReflectsAutomaticReload" classname="UI943WeaponStatusTests" runstate="Runnable" seed="1431842028" result="Passed" start-time="2026-11-08 16:57:21Z" end-time="2026-11-08 16:57:21Z" duration="0.000074" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+          </test-case>
+          <test-case id="2204" name="RocketStatusReflectsAutomaticReload(0,11.0f,0.0f,10.0f,&quot;0/10 • ładowanie&quot;)" fullname="UI943WeaponStatusTests.RocketStatusReflectsAutomaticReload(0,11.0f,0.0f,10.0f,&quot;0/10 • ładowanie&quot;)" methodname="RocketStatusReflectsAutomaticReload" classname="UI943WeaponStatusTests" runstate="Runnable" seed="974550341" result="Passed" start-time="2026-11-08 16:57:21Z" end-time="2026-11-08 16:57:21Z" duration="0.000039" asserts="0">
+            <properties>
+              <property name="retryIteration" value="0" />
+              <property name="repeatIteration" value="0" />
+            </properties>
+            <output><![CDATA[Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+          </test-case>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
