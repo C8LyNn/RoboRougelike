@@ -136,9 +136,9 @@ public sealed class R4WheelVariantsTests
             var body=vehicle.GetComponent<Rigidbody>();float start=body.position.z;int grounded=0;
             float fixedStart=Time.fixedTime;float deadline=Time.realtimeSinceStartup+10;
             var trace=new System.Text.StringBuilder();
-            int i=0;
+            int sample=0;
             while(Time.fixedTime-fixedStart<1.6f&&Time.realtimeSinceStartup<deadline){drive.Step(1,0,7,4,90);grounded=Mathf.Max(grounded,drive.GroundedWheels);
-                if(i++%20==0)trace.Append($"[{i}: t={Time.fixedTime:F2} p={body.position} v={body.linearVelocity} ground={drive.GroundedWheels} force={drive.AvailableForce:0}] ");
+                if(sample++%20==0)trace.Append($"[{sample}: t={Time.fixedTime:F2} p={body.position} v={body.linearVelocity} ground={drive.GroundedWheels} force={drive.AvailableForce:0}] ");
                 yield return new WaitForFixedUpdate();}
             Debug.Log("Large wheel R6 trace "+trace+"final="+body.position);
             Assert.That(Time.fixedTime-fixedStart,Is.GreaterThanOrEqualTo(1.6f),"The physics clock must really advance.");
