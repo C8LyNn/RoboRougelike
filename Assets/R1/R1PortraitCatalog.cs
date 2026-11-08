@@ -23,47 +23,16 @@ namespace RoboRougelike.R1
             GUI.Label(new Rect(24,20,520,40),"KATALOG CZĘŚCI • MAGAZYN",heading);
             GUI.Label(new Rect(24,80,720,26),$"Złom: {run.VehicleModel.Scrap} • wybierz grupę i egzemplarz według HP",body);
             if(GUI.Button(PortraitCatalogBackRect(),"Wróć do garażu",compactButton)){DismissCatalog();return;}
-            GUI.Label(new Rect(24,110,346,25),"Grupy części",body);
+            DrawCatalogSearch(run,new Rect(24,110,70,25),new Rect(94,108,222,28),new Rect(322,108,48,28));
             GUI.Label(new Rect(390,110,354,55),"Egzemplarze w magazynie",body);
 
             var model=run.VehicleModel;
-            var bonuses=model.Inventory.Where(p=>p.Kind==R3PartKind.BonusModule).Select(p=>p.UpgradeId).Distinct().ToArray();
-            int count=shopKinds.Length+16+R4WeaponDefinition.Count+bonuses.Length;
+            var entries=BuildCatalogEntries(model).Where(entry=>CatalogNameMatches(entry.Name,catalogSearch)).ToArray();
             var groups=PortraitCatalogGroupsViewport();
-            catalogScroll=GUI.BeginScrollView(groups,catalogScroll,new Rect(0,0,320,Mathf.Max(groups.height,count*56)));
-            int row=0;
-            for(int i=0;i<shopKinds.Length;i++)
-            {
-                var kind=shopKinds[i];if(kind==R3PartKind.Gun)continue;
-                DrawPortraitCatalogGroup(run,kind,R4WeaponKind.Basic,null,kind==R3PartKind.Wheel?"Koło terenowe":shopNames[i],row++);
-                if(kind==R3PartKind.Armor)DrawPortraitCatalogGroup(run,kind,R4WeaponKind.Basic,WedgeArmorGroup,"Pancerz • klin",row++);
-                if(kind==R3PartKind.Armor)DrawPortraitCatalogGroup(run,kind,R4WeaponKind.Basic,HalfArmorGroup,"Pancerz • półblok",row++);
-                if(kind==R3PartKind.Armor)DrawPortraitCatalogGroup(run,kind,R4WeaponKind.Basic,PyramidArmorGroup,"Pancerz • piramida",row++);
-                if(kind==R3PartKind.Armor)DrawPortraitCatalogGroup(run,kind,R4WeaponKind.Basic,RoundArmorGroup,"Pancerz • zaokrąglenie",row++);
-                if(kind==R3PartKind.Armor)DrawPortraitCatalogGroup(run,kind,R4WeaponKind.Basic,HalfWedgeArmorGroup,"Pancerz • półklin",row++);
-                if(kind==R3PartKind.Armor)DrawPortraitCatalogGroup(run,kind,R4WeaponKind.Basic,DomeArmorGroup,"Pancerz • kopuła",row++);
-                if(kind==R3PartKind.Wheel)DrawPortraitCatalogGroup(run,kind,R4WeaponKind.Basic,SlickWheelGroup,"Koło szosowe",row++);
-                if(kind==R3PartKind.Wheel)DrawPortraitCatalogGroup(run,kind,R4WeaponKind.Basic,LargeWheelGroup,"Duże koło terenowe",row++);
-                if(kind==R3PartKind.Wheel)DrawPortraitCatalogGroup(run,kind,R4WeaponKind.Basic,MonsterWheelGroup,"Koło monster XL",row++);
-                if(kind==R3PartKind.Wheel)DrawPortraitCatalogGroup(run,kind,R4WeaponKind.Basic,SmallWheelGroup,"Małe koło drogowe",row++);
-                if(kind==R3PartKind.Wheel)DrawPortraitCatalogGroup(run,kind,R4WeaponKind.Basic,BalloonWheelGroup,"Koło balonowe",row++);
-                if(kind==R3PartKind.Wheel)DrawPortraitCatalogGroup(run,kind,R4WeaponKind.Basic,SpikedWheelGroup,"Koło z kolcami",row++);
-                if(kind==R3PartKind.Wheel)DrawPortraitCatalogGroup(run,kind,R4WeaponKind.Basic,TwinWheelGroup,"Koło bliźniacze",row++);
-                if(kind==R3PartKind.Wheel)DrawPortraitCatalogGroup(run,kind,R4WeaponKind.Basic,SteerWheelGroup,"Koło skrętne drogowe",row++);
-                if(kind==R3PartKind.Wheel)DrawPortraitCatalogGroup(run,kind,R4WeaponKind.Basic,LargeSteerWheelGroup,"Duże koło skrętne",row++);
-                if(kind==R3PartKind.Wheel)DrawPortraitCatalogGroup(run,kind,R4WeaponKind.Basic,CasterWheelGroup,"Kółko samonastawne",row++);
-                if(kind==R3PartKind.Wheel)DrawPortraitCatalogGroup(run,kind,R4WeaponKind.Basic,SwingWheelGroup,"Koło na wahaczu",row++);
-            }
-            for(int i=0;i<R4WeaponDefinition.Count;i++)
-            {
-                var weapon=(R4WeaponKind)i;
-                DrawPortraitCatalogGroup(run,R3PartKind.Gun,weapon,null,R4WeaponDefinition.Get(weapon).Name,row++);
-            }
-            foreach(var bonus in bonuses)
-            {
-                var item=model.Inventory.First(p=>p.Kind==R3PartKind.BonusModule&&p.UpgradeId==bonus);
-                DrawPortraitCatalogGroup(run,R3PartKind.BonusModule,R4WeaponKind.Basic,bonus,CatalogBonusGroupName(item),row++);
-            }
+            catalogScroll=GUI.BeginScrollView(groups,catalogScroll,new Rect(0,0,320,Mathf.Max(groups.height,entries.Length*56)));
+            for(int row=0;row<entries.Length;row++)
+            {var entry=entries[row];DrawPortraitCatalogGroup(run,entry.Kind,entry.Weapon,entry.Group,entry.Name,row);}
+            if(entries.Length==0)GUI.Label(new Rect(0,5,310,60),"Brak części pasujących do wyszukiwania.",small);
             GUI.EndScrollView();GUI.backgroundColor=Color.white;
 
             if(!catalogGroup.HasValue)
