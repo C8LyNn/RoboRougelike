@@ -74,6 +74,11 @@ namespace RoboRougelike.R1
         private static Color BasketColor(R4SalvageBasket basket)=>basket.Percent>=66?new Color(.48f,.9f,.55f):
             basket.Percent>=33?new Color(.45f,.82f,.95f):Color.white;
         private static int RewardShortcutIndex(bool first,bool second,bool third)=>first?0:second?1:third?2:-1;
+        private static string RewardConfirmCaption(int basketCount)=>basketCount==0?
+            "Odbierz bonus [Enter]":"Zatwierdź oba wybory [Enter]";
+        private static string RewardIntro(int basketCount,int scrap)=>basketCount==0?
+            $"Wybierz moduł bonusowy. Brak części do odzyskania. +{scrap} Z za walkę.":
+            $"Wybierz moduł i jeden zestaw z wraków. +{scrap} Z za walkę.";
         private static bool RewardSelectionReady(int bonus,int bonusCount,int basket,int basketCount,int inventoryCount,int lootCount)
             =>bonus>=0&&bonus<bonusCount&&(basketCount==0||(basket>=0&&basket<basketCount))&&
               inventoryCount+lootCount+1<=R3VehicleModel.InventoryCapacity;
@@ -101,7 +106,7 @@ namespace RoboRougelike.R1
             if(rewardInventoryOpen){DrawRewardInventory(run);return;}
             GUI.Label(new Rect(45,30,1190,60),run.LastActivityWasReactor?"ZWYCIĘSTWO • REAKTOR OBRONIONY":"ZWYCIĘSTWO • WYBÓR NAGRÓD",title);
             GUI.Label(new Rect(45,97,1190,50),
-                $"Wybierz moduł i jeden zestaw z wraków. +{run.LastScrapReward} Z za walkę."+
+                RewardIntro(rewardBaskets.Count,run.LastScrapReward)+
                 (string.IsNullOrEmpty(run.TechnologyMessage)?"":"\n"+run.TechnologyMessage),body);
             GUI.Label(new Rect(45,155,355,32),"BONUS • [1 / 2 / 3]",heading);
             GUI.Label(new Rect(455,155,765,32),"ZESTAW • [Q / W / E]",heading);
@@ -146,7 +151,7 @@ namespace RoboRougelike.R1
                 $"Niewybrane części → +{run.VehicleModel.PreviewAward(ledger.PreviewScrap(run.VehicleModel,lootSelection))} Z.\n" +
                 "Bonusy trafiają do magazynu i pozostają NIEAKTYWNE do montażu.",small);
             GUI.enabled=RewardSelectionReady(selectedBonus,offers.Length,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,lootSelection.Count);
-            if(GUI.Button(new Rect(805,610,420,68),"Zatwierdź oba wybory [Enter]",button))
+            if(GUI.Button(new Rect(805,610,420,68),RewardConfirmCaption(rewardBaskets.Count),button))
                 ConfirmSelectedRewards(run);
             GUI.enabled=true;
             if(!room||!string.IsNullOrEmpty(rewardClaimFeedback))GUI.Label(new Rect(45,685,1180,30),!room?"Brak miejsca na wybrane nagrody. Otwórz magazyn i rozmontuj posiadane części, aby zwolnić miejsce.":rewardClaimFeedback,small);

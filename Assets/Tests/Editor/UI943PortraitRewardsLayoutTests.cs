@@ -9,6 +9,16 @@ public sealed class UI943PortraitRewardsLayoutTests
     static MethodInfo Method(string name)
     {var m=typeof(R1RunHUD).GetMethod(name,BindingFlags.Static|BindingFlags.NonPublic);Assert.That(m,Is.Not.Null,name);return m;}
     static Rect RectOf(string name,params object[] args)=>(Rect)Method(name).Invoke(null,args);
+    [Test] public void NoLootRequiresOnlyTheBonusAndExplainsIt()
+    {
+        var caption=(string)Method("RewardConfirmCaption").Invoke(null,new object[]{0});
+        var intro=(string)Method("RewardIntro").Invoke(null,new object[]{0,25});
+        Assert.That(caption,Does.Contain("bonus").And.Not.Contain("oba"));
+        Assert.That(intro,Does.Contain("Brak części").And.Contain("25 Z"));
+        Assert.That((bool)Method("RewardSelectionReady").Invoke(null,new object[]{0,3,-1,0,0,0}),Is.True);
+        Assert.That((bool)Method("RewardSelectionReady").Invoke(null,new object[]{0,3,-1,1,0,0}),Is.False);
+        Assert.That((string)Method("RewardConfirmCaption").Invoke(null,new object[]{1}),Does.Contain("oba"));
+    }
     static void In(Rect outer,Rect inner,string name)
     {Assert.That(outer.Contains(inner.min)&&outer.Contains(inner.max-Vector2.one),Is.True,name);}
     [TestCase(768,1024,true)] [TestCase(1024,768,false)] [TestCase(1920,1080,false)]

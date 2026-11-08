@@ -70,7 +70,7 @@ namespace RoboRougelike.R1
                 $"Niewybrane części → +{run.VehicleModel.PreviewAward(ledger.PreviewScrap(run.VehicleModel,lootSelection))} Z. Bonus jest nieaktywny do montażu.\n"+
                 (!room?"Brak miejsca na nagrody. Otwórz magazyn i rozmontuj część.":rewardClaimFeedback??""),small);
             GUI.enabled=RewardSelectionReady(selectedBonus,offers.Length,selectedBasket,rewardBaskets.Count,run.VehicleModel.Inventory.Count,lootSelection.Count);
-            if(GUI.Button(PortraitRewardConfirm(),"Zatwierdź oba wybory [Enter]",button))PortraitRewardConfirm(run);
+            if(GUI.Button(PortraitRewardConfirm(),RewardConfirmCaption(rewardBaskets.Count),button))PortraitRewardConfirm(run);
             GUI.enabled=true;
         }
 
