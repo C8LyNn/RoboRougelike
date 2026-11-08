@@ -425,6 +425,29 @@ public sealed class R4WheelVariantsTests
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Standard,model.Economy,Time.time,out var restored,out var error),Is.True,error);
         Assert.That(restored.Parts.Single(p=>p.Id==item.Id).WheelStyle,Is.EqualTo(R3WheelStyle.CasterSlick));
     }
+    [UnityTest]public IEnumerator SwingArmMovesWithGroundAndKeepsColliderAligned()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
+        var model=run.VehicleModel;model.Award(1000);var style=(R3WheelStyle)11;
+        Assert.That(run.GaragePurchase(R3PartKind.Wheel,default,style),Is.True);
+        Assert.That(model.Inventory.Last().ContactMask,Is.EqualTo(R3MountingGrid.FaceBit(Vector3Int.up)));
+        var owner=new GameObject("swing QA");owner.transform.position=new Vector3(1000,10,1000);
+        var body=owner.AddComponent<Rigidbody>();body.isKinematic=true;
+        var block=GameObject.CreatePrimitive(PrimitiveType.Cube);block.transform.SetParent(owner.transform,false);block.transform.localScale=Vector3.one*R41PartGeometry.BlockSize;
+        var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));R41PartGeometry.ConfigureWheelMount(block,style);
+        var wheel=R41PartGeometry.Payload(block.transform,R3PartKind.Wheel,default,material,true,out _,style);
+        var art=R4WheelArt.TryAttach(block.transform,wheel,false,style);Assert.That(art,Is.Not.Null);
+        var arm=block.GetComponentsInChildren<Transform>(true).Single(t=>t.name=="R4M_WheelM_SwingArm_Offroad_Arm");
+        var rotor=block.GetComponentsInChildren<Transform>(true).Single(t=>t.name=="R4M_WheelM_SwingArm_Offroad_Rotor");
+        var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.localScale=new Vector3(2,.1f,2);
+        floor.transform.position=new Vector3(wheel.position.x,wheel.position.y-.33f-.05f+.045f,wheel.position.z);Physics.SyncTransforms();
+        var before=arm.rotation;Time.timeScale=1;float start=Time.fixedTime,deadline=Time.realtimeSinceStartup+10;
+        while(Time.fixedTime-start<.35f&&Time.realtimeSinceStartup<deadline)yield return new WaitForFixedUpdate();
+        Assert.That(Time.fixedTime-start,Is.GreaterThanOrEqualTo(.35f));
+        Assert.That(Quaternion.Angle(arm.rotation,before),Is.GreaterThan(1f),"Raised terrain must compress the arm.");
+        Assert.That(Vector3.Distance(wheel.position,rotor.position),Is.LessThan(.01f),"The physical tire must track the arm axle.");
+        Object.Destroy(owner);Object.Destroy(floor);Object.Destroy(material);
+    }
     [UnityTest]public IEnumerator LargeWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.LargeOffroad);}
     [UnityTest]public IEnumerator MonsterWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.Monster);}
     [UnityTest]public IEnumerator SmallForkWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.SmallFork);}
