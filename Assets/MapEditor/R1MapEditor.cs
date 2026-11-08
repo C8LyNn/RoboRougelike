@@ -58,13 +58,13 @@ namespace RoboRougelike.R1
         public bool ReturnToMapEditorFromGarage()
         {
             if(!MapEditorSession||Progress?.State!=R1RunState.Garage||Transitioning)return false;
-            Garage.Close();SetSimulation(false);if(Player!=null)Player.gameObject.SetActive(false);
+            pendingMapExitSnapshot=null;Garage.Close();SetSimulation(false);if(Player!=null)Player.gameObject.SetActive(false);
             if(editorGround!=null)editorGround.SetActive(false);followCamera.enabled=false;
             MapEditing=true;MapEditorTesting=false;editorGrid.SetActive(true);EditorWorld.Build(EditorDraft,palette);UpdateEditorCamera();return true;
         }
         public void MapEditorGarage()
         {
-            if(!MapEditing||Transitioning)return;MapEditing=false;editorGrid.SetActive(false);EditorWorld.HideGhost();
+            if(!MapEditing||Transitioning)return;pendingMapExitSnapshot=null;MapEditing=false;editorGrid.SetActive(false);EditorWorld.HideGhost();
             if(EditorWorld.Layout!=null)EditorWorld.Layout.gameObject.SetActive(false);
             if(editorGround!=null)editorGround.SetActive(true);Player.gameObject.SetActive(true);followCamera.enabled=true;Garage.Open();
         }
@@ -74,7 +74,7 @@ namespace RoboRougelike.R1
             string error=EditorDraft.TestError()??VehicleModel.DeployError;
             if(error!=null){EditorMessage=error;return false;}
             workshopModel=VehicleModel;testStats=Progress.Stats.Copy();workshopPosition=Player.transform.position;workshopRotation=Player.transform.rotation;
-            if(!Progress.BeginTest())return false;
+            if(!Progress.BeginTest())return false;pendingMapExitSnapshot=null;
             MapEditing=false;MapEditorTesting=true;editorGrid.SetActive(false);EditorWorld.HideGhost();StartCoroutine(BuildEditedMapTest());return true;
         }
         IEnumerator BuildEditedMapTest()
@@ -89,7 +89,7 @@ namespace RoboRougelike.R1
         }
         public bool ReturnFromEditedMapTest()
         {
-            if(!MapEditorTesting||Transitioning||workshopModel==null)return false;
+            if(!MapEditorTesting||Transitioning||workshopModel==null)return false;pendingMapExitSnapshot=null;
             StartCoroutine(RestoreEditedMap());return true;
         }
         IEnumerator RestoreEditedMap()
