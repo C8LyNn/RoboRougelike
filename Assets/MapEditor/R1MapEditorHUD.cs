@@ -30,7 +30,7 @@ namespace RoboRougelike.R1
             if(run.EditorName!=previousName)run.CancelMapOverwrite();
             run.EditorTextFocused=GUI.GetNameOfFocusedControl()=="map-name";
             if(GUI.Button(new Rect(25,510,130,35),run.MapOverwritePending?"Potwierdź zapis":"Zapisz",compactButton)){run.SaveEditedMap();GUI.FocusControl(null);}
-            if(GUI.Button(new Rect(165,510,130,35),"Wczytaj",compactButton)){run.LoadEditedMap();GUI.FocusControl(null);}
+            if(GUI.Button(new Rect(165,510,130,35),run.MapLoadPending?"Potwierdź":"Wczytaj",compactButton)){run.LoadEditedMap();GUI.FocusControl(null);}
             if(GUI.Button(new Rect(25,550,270,40),"Testuj mapę",button)){GUI.FocusControl(null);run.TestEditedMap();}
             if(GUI.Button(new Rect(25,595,270,35),"Dostosuj pojazd w garażu",compactButton))run.MapEditorGarage();
             if(GUI.Button(new Rect(25,635,270,28),"Powrót do menu",compactButton))run.RestartRun();

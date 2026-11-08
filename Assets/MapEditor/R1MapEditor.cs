@@ -25,8 +25,11 @@ namespace RoboRougelike.R1
         public int EditorScaleX=1,EditorScaleY=1,EditorScaleZ=1;
         public string EditorName="Moja mapa",EditorMessage="Wybierz element i kliknij siatkę.";
         string pendingMapOverwrite;
+        string savedMapSnapshot,pendingMapLoadPath,pendingMapLoadSnapshot;
+        public bool MapLoadPending=>pendingMapLoadPath!=null;
+        void CancelMapLoad(){pendingMapLoadPath=null;pendingMapLoadSnapshot=null;}
         public bool MapOverwritePending => pendingMapOverwrite!=null;
-        public void CancelMapOverwrite(){pendingMapOverwrite=null;}
+        public void CancelMapOverwrite(){pendingMapOverwrite=null;CancelMapLoad();}
         public bool EditorTextFocused;
         GameObject editorGrid,editorGround;
         Vector3 editorCenter;
@@ -36,7 +39,7 @@ namespace RoboRougelike.R1
         public bool OpenMapEditor()
         {
             if(Progress?.State!=R1RunState.Ready||!OpenSandboxGarage())return false;
-            pendingMapOverwrite=null;MapEditorSession=true;EditorDraft=new MapDraft();EditorWorld=gameObject.AddComponent<MapWorld>();
+            pendingMapOverwrite=null;CancelMapLoad();MapEditorSession=true;EditorDraft=new MapDraft();savedMapSnapshot=EditorDraft.ToJson();EditorWorld=gameObject.AddComponent<MapWorld>();
             editorGround=GameObject.Find("P12_Ground");MakeEditorGrid();return ReturnToMapEditorFromGarage();
         }
         void MakeEditorGrid()
@@ -100,6 +103,7 @@ namespace RoboRougelike.R1
         }
         public void SaveEditedMap()
         {
+            CancelMapLoad();
             try
             {
                 if(!MapStorage.TryPath(MapStorage.DirectoryPath,EditorName,out var path))
@@ -107,21 +111,29 @@ namespace RoboRougelike.R1
                 bool overwrite=System.IO.File.Exists(path);
                 if(overwrite&&pendingMapOverwrite!=path)
                 {pendingMapOverwrite=path;EditorMessage="Mapa istnieje. Kliknij ponownie Zapisz, aby ją nadpisać.";return;}
-                pendingMapOverwrite=null;MapStorage.Save(path,EditorDraft,overwrite);EditorMessage="Zapisano: "+EditorName;
+                pendingMapOverwrite=null;MapStorage.Save(path,EditorDraft,overwrite);savedMapSnapshot=EditorDraft.ToJson();EditorMessage="Zapisano: "+EditorName;
             }
             catch(Exception e){pendingMapOverwrite=null;EditorMessage="Nie udało się zapisać: "+e.Message;}
         }
         public void LoadEditedMap()
         {
             pendingMapOverwrite=null;
-            if(!MapStorage.TryPath(MapStorage.DirectoryPath,EditorName,out var path)){EditorMessage="Niepoprawna nazwa mapy.";return;}
-            if(MapStorage.Load(path,EditorDraft,out var error)){EditorSelected=null;EditorWorld.Build(EditorDraft,palette);EditorMessage="Wczytano: "+EditorName;}
+            if(!MapStorage.TryPath(MapStorage.DirectoryPath,EditorName,out var path)){CancelMapLoad();EditorMessage="Niepoprawna nazwa mapy.";return;}
+            string current=EditorDraft.ToJson();
+            if(System.IO.File.Exists(path)&&current!=savedMapSnapshot&&
+                (pendingMapLoadPath!=path||pendingMapLoadSnapshot!=current))
+            {
+                pendingMapLoadPath=path;pendingMapLoadSnapshot=current;
+                EditorMessage="Niezapisane zmiany zostaną utracone. Kliknij ponownie Wczytaj, aby potwierdzić.";return;
+            }
+            CancelMapLoad();
+            if(MapStorage.Load(path,EditorDraft,out var error)){savedMapSnapshot=EditorDraft.ToJson();EditorSelected=null;EditorWorld.Build(EditorDraft,palette);EditorMessage="Wczytano: "+EditorName;}
             else EditorMessage=error;
         }
         public void ChangeEditedMap(bool undo)
-        {if((undo?EditorDraft.Undo():EditorDraft.Redo())){EditorSelected=null;EditorWorld.Build(EditorDraft,palette);EditorMessage=undo?"Cofnięto zmianę.":"Ponowiono zmianę.";}}
+        {if((undo?EditorDraft.Undo():EditorDraft.Redo())){CancelMapLoad();EditorSelected=null;EditorWorld.Build(EditorDraft,palette);EditorMessage=undo?"Cofnięto zmianę.":"Ponowiono zmianę.";}}
         public void ToggleMapFloor()
-        {if(EditorDraft.SetGlobalFloor(!EditorDraft.GlobalFloor)){EditorSelected=null;EditorWorld.Build(EditorDraft,palette);EditorMessage=EditorDraft.GlobalFloor?"Włączono podłoże całej mapy.":"Wyłączono podłoże całej mapy.";}}
+        {if(EditorDraft.SetGlobalFloor(!EditorDraft.GlobalFloor)){CancelMapLoad();EditorSelected=null;EditorWorld.Build(EditorDraft,palette);EditorMessage=EditorDraft.GlobalFloor?"Włączono podłoże całej mapy.":"Wyłączono podłoże całej mapy.";}}
         public void SetMapTool(bool select,bool remove)
         {EditorSelect=select;EditorRemove=remove;EditorSelected=null;EditorWorld.HideGhost();}
         public void SelectMapAt(int x,int z)
@@ -149,7 +161,7 @@ namespace RoboRougelike.R1
             {
                 if(EditorSelected==null||!EditorDraft.Items.Contains(EditorSelected)){EditorSelected=null;EditorMessage="Najpierw zaznacz element.";return;}
                 if(!EditorDraft.Resize(EditorSelected,EditorRotation,x,y,z)){EditorMessage="Nie można zmienić skali: pole zajęte lub granica mapy.";return;}
-                EditorWorld.Build(EditorDraft,palette);RefreshMapSelection();EditorMessage="Zmieniono skalę zaznaczonego elementu.";
+                CancelMapLoad();EditorWorld.Build(EditorDraft,palette);RefreshMapSelection();EditorMessage="Zmieniono skalę zaznaczonego elementu.";
             }
             EditorScaleX=x;EditorScaleY=y;EditorScaleZ=z;
         }
@@ -160,7 +172,7 @@ namespace RoboRougelike.R1
             {
                 if(EditorSelected==null||!EditorDraft.Items.Contains(EditorSelected)){EditorSelected=null;EditorMessage="Najpierw zaznacz element.";return;}
                 if(!EditorDraft.Resize(EditorSelected,rotation,EditorScaleX,EditorScaleY,EditorScaleZ)){EditorMessage="Nie można obrócić: pole zajęte lub granica mapy.";return;}
-                EditorWorld.Build(EditorDraft,palette);RefreshMapSelection();EditorMessage="Obrócono zaznaczony element.";
+                CancelMapLoad();EditorWorld.Build(EditorDraft,palette);RefreshMapSelection();EditorMessage="Obrócono zaznaczony element.";
             }
             EditorRotation=rotation;
         }
@@ -229,7 +241,7 @@ namespace RoboRougelike.R1
                     else
                     {
                         bool changed=EditorRemove?EditorDraft.Remove(cell.x,cell.y):EditorDraft.Place(EditorKind,cell.x,cell.y,EditorRotation,EditorScaleX,EditorScaleY,EditorScaleZ);
-                        if(changed){EditorSelected=null;EditorWorld.Build(EditorDraft,palette);EditorMessage=EditorRemove?"Usunięto element.":"Umieszczono element.";}
+                        if(changed){CancelMapLoad();EditorSelected=null;EditorWorld.Build(EditorDraft,palette);EditorMessage=EditorRemove?"Usunięto element.":"Umieszczono element.";}
                         else EditorMessage="Nie można zmienić tego pola.";
                     }
                 }
