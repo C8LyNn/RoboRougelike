@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="5" result="Passed" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-08 16:36:24Z" end-time="2026-11-08 16:36:24Z" duration="0,1236252">
+  <test-suite type="TestSuite" id="1691" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="478" result="Passed" start-time="2026-11-08 16:36:24Z" end-time="2026-11-08 16:36:24Z" duration="0.123625" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1453" name="RoboRougelike.MOV009ActiveSuspension.PlayModeTests.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-PlayQA-97f8/Library/ScriptAssemblies/RoboRougelike.MOV009ActiveSuspension.PlayModeTests.dll" runstate="Runnable" testcasecount="14" result="Passed" start-time="2026-11-08 16:36:24Z" end-time="2026-11-08 16:36:24Z" duration="0.073767" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="91172" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1454" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="14" result="Passed" start-time="2026-11-08 16:36:24Z" end-time="2026-11-08 16:36:24Z" duration="0.073145" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1455" name="Mechanics" fullname="RoboRougelike.Mechanics" runstate="Runnable" testcasecount="14" result="Passed" start-time="2026-11-08 16:36:24Z" end-time="2026-11-08 16:36:24Z" duration="0.072809" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1456" name="MOV009" fullname="RoboRougelike.Mechanics.MOV009" runstate="Runnable" testcasecount="14" result="Passed" start-time="2026-11-08 16:36:24Z" end-time="2026-11-08 16:36:24Z" duration="0.072487" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1457" name="Tests" fullname="RoboRougelike.Mechanics.MOV009.Tests" runstate="Runnable" testcasecount="14" result="Passed" start-time="2026-11-08 16:36:24Z" end-time="2026-11-08 16:36:24Z" duration="0.072150" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1438" name="ActiveSuspensionPlayModeTests" fullname="RoboRougelike.Mechanics.MOV009.Tests.ActiveSuspensionPlayModeTests" classname="RoboRougelike.Mechanics.MOV009.Tests.ActiveSuspensionPlayModeTests" runstate="Runnable" testcasecount="14" result="Passed" start-time="2026-11-08 16:36:24Z" end-time="2026-11-08 16:36:24Z" duration="0.071141" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1440" name="AssistModeIsWeakerThanFullSupport" fullname="RoboRougelike.Mechanics.MOV009.Tests.ActiveSuspensionPlayModeTests.AssistModeIsWeakerThanFullSupport" methodname="AssistModeIsWeakerThanFullSupport" classname="RoboRougelike.Mechanics.MOV009.Tests.ActiveSuspensionPlayModeTests" runstate="Runnable" seed="1524827221" result="Passed" start-time="2026-11-08 16:36:24Z" end-time="2026-11-08 16:36:24Z" duration="0.032075" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1442" name="DisabledControllerGeneratesNoLift" fullname="RoboRougelike.Mechanics.MOV009.Tests.ActiveSuspensionPlayModeTests.DisabledControllerGeneratesNoLift" methodname="DisabledControllerGeneratesNoLift" classname="RoboRougelike.Mechanics.MOV009.Tests.ActiveSuspensionPlayModeTests" runstate="Runnable" seed="960931533" result="Passed" start-time="2026-11-08 16:36:24Z" end-time="2026-11-08 16:36:24Z" duration="0.008374" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1439" name="FullSupportAppliesRealForce" fullname="RoboRougelike.Mechanics.MOV009.Tests.ActiveSuspensionPlayModeTests.FullSupportAppliesRealForce" methodname="FullSupportAppliesRealForce" classname="RoboRougelike.Mechanics.MOV009.Tests.ActiveSuspensionPlayModeTests" runstate="Runnable" seed="1416631344" result="Passed" start-time="2026-11-08 16:36:24Z" end-time="2026-11-08 16:36:24Z" duration="0.017450" asserts="0">
+                  <properties>
+                    <property name="_JOINTYPE" value="UnityCombinatorial" />
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1557" name="RoboRougelike.WPN001Shotgun.PlayModeTests.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-PlayQA-97f8/Library/ScriptAssemblies/RoboRougelike.WPN001Shotgun.PlayModeTests.dll" runstate="Runnable" testcasecount="18" result="Passed" start-time="2026-11-08 16:36:24Z" end-time="2026-11-08 16:36:24Z" duration="0.019362" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="91172" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1558" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="18" result="Passed" start-time="2026-11-08 16:36:24Z" end-time="2026-11-08 16:36:24Z" duration="0.018305" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1559" name="WPN001Shotgun" fullname="RoboRougelike.WPN001Shotgun" runstate="Runnable" testcasecount="18" result="Passed" start-time="2026-11-08 16:36:24Z" end-time="2026-11-08 16:36:24Z" duration="0.017491" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1560" name="Tests" fullname="RoboRougelike.WPN001Shotgun.Tests" runstate="Runnable" testcasecount="18" result="Passed" start-time="2026-11-08 16:36:24Z" end-time="2026-11-08 16:36:24Z" duration="0.016693" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestSuite" id="1561" name="PlayMode" fullname="RoboRougelike.WPN001Shotgun.Tests.PlayMode" runstate="Runnable" testcasecount="18" result="Passed" start-time="2026-11-08 16:36:24Z" end-time="2026-11-08 16:36:24Z" duration="0.015784" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-suite type="TestFixture" id="1538" name="ShotgunModulePlayModeTests" fullname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests" classname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests" runstate="Runnable" testcasecount="18" result="Passed" start-time="2026-11-08 16:36:24Z" end-time="2026-11-08 16:36:24Z" duration="0.014950" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+                <properties />
+                <test-case id="1543" name="CooldownRejectsAnotherShot" fullname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.CooldownRejectsAnotherShot" methodname="CooldownRejectsAnotherShot" classname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests" runstate="Runnable" seed="1498362959" result="Passed" start-time="2026-11-08 16:36:24Z" end-time="2026-11-08 16:36:24Z" duration="0.007201" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                </test-case>
+                <test-case id="1539" name="FiringEmitsEightPellets" fullname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests.FiringEmitsEightPellets" methodname="FiringEmitsEightPellets" classname="RoboRougelike.WPN001Shotgun.Tests.PlayMode.ShotgunModulePlayModeTests" runstate="Runnable" seed="864108993" result="Passed" start-time="2026-11-08 16:36:24Z" end-time="2026-11-08 16:36:24Z" duration="0.000280" asserts="0">
+                  <properties>
+                    <property name="retryIteration" value="0" />
+                    <property name="repeatIteration" value="0" />
+                  </properties>
+                  <output><![CDATA[Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+                </test-case>
+              </test-suite>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

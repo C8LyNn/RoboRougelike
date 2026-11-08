@@ -1,0 +1,598 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="51" result="Failed(Child)" total="51" passed="50" failed="1" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-08 15:47:15Z" end-time="2026-11-08 15:47:16Z" duration="0,9012016">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="1849" result="Failed" site="Child" start-time="2026-11-08 15:47:15Z" end-time="2026-11-08 15:47:16Z" duration="0.901202" total="51" passed="50" failed="1" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="2306" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-PlayQA-97f8/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="1056" result="Failed" site="Child" start-time="2026-11-08 15:47:15Z" end-time="2026-11-08 15:47:16Z" duration="0.813622" total="51" passed="50" failed="1" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="84932" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestFixture" id="1156" name="CameraRamp18DiagnosticTests" fullname="CameraRamp18DiagnosticTests" classname="CameraRamp18DiagnosticTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-11-08 15:46:32Z" end-time="2026-11-08 15:46:35Z" duration="2.853156" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1158" name="RealHeavyVehicleOnRangeRampRecordsCameraAndAimCollision" fullname="CameraRamp18DiagnosticTests.RealHeavyVehicleOnRangeRampRecordsCameraAndAimCollision" methodname="RealHeavyVehicleOnRangeRampRecordsCameraAndAimCollision" classname="CameraRamp18DiagnosticTests" runstate="Runnable" seed="1490637697" result="Passed" start-time="2026-11-08 15:46:23Z" end-time="2026-11-08 15:46:29Z" duration="6.526946" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 85 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 85 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 85 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 85 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 85 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 85 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[RAMP-DRIVE SETUP] kind=Heavy massKg=760,00 gravity=(0.000, -9.810, 0.000) uphill=(0.000, 0.309, -0.951) start=(-18.000, 1.375, 13.147) installedWheels=8 powerUnits=0,00
+[RAMP-DRIVE] kind=Heavy fixed=0 progress=-0,007 uphillSpeed=-0,357 forwardSpeed=-0,357 availableForceN=3200,0 gravityAlongRampN=-2303,9 groundNormal=(0.000, 0.951, 0.309) grounded=8/8 powerUnits=0,00
+[CAMERA-RAMP18] fixed=0 t=0,32 body=(-18.000, 1.373, 13.154) velocity=(0.001, -0.112, 0.339) bodyRotation=(342.00, 180.00, 0.00) contacts=8 camera=(-18.000, 3.849, -2.757) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.000, 5.592, 17.167) cameraToBody=16,102 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Heavy fixed=5 progress=-0,024 uphillSpeed=-0,082 forwardSpeed=-0,082 availableForceN=3200,0 gravityAlongRampN=-2303,9 groundNormal=(0.000, 0.951, 0.309) grounded=8/8 powerUnits=0,00
+[CAMERA-RAMP18] fixed=5 t=0,42 body=(-18.000, 1.368, 13.170) velocity=(0.000, -0.024, 0.078) bodyRotation=(342.00, 180.00, 359.99) contacts=8 camera=(-18.000, 3.840, -2.725) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.000, 5.583, 17.199) cameraToBody=16,086 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Heavy fixed=10 progress=-0,025 uphillSpeed=0,015 forwardSpeed=0,015 availableForceN=3200,0 gravityAlongRampN=-2303,9 groundNormal=(0.000, 0.951, 0.309) grounded=8/8 powerUnits=0,00
+[CAMERA-RAMP18] fixed=10 t=0,52 body=(-18.000, 1.367, 13.170) velocity=(0.001, 0.005, -0.014) bodyRotation=(342.00, 180.00, 0.00) contacts=8 camera=(-18.000, 3.833, -2.713) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.000, 5.576, 17.211) cameraToBody=16,073 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Heavy fixed=15 progress=-0,022 uphillSpeed=0,040 forwardSpeed=0,040 availableForceN=3200,0 gravityAlongRampN=-2303,9 groundNormal=(0.000, 0.951, 0.309) grounded=8/8 powerUnits=0,00
+[CAMERA-RAMP18] fixed=15 t=0,62 body=(-18.000, 1.368, 13.168) velocity=(0.000, 0.012, -0.038) bodyRotation=(342.00, 180.00, 0.00) contacts=8 camera=(-18.000, 3.831, -2.712) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.000, 5.574, 17.211) cameraToBody=16,070 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Heavy fixed=20 progress=-0,016 uphillSpeed=0,064 forwardSpeed=0,064 availableForceN=3200,0 gravityAlongRampN=-2303,9 groundNormal=(0.000, 0.951, 0.309) grounded=8/8 powerUnits=0,00
+[CAMERA-RAMP18] fixed=20 t=0,72 body=(-18.000, 1.370, 13.162) velocity=(0.000, 0.020, -0.061) bodyRotation=(342.00, 180.00, 0.00) contacts=8 camera=(-18.000, 3.831, -2.716) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.000, 5.574, 17.208) cameraToBody=16,067 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Heavy fixed=25 progress=-0,008 uphillSpeed=0,089 forwardSpeed=0,089 availableForceN=3200,0 gravityAlongRampN=-2303,9 groundNormal=(0.000, 0.951, 0.309) grounded=8/8 powerUnits=0,00
+[CAMERA-RAMP18] fixed=25 t=0,82 body=(-18.000, 1.372, 13.155) velocity=(0.000, 0.027, -0.085) bodyRotation=(342.00, 180.00, 0.00) contacts=8 camera=(-18.000, 3.832, -2.721) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.000, 5.575, 17.203) cameraToBody=16,065 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Heavy fixed=30 progress=0,002 uphillSpeed=0,113 forwardSpeed=0,113 availableForceN=3200,0 gravityAlongRampN=-2303,9 groundNormal=(0.000, 0.951, 0.309) grounded=8/8 powerUnits=0,00
+[CAMERA-RAMP18] fixed=30 t=0,92 body=(-18.000, 1.376, 13.145) velocity=(0.000, 0.035, -0.108) bodyRotation=(342.00, 180.00, 0.00) contacts=8 camera=(-18.000, 3.834, -2.729) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.000, 5.577, 17.195) cameraToBody=16,063 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Heavy fixed=35 progress=0,015 uphillSpeed=0,138 forwardSpeed=0,138 availableForceN=3200,0 gravityAlongRampN=-2303,9 groundNormal=(0.000, 0.951, 0.309) grounded=8/8 powerUnits=0,00
+[CAMERA-RAMP18] fixed=35 t=1,02 body=(-18.000, 1.379, 13.133) velocity=(0.000, 0.043, -0.131) bodyRotation=(342.00, 179.99, 0.00) contacts=8 camera=(-18.000, 3.837, -2.740) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.000, 5.580, 17.184) cameraToBody=16,061 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Heavy fixed=40 progress=0,030 uphillSpeed=0,163 forwardSpeed=0,163 availableForceN=3200,0 gravityAlongRampN=-2303,9 groundNormal=(0.000, 0.951, 0.309) grounded=8/8 powerUnits=0,00
+[CAMERA-RAMP18] fixed=40 t=1,12 body=(-18.000, 1.384, 13.118) velocity=(-0.001, 0.051, -0.154) bodyRotation=(342.00, 179.99, 0.00) contacts=8 camera=(-18.000, 3.840, -2.752) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.000, 5.584, 17.172) cameraToBody=16,060 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Heavy fixed=45 progress=0,048 uphillSpeed=0,187 forwardSpeed=0,187 availableForceN=3200,0 gravityAlongRampN=-2303,9 groundNormal=(0.000, 0.951, 0.309) grounded=8/8 powerUnits=0,00
+[CAMERA-RAMP18] fixed=45 t=1,22 body=(-18.000, 1.390, 13.101) velocity=(0.000, 0.058, -0.178) bodyRotation=(342.00, 179.99, 0.00) contacts=8 camera=(-18.000, 3.845, -2.767) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.000, 5.588, 17.157) cameraToBody=16,057 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Heavy fixed=50 progress=0,068 uphillSpeed=0,212 forwardSpeed=0,212 availableForceN=3200,0 gravityAlongRampN=-2303,9 groundNormal=(0.000, 0.951, 0.309) grounded=8/8 powerUnits=0,00
+[CAMERA-RAMP18] fixed=50 t=1,32 body=(-18.000, 1.396, 13.082) velocity=(0.000, 0.068, -0.201) bodyRotation=(342.00, 179.99, 0.00) contacts=8 camera=(-18.000, 3.850, -2.785) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.000, 5.593, 17.139) cameraToBody=16,055 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Heavy fixed=55 progress=0,091 uphillSpeed=0,237 forwardSpeed=0,237 availableForceN=3200,0 gravityAlongRampN=-2303,9 groundNormal=(0.000, 0.951, 0.309) grounded=8/8 powerUnits=0,00
+[CAMERA-RAMP18] fixed=55 t=1,42 body=(-18.000, 1.403, 13.061) velocity=(0.001, 0.070, -0.226) bodyRotation=(342.00, 179.99, 0.00) contacts=8 camera=(-18.000, 3.856, -2.804) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.000, 5.599, 17.120) cameraToBody=16,053 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Heavy fixed=60 progress=0,116 uphillSpeed=0,261 forwardSpeed=0,261 availableForceN=3200,0 gravityAlongRampN=-2303,9 groundNormal=(0.000, 0.951, 0.309) grounded=8/8 powerUnits=0,00
+[CAMERA-RAMP18] fixed=60 t=1,52 body=(-18.000, 1.411, 13.037) velocity=(0.001, 0.078, -0.249) bodyRotation=(342.01, 179.99, 0.00) contacts=8 camera=(-18.000, 3.863, -2.826) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.000, 5.606, 17.098) cameraToBody=16,051 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Heavy fixed=65 progress=0,143 uphillSpeed=0,286 forwardSpeed=0,286 availableForceN=3200,0 gravityAlongRampN=-2303,9 groundNormal=(0.000, 0.951, 0.309) grounded=8/8 powerUnits=0,00
+[CAMERA-RAMP18] fixed=65 t=1,62 body=(-18.000, 1.419, 13.010) velocity=(0.000, 0.085, -0.273) bodyRotation=(342.00, 179.99, 0.00) contacts=8 camera=(-18.000, 3.870, -2.851) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.000, 5.613, 17.073) cameraToBody=16,049 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Heavy fixed=70 progress=0,174 uphillSpeed=0,310 forwardSpeed=0,310 availableForceN=3200,0 gravityAlongRampN=-2303,9 groundNormal=(0.000, 0.951, 0.309) grounded=8/8 powerUnits=0,00
+[CAMERA-RAMP18] fixed=70 t=1,72 body=(-18.000, 1.429, 12.982) velocity=(0.001, 0.096, -0.295) bodyRotation=(342.00, 179.99, 0.00) contacts=8 camera=(-18.000, 3.878, -2.877) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.000, 5.622, 17.046) cameraToBody=16,047 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Heavy fixed=75 progress=0,206 uphillSpeed=0,335 forwardSpeed=0,335 availableForceN=3200,0 gravityAlongRampN=-2303,9 groundNormal=(0.000, 0.951, 0.309) grounded=8/8 powerUnits=0,00
+[CAMERA-RAMP18] fixed=75 t=1,82 body=(-17.999, 1.439, 12.951) velocity=(0.000, 0.103, -0.319) bodyRotation=(342.00, 179.99, 0.00) contacts=8 camera=(-18.000, 3.887, -2.907) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.000, 5.631, 17.017) cameraToBody=16,046 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Heavy fixed=80 progress=0,241 uphillSpeed=0,360 forwardSpeed=0,360 availableForceN=3200,0 gravityAlongRampN=-2303,9 groundNormal=(0.000, 0.951, 0.309) grounded=8/8 powerUnits=0,00
+[CAMERA-RAMP18] fixed=80 t=1,92 body=(-17.999, 1.449, 12.918) velocity=(0.000, 0.111, -0.342) bodyRotation=(342.00, 179.99, 0.00) contacts=8 camera=(-18.000, 3.897, -2.938) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.000, 5.640, 16.986) cameraToBody=16,044 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Heavy fixed=85 progress=0,278 uphillSpeed=0,384 forwardSpeed=0,384 availableForceN=3200,0 gravityAlongRampN=-2303,9 groundNormal=(0.000, 0.951, 0.309) grounded=8/8 powerUnits=0,00
+[CAMERA-RAMP18] fixed=85 t=2,02 body=(-17.999, 1.461, 12.882) velocity=(0.000, 0.120, -0.365) bodyRotation=(342.00, 179.99, 0.00) contacts=8 camera=(-17.999, 3.908, -2.972) cameraRotation=(355.00, 0.00, 0.00) aim=(-17.999, 5.651, 16.952) cameraToBody=16,041 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Heavy fixed=90 progress=0,318 uphillSpeed=0,409 forwardSpeed=0,409 availableForceN=3200,0 gravityAlongRampN=-2303,9 groundNormal=(0.000, 0.951, 0.309) grounded=8/8 powerUnits=0,00
+[CAMERA-RAMP18] fixed=90 t=2,12 body=(-17.999, 1.473, 12.844) velocity=(0.000, 0.127, -0.388) bodyRotation=(342.00, 179.99, 0.00) contacts=8 camera=(-17.999, 3.919, -3.008) cameraRotation=(355.00, 0.00, 0.00) aim=(-17.999, 5.662, 16.916) cameraToBody=16,040 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Heavy fixed=95 progress=0,361 uphillSpeed=0,434 forwardSpeed=0,434 availableForceN=3200,0 gravityAlongRampN=-2303,9 groundNormal=(0.000, 0.951, 0.309) grounded=8/8 powerUnits=0,00
+[CAMERA-RAMP18] fixed=95 t=2,22 body=(-17.999, 1.486, 12.804) velocity=(0.000, 0.132, -0.413) bodyRotation=(342.01, 179.99, 0.00) contacts=8 camera=(-17.999, 3.931, -3.046) cameraRotation=(355.00, 0.00, 0.00) aim=(-17.999, 5.674, 16.878) cameraToBody=16,037 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[CAMERA-RAMP18 SUMMARY] kind=Heavy progress=0,396 groundedFrames=100/100 overlapAimFrames=0 clippedFrames=0 overlapCameraFrames=0 maxCameraToBody=16,102 maxDesiredGap=0,000
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1157" name="RealLightVehicleOnRangeRampRecordsCameraAndAimCollision" fullname="CameraRamp18DiagnosticTests.RealLightVehicleOnRangeRampRecordsCameraAndAimCollision" methodname="RealLightVehicleOnRangeRampRecordsCameraAndAimCollision" classname="CameraRamp18DiagnosticTests" runstate="Runnable" seed="1568933069" result="Passed" start-time="2026-11-08 15:46:29Z" end-time="2026-11-08 15:46:35Z" duration="6.054128" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[RAMP-DRIVE SETUP] kind=Light massKg=192,00 gravity=(0.000, -9.810, 0.000) uphill=(0.000, 0.309, -0.951) start=(-18.000, 1.383, 13.122) installedWheels=4 powerUnits=0,00
+[RAMP-DRIVE] kind=Light fixed=0 progress=-0,001 uphillSpeed=-0,070 forwardSpeed=-0,070 availableForceN=1600,0 gravityAlongRampN=-582,0 groundNormal=(0.000, 0.951, 0.309) grounded=4/4 powerUnits=0,00
+[CAMERA-RAMP18] fixed=0 t=0,32 body=(-18.000, 1.383, 13.124) velocity=(-0.002, -0.020, 0.067) bodyRotation=(342.00, 180.00, 359.99) contacts=4 camera=(-18.000, 3.669, -3.607) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.000, 5.412, 16.316) cameraToBody=16,887 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Light fixed=5 progress=0,018 uphillSpeed=0,368 forwardSpeed=0,368 availableForceN=1600,0 gravityAlongRampN=-582,0 groundNormal=(0.000, 0.951, 0.309) grounded=4/4 powerUnits=0,00
+[CAMERA-RAMP18] fixed=5 t=0,42 body=(-18.000, 1.389, 13.105) velocity=(0.002, 0.114, -0.350) bodyRotation=(342.00, 180.01, 0.00) contacts=4 camera=(-18.000, 3.665, -3.597) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.000, 5.408, 16.327) cameraToBody=16,857 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Light fixed=10 progress=0,081 uphillSpeed=0,804 forwardSpeed=0,804 availableForceN=1600,0 gravityAlongRampN=-582,0 groundNormal=(0.000, 0.951, 0.309) grounded=4/4 powerUnits=0,00
+[CAMERA-RAMP18] fixed=10 t=0,52 body=(-18.000, 1.408, 13.045) velocity=(0.001, 0.249, -0.765) bodyRotation=(342.00, 180.01, 0.00) contacts=4 camera=(-18.000, 3.668, -3.624) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.000, 5.411, 16.300) cameraToBody=16,822 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Light fixed=15 progress=0,188 uphillSpeed=1,241 forwardSpeed=1,241 availableForceN=1600,0 gravityAlongRampN=-582,0 groundNormal=(0.000, 0.951, 0.309) grounded=4/4 powerUnits=0,00
+[CAMERA-RAMP18] fixed=15 t=0,62 body=(-18.000, 1.441, 12.944) velocity=(-0.001, 0.383, -1.181) bodyRotation=(342.00, 180.01, 0.00) contacts=4 camera=(-18.000, 3.683, -3.692) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.000, 5.426, 16.232) cameraToBody=16,787 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Light fixed=20 progress=0,338 uphillSpeed=1,678 forwardSpeed=1,678 availableForceN=1600,0 gravityAlongRampN=-582,0 groundNormal=(0.000, 0.951, 0.309) grounded=4/4 powerUnits=0,00
+[CAMERA-RAMP18] fixed=20 t=0,72 body=(-18.000, 1.487, 12.801) velocity=(-0.001, 0.518, -1.596) bodyRotation=(342.00, 180.01, 0.00) contacts=4 camera=(-18.000, 3.710, -3.802) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.000, 5.453, 16.122) cameraToBody=16,751 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Light fixed=25 progress=0,532 uphillSpeed=2,115 forwardSpeed=2,115 availableForceN=1600,0 gravityAlongRampN=-582,0 groundNormal=(0.000, 0.951, 0.309) grounded=4/4 powerUnits=0,00
+[CAMERA-RAMP18] fixed=25 t=0,82 body=(-18.000, 1.547, 12.616) velocity=(-0.001, 0.653, -2.012) bodyRotation=(342.00, 180.01, 0.00) contacts=4 camera=(-18.000, 3.751, -3.954) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.000, 5.495, 15.970) cameraToBody=16,716 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Light fixed=30 progress=0,770 uphillSpeed=2,552 forwardSpeed=2,552 availableForceN=1600,0 gravityAlongRampN=-582,0 groundNormal=(0.000, 0.951, 0.309) grounded=4/4 powerUnits=0,00
+[CAMERA-RAMP18] fixed=30 t=0,92 body=(-18.000, 1.621, 12.390) velocity=(-0.001, 0.788, -2.427) bodyRotation=(342.00, 180.01, 0.00) contacts=4 camera=(-18.000, 3.806, -4.147) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.000, 5.549, 15.777) cameraToBody=16,681 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Light fixed=35 progress=1,051 uphillSpeed=2,989 forwardSpeed=2,989 availableForceN=1600,0 gravityAlongRampN=-582,0 groundNormal=(0.000, 0.951, 0.309) grounded=4/4 powerUnits=0,00
+[CAMERA-RAMP18] fixed=35 t=1,02 body=(-18.000, 1.708, 12.123) velocity=(-0.001, 0.923, -2.843) bodyRotation=(342.00, 180.01, 0.00) contacts=4 camera=(-18.000, 3.874, -4.381) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.000, 5.617, 15.543) cameraToBody=16,645 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Light fixed=40 progress=1,376 uphillSpeed=3,426 forwardSpeed=3,426 availableForceN=1600,0 gravityAlongRampN=-582,0 groundNormal=(0.000, 0.951, 0.309) grounded=4/4 powerUnits=0,00
+[CAMERA-RAMP18] fixed=40 t=1,12 body=(-18.000, 1.808, 11.813) velocity=(-0.001, 1.058, -3.258) bodyRotation=(342.00, 180.01, 0.00) contacts=4 camera=(-18.000, 3.956, -4.657) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.000, 5.699, 15.267) cameraToBody=16,610 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Light fixed=45 progress=1,745 uphillSpeed=3,863 forwardSpeed=3,863 availableForceN=1600,0 gravityAlongRampN=-582,0 groundNormal=(0.000, 0.951, 0.309) grounded=4/4 powerUnits=0,00
+[CAMERA-RAMP18] fixed=45 t=1,22 body=(-18.000, 1.922, 11.463) velocity=(-0.002, 1.193, -3.674) bodyRotation=(342.00, 180.01, 0.00) contacts=4 camera=(-18.000, 4.051, -4.975) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.000, 5.794, 14.949) cameraToBody=16,575 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Light fixed=50 progress=2,157 uphillSpeed=4,300 forwardSpeed=4,300 availableForceN=1600,0 gravityAlongRampN=-582,0 groundNormal=(0.000, 0.951, 0.309) grounded=4/4 powerUnits=0,00
+[CAMERA-RAMP18] fixed=50 t=1,32 body=(-18.001, 2.050, 11.070) velocity=(-0.002, 1.328, -4.089) bodyRotation=(342.00, 180.01, 0.00) contacts=4 camera=(-18.000, 4.159, -5.334) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.000, 5.903, 14.590) cameraToBody=16,540 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Light fixed=55 progress=2,614 uphillSpeed=4,736 forwardSpeed=4,736 availableForceN=1600,0 gravityAlongRampN=-582,0 groundNormal=(0.000, 0.951, 0.309) grounded=4/4 powerUnits=0,00
+[CAMERA-RAMP18] fixed=55 t=1,42 body=(-18.001, 2.191, 10.637) velocity=(-0.002, 1.463, -4.505) bodyRotation=(342.00, 180.01, 0.00) contacts=4 camera=(-18.000, 4.282, -5.735) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.000, 6.025, 14.189) cameraToBody=16,505 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Light fixed=60 progress=3,113 uphillSpeed=5,173 forwardSpeed=5,173 availableForceN=1600,0 gravityAlongRampN=-582,0 groundNormal=(0.000, 0.951, 0.309) grounded=4/4 powerUnits=0,00
+[CAMERA-RAMP18] fixed=60 t=1,52 body=(-18.001, 2.345, 10.161) velocity=(-0.002, 1.598, -4.920) bodyRotation=(342.00, 180.01, 0.00) contacts=4 camera=(-18.001, 4.417, -6.177) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.001, 6.160, 13.747) cameraToBody=16,469 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Light fixed=65 progress=3,657 uphillSpeed=5,610 forwardSpeed=5,610 availableForceN=1600,0 gravityAlongRampN=-582,0 groundNormal=(0.000, 0.951, 0.309) grounded=4/4 powerUnits=0,00
+[CAMERA-RAMP18] fixed=65 t=1,62 body=(-18.001, 2.513, 9.644) velocity=(-0.002, 1.733, -5.336) bodyRotation=(342.00, 180.01, 0.00) contacts=4 camera=(-18.001, 4.566, -6.660) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.001, 6.309, 13.263) cameraToBody=16,433 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Light fixed=70 progress=4,244 uphillSpeed=6,047 forwardSpeed=6,047 availableForceN=1600,0 gravityAlongRampN=-582,0 groundNormal=(0.000, 0.951, 0.309) grounded=4/4 powerUnits=0,00
+[CAMERA-RAMP18] fixed=70 t=1,72 body=(-18.001, 2.695, 9.086) velocity=(-0.002, 1.868, -5.751) bodyRotation=(342.00, 180.02, 0.00) contacts=4 camera=(-18.001, 4.729, -7.186) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.001, 6.472, 12.738) cameraToBody=16,398 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Light fixed=75 progress=4,875 uphillSpeed=6,484 forwardSpeed=6,484 availableForceN=1600,0 gravityAlongRampN=-582,0 groundNormal=(0.000, 0.951, 0.309) grounded=4/4 powerUnits=0,00
+[CAMERA-RAMP18] fixed=75 t=1,82 body=(-18.001, 2.889, 8.486) velocity=(-0.003, 2.003, -6.167) bodyRotation=(342.00, 180.02, 0.00) contacts=4 camera=(-18.001, 4.905, -7.754) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.001, 6.648, 12.170) cameraToBody=16,365 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Light fixed=80 progress=5,550 uphillSpeed=6,921 forwardSpeed=6,921 availableForceN=1600,0 gravityAlongRampN=-582,0 groundNormal=(0.000, 0.951, 0.309) grounded=4/4 powerUnits=0,00
+[CAMERA-RAMP18] fixed=80 t=1,92 body=(-18.002, 3.098, 7.844) velocity=(-0.003, 2.138, -6.582) bodyRotation=(342.00, 180.02, 0.00) contacts=4 camera=(-18.001, 5.095, -8.362) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.001, 6.838, 11.562) cameraToBody=16,329 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Light fixed=85 progress=6,268 uphillSpeed=7,358 forwardSpeed=7,358 availableForceN=1600,0 gravityAlongRampN=-582,0 groundNormal=(0.000, 0.951, 0.309) grounded=4/4 powerUnits=0,00
+[CAMERA-RAMP18] fixed=85 t=2,02 body=(-18.002, 3.320, 7.161) velocity=(-0.003, 2.273, -6.998) bodyRotation=(342.00, 180.02, 0.00) contacts=4 camera=(-18.002, 5.298, -9.012) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.002, 7.041, 10.912) cameraToBody=16,294 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Light fixed=90 progress=7,030 uphillSpeed=7,795 forwardSpeed=7,795 availableForceN=1600,0 gravityAlongRampN=-582,0 groundNormal=(0.000, 0.951, 0.309) grounded=4/4 powerUnits=0,00
+[CAMERA-RAMP18] fixed=90 t=2,12 body=(-18.002, 3.555, 6.436) velocity=(-0.003, 2.408, -7.413) bodyRotation=(342.00, 180.02, 0.00) contacts=4 camera=(-18.002, 5.514, -9.703) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.002, 7.257, 10.221) cameraToBody=16,258 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[RAMP-DRIVE] kind=Light fixed=95 progress=7,831 uphillSpeed=8,084 forwardSpeed=8,084 availableForceN=800,0 gravityAlongRampN=-582,0 groundNormal=(0.000, 0.951, 0.309) grounded=2/4 powerUnits=0,00
+[CAMERA-RAMP18] fixed=95 t=2,22 body=(-18.003, 3.798, 5.673) velocity=(-0.003, 2.319, -7.746) bodyRotation=(342.29, 180.02, -0.01) contacts=2 camera=(-18.002, 5.744, -10.436) cameraRotation=(355.00, 0.00, 0.00) aim=(-18.002, 7.487, 9.488) cameraToBody=16,226 cameraToAim=20,000 desiredGap=0,000 overlapAim=False clipped=False overlapCamera=False
+[CAMERA-RAMP18 SUMMARY] kind=Light progress=8,478 groundedFrames=100/100 overlapAimFrames=0 clippedFrames=0 overlapCameraFrames=0 maxCameraToBody=16,887 maxDesiredGap=0,000
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1249" name="GarageEditFreedomTests" fullname="GarageEditFreedomTests" classname="GarageEditFreedomTests" runstate="Runnable" testcasecount="13" result="Passed" start-time="2026-11-08 15:46:38Z" end-time="2026-11-08 15:46:39Z" duration="1.024692" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1263" name="RealGarageRebuildsAfterLastGunAndEveryWheelAreRemoved" fullname="GarageEditFreedomTests.RealGarageRebuildsAfterLastGunAndEveryWheelAreRemoved" methodname="RealGarageRebuildsAfterLastGunAndEveryWheelAreRemoved" classname="GarageEditFreedomTests" runstate="Runnable" seed="2070955671" result="Passed" start-time="2026-11-08 15:46:35Z" end-time="2026-11-08 15:46:39Z" duration="4.117750" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 57 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 57 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 56 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 56 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 55 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 55 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 54 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 54 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 53 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 53 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 52 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 52 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 51 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 51 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 52 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 52 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 53 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 53 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 54 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 54 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 55 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 55 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 56 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 56 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 57 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 57 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 15 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 35 structural block(s).
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="2101" name="UI943LandscapeRewardInventoryTests" fullname="UI943LandscapeRewardInventoryTests" classname="UI943LandscapeRewardInventoryTests" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-11-08 15:46:39Z" end-time="2026-11-08 15:46:39Z" duration="0.011163" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="2114" name="DetailAndStatusFitAllCardsWithoutCoveringTheUnchangedButton" fullname="UI943LandscapeRewardInventoryTests.DetailAndStatusFitAllCardsWithoutCoveringTheUnchangedButton" methodname="DetailAndStatusFitAllCardsWithoutCoveringTheUnchangedButton" classname="UI943LandscapeRewardInventoryTests" runstate="Runnable" seed="476830657" result="Passed" start-time="2026-11-08 15:46:39Z" end-time="2026-11-08 15:46:39Z" duration="0.003803" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="2113" name="ExistingNameHpAndSourceRemainInTheDetails" fullname="UI943LandscapeRewardInventoryTests.ExistingNameHpAndSourceRemainInTheDetails" methodname="ExistingNameHpAndSourceRemainInTheDetails" classname="UI943LandscapeRewardInventoryTests" runstate="Runnable" seed="1146770374" result="Passed" start-time="2026-11-08 15:46:39Z" end-time="2026-11-08 15:46:39Z" duration="0.002650" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="2112" name="NoMagazineLabelForWheelOrUnmeteredWeapon" fullname="UI943LandscapeRewardInventoryTests.NoMagazineLabelForWheelOrUnmeteredWeapon" methodname="NoMagazineLabelForWheelOrUnmeteredWeapon" classname="UI943LandscapeRewardInventoryTests" runstate="Runnable" seed="92406929" result="Passed" start-time="2026-11-08 15:46:39Z" end-time="2026-11-08 15:46:39Z" duration="0.000800" asserts="0">
+          <properties />
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="2106" name="RewardShortcutChoosesTheCorrespondingBasket" fullname="UI943LandscapeRewardInventoryTests.RewardShortcutChoosesTheCorrespondingBasket" classname="UI943LandscapeRewardInventoryTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-08 15:46:39Z" end-time="2026-11-08 15:46:39Z" duration="0.001117" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="2102" name="RewardShortcutChoosesTheCorrespondingBasket(False,False,False,-1)" fullname="UI943LandscapeRewardInventoryTests.RewardShortcutChoosesTheCorrespondingBasket(False,False,False,-1)" methodname="RewardShortcutChoosesTheCorrespondingBasket" classname="UI943LandscapeRewardInventoryTests" runstate="Runnable" seed="1351965071" result="Passed" start-time="2026-11-08 15:46:39Z" end-time="2026-11-08 15:46:39Z" duration="0.000295" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="2103" name="RewardShortcutChoosesTheCorrespondingBasket(True,False,False,0)" fullname="UI943LandscapeRewardInventoryTests.RewardShortcutChoosesTheCorrespondingBasket(True,False,False,0)" methodname="RewardShortcutChoosesTheCorrespondingBasket" classname="UI943LandscapeRewardInventoryTests" runstate="Runnable" seed="78134743" result="Passed" start-time="2026-11-08 15:46:39Z" end-time="2026-11-08 15:46:39Z" duration="0.000041" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="2104" name="RewardShortcutChoosesTheCorrespondingBasket(False,True,False,1)" fullname="UI943LandscapeRewardInventoryTests.RewardShortcutChoosesTheCorrespondingBasket(False,True,False,1)" methodname="RewardShortcutChoosesTheCorrespondingBasket" classname="UI943LandscapeRewardInventoryTests" runstate="Runnable" seed="735994985" result="Passed" start-time="2026-11-08 15:46:39Z" end-time="2026-11-08 15:46:39Z" duration="0.000029" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="2105" name="RewardShortcutChoosesTheCorrespondingBasket(False,False,True,2)" fullname="UI943LandscapeRewardInventoryTests.RewardShortcutChoosesTheCorrespondingBasket(False,False,True,2)" methodname="RewardShortcutChoosesTheCorrespondingBasket" classname="UI943LandscapeRewardInventoryTests" runstate="Runnable" seed="1045659514" result="Passed" start-time="2026-11-08 15:46:39Z" end-time="2026-11-08 15:46:39Z" duration="0.000026" asserts="0">
+            <properties />
+          </test-case>
+        </test-suite>
+        <test-suite type="ParameterizedMethod" id="2111" name="StatusShowsRealRepairQuoteAndApplicableAmmo" fullname="UI943LandscapeRewardInventoryTests.StatusShowsRealRepairQuoteAndApplicableAmmo" classname="UI943LandscapeRewardInventoryTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-08 15:46:39Z" end-time="2026-11-08 15:46:39Z" duration="0.001378" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="2107" name="StatusShowsRealRepairQuoteAndApplicableAmmo(Gun,Shotgun,0.5f,5,&quot;Naprawa&quot;,&quot;5/12 salw&quot;)" fullname="UI943LandscapeRewardInventoryTests.StatusShowsRealRepairQuoteAndApplicableAmmo(Gun,Shotgun,0.5f,5,&quot;Naprawa&quot;,&quot;5/12 salw&quot;)" methodname="StatusShowsRealRepairQuoteAndApplicableAmmo" classname="UI943LandscapeRewardInventoryTests" runstate="Runnable" seed="1022484505" result="Passed" start-time="2026-11-08 15:46:39Z" end-time="2026-11-08 15:46:39Z" duration="0.000410" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="2108" name="StatusShowsRealRepairQuoteAndApplicableAmmo(Gun,Railgun,0.0f,0,&quot;Odbudowa&quot;,&quot;0/12 nab.&quot;)" fullname="UI943LandscapeRewardInventoryTests.StatusShowsRealRepairQuoteAndApplicableAmmo(Gun,Railgun,0.0f,0,&quot;Odbudowa&quot;,&quot;0/12 nab.&quot;)" methodname="StatusShowsRealRepairQuoteAndApplicableAmmo" classname="UI943LandscapeRewardInventoryTests" runstate="Runnable" seed="2051805266" result="Passed" start-time="2026-11-08 15:46:39Z" end-time="2026-11-08 15:46:39Z" duration="0.000125" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="2109" name="StatusShowsRealRepairQuoteAndApplicableAmmo(Gun,RocketLauncher,1.0f,-1,&quot;niepotrzebna&quot;,&quot;10/10 rak.&quot;)" fullname="UI943LandscapeRewardInventoryTests.StatusShowsRealRepairQuoteAndApplicableAmmo(Gun,RocketLauncher,1.0f,-1,&quot;niepotrzebna&quot;,&quot;10/10 rak.&quot;)" methodname="StatusShowsRealRepairQuoteAndApplicableAmmo" classname="UI943LandscapeRewardInventoryTests" runstate="Runnable" seed="1493654860" result="Passed" start-time="2026-11-08 15:46:39Z" end-time="2026-11-08 15:46:39Z" duration="0.000103" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="2110" name="StatusShowsRealRepairQuoteAndApplicableAmmo(PointDefense,Basic,0.5f,7,&quot;Naprawa&quot;,&quot;7/40 poc.&quot;)" fullname="UI943LandscapeRewardInventoryTests.StatusShowsRealRepairQuoteAndApplicableAmmo(PointDefense,Basic,0.5f,7,&quot;Naprawa&quot;,&quot;7/40 poc.&quot;)" methodname="StatusShowsRealRepairQuoteAndApplicableAmmo" classname="UI943LandscapeRewardInventoryTests" runstate="Runnable" seed="1108721522" result="Passed" start-time="2026-11-08 15:46:39Z" end-time="2026-11-08 15:46:39Z" duration="0.000111" asserts="0">
+            <properties />
+          </test-case>
+        </test-suite>
+      </test-suite>
+      <test-suite type="TestFixture" id="2122" name="UI943PortraitCatalogActionsTests" fullname="UI943PortraitCatalogActionsTests" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" testcasecount="23" result="Failed" site="Child" start-time="2026-11-08 15:47:08Z" end-time="2026-11-08 15:47:08Z" duration="0.460478" total="23" passed="22" failed="1" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="ParameterizedMethod" id="2127" name="ActivityHintExplainsExistingAvailability" fullname="UI943PortraitCatalogActionsTests.ActivityHintExplainsExistingAvailability" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-08 15:46:39Z" end-time="2026-11-08 15:46:39Z" duration="0.001600" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="2123" name="ActivityHintExplainsExistingAvailability(False,&quot;Brak sprawnej broni.&quot;,Wheels,&quot;Start zablokowany: Brak sprawnej broni.&quot;)" fullname="UI943PortraitCatalogActionsTests.ActivityHintExplainsExistingAvailability(False,&quot;Brak sprawnej broni.&quot;,Wheels,&quot;Start zablokowany: Brak sprawnej broni.&quot;)" methodname="ActivityHintExplainsExistingAvailability" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" seed="382071424" result="Passed" start-time="2026-11-08 15:46:39Z" end-time="2026-11-08 15:46:39Z" duration="0.000978" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="2124" name="ActivityHintExplainsExistingAvailability(False,null,Omni,&quot;Start zablokowany: Sprawdź konstrukcję.&quot;)" fullname="UI943PortraitCatalogActionsTests.ActivityHintExplainsExistingAvailability(False,null,Omni,&quot;Start zablokowany: Sprawdź konstrukcję.&quot;)" methodname="ActivityHintExplainsExistingAvailability" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" seed="818246782" result="Passed" start-time="2026-11-08 15:46:39Z" end-time="2026-11-08 15:46:39Z" duration="0.000066" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="2125" name="ActivityHintExplainsExistingAvailability(True,null,Omni,&quot;Wyścig, tryby drogowe i generowana arena wymagają kół.&quot;)" fullname="UI943PortraitCatalogActionsTests.ActivityHintExplainsExistingAvailability(True,null,Omni,&quot;Wyścig, tryby drogowe i generowana arena wymagają kół.&quot;)" methodname="ActivityHintExplainsExistingAvailability" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" seed="1757133226" result="Passed" start-time="2026-11-08 15:46:39Z" end-time="2026-11-08 15:46:39Z" duration="0.000045" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="2126" name="ActivityHintExplainsExistingAvailability(True,null,Wheels,null)" fullname="UI943PortraitCatalogActionsTests.ActivityHintExplainsExistingAvailability(True,null,Wheels,null)" methodname="ActivityHintExplainsExistingAvailability" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" seed="1342944231" result="Passed" start-time="2026-11-08 15:46:39Z" end-time="2026-11-08 15:46:39Z" duration="0.000041" asserts="0">
+            <properties />
+          </test-case>
+        </test-suite>
+        <test-case id="2148" name="ArmorCatalogPurchasesWedgeAsSeparateOwnedStack" fullname="UI943PortraitCatalogActionsTests.ArmorCatalogPurchasesWedgeAsSeparateOwnedStack" methodname="ArmorCatalogPurchasesWedgeAsSeparateOwnedStack" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" seed="1285722133" result="Passed" start-time="2026-11-08 15:46:39Z" end-time="2026-11-08 15:46:43Z" duration="3.658040" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="2134" name="BonusStackNameDoesNotInheritFirstItemsTier" fullname="UI943PortraitCatalogActionsTests.BonusStackNameDoesNotInheritFirstItemsTier" methodname="BonusStackNameDoesNotInheritFirstItemsTier" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" seed="1379767496" result="Passed" start-time="2026-11-08 15:46:43Z" end-time="2026-11-08 15:46:43Z" duration="0.002080" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="2141" name="CatalogDetailsSelectsHealthyPartWithoutClosingOrSpending" fullname="UI943PortraitCatalogActionsTests.CatalogDetailsSelectsHealthyPartWithoutClosingOrSpending" methodname="CatalogDetailsSelectsHealthyPartWithoutClosingOrSpending" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" seed="390953042" result="Passed" start-time="2026-11-08 15:46:43Z" end-time="2026-11-08 15:46:47Z" duration="3.497926" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="2143" name="DestroyedItemKeepsCatalogOpenUntilRepaired" fullname="UI943PortraitCatalogActionsTests.DestroyedItemKeepsCatalogOpenUntilRepaired" methodname="DestroyedItemKeepsCatalogOpenUntilRepaired" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" seed="853565292" result="Failed" label="Error" start-time="2026-11-08 15:46:47Z" end-time="2026-11-08 15:46:50Z" duration="3.614372" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <failure>
+            <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+            <stack-trace><![CDATA[  at UI943PortraitCatalogActionsTests+<DestroyedItemKeepsCatalogOpenUntilRepaired>d__12.MoveNext () [0x000f0] in C:\Users\kubap\Desktop\Prototypy\RoboRougelike-PlayQA-97f8\Assets\Tests\Editor\UI943PortraitCatalogActionsTests.cs:166 
+  at UnityEngine.TestTools.TestEnumerator+<Execute>d__7.MoveNext () [0x0003a] in .\Library\PackageCache\com.unity.test-framework@aebcb98460c6\UnityEngine.TestRunner\NUnitExtensions\Attributes\TestEnumerator.cs:44 ]]></stack-trace>
+          </failure>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="2142" name="DismantleConfirmationResetsAfterGroupChangeAndCatalogClose" fullname="UI943PortraitCatalogActionsTests.DismantleConfirmationResetsAfterGroupChangeAndCatalogClose" methodname="DismantleConfirmationResetsAfterGroupChangeAndCatalogClose" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" seed="1654415463" result="Passed" start-time="2026-11-08 15:46:50Z" end-time="2026-11-08 15:46:54Z" duration="3.445639" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="2133" name="GarageOptionsRepairReportsActualScrapSpent" fullname="UI943PortraitCatalogActionsTests.GarageOptionsRepairReportsActualScrapSpent" methodname="GarageOptionsRepairReportsActualScrapSpent" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" seed="1362591424" result="Passed" start-time="2026-11-08 15:46:54Z" end-time="2026-11-08 15:46:57Z" duration="3.573938" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="2144" name="IncompleteGarageKeepsActionFeedbackAlongsideDeploymentWarning" fullname="UI943PortraitCatalogActionsTests.IncompleteGarageKeepsActionFeedbackAlongsideDeploymentWarning" methodname="IncompleteGarageKeepsActionFeedbackAlongsideDeploymentWarning" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" seed="659318372" result="Passed" start-time="2026-11-08 15:46:57Z" end-time="2026-11-08 15:47:01Z" duration="3.798149" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 58 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 57 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 57 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 56 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 56 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 55 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 55 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 54 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 54 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 53 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 53 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 53 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 53 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="2140" name="InspectionSummaryUsesMountedPartHealthAndRepairQuote" fullname="UI943PortraitCatalogActionsTests.InspectionSummaryUsesMountedPartHealthAndRepairQuote" methodname="InspectionSummaryUsesMountedPartHealthAndRepairQuote" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" seed="1761998040" result="Passed" start-time="2026-11-08 15:47:01Z" end-time="2026-11-08 15:47:01Z" duration="0.003641" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="2145" name="QuickCategoriesCoverEveryCatalogKindWithoutOverlap" fullname="UI943PortraitCatalogActionsTests.QuickCategoriesCoverEveryCatalogKindWithoutOverlap" methodname="QuickCategoriesCoverEveryCatalogKindWithoutOverlap" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" seed="1882210709" result="Passed" start-time="2026-11-08 15:47:01Z" end-time="2026-11-08 15:47:01Z" duration="0.002691" asserts="0">
+          <properties />
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="2132" name="SaveFeedbackNeverReportsStaleSuccess" fullname="UI943PortraitCatalogActionsTests.SaveFeedbackNeverReportsStaleSuccess" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-08 15:47:01Z" end-time="2026-11-08 15:47:01Z" duration="0.001895" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="2128" name="SaveFeedbackNeverReportsStaleSuccess(True,null,&quot;Zapisano wyprawę w garażu.&quot;,&quot;Zapisano wyprawę w garażu.&quot;)" fullname="UI943PortraitCatalogActionsTests.SaveFeedbackNeverReportsStaleSuccess(True,null,&quot;Zapisano wyprawę w garażu.&quot;,&quot;Zapisano wyprawę w garażu.&quot;)" methodname="SaveFeedbackNeverReportsStaleSuccess" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" seed="1202609119" result="Passed" start-time="2026-11-08 15:47:01Z" end-time="2026-11-08 15:47:01Z" duration="0.000443" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="2129" name="SaveFeedbackNeverReportsStaleSuccess(False,&quot;stary&quot;,&quot;Nie zapisano wyprawy: brak miejsca.&quot;,&quot;Nie zapisano wyprawy: brak miejsca.&quot;)" fullname="UI943PortraitCatalogActionsTests.SaveFeedbackNeverReportsStaleSuccess(False,&quot;stary&quot;,&quot;Nie zapisano wyprawy: brak miejsca.&quot;,&quot;Nie zapisano wyprawy: brak miejsca.&quot;)" methodname="SaveFeedbackNeverReportsStaleSuccess" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" seed="293418070" result="Passed" start-time="2026-11-08 15:47:01Z" end-time="2026-11-08 15:47:01Z" duration="0.000050" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="2130" name="SaveFeedbackNeverReportsStaleSuccess(False,&quot;Zapisano wyprawę.&quot;,&quot;Zapisano wyprawę.&quot;,&quot;Nie udało się zapisać wyprawy.&quot;)" fullname="UI943PortraitCatalogActionsTests.SaveFeedbackNeverReportsStaleSuccess(False,&quot;Zapisano wyprawę.&quot;,&quot;Zapisano wyprawę.&quot;,&quot;Nie udało się zapisać wyprawy.&quot;)" methodname="SaveFeedbackNeverReportsStaleSuccess" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" seed="1037809425" result="Passed" start-time="2026-11-08 15:47:01Z" end-time="2026-11-08 15:47:01Z" duration="0.000039" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="2131" name="SaveFeedbackNeverReportsStaleSuccess(False,null,null,&quot;Nie udało się zapisać wyprawy.&quot;)" fullname="UI943PortraitCatalogActionsTests.SaveFeedbackNeverReportsStaleSuccess(False,null,null,&quot;Nie udało się zapisać wyprawy.&quot;)" methodname="SaveFeedbackNeverReportsStaleSuccess" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" seed="391867984" result="Passed" start-time="2026-11-08 15:47:01Z" end-time="2026-11-08 15:47:01Z" duration="0.000032" asserts="0">
+            <properties />
+          </test-case>
+        </test-suite>
+        <test-case id="2146" name="SelectionPurchaseRepairAndConfirmedDismantleKeepRealInventorySemantics" fullname="UI943PortraitCatalogActionsTests.SelectionPurchaseRepairAndConfirmedDismantleKeepRealInventorySemantics" methodname="SelectionPurchaseRepairAndConfirmedDismantleKeepRealInventorySemantics" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" seed="729562191" result="Passed" start-time="2026-11-08 15:47:01Z" end-time="2026-11-08 15:47:05Z" duration="3.522045" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+Portrait catalog test: purchased inventory exists
+Portrait catalog test: got last item
+Portrait catalog test: selected id verified
+Portrait catalog test: selection and close verified
+Portrait catalog test: repair returned
+Portrait catalog test: existing item selected
+Portrait catalog test: first dismantle request
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="2139" name="StackCaptionDistinguishesWrecksFromUsableOrLockedParts" fullname="UI943PortraitCatalogActionsTests.StackCaptionDistinguishesWrecksFromUsableOrLockedParts" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-11-08 15:47:05Z" end-time="2026-11-08 15:47:05Z" duration="0.003001" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="2135" name="StackCaptionDistinguishesWrecksFromUsableOrLockedParts(5,False,True,&quot;Koło × 5 • napraw&quot;)" fullname="UI943PortraitCatalogActionsTests.StackCaptionDistinguishesWrecksFromUsableOrLockedParts(5,False,True,&quot;Koło × 5 • napraw&quot;)" methodname="StackCaptionDistinguishesWrecksFromUsableOrLockedParts" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" seed="1718523956" result="Passed" start-time="2026-11-08 15:47:05Z" end-time="2026-11-08 15:47:05Z" duration="0.001172" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="2136" name="StackCaptionDistinguishesWrecksFromUsableOrLockedParts(5,True,True,&quot;Koło × 5&quot;)" fullname="UI943PortraitCatalogActionsTests.StackCaptionDistinguishesWrecksFromUsableOrLockedParts(5,True,True,&quot;Koło × 5&quot;)" methodname="StackCaptionDistinguishesWrecksFromUsableOrLockedParts" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" seed="1881494236" result="Passed" start-time="2026-11-08 15:47:05Z" end-time="2026-11-08 15:47:05Z" duration="0.000084" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="2137" name="StackCaptionDistinguishesWrecksFromUsableOrLockedParts(0,False,False,&quot;Koło × 0 • blokada&quot;)" fullname="UI943PortraitCatalogActionsTests.StackCaptionDistinguishesWrecksFromUsableOrLockedParts(0,False,False,&quot;Koło × 0 • blokada&quot;)" methodname="StackCaptionDistinguishesWrecksFromUsableOrLockedParts" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" seed="930552557" result="Passed" start-time="2026-11-08 15:47:05Z" end-time="2026-11-08 15:47:05Z" duration="0.000042" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="2138" name="StackCaptionDistinguishesWrecksFromUsableOrLockedParts(0,False,True,&quot;Koło × 0&quot;)" fullname="UI943PortraitCatalogActionsTests.StackCaptionDistinguishesWrecksFromUsableOrLockedParts(0,False,True,&quot;Koło × 0&quot;)" methodname="StackCaptionDistinguishesWrecksFromUsableOrLockedParts" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" seed="130757052" result="Passed" start-time="2026-11-08 15:47:05Z" end-time="2026-11-08 15:47:05Z" duration="0.000032" asserts="0">
+            <properties />
+          </test-case>
+        </test-suite>
+        <test-case id="2147" name="WheelCatalogSeparatesModelsAndBuysChosenAppearance" fullname="UI943PortraitCatalogActionsTests.WheelCatalogSeparatesModelsAndBuysChosenAppearance" methodname="WheelCatalogSeparatesModelsAndBuysChosenAppearance" classname="UI943PortraitCatalogActionsTests" runstate="Runnable" seed="619901537" result="Passed" start-time="2026-11-08 15:47:05Z" end-time="2026-11-08 15:47:08Z" duration="3.511193" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 59 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="2156" name="UI943PortraitMenuTests" fullname="UI943PortraitMenuTests" classname="UI943PortraitMenuTests" runstate="Runnable" testcasecount="12" result="Passed" start-time="2026-11-08 15:47:08Z" end-time="2026-11-08 15:47:08Z" duration="0.007119" total="12" passed="12" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="ParameterizedMethod" id="2162" name="InvalidSeedReportsTheLastValidValue" fullname="UI943PortraitMenuTests.InvalidSeedReportsTheLastValidValue" classname="UI943PortraitMenuTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-08 15:47:08Z" end-time="2026-11-08 15:47:08Z" duration="0.002471" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="2157" name="InvalidSeedReportsTheLastValidValue(&quot;&quot;,2026,&quot;Błędny seed\nUżyty: 2026&quot;)" fullname="UI943PortraitMenuTests.InvalidSeedReportsTheLastValidValue(&quot;&quot;,2026,&quot;Błędny seed\nUżyty: 2026&quot;)" methodname="InvalidSeedReportsTheLastValidValue" classname="UI943PortraitMenuTests" runstate="Runnable" seed="578934404" result="Passed" start-time="2026-11-08 15:47:08Z" end-time="2026-11-08 15:47:08Z" duration="0.001191" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="2158" name="InvalidSeedReportsTheLastValidValue(&quot;abc&quot;,7,&quot;Błędny seed\nUżyty: 7&quot;)" fullname="UI943PortraitMenuTests.InvalidSeedReportsTheLastValidValue(&quot;abc&quot;,7,&quot;Błędny seed\nUżyty: 7&quot;)" methodname="InvalidSeedReportsTheLastValidValue" classname="UI943PortraitMenuTests" runstate="Runnable" seed="466458581" result="Passed" start-time="2026-11-08 15:47:08Z" end-time="2026-11-08 15:47:08Z" duration="0.000061" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="2159" name="InvalidSeedReportsTheLastValidValue(&quot;2147483648&quot;,-4,&quot;Błędny seed\nUżyty: -4&quot;)" fullname="UI943PortraitMenuTests.InvalidSeedReportsTheLastValidValue(&quot;2147483648&quot;,-4,&quot;Błędny seed\nUżyty: -4&quot;)" methodname="InvalidSeedReportsTheLastValidValue" classname="UI943PortraitMenuTests" runstate="Runnable" seed="1715269442" result="Passed" start-time="2026-11-08 15:47:08Z" end-time="2026-11-08 15:47:08Z" duration="0.000209" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="2160" name="InvalidSeedReportsTheLastValidValue(&quot;-2147483648&quot;,2026,null)" fullname="UI943PortraitMenuTests.InvalidSeedReportsTheLastValidValue(&quot;-2147483648&quot;,2026,null)" methodname="InvalidSeedReportsTheLastValidValue" classname="UI943PortraitMenuTests" runstate="Runnable" seed="69012391" result="Passed" start-time="2026-11-08 15:47:08Z" end-time="2026-11-08 15:47:08Z" duration="0.000041" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="2161" name="InvalidSeedReportsTheLastValidValue(&quot;42&quot;,2026,null)" fullname="UI943PortraitMenuTests.InvalidSeedReportsTheLastValidValue(&quot;42&quot;,2026,null)" methodname="InvalidSeedReportsTheLastValidValue" classname="UI943PortraitMenuTests" runstate="Runnable" seed="1984994775" result="Passed" start-time="2026-11-08 15:47:08Z" end-time="2026-11-08 15:47:08Z" duration="0.000029" asserts="0">
+            <properties />
+          </test-case>
+        </test-suite>
+        <test-case id="2163" name="LandscapeReadyMessagesDoNotOverlapControlsOrEachOther" fullname="UI943PortraitMenuTests.LandscapeReadyMessagesDoNotOverlapControlsOrEachOther" methodname="LandscapeReadyMessagesDoNotOverlapControlsOrEachOther" classname="UI943PortraitMenuTests" runstate="Runnable" seed="1386118723" result="Passed" start-time="2026-11-08 15:47:08Z" end-time="2026-11-08 15:47:08Z" duration="0.000883" asserts="0">
+          <properties />
+        </test-case>
+        <test-case id="2170" name="PortraitCardsAndActionsStayInsideCanvasWithoutCollisions" fullname="UI943PortraitMenuTests.PortraitCardsAndActionsStayInsideCanvasWithoutCollisions" methodname="PortraitCardsAndActionsStayInsideCanvasWithoutCollisions" classname="UI943PortraitMenuTests" runstate="Runnable" seed="265985384" result="Passed" start-time="2026-11-08 15:47:08Z" end-time="2026-11-08 15:47:08Z" duration="0.000941" asserts="0">
+          <properties />
+        </test-case>
+        <test-suite type="ParameterizedMethod" id="2169" name="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu" fullname="UI943PortraitMenuTests.PortraitLayoutIsSelectedOnlyForPortraitReadyMenu" classname="UI943PortraitMenuTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-11-08 15:47:08Z" end-time="2026-11-08 15:47:08Z" duration="0.001715" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-case id="2164" name="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(768,1024,True)" fullname="UI943PortraitMenuTests.PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(768,1024,True)" methodname="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu" classname="UI943PortraitMenuTests" runstate="Runnable" seed="142529073" result="Passed" start-time="2026-11-08 15:47:08Z" end-time="2026-11-08 15:47:08Z" duration="0.000773" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="2165" name="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(1024,768,False)" fullname="UI943PortraitMenuTests.PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(1024,768,False)" methodname="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu" classname="UI943PortraitMenuTests" runstate="Runnable" seed="1235774879" result="Passed" start-time="2026-11-08 15:47:08Z" end-time="2026-11-08 15:47:08Z" duration="0.000053" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="2166" name="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(1366,768,False)" fullname="UI943PortraitMenuTests.PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(1366,768,False)" methodname="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu" classname="UI943PortraitMenuTests" runstate="Runnable" seed="641612283" result="Passed" start-time="2026-11-08 15:47:08Z" end-time="2026-11-08 15:47:08Z" duration="0.000036" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="2167" name="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(1920,1080,False)" fullname="UI943PortraitMenuTests.PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(1920,1080,False)" methodname="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu" classname="UI943PortraitMenuTests" runstate="Runnable" seed="374366177" result="Passed" start-time="2026-11-08 15:47:08Z" end-time="2026-11-08 15:47:08Z" duration="0.000032" asserts="0">
+            <properties />
+          </test-case>
+          <test-case id="2168" name="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(3840,2160,False)" fullname="UI943PortraitMenuTests.PortraitLayoutIsSelectedOnlyForPortraitReadyMenu(3840,2160,False)" methodname="PortraitLayoutIsSelectedOnlyForPortraitReadyMenu" classname="UI943PortraitMenuTests" runstate="Runnable" seed="1485054319" result="Passed" start-time="2026-11-08 15:47:08Z" end-time="2026-11-08 15:47:08Z" duration="0.000033" asserts="0">
+            <properties />
+          </test-case>
+        </test-suite>
+      </test-suite>
+      <test-suite type="TestFixture" id="2171" name="UI943PortraitRewardsActionsTests" fullname="UI943PortraitRewardsActionsTests" classname="UI943PortraitRewardsActionsTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-08 15:47:15Z" end-time="2026-11-08 15:47:16Z" duration="0.618085" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="2174" name="BasketKeysSelectWithoutClaimAndAreIgnoredInInventory" fullname="UI943PortraitRewardsActionsTests.BasketKeysSelectWithoutClaimAndAreIgnoredInInventory" methodname="BasketKeysSelectWithoutClaimAndAreIgnoredInInventory" classname="UI943PortraitRewardsActionsTests" runstate="Runnable" seed="1652312773" result="Passed" start-time="2026-11-08 15:47:08Z" end-time="2026-11-08 15:47:12Z" duration="3.626628" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="2173" name="EscapeClosesRewardInventoryBeforePausingAndCancelsConfirmation" fullname="UI943PortraitRewardsActionsTests.EscapeClosesRewardInventoryBeforePausingAndCancelsConfirmation" methodname="EscapeClosesRewardInventoryBeforePausingAndCancelsConfirmation" classname="UI943PortraitRewardsActionsTests" runstate="Runnable" seed="1135695910" result="Passed" start-time="2026-11-08 15:47:12Z" end-time="2026-11-08 15:47:16Z" duration="3.786414" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[[R5] Seed=2026; pojazd=Light
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 20 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 24 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[R3] Wygrano starcie 1; Złom +80; stan=Salvage
+[EXIT273] Shutdown prepared: NativeClose
+Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
