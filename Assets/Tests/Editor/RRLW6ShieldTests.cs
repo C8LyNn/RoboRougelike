@@ -64,6 +64,22 @@ public class RRLW6ShieldPhysicalTests
         Assert.That(again.Charge,Is.EqualTo(60).Within(.001),"Rebuild cannot farm a full new shield charge");
         yield return null;
     }
+    [UnityTest] public IEnumerator EnemyShieldKeepsPassiveReservationDuringEmpUntilDestroyed()
+    {
+        var run=R1RunController.Instance;var enemy=run.Encounter.Enemies.First();
+        var bank=enemy.GetComponent<VehicleEnergyBank>();Assert.That(bank,Is.Not.Null);
+        float before=bank.Maximum;Assert.That(enemy.EquipDirectionalShield(),Is.True);
+        var binding=enemy.GetComponentInChildren<RoboRougelike.WeaponIntegration.RRLShieldBinding>();
+        RoboRougelike.WeaponIntegration.RRLEmpVehicleAdapter.Configure(enemy.transform);
+        var receiver=binding.GetComponent<RoboRougelike.Mechanics.EMP.EmpReceiver>();Assert.That(receiver,Is.Not.Null);
+        bank.Refresh();float reserved=bank.Maximum;Assert.That(reserved,Is.EqualTo(before-25));
+        receiver.ApplyEmp(2);Assert.That(receiver.IsDisrupted,Is.True);Assert.That(binding.Device.HardwareAvailable,Is.False);
+        bank.Refresh();Assert.That(bank.Maximum,Is.EqualTo(reserved),"EMP blocks operation but does not remove a mounted passive module.");
+        receiver.Advance(2);bank.Refresh();Assert.That(bank.Maximum,Is.EqualTo(reserved));
+        binding.Device.Damageable.ApplyDamage(100000,binding.transform.position,Vector3.up);
+        bank.Refresh();Assert.That(bank.Maximum,Is.EqualTo(before),"Destroying the shield releases its reservation.");
+        yield return null;
+    }
     [UnityTest] public IEnumerator ActualEnemyShieldSnapshotPreservesConditionChargeAndRotation()
     {
         var run=R1RunController.Instance;var enemy=run.Encounter.Enemies.First();
