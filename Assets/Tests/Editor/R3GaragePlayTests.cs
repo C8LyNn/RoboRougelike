@@ -180,6 +180,27 @@ public class R3GaragePlayTests
         Assert.That(body.position.x - before.x, Is.LessThan(-.3f), "Przy zablokowanych stycznych przeciwnik powinien wycofać się do środka areny.");
     }
 
+    [UnityTest] public IEnumerator RotatedEnemyObstacleSweepTracksItsActualOrientation()
+    {
+        var enemy=Run.Encounter.Enemies.First();enemy.SetCombatActive(false);
+        var body=enemy.GetComponent<Rigidbody>();body.isKinematic=true;
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        var extent=(Vector3)enemy.GetType().GetField("movementHalfExtents",flags).GetValue(enemy);
+        Assert.That(extent.x,Is.GreaterThan(extent.z+.1f),"The fixture needs a non-square enemy footprint.");
+        var origin=new Vector3(1000,2,1000);body.position=origin;body.rotation=Quaternion.Euler(0,90,0);
+        var wall=GameObject.CreatePrimitive(PrimitiveType.Cube);wall.name="Obstacle beside rotated enemy";
+        wall.transform.localScale=new Vector3(.1f,1,.1f);
+        wall.transform.position=origin+new Vector3((extent.x+extent.z)*.5f,.75f,extent.z+1);
+        Physics.SyncTransforms();yield return null;
+        var canMove=enemy.GetType().GetMethod("CanMove",flags);Assert.That(canMove,Is.Not.Null);
+        bool Sweep()=>(bool)canMove.Invoke(enemy,new object[]{Vector3.forward,2f,false});
+        Assert.That(Sweep(),Is.True,"An obstacle outside the rotated vehicle's sweep must not block it.");
+        wall.transform.position=origin+new Vector3(0,.75f,extent.x+1);
+        Physics.SyncTransforms();
+        Assert.That(Sweep(),Is.False,"A wall in front of the rotated vehicle must still block movement.");
+        UnityEngine.Object.Destroy(wall);
+    }
+
     [UnityTest] public IEnumerator TrappedUnarmedEnemyUsesDelayedBlastWithoutSlidingThroughWalls()
     {
         var enemy=Run.Encounter.Enemies.First();enemy.SetCombatActive(false);
