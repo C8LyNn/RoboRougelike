@@ -1,0 +1,154 @@
+{
+  "cases": [
+    {
+      "name": "ReadyIntroRect-inside",
+      "status": "PASS"
+    },
+    {
+      "name": "ReadyIntroRect-control-0",
+      "status": "PASS"
+    },
+    {
+      "name": "ReadyIntroRect-control-1",
+      "status": "PASS"
+    },
+    {
+      "name": "ReadyIntroRect-control-2",
+      "status": "PASS"
+    },
+    {
+      "name": "ReadyIntroRect-control-3",
+      "status": "PASS"
+    },
+    {
+      "name": "ReadyIntroRect-control-4",
+      "status": "PASS"
+    },
+    {
+      "name": "ReadyIntroRect-control-5",
+      "status": "PASS"
+    },
+    {
+      "name": "ReadyIntroRect-control-6",
+      "status": "PASS"
+    },
+    {
+      "name": "ReadyIntroRect-card-0",
+      "status": "PASS"
+    },
+    {
+      "name": "ReadyIntroRect-card-1",
+      "status": "PASS"
+    },
+    {
+      "name": "ReadyIntroRect-card-2",
+      "status": "PASS"
+    },
+    {
+      "name": "ReadySaveMessageRect-inside",
+      "status": "PASS"
+    },
+    {
+      "name": "ReadySaveMessageRect-message-0",
+      "status": "PASS"
+    },
+    {
+      "name": "ReadySaveMessageRect-control-0",
+      "status": "PASS"
+    },
+    {
+      "name": "ReadySaveMessageRect-control-1",
+      "status": "PASS"
+    },
+    {
+      "name": "ReadySaveMessageRect-control-2",
+      "status": "PASS"
+    },
+    {
+      "name": "ReadySaveMessageRect-control-3",
+      "status": "PASS"
+    },
+    {
+      "name": "ReadySaveMessageRect-control-4",
+      "status": "PASS"
+    },
+    {
+      "name": "ReadySaveMessageRect-control-5",
+      "status": "PASS"
+    },
+    {
+      "name": "ReadySaveMessageRect-control-6",
+      "status": "PASS"
+    },
+    {
+      "name": "ReadySaveMessageRect-card-0",
+      "status": "PASS"
+    },
+    {
+      "name": "ReadySaveMessageRect-card-1",
+      "status": "PASS"
+    },
+    {
+      "name": "ReadySaveMessageRect-card-2",
+      "status": "PASS"
+    },
+    {
+      "name": "ReadySeedWarningRect-inside",
+      "status": "PASS"
+    },
+    {
+      "name": "ReadySeedWarningRect-message-0",
+      "status": "PASS"
+    },
+    {
+      "name": "ReadySeedWarningRect-message-1",
+      "status": "PASS"
+    },
+    {
+      "name": "ReadySeedWarningRect-control-0",
+      "status": "PASS"
+    },
+    {
+      "name": "ReadySeedWarningRect-control-1",
+      "status": "PASS"
+    },
+    {
+      "name": "ReadySeedWarningRect-control-2",
+      "status": "PASS"
+    },
+    {
+      "name": "ReadySeedWarningRect-control-3",
+      "status": "PASS"
+    },
+    {
+      "name": "ReadySeedWarningRect-control-4",
+      "status": "PASS"
+    },
+    {
+      "name": "ReadySeedWarningRect-control-5",
+      "status": "PASS"
+    },
+    {
+      "name": "ReadySeedWarningRect-control-6",
+      "status": "PASS"
+    },
+    {
+      "name": "ReadySeedWarningRect-card-0",
+      "status": "PASS"
+    },
+    {
+      "name": "ReadySeedWarningRect-card-1",
+      "status": "PASS"
+    },
+    {
+      "name": "ReadySeedWarningRect-card-2",
+      "status": "PASS"
+    }
+  ],
+  "assembly_sha256": "A06BBE135D46121C6CA81F091452537C456A92CFD90E4EE11EE8A0B5709C571D",
+  "passed": 36,
+  "worktree_head": "38e7fe6e0144750b65b644ec1d69f35628acd85b",
+  "environment": "PowerShell/.NET; compiled HUD methods and Unity Rect; no Editor, Player, rendering or text measurement",
+  "compiled_source": "38e7fe6e0144750b65b644ec1d69f35628acd85b",
+  "failed": 0
+}
