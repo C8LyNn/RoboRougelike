@@ -25,9 +25,10 @@ namespace RoboRougelike.R1
         public int EditorScaleX=1,EditorScaleY=1,EditorScaleZ=1;
         public string EditorName="Moja mapa",EditorMessage="Wybierz element i kliknij siatkę.";
         string pendingMapOverwrite;
-        string savedMapSnapshot,pendingMapLoadPath,pendingMapLoadSnapshot;
+        string savedMapSnapshot,pendingMapLoadPath,pendingMapLoadSnapshot,pendingMapExitSnapshot;
         public bool MapLoadPending=>pendingMapLoadPath!=null;
-        void CancelMapLoad(){pendingMapLoadPath=null;pendingMapLoadSnapshot=null;}
+        public bool MapExitPending=>pendingMapExitSnapshot!=null;
+        void CancelMapLoad(){pendingMapLoadPath=null;pendingMapLoadSnapshot=null;pendingMapExitSnapshot=null;}
         public bool MapOverwritePending => pendingMapOverwrite!=null;
         public void CancelMapOverwrite(){pendingMapOverwrite=null;CancelMapLoad();}
         public bool EditorTextFocused;
@@ -100,6 +101,17 @@ namespace RoboRougelike.R1
             followCamera.Configure(Player.transform,Player.CameraPivot);Player.gameObject.SetActive(false);followCamera.enabled=false;
             EditorWorld.Build(EditorDraft,palette);editorGrid.SetActive(true);MapEditorTesting=false;MapEditing=true;
             yield return null;yield return null;Transitioning=false;UpdateEditorCamera();
+        }
+        public void ReturnFromMapEditorToMenu()
+        {
+            if(!MapEditing||Transitioning||EditorDraft==null)return;
+            string current=EditorDraft.ToJson();
+            if(current!=savedMapSnapshot&&pendingMapExitSnapshot!=current)
+            {
+                pendingMapExitSnapshot=current;
+                EditorMessage="Niezapisane zmiany zostaną utracone. Kliknij ponownie Powrót do menu, aby potwierdzić.";return;
+            }
+            pendingMapExitSnapshot=null;RestartRun();
         }
         public void SaveEditedMap()
         {
