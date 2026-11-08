@@ -68,6 +68,38 @@ public sealed class BacklogEnemyBatteryTierTests
         Assert.That(R6VehicleDrive.PartMass(tier3hp), Is.EqualTo(10.4f).Within(.01));
         yield return null;
     }
+    [UnityTest] public IEnumerator RealEnemyEnergyRefreshProfilerDiagnostic()
+    {
+        var run=R1RunController.Instance;Assert.That(run.StartRun()&&run.ChooseRoute(0),Is.True);
+        for(int i=0;i<300&&run.Transitioning;i++)yield return null;
+        Assert.That(run.Transitioning,Is.False);run.Encounter.SetCombatActive(false);
+        var enemy=run.Encounter.Enemies.Last();var bank=enemy.GetComponent<VehicleEnergyBank>();
+        Assert.That(enemy.GetComponentInChildren<VehicleEnergyBattery>(),Is.Not.Null);
+        for(int i=0;i<5;i++)bank.Refresh();
+        using(var recorder=Unity.Profiling.ProfilerRecorder.StartNew(Unity.Profiling.ProfilerCategory.Memory,"GC Allocated In Frame",16))
+        {
+            Assert.That(recorder.Valid,Is.True);yield return null;yield return null;
+            long idle=recorder.LastValue;const int iterations=1000;
+            for(int i=0;i<iterations;i++)bank.Refresh();
+            yield return null;
+            long measured=recorder.LastValue;
+            Debug.Log($"[ENEMY_ENERGY_FRAME] iterations={iterations} idle_bytes={idle} measured_bytes={measured}");
+            Assert.That(bank.Maximum,Is.EqualTo(600));
+        }
+    }
+    [UnityTest] public IEnumerator EnemyShieldReservationIsRemovedWhenDestroyed()
+    {
+        var run=R1RunController.Instance;Assert.That(run.StartRun()&&run.ChooseRoute(0),Is.True);
+        for(int i=0;i<300&&run.Transitioning;i++)yield return null;
+        Assert.That(run.Transitioning,Is.False);run.Encounter.SetCombatActive(false);
+        var enemy=run.Encounter.Enemies.Last();var bank=enemy.GetComponent<VehicleEnergyBank>();
+        Assert.That(bank.Maximum,Is.EqualTo(600));Assert.That(enemy.EquipDirectionalShield(),Is.True);
+        var shield=enemy.GetComponentInChildren<RoboRougelike.WeaponIntegration.RRLShieldBinding>();
+        Assert.That(shield,Is.Not.Null);bank.Refresh();Assert.That(bank.Maximum,Is.EqualTo(575));
+        shield.Device.Damageable.ApplyDamage(100000,shield.transform.position,Vector3.up);
+        bank.Refresh();Assert.That(bank.Maximum,Is.EqualTo(600));
+        yield return null;
+    }
     [UnityTearDown] public IEnumerator Cleanup()
     {
         if (Application.isPlaying) { Time.timeScale = 1; yield return new ExitPlayMode(); }
