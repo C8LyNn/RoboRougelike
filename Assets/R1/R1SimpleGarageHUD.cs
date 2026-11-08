@@ -295,7 +295,7 @@ namespace RoboRougelike.R1
             if(run.MapEditorSession){if(GUI.Button(new Rect(870,663,185,43),"Wróć do edytora",compactButton))run.ReturnToMapEditorFromGarage();}
             else if(GUI.Button(new Rect(870,663,185,43),"Testuj pojazd",compactButton))run.EnterTestRange();
             GUI.enabled=!garageOptionsOpen&&(run.SandboxWorkshop||model.CanDeploy);
-            if(GUI.Button(new Rect(1066,663,195,43),run.ReactorPrepared?"Broń reaktora":run.SandboxWorkshop?(run.MapExitPending?"Potwierdź powrót":"Menu główne"):"Następna trasa",compactButton))
+            if(GUI.Button(new Rect(1066,663,195,43),run.ReactorPrepared?"Broń reaktora":run.SandboxWorkshop?(run.MapReturnPending?"Potwierdź powrót":"Menu główne"):"Następna trasa",compactButton))
             {if(run.ReactorPrepared)run.ChooseReactorDefense();else if(run.SandboxWorkshop)run.RestartRun();else run.StartNextEncounter();}
             GUI.enabled=true;
             if(garageOptionsOpen)DrawSimpleGarageOptions(run);
@@ -359,7 +359,7 @@ namespace RoboRougelike.R1
             if(run.MapEditorSession){if(GUI.Button(new Rect(24,960,350,44),"Wróć do edytora",compactButton))run.ReturnToMapEditorFromGarage();}
             else if(GUI.Button(new Rect(24,960,350,44),"Testuj pojazd",compactButton))run.EnterTestRange();
             GUI.enabled=!garageOptionsOpen&&(run.SandboxWorkshop||model.CanDeploy);
-            if(GUI.Button(new Rect(394,960,350,44),run.ReactorPrepared?"Broń reaktora":run.SandboxWorkshop?(run.MapExitPending?"Potwierdź powrót":"Menu główne"):"Następna trasa",compactButton))
+            if(GUI.Button(new Rect(394,960,350,44),run.ReactorPrepared?"Broń reaktora":run.SandboxWorkshop?(run.MapReturnPending?"Potwierdź powrót":"Menu główne"):"Następna trasa",compactButton))
             {if(run.ReactorPrepared)run.ChooseReactorDefense();else if(run.SandboxWorkshop)run.RestartRun();else run.StartNextEncounter();}
             GUI.enabled=true;
             if(garageOptionsOpen)DrawSimplePortraitOptions(run);
