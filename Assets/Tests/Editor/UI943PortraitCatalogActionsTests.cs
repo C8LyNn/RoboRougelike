@@ -23,6 +23,34 @@ public sealed class UI943PortraitCatalogActionsTests
     static object Field(R1RunHUD hud,string name)=>typeof(R1RunHUD).GetField(name,BindingFlags.Instance|BindingFlags.NonPublic).GetValue(hud);
     static bool ContainsId(R3VehicleModel model,string id)=>model.Inventory.Any(p=>p.Id==id);
 
+    [TestCase(true,"stary błąd",null)]
+    [TestCase(false,"Pojazd jest zbyt szeroki.","Pojazd jest zbyt szeroki.")]
+    [TestCase(false,null,"Nie udało się uruchomić aktywności.")]
+    [TestCase(false,"   ","Nie udało się uruchomić aktywności.")]
+    public void ActivityLaunchFeedbackUsesOnlyCurrentResult(bool started,string detail,string expected)
+    {
+        var method=typeof(R1RunHUD).GetMethod("ActivityLaunchResult",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        Assert.That((string)method.Invoke(null,new object[]{started,detail}),Is.EqualTo(expected));
+    }
+
+    [UnityTest] public IEnumerator FailedActivityLaunchDisplaysCurrentReasonWithoutReusingOldMessage()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float timeout=Time.realtimeSinceStartup+15;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<timeout)yield return null;
+        var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        Assert.That(run.OpenSandboxGarage(),Is.True);
+        var hud=run.GetComponent<R1RunHUD>();run.Garage.Message="Stary komunikat";
+        Invoke(hud,"AttemptGarageActivity",run,new Func<bool>(()=>false));
+        Assert.That((string)Field(hud,"activitySaveFeedback"),Is.EqualTo("Nie udało się uruchomić aktywności."));
+        Invoke(hud,"AttemptGarageActivity",run,new Func<bool>(()=>{run.Garage.Message="Pojazd jest zbyt szeroki.";return false;}));
+        Assert.That((string)Field(hud,"activitySaveFeedback"),Is.EqualTo("Pojazd jest zbyt szeroki."));
+        Invoke(hud,"AttemptGarageActivity",run,new Func<bool>(()=>true));
+        Assert.That(Field(hud,"activitySaveFeedback"),Is.Null);
+        yield return null;
+    }
+
     [TestCase(false,R3PartKind.Armor,true,5,100,0,"chwilowo")]
     [TestCase(true,R3PartKind.BonusModule,true,5,100,0,"nagród")]
     [TestCase(true,R3PartKind.Gun,false,10,100,0,"Technologia")]
