@@ -39,4 +39,6 @@ Po naprawie kilku egzemplarzy z magazynu sprawdź, czy widok nie przeskakuje, po
 
 Sprawdź też rozmontowanie egzemplarza: pierwsze kliknięcie ma poprosić o potwierdzenie bez zmiany złomu, drugie usunąć właściwą część i raz przyznać wskazaną kwotę. Widok pojazdu nie powinien się przebudowywać. Ta optymalizacja również oczekuje testów Unity i nie występuje w ZIP-ie 5b21.
 
+Na kolejnym buildzie rozpocznij potwierdzenie rozmontowania, ale zamknij katalog, zmień grupę lub napraw część. Po powrocie pierwsze kliknięcie rozmontowania powinno ponownie prosić o potwierdzenie. Ta poprawka również nie występuje w ZIP-ie 5b21.
+
 Kod gry i kod testów do zmian garażu skompilowano lokalnie w C# na stanie `f62ce4f9`; testy Unity nie zostały uruchomione. Szczegóły i ograniczenia tej kontroli: `Docs/GARAGE_LOCAL_CSHARP_COMPILE_QA.md`.

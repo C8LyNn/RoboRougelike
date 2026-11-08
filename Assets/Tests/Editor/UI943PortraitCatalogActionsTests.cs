@@ -22,6 +22,38 @@ public sealed class UI943PortraitCatalogActionsTests
     static object Field(R1RunHUD hud,string name)=>typeof(R1RunHUD).GetField(name,BindingFlags.Instance|BindingFlags.NonPublic).GetValue(hud);
     static bool ContainsId(R3VehicleModel model,string id)=>model.Inventory.Any(p=>p.Id==id);
 
+    [UnityTest] public IEnumerator DismantleConfirmationResetsAfterGroupChangeAndCatalogClose()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float timeout=Time.realtimeSinceStartup+15;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<timeout)yield return null;
+        var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        Assert.That(run.OpenSandboxGarage(),Is.True);run.VehicleModel.Award(100);
+        Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
+        var item=run.VehicleModel.Inventory.Last();var hud=run.GetComponent<R1RunHUD>();Field(hud,"catalogOpen",true);
+        int scrap=run.VehicleModel.Scrap;
+        Invoke(hud,"PortraitCatalogDismantle",run,item.Id);
+        Invoke(hud,"PortraitCatalogSelectGroup",run,R3PartKind.Armor,R4WeaponKind.Basic,null);
+        Invoke(hud,"PortraitCatalogDismantle",run,item.Id);
+        Assert.That(ContainsId(run.VehicleModel,item.Id),Is.True,"Changing group must cancel a previous confirmation.");
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));
+        Assert.That((bool)Invoke(hud,"ClosePartCatalog"),Is.True);Field(hud,"catalogOpen",true);
+        Invoke(hud,"PortraitCatalogDismantle",run,item.Id);
+        Assert.That(ContainsId(run.VehicleModel,item.Id),Is.True,"Reopening the catalog must require a fresh confirmation.");
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));
+        item.Health=.5f;int repair=run.VehicleModel.RepairCost(item);
+        Invoke(hud,"PortraitCatalogRepair",run,item.Id);
+        Assert.That(item.Health,Is.EqualTo(1));scrap-=repair;
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));
+        Invoke(hud,"PortraitCatalogDismantle",run,item.Id);
+        Assert.That(ContainsId(run.VehicleModel,item.Id),Is.True,"Repair must cancel a previous dismantle confirmation.");
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));
+        int value=run.VehicleModel.DismantleValue(item);
+        Invoke(hud,"PortraitCatalogDismantle",run,item.Id);
+        Assert.That(ContainsId(run.VehicleModel,item.Id),Is.False);
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap+value));
+    }
+
     [UnityTest] public IEnumerator DestroyedItemKeepsCatalogOpenUntilRepaired()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();

@@ -22,7 +22,7 @@ namespace RoboRougelike.R1
             GUI.DrawTexture(new Rect(0,0,768,1024),Texture2D.whiteTexture);GUI.color=before;
             GUI.Label(new Rect(24,20,520,40),"KATALOG CZĘŚCI • MAGAZYN",heading);
             GUI.Label(new Rect(24,80,720,26),$"Złom: {run.VehicleModel.Scrap} • wybierz grupę i egzemplarz według HP",body);
-            if(GUI.Button(PortraitCatalogBackRect(),"Wróć do garażu",compactButton)){catalogOpen=false;return;}
+            if(GUI.Button(PortraitCatalogBackRect(),"Wróć do garażu",compactButton)){DismissCatalog();return;}
             GUI.Label(new Rect(24,110,346,25),"Grupy części",body);
             GUI.Label(new Rect(390,110,354,55),"Egzemplarze w magazynie",body);
 
@@ -113,22 +113,24 @@ namespace RoboRougelike.R1
 
         private void PortraitCatalogSelectGroup(R1RunController run,R3PartKind kind,R4WeaponKind weapon,string bonus)
         {
-            catalogGroup=kind;catalogWeapon=weapon;catalogBonusId=bonus;stackScroll=Vector2.zero;
+            catalogGroup=kind;catalogWeapon=weapon;catalogBonusId=bonus;stackScroll=Vector2.zero;dismantleConfirmation=null;
             var garage=run.Garage;garage.SelectedPart=kind;garage.SelectedWeapon=weapon;
             garage.SelectedInventoryId=null;garage.UseInventory=true;garage.SetTool(R41GarageTool.Mount);inventoryOpen=true;
         }
         private void PortraitCatalogSelectItem(R1RunController run,string id)=>SelectCatalogItem(run,id);
         private void PortraitCatalogPurchase(R1RunController run,R3PartKind kind,R4WeaponKind weapon)
         {
+            dismantleConfirmation=null;
             if(run.GaragePurchase(kind,weapon,kind==R3PartKind.Wheel?CatalogWheelStyle(catalogBonusId):R3WheelStyle.Offroad,
                 kind==R3PartKind.Armor?CatalogArmorShape(catalogBonusId):R3ArmorShape.Cube))
             {
-                var purchased=run.VehicleModel.Inventory.Last();run.Garage.ChooseInventory(purchased.Id);catalogOpen=false;
+                var purchased=run.VehicleModel.Inventory.Last();run.Garage.ChooseInventory(purchased.Id);DismissCatalog();
                 run.Garage.Message="Kupiono część. Kliknij pojazd, aby ją zamontować.";
             }
             else run.Garage.Message="Nie udało się kupić części.";
         }
-        private void PortraitCatalogRepair(R1RunController run,string id)=>run.GarageRepairInventory(id);
+        private void PortraitCatalogRepair(R1RunController run,string id)
+        {dismantleConfirmation=null;run.GarageRepairInventory(id);}
         private void PortraitCatalogDismantle(R1RunController run,string id)
         {
             if(dismantleConfirmation==id){run.GarageDismantle(id);dismantleConfirmation=null;}
