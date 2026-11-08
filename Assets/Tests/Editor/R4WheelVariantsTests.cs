@@ -386,6 +386,28 @@ public sealed class R4WheelVariantsTests
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Standard,model.Economy,Time.time,out var restored,out var error),Is.True,error);
         Assert.That(restored.Parts.Single(p=>p.Id==purchased.Id).WheelStyle,Is.EqualTo(style));
     }
+    [UnityTest]public IEnumerator CasterFollowsVelocityAndKeepsTyreAlignedWithArt()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
+        var model=run.VehicleModel;model.Award(1000);var style=(R3WheelStyle)10;
+        Assert.That(run.GaragePurchase(R3PartKind.Wheel,default,style),Is.True);
+        Assert.That(model.Inventory.Last().ContactMask,Is.EqualTo(R3MountingGrid.FaceBit(Vector3Int.up)));
+        Assert.That(R3VehicleModel.WheelRadius(style),Is.EqualTo(.17f).Within(.001f));
+        var owner=new GameObject("caster QA");var body=owner.AddComponent<Rigidbody>();body.useGravity=false;
+        var block=GameObject.CreatePrimitive(PrimitiveType.Cube);block.transform.SetParent(owner.transform,false);block.transform.localScale=Vector3.one*R41PartGeometry.BlockSize;
+        var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));R41PartGeometry.ConfigureWheelMount(block,style);
+        var wheel=R41PartGeometry.Payload(block.transform,R3PartKind.Wheel,default,material,true,out _,style);
+        var art=R4WheelArt.TryAttach(block.transform,wheel,false,style);Assert.That(art,Is.Not.Null);
+        var socket=block.GetComponentsInChildren<Transform>(true).Single(t=>t.name=="Socket_Mount");
+        var swivel=block.GetComponentsInChildren<Transform>(true).Single(t=>t.name=="R4M_WheelS_Caster_Slick_Swivel");
+        var rotor=block.GetComponentsInChildren<Transform>(true).Single(t=>t.name=="R4M_WheelS_Caster_Slick_Rotor");
+        var before=swivel.localRotation;var fixedSocket=socket.localPosition;body.linearVelocity=Vector3.right*3;
+        for(int i=0;i<15;i++)yield return new WaitForFixedUpdate();
+        Assert.That(Quaternion.Angle(swivel.localRotation,before),Is.GreaterThan(15),"Swivel must follow travel direction.");
+        Assert.That(Vector3.Distance(wheel.position,rotor.position),Is.LessThan(.01f),"Collider and imported axle must move together.");
+        Assert.That(Vector3.Distance(socket.localPosition,fixedSocket),Is.LessThan(.001f));
+        Object.Destroy(owner);Object.Destroy(material);
+    }
     [UnityTest]public IEnumerator LargeWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.LargeOffroad);}
     [UnityTest]public IEnumerator MonsterWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.Monster);}
     [UnityTest]public IEnumerator SmallForkWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.SmallFork);}
