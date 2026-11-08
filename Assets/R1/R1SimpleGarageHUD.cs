@@ -25,6 +25,7 @@ namespace RoboRougelike.R1
                 kind==R3PartKind.DrivePower?$"Silnik T{R3VehicleModel.NormalizedTier(part.Tier)} wspomaga koła; rezerwuje {25+R3VehicleModel.TierPassiveExtra(part.Tier):0} energii.":
                 kind==R3PartKind.EnergyRegenerator?$"Regenerator T{R3VehicleModel.NormalizedTier(part.Tier)}: +{5*R3VehicleModel.TierEffectUnits(part.Tier)} energii/s, rezerwa {25+R3VehicleModel.TierPassiveExtra(part.Tier):0}.":
                 kind==R3PartKind.Armor&&part.ArmorShape==R3ArmorShape.Wedge?"Klin: montaż od spodu lub od tylnej płaskiej ściany. Obracaj Q/E, R/F, Z/X.":
+                kind==R3PartKind.Wheel&&part.WheelStyle==R3WheelStyle.BalloonFork?"Koło balonowe: 16 kg, +15% siły przyczepności. U: widok od spodu.":
                 kind==R3PartKind.Wheel&&part.WheelStyle==R3WheelStyle.SmallFork?"Małe koło: 6 kg, −35% siły przyczepności. PPM: spójrz pod pojazd i zamontuj od spodu.":
                 kind==R3PartKind.Wheel&&part.WheelStyle==R3WheelStyle.Monster?"Koło monster XL: 24 kg i +50% siły przyczepności. Potrzebuje dużo miejsca.":
                 kind==R3PartKind.Wheel&&part.WheelStyle==R3WheelStyle.LargeOffroad?"Duże koło: 18 kg i +25% siły przyczepności. Potrzebuje więcej miejsca.":
@@ -35,6 +36,7 @@ namespace RoboRougelike.R1
                     kind==R3PartKind.DrivePower?"Silnik wspomaga koła; zajmuje 25 maks. energii. Kup część lub otwórz szczegóły.":
                     kind==R3PartKind.EnergyRegenerator?"Regenerator: +5 energii/s, −25 maks. energii. Kup część lub otwórz szczegóły.":
                     kind==R3PartKind.Armor&&CatalogArmorShape(bonus)==R3ArmorShape.Wedge?"Klin 1×1×1: mocowanie od spodu i z tyłu. Kup część.":
+                    kind==R3PartKind.Wheel&&CatalogWheelStyle(bonus)==R3WheelStyle.BalloonFork?"Koło balonowe: 16 kg, +15% siły przyczepności. Mocowanie od góry.":
                     kind==R3PartKind.Wheel&&CatalogWheelStyle(bonus)==R3WheelStyle.SmallFork?"Małe koło: 6 kg, −35% siły przyczepności. Mocowanie od góry.":
                     kind==R3PartKind.Wheel&&CatalogWheelStyle(bonus)==R3WheelStyle.Monster?"Koło monster XL: 24 kg, +50% siły przyczepności. Kup część.":
                     kind==R3PartKind.Wheel&&CatalogWheelStyle(bonus)==R3WheelStyle.LargeOffroad?"Duże koło: 18 kg, +25% siły przyczepności. Kup część.":"Brak sprawnej części w magazynie. Kup nową lub otwórz szczegóły.";}
@@ -56,7 +58,7 @@ namespace RoboRougelike.R1
         {
             var model=run.VehicleModel;
             var bonuses=model.Inventory.Where(p=>p.Kind==R3PartKind.BonusModule).Select(p=>p.UpgradeId).Distinct().ToArray();
-            int count=shopKinds.Length+9+R4WeaponDefinition.Count+bonuses.Length;
+            int count=shopKinds.Length+10+R4WeaponDefinition.Count+bonuses.Length;
             quickPartsScroll=GUI.BeginScrollView(area,quickPartsScroll,new Rect(0,0,rowWidth,Mathf.Max(area.height,count*38)));
             int row=0;
             for(int i=0;i<shopKinds.Length;i++)
@@ -71,7 +73,8 @@ namespace RoboRougelike.R1
                 if(kind==R3PartKind.Wheel)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,SlickWheelGroup,"Koło szosowe",row++,rowWidth);
                 if(kind==R3PartKind.Wheel)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,LargeWheelGroup,"Duże koło terenowe",row++,rowWidth);
                 if(kind==R3PartKind.Wheel)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,MonsterWheelGroup,"Koło monster XL",row++,rowWidth);
-                if(kind==R3PartKind.Wheel)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,SmallWheelGroup,"Małe koło drogowe",row++,rowWidth);}
+                if(kind==R3PartKind.Wheel)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,SmallWheelGroup,"Małe koło drogowe",row++,rowWidth);
+                if(kind==R3PartKind.Wheel)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,BalloonWheelGroup,"Koło balonowe",row++,rowWidth);}
             for(int i=0;i<R4WeaponDefinition.Count;i++)
             {var weapon=(R4WeaponKind)i;DrawQuickPartRow(run,R3PartKind.Gun,weapon,null,R4WeaponDefinition.Get(weapon).Name,row++,rowWidth);}
             foreach(var bonus in bonuses)
@@ -121,7 +124,7 @@ namespace RoboRougelike.R1
                 catalogGroup.HasValue?"Wybierz egzemplarz lub kup część.":"Wybierz część z listy.",small);
             var inspectedWheel=garage.Tool==R41GarageTool.Inspect&&garage.HasTarget?model.At(garage.Cell):null;
             if(inspectedWheel!=null&&inspectedWheel.Kind==R3PartKind.Wheel&&!R3VehicleModel.CanSwapWheelAppearance(inspectedWheel.WheelStyle))
-                GUI.Label(new Rect(12,560,245,42),inspectedWheel.WheelStyle==R3WheelStyle.SmallFork?"Małe koło • 6 kg • −35% napędu":inspectedWheel.WheelStyle==R3WheelStyle.Monster?"Monster XL • 24 kg • +50% napędu":"Duże koło • 18 kg • +25% napędu",small);
+                GUI.Label(new Rect(12,560,245,42),inspectedWheel.WheelStyle==R3WheelStyle.SmallFork?"Małe koło • 6 kg • −35% napędu":inspectedWheel.WheelStyle==R3WheelStyle.BalloonFork?"Balonowe • 16 kg • +15% napędu":inspectedWheel.WheelStyle==R3WheelStyle.Monster?"Monster XL • 24 kg • +50% napędu":"Duże koło • 18 kg • +25% napędu",small);
             else if(inspectedWheel!=null&&inspectedWheel.Kind==R3PartKind.Wheel)
             {
                 GUI.enabled=!garageOptionsOpen&&inspectedWheel.Health>0;
@@ -183,7 +186,7 @@ namespace RoboRougelike.R1
                 "Wybierz część z listy.",small);
             var inspectedWheel=garage.Tool==R41GarageTool.Inspect&&garage.HasTarget?model.At(garage.Cell):null;
             if(inspectedWheel!=null&&inspectedWheel.Kind==R3PartKind.Wheel&&!R3VehicleModel.CanSwapWheelAppearance(inspectedWheel.WheelStyle))
-                GUI.Label(new Rect(458,690,286,40),inspectedWheel.WheelStyle==R3WheelStyle.SmallFork?"Małe koło • 6 kg • −35% napędu":inspectedWheel.WheelStyle==R3WheelStyle.Monster?"Monster XL • 24 kg • +50% napędu":"Duże koło • 18 kg • +25% napędu",small);
+                GUI.Label(new Rect(458,690,286,40),inspectedWheel.WheelStyle==R3WheelStyle.SmallFork?"Małe koło • 6 kg • −35% napędu":inspectedWheel.WheelStyle==R3WheelStyle.BalloonFork?"Balonowe • 16 kg • +15% napędu":inspectedWheel.WheelStyle==R3WheelStyle.Monster?"Monster XL • 24 kg • +50% napędu":"Duże koło • 18 kg • +25% napędu",small);
             else if(inspectedWheel!=null&&inspectedWheel.Kind==R3PartKind.Wheel)
             {
                 GUI.enabled=!garageOptionsOpen&&inspectedWheel.Health>0;

@@ -54,7 +54,7 @@ namespace RoboRougelike.R4_1
         }
         public static void ConfigureWheelMount(GameObject block,R3WheelStyle style)
         {
-            if(style!=R3WheelStyle.SmallFork)return;
+            if(!R3VehicleModel.HasForkMount(style))return;
             var box=block.GetComponent<BoxCollider>();if(box==null)throw new System.InvalidOperationException("Missing wheel mounting collider.");
             // The small fork has a compact upper hub rather than the former
             // full cell cube, which would touch ground before the small tire.
@@ -140,11 +140,11 @@ namespace RoboRougelike.R4_1
                 // Place the physical axle there as well so its actual side socket
                 // remains centered against the neighboring block face.
                 float axle=R3VehicleModel.WheelAxleOffset(wheelStyle);
-                wheel.localPosition=wheelStyle==R3WheelStyle.SmallFork?new Vector3(0,-.075f/BlockSize,0):R3VehicleModel.HasSizedSideWheel(wheelStyle)?
+                wheel.localPosition=R3VehicleModel.HasForkMount(wheelStyle)?new Vector3(0,-R3VehicleModel.ForkAxleDrop(wheelStyle)/BlockSize,0):R3VehicleModel.HasSizedSideWheel(wheelStyle)?
                     new Vector3((mirrorWheel ? -axle : axle)/BlockSize,0,0):new Vector3(0,-0.5f,0);
                 wheel.localRotation=Quaternion.Euler(0,0,90);
                 float diameterScale=R3VehicleModel.WheelRadius(wheelStyle)/(.5f*BlockSize);
-                wheel.localScale=new Vector3(diameterScale,R3VehicleModel.HasSizedSideWheel(wheelStyle)||wheelStyle==R3WheelStyle.SmallFork ? R3VehicleModel.WheelWidth(wheelStyle)/(2*BlockSize) : .35f,diameterScale);
+                wheel.localScale=new Vector3(diameterScale,R3VehicleModel.HasSizedSideWheel(wheelStyle)||R3VehicleModel.HasForkMount(wheelStyle) ? R3VehicleModel.WheelWidth(wheelStyle)/(2*BlockSize) : .35f,diameterScale);
                 if(solid){
                     // A short CapsuleCollider becomes a sphere under this axle
                     // scale and penetrates the supporting armor by ~10cm.
