@@ -406,7 +406,7 @@ public sealed class R4WheelVariantsTests
         while(Time.fixedTime-begin<.3f&&Time.realtimeSinceStartup<deadline)yield return new WaitForFixedUpdate();
         Assert.That(Time.fixedTime-begin,Is.GreaterThanOrEqualTo(.3f),"Physics time must advance.");
         Assert.That(Quaternion.Angle(swivel.localRotation,before),Is.GreaterThan(15),"Swivel must follow travel direction.");
-        Assert.That(Vector3.Distance(wheel.position,rotor.position),Is.LessThan(.01f),"Collider and imported axle must move together.");
+        Assert.That(Vector3.Distance(wheel.position,rotor.position),Is.LessThan(.01f),$"Collider and imported axle must move together. physical={block.transform.InverseTransformPoint(wheel.position)}, rotor={block.transform.InverseTransformPoint(rotor.position)}, swivel={block.transform.InverseTransformPoint(swivel.position)}");
         Assert.That(Vector3.Distance(socket.localPosition,fixedSocket),Is.LessThan(.001f));
         Object.Destroy(owner);Object.Destroy(material);
     }
