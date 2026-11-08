@@ -70,11 +70,9 @@ public sealed class EnergyCombatRefinementTests
     [Test] public void PurchasingAddsIndividualPartsToInventoryBeforeMounting()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(100);
-        var method=typeof(R3VehicleModel).GetMethod("PurchaseToInventory");
-        Assert.That(method,Is.Not.Null,"The catalog must purchase into inventory, not directly mount.");
         int before=model.Scrap,price=model.Price(R3PartKind.Wheel);
-        Assert.That((bool)method.Invoke(model,new object[]{R3PartKind.Wheel,RoboRougelike.R4.R4WeaponKind.Basic}),Is.True);
-        Assert.That((bool)method.Invoke(model,new object[]{R3PartKind.Wheel,RoboRougelike.R4.R4WeaponKind.Basic}),Is.True);
+        Assert.That(model.PurchaseToInventory(R3PartKind.Wheel),Is.True);
+        Assert.That(model.PurchaseToInventory(R3PartKind.Wheel),Is.True);
         var items=model.Inventory.Where(p=>p.Kind==R3PartKind.Wheel).ToArray();
         Assert.That(items.Length,Is.EqualTo(2));Assert.That(items[0].Id,Is.Not.EqualTo(items[1].Id));
         Assert.That(items.All(p=>p.Health==1),Is.True);Assert.That(model.Scrap,Is.EqualTo(before-2*price));
