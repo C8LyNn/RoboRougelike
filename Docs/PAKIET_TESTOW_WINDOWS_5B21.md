@@ -56,3 +56,5 @@ W kolejnym buildzie wybierz w garażu „Zaznacz” i wskaż sprawny, a następn
 Ten sam podgląd powinien pojawić się również przed kliknięciem części w trybach „Napraw” i „Zdejmij”, aby można było sprawdzić jej stan. Zamiana wyglądu koła pozostaje dostępna tylko przy „Zaznacz”. Oba przypadki wymagają ręcznej kontroli w nowym buildzie.
 
 Sprawdź stos zawierający wyłącznie zniszczone egzemplarze: lista części powinna zachować jego łączną liczbę i dopisać „napraw”. Po naprawieniu jednego egzemplarza oznaczenie powinno zniknąć. Pusty stos nie powinien sugerować naprawy; przy niedostępnej technologii nadal pokazuje blokadę. Przygotowane przypadki testowe Unity i rzeczywisty wygląd etykiet pozostają NOT RUN; starszy ZIP nie zawiera zmiany.
+
+Jeżeli masz bonusy tego samego rodzaju na różnych poziomach, sprawdź ich stos: nazwa grupy nie powinna sugerować poziomu pierwszego egzemplarza, a poziomy poszczególnych części powinny pozostać widoczne w ich szczegółach. Test Unity i ręczna kontrola obu układów: NOT RUN; ZIP 5b21 nie zawiera tej zmiany.

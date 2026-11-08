@@ -62,7 +62,7 @@ namespace RoboRougelike.R1
             foreach(var bonus in bonuses)
             {
                 var item=model.Inventory.First(p=>p.Kind==R3PartKind.BonusModule&&p.UpgradeId==bonus);
-                DrawPortraitCatalogGroup(run,R3PartKind.BonusModule,R4WeaponKind.Basic,bonus,R4WeaponDefinition.PartName(item),row++);
+                DrawPortraitCatalogGroup(run,R3PartKind.BonusModule,R4WeaponKind.Basic,bonus,CatalogBonusGroupName(item),row++);
             }
             GUI.EndScrollView();GUI.backgroundColor=Color.white;
 
@@ -75,7 +75,7 @@ namespace RoboRougelike.R1
             var items=model.Inventory.Where(p=>InCatalogGroup(p,selectedKind,selectedWeapon,catalogBonusId)).ToArray();
             string name=selectedKind==R3PartKind.Armor?R4WeaponDefinition.ArmorName(CatalogArmorShape(catalogBonusId)):
                 selectedKind==R3PartKind.Wheel?R4WeaponDefinition.WheelName(CatalogWheelStyle(catalogBonusId)):
-                selectedKind==R3PartKind.BonusModule&&items.Length>0?R4WeaponDefinition.PartName(items[0]):R4WeaponDefinition.PartName(selectedKind,selectedWeapon);
+                selectedKind==R3PartKind.BonusModule&&items.Length>0?CatalogBonusGroupName(items[0]):R4WeaponDefinition.PartName(selectedKind,selectedWeapon);
             GUI.Label(new Rect(390,145,354,28),$"{name} × {items.Length}",small);
             var viewport=PortraitCatalogItemsViewport();
             stackScroll=GUI.BeginScrollView(viewport,stackScroll,new Rect(0,0,330,Mathf.Max(viewport.height,items.Length*108)));

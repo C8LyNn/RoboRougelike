@@ -171,7 +171,7 @@ namespace RoboRougelike.R1
             {var weapon=(R4WeaponKind)i;DrawQuickPartRow(run,R3PartKind.Gun,weapon,null,R4WeaponDefinition.Get(weapon).Name,row++,rowWidth);}
             if(QuickCategoryIncludes(quickPartCategory,R3PartKind.BonusModule))foreach(var bonus in bonuses)
             {var item=model.Inventory.First(p=>p.Kind==R3PartKind.BonusModule&&p.UpgradeId==bonus);
-                DrawQuickPartRow(run,R3PartKind.BonusModule,R4WeaponKind.Basic,bonus,R4WeaponDefinition.PartName(item),row++,rowWidth);}
+                DrawQuickPartRow(run,R3PartKind.BonusModule,R4WeaponKind.Basic,bonus,CatalogBonusGroupName(item),row++,rowWidth);}
             GUI.EndScrollView();GUI.backgroundColor=Color.white;
         }
 

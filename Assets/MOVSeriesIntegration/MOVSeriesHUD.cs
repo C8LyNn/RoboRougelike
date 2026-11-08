@@ -86,7 +86,7 @@ namespace RoboRougelike.R1
             for(int i=0;i<R4WeaponDefinition.Count;i++)
             {var weapon=(R4WeaponKind)i;DrawCatalogRow(run,R3PartKind.Gun,weapon,null,R4WeaponDefinition.Get(weapon).Name,row++);}
             foreach(var bonus in bonuses)
-            {var item=model.Inventory.First(p=>p.Kind==R3PartKind.BonusModule&&p.UpgradeId==bonus);DrawCatalogRow(run,R3PartKind.BonusModule,R4WeaponKind.Basic,bonus,R4WeaponDefinition.PartName(item),row++);}
+            {var item=model.Inventory.First(p=>p.Kind==R3PartKind.BonusModule&&p.UpgradeId==bonus);DrawCatalogRow(run,R3PartKind.BonusModule,R4WeaponKind.Basic,bonus,CatalogBonusGroupName(item),row++);}
             GUI.EndScrollView();GUI.backgroundColor=Color.white;
             DrawInventory(run);
             if(!string.IsNullOrEmpty(catalogFeedback))GUI.Label(new Rect(25,675,900,30),catalogFeedback,small);
@@ -95,6 +95,8 @@ namespace RoboRougelike.R1
             item.Kind==kind&&(kind!=R3PartKind.Gun||item.Weapon==weapon)&&(kind!=R3PartKind.BonusModule||item.UpgradeId==bonus)&&
             (kind!=R3PartKind.Wheel||item.WheelStyle==CatalogWheelStyle(bonus))&&
             (kind!=R3PartKind.Armor||item.ArmorShape==CatalogArmorShape(bonus));
+        static string CatalogBonusGroupName(R3PartState part) =>
+            string.IsNullOrWhiteSpace(part.UpgradeTitle)?"Moduł bonusu":part.UpgradeTitle;
         static string CatalogStackCaption(string name,int count,bool usable,bool unlocked) =>
             $"{name} × {count}"+(count>0&&!usable?" • napraw":!unlocked?" • blokada":"");
         string CatalogGroupCaption(R1RunController run,R3PartKind kind,R4WeaponKind weapon,string bonus,string name)
