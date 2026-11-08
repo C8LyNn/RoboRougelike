@@ -1,6 +1,10 @@
 using System.Reflection;
+using System.Collections;
+using System.Linq;
 using NUnit.Framework;
 using RoboRougelike.R1;
+using RoboRougelike.R3;
+using RoboRougelike.R4;
 using UnityEngine;
 
 public sealed class UI943PortraitCatalogTests
@@ -46,5 +50,31 @@ public sealed class UI943PortraitCatalogTests
             Assert.That(group.height,Is.GreaterThanOrEqualTo(44));
             Assert.That(item.height,Is.LessThanOrEqualTo(108));
         }
+    }
+
+    [TestCase("Koło skrętne drogowe","kolo",true)]
+    [TestCase("Żyroskop","ZYRO",true)]
+    [TestCase("Pancerz • zaokrąglenie","okrag",true)]
+    [TestCase("Rocket Launcher","launcher",true)]
+    [TestCase("Koło terenowe","laser",false)]
+    [TestCase("Koło terenowe","   ",true)]
+    public void SearchMatchesNamesWithoutCaseOrPolishDiacritics(string name,string query,bool expected)
+    {
+        var method=typeof(R1RunHUD).GetMethod("CatalogNameMatches",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        Assert.That((bool)method.Invoke(null,new object[]{name,query}),Is.EqualTo(expected));
+    }
+
+    [Test] public void SharedCatalogContainsAllDistinctBaseGroups()
+    {
+        var model=new R3VehicleModel(new R3VehicleDesign());
+        var method=typeof(R1RunHUD).GetMethod("BuildCatalogEntries",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        var entries=((IEnumerable)method.Invoke(null,new object[]{model})).Cast<object>().ToArray();
+        object Field(object entry,string name)=>entry.GetType().GetField(name).GetValue(entry);
+        Assert.That(entries.Count(e=>(R3PartKind)Field(e,"Kind")==R3PartKind.Wheel),Is.EqualTo(12));
+        Assert.That(entries.Count(e=>(R3PartKind)Field(e,"Kind")==R3PartKind.Armor),Is.EqualTo(7));
+        Assert.That(entries.Count(e=>(R3PartKind)Field(e,"Kind")==R3PartKind.Gun),Is.EqualTo(R4WeaponDefinition.Count));
+        Assert.That(entries.Select(e=>(Field(e,"Kind"),Field(e,"Weapon"),Field(e,"Group"))).Distinct().Count(),Is.EqualTo(entries.Length));
     }
 }

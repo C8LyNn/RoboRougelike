@@ -378,5 +378,27 @@ public sealed class UI943PortraitCatalogActionsTests
         }
         yield return null;
     }
+    [UnityTest] public IEnumerator SearchClearsOldSelectionWithoutChangingInventoryOrWallet()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float timeout=Time.realtimeSinceStartup+15;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<timeout)yield return null;
+        var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        Assert.That(run.OpenSandboxGarage(),Is.True);run.VehicleModel.Award(100);
+        Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
+        var item=run.VehicleModel.Inventory.Last();var hud=run.GetComponent<R1RunHUD>();
+        Field(hud,"catalogOpen",true);
+        Invoke(hud,"PortraitCatalogSelectGroup",run,R3PartKind.Armor,R4WeaponKind.Basic,null);
+        Invoke(hud,"SelectCatalogDetails",run,item.Id);
+        int scrap=run.VehicleModel.Scrap,count=run.VehicleModel.Inventory.Count;
+        Invoke(hud,"ApplyCatalogSearch",run,"kolo");
+        Assert.That(Field(hud,"catalogGroup"),Is.Null);
+        Assert.That(run.Garage.SelectedInventoryId,Is.Null);
+        Assert.That((bool)Field(hud,"catalogOpen"),Is.True);
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));
+        Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(count));
+        Assert.That(ContainsId(run.VehicleModel,item.Id),Is.True);
+        yield return null;
+    }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying)yield return new ExitPlayMode();}
 }

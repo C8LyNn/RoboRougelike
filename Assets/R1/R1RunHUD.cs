@@ -22,7 +22,7 @@ namespace RoboRougelike.R1
         private static Rect ReadyIntroRect()=>new Rect(90,490,880,22);
         private static Rect ReadySaveMessageRect()=>new Rect(90,515,880,30);
         private static Rect ReadySeedWarningRect()=>new Rect(990,505,200,42);
-        private void DismissCatalog(){catalogOpen=false;dismantleConfirmation=null;catalogFeedback=null;SyncQuickCategoryToCatalog();}
+        private void DismissCatalog(){catalogOpen=false;catalogSearch=string.Empty;dismantleConfirmation=null;catalogFeedback=null;SyncQuickCategoryToCatalog();}
         internal bool ClosePartCatalog()
         {
             if(catalogOpen){DismissCatalog();return true;}
