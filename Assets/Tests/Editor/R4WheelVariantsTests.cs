@@ -191,6 +191,11 @@ public sealed class R4WheelVariantsTests
         Assert.That(restored.Parts.Single(p=>p.Id==wheel.Id).WheelStyle,Is.EqualTo(R3WheelStyle.SmallFork));
         data.mounted.Single(p=>p.Id==wheel.Id).ContactMask=R3MountingGrid.AllFaces;
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Standard,model.Economy,Time.time,out _,out _),Is.False);
+        var recovered=wheel.Copy();recovered.Id=System.Guid.NewGuid().ToString("N");recovered.Health=.4f;
+        Assert.That(model.ReceiveSalvage(new[]{recovered}),Is.True);
+        Assert.That(model.Inventory.Single(p=>p.Id==recovered.Id).WheelStyle,Is.EqualTo(R3WheelStyle.SmallFork));
+        var invalid=recovered.Copy();invalid.Id=System.Guid.NewGuid().ToString("N");invalid.ContactMask=R3MountingGrid.AllFaces;
+        Assert.That(model.ReceiveSalvage(new[]{invalid}),Is.False,"Recovered parts must not bypass their mounting restrictions.");
     }
     [UnityTest]public IEnumerator LargeWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.LargeOffroad);}
     [UnityTest]public IEnumerator MonsterWheelsDriveActualRigidVehicleOnGround(){yield return DriveSizedWheels(R3WheelStyle.Monster);}

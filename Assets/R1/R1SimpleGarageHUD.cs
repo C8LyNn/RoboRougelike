@@ -143,7 +143,7 @@ namespace RoboRougelike.R1
             }
             if(GUI.Button(new Rect(12,610,245,42),"Egzemplarze i naprawy",compactButton))
             {inventoryOpen=true;catalogOpen=true;stackScroll=Vector2.zero;}
-            GUI.Label(new Rect(12,655,245,62),"PPM: widok • U: podwozie • kółko: zoom\nShift + LPM: zdejmij • Ctrl + LPM: napraw\nQ/E, R/F, Z/X: obrót części",small);
+            GUI.Label(new Rect(12,655,245,62),"PPM/kółko: widok • U: spód\nShift/Ctrl + LPM: zdejmij/napraw\nQ/E, R/F, Z/X: obrót części",small);
             string garageFeedback=model.CanDeploy?garage.Message:
                 "Możesz budować dalej. " +(model.CriticalReadinessMessage??model.DeployError);
             if(run.Technology?.Error!=null)garageFeedback+="\nBłąd zapisu lub odczytu technologii.";
