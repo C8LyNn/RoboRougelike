@@ -7,11 +7,10 @@ namespace RoboRougelike.R1
     {
         GUIStyle aimCrossStyle,aimCaptionStyle,weaponMarkerStyle;
         int weaponStatusPage;
+        private static string ManualReloadAction(int ammo,int capacity,float reloadReadyAt,float now)
+            =>reloadReadyAt>now?"ładowanie":ammo>=capacity?"pełny":"T przeładuj";
         private static string ManualReloadWeaponStatus(int ammo,int capacity,float reloadReadyAt,float now)
-        {
-            string state=reloadReadyAt>now?"ładowanie":ammo>=capacity?"pełny":"T przeładuj";
-            return $"{ammo}/{capacity} • {state}";
-        }
+            =>$"{ammo}/{capacity} • {ManualReloadAction(ammo,capacity,reloadReadyAt,now)}";
         private static string RocketWeaponStatus(int ammo,float reloadReadyAt,float readyAt,float now)
         {
             string state=ammo<=0||reloadReadyAt>now?"ładowanie":readyAt>now?$"{readyAt-now:0.0} s":"gotowa";
@@ -129,7 +128,7 @@ namespace RoboRougelike.R1
             foreach(var defense in defenses)
             {
                 if(index>=start&&rows.Count<DefensePageSize)
-                    rows.Add($"DEF-002 • {defense.State.Ammo}/40 • "+(defense.Controller.IsOperational?"ON":"OFF")+" • T przeładuj");
+                    rows.Add($"DEF-002 • {defense.State.Ammo}/40 • "+(defense.Controller.IsOperational?"ON":"OFF")+" • "+ManualReloadAction(defense.State.Ammo,40,defense.State.ReloadReadyAt,Time.time));
                 index++;
             }
             return rows.ToArray();
