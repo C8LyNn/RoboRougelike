@@ -48,7 +48,7 @@ namespace RoboRougelike.R1
         private Quaternion playerRotation;
         private int lastEscapeFrame=-1;
         float pickupGraceDeadline=-1;
-        public float PickupGraceRemaining=>pickupGraceDeadline<0?0:Mathf.Max(0,pickupGraceDeadline-Time.time);
+        public float PickupGraceRemaining=>Progress?.State!=R1RunState.Combat||pickupGraceDeadline<0?0:Mathf.Max(0,pickupGraceDeadline-Time.time);
 
         private void Awake() { Instance = this; }
 
@@ -342,7 +342,7 @@ namespace RoboRougelike.R1
                 LastScrapReward=VehicleModel.PreviewAward(Definition.Encounters[Progress.EncounterIndex].ScrapReward);
                 VehicleModel.Award(LastScrapReward);
                 EarnedScrap+=LastScrapReward;DefeatedEnemies+=Encounter.Enemies.Count(enemy=>enemy!=null&&enemy.IsDefeated);
-                Progress.OpenSalvage();
+                Progress.OpenSalvage();pickupGraceDeadline=-1;
                 OpenRecoveryWindow();
                 SetSimulation(false);
                 Encounter.Clear();

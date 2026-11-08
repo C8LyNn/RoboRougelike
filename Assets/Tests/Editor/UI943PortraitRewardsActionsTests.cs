@@ -82,6 +82,29 @@ public sealed class UI943PortraitRewardsActionsTests
         Assert.That(run.Paused,Is.True,"The next Escape still opens the session pause menu.");
     }
 #if ENABLE_INPUT_SYSTEM
+    [UnityTest] public IEnumerator CollectedFinalPickupDoesNotConsumeRewardConfirmationKey()
+    {
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        for(int i=0;i<300&&run.Progress.State==R1RunState.Combat&&run.PickupGraceRemaining<=0;i++)yield return null;
+        Assert.That(run.PickupGraceRemaining,Is.GreaterThan(0),"Expected the post-battle pickup window.");
+        foreach(var pickup in UnityEngine.Object.FindObjectsByType<EnergyPickup>(FindObjectsSortMode.None))pickup.gameObject.SetActive(false);
+        for(int i=0;i<300&&run.Progress.State!=R1RunState.Salvage;i++)yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));
+        Assert.That(run.PickupGraceRemaining,Is.Zero,"Pickup grace must not remain active in rewards.");
+        Assert.That((float)typeof(R1RunController).GetField("pickupGraceDeadline",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(run),Is.EqualTo(-1));
+        Call("TrackRewardLedger",run.Salvage);Call("PortraitRewardSelectBonus",0);Call("ChooseRewardBasket",0);
+        var oldSettings=InputSystem.settings;var settings=UnityEngine.Object.Instantiate(oldSettings);
+        InputSystem.settings=settings;settings.backgroundBehavior=InputSettings.BackgroundBehavior.IgnoreFocus;
+        settings.editorInputBehaviorInPlayMode=InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
+        var keyboard=InputSystem.AddDevice<Keyboard>();
+        try
+        {
+            InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.Enter));InputSystem.Update();
+            typeof(R1RunController).GetMethod("ReadMenuInput",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(run,null);
+            Assert.That(run.Salvage.Closed,Is.True,"The first Enter must confirm a valid reward selection.");
+        }
+        finally {if(keyboard.added)InputSystem.RemoveDevice(keyboard);InputSystem.settings=oldSettings;UnityEngine.Object.Destroy(settings);}
+    }
     [UnityTest] public IEnumerator BasketKeysSelectWithoutClaimAndAreIgnoredInInventory()
     {
         foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
