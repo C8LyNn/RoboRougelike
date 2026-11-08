@@ -11,7 +11,8 @@ namespace RoboRougelike.R1
         string activitySaveFeedback;
         static string ActivitySaveResult(bool saved,string previous,string current)=>saved?
             (string.IsNullOrEmpty(current)?"Zapisano wyprawę.":current):
-            (!string.IsNullOrEmpty(current)&&current!=previous?current:"Nie udało się zapisać wyprawy.");
+            (!string.IsNullOrEmpty(current)&&(current!=previous||current.StartsWith("Nie zapisano wyprawy:",System.StringComparison.Ordinal))?
+                current:"Nie udało się zapisać wyprawy.");
         static string ActivityReadinessHint(bool canDeploy,string reason,R3DriveKind drive)=>!canDeploy?
             "Start zablokowany: "+(string.IsNullOrWhiteSpace(reason)?"Sprawdź konstrukcję.":reason):
             drive!=R3DriveKind.Wheels?"Wyścig, tryby drogowe i generowana arena wymagają kół.":null;

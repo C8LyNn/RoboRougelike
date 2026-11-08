@@ -35,6 +35,7 @@ public sealed class UI943PortraitCatalogActionsTests
 
     [TestCase(true,null,"Zapisano wyprawę w garażu.","Zapisano wyprawę w garażu.")]
     [TestCase(false,"stary","Nie zapisano wyprawy: brak miejsca.","Nie zapisano wyprawy: brak miejsca.")]
+    [TestCase(false,"Nie zapisano wyprawy: brak miejsca.","Nie zapisano wyprawy: brak miejsca.","Nie zapisano wyprawy: brak miejsca.")]
     [TestCase(false,"Zapisano wyprawę.","Zapisano wyprawę.","Nie udało się zapisać wyprawy.")]
     [TestCase(false,null,null,"Nie udało się zapisać wyprawy.")]
     public void SaveFeedbackNeverReportsStaleSuccess(bool saved,string previous,string current,string expected)
@@ -42,6 +43,17 @@ public sealed class UI943PortraitCatalogActionsTests
         var method=typeof(R1RunHUD).GetMethod("ActivitySaveResult",BindingFlags.Static|BindingFlags.NonPublic);
         Assert.That(method,Is.Not.Null);
         Assert.That((string)method.Invoke(null,new object[]{saved,previous,current}),Is.EqualTo(expected));
+    }
+
+    [UnityTest] public IEnumerator RejectedSaveClearsPreviousErrorBeforeReporting()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float timeout=Time.realtimeSinceStartup+15;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<timeout)yield return null;
+        var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        typeof(R1RunController).GetProperty("RunSaveMessage").GetSetMethod(true).Invoke(run,new object[]{"Nie zapisano wyprawy: brak miejsca."});
+        Assert.That(run.SaveRunCheckpoint(),Is.False,"Saving in the initial menu is unavailable.");
+        Assert.That(run.RunSaveMessage,Is.Null,"A previous error must not describe a new rejected attempt.");
     }
 
     [UnityTest] public IEnumerator GarageOptionsRepairReportsActualScrapSpent()
