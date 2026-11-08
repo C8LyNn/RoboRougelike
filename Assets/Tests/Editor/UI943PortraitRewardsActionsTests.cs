@@ -65,6 +65,22 @@ public sealed class UI943PortraitRewardsActionsTests
         Assert.That(ContainsId(run.VehicleModel,choices[7].Id),Is.False);
         Assert.That((bool)Call("PortraitRewardConfirm",run),Is.False,"Nie wolno wypłacić nagród dwukrotnie.");
     }
+    [UnityTest] public IEnumerator EscapeClosesRewardInventoryBeforePausingAndCancelsConfirmation()
+    {
+        foreach(var enemy in run.Encounter.Enemies.ToArray())enemy.Core.ApplyDamage(100000,enemy.transform.position,Vector3.zero);
+        for(int i=0;i<300&&run.Progress.State==R1RunState.Combat&&run.PickupGraceRemaining<=0;i++)yield return null;
+        if(run.PickupGraceRemaining>0)
+            typeof(R1RunController).GetField("pickupGraceDeadline",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(run,Time.time);
+        for(int i=0;i<300&&run.Progress.State!=R1RunState.Salvage;i++)yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Salvage));
+        Field("rewardInventoryOpen",true);Field("rewardDismantleConfirmation","pending");
+        run.HandleEscape();
+        Assert.That((bool)Field("rewardInventoryOpen"),Is.False);
+        Assert.That(Field("rewardDismantleConfirmation"),Is.Null);
+        Assert.That(run.Paused,Is.False,"Closing the top overlay must not also pause the game.");
+        yield return null;run.HandleEscape();
+        Assert.That(run.Paused,Is.True,"The next Escape still opens the session pause menu.");
+    }
 #if ENABLE_INPUT_SYSTEM
     [UnityTest] public IEnumerator BasketKeysSelectWithoutClaimAndAreIgnoredInInventory()
     {
