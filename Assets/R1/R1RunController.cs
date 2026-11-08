@@ -181,6 +181,15 @@ namespace RoboRougelike.R1
             RefreshInventoryPreview();
             return true;
         }
+        public int GarageRepairInventoryBatch(System.Collections.Generic.IEnumerable<string> ids)
+        {
+            if(Transitioning||Progress?.State!=R1RunState.Garage||VehicleModel==null||ids==null)return 0;
+            int count=0;
+            foreach(var id in ids.Where(id=>!string.IsNullOrEmpty(id)).Distinct().ToArray())
+                if(VehicleModel.RepairInventory(id))count++;
+            if(count>0)RefreshInventoryPreview();
+            return count;
+        }
         private void RefreshInventoryPreview()
         {
             if(Garage!=null&&Player!=null)Garage.RefreshPreview();

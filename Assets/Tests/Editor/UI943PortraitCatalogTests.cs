@@ -21,9 +21,10 @@ public sealed class UI943PortraitCatalogTests
         var canvas=new Rect(0,0,768,1024);
         var groups=RectFor("PortraitCatalogGroupsViewport");
         var items=RectFor("PortraitCatalogItemsViewport");
+        var bulkRepair=RectFor("PortraitCatalogBulkRepairRect");
         var buy=RectFor("PortraitCatalogBuyRect");
         var back=RectFor("PortraitCatalogBackRect");
-        var rectangles=new[]{groups,items,buy,back};
+        var rectangles=new[]{groups,items,bulkRepair,buy,back};
         for(int i=0;i<rectangles.Length;i++)
         {
             Assert.That(canvas.Contains(rectangles[i].min)&&canvas.Contains(rectangles[i].max-Vector2.one),Is.True,$"Element {i} poza płótnem.");

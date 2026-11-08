@@ -221,7 +221,7 @@ namespace RoboRougelike.R1
                 kind==R3PartKind.Wheel?R4WeaponDefinition.WheelName(CatalogWheelStyle(catalogBonusId)):
                 kind==R3PartKind.BonusModule&&items.Length>0?CatalogBonusGroupName(items[0]):R4WeaponDefinition.PartName(kind,weapon);
             GUI.Label(new Rect(970,70,280,48),$"{name}  × {items.Length}\nHP — montaż • Akcje — łączenie i demontaż",small);
-            stackScroll=GUI.BeginScrollView(new Rect(970,118,280,210),stackScroll,new Rect(0,0,255,Mathf.Max(210,items.Length*40)));
+            stackScroll=GUI.BeginScrollView(new Rect(970,118,280,168),stackScroll,new Rect(0,0,255,Mathf.Max(168,items.Length*40)));
             for(int i=0;i<items.Length;i++)
             {
                 var item=items[i];GUI.backgroundColor=garage.SelectedInventoryId==item.Id?new Color(.3f,.9f,.9f):Color.white;
@@ -235,6 +235,7 @@ namespace RoboRougelike.R1
                 GUI.enabled=true;
             }
             GUI.EndScrollView();GUI.backgroundColor=Color.white;
+            DrawCatalogBulkRepair(run,items,new Rect(970,295,280,36));
             int price=model.Price(kind,weapon);
             bool unlocked=run.CanBuyTechnology(kind,weapon);
             GUI.enabled=unlocked&&kind!=R3PartKind.BonusModule&&model.Scrap>=price&&model.Inventory.Count<R3VehicleModel.InventoryCapacity;
@@ -292,6 +293,37 @@ namespace RoboRougelike.R1
             var item=run.VehicleModel.Inventory.FirstOrDefault(p=>p.Id==id);
             int quote=run.VehicleModel.RepairCost(item);
             catalogFeedback=run.GarageRepairInventory(id)?$"Naprawiono część • koszt {quote} Z.":"Nie udało się naprawić części.";
+        }
+        private static R3PartState[] CatalogRepairPlan(R3VehicleModel model,R3PartState[] items,out int eligible,out int total)
+        {
+            var candidates=items.Where(item=>item!=null).Select(item=>new{item,cost=model.RepairCost(item)})
+                .Where(entry=>entry.cost>0).OrderBy(entry=>entry.cost).ThenBy(entry=>entry.item.Id,System.StringComparer.Ordinal).ToArray();
+            eligible=candidates.Length;total=0;
+            var selected=new System.Collections.Generic.List<R3PartState>();
+            foreach(var entry in candidates)
+            {
+                if(entry.cost>model.Scrap-total)break;
+                selected.Add(entry.item);total+=entry.cost;
+            }
+            return selected.ToArray();
+        }
+        private void DrawCatalogBulkRepair(R1RunController run,R3PartState[] items,Rect rect)
+        {
+            var plan=CatalogRepairPlan(run.VehicleModel,items,out int eligible,out int total);
+            GUI.enabled=plan.Length>0;
+            string label=eligible==0?"Brak części do naprawy":plan.Length==0?"Za mało złomu na naprawę":
+                $"Napraw {plan.Length}/{eligible} • {total} Z"+(plan.Length<eligible?" • najtaniej":"");
+            if(GUI.Button(rect,label,compactButton))RepairCatalogStack(run,items);
+            GUI.enabled=true;
+        }
+        private void RepairCatalogStack(R1RunController run,R3PartState[] items)
+        {
+            dismantleConfirmation=null;
+            var plan=CatalogRepairPlan(run.VehicleModel,items,out _,out _);
+            int before=run.VehicleModel.Scrap;
+            int repaired=run.GarageRepairInventoryBatch(plan.Select(item=>item.Id));
+            int spent=before-run.VehicleModel.Scrap;
+            catalogFeedback=repaired>0?$"Naprawiono {repaired} części • koszt {spent} Z.":"Nie udało się naprawić części.";
         }
         private bool DismantleCatalogItem(R1RunController run,string id)
         {

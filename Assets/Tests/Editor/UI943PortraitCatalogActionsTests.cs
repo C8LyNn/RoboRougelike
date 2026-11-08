@@ -400,6 +400,47 @@ public sealed class UI943PortraitCatalogActionsTests
         Assert.That(ContainsId(run.VehicleModel,item.Id),Is.True);
         yield return null;
     }
+    [Test] public void BatchRepairPreviewPicksAffordablePartsAndMatchesRealCharges()
+    {
+        var model=new R3VehicleModel(new R3VehicleDesign());model.Award(17);
+        for(int i=0;i<3;i++)Assert.That(model.PurchaseToInventory(R3PartKind.Armor),Is.True);
+        var items=model.Inventory.ToArray();items[0].Health=0;items[1].Health=.8f;items[2].Health=.5f;
+        var method=typeof(R1RunHUD).GetMethod("CatalogRepairPlan",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        var arguments=new object[]{model,items,0,0};
+        var plan=(R3PartState[])method.Invoke(null,arguments);
+        Assert.That((int)arguments[2],Is.EqualTo(3));Assert.That(plan.Length,Is.EqualTo(2));
+        Assert.That((int)arguments[3],Is.EqualTo(2));
+        Assert.That(items.All(item=>item.Health<1),Is.True,"Preview must not mutate parts.");
+        int before=model.Scrap;
+        foreach(var item in plan)Assert.That(model.RepairInventory(item.Id),Is.True);
+        Assert.That(before-model.Scrap,Is.EqualTo((int)arguments[3]));
+        Assert.That(items.Count(item=>item.Health==1),Is.EqualTo(2));
+        Assert.That(items[0].Health,Is.Zero,"The cheapest repairs must be selected first.");
+    }
+
+    [UnityTest] public IEnumerator BatchRepairOnlyChangesTheSelectedInventoryStack()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float timeout=Time.realtimeSinceStartup+15;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<timeout)yield return null;
+        var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        Assert.That(run.OpenSandboxGarage(),Is.True);run.VehicleModel.Award(100);
+        for(int i=0;i<2;i++)Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
+        Assert.That(run.GaragePurchase(R3PartKind.Wheel),Is.True);
+        var armor=run.VehicleModel.Inventory.Where(part=>part.Kind==R3PartKind.Armor).ToArray();
+        var wheel=run.VehicleModel.Inventory.Last(part=>part.Kind==R3PartKind.Wheel);
+        foreach(var part in armor)part.Health=.5f;wheel.Health=.5f;
+        int quote=armor.Sum(run.VehicleModel.RepairCost),before=run.VehicleModel.Scrap;
+        var player=run.Player;var hud=run.GetComponent<R1RunHUD>();
+        Invoke(hud,"RepairCatalogStack",run,armor);
+        Assert.That(armor.All(part=>part.Health==1),Is.True);Assert.That(wheel.Health,Is.EqualTo(.5f));
+        Assert.That(before-run.VehicleModel.Scrap,Is.EqualTo(quote));
+        Assert.That(run.Player,Is.SameAs(player),"Inventory repairs must not rebuild the vehicle.");
+        Assert.That((string)Field(hud,"catalogFeedback"),Does.Contain("2").And.Contain(quote+" Z"));
+        yield return null;
+    }
+
     [UnityTest] public IEnumerator OwnedFilterIncludesWrecksAndCannotKeepAnInvisiblePurchaseSelection()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
