@@ -1,0 +1,6 @@
+{
+  "exitCode": 0,
+  "mode": "Targeted EditMode with UnityTests entering Play Mode; batch nographics",
+  "filter": "MapStorageIntegrityTests.NativeCloseProtectsDirtyMapAndRequiresFreshConfirmationAfterEdits;MapStorageIntegrityTests.QuitAndReturnRequireSeparateConfirmationForUnsavedMap;MapStorageIntegrityTests.ReturningToMenuFromMapGarageWarnsAboutUnsavedDraft;Exit273PauseTests",
+  "head": "c0f76b6d plus map native quit changes"
+}
