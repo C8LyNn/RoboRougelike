@@ -400,5 +400,28 @@ public sealed class UI943PortraitCatalogActionsTests
         Assert.That(ContainsId(run.VehicleModel,item.Id),Is.True);
         yield return null;
     }
+    [UnityTest] public IEnumerator OwnedFilterIncludesWrecksAndCannotKeepAnInvisiblePurchaseSelection()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float timeout=Time.realtimeSinceStartup+15;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<timeout)yield return null;
+        var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        Assert.That(run.OpenSandboxGarage(),Is.True);run.VehicleModel.Award(100);
+        Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
+        var wreck=run.VehicleModel.Inventory.Last();wreck.Health=0;
+        var hud=run.GetComponent<R1RunHUD>();int scrap=run.VehicleModel.Scrap;
+        Invoke(hud,"SelectQuickPart",run,R3PartKind.Wheel,R4WeaponKind.Basic,null);
+        Invoke(hud,"ToggleQuickOwnedOnly",run);
+        Assert.That((bool)Field(hud,"quickOwnedOnly"),Is.True);
+        Assert.That(Field(hud,"catalogGroup"),Is.Null,"A non-owned group must not remain a hidden purchase target.");
+        var owned=((IEnumerable)Invoke(hud,"BuildQuickCatalogEntries",run.VehicleModel,0,true)).Cast<object>().ToArray();
+        Assert.That(owned.Length,Is.EqualTo(1),"A wreck must remain listed so the player can repair it.");
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));Assert.That(ContainsId(run.VehicleModel,wreck.Id),Is.True);
+        Field(hud,"catalogOpen",true);
+        Invoke(hud,"PortraitCatalogSelectGroup",run,R3PartKind.Wheel,R4WeaponKind.Basic,null);
+        Invoke(hud,"ClosePartCatalog");
+        Assert.That((bool)Field(hud,"quickOwnedOnly"),Is.False,"A group deliberately selected in the full catalog must remain visible on return.");
+        yield return null;
+    }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying)yield return new ExitPlayMode();}
 }

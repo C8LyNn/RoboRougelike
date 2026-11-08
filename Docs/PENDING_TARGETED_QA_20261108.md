@@ -7,7 +7,7 @@ Kod odniesienia dla początkowej kolejki: `b616c8722749031424445d90ea6b124086458
 Użyj Unity 6000.3.14f1 i zachowaj XML, Editor.log oraz kody zakończenia. Nie uruchamiaj dodatkowej pełnej regresji bez konkretnego powodu. Wybrane testy EditMode wykorzystują `[UnityTest]` z wejściem w Play Mode; nie stanowią pełnego zestawu PlayMode.
 
 - `MapStorageIntegrityTests`: `RealEditorRequiresExplicitSecondSaveForOverwrite`, `LoadingAStoredMapRequiresConfirmationForUnsavedChanges`, `ReturningToMenuFromMapGarageWarnsAboutUnsavedDraft`, `QuitAndReturnRequireSeparateConfirmationForUnsavedMap`.
-- `UI943PortraitCatalogTests`: `SearchMatchesNamesWithoutCaseOrPolishDiacritics`, `SharedCatalogContainsAllDistinctBaseGroups`; `UI943PortraitCatalogActionsTests`: `CategorySwitchCannotBuyOrMountPreviousPartAndCatalogKeepsCategoryInSync`, `DestroyedItemKeepsCatalogOpenUntilRepaired`, `SearchClearsOldSelectionWithoutChangingInventoryOrWallet`.
+- `UI943PortraitCatalogTests`: `SearchMatchesNamesWithoutCaseOrPolishDiacritics`, `SharedCatalogContainsAllDistinctBaseGroups`; `UI943PortraitCatalogActionsTests`: `CategorySwitchCannotBuyOrMountPreviousPartAndCatalogKeepsCategoryInSync`, `DestroyedItemKeepsCatalogOpenUntilRepaired`, `SearchClearsOldSelectionWithoutChangingInventoryOrWallet`, `OwnedFilterIncludesWrecksAndCannotKeepAnInvisiblePurchaseSelection`.
 - `UI943PortraitRewardsActionsTests`: `CollectedFinalPickupDoesNotConsumeRewardConfirmationKey`, `EscapeClosesRewardInventoryBeforePausingAndCancelsConfirmation`.
 - `UI943WeaponStatusTests`: `ManualReloadHintRespectsDeviceAvailability`, `DefenseRowsUseActualMountedDevicesInOrderAcrossPages`.
 - `RRLW34RewardTests`: `ScrapPreviewAndLedgerReportOnlyAmountActuallyCredited`, `DismantlePreviewMatchesWalletChangeAtTheLimit`.
@@ -18,7 +18,7 @@ Przed testami sprawdź izolację danych. Testy map używają losowych nazw plik�
 
 ## Późniejszy test interaktywny
 
-1. Garaż: przełącz kategorię, sprawdź brak starej części/widma, kup i zamontuj wybrany egzemplarz. W katalogu pionowym i poziomym wyszukaj koło bez polskich znaków, sprawdź brak wyników, wyczyść filtr, kup lub wybierz wynik oraz sprawdź, że wcześniejsza część nie pozostała wybrana.
+1. Garaż: przełącz kategorię, sprawdź brak starej części/widma, kup i zamontuj wybrany egzemplarz. Włącz filtr posiadanych części i sprawdź także uszkodzony egzemplarz oraz powrót z pełnego katalogu. W katalogu pionowym i poziomym wyszukaj koło bez polskich znaków, sprawdź brak wyników, wyczyść filtr, kup lub wybierz wynik oraz sprawdź, że wcześniejsza część nie pozostała wybrana.
 2. Mapa: zapisz, zmień i spróbuj wczytać lub wyjść przez pauzę; sprawdź osobne potwierdzenia, anulowanie i ponowne ostrzeżenie po edycji. X i Alt+F4 nadal nie ostrzegają o niezapisanej mapie.
 3. Po walce: zbierz ostatnią kostkę przed końcem odliczania; po wyborze nagród pierwszy Enter powinien je zatwierdzić. Podczas odliczania Enter nadal powinien je pominąć.
 4. Złom: tylko na odizolowanym profilu blisko limitu portfela porównaj podgląd, rzeczywistą wypłatę i podsumowanie.

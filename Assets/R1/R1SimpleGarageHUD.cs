@@ -12,6 +12,7 @@ namespace RoboRougelike.R1
         int garageOptionsTab;
         string garageOptionsFeedback;
         int quickPartCategory;
+        bool quickOwnedOnly;
         GUIStyle quickCategoryButton;
         Vector2 quickPartsScroll;
         void OpenSimpleGarageOptions(int tab){garageOptionsTab=tab;garageOptionsFeedback=null;activitySaveFeedback=null;garageOptionsOpen=true;}
@@ -46,9 +47,40 @@ namespace RoboRougelike.R1
         void SyncQuickCategoryToCatalog()
         {
             if(!catalogGroup.HasValue)return;
+            var model=R1RunController.Instance?.VehicleModel;
+            if(quickOwnedOnly&&model!=null&&!model.Inventory.Any(part=>
+                InCatalogGroup(part,catalogGroup.Value,catalogWeapon,catalogBonusId)))quickOwnedOnly=false;
             int category=QuickCategoryFor(catalogGroup.Value);
             if(category==quickPartCategory)return;
             quickPartCategory=category;quickPartsScroll=Vector2.zero;
+        }
+
+        bool CatalogEntryOwned(R3VehicleModel model,CatalogEntry entry)=>
+            model.Inventory.Any(part=>InCatalogGroup(part,entry.Kind,entry.Weapon,entry.Group));
+
+        System.Collections.Generic.List<CatalogEntry> BuildQuickCatalogEntries(R3VehicleModel model,int category,bool ownedOnly)=>
+            BuildCatalogEntries(model).Where(entry=>QuickCategoryIncludes(category,entry.Kind)&&
+                (!ownedOnly||CatalogEntryOwned(model,entry))).ToList();
+
+        void ToggleQuickOwnedOnly(R1RunController run)
+        {
+            quickOwnedOnly=!quickOwnedOnly;quickPartsScroll=Vector2.zero;
+            ClearMissingOwnedSelection(run);
+        }
+
+        void ClearMissingOwnedSelection(R1RunController run)
+        {
+            if(!quickOwnedOnly||!catalogGroup.HasValue||run.VehicleModel.Inventory.Any(part=>
+                InCatalogGroup(part,catalogGroup.Value,catalogWeapon,catalogBonusId)))return;
+            catalogGroup=null;catalogBonusId=null;dismantleConfirmation=null;catalogFeedback=null;
+            var garage=run.Garage;garage.SelectedInventoryId=null;garage.UseInventory=true;
+            if(garage.Tool==R41GarageTool.Mount)
+            {garage.SetTool(R41GarageTool.Mount);garage.Message="Wybierz posiadaną część z listy.";}
+        }
+
+        void DrawQuickOwnedFilter(R1RunController run,Rect rect)
+        {
+            if(GUI.Button(rect,quickOwnedOnly?"Filtr: posiadane":"Filtr: wszystkie",compactButton))ToggleQuickOwnedOnly(run);
         }
 
         static string GaragePurchaseCaption(R3PartKind kind,bool unlocked,int price,int scrap,bool full,bool toInventory=false)=>
@@ -181,7 +213,8 @@ namespace RoboRougelike.R1
         void DrawQuickParts(R1RunController run,Rect area,float rowWidth)
         {
             var model=run.VehicleModel;
-            var bonuses=model.Inventory.Where(p=>p.Kind==R3PartKind.BonusModule).Select(p=>p.UpgradeId).Distinct().ToArray();
+            ClearMissingOwnedSelection(run);
+
             string[] categories={"Bloki","Koła","Broń","Moduły"};
             if(quickCategoryButton==null)quickCategoryButton=new GUIStyle(compactButton){fontSize=13,wordWrap=false,padding=new RectOffset(1,1,2,2)};
             float categoryWidth=(area.width-12)/4;
@@ -193,34 +226,11 @@ namespace RoboRougelike.R1
             }
             GUI.backgroundColor=Color.white;
             var listArea=new Rect(area.x,area.y+40,area.width,area.height-40);
-            int count=quickPartCategory==0?7:quickPartCategory==1?12:quickPartCategory==2?R4WeaponDefinition.Count:shopKinds.Length-3+bonuses.Length;
-            quickPartsScroll=GUI.BeginScrollView(listArea,quickPartsScroll,new Rect(0,0,rowWidth,Mathf.Max(listArea.height,count*38)));
-            int row=0;
-            for(int i=0;i<shopKinds.Length;i++)
-            {var kind=shopKinds[i];if(kind==R3PartKind.Gun||!QuickCategoryIncludes(quickPartCategory,kind))continue;
-                DrawQuickPartRow(run,kind,R4WeaponKind.Basic,null,kind==R3PartKind.Wheel?"Koło terenowe":shopNames[i],row++,rowWidth);
-                if(kind==R3PartKind.Armor)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,WedgeArmorGroup,"Pancerz • klin",row++,rowWidth);
-                if(kind==R3PartKind.Armor)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,HalfArmorGroup,"Pancerz • półblok",row++,rowWidth);
-                if(kind==R3PartKind.Armor)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,PyramidArmorGroup,"Pancerz • piramida",row++,rowWidth);
-                if(kind==R3PartKind.Armor)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,RoundArmorGroup,"Pancerz • zaokrąglenie",row++,rowWidth);
-                if(kind==R3PartKind.Armor)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,HalfWedgeArmorGroup,"Pancerz • półklin",row++,rowWidth);
-                if(kind==R3PartKind.Armor)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,DomeArmorGroup,"Pancerz • kopuła",row++,rowWidth);
-                if(kind==R3PartKind.Wheel)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,SlickWheelGroup,"Koło szosowe",row++,rowWidth);
-                if(kind==R3PartKind.Wheel)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,LargeWheelGroup,"Duże koło terenowe",row++,rowWidth);
-                if(kind==R3PartKind.Wheel)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,MonsterWheelGroup,"Koło monster XL",row++,rowWidth);
-                if(kind==R3PartKind.Wheel)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,SmallWheelGroup,"Małe koło drogowe",row++,rowWidth);
-                if(kind==R3PartKind.Wheel)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,BalloonWheelGroup,"Koło balonowe",row++,rowWidth);
-                if(kind==R3PartKind.Wheel)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,SpikedWheelGroup,"Koło z kolcami",row++,rowWidth);
-                if(kind==R3PartKind.Wheel)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,TwinWheelGroup,"Koło bliźniacze",row++,rowWidth);
-                if(kind==R3PartKind.Wheel)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,SteerWheelGroup,"Koło skrętne drogowe",row++,rowWidth);
-                if(kind==R3PartKind.Wheel)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,LargeSteerWheelGroup,"Duże koło skrętne",row++,rowWidth);
-                if(kind==R3PartKind.Wheel)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,CasterWheelGroup,"Kółko samonastawne",row++,rowWidth);
-                if(kind==R3PartKind.Wheel)DrawQuickPartRow(run,kind,R4WeaponKind.Basic,SwingWheelGroup,"Koło na wahaczu",row++,rowWidth);}
-            if(QuickCategoryIncludes(quickPartCategory,R3PartKind.Gun))for(int i=0;i<R4WeaponDefinition.Count;i++)
-            {var weapon=(R4WeaponKind)i;DrawQuickPartRow(run,R3PartKind.Gun,weapon,null,R4WeaponDefinition.Get(weapon).Name,row++,rowWidth);}
-            if(QuickCategoryIncludes(quickPartCategory,R3PartKind.BonusModule))foreach(var bonus in bonuses)
-            {var item=model.Inventory.First(p=>p.Kind==R3PartKind.BonusModule&&p.UpgradeId==bonus);
-                DrawQuickPartRow(run,R3PartKind.BonusModule,R4WeaponKind.Basic,bonus,CatalogBonusGroupName(item),row++,rowWidth);}
+            var entries=BuildQuickCatalogEntries(model,quickPartCategory,quickOwnedOnly);
+            quickPartsScroll=GUI.BeginScrollView(listArea,quickPartsScroll,new Rect(0,0,rowWidth,Mathf.Max(listArea.height,entries.Count*38)));
+            for(int row=0;row<entries.Count;row++)
+            {var entry=entries[row];DrawQuickPartRow(run,entry.Kind,entry.Weapon,entry.Group,entry.Name,row,rowWidth);}
+            if(entries.Count==0)GUI.Label(new Rect(0,5,rowWidth,70),"Brak posiadanych części w tej kategorii. Wyłącz filtr, aby zobaczyć wszystkie.",small);
             GUI.EndScrollView();GUI.backgroundColor=Color.white;
         }
 
@@ -258,7 +268,8 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(760,15,145,42),"Ustawienia",compactButton))OpenSimpleGarageOptions(0);
             if(GUI.Button(new Rect(913,15,145,42),"Aktywności",compactButton))OpenSimpleGarageOptions(1);
             if(GUI.Button(new Rect(1066,15,195,42),"Dopasuj widok",compactButton))garage.FrameVehicle();
-            GUI.Label(new Rect(12,79,240,24),"CZĘŚCI • kliknij, aby wybrać",small);
+            GUI.Label(new Rect(12,79,112,24),"CZĘŚCI",small);
+            DrawQuickOwnedFilter(run,new Rect(130,78,127,25));
             DrawQuickParts(run,new Rect(12,105,246,397),225);
             var owned=model.Inventory.FirstOrDefault(p=>p.Id==garage.SelectedInventoryId);
             var inspected=garage.Tool!=R41GarageTool.Mount&&garage.HasTarget?model.At(garage.Cell):null;
@@ -319,7 +330,8 @@ namespace RoboRougelike.R1
                 compactButton.normal.background=buttonNormal;
             }
             GUI.backgroundColor=Color.white;
-            GUI.Label(new Rect(24,632,420,24),"CZĘŚCI • kliknij, aby wybrać",small);
+            GUI.Label(new Rect(24,632,190,24),"CZĘŚCI",small);
+            DrawQuickOwnedFilter(run,new Rect(240,628,190,27));
             DrawQuickParts(run,new Rect(24,658,414,220),392);
             var owned=model.Inventory.FirstOrDefault(p=>p.Id==garage.SelectedInventoryId);
             var inspected=garage.Tool!=R41GarageTool.Mount&&garage.HasTarget?model.At(garage.Cell):null;
