@@ -82,7 +82,7 @@ namespace RoboRougelike.R1
             for(int i=0;i<items.Length;i++)
             {
                 var item=items[i];var rect=PortraitCatalogItemRow(i);
-                GUI.Label(new Rect(rect.x,rect.y,230,28),$"{R4WeaponDefinition.PartName(item)} • HP {item.Health*100:0}%",small);
+                GUI.Label(new Rect(rect.x,rect.y,230,28),$"T{R3VehicleModel.NormalizedTier(item.Tier)} • HP {item.Health*100:0}%",small);
                 if(GUI.Button(new Rect(rect.x+234,rect.y,96,28),"Akcje",compactButton))SelectCatalogDetails(run,item.Id);
                 GUI.backgroundColor=run.Garage.SelectedInventoryId==item.Id?new Color(.3f,.9f,.9f):Color.white;
                 if(GUI.Button(new Rect(rect.x,rect.y+31,102,60),item.Health<=0?"Szczegóły\nwraku":"Wybierz\ndo montażu",compactButton))PortraitCatalogSelectItem(run,item.Id);
