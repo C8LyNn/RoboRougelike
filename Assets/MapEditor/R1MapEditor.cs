@@ -137,8 +137,13 @@ namespace RoboRougelike.R1
         public void LoadEditedMap()
         {
             pendingMapOverwrite=null;pendingMapOverwriteSnapshot=null;
-            if(!MapStorage.TryPath(MapStorage.DirectoryPath,EditorName,out var path)){CancelMapLoad();EditorMessage="Niepoprawna nazwa mapy.";return;}
-            string current=EditorDraft.ToJson();
+            string path,current;
+            try
+            {
+                if(!MapStorage.TryPath(MapStorage.DirectoryPath,EditorName,out path)){CancelMapLoad();EditorMessage="Niepoprawna nazwa mapy.";return;}
+                current=EditorDraft.ToJson();
+            }
+            catch(Exception e){CancelMapLoad();EditorMessage="Nie udało się wczytać: "+e.Message;return;}
             if(System.IO.File.Exists(path)&&current!=savedMapSnapshot&&
                 (pendingMapLoadPath!=path||pendingMapLoadSnapshot!=current))
             {
