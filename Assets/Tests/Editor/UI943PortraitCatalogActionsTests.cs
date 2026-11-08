@@ -119,14 +119,18 @@ public sealed class UI943PortraitCatalogActionsTests
         Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(second.Id));
         Assert.That(second.Health,Is.EqualTo(.35f));
         Assert.That((bool)Field(hud,"catalogOpen"),Is.False);
-        funds=run.VehicleModel.Scrap;int value=run.VehicleModel.DismantleValue(part);
+        funds=run.VehicleModel.Scrap;int value=run.VehicleModel.DismantleValue(part),earned=run.EarnedScrap;
+        var playerBeforeDismantle=run.Player;
         Invoke(hud,"PortraitCatalogDismantle",run,part.Id);
         Debug.Log("Portrait catalog test: first dismantle request");
         Assert.That(ContainsId(run.VehicleModel,part.Id),Is.True,"Pierwsze kliknięcie tylko prosi o potwierdzenie.");
         Assert.That(run.VehicleModel.Scrap,Is.EqualTo(funds));
+        Assert.That(run.EarnedScrap,Is.EqualTo(earned));
         Invoke(hud,"PortraitCatalogDismantle",run,part.Id);
         Assert.That(ContainsId(run.VehicleModel,part.Id),Is.False);
         Assert.That(run.VehicleModel.Scrap,Is.EqualTo(funds+value));
+        Assert.That(run.EarnedScrap,Is.EqualTo(earned+value));
+        Assert.That(run.Player,Is.SameAs(playerBeforeDismantle),"Dismantling an inventory-only item must not rebuild the assembled vehicle.");
         yield return null;
     }
     [UnityTest] public IEnumerator WheelCatalogSeparatesModelsAndBuysChosenAppearance()

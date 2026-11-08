@@ -1,0 +1,5 @@
+# Inventory-only dismantling and vehicle rebuild
+
+Confirmed dismantling of an inventory item previously went through the general vehicle edit path and rebuilt the assembled vehicle. It now retains the same garage/transition checks, the existing `R3VehicleModel.Dismantle` transaction and the same earned-scrap update, then uses the shared inventory-preview refresh added for inventory repairs. The existing rebuild remains the fallback when the normal preview context is absent. The two-step UI confirmation and reward-screen dismantling are unchanged.
+
+The queued `UI943PortraitCatalogActionsTests.SelectionPurchaseRepairAndConfirmedDismantleKeepRealInventorySemantics` now also checks that the confirmation step does not award scrap, the confirmed step awards it once, and the assembled player instance remains unchanged. **The modified test has not been run.** Unity semantic compilation, real GUI interactions, preview invalidation after dismantling and measured performance are **NOT RUN**. Roslyn syntax parsing reports zero errors in the two modified C# files; `git diff --check` is clean. No performance claim is made without measurement.
