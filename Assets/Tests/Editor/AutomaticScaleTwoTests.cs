@@ -5,6 +5,7 @@ using RoboRougelike.R1;
 using RoboRougelike.R3;
 using RoboRougelike.R4;
 using RoboRougelike.R4_1;
+using RoboRougelike.WeaponIntegration;
 using RogueMachine.P12PipelineSafe;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -15,6 +16,7 @@ public sealed class AutomaticScaleTwoModelTests
     [TestCase(R4WeaponKind.Automatic)]
     [TestCase(R4WeaponKind.Basic)]
     [TestCase(R4WeaponKind.Heavy)]
+    [TestCase(R4WeaponKind.RocketLauncher)]
     public void NewGunHasVersionedFootprintWhileLegacyRetainsOneCell(R4WeaponKind weapon)
     {
         var design=new R3VehicleDesign{Name="Automatic QA",CoreHp=100,Speed=7,TurnSpeed=82};
@@ -138,6 +140,39 @@ public sealed class AutomaticScaleTwoTests
         float deadline=Time.realtimeSinceStartup+5;
         while(hp.CurrentHp>=1000&&Time.realtimeSinceStartup<deadline)yield return new WaitForFixedUpdate();
         Assert.That(hp.CurrentHp,Is.EqualTo(900).Within(.01f));Object.Destroy(target);
+    }
+
+    [UnityTest] public IEnumerator EnlargedRocketMountsHitsAndAutomaticallyReloads()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
+        var model=run.VehicleModel;model.Award(1000);
+        foreach(var part in model.Parts.Where(p=>p.Kind==R3PartKind.Gun).ToArray())
+        {Assert.That(run.GarageRemove(part.Cell),Is.True);yield return null;}
+        var anchor=new Vector3Int(0,2,0);
+        Assert.That(run.GarageBuyWeapon(anchor,R4WeaponKind.RocketLauncher),Is.True);
+        var state=model.At(anchor);Assert.That(state.FootprintRevision,Is.EqualTo(2));
+        Assert.That(R3VehicleModel.OccupiedCells(state).Count(),Is.EqualTo(18));
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();var installed=assembly.Parts.Single(p=>p.Id==state.Id);
+        AssertPhysicalBarrelMatchesVisibleMuzzle(installed);
+        run.Player.GetComponent<Rigidbody>().isKinematic=true;run.Player.GetComponent<P12PipelineSafeTankController>().enabled=false;
+        run.Player.transform.SetPositionAndRotation(new Vector3(1000,20,1000),Quaternion.identity);
+        installed.GunPivot.rotation=Quaternion.identity;installed.GetComponent<R4WeaponArt>().Sync();
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=installed.Muzzle.position+installed.Muzzle.forward*5;
+        target.transform.localScale=new Vector3(2,2,.5f);
+        var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(1000,false);
+        var binding=installed.GetComponent<RRLRocketBinding>();Assert.That(binding,Is.Not.Null);
+        var bank=run.Player.GetComponent<VehicleEnergyBank>();float energy=bank.Current;
+        Physics.SyncTransforms();Assert.That(binding.Fire(),Is.True);
+        Assert.That(bank.Current,Is.EqualTo(energy-7.5f).Within(.001f));Assert.That(binding.State.Ammo,Is.EqualTo(9));
+        float deadline=Time.realtimeSinceStartup+5;
+        while(hp.CurrentHp>=1000&&Time.realtimeSinceStartup<deadline)yield return new WaitForFixedUpdate();
+        Assert.That(hp.CurrentHp,Is.LessThan(1000),"The actual rocket explosion damages the target.");
+        binding.State.Ammo=0;yield return null;
+        Assert.That(binding.State.ReloadReadyAt,Is.GreaterThan(Time.time),"Empty launcher starts reloading automatically.");
+        deadline=Time.realtimeSinceStartup+5;
+        while(binding.State.Ammo==0&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(binding.State.Ammo,Is.EqualTo(RRLRocketBinding.Magazine));Object.Destroy(target);
     }
 
     [UnityTest] public IEnumerator RealGarageShowsAndMountsEnlargedAutomaticWithTwoWorkingMuzzles()
