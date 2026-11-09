@@ -50,6 +50,36 @@ public class R41GarageTests
         var part=Run.VehicleModel.Inventory.Last();Assert.That(part.Kind,Is.EqualTo(kind));Assert.That(part.Weapon,Is.EqualTo(weapon));
         return part.Id;
     }
+    [UnityTest] public IEnumerator WheelRemainsSelectableAndRemovableAfterCameraOrbit()
+    {
+        var garage=Run.Garage;
+        var camera=Camera.main;Assert.That(camera,Is.Not.Null);
+        garage.SetTool(R41GarageTool.Remove);
+        var assembly=Run.Player.GetComponent<R3VehicleAssembly>();
+        Assert.That(assembly,Is.Not.Null);
+        string id=null;
+        foreach(var candidate in assembly.Parts.Where(p=>p!=null&&p.Kind==R3PartKind.Wheel))
+        {
+            var screen=camera.WorldToScreenPoint(candidate.transform.position);
+            if(screen.z<=0||!R3GarageView.InBuildArea(screen,Screen.width,Screen.height))continue;
+            if(!garage.Point(camera.ScreenPointToRay(screen))||garage.Cell!=candidate.Cell)continue;
+            id=candidate.Id;break;
+        }
+        Assert.That(id,Is.Not.Null,"A visible wheel must be selectable.");
+        garage.Orbit(3.2f);
+        Assert.That(Run.VehicleModel.Parts.Any(p=>p.Id==id),Is.True,"Dragging the camera must not remove a part.");
+        yield return null;
+        var wheel=Run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==id);
+        var afterDrag=camera.WorldToScreenPoint(wheel.transform.position);
+        Assert.That(R3GarageView.InBuildArea(afterDrag,Screen.width,Screen.height),Is.True,"Wheel must remain inside the clickable viewport.");
+        garage.SetTool(R41GarageTool.Remove);
+        Assert.That(garage.Point(camera.ScreenPointToRay(afterDrag)),Is.True,"The wheel must remain visible after orbiting.");
+        Assert.That(garage.Cell,Is.EqualTo(wheel.Cell),"The pointer must address the same wheel after orbiting.");
+        Assert.That(garage.ClickTarget(),Is.True,"The selected wheel can be removed.");
+        Assert.That(Run.VehicleModel.Parts.Any(p=>p.Id==id),Is.False,"The selected wheel was removed: "+garage.Message);
+        Assert.That(Run.VehicleModel.Inventory.Any(p=>p.Id==id),Is.True,"Removal keeps its identity.");
+        yield return null;
+    }
     [UnityTest] public IEnumerator DirectFaceClickMountsExactlyAtGhostWithoutMovingTheVehicle()
     {
         var garage=Run.Garage;var anchor=new Vector3Int(2,1,2);var target=anchor+Vector3Int.up;

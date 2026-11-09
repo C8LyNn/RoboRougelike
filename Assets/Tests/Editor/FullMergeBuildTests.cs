@@ -83,8 +83,12 @@ public sealed class FullMergeBuildTests
     }
     [UnityTest] public IEnumerator StructuralFaceRemainsClickableAfterSuccessfulGarageRebuild()
     {
-        Assert.That(run.GarageBuy(new Vector3Int(1,2,1),R3PartKind.Armor),Is.True);yield return null;yield return null;
-        var armor=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Cell==new Vector3Int(2,1,2));
+        // The current standard design has a gun at (1,2,0): (1,2,1) is
+        // therefore inside its required clearance. Use an unobstructed socket.
+        Assert.That(run.GarageBuy(new Vector3Int(2,2,2),R3PartKind.Armor),Is.True);yield return null;yield return null;
+        Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
+        run.Garage.ChooseInventory(run.VehicleModel.Inventory.Last().Id);
+        var armor=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Cell==new Vector3Int(2,1,1));
         var ray=new Ray(armor.transform.TransformPoint(Vector3.right*4),armor.transform.TransformDirection(Vector3.left));
         Physics.SyncTransforms();Assert.That(run.Garage.Point(ray),Is.True,"A successful edit must rebuild authorized hit surfaces too");
         Assert.That(run.Garage.Cell,Is.EqualTo(armor.Cell+Vector3Int.right));

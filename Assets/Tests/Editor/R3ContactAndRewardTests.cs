@@ -10,6 +10,18 @@ using RogueMachine.P12PipelineSafe;
 
 public sealed class R3ContactAndRewardTests
 {
+    [Test]
+    public void StarterVehiclesUseTheirActualWeaponAndWheelMountFaces()
+    {
+        foreach(R3VehicleKind kind in Enum.GetValues(typeof(R3VehicleKind)))
+        {
+            var design=R3VehicleCatalog.Create(kind);
+            foreach(var part in design.Parts.Where(p=>p.Kind==R3PartKind.Gun||p.Kind==R3PartKind.Wheel))
+                Assert.That(part.ContactMask,Is.EqualTo(R3VehicleModel.PlacementContacts(part.Kind,part)),
+                    kind+" "+part.Kind+" at "+part.Cell+" must use its real attachment faces.");
+            Assert.That(R3VehicleModel.Connected(design.Parts),Is.True,kind+" must start fully connected.");
+        }
+    }
     private static R1UpgradeDefinition Upgrade(string id)
     {
         var u=ScriptableObject.CreateInstance<R1UpgradeDefinition>();

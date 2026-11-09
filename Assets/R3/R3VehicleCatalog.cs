@@ -37,6 +37,11 @@ namespace RoboRougelike.R3
             if(light)design.Parts.Add(new R3PartState(new Vector3Int(0,1,0),R3PartKind.Gun));
             else if(heavy)for(int x=-2;x<=2;x+=2)design.Parts.Add(new R3PartState(new Vector3Int(x,2,-2),R3PartKind.Gun));
             else for(int x=-1;x<=1;x+=2)design.Parts.Add(new R3PartState(new Vector3Int(x,2,0),R3PartKind.Gun));
+            // Starter blueprints use the same physical attachment faces as newly
+            // installed equipment. Existing saved designs keep their stored masks.
+            foreach(var part in design.Parts)
+                if(part.Kind==R3PartKind.Wheel||part.Kind==R3PartKind.Gun)
+                    part.ContactMask=R3VehicleModel.PlacementContacts(part.Kind,part);
             return design;
         }
     }
