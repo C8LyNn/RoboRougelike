@@ -81,6 +81,9 @@ namespace RoboRougelike.R3
         private System.Collections.Generic.List<R3VisibleMountPoint> availableMountPoints;
         private R3VehicleAssembly mountPointsAssembly;
         private R3PartKind mountPointsKind;
+        private R3ArmorShape mountPointsArmorShape;
+        private R3WheelStyle mountPointsWheelStyle;
+        private R4WeaponKind mountPointsWeapon;
         private Vector3Int mountPointsRotation;
         private int mountPointsMask;
         private bool mountPointsSelection;
@@ -128,15 +131,21 @@ namespace RoboRougelike.R3
             {
                 var assembly=run.Player!=null?run.Player.GetComponent<R3VehicleAssembly>():null;
                 int mask=SelectedContactMask;bool selected=HasMountSelection;
+                var armor=Owned?.ArmorShape??R3ArmorShape.Cube;
+                var wheel=Owned?.WheelStyle??R3WheelStyle.Offroad;
+                var weapon=MountWeapon;
                 if(availableMountPoints==null||mountPointsAssembly!=assembly||mountPointsKind!=MountKind||
-                   mountPointsRotation!=SelectedRotation||mountPointsMask!=mask||mountPointsSelection!=selected)
+                   mountPointsRotation!=SelectedRotation||mountPointsMask!=mask||mountPointsSelection!=selected||
+                   mountPointsArmorShape!=armor||mountPointsWheelStyle!=wheel||mountPointsWeapon!=weapon)
                 {
                     var candidate=new R3PartState(Vector3Int.zero,MountKind){
-                        RotationQuarterTurns=SelectedRotation,ContactMask=mask};
+                        RotationQuarterTurns=SelectedRotation,ContactMask=mask,
+                        ArmorShape=armor,WheelStyle=wheel,Weapon=weapon};
                     availableMountPoints=HasMountSelection?
                         R3BuildValidation.PotentialMountPoints(assembly,candidate):new System.Collections.Generic.List<R3VisibleMountPoint>();
                     mountPointsAssembly=assembly;mountPointsKind=MountKind;
                     mountPointsRotation=SelectedRotation;mountPointsMask=mask;mountPointsSelection=selected;
+                    mountPointsArmorShape=armor;mountPointsWheelStyle=wheel;mountPointsWeapon=weapon;
                 }
                 return availableMountPoints;
             }

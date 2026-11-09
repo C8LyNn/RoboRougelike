@@ -42,8 +42,18 @@ namespace RoboRougelike.R3
         }
         BuildDefinition Definition(R3PartState part)
         {
-            string key=part.Kind+"/"+part.ContactMask;
+            string key=part.Kind+"/"+part.ContactMask+"/"+part.ArmorShape+"/"+part.WheelStyle+"/"+part.Weapon;
             if(definitions.TryGetValue(key,out var known))return known;
+            if(part.Kind==R3PartKind.Armor&&part.ArmorShape!=R3ArmorShape.Cube)
+            {
+                // Source full patches are the current conservative policy for
+                // both construction and module support. Never silently replace
+                // an unknown shape with a full-faced cube.
+                if(!R4MountDefinitionAdapter.TryCreate(R41PartGeometry.ArmorCatalogId(part.ArmorShape),true,out known))
+                    known=new BuildDefinition("invalid/"+key,BuildRole.Armor,System.Array.Empty<Vector3Int>(),
+                        System.Array.Empty<BuildSocket>(),false);
+                definitions.Add(key,known);return known;
+            }
             var role=part.Kind==R3PartKind.Core?BuildRole.Core:part.Kind==R3PartKind.Armor?BuildRole.Armor:
                 part.Kind==R3PartKind.Wheel?BuildRole.Wheel:part.Kind==R3PartKind.Gun?BuildRole.Gun:
                 part.Kind==R3PartKind.Suspension?BuildRole.Suspension:BuildRole.Device;
