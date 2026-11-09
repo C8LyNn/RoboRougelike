@@ -17,6 +17,8 @@ public sealed class AutomaticScaleTwoModelTests
     [TestCase(R4WeaponKind.Basic)]
     [TestCase(R4WeaponKind.Heavy)]
     [TestCase(R4WeaponKind.RocketLauncher)]
+    [TestCase(R4WeaponKind.Shotgun)]
+    [TestCase(R4WeaponKind.Railgun)]
     public void NewGunHasVersionedFootprintWhileLegacyRetainsOneCell(R4WeaponKind weapon)
     {
         var design=new R3VehicleDesign{Name="Automatic QA",CoreHp=100,Speed=7,TurnSpeed=82};
@@ -173,6 +175,39 @@ public sealed class AutomaticScaleTwoTests
         deadline=Time.realtimeSinceStartup+5;
         while(binding.State.Ammo==0&&Time.realtimeSinceStartup<deadline)yield return null;
         Assert.That(binding.State.Ammo,Is.EqualTo(RRLRocketBinding.Magazine));Object.Destroy(target);
+    }
+
+    [UnityTest] public IEnumerator EnlargedShotgunMountsAndHits() => VerifyPackageGun(R4WeaponKind.Shotgun,5f);
+    [UnityTest] public IEnumerator EnlargedRailgunMountsAndHits() => VerifyPackageGun(R4WeaponKind.Railgun,9f);
+
+    IEnumerator VerifyPackageGun(R4WeaponKind weapon,float cost)
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
+        var model=run.VehicleModel;model.Award(1000);
+        foreach(var part in model.Parts.Where(p=>p.Kind==R3PartKind.Gun).ToArray())
+        {Assert.That(run.GarageRemove(part.Cell),Is.True);yield return null;}
+        var anchor=new Vector3Int(0,2,0);
+        Assert.That(run.GarageBuyWeapon(anchor,weapon),Is.True);
+        var state=model.At(anchor);Assert.That(state.FootprintRevision,Is.EqualTo(2));
+        Assert.That(R3VehicleModel.OccupiedCells(state).Count(),Is.EqualTo(18));
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();var installed=assembly.Parts.Single(p=>p.Id==state.Id);
+        AssertPhysicalBarrelMatchesVisibleMuzzle(installed);
+        run.Player.GetComponent<Rigidbody>().isKinematic=true;run.Player.GetComponent<P12PipelineSafeTankController>().enabled=false;
+        run.Player.transform.SetPositionAndRotation(new Vector3(1000,20,1000),Quaternion.identity);
+        installed.GunPivot.rotation=Quaternion.identity;installed.GetComponent<R4WeaponArt>().Sync();
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=installed.Muzzle.position+installed.Muzzle.forward*5;
+        target.transform.localScale=new Vector3(4,4,.5f);
+        var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(1000,false);
+        var bank=run.Player.GetComponent<VehicleEnergyBank>();float energy=bank.Current;
+        Physics.SyncTransforms();
+        bool fired=weapon==R4WeaponKind.Shotgun?installed.GetComponent<RRLShotgunBinding>().Fire():installed.GetComponent<RRLRailgunBinding>().Fire();
+        Assert.That(fired,Is.True);Assert.That(bank.Current,Is.EqualTo(energy-cost).Within(.001f));
+        float deadline=Time.realtimeSinceStartup+5;
+        while(hp.CurrentHp>=1000&&Time.realtimeSinceStartup<deadline)yield return new WaitForFixedUpdate();
+        Assert.That(hp.CurrentHp,Is.LessThan(1000),"The actual package projectile hits.");
+        int ammo=weapon==R4WeaponKind.Shotgun?installed.GetComponent<RRLShotgunBinding>().State.Ammo:installed.GetComponent<RRLRailgunBinding>().State.Ammo;
+        Assert.That(ammo,Is.EqualTo(11));Object.Destroy(target);
     }
 
     [UnityTest] public IEnumerator RealGarageShowsAndMountsEnlargedAutomaticWithTwoWorkingMuzzles()
