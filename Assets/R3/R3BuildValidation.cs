@@ -63,7 +63,7 @@ namespace RoboRougelike.R3
             foreach(var cell in cells)
             foreach(var face in R3MountingGrid.FaceDirections)
             {
-                if(occupied.Contains(cell+face)||(part.FootprintRevision==1&&cell!=Vector3Int.zero)||
+                if(occupied.Contains(cell+face)||(part.FootprintRevision!=0&&cell!=Vector3Int.zero)||
                     (part.ContactMask&R3MountingGrid.FaceBit(face))==0)continue;
                 var kind=role==BuildRole.Wheel?BuildSocketKind.Axle:role==BuildRole.Gun?BuildSocketKind.WeaponBase:
                     role==BuildRole.Suspension?BuildSocketKind.SuspensionBase:BuildSocketKind.Structural;

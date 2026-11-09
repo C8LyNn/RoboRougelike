@@ -100,6 +100,7 @@ namespace RoboRougelike.R3
         private static readonly Vector3 WorkshopOrigin=new Vector3(0,500,0);
         private R3PartKind shownKind;
         private R4WeaponKind shownWeapon;
+        private int shownFootprintRevision;
         private R41GarageTool shownTool;
         private Vector3Int shownRotation;
         private int shownContacts=-1;
@@ -135,7 +136,7 @@ namespace RoboRougelike.R3
                 var armor=Owned?.ArmorShape??R3ArmorShape.Cube;
                 var wheel=Owned?.WheelStyle??R3WheelStyle.Offroad;
                 var weapon=MountWeapon;
-                int footprintRevision=Owned?.FootprintRevision??0;
+                int footprintRevision=CandidateFootprintRevision;
                 if(availableMountPoints==null||mountPointsAssembly!=assembly||mountPointsKind!=MountKind||
                    mountPointsRotation!=SelectedRotation||mountPointsMask!=mask||mountPointsSelection!=selected||
                    mountPointsArmorShape!=armor||mountPointsWheelStyle!=wheel||mountPointsWeapon!=weapon||
@@ -156,10 +157,13 @@ namespace RoboRougelike.R3
         }
         public R3PartKind MountKind => Owned?.Kind??SelectedPart;
         public R4WeaponKind MountWeapon => Owned?.Weapon??SelectedWeapon;
+        public int CandidateFootprintRevision=>Owned?.FootprintRevision??
+            R3VehicleModel.NewPurchaseFootprint(MountKind,MountWeapon,R3WheelStyle.Offroad);
         public R3PartState CandidatePart()
         {
             var candidate=Owned?.Copy()??new R3PartState(Cell,MountKind){Weapon=MountWeapon};
             candidate.Cell=Cell;candidate.RotationQuarterTurns=SelectedRotation;candidate.ContactMask=SelectedContactMask;
+            candidate.FootprintRevision=CandidateFootprintRevision;
             return candidate;
         }
         public System.Collections.Generic.IEnumerable<Vector3Int> CandidateOccupiedCells()=>
@@ -358,11 +362,13 @@ namespace RoboRougelike.R3
                 bool wheelMirror=kind==R3PartKind.Wheel&&R4WheelArt.MirrorForMount(run.VehicleModel,
                     new R3PartState(cell,R3PartKind.Wheel){RotationQuarterTurns=rotation,ContactMask=contacts});
                 var payload=R41PartGeometry.Payload(item.transform,kind,weapon,material,false,out var muzzle,Owned?.WheelStyle??R3WheelStyle.Offroad,wheelMirror);
+                if(kind==R3PartKind.Gun&&CandidateFootprintRevision==2)
+                    R41PartGeometry.ConfigureAutomaticScale2(item,payload);
                 // Reuse the player's model and axis adapter, but keep the
                 // original ghost geometry and do not create physical colliders.
                 if(!plan&&Tool==R41GarageTool.Mount)
                 {
-                    if(kind==R3PartKind.Gun&&payload!=null)R4WeaponArt.TryAttach(item.transform,payload,muzzle,weapon);
+                    if(kind==R3PartKind.Gun&&payload!=null)R4WeaponArt.TryAttach(item.transform,payload,muzzle,weapon,CandidateFootprintRevision==2);
                     else if(kind==R3PartKind.Wheel&&payload!=null)R4WheelArt.TryAttach(item.transform,payload,wheelMirror,Owned?.WheelStyle??R3WheelStyle.Offroad);
                     else if(kind==R3PartKind.Suspension)R4SuspensionArt.TryAttach(item.transform);
                     else if(kind==R3PartKind.Booster)R4BoosterArt.TryAttach(item.transform);
@@ -412,7 +418,7 @@ namespace RoboRougelike.R3
             var armorShape=Owned?.ArmorShape??R3ArmorShape.Cube;
             previewWheel.Cell=Cell;previewWheel.RotationQuarterTurns=SelectedRotation;previewWheel.ContactMask=SelectedContactMask;
             bool wheelMirrored=MountKind==R3PartKind.Wheel&&R4WheelArt.MirrorForMount(run.VehicleModel,previewWheel);
-            if(marker==null||shownKind!=MountKind||shownWeapon!=MountWeapon||
+            if(marker==null||shownKind!=MountKind||shownWeapon!=MountWeapon||shownFootprintRevision!=CandidateFootprintRevision||
                shownTool!=Tool||shownRotation!=SelectedRotation||shownContacts!=SelectedContactMask||
                (MountKind==R3PartKind.Wheel&&(shownWheelStyle!=wheelStyle||shownWheelMirrored!=wheelMirrored))||
                (MountKind==R3PartKind.Armor&&shownArmorShape!=armorShape)||
@@ -424,7 +430,7 @@ namespace RoboRougelike.R3
                     SelectedRotation,SelectedContactMask);
                 shownKind=MountKind;shownWeapon=MountWeapon;shownTool=Tool;shownRotation=SelectedRotation;
                 shownContacts=SelectedContactMask;shownMirrored=Cell.x>0;
-                shownWheelStyle=wheelStyle;shownWheelMirrored=wheelMirrored;
+                shownWheelStyle=wheelStyle;shownWheelMirrored=wheelMirrored;shownFootprintRevision=CandidateFootprintRevision;
                 shownArmorShape=armorShape;
             }
             bool needsOwned=UseInventory||!string.IsNullOrEmpty(SelectedInventoryId);
@@ -525,7 +531,7 @@ namespace RoboRougelike.R3
                     // Keep building from the same owned stack, without purchasing or
                     // silently substituting a different weapon or bonus.
                     var remaining=run.VehicleModel.Inventory.Where(p=>p.Kind==mounted.Kind&&
-                        (p.Kind!=R3PartKind.Gun||p.Weapon==mounted.Weapon)&&
+                        (p.Kind!=R3PartKind.Gun||(p.Weapon==mounted.Weapon&&p.FootprintRevision==mounted.FootprintRevision))&&
                         (p.Kind!=R3PartKind.Wheel||(p.WheelStyle==mounted.WheelStyle&&p.FootprintRevision==mounted.FootprintRevision))&&
                         (p.Kind!=R3PartKind.Armor||p.ArmorShape==mounted.ArmorShape)&&
                         (p.Kind!=R3PartKind.BonusModule||p.UpgradeId==mounted.UpgradeId)).ToArray();

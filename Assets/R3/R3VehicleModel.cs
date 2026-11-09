@@ -78,6 +78,9 @@ namespace RoboRougelike.R3
         public static float TierMass(int tier)=>NormalizedTier(tier)==3?1.3f:NormalizedTier(tier)==2?1.15f:1f;
         public static float TierWheelTraction(int tier)=>NormalizedTier(tier)==3?1.8f:NormalizedTier(tier)==2?1.35f:1f;
         public static bool HasSizedSideWheel(R3WheelStyle style)=>style==R3WheelStyle.LargeOffroad||style==R3WheelStyle.Monster;
+        public static int NewPurchaseFootprint(R3PartKind kind,R4WeaponKind weapon,R3WheelStyle wheelStyle)=>
+            kind==R3PartKind.Wheel&&HasSizedSideWheel(wheelStyle)?1:
+            kind==R3PartKind.Gun&&weapon==R4WeaponKind.Automatic?2:0;
         public static bool HasForkMount(R3WheelStyle style)=>style==R3WheelStyle.SmallFork||style==R3WheelStyle.BalloonFork||style==R3WheelStyle.SpikedFork||style==R3WheelStyle.TwinRoad||style==R3WheelStyle.SteerRoad||style==R3WheelStyle.SteerOffroad||style==R3WheelStyle.CasterSlick||style==R3WheelStyle.SwingOffroad;
         public static bool HasSideMount(R3WheelStyle style)=>!HasForkMount(style);
         public static int StoredWheelContacts(R3PartState part)=>part!=null&&part.Kind==R3PartKind.Wheel&&HasSideMount(part.WheelStyle)?
@@ -207,6 +210,12 @@ namespace RoboRougelike.R3
         }
         public static IEnumerable<Vector3Int> OccupiedCells(R3PartState part)
         {
+            if(part.FootprintRevision==2&&part.Kind==R3PartKind.Gun&&part.Weapon==R4WeaponKind.Automatic)
+            {
+                for(int y=0;y<=1;y++)for(int x=-1;x<=1;x++)for(int z=-1;z<=1;z++)
+                    yield return part.Cell+R3MountingGrid.Rotate(new Vector3Int(x,y,z),part.RotationQuarterTurns);
+                yield break;
+            }
             if(part.FootprintRevision==1&&part.Kind==R3PartKind.Wheel&&HasSizedSideWheel(part.WheelStyle))
             {
                 for(int y=-1;y<=1;y++)for(int z=-1;z<=1;z++)
@@ -242,7 +251,8 @@ namespace RoboRougelike.R3
             (part.Kind==R3PartKind.Wheel?(!HasForkMount(part.WheelStyle)||part.ContactMask==R3MountingGrid.FaceBit(Vector3Int.up)):
                 part.WheelStyle==R3WheelStyle.Offroad);
         public static bool ValidFootprint(R3PartState part)=>part!=null&&(part.FootprintRevision==0||
-            (part.FootprintRevision==1&&part.Kind==R3PartKind.Wheel&&HasSizedSideWheel(part.WheelStyle)));
+            (part.FootprintRevision==1&&part.Kind==R3PartKind.Wheel&&HasSizedSideWheel(part.WheelStyle))||
+            (part.FootprintRevision==2&&part.Kind==R3PartKind.Gun&&part.Weapon==R4WeaponKind.Automatic));
         public static bool ValidEconomicPart(R3PartState part) => part!=null && ValidEconomicKind(part.Kind,part.Weapon) && ValidWheelStyle(part) && ValidArmorShape(part) && ValidFootprint(part) && part.Tier>=0&&part.Tier<=3&&
             (part.Tier<=1||SupportsFusion(part.Kind,part.Weapon))&&
             !float.IsNaN(part.Health)&&!float.IsInfinity(part.Health)&&part.Health>=0&&part.Health<=1;
@@ -274,7 +284,8 @@ namespace RoboRougelike.R3
             if (!Enum.IsDefined(typeof(R3PartKind),kind)) return "Nieznany typ części.";
             if(kind==R3PartKind.Gun&&!Enum.IsDefined(typeof(R4WeaponKind),weapon))return "Nieznany rodzaj broni.";
             var stored=ownedId!=null?inventory.FirstOrDefault(p=>p.Id==ownedId):null;
-            var candidate=stored?.Copy()??new R3PartState(cell,kind){Weapon=weapon};
+            var candidate=stored?.Copy()??new R3PartState(cell,kind){Weapon=weapon,
+                FootprintRevision=owned?0:NewPurchaseFootprint(kind,weapon,R3WheelStyle.Offroad)};
             candidate.Cell=cell;candidate.RotationQuarterTurns=rotation;candidate.ContactMask=contactMask;
             var footprint=OccupiedCells(candidate).ToArray();
             if(footprint.Any(c=>Math.Abs(c.x)>6||Math.Abs(c.z)>7||c.y<0||c.y>5))return "Moduł wykracza poza siatkę montażową.";
@@ -310,7 +321,8 @@ namespace RoboRougelike.R3
             rotation=R3MountingGrid.Normalize(rotation);
             if(kind==R3PartKind.BonusModule||PlacementError(cell,kind,false,weapon,rotation)!=null)return false;
             Scrap-=Price(kind,weapon);
-            Parts.Add(new R3PartState(cell,kind){Weapon=weapon,RotationQuarterTurns=rotation,ContactMask=PlacementContacts(kind)});
+            Parts.Add(new R3PartState(cell,kind){Weapon=weapon,RotationQuarterTurns=rotation,ContactMask=PlacementContacts(kind),
+                FootprintRevision=NewPurchaseFootprint(kind,weapon,R3WheelStyle.Offroad)});
             return true;
         }
         public bool PurchaseToInventory(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic,R3WheelStyle wheelStyle=R3WheelStyle.Offroad,R3ArmorShape armorShape=R3ArmorShape.Cube)
@@ -323,7 +335,7 @@ namespace RoboRougelike.R3
                 (armorShape!=R3ArmorShape.Cube&&!R4_1.R41PartGeometry.ArmorShapeAvailable(armorShape)))return false;
             int price=Price(kind,weapon);if(price<=0||Scrap<price)return false;
             Scrap-=price;inventory.Add(new R3PartState(default,kind){Weapon=weapon,WheelStyle=wheelStyle,ArmorShape=armorShape,
-                FootprintRevision=kind==R3PartKind.Wheel&&HasSizedSideWheel(wheelStyle)?1:0,
+                FootprintRevision=NewPurchaseFootprint(kind,weapon,wheelStyle),
                 ContactMask=kind==R3PartKind.Wheel?(HasForkMount(wheelStyle)?R3MountingGrid.FaceBit(Vector3Int.up):
                     R3MountingGrid.FaceBit(Vector3Int.right)|R3MountingGrid.FaceBit(Vector3Int.left)):
                     armorShape==R3ArmorShape.Cube?R3MountingGrid.AllFaces:R4_1.R41PartGeometry.FullArmorContacts(armorShape)});return true;
@@ -449,7 +461,7 @@ namespace RoboRougelike.R3
         public int DismantleValue(R3PartState part) => !ValidEconomicPart(part)?0:Mathf.FloorToInt(OwnedPartValue(part)*0.25f*Mathf.Clamp01(part.Health));
         public static bool SameFusionType(R3PartState a,R3PartState b) => a!=null&&b!=null&&a.Kind==b.Kind&&
             NormalizedTier(a.Tier)==NormalizedTier(b.Tier)&&
-            (a.Kind!=R3PartKind.Gun||a.Weapon==b.Weapon)&&
+            (a.Kind!=R3PartKind.Gun||(a.Weapon==b.Weapon&&a.FootprintRevision==b.FootprintRevision))&&
             (a.Kind!=R3PartKind.Wheel||(a.WheelStyle==b.WheelStyle&&a.FootprintRevision==b.FootprintRevision))&&
             (a.Kind!=R3PartKind.Armor||a.ArmorShape==b.ArmorShape)&&
             (a.Kind!=R3PartKind.BonusModule||(!string.IsNullOrWhiteSpace(a.UpgradeId)&&a.UpgradeId==b.UpgradeId&&

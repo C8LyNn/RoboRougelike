@@ -211,6 +211,8 @@ namespace RoboRougelike.R1
             string caption=$"T{R3VehicleModel.NormalizedTier(part.Tier)} • {(compact?"":"HP ")}{part.Health*100:0}%";
             if(part.Kind==R3PartKind.Wheel&&R3VehicleModel.HasSizedSideWheel(part.WheelStyle))
                 caption+=(compact?"\n":" • ")+(part.FootprintRevision==1?"3×3":"1 pole");
+            if(part.Kind==R3PartKind.Gun&&part.Weapon==R4WeaponKind.Automatic)
+                caption+=(compact?"\n":" • ")+(part.FootprintRevision==2?"×2":"×1");
             return caption;
         }
 

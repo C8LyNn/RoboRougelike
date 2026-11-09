@@ -14,7 +14,7 @@ namespace RoboRougelike.R4_1
         public void AdvanceMuzzle()=>adapter?.AdvanceMuzzle();
         public Transform SawRotor {get;private set;}
 
-        public static R4WeaponArt TryAttach(Transform block,Transform pivot,Transform muzzle,R4WeaponKind weapon)
+        public static R4WeaponArt TryAttach(Transform block,Transform pivot,Transform muzzle,R4WeaponKind weapon,bool scale2=false)
         {
 
             if(block==null||pivot==null)return null;
@@ -25,6 +25,12 @@ namespace RoboRougelike.R4_1
             var axes=block.gameObject.AddComponent<R4ArtWeaponAxisAdapter>();
             if(!axes.Bind(visual.transform,weapon==R4WeaponKind.Automatic?"R41":"R4W_"+weapon))
             {Destroy(visual);Destroy(axes);return null;}
+            if(scale2&&weapon==R4WeaponKind.Automatic)
+            {
+                // Keep the bottom mounting face fixed while doubling the art.
+                visual.transform.localScale*=2f;
+                visual.transform.localPosition+=Vector3.up*(.26f/block.lossyScale.x);
+            }
             Transform sawRotor=null;
             if(weapon==R4WeaponKind.RotarySaw)
             {
