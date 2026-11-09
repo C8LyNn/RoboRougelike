@@ -11,7 +11,7 @@ using RoboRougelike.R4_1;
 
 namespace RoboRougelike.B01.GarageSpatialW28
 {
-    public enum B0112ZoneKind { OccupiedRed, ProtrusionBlue, WeaponPurple, MechanismOrange, ValidGreen }
+    public enum B0112ZoneKind { OccupiedRed, ProtrusionBlue, WeaponPurple, MechanismOrange, ValidGreen, PotentialSocket }
 
     public readonly struct B0112ZoneBox
     {
@@ -34,11 +34,11 @@ namespace RoboRougelike.B01.GarageSpatialW28
     public sealed class B0112GarageSpatialOverlay : MonoBehaviour
     {
         public const float CellMeters=R41PartGeometry.Grid; // real canonical R3 0.55 m
-        public const int MaxBoxes=256;
+        public const int MaxBoxes=2048;
         public const string ValidationOwner="R3GarageView.PlacementIssue";
 
         readonly List<B0112ZoneBox> boxes=new List<B0112ZoneBox>(MaxBoxes);
-        readonly Material[] materials=new Material[5];
+        readonly Material[] materials=new Material[6];
         R3GarageView garage;
         Mesh cube;
         bool shaderWarned;
@@ -94,6 +94,7 @@ namespace RoboRougelike.B01.GarageSpatialW28
             materials[(int)B0112ZoneKind.WeaponPurple]=NewTint(new Color(.66f,.22f,1f,.20f));
             materials[(int)B0112ZoneKind.MechanismOrange]=NewTint(new Color(1f,.47f,.06f,.20f));
             materials[(int)B0112ZoneKind.ValidGreen]=NewTint(new Color(.13f,1f,.32f,.29f));
+            materials[(int)B0112ZoneKind.PotentialSocket]=NewTint(new Color(.08f,.9f,1f,.85f));
         }
 
         static bool Mechanism(R3PartKind kind) => kind==R3PartKind.Suspension||
@@ -166,13 +167,19 @@ namespace RoboRougelike.B01.GarageSpatialW28
         public void RebuildReadout(R3GarageView source)
         {
             boxes.Clear();reason=null;visible=false;garage=source;
-            if(source==null||source.Preview==null||!source.Preview.gameObject.activeInHierarchy||
-                !source.HasTarget||source.Tool!=R41GarageTool.Mount)return;
-            var assembly=source.Preview.GetComponentInParent<R3VehicleAssembly>();
+            if(source==null||source.Preview==null||source.Tool!=R41GarageTool.Mount||!source.HasMountSelection)return;
+            var assembly=source.Preview.GetComponentInParent<R3VehicleAssembly>(true);
             if(assembly==null||assembly.Model==null)return;
             var model=assembly.Model;
             var partRoot=assembly.transform;
             var orientation=partRoot.rotation;
+            foreach(var point in source.AvailableMountPoints)
+                Add(B0112ZoneKind.PotentialSocket,point.Position,point.Rotation,
+                    new Vector3(R3BuildValidation.GarageSocketSize,R3BuildValidation.GarageSocketSize,.012f));
+            // Available points must remain visible even before the cursor has
+            // reached a registered socket; no ghost is shown in this state.
+            visible=true;
+            if(!source.HasTarget||!source.Preview.gameObject.activeInHierarchy)return;
             // Canonical R3GarageView already renders RED occupied-cell outlines and
             // BLUE selected payloads in the real W27 Player. Do not duplicate them.
             // Put the genuine host-authorized current candidate FIRST so 180-cell
@@ -211,7 +218,6 @@ namespace RoboRougelike.B01.GarageSpatialW28
                 AddFunctionalEnvelope(p.transform,p.Kind);
             }
             AddFunctionalEnvelope(source.Preview,source.MountKind);
-            visible=true;
         }
 
         void LateUpdate()
@@ -261,9 +267,8 @@ namespace RoboRougelike.B01.GarageSpatialW28
             int y=Mathf.RoundToInt(Screen.height*.11f);
             int width=Mathf.Min(Mathf.RoundToInt(Screen.width*.465f),660);
             if(width<220)return;
-            string state=reason==null?"ZIELONY: zgodne z aktualnym walidatorem R3":"CZERWONY: "+reason;
-            GUI.Box(new Rect(x,y,width,57),"STREFY 3D  Czerwony: zajęte  |  Niebieski: wystające  |  Fiolet: broń\n"+
-                "Pomarańczowy: ruch  |  Zielony: montaż  ·  "+state);
+            string state=!garage.HasTarget?"Najedź na świecący punkt":reason==null?"Zielony: można zamontować":"Czerwony: "+reason;
+            GUI.Box(new Rect(x,y,width,57),"CYJAN: punkty styku  |  NIEBIESKI: obrys  |  FIOLET: broń\n"+state);
         }
 
         void OnDestroy()

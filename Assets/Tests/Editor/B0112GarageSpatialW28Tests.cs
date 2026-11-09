@@ -33,9 +33,9 @@ public sealed class B0112GarageSpatialW28Tests
         Assert.That(B0112GarageSpatialOverlay.CandidateTint(true,"Fizyczny obrys części przenika istniejący collider."),
             Is.EqualTo(B0112ZoneKind.OccupiedRed));
     }
-    [Test] public void FiveZoneKindsKeepStableReceiverColors()
+    [Test] public void SixZoneKindsKeepStableReceiverColors()
     {
-        Assert.That(System.Enum.GetValues(typeof(B0112ZoneKind)).Length,Is.EqualTo(5));
+        Assert.That(System.Enum.GetValues(typeof(B0112ZoneKind)).Length,Is.EqualTo(6));
     }
     [Test] public void ReadoutHasNoPhysicsColliderAndStartsHidden()
     {

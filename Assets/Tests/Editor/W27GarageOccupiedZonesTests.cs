@@ -11,6 +11,48 @@ using UnityEngine.TestTools;
 public class W27GarageOccupiedZonesTests
 {
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying)yield return new ExitPlayMode();}
+    [UnityTest] public IEnumerator CompatibleMountPointsAreVisibleBeforeAimingAtOne()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float end=Time.realtimeSinceStartup+15;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<end)yield return null;
+        var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        run.SelectVehicle(R3VehicleKind.Light);Assert.That(run.OpenSandboxGarage(),Is.True);
+        var garage=run.Garage;garage.UseInventory=false;garage.SelectedPart=R3PartKind.Armor;
+        garage.SetTool(RoboRougelike.R4_1.R41GarageTool.Mount);
+        Assert.That(garage.HasTarget,Is.False);
+        var overlay=UnityEngine.Object.FindFirstObjectByType<RoboRougelike.B01.GarageSpatialW28.B0112GarageSpatialOverlay>();
+        Assert.That(overlay,Is.Not.Null);overlay.RebuildReadout(garage);
+        Assert.That(overlay.VisibleBoxCount,Is.GreaterThan(0),
+            "The garage should show usable attachment points before the player aims at one.");
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();
+        var gun=new R3PartState(Vector3Int.zero,R3PartKind.Gun){
+            ContactMask=R3VehicleModel.PlacementContacts(R3PartKind.Gun)};
+        var points=R3BuildValidation.PotentialMountPoints(assembly,gun);
+        Assert.That(points,Is.Not.Empty,"The light vehicle offers places for the bottom of a gun.");
+        var surfaces=assembly.GetComponentsInChildren<B01.BUILD001.BuildMountSurface>();
+        foreach(var point in points)
+        {
+            Assert.That(Vector3.Dot(point.Rotation*Vector3.forward,assembly.transform.up),Is.GreaterThan(.99f),
+                "An upright turret's base must only match upward-facing supports.");
+            var surface=surfaces.FirstOrDefault(s=>Vector3.Distance(s.transform.position,point.Position)<.001f);
+            Assert.That(surface,Is.Not.Null,"Every visible point comes from an actual registered collider.");
+            var box=surface.GetComponent<BoxCollider>();Assert.That(box,Is.Not.Null);
+            Assert.That(box.size.x*surface.transform.lossyScale.x,Is.EqualTo(R3BuildValidation.GarageSocketSize).Within(.001f),
+                "The selectable area matches the visible indicator.");
+        }
+        garage.SelectedPart=R3PartKind.Gun;
+        var before=garage.AvailableMountPoints;
+        Assert.That(before,Is.Not.Empty);
+        garage.RotateSelected(0,1);
+        var after=garage.AvailableMountPoints;
+        Assert.That(after,Is.Not.SameAs(before),"Changing orientation must refresh the candidate points.");
+        Assert.That(after,Is.Not.Empty);
+        var expected=-R3MountingGrid.Rotate(Vector3Int.down,garage.SelectedRotation);
+        foreach(var point in after)
+            Assert.That(Vector3.Dot(point.Rotation*Vector3.forward,assembly.transform.TransformDirection(expected)),Is.GreaterThan(.99f),
+                "The offered socket follows the rotated local gun base.");
+    }
     [UnityTest] public IEnumerator OccupiedGridIsVisibleAndTracksActualGarageConstructionWithoutColliders()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");
@@ -77,5 +119,36 @@ public class W27GarageOccupiedZonesTests
         Assert.That(actual,Is.SameAs(wedge.GetComponent<MeshFilter>().sharedMesh));
         Assert.That(run.Garage.Preview.GetComponentsInChildren<Collider>(true).All(c=>!c.enabled),Is.True);
         UnityEngine.Object.Destroy(wedge);
+    }
+    [UnityTest] public IEnumerator GunCannotSnapToUnmarkedSideSocket()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float end=Time.realtimeSinceStartup+15;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<end)yield return null;
+        var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        run.SelectVehicle(R3VehicleKind.Standard);Assert.That(run.OpenSandboxGarage(),Is.True);
+        var garage=run.Garage;garage.UseInventory=false;garage.SelectedPart=R3PartKind.Gun;
+        garage.SetTool(RoboRougelike.R4_1.R41GarageTool.Mount);
+        var root=run.Player.transform;var face=new Vector3(2.5f,1,2)*RoboRougelike.R4_1.R41PartGeometry.Grid;
+        var ray=new Ray(root.TransformPoint(face+Vector3.right*.4f),-root.right);
+        Assert.That(garage.Point(ray),Is.False,
+            "An upright gun must not snap to a side socket which was not offered as compatible.");
+    }
+    [UnityTest] public IEnumerator HeavyVehicleReusesMountPointListUntilItsSelectionChanges()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float end=Time.realtimeSinceStartup+15;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<end)yield return null;
+        var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        run.SelectVehicle(R3VehicleKind.Heavy);Assert.That(run.OpenSandboxGarage(),Is.True);
+        var garage=run.Garage;garage.UseInventory=false;garage.SelectedPart=R3PartKind.Gun;
+        garage.SetTool(RoboRougelike.R4_1.R41GarageTool.Mount);
+        var timer=System.Diagnostics.Stopwatch.StartNew();var first=garage.AvailableMountPoints;timer.Stop();
+        Debug.Log("[MOUNT-POINT-QA] Heavy count="+first.Count+" first calculation ms="+timer.ElapsedMilliseconds);
+        Assert.That(first,Is.Not.Empty);
+        Assert.That(first.Count,Is.LessThan(RoboRougelike.B01.GarageSpatialW28.B0112GarageSpatialOverlay.MaxBoxes));
+        Assert.That(garage.AvailableMountPoints,Is.SameAs(first),"Pointer movement must not rebuild the full graph.");
+        garage.RotateSelected(0,1);
+        Assert.That(garage.AvailableMountPoints,Is.Not.SameAs(first),"Rotation must refresh the compatible sockets.");
     }
 }

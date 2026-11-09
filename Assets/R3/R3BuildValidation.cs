@@ -9,9 +9,19 @@ using UnityEngine;
 
 namespace RoboRougelike.R3
 {
+    public readonly struct R3VisibleMountPoint
+    {
+        public readonly Vector3 Position;
+        public readonly Quaternion Rotation;
+        public readonly Collider Surface;
+        public R3VisibleMountPoint(Vector3 position,Quaternion rotation,Collider surface)
+        {Position=position;Rotation=rotation;Surface=surface;}
+    }
     // Receiver policy only. R3 remains the sole inventory/wallet/HP owner.
     public sealed partial class R3BuildValidation : MonoBehaviour
     {
+        // The visible patch and its registered trigger are the same size.
+        public const float GarageSocketSize=.18f;
         R3VehicleAssembly assembly;
         R3VehicleModel model;
         readonly Dictionary<string,BuildDefinition> definitions=new Dictionary<string,BuildDefinition>();
@@ -257,6 +267,45 @@ namespace RoboRougelike.R3
             return BuildSocketRaycast.ValidateHit(local,part.transform,part.Id,gate.Definition(state),
                 new BuildPose(state.Cell,state.RotationQuarterTurns),Vector3.zero,gate.registry,out _)==BuildHitResult.Valid;
         }
+        public static List<R3VisibleMountPoint> PotentialMountPoints(R3VehicleAssembly actual,R3PartState candidate)
+        {
+            var result=new List<R3VisibleMountPoint>();
+            var gate=actual!=null?actual.GetComponent<R3BuildValidation>():null;
+            if(gate==null||gate.sockets==null||gate.model==null||candidate==null)return result;
+            var states=gate.model.Parts.ToDictionary(p=>p.Id);
+            var occupied=new HashSet<Vector3Int>(gate.model.Parts.SelectMany(R3VehicleModel.OccupiedCells));
+            var reachable=BuildPlacementRules.Reachable(gate.Installed());
+            var definition=gate.Definition(candidate);
+            var offsets=R3VehicleModel.OccupiedCells(Vector3Int.zero,candidate.Kind,candidate.RotationQuarterTurns).ToArray();
+            var seen=new HashSet<(Vector3Int,Vector3Int)>();
+            foreach(var face in gate.socketFaces)
+            {
+                if(face==null||!face.activeInHierarchy)continue;
+                var marker=face.GetComponent<BuildMountSurface>();var collider=face.GetComponent<Collider>();
+                var mounted=face.GetComponentInParent<R3MountedPart>();
+                if(marker==null||collider==null||mounted==null||!mounted.Operational||
+                    !mounted.transform.IsChildOf(actual.transform)||!reachable.Contains(mounted.Id)||
+                    !states.TryGetValue(marker.PartInstanceId,out var state))continue;
+                var support=gate.Definition(state);
+                if(!gate.registry.TryGet(collider,mounted.transform,mounted.Id,support,out int index))continue;
+                var socket=support.Sockets[index];
+                var cell=state.Cell+R3MountingGrid.Rotate(socket.Cell,state.RotationQuarterTurns);
+                var direction=R3MountingGrid.Rotate(socket.Face,state.RotationQuarterTurns);
+                if(!seen.Add((cell,direction)))continue;
+                foreach(var offset in offsets)
+                {
+                    var anchor=cell+direction-offset;
+                    var candidateCells=R3VehicleModel.OccupiedCells(anchor,candidate.Kind,candidate.RotationQuarterTurns);
+                    if(candidateCells.Any(c=>occupied.Contains(c)||System.Math.Abs(c.x)>6||
+                        System.Math.Abs(c.z)>7||c.y<0||c.y>5))continue;
+                    if(!BuildSocketGeometry.Touches(support,new BuildPose(state.Cell,state.RotationQuarterTurns),
+                        definition,new BuildPose(anchor,candidate.RotationQuarterTurns),out _))continue;
+                    result.Add(new R3VisibleMountPoint(face.transform.position,face.transform.rotation,collider));
+                    break;
+                }
+            }
+            return result;
+        }
         public static void SetGarageSockets(R3VehicleAssembly actual,bool visible)
         {
             var gate=actual!=null?actual.GetComponent<R3BuildValidation>():null;if(gate==null)return;
@@ -273,7 +322,7 @@ namespace RoboRougelike.R3
                     face.transform.localPosition=((Vector3)socket.Cell+(Vector3)socket.Face*.5f)*R41PartGeometry.Grid/part.transform.localScale.x;
                     face.transform.localRotation=Quaternion.LookRotation((Vector3)socket.Face,socket.Face.y!=0?Vector3.forward:Vector3.up);
                     var box=face.AddComponent<BoxCollider>();box.isTrigger=true;
-                    box.size=new Vector3(socket.HalfSize.x*2,socket.HalfSize.y*2,.012f/R41PartGeometry.Grid)*R41PartGeometry.Grid/part.transform.localScale.x;
+                    box.size=new Vector3(GarageSocketSize,GarageSocketSize,.012f)/part.transform.localScale.x;
                     var marker=face.AddComponent<BuildMountSurface>();marker.PartInstanceId=part.Id;marker.SocketIndex=index;
                     if(!gate.registry.Register(box,part.transform,part.Id,definition,index))
                         Debug.LogError("[BUILD receiver] Cannot register actual structural socket "+part.Id+"/"+index);
