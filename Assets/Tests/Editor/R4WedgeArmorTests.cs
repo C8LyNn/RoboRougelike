@@ -61,6 +61,10 @@ public sealed class R4WedgeArmorTests
         Assert.That(R3MountingGrid.PortOnFace(mounted,R3MountingGrid.Rotate(Vector3Int.back,mounted.RotationQuarterTurns)),Is.True);
         Assert.That(R3MountingGrid.PortOnFace(mounted,R3MountingGrid.Rotate(Vector3Int.right,mounted.RotationQuarterTurns)),Is.False);
         var assembly=run.Player.GetComponent<R3VehicleAssembly>();var part=assembly.Parts.Single(p=>p.Id==id);
+        var runtimePorts=part.GetComponent<R3BlockMountPoints>();Assert.That(runtimePorts,Is.Not.Null);
+        Assert.That(runtimePorts.WorldMaskAt(Vector3Int.zero),Is.EqualTo(
+            R3MountingGrid.WorldPortMask(mounted.RotationQuarterTurns,mounted.ContactMask)),
+            "The live rotated wedge graph must use the same full catalog ports as the mounted item.");
         part.Damageable.ApplyDamage(part.Damageable.MaxHp*.4f,part.transform.position,Vector3.up);assembly.Capture();
         Assert.That(model.At(cell).Health,Is.LessThan(1));Assert.That(run.GarageRepair(cell),Is.True);
         Assert.That(model.At(cell).Health,Is.EqualTo(1));Assert.That(run.GarageRemove(cell),Is.True);

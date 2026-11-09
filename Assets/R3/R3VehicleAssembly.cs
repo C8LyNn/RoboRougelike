@@ -253,8 +253,12 @@ namespace RoboRougelike.R3
                     state.Kind==R3PartKind.BonusModule?250:state.Kind==R3PartKind.DirectionalShield?180:state.Kind==R3PartKind.PointDefense?160:state.Kind==R3PartKind.Wheel?80:state.Kind==R3PartKind.CrawlerTrack?140:100;
                 hp.Configure(baseHp*R3VehicleModel.TierHealth(state.Tier),true);
                 var block=item.AddComponent<P12_PipelineSafePlayerBlock>();
-                item.AddComponent<R3BlockMountPoints>().Configure(state.Id,
+                var mountPoints=item.AddComponent<R3BlockMountPoints>();mountPoints.Configure(state.Id,
                     R3MountingGrid.WorldPortMask(state.RotationQuarterTurns,state.ContactMask));
+                if(state.Kind==R3PartKind.Armor&&state.ArmorShape!=R3ArmorShape.Cube&&
+                    R4MountDefinitionAdapter.TryCreateCellPortMasks(R41PartGeometry.ArmorCatalogId(state.ArmorShape),
+                        true,state.RotationQuarterTurns,out var cellPortMasks))
+                    mountPoints.SetCellPortMasks(cellPortMasks);
                 if(wide)R3BonusModuleGeometry.AddStructuralSockets(item.transform,state);
                 if(state.Kind==R3PartKind.Core)core=block;
                 var part=item.AddComponent<R3MountedPart>(); part.Cell=state.Cell;part.Kind=state.Kind;part.Tier=R3VehicleModel.NormalizedTier(state.Tier);part.Damageable=hp;part.Block=block;

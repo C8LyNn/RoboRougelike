@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using B01.BUILD001;
+using RoboRougelike.R3;
 using UnityEngine;
 
 namespace RoboRougelike.R4_1
@@ -13,6 +14,25 @@ namespace RoboRougelike.R4_1
     /// </summary>
     public static class R4MountDefinitionAdapter
     {
+        // One mask per occupied cell in the rotated vehicle-local grid. A
+        // bit means a catalog socket exists; exact patch overlap is still the
+        // responsibility of BUILD001, not this compact graph representation.
+        public static bool TryCreateCellPortMasks(string id,bool moduleSupport,Vector3Int turns,
+            out Dictionary<Vector3Int,int> masks)
+        {
+            masks=null;
+            if(!TryCreate(id,moduleSupport,out var definition))return false;
+            var result=new Dictionary<Vector3Int,int>();
+            foreach(var cell in definition.Cells)result.Add(R3MountingGrid.Rotate(cell,turns),0);
+            foreach(var socket in definition.Sockets)
+            {
+                var cell=R3MountingGrid.Rotate(socket.Cell,turns);
+                var face=R3MountingGrid.Rotate(socket.Face,turns);
+                if(!result.ContainsKey(cell))return false;
+                result[cell]|=R3MountingGrid.FaceBit(face);
+            }
+            masks=result;return true;
+        }
         // The pinned #963 source's sampled collider does not cover these
         // patches. Keep the source catalogue intact, but do not authorize
         // structural or device support until its owner resolves the geometry.
