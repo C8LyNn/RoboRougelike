@@ -14,7 +14,10 @@ namespace RoboRougelike.WeaponIntegration
             var chassis=owner.Find("Base");if(chassis==null)return;
             var enemy=owner.GetComponent<P12PipelineSafeEnemyTurret>();
             var support=chassis.GetComponentsInChildren<P12PipelineSafeDamageable>()
-                .Where(p=>!p.IsDead&&p!=enemy.Core&&p.GetComponent<RRLDeviceBinding>()==null)
+                .Where(p=>!p.IsDead&&p!=enemy.Core&&p.GetComponent<RRLDeviceBinding>()==null&&
+                    !RoboRougelike.R6.R6VehicleDrive.IsWheel(p)&&p.GetComponent<Collider>()!=null&&
+                    (p.GetComponent<R3BlockMountPoints>()==null||
+                     (p.GetComponent<R3BlockMountPoints>().WorldMask&R3MountingGrid.FaceBit(Vector3Int.up))!=0))
                 .OrderBy(p=>(p.transform.position-item.transform.position).sqrMagnitude).FirstOrDefault();
             if(support==null)return;var bounds=support.GetComponent<Collider>().bounds;
             var rotation=owner.rotation*R3MountingGrid.Rotation(state.RotationQuarterTurns);
