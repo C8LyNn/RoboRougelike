@@ -38,6 +38,12 @@ namespace RoboRougelike.R3
         private R3VisualPalette palette;
         private GameObject previewRoot,marker;
         private readonly System.Collections.Generic.HashSet<Renderer> payloadRenderers=new System.Collections.Generic.HashSet<Renderer>();
+        private System.Collections.Generic.List<R3VisibleMountPoint> availableMountPoints;
+        private R3VehicleAssembly mountPointsAssembly;
+        private R3PartKind mountPointsKind;
+        private Vector3Int mountPointsRotation;
+        private int mountPointsMask;
+        private bool mountPointsSelection;
         private readonly RaycastHit[] hits=new RaycastHit[512];
         private float yaw=35,pitch=32,distance=9,previousNear;
         private Vector3 pivotLocal;
@@ -75,6 +81,26 @@ namespace RoboRougelike.R3
             hasTarget&&(tool!=R41GarageTool.Mount||!needsOwned||hasOwned);
         public float Distance => distance;
         private R3PartState Owned => run.VehicleModel.Inventory.FirstOrDefault(p=>p.Id==SelectedInventoryId);
+        public bool HasMountSelection=>!(UseInventory||!string.IsNullOrEmpty(SelectedInventoryId))||Owned!=null;
+        public System.Collections.Generic.IReadOnlyList<R3VisibleMountPoint> AvailableMountPoints
+        {
+            get
+            {
+                var assembly=run.Player!=null?run.Player.GetComponent<R3VehicleAssembly>():null;
+                int mask=SelectedContactMask;bool selected=HasMountSelection;
+                if(availableMountPoints==null||mountPointsAssembly!=assembly||mountPointsKind!=MountKind||
+                   mountPointsRotation!=SelectedRotation||mountPointsMask!=mask||mountPointsSelection!=selected)
+                {
+                    var candidate=new R3PartState(Vector3Int.zero,MountKind){
+                        RotationQuarterTurns=SelectedRotation,ContactMask=mask};
+                    availableMountPoints=HasMountSelection?
+                        R3BuildValidation.PotentialMountPoints(assembly,candidate):new System.Collections.Generic.List<R3VisibleMountPoint>();
+                    mountPointsAssembly=assembly;mountPointsKind=MountKind;
+                    mountPointsRotation=SelectedRotation;mountPointsMask=mask;mountPointsSelection=selected;
+                }
+                return availableMountPoints;
+            }
+        }
         public R3PartKind MountKind => Owned?.Kind??SelectedPart;
         public R4WeaponKind MountWeapon => Owned?.Weapon??SelectedWeapon;
         public string PlacementIssue => (UseInventory||!string.IsNullOrEmpty(SelectedInventoryId))&&Owned==null?
@@ -109,7 +135,7 @@ namespace RoboRougelike.R3
         {
             if(run.Player!=null)R3BuildValidation.SetGarageSockets(run.Player.GetComponent<R3VehicleAssembly>(),false);
             if(previewRoot!=null){previewRoot.SetActive(false);Destroy(previewRoot);}
-            previewRoot=null;marker=null;payloadRenderers.Clear();HasTarget=false;orbitDragging=false;rightPressed=false;rightDragged=false;
+            previewRoot=null;marker=null;payloadRenderers.Clear();availableMountPoints=null;mountPointsAssembly=null;HasTarget=false;orbitDragging=false;rightPressed=false;rightDragged=false;
             DestroyWorkshopSpace();
             RestoreArena();
             if(isOpen){view.nearClipPlane=previousNear;view.rect=new Rect(0,0,1,1);follow.enabled=true;}
@@ -208,6 +234,7 @@ namespace RoboRougelike.R3
         }
         public void RefreshPreview()
         {
+            availableMountPoints=null;mountPointsAssembly=null;
             if(previewRoot!=null){previewRoot.SetActive(false);Destroy(previewRoot);}
             previewRoot=new GameObject("Podgląd garażu");previewRoot.transform.SetParent(run.Player.transform,false);marker=null;payloadRenderers.Clear();
             ShowOccupiedCells();
@@ -373,7 +400,8 @@ namespace RoboRougelike.R3
             }
             HasTarget=target!=null||missing!=null;
             if(Tool==R41GarageTool.Mount&&target!=null&&
-                !R3BuildValidation.ValidateHit(run.Player.GetComponent<R3VehicleAssembly>(),nearestHit))
+                (!R3BuildValidation.ValidateHit(run.Player.GetComponent<R3VehicleAssembly>(),nearestHit)||
+                 !AvailableMountPoints.Any(p=>p.Surface==nearestHit.collider)))
             {HasTarget=false;RefreshMarker();return false;}
             if(HasTarget)
             {
