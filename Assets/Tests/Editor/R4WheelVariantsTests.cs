@@ -191,6 +191,16 @@ public sealed class R4WheelVariantsTests
         var garage=run.Garage;garage.ChooseInventory(id);garage.Select(target);
         Assert.That(garage.PreviewValid,Is.True,garage.PlacementIssue);
         Assert.That(garage.CandidateOccupiedCells().Count(),Is.EqualTo(9),"The preview uses the same reserved cells.");
+        var overlay=Object.FindFirstObjectByType<RoboRougelike.B01.GarageSpatialW28.B0112GarageSpatialOverlay>();
+        Assert.That(overlay,Is.Not.Null);overlay.RebuildReadout(garage);
+        var zones=(System.Collections.Generic.List<RoboRougelike.B01.GarageSpatialW28.B0112ZoneBox>)
+            typeof(RoboRougelike.B01.GarageSpatialW28.B0112GarageSpatialOverlay).GetField("boxes",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(overlay);
+        foreach(var cell in garage.CandidateOccupiedCells())
+        {
+            var center=run.Player.transform.TransformPoint((Vector3)cell*R41PartGeometry.Grid);
+            Assert.That(zones.Any(zone=>zone.Kind==RoboRougelike.B01.GarageSpatialW28.B0112ZoneKind.ValidGreen&&
+                Vector3.Distance(zone.Position,center)<.001f),Is.True,"Missing green preview for occupied cell "+cell);
+        }
         Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);yield return null;
         var mounted=model.Parts.Single(p=>p.Id==id);Assert.That(R3VehicleModel.OccupiedCells(mounted).Count(),Is.EqualTo(9));
         Assert.That(model.At(new Vector3Int(3,2,1)).Id,Is.EqualTo(id));
