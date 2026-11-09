@@ -1,0 +1,112 @@
+{
+ "id": "R4C_ROD_PLUS",
+ "version": "1182-v1",
+ "files": {
+  "R4C_ROD_PLUS.blend": {
+   "sha256": "aae27f00cade0c6f5ca8edf91145e14b5d5cf79417532b98e4db071b46c429dc",
+   "bytes": 1396557
+  },
+  "R4C_ROD_PLUS.fbx": {
+   "sha256": "606923fc9854e78433ef61a90ba942870e48062d443dae9eb84c6f73eca84925",
+   "bytes": 238060
+  },
+  "R4C_ROD_PLUS.glb": {
+   "sha256": "61e8f3679955ffb379a2d2b1e34d3ada4858b62d5e3abc1310f5da0798915495",
+   "bytes": 290336
+  },
+  "R4C_ROD_PLUS_colliders.glb": {
+   "sha256": "39be241f9765f9405b751905ec42a447bd7a1ae50a48f694cf1be16c750a2d25",
+   "bytes": 45420
+  }
+ },
+ "units": "metres",
+ "blender": "5.2.3 LTS",
+ "export": {
+  "fbx": "Unity 6 URP, -Z forward, Y up, FBX_SCALE_UNITS, bake_space_transform=False",
+  "glb": "glTF 2.0 binary, +Y up"
+ },
+ "triangles": 7120,
+ "triangle_budget": 14000,
+ "materials": [
+  "Armor_Dark",
+  "Armor_Gunmetal",
+  "Hazard_Yellow",
+  "Steel_Light",
+  "TeamColor_Red"
+ ],
+ "palette": "R41 locked palette (same as R4 blocks / weapons / movement)",
+ "mesh_check": {
+  "object": "R4C_ROD_PLUS",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 7120,
+  "shells": 1,
+  "uv": true,
+  "ok": true
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0002,
+   "verts": 3562,
+   "empties": 12
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 7542,
+   "empties": 12
+  }
+ },
+ "port_contact_test": [
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_W_left",
+   "kind": "rod_mini",
+   "PASS": true
+  },
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_E_right",
+   "kind": "rod_mini",
+   "PASS": true
+  },
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_S_back",
+   "kind": "rod_mini",
+   "PASS": true
+  },
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_N_forward",
+   "kind": "rod_mini",
+   "PASS": true
+  }
+ ],
+ "renders": [
+  "R4C_ROD_PLUS_front.jpg",
+  "R4C_ROD_PLUS_side.jpg",
+  "R4C_ROD_PLUS_34front.jpg",
+  "R4C_ROD_PLUS_34front_wireframe.jpg",
+  "R4C_ROD_PLUS_board.jpg"
+ ],
+ "generator": "scripts/build_connectors.py",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN"
+}

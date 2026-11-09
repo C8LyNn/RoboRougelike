@@ -1,0 +1,618 @@
+{
+ "rule_checks": [
+  {
+   "a": "module",
+   "b": "rod_mini",
+   "expected": false,
+   "got": false,
+   "PASS": true
+  },
+  {
+   "a": "module",
+   "b": "r4_full",
+   "expected": true,
+   "got": true,
+   "PASS": true
+  },
+  {
+   "a": "module",
+   "b": "full",
+   "expected": true,
+   "got": true,
+   "PASS": true
+  },
+  {
+   "a": "module",
+   "b": "partial",
+   "expected": false,
+   "got": false,
+   "PASS": true
+  },
+  {
+   "a": "module",
+   "b": "module",
+   "expected": false,
+   "got": false,
+   "PASS": true
+  },
+  {
+   "a": "rod_mini",
+   "b": "full",
+   "expected": true,
+   "got": true,
+   "PASS": true
+  },
+  {
+   "a": "rod_mini",
+   "b": "r4_full",
+   "expected": true,
+   "got": true,
+   "PASS": true
+  },
+  {
+   "a": "rod_mini",
+   "b": "rod_mini",
+   "expected": true,
+   "got": true,
+   "PASS": true
+  },
+  {
+   "a": "r4_full",
+   "b": "partial",
+   "expected": true,
+   "got": true,
+   "PASS": true
+  }
+ ],
+ "scenes": {
+  "two_robots": {
+   "note": "A: wedge armour directly on the chassis. B: armour wall 2 cells out on two rods (redundant); the filler cube is adjacent to both rod nodes but rods have no side ports.",
+   "graph": {
+    "robot_A": {
+     "anchor": "A_cube_0_0",
+     "parts": 17,
+     "members": [
+      "A_cube_-1_-1",
+      "A_cube_-1_0",
+      "A_cube_-1_1",
+      "A_cube_0_-1",
+      "A_cube_0_0",
+      "A_cube_0_1",
+      "A_cube_1_-1",
+      "A_cube_1_0",
+      "A_cube_1_1",
+      "A_gun",
+      "A_wedge_-1",
+      "A_wedge_0",
+      "A_wedge_1",
+      "A_wheel_-1_-1",
+      "A_wheel_-1_1",
+      "A_wheel_1_-1",
+      "A_wheel_1_1"
+     ],
+     "single_point_links": [
+      {
+       "link": [
+        "A_cube_0_0",
+        "A_gun"
+       ],
+       "ports": 1,
+       "parts_lost": [
+        "A_gun"
+       ]
+      },
+      {
+       "link": [
+        "A_cube_-1_1",
+        "A_wheel_-1_1"
+       ],
+       "ports": 1,
+       "parts_lost": [
+        "A_wheel_-1_1"
+       ]
+      },
+      {
+       "link": [
+        "A_cube_1_-1",
+        "A_wheel_1_-1"
+       ],
+       "ports": 1,
+       "parts_lost": [
+        "A_wheel_1_-1"
+       ]
+      },
+      {
+       "link": [
+        "A_cube_1_1",
+        "A_wheel_1_1"
+       ],
+       "ports": 1,
+       "parts_lost": [
+        "A_wheel_1_1"
+       ]
+      },
+      {
+       "link": [
+        "A_cube_-1_-1",
+        "A_wheel_-1_-1"
+       ],
+       "ports": 1,
+       "parts_lost": [
+        "A_wheel_-1_-1"
+       ]
+      }
+     ],
+     "critical_parts": {
+      "A_cube_1_-1": [
+       "A_wheel_1_-1"
+      ],
+      "A_cube_1_1": [
+       "A_wheel_1_1"
+      ],
+      "A_cube_-1_-1": [
+       "A_wheel_-1_-1"
+      ],
+      "A_cube_-1_1": [
+       "A_wheel_-1_1"
+      ]
+     }
+    },
+    "robot_B": {
+     "anchor": "B_cube_0_0",
+     "parts": 23,
+     "members": [
+      "B_armour_-1",
+      "B_armour_0",
+      "B_armour_1",
+      "B_cube_-1_-1",
+      "B_cube_-1_0",
+      "B_cube_-1_1",
+      "B_cube_0_-1",
+      "B_cube_0_0",
+      "B_cube_0_1",
+      "B_cube_1_-1",
+      "B_cube_1_0",
+      "B_cube_1_1",
+      "B_filler_cube",
+      "B_gun",
+      "B_rod_-1",
+      "B_rod_1",
+      "B_wedge_-1",
+      "B_wedge_0",
+      "B_wedge_1",
+      "B_wheel_-1_-1",
+      "B_wheel_-1_1",
+      "B_wheel_1_-1",
+      "B_wheel_1_1"
+     ],
+     "single_point_links": [
+      {
+       "link": [
+        "B_cube_-1_1",
+        "B_wheel_-1_1"
+       ],
+       "ports": 1,
+       "parts_lost": [
+        "B_wheel_-1_1"
+       ]
+      },
+      {
+       "link": [
+        "B_cube_0_1",
+        "B_filler_cube"
+       ],
+       "ports": 1,
+       "parts_lost": [
+        "B_filler_cube"
+       ]
+      },
+      {
+       "link": [
+        "B_cube_0_0",
+        "B_gun"
+       ],
+       "ports": 1,
+       "parts_lost": [
+        "B_gun"
+       ]
+      },
+      {
+       "link": [
+        "B_cube_-1_-1",
+        "B_wheel_-1_-1"
+       ],
+       "ports": 1,
+       "parts_lost": [
+        "B_wheel_-1_-1"
+       ]
+      },
+      {
+       "link": [
+        "B_cube_1_1",
+        "B_wheel_1_1"
+       ],
+       "ports": 1,
+       "parts_lost": [
+        "B_wheel_1_1"
+       ]
+      },
+      {
+       "link": [
+        "B_cube_1_-1",
+        "B_wheel_1_-1"
+       ],
+       "ports": 1,
+       "parts_lost": [
+        "B_wheel_1_-1"
+       ]
+      }
+     ],
+     "critical_parts": {
+      "B_cube_1_-1": [
+       "B_wheel_1_-1"
+      ],
+      "B_cube_1_1": [
+       "B_wheel_1_1"
+      ],
+      "B_cube_-1_-1": [
+       "B_wheel_-1_-1"
+      ],
+      "B_cube_-1_1": [
+       "B_wheel_-1_1"
+      ],
+      "B_cube_0_1": [
+       "B_filler_cube"
+      ]
+     }
+    }
+   },
+   "summary": {
+    "parts": 40,
+    "mated_pairs": 51,
+    "contact_fail": 0,
+    "rejected": 0,
+    "adjacent_not_connected": 2,
+    "overlaps": 0,
+    "cell_conflicts": 0,
+    "floating": 0,
+    "single_point_links": 11
+   },
+   "PASS": true
+  },
+  "long_mast": {
+   "note": "STRUT_LONG weapon mast on a single mount (bridge), railgun on the top node, wedge armour on the bottom node.",
+   "graph": {
+    "mast": {
+     "anchor": "base",
+     "parts": 4,
+     "members": [
+      "base",
+      "mast",
+      "nose_wedge",
+      "rail"
+     ],
+     "single_point_links": [
+      {
+       "link": [
+        "mast",
+        "rail"
+       ],
+       "ports": 1,
+       "parts_lost": [
+        "rail"
+       ]
+      },
+      {
+       "link": [
+        "base",
+        "mast"
+       ],
+       "ports": 1,
+       "parts_lost": [
+        "mast",
+        "nose_wedge",
+        "rail"
+       ]
+      },
+      {
+       "link": [
+        "mast",
+        "nose_wedge"
+       ],
+       "ports": 1,
+       "parts_lost": [
+        "nose_wedge"
+       ]
+      }
+     ],
+     "critical_parts": {
+      "mast": [
+       "nose_wedge",
+       "rail"
+      ]
+     }
+    }
+   },
+   "summary": {
+    "parts": 4,
+    "mated_pairs": 3,
+    "contact_fail": 0,
+    "rejected": 0,
+    "adjacent_not_connected": 0,
+    "overlaps": 0,
+    "cell_conflicts": 0,
+    "floating": 0,
+    "single_point_links": 3
+   },
+   "PASS": true
+  },
+  "braced_mast": {
+   "note": "STRUT_STANDARD mast braced by ROD_DIAG_2D_LONG (closed loop = redundant); brace passes next to the beam and mast without connecting.",
+   "graph": {
+    "frame": {
+     "anchor": "base",
+     "parts": 6,
+     "members": [
+      "base",
+      "brace",
+      "foot",
+      "gun",
+      "mast",
+      "wedge"
+     ],
+     "single_point_links": [
+      {
+       "link": [
+        "gun",
+        "mast"
+       ],
+       "ports": 1,
+       "parts_lost": [
+        "gun"
+       ]
+      },
+      {
+       "link": [
+        "mast",
+        "wedge"
+       ],
+       "ports": 1,
+       "parts_lost": [
+        "wedge"
+       ]
+      }
+     ],
+     "critical_parts": {
+      "mast": [
+       "gun",
+       "wedge"
+      ]
+     }
+    }
+   },
+   "summary": {
+    "parts": 6,
+    "mated_pairs": 6,
+    "contact_fail": 0,
+    "rejected": 0,
+    "adjacent_not_connected": 2,
+    "overlaps": 0,
+    "cell_conflicts": 0,
+    "floating": 0,
+    "single_point_links": 2
+   },
+   "PASS": true
+  },
+  "arc_outrigger": {
+   "note": "STRUT_ARC outriggers: right one native, left one MIRRORED (scale X -1); side-hub wheel and steering wheel on the arc end nodes.",
+   "graph": {
+    "chassis": {
+     "anchor": "chassis_0",
+     "parts": 8,
+     "members": [
+      "arc_L_mirror",
+      "arc_R",
+      "chassis_-1",
+      "chassis_0",
+      "chassis_1",
+      "gun",
+      "side_wheel_R",
+      "steer_wheel_L"
+     ],
+     "single_point_links": [
+      {
+       "link": [
+        "arc_L_mirror",
+        "chassis_0"
+       ],
+       "ports": 1,
+       "parts_lost": [
+        "arc_L_mirror",
+        "steer_wheel_L"
+       ]
+      },
+      {
+       "link": [
+        "arc_R",
+        "chassis_0"
+       ],
+       "ports": 1,
+       "parts_lost": [
+        "arc_R",
+        "side_wheel_R"
+       ]
+      },
+      {
+       "link": [
+        "chassis_0",
+        "chassis_1"
+       ],
+       "ports": 1,
+       "parts_lost": [
+        "chassis_1"
+       ]
+      },
+      {
+       "link": [
+        "arc_R",
+        "side_wheel_R"
+       ],
+       "ports": 1,
+       "parts_lost": [
+        "side_wheel_R"
+       ]
+      },
+      {
+       "link": [
+        "chassis_-1",
+        "chassis_0"
+       ],
+       "ports": 1,
+       "parts_lost": [
+        "chassis_-1"
+       ]
+      },
+      {
+       "link": [
+        "chassis_0",
+        "gun"
+       ],
+       "ports": 1,
+       "parts_lost": [
+        "gun"
+       ]
+      },
+      {
+       "link": [
+        "arc_L_mirror",
+        "steer_wheel_L"
+       ],
+       "ports": 1,
+       "parts_lost": [
+        "steer_wheel_L"
+       ]
+      }
+     ],
+     "critical_parts": {
+      "arc_R": [
+       "side_wheel_R"
+      ],
+      "arc_L_mirror": [
+       "steer_wheel_L"
+      ]
+     }
+    }
+   },
+   "summary": {
+    "parts": 8,
+    "mated_pairs": 7,
+    "contact_fail": 0,
+    "rejected": 0,
+    "adjacent_not_connected": 0,
+    "overlaps": 0,
+    "cell_conflicts": 0,
+    "floating": 0,
+    "single_point_links": 7
+   },
+   "PASS": true
+  },
+  "cross_deck": {
+   "note": "STRUT_CROSS deck ties two beams (4 redundant links); ROD_FRAME bumper cage on two front links; weapons on strut nodes.",
+   "graph": {
+    "frame": {
+     "anchor": "beam_back",
+     "parts": 6,
+     "members": [
+      "beam_back",
+      "beam_front",
+      "bumper",
+      "deck",
+      "gun_L",
+      "gun_R"
+     ],
+     "single_point_links": [
+      {
+       "link": [
+        "deck",
+        "gun_L"
+       ],
+       "ports": 1,
+       "parts_lost": [
+        "gun_L"
+       ]
+      },
+      {
+       "link": [
+        "beam_front",
+        "bumper"
+       ],
+       "ports": 2,
+       "parts_lost": [
+        "bumper"
+       ]
+      },
+      {
+       "link": [
+        "deck",
+        "gun_R"
+       ],
+       "ports": 1,
+       "parts_lost": [
+        "gun_R"
+       ]
+      },
+      {
+       "link": [
+        "beam_back",
+        "deck"
+       ],
+       "ports": 2,
+       "parts_lost": [
+        "beam_front",
+        "bumper",
+        "deck",
+        "gun_L",
+        "gun_R"
+       ]
+      },
+      {
+       "link": [
+        "beam_front",
+        "deck"
+       ],
+       "ports": 2,
+       "parts_lost": [
+        "beam_front",
+        "bumper"
+       ]
+      }
+     ],
+     "critical_parts": {
+      "deck": [
+       "beam_front",
+       "bumper",
+       "gun_L",
+       "gun_R"
+      ],
+      "beam_front": [
+       "bumper"
+      ]
+     }
+    }
+   },
+   "summary": {
+    "parts": 6,
+    "mated_pairs": 8,
+    "contact_fail": 0,
+    "rejected": 0,
+    "adjacent_not_connected": 3,
+    "overlaps": 0,
+    "cell_conflicts": 0,
+    "floating": 0,
+    "single_point_links": 5
+   },
+   "PASS": true
+  }
+ },
+ "PASS": true
+}

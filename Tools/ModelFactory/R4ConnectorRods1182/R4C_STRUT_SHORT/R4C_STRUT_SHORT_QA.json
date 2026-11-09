@@ -1,0 +1,486 @@
+{
+ "id": "R4C_STRUT_SHORT",
+ "part_id": "STRUT_SHORT",
+ "family": "strut",
+ "description": "straight strut 1x2",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "occupied_cells_unity": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "role": "node"
+  },
+  {
+   "cell": [
+    0,
+    0,
+    1
+   ],
+   "role": "node"
+  }
+ ],
+ "occupied_geometric": [
+  [
+   0,
+   0,
+   0
+  ],
+  [
+   0,
+   0,
+   1
+  ]
+ ],
+ "occupancy_consistent": true,
+ "nodes": {
+  "A": [
+   0,
+   0,
+   0
+  ],
+  "B": [
+   0,
+   0,
+   1
+  ]
+ },
+ "members": [
+  {
+   "id": "M0",
+   "from_node": "A",
+   "to_node": "B",
+   "kind": "line",
+   "length_m": 0.55,
+   "carries_ports": false
+  }
+ ],
+ "ports": [
+  {
+   "id": "P_A_right",
+   "node": "A",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "right",
+   "kind": "r4_full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "position_m": [
+    0.26,
+    0.0,
+    -0.0
+   ],
+   "normal": [
+    1,
+    0,
+    0
+   ]
+  },
+  {
+   "id": "P_A_left",
+   "node": "A",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "r4_full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "position_m": [
+    -0.26,
+    0.0,
+    -0.0
+   ],
+   "normal": [
+    -1,
+    0,
+    0
+   ]
+  },
+  {
+   "id": "P_A_up",
+   "node": "A",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "up",
+   "kind": "r4_full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "position_m": [
+    0.0,
+    0.26,
+    -0.0
+   ],
+   "normal": [
+    0,
+    1,
+    0
+   ]
+  },
+  {
+   "id": "P_A_down",
+   "node": "A",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "r4_full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "position_m": [
+    0.0,
+    -0.26,
+    -0.0
+   ],
+   "normal": [
+    0,
+    -1,
+    0
+   ]
+  },
+  {
+   "id": "P_A_back",
+   "node": "A",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "r4_full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "position_m": [
+    0.0,
+    0.0,
+    -0.26
+   ],
+   "normal": [
+    0,
+    0,
+    -1
+   ]
+  },
+  {
+   "id": "P_B_right",
+   "node": "B",
+   "cell": [
+    0,
+    0,
+    1
+   ],
+   "dir": "right",
+   "kind": "r4_full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "position_m": [
+    0.26,
+    0.0,
+    0.55
+   ],
+   "normal": [
+    1,
+    0,
+    0
+   ]
+  },
+  {
+   "id": "P_B_left",
+   "node": "B",
+   "cell": [
+    0,
+    0,
+    1
+   ],
+   "dir": "left",
+   "kind": "r4_full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "position_m": [
+    -0.26,
+    0.0,
+    0.55
+   ],
+   "normal": [
+    -1,
+    0,
+    0
+   ]
+  },
+  {
+   "id": "P_B_up",
+   "node": "B",
+   "cell": [
+    0,
+    0,
+    1
+   ],
+   "dir": "up",
+   "kind": "r4_full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "position_m": [
+    0.0,
+    0.26,
+    0.55
+   ],
+   "normal": [
+    0,
+    1,
+    0
+   ]
+  },
+  {
+   "id": "P_B_down",
+   "node": "B",
+   "cell": [
+    0,
+    0,
+    1
+   ],
+   "dir": "down",
+   "kind": "r4_full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "position_m": [
+    0.0,
+    -0.26,
+    0.55
+   ],
+   "normal": [
+    0,
+    -1,
+    0
+   ]
+  },
+  {
+   "id": "P_B_forward",
+   "node": "B",
+   "cell": [
+    0,
+    0,
+    1
+   ],
+   "dir": "forward",
+   "kind": "r4_full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "position_m": [
+    0.0,
+    0.0,
+    0.81
+   ],
+   "normal": [
+    0,
+    0,
+    1
+   ]
+  }
+ ],
+ "sockets": {
+  "Socket_Start": "P_A_back",
+  "Socket_End": "P_B_forward"
+ },
+ "port_contact_test": [
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_A_right",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_A_left",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_A_up",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_A_down",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_A_back",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_B_right",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_B_left",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_B_up",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_B_down",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_B_forward",
+   "kind": "r4_full",
+   "PASS": true
+  }
+ ],
+ "mesh": {
+  "object": "R4C_STRUT_SHORT",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 9356,
+  "shells": 1,
+  "uv": true,
+  "ok": true
+ },
+ "triangle_budget": 22000,
+ "bounds_unity_m": [
+  [
+   -0.2608,
+   -0.2608,
+   -0.2608
+  ],
+  [
+   0.2608,
+   0.2608,
+   0.8108
+  ]
+ ],
+ "materials": [
+  "Armor_Dark",
+  "Armor_Gunmetal",
+  "Hazard_Yellow",
+  "Steel_Light"
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0001,
+   "verts": 4680,
+   "empties": 15
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 11236,
+   "empties": 15
+  }
+ },
+ "renders": [
+  "R4C_STRUT_SHORT_front.jpg",
+  "R4C_STRUT_SHORT_side.jpg",
+  "R4C_STRUT_SHORT_34front.jpg",
+  "R4C_STRUT_SHORT_34front_wireframe.jpg",
+  "R4C_STRUT_SHORT_board.jpg"
+ ],
+ "files": {
+  "R4C_STRUT_SHORT.blend": {
+   "sha256": "b49878da7765e6af09650ceb9ef04ae62bb2b4d7a537c9c958dfb59616e4f05c",
+   "bytes": 1403704,
+   "note": "re-saved uncompressed; local paths replaced by '//' (length-preserving)"
+  },
+  "R4C_STRUT_SHORT.fbx": {
+   "sha256": "9b78e72badc837dd6236021af496ec627c35d74b95637f0c547f525bd20f6176",
+   "bytes": 315660
+  },
+  "R4C_STRUT_SHORT.glb": {
+   "sha256": "5ea49cdceb7dc47b3f5e5f366b06dbcf02cb533d49d6d3a014afa543ab2b2a6b",
+   "bytes": 420472
+  },
+  "R4C_STRUT_SHORT_colliders.glb": {
+   "sha256": "add51ce2941c0ad788cba62b428b91d0f48989fcda7e22b449d23bf908c02583",
+   "bytes": 11188
+  }
+ },
+ "colliders": {
+  "file": "R4C_STRUT_SHORT_colliders.glb",
+  "pieces": 9
+ },
+ "seconds": 4.2,
+ "blender": "5.2.3 LTS"
+}

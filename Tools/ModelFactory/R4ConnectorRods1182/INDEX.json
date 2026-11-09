@@ -1,0 +1,1549 @@
+{
+ "library": "Tools/ModelFactory/R4ConnectorRods1182",
+ "issue": "#1182",
+ "version": "1182-v1",
+ "unity_status": "UNITY_NOT_RUN for all parts",
+ "standard_measured": {
+  "R4B_Cube": {
+   "socket_m": [
+    0.0,
+    0.0,
+    -0.26
+   ],
+   "outermost_along_socket_normal_m": 0.26,
+   "port_face_half_extent_m": [
+    0.26,
+    0.26
+   ],
+   "bounds_m": [
+    [
+     -0.26,
+     -0.26,
+     -0.26
+    ],
+    [
+     0.26,
+     0.26,
+     0.26
+    ]
+   ]
+  },
+  "R4B_Wedge": {
+   "socket_m": [
+    0.0,
+    0.0,
+    -0.26
+   ],
+   "outermost_along_socket_normal_m": 0.26,
+   "port_face_half_extent_m": [
+    0.26,
+    0.26
+   ],
+   "bounds_m": [
+    [
+     -0.26,
+     -0.2529,
+     -0.26
+    ],
+    [
+     0.26,
+     0.26,
+     0.2529
+    ]
+   ]
+  },
+  "R4W_Basic": {
+   "socket_m": [
+    0.0,
+    0.0,
+    -0.26
+   ],
+   "outermost_along_socket_normal_m": 0.26,
+   "port_face_half_extent_m": [
+    0.2565,
+    0.2565
+   ],
+   "bounds_m": [
+    [
+     -0.2565,
+     -0.62,
+     -0.26
+    ],
+    [
+     0.2565,
+     0.257,
+     0.236
+    ]
+   ]
+  },
+  "R4M_Wheel": {
+   "socket_m": [
+    0.0,
+    0.0,
+    0.26
+   ],
+   "outermost_along_socket_normal_m": 0.26,
+   "port_face_half_extent_m": [
+    0.2563,
+    0.2563
+   ],
+   "bounds_m": [
+    [
+     -0.2563,
+     -0.39,
+     -0.65
+    ],
+    [
+     0.2563,
+     0.39,
+     0.26
+    ]
+   ]
+  },
+  "R4M_WheelM_Side_Offroad": {
+   "socket_m": [
+    -0.26,
+    0.0,
+    0.0
+   ],
+   "outermost_along_socket_normal_m": 0.26,
+   "port_face_half_extent_m": [
+    0.2563,
+    0.2563
+   ],
+   "bounds_m": [
+    [
+     -0.26,
+     -0.39,
+     -0.39
+    ],
+    [
+     0.192,
+     0.39,
+     0.39
+    ]
+   ]
+  }
+ },
+ "compat_PASS": true,
+ "assemblies": {
+  "rule_checks": [
+   {
+    "a": "module",
+    "b": "rod_mini",
+    "expected": false,
+    "got": false,
+    "PASS": true
+   },
+   {
+    "a": "module",
+    "b": "r4_full",
+    "expected": true,
+    "got": true,
+    "PASS": true
+   },
+   {
+    "a": "module",
+    "b": "full",
+    "expected": true,
+    "got": true,
+    "PASS": true
+   },
+   {
+    "a": "module",
+    "b": "partial",
+    "expected": false,
+    "got": false,
+    "PASS": true
+   },
+   {
+    "a": "module",
+    "b": "module",
+    "expected": false,
+    "got": false,
+    "PASS": true
+   },
+   {
+    "a": "rod_mini",
+    "b": "full",
+    "expected": true,
+    "got": true,
+    "PASS": true
+   },
+   {
+    "a": "rod_mini",
+    "b": "r4_full",
+    "expected": true,
+    "got": true,
+    "PASS": true
+   },
+   {
+    "a": "rod_mini",
+    "b": "rod_mini",
+    "expected": true,
+    "got": true,
+    "PASS": true
+   },
+   {
+    "a": "r4_full",
+    "b": "partial",
+    "expected": true,
+    "got": true,
+    "PASS": true
+   }
+  ],
+  "scenes": {
+   "two_robots": {
+    "note": "A: wedge armour directly on the chassis. B: armour wall 2 cells out on two rods (redundant); the filler cube is adjacent to both rod nodes but rods have no side ports.",
+    "graph": {
+     "robot_A": {
+      "anchor": "A_cube_0_0",
+      "parts": 17,
+      "members": [
+       "A_cube_-1_-1",
+       "A_cube_-1_0",
+       "A_cube_-1_1",
+       "A_cube_0_-1",
+       "A_cube_0_0",
+       "A_cube_0_1",
+       "A_cube_1_-1",
+       "A_cube_1_0",
+       "A_cube_1_1",
+       "A_gun",
+       "A_wedge_-1",
+       "A_wedge_0",
+       "A_wedge_1",
+       "A_wheel_-1_-1",
+       "A_wheel_-1_1",
+       "A_wheel_1_-1",
+       "A_wheel_1_1"
+      ],
+      "single_point_links": [
+       {
+        "link": [
+         "A_cube_0_0",
+         "A_gun"
+        ],
+        "ports": 1,
+        "parts_lost": [
+         "A_gun"
+        ]
+       },
+       {
+        "link": [
+         "A_cube_-1_1",
+         "A_wheel_-1_1"
+        ],
+        "ports": 1,
+        "parts_lost": [
+         "A_wheel_-1_1"
+        ]
+       },
+       {
+        "link": [
+         "A_cube_1_-1",
+         "A_wheel_1_-1"
+        ],
+        "ports": 1,
+        "parts_lost": [
+         "A_wheel_1_-1"
+        ]
+       },
+       {
+        "link": [
+         "A_cube_1_1",
+         "A_wheel_1_1"
+        ],
+        "ports": 1,
+        "parts_lost": [
+         "A_wheel_1_1"
+        ]
+       },
+       {
+        "link": [
+         "A_cube_-1_-1",
+         "A_wheel_-1_-1"
+        ],
+        "ports": 1,
+        "parts_lost": [
+         "A_wheel_-1_-1"
+        ]
+       }
+      ],
+      "critical_parts": {
+       "A_cube_1_-1": [
+        "A_wheel_1_-1"
+       ],
+       "A_cube_1_1": [
+        "A_wheel_1_1"
+       ],
+       "A_cube_-1_-1": [
+        "A_wheel_-1_-1"
+       ],
+       "A_cube_-1_1": [
+        "A_wheel_-1_1"
+       ]
+      }
+     },
+     "robot_B": {
+      "anchor": "B_cube_0_0",
+      "parts": 23,
+      "members": [
+       "B_armour_-1",
+       "B_armour_0",
+       "B_armour_1",
+       "B_cube_-1_-1",
+       "B_cube_-1_0",
+       "B_cube_-1_1",
+       "B_cube_0_-1",
+       "B_cube_0_0",
+       "B_cube_0_1",
+       "B_cube_1_-1",
+       "B_cube_1_0",
+       "B_cube_1_1",
+       "B_filler_cube",
+       "B_gun",
+       "B_rod_-1",
+       "B_rod_1",
+       "B_wedge_-1",
+       "B_wedge_0",
+       "B_wedge_1",
+       "B_wheel_-1_-1",
+       "B_wheel_-1_1",
+       "B_wheel_1_-1",
+       "B_wheel_1_1"
+      ],
+      "single_point_links": [
+       {
+        "link": [
+         "B_cube_-1_1",
+         "B_wheel_-1_1"
+        ],
+        "ports": 1,
+        "parts_lost": [
+         "B_wheel_-1_1"
+        ]
+       },
+       {
+        "link": [
+         "B_cube_0_1",
+         "B_filler_cube"
+        ],
+        "ports": 1,
+        "parts_lost": [
+         "B_filler_cube"
+        ]
+       },
+       {
+        "link": [
+         "B_cube_0_0",
+         "B_gun"
+        ],
+        "ports": 1,
+        "parts_lost": [
+         "B_gun"
+        ]
+       },
+       {
+        "link": [
+         "B_cube_-1_-1",
+         "B_wheel_-1_-1"
+        ],
+        "ports": 1,
+        "parts_lost": [
+         "B_wheel_-1_-1"
+        ]
+       },
+       {
+        "link": [
+         "B_cube_1_1",
+         "B_wheel_1_1"
+        ],
+        "ports": 1,
+        "parts_lost": [
+         "B_wheel_1_1"
+        ]
+       },
+       {
+        "link": [
+         "B_cube_1_-1",
+         "B_wheel_1_-1"
+        ],
+        "ports": 1,
+        "parts_lost": [
+         "B_wheel_1_-1"
+        ]
+       }
+      ],
+      "critical_parts": {
+       "B_cube_1_-1": [
+        "B_wheel_1_-1"
+       ],
+       "B_cube_1_1": [
+        "B_wheel_1_1"
+       ],
+       "B_cube_-1_-1": [
+        "B_wheel_-1_-1"
+       ],
+       "B_cube_-1_1": [
+        "B_wheel_-1_1"
+       ],
+       "B_cube_0_1": [
+        "B_filler_cube"
+       ]
+      }
+     }
+    },
+    "summary": {
+     "parts": 40,
+     "mated_pairs": 51,
+     "contact_fail": 0,
+     "rejected": 0,
+     "adjacent_not_connected": 2,
+     "overlaps": 0,
+     "cell_conflicts": 0,
+     "floating": 0,
+     "single_point_links": 11
+    },
+    "PASS": true
+   },
+   "long_mast": {
+    "note": "STRUT_LONG weapon mast on a single mount (bridge), railgun on the top node, wedge armour on the bottom node.",
+    "graph": {
+     "mast": {
+      "anchor": "base",
+      "parts": 4,
+      "members": [
+       "base",
+       "mast",
+       "nose_wedge",
+       "rail"
+      ],
+      "single_point_links": [
+       {
+        "link": [
+         "mast",
+         "rail"
+        ],
+        "ports": 1,
+        "parts_lost": [
+         "rail"
+        ]
+       },
+       {
+        "link": [
+         "base",
+         "mast"
+        ],
+        "ports": 1,
+        "parts_lost": [
+         "mast",
+         "nose_wedge",
+         "rail"
+        ]
+       },
+       {
+        "link": [
+         "mast",
+         "nose_wedge"
+        ],
+        "ports": 1,
+        "parts_lost": [
+         "nose_wedge"
+        ]
+       }
+      ],
+      "critical_parts": {
+       "mast": [
+        "nose_wedge",
+        "rail"
+       ]
+      }
+     }
+    },
+    "summary": {
+     "parts": 4,
+     "mated_pairs": 3,
+     "contact_fail": 0,
+     "rejected": 0,
+     "adjacent_not_connected": 0,
+     "overlaps": 0,
+     "cell_conflicts": 0,
+     "floating": 0,
+     "single_point_links": 3
+    },
+    "PASS": true
+   },
+   "braced_mast": {
+    "note": "STRUT_STANDARD mast braced by ROD_DIAG_2D_LONG (closed loop = redundant); brace passes next to the beam and mast without connecting.",
+    "graph": {
+     "frame": {
+      "anchor": "base",
+      "parts": 6,
+      "members": [
+       "base",
+       "brace",
+       "foot",
+       "gun",
+       "mast",
+       "wedge"
+      ],
+      "single_point_links": [
+       {
+        "link": [
+         "gun",
+         "mast"
+        ],
+        "ports": 1,
+        "parts_lost": [
+         "gun"
+        ]
+       },
+       {
+        "link": [
+         "mast",
+         "wedge"
+        ],
+        "ports": 1,
+        "parts_lost": [
+         "wedge"
+        ]
+       }
+      ],
+      "critical_parts": {
+       "mast": [
+        "gun",
+        "wedge"
+       ]
+      }
+     }
+    },
+    "summary": {
+     "parts": 6,
+     "mated_pairs": 6,
+     "contact_fail": 0,
+     "rejected": 0,
+     "adjacent_not_connected": 2,
+     "overlaps": 0,
+     "cell_conflicts": 0,
+     "floating": 0,
+     "single_point_links": 2
+    },
+    "PASS": true
+   },
+   "arc_outrigger": {
+    "note": "STRUT_ARC outriggers: right one native, left one MIRRORED (scale X -1); side-hub wheel and steering wheel on the arc end nodes.",
+    "graph": {
+     "chassis": {
+      "anchor": "chassis_0",
+      "parts": 8,
+      "members": [
+       "arc_L_mirror",
+       "arc_R",
+       "chassis_-1",
+       "chassis_0",
+       "chassis_1",
+       "gun",
+       "side_wheel_R",
+       "steer_wheel_L"
+      ],
+      "single_point_links": [
+       {
+        "link": [
+         "arc_L_mirror",
+         "chassis_0"
+        ],
+        "ports": 1,
+        "parts_lost": [
+         "arc_L_mirror",
+         "steer_wheel_L"
+        ]
+       },
+       {
+        "link": [
+         "arc_R",
+         "chassis_0"
+        ],
+        "ports": 1,
+        "parts_lost": [
+         "arc_R",
+         "side_wheel_R"
+        ]
+       },
+       {
+        "link": [
+         "chassis_0",
+         "chassis_1"
+        ],
+        "ports": 1,
+        "parts_lost": [
+         "chassis_1"
+        ]
+       },
+       {
+        "link": [
+         "arc_R",
+         "side_wheel_R"
+        ],
+        "ports": 1,
+        "parts_lost": [
+         "side_wheel_R"
+        ]
+       },
+       {
+        "link": [
+         "chassis_-1",
+         "chassis_0"
+        ],
+        "ports": 1,
+        "parts_lost": [
+         "chassis_-1"
+        ]
+       },
+       {
+        "link": [
+         "chassis_0",
+         "gun"
+        ],
+        "ports": 1,
+        "parts_lost": [
+         "gun"
+        ]
+       },
+       {
+        "link": [
+         "arc_L_mirror",
+         "steer_wheel_L"
+        ],
+        "ports": 1,
+        "parts_lost": [
+         "steer_wheel_L"
+        ]
+       }
+      ],
+      "critical_parts": {
+       "arc_R": [
+        "side_wheel_R"
+       ],
+       "arc_L_mirror": [
+        "steer_wheel_L"
+       ]
+      }
+     }
+    },
+    "summary": {
+     "parts": 8,
+     "mated_pairs": 7,
+     "contact_fail": 0,
+     "rejected": 0,
+     "adjacent_not_connected": 0,
+     "overlaps": 0,
+     "cell_conflicts": 0,
+     "floating": 0,
+     "single_point_links": 7
+    },
+    "PASS": true
+   },
+   "cross_deck": {
+    "note": "STRUT_CROSS deck ties two beams (4 redundant links); ROD_FRAME bumper cage on two front links; weapons on strut nodes.",
+    "graph": {
+     "frame": {
+      "anchor": "beam_back",
+      "parts": 6,
+      "members": [
+       "beam_back",
+       "beam_front",
+       "bumper",
+       "deck",
+       "gun_L",
+       "gun_R"
+      ],
+      "single_point_links": [
+       {
+        "link": [
+         "deck",
+         "gun_L"
+        ],
+        "ports": 1,
+        "parts_lost": [
+         "gun_L"
+        ]
+       },
+       {
+        "link": [
+         "beam_front",
+         "bumper"
+        ],
+        "ports": 2,
+        "parts_lost": [
+         "bumper"
+        ]
+       },
+       {
+        "link": [
+         "deck",
+         "gun_R"
+        ],
+        "ports": 1,
+        "parts_lost": [
+         "gun_R"
+        ]
+       },
+       {
+        "link": [
+         "beam_back",
+         "deck"
+        ],
+        "ports": 2,
+        "parts_lost": [
+         "beam_front",
+         "bumper",
+         "deck",
+         "gun_L",
+         "gun_R"
+        ]
+       },
+       {
+        "link": [
+         "beam_front",
+         "deck"
+        ],
+        "ports": 2,
+        "parts_lost": [
+         "beam_front",
+         "bumper"
+        ]
+       }
+      ],
+      "critical_parts": {
+       "deck": [
+        "beam_front",
+        "bumper",
+        "gun_L",
+        "gun_R"
+       ],
+       "beam_front": [
+        "bumper"
+       ]
+      }
+     }
+    },
+    "summary": {
+     "parts": 6,
+     "mated_pairs": 8,
+     "contact_fail": 0,
+     "rejected": 0,
+     "adjacent_not_connected": 3,
+     "overlaps": 0,
+     "cell_conflicts": 0,
+     "floating": 0,
+     "single_point_links": 5
+    },
+    "PASS": true
+   }
+  },
+  "PASS": true
+ },
+ "parts": [
+  {
+   "id": "R4C_ROD_SHORT",
+   "family": "rod",
+   "pilot": true,
+   "description": "straight rod 1x2",
+   "cells": 2,
+   "bbox_cells": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "nodes": 2,
+   "ports": 2,
+   "port_types": [
+    "rod_mini"
+   ],
+   "triangles": 2634,
+   "blender_qa": "BLENDER_PASS",
+   "rotation_check": true,
+   "distinct_orientations": 3,
+   "mirror_equals_rotation": true,
+   "compat": {
+    "ports": 2,
+    "mountings": 10,
+    "contact_fail": 0,
+    "all_rolls_clear": 10,
+    "some_rolls_clear": 0,
+    "blocked": 0,
+    "neighbour_overlaps": 0
+   },
+   "compat_PASS": true,
+   "unity": "UNITY_NOT_RUN"
+  },
+  {
+   "id": "R4C_ROD_STANDARD",
+   "family": "rod",
+   "pilot": false,
+   "description": "straight rod 1x3",
+   "cells": 3,
+   "bbox_cells": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     2
+    ]
+   ],
+   "nodes": 2,
+   "ports": 2,
+   "port_types": [
+    "rod_mini"
+   ],
+   "triangles": 3450,
+   "blender_qa": "BLENDER_PASS",
+   "rotation_check": true,
+   "distinct_orientations": 3,
+   "mirror_equals_rotation": true,
+   "compat": {
+    "ports": 2,
+    "mountings": 10,
+    "contact_fail": 0,
+    "all_rolls_clear": 10,
+    "some_rolls_clear": 0,
+    "blocked": 0,
+    "neighbour_overlaps": 0
+   },
+   "compat_PASS": true,
+   "unity": "UNITY_NOT_RUN"
+  },
+  {
+   "id": "R4C_ROD_LONG",
+   "family": "rod",
+   "pilot": true,
+   "description": "straight rod 1x5 (spaced-armour standoff)",
+   "cells": 5,
+   "bbox_cells": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     4
+    ]
+   ],
+   "nodes": 2,
+   "ports": 2,
+   "port_types": [
+    "rod_mini"
+   ],
+   "triangles": 4962,
+   "blender_qa": "BLENDER_PASS",
+   "rotation_check": true,
+   "distinct_orientations": 3,
+   "mirror_equals_rotation": true,
+   "compat": {
+    "ports": 2,
+    "mountings": 10,
+    "contact_fail": 0,
+    "all_rolls_clear": 10,
+    "some_rolls_clear": 0,
+    "blocked": 0,
+    "neighbour_overlaps": 0
+   },
+   "compat_PASS": true,
+   "unity": "UNITY_NOT_RUN"
+  },
+  {
+   "id": "R4C_ROD_ARC_SHORT",
+   "family": "rod",
+   "pilot": false,
+   "description": "quarter-arc rod, 2x2 (radius 1 cell)",
+   "cells": 3,
+   "bbox_cells": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     1,
+     0,
+     1
+    ]
+   ],
+   "nodes": 2,
+   "ports": 2,
+   "port_types": [
+    "rod_mini"
+   ],
+   "triangles": 3274,
+   "blender_qa": "BLENDER_PASS",
+   "rotation_check": true,
+   "distinct_orientations": 12,
+   "mirror_equals_rotation": true,
+   "compat": {
+    "ports": 2,
+    "mountings": 10,
+    "contact_fail": 0,
+    "all_rolls_clear": 10,
+    "some_rolls_clear": 0,
+    "blocked": 0,
+    "neighbour_overlaps": 0
+   },
+   "compat_PASS": true,
+   "unity": "UNITY_NOT_RUN"
+  },
+  {
+   "id": "R4C_ROD_ARC_LONG",
+   "family": "rod",
+   "pilot": false,
+   "description": "quarter-arc rod, 3x3 (radius 2 cells)",
+   "cells": 5,
+   "bbox_cells": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     2,
+     0,
+     2
+    ]
+   ],
+   "nodes": 2,
+   "ports": 2,
+   "port_types": [
+    "rod_mini"
+   ],
+   "triangles": 4382,
+   "blender_qa": "BLENDER_PASS",
+   "rotation_check": true,
+   "distinct_orientations": 12,
+   "mirror_equals_rotation": true,
+   "compat": {
+    "ports": 2,
+    "mountings": 10,
+    "contact_fail": 0,
+    "all_rolls_clear": 10,
+    "some_rolls_clear": 0,
+    "blocked": 0,
+    "neighbour_overlaps": 0
+   },
+   "compat_PASS": true,
+   "unity": "UNITY_NOT_RUN"
+  },
+  {
+   "id": "R4C_ROD_DIAG_2D_SHORT",
+   "family": "rod",
+   "pilot": false,
+   "description": "flat diagonal rod, 2x2",
+   "cells": 4,
+   "bbox_cells": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     1,
+     0,
+     1
+    ]
+   ],
+   "nodes": 2,
+   "ports": 4,
+   "port_types": [
+    "rod_mini"
+   ],
+   "triangles": 4608,
+   "blender_qa": "BLENDER_PASS",
+   "rotation_check": true,
+   "distinct_orientations": 6,
+   "mirror_equals_rotation": true,
+   "compat": {
+    "ports": 4,
+    "mountings": 20,
+    "contact_fail": 0,
+    "all_rolls_clear": 20,
+    "some_rolls_clear": 0,
+    "blocked": 0,
+    "neighbour_overlaps": 0
+   },
+   "compat_PASS": true,
+   "unity": "UNITY_NOT_RUN"
+  },
+  {
+   "id": "R4C_ROD_DIAG_2D_LONG",
+   "family": "rod",
+   "pilot": true,
+   "description": "flat diagonal rod, 3x3",
+   "cells": 7,
+   "bbox_cells": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     2,
+     0,
+     2
+    ]
+   ],
+   "nodes": 2,
+   "ports": 4,
+   "port_types": [
+    "rod_mini"
+   ],
+   "triangles": 5704,
+   "blender_qa": "BLENDER_PASS",
+   "rotation_check": true,
+   "distinct_orientations": 6,
+   "mirror_equals_rotation": true,
+   "compat": {
+    "ports": 4,
+    "mountings": 20,
+    "contact_fail": 0,
+    "all_rolls_clear": 20,
+    "some_rolls_clear": 0,
+    "blocked": 0,
+    "neighbour_overlaps": 0
+   },
+   "compat_PASS": true,
+   "unity": "UNITY_NOT_RUN"
+  },
+  {
+   "id": "R4C_ROD_DIAG_3D",
+   "family": "rod",
+   "pilot": false,
+   "description": "space-diagonal rod, 3x3x3",
+   "cells": 15,
+   "bbox_cells": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     2,
+     2,
+     2
+    ]
+   ],
+   "nodes": 2,
+   "ports": 6,
+   "port_types": [
+    "rod_mini"
+   ],
+   "triangles": 7576,
+   "blender_qa": "BLENDER_PASS",
+   "rotation_check": true,
+   "distinct_orientations": 4,
+   "mirror_equals_rotation": true,
+   "compat": {
+    "ports": 6,
+    "mountings": 30,
+    "contact_fail": 0,
+    "all_rolls_clear": 30,
+    "some_rolls_clear": 0,
+    "blocked": 0,
+    "neighbour_overlaps": 0
+   },
+   "compat_PASS": true,
+   "unity": "UNITY_NOT_RUN"
+  },
+  {
+   "id": "R4C_ROD_CROSS",
+   "family": "rod",
+   "pilot": false,
+   "description": "X rod cross 3x3 with a centre hub",
+   "cells": 9,
+   "bbox_cells": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     2,
+     0,
+     2
+    ]
+   ],
+   "nodes": 5,
+   "ports": 8,
+   "port_types": [
+    "rod_mini"
+   ],
+   "triangles": 12064,
+   "blender_qa": "BLENDER_PASS",
+   "rotation_check": true,
+   "distinct_orientations": 3,
+   "mirror_equals_rotation": true,
+   "compat": {
+    "ports": 8,
+    "mountings": 40,
+    "contact_fail": 0,
+    "all_rolls_clear": 40,
+    "some_rolls_clear": 0,
+    "blocked": 0,
+    "neighbour_overlaps": 0
+   },
+   "compat_PASS": true,
+   "unity": "UNITY_NOT_RUN"
+  },
+  {
+   "id": "R4C_ROD_PLUS",
+   "family": "rod",
+   "pilot": false,
+   "description": "plus rod (4 arms) 3x3",
+   "cells": 5,
+   "bbox_cells": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     2,
+     0,
+     2
+    ]
+   ],
+   "nodes": 5,
+   "ports": 4,
+   "port_types": [
+    "rod_mini"
+   ],
+   "triangles": 7120,
+   "blender_qa": "BLENDER_PASS",
+   "rotation_check": true,
+   "distinct_orientations": 3,
+   "mirror_equals_rotation": true,
+   "compat": {
+    "ports": 4,
+    "mountings": 20,
+    "contact_fail": 0,
+    "all_rolls_clear": 20,
+    "some_rolls_clear": 0,
+    "blocked": 0,
+    "neighbour_overlaps": 0
+   },
+   "compat_PASS": true,
+   "unity": "UNITY_NOT_RUN"
+  },
+  {
+   "id": "R4C_ROD_FRAME",
+   "family": "rod",
+   "pilot": false,
+   "description": "open square rod frame 3x3",
+   "cells": 8,
+   "bbox_cells": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     2,
+     0,
+     2
+    ]
+   ],
+   "nodes": 4,
+   "ports": 8,
+   "port_types": [
+    "rod_mini"
+   ],
+   "triangles": 13332,
+   "blender_qa": "BLENDER_PASS",
+   "rotation_check": true,
+   "distinct_orientations": 3,
+   "mirror_equals_rotation": true,
+   "compat": {
+    "ports": 8,
+    "mountings": 40,
+    "contact_fail": 0,
+    "all_rolls_clear": 40,
+    "some_rolls_clear": 0,
+    "blocked": 0,
+    "neighbour_overlaps": 0
+   },
+   "compat_PASS": true,
+   "unity": "UNITY_NOT_RUN"
+  },
+  {
+   "id": "R4C_ROD_T",
+   "family": "rod",
+   "pilot": false,
+   "description": "T rod 3x3",
+   "cells": 5,
+   "bbox_cells": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     2,
+     0,
+     2
+    ]
+   ],
+   "nodes": 4,
+   "ports": 4,
+   "port_types": [
+    "rod_mini"
+   ],
+   "triangles": 6958,
+   "blender_qa": "BLENDER_PASS",
+   "rotation_check": true,
+   "distinct_orientations": 12,
+   "mirror_equals_rotation": true,
+   "compat": {
+    "ports": 4,
+    "mountings": 20,
+    "contact_fail": 0,
+    "all_rolls_clear": 20,
+    "some_rolls_clear": 0,
+    "blocked": 0,
+    "neighbour_overlaps": 0
+   },
+   "compat_PASS": true,
+   "unity": "UNITY_NOT_RUN"
+  },
+  {
+   "id": "R4C_STRUT_SHORT",
+   "family": "strut",
+   "pilot": false,
+   "description": "straight strut 1x2",
+   "cells": 2,
+   "bbox_cells": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "nodes": 2,
+   "ports": 10,
+   "port_types": [
+    "r4_full"
+   ],
+   "triangles": 9356,
+   "blender_qa": "BLENDER_PASS",
+   "rotation_check": true,
+   "distinct_orientations": 3,
+   "mirror_equals_rotation": true,
+   "compat": {
+    "ports": 10,
+    "mountings": 360,
+    "contact_fail": 0,
+    "all_rolls_clear": 360,
+    "some_rolls_clear": 0,
+    "blocked": 0,
+    "neighbour_overlaps": 0
+   },
+   "compat_PASS": true,
+   "unity": "UNITY_NOT_RUN"
+  },
+  {
+   "id": "R4C_STRUT_STANDARD",
+   "family": "strut",
+   "pilot": false,
+   "description": "straight strut 1x3",
+   "cells": 3,
+   "bbox_cells": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     2
+    ]
+   ],
+   "nodes": 2,
+   "ports": 10,
+   "port_types": [
+    "r4_full"
+   ],
+   "triangles": 10348,
+   "blender_qa": "BLENDER_PASS",
+   "rotation_check": true,
+   "distinct_orientations": 3,
+   "mirror_equals_rotation": true,
+   "compat": {
+    "ports": 10,
+    "mountings": 360,
+    "contact_fail": 0,
+    "all_rolls_clear": 360,
+    "some_rolls_clear": 0,
+    "blocked": 0,
+    "neighbour_overlaps": 0
+   },
+   "compat_PASS": true,
+   "unity": "UNITY_NOT_RUN"
+  },
+  {
+   "id": "R4C_STRUT_LONG",
+   "family": "strut",
+   "pilot": true,
+   "description": "straight strut 1x5 (weapon mast / long brace)",
+   "cells": 5,
+   "bbox_cells": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     4
+    ]
+   ],
+   "nodes": 2,
+   "ports": 10,
+   "port_types": [
+    "r4_full"
+   ],
+   "triangles": 12100,
+   "blender_qa": "BLENDER_PASS",
+   "rotation_check": true,
+   "distinct_orientations": 3,
+   "mirror_equals_rotation": true,
+   "compat": {
+    "ports": 10,
+    "mountings": 360,
+    "contact_fail": 0,
+    "all_rolls_clear": 360,
+    "some_rolls_clear": 0,
+    "blocked": 0,
+    "neighbour_overlaps": 0
+   },
+   "compat_PASS": true,
+   "unity": "UNITY_NOT_RUN"
+  },
+  {
+   "id": "R4C_STRUT_ARC",
+   "family": "strut",
+   "pilot": true,
+   "description": "quarter-arc strut, 3x3 (radius 2 cells)",
+   "cells": 6,
+   "bbox_cells": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     2,
+     0,
+     2
+    ]
+   ],
+   "nodes": 2,
+   "ports": 10,
+   "port_types": [
+    "r4_full"
+   ],
+   "triangles": 11364,
+   "blender_qa": "BLENDER_PASS",
+   "rotation_check": true,
+   "distinct_orientations": 12,
+   "mirror_equals_rotation": true,
+   "compat": {
+    "ports": 10,
+    "mountings": 360,
+    "contact_fail": 0,
+    "all_rolls_clear": 350,
+    "some_rolls_clear": 8,
+    "blocked": 2,
+    "neighbour_overlaps": 0
+   },
+   "compat_PASS": true,
+   "unity": "UNITY_NOT_RUN"
+  },
+  {
+   "id": "R4C_STRUT_DIAG_2D",
+   "family": "strut",
+   "pilot": false,
+   "description": "flat diagonal strut, 3x3",
+   "cells": 7,
+   "bbox_cells": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     2,
+     0,
+     2
+    ]
+   ],
+   "nodes": 2,
+   "ports": 8,
+   "port_types": [
+    "r4_full"
+   ],
+   "triangles": 9736,
+   "blender_qa": "BLENDER_PASS",
+   "rotation_check": true,
+   "distinct_orientations": 6,
+   "mirror_equals_rotation": true,
+   "compat": {
+    "ports": 8,
+    "mountings": 288,
+    "contact_fail": 0,
+    "all_rolls_clear": 288,
+    "some_rolls_clear": 0,
+    "blocked": 0,
+    "neighbour_overlaps": 0
+   },
+   "compat_PASS": true,
+   "unity": "UNITY_NOT_RUN"
+  },
+  {
+   "id": "R4C_STRUT_DIAG_3D",
+   "family": "strut",
+   "pilot": false,
+   "description": "space-diagonal strut, 3x3x3",
+   "cells": 15,
+   "bbox_cells": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     2,
+     2,
+     2
+    ]
+   ],
+   "nodes": 2,
+   "ports": 6,
+   "port_types": [
+    "r4_full"
+   ],
+   "triangles": 8746,
+   "blender_qa": "BLENDER_PASS",
+   "rotation_check": true,
+   "distinct_orientations": 4,
+   "mirror_equals_rotation": true,
+   "compat": {
+    "ports": 6,
+    "mountings": 216,
+    "contact_fail": 0,
+    "all_rolls_clear": 216,
+    "some_rolls_clear": 0,
+    "blocked": 0,
+    "neighbour_overlaps": 0
+   },
+   "compat_PASS": true,
+   "unity": "UNITY_NOT_RUN"
+  },
+  {
+   "id": "R4C_STRUT_CROSS",
+   "family": "strut",
+   "pilot": false,
+   "description": "X strut cross 3x3 with a heavy centre node",
+   "cells": 9,
+   "bbox_cells": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     2,
+     0,
+     2
+    ]
+   ],
+   "nodes": 5,
+   "ports": 18,
+   "port_types": [
+    "r4_full"
+   ],
+   "triangles": 20776,
+   "blender_qa": "BLENDER_PASS",
+   "rotation_check": true,
+   "distinct_orientations": 3,
+   "mirror_equals_rotation": true,
+   "compat": {
+    "ports": 18,
+    "mountings": 648,
+    "contact_fail": 0,
+    "all_rolls_clear": 648,
+    "some_rolls_clear": 0,
+    "blocked": 0,
+    "neighbour_overlaps": 0
+   },
+   "compat_PASS": true,
+   "unity": "UNITY_NOT_RUN"
+  },
+  {
+   "id": "R4C_STRUT_RAMP",
+   "family": "strut",
+   "pilot": false,
+   "description": "triangulated knee bracket / ramp (3 nodes)",
+   "cells": 8,
+   "bbox_cells": [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     2,
+     2
+    ]
+   ],
+   "nodes": 3,
+   "ports": 12,
+   "port_types": [
+    "r4_full"
+   ],
+   "triangles": 15716,
+   "blender_qa": "BLENDER_PASS",
+   "rotation_check": true,
+   "distinct_orientations": 12,
+   "mirror_equals_rotation": true,
+   "compat": {
+    "ports": 12,
+    "mountings": 432,
+    "contact_fail": 0,
+    "all_rolls_clear": 432,
+    "some_rolls_clear": 0,
+    "blocked": 0,
+    "neighbour_overlaps": 0
+   },
+   "compat_PASS": true,
+   "unity": "UNITY_NOT_RUN"
+  }
+ ]
+}

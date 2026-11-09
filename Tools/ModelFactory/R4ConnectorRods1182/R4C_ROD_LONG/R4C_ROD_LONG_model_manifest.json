@@ -1,0 +1,94 @@
+{
+ "id": "R4C_ROD_LONG",
+ "version": "1182-v1",
+ "files": {
+  "R4C_ROD_LONG.blend": {
+   "sha256": "91392e1ea5ac811cb59ef1d9085fa46a2749ca7014a0ce2801c7c57fee9357b3",
+   "bytes": 1086645
+  },
+  "R4C_ROD_LONG.fbx": {
+   "sha256": "be99cc7c7726296ec22a6e23c0a7889586dd16c425ce6a6ac857cf6da0798ba8",
+   "bytes": 159852
+  },
+  "R4C_ROD_LONG.glb": {
+   "sha256": "85f4231848fdff98bcfb44305796db211e18fe442aad0c5bd58d804842b603b9",
+   "bytes": 186276
+  },
+  "R4C_ROD_LONG_colliders.glb": {
+   "sha256": "8787846ca512512b39db4140b995c69684a154ba5abb69c805c543639961bedd",
+   "bytes": 14008
+  }
+ },
+ "units": "metres",
+ "blender": "5.2.3 LTS",
+ "export": {
+  "fbx": "Unity 6 URP, -Z forward, Y up, FBX_SCALE_UNITS, bake_space_transform=False",
+  "glb": "glTF 2.0 binary, +Y up"
+ },
+ "triangles": 4962,
+ "triangle_budget": 14000,
+ "materials": [
+  "Armor_Dark",
+  "Armor_Gunmetal",
+  "Hazard_Yellow",
+  "Steel_Light",
+  "TeamColor_Red"
+ ],
+ "palette": "R41 locked palette (same as R4 blocks / weapons / movement)",
+ "mesh_check": {
+  "object": "R4C_ROD_LONG",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 4962,
+  "shells": 1,
+  "uv": true,
+  "ok": true
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0004,
+   "verts": 2483,
+   "empties": 7
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 4710,
+   "empties": 7
+  }
+ },
+ "port_contact_test": [
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_A_back",
+   "kind": "rod_mini",
+   "PASS": true
+  },
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_B_forward",
+   "kind": "rod_mini",
+   "PASS": true
+  }
+ ],
+ "renders": [
+  "R4C_ROD_LONG_front.jpg",
+  "R4C_ROD_LONG_side.jpg",
+  "R4C_ROD_LONG_34front.jpg",
+  "R4C_ROD_LONG_34front_wireframe.jpg",
+  "R4C_ROD_LONG_board.jpg"
+ ],
+ "generator": "scripts/build_connectors.py",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN"
+}

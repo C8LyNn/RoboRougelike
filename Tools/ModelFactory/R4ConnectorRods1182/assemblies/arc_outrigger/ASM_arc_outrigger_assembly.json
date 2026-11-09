@@ -1,0 +1,1037 @@
+{
+ "scene": "arc_outrigger",
+ "note": "STRUT_ARC outriggers: right one native, left one MIRRORED (scale X -1); side-hub wheel and steering wheel on the arc end nodes.",
+ "grid_m": 0.55,
+ "face_m": 0.26,
+ "gap_m": 0.03,
+ "unity": "UNITY_NOT_RUN",
+ "parts": {
+  "chassis_-1": {
+   "model": "R4B_Cube",
+   "type": "block",
+   "at": [
+    0,
+    0,
+    -1
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "f5084d93cb3c4097c8f9f911ed63f5a960efb4a24a094cd30f5083bf73a33a9c",
+   "ports": [
+    {
+     "id": "right@0,0,0",
+     "cell": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "right",
+     "kind": "full"
+    },
+    {
+     "id": "left@0,0,0",
+     "cell": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "left",
+     "kind": "full"
+    },
+    {
+     "id": "up@0,0,0",
+     "cell": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "up",
+     "kind": "full"
+    },
+    {
+     "id": "down@0,0,0",
+     "cell": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "forward@0,0,0",
+     "cell": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "forward",
+     "kind": "full"
+    },
+    {
+     "id": "back@0,0,0",
+     "cell": [
+      0,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "full"
+    }
+   ]
+  },
+  "chassis_0": {
+   "model": "R4B_Cube",
+   "type": "block",
+   "at": [
+    0,
+    0,
+    0
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "f5084d93cb3c4097c8f9f911ed63f5a960efb4a24a094cd30f5083bf73a33a9c",
+   "ports": [
+    {
+     "id": "right@0,0,0",
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "dir": "right",
+     "kind": "full"
+    },
+    {
+     "id": "left@0,0,0",
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "full"
+    },
+    {
+     "id": "up@0,0,0",
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "dir": "up",
+     "kind": "full"
+    },
+    {
+     "id": "down@0,0,0",
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "forward@0,0,0",
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "dir": "forward",
+     "kind": "full"
+    },
+    {
+     "id": "back@0,0,0",
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "dir": "back",
+     "kind": "full"
+    }
+   ]
+  },
+  "chassis_1": {
+   "model": "R4B_Cube",
+   "type": "block",
+   "at": [
+    0,
+    0,
+    1
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "f5084d93cb3c4097c8f9f911ed63f5a960efb4a24a094cd30f5083bf73a33a9c",
+   "ports": [
+    {
+     "id": "right@0,0,0",
+     "cell": [
+      0,
+      0,
+      1
+     ],
+     "dir": "right",
+     "kind": "full"
+    },
+    {
+     "id": "left@0,0,0",
+     "cell": [
+      0,
+      0,
+      1
+     ],
+     "dir": "left",
+     "kind": "full"
+    },
+    {
+     "id": "up@0,0,0",
+     "cell": [
+      0,
+      0,
+      1
+     ],
+     "dir": "up",
+     "kind": "full"
+    },
+    {
+     "id": "down@0,0,0",
+     "cell": [
+      0,
+      0,
+      1
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "forward@0,0,0",
+     "cell": [
+      0,
+      0,
+      1
+     ],
+     "dir": "forward",
+     "kind": "full"
+    },
+    {
+     "id": "back@0,0,0",
+     "cell": [
+      0,
+      0,
+      1
+     ],
+     "dir": "back",
+     "kind": "full"
+    }
+   ]
+  },
+  "arc_R": {
+   "model": "R4C_STRUT_ARC",
+   "type": "connector",
+   "at": [
+    1,
+    0,
+    0
+   ],
+   "rot_unity": [
+    [
+     0,
+     0,
+     1
+    ],
+    [
+     -1,
+     0,
+     0
+    ],
+    [
+     0,
+     -1,
+     0
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "c90e90a1449e78a863059d6c444d10a4285512bdb16e173a8d60a268ba16b51b",
+   "ports": [
+    {
+     "id": "P_A_right",
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "dir": "down",
+     "kind": "r4_full"
+    },
+    {
+     "id": "P_A_left",
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "dir": "up",
+     "kind": "r4_full"
+    },
+    {
+     "id": "P_A_up",
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "dir": "back",
+     "kind": "r4_full"
+    },
+    {
+     "id": "P_A_down",
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "dir": "forward",
+     "kind": "r4_full"
+    },
+    {
+     "id": "P_A_back",
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "r4_full"
+    },
+    {
+     "id": "P_B_right",
+     "cell": [
+      3,
+      -2,
+      0
+     ],
+     "dir": "down",
+     "kind": "r4_full"
+    },
+    {
+     "id": "P_B_up",
+     "cell": [
+      3,
+      -2,
+      0
+     ],
+     "dir": "back",
+     "kind": "r4_full"
+    },
+    {
+     "id": "P_B_down",
+     "cell": [
+      3,
+      -2,
+      0
+     ],
+     "dir": "forward",
+     "kind": "r4_full"
+    },
+    {
+     "id": "P_B_forward",
+     "cell": [
+      3,
+      -2,
+      0
+     ],
+     "dir": "right",
+     "kind": "r4_full"
+    },
+    {
+     "id": "P_B_back",
+     "cell": [
+      3,
+      -2,
+      0
+     ],
+     "dir": "left",
+     "kind": "r4_full"
+    }
+   ]
+  },
+  "arc_L_mirror": {
+   "model": "R4C_STRUT_ARC",
+   "type": "connector",
+   "at": [
+    -1,
+    0,
+    0
+   ],
+   "rot_unity": [
+    [
+     0,
+     0,
+     -1
+    ],
+    [
+     -1,
+     0,
+     0
+    ],
+    [
+     0,
+     -1,
+     0
+    ]
+   ],
+   "mirrored": true,
+   "glb_sha256": "c90e90a1449e78a863059d6c444d10a4285512bdb16e173a8d60a268ba16b51b",
+   "ports": [
+    {
+     "id": "P_A_right",
+     "cell": [
+      -1,
+      0,
+      0
+     ],
+     "dir": "down",
+     "kind": "r4_full"
+    },
+    {
+     "id": "P_A_left",
+     "cell": [
+      -1,
+      0,
+      0
+     ],
+     "dir": "up",
+     "kind": "r4_full"
+    },
+    {
+     "id": "P_A_up",
+     "cell": [
+      -1,
+      0,
+      0
+     ],
+     "dir": "back",
+     "kind": "r4_full"
+    },
+    {
+     "id": "P_A_down",
+     "cell": [
+      -1,
+      0,
+      0
+     ],
+     "dir": "forward",
+     "kind": "r4_full"
+    },
+    {
+     "id": "P_A_back",
+     "cell": [
+      -1,
+      0,
+      0
+     ],
+     "dir": "right",
+     "kind": "r4_full"
+    },
+    {
+     "id": "P_B_right",
+     "cell": [
+      -3,
+      -2,
+      0
+     ],
+     "dir": "down",
+     "kind": "r4_full"
+    },
+    {
+     "id": "P_B_up",
+     "cell": [
+      -3,
+      -2,
+      0
+     ],
+     "dir": "back",
+     "kind": "r4_full"
+    },
+    {
+     "id": "P_B_down",
+     "cell": [
+      -3,
+      -2,
+      0
+     ],
+     "dir": "forward",
+     "kind": "r4_full"
+    },
+    {
+     "id": "P_B_forward",
+     "cell": [
+      -3,
+      -2,
+      0
+     ],
+     "dir": "left",
+     "kind": "r4_full"
+    },
+    {
+     "id": "P_B_back",
+     "cell": [
+      -3,
+      -2,
+      0
+     ],
+     "dir": "right",
+     "kind": "r4_full"
+    }
+   ]
+  },
+  "side_wheel_R": {
+   "model": "R4M_WheelM_Side_Offroad",
+   "type": "module",
+   "on": {
+    "cell": [
+     3,
+     -2,
+     0
+    ],
+    "dir": "right"
+   },
+   "roll_deg": 0,
+   "glb_sha256": "6f5fb68eab1dc4e61917c0f6de9db1cb65ea7e3e6ce8eedffefd1ed09a079ca6",
+   "ports": [
+    {
+     "id": "Socket_Mount",
+     "cell": [
+      4,
+      -2,
+      0
+     ],
+     "dir": "left",
+     "kind": "module"
+    }
+   ]
+  },
+  "steer_wheel_L": {
+   "model": "R4M_WheelM_Steer_Road",
+   "type": "module",
+   "on": {
+    "cell": [
+     -3,
+     -2,
+     0
+    ],
+    "dir": "down"
+   },
+   "roll_deg": 0,
+   "glb_sha256": "d632c92b30aad290766a9e7d6f4d6f977961634cc37f00f7c3ace90c00c5a629",
+   "ports": [
+    {
+     "id": "Socket_Mount",
+     "cell": [
+      -3,
+      -3,
+      0
+     ],
+     "dir": "up",
+     "kind": "module"
+    }
+   ]
+  },
+  "gun": {
+   "model": "R4W_RocketLauncher",
+   "type": "module",
+   "on": {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "up"
+   },
+   "roll_deg": 0,
+   "glb_sha256": "91062bbdc89972fe293199777a5f62c03d8ce3ea6ef4ec2e6912a66a7e346d34",
+   "ports": [
+    {
+     "id": "Socket_Mount",
+     "cell": [
+      0,
+      1,
+      0
+     ],
+     "dir": "down",
+     "kind": "module"
+    }
+   ]
+  }
+ },
+ "cells": {
+  "-3,-3,0": [
+   [
+    "steer_wheel_L",
+    "module"
+   ]
+  ],
+  "-3,-2,0": [
+   [
+    "arc_L_mirror",
+    "node"
+   ]
+  ],
+  "-3,-1,0": [
+   [
+    "arc_L_mirror",
+    "span"
+   ]
+  ],
+  "-3,0,0": [
+   [
+    "arc_L_mirror",
+    "crossing"
+   ]
+  ],
+  "-2,-1,0": [
+   [
+    "arc_L_mirror",
+    "span"
+   ]
+  ],
+  "-2,0,0": [
+   [
+    "arc_L_mirror",
+    "span"
+   ]
+  ],
+  "-1,0,0": [
+   [
+    "arc_L_mirror",
+    "node"
+   ]
+  ],
+  "0,0,-1": [
+   [
+    "chassis_-1",
+    "block"
+   ]
+  ],
+  "0,0,0": [
+   [
+    "chassis_0",
+    "block"
+   ]
+  ],
+  "0,0,1": [
+   [
+    "chassis_1",
+    "block"
+   ]
+  ],
+  "0,1,0": [
+   [
+    "gun",
+    "module"
+   ]
+  ],
+  "1,0,0": [
+   [
+    "arc_R",
+    "node"
+   ]
+  ],
+  "2,-1,0": [
+   [
+    "arc_R",
+    "span"
+   ]
+  ],
+  "2,0,0": [
+   [
+    "arc_R",
+    "span"
+   ]
+  ],
+  "3,-2,0": [
+   [
+    "arc_R",
+    "node"
+   ]
+  ],
+  "3,-1,0": [
+   [
+    "arc_R",
+    "span"
+   ]
+  ],
+  "3,0,0": [
+   [
+    "arc_R",
+    "crossing"
+   ]
+  ],
+  "4,-2,0": [
+   [
+    "side_wheel_R",
+    "module"
+   ]
+  ]
+ },
+ "mated_pairs": [
+  {
+   "a": "chassis_-1",
+   "a_port": "forward@0,0,0",
+   "a_kind": "full",
+   "b": "chassis_0",
+   "b_port": "back@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    0,
+    0,
+    -1
+   ],
+   "face_dir": "forward",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "chassis_0",
+   "a_port": "right@0,0,0",
+   "a_kind": "full",
+   "b": "arc_R",
+   "b_port": "P_A_back",
+   "b_kind": "r4_full",
+   "face_cell": [
+    0,
+    0,
+    0
+   ],
+   "face_dir": "right",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "chassis_0",
+   "a_port": "left@0,0,0",
+   "a_kind": "full",
+   "b": "arc_L_mirror",
+   "b_port": "P_A_back",
+   "b_kind": "r4_full",
+   "face_cell": [
+    0,
+    0,
+    0
+   ],
+   "face_dir": "left",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "chassis_0",
+   "a_port": "up@0,0,0",
+   "a_kind": "full",
+   "b": "gun",
+   "b_port": "Socket_Mount",
+   "b_kind": "module",
+   "face_cell": [
+    0,
+    0,
+    0
+   ],
+   "face_dir": "up",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "chassis_0",
+   "a_port": "forward@0,0,0",
+   "a_kind": "full",
+   "b": "chassis_1",
+   "b_port": "back@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    0,
+    0,
+    0
+   ],
+   "face_dir": "forward",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "arc_R",
+   "a_port": "P_B_forward",
+   "a_kind": "r4_full",
+   "b": "side_wheel_R",
+   "b_port": "Socket_Mount",
+   "b_kind": "module",
+   "face_cell": [
+    3,
+    -2,
+    0
+   ],
+   "face_dir": "right",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "arc_L_mirror",
+   "a_port": "P_B_right",
+   "a_kind": "r4_full",
+   "b": "steer_wheel_L",
+   "b_port": "Socket_Mount",
+   "b_kind": "module",
+   "face_cell": [
+    -3,
+    -2,
+    0
+   ],
+   "face_dir": "down",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  }
+ ],
+ "rejected_pairs": [],
+ "adjacent_not_connected": [],
+ "cell_conflicts": [],
+ "mesh_overlaps": [],
+ "floating_parts": [],
+ "unmated_modules": [],
+ "graph": {
+  "chassis": {
+   "anchor": "chassis_0",
+   "parts": 8,
+   "members": [
+    "arc_L_mirror",
+    "arc_R",
+    "chassis_-1",
+    "chassis_0",
+    "chassis_1",
+    "gun",
+    "side_wheel_R",
+    "steer_wheel_L"
+   ],
+   "single_point_links": [
+    {
+     "link": [
+      "arc_L_mirror",
+      "chassis_0"
+     ],
+     "ports": 1,
+     "parts_lost": [
+      "arc_L_mirror",
+      "steer_wheel_L"
+     ]
+    },
+    {
+     "link": [
+      "arc_R",
+      "chassis_0"
+     ],
+     "ports": 1,
+     "parts_lost": [
+      "arc_R",
+      "side_wheel_R"
+     ]
+    },
+    {
+     "link": [
+      "chassis_0",
+      "chassis_1"
+     ],
+     "ports": 1,
+     "parts_lost": [
+      "chassis_1"
+     ]
+    },
+    {
+     "link": [
+      "arc_R",
+      "side_wheel_R"
+     ],
+     "ports": 1,
+     "parts_lost": [
+      "side_wheel_R"
+     ]
+    },
+    {
+     "link": [
+      "chassis_-1",
+      "chassis_0"
+     ],
+     "ports": 1,
+     "parts_lost": [
+      "chassis_-1"
+     ]
+    },
+    {
+     "link": [
+      "chassis_0",
+      "gun"
+     ],
+     "ports": 1,
+     "parts_lost": [
+      "gun"
+     ]
+    },
+    {
+     "link": [
+      "arc_L_mirror",
+      "steer_wheel_L"
+     ],
+     "ports": 1,
+     "parts_lost": [
+      "steer_wheel_L"
+     ]
+    }
+   ],
+   "critical_parts": {
+    "arc_R": [
+     "side_wheel_R"
+    ],
+    "arc_L_mirror": [
+     "steer_wheel_L"
+    ]
+   }
+  }
+ },
+ "summary": {
+  "parts": 8,
+  "mated_pairs": 7,
+  "contact_fail": 0,
+  "rejected": 0,
+  "adjacent_not_connected": 0,
+  "overlaps": 0,
+  "cell_conflicts": 0,
+  "floating": 0,
+  "single_point_links": 7
+ },
+ "renders": [
+  "ASM_arc_outrigger_34front.jpg",
+  "ASM_arc_outrigger_side.jpg",
+  "ASM_arc_outrigger_top.jpg",
+  "ASM_arc_outrigger_34back.jpg"
+ ],
+ "glb": "ASM_arc_outrigger.glb",
+ "glb_sha256": "d49ad9c20d4e65e4840bec57a502959df94c2c162a145ded59583158ba86375f",
+ "PASS": true,
+ "sec": 2.5
+}

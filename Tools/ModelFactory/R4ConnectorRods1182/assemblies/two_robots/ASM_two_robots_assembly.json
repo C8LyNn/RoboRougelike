@@ -1,0 +1,4611 @@
+{
+ "scene": "two_robots",
+ "note": "A: wedge armour directly on the chassis. B: armour wall 2 cells out on two rods (redundant); the filler cube is adjacent to both rod nodes but rods have no side ports.",
+ "grid_m": 0.55,
+ "face_m": 0.26,
+ "gap_m": 0.03,
+ "unity": "UNITY_NOT_RUN",
+ "parts": {
+  "A_cube_-1_-1": {
+   "model": "R4B_Cube",
+   "type": "block",
+   "at": [
+    -4,
+    0,
+    -1
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "f5084d93cb3c4097c8f9f911ed63f5a960efb4a24a094cd30f5083bf73a33a9c",
+   "ports": [
+    {
+     "id": "right@0,0,0",
+     "cell": [
+      -4,
+      0,
+      -1
+     ],
+     "dir": "right",
+     "kind": "full"
+    },
+    {
+     "id": "left@0,0,0",
+     "cell": [
+      -4,
+      0,
+      -1
+     ],
+     "dir": "left",
+     "kind": "full"
+    },
+    {
+     "id": "up@0,0,0",
+     "cell": [
+      -4,
+      0,
+      -1
+     ],
+     "dir": "up",
+     "kind": "full"
+    },
+    {
+     "id": "down@0,0,0",
+     "cell": [
+      -4,
+      0,
+      -1
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "forward@0,0,0",
+     "cell": [
+      -4,
+      0,
+      -1
+     ],
+     "dir": "forward",
+     "kind": "full"
+    },
+    {
+     "id": "back@0,0,0",
+     "cell": [
+      -4,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "full"
+    }
+   ]
+  },
+  "A_cube_-1_0": {
+   "model": "R4B_Cube",
+   "type": "block",
+   "at": [
+    -4,
+    0,
+    0
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "f5084d93cb3c4097c8f9f911ed63f5a960efb4a24a094cd30f5083bf73a33a9c",
+   "ports": [
+    {
+     "id": "right@0,0,0",
+     "cell": [
+      -4,
+      0,
+      0
+     ],
+     "dir": "right",
+     "kind": "full"
+    },
+    {
+     "id": "left@0,0,0",
+     "cell": [
+      -4,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "full"
+    },
+    {
+     "id": "up@0,0,0",
+     "cell": [
+      -4,
+      0,
+      0
+     ],
+     "dir": "up",
+     "kind": "full"
+    },
+    {
+     "id": "down@0,0,0",
+     "cell": [
+      -4,
+      0,
+      0
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "forward@0,0,0",
+     "cell": [
+      -4,
+      0,
+      0
+     ],
+     "dir": "forward",
+     "kind": "full"
+    },
+    {
+     "id": "back@0,0,0",
+     "cell": [
+      -4,
+      0,
+      0
+     ],
+     "dir": "back",
+     "kind": "full"
+    }
+   ]
+  },
+  "A_cube_-1_1": {
+   "model": "R4B_Cube",
+   "type": "block",
+   "at": [
+    -4,
+    0,
+    1
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "f5084d93cb3c4097c8f9f911ed63f5a960efb4a24a094cd30f5083bf73a33a9c",
+   "ports": [
+    {
+     "id": "right@0,0,0",
+     "cell": [
+      -4,
+      0,
+      1
+     ],
+     "dir": "right",
+     "kind": "full"
+    },
+    {
+     "id": "left@0,0,0",
+     "cell": [
+      -4,
+      0,
+      1
+     ],
+     "dir": "left",
+     "kind": "full"
+    },
+    {
+     "id": "up@0,0,0",
+     "cell": [
+      -4,
+      0,
+      1
+     ],
+     "dir": "up",
+     "kind": "full"
+    },
+    {
+     "id": "down@0,0,0",
+     "cell": [
+      -4,
+      0,
+      1
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "forward@0,0,0",
+     "cell": [
+      -4,
+      0,
+      1
+     ],
+     "dir": "forward",
+     "kind": "full"
+    },
+    {
+     "id": "back@0,0,0",
+     "cell": [
+      -4,
+      0,
+      1
+     ],
+     "dir": "back",
+     "kind": "full"
+    }
+   ]
+  },
+  "A_cube_0_-1": {
+   "model": "R4B_Cube",
+   "type": "block",
+   "at": [
+    -3,
+    0,
+    -1
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "f5084d93cb3c4097c8f9f911ed63f5a960efb4a24a094cd30f5083bf73a33a9c",
+   "ports": [
+    {
+     "id": "right@0,0,0",
+     "cell": [
+      -3,
+      0,
+      -1
+     ],
+     "dir": "right",
+     "kind": "full"
+    },
+    {
+     "id": "left@0,0,0",
+     "cell": [
+      -3,
+      0,
+      -1
+     ],
+     "dir": "left",
+     "kind": "full"
+    },
+    {
+     "id": "up@0,0,0",
+     "cell": [
+      -3,
+      0,
+      -1
+     ],
+     "dir": "up",
+     "kind": "full"
+    },
+    {
+     "id": "down@0,0,0",
+     "cell": [
+      -3,
+      0,
+      -1
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "forward@0,0,0",
+     "cell": [
+      -3,
+      0,
+      -1
+     ],
+     "dir": "forward",
+     "kind": "full"
+    },
+    {
+     "id": "back@0,0,0",
+     "cell": [
+      -3,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "full"
+    }
+   ]
+  },
+  "A_cube_0_0": {
+   "model": "R4B_Cube",
+   "type": "block",
+   "at": [
+    -3,
+    0,
+    0
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "f5084d93cb3c4097c8f9f911ed63f5a960efb4a24a094cd30f5083bf73a33a9c",
+   "ports": [
+    {
+     "id": "right@0,0,0",
+     "cell": [
+      -3,
+      0,
+      0
+     ],
+     "dir": "right",
+     "kind": "full"
+    },
+    {
+     "id": "left@0,0,0",
+     "cell": [
+      -3,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "full"
+    },
+    {
+     "id": "up@0,0,0",
+     "cell": [
+      -3,
+      0,
+      0
+     ],
+     "dir": "up",
+     "kind": "full"
+    },
+    {
+     "id": "down@0,0,0",
+     "cell": [
+      -3,
+      0,
+      0
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "forward@0,0,0",
+     "cell": [
+      -3,
+      0,
+      0
+     ],
+     "dir": "forward",
+     "kind": "full"
+    },
+    {
+     "id": "back@0,0,0",
+     "cell": [
+      -3,
+      0,
+      0
+     ],
+     "dir": "back",
+     "kind": "full"
+    }
+   ]
+  },
+  "A_cube_0_1": {
+   "model": "R4B_Cube",
+   "type": "block",
+   "at": [
+    -3,
+    0,
+    1
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "f5084d93cb3c4097c8f9f911ed63f5a960efb4a24a094cd30f5083bf73a33a9c",
+   "ports": [
+    {
+     "id": "right@0,0,0",
+     "cell": [
+      -3,
+      0,
+      1
+     ],
+     "dir": "right",
+     "kind": "full"
+    },
+    {
+     "id": "left@0,0,0",
+     "cell": [
+      -3,
+      0,
+      1
+     ],
+     "dir": "left",
+     "kind": "full"
+    },
+    {
+     "id": "up@0,0,0",
+     "cell": [
+      -3,
+      0,
+      1
+     ],
+     "dir": "up",
+     "kind": "full"
+    },
+    {
+     "id": "down@0,0,0",
+     "cell": [
+      -3,
+      0,
+      1
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "forward@0,0,0",
+     "cell": [
+      -3,
+      0,
+      1
+     ],
+     "dir": "forward",
+     "kind": "full"
+    },
+    {
+     "id": "back@0,0,0",
+     "cell": [
+      -3,
+      0,
+      1
+     ],
+     "dir": "back",
+     "kind": "full"
+    }
+   ]
+  },
+  "A_cube_1_-1": {
+   "model": "R4B_Cube",
+   "type": "block",
+   "at": [
+    -2,
+    0,
+    -1
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "f5084d93cb3c4097c8f9f911ed63f5a960efb4a24a094cd30f5083bf73a33a9c",
+   "ports": [
+    {
+     "id": "right@0,0,0",
+     "cell": [
+      -2,
+      0,
+      -1
+     ],
+     "dir": "right",
+     "kind": "full"
+    },
+    {
+     "id": "left@0,0,0",
+     "cell": [
+      -2,
+      0,
+      -1
+     ],
+     "dir": "left",
+     "kind": "full"
+    },
+    {
+     "id": "up@0,0,0",
+     "cell": [
+      -2,
+      0,
+      -1
+     ],
+     "dir": "up",
+     "kind": "full"
+    },
+    {
+     "id": "down@0,0,0",
+     "cell": [
+      -2,
+      0,
+      -1
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "forward@0,0,0",
+     "cell": [
+      -2,
+      0,
+      -1
+     ],
+     "dir": "forward",
+     "kind": "full"
+    },
+    {
+     "id": "back@0,0,0",
+     "cell": [
+      -2,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "full"
+    }
+   ]
+  },
+  "A_cube_1_0": {
+   "model": "R4B_Cube",
+   "type": "block",
+   "at": [
+    -2,
+    0,
+    0
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "f5084d93cb3c4097c8f9f911ed63f5a960efb4a24a094cd30f5083bf73a33a9c",
+   "ports": [
+    {
+     "id": "right@0,0,0",
+     "cell": [
+      -2,
+      0,
+      0
+     ],
+     "dir": "right",
+     "kind": "full"
+    },
+    {
+     "id": "left@0,0,0",
+     "cell": [
+      -2,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "full"
+    },
+    {
+     "id": "up@0,0,0",
+     "cell": [
+      -2,
+      0,
+      0
+     ],
+     "dir": "up",
+     "kind": "full"
+    },
+    {
+     "id": "down@0,0,0",
+     "cell": [
+      -2,
+      0,
+      0
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "forward@0,0,0",
+     "cell": [
+      -2,
+      0,
+      0
+     ],
+     "dir": "forward",
+     "kind": "full"
+    },
+    {
+     "id": "back@0,0,0",
+     "cell": [
+      -2,
+      0,
+      0
+     ],
+     "dir": "back",
+     "kind": "full"
+    }
+   ]
+  },
+  "A_cube_1_1": {
+   "model": "R4B_Cube",
+   "type": "block",
+   "at": [
+    -2,
+    0,
+    1
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "f5084d93cb3c4097c8f9f911ed63f5a960efb4a24a094cd30f5083bf73a33a9c",
+   "ports": [
+    {
+     "id": "right@0,0,0",
+     "cell": [
+      -2,
+      0,
+      1
+     ],
+     "dir": "right",
+     "kind": "full"
+    },
+    {
+     "id": "left@0,0,0",
+     "cell": [
+      -2,
+      0,
+      1
+     ],
+     "dir": "left",
+     "kind": "full"
+    },
+    {
+     "id": "up@0,0,0",
+     "cell": [
+      -2,
+      0,
+      1
+     ],
+     "dir": "up",
+     "kind": "full"
+    },
+    {
+     "id": "down@0,0,0",
+     "cell": [
+      -2,
+      0,
+      1
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "forward@0,0,0",
+     "cell": [
+      -2,
+      0,
+      1
+     ],
+     "dir": "forward",
+     "kind": "full"
+    },
+    {
+     "id": "back@0,0,0",
+     "cell": [
+      -2,
+      0,
+      1
+     ],
+     "dir": "back",
+     "kind": "full"
+    }
+   ]
+  },
+  "A_wedge_-1": {
+   "model": "R4B_Wedge",
+   "type": "block",
+   "at": [
+    -4,
+    0,
+    2
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "eae3de19ebbc1be9527c2f1b59f46a2b9893da33e59e2d329c0127bb2fa6daa6",
+   "ports": [
+    {
+     "id": "down@0,0,0",
+     "cell": [
+      -4,
+      0,
+      2
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "back@0,0,0",
+     "cell": [
+      -4,
+      0,
+      2
+     ],
+     "dir": "back",
+     "kind": "full"
+    },
+    {
+     "id": "left@0,0,0",
+     "cell": [
+      -4,
+      0,
+      2
+     ],
+     "dir": "left",
+     "kind": "partial"
+    },
+    {
+     "id": "right@0,0,0",
+     "cell": [
+      -4,
+      0,
+      2
+     ],
+     "dir": "right",
+     "kind": "partial"
+    }
+   ]
+  },
+  "A_wedge_0": {
+   "model": "R4B_Wedge",
+   "type": "block",
+   "at": [
+    -3,
+    0,
+    2
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "eae3de19ebbc1be9527c2f1b59f46a2b9893da33e59e2d329c0127bb2fa6daa6",
+   "ports": [
+    {
+     "id": "down@0,0,0",
+     "cell": [
+      -3,
+      0,
+      2
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "back@0,0,0",
+     "cell": [
+      -3,
+      0,
+      2
+     ],
+     "dir": "back",
+     "kind": "full"
+    },
+    {
+     "id": "left@0,0,0",
+     "cell": [
+      -3,
+      0,
+      2
+     ],
+     "dir": "left",
+     "kind": "partial"
+    },
+    {
+     "id": "right@0,0,0",
+     "cell": [
+      -3,
+      0,
+      2
+     ],
+     "dir": "right",
+     "kind": "partial"
+    }
+   ]
+  },
+  "A_wedge_1": {
+   "model": "R4B_Wedge",
+   "type": "block",
+   "at": [
+    -2,
+    0,
+    2
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "eae3de19ebbc1be9527c2f1b59f46a2b9893da33e59e2d329c0127bb2fa6daa6",
+   "ports": [
+    {
+     "id": "down@0,0,0",
+     "cell": [
+      -2,
+      0,
+      2
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "back@0,0,0",
+     "cell": [
+      -2,
+      0,
+      2
+     ],
+     "dir": "back",
+     "kind": "full"
+    },
+    {
+     "id": "left@0,0,0",
+     "cell": [
+      -2,
+      0,
+      2
+     ],
+     "dir": "left",
+     "kind": "partial"
+    },
+    {
+     "id": "right@0,0,0",
+     "cell": [
+      -2,
+      0,
+      2
+     ],
+     "dir": "right",
+     "kind": "partial"
+    }
+   ]
+  },
+  "B_cube_-1_-1": {
+   "model": "R4B_Cube",
+   "type": "block",
+   "at": [
+    2,
+    0,
+    -1
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "f5084d93cb3c4097c8f9f911ed63f5a960efb4a24a094cd30f5083bf73a33a9c",
+   "ports": [
+    {
+     "id": "right@0,0,0",
+     "cell": [
+      2,
+      0,
+      -1
+     ],
+     "dir": "right",
+     "kind": "full"
+    },
+    {
+     "id": "left@0,0,0",
+     "cell": [
+      2,
+      0,
+      -1
+     ],
+     "dir": "left",
+     "kind": "full"
+    },
+    {
+     "id": "up@0,0,0",
+     "cell": [
+      2,
+      0,
+      -1
+     ],
+     "dir": "up",
+     "kind": "full"
+    },
+    {
+     "id": "down@0,0,0",
+     "cell": [
+      2,
+      0,
+      -1
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "forward@0,0,0",
+     "cell": [
+      2,
+      0,
+      -1
+     ],
+     "dir": "forward",
+     "kind": "full"
+    },
+    {
+     "id": "back@0,0,0",
+     "cell": [
+      2,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "full"
+    }
+   ]
+  },
+  "B_cube_-1_0": {
+   "model": "R4B_Cube",
+   "type": "block",
+   "at": [
+    2,
+    0,
+    0
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "f5084d93cb3c4097c8f9f911ed63f5a960efb4a24a094cd30f5083bf73a33a9c",
+   "ports": [
+    {
+     "id": "right@0,0,0",
+     "cell": [
+      2,
+      0,
+      0
+     ],
+     "dir": "right",
+     "kind": "full"
+    },
+    {
+     "id": "left@0,0,0",
+     "cell": [
+      2,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "full"
+    },
+    {
+     "id": "up@0,0,0",
+     "cell": [
+      2,
+      0,
+      0
+     ],
+     "dir": "up",
+     "kind": "full"
+    },
+    {
+     "id": "down@0,0,0",
+     "cell": [
+      2,
+      0,
+      0
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "forward@0,0,0",
+     "cell": [
+      2,
+      0,
+      0
+     ],
+     "dir": "forward",
+     "kind": "full"
+    },
+    {
+     "id": "back@0,0,0",
+     "cell": [
+      2,
+      0,
+      0
+     ],
+     "dir": "back",
+     "kind": "full"
+    }
+   ]
+  },
+  "B_cube_-1_1": {
+   "model": "R4B_Cube",
+   "type": "block",
+   "at": [
+    2,
+    0,
+    1
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "f5084d93cb3c4097c8f9f911ed63f5a960efb4a24a094cd30f5083bf73a33a9c",
+   "ports": [
+    {
+     "id": "right@0,0,0",
+     "cell": [
+      2,
+      0,
+      1
+     ],
+     "dir": "right",
+     "kind": "full"
+    },
+    {
+     "id": "left@0,0,0",
+     "cell": [
+      2,
+      0,
+      1
+     ],
+     "dir": "left",
+     "kind": "full"
+    },
+    {
+     "id": "up@0,0,0",
+     "cell": [
+      2,
+      0,
+      1
+     ],
+     "dir": "up",
+     "kind": "full"
+    },
+    {
+     "id": "down@0,0,0",
+     "cell": [
+      2,
+      0,
+      1
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "forward@0,0,0",
+     "cell": [
+      2,
+      0,
+      1
+     ],
+     "dir": "forward",
+     "kind": "full"
+    },
+    {
+     "id": "back@0,0,0",
+     "cell": [
+      2,
+      0,
+      1
+     ],
+     "dir": "back",
+     "kind": "full"
+    }
+   ]
+  },
+  "B_cube_0_-1": {
+   "model": "R4B_Cube",
+   "type": "block",
+   "at": [
+    3,
+    0,
+    -1
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "f5084d93cb3c4097c8f9f911ed63f5a960efb4a24a094cd30f5083bf73a33a9c",
+   "ports": [
+    {
+     "id": "right@0,0,0",
+     "cell": [
+      3,
+      0,
+      -1
+     ],
+     "dir": "right",
+     "kind": "full"
+    },
+    {
+     "id": "left@0,0,0",
+     "cell": [
+      3,
+      0,
+      -1
+     ],
+     "dir": "left",
+     "kind": "full"
+    },
+    {
+     "id": "up@0,0,0",
+     "cell": [
+      3,
+      0,
+      -1
+     ],
+     "dir": "up",
+     "kind": "full"
+    },
+    {
+     "id": "down@0,0,0",
+     "cell": [
+      3,
+      0,
+      -1
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "forward@0,0,0",
+     "cell": [
+      3,
+      0,
+      -1
+     ],
+     "dir": "forward",
+     "kind": "full"
+    },
+    {
+     "id": "back@0,0,0",
+     "cell": [
+      3,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "full"
+    }
+   ]
+  },
+  "B_cube_0_0": {
+   "model": "R4B_Cube",
+   "type": "block",
+   "at": [
+    3,
+    0,
+    0
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "f5084d93cb3c4097c8f9f911ed63f5a960efb4a24a094cd30f5083bf73a33a9c",
+   "ports": [
+    {
+     "id": "right@0,0,0",
+     "cell": [
+      3,
+      0,
+      0
+     ],
+     "dir": "right",
+     "kind": "full"
+    },
+    {
+     "id": "left@0,0,0",
+     "cell": [
+      3,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "full"
+    },
+    {
+     "id": "up@0,0,0",
+     "cell": [
+      3,
+      0,
+      0
+     ],
+     "dir": "up",
+     "kind": "full"
+    },
+    {
+     "id": "down@0,0,0",
+     "cell": [
+      3,
+      0,
+      0
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "forward@0,0,0",
+     "cell": [
+      3,
+      0,
+      0
+     ],
+     "dir": "forward",
+     "kind": "full"
+    },
+    {
+     "id": "back@0,0,0",
+     "cell": [
+      3,
+      0,
+      0
+     ],
+     "dir": "back",
+     "kind": "full"
+    }
+   ]
+  },
+  "B_cube_0_1": {
+   "model": "R4B_Cube",
+   "type": "block",
+   "at": [
+    3,
+    0,
+    1
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "f5084d93cb3c4097c8f9f911ed63f5a960efb4a24a094cd30f5083bf73a33a9c",
+   "ports": [
+    {
+     "id": "right@0,0,0",
+     "cell": [
+      3,
+      0,
+      1
+     ],
+     "dir": "right",
+     "kind": "full"
+    },
+    {
+     "id": "left@0,0,0",
+     "cell": [
+      3,
+      0,
+      1
+     ],
+     "dir": "left",
+     "kind": "full"
+    },
+    {
+     "id": "up@0,0,0",
+     "cell": [
+      3,
+      0,
+      1
+     ],
+     "dir": "up",
+     "kind": "full"
+    },
+    {
+     "id": "down@0,0,0",
+     "cell": [
+      3,
+      0,
+      1
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "forward@0,0,0",
+     "cell": [
+      3,
+      0,
+      1
+     ],
+     "dir": "forward",
+     "kind": "full"
+    },
+    {
+     "id": "back@0,0,0",
+     "cell": [
+      3,
+      0,
+      1
+     ],
+     "dir": "back",
+     "kind": "full"
+    }
+   ]
+  },
+  "B_cube_1_-1": {
+   "model": "R4B_Cube",
+   "type": "block",
+   "at": [
+    4,
+    0,
+    -1
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "f5084d93cb3c4097c8f9f911ed63f5a960efb4a24a094cd30f5083bf73a33a9c",
+   "ports": [
+    {
+     "id": "right@0,0,0",
+     "cell": [
+      4,
+      0,
+      -1
+     ],
+     "dir": "right",
+     "kind": "full"
+    },
+    {
+     "id": "left@0,0,0",
+     "cell": [
+      4,
+      0,
+      -1
+     ],
+     "dir": "left",
+     "kind": "full"
+    },
+    {
+     "id": "up@0,0,0",
+     "cell": [
+      4,
+      0,
+      -1
+     ],
+     "dir": "up",
+     "kind": "full"
+    },
+    {
+     "id": "down@0,0,0",
+     "cell": [
+      4,
+      0,
+      -1
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "forward@0,0,0",
+     "cell": [
+      4,
+      0,
+      -1
+     ],
+     "dir": "forward",
+     "kind": "full"
+    },
+    {
+     "id": "back@0,0,0",
+     "cell": [
+      4,
+      0,
+      -1
+     ],
+     "dir": "back",
+     "kind": "full"
+    }
+   ]
+  },
+  "B_cube_1_0": {
+   "model": "R4B_Cube",
+   "type": "block",
+   "at": [
+    4,
+    0,
+    0
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "f5084d93cb3c4097c8f9f911ed63f5a960efb4a24a094cd30f5083bf73a33a9c",
+   "ports": [
+    {
+     "id": "right@0,0,0",
+     "cell": [
+      4,
+      0,
+      0
+     ],
+     "dir": "right",
+     "kind": "full"
+    },
+    {
+     "id": "left@0,0,0",
+     "cell": [
+      4,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "full"
+    },
+    {
+     "id": "up@0,0,0",
+     "cell": [
+      4,
+      0,
+      0
+     ],
+     "dir": "up",
+     "kind": "full"
+    },
+    {
+     "id": "down@0,0,0",
+     "cell": [
+      4,
+      0,
+      0
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "forward@0,0,0",
+     "cell": [
+      4,
+      0,
+      0
+     ],
+     "dir": "forward",
+     "kind": "full"
+    },
+    {
+     "id": "back@0,0,0",
+     "cell": [
+      4,
+      0,
+      0
+     ],
+     "dir": "back",
+     "kind": "full"
+    }
+   ]
+  },
+  "B_cube_1_1": {
+   "model": "R4B_Cube",
+   "type": "block",
+   "at": [
+    4,
+    0,
+    1
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "f5084d93cb3c4097c8f9f911ed63f5a960efb4a24a094cd30f5083bf73a33a9c",
+   "ports": [
+    {
+     "id": "right@0,0,0",
+     "cell": [
+      4,
+      0,
+      1
+     ],
+     "dir": "right",
+     "kind": "full"
+    },
+    {
+     "id": "left@0,0,0",
+     "cell": [
+      4,
+      0,
+      1
+     ],
+     "dir": "left",
+     "kind": "full"
+    },
+    {
+     "id": "up@0,0,0",
+     "cell": [
+      4,
+      0,
+      1
+     ],
+     "dir": "up",
+     "kind": "full"
+    },
+    {
+     "id": "down@0,0,0",
+     "cell": [
+      4,
+      0,
+      1
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "forward@0,0,0",
+     "cell": [
+      4,
+      0,
+      1
+     ],
+     "dir": "forward",
+     "kind": "full"
+    },
+    {
+     "id": "back@0,0,0",
+     "cell": [
+      4,
+      0,
+      1
+     ],
+     "dir": "back",
+     "kind": "full"
+    }
+   ]
+  },
+  "B_rod_-1": {
+   "model": "R4C_ROD_SHORT",
+   "type": "connector",
+   "at": [
+    2,
+    0,
+    2
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "c9531157f0eb184c105205f075b5ce2d3b2907bb1928d809aedde1c9aeeea832",
+   "ports": [
+    {
+     "id": "P_A_back",
+     "cell": [
+      2,
+      0,
+      2
+     ],
+     "dir": "back",
+     "kind": "rod_mini"
+    },
+    {
+     "id": "P_B_forward",
+     "cell": [
+      2,
+      0,
+      3
+     ],
+     "dir": "forward",
+     "kind": "rod_mini"
+    }
+   ]
+  },
+  "B_rod_1": {
+   "model": "R4C_ROD_SHORT",
+   "type": "connector",
+   "at": [
+    4,
+    0,
+    2
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "c9531157f0eb184c105205f075b5ce2d3b2907bb1928d809aedde1c9aeeea832",
+   "ports": [
+    {
+     "id": "P_A_back",
+     "cell": [
+      4,
+      0,
+      2
+     ],
+     "dir": "back",
+     "kind": "rod_mini"
+    },
+    {
+     "id": "P_B_forward",
+     "cell": [
+      4,
+      0,
+      3
+     ],
+     "dir": "forward",
+     "kind": "rod_mini"
+    }
+   ]
+  },
+  "B_armour_-1": {
+   "model": "R4B_Cube",
+   "type": "block",
+   "at": [
+    2,
+    0,
+    4
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "f5084d93cb3c4097c8f9f911ed63f5a960efb4a24a094cd30f5083bf73a33a9c",
+   "ports": [
+    {
+     "id": "right@0,0,0",
+     "cell": [
+      2,
+      0,
+      4
+     ],
+     "dir": "right",
+     "kind": "full"
+    },
+    {
+     "id": "left@0,0,0",
+     "cell": [
+      2,
+      0,
+      4
+     ],
+     "dir": "left",
+     "kind": "full"
+    },
+    {
+     "id": "up@0,0,0",
+     "cell": [
+      2,
+      0,
+      4
+     ],
+     "dir": "up",
+     "kind": "full"
+    },
+    {
+     "id": "down@0,0,0",
+     "cell": [
+      2,
+      0,
+      4
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "forward@0,0,0",
+     "cell": [
+      2,
+      0,
+      4
+     ],
+     "dir": "forward",
+     "kind": "full"
+    },
+    {
+     "id": "back@0,0,0",
+     "cell": [
+      2,
+      0,
+      4
+     ],
+     "dir": "back",
+     "kind": "full"
+    }
+   ]
+  },
+  "B_wedge_-1": {
+   "model": "R4B_Wedge",
+   "type": "block",
+   "at": [
+    2,
+    0,
+    5
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "eae3de19ebbc1be9527c2f1b59f46a2b9893da33e59e2d329c0127bb2fa6daa6",
+   "ports": [
+    {
+     "id": "down@0,0,0",
+     "cell": [
+      2,
+      0,
+      5
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "back@0,0,0",
+     "cell": [
+      2,
+      0,
+      5
+     ],
+     "dir": "back",
+     "kind": "full"
+    },
+    {
+     "id": "left@0,0,0",
+     "cell": [
+      2,
+      0,
+      5
+     ],
+     "dir": "left",
+     "kind": "partial"
+    },
+    {
+     "id": "right@0,0,0",
+     "cell": [
+      2,
+      0,
+      5
+     ],
+     "dir": "right",
+     "kind": "partial"
+    }
+   ]
+  },
+  "B_armour_0": {
+   "model": "R4B_Cube",
+   "type": "block",
+   "at": [
+    3,
+    0,
+    4
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "f5084d93cb3c4097c8f9f911ed63f5a960efb4a24a094cd30f5083bf73a33a9c",
+   "ports": [
+    {
+     "id": "right@0,0,0",
+     "cell": [
+      3,
+      0,
+      4
+     ],
+     "dir": "right",
+     "kind": "full"
+    },
+    {
+     "id": "left@0,0,0",
+     "cell": [
+      3,
+      0,
+      4
+     ],
+     "dir": "left",
+     "kind": "full"
+    },
+    {
+     "id": "up@0,0,0",
+     "cell": [
+      3,
+      0,
+      4
+     ],
+     "dir": "up",
+     "kind": "full"
+    },
+    {
+     "id": "down@0,0,0",
+     "cell": [
+      3,
+      0,
+      4
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "forward@0,0,0",
+     "cell": [
+      3,
+      0,
+      4
+     ],
+     "dir": "forward",
+     "kind": "full"
+    },
+    {
+     "id": "back@0,0,0",
+     "cell": [
+      3,
+      0,
+      4
+     ],
+     "dir": "back",
+     "kind": "full"
+    }
+   ]
+  },
+  "B_wedge_0": {
+   "model": "R4B_Wedge",
+   "type": "block",
+   "at": [
+    3,
+    0,
+    5
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "eae3de19ebbc1be9527c2f1b59f46a2b9893da33e59e2d329c0127bb2fa6daa6",
+   "ports": [
+    {
+     "id": "down@0,0,0",
+     "cell": [
+      3,
+      0,
+      5
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "back@0,0,0",
+     "cell": [
+      3,
+      0,
+      5
+     ],
+     "dir": "back",
+     "kind": "full"
+    },
+    {
+     "id": "left@0,0,0",
+     "cell": [
+      3,
+      0,
+      5
+     ],
+     "dir": "left",
+     "kind": "partial"
+    },
+    {
+     "id": "right@0,0,0",
+     "cell": [
+      3,
+      0,
+      5
+     ],
+     "dir": "right",
+     "kind": "partial"
+    }
+   ]
+  },
+  "B_armour_1": {
+   "model": "R4B_Cube",
+   "type": "block",
+   "at": [
+    4,
+    0,
+    4
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "f5084d93cb3c4097c8f9f911ed63f5a960efb4a24a094cd30f5083bf73a33a9c",
+   "ports": [
+    {
+     "id": "right@0,0,0",
+     "cell": [
+      4,
+      0,
+      4
+     ],
+     "dir": "right",
+     "kind": "full"
+    },
+    {
+     "id": "left@0,0,0",
+     "cell": [
+      4,
+      0,
+      4
+     ],
+     "dir": "left",
+     "kind": "full"
+    },
+    {
+     "id": "up@0,0,0",
+     "cell": [
+      4,
+      0,
+      4
+     ],
+     "dir": "up",
+     "kind": "full"
+    },
+    {
+     "id": "down@0,0,0",
+     "cell": [
+      4,
+      0,
+      4
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "forward@0,0,0",
+     "cell": [
+      4,
+      0,
+      4
+     ],
+     "dir": "forward",
+     "kind": "full"
+    },
+    {
+     "id": "back@0,0,0",
+     "cell": [
+      4,
+      0,
+      4
+     ],
+     "dir": "back",
+     "kind": "full"
+    }
+   ]
+  },
+  "B_wedge_1": {
+   "model": "R4B_Wedge",
+   "type": "block",
+   "at": [
+    4,
+    0,
+    5
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "eae3de19ebbc1be9527c2f1b59f46a2b9893da33e59e2d329c0127bb2fa6daa6",
+   "ports": [
+    {
+     "id": "down@0,0,0",
+     "cell": [
+      4,
+      0,
+      5
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "back@0,0,0",
+     "cell": [
+      4,
+      0,
+      5
+     ],
+     "dir": "back",
+     "kind": "full"
+    },
+    {
+     "id": "left@0,0,0",
+     "cell": [
+      4,
+      0,
+      5
+     ],
+     "dir": "left",
+     "kind": "partial"
+    },
+    {
+     "id": "right@0,0,0",
+     "cell": [
+      4,
+      0,
+      5
+     ],
+     "dir": "right",
+     "kind": "partial"
+    }
+   ]
+  },
+  "B_filler_cube": {
+   "model": "R4B_Cube",
+   "type": "block",
+   "at": [
+    3,
+    0,
+    2
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "f5084d93cb3c4097c8f9f911ed63f5a960efb4a24a094cd30f5083bf73a33a9c",
+   "ports": [
+    {
+     "id": "right@0,0,0",
+     "cell": [
+      3,
+      0,
+      2
+     ],
+     "dir": "right",
+     "kind": "full"
+    },
+    {
+     "id": "left@0,0,0",
+     "cell": [
+      3,
+      0,
+      2
+     ],
+     "dir": "left",
+     "kind": "full"
+    },
+    {
+     "id": "up@0,0,0",
+     "cell": [
+      3,
+      0,
+      2
+     ],
+     "dir": "up",
+     "kind": "full"
+    },
+    {
+     "id": "down@0,0,0",
+     "cell": [
+      3,
+      0,
+      2
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "forward@0,0,0",
+     "cell": [
+      3,
+      0,
+      2
+     ],
+     "dir": "forward",
+     "kind": "full"
+    },
+    {
+     "id": "back@0,0,0",
+     "cell": [
+      3,
+      0,
+      2
+     ],
+     "dir": "back",
+     "kind": "full"
+    }
+   ]
+  },
+  "A_wheel_-1_-1": {
+   "model": "R4M_Wheel",
+   "type": "module",
+   "on": {
+    "cell": [
+     -4,
+     0,
+     -1
+    ],
+    "dir": "down"
+   },
+   "roll_deg": 0,
+   "glb_sha256": "97aa6ded79f0388c3651489ccf3a5a28fbe1788ca7ca27ecc2dd1b427a1562a9",
+   "ports": [
+    {
+     "id": "Socket_Mount",
+     "cell": [
+      -4,
+      -1,
+      -1
+     ],
+     "dir": "up",
+     "kind": "module"
+    }
+   ]
+  },
+  "A_wheel_-1_1": {
+   "model": "R4M_Wheel",
+   "type": "module",
+   "on": {
+    "cell": [
+     -4,
+     0,
+     1
+    ],
+    "dir": "down"
+   },
+   "roll_deg": 0,
+   "glb_sha256": "97aa6ded79f0388c3651489ccf3a5a28fbe1788ca7ca27ecc2dd1b427a1562a9",
+   "ports": [
+    {
+     "id": "Socket_Mount",
+     "cell": [
+      -4,
+      -1,
+      1
+     ],
+     "dir": "up",
+     "kind": "module"
+    }
+   ]
+  },
+  "A_wheel_1_-1": {
+   "model": "R4M_Wheel",
+   "type": "module",
+   "on": {
+    "cell": [
+     -2,
+     0,
+     -1
+    ],
+    "dir": "down"
+   },
+   "roll_deg": 0,
+   "glb_sha256": "97aa6ded79f0388c3651489ccf3a5a28fbe1788ca7ca27ecc2dd1b427a1562a9",
+   "ports": [
+    {
+     "id": "Socket_Mount",
+     "cell": [
+      -2,
+      -1,
+      -1
+     ],
+     "dir": "up",
+     "kind": "module"
+    }
+   ]
+  },
+  "A_wheel_1_1": {
+   "model": "R4M_Wheel",
+   "type": "module",
+   "on": {
+    "cell": [
+     -2,
+     0,
+     1
+    ],
+    "dir": "down"
+   },
+   "roll_deg": 0,
+   "glb_sha256": "97aa6ded79f0388c3651489ccf3a5a28fbe1788ca7ca27ecc2dd1b427a1562a9",
+   "ports": [
+    {
+     "id": "Socket_Mount",
+     "cell": [
+      -2,
+      -1,
+      1
+     ],
+     "dir": "up",
+     "kind": "module"
+    }
+   ]
+  },
+  "A_gun": {
+   "model": "R4W_Basic",
+   "type": "module",
+   "on": {
+    "cell": [
+     -3,
+     0,
+     0
+    ],
+    "dir": "up"
+   },
+   "roll_deg": 0,
+   "glb_sha256": "9535f7deb4e52b998e5d2f663d77807bddf295cdba014fafb6c38851d1262631",
+   "ports": [
+    {
+     "id": "Socket_Mount",
+     "cell": [
+      -3,
+      1,
+      0
+     ],
+     "dir": "down",
+     "kind": "module"
+    }
+   ]
+  },
+  "B_wheel_-1_-1": {
+   "model": "R4M_Wheel",
+   "type": "module",
+   "on": {
+    "cell": [
+     2,
+     0,
+     -1
+    ],
+    "dir": "down"
+   },
+   "roll_deg": 0,
+   "glb_sha256": "97aa6ded79f0388c3651489ccf3a5a28fbe1788ca7ca27ecc2dd1b427a1562a9",
+   "ports": [
+    {
+     "id": "Socket_Mount",
+     "cell": [
+      2,
+      -1,
+      -1
+     ],
+     "dir": "up",
+     "kind": "module"
+    }
+   ]
+  },
+  "B_wheel_-1_1": {
+   "model": "R4M_Wheel",
+   "type": "module",
+   "on": {
+    "cell": [
+     2,
+     0,
+     1
+    ],
+    "dir": "down"
+   },
+   "roll_deg": 0,
+   "glb_sha256": "97aa6ded79f0388c3651489ccf3a5a28fbe1788ca7ca27ecc2dd1b427a1562a9",
+   "ports": [
+    {
+     "id": "Socket_Mount",
+     "cell": [
+      2,
+      -1,
+      1
+     ],
+     "dir": "up",
+     "kind": "module"
+    }
+   ]
+  },
+  "B_wheel_1_-1": {
+   "model": "R4M_Wheel",
+   "type": "module",
+   "on": {
+    "cell": [
+     4,
+     0,
+     -1
+    ],
+    "dir": "down"
+   },
+   "roll_deg": 0,
+   "glb_sha256": "97aa6ded79f0388c3651489ccf3a5a28fbe1788ca7ca27ecc2dd1b427a1562a9",
+   "ports": [
+    {
+     "id": "Socket_Mount",
+     "cell": [
+      4,
+      -1,
+      -1
+     ],
+     "dir": "up",
+     "kind": "module"
+    }
+   ]
+  },
+  "B_wheel_1_1": {
+   "model": "R4M_Wheel",
+   "type": "module",
+   "on": {
+    "cell": [
+     4,
+     0,
+     1
+    ],
+    "dir": "down"
+   },
+   "roll_deg": 0,
+   "glb_sha256": "97aa6ded79f0388c3651489ccf3a5a28fbe1788ca7ca27ecc2dd1b427a1562a9",
+   "ports": [
+    {
+     "id": "Socket_Mount",
+     "cell": [
+      4,
+      -1,
+      1
+     ],
+     "dir": "up",
+     "kind": "module"
+    }
+   ]
+  },
+  "B_gun": {
+   "model": "R4W_Basic",
+   "type": "module",
+   "on": {
+    "cell": [
+     3,
+     0,
+     0
+    ],
+    "dir": "up"
+   },
+   "roll_deg": 0,
+   "glb_sha256": "9535f7deb4e52b998e5d2f663d77807bddf295cdba014fafb6c38851d1262631",
+   "ports": [
+    {
+     "id": "Socket_Mount",
+     "cell": [
+      3,
+      1,
+      0
+     ],
+     "dir": "down",
+     "kind": "module"
+    }
+   ]
+  }
+ },
+ "cells": {
+  "-4,-1,-1": [
+   [
+    "A_wheel_-1_-1",
+    "module"
+   ]
+  ],
+  "-4,-1,1": [
+   [
+    "A_wheel_-1_1",
+    "module"
+   ]
+  ],
+  "-4,0,-1": [
+   [
+    "A_cube_-1_-1",
+    "block"
+   ]
+  ],
+  "-4,0,0": [
+   [
+    "A_cube_-1_0",
+    "block"
+   ]
+  ],
+  "-4,0,1": [
+   [
+    "A_cube_-1_1",
+    "block"
+   ]
+  ],
+  "-4,0,2": [
+   [
+    "A_wedge_-1",
+    "block"
+   ]
+  ],
+  "-3,0,-1": [
+   [
+    "A_cube_0_-1",
+    "block"
+   ]
+  ],
+  "-3,0,0": [
+   [
+    "A_cube_0_0",
+    "block"
+   ]
+  ],
+  "-3,0,1": [
+   [
+    "A_cube_0_1",
+    "block"
+   ]
+  ],
+  "-3,0,2": [
+   [
+    "A_wedge_0",
+    "block"
+   ]
+  ],
+  "-3,1,0": [
+   [
+    "A_gun",
+    "module"
+   ]
+  ],
+  "-2,-1,-1": [
+   [
+    "A_wheel_1_-1",
+    "module"
+   ]
+  ],
+  "-2,-1,1": [
+   [
+    "A_wheel_1_1",
+    "module"
+   ]
+  ],
+  "-2,0,-1": [
+   [
+    "A_cube_1_-1",
+    "block"
+   ]
+  ],
+  "-2,0,0": [
+   [
+    "A_cube_1_0",
+    "block"
+   ]
+  ],
+  "-2,0,1": [
+   [
+    "A_cube_1_1",
+    "block"
+   ]
+  ],
+  "-2,0,2": [
+   [
+    "A_wedge_1",
+    "block"
+   ]
+  ],
+  "2,-1,-1": [
+   [
+    "B_wheel_-1_-1",
+    "module"
+   ]
+  ],
+  "2,-1,1": [
+   [
+    "B_wheel_-1_1",
+    "module"
+   ]
+  ],
+  "2,0,-1": [
+   [
+    "B_cube_-1_-1",
+    "block"
+   ]
+  ],
+  "2,0,0": [
+   [
+    "B_cube_-1_0",
+    "block"
+   ]
+  ],
+  "2,0,1": [
+   [
+    "B_cube_-1_1",
+    "block"
+   ]
+  ],
+  "2,0,2": [
+   [
+    "B_rod_-1",
+    "node"
+   ]
+  ],
+  "2,0,3": [
+   [
+    "B_rod_-1",
+    "node"
+   ]
+  ],
+  "2,0,4": [
+   [
+    "B_armour_-1",
+    "block"
+   ]
+  ],
+  "2,0,5": [
+   [
+    "B_wedge_-1",
+    "block"
+   ]
+  ],
+  "3,0,-1": [
+   [
+    "B_cube_0_-1",
+    "block"
+   ]
+  ],
+  "3,0,0": [
+   [
+    "B_cube_0_0",
+    "block"
+   ]
+  ],
+  "3,0,1": [
+   [
+    "B_cube_0_1",
+    "block"
+   ]
+  ],
+  "3,0,2": [
+   [
+    "B_filler_cube",
+    "block"
+   ]
+  ],
+  "3,0,4": [
+   [
+    "B_armour_0",
+    "block"
+   ]
+  ],
+  "3,0,5": [
+   [
+    "B_wedge_0",
+    "block"
+   ]
+  ],
+  "3,1,0": [
+   [
+    "B_gun",
+    "module"
+   ]
+  ],
+  "4,-1,-1": [
+   [
+    "B_wheel_1_-1",
+    "module"
+   ]
+  ],
+  "4,-1,1": [
+   [
+    "B_wheel_1_1",
+    "module"
+   ]
+  ],
+  "4,0,-1": [
+   [
+    "B_cube_1_-1",
+    "block"
+   ]
+  ],
+  "4,0,0": [
+   [
+    "B_cube_1_0",
+    "block"
+   ]
+  ],
+  "4,0,1": [
+   [
+    "B_cube_1_1",
+    "block"
+   ]
+  ],
+  "4,0,2": [
+   [
+    "B_rod_1",
+    "node"
+   ]
+  ],
+  "4,0,3": [
+   [
+    "B_rod_1",
+    "node"
+   ]
+  ],
+  "4,0,4": [
+   [
+    "B_armour_1",
+    "block"
+   ]
+  ],
+  "4,0,5": [
+   [
+    "B_wedge_1",
+    "block"
+   ]
+  ]
+ },
+ "mated_pairs": [
+  {
+   "a": "A_cube_-1_-1",
+   "a_port": "right@0,0,0",
+   "a_kind": "full",
+   "b": "A_cube_0_-1",
+   "b_port": "left@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    -4,
+    0,
+    -1
+   ],
+   "face_dir": "right",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "A_cube_-1_-1",
+   "a_port": "down@0,0,0",
+   "a_kind": "full",
+   "b": "A_wheel_-1_-1",
+   "b_port": "Socket_Mount",
+   "b_kind": "module",
+   "face_cell": [
+    -4,
+    0,
+    -1
+   ],
+   "face_dir": "down",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "A_cube_-1_-1",
+   "a_port": "forward@0,0,0",
+   "a_kind": "full",
+   "b": "A_cube_-1_0",
+   "b_port": "back@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    -4,
+    0,
+    -1
+   ],
+   "face_dir": "forward",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "A_cube_-1_0",
+   "a_port": "right@0,0,0",
+   "a_kind": "full",
+   "b": "A_cube_0_0",
+   "b_port": "left@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    -4,
+    0,
+    0
+   ],
+   "face_dir": "right",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "A_cube_-1_0",
+   "a_port": "forward@0,0,0",
+   "a_kind": "full",
+   "b": "A_cube_-1_1",
+   "b_port": "back@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    -4,
+    0,
+    0
+   ],
+   "face_dir": "forward",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "A_cube_-1_1",
+   "a_port": "right@0,0,0",
+   "a_kind": "full",
+   "b": "A_cube_0_1",
+   "b_port": "left@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    -4,
+    0,
+    1
+   ],
+   "face_dir": "right",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "A_cube_-1_1",
+   "a_port": "down@0,0,0",
+   "a_kind": "full",
+   "b": "A_wheel_-1_1",
+   "b_port": "Socket_Mount",
+   "b_kind": "module",
+   "face_cell": [
+    -4,
+    0,
+    1
+   ],
+   "face_dir": "down",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "A_cube_-1_1",
+   "a_port": "forward@0,0,0",
+   "a_kind": "full",
+   "b": "A_wedge_-1",
+   "b_port": "back@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    -4,
+    0,
+    1
+   ],
+   "face_dir": "forward",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "A_cube_0_-1",
+   "a_port": "right@0,0,0",
+   "a_kind": "full",
+   "b": "A_cube_1_-1",
+   "b_port": "left@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    -3,
+    0,
+    -1
+   ],
+   "face_dir": "right",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "A_cube_0_-1",
+   "a_port": "forward@0,0,0",
+   "a_kind": "full",
+   "b": "A_cube_0_0",
+   "b_port": "back@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    -3,
+    0,
+    -1
+   ],
+   "face_dir": "forward",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "A_cube_0_0",
+   "a_port": "right@0,0,0",
+   "a_kind": "full",
+   "b": "A_cube_1_0",
+   "b_port": "left@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    -3,
+    0,
+    0
+   ],
+   "face_dir": "right",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "A_cube_0_0",
+   "a_port": "up@0,0,0",
+   "a_kind": "full",
+   "b": "A_gun",
+   "b_port": "Socket_Mount",
+   "b_kind": "module",
+   "face_cell": [
+    -3,
+    0,
+    0
+   ],
+   "face_dir": "up",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "A_cube_0_0",
+   "a_port": "forward@0,0,0",
+   "a_kind": "full",
+   "b": "A_cube_0_1",
+   "b_port": "back@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    -3,
+    0,
+    0
+   ],
+   "face_dir": "forward",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "A_cube_0_1",
+   "a_port": "right@0,0,0",
+   "a_kind": "full",
+   "b": "A_cube_1_1",
+   "b_port": "left@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    -3,
+    0,
+    1
+   ],
+   "face_dir": "right",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "A_cube_0_1",
+   "a_port": "forward@0,0,0",
+   "a_kind": "full",
+   "b": "A_wedge_0",
+   "b_port": "back@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    -3,
+    0,
+    1
+   ],
+   "face_dir": "forward",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "A_cube_1_-1",
+   "a_port": "down@0,0,0",
+   "a_kind": "full",
+   "b": "A_wheel_1_-1",
+   "b_port": "Socket_Mount",
+   "b_kind": "module",
+   "face_cell": [
+    -2,
+    0,
+    -1
+   ],
+   "face_dir": "down",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "A_cube_1_-1",
+   "a_port": "forward@0,0,0",
+   "a_kind": "full",
+   "b": "A_cube_1_0",
+   "b_port": "back@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    -2,
+    0,
+    -1
+   ],
+   "face_dir": "forward",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "A_cube_1_0",
+   "a_port": "forward@0,0,0",
+   "a_kind": "full",
+   "b": "A_cube_1_1",
+   "b_port": "back@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    -2,
+    0,
+    0
+   ],
+   "face_dir": "forward",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "A_cube_1_1",
+   "a_port": "down@0,0,0",
+   "a_kind": "full",
+   "b": "A_wheel_1_1",
+   "b_port": "Socket_Mount",
+   "b_kind": "module",
+   "face_cell": [
+    -2,
+    0,
+    1
+   ],
+   "face_dir": "down",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "A_cube_1_1",
+   "a_port": "forward@0,0,0",
+   "a_kind": "full",
+   "b": "A_wedge_1",
+   "b_port": "back@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    -2,
+    0,
+    1
+   ],
+   "face_dir": "forward",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "A_wedge_-1",
+   "a_port": "right@0,0,0",
+   "a_kind": "partial",
+   "b": "A_wedge_0",
+   "b_port": "left@0,0,0",
+   "b_kind": "partial",
+   "face_cell": [
+    -4,
+    0,
+    2
+   ],
+   "face_dir": "right",
+   "contact": {
+    "samples": 121,
+    "patch_half_m": 0.24,
+    "flush_a_pct": 12.4,
+    "flush_b_pct": 12.4,
+    "flush_both": 15,
+    "protruding": 0,
+    "missing": 62,
+    "gap_m": 0.03,
+    "method": "partial: whole face, >=4 flush-both, no protrusion",
+    "PASS": true
+   }
+  },
+  {
+   "a": "A_wedge_0",
+   "a_port": "right@0,0,0",
+   "a_kind": "partial",
+   "b": "A_wedge_1",
+   "b_port": "left@0,0,0",
+   "b_kind": "partial",
+   "face_cell": [
+    -3,
+    0,
+    2
+   ],
+   "face_dir": "right",
+   "contact": {
+    "samples": 121,
+    "patch_half_m": 0.24,
+    "flush_a_pct": 12.4,
+    "flush_b_pct": 12.4,
+    "flush_both": 15,
+    "protruding": 0,
+    "missing": 62,
+    "gap_m": 0.03,
+    "method": "partial: whole face, >=4 flush-both, no protrusion",
+    "PASS": true
+   }
+  },
+  {
+   "a": "B_cube_-1_-1",
+   "a_port": "right@0,0,0",
+   "a_kind": "full",
+   "b": "B_cube_0_-1",
+   "b_port": "left@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    2,
+    0,
+    -1
+   ],
+   "face_dir": "right",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "B_cube_-1_-1",
+   "a_port": "down@0,0,0",
+   "a_kind": "full",
+   "b": "B_wheel_-1_-1",
+   "b_port": "Socket_Mount",
+   "b_kind": "module",
+   "face_cell": [
+    2,
+    0,
+    -1
+   ],
+   "face_dir": "down",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "B_cube_-1_-1",
+   "a_port": "forward@0,0,0",
+   "a_kind": "full",
+   "b": "B_cube_-1_0",
+   "b_port": "back@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    2,
+    0,
+    -1
+   ],
+   "face_dir": "forward",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "B_cube_-1_0",
+   "a_port": "right@0,0,0",
+   "a_kind": "full",
+   "b": "B_cube_0_0",
+   "b_port": "left@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    2,
+    0,
+    0
+   ],
+   "face_dir": "right",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "B_cube_-1_0",
+   "a_port": "forward@0,0,0",
+   "a_kind": "full",
+   "b": "B_cube_-1_1",
+   "b_port": "back@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    2,
+    0,
+    0
+   ],
+   "face_dir": "forward",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "B_cube_-1_1",
+   "a_port": "right@0,0,0",
+   "a_kind": "full",
+   "b": "B_cube_0_1",
+   "b_port": "left@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    2,
+    0,
+    1
+   ],
+   "face_dir": "right",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "B_cube_-1_1",
+   "a_port": "down@0,0,0",
+   "a_kind": "full",
+   "b": "B_wheel_-1_1",
+   "b_port": "Socket_Mount",
+   "b_kind": "module",
+   "face_cell": [
+    2,
+    0,
+    1
+   ],
+   "face_dir": "down",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "B_cube_-1_1",
+   "a_port": "forward@0,0,0",
+   "a_kind": "full",
+   "b": "B_rod_-1",
+   "b_port": "P_A_back",
+   "b_kind": "rod_mini",
+   "face_cell": [
+    2,
+    0,
+    1
+   ],
+   "face_dir": "forward",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 98.0,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "B_cube_0_-1",
+   "a_port": "right@0,0,0",
+   "a_kind": "full",
+   "b": "B_cube_1_-1",
+   "b_port": "left@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    3,
+    0,
+    -1
+   ],
+   "face_dir": "right",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "B_cube_0_-1",
+   "a_port": "forward@0,0,0",
+   "a_kind": "full",
+   "b": "B_cube_0_0",
+   "b_port": "back@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    3,
+    0,
+    -1
+   ],
+   "face_dir": "forward",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "B_cube_0_0",
+   "a_port": "right@0,0,0",
+   "a_kind": "full",
+   "b": "B_cube_1_0",
+   "b_port": "left@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    3,
+    0,
+    0
+   ],
+   "face_dir": "right",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "B_cube_0_0",
+   "a_port": "up@0,0,0",
+   "a_kind": "full",
+   "b": "B_gun",
+   "b_port": "Socket_Mount",
+   "b_kind": "module",
+   "face_cell": [
+    3,
+    0,
+    0
+   ],
+   "face_dir": "up",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "B_cube_0_0",
+   "a_port": "forward@0,0,0",
+   "a_kind": "full",
+   "b": "B_cube_0_1",
+   "b_port": "back@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    3,
+    0,
+    0
+   ],
+   "face_dir": "forward",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "B_cube_0_1",
+   "a_port": "right@0,0,0",
+   "a_kind": "full",
+   "b": "B_cube_1_1",
+   "b_port": "left@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    3,
+    0,
+    1
+   ],
+   "face_dir": "right",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "B_cube_0_1",
+   "a_port": "forward@0,0,0",
+   "a_kind": "full",
+   "b": "B_filler_cube",
+   "b_port": "back@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    3,
+    0,
+    1
+   ],
+   "face_dir": "forward",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "B_cube_1_-1",
+   "a_port": "down@0,0,0",
+   "a_kind": "full",
+   "b": "B_wheel_1_-1",
+   "b_port": "Socket_Mount",
+   "b_kind": "module",
+   "face_cell": [
+    4,
+    0,
+    -1
+   ],
+   "face_dir": "down",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "B_cube_1_-1",
+   "a_port": "forward@0,0,0",
+   "a_kind": "full",
+   "b": "B_cube_1_0",
+   "b_port": "back@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    4,
+    0,
+    -1
+   ],
+   "face_dir": "forward",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "B_cube_1_0",
+   "a_port": "forward@0,0,0",
+   "a_kind": "full",
+   "b": "B_cube_1_1",
+   "b_port": "back@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    4,
+    0,
+    0
+   ],
+   "face_dir": "forward",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "B_cube_1_1",
+   "a_port": "down@0,0,0",
+   "a_kind": "full",
+   "b": "B_wheel_1_1",
+   "b_port": "Socket_Mount",
+   "b_kind": "module",
+   "face_cell": [
+    4,
+    0,
+    1
+   ],
+   "face_dir": "down",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "B_cube_1_1",
+   "a_port": "forward@0,0,0",
+   "a_kind": "full",
+   "b": "B_rod_1",
+   "b_port": "P_A_back",
+   "b_kind": "rod_mini",
+   "face_cell": [
+    4,
+    0,
+    1
+   ],
+   "face_dir": "forward",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 98.0,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "B_rod_-1",
+   "a_port": "P_B_forward",
+   "a_kind": "rod_mini",
+   "b": "B_armour_-1",
+   "b_port": "back@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    2,
+    0,
+    3
+   ],
+   "face_dir": "forward",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 98.0,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "B_rod_1",
+   "a_port": "P_B_forward",
+   "a_kind": "rod_mini",
+   "b": "B_armour_1",
+   "b_port": "back@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    4,
+    0,
+    3
+   ],
+   "face_dir": "forward",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 98.0,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "B_armour_-1",
+   "a_port": "right@0,0,0",
+   "a_kind": "full",
+   "b": "B_armour_0",
+   "b_port": "left@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    2,
+    0,
+    4
+   ],
+   "face_dir": "right",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "B_armour_-1",
+   "a_port": "forward@0,0,0",
+   "a_kind": "full",
+   "b": "B_wedge_-1",
+   "b_port": "back@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    2,
+    0,
+    4
+   ],
+   "face_dir": "forward",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "B_wedge_-1",
+   "a_port": "right@0,0,0",
+   "a_kind": "partial",
+   "b": "B_wedge_0",
+   "b_port": "left@0,0,0",
+   "b_kind": "partial",
+   "face_cell": [
+    2,
+    0,
+    5
+   ],
+   "face_dir": "right",
+   "contact": {
+    "samples": 121,
+    "patch_half_m": 0.24,
+    "flush_a_pct": 12.4,
+    "flush_b_pct": 12.4,
+    "flush_both": 15,
+    "protruding": 0,
+    "missing": 60,
+    "gap_m": 0.03,
+    "method": "partial: whole face, >=4 flush-both, no protrusion",
+    "PASS": true
+   }
+  },
+  {
+   "a": "B_armour_0",
+   "a_port": "right@0,0,0",
+   "a_kind": "full",
+   "b": "B_armour_1",
+   "b_port": "left@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    3,
+    0,
+    4
+   ],
+   "face_dir": "right",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "B_armour_0",
+   "a_port": "forward@0,0,0",
+   "a_kind": "full",
+   "b": "B_wedge_0",
+   "b_port": "back@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    3,
+    0,
+    4
+   ],
+   "face_dir": "forward",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "B_wedge_0",
+   "a_port": "right@0,0,0",
+   "a_kind": "partial",
+   "b": "B_wedge_1",
+   "b_port": "left@0,0,0",
+   "b_kind": "partial",
+   "face_cell": [
+    3,
+    0,
+    5
+   ],
+   "face_dir": "right",
+   "contact": {
+    "samples": 121,
+    "patch_half_m": 0.24,
+    "flush_a_pct": 12.4,
+    "flush_b_pct": 12.4,
+    "flush_both": 15,
+    "protruding": 0,
+    "missing": 60,
+    "gap_m": 0.03,
+    "method": "partial: whole face, >=4 flush-both, no protrusion",
+    "PASS": true
+   }
+  },
+  {
+   "a": "B_armour_1",
+   "a_port": "forward@0,0,0",
+   "a_kind": "full",
+   "b": "B_wedge_1",
+   "b_port": "back@0,0,0",
+   "b_kind": "full",
+   "face_cell": [
+    4,
+    0,
+    4
+   ],
+   "face_dir": "forward",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  }
+ ],
+ "rejected_pairs": [],
+ "adjacent_not_connected": [
+  {
+   "cell": [
+    2,
+    0,
+    2
+   ],
+   "dir": "right",
+   "parts": [
+    "B_rod_-1",
+    "B_filler_cube"
+   ],
+   "roles": [
+    "node",
+    "block"
+   ]
+  },
+  {
+   "cell": [
+    3,
+    0,
+    2
+   ],
+   "dir": "right",
+   "parts": [
+    "B_filler_cube",
+    "B_rod_1"
+   ],
+   "roles": [
+    "block",
+    "node"
+   ]
+  }
+ ],
+ "cell_conflicts": [],
+ "mesh_overlaps": [],
+ "floating_parts": [],
+ "unmated_modules": [],
+ "graph": {
+  "robot_A": {
+   "anchor": "A_cube_0_0",
+   "parts": 17,
+   "members": [
+    "A_cube_-1_-1",
+    "A_cube_-1_0",
+    "A_cube_-1_1",
+    "A_cube_0_-1",
+    "A_cube_0_0",
+    "A_cube_0_1",
+    "A_cube_1_-1",
+    "A_cube_1_0",
+    "A_cube_1_1",
+    "A_gun",
+    "A_wedge_-1",
+    "A_wedge_0",
+    "A_wedge_1",
+    "A_wheel_-1_-1",
+    "A_wheel_-1_1",
+    "A_wheel_1_-1",
+    "A_wheel_1_1"
+   ],
+   "single_point_links": [
+    {
+     "link": [
+      "A_cube_0_0",
+      "A_gun"
+     ],
+     "ports": 1,
+     "parts_lost": [
+      "A_gun"
+     ]
+    },
+    {
+     "link": [
+      "A_cube_-1_1",
+      "A_wheel_-1_1"
+     ],
+     "ports": 1,
+     "parts_lost": [
+      "A_wheel_-1_1"
+     ]
+    },
+    {
+     "link": [
+      "A_cube_1_-1",
+      "A_wheel_1_-1"
+     ],
+     "ports": 1,
+     "parts_lost": [
+      "A_wheel_1_-1"
+     ]
+    },
+    {
+     "link": [
+      "A_cube_1_1",
+      "A_wheel_1_1"
+     ],
+     "ports": 1,
+     "parts_lost": [
+      "A_wheel_1_1"
+     ]
+    },
+    {
+     "link": [
+      "A_cube_-1_-1",
+      "A_wheel_-1_-1"
+     ],
+     "ports": 1,
+     "parts_lost": [
+      "A_wheel_-1_-1"
+     ]
+    }
+   ],
+   "critical_parts": {
+    "A_cube_1_-1": [
+     "A_wheel_1_-1"
+    ],
+    "A_cube_1_1": [
+     "A_wheel_1_1"
+    ],
+    "A_cube_-1_-1": [
+     "A_wheel_-1_-1"
+    ],
+    "A_cube_-1_1": [
+     "A_wheel_-1_1"
+    ]
+   }
+  },
+  "robot_B": {
+   "anchor": "B_cube_0_0",
+   "parts": 23,
+   "members": [
+    "B_armour_-1",
+    "B_armour_0",
+    "B_armour_1",
+    "B_cube_-1_-1",
+    "B_cube_-1_0",
+    "B_cube_-1_1",
+    "B_cube_0_-1",
+    "B_cube_0_0",
+    "B_cube_0_1",
+    "B_cube_1_-1",
+    "B_cube_1_0",
+    "B_cube_1_1",
+    "B_filler_cube",
+    "B_gun",
+    "B_rod_-1",
+    "B_rod_1",
+    "B_wedge_-1",
+    "B_wedge_0",
+    "B_wedge_1",
+    "B_wheel_-1_-1",
+    "B_wheel_-1_1",
+    "B_wheel_1_-1",
+    "B_wheel_1_1"
+   ],
+   "single_point_links": [
+    {
+     "link": [
+      "B_cube_-1_1",
+      "B_wheel_-1_1"
+     ],
+     "ports": 1,
+     "parts_lost": [
+      "B_wheel_-1_1"
+     ]
+    },
+    {
+     "link": [
+      "B_cube_0_1",
+      "B_filler_cube"
+     ],
+     "ports": 1,
+     "parts_lost": [
+      "B_filler_cube"
+     ]
+    },
+    {
+     "link": [
+      "B_cube_0_0",
+      "B_gun"
+     ],
+     "ports": 1,
+     "parts_lost": [
+      "B_gun"
+     ]
+    },
+    {
+     "link": [
+      "B_cube_-1_-1",
+      "B_wheel_-1_-1"
+     ],
+     "ports": 1,
+     "parts_lost": [
+      "B_wheel_-1_-1"
+     ]
+    },
+    {
+     "link": [
+      "B_cube_1_1",
+      "B_wheel_1_1"
+     ],
+     "ports": 1,
+     "parts_lost": [
+      "B_wheel_1_1"
+     ]
+    },
+    {
+     "link": [
+      "B_cube_1_-1",
+      "B_wheel_1_-1"
+     ],
+     "ports": 1,
+     "parts_lost": [
+      "B_wheel_1_-1"
+     ]
+    }
+   ],
+   "critical_parts": {
+    "B_cube_1_-1": [
+     "B_wheel_1_-1"
+    ],
+    "B_cube_1_1": [
+     "B_wheel_1_1"
+    ],
+    "B_cube_-1_-1": [
+     "B_wheel_-1_-1"
+    ],
+    "B_cube_-1_1": [
+     "B_wheel_-1_1"
+    ],
+    "B_cube_0_1": [
+     "B_filler_cube"
+    ]
+   }
+  }
+ },
+ "summary": {
+  "parts": 40,
+  "mated_pairs": 51,
+  "contact_fail": 0,
+  "rejected": 0,
+  "adjacent_not_connected": 2,
+  "overlaps": 0,
+  "cell_conflicts": 0,
+  "floating": 0,
+  "single_point_links": 11
+ },
+ "renders": [
+  "ASM_two_robots_34front.jpg",
+  "ASM_two_robots_side.jpg",
+  "ASM_two_robots_top.jpg",
+  "ASM_two_robots_34back.jpg"
+ ],
+ "glb": "ASM_two_robots.glb",
+ "glb_sha256": "f671496984596253370a9a01cb2dc4e9eb2be68a30170dcbc567558b98be1438",
+ "PASS": true,
+ "sec": 6.4
+}

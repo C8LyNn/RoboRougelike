@@ -1,0 +1,185 @@
+<title>R4 Connectors 1182</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#16181b; --panel:#1e2125; --panel2:#262a2f; --line:#343a41; --fg:#e7e9ec; --mute:#9aa3ad; --accent:#e8432f; --hazard:#f2c230;
+  --full:#3fa9ff; --mini:#ff9f1a; --ok:#3ccf6e; --warn:#f2a530; --bad:#ff5a4a; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:14px/1.45 "IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;margin:0}
+.mono{font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace}
+header{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;padding-block:12px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));border-bottom:1px solid var(--line);background:linear-gradient(90deg,#1b1e22,#16181b)}
+header h1{font-size:17px;margin:0;font-weight:600;letter-spacing:.01em;text-wrap:balance}
+header h1 b{color:var(--accent)}
+header .std{color:var(--mute);font-size:12.5px}
+.app{display:grid;grid-template-columns:250px minmax(0,1fr) 330px;height:calc(100vh - 50px);min-height:520px}
+nav{border-right:1px solid var(--line);overflow:auto;background:var(--panel);padding:10px 0}
+nav h2{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin:12px 14px 6px;font-weight:600}
+nav button{display:flex;justify-content:space-between;gap:8px;width:100%;text-align:left;background:none;border:0;color:var(--fg);padding:6px 14px;font:inherit;font-size:13px;cursor:pointer;border-left:3px solid transparent}
+nav button:hover{background:var(--panel2)}
+nav button.on{background:var(--panel2);border-left-color:var(--accent)}
+nav button .t{color:var(--mute);font-size:11px}
+.pill{font-size:10px;padding:1px 6px;border-radius:9px;background:#3a2b12;color:var(--hazard);letter-spacing:.04em}
+.stage{position:relative;min-width:0;background:#202327}
+#cv{width:100%;height:100%;display:block}
+#boardimg{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#26282c}
+.tools{position:absolute;left:10px;top:10px;display:flex;flex-wrap:wrap;gap:6px;max-width:calc(100% - 20px)}
+.tools button{background:rgba(22,24,27,.85);color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:5px 10px;font:inherit;font-size:12.5px;cursor:pointer}
+.tools button.on{border-color:var(--hazard);color:var(--hazard)}
+#status{position:absolute;right:12px;bottom:10px;color:var(--mute);font-size:12px;background:rgba(22,24,27,.8);padding:3px 8px;border-radius:5px}
+aside{border-left:1px solid var(--line);background:var(--panel);overflow:auto;padding:14px 16px}
+aside h3{margin:0 0 4px;font-size:16px;text-wrap:balance}
+aside h4{margin:16px 0 6px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);font-weight:600}
+aside p{margin:6px 0;color:#cfd4da}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;font-size:13px}
+.kv span:nth-child(odd){color:var(--mute)}
+table{border-collapse:collapse;width:100%;font-size:12px}
+td,th{padding:3px 6px;border-bottom:1px solid var(--line);text-align:left}
+th{color:var(--mute);font-weight:500}
+.tbl{overflow-x:auto}
+.ok{color:var(--ok)} .bad{color:var(--bad)} .warn{color:var(--warn)}
+.sw{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+.legend div{margin:3px 0;font-size:12.5px}
+.note{font-size:12px;color:var(--mute)}
+@media (max-width:900px){
+  .app{grid-template-columns:1fr;height:auto}
+  .stage{height:62vh}
+  nav{border-right:0;border-bottom:1px solid var(--line);max-height:240px}
+  aside{border-left:0}
+  nav,aside{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+}
+</style>
+<!--LIBS-->
+<script src="data.js"></script>
+<header>
+  <h1>R4 łączniki <b>#1182</b> — pręty i rozpory na prawdziwych modelach R4</h1>
+  <div class="std mono" id="std"></div>
+</header>
+<div class="app">
+  <nav id="nav"></nav>
+  <div class="stage">
+    <canvas id="cv"></canvas>
+    <img id="boardimg" alt="Plansza: 20 łączników w jednej skali" hidden>
+    <div class="tools" id="tools">
+      <button data-t="cells" class="on">Komórki</button>
+      <button data-t="ports" class="on">Porty</button>
+      <button data-t="markers" class="on">Znaczniki styku</button>
+      <button data-t="wire">Siatka druciana</button>
+      <button data-t="grid" class="on">Siatka 0,55 m</button>
+      <button data-t="fit">Wyśrodkuj</button>
+    </div>
+    <div id="status" class="mono">—</div>
+  </div>
+  <aside id="info"></aside>
+</div>
+<script>
+(function(){
+const MODE="__MODE__", D=window.DATA, G=0.55, H=0.26;
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+const st=D.standard["R4B_Cube"];
+$("#std").textContent=`siatka ${G} m · ściana ${H} m (zmierzone: Cube ${st.outermost_along_socket_normal_m} m) · szczelina 0,03 m · ${D.partners} prawdziwych partnerów w teście`;
+// ---------- nav
+const nav=$("#nav"); let cur=null;
+function addBtn(label,sub,key,pill){const b=document.createElement("button");b.innerHTML=`<span>${esc(label)} ${pill?'<span class="pill">PILOT</span>':''}</span><span class="t mono">${esc(sub)}</span>`;b.onclick=()=>select(key);b.dataset.k=key;nav.appendChild(b);}
+const h=t=>{const e=document.createElement("h2");e.textContent=t;nav.appendChild(e);};
+h("Konstrukcje ze starymi modelami");D.scenes.forEach(s=>addBtn(s.title,s.PASS?"PASS":"FAIL","S:"+s.id));
+h("Plansza");addBtn("20 łączników, jedna skala","","B:");
+h("Pręty (ROD)");D.parts.filter(p=>p.family==="rod").forEach(p=>addBtn(p.pid.replace("ROD_",""),p.tris+" tri","P:"+p.id,p.pilot));
+h("Rozpory (STRUT)");D.parts.filter(p=>p.family==="strut").forEach(p=>addBtn(p.pid.replace("STRUT_",""),p.tris+" tri","P:"+p.id,p.pilot));
+// ---------- three
+const cv=$("#cv"), R=new THREE.WebGLRenderer({canvas:cv,antialias:true});R.setPixelRatio(Math.min(2,window.devicePixelRatio||1));
+R.outputEncoding=THREE.sRGBEncoding;R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.05;
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x202327);
+const cam=new THREE.PerspectiveCamera(40,1,0.02,200);const ctl=new THREE.OrbitControls(cam,cv);ctl.enableDamping=true;
+scene.add(new THREE.HemisphereLight(0xdfe6ee,0x2a2622,0.9));
+const k=new THREE.DirectionalLight(0xffffff,1.6);k.position.set(4,7,-5);scene.add(k);
+const f=new THREE.DirectionalLight(0xbfd0ff,0.6);f.position.set(-5,3,4);scene.add(f);
+const grid=new THREE.GridHelper(G*40,40,0x4a5058,0x30353b);grid.position.set(G/2,-G/2,G/2);scene.add(grid);
+let model=null, over=new THREE.Group(); scene.add(over);
+const flags={cells:true,ports:true,markers:true,wire:false,grid:true};
+function resize(){const r=cv.parentElement.getBoundingClientRect();R.setSize(r.width,r.height,false);cam.aspect=r.width/Math.max(1,r.height);cam.updateProjectionMatrix();}
+window.addEventListener("resize",resize);
+(function loop(){requestAnimationFrame(loop);ctl.update();R.render(scene,cam);})();
+const loader=new THREE.GLTFLoader(), cache={};
+function b64ab(b){const s=atob(b),u=new Uint8Array(s.length);for(let i=0;i<s.length;i++)u[i]=s.charCodeAt(i);return u.buffer;}
+function getGLB(name){
+  if(cache[name])return cache[name];
+  cache[name]=new Promise((res,rej)=>{
+    if(MODE==="local"){
+      if(window.GLB_B64&&window.GLB_B64[name])return res(b64ab(window.GLB_B64[name]));
+      const s=document.createElement("script");s.src="glb/"+name+".js";s.onload=()=>res(b64ab(window.GLB_B64[name]));s.onerror=()=>rej(new Error("brak "+name));document.head.appendChild(s);
+    } else fetch("glb/"+name).then(r=>{if(!r.ok)throw new Error(r.status);return r.arrayBuffer();}).then(res,rej);
+  }).then(ab=>new Promise((res,rej)=>loader.parse(ab,"",res,rej)));
+  return cache[name];
+}
+function fit(obj){const b=new THREE.Box3().setFromObject(obj),c=b.getCenter(new THREE.Vector3()),s=b.getSize(new THREE.Vector3()).length();
+  ctl.target.copy(c);cam.position.copy(c).add(new THREE.Vector3(0.75,0.55,0.95).normalize().multiplyScalar(s*1.25+0.6));cam.near=s/200;cam.far=s*40;cam.updateProjectionMatrix();}
+function applyFlags(){
+  grid.visible=flags.grid;over.visible=flags.cells||flags.ports;
+  over.children.forEach(o=>{o.visible=o.userData.kind==="cell"?flags.cells:flags.ports;});
+  if(model)model.traverse(o=>{if(o.isMesh){if(o.name.startsWith("MK_"))o.visible=flags.markers;else{(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>m.wireframe=flags.wire);}}});
+  document.querySelectorAll("#tools button").forEach(b=>{if(b.dataset.t in flags)b.classList.toggle("on",flags[b.dataset.t]);});
+}
+document.querySelectorAll("#tools button").forEach(b=>b.onclick=()=>{const t=b.dataset.t;if(t==="fit"){if(model)fit(model);return;}flags[t]=!flags[t];applyFlags();});
+function overlay(p){
+  over.clear();
+  const roleCol={node:0xe8432f,span:0xf2c230,crossing:0x8a96a3};
+  p.cells.forEach(c=>{const g=new THREE.EdgesGeometry(new THREE.BoxGeometry(G*0.98,G*0.98,G*0.98));const l=new THREE.LineSegments(g,new THREE.LineBasicMaterial({color:roleCol[c.role]||0xffffff,transparent:true,opacity:c.role==="node"?0.9:0.55}));
+    l.position.set(c.cell[0]*G,c.cell[1]*G,c.cell[2]*G);l.userData.kind="cell";over.add(l);});
+  p.ports.forEach(q=>{const col=q.type==="r4_full"?0x3fa9ff:0xff9f1a;const pos=new THREE.Vector3(...q.position_m),n=new THREE.Vector3(...q.normal);
+    const s=new THREE.Mesh(new THREE.SphereGeometry(0.03,16,10),new THREE.MeshBasicMaterial({color:col}));s.position.copy(pos);s.userData.kind="port";over.add(s);
+    const a=new THREE.ArrowHelper(n,pos,0.16,col,0.06,0.035);a.userData.kind="port";over.add(a);
+    if(Object.values(p.sockets).includes(q.id)){const r=new THREE.Mesh(new THREE.TorusGeometry(0.07,0.008,8,32),new THREE.MeshBasicMaterial({color:0xffffff}));r.position.copy(pos).addScaledVector(n,0.005);r.lookAt(pos.clone().add(n));r.userData.kind="port";over.add(r);}});
+}
+// ---------- info
+const fmt=v=>v===true?'<span class="ok">PASS</span>':v===false?'<span class="bad">FAIL</span>':esc(v);
+function infoPart(p){
+  const c=p.compat||{};
+  $("#info").innerHTML=`<h3 class="mono">${esc(p.id)}</h3><p>${esc(p.desc)}${p.pilot?' · <span class="pill">PILOT</span>':''}</p>
+  <div class="kv"><span>Rodzina</span><span>${p.family==="rod"?"pręt (ROD) — lekkie łącze":"rozpora (STRUT) — węzły z pełnym portem"}</span>
+  <span>Trójkąty</span><span class="mono">${p.tris}</span><span>Komórki</span><span class="mono">${p.cells.length} (węzły ${p.cells.filter(c=>c.role==="node").length})</span>
+  <span>QA Blender</span><span>${esc(p.status)}</span><span>Unity</span><span class="warn">UNITY_NOT_RUN</span>
+  <span>24 obroty + lustro</span><span>${fmt(p.rot.PASS)} · ${p.rot.distinct_orientations} różnych orientacji · lustro ${p.rot.mirror_equals_a_rotation?"= obrót":"wymaga odbicia"}</span></div>
+  <h4>Test z prawdziwymi modelami</h4><div class="kv"><span>Montaży</span><span class="mono">${c.mountings}</span><span>Błędy styku</span><span class="mono ${c.contact_fail?'bad':'ok'}">${c.contact_fail}</span>
+  <span>Wolne we wszystkich obrotach</span><span class="mono">${c.all_rolls_clear}</span><span>Tylko w części obrotów</span><span class="mono">${c.some_rolls_clear}</span><span>Zablokowane</span><span class="mono ${c.blocked?'warn':''}">${c.blocked}</span>
+  <span>Kolizje z sąsiednim Cube</span><span class="mono ${c.neighbour_overlaps?'bad':'ok'}">${c.neighbour_overlaps}</span></div>
+  <h4>Porty (tylko zadeklarowane)</h4><div class="tbl"><table><tr><th>port</th><th>ściana</th><th>typ</th><th>pozycja m</th></tr>${p.ports.map(q=>`<tr><td class="mono">${esc(q.id)}${Object.entries(p.sockets).filter(([k,v])=>v===q.id).map(([k])=>' · '+k).join('')}</td><td>${q.face}</td><td style="color:${q.type==='r4_full'?'var(--full)':'var(--mini)'}">${q.type}</td><td class="mono">${q.position_m.join(", ")}</td></tr>`).join("")}</table></div>
+  <p class="note">${p.family==="rod"?"rod_mini: tylko połączenie konstrukcyjne; broń / ruch / koła wymagają pełnego portu r4_full.":"r4_full: ten sam port 0,509 m co klocki, broń i moduły ruchu."} Element pręta/belki nie ma portów — bliskość ≠ połączenie.</p>
+  <h4>Propozycja (PROPOSAL_ONLY)</h4><div class="kv"><span>Masa</span><span class="mono">${p.proposal.mass_kg} kg</span><span>HP (Cube = 1)</span><span class="mono">${p.proposal.hp_relative_to_R4B_Cube}</span><span>Koszt (Cube = 1)</span><span class="mono">${p.proposal.cost_relative_to_R4B_Cube}</span></div>
+  <h4>Legenda</h4><div class="legend"><div><span class="sw" style="background:var(--full)"></span>port r4_full</div><div><span class="sw" style="background:var(--mini)"></span>port rod_mini</div><div><span class="sw" style="background:#fff"></span>Socket_Start / Socket_End</div><div><span class="sw" style="background:#e8432f;border-radius:2px"></span>komórka węzła · <span class="sw" style="background:#f2c230;border-radius:2px"></span>przelot · <span class="sw" style="background:#8a96a3;border-radius:2px"></span>muśnięta</div></div>`;
+}
+function infoScene(s){
+  const S=s.summary;
+  $("#info").innerHTML=`<h3>${esc(s.title)}</h3><p>${esc(s.note)}</p>
+  <div class="kv"><span>Wynik</span><span>${fmt(s.PASS)}</span><span>Części</span><span class="mono">${S.parts}</span><span>Sparowane porty</span><span class="mono">${S.mated_pairs}</span>
+  <span>Błędy styku</span><span class="mono ${S.contact_fail?'bad':'ok'}">${S.contact_fail}</span><span>Przenikania siatek</span><span class="mono ${S.overlaps?'bad':'ok'}">${S.overlaps}</span>
+  <span>Konflikty komórek</span><span class="mono">${S.cell_conflicts}</span><span>Odrzucone pary (reguła)</span><span class="mono">${S.rejected}</span>
+  <span>Obok, bez połączenia</span><span class="mono">${S.adjacent_not_connected}</span><span>Części „wiszące”</span><span class="mono">${S.floating}</span><span>Unity</span><span class="warn">UNITY_NOT_RUN</span></div>
+  <h4>Graf połączeń (triforcing)</h4>${Object.entries(s.graph).map(([g,v])=>`<p><b>${esc(g)}</b>: kotwica <span class="mono">${esc(v.anchor)}</span>, ${v.parts} części, łącza pojedyncze: ${v.single_point_links.length?v.single_point_links.map(l=>'<span class="mono">'+esc(l.join(" ↔ "))+'</span>').join(", "):"brak"}</p>`).join("")}
+  ${s.adjacent.length?`<h4>Stykają się, ale NIE są połączone</h4><div class="tbl"><table><tr><th>części</th><th>role komórek</th></tr>${s.adjacent.map(a=>`<tr><td class="mono">${esc(a.parts.join(" | "))}</td><td>${esc(a.roles.join(" / "))}</td></tr>`).join("")}</table></div>`:""}
+  <h4>Użyte modele</h4><p class="mono" style="font-size:12px">${s.models.map(esc).join(", ")}</p>
+  <h4>Legenda znaczników</h4><div class="legend"><div><span class="sw" style="background:#0a8c18"></span>para portów połączona</div><div><span class="sw" style="background:#f26100"></span>wolny port łącznika / modułu</div><div><span class="sw" style="background:#d00;border-radius:2px"></span>sąsiedztwo bez połączenia</div></div>`;
+}
+// ---------- select
+let token=0;
+async function select(key){
+  document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.k===key));
+  const my=++token; const [t,id]=[key[0],key.slice(2)];
+  $("#boardimg").hidden=t!=="B"; cv.style.visibility=t==="B"?"hidden":"visible";
+  if(t==="B"){$("#boardimg").src="board_all20.jpg";$("#info").innerHTML=`<h3>Plansza porównawcza</h3><p>Wszystkie 20 łączników tą samą kamerą ortograficzną (4,4 m), w tej samej skali co klocki R4.</p><p class="note">Render z Blendera 5.2.3 (Eevee) z eksportowanych modeli.</p>`;$("#status").textContent="plansza";return;}
+  let name, P=null, S=null;
+  if(t==="P"){P=D.parts.find(p=>p.id===id);name=P.glb;infoPart(P);} else {S=D.scenes.find(s=>s.id===id);name=S.glb;infoScene(S);}
+  $("#status").textContent="ładowanie "+name+" …";
+  try{
+    const g=await getGLB(name); if(my!==token)return;
+    if(model)scene.remove(model); model=g.scene; scene.add(model);
+    if(P)overlay(P); else over.clear();
+    applyFlags(); fit(model); resize();
+    $("#status").textContent=name+" · "+Math.round((P||S).bytes/1024)+" KB";
+  }catch(e){$("#status").textContent="błąd: "+e.message;}
+}
+resize(); select("S:two_robots");
+})();
+</script>

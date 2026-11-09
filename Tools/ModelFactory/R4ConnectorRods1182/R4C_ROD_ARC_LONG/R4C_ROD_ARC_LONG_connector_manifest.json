@@ -1,0 +1,317 @@
+{
+ "part_id": "ROD_ARC_LONG",
+ "id": "R4C_ROD_ARC_LONG",
+ "family": "rod",
+ "version": "1182-v1",
+ "description": "quarter-arc rod, 3x3 (radius 2 cells)",
+ "pilot": false,
+ "grid": {
+  "cell_m": 0.55,
+  "block_m": 0.52,
+  "face_offset_m": 0.26,
+  "gap_between_neighbours_m": 0.03,
+  "unity_axes": "+X right, +Y up, +Z forward",
+  "blender_axes": "Blender (x, y, z) = Unity (x, -z, y)",
+  "standard": "measured from the real R4 GLBs (compat/compat_all.json standard_measured)"
+ },
+ "pivot": "model origin = centre of cell (0,0,0); all cells / ports in Unity cells relative to it",
+ "bbox_cells": [
+  [
+   0,
+   0,
+   0
+  ],
+  [
+   2,
+   0,
+   2
+  ]
+ ],
+ "bounds_m": [
+  [
+   -0.1166,
+   -0.115,
+   -0.26
+  ],
+  [
+   1.36,
+   0.1166,
+   1.2166
+  ]
+ ],
+ "occupied_cells": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "role": "node"
+  },
+  {
+   "cell": [
+    0,
+    0,
+    1
+   ],
+   "role": "span"
+  },
+  {
+   "cell": [
+    1,
+    0,
+    1
+   ],
+   "role": "span"
+  },
+  {
+   "cell": [
+    1,
+    0,
+    2
+   ],
+   "role": "span"
+  },
+  {
+   "cell": [
+    2,
+    0,
+    2
+   ],
+   "role": "node"
+  }
+ ],
+ "occupied_cells_note": "explicit list; role node = cell with a hub/node, span = member passes through, crossing = member clips the cell (thickness) - every listed cell is reserved",
+ "nodes": {
+  "A": [
+   0,
+   0,
+   0
+  ],
+  "B": [
+   2,
+   0,
+   2
+  ]
+ },
+ "members": [
+  {
+   "id": "M0",
+   "from_node": "A",
+   "to_node": "B",
+   "kind": "arc",
+   "length_m": 1.7279,
+   "carries_ports": false
+  }
+ ],
+ "members_note": "members carry NO ports: nothing connects along a rod / beam (no automatic ports)",
+ "connection_ports": [
+  {
+   "id": "P_A_back",
+   "node": "A",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "face": "back",
+   "normal": [
+    0,
+    0,
+    -1
+   ],
+   "position_m": [
+    0.0,
+    0.0,
+    -0.26
+   ],
+   "type": "rod_mini",
+   "patch_half_cells": [
+    0.2091,
+    0.2091
+   ],
+   "contact_mask_bit": 5,
+   "allow": [
+    "R4B block full port",
+    "R4B block partial port",
+    "R4C r4_full port",
+    "R4C rod_mini port"
+   ],
+   "deny": [
+    "weapon / movement / wheel module socket (needs a full 0.509 m R4 port)"
+   ],
+   "gap_to_partner_m": 0.03
+  },
+  {
+   "id": "P_B_right",
+   "node": "B",
+   "cell": [
+    2,
+    0,
+    2
+   ],
+   "face": "right",
+   "normal": [
+    1,
+    0,
+    0
+   ],
+   "position_m": [
+    1.36,
+    0.0,
+    1.1
+   ],
+   "type": "rod_mini",
+   "patch_half_cells": [
+    0.2091,
+    0.2091
+   ],
+   "contact_mask_bit": 0,
+   "allow": [
+    "R4B block full port",
+    "R4B block partial port",
+    "R4C r4_full port",
+    "R4C rod_mini port"
+   ],
+   "deny": [
+    "weapon / movement / wheel module socket (needs a full 0.509 m R4 port)"
+   ],
+   "gap_to_partner_m": 0.03
+  }
+ ],
+ "sockets": {
+  "Socket_Start": {
+   "id": "P_A_back",
+   "node": "A",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "face": "back",
+   "normal": [
+    0,
+    0,
+    -1
+   ],
+   "position_m": [
+    0.0,
+    0.0,
+    -0.26
+   ],
+   "type": "rod_mini",
+   "patch_half_cells": [
+    0.2091,
+    0.2091
+   ],
+   "contact_mask_bit": 5,
+   "allow": [
+    "R4B block full port",
+    "R4B block partial port",
+    "R4C r4_full port",
+    "R4C rod_mini port"
+   ],
+   "deny": [
+    "weapon / movement / wheel module socket (needs a full 0.509 m R4 port)"
+   ],
+   "gap_to_partner_m": 0.03
+  },
+  "Socket_End": {
+   "id": "P_B_right",
+   "node": "B",
+   "cell": [
+    2,
+    0,
+    2
+   ],
+   "face": "right",
+   "normal": [
+    1,
+    0,
+    0
+   ],
+   "position_m": [
+    1.36,
+    0.0,
+    1.1
+   ],
+   "type": "rod_mini",
+   "patch_half_cells": [
+    0.2091,
+    0.2091
+   ],
+   "contact_mask_bit": 0,
+   "allow": [
+    "R4B block full port",
+    "R4B block partial port",
+    "R4C r4_full port",
+    "R4C rod_mini port"
+   ],
+   "deny": [
+    "weapon / movement / wheel module socket (needs a full 0.509 m R4 port)"
+   ],
+   "gap_to_partner_m": 0.03
+  }
+ },
+ "contact_mask_anchor": 32,
+ "connection_rule": "two parts are connected ONLY through a pair of declared ports on opposite faces of neighbouring cells; physical adjacency without such a pair is NOT a connection",
+ "rotations": {
+  "allowed": "all 24 grid rotations",
+  "mirror": "allowed (scale X -1)",
+  "check": {
+   "transforms_tested": 48,
+   "rotations": 24,
+   "mirror": "scale X -1 then each of the 24 rotations",
+   "checks": [
+    "cells stay unique",
+    "every port stays on an occupied cell",
+    "every port faces a free cell",
+    "no duplicate port faces"
+   ],
+   "failures": [],
+   "PASS": true,
+   "distinct_orientations": 12,
+   "mirror_equals_a_rotation": true,
+   "mirror_note": "mirrored footprint + ports equal a rotated copy: no separate mirrored model needed"
+  }
+ },
+ "geometry": {
+  "visual": "R4C_ROD_ARC_LONG.glb / .fbx",
+  "collision_proposal": "R4C_ROD_ARC_LONG_colliders.glb (UCX convex pieces: node boxes + member segments)",
+  "visual_vs_collision": "visual mesh is detailed (port pattern, bolts); colliders are coarse convex pieces inside the occupied cells"
+ },
+ "damage_routing": {
+  "internal_graph": [
+   {
+    "from": "A",
+    "to": "B",
+    "via": "M0"
+   }
+  ],
+  "external": "only via connection_ports",
+  "rules": "PENDING_CODEX_DESIGN (#1153)"
+ },
+ "proposal": {
+  "status": "PROPOSAL_ONLY",
+  "note": "numbers are art-side suggestions for balance; final values are a Codex / design decision (#1153, #141)",
+  "mass_kg": 7.3,
+  "hp_relative_to_R4B_Cube": 0.49,
+  "cost_relative_to_R4B_Cube": 1.07,
+  "basis": {
+   "nodes": 2,
+   "member_length_m": 1.728
+  }
+ },
+ "compat": {
+  "ports": 2,
+  "mountings": 10,
+  "contact_fail": 0,
+  "all_rolls_clear": 10,
+  "some_rolls_clear": 0,
+  "blocked": 0,
+  "neighbour_overlaps": 0
+ },
+ "compat_PASS": true,
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN"
+}
