@@ -41,6 +41,13 @@ namespace RoboRougelike.R1
             float speed=R3VehicleAssembly.SpeedFor(design.Parts.Sum(R4WeaponDefinition.PartMass),wheels);
             return $"Koła: {wheels} • Broń: {weapons}\nNapęd: {speed:0.0} m/s • Rdzeń: {design.CoreHp:0} HP";
         }
+        private static string StarterVehicleDescription(R3VehicleDesign design)
+        {
+            var weapons=design.Parts.Where(p=>p.Kind==R3PartKind.Gun)
+                .Select(p=>R4WeaponDefinition.Get(p.Weapon).ShortName).Distinct();
+            string names=string.Join(" / ",weapons);
+            return design.Description+"\n"+(names.Length>0?names:"Bez broni");
+        }
         private void DismissCatalog(){catalogOpen=false;catalogSearch=string.Empty;dismantleConfirmation=null;catalogFeedback=null;SyncQuickCategoryToCatalog();}
         internal bool ClosePartCatalog()
         {
@@ -246,7 +253,7 @@ namespace RoboRougelike.R1
                     int offer=starterOffers[i],variant=offer%4;var kind=(R3VehicleKind)(offer/4);var design=R3VehicleCatalog.Create(kind,variant);float x=80+i*380;
                     Panel(new Rect(x,205,360,280));
                     GUI.Label(new Rect(x+20,220,320,40),design.Name,heading);
-                    GUI.Label(new Rect(x+20,270,320,90),design.Description,body);
+                    GUI.Label(new Rect(x+20,270,320,90),StarterVehicleDescription(design),body);
                     GUI.Label(new Rect(x+20,365,320,45),StarterVehicleSummary(design),small);
                     if(GUI.Button(new Rect(x+20,420,320,48),run.SelectedVehicle==kind&&run.SelectedVehicleVariant==variant?"WYBRANY":"Wybierz",button))run.SelectVehicle(kind,variant);
                 }
@@ -301,7 +308,7 @@ namespace RoboRougelike.R1
                 int offer=starterOffers[i],variant=offer%4;var kind=(R3VehicleKind)(offer/4);var design=R3VehicleCatalog.Create(kind,variant);var card=PortraitVehicleCard(i);
                 Panel(card);
                 GUI.Label(new Rect(card.x+16,card.y+8,440,34),design.Name,heading);
-                GUI.Label(new Rect(card.x+16,card.y+44,440,62),design.Description,body);
+                GUI.Label(new Rect(card.x+16,card.y+44,440,62),StarterVehicleDescription(design),body);
                 GUI.Label(new Rect(card.x+16,card.y+112,430,42),StarterVehicleSummary(design),small);
                 if(GUI.Button(new Rect(card.x+475,card.y+96,225,52),run.SelectedVehicle==kind&&run.SelectedVehicleVariant==variant?"WYBRANY":"Wybierz",button))run.SelectVehicle(kind,variant);
             }
