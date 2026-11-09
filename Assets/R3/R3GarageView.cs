@@ -90,7 +90,7 @@ namespace RoboRougelike.R3
         private readonly RaycastHit[] hits=new RaycastHit[512];
         private float yaw=35,pitch=32,distance=9,previousNear;
         private Vector3 pivotLocal;
-        private bool orbitDragging,isOpen,arenaWasActive;
+        private bool orbitDragging,isOpen,arenaWasActive,raycastSaturated;
         private readonly R3GaragePointerGesture rightGesture=new R3GaragePointerGesture();
         private GameObject hiddenArena,workshopSpace;
         private Renderer workshopFloor;
@@ -184,7 +184,7 @@ namespace RoboRougelike.R3
         {
             if(run.Player!=null)R3BuildValidation.SetGarageSockets(run.Player.GetComponent<R3VehicleAssembly>(),false);
             if(previewRoot!=null){previewRoot.SetActive(false);Destroy(previewRoot);}
-            previewRoot=null;marker=null;payloadRenderers.Clear();availableMountPoints=null;mountPointsAssembly=null;HasTarget=false;CancelPointerGesture();
+            previewRoot=null;marker=null;payloadRenderers.Clear();availableMountPoints=null;mountPointsAssembly=null;HasTarget=false;raycastSaturated=false;CancelPointerGesture();
             DestroyWorkshopSpace();
             RestoreArena();
             if(isOpen){view.nearClipPlane=previousNear;view.rect=new Rect(0,0,1,1);follow.enabled=true;}
@@ -436,6 +436,15 @@ namespace RoboRougelike.R3
             if(run.Progress?.State!=R1RunState.Garage||run.Transitioning)return false;
             Physics.SyncTransforms();
             int count=Physics.RaycastNonAlloc(ray,hits,100,~0,QueryTriggerInteraction.Collide);
+            // PhysX does not guarantee ordering when its fixed buffer fills.
+            // A partial hit list cannot safely authorize removal or mounting.
+            if(count>=hits.Length)
+            {
+                raycastSaturated=true;HasTarget=false;
+                Message="Nie można wskazać części: zbyt wiele obiektów pod kursorem.";
+                RefreshMarker();return false;
+            }
+            if(raycastSaturated){raycastSaturated=false;Message="Możesz ponownie wskazać część.";}
             float nearest=float.PositiveInfinity;R3MountedPart target=null;R41MissingPlan missing=null;Vector3 normal=default;
             RaycastHit nearestHit=default;
             for(int i=0;i<count;i++)
