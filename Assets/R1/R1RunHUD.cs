@@ -266,7 +266,7 @@ namespace RoboRougelike.R1
                 if(GUI.Button(new Rect(450,548,170,38),"Wczytaj wyprawę",compactButton))run.LoadRunCheckpoint();
                 if(!string.IsNullOrEmpty(run.RunSaveMessage))GUI.Label(ReadySaveMessageRect(),run.RunSaveMessage,small);
                 if (GUI.Button(new Rect(90,600,500,65), "Przygotuj pojazd  [Enter]", button)) run.PrepareUnifiedRun();
-                if(GUI.Button(new Rect(640,600,550,65),"Garaż i poligon testowy",button))run.OpenSandboxGarage();
+                if(GUI.Button(new Rect(640,600,550,65),"Garaż i poligon (budżet testowy)",button))run.OpenSandboxGarage();
                 if(GUI.Button(new Rect(640,548,300,38),"Edytor map",compactButton))run.OpenMapEditor();
                 if(GUI.Button(new Rect(960,552,230,38),"Wyjdź z gry",button))run.RequestQuit();
                 GUI.Label(new Rect(90,675,1100,30),"WASD — jazda / hamowanie • Mysz — celowanie • LPM/PPM — ogień • Esc — pauza",small);
@@ -320,7 +320,7 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(340,700,250,40),"Wczytaj wyprawę",compactButton))run.LoadRunCheckpoint();
             if(!string.IsNullOrEmpty(run.RunSaveMessage))GUI.Label(new Rect(24,744,720,34),run.RunSaveMessage,small);
             if(GUI.Button(PortraitActionRect(0),"Przygotuj pojazd  [Enter]",button))run.PrepareUnifiedRun();
-            if(GUI.Button(PortraitActionRect(1),"Garaż i poligon testowy",button))run.OpenSandboxGarage();
+            if(GUI.Button(PortraitActionRect(1),"Garaż i poligon (budżet testowy)",button))run.OpenSandboxGarage();
             if(GUI.Button(PortraitActionRect(2),"Edytor map",compactButton))run.OpenMapEditor();
             if(GUI.Button(PortraitActionRect(3),"Wyjdź z gry",compactButton))run.RequestQuit();
             GUI.Label(new Rect(24,920,720,43),"6 starć • nagrody • garaż\nPo walce wybierz moduł i części z wraków.",small);
