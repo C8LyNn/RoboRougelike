@@ -32,6 +32,26 @@ public sealed class R3MultiCellWheelTests
         Assert.That(R3VehicleModel.Connected(new[]{core,wheel,unsupported}),Is.False,"The tire's outer cell is not a socket.");
     }
 
+    [Test] public void NewLargeOffroadWheelUsesItsOwnNineCellFootprintAndLegacyStillFits()
+    {
+        var design=new R3VehicleDesign{Name="Large wheel QA"};
+        design.Parts.Add(new R3PartState(new Vector3Int(0,1,0),R3PartKind.Core));
+        var model=new R3VehicleModel(design);model.Award(100);
+        Assert.That(model.PurchaseToInventory(R3PartKind.Wheel,default,R3WheelStyle.LargeOffroad),Is.True);
+        var part=model.Inventory.Last();var anchor=new Vector3Int(1,1,0);
+        Assert.That(part.FootprintRevision,Is.EqualTo(1));
+        Assert.That(model.OwnedPlacementError(part.Id,anchor,Vector3Int.zero),Is.Null);
+        Assert.That(model.Mount(part.Id,anchor),Is.True);
+        Assert.That(R3VehicleModel.OccupiedCells(model.At(anchor)).Count(),Is.EqualTo(9));
+        Assert.That(model.At(anchor+Vector3Int.up).Id,Is.EqualTo(part.Id));
+        var save=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(0)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(save,R3VehicleKind.Light,null,0,out var loaded,out var error),Is.True,error);
+        Assert.That(loaded.At(anchor+Vector3Int.up).Id,Is.EqualTo(part.Id));
+        var legacy=part.Copy();legacy.FootprintRevision=0;
+        Assert.That(R3VehicleModel.OccupiedCells(legacy).Count(),Is.EqualTo(1));
+        Assert.That(R3VehicleModel.SameFusionType(part,legacy),Is.False);
+    }
+
     [Test] public void NewAndLegacyFootprintsRoundTripWithoutReinterpretingOldItems()
     {
         var design=new R3VehicleDesign{Name="test",CoreHp=100,Speed=7.5f,TurnSpeed=82};
