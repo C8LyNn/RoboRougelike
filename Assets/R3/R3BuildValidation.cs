@@ -78,12 +78,24 @@ namespace RoboRougelike.R3
             known=new BuildDefinition("R3/"+key,role,cells,patches.ToArray(),role!=BuildRole.Wheel&&role!=BuildRole.Gun,bonds.ToArray());
             definitions.Add(key,known);return known;
         }
-        List<BuildInstalledPart> Installed()=>model.Parts.Select(p=>{
-            var actual=assembly.Parts.FirstOrDefault(a=>a!=null&&a.Id==p.Id);
-            bool alive=p.Health>0&&actual!=null&&actual.Operational&&actual.transform.IsChildOf(transform)&&
-                actual.GetComponentsInChildren<Collider>().Any(c=>c.enabled&&c.gameObject.activeInHierarchy&&!c.isTrigger&&c.attachedRigidbody==GetComponent<Rigidbody>());
-            return new BuildInstalledPart(p.Id,Definition(p),new BuildPose(p.Cell,p.RotationQuarterTurns),alive);
-        }).ToList();
+        List<BuildInstalledPart> Installed()
+        {
+            // Resolve the shared HP objects once rather than scanning every
+            // physical part again for every logical part on each garage probe.
+            var actualById=new Dictionary<string,R3MountedPart>(System.StringComparer.Ordinal);
+            foreach(var item in assembly.Parts)
+                if(item!=null&&!string.IsNullOrEmpty(item.Id)&&!actualById.ContainsKey(item.Id))actualById.Add(item.Id,item);
+            var body=GetComponent<Rigidbody>();var result=new List<BuildInstalledPart>(model.Parts.Count);
+            foreach(var p in model.Parts)
+            {
+                R3MountedPart actual=null;
+                if(!string.IsNullOrEmpty(p.Id))actualById.TryGetValue(p.Id,out actual);
+                bool alive=p.Health>0&&actual!=null&&actual.Operational&&actual.transform.IsChildOf(transform)&&
+                    actual.GetComponentsInChildren<Collider>().Any(c=>c.enabled&&c.gameObject.activeInHierarchy&&!c.isTrigger&&c.attachedRigidbody==body);
+                result.Add(new BuildInstalledPart(p.Id,Definition(p),new BuildPose(p.Cell,p.RotationQuarterTurns),alive));
+            }
+            return result;
+        }
 
         public string Validate(R3PartState candidate)
         {
@@ -326,9 +338,12 @@ namespace RoboRougelike.R3
             var gate=actual!=null?actual.GetComponent<R3BuildValidation>():null;if(gate==null)return;
             if(!visible){gate.registry.Clear();foreach(var face in gate.socketFaces)if(face!=null){face.SetActive(false);Destroy(face);}gate.socketFaces.Clear();if(gate.sockets!=null){gate.sockets.SetActive(false);Destroy(gate.sockets);}gate.sockets=null;return;}
             SetGarageSockets(actual,false);gate.sockets=new GameObject("R3 authorized structural sockets");gate.sockets.transform.SetParent(actual.transform,false);
+            var states=new Dictionary<string,R3PartState>(System.StringComparer.Ordinal);
+            foreach(var state in gate.model.Parts)
+                if(state!=null&&!string.IsNullOrEmpty(state.Id)&&!states.ContainsKey(state.Id))states.Add(state.Id,state);
             foreach(var part in actual.Parts.Where(p=>p!=null&&p.Operational&&p.transform.IsChildOf(actual.transform)))
             {
-                var state=gate.model.Parts.FirstOrDefault(p=>p.Id==part.Id);if(state==null)continue;
+                if(string.IsNullOrEmpty(part.Id)||!states.TryGetValue(part.Id,out var state))continue;
                 var definition=gate.Definition(state);if(!definition.SupportsOtherParts)continue;
                 for(int index=0;index<definition.Sockets.Length;index++)
                 {
