@@ -1,10 +1,30 @@
 using System.Linq;
+using System.Reflection;
 using NUnit.Framework;
+using RoboRougelike.R1;
 using RoboRougelike.R3;
 using UnityEngine;
 
 public sealed class R3MultiCellWheelTests
 {
+    [Test] public void InventoryCaptionsDistinguishOldAndNewLargeWheelsInBothLayouts()
+    {
+        var caption=typeof(R1RunHUD).GetMethod("CatalogItemCaption",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(caption,Is.Not.Null,"The actual inventory rows must show the footprint before selecting an item.");
+        foreach(var style in new[]{R3WheelStyle.Monster,R3WheelStyle.LargeOffroad})
+        foreach(bool compact in new[]{false,true})
+        {
+            var old=new R3PartState(Vector3Int.zero,R3PartKind.Wheel,.55f){WheelStyle=style};
+            var updated=old.Copy();updated.FootprintRevision=1;
+            var oldText=(string)caption.Invoke(null,new object[]{old,compact});
+            var newText=(string)caption.Invoke(null,new object[]{updated,compact});
+            Assert.That(oldText,Does.Contain("1 pole"));Assert.That(newText,Does.Contain("3×3"));
+            Assert.That(oldText,Does.Contain("55%"));Assert.That(newText,Does.Contain("55%"));
+        }
+        var ordinary=new R3PartState(Vector3Int.zero,R3PartKind.Wheel,1);
+        var ordinaryText=(string)caption.Invoke(null,new object[]{ordinary,true});
+        Assert.That(ordinaryText,Does.Not.Contain("pole"));Assert.That(ordinaryText,Does.Not.Contain("3×3"));
+    }
     static R3PartState Monster(Vector3Int cell)=>new R3PartState(cell,R3PartKind.Wheel){
         WheelStyle=R3WheelStyle.Monster,FootprintRevision=1,
         ContactMask=R3MountingGrid.FaceBit(Vector3Int.left)|R3MountingGrid.FaceBit(Vector3Int.right)};

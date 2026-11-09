@@ -230,7 +230,7 @@ namespace RoboRougelike.R1
             for(int i=0;i<items.Length;i++)
             {
                 var item=items[i];GUI.backgroundColor=garage.SelectedInventoryId==item.Id?new Color(.3f,.9f,.9f):Color.white;
-                if(GUI.Button(new Rect(0,i*40,100,36),$"T{R3VehicleModel.NormalizedTier(item.Tier)} • {item.Health*100:0}%",compactButton))
+                if(GUI.Button(new Rect(0,i*40,100,36),CatalogItemCaption(item,true),compactButton))
                     SelectCatalogItem(run,item.Id);
                 GUI.backgroundColor=Color.white;
                 if(GUI.Button(new Rect(104,i*40,55,36),"Akcje",compactButton))SelectCatalogDetails(run,item.Id);
