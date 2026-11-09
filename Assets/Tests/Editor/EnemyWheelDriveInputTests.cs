@@ -84,7 +84,7 @@ public sealed class EnemyWheelDriveInputTests
             var armor=GameObject.CreatePrimitive(PrimitiveType.Cube);armor.name="P12_EnemyBlock";
             armor.transform.SetParent(chassis.transform);armor.transform.position=Vector3.right*2;
             armor.AddComponent<P12PipelineSafeDamageable>().Configure(100,true);
-            var gun=new GameObject("gun");gun.transform.SetParent(root.transform);gun.transform.position=Vector3.up;
+            var gun=GameObject.CreatePrimitive(PrimitiveType.Cube);gun.name="gun";gun.transform.SetParent(root.transform);gun.transform.position=Vector3.up;gun.transform.localScale=Vector3.one*.52f;
             Physics.SyncTransforms();
             RoboRougelike.WeaponIntegration.RRLEnemyDeviceMount.Attach(gun,root.transform,new R3PartState(Vector3Int.zero,R3PartKind.Gun));
             Assert.That(gun.transform.parent,Is.EqualTo(armor.transform),"A wheel has only an inward axle socket, not a top device socket.");
@@ -109,6 +109,27 @@ public sealed class EnemyWheelDriveInputTests
             Assert.That(enemy.EquipBattery(),Is.False,"A battery cannot float independently of its support.");
             Assert.That(enemy.EquipDirectionalShield(),Is.False,"A shield cannot float independently of its support.");
             Assert.That(enemy.EquipPointDefense(),Is.False,"Point defense cannot float independently of its support.");
+        }
+        finally{Object.DestroyImmediate(root);}
+    }
+
+    [Test]
+    public void EnemyDeviceDoesNotMountInsideBlockAboveNearestSupport()
+    {
+        var root=new GameObject("enemy");root.AddComponent<P12PipelineSafeEnemyTurret>();
+        try
+        {
+            var chassis=new GameObject("Base");chassis.transform.SetParent(root.transform);
+            var lower=GameObject.CreatePrimitive(PrimitiveType.Cube);lower.transform.SetParent(chassis.transform);
+            lower.transform.localScale=Vector3.one*.52f;lower.AddComponent<P12PipelineSafeDamageable>().Configure(100,true);
+            var upper=GameObject.CreatePrimitive(PrimitiveType.Cube);upper.transform.SetParent(chassis.transform);
+            upper.transform.localPosition=Vector3.up*.55f;upper.transform.localScale=Vector3.one*.52f;
+            upper.AddComponent<P12PipelineSafeDamageable>().Configure(100,true);
+            var gun=GameObject.CreatePrimitive(PrimitiveType.Cube);gun.name="gun";gun.transform.SetParent(root.transform);gun.transform.position=lower.transform.position;gun.transform.localScale=Vector3.one*.52f;
+            Physics.SyncTransforms();
+            Assert.That(RoboRougelike.WeaponIntegration.RRLEnemyDeviceMount.Attach(gun,root.transform,new R3PartState(Vector3Int.zero,R3PartKind.Gun)),Is.True);
+            Assert.That(gun.transform.parent,Is.EqualTo(upper.transform),"The nearest lower support has an occupied top cell.");
+            Assert.That(Vector3.Distance(gun.transform.position,upper.transform.position),Is.GreaterThan(.5f));
         }
         finally{Object.DestroyImmediate(root);}
     }
