@@ -167,4 +167,37 @@ public sealed class R3ContactAndRewardTests
         }
         finally {UnityEngine.Object.DestroyImmediate(root);}
     }
+
+    [Test]
+    public void MultiCellRuntimePortsAreCheckedAtTheTouchedCell()
+    {
+        var root=new GameObject("cell-port-test");
+        var a=new GameObject("core");var beam=new GameObject("beam");var end=new GameObject("end");
+        a.transform.SetParent(root.transform,false);beam.transform.SetParent(root.transform,false);end.transform.SetParent(root.transform,false);
+        try
+        {
+            var ca=a.AddComponent<P12_PipelineSafePlayerBlock>();ca.AssignLogicalGrid(Vector3Int.zero);
+            var cb=beam.AddComponent<P12_PipelineSafePlayerBlock>();cb.AssignLogicalGrid(Vector3Int.right);
+            var cc=end.AddComponent<P12_PipelineSafePlayerBlock>();cc.AssignLogicalGrid(new Vector3Int(3,0,0));
+            a.AddComponent<R3BlockMountPoints>().Configure("core",R3MountingGrid.AllFaces);
+            var ports=beam.AddComponent<R3BlockMountPoints>();ports.Configure("beam",R3MountingGrid.AllFaces);
+            ports.SetFootprint(new[]{Vector3Int.zero,Vector3Int.right});
+            Assert.That(ports.WorldMaskAt(new Vector3Int(9,0,0)),Is.Zero,"A nonexistent occupied cell must never provide a port.");
+            ports.SetCellPortMasks(new Dictionary<Vector3Int,int>{
+                {Vector3Int.zero,R3MountingGrid.FaceBit(Vector3Int.left)},
+                {Vector3Int.right,R3MountingGrid.FaceBit(Vector3Int.right)}});
+            end.AddComponent<R3BlockMountPoints>().Configure("end",R3MountingGrid.AllFaces);
+            Assert.That(R3MountingGrid.Compatible(ca,Vector3Int.zero,cb,Vector3Int.right),Is.True);
+            Assert.That(R3MountingGrid.Compatible(cb,new Vector3Int(2,0,0),cc,new Vector3Int(3,0,0)),Is.True);
+            ports.SetCellPortMasks(new Dictionary<Vector3Int,int>{
+                {Vector3Int.zero,R3MountingGrid.FaceBit(Vector3Int.left)},
+                {Vector3Int.right,R3MountingGrid.FaceBit(Vector3Int.up)}});
+            Assert.That(R3MountingGrid.Compatible(cb,new Vector3Int(2,0,0),cc,new Vector3Int(3,0,0)),Is.False,
+                "The anchor's ports must not create a phantom connection on another cell.");
+            ports.SetCellPortMasks(new Dictionary<Vector3Int,int>{{Vector3Int.zero,R3MountingGrid.FaceBit(Vector3Int.left)}});
+            Assert.That(R3MountingGrid.Compatible(cb,new Vector3Int(2,0,0),cc,new Vector3Int(3,0,0)),Is.False,
+                "A cell without explicit ports must fail closed.");
+        }
+        finally {UnityEngine.Object.DestroyImmediate(root);}
+    }
 }

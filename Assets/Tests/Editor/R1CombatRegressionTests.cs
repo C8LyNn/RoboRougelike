@@ -99,6 +99,50 @@ public class R1CombatRegressionTests
     }
 
     [UnityTest]
+    public IEnumerator MultiCellContactControlsRuntimeDamageAndDetachment()
+    {
+        EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
+        yield return new EnterPlayMode();Time.timeScale=1;
+        CheckMultiCellContactInRuntime();
+        yield return null;
+    }
+
+    static void CheckMultiCellContactInRuntime()
+    {
+        var root=new GameObject("Multi-cell structural fixture");
+        P12_PipelineSafePlayerBlock Part(string name,Vector3Int cell)
+        {
+            var item=GameObject.CreatePrimitive(PrimitiveType.Cube);item.name=name;
+            item.transform.SetParent(root.transform,false);item.transform.localPosition=(Vector3)cell*.55f;
+            item.transform.localScale=Vector3.one*.5f;
+            var block=item.AddComponent<P12_PipelineSafePlayerBlock>();block.AssignLogicalGrid(cell);
+            item.AddComponent<P12PipelineSafeDamageable>().Configure(100,true);
+            item.AddComponent<RoboRougelike.R3.R3BlockMountPoints>().Configure(name,RoboRougelike.R3.R3MountingGrid.AllFaces);
+            return block;
+        }
+        var core=Part("core",Vector3Int.zero);
+        var beam=Part("beam",Vector3Int.right);
+        var end=Part("end",new Vector3Int(3,0,0));
+        var ports=beam.GetComponent<RoboRougelike.R3.R3BlockMountPoints>();
+        ports.SetFootprint(new[]{Vector3Int.zero,Vector3Int.right});
+        ports.SetCellPortMasks(new System.Collections.Generic.Dictionary<Vector3Int,int>{
+            {Vector3Int.zero,RoboRougelike.R3.R3MountingGrid.FaceBit(Vector3Int.left)},
+            {Vector3Int.right,RoboRougelike.R3.R3MountingGrid.FaceBit(Vector3Int.right)}});
+        var structure=root.AddComponent<P12PipelineSafeVehicleStructure>();structure.SetDesignatedCore(core);structure.RebuildNow();
+        Assert.That(structure.ConnectedBlockCount,Is.EqualTo(3),"One beam spans two cells without duplicating its HP.");
+        end.GetComponent<P12PipelineSafeDamageable>().ApplyDamage(8,end.transform.position,Vector3.right);
+        Assert.That(end.GetComponent<P12PipelineSafeDamageable>().CurrentHp,Is.EqualTo(94).Within(.001f));
+        Assert.That(beam.GetComponent<P12PipelineSafeDamageable>().CurrentHp,Is.EqualTo(98.5f).Within(.001f));
+        Assert.That(core.GetComponent<P12PipelineSafeDamageable>().CurrentHp,Is.EqualTo(99.5f).Within(.001f));
+        ports.SetCellPortMasks(new System.Collections.Generic.Dictionary<Vector3Int,int>{
+            {Vector3Int.zero,RoboRougelike.R3.R3MountingGrid.FaceBit(Vector3Int.left)},
+            {Vector3Int.right,0}});
+        structure.EvaluateStructure();
+        Assert.That(end.DetachedFromVehicle,Is.True,"Removing the far socket disconnects the far part.");
+        Assert.That(beam.transform.IsChildOf(root.transform),Is.True);
+    }
+
+    [UnityTest]
     public IEnumerator PhysicalProjectileIgnoresOwnerAndDamagesOnlyFirstTarget()
     {
         EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
