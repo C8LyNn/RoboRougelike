@@ -128,4 +128,39 @@ public sealed class MapStorageIntegrityTests
         run.TogglePause();run.TogglePause();Assert.That(run.MapExitPending,Is.False);
         yield return new ExitPlayMode();
     }
+    [UnityTest] public IEnumerator NativeCloseProtectsDirtyMapAndRequiresFreshConfirmationAfterEdits()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);yield return new EnterPlayMode();
+        var until=Time.realtimeSinceStartup+15;while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<until)yield return null;
+        var run=R1RunController.Instance;Assert.That(run,Is.Not.Null);
+        var handler=typeof(R1RunController).GetMethod("HandleNativeQuit",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+        Assert.That(handler,Is.Not.Null,"Native window close must check for an unsaved map.");
+        Assert.That((bool)handler.Invoke(run,null),Is.True,"Normal game exit must remain available.");
+        Assert.That(run.OpenMapEditor(),Is.True);
+        Assert.That((bool)handler.Invoke(run,null),Is.True,"A clean map must not block closing.");
+        Assert.That(run.EditorDraft.Place(MapItemKind.Ground,0,0,0),Is.True);
+        Assert.That((bool)handler.Invoke(run,null),Is.False);
+        Assert.That(run.MapQuitPending,Is.True);Assert.That(run.Paused,Is.True);
+        Assert.That(run.QuitRequested,Is.False);Assert.That(run.EditorMessage,Does.Contain("Niezapisane"));
+        Assert.That(run.EditorMessage,Does.Contain("Zamknij okno ponownie"));
+        Assert.That((bool)handler.Invoke(run,null),Is.False,"Duplicate close events in one frame must not confirm.");
+        yield return null;
+        Assert.That(run.EditorDraft.Place(MapItemKind.Ground,1,0,0),Is.True);
+        Assert.That((bool)handler.Invoke(run,null),Is.False,"An edited map needs a fresh confirmation.");
+        yield return null;
+        Assert.That((bool)handler.Invoke(run,null),Is.True,"A repeated close may confirm the unchanged draft.");
+        yield return new ExitPlayMode();
+    }
+    [UnityTest] public IEnumerator QuitActionOutsidePauseShowsUnsavedMapWarningBeforeClosing()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);yield return new EnterPlayMode();
+        var until=Time.realtimeSinceStartup+15;while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<until)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenMapEditor(),Is.True);
+        Assert.That(run.EditorDraft.Place(MapItemKind.Ground,0,0,0),Is.True);
+        Assert.That(run.Paused,Is.False);run.RequestQuitFromMenu();
+        Assert.That(run.QuitRequested,Is.False);Assert.That(run.MapQuitPending,Is.True);
+        Assert.That(run.Paused,Is.True,"A quit action outside pause must make the warning visible.");
+        Assert.That(run.EditorMessage,Does.Contain("Niezapisane"));
+        yield return new ExitPlayMode();
+    }
 }

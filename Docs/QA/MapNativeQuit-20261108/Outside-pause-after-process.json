@@ -1,0 +1,6 @@
+{
+  "mode": "Targeted EditMode UnityTests entering Play Mode",
+  "exitCode": 0,
+  "head": "d0cf452b plus outside-pause warning",
+  "filter": "MapStorageIntegrityTests.QuitActionOutsidePauseShowsUnsavedMapWarningBeforeClosing;MapStorageIntegrityTests.NativeCloseProtectsDirtyMapAndRequiresFreshConfirmationAfterEdits;MapStorageIntegrityTests.QuitAndReturnRequireSeparateConfirmationForUnsavedMap"
+}

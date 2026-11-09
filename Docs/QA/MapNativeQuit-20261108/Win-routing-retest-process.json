@@ -1,0 +1,6 @@
+{
+  "filter": "MapStorageIntegrityTests.NativeCloseProtectsDirtyMapAndRequiresFreshConfirmationAfterEdits;Exit273PauseTests",
+  "exitCode": 0,
+  "mode": "Targeted EditMode with UnityTests entering Play Mode; Windows Player path not run",
+  "head": "8b206185 plus Windows input routing"
+}
