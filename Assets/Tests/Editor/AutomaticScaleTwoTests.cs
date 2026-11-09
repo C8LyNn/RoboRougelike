@@ -22,6 +22,7 @@ public sealed class AutomaticScaleTwoModelTests
     [TestCase(R4WeaponKind.Railgun)]
     [TestCase(R4WeaponKind.BeamCutter)]
     [TestCase(R4WeaponKind.EmpEmitter)]
+    [TestCase(R4WeaponKind.RotarySaw)]
     public void NewGunHasVersionedFootprintWhileLegacyRetainsOneCell(R4WeaponKind weapon)
     {
         var design=new R3VehicleDesign{Name="Automatic QA",CoreHp=100,Speed=7,TurnSpeed=82};
@@ -215,6 +216,32 @@ public sealed class AutomaticScaleTwoTests
 
     [UnityTest] public IEnumerator EnlargedBeamHitsAndConsumesEnergy() => VerifyBeamOrEmp(R4WeaponKind.BeamCutter);
     [UnityTest] public IEnumerator EnlargedEmpDisruptsRealReceiver() => VerifyBeamOrEmp(R4WeaponKind.EmpEmitter);
+
+    [UnityTest] public IEnumerator EnlargedSawMountsAndCutsAtItsVisibleExtendedRadius()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
+        var model=run.VehicleModel;model.Award(1000);
+        foreach(var part in model.Parts.Where(p=>p.Kind==R3PartKind.Gun).ToArray())
+        {Assert.That(run.GarageRemove(part.Cell),Is.True);yield return null;}
+        Assert.That(run.GarageBuy(new Vector3Int(0,2,0),R3PartKind.Armor),Is.True);yield return null;
+        Assert.That(run.GarageBuy(new Vector3Int(0,3,0),R3PartKind.Armor),Is.True);yield return null;
+        var anchor=new Vector3Int(0,4,0);
+        Assert.That(run.GarageBuyWeapon(anchor,R4WeaponKind.RotarySaw),Is.True,"A raised support permits the disc to clear the vehicle.");
+        var state=model.At(anchor);Assert.That(state.FootprintRevision,Is.EqualTo(2));
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();var installed=assembly.Parts.Single(p=>p.Id==state.Id);
+        run.Player.GetComponent<Rigidbody>().isKinematic=true;run.Player.GetComponent<P12PipelineSafeTankController>().enabled=false;
+        run.Player.transform.SetPositionAndRotation(new Vector3(1000,20,1000),Quaternion.identity);
+        installed.GunPivot.rotation=Quaternion.identity;var art=installed.GetComponent<R4WeaponArt>();art.Sync();
+        var binding=installed.GetComponent<RRLSawBinding>();Assert.That(binding.Module.ContactRadius,Is.EqualTo(1.8f).Within(.001f));
+        Assert.That(Vector3.Distance(art.SawRotor.position,installed.Muzzle.position),Is.LessThan(.01f));
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.localScale=Vector3.one*.2f;
+        target.transform.position=installed.Muzzle.position+installed.Muzzle.up*1.4f;
+        var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(500,false);Physics.SyncTransforms();
+        binding.Module.SetMotorRequested(true);for(int i=0;i<12;i++)binding.Module.Advance(.1f);
+        Assert.That(hp.CurrentHp,Is.LessThan(500),"The actual blade damages targets beyond the old .9 m radius.");
+        Object.Destroy(target);
+    }
 
     IEnumerator VerifyBeamOrEmp(R4WeaponKind weapon)
     {

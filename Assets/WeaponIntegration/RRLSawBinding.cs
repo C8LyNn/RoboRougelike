@@ -14,6 +14,13 @@ namespace RoboRougelike.WeaponIntegration
         public R3PartState State=>Device.State;
         Transform blade,rotor;bool requested,artRotor;
         P12PipelineSafeTankController tank;float damageScale=1;
+        public static RotarySawConfiguration Geometry(R3PartState state)
+        {
+            var config=new RotarySawConfiguration();
+            if(state!=null&&state.Kind==R3PartKind.Gun&&state.Weapon==RoboRougelike.R4.R4WeaponKind.RotarySaw&&state.FootprintRevision==2)
+            {config.bladeRadius*=2;config.bladeHalfThickness*=2;config.hubDeadZone*=2;}
+            return config;
+        }
         public void Bind(R3PartState state,Transform owner,Transform center,float damageMultiplier=1)
         {
             Device=GetComponent<RRLDeviceBinding>();if(Device==null)Device=gameObject.AddComponent<RRLDeviceBinding>();Device.Bind(state,owner);
@@ -21,7 +28,9 @@ namespace RoboRougelike.WeaponIntegration
             Module=gameObject.AddComponent<RotarySawModule>();Module.SetAutomaticSimulation(false);
             Module.Bind(Device.Body,owner,center);Module.SetDamageSink(this);
             var energy=owner.GetComponent<VehicleEnergyBank>();
-            if(energy!=null){Module.Configure(new RotarySawConfiguration{energyPerSecond=VehicleEnergyCosts.ContinuousWeaponPerSecond*R3VehicleModel.TierActivationCost(state.Tier)});Module.SetEnergySource(energy);}
+            var config=Geometry(state);
+            if(energy!=null)config.energyPerSecond=VehicleEnergyCosts.ContinuousWeaponPerSecond*R3VehicleModel.TierActivationCost(state.Tier);
+            Module.Configure(config);if(energy!=null)Module.SetEnergySource(energy);
             foreach(var collider in owner.GetComponentsInChildren<Collider>())Module.RegisterOwnerCollider(collider);
             Module.Motor.RestoreState(state.ThermalHeat,state.ThermalLocked,Mathf.Max(0,state.DeviceReadyAt-Time.time));
             // The previous visual may be inactive until Unity destroys it at

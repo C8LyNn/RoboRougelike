@@ -123,7 +123,7 @@ namespace RoboRougelike.B01.GarageSpatialW28
             return null;
         }
 
-        void AddFunctionalEnvelope(Transform root,R3PartKind kind)
+        void AddFunctionalEnvelope(Transform root,R3PartKind kind,R4WeaponKind weapon,int footprintRevision)
         {
             if(root==null)return;
             if(Protrusion(kind))
@@ -150,9 +150,9 @@ namespace RoboRougelike.B01.GarageSpatialW28
                     // Thin line is information only; never veto placement at long range.
                     Add(B0112ZoneKind.WeaponPurple,muzzle.position+muzzle.forward*1.8f,
                         muzzle.rotation,new Vector3(.04f,.04f,3.2f));
-                    if(root.GetComponent<R3MountedPart>()?.Weapon==R4WeaponKind.RotarySaw)
+                    if(weapon==R4WeaponKind.RotarySaw)
                         Add(B0112ZoneKind.MechanismOrange,muzzle.position,muzzle.rotation,
-                            new Vector3(.28f,1.8f,1.8f));
+                            new Vector3(.28f,1.8f,1.8f)*(footprintRevision==2?2f:1f));
                 }
             }
             if(Mechanism(kind))
@@ -214,9 +214,10 @@ namespace RoboRougelike.B01.GarageSpatialW28
             foreach(var p in assembly.Parts)
             {
                 if(p==null||!p.Operational||!p.transform.IsChildOf(partRoot))continue;
-                AddFunctionalEnvelope(p.transform,p.Kind);
+                var part=model.Parts.Find(item=>item.Id==p.Id);
+                AddFunctionalEnvelope(p.transform,p.Kind,p.Weapon,part?.FootprintRevision??0);
             }
-            AddFunctionalEnvelope(source.Preview,source.MountKind);
+            AddFunctionalEnvelope(source.Preview,source.MountKind,source.MountWeapon,source.CandidateFootprintRevision);
         }
 
         void LateUpdate()
