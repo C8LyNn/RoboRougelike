@@ -83,6 +83,8 @@ namespace RoboRougelike.R3
             else {
                 bool mirror=candidate.Kind==R3PartKind.Wheel&&R4WheelArt.MirrorForMount(model,candidate);
                 var payload=R41PartGeometry.Payload(probe.transform,candidate.Kind,candidate.Weapon,null,true,out _,candidate.WheelStyle,mirror);
+                if(candidate.Kind==R3PartKind.Gun&&candidate.FootprintRevision==2)
+                    R41PartGeometry.ConfigureAutomaticScale2(probe,payload);
                 var actual=assembly.Parts.FirstOrDefault(p=>p!=null&&p.Id==candidate.Id&&p.Operational&&p.transform.IsChildOf(transform));
                 if(payload!=null&&candidate.Kind==R3PartKind.Gun&&actual?.GunPivot!=null)payload.localRotation=actual.GunPivot.localRotation;
             }

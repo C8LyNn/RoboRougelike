@@ -98,6 +98,15 @@ namespace RoboRougelike.R4_1
             if(!solid){var collider=item.GetComponent<Collider>();collider.enabled=false;Object.Destroy(collider);}
             return item;
         }
+        // The new automatic gun is 2x around the underside of the mounting
+        // block. The solid base and physical barrel proxy use that same frame.
+        public static void ConfigureAutomaticScale2(GameObject block,Transform pivot)
+        {
+            if(block==null)return;
+            var box=block.GetComponent<BoxCollider>();
+            if(box!=null){box.size=new Vector3(1.98f,1.06154f,1.98f);box.center=new Vector3(0,.03077f,0);}
+            if(pivot!=null){pivot.localPosition=Vector3.up*((.135f*2f+.26f)/BlockSize);pivot.localScale=Vector3.one*2f;}
+        }
         public static Transform Payload(Transform block,R3PartKind kind,R4WeaponKind weapon,Material material,bool solid,out Transform muzzle,R3WheelStyle wheelStyle=R3WheelStyle.Offroad,bool mirrorWheel=false)
         {
             muzzle=null;

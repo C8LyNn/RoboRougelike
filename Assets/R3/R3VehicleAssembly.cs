@@ -255,7 +255,7 @@ namespace RoboRougelike.R3
                 var block=item.AddComponent<P12_PipelineSafePlayerBlock>();
                 var mountPoints=item.AddComponent<R3BlockMountPoints>();mountPoints.Configure(state.Id,
                     R3MountingGrid.WorldPortMask(state.RotationQuarterTurns,state.ContactMask));
-                if(state.FootprintRevision==1)
+                if(state.FootprintRevision!=0)
                 {
                     var offsets=R3VehicleModel.OccupiedCells(state).Select(cell=>cell-state.Cell).ToArray();
                     mountPoints.SetFootprint(offsets);
@@ -277,6 +277,8 @@ namespace RoboRougelike.R3
                 bool wheelMirror=state.Kind==R3PartKind.Wheel&&R4WheelArt.MirrorForMount(model,state);
                 if(!wide)payload=R41PartGeometry.Payload(item.transform,state.Kind,state.Weapon,
                     state.Kind==R3PartKind.Gun?palette.Weapons[(int)state.Weapon]:palette.Parts[(int)state.Kind],true,out partMuzzle,state.WheelStyle,wheelMirror);
+                if(state.Kind==R3PartKind.Gun&&state.FootprintRevision==2)
+                    R41PartGeometry.ConfigureAutomaticScale2(item,payload);
                 if(state.Kind==R3PartKind.Wheel&&payload!=null)
                     R4WheelArt.TryAttach(item.transform,payload,wheelMirror,state.WheelStyle);
                 if(state.Kind==R3PartKind.Booster&&!wide)
@@ -301,7 +303,7 @@ namespace RoboRougelike.R3
                     RoboRougelike.R4_1.R4IndependentSteeringArt.TryAttach(item.transform);
                 if(state.Kind==R3PartKind.Gun&&payload!=null)
                 {
-                    var art=RoboRougelike.R4_1.R4WeaponArt.TryAttach(item.transform,payload,partMuzzle,state.Weapon);
+                    var art=RoboRougelike.R4_1.R4WeaponArt.TryAttach(item.transform,payload,partMuzzle,state.Weapon,state.FootprintRevision==2);
                     if(art!=null&&state.Weapon!=R4WeaponKind.RotarySaw)partMuzzle=art.Muzzle;
                 }
                 if(state.Kind==R3PartKind.Gun){part.GunPivot=payload;part.Muzzle=partMuzzle;}

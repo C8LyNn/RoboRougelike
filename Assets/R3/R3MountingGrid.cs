@@ -66,7 +66,7 @@ namespace RoboRougelike.R3
             if(part==null||!R3VehicleModel.OccupiedCells(part).Contains(occupiedCell))return false;
             // A large side tire occupies surrounding cells but is attached only
             // through the side socket at its axle anchor.
-            if(part.FootprintRevision==1&&occupiedCell!=part.Cell)return false;
+            if(part.FootprintRevision!=0&&occupiedCell!=part.Cell)return false;
             return PortOnFace(part,worldDirection);
         }
 
@@ -77,7 +77,7 @@ namespace RoboRougelike.R3
             footprint??=R3VehicleModel.OccupiedCells;
             if(!footprint(a).Contains(aCell)||!footprint(b).Contains(bCell))return false;
             if(ReferenceEquals(a,b))return true;
-            if((a.FootprintRevision==1&&aCell!=a.Cell)||(b.FootprintRevision==1&&bCell!=b.Cell))return false;
+            if((a.FootprintRevision!=0&&aCell!=a.Cell)||(b.FootprintRevision!=0&&bCell!=b.Cell))return false;
             return PortOnFace(a,direction)&&PortOnFace(b,-direction);
         }
 
