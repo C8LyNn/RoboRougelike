@@ -125,7 +125,7 @@ namespace RogueMachine.P12PipelineSafe
                 {
                     if(!grid.TryGetValue(cell+offset,out var other)||other==null||other==block||
                         other.DetachedFromVehicle||!other.transform.IsChildOf(transform)||
-                        !RoboRougelike.R3.R3MountingGrid.Compatible(block,other,offset))continue;
+                        !RoboRougelike.R3.R3MountingGrid.Compatible(block,cell,other,cell+offset))continue;
                     if(!health.TryGetValue(other,out var hp))
                     {
                         hp=other.GetComponent<P12PipelineSafeDamageable>();
@@ -559,7 +559,7 @@ namespace RogueMachine.P12PipelineSafe
                     }
 
                     if(!grid.TryGetValue(next,out var nextBlock)||
-                       !RoboRougelike.R3.R3MountingGrid.Compatible(grid[current],nextBlock,offset))
+                       !RoboRougelike.R3.R3MountingGrid.Compatible(grid[current],current,nextBlock,next))
                         continue;
 
                     connected.Add(
@@ -653,7 +653,7 @@ namespace RogueMachine.P12PipelineSafe
                             offset;
 
                         if(handled.Contains(next)||!disconnectedGrid.TryGetValue(next,out var nextBlock)||
-                           !RoboRougelike.R3.R3MountingGrid.Compatible(disconnectedGrid[current],nextBlock,offset))
+                           !RoboRougelike.R3.R3MountingGrid.Compatible(disconnectedGrid[current],current,nextBlock,next))
                             continue;
 
                         handled.Add(

@@ -68,14 +68,29 @@ namespace RoboRougelike.R3
         /// </summary>
         public static bool Compatible(P12_PipelineSafePlayerBlock a,
             P12_PipelineSafePlayerBlock b,Vector3Int direction)
+            =>CompatibleAtOffsets(a,Vector3Int.zero,b,Vector3Int.zero,direction);
+
+        // Runtime traversal knows the exact occupied cells at the contact;
+        // multi-cell parts need not expose the anchor's ports on every cell.
+        public static bool Compatible(P12_PipelineSafePlayerBlock a,Vector3Int aCell,
+            P12_PipelineSafePlayerBlock b,Vector3Int bCell)
+        {
+            if(a==null||b==null)return false;
+            var direction=bCell-aCell;
+            if(direction.sqrMagnitude!=1)return false;
+            return CompatibleAtOffsets(a,aCell-a.LogicalGridPosition,b,bCell-b.LogicalGridPosition,direction);
+        }
+        private static bool CompatibleAtOffsets(P12_PipelineSafePlayerBlock a,Vector3Int aOffset,
+            P12_PipelineSafePlayerBlock b,Vector3Int bOffset,Vector3Int direction)
         {
             if(a==null||b==null)return false;
             var left=a.GetComponent<R3BlockMountPoints>();
             var right=b.GetComponent<R3BlockMountPoints>();
+            if((left!=null&&!left.ContainsOffset(aOffset))||(right!=null&&!right.ContainsOffset(bOffset)))return false;
             if(left!=null&&right!=null&&!string.IsNullOrEmpty(left.GroupId)&&left.GroupId==right.GroupId)
                 return true;
-            int lm=left!=null?left.WorldMask:AllFaces;
-            int rm=right!=null?right.WorldMask:AllFaces;
+            int lm=left!=null?left.WorldMaskAt(aOffset):AllFaces;
+            int rm=right!=null?right.WorldMaskAt(bOffset):AllFaces;
             return (lm&FaceBit(direction))!=0 && (rm&FaceBit(-direction))!=0;
         }
 
@@ -90,7 +105,19 @@ namespace RoboRougelike.R3
         public string GroupId=>groupId;
         public int WorldMask=>worldMask;
         private Vector3Int[] gridOffsets={Vector3Int.zero};
+        private Dictionary<Vector3Int,int> cellPortMasks;
         public IEnumerable<Vector3Int> GridOffsets=>gridOffsets;
+        public bool ContainsOffset(Vector3Int offset)=>Array.IndexOf(gridOffsets,offset)>=0;
+        public int WorldMaskAt(Vector3Int offset)=>!ContainsOffset(offset)?0:cellPortMasks!=null?
+            (cellPortMasks.TryGetValue(offset,out var mask)?mask:0):worldMask;
+        // Keys are already-rotated offsets relative to the block's grid anchor.
+        // When provided, missing cells fail closed rather than inheriting a port.
+        public void SetCellPortMasks(IDictionary<Vector3Int,int> masks)
+        {
+            if(masks==null)throw new ArgumentNullException(nameof(masks));
+            cellPortMasks=new Dictionary<Vector3Int,int>();
+            foreach(var item in masks)cellPortMasks.Add(item.Key,item.Value&R3MountingGrid.AllFaces);
+        }
         public void SetFootprint(IEnumerable<Vector3Int> offsets)
         {
             gridOffsets=new List<Vector3Int>(offsets).ToArray();
