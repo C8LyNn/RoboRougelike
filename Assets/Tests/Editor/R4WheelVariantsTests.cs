@@ -14,6 +14,23 @@ using UnityEngine.TestTools;
 public sealed class R4WheelVariantsTests
 {
     [UnitySetUp]public IEnumerator Setup(){EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();while(R1RunController.Instance?.Progress==null)yield return null;}
+    [UnityTest]public IEnumerator InvalidPlacementShowsOnlyRedCandidateWithoutOtherPartVolumes()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
+        var garage=run.Garage;garage.UseInventory=false;garage.SelectedPart=R3PartKind.Wheel;
+        garage.SetTool(R41GarageTool.Mount);garage.Select(run.VehicleModel.Parts.First(p=>p.Kind==R3PartKind.Core).Cell);
+        Assert.That(garage.PreviewValid,Is.False);
+        var renderers=garage.Preview.GetComponentsInChildren<Renderer>(true).Where(r=>r.enabled).ToArray();
+        Assert.That(renderers,Is.Not.Empty);
+        foreach(var material in renderers.SelectMany(r=>r.sharedMaterials))
+            Assert.That(material.color.r,Is.GreaterThan(material.color.g),"Every visible part of an invalid ghost must be red.");
+        var overlay=Object.FindFirstObjectByType<RoboRougelike.B01.GarageSpatialW28.B0112GarageSpatialOverlay>();
+        overlay.RebuildReadout(garage);
+        var field=overlay.GetType().GetField("boxes",BindingFlags.Instance|BindingFlags.NonPublic);
+        var boxes=(System.Collections.Generic.List<RoboRougelike.B01.GarageSpatialW28.B0112ZoneBox>)field.GetValue(overlay);
+        Assert.That(boxes.All(b=>b.Kind==RoboRougelike.B01.GarageSpatialW28.B0112ZoneKind.PotentialSocket||b.Kind==RoboRougelike.B01.GarageSpatialW28.B0112ZoneKind.ValidGreen),Is.True,
+            "No colored volumes or barrel lines from other parts should obscure the candidate.");
+    }
     [UnityTest]public IEnumerator GaragePreviewShowsTheSameSingleWheelContactAsInstallation()
     {
         var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
@@ -22,6 +39,9 @@ public sealed class R4WheelVariantsTests
         Assert.That(run.GarageRemove(cell),Is.True);yield return null;
         var garage=run.Garage;garage.ChooseInventory(id);garage.Select(cell);
         var preview=garage.CandidatePart();
+        Assert.That(garage.PreviewValid,Is.True,garage.PlacementIssue);
+        foreach(var material in garage.Preview.GetComponentsInChildren<Renderer>(true).Where(r=>r.enabled).SelectMany(r=>r.sharedMaterials))
+            Assert.That(material.color.g,Is.GreaterThan(material.color.r),"Every visible part of a valid ghost must be green.");
         Assert.That(preview.ContactMask==R3MountingGrid.FaceBit(Vector3Int.left)||preview.ContactMask==R3MountingGrid.FaceBit(Vector3Int.right),Is.True,
             "Only the real connected side may be presented as a candidate socket.");
         Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);

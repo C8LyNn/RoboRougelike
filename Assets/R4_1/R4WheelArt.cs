@@ -168,11 +168,17 @@ namespace RoboRougelike.R4_1
             if(rotor==null)return;
             if(owner==null||!transform.IsChildOf(owner.transform))owner=GetComponentInParent<Rigidbody>(true);
             if(owner==null)return;
-            var direction=Vector3.Cross(rotor.right,transform.up);
+            // A reflected FBX hierarchy reverses handedness: Transform.right
+            // is derived from rotation alone and can disagree with the actual
+            // visible mesh. Derive its positive rotation axis from the basis
+            // vectors that include the mirrored scale instead.
+            var axis=Vector3.Cross(rotor.TransformVector(Vector3.up),rotor.TransformVector(Vector3.forward)).normalized;
+            var direction=Vector3.Cross(axis,transform.up);
             if(direction.sqrMagnitude<.0001f)return;
             float speed=Vector3.Dot(owner.GetPointVelocity(rotor.position),direction.normalized);
             if(float.IsNaN(speed)||float.IsInfinity(speed))return;
-            rotor.Rotate(Vector3.right,speed/radiusMeters*Mathf.Rad2Deg*Time.deltaTime,Space.Self);
+            float determinant=Vector3.Dot(Vector3.Cross(rotor.TransformVector(Vector3.right),rotor.TransformVector(Vector3.up)),rotor.TransformVector(Vector3.forward));
+            rotor.Rotate(Vector3.right,speed/radiusMeters*Mathf.Rad2Deg*Time.deltaTime*(determinant<0?-1f:1f),Space.Self);
         }
     }
 }

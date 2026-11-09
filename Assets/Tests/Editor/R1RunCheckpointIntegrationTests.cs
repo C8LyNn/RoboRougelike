@@ -21,6 +21,20 @@ public sealed class R1RunCheckpointIntegrationTests
         for(int i=0;i<300&&R1RunController.Instance?.Progress==null;i++)yield return null;
         run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
     }
+    [UnityTest] public IEnumerator SelectedStarterVariantAndBudgetSurviveSaveAndLoad()
+    {
+        Assert.That(run.SelectVehicle(R3VehicleKind.Light,3),Is.True);
+        Assert.That(run.PrepareUnifiedRun(),Is.True);yield return null;
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(200));
+        Assert.That(run.SaveRunCheckpoint(),Is.True,run.RunSaveMessage);
+        Assert.That(R1RunCheckpointStorage.Read(path).variant,Is.EqualTo(3));
+        var previous=run;run.RestartRun();
+        for(int i=0;i<300&&(R1RunController.Instance==previous||R1RunController.Instance?.Progress==null);i++)yield return null;
+        run=R1RunController.Instance;Assert.That(run.LoadRunCheckpoint(),Is.True,run.RunSaveMessage);
+        Assert.That(run.SelectedVehicle,Is.EqualTo(R3VehicleKind.Light));Assert.That(run.SelectedVehicleVariant,Is.EqualTo(3));
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(200));
+        Assert.That(run.VehicleModel.Design.Name,Is.EqualTo(R3VehicleCatalog.Create(R3VehicleKind.Light,3).Name));
+    }
     [UnityTest] public IEnumerator SaveAfterVictoryRestoresGarageWithoutDuplicatingPartsOrReward()
     {
         Assert.That(run.SelectVehicle(R3VehicleKind.Light),Is.True);Assert.That(run.PrepareUnifiedRun(),Is.True);yield return null;

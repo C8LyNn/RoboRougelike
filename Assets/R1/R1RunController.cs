@@ -28,6 +28,7 @@ namespace RoboRougelike.R1
         public string TechnologyMessage { get; private set; }
         public R1RunStats ActiveStats => Player?.GetComponent<R3MountedBonusEffects>()?.EffectiveStats??Progress?.Stats;
         public R3VehicleKind SelectedVehicle { get; private set; }
+        public int SelectedVehicleVariant { get; private set; }
         public R3GarageView Garage { get; private set; }
         public int LastScrapReward { get; private set; }
         public R4SalvageLedger Salvage { get; private set; }
@@ -106,7 +107,8 @@ namespace RoboRougelike.R1
             try{candidate=new R5RunPlan(Definition.RouteStages,RequestedSeed);}
             catch(System.ArgumentException problem){Error=problem.Message;return false;}
             if(!Progress.Start())return false;
-            VehicleModel=new R3VehicleModel(R3VehicleCatalog.Create(SelectedVehicle),Definition.GaragePrices);
+            VehicleModel=new R3VehicleModel(R3VehicleCatalog.Create(SelectedVehicle,SelectedVehicleVariant),Definition.GaragePrices);
+            VehicleModel.Award(R3VehicleCatalog.StartingScrap(SelectedVehicle));
             runId=System.Guid.NewGuid().ToString("N");
             Plan=candidate;
             DefeatedEnemies=EarnedScrap=RecoveredModules=LastScrapReward=0;
@@ -141,10 +143,10 @@ namespace RoboRougelike.R1
             return true;
         }
 
-        public bool SelectVehicle(R3VehicleKind kind)
+        public bool SelectVehicle(R3VehicleKind kind,int variant=0)
         {
-            if(Progress==null||Progress.State!=R1RunState.Ready||!System.Enum.IsDefined(typeof(R3VehicleKind),kind))return false;
-            SelectedVehicle=kind;return true;
+            if(Progress==null||Progress.State!=R1RunState.Ready||!System.Enum.IsDefined(typeof(R3VehicleKind),kind)||variant<0||variant>=4)return false;
+            SelectedVehicle=kind;SelectedVehicleVariant=variant;return true;
         }
         public bool StartNextEncounter()
         {

@@ -186,12 +186,8 @@ namespace RoboRougelike.B01.GarageSpatialW28
             // Heavy builds cannot starve its green/red indication at MaxBoxes.
             reason=source.PlacementIssue;
             var tint=CandidateTint(source.HasTarget,reason);
-            // A filled cube hides the wedge and other shaped armor ghosts.
-            // Their actual preview mesh already carries the valid/invalid tint.
-            if(source.MountKind!=R3PartKind.Armor||source.MountArmorShape==R3ArmorShape.Cube)
-                foreach(var cell in source.CandidateOccupiedCells())
-                    Add(tint,partRoot.TransformPoint((Vector3)cell*CellMeters),orientation,
-                        Vector3.one*(R41PartGeometry.BlockSize+.025f));
+            // The actual part ghost already displays green/red. Extra filled
+            // cells and unrelated weapon/wheel volumes obscure its geometry.
             // Show green trusted socket faces only near a candidate that the real
             // R3+BUILD001 physical validator has ALREADY accepted; green never
             // grants permission by itself and cannot override a red host rejection.
@@ -211,13 +207,6 @@ namespace RoboRougelike.B01.GarageSpatialW28
                         new Vector3(.15f,.15f,.035f));
                 }
             }
-            foreach(var p in assembly.Parts)
-            {
-                if(p==null||!p.Operational||!p.transform.IsChildOf(partRoot))continue;
-                var part=model.Parts.Find(item=>item.Id==p.Id);
-                AddFunctionalEnvelope(p.transform,p.Kind,p.Weapon,part?.FootprintRevision??0);
-            }
-            AddFunctionalEnvelope(source.Preview,source.MountKind,source.MountWeapon,source.CandidateFootprintRevision);
         }
 
         void LateUpdate()

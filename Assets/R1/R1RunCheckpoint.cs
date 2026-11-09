@@ -11,7 +11,7 @@ namespace RoboRougelike.R1
 {
     [Serializable] public sealed class R1RunCheckpoint
     {
-        public int version=1,seed,vehicle,defeated,earned,recovered,lastReward;
+        public int version=1,seed,vehicle,variant,defeated,earned,recovered,lastReward;
         public string runId;
         public R1ProgressCheckpoint progress;
         public R3ModelCheckpoint model;
@@ -87,10 +87,10 @@ namespace RoboRougelike.R1
             try
             {
                 Player?.GetComponent<R3VehicleAssembly>()?.Capture();
-                var document=new R1RunCheckpoint{version=VehicleModel.Parts.Concat(VehicleModel.Inventory).Any(p=>p.Tier>1)?2:1,seed=Seed,vehicle=(int)SelectedVehicle,runId=runId,
+                var document=new R1RunCheckpoint{version=VehicleModel.Parts.Concat(VehicleModel.Inventory).Any(p=>p.Tier>1)?2:1,seed=Seed,vehicle=(int)SelectedVehicle,variant=SelectedVehicleVariant,runId=runId,
                     defeated=DefeatedEnemies,earned=EarnedScrap,recovered=RecoveredModules,lastReward=LastScrapReward,
                     progress=Progress.MakeGarageCheckpoint(),model=VehicleModel.MakeCheckpoint(Time.time)};
-                if(!R3VehicleModel.TryRestoreCheckpoint(document.model,SelectedVehicle,Definition.GaragePrices,Time.time,out _,out var error))
+                if(!R3VehicleModel.TryRestoreCheckpoint(document.model,SelectedVehicle,Definition.GaragePrices,Time.time,out _,out var error,SelectedVehicleVariant))
                     throw new InvalidDataException(error);
                 R1RunCheckpointStorage.Write(R1RunCheckpointStorage.PathName,document);
                 RunSaveMessage="Zapisano wyprawę w garażu.";Garage.Message=RunSaveMessage;return true;
@@ -103,22 +103,24 @@ namespace RoboRougelike.R1
             try
             {
                 var data=R1RunCheckpointStorage.Read(R1RunCheckpointStorage.PathName);
-                if(!Enum.IsDefined(typeof(R3VehicleKind),data.vehicle)||!Guid.TryParseExact(data.runId,"N",out _)||
+                if(!Enum.IsDefined(typeof(R3VehicleKind),data.vehicle)||data.variant<0||data.variant>=4||!Guid.TryParseExact(data.runId,"N",out _)||
                     data.defeated<0||data.earned<0||data.recovered<0||data.lastReward<0||
                     !R1RunProgress.TryRestoreGarage(data.progress,Definition.Encounters.Length,out var restoredProgress))
                     throw new InvalidDataException("Niepoprawny postęp lub dane wyprawy.");
                 var kind=(R3VehicleKind)data.vehicle;
-                if(!R3VehicleModel.TryRestoreCheckpoint(data.model,kind,Definition.GaragePrices,Time.time,out var restoredModel,out var error))
+                if(!R3VehicleModel.TryRestoreCheckpoint(data.model,kind,Definition.GaragePrices,Time.time,out var restoredModel,out var error,data.variant))
                     throw new InvalidDataException(error);
                 // Legacy owned weapons remain purchasable after loading old saves.
                 Technology?.Discover(restoredModel.Parts.Concat(restoredModel.Inventory));
                 if(Technology?.Error!=null)TechnologyMessage=Technology.Error;
                 var restoredPlan=new R5RunPlan(Definition.RouteStages,data.seed);
                 var player=R3VehicleAssembly.Build(restoredModel,restoredProgress.Stats,palette,new Vector3(0,.7f,-22),Quaternion.identity);
-                Progress=restoredProgress;VehicleModel=restoredModel;Plan=restoredPlan;SelectedVehicle=kind;RequestedSeed=data.seed;runId=data.runId;
+                Progress=restoredProgress;VehicleModel=restoredModel;Plan=restoredPlan;SelectedVehicle=kind;SelectedVehicleVariant=data.variant;RequestedSeed=data.seed;runId=data.runId;
                 DefeatedEnemies=data.defeated;EarnedScrap=data.earned;RecoveredModules=data.recovered;LastScrapReward=data.lastReward;
                 Player=player;followCamera.Configure(Player.transform,Player.CameraPivot);SetSimulation(false);Garage.Open();
-                RunSaveMessage=restoredModel.LegacyPartsMovedToInventory>0||restoredModel.LegacyPortPartsMovedToInventory>0?
+                RunSaveMessage=restoredModel.LegacyGunScalePending>0?
+                    "Wczytano starszy zapis bez zmian broni: zwolnij miejsce w magazynie, aby bezpiecznie dostosować jej rozmiar.":
+                    restoredModel.LegacyPartsMovedToInventory>0||restoredModel.LegacyPortPartsMovedToInventory>0?
                     $"Wczytano starszy zapis. Przeniesiono do magazynu {restoredModel.LegacyPartsMovedToInventory+restoredModel.LegacyPortPartsMovedToInventory} części po zmianie rozmiarów lub punktów mocowania. Sprawdź konstrukcję.":
                     restoredModel.LegacyPortMasksNormalized>0?"Wczytano wyprawę. Dopasowano punkty mocowania kół i dział.":"Wczytano wyprawę.";
                 Garage.Message=RunSaveMessage;return true;

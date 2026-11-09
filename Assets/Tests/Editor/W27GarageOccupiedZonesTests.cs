@@ -53,52 +53,44 @@ public class W27GarageOccupiedZonesTests
             Assert.That(Vector3.Dot(point.Rotation*Vector3.forward,assembly.transform.TransformDirection(expected)),Is.GreaterThan(.99f),
                 "The offered socket follows the rotated local gun base.");
     }
-    [UnityTest] public IEnumerator OccupiedGridIsVisibleAndTracksActualGarageConstructionWithoutColliders()
+    [UnityTest] public IEnumerator SimplifiedGarageHidesGridAndStillAllowsConstruction()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");
         yield return new EnterPlayMode();
+        yield return VerifySimplifiedGrid();
+    }
+    static IEnumerator VerifySimplifiedGrid()
+    {
         float end=Time.realtimeSinceStartup+15;
         while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<end)yield return null;
         var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
         run.SelectVehicle(R3VehicleKind.Light);Assert.That(run.OpenSandboxGarage(),Is.True);
         var lines=run.Player.GetComponentsInChildren<LineRenderer>().Where(l=>l.name=="W27 occupied cell").ToArray();
-        Assert.That(lines.Length,Is.EqualTo(20),"Light construction has 15 armor/core cells, 4 wheels and 1 gun.");
-        Assert.That(lines.All(l=>l.GetComponent<Collider>()==null),Is.True,"The overlay cannot affect hit tests or physics.");
-        Assert.That(lines.All(l=>l.positionCount>=16&&!l.useWorldSpace),Is.True);
-        Assert.That(lines.All(l=>l.sharedMaterial.color.r>l.sharedMaterial.color.g),Is.True);
-        Assert.That(lines.All(l=>l.sharedMaterial.GetColor("_BaseColor").a>=.9f&&l.startWidth>=.02f),Is.True,
-            "Occupied-cell outlines must remain visible against both bright and dark vehicle surfaces.");
-        Assert.That(lines.Any(l=>Vector3.Distance(l.transform.localPosition,new Vector3(.55f,0,1.1f))<.001f),Is.True,"The displayed cell uses the real 0.55m grid.");
-        Assert.That(run.GarageBuy(new Vector3Int(1,1,1),R3PartKind.Armor),Is.True);
-        lines=run.Player.GetComponentsInChildren<LineRenderer>().Where(l=>l.name=="W27 occupied cell").ToArray();
-        Assert.That(lines.Length,Is.EqualTo(21),"The overlay must refresh after an actual successful purchase.");
-        Assert.That(lines.Any(l=>Vector3.Distance(l.transform.localPosition,new Vector3(.55f,.55f,.55f))<.001f),Is.True);
-        Assert.That(run.GarageBuy(new Vector3Int(1,1,2),R3PartKind.DirectionalShield,new Vector3Int(3,0,0)),Is.True);
-        lines=run.Player.GetComponentsInChildren<LineRenderer>().Where(l=>l.name=="W27 occupied cell").ToArray();
-        Assert.That(lines.Length,Is.EqualTo(22),"The rotated shield reserves exactly one cell.");
-        Assert.That(lines.Any(l=>Vector3.Distance(l.transform.localPosition,new Vector3(.55f,.55f,1.1f))<.001f),Is.True,"The rotated shield's occupied cell is shown.");
+        Assert.That(lines,Is.Empty,"The garage no longer overlays every existing part with a distracting grid.");
+        var garage=run.Garage;garage.UseInventory=false;garage.SelectedPart=R3PartKind.Armor;
+        var free=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>run.VehicleModel.PlacementError(c,R3PartKind.Armor)==null);
+        garage.Select(free);Assert.That(garage.PreviewValid,Is.True);
+        Assert.That(garage.ClickTarget(),Is.True,"Construction still works without the old grid overlay.");
+        Assert.That(run.Player.GetComponentsInChildren<LineRenderer>().Where(l=>l.name=="W27 occupied cell"),Is.Empty);
         run.Garage.Close();
         Assert.That(run.Player.GetComponentsInChildren<LineRenderer>().Any(l=>l.name=="W27 occupied cell"),Is.False,"Closing the garage must immediately hide its overlay.");
     }
-    [UnityTest] public IEnumerator WheelGhostDistinguishesItsProtrudingGeometryDuringRotation()
+    [UnityTest] public IEnumerator InvalidWheelGhostRemainsRedDuringRotation()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
         float end=Time.realtimeSinceStartup+15;
         while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<end)yield return null;
         var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
         run.SelectVehicle(R3VehicleKind.Light);Assert.That(run.OpenSandboxGarage(),Is.True);
-        var garage=run.Garage;garage.SelectedPart=R3PartKind.Wheel;garage.Select(new Vector3Int(1,1,1));
+        var garage=run.Garage;garage.UseInventory=false;garage.SelectedPart=R3PartKind.Wheel;garage.Select(run.VehicleModel.Parts.First(p=>p.Kind==R3PartKind.Core).Cell);
         foreach(var turn in new[]{0,1})
         {
             if(turn!=0)garage.RotateSelected(0,turn);
             var visual=garage.Preview.GetComponentsInChildren<Renderer>().FirstOrDefault(r=>r.name=="Koło");
             Assert.That(visual,Is.Not.Null,"The ghost uses the actual wheel geometry.");
             var color=visual.sharedMaterial.color;
-            Assert.That(color.b,Is.GreaterThan(color.r));Assert.That(color.b,Is.GreaterThan(color.g));
-            Assert.That(visual.sharedMaterial.GetColor("_BaseColor").a,Is.GreaterThanOrEqualTo(.65f),
-                "The protruding blue geometry must remain distinguishable over an invalid red ghost.");
-            Assert.That(visual.sharedMaterial.renderQueue,Is.GreaterThan(garage.Preview.GetComponent<Renderer>().sharedMaterial.renderQueue),
-                "The blue protruding geometry must render after the translucent placement ghost.");
+            Assert.That(color.r,Is.GreaterThan(color.g),"The whole invalid wheel ghost is red.");
             Assert.That(visual.GetComponentsInChildren<Collider>().All(c=>!c.enabled),Is.True,"Ghost geometry cannot affect physics.");
         }
     }
@@ -129,10 +121,15 @@ public class W27GarageOccupiedZonesTests
         run.SelectVehicle(R3VehicleKind.Standard);Assert.That(run.OpenSandboxGarage(),Is.True);
         var garage=run.Garage;garage.UseInventory=false;garage.SelectedPart=R3PartKind.Gun;
         garage.SetTool(RoboRougelike.R4_1.R41GarageTool.Mount);
-        var root=run.Player.transform;var face=new Vector3(2.5f,1,2)*RoboRougelike.R4_1.R41PartGeometry.Grid;
+        var root=run.Player.transform;var face=new Vector3(3.5f,0,2)*RoboRougelike.R4_1.R41PartGeometry.Grid;
         var ray=new Ray(root.TransformPoint(face+Vector3.right*.4f),-root.right);
         Assert.That(garage.Point(ray),Is.False,
             "An upright gun must not snap to a side socket which was not offered as compatible.");
+        Assert.That(garage.Preview.gameObject.activeInHierarchy,Is.True,"An invalid surface still needs a visible red ghost.");
+        Assert.That(garage.PreviewValid,Is.False);
+        int scrap=run.VehicleModel.Scrap;
+        Assert.That(garage.ClickTarget(),Is.False,"A red ghost must never authorize a purchase.");
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));
     }
     [UnityTest] public IEnumerator HeavyVehicleReusesMountPointListUntilItsSelectionChanges()
     {
