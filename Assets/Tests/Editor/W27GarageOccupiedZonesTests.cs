@@ -61,6 +61,15 @@ public class W27GarageOccupiedZonesTests
             Assert.That(assembly.Parts.Count,Is.EqualTo(81*height));
             Assert.That(points.Count,Is.EqualTo(height==1?117:225),"Exposed selectable positions must remain available.");
             Assert.That(surfaces,Is.LessThan(model.Parts.Count*3),"Occupied internal faces should not create selectable socket colliders.");
+            timer.Restart();
+            var repeated=R3BuildValidation.PotentialMountPoints(assembly,new R3PartState(Vector3Int.zero,R3PartKind.Armor));
+            Debug.Log("[LARGE-GARAGE-QA] cells="+model.Parts.Count+" repeated_lookup_ms="+timer.ElapsedMilliseconds);
+            Assert.That(repeated.Count,Is.EqualTo(points.Count));
+            var core=model.Parts.First(p=>p.Kind==R3PartKind.Core);core.Health=0;
+            Assert.That(R3BuildValidation.PotentialMountPoints(assembly,new R3PartState(Vector3Int.zero,R3PartKind.Armor)),Is.Empty,
+                "An offline core must immediately invalidate its old connection graph.");
+            core.Health=1;
+            Assert.That(R3BuildValidation.PotentialMountPoints(assembly,new R3PartState(Vector3Int.zero,R3PartKind.Armor)).Count,Is.EqualTo(points.Count));
             R3BuildValidation.SetGarageSockets(assembly,false);UnityEngine.Object.Destroy(player.gameObject);yield return null;
         }
     }

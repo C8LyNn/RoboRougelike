@@ -28,6 +28,8 @@ namespace RoboRougelike.R3
         readonly Dictionary<string,BuildDefinition> definitions=new Dictionary<string,BuildDefinition>();
         readonly BuildSocketRegistry registry=new BuildSocketRegistry();
         readonly List<GameObject> socketFaces=new List<GameObject>();
+        List<BuildInstalledPart> reachabilityInput;
+        HashSet<string> reachabilityResult;
         // No per-frame PhysX query arrays; full buffer means blocked, never permitted.
         const int FunctionalQueryCapacity=256;
         readonly Collider[] functionalOverlap=new Collider[FunctionalQueryCapacity];
@@ -95,6 +97,25 @@ namespace RoboRougelike.R3
                 result.Add(new BuildInstalledPart(p.Id,Definition(p),new BuildPose(p.Cell,p.RotationQuarterTurns),alive));
             }
             return result;
+        }
+
+        HashSet<string> ReachableForGarage()
+        {
+            var current=Installed();
+            bool unchanged=reachabilityInput!=null&&reachabilityInput.Count==current.Count;
+            for(int i=0;unchanged&&i<current.Count;i++)
+            {
+                var old=reachabilityInput[i];var next=current[i];
+                unchanged=old.PartId==next.PartId&&old.Alive==next.Alive&&
+                    old.Definition==next.Definition&&old.Pose.Anchor==next.Pose.Anchor&&
+                    old.Pose.QuarterTurns==next.Pose.QuarterTurns;
+            }
+            if(!unchanged)
+            {
+                reachabilityInput=current;
+                reachabilityResult=BuildPlacementRules.Reachable(current);
+            }
+            return reachabilityResult;
         }
 
         public string Validate(R3PartState candidate)
@@ -299,7 +320,7 @@ namespace RoboRougelike.R3
             if(gate==null||gate.sockets==null||gate.model==null||candidate==null)return result;
             var states=gate.model.Parts.ToDictionary(p=>p.Id);
             var occupied=new HashSet<Vector3Int>(gate.model.Parts.SelectMany(R3VehicleModel.OccupiedCells));
-            var reachable=BuildPlacementRules.Reachable(gate.Installed());
+            var reachable=gate.ReachableForGarage();
             var definition=gate.Definition(candidate);
             var atOrigin=candidate.Copy();atOrigin.Cell=Vector3Int.zero;
             var offsets=R3VehicleModel.OccupiedCells(atOrigin).ToArray();
