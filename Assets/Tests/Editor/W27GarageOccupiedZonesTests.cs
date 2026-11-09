@@ -11,6 +11,59 @@ using UnityEngine.TestTools;
 public class W27GarageOccupiedZonesTests
 {
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying)yield return new ExitPlayMode();}
+    [UnityTest] public IEnumerator RemovingArmorExposesItsFormerNeighboursSocket()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        yield return VerifyRemovedArmorSocket();
+    }
+    static IEnumerator VerifyRemovedArmorSocket()
+    {
+        float end=Time.realtimeSinceStartup+15;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<end)yield return null;
+        yield return null;
+        var run=R1RunController.Instance;
+        Assert.That(run,Is.Not.Null);
+        Assert.That(run.Progress,Is.Not.Null);
+        run.SelectVehicle(R3VehicleKind.Light);Assert.That(run.OpenSandboxGarage(),Is.True);
+        var removed=run.VehicleModel.Parts.First(p=>p.Kind==R3PartKind.Armor &&
+            R3VehicleModel.Neighbours.Any(d=>run.VehicleModel.At(p.Cell+d)?.Kind==R3PartKind.Armor));
+        var neighbour=R3VehicleModel.Neighbours.Select(d=>run.VehicleModel.At(removed.Cell+d))
+            .First(p=>p!=null&&p.Kind==R3PartKind.Armor);
+        Vector3Int dir=removed.Cell-neighbour.Cell;string id=neighbour.Id;
+        Func<B01.BUILD001.BuildMountSurface,bool> isFace=surface=>surface.PartInstanceId==id&&
+            Vector3.Dot(surface.transform.forward,run.Player.transform.TransformDirection(dir))>.99f;
+        Assert.That(run.Player.GetComponentsInChildren<B01.BUILD001.BuildMountSurface>().Any(isFace),Is.False);
+        Assert.That(run.GarageRemove(removed.Cell),Is.True);
+        Assert.That(run.Player.GetComponentsInChildren<B01.BUILD001.BuildMountSurface>().Any(isFace),Is.True,
+            "Removing a part must expose the newly usable physical socket on its neighbour.");
+    }
+    [UnityTest] public IEnumerator LargeStructureMountPointsRemainAvailable()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float end=Time.realtimeSinceStartup+15;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<end)yield return null;
+        var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        var palette=run.GetComponent<R3VisualPalette>();Assert.That(palette,Is.Not.Null);
+        foreach(int height in new[]{1,4})
+        {
+            var design=new R3VehicleDesign{Name="Diagnostic structure",Speed=7,TurnSpeed=80};
+            for(int x=-4;x<=4;x++)for(int y=0;y<height;y++)for(int z=-4;z<=4;z++)
+                design.Parts.Add(new R3PartState(new Vector3Int(x,y,z),x==0&&y==0&&z==0?R3PartKind.Core:R3PartKind.Armor));
+            var model=new R3VehicleModel(design);var timer=System.Diagnostics.Stopwatch.StartNew();
+            var player=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(1000,30,1000),Quaternion.identity);
+            var assembly=player.GetComponent<R3VehicleAssembly>();player.GetComponent<Rigidbody>().isKinematic=true;
+            long build=timer.ElapsedMilliseconds;R3BuildValidation.SetGarageSockets(assembly,true);
+            long sockets=timer.ElapsedMilliseconds-build;
+            var points=R3BuildValidation.PotentialMountPoints(assembly,new R3PartState(Vector3Int.zero,R3PartKind.Armor));
+            long lookup=timer.ElapsedMilliseconds-build-sockets;
+            int surfaces=assembly.GetComponentsInChildren<B01.BUILD001.BuildMountSurface>().Length;
+            Debug.Log("[LARGE-GARAGE-QA] cells="+model.Parts.Count+" build_ms="+build+" sockets_ms="+sockets+" lookup_ms="+lookup+" points="+points.Count+" surfaces="+surfaces);
+            Assert.That(assembly.Parts.Count,Is.EqualTo(81*height));
+            Assert.That(points.Count,Is.EqualTo(height==1?117:225),"Exposed selectable positions must remain available.");
+            Assert.That(surfaces,Is.LessThan(model.Parts.Count*3),"Occupied internal faces should not create selectable socket colliders.");
+            R3BuildValidation.SetGarageSockets(assembly,false);UnityEngine.Object.Destroy(player.gameObject);yield return null;
+        }
+    }
     [UnityTest] public IEnumerator CompatibleMountPointsAreVisibleBeforeAimingAtOne()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
