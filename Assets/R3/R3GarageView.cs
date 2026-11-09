@@ -84,6 +84,7 @@ namespace RoboRougelike.R3
         private R3ArmorShape mountPointsArmorShape;
         private R3WheelStyle mountPointsWheelStyle;
         private R4WeaponKind mountPointsWeapon;
+        private int mountPointsFootprintRevision;
         private Vector3Int mountPointsRotation;
         private int mountPointsMask;
         private bool mountPointsSelection;
@@ -134,24 +135,35 @@ namespace RoboRougelike.R3
                 var armor=Owned?.ArmorShape??R3ArmorShape.Cube;
                 var wheel=Owned?.WheelStyle??R3WheelStyle.Offroad;
                 var weapon=MountWeapon;
+                int footprintRevision=Owned?.FootprintRevision??0;
                 if(availableMountPoints==null||mountPointsAssembly!=assembly||mountPointsKind!=MountKind||
                    mountPointsRotation!=SelectedRotation||mountPointsMask!=mask||mountPointsSelection!=selected||
-                   mountPointsArmorShape!=armor||mountPointsWheelStyle!=wheel||mountPointsWeapon!=weapon)
+                   mountPointsArmorShape!=armor||mountPointsWheelStyle!=wheel||mountPointsWeapon!=weapon||
+                   mountPointsFootprintRevision!=footprintRevision)
                 {
                     var candidate=new R3PartState(Vector3Int.zero,MountKind){
                         RotationQuarterTurns=SelectedRotation,ContactMask=mask,
-                        ArmorShape=armor,WheelStyle=wheel,Weapon=weapon};
+                        ArmorShape=armor,WheelStyle=wheel,Weapon=weapon,FootprintRevision=footprintRevision};
                     availableMountPoints=HasMountSelection?
                         R3BuildValidation.PotentialMountPoints(assembly,candidate):new System.Collections.Generic.List<R3VisibleMountPoint>();
                     mountPointsAssembly=assembly;mountPointsKind=MountKind;
                     mountPointsRotation=SelectedRotation;mountPointsMask=mask;mountPointsSelection=selected;
                     mountPointsArmorShape=armor;mountPointsWheelStyle=wheel;mountPointsWeapon=weapon;
+                    mountPointsFootprintRevision=footprintRevision;
                 }
                 return availableMountPoints;
             }
         }
         public R3PartKind MountKind => Owned?.Kind??SelectedPart;
         public R4WeaponKind MountWeapon => Owned?.Weapon??SelectedWeapon;
+        public R3PartState CandidatePart()
+        {
+            var candidate=Owned?.Copy()??new R3PartState(Cell,MountKind){Weapon=MountWeapon};
+            candidate.Cell=Cell;candidate.RotationQuarterTurns=SelectedRotation;candidate.ContactMask=SelectedContactMask;
+            return candidate;
+        }
+        public System.Collections.Generic.IEnumerable<Vector3Int> CandidateOccupiedCells()=>
+            R3VehicleModel.OccupiedCells(CandidatePart());
         public string PlacementIssue => (UseInventory||!string.IsNullOrEmpty(SelectedInventoryId))&&Owned==null?
             "Wybierz kolejną część w magazynie. Zakup wymaga świadomego wyboru typu części.":!HasTarget?"Najedź na ścianę bloku pojazdu.":
             Owned?.Health<=0?"Zniszczony moduł wymaga odbudowy przed montażem.":
@@ -514,7 +526,7 @@ namespace RoboRougelike.R3
                     // silently substituting a different weapon or bonus.
                     var remaining=run.VehicleModel.Inventory.Where(p=>p.Kind==mounted.Kind&&
                         (p.Kind!=R3PartKind.Gun||p.Weapon==mounted.Weapon)&&
-                        (p.Kind!=R3PartKind.Wheel||p.WheelStyle==mounted.WheelStyle)&&
+                        (p.Kind!=R3PartKind.Wheel||(p.WheelStyle==mounted.WheelStyle&&p.FootprintRevision==mounted.FootprintRevision))&&
                         (p.Kind!=R3PartKind.Armor||p.ArmorShape==mounted.ArmorShape)&&
                         (p.Kind!=R3PartKind.BonusModule||p.UpgradeId==mounted.UpgradeId)).ToArray();
                     var next=remaining.Where(p=>p.Health>0).OrderByDescending(p=>p.Health).FirstOrDefault();

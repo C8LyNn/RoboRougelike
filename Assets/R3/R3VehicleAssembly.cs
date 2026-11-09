@@ -255,6 +255,13 @@ namespace RoboRougelike.R3
                 var block=item.AddComponent<P12_PipelineSafePlayerBlock>();
                 var mountPoints=item.AddComponent<R3BlockMountPoints>();mountPoints.Configure(state.Id,
                     R3MountingGrid.WorldPortMask(state.RotationQuarterTurns,state.ContactMask));
+                if(state.FootprintRevision==1)
+                {
+                    var offsets=R3VehicleModel.OccupiedCells(state).Select(cell=>cell-state.Cell).ToArray();
+                    mountPoints.SetFootprint(offsets);
+                    int axleMask=R3MountingGrid.WorldPortMask(state.RotationQuarterTurns,state.ContactMask);
+                    mountPoints.SetCellPortMasks(offsets.ToDictionary(offset=>offset,offset=>offset==Vector3Int.zero?axleMask:0));
+                }
                 if(state.Kind==R3PartKind.Armor&&state.ArmorShape!=R3ArmorShape.Cube&&
                     R4MountDefinitionAdapter.TryCreateCellPortMasks(R41PartGeometry.ArmorCatalogId(state.ArmorShape),
                         true,state.RotationQuarterTurns,out var cellPortMasks))

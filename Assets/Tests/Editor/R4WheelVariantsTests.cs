@@ -56,14 +56,17 @@ public sealed class R4WheelVariantsTests
         var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
         foreach(var style in new[]{R3WheelStyle.Offroad,R3WheelStyle.Slick,R3WheelStyle.LargeOffroad,R3WheelStyle.Monster})
         {
-            var design=new R3VehicleDesign{Name="Port QA"};design.Parts.Add(new R3PartState(Vector3Int.zero,R3PartKind.Core));
+            var design=new R3VehicleDesign{Name="Port QA"};var coreCell=Vector3Int.up;
+            design.Parts.Add(new R3PartState(coreCell,R3PartKind.Core));
             var model=new R3VehicleModel(design);model.Award(100);
             Assert.That(model.PurchaseToInventory(R3PartKind.Wheel,default,style),Is.True);
             var part=model.Inventory.Last();Assert.That(part.ContactMask,Is.EqualTo(3));
-            Assert.That(model.OwnedPlacementError(part.Id,Vector3Int.up,Vector3Int.zero),Is.Not.Null,style+" must not mount by its top face.");
-            Assert.That(model.OwnedPlacementError(part.Id,Vector3Int.right,Vector3Int.zero),Is.Null,style+" must mount by its side.");
-            Assert.That(model.Mount(part.Id,Vector3Int.right),Is.True);
-            Assert.That(model.At(Vector3Int.right).ContactMask,Is.EqualTo(3));
+            Assert.That(R3MountingGrid.PortOnFace(part,Vector3Int.down),Is.False,style+" has no upper or lower axle socket.");
+            Assert.That(model.OwnedPlacementError(part.Id,coreCell+Vector3Int.up,Vector3Int.zero),Is.Not.Null,style+" must not mount by its top face.");
+            var side=coreCell+Vector3Int.right;
+            Assert.That(model.OwnedPlacementError(part.Id,side,Vector3Int.zero),Is.Null,style+" must mount by its side.");
+            Assert.That(model.Mount(part.Id,side),Is.True);
+            Assert.That(model.At(side).ContactMask,Is.EqualTo(3));
         }
         var current=run.VehicleModel;var original=current.Parts.First(p=>p.Kind==R3PartKind.Wheel);var originalId=original.Id;
         Assert.That(run.GarageRemove(original.Cell),Is.True);Assert.That(current.Inventory.Single(p=>p.Id==originalId).ContactMask,Is.EqualTo(3));
@@ -171,6 +174,39 @@ public sealed class R4WheelVariantsTests
         var data=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(Time.time)));
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Standard,model.Economy,Time.time,out var restored,out var error),Is.True,error);
         Assert.That(restored.Parts.Single(p=>p.Id==monster.Id).WheelStyle,Is.EqualTo(R3WheelStyle.Monster));
+    }
+    [UnityTest]public IEnumerator NewMonsterWheelReservesItsPhysicalCellsAndSurvivesRepairAndSave()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
+        var model=run.VehicleModel;model.Award(1000);
+        foreach(var cell in model.Parts.Where(p=>p.Kind==R3PartKind.Wheel&&p.Cell.x>0).Select(p=>p.Cell).ToArray())
+            Assert.That(run.GarageRemove(cell),Is.True,"Clear the factory wheels from the larger wheel's area.");
+        Assert.That(run.GaragePurchase(R3PartKind.Wheel,default,R3WheelStyle.Monster),Is.True);
+        var wheel=model.Inventory.Last();string id=wheel.Id;
+        Assert.That(wheel.FootprintRevision,Is.EqualTo(1),"A newly purchased Monster uses its 3x3 tire footprint.");
+        var low=new Vector3Int(3,0,0);
+        Assert.That(model.OwnedPlacementError(id,low,Vector3Int.zero),Does.Contain("siatkę"),"The tire cannot extend below the build grid.");
+        var target=new Vector3Int(3,1,0);
+        Assert.That(model.OwnedPlacementError(id,target,Vector3Int.zero),Is.Null,"The centered axle has chassis support and free space.");
+        var garage=run.Garage;garage.ChooseInventory(id);garage.Select(target);
+        Assert.That(garage.PreviewValid,Is.True,garage.PlacementIssue);
+        Assert.That(garage.CandidateOccupiedCells().Count(),Is.EqualTo(9),"The preview uses the same reserved cells.");
+        Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);yield return null;
+        var mounted=model.Parts.Single(p=>p.Id==id);Assert.That(R3VehicleModel.OccupiedCells(mounted).Count(),Is.EqualTo(9));
+        Assert.That(model.At(new Vector3Int(3,2,1)).Id,Is.EqualTo(id));
+        var actual=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==id);
+        Assert.That(actual.GetComponent<R3BlockMountPoints>().GridOffsets.Count(),Is.EqualTo(9));
+        Assert.That(actual.transform.Find("Koło").GetComponent<Collider>().bounds.extents.y,Is.EqualTo(.8f).Within(.02f));
+        var saved=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(Time.time)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(saved,R3VehicleKind.Standard,model.Economy,Time.time,out var restored,out var error),Is.True,error);
+        Assert.That(R3VehicleModel.OccupiedCells(restored.Parts.Single(p=>p.Id==id)).Count(),Is.EqualTo(9));
+        actual.Damageable.ApplyDamage(actual.Damageable.CurrentHp/.75f+1,actual.transform.position,Vector3.up);
+        run.Player.GetComponent<R3VehicleAssembly>().Capture();Assert.That(model.At(target).Health,Is.Zero);
+        Assert.That(run.GarageRepair(target),Is.True,"The destroyed large wheel can be restored with its whole footprint.");
+        yield return null;
+        Assert.That(R3VehicleModel.OccupiedCells(model.Parts.Single(p=>p.Id==id)).Count(),Is.EqualTo(9));
+        Assert.That(run.GarageRemove(new Vector3Int(3,2,1)),Is.True,"Removing any reserved cell removes one physical item.");
+        Assert.That(model.Inventory.Count(p=>p.Id==id),Is.EqualTo(1));
     }
     [UnityTest]public IEnumerator SmallForkNeedsUpperSupportAndUsesItsOwnTire()
     {

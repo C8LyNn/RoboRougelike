@@ -26,6 +26,9 @@ namespace RoboRougelike.R3
         public string Source = "Zakup / pojazd startowy";
         public R4WeaponKind Weapon;
         public R3WheelStyle WheelStyle;
+        // Zero is the one-cell footprint written by all existing saves.
+        // Revision 1 is reserved for the physical 3x3 Monster wheel pilot.
+        public int FootprintRevision;
         public R3ArmorShape ArmorShape;
         // A bonus is a physical, single inventory item occupying one grid cell.
         public string UpgradeId, UpgradeTitle, UpgradeDescription;
@@ -45,7 +48,7 @@ namespace RoboRougelike.R3
         public bool ThermalLocked;
         public float DefenseCharge=-1,DefenseRechargeAge=float.PositiveInfinity;
         public R3PartState(Vector3Int cell, R3PartKind kind, float health = 1) { Cell = cell; Kind = kind; Health = health; }
-        public R3PartState Copy() => new R3PartState(Cell, Kind, Health){Id=Id,Source=Source,Weapon=Weapon,WheelStyle=WheelStyle,ArmorShape=ArmorShape,Tier=Tier,SteeringMode=SteeringMode,DeviceReadyAt=DeviceReadyAt,Ammo=Ammo,ReloadReadyAt=ReloadReadyAt,ThermalHeat=ThermalHeat,ThermalLocked=ThermalLocked,DisruptionRemaining=DisruptionRemaining,DefenseCharge=DefenseCharge,DefenseRechargeAge=DefenseRechargeAge,
+        public R3PartState Copy() => new R3PartState(Cell, Kind, Health){Id=Id,Source=Source,Weapon=Weapon,WheelStyle=WheelStyle,FootprintRevision=FootprintRevision,ArmorShape=ArmorShape,Tier=Tier,SteeringMode=SteeringMode,DeviceReadyAt=DeviceReadyAt,Ammo=Ammo,ReloadReadyAt=ReloadReadyAt,ThermalHeat=ThermalHeat,ThermalLocked=ThermalLocked,DisruptionRemaining=DisruptionRemaining,DefenseCharge=DefenseCharge,DefenseRechargeAge=DefenseRechargeAge,
             UpgradeId=UpgradeId,UpgradeTitle=UpgradeTitle,UpgradeDescription=UpgradeDescription,
             UpgradeEffect=UpgradeEffect,UpgradeAmount=UpgradeAmount,
             RotationQuarterTurns=RotationQuarterTurns,ContactMask=ContactMask};
@@ -193,8 +196,8 @@ namespace RoboRougelike.R3
                 alive.Count(p=>IsPassiveEnergyPart(p.Kind)),alive.Any(p=>p.Kind==R3PartKind.Core));
             Energy.SetRegeneratorCount(alive.Where(p=>p.Kind==R3PartKind.EnergyRegenerator).Sum(p=>TierEffectUnits(p.Tier)));
         }
-        // Every part reserves one structural cell. Rotation changes ports and
-        // functional geometry, but never the size of its mounting footprint.
+        // The legacy overload describes a one-cell item. Versioned owned
+        // items use their own physical footprint via OccupiedCells(part).
         public static IEnumerable<Vector3Int> OccupiedCells(Vector3Int anchor,R3PartKind kind) =>
             OccupiedCells(anchor,kind,default);
         public static bool UsesWideFootprint(R3PartKind kind) => false;
@@ -202,22 +205,30 @@ namespace RoboRougelike.R3
         {
             yield return anchor;
         }
-        public static IEnumerable<Vector3Int> OccupiedCells(R3PartState part) =>
-            OccupiedCells(part.Cell,part.Kind,part.RotationQuarterTurns);
+        public static IEnumerable<Vector3Int> OccupiedCells(R3PartState part)
+        {
+            if(part.FootprintRevision==1&&part.Kind==R3PartKind.Wheel&&part.WheelStyle==R3WheelStyle.Monster)
+            {
+                for(int y=-1;y<=1;y++)for(int z=-1;z<=1;z++)
+                    yield return part.Cell+R3MountingGrid.Rotate(new Vector3Int(0,y,z),part.RotationQuarterTurns);
+                yield break;
+            }
+            yield return part.Cell;
+        }
         public R3PartState At(Vector3Int cell) => Parts.FirstOrDefault(p=>OccupiedCells(p).Contains(cell));
         private bool HasAliveExternalNeighbour(Vector3Int anchor,R3PartKind kind,
-            Vector3Int turns=default,int contacts=R3MountingGrid.AllFaces)
+            Vector3Int turns=default,int contacts=R3MountingGrid.AllFaces,R3PartState template=null)
         {
-            var footprint=new HashSet<Vector3Int>(OccupiedCells(anchor,kind,turns));
-            int worldPorts=R3MountingGrid.WorldPortMask(turns,contacts);
+            var candidate=template?.Copy()??new R3PartState(anchor,kind);
+            candidate.Cell=anchor;candidate.RotationQuarterTurns=turns;candidate.ContactMask=contacts;
+            var footprint=new HashSet<Vector3Int>(OccupiedCells(candidate));
             foreach(var cell in footprint)
                 foreach(var direction in Neighbours)
                 {
-                    if(footprint.Contains(cell+direction)||
-                       (worldPorts&R3MountingGrid.FaceBit(direction))==0)continue;
+                    if(footprint.Contains(cell+direction))continue;
                     var neighbour=At(cell+direction);
                     if(neighbour!=null&&neighbour.Health>0&&
-                       R3MountingGrid.PortOnFace(neighbour,-direction))return true;
+                       R3MountingGrid.Compatible(candidate,cell,neighbour,cell+direction))return true;
                 }
             return false;
         }
@@ -230,7 +241,9 @@ namespace RoboRougelike.R3
         public static bool ValidWheelStyle(R3PartState part)=>part!=null&&Enum.IsDefined(typeof(R3WheelStyle),part.WheelStyle)&&
             (part.Kind==R3PartKind.Wheel?(!HasForkMount(part.WheelStyle)||part.ContactMask==R3MountingGrid.FaceBit(Vector3Int.up)):
                 part.WheelStyle==R3WheelStyle.Offroad);
-        public static bool ValidEconomicPart(R3PartState part) => part!=null && ValidEconomicKind(part.Kind,part.Weapon) && ValidWheelStyle(part) && ValidArmorShape(part) && part.Tier>=0&&part.Tier<=3&&
+        public static bool ValidFootprint(R3PartState part)=>part!=null&&(part.FootprintRevision==0||
+            (part.FootprintRevision==1&&part.Kind==R3PartKind.Wheel&&part.WheelStyle==R3WheelStyle.Monster));
+        public static bool ValidEconomicPart(R3PartState part) => part!=null && ValidEconomicKind(part.Kind,part.Weapon) && ValidWheelStyle(part) && ValidArmorShape(part) && ValidFootprint(part) && part.Tier>=0&&part.Tier<=3&&
             (part.Tier<=1||SupportsFusion(part.Kind,part.Weapon))&&
             !float.IsNaN(part.Health)&&!float.IsInfinity(part.Health)&&part.Health>=0&&part.Health<=1;
         public int Price(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic) => !ValidEconomicKind(kind,weapon)?0:Math.Max(1,
@@ -260,7 +273,10 @@ namespace RoboRougelike.R3
             if (kind == R3PartKind.Core) return "Rdzeń jest jedyny i nie można go kupić.";
             if (!Enum.IsDefined(typeof(R3PartKind),kind)) return "Nieznany typ części.";
             if(kind==R3PartKind.Gun&&!Enum.IsDefined(typeof(R4WeaponKind),weapon))return "Nieznany rodzaj broni.";
-            var footprint=OccupiedCells(cell,kind,rotation).ToArray();
+            var stored=ownedId!=null?inventory.FirstOrDefault(p=>p.Id==ownedId):null;
+            var candidate=stored?.Copy()??new R3PartState(cell,kind){Weapon=weapon};
+            candidate.Cell=cell;candidate.RotationQuarterTurns=rotation;candidate.ContactMask=contactMask;
+            var footprint=OccupiedCells(candidate).ToArray();
             if(footprint.Any(c=>Math.Abs(c.x)>6||Math.Abs(c.z)>7||c.y<0||c.y>5))return "Moduł wykracza poza siatkę montażową.";
             if(footprint.Any(c=>At(c)!=null))return "Zajęte pole części. Utraconą część odtwórz lub usuń jej plan.";
             if(Parts.Sum(p=>OccupiedCells(p).Count())+footprint.Length>180)return "Limit 180 pól części.";
@@ -282,13 +298,10 @@ namespace RoboRougelike.R3
                 R3PartKind.Gyroscope=>2,R3PartKind.MagneticGrapple=>2,R3PartKind.DirectionalShield=>2,R3PartKind.PointDefense=>2,R3PartKind.StructuralScanner=>1,R3PartKind.ScannerPulse=>1,R3PartKind.IndependentSteering=>1,_=>8};
             if(kind>=R3PartKind.Booster&&kind!=R3PartKind.Battery&&kind!=R3PartKind.RepairPulse&&kind!=R3PartKind.DrivePower&&kind!=R3PartKind.EnergyRegenerator&&Parts.Count(p=>p.Kind==kind)>=limit)return "Limit modułów: "+limit+".";
             if(kind==R3PartKind.CrawlerTrack&&cell.x==0)return "Gąsienicę zamontuj po lewej lub prawej stronie.";
-            if (!HasAliveExternalNeighbour(cell,kind,rotation,contactMask))
+            if (!HasAliveExternalNeighbour(cell,kind,rotation,contactMask,candidate))
                 return "Brak zgodnych punktów mocowania ze sprawną konstrukcją.";
             if (!owned && Scrap < Price(kind,weapon)) return "Za mało Złomu.";
             if(installationGate==null)return null;
-            var candidate=new R3PartState(cell,kind){Weapon=weapon,RotationQuarterTurns=rotation,ContactMask=contactMask};
-            if(ownedId!=null){candidate.Id=ownedId;var stored=inventory.FirstOrDefault(p=>p.Id==ownedId);
-                if(stored!=null){candidate.ArmorShape=stored.ArmorShape;candidate.WheelStyle=stored.WheelStyle;}}
             return installationGate(candidate);
         }
         public bool Buy(Vector3Int cell,R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic,
@@ -310,6 +323,7 @@ namespace RoboRougelike.R3
                 (armorShape!=R3ArmorShape.Cube&&!R4_1.R41PartGeometry.ArmorShapeAvailable(armorShape)))return false;
             int price=Price(kind,weapon);if(price<=0||Scrap<price)return false;
             Scrap-=price;inventory.Add(new R3PartState(default,kind){Weapon=weapon,WheelStyle=wheelStyle,ArmorShape=armorShape,
+                FootprintRevision=kind==R3PartKind.Wheel&&wheelStyle==R3WheelStyle.Monster?1:0,
                 ContactMask=kind==R3PartKind.Wheel?(HasForkMount(wheelStyle)?R3MountingGrid.FaceBit(Vector3Int.up):
                     R3MountingGrid.FaceBit(Vector3Int.right)|R3MountingGrid.FaceBit(Vector3Int.left)):
                     armorShape==R3ArmorShape.Cube?R3MountingGrid.AllFaces:R4_1.R41PartGeometry.FullArmorContacts(armorShape)});return true;
@@ -330,7 +344,7 @@ namespace RoboRougelike.R3
             if (part == null || price <= 0 || Scrap < price) return false;
             if(part.Kind==R3PartKind.Gun&&InvalidWeaponTypes)return false;
             if (part.Health<=0&&!HasAliveExternalNeighbour(part.Cell,part.Kind,
-                part.RotationQuarterTurns,part.ContactMask))return false;
+                part.RotationQuarterTurns,part.ContactMask,part))return false;
             if(part.Health<=0&&restorationGate!=null&&!restorationGate(new[]{part}))return false;
             Scrap -= price; part.Health = 1; return true;
         }
@@ -386,7 +400,7 @@ namespace RoboRougelike.R3
             var batch=recovered.ToArray();
             if(inventory.Count+batch.Length>InventoryCapacity)return false;
             if(batch.Any(p=>p==null||float.IsNaN(p.Health)||float.IsInfinity(p.Health)||p.Health<0||p.Health>1||
-                !ValidEconomicKind(p.Kind,p.Weapon)||!ValidWheelStyle(p)||!ValidArmorShape(p)||p.Kind==R3PartKind.Armor||p.Kind==R3PartKind.Core||
+                !ValidEconomicKind(p.Kind,p.Weapon)||!ValidWheelStyle(p)||!ValidArmorShape(p)||!ValidFootprint(p)||p.Kind==R3PartKind.Armor||p.Kind==R3PartKind.Core||
                 (p.Kind==R3PartKind.BonusModule&&(string.IsNullOrWhiteSpace(p.UpgradeId)||
                     !Enum.IsDefined(typeof(R1UpgradeEffect),p.UpgradeEffect)||float.IsNaN(p.UpgradeAmount)||
                     float.IsInfinity(p.UpgradeAmount)||p.UpgradeAmount<0||p.UpgradeAmount>1))||
@@ -436,7 +450,7 @@ namespace RoboRougelike.R3
         public static bool SameFusionType(R3PartState a,R3PartState b) => a!=null&&b!=null&&a.Kind==b.Kind&&
             NormalizedTier(a.Tier)==NormalizedTier(b.Tier)&&
             (a.Kind!=R3PartKind.Gun||a.Weapon==b.Weapon)&&
-            (a.Kind!=R3PartKind.Wheel||a.WheelStyle==b.WheelStyle)&&
+            (a.Kind!=R3PartKind.Wheel||(a.WheelStyle==b.WheelStyle&&a.FootprintRevision==b.FootprintRevision))&&
             (a.Kind!=R3PartKind.Armor||a.ArmorShape==b.ArmorShape)&&
             (a.Kind!=R3PartKind.BonusModule||(!string.IsNullOrWhiteSpace(a.UpgradeId)&&a.UpgradeId==b.UpgradeId&&
                 Enum.IsDefined(typeof(R1UpgradeEffect),a.UpgradeEffect)&&a.UpgradeEffect==b.UpgradeEffect&&
@@ -493,7 +507,7 @@ namespace RoboRougelike.R3
                 foreach (var n in Neighbours)
                 { var next=current+n;
                     if(cells.TryGetValue(next,out var other)&&!visited.Contains(next)&&
-                        R3MountingGrid.Compatible(cells[current],other,n))
+                        R3MountingGrid.Compatible(cells[current],current,other,next))
                     {visited.Add(next);queue.Enqueue(next);}
                 }
             }
@@ -539,7 +553,7 @@ namespace RoboRougelike.R3
                     {
                         var next=current+direction;
                         if(cells.TryGetValue(next,out var other)&&!visited.Contains(next)&&
-                            R3MountingGrid.Compatible(cells[current],other,direction))
+                            R3MountingGrid.Compatible(cells[current],current,other,next))
                         {visited.Add(next);queue.Enqueue(next);}
                     }
                 }
@@ -589,7 +603,7 @@ namespace RoboRougelike.R3
                 {
                     var next=current+n;
                     if(!byCell.ContainsKey(next)||
-                        !R3MountingGrid.Compatible(byCell[current],byCell[next],n))continue;
+                        !R3MountingGrid.Compatible(byCell[current],current,byCell[next],next))continue;
                     int cost=costs[current]+(byCell[next].Health<=0?1:0);
                     if(costs.TryGetValue(next,out int old)&&old<=cost)continue;
                     costs[next]=cost;previous[next]=current;
