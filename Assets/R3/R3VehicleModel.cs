@@ -78,9 +78,10 @@ namespace RoboRougelike.R3
         public static float TierMass(int tier)=>NormalizedTier(tier)==3?1.3f:NormalizedTier(tier)==2?1.15f:1f;
         public static float TierWheelTraction(int tier)=>NormalizedTier(tier)==3?1.8f:NormalizedTier(tier)==2?1.35f:1f;
         public static bool HasSizedSideWheel(R3WheelStyle style)=>style==R3WheelStyle.LargeOffroad||style==R3WheelStyle.Monster;
+        public static bool SupportsGunScale2(R4WeaponKind weapon)=>weapon==R4WeaponKind.Basic||weapon==R4WeaponKind.Automatic;
         public static int NewPurchaseFootprint(R3PartKind kind,R4WeaponKind weapon,R3WheelStyle wheelStyle)=>
             kind==R3PartKind.Wheel&&HasSizedSideWheel(wheelStyle)?1:
-            kind==R3PartKind.Gun&&weapon==R4WeaponKind.Automatic?2:0;
+            kind==R3PartKind.Gun&&SupportsGunScale2(weapon)?2:0;
         public static bool HasForkMount(R3WheelStyle style)=>style==R3WheelStyle.SmallFork||style==R3WheelStyle.BalloonFork||style==R3WheelStyle.SpikedFork||style==R3WheelStyle.TwinRoad||style==R3WheelStyle.SteerRoad||style==R3WheelStyle.SteerOffroad||style==R3WheelStyle.CasterSlick||style==R3WheelStyle.SwingOffroad;
         public static bool HasSideMount(R3WheelStyle style)=>!HasForkMount(style);
         public static int StoredWheelContacts(R3PartState part)=>part!=null&&part.Kind==R3PartKind.Wheel&&HasSideMount(part.WheelStyle)?
@@ -210,7 +211,7 @@ namespace RoboRougelike.R3
         }
         public static IEnumerable<Vector3Int> OccupiedCells(R3PartState part)
         {
-            if(part.FootprintRevision==2&&part.Kind==R3PartKind.Gun&&part.Weapon==R4WeaponKind.Automatic)
+            if(part.FootprintRevision==2&&part.Kind==R3PartKind.Gun&&SupportsGunScale2(part.Weapon))
             {
                 for(int y=0;y<=1;y++)for(int x=-1;x<=1;x++)for(int z=-1;z<=1;z++)
                     yield return part.Cell+R3MountingGrid.Rotate(new Vector3Int(x,y,z),part.RotationQuarterTurns);
@@ -252,7 +253,7 @@ namespace RoboRougelike.R3
                 part.WheelStyle==R3WheelStyle.Offroad);
         public static bool ValidFootprint(R3PartState part)=>part!=null&&(part.FootprintRevision==0||
             (part.FootprintRevision==1&&part.Kind==R3PartKind.Wheel&&HasSizedSideWheel(part.WheelStyle))||
-            (part.FootprintRevision==2&&part.Kind==R3PartKind.Gun&&part.Weapon==R4WeaponKind.Automatic));
+            (part.FootprintRevision==2&&part.Kind==R3PartKind.Gun&&SupportsGunScale2(part.Weapon)));
         public static bool ValidEconomicPart(R3PartState part) => part!=null && ValidEconomicKind(part.Kind,part.Weapon) && ValidWheelStyle(part) && ValidArmorShape(part) && ValidFootprint(part) && part.Tier>=0&&part.Tier<=3&&
             (part.Tier<=1||SupportsFusion(part.Kind,part.Weapon))&&
             !float.IsNaN(part.Health)&&!float.IsInfinity(part.Health)&&part.Health>=0&&part.Health<=1;

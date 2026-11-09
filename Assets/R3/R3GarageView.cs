@@ -363,7 +363,7 @@ namespace RoboRougelike.R3
                     new R3PartState(cell,R3PartKind.Wheel){RotationQuarterTurns=rotation,ContactMask=contacts});
                 var payload=R41PartGeometry.Payload(item.transform,kind,weapon,material,false,out var muzzle,Owned?.WheelStyle??R3WheelStyle.Offroad,wheelMirror);
                 if(kind==R3PartKind.Gun&&CandidateFootprintRevision==2)
-                    R41PartGeometry.ConfigureAutomaticScale2(item,payload);
+                    R41PartGeometry.ConfigureGunScale2(item,payload);
                 // Reuse the player's model and axis adapter, but keep the
                 // original ghost geometry and do not create physical colliders.
                 if(!plan&&Tool==R41GarageTool.Mount)

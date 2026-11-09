@@ -12,12 +12,14 @@ using UnityEngine.TestTools;
 
 public sealed class AutomaticScaleTwoModelTests
 {
-    [Test] public void NewAutomaticHasVersionedFootprintWhileLegacyRetainsOneCell()
+    [TestCase(R4WeaponKind.Automatic)]
+    [TestCase(R4WeaponKind.Basic)]
+    public void NewGunHasVersionedFootprintWhileLegacyRetainsOneCell(R4WeaponKind weapon)
     {
         var design=new R3VehicleDesign{Name="Automatic QA",CoreHp=100,Speed=7,TurnSpeed=82};
         design.Parts.Add(new R3PartState(Vector3Int.zero,R3PartKind.Core));
         var model=new R3VehicleModel(design);model.Award(1000);
-        Assert.That(model.PurchaseToInventory(R3PartKind.Gun,R4WeaponKind.Automatic),Is.True);
+        Assert.That(model.PurchaseToInventory(R3PartKind.Gun,weapon),Is.True);
         var item=model.Inventory.Single();var old=item.Copy();old.FootprintRevision=0;
         Assert.That(item.FootprintRevision,Is.EqualTo(2));
         Assert.That(R3VehicleModel.OccupiedCells(item).Distinct().Count(),Is.EqualTo(18));
@@ -35,7 +37,7 @@ public sealed class AutomaticScaleTwoModelTests
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(save,R3VehicleKind.Light,null,0,out var restored,out var error),Is.True,error);
         Assert.That(restored.At(anchor+Vector3Int.right+Vector3Int.up).Id,Is.EqualTo(item.Id));
         var direct=new R3VehicleModel(design);direct.Award(1000);
-        Assert.That(direct.Buy(anchor,R3PartKind.Gun,R4WeaponKind.Automatic),Is.True);
+        Assert.That(direct.Buy(anchor,R3PartKind.Gun,weapon),Is.True);
         Assert.That(direct.At(anchor).FootprintRevision,Is.EqualTo(2),"Direct purchase must use the same footprint.");
     }
 
@@ -48,6 +50,36 @@ public sealed class AutomaticScaleTwoTests
         EditorSceneManager.OpenScene("Assets/scene 1.unity");
         yield return new EnterPlayMode();
         while(R1RunController.Instance?.Progress==null)yield return null;
+    }
+
+    [UnityTest] public IEnumerator EnlargedBasicMountsAndFiresForFreeFromItsModel()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
+        var model=run.VehicleModel;model.Award(1000);
+        foreach(var part in model.Parts.Where(p=>p.Kind==R3PartKind.Gun).ToArray())
+        {Assert.That(run.GarageRemove(part.Cell),Is.True);yield return null;}
+        var anchor=new Vector3Int(0,2,0);
+        Assert.That(run.GarageBuyWeapon(anchor,R4WeaponKind.Basic),Is.True);
+        var state=model.At(anchor);Assert.That(state.FootprintRevision,Is.EqualTo(2));
+        Assert.That(R3VehicleModel.OccupiedCells(state).Count(),Is.EqualTo(18));
+        var installed=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==state.Id);
+        Assert.That(installed.GetComponent<BoxCollider>().bounds.size.x,Is.GreaterThan(1f));
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();installed=assembly.Parts.Single(p=>p.Id==state.Id);
+        run.Player.GetComponent<Rigidbody>().isKinematic=true;
+        run.Player.GetComponent<P12PipelineSafeTankController>().enabled=false;
+        run.Player.transform.SetPositionAndRotation(new Vector3(1000,20,1000),Quaternion.identity);
+        installed.GunPivot.rotation=Quaternion.identity;installed.GetComponent<R4WeaponArt>().Sync();
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);
+        target.transform.position=installed.Muzzle.position+installed.Muzzle.forward*5;
+        target.transform.localScale=new Vector3(2,2,.5f);
+        var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(1000,false);
+        var bank=run.Player.GetComponent<VehicleEnergyBank>();float energy=bank.Current;
+        Physics.SyncTransforms();Assert.That(assembly.ClearProjectilePath(installed),Is.True);
+        assembly.FireGroup(false);Assert.That(bank.Current,Is.EqualTo(energy).Within(.001f));
+        float deadline=Time.realtimeSinceStartup+5;
+        while(hp.CurrentHp>=1000&&Time.realtimeSinceStartup<deadline)yield return new WaitForFixedUpdate();
+        Assert.That(hp.CurrentHp,Is.EqualTo(960).Within(.01f));Object.Destroy(target);
     }
 
     [UnityTest] public IEnumerator RealGarageShowsAndMountsEnlargedAutomaticWithTwoWorkingMuzzles()

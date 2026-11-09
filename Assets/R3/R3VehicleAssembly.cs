@@ -278,7 +278,7 @@ namespace RoboRougelike.R3
                 if(!wide)payload=R41PartGeometry.Payload(item.transform,state.Kind,state.Weapon,
                     state.Kind==R3PartKind.Gun?palette.Weapons[(int)state.Weapon]:palette.Parts[(int)state.Kind],true,out partMuzzle,state.WheelStyle,wheelMirror);
                 if(state.Kind==R3PartKind.Gun&&state.FootprintRevision==2)
-                    R41PartGeometry.ConfigureAutomaticScale2(item,payload);
+                    R41PartGeometry.ConfigureGunScale2(item,payload);
                 if(state.Kind==R3PartKind.Wheel&&payload!=null)
                     R4WheelArt.TryAttach(item.transform,payload,wheelMirror,state.WheelStyle);
                 if(state.Kind==R3PartKind.Booster&&!wide)

@@ -25,7 +25,7 @@ namespace RoboRougelike.R4_1
             var axes=block.gameObject.AddComponent<R4ArtWeaponAxisAdapter>();
             if(!axes.Bind(visual.transform,weapon==R4WeaponKind.Automatic?"R41":"R4W_"+weapon))
             {Destroy(visual);Destroy(axes);return null;}
-            if(scale2&&weapon==R4WeaponKind.Automatic)
+            if(scale2&&RoboRougelike.R3.R3VehicleModel.SupportsGunScale2(weapon))
             {
                 // Keep the bottom mounting face fixed while doubling the art.
                 visual.transform.localScale*=2f;
