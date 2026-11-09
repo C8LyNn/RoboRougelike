@@ -367,6 +367,37 @@ public sealed class EnergyCombatRefinementTests
         finally {UnityEngine.Object.DestroyImmediate(obstacles);UnityEngine.Object.DestroyImmediate(fieldObject);}
     }
 
+    [UnityTest] public IEnumerator CrowdedEnergyQueriesHaveBoundedSteadyStateAllocations()
+    {
+        EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
+        yield return new EnterPlayMode();
+        var obstacles=new GameObject("Energy allocation fixture");obstacles.transform.position=new Vector3(14000,2,14000);
+        var cube=new GameObject("Energy allocation pickup");cube.transform.position=obstacles.transform.position;
+        var fieldObject=new GameObject("Energy allocation field");fieldObject.transform.position=obstacles.transform.position-Vector3.up;
+        try
+        {
+            for(int i=0;i<1200;i++)obstacles.AddComponent<BoxCollider>().size=Vector3.one*.1f;
+            var pickup=cube.AddComponent<EnergyPickup>();var field=fieldObject.AddComponent<EnergyChargingField>();
+            pickup.enabled=false;field.enabled=false;Physics.SyncTransforms();
+            Assert.That(Physics.OverlapSphere(cube.transform.position,1.1f,~0,QueryTriggerInteraction.Ignore).Length,Is.GreaterThan(1024));
+            var pickupTick=(Action)Delegate.CreateDelegate(typeof(Action),pickup,typeof(EnergyPickup).GetMethod("FixedUpdate",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance));
+            var fieldTick=(Action)Delegate.CreateDelegate(typeof(Action),field,typeof(EnergyChargingField).GetMethod("FixedUpdate",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance));
+            for(int i=0;i<3;i++){pickupTick();fieldTick();}
+            using(var recorder=Unity.Profiling.ProfilerRecorder.StartNew(Unity.Profiling.ProfilerCategory.Memory,"GC Allocated In Frame",16))
+            {
+                Assert.That(recorder.Valid,Is.True);yield return null;yield return null;
+                long idle=recorder.LastValue;
+                for(int i=0;i<50;i++){pickupTick();fieldTick();}
+                yield return null;long sample=recorder.LastValue;
+                var control=new byte[1024*1024];control[0]=1;yield return null;long controlBytes=recorder.LastValue;GC.KeepAlive(control);
+                Debug.Log($"[ENERGY_QUERY_ALLOC] queries=50 colliders=1200 idle={idle} sample={sample} control={controlBytes}");
+                Assert.That(controlBytes,Is.GreaterThanOrEqualTo(1024*1024),"The profiler must detect a known allocation.");
+                Assert.That(sample-idle,Is.LessThan(20000),"Steady crowded queries must avoid a full allocation every tick.");
+            }
+        }
+        finally{UnityEngine.Object.Destroy(obstacles);UnityEngine.Object.Destroy(cube);UnityEngine.Object.Destroy(fieldObject);}
+    }
+
     [UnityTearDown] public IEnumerator Cleanup()
     {if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }
