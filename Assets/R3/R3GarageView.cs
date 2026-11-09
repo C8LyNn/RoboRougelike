@@ -88,7 +88,8 @@ namespace RoboRougelike.R3
         private Vector3Int mountPointsRotation;
         private int mountPointsMask;
         private bool mountPointsSelection;
-        private readonly RaycastHit[] hits=new RaycastHit[512];
+        private const int MaxRayHits=4096;
+        private RaycastHit[] hits=new RaycastHit[512];
         private float yaw=35,pitch=32,distance=9,previousNear;
         private Vector3 pivotLocal;
         private bool orbitDragging,isOpen,arenaWasActive;
@@ -460,14 +461,16 @@ namespace RoboRougelike.R3
         {
             if(run.Progress?.State!=R1RunState.Garage||run.Transitioning)return false;
             Physics.SyncTransforms();
-            int count=Physics.RaycastNonAlloc(ray,hits,100,~0,QueryTriggerInteraction.Collide);
-            // PhysX does not order the fixed buffer. A complete query is needed
-            // before choosing the closest genuine vehicle part on overflow.
-            var rayHits=hits;
-            if(count>=hits.Length)
+            int count;RaycastHit[] rayHits;
+            while(true)
             {
-                rayHits=Physics.RaycastAll(ray,100,~0,QueryTriggerInteraction.Collide);
-                count=rayHits.Length;
+                count=Physics.RaycastNonAlloc(ray,hits,100,~0,QueryTriggerInteraction.Collide);
+                if(count<hits.Length){rayHits=hits;break;}
+                // Never select from a partial, unordered list. Grow once and
+                // reuse it; preserve the complete fallback at extreme density.
+                if(hits.Length>=MaxRayHits)
+                {rayHits=Physics.RaycastAll(ray,100,~0,QueryTriggerInteraction.Collide);count=rayHits.Length;break;}
+                System.Array.Resize(ref hits,Mathf.Min(hits.Length*2,MaxRayHits));
             }
             float nearest=float.PositiveInfinity;R3MountedPart target=null;R41MissingPlan missing=null;Vector3 normal=default;
             RaycastHit nearestHit=default;
