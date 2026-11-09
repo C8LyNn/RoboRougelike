@@ -81,7 +81,7 @@ namespace RoboRougelike.R3
         public static bool SupportsGunScale2(R4WeaponKind weapon)=>
             weapon==R4WeaponKind.Basic||weapon==R4WeaponKind.Automatic||weapon==R4WeaponKind.Heavy||
             weapon==R4WeaponKind.RocketLauncher||weapon==R4WeaponKind.Shotgun||weapon==R4WeaponKind.Railgun||
-            weapon==R4WeaponKind.BeamCutter||weapon==R4WeaponKind.EmpEmitter;
+            weapon==R4WeaponKind.BeamCutter||weapon==R4WeaponKind.EmpEmitter||weapon==R4WeaponKind.RotarySaw;
         public static int NewPurchaseFootprint(R3PartKind kind,R4WeaponKind weapon,R3WheelStyle wheelStyle)=>
             kind==R3PartKind.Wheel&&HasSizedSideWheel(wheelStyle)?1:
             kind==R3PartKind.Gun&&SupportsGunScale2(weapon)?2:0;

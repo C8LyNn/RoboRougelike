@@ -1,0 +1,5 @@
+# Piła tarczowa ×2
+
+Nowe egzemplarze piły zajmują 18 pól, zachowując jedno ID, HP i punkt montażu. Starsze egzemplarze pozostają w pierwotnej skali i zachowują zapisany obrys. Powiększony model i rzeczywista tarcza korzystają ze wspólnego środka, odsuniętego od podstawy, aby tarcza mogła ominąć wspornik. Promień cięcia rośnie z 0,9 m do 1,8 m; tempo obrażeń, koszt energii i obroty pozostają bez zmian. Oznaczenie tarczy w garażu ma rozmiar odpowiedni do wersji i jest wyświetlane także dla podglądu przed montażem. Walidacja bierze pod uwagę rzeczywisty rozmiar tarczy zarówno przy montażu piły, jak i kolejnych części.
+
+Unity 6000.3.14f1: **30/30 celowanych testów EditMode PASS** (`saw_scale_regression.xml`, exit 0). Test obejmuje rzeczywisty zakup i montaż piły, trafienie celu poza dawnym zasięgiem, starsze zapisy i pozostałe bronie. Wcześniejszy test przed zmianą wykazał brak powiększonego obrysu (`saw_scale_red.xml`). Osobny PlayMode, ręczny Windows Player i pełna regresja: NOT RUN. Wygląd oraz balans większego zasięgu wymagają oceny w grze; piły przeciwników pozostają w dotychczasowej skali.

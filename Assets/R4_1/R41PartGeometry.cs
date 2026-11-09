@@ -108,6 +108,11 @@ namespace RoboRougelike.R4_1
             if(pivot!=null)
             {
                 pivot.localPosition=Vector3.up*((.135f*2f+.26f)/BlockSize);pivot.localScale=Vector3.one*2f;
+                // The larger disc needs clearance from its own base and support.
+                // Art and physical contact share this center.
+                var sawCenter=pivot.Find("Środek piły");
+                if(weapon==R4WeaponKind.RotarySaw&&sawCenter!=null)
+                    sawCenter.localPosition=Vector3.forward*(2.20f/(2f*BlockSize));
                 // Distances measured from the source model's pitch axis to its
                 // muzzle in Unity. The pivot's 2x scale supplies the final 2x.
                 float sourceLength=weapon==R4WeaponKind.Automatic?.70f:weapon==R4WeaponKind.Heavy?.60f:

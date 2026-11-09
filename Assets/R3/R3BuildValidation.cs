@@ -5,6 +5,7 @@ using RoboRougelike.R1;
 using RoboRougelike.R4_1;
 using RoboRougelike.R4;
 using RoboRougelike.Weapons.RotarySaw;
+using RoboRougelike.WeaponIntegration;
 using UnityEngine;
 
 namespace RoboRougelike.R3
@@ -142,7 +143,7 @@ namespace RoboRougelike.R3
             if(muzzle==null)return "Brak fizycznie zdefiniowanego wylotu broni.";
             if(candidate.Weapon==R4WeaponKind.RotarySaw)
             {
-                var config=new RotarySawConfiguration();
+                var config=RRLSawBinding.Geometry(candidate);
                 float extent=Mathf.Sqrt(config.bladeRadius*config.bladeRadius+
                     config.bladeHalfThickness*config.bladeHalfThickness);
                 int count=Physics.OverlapSphereNonAlloc(muzzle.position,extent,
@@ -207,7 +208,7 @@ namespace RoboRougelike.R3
 
                 if(gun.Weapon==R4WeaponKind.RotarySaw)
                 {
-                    var config=new RotarySawConfiguration();
+                    var config=RRLSawBinding.Geometry(model.Parts.FirstOrDefault(p=>p.Id==gun.Id));
                     Vector3 center=gun.Muzzle.position;
                     float extent=Mathf.Sqrt(config.bladeRadius*config.bladeRadius+
                         config.bladeHalfThickness*config.bladeHalfThickness);
