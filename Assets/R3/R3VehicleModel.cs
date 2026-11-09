@@ -95,8 +95,9 @@ namespace RoboRougelike.R3
             kind==R3PartKind.Gun?R3MountingGrid.FaceBit(Vector3Int.down):StoredWheelContacts(part);
         // An unmounted side wheel can be fitted on either side; once installed
         // only the real axle side participates in connectivity and damage.
-        int SideWheelContactAt(R3PartState wheel)
+        public int SideWheelContactAt(R3PartState wheel)
         {
+            if(wheel==null||wheel.Kind!=R3PartKind.Wheel||!HasSideMount(wheel.WheelStyle))return 0;
             var candidate=wheel.Copy();candidate.ContactMask=StoredWheelContacts(candidate);
             var axis=R3MountingGrid.Rotate(Vector3Int.right,candidate.RotationQuarterTurns);
             var plus=At(candidate.Cell+axis);var minus=At(candidate.Cell-axis);

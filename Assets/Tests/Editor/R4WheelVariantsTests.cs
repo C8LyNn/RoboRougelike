@@ -14,6 +14,19 @@ using UnityEngine.TestTools;
 public sealed class R4WheelVariantsTests
 {
     [UnitySetUp]public IEnumerator Setup(){EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();while(R1RunController.Instance?.Progress==null)yield return null;}
+    [UnityTest]public IEnumerator GaragePreviewShowsTheSameSingleWheelContactAsInstallation()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
+        var wheel=run.VehicleModel.Parts.First(p=>p.Kind==R3PartKind.Wheel);
+        var cell=wheel.Cell;var id=wheel.Id;
+        Assert.That(run.GarageRemove(cell),Is.True);yield return null;
+        var garage=run.Garage;garage.ChooseInventory(id);garage.Select(cell);
+        var preview=garage.CandidatePart();
+        Assert.That(preview.ContactMask==R3MountingGrid.FaceBit(Vector3Int.left)||preview.ContactMask==R3MountingGrid.FaceBit(Vector3Int.right),Is.True,
+            "Only the real connected side may be presented as a candidate socket.");
+        Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);
+        Assert.That(run.VehicleModel.Parts.Single(p=>p.Id==id).ContactMask,Is.EqualTo(preview.ContactMask));
+    }
     [UnityTest]public IEnumerator RealGarageSwitchesWheelAppearanceAndPersistsIt()
     {
         var run=R1RunController.Instance;Assert.That(run.PrepareUnifiedRun(),Is.True);yield return null;

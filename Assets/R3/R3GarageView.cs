@@ -164,6 +164,8 @@ namespace RoboRougelike.R3
             var candidate=Owned?.Copy()??new R3PartState(Cell,MountKind){Weapon=MountWeapon};
             candidate.Cell=Cell;candidate.RotationQuarterTurns=SelectedRotation;candidate.ContactMask=SelectedContactMask;
             candidate.FootprintRevision=CandidateFootprintRevision;
+            if(HasTarget&&candidate.Kind==R3PartKind.Wheel&&R3VehicleModel.HasSideMount(candidate.WheelStyle)&&run?.VehicleModel!=null)
+                candidate.ContactMask=run.VehicleModel.SideWheelContactAt(candidate);
             return candidate;
         }
         public System.Collections.Generic.IEnumerable<Vector3Int> CandidateOccupiedCells()=>
