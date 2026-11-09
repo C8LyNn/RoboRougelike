@@ -32,6 +32,8 @@ namespace RoboRougelike.R3
     {
         // This is an in-memory load notice, not an additional save format or writer.
         public int LegacyPartsMovedToInventory { get; private set; }
+        public int LegacyPortMasksNormalized { get; private set; }
+        public int LegacyPortPartsMovedToInventory { get; private set; }
 
         static bool LegacyWidePart(R3PartKind kind) => kind==R3PartKind.BonusModule||
             kind==R3PartKind.DirectionalShield||kind==R3PartKind.PointDefense||
@@ -159,6 +161,36 @@ namespace RoboRougelike.R3
                 inventory=inventory.Concat(detached).ToArray();migratedCount=detached.Length;
                 if(!Connected(mounted)||!Connected(mounted.Where(p=>p.Health>0)))return false;
             }
+            // Old checkpoints could give wheels and guns six logical contacts,
+            // including faces where their actual mounting socket does not exist.
+            // Normalize copies only; if a formerly legal side-mounted assembly
+            // loses support, preserve its parts and HP in inventory instead.
+            var portNormalizedIds=new HashSet<string>(StringComparer.Ordinal);
+            var normalized=mounted.Select(p=>p.Copy()).ToArray();
+            foreach(var part in normalized.Where(p=>p.Kind==R3PartKind.Gun||p.Kind==R3PartKind.Wheel))
+            {
+                int actual=PlacementContacts(part.Kind,part);
+                if(part.ContactMask!=actual){part.ContactMask=actual;portNormalizedIds.Add(part.Id);}
+            }
+            int portMovedCount=0;
+            if(portNormalizedIds.Count>0)
+            {
+                if(!Connected(normalized)||!Connected(normalized.Where(p=>p.Health>0)))
+                {
+                    var alive=normalized.Where(p=>p.Health>0).ToArray();
+                    var core=alive.SingleOrDefault(p=>p.Kind==R3PartKind.Core);
+                    if(core==null)return false;
+                    var reachable=ReachableCheckpointParts(alive,new HashSet<string>{core.Id},false);
+                    reachable=ReachableCheckpointParts(normalized,reachable,true);
+                    var detached=normalized.Where(p=>!reachable.Contains(p.Id)).ToArray();
+                    if(inventory.Length+detached.Length>InventoryCapacity)
+                    {error="Nie można dopasować starych punktów mocowania: magazyn jest pełny. Zapis pozostaje bez zmian.";return false;}
+                    normalized=normalized.Where(p=>reachable.Contains(p.Id)).ToArray();
+                    inventory=inventory.Concat(detached).ToArray();portMovedCount=detached.Length;
+                    if(!Connected(normalized)||!Connected(normalized.Where(p=>p.Health>0)))return false;
+                }
+                mounted=normalized;
+            }
             if(data.wheels.Any(p=>p==null||string.IsNullOrWhiteSpace(p.id)||p.contacts<0||p.contacts>63)||
                 data.wheels.Select(p=>p.id).Distinct(StringComparer.Ordinal).Count()!=data.wheels.Length||
                 data.groups.Any(p=>p==null||string.IsNullOrWhiteSpace(p.id))||
@@ -170,8 +202,15 @@ namespace RoboRougelike.R3
             foreach(var source in mounted){var p=source.Copy();p.Tier=NormalizedTier(p.Tier);p.DeviceReadyAt=p.DeviceReadyAt>0?now+p.DeviceReadyAt:0;p.ReloadReadyAt=p.ReloadReadyAt>0?now+p.ReloadReadyAt:0;restored.Parts.Add(p);}
             foreach(var source in inventory){var p=source.Copy();p.ContactMask=StoredWheelContacts(p);p.Tier=NormalizedTier(p.Tier);p.DeviceReadyAt=p.DeviceReadyAt>0?now+p.DeviceReadyAt:0;p.ReloadReadyAt=p.ReloadReadyAt>0?now+p.ReloadReadyAt:0;restored.inventory.Add(p);}
             restored.LegacyPartsMovedToInventory=migratedCount;
+            restored.LegacyPortMasksNormalized=portNormalizedIds.Count;
+            restored.LegacyPortPartsMovedToInventory=portMovedCount;
             restored.factoryWheels.Clear();foreach(var wheel in data.wheels)
-                restored.factoryWheels.Add(wheel.id,new FactoryWheelPose(new R3PartState(wheel.cell,R3PartKind.Wheel){RotationQuarterTurns=wheel.rotation,ContactMask=wheel.contacts}));
+            {
+                int contacts=wheel.contacts;
+                var normalizedWheel=mounted.Concat(inventory).FirstOrDefault(p=>p.Id==wheel.id&&p.Kind==R3PartKind.Wheel);
+                if(normalizedWheel!=null&&portNormalizedIds.Contains(wheel.id))contacts=PlacementContacts(R3PartKind.Wheel,normalizedWheel);
+                restored.factoryWheels.Add(wheel.id,new FactoryWheelPose(new R3PartState(wheel.cell,R3PartKind.Wheel){RotationQuarterTurns=wheel.rotation,ContactMask=contacts}));
+            }
             restored.weaponGroupPreference.Clear();foreach(var group in data.groups)restored.weaponGroupPreference.Add(group.id,group.secondary);
             restored.weaponGroupA=data.hasA?(R4WeaponKind?)data.groupA:null;restored.weaponGroupB=data.hasB?(R4WeaponKind?)data.groupB:null;
             restored.Scrap=data.scrap;restored.SelectedDrive=data.drive;restored.SuspensionEnabled=data.suspensionEnabled;

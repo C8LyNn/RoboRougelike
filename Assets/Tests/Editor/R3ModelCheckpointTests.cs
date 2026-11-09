@@ -5,6 +5,59 @@ using RoboRougelike.R3;
 
 public sealed class R3ModelCheckpointTests
 {
+    [Test] public void OldStarterContactsAreNormalizedWithoutMutatingTheSavedData()
+    {
+        var source=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
+        var data=source.MakeCheckpoint(0);
+        foreach(var p in data.mounted.Where(p=>p.Kind==R3PartKind.Gun||p.Kind==R3PartKind.Wheel))p.ContactMask=R3MountingGrid.AllFaces;
+        var ids=data.mounted.Select(p=>p.Id).ToArray();
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Standard,null,0,out var loaded,out var error),Is.True,error);
+        Assert.That(loaded.Parts.Select(p=>p.Id),Is.EquivalentTo(ids));
+        Assert.That(loaded.LegacyPortPartsMovedToInventory,Is.Zero);
+        foreach(var p in loaded.Parts.Where(p=>p.Kind==R3PartKind.Gun||p.Kind==R3PartKind.Wheel))
+            Assert.That(p.ContactMask,Is.EqualTo(R3VehicleModel.PlacementContacts(p.Kind,p)));
+        Assert.That(data.mounted.Where(p=>p.Kind==R3PartKind.Gun||p.Kind==R3PartKind.Wheel)
+            .All(p=>p.ContactMask==R3MountingGrid.AllFaces),Is.True,"Restoring must not edit the input save.");
+    }
+
+    static R3ModelCheckpoint LegacySideMountedGun()
+    {
+        var data=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard)).MakeCheckpoint(0);
+        var gun=data.mounted.First(p=>p.Kind==R3PartKind.Gun);
+        gun.Cell=new Vector3Int(3,1,1);gun.ContactMask=R3MountingGrid.AllFaces;gun.Health=.43f;
+        return data;
+    }
+
+    [Test] public void UnsupportedLegacySideGunMovesToInventoryWithoutLosingIdentityOrHealth()
+    {
+        var data=LegacySideMountedGun();var gun=data.mounted.First(p=>p.Kind==R3PartKind.Gun);string id=gun.Id;
+        var originalIds=data.mounted.Concat(data.inventory).Select(p=>p.Id).ToArray();int scrap=data.scrap;
+        Assert.That(R3VehicleModel.Connected(data.mounted),Is.True,"The old arbitrary side port was accepted.");
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Standard,null,0,out var loaded,out var error),Is.True,error);
+        Assert.That(loaded.LegacyPortPartsMovedToInventory,Is.EqualTo(1));
+        Assert.That(loaded.Parts.Any(p=>p.Id==id),Is.False);
+        var stored=loaded.Inventory.Single(p=>p.Id==id);
+        Assert.That(stored.Health,Is.EqualTo(.43f));
+        Assert.That(stored.ContactMask,Is.EqualTo(R3MountingGrid.FaceBit(Vector3Int.down)));
+        Assert.That(gun.ContactMask,Is.EqualTo(R3MountingGrid.AllFaces),"Input checkpoint remains unchanged.");
+        Assert.That(R3VehicleModel.Connected(loaded.Parts),Is.True);
+        Assert.That(loaded.Parts.Concat(loaded.Inventory).Select(p=>p.Id),Is.EquivalentTo(originalIds));
+        Assert.That(loaded.Scrap,Is.EqualTo(scrap));
+        Assert.That(loaded.Mount(id,new Vector3Int(2,2,2)),Is.True,"The preserved gun can be remounted at a compatible upper socket.");
+        var savedAgain=loaded.MakeCheckpoint(0);
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(savedAgain,R3VehicleKind.Standard,null,0,out var reloaded,out var reError),Is.True,reError);
+        Assert.That(reloaded.Parts.Single(p=>p.Id==id).Health,Is.EqualTo(.43f));
+    }
+
+    [Test] public void FullInventoryBlocksLegacyPortMigrationWithoutChangingTheSave()
+    {
+        var data=LegacySideMountedGun();var gun=data.mounted.First(p=>p.Kind==R3PartKind.Gun);
+        data.inventory=Enumerable.Range(0,R3VehicleModel.InventoryCapacity)
+            .Select(_=>new R3PartState(default,R3PartKind.Armor){DefenseRechargeAge=float.MaxValue}).ToArray();
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Standard,null,0,out var loaded,out var error),Is.False);
+        Assert.That(loaded,Is.Null);Assert.That(error,Does.Contain("magazyn"));
+        Assert.That(data.mounted.Any(p=>p.Id==gun.Id),Is.True);Assert.That(gun.ContactMask,Is.EqualTo(R3MountingGrid.AllFaces));
+    }
     [Test] public void FirstDeploymentAfterSaveFillsBatteryAddedInGarage()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
