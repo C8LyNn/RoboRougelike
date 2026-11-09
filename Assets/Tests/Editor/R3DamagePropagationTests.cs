@@ -104,6 +104,28 @@ public sealed class R3DamagePropagationTests
         Assert.That(Core(routed,blast),Is.GreaterThan(Core(compact,blast)),"The same route has a blast trade-off.");
     }
 
+    [Test]
+    public void DiverseConnectedLayoutsNeverDuplicateOrEraseTheHitBudget()
+    {
+        var random=new System.Random(1153);
+        for(int trial=0;trial<300;trial++)
+        {
+            int count=random.Next(2,41);
+            var neighbours=Enumerable.Range(0,count).Select(_=>new List<int>()).ToArray();
+            void Link(int a,int b) { if(!neighbours[a].Contains(b)){neighbours[a].Add(b);neighbours[b].Add(a);} }
+            for(int i=1;i<count;i++)Link(i,random.Next(i));
+            for(int i=0;i<count;i++)if(random.NextDouble()<.4) { int j=random.Next(count);if(i!=j)Link(i,j); }
+            var graph=Enumerable.Range(0,count).Select(i=>Part(i,random.Next(1,121),neighbours[i].ToArray())).ToArray();
+            int hit=random.Next(count),hops=random.Next(0,4);
+            float amount=random.Next(1,3001),fraction=(float)random.NextDouble();
+            var result=R3DamagePropagation.Resolve(graph,hit,amount,fraction,hops);
+            Assert.That(result.Damage.Values.Sum()+result.Unused,Is.EqualTo(amount).Within(.02f),$"trial {trial}");
+            foreach(var entry in result.Damage)
+                Assert.That(entry.Value,Is.InRange(0,graph[entry.Key].Health+.001f),$"trial {trial}, part {entry.Key}");
+            Assert.That(result.Unused,Is.GreaterThanOrEqualTo(0),$"trial {trial}");
+        }
+    }
+
     [UnityTest]
     public IEnumerator RemountedSingleContactWheelTransfersDamageThroughItsRealConnection()
     {

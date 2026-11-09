@@ -11,3 +11,9 @@ Celowane testy Unity 6000.3.14f1 EditMode: 12/12 PASS, pliki `damage_typed_final
 Po poprawce przekazywania nadwyżki do innych gałęzi: 12/12 PASS (graf, rzeczywiste pojazdy, tarcza i odpadanie; `damage_overflow_green.xml`), a po ograniczeniu iteracji do faktycznych pierścieni ponownie 9/9 PASS (`damage_overflow_final.xml`).
 
 Po zmianie na jeden styk bocznego koła: **10/10 celowanych EditMode PASS** (`wheel_damage_final.xml`, exit 0). Test rzeczywistego pojazdu zdejmuje koło, montuje je ponownie, sprawdza pojedynczy styk i rozdział trafienia 8 HP: 6 HP na kole i 2 HP w połączonej konstrukcji. Pierwsze wykonanie miało 9/10 wskutek błędu scenariusza inicjalizowanego przed przeładowaniem domeny Play Mode; po przeniesieniu inicjalizacji za przeładowanie test przeszedł. Nie wykonano osobnego PlayMode ani Windows Playera.
+
+## Kontrola aktualnej gałęzi — 2026-11-09
+
+Kod gry `b04ecbaa097964e4248595bdc116a58efb53e538` zawiera już ten prototyp; raport #1153 opisujący brak routingu na starszym `main` nie opisuje tej gałęzi. Nie dodawano drugiego systemu. Celowane testy `R3DamagePropagationTests` w Unity 6000.3.14f1: **10/10 PASS**, exit 0 (`connected-damage-ai-baseline.xml` i `.log` na pulpicie). Część testów uruchamia tryb Play z poziomu zestawu EditMode; nie jest to osobny pełny przebieg PlayMode ani ręczna walka.
+
+Dodatkowy deterministyczny test księgowania sprawdza 300 różnych spójnych grafów, poziomów HP, trafień, udziałów oraz limitów propagacji. Wynik **1/1 PASS**, exit 0 (`damage-300-layouts.xml` i `.log` na pulpicie): suma utraconego HP i niewykorzystanej nadwyżki odpowiada budżetowi trafienia, a żadna część nie otrzymuje więcej niż swoje HP. Jest to test algorytmu na danych, a nie benchmark wydajności ani dowód balansu. Nadal potrzebne są rzeczywista walka, porównanie konstrukcji i profilowanie na dużych pojazdach.
