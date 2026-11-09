@@ -341,6 +341,10 @@ namespace RoboRougelike.R3
             var states=new Dictionary<string,R3PartState>(System.StringComparer.Ordinal);
             foreach(var state in gate.model.Parts)
                 if(state!=null&&!string.IsNullOrEmpty(state.Id)&&!states.ContainsKey(state.Id))states.Add(state.Id,state);
+            // A socket whose neighboring cell is occupied can never accept a
+            // new part. Keep internal faces out of raycasts and the registry;
+            // the garage is rebuilt after each construction change.
+            var occupied=new HashSet<Vector3Int>(gate.model.Parts.SelectMany(R3VehicleModel.OccupiedCells));
             foreach(var part in actual.Parts.Where(p=>p!=null&&p.Operational&&p.transform.IsChildOf(actual.transform)))
             {
                 if(string.IsNullOrEmpty(part.Id)||!states.TryGetValue(part.Id,out var state))continue;
@@ -348,6 +352,9 @@ namespace RoboRougelike.R3
                 for(int index=0;index<definition.Sockets.Length;index++)
                 {
                     var socket=definition.Sockets[index];if(socket.Kind!=BuildSocketKind.Structural&&socket.Kind!=BuildSocketKind.Axle)continue;
+                    var cell=state.Cell+R3MountingGrid.Rotate(socket.Cell,state.RotationQuarterTurns);
+                    var outward=R3MountingGrid.Rotate(socket.Face,state.RotationQuarterTurns);
+                    if(occupied.Contains(cell+outward))continue;
                     var face=new GameObject("Authorized socket "+index);gate.socketFaces.Add(face);face.transform.SetParent(part.transform,false);
                     face.transform.localPosition=((Vector3)socket.Cell+(Vector3)socket.Face*.5f)*R41PartGeometry.Grid/part.transform.localScale.x;
                     face.transform.localRotation=Quaternion.LookRotation((Vector3)socket.Face,socket.Face.y!=0?Vector3.forward:Vector3.up);
