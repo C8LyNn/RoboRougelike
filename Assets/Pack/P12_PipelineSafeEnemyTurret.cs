@@ -952,6 +952,7 @@ namespace RogueMachine.P12PipelineSafe
 
             List<Collider> moduleTargets =
                 new List<Collider>();
+            var preferredTargets = new List<Collider>();
 
             P12PipelineSafeFunctionalModule[] modules =
                 playerRoot.GetComponentsInChildren<
@@ -969,8 +970,18 @@ namespace RogueMachine.P12PipelineSafe
                     module.GetComponent<Collider>();
 
                 if (ValidTarget(collider))
+                {
                     moduleTargets.Add(collider);
+                    if(profiled && ((Archetype==R3EnemyArchetype.Gunner && module.ModuleType==P12FunctionalModuleType.Weapon) ||
+                       (Archetype==R3EnemyArchetype.Flanker && module.ModuleType==P12FunctionalModuleType.Wheel)))
+                        preferredTargets.Add(collider);
+                }
             }
+
+            // Priorities bias aim; they do not bypass armor, line of sight or
+            // the existing physical projectile and weapon-cadence systems.
+            if(preferredTargets.Count>0 && Random.value<.7f)
+                return preferredTargets[Random.Range(0,preferredTargets.Count)];
 
             if (moduleTargets.Count > 0 &&
                 Random.value < 0.34f)

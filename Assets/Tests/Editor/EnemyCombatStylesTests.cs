@@ -1,6 +1,8 @@
 using NUnit.Framework;
 using RoboRougelike.R3;
 using RogueMachine.P12PipelineSafe;
+using System.Reflection;
+using UnityEngine;
 
 public sealed class EnemyCombatStylesTests
 {
@@ -48,5 +50,43 @@ public sealed class EnemyCombatStylesTests
         Assert.That(recovery.Advance(true, .3f), Is.True);
         recovery.Reset();
         Assert.That(recovery.Recovering, Is.False);
+    }
+
+    [TestCase(R3EnemyArchetype.Gunner, P12FunctionalModuleType.Weapon)]
+    [TestCase(R3EnemyArchetype.Flanker, P12FunctionalModuleType.Wheel)]
+    public void EnemiesPreferDifferentWorkingModules(R3EnemyArchetype archetype,P12FunctionalModuleType preferred)
+    {
+        var player=new GameObject("Target vehicle");
+        var enemyRoot=new GameObject("Enemy");
+        var oldRandom=Random.state;
+        try
+        {
+            var enemy=enemyRoot.AddComponent<P12PipelineSafeEnemyTurret>();
+            enemy.ConfigureArchetype(archetype);
+            typeof(P12PipelineSafeEnemyTurret).GetField("playerRoot",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(enemy,player.transform);
+            foreach(var kind in new[]{P12FunctionalModuleType.Weapon,P12FunctionalModuleType.Wheel})
+            {
+                var part=new GameObject(kind.ToString());part.transform.SetParent(player.transform);
+                part.AddComponent<BoxCollider>();part.AddComponent<P12PipelineSafeDamageable>().Configure(100,true);
+                part.AddComponent<P12PipelineSafeFunctionalModule>().Configure(kind,0,null,part.transform,player.transform);
+            }
+            var select=typeof(P12PipelineSafeEnemyTurret).GetMethod("SelectTargetCollider",BindingFlags.Instance|BindingFlags.NonPublic);
+            Random.InitState(242);
+            int picked=0;
+            for(int i=0;i<200;i++)
+            {
+                var collider=(Collider)select.Invoke(enemy,null);
+                if(collider.GetComponent<P12PipelineSafeFunctionalModule>().ModuleType==preferred)picked++;
+            }
+            Assert.That(picked,Is.GreaterThan(140),"The archetype should visibly prefer its intended operational module.");
+            player.transform.Find(preferred.ToString()).gameObject.SetActive(false);
+            for(int i=0;i<10;i++)
+            {
+                var fallback=(Collider)select.Invoke(enemy,null);
+                Assert.That(fallback,Is.Not.Null);
+                Assert.That(fallback.GetComponent<P12PipelineSafeFunctionalModule>().ModuleType,Is.Not.EqualTo(preferred),"Inactive parts cannot remain targets.");
+            }
+        }
+        finally { Random.state=oldRandom;Object.DestroyImmediate(enemyRoot);Object.DestroyImmediate(player); }
     }
 }
