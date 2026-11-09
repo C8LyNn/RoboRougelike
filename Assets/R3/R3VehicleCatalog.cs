@@ -66,9 +66,13 @@ namespace RoboRougelike.R3
                 variant==2?new[]{-3,-1,1,3}:new[]{-2,0,2};
             for(int side=-1;side<=1;side+=2)foreach(int z in positions)
                 design.Parts.Add(new R3PartState(new Vector3Int(side*(width+1),0,z),R3PartKind.Wheel));
-            if(light)design.Parts.Add(new R3PartState(new Vector3Int(0,2,0),R3PartKind.Gun));
-            else if(heavy)for(int x=-3;x<=3;x+=3)design.Parts.Add(new R3PartState(new Vector3Int(x,2,0),R3PartKind.Gun));
-            else for(int x=-2;x<=2;x+=4)design.Parts.Add(new R3PartState(new Vector3Int(x,2,0),R3PartKind.Gun));
+            var gunColumns=light?new[]{0}:heavy?new[]{-3,0,3}:new[]{-2,2};
+            int gunHeight=R3VehicleModel.UseEnlargedEquipment?2:3;
+            if(!R3VehicleModel.UseEnlargedEquipment)
+                foreach(int x in gunColumns)
+                    design.Parts.Add(new R3PartState(new Vector3Int(x,2,0),R3PartKind.Armor));
+            foreach(int x in gunColumns)
+                design.Parts.Add(new R3PartState(new Vector3Int(x,gunHeight,0),R3PartKind.Gun));
             if(variant==1||variant==3)
                 foreach(var gun in design.Parts)
                     if(gun.Kind==R3PartKind.Gun&&(light||gun.Cell.x>0))gun.Weapon=RoboRougelike.R4.R4WeaponKind.Automatic;

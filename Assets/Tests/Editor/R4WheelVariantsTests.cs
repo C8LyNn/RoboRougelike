@@ -13,7 +13,7 @@ using UnityEngine.TestTools;
 
 public sealed class R4WheelVariantsTests
 {
-    [UnitySetUp]public IEnumerator Setup(){EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();while(R1RunController.Instance?.Progress==null)yield return null;}
+    [UnitySetUp]public IEnumerator Setup(){EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();R3VehicleModel.SetEquipmentScaleForEditorTests(true);while(R1RunController.Instance?.Progress==null)yield return null;}
     [UnityTest]public IEnumerator InvalidPlacementShowsOnlyRedCandidateWithoutOtherPartVolumes()
     {
         var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
@@ -687,5 +687,5 @@ public sealed class R4WheelVariantsTests
         }
         finally{Object.Destroy(vehicle.gameObject);Object.Destroy(floor);if(ramp!=null)Object.Destroy(ramp);}
     }
-    [UnityTearDown]public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
+    [UnityTearDown]public IEnumerator Cleanup(){R3VehicleModel.SetEquipmentScaleForEditorTests(false);if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }

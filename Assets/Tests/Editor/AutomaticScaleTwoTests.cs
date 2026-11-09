@@ -14,6 +14,8 @@ using UnityEngine.TestTools;
 
 public sealed class AutomaticScaleTwoModelTests
 {
+    [SetUp] public void UseEnlargedEquipment()=>R3VehicleModel.SetEquipmentScaleForEditorTests(true);
+    [TearDown] public void RestoreNormalEquipment()=>R3VehicleModel.SetEquipmentScaleForEditorTests(false);
     [Test] public void DrawOffersSelectsThreeDistinctVehiclesFromTheEntirePool()
     {
         var method=typeof(R3VehicleCatalog).GetMethod("DrawOffers",new[]{typeof(System.Random)});
@@ -169,7 +171,13 @@ public sealed class AutomaticScaleTwoTests
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");
         yield return new EnterPlayMode();
+        R3VehicleModel.SetEquipmentScaleForEditorTests(true);
         while(R1RunController.Instance?.Progress==null)yield return null;
+    }
+    [UnityTearDown] public IEnumerator Cleanup()
+    {
+        R3VehicleModel.SetEquipmentScaleForEditorTests(false);
+        if(Application.isPlaying)yield return new ExitPlayMode();
     }
 
     [UnityTest] public IEnumerator StarterLightLargeGunsRemainPhysicallyClear()=>VerifyStarterPhysicalGuns(R3VehicleKind.Light);
