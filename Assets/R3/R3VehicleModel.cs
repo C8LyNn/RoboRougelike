@@ -78,7 +78,8 @@ namespace RoboRougelike.R3
         public static float TierMass(int tier)=>NormalizedTier(tier)==3?1.3f:NormalizedTier(tier)==2?1.15f:1f;
         public static float TierWheelTraction(int tier)=>NormalizedTier(tier)==3?1.8f:NormalizedTier(tier)==2?1.35f:1f;
         public static bool HasSizedSideWheel(R3WheelStyle style)=>style==R3WheelStyle.LargeOffroad||style==R3WheelStyle.Monster;
-        public static bool SupportsGunScale2(R4WeaponKind weapon)=>weapon==R4WeaponKind.Basic||weapon==R4WeaponKind.Automatic;
+        public static bool SupportsGunScale2(R4WeaponKind weapon)=>
+            weapon==R4WeaponKind.Basic||weapon==R4WeaponKind.Automatic||weapon==R4WeaponKind.Heavy;
         public static int NewPurchaseFootprint(R3PartKind kind,R4WeaponKind weapon,R3WheelStyle wheelStyle)=>
             kind==R3PartKind.Wheel&&HasSizedSideWheel(wheelStyle)?1:
             kind==R3PartKind.Gun&&SupportsGunScale2(weapon)?2:0;

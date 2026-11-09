@@ -14,6 +14,7 @@ public sealed class AutomaticScaleTwoModelTests
 {
     [TestCase(R4WeaponKind.Automatic)]
     [TestCase(R4WeaponKind.Basic)]
+    [TestCase(R4WeaponKind.Heavy)]
     public void NewGunHasVersionedFootprintWhileLegacyRetainsOneCell(R4WeaponKind weapon)
     {
         var design=new R3VehicleDesign{Name="Automatic QA",CoreHp=100,Speed=7,TurnSpeed=82};
@@ -80,6 +81,33 @@ public sealed class AutomaticScaleTwoTests
         float deadline=Time.realtimeSinceStartup+5;
         while(hp.CurrentHp>=1000&&Time.realtimeSinceStartup<deadline)yield return new WaitForFixedUpdate();
         Assert.That(hp.CurrentHp,Is.EqualTo(960).Within(.01f));Object.Destroy(target);
+    }
+
+    [UnityTest] public IEnumerator EnlargedHeavyMountsAndFiresWithItsNormalCost()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
+        var model=run.VehicleModel;model.Award(1000);
+        foreach(var part in model.Parts.Where(p=>p.Kind==R3PartKind.Gun).ToArray())
+        {Assert.That(run.GarageRemove(part.Cell),Is.True);yield return null;}
+        var anchor=new Vector3Int(0,2,0);
+        Assert.That(run.GarageBuyWeapon(anchor,R4WeaponKind.Heavy),Is.True);
+        var state=model.At(anchor);Assert.That(state.FootprintRevision,Is.EqualTo(2));
+        Assert.That(R3VehicleModel.OccupiedCells(state).Count(),Is.EqualTo(18));
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();var installed=assembly.Parts.Single(p=>p.Id==state.Id);
+        Assert.That(installed.GetComponent<BoxCollider>().bounds.size.x,Is.GreaterThan(1f));
+        run.Player.GetComponent<Rigidbody>().isKinematic=true;run.Player.GetComponent<P12PipelineSafeTankController>().enabled=false;
+        run.Player.transform.SetPositionAndRotation(new Vector3(1000,20,1000),Quaternion.identity);
+        installed.GunPivot.rotation=Quaternion.identity;installed.GetComponent<R4WeaponArt>().Sync();
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.position=installed.Muzzle.position+installed.Muzzle.forward*5;
+        target.transform.localScale=new Vector3(2,2,.5f);
+        var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(1000,false);
+        var bank=run.Player.GetComponent<VehicleEnergyBank>();float energy=bank.Current;
+        Physics.SyncTransforms();Assert.That(assembly.ClearProjectilePath(installed),Is.True);
+        assembly.FireGroup(false);Assert.That(bank.Current,Is.EqualTo(energy-2.5f).Within(.001f));
+        float deadline=Time.realtimeSinceStartup+5;
+        while(hp.CurrentHp>=1000&&Time.realtimeSinceStartup<deadline)yield return new WaitForFixedUpdate();
+        Assert.That(hp.CurrentHp,Is.EqualTo(900).Within(.01f));Object.Destroy(target);
     }
 
     [UnityTest] public IEnumerator RealGarageShowsAndMountsEnlargedAutomaticWithTwoWorkingMuzzles()
