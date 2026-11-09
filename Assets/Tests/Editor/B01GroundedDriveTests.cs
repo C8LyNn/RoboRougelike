@@ -45,7 +45,8 @@ public class B01GroundedDriveTests
     }
     [UnityTest] public IEnumerator PHY_GROUND_01_FourRealTreadsOnFloorDriveAndSteer()
     {
-        Pose(new Vector3(0,.65f,1000),Quaternion.identity);body.constraints=RigidbodyConstraints.FreezePositionY|RigidbodyConstraints.FreezeRotationX|RigidbodyConstraints.FreezeRotationZ;
+        // Keep the corrected center-mounted tire on the ground before locking Y.
+        Pose(new Vector3(0,R3VehicleModel.WheelRadius(R3WheelStyle.Offroad),1000),Quaternion.identity);body.constraints=RigidbodyConstraints.FreezePositionY|RigidbodyConstraints.FreezeRotationX|RigidbodyConstraints.FreezeRotationZ;
         yield return Motor(.35f);Assert.That(body.linearVelocity.z,Is.GreaterThan(.5f));Assert.That(body.angularVelocity.y,Is.GreaterThan(.1f));
         Assert.That(Contacts,Is.EqualTo(4));Assert.That(drive.Wheels,Is.EqualTo(4));
     }

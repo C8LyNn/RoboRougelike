@@ -62,6 +62,27 @@ namespace B01.CAMERA001.Tests
             yield return null;
         }
 
+        [UnityTest] public IEnumerator BlockedAimDoesNotLeaveCameraBehindParallelToWall()
+        {
+            var rig=cameraGo.GetComponent<Camera001Rig>();
+            rig.ReceiverResponsiveMotion=true;
+            rig.SetOrbit(0,18,8);rig.StepCamera(0);
+            wall=GameObject.CreatePrimitive(PrimitiveType.Cube);
+            wall.transform.position=rig.LastSolution.AimWorld;
+            wall.transform.localScale=new Vector3(20,1,1);
+            Physics.SyncTransforms();
+            var start=cameraGo.transform.position;
+            for(int i=0;i<30;i++)
+            {
+                root.transform.position+=Vector3.right*.1f;
+                Physics.SyncTransforms();rig.StepCamera(1f/30f);
+                Assert.IsFalse(rig.WorldOverlapAtCamera,"Camera must stay outside the wall.");
+            }
+            Assert.Greater(cameraGo.transform.position.x-start.x,1f,
+                "An obstructed aim should not freeze a camera that can follow parallel to the edge.");
+            yield return null;
+        }
+
         [UnityTest] public IEnumerator HeavyToLightSwitchClearsPreviousSmoothing()
         {
             var rig = cameraGo.GetComponent<Camera001Rig>();

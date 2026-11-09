@@ -140,8 +140,8 @@ namespace RoboRougelike.R4_1
                 // Place the physical axle there as well so its actual side socket
                 // remains centered against the neighboring block face.
                 float axle=R3VehicleModel.WheelAxleOffset(wheelStyle);
-                wheel.localPosition=R3VehicleModel.HasForkMount(wheelStyle)?new Vector3(0,-R3VehicleModel.ForkAxleDrop(wheelStyle)/BlockSize,0):R3VehicleModel.HasSizedSideWheel(wheelStyle)?
-                    new Vector3((mirrorWheel ? -axle : axle)/BlockSize,0,0):new Vector3(0,-0.5f,0);
+                wheel.localPosition=R3VehicleModel.HasForkMount(wheelStyle)?new Vector3(0,-R3VehicleModel.ForkAxleDrop(wheelStyle)/BlockSize,0):
+                    new Vector3((mirrorWheel ? -axle : axle)/BlockSize,0,0);
                 if(wheelStyle==R3WheelStyle.CasterSlick)wheel.localPosition+=Vector3.forward*(.075f/BlockSize);
                 wheel.localRotation=Quaternion.Euler(0,0,90);
                 float diameterScale=R3VehicleModel.WheelRadius(wheelStyle)/(.5f*BlockSize);

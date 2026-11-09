@@ -79,10 +79,14 @@ namespace RoboRougelike.R3
         public static bool HasSideMount(R3WheelStyle style)=>!HasForkMount(style);
         public static int StoredWheelContacts(R3PartState part)=>part!=null&&part.Kind==R3PartKind.Wheel&&HasSideMount(part.WheelStyle)?
             R3MountingGrid.FaceBit(Vector3Int.right)|R3MountingGrid.FaceBit(Vector3Int.left):part?.ContactMask??R3MountingGrid.AllFaces;
+        // Existing vehicles retain their serialized ports; a turret being newly
+        // installed must use its local mounting base, not an arbitrary side.
+        public static int PlacementContacts(R3PartKind kind,R3PartState part=null)=>
+            kind==R3PartKind.Gun?R3MountingGrid.FaceBit(Vector3Int.down):StoredWheelContacts(part);
         public static bool CanSwapWheelAppearance(R3WheelStyle style)=>style==R3WheelStyle.Offroad||style==R3WheelStyle.Slick;
         public static float WheelRadius(R3WheelStyle style)=>style==R3WheelStyle.SwingOffroad ? .33f : style==R3WheelStyle.CasterSlick ? .17f : style==R3WheelStyle.SteerOffroad ? .48f : style==R3WheelStyle.SteerRoad ? .34f : style==R3WheelStyle.TwinRoad ? .33f : style==R3WheelStyle.SpikedFork ? .37f : style==R3WheelStyle.SmallFork ? .205f : style==R3WheelStyle.BalloonFork ? .5f : style==R3WheelStyle.Monster ? .8f : style==R3WheelStyle.LargeOffroad ? .56f : .39f;
         public static float WheelWidth(R3WheelStyle style)=>style==R3WheelStyle.SwingOffroad ? .26f : style==R3WheelStyle.CasterSlick ? .12f : style==R3WheelStyle.SteerOffroad ? .34f : style==R3WheelStyle.SteerRoad ? .26f : style==R3WheelStyle.TwinRoad ? .16f : style==R3WheelStyle.SpikedFork ? .30f : style==R3WheelStyle.SmallFork ? .15f : style==R3WheelStyle.BalloonFork ? .43f : style==R3WheelStyle.Monster ? .58f : .42f;
-        public static float WheelAxleOffset(R3WheelStyle style)=>style==R3WheelStyle.Monster ? .142f : .062f;
+        public static float WheelAxleOffset(R3WheelStyle style)=>style==R3WheelStyle.Monster ? .142f : style==R3WheelStyle.LargeOffroad ? .062f : .022f;
         public static float ForkAxleDrop(R3WheelStyle style)=>style==R3WheelStyle.SwingOffroad ? .30f : style==R3WheelStyle.CasterSlick ? .13f : style==R3WheelStyle.SteerOffroad ? .455f : style==R3WheelStyle.SteerRoad ? .315f : style==R3WheelStyle.TwinRoad ? .20f : style==R3WheelStyle.SpikedFork ? .24f : style==R3WheelStyle.BalloonFork ? .37f : .075f;
         public static float WheelTraction(R3WheelStyle style)=>style==R3WheelStyle.CasterSlick ? .5f : style==R3WheelStyle.SmallFork ? .65f : style==R3WheelStyle.BalloonFork||style==R3WheelStyle.SteerOffroad?1.15f:style==R3WheelStyle.Monster?1.5f:style==R3WheelStyle.LargeOffroad?1.25f:1f;
         public static float WheelMass(R3WheelStyle style)=>style==R3WheelStyle.CasterSlick ? 1f/3f : style==R3WheelStyle.SmallFork ? .5f : style==R3WheelStyle.BalloonFork||style==R3WheelStyle.SteerOffroad?4f/3f:style==R3WheelStyle.Monster?2f:style==R3WheelStyle.LargeOffroad?1.5f:1f;
@@ -248,10 +252,11 @@ namespace RoboRougelike.R3
         {
             var part=inventory.FirstOrDefault(p=>p.Id==id);
             return part==null?"Brak części w magazynie.":!ValidEconomicPart(part)?"Nieprawidłowe dane części.":part.Health<=0?"Odtwórz zniszczoną część przed montażem.":
-                CheckPlacement(cell,part.Kind,true,part.Weapon,rotation,StoredWheelContacts(part),part.Id);
+                CheckPlacement(cell,part.Kind,true,part.Weapon,rotation,PlacementContacts(part.Kind,part),part.Id);
         }
         string CheckPlacement(Vector3Int cell,R3PartKind kind,bool owned,R4WeaponKind weapon,Vector3Int rotation,int contactMask,string ownedId)
         {
+            if(kind==R3PartKind.Gun)contactMask=PlacementContacts(kind);
             if (kind == R3PartKind.Core) return "Rdzeń jest jedyny i nie można go kupić.";
             if (!Enum.IsDefined(typeof(R3PartKind),kind)) return "Nieznany typ części.";
             if(kind==R3PartKind.Gun&&!Enum.IsDefined(typeof(R4WeaponKind),weapon))return "Nieznany rodzaj broni.";
@@ -292,7 +297,7 @@ namespace RoboRougelike.R3
             rotation=R3MountingGrid.Normalize(rotation);
             if(kind==R3PartKind.BonusModule||PlacementError(cell,kind,false,weapon,rotation)!=null)return false;
             Scrap-=Price(kind,weapon);
-            Parts.Add(new R3PartState(cell,kind){Weapon=weapon,RotationQuarterTurns=rotation});
+            Parts.Add(new R3PartState(cell,kind){Weapon=weapon,RotationQuarterTurns=rotation,ContactMask=PlacementContacts(kind)});
             return true;
         }
         public bool PurchaseToInventory(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic,R3WheelStyle wheelStyle=R3WheelStyle.Offroad,R3ArmorShape armorShape=R3ArmorShape.Cube)
@@ -354,6 +359,27 @@ namespace RoboRougelike.R3
                 !Connected(rest) || !Connected(rest.Where(p => p.Health > 0))) return false;
             Parts.Remove(part);part.ContactMask=StoredWheelContacts(part);inventory.Add(part); return true;
         }
+        public bool RotateMounted(Vector3Int cell,Vector3Int quarterTurns)
+        {
+            var part=At(cell);
+            if(part==null||part.Kind==R3PartKind.Core||part.Health<=0)return false;
+            var oldRotation=part.RotationQuarterTurns;var oldContacts=part.ContactMask;
+            var next=R3MountingGrid.Normalize(oldRotation+quarterTurns);
+            if(next==oldRotation)return false;
+            bool accepted=false;
+            try
+            {
+                part.RotationQuarterTurns=next;
+                if(part.Kind==R3PartKind.Gun)part.ContactMask=PlacementContacts(part.Kind,part);
+                var cells=OccupiedCells(part).ToArray();
+                if(cells.Any(c=>Math.Abs(c.x)>6||Math.Abs(c.z)>7||c.y<0||c.y>5))return false;
+                var otherCells=new HashSet<Vector3Int>(Parts.Where(p=>p!=part).SelectMany(OccupiedCells));
+                if(cells.Any(otherCells.Contains)||!Connected(Parts)||!Connected(Parts.Where(p=>p.Health>0)))return false;
+                if(installationGate!=null&&installationGate(part)!=null)return false;
+                accepted=true;return true;
+            }
+            finally {if(!accepted){part.RotationQuarterTurns=oldRotation;part.ContactMask=oldContacts;}}
+        }
         public bool ReceiveSalvage(IEnumerable<R3PartState> recovered)
         {
             if(recovered==null)return false;
@@ -396,7 +422,7 @@ namespace RoboRougelike.R3
             rotation=R3MountingGrid.Normalize(rotation);
             if(part==null||part.Health<=0||
                 OwnedPlacementError(part.Id,cell,rotation)!=null)return false;
-            inventory.Remove(part);part.Cell=cell;part.RotationQuarterTurns=rotation;part.ContactMask=StoredWheelContacts(part);
+            inventory.Remove(part);part.Cell=cell;part.RotationQuarterTurns=rotation;part.ContactMask=PlacementContacts(part.Kind,part);
             Parts.Add(part);return true;
         }
         public bool RepairInventory(string id)

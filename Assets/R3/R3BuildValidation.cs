@@ -70,7 +70,9 @@ namespace RoboRougelike.R3
                 (run.Progress?.State!=R1RunState.Garage||run.Transitioning))return "Montaż jest dostępny tylko w garażu.";
             if((transform.lossyScale-Vector3.one).sqrMagnitude>.000001f)return "Niezgodna fizyczna skala siatki pojazdu.";
             var item=new BuildInstalledPart(candidate.Id,Definition(candidate),new BuildPose(candidate.Cell,candidate.RotationQuarterTurns),candidate.Health>0);
-            var installed=Installed();
+            // A rotation replaces the same physical part; its old pose must
+            // not collide with the proposed pose or count as its own support.
+            var installed=Installed().Where(p=>p.PartId!=candidate.Id).ToList();
             var logical=BuildPlacementRules.Check(installed,item,out _);
             if(logical!=BuildPlacementResult.Valid)return Explain(logical);
             GameObject probe=null;
@@ -84,7 +86,8 @@ namespace RoboRougelike.R3
                 // Allocating broadphase returns ALL candidates; no fixed buffer/truncation PASS.
                 foreach(var collider in candidateColliders)
                 foreach(var other in Physics.OverlapBox(collider.bounds.center,collider.bounds.extents+Vector3.one*.001f,Quaternion.identity,~0,QueryTriggerInteraction.Ignore))
-                    if(!other.transform.IsChildOf(probe.transform)&&(factoryGroup==null||!factoryGroup.Contains(other)))neighbors.Add(other);
+                    if(!other.transform.IsChildOf(probe.transform)&&(factoryGroup==null||!factoryGroup.Contains(other))&&
+                        other.GetComponentInParent<R3MountedPart>()?.Id!=candidate.Id)neighbors.Add(other);
                 var result=BuildPlacementRules.CheckForInstallation(installed,item,
                     new BuildPhysicsEvidence(candidateColliders,neighbors.ToArray(),true),out _);
                 if(result!=BuildPlacementResult.Valid)return Explain(result);
@@ -92,7 +95,7 @@ namespace RoboRougelike.R3
                 // Do not authorize a near-barrel or rotating saw envelope that enters own armor.
                 // Selected B01-23 #887: reject the reverse case before any payment:
                 // new armor must not disable an already mounted functional gun.
-                var mountedIssue=ExistingMountedWeaponPlacementIssue(probe,candidateColliders);
+                var mountedIssue=ExistingMountedWeaponPlacementIssue(probe,candidateColliders,new HashSet<string>{candidate.Id});
                 if(mountedIssue!=null)return mountedIssue;
                 return FunctionalWeaponPlacementIssue(candidate,probe);
             }
@@ -129,7 +132,7 @@ namespace RoboRougelike.R3
                     var other=functionalOverlap[i];
                     if(other==null||!other.enabled||!other.gameObject.activeInHierarchy||
                         other.transform.IsChildOf(probe.transform)||
-                        !other.transform.IsChildOf(transform))continue;
+                        !other.transform.IsChildOf(transform)||other.GetComponentInParent<R3MountedPart>()?.Id==candidate.Id)continue;
                     if(other.bounds.Contains(muzzle.position)||
                        RotarySawContactMath.IsOnCuttingDisc(
                            other.ClosestPoint(muzzle.position)-muzzle.position,
@@ -152,7 +155,7 @@ namespace RoboRougelike.R3
                 var other=functionalOverlap[i];
                 if(other!=null&&other.enabled&&other.gameObject.activeInHierarchy&&
                     other.transform.IsChildOf(transform)&&
-                    !other.transform.IsChildOf(probe.transform))
+                    !other.transform.IsChildOf(probe.transform)&&other.GetComponentInParent<R3MountedPart>()?.Id!=candidate.Id)
                     return "Fioletowa strefa: oś lufy zaczyna się we własnej części.";
             }
             int castCount=Physics.SphereCastNonAlloc(pivot.position,radius,delta.normalized,
@@ -164,7 +167,7 @@ namespace RoboRougelike.R3
                 var collider=functionalCast[i].collider;
                 if(collider!=null&&collider.enabled&&
                     collider.transform.IsChildOf(transform)&&
-                    !collider.transform.IsChildOf(probe.transform))
+                    !collider.transform.IsChildOf(probe.transform)&&collider.GetComponentInParent<R3MountedPart>()?.Id!=candidate.Id)
                     return "Fioletowa strefa: obracana lufa przecina własną konstrukcję.";
             }
             return null;

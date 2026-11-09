@@ -28,7 +28,7 @@ namespace B01.CAMERA001
         private readonly RaycastHit[] worldHits = new RaycastHit[128];
         private readonly Collider[] overlaps = new Collider[64];
         private Camera attachedCamera;
-        private Vector3 velocity;
+        private Vector3 velocity,previousAim;
         private bool initialized;
         public Camera001Framing.Result LastSolution { get; private set; }
         public bool WorldClipped { get; private set; }
@@ -167,7 +167,10 @@ namespace B01.CAMERA001
             if (WorldOverlapAtAim)
             {
                 WorldClipped = true;
-                if (initialized) desired = transform.position;
+                if (initialized)
+                    desired = ReceiverResponsiveMotion
+                        ? transform.position+(aim-previousAim)
+                        : transform.position;
             }
             else
             {
@@ -248,6 +251,7 @@ namespace B01.CAMERA001
             transform.rotation = actualRotation; // atomic final-pose commit
 
             initialized = true;
+            previousAim=aim;
             previousOrbit=new Vector2(yaw,pitch);orbitInitialized=true;
             LastCameraStepMeters = reset ? 0f : Vector3.Distance(previous, candidate);
             LastAimErrorDegrees = Vector3.Angle(transform.forward, aim - transform.position);

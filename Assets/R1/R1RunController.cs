@@ -245,6 +245,7 @@ namespace RoboRougelike.R1
             return true;
         });
         public bool GarageRemove(Vector3Int cell) => EditGarage(()=>VehicleModel.Remove(cell));
+        public bool GarageRotate(Vector3Int cell,Vector3Int turns) => EditGarage(()=>VehicleModel.RotateMounted(cell,turns));
         public bool GarageRepairAffordable() => EditGarage(()=>VehicleModel.RepairAffordable()>0);
         public bool GarageEmergencyRepair() => EditGarage(()=>VehicleModel.EmergencyRepair());
         private bool EditGarage(System.Func<bool> action)

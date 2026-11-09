@@ -72,6 +72,33 @@ public class R3GarageModelTests
         Assert.That(model.Remove(Vector3Int.forward * 2), Is.True);
         Assert.That(model.Scrap, Is.EqualTo(10), "Usuwanie nie produkuje waluty.");
     }
+    [Test] public void MountedRotationPreservesIdentityAndRejectsDisconnectedOrientation()
+    {
+        var design=new R3VehicleDesign{Name="Rotation fixture"};
+        design.Parts.Add(new R3PartState(Vector3Int.zero,R3PartKind.Core));
+        var attached=new R3PartState(Vector3Int.right,R3PartKind.Armor)
+            {ContactMask=R3MountingGrid.FaceBit(Vector3Int.left)};
+        design.Parts.Add(attached);
+        var model=new R3VehicleModel(design);
+        var part=model.At(Vector3Int.right);var id=part.Id;var health=part.Health;
+        var rotate=typeof(R3VehicleModel).GetMethod("RotateMounted",new[]{typeof(Vector3Int),typeof(Vector3Int)});
+        Assert.That(rotate,Is.Not.Null,"Mounted parts need a validated atomic rotation.");
+        Assert.That((bool)rotate.Invoke(model,new object[]{part.Cell,new Vector3Int(1,0,0)}),Is.True);
+        Assert.That(part.Id,Is.EqualTo(id));Assert.That(part.Health,Is.EqualTo(health));
+        Assert.That(part.RotationQuarterTurns,Is.EqualTo(new Vector3Int(1,0,0)));
+        Assert.That((bool)rotate.Invoke(model,new object[]{part.Cell,new Vector3Int(0,1,0)}),Is.False);
+        Assert.That(part.RotationQuarterTurns,Is.EqualTo(new Vector3Int(1,0,0)),"Failed rotation must roll back.");
+    }
+    [Test] public void NewTurretRequiresItsBaseRatherThanAnyAdjacentFace()
+    {
+        var design=new R3VehicleDesign{Name="Gun socket fixture"};
+        design.Parts.Add(new R3PartState(Vector3Int.zero,R3PartKind.Core));
+        var model=new R3VehicleModel(design);model.Award(100);
+        Assert.That(model.PlacementError(Vector3Int.left,R3PartKind.Gun),Is.Not.Null,
+            "An upright turret cannot attach via its side.");
+        Assert.That(model.PlacementError(Vector3Int.up,R3PartKind.Gun),Is.Null,
+            "An upright turret can attach on its bottom face.");
+    }
     [Test] public void EmergencyOnlyRebuildsMissingEssentialsAtDiscountedQuote()
     {
         var model = new R3VehicleModel(Blueprint());

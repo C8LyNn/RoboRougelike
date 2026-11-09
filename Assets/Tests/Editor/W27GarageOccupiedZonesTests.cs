@@ -60,4 +60,22 @@ public class W27GarageOccupiedZonesTests
             Assert.That(visual.GetComponentsInChildren<Collider>().All(c=>!c.enabled),Is.True,"Ghost geometry cannot affect physics.");
         }
     }
+    [UnityTest] public IEnumerator WedgePreviewUsesTheRealWedgeRatherThanACube()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float end=Time.realtimeSinceStartup+15;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<end)yield return null;
+        var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        run.SelectVehicle(R3VehicleKind.Light);Assert.That(run.OpenSandboxGarage(),Is.True);
+        run.VehicleModel.Award(100);
+        Assert.That(run.GaragePurchase(R3PartKind.Armor,RoboRougelike.R4.R4WeaponKind.Basic,
+            R3WheelStyle.Offroad,R3ArmorShape.Wedge),Is.True);
+        var part=run.VehicleModel.Inventory.Last(p=>p.ArmorShape==R3ArmorShape.Wedge);
+        run.Garage.ChooseInventory(part.Id);run.Garage.Select(new Vector3Int(0,1,1));
+        var actual=run.Garage.Preview.GetComponent<MeshFilter>().sharedMesh;
+        var wedge=RoboRougelike.R4_1.R41PartGeometry.CreateMountingBlock(R3ArmorShape.Wedge);
+        Assert.That(actual,Is.SameAs(wedge.GetComponent<MeshFilter>().sharedMesh));
+        Assert.That(run.Garage.Preview.GetComponentsInChildren<Collider>(true).All(c=>!c.enabled),Is.True);
+        UnityEngine.Object.Destroy(wedge);
+    }
 }
