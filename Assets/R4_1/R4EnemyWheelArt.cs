@@ -61,7 +61,11 @@ namespace RoboRougelike.R4_1
             if(body==null)return;
             float speed=Vector3.Dot(body.GetPointVelocity(transform.position),body.transform.forward);
             if(float.IsNaN(speed)||float.IsInfinity(speed))return;
-            rotor.Rotate(Vector3.right,speed/radius*Mathf.Rad2Deg*Time.deltaTime,Space.Self);
+            // A reflected left-side mesh reverses the apparent spin, even
+            // though Transform.right ignores the negative scale. Use the
+            // rendered basis handedness to keep both tires rolling alike.
+            float determinant=Vector3.Dot(Vector3.Cross(rotor.TransformVector(Vector3.right),rotor.TransformVector(Vector3.up)),rotor.TransformVector(Vector3.forward));
+            rotor.Rotate(Vector3.right,speed/radius*Mathf.Rad2Deg*Time.deltaTime*(determinant<0?-1f:1f),Space.Self);
         }
     }
 }

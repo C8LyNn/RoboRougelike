@@ -51,6 +51,24 @@ public sealed class R4EnemyWheelArtTests
         Object.Destroy(wheel.gameObject);Object.Destroy(root);Object.Destroy(material);
     }
 
+    [UnityTest] public IEnumerator BothEnemyTiresRollForwardInWorldSpace()
+    {
+        var root=new GameObject("enemy two wheel direction");
+        var body=root.AddComponent<Rigidbody>();body.useGravity=false;body.constraints=RigidbodyConstraints.FreezeRotation;
+        var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
+        var make=typeof(P12PipelineSafeEnemyTurret).GetMethod("MakeProfileBlock",BindingFlags.NonPublic|BindingFlags.Static);
+        var left=(P12PipelineSafeDamageable)make.Invoke(null,new object[]{root.transform,new Vector3Int(-2,0,1),material,true});
+        var right=(P12PipelineSafeDamageable)make.Invoke(null,new object[]{root.transform,new Vector3Int(2,0,1),material,true});
+        Transform Rotor(P12PipelineSafeDamageable wheel)=>wheel.GetComponentsInChildren<Transform>(true).First(t=>t.name=="R4M_WheelM_Side_Offroad_Rotor");
+        var l=Rotor(left);var r=Rotor(right);var axis=root.transform.right;
+        Vector3 Mark(Transform rotor){var v=Vector3.ProjectOnPlane(rotor.TransformVector(Vector3.up),axis);return v.sqrMagnitude>.001f?v:Vector3.ProjectOnPlane(rotor.TransformVector(Vector3.forward),axis);}
+        body.linearVelocity=root.transform.forward*2;var l0=Mark(l);var r0=Mark(r);yield return null;
+        float ld=Vector3.Dot(Vector3.Cross(l0,Mark(l)),axis),rd=Vector3.Dot(Vector3.Cross(r0,Mark(r)),axis);
+        Assert.That(ld,Is.GreaterThan(0),"The left enemy tire must roll forwards.");
+        Assert.That(rd,Is.GreaterThan(0),"The right enemy tire must roll forwards.");
+        Object.Destroy(root);Object.Destroy(material);
+    }
+
     [UnityTest] public IEnumerator InvalidMountKeepsFallbackAndDuplicateAttachIsRejected()
     {
         var parent=new GameObject("visual parent");
