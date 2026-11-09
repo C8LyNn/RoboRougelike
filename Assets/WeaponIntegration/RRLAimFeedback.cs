@@ -5,6 +5,42 @@ using RogueMachine.P12PipelineSafe;
 
 namespace RoboRougelike.WeaponIntegration
 {
+    // Shared transient query buffers; Unity calls these presentation paths on
+    // the main thread and each caller consumes the result before the next query.
+    internal static class RRLAimPhysicsQuery
+    {
+        const int MaxBuffer=4096;
+        static Collider[] overlaps=new Collider[64];
+        static RaycastHit[] hits=new RaycastHit[64];
+        internal static Collider[] Overlap(Vector3 origin,float radius,out int count)
+        {
+            while(true)
+            {
+                count=Physics.OverlapSphereNonAlloc(origin,radius,overlaps,~0,QueryTriggerInteraction.Ignore);
+                if(count<overlaps.Length)return overlaps;
+                if(overlaps.Length>=MaxBuffer)
+                {var all=Physics.OverlapSphere(origin,radius,~0,QueryTriggerInteraction.Ignore);count=all.Length;return all;}
+                System.Array.Resize(ref overlaps,Mathf.Min(overlaps.Length*2,MaxBuffer));
+            }
+        }
+        internal static RaycastHit[] Cast(Vector3 origin,float radius,Vector3 direction,float distance,out int count)
+        {
+            while(true)
+            {
+                count=radius>0?Physics.SphereCastNonAlloc(origin,radius,direction,hits,distance,~0,QueryTriggerInteraction.Ignore):
+                    Physics.RaycastNonAlloc(origin,direction,hits,distance,~0,QueryTriggerInteraction.Ignore);
+                if(count<hits.Length)return hits;
+                if(hits.Length>=MaxBuffer)
+                {
+                    var all=radius>0?Physics.SphereCastAll(origin,radius,direction,distance,~0,QueryTriggerInteraction.Ignore):
+                        Physics.RaycastAll(origin,direction,distance,~0,QueryTriggerInteraction.Ignore);
+                    count=all.Length;return all;
+                }
+                System.Array.Resize(ref hits,Mathf.Min(hits.Length*2,MaxBuffer));
+            }
+        }
+    }
+
     // Read-only geometry feedback, after the final camera pose and gun rotation.
     // It neither steers projectiles nor changes firing, resources or weapon balance.
     public static class RRLAimFeedback
@@ -21,8 +57,6 @@ namespace RoboRougelike.WeaponIntegration
                 Clear==0?$"{Distance:0} m • przeszkoda przy lufie":
                 $"{Distance:0} m • tor: {Clear}/{Guns}"+(DamageableSurface?"":" • podłoże / osłona");
         }
-        static readonly RaycastHit[] hits=new RaycastHit[64];
-        static readonly Collider[] overlaps=new Collider[64];
         internal static float ProjectileRadius(R3MountedPart part)
         {
             if(part.Weapon==R4WeaponKind.RocketLauncher)return part.GetComponent<RRLRocketBinding>()?.Module?.CurrentSpec.CollisionRadius??0;
@@ -94,12 +128,10 @@ namespace RoboRougelike.WeaponIntegration
                 if(!radial&&Vector3.Angle(part.Muzzle.forward,direction)>.25f)continue;
                 result.Aligned++;
                 float radius=ProjectileRadius(part);
-                int initial=Physics.OverlapSphereNonAlloc(origin,Mathf.Max(.001f,radius),overlaps,~0,QueryTriggerInteraction.Ignore);
-                bool blocked=initial>=overlaps.Length;
+                var overlaps=RRLAimPhysicsQuery.Overlap(origin,Mathf.Max(.001f,radius),out int initial);
+                bool blocked=false;
                 for(int i=0;i<initial&&!blocked;i++)blocked=Blocks(overlaps[i],target,assembly.transform);
-                int count=radius>0?Physics.SphereCastNonAlloc(origin,radius,direction.normalized,hits,Mathf.Max(0,distance-.03f),~0,QueryTriggerInteraction.Ignore):
-                    Physics.RaycastNonAlloc(origin,direction.normalized,hits,Mathf.Max(0,distance-.03f),~0,QueryTriggerInteraction.Ignore);
-                blocked|=count>=hits.Length;
+                var hits=RRLAimPhysicsQuery.Cast(origin,radius,direction.normalized,Mathf.Max(0,distance-.03f),out int count);
                 for(int i=0;i<count&&!blocked;i++)
                     blocked=Blocks(hits[i].collider,target,assembly.transform);
                 if(!blocked&&!OwnArmorBlocksShot(assembly,part))result.Clear++;
