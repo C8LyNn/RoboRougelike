@@ -80,6 +80,30 @@ namespace RoboRougelike.R3
                         pending[child]=pending.TryGetValue(child,out float old)?old+share:share;
                 }
             }
+
+            // A small or already-damaged branch must not erase damage while
+            // another part in the same bounded graph still has health. Reuse
+            // capacity in the outermost reachable ring first, sharing evenly.
+            // This is the same atomic impact, not another graph traversal.
+            foreach(int depth in distance.Values.Distinct().OrderByDescending(value=>value))
+            {
+                if(result.Unused<=0)break;
+                var remaining=distance.Where(p=>p.Value==depth).Select(p=>p.Key).OrderBy(id=>id).ToList();
+                while(result.Unused>0&&remaining.Count>0)
+                {
+                    float share=result.Unused/remaining.Count,spent=0;
+                    for(int i=remaining.Count-1;i>=0;i--)
+                    {
+                        int id=remaining[i];result.Damage.TryGetValue(id,out float previous);
+                        float capacity=Math.Max(0,nodes[id].Health-previous);
+                        float applied=Math.Min(share,capacity);
+                        if(applied>0){result.Damage[id]=previous+applied;spent+=applied;}
+                        if(capacity<=share)remaining.RemoveAt(i);
+                    }
+                    if(spent<=0)break;
+                    result.Unused=Math.Max(0,result.Unused-spent);
+                }
+            }
             return result;
         }
     }

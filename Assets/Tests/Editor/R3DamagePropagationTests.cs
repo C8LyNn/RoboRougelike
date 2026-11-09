@@ -60,6 +60,17 @@ public sealed class R3DamagePropagationTests
     }
 
     [Test]
+    public void DamagedBranchRedistributesItsOverflowToOtherReachableParts()
+    {
+        var graph=new[]{Part(0,100,1,2),Part(1,1,0),Part(2,100,0)};
+        var result=R3DamagePropagation.Resolve(graph,0,100,.25f,2);
+        Assert.That(result.Damage[0],Is.EqualTo(75).Within(.001f));
+        Assert.That(result.Damage[1],Is.EqualTo(1).Within(.001f));
+        Assert.That(result.Damage[2],Is.EqualTo(24).Within(.001f),"A surviving sibling can absorb the other branch's excess.");
+        Assert.That(result.Unused,Is.EqualTo(0).Within(.001f),"Reachable HP prevents damage from disappearing.");
+    }
+
+    [Test]
     public void ProjectileProfilesChangeTheSpreadWithoutChangingDamageBudget()
     {
         var graph=new[]{Part(0,100,1),Part(1,100,0)};
