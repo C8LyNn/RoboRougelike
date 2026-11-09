@@ -95,6 +95,28 @@ public sealed class R1RunCheckpointIntegrationTests
         Assert.That(File.ReadAllText(path),Is.EqualTo(original),"Loading must not modify the original save.");
         yield return null;
     }
+    [UnityTest] public IEnumerator LegacySideMountedGunLoadsIntoInventoryWithNotice()
+    {
+        CheckLegacySideMountedGun(run,path);
+        yield return null;
+    }
+    static void CheckLegacySideMountedGun(R1RunController run,string path)
+    {
+        var progress=new R1RunProgress(6,true);Assert.That(progress.Start(),Is.True);Assert.That(progress.PrepareGarage(),Is.True);
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));var saved=model.MakeCheckpoint(Time.time);
+        var gun=saved.mounted.First(p=>p.Kind==R3PartKind.Gun);
+        gun.Cell=new Vector3Int(3,1,1);gun.ContactMask=R3MountingGrid.AllFaces;gun.Health=.43f;
+        string id=gun.Id;
+        R1RunCheckpointStorage.Write(path,new R1RunCheckpoint{vehicle=(int)R3VehicleKind.Standard,runId=Guid.NewGuid().ToString("N"),
+            progress=progress.MakeGarageCheckpoint(),model=saved});
+        string original=File.ReadAllText(path);
+        Assert.That(run.LoadRunCheckpoint(),Is.True,run.RunSaveMessage);
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage));
+        Assert.That(run.RunSaveMessage,Does.Contain("punktów mocowania"));
+        Assert.That(run.VehicleModel.Inventory.Single(p=>p.Id==id).Health,Is.EqualTo(.43f));
+        Assert.That(run.Player.GetComponent<R3VehicleAssembly>().Parts.Any(p=>p.Id==id),Is.False);
+        Assert.That(File.ReadAllText(path),Is.EqualTo(original),"Loading does not overwrite the source file.");
+    }
     [UnityTearDown] public IEnumerator Cleanup()
     {
         if(File.Exists(path))File.Delete(path);R1RunCheckpointStorage.TestPath=null;
