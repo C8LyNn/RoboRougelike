@@ -78,6 +78,17 @@ public sealed class EnemyCombatStylesTests
         Assert.That(encounter.SpawnArchetype(1),Is.EqualTo(R3EnemyArchetype.Scout));
     }
 
+    [Test]
+    public void CoincidentVehicleRootsStillHaveAUsableEscapeDirection()
+    {
+        var method=typeof(P12PipelineSafeEnemyTurret).GetMethod("TargetDirection",BindingFlags.Static|BindingFlags.Public);
+        Assert.That(method,Is.Not.Null,"Overlapping vehicle origins must not halt enemy steering.");
+        var direction=(Vector3)method.Invoke(null,new object[]{Vector3.zero,Vector3.right});
+        Assert.That(direction,Is.EqualTo(Vector3.right));
+        direction=(Vector3)method.Invoke(null,new object[]{Vector3.zero,Vector3.up});
+        Assert.That(direction,Is.EqualTo(Vector3.forward),"Vertical chassis orientation needs a finite fallback.");
+    }
+
     [TestCase(R3EnemyArchetype.Gunner, P12FunctionalModuleType.Weapon)]
     [TestCase(R3EnemyArchetype.Flanker, P12FunctionalModuleType.Wheel)]
     public void EnemiesPreferDifferentWorkingModules(R3EnemyArchetype archetype,P12FunctionalModuleType preferred)
