@@ -7,6 +7,29 @@ using RogueMachine.P12PipelineSafe;
 
 namespace RoboRougelike.R3
 {
+    // A right-button click removes; moving at least four pixels changes it
+    // into an orbit gesture. Losing focus or opening UI cancels either.
+    public sealed class R3GaragePointerGesture
+    {
+        const float DragThreshold=4f;
+        public bool Pressed { get; private set; }
+        bool dragging;
+        float distance;
+        public void Press(){Pressed=true;dragging=false;distance=0;}
+        public bool Drag(Vector2 delta)
+        {
+            if(!Pressed)return false;
+            distance+=delta.magnitude;if(distance>=DragThreshold)dragging=true;
+            return dragging;
+        }
+        public bool Release(bool inside)
+        {
+            bool remove=Pressed&&!dragging&&inside;
+            Cancel();return remove;
+        }
+        public void Cancel(){Pressed=false;dragging=false;distance=0;}
+    }
+
     public sealed class R3GarageView : MonoBehaviour
     {
         public static Rect Viewport => new Rect(0.215625f,0.10f,0.7765625f,0.78f);
@@ -47,8 +70,8 @@ namespace RoboRougelike.R3
         private readonly RaycastHit[] hits=new RaycastHit[512];
         private float yaw=35,pitch=32,distance=9,previousNear;
         private Vector3 pivotLocal;
-        private bool orbitDragging,rightPressed,rightDragged,isOpen,arenaWasActive;
-        private float rightDragDistance;
+        private bool orbitDragging,isOpen,arenaWasActive;
+        private readonly R3GaragePointerGesture rightGesture=new R3GaragePointerGesture();
         private GameObject hiddenArena,workshopSpace;
         private Renderer workshopFloor;
         // A separate, non-gameplay workspace: safely away from arenas, authored maps,
@@ -135,7 +158,7 @@ namespace RoboRougelike.R3
         {
             if(run.Player!=null)R3BuildValidation.SetGarageSockets(run.Player.GetComponent<R3VehicleAssembly>(),false);
             if(previewRoot!=null){previewRoot.SetActive(false);Destroy(previewRoot);}
-            previewRoot=null;marker=null;payloadRenderers.Clear();availableMountPoints=null;mountPointsAssembly=null;HasTarget=false;orbitDragging=false;rightPressed=false;rightDragged=false;
+            previewRoot=null;marker=null;payloadRenderers.Clear();availableMountPoints=null;mountPointsAssembly=null;HasTarget=false;CancelPointerGesture();
             DestroyWorkshopSpace();
             RestoreArena();
             if(isOpen){view.nearClipPlane=previousNear;view.rect=new Rect(0,0,1,1);follow.enabled=true;}
@@ -504,7 +527,8 @@ namespace RoboRougelike.R3
         }
         public void HandleGuiPointer(Event current,Vector2 rawTopLeft)
         {
-            if(run.Progress?.State!=R1RunState.Garage||run.Transitioning||run.Paused||run.QuitRequested)return;
+            if(run.Progress?.State!=R1RunState.Garage||run.Transitioning||run.Paused||run.QuitRequested)
+            {CancelPointerGesture();return;}
             var screen=new Vector2(rawTopLeft.x,Screen.height-rawTopLeft.y);bool inside=InBuildArea(screen,Screen.width,Screen.height);
             if(current.type==EventType.KeyDown)
             {
@@ -542,17 +566,15 @@ namespace RoboRougelike.R3
                 }
             }
             if(inside&&current.type==EventType.MouseDown&&current.button==1)
-            {rightPressed=true;rightDragged=false;rightDragDistance=0;current.Use();return;}
-            if(current.type==EventType.MouseDrag&&current.button==1&&rightPressed)
+            {rightGesture.Press();current.Use();return;}
+            if(current.type==EventType.MouseDrag&&current.button==1&&rightGesture.Pressed)
             {
-                rightDragDistance+=current.delta.magnitude;
-                if(rightDragDistance>=4f)rightDragged=true;
-                if(rightDragged){orbitDragging=true;Orbit(current.delta.x*.4f);Tilt(-current.delta.y*.3f);}
+                if(rightGesture.Drag(current.delta)){orbitDragging=true;Orbit(current.delta.x*.4f);Tilt(-current.delta.y*.3f);}
                 current.Use();return;
             }
-            if(current.type==EventType.MouseUp&&current.button==1&&rightPressed)
+            if(current.type==EventType.MouseUp&&current.button==1&&rightGesture.Pressed)
             {
-                bool remove=!rightDragged&&inside;rightPressed=false;orbitDragging=false;
+                bool remove=rightGesture.Release(inside);orbitDragging=false;
                 if(remove)
                 {
                     var prior=Tool;Tool=R41GarageTool.Remove;ClickScreen(screen);
@@ -574,6 +596,8 @@ namespace RoboRougelike.R3
                 current.Use();
             }
         }
+        public void CancelPointerGesture(){rightGesture.Cancel();orbitDragging=false;}
+        private void OnApplicationFocus(bool focused){if(!focused)CancelPointerGesture();}
         private void LateUpdate()
         {
             if(!isOpen||run.Progress?.State!=R1RunState.Garage||run.Player==null)return;

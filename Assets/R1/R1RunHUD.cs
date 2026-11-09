@@ -129,6 +129,7 @@ namespace RoboRougelike.R1
                 Draw(run,portraitReady,portraitGarage,portraitRoute,portraitSalvage);
                 if(!sessionOverlay&&run.MapEditing)run.MapEditorPointer(Event.current,rawPointer);
                 else if(!sessionOverlay&&!catalogOpen&&!garageOptionsOpen&&run.Progress?.State==R1RunState.Garage&&!run.Transitioning&&!run.Paused&&!run.QuitRequested)run.Garage.HandleGuiPointer(Event.current,rawPointer);
+                else run.Garage?.CancelPointerGesture();
             }
             finally { GUI.matrix = previous; GUI.enabled = true; }
         }
