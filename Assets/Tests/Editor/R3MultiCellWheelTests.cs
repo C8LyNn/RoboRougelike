@@ -7,6 +7,28 @@ using UnityEngine;
 
 public sealed class R3MultiCellWheelTests
 {
+    [Test] public void InstalledSideWheelRetainsOnlyItsRealSocketAcrossSaveAndRemount()
+    {
+        var design=new R3VehicleDesign{Name="Wheel contact QA",CoreHp=100,Speed=7,TurnSpeed=82};
+        design.Parts.Add(new R3PartState(new Vector3Int(0,1,0),R3PartKind.Core));
+        var model=new R3VehicleModel(design);model.Award(100);
+        Assert.That(model.PurchaseToInventory(R3PartKind.Wheel),Is.True);
+        var wheel=model.Inventory.Single();var id=wheel.Id;var right=new Vector3Int(1,1,0);
+        Assert.That(model.Mount(id,right),Is.True);
+        Assert.That(model.At(right).ContactMask,Is.EqualTo(R3MountingGrid.FaceBit(Vector3Int.left)),"The wheel's single real socket faces its support.");
+        var saved=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(0)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(saved,R3VehicleKind.Light,null,0,out var loaded,out var error),Is.True,error);
+        Assert.That(loaded.At(right).ContactMask,Is.EqualTo(R3MountingGrid.FaceBit(Vector3Int.left)));
+        Assert.That(loaded.Remove(right),Is.True);
+        var left=new Vector3Int(-1,1,0);Assert.That(loaded.Mount(id,left),Is.True);
+        Assert.That(loaded.At(left).ContactMask,Is.EqualTo(R3MountingGrid.FaceBit(Vector3Int.right)),"The same recovered wheel can attach on the other side.");
+        Assert.That(loaded.At(left).Id,Is.EqualTo(id));
+        Assert.That(loaded.RotateMounted(left,new Vector3Int(0,1,0)),Is.False,"Rotation cannot disconnect the only axle contact.");
+        var direct=new R3VehicleModel(design);direct.Award(100);
+        Assert.That(direct.Buy(right,R3PartKind.Wheel),Is.True);
+        Assert.That(direct.At(right).ContactMask,Is.EqualTo(R3MountingGrid.FaceBit(Vector3Int.left)),"Direct purchase also records the real socket.");
+        Assert.That(direct.Buy(new Vector3Int(0,2,0),R3PartKind.Wheel),Is.False,"A side wheel cannot attach by its top or bottom.");
+    }
     [Test] public void InventoryCaptionsDistinguishOldAndNewLargeWheelsInBothLayouts()
     {
         var caption=typeof(R1RunHUD).GetMethod("CatalogItemCaption",BindingFlags.Static|BindingFlags.NonPublic);
