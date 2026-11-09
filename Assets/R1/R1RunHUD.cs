@@ -38,8 +38,9 @@ namespace RoboRougelike.R1
         {
             int wheels=design.Parts.Count(p=>p.Kind==R3PartKind.Wheel);
             int weapons=design.Parts.Count(p=>p.Kind==R3PartKind.Gun);
+            int batteries=design.Parts.Count(p=>p.Kind==R3PartKind.Battery);
             float speed=R3VehicleAssembly.SpeedFor(design.Parts.Sum(R4WeaponDefinition.PartMass),wheels);
-            return $"Koła: {wheels} • Broń: {weapons}\nNapęd: {speed:0.0} m/s • Rdzeń: {design.CoreHp:0} HP";
+            return $"Koła: {wheels} • Broń: {weapons} • Baterie: {batteries}\nNapęd: {speed:0.0} m/s • Rdzeń: {design.CoreHp:0} HP";
         }
         private static string StarterVehicleDescription(R3VehicleDesign design)
         {
