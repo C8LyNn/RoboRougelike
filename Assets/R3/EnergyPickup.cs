@@ -21,15 +21,27 @@ namespace RoboRougelike.R3
         void FixedUpdate()
         {
             int count=Physics.OverlapSphereNonAlloc(transform.position,1.1f,contacts,~0,QueryTriggerInteraction.Ignore);
+            if(TryCollect(contacts,count))return;
+            // A saturated buffer can omit the player entirely; fall back only
+            // in that case so large vehicles and dense wrecks cannot hide them.
+            if(count==contacts.Length)
+            {
+                var all=Physics.OverlapSphere(transform.position,1.1f,~0,QueryTriggerInteraction.Ignore);
+                TryCollect(all,all.Length);
+            }
+        }
+        bool TryCollect(Collider[] hits,int count)
+        {
             for(int i=0;i<count;i++)
             {
-                var assembly=contacts[i]!=null?contacts[i].GetComponentInParent<R3VehicleAssembly>():null;
+                var assembly=hits[i]!=null?hits[i].GetComponentInParent<R3VehicleAssembly>():null;
                 if(assembly==null||RoboRougelike.R1.R1RunController.Instance?.Player==null||
                     assembly.gameObject!=RoboRougelike.R1.R1RunController.Instance.Player.gameObject)continue;
                 var bank=assembly.GetComponent<VehicleEnergyBank>();
                 if(bank==null||bank.Maximum<=0)continue;
-                bank.ApplyEnergyPickup();gameObject.SetActive(false);Destroy(gameObject);return;
+                bank.ApplyEnergyPickup();gameObject.SetActive(false);Destroy(gameObject);return true;
             }
+            return false;
         }
         void OnDestroy(){if(material!=null)Destroy(material);}
     }
