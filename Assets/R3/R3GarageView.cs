@@ -91,7 +91,7 @@ namespace RoboRougelike.R3
         private readonly RaycastHit[] hits=new RaycastHit[512];
         private float yaw=35,pitch=32,distance=9,previousNear;
         private Vector3 pivotLocal;
-        private bool orbitDragging,isOpen,arenaWasActive,raycastSaturated;
+        private bool orbitDragging,isOpen,arenaWasActive;
         private readonly R3GaragePointerGesture rightGesture=new R3GaragePointerGesture();
         private GameObject hiddenArena,workshopSpace;
         private Renderer workshopFloor;
@@ -204,7 +204,7 @@ namespace RoboRougelike.R3
         {
             if(run.Player!=null)R3BuildValidation.SetGarageSockets(run.Player.GetComponent<R3VehicleAssembly>(),false);
             if(previewRoot!=null){previewRoot.SetActive(false);Destroy(previewRoot);}
-            previewRoot=null;marker=null;payloadRenderers.Clear();availableMountPoints=null;mountPointsAssembly=null;HasTarget=false;raycastSaturated=false;CancelPointerGesture();
+            previewRoot=null;marker=null;payloadRenderers.Clear();availableMountPoints=null;mountPointsAssembly=null;HasTarget=false;CancelPointerGesture();
             DestroyWorkshopSpace();
             RestoreArena();
             if(isOpen){view.nearClipPlane=previousNear;view.rect=new Rect(0,0,1,1);follow.enabled=true;}
@@ -461,20 +461,19 @@ namespace RoboRougelike.R3
             if(run.Progress?.State!=R1RunState.Garage||run.Transitioning)return false;
             Physics.SyncTransforms();
             int count=Physics.RaycastNonAlloc(ray,hits,100,~0,QueryTriggerInteraction.Collide);
-            // PhysX does not guarantee ordering when its fixed buffer fills.
-            // A partial hit list cannot safely authorize removal or mounting.
+            // PhysX does not order the fixed buffer. A complete query is needed
+            // before choosing the closest genuine vehicle part on overflow.
+            var rayHits=hits;
             if(count>=hits.Length)
             {
-                raycastSaturated=true;HasTarget=false;pointerSurfaceRejected=false;
-                Message="Nie można wskazać części: zbyt wiele obiektów pod kursorem.";
-                RefreshMarker();return false;
+                rayHits=Physics.RaycastAll(ray,100,~0,QueryTriggerInteraction.Collide);
+                count=rayHits.Length;
             }
-            if(raycastSaturated){raycastSaturated=false;Message="Możesz ponownie wskazać część.";}
             float nearest=float.PositiveInfinity;R3MountedPart target=null;R41MissingPlan missing=null;Vector3 normal=default;
             RaycastHit nearestHit=default;
             for(int i=0;i<count;i++)
             {
-                var hit=hits[i];if(hit.distance>=nearest)continue;
+                var hit=rayHits[i];if(hit.distance>=nearest)continue;
                 var plan=hit.collider.GetComponent<R41MissingPlan>();var part=hit.collider.GetComponentInParent<R3MountedPart>();
                 if(plan!=null&&plan.transform.IsChildOf(previewRoot.transform)){missing=plan;target=null;}
                 else if(part!=null&&part.Operational&&part.transform.IsChildOf(run.Player.transform)){target=part;missing=null;}

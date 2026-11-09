@@ -115,6 +115,30 @@ public class R41GarageTests
         Assert.That(Run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==id).Block.DetachedFromVehicle,Is.False);
         yield return null;
     }
+    [UnityTest] public IEnumerator CrowdedRaycastStillSelectsTheSameRealMountPoint()
+    {
+        var garage=Run.Garage;string id=PurchasePart(R3PartKind.Armor);garage.ChooseInventory(id);
+        var ray=TopRay(new Vector3Int(2,1,2));
+        Assert.That(garage.Point(ray),Is.True,"The original mount must be selectable.");
+        var original=garage.Cell;
+        var obstacles=new GameObject("Crowded ray fixture");
+        try
+        {
+            for(int i=0;i<520;i++)
+            {
+                var child=new GameObject("overlap "+i);child.transform.SetParent(obstacles.transform,false);
+                child.transform.position=ray.GetPoint(.1f+i*.004f);
+                var collider=child.AddComponent<BoxCollider>();collider.size=Vector3.one*.01f;collider.isTrigger=true;
+            }
+            Physics.SyncTransforms();
+            Assert.That(Physics.RaycastAll(ray,100,~0,QueryTriggerInteraction.Collide).Length,Is.GreaterThan(512));
+            Assert.That(garage.Point(ray),Is.True,"A complete query can still identify the genuine mounting socket.");
+            Assert.That(garage.Cell,Is.EqualTo(original),"Crowding must not select another mount.");
+        }
+        finally {UnityEngine.Object.Destroy(obstacles);}
+        yield return null;
+    }
+
     [UnityTest] public IEnumerator FullRaycastBufferCannotAuthorizeAHiddenMountTarget()
     {
         var garage=Run.Garage;string id=PurchasePart(R3PartKind.Armor);garage.ChooseInventory(id);
@@ -129,15 +153,14 @@ public class R41GarageTests
                 child.transform.position=ray.GetPoint(.1f+i*.004f);
                 var collider=child.AddComponent<BoxCollider>();collider.size=Vector3.one*.01f;collider.isTrigger=true;
             }
+            Run.Player.gameObject.SetActive(false);
             Physics.SyncTransforms();
-            Assert.That(garage.Point(ray),Is.False,"A truncated physics result must never authorize a mount.");
+            Assert.That(garage.Point(ray),Is.False,"Crowding must never manufacture a hidden mount target.");
             Assert.That(garage.HasTarget,Is.False);
-            Assert.That(garage.Message,Does.Contain("zbyt wiele"));
         }
-        finally {UnityEngine.Object.Destroy(obstacles);}
+        finally {Run.Player.gameObject.SetActive(true);UnityEngine.Object.Destroy(obstacles);}
         yield return null;
         Assert.That(garage.Point(ray),Is.True,"The same mount becomes selectable once the obstruction is gone.");
-        Assert.That(garage.Message,Does.Contain("ponownie"));
     }
     [UnityTest] public IEnumerator PointedRepairRemovalAndInventoryMountUseActualPartAndSurviveNextFight()
     {
