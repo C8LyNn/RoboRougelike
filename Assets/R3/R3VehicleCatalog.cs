@@ -23,7 +23,7 @@ namespace RoboRougelike.R3
                 new[]{"Patrol","Szturm","Eskorta","Wędrowiec"};
             var design=new R3VehicleDesign {
                 Name=names[variant],
-                Description=(light?"Lekki":heavy?"Ciężki":"Średni")+" • wariant "+(variant+1)+"/4 • złom na start: "+StartingScrap(kind),
+                Description=(light?"Lekki":heavy?"Ciężki":"Średni")+" • złom na start: "+StartingScrap(kind),
                 // Shared baseline: actual mass and wheels determine mobility.
                 Speed=7.5f,TurnSpeed=82,CoreHp=100
             };
