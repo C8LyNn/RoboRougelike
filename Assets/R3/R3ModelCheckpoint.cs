@@ -7,6 +7,32 @@ using RoboRougelike.Mechanics.MOV009;
 
 namespace RoboRougelike.R3
 {
+    // Traverses part identities through all their occupied grid cells. The
+    // footprint override is also useful for validating future catalog shapes;
+    // it does not enable any unreleased shape in gameplay.
+    public static class R3ConnectionTraversal
+    {
+        public static HashSet<string> Reachable(IEnumerable<R3PartState> parts,IEnumerable<string> initial,
+            bool deadOnly,Func<R3PartState,IEnumerable<Vector3Int>> footprint=null)
+        {
+            footprint??=R3VehicleModel.OccupiedCells;
+            var items=parts.ToArray();
+            var cells=items.SelectMany(p=>footprint(p).Select(cell=>new{cell,part=p}))
+                .ToDictionary(item=>item.cell,item=>item.part);
+            var reached=new HashSet<string>(initial,StringComparer.Ordinal);
+            var queue=new Queue<R3PartState>(items.Where(p=>reached.Contains(p.Id)));
+            while(queue.Count>0)
+            {
+                var current=queue.Dequeue();
+                foreach(var cell in footprint(current))foreach(var direction in R3MountingGrid.FaceDirections)
+                    if(cells.TryGetValue(cell+direction,out var next)&&!reached.Contains(next.Id)&&
+                        (!deadOnly||next.Health<=0)&&R3MountingGrid.Compatible(current,next,direction))
+                    {reached.Add(next.Id);queue.Enqueue(next);}
+            }
+            return reached;
+        }
+    }
+
     [Serializable] public sealed class R3WheelCheckpoint
     {public string id;public Vector3Int cell,rotation;public int contacts;}
     [Serializable] public sealed class R3GroupCheckpoint
@@ -74,20 +100,7 @@ namespace RoboRougelike.R3
         }
 
         static HashSet<string> ReachableCheckpointParts(R3PartState[] parts,HashSet<string> initial,bool deadOnly)
-        {
-            var cells=parts.ToDictionary(p=>p.Cell);
-            var reached=new HashSet<string>(initial,StringComparer.Ordinal);
-            var queue=new Queue<R3PartState>(parts.Where(p=>reached.Contains(p.Id)));
-            while(queue.Count>0)
-            {
-                var current=queue.Dequeue();
-                foreach(var direction in R3MountingGrid.FaceDirections)
-                    if(cells.TryGetValue(current.Cell+direction,out var next)&&!reached.Contains(next.Id)&&
-                        (!deadOnly||next.Health<=0)&&R3MountingGrid.Compatible(current,next,direction))
-                    {reached.Add(next.Id);queue.Enqueue(next);}
-            }
-            return reached;
-        }
+            =>R3ConnectionTraversal.Reachable(parts,initial,deadOnly);
         static float Remaining(float at,float now)=>at>now?at-now:0;
         static R3PartState SavePart(R3PartState source,float now)
         {

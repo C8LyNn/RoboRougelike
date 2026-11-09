@@ -1,10 +1,25 @@
 using System.Linq;
+using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using RoboRougelike.R3;
 
 public sealed class R3ModelCheckpointTests
 {
+    [Test] public void TraversalCanCrossAllCellsOfOnePartWithoutCreatingExtraIdentities()
+    {
+        var core=new R3PartState(Vector3Int.zero,R3PartKind.Core);
+        var beam=new R3PartState(Vector3Int.right,R3PartKind.Armor);
+        var end=new R3PartState(new Vector3Int(3,0,0),R3PartKind.Armor);
+        var cells=new Dictionary<string,Vector3Int[]>{
+            {core.Id,new[]{core.Cell}},{beam.Id,new[]{beam.Cell,new Vector3Int(2,0,0)}},{end.Id,new[]{end.Cell}}};
+        var parts=new[]{core,beam,end};
+        var reached=R3ConnectionTraversal.Reachable(parts,new[]{core.Id},false,p=>cells[p.Id]);
+        Assert.That(reached,Is.EquivalentTo(new[]{core.Id,beam.Id,end.Id}),"One two-cell part links its far end to the core.");
+        beam.ContactMask=R3MountingGrid.FaceBit(Vector3Int.left);
+        reached=R3ConnectionTraversal.Reachable(parts,new[]{core.Id},false,p=>cells[p.Id]);
+        Assert.That(reached,Does.Contain(beam.Id));Assert.That(reached,Does.Not.Contain(end.Id),"Unmatched outer ports cannot create a connection.");
+    }
     [Test] public void OldStarterContactsAreNormalizedWithoutMutatingTheSavedData()
     {
         var source=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
