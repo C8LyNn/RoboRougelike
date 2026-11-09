@@ -484,12 +484,13 @@ namespace RoboRougelike.R3
             HasTarget=target!=null||missing!=null;
             pointerSurfaceRejected=false;
             if(Tool==R41GarageTool.Mount&&target!=null&&
-                (!R3BuildValidation.ValidateHit(run.Player.GetComponent<R3VehicleAssembly>(),nearestHit)||
-                 !AvailableMountPoints.Any(p=>p.Surface==nearestHit.collider)))
+                (!ResolveSocketFace(ray,ref nearestHit)||
+                 !R3BuildValidation.ValidateHit(run.Player.GetComponent<R3VehicleAssembly>(),nearestHit)))
             {
                 Cell=target.Cell+LocalFace(run.Player.transform,normal);
                 pointerSurfaceRejected=true;RefreshMarker();return false;
             }
+            if(Tool==R41GarageTool.Mount&&target!=null)normal=nearestHit.normal;
             if(HasTarget)
             {
                 var nearestCell=target!=null?target.Cell:missing.Part.Cell;
@@ -520,6 +521,26 @@ namespace RoboRougelike.R3
                 else Cell=Tool==R41GarageTool.Mount?outside:nearestCell;
             }
             RefreshMarker();return HasTarget;
+        }
+        bool ResolveSocketFace(Ray ray,ref RaycastHit hit)
+        {
+            // The selectable patch is a thin trigger. A grazing ray may hit
+            // its side, whose PhysX normal is unrelated to the visible face.
+            // Project onto the registered patch only, and require the cursor
+            // to land inside its displayed bounds from the front.
+            var hitCollider=hit.collider;
+            var socket=AvailableMountPoints.FirstOrDefault(p=>p.Surface==hitCollider);
+            if(socket.Surface==null)return false;
+            var normal=socket.Rotation*Vector3.forward;
+            if(Vector3.Dot(ray.direction,normal)>=-.00001f)return false;
+            var plane=new Plane(normal,socket.Position);
+            if(!plane.Raycast(ray,out float distance)||distance<0)return false;
+            var point=ray.GetPoint(distance);
+            var local=Quaternion.Inverse(socket.Rotation)*(point-socket.Position);
+            float half=R3BuildValidation.GarageSocketSize*.5f+.0001f;
+            if(Mathf.Abs(local.x)>half||Mathf.Abs(local.y)>half)return false;
+            hit.point=point;hit.normal=normal;
+            return true;
         }
         private static string MountedStackFeedback(int remaining,bool usable)=>usable?
             "Zamontowano. Wybierz miejsce dla kolejnej części.":remaining>0?
