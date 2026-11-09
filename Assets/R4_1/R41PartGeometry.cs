@@ -112,12 +112,17 @@ namespace RoboRougelike.R4_1
                 // muzzle in Unity. The pivot's 2x scale supplies the final 2x.
                 float sourceLength=weapon==R4WeaponKind.Automatic?.70f:weapon==R4WeaponKind.Heavy?.60f:
                     weapon==R4WeaponKind.RocketLauncher?.382f:weapon==R4WeaponKind.Shotgun?.45f:
-                    weapon==R4WeaponKind.Railgun?.84f:.66f;
+                    weapon==R4WeaponKind.Railgun?.84f:weapon==R4WeaponKind.BeamCutter?.44f:.66f;
                 float localLength=sourceLength/BlockSize;
                 var muzzle=pivot.Find("Wylot");if(muzzle!=null)muzzle.localPosition=Vector3.forward*localLength;
                 foreach(Transform barrel in pivot)
                 {
                     if(!barrel.name.StartsWith("Lufa",System.StringComparison.Ordinal))continue;
+                    if(weapon==R4WeaponKind.EmpEmitter)
+                    {
+                        foreach(var collider in barrel.GetComponentsInChildren<Collider>())collider.enabled=false;
+                        continue;
+                    }
                     var position=barrel.localPosition;position.z=localLength*.5f;
                     if(weapon==R4WeaponKind.Automatic)position.x=Mathf.Sign(position.x)*(.06f/BlockSize);
                     barrel.localPosition=position;
