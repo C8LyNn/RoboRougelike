@@ -1314,6 +1314,8 @@ namespace RogueMachine.P12PipelineSafe
                 var support=MakeProfileBlock(baseRoot,new Vector3Int(side*bridge,height,0),accent,false);support.name="Podpora baterii "+side;
                 support.Configure(boss?90:75,true);
                 var gun=MakeProfileBlock(baseRoot,new Vector3Int(side*(bridge+1),height,0),accent,false);gun.name="Bateria "+side;
+                var inward=side<0?Vector3Int.right:Vector3Int.left;
+                gun.gameObject.AddComponent<R3BlockMountPoints>().Configure(null,R3MountingGrid.FaceBit(inward));
                 var kind=variant==R5EnemyVariant.EliteGunner&&side==1?R4WeaponKind.Automatic:R4WeaponKind.Heavy;
                 var profile=R4WeaponDefinition.Get(kind);gun.Configure(profile.Hp,true);
                 var pivot=R41PartGeometry.Payload(gun.transform,R3PartKind.Gun,kind,accent,true,out var barrel);
