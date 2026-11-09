@@ -15,7 +15,7 @@
           "EnemyCount": 1,
           "ScrapReward": 80,
           "Risk": "Niskie",
-          "Loot": "Automat i lekkie koła",
+          "Loot": "Automat, ciężkie działo i koła",
           "Rule": "Zniszcz wszystkie rdzenie",
           "ThreatBudget": 40,
           "HealthMultiplier": 0.8,

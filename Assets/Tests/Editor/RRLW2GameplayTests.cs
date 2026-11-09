@@ -66,7 +66,12 @@ public class RRLW2GameplayTests
             yield return Combat();var foes=run.Encounter.Enemies.ToArray();
             Assert.That(foes.Length,Is.EqualTo(counts[stage]));Assert.That(run.CurrentEncounter.SpawnCount,Is.EqualTo(counts[stage]));
             Assert.That(R5RunPlan.Threat(run.CurrentEncounter),Is.LessThanOrEqualTo(run.CurrentEncounter.ThreatBudget));
-            if(stage<5){Assert.That(foes.Last().Archetype,Is.EqualTo(R3EnemyArchetype.Scout));Assert.That(foes.Last().Variant,Is.EqualTo(R5EnemyVariant.Normal));}
+            if(stage<5)
+            {
+                var escortArchetype=foes.Take(foes.Length-1).All(e=>e.Archetype==R3EnemyArchetype.Scout)?R3EnemyArchetype.Gunner:R3EnemyArchetype.Scout;
+                Assert.That(foes.Last().Archetype,Is.EqualTo(escortArchetype));
+                Assert.That(foes.Last().Variant,Is.EqualTo(R5EnemyVariant.Normal));
+            }
             else Assert.That(foes.Single().Variant,Is.EqualTo(R5EnemyVariant.SiegeBoss));
             Physics.SyncTransforms();
             foreach(var foe in foes)
