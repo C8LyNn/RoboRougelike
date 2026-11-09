@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using RoboRougelike.R3;
+using RoboRougelike.R1;
 using RogueMachine.P12PipelineSafe;
 using System.Reflection;
 using UnityEngine;
@@ -59,6 +60,22 @@ public sealed class EnemyCombatStylesTests
         Assert.That(recovery.Advance(true, 1f), Is.False);
         Assert.That(recovery.Advance(false, .1f), Is.False);
         Assert.That(recovery.Advance(true, .3f), Is.True);
+    }
+
+    [Test]
+    public void AllScoutRosterGetsRangedEscortInsteadOfAnotherScout()
+    {
+        var encounter=new R1EncounterDefinition {EnemyCount=1,Roster=new[]{R3EnemyArchetype.Scout}};
+        Assert.That(encounter.SpawnCount,Is.EqualTo(2));
+        Assert.That(encounter.SpawnArchetype(0),Is.EqualTo(R3EnemyArchetype.Scout));
+        Assert.That(encounter.SpawnArchetype(1),Is.EqualTo(R3EnemyArchetype.Gunner));
+    }
+
+    [Test]
+    public void ExistingDifferentArchetypeStillGetsScoutEscort()
+    {
+        var encounter=new R1EncounterDefinition {EnemyCount=1,Roster=new[]{R3EnemyArchetype.Gunner}};
+        Assert.That(encounter.SpawnArchetype(1),Is.EqualTo(R3EnemyArchetype.Scout));
     }
 
     [TestCase(R3EnemyArchetype.Gunner, P12FunctionalModuleType.Weapon)]
