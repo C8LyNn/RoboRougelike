@@ -117,6 +117,11 @@ namespace RogueMachine.P12PipelineSafe
             GetComponent<RoboRougelike.R6.R6VehicleDrive>()?.RefreshParts();
         }
         public bool EquipBattery() => EquipBattery(1);
+        private static void DiscardUnattachedDevice(GameObject item)
+        {
+            item.SetActive(false);
+            if(Application.isPlaying)Destroy(item);else DestroyImmediate(item);
+        }
         public bool EquipBattery(int tier)
         {
             if(tier<1||tier>3||packageBattery!=null||IsDefeated||weaponBlock==null)return false;
@@ -126,7 +131,8 @@ namespace RogueMachine.P12PipelineSafe
             item.GetComponent<Renderer>().sharedMaterial=weaponBlock.GetComponent<Renderer>().sharedMaterial;
             packageBatteryState=new R3PartState(new Vector3Int(0,3,-3),R3PartKind.Battery)
                 {Id=EquipmentInstanceId("battery"),Source=name+" / bateria",Tier=tier};
-            RoboRougelike.WeaponIntegration.RRLEnemyDeviceMount.Attach(item,transform,packageBatteryState);
+            if(!RoboRougelike.WeaponIntegration.RRLEnemyDeviceMount.Attach(item,transform,packageBatteryState))
+            {packageBatteryState=null;DiscardUnattachedDevice(item);return false;}
             packageBattery=item.AddComponent<P12PipelineSafeDamageable>();packageBattery.Configure(100*R3VehicleModel.TierHealth(tier),true);
             packageBattery.SetBaseTint(new Color(.2f,.9f,.35f));item.AddComponent<VehicleEnergyBattery>().Configure(packageBatteryState);
             GetComponent<RoboRougelike.R6.R6VehicleDrive>()?.RefreshParts();
@@ -142,7 +148,8 @@ namespace RogueMachine.P12PipelineSafe
             item.transform.localRotation=R3MountingGrid.Rotation(state.RotationQuarterTurns);
             item.GetComponent<Renderer>().sharedMaterial=weaponMaterial!=null?weaponMaterial:weaponBlock.GetComponent<Renderer>().sharedMaterial;
             item.transform.localScale=Vector3.one*R41PartGeometry.BlockSize;
-            RoboRougelike.WeaponIntegration.RRLEnemyDeviceMount.Attach(item,transform,state);
+            if(!RoboRougelike.WeaponIntegration.RRLEnemyDeviceMount.Attach(item,transform,state))
+            {DiscardUnattachedDevice(item);return false;}
             var hp=item.AddComponent<P12PipelineSafeDamageable>();hp.Configure(180,true);hp.SetBaseTint(new Color(.25f,.6f,1));
             packageShield=item.AddComponent<RoboRougelike.WeaponIntegration.RRLShieldBinding>();packageShield.Bind(state,transform);packageShieldState=state;
             GetComponent<RoboRougelike.R6.R6VehicleDrive>()?.RefreshMass();return true;
@@ -156,7 +163,8 @@ namespace RogueMachine.P12PipelineSafe
             item.transform.SetParent(transform,false);item.transform.localPosition=(Vector3)state.Cell*.55f;
             item.GetComponent<Renderer>().sharedMaterial=weaponMaterial!=null?weaponMaterial:weaponBlock.GetComponent<Renderer>().sharedMaterial;
             item.transform.localScale=Vector3.one*R41PartGeometry.BlockSize;
-            RoboRougelike.WeaponIntegration.RRLEnemyDeviceMount.Attach(item,transform,state);
+            if(!RoboRougelike.WeaponIntegration.RRLEnemyDeviceMount.Attach(item,transform,state))
+            {DiscardUnattachedDevice(item);return false;}
             var hp=item.AddComponent<P12PipelineSafeDamageable>();hp.Configure(160,true);
             packagePointDefense=item.AddComponent<RoboRougelike.WeaponIntegration.RRLPointDefenseBinding>();packagePointDefense.Bind(state,transform);packagePointDefenseState=state;return true;
         }
@@ -1254,7 +1262,8 @@ namespace RogueMachine.P12PipelineSafe
             gun.transform.localScale=Vector3.one*R41PartGeometry.BlockSize;
             var material=core.GetComponent<Renderer>().sharedMaterial;gun.GetComponent<Renderer>().sharedMaterial=material;
             var state=new R3PartState(default,R3PartKind.Gun){Weapon=R4WeaponKind.Automatic};
-            RoboRougelike.WeaponIntegration.RRLEnemyDeviceMount.Attach(gun,transform,state);
+            if(!RoboRougelike.WeaponIntegration.RRLEnemyDeviceMount.Attach(gun,transform,state))
+            {DiscardUnattachedDevice(gun);return false;}
             var support=gun.transform.parent.GetComponent<P12PipelineSafeDamageable>();
             if(support==null){Destroy(gun);return false;}
             var hp=gun.AddComponent<P12PipelineSafeDamageable>();hp.Configure(R4WeaponDefinition.Get(state.Weapon).Hp,true);
