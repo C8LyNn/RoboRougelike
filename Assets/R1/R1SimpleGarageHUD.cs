@@ -237,8 +237,16 @@ namespace RoboRougelike.R1
             var model=run.VehicleModel;
             if(run.MapExitPending)return run.EditorMessage;
             string message=run.Garage.Message??string.Empty;
-            if(!model.CanDeploy)
-                message+="\nStart zablokowany: "+(model.CriticalReadinessMessage??model.DeployError);
+            string reason=model.DeployError;
+            if(reason!=null)
+            {
+                string detail=model.CriticalReadinessMessage;
+                // Add the combined missing-gun/missing-drive detail only when
+                // it describes the actual first deployment failure. Otherwise
+                // disconnected parts or the weapon-type limit could be hidden.
+                if(!string.IsNullOrEmpty(detail)&&detail.StartsWith(reason.TrimEnd('.'),System.StringComparison.Ordinal))reason=detail;
+                message+="\nStart zablokowany: "+reason;
+            }
             if(run.Technology?.Error!=null)message+="\nBłąd zapisu lub odczytu technologii.";
             return message.TrimStart('\n');
         }

@@ -307,6 +307,52 @@ public sealed class UI943PortraitCatalogActionsTests
         yield return new ExitPlayMode();
     }
 
+    [UnityTest] public IEnumerator GarageExplainsDisconnectedConstructionBeforeMissingEquipment()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance?.Progress==null)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);
+        // API-controlled model state representing a disconnected part and a
+        // missing weapon; deployment policy reports disconnection first.
+        run.VehicleModel.Parts.RemoveAll(p=>p.Kind==R3PartKind.Gun);
+        run.VehicleModel.Parts.Add(new R3PartState(new Vector3Int(6,5,7),R3PartKind.Armor));
+        Assert.That(run.VehicleModel.DeployError,Does.Contain("odłączone"));
+        Assert.That(run.VehicleModel.CriticalReadinessMessage,Does.Contain("broni"));
+        run.Garage.Message="Wybrane pole jest zajęte.";
+        var feedback=(string)Invoke(run.GetComponent<R1RunHUD>(),"SimpleGarageFeedback",run);
+        Assert.That(feedback,Does.Contain(run.VehicleModel.DeployError),
+            "The player needs the actual reason deployment is refused.");
+        Assert.That(feedback,Does.Contain("Wybrane pole jest zajęte."));
+        yield return new ExitPlayMode();
+    }
+
+    [UnityTest] public IEnumerator GarageStillExplainsBothMissingWeaponAndDrive()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance?.Progress==null)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);
+        run.VehicleModel.Parts.RemoveAll(p=>p.Kind==R3PartKind.Gun||p.Kind==R3PartKind.Wheel);
+        Assert.That(run.VehicleModel.DeployError,Is.EqualTo("Brak sprawnej broni."));
+        var feedback=(string)Invoke(run.GetComponent<R1RunHUD>(),"SimpleGarageFeedback",run);
+        Assert.That(feedback,Does.Contain("Brak sprawnej broni").And.Contain("Brak sprawnego napędu"));
+        yield return new ExitPlayMode();
+    }
+
+    [UnityTest] public IEnumerator GarageDoesNotHideWeaponTypeLimitBehindMissingDrive()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance?.Progress==null)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);
+        run.VehicleModel.Parts.RemoveAll(p=>p.Kind==R3PartKind.Wheel);
+        run.VehicleModel.Parts.Add(new R3PartState(new Vector3Int(6,5,6),R3PartKind.Gun){Weapon=R4WeaponKind.Automatic});
+        run.VehicleModel.Parts.Add(new R3PartState(new Vector3Int(6,5,7),R3PartKind.Gun){Weapon=R4WeaponKind.Heavy});
+        Assert.That(run.VehicleModel.DeployError,Does.Contain("2 różne typy"));
+        Assert.That(run.VehicleModel.CriticalReadinessMessage,Does.Contain("napędu"));
+        var feedback=(string)Invoke(run.GetComponent<R1RunHUD>(),"SimpleGarageFeedback",run);
+        Assert.That(feedback,Does.Contain(run.VehicleModel.DeployError));
+        yield return new ExitPlayMode();
+    }
+
     [Test] public void QuickCategoriesCoverEveryCatalogKindWithoutOverlap()
     {
         var method=typeof(R1RunHUD).GetMethod("QuickCategoryIncludes",BindingFlags.Static|BindingFlags.NonPublic);
