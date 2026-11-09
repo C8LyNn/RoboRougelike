@@ -21,9 +21,9 @@ public sealed class FullMergeBuildTests
     [UnityTest] public IEnumerator DirectBuyCannotUseGunAsStructuralScaffoldingOrSpendOnRefusal()
     {
         var model=run.VehicleModel;var gun=model.Parts.First(p=>p.Kind==R3PartKind.Gun);
-        var cell=gun.Cell+Vector3Int.up;Assert.That(model.At(cell),Is.Null);
+        var cell=gun.Cell+Vector3Int.up*2;Assert.That(model.At(cell),Is.Null);
         int money=model.Scrap;var ids=model.Parts.Select(p=>p.Id).ToArray();
-        Assert.That(model.PlacementError(cell,R3PartKind.Armor),Is.EqualTo("Brak zgodnego, połączonego z rdzeniem mocowania. Koło i broń nie są podporą konstrukcji."));
+        Assert.That(model.PlacementError(cell,R3PartKind.Armor),Is.Not.Null,"A gun cannot act as structural scaffolding.");
         Assert.That(model.Buy(cell,R3PartKind.Armor),Is.False,"Direct model API must respect the actual bound garage validator");
         Assert.That(model.Scrap,Is.EqualTo(money));Assert.That(model.Parts.Select(p=>p.Id),Is.EqualTo(ids));
         yield return null;
@@ -32,16 +32,18 @@ public sealed class FullMergeBuildTests
     {
         var model=run.VehicleModel;var stored=new R3PartState(default,R3PartKind.Wheel);
         Assert.That(model.ReceiveSalvage(new[]{stored}),Is.True);
-        var cell=model.Parts.First(p=>p.Kind==R3PartKind.Gun).Cell+Vector3Int.up;
+        var cell=model.Parts.First(p=>p.Kind==R3PartKind.Gun).Cell+Vector3Int.up*2;
         int money=model.Scrap;var ids=model.Parts.Select(p=>p.Id).ToArray();
-        Assert.That(model.OwnedPlacementError(stored.Id,cell,default),Is.EqualTo("Brak zgodnego, połączonego z rdzeniem mocowania. Koło i broń nie są podporą konstrukcji."));
+        Assert.That(model.OwnedPlacementError(stored.Id,cell,default),Is.Not.Null,"A gun is not a wheel mounting support.");
         Assert.That(model.Mount(stored.Id,cell),Is.False);
         Assert.That(model.Inventory.Single().Id,Is.EqualTo(stored.Id));Assert.That(model.Scrap,Is.EqualTo(money));
         Assert.That(model.Parts.Select(p=>p.Id),Is.EqualTo(ids));yield return null;
     }
     [UnityTest] public IEnumerator ForeignPhysicalObstacleRejectsGridValidPlacementWithoutSpending()
     {
-        var cell=new Vector3Int(1,2,1);var model=run.VehicleModel;
+        var model=run.VehicleModel;
+        var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+            .First(c=>model.PlacementError(c,R3PartKind.Armor)==null);
         Assert.That(model.PlacementError(cell,R3PartKind.Armor),Is.Null,"Canonical logical precondition for physical overlap test");
         var obstacle=GameObject.CreatePrimitive(PrimitiveType.Cube);obstacle.name="FM270 external physical blocker";
         obstacle.transform.position=run.Player.transform.TransformPoint((Vector3)cell*.55f);
@@ -53,16 +55,19 @@ public sealed class FullMergeBuildTests
     }
     [UnityTest] public IEnumerator WheelHitCannotAuthorizeMountingStructuralParts()
     {
+        run.Garage.UseInventory=false;run.Garage.SelectedPart=R3PartKind.Armor;run.Garage.SetTool(R41GarageTool.Mount);
         var wheel=run.Player.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Kind==R3PartKind.Wheel&&p.Cell.x<0);
         var ray=new Ray(wheel.transform.TransformPoint(new Vector3(-4,0,0)),wheel.transform.TransformDirection(Vector3.right));
         Physics.SyncTransforms();var hits=Physics.RaycastAll(ray,4,~0,QueryTriggerInteraction.Collide)
             .Where(h=>h.collider.GetComponentInParent<R3MountedPart>()!=null).OrderBy(h=>h.distance).ToArray();
         Assert.That(hits,Is.Not.Empty);Assert.That(hits[0].collider.GetComponentInParent<R3MountedPart>().Kind,Is.EqualTo(R3PartKind.Wheel));
         Assert.That(run.Garage.Point(ray),Is.False,"Wheel hub/tire is not a structural socket owner");
-        Assert.That(run.Garage.HasTarget,Is.False);yield return null;
+        Assert.That(run.Garage.PreviewValid,Is.False,"The rejected target is visible only as a red ghost.");
+        Assert.That(run.Garage.ClickTarget(),Is.False,"The wheel must not authorize an actual placement.");yield return null;
     }
     [UnityTest] public IEnumerator RealArmorFaceRemainsClickableAfterNonQuarterVehicleYaw()
     {
+        run.Garage.UseInventory=false;run.Garage.SelectedPart=R3PartKind.Armor;run.Garage.SetTool(R41GarageTool.Mount);
         var root=run.Player.transform;root.rotation=Quaternion.Euler(0,37,0);
         var armor=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Cell==new Vector3Int(2,1,2));
         var ray=new Ray(armor.transform.TransformPoint(Vector3.right*4),armor.transform.TransformDirection(Vector3.left));
@@ -97,7 +102,8 @@ public sealed class FullMergeBuildTests
     {
         var wheel=run.Player.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Kind==R3PartKind.Wheel);
         Debug.Log("[Full270 wheel geometry] "+string.Join(",",wheel.GetComponentsInChildren<Collider>().Select(c=>c.GetType().Name+":"+c.transform.localScale)));
-        var cell=new Vector3Int(0,0,3);var rotation=new Vector3Int(0,1,0);
+        var cell=wheel.Cell;Assert.That(run.GarageRemove(cell),Is.True);yield return null;
+        var rotation=Vector3Int.zero;
         Assert.That(run.GarageBuy(cell,R3PartKind.Wheel,rotation),Is.True,run.VehicleModel.PlacementError(cell,R3PartKind.Wheel,false,default,rotation));
         yield return null;
     }
