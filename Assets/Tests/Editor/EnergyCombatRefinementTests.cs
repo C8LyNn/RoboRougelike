@@ -330,6 +330,43 @@ public sealed class EnergyCombatRefinementTests
         finally {UnityEngine.Object.DestroyImmediate(obstacles);if(cube!=null)UnityEngine.Object.DestroyImmediate(cube);}
     }
 
+    [UnityTest] public IEnumerator ChargingFieldFindsPlayerInCrowdedCollisionArea()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);
+        yield return new EnterPlayMode();
+        float deadline=Time.realtimeSinceStartup+20;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<deadline)yield return null;
+        var run=R1RunController.Instance;
+        Assert.That(run.StartRun()&&run.ChooseRoute(0),Is.True);
+        while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+        AssertCrowdedField(run);
+    }
+
+    static void AssertCrowdedField(R1RunController run)
+    {
+        var position=run.Player.Core.transform.position;
+        var obstacles=new GameObject("Crowded field fixture");
+        var fieldObject=new GameObject("Crowded field");
+        try
+        {
+            for(int i=0;i<1200;i++)
+            {
+                var obstacle=new GameObject("Obstacle "+i);obstacle.transform.SetParent(obstacles.transform);
+                obstacle.transform.position=position;obstacle.AddComponent<BoxCollider>().size=Vector3.one*.1f;
+            }
+            fieldObject.transform.position=position-Vector3.up;
+            var field=fieldObject.AddComponent<EnergyChargingField>();var bank=run.Player.GetComponent<VehicleEnergyBank>();
+            bank.TrySpend(bank.Current);Physics.SyncTransforms();
+            var hits=new Collider[1024];int count=Physics.OverlapBoxNonAlloc(position,new Vector3(2.5f,1.5f,2.5f),hits,Quaternion.identity,~0,QueryTriggerInteraction.Ignore);
+            Assert.That(count,Is.EqualTo(hits.Length),"Fixture must overflow the field buffer.");
+            Assert.That(hits.Any(hit=>hit.GetComponentInParent<VehicleEnergyBank>()==bank),Is.False,
+                "The first buffer must not already include the player.");
+            typeof(EnergyChargingField).GetMethod("FixedUpdate",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance).Invoke(field,null);
+            Assert.That(bank.Current,Is.EqualTo(bank.Maximum*.5f).Within(.001f),"The field must charge the player even when crowded.");
+        }
+        finally {UnityEngine.Object.DestroyImmediate(obstacles);UnityEngine.Object.DestroyImmediate(fieldObject);}
+    }
+
     [UnityTearDown] public IEnumerator Cleanup()
     {if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }

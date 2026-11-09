@@ -33,11 +33,20 @@ namespace RoboRougelike.R3
         void FixedUpdate()
         {
             vehicles.Clear();
-            int count=Physics.OverlapBoxNonAlloc(transform.position+Vector3.up,
-                new Vector3(2.5f,1.5f,2.5f),hits,Quaternion.identity,~0,QueryTriggerInteraction.Ignore);
+            var center=transform.position+Vector3.up;
+            var extents=new Vector3(2.5f,1.5f,2.5f);
+            int count=Physics.OverlapBoxNonAlloc(center,extents,hits,Quaternion.identity,~0,QueryTriggerInteraction.Ignore);
+            var candidates=hits;
+            // Multiple vehicles can share a field; a full buffer may omit any
+            // of them even when some vehicles were already found.
+            if(count==hits.Length)
+            {
+                candidates=Physics.OverlapBox(center,extents,Quaternion.identity,~0,QueryTriggerInteraction.Ignore);
+                count=candidates.Length;
+            }
             for(int i=0;i<count;i++)
             {
-                var bank=hits[i]!=null?hits[i].GetComponentInParent<VehicleEnergyBank>():null;
+                var bank=candidates[i]!=null?candidates[i].GetComponentInParent<VehicleEnergyBank>():null;
                 if(bank!=null&&bank.isActiveAndEnabled)vehicles.Add(bank);
             }
             foreach(var bank in vehicles)
