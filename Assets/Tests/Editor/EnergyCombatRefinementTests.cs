@@ -294,6 +294,42 @@ public sealed class EnergyCombatRefinementTests
         Assert.That(bank.Current,Is.GreaterThan(before+10),"Collected energy grants timed regeneration.");
         yield return new ExitPlayMode();
     }
+    [UnityTest] public IEnumerator EnergyPickupFindsPlayerInCrowdedCollisionArea()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);
+        yield return new EnterPlayMode();
+        float deadline=Time.realtimeSinceStartup+20;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<deadline)yield return null;
+        var run=R1RunController.Instance;
+        Assert.That(run.StartRun()&&run.ChooseRoute(0),Is.True);
+        while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+        AssertCrowdedPickup(run);
+    }
+
+    static void AssertCrowdedPickup(R1RunController run)
+    {
+        var position=run.Player.Core.transform.position;
+        var obstacles=new GameObject("Crowded pickup fixture");
+        var cube=new GameObject("Crowded energy cube");
+        try
+        {
+            for(int i=0;i<300;i++)
+            {
+                var obstacle=new GameObject("Obstacle "+i);obstacle.transform.SetParent(obstacles.transform);
+                obstacle.transform.position=position;obstacle.AddComponent<BoxCollider>().size=Vector3.one*.1f;
+            }
+            cube.transform.position=position;var pickup=cube.AddComponent<EnergyPickup>();
+            Physics.SyncTransforms();
+            var hits=new Collider[128];int count=Physics.OverlapSphereNonAlloc(position,1.1f,hits,~0,QueryTriggerInteraction.Ignore);
+            Assert.That(count,Is.EqualTo(hits.Length),"Fixture must overflow the pickup buffer.");
+            Assert.That(hits.Any(hit=>hit.GetComponentInParent<R3VehicleAssembly>()?.gameObject==run.Player.gameObject),Is.False,
+                "The first buffer must not already include the player.");
+            typeof(EnergyPickup).GetMethod("FixedUpdate",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance).Invoke(pickup,null);
+            Assert.That(cube.activeSelf,Is.False,"A player touching the pickup must collect it despite other nearby colliders.");
+        }
+        finally {UnityEngine.Object.DestroyImmediate(obstacles);if(cube!=null)UnityEngine.Object.DestroyImmediate(cube);}
+    }
+
     [UnityTearDown] public IEnumerator Cleanup()
     {if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }
