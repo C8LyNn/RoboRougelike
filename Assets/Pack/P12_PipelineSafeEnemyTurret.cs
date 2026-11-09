@@ -44,7 +44,8 @@ namespace RogueMachine.P12PipelineSafe
         private int strafeDirection = 1;
         private Vector3 lastMoveNormal,obstacleTangent;
         private float navigationUntil;
-        private readonly RaycastHit[] movementHits = new RaycastHit[256];
+        private const int MaxMovementHitBuffer=4096;
+        private RaycastHit[] movementHits = new RaycastHit[256];
         private Vector3 movementHalfExtents = new Vector3(0.88f, 0.67f, 0.88f);
         private readonly List<P12PipelineSafeDamageable> driveWheels=new List<P12PipelineSafeDamageable>();
         private P12PipelineSafeDamageable turretAnchor;
@@ -902,12 +903,14 @@ namespace RogueMachine.P12PipelineSafe
         private bool FriendlyBetween(Vector3 origin,Vector3 point)
         {
             var delta=point-origin;
-            int count=Physics.RaycastNonAlloc(origin,delta.normalized,movementHits,delta.magnitude,~0,QueryTriggerInteraction.Ignore);
-            var rayHits=movementHits;
-            if(count==movementHits.Length)
+            int count;RaycastHit[] rayHits;
+            while(true)
             {
-                rayHits=Physics.RaycastAll(origin,delta.normalized,delta.magnitude,~0,QueryTriggerInteraction.Ignore);
-                count=rayHits.Length;
+                count=Physics.RaycastNonAlloc(origin,delta.normalized,movementHits,delta.magnitude,~0,QueryTriggerInteraction.Ignore);
+                if(count<movementHits.Length){rayHits=movementHits;break;}
+                if(movementHits.Length>=MaxMovementHitBuffer)
+                {rayHits=Physics.RaycastAll(origin,delta.normalized,delta.magnitude,~0,QueryTriggerInteraction.Ignore);count=rayHits.Length;break;}
+                System.Array.Resize(ref movementHits,Mathf.Min(movementHits.Length*2,MaxMovementHitBuffer));
             }
             for(int i=0;i<count;i++)
             {
@@ -922,15 +925,19 @@ namespace RogueMachine.P12PipelineSafe
             // Keep the probe upright but rotate its local footprint with the chassis.
             // A world-aligned rectangle reports false walls after a 90-degree turn.
             var yaw=Quaternion.Euler(0,movementBody.rotation.eulerAngles.y,0);
-            int count = Physics.BoxCastNonAlloc(movementBody.position + Vector3.up * 0.75f,
-                movementHalfExtents, direction, movementHits, yaw, distance,
-                ~0, QueryTriggerInteraction.Ignore);
-            var queriedHits=movementHits;
-            if(count==movementHits.Length)
+            int count;RaycastHit[] queriedHits;
+            while(true)
             {
-                queriedHits=Physics.BoxCastAll(movementBody.position+Vector3.up*.75f,
-                    movementHalfExtents,direction,yaw,distance,~0,QueryTriggerInteraction.Ignore);
-                count=queriedHits.Length;
+                count=Physics.BoxCastNonAlloc(movementBody.position+Vector3.up*.75f,
+                    movementHalfExtents,direction,movementHits,yaw,distance,~0,QueryTriggerInteraction.Ignore);
+                if(count<movementHits.Length){queriedHits=movementHits;break;}
+                if(movementHits.Length>=MaxMovementHitBuffer)
+                {
+                    queriedHits=Physics.BoxCastAll(movementBody.position+Vector3.up*.75f,
+                        movementHalfExtents,direction,yaw,distance,~0,QueryTriggerInteraction.Ignore);
+                    count=queriedHits.Length;break;
+                }
+                System.Array.Resize(ref movementHits,Mathf.Min(movementHits.Length*2,MaxMovementHitBuffer));
             }
             for (int i = 0; i < count; i++)
             {
