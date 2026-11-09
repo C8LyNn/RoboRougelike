@@ -100,5 +100,20 @@ public sealed class R4WedgeArmorTests
         }
     }
 
+    [UnityTest] public IEnumerator SwitchingSameMaskShapesRefreshesVisibleMountPoints()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
+        var model=run.VehicleModel;model.Award(100);
+        Assert.That(run.GaragePurchase(R3PartKind.Armor,default,R3WheelStyle.Offroad,R3ArmorShape.Wedge),Is.True);
+        var wedge=model.Inventory.Last();
+        Assert.That(run.GaragePurchase(R3PartKind.Armor,default,R3WheelStyle.Offroad,R3ArmorShape.RoundEdge),Is.True);
+        var rounded=model.Inventory.Last();Assert.That(wedge.ContactMask,Is.EqualTo(rounded.ContactMask));
+        run.Garage.ChooseInventory(wedge.Id);var before=run.Garage.AvailableMountPoints;
+        Assert.That(before.Count,Is.GreaterThan(0));
+        run.Garage.ChooseInventory(rounded.Id);var after=run.Garage.AvailableMountPoints;
+        Assert.That(after,Is.Not.SameAs(before),"Changing shape must invalidate the port cache even with the same mask.");
+        Assert.That(after.Count,Is.GreaterThan(0));
+    }
+
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }

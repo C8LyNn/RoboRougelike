@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using B01.BUILD001;
 using NUnit.Framework;
 using RoboRougelike.R3;
@@ -10,6 +11,26 @@ using UnityEngine;
 
 public sealed class R4MountDefinitionAdapterTests
 {
+    [Test] public void DistinctShapesWithTheSameMaskDoNotShareAPlacementDefinition()
+    {
+        var go=new GameObject("shape-definition-cache");
+        try
+        {
+            var gate=go.AddComponent<R3BuildValidation>();
+            var definition=typeof(R3BuildValidation).GetMethod("Definition",BindingFlags.Instance|BindingFlags.NonPublic);
+            var wedge=new R3PartState(default,R3PartKind.Armor){ArmorShape=R3ArmorShape.Wedge,
+                ContactMask=R41PartGeometry.FullArmorContacts(R3ArmorShape.Wedge)};
+            var rounded=new R3PartState(default,R3PartKind.Armor){ArmorShape=R3ArmorShape.RoundEdge,
+                ContactMask=R41PartGeometry.FullArmorContacts(R3ArmorShape.RoundEdge)};
+            Assert.That(wedge.ContactMask,Is.EqualTo(rounded.ContactMask),"The test needs the old cache-key collision.");
+            var first=(BuildDefinition)definition.Invoke(gate,new object[]{wedge});
+            var second=(BuildDefinition)definition.Invoke(gate,new object[]{rounded});
+            Assert.That(first.Id,Is.EqualTo("R4B_Wedge"));
+            Assert.That(second.Id,Is.EqualTo("R4B_RoundEdge"));
+            Assert.That(second,Is.Not.SameAs(first));
+        }
+        finally {UnityEngine.Object.DestroyImmediate(go);}
+    }
     [Test] public void CatalogCellMasksRotateWithTheActualMultiCellShape()
     {
         for(int x=0;x<4;x++)for(int y=0;y<4;y++)for(int z=0;z<4;z++)
