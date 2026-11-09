@@ -32,10 +32,11 @@ public sealed class WeaponModelFootprintInventoryTests
                     Assert.That(source,Is.Not.Empty,weapon+" must have visible imported geometry");
                     var yawNode=block.GetComponentsInChildren<Transform>(true)
                         .First(t=>t.name==(weapon==R4WeaponKind.Automatic?"R41":"R4W_"+weapon)+"_Yaw");
-                    if(weapon==R4WeaponKind.Automatic)
+                    if(weapon==R4WeaponKind.Automatic||weapon==R4WeaponKind.Basic)
                     {
-                        var pitchNode=block.GetComponentsInChildren<Transform>(true).First(t=>t.name=="R41_Pitch");
-                        Debug.Log($"AUTOMATIC_AXES yaw={yawNode.position.ToString("F4")} pitch={pitchNode.position.ToString("F4")} physical={pivot.position.ToString("F4")}");
+                        var pitchName=weapon==R4WeaponKind.Automatic?"R41_Pitch":"R4W_Basic_Pitch";
+                        var pitchNode=block.GetComponentsInChildren<Transform>(true).First(t=>t.name==pitchName);
+                        Debug.Log($"WEAPON_AXES {weapon} yaw={yawNode.position.ToString("F4")} pitch={pitchNode.position.ToString("F4")} physical={pivot.position.ToString("F4")}");
                     }
                     var fixedRenderers=source.Where(r=>!r.transform.IsChildOf(yawNode)).ToArray();
                     if(fixedRenderers.Length>0)

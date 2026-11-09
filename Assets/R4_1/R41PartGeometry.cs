@@ -98,9 +98,9 @@ namespace RoboRougelike.R4_1
             if(!solid){var collider=item.GetComponent<Collider>();collider.enabled=false;Object.Destroy(collider);}
             return item;
         }
-        // The new automatic gun is 2x around the underside of the mounting
+        // The enlarged guns scale 2x around the underside of the mounting
         // block. The solid base and physical barrel proxy use that same frame.
-        public static void ConfigureAutomaticScale2(GameObject block,Transform pivot)
+        public static void ConfigureGunScale2(GameObject block,Transform pivot)
         {
             if(block==null)return;
             var box=block.GetComponent<BoxCollider>();
