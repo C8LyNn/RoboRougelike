@@ -473,8 +473,9 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(606,784,138,40),"Aktywności",compactButton))OpenSimpleGarageOptions(1);
             if(GUI.Button(new Rect(458,831,286,40),"Dopasuj widok",compactButton))garage.FrameVehicle();
             string garageFeedback=SimpleGarageFeedback(run);
-            GUI.Label(new Rect(24,884,720,55),garageFeedback+
-                "\nPPM: zdejmij • przeciągnij: widok • Ctrl + LPM: napraw",small);
+            GUI.Label(new Rect(24,878,720,74),garageFeedback+
+                "\nPPM: zdejmij • przeciągnij: obrót widoku"+
+                "\nQ/E R/F Z/X: obrót • Shift + klawisz: zamontowana część • Ctrl + LPM: napraw",small);
             GUI.enabled=!garageOptionsOpen&&(run.MapEditorSession||model.CanDeploy);
             if(run.MapEditorSession){if(GUI.Button(new Rect(24,960,350,44),"Wróć do edytora",compactButton))run.ReturnToMapEditorFromGarage();}
             else if(GUI.Button(new Rect(24,960,350,44),"Testuj pojazd",compactButton))run.EnterTestRange();
