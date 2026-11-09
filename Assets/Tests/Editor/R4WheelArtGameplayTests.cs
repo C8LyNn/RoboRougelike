@@ -23,7 +23,9 @@ public sealed class R4WheelArtGameplayTests
         // As in B01GroundedDriveTests, do not let controller zero-input oppose
         // the explicit R6 drive commands used by this physical fixture.
         vehicle.Controller.SetGameplayInputEnabled(true);vehicle.Controller.enabled=false;
-        var body=vehicle.GetComponent<Rigidbody>();body.position=new Vector3(0,.65f,1000);body.useGravity=false;
+        // Lock the body at the corrected tire's ground-contact height. The
+        // old .65 m fixture encoded the previous, lowered axle position.
+        var body=vehicle.GetComponent<Rigidbody>();body.position=new Vector3(0,R3VehicleModel.WheelRadius(R3WheelStyle.Offroad),1000);body.useGravity=false;
         body.constraints=RigidbodyConstraints.FreezePositionY|RigidbodyConstraints.FreezeRotationX|RigidbodyConstraints.FreezeRotationZ;
         body.linearVelocity=Vector3.zero;body.angularVelocity=Vector3.zero;Physics.SyncTransforms();
         foreach(var b in vehicle.GetComponents<MonoBehaviour>())if(b.GetType().Name=="R6CoreRecovery")b.enabled=false;

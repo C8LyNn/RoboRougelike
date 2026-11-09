@@ -31,8 +31,8 @@ public sealed class WheelMountOrientationTests
             var socket=block.GetComponentsInChildren<Transform>(true).Single(t=>t.name=="Socket_Mount");
             var rotor=block.GetComponentsInChildren<Transform>(true).Single(t=>t.name==(style==R3WheelStyle.Monster?"R4M_WheelXL_Side_Monster_Rotor":style==R3WheelStyle.LargeOffroad?"R4M_WheelL_Side_Offroad_Rotor":style==R3WheelStyle.Slick?"R4M_WheelM_Side_Slick_Rotor":"R4M_WheelM_Side_Offroad_Rotor"));
             Assert.That(Vector3.Dot((socket.position-rotor.position).normalized,(Vector3)axis),Is.GreaterThan(.9f),style+" "+turns+" "+sign);
-            if(R3VehicleModel.HasSizedSideWheel(style))
-                Assert.That(Vector3.Distance(socket.position,block.transform.position+(Vector3)axis*.26f),Is.LessThan(.015f),style+" wheel port must meet the support face.");
+            Assert.That(Vector3.Distance(socket.position,block.transform.position+(Vector3)axis*.26f),Is.LessThan(.015f),
+                style+" wheel port must meet the support face; socket="+socket.position+" expected="+(block.transform.position+(Vector3)axis*.26f));
             Object.Destroy(block);
         }
         Object.Destroy(material);yield return null;yield return new ExitPlayMode();

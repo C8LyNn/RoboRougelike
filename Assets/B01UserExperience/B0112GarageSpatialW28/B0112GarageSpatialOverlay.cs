@@ -99,7 +99,7 @@ namespace RoboRougelike.B01.GarageSpatialW28
         static bool Mechanism(R3PartKind kind) => kind==R3PartKind.Suspension||
             kind==R3PartKind.Booster||kind==R3PartKind.Gyroscope||
             kind==R3PartKind.JumpDrive;
-        static bool Protrusion(R3PartKind kind) => kind==R3PartKind.Wheel||
+        static bool Protrusion(R3PartKind kind) => kind==R3PartKind.Gun||kind==R3PartKind.Wheel||
             kind==R3PartKind.CrawlerTrack||kind==R3PartKind.OmniDrive;
 
         public static bool IsAllowedByExistingValidator(bool hasTarget, string placementIssue)
@@ -131,7 +131,8 @@ namespace RoboRougelike.B01.GarageSpatialW28
                 // Renderer bounds are visual guidance, not a Collider/placement proof.
                 foreach(var renderer in root.GetComponentsInChildren<Renderer>(true))
                 {
-                    if(renderer is ParticleSystemRenderer||renderer is LineRenderer||!renderer.enabled)continue;
+                    if(renderer is ParticleSystemRenderer||renderer is LineRenderer||!renderer.enabled||
+                       renderer.name.StartsWith("Punkt mocowania"))continue;
                     var bounds=renderer.bounds;
                     if(bounds.size.sqrMagnitude>0.01f)
                         Add(B0112ZoneKind.ProtrusionBlue,bounds.center,Quaternion.identity,bounds.size);
@@ -178,20 +179,32 @@ namespace RoboRougelike.B01.GarageSpatialW28
             // Heavy builds cannot starve its green/red indication at MaxBoxes.
             reason=source.PlacementIssue;
             var tint=CandidateTint(source.HasTarget,reason);
-            foreach(var cell in R3VehicleModel.OccupiedCells(source.Cell,source.MountKind,source.SelectedRotation))
-                Add(tint,partRoot.TransformPoint((Vector3)cell*CellMeters),orientation,
-                    Vector3.one*(R41PartGeometry.BlockSize+.025f));
+            // A filled cube hides the wedge and other shaped armor ghosts.
+            // Their actual preview mesh already carries the valid/invalid tint.
+            if(source.MountKind!=R3PartKind.Armor||source.MountArmorShape==R3ArmorShape.Cube)
+                foreach(var cell in R3VehicleModel.OccupiedCells(source.Cell,source.MountKind,source.SelectedRotation))
+                    Add(tint,partRoot.TransformPoint((Vector3)cell*CellMeters),orientation,
+                        Vector3.one*(R41PartGeometry.BlockSize+.025f));
             // Show green trusted socket faces only near a candidate that the real
             // R3+BUILD001 physical validator has ALREADY accepted; green never
             // grants permission by itself and cannot override a red host rejection.
             if(tint==B0112ZoneKind.ValidGreen)
-                foreach(var socket in assembly.GetComponentsInChildren<global::B01.BUILD001.BuildMountSurface>())
+            {
+                var candidate=new R3PartState(source.Cell,source.MountKind){
+                    RotationQuarterTurns=source.SelectedRotation,ContactMask=source.SelectedContactMask};
+                foreach(var cell in R3VehicleModel.OccupiedCells(candidate))
+                foreach(var direction in R3MountingGrid.FaceDirections)
                 {
-                    if(socket==null||!socket.gameObject.activeInHierarchy)continue;
-                    if(Vector3.Distance(socket.transform.position,source.Preview.position)>1.1f)continue;
-                    Add(B0112ZoneKind.ValidGreen,socket.transform.position,socket.transform.rotation,
+                    var support=model.At(cell+direction);
+                    if(support==null||support.Health<=0||support.Kind==R3PartKind.Gun||support.Kind==R3PartKind.Wheel||
+                       !R3MountingGrid.Compatible(candidate,support,direction))continue;
+                    var face=partRoot.TransformPoint(((Vector3)cell+(Vector3)direction*.5f)*CellMeters);
+                    var facing=orientation*Quaternion.LookRotation((Vector3)direction,
+                        direction.y!=0?Vector3.forward:Vector3.up);
+                    Add(B0112ZoneKind.ValidGreen,face,facing,
                         new Vector3(.15f,.15f,.035f));
                 }
+            }
             foreach(var p in assembly.Parts)
             {
                 if(p==null||!p.Operational||!p.transform.IsChildOf(partRoot))continue;
