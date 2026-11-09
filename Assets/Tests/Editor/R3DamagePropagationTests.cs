@@ -254,6 +254,34 @@ public sealed class R3DamagePropagationTests
         ValidateAdditionalGunDamage(enemy);
     }
 
+    [UnityTest]
+    public IEnumerator EliteGunsConnectOnlyToTheirSideSupports()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float end=Time.realtimeSinceStartup+20;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<end)yield return null;
+        var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        Assert.That(run.StartRun()&&run.ChooseRoute(0),Is.True);
+        while(run.Transitioning&&Time.realtimeSinceStartup<end)yield return null;
+        Assert.That(run.Transitioning,Is.False);run.Encounter.SetCombatActive(false);yield return null;
+        var enemy=run.Encounter.Enemies.First();
+        enemy.ConfigureVariant(RoboRougelike.R5.R5EnemyVariant.EliteGunner);
+        ValidateEliteGunSockets(enemy);
+    }
+
+    static void ValidateEliteGunSockets(RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret enemy)
+    {
+        Assert.That(enemy.VariantWeapons.Count,Is.EqualTo(2));
+        foreach(var gun in enemy.VariantWeapons)
+        {
+            var side=enemy.transform.InverseTransformPoint(gun.Block.transform.position).x;
+            var inward=side<0?Vector3Int.right:Vector3Int.left;
+            var ports=gun.Block.GetComponent<R3BlockMountPoints>();
+            Assert.That(ports,Is.Not.Null,"Elite guns must declare their real attachment.");
+            Assert.That(ports.WorldMask,Is.EqualTo(R3MountingGrid.FaceBit(inward)));
+        }
+    }
+
     static void ValidateAdditionalGunDamage(RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret enemy)
     {
         var weapons=enemy.AdditionalWeapons;
