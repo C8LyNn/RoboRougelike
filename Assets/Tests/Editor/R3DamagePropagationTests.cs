@@ -214,6 +214,32 @@ public sealed class R3DamagePropagationTests
         ValidateEnemyHit(run);
     }
 
+    [UnityTest]
+    public IEnumerator BruiserWheelTransfersThroughAxleNotAdjacentWheel()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float end=Time.realtimeSinceStartup+20;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<end)yield return null;
+        var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        Assert.That(run.StartRun()&&run.ChooseRoute(0),Is.True);
+        while(run.Transitioning&&Time.realtimeSinceStartup<end)yield return null;
+        Assert.That(run.Transitioning,Is.False);
+        var template=(RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret)typeof(R1RunController)
+            .GetField("enemyTemplate",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).GetValue(run);
+        run.Encounter.Spawn(template,run.Player.transform,new R1EncounterDefinition
+            {EnemyCount=1,Roster=new[]{R3EnemyArchetype.Bruiser}},run.Salvage,"wheel-port-fixture");
+        run.Encounter.SetCombatActive(false);yield return null;
+        var enemy=run.Encounter.Enemies.First();
+        var wheels=enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>()
+            .Where(RoboRougelike.R6.R6VehicleDrive.IsWheel).ToArray();
+        var target=wheels.Single(w=>{var c=w.GetComponent<RogueMachine.P12PipelineSafe.P12_PipelineSafePlayerBlock>().LogicalGridPosition;return c.x==3&&c.z==0;});
+        var adjacent=wheels.Single(w=>{var c=w.GetComponent<RogueMachine.P12PipelineSafe.P12_PipelineSafePlayerBlock>().LogicalGridPosition;return c.x==3&&c.z==1;});
+        float targetBefore=target.CurrentHp,adjacentBefore=adjacent.CurrentHp;
+        target.ApplyDamage(8,target.transform.position,Vector3.forward);
+        Assert.That(targetBefore-target.CurrentHp,Is.EqualTo(6).Within(.001f),"Only one real axle transfers a quarter of the hit.");
+        Assert.That(adjacent.CurrentHp,Is.EqualTo(adjacentBefore).Within(.001f),"Side-by-side wheel meshes do not form a direct socket.");
+    }
+
     static void ValidateEnemyHit(R1RunController run)
     {
         var enemy=run.Encounter.Enemies.First();

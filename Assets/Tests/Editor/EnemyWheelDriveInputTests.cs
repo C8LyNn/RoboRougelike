@@ -1,6 +1,7 @@
 using System.Reflection;
 using NUnit.Framework;
 using RoboRougelike.R6;
+using RoboRougelike.R3;
 using RogueMachine.P12PipelineSafe;
 using UnityEngine;
 
@@ -45,6 +46,28 @@ public sealed class EnemyWheelDriveInputTests
             Assert.That(art,Is.Not.Null,"The supplied model replaces the old tread rendering.");
             Assert.That(visual.GetComponent<Renderer>().enabled,Is.False,"Fallback is retained but not drawn twice.");
             Assert.That(art.GetComponentsInChildren<Renderer>().Length,Is.GreaterThan(0));
+        }
+        finally{Object.DestroyImmediate(root);}
+    }
+
+    [Test]
+    public void EnemyWheelsHaveOneInwardSocketAndDoNotConnectToAdjacentWheels()
+    {
+        var root=new GameObject("enemy root");root.AddComponent<Rigidbody>();
+        try
+        {
+            var make=typeof(P12PipelineSafeEnemyTurret).GetMethod("MakeProfileBlock",BindingFlags.NonPublic|BindingFlags.Static);
+            var left=(P12PipelineSafeDamageable)make.Invoke(null,new object[]{root.transform,new Vector3Int(-3,0,0),null,true});
+            var right=(P12PipelineSafeDamageable)make.Invoke(null,new object[]{root.transform,new Vector3Int(3,0,0),null,true});
+            var next=(P12PipelineSafeDamageable)make.Invoke(null,new object[]{root.transform,new Vector3Int(3,0,1),null,true});
+            Assert.That(left.GetComponent<R3BlockMountPoints>()?.WorldMask,Is.EqualTo(R3MountingGrid.FaceBit(Vector3Int.right)));
+            Assert.That(right.GetComponent<R3BlockMountPoints>()?.WorldMask,Is.EqualTo(R3MountingGrid.FaceBit(Vector3Int.left)));
+            var wheel=right.gameObject.AddComponent<P12_PipelineSafePlayerBlock>();
+            var neighbouringWheel=next.gameObject.AddComponent<P12_PipelineSafePlayerBlock>();
+            var armor=new GameObject("armor");armor.transform.SetParent(root.transform);
+            var armorBlock=armor.AddComponent<P12_PipelineSafePlayerBlock>();
+            Assert.That(R3MountingGrid.Compatible(wheel,armorBlock,Vector3Int.left),Is.True);
+            Assert.That(R3MountingGrid.Compatible(wheel,neighbouringWheel,Vector3Int.forward),Is.False);
         }
         finally{Object.DestroyImmediate(root);}
     }
