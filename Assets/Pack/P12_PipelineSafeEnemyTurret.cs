@@ -737,6 +737,14 @@ namespace RogueMachine.P12PipelineSafe
             return false;
         }
 
+        public static Vector3 TargetDirection(Vector3 offset,Vector3 chassisForward)
+        {
+            var flat=Vector3.ProjectOnPlane(offset,Vector3.up);
+            if(flat.sqrMagnitude>=.0001f)return flat.normalized;
+            flat=Vector3.ProjectOnPlane(chassisForward,Vector3.up);
+            return flat.sqrMagnitude>=.0001f?flat.normalized:Vector3.forward;
+        }
+
         private void OnCollisionStay(Collision collision)
         {
             if(playerRoot!=null && collision.collider!=null &&
@@ -752,8 +760,9 @@ namespace RogueMachine.P12PipelineSafe
             ConstrainOutwardBoundaryVelocity();
             Vector3 toward = Vector3.ProjectOnPlane(playerRoot.position - movementBody.position, Vector3.up);
             float distance = toward.magnitude;
-            if (distance < 0.01f) return;
-            toward /= distance;
+            // Exactly overlapping roots used to stop AI before the contact
+            // recovery timer could run. Keep a finite direction to escape.
+            toward=TargetDirection(toward,transform.forward);
             // A mobile enemy with no working gun can still physically ram the
             // player. Keep the original R6 wheel solver and ally/world avoidance.
             bool recovering=contactRecovery.Advance(Time.fixedTime-lastPlayerContact<=Time.fixedDeltaTime*2f,Time.fixedDeltaTime);
