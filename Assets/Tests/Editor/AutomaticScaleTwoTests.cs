@@ -46,6 +46,15 @@ public sealed class AutomaticScaleTwoModelTests
 
 public sealed class AutomaticScaleTwoTests
 {
+    static void AssertPhysicalBarrelMatchesVisibleMuzzle(R3MountedPart gun)
+    {
+        var physicalMuzzle=gun.GunPivot.Find("Wylot");Assert.That(physicalMuzzle,Is.Not.Null);
+        var axis=gun.GunPivot.forward;
+        float physical=Vector3.Dot(physicalMuzzle.position-gun.GunPivot.position,axis);
+        float visible=Vector3.Dot(gun.Muzzle.position-gun.GunPivot.position,axis);
+        Assert.That(physical,Is.EqualTo(visible).Within(.02f),
+            "The placement/repair barrel proxy must end at the real visible muzzle.");
+    }
     [UnitySetUp] public IEnumerator Setup()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");
@@ -65,6 +74,7 @@ public sealed class AutomaticScaleTwoTests
         Assert.That(R3VehicleModel.OccupiedCells(state).Count(),Is.EqualTo(18));
         var installed=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==state.Id);
         Assert.That(installed.GetComponent<BoxCollider>().bounds.size.x,Is.GreaterThan(1f));
+        AssertPhysicalBarrelMatchesVisibleMuzzle(installed);
         Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
         var assembly=run.Player.GetComponent<R3VehicleAssembly>();installed=assembly.Parts.Single(p=>p.Id==state.Id);
         run.Player.GetComponent<Rigidbody>().isKinematic=true;
@@ -83,6 +93,25 @@ public sealed class AutomaticScaleTwoTests
         Assert.That(hp.CurrentHp,Is.EqualTo(960).Within(.01f));Object.Destroy(target);
     }
 
+    [UnityTest] public IEnumerator EnlargedBasicRejectsRealBarrelOverlapButAllowsSpaceBeyondMuzzle()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
+        var model=run.VehicleModel;model.Award(1000);
+        foreach(var part in model.Parts.Where(p=>p.Kind==R3PartKind.Gun).ToArray())
+        {Assert.That(run.GarageRemove(part.Cell),Is.True);yield return null;}
+        var anchor=new Vector3Int(0,2,0);var root=run.Player.transform;
+        var obstacle=GameObject.CreatePrimitive(PrimitiveType.Cube);obstacle.transform.SetParent(root,false);
+        obstacle.transform.localScale=Vector3.one*.08f;
+        var barrelOrigin=(Vector3)anchor*R41PartGeometry.Grid+Vector3.up*.53f;
+        obstacle.transform.localPosition=barrelOrigin+Vector3.forward*1.0f;Physics.SyncTransforms();
+        int before=model.Scrap;
+        Assert.That(run.GarageBuyWeapon(anchor,R4WeaponKind.Basic),Is.False,"A solid object inside the visible barrel prevents placement.");
+        Assert.That(model.Scrap,Is.EqualTo(before));
+        obstacle.transform.localPosition=barrelOrigin+Vector3.forward*1.55f;Physics.SyncTransforms();
+        Assert.That(run.GarageBuyWeapon(anchor,R4WeaponKind.Basic),Is.True,"Empty space beyond the visible muzzle is not part of the physical barrel.");
+        Object.Destroy(obstacle);
+    }
+
     [UnityTest] public IEnumerator EnlargedHeavyMountsAndFiresWithItsNormalCost()
     {
         var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
@@ -96,6 +125,7 @@ public sealed class AutomaticScaleTwoTests
         Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
         var assembly=run.Player.GetComponent<R3VehicleAssembly>();var installed=assembly.Parts.Single(p=>p.Id==state.Id);
         Assert.That(installed.GetComponent<BoxCollider>().bounds.size.x,Is.GreaterThan(1f));
+        AssertPhysicalBarrelMatchesVisibleMuzzle(installed);
         run.Player.GetComponent<Rigidbody>().isKinematic=true;run.Player.GetComponent<P12PipelineSafeTankController>().enabled=false;
         run.Player.transform.SetPositionAndRotation(new Vector3(1000,20,1000),Quaternion.identity);
         installed.GunPivot.rotation=Quaternion.identity;installed.GetComponent<R4WeaponArt>().Sync();
@@ -142,8 +172,13 @@ public sealed class AutomaticScaleTwoTests
         var bounds=actual.GetComponent<BoxCollider>().bounds;
         Assert.That(bounds.size.x,Is.GreaterThan(1f));Assert.That(bounds.size.z,Is.GreaterThan(1f));
         var art=actual.GetComponent<R4WeaponArt>();Assert.That(art,Is.Not.Null);
+        AssertPhysicalBarrelMatchesVisibleMuzzle(actual);
+        var barrelProxies=actual.GunPivot.GetComponentsInChildren<BoxCollider>();
+        Assert.That(barrelProxies.Length,Is.EqualTo(2));
+        var proxySpacing=Vector3.Distance(barrelProxies[0].bounds.center,barrelProxies[1].bounds.center);
         var first=art.Muzzle.position;art.AdvanceMuzzle();var second=art.Muzzle.position;
         Assert.That(Vector3.Distance(first,second),Is.GreaterThan(.20f),"Both scaled barrels stay distinct.");
+        Assert.That(proxySpacing,Is.EqualTo(Vector3.Distance(first,second)).Within(.01f),"Physical barrels follow visible spacing.");
         Assert.That((first-actual.transform.position).magnitude,Is.GreaterThan(1.2f));
         Assert.That(model.Parts.Count(p=>p.Id==gun.Id),Is.EqualTo(1));
         Assert.That(run.GarageRotate(anchor,Vector3Int.up),Is.True,"A valid rotation keeps the one mounted part.");
