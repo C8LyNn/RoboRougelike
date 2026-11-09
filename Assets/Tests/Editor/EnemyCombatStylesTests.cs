@@ -45,11 +45,20 @@ public sealed class EnemyCombatStylesTests
     {
         var recovery = new EnemyContactRecovery();
         recovery.Advance(true, 1f);
-        recovery.Advance(false, .1f);
+        recovery.Advance(false, .4f);
         Assert.That(recovery.Advance(true, 1f), Is.False);
         Assert.That(recovery.Advance(true, .3f), Is.True);
         recovery.Reset();
         Assert.That(recovery.Recovering, Is.False);
+    }
+
+    [Test]
+    public void BriefGapsInCollisionCallbacksDoNotHideARealPin()
+    {
+        var recovery=new EnemyContactRecovery();
+        Assert.That(recovery.Advance(true, 1f), Is.False);
+        Assert.That(recovery.Advance(false, .1f), Is.False);
+        Assert.That(recovery.Advance(true, .3f), Is.True);
     }
 
     [TestCase(R3EnemyArchetype.Gunner, P12FunctionalModuleType.Weapon)]

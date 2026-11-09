@@ -5,8 +5,8 @@ namespace RogueMachine.P12PipelineSafe
     // Brief rams remain possible, but long contact causes a committed retreat.
     public sealed class EnemyContactRecovery
     {
-        const float ContactLimit = 1.25f, RetreatDuration = 2.25f;
-        float contactTime, retreatRemaining;
+        const float ContactLimit = 1.25f, RetreatDuration = 2.25f, ContactGapTolerance = .25f;
+        float contactTime, contactGap, retreatRemaining;
         public bool Recovering => retreatRemaining > 0f;
         public bool Advance(bool contact, float deltaTime)
         {
@@ -14,17 +14,18 @@ namespace RogueMachine.P12PipelineSafe
             if (Recovering)
             {
                 retreatRemaining = Mathf.Max(0f, retreatRemaining - deltaTime);
-                contactTime = 0f;
+                contactTime = contactGap = 0f;
                 return Recovering;
             }
-            contactTime = contact ? contactTime + deltaTime : 0f;
+            if(contact) { contactTime += deltaTime; contactGap=0f; }
+            else { contactGap+=deltaTime; if(contactGap>ContactGapTolerance)contactTime=0f; }
             if (contactTime >= ContactLimit)
             {
-                contactTime = 0f;
+                contactTime = contactGap = 0f;
                 retreatRemaining = RetreatDuration;
             }
             return Recovering;
         }
-        public void Reset() { contactTime = 0f; retreatRemaining = 0f; }
+        public void Reset() { contactTime = contactGap = retreatRemaining = 0f; }
     }
 }
