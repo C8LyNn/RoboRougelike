@@ -93,6 +93,19 @@ namespace RoboRougelike.R3
         // installed must use its local mounting base, not an arbitrary side.
         public static int PlacementContacts(R3PartKind kind,R3PartState part=null)=>
             kind==R3PartKind.Gun?R3MountingGrid.FaceBit(Vector3Int.down):StoredWheelContacts(part);
+        // An unmounted side wheel can be fitted on either side; once installed
+        // only the real axle side participates in connectivity and damage.
+        int SideWheelContactAt(R3PartState wheel)
+        {
+            var candidate=wheel.Copy();candidate.ContactMask=StoredWheelContacts(candidate);
+            var axis=R3MountingGrid.Rotate(Vector3Int.right,candidate.RotationQuarterTurns);
+            var plus=At(candidate.Cell+axis);var minus=At(candidate.Cell-axis);
+            bool positive=plus!=null&&plus.Health>0&&R3MountingGrid.Compatible(candidate,candidate.Cell,plus,candidate.Cell+axis);
+            bool negative=minus!=null&&minus.Health>0&&R3MountingGrid.Compatible(candidate,candidate.Cell,minus,candidate.Cell-axis);
+            if(!positive&&!negative)return 0;
+            bool mirror=positive!=negative?positive:(candidate.Cell.x<0?axis.x>0:axis.x<0);
+            return R3MountingGrid.FaceBit(mirror?Vector3Int.right:Vector3Int.left);
+        }
         public static bool CanSwapWheelAppearance(R3WheelStyle style)=>style==R3WheelStyle.Offroad||style==R3WheelStyle.Slick;
         public static float WheelRadius(R3WheelStyle style)=>style==R3WheelStyle.SwingOffroad ? .33f : style==R3WheelStyle.CasterSlick ? .17f : style==R3WheelStyle.SteerOffroad ? .48f : style==R3WheelStyle.SteerRoad ? .34f : style==R3WheelStyle.TwinRoad ? .33f : style==R3WheelStyle.SpikedFork ? .37f : style==R3WheelStyle.SmallFork ? .205f : style==R3WheelStyle.BalloonFork ? .5f : style==R3WheelStyle.Monster ? .8f : style==R3WheelStyle.LargeOffroad ? .56f : .39f;
         public static float WheelWidth(R3WheelStyle style)=>style==R3WheelStyle.SwingOffroad ? .26f : style==R3WheelStyle.CasterSlick ? .12f : style==R3WheelStyle.SteerOffroad ? .34f : style==R3WheelStyle.SteerRoad ? .26f : style==R3WheelStyle.TwinRoad ? .16f : style==R3WheelStyle.SpikedFork ? .30f : style==R3WheelStyle.SmallFork ? .15f : style==R3WheelStyle.BalloonFork ? .43f : style==R3WheelStyle.Monster ? .58f : .42f;
@@ -291,6 +304,8 @@ namespace RoboRougelike.R3
             var candidate=stored?.Copy()??new R3PartState(cell,kind){Weapon=weapon,
                 FootprintRevision=owned?0:NewPurchaseFootprint(kind,weapon,R3WheelStyle.Offroad)};
             candidate.Cell=cell;candidate.RotationQuarterTurns=rotation;candidate.ContactMask=contactMask;
+            if(kind==R3PartKind.Wheel&&HasSideMount(candidate.WheelStyle))
+                contactMask=candidate.ContactMask=SideWheelContactAt(candidate);
             var footprint=OccupiedCells(candidate).ToArray();
             if(footprint.Any(c=>Math.Abs(c.x)>6||Math.Abs(c.z)>7||c.y<0||c.y>5))return "Moduł wykracza poza siatkę montażową.";
             if(footprint.Any(c=>At(c)!=null))return "Zajęte pole części. Utraconą część odtwórz lub usuń jej plan.";
@@ -325,8 +340,10 @@ namespace RoboRougelike.R3
             rotation=R3MountingGrid.Normalize(rotation);
             if(kind==R3PartKind.BonusModule||PlacementError(cell,kind,false,weapon,rotation)!=null)return false;
             Scrap-=Price(kind,weapon);
-            Parts.Add(new R3PartState(cell,kind){Weapon=weapon,RotationQuarterTurns=rotation,ContactMask=PlacementContacts(kind),
-                FootprintRevision=NewPurchaseFootprint(kind,weapon,R3WheelStyle.Offroad)});
+            var part=new R3PartState(cell,kind){Weapon=weapon,RotationQuarterTurns=rotation,ContactMask=PlacementContacts(kind),
+                FootprintRevision=NewPurchaseFootprint(kind,weapon,R3WheelStyle.Offroad)};
+            if(kind==R3PartKind.Wheel&&HasSideMount(part.WheelStyle))part.ContactMask=SideWheelContactAt(part);
+            Parts.Add(part);
             return true;
         }
         public bool PurchaseToInventory(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic,R3WheelStyle wheelStyle=R3WheelStyle.Offroad,R3ArmorShape armorShape=R3ArmorShape.Cube)
@@ -453,6 +470,7 @@ namespace RoboRougelike.R3
             if(part==null||part.Health<=0||
                 OwnedPlacementError(part.Id,cell,rotation)!=null)return false;
             inventory.Remove(part);part.Cell=cell;part.RotationQuarterTurns=rotation;part.ContactMask=PlacementContacts(part.Kind,part);
+            if(part.Kind==R3PartKind.Wheel&&HasSideMount(part.WheelStyle))part.ContactMask=SideWheelContactAt(part);
             Parts.Add(part);return true;
         }
         public bool RepairInventory(string id)

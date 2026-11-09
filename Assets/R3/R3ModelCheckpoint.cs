@@ -183,7 +183,10 @@ namespace RoboRougelike.R3
             var normalized=mounted.Select(p=>p.Copy()).ToArray();
             foreach(var part in normalized.Where(p=>p.Kind==R3PartKind.Gun||p.Kind==R3PartKind.Wheel))
             {
-                int actual=PlacementContacts(part.Kind,part);
+                int sideLeft=R3MountingGrid.FaceBit(Vector3Int.left),sideRight=R3MountingGrid.FaceBit(Vector3Int.right);
+                bool fixedSide=part.Kind==R3PartKind.Wheel&&HasSideMount(part.WheelStyle)&&
+                    (part.ContactMask==sideLeft||part.ContactMask==sideRight);
+                int actual=fixedSide?part.ContactMask:PlacementContacts(part.Kind,part);
                 if(part.ContactMask!=actual){part.ContactMask=actual;portNormalizedIds.Add(part.Id);}
             }
             int portMovedCount=0;

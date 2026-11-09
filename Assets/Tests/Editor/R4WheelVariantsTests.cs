@@ -66,7 +66,8 @@ public sealed class R4WheelVariantsTests
             var side=coreCell+Vector3Int.right;
             Assert.That(model.OwnedPlacementError(part.Id,side,Vector3Int.zero),Is.Null,style+" must mount by its side.");
             Assert.That(model.Mount(part.Id,side),Is.True);
-            Assert.That(model.At(side).ContactMask,Is.EqualTo(3));
+            Assert.That(model.At(side).ContactMask,Is.EqualTo(R3MountingGrid.FaceBit(Vector3Int.left)),
+                "The installed axle retains only its physical contact with the core.");
         }
         var current=run.VehicleModel;var original=current.Parts.First(p=>p.Kind==R3PartKind.Wheel);var originalId=original.Id;
         Assert.That(run.GarageRemove(original.Cell),Is.True);Assert.That(current.Inventory.Single(p=>p.Id==originalId).ContactMask,Is.EqualTo(3));
