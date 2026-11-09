@@ -896,11 +896,22 @@ namespace RogueMachine.P12PipelineSafe
 
         private bool FriendlyInLine(Vector3 point)
         {
-            var delta=point-muzzle.position;
-            int count=Physics.RaycastNonAlloc(muzzle.position,delta.normalized,movementHits,delta.magnitude,~0,QueryTriggerInteraction.Ignore);
+            return FriendlyBetween(muzzle.position,point);
+        }
+
+        private bool FriendlyBetween(Vector3 origin,Vector3 point)
+        {
+            var delta=point-origin;
+            int count=Physics.RaycastNonAlloc(origin,delta.normalized,movementHits,delta.magnitude,~0,QueryTriggerInteraction.Ignore);
+            var rayHits=movementHits;
+            if(count==movementHits.Length)
+            {
+                rayHits=Physics.RaycastAll(origin,delta.normalized,delta.magnitude,~0,QueryTriggerInteraction.Ignore);
+                count=rayHits.Length;
+            }
             for(int i=0;i<count;i++)
             {
-                var ally=movementHits[i].collider.GetComponentInParent<P12PipelineSafeEnemyTurret>();
+                var ally=rayHits[i].collider.GetComponentInParent<P12PipelineSafeEnemyTurret>();
                 if(ally!=null&&ally!=this&&!ally.IsDefeated)return true;
             }
             return false;
@@ -1354,10 +1365,7 @@ namespace RogueMachine.P12PipelineSafe
                 gun.Pivot.rotation=Quaternion.RotateTowards(gun.Pivot.rotation,Quaternion.LookRotation(delta),85*Time.deltaTime);
                 gun.Block.GetComponent<R4WeaponArt>()?.Sync();
                 if(delta.magnitude>maxRange||Vector3.Angle(gun.Pivot.forward,delta)>9||Time.time<gun.NextShot)continue;
-                var ray=point-gun.Muzzle.position;
-                int count=Physics.RaycastNonAlloc(gun.Muzzle.position,ray.normalized,movementHits,ray.magnitude,~0,QueryTriggerInteraction.Ignore);
-                bool ally=false;for(int i=0;i<count;i++){var other=movementHits[i].collider.GetComponentInParent<P12PipelineSafeEnemyTurret>();if(other!=null&&other!=this&&!other.IsDefeated)ally=true;}
-                if(ally)continue;
+                if(FriendlyBetween(gun.Muzzle.position,point))continue;
                 var energy=GetComponent<VehicleEnergyBank>();
                 int tier=gun.Block.GetComponent<RoboRougelike.WeaponIntegration.RRLDeviceBinding>()?.State?.Tier??1;
                 if(energy!=null&&!energy.TrySpend(VehicleEnergyCosts.ConventionalShot(gun.Kind)*R3VehicleModel.TierActivationCost(tier)))continue;
