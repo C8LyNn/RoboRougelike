@@ -6,6 +6,7 @@ using RoboRougelike.R3;
 using RoboRougelike.R4;
 using RoboRougelike.R4_1;
 using RoboRougelike.WeaponIntegration;
+using RoboRougelike.Mechanics.EMP;
 using RogueMachine.P12PipelineSafe;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -19,6 +20,8 @@ public sealed class AutomaticScaleTwoModelTests
     [TestCase(R4WeaponKind.RocketLauncher)]
     [TestCase(R4WeaponKind.Shotgun)]
     [TestCase(R4WeaponKind.Railgun)]
+    [TestCase(R4WeaponKind.BeamCutter)]
+    [TestCase(R4WeaponKind.EmpEmitter)]
     public void NewGunHasVersionedFootprintWhileLegacyRetainsOneCell(R4WeaponKind weapon)
     {
         var design=new R3VehicleDesign{Name="Automatic QA",CoreHp=100,Speed=7,TurnSpeed=82};
@@ -208,6 +211,48 @@ public sealed class AutomaticScaleTwoTests
         Assert.That(hp.CurrentHp,Is.LessThan(1000),"The actual package projectile hits.");
         int ammo=weapon==R4WeaponKind.Shotgun?installed.GetComponent<RRLShotgunBinding>().State.Ammo:installed.GetComponent<RRLRailgunBinding>().State.Ammo;
         Assert.That(ammo,Is.EqualTo(11));Object.Destroy(target);
+    }
+
+    [UnityTest] public IEnumerator EnlargedBeamHitsAndConsumesEnergy() => VerifyBeamOrEmp(R4WeaponKind.BeamCutter);
+    [UnityTest] public IEnumerator EnlargedEmpDisruptsRealReceiver() => VerifyBeamOrEmp(R4WeaponKind.EmpEmitter);
+
+    IEnumerator VerifyBeamOrEmp(R4WeaponKind weapon)
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
+        var model=run.VehicleModel;model.Award(1000);
+        foreach(var part in model.Parts.Where(p=>p.Kind==R3PartKind.Gun).ToArray())
+        {Assert.That(run.GarageRemove(part.Cell),Is.True);yield return null;}
+        var anchor=new Vector3Int(0,2,0);Assert.That(run.GarageBuyWeapon(anchor,weapon),Is.True);
+        var state=model.At(anchor);Assert.That(state.FootprintRevision,Is.EqualTo(2));
+        Assert.That(R3VehicleModel.OccupiedCells(state).Count(),Is.EqualTo(18));
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();var installed=assembly.Parts.Single(p=>p.Id==state.Id);
+        run.Player.GetComponent<Rigidbody>().isKinematic=true;run.Player.GetComponent<P12PipelineSafeTankController>().enabled=false;
+        run.Player.transform.SetPositionAndRotation(new Vector3(1000,20,1000),Quaternion.identity);
+        installed.GunPivot.rotation=Quaternion.identity;installed.GetComponent<R4WeaponArt>().Sync();
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.localScale=new Vector3(2,2,.5f);
+        var bank=run.Player.GetComponent<VehicleEnergyBank>();float energy=bank.Current;
+        if(weapon==R4WeaponKind.BeamCutter)
+        {
+            AssertPhysicalBarrelMatchesVisibleMuzzle(installed);
+            target.transform.position=installed.Muzzle.position+installed.Muzzle.forward*4;
+            var hp=target.AddComponent<P12PipelineSafeDamageable>();hp.Configure(500,false);Physics.SyncTransforms();
+            var binding=installed.GetComponent<RRLBeamBinding>();binding.Module.SetTriggerHeld(true);
+            var result=binding.Module.ManualFixedStep(.1f);
+            Assert.That(result.Status.ToString(),Is.EqualTo("Firing"));
+            Assert.That(hp.CurrentHp,Is.EqualTo(496.5f).Within(.01f));
+            Assert.That(bank.Current,Is.EqualTo(energy-.6f).Within(.01f));
+        }
+        else
+        {
+            Assert.That(installed.GunPivot.GetComponentsInChildren<Collider>().Any(c=>c.enabled),Is.False,
+                "EMP has no physical gun barrel that could block neighboring parts.");
+            target.transform.position=installed.transform.position+Vector3.forward*3;
+            var receiver=target.AddComponent<EmpReceiver>();receiver.ConfigureOwnership(target.transform,12345,2);Physics.SyncTransforms();
+            Assert.That(installed.GetComponent<RRLEmpBinding>().Fire(),Is.True);
+            Assert.That(receiver.IsDisrupted,Is.True);Assert.That(bank.Current,Is.EqualTo(energy-12.5f).Within(.01f));
+        }
+        Object.Destroy(target);
     }
 
     [UnityTest] public IEnumerator RealGarageShowsAndMountsEnlargedAutomaticWithTwoWorkingMuzzles()
