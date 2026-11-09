@@ -49,6 +49,9 @@ namespace RogueMachine.P12PipelineSafe
         private readonly List<P12PipelineSafeDamageable> driveWheels=new List<P12PipelineSafeDamageable>();
         private P12PipelineSafeDamageable turretAnchor;
         private float nextStrafeChange;
+        private float movementStartedAt;
+        private readonly EnemyContactRecovery contactRecovery = new EnemyContactRecovery();
+        private float lastPlayerContact = float.NegativeInfinity;
         private bool profiled;
         public R4WeaponKind WeaponKind { get; private set; }
         public bool CombatActive => combatActive;
@@ -347,9 +350,11 @@ namespace RogueMachine.P12PipelineSafe
             turretSupport != null && !turretSupport.IsDead && yawPivot != null && muzzle != null &&
             (turretAnchor==null||!turretAnchor.IsDead&&turretAnchor.transform.IsChildOf(transform));
         public bool WeaponOnline => PrimaryWeaponOnline||additionalGuns.Any(g=>g.Online(transform));
+        public bool RecoveringFromPlayerContact => contactRecovery.Recovering;
 
         public void ConfigureMovement(float speed, float distance, float strafe)
         {
+            movementStartedAt=Time.time;
             moveSpeed = Mathf.Clamp(speed, 0, 6);
             preferredDistance = Mathf.Clamp(distance, 6, 20);
             strafeStrength = Mathf.Clamp01(strafe);
@@ -379,7 +384,7 @@ namespace RogueMachine.P12PipelineSafe
             structure.SetDesignatedCore(core.GetComponent<P12_PipelineSafePlayerBlock>());
         }
 
-        public void SetCombatActive(bool active) { combatActive = active; }
+        public void SetCombatActive(bool active) { combatActive = active; if(!active) { contactRecovery.Reset(); lastPlayerContact=float.NegativeInfinity; } }
         public Transform EncounterTarget=>playerRoot;
         public void RetargetEncounter(Transform target)
         {
@@ -721,9 +726,25 @@ namespace RogueMachine.P12PipelineSafe
             movementBounds=bounds;
         }
         public static bool ShouldRam(bool weaponOnline,R3EnemyArchetype archetype,float distance,float cycleTime)
+            => ShouldRam(weaponOnline,archetype,distance,cycleTime,false);
+        public static bool ShouldRam(bool weaponOnline,R3EnemyArchetype archetype,float distance,float cycleTime,bool meleeWeapon)
         {
-            return !weaponOnline||archetype==R3EnemyArchetype.Bruiser||distance<8f||Mathf.Repeat(cycleTime,12f)<5f;
-        }        private void FixedUpdate()
+            if (!weaponOnline) return true;
+            if (meleeWeapon) return true;
+            float phase=Mathf.Repeat(cycleTime,12f);
+            if (archetype==R3EnemyArchetype.Bruiser) return phase<4f;
+            if (archetype==R3EnemyArchetype.Scout) return phase<2f;
+            return false;
+        }
+
+        private void OnCollisionStay(Collision collision)
+        {
+            if(playerRoot!=null && collision.collider!=null &&
+                (collision.collider.transform==playerRoot || collision.collider.transform.IsChildOf(playerRoot)))
+                lastPlayerContact=Time.fixedTime;
+        }
+
+        private void FixedUpdate()
         {
             var drive=GetComponent<RoboRougelike.R6.R6VehicleDrive>();
             if(drive!=null)drive.StepWorld(Vector3.zero,0);
@@ -735,12 +756,15 @@ namespace RogueMachine.P12PipelineSafe
             toward /= distance;
             // A mobile enemy with no working gun can still physically ram the
             // player. Keep the original R6 wheel solver and ally/world avoidance.
-            bool ramming=ShouldRam(WeaponOnline,Archetype,distance,Time.time+Mathf.Abs(GetInstanceID()%997)*.033f);
+            bool recovering=contactRecovery.Advance(Time.fixedTime-lastPlayerContact<=Time.fixedDeltaTime*2f,Time.fixedDeltaTime);
+            float attackClock=Time.time-movementStartedAt+(Archetype==R3EnemyArchetype.Bruiser?0:Mathf.Abs(GetInstanceID()%997)*.033f);
+            bool ramming=!recovering&&ShouldRam(WeaponOnline,Archetype,distance,attackClock,packageSaw!=null&&PrimaryWeaponOnline);
             if(profiled&&Time.time>=nextStrafeChange&&Time.time>=navigationUntil)
             { strafeDirection=-strafeDirection;nextStrafeChange=Time.time+(Archetype==R3EnemyArchetype.Flanker?2:4.5f); }
             Vector3 sideways = Vector3.Cross(Vector3.up, toward) * strafeDirection;
             float approach = ramming?1:Mathf.Clamp((distance - preferredDistance) / 3, -1, 1);
-            Vector3 desired = (toward * approach + sideways * (ramming?0:strafeStrength)).normalized;
+            Vector3 desired = recovering ? (-toward + sideways * .35f).normalized :
+                (toward * approach + sideways * (ramming?0:strafeStrength)).normalized;
             var encounter=RoboRougelike.R1.R1RunController.Instance?.Encounter;
             if(encounter!=null)
                 foreach(var other in encounter.Enemies)
@@ -755,22 +779,26 @@ namespace RogueMachine.P12PipelineSafe
             if(wheelFactor<=0)return;
             float step = moveSpeed * Mathf.Lerp(0.3f,1,wheelFactor) * Time.fixedDeltaTime;
             float clearance = Mathf.Max(step + 0.08f, 1.4f);
-            if (!CanMove(desired, clearance,ramming))
+            // A backward probe may begin overlapping the player. Ignore that
+            // player only for approach-by-ram or retreat; physical collisions
+            // and all world-obstacle checks remain active.
+            bool allowPlayerContact=ramming||recovering||Vector3.Dot(desired,toward)<-.05f;
+            if (!CanMove(desired, clearance,allowPlayerContact))
             {
                 // Keep a wall-parallel escape direction across periodic combat strafing changes.
                 var normal=lastMoveNormal;
                 var tangent=Time.time<navigationUntil?obstacleTangent:Vector3.Cross(Vector3.up,normal).normalized;
                 if(Time.time>=navigationUntil&&Vector3.Dot(tangent,desired)<0)tangent=-tangent;
-                if(!CanMove(tangent,step+.08f,ramming))
+                if(!CanMove(tangent,step+.08f,allowPlayerContact))
                 {
                     tangent=Vector3.Cross(Vector3.up,normal).normalized;
                     if(Vector3.Dot(tangent,desired)<0)tangent=-tangent;
-                    if(!CanMove(tangent,step+.08f,ramming))tangent=-tangent;
+                    if(!CanMove(tangent,step+.08f,allowPlayerContact))tangent=-tangent;
                 }
-                desired=CanMove(tangent,step+.08f,ramming)?tangent:normal;
+                desired=CanMove(tangent,step+.08f,allowPlayerContact)?tangent:normal;
                 obstacleTangent=desired;navigationUntil=Time.time+1.1f;
             }
-            else if(Time.time<navigationUntil&&CanMove(obstacleTangent,step+.08f,ramming))desired=obstacleTangent;
+            else if(!recovering&&Time.time<navigationUntil&&CanMove(obstacleTangent,step+.08f,allowPlayerContact))desired=obstacleTangent;
             Vector3 next = movementBody.position + desired * step;
             bool cutX=(next.x<movementBounds.min.x&&desired.x<0)||(next.x>movementBounds.max.x&&desired.x>0);
             bool cutZ=(next.z<movementBounds.min.z&&desired.z<0)||(next.z>movementBounds.max.z&&desired.z>0);
@@ -804,7 +832,7 @@ namespace RogueMachine.P12PipelineSafe
                 if(!TryBoundaryTangent(outwardX,outwardZ,step,ramming,out var safeTangent))return;
                 desired=safeTangent;obstacleTangent=safeTangent;navigationUntil=Time.time+1.1f;
             }
-            if (!CanMove(desired, step + 0.08f,ramming)) return;
+            if (!CanMove(desired, step + 0.08f,allowPlayerContact)) return;
             next=movementBody.position+desired*step;
             next.x=Mathf.Clamp(next.x,movementBounds.min.x,movementBounds.max.x);next.z=Mathf.Clamp(next.z,movementBounds.min.z,movementBounds.max.z);
             if(drive!=null)drive.StepToward(desired,moveSpeed * Mathf.Lerp(0.3f,1,wheelFactor),turnSpeed);
@@ -924,6 +952,7 @@ namespace RogueMachine.P12PipelineSafe
 
             List<Collider> moduleTargets =
                 new List<Collider>();
+            var preferredTargets = new List<Collider>();
 
             P12PipelineSafeFunctionalModule[] modules =
                 playerRoot.GetComponentsInChildren<
@@ -941,8 +970,18 @@ namespace RogueMachine.P12PipelineSafe
                     module.GetComponent<Collider>();
 
                 if (ValidTarget(collider))
+                {
                     moduleTargets.Add(collider);
+                    if(profiled && ((Archetype==R3EnemyArchetype.Gunner && module.ModuleType==P12FunctionalModuleType.Weapon) ||
+                       (Archetype==R3EnemyArchetype.Flanker && module.ModuleType==P12FunctionalModuleType.Wheel)))
+                        preferredTargets.Add(collider);
+                }
             }
+
+            // Priorities bias aim; they do not bypass armor, line of sight or
+            // the existing physical projectile and weapon-cadence systems.
+            if(preferredTargets.Count>0 && Random.value<.7f)
+                return preferredTargets[Random.Range(0,preferredTargets.Count)];
 
             if (moduleTargets.Count > 0 &&
                 Random.value < 0.34f)

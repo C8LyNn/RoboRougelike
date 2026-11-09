@@ -21,7 +21,9 @@ public sealed class UnarmedEnemyRammingTests
     [UnitySetUp] public IEnumerator Setup()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
-        while(R1RunController.Instance?.Progress==null)yield return null;run=R1RunController.Instance;
+        float setupDeadline=Time.realtimeSinceStartup+25;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<setupDeadline)yield return null;
+        run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null,"Game initialization timed out.");
         Assert.That(run.SelectVehicle(R3VehicleKind.Light),Is.True);Assert.That(run.OpenSandboxGarage(),Is.True);
         Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
         range=run.GetComponent<R6TestRange>();enemy=range.TrainingTarget;Assert.That(enemy,Is.Not.Null);
@@ -53,6 +55,22 @@ public sealed class UnarmedEnemyRammingTests
         Assert.That(Vector3.ProjectOnPlane(body.position-start,Vector3.up).magnitude,Is.LessThan(.6f));
         Assert.That(probe.Contact,Is.False);
     }
+    [UnityTest] public IEnumerator ProlongedPhysicalContactTriggersRetreat()
+    {
+        float deadline=Time.realtimeSinceStartup+20;
+        while(!probe.Contact&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(probe.Contact,Is.True,"The real enemy must first reach the player's colliders.");
+        while(!enemy.RecoveringFromPlayerContact&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(enemy.RecoveringFromPlayerContact,Is.True,"Continuous contact should activate the retreat.");
+        float atRetreat=Vector3.Distance(body.position,playerBody.position);
+        float furthest=atRetreat;
+        while(enemy.RecoveringFromPlayerContact&&Time.realtimeSinceStartup<deadline)
+        {
+            furthest=Mathf.Max(furthest,Vector3.Distance(body.position,playerBody.position));
+            yield return null;
+        }
+        Assert.That(furthest,Is.GreaterThan(atRetreat+.15f),"The real wheel drive should move away, not merely change state.");
+    }
     [UnityTest] public IEnumerator UnarmedEnemyDoesNotDriveThroughSolidWall()
     {
         var wall=GameObject.CreatePrimitive(PrimitiveType.Cube);wall.name="P16 solid wall";
@@ -71,7 +89,7 @@ public sealed class UnarmedEnemyRammingTests
 
 public sealed class ArmedEnemyRammingTests
 {
-    [UnityTest] public IEnumerator ArmedEnemyActuallyApproachesAndContactsPlayer()
+    [UnityTest] public IEnumerator ArmedGunnerKeepsDistanceInsteadOfAutomaticallyRamming()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
         float deadline=Time.realtimeSinceStartup+20;
@@ -83,14 +101,18 @@ public sealed class ArmedEnemyRammingTests
         enemy.transform.SetParent(null,true);range.Layout.gameObject.SetActive(false);
         var body=enemy.GetComponent<Rigidbody>();var player=run.Player.GetComponent<Rigidbody>();player.isKinematic=true;
         foreach(var hp in run.Player.GetComponentsInChildren<P12PipelineSafeDamageable>())hp.SetDurabilityMultiplier(50);
-        body.position=player.position+Vector3.forward*9;body.rotation=Quaternion.identity;body.linearVelocity=Vector3.zero;
+        enemy.transform.SetPositionAndRotation(player.position+Vector3.forward*9,Quaternion.identity);body.linearVelocity=Vector3.zero;
         enemy.ConfigureMovement(5,15,0);var probe=enemy.gameObject.AddComponent<RamContactProbe>();probe.Target=run.Player.transform;
         Physics.SyncTransforms();range.SetTrainingFire(true);float initial=Vector3.Distance(body.position,player.position);
-        deadline=Time.realtimeSinceStartup+25;
-        while(!probe.Contact&&Time.realtimeSinceStartup<deadline)yield return null;
-        Debug.Log($"Armed ram: contact={probe.Contact} distance={initial:F2}->{Vector3.Distance(body.position,player.position):F2}");
-        Assert.That(probe.Contact,Is.True,"An armed, mobile enemy must physically contact the player.");
-        Assert.That(enemy.WeaponOnline,Is.True,"Ramming does not require discarding the weapon.");
+        Assert.That(enemy.Archetype,Is.EqualTo(R3EnemyArchetype.Gunner));
+        float started=Time.time;deadline=Time.realtimeSinceStartup+18;
+        while(Time.time-started<6f&&Time.realtimeSinceStartup<deadline)yield return null;
+        float final=Vector3.Distance(body.position,player.position);
+        var drive=enemy.GetComponent<R6VehicleDrive>();
+        Debug.Log($"Ranged gunner: contact={probe.Contact} distance={initial:F2}->{final:F2} pos={body.position} vel={body.linearVelocity} kinematic={body.isKinematic} gravity={body.useGravity} active={enemy.CombatActive} wheels={drive.Wheels} grounded={drive.GroundedWheels}");
+        Assert.That(final,Is.GreaterThan(initial+.5f),"The ranged enemy should open distance from a nearby player.");
+        Assert.That(probe.Contact,Is.False,"A ranged enemy must not automatically ram a nearby player.");
+        Assert.That(enemy.WeaponOnline,Is.True);
         yield return new ExitPlayMode();
     }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
