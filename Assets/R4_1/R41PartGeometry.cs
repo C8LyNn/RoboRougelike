@@ -110,7 +110,8 @@ namespace RoboRougelike.R4_1
                 pivot.localPosition=Vector3.up*((.135f*2f+.26f)/BlockSize);pivot.localScale=Vector3.one*2f;
                 // Distances measured from the source model's pitch axis to its
                 // muzzle in Unity. The pivot's 2x scale supplies the final 2x.
-                float sourceLength=weapon==R4WeaponKind.Automatic?.70f:weapon==R4WeaponKind.Heavy?.60f:.66f;
+                float sourceLength=weapon==R4WeaponKind.Automatic?.70f:weapon==R4WeaponKind.Heavy?.60f:
+                    weapon==R4WeaponKind.RocketLauncher?.382f:.66f;
                 float localLength=sourceLength/BlockSize;
                 var muzzle=pivot.Find("Wylot");if(muzzle!=null)muzzle.localPosition=Vector3.forward*localLength;
                 foreach(Transform barrel in pivot)
