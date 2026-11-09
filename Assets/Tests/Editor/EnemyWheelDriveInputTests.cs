@@ -91,4 +91,25 @@ public sealed class EnemyWheelDriveInputTests
         }
         finally{Object.DestroyImmediate(root);}
     }
+
+    [Test]
+    public void EnemyDevicesCannotBeEquippedWhenNoValidChassisSocketExists()
+    {
+        var root=new GameObject("enemy");
+        try
+        {
+            var enemy=root.AddComponent<P12PipelineSafeEnemyTurret>();
+            var chassis=new GameObject("Base");chassis.transform.SetParent(root.transform);
+            var core=GameObject.CreatePrimitive(PrimitiveType.Cube);core.name="Core";core.transform.SetParent(chassis.transform);
+            var hp=core.AddComponent<P12PipelineSafeDamageable>();hp.Configure(100,true);
+            typeof(P12PipelineSafeEnemyTurret).GetField("core",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(enemy,hp);
+            typeof(P12PipelineSafeEnemyTurret).GetField("weaponBlock",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(enemy,hp);
+            var wheel=GameObject.CreatePrimitive(PrimitiveType.Cube);wheel.name="Koło przeciwnika";wheel.transform.SetParent(chassis.transform);
+            wheel.AddComponent<P12PipelineSafeDamageable>().Configure(100,true);
+            Assert.That(enemy.EquipBattery(),Is.False,"A battery cannot float independently of its support.");
+            Assert.That(enemy.EquipDirectionalShield(),Is.False,"A shield cannot float independently of its support.");
+            Assert.That(enemy.EquipPointDefense(),Is.False,"Point defense cannot float independently of its support.");
+        }
+        finally{Object.DestroyImmediate(root);}
+    }
 }
