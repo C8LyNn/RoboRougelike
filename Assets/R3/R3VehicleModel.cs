@@ -85,8 +85,18 @@ namespace RoboRougelike.R3
         public static int NewPurchaseFootprint(R3PartKind kind,R4WeaponKind weapon,R3WheelStyle wheelStyle)=>
             kind==R3PartKind.Wheel&&HasSizedSideWheel(wheelStyle)?1:
             kind==R3PartKind.Gun&&SupportsGunScale2(weapon)?2:0;
+        public static void UpgradeStoredGunFootprint(R3PartState part)
+        {
+            // The inventory has no occupied cells, so a legacy weapon can be
+            // enlarged there without overlapping or deleting any vehicle part.
+            if(part!=null&&part.Kind==R3PartKind.Gun&&part.FootprintRevision==0&&SupportsGunScale2(part.Weapon))
+                part.FootprintRevision=2;
+        }
         public static bool HasForkMount(R3WheelStyle style)=>style==R3WheelStyle.SmallFork||style==R3WheelStyle.BalloonFork||style==R3WheelStyle.SpikedFork||style==R3WheelStyle.TwinRoad||style==R3WheelStyle.SteerRoad||style==R3WheelStyle.SteerOffroad||style==R3WheelStyle.CasterSlick||style==R3WheelStyle.SwingOffroad;
         public static bool HasSideMount(R3WheelStyle style)=>!HasForkMount(style);
+        public static bool ValidWheelOrientation(Vector3Int turns)=>
+            R3MountingGrid.Rotate(Vector3Int.up,turns)==Vector3Int.up&&
+            Math.Abs(R3MountingGrid.Rotate(Vector3Int.right,turns).x)==1;
         public static int StoredWheelContacts(R3PartState part)=>part!=null&&part.Kind==R3PartKind.Wheel&&HasSideMount(part.WheelStyle)?
             R3MountingGrid.FaceBit(Vector3Int.right)|R3MountingGrid.FaceBit(Vector3Int.left):part?.ContactMask??R3MountingGrid.AllFaces;
         // Existing vehicles retain their serialized ports; a turret being newly
@@ -300,6 +310,8 @@ namespace RoboRougelike.R3
             if(kind==R3PartKind.Gun)contactMask=PlacementContacts(kind);
             if (kind == R3PartKind.Core) return "Rdzeń jest jedyny i nie można go kupić.";
             if (!Enum.IsDefined(typeof(R3PartKind),kind)) return "Nieznany typ części.";
+            if(kind==R3PartKind.Wheel&&!ValidWheelOrientation(rotation))
+                return "Koło musi stać pionowo, a jego oś powinna być skierowana na bok pojazdu.";
             if(kind==R3PartKind.Gun&&!Enum.IsDefined(typeof(R4WeaponKind),weapon))return "Nieznany rodzaj broni.";
             var stored=ownedId!=null?inventory.FirstOrDefault(p=>p.Id==ownedId):null;
             var candidate=stored?.Copy()??new R3PartState(cell,kind){Weapon=weapon,
@@ -405,7 +417,7 @@ namespace RoboRougelike.R3
             // Edits may temporarily be undeployable; keep the core, structure and inventory safe.
             if (inventory.Count>=InventoryCapacity ||
                 !Connected(rest) || !Connected(rest.Where(p => p.Health > 0))) return false;
-            Parts.Remove(part);part.ContactMask=StoredWheelContacts(part);inventory.Add(part); return true;
+            Parts.Remove(part);part.ContactMask=StoredWheelContacts(part);UpgradeStoredGunFootprint(part);inventory.Add(part); return true;
         }
         public bool RotateMounted(Vector3Int cell,Vector3Int quarterTurns)
         {
@@ -414,6 +426,7 @@ namespace RoboRougelike.R3
             var oldRotation=part.RotationQuarterTurns;var oldContacts=part.ContactMask;
             var next=R3MountingGrid.Normalize(oldRotation+quarterTurns);
             if(next==oldRotation)return false;
+            if(part.Kind==R3PartKind.Wheel&&!ValidWheelOrientation(next))return false;
             bool accepted=false;
             try
             {
@@ -440,7 +453,7 @@ namespace RoboRougelike.R3
                     float.IsInfinity(p.UpgradeAmount)||p.UpgradeAmount<0||p.UpgradeAmount>1))||
                 string.IsNullOrWhiteSpace(p.Id)||Owns(p.Id))||
                 batch.Select(p=>p.Id).Distinct().Count()!=batch.Length)return false;
-            inventory.AddRange(batch.Select(p=>{var copy=p.Copy();copy.ContactMask=StoredWheelContacts(copy);return copy;}));return true;
+            inventory.AddRange(batch.Select(p=>{var copy=p.Copy();copy.ContactMask=StoredWheelContacts(copy);UpgradeStoredGunFootprint(copy);return copy;}));return true;
         }
         public static R3PartState CreateBonusReward(R1UpgradeDefinition bonus)
         {

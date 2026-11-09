@@ -18,7 +18,7 @@ namespace RoboRougelike.R1
         public bool OpenSandboxGarage()
         {
             if(Error!=null||Transitioning||Progress==null||!Progress.OpenWorkshop())return false;
-            SandboxWorkshop=true;VehicleModel=new R3VehicleModel(R3VehicleCatalog.Create(SelectedVehicle),Definition.GaragePrices);
+            SandboxWorkshop=true;VehicleModel=new R3VehicleModel(R3VehicleCatalog.Create(SelectedVehicle,SelectedVehicleVariant),Definition.GaragePrices);
             VehicleModel.Award(R6Tuning.Current.SandboxScrap);
             Player=R3VehicleAssembly.Build(VehicleModel,Progress.Stats,palette,new Vector3(0,.7f,-25),Quaternion.identity);
             followCamera.Configure(Player.transform,Player.CameraPivot);SetSimulation(false);Garage.Open();return true;

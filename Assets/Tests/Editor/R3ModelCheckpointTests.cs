@@ -37,10 +37,11 @@ public sealed class R3ModelCheckpointTests
 
     static R3ModelCheckpoint LegacySideMountedGun()
     {
-        var data=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard)).MakeCheckpoint(0);
-        var gun=data.mounted.First(p=>p.Kind==R3PartKind.Gun);
-        gun.Cell=new Vector3Int(3,1,1);gun.ContactMask=R3MountingGrid.AllFaces;gun.Health=.43f;
-        return data;
+        var design=new R3VehicleDesign{Name="Legacy side mount"};
+        design.Parts.Add(new R3PartState(Vector3Int.zero,R3PartKind.Core));
+        design.Parts.Add(new R3PartState(Vector3Int.right,R3PartKind.Armor));
+        design.Parts.Add(new R3PartState(new Vector3Int(2,0,0),R3PartKind.Gun,.43f){ContactMask=R3MountingGrid.AllFaces,FootprintRevision=0});
+        return new R3VehicleModel(design).MakeCheckpoint(0);
     }
 
     [Test] public void UnsupportedLegacySideGunMovesToInventoryWithoutLosingIdentityOrHealth()
@@ -58,7 +59,7 @@ public sealed class R3ModelCheckpointTests
         Assert.That(R3VehicleModel.Connected(loaded.Parts),Is.True);
         Assert.That(loaded.Parts.Concat(loaded.Inventory).Select(p=>p.Id),Is.EquivalentTo(originalIds));
         Assert.That(loaded.Scrap,Is.EqualTo(scrap));
-        Assert.That(loaded.Mount(id,new Vector3Int(2,2,2)),Is.True,"The preserved gun can be remounted at a compatible upper socket.");
+        Assert.That(loaded.Mount(id,new Vector3Int(0,1,0)),Is.True,"The preserved gun can be remounted at a compatible upper socket.");
         var savedAgain=loaded.MakeCheckpoint(0);
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(savedAgain,R3VehicleKind.Standard,null,0,out var reloaded,out var reError),Is.True,reError);
         Assert.That(reloaded.Parts.Single(p=>p.Id==id).Health,Is.EqualTo(.43f));
@@ -76,6 +77,7 @@ public sealed class R3ModelCheckpointTests
     [Test] public void FirstDeploymentAfterSaveFillsBatteryAddedInGarage()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
+        float initialMaximum=model.Energy.Maximum;
         var saved=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(0)));
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(saved,R3VehicleKind.Standard,model.Economy,0,out var loaded,out var error),Is.True,error);
         loaded.Award(100);
@@ -83,19 +85,20 @@ public sealed class R3ModelCheckpointTests
             .First(c=>loaded.PlacementError(c,R3PartKind.Battery)==null);
         Assert.That(loaded.Buy(cell,R3PartKind.Battery),Is.True);
         loaded.PrepareInitialEnergy();
-        Assert.That(loaded.Energy.Maximum,Is.EqualTo(700).Within(.01f));
-        Assert.That(loaded.Energy.Current,Is.EqualTo(700).Within(.01f));
+        Assert.That(loaded.Energy.Maximum,Is.EqualTo(initialMaximum+100).Within(.01f));
+        Assert.That(loaded.Energy.Current,Is.EqualTo(initialMaximum+100).Within(.01f));
     }
     [Test] public void DepletedAndLegacyCheckpointsDoNotRefillOnDeployment()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
         model.PrepareInitialEnergy();Assert.That(model.Energy.TrySpend(100),Is.True);
+        float depleted=model.Energy.Current;
         var saved=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(0)));
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(saved,R3VehicleKind.Standard,model.Economy,0,out var loaded,out var error),Is.True,error);
-        loaded.PrepareInitialEnergy();Assert.That(loaded.Energy.Current,Is.EqualTo(500).Within(.01f));
+        loaded.PrepareInitialEnergy();Assert.That(loaded.Energy.Current,Is.EqualTo(depleted).Within(.01f));
         saved.hasInitialEnergyPrepared=false;saved.initialEnergyPrepared=false;
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(saved,R3VehicleKind.Standard,model.Economy,0,out loaded,out error),Is.True,error);
-        loaded.PrepareInitialEnergy();Assert.That(loaded.Energy.Current,Is.EqualTo(500).Within(.01f),"Legacy saves must not receive a free refill.");
+        loaded.PrepareInitialEnergy();Assert.That(loaded.Energy.Current,Is.EqualTo(depleted).Within(.01f),"Legacy saves must not receive a free refill.");
     }
     [Test] public void JsonRoundTripPreservesOwnedIdsConditionInventoryAndResources()
     {

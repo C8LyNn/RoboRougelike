@@ -7,6 +7,17 @@ using UnityEngine;
 
 public sealed class R3MultiCellWheelTests
 {
+    [Test] public void SideWheelMustStayUprightWithAxleAcrossVehicle()
+    {
+        var design=new R3VehicleDesign{Name="Wheel orientation",CoreHp=100,Speed=7,TurnSpeed=82};
+        design.Parts.Add(new R3PartState(new Vector3Int(0,1,0),R3PartKind.Core));
+        var model=new R3VehicleModel(design);model.Award(1000);
+        Assert.That(model.PurchaseToInventory(R3PartKind.Wheel),Is.True);
+        var wheel=model.Inventory.Single();var right=new Vector3Int(1,1,0);
+        Assert.That(model.OwnedPlacementError(wheel.Id,right,Vector3Int.zero),Is.Null);
+        Assert.That(model.OwnedPlacementError(wheel.Id,right,new Vector3Int(2,0,0)),Is.Not.Null,"An upside-down wheel is forbidden.");
+        Assert.That(model.OwnedPlacementError(wheel.Id,new Vector3Int(0,1,1),new Vector3Int(0,1,0)),Is.Not.Null,"The axle must not point fore and aft.");
+    }
     [Test] public void InstalledSideWheelRetainsOnlyItsRealSocketAcrossSaveAndRemount()
     {
         var design=new R3VehicleDesign{Name="Wheel contact QA",CoreHp=100,Speed=7,TurnSpeed=82};

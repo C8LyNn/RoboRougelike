@@ -14,6 +14,108 @@ using UnityEngine.TestTools;
 
 public sealed class AutomaticScaleTwoModelTests
 {
+    [Test] public void DrawOffersSelectsThreeDistinctVehiclesFromTheEntirePool()
+    {
+        var method=typeof(R3VehicleCatalog).GetMethod("DrawOffers",new[]{typeof(System.Random)});
+        Assert.That(method,Is.Not.Null);
+        var seen=new System.Collections.Generic.HashSet<int>();bool repeatedCategory=false;
+        for(int seed=0;seed<100;seed++)
+        {
+            var offers=(int[])method.Invoke(null,new object[]{new System.Random(seed)});
+            Assert.That(offers.Length,Is.EqualTo(3));Assert.That(offers.Distinct().Count(),Is.EqualTo(3));
+            Assert.That(offers.All(v=>v>=0&&v<12),Is.True);
+            foreach(var v in offers)seen.Add(v);
+            repeatedCategory|=offers.Select(v=>v/4).Distinct().Count()<3;
+        }
+        Assert.That(seen.Count,Is.EqualTo(12));Assert.That(repeatedCategory,Is.True,"Offers can include multiple vehicles from one category.");
+    }
+    [Test] public void TwelveStarterBlueprintsAreDistinctConnectedAndScaled()
+    {
+        var create=typeof(R3VehicleCatalog).GetMethod("Create",new[]{typeof(R3VehicleKind),typeof(int)});
+        Assert.That(create,Is.Not.Null,"Each category needs four selectable starter designs.");
+        var signatures=new System.Collections.Generic.HashSet<string>();
+        foreach(R3VehicleKind kind in System.Enum.GetValues(typeof(R3VehicleKind)))
+        for(int variant=0;variant<4;variant++)
+        {
+            var design=(R3VehicleDesign)create.Invoke(null,new object[]{kind,variant});
+            Assert.That(design.Parts.Count(p=>p.Kind==R3PartKind.Core),Is.EqualTo(1));
+            Assert.That(design.Parts.Where(p=>p.Kind==R3PartKind.Gun).All(p=>p.FootprintRevision==2),Is.True);
+            foreach(var wheel in design.Parts.Where(p=>p.Kind==R3PartKind.Wheel))
+                Assert.That(wheel.ContactMask,Is.EqualTo(R3MountingGrid.FaceBit(wheel.Cell.x<0?Vector3Int.right:Vector3Int.left)));
+            var cells=design.Parts.SelectMany(R3VehicleModel.OccupiedCells).ToArray();
+            Assert.That(cells.Distinct().Count(),Is.EqualTo(cells.Length),kind+"/"+variant);
+            Assert.That(cells.Length,Is.LessThanOrEqualTo(180));
+            Assert.That(R3VehicleModel.Connected(design.Parts),Is.True,kind+"/"+variant);
+            Assert.That(new R3VehicleModel(design).DeployError,Is.Null,kind+"/"+variant);
+            string signature=string.Join(";",design.Parts.Select(p=>$"{p.Kind}:{p.Cell.x},{p.Cell.y},{p.Cell.z}:{p.Weapon}").OrderBy(s=>s));
+            Assert.That(signatures.Add(signature),Is.True,"Every vehicle needs its own construction.");
+        }
+        var balance=typeof(R3VehicleCatalog).GetMethod("StartingScrap",new[]{typeof(R3VehicleKind)});
+        Assert.That(balance,Is.Not.Null);
+        int light=(int)balance.Invoke(null,new object[]{R3VehicleKind.Light});
+        int medium=(int)balance.Invoke(null,new object[]{R3VehicleKind.Standard});
+        int heavy=(int)balance.Invoke(null,new object[]{R3VehicleKind.Heavy});
+        Assert.That(heavy,Is.Zero);Assert.That(medium,Is.GreaterThan(0));Assert.That(light,Is.GreaterThan(medium));
+    }
+    [Test] public void LoadingLegacyMountedGunMovesItSafelyIntoInventoryAtModernScale()
+    {
+        var design=new R3VehicleDesign{Name="Old save",CoreHp=100,Speed=7,TurnSpeed=82};
+        design.Parts.Add(new R3PartState(Vector3Int.zero,R3PartKind.Core));
+        design.Parts.Add(new R3PartState(Vector3Int.up,R3PartKind.Gun,.45f){FootprintRevision=0,ContactMask=R3MountingGrid.FaceBit(Vector3Int.down)});
+        var model=new R3VehicleModel(design);var original=model.Parts.Single(p=>p.Kind==R3PartKind.Gun);
+        var data=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(0)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Light,null,0,out var loaded,out var error),Is.True,error);
+        var recovered=loaded.Inventory.Single(p=>p.Id==original.Id);
+        Assert.That(recovered.FootprintRevision,Is.EqualTo(2));Assert.That(recovered.Health,Is.EqualTo(.45f));
+        Assert.That(loaded.Parts.Any(p=>p.Id==original.Id),Is.False);
+        Assert.That(data.mounted.Single(p=>p.Id==original.Id).FootprintRevision,Is.Zero,"Migration must not edit the source document.");
+    }
+    [Test] public void FullInventoryKeepsOldMountedGunAndSaveIntactUntilThereIsSpace()
+    {
+        var design=new R3VehicleDesign{Name="Full inventory",CoreHp=100,Speed=7,TurnSpeed=82};
+        design.Parts.Add(new R3PartState(Vector3Int.zero,R3PartKind.Core));
+        design.Parts.Add(new R3PartState(Vector3Int.up,R3PartKind.Gun){ContactMask=R3MountingGrid.FaceBit(Vector3Int.down)});
+        var data=new R3VehicleModel(design).MakeCheckpoint(0);var id=data.mounted.Single(p=>p.Kind==R3PartKind.Gun).Id;
+        data.inventory=Enumerable.Range(0,R3VehicleModel.InventoryCapacity).Select(_=>new R3PartState(Vector3Int.zero,R3PartKind.Armor){DefenseRechargeAge=float.MaxValue}).ToArray();
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(data,R3VehicleKind.Light,null,0,out var loaded,out var error),Is.True,error);
+        Assert.That(loaded.LegacyGunScalePending,Is.EqualTo(1));
+        Assert.That(loaded.Parts.Single(p=>p.Id==id).FootprintRevision,Is.Zero);
+        Assert.That(loaded.Inventory.Count,Is.EqualTo(R3VehicleModel.InventoryCapacity));
+        Assert.That(data.mounted.Single(p=>p.Id==id).FootprintRevision,Is.Zero);
+    }
+    [Test] public void RecoveredAndRemovedLegacyGunsAdoptModernSizeWithoutLosingIdentity()
+    {
+        var design=new R3VehicleDesign{Name="Migration",CoreHp=100,Speed=7,TurnSpeed=82};
+        design.Parts.Add(new R3PartState(Vector3Int.zero,R3PartKind.Core));
+        var old=new R3PartState(Vector3Int.up,R3PartKind.Gun,.45f){FootprintRevision=0};
+        design.Parts.Add(old);var model=new R3VehicleModel(design);var id=model.At(old.Cell).Id;
+        Assert.That(model.Remove(old.Cell),Is.True);
+        var stored=model.Inventory.Single(p=>p.Id==id);
+        Assert.That(stored.FootprintRevision,Is.EqualTo(2));Assert.That(stored.Health,Is.EqualTo(.45f));
+        var salvage=new R3PartState(Vector3Int.zero,R3PartKind.Gun,.3f){FootprintRevision=0};
+        Assert.That(model.ReceiveSalvage(new[]{salvage}),Is.True);
+        var recovered=model.Inventory.Single(p=>p.Id==salvage.Id);
+        Assert.That(recovered.FootprintRevision,Is.EqualTo(2));Assert.That(recovered.Health,Is.EqualTo(.3f));
+        var save=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(model.MakeCheckpoint(0)));
+        save.inventory.Single(p=>p.Id==id).FootprintRevision=0;
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(save,R3VehicleKind.Light,null,0,out var loaded,out var error),Is.True,error);
+        Assert.That(loaded.Inventory.Single(p=>p.Id==id).FootprintRevision,Is.EqualTo(2));
+        Assert.That(save.inventory.Single(p=>p.Id==id).FootprintRevision,Is.Zero,"Loading must not mutate the original checkpoint.");
+    }
+    [TestCase(R3VehicleKind.Light)]
+    [TestCase(R3VehicleKind.Standard)]
+    [TestCase(R3VehicleKind.Heavy)]
+    public void FactoryVehiclesStartWithEnlargedGunsAndNonOverlappingCells(R3VehicleKind kind)
+    {
+        var design=R3VehicleCatalog.Create(kind);
+        var guns=design.Parts.Where(p=>p.Kind==R3PartKind.Gun).ToArray();
+        Assert.That(guns,Is.Not.Empty);
+        Assert.That(guns.All(p=>p.FootprintRevision==2),Is.True,"Starter guns use the same physical scale as purchased guns.");
+        var cells=design.Parts.SelectMany(R3VehicleModel.OccupiedCells).ToArray();
+        Assert.That(cells.Distinct().Count(),Is.EqualTo(cells.Length));
+        Assert.That(R3VehicleModel.Connected(design.Parts),Is.True);
+        Assert.That(new R3VehicleModel(design).DeployError,Is.Null);
+    }
     [TestCase(R4WeaponKind.Automatic)]
     [TestCase(R4WeaponKind.Basic)]
     [TestCase(R4WeaponKind.Heavy)]
@@ -68,6 +170,94 @@ public sealed class AutomaticScaleTwoTests
         EditorSceneManager.OpenScene("Assets/scene 1.unity");
         yield return new EnterPlayMode();
         while(R1RunController.Instance?.Progress==null)yield return null;
+    }
+
+    [UnityTest] public IEnumerator StarterLightLargeGunsRemainPhysicallyClear()=>VerifyStarterPhysicalGuns(R3VehicleKind.Light);
+    [UnityTest] public IEnumerator StarterStandardLargeGunsRemainPhysicallyClear()=>VerifyStarterPhysicalGuns(R3VehicleKind.Standard);
+    [UnityTest] public IEnumerator StarterHeavyLargeGunsRemainPhysicallyClear()=>VerifyStarterPhysicalGuns(R3VehicleKind.Heavy);
+    [UnityTest] public IEnumerator LightVariantStartsWithItsRealBudget()=>VerifyStarterBudget(R3VehicleKind.Light,200);
+    [UnityTest] public IEnumerator StandardVariantStartsWithItsRealBudget()=>VerifyStarterBudget(R3VehicleKind.Standard,75);
+    [UnityTest] public IEnumerator HeavyVariantStartsWithItsRealBudget()=>VerifyStarterBudget(R3VehicleKind.Heavy,0);
+    [UnityTest] public IEnumerator MainMenuOffersThreeRandomVehiclesAndSelectedOfferEntersGarage()
+    {
+        var run=R1RunController.Instance;var hud=run.GetComponent<R1RunHUD>();Assert.That(hud,Is.Not.Null);
+        var field=typeof(R1RunHUD).GetField("starterOffers",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+        Assert.That(field,Is.Not.Null);
+        float deadline=Time.realtimeSinceStartup+5;int[] offers=null;
+        while(offers==null&&Time.realtimeSinceStartup<deadline){yield return null;offers=(int[])field.GetValue(hud);}
+        Assert.That(offers,Is.Not.Null);Assert.That(offers.Length,Is.EqualTo(3));Assert.That(offers.Distinct().Count(),Is.EqualTo(3));
+        int offer=offers[2];var kind=(R3VehicleKind)(offer/4);int variant=offer%4;
+        Assert.That(run.SelectVehicle(kind,variant),Is.True);Assert.That(run.PrepareUnifiedRun(),Is.True);yield return null;
+        Assert.That(run.VehicleModel.Design.Name,Is.EqualTo(R3VehicleCatalog.Create(kind,variant).Name));
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(R3VehicleCatalog.StartingScrap(kind)));
+    }
+    [UnityTest] public IEnumerator AllTwelveVariantsBuildWithPhysicallyClearGuns()
+    {
+        var palette=R1RunController.Instance.GetComponent<R3VisualPalette>();Assert.That(palette,Is.Not.Null);
+        foreach(R3VehicleKind kind in System.Enum.GetValues(typeof(R3VehicleKind)))
+        for(int variant=0;variant<4;variant++)
+        {
+            var model=new R3VehicleModel(R3VehicleCatalog.Create(kind,variant));
+            var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(1000,20,1000),Quaternion.identity);
+            var assembly=vehicle.GetComponent<R3VehicleAssembly>();Physics.SyncTransforms();
+            foreach(var gun in assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun))
+            foreach(var a in gun.GetComponentsInChildren<Collider>().Where(c=>c.enabled&&!c.isTrigger))
+            foreach(var other in assembly.Parts.Where(p=>p.Id!=gun.Id))
+            foreach(var b in other.GetComponentsInChildren<Collider>().Where(c=>c.enabled&&!c.isTrigger))
+                if(a.bounds.Intersects(b.bounds)&&Physics.ComputePenetration(a,a.transform.position,a.transform.rotation,b,b.transform.position,b.transform.rotation,out _,out var depth))
+                    Assert.That(depth,Is.LessThan(.002f),$"{kind}/{variant}: {gun.Cell}/{a.name} intersects {other.Cell}/{b.name}.");
+            Object.Destroy(vehicle.gameObject);yield return null;
+        }
+    }
+    [UnityTest] public IEnumerator AllTwelveVariantsDriveWithRealWheelContacts()
+    {
+        var palette=R1RunController.Instance.GetComponent<R3VisualPalette>();Assert.That(palette,Is.Not.Null);
+        var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.position=new Vector3(0,-.5f,1000);floor.transform.localScale=new Vector3(100,1,100);
+        Time.timeScale=1;
+        foreach(R3VehicleKind kind in System.Enum.GetValues(typeof(R3VehicleKind)))
+        for(int variant=0;variant<4;variant++)
+        {
+            var model=new R3VehicleModel(R3VehicleCatalog.Create(kind,variant));
+            var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(0,.39f,1000),Quaternion.identity);
+            vehicle.Controller.SetGameplayInputEnabled(true);vehicle.Controller.enabled=false;
+            var body=vehicle.GetComponent<Rigidbody>();body.position=new Vector3(0,R3VehicleModel.WheelRadius(R3WheelStyle.Offroad),1000);
+            body.useGravity=false;body.constraints=RigidbodyConstraints.FreezePositionY|RigidbodyConstraints.FreezeRotationX|RigidbodyConstraints.FreezeRotationZ;
+            foreach(var component in vehicle.GetComponents<MonoBehaviour>())if(component.GetType().Name=="R6CoreRecovery")component.enabled=false;
+            var drive=vehicle.GetComponent<RoboRougelike.R6.R6VehicleDrive>();Physics.SyncTransforms();
+            for(int i=0;i<20&&drive.GroundedWheels==0;i++){drive.Step(0,0,10,5,90);yield return MOVSeriesDeviceTests.FixedStep();}
+            Assert.That(drive.GroundedWheels,Is.GreaterThan(0),$"{kind}/{variant}: wheels must touch the ground.");
+            float start=body.position.z;
+            for(int i=0;i<50;i++){drive.Step(1,0,10,5,90);yield return MOVSeriesDeviceTests.FixedStep();}
+            Assert.That(body.position.z-start,Is.GreaterThan(.1f),$"{kind}/{variant}: real wheel drive must move the vehicle.");
+            Object.Destroy(vehicle.gameObject);yield return null;
+        }
+        Object.Destroy(floor);
+    }
+    IEnumerator VerifyStarterBudget(R3VehicleKind kind,int expected)
+    {
+        var run=R1RunController.Instance;Assert.That(run.SelectVehicle(kind,3),Is.True);
+        Assert.That(run.PrepareUnifiedRun(),Is.True);yield return null;
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(expected));
+        Assert.That(run.SelectedVehicleVariant,Is.EqualTo(3));
+        Assert.That(run.VehicleModel.Design.Name,Is.EqualTo(R3VehicleCatalog.Create(kind,3).Name));
+    }
+    IEnumerator VerifyStarterPhysicalGuns(R3VehicleKind kind)
+    {
+        var run=R1RunController.Instance;Assert.That(run.SelectVehicle(kind),Is.True);
+        Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;Physics.SyncTransforms();
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();
+        foreach(var gun in assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun))
+        {
+            Assert.That(run.VehicleModel.Parts.Single(p=>p.Id==gun.Id).FootprintRevision,Is.EqualTo(2));
+            var own=gun.GetComponentsInChildren<Collider>().Where(c=>c.enabled&&!c.isTrigger).ToArray();
+            foreach(var other in assembly.Parts.Where(p=>p.Id!=gun.Id))
+            foreach(var a in own)
+            foreach(var b in other.GetComponentsInChildren<Collider>().Where(c=>c.enabled&&!c.isTrigger))
+                if(a.bounds.Intersects(b.bounds)&&Physics.ComputePenetration(a,a.transform.position,a.transform.rotation,b,b.transform.position,b.transform.rotation,out _,out var depth))
+                    Assert.That(depth,Is.LessThan(.002f),$"{kind}: {gun.Cell}/{a.name} intersects {other.Cell}/{b.name}.");
+        }
+        Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
+        Assert.That(run.Player.GetComponent<R3VehicleAssembly>().Parts.Count(p=>p.Kind==R3PartKind.Gun),Is.GreaterThan(0));
     }
 
     [UnityTest] public IEnumerator EnlargedBasicMountsAndFiresForFreeFromItsModel()

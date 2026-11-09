@@ -11,6 +11,24 @@ using UnityEngine.TestTools;
 public sealed class R4WheelArtGameplayTests
 {
     [UnitySetUp] public IEnumerator Setup(){EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();while(R1RunController.Instance?.Progress==null)yield return null;R1RunController.Instance.OpenSandboxGarage();Time.timeScale=1;}
+    [UnityTest] public IEnumerator LeftAndRightVisibleTiresRollInTheSameWorldDirection()
+    {
+        var run=R1RunController.Instance;var assembly=run.Player.GetComponent<R3VehicleAssembly>();
+        var wheels=assembly.Parts.Where(p=>p.Kind==R3PartKind.Wheel).ToArray();
+        var left=wheels.First(p=>p.Cell.x<0);var right=wheels.First(p=>p.Cell.x>0);
+        Transform Rotor(R3MountedPart p)=>p.GetComponentsInChildren<Transform>(true).First(t=>t.name=="R4M_WheelM_Side_Offroad_Rotor");
+        var lr=Rotor(left);var rr=Rotor(right);var body=run.Player.GetComponent<Rigidbody>();
+        body.isKinematic=false;body.useGravity=false;body.constraints=RigidbodyConstraints.FreezeRotation;
+        run.Player.GetComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeTankController>().enabled=false;
+        body.linearVelocity=run.Player.transform.forward*2f;
+        var axis=run.Player.transform.right;
+        Vector3 Mark(Transform rotor){var v=Vector3.ProjectOnPlane(rotor.TransformVector(Vector3.up),axis);return v.sqrMagnitude>.001f?v:Vector3.ProjectOnPlane(rotor.TransformVector(Vector3.forward),axis);}
+        var l0=Mark(lr);var r0=Mark(rr);yield return null;
+        var ld=Vector3.Dot(Vector3.Cross(l0,Mark(lr)),axis);var rd=Vector3.Dot(Vector3.Cross(r0,Mark(rr)),axis);
+        Debug.Log($"[wheel-spin-QA] left={ld:F6} right={rd:F6} leftscale={lr.lossyScale} rightscale={rr.lossyScale} leftaxis={lr.right} rightaxis={rr.right}");
+        Assert.That(ld,Is.GreaterThan(0),"Left wheel must roll forwards, not backwards.");
+        Assert.That(rd,Is.GreaterThan(0),"Right wheel must roll forwards, not backwards.");
+    }
     [UnityTest] public IEnumerator SuppliedWheelVisualRollsWhileExistingPhysicalWheelsDrive()
     {
         var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.position=new Vector3(0,-.5f,1000);floor.transform.localScale=new Vector3(80,1,80);

@@ -120,6 +120,7 @@ namespace RoboRougelike.R3
         public string Message = "LPM — montaż; PPM — zdejmij; przeciągnij PPM — obrót widoku.";
         public R41GarageTool Tool { get; private set; }
         public bool HasTarget { get; private set; }
+        bool pointerSurfaceRejected;
         public Transform Preview => marker!=null?marker.transform:null;
         public bool PreviewValid => HasTarget&&PlacementIssue==null;
         static bool MarkerVisible(bool hasTarget,R41GarageTool tool,bool needsOwned,bool hasOwned)=>
@@ -172,6 +173,7 @@ namespace RoboRougelike.R3
             R3VehicleModel.OccupiedCells(CandidatePart());
         public string PlacementIssue => (UseInventory||!string.IsNullOrEmpty(SelectedInventoryId))&&Owned==null?
             "Wybierz kolejną część w magazynie. Zakup wymaga świadomego wyboru typu części.":!HasTarget?"Najedź na ścianę bloku pojazdu.":
+            pointerSurfaceRejected?"Nie można zamontować na wskazanej powierzchni: brak zgodnego punktu styku.":
             Owned?.Health<=0?"Zniszczony moduł wymaga odbudowy przed montażem.":
             Owned!=null?run.VehicleModel.OwnedPlacementError(Owned.Id,Cell,SelectedRotation):
             run.VehicleModel.PlacementError(Cell,MountKind,false,MountWeapon,SelectedRotation,SelectedContactMask);
@@ -195,7 +197,7 @@ namespace RoboRougelike.R3
             Physics.SyncTransforms();
             R3BuildValidation.SetGarageSockets(run.Player.GetComponent<R3VehicleAssembly>(),true);
             if(!Application.isBatchMode){Cursor.lockState=CursorLockMode.None;Cursor.visible=true;}
-            HasTarget=false;Tool=R41GarageTool.Mount;UseInventory=true;SelectedInventoryId=null;SelectedRotation=default;
+            HasTarget=false;pointerSurfaceRejected=false;Tool=R41GarageTool.Mount;UseInventory=true;SelectedInventoryId=null;SelectedRotation=default;
             RefreshPreview();FrameVehicle();
         }
         public void Close()
@@ -265,7 +267,7 @@ namespace RoboRougelike.R3
                 "° / Z "+SelectedRotation.z*90+"°. Dopasuj punkty styku.";
             RefreshMarker();
         }
-        public void SetTool(R41GarageTool tool){Tool=tool;HasTarget=false;RefreshMarker();}
+        public void SetTool(R41GarageTool tool){Tool=tool;HasTarget=false;pointerSurfaceRejected=false;RefreshMarker();}
         public void ChooseInventory(string id)
         {
             UseInventory=true;SelectedInventoryId=id;var part=Owned;
@@ -273,7 +275,7 @@ namespace RoboRougelike.R3
                 SelectedRotation=part.RotationQuarterTurns;}
             SetTool(R41GarageTool.Mount);
         }
-        public void Select(Vector3Int cell){Cell=cell;HasTarget=true;RefreshMarker();}
+        public void Select(Vector3Int cell){Cell=cell;HasTarget=true;pointerSurfaceRejected=false;RefreshMarker();}
         private void UpdatePivot()
         {
             var parts=run.Player.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p!=null&&p.Operational&&p.transform.IsChildOf(run.Player.transform)).ToArray();
@@ -304,7 +306,6 @@ namespace RoboRougelike.R3
             availableMountPoints=null;mountPointsAssembly=null;
             if(previewRoot!=null){previewRoot.SetActive(false);Destroy(previewRoot);}
             previewRoot=new GameObject("Podgląd garażu");previewRoot.transform.SetParent(run.Player.transform,false);marker=null;payloadRenderers.Clear();
-            ShowOccupiedCells();
             foreach(var part in run.VehicleModel.Parts.Where(p=>p.Health<=0))
             {
                 var plan=CreateGhost(part.Cell,part.Kind,part.Weapon,palette.Missing,true,
@@ -439,10 +440,14 @@ namespace RoboRougelike.R3
             marker.SetActive(MarkerVisible(HasTarget,Tool,needsOwned,Owned!=null));
             marker.transform.localPosition=(Vector3)Cell*R41PartGeometry.Grid;
             var material=Tool==R41GarageTool.Mount?(PreviewValid?palette.Valid:palette.Invalid):palette.Selection;
-            var rootRenderer=marker.GetComponent<Renderer>();
-            bool replacementOnly=rootRenderer!=null&&!rootRenderer.enabled;
             foreach(var renderer in marker.GetComponentsInChildren<Renderer>())
-                renderer.sharedMaterial=!replacementOnly&&payloadRenderers.Contains(renderer)?palette.Payload:material;
+            {
+                var materials=renderer.sharedMaterials;
+                for(int i=0;i<materials.Length;i++)materials[i]=material;
+                renderer.sharedMaterials=materials;
+            }
+            foreach(var plan in previewRoot.GetComponentsInChildren<R41MissingPlan>(true))
+                foreach(var renderer in plan.GetComponentsInChildren<Renderer>(true))renderer.enabled=Tool!=R41GarageTool.Mount;
         }
         public static Vector3Int LocalFace(Transform vehicle,Vector3 worldNormal)
         {
@@ -460,7 +465,7 @@ namespace RoboRougelike.R3
             // A partial hit list cannot safely authorize removal or mounting.
             if(count>=hits.Length)
             {
-                raycastSaturated=true;HasTarget=false;
+                raycastSaturated=true;HasTarget=false;pointerSurfaceRejected=false;
                 Message="Nie można wskazać części: zbyt wiele obiektów pod kursorem.";
                 RefreshMarker();return false;
             }
@@ -477,10 +482,14 @@ namespace RoboRougelike.R3
                 nearest=hit.distance;normal=hit.normal;nearestHit=hit;
             }
             HasTarget=target!=null||missing!=null;
+            pointerSurfaceRejected=false;
             if(Tool==R41GarageTool.Mount&&target!=null&&
                 (!R3BuildValidation.ValidateHit(run.Player.GetComponent<R3VehicleAssembly>(),nearestHit)||
                  !AvailableMountPoints.Any(p=>p.Surface==nearestHit.collider)))
-            {HasTarget=false;RefreshMarker();return false;}
+            {
+                Cell=target.Cell+LocalFace(run.Player.transform,normal);
+                pointerSurfaceRejected=true;RefreshMarker();return false;
+            }
             if(HasTarget)
             {
                 var nearestCell=target!=null?target.Cell:missing.Part.Cell;

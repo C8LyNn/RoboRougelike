@@ -60,6 +60,7 @@ namespace RoboRougelike.R3
         public int LegacyPartsMovedToInventory { get; private set; }
         public int LegacyPortMasksNormalized { get; private set; }
         public int LegacyPortPartsMovedToInventory { get; private set; }
+        public int LegacyGunScalePending { get; private set; }
 
         static bool LegacyWidePart(R3PartKind kind) => kind==R3PartKind.BonusModule||
             kind==R3PartKind.DirectionalShield||kind==R3PartKind.PointDefense||
@@ -141,10 +142,10 @@ namespace RoboRougelike.R3
                 (p.Kind!=R3PartKind.BonusModule||(!string.IsNullOrWhiteSpace(p.UpgradeId)&&
                   Enum.IsDefined(typeof(RoboRougelike.R1.R1UpgradeEffect),p.UpgradeEffect)&&Finite(p.UpgradeAmount)&&p.UpgradeAmount>=0&&p.UpgradeAmount<=1));
         }
-        public static bool TryRestoreCheckpoint(R3ModelCheckpoint data,R3VehicleKind kind,R3GarageEconomy economy,float now,out R3VehicleModel model,out string error)
+        public static bool TryRestoreCheckpoint(R3ModelCheckpoint data,R3VehicleKind kind,R3GarageEconomy economy,float now,out R3VehicleModel model,out string error,int variant=0)
         {
             model=null;error="Niepoprawny zapis konstrukcji.";
-            if(data==null||!Enum.IsDefined(typeof(R3VehicleKind),kind)||data.mounted==null||data.inventory==null||
+            if(data==null||!Enum.IsDefined(typeof(R3VehicleKind),kind)||variant<0||variant>=4||data.mounted==null||data.inventory==null||
                 data.wheels==null||data.groups==null||data.mounted.Length>2000||data.inventory.Length>InventoryCapacity||
                 data.wheels.Length>2000||data.groups.Length>4000||data.scrap<0||data.scrap>100000||
                 !Enum.IsDefined(typeof(R3DriveKind),data.drive)||!Enum.IsDefined(typeof(ActiveSuspensionSupportMode),data.suspensionMode)||
@@ -208,19 +209,46 @@ namespace RoboRougelike.R3
                 }
                 mounted=normalized;
             }
+            // Enlarging a previously installed one-cell gun in place could
+            // overlap existing parts. Move it and any newly unsupported parts
+            // into inventory as one transaction; the source checkpoint is not
+            // changed. If storage is full, keep the old construction intact.
+            int pendingGunScale=0;
+            var oldGuns=mounted.Where(p=>p.Kind==R3PartKind.Gun&&p.FootprintRevision==0&&SupportsGunScale2(p.Weapon)).ToArray();
+            if(oldGuns.Length>0)
+            {
+                var others=mounted.Where(p=>!oldGuns.Contains(p)).ToArray();
+                var alive=others.Where(p=>p.Health>0).ToArray();
+                var core=alive.SingleOrDefault(p=>p.Kind==R3PartKind.Core);
+                if(core!=null)
+                {
+                    var reachable=ReachableCheckpointParts(alive,new HashSet<string>{core.Id},false);
+                    reachable=ReachableCheckpointParts(others,reachable,true);
+                    var detached=others.Where(p=>!reachable.Contains(p.Id)).ToArray();
+                    if(inventory.Length+oldGuns.Length+detached.Length<=InventoryCapacity)
+                    {
+                        mounted=others.Where(p=>reachable.Contains(p.Id)).ToArray();
+                        inventory=inventory.Concat(oldGuns).Concat(detached).ToArray();
+                        migratedCount+=oldGuns.Length+detached.Length;
+                    }
+                    else pendingGunScale=oldGuns.Length;
+                }
+                else pendingGunScale=oldGuns.Length;
+            }
             if(data.wheels.Any(p=>p==null||string.IsNullOrWhiteSpace(p.id)||p.contacts<0||p.contacts>63)||
                 data.wheels.Select(p=>p.id).Distinct(StringComparer.Ordinal).Count()!=data.wheels.Length||
                 data.groups.Any(p=>p==null||string.IsNullOrWhiteSpace(p.id))||
                 data.groups.Select(p=>p.id).Distinct(StringComparer.Ordinal).Count()!=data.groups.Length||
                 (data.hasA&&!Enum.IsDefined(typeof(R4WeaponKind),data.groupA))||(data.hasB&&!Enum.IsDefined(typeof(R4WeaponKind),data.groupB))||
                 (data.hasA&&data.hasB&&data.groupA==data.groupB))return false;
-            var restored=new R3VehicleModel(R3VehicleCatalog.Create(kind),economy);
+            var restored=new R3VehicleModel(R3VehicleCatalog.Create(kind,variant),economy);
             restored.Parts.Clear();restored.inventory.Clear();
             foreach(var source in mounted){var p=source.Copy();p.Tier=NormalizedTier(p.Tier);p.DeviceReadyAt=p.DeviceReadyAt>0?now+p.DeviceReadyAt:0;p.ReloadReadyAt=p.ReloadReadyAt>0?now+p.ReloadReadyAt:0;restored.Parts.Add(p);}
-            foreach(var source in inventory){var p=source.Copy();p.ContactMask=StoredWheelContacts(p);p.Tier=NormalizedTier(p.Tier);p.DeviceReadyAt=p.DeviceReadyAt>0?now+p.DeviceReadyAt:0;p.ReloadReadyAt=p.ReloadReadyAt>0?now+p.ReloadReadyAt:0;restored.inventory.Add(p);}
+            foreach(var source in inventory){var p=source.Copy();p.ContactMask=StoredWheelContacts(p);UpgradeStoredGunFootprint(p);p.Tier=NormalizedTier(p.Tier);p.DeviceReadyAt=p.DeviceReadyAt>0?now+p.DeviceReadyAt:0;p.ReloadReadyAt=p.ReloadReadyAt>0?now+p.ReloadReadyAt:0;restored.inventory.Add(p);}
             restored.LegacyPartsMovedToInventory=migratedCount;
             restored.LegacyPortMasksNormalized=portNormalizedIds.Count;
             restored.LegacyPortPartsMovedToInventory=portMovedCount;
+            restored.LegacyGunScalePending=pendingGunScale;
             restored.factoryWheels.Clear();foreach(var wheel in data.wheels)
             {
                 int contacts=wheel.contacts;
