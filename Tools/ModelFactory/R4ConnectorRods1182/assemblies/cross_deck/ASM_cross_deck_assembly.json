@@ -1,0 +1,1242 @@
+{
+ "scene": "cross_deck",
+ "note": "STRUT_CROSS deck ties two beams (4 redundant links); ROD_FRAME bumper cage on two front links; weapons on strut nodes.",
+ "grid_m": 0.55,
+ "face_m": 0.26,
+ "gap_m": 0.03,
+ "unity": "UNITY_NOT_RUN",
+ "parts": {
+  "beam_back": {
+   "model": "R4B_Beam3",
+   "type": "block",
+   "at": [
+    0,
+    0,
+    0
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "744247829480de9acee1ca46da82a0f9cf7c0edd22acb272fd1c14ee34b7b01c",
+   "ports": [
+    {
+     "id": "left@0,0,0",
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "dir": "left",
+     "kind": "full"
+    },
+    {
+     "id": "right@2,0,0",
+     "cell": [
+      2,
+      0,
+      0
+     ],
+     "dir": "right",
+     "kind": "full"
+    },
+    {
+     "id": "up@0,0,0",
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "dir": "up",
+     "kind": "full"
+    },
+    {
+     "id": "down@0,0,0",
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "forward@0,0,0",
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "dir": "forward",
+     "kind": "full"
+    },
+    {
+     "id": "back@0,0,0",
+     "cell": [
+      0,
+      0,
+      0
+     ],
+     "dir": "back",
+     "kind": "full"
+    },
+    {
+     "id": "up@1,0,0",
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "dir": "up",
+     "kind": "full"
+    },
+    {
+     "id": "down@1,0,0",
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "forward@1,0,0",
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "dir": "forward",
+     "kind": "full"
+    },
+    {
+     "id": "back@1,0,0",
+     "cell": [
+      1,
+      0,
+      0
+     ],
+     "dir": "back",
+     "kind": "full"
+    },
+    {
+     "id": "up@2,0,0",
+     "cell": [
+      2,
+      0,
+      0
+     ],
+     "dir": "up",
+     "kind": "full"
+    },
+    {
+     "id": "down@2,0,0",
+     "cell": [
+      2,
+      0,
+      0
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "forward@2,0,0",
+     "cell": [
+      2,
+      0,
+      0
+     ],
+     "dir": "forward",
+     "kind": "full"
+    },
+    {
+     "id": "back@2,0,0",
+     "cell": [
+      2,
+      0,
+      0
+     ],
+     "dir": "back",
+     "kind": "full"
+    }
+   ]
+  },
+  "beam_front": {
+   "model": "R4B_Beam3",
+   "type": "block",
+   "at": [
+    0,
+    0,
+    2
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "744247829480de9acee1ca46da82a0f9cf7c0edd22acb272fd1c14ee34b7b01c",
+   "ports": [
+    {
+     "id": "left@0,0,0",
+     "cell": [
+      0,
+      0,
+      2
+     ],
+     "dir": "left",
+     "kind": "full"
+    },
+    {
+     "id": "right@2,0,0",
+     "cell": [
+      2,
+      0,
+      2
+     ],
+     "dir": "right",
+     "kind": "full"
+    },
+    {
+     "id": "up@0,0,0",
+     "cell": [
+      0,
+      0,
+      2
+     ],
+     "dir": "up",
+     "kind": "full"
+    },
+    {
+     "id": "down@0,0,0",
+     "cell": [
+      0,
+      0,
+      2
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "forward@0,0,0",
+     "cell": [
+      0,
+      0,
+      2
+     ],
+     "dir": "forward",
+     "kind": "full"
+    },
+    {
+     "id": "back@0,0,0",
+     "cell": [
+      0,
+      0,
+      2
+     ],
+     "dir": "back",
+     "kind": "full"
+    },
+    {
+     "id": "up@1,0,0",
+     "cell": [
+      1,
+      0,
+      2
+     ],
+     "dir": "up",
+     "kind": "full"
+    },
+    {
+     "id": "down@1,0,0",
+     "cell": [
+      1,
+      0,
+      2
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "forward@1,0,0",
+     "cell": [
+      1,
+      0,
+      2
+     ],
+     "dir": "forward",
+     "kind": "full"
+    },
+    {
+     "id": "back@1,0,0",
+     "cell": [
+      1,
+      0,
+      2
+     ],
+     "dir": "back",
+     "kind": "full"
+    },
+    {
+     "id": "up@2,0,0",
+     "cell": [
+      2,
+      0,
+      2
+     ],
+     "dir": "up",
+     "kind": "full"
+    },
+    {
+     "id": "down@2,0,0",
+     "cell": [
+      2,
+      0,
+      2
+     ],
+     "dir": "down",
+     "kind": "full"
+    },
+    {
+     "id": "forward@2,0,0",
+     "cell": [
+      2,
+      0,
+      2
+     ],
+     "dir": "forward",
+     "kind": "full"
+    },
+    {
+     "id": "back@2,0,0",
+     "cell": [
+      2,
+      0,
+      2
+     ],
+     "dir": "back",
+     "kind": "full"
+    }
+   ]
+  },
+  "deck": {
+   "model": "R4C_STRUT_CROSS",
+   "type": "connector",
+   "at": [
+    0,
+    1,
+    0
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "62328b046da616eb8e188550046a79ca0d945854b6ba022a231002d725c084ef",
+   "ports": [
+    {
+     "id": "P_C_up",
+     "cell": [
+      1,
+      1,
+      1
+     ],
+     "dir": "up",
+     "kind": "r4_full"
+    },
+    {
+     "id": "P_C_down",
+     "cell": [
+      1,
+      1,
+      1
+     ],
+     "dir": "down",
+     "kind": "r4_full"
+    },
+    {
+     "id": "P_N00_left",
+     "cell": [
+      0,
+      1,
+      0
+     ],
+     "dir": "left",
+     "kind": "r4_full"
+    },
+    {
+     "id": "P_N00_up",
+     "cell": [
+      0,
+      1,
+      0
+     ],
+     "dir": "up",
+     "kind": "r4_full"
+    },
+    {
+     "id": "P_N00_down",
+     "cell": [
+      0,
+      1,
+      0
+     ],
+     "dir": "down",
+     "kind": "r4_full"
+    },
+    {
+     "id": "P_N00_back",
+     "cell": [
+      0,
+      1,
+      0
+     ],
+     "dir": "back",
+     "kind": "r4_full"
+    },
+    {
+     "id": "P_N20_right",
+     "cell": [
+      2,
+      1,
+      0
+     ],
+     "dir": "right",
+     "kind": "r4_full"
+    },
+    {
+     "id": "P_N20_up",
+     "cell": [
+      2,
+      1,
+      0
+     ],
+     "dir": "up",
+     "kind": "r4_full"
+    },
+    {
+     "id": "P_N20_down",
+     "cell": [
+      2,
+      1,
+      0
+     ],
+     "dir": "down",
+     "kind": "r4_full"
+    },
+    {
+     "id": "P_N20_back",
+     "cell": [
+      2,
+      1,
+      0
+     ],
+     "dir": "back",
+     "kind": "r4_full"
+    },
+    {
+     "id": "P_N02_left",
+     "cell": [
+      0,
+      1,
+      2
+     ],
+     "dir": "left",
+     "kind": "r4_full"
+    },
+    {
+     "id": "P_N02_up",
+     "cell": [
+      0,
+      1,
+      2
+     ],
+     "dir": "up",
+     "kind": "r4_full"
+    },
+    {
+     "id": "P_N02_down",
+     "cell": [
+      0,
+      1,
+      2
+     ],
+     "dir": "down",
+     "kind": "r4_full"
+    },
+    {
+     "id": "P_N02_forward",
+     "cell": [
+      0,
+      1,
+      2
+     ],
+     "dir": "forward",
+     "kind": "r4_full"
+    },
+    {
+     "id": "P_N22_right",
+     "cell": [
+      2,
+      1,
+      2
+     ],
+     "dir": "right",
+     "kind": "r4_full"
+    },
+    {
+     "id": "P_N22_up",
+     "cell": [
+      2,
+      1,
+      2
+     ],
+     "dir": "up",
+     "kind": "r4_full"
+    },
+    {
+     "id": "P_N22_down",
+     "cell": [
+      2,
+      1,
+      2
+     ],
+     "dir": "down",
+     "kind": "r4_full"
+    },
+    {
+     "id": "P_N22_forward",
+     "cell": [
+      2,
+      1,
+      2
+     ],
+     "dir": "forward",
+     "kind": "r4_full"
+    }
+   ]
+  },
+  "bumper": {
+   "model": "R4C_ROD_FRAME",
+   "type": "connector",
+   "at": [
+    0,
+    0,
+    3
+   ],
+   "rot_unity": [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     1,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   "mirrored": false,
+   "glb_sha256": "baf20fd0e21e07e9b2bfc586c32aad457a54d23ced27c01dd7380dcac6541497",
+   "ports": [
+    {
+     "id": "P_N00_left",
+     "cell": [
+      0,
+      0,
+      3
+     ],
+     "dir": "left",
+     "kind": "rod_mini"
+    },
+    {
+     "id": "P_N00_back",
+     "cell": [
+      0,
+      0,
+      3
+     ],
+     "dir": "back",
+     "kind": "rod_mini"
+    },
+    {
+     "id": "P_N20_right",
+     "cell": [
+      2,
+      0,
+      3
+     ],
+     "dir": "right",
+     "kind": "rod_mini"
+    },
+    {
+     "id": "P_N20_back",
+     "cell": [
+      2,
+      0,
+      3
+     ],
+     "dir": "back",
+     "kind": "rod_mini"
+    },
+    {
+     "id": "P_N22_right",
+     "cell": [
+      2,
+      0,
+      5
+     ],
+     "dir": "right",
+     "kind": "rod_mini"
+    },
+    {
+     "id": "P_N22_forward",
+     "cell": [
+      2,
+      0,
+      5
+     ],
+     "dir": "forward",
+     "kind": "rod_mini"
+    },
+    {
+     "id": "P_N02_left",
+     "cell": [
+      0,
+      0,
+      5
+     ],
+     "dir": "left",
+     "kind": "rod_mini"
+    },
+    {
+     "id": "P_N02_forward",
+     "cell": [
+      0,
+      0,
+      5
+     ],
+     "dir": "forward",
+     "kind": "rod_mini"
+    }
+   ]
+  },
+  "gun_L": {
+   "model": "R4W_BeamCutter",
+   "type": "module",
+   "on": {
+    "cell": [
+     0,
+     1,
+     2
+    ],
+    "dir": "up"
+   },
+   "roll_deg": 0,
+   "glb_sha256": "12acb3cb53b55f5c7b5e7bfc25b1f360c2d2f259f65bd75403617a27efcd0b4c",
+   "ports": [
+    {
+     "id": "Socket_Mount",
+     "cell": [
+      0,
+      2,
+      2
+     ],
+     "dir": "down",
+     "kind": "module"
+    }
+   ]
+  },
+  "gun_R": {
+   "model": "R4W_BeamCutter",
+   "type": "module",
+   "on": {
+    "cell": [
+     2,
+     1,
+     2
+    ],
+    "dir": "up"
+   },
+   "roll_deg": 0,
+   "glb_sha256": "12acb3cb53b55f5c7b5e7bfc25b1f360c2d2f259f65bd75403617a27efcd0b4c",
+   "ports": [
+    {
+     "id": "Socket_Mount",
+     "cell": [
+      2,
+      2,
+      2
+     ],
+     "dir": "down",
+     "kind": "module"
+    }
+   ]
+  }
+ },
+ "cells": {
+  "0,0,0": [
+   [
+    "beam_back",
+    "block"
+   ]
+  ],
+  "0,0,2": [
+   [
+    "beam_front",
+    "block"
+   ]
+  ],
+  "0,0,3": [
+   [
+    "bumper",
+    "node"
+   ]
+  ],
+  "0,0,4": [
+   [
+    "bumper",
+    "span"
+   ]
+  ],
+  "0,0,5": [
+   [
+    "bumper",
+    "node"
+   ]
+  ],
+  "0,1,0": [
+   [
+    "deck",
+    "node"
+   ]
+  ],
+  "0,1,1": [
+   [
+    "deck",
+    "crossing"
+   ]
+  ],
+  "0,1,2": [
+   [
+    "deck",
+    "node"
+   ]
+  ],
+  "0,2,2": [
+   [
+    "gun_L",
+    "module"
+   ]
+  ],
+  "1,0,0": [
+   [
+    "beam_back",
+    "block"
+   ]
+  ],
+  "1,0,2": [
+   [
+    "beam_front",
+    "block"
+   ]
+  ],
+  "1,0,3": [
+   [
+    "bumper",
+    "span"
+   ]
+  ],
+  "1,0,5": [
+   [
+    "bumper",
+    "span"
+   ]
+  ],
+  "1,1,0": [
+   [
+    "deck",
+    "crossing"
+   ]
+  ],
+  "1,1,1": [
+   [
+    "deck",
+    "node"
+   ]
+  ],
+  "1,1,2": [
+   [
+    "deck",
+    "crossing"
+   ]
+  ],
+  "2,0,0": [
+   [
+    "beam_back",
+    "block"
+   ]
+  ],
+  "2,0,2": [
+   [
+    "beam_front",
+    "block"
+   ]
+  ],
+  "2,0,3": [
+   [
+    "bumper",
+    "node"
+   ]
+  ],
+  "2,0,4": [
+   [
+    "bumper",
+    "span"
+   ]
+  ],
+  "2,0,5": [
+   [
+    "bumper",
+    "node"
+   ]
+  ],
+  "2,1,0": [
+   [
+    "deck",
+    "node"
+   ]
+  ],
+  "2,1,1": [
+   [
+    "deck",
+    "crossing"
+   ]
+  ],
+  "2,1,2": [
+   [
+    "deck",
+    "node"
+   ]
+  ],
+  "2,2,2": [
+   [
+    "gun_R",
+    "module"
+   ]
+  ]
+ },
+ "mated_pairs": [
+  {
+   "a": "beam_back",
+   "a_port": "up@0,0,0",
+   "a_kind": "full",
+   "b": "deck",
+   "b_port": "P_N00_down",
+   "b_kind": "r4_full",
+   "face_cell": [
+    0,
+    0,
+    0
+   ],
+   "face_dir": "up",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "beam_back",
+   "a_port": "up@2,0,0",
+   "a_kind": "full",
+   "b": "deck",
+   "b_port": "P_N20_down",
+   "b_kind": "r4_full",
+   "face_cell": [
+    2,
+    0,
+    0
+   ],
+   "face_dir": "up",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "beam_front",
+   "a_port": "up@0,0,0",
+   "a_kind": "full",
+   "b": "deck",
+   "b_port": "P_N02_down",
+   "b_kind": "r4_full",
+   "face_cell": [
+    0,
+    0,
+    2
+   ],
+   "face_dir": "up",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "beam_front",
+   "a_port": "forward@0,0,0",
+   "a_kind": "full",
+   "b": "bumper",
+   "b_port": "P_N00_back",
+   "b_kind": "rod_mini",
+   "face_cell": [
+    0,
+    0,
+    2
+   ],
+   "face_dir": "forward",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 98.0,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "beam_front",
+   "a_port": "up@2,0,0",
+   "a_kind": "full",
+   "b": "deck",
+   "b_port": "P_N22_down",
+   "b_kind": "r4_full",
+   "face_cell": [
+    2,
+    0,
+    2
+   ],
+   "face_dir": "up",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "beam_front",
+   "a_port": "forward@2,0,0",
+   "a_kind": "full",
+   "b": "bumper",
+   "b_port": "P_N20_back",
+   "b_kind": "rod_mini",
+   "face_cell": [
+    2,
+    0,
+    2
+   ],
+   "face_dir": "forward",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 98.0,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "deck",
+   "a_port": "P_N02_up",
+   "a_kind": "r4_full",
+   "b": "gun_L",
+   "b_port": "Socket_Mount",
+   "b_kind": "module",
+   "face_cell": [
+    0,
+    1,
+    2
+   ],
+   "face_dir": "up",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  },
+  {
+   "a": "deck",
+   "a_port": "P_N22_up",
+   "a_kind": "r4_full",
+   "b": "gun_R",
+   "b_port": "Socket_Mount",
+   "b_kind": "module",
+   "face_cell": [
+    2,
+    1,
+    2
+   ],
+   "face_dir": "up",
+   "contact": {
+    "samples": 49,
+    "patch_half_m": 0.09,
+    "flush_a_pct": 73.5,
+    "flush_b_pct": 73.5,
+    "flush_both": 36,
+    "protruding": 0,
+    "missing": 0,
+    "gap_m": 0.03,
+    "method": "patch 0.18 m, no miss, >=50% flush each side",
+    "PASS": true
+   }
+  }
+ ],
+ "rejected_pairs": [],
+ "adjacent_not_connected": [
+  {
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "up",
+   "parts": [
+    "beam_back",
+    "deck"
+   ],
+   "roles": [
+    "block",
+    "crossing"
+   ]
+  },
+  {
+   "cell": [
+    1,
+    0,
+    2
+   ],
+   "dir": "up",
+   "parts": [
+    "beam_front",
+    "deck"
+   ],
+   "roles": [
+    "block",
+    "crossing"
+   ]
+  },
+  {
+   "cell": [
+    1,
+    0,
+    2
+   ],
+   "dir": "forward",
+   "parts": [
+    "beam_front",
+    "bumper"
+   ],
+   "roles": [
+    "block",
+    "span"
+   ]
+  }
+ ],
+ "cell_conflicts": [],
+ "mesh_overlaps": [],
+ "floating_parts": [],
+ "unmated_modules": [],
+ "graph": {
+  "frame": {
+   "anchor": "beam_back",
+   "parts": 6,
+   "members": [
+    "beam_back",
+    "beam_front",
+    "bumper",
+    "deck",
+    "gun_L",
+    "gun_R"
+   ],
+   "single_point_links": [
+    {
+     "link": [
+      "deck",
+      "gun_L"
+     ],
+     "ports": 1,
+     "parts_lost": [
+      "gun_L"
+     ]
+    },
+    {
+     "link": [
+      "beam_front",
+      "bumper"
+     ],
+     "ports": 2,
+     "parts_lost": [
+      "bumper"
+     ]
+    },
+    {
+     "link": [
+      "deck",
+      "gun_R"
+     ],
+     "ports": 1,
+     "parts_lost": [
+      "gun_R"
+     ]
+    },
+    {
+     "link": [
+      "beam_back",
+      "deck"
+     ],
+     "ports": 2,
+     "parts_lost": [
+      "beam_front",
+      "bumper",
+      "deck",
+      "gun_L",
+      "gun_R"
+     ]
+    },
+    {
+     "link": [
+      "beam_front",
+      "deck"
+     ],
+     "ports": 2,
+     "parts_lost": [
+      "beam_front",
+      "bumper"
+     ]
+    }
+   ],
+   "critical_parts": {
+    "deck": [
+     "beam_front",
+     "bumper",
+     "gun_L",
+     "gun_R"
+    ],
+    "beam_front": [
+     "bumper"
+    ]
+   }
+  }
+ },
+ "summary": {
+  "parts": 6,
+  "mated_pairs": 8,
+  "contact_fail": 0,
+  "rejected": 0,
+  "adjacent_not_connected": 3,
+  "overlaps": 0,
+  "cell_conflicts": 0,
+  "floating": 0,
+  "single_point_links": 5
+ },
+ "renders": [
+  "ASM_cross_deck_34front.jpg",
+  "ASM_cross_deck_side.jpg",
+  "ASM_cross_deck_top.jpg",
+  "ASM_cross_deck_34back.jpg"
+ ],
+ "glb": "ASM_cross_deck.glb",
+ "glb_sha256": "39e139264885f66dad5ef5740c1c8f5e9731941af78f19d5254c8f3a47bff376",
+ "PASS": true,
+ "sec": 2.6
+}

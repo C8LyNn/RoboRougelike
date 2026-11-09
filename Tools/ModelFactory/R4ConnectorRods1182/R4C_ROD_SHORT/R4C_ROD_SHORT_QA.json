@@ -1,0 +1,215 @@
+{
+ "id": "R4C_ROD_SHORT",
+ "part_id": "ROD_SHORT",
+ "family": "rod",
+ "description": "straight rod 1x2",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "occupied_cells_unity": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "role": "node"
+  },
+  {
+   "cell": [
+    0,
+    0,
+    1
+   ],
+   "role": "node"
+  }
+ ],
+ "occupied_geometric": [
+  [
+   0,
+   0,
+   0
+  ],
+  [
+   0,
+   0,
+   1
+  ]
+ ],
+ "occupancy_consistent": true,
+ "nodes": {
+  "A": [
+   0,
+   0,
+   0
+  ],
+  "B": [
+   0,
+   0,
+   1
+  ]
+ },
+ "members": [
+  {
+   "id": "M0",
+   "from_node": "A",
+   "to_node": "B",
+   "kind": "line",
+   "length_m": 0.55,
+   "carries_ports": false
+  }
+ ],
+ "ports": [
+  {
+   "id": "P_A_back",
+   "node": "A",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "rod_mini",
+   "half": [
+    0.2091,
+    0.2091
+   ],
+   "position_m": [
+    0.0,
+    0.0,
+    -0.26
+   ],
+   "normal": [
+    0,
+    0,
+    -1
+   ]
+  },
+  {
+   "id": "P_B_forward",
+   "node": "B",
+   "cell": [
+    0,
+    0,
+    1
+   ],
+   "dir": "forward",
+   "kind": "rod_mini",
+   "half": [
+    0.2091,
+    0.2091
+   ],
+   "position_m": [
+    0.0,
+    0.0,
+    0.81
+   ],
+   "normal": [
+    0,
+    0,
+    1
+   ]
+  }
+ ],
+ "sockets": {
+  "Socket_Start": "P_A_back",
+  "Socket_End": "P_B_forward"
+ },
+ "port_contact_test": [
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_A_back",
+   "kind": "rod_mini",
+   "PASS": true
+  },
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_B_forward",
+   "kind": "rod_mini",
+   "PASS": true
+  }
+ ],
+ "mesh": {
+  "object": "R4C_ROD_SHORT",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 2634,
+  "shells": 1,
+  "uv": true,
+  "ok": true
+ },
+ "triangle_budget": 14000,
+ "bounds_unity_m": [
+  [
+   -0.1166,
+   -0.115,
+   -0.26
+  ],
+  [
+   0.1166,
+   0.1166,
+   0.81
+  ]
+ ],
+ "materials": [
+  "Armor_Dark",
+  "Armor_Gunmetal",
+  "Hazard_Yellow",
+  "Steel_Light",
+  "TeamColor_Red"
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0001,
+   "verts": 1319,
+   "empties": 7
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 2966,
+   "empties": 7
+  }
+ },
+ "renders": [
+  "R4C_ROD_SHORT_front.jpg",
+  "R4C_ROD_SHORT_side.jpg",
+  "R4C_ROD_SHORT_34front.jpg",
+  "R4C_ROD_SHORT_34front_wireframe.jpg",
+  "R4C_ROD_SHORT_board.jpg"
+ ],
+ "files": {
+  "R4C_ROD_SHORT.blend": {
+   "sha256": "73d90612ce5044dc16e58846a8e2080c7d619b38d687c5d55100aff58b61bd56",
+   "bytes": 910849,
+   "note": "re-saved uncompressed; local paths replaced by '//' (length-preserving)"
+  },
+  "R4C_ROD_SHORT.fbx": {
+   "sha256": "b9e5129673175c55c759cc2ca3fe4237d956b1e0a3173aeff85e9d283cb4b02a",
+   "bytes": 101468
+  },
+  "R4C_ROD_SHORT.glb": {
+   "sha256": "c9531157f0eb184c105205f075b5ce2d3b2907bb1928d809aedde1c9aeeea832",
+   "bytes": 116484
+  },
+  "R4C_ROD_SHORT_colliders.glb": {
+   "sha256": "de30dcc1d922cf9ef8e506f0297090962b761df2822424992583dd437a54a0c4",
+   "bytes": 14040
+  }
+ },
+ "colliders": {
+  "file": "R4C_ROD_SHORT_colliders.glb",
+  "pieces": 11
+ },
+ "seconds": 3.5,
+ "blender": "5.2.3 LTS"
+}

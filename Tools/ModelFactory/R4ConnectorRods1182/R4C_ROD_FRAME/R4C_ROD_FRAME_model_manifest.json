@@ -1,0 +1,148 @@
+{
+ "id": "R4C_ROD_FRAME",
+ "version": "1182-v1",
+ "files": {
+  "R4C_ROD_FRAME.blend": {
+   "sha256": "ce1286b29133a81a375ef6ad5f1802d9bd017e0cc74eb1c0a951d35d23517f3c",
+   "bytes": 1868043
+  },
+  "R4C_ROD_FRAME.fbx": {
+   "sha256": "48f3358ee41a186153f7eac09425007fae244ce734395c8394dfed1069c134ac",
+   "bytes": 403084
+  },
+  "R4C_ROD_FRAME.glb": {
+   "sha256": "baf20fd0e21e07e9b2bfc586c32aad457a54d23ced27c01dd7380dcac6541497",
+   "bytes": 531864
+  },
+  "R4C_ROD_FRAME_colliders.glb": {
+   "sha256": "a89d3730e66127bab30543ced366be64f76bdf2bf4d25ea68748a1d04ae18a21",
+   "bytes": 44184
+  }
+ },
+ "units": "metres",
+ "blender": "5.2.3 LTS",
+ "export": {
+  "fbx": "Unity 6 URP, -Z forward, Y up, FBX_SCALE_UNITS, bake_space_transform=False",
+  "glb": "glTF 2.0 binary, +Y up"
+ },
+ "triangles": 13332,
+ "triangle_budget": 14000,
+ "materials": [
+  "Armor_Dark",
+  "Armor_Gunmetal",
+  "Hazard_Yellow",
+  "Steel_Light",
+  "TeamColor_Red"
+ ],
+ "palette": "R41 locked palette (same as R4 blocks / weapons / movement)",
+ "mesh_check": {
+  "object": "R4C_ROD_FRAME",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 13332,
+  "shells": 1,
+  "uv": true,
+  "ok": true
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0002,
+   "verts": 6666,
+   "empties": 15
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 13914,
+   "empties": 15
+  }
+ },
+ "port_contact_test": [
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_N00_left",
+   "kind": "rod_mini",
+   "PASS": true
+  },
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_N00_back",
+   "kind": "rod_mini",
+   "PASS": true
+  },
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_N20_right",
+   "kind": "rod_mini",
+   "PASS": true
+  },
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_N20_back",
+   "kind": "rod_mini",
+   "PASS": true
+  },
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_N22_right",
+   "kind": "rod_mini",
+   "PASS": true
+  },
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_N22_forward",
+   "kind": "rod_mini",
+   "PASS": true
+  },
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_N02_left",
+   "kind": "rod_mini",
+   "PASS": true
+  },
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_N02_forward",
+   "kind": "rod_mini",
+   "PASS": true
+  }
+ ],
+ "renders": [
+  "R4C_ROD_FRAME_front.jpg",
+  "R4C_ROD_FRAME_side.jpg",
+  "R4C_ROD_FRAME_34front.jpg",
+  "R4C_ROD_FRAME_34front_wireframe.jpg",
+  "R4C_ROD_FRAME_board.jpg"
+ ],
+ "generator": "scripts/build_connectors.py",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN"
+}

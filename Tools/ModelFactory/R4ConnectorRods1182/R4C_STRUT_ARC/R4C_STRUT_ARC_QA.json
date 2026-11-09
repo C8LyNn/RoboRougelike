@@ -1,0 +1,539 @@
+{
+ "id": "R4C_STRUT_ARC",
+ "part_id": "STRUT_ARC",
+ "family": "strut",
+ "description": "quarter-arc strut, 3x3 (radius 2 cells)",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "occupied_cells_unity": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "role": "node"
+  },
+  {
+   "cell": [
+    0,
+    0,
+    1
+   ],
+   "role": "span"
+  },
+  {
+   "cell": [
+    0,
+    0,
+    2
+   ],
+   "role": "crossing"
+  },
+  {
+   "cell": [
+    1,
+    0,
+    1
+   ],
+   "role": "span"
+  },
+  {
+   "cell": [
+    1,
+    0,
+    2
+   ],
+   "role": "span"
+  },
+  {
+   "cell": [
+    2,
+    0,
+    2
+   ],
+   "role": "node"
+  }
+ ],
+ "occupied_geometric": [
+  [
+   0,
+   0,
+   0
+  ],
+  [
+   0,
+   0,
+   1
+  ],
+  [
+   0,
+   0,
+   2
+  ],
+  [
+   1,
+   0,
+   1
+  ],
+  [
+   1,
+   0,
+   2
+  ],
+  [
+   2,
+   0,
+   2
+  ]
+ ],
+ "occupancy_consistent": true,
+ "nodes": {
+  "A": [
+   0,
+   0,
+   0
+  ],
+  "B": [
+   2,
+   0,
+   2
+  ]
+ },
+ "members": [
+  {
+   "id": "M0",
+   "from_node": "A",
+   "to_node": "B",
+   "kind": "arc",
+   "length_m": 1.7279,
+   "carries_ports": false
+  }
+ ],
+ "ports": [
+  {
+   "id": "P_A_right",
+   "node": "A",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "right",
+   "kind": "r4_full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "position_m": [
+    0.26,
+    0.0,
+    -0.0
+   ],
+   "normal": [
+    1,
+    0,
+    0
+   ]
+  },
+  {
+   "id": "P_A_left",
+   "node": "A",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "r4_full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "position_m": [
+    -0.26,
+    0.0,
+    -0.0
+   ],
+   "normal": [
+    -1,
+    0,
+    0
+   ]
+  },
+  {
+   "id": "P_A_up",
+   "node": "A",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "up",
+   "kind": "r4_full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "position_m": [
+    0.0,
+    0.26,
+    -0.0
+   ],
+   "normal": [
+    0,
+    1,
+    0
+   ]
+  },
+  {
+   "id": "P_A_down",
+   "node": "A",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "r4_full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "position_m": [
+    0.0,
+    -0.26,
+    -0.0
+   ],
+   "normal": [
+    0,
+    -1,
+    0
+   ]
+  },
+  {
+   "id": "P_A_back",
+   "node": "A",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "r4_full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "position_m": [
+    0.0,
+    0.0,
+    -0.26
+   ],
+   "normal": [
+    0,
+    0,
+    -1
+   ]
+  },
+  {
+   "id": "P_B_right",
+   "node": "B",
+   "cell": [
+    2,
+    0,
+    2
+   ],
+   "dir": "right",
+   "kind": "r4_full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "position_m": [
+    1.36,
+    0.0,
+    1.1
+   ],
+   "normal": [
+    1,
+    0,
+    0
+   ]
+  },
+  {
+   "id": "P_B_up",
+   "node": "B",
+   "cell": [
+    2,
+    0,
+    2
+   ],
+   "dir": "up",
+   "kind": "r4_full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "position_m": [
+    1.1,
+    0.26,
+    1.1
+   ],
+   "normal": [
+    0,
+    1,
+    0
+   ]
+  },
+  {
+   "id": "P_B_down",
+   "node": "B",
+   "cell": [
+    2,
+    0,
+    2
+   ],
+   "dir": "down",
+   "kind": "r4_full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "position_m": [
+    1.1,
+    -0.26,
+    1.1
+   ],
+   "normal": [
+    0,
+    -1,
+    0
+   ]
+  },
+  {
+   "id": "P_B_forward",
+   "node": "B",
+   "cell": [
+    2,
+    0,
+    2
+   ],
+   "dir": "forward",
+   "kind": "r4_full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "position_m": [
+    1.1,
+    0.0,
+    1.36
+   ],
+   "normal": [
+    0,
+    0,
+    1
+   ]
+  },
+  {
+   "id": "P_B_back",
+   "node": "B",
+   "cell": [
+    2,
+    0,
+    2
+   ],
+   "dir": "back",
+   "kind": "r4_full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "position_m": [
+    1.1,
+    0.0,
+    0.84
+   ],
+   "normal": [
+    0,
+    0,
+    -1
+   ]
+  }
+ ],
+ "sockets": {
+  "Socket_Start": "P_A_back",
+  "Socket_End": "P_B_right"
+ },
+ "port_contact_test": [
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_A_right",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_A_left",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_A_up",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_A_down",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_A_back",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_B_right",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_B_up",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_B_down",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_B_forward",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_B_back",
+   "kind": "r4_full",
+   "PASS": true
+  }
+ ],
+ "mesh": {
+  "object": "R4C_STRUT_ARC",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 11364,
+  "shells": 1,
+  "uv": true,
+  "ok": true
+ },
+ "triangle_budget": 22000,
+ "bounds_unity_m": [
+  [
+   -0.2608,
+   -0.2608,
+   -0.2608
+  ],
+  [
+   1.3608,
+   0.2608,
+   1.3608
+  ]
+ ],
+ "materials": [
+  "Armor_Dark",
+  "Armor_Gunmetal",
+  "Hazard_Yellow",
+  "Steel_Light",
+  "TeamColor_Red"
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0002,
+   "verts": 5684,
+   "empties": 15
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 13309,
+   "empties": 15
+  }
+ },
+ "renders": [
+  "R4C_STRUT_ARC_front.jpg",
+  "R4C_STRUT_ARC_side.jpg",
+  "R4C_STRUT_ARC_34front.jpg",
+  "R4C_STRUT_ARC_34front_wireframe.jpg",
+  "R4C_STRUT_ARC_board.jpg"
+ ],
+ "files": {
+  "R4C_STRUT_ARC.blend": {
+   "sha256": "6dc22b4fc1b6a04493d9c4cd88206072417d582fe97308f8bbefa620d9459762",
+   "bytes": 1577830,
+   "note": "re-saved uncompressed; local paths replaced by '//' (length-preserving)"
+  },
+  "R4C_STRUT_ARC.fbx": {
+   "sha256": "0702726ab287e494a52ce2665798a30c165df42e198a5e34ce0c2977ba120d24",
+   "bytes": 402876
+  },
+  "R4C_STRUT_ARC.glb": {
+   "sha256": "c90e90a1449e78a863059d6c444d10a4285512bdb16e173a8d60a268ba16b51b",
+   "bytes": 500856
+  },
+  "R4C_STRUT_ARC_colliders.glb": {
+   "sha256": "65c40fc4ea1dde894807151448fe8057cccdc1550ed9512b53a6b56cd7525168",
+   "bytes": 11952
+  }
+ },
+ "colliders": {
+  "file": "R4C_STRUT_ARC_colliders.glb",
+  "pieces": 9
+ },
+ "seconds": 4.9,
+ "blender": "5.2.3 LTS"
+}

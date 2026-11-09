@@ -1,0 +1,254 @@
+{
+ "id": "R4C_ROD_ARC_LONG",
+ "part_id": "ROD_ARC_LONG",
+ "family": "rod",
+ "description": "quarter-arc rod, 3x3 (radius 2 cells)",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "occupied_cells_unity": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "role": "node"
+  },
+  {
+   "cell": [
+    0,
+    0,
+    1
+   ],
+   "role": "span"
+  },
+  {
+   "cell": [
+    1,
+    0,
+    1
+   ],
+   "role": "span"
+  },
+  {
+   "cell": [
+    1,
+    0,
+    2
+   ],
+   "role": "span"
+  },
+  {
+   "cell": [
+    2,
+    0,
+    2
+   ],
+   "role": "node"
+  }
+ ],
+ "occupied_geometric": [
+  [
+   0,
+   0,
+   0
+  ],
+  [
+   0,
+   0,
+   1
+  ],
+  [
+   1,
+   0,
+   1
+  ],
+  [
+   1,
+   0,
+   2
+  ],
+  [
+   2,
+   0,
+   2
+  ]
+ ],
+ "occupancy_consistent": true,
+ "nodes": {
+  "A": [
+   0,
+   0,
+   0
+  ],
+  "B": [
+   2,
+   0,
+   2
+  ]
+ },
+ "members": [
+  {
+   "id": "M0",
+   "from_node": "A",
+   "to_node": "B",
+   "kind": "arc",
+   "length_m": 1.7279,
+   "carries_ports": false
+  }
+ ],
+ "ports": [
+  {
+   "id": "P_A_back",
+   "node": "A",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "rod_mini",
+   "half": [
+    0.2091,
+    0.2091
+   ],
+   "position_m": [
+    0.0,
+    0.0,
+    -0.26
+   ],
+   "normal": [
+    0,
+    0,
+    -1
+   ]
+  },
+  {
+   "id": "P_B_right",
+   "node": "B",
+   "cell": [
+    2,
+    0,
+    2
+   ],
+   "dir": "right",
+   "kind": "rod_mini",
+   "half": [
+    0.2091,
+    0.2091
+   ],
+   "position_m": [
+    1.36,
+    0.0,
+    1.1
+   ],
+   "normal": [
+    1,
+    0,
+    0
+   ]
+  }
+ ],
+ "sockets": {
+  "Socket_Start": "P_A_back",
+  "Socket_End": "P_B_right"
+ },
+ "port_contact_test": [
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_A_back",
+   "kind": "rod_mini",
+   "PASS": true
+  },
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_B_right",
+   "kind": "rod_mini",
+   "PASS": true
+  }
+ ],
+ "mesh": {
+  "object": "R4C_ROD_ARC_LONG",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 4382,
+  "shells": 1,
+  "uv": true,
+  "ok": true
+ },
+ "triangle_budget": 14000,
+ "bounds_unity_m": [
+  [
+   -0.1166,
+   -0.115,
+   -0.26
+  ],
+  [
+   1.36,
+   0.1166,
+   1.2166
+  ]
+ ],
+ "materials": [
+  "Armor_Dark",
+  "Armor_Gunmetal",
+  "Hazard_Yellow",
+  "Steel_Light",
+  "TeamColor_Red"
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0002,
+   "verts": 2193,
+   "empties": 7
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 4327,
+   "empties": 7
+  }
+ },
+ "renders": [
+  "R4C_ROD_ARC_LONG_front.jpg",
+  "R4C_ROD_ARC_LONG_side.jpg",
+  "R4C_ROD_ARC_LONG_34front.jpg",
+  "R4C_ROD_ARC_LONG_34front_wireframe.jpg",
+  "R4C_ROD_ARC_LONG_board.jpg"
+ ],
+ "files": {
+  "R4C_ROD_ARC_LONG.blend": {
+   "sha256": "6e96be5d0cac545bbec93ff46507fd9ca78c44b337aced5fe460cdabb6531b72",
+   "bytes": 1042855,
+   "note": "re-saved uncompressed; local paths replaced by '//' (length-preserving)"
+  },
+  "R4C_ROD_ARC_LONG.fbx": {
+   "sha256": "69d942e3c4f4ab82664096900d3546681be4395971bff0c339d10dfe3ed244f1",
+   "bytes": 168284
+  },
+  "R4C_ROD_ARC_LONG.glb": {
+   "sha256": "7a482cfbdec8b6a4f300d0017f76c983cfdb0eb18737016e85c7bf626434122e",
+   "bytes": 170544
+  },
+  "R4C_ROD_ARC_LONG_colliders.glb": {
+   "sha256": "7768f0810297b2ab489c0a1fc984d05df384c6a94f07d29d8f2d83035cd3a932",
+   "bytes": 14888
+  }
+ },
+ "colliders": {
+  "file": "R4C_ROD_ARC_LONG_colliders.glb",
+  "pieces": 11
+ },
+ "seconds": 2.6,
+ "blender": "5.2.3 LTS"
+}

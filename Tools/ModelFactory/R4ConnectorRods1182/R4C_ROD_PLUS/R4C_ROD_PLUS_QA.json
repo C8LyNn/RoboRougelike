@@ -1,0 +1,361 @@
+{
+ "id": "R4C_ROD_PLUS",
+ "part_id": "ROD_PLUS",
+ "family": "rod",
+ "description": "plus rod (4 arms) 3x3",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "occupied_cells_unity": [
+  {
+   "cell": [
+    0,
+    0,
+    1
+   ],
+   "role": "node"
+  },
+  {
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "role": "node"
+  },
+  {
+   "cell": [
+    1,
+    0,
+    1
+   ],
+   "role": "node"
+  },
+  {
+   "cell": [
+    1,
+    0,
+    2
+   ],
+   "role": "node"
+  },
+  {
+   "cell": [
+    2,
+    0,
+    1
+   ],
+   "role": "node"
+  }
+ ],
+ "occupied_geometric": [
+  [
+   0,
+   0,
+   1
+  ],
+  [
+   1,
+   0,
+   0
+  ],
+  [
+   1,
+   0,
+   1
+  ],
+  [
+   1,
+   0,
+   2
+  ],
+  [
+   2,
+   0,
+   1
+  ]
+ ],
+ "occupancy_consistent": true,
+ "nodes": {
+  "C": [
+   1,
+   0,
+   1
+  ],
+  "W": [
+   0,
+   0,
+   1
+  ],
+  "E": [
+   2,
+   0,
+   1
+  ],
+  "S": [
+   1,
+   0,
+   0
+  ],
+  "N": [
+   1,
+   0,
+   2
+  ]
+ },
+ "members": [
+  {
+   "id": "M0",
+   "from_node": "C",
+   "to_node": "W",
+   "kind": "line",
+   "length_m": 0.55,
+   "carries_ports": false
+  },
+  {
+   "id": "M1",
+   "from_node": "C",
+   "to_node": "E",
+   "kind": "line",
+   "length_m": 0.55,
+   "carries_ports": false
+  },
+  {
+   "id": "M2",
+   "from_node": "C",
+   "to_node": "S",
+   "kind": "line",
+   "length_m": 0.55,
+   "carries_ports": false
+  },
+  {
+   "id": "M3",
+   "from_node": "C",
+   "to_node": "N",
+   "kind": "line",
+   "length_m": 0.55,
+   "carries_ports": false
+  }
+ ],
+ "ports": [
+  {
+   "id": "P_W_left",
+   "node": "W",
+   "cell": [
+    0,
+    0,
+    1
+   ],
+   "dir": "left",
+   "kind": "rod_mini",
+   "half": [
+    0.2091,
+    0.2091
+   ],
+   "position_m": [
+    -0.26,
+    0.0,
+    0.55
+   ],
+   "normal": [
+    -1,
+    0,
+    0
+   ]
+  },
+  {
+   "id": "P_E_right",
+   "node": "E",
+   "cell": [
+    2,
+    0,
+    1
+   ],
+   "dir": "right",
+   "kind": "rod_mini",
+   "half": [
+    0.2091,
+    0.2091
+   ],
+   "position_m": [
+    1.36,
+    0.0,
+    0.55
+   ],
+   "normal": [
+    1,
+    0,
+    0
+   ]
+  },
+  {
+   "id": "P_S_back",
+   "node": "S",
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "rod_mini",
+   "half": [
+    0.2091,
+    0.2091
+   ],
+   "position_m": [
+    0.55,
+    0.0,
+    -0.26
+   ],
+   "normal": [
+    0,
+    0,
+    -1
+   ]
+  },
+  {
+   "id": "P_N_forward",
+   "node": "N",
+   "cell": [
+    1,
+    0,
+    2
+   ],
+   "dir": "forward",
+   "kind": "rod_mini",
+   "half": [
+    0.2091,
+    0.2091
+   ],
+   "position_m": [
+    0.55,
+    0.0,
+    1.36
+   ],
+   "normal": [
+    0,
+    0,
+    1
+   ]
+  }
+ ],
+ "sockets": {
+  "Socket_Start": "P_W_left",
+  "Socket_End": "P_E_right"
+ },
+ "port_contact_test": [
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_W_left",
+   "kind": "rod_mini",
+   "PASS": true
+  },
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_E_right",
+   "kind": "rod_mini",
+   "PASS": true
+  },
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_S_back",
+   "kind": "rod_mini",
+   "PASS": true
+  },
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_N_forward",
+   "kind": "rod_mini",
+   "PASS": true
+  }
+ ],
+ "mesh": {
+  "object": "R4C_ROD_PLUS",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 7120,
+  "shells": 1,
+  "uv": true,
+  "ok": true
+ },
+ "triangle_budget": 14000,
+ "bounds_unity_m": [
+  [
+   -0.26,
+   -0.115,
+   -0.26
+  ],
+  [
+   1.36,
+   0.1166,
+   1.36
+  ]
+ ],
+ "materials": [
+  "Armor_Dark",
+  "Armor_Gunmetal",
+  "Hazard_Yellow",
+  "Steel_Light",
+  "TeamColor_Red"
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0002,
+   "verts": 3562,
+   "empties": 12
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 7542,
+   "empties": 12
+  }
+ },
+ "renders": [
+  "R4C_ROD_PLUS_front.jpg",
+  "R4C_ROD_PLUS_side.jpg",
+  "R4C_ROD_PLUS_34front.jpg",
+  "R4C_ROD_PLUS_34front_wireframe.jpg",
+  "R4C_ROD_PLUS_board.jpg"
+ ],
+ "files": {
+  "R4C_ROD_PLUS.blend": {
+   "sha256": "aae27f00cade0c6f5ca8edf91145e14b5d5cf79417532b98e4db071b46c429dc",
+   "bytes": 1396557,
+   "note": "re-saved uncompressed; local paths replaced by '//' (length-preserving)"
+  },
+  "R4C_ROD_PLUS.fbx": {
+   "sha256": "606923fc9854e78433ef61a90ba942870e48062d443dae9eb84c6f73eca84925",
+   "bytes": 238060
+  },
+  "R4C_ROD_PLUS.glb": {
+   "sha256": "61e8f3679955ffb379a2d2b1e34d3ada4858b62d5e3abc1310f5da0798915495",
+   "bytes": 290336
+  },
+  "R4C_ROD_PLUS_colliders.glb": {
+   "sha256": "39be241f9765f9405b751905ec42a447bd7a1ae50a48f694cf1be16c750a2d25",
+   "bytes": 45420
+  }
+ },
+ "colliders": {
+  "file": "R4C_ROD_PLUS_colliders.glb",
+  "pieces": 37
+ },
+ "seconds": 4.3,
+ "blender": "5.2.3 LTS"
+}

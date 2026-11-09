@@ -1,0 +1,237 @@
+{
+ "id": "R4C_STRUT_CROSS",
+ "version": "1182-v1",
+ "files": {
+  "R4C_STRUT_CROSS.blend": {
+   "sha256": "9f1b7697c00ec45a145816ff603dd9d9e082296e471a1224deadc9bc0661c8fc",
+   "bytes": 2415833
+  },
+  "R4C_STRUT_CROSS.fbx": {
+   "sha256": "854076a81eab9ebe570720d8320f19b18aa571a02eaceafa1637e8a2c05186c6",
+   "bytes": 697260
+  },
+  "R4C_STRUT_CROSS.glb": {
+   "sha256": "62328b046da616eb8e188550046a79ca0d945854b6ba022a231002d725c084ef",
+   "bytes": 952736
+  },
+  "R4C_STRUT_CROSS_colliders.glb": {
+   "sha256": "d0f6c258ed5f0f8c20ecd0ef1d764c966112090d32964959889188116bf5f281",
+   "bytes": 41940
+  }
+ },
+ "units": "metres",
+ "blender": "5.2.3 LTS",
+ "export": {
+  "fbx": "Unity 6 URP, -Z forward, Y up, FBX_SCALE_UNITS, bake_space_transform=False",
+  "glb": "glTF 2.0 binary, +Y up"
+ },
+ "triangles": 20776,
+ "triangle_budget": 22000,
+ "materials": [
+  "Armor_Dark",
+  "Armor_Gunmetal",
+  "Hazard_Yellow",
+  "Steel_Light"
+ ],
+ "palette": "R41 locked palette (same as R4 blocks / weapons / movement)",
+ "mesh_check": {
+  "object": "R4C_STRUT_CROSS",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 20776,
+  "shells": 1,
+  "uv": true,
+  "ok": true
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0002,
+   "verts": 10358,
+   "empties": 26
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 25657,
+   "empties": 26
+  }
+ },
+ "port_contact_test": [
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_C_up",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_C_down",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_N00_left",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_N00_up",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_N00_down",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_N00_back",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_N20_right",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_N20_up",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_N20_down",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_N20_back",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_N02_left",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_N02_up",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_N02_down",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_N02_forward",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_N22_right",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_N22_up",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_N22_down",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_N22_forward",
+   "kind": "r4_full",
+   "PASS": true
+  }
+ ],
+ "renders": [
+  "R4C_STRUT_CROSS_front.jpg",
+  "R4C_STRUT_CROSS_side.jpg",
+  "R4C_STRUT_CROSS_34front.jpg",
+  "R4C_STRUT_CROSS_34front_wireframe.jpg",
+  "R4C_STRUT_CROSS_board.jpg"
+ ],
+ "generator": "scripts/build_connectors.py",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN"
+}

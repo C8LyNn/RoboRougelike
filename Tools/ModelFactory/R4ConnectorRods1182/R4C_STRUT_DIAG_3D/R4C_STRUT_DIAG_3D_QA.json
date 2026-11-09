@@ -1,0 +1,520 @@
+{
+ "id": "R4C_STRUT_DIAG_3D",
+ "part_id": "STRUT_DIAG_3D",
+ "family": "strut",
+ "description": "space-diagonal strut, 3x3x3",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "occupied_cells_unity": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "role": "node"
+  },
+  {
+   "cell": [
+    0,
+    0,
+    1
+   ],
+   "role": "crossing"
+  },
+  {
+   "cell": [
+    0,
+    1,
+    0
+   ],
+   "role": "crossing"
+  },
+  {
+   "cell": [
+    0,
+    1,
+    1
+   ],
+   "role": "crossing"
+  },
+  {
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "role": "crossing"
+  },
+  {
+   "cell": [
+    1,
+    0,
+    1
+   ],
+   "role": "crossing"
+  },
+  {
+   "cell": [
+    1,
+    1,
+    0
+   ],
+   "role": "crossing"
+  },
+  {
+   "cell": [
+    1,
+    1,
+    1
+   ],
+   "role": "span"
+  },
+  {
+   "cell": [
+    1,
+    1,
+    2
+   ],
+   "role": "crossing"
+  },
+  {
+   "cell": [
+    1,
+    2,
+    1
+   ],
+   "role": "crossing"
+  },
+  {
+   "cell": [
+    1,
+    2,
+    2
+   ],
+   "role": "crossing"
+  },
+  {
+   "cell": [
+    2,
+    1,
+    1
+   ],
+   "role": "crossing"
+  },
+  {
+   "cell": [
+    2,
+    1,
+    2
+   ],
+   "role": "crossing"
+  },
+  {
+   "cell": [
+    2,
+    2,
+    1
+   ],
+   "role": "crossing"
+  },
+  {
+   "cell": [
+    2,
+    2,
+    2
+   ],
+   "role": "node"
+  }
+ ],
+ "occupied_geometric": [
+  [
+   0,
+   0,
+   0
+  ],
+  [
+   0,
+   0,
+   1
+  ],
+  [
+   0,
+   1,
+   0
+  ],
+  [
+   0,
+   1,
+   1
+  ],
+  [
+   1,
+   0,
+   0
+  ],
+  [
+   1,
+   0,
+   1
+  ],
+  [
+   1,
+   1,
+   0
+  ],
+  [
+   1,
+   1,
+   1
+  ],
+  [
+   1,
+   1,
+   2
+  ],
+  [
+   1,
+   2,
+   1
+  ],
+  [
+   1,
+   2,
+   2
+  ],
+  [
+   2,
+   1,
+   1
+  ],
+  [
+   2,
+   1,
+   2
+  ],
+  [
+   2,
+   2,
+   1
+  ],
+  [
+   2,
+   2,
+   2
+  ]
+ ],
+ "occupancy_consistent": true,
+ "nodes": {
+  "A": [
+   0,
+   0,
+   0
+  ],
+  "B": [
+   2,
+   2,
+   2
+  ]
+ },
+ "members": [
+  {
+   "id": "M0",
+   "from_node": "A",
+   "to_node": "B",
+   "kind": "line",
+   "length_m": 1.9053,
+   "carries_ports": false
+  }
+ ],
+ "ports": [
+  {
+   "id": "P_A_left",
+   "node": "A",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "r4_full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "position_m": [
+    -0.26,
+    0.0,
+    -0.0
+   ],
+   "normal": [
+    -1,
+    0,
+    0
+   ]
+  },
+  {
+   "id": "P_A_down",
+   "node": "A",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "r4_full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "position_m": [
+    0.0,
+    -0.26,
+    -0.0
+   ],
+   "normal": [
+    0,
+    -1,
+    0
+   ]
+  },
+  {
+   "id": "P_A_back",
+   "node": "A",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "r4_full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "position_m": [
+    0.0,
+    0.0,
+    -0.26
+   ],
+   "normal": [
+    0,
+    0,
+    -1
+   ]
+  },
+  {
+   "id": "P_B_right",
+   "node": "B",
+   "cell": [
+    2,
+    2,
+    2
+   ],
+   "dir": "right",
+   "kind": "r4_full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "position_m": [
+    1.36,
+    1.1,
+    1.1
+   ],
+   "normal": [
+    1,
+    0,
+    0
+   ]
+  },
+  {
+   "id": "P_B_up",
+   "node": "B",
+   "cell": [
+    2,
+    2,
+    2
+   ],
+   "dir": "up",
+   "kind": "r4_full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "position_m": [
+    1.1,
+    1.36,
+    1.1
+   ],
+   "normal": [
+    0,
+    1,
+    0
+   ]
+  },
+  {
+   "id": "P_B_forward",
+   "node": "B",
+   "cell": [
+    2,
+    2,
+    2
+   ],
+   "dir": "forward",
+   "kind": "r4_full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "position_m": [
+    1.1,
+    1.1,
+    1.36
+   ],
+   "normal": [
+    0,
+    0,
+    1
+   ]
+  }
+ ],
+ "sockets": {
+  "Socket_Start": "P_A_left",
+  "Socket_End": "P_B_right"
+ },
+ "port_contact_test": [
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_A_left",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_A_down",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_A_back",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_B_right",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_B_up",
+   "kind": "r4_full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 93.8,
+   "recessed_pct": 6.2,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_B_forward",
+   "kind": "r4_full",
+   "PASS": true
+  }
+ ],
+ "mesh": {
+  "object": "R4C_STRUT_DIAG_3D",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 8746,
+  "shells": 1,
+  "uv": true,
+  "ok": true
+ },
+ "triangle_budget": 22000,
+ "bounds_unity_m": [
+  [
+   -0.2608,
+   -0.2608,
+   -0.2608
+  ],
+  [
+   1.3608,
+   1.3608,
+   1.3608
+  ]
+ ],
+ "materials": [
+  "Armor_Dark",
+  "Armor_Gunmetal",
+  "Hazard_Yellow",
+  "Steel_Light",
+  "TeamColor_Red"
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0002,
+   "verts": 4363,
+   "empties": 11
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 10361,
+   "empties": 11
+  }
+ },
+ "renders": [
+  "R4C_STRUT_DIAG_3D_front.jpg",
+  "R4C_STRUT_DIAG_3D_side.jpg",
+  "R4C_STRUT_DIAG_3D_34front.jpg",
+  "R4C_STRUT_DIAG_3D_34front_wireframe.jpg",
+  "R4C_STRUT_DIAG_3D_board.jpg"
+ ],
+ "files": {
+  "R4C_STRUT_DIAG_3D.blend": {
+   "sha256": "51f1c497feca0e682de33897b650f6fb1795709959b15c4239d719261620ae89",
+   "bytes": 1370911,
+   "note": "re-saved uncompressed; local paths replaced by '//' (length-preserving)"
+  },
+  "R4C_STRUT_DIAG_3D.fbx": {
+   "sha256": "2c4f611a93c7b5bb9c851fd3e16fedddb3226e674bef381ea6bb4b5204e617aa",
+   "bytes": 326492
+  },
+  "R4C_STRUT_DIAG_3D.glb": {
+   "sha256": "e1811677e52345c4fdfd86ad5afa1893fdb28acf696d9c5b40a1782d0e1ef11d",
+   "bytes": 389372
+  },
+  "R4C_STRUT_DIAG_3D_colliders.glb": {
+   "sha256": "8bdf69096323973819525bba6a80c98ab08c5b915bb9b52a755eae6087edda48",
+   "bytes": 12200
+  }
+ },
+ "colliders": {
+  "file": "R4C_STRUT_DIAG_3D_colliders.glb",
+  "pieces": 9
+ },
+ "seconds": 4.5,
+ "blender": "5.2.3 LTS"
+}

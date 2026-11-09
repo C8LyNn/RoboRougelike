@@ -1,0 +1,348 @@
+{
+ "id": "R4C_ROD_DIAG_2D_LONG",
+ "part_id": "ROD_DIAG_2D_LONG",
+ "family": "rod",
+ "description": "flat diagonal rod, 3x3",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "occupied_cells_unity": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "role": "node"
+  },
+  {
+   "cell": [
+    0,
+    0,
+    1
+   ],
+   "role": "crossing"
+  },
+  {
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "role": "crossing"
+  },
+  {
+   "cell": [
+    1,
+    0,
+    1
+   ],
+   "role": "span"
+  },
+  {
+   "cell": [
+    1,
+    0,
+    2
+   ],
+   "role": "crossing"
+  },
+  {
+   "cell": [
+    2,
+    0,
+    1
+   ],
+   "role": "crossing"
+  },
+  {
+   "cell": [
+    2,
+    0,
+    2
+   ],
+   "role": "node"
+  }
+ ],
+ "occupied_geometric": [
+  [
+   0,
+   0,
+   0
+  ],
+  [
+   0,
+   0,
+   1
+  ],
+  [
+   1,
+   0,
+   0
+  ],
+  [
+   1,
+   0,
+   1
+  ],
+  [
+   1,
+   0,
+   2
+  ],
+  [
+   2,
+   0,
+   1
+  ],
+  [
+   2,
+   0,
+   2
+  ]
+ ],
+ "occupancy_consistent": true,
+ "nodes": {
+  "A": [
+   0,
+   0,
+   0
+  ],
+  "B": [
+   2,
+   0,
+   2
+  ]
+ },
+ "members": [
+  {
+   "id": "M0",
+   "from_node": "A",
+   "to_node": "B",
+   "kind": "line",
+   "length_m": 1.5556,
+   "carries_ports": false
+  }
+ ],
+ "ports": [
+  {
+   "id": "P_A_left",
+   "node": "A",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "rod_mini",
+   "half": [
+    0.2091,
+    0.2091
+   ],
+   "position_m": [
+    -0.26,
+    0.0,
+    -0.0
+   ],
+   "normal": [
+    -1,
+    0,
+    0
+   ]
+  },
+  {
+   "id": "P_A_back",
+   "node": "A",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "rod_mini",
+   "half": [
+    0.2091,
+    0.2091
+   ],
+   "position_m": [
+    0.0,
+    0.0,
+    -0.26
+   ],
+   "normal": [
+    0,
+    0,
+    -1
+   ]
+  },
+  {
+   "id": "P_B_right",
+   "node": "B",
+   "cell": [
+    2,
+    0,
+    2
+   ],
+   "dir": "right",
+   "kind": "rod_mini",
+   "half": [
+    0.2091,
+    0.2091
+   ],
+   "position_m": [
+    1.36,
+    0.0,
+    1.1
+   ],
+   "normal": [
+    1,
+    0,
+    0
+   ]
+  },
+  {
+   "id": "P_B_forward",
+   "node": "B",
+   "cell": [
+    2,
+    0,
+    2
+   ],
+   "dir": "forward",
+   "kind": "rod_mini",
+   "half": [
+    0.2091,
+    0.2091
+   ],
+   "position_m": [
+    1.1,
+    0.0,
+    1.36
+   ],
+   "normal": [
+    0,
+    0,
+    1
+   ]
+  }
+ ],
+ "sockets": {
+  "Socket_Start": "P_A_left",
+  "Socket_End": "P_B_right"
+ },
+ "port_contact_test": [
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_A_left",
+   "kind": "rod_mini",
+   "PASS": true
+  },
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_A_back",
+   "kind": "rod_mini",
+   "PASS": true
+  },
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_B_right",
+   "kind": "rod_mini",
+   "PASS": true
+  },
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_B_forward",
+   "kind": "rod_mini",
+   "PASS": true
+  }
+ ],
+ "mesh": {
+  "object": "R4C_ROD_DIAG_2D_LONG",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 5704,
+  "shells": 1,
+  "uv": true,
+  "ok": true
+ },
+ "triangle_budget": 14000,
+ "bounds_unity_m": [
+  [
+   -0.26,
+   -0.115,
+   -0.26
+  ],
+  [
+   1.36,
+   0.1166,
+   1.36
+  ]
+ ],
+ "materials": [
+  "Armor_Dark",
+  "Armor_Gunmetal",
+  "Hazard_Yellow",
+  "Steel_Light",
+  "TeamColor_Red"
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0002,
+   "verts": 2854,
+   "empties": 9
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 6472,
+   "empties": 9
+  }
+ },
+ "renders": [
+  "R4C_ROD_DIAG_2D_LONG_front.jpg",
+  "R4C_ROD_DIAG_2D_LONG_side.jpg",
+  "R4C_ROD_DIAG_2D_LONG_34front.jpg",
+  "R4C_ROD_DIAG_2D_LONG_34front_wireframe.jpg",
+  "R4C_ROD_DIAG_2D_LONG_board.jpg"
+ ],
+ "files": {
+  "R4C_ROD_DIAG_2D_LONG.blend": {
+   "sha256": "eb24dbb41a6eeb0ee4a9ebe9bc10ecd352c506d481c18d5c77f4452e24f8125f",
+   "bytes": 1157919,
+   "note": "re-saved uncompressed; local paths replaced by '//' (length-preserving)"
+  },
+  "R4C_ROD_DIAG_2D_LONG.fbx": {
+   "sha256": "57bfcb44747dea9864a37998867b8514ce0300f2151b6130ea263ee7618f7a66",
+   "bytes": 205516
+  },
+  "R4C_ROD_DIAG_2D_LONG.glb": {
+   "sha256": "44d08b4b8d40659d7b6939a3ff8f210fc1c90d649161ca0d50ca21fdbdf25f39",
+   "bytes": 247324
+  },
+  "R4C_ROD_DIAG_2D_LONG_colliders.glb": {
+   "sha256": "1177e637938158ca70eaa9235492d4a51cb80438dcdd324a33e7583b147e1ac0",
+   "bytes": 17248
+  }
+ },
+ "colliders": {
+  "file": "R4C_ROD_DIAG_2D_LONG_colliders.glb",
+  "pieces": 13
+ },
+ "seconds": 3.6,
+ "blender": "5.2.3 LTS"
+}

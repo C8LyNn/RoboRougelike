@@ -1,0 +1,94 @@
+{
+ "id": "R4C_ROD_ARC_LONG",
+ "version": "1182-v1",
+ "files": {
+  "R4C_ROD_ARC_LONG.blend": {
+   "sha256": "6e96be5d0cac545bbec93ff46507fd9ca78c44b337aced5fe460cdabb6531b72",
+   "bytes": 1042855
+  },
+  "R4C_ROD_ARC_LONG.fbx": {
+   "sha256": "69d942e3c4f4ab82664096900d3546681be4395971bff0c339d10dfe3ed244f1",
+   "bytes": 168284
+  },
+  "R4C_ROD_ARC_LONG.glb": {
+   "sha256": "7a482cfbdec8b6a4f300d0017f76c983cfdb0eb18737016e85c7bf626434122e",
+   "bytes": 170544
+  },
+  "R4C_ROD_ARC_LONG_colliders.glb": {
+   "sha256": "7768f0810297b2ab489c0a1fc984d05df384c6a94f07d29d8f2d83035cd3a932",
+   "bytes": 14888
+  }
+ },
+ "units": "metres",
+ "blender": "5.2.3 LTS",
+ "export": {
+  "fbx": "Unity 6 URP, -Z forward, Y up, FBX_SCALE_UNITS, bake_space_transform=False",
+  "glb": "glTF 2.0 binary, +Y up"
+ },
+ "triangles": 4382,
+ "triangle_budget": 14000,
+ "materials": [
+  "Armor_Dark",
+  "Armor_Gunmetal",
+  "Hazard_Yellow",
+  "Steel_Light",
+  "TeamColor_Red"
+ ],
+ "palette": "R41 locked palette (same as R4 blocks / weapons / movement)",
+ "mesh_check": {
+  "object": "R4C_ROD_ARC_LONG",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 4382,
+  "shells": 1,
+  "uv": true,
+  "ok": true
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0002,
+   "verts": 2193,
+   "empties": 7
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 4327,
+   "empties": 7
+  }
+ },
+ "port_contact_test": [
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_A_back",
+   "kind": "rod_mini",
+   "PASS": true
+  },
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_B_right",
+   "kind": "rod_mini",
+   "PASS": true
+  }
+ ],
+ "renders": [
+  "R4C_ROD_ARC_LONG_front.jpg",
+  "R4C_ROD_ARC_LONG_side.jpg",
+  "R4C_ROD_ARC_LONG_34front.jpg",
+  "R4C_ROD_ARC_LONG_34front_wireframe.jpg",
+  "R4C_ROD_ARC_LONG_board.jpg"
+ ],
+ "generator": "scripts/build_connectors.py",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN"
+}

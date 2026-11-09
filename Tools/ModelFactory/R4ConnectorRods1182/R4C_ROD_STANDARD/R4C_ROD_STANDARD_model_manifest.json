@@ -1,0 +1,94 @@
+{
+ "id": "R4C_ROD_STANDARD",
+ "version": "1182-v1",
+ "files": {
+  "R4C_ROD_STANDARD.blend": {
+   "sha256": "84cf41d3425284ef6ecb612bb39cd98cb8046a3eaf27b017aa168f5450b5824d",
+   "bytes": 967165
+  },
+  "R4C_ROD_STANDARD.fbx": {
+   "sha256": "df53445bac212851eb4996b23131034be651c030b08bdb15ee7c84d055952bad",
+   "bytes": 121580
+  },
+  "R4C_ROD_STANDARD.glb": {
+   "sha256": "3d7081de36b59ef6a8ad23ae5e5020cf3065d50dbf9f658f6dc83777653d987c",
+   "bytes": 141624
+  },
+  "R4C_ROD_STANDARD_colliders.glb": {
+   "sha256": "96ed1a0587dd50b6150916844214060042a4706b297e2674856a7acdaf5e1caa",
+   "bytes": 12760
+  }
+ },
+ "units": "metres",
+ "blender": "5.2.3 LTS",
+ "export": {
+  "fbx": "Unity 6 URP, -Z forward, Y up, FBX_SCALE_UNITS, bake_space_transform=False",
+  "glb": "glTF 2.0 binary, +Y up"
+ },
+ "triangles": 3450,
+ "triangle_budget": 14000,
+ "materials": [
+  "Armor_Dark",
+  "Armor_Gunmetal",
+  "Hazard_Yellow",
+  "Steel_Light",
+  "TeamColor_Red"
+ ],
+ "palette": "R41 locked palette (same as R4 blocks / weapons / movement)",
+ "mesh_check": {
+  "object": "R4C_ROD_STANDARD",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 3450,
+  "shells": 1,
+  "uv": true,
+  "ok": true
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0002,
+   "verts": 1727,
+   "empties": 7
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 3598,
+   "empties": 7
+  }
+ },
+ "port_contact_test": [
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_A_back",
+   "kind": "rod_mini",
+   "PASS": true
+  },
+  {
+   "flush_pct": 88.9,
+   "recessed_pct": 11.1,
+   "protruding": 0,
+   "missing": 0,
+   "port": "P_B_forward",
+   "kind": "rod_mini",
+   "PASS": true
+  }
+ ],
+ "renders": [
+  "R4C_ROD_STANDARD_front.jpg",
+  "R4C_ROD_STANDARD_side.jpg",
+  "R4C_ROD_STANDARD_34front.jpg",
+  "R4C_ROD_STANDARD_34front_wireframe.jpg",
+  "R4C_ROD_STANDARD_board.jpg"
+ ],
+ "generator": "scripts/build_connectors.py",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN"
+}
