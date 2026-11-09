@@ -206,6 +206,14 @@ namespace RoboRougelike.R1
             return $"{R4WeaponDefinition.PartName(part)} • HP {part.Health*100:0}%\n{repair}";
         }
 
+        static string CatalogItemCaption(R3PartState part,bool compact)
+        {
+            string caption=$"T{R3VehicleModel.NormalizedTier(part.Tier)} • {(compact?"":"HP ")}{part.Health*100:0}%";
+            if(part.Kind==R3PartKind.Wheel&&R3VehicleModel.HasSizedSideWheel(part.WheelStyle))
+                caption+=(compact?"\n":" • ")+(part.FootprintRevision==1?"3×3":"1 pole");
+            return caption;
+        }
+
         static string GarageWheelStats(R3PartState part)=>
             $"{R4WeaponDefinition.WheelName(part.WheelStyle)} T{R3VehicleModel.NormalizedTier(part.Tier)} • {R4WeaponDefinition.PartMass(part):0.#} kg\n"+
             $"Siła {100*R3VehicleModel.WheelTraction(part.WheelStyle)*R3VehicleModel.TierWheelTraction(part.Tier):0}% przy 100% HP"+
