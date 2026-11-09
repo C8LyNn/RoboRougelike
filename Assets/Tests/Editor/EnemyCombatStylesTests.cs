@@ -12,6 +12,15 @@ public sealed class EnemyCombatStylesTests
     }
 
     [Test]
+    public void RangedArchetypeWithMeleeWeaponCanStillCloseForContact()
+    {
+        var selector=typeof(P12PipelineSafeEnemyTurret).GetMethod("ShouldRam",new[]{typeof(bool),typeof(R3EnemyArchetype),typeof(float),typeof(float),typeof(bool)});
+        Assert.That(selector,Is.Not.Null,"The chosen weapon must be part of the charge decision.");
+        Assert.That((bool)selector.Invoke(null,new object[]{true,R3EnemyArchetype.Gunner,5f,8f,true}),Is.True);
+        Assert.That((bool)selector.Invoke(null,new object[]{true,R3EnemyArchetype.Gunner,5f,8f,false}),Is.False);
+    }
+
+    [Test]
     public void BruiserHasAttackAndRecoveryPhasesWhileUnarmedEnemiesCanStillRam()
     {
         Assert.That(P12PipelineSafeEnemyTurret.ShouldRam(true, R3EnemyArchetype.Bruiser, 5, 1), Is.True);

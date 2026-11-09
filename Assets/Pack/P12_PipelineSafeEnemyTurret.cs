@@ -726,8 +726,11 @@ namespace RogueMachine.P12PipelineSafe
             movementBounds=bounds;
         }
         public static bool ShouldRam(bool weaponOnline,R3EnemyArchetype archetype,float distance,float cycleTime)
+            => ShouldRam(weaponOnline,archetype,distance,cycleTime,false);
+        public static bool ShouldRam(bool weaponOnline,R3EnemyArchetype archetype,float distance,float cycleTime,bool meleeWeapon)
         {
             if (!weaponOnline) return true;
+            if (meleeWeapon) return true;
             float phase=Mathf.Repeat(cycleTime,12f);
             if (archetype==R3EnemyArchetype.Bruiser) return phase<4f;
             if (archetype==R3EnemyArchetype.Scout) return phase<2f;
@@ -755,7 +758,7 @@ namespace RogueMachine.P12PipelineSafe
             // player. Keep the original R6 wheel solver and ally/world avoidance.
             bool recovering=contactRecovery.Advance(Time.fixedTime-lastPlayerContact<=Time.fixedDeltaTime*2f,Time.fixedDeltaTime);
             float attackClock=Time.time-movementStartedAt+(Archetype==R3EnemyArchetype.Bruiser?0:Mathf.Abs(GetInstanceID()%997)*.033f);
-            bool ramming=!recovering&&ShouldRam(WeaponOnline,Archetype,distance,attackClock);
+            bool ramming=!recovering&&ShouldRam(WeaponOnline,Archetype,distance,attackClock,packageSaw!=null&&PrimaryWeaponOnline);
             if(profiled&&Time.time>=nextStrafeChange&&Time.time>=navigationUntil)
             { strafeDirection=-strafeDirection;nextStrafeChange=Time.time+(Archetype==R3EnemyArchetype.Flanker?2:4.5f); }
             Vector3 sideways = Vector3.Cross(Vector3.up, toward) * strafeDirection;
