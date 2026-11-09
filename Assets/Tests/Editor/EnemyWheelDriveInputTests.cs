@@ -8,6 +8,43 @@ using UnityEngine;
 public sealed class EnemyWheelDriveInputTests
 {
     [Test]
+    public void CrowdedShotLineCannotHideALiveAlly()
+    {
+        var root=new GameObject("shooting enemy");root.transform.position=new Vector3(12000,0,12000);
+        var shooter=root.AddComponent<P12PipelineSafeEnemyTurret>();
+        var muzzle=new GameObject("muzzle");muzzle.transform.SetParent(root.transform,false);muzzle.transform.localPosition=Vector3.up;
+        typeof(P12PipelineSafeEnemyTurret).GetField("muzzle",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(shooter,muzzle.transform);
+        var allyRoot=new GameObject("ally");allyRoot.transform.position=root.transform.position+new Vector3(0,1,10);
+        var ally=allyRoot.AddComponent<P12PipelineSafeEnemyTurret>();
+        var core=allyRoot.AddComponent<P12PipelineSafeDamageable>();core.Configure(100,true);
+        allyRoot.AddComponent<BoxCollider>();
+        typeof(P12PipelineSafeEnemyTurret).GetField("core",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(ally,core);
+        try
+        {
+            for(int i=0;i<300;i++)
+            {
+                var child=new GameObject("own collider "+i);child.transform.SetParent(root.transform,false);
+                child.transform.localPosition=new Vector3(0,1,1+i*.01f);child.AddComponent<BoxCollider>().size=Vector3.one*.005f;
+            }
+            Physics.SyncTransforms();var hits=new RaycastHit[256];
+            int count=Physics.RaycastNonAlloc(muzzle.transform.position,Vector3.forward,hits,40,~0,QueryTriggerInteraction.Ignore);
+            Assert.That(count,Is.EqualTo(hits.Length));
+            Assert.That(System.Array.Exists(hits,h=>h.collider!=null&&h.collider.transform.IsChildOf(allyRoot.transform)),Is.False,
+                "The crowded first query must omit the real ally.");
+            var check=typeof(P12PipelineSafeEnemyTurret).GetMethod("FriendlyInLine",BindingFlags.Instance|BindingFlags.NonPublic);
+            Assert.That((bool)check.Invoke(shooter,new object[]{muzzle.transform.position+Vector3.forward*40}),Is.True,
+                "A living ally must still prevent a shot through it.");
+            var variantCheck=typeof(P12PipelineSafeEnemyTurret).GetMethod("FriendlyBetween",BindingFlags.Instance|BindingFlags.NonPublic);
+            Assert.That(variantCheck,Is.Not.Null);
+            Assert.That((bool)variantCheck.Invoke(shooter,new object[]{muzzle.transform.position,muzzle.transform.position+Vector3.forward*40}),Is.True,
+                "Additional weapons must use the same complete ally check.");
+            allyRoot.SetActive(false);Physics.SyncTransforms();
+            Assert.That((bool)check.Invoke(shooter,new object[]{muzzle.transform.position+Vector3.forward*40}),Is.False);
+        }
+        finally{Object.DestroyImmediate(allyRoot);Object.DestroyImmediate(root);}
+    }
+
+    [Test]
     public void CrowdedOwnCollidersDoNotFreezeEnemyButRealWallStillBlocks()
     {
         var root=new GameObject("enemy movement fixture");root.transform.position=new Vector3(10000,0,10000);
