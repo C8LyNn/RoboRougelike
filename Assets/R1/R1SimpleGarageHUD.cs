@@ -360,7 +360,7 @@ namespace RoboRougelike.R1
             GUI.enabled=!garageOptionsOpen;
             Panel(new Rect(0,0,1280,76));Panel(new Rect(0,76,270,644));
             GUI.Label(new Rect(14,10,150,34),"GARAŻ",heading);
-            GUI.Label(new Rect(14,43,245,25),$"Złom: {model.Scrap} • {model.Design.Name}",small);
+            GUI.Label(new Rect(14,43,245,25),$"Złom: {model.Scrap} • Energia maks.: {model.Energy.Maximum:0}",small);
             string[] labels={"1 Montuj","2 Zaznacz","3 Napraw","4 Zdejmij"};
             for(int i=0;i<labels.Length;i++)
             {
@@ -427,7 +427,7 @@ namespace RoboRougelike.R1
             GUI.DrawTexture(new Rect(0,opening.yMax,768,1024-opening.yMax),Texture2D.whiteTexture);GUI.color=color;
             var garage=run.Garage;var model=run.VehicleModel;GUI.enabled=!garageOptionsOpen;
             GUI.Label(new Rect(24,12,185,40),"GARAŻ",heading);
-            GUI.Label(new Rect(210,18,530,35),$"{model.Design.Name} • Złom: {model.Scrap}",body);
+            GUI.Label(new Rect(210,18,530,35),$"{model.Design.Name} • Złom: {model.Scrap} • Energia maks.: {model.Energy.Maximum:0}",body);
             string[] labels={"1 Montuj","2 Zaznacz","3 Napraw","4 Zdejmij"};
             for(int i=0;i<labels.Length;i++)
             {
