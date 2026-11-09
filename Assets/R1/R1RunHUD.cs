@@ -12,15 +12,21 @@ namespace RoboRougelike.R1
         private Texture2D buttonNormal,buttonHover,buttonPressed;
         private bool combatDetailsOpen;
         private int[] starterOffers;
+        private R3VehicleDesign[] starterDesigns;
+        private string[] starterDescriptions,starterSummaries;
         private readonly System.Random starterOfferRandom=new System.Random();
         private void Update()=>RefreshStarterOffers(R1RunController.Instance);
         private void RefreshStarterOffers(R1RunController run)
         {
             if(run==null||run.Progress==null)return;
-            if(run.Progress.State!=R1RunState.Ready)starterOffers=null;
+            if(run.Progress.State!=R1RunState.Ready)
+            {starterOffers=null;starterDesigns=null;starterDescriptions=null;starterSummaries=null;}
             else if(!run.MapEditing&&starterOffers==null)
             {
                 starterOffers=R3VehicleCatalog.DrawOffers(starterOfferRandom);
+                starterDesigns=starterOffers.Select(offer=>R3VehicleCatalog.Create((R3VehicleKind)(offer/4),offer%4)).ToArray();
+                starterDescriptions=starterDesigns.Select(StarterVehicleDescription).ToArray();
+                starterSummaries=starterDesigns.Select(StarterVehicleSummary).ToArray();
             }
         }
 
@@ -251,11 +257,11 @@ namespace RoboRougelike.R1
                 GUI.Label(new Rect(90,173,1100,28),"Jeden pojazd, wspólny garaż i nagrody. Aktywność wybierzesz po przygotowaniu.",small);
                 for(int i=0;i<3;i++)
                 {
-                    int offer=starterOffers[i],variant=offer%4;var kind=(R3VehicleKind)(offer/4);var design=R3VehicleCatalog.Create(kind,variant);float x=80+i*380;
+                    int offer=starterOffers[i],variant=offer%4;var kind=(R3VehicleKind)(offer/4);var design=starterDesigns[i];float x=80+i*380;
                     Panel(new Rect(x,205,360,280));
                     GUI.Label(new Rect(x+20,220,320,40),design.Name,heading);
-                    GUI.Label(new Rect(x+20,270,320,90),StarterVehicleDescription(design),body);
-                    GUI.Label(new Rect(x+20,365,320,45),StarterVehicleSummary(design),small);
+                    GUI.Label(new Rect(x+20,270,320,90),starterDescriptions[i],body);
+                    GUI.Label(new Rect(x+20,365,320,45),starterSummaries[i],small);
                     if(GUI.Button(new Rect(x+20,420,320,48),run.SelectedVehicle==kind&&run.SelectedVehicleVariant==variant?"WYBRANY":"Wybierz",button))run.SelectVehicle(kind,variant);
                 }
                 GUI.Label(ReadyIntroRect(),"6 starć • 3 areny • elity • Oblężnik • nagrody: 1 bonus i do 3 części",small);
@@ -306,11 +312,11 @@ namespace RoboRougelike.R1
             GUI.Label(new Rect(24,113,720,28),"Jeden pojazd, wspólny garaż i nagrody.",small);
             for(int i=0;i<3;i++)
             {
-                int offer=starterOffers[i],variant=offer%4;var kind=(R3VehicleKind)(offer/4);var design=R3VehicleCatalog.Create(kind,variant);var card=PortraitVehicleCard(i);
+                int offer=starterOffers[i],variant=offer%4;var kind=(R3VehicleKind)(offer/4);var design=starterDesigns[i];var card=PortraitVehicleCard(i);
                 Panel(card);
                 GUI.Label(new Rect(card.x+16,card.y+8,440,34),design.Name,heading);
-                GUI.Label(new Rect(card.x+16,card.y+44,440,62),StarterVehicleDescription(design),body);
-                GUI.Label(new Rect(card.x+16,card.y+112,430,42),StarterVehicleSummary(design),small);
+                GUI.Label(new Rect(card.x+16,card.y+44,440,62),starterDescriptions[i],body);
+                GUI.Label(new Rect(card.x+16,card.y+112,430,42),starterSummaries[i],small);
                 if(GUI.Button(new Rect(card.x+475,card.y+96,225,52),run.SelectedVehicle==kind&&run.SelectedVehicleVariant==variant?"WYBRANY":"Wybierz",button))run.SelectVehicle(kind,variant);
             }
             GUI.Label(new Rect(24,704,75,30),"Seed:",body);
