@@ -82,15 +82,24 @@ namespace RoboRougelike.R3
             weapon==R4WeaponKind.Basic||weapon==R4WeaponKind.Automatic||weapon==R4WeaponKind.Heavy||
             weapon==R4WeaponKind.RocketLauncher||weapon==R4WeaponKind.Shotgun||weapon==R4WeaponKind.Railgun||
             weapon==R4WeaponKind.BeamCutter||weapon==R4WeaponKind.EmpEmitter||weapon==R4WeaponKind.RotarySaw;
+        // The larger geometry and versioned footprints remain supported for a
+        // future iteration, but current purchases and restored vehicles use 1x.
+        static bool useEnlargedEquipment=false;
+        public static bool UseEnlargedEquipment => useEnlargedEquipment;
+#if UNITY_EDITOR
+        // Editor tests may verify the retained larger variant in isolation.
+        public static void SetEquipmentScaleForEditorTests(bool enlarged)=>useEnlargedEquipment=enlarged;
+#endif
         public static int NewPurchaseFootprint(R3PartKind kind,R4WeaponKind weapon,R3WheelStyle wheelStyle)=>
-            kind==R3PartKind.Wheel&&HasSizedSideWheel(wheelStyle)?1:
-            kind==R3PartKind.Gun&&SupportsGunScale2(weapon)?2:0;
-        public static void UpgradeStoredGunFootprint(R3PartState part)
+            UseEnlargedEquipment&&kind==R3PartKind.Wheel&&HasSizedSideWheel(wheelStyle)?1:
+            UseEnlargedEquipment&&kind==R3PartKind.Gun&&SupportsGunScale2(weapon)?2:0;
+        public static void NormalizeStoredEquipmentFootprint(R3PartState part)
         {
-            // The inventory has no occupied cells, so a legacy weapon can be
-            // enlarged there without overlapping or deleting any vehicle part.
-            if(part!=null&&part.Kind==R3PartKind.Gun&&part.FootprintRevision==0&&SupportsGunScale2(part.Weapon))
-                part.FootprintRevision=2;
+            if(part==null)return;
+            if(part.Kind==R3PartKind.Gun&&SupportsGunScale2(part.Weapon))
+                part.FootprintRevision=UseEnlargedEquipment?2:0;
+            else if(part.Kind==R3PartKind.Wheel&&HasSizedSideWheel(part.WheelStyle))
+                part.FootprintRevision=UseEnlargedEquipment?1:0;
         }
         public static bool HasForkMount(R3WheelStyle style)=>style==R3WheelStyle.SmallFork||style==R3WheelStyle.BalloonFork||style==R3WheelStyle.SpikedFork||style==R3WheelStyle.TwinRoad||style==R3WheelStyle.SteerRoad||style==R3WheelStyle.SteerOffroad||style==R3WheelStyle.CasterSlick||style==R3WheelStyle.SwingOffroad;
         public static bool HasSideMount(R3WheelStyle style)=>!HasForkMount(style);
@@ -118,9 +127,17 @@ namespace RoboRougelike.R3
             return R3MountingGrid.FaceBit(mirror?Vector3Int.right:Vector3Int.left);
         }
         public static bool CanSwapWheelAppearance(R3WheelStyle style)=>style==R3WheelStyle.Offroad||style==R3WheelStyle.Slick;
-        public static float WheelRadius(R3WheelStyle style)=>style==R3WheelStyle.SwingOffroad ? .33f : style==R3WheelStyle.CasterSlick ? .17f : style==R3WheelStyle.SteerOffroad ? .48f : style==R3WheelStyle.SteerRoad ? .34f : style==R3WheelStyle.TwinRoad ? .33f : style==R3WheelStyle.SpikedFork ? .37f : style==R3WheelStyle.SmallFork ? .205f : style==R3WheelStyle.BalloonFork ? .5f : style==R3WheelStyle.Monster ? .8f : style==R3WheelStyle.LargeOffroad ? .56f : .39f;
-        public static float WheelWidth(R3WheelStyle style)=>style==R3WheelStyle.SwingOffroad ? .26f : style==R3WheelStyle.CasterSlick ? .12f : style==R3WheelStyle.SteerOffroad ? .34f : style==R3WheelStyle.SteerRoad ? .26f : style==R3WheelStyle.TwinRoad ? .16f : style==R3WheelStyle.SpikedFork ? .30f : style==R3WheelStyle.SmallFork ? .15f : style==R3WheelStyle.BalloonFork ? .43f : style==R3WheelStyle.Monster ? .58f : .42f;
-        public static float WheelAxleOffset(R3WheelStyle style)=>style==R3WheelStyle.Monster ? .142f : style==R3WheelStyle.LargeOffroad ? .062f : .022f;
+        static float AuthoredWheelRadius(R3WheelStyle style)=>style==R3WheelStyle.SwingOffroad ? .33f : style==R3WheelStyle.CasterSlick ? .17f : style==R3WheelStyle.SteerOffroad ? .48f : style==R3WheelStyle.SteerRoad ? .34f : style==R3WheelStyle.TwinRoad ? .33f : style==R3WheelStyle.SpikedFork ? .37f : style==R3WheelStyle.SmallFork ? .205f : style==R3WheelStyle.BalloonFork ? .5f : style==R3WheelStyle.Monster ? .8f : style==R3WheelStyle.LargeOffroad ? .56f : .39f;
+        public static float WheelArtScale(R3WheelStyle style)=>!UseEnlargedEquipment&&HasSizedSideWheel(style) ? .39f/AuthoredWheelRadius(style) : 1f;
+        public static float WheelRadius(R3WheelStyle style)=>AuthoredWheelRadius(style)*WheelArtScale(style);
+        public static float WheelWidth(R3WheelStyle style)=>(style==R3WheelStyle.SwingOffroad ? .26f : style==R3WheelStyle.CasterSlick ? .12f : style==R3WheelStyle.SteerOffroad ? .34f : style==R3WheelStyle.SteerRoad ? .26f : style==R3WheelStyle.TwinRoad ? .16f : style==R3WheelStyle.SpikedFork ? .30f : style==R3WheelStyle.SmallFork ? .15f : style==R3WheelStyle.BalloonFork ? .43f : style==R3WheelStyle.Monster ? .58f : .42f)*WheelArtScale(style);
+        public static float WheelAxleOffset(R3WheelStyle style)
+        {
+            float authored=style==R3WheelStyle.Monster ? .142f : style==R3WheelStyle.LargeOffroad ? .062f : .022f;
+            // Scaling is about the visual axle; shift the physical axle so the
+            // scaled mounting socket still lies on the same block face.
+            return (.26f+authored)*WheelArtScale(style)-.26f;
+        }
         public static float ForkAxleDrop(R3WheelStyle style)=>style==R3WheelStyle.SwingOffroad ? .30f : style==R3WheelStyle.CasterSlick ? .13f : style==R3WheelStyle.SteerOffroad ? .455f : style==R3WheelStyle.SteerRoad ? .315f : style==R3WheelStyle.TwinRoad ? .20f : style==R3WheelStyle.SpikedFork ? .24f : style==R3WheelStyle.BalloonFork ? .37f : .075f;
         public static float WheelTraction(R3WheelStyle style)=>style==R3WheelStyle.CasterSlick ? .5f : style==R3WheelStyle.SmallFork ? .65f : style==R3WheelStyle.BalloonFork||style==R3WheelStyle.SteerOffroad?1.15f:style==R3WheelStyle.Monster?1.5f:style==R3WheelStyle.LargeOffroad?1.25f:1f;
         public static float WheelMass(R3WheelStyle style)=>style==R3WheelStyle.CasterSlick ? 1f/3f : style==R3WheelStyle.SmallFork ? .5f : style==R3WheelStyle.BalloonFork||style==R3WheelStyle.SteerOffroad?4f/3f:style==R3WheelStyle.Monster?2f:style==R3WheelStyle.LargeOffroad?1.5f:1f;
@@ -417,7 +434,7 @@ namespace RoboRougelike.R3
             // Edits may temporarily be undeployable; keep the core, structure and inventory safe.
             if (inventory.Count>=InventoryCapacity ||
                 !Connected(rest) || !Connected(rest.Where(p => p.Health > 0))) return false;
-            Parts.Remove(part);part.ContactMask=StoredWheelContacts(part);UpgradeStoredGunFootprint(part);inventory.Add(part); return true;
+            Parts.Remove(part);part.ContactMask=StoredWheelContacts(part);NormalizeStoredEquipmentFootprint(part);inventory.Add(part); return true;
         }
         public bool RotateMounted(Vector3Int cell,Vector3Int quarterTurns)
         {
@@ -453,7 +470,7 @@ namespace RoboRougelike.R3
                     float.IsInfinity(p.UpgradeAmount)||p.UpgradeAmount<0||p.UpgradeAmount>1))||
                 string.IsNullOrWhiteSpace(p.Id)||Owns(p.Id))||
                 batch.Select(p=>p.Id).Distinct().Count()!=batch.Length)return false;
-            inventory.AddRange(batch.Select(p=>{var copy=p.Copy();copy.ContactMask=StoredWheelContacts(copy);UpgradeStoredGunFootprint(copy);return copy;}));return true;
+            inventory.AddRange(batch.Select(p=>{var copy=p.Copy();copy.ContactMask=StoredWheelContacts(copy);NormalizeStoredEquipmentFootprint(copy);return copy;}));return true;
         }
         public static R3PartState CreateBonusReward(R1UpgradeDefinition bonus)
         {

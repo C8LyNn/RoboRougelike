@@ -68,6 +68,7 @@ namespace RoboRougelike.R4_1
             var renderer=physicalWheel.GetComponent<Renderer>();
             if(spinning==null||socket==null||renderer==null||(steer&&(knuckle==null||!spinning.IsChildOf(knuckle)))||(caster&&(swivel==null||!spinning.IsChildOf(swivel)))||(swing&&(arm==null||!spinning.IsChildOf(arm)))){Destroy(visual);return null;}
             visual.transform.localScale/=scale.x;
+            visual.transform.localScale*=R3VehicleModel.WheelArtScale(style);
             if(slick)visual.transform.localScale*=.39f/.37f;
             if(side)
             {

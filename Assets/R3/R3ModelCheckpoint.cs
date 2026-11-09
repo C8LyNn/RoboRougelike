@@ -182,8 +182,15 @@ namespace RoboRougelike.R3
             // loses support, preserve its parts and HP in inventory instead.
             var portNormalizedIds=new HashSet<string>(StringComparer.Ordinal);
             var normalized=mounted.Select(p=>p.Copy()).ToArray();
+            bool equipmentScaleNormalized=false;
             foreach(var part in normalized.Where(p=>p.Kind==R3PartKind.Gun||p.Kind==R3PartKind.Wheel))
             {
+                if(!UseEnlargedEquipment)
+                {
+                    int before=part.FootprintRevision;
+                    NormalizeStoredEquipmentFootprint(part);
+                    equipmentScaleNormalized|=before!=part.FootprintRevision;
+                }
                 int sideLeft=R3MountingGrid.FaceBit(Vector3Int.left),sideRight=R3MountingGrid.FaceBit(Vector3Int.right);
                 bool fixedSide=part.Kind==R3PartKind.Wheel&&HasSideMount(part.WheelStyle)&&
                     (part.ContactMask==sideLeft||part.ContactMask==sideRight);
@@ -191,7 +198,7 @@ namespace RoboRougelike.R3
                 if(part.ContactMask!=actual){part.ContactMask=actual;portNormalizedIds.Add(part.Id);}
             }
             int portMovedCount=0;
-            if(portNormalizedIds.Count>0)
+            if(portNormalizedIds.Count>0||equipmentScaleNormalized)
             {
                 if(!Connected(normalized)||!Connected(normalized.Where(p=>p.Health>0)))
                 {
@@ -209,15 +216,17 @@ namespace RoboRougelike.R3
                 }
                 mounted=normalized;
             }
-            // Enlarging a previously installed one-cell gun in place could
-            // overlap existing parts. Move it and any newly unsupported parts
-            // into inventory as one transaction; the source checkpoint is not
-            // changed. If storage is full, keep the old construction intact.
+            // If the larger variant is enabled again, expanding a one-cell
+            // gun or wheel in place can overlap other parts. Move the affected
+            // equipment and disconnected parts to inventory transactionally.
+            // Never modify the checkpoint if there is not enough space.
             int pendingGunScale=0;
-            var oldGuns=mounted.Where(p=>p.Kind==R3PartKind.Gun&&p.FootprintRevision==0&&SupportsGunScale2(p.Weapon)).ToArray();
-            if(oldGuns.Length>0)
+            var oldGuns=UseEnlargedEquipment?mounted.Where(p=>p.Kind==R3PartKind.Gun&&p.FootprintRevision==0&&SupportsGunScale2(p.Weapon)).ToArray():Array.Empty<R3PartState>();
+            var oldWheels=UseEnlargedEquipment?mounted.Where(p=>p.Kind==R3PartKind.Wheel&&p.FootprintRevision==0&&HasSizedSideWheel(p.WheelStyle)).ToArray():Array.Empty<R3PartState>();
+            var oldEquipment=oldGuns.Concat(oldWheels).ToArray();
+            if(oldEquipment.Length>0)
             {
-                var others=mounted.Where(p=>!oldGuns.Contains(p)).ToArray();
+                var others=mounted.Where(p=>!oldEquipment.Contains(p)).ToArray();
                 var alive=others.Where(p=>p.Health>0).ToArray();
                 var core=alive.SingleOrDefault(p=>p.Kind==R3PartKind.Core);
                 if(core!=null)
@@ -225,14 +234,18 @@ namespace RoboRougelike.R3
                     var reachable=ReachableCheckpointParts(alive,new HashSet<string>{core.Id},false);
                     reachable=ReachableCheckpointParts(others,reachable,true);
                     var detached=others.Where(p=>!reachable.Contains(p.Id)).ToArray();
-                    if(inventory.Length+oldGuns.Length+detached.Length<=InventoryCapacity)
+                    if(inventory.Length+oldEquipment.Length+detached.Length<=InventoryCapacity)
                     {
                         mounted=others.Where(p=>reachable.Contains(p.Id)).ToArray();
-                        inventory=inventory.Concat(oldGuns).Concat(detached).ToArray();
-                        migratedCount+=oldGuns.Length+detached.Length;
+                        inventory=inventory.Concat(oldEquipment).Concat(detached).ToArray();
+                        migratedCount+=oldEquipment.Length+detached.Length;
                     }
+                    else if(oldWheels.Length>0)
+                    {error="Brak miejsca w magazynie na powiększone koła. Zapis pozostaje bez zmian.";return false;}
                     else pendingGunScale=oldGuns.Length;
                 }
+                else if(oldWheels.Length>0)
+                {error="Nie można bezpiecznie powiększyć kół bez sprawnego rdzenia. Zapis pozostaje bez zmian.";return false;}
                 else pendingGunScale=oldGuns.Length;
             }
             if(data.wheels.Any(p=>p==null||string.IsNullOrWhiteSpace(p.id)||p.contacts<0||p.contacts>63)||
@@ -244,7 +257,7 @@ namespace RoboRougelike.R3
             var restored=new R3VehicleModel(R3VehicleCatalog.Create(kind,variant),economy);
             restored.Parts.Clear();restored.inventory.Clear();
             foreach(var source in mounted){var p=source.Copy();p.Tier=NormalizedTier(p.Tier);p.DeviceReadyAt=p.DeviceReadyAt>0?now+p.DeviceReadyAt:0;p.ReloadReadyAt=p.ReloadReadyAt>0?now+p.ReloadReadyAt:0;restored.Parts.Add(p);}
-            foreach(var source in inventory){var p=source.Copy();p.ContactMask=StoredWheelContacts(p);UpgradeStoredGunFootprint(p);p.Tier=NormalizedTier(p.Tier);p.DeviceReadyAt=p.DeviceReadyAt>0?now+p.DeviceReadyAt:0;p.ReloadReadyAt=p.ReloadReadyAt>0?now+p.ReloadReadyAt:0;restored.inventory.Add(p);}
+            foreach(var source in inventory){var p=source.Copy();p.ContactMask=StoredWheelContacts(p);NormalizeStoredEquipmentFootprint(p);p.Tier=NormalizedTier(p.Tier);p.DeviceReadyAt=p.DeviceReadyAt>0?now+p.DeviceReadyAt:0;p.ReloadReadyAt=p.ReloadReadyAt>0?now+p.ReloadReadyAt:0;restored.inventory.Add(p);}
             restored.LegacyPartsMovedToInventory=migratedCount;
             restored.LegacyPortMasksNormalized=portNormalizedIds.Count;
             restored.LegacyPortPartsMovedToInventory=portMovedCount;
