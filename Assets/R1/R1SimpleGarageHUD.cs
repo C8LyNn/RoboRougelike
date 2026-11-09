@@ -403,7 +403,7 @@ namespace RoboRougelike.R1
                 DrawBuyFive(run,kind,catalogWeapon,new Rect(137,560,120,42));
                 GUI.enabled=!garageOptionsOpen;
             }
-            if(GUI.Button(new Rect(12,610,245,42),"Egzemplarze i naprawy",compactButton))
+            if(GUI.Button(new Rect(12,610,245,42),$"Magazyn {model.Inventory.Count}/{R3VehicleModel.InventoryCapacity} • naprawy",compactButton))
             {inventoryOpen=true;catalogOpen=true;stackScroll=Vector2.zero;}
             GUI.Label(new Rect(12,655,245,62),"PPM: zdejmij • przeciągnij: widok\nCtrl + LPM: napraw • U: spód\nQ/E R/F Z/X: obrót • Shift: zamontowane",small);
             string garageFeedback=SimpleGarageFeedback(run);
@@ -467,7 +467,7 @@ namespace RoboRougelike.R1
                 DrawBuyFive(run,kind,catalogWeapon,new Rect(604,690,140,40));
                 GUI.enabled=!garageOptionsOpen;
             }
-            if(GUI.Button(new Rect(458,737,286,40),"Egzemplarze i naprawy",compactButton))
+            if(GUI.Button(new Rect(458,737,286,40),$"Magazyn {model.Inventory.Count}/{R3VehicleModel.InventoryCapacity} • naprawy",compactButton))
             {inventoryOpen=true;catalogOpen=true;stackScroll=Vector2.zero;}
             if(GUI.Button(new Rect(458,784,138,40),"Ustawienia",compactButton))OpenSimpleGarageOptions(0);
             if(GUI.Button(new Rect(606,784,138,40),"Aktywności",compactButton))OpenSimpleGarageOptions(1);

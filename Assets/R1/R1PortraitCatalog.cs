@@ -22,7 +22,7 @@ namespace RoboRougelike.R1
             var before=GUI.color;GUI.color=new Color(.04f,.06f,.08f,1);
             GUI.DrawTexture(new Rect(0,0,768,1024),Texture2D.whiteTexture);GUI.color=before;
             GUI.Label(new Rect(24,20,520,40),"KATALOG CZĘŚCI • MAGAZYN",heading);
-            GUI.Label(new Rect(24,80,720,26),$"Złom: {run.VehicleModel.Scrap} • wybierz grupę i egzemplarz według HP",body);
+            GUI.Label(new Rect(24,80,720,26),$"Złom: {run.VehicleModel.Scrap} • Magazyn: {run.VehicleModel.Inventory.Count}/{R3VehicleModel.InventoryCapacity}",body);
             if(GUI.Button(PortraitCatalogBackRect(),"Wróć do garażu",compactButton)){DismissCatalog();return;}
             DrawCatalogSearch(run,new Rect(24,110,70,25),new Rect(94,108,222,28),new Rect(322,108,48,28));
             GUI.Label(new Rect(390,110,354,55),"Egzemplarze w magazynie",body);
