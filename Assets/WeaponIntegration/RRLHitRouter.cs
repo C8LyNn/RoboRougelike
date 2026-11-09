@@ -32,13 +32,16 @@ namespace RoboRougelike.WeaponIntegration
             return a==0||b==0||a!=b;
         }
         public static bool Apply(Collider collider,float damage,Vector3 point,Vector3 direction,Transform source)
+        {return ApplyTyped(collider,damage,point,direction,source,R3.R3DamagePropagation.DamageKind.Kinetic);}
+        public static bool ApplyTyped(Collider collider,float damage,Vector3 point,Vector3 direction,Transform source,
+            R3.R3DamagePropagation.DamageKind damageKind)
         {
             if(!CanHit(collider,source)||damage<=0||float.IsNaN(damage)||float.IsInfinity(damage))return false;
             var receiver=collider.GetComponentInParent<IRRLHitReceiver>();
             if(receiver!=null)return receiver.ReceiveHit(damage,point,direction,source);
             var hp=collider.GetComponentInParent<P12PipelineSafeDamageable>();
             if(hp==null)return false;
-            hp.ApplyDamage(damage,point,direction);return true;
+            hp.ApplyDamageResolvedTyped(damage,point,direction,damageKind);return true;
         }
     }
 }

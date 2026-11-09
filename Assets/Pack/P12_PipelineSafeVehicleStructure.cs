@@ -99,6 +99,61 @@ namespace RogueMachine.P12PipelineSafe
             );
         }
 
+        // Prototype tuning: part of each impact travels at most two actual
+        // graph edges. Both values are deliberately centralised for playtesting.
+        const int DamageTransferMaxHops=2;
+
+        internal bool TryRouteDamage(P12PipelineSafeDamageable target,float amount,Vector3 point,Vector3 direction,
+            RoboRougelike.R3.R3DamagePropagation.DamageKind damageKind)
+        {
+            var hitBlock=target!=null?target.GetComponent<P12_PipelineSafePlayerBlock>():null;
+            if(!initialized||hitBlock==null||grid.Count==0||!hitBlock.transform.IsChildOf(transform))return false;
+            // Reuse the cached structural grid and explore only the two-ring
+            // neighbourhood. Never scan the complete Unity hierarchy per hit.
+            if(hitBlock.DetachedFromVehicle||target.IsDead||target.CurrentHp<=0||
+                !OccupiedGridCells(hitBlock).Any(c=>grid.TryGetValue(c,out var b)&&b==hitBlock))return false;
+            var depths=new Dictionary<P12_PipelineSafePlayerBlock,int>{{hitBlock,0}};
+            var health=new Dictionary<P12_PipelineSafePlayerBlock,P12PipelineSafeDamageable>{{hitBlock,target}};
+            var links=new Dictionary<P12_PipelineSafePlayerBlock,HashSet<P12_PipelineSafePlayerBlock>>
+                {{hitBlock,new HashSet<P12_PipelineSafePlayerBlock>()}};
+            var pending=new Queue<P12_PipelineSafePlayerBlock>();pending.Enqueue(hitBlock);
+            while(pending.Count>0)
+            {
+                var block=pending.Dequeue();int depth=depths[block];
+                if(depth>=DamageTransferMaxHops)continue;
+                foreach(var cell in OccupiedGridCells(block))foreach(var offset in Neighbours)
+                {
+                    if(!grid.TryGetValue(cell+offset,out var other)||other==null||other==block||
+                        other.DetachedFromVehicle||!other.transform.IsChildOf(transform)||
+                        !RoboRougelike.R3.R3MountingGrid.Compatible(block,other,offset))continue;
+                    if(!health.TryGetValue(other,out var hp))
+                    {
+                        hp=other.GetComponent<P12PipelineSafeDamageable>();
+                        if(hp==null||hp.IsDead||hp.CurrentHp<=0)continue;
+                        health.Add(other,hp);depths.Add(other,depth+1);
+                        links.Add(other,new HashSet<P12_PipelineSafePlayerBlock>());pending.Enqueue(other);
+                    }
+                    links[block].Add(other);links[other].Add(block);
+                }
+            }
+            var blocks=health.Keys.OrderBy(b=>b.LogicalGridPosition.x).ThenBy(b=>b.LogicalGridPosition.y)
+                .ThenBy(b=>b.LogicalGridPosition.z).ToArray();
+            var ids=blocks.Select((block,index)=>new{block,index}).ToDictionary(x=>x.block,x=>x.index);
+            var byId=blocks.ToDictionary(b=>ids[b],b=>health[b]);
+            var nodes=blocks.Select(b=>new RoboRougelike.R3.R3DamagePropagation.Node(
+                ids[b],health[b].CurrentHp,links[b].Select(other=>ids[other]).ToArray()));
+            var result=RoboRougelike.R3.R3DamagePropagation.Resolve(nodes,ids[hitBlock],
+                amount,RoboRougelike.R3.R3DamagePropagation.TransferFraction(damageKind),DamageTransferMaxHops);
+            // First stage every HP change, then run feedback and death callbacks.
+            var ordered=result.Damage.OrderBy(x=>x.Key).ToArray();
+            foreach(var impact in ordered)byId[impact.Key].StageRoutedDamage(impact.Value);
+            foreach(var impact in ordered)
+            {
+                var hp=byId[impact.Key];if(hp!=null)hp.FinishRoutedDamage(point,direction);
+            }
+            return true;
+        }
+
         public P12_PipelineSafePlayerBlock FindNearestStructuralBlock(
             Vector3 worldPosition)
         {

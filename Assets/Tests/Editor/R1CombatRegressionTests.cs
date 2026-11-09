@@ -85,7 +85,11 @@ public class R1CombatRegressionTests
         var structure = vehicle.AddComponent<P12PipelineSafeVehicleStructure>();
         structure.RebuildNow();
         Assert.That(structure.ConnectedBlockCount, Is.EqualTo(3));
-        blocks[1].GetComponent<P12PipelineSafeDamageable>().ApplyDamage(1000, blocks[1].transform.position, Vector3.up);
+        // Destroy the bridge while leaving enough HP in its neighbours to
+        // observe structural detachment after the routed portion of the hit.
+        blocks[1].GetComponent<P12PipelineSafeDamageable>().ApplyDamage(140, blocks[1].transform.position, Vector3.up);
+        Assert.That(blocks[0].GetComponent<P12PipelineSafeDamageable>().CurrentHp,Is.EqualTo(80).Within(.001f));
+        Assert.That(blocks[2].GetComponent<P12PipelineSafeDamageable>().CurrentHp,Is.EqualTo(80).Within(.001f));
         structure.EvaluateStructure();
         Assert.That(blocks[2].DetachedFromVehicle, Is.True);
         Assert.That(blocks[2].GetComponentInParent<Rigidbody>(), Is.Not.Null);
