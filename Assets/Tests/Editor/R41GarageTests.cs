@@ -100,6 +100,21 @@ public class R41GarageTests
         Assert.That(Run.VehicleModel.Inventory.Any(p=>p.Id==secondId),Is.True);
         yield return null;
     }
+    [UnityTest] public IEnumerator PointedMountedPartCanRotateWithoutChangingIdentityOrResources()
+    {
+        var cell=new Vector3Int(2,1,2);var part=Run.VehicleModel.At(cell);
+        Assert.That(part,Is.Not.Null);Assert.That(part.Kind,Is.EqualTo(R3PartKind.Armor));
+        string id=part.Id;float health=part.Health;int scrap=Run.VehicleModel.Scrap;
+        var previousTool=Run.Garage.Tool;
+        Assert.That(Run.Garage.RotatePointed(TopRay(cell),new Vector3Int(0,1,0)),Is.True);
+        var rotated=Run.VehicleModel.At(cell);
+        Assert.That(rotated.Id,Is.EqualTo(id));Assert.That(rotated.Health,Is.EqualTo(health));
+        Assert.That(rotated.RotationQuarterTurns,Is.EqualTo(new Vector3Int(0,1,0)));
+        Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(scrap));
+        Assert.That(Run.Garage.Tool,Is.EqualTo(previousTool),"Rotation must preserve the active build tool.");
+        Assert.That(Run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==id).Block.DetachedFromVehicle,Is.False);
+        yield return null;
+    }
     [UnityTest] public IEnumerator PointedRepairRemovalAndInventoryMountUseActualPartAndSurviveNextFight()
     {
         var garage=Run.Garage;var cell=new Vector3Int(2,2,2);string purchased=PurchasePart(R3PartKind.Armor);garage.ChooseInventory(purchased);
