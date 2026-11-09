@@ -100,12 +100,28 @@ namespace RoboRougelike.R4_1
         }
         // The enlarged guns scale 2x around the underside of the mounting
         // block. The solid base and physical barrel proxy use that same frame.
-        public static void ConfigureGunScale2(GameObject block,Transform pivot)
+        public static void ConfigureGunScale2(GameObject block,Transform pivot,R4WeaponKind weapon)
         {
             if(block==null)return;
             var box=block.GetComponent<BoxCollider>();
             if(box!=null){box.size=new Vector3(1.98f,1.06154f,1.98f);box.center=new Vector3(0,.03077f,0);}
-            if(pivot!=null){pivot.localPosition=Vector3.up*((.135f*2f+.26f)/BlockSize);pivot.localScale=Vector3.one*2f;}
+            if(pivot!=null)
+            {
+                pivot.localPosition=Vector3.up*((.135f*2f+.26f)/BlockSize);pivot.localScale=Vector3.one*2f;
+                // Distances measured from the source model's pitch axis to its
+                // muzzle in Unity. The pivot's 2x scale supplies the final 2x.
+                float sourceLength=weapon==R4WeaponKind.Automatic?.70f:weapon==R4WeaponKind.Heavy?.60f:.66f;
+                float localLength=sourceLength/BlockSize;
+                var muzzle=pivot.Find("Wylot");if(muzzle!=null)muzzle.localPosition=Vector3.forward*localLength;
+                foreach(Transform barrel in pivot)
+                {
+                    if(!barrel.name.StartsWith("Lufa",System.StringComparison.Ordinal))continue;
+                    var position=barrel.localPosition;position.z=localLength*.5f;
+                    if(weapon==R4WeaponKind.Automatic)position.x=Mathf.Sign(position.x)*(.06f/BlockSize);
+                    barrel.localPosition=position;
+                    var size=barrel.localScale;size.z=localLength;barrel.localScale=size;
+                }
+            }
         }
         public static Transform Payload(Transform block,R3PartKind kind,R4WeaponKind weapon,Material material,bool solid,out Transform muzzle,R3WheelStyle wheelStyle=R3WheelStyle.Offroad,bool mirrorWheel=false)
         {
