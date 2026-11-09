@@ -30,6 +30,23 @@ namespace RoboRougelike.R3
         public void Cancel(){Pressed=false;dragging=false;distance=0;}
     }
 
+    public static class R3GarageRotationInput
+    {
+        public static bool TryStep(KeyCode key,out Vector3Int step)
+        {
+            switch(key)
+            {
+                case KeyCode.Q:step=new Vector3Int(0,-1,0);return true;
+                case KeyCode.E:step=new Vector3Int(0,1,0);return true;
+                case KeyCode.R:step=new Vector3Int(1,0,0);return true;
+                case KeyCode.F:step=new Vector3Int(-1,0,0);return true;
+                case KeyCode.Z:step=new Vector3Int(0,0,-1);return true;
+                case KeyCode.X:step=new Vector3Int(0,0,1);return true;
+                default:step=default;return false;
+            }
+        }
+    }
+
     public sealed class R3GarageView : MonoBehaviour
     {
         public static Rect Viewport => new Rect(0.215625f,0.10f,0.7765625f,0.78f);
@@ -525,6 +542,17 @@ namespace RoboRougelike.R3
                 default:return null;
             }
         }
+        public bool RotatePointed(Ray ray,Vector3Int turns)
+        {
+            var prior=Tool;Tool=R41GarageTool.Inspect;
+            try
+            {
+                bool done=Point(ray)&&run.GarageRotate(Cell,turns);
+                Message=done?"Obrócono wskazaną część.":"Nie można obrócić: połączenie, miejsce lub kolizja.";
+                return done;
+            }
+            finally {Tool=prior;RefreshMarker();}
+        }
         public void HandleGuiPointer(Event current,Vector2 rawTopLeft)
         {
             if(run.Progress?.State!=R1RunState.Garage||run.Transitioning||run.Paused||run.QuitRequested)
@@ -539,29 +567,14 @@ namespace RoboRougelike.R3
             {ToggleUndersideView();current.Use();return;}
             if(current.type==EventType.KeyDown&&(Tool==R41GarageTool.Mount||current.shift))
             {
-                int axis=-1,step=1;
-                switch(current.keyCode)
+                if(R3GarageRotationInput.TryStep(current.keyCode,out var turns))
                 {
-                    case KeyCode.Q:axis=1;step=-1;break;
-                    case KeyCode.E:axis=1;break;
-                    case KeyCode.R:axis=0;break;
-                    case KeyCode.F:axis=0;step=-1;break;
-                    case KeyCode.Z:axis=2;step=-1;break;
-                    case KeyCode.X:axis=2;break;
-                }
-                if(axis>=0)
-                {
-                    if(current.shift&&inside)
+                    if(current.shift&&inside)RotatePointed(view.ScreenPointToRay(screen),turns);
+                    else if(!current.shift&&Tool==R41GarageTool.Mount)
                     {
-                        var prior=Tool;Tool=R41GarageTool.Inspect;
-                        bool found=Point(view.ScreenPointToRay(screen));
-                        var turns=axis==0?new Vector3Int(step,0,0):axis==1?new Vector3Int(0,step,0):new Vector3Int(0,0,step);
-                        bool done=found&&run.GarageRotate(Cell,turns);
-                        Tool=prior;
-                        Message=done?"Obrócono wskazaną część.":"Nie można obrócić: połączenie, miejsce lub kolizja.";
-                        RefreshMarker();
+                        int axis=turns.x!=0?0:turns.y!=0?1:2;
+                        RotateSelected(axis,axis==0?turns.x:axis==1?turns.y:turns.z);
                     }
-                    else if(!current.shift&&Tool==R41GarageTool.Mount)RotateSelected(axis,step);
                     current.Use();return;
                 }
             }
