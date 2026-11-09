@@ -14,6 +14,11 @@ public sealed class R3DamagePropagationTests
     {if(Application.isPlaying)yield return new ExitPlayMode();}
     static R3DamagePropagation.Node Part(int id,float hp,params int[] neighbours) =>
         new R3DamagePropagation.Node(id,hp,neighbours);
+    static (Vector3Int cell,string id,Vector3Int rotation) WheelDescriptor(R1RunController run)
+    {
+        var wheel=run.VehicleModel.Parts.First(p=>p!=null&&p.Kind==R3PartKind.Wheel);
+        return (wheel.Cell,wheel.Id,wheel.RotationQuarterTurns);
+    }
 
     [Test]
     public void DamageIsSharedEquallyWithoutCreatingOrLosingDamage()
@@ -97,6 +102,37 @@ public sealed class R3DamagePropagationTests
         float Core(R3DamagePropagation.Node[] graph,float fraction)=>R3DamagePropagation.Resolve(graph,0,100,fraction,2).Damage[1];
         Assert.That(Core(routed,kinetic),Is.LessThan(Core(compact,kinetic)),"A narrow route can protect the core from kinetic impacts.");
         Assert.That(Core(routed,blast),Is.GreaterThan(Core(compact,blast)),"The same route has a blast trade-off.");
+    }
+
+    [UnityTest]
+    public IEnumerator RemountedSingleContactWheelTransfersDamageThroughItsRealConnection()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        yield return VerifyRemountedWheelDamage();
+    }
+
+    static IEnumerator VerifyRemountedWheelDamage()
+    {
+        float end=Time.realtimeSinceStartup+15;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<end)yield return null;
+        var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        Assert.That(run.SelectVehicle(R3VehicleKind.Light),Is.True);
+        Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;
+        Assert.That(run.VehicleModel,Is.Not.Null);
+        var wheel=WheelDescriptor(run);
+        var cell=wheel.cell;var id=wheel.id;var rotation=wheel.rotation;
+        Assert.That(run.GarageRemove(cell),Is.True);yield return null;
+        Assert.That(run.GarageMount(id,cell,rotation),Is.True);yield return null;
+        var state=run.VehicleModel.Parts.Single(p=>p.Id==id);
+        Assert.That(state.ContactMask==R3MountingGrid.FaceBit(Vector3Int.left)||state.ContactMask==R3MountingGrid.FaceBit(Vector3Int.right),Is.True);
+        Assert.That(run.Player,Is.Not.Null);
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();Assert.That(assembly,Is.Not.Null);
+        var parts=assembly.Parts.Where(p=>p!=null&&p.Operational).ToArray();
+        foreach(var part in parts)Assert.That(part.Damageable,Is.Not.Null,part.name);
+        var before=parts.ToDictionary(p=>p.Id,p=>p.Damageable.CurrentHp);var target=parts.Single(p=>p.Id==id);
+        target.Damageable.ApplyDamage(8,target.transform.position,Vector3.forward);
+        Assert.That(before[id]-target.Damageable.CurrentHp,Is.EqualTo(6).Within(.001f));
+        Assert.That(parts.Where(p=>p!=target).Sum(p=>before[p.Id]-p.Damageable.CurrentHp),Is.EqualTo(2).Within(.001f));
     }
 
     [UnityTest]
