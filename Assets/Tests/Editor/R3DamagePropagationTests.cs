@@ -240,6 +240,38 @@ public sealed class R3DamagePropagationTests
         Assert.That(adjacent.CurrentHp,Is.EqualTo(adjacentBefore).Within(.001f),"Side-by-side wheel meshes do not form a direct socket.");
     }
 
+    [UnityTest]
+    public IEnumerator EnemyAdditionalGunTransfersThroughItsActualBase()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float end=Time.realtimeSinceStartup+20;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<end)yield return null;
+        var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        Assert.That(run.StartRun()&&run.ChooseRoute(0),Is.True);
+        while(run.Transitioning&&Time.realtimeSinceStartup<end)yield return null;
+        Assert.That(run.Transitioning,Is.False);run.Encounter.SetCombatActive(false);yield return null;
+        var enemy=run.Encounter.Enemies.First(e=>e!=null&&e.AdditionalWeapons.Count>0);
+        ValidateAdditionalGunDamage(enemy);
+    }
+
+    static void ValidateAdditionalGunDamage(RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret enemy)
+    {
+        var weapons=enemy.AdditionalWeapons;
+        var gun=weapons[0];
+        Assert.That(gun,Is.Not.Null,"The weapon entry must exist.");
+        Assert.That(gun.Block!=null,Is.True,"The additional gun must remain attached.");
+        Assert.That(gun.Support!=null,Is.True,"The gun must retain its support.");
+        var ports=gun.Block.GetComponent<R3BlockMountPoints>();Assert.That(ports,Is.Not.Null);
+        Assert.That(ports.WorldMask,Is.EqualTo(R3MountingGrid.FaceBit(Vector3Int.down)));
+        float gunBefore=gun.Block.CurrentHp,supportBefore=gun.Support.CurrentHp;
+        var others=enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>()
+            .Where(p=>p!=gun.Block&&p!=gun.Support&&!p.IsDead).ToDictionary(p=>p,p=>p.CurrentHp);
+        gun.Block.ApplyDamage(8,gun.Block.transform.position,Vector3.forward);
+        Assert.That(gunBefore-gun.Block.CurrentHp,Is.EqualTo(6).Within(.001f));
+        Assert.That(supportBefore-gun.Support.CurrentHp,Is.EqualTo(1.5f).Within(.001f),"The base retains its share before the next hop.");
+        Assert.That(others.Where(p=>p.Key!=null).Sum(p=>p.Value-p.Key.CurrentHp),Is.EqualTo(.5f).Within(.001f),"The remainder reaches the next connected ring.");
+    }
+
     static void ValidateEnemyHit(R1RunController run)
     {
         var enemy=run.Encounter.Enemies.First();

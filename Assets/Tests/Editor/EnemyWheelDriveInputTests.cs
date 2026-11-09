@@ -88,6 +88,8 @@ public sealed class EnemyWheelDriveInputTests
             Physics.SyncTransforms();
             RoboRougelike.WeaponIntegration.RRLEnemyDeviceMount.Attach(gun,root.transform,new R3PartState(Vector3Int.zero,R3PartKind.Gun));
             Assert.That(gun.transform.parent,Is.EqualTo(armor.transform),"A wheel has only an inward axle socket, not a top device socket.");
+            Assert.That(gun.GetComponent<R3BlockMountPoints>()?.WorldMask,Is.EqualTo(R3MountingGrid.FaceBit(Vector3Int.down)),
+                "An enemy gun connects through its base, just like a newly mounted player gun.");
         }
         finally{Object.DestroyImmediate(root);}
     }

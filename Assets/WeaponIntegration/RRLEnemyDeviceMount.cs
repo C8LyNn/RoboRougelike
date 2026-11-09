@@ -44,6 +44,12 @@ namespace RoboRougelike.WeaponIntegration
                 if(blocked)continue;
                 item.transform.SetPositionAndRotation(center,rotation);
                 item.transform.SetParent(support.transform,true);
+                if(state.Kind==R3PartKind.Gun)
+                {
+                    var ports=item.GetComponent<R3BlockMountPoints>();
+                    if(ports==null)ports=item.AddComponent<R3BlockMountPoints>();
+                    ports.Configure(null,R3MountingGrid.FaceBit(Vector3Int.down));
+                }
                 return true;
             }
             return false;
