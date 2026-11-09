@@ -71,4 +71,24 @@ public sealed class EnemyWheelDriveInputTests
         }
         finally{Object.DestroyImmediate(root);}
     }
+
+    [Test]
+    public void EnemyDevicesChooseChassisEvenWhenAParentWheelIsCloser()
+    {
+        var root=new GameObject("enemy");root.AddComponent<P12PipelineSafeEnemyTurret>();
+        try
+        {
+            var chassis=new GameObject("Base");chassis.transform.SetParent(root.transform);
+            var wheel=GameObject.CreatePrimitive(PrimitiveType.Cube);wheel.name="Koło przeciwnika";
+            wheel.transform.SetParent(chassis.transform);wheel.AddComponent<P12PipelineSafeDamageable>().Configure(100,true);
+            var armor=GameObject.CreatePrimitive(PrimitiveType.Cube);armor.name="P12_EnemyBlock";
+            armor.transform.SetParent(chassis.transform);armor.transform.position=Vector3.right*2;
+            armor.AddComponent<P12PipelineSafeDamageable>().Configure(100,true);
+            var gun=new GameObject("gun");gun.transform.SetParent(root.transform);gun.transform.position=Vector3.up;
+            Physics.SyncTransforms();
+            RoboRougelike.WeaponIntegration.RRLEnemyDeviceMount.Attach(gun,root.transform,new R3PartState(Vector3Int.zero,R3PartKind.Gun));
+            Assert.That(gun.transform.parent,Is.EqualTo(armor.transform),"A wheel has only an inward axle socket, not a top device socket.");
+        }
+        finally{Object.DestroyImmediate(root);}
+    }
 }
