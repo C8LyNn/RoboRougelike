@@ -189,7 +189,7 @@ namespace RoboRougelike.B01.GarageSpatialW28
             // A filled cube hides the wedge and other shaped armor ghosts.
             // Their actual preview mesh already carries the valid/invalid tint.
             if(source.MountKind!=R3PartKind.Armor||source.MountArmorShape==R3ArmorShape.Cube)
-                foreach(var cell in R3VehicleModel.OccupiedCells(source.Cell,source.MountKind,source.SelectedRotation))
+                foreach(var cell in source.CandidateOccupiedCells())
                     Add(tint,partRoot.TransformPoint((Vector3)cell*CellMeters),orientation,
                         Vector3.one*(R41PartGeometry.BlockSize+.025f));
             // Show green trusted socket faces only near a candidate that the real
@@ -197,14 +197,13 @@ namespace RoboRougelike.B01.GarageSpatialW28
             // grants permission by itself and cannot override a red host rejection.
             if(tint==B0112ZoneKind.ValidGreen)
             {
-                var candidate=new R3PartState(source.Cell,source.MountKind){
-                    RotationQuarterTurns=source.SelectedRotation,ContactMask=source.SelectedContactMask};
+                var candidate=source.CandidatePart();
                 foreach(var cell in R3VehicleModel.OccupiedCells(candidate))
                 foreach(var direction in R3MountingGrid.FaceDirections)
                 {
                     var support=model.At(cell+direction);
                     if(support==null||support.Health<=0||support.Kind==R3PartKind.Gun||support.Kind==R3PartKind.Wheel||
-                       !R3MountingGrid.Compatible(candidate,support,direction))continue;
+                       !R3MountingGrid.Compatible(candidate,cell,support,cell+direction))continue;
                     var face=partRoot.TransformPoint(((Vector3)cell+(Vector3)direction*.5f)*CellMeters);
                     var facing=orientation*Quaternion.LookRotation((Vector3)direction,
                         direction.y!=0?Vector3.forward:Vector3.up);

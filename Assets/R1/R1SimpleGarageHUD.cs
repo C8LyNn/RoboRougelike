@@ -208,7 +208,8 @@ namespace RoboRougelike.R1
 
         static string GarageWheelStats(R3PartState part)=>
             $"{R4WeaponDefinition.WheelName(part.WheelStyle)} T{R3VehicleModel.NormalizedTier(part.Tier)} • {R4WeaponDefinition.PartMass(part):0.#} kg\n"+
-            $"Siła {100*R3VehicleModel.WheelTraction(part.WheelStyle)*R3VehicleModel.TierWheelTraction(part.Tier):0}% przy 100% HP";
+            $"Siła {100*R3VehicleModel.WheelTraction(part.WheelStyle)*R3VehicleModel.TierWheelTraction(part.Tier):0}% przy 100% HP"+
+            (part.WheelStyle==R3WheelStyle.Monster?(part.FootprintRevision==1?" • obrys 3×3":" • starszy obrys 1 pole"):"");
 
         static string GarageWheelSelection(R3PartState part)
         {
@@ -289,7 +290,7 @@ namespace RoboRougelike.R1
                     kind==R3PartKind.Wheel&&CatalogWheelStyle(bonus)==R3WheelStyle.SpikedFork?"Koło z kolcami: 12 kg, mocowanie od góry. Kolce są wizualne.":
                     kind==R3PartKind.Wheel&&CatalogWheelStyle(bonus)==R3WheelStyle.BalloonFork?"Koło balonowe: 16 kg, +15% siły przyczepności. Mocowanie od góry.":
                     kind==R3PartKind.Wheel&&CatalogWheelStyle(bonus)==R3WheelStyle.SmallFork?"Małe koło: 6 kg, −35% siły przyczepności. Mocowanie od góry.":
-                    kind==R3PartKind.Wheel&&CatalogWheelStyle(bonus)==R3WheelStyle.Monster?"Koło monster XL: 24 kg, +50% siły przyczepności. Kup część.":
+                    kind==R3PartKind.Wheel&&CatalogWheelStyle(bonus)==R3WheelStyle.Monster?"Koło monster XL: 24 kg, +50% przyczepności; zajmuje 3×3 pola. Kup część.":
                     kind==R3PartKind.Wheel&&CatalogWheelStyle(bonus)==R3WheelStyle.LargeOffroad?"Duże koło: 18 kg, +25% siły przyczepności. Kup część.":"Brak sprawnej części w magazynie. Kup nową lub otwórz szczegóły.";}
         }
 

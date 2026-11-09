@@ -1,0 +1,49 @@
+using System.Linq;
+using NUnit.Framework;
+using RoboRougelike.R3;
+using UnityEngine;
+
+public sealed class R3MultiCellWheelTests
+{
+    static R3PartState Monster(Vector3Int cell)=>new R3PartState(cell,R3PartKind.Wheel){
+        WheelStyle=R3WheelStyle.Monster,FootprintRevision=1,
+        ContactMask=R3MountingGrid.FaceBit(Vector3Int.left)|R3MountingGrid.FaceBit(Vector3Int.right)};
+
+    [Test] public void MonsterOccupiesNineRotatingCellsButKeepsOneIdentity()
+    {
+        var wheel=Monster(new Vector3Int(1,1,0));string id=wheel.Id;
+        var flat=R3VehicleModel.OccupiedCells(wheel).ToArray();
+        Assert.That(flat.Distinct().Count(),Is.EqualTo(9));
+        Assert.That(flat,Does.Contain(new Vector3Int(1,0,-1)));
+        Assert.That(flat,Does.Contain(new Vector3Int(1,2,1)));
+        wheel.RotationQuarterTurns=new Vector3Int(0,1,0);
+        var rotated=R3VehicleModel.OccupiedCells(wheel).ToArray();
+        Assert.That(rotated.Distinct().Count(),Is.EqualTo(9));
+        Assert.That(rotated,Is.EquivalentTo(flat.Select(cell=>wheel.Cell+R3MountingGrid.Rotate(cell-wheel.Cell,wheel.RotationQuarterTurns))));
+        Assert.That(wheel.Id,Is.EqualTo(id));
+    }
+
+    [Test] public void TireCellsAreOccupiedButDoNotBecomeMountingSockets()
+    {
+        var core=new R3PartState(new Vector3Int(0,1,0),R3PartKind.Core);
+        var wheel=Monster(new Vector3Int(1,1,0));
+        var unsupported=new R3PartState(new Vector3Int(1,3,0),R3PartKind.Armor);
+        Assert.That(R3VehicleModel.Connected(new[]{core,wheel}),Is.True,"The central axle connects to the chassis.");
+        Assert.That(R3VehicleModel.Connected(new[]{core,wheel,unsupported}),Is.False,"The tire's outer cell is not a socket.");
+    }
+
+    [Test] public void NewAndLegacyFootprintsRoundTripWithoutReinterpretingOldItems()
+    {
+        var design=new R3VehicleDesign{Name="test",CoreHp=100,Speed=7.5f,TurnSpeed=82};
+        design.Parts.Add(new R3PartState(new Vector3Int(0,1,0),R3PartKind.Core));
+        design.Parts.Add(Monster(new Vector3Int(1,1,0)));
+        var source=new R3VehicleModel(design);var saved=JsonUtility.FromJson<R3ModelCheckpoint>(JsonUtility.ToJson(source.MakeCheckpoint(0)));
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(saved,R3VehicleKind.Light,null,0,out var restored,out var error),Is.True,error);
+        var wheel=restored.Parts.Single(p=>p.Kind==R3PartKind.Wheel);
+        Assert.That(wheel.FootprintRevision,Is.EqualTo(1));Assert.That(R3VehicleModel.OccupiedCells(wheel).Count(),Is.EqualTo(9));
+        wheel.FootprintRevision=0;Assert.That(R3VehicleModel.OccupiedCells(wheel).Count(),Is.EqualTo(1),"Old saved items retain their footprint.");
+        Assert.That(R3VehicleModel.SameFusionType(wheel,source.Parts.Single(p=>p.Kind==R3PartKind.Wheel)),Is.False);
+        saved.mounted.Single(p=>p.Kind==R3PartKind.Wheel).FootprintRevision=99;
+        Assert.That(R3VehicleModel.TryRestoreCheckpoint(saved,R3VehicleKind.Light,null,0,out _,out _),Is.False,"Unknown footprint revisions fail closed.");
+    }
+}

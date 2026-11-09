@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using RogueMachine.P12PipelineSafe;
 
@@ -59,6 +60,26 @@ namespace RoboRougelike.R3
         public static bool Compatible(R3PartState a,R3PartState b,Vector3Int direction) =>
             a!=null&&b!=null&&(ReferenceEquals(a,b)||
             (PortOnFace(a,direction)&&PortOnFace(b,-direction)));
+
+        public static bool PortOnFace(R3PartState part,Vector3Int occupiedCell,Vector3Int worldDirection)
+        {
+            if(part==null||!R3VehicleModel.OccupiedCells(part).Contains(occupiedCell))return false;
+            // The Monster tire occupies surrounding cells but is attached only
+            // through the side socket at its axle anchor.
+            if(part.FootprintRevision==1&&occupiedCell!=part.Cell)return false;
+            return PortOnFace(part,worldDirection);
+        }
+
+        public static bool Compatible(R3PartState a,Vector3Int aCell,R3PartState b,Vector3Int bCell,
+            Func<R3PartState,IEnumerable<Vector3Int>> footprint=null)
+        {
+            var direction=bCell-aCell;if(a==null||b==null||direction.sqrMagnitude!=1)return false;
+            footprint??=R3VehicleModel.OccupiedCells;
+            if(!footprint(a).Contains(aCell)||!footprint(b).Contains(bCell))return false;
+            if(ReferenceEquals(a,b))return true;
+            if((a.FootprintRevision==1&&aCell!=a.Cell)||(b.FootprintRevision==1&&bCell!=b.Cell))return false;
+            return PortOnFace(a,direction)&&PortOnFace(b,-direction);
+        }
 
         /// <summary>
         /// The existing P12 vehicle graph uses this adapter to mirror exactly

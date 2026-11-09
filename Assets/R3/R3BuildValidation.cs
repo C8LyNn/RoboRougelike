@@ -42,7 +42,7 @@ namespace RoboRougelike.R3
         }
         BuildDefinition Definition(R3PartState part)
         {
-            string key=part.Kind+"/"+part.ContactMask+"/"+part.ArmorShape+"/"+part.WheelStyle+"/"+part.Weapon;
+            string key=part.Kind+"/"+part.ContactMask+"/"+part.ArmorShape+"/"+part.WheelStyle+"/"+part.Weapon+"/"+part.FootprintRevision;
             if(definitions.TryGetValue(key,out var known))return known;
             if(part.Kind==R3PartKind.Armor&&part.ArmorShape!=R3ArmorShape.Cube)
             {
@@ -57,12 +57,14 @@ namespace RoboRougelike.R3
             var role=part.Kind==R3PartKind.Core?BuildRole.Core:part.Kind==R3PartKind.Armor?BuildRole.Armor:
                 part.Kind==R3PartKind.Wheel?BuildRole.Wheel:part.Kind==R3PartKind.Gun?BuildRole.Gun:
                 part.Kind==R3PartKind.Suspension?BuildRole.Suspension:BuildRole.Device;
-            var cells=R3VehicleModel.OccupiedCells(Vector3Int.zero,part.Kind).ToArray();
+            var local=part.Copy();local.Cell=Vector3Int.zero;local.RotationQuarterTurns=Vector3Int.zero;
+            var cells=R3VehicleModel.OccupiedCells(local).ToArray();
             var occupied=new HashSet<Vector3Int>(cells);var patches=new List<BuildSocket>();
             foreach(var cell in cells)
             foreach(var face in R3MountingGrid.FaceDirections)
             {
-                if(occupied.Contains(cell+face)||(part.ContactMask&R3MountingGrid.FaceBit(face))==0)continue;
+                if(occupied.Contains(cell+face)||(part.FootprintRevision==1&&cell!=Vector3Int.zero)||
+                    (part.ContactMask&R3MountingGrid.FaceBit(face))==0)continue;
                 var kind=role==BuildRole.Wheel?BuildSocketKind.Axle:role==BuildRole.Gun?BuildSocketKind.WeaponBase:
                     role==BuildRole.Suspension?BuildSocketKind.SuspensionBase:BuildSocketKind.Structural;
                 patches.Add(new BuildSocket(cell,face,kind,new Vector2(.47f,.47f)));
@@ -286,7 +288,8 @@ namespace RoboRougelike.R3
             var occupied=new HashSet<Vector3Int>(gate.model.Parts.SelectMany(R3VehicleModel.OccupiedCells));
             var reachable=BuildPlacementRules.Reachable(gate.Installed());
             var definition=gate.Definition(candidate);
-            var offsets=R3VehicleModel.OccupiedCells(Vector3Int.zero,candidate.Kind,candidate.RotationQuarterTurns).ToArray();
+            var atOrigin=candidate.Copy();atOrigin.Cell=Vector3Int.zero;
+            var offsets=R3VehicleModel.OccupiedCells(atOrigin).ToArray();
             var seen=new HashSet<(Vector3Int,Vector3Int)>();
             foreach(var face in gate.socketFaces)
             {
@@ -305,7 +308,8 @@ namespace RoboRougelike.R3
                 foreach(var offset in offsets)
                 {
                     var anchor=cell+direction-offset;
-                    var candidateCells=R3VehicleModel.OccupiedCells(anchor,candidate.Kind,candidate.RotationQuarterTurns);
+                    var atAnchor=candidate.Copy();atAnchor.Cell=anchor;
+                    var candidateCells=R3VehicleModel.OccupiedCells(atAnchor);
                     if(candidateCells.Any(c=>occupied.Contains(c)||System.Math.Abs(c.x)>6||
                         System.Math.Abs(c.z)>7||c.y<0||c.y>5))continue;
                     if(!BuildSocketGeometry.Touches(support,new BuildPose(state.Cell,state.RotationQuarterTurns),

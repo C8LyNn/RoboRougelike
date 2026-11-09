@@ -26,7 +26,7 @@ namespace RoboRougelike.R3
                 var current=queue.Dequeue();
                 foreach(var cell in footprint(current))foreach(var direction in R3MountingGrid.FaceDirections)
                     if(cells.TryGetValue(cell+direction,out var next)&&!reached.Contains(next.Id)&&
-                        (!deadOnly||next.Health<=0)&&R3MountingGrid.Compatible(current,next,direction))
+                        (!deadOnly||next.Health<=0)&&R3MountingGrid.Compatible(current,cell,next,cell+direction,footprint))
                     {reached.Add(next.Id);queue.Enqueue(next);}
             }
             return reached;
@@ -129,7 +129,7 @@ namespace RoboRougelike.R3
         static bool Finite(float value)=>!float.IsNaN(value)&&!float.IsInfinity(value);
         static bool ValidCheckpointPart(R3PartState p)
         {
-            return p!=null&&!string.IsNullOrWhiteSpace(p.Id)&&p.Id.Length<=128&&ValidEconomicKind(p.Kind,p.Weapon)&&ValidWheelStyle(p)&&ValidArmorShape(p)&&
+            return p!=null&&!string.IsNullOrWhiteSpace(p.Id)&&p.Id.Length<=128&&ValidEconomicKind(p.Kind,p.Weapon)&&ValidWheelStyle(p)&&ValidArmorShape(p)&&ValidFootprint(p)&&
                 p.Tier>=0&&p.Tier<=3&&(p.Tier<=1||SupportsFusion(p.Kind,p.Weapon))&&
                 Finite(p.Health)&&p.Health>=0&&p.Health<=1&&Finite(p.DeviceReadyAt)&&p.DeviceReadyAt>=0&&
                 Finite(p.ReloadReadyAt)&&p.ReloadReadyAt>=0&&Finite(p.DisruptionRemaining)&&p.DisruptionRemaining>=0&&
@@ -154,6 +154,7 @@ namespace RoboRougelike.R3
                 !Finite(data.hoverHeight)||data.hoverHeight<.7f||data.hoverHeight>1.6f||
                 !Finite(data.grappleRemaining)||data.grappleRemaining<0)return false;
             var all=data.mounted.Concat(data.inventory).ToArray();
+            if(data.energyVersion==0&&all.Any(p=>p!=null&&p.FootprintRevision!=0))return false;
             if(all.Any(p=>!ValidCheckpointPart(p))||all.Select(p=>p.Id).Distinct(StringComparer.Ordinal).Count()!=all.Length||
                 data.mounted.Count(p=>p.Kind==R3PartKind.Core)!=1||data.inventory.Any(p=>p.Kind==R3PartKind.Core)||
                 data.mounted.Where(p=>p.Kind==R3PartKind.Gun).Select(p=>p.Weapon).Distinct().Count()>2||
