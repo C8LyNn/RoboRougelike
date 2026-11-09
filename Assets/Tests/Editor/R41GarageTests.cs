@@ -139,6 +139,35 @@ public class R41GarageTests
         yield return null;
     }
 
+    [UnityTest] public IEnumerator CrowdedGaragePointerAllocationDiagnostic()
+    {
+        var garage=Run.Garage;string id=PurchasePart(R3PartKind.Armor);garage.ChooseInventory(id);
+        var ray=TopRay(new Vector3Int(2,1,2));
+        var obstacles=new GameObject("Crowded garage allocation fixture");
+        try
+        {
+            for(int i=0;i<520;i++)
+            {
+                var child=new GameObject("overlap "+i);child.transform.SetParent(obstacles.transform,false);
+                child.transform.position=ray.GetPoint(.1f+i*.004f);
+                var collider=child.AddComponent<BoxCollider>();collider.size=Vector3.one*.01f;collider.isTrigger=true;
+            }
+            Physics.SyncTransforms();
+            Assert.That(Physics.RaycastAll(ray,100,~0,QueryTriggerInteraction.Collide).Length,Is.GreaterThan(512));
+            for(int i=0;i<3;i++)Assert.That(garage.Point(ray),Is.True);
+            using(var recorder=Unity.Profiling.ProfilerRecorder.StartNew(Unity.Profiling.ProfilerCategory.Memory,"GC Allocated In Frame",16))
+            {
+                Assert.That(recorder.Valid,Is.True);yield return null;yield return null;long idle=recorder.LastValue;
+                bool ok=true;for(int i=0;i<20;i++)ok&=garage.Point(ray);
+                yield return null;long sample=recorder.LastValue;
+                var control=new byte[1024*1024];control[0]=1;yield return null;long controlBytes=recorder.LastValue;GC.KeepAlive(control);
+                Debug.Log($"[GARAGE_QUERY_ALLOC] queries=20 colliders=520 idle={idle} sample={sample} control={controlBytes}");
+                Assert.That(controlBytes,Is.GreaterThanOrEqualTo(1024*1024));Assert.That(ok,Is.True);
+            }
+        }
+        finally{UnityEngine.Object.Destroy(obstacles);}
+    }
+
     [UnityTest] public IEnumerator FullRaycastBufferCannotAuthorizeAHiddenMountTarget()
     {
         var garage=Run.Garage;string id=PurchasePart(R3PartKind.Armor);garage.ChooseInventory(id);
