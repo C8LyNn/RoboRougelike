@@ -89,6 +89,10 @@ namespace RogueMachine.P12PipelineSafe
             float amount,
             Vector3 hitPoint,
             Vector3 hitDirection)
+        { return ApplyDamageResolvedTyped(amount,hitPoint,hitDirection,RoboRougelike.R3.R3DamagePropagation.DamageKind.Kinetic); }
+
+        public float ApplyDamageResolvedTyped(float amount,Vector3 hitPoint,Vector3 hitDirection,
+            RoboRougelike.R3.R3DamagePropagation.DamageKind damageKind)
         {
             if (dead || amount<=0 || float.IsNaN(amount) || float.IsInfinity(amount))
                 return 0;
@@ -101,20 +105,35 @@ namespace RogueMachine.P12PipelineSafe
                 amount=Mathf.Min(amount,filtered);
             }
 
-            currentHp -= Mathf.Max(0f, amount);
+            var structure=GetComponentInParent<P12PipelineSafeVehicleStructure>();
+            if(structure!=null&&structure.TryRouteDamage(this,amount,hitPoint,hitDirection,damageKind))
+                return amount;
+
+            StageRoutedDamage(amount);
+            FinishRoutedDamage(hitPoint,hitDirection);
+            return amount;
+        }
+
+        // An impact stages all connected HP changes before any death callback
+        // can detach pieces or alter the graph used by this same impact.
+        internal void StageRoutedDamage(float amount)
+        { if(!dead)currentHp=Mathf.Max(0,currentHp-Mathf.Max(0,amount)); }
+
+        internal void FinishRoutedDamage(Vector3 hitPoint,Vector3 hitDirection)
+        {
+            if(dead)return;
             RoboRougelike.R6.R6CombatFeedback.Hit(this,hitPoint,currentHp<=0);
 
             if (currentHp <= 0f)
             {
                 Die(hitPoint, hitDirection);
-                return amount;
+                return;
             }
 
             if (flashRoutine != null)
                 StopCoroutine(flashRoutine);
 
             flashRoutine = StartCoroutine(DamageFlash());
-            return amount;
         }
 
         private IEnumerator DamageFlash()

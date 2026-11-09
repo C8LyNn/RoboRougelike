@@ -22,6 +22,9 @@ public class RRLW6ShieldModelTests
 
 public class RRLW6ShieldPhysicalTests
 {
+    static float TotalHealth(R3VehicleAssembly assembly)=>assembly.Parts
+        .Where(p=>p!=null&&p.Damageable!=null&&!p.Damageable.IsDead)
+        .Sum(p=>p.Damageable.CurrentHp);
     [UnitySetUp] public IEnumerator Setup()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
@@ -48,15 +51,20 @@ public class RRLW6ShieldPhysicalTests
         var generator=part.GetComponent<DirectionalShieldGenerator>();Assert.That(generator,Is.Not.Null);
         var target=assembly.Parts.First(p=>p.Kind==R3PartKind.Armor&&p.transform.position.z>part.transform.position.z+.5f&&Vector3.Distance(p.transform.position,part.transform.position)<8);
         float before=target.Damageable.CurrentHp;
+        float totalBefore=TotalHealth(assembly);
         target.Damageable.ApplyDamage(40,target.transform.position,Vector3.back);
         Assert.That(target.Damageable.CurrentHp,Is.EqualTo(before),"Front damage must be intercepted before HP");
+        Assert.That(TotalHealth(assembly),Is.EqualTo(totalBefore).Within(.001f),"A blocked hit must not leak to neighbours.");
         Assert.That(generator.Charge,Is.EqualTo(60).Within(.001));
         target.Damageable.ApplyDamage(40,target.transform.position,Vector3.forward);
-        Assert.That(target.Damageable.CurrentHp,Is.EqualTo(before-40),"Rear damage passes the directional arc");
-        part.Damageable.ApplyDamage(10000,part.transform.position,Vector3.up);
+        Assert.That(target.Damageable.CurrentHp,Is.EqualTo(before-30).Within(.001f),"Rear damage reaches the target and connected parts.");
+        Assert.That(TotalHealth(assembly),Is.EqualTo(totalBefore-40).Within(.001f),"The shield cannot multiply or delete a rear hit.");
+        part.Damageable.ApplyDamage(part.Damageable.CurrentHp/.75f+1,part.transform.position,Vector3.up);
         Assert.That(generator.Operational,Is.False,"Death disables defense in the same damage operation");
-        target.Damageable.ApplyDamage(40,target.transform.position,Vector3.back);
-        Assert.That(target.Damageable.CurrentHp,Is.EqualTo(before-80));
+        before=target.Damageable.CurrentHp;totalBefore=TotalHealth(assembly);
+        target.Damageable.ApplyDamage(10,target.transform.position,Vector3.back);
+        Assert.That(target.Damageable.CurrentHp,Is.EqualTo(before-7.5f).Within(.001f));
+        Assert.That(TotalHealth(assembly),Is.EqualTo(totalBefore-10).Within(.001f));
         assembly.Capture();int scrap=model.Scrap;
         Assert.That(model.Repair(part.Cell),Is.True);Assert.That(model.Scrap,Is.EqualTo(scrap-21));
         var restored=R3VehicleAssembly.Build(model.DeepCopy(),new R1RunStats(),run.GetComponent<R3VisualPalette>(),new Vector3(150,1,100),Quaternion.identity);

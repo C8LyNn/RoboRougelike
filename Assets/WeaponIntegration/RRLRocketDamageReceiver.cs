@@ -16,7 +16,8 @@ namespace RoboRougelike.WeaponIntegration
             Transform source=binding!=null?binding.Device.Owner:attacker!=null?attacker.transform:null;
             Vector3 direction=impulse.sqrMagnitude>.000001f?impulse.normalized:source!=null?(point-source.position).normalized:Vector3.up;
             var body=target.attachedRigidbody;
-            if(RRLHitRouter.Apply(target,damage,point,direction,source)&&body!=null&&!body.isKinematic)
+            if(RRLHitRouter.ApplyTyped(target,damage,point,direction,source,
+                RoboRougelike.R3.R3DamagePropagation.DamageKind.Blast)&&body!=null&&!body.isKinematic)
                 body.AddForceAtPosition(impulse,point,ForceMode.Impulse);
         }
     }

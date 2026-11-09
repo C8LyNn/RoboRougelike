@@ -32,7 +32,8 @@ namespace RoboRougelike.WeaponIntegration
                 // Chassis resistance is integration tuning, read from existing physical HP.
                 var impact=RailgunRules.Evaluate(energy,Mathf.Clamp(hp.MaxHp*.2f,5,60),shot.Spec.DamagePerEnergy,shot.Spec.MaxDamagePerPart,visited.Count-1,shot.Spec.MaxDistinctParts,shot.Spec.MinEnergyToContinue,true);
                 float requested=impact.Damage*damageScale;
-                float settled=hp.ApplyDamageResolved(requested,hit.point,direction);
+                float settled=hp.ApplyDamageResolvedTyped(requested,hit.point,direction,
+                    RoboRougelike.R3.R3DamagePropagation.DamageKind.Piercing);
                 float absorbed=Mathf.Max(0,requested-settled);
                 energy=Mathf.Max(0,impact.RemainingEnergy-absorbed/Mathf.Max(.001f,shot.Spec.DamagePerEnergy*damageScale));
                 if(!impact.Continues||settled<=0||energy<=shot.Spec.MinEnergyToContinue){Stop();return;}
