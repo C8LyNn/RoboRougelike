@@ -4,10 +4,37 @@ using System.Collections.Generic;
 using System.Linq;
 using B01.BUILD001;
 using NUnit.Framework;
+using RoboRougelike.R3;
+using RoboRougelike.R4_1;
 using UnityEngine;
 
 public sealed class R4MountDefinitionAdapterTests
 {
+    [Test] public void CatalogCellMasksRotateWithTheActualMultiCellShape()
+    {
+        for(int x=0;x<4;x++)for(int y=0;y<4;y++)for(int z=0;z<4;z++)
+        {
+            var turns=new Vector3Int(x,y,z);
+            Assert.That(R4MountDefinitionAdapter.TryCreateCellPortMasks("R4B_Beam2",true,turns,out var masks),Is.True);
+            var far=R3MountingGrid.Rotate(Vector3Int.right,turns);
+            var left=R3MountingGrid.Rotate(Vector3Int.left,turns);
+            Assert.That(masks.Count,Is.EqualTo(2));
+            Assert.That((masks[Vector3Int.zero]&R3MountingGrid.FaceBit(left))!=0,Is.True);
+            Assert.That((masks[Vector3Int.zero]&R3MountingGrid.FaceBit(far))!=0,Is.False,"The internal face is not an external socket.");
+            Assert.That((masks[far]&R3MountingGrid.FaceBit(far))!=0,Is.True);
+            Assert.That((masks[far]&R3MountingGrid.FaceBit(left))!=0,Is.False);
+        }
+    }
+
+    [Test] public void ModuleMasksExcludePartialAndQuarantinedCatalogPatches()
+    {
+        Assert.That(R4MountDefinitionAdapter.TryCreateCellPortMasks("R4B_Wedge",false,default,out var structural),Is.True);
+        Assert.That(R4MountDefinitionAdapter.TryCreateCellPortMasks("R4B_Wedge",true,default,out var module),Is.True);
+        int right=R3MountingGrid.FaceBit(Vector3Int.right);
+        Assert.That(structural[Vector3Int.zero]&right,Is.Not.Zero);
+        Assert.That(module[Vector3Int.zero]&right,Is.Zero);
+        Assert.That(R4MountDefinitionAdapter.TryCreateCellPortMasks("R4B_HexColumn",false,default,out _),Is.False);
+    }
     private static bool Create(string id, bool moduleSupport, out BuildDefinition definition)
     {
         var type = Type.GetType("RoboRougelike.R4_1.R4MountDefinitionAdapter, Assembly-CSharp");

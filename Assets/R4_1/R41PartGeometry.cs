@@ -13,7 +13,7 @@ namespace RoboRougelike.R4_1
         public const int WedgeFullContacts=(1<<3)|(1<<5);
         private static readonly System.Collections.Generic.Dictionary<R3ArmorShape,Mesh> armorMeshes=new System.Collections.Generic.Dictionary<R3ArmorShape,Mesh>();
         private static readonly System.Collections.Generic.Dictionary<R3ArmorShape,int> armorContacts=new System.Collections.Generic.Dictionary<R3ArmorShape,int>();
-        private static string ArmorId(R3ArmorShape shape)=>shape switch {
+        public static string ArmorCatalogId(R3ArmorShape shape)=>shape switch {
             R3ArmorShape.Wedge=>"R4B_Wedge",R3ArmorShape.HalfBlock=>"R4B_HalfBlock",
             R3ArmorShape.Pyramid=>"R4B_Pyramid",R3ArmorShape.RoundEdge=>"R4B_RoundEdge",
             R3ArmorShape.HalfWedge=>"R4B_HalfWedge",R3ArmorShape.Dome=>"R4B_Dome",_=>null};
@@ -25,14 +25,14 @@ namespace RoboRougelike.R4_1
         public static int FullArmorContacts(R3ArmorShape shape)
         {
             if(armorContacts.TryGetValue(shape,out var cached))return cached;
-            var id=ArmorId(shape);if(id==null||!R4MountDefinitionAdapter.TryCreate(id,true,out var definition))return 0;
+            var id=ArmorCatalogId(shape);if(id==null||!R4MountDefinitionAdapter.TryCreate(id,true,out var definition))return 0;
             int mask=0;foreach(var socket in definition.Sockets)mask|=R3MountingGrid.FaceBit(socket.Face);
             armorContacts[shape]=mask;return mask;
         }
         private static Mesh ArmorMesh(R3ArmorShape shape)
         {
             if(armorMeshes.TryGetValue(shape,out var known)&&known!=null)return known;
-            var id=ArmorId(shape);var source=Resources.Load<TextAsset>("R4Art/BlockColliders");
+            var id=ArmorCatalogId(shape);var source=Resources.Load<TextAsset>("R4Art/BlockColliders");
             if(id==null||source==null||!R4ColliderMeshFactory.TryCreate(source.text,id,out var meshes,out _))return null;
             if(meshes.Length!=1){foreach(var mesh in meshes)if(mesh!=null)Object.Destroy(mesh);return null;}
             var result=meshes[0];var vertices=result.vertices;
