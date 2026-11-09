@@ -334,6 +334,10 @@ namespace RogueMachine.P12PipelineSafe
             var hp=part.AddComponent<P12PipelineSafeDamageable>();hp.Configure(wheel?75:100,true);
             if(wheel)
             {
+                // Generated enemy wheels attach at the axle to the adjoining
+                // chassis cell, not to every neighbouring face of their cube.
+                var inward=cell.x<0?Vector3Int.right:Vector3Int.left;
+                part.AddComponent<R3BlockMountPoints>().Configure(null,R3MountingGrid.FaceBit(inward));
                 var visual=new GameObject("Obrót koła");visual.transform.SetParent(part.transform,false);
                 visual.AddComponent<MeshFilter>().sharedMesh=part.GetComponent<MeshFilter>().sharedMesh;
                 visual.AddComponent<MeshRenderer>().sharedMaterial=material;
