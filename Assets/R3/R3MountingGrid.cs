@@ -64,7 +64,7 @@ namespace RoboRougelike.R3
         public static bool PortOnFace(R3PartState part,Vector3Int occupiedCell,Vector3Int worldDirection)
         {
             if(part==null||!R3VehicleModel.OccupiedCells(part).Contains(occupiedCell))return false;
-            // The Monster tire occupies surrounding cells but is attached only
+            // A large side tire occupies surrounding cells but is attached only
             // through the side socket at its axle anchor.
             if(part.FootprintRevision==1&&occupiedCell!=part.Cell)return false;
             return PortOnFace(part,worldDirection);

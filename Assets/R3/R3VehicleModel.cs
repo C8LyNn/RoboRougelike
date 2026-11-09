@@ -27,7 +27,7 @@ namespace RoboRougelike.R3
         public R4WeaponKind Weapon;
         public R3WheelStyle WheelStyle;
         // Zero is the one-cell footprint written by all existing saves.
-        // Revision 1 is reserved for the physical 3x3 Monster wheel pilot.
+        // Revision 1 reserves a 3x3 tire plane for large side wheels.
         public int FootprintRevision;
         public R3ArmorShape ArmorShape;
         // A bonus is a physical, single inventory item occupying one grid cell.
@@ -207,7 +207,7 @@ namespace RoboRougelike.R3
         }
         public static IEnumerable<Vector3Int> OccupiedCells(R3PartState part)
         {
-            if(part.FootprintRevision==1&&part.Kind==R3PartKind.Wheel&&part.WheelStyle==R3WheelStyle.Monster)
+            if(part.FootprintRevision==1&&part.Kind==R3PartKind.Wheel&&HasSizedSideWheel(part.WheelStyle))
             {
                 for(int y=-1;y<=1;y++)for(int z=-1;z<=1;z++)
                     yield return part.Cell+R3MountingGrid.Rotate(new Vector3Int(0,y,z),part.RotationQuarterTurns);
@@ -242,7 +242,7 @@ namespace RoboRougelike.R3
             (part.Kind==R3PartKind.Wheel?(!HasForkMount(part.WheelStyle)||part.ContactMask==R3MountingGrid.FaceBit(Vector3Int.up)):
                 part.WheelStyle==R3WheelStyle.Offroad);
         public static bool ValidFootprint(R3PartState part)=>part!=null&&(part.FootprintRevision==0||
-            (part.FootprintRevision==1&&part.Kind==R3PartKind.Wheel&&part.WheelStyle==R3WheelStyle.Monster));
+            (part.FootprintRevision==1&&part.Kind==R3PartKind.Wheel&&HasSizedSideWheel(part.WheelStyle)));
         public static bool ValidEconomicPart(R3PartState part) => part!=null && ValidEconomicKind(part.Kind,part.Weapon) && ValidWheelStyle(part) && ValidArmorShape(part) && ValidFootprint(part) && part.Tier>=0&&part.Tier<=3&&
             (part.Tier<=1||SupportsFusion(part.Kind,part.Weapon))&&
             !float.IsNaN(part.Health)&&!float.IsInfinity(part.Health)&&part.Health>=0&&part.Health<=1;
@@ -323,7 +323,7 @@ namespace RoboRougelike.R3
                 (armorShape!=R3ArmorShape.Cube&&!R4_1.R41PartGeometry.ArmorShapeAvailable(armorShape)))return false;
             int price=Price(kind,weapon);if(price<=0||Scrap<price)return false;
             Scrap-=price;inventory.Add(new R3PartState(default,kind){Weapon=weapon,WheelStyle=wheelStyle,ArmorShape=armorShape,
-                FootprintRevision=kind==R3PartKind.Wheel&&wheelStyle==R3WheelStyle.Monster?1:0,
+                FootprintRevision=kind==R3PartKind.Wheel&&HasSizedSideWheel(wheelStyle)?1:0,
                 ContactMask=kind==R3PartKind.Wheel?(HasForkMount(wheelStyle)?R3MountingGrid.FaceBit(Vector3Int.up):
                     R3MountingGrid.FaceBit(Vector3Int.right)|R3MountingGrid.FaceBit(Vector3Int.left)):
                     armorShape==R3ArmorShape.Cube?R3MountingGrid.AllFaces:R4_1.R41PartGeometry.FullArmorContacts(armorShape)});return true;
