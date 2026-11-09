@@ -914,19 +914,26 @@ namespace RogueMachine.P12PipelineSafe
             int count = Physics.BoxCastNonAlloc(movementBody.position + Vector3.up * 0.75f,
                 movementHalfExtents, direction, movementHits, yaw, distance,
                 ~0, QueryTriggerInteraction.Ignore);
+            var queriedHits=movementHits;
+            if(count==movementHits.Length)
+            {
+                queriedHits=Physics.BoxCastAll(movementBody.position+Vector3.up*.75f,
+                    movementHalfExtents,direction,yaw,distance,~0,QueryTriggerInteraction.Ignore);
+                count=queriedHits.Length;
+            }
             for (int i = 0; i < count; i++)
             {
-                var hit = movementHits[i].collider;
+                var hit = queriedHits[i].collider;
                 if (hit == null || hit.transform.IsChildOf(transform) ||
                     hit.GetComponent<P17PhysicalShell>() != null) continue;
                 if(allowPlayerContact&&playerRoot!=null&&hit.transform.IsChildOf(playerRoot))continue;
                 // Ignore the flat ground, but avoid walls, live vehicles, and loose debris.
                 if (hit.bounds.max.y < 0.12f) continue;
-                lastMoveNormal=Vector3.ProjectOnPlane(movementHits[i].normal,Vector3.up).normalized;
+                lastMoveNormal=Vector3.ProjectOnPlane(queriedHits[i].normal,Vector3.up).normalized;
                 if(lastMoveNormal.sqrMagnitude<.01f)lastMoveNormal=-direction;
                 return false;
             }
-            return count < movementHits.Length;
+            return true;
         }
 
         private void RotateToward(

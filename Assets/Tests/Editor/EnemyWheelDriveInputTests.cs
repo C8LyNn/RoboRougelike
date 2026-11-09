@@ -8,6 +8,35 @@ using UnityEngine;
 public sealed class EnemyWheelDriveInputTests
 {
     [Test]
+    public void CrowdedOwnCollidersDoNotFreezeEnemyButRealWallStillBlocks()
+    {
+        var root=new GameObject("enemy movement fixture");root.transform.position=new Vector3(10000,0,10000);
+        var body=root.AddComponent<Rigidbody>();body.isKinematic=true;
+        var enemy=root.AddComponent<P12PipelineSafeEnemyTurret>();
+        typeof(P12PipelineSafeEnemyTurret).GetField("movementBody",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(enemy,body);
+        GameObject wall=null;
+        try
+        {
+            for(int i=0;i<300;i++)
+            {
+                var child=new GameObject("own collider "+i);child.transform.SetParent(root.transform,false);
+                child.transform.localPosition=new Vector3(0,.75f,1.1f);child.AddComponent<BoxCollider>().size=Vector3.one*.01f;
+            }
+            Physics.SyncTransforms();
+            var origin=body.position+Vector3.up*.75f;
+            Assert.That(Physics.BoxCastAll(origin,new Vector3(.88f,.67f,.88f),Vector3.forward,Quaternion.identity,2,~0,QueryTriggerInteraction.Ignore).Length,Is.GreaterThan(256));
+            var probe=typeof(P12PipelineSafeEnemyTurret).GetMethod("CanMove",BindingFlags.Instance|BindingFlags.NonPublic);
+            Assert.That((bool)probe.Invoke(enemy,new object[]{Vector3.forward,2f,false}),Is.True,
+                "Own geometry alone must not be treated as an impassable wall.");
+            wall=GameObject.CreatePrimitive(PrimitiveType.Cube);wall.transform.position=root.transform.position+new Vector3(0,.75f,1.5f);
+            Physics.SyncTransforms();
+            Assert.That((bool)probe.Invoke(enemy,new object[]{Vector3.forward,2f,false}),Is.False,
+                "A real wall must not be missed behind the crowded results.");
+        }
+        finally{if(wall!=null)Object.DestroyImmediate(wall);Object.DestroyImmediate(root);}
+    }
+
+    [Test]
     public void WorldWishUsesForwardThrottleAndSteeringInsteadOfSidewaysForce()
     {
         var forward=R6VehicleDrive.WorldSteering(Vector3.forward,Vector3.forward,Vector3.up);
