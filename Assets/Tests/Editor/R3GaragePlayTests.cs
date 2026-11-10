@@ -89,9 +89,11 @@ public class R3GaragePlayTests
         Assert.That(wheels, Is.GreaterThan(0));
         var weapon = enemy.WeaponBlock;
         Assert.That(weapon, Is.Not.Null);
-        weapon.ApplyDamage(100000, weapon.transform.position, Vector3.up);
+        // Isolate movement with intact wheels; a large hit now correctly
+        // propagates through connections and can destroy those wheels too.
+        weapon.gameObject.SetActive(false);
         foreach (var gun in enemy.AdditionalWeapons)
-            if (gun.Block != null && !gun.Block.IsDead) gun.Block.ApplyDamage(100000, gun.Block.transform.position, Vector3.up);
+            if (gun.Block != null && !gun.Block.IsDead) gun.Block.gameObject.SetActive(false);
         yield return null;
         Assert.That(enemy.IsDefeated, Is.False);
         Assert.That(enemy.WeaponOnline, Is.False);
@@ -121,9 +123,9 @@ public class R3GaragePlayTests
         enemy.SetCombatActive(false);
         var weapon = enemy.WeaponBlock;
         Assert.That(weapon, Is.Not.Null);
-        weapon.ApplyDamage(100000, weapon.transform.position, Vector3.up);
+        weapon.gameObject.SetActive(false);
         foreach (var gun in enemy.AdditionalWeapons)
-            if (gun.Block != null && !gun.Block.IsDead) gun.Block.ApplyDamage(100000, gun.Block.transform.position, Vector3.up);
+            if (gun.Block != null && !gun.Block.IsDead) gun.Block.gameObject.SetActive(false);
         yield return null;
         Assert.That(enemy.WeaponOnline, Is.False);
         var body = enemy.GetComponent<Rigidbody>();
@@ -151,6 +153,18 @@ public class R3GaragePlayTests
             walls.Add(wall.GetComponent<Collider>());
         }
         Physics.SyncTransforms();
+        var probe=enemy.GetType().GetMethod("CanMove",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+        Assert.That(probe,Is.Not.Null);
+        Assert.That((bool)probe.Invoke(enemy,new object[]{Vector3.left,.2f,true}),Is.True,
+            "The robot must be allowed to probe away along the corridor, not treat side walls as a rear wall.");
+        Assert.That((bool)probe.Invoke(enemy,new object[]{Vector3.forward,.2f,true}),Is.False,
+            "A probe directed into a real side wall must remain blocked.");
+        body.rotation=Quaternion.Euler(0,-7,0);Physics.SyncTransforms();
+        Assert.That((bool)probe.Invoke(enemy,new object[]{Vector3.left,.2f,true}),Is.True,
+            "A slightly rotated probe overlapping side walls must still allow movement parallel to them.");
+        Assert.That((bool)probe.Invoke(enemy,new object[]{Vector3.forward,.2f,true}),Is.False,
+            "Rotating the probe must not allow driving into a wall.");
+        body.rotation=Quaternion.identity;Physics.SyncTransforms();
         var before = body.position;
         enemy.SetCombatActive(true);
         float end = Time.time + 2;
@@ -199,6 +213,33 @@ public class R3GaragePlayTests
         Physics.SyncTransforms();
         Assert.That(Sweep(),Is.False,"A wall in front of the rotated vehicle must still block movement.");
         UnityEngine.Object.Destroy(wall);
+    }
+
+    [UnityTest] public IEnumerator RotatedClearanceProbeAllowsParallelEscapeButStillBlocksWalls()
+    {
+        var enemy=Run.Encounter.Enemies.First();enemy.SetCombatActive(false);
+        var body=enemy.GetComponent<Rigidbody>();body.isKinematic=true;
+        var origin=new Vector3(1000,2,1000);body.position=origin;body.rotation=Quaternion.Euler(0,-7,0);
+        var walls=new System.Collections.Generic.List<GameObject>();
+        try
+        {
+            foreach(float z in new[]{-1.05f,1.05f})
+            {
+                var wall=GameObject.CreatePrimitive(PrimitiveType.Cube);walls.Add(wall);
+                wall.transform.position=origin+new Vector3(0,.75f,z);wall.transform.localScale=new Vector3(5,3,.2f);
+            }
+            Physics.SyncTransforms();
+            var method=enemy.GetType().GetMethod("CanMove",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            bool Clear(Vector3 direction)=>(bool)method.Invoke(enemy,new object[]{direction,.2f,true});
+            Assert.That(Clear(Vector3.left),Is.True,"Side walls overlapping the rotated clearance box cannot block parallel escape.");
+            Assert.That(Clear(Vector3.forward),Is.False,"The robot cannot drive into a side wall.");
+            var blocker=GameObject.CreatePrimitive(PrimitiveType.Cube);walls.Add(blocker);
+            blocker.transform.position=origin+new Vector3(-1.1f,.75f,0);blocker.transform.localScale=new Vector3(.2f,3,4);
+            Physics.SyncTransforms();
+            Assert.That(Clear(Vector3.left),Is.False,"A wall actually ahead must remain blocking, including initial probe overlap.");
+        }
+        finally{foreach(var wall in walls)UnityEngine.Object.Destroy(wall);}
+        yield return null;
     }
 
     [UnityTest] public IEnumerator TrappedUnarmedEnemyUsesDelayedBlastWithoutSlidingThroughWalls()

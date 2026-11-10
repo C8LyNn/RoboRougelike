@@ -970,15 +970,16 @@ namespace RogueMachine.P12PipelineSafe
             // Keep the probe upright but rotate its local footprint with the chassis.
             // A world-aligned rectangle reports false walls after a 90-degree turn.
             var yaw=Quaternion.Euler(0,movementBody.rotation.eulerAngles.y,0);
+            var probeOrigin=movementBody.position+Vector3.up*.75f;
             int count;RaycastHit[] queriedHits;
             while(true)
             {
-                count=Physics.BoxCastNonAlloc(movementBody.position+Vector3.up*.75f,
+                count=Physics.BoxCastNonAlloc(probeOrigin,
                     movementHalfExtents,direction,movementHits,yaw,distance,~0,QueryTriggerInteraction.Ignore);
                 if(count<movementHits.Length){queriedHits=movementHits;break;}
                 if(movementHits.Length>=MaxMovementHitBuffer)
                 {
-                    queriedHits=Physics.BoxCastAll(movementBody.position+Vector3.up*.75f,
+                    queriedHits=Physics.BoxCastAll(probeOrigin,
                         movementHalfExtents,direction,yaw,distance,~0,QueryTriggerInteraction.Ignore);
                     count=queriedHits.Length;break;
                 }
@@ -995,6 +996,15 @@ namespace RogueMachine.P12PipelineSafe
                 if(allowPlayerContact&&playerRoot!=null&&hit.transform.IsChildOf(playerRoot))continue;
                 // Ignore the flat ground, but avoid walls, live vehicles, and loose debris.
                 if (hit.bounds.max.y < 0.12f) continue;
+                // A rotated clearance box can initially overlap a nearby side
+                // wall even when the chassis itself does not. Such a zero-hit
+                // must not prevent motion parallel to or away from that wall.
+                // Unknown/inside geometry stays blocking, as does motion into it.
+                if(queriedHits[i].distance<=.0001f)
+                {
+                    var separation=Vector3.ProjectOnPlane(hit.ClosestPoint(probeOrigin)-probeOrigin,Vector3.up);
+                    if(separation.sqrMagnitude>.000001f&&Vector3.Dot(separation,direction)<=.0001f)continue;
+                }
                 if(queriedHits[i].distance<closestDistance)
                 {closest=i;closestDistance=queriedHits[i].distance;}
             }
