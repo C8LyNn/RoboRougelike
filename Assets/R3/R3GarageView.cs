@@ -477,6 +477,10 @@ namespace RoboRougelike.R3
             for(int i=0;i<count;i++)
             {
                 var hit=rayHits[i];if(hit.distance>=nearest)continue;
+                // Both valid mounted parts and preview plans live under the
+                // current player. Ignore unrelated scene colliders before any
+                // component lookup; they could never become a target anyway.
+                if(hit.collider==null||run.Player==null||!hit.collider.transform.IsChildOf(run.Player.transform))continue;
                 var plan=hit.collider.GetComponent<R41MissingPlan>();var part=hit.collider.GetComponentInParent<R3MountedPart>();
                 if(plan!=null&&plan.transform.IsChildOf(previewRoot.transform)){missing=plan;target=null;}
                 else if(part!=null&&part.Operational&&part.transform.IsChildOf(run.Player.transform)){target=part;missing=null;}
