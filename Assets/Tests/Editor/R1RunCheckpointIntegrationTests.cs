@@ -21,6 +21,35 @@ public sealed class R1RunCheckpointIntegrationTests
         for(int i=0;i<300&&R1RunController.Instance?.Progress==null;i++)yield return null;
         run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
     }
+    [UnityTest] public IEnumerator RejectedLoadDoesNotCommitTechnologyToProfile()
+    {
+        var progress=new R1RunProgress(6,true);Assert.That(progress.Start()&&progress.PrepareGarage(),Is.True);
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        Assert.That(model.ReceiveSalvage(new[]{new R3PartState(default,R3PartKind.Gun){Id=Guid.NewGuid().ToString("N"),Weapon=RoboRougelike.R4.R4WeaponKind.Railgun}}),Is.True);
+        R1RunCheckpointStorage.Write(path,new R1RunCheckpoint{vehicle=(int)R3VehicleKind.Light,runId=Guid.NewGuid().ToString("N"),progress=progress.MakeGarageCheckpoint(),model=model.MakeCheckpoint(Time.time)});
+        string original=File.ReadAllText(path);
+        string technologyPath=Path.Combine(Application.temporaryCachePath,"rrl-technology-test-"+Guid.NewGuid().ToString("N")+".json");
+        var technology=new R1TechnologyProgress(technologyPath);
+        typeof(R1RunController).GetProperty("Technology").GetSetMethod(true).Invoke(run,new object[]{technology});
+        var stages=run.Definition.RouteStages;
+        try
+        {
+            Assert.That(technology.IsUnlocked(R3PartKind.Gun,RoboRougelike.R4.R4WeaponKind.Railgun),Is.False);
+            run.Definition.RouteStages=null;
+            Assert.That(run.LoadRunCheckpoint(),Is.False,"An invalid route must reject the load.");
+            Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Ready));Assert.That(run.VehicleModel,Is.Null);
+            Assert.That(technology.IsUnlocked(R3PartKind.Gun,RoboRougelike.R4.R4WeaponKind.Railgun),Is.False,"A rejected load must not change technology in memory.");
+            Assert.That(File.Exists(technologyPath),Is.False,"A rejected load must not write a technology profile.");
+            Assert.That(File.ReadAllText(path),Is.EqualTo(original));
+            run.Definition.RouteStages=stages;
+            Assert.That(run.LoadRunCheckpoint(),Is.True,run.RunSaveMessage);
+            Assert.That(technology.IsUnlocked(R3PartKind.Gun,RoboRougelike.R4.R4WeaponKind.Railgun),Is.True);
+            Assert.That(File.Exists(technologyPath),Is.True,"A successful load should preserve legacy technology discovery.");
+            Assert.That(File.ReadAllText(path),Is.EqualTo(original));
+        }
+        finally{run.Definition.RouteStages=stages;if(File.Exists(technologyPath))File.Delete(technologyPath);}
+        yield return null;
+    }
     [UnityTest] public IEnumerator SelectedStarterVariantAndBudgetSurviveSaveAndLoad()
     {
         Assert.That(run.SelectVehicle(R3VehicleKind.Light,3),Is.True);

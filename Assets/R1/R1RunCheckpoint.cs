@@ -110,14 +110,15 @@ namespace RoboRougelike.R1
                 var kind=(R3VehicleKind)data.vehicle;
                 if(!R3VehicleModel.TryRestoreCheckpoint(data.model,kind,Definition.GaragePrices,Time.time,out var restoredModel,out var error,data.variant))
                     throw new InvalidDataException(error);
-                // Legacy owned weapons remain purchasable after loading old saves.
-                Technology?.Discover(restoredModel.Parts.Concat(restoredModel.Inventory));
-                if(Technology?.Error!=null)TechnologyMessage=Technology.Error;
                 var restoredPlan=new R5RunPlan(Definition.RouteStages,data.seed);
                 var player=R3VehicleAssembly.Build(restoredModel,restoredProgress.Stats,palette,new Vector3(0,.7f,-22),Quaternion.identity);
                 Progress=restoredProgress;VehicleModel=restoredModel;Plan=restoredPlan;SelectedVehicle=kind;SelectedVehicleVariant=data.variant;RequestedSeed=data.seed;runId=data.runId;
                 DefeatedEnemies=data.defeated;EarnedScrap=data.earned;RecoveredModules=data.recovered;LastScrapReward=data.lastReward;
                 Player=player;followCamera.Configure(Player.transform,Player.CameraPivot);SetSimulation(false);Garage.Open();
+                // Only a successfully restored garage may unlock technology;
+                // a rejected route or failed construction must not persist it.
+                Technology?.Discover(restoredModel.Parts.Concat(restoredModel.Inventory));
+                if(Technology?.Error!=null)TechnologyMessage=Technology.Error;
                 RunSaveMessage=restoredModel.LegacyGunScalePending>0?
                     "Wczytano starszy zapis bez zmian broni: zwolnij miejsce w magazynie, aby bezpiecznie dostosować jej rozmiar.":
                     restoredModel.LegacyPartsMovedToInventory>0||restoredModel.LegacyPortPartsMovedToInventory>0?
