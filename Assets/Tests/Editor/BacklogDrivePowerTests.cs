@@ -97,5 +97,35 @@ public sealed class BacklogDrivePowerIntegrationTests
         }
         UnityEngine.Object.Destroy(vehicle.gameObject);UnityEngine.Object.Destroy(paletteObject);UnityEngine.Object.Destroy(material);
     }
+    [UnityTest] public IEnumerator ManyNonTerrainCollidersCannotHideRealWheelGround()
+    {
+        var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.position=Vector3.down*.5f;floor.transform.localScale=new Vector3(100,1,100);
+        var paletteObject=new GameObject("QA palette");var palette=paletteObject.AddComponent<R3VisualPalette>();
+        var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
+        for(int i=0;i<palette.Parts.Length;i++)palette.Parts[i]=material;
+        for(int i=0;i<palette.Weapons.Length;i++)palette.Weapons[i]=material;
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(0,R3VehicleModel.WheelRadius(R3WheelStyle.Offroad),0),Quaternion.identity);
+        var drive=vehicle.GetComponent<R6VehicleDrive>();vehicle.GetComponent<Rigidbody>().isKinematic=true;
+        Physics.SyncTransforms();drive.RefreshMass();int grounded=drive.GroundedWheels;
+        Assert.That(grounded,Is.EqualTo(4),"The real vehicle must first have wheel contact with the floor.");
+        var clutter=new GameObject("Dense non-terrain physics objects");clutter.AddComponent<Rigidbody>().isKinematic=true;
+        for(int i=0;i<128;i++)
+        {
+            var layer=new GameObject("Non-terrain collider "+i);layer.transform.SetParent(clutter.transform,false);
+            layer.transform.localPosition=new Vector3(0,.02f+i*.0015f,0);
+            layer.AddComponent<BoxCollider>().size=new Vector3(100,.0003f,100);
+        }
+        Physics.SyncTransforms();
+        var wheel=vehicle.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Kind==R3PartKind.Wheel);
+        var probe=new RaycastHit[64];
+        Assert.That(Physics.RaycastNonAlloc(wheel.transform.position,Vector3.down,probe,1f,~0,QueryTriggerInteraction.Ignore),Is.EqualTo(probe.Length),
+            "The fixture must actually fill the former 64-hit buffer.");
+        drive.RefreshMass();Assert.That(drive.GroundedWheels,Is.EqualTo(grounded),"Unrelated bodies must not make valid ground disappear.");
+        floor.transform.position=Vector3.down*5;Physics.SyncTransforms();drive.RefreshMass();
+        Assert.That(drive.GroundedWheels,Is.Zero,"Non-terrain colliders must not become imaginary ground.");
+        UnityEngine.Object.Destroy(clutter);UnityEngine.Object.Destroy(vehicle.gameObject);UnityEngine.Object.Destroy(floor);
+        UnityEngine.Object.Destroy(paletteObject);UnityEngine.Object.Destroy(material);yield return null;
+    }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }
