@@ -42,6 +42,20 @@ public sealed class EnergyCombatRefinementTests
         Assert.That(DriveToMass(R3VehicleKind.Light),Is.GreaterThan(DriveToMass(R3VehicleKind.Standard)));
         Assert.That(DriveToMass(R3VehicleKind.Standard),Is.GreaterThan(DriveToMass(R3VehicleKind.Heavy)));
     }
+    [Test] public void StarterSpeedLimitsFollowMassWithoutRewardingExtraWheelsAsFreeTopSpeed()
+    {
+        float Speed(R3VehicleKind kind)
+        {
+            var parts=R3VehicleCatalog.Create(kind).Parts;
+            return R3VehicleAssembly.SpeedFor(parts.Sum(R4WeaponDefinition.PartMass),parts.Count(p=>p.Kind==R3PartKind.Wheel));
+        }
+        Assert.That(Speed(R3VehicleKind.Light),Is.GreaterThan(Speed(R3VehicleKind.Standard)));
+        Assert.That(Speed(R3VehicleKind.Standard),Is.GreaterThan(Speed(R3VehicleKind.Heavy)));
+        Assert.That(R3VehicleAssembly.SpeedFor(800,8),Is.EqualTo(R3VehicleAssembly.SpeedFor(800,4)).Within(.001f),
+            "Extra wheels should improve physical traction without increasing the top-speed cap for free.");
+        Assert.That(R3VehicleAssembly.SpeedFor(800,2),Is.LessThan(R3VehicleAssembly.SpeedFor(800,4)),
+            "Inadequate wheel support should still reduce the cap.");
+    }
 
     [Test] public void ChargingFieldChoosesSurfaceNearVehicleHeightRegardlessOfRaycastOrder()
     {

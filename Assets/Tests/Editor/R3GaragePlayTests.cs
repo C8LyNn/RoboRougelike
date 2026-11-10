@@ -315,7 +315,7 @@ public class R3GaragePlayTests
             counts[i]=Run.VehicleModel.Parts.Count;masses[i]=Run.Player.GetComponent<Rigidbody>().mass;
             speeds[i]=Run.Player.Controller.EffectiveForwardSpeed;
             Assert.That(Run.Player.Structure.CoreAlive,Is.True);Assert.That(Run.Player.Modules.WeaponOnline,Is.True);
-            Assert.That(Run.VehicleModel.Scrap,Is.Zero);
+            Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(R3VehicleCatalog.StartingScrap((R3VehicleKind)i)));
             var before=Run.Player.transform.position;
             InputSystem.QueueStateEvent(keyboard,new KeyboardState(Key.W));
             float until=Time.time+0.7f;yield return Until(()=>Time.time>=until,"Jazda pojazdem.");
@@ -326,7 +326,8 @@ public class R3GaragePlayTests
                 .Any(s=>s.name=="P17_PlayerPhysicalShell"),"Każdy pojazd strzela po LPM.");
             InputSystem.QueueStateEvent(mouse,new MouseState());
             var core=Run.Player.Core;core.ApplyDamage(10,core.transform.position,Vector3.forward);
-            Assert.That(core.CurrentHp,Is.EqualTo(core.MaxHp-10).Within(0.01));
+            float coreDamage=10*(1-R3DamagePropagation.TransferFraction(R3DamagePropagation.DamageKind.Kinetic));
+            Assert.That(core.CurrentHp,Is.EqualTo(core.MaxHp-coreDamage).Within(0.01));
         }
         Assert.That(counts[1],Is.LessThan(counts[0]));Assert.That(counts[2],Is.GreaterThan(counts[0]));
         Assert.That(masses[1],Is.LessThan(masses[0]));Assert.That(masses[2],Is.GreaterThan(masses[0]));

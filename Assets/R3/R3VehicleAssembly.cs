@@ -49,7 +49,9 @@ namespace RoboRougelike.R3
         public static float SpeedFor(float mass,int wheels)
         {
             float weight=Mathf.Clamp(Mathf.Sqrt(350f/Mathf.Max(1f,mass)),.6f,1.35f);
-            float support=Mathf.Clamp(Mathf.Sqrt(Mathf.Max(0,wheels)/4f),.7f,1.3f);
+            // Wheels above the basic support threshold add real traction and
+            // acceleration through R6; they do not grant free top speed.
+            float support=Mathf.Clamp(Mathf.Sqrt(Mathf.Max(0,wheels)/4f),.7f,1f);
             return Mathf.Clamp(7.5f*weight*support,2f,14f);
         }
         public static float TurnFor(float mass)=>Mathf.Clamp(82f*Mathf.Clamp(Mathf.Sqrt(350f/Mathf.Max(1f,mass)),.6f,1.35f),35f,130f);        public void AimGuns(Vector3 point)
