@@ -621,8 +621,15 @@ namespace RoboRougelike.R3
             var prior=Tool;Tool=R41GarageTool.Inspect;
             try
             {
-                bool done=Point(ray)&&run.GarageRotate(Cell,turns);
-                Message=done?"Obrócono wskazaną część.":"Nie można obrócić: połączenie, miejsce lub kolizja.";
+                bool hit=Point(ray);
+                var part=hit?run.VehicleModel.At(Cell):null;
+                // A wheel may only face sideways. Skip the forbidden 90°
+                // intermediate yaw so one shortcut reaches the next legal pose.
+                bool wheelYaw=part!=null&&part.Kind==R3PartKind.Wheel&&turns.x==0&&turns.z==0&&Mathf.Abs(turns.y)==1;
+                if(wheelYaw)turns.y*=2;
+                bool done=hit&&run.GarageRotate(Cell,turns);
+                Message=done?(wheelYaw?"Obrócono koło o 180°.":"Obrócono wskazaną część."):
+                    "Nie można obrócić: połączenie, miejsce lub kolizja.";
                 return done;
             }
             finally {Tool=prior;RefreshMarker();}
