@@ -78,6 +78,29 @@ public sealed class BacklogBonusTierGameplayTests
         Assert.That(effects.EffectiveStats.Damage, Is.EqualTo(1f).Within(.001f));
         Object.Destroy(reward);
     }
+    [UnityTest] public IEnumerator LiveMountedBonusUpdatesWhenItsPropertiesChange()
+    {
+        var run=R1RunController.Instance;
+        Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);
+        var reward=ScriptableObject.CreateInstance<R1UpgradeDefinition>();
+        reward.Id="damage";reward.Effect=R1UpgradeEffect.Damage;reward.Amount=.2f;
+        var model=run.VehicleModel;Assert.That(model.ReceiveBonuses(new[]{reward}),Is.True);
+        var state=model.Inventory.Single();
+        var cells=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct();
+        var cell=cells.First(c=>model.OwnedPlacementError(state.Id,c,default)==null);
+        Assert.That(run.GarageMount(state.Id,cell),Is.True);yield return null;
+        var effects=run.Player.GetComponent<R3MountedBonusEffects>();
+        var part=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==state.Id);
+        Assert.That(effects.EffectiveStats.Damage,Is.EqualTo(1.2f).Within(.001f));
+        part.Tier=2;yield return null;
+        Assert.That(effects.EffectiveStats.Damage,Is.EqualTo(1.44f).Within(.001f),"The live tier is part of the effect, even if the part ID is unchanged.");
+        part.UpgradeAmount=.3f;yield return null;
+        Assert.That(effects.EffectiveStats.Damage,Is.EqualTo(1.69f).Within(.001f));
+        part.UpgradeEffect=R1UpgradeEffect.Mobility;yield return null;
+        Assert.That(effects.EffectiveStats.Damage,Is.EqualTo(1f).Within(.001f));
+        Assert.That(effects.EffectiveStats.Mobility,Is.EqualTo(1.69f).Within(.001f));
+        Object.Destroy(reward);
+    }
     [UnityTearDown] public IEnumerator Cleanup()
     {
         if (Application.isPlaying) { Time.timeScale = 1; yield return new ExitPlayMode(); }
