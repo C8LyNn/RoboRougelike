@@ -37,9 +37,11 @@ namespace RoboRougelike.R1
             bool placementError=run.Garage.Tool==RoboRougelike.R4_1.R41GarageTool.Mount&&run.Garage.HasTarget&&run.Garage.PlacementIssue!=null;
             if(!placementError)GUI.Label(new Rect(30,462,280,52),introduction+"\nOFF: wył. • Assist: słabsze • Full: pełne.\n+/−: docelowa wysokość (±0,35 m).\nWybierz Zawieszenie i kliknij zielone widmo.",SuspensionHelp);
         }
+        static bool ShowSuspensionPause(R3VehicleModel model)=>
+            model!=null&&model.Parts.Exists(p=>p!=null&&p.Kind==R3PartKind.Suspension);
         void DrawSuspensionPause(R1RunController run)
         {
-            if(run.Player==null||run.VehicleModel==null||run.MapEditing)return;
+            if(run.Player==null||run.MapEditing||!ShowSuspensionPause(run.VehicleModel))return;
             var state=MOV009Presentation.Capture(run);
             string controls=state.CanConfigure?"Zmiany zadziałają po wznowieniu.":"Zmień ustawienia w garażu lub na poligonie.";
             GUI.Label(new Rect(230,470,820,58),$"Zawieszenie: {state.Mode} • {state.Status} • sprawne: {state.OperationalCount}/{state.MountedCount}\nOFF: wył. • Assist: słabsze • Full: pełne • wysokość {state.Offset:+0.00;-0.00;0.00} m (±0,35 m). {controls}",small);

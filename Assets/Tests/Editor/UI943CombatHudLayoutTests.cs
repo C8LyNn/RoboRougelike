@@ -5,6 +5,18 @@ using UnityEngine;
 
 public sealed class UI943CombatHudLayoutTests
 {
+    [Test] public void SuspensionPauseIsRelevantForMountedAndDestroyedPlansOnly()
+    {
+        var method=typeof(R1RunHUD).GetMethod("ShowSuspensionPause",BindingFlags.NonPublic|BindingFlags.Static);
+        Assert.That(method,Is.Not.Null);
+        var model=new RoboRougelike.R3.R3VehicleModel(RoboRougelike.R3.R3VehicleCatalog.Create(RoboRougelike.R3.R3VehicleKind.Light));
+        bool Visible()=>(bool)method.Invoke(null,new object[]{model});
+        Assert.That(Visible(),Is.False);
+        var support=new RoboRougelike.R3.R3PartState(Vector3Int.up,RoboRougelike.R3.R3PartKind.Suspension,0);
+        model.Parts.Add(support);
+        Assert.That(Visible(),Is.True,"A destroyed mounted plan still needs an explanation.");
+        model.Parts.Remove(support);Assert.That(Visible(),Is.False);
+    }
     [TestCase(false,false,75)][TestCase(false,true,115)][TestCase(true,false,160)][TestCase(true,true,160)]
     public void SuspensionPanelOnlyUsesSpaceNeededForDetailsAndWarnings(bool details,bool warning,int height)
     {
