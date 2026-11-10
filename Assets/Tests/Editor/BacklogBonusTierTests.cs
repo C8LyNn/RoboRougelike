@@ -92,6 +92,10 @@ public sealed class BacklogBonusTierGameplayTests
         var effects=run.Player.GetComponent<R3MountedBonusEffects>();
         var part=run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==state.Id);
         Assert.That(effects.EffectiveStats.Damage,Is.EqualTo(1.2f).Within(.001f));
+        part.gameObject.SetActive(false);yield return null;
+        Assert.That(effects.EffectiveStats.Damage,Is.EqualTo(1f).Within(.001f),"An inactive module cannot grant a bonus.");
+        part.gameObject.SetActive(true);yield return null;
+        Assert.That(effects.EffectiveStats.Damage,Is.EqualTo(1.2f).Within(.001f));
         part.Tier=2;yield return null;
         Assert.That(effects.EffectiveStats.Damage,Is.EqualTo(1.44f).Within(.001f),"The live tier is part of the effect, even if the part ID is unchanged.");
         part.UpgradeAmount=.3f;yield return null;

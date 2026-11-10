@@ -52,7 +52,7 @@ namespace RoboRougelike.R3
         {
             nextActive.Clear();
             foreach(var part in assembly.Parts)
-                if(part!=null&&part.Kind==R3PartKind.BonusModule&&part.Operational&&part.transform.IsChildOf(assembly.transform))
+                if(part!=null&&part.gameObject.activeInHierarchy&&part.Kind==R3PartKind.BonusModule&&part.Operational&&part.transform.IsChildOf(assembly.transform))
                     nextActive.Add(part);
             nextActive.Sort(CompareIds);
             bool unchanged=!force&&snapshot.Count==nextActive.Count;

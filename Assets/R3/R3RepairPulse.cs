@@ -47,7 +47,7 @@ namespace RoboRougelike.R3
             }
         }
         public void Configure(R3VehicleAssembly owner){assembly=owner;energy=GetComponent<VehicleEnergyBank>();}
-        bool Live(R3MountedPart part)=>part!=null&&part.Operational&&part.transform.IsChildOf(transform);
+        bool Live(R3MountedPart part)=>part!=null&&part.gameObject.activeInHierarchy&&part.Operational&&part.transform.IsChildOf(transform);
         bool ReadyHardware(R3MountedPart part)=>Live(part)&&part.Kind==R3PartKind.RepairPulse&&
             !RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject);
         R3PartState FindState(string id)

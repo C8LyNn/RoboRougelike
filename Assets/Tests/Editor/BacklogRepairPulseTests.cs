@@ -79,6 +79,15 @@ public sealed class BacklogRepairPulseIntegrationTests
         tick.Invoke(pulse,new object[]{2f});
         Assert.That(armor.Damageable.CurrentHp/armor.Damageable.MaxHp,Is.EqualTo(.6f).Within(.001f));
         var device=assembly.Parts.Single(p=>p.Id==part.Id);
+        armor.gameObject.SetActive(false);tick.Invoke(pulse,new object[]{1f});
+        Assert.That(armor.Damageable.CurrentHp/armor.Damageable.MaxHp,Is.EqualTo(.6f).Within(.001f),"Inactive targets must not be repaired.");
+        armor.gameObject.SetActive(true);tick.Invoke(pulse,new object[]{1f});
+        Assert.That(armor.Damageable.CurrentHp/armor.Damageable.MaxHp,Is.EqualTo(.65f).Within(.001f));
+        device.gameObject.SetActive(false);tick.Invoke(pulse,new object[]{1f});
+        Assert.That(pulse.ActiveCount,Is.Zero);Assert.That(pulse.Status,Is.EqualTo("nieaktywny"));
+        Assert.That(armor.Damageable.CurrentHp/armor.Damageable.MaxHp,Is.EqualTo(.65f).Within(.001f),"An inactive device must stop its pulse.");
+        device.gameObject.SetActive(true);state.DeviceReadyAt=0;
+        Assert.That(pulse.TryActivate(),Is.EqualTo(1));
         // A killing blow can also damage connected armor. Use a bounded hit
         // and measure after routing instead of assuming neighbours stay intact.
         device.Damageable.ApplyDamage(device.Damageable.CurrentHp*1.4f,device.transform.position,Vector3.up);
@@ -142,6 +151,12 @@ public sealed class BacklogRepairPulseIntegrationTests
         Assert.That(emp,Is.Not.Null);emp.ApplyEmp(3f);
         Assert.That(pulse.Status,Does.StartWith("odnowienie "));
         emp.Advance(3f);
+        Assert.That(pulse.Status,Is.EqualTo("gotowy"));
+        devices[1].gameObject.SetActive(false);
+        Assert.That(pulse.Status,Does.StartWith("odnowienie "),"An inactive available device must not mask the other device's cooldown.");
+        devices[0].gameObject.SetActive(false);
+        Assert.That(pulse.Status,Is.EqualTo("nieaktywny"));
+        devices[0].gameObject.SetActive(true);devices[1].gameObject.SetActive(true);
         Assert.That(pulse.Status,Is.EqualTo("gotowy"));
         yield return null;
     }
