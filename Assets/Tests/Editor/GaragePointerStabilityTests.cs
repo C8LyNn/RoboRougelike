@@ -22,8 +22,9 @@ public sealed class GaragePointerStabilityTests
         while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<end)yield return null;
         var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light,0),Is.True);
         Assert.That(run.OpenSandboxGarage(),Is.True);run.VehicleModel.Award(1000);yield return null;
-        var garage=run.Garage;garage.UseInventory=false;garage.SelectedPart=R3PartKind.Armor;
-        garage.SetTool(R41GarageTool.Mount);
+        Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
+        var item=run.VehicleModel.Inventory.Last();var garage=run.Garage;
+        garage.ChooseInventory(item.Id);
         var socket=garage.AvailableMountPoints.First(p=>garage.Point(new Ray(
             p.Position+(p.Rotation*Vector3.forward)*2,-(p.Rotation*Vector3.forward)))&&garage.PreviewValid);
         Assert.That(garage.Preview.gameObject.activeSelf,Is.True);
@@ -33,6 +34,7 @@ public sealed class GaragePointerStabilityTests
         Assert.That(garage.HasTarget,Is.False,"Blocked input must not leave an old mounting target.");
         Assert.That(garage.Preview.gameObject.activeSelf,Is.False);
         Assert.That(garage.MountKind,Is.EqualTo(R3PartKind.Armor));
+        Assert.That(garage.SelectedInventoryId,Is.EqualTo(item.Id),"The same owned instance must remain selected.");
         var normal=socket.Rotation*Vector3.forward;
         Assert.That(garage.Point(new Ray(socket.Position+normal*2,-normal)),Is.True);
         Assert.That(garage.Preview.gameObject.activeSelf,Is.True);
