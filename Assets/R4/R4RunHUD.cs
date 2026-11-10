@@ -74,8 +74,13 @@ namespace RoboRougelike.R1
         private static Color BasketColor(R4SalvageBasket basket)=>basket.Percent>=66?new Color(.48f,.9f,.55f):
             basket.Percent>=33?new Color(.45f,.82f,.95f):Color.white;
         private static string RewardBasketContents(IEnumerable<R4SalvageItem> items)=>string.Join(", ",
-            items.GroupBy(item=>R4WeaponDefinition.PartName(item.ToPart()))
-                .Select(group=>group.Count()>1?$"{group.Key} ×{group.Count()}":group.Key));
+            items.Select(item=>item.ToPart()).GroupBy(part=>part.Kind==R3PartKind.BonusModule?
+                "bonus:"+CatalogBonusKey(part)+":"+R3VehicleModel.NormalizedTier(part.Tier):"part:"+R4WeaponDefinition.PartName(part))
+                .Select(group=>{
+                    var part=group.First();string name=R4WeaponDefinition.PartName(part);
+                    if(part.Kind==R3PartKind.BonusModule)name+=" • "+BonusInstanceText(part);
+                    return group.Count()>1?$"{name} ×{group.Count()}":name;
+                }));
         private static int RewardShortcutIndex(bool first,bool second,bool third)=>first?0:second?1:third?2:-1;
         private static string RewardConfirmCaption(int basketCount)=>basketCount==0?
             "Odbierz bonus [Enter]":"Zatwierdź oba wybory [Enter]";
@@ -218,6 +223,24 @@ namespace RoboRougelike.R1
             return name+" "+(item.UpgradeEffect==R1UpgradeEffect.Reload?"−":"+")+
                 (item.UpgradeAmount*100).ToString("0")+"%";
         }
+        private static string BonusInstanceText(R3PartState item)
+        {
+            int units=R3VehicleModel.TierEffectUnits(item.Tier);
+            if(item.UpgradeEffect==R1UpgradeEffect.Repair)
+                return $"Regeneracja do {Mathf.Min(.08f,units*.025f)*100:0.#}% HP/s";
+            var stats=new R1RunStats();for(int i=0;i<units;i++)stats.Apply(item.UpgradeEffect,item.UpgradeAmount);
+            string name;float percent;bool reduction=false;
+            switch(item.UpgradeEffect)
+            {
+                case R1UpgradeEffect.Hull:name="Wytrzymałość";percent=(stats.Hull-1)*100;break;
+                case R1UpgradeEffect.Damage:name="Obrażenia";percent=(stats.Damage-1)*100;break;
+                case R1UpgradeEffect.Reload:name="Czas przeładowania";percent=(1-stats.FireInterval)*100;reduction=true;break;
+                case R1UpgradeEffect.Mobility:name="Mobilność";percent=(stats.Mobility-1)*100;break;
+                case R1UpgradeEffect.Core:name="Rdzeń";percent=(stats.Core-1)*100;break;
+                default:return "Nieznany bonus";
+            }
+            return $"{name} do {(reduction?"−":"+")}{percent:0.#}%";
+        }
         private void DrawInventory(R1RunController run)
         {
             var model=run.VehicleModel;var garage=run.Garage;
@@ -261,6 +284,7 @@ namespace RoboRougelike.R1
             if(selected==null)
             {GUI.Label(new Rect(970,400,280,100),"Wybierz egzemplarz z listy. Zielony podgląd oznacza poprawne miejsce montażu.",small);return;}
             GUI.Label(new Rect(970,395,280,70),$"{R4WeaponDefinition.PartName(selected)} • HP {selected.Health*100:0}%\n"+
+                (selected.Kind==R3PartKind.BonusModule?BonusInstanceText(selected)+"\n":"")+
                 (selected.Health<=0?"Napraw w wierszu przed montażem.":"Kliknij HP w wierszu, aby montować."),small);
             if(GUI.Button(new Rect(970,480,280,42),dismantleConfirmation==selected.Id?"Potwierdź rozmontowanie":$"Rozmontuj → {model.PreviewAward(model.DismantleValue(selected))} Z",compactButton))
             {if(DismantleCatalogItem(run,selected.Id))return;}

@@ -301,7 +301,8 @@ namespace RoboRougelike.R1
             garage.SelectedPart=kind;garage.SelectedWeapon=weapon;garage.UseInventory=true;
             var part=run.VehicleModel.Inventory.Where(p=>InCatalogGroup(p,kind,weapon,bonus)&&p.Health>0)
                 .OrderByDescending(p=>p.Health).FirstOrDefault();
-            if(part!=null){garage.ChooseInventory(part.Id);garage.Message=kind==R3PartKind.Battery?
+            if(part!=null){garage.ChooseInventory(part.Id);garage.Message=kind==R3PartKind.BonusModule?
+                $"Moduł T{R3VehicleModel.NormalizedTier(part.Tier)}: {BonusInstanceText(part)}. Kliknij, aby zamontować.":kind==R3PartKind.Battery?
                 $"Bateria T{R3VehicleModel.NormalizedTier(part.Tier)}: +{VehicleEnergyState.BatteryCapacity*R3VehicleModel.TierEffectUnits(part.Tier):0} maks. energii. Kliknij, aby zamontować.":
                 kind==R3PartKind.RepairPulse?
                 $"Impuls T{R3VehicleModel.NormalizedTier(part.Tier)}: V, {R3RepairPulse.EnergyCost*R3VehicleModel.TierActivationCost(part.Tier):0} energii, {R3RepairPulse.Duration:0} s. Kliknij, aby zamontować.":

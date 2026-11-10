@@ -103,7 +103,7 @@ namespace RoboRougelike.R1
             for(int i=0;i<R4WeaponDefinition.Count;i++)
             {var weapon=(R4WeaponKind)i;result.Add(new CatalogEntry(R3PartKind.Gun,weapon,null,R4WeaponDefinition.Get(weapon).Name));}
             foreach(var item in model.Inventory.Where(p=>p.Kind==R3PartKind.BonusModule).GroupBy(CatalogBonusKey).Select(g=>g.First()))
-                result.Add(new CatalogEntry(R3PartKind.BonusModule,R4WeaponKind.Basic,CatalogBonusKey(item),CatalogBonusGroupName(item)+" • "+BonusText(item)));
+                result.Add(new CatalogEntry(R3PartKind.BonusModule,R4WeaponKind.Basic,CatalogBonusKey(item),CatalogBonusGroupName(item)+" • T1: "+BonusText(item)));
             return result;
         }
         void DrawCatalogSearch(R1RunController run,Rect label,Rect field,Rect clear)

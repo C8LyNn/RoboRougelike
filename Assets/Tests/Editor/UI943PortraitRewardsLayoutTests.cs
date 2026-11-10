@@ -32,6 +32,23 @@ public sealed class UI943PortraitRewardsLayoutTests
         Assert.That(text,Does.Contain("Koło terenowe ×2"));
         Assert.That(text,Does.Contain("Koło terenowe T2"));
     }
+    [Test] public void BasketSummaryDoesNotMergeDifferentBonusEffectsWithTheSameTitle()
+    {
+        var damage=new R3PartState(Vector3Int.zero,R3PartKind.BonusModule,1){UpgradeId="same",UpgradeTitle="Moduł",UpgradeEffect=R1UpgradeEffect.Damage,UpgradeAmount=.2f};
+        var speed=new R3PartState(Vector3Int.zero,R3PartKind.BonusModule,1){UpgradeId="same",UpgradeTitle="Moduł",UpgradeEffect=R1UpgradeEffect.Mobility,UpgradeAmount=.2f};
+        var text=(string)Method("RewardBasketContents").Invoke(null,new object[]{new[]{new R4SalvageItem(damage,1),new R4SalvageItem(speed,1)}});
+        Assert.That(text,Does.Contain("Obrażenia").And.Contain("Mobilność"));
+        Assert.That(text,Does.Not.Contain("×2"));
+    }
+    [Test] public void InstanceDescriptionUsesActualTierStrength()
+    {
+        var item=new R3PartState(Vector3Int.zero,R3PartKind.BonusModule,1){Tier=2,UpgradeEffect=R1UpgradeEffect.Damage,UpgradeAmount=.2f};
+        string Text()=>(string)Method("BonusInstanceText").Invoke(null,new object[]{item});
+        Assert.That(Text(),Does.Contain("44%"));
+        item.UpgradeEffect=R1UpgradeEffect.Reload;Assert.That(Text(),Does.Contain("36%"));
+        item.UpgradeEffect=R1UpgradeEffect.Repair;Assert.That(Text(),Does.Contain("5%"));
+        item.Tier=3;Assert.That(Text(),Does.Contain("8%"),"Repair bonus follows its actual cap.");
+    }
     [Test] public void ActualPortraitBasketCardsFitWithoutCoveringTheirControls()
     {
         var canvas=new Rect(0,0,768,1024);
