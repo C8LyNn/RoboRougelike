@@ -74,5 +74,28 @@ public sealed class BacklogDrivePowerIntegrationTests
         Assert.That(drive.ActivePowerUnits,Is.Zero);
         UnityEngine.Object.Destroy(vehicle.gameObject);UnityEngine.Object.Destroy(floor);UnityEngine.Object.Destroy(paletteObject);UnityEngine.Object.Destroy(material);
     }
+    [UnityTest] public IEnumerator HeavyChassisQueriesDoNotAllocatePerPartOnEveryRefresh()
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Heavy));
+        var paletteObject=new GameObject("QA palette");var palette=paletteObject.AddComponent<R3VisualPalette>();
+        var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
+        for(int i=0;i<palette.Parts.Length;i++)palette.Parts[i]=material;
+        for(int i=0;i<palette.Weapons.Length;i++)palette.Weapons[i]=material;
+        var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(0,.7f,0),Quaternion.identity);
+        var assembly=vehicle.GetComponent<R3VehicleAssembly>();vehicle.GetComponent<Rigidbody>().isKinematic=true;
+        for(int i=0;i<3;i++)assembly.TuneChassis();
+        using(var recorder=Unity.Profiling.ProfilerRecorder.StartNew(Unity.Profiling.ProfilerCategory.Memory,"GC Allocated In Frame",16))
+        {
+            Assert.That(recorder.Valid,Is.True);yield return null;yield return null;
+            long idle=recorder.LastValue;
+            for(int i=0;i<50;i++)assembly.TuneChassis();
+            yield return null;long sample=recorder.LastValue;
+            var control=new byte[1024*1024];control[0]=1;yield return null;long controlBytes=recorder.LastValue;GC.KeepAlive(control);
+            Debug.Log($"[CHASSIS_ALLOC] calls=50 parts={model.Parts.Count} idle={idle} sample={sample} control={controlBytes}");
+            Assert.That(controlBytes,Is.GreaterThanOrEqualTo(1024*1024));
+            Assert.That(sample-idle,Is.LessThan(20000),"Chassis refresh should not allocate in proportion to vehicle size.");
+        }
+        UnityEngine.Object.Destroy(vehicle.gameObject);UnityEngine.Object.Destroy(paletteObject);UnityEngine.Object.Destroy(material);
+    }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }

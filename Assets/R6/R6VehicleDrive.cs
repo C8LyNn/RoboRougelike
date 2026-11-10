@@ -58,15 +58,13 @@ namespace RoboRougelike.R6
         }
         public static float PartMass(P12PipelineSafeDamageable part)
         {
-            var battery=part.GetComponent<VehicleEnergyBattery>();
-            if(battery!=null)return R4WeaponDefinition.PartMass(R3PartKind.Battery)*R3VehicleModel.TierMass(battery.Tier);
-            var device=part.GetComponent<RoboRougelike.WeaponIntegration.RRLDeviceBinding>();
-            if(device?.State!=null)return R4WeaponDefinition.PartMass(device.State);
-            var mounted=part.GetComponent<R3MountedPart>();
-            if(mounted!=null)return R4WeaponDefinition.PartMass(mounted.Kind,mounted.Weapon)*R3VehicleModel.TierMass(mounted.Tier)*
+            if(part.TryGetComponent<VehicleEnergyBattery>(out var battery))return R4WeaponDefinition.PartMass(R3PartKind.Battery)*R3VehicleModel.TierMass(battery.Tier);
+            if(part.TryGetComponent<RoboRougelike.WeaponIntegration.RRLDeviceBinding>(out var device)&&device.State!=null)return R4WeaponDefinition.PartMass(device.State);
+            if(part.TryGetComponent<R3MountedPart>(out var mounted))return R4WeaponDefinition.PartMass(mounted.Kind,mounted.Weapon)*R3VehicleModel.TierMass(mounted.Tier)*
                 (mounted.Kind==R3PartKind.Wheel?R3VehicleModel.WheelMass(mounted.WheelStyle):1);
-            var module=part.GetComponent<P12PipelineSafeFunctionalModule>();
-            return module!=null&&module.ModuleType==P12FunctionalModuleType.Weapon?32:IsWheel(part)?12:8;
+            part.TryGetComponent<P12PipelineSafeFunctionalModule>(out var module);
+            return module!=null&&module.ModuleType==P12FunctionalModuleType.Weapon?32:
+                (module!=null&&module.ModuleType==P12FunctionalModuleType.Wheel||part.name.StartsWith("Koło"))?12:8;
         }
         public static bool IsWheel(P12PipelineSafeDamageable part)
         {
