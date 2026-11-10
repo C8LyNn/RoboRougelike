@@ -701,6 +701,10 @@ namespace RoboRougelike.R3
                 }
             }
             Func<R3PartState,bool> reachable=p=>costs.ContainsKey(p.Cell);
+            // Deployment requires every surviving fragment to reconnect. If
+            // an unrepairable bridge prevents that, do not charge for a plan
+            // that would leave the vehicle just as undeployable.
+            if(Parts.Any(p=>p.Health>0&&!reachable(p)))return null;
             Func<R3PartState,int> distance=p=>Math.Abs(p.Cell.x-core.Cell.x)+Math.Abs(p.Cell.y-core.Cell.y)+Math.Abs(p.Cell.z-core.Cell.z);
             var required = new List<R3PartState>();
             if(!HasMobility(Parts,SelectedDrive,false))return null;

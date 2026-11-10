@@ -39,4 +39,20 @@ public sealed class OwnedRebuildPricingTests
         var before=m.Scrap;Assert.That(m.CanDeploy,Is.False);Assert.That(m.EmergencyRepair(),Is.False);
         Assert.That(m.Scrap,Is.EqualTo(before));Assert.That(m.Parts.Where(p=>p.Kind==R3PartKind.Wheel&&p.Cell.x<0).All(p=>p.Health==0),Is.True);
     }
+    [Test] public void EmergencyRepairDoesNotChargeForIncompletePlanWithUnrepairableBridge()
+    {
+        var design=new R3VehicleDesign{Name="Disconnected fragment"};
+        design.Parts.Add(new R3PartState(Vector3Int.zero,R3PartKind.Core));
+        design.Parts.Add(new R3PartState(Vector3Int.up,R3PartKind.Gun,0));
+        design.Parts.Add(new R3PartState(Vector3Int.left,R3PartKind.Wheel));
+        design.Parts.Add(new R3PartState(Vector3Int.right,R3PartKind.Wheel));
+        design.Parts.Add(new R3PartState(new Vector3Int(-1,0,1),R3PartKind.Armor,0));
+        design.Parts.Add(new R3PartState(new Vector3Int(-1,0,2),R3PartKind.Armor));
+        var m=new R3VehicleModel(design,new R3GarageEconomy{ArmorCost=1});m.Award(100);
+        var gun=m.At(Vector3Int.up);int before=m.Scrap;
+        Assert.That(m.CanDeploy,Is.False);
+        Assert.That(m.EmergencyRepairCost,Is.Zero,"An unrepairable bridge cannot be included in an actionable quote.");
+        Assert.That(m.EmergencyRepair(),Is.False);
+        Assert.That(gun.Health,Is.Zero);Assert.That(m.Scrap,Is.EqualTo(before));
+    }
 }
