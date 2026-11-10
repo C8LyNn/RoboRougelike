@@ -21,6 +21,26 @@ public sealed class R1RunCheckpointIntegrationTests
         for(int i=0;i<300&&R1RunController.Instance?.Progress==null;i++)yield return null;
         run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
     }
+    [UnityTest] public IEnumerator MissingGarageCameraRejectsLoadWithoutPartialRun()
+    {
+        var savedProgress=new R1RunProgress(6,true);Assert.That(savedProgress.Start()&&savedProgress.PrepareGarage(),Is.True);
+        var savedModel=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        R1RunCheckpointStorage.Write(path,new R1RunCheckpoint{vehicle=(int)R3VehicleKind.Light,runId=Guid.NewGuid().ToString("N"),progress=savedProgress.MakeGarageCheckpoint(),model=savedModel.MakeCheckpoint(Time.time)});
+        var original=File.ReadAllText(path);var initialProgress=run.Progress;var initialPlan=run.Plan;
+        var field=typeof(R1RunController).GetField("followCamera",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+        Assert.That(field,Is.Not.Null);var camera=field.GetValue(run);
+        try
+        {
+            field.SetValue(run,null);
+            Assert.That(run.LoadRunCheckpoint(),Is.False);
+            Assert.That(run.RunSaveMessage,Does.Contain("kamery"));
+            Assert.That(run.Progress,Is.SameAs(initialProgress));Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Ready));
+            Assert.That(run.Plan,Is.SameAs(initialPlan));Assert.That(run.VehicleModel,Is.Null);Assert.That(run.Player,Is.Null);
+            Assert.That(File.ReadAllText(path),Is.EqualTo(original),"A failed load must preserve the checkpoint.");
+        }
+        finally{field.SetValue(run,camera);}
+        yield return null;
+    }
     [UnityTest] public IEnumerator RejectedLoadDoesNotCommitTechnologyToProfile()
     {
         var progress=new R1RunProgress(6,true);Assert.That(progress.Start()&&progress.PrepareGarage(),Is.True);

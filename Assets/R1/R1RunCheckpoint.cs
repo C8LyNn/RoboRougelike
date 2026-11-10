@@ -102,6 +102,10 @@ namespace RoboRougelike.R1
             if(Progress?.State!=R1RunState.Ready||Transitioning||Definition==null)return false;
             try
             {
+                // Reject missing scene dependencies before constructing a
+                // vehicle or replacing any of the current run state.
+                if(followCamera==null||followCamera.GetComponent<Camera>()==null||Garage==null||palette==null)
+                    throw new InvalidOperationException("Brakuje kamery lub elementów garażu.");
                 var data=R1RunCheckpointStorage.Read(R1RunCheckpointStorage.PathName);
                 if(!Enum.IsDefined(typeof(R3VehicleKind),data.vehicle)||data.variant<0||data.variant>=4||!Guid.TryParseExact(data.runId,"N",out _)||
                     data.defeated<0||data.earned<0||data.recovered<0||data.lastReward<0||
