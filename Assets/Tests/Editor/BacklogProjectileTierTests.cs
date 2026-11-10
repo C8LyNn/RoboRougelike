@@ -141,5 +141,37 @@ public sealed class BacklogProjectileTierPhysicsTests
         float end=Time.time+.8f;while(Time.time<end)yield return null;
         Assert.That(500-hp.CurrentHp,Is.InRange(100f,120f));
     }
+    [UnityTest] public IEnumerator RocketBlastDamagesTargetAmongHundredsOfUnrelatedColliders()
+    {
+        var gun=Build(R4WeaponKind.RocketLauncher,out var energy);var hp=Target(gun,6,2);
+        var fixture=new GameObject("Crowded explosion fixture");
+        fixture.transform.position=gun.Muzzle.position+gun.Muzzle.forward*6f+gun.Muzzle.right*2f;
+        for(int i=0;i<300;i++)fixture.AddComponent<BoxCollider>().size=Vector3.one*.02f;
+        Physics.SyncTransforms();
+        Assert.That(Physics.OverlapSphere(fixture.transform.position,1).Count(c=>c.gameObject==fixture),Is.EqualTo(300));
+        try
+        {
+            Assert.That(gun.GetComponent<RRLRocketBinding>().Fire(),Is.True);
+            float end=Time.time+1f;while(Time.time<end)yield return null;
+            Assert.That(hp.CurrentHp,Is.LessThan(500),"Unrelated nearby colliders must not erase an otherwise valid explosion.");
+        }
+        finally{Object.Destroy(fixture);}
+    }
+    [UnityTest] public IEnumerator RocketBlastStillFailsClosedBeyondConfiguredBound()
+    {
+        var gun=Build(R4WeaponKind.RocketLauncher,out var energy);var hp=Target(gun,6,2);
+        var fixture=new GameObject("Extreme explosion saturation fixture");
+        fixture.transform.position=gun.Muzzle.position+gun.Muzzle.forward*6f+gun.Muzzle.right*2f;
+        for(int i=0;i<1030;i++)fixture.AddComponent<BoxCollider>().size=Vector3.one*.02f;
+        Physics.SyncTransforms();
+        try
+        {
+            LogAssert.Expect(LogType.Warning,"WPN-004: blast overlap overflow; no explosion damage applied.");
+            Assert.That(gun.GetComponent<RRLRocketBinding>().Fire(),Is.True);
+            float end=Time.time+1f;while(Time.time<end)yield return null;
+            Assert.That(hp.CurrentHp,Is.EqualTo(500),"An incomplete query must not apply a partial explosion.");
+        }
+        finally{Object.Destroy(fixture);}
+    }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }
