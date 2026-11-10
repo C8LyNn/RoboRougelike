@@ -203,6 +203,27 @@ public class R41GarageTests
         yield return null;
     }
 
+    [UnityTest] public IEnumerator ForeignVehicleAndPlanDoNotOverrideOwnSocket()
+    {
+        var garage=Run.Garage;string id=PurchasePart(R3PartKind.Armor);garage.ChooseInventory(id);
+        var ray=TopRay(new Vector3Int(2,1,2));Assert.That(garage.Point(ray),Is.True);var original=garage.Cell;
+        var other=GameObject.CreatePrimitive(PrimitiveType.Cube);other.name="Foreign part";
+        other.transform.position=ray.GetPoint(.1f);other.transform.localScale=Vector3.one*.05f;
+        var part=other.AddComponent<R3MountedPart>();part.Id="foreign";part.Kind=R3PartKind.Armor;
+        part.Damageable=other.AddComponent<P12PipelineSafeDamageable>();part.Damageable.Configure(100,true);
+        part.Block=other.AddComponent<P12_PipelineSafePlayerBlock>();
+        var plan=GameObject.CreatePrimitive(PrimitiveType.Cube);plan.name="Foreign plan";
+        plan.transform.position=ray.GetPoint(.3f);plan.transform.localScale=Vector3.one*.05f;
+        plan.AddComponent<R41MissingPlan>().Part=new R3PartState(Vector3Int.zero,R3PartKind.Armor);
+        try
+        {
+            Physics.SyncTransforms();Assert.That(garage.Point(ray),Is.True);
+            Assert.That(garage.Cell,Is.EqualTo(original),"Only this vehicle and its preview can provide the target.");
+        }
+        finally{UnityEngine.Object.Destroy(other);UnityEngine.Object.Destroy(plan);}
+        yield return null;
+    }
+
     [UnityTest] public IEnumerator FullRaycastBufferCannotAuthorizeAHiddenMountTarget()
     {
         var garage=Run.Garage;string id=PurchasePart(R3PartKind.Armor);garage.ChooseInventory(id);
