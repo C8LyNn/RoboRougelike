@@ -18,6 +18,17 @@ public sealed class CompactCombatHUDTests
         var summary=(string)method.Invoke(null,new object[]{design});
         Assert.That(summary,Does.Contain("Energia: 550"),"500 core + 100 battery - 2×25 passive reservation.");
     }
+    [Test] public void GarageMotorAdviceDoesNotSuggestAddingPowerAtTheCap()
+    {
+        var method=typeof(R1RunHUD).GetMethod("GarageWheelPowerAdvice",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        string below=(string)method.Invoke(null,new object[]{4f});
+        string capped=(string)method.Invoke(null,new object[]{5f});
+        Assert.That(below,Does.Contain("dołóż silnik"));
+        Assert.That(capped,Does.Contain("Limit silników"));
+        Assert.That(capped,Does.Not.Contain("dołóż silnik"));
+        Assert.That(capped,Does.Contain("koła"));
+    }
     [TestCase(0f,100f,0f)]
     [TestCase(50f,100f,.5f)]
     [TestCase(110f,100f,1f)]
