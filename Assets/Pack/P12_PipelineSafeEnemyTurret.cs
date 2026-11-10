@@ -359,8 +359,9 @@ namespace RogueMachine.P12PipelineSafe
 
         public P12PipelineSafeDamageable Core => core;
         public bool IsDefeated => defeated || core == null || core.IsDead;
-        bool PrimaryWeaponOnline => variantGuns.Count>0?variantGuns.Any(g=>g.Online(transform)):weaponBlock != null && !weaponBlock.IsDead &&
-            turretSupport != null && !turretSupport.IsDead && yawPivot != null && muzzle != null &&
+        bool PrimaryWeaponOnline => variantGuns.Count>0?variantGuns.Any(g=>g.Online(transform)):weaponBlock != null && !weaponBlock.IsDead && weaponBlock.transform.IsChildOf(transform) &&
+            turretSupport != null && !turretSupport.IsDead && turretSupport.transform.IsChildOf(transform) &&
+            yawPivot != null && yawPivot.IsChildOf(transform) && muzzle != null && muzzle.IsChildOf(transform) &&
             (turretAnchor==null||!turretAnchor.IsDead&&turretAnchor.transform.IsChildOf(transform));
         public bool WeaponOnline => PrimaryWeaponOnline||additionalGuns.Any(g=>g.Online(transform));
         public bool RecoveringFromPlayerContact => contactRecovery.Recovering;

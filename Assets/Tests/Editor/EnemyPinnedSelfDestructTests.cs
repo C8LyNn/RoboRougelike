@@ -18,6 +18,19 @@ public sealed class EnemyPinnedSelfDestructTests
         while(run.Transitioning&&Time.realtimeSinceStartup<until)yield return null;
         Assert.That(run.Transitioning,Is.False);run.Encounter.SetCombatActive(false);
     }
+    [UnityTest] public IEnumerator DetachedIntactPrimaryGunDoesNotKeepEnemyArmed()
+    {
+        var enemy=R1RunController.Instance.Encounter.Enemies.First();
+        var yaw=enemy.transform.Find("Enemy_Yaw");
+        Assert.That(yaw,Is.Not.Null);Assert.That(enemy.WeaponBlock.IsDead,Is.False);
+        Assert.That(enemy.AdditionalWeapons,Is.Not.Empty);
+        yaw.SetParent(null,true);
+        Assert.That(enemy.WeaponOnline,Is.True,"A still attached extra gun remains usable.");
+        foreach(var gun in enemy.AdditionalWeapons)gun.Block.transform.SetParent(null,true);
+        Assert.That(enemy.WeaponBlock.IsDead,Is.False,"The detached primary remains physically intact.");
+        Assert.That(enemy.WeaponOnline,Is.False,"Detached guns cannot arm or fire for the enemy.");
+        yield return null;
+    }
     [UnityTest] public IEnumerator MobileButUnarmedEnemyExplodesNearPlayerAfterWarning()
     {
         var run=R1RunController.Instance;var enemy=run.Encounter.Enemies.First();
