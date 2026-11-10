@@ -137,6 +137,31 @@ public class R41GarageTests
             yield return null;
         }
     }
+    [UnityTest] public IEnumerator WheelRotationShortcutSkipsTheInvalidSidewaysIntermediatePose()
+    {
+        var garage=Run.Garage;
+        foreach(int side in new[]{-1,1})
+        {
+            var model=Run.VehicleModel;
+            var wheel=model.Parts.First(p=>p.Kind==R3PartKind.Wheel&&Math.Sign(p.Cell.x)==side);
+            var id=wheel.Id;var cell=wheel.Cell;var before=wheel.RotationQuarterTurns;
+            int mask=R3MountingGrid.WorldPortMask(before,wheel.ContactMask);int scrap=model.Scrap;
+            var actual=Run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==id);
+            var outward=Run.Player.transform.right*side;
+            var ray=new Ray(actual.transform.position+outward*3f,-outward);
+            Assert.That(garage.RotatePointed(ray,new Vector3Int(0,side,0)),Is.True,
+                "A single horizontal rotation shortcut must reach the next legal upright wheel pose.");
+            var rotated=Run.VehicleModel.At(cell);
+            Assert.That(rotated.Id,Is.EqualTo(id));Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(scrap));
+            Assert.That(rotated.RotationQuarterTurns,Is.EqualTo(R3MountingGrid.Normalize(before+new Vector3Int(0,2,0))));
+            Assert.That(R3MountingGrid.WorldPortMask(rotated.RotationQuarterTurns,rotated.ContactMask),Is.EqualTo(mask));
+            Assert.That(R3VehicleModel.ValidWheelOrientation(rotated.RotationQuarterTurns),Is.True);
+            actual=Run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==id);
+            ray=new Ray(actual.transform.position+outward*3f,-outward);
+            Assert.That(garage.RotatePointed(ray,new Vector3Int(1,0,0)),Is.False,"Wheels must not be flipped upside down.");
+            yield return null;
+        }
+    }
     [UnityTest] public IEnumerator GhostColorTracksBlockedAndAllowedPlacementAfterReappearing()
     {
         var garage=Run.Garage;string id=PurchasePart(R3PartKind.Armor);garage.ChooseInventory(id);
