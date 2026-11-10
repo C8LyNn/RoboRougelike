@@ -170,6 +170,48 @@ public sealed class R3DamagePropagationTests
         ValidatePlayerHit(run);
     }
 
+    [UnityTest]
+    public IEnumerator InactiveNeighbourDoesNotReceiveOrRelayLiveDamage()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float end=Time.realtimeSinceStartup+15;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<end)yield return null;
+        var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);yield return null;
+        ValidateInactiveNeighbour(run);
+    }
+
+    static void ValidateInactiveNeighbour(R1RunController run)
+    {
+        var parts=run.Player.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p!=null&&p.Operational).ToArray();
+        R3MountedPart target=null,hidden=null;
+        foreach(var part in parts)
+        {
+            if(part==null)continue;
+            if(part.Cell==new Vector3Int(1,0,0))target=part;
+            if(part.Cell==new Vector3Int(2,0,0))hidden=part;
+        }
+        Assert.That(target,Is.Not.Null);Assert.That(hidden,Is.Not.Null);
+        Assert.That(target.Damageable,Is.Not.Null);Assert.That(hidden.Damageable,Is.Not.Null);
+        var before=parts.ToDictionary(p=>p.Id,p=>p.Damageable.CurrentHp);
+        hidden.gameObject.SetActive(false);
+        try
+        {
+            // The cached structure grid deliberately still knows this object;
+            // it cannot participate in a physical hit while inactive.
+            target.Damageable.ApplyDamage(8,target.transform.position,Vector3.forward);
+            Assert.That(hidden.Damageable.CurrentHp,Is.EqualTo(before[hidden.Id]).Within(.001f));
+            Assert.That(parts.Where(p=>p!=hidden).Sum(p=>before[p.Id]-p.Damageable.CurrentHp),Is.EqualTo(8).Within(.001f),
+                "The live connected parts must still account for the entire hit.");
+            hidden.gameObject.SetActive(true);
+            float restoredHp=hidden.Damageable.CurrentHp;
+            target.Damageable.ApplyDamage(8,target.transform.position,Vector3.forward);
+            Assert.That(hidden.Damageable.CurrentHp,Is.LessThan(restoredHp),
+                "The same real connection must carry damage again when its part is active.");
+        }
+        finally {if(hidden!=null)hidden.gameObject.SetActive(true);}
+    }
+
     static void ValidatePlayerHit(R1RunController run)
     {
         Assert.That(run.Player,Is.Not.Null);
