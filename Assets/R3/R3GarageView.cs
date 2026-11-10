@@ -685,7 +685,15 @@ namespace RoboRougelike.R3
                 }
                 current.Use();return;
             }
-            if(!inside)return;
+            if(!inside)
+            {
+                // A mounting ghost describes the cell under the pointer. Keep
+                // the selected part, but do not leave an old ghost visible
+                // when the pointer has moved onto the surrounding UI.
+                if(current.type==EventType.Repaint&&Tool==R41GarageTool.Mount&&HasTarget)
+                {HasTarget=false;pointerSurfaceRejected=false;RefreshMarker();}
+                return;
+            }
             if(current.type==EventType.ScrollWheel){Zoom(current.delta.y*0.4f);current.Use();return;}
             if(current.type==EventType.Repaint&&!orbitDragging)Point(view.ScreenPointToRay(screen));
             if(current.type==EventType.MouseDown&&current.button==0&&!orbitDragging)
