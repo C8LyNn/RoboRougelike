@@ -35,6 +35,8 @@ public sealed class BacklogDrivePowerIntegrationTests
     {
         var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.position=Vector3.down*.5f;floor.transform.localScale=new Vector3(100,1,100);
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(500);
+        // Isolate one motor below the power cap so damage changes measured force.
+        model.Parts.RemoveAll(p=>p.Kind==R3PartKind.DrivePower);model.RefreshEnergyLayout();
         var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
             .First(c=>model.PlacementError(c,R3PartKind.DrivePower,false)==null);
         Assert.That(model.Buy(cell,R3PartKind.DrivePower),Is.True);

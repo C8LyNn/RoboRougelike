@@ -74,11 +74,13 @@ public sealed class BacklogDeviceTierGameplayTests
     }
     [UnityTest] public IEnumerator UpgradedMotorUsesTwoPowerUnitsAndTwentyFiveEnergyReservation()
     {
-        var part=FuseAndMount(R3PartKind.DrivePower);
         var drive=run.Player.GetComponent<R6VehicleDrive>();var bank=run.Player.GetComponent<VehicleEnergyBank>();
+        drive.RefreshMass();bank.Refresh();float powerBefore=drive.ActivePowerUnits,energyBefore=bank.Maximum;
+        var part=FuseAndMount(R3PartKind.DrivePower);
+        drive=run.Player.GetComponent<R6VehicleDrive>();bank=run.Player.GetComponent<VehicleEnergyBank>();
         drive.RefreshMass();bank.Refresh();
-        Assert.That(part.Tier,Is.EqualTo(2));Assert.That(drive.ActivePowerUnits,Is.EqualTo(2).Within(.001));
-        Assert.That(bank.Maximum,Is.EqualTo(475));yield return null;
+        Assert.That(part.Tier,Is.EqualTo(2));Assert.That(drive.ActivePowerUnits,Is.EqualTo(powerBefore+2).Within(.001));
+        Assert.That(bank.Maximum,Is.EqualTo(energyBefore-25));yield return null;
     }
     [UnityTest] public IEnumerator UpgradedRepairUsesMoreEnergyAndHealsTwiceAsFast()
     {
