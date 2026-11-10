@@ -261,9 +261,16 @@ namespace RoboRougelike.R3
         public void RotateSelected(int axis,int quarterTurns)
         {
             if(axis<0||axis>2||quarterTurns==0)return;
+            bool uprightWheel=MountKind==R3PartKind.Wheel&&R3VehicleModel.ValidWheelOrientation(SelectedRotation);
+            if(uprightWheel&&axis==1&&Mathf.Abs(quarterTurns)==1)quarterTurns*=2;
             var step=axis==0?new Vector3Int(quarterTurns,0,0):
                 axis==1?new Vector3Int(0,quarterTurns,0):new Vector3Int(0,0,quarterTurns);
-            SelectedRotation=R3MountingGrid.Normalize(SelectedRotation+step);
+            var next=R3MountingGrid.Normalize(SelectedRotation+step);
+            // Keep legal wheel ghosts upright. If an old inventory item has
+            // an invalid legacy pose, allow intermediate turns to correct it.
+            if(uprightWheel&&!R3VehicleModel.ValidWheelOrientation(next))
+            {Message="Koło musi stać pionowo, a jego oś musi być skierowana na bok.";return;}
+            SelectedRotation=next;
             Message="Obrót: X "+SelectedRotation.x*90+"° / Y "+SelectedRotation.y*90+
                 "° / Z "+SelectedRotation.z*90+"°. Dopasuj punkty styku.";
             RefreshMarker();
