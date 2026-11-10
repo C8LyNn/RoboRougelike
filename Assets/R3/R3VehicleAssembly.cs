@@ -61,7 +61,8 @@ namespace RoboRougelike.R3
         public static float TurnFor(float mass)=>Mathf.Clamp(82f*Mathf.Clamp(Mathf.Sqrt(350f/Mathf.Max(1f,mass)),.6f,1.35f),35f,130f);        public void AimGuns(Vector3 point)
         {
             foreach(var part in Parts)
-                if(part!=null && part.Kind==R3PartKind.Gun && part.Operational && part.GunPivot!=null&&!RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))
+                if(part!=null && part.Kind==R3PartKind.Gun && part.gameObject.activeInHierarchy && part.Operational &&
+                   part.transform.IsChildOf(transform) && part.GunPivot!=null&&!RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))
                 {
                     // Aim from the actual firing point, not the turret pivot. The muzzle moves with the barrel, so this converges while the turret turns.
                     var direction = point - (part.Muzzle!=null?part.Muzzle.position:part.GunPivot.position);

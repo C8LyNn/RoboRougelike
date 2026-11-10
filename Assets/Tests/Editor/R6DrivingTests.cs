@@ -53,7 +53,29 @@ public class R6DrivingTests
         while(Time.time<until){peak=Mathf.Max(peak,Vector3.Angle(body.rotation*Vector3.up,Vector3.up));yield return null;}
         Debug.Log($"Light braking maximum tilt: {peak:F2} degrees");
         Assert.That(peak,Is.LessThan(20f),"The light vehicle should remain stable during braking.");
-    }    [UnityTest] public IEnumerator LosingAHeavyGunRecalculatesPerformanceFromRemainingMass()
+    }
+    [UnityTest] public IEnumerator InactiveOrDetachedGunsDoNotAimWithTheVehicle()
+    {
+        yield return null;Assert.That(Time.deltaTime,Is.GreaterThan(0));
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();
+        var gun=assembly.Parts.First(p=>p.Kind==R3PartKind.Gun&&p.Operational);
+        var pivot=gun.GunPivot;Assert.That(pivot,Is.Not.Null);
+        var target=pivot.position+Vector3.right*100;
+        pivot.rotation=Quaternion.identity;assembly.AimGuns(target);
+        Assert.That(Quaternion.Angle(pivot.rotation,Quaternion.identity),Is.GreaterThan(.01f),"An active attached gun must still aim.");
+        pivot.rotation=Quaternion.identity;gun.gameObject.SetActive(false);
+        assembly.AimGuns(target);
+        Assert.That(Quaternion.Angle(pivot.rotation,Quaternion.identity),Is.LessThan(.001f),"Inactive guns must not track the player aim.");
+        gun.gameObject.SetActive(true);var parent=gun.transform.parent;
+        try
+        {
+            gun.transform.SetParent(null,true);pivot.rotation=Quaternion.identity;
+            assembly.AimGuns(target);
+            Assert.That(Quaternion.Angle(pivot.rotation,Quaternion.identity),Is.LessThan(.001f),"A detached part must not keep receiving aim commands.");
+        }
+        finally{if(gun!=null)gun.transform.SetParent(parent,true);}
+    }
+    [UnityTest] public IEnumerator LosingAHeavyGunRecalculatesPerformanceFromRemainingMass()
     {
         var assembly=run.Player.GetComponent<R3VehicleAssembly>();var drive=run.Player.GetComponent<R6VehicleDrive>();
         var gun=assembly.Parts.First(p=>p.Kind==R3PartKind.Gun);float before=run.Player.Controller.EffectiveForwardSpeed;
