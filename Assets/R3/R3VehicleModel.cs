@@ -424,7 +424,25 @@ namespace RoboRougelike.R3
         }
         public int AffordableRepairCost
         {
-            get {var preview=DeepCopy();preview.RepairAffordable();return Scrap-preview.Scrap;}
+            get
+            {
+                var preview=DeepCopy();
+                if(restorationGate!=null)
+                {
+                    // Validate every hypothetical rebuilt part against earlier
+                    // hypothetical repairs as one batch. Keep snapshots dead so
+                    // the physical gate also checks their recreated geometry.
+                    var restored=new List<R3PartState>();
+                    preview.restorationGate=parts=>
+                    {
+                        var batch=restored.Concat(parts).ToArray();
+                        if(!restorationGate(batch))return false;
+                        restored.AddRange(parts.Select(p=>p.Copy()));
+                        return true;
+                    };
+                }
+                preview.RepairAffordable();return Scrap-preview.Scrap;
+            }
         }
         public bool Remove(Vector3Int cell)
         {

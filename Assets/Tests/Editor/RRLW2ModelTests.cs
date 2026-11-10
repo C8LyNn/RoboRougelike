@@ -124,6 +124,17 @@ public class RRLW2ModelTests
         var bulk=typeof(R3VehicleModel).GetProperty("AffordableRepairCost");Assert.That(bulk,Is.Not.Null);
         Assert.That(bulk.GetValue(m),Is.EqualTo(9));m.RepairAffordable();Assert.That(m.Scrap,Is.EqualTo(24));
     }
+    [Test] public void BulkQuoteAccountsForTheGeometryOfEarlierHypotheticalRepairs()
+    {
+        var m=Model();var gun=m.Parts[1];var wheel=m.Parts[2];gun.Health=wheel.Health=0;m.Award(100);
+        var ids=new[]{gun.Id,wheel.Id};
+        Func<System.Collections.Generic.IReadOnlyList<R3PartState>,bool> gate=parts=>
+            parts.Count(p=>ids.Contains(p.Id))+m.Parts.Count(p=>ids.Contains(p.Id)&&p.Health>0)<=1;
+        typeof(R3VehicleModel).GetMethod("SetRestorationGate",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(m,new object[]{gate});
+        int before=m.Scrap,quote=m.AffordableRepairCost;
+        Assert.That(quote,Is.EqualTo(m.RepairCost(gun)));Assert.That(gun.Health,Is.Zero);Assert.That(wheel.Health,Is.Zero);
+        Assert.That(m.RepairAffordable(),Is.EqualTo(1));Assert.That(before-m.Scrap,Is.EqualTo(quote));
+    }
     [Test] public void ThreatIncludesTheActuallySpawnedNormalEscort()
     {
         var a=new R1EncounterDefinition{Roster=new[]{R3EnemyArchetype.Scout},Variants=new[]{R5EnemyVariant.Normal},EnemyCount=1,MoveSpeed=0,HealthMultiplier=1,DamageMultiplier=1,FireIntervalMultiplier=1,Arena=R5ArenaKind.SalvageYard};

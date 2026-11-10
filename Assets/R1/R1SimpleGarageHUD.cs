@@ -15,13 +15,25 @@ namespace RoboRougelike.R1
         bool quickOwnedOnly;
         GUIStyle quickCategoryButton;
         Vector2 quickPartsScroll;
+        R3VehicleModel repairQuoteModel;
+        float nextRepairQuoteTime;
+        int repairQuote;
         static Rect QuickPartsArea(bool portrait)=>portrait?new Rect(24,658,414,178):new Rect(12,105,246,355);
         static Rect QuickRepairArea(bool portrait)=>portrait?new Rect(24,840,414,38):new Rect(12,465,245,38);
-        void OpenSimpleGarageOptions(int tab){garageOptionsTab=tab;garageOptionsFeedback=null;activitySaveFeedback=null;garageOptionsOpen=true;}
+        void OpenSimpleGarageOptions(int tab){garageOptionsTab=tab;garageOptionsFeedback=null;activitySaveFeedback=null;garageOptionsOpen=true;repairQuoteModel=null;}
+        int SimpleGarageRepairQuote(R3VehicleModel model)
+        {
+            // The physical quote may construct temporary collision probes.
+            // Do not repeat that work for every IMGUI event and rendered frame.
+            if(repairQuoteModel!=model||Time.unscaledTime>=nextRepairQuoteTime)
+            {repairQuote=model.AffordableRepairCost;repairQuoteModel=model;nextRepairQuoteTime=Time.unscaledTime+.25f;}
+            return repairQuote;
+        }
         void RepairFromGarageOptions(R1RunController run,bool emergency)
         {
             int before=run.VehicleModel.Scrap;
             bool done=emergency?run.GarageEmergencyRepair():run.GarageRepairAffordable();
+            repairQuoteModel=null;
             string action=emergency?"Odbudowano niezbędne moduły.":"Naprawiono dostępne części.";
             garageOptionsFeedback=done?$"{action} Koszt: {before-run.VehicleModel.Scrap} Z.":
                 emergency?"Nie można odbudować części.":"Brak środków lub części do naprawy.";
@@ -509,7 +521,7 @@ namespace RoboRougelike.R1
                 var model=run.VehicleModel;
                 GUI.Label(new Rect(350,180,380,70),"A / LPM: "+WeaponGroupName(model.WeaponGroupA)+"\nB / PPM: "+WeaponGroupName(model.WeaponGroupB),small);
                 if(GUI.Button(new Rect(350,255,380,44),"Zamień grupy broni",compactButton))model.SwapWeaponGroups();
-                int repair=model.AffordableRepairCost;GUI.enabled=repair>0;
+                int repair=SimpleGarageRepairQuote(model);GUI.enabled=repair>0;
                 if(GUI.Button(new Rect(350,309,380,44),GarageBulkRepairCaption(model,repair),compactButton))
                     RepairFromGarageOptions(run,false);
                 int emergency=model.EmergencyRepairCost;GUI.enabled=emergency>0&&model.Scrap>=emergency;
@@ -540,7 +552,7 @@ namespace RoboRougelike.R1
                 var model=run.VehicleModel;
                 GUI.Label(new Rect(680,190,350,70),"A / LPM: "+WeaponGroupName(model.WeaponGroupA)+"\nB / PPM: "+WeaponGroupName(model.WeaponGroupB),small);
                 if(GUI.Button(new Rect(680,270,300,40),"Zamień grupy broni",compactButton))model.SwapWeaponGroups();
-                int repair=model.AffordableRepairCost;GUI.enabled=repair>0;
+                int repair=SimpleGarageRepairQuote(model);GUI.enabled=repair>0;
                 if(GUI.Button(new Rect(680,325,300,40),GarageBulkRepairCaption(model,repair),compactButton))
                     RepairFromGarageOptions(run,false);
                 int emergency=model.EmergencyRepairCost;GUI.enabled=emergency>0&&model.Scrap>=emergency;

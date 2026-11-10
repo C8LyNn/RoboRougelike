@@ -49,6 +49,24 @@ public sealed class FullMergeAdditionalRegression
         int scrap=run.VehicleModel.Scrap;Assert.That(run.GarageRepair(cell),Is.False);Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));Assert.That(run.VehicleModel.At(cell).Health,Is.Zero);
         Object.Destroy(obstacle);yield return null;Assert.That(run.GarageRepair(cell),Is.True);
     }
+    [UnityTest]public IEnumerator BulkRepairQuoteExcludesPhysicallyBlockedRestoration()
+    {
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();
+        var part=assembly.Parts.Single(p=>p.Cell==new Vector3Int(1,0,2));var cell=part.Cell;var id=part.Id;
+        part.Damageable.ApplyDamage(100000,part.transform.position,Vector3.zero);assembly.Capture();yield return null;yield return null;
+        foreach(var state in run.VehicleModel.Parts.Where(p=>p.Id!=id))state.Health=1f;
+        Assert.That(run.VehicleModel.At(cell).Health,Is.Zero);
+        var obstacle=GameObject.CreatePrimitive(PrimitiveType.Cube);
+        obstacle.transform.position=run.Player.transform.TransformPoint((Vector3)cell*.55f);
+        obstacle.transform.localScale=Vector3.one*.3f;Physics.SyncTransforms();
+        int scrap=run.VehicleModel.Scrap;
+        Assert.That(run.VehicleModel.AffordableRepairCost,Is.Zero,"A blocked repair cannot be quoted as available.");
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));Assert.That(run.VehicleModel.At(cell).Health,Is.Zero);
+        Assert.That(run.GarageRepairAffordable(),Is.False);
+        Object.Destroy(obstacle);yield return null;
+        int quote=run.VehicleModel.AffordableRepairCost;Assert.That(quote,Is.GreaterThan(0));
+        Assert.That(run.GarageRepairAffordable(),Is.True);Assert.That(scrap-run.VehicleModel.Scrap,Is.EqualTo(quote));
+    }
     [UnityTest]public IEnumerator FactoryWheelCanReturnAndRestoreWithoutIgnoringForgedForeignColliders()
     {
         var old=run;run.RestartRun();while(R1RunController.Instance==old||R1RunController.Instance?.Progress==null)yield return null;
