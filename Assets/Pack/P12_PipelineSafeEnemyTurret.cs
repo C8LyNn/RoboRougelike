@@ -759,6 +759,13 @@ namespace RogueMachine.P12PipelineSafe
             return flat.sqrMagnitude>=.0001f?flat.normalized:Vector3.forward;
         }
 
+        public static Vector3 ConstrainRetreatDirection(Vector3 desired,Vector3 towardPlayer)
+        {
+            float approach=Vector3.Dot(desired,towardPlayer);
+            if(approach>=0f)desired-=towardPlayer*(approach+.25f);
+            return desired.normalized;
+        }
+
         private void OnCollisionStay(Collision collision)
         {
             if(playerRoot!=null && collision.collider!=null &&
@@ -797,7 +804,7 @@ namespace RogueMachine.P12PipelineSafe
                     float d=away.magnitude;
                     if(d>0.01f&&d<6)desired+=away/d*((6-d)/6)*1.5f;
                 }
-            desired.Normalize();
+            desired=recovering?ConstrainRetreatDirection(desired,toward):desired.normalized;
             float wheelFactor=driveWheels.Count==0?1:ActiveWheelCount/(float)driveWheels.Count;
             if(wheelFactor<=0)return;
             float step = moveSpeed * Mathf.Lerp(0.3f,1,wheelFactor) * Time.fixedDeltaTime;

@@ -63,6 +63,19 @@ public sealed class EnemyCombatStylesTests
     }
 
     [Test]
+    public void AllyBehindCannotReverseAnActiveRetreatIntoThePlayer()
+    {
+        var method=typeof(P12PipelineSafeEnemyTurret).GetMethod("ConstrainRetreatDirection",BindingFlags.Static|BindingFlags.Public);
+        Assert.That(method,Is.Not.Null,"A retreat must survive contradictory ally avoidance.");
+        var towardPlayer=Vector3.forward;
+        var retreat=(-towardPlayer+Vector3.right*.35f).normalized;
+        var avoidanceFromAllyBehind=towardPlayer*1.4f;
+        var direction=(Vector3)method.Invoke(null,new object[]{retreat+avoidanceFromAllyBehind,towardPlayer});
+        Assert.That(Vector3.Dot(direction,towardPlayer),Is.LessThan(0f),"Retreat must not steer back into the player.");
+        Assert.That(direction.x,Is.GreaterThan(0f),"Keep a sideways escape component when possible.");
+    }
+
+    [Test]
     public void AllScoutRosterGetsRangedEscortInsteadOfAnotherScout()
     {
         var encounter=new R1EncounterDefinition {EnemyCount=1,Roster=new[]{R3EnemyArchetype.Scout}};
