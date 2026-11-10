@@ -49,7 +49,8 @@ namespace RoboRougelike.R1
                 if(part==null||part.IsDead||!hit.Add(part))continue;
                 float distance=Vector3.Distance(part.transform.position,center);
                 if(distance>6f)continue;
-                part.ApplyDamage(80f*Mathf.Clamp01(1f-distance/8f),part.transform.position,(part.transform.position-center).normalized);
+                part.ApplyDamageResolvedTyped(80f*Mathf.Clamp01(1f-distance/8f),part.transform.position,
+                    (part.transform.position-center).normalized,RoboRougelike.R3.R3DamagePropagation.DamageKind.Blast);
             }
             enemy.Core.ApplyDamage(100000f,center,Vector3.up);
         }

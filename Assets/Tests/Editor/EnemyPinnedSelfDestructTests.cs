@@ -2,6 +2,7 @@ using System.Collections;
 using System.Linq;
 using NUnit.Framework;
 using RoboRougelike.R1;
+using RoboRougelike.R3;
 using RogueMachine.P12PipelineSafe;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -73,6 +74,42 @@ public sealed class EnemyPinnedSelfDestructTests
         enemy.transform.position=run.Player.transform.position+Vector3.forward*2;Physics.SyncTransforms();
         while(!enemy.IsDefeated&&Time.realtimeSinceStartup<deadline)yield return null;
         Assert.That(enemy.IsDefeated,Is.True,"Once the warning elapsed, a nearby player triggers the blast.");
+    }
+    [UnityTest] public IEnumerator SelfDestructionUsesBlastDamageOnConnectedPlayerParts()
+    {
+        var run=R1RunController.Instance;var enemy=run.Encounter.Enemies.First();
+        run.Player.GetComponent<Rigidbody>().isKinematic=true;enemy.GetComponent<Rigidbody>().isKinematic=true;
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();
+        var all=run.Player.GetComponentsInChildren<P12PipelineSafeDamageable>().Where(h=>h!=null&&!h.IsDead).ToArray();
+        var directions=new[]{new Vector3(1,0,1).normalized,new Vector3(1,0,-1).normalized,
+            new Vector3(-1,0,1).normalized,new Vector3(-1,0,-1).normalized};
+        R3MountedPart target=null;Vector3 center=default;
+        foreach(var part in assembly.Parts.Where(p=>p!=null&&p.Kind==R3PartKind.Armor&&p.Operational))
+        {
+            bool linked=assembly.Parts.Any(other=>other!=null&&other!=part&&other.Operational&&
+                (other.Cell-part.Cell).sqrMagnitude==1&&R3MountingGrid.Compatible(part.Block,part.Cell,other.Block,other.Cell));
+            if(!linked)continue;
+            foreach(var direction in directions)
+            {
+                var proposed=part.transform.position+direction*5.98f;
+                if(all.Count(h=>Vector3.Distance(h.transform.position,proposed)<=6f)!=1||
+                    Vector3.Distance(part.transform.position,proposed)>6f)continue;
+                target=part;center=proposed;break;
+            }
+            if(target!=null)break;
+        }
+        Assert.That(target,Is.Not.Null,"The real vehicle must expose one connected armor part at the blast edge.");
+        enemy.transform.position+=center-enemy.Core.transform.position;Physics.SyncTransforms();
+        foreach(var gun in enemy.AdditionalWeapons.Where(g=>g.Block!=null).ToArray())gun.Block.ApplyDamage(100000,gun.Block.transform.position,Vector3.up);
+        if(enemy.WeaponBlock!=null)enemy.WeaponBlock.ApplyDamage(100000,enemy.WeaponBlock.transform.position,Vector3.up);
+        Assert.That(enemy.WeaponOnline,Is.False);float before=target.Damageable.CurrentHp;
+        float impact=80f*Mathf.Clamp01(1f-Vector3.Distance(target.transform.position,enemy.Core.transform.position)/8f);
+        enemy.SetCombatActive(true);float deadline=Time.realtimeSinceStartup+15;
+        while(!enemy.IsDefeated&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(enemy.IsDefeated,Is.True);
+        float direct=before-target.Damageable.CurrentHp;
+        Assert.That(direct,Is.EqualTo(impact*(1-R3DamagePropagation.TransferFraction(R3DamagePropagation.DamageKind.Blast))).Within(.1f),
+            "A self-destruction is blast damage, so the same physical connection rules as other explosions apply.");
     }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }
