@@ -146,9 +146,14 @@ public sealed class R1RunCheckpointIntegrationTests
     static void CheckLegacySideMountedGun(R1RunController run,string path)
     {
         var progress=new R1RunProgress(6,true);Assert.That(progress.Start(),Is.True);Assert.That(progress.PrepareGarage(),Is.True);
-        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));var saved=model.MakeCheckpoint(Time.time);
+        // Construct an actual old side-only connection, independent of future
+        // starter hull changes which may put a valid support under the gun.
+        var design=new R3VehicleDesign{Name="Legacy side mount"};
+        design.Parts.Add(new R3PartState(Vector3Int.zero,R3PartKind.Core));
+        design.Parts.Add(new R3PartState(Vector3Int.right,R3PartKind.Armor));
+        design.Parts.Add(new R3PartState(new Vector3Int(2,0,0),R3PartKind.Gun,.43f){ContactMask=R3MountingGrid.AllFaces});
+        var model=new R3VehicleModel(design);var saved=model.MakeCheckpoint(Time.time);
         var gun=saved.mounted.First(p=>p.Kind==R3PartKind.Gun);
-        gun.Cell=new Vector3Int(3,1,1);gun.ContactMask=R3MountingGrid.AllFaces;gun.Health=.43f;
         string id=gun.Id;
         R1RunCheckpointStorage.Write(path,new R1RunCheckpoint{vehicle=(int)R3VehicleKind.Standard,runId=Guid.NewGuid().ToString("N"),
             progress=progress.MakeGarageCheckpoint(),model=saved});
