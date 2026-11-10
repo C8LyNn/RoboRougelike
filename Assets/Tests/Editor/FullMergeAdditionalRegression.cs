@@ -15,6 +15,31 @@ public sealed class FullMergeAdditionalRegression
     R1RunController run;
     [UnitySetUp]public IEnumerator Setup(){EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();while(R1RunController.Instance?.Progress==null)yield return null;run=R1RunController.Instance;run.SelectVehicle(R3VehicleKind.Light);Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;yield return null;}
     static void Set(object o,string n,object v)=>o.GetType().GetField(n,BindingFlags.Instance|BindingFlags.NonPublic).SetValue(o,v);
+    [UnityTest]public IEnumerator CameraHullQueriesReuseColliderStorageForDenseVehicles()
+    {
+        var follow=Camera.main.GetComponent<P12PipelineSafeCamera>();var query=follow.ReceiverRig.ReceiverHullBounds;
+        Assert.That(query,Is.Not.Null);var fixture=new GameObject("camera dense collider fixture");
+        fixture.transform.SetParent(run.Player.transform,false);
+        try
+        {
+            for(int i=0;i<300;i++)fixture.AddComponent<BoxCollider>().size=Vector3.one*.01f;
+            Physics.SyncTransforms();var initial=query(run.Player.transform);
+            for(int i=0;i<3;i++)query(run.Player.transform);
+            using(var recorder=Unity.Profiling.ProfilerRecorder.StartNew(Unity.Profiling.ProfilerCategory.Memory,"GC Allocated In Frame",16))
+            {
+                Assert.That(recorder.Valid,Is.True);yield return null;yield return null;long idle=recorder.LastValue;
+                Bounds last=default;for(int i=0;i<50;i++)last=query(run.Player.transform);
+                yield return null;long sample=recorder.LastValue;
+                var control=new byte[1024*1024];control[0]=1;yield return null;long controlBytes=recorder.LastValue;System.GC.KeepAlive(control);
+                Debug.Log($"[CAMERA_HULL_ALLOC] queries=50 extra_colliders=300 idle={idle} sample={sample} control={controlBytes}");
+                Assert.That(last.center,Is.EqualTo(initial.center));Assert.That(last.size,Is.EqualTo(initial.size));
+                Assert.That(controlBytes,Is.GreaterThanOrEqualTo(1024*1024),"The allocation profiler must detect a known allocation.");
+                Assert.That(sample-idle,Is.LessThan(32000),"Repeated hull queries should not allocate a collider array per frame.");
+            }
+        }
+        finally{Object.Destroy(fixture);}
+        yield return null;
+    }
     [UnityTest]public IEnumerator MinimumPitchFramesActualRobotInsideViewport()
     {
         run.Garage.Close();yield return null;

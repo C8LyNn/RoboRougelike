@@ -1,5 +1,6 @@
 using UnityEngine;
 using B01.CAMERA001;
+using System.Collections.Generic;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
@@ -34,10 +35,12 @@ namespace RogueMachine.P12PipelineSafe
             rig.ReceiverHorizontalDamping=horizontalFollowSeconds;rig.ReceiverVerticalDamping=verticalFollowSeconds;rig.ReceiverFramingDamping=framingFollowSeconds;
             rig.ReceiverZoomMaximum=maxDistance;
         }
-        static Bounds StableVehicleBounds(Transform root)
+        readonly List<Collider> hullColliders=new List<Collider>();
+        Bounds StableVehicleBounds(Transform root)
         {
             bool any=false;Bounds total=default;
-            foreach(var c in root.GetComponentsInChildren<Collider>()){
+            hullColliders.Clear();root.GetComponentsInChildren(false,hullColliders);
+            foreach(var c in hullColliders){
                 if(c==null||!c.enabled||c.isTrigger||!c.gameObject.activeInHierarchy)continue;
                 var part=c.GetComponentInParent<RoboRougelike.R3.R3MountedPart>();
                 var pivot=part!=null&&part.GunPivot!=null&&c.transform.IsChildOf(part.GunPivot)?part.GunPivot:null;
