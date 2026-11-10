@@ -113,4 +113,22 @@ public class R3GarageModelTests
         Assert.That(model.Scrap, Is.EqualTo(28));
         Assert.That(model.EmergencyRepair(), Is.False);
     }
+    [Test] public void EmergencyChoosesAffordableWeaponInsteadOfCloserExpensiveWreck()
+    {
+        var design=Blueprint();
+        var expensive=design.Parts[1];expensive.Weapon=RoboRougelike.R4.R4WeaponKind.Railgun;expensive.Health=0;
+        design.Parts.Add(new R3PartState(new Vector3Int(-1,1,0),R3PartKind.Armor));
+        design.Parts.Add(new R3PartState(new Vector3Int(-2,1,0),R3PartKind.Armor));
+        design.Parts.Add(new R3PartState(new Vector3Int(-2,2,0),R3PartKind.Gun,0)
+            {Weapon=RoboRougelike.R4.R4WeaponKind.Basic,ContactMask=R3MountingGrid.FaceBit(Vector3Int.down)});
+        var model=new R3VehicleModel(design);
+        var cheap=model.At(new Vector3Int(-2,2,0));
+        int price=model.RepairCost(cheap),expensivePrice=model.RepairCost(model.At(Vector3Int.up));
+        Assert.That(price,Is.LessThan(expensivePrice));model.Award(price);
+        Assert.That(model.CanDeploy,Is.False);
+        Assert.That(model.EmergencyRepairCost,Is.EqualTo(price));
+        Assert.That(model.EmergencyRepair(),Is.True,"An affordable essential repair must not be hidden by a nearer expensive wreck.");
+        Assert.That(model.CanDeploy,Is.True);Assert.That(cheap.Health,Is.EqualTo(1));
+        Assert.That(model.At(Vector3Int.up).Health,Is.Zero);Assert.That(model.Scrap,Is.Zero);
+    }
 }

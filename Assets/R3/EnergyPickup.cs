@@ -5,7 +5,9 @@ namespace RoboRougelike.R3
     /// <summary>A physical energy cube produced by a defeated enemy.</summary>
     public sealed class EnergyPickup : MonoBehaviour
     {
-        readonly Collider[] contacts=new Collider[128];
+        const int MaxContactBuffer=4096;
+        Collider[] contacts=new Collider[128];
+        int previousContacts;
         Material material;
         public static void Spawn(Vector3 position)
         {
@@ -20,16 +22,36 @@ namespace RoboRougelike.R3
         }
         void FixedUpdate()
         {
-            int count=Physics.OverlapSphereNonAlloc(transform.position,1.1f,contacts,~0,QueryTriggerInteraction.Ignore);
+            while(true)
+            {
+                int count=Physics.OverlapSphereNonAlloc(transform.position,1.1f,contacts,~0,QueryTriggerInteraction.Ignore);
+                if(TryCollect(contacts,count))return;
+                if(count<contacts.Length)
+                {
+                    if(previousContacts>count)System.Array.Clear(contacts,count,previousContacts-count);
+                    previousContacts=count;return;
+                }
+                if(contacts.Length>=MaxContactBuffer)
+                {
+                    System.Array.Clear(contacts,0,contacts.Length);previousContacts=0;
+                    var all=Physics.OverlapSphere(transform.position,1.1f,~0,QueryTriggerInteraction.Ignore);
+                    TryCollect(all,all.Length);return;
+                }
+                System.Array.Resize(ref contacts,Mathf.Min(contacts.Length*2,MaxContactBuffer));
+            }
+        }
+        bool TryCollect(Collider[] hits,int count)
+        {
             for(int i=0;i<count;i++)
             {
-                var assembly=contacts[i]!=null?contacts[i].GetComponentInParent<R3VehicleAssembly>():null;
+                var assembly=hits[i]!=null?hits[i].GetComponentInParent<R3VehicleAssembly>():null;
                 if(assembly==null||RoboRougelike.R1.R1RunController.Instance?.Player==null||
                     assembly.gameObject!=RoboRougelike.R1.R1RunController.Instance.Player.gameObject)continue;
                 var bank=assembly.GetComponent<VehicleEnergyBank>();
                 if(bank==null||bank.Maximum<=0)continue;
-                bank.ApplyEnergyPickup();gameObject.SetActive(false);Destroy(gameObject);return;
+                bank.ApplyEnergyPickup();gameObject.SetActive(false);Destroy(gameObject);return true;
             }
+            return false;
         }
         void OnDestroy(){if(material!=null)Destroy(material);}
     }

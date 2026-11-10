@@ -5,6 +5,41 @@ using UnityEngine;
 
 public sealed class UI943CombatHudLayoutTests
 {
+    [Test] public void SuspensionPauseIsRelevantForMountedAndDestroyedPlansOnly()
+    {
+        var method=typeof(R1RunHUD).GetMethod("ShowSuspensionPause",BindingFlags.NonPublic|BindingFlags.Static);
+        Assert.That(method,Is.Not.Null);
+        var model=new RoboRougelike.R3.R3VehicleModel(RoboRougelike.R3.R3VehicleCatalog.Create(RoboRougelike.R3.R3VehicleKind.Light));
+        bool Visible()=>(bool)method.Invoke(null,new object[]{model});
+        Assert.That(Visible(),Is.False);
+        var support=new RoboRougelike.R3.R3PartState(Vector3Int.up,RoboRougelike.R3.R3PartKind.Suspension,0);
+        model.Parts.Add(support);
+        Assert.That(Visible(),Is.True,"A destroyed mounted plan still needs an explanation.");
+        model.Parts.Remove(support);Assert.That(Visible(),Is.False);
+    }
+    [TestCase(false,false,75)][TestCase(false,true,115)][TestCase(true,false,160)][TestCase(true,true,160)]
+    public void SuspensionPanelOnlyUsesSpaceNeededForDetailsAndWarnings(bool details,bool warning,int height)
+    {
+        var method=typeof(R1RunHUD).GetMethod("SuspensionTelemetryPanelRect",BindingFlags.NonPublic|BindingFlags.Static);
+        Assert.That(method,Is.Not.Null);
+        var panel=(Rect)method.Invoke(null,new object[]{details,warning});
+        Assert.That(panel.height,Is.EqualTo(height));
+        Assert.That(panel.yMin,Is.GreaterThanOrEqualTo(348),"Weapon status must remain unobstructed.");
+        Assert.That(panel.yMax,Is.LessThanOrEqualTo(516),"Damage notices must remain unobstructed.");
+    }
+    [TestCase(1)][TestCase(2)][TestCase(3)][TestCase(4)][TestCase(5)]
+    public void CompactMovementPanelFitsBetweenDefenseAndRangeInstructions(int rows)
+    {
+        var flags=BindingFlags.NonPublic|BindingFlags.Static;
+        var movement=typeof(R1RunHUD).GetMethod("CompactMovementPanelRect",flags);
+        var defense=typeof(R1RunHUD).GetMethod("DefensePanelRect",flags);
+        Assert.That(movement,Is.Not.Null);Assert.That(defense,Is.Not.Null);
+        var panel=(Rect)movement.Invoke(null,new object[]{rows});
+        var defensePanel=(Rect)defense.Invoke(null,new object[]{9});
+        Assert.That(panel.Overlaps(defensePanel),Is.False);
+        Assert.That(panel.yMax,Is.LessThanOrEqualTo(625));
+        Assert.That(panel.height,Is.GreaterThanOrEqualTo(rows*24));
+    }
     [TestCase(1)] [TestCase(4)] [TestCase(9)]
     public void DefenseHeadingAndRowsFitInsideTheirPanel(int count)
     {

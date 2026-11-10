@@ -30,7 +30,9 @@ public sealed class BacklogEnemyWeaponTierTests
         Assert.That(enemy.EquipShotgun(), Is.True);
         var shotgun = enemy.GetComponentInChildren<RRLShotgunBinding>();
         Assert.That(shotgun, Is.Not.Null);
-        var shotgunArt=shotgun.GetComponentInChildren<R4WeaponArt>(true);
+        // Replacing a gun disables the old art immediately, then Unity
+        // destroys it at frame end. Inspect the actual visible art.
+        var shotgunArt=shotgun.GetComponentsInChildren<R4WeaponArt>(true).SingleOrDefault(art=>art.gameObject.activeInHierarchy);
         Assert.That(shotgunArt,Is.Not.Null,"Enemy shotgun must display its supplied model.");
         Assert.That(typeof(RRLShotgunBinding).GetField("muzzle",BindingFlags.NonPublic|BindingFlags.Instance).GetValue(shotgun),Is.SameAs(shotgunArt.Muzzle),
             "The physical shotgun must use the visible muzzle.");

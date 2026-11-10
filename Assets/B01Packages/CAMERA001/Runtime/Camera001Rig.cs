@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace B01.CAMERA001
@@ -25,8 +26,10 @@ namespace B01.CAMERA001
         [SerializeField, Min(.1f)] private float maxContinuousSpeed = 15f;
         [SerializeField] private LayerMask worldCollisionMask = ~0;
 
-        private readonly RaycastHit[] worldHits = new RaycastHit[128];
-        private readonly Collider[] overlaps = new Collider[64];
+        private const int MaxCollisionBuffer = 4096;
+        private RaycastHit[] worldHits = new RaycastHit[128];
+        private Collider[] overlaps = new Collider[64];
+        private readonly List<Collider> ownHullColliders = new List<Collider>();
         private Camera attachedCamera;
         private Vector3 velocity,previousAim;
         private bool initialized;
@@ -65,6 +68,7 @@ namespace B01.CAMERA001
             set=>receiverFollowSpeed=float.IsNaN(value)||float.IsInfinity(value)?0:Mathf.Clamp(value,0,100);
         }
         public float EffectiveContinuousSpeedLimit=>Mathf.Max(Mathf.Max(.1f,maxContinuousSpeed),
+            ReceiverResponsiveMotion?receiverFollowSpeed+6:
             receiverFollowSpeed>maxContinuousSpeed?receiverFollowSpeed+3:0);
 
         public void Configure(Transform root, Camera camera)
@@ -313,30 +317,53 @@ namespace B01.CAMERA001
 
         private bool IsWorldOverlapping(Vector3 center, float radius)
         {
-            int count = Physics.OverlapSphereNonAlloc(center,
-                radius + Mathf.Max(0f, worldPadding), overlaps,
-                worldCollisionMask, QueryTriggerInteraction.Ignore);
-            if (count >= overlaps.Length) return true; // overflow fails closed
-            for (int i = 0; i < count; i++)
-                if (IsWorld(overlaps[i])) return true;
-            return false;
+            float queryRadius=radius+Mathf.Max(0f,worldPadding);
+            while(true)
+            {
+                int count=Physics.OverlapSphereNonAlloc(center,queryRadius,overlaps,
+                    worldCollisionMask,QueryTriggerInteraction.Ignore);
+                bool blocked=false;
+                for(int i=0;i<count;i++)if(IsWorld(overlaps[i])){blocked=true;break;}
+                Array.Clear(overlaps,0,count);
+                if(blocked)return true;
+                if(count<overlaps.Length)return false;
+                if(overlaps.Length>=MaxCollisionBuffer)
+                {
+                    var all=Physics.OverlapSphere(center,queryRadius,worldCollisionMask,QueryTriggerInteraction.Ignore);
+                    foreach(var collider in all)if(IsWorld(collider))return true;
+                    return false;
+                }
+                Array.Resize(ref overlaps,Mathf.Min(overlaps.Length*2,MaxCollisionBuffer));
+            }
         }
 
         private float CastWorldClearance(Vector3 start, Vector3 direction,
             float distance, float radius)
         {
             if (distance <= .00001f) return 0f;
-            int count = Physics.SphereCastNonAlloc(start, radius,
-                direction, worldHits, distance, worldCollisionMask,
-                QueryTriggerInteraction.Ignore);
-            if (count >= worldHits.Length) return 0f; // fail closed
+            int count;RaycastHit[] hits;
+            while(true)
+            {
+                count=Physics.SphereCastNonAlloc(start,radius,direction,worldHits,distance,
+                    worldCollisionMask,QueryTriggerInteraction.Ignore);
+                if(count<worldHits.Length){hits=worldHits;break;}
+                if(worldHits.Length>=MaxCollisionBuffer)
+                {
+                    Array.Clear(worldHits,0,count);
+                    hits=Physics.SphereCastAll(start,radius,direction,distance,worldCollisionMask,QueryTriggerInteraction.Ignore);
+                    count=hits.Length;break;
+                }
+                Array.Clear(worldHits,0,count);
+                Array.Resize(ref worldHits,Mathf.Min(worldHits.Length*2,MaxCollisionBuffer));
+            }
             float allowed = distance;
             for (int i = 0; i < count; i++)
             {
-                if (!IsWorld(worldHits[i].collider)) continue;
+                if (!IsWorld(hits[i].collider)) continue;
                 allowed = Mathf.Min(allowed,
-                    Mathf.Max(0f, worldHits[i].distance - Mathf.Max(0f, worldPadding)));
+                    Mathf.Max(0f, hits[i].distance - Mathf.Max(0f, worldPadding)));
             }
+            if(ReferenceEquals(hits,worldHits))Array.Clear(worldHits,0,count);
             return allowed;
         }
 
@@ -349,16 +376,21 @@ namespace B01.CAMERA001
             if (bounds.Contains(origin)) return true;
             if (bounds.IntersectRay(ray, out entry) && entry >= 0f)
                 return true; // conservative protection for unloaded colliders
-            foreach (var c in vehicleRoot.GetComponentsInChildren<Collider>())
+            ownHullColliders.Clear();vehicleRoot.GetComponentsInChildren(false,ownHullColliders);
+            try
             {
-                if (c == null || !c.enabled || c.isTrigger || !c.gameObject.activeInHierarchy)
-                    continue;
-                RaycastHit hit;
-                if (c.Raycast(ray, out hit, Mathf.Infinity)) return true;
-                // Collider.Raycast alone cannot report a ray starting inside.
-                if ((c.ClosestPoint(origin) - origin).sqrMagnitude < .000001f)
-                    return true;
+                foreach (var c in ownHullColliders)
+                {
+                    if (c == null || !c.enabled || c.isTrigger || !c.gameObject.activeInHierarchy)
+                        continue;
+                    RaycastHit hit;
+                    if (c.Raycast(ray, out hit, Mathf.Infinity)) return true;
+                    // Collider.Raycast alone cannot report a ray starting inside.
+                    if ((c.ClosestPoint(origin) - origin).sqrMagnitude < .000001f)
+                        return true;
+                }
             }
+            finally{ownHullColliders.Clear();}
             return false;
         }
 

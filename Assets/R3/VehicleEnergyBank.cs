@@ -54,10 +54,13 @@ namespace RoboRougelike.R3
         {
             if(assembly!=null)
             {
+                // A temporarily disabled entire actor keeps its stored charge;
+                // individual disabled parts do not provide or reserve capacity.
+                if(!assembly.gameObject.activeInHierarchy)return;
                 int batteries=0,passive=0,regenerators=0;float extra=0;bool coreAlive=false;
                 foreach(var part in assembly.Parts)
                 {
-                    if(part==null||!part.Operational||!part.transform.IsChildOf(transform))continue;
+                    if(part==null||!part.gameObject.activeInHierarchy||!part.Operational||!part.transform.IsChildOf(transform))continue;
                     if(R3VehicleModel.IsPassiveEnergyPart(part.Kind))
                     {passive++;extra+=R3VehicleModel.TierPassiveExtra(part.Tier);}
                     if(part.Kind==R3PartKind.Core)coreAlive=true;

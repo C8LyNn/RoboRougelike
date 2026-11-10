@@ -25,7 +25,9 @@ namespace RoboRougelike.R3
         public const float GarageSocketSize=.18f;
         R3VehicleAssembly assembly;
         R3VehicleModel model;
-        readonly Dictionary<string,BuildDefinition> definitions=new Dictionary<string,BuildDefinition>();
+        readonly Dictionary<(R3PartKind,int,R3ArmorShape,R3WheelStyle,R4WeaponKind,int),BuildDefinition> definitions=
+            new Dictionary<(R3PartKind,int,R3ArmorShape,R3WheelStyle,R4WeaponKind,int),BuildDefinition>();
+        readonly List<Collider> installedColliders=new List<Collider>();
         readonly BuildSocketRegistry registry=new BuildSocketRegistry();
         readonly List<GameObject> socketFaces=new List<GameObject>();
         List<BuildInstalledPart> reachabilityInput;
@@ -45,15 +47,16 @@ namespace RoboRougelike.R3
         }
         BuildDefinition Definition(R3PartState part)
         {
-            string key=part.Kind+"/"+part.ContactMask+"/"+part.ArmorShape+"/"+part.WheelStyle+"/"+part.Weapon+"/"+part.FootprintRevision;
+            var key=(part.Kind,part.ContactMask,part.ArmorShape,part.WheelStyle,part.Weapon,part.FootprintRevision);
             if(definitions.TryGetValue(key,out var known))return known;
+            string keyName=part.Kind+"/"+part.ContactMask+"/"+part.ArmorShape+"/"+part.WheelStyle+"/"+part.Weapon+"/"+part.FootprintRevision;
             if(part.Kind==R3PartKind.Armor&&part.ArmorShape!=R3ArmorShape.Cube)
             {
                 // Source full patches are the current conservative policy for
                 // both construction and module support. Never silently replace
                 // an unknown shape with a full-faced cube.
                 if(!R4MountDefinitionAdapter.TryCreate(R41PartGeometry.ArmorCatalogId(part.ArmorShape),true,out known))
-                    known=new BuildDefinition("invalid/"+key,BuildRole.Armor,System.Array.Empty<Vector3Int>(),
+                    known=new BuildDefinition("invalid/"+keyName,BuildRole.Armor,System.Array.Empty<Vector3Int>(),
                         System.Array.Empty<BuildSocket>(),false);
                 definitions.Add(key,known);return known;
             }
@@ -77,7 +80,7 @@ namespace RoboRougelike.R3
             var bonds=new List<BuildCellBond>();
             foreach(var a in cells)foreach(var b in cells)
                 if((a-b).sqrMagnitude==1&&System.Array.IndexOf(cells,a)<System.Array.IndexOf(cells,b))bonds.Add(new BuildCellBond(a,b));
-            known=new BuildDefinition("R3/"+key,role,cells,patches.ToArray(),role!=BuildRole.Wheel&&role!=BuildRole.Gun,bonds.ToArray());
+            known=new BuildDefinition("R3/"+keyName,role,cells,patches.ToArray(),role!=BuildRole.Wheel&&role!=BuildRole.Gun,bonds.ToArray());
             definitions.Add(key,known);return known;
         }
         List<BuildInstalledPart> Installed()
@@ -92,8 +95,16 @@ namespace RoboRougelike.R3
             {
                 R3MountedPart actual=null;
                 if(!string.IsNullOrEmpty(p.Id))actualById.TryGetValue(p.Id,out actual);
-                bool alive=p.Health>0&&actual!=null&&actual.Operational&&actual.transform.IsChildOf(transform)&&
-                    actual.GetComponentsInChildren<Collider>().Any(c=>c.enabled&&c.gameObject.activeInHierarchy&&!c.isTrigger&&c.attachedRigidbody==body);
+                bool alive=p.Health>0&&actual!=null&&actual.Operational&&actual.transform.IsChildOf(transform);
+                if(alive)
+                {
+                    installedColliders.Clear();actual.GetComponentsInChildren(false,installedColliders);
+                    alive=false;
+                    foreach(var collider in installedColliders)
+                        if(collider.enabled&&collider.gameObject.activeInHierarchy&&!collider.isTrigger&&collider.attachedRigidbody==body)
+                        {alive=true;break;}
+                    installedColliders.Clear();
+                }
                 result.Add(new BuildInstalledPart(p.Id,Definition(p),new BuildPose(p.Cell,p.RotationQuarterTurns),alive));
             }
             return result;
@@ -129,8 +140,6 @@ namespace RoboRougelike.R3
             // A rotation replaces the same physical part; its old pose must
             // not collide with the proposed pose or count as its own support.
             var installed=Installed().Where(p=>p.PartId!=candidate.Id).ToList();
-            var logical=BuildPlacementRules.Check(installed,item,out _);
-            if(logical!=BuildPlacementResult.Valid)return Explain(logical);
             GameObject probe=null;
             try
             {
@@ -144,6 +153,8 @@ namespace RoboRougelike.R3
                 foreach(var other in Physics.OverlapBox(collider.bounds.center,collider.bounds.extents+Vector3.one*.001f,Quaternion.identity,~0,QueryTriggerInteraction.Ignore))
                     if(!other.transform.IsChildOf(probe.transform)&&(factoryGroup==null||!factoryGroup.Contains(other))&&
                         other.GetComponentInParent<R3MountedPart>()?.Id!=candidate.Id)neighbors.Add(other);
+                // The authoritative installation check already includes the
+                // full logical graph walk as well as the physical evidence.
                 var result=BuildPlacementRules.CheckForInstallation(installed,item,
                     new BuildPhysicsEvidence(candidateColliders,neighbors.ToArray(),true),out _);
                 if(result!=BuildPlacementResult.Valid)return Explain(result);
@@ -295,7 +306,7 @@ namespace RoboRougelike.R3
         }
 
         static string Explain(BuildPlacementResult result)=>result==BuildPlacementResult.ColliderPenetration?
-            "Fizyczny obrys części przenika istniejący collider.":result==BuildPlacementResult.NoCompatibleSocket?
+            "Część nachodzi na inną część lub przeszkodę.":result==BuildPlacementResult.NoCompatibleSocket?
             "Brak zgodnego, połączonego z rdzeniem mocowania. Koło i broń nie są podporą konstrukcji.":
             "Montaż odrzucony: "+result;
 

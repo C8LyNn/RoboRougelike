@@ -424,7 +424,25 @@ namespace RoboRougelike.R3
         }
         public int AffordableRepairCost
         {
-            get {var preview=DeepCopy();preview.RepairAffordable();return Scrap-preview.Scrap;}
+            get
+            {
+                var preview=DeepCopy();
+                if(restorationGate!=null)
+                {
+                    // Validate every hypothetical rebuilt part against earlier
+                    // hypothetical repairs as one batch. Keep snapshots dead so
+                    // the physical gate also checks their recreated geometry.
+                    var restored=new List<R3PartState>();
+                    preview.restorationGate=parts=>
+                    {
+                        var batch=restored.Concat(parts).ToArray();
+                        if(!restorationGate(batch))return false;
+                        restored.AddRange(parts.Select(p=>p.Copy()));
+                        return true;
+                    };
+                }
+                preview.RepairAffordable();return Scrap-preview.Scrap;
+            }
         }
         public bool Remove(Vector3Int cell)
         {
@@ -449,6 +467,8 @@ namespace RoboRougelike.R3
             {
                 part.RotationQuarterTurns=next;
                 if(part.Kind==R3PartKind.Gun)part.ContactMask=PlacementContacts(part.Kind,part);
+                else if(part.Kind==R3PartKind.Wheel&&HasSideMount(part.WheelStyle))
+                    part.ContactMask=SideWheelContactAt(part);
                 var cells=OccupiedCells(part).ToArray();
                 if(cells.Any(c=>Math.Abs(c.x)>6||Math.Abs(c.z)>7||c.y<0||c.y>5))return false;
                 var otherCells=new HashSet<Vector3Int>(Parts.Where(p=>p!=part).SelectMany(OccupiedCells));
@@ -463,8 +483,7 @@ namespace RoboRougelike.R3
             if(recovered==null)return false;
             var batch=recovered.ToArray();
             if(inventory.Count+batch.Length>InventoryCapacity)return false;
-            if(batch.Any(p=>p==null||float.IsNaN(p.Health)||float.IsInfinity(p.Health)||p.Health<0||p.Health>1||
-                !ValidEconomicKind(p.Kind,p.Weapon)||!ValidWheelStyle(p)||!ValidArmorShape(p)||!ValidFootprint(p)||p.Kind==R3PartKind.Armor||p.Kind==R3PartKind.Core||
+            if(batch.Any(p=>!ValidEconomicPart(p)||p.Kind==R3PartKind.Armor||p.Kind==R3PartKind.Core||
                 (p.Kind==R3PartKind.BonusModule&&(string.IsNullOrWhiteSpace(p.UpgradeId)||
                     !Enum.IsDefined(typeof(R1UpgradeEffect),p.UpgradeEffect)||float.IsNaN(p.UpgradeAmount)||
                     float.IsInfinity(p.UpgradeAmount)||p.UpgradeAmount<0||p.UpgradeAmount>1))||
@@ -512,14 +531,17 @@ namespace RoboRougelike.R3
         }
         int OwnedPartValue(R3PartState part)=>Price(part.Kind,part.Weapon)*(NormalizedTier(part.Tier)==3?9:NormalizedTier(part.Tier)==2?3:1);
         public int DismantleValue(R3PartState part) => !ValidEconomicPart(part)?0:Mathf.FloorToInt(OwnedPartValue(part)*0.25f*Mathf.Clamp01(part.Health));
+        public static bool SameBonusType(R3PartState a,R3PartState b)=>a!=null&&b!=null&&
+            a.Kind==R3PartKind.BonusModule&&b.Kind==R3PartKind.BonusModule&&
+            !string.IsNullOrWhiteSpace(a.UpgradeId)&&a.UpgradeId==b.UpgradeId&&
+            Enum.IsDefined(typeof(R1UpgradeEffect),a.UpgradeEffect)&&a.UpgradeEffect==b.UpgradeEffect&&
+            !float.IsNaN(a.UpgradeAmount)&&!float.IsInfinity(a.UpgradeAmount)&&a.UpgradeAmount>=0&&a.UpgradeAmount<=1&&a.UpgradeAmount==b.UpgradeAmount;
         public static bool SameFusionType(R3PartState a,R3PartState b) => a!=null&&b!=null&&a.Kind==b.Kind&&
             NormalizedTier(a.Tier)==NormalizedTier(b.Tier)&&
             (a.Kind!=R3PartKind.Gun||(a.Weapon==b.Weapon&&a.FootprintRevision==b.FootprintRevision))&&
             (a.Kind!=R3PartKind.Wheel||(a.WheelStyle==b.WheelStyle&&a.FootprintRevision==b.FootprintRevision))&&
             (a.Kind!=R3PartKind.Armor||a.ArmorShape==b.ArmorShape)&&
-            (a.Kind!=R3PartKind.BonusModule||(!string.IsNullOrWhiteSpace(a.UpgradeId)&&a.UpgradeId==b.UpgradeId&&
-                Enum.IsDefined(typeof(R1UpgradeEffect),a.UpgradeEffect)&&a.UpgradeEffect==b.UpgradeEffect&&
-                !float.IsNaN(a.UpgradeAmount)&&!float.IsInfinity(a.UpgradeAmount)&&a.UpgradeAmount>=0&&a.UpgradeAmount<=1&&a.UpgradeAmount==b.UpgradeAmount));
+            (a.Kind!=R3PartKind.BonusModule||SameBonusType(a,b));
         public bool FuseInventory(IEnumerable<string> ids)
         {
             if(ids==null)return false;
@@ -659,7 +681,7 @@ namespace RoboRougelike.R3
             if (InvalidWeaponTypes || CanDeploy || !Parts.Any(p => p.Kind == R3PartKind.Core && p.Health > 0)) return null;
             var byCell=Parts.SelectMany(p=>OccupiedCells(p).Select(cell=>new{cell,part=p})).ToDictionary(x=>x.cell,x=>x.part); var core = Parts.Single(p => p.Kind == R3PartKind.Core);
             var previous = new Dictionary<Vector3Int, Vector3Int> { [core.Cell] = core.Cell };
-            var costs = new Dictionary<Vector3Int,int> { [core.Cell]=0 };
+            var costs = new Dictionary<Vector3Int,long> { [core.Cell]=0 };
             var pending = new List<Vector3Int>{core.Cell};
             while (pending.Count > 0)
             {
@@ -669,13 +691,23 @@ namespace RoboRougelike.R3
                     var next=current+n;
                     if(!byCell.ContainsKey(next)||
                         !R3MountingGrid.Compatible(byCell[current],current,byCell[next],next))continue;
-                    int cost=costs[current]+(byCell[next].Health<=0?1:0);
-                    if(costs.TryGetValue(next,out int old)&&old<=cost)continue;
+                    var nextPart=byCell[next];
+                    bool enteringWreck=nextPart.Health<=0&&!ReferenceEquals(nextPart,byCell[current]);
+                    int repairCost=enteringWreck?RepairCost(nextPart):0;
+                    // A zero quote on a wreck means it cannot be repaired;
+                    // do not prefer an unusable route over a payable one.
+                    if(enteringWreck&&repairCost<=0)continue;
+                    long cost=costs[current]+repairCost;
+                    if(costs.TryGetValue(next,out long old)&&old<=cost)continue;
                     costs[next]=cost;previous[next]=current;
                     if(!pending.Contains(next))pending.Add(next);
                 }
             }
             Func<R3PartState,bool> reachable=p=>costs.ContainsKey(p.Cell);
+            // Deployment requires every surviving fragment to reconnect. If
+            // an unrepairable bridge prevents that, do not charge for a plan
+            // that would leave the vehicle just as undeployable.
+            if(Parts.Any(p=>p.Health>0&&!reachable(p)))return null;
             Func<R3PartState,int> distance=p=>Math.Abs(p.Cell.x-core.Cell.x)+Math.Abs(p.Cell.y-core.Cell.y)+Math.Abs(p.Cell.z-core.Cell.z);
             var required = new List<R3PartState>();
             if(!HasMobility(Parts,SelectedDrive,false))return null;

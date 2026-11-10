@@ -17,8 +17,6 @@ namespace RoboRougelike.WeaponIntegration
             public Vector2 Viewport;
             public bool Obstructed,OutOfRange,Offscreen,Disabled,AreaWeapon;
         }
-        static readonly RaycastHit[] hits=new RaycastHit[128];
-        static readonly Collider[] overlaps=new Collider[128];
 
         static bool IsObstacle(Collider collider,R3MountedPart part,Transform owner)
         {
@@ -117,16 +115,13 @@ namespace RoboRougelike.WeaponIntegration
                     // aiming plane and warns when the weapon cannot reach it.
                     float travel=Mathf.Min(distance,Mathf.Max(0,range));
                     float radius=RRLAimFeedback.ProjectileRadius(part);
-                    int count=Physics.OverlapSphereNonAlloc(origin,Mathf.Max(.001f,radius),overlaps,~0,QueryTriggerInteraction.Ignore);
-                    marker.Obstructed=count>=overlaps.Length;
+                    var overlaps=RRLAimPhysicsQuery.Overlap(origin,Mathf.Max(.001f,radius),out int count);
                     for(int i=0;i<count&&!marker.Obstructed;i++)
                         marker.Obstructed=IsObstacle(overlaps[i],part,assembly.transform);
                     if(marker.Obstructed)visiblePoint=origin;
                     else if(travel>.001f)
                     {
-                        count=radius>0?Physics.SphereCastNonAlloc(origin,radius,direction,hits,travel,~0,QueryTriggerInteraction.Ignore):
-                            Physics.RaycastNonAlloc(origin,direction,hits,travel,~0,QueryTriggerInteraction.Ignore);
-                        marker.Obstructed=count>=hits.Length;
+                        var hits=RRLAimPhysicsQuery.Cast(origin,radius,direction,travel,out count);
                         float nearest=float.PositiveInfinity;RaycastHit best=default;
                         for(int i=0;i<count;i++)
                             if(hits[i].distance<nearest&&IsObstacle(hits[i].collider,part,assembly.transform))

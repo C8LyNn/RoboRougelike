@@ -82,6 +82,29 @@ public sealed class Camera275NativeTests
         Assert.That(follow.ReceiverRig.ActualOwnHullIntersectsCrosshair,Is.False);
         Object.DestroyImmediate(native.gameObject);
     }
+    [UnityTest]public IEnumerator FastMovingVehicleDoesNotLeaveCameraTrailingForManySeconds()
+    {
+        // Controlled follow diagnostic: move the real player body at a fixed
+        // speed after introducing camera lag, without an obstacle or teleporting
+        // the camera again during the measurement.
+        var rig=follow.ReceiverRig;follow.enabled=false;
+        rig.SetOrbit(0,18,10);for(int i=0;i<90;i++)rig.StepCamera(1f/60);
+        rig.transform.position+=Vector3.back*8;Physics.SyncTransforms();
+        float start=Vector3.Distance(rig.transform.position,rig.LastSolution.DesiredCameraWorld);
+        Assert.That(start,Is.GreaterThan(7));
+        for(int i=0;i<150;i++)
+        {
+            run.Player.transform.position+=Vector3.forward*(14f/60f);Physics.SyncTransforms();
+            rig.ReceiverFollowSpeed=14f;rig.StepCamera(1f/60f);
+            Assert.That(rig.WorldClipped,Is.False,"The catch-up measurement requires an unobstructed camera.");
+        }
+        float remaining=Vector3.Distance(rig.transform.position,rig.LastSolution.DesiredCameraWorld);
+        Debug.Log($"[CAMERA_CATCHUP] start={start:F2} remaining={remaining:F2} speed=14 duration=2.5");
+        Assert.That(remaining,Is.LessThan(1.5f),"The camera should recover its framing without trailing for many seconds.");
+        Assert.That(rig.WorldOverlapAtCamera,Is.False);
+        Assert.That(rig.ActualOwnHullIntersectsCrosshair,Is.False);
+        yield return null;
+    }
     [UnityTearDown]public IEnumerator Cleanup()
     {
         if(probe!=null)Object.DestroyImmediate(probe.gameObject);

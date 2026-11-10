@@ -17,14 +17,29 @@ namespace RoboRougelike.R3
         private R1VehicleState player;
         private R1RunStats baseStats;
         private readonly List<R3MountedPart> active=new List<R3MountedPart>();
-        private string lastSignature;
+        private readonly List<R3MountedPart> nextActive=new List<R3MountedPart>();
+        private readonly List<BonusSnapshot> snapshot=new List<BonusSnapshot>();
+        private static readonly System.Comparison<R3MountedPart> CompareIds=
+            (a,b)=>Comparer<string>.Default.Compare(a.Id,b.Id);
+        private readonly struct BonusSnapshot
+        {
+            readonly R3MountedPart part;
+            readonly string id;
+            readonly int tier;
+            readonly R1UpgradeEffect effect;
+            readonly float amount;
+            public BonusSnapshot(R3MountedPart p)
+            {part=p;id=p.Id;tier=p.Tier;effect=p.UpgradeEffect;amount=p.UpgradeAmount;}
+            public bool Matches(R3MountedPart p)=>ReferenceEquals(part,p)&&id==p.Id&&tier==p.Tier&&
+                effect==p.UpgradeEffect&&amount.Equals(p.UpgradeAmount);
+        }
         private float lastRepairPulse;
         public R1RunStats EffectiveStats {get;private set;}
 
         public void Configure(R3VehicleAssembly owner,R1VehicleState vehicle,R1RunStats baseline)
         {
             assembly=owner;player=vehicle;baseStats=(baseline??new R1RunStats()).Copy();
-            lastSignature=null;lastRepairPulse=Time.time;
+            snapshot.Clear();lastRepairPulse=Time.time;
             Refresh(true);
         }
         private void Update()
@@ -35,11 +50,16 @@ namespace RoboRougelike.R3
         }
         private void Refresh(bool force)
         {
-            var online=assembly.Parts.Where(p=>p!=null&&p.Kind==R3PartKind.BonusModule&&
-                p.Operational&&p.transform.IsChildOf(assembly.transform)).OrderBy(p=>p.Id).ToArray();
-            string signature=string.Join("|",online.Select(p=>p.Id));
-            if(!force&&signature==lastSignature)return;
-            lastSignature=signature;active.Clear();active.AddRange(online);
+            nextActive.Clear();
+            foreach(var part in assembly.Parts)
+                if(part!=null&&part.gameObject.activeInHierarchy&&part.Kind==R3PartKind.BonusModule&&part.Operational&&part.transform.IsChildOf(assembly.transform))
+                    nextActive.Add(part);
+            nextActive.Sort(CompareIds);
+            bool unchanged=!force&&snapshot.Count==nextActive.Count;
+            for(int i=0;unchanged&&i<nextActive.Count;i++)unchanged=snapshot[i].Matches(nextActive[i]);
+            if(unchanged)return;
+            snapshot.Clear();active.Clear();
+            foreach(var part in nextActive){active.Add(part);snapshot.Add(new BonusSnapshot(part));}
             var stats=baseStats.Copy();
             foreach(var module in active)
                 for(int i=0;i<R3VehicleModel.TierEffectUnits(module.Tier);i++)stats.Apply(module.UpgradeEffect,module.UpgradeAmount);

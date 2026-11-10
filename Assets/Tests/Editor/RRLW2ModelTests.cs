@@ -104,7 +104,10 @@ public class RRLW2ModelTests
         Assert.That(m.RepairInventory("wreck"),Is.False);Assert.That(m.Scrap,Is.EqualTo(10));
         m.Award(1);Assert.That(m.RepairInventory("wreck"),Is.True);Assert.That(m.Scrap,Is.Zero);
         Assert.That(m.RepairInventory("wreck"),Is.False);Assert.That(m.Inventory.Single().Health,Is.EqualTo(1));
-        Assert.That(m.Mount("wreck",Vector3Int.forward),Is.True);
+        // Current guns mount by their base, with a free cell between turrets.
+        m.Parts.Add(new R3PartState(Vector3Int.forward,R3PartKind.Armor));
+        m.Parts.Add(new R3PartState(Vector3Int.forward*2,R3PartKind.Armor));
+        Assert.That(m.Mount("wreck",Vector3Int.forward*2+Vector3Int.up),Is.True);
     }
     [Test] public void EmergencyRebuildCannotBeFreeOrPartiallySpendWhenUnaffordable()
     {
@@ -124,10 +127,23 @@ public class RRLW2ModelTests
         var bulk=typeof(R3VehicleModel).GetProperty("AffordableRepairCost");Assert.That(bulk,Is.Not.Null);
         Assert.That(bulk.GetValue(m),Is.EqualTo(9));m.RepairAffordable();Assert.That(m.Scrap,Is.EqualTo(24));
     }
+    [Test] public void BulkQuoteAccountsForTheGeometryOfEarlierHypotheticalRepairs()
+    {
+        var m=Model();var gun=m.Parts[1];var wheel=m.Parts[2];gun.Health=wheel.Health=0;m.Award(100);
+        var ids=new[]{gun.Id,wheel.Id};
+        Func<System.Collections.Generic.IReadOnlyList<R3PartState>,bool> gate=parts=>
+            parts.Count(p=>ids.Contains(p.Id))+m.Parts.Count(p=>ids.Contains(p.Id)&&p.Health>0)<=1;
+        typeof(R3VehicleModel).GetMethod("SetRestorationGate",BindingFlags.Instance|BindingFlags.NonPublic).Invoke(m,new object[]{gate});
+        int before=m.Scrap,quote=m.AffordableRepairCost;
+        Assert.That(quote,Is.EqualTo(m.RepairCost(gun)));Assert.That(gun.Health,Is.Zero);Assert.That(wheel.Health,Is.Zero);
+        Assert.That(m.RepairAffordable(),Is.EqualTo(1));Assert.That(before-m.Scrap,Is.EqualTo(quote));
+    }
     [Test] public void ThreatIncludesTheActuallySpawnedNormalEscort()
     {
         var a=new R1EncounterDefinition{Roster=new[]{R3EnemyArchetype.Scout},Variants=new[]{R5EnemyVariant.Normal},EnemyCount=1,MoveSpeed=0,HealthMultiplier=1,DamageMultiplier=1,FireIntervalMultiplier=1,Arena=R5ArenaKind.SalvageYard};
-        Assert.That(R5RunPlan.Threat(a),Is.EqualTo(5.6f).Within(.001f),"Two normal scouts: (0.8+1+1)*2.");
+        Assert.That(a.SpawnArchetype(0),Is.EqualTo(R3EnemyArchetype.Scout));
+        Assert.That(a.SpawnArchetype(1),Is.EqualTo(R3EnemyArchetype.Gunner),"The escort diversifies an all-scout roster.");
+        Assert.That(R5RunPlan.Threat(a),Is.EqualTo(7.616f).Within(.001f),"Scout plus gunner, including the mixed-roster factor.");
     }
     [Test] public void CoreNeverEntersLootAndArmorCanOnlyBeDismantled()
     {

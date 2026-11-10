@@ -99,6 +99,40 @@ public sealed class PerWeaponReticleTests
         Assert.That(feedback.Aligned,Is.EqualTo(1));
         Assert.That(feedback.Clear,Is.Zero,"The aim caption must not advertise a clear path.");
     }
+    [Test]public void DenseOwnMuzzleCollidersDoNotClaimARealClearShotIsBlocked()
+    {
+        right.Block.MarkDetached();left.Muzzle.position=Vector3.zero;left.Muzzle.forward=Vector3.forward;
+        for(int i=0;i<150;i++)
+        {
+            var item=new GameObject("own muzzle collider "+i);item.transform.SetParent(left.transform,false);
+            item.AddComponent<BoxCollider>().size=Vector3.one*.01f;
+        }
+        Physics.SyncTransforms();
+        Assert.That(Physics.OverlapSphere(left.Muzzle.position,.1f,~0,QueryTriggerInteraction.Ignore).Length,Is.GreaterThan(128));
+        Assert.That(assembly.ClearProjectilePath(left),Is.True,"The real shot ignores its own gun.");
+        var feedback=RoboRougelike.WeaponIntegration.RRLAimFeedback.Evaluate(assembly,controller,target,null);
+        Assert.That(feedback.Clear,Is.EqualTo(1),"The aim caption must agree with the actual clear path.");
+        Assert.That(Field<bool>(Collect(target)[0],"Obstructed"),Is.False,"The gun marker must also report a clear path.");
+    }
+    [Test]public void DenseIgnoredShotPathStillDetectsARealObstacle()
+    {
+        right.Block.MarkDetached();left.Muzzle.position=Vector3.zero;left.Muzzle.forward=Vector3.forward;
+        for(int i=0;i<150;i++)
+        {
+            var item=new GameObject("own barrel collider "+i);item.transform.SetParent(left.transform,false);
+            item.transform.localPosition=new Vector3(0,0,1+i*.15f);item.AddComponent<BoxCollider>().size=Vector3.one*.01f;
+        }
+        Physics.SyncTransforms();
+        Assert.That(Physics.SphereCastAll(Vector3.zero,.1f,Vector3.forward,49,~0,QueryTriggerInteraction.Ignore).Length,Is.GreaterThan(128));
+        Assert.That(assembly.ClearProjectilePath(left),Is.True);
+        var clear=RoboRougelike.WeaponIntegration.RRLAimFeedback.Evaluate(assembly,controller,target,null);
+        Assert.That(clear.Clear,Is.EqualTo(1));
+        Assert.That(Field<bool>(Collect(target)[0],"Obstructed"),Is.False);
+        wall=GameObject.CreatePrimitive(PrimitiveType.Cube);wall.transform.position=new Vector3(0,0,30);Physics.SyncTransforms();
+        var blocked=RoboRougelike.WeaponIntegration.RRLAimFeedback.Evaluate(assembly,controller,target,null);
+        Assert.That(blocked.Clear,Is.Zero,"A real obstacle must not be hidden by ignored colliders.");
+        Assert.That(Field<bool>(Collect(target)[0],"Obstructed"),Is.True);
+    }
     [Test]public void TwelveGunAimFeedbackDiagnostic()
     {
         BuildTwelveGunFixture(out var aim,out var targetCollider);

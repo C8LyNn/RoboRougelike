@@ -160,9 +160,15 @@ namespace RoboRougelike.R1
         public void DiscoverEnemyTechnology(System.Collections.Generic.IEnumerable<R4SalvageItem> parts)
         {
             if(SandboxWorkshop||Progress?.State!=R1RunState.Combat||Technology==null||parts==null)return;
+            string previousError=Technology.Error;
             int count=Technology.Discover(parts.Select(p=>p.ToPart()));
-            if(count>0)TechnologyMessage=$"Odkryto {count} nowych technologii broni.";
-            if(Technology.Error!=null)TechnologyMessage=Technology.Error;
+            UpdateTechnologyMessage(count,previousError);
+        }
+        private void UpdateTechnologyMessage(int count,string previousError)
+        {
+            if(Technology?.Error!=null)TechnologyMessage=Technology.Error;
+            else if(count>0)TechnologyMessage=$"Odkryto {count} nowych technologii broni.";
+            else if(previousError!=null&&TechnologyMessage==previousError)TechnologyMessage="Zapisano odkryte technologie.";
         }
         public bool GaragePurchase(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic,R3WheelStyle wheelStyle=R3WheelStyle.Offroad,R3ArmorShape armorShape=R3ArmorShape.Cube) =>
             !Transitioning&&Progress?.State==R1RunState.Garage&&VehicleModel!=null&&CanBuyTechnology(kind,weapon)&&VehicleModel.PurchaseToInventory(kind,weapon,wheelStyle,armorShape);

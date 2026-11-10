@@ -291,6 +291,29 @@ public sealed class UI943PortraitCatalogActionsTests
         Assert.That((bool)Field(hud,"catalogOpen"),Is.False,"The repaired part can now be selected for mounting.");
     }
 
+    [UnityTest] public IEnumerator BlockedPlacementShowsTheActualReasonBeforeClicking()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance?.Progress==null)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light,0),Is.True);
+        Assert.That(run.OpenSandboxGarage(),Is.True);run.VehicleModel.Award(1000);yield return null;
+        var garage=run.Garage;garage.UseInventory=false;garage.SelectedPart=R3PartKind.Gun;
+        garage.SelectedWeapon=R4WeaponKind.Basic;garage.SetTool(R41GarageTool.Mount);
+        bool found=false;
+        foreach(var socket in garage.AvailableMountPoints.ToArray())
+        {
+            var normal=socket.Rotation*Vector3.forward;
+            if(!garage.Point(new Ray(socket.Position+normal*2,-normal))||!garage.HasTarget)continue;
+            if(garage.PlacementIssue!=null){found=true;break;}
+        }
+        Assert.That(found,Is.True,"The real vehicle must offer a socket with a blocked gun position.");
+        string reason=garage.PlacementIssue;
+        garage.Message="Kupiono część. Kliknij pojazd, aby ją zamontować.";
+        var feedback=(string)Invoke(run.GetComponent<R1RunHUD>(),"SimpleGarageFeedback",run);
+        Assert.That(feedback,Does.Contain(reason),"A red ghost must explain its current restriction in the readable main HUD.");
+        yield return new ExitPlayMode();
+    }
+
     [UnityTest] public IEnumerator IncompleteGarageKeepsActionFeedbackAlongsideDeploymentWarning()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();

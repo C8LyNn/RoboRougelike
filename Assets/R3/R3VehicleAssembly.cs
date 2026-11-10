@@ -37,25 +37,32 @@ namespace RoboRougelike.R3
         }
         public void TuneChassis()
         {
-            var active=Parts.Where(p=>p!=null&&p.Operational&&p.transform.IsChildOf(transform)).ToArray();
-            float mass=active.Sum(p=>RoboRougelike.R6.R6VehicleDrive.PartMass(p.Damageable));
-            int wheels=active.Count(p=>p.Kind==R3PartKind.Wheel);
-            float power=ModelWheelPower(active);
+            if(!gameObject.activeInHierarchy)return;
+            float mass=0,power=0;int wheels=0;
+            foreach(var part in Parts)
+            {
+                if(part==null||!part.gameObject.activeInHierarchy||!part.Operational||!part.transform.IsChildOf(transform))continue;
+                mass+=RoboRougelike.R6.R6VehicleDrive.PartMass(part.Damageable);
+                if(part.Kind==R3PartKind.Wheel)wheels++;
+                if(part.Kind==R3PartKind.DrivePower&&Model.SelectedDrive==R3DriveKind.Wheels&&
+                   !RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))
+                    power+=Mathf.Clamp01(part.Damageable.CurrentHp/Mathf.Max(1,part.Damageable.MaxHp))*R3VehicleModel.TierEffectUnits(part.Tier);
+            }
             controller.ConfigureChassis(SpeedFor(mass,wheels),Mathf.Min(130f,TurnFor(mass)*Mathf.Min(1.6f,1f+.12f*power)),mass);
         }
-        float ModelWheelPower(R3MountedPart[] active)=>Model.SelectedDrive!=R3DriveKind.Wheels?0:
-            active.Where(p=>p.Kind==R3PartKind.DrivePower&&!RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(p.gameObject))
-                .Sum(p=>Mathf.Clamp01(p.Damageable.CurrentHp/Mathf.Max(1,p.Damageable.MaxHp))*R3VehicleModel.TierEffectUnits(p.Tier));
         public static float SpeedFor(float mass,int wheels)
         {
             float weight=Mathf.Clamp(Mathf.Sqrt(350f/Mathf.Max(1f,mass)),.6f,1.35f);
-            float support=Mathf.Clamp(Mathf.Sqrt(Mathf.Max(0,wheels)/4f),.7f,1.3f);
+            // Wheels above the basic support threshold add real traction and
+            // acceleration through R6; they do not grant free top speed.
+            float support=Mathf.Clamp(Mathf.Sqrt(Mathf.Max(0,wheels)/4f),.7f,1f);
             return Mathf.Clamp(7.5f*weight*support,2f,14f);
         }
         public static float TurnFor(float mass)=>Mathf.Clamp(82f*Mathf.Clamp(Mathf.Sqrt(350f/Mathf.Max(1f,mass)),.6f,1.35f),35f,130f);        public void AimGuns(Vector3 point)
         {
             foreach(var part in Parts)
-                if(part!=null && part.Kind==R3PartKind.Gun && part.Operational && part.GunPivot!=null&&!RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))
+                if(part!=null && part.Kind==R3PartKind.Gun && part.gameObject.activeInHierarchy && part.Operational &&
+                   part.transform.IsChildOf(transform) && part.GunPivot!=null&&!RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))
                 {
                     // Aim from the actual firing point, not the turret pivot. The muzzle moves with the barrel, so this converges while the turret turns.
                     var direction = point - (part.Muzzle!=null?part.Muzzle.position:part.GunPivot.position);

@@ -10,6 +10,11 @@ namespace RoboRougelike.R1
         private static bool UsePortraitSalvage(int width,int height,bool salvage,bool overlay)
             =>width>0&&height>width&&salvage&&!overlay;
         private static Rect PortraitRewardBonusCard(int index)=>new Rect(24,132+index*104,720,96);
+        private static Rect PortraitRewardBasketCard(int index)=>new Rect(24,480+index*103,720,98);
+        private static Rect PortraitRewardBasketInfo(int index)
+        {var card=PortraitRewardBasketCard(index);return new Rect(card.x+10,card.y+5,510,84);}
+        private static Rect PortraitRewardBasketButton(int index)
+        {var card=PortraitRewardBasketCard(index);return new Rect(card.x+555,card.y+23,150,52);}
         private static Rect PortraitRewardLootCard(int index)=>new Rect(24+(index%2)*366,480+(index/2)*103,354,98);
         private static Rect PortraitRewardLootDetails(int index)
         {var card=PortraitRewardLootCard(index);return new Rect(card.x+10,card.y+3,230,67);}
@@ -50,15 +55,15 @@ namespace RoboRougelike.R1
             GUI.Label(new Rect(24,442,720,30),"ZESTAW • [Q / W / E]",heading);
             for(int i=0;i<rewardBaskets.Count;i++)
             {
-                var basket=rewardBaskets[i];var card=new Rect(24,480+i*103,720,98);Panel(card);
+                var basket=rewardBaskets[i];var card=PortraitRewardBasketCard(i);var info=PortraitRewardBasketInfo(i);Panel(card);
                 GUI.contentColor=BasketColor(basket);
-                GUI.Label(new Rect(card.x+10,card.y+5,510,24),$"{R3EnemyProfiles.Name(basket.Archetype)} • {basket.Items.Count}/{basket.AvailableParts} części",small);
+                GUI.Label(new Rect(info.x,info.y,info.width,24),$"{R3EnemyProfiles.Name(basket.Archetype)} • {basket.Items.Count}/{basket.AvailableParts} części",small);
                 GUI.contentColor=Color.white;
-                GUI.Label(new Rect(card.x+10,card.y+31,510,58),string.Join(", ",basket.Items.Select(p=>R4WeaponDefinition.PartName(p.ToPart())))+"\nOdbiór: 100% HP",small);
+                GUI.Label(new Rect(info.x,card.y+31,info.width,58),RewardBasketContents(basket.Items)+"\nOdbiór: 100% HP",small);
                 bool chosen=selectedBasket==i;
                 GUI.backgroundColor=chosen?new Color(.35f,.85f,.65f):Color.white;
                 string key=i<3?"QWE"[i].ToString():null;
-                if(GUI.Button(new Rect(card.x+555,card.y+23,150,52),chosen?"Wybrano ✓":key!=null?$"Wybierz [{key}]":"Wybierz",compactButton))ChooseRewardBasket(i);
+                if(GUI.Button(PortraitRewardBasketButton(i),chosen?"Wybrano ✓":key!=null?$"Wybierz [{key}]":"Wybierz",compactButton))ChooseRewardBasket(i);
                 GUI.backgroundColor=Color.white;
             }
             if(rewardBaskets.Count==0)GUI.Label(new Rect(36,495,680,50),"Brak części do odzyskania.",small);

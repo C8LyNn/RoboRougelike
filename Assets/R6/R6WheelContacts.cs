@@ -9,7 +9,8 @@ namespace RoboRougelike.R6
     // Contact sensing only. R6 remains the sole wheel force authority.
     public sealed class R6WheelContacts
     {
-        readonly RaycastHit[] hits=new RaycastHit[64];
+        const int MaxGroundHitBuffer=4096;
+        RaycastHit[] hits=new RaycastHit[64];
         readonly Dictionary<P12PipelineSafeDamageable,Collider[]> wheelColliders=new Dictionary<P12PipelineSafeDamageable,Collider[]>();
         public void Invalidate()=>wheelColliders.Clear();
         public int Count {get;private set;}
@@ -29,7 +30,7 @@ namespace RoboRougelike.R6
             var structure=body.GetComponent<P12PipelineSafeVehicleStructure>();
             foreach(var part in parts)
             {
-                if(part==null||part.IsDead||!R6VehicleDrive.IsWheel(part)||!part.transform.IsChildOf(body.transform)||
+                if(part==null||!part.gameObject.activeInHierarchy||part.IsDead||!R6VehicleDrive.IsWheel(part)||!part.transform.IsChildOf(body.transform)||
                     part.GetComponentInParent<Rigidbody>()!=body||RRLEmpPartState.IsBlocked(part.gameObject))continue;
                 var mounted=part.GetComponent<R3MountedPart>();if(mounted!=null&&!mounted.Operational)continue;
                 var block=part.GetComponent<P12_PipelineSafePlayerBlock>();if(block!=null&&block.DetachedFromVehicle)continue;
@@ -65,18 +66,31 @@ namespace RoboRougelike.R6
                 float radius=TreadReach(c,body,down);if(radius<.005f)continue;
                 // Tolerates the existing 5cm starter clearance, never a long suspension/air ray.
                 float skin=Mathf.Clamp(radius*.2f,.015f,.08f);
-                int count=Physics.RaycastNonAlloc(center,down,hits,radius+skin,~0,QueryTriggerInteraction.Ignore);
-                if(count==hits.Length)continue; // ambiguous/truncated query fails closed
+                var groundHits=GroundHits(center,down,radius+skin,out int count);
                 float nearest=float.PositiveInfinity;Vector3 best=Vector3.zero;
                 for(int i=0;i<count;i++)
                 {
-                    var hit=hits[i];if(!Terrain(hit.collider)||hit.collider.transform.IsChildOf(body.transform))continue;
+                    var hit=groundHits[i];if(!Terrain(hit.collider)||hit.collider.transform.IsChildOf(body.transform))continue;
                     if(hit.distance<radius-skin||Vector3.Dot(hit.normal,Vector3.up)<.5f||Vector3.Dot(hit.normal,-down)<.5f)continue;
                     if(hit.distance<nearest){nearest=hit.distance;best=hit.normal;point=hit.point;}
                 }
                 if(best.sqrMagnitude>.1f){normal=best;return true;}
             }
             return false;
+        }
+        RaycastHit[] GroundHits(Vector3 origin,Vector3 direction,float distance,out int count)
+        {
+            while(true)
+            {
+                count=Physics.RaycastNonAlloc(origin,direction,hits,distance,~0,QueryTriggerInteraction.Ignore);
+                if(count<hits.Length)return hits;
+                if(hits.Length>=MaxGroundHitBuffer)
+                {
+                    var all=Physics.RaycastAll(origin,direction,distance,~0,QueryTriggerInteraction.Ignore);
+                    count=all.Length;return all;
+                }
+                System.Array.Resize(ref hits,Mathf.Min(hits.Length*2,MaxGroundHitBuffer));
+            }
         }
         static float TreadReach(Collider c,Rigidbody body,Vector3 direction)
         {

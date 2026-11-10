@@ -1,5 +1,6 @@
 using UnityEngine;
 using RogueMachine.P12PipelineSafe;
+using System.Collections.Generic;
 
 namespace RoboRougelike.R1
 {
@@ -10,6 +11,8 @@ namespace RoboRougelike.R1
         [SerializeField] private P12PipelineSafeVehicleStructure structure;
         [SerializeField] private P12PipelineSafeVehicleModuleSystem modules;
         [SerializeField] private Transform cameraPivot;
+        readonly List<P12_PipelineSafePlayerBlock> coreQuery=new List<P12_PipelineSafePlayerBlock>();
+        readonly List<P12PipelineSafeDamageable> healthQuery=new List<P12PipelineSafeDamageable>();
         public P12PipelineSafeTankController Controller => controller;
         public P12PipelineSafeVehicleStructure Structure => structure;
         public P12PipelineSafeVehicleModuleSystem Modules => modules;
@@ -18,9 +21,14 @@ namespace RoboRougelike.R1
         {
             get
             {
-                foreach (var block in GetComponentsInChildren<P12_PipelineSafePlayerBlock>())
-                    if (block.IsCore) return block.GetComponent<P12PipelineSafeDamageable>();
-                return null;
+                coreQuery.Clear();GetComponentsInChildren(false,coreQuery);
+                try
+                {
+                    foreach(var block in coreQuery)
+                        if(block.IsCore)return block.GetComponent<P12PipelineSafeDamageable>();
+                    return null;
+                }
+                finally{coreQuery.Clear();}
             }
         }
         public float HealthFraction
@@ -28,8 +36,13 @@ namespace RoboRougelike.R1
             get
             {
                 float hp = 0, max = 0;
-                foreach (var part in GetComponentsInChildren<P12PipelineSafeDamageable>())
-                { if (!part.IsDead) { hp += part.CurrentHp; max += part.MaxHp; } }
+                healthQuery.Clear();GetComponentsInChildren(false,healthQuery);
+                try
+                {
+                    foreach(var part in healthQuery)
+                    { if (!part.IsDead) { hp += part.CurrentHp; max += part.MaxHp; } }
+                }
+                finally{healthQuery.Clear();}
                 return max > 0 ? hp / max : 0;
             }
         }

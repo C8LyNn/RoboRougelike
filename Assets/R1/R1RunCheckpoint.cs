@@ -102,6 +102,10 @@ namespace RoboRougelike.R1
             if(Progress?.State!=R1RunState.Ready||Transitioning||Definition==null)return false;
             try
             {
+                // Reject missing scene dependencies before constructing a
+                // vehicle or replacing any of the current run state.
+                if(followCamera==null||followCamera.GetComponent<Camera>()==null||Garage==null||palette==null)
+                    throw new InvalidOperationException("Brakuje kamery lub elementów garażu.");
                 var data=R1RunCheckpointStorage.Read(R1RunCheckpointStorage.PathName);
                 if(!Enum.IsDefined(typeof(R3VehicleKind),data.vehicle)||data.variant<0||data.variant>=4||!Guid.TryParseExact(data.runId,"N",out _)||
                     data.defeated<0||data.earned<0||data.recovered<0||data.lastReward<0||
@@ -110,14 +114,16 @@ namespace RoboRougelike.R1
                 var kind=(R3VehicleKind)data.vehicle;
                 if(!R3VehicleModel.TryRestoreCheckpoint(data.model,kind,Definition.GaragePrices,Time.time,out var restoredModel,out var error,data.variant))
                     throw new InvalidDataException(error);
-                // Legacy owned weapons remain purchasable after loading old saves.
-                Technology?.Discover(restoredModel.Parts.Concat(restoredModel.Inventory));
-                if(Technology?.Error!=null)TechnologyMessage=Technology.Error;
                 var restoredPlan=new R5RunPlan(Definition.RouteStages,data.seed);
                 var player=R3VehicleAssembly.Build(restoredModel,restoredProgress.Stats,palette,new Vector3(0,.7f,-22),Quaternion.identity);
                 Progress=restoredProgress;VehicleModel=restoredModel;Plan=restoredPlan;SelectedVehicle=kind;SelectedVehicleVariant=data.variant;RequestedSeed=data.seed;runId=data.runId;
                 DefeatedEnemies=data.defeated;EarnedScrap=data.earned;RecoveredModules=data.recovered;LastScrapReward=data.lastReward;
                 Player=player;followCamera.Configure(Player.transform,Player.CameraPivot);SetSimulation(false);Garage.Open();
+                // Only a successfully restored garage may unlock technology;
+                // a rejected route or failed construction must not persist it.
+                string previousTechnologyError=Technology?.Error;
+                int discoveries=Technology?.Discover(restoredModel.Parts.Concat(restoredModel.Inventory))??0;
+                UpdateTechnologyMessage(discoveries,previousTechnologyError);
                 RunSaveMessage=restoredModel.LegacyGunScalePending>0?
                     "Wczytano starszy zapis bez zmian broni: zwolnij miejsce w magazynie, aby bezpiecznie dostosować jej rozmiar.":
                     restoredModel.LegacyPartsMovedToInventory>0||restoredModel.LegacyPortPartsMovedToInventory>0?

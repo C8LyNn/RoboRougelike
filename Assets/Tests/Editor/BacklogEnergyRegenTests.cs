@@ -32,21 +32,23 @@ public sealed class BacklogEnergyRegenTests
     [Test] public void CheckpointPreservesTieredBatteryPassiveReservationAndCurrentCharge()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(500);
+        float baseline=model.Energy.Maximum;
+        var existingIds=model.Parts.Select(p=>p.Id).ToHashSet();
         foreach(var kind in new[]{R3PartKind.Battery,R3PartKind.DrivePower})
         {
             var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
                 .First(c=>model.PlacementError(c,kind,false)==null);
             Assert.That(model.Buy(cell,kind),Is.True);
         }
-        var battery=model.Parts.Single(p=>p.Kind==R3PartKind.Battery);battery.Tier=2;
-        var motor=model.Parts.Single(p=>p.Kind==R3PartKind.DrivePower);motor.Tier=3;
-        model.PrepareInitialEnergy();Assert.That(model.Energy.Maximum,Is.EqualTo(675));
+        var battery=model.Parts.Single(p=>p.Kind==R3PartKind.Battery&&!existingIds.Contains(p.Id));battery.Tier=2;
+        var motor=model.Parts.Single(p=>p.Kind==R3PartKind.DrivePower&&!existingIds.Contains(p.Id));motor.Tier=3;
+        model.PrepareInitialEnergy();Assert.That(model.Energy.Maximum,Is.EqualTo(baseline+175));
         Assert.That(model.Energy.TrySpend(model.Energy.Current-123),Is.True);
         var checkpoint=model.MakeCheckpoint(10);
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(checkpoint,R3VehicleKind.Light,model.Economy,10,out var restored,out var error),Is.True,error);
         Assert.That(restored.Parts.Single(p=>p.Id==battery.Id).Tier,Is.EqualTo(2));
         Assert.That(restored.Parts.Single(p=>p.Id==motor.Id).Tier,Is.EqualTo(3));
-        Assert.That(restored.Energy.Maximum,Is.EqualTo(675));Assert.That(restored.Energy.Current,Is.EqualTo(123));
+        Assert.That(restored.Energy.Maximum,Is.EqualTo(baseline+175));Assert.That(restored.Energy.Current,Is.EqualTo(123));
         restored.PrepareInitialEnergy();Assert.That(restored.Energy.Current,Is.EqualTo(123),"Loading a started run must not refill the battery.");
     }
     [Test]
@@ -69,17 +71,18 @@ public sealed class BacklogEnergyRegenTests
     public void MultipleDevicesStackAndDestroyedDevicesStopContributing()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(500);
+        float baseline=model.Energy.Maximum;
         for(int i=0;i<2;i++)
         {
             var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
                 .First(c=>model.PlacementError(c,R3PartKind.EnergyRegenerator,false)==null);
             Assert.That(model.Buy(cell,R3PartKind.EnergyRegenerator),Is.True);
         }
-        model.RefreshEnergyLayout();Assert.That(model.Energy.Maximum,Is.EqualTo(450));
+        model.RefreshEnergyLayout();Assert.That(model.Energy.Maximum,Is.EqualTo(baseline-50));
         Assert.That(model.Energy.TrySpend(model.Energy.Current),Is.True);model.Energy.Advance(1);
         Assert.That(model.Energy.Current,Is.EqualTo(20).Within(.001));
         model.Parts.First(p=>p.Kind==R3PartKind.EnergyRegenerator).Health=0;model.RefreshEnergyLayout();
-        Assert.That(model.Energy.Maximum,Is.EqualTo(475));model.Energy.Advance(1);
+        Assert.That(model.Energy.Maximum,Is.EqualTo(baseline-25));model.Energy.Advance(1);
         Assert.That(model.Energy.Current,Is.EqualTo(35).Within(.001));
     }
 }
@@ -92,6 +95,7 @@ public sealed class BacklogEnergyRegenIntegrationTests
     [UnityTest] public IEnumerator DestroyingRealRegeneratorRemovesItsRateAndReservation()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(500);
+        float startingCapacity=model.Energy.Maximum;
         var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
             .First(c=>model.PlacementError(c,R3PartKind.EnergyRegenerator,false)==null);
         Assert.That(model.Buy(cell,R3PartKind.EnergyRegenerator),Is.True);
@@ -101,18 +105,18 @@ public sealed class BacklogEnergyRegenIntegrationTests
         for(int i=0;i<palette.Weapons.Length;i++)palette.Weapons[i]=material;
         var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(0,20,0),Quaternion.identity);
         var bank=vehicle.GetComponent<VehicleEnergyBank>();var assembly=vehicle.GetComponent<R3VehicleAssembly>();
-        bank.Refresh();Assert.That(bank.Maximum,Is.EqualTo(475));
+        bank.Refresh();Assert.That(bank.Maximum,Is.EqualTo(startingCapacity-25));
         Assert.That(bank.TrySpend(bank.Current),Is.True);model.Energy.Advance(1);
         Assert.That(bank.Current,Is.EqualTo(15).Within(.001f));
         var device=assembly.Parts.Single(p=>p.Kind==R3PartKind.EnergyRegenerator);
         var receiver=device.GetComponent<RoboRougelike.Mechanics.EMP.EmpReceiver>();Assert.That(receiver,Is.Not.Null);
-        receiver.ApplyEmp(2);bank.Refresh();Assert.That(bank.Maximum,Is.EqualTo(475),"EMP must not remove passive reservation.");
+        receiver.ApplyEmp(2);bank.Refresh();Assert.That(bank.Maximum,Is.EqualTo(startingCapacity-25),"EMP must not remove passive reservation.");
         Assert.That(bank.TrySpend(bank.Current),Is.True);model.Energy.Advance(1);
         Assert.That(bank.Current,Is.EqualTo(10).Within(.001f),"EMP must pause the regenerator bonus.");
         Assert.That(bank.TrySpend(bank.Current),Is.True);receiver.Advance(2);bank.Refresh();model.Energy.Advance(1);
         Assert.That(bank.Current,Is.EqualTo(15).Within(.001f),"Regeneration bonus resumes after EMP.");
         device.Damageable.ApplyDamage(100000,device.transform.position,Vector3.up);bank.Refresh();
-        Assert.That(bank.Maximum,Is.EqualTo(500));model.Energy.Advance(1);
+        Assert.That(bank.Maximum,Is.EqualTo(startingCapacity));model.Energy.Advance(1);
         Assert.That(bank.Current,Is.EqualTo(25).Within(.001f));
         UnityEngine.Object.Destroy(vehicle.gameObject);UnityEngine.Object.Destroy(paletteObject);UnityEngine.Object.Destroy(material);
         yield return null;

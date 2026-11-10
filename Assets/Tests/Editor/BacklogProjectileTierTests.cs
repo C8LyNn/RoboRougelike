@@ -10,6 +10,14 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.TestTools;
 
+public sealed class RailgunFriendlyFixture : MonoBehaviour,IRRLTeamMember
+{ public int TeamId=>1; }
+public sealed class RailgunWallFixture : MonoBehaviour,IRRLHitReceiver
+{
+    public int HitCount {get;private set;}
+    public bool ReceiveHit(float damage,Vector3 point,Vector3 direction,Transform source){HitCount++;return true;}
+}
+
 public sealed class BacklogProjectileTierTests
 {
     [TestCase(R4WeaponKind.Shotgun)]
@@ -68,6 +76,63 @@ public sealed class BacklogProjectileTierPhysicsTests
         float end=Time.time+.35f;while(Time.time<end)yield return null;
         Assert.That(500-hp.CurrentHp,Is.InRange(100f,130f));
     }
+    [UnityTest] public IEnumerator RailgunDoesNotVanishAmongManyIgnoredFriendlyColliders()
+    {
+        var gun=Build(R4WeaponKind.Railgun,out var energy);var hp=Target(gun,6);
+        var fixture=new GameObject("Ignored friendly colliders");
+        fixture.transform.position=gun.Muzzle.position+gun.Muzzle.forward*2.5f;
+        fixture.AddComponent<RailgunFriendlyFixture>();
+        for(int i=0;i<150;i++)fixture.AddComponent<BoxCollider>().size=Vector3.one*.05f;
+        Physics.SyncTransforms();
+        int crowded=Physics.SphereCastAll(gun.Muzzle.position,.075f,gun.Muzzle.forward,3f,~0,QueryTriggerInteraction.Ignore)
+            .Count(h=>h.collider.gameObject==fixture);
+        Assert.That(crowded,Is.EqualTo(150),"The real cast must overflow the old 128-hit buffer.");
+        try
+        {
+            Assert.That(gun.GetComponent<RRLRailgunBinding>().Fire(),Is.True);
+            float end=Time.time+.5f;while(Time.time<end)yield return null;
+            Assert.That(hp.CurrentHp,Is.LessThan(500),"Ignored friendly colliders must not destroy the projectile before it reaches a valid target.");
+        }
+        finally{Object.Destroy(fixture);}
+    }
+    [UnityTest] public IEnumerator CrowdedRailgunStillStopsAtWorldWallBeforeTarget()
+    {
+        var gun=Build(R4WeaponKind.Railgun,out var energy);var hp=Target(gun,6);
+        var fixture=new GameObject("Ignored friendly colliders");
+        fixture.transform.position=gun.Muzzle.position+gun.Muzzle.forward*2.5f;
+        fixture.AddComponent<RailgunFriendlyFixture>();
+        for(int i=0;i<150;i++)fixture.AddComponent<BoxCollider>().size=Vector3.one*.05f;
+        var wall=GameObject.CreatePrimitive(PrimitiveType.Cube);
+        wall.name="Solid wall";wall.transform.position=gun.Muzzle.position+gun.Muzzle.forward*4f;
+        var receiver=wall.AddComponent<RailgunWallFixture>();
+        wall.transform.localScale=new Vector3(4,4,.25f);Physics.SyncTransforms();
+        try
+        {
+            Assert.That(gun.GetComponent<RRLRailgunBinding>().Fire(),Is.True);
+            float end=Time.time+.5f;while(Time.time<end)yield return null;
+            Assert.That(receiver.HitCount,Is.EqualTo(1),"The projectile must actually reach the wall.");
+            Assert.That(hp.CurrentHp,Is.EqualTo(500),"Complete queries must still process the first solid obstacle before the target.");
+        }
+        finally{Object.Destroy(fixture);Object.Destroy(wall);}
+    }
+    [UnityTest] public IEnumerator RailgunFallsBackToCompleteQueryBeyondMaximumBuffer()
+    {
+        var gun=Build(R4WeaponKind.Railgun,out var energy);var hp=Target(gun,6);
+        var fixture=new GameObject("Extreme friendly collider crowd");
+        fixture.transform.position=gun.Muzzle.position+gun.Muzzle.forward*2.5f;
+        fixture.AddComponent<RailgunFriendlyFixture>();
+        for(int i=0;i<4100;i++)fixture.AddComponent<BoxCollider>().size=Vector3.one*.05f;
+        Physics.SyncTransforms();
+        Assert.That(Physics.SphereCastAll(gun.Muzzle.position,.075f,gun.Muzzle.forward,3f,~0,QueryTriggerInteraction.Ignore)
+            .Count(h=>h.collider.gameObject==fixture),Is.EqualTo(4100));
+        try
+        {
+            Assert.That(gun.GetComponent<RRLRailgunBinding>().Fire(),Is.True);
+            float end=Time.time+.5f;while(Time.time<end)yield return null;
+            Assert.That(hp.CurrentHp,Is.LessThan(500),"The bounded buffer must fall back to a complete query without losing the shot.");
+        }
+        finally{Object.Destroy(fixture);}
+    }
     [UnityTest] public IEnumerator RocketTierTwoConsumesEnergyAndExplodesAgainstRealTarget()
     {
         var gun=Build(R4WeaponKind.RocketLauncher,out var energy);var hp=Target(gun,6,2);float before=energy.Current;
@@ -75,6 +140,38 @@ public sealed class BacklogProjectileTierPhysicsTests
         Assert.That(energy.Current,Is.EqualTo(before-9f).Within(.001));Assert.That(binding.State.Ammo,Is.EqualTo(9));
         float end=Time.time+.8f;while(Time.time<end)yield return null;
         Assert.That(500-hp.CurrentHp,Is.InRange(100f,120f));
+    }
+    [UnityTest] public IEnumerator RocketBlastDamagesTargetAmongHundredsOfUnrelatedColliders()
+    {
+        var gun=Build(R4WeaponKind.RocketLauncher,out var energy);var hp=Target(gun,6,2);
+        var fixture=new GameObject("Crowded explosion fixture");
+        fixture.transform.position=gun.Muzzle.position+gun.Muzzle.forward*6f+gun.Muzzle.right*2f;
+        for(int i=0;i<300;i++)fixture.AddComponent<BoxCollider>().size=Vector3.one*.02f;
+        Physics.SyncTransforms();
+        Assert.That(Physics.OverlapSphere(fixture.transform.position,1).Count(c=>c.gameObject==fixture),Is.EqualTo(300));
+        try
+        {
+            Assert.That(gun.GetComponent<RRLRocketBinding>().Fire(),Is.True);
+            float end=Time.time+1f;while(Time.time<end)yield return null;
+            Assert.That(hp.CurrentHp,Is.LessThan(500),"Unrelated nearby colliders must not erase an otherwise valid explosion.");
+        }
+        finally{Object.Destroy(fixture);}
+    }
+    [UnityTest] public IEnumerator RocketBlastStillFailsClosedBeyondConfiguredBound()
+    {
+        var gun=Build(R4WeaponKind.RocketLauncher,out var energy);var hp=Target(gun,6,2);
+        var fixture=new GameObject("Extreme explosion saturation fixture");
+        fixture.transform.position=gun.Muzzle.position+gun.Muzzle.forward*6f+gun.Muzzle.right*2f;
+        for(int i=0;i<1030;i++)fixture.AddComponent<BoxCollider>().size=Vector3.one*.02f;
+        Physics.SyncTransforms();
+        try
+        {
+            LogAssert.Expect(LogType.Warning,"WPN-004: blast overlap overflow; no explosion damage applied.");
+            Assert.That(gun.GetComponent<RRLRocketBinding>().Fire(),Is.True);
+            float end=Time.time+1f;while(Time.time<end)yield return null;
+            Assert.That(hp.CurrentHp,Is.EqualTo(500),"An incomplete query must not apply a partial explosion.");
+        }
+        finally{Object.Destroy(fixture);}
     }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }

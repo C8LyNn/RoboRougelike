@@ -30,7 +30,7 @@ public sealed class R4EnemyRocketBeamArtTests
     {
         yield return StartCombat();var run=R1RunController.Instance;var enemy=run.Encounter.Enemies.First();
         Assert.That(enemy.EquipRocket(),Is.True);var binding=enemy.WeaponBlock.GetComponent<RRLRocketBinding>();
-        var art=enemy.WeaponBlock.GetComponentInChildren<R4WeaponArt>(true);Assert.That(art,Is.Not.Null,"Enemy rocket must show its supplied model.");
+        var art=enemy.WeaponBlock.GetComponentsInChildren<R4WeaponArt>(true).SingleOrDefault(v=>v.gameObject.activeInHierarchy);Assert.That(art,Is.Not.Null,"Enemy rocket must show its supplied model.");
         Assert.That(art.GetComponentsInChildren<Transform>(true).Any(t=>t.name=="R4W_RocketLauncher_ROOT"),Is.True);
         Assert.That(typeof(RRLRocketBinding).GetField("muzzle",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(binding),Is.SameAs(art.Muzzle));
         Assert.That(enemy.WeaponBlock.GetComponent<Collider>().enabled,Is.True);
@@ -46,7 +46,7 @@ public sealed class R4EnemyRocketBeamArtTests
     {
         yield return StartCombat();var run=R1RunController.Instance;var enemy=run.Encounter.Enemies.First();
         Assert.That(enemy.EquipBeam(),Is.True);var binding=enemy.WeaponBlock.GetComponent<RRLBeamBinding>();
-        var art=enemy.WeaponBlock.GetComponentInChildren<R4WeaponArt>(true);Assert.That(art,Is.Not.Null,"Enemy beam must show its supplied model.");
+        var art=enemy.WeaponBlock.GetComponentsInChildren<R4WeaponArt>(true).SingleOrDefault(v=>v.gameObject.activeInHierarchy);Assert.That(art,Is.Not.Null,"Enemy beam must show its supplied model.");
         Assert.That(art.GetComponentsInChildren<Transform>(true).Any(t=>t.name=="R4W_BeamCutter_ROOT"),Is.True);
         Assert.That(binding.Module.GetType().GetField("muzzle",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(binding.Module),Is.SameAs(art.Muzzle));
         Assert.That(enemy.WeaponBlock.GetComponent<Collider>().enabled,Is.True);

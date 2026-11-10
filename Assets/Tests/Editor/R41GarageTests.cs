@@ -115,6 +115,243 @@ public class R41GarageTests
         Assert.That(Run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==id).Block.DetachedFromVehicle,Is.False);
         yield return null;
     }
+    [UnityTest] public IEnumerator RealGarageRotatesSideWheelsWithoutLosingTheirMount()
+    {
+        foreach(int side in new[]{-1,1})
+        {
+            var model=Run.VehicleModel;
+            var wheel=model.Parts.First(p=>p.Kind==R3PartKind.Wheel&&Math.Sign(p.Cell.x)==side);
+            var cell=wheel.Cell;string id=wheel.Id;int scrap=model.Scrap;float health=wheel.Health;
+            int oldMask=R3MountingGrid.WorldPortMask(wheel.RotationQuarterTurns,wheel.ContactMask);
+            Assert.That(Run.GarageRotate(cell,new Vector3Int(0,2,0)),Is.True,"Real physical installation must approve this axle rotation.");
+            var rotated=Run.VehicleModel.At(cell);
+            Assert.That(rotated.Id,Is.EqualTo(id));Assert.That(rotated.Health,Is.EqualTo(health));
+            Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(scrap));
+            Assert.That(R3MountingGrid.WorldPortMask(rotated.RotationQuarterTurns,rotated.ContactMask),Is.EqualTo(oldMask));
+            var actual=Run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==id);
+            Assert.That(actual.Operational,Is.True);Assert.That(actual.Block.DetachedFromVehicle,Is.False);
+            var socket=actual.GetComponentsInChildren<Transform>(true).Single(t=>t.name=="Socket_Mount");
+            var towardSupport=Run.Player.transform.TransformDirection(side<0?Vector3.right:Vector3.left);
+            Assert.That(Vector3.Distance(socket.position,actual.transform.position+towardSupport*.26f),Is.LessThan(.015f),
+                "The rendered axle socket must still meet the real supporting face.");
+            yield return null;
+        }
+    }
+    [UnityTest] public IEnumerator WheelRotationShortcutSkipsTheInvalidSidewaysIntermediatePose()
+    {
+        var garage=Run.Garage;
+        foreach(int side in new[]{-1,1})
+        {
+            var model=Run.VehicleModel;
+            var wheel=model.Parts.First(p=>p.Kind==R3PartKind.Wheel&&Math.Sign(p.Cell.x)==side);
+            var id=wheel.Id;var cell=wheel.Cell;var before=wheel.RotationQuarterTurns;
+            int mask=R3MountingGrid.WorldPortMask(before,wheel.ContactMask);int scrap=model.Scrap;
+            var actual=Run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==id);
+            var outward=Run.Player.transform.right*side;
+            var ray=new Ray(actual.transform.position+outward*3f,-outward);
+            Assert.That(garage.RotatePointed(ray,new Vector3Int(0,side,0)),Is.True,
+                "A single horizontal rotation shortcut must reach the next legal upright wheel pose.");
+            var rotated=Run.VehicleModel.At(cell);
+            Assert.That(rotated.Id,Is.EqualTo(id));Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(scrap));
+            Assert.That(rotated.RotationQuarterTurns,Is.EqualTo(R3MountingGrid.Normalize(before+new Vector3Int(0,2,0))));
+            Assert.That(R3MountingGrid.WorldPortMask(rotated.RotationQuarterTurns,rotated.ContactMask),Is.EqualTo(mask));
+            Assert.That(R3VehicleModel.ValidWheelOrientation(rotated.RotationQuarterTurns),Is.True);
+            actual=Run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==id);
+            ray=new Ray(actual.transform.position+outward*3f,-outward);
+            Assert.That(garage.RotatePointed(ray,new Vector3Int(1,0,0)),Is.False,"Wheels must not be flipped upside down.");
+            yield return null;
+        }
+    }
+    [UnityTest] public IEnumerator WheelGhostRotationStaysUprightAndCanStillBeMounted()
+    {
+        var garage=Run.Garage;var model=Run.VehicleModel;string id=PurchasePart(R3PartKind.Wheel);
+        garage.ChooseInventory(id);
+        var cells=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct();
+        var cell=cells.First(c=>model.OwnedPlacementError(id,c,Vector3Int.zero)==null);
+        garage.Select(cell);Assert.That(garage.PreviewValid,Is.True,garage.PlacementIssue);
+        garage.RotateSelected(1,1);
+        Assert.That(garage.SelectedRotation,Is.EqualTo(new Vector3Int(0,2,0)));
+        Assert.That(garage.PreviewValid,Is.True,garage.PlacementIssue);
+        garage.RotateSelected(0,1);
+        Assert.That(garage.SelectedRotation,Is.EqualTo(new Vector3Int(0,2,0)),"A wheel cannot be flipped on its side.");
+        Assert.That(garage.PreviewValid,Is.True,garage.PlacementIssue);
+        Assert.That(garage.ClickTarget(),Is.True,garage.Message);
+        Assert.That(Run.VehicleModel.At(cell).Id,Is.EqualTo(id));
+        string legacyId=PurchasePart(R3PartKind.Wheel);
+        var legacy=Run.VehicleModel.Inventory.Single(p=>p.Id==legacyId);
+        legacy.RotationQuarterTurns=new Vector3Int(1,0,0);
+        garage.ChooseInventory(legacyId);
+        Assert.That(R3VehicleModel.ValidWheelOrientation(garage.SelectedRotation),Is.False);
+        garage.RotateSelected(0,-1);
+        Assert.That(garage.SelectedRotation,Is.EqualTo(Vector3Int.zero),"An invalid legacy wheel pose must remain correctable.");
+        yield return null;
+    }
+    [UnityTest] public IEnumerator MountedLegacyWheelCanBeTurnedBackIntoAValidPose()
+    {
+        var wheel=Run.VehicleModel.Parts.First(p=>p.Kind==R3PartKind.Wheel&&p.Cell.x<0);
+        string id=wheel.Id;var cell=wheel.Cell;
+        // Represent an older stored pose; the pointed hit still uses the real
+        // current collider and the proposed replacement uses the physical gate.
+        wheel.RotationQuarterTurns=new Vector3Int(0,1,0);
+        Assert.That(R3VehicleModel.ValidWheelOrientation(wheel.RotationQuarterTurns),Is.False);
+        var actual=Run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==id);
+        var outward=-Run.Player.transform.right;
+        var ray=new Ray(actual.transform.position+outward*3f,-outward);
+        Assert.That(Run.Garage.RotatePointed(ray,new Vector3Int(0,1,0)),Is.True,
+            "A legacy sideways axle must be correctable using one 90-degree step.");
+        var corrected=Run.VehicleModel.At(cell);
+        Assert.That(corrected.Id,Is.EqualTo(id));
+        Assert.That(corrected.RotationQuarterTurns,Is.EqualTo(new Vector3Int(0,2,0)));
+        Assert.That(R3VehicleModel.ValidWheelOrientation(corrected.RotationQuarterTurns),Is.True);
+        yield return null;
+    }
+    [UnityTest] public IEnumerator ShiftEEventRotatesTheWheelUnderTheActualGaragePointer()
+    {
+        var garage=Run.Garage;var camera=Camera.main;Assert.That(camera,Is.Not.Null);
+        garage.SetTool(R41GarageTool.Inspect);
+        R3MountedPart pointed=null;Vector3 screen=default;
+        foreach(var part in Run.Player.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p!=null&&p.Kind==R3PartKind.Wheel))
+        {
+            var at=camera.WorldToScreenPoint(part.transform.position);
+            if(at.z<=0||!R3GarageView.InBuildArea(at,Screen.width,Screen.height))continue;
+            if(!garage.Point(camera.ScreenPointToRay(at))||garage.Cell!=part.Cell)continue;
+            pointed=part;screen=at;break;
+        }
+        Assert.That(pointed,Is.Not.Null,"The actual garage viewport must expose a selectable wheel.");
+        string id=pointed.Id;var cell=pointed.Cell;int before=Run.VehicleModel.Scrap;
+        var key=new Event{type=EventType.KeyDown,keyCode=KeyCode.E,modifiers=EventModifiers.Shift};
+        garage.HandleGuiPointer(key,new Vector2(screen.x,Screen.height-screen.y));
+        Assert.That(key.type,Is.EqualTo(EventType.Used));
+        var rotated=Run.VehicleModel.At(cell);
+        Assert.That(rotated.Id,Is.EqualTo(id));Assert.That(rotated.RotationQuarterTurns.y,Is.EqualTo(2));
+        Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(before));Assert.That(garage.Tool,Is.EqualTo(R41GarageTool.Inspect));
+        yield return null;
+    }
+    [UnityTest] public IEnumerator GhostColorTracksBlockedAndAllowedPlacementAfterReappearing()
+    {
+        var garage=Run.Garage;string id=PurchasePart(R3PartKind.Armor);garage.ChooseInventory(id);
+        var ray=TopRay(new Vector3Int(2,1,2));Assert.That(garage.Point(ray),Is.True);
+        var valid=garage.Preview.GetComponent<Renderer>().sharedMaterial.GetColor("_BaseColor");
+        Assert.That(valid.g,Is.GreaterThan(valid.r));
+        garage.Select(new Vector3Int(2,1,2));
+        var invalid=garage.Preview.GetComponent<Renderer>().sharedMaterial.GetColor("_BaseColor");
+        Assert.That(invalid.r,Is.GreaterThan(invalid.g));
+        garage.RefreshMarker();Assert.That(garage.Preview.GetComponent<Renderer>().sharedMaterial.GetColor("_BaseColor"),Is.EqualTo(invalid));
+        garage.SetTool(R41GarageTool.Remove);Assert.That(garage.Preview.gameObject.activeSelf,Is.False);
+        garage.ChooseInventory(id);Assert.That(garage.Point(ray),Is.True);
+        Assert.That(garage.Preview.GetComponent<Renderer>().sharedMaterial.GetColor("_BaseColor"),Is.EqualTo(valid),
+            "A newly shown ghost must restore the allowed color even after an invalid placement.");
+        yield return null;
+    }
+    [UnityTest] public IEnumerator CrowdedRaycastStillSelectsTheSameRealMountPoint()
+    {
+        var garage=Run.Garage;string id=PurchasePart(R3PartKind.Armor);garage.ChooseInventory(id);
+        var ray=TopRay(new Vector3Int(2,1,2));
+        Assert.That(garage.Point(ray),Is.True,"The original mount must be selectable.");
+        var original=garage.Cell;
+        var obstacles=new GameObject("Crowded ray fixture");
+        try
+        {
+            for(int i=0;i<520;i++)
+            {
+                var child=new GameObject("overlap "+i);child.transform.SetParent(obstacles.transform,false);
+                child.transform.position=ray.GetPoint(.1f+i*.004f);
+                var collider=child.AddComponent<BoxCollider>();collider.size=Vector3.one*.01f;collider.isTrigger=true;
+            }
+            Physics.SyncTransforms();
+            Assert.That(Physics.RaycastAll(ray,100,~0,QueryTriggerInteraction.Collide).Length,Is.GreaterThan(512));
+            Assert.That(garage.Point(ray),Is.True,"A complete query can still identify the genuine mounting socket.");
+            Assert.That(garage.Cell,Is.EqualTo(original),"Crowding must not select another mount.");
+        }
+        finally {UnityEngine.Object.Destroy(obstacles);}
+        yield return null;
+    }
+
+    [UnityTest] public IEnumerator CrowdedGaragePointerAllocationDiagnostic()
+    {
+        var garage=Run.Garage;string id=PurchasePart(R3PartKind.Armor);garage.ChooseInventory(id);
+        var ray=TopRay(new Vector3Int(2,1,2));
+        var obstacles=new GameObject("Crowded garage allocation fixture");
+        try
+        {
+            for(int i=0;i<520;i++)
+            {
+                var child=new GameObject("overlap "+i);child.transform.SetParent(obstacles.transform,false);
+                child.transform.position=ray.GetPoint(.1f+i*.004f);
+                var collider=child.AddComponent<BoxCollider>();collider.size=Vector3.one*.01f;collider.isTrigger=true;
+            }
+            Physics.SyncTransforms();
+            Assert.That(Physics.RaycastAll(ray,100,~0,QueryTriggerInteraction.Collide).Length,Is.GreaterThan(512));
+            for(int i=0;i<3;i++)Assert.That(garage.Point(ray),Is.True);
+            using(var recorder=Unity.Profiling.ProfilerRecorder.StartNew(Unity.Profiling.ProfilerCategory.Memory,"GC Allocated In Frame",16))
+            {
+                Assert.That(recorder.Valid,Is.True);yield return null;yield return null;long idle=recorder.LastValue;
+                bool ok=true;for(int i=0;i<20;i++)ok&=garage.Point(ray);
+                yield return null;long sample=recorder.LastValue;
+                var gate=Run.Player.GetComponent<R3BuildValidation>();
+                var installedMethod=typeof(R3BuildValidation).GetMethod("Installed",BindingFlags.NonPublic|BindingFlags.Instance);
+                var collect=(Func<System.Collections.Generic.List<B01.BUILD001.BuildInstalledPart>>)Delegate.CreateDelegate(typeof(Func<System.Collections.Generic.List<B01.BUILD001.BuildInstalledPart>>),gate,installedMethod);
+                var snapshot=collect();var selected=Run.VehicleModel.Inventory.Single(p=>p.Id==id).Copy();
+                selected.Cell=garage.Cell;selected.RotationQuarterTurns=garage.SelectedRotation;
+                var definition=(B01.BUILD001.BuildDefinition)typeof(R3BuildValidation).GetMethod("Definition",BindingFlags.NonPublic|BindingFlags.Instance).Invoke(gate,new object[]{selected});
+                var candidate=new B01.BUILD001.BuildInstalledPart(id,definition,new B01.BUILD001.BuildPose(selected.Cell,selected.RotationQuarterTurns),true);
+                Assert.That(B01.BUILD001.BuildPlacementRules.Check(snapshot,candidate,out _),Is.EqualTo(B01.BUILD001.BuildPlacementResult.Valid));
+                yield return null;
+                for(int i=0;i<20;i++)snapshot=collect();
+                yield return null;long installedBytes=recorder.LastValue;
+                for(int i=0;i<20;i++)B01.BUILD001.BuildPlacementRules.Check(snapshot,candidate,out _);
+                yield return null;long graphBytes=recorder.LastValue;
+                var control=new byte[1024*1024];control[0]=1;yield return null;long controlBytes=recorder.LastValue;GC.KeepAlive(control);
+                Debug.Log($"[GARAGE_QUERY_ALLOC] queries=20 colliders=520 idle={idle} sample={sample} installed={installedBytes} graph={graphBytes} control={controlBytes}");
+                Assert.That(controlBytes,Is.GreaterThanOrEqualTo(1024*1024));Assert.That(ok,Is.True);
+            }
+        }
+        finally{UnityEngine.Object.Destroy(obstacles);}
+    }
+
+    [UnityTest] public IEnumerator InstallationSnapshotTracksColliderEnablement()
+    {
+        var gate=Run.Player.GetComponent<R3BuildValidation>();
+        var assembly=Run.Player.GetComponent<R3VehicleAssembly>();
+        var armor=assembly.Parts.First(p=>p!=null&&p.Kind==R3PartKind.Armor&&p.Operational);
+        var colliders=armor.GetComponentsInChildren<Collider>().Where(c=>c.enabled&&!c.isTrigger&&c.attachedRigidbody==Run.Player.GetComponent<Rigidbody>()).ToArray();
+        Assert.That(colliders,Is.Not.Empty);
+        var collect=(Func<System.Collections.Generic.List<B01.BUILD001.BuildInstalledPart>>)Delegate.CreateDelegate(
+            typeof(Func<System.Collections.Generic.List<B01.BUILD001.BuildInstalledPart>>),gate,
+            typeof(R3BuildValidation).GetMethod("Installed",BindingFlags.NonPublic|BindingFlags.Instance));
+        try
+        {
+            Assert.That(collect().Single(p=>p.PartId==armor.Id).Alive,Is.True);
+            foreach(var collider in colliders)collider.enabled=false;
+            Assert.That(collect().Single(p=>p.PartId==armor.Id).Alive,Is.False,"A colliderless block cannot become support.");
+            foreach(var collider in colliders)collider.enabled=true;
+            Assert.That(collect().Single(p=>p.PartId==armor.Id).Alive,Is.True,"Re-enabled real support must become available again.");
+        }
+        finally{foreach(var collider in colliders)if(collider!=null)collider.enabled=true;}
+        yield return null;
+    }
+
+    [UnityTest] public IEnumerator ForeignVehicleAndPlanDoNotOverrideOwnSocket()
+    {
+        var garage=Run.Garage;string id=PurchasePart(R3PartKind.Armor);garage.ChooseInventory(id);
+        var ray=TopRay(new Vector3Int(2,1,2));Assert.That(garage.Point(ray),Is.True);var original=garage.Cell;
+        var other=GameObject.CreatePrimitive(PrimitiveType.Cube);other.name="Foreign part";
+        other.transform.position=ray.GetPoint(.1f);other.transform.localScale=Vector3.one*.05f;
+        var part=other.AddComponent<R3MountedPart>();part.Id="foreign";part.Kind=R3PartKind.Armor;
+        part.Damageable=other.AddComponent<P12PipelineSafeDamageable>();part.Damageable.Configure(100,true);
+        part.Block=other.AddComponent<P12_PipelineSafePlayerBlock>();
+        var plan=GameObject.CreatePrimitive(PrimitiveType.Cube);plan.name="Foreign plan";
+        plan.transform.position=ray.GetPoint(.3f);plan.transform.localScale=Vector3.one*.05f;
+        plan.AddComponent<R41MissingPlan>().Part=new R3PartState(Vector3Int.zero,R3PartKind.Armor);
+        try
+        {
+            Physics.SyncTransforms();Assert.That(garage.Point(ray),Is.True);
+            Assert.That(garage.Cell,Is.EqualTo(original),"Only this vehicle and its preview can provide the target.");
+        }
+        finally{UnityEngine.Object.Destroy(other);UnityEngine.Object.Destroy(plan);}
+        yield return null;
+    }
+
     [UnityTest] public IEnumerator FullRaycastBufferCannotAuthorizeAHiddenMountTarget()
     {
         var garage=Run.Garage;string id=PurchasePart(R3PartKind.Armor);garage.ChooseInventory(id);
@@ -129,15 +366,14 @@ public class R41GarageTests
                 child.transform.position=ray.GetPoint(.1f+i*.004f);
                 var collider=child.AddComponent<BoxCollider>();collider.size=Vector3.one*.01f;collider.isTrigger=true;
             }
+            Run.Player.gameObject.SetActive(false);
             Physics.SyncTransforms();
-            Assert.That(garage.Point(ray),Is.False,"A truncated physics result must never authorize a mount.");
+            Assert.That(garage.Point(ray),Is.False,"Crowding must never manufacture a hidden mount target.");
             Assert.That(garage.HasTarget,Is.False);
-            Assert.That(garage.Message,Does.Contain("zbyt wiele"));
         }
-        finally {UnityEngine.Object.Destroy(obstacles);}
+        finally {Run.Player.gameObject.SetActive(true);UnityEngine.Object.Destroy(obstacles);}
         yield return null;
         Assert.That(garage.Point(ray),Is.True,"The same mount becomes selectable once the obstruction is gone.");
-        Assert.That(garage.Message,Does.Contain("ponownie"));
     }
     [UnityTest] public IEnumerator PointedRepairRemovalAndInventoryMountUseActualPartAndSurviveNextFight()
     {
@@ -179,7 +415,10 @@ public class R41GarageTests
     [UnityTest] public IEnumerator WeaponGhostGeometryAndOrientationMatchMountedHeavyCannon()
     {
         Run.VehicleModel.Award(100);var garage=Run.Garage;string id=PurchasePart(R3PartKind.Gun,R4WeaponKind.Heavy);garage.ChooseInventory(id);
-        Assert.That(garage.Point(TopRay(new Vector3Int(2,1,2))),Is.True);Assert.That(garage.Cell,Is.EqualTo(new Vector3Int(2,2,2)));
+        // The current starter has raised front armor at z=3; the former
+        // (2,2,2) placement legitimately intersects it. Mount on top of that
+        // armor instead, and still verify the real physical gate below.
+        Assert.That(garage.Point(TopRay(new Vector3Int(1,2,3))),Is.True);Assert.That(garage.Cell,Is.EqualTo(new Vector3Int(1,3,3)));
         Assert.That(garage.PreviewValid,Is.True,garage.PlacementIssue);
         var ghostBarrel=garage.Preview.Find("Obrót broni/Lufa");var size=ghostBarrel.localScale;var local=ghostBarrel.localPosition;
         var ghostArt=garage.Preview.GetComponentsInChildren<Transform>(true).Single(t=>t.name=="R4W_Heavy_ROOT");
@@ -333,6 +572,24 @@ public class R41GarageTests
         Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(funds),"Powtarzanie montażu nie może nic automatycznie kupić.");
         Assert.That(garage.SelectedInventoryId,Is.Null);
         yield return null;
+    }
+    [UnityTest] public IEnumerator RepeatedBonusMountNeverSwitchesToDifferentEffectWithSameId()
+    {
+        var damage=ScriptableObject.CreateInstance<R1UpgradeDefinition>();damage.Id="shared";damage.Title="Moduł";damage.Effect=R1UpgradeEffect.Damage;damage.Amount=.2f;
+        var speed=ScriptableObject.CreateInstance<R1UpgradeDefinition>();speed.Id="shared";speed.Title="Moduł";speed.Effect=R1UpgradeEffect.Mobility;speed.Amount=.2f;
+        int before=Run.VehicleModel.Inventory.Count;
+        Assert.That(Run.VehicleModel.ReceiveBonuses(new[]{damage,speed,damage}),Is.True);
+        var items=Run.VehicleModel.Inventory.Skip(before).ToArray();var garage=Run.Garage;
+        garage.ChooseInventory(items[0].Id);int wallet=Run.VehicleModel.Scrap;
+        Assert.That(garage.Point(TopRay(new Vector3Int(2,1,2))),Is.True);
+        Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);
+        Assert.That(garage.SelectedInventoryId,Is.EqualTo(items[2].Id),"Next mounted part must retain the chosen bonus effect.");
+        Assert.That(garage.Point(TopRay(new Vector3Int(-2,1,2))),Is.True);
+        Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);
+        Assert.That(garage.SelectedInventoryId,Is.Null,"A different effect must never be silently selected.");
+        Assert.That(Run.VehicleModel.Inventory.Any(part=>part.Id==items[1].Id),Is.True);
+        Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(wallet));
+        UnityEngine.Object.Destroy(damage);UnityEngine.Object.Destroy(speed);yield return null;
     }
     [UnityTest] public IEnumerator MountingLastHealthyItemExplainsRemainingWreckWithoutBuying()
     {

@@ -11,6 +11,83 @@ using RoboRougelike.R1;
 
 public sealed class EnergyCombatRefinementTests
 {
+    [Test] public void AllStarterVariantsHaveConnectedReplaceablePowerAndExpectedEnergyBudget()
+    {
+        foreach(R3VehicleKind kind in Enum.GetValues(typeof(R3VehicleKind)))
+        for(int variant=0;variant<4;variant++)
+        {
+            var design=R3VehicleCatalog.Create(kind,variant);
+            var model=new R3VehicleModel(design);
+            int motors=design.Parts.Count(p=>p.Kind==R3PartKind.DrivePower);
+            int expected=kind==R3VehicleKind.Light?(variant%2==0?5:3):kind==R3VehicleKind.Heavy?(variant==3?3:4):5;
+            Assert.That(motors,Is.EqualTo(expected),$"{kind}/{variant}: actual modules supply the motor power.");
+            Assert.That(R3VehicleModel.Connected(design.Parts),Is.True,$"{kind}/{variant}: every module must remain attached.");
+            Assert.That(model.DeployError,Is.Null,$"{kind}/{variant}: the starter must be deployable.");
+            int batteries=design.Parts.Count(p=>p.Kind==R3PartKind.Battery);
+            Assert.That(model.Energy.Maximum,Is.EqualTo(500+100*batteries-25*motors),$"{kind}/{variant}: passive motors reserve energy.");
+        }
+    }
+
+    [Test] public void DefaultClassesDeriveAccelerationOrderingFromInstalledParts()
+    {
+        float DriveToMass(R3VehicleKind kind)
+        {
+            var parts=R3VehicleCatalog.Create(kind).Parts;
+            float mass=parts.Sum(R4WeaponDefinition.PartMass);
+            float grip=parts.Where(p=>p.Kind==R3PartKind.Wheel).Sum(p=>
+                R3VehicleModel.TierWheelTraction(p.Tier)*R3VehicleModel.WheelTraction(p.WheelStyle));
+            float motors=parts.Where(p=>p.Kind==R3PartKind.DrivePower).Sum(p=>R3VehicleModel.TierEffectUnits(p.Tier));
+            return grip*RoboRougelike.R6.R6VehicleDrive.MotorMultiplier(motors)/mass;
+        }
+        Assert.That(DriveToMass(R3VehicleKind.Light),Is.GreaterThan(DriveToMass(R3VehicleKind.Standard)));
+        Assert.That(DriveToMass(R3VehicleKind.Standard),Is.GreaterThan(DriveToMass(R3VehicleKind.Heavy)));
+    }
+    [Test] public void StarterSpeedLimitsFollowMassWithoutRewardingExtraWheelsAsFreeTopSpeed()
+    {
+        float Speed(R3VehicleKind kind)
+        {
+            var parts=R3VehicleCatalog.Create(kind).Parts;
+            return R3VehicleAssembly.SpeedFor(parts.Sum(R4WeaponDefinition.PartMass),parts.Count(p=>p.Kind==R3PartKind.Wheel));
+        }
+        Assert.That(Speed(R3VehicleKind.Light),Is.GreaterThan(Speed(R3VehicleKind.Standard)));
+        Assert.That(Speed(R3VehicleKind.Standard),Is.GreaterThan(Speed(R3VehicleKind.Heavy)));
+        Assert.That(R3VehicleAssembly.SpeedFor(800,8),Is.EqualTo(R3VehicleAssembly.SpeedFor(800,4)).Within(.001f),
+            "Extra wheels should improve physical traction without increasing the top-speed cap for free.");
+        Assert.That(R3VehicleAssembly.SpeedFor(800,2),Is.LessThan(R3VehicleAssembly.SpeedFor(800,4)),
+            "Inadequate wheel support should still reduce the cap.");
+    }
+
+    [Test] public void ChargingFieldChoosesSurfaceNearVehicleHeightRegardlessOfRaycastOrder()
+    {
+        var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);var upper=GameObject.CreatePrimitive(PrimitiveType.Cube);
+        try
+        {
+            var origin=new Vector3(12000,0,12000);
+            floor.transform.position=origin+Vector3.down*.5f;floor.transform.localScale=new Vector3(8,1,8);
+            upper.transform.position=origin+Vector3.up*4;upper.transform.localScale=new Vector3(2,1,2);
+            Physics.SyncTransforms();
+            var hits=Physics.RaycastAll(origin+Vector3.up*12,Vector3.down,20,~0,QueryTriggerInteraction.Ignore)
+                .Where(h=>h.collider==floor.GetComponent<Collider>()||h.collider==upper.GetComponent<Collider>())
+                .OrderByDescending(h=>h.point.y).ToArray();
+            Assert.That(hits.Length,Is.EqualTo(2));Assert.That(hits[0].collider,Is.EqualTo(upper.GetComponent<Collider>()));
+            var method=typeof(R1EnergyFieldDirector).GetMethod("TrySelectFieldSurface",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.Public);
+            Assert.That(method,Is.Not.Null,"Surface selection must not depend on Physics.RaycastAll ordering.");
+            var args=new object[]{hits,origin.y+.7f,default(RaycastHit)};
+            Assert.That((bool)method.Invoke(null,args),Is.True);Assert.That(((RaycastHit)args[2]).collider,Is.EqualTo(floor.GetComponent<Collider>()));
+            Array.Reverse(hits);args[0]=hits;Assert.That((bool)method.Invoke(null,args),Is.True);
+            Assert.That(((RaycastHit)args[2]).collider,Is.EqualTo(floor.GetComponent<Collider>()));
+        }
+        finally{UnityEngine.Object.DestroyImmediate(floor);UnityEngine.Object.DestroyImmediate(upper);}
+    }
+    static System.Collections.Generic.List<string> InvokeEnemyGunAndCollectLogs(object enemy,System.Reflection.MethodInfo update,object list)
+    {
+        var messages=new System.Collections.Generic.List<string>();
+        Application.LogCallback capture=(condition,stack,logType)=>messages.Add(condition);
+        Application.logMessageReceived+=capture;
+        try{update.Invoke(enemy,new[]{list,"extra-gun/"});}
+        finally{Application.logMessageReceived-=capture;}
+        return messages;
+    }
     static void Invoke(VehicleEnergyState state,string name,params object[] args)
     {
         var method=typeof(VehicleEnergyState).GetMethod(name);
@@ -29,12 +106,13 @@ public sealed class EnergyCombatRefinementTests
     [Test] public void InitialDeploymentFillsNewBatteryButLaterDeploymentsDoNotRefill()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(100);
+        float capacityBeforeBattery=model.Energy.Maximum;
         var cell=Enumerable.Range(-6,13).SelectMany(x=>Enumerable.Range(-7,15).Select(z=>new Vector3Int(x,1,z)))
             .First(c=>model.PlacementError(c,R3PartKind.Battery)==null);
         Assert.That(model.Buy(cell,R3PartKind.Battery),Is.True);
         var method=typeof(R3VehicleModel).GetMethod("PrepareInitialEnergy");Assert.That(method,Is.Not.Null);
-        method.Invoke(model,null);Assert.That(model.Energy.Maximum,Is.EqualTo(600));Assert.That(model.Energy.Current,Is.EqualTo(600));
-        model.Energy.TrySpend(50);method.Invoke(model,null);Assert.That(model.Energy.Current,Is.EqualTo(550));
+        method.Invoke(model,null);Assert.That(model.Energy.Maximum,Is.EqualTo(capacityBeforeBattery+100));Assert.That(model.Energy.Current,Is.EqualTo(model.Energy.Maximum));
+        model.Energy.TrySpend(50);method.Invoke(model,null);Assert.That(model.Energy.Current,Is.EqualTo(model.Energy.Maximum-50));
     }    [Test] public void MovingAndStationaryRegenerationUsesTenAndFortyPerSecond()
     {
         var energy=new VehicleEnergyState();energy.TrySpend(500);
@@ -78,14 +156,16 @@ public sealed class EnergyCombatRefinementTests
         Assert.That(items.All(p=>p.Health==1),Is.True);Assert.That(model.Scrap,Is.EqualTo(before-2*price));
         Assert.That(model.Parts.Count(p=>p.Kind==R3PartKind.Wheel),Is.EqualTo(4));
     }
-    [Test] public void ArmedEnemiesPeriodicallyTryToRamWithoutDiscardingTheirWeapon()
+    [Test] public void EnemyChargeDependsOnCombatStyleAndEquipment()
     {
-        var method=typeof(RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret).GetMethod("ShouldRam");
-        Assert.That(method,Is.Not.Null,"Mobile armed enemies need a periodic charge.");
-        bool Decide(bool armed,R3EnemyArchetype kind,float distance,float time)=>(bool)method.Invoke(null,new object[]{armed,kind,distance,time});
+        var method=typeof(RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret).GetMethod("ShouldRam",
+            new[]{typeof(bool),typeof(R3EnemyArchetype),typeof(float),typeof(float),typeof(bool)});
+        Assert.That(method,Is.Not.Null,"A charge decision must account for the mounted weapon.");
+        bool Decide(bool armed,R3EnemyArchetype kind,float distance,float time,bool melee=false)=>(bool)method.Invoke(null,new object[]{armed,kind,distance,time,melee});
         Assert.That(Decide(true,R3EnemyArchetype.Scout,15,1),Is.True);
         Assert.That(Decide(true,R3EnemyArchetype.Scout,15,6),Is.False);
-        Assert.That(Decide(true,R3EnemyArchetype.Gunner,6,6),Is.True);
+        Assert.That(Decide(true,R3EnemyArchetype.Gunner,6,6),Is.False,"Ranged gunners keep their distance rather than always pinning the player.");
+        Assert.That(Decide(true,R3EnemyArchetype.Gunner,6,6,true),Is.True,"Melee equipment must still close for contact.");
         Assert.That(Decide(false,R3EnemyArchetype.Gunner,15,6),Is.True);
     }
     [Test] public void SelfDestructionRequiresFiveSecondsDisabledAndNearbyPlayer()
@@ -266,6 +346,55 @@ public sealed class EnergyCombatRefinementTests
         Assert.That(gun.NextShot,Is.GreaterThan(first),"The added weapon must actually fire, not just exist visually.");
         yield return new ExitPlayMode();
     }
+    [UnityTest] public IEnumerator AdditionalEnemyGunDoesNotFireAtAnUndefinedZeroDistanceDirection()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);yield return new EnterPlayMode();
+        float deadline=Time.realtimeSinceStartup+20;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<deadline)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.StartRun()&&run.ChooseRoute(0),Is.True);
+        while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+        run.Encounter.SetCombatActive(false);var enemy=run.Encounter.Enemies.First();
+        Assert.That(enemy.AdditionalWeapons.Count,Is.GreaterThan(0));var gun=enemy.AdditionalWeapons[0];
+        Assert.That(gun.Online(enemy.transform),Is.True);
+        var target=run.Player.Core.GetComponent<Collider>();Assert.That(target,Is.Not.Null);
+        var body=run.Player.GetComponent<Rigidbody>();body.isKinematic=true;
+        body.position+=gun.Pivot.position-target.bounds.center;Physics.SyncTransforms();
+        Assert.That(Vector3.Distance(gun.Pivot.position,target.bounds.center),Is.LessThan(.0001f));
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        var type=typeof(RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret);
+        var targetField=type.GetField("currentTarget",flags);Assert.That(targetField,Is.Not.Null);targetField.SetValue(enemy,target);
+        var clockField=type.GetField("nextTargetTime",flags);Assert.That(clockField,Is.Not.Null);clockField.SetValue(enemy,Time.time+10f);
+        var listField=type.GetField("additionalGuns",flags);Assert.That(listField,Is.Not.Null);var list=listField.GetValue(enemy);
+        var update=type.GetMethod("UpdateVariantWeapons",flags);Assert.That(update,Is.Not.Null);
+        gun.NextShot=0;var energy=enemy.GetComponent<VehicleEnergyBank>();Assert.That(energy,Is.Not.Null);float before=energy.Current;
+        var messages=InvokeEnemyGunAndCollectLogs(enemy,update,list);
+        Assert.That(messages.Any(m=>m!=null&&m.Contains("Look rotation viewing vector is zero")),Is.False,
+            "Overlapping vehicles must not emit a zero-direction warning each frame.");
+        Assert.That(gun.NextShot,Is.Zero,"An undefined direction must not spend a shot or start cooldown.");
+        Assert.That(energy.Current,Is.EqualTo(before));
+    }
+    [UnityTest] public IEnumerator PrimaryEnemyGunDoesNotSpendAZeroDirectionShot()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);yield return new EnterPlayMode();
+        float deadline=Time.realtimeSinceStartup+20;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<deadline)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.StartRun()&&run.ChooseRoute(0),Is.True);
+        while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+        run.Encounter.SetCombatActive(false);var enemy=run.Encounter.Enemies.First();
+        foreach(var extra in enemy.AdditionalWeapons)extra.Block.transform.SetParent(null,true);
+        Assert.That(enemy.WeaponOnline,Is.True,"The primary gun remains mounted and operational.");
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        var type=typeof(RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret);
+        var muzzle=(Transform)type.GetField("muzzle",flags).GetValue(enemy);Assert.That(muzzle,Is.Not.Null);
+        var target=run.Player.Core.GetComponent<Collider>();var body=run.Player.GetComponent<Rigidbody>();body.isKinematic=true;
+        body.position+=muzzle.position-target.bounds.center;Physics.SyncTransforms();
+        Assert.That(Vector3.Distance(muzzle.position,target.bounds.center),Is.LessThan(.0001f));
+        type.GetField("currentTarget",flags).SetValue(enemy,target);type.GetField("nextTargetTime",flags).SetValue(enemy,Time.time+10f);
+        type.GetField("nextFireTime",flags).SetValue(enemy,0f);type.GetField("turnSpeed",flags).SetValue(enemy,0f);
+        enemy.SetCombatActive(true);type.GetMethod("Update",flags).Invoke(enemy,null);
+        Assert.That((float)type.GetField("nextFireTime",flags).GetValue(enemy),Is.Zero,
+            "An undefined muzzle-to-target direction must not consume a shot or cooldown.");
+    }
     [UnityTest] public IEnumerator DefeatedEnemyDropsCollectibleThatGivesTimedPlayerEnergy()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);
@@ -294,6 +423,110 @@ public sealed class EnergyCombatRefinementTests
         Assert.That(bank.Current,Is.GreaterThan(before+10),"Collected energy grants timed regeneration.");
         yield return new ExitPlayMode();
     }
+    [UnityTest] public IEnumerator EnergyPickupFindsPlayerInCrowdedCollisionArea()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);
+        yield return new EnterPlayMode();
+        float deadline=Time.realtimeSinceStartup+20;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<deadline)yield return null;
+        var run=R1RunController.Instance;
+        Assert.That(run.StartRun()&&run.ChooseRoute(0),Is.True);
+        while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+        AssertCrowdedPickup(run);
+    }
+
+    static void AssertCrowdedPickup(R1RunController run)
+    {
+        var position=run.Player.Core.transform.position;
+        var obstacles=new GameObject("Crowded pickup fixture");
+        var cube=new GameObject("Crowded energy cube");
+        try
+        {
+            for(int i=0;i<300;i++)
+            {
+                var obstacle=new GameObject("Obstacle "+i);obstacle.transform.SetParent(obstacles.transform);
+                obstacle.transform.position=position;obstacle.AddComponent<BoxCollider>().size=Vector3.one*.1f;
+            }
+            cube.transform.position=position;var pickup=cube.AddComponent<EnergyPickup>();
+            Physics.SyncTransforms();
+            var hits=new Collider[128];int count=Physics.OverlapSphereNonAlloc(position,1.1f,hits,~0,QueryTriggerInteraction.Ignore);
+            Assert.That(count,Is.EqualTo(hits.Length),"Fixture must overflow the pickup buffer.");
+            Assert.That(hits.Any(hit=>hit.GetComponentInParent<R3VehicleAssembly>()?.gameObject==run.Player.gameObject),Is.False,
+                "The first buffer must not already include the player.");
+            typeof(EnergyPickup).GetMethod("FixedUpdate",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance).Invoke(pickup,null);
+            Assert.That(cube.activeSelf,Is.False,"A player touching the pickup must collect it despite other nearby colliders.");
+        }
+        finally {UnityEngine.Object.DestroyImmediate(obstacles);if(cube!=null)UnityEngine.Object.DestroyImmediate(cube);}
+    }
+
+    [UnityTest] public IEnumerator ChargingFieldFindsPlayerInCrowdedCollisionArea()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);
+        yield return new EnterPlayMode();
+        float deadline=Time.realtimeSinceStartup+20;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<deadline)yield return null;
+        var run=R1RunController.Instance;
+        Assert.That(run.StartRun()&&run.ChooseRoute(0),Is.True);
+        while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+        AssertCrowdedField(run);
+    }
+
+    static void AssertCrowdedField(R1RunController run)
+    {
+        var position=run.Player.Core.transform.position;
+        var obstacles=new GameObject("Crowded field fixture");
+        var fieldObject=new GameObject("Crowded field");
+        try
+        {
+            for(int i=0;i<1200;i++)
+            {
+                var obstacle=new GameObject("Obstacle "+i);obstacle.transform.SetParent(obstacles.transform);
+                obstacle.transform.position=position;obstacle.AddComponent<BoxCollider>().size=Vector3.one*.1f;
+            }
+            fieldObject.transform.position=position-Vector3.up;
+            var field=fieldObject.AddComponent<EnergyChargingField>();var bank=run.Player.GetComponent<VehicleEnergyBank>();
+            bank.TrySpend(bank.Current);Physics.SyncTransforms();
+            var hits=new Collider[1024];int count=Physics.OverlapBoxNonAlloc(position,new Vector3(2.5f,1.5f,2.5f),hits,Quaternion.identity,~0,QueryTriggerInteraction.Ignore);
+            Assert.That(count,Is.EqualTo(hits.Length),"Fixture must overflow the field buffer.");
+            Assert.That(hits.Any(hit=>hit.GetComponentInParent<VehicleEnergyBank>()==bank),Is.False,
+                "The first buffer must not already include the player.");
+            typeof(EnergyChargingField).GetMethod("FixedUpdate",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance).Invoke(field,null);
+            Assert.That(bank.Current,Is.EqualTo(bank.Maximum*.5f).Within(.001f),"The field must charge the player even when crowded.");
+        }
+        finally {UnityEngine.Object.DestroyImmediate(obstacles);UnityEngine.Object.DestroyImmediate(fieldObject);}
+    }
+
+    [UnityTest] public IEnumerator CrowdedEnergyQueriesHaveBoundedSteadyStateAllocations()
+    {
+        EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
+        yield return new EnterPlayMode();
+        var obstacles=new GameObject("Energy allocation fixture");obstacles.transform.position=new Vector3(14000,2,14000);
+        var cube=new GameObject("Energy allocation pickup");cube.transform.position=obstacles.transform.position;
+        var fieldObject=new GameObject("Energy allocation field");fieldObject.transform.position=obstacles.transform.position-Vector3.up;
+        try
+        {
+            for(int i=0;i<1200;i++)obstacles.AddComponent<BoxCollider>().size=Vector3.one*.1f;
+            var pickup=cube.AddComponent<EnergyPickup>();var field=fieldObject.AddComponent<EnergyChargingField>();
+            pickup.enabled=false;field.enabled=false;Physics.SyncTransforms();
+            Assert.That(Physics.OverlapSphere(cube.transform.position,1.1f,~0,QueryTriggerInteraction.Ignore).Length,Is.GreaterThan(1024));
+            var pickupTick=(Action)Delegate.CreateDelegate(typeof(Action),pickup,typeof(EnergyPickup).GetMethod("FixedUpdate",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance));
+            var fieldTick=(Action)Delegate.CreateDelegate(typeof(Action),field,typeof(EnergyChargingField).GetMethod("FixedUpdate",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance));
+            for(int i=0;i<3;i++){pickupTick();fieldTick();}
+            using(var recorder=Unity.Profiling.ProfilerRecorder.StartNew(Unity.Profiling.ProfilerCategory.Memory,"GC Allocated In Frame",16))
+            {
+                Assert.That(recorder.Valid,Is.True);yield return null;yield return null;
+                long idle=recorder.LastValue;
+                for(int i=0;i<50;i++){pickupTick();fieldTick();}
+                yield return null;long sample=recorder.LastValue;
+                var control=new byte[1024*1024];control[0]=1;yield return null;long controlBytes=recorder.LastValue;GC.KeepAlive(control);
+                Debug.Log($"[ENERGY_QUERY_ALLOC] queries=50 colliders=1200 idle={idle} sample={sample} control={controlBytes}");
+                Assert.That(controlBytes,Is.GreaterThanOrEqualTo(1024*1024),"The profiler must detect a known allocation.");
+                Assert.That(sample-idle,Is.LessThan(20000),"Steady crowded queries must avoid a full allocation every tick.");
+            }
+        }
+        finally{UnityEngine.Object.Destroy(obstacles);UnityEngine.Object.Destroy(cube);UnityEngine.Object.Destroy(fieldObject);}
+    }
+
     [UnityTearDown] public IEnumerator Cleanup()
     {if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }

@@ -21,8 +21,18 @@ namespace RoboRougelike.R1
         // Serialized rosters remain the authored base; all consumers resolve the same escort.
         public bool IsBoss => Variants!=null&&System.Array.IndexOf(Variants,RoboRougelike.R5.R5EnemyVariant.SiegeBoss)>=0;
         public int SpawnCount => IsBoss?1:Mathf.Clamp(EnemyCount+1,1,4);
-        public RoboRougelike.R3.R3EnemyArchetype SpawnArchetype(int index) => index>=EnemyCount?
-            RoboRougelike.R3.R3EnemyArchetype.Scout: Roster!=null&&index<Roster.Length?Roster[index]:RoboRougelike.R3.R3EnemyProfiles.InEncounter(EnemyCount,index);
+        public RoboRougelike.R3.R3EnemyArchetype SpawnArchetype(int index)
+        {
+            if(index<EnemyCount)
+                return Roster!=null&&index<Roster.Length?Roster[index]:RoboRougelike.R3.R3EnemyProfiles.InEncounter(EnemyCount,index);
+            // Preserve the ordinary scout escort except when the entire authored
+            // roster is already scouts (notably the first encounter). In that
+            // case choose a ranged gunner so the two tactics are distinct.
+            for(int i=0;i<EnemyCount;i++)
+                if((Roster!=null&&i<Roster.Length?Roster[i]:RoboRougelike.R3.R3EnemyProfiles.InEncounter(EnemyCount,i))!=RoboRougelike.R3.R3EnemyArchetype.Scout)
+                    return RoboRougelike.R3.R3EnemyArchetype.Scout;
+            return RoboRougelike.R3.R3EnemyArchetype.Gunner;
+        }
         public RoboRougelike.R5.R5EnemyVariant SpawnVariant(int index) => index<EnemyCount&&Variants!=null&&index<Variants.Length?
             Variants[index]:RoboRougelike.R5.R5EnemyVariant.Normal;
         [Range(0.5f, 3f)] public float HealthMultiplier = 1;

@@ -44,11 +44,15 @@ namespace RogueMachine.P12PipelineSafe
         private int strafeDirection = 1;
         private Vector3 lastMoveNormal,obstacleTangent;
         private float navigationUntil;
-        private readonly RaycastHit[] movementHits = new RaycastHit[256];
+        private const int MaxMovementHitBuffer=4096;
+        private RaycastHit[] movementHits = new RaycastHit[256];
         private Vector3 movementHalfExtents = new Vector3(0.88f, 0.67f, 0.88f);
         private readonly List<P12PipelineSafeDamageable> driveWheels=new List<P12PipelineSafeDamageable>();
         private P12PipelineSafeDamageable turretAnchor;
         private float nextStrafeChange;
+        private float movementStartedAt;
+        private readonly EnemyContactRecovery contactRecovery = new EnemyContactRecovery();
+        private float lastPlayerContact = float.NegativeInfinity;
         private bool profiled;
         public R4WeaponKind WeaponKind { get; private set; }
         public bool CombatActive => combatActive;
@@ -114,6 +118,11 @@ namespace RogueMachine.P12PipelineSafe
             GetComponent<RoboRougelike.R6.R6VehicleDrive>()?.RefreshParts();
         }
         public bool EquipBattery() => EquipBattery(1);
+        private static void DiscardUnattachedDevice(GameObject item)
+        {
+            item.SetActive(false);
+            if(Application.isPlaying)Destroy(item);else DestroyImmediate(item);
+        }
         public bool EquipBattery(int tier)
         {
             if(tier<1||tier>3||packageBattery!=null||IsDefeated||weaponBlock==null)return false;
@@ -123,7 +132,8 @@ namespace RogueMachine.P12PipelineSafe
             item.GetComponent<Renderer>().sharedMaterial=weaponBlock.GetComponent<Renderer>().sharedMaterial;
             packageBatteryState=new R3PartState(new Vector3Int(0,3,-3),R3PartKind.Battery)
                 {Id=EquipmentInstanceId("battery"),Source=name+" / bateria",Tier=tier};
-            RoboRougelike.WeaponIntegration.RRLEnemyDeviceMount.Attach(item,transform,packageBatteryState);
+            if(!RoboRougelike.WeaponIntegration.RRLEnemyDeviceMount.Attach(item,transform,packageBatteryState))
+            {packageBatteryState=null;DiscardUnattachedDevice(item);return false;}
             packageBattery=item.AddComponent<P12PipelineSafeDamageable>();packageBattery.Configure(100*R3VehicleModel.TierHealth(tier),true);
             packageBattery.SetBaseTint(new Color(.2f,.9f,.35f));item.AddComponent<VehicleEnergyBattery>().Configure(packageBatteryState);
             GetComponent<RoboRougelike.R6.R6VehicleDrive>()?.RefreshParts();
@@ -139,7 +149,8 @@ namespace RogueMachine.P12PipelineSafe
             item.transform.localRotation=R3MountingGrid.Rotation(state.RotationQuarterTurns);
             item.GetComponent<Renderer>().sharedMaterial=weaponMaterial!=null?weaponMaterial:weaponBlock.GetComponent<Renderer>().sharedMaterial;
             item.transform.localScale=Vector3.one*R41PartGeometry.BlockSize;
-            RoboRougelike.WeaponIntegration.RRLEnemyDeviceMount.Attach(item,transform,state);
+            if(!RoboRougelike.WeaponIntegration.RRLEnemyDeviceMount.Attach(item,transform,state))
+            {DiscardUnattachedDevice(item);return false;}
             var hp=item.AddComponent<P12PipelineSafeDamageable>();hp.Configure(180,true);hp.SetBaseTint(new Color(.25f,.6f,1));
             packageShield=item.AddComponent<RoboRougelike.WeaponIntegration.RRLShieldBinding>();packageShield.Bind(state,transform);packageShieldState=state;
             GetComponent<RoboRougelike.R6.R6VehicleDrive>()?.RefreshMass();return true;
@@ -153,7 +164,8 @@ namespace RogueMachine.P12PipelineSafe
             item.transform.SetParent(transform,false);item.transform.localPosition=(Vector3)state.Cell*.55f;
             item.GetComponent<Renderer>().sharedMaterial=weaponMaterial!=null?weaponMaterial:weaponBlock.GetComponent<Renderer>().sharedMaterial;
             item.transform.localScale=Vector3.one*R41PartGeometry.BlockSize;
-            RoboRougelike.WeaponIntegration.RRLEnemyDeviceMount.Attach(item,transform,state);
+            if(!RoboRougelike.WeaponIntegration.RRLEnemyDeviceMount.Attach(item,transform,state))
+            {DiscardUnattachedDevice(item);return false;}
             var hp=item.AddComponent<P12PipelineSafeDamageable>();hp.Configure(160,true);
             packagePointDefense=item.AddComponent<RoboRougelike.WeaponIntegration.RRLPointDefenseBinding>();packagePointDefense.Bind(state,transform);packagePointDefenseState=state;return true;
         }
@@ -331,6 +343,10 @@ namespace RogueMachine.P12PipelineSafe
             var hp=part.AddComponent<P12PipelineSafeDamageable>();hp.Configure(wheel?75:100,true);
             if(wheel)
             {
+                // Generated enemy wheels attach at the axle to the adjoining
+                // chassis cell, not to every neighbouring face of their cube.
+                var inward=cell.x<0?Vector3Int.right:Vector3Int.left;
+                part.AddComponent<R3BlockMountPoints>().Configure(null,R3MountingGrid.FaceBit(inward));
                 var visual=new GameObject("Obrót koła");visual.transform.SetParent(part.transform,false);
                 visual.AddComponent<MeshFilter>().sharedMesh=part.GetComponent<MeshFilter>().sharedMesh;
                 visual.AddComponent<MeshRenderer>().sharedMaterial=material;
@@ -343,13 +359,25 @@ namespace RogueMachine.P12PipelineSafe
 
         public P12PipelineSafeDamageable Core => core;
         public bool IsDefeated => defeated || core == null || core.IsDead;
-        bool PrimaryWeaponOnline => variantGuns.Count>0?variantGuns.Any(g=>g.Online(transform)):weaponBlock != null && !weaponBlock.IsDead &&
-            turretSupport != null && !turretSupport.IsDead && yawPivot != null && muzzle != null &&
-            (turretAnchor==null||!turretAnchor.IsDead&&turretAnchor.transform.IsChildOf(transform));
+        static bool ActiveUnder(Transform part,Transform owner)=>
+            part!=null&&owner!=null&&part.gameObject.activeInHierarchy&&part.IsChildOf(owner);
+        static bool AttachedUnder(Transform part,Transform owner)=>part!=null&&owner!=null&&part.IsChildOf(owner);
+        bool PrimaryWeaponAttached => weaponBlock!=null&&!weaponBlock.IsDead&&AttachedUnder(weaponBlock.transform,transform)&&
+            turretSupport!=null&&!turretSupport.IsDead&&AttachedUnder(turretSupport.transform,transform)&&
+            AttachedUnder(yawPivot,transform)&&AttachedUnder(muzzle,transform)&&
+            (turretAnchor==null||!turretAnchor.IsDead&&AttachedUnder(turretAnchor.transform,transform));
+        bool PrimaryWeaponOnline => variantGuns.Count>0?variantGuns.Any(g=>g.Online(transform)):PrimaryWeaponAttached&&
+            ActiveUnder(weaponBlock.transform,transform)&&ActiveUnder(turretSupport.transform,transform)&&
+            ActiveUnder(yawPivot,transform) && ActiveUnder(muzzle,transform) &&
+            (turretAnchor==null||ActiveUnder(turretAnchor.transform,transform));
         public bool WeaponOnline => PrimaryWeaponOnline||additionalGuns.Any(g=>g.Online(transform));
+        public bool HasAttachedWeapon => (variantGuns.Count>0?variantGuns.Any(g=>g.Attached(transform)):PrimaryWeaponAttached)||
+            additionalGuns.Any(g=>g.Attached(transform));
+        public bool RecoveringFromPlayerContact => contactRecovery.Recovering;
 
         public void ConfigureMovement(float speed, float distance, float strafe)
         {
+            movementStartedAt=Time.time;
             moveSpeed = Mathf.Clamp(speed, 0, 6);
             preferredDistance = Mathf.Clamp(distance, 6, 20);
             strafeStrength = Mathf.Clamp01(strafe);
@@ -379,7 +407,7 @@ namespace RogueMachine.P12PipelineSafe
             structure.SetDesignatedCore(core.GetComponent<P12_PipelineSafePlayerBlock>());
         }
 
-        public void SetCombatActive(bool active) { combatActive = active; }
+        public void SetCombatActive(bool active) { combatActive = active; if(!active) { contactRecovery.Reset(); lastPlayerContact=float.NegativeInfinity; } }
         public Transform EncounterTarget=>playerRoot;
         public void RetargetEncounter(Transform target)
         {
@@ -598,7 +626,7 @@ namespace RogueMachine.P12PipelineSafe
             if(additionalGuns.Count>0)UpdateVariantWeapons(additionalGuns,"extra-gun/");
             if (!PrimaryWeaponOnline)
             {
-                DropTurret();
+                if(!PrimaryWeaponAttached)DropTurret();
                 return;
             }
             if(weaponBlock!=null&&RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(weaponBlock.gameObject))return;
@@ -647,6 +675,10 @@ namespace RogueMachine.P12PipelineSafe
             if (distance >
                 maxRange)
                 return;
+
+            // Projectile launch needs a direction. Contact weapons and EMP
+            // use their own close-range rules and remain eligible at zero range.
+            if(distance<.0001f&&packageEmp==null&&packageSaw==null&&packageBeam==null)return;
 
             Vector3 flatForward =
                 Vector3.ProjectOnPlane(
@@ -721,9 +753,40 @@ namespace RogueMachine.P12PipelineSafe
             movementBounds=bounds;
         }
         public static bool ShouldRam(bool weaponOnline,R3EnemyArchetype archetype,float distance,float cycleTime)
+            => ShouldRam(weaponOnline,archetype,distance,cycleTime,false);
+        public static bool ShouldRam(bool weaponOnline,R3EnemyArchetype archetype,float distance,float cycleTime,bool meleeWeapon)
         {
-            return !weaponOnline||archetype==R3EnemyArchetype.Bruiser||distance<8f||Mathf.Repeat(cycleTime,12f)<5f;
-        }        private void FixedUpdate()
+            if (!weaponOnline) return true;
+            if (meleeWeapon) return true;
+            float phase=Mathf.Repeat(cycleTime,12f);
+            if (archetype==R3EnemyArchetype.Bruiser) return phase<4f;
+            if (archetype==R3EnemyArchetype.Scout) return phase<2f;
+            return false;
+        }
+
+        public static Vector3 TargetDirection(Vector3 offset,Vector3 chassisForward)
+        {
+            var flat=Vector3.ProjectOnPlane(offset,Vector3.up);
+            if(flat.sqrMagnitude>=.0001f)return flat.normalized;
+            flat=Vector3.ProjectOnPlane(chassisForward,Vector3.up);
+            return flat.sqrMagnitude>=.0001f?flat.normalized:Vector3.forward;
+        }
+
+        public static Vector3 ConstrainRetreatDirection(Vector3 desired,Vector3 towardPlayer)
+        {
+            float approach=Vector3.Dot(desired,towardPlayer);
+            if(approach>=0f)desired-=towardPlayer*(approach+.25f);
+            return desired.normalized;
+        }
+
+        private void OnCollisionStay(Collision collision)
+        {
+            if(playerRoot!=null && collision.collider!=null &&
+                (collision.collider.transform==playerRoot || collision.collider.transform.IsChildOf(playerRoot)))
+                lastPlayerContact=Time.fixedTime;
+        }
+
+        private void FixedUpdate()
         {
             var drive=GetComponent<RoboRougelike.R6.R6VehicleDrive>();
             if(drive!=null)drive.StepWorld(Vector3.zero,0);
@@ -731,16 +794,20 @@ namespace RogueMachine.P12PipelineSafe
             ConstrainOutwardBoundaryVelocity();
             Vector3 toward = Vector3.ProjectOnPlane(playerRoot.position - movementBody.position, Vector3.up);
             float distance = toward.magnitude;
-            if (distance < 0.01f) return;
-            toward /= distance;
+            // Exactly overlapping roots used to stop AI before the contact
+            // recovery timer could run. Keep a finite direction to escape.
+            toward=TargetDirection(toward,transform.forward);
             // A mobile enemy with no working gun can still physically ram the
             // player. Keep the original R6 wheel solver and ally/world avoidance.
-            bool ramming=ShouldRam(WeaponOnline,Archetype,distance,Time.time+Mathf.Abs(GetInstanceID()%997)*.033f);
+            bool recovering=contactRecovery.Advance(Time.fixedTime-lastPlayerContact<=Time.fixedDeltaTime*2f,Time.fixedDeltaTime);
+            float attackClock=Time.time-movementStartedAt+(Archetype==R3EnemyArchetype.Bruiser?0:Mathf.Abs(GetInstanceID()%997)*.033f);
+            bool ramming=!recovering&&ShouldRam(WeaponOnline,Archetype,distance,attackClock,packageSaw!=null&&PrimaryWeaponOnline);
             if(profiled&&Time.time>=nextStrafeChange&&Time.time>=navigationUntil)
             { strafeDirection=-strafeDirection;nextStrafeChange=Time.time+(Archetype==R3EnemyArchetype.Flanker?2:4.5f); }
             Vector3 sideways = Vector3.Cross(Vector3.up, toward) * strafeDirection;
             float approach = ramming?1:Mathf.Clamp((distance - preferredDistance) / 3, -1, 1);
-            Vector3 desired = (toward * approach + sideways * (ramming?0:strafeStrength)).normalized;
+            Vector3 desired = recovering ? (-toward + sideways * .35f).normalized :
+                (toward * approach + sideways * (ramming?0:strafeStrength)).normalized;
             var encounter=RoboRougelike.R1.R1RunController.Instance?.Encounter;
             if(encounter!=null)
                 foreach(var other in encounter.Enemies)
@@ -750,27 +817,31 @@ namespace RogueMachine.P12PipelineSafe
                     float d=away.magnitude;
                     if(d>0.01f&&d<6)desired+=away/d*((6-d)/6)*1.5f;
                 }
-            desired.Normalize();
+            desired=recovering?ConstrainRetreatDirection(desired,toward):desired.normalized;
             float wheelFactor=driveWheels.Count==0?1:ActiveWheelCount/(float)driveWheels.Count;
             if(wheelFactor<=0)return;
             float step = moveSpeed * Mathf.Lerp(0.3f,1,wheelFactor) * Time.fixedDeltaTime;
             float clearance = Mathf.Max(step + 0.08f, 1.4f);
-            if (!CanMove(desired, clearance,ramming))
+            // A backward probe may begin overlapping the player. Ignore that
+            // player only for approach-by-ram or retreat; physical collisions
+            // and all world-obstacle checks remain active.
+            bool allowPlayerContact=ramming||recovering||Vector3.Dot(desired,toward)<-.05f;
+            if (!CanMove(desired, clearance,allowPlayerContact))
             {
                 // Keep a wall-parallel escape direction across periodic combat strafing changes.
                 var normal=lastMoveNormal;
                 var tangent=Time.time<navigationUntil?obstacleTangent:Vector3.Cross(Vector3.up,normal).normalized;
                 if(Time.time>=navigationUntil&&Vector3.Dot(tangent,desired)<0)tangent=-tangent;
-                if(!CanMove(tangent,step+.08f,ramming))
+                if(!CanMove(tangent,step+.08f,allowPlayerContact))
                 {
                     tangent=Vector3.Cross(Vector3.up,normal).normalized;
                     if(Vector3.Dot(tangent,desired)<0)tangent=-tangent;
-                    if(!CanMove(tangent,step+.08f,ramming))tangent=-tangent;
+                    if(!CanMove(tangent,step+.08f,allowPlayerContact))tangent=-tangent;
                 }
-                desired=CanMove(tangent,step+.08f,ramming)?tangent:normal;
+                desired=CanMove(tangent,step+.08f,allowPlayerContact)?tangent:normal;
                 obstacleTangent=desired;navigationUntil=Time.time+1.1f;
             }
-            else if(Time.time<navigationUntil&&CanMove(obstacleTangent,step+.08f,ramming))desired=obstacleTangent;
+            else if(!recovering&&Time.time<navigationUntil&&CanMove(obstacleTangent,step+.08f,allowPlayerContact))desired=obstacleTangent;
             Vector3 next = movementBody.position + desired * step;
             bool cutX=(next.x<movementBounds.min.x&&desired.x<0)||(next.x>movementBounds.max.x&&desired.x>0);
             bool cutZ=(next.z<movementBounds.min.z&&desired.z<0)||(next.z>movementBounds.max.z&&desired.z>0);
@@ -804,10 +875,41 @@ namespace RogueMachine.P12PipelineSafe
                 if(!TryBoundaryTangent(outwardX,outwardZ,step,ramming,out var safeTangent))return;
                 desired=safeTangent;obstacleTangent=safeTangent;navigationUntil=Time.time+1.1f;
             }
-            if (!CanMove(desired, step + 0.08f,ramming)) return;
+            // Obstacle avoidance can replace a safe retreat with a wall normal
+            // that points straight back into the player. Prefer an open lateral
+            // escape; if both sides are blocked, brake rather than push.
+            if(recovering&&Vector3.Dot(desired,toward)>.001f)
+            {
+                if(!TryRetreatSide(toward,step,out var escape))return;
+                desired=escape;obstacleTangent=escape;navigationUntil=Time.time+1.1f;
+            }
+            if (!CanMove(desired, step + 0.08f,allowPlayerContact)) return;
             next=movementBody.position+desired*step;
             next.x=Mathf.Clamp(next.x,movementBounds.min.x,movementBounds.max.x);next.z=Mathf.Clamp(next.z,movementBounds.min.z,movementBounds.max.z);
-            if(drive!=null)drive.StepToward(desired,moveSpeed * Mathf.Lerp(0.3f,1,wheelFactor),turnSpeed);
+            if(drive!=null)
+            {
+                float speed=moveSpeed * Mathf.Lerp(0.3f,1,wheelFactor);
+                if(recovering)
+                {
+                    var input=RoboRougelike.R6.R6VehicleDrive.WorldSteering(transform.forward,desired,drive.GroundNormal,drive.ForwardSpeed);
+                    var axis=Vector3.ProjectOnPlane(transform.forward,drive.GroundNormal).normalized*input.x;
+                    if(Vector3.Dot(axis,toward)>.001f){drive.Step(0,input.y,speed,speed,turnSpeed);return;}
+                }
+                drive.StepToward(desired,speed,turnSpeed);
+            }
+        }
+
+        private bool TryRetreatSide(Vector3 toward,float step,out Vector3 escape)
+        {
+            var side=Vector3.Cross(Vector3.up,toward).normalized*strafeDirection;
+            for(int i=0;i<2;i++,side=-side)
+            {
+                var next=movementBody.position+side*step;
+                if((next.x<movementBounds.min.x&&side.x<0)||(next.x>movementBounds.max.x&&side.x>0)||
+                   (next.z<movementBounds.min.z&&side.z<0)||(next.z>movementBounds.max.z&&side.z>0))continue;
+                if(CanMove(side,step+.08f,true)){escape=side;return true;}
+            }
+            escape=Vector3.zero;return false;
         }
 
         // Steering toward a boundary tangent does not remove existing outward
@@ -847,11 +949,24 @@ namespace RogueMachine.P12PipelineSafe
 
         private bool FriendlyInLine(Vector3 point)
         {
-            var delta=point-muzzle.position;
-            int count=Physics.RaycastNonAlloc(muzzle.position,delta.normalized,movementHits,delta.magnitude,~0,QueryTriggerInteraction.Ignore);
+            return FriendlyBetween(muzzle.position,point);
+        }
+
+        private bool FriendlyBetween(Vector3 origin,Vector3 point)
+        {
+            var delta=point-origin;
+            int count;RaycastHit[] rayHits;
+            while(true)
+            {
+                count=Physics.RaycastNonAlloc(origin,delta.normalized,movementHits,delta.magnitude,~0,QueryTriggerInteraction.Ignore);
+                if(count<movementHits.Length){rayHits=movementHits;break;}
+                if(movementHits.Length>=MaxMovementHitBuffer)
+                {rayHits=Physics.RaycastAll(origin,delta.normalized,delta.magnitude,~0,QueryTriggerInteraction.Ignore);count=rayHits.Length;break;}
+                System.Array.Resize(ref movementHits,Mathf.Min(movementHits.Length*2,MaxMovementHitBuffer));
+            }
             for(int i=0;i<count;i++)
             {
-                var ally=movementHits[i].collider.GetComponentInParent<P12PipelineSafeEnemyTurret>();
+                var ally=rayHits[i].collider.GetComponentInParent<P12PipelineSafeEnemyTurret>();
                 if(ally!=null&&ally!=this&&!ally.IsDefeated)return true;
             }
             return false;
@@ -862,22 +977,48 @@ namespace RogueMachine.P12PipelineSafe
             // Keep the probe upright but rotate its local footprint with the chassis.
             // A world-aligned rectangle reports false walls after a 90-degree turn.
             var yaw=Quaternion.Euler(0,movementBody.rotation.eulerAngles.y,0);
-            int count = Physics.BoxCastNonAlloc(movementBody.position + Vector3.up * 0.75f,
-                movementHalfExtents, direction, movementHits, yaw, distance,
-                ~0, QueryTriggerInteraction.Ignore);
+            var probeOrigin=movementBody.position+Vector3.up*.75f;
+            int count;RaycastHit[] queriedHits;
+            while(true)
+            {
+                count=Physics.BoxCastNonAlloc(probeOrigin,
+                    movementHalfExtents,direction,movementHits,yaw,distance,~0,QueryTriggerInteraction.Ignore);
+                if(count<movementHits.Length){queriedHits=movementHits;break;}
+                if(movementHits.Length>=MaxMovementHitBuffer)
+                {
+                    queriedHits=Physics.BoxCastAll(probeOrigin,
+                        movementHalfExtents,direction,yaw,distance,~0,QueryTriggerInteraction.Ignore);
+                    count=queriedHits.Length;break;
+                }
+                System.Array.Resize(ref movementHits,Mathf.Min(movementHits.Length*2,MaxMovementHitBuffer));
+            }
+            // BoxCastNonAlloc/BoxCastAll do not order hits by distance. A
+            // farther wall must not choose the escape tangent for a nearer one.
+            int closest=-1;float closestDistance=float.PositiveInfinity;
             for (int i = 0; i < count; i++)
             {
-                var hit = movementHits[i].collider;
+                var hit = queriedHits[i].collider;
                 if (hit == null || hit.transform.IsChildOf(transform) ||
                     hit.GetComponent<P17PhysicalShell>() != null) continue;
                 if(allowPlayerContact&&playerRoot!=null&&hit.transform.IsChildOf(playerRoot))continue;
                 // Ignore the flat ground, but avoid walls, live vehicles, and loose debris.
                 if (hit.bounds.max.y < 0.12f) continue;
-                lastMoveNormal=Vector3.ProjectOnPlane(movementHits[i].normal,Vector3.up).normalized;
-                if(lastMoveNormal.sqrMagnitude<.01f)lastMoveNormal=-direction;
-                return false;
+                // A rotated clearance box can initially overlap a nearby side
+                // wall even when the chassis itself does not. Such a zero-hit
+                // must not prevent motion parallel to or away from that wall.
+                // Unknown/inside geometry stays blocking, as does motion into it.
+                if(queriedHits[i].distance<=.0001f)
+                {
+                    var separation=Vector3.ProjectOnPlane(hit.ClosestPoint(probeOrigin)-probeOrigin,Vector3.up);
+                    if(separation.sqrMagnitude>.000001f&&Vector3.Dot(separation,direction)<=.0001f)continue;
+                }
+                if(queriedHits[i].distance<closestDistance)
+                {closest=i;closestDistance=queriedHits[i].distance;}
             }
-            return count < movementHits.Length;
+            if(closest<0)return true;
+            lastMoveNormal=Vector3.ProjectOnPlane(queriedHits[closest].normal,Vector3.up).normalized;
+            if(lastMoveNormal.sqrMagnitude<.01f)lastMoveNormal=-direction;
+            return false;
         }
 
         private void RotateToward(
@@ -917,20 +1058,27 @@ namespace RogueMachine.P12PipelineSafe
             return health==null||!health.IsDead;
         }
 
+        private readonly List<P12PipelineSafeFunctionalModule> targetModules=new List<P12PipelineSafeFunctionalModule>();
+        private readonly List<P12_PipelineSafePlayerBlock> targetBlocks=new List<P12_PipelineSafePlayerBlock>();
+        private readonly List<P12PipelineSafeDamageable> targetHealth=new List<P12PipelineSafeDamageable>();
+        private readonly List<Collider> moduleTargets=new List<Collider>();
+        private readonly List<Collider> preferredTargets=new List<Collider>();
+        private readonly List<Collider> blockTargets=new List<Collider>();
         private Collider SelectTargetCollider()
         {
             if (playerRoot == null)
                 return null;
-
-            List<Collider> moduleTargets =
-                new List<Collider>();
-
-            P12PipelineSafeFunctionalModule[] modules =
-                playerRoot.GetComponentsInChildren<
-                    P12PipelineSafeFunctionalModule
-                >(true);
-
-            foreach (P12PipelineSafeFunctionalModule module in modules)
+            try{return SelectTargetColliderCore();}
+            finally
+            {
+                targetModules.Clear();targetBlocks.Clear();targetHealth.Clear();
+                moduleTargets.Clear();preferredTargets.Clear();blockTargets.Clear();
+            }
+        }
+        private Collider SelectTargetColliderCore()
+        {
+            playerRoot.GetComponentsInChildren(true,targetModules);
+            foreach (P12PipelineSafeFunctionalModule module in targetModules)
             {
                 if (module == null ||
                     module.ModuleLost ||
@@ -941,8 +1089,18 @@ namespace RogueMachine.P12PipelineSafe
                     module.GetComponent<Collider>();
 
                 if (ValidTarget(collider))
+                {
                     moduleTargets.Add(collider);
+                    if(profiled && ((Archetype==R3EnemyArchetype.Gunner && module.ModuleType==P12FunctionalModuleType.Weapon) ||
+                       (Archetype==R3EnemyArchetype.Flanker && module.ModuleType==P12FunctionalModuleType.Wheel)))
+                        preferredTargets.Add(collider);
+                }
             }
+
+            // Priorities bias aim; they do not bypass armor, line of sight or
+            // the existing physical projectile and weapon-cadence systems.
+            if(preferredTargets.Count>0 && Random.value<.7f)
+                return preferredTargets[Random.Range(0,preferredTargets.Count)];
 
             if (moduleTargets.Count > 0 &&
                 Random.value < 0.34f)
@@ -952,15 +1110,8 @@ namespace RogueMachine.P12PipelineSafe
                 ];
             }
 
-            List<Collider> blockTargets =
-                new List<Collider>();
-
-            P12_PipelineSafePlayerBlock[] blocks =
-                playerRoot.GetComponentsInChildren<
-                    P12_PipelineSafePlayerBlock
-                >(true);
-
-            foreach (P12_PipelineSafePlayerBlock block in blocks)
+            playerRoot.GetComponentsInChildren(true,targetBlocks);
+            foreach (P12_PipelineSafePlayerBlock block in targetBlocks)
             {
                 if (block == null)
                     continue;
@@ -982,11 +1133,14 @@ namespace RogueMachine.P12PipelineSafe
             }
 
             if(blockTargets.Count==0)
-                foreach(var hp in playerRoot.GetComponentsInChildren<P12PipelineSafeDamageable>())
+            {
+                playerRoot.GetComponentsInChildren(false,targetHealth);
+                foreach(var hp in targetHealth)
                 {
                     var collider=hp.GetComponent<Collider>();
                     if(!hp.IsDead&&ValidTarget(collider))blockTargets.Add(collider);
                 }
+            }
             if(blockTargets.Count==0)return null;
 
             return blockTargets[
@@ -1183,8 +1337,11 @@ namespace RogueMachine.P12PipelineSafe
             public Transform Pivot,Muzzle;
             public R4WeaponKind Kind;
             public float NextShot;
-            public bool Online(Transform owner)=>Block!=null&&!Block.IsDead&&Block.transform.IsChildOf(owner)&&
-                Support!=null&&!Support.IsDead&&Support.transform.IsChildOf(owner)&&Pivot!=null&&Muzzle!=null;
+            public bool Attached(Transform owner)=>Block!=null&&!Block.IsDead&&AttachedUnder(Block.transform,owner)&&
+                Support!=null&&!Support.IsDead&&AttachedUnder(Support.transform,owner)&&
+                AttachedUnder(Pivot,owner)&&AttachedUnder(Muzzle,owner);
+            public bool Online(Transform owner)=>Attached(owner)&&ActiveUnder(Block.transform,owner)&&
+                ActiveUnder(Support.transform,owner)&&ActiveUnder(Pivot,owner)&&ActiveUnder(Muzzle,owner);
         }
         private readonly List<VariantGun> variantGuns=new List<VariantGun>();
         private readonly List<VariantGun> additionalGuns=new List<VariantGun>();
@@ -1202,7 +1359,8 @@ namespace RogueMachine.P12PipelineSafe
             gun.transform.localScale=Vector3.one*R41PartGeometry.BlockSize;
             var material=core.GetComponent<Renderer>().sharedMaterial;gun.GetComponent<Renderer>().sharedMaterial=material;
             var state=new R3PartState(default,R3PartKind.Gun){Weapon=R4WeaponKind.Automatic};
-            RoboRougelike.WeaponIntegration.RRLEnemyDeviceMount.Attach(gun,transform,state);
+            if(!RoboRougelike.WeaponIntegration.RRLEnemyDeviceMount.Attach(gun,transform,state))
+            {DiscardUnattachedDevice(gun);return false;}
             var support=gun.transform.parent.GetComponent<P12PipelineSafeDamageable>();
             if(support==null){Destroy(gun);return false;}
             var hp=gun.AddComponent<P12PipelineSafeDamageable>();hp.Configure(R4WeaponDefinition.Get(state.Weapon).Hp,true);
@@ -1253,6 +1411,8 @@ namespace RogueMachine.P12PipelineSafe
                 var support=MakeProfileBlock(baseRoot,new Vector3Int(side*bridge,height,0),accent,false);support.name="Podpora baterii "+side;
                 support.Configure(boss?90:75,true);
                 var gun=MakeProfileBlock(baseRoot,new Vector3Int(side*(bridge+1),height,0),accent,false);gun.name="Bateria "+side;
+                var inward=side<0?Vector3Int.right:Vector3Int.left;
+                gun.gameObject.AddComponent<R3BlockMountPoints>().Configure(null,R3MountingGrid.FaceBit(inward));
                 var kind=variant==R5EnemyVariant.EliteGunner&&side==1?R4WeaponKind.Automatic:R4WeaponKind.Heavy;
                 var profile=R4WeaponDefinition.Get(kind);gun.Configure(profile.Hp,true);
                 var pivot=R41PartGeometry.Payload(gun.transform,R3PartKind.Gun,kind,accent,true,out var barrel);
@@ -1281,13 +1441,13 @@ namespace RogueMachine.P12PipelineSafe
             {
                 if(!gun.Online(transform)||RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(gun.Block.gameObject))continue;
                 var delta=point-gun.Pivot.position;
+                // A target can overlap the pivot during a ram. There is then
+                // no meaningful aim direction and no valid shot this frame.
+                if(delta.sqrMagnitude<.00000001f)continue;
                 gun.Pivot.rotation=Quaternion.RotateTowards(gun.Pivot.rotation,Quaternion.LookRotation(delta),85*Time.deltaTime);
                 gun.Block.GetComponent<R4WeaponArt>()?.Sync();
                 if(delta.magnitude>maxRange||Vector3.Angle(gun.Pivot.forward,delta)>9||Time.time<gun.NextShot)continue;
-                var ray=point-gun.Muzzle.position;
-                int count=Physics.RaycastNonAlloc(gun.Muzzle.position,ray.normalized,movementHits,ray.magnitude,~0,QueryTriggerInteraction.Ignore);
-                bool ally=false;for(int i=0;i<count;i++){var other=movementHits[i].collider.GetComponentInParent<P12PipelineSafeEnemyTurret>();if(other!=null&&other!=this&&!other.IsDefeated)ally=true;}
-                if(ally)continue;
+                if(FriendlyBetween(gun.Muzzle.position,point))continue;
                 var energy=GetComponent<VehicleEnergyBank>();
                 int tier=gun.Block.GetComponent<RoboRougelike.WeaponIntegration.RRLDeviceBinding>()?.State?.Tier??1;
                 if(energy!=null&&!energy.TrySpend(VehicleEnergyCosts.ConventionalShot(gun.Kind)*R3VehicleModel.TierActivationCost(tier)))continue;

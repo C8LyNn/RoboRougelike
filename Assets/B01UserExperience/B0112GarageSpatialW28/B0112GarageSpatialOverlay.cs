@@ -257,7 +257,7 @@ namespace RoboRougelike.B01.GarageSpatialW28
             int width=Mathf.Min(Mathf.RoundToInt(Screen.width*.465f),660);
             if(width<220)return;
             string state=!garage.HasTarget?"Najedź na świecący punkt":reason==null?"Zielony: można zamontować":"Czerwony: "+reason;
-            GUI.Box(new Rect(x,y,width,57),"CYJAN: punkty styku  |  NIEBIESKI: obrys  |  FIOLET: broń\n"+state);
+            GUI.Box(new Rect(x,y,width,57),"CYJAN: dostępne punkty styku\n"+state);
         }
 
         void OnDestroy()

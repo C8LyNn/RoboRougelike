@@ -18,7 +18,11 @@ public sealed class R4SawArtGameplayTests
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));
         var state=model.Parts.First(p=>p.Kind==R3PartKind.Gun);
         Assert.That(model.Remove(state.Cell),Is.True);state.Weapon=R4WeaponKind.RotarySaw;
-        Assert.That(model.Mount(state.Id,new Vector3Int(0,1,4)),Is.True);
+        // Current starter ends at z=3; the legacy z=4 fixture is detached.
+        model.Award(1000);
+        Assert.That(model.Buy(new Vector3Int(0,3,3),R3PartKind.Armor),Is.True);
+        Assert.That(model.Buy(new Vector3Int(0,4,3),R3PartKind.Armor),Is.True);
+        Assert.That(model.Mount(state.Id,new Vector3Int(0,5,3)),Is.True);
         var paletteObject=new GameObject("QA palette");var palette=paletteObject.AddComponent<R3VisualPalette>();
         var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
         for(int i=0;i<palette.Parts.Length;i++)palette.Parts[i]=material;

@@ -21,6 +21,84 @@ public sealed class R1RunCheckpointIntegrationTests
         for(int i=0;i<300&&R1RunController.Instance?.Progress==null;i++)yield return null;
         run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
     }
+    [UnityTest] public IEnumerator MissingGarageCameraRejectsLoadWithoutPartialRun()
+    {
+        var savedProgress=new R1RunProgress(6,true);Assert.That(savedProgress.Start()&&savedProgress.PrepareGarage(),Is.True);
+        var savedModel=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        R1RunCheckpointStorage.Write(path,new R1RunCheckpoint{vehicle=(int)R3VehicleKind.Light,runId=Guid.NewGuid().ToString("N"),progress=savedProgress.MakeGarageCheckpoint(),model=savedModel.MakeCheckpoint(Time.time)});
+        var original=File.ReadAllText(path);var initialProgress=run.Progress;var initialPlan=run.Plan;
+        var field=typeof(R1RunController).GetField("followCamera",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+        Assert.That(field,Is.Not.Null);var camera=field.GetValue(run);
+        try
+        {
+            field.SetValue(run,null);
+            Assert.That(run.LoadRunCheckpoint(),Is.False);
+            Assert.That(run.RunSaveMessage,Does.Contain("kamery"));
+            Assert.That(run.Progress,Is.SameAs(initialProgress));Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Ready));
+            Assert.That(run.Plan,Is.SameAs(initialPlan));Assert.That(run.VehicleModel,Is.Null);Assert.That(run.Player,Is.Null);
+            Assert.That(File.ReadAllText(path),Is.EqualTo(original),"A failed load must preserve the checkpoint.");
+        }
+        finally{field.SetValue(run,camera);}
+        yield return null;
+    }
+    [UnityTest] public IEnumerator RejectedLoadDoesNotCommitTechnologyToProfile()
+    {
+        var progress=new R1RunProgress(6,true);Assert.That(progress.Start()&&progress.PrepareGarage(),Is.True);
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        Assert.That(model.ReceiveSalvage(new[]{new R3PartState(default,R3PartKind.Gun){Id=Guid.NewGuid().ToString("N"),Weapon=RoboRougelike.R4.R4WeaponKind.Railgun}}),Is.True);
+        R1RunCheckpointStorage.Write(path,new R1RunCheckpoint{vehicle=(int)R3VehicleKind.Light,runId=Guid.NewGuid().ToString("N"),progress=progress.MakeGarageCheckpoint(),model=model.MakeCheckpoint(Time.time)});
+        string original=File.ReadAllText(path);
+        string technologyPath=Path.Combine(Application.temporaryCachePath,"rrl-technology-test-"+Guid.NewGuid().ToString("N")+".json");
+        var technology=new R1TechnologyProgress(technologyPath);
+        typeof(R1RunController).GetProperty("Technology").GetSetMethod(true).Invoke(run,new object[]{technology});
+        var stages=run.Definition.RouteStages;
+        try
+        {
+            Assert.That(technology.IsUnlocked(R3PartKind.Gun,RoboRougelike.R4.R4WeaponKind.Railgun),Is.False);
+            run.Definition.RouteStages=null;
+            Assert.That(run.LoadRunCheckpoint(),Is.False,"An invalid route must reject the load.");
+            Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Ready));Assert.That(run.VehicleModel,Is.Null);
+            Assert.That(technology.IsUnlocked(R3PartKind.Gun,RoboRougelike.R4.R4WeaponKind.Railgun),Is.False,"A rejected load must not change technology in memory.");
+            Assert.That(File.Exists(technologyPath),Is.False,"A rejected load must not write a technology profile.");
+            Assert.That(File.ReadAllText(path),Is.EqualTo(original));
+            run.Definition.RouteStages=stages;
+            Assert.That(run.LoadRunCheckpoint(),Is.True,run.RunSaveMessage);
+            Assert.That(technology.IsUnlocked(R3PartKind.Gun,RoboRougelike.R4.R4WeaponKind.Railgun),Is.True);
+            Assert.That(File.Exists(technologyPath),Is.True,"A successful load should preserve legacy technology discovery.");
+            Assert.That(File.ReadAllText(path),Is.EqualTo(original));
+        }
+        finally{run.Definition.RouteStages=stages;if(File.Exists(technologyPath))File.Delete(technologyPath);}
+        yield return null;
+    }
+    [UnityTest] public IEnumerator SuccessfulLoadClearsResolvedTechnologyWriteError()
+    {
+        var progress=new R1RunProgress(6,true);Assert.That(progress.Start()&&progress.PrepareGarage(),Is.True);
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        var gun=new R3PartState(default,R3PartKind.Gun){Weapon=RoboRougelike.R4.R4WeaponKind.Railgun};
+        Assert.That(model.ReceiveSalvage(new[]{gun}),Is.True);
+        R1RunCheckpointStorage.Write(path,new R1RunCheckpoint{vehicle=(int)R3VehicleKind.Light,
+            runId=Guid.NewGuid().ToString("N"),progress=progress.MakeGarageCheckpoint(),model=model.MakeCheckpoint(Time.time)});
+        string parent=path+"-tech-blocked",target=Path.Combine(parent,"technology.json");
+        try
+        {
+            File.WriteAllText(parent,"temporary blocker");var technology=new R1TechnologyProgress(target);
+            technology.Discover(new[]{gun});Assert.That(technology.Error,Is.Not.Null);
+            typeof(R1RunController).GetProperty("Technology").GetSetMethod(true).Invoke(run,new object[]{technology});
+            typeof(R1RunController).GetProperty("TechnologyMessage").GetSetMethod(true).Invoke(run,new object[]{technology.Error});
+            File.Delete(parent);Directory.CreateDirectory(parent);
+            Assert.That(run.LoadRunCheckpoint(),Is.True,run.RunSaveMessage);
+            Assert.That(technology.Error,Is.Null);Assert.That(File.Exists(target),Is.True);
+            Assert.That(run.TechnologyMessage,Does.Not.Contain("Nie zapisano"));
+            Assert.That(new R1TechnologyProgress(target).IsUnlocked(R3PartKind.Gun,RoboRougelike.R4.R4WeaponKind.Railgun),Is.True);
+        }
+        finally
+        {
+            if(File.Exists(target))File.Delete(target);
+            if(Directory.Exists(parent))Directory.Delete(parent);
+            if(File.Exists(parent))File.Delete(parent);
+        }
+        yield return null;
+    }
     [UnityTest] public IEnumerator SelectedStarterVariantAndBudgetSurviveSaveAndLoad()
     {
         Assert.That(run.SelectVehicle(R3VehicleKind.Light,3),Is.True);
@@ -117,9 +195,14 @@ public sealed class R1RunCheckpointIntegrationTests
     static void CheckLegacySideMountedGun(R1RunController run,string path)
     {
         var progress=new R1RunProgress(6,true);Assert.That(progress.Start(),Is.True);Assert.That(progress.PrepareGarage(),Is.True);
-        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Standard));var saved=model.MakeCheckpoint(Time.time);
+        // Construct an actual old side-only connection, independent of future
+        // starter hull changes which may put a valid support under the gun.
+        var design=new R3VehicleDesign{Name="Legacy side mount"};
+        design.Parts.Add(new R3PartState(Vector3Int.zero,R3PartKind.Core));
+        design.Parts.Add(new R3PartState(Vector3Int.right,R3PartKind.Armor));
+        design.Parts.Add(new R3PartState(new Vector3Int(2,0,0),R3PartKind.Gun,.43f){ContactMask=R3MountingGrid.AllFaces});
+        var model=new R3VehicleModel(design);var saved=model.MakeCheckpoint(Time.time);
         var gun=saved.mounted.First(p=>p.Kind==R3PartKind.Gun);
-        gun.Cell=new Vector3Int(3,1,1);gun.ContactMask=R3MountingGrid.AllFaces;gun.Health=.43f;
         string id=gun.Id;
         R1RunCheckpointStorage.Write(path,new R1RunCheckpoint{vehicle=(int)R3VehicleKind.Standard,runId=Guid.NewGuid().ToString("N"),
             progress=progress.MakeGarageCheckpoint(),model=saved});

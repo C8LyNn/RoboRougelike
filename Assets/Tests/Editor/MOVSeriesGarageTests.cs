@@ -36,6 +36,28 @@ public class MOVSeriesGarageTests
         return (bool)method.Invoke(run,args);
     }
     void Buy(Vector3Int cell,R3PartKind kind)=>Assert.That(run.GarageBuy(cell,kind),Is.True,kind+" at "+cell+" / "+run.VehicleModel.PlacementError(cell,kind));
+    [UnityTest] public IEnumerator CompactMovementHudShowsMountedAbilitiesButOmitsMissingOnes()
+    {
+        run.VehicleModel.Award(500);
+        foreach(var kind in new[]{R3PartKind.Booster,R3PartKind.JumpDrive})
+        {
+            var cell=run.VehicleModel.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                .First(c=>run.VehicleModel.PlacementError(c,kind)==null);
+            Buy(cell,kind);
+        }
+        var adapter=run.Player.GetComponent<MOVSeriesVehicleAdapter>();Assert.That(adapter,Is.Not.Null);
+        var hud=run.GetComponent<R1RunHUD>();Assert.That(hud,Is.Not.Null);
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        var build=typeof(R1RunHUD).GetMethod("RebuildMovementRows",flags);
+        var rowsField=typeof(R1RunHUD).GetField("compactMovementRows",flags);
+        Assert.That(build,Is.Not.Null);Assert.That(rowsField,Is.Not.Null);
+        build.Invoke(hud,new object[]{run,adapter,null});
+        var rows=((System.Collections.Generic.List<string>)rowsField.GetValue(hud)).ToArray();
+        Assert.That(rows.Any(row=>row.Contains("Shift Booster")&&row.Contains("Spacja skok")),Is.True);
+        Assert.That(rows.Any(row=>row.Contains("Blink")||row.Contains("zaczep")||row.Contains("żyroskop")||row.Contains("Hover")),Is.False);
+        Assert.That(rows.Length,Is.EqualTo(2),"Unused abilities must not reserve a HUD row.");
+        yield return null;
+    }
     void Corners(R3PartKind kind)
     {foreach(int x in new[]{-1,1})foreach(int z in new[]{-3,3})Buy(new Vector3Int(x,0,z),kind);}
     void FullConstruction(bool keepGunClear=false)

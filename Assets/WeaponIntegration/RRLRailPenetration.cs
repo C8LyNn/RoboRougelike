@@ -8,7 +8,11 @@ namespace RoboRougelike.WeaponIntegration
     // A mode of P17's bounded, encounter-owned physical projectile, not a demo projectile.
     public sealed class RRLRailPenetration : MonoBehaviour
     {
-        readonly RaycastHit[] hits=new RaycastHit[128];
+        const int MaxHitBuffer=4096;
+        RaycastHit[] hits=new RaycastHit[128];
+        sealed class HitDistanceComparer : IComparer<RaycastHit>
+        { public int Compare(RaycastHit a,RaycastHit b)=>a.distance.CompareTo(b.distance); }
+        static readonly IComparer<RaycastHit> HitDistance=new HitDistanceComparer();
         readonly HashSet<int> visited=new HashSet<int>();
         RailgunShot shot;Rigidbody body;Vector3 position;float travelled,energy,damageScale;
         public Vector3 Velocity=>shot.InitialVelocity;
@@ -17,13 +21,22 @@ namespace RoboRougelike.WeaponIntegration
         {
             float move=Mathf.Min(shot.InitialVelocity.magnitude*dt,shot.Spec.Range-travelled);
             if(move<=0){Stop();return;}Vector3 direction=shot.InitialVelocity.normalized;
-            int count=Physics.SphereCastNonAlloc(position,shot.Spec.Radius,direction,hits,move,~0,QueryTriggerInteraction.Ignore);
-            if(count>=hits.Length){Stop();return;}
-            for(int i=1;i<count;i++){var key=hits[i];int j=i-1;while(j>=0&&hits[j].distance>key.distance){hits[j+1]=hits[j];j--;}hits[j+1]=key;}
+            int count;RaycastHit[] candidates;
+            while(true)
+            {
+                count=Physics.SphereCastNonAlloc(position,shot.Spec.Radius,direction,hits,move,~0,QueryTriggerInteraction.Ignore);
+                if(count<hits.Length){candidates=hits;break;}
+                // A full non-alloc result is incomplete and unordered. Grow
+                // the reusable buffer, then fall back to the complete query.
+                if(hits.Length>=MaxHitBuffer)
+                {candidates=Physics.SphereCastAll(position,shot.Spec.Radius,direction,move,~0,QueryTriggerInteraction.Ignore);count=candidates.Length;break;}
+                System.Array.Resize(ref hits,Mathf.Min(hits.Length*2,MaxHitBuffer));
+            }
+            System.Array.Sort(candidates,0,count,HitDistance);
             float previous=0;
             for(int i=0;i<count;i++)
             {
-                var hit=hits[i];var c=hit.collider;if(c==null||c.transform.IsChildOf(transform)||!RRLHitRouter.CanHit(c,shot.OwnerRoot.transform))continue;
+                var hit=candidates[i];var c=hit.collider;if(c==null||c.transform.IsChildOf(transform)||!RRLHitRouter.CanHit(c,shot.OwnerRoot.transform))continue;
                 var hp=c.GetComponentInParent<P12PipelineSafeDamageable>();
                 if(hp!=null&&visited.Contains(hp.GetInstanceID()))continue;
                 energy=RailgunRules.AfterTravel(energy,hit.distance-previous,shot.Spec.EnergyLossPerMeter);previous=hit.distance;

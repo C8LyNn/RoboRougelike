@@ -30,18 +30,20 @@ namespace RoboRougelike.R1
             // An unarmed robot can otherwise push a player indefinitely while
             // neither side has a clear shot. Its remaining drive still rams;
             // the existing warning gives five seconds before a nearby blast.
-            bool disabled=!enemy.WeaponOnline;
+            // Temporary deactivation disables firing, but is not the loss of a weapon.
+            bool disabled=!enemy.HasAttachedWeapon;
             if(disabled&&warning==null)CreateWarning();
             if(warning!=null){warning.SetActive(disabled);if(disabled)warning.transform.localScale=Vector3.one*(.25f+.08f*Mathf.Sin(Time.time*8));}
             timer.Advance(disabled,false,Time.deltaTime);
             if(!disabled||timer.Remaining>0)return;
             var center=enemy.Core.transform.position;
             player.GetComponentsInChildren(false,nearbyParts);
-            bool nearby=Vector3.Distance(enemy.transform.position,player.position)<=6f;
-            if(!nearby)
-                foreach(var part in nearbyParts)
-                    if(part!=null&&!part.IsDead&&(part.transform.position-center).sqrMagnitude<=36f)
-                    {nearby=true;break;}
+            // The roots are not the blast center or necessarily a surviving
+            // physical part; use the same distance test as the damage below.
+            bool nearby=false;
+            foreach(var part in nearbyParts)
+                if(part!=null&&!part.IsDead&&(part.transform.position-center).sqrMagnitude<=36f)
+                {nearby=true;break;}
             if(!nearby)return;
             var hit=new HashSet<P12PipelineSafeDamageable>();
             foreach(var part in nearbyParts)
@@ -49,7 +51,8 @@ namespace RoboRougelike.R1
                 if(part==null||part.IsDead||!hit.Add(part))continue;
                 float distance=Vector3.Distance(part.transform.position,center);
                 if(distance>6f)continue;
-                part.ApplyDamage(80f*Mathf.Clamp01(1f-distance/8f),part.transform.position,(part.transform.position-center).normalized);
+                part.ApplyDamageResolvedTyped(80f*Mathf.Clamp01(1f-distance/8f),part.transform.position,
+                    (part.transform.position-center).normalized,RoboRougelike.R3.R3DamagePropagation.DamageKind.Blast);
             }
             enemy.Core.ApplyDamage(100000f,center,Vector3.up);
         }

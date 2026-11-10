@@ -15,6 +15,164 @@ public sealed class FullMergeAdditionalRegression
     R1RunController run;
     [UnitySetUp]public IEnumerator Setup(){EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();while(R1RunController.Instance?.Progress==null)yield return null;run=R1RunController.Instance;run.SelectVehicle(R3VehicleKind.Light);Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;yield return null;}
     static void Set(object o,string n,object v)=>o.GetType().GetField(n,BindingFlags.Instance|BindingFlags.NonPublic).SetValue(o,v);
+    [UnityTest]public IEnumerator EnemyTargetQueriesReuseStorageForHeavyVehicle()
+    {
+        yield return FreshVehicle(R3VehicleKind.Heavy);
+        var root=new GameObject("Enemy target profiling fixture");
+        try
+        {
+            var enemy=root.AddComponent<P12PipelineSafeEnemyTurret>();
+            enemy.Configure(run.Player.transform,null,null,root.transform,null,null);
+            var method=typeof(P12PipelineSafeEnemyTurret).GetMethod("SelectTargetCollider",BindingFlags.Instance|BindingFlags.NonPublic);
+            var query=(System.Func<Collider>)System.Delegate.CreateDelegate(typeof(System.Func<Collider>),enemy,method);
+            for(int i=0;i<5;i++)Assert.That(query(),Is.Not.Null);
+            using(var recorder=Unity.Profiling.ProfilerRecorder.StartNew(Unity.Profiling.ProfilerCategory.Memory,"GC Allocated In Frame",16))
+            {
+                Assert.That(recorder.Valid,Is.True);yield return null;yield return null;long idle=recorder.LastValue;
+                Collider last=null;for(int i=0;i<50;i++)last=query();
+                yield return null;long sample=recorder.LastValue;
+                var control=new byte[1024*1024];control[0]=1;yield return null;long controlBytes=recorder.LastValue;System.GC.KeepAlive(control);
+                Debug.Log($"[ENEMY_TARGET_ALLOC] queries=50 vehicle=Heavy idle={idle} sample={sample} control={controlBytes}");
+                Assert.That(last,Is.Not.Null);Assert.That(last.transform.IsChildOf(run.Player.transform),Is.True);
+                Assert.That(controlBytes,Is.GreaterThanOrEqualTo(1024*1024));
+                Assert.That(sample-idle,Is.LessThan(32000),"Repeated target selections should reuse hierarchy buffers.");
+            }
+        }
+        finally{Object.Destroy(root);}
+    }
+    [UnityTest]public IEnumerator CameraHullQueriesReuseColliderStorageForDenseVehicles()
+    {
+        var follow=Camera.main.GetComponent<P12PipelineSafeCamera>();var query=follow.ReceiverRig.ReceiverHullBounds;
+        Assert.That(query,Is.Not.Null);var fixture=new GameObject("camera dense collider fixture");
+        fixture.transform.SetParent(run.Player.transform,false);
+        try
+        {
+            for(int i=0;i<300;i++)fixture.AddComponent<BoxCollider>().size=Vector3.one*.01f;
+            Physics.SyncTransforms();var initial=query(run.Player.transform);
+            for(int i=0;i<3;i++)query(run.Player.transform);
+            using(var recorder=Unity.Profiling.ProfilerRecorder.StartNew(Unity.Profiling.ProfilerCategory.Memory,"GC Allocated In Frame",16))
+            {
+                Assert.That(recorder.Valid,Is.True);yield return null;yield return null;long idle=recorder.LastValue;
+                Bounds last=default;for(int i=0;i<50;i++)last=query(run.Player.transform);
+                yield return null;long sample=recorder.LastValue;
+                var control=new byte[1024*1024];control[0]=1;yield return null;long controlBytes=recorder.LastValue;System.GC.KeepAlive(control);
+                Debug.Log($"[CAMERA_HULL_ALLOC] queries=50 extra_colliders=300 idle={idle} sample={sample} control={controlBytes}");
+                Assert.That(last.center,Is.EqualTo(initial.center));Assert.That(last.size,Is.EqualTo(initial.size));
+                Assert.That(controlBytes,Is.GreaterThanOrEqualTo(1024*1024),"The allocation profiler must detect a known allocation.");
+                Assert.That(sample-idle,Is.LessThan(32000),"Repeated hull queries should not allocate a collider array per frame.");
+            }
+        }
+        finally{Object.Destroy(fixture);}
+        yield return null;
+    }
+    [UnityTest]public IEnumerator HeavyVehicleHudHealthQueriesReuseStorageAndTrackLiveParts()
+    {
+        yield return FreshVehicle(R3VehicleKind.Heavy);
+        var player=run.Player;var core=player.Core;Assert.That(core,Is.Not.Null);
+        var armor=player.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Kind==R3PartKind.Armor&&p.Operational);
+        armor.Damageable.RestoreHealthRatio(.5f);Assert.That(player.HealthFraction,Is.LessThan(1f));
+        armor.gameObject.SetActive(false);Assert.That(player.HealthFraction,Is.EqualTo(1f).Within(.0001f));armor.gameObject.SetActive(true);
+        armor.Damageable.RestoreHealthRatio(1f);
+        core.gameObject.SetActive(false);Assert.That(player.Core,Is.Null);core.gameObject.SetActive(true);Assert.That(player.Core,Is.SameAs(core));
+        for(int i=0;i<3;i++){var warm=player.Core;var health=player.HealthFraction;}
+        using(var recorder=Unity.Profiling.ProfilerRecorder.StartNew(Unity.Profiling.ProfilerCategory.Memory,"GC Allocated In Frame",16))
+        {
+            Assert.That(recorder.Valid,Is.True);yield return null;yield return null;long idle=recorder.LastValue;
+            float health=0;P12PipelineSafeDamageable found=null;for(int i=0;i<50;i++){found=player.Core;health=player.HealthFraction;}
+            yield return null;long sample=recorder.LastValue;
+            var control=new byte[1024*1024];control[0]=1;yield return null;long controlBytes=recorder.LastValue;System.GC.KeepAlive(control);
+            Debug.Log($"[HUD_HEALTH_ALLOC] queries=50 vehicle=Heavy idle={idle} sample={sample} control={controlBytes}");
+            Assert.That(found,Is.SameAs(core));Assert.That(health,Is.EqualTo(1f).Within(.0001f));
+            Assert.That(controlBytes,Is.GreaterThanOrEqualTo(1024*1024));
+            Assert.That(sample-idle,Is.LessThan(32000),"Repeated HUD queries must not allocate hierarchy arrays.");
+        }
+    }
+    [UnityTest]public IEnumerator CameraOwnHullRayReusesColliderStorage()
+    {
+        var rig=Camera.main.GetComponent<P12PipelineSafeCamera>().ReceiverRig;
+        var method=typeof(Camera001Rig).GetMethod("HitsOwnHullFromActualPose",BindingFlags.Instance|BindingFlags.NonPublic);
+        var query=(System.Func<Vector3,Vector3,Bounds,bool>)System.Delegate.CreateDelegate(typeof(System.Func<Vector3,Vector3,Bounds,bool>),rig,method);
+        var fixture=new GameObject("camera own ray dense fixture");fixture.transform.SetParent(run.Player.transform,false);
+        try
+        {
+            for(int i=0;i<300;i++)fixture.AddComponent<BoxCollider>().size=Vector3.one*.01f;
+            Physics.SyncTransforms();var bounds=new Bounds(run.Player.transform.position,Vector3.one*10);
+            var origin=run.Player.transform.position+Vector3.right*100;var direction=Vector3.up;
+            var unrelatedBounds=new Bounds(run.Player.transform.position+Vector3.up*100,Vector3.one);
+            Assert.That(query(fixture.transform.position,Vector3.forward,unrelatedBounds),Is.True,
+                "Starting inside an actual own collider must still be detected.");
+            for(int i=0;i<3;i++)Assert.That(query(origin,direction,bounds),Is.False);
+            using(var recorder=Unity.Profiling.ProfilerRecorder.StartNew(Unity.Profiling.ProfilerCategory.Memory,"GC Allocated In Frame",16))
+            {
+                Assert.That(recorder.Valid,Is.True);yield return null;yield return null;long idle=recorder.LastValue;
+                for(int i=0;i<50;i++)query(origin,direction,bounds);
+                yield return null;long sample=recorder.LastValue;
+                var control=new byte[1024*1024];control[0]=1;yield return null;long controlBytes=recorder.LastValue;System.GC.KeepAlive(control);
+                Debug.Log($"[CAMERA_OWN_RAY_ALLOC] queries=50 extra_colliders=300 idle={idle} sample={sample} control={controlBytes}");
+                Assert.That(controlBytes,Is.GreaterThanOrEqualTo(1024*1024));
+                Assert.That(sample-idle,Is.LessThan(32000),"The own-hull ray should not allocate a collider array on every query.");
+            }
+        }
+        finally{Object.Destroy(fixture);}
+    }
+    [UnityTest]public IEnumerator CameraOverlapIgnoresCrowdedOwnCollidersButDetectsWorld()
+    {
+        var rig=Camera.main.GetComponent<P12PipelineSafeCamera>().ReceiverRig;
+        var overlap=typeof(Camera001Rig).GetMethod("IsWorldOverlapping",BindingFlags.Instance|BindingFlags.NonPublic);
+        var fixture=new GameObject("crowded camera owner fixture");fixture.transform.SetParent(run.Player.transform,false);
+        fixture.transform.position=new Vector3(12000,500,12000);GameObject wall=null;
+        try
+        {
+            for(int i=0;i<180;i++)fixture.AddComponent<BoxCollider>().size=Vector3.one*.01f;
+            Physics.SyncTransforms();var point=fixture.transform.position;
+            Assert.That(Physics.OverlapSphere(point,.4f).Length,Is.GreaterThan(64));
+            Assert.That((bool)overlap.Invoke(rig,new object[]{point,.3f}),Is.False,"Own colliders are not world obstacles, even beyond the buffer.");
+            wall=GameObject.CreatePrimitive(PrimitiveType.Cube);wall.transform.position=point;wall.transform.localScale=Vector3.one*.1f;Physics.SyncTransforms();
+            Assert.That((bool)overlap.Invoke(rig,new object[]{point,.3f}),Is.True,"A real wall must still block the camera.");
+        }
+        finally{Object.Destroy(fixture);if(wall!=null)Object.Destroy(wall);}
+        yield return null;
+    }
+    [UnityTest]public IEnumerator CameraSweepIgnoresCrowdedOwnCollidersButStopsAtWorld()
+    {
+        var rig=Camera.main.GetComponent<P12PipelineSafeCamera>().ReceiverRig;
+        var cast=typeof(Camera001Rig).GetMethod("CastWorldClearance",BindingFlags.Instance|BindingFlags.NonPublic);
+        var fixture=new GameObject("crowded camera sweep fixture");fixture.transform.SetParent(run.Player.transform,false);
+        fixture.transform.position=new Vector3(12000,500,12000);GameObject wall=null;
+        try
+        {
+            for(int i=0;i<180;i++)fixture.AddComponent<BoxCollider>().size=Vector3.one*.01f;
+            Physics.SyncTransforms();var origin=fixture.transform.position-Vector3.forward*2;
+            Assert.That(Physics.SphereCastAll(origin,.1f,Vector3.forward,4f).Length,Is.GreaterThan(128));
+            Assert.That((float)cast.Invoke(rig,new object[]{origin,Vector3.forward,4f,.1f}),Is.EqualTo(4f).Within(.001f),"Own colliders must not collapse camera distance.");
+            wall=GameObject.CreatePrimitive(PrimitiveType.Cube);wall.transform.position=fixture.transform.position;wall.transform.localScale=Vector3.one*.1f;Physics.SyncTransforms();
+            Assert.That((float)cast.Invoke(rig,new object[]{origin,Vector3.forward,4f,.1f}),Is.LessThan(4f),"A real wall must still stop the sweep.");
+        }
+        finally{Object.Destroy(fixture);if(wall!=null)Object.Destroy(wall);}
+        yield return null;
+    }
+    [UnityTest]public IEnumerator ExtremeCameraQueryOverflowStillSeesARealWall()
+    {
+        var rig=Camera.main.GetComponent<P12PipelineSafeCamera>().ReceiverRig;
+        var overlap=typeof(Camera001Rig).GetMethod("IsWorldOverlapping",BindingFlags.Instance|BindingFlags.NonPublic);
+        var cast=typeof(Camera001Rig).GetMethod("CastWorldClearance",BindingFlags.Instance|BindingFlags.NonPublic);
+        var fixture=new GameObject("extreme camera query fixture");fixture.transform.SetParent(run.Player.transform,false);
+        fixture.transform.position=new Vector3(12000,500,12000);GameObject wall=null;
+        try
+        {
+            for(int i=0;i<4100;i++)fixture.AddComponent<BoxCollider>().size=Vector3.one*.01f;
+            Physics.SyncTransforms();var point=fixture.transform.position;var origin=point-Vector3.forward*2;
+            Assert.That(Physics.OverlapSphere(point,.4f).Length,Is.GreaterThan(4096));
+            Assert.That(Physics.SphereCastAll(origin,.1f,Vector3.forward,4f).Length,Is.GreaterThan(4096));
+            Assert.That((bool)overlap.Invoke(rig,new object[]{point,.3f}),Is.False);
+            Assert.That((float)cast.Invoke(rig,new object[]{origin,Vector3.forward,4f,.1f}),Is.EqualTo(4f).Within(.001f));
+            wall=GameObject.CreatePrimitive(PrimitiveType.Cube);wall.transform.position=point;wall.transform.localScale=Vector3.one*.1f;Physics.SyncTransforms();
+            Assert.That((bool)overlap.Invoke(rig,new object[]{point,.3f}),Is.True);
+            Assert.That((float)cast.Invoke(rig,new object[]{origin,Vector3.forward,4f,.1f}),Is.LessThan(4f));
+        }
+        finally{Object.Destroy(fixture);if(wall!=null)Object.Destroy(wall);}
+        yield return null;
+    }
     [UnityTest]public IEnumerator MinimumPitchFramesActualRobotInsideViewport()
     {
         run.Garage.Close();yield return null;
@@ -42,12 +200,33 @@ public sealed class FullMergeAdditionalRegression
     }
     [UnityTest]public IEnumerator LostPartRestorationCannotSpendOrRecreateThroughForeignCollider()
     {
-        var assembly=run.Player.GetComponent<R3VehicleAssembly>();var part=assembly.Parts.Single(p=>p.Cell==new Vector3Int(1,0,2));var cell=part.Cell;
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();var part=assembly.Parts.Single(p=>p.Cell==new Vector3Int(1,0,2));var cell=part.Cell;var id=part.Id;
         part.Damageable.ApplyDamage(100000,part.transform.position,Vector3.zero);assembly.Capture();yield return null;yield return null;
+        // This fixture isolates foreign geometry, not secondary damage from the
+        // newer connected-part damage distribution.
+        foreach(var state in run.VehicleModel.Parts.Where(p=>p.Id!=id))state.Health=1f;
         Assert.That(run.VehicleModel.At(cell).Health,Is.Zero);
         var obstacle=GameObject.CreatePrimitive(PrimitiveType.Cube);obstacle.transform.position=run.Player.transform.TransformPoint((Vector3)cell*.55f);obstacle.transform.localScale=Vector3.one*.3f;Physics.SyncTransforms();
         int scrap=run.VehicleModel.Scrap;Assert.That(run.GarageRepair(cell),Is.False);Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));Assert.That(run.VehicleModel.At(cell).Health,Is.Zero);
         Object.Destroy(obstacle);yield return null;Assert.That(run.GarageRepair(cell),Is.True);
+    }
+    [UnityTest]public IEnumerator BulkRepairQuoteExcludesPhysicallyBlockedRestoration()
+    {
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();
+        var part=assembly.Parts.Single(p=>p.Cell==new Vector3Int(1,0,2));var cell=part.Cell;var id=part.Id;
+        part.Damageable.ApplyDamage(100000,part.transform.position,Vector3.zero);assembly.Capture();yield return null;yield return null;
+        foreach(var state in run.VehicleModel.Parts.Where(p=>p.Id!=id))state.Health=1f;
+        Assert.That(run.VehicleModel.At(cell).Health,Is.Zero);
+        var obstacle=GameObject.CreatePrimitive(PrimitiveType.Cube);
+        obstacle.transform.position=run.Player.transform.TransformPoint((Vector3)cell*.55f);
+        obstacle.transform.localScale=Vector3.one*.3f;Physics.SyncTransforms();
+        int scrap=run.VehicleModel.Scrap;
+        Assert.That(run.VehicleModel.AffordableRepairCost,Is.Zero,"A blocked repair cannot be quoted as available.");
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));Assert.That(run.VehicleModel.At(cell).Health,Is.Zero);
+        Assert.That(run.GarageRepairAffordable(),Is.False);
+        Object.Destroy(obstacle);yield return null;
+        int quote=run.VehicleModel.AffordableRepairCost;Assert.That(quote,Is.GreaterThan(0));
+        Assert.That(run.GarageRepairAffordable(),Is.True);Assert.That(scrap-run.VehicleModel.Scrap,Is.EqualTo(quote));
     }
     [UnityTest]public IEnumerator FactoryWheelCanReturnAndRestoreWithoutIgnoringForgedForeignColliders()
     {

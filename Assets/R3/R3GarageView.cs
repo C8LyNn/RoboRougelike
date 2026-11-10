@@ -88,10 +88,11 @@ namespace RoboRougelike.R3
         private Vector3Int mountPointsRotation;
         private int mountPointsMask;
         private bool mountPointsSelection;
-        private readonly RaycastHit[] hits=new RaycastHit[512];
+        private const int MaxRayHits=4096;
+        private RaycastHit[] hits=new RaycastHit[512];
         private float yaw=35,pitch=32,distance=9,previousNear;
         private Vector3 pivotLocal;
-        private bool orbitDragging,isOpen,arenaWasActive,raycastSaturated;
+        private bool orbitDragging,isOpen,arenaWasActive;
         private readonly R3GaragePointerGesture rightGesture=new R3GaragePointerGesture();
         private GameObject hiddenArena,workshopSpace;
         private Renderer workshopFloor;
@@ -204,7 +205,7 @@ namespace RoboRougelike.R3
         {
             if(run.Player!=null)R3BuildValidation.SetGarageSockets(run.Player.GetComponent<R3VehicleAssembly>(),false);
             if(previewRoot!=null){previewRoot.SetActive(false);Destroy(previewRoot);}
-            previewRoot=null;marker=null;payloadRenderers.Clear();availableMountPoints=null;mountPointsAssembly=null;HasTarget=false;raycastSaturated=false;CancelPointerGesture();
+            previewRoot=null;marker=null;payloadRenderers.Clear();availableMountPoints=null;mountPointsAssembly=null;HasTarget=false;CancelPointerGesture();
             DestroyWorkshopSpace();
             RestoreArena();
             if(isOpen){view.nearClipPlane=previousNear;view.rect=new Rect(0,0,1,1);follow.enabled=true;}
@@ -260,9 +261,16 @@ namespace RoboRougelike.R3
         public void RotateSelected(int axis,int quarterTurns)
         {
             if(axis<0||axis>2||quarterTurns==0)return;
+            bool uprightWheel=MountKind==R3PartKind.Wheel&&R3VehicleModel.ValidWheelOrientation(SelectedRotation);
+            if(uprightWheel&&axis==1&&Mathf.Abs(quarterTurns)==1)quarterTurns*=2;
             var step=axis==0?new Vector3Int(quarterTurns,0,0):
                 axis==1?new Vector3Int(0,quarterTurns,0):new Vector3Int(0,0,quarterTurns);
-            SelectedRotation=R3MountingGrid.Normalize(SelectedRotation+step);
+            var next=R3MountingGrid.Normalize(SelectedRotation+step);
+            // Keep legal wheel ghosts upright. If an old inventory item has
+            // an invalid legacy pose, allow intermediate turns to correct it.
+            if(uprightWheel&&!R3VehicleModel.ValidWheelOrientation(next))
+            {Message="Koło musi stać pionowo, a jego oś musi być skierowana na bok.";return;}
+            SelectedRotation=next;
             Message="Obrót: X "+SelectedRotation.x*90+"° / Y "+SelectedRotation.y*90+
                 "° / Z "+SelectedRotation.z*90+"°. Dopasuj punkty styku.";
             RefreshMarker();
@@ -460,21 +468,26 @@ namespace RoboRougelike.R3
         {
             if(run.Progress?.State!=R1RunState.Garage||run.Transitioning)return false;
             Physics.SyncTransforms();
-            int count=Physics.RaycastNonAlloc(ray,hits,100,~0,QueryTriggerInteraction.Collide);
-            // PhysX does not guarantee ordering when its fixed buffer fills.
-            // A partial hit list cannot safely authorize removal or mounting.
-            if(count>=hits.Length)
+            int count;RaycastHit[] rayHits;
+            while(true)
             {
-                raycastSaturated=true;HasTarget=false;pointerSurfaceRejected=false;
-                Message="Nie można wskazać części: zbyt wiele obiektów pod kursorem.";
-                RefreshMarker();return false;
+                count=Physics.RaycastNonAlloc(ray,hits,100,~0,QueryTriggerInteraction.Collide);
+                if(count<hits.Length){rayHits=hits;break;}
+                // Never select from a partial, unordered list. Grow once and
+                // reuse it; preserve the complete fallback at extreme density.
+                if(hits.Length>=MaxRayHits)
+                {rayHits=Physics.RaycastAll(ray,100,~0,QueryTriggerInteraction.Collide);count=rayHits.Length;break;}
+                System.Array.Resize(ref hits,Mathf.Min(hits.Length*2,MaxRayHits));
             }
-            if(raycastSaturated){raycastSaturated=false;Message="Możesz ponownie wskazać część.";}
             float nearest=float.PositiveInfinity;R3MountedPart target=null;R41MissingPlan missing=null;Vector3 normal=default;
             RaycastHit nearestHit=default;
             for(int i=0;i<count;i++)
             {
-                var hit=hits[i];if(hit.distance>=nearest)continue;
+                var hit=rayHits[i];if(hit.distance>=nearest)continue;
+                // Both valid mounted parts and preview plans live under the
+                // current player. Ignore unrelated scene colliders before any
+                // component lookup; they could never become a target anyway.
+                if(hit.collider==null||run.Player==null||!hit.collider.transform.IsChildOf(run.Player.transform))continue;
                 var plan=hit.collider.GetComponent<R41MissingPlan>();var part=hit.collider.GetComponentInParent<R3MountedPart>();
                 if(plan!=null&&plan.transform.IsChildOf(previewRoot.transform)){missing=plan;target=null;}
                 else if(part!=null&&part.Operational&&part.transform.IsChildOf(run.Player.transform)){target=part;missing=null;}
@@ -566,7 +579,7 @@ namespace RoboRougelike.R3
                         (p.Kind!=R3PartKind.Gun||(p.Weapon==mounted.Weapon&&p.FootprintRevision==mounted.FootprintRevision))&&
                         (p.Kind!=R3PartKind.Wheel||(p.WheelStyle==mounted.WheelStyle&&p.FootprintRevision==mounted.FootprintRevision))&&
                         (p.Kind!=R3PartKind.Armor||p.ArmorShape==mounted.ArmorShape)&&
-                        (p.Kind!=R3PartKind.BonusModule||p.UpgradeId==mounted.UpgradeId)).ToArray();
+                        (p.Kind!=R3PartKind.BonusModule||R3VehicleModel.SameBonusType(p,mounted))).ToArray();
                     var next=remaining.Where(p=>p.Health>0).OrderByDescending(p=>p.Health).FirstOrDefault();
                     SelectedInventoryId=next?.Id;
                     Message=MountedStackFeedback(remaining.Length,next!=null);
@@ -615,8 +628,17 @@ namespace RoboRougelike.R3
             var prior=Tool;Tool=R41GarageTool.Inspect;
             try
             {
-                bool done=Point(ray)&&run.GarageRotate(Cell,turns);
-                Message=done?"Obrócono wskazaną część.":"Nie można obrócić: połączenie, miejsce lub kolizja.";
+                bool hit=Point(ray);
+                var part=hit?run.VehicleModel.At(Cell):null;
+                // A wheel may only face sideways. Skip the forbidden 90°
+                // intermediate yaw so one shortcut reaches the next legal pose.
+                bool wheelYaw=part!=null&&part.Kind==R3PartKind.Wheel&&
+                    R3VehicleModel.ValidWheelOrientation(part.RotationQuarterTurns)&&
+                    turns.x==0&&turns.z==0&&Mathf.Abs(turns.y)==1;
+                if(wheelYaw)turns.y*=2;
+                bool done=hit&&run.GarageRotate(Cell,turns);
+                Message=done?(wheelYaw?"Obrócono koło o 180°.":"Obrócono wskazaną część."):
+                    "Nie można obrócić: połączenie, miejsce lub kolizja.";
                 return done;
             }
             finally {Tool=prior;RefreshMarker();}
@@ -663,7 +685,15 @@ namespace RoboRougelike.R3
                 }
                 current.Use();return;
             }
-            if(!inside)return;
+            if(!inside)
+            {
+                // A mounting ghost describes the cell under the pointer. Keep
+                // the selected part, but do not leave an old ghost visible
+                // when the pointer has moved onto the surrounding UI.
+                if(current.type==EventType.Repaint&&Tool==R41GarageTool.Mount&&HasTarget)
+                {HasTarget=false;pointerSurfaceRejected=false;RefreshMarker();}
+                return;
+            }
             if(current.type==EventType.ScrollWheel){Zoom(current.delta.y*0.4f);current.Use();return;}
             if(current.type==EventType.Repaint&&!orbitDragging)Point(view.ScreenPointToRay(screen));
             if(current.type==EventType.MouseDown&&current.button==0&&!orbitDragging)
@@ -677,7 +707,15 @@ namespace RoboRougelike.R3
                 current.Use();
             }
         }
-        public void CancelPointerGesture(){rightGesture.Cancel();orbitDragging=false;}
+        public void CancelPointerGesture()
+        {
+            rightGesture.Cancel();orbitDragging=false;
+            // Pausing, opening a modal or losing focus suspends build input.
+            // Preserve the inventory selection but do not leave an actionable
+            // looking ghost at the last position while input is blocked.
+            if(Tool==R41GarageTool.Mount&&HasTarget)
+            {HasTarget=false;pointerSurfaceRejected=false;RefreshMarker();}
+        }
         private void OnApplicationFocus(bool focused){if(!focused)CancelPointerGesture();}
         private void LateUpdate()
         {

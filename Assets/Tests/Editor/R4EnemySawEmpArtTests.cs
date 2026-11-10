@@ -33,7 +33,10 @@ public sealed class R4EnemySawEmpArtTests
         yield return StartCombat();var run=R1RunController.Instance;var enemy=run.Encounter.Enemies.First();
         var center=enemy.transform.Find("Enemy_Yaw/Enemy_Muzzle");Assert.That(center,Is.Not.Null);
         Assert.That(enemy.EquipSaw(),Is.True);var binding=enemy.WeaponBlock.GetComponent<RRLSawBinding>();
-        var art=enemy.WeaponBlock.GetComponentInChildren<R4WeaponArt>(true);Assert.That(art,Is.Not.Null,"Enemy saw must show its supplied model.");
+        // Switching disables the previous gun immediately but Unity destroys it
+        // at end of frame; select the active art, not the stale inactive model.
+        var art=enemy.WeaponBlock.GetComponentsInChildren<R4WeaponArt>(true).SingleOrDefault(a=>a.gameObject.activeInHierarchy);
+        Assert.That(art,Is.Not.Null,"Enemy saw must show its supplied model.");
         Assert.That(art.SawRotor,Is.Not.Null);
         Assert.That(typeof(RRLSawBinding).GetField("blade",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(binding),Is.SameAs(center));
         Assert.That(typeof(RRLSawBinding).GetField("rotor",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(binding),Is.SameAs(art.SawRotor));
@@ -92,7 +95,7 @@ public sealed class R4EnemySawEmpArtTests
     {
         yield return StartCombat();var run=R1RunController.Instance;var enemy=run.Encounter.Enemies.First();
         var legacy=enemy.transform.Find("Enemy_Yaw/Enemy_Muzzle");Assert.That(enemy.EquipEmp(),Is.True);
-        var binding=enemy.WeaponBlock.GetComponent<RRLEmpBinding>();var art=enemy.WeaponBlock.GetComponentInChildren<R4WeaponArt>(true);
+        var binding=enemy.WeaponBlock.GetComponent<RRLEmpBinding>();var art=enemy.WeaponBlock.GetComponentsInChildren<R4WeaponArt>(true).SingleOrDefault(v=>v.gameObject.activeInHierarchy);
         Assert.That(art,Is.Not.Null,"Enemy EMP must show its supplied model.");
         Assert.That(art.GetComponentsInChildren<Transform>(true).Any(t=>t.name=="R4W_EmpEmitter_ROOT"),Is.True);
         Assert.That(typeof(P12PipelineSafeEnemyTurret).GetField("muzzle",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(enemy),Is.SameAs(legacy));

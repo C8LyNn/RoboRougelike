@@ -31,6 +31,18 @@ public sealed class InvalidWeaponTransactionTests
         Assert.That(ledger.Items,Is.Empty);
         Assert.That(ledger.Record("enemy",new[]{new R4SalvageItem(good,1)}),Is.True);
     }
+    [TestCase(R3PartKind.Wheel,4)]
+    [TestCase(R3PartKind.Wheel,-1)]
+    [TestCase(R3PartKind.Booster,2)]
+    public void RejectsInvalidTierInMixedSalvageWithoutChangingInventoryOrWallet(R3PartKind kind,int tier)
+    {
+        var model=Model();var good=Gun(R4WeaponKind.Basic);var bad=new R3PartState(Vector3Int.zero,kind){Tier=tier};
+        int before=model.Scrap;
+        Assert.That(model.ReceiveSalvage(new[]{good,bad}),Is.False);
+        Assert.That(model.Owns(good.Id)||model.Owns(bad.Id),Is.False);
+        Assert.That(model.Inventory,Is.Empty);Assert.That(model.Scrap,Is.EqualTo(before));
+        Assert.That(model.ReceiveSalvage(new[]{good}),Is.True,"A valid part remains receivable after rejection.");
+    }
     [Test] public void HealthyValidTransactionsPreserveGuidAndChargeOnce()
     {
         var model=Model();var gun=Gun(R4WeaponKind.Automatic);Assert.That(model.ReceiveSalvage(new[]{gun}),Is.True);

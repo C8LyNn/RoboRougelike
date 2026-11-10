@@ -104,6 +104,28 @@ public sealed class R3DamagePropagationTests
         Assert.That(Core(routed,blast),Is.GreaterThan(Core(compact,blast)),"The same route has a blast trade-off.");
     }
 
+    [Test]
+    public void DiverseConnectedLayoutsNeverDuplicateOrEraseTheHitBudget()
+    {
+        var random=new System.Random(1153);
+        for(int trial=0;trial<300;trial++)
+        {
+            int count=random.Next(2,41);
+            var neighbours=Enumerable.Range(0,count).Select(_=>new List<int>()).ToArray();
+            void Link(int a,int b) { if(!neighbours[a].Contains(b)){neighbours[a].Add(b);neighbours[b].Add(a);} }
+            for(int i=1;i<count;i++)Link(i,random.Next(i));
+            for(int i=0;i<count;i++)if(random.NextDouble()<.4) { int j=random.Next(count);if(i!=j)Link(i,j); }
+            var graph=Enumerable.Range(0,count).Select(i=>Part(i,random.Next(1,121),neighbours[i].ToArray())).ToArray();
+            int hit=random.Next(count),hops=random.Next(0,4);
+            float amount=random.Next(1,3001),fraction=(float)random.NextDouble();
+            var result=R3DamagePropagation.Resolve(graph,hit,amount,fraction,hops);
+            Assert.That(result.Damage.Values.Sum()+result.Unused,Is.EqualTo(amount).Within(.02f),$"trial {trial}");
+            foreach(var entry in result.Damage)
+                Assert.That(entry.Value,Is.InRange(0,graph[entry.Key].Health+.001f),$"trial {trial}, part {entry.Key}");
+            Assert.That(result.Unused,Is.GreaterThanOrEqualTo(0),$"trial {trial}");
+        }
+    }
+
     [UnityTest]
     public IEnumerator RemountedSingleContactWheelTransfersDamageThroughItsRealConnection()
     {
@@ -148,6 +170,48 @@ public sealed class R3DamagePropagationTests
         ValidatePlayerHit(run);
     }
 
+    [UnityTest]
+    public IEnumerator InactiveNeighbourDoesNotReceiveOrRelayLiveDamage()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float end=Time.realtimeSinceStartup+15;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<end)yield return null;
+        var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        Assert.That(run.SelectVehicle(R3VehicleKind.Light)&&run.OpenSandboxGarage(),Is.True);yield return null;
+        ValidateInactiveNeighbour(run);
+    }
+
+    static void ValidateInactiveNeighbour(R1RunController run)
+    {
+        var parts=run.Player.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p!=null&&p.Operational).ToArray();
+        R3MountedPart target=null,hidden=null;
+        foreach(var part in parts)
+        {
+            if(part==null)continue;
+            if(part.Cell==new Vector3Int(1,0,0))target=part;
+            if(part.Cell==new Vector3Int(2,0,0))hidden=part;
+        }
+        Assert.That(target,Is.Not.Null);Assert.That(hidden,Is.Not.Null);
+        Assert.That(target.Damageable,Is.Not.Null);Assert.That(hidden.Damageable,Is.Not.Null);
+        var before=parts.ToDictionary(p=>p.Id,p=>p.Damageable.CurrentHp);
+        hidden.gameObject.SetActive(false);
+        try
+        {
+            // The cached structure grid deliberately still knows this object;
+            // it cannot participate in a physical hit while inactive.
+            target.Damageable.ApplyDamage(8,target.transform.position,Vector3.forward);
+            Assert.That(hidden.Damageable.CurrentHp,Is.EqualTo(before[hidden.Id]).Within(.001f));
+            Assert.That(parts.Where(p=>p!=hidden).Sum(p=>before[p.Id]-p.Damageable.CurrentHp),Is.EqualTo(8).Within(.001f),
+                "The live connected parts must still account for the entire hit.");
+            hidden.gameObject.SetActive(true);
+            float restoredHp=hidden.Damageable.CurrentHp;
+            target.Damageable.ApplyDamage(8,target.transform.position,Vector3.forward);
+            Assert.That(hidden.Damageable.CurrentHp,Is.LessThan(restoredHp),
+                "The same real connection must carry damage again when its part is active.");
+        }
+        finally {if(hidden!=null)hidden.gameObject.SetActive(true);}
+    }
+
     static void ValidatePlayerHit(R1RunController run)
     {
         Assert.That(run.Player,Is.Not.Null);
@@ -190,6 +254,92 @@ public sealed class R3DamagePropagationTests
         while(run.Transitioning&&Time.realtimeSinceStartup<end)yield return null;
         run.Encounter.SetCombatActive(false);yield return null;
         ValidateEnemyHit(run);
+    }
+
+    [UnityTest]
+    public IEnumerator BruiserWheelTransfersThroughAxleNotAdjacentWheel()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float end=Time.realtimeSinceStartup+20;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<end)yield return null;
+        var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        Assert.That(run.StartRun()&&run.ChooseRoute(0),Is.True);
+        while(run.Transitioning&&Time.realtimeSinceStartup<end)yield return null;
+        Assert.That(run.Transitioning,Is.False);
+        var template=(RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret)typeof(R1RunController)
+            .GetField("enemyTemplate",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).GetValue(run);
+        run.Encounter.Spawn(template,run.Player.transform,new R1EncounterDefinition
+            {EnemyCount=1,Roster=new[]{R3EnemyArchetype.Bruiser}},run.Salvage,"wheel-port-fixture");
+        run.Encounter.SetCombatActive(false);yield return null;
+        var enemy=run.Encounter.Enemies.First();
+        var wheels=enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>()
+            .Where(RoboRougelike.R6.R6VehicleDrive.IsWheel).ToArray();
+        var target=wheels.Single(w=>{var c=w.GetComponent<RogueMachine.P12PipelineSafe.P12_PipelineSafePlayerBlock>().LogicalGridPosition;return c.x==3&&c.z==0;});
+        var adjacent=wheels.Single(w=>{var c=w.GetComponent<RogueMachine.P12PipelineSafe.P12_PipelineSafePlayerBlock>().LogicalGridPosition;return c.x==3&&c.z==1;});
+        float targetBefore=target.CurrentHp,adjacentBefore=adjacent.CurrentHp;
+        target.ApplyDamage(8,target.transform.position,Vector3.forward);
+        Assert.That(targetBefore-target.CurrentHp,Is.EqualTo(6).Within(.001f),"Only one real axle transfers a quarter of the hit.");
+        Assert.That(adjacent.CurrentHp,Is.EqualTo(adjacentBefore).Within(.001f),"Side-by-side wheel meshes do not form a direct socket.");
+    }
+
+    [UnityTest]
+    public IEnumerator EnemyAdditionalGunTransfersThroughItsActualBase()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float end=Time.realtimeSinceStartup+20;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<end)yield return null;
+        var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        Assert.That(run.StartRun()&&run.ChooseRoute(0),Is.True);
+        while(run.Transitioning&&Time.realtimeSinceStartup<end)yield return null;
+        Assert.That(run.Transitioning,Is.False);run.Encounter.SetCombatActive(false);yield return null;
+        var enemy=run.Encounter.Enemies.First(e=>e!=null&&e.AdditionalWeapons.Count>0);
+        ValidateAdditionalGunDamage(enemy);
+    }
+
+    [UnityTest]
+    public IEnumerator EliteGunsConnectOnlyToTheirSideSupports()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        float end=Time.realtimeSinceStartup+20;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<end)yield return null;
+        var run=R1RunController.Instance;Assert.That(run?.Progress,Is.Not.Null);
+        Assert.That(run.StartRun()&&run.ChooseRoute(0),Is.True);
+        while(run.Transitioning&&Time.realtimeSinceStartup<end)yield return null;
+        Assert.That(run.Transitioning,Is.False);run.Encounter.SetCombatActive(false);yield return null;
+        var enemy=run.Encounter.Enemies.First();
+        enemy.ConfigureVariant(RoboRougelike.R5.R5EnemyVariant.EliteGunner);
+        ValidateEliteGunSockets(enemy);
+    }
+
+    static void ValidateEliteGunSockets(RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret enemy)
+    {
+        Assert.That(enemy.VariantWeapons.Count,Is.EqualTo(2));
+        foreach(var gun in enemy.VariantWeapons)
+        {
+            var side=enemy.transform.InverseTransformPoint(gun.Block.transform.position).x;
+            var inward=side<0?Vector3Int.right:Vector3Int.left;
+            var ports=gun.Block.GetComponent<R3BlockMountPoints>();
+            Assert.That(ports,Is.Not.Null,"Elite guns must declare their real attachment.");
+            Assert.That(ports.WorldMask,Is.EqualTo(R3MountingGrid.FaceBit(inward)));
+        }
+    }
+
+    static void ValidateAdditionalGunDamage(RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret enemy)
+    {
+        var weapons=enemy.AdditionalWeapons;
+        var gun=weapons[0];
+        Assert.That(gun,Is.Not.Null,"The weapon entry must exist.");
+        Assert.That(gun.Block!=null,Is.True,"The additional gun must remain attached.");
+        Assert.That(gun.Support!=null,Is.True,"The gun must retain its support.");
+        var ports=gun.Block.GetComponent<R3BlockMountPoints>();Assert.That(ports,Is.Not.Null);
+        Assert.That(ports.WorldMask,Is.EqualTo(R3MountingGrid.FaceBit(Vector3Int.down)));
+        float gunBefore=gun.Block.CurrentHp,supportBefore=gun.Support.CurrentHp;
+        var others=enemy.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>()
+            .Where(p=>p!=gun.Block&&p!=gun.Support&&!p.IsDead).ToDictionary(p=>p,p=>p.CurrentHp);
+        gun.Block.ApplyDamage(8,gun.Block.transform.position,Vector3.forward);
+        Assert.That(gunBefore-gun.Block.CurrentHp,Is.EqualTo(6).Within(.001f));
+        Assert.That(supportBefore-gun.Support.CurrentHp,Is.EqualTo(1.5f).Within(.001f),"The base retains its share before the next hop.");
+        Assert.That(others.Where(p=>p.Key!=null).Sum(p=>p.Value-p.Key.CurrentHp),Is.EqualTo(.5f).Within(.001f),"The remainder reaches the next connected ring.");
     }
 
     static void ValidateEnemyHit(R1RunController run)

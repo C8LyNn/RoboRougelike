@@ -13,15 +13,27 @@ namespace RoboRougelike.R1
         string garageOptionsFeedback;
         int quickPartCategory;
         bool quickOwnedOnly;
-        GUIStyle quickCategoryButton;
+        GUIStyle quickCategoryButton,garageShortcutLabel;
         Vector2 quickPartsScroll;
+        R3VehicleModel repairQuoteModel;
+        float nextRepairQuoteTime;
+        int repairQuote;
         static Rect QuickPartsArea(bool portrait)=>portrait?new Rect(24,658,414,178):new Rect(12,105,246,355);
         static Rect QuickRepairArea(bool portrait)=>portrait?new Rect(24,840,414,38):new Rect(12,465,245,38);
-        void OpenSimpleGarageOptions(int tab){garageOptionsTab=tab;garageOptionsFeedback=null;activitySaveFeedback=null;garageOptionsOpen=true;}
+        void OpenSimpleGarageOptions(int tab){garageOptionsTab=tab;garageOptionsFeedback=null;activitySaveFeedback=null;garageOptionsOpen=true;repairQuoteModel=null;}
+        int SimpleGarageRepairQuote(R3VehicleModel model)
+        {
+            // The physical quote may construct temporary collision probes.
+            // Do not repeat that work for every IMGUI event and rendered frame.
+            if(repairQuoteModel!=model||Time.unscaledTime>=nextRepairQuoteTime)
+            {repairQuote=model.AffordableRepairCost;repairQuoteModel=model;nextRepairQuoteTime=Time.unscaledTime+.25f;}
+            return repairQuote;
+        }
         void RepairFromGarageOptions(R1RunController run,bool emergency)
         {
             int before=run.VehicleModel.Scrap;
             bool done=emergency?run.GarageEmergencyRepair():run.GarageRepairAffordable();
+            repairQuoteModel=null;
             string action=emergency?"Odbudowano niezbędne moduły.":"Naprawiono dostępne części.";
             garageOptionsFeedback=done?$"{action} Koszt: {before-run.VehicleModel.Scrap} Z.":
                 emergency?"Nie można odbudować części.":"Brak środków lub części do naprawy.";
@@ -237,6 +249,14 @@ namespace RoboRougelike.R1
             var model=run.VehicleModel;
             if(run.MapExitPending)return run.EditorMessage;
             string message=run.Garage.Message??string.Empty;
+            // The visible ghost can move onto a blocked cell after a previous
+            // successful purchase. Explain that current placement before the
+            // player clicks, rather than leaving the old purchase message.
+            if(run.Garage.Tool==R41GarageTool.Mount&&run.Garage.HasTarget&&run.Garage.HasMountSelection)
+            {
+                string placement=run.Garage.PlacementIssue;
+                if(placement!=null)message=placement;
+            }
             string reason=model.DeployError;
             if(reason!=null)
             {
@@ -249,6 +269,15 @@ namespace RoboRougelike.R1
             }
             if(run.Technology?.Error!=null)message+="\nBłąd zapisu lub odczytu technologii.";
             return message.TrimStart('\n');
+        }
+
+        static string GarageWheelPowerAdvice(float units)
+        {
+            float limit=RoboRougelike.R6.R6VehicleDrive.MotorMultiplier(100);
+            if(RoboRougelike.R6.R6VehicleDrive.MotorMultiplier(units)>=limit-.001f)
+                return "Limit silników osiągnięty. Zmniejsz masę albo dodaj mocniejsze koła. Koła muszą dotykać podłoża.";
+            float firstMotor=(RoboRougelike.R6.R6VehicleDrive.MotorMultiplier(1)-1)*100;
+            return $"Podjazd: dołóż silnik lub koła albo zmniejsz masę. T1: +{firstMotor:0}% siły, −{VehicleEnergyState.PassiveReservation:0} maks. energii. Koła muszą dotykać podłoża.";
         }
 
         static string GarageDriveSummary(R1RunController run)
@@ -267,10 +296,9 @@ namespace RoboRougelike.R1
             if(drive==null)return "Dane napędu są niedostępne.";
             float bonus=(RoboRougelike.R6.R6VehicleDrive.MotorMultiplier(drive.ActivePowerUnits)-1)*100;
             float maxBonus=(RoboRougelike.R6.R6VehicleDrive.MotorMultiplier(100)-1)*100;
-            float firstMotor=(RoboRougelike.R6.R6VehicleDrive.MotorMultiplier(1)-1)*100;
             return $"Masa: {body.mass:0} kg • Sprawne koła: {drive.Wheels}\n"+
                 $"Siła silników kół: +{bonus:0}% (maks. +{maxBonus:0}%)\n"+
-                $"Podjazd: dołóż silnik kół albo zmniejsz masę. T1: +{firstMotor:0}% siły, −{VehicleEnergyState.PassiveReservation:0} maks. energii. Koła muszą dotykać podłoża.";
+                GarageWheelPowerAdvice(drive.ActivePowerUnits);
         }
 
         // One click chooses an owned instance; buying remains a separate, explicit action.
@@ -281,7 +309,8 @@ namespace RoboRougelike.R1
             garage.SelectedPart=kind;garage.SelectedWeapon=weapon;garage.UseInventory=true;
             var part=run.VehicleModel.Inventory.Where(p=>InCatalogGroup(p,kind,weapon,bonus)&&p.Health>0)
                 .OrderByDescending(p=>p.Health).FirstOrDefault();
-            if(part!=null){garage.ChooseInventory(part.Id);garage.Message=kind==R3PartKind.Battery?
+            if(part!=null){garage.ChooseInventory(part.Id);garage.Message=kind==R3PartKind.BonusModule?
+                $"Moduł T{R3VehicleModel.NormalizedTier(part.Tier)}: {BonusInstanceText(part)}. Kliknij, aby zamontować.":kind==R3PartKind.Battery?
                 $"Bateria T{R3VehicleModel.NormalizedTier(part.Tier)}: +{VehicleEnergyState.BatteryCapacity*R3VehicleModel.TierEffectUnits(part.Tier):0} maks. energii. Kliknij, aby zamontować.":
                 kind==R3PartKind.RepairPulse?
                 $"Impuls T{R3VehicleModel.NormalizedTier(part.Tier)}: V, {R3RepairPulse.EnergyCost*R3VehicleModel.TierActivationCost(part.Tier):0} energii, {R3RepairPulse.Duration:0} s. Kliknij, aby zamontować.":
@@ -413,9 +442,10 @@ namespace RoboRougelike.R1
                 DrawBuyFive(run,kind,catalogWeapon,new Rect(137,560,120,42));
                 GUI.enabled=!garageOptionsOpen;
             }
-            if(GUI.Button(new Rect(12,610,245,42),$"Magazyn {model.Inventory.Count}/{R3VehicleModel.InventoryCapacity} • naprawy",compactButton))
+            if(GUI.Button(new Rect(12,605,245,42),$"Magazyn {model.Inventory.Count}/{R3VehicleModel.InventoryCapacity} • naprawy",compactButton))
             {inventoryOpen=true;catalogOpen=true;stackScroll=Vector2.zero;}
-            GUI.Label(new Rect(12,655,245,62),"PPM: zdejmij • przeciągnij: widok\nCtrl + LPM: napraw • U: spód\nQ/E R/F Z/X: obrót • Shift: zamontowane",small);
+            if(garageShortcutLabel==null)garageShortcutLabel=new GUIStyle(small){fontSize=14,wordWrap=false};
+            GUI.Label(new Rect(12,649,245,70),"PPM: zdejmij • przeciągnij: widok\nCtrl+LPM: napraw • U: spód\nQ/E R/F Z/X: obrót widma\nShift + klawisz: obrót części",garageShortcutLabel);
             string garageFeedback=SimpleGarageFeedback(run);
             GUI.Label(new Rect(286,655,570,58),garageFeedback,small);
             GUI.enabled=!garageOptionsOpen&&(run.MapEditorSession||model.CanDeploy);
@@ -509,7 +539,7 @@ namespace RoboRougelike.R1
                 var model=run.VehicleModel;
                 GUI.Label(new Rect(350,180,380,70),"A / LPM: "+WeaponGroupName(model.WeaponGroupA)+"\nB / PPM: "+WeaponGroupName(model.WeaponGroupB),small);
                 if(GUI.Button(new Rect(350,255,380,44),"Zamień grupy broni",compactButton))model.SwapWeaponGroups();
-                int repair=model.AffordableRepairCost;GUI.enabled=repair>0;
+                int repair=SimpleGarageRepairQuote(model);GUI.enabled=repair>0;
                 if(GUI.Button(new Rect(350,309,380,44),GarageBulkRepairCaption(model,repair),compactButton))
                     RepairFromGarageOptions(run,false);
                 int emergency=model.EmergencyRepairCost;GUI.enabled=emergency>0&&model.Scrap>=emergency;
@@ -540,7 +570,7 @@ namespace RoboRougelike.R1
                 var model=run.VehicleModel;
                 GUI.Label(new Rect(680,190,350,70),"A / LPM: "+WeaponGroupName(model.WeaponGroupA)+"\nB / PPM: "+WeaponGroupName(model.WeaponGroupB),small);
                 if(GUI.Button(new Rect(680,270,300,40),"Zamień grupy broni",compactButton))model.SwapWeaponGroups();
-                int repair=model.AffordableRepairCost;GUI.enabled=repair>0;
+                int repair=SimpleGarageRepairQuote(model);GUI.enabled=repair>0;
                 if(GUI.Button(new Rect(680,325,300,40),GarageBulkRepairCaption(model,repair),compactButton))
                     RepairFromGarageOptions(run,false);
                 int emergency=model.EmergencyRepairCost;GUI.enabled=emergency>0&&model.Scrap>=emergency;
