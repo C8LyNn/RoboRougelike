@@ -133,6 +133,27 @@ public sealed class EnemyCombatStylesTests
         finally { Object.DestroyImmediate(root);Object.DestroyImmediate(near);Object.DestroyImmediate(far); }
     }
 
+    [Test]
+    public void VariantGunsDropInactiveCachedTargetBeforeRefreshDeadline()
+    {
+        var player=new GameObject("Player target");var root=new GameObject("Variant gun owner");
+        try
+        {
+            var enemy=root.AddComponent<P12PipelineSafeEnemyTurret>();
+            enemy.Configure(player.transform,null,null,root.transform,null,null);
+            var part=GameObject.CreatePrimitive(PrimitiveType.Cube);part.transform.SetParent(player.transform);
+            part.AddComponent<P12_PipelineSafePlayerBlock>();part.AddComponent<P12PipelineSafeDamageable>().Configure(100,true);
+            var flags=BindingFlags.Instance|BindingFlags.NonPublic;var target=part.GetComponent<Collider>();
+            typeof(P12PipelineSafeEnemyTurret).GetField("currentTarget",flags).SetValue(enemy,target);
+            typeof(P12PipelineSafeEnemyTurret).GetField("nextTargetTime",flags).SetValue(enemy,float.PositiveInfinity);
+            part.SetActive(false);
+            var guns=typeof(P12PipelineSafeEnemyTurret).GetField("variantGuns",flags).GetValue(enemy);
+            typeof(P12PipelineSafeEnemyTurret).GetMethod("UpdateVariantWeapons",flags).Invoke(enemy,new[]{guns,(object)"gun/"});
+            Assert.That(typeof(P12PipelineSafeEnemyTurret).GetField("currentTarget",flags).GetValue(enemy),Is.Null);
+        }
+        finally{Object.DestroyImmediate(root);Object.DestroyImmediate(player);}
+    }
+
     [TestCase(R3EnemyArchetype.Gunner, P12FunctionalModuleType.Weapon)]
     [TestCase(R3EnemyArchetype.Flanker, P12FunctionalModuleType.Wheel)]
     public void EnemiesPreferDifferentWorkingModules(R3EnemyArchetype archetype,P12FunctionalModuleType preferred)

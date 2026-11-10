@@ -1008,21 +1008,27 @@ namespace RogueMachine.P12PipelineSafe
             return health==null||!health.IsDead;
         }
 
+        private readonly List<P12PipelineSafeFunctionalModule> targetModules=new List<P12PipelineSafeFunctionalModule>();
+        private readonly List<P12_PipelineSafePlayerBlock> targetBlocks=new List<P12_PipelineSafePlayerBlock>();
+        private readonly List<P12PipelineSafeDamageable> targetHealth=new List<P12PipelineSafeDamageable>();
+        private readonly List<Collider> moduleTargets=new List<Collider>();
+        private readonly List<Collider> preferredTargets=new List<Collider>();
+        private readonly List<Collider> blockTargets=new List<Collider>();
         private Collider SelectTargetCollider()
         {
             if (playerRoot == null)
                 return null;
-
-            List<Collider> moduleTargets =
-                new List<Collider>();
-            var preferredTargets = new List<Collider>();
-
-            P12PipelineSafeFunctionalModule[] modules =
-                playerRoot.GetComponentsInChildren<
-                    P12PipelineSafeFunctionalModule
-                >(true);
-
-            foreach (P12PipelineSafeFunctionalModule module in modules)
+            try{return SelectTargetColliderCore();}
+            finally
+            {
+                targetModules.Clear();targetBlocks.Clear();targetHealth.Clear();
+                moduleTargets.Clear();preferredTargets.Clear();blockTargets.Clear();
+            }
+        }
+        private Collider SelectTargetColliderCore()
+        {
+            playerRoot.GetComponentsInChildren(true,targetModules);
+            foreach (P12PipelineSafeFunctionalModule module in targetModules)
             {
                 if (module == null ||
                     module.ModuleLost ||
@@ -1054,15 +1060,8 @@ namespace RogueMachine.P12PipelineSafe
                 ];
             }
 
-            List<Collider> blockTargets =
-                new List<Collider>();
-
-            P12_PipelineSafePlayerBlock[] blocks =
-                playerRoot.GetComponentsInChildren<
-                    P12_PipelineSafePlayerBlock
-                >(true);
-
-            foreach (P12_PipelineSafePlayerBlock block in blocks)
+            playerRoot.GetComponentsInChildren(true,targetBlocks);
+            foreach (P12_PipelineSafePlayerBlock block in targetBlocks)
             {
                 if (block == null)
                     continue;
@@ -1084,11 +1083,14 @@ namespace RogueMachine.P12PipelineSafe
             }
 
             if(blockTargets.Count==0)
-                foreach(var hp in playerRoot.GetComponentsInChildren<P12PipelineSafeDamageable>())
+            {
+                playerRoot.GetComponentsInChildren(false,targetHealth);
+                foreach(var hp in targetHealth)
                 {
                     var collider=hp.GetComponent<Collider>();
                     if(!hp.IsDead&&ValidTarget(collider))blockTargets.Add(collider);
                 }
+            }
             if(blockTargets.Count==0)return null;
 
             return blockTargets[

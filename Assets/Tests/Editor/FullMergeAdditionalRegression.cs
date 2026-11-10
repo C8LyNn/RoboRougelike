@@ -15,6 +15,31 @@ public sealed class FullMergeAdditionalRegression
     R1RunController run;
     [UnitySetUp]public IEnumerator Setup(){EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();while(R1RunController.Instance?.Progress==null)yield return null;run=R1RunController.Instance;run.SelectVehicle(R3VehicleKind.Light);Assert.That(run.OpenSandboxGarage(),Is.True);yield return null;yield return null;}
     static void Set(object o,string n,object v)=>o.GetType().GetField(n,BindingFlags.Instance|BindingFlags.NonPublic).SetValue(o,v);
+    [UnityTest]public IEnumerator EnemyTargetQueriesReuseStorageForHeavyVehicle()
+    {
+        yield return FreshVehicle(R3VehicleKind.Heavy);
+        var root=new GameObject("Enemy target profiling fixture");
+        try
+        {
+            var enemy=root.AddComponent<P12PipelineSafeEnemyTurret>();
+            enemy.Configure(run.Player.transform,null,null,root.transform,null,null);
+            var method=typeof(P12PipelineSafeEnemyTurret).GetMethod("SelectTargetCollider",BindingFlags.Instance|BindingFlags.NonPublic);
+            var query=(System.Func<Collider>)System.Delegate.CreateDelegate(typeof(System.Func<Collider>),enemy,method);
+            for(int i=0;i<5;i++)Assert.That(query(),Is.Not.Null);
+            using(var recorder=Unity.Profiling.ProfilerRecorder.StartNew(Unity.Profiling.ProfilerCategory.Memory,"GC Allocated In Frame",16))
+            {
+                Assert.That(recorder.Valid,Is.True);yield return null;yield return null;long idle=recorder.LastValue;
+                Collider last=null;for(int i=0;i<50;i++)last=query();
+                yield return null;long sample=recorder.LastValue;
+                var control=new byte[1024*1024];control[0]=1;yield return null;long controlBytes=recorder.LastValue;System.GC.KeepAlive(control);
+                Debug.Log($"[ENEMY_TARGET_ALLOC] queries=50 vehicle=Heavy idle={idle} sample={sample} control={controlBytes}");
+                Assert.That(last,Is.Not.Null);Assert.That(last.transform.IsChildOf(run.Player.transform),Is.True);
+                Assert.That(controlBytes,Is.GreaterThanOrEqualTo(1024*1024));
+                Assert.That(sample-idle,Is.LessThan(32000),"Repeated target selections should reuse hierarchy buffers.");
+            }
+        }
+        finally{Object.Destroy(root);}
+    }
     [UnityTest]public IEnumerator CameraHullQueriesReuseColliderStorageForDenseVehicles()
     {
         var follow=Camera.main.GetComponent<P12PipelineSafeCamera>();var query=follow.ReceiverRig.ReceiverHullBounds;
