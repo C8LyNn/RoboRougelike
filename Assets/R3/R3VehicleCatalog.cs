@@ -29,7 +29,12 @@ namespace RoboRougelike.R3
             };
             int width=light?2:3,length=heavy?4:3,upperLength=light?2:3;
             for(int x=-width;x<=width;x++)for(int z=-length;z<=length;z++)
+            {
+                // Taper the heavy hull at both ends instead of filling its
+                // whole rectangular footprint with low-value armor.
+                if(heavy&&Mathf.Abs(z)==length&&Mathf.Abs(x)>=2)continue;
                 design.Parts.Add(new R3PartState(new Vector3Int(x,0,z),x==0&&z==0?R3PartKind.Core:R3PartKind.Armor));
+            }
             for(int x=-2;x<=2;x++)for(int z=-upperLength;z<=upperLength;z++)
             {
                 bool gunSupport=z==0&&(light?x==0:!heavy&&Mathf.Abs(x)==2||heavy&&x==0);
@@ -60,6 +65,7 @@ namespace RoboRougelike.R3
                     design.Parts.Add(new R3PartState(new Vector3Int(x,1,-upperLength-1),R3PartKind.Armor));
                 foreach(int side in new[]{-1,1})
                 {
+                    if(heavy&&Mathf.Abs(x)==2)continue;
                     var support=new Vector3Int(x,1,side*upperLength);
                     if(design.Parts.Exists(p=>p.Cell==support))
                         design.Parts.Add(new R3PartState(support+Vector3Int.up,R3PartKind.Armor));
@@ -75,7 +81,7 @@ namespace RoboRougelike.R3
                 heavy?(variant==3?new[]{-3,-2,0,2,3}:new[]{-3,-1,1,3}):
                 variant==2?new[]{-3,-1,1,3}:new[]{-2,0,2};
             for(int side=-1;side<=1;side+=2)foreach(int z in positions)
-                design.Parts.Add(new R3PartState(new Vector3Int(side*(width+1),0,z),R3PartKind.Wheel){Tier=light?2:1});
+                design.Parts.Add(new R3PartState(new Vector3Int(side*(width+1),0,z),R3PartKind.Wheel){Tier=light||!heavy&&z==(variant==2?-1:0)?2:1});
             var gunColumns=light?new[]{0}:heavy?new[]{-3,0,3}:new[]{-2,2};
             int gunHeight=R3VehicleModel.UseEnlargedEquipment?2:3;
             if(!R3VehicleModel.UseEnlargedEquipment)
