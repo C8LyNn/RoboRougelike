@@ -68,6 +68,7 @@ namespace B01.CAMERA001
             set=>receiverFollowSpeed=float.IsNaN(value)||float.IsInfinity(value)?0:Mathf.Clamp(value,0,100);
         }
         public float EffectiveContinuousSpeedLimit=>Mathf.Max(Mathf.Max(.1f,maxContinuousSpeed),
+            ReceiverResponsiveMotion?receiverFollowSpeed+6:
             receiverFollowSpeed>maxContinuousSpeed?receiverFollowSpeed+3:0);
 
         public void Configure(Transform root, Camera camera)
