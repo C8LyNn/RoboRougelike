@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Linq;
+using System.Reflection;
 using NUnit.Framework;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -83,6 +84,60 @@ public sealed class UnarmedEnemyRammingTests
             Assert.That(body.position.z,Is.GreaterThan(wall.transform.position.z),"cannot cross wall toward player");
         }
         finally{Object.Destroy(wall);}
+    }
+    [UnityTest] public IEnumerator BlockedRetreatDoesNotApplyDriveForceTowardPlayer()
+    {
+        // Enter the recovery phase directly; collision timing itself is covered
+        // by ProlongedPhysicalContactTriggersRetreat. Walls and drive are real.
+        var flags=BindingFlags.NonPublic|BindingFlags.Instance;
+        var recovery=(EnemyContactRecovery)typeof(P12PipelineSafeEnemyTurret).GetField("contactRecovery",flags).GetValue(enemy);
+        Assert.That(recovery.Advance(true,1.3f),Is.True);
+        body.rotation=Quaternion.identity;body.linearVelocity=Vector3.zero;body.angularVelocity=Vector3.zero;
+        var half=(Vector3)typeof(P12PipelineSafeEnemyTurret).GetField("movementHalfExtents",flags).GetValue(enemy);
+        var walls=new GameObject[3];
+        try
+        {
+            for(int i=0;i<walls.Length;i++)walls[i]=GameObject.CreatePrimitive(PrimitiveType.Cube);
+            walls[0].transform.position=body.position+Vector3.up*.75f+Vector3.forward*(half.z+.2f);
+            walls[0].transform.localScale=new Vector3(20,4,.2f);
+            walls[1].transform.position=body.position+Vector3.up*.75f+Vector3.right*(half.x+.2f);
+            walls[1].transform.localScale=new Vector3(.2f,4,20);
+            walls[2].transform.position=body.position+Vector3.up*.75f+Vector3.left*(half.x+.2f);
+            walls[2].transform.localScale=new Vector3(.2f,4,20);
+            Physics.SyncTransforms();
+            var toward=Vector3.ProjectOnPlane(playerBody.position-body.position,Vector3.up).normalized;
+            var before=body.GetAccumulatedForce(Time.fixedDeltaTime);
+            typeof(P12PipelineSafeEnemyTurret).GetMethod("FixedUpdate",flags).Invoke(enemy,null);
+            var applied=body.GetAccumulatedForce(Time.fixedDeltaTime)-before;
+            Debug.Log($"[RETREAT_WALL] toward={toward} applied={applied} dot={Vector3.Dot(applied,toward):F2}");
+            Assert.That(Vector3.Dot(applied,toward),Is.LessThanOrEqualTo(.01f),
+                "Blocked retreat must not command the wheels to push into the player.");
+        }
+        finally{foreach(var wall in walls)if(wall!=null)Object.Destroy(wall);}
+        yield return null;
+    }
+    [UnityTest] public IEnumerator RetreatChoosesOpenSideWhenOtherSideHasWall()
+    {
+        var flags=BindingFlags.NonPublic|BindingFlags.Instance;
+        var toward=Vector3.ProjectOnPlane(playerBody.position-body.position,Vector3.up).normalized;
+        var sign=(int)typeof(P12PipelineSafeEnemyTurret).GetField("strafeDirection",flags).GetValue(enemy);
+        var blocked=Vector3.Cross(Vector3.up,toward).normalized*sign;
+        var half=(Vector3)typeof(P12PipelineSafeEnemyTurret).GetField("movementHalfExtents",flags).GetValue(enemy);
+        float extent=Mathf.Abs(blocked.x)*half.x+Mathf.Abs(blocked.z)*half.z;
+        var wall=GameObject.CreatePrimitive(PrimitiveType.Cube);
+        wall.transform.SetPositionAndRotation(body.position+Vector3.up*.75f+blocked*(extent+.12f),Quaternion.LookRotation(blocked));
+        wall.transform.localScale=new Vector3(20,4,.2f);Physics.SyncTransforms();
+        try
+        {
+            var args=new object[]{toward,.12f,Vector3.zero};
+            var method=typeof(P12PipelineSafeEnemyTurret).GetMethod("TryRetreatSide",flags);
+            Assert.That((bool)method.Invoke(enemy,args),Is.True,"The other side is physically open.");
+            var escape=(Vector3)args[2];
+            Assert.That(Vector3.Dot(escape,blocked),Is.LessThan(-.99f));
+            Assert.That(Mathf.Abs(Vector3.Dot(escape,toward)),Is.LessThan(.001f));
+        }
+        finally{Object.Destroy(wall);}
+        yield return null;
     }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }

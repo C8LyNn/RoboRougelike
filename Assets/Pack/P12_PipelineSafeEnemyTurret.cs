@@ -866,10 +866,41 @@ namespace RogueMachine.P12PipelineSafe
                 if(!TryBoundaryTangent(outwardX,outwardZ,step,ramming,out var safeTangent))return;
                 desired=safeTangent;obstacleTangent=safeTangent;navigationUntil=Time.time+1.1f;
             }
+            // Obstacle avoidance can replace a safe retreat with a wall normal
+            // that points straight back into the player. Prefer an open lateral
+            // escape; if both sides are blocked, brake rather than push.
+            if(recovering&&Vector3.Dot(desired,toward)>.001f)
+            {
+                if(!TryRetreatSide(toward,step,out var escape))return;
+                desired=escape;obstacleTangent=escape;navigationUntil=Time.time+1.1f;
+            }
             if (!CanMove(desired, step + 0.08f,allowPlayerContact)) return;
             next=movementBody.position+desired*step;
             next.x=Mathf.Clamp(next.x,movementBounds.min.x,movementBounds.max.x);next.z=Mathf.Clamp(next.z,movementBounds.min.z,movementBounds.max.z);
-            if(drive!=null)drive.StepToward(desired,moveSpeed * Mathf.Lerp(0.3f,1,wheelFactor),turnSpeed);
+            if(drive!=null)
+            {
+                float speed=moveSpeed * Mathf.Lerp(0.3f,1,wheelFactor);
+                if(recovering)
+                {
+                    var input=RoboRougelike.R6.R6VehicleDrive.WorldSteering(transform.forward,desired,drive.GroundNormal,drive.ForwardSpeed);
+                    var axis=Vector3.ProjectOnPlane(transform.forward,drive.GroundNormal).normalized*input.x;
+                    if(Vector3.Dot(axis,toward)>.001f){drive.Step(0,input.y,speed,speed,turnSpeed);return;}
+                }
+                drive.StepToward(desired,speed,turnSpeed);
+            }
+        }
+
+        private bool TryRetreatSide(Vector3 toward,float step,out Vector3 escape)
+        {
+            var side=Vector3.Cross(Vector3.up,toward).normalized*strafeDirection;
+            for(int i=0;i<2;i++,side=-side)
+            {
+                var next=movementBody.position+side*step;
+                if((next.x<movementBounds.min.x&&side.x<0)||(next.x>movementBounds.max.x&&side.x>0)||
+                   (next.z<movementBounds.min.z&&side.z<0)||(next.z>movementBounds.max.z&&side.z>0))continue;
+                if(CanMove(side,step+.08f,true)){escape=side;return true;}
+            }
+            escape=Vector3.zero;return false;
         }
 
         // Steering toward a boundary tangent does not remove existing outward
