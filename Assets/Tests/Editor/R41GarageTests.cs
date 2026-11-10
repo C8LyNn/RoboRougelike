@@ -186,6 +186,25 @@ public class R41GarageTests
         Assert.That(garage.SelectedRotation,Is.EqualTo(Vector3Int.zero),"An invalid legacy wheel pose must remain correctable.");
         yield return null;
     }
+    [UnityTest] public IEnumerator MountedLegacyWheelCanBeTurnedBackIntoAValidPose()
+    {
+        var wheel=Run.VehicleModel.Parts.First(p=>p.Kind==R3PartKind.Wheel&&p.Cell.x<0);
+        string id=wheel.Id;var cell=wheel.Cell;
+        // Represent an older stored pose; the pointed hit still uses the real
+        // current collider and the proposed replacement uses the physical gate.
+        wheel.RotationQuarterTurns=new Vector3Int(0,1,0);
+        Assert.That(R3VehicleModel.ValidWheelOrientation(wheel.RotationQuarterTurns),Is.False);
+        var actual=Run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==id);
+        var outward=-Run.Player.transform.right;
+        var ray=new Ray(actual.transform.position+outward*3f,-outward);
+        Assert.That(Run.Garage.RotatePointed(ray,new Vector3Int(0,1,0)),Is.True,
+            "A legacy sideways axle must be correctable using one 90-degree step.");
+        var corrected=Run.VehicleModel.At(cell);
+        Assert.That(corrected.Id,Is.EqualTo(id));
+        Assert.That(corrected.RotationQuarterTurns,Is.EqualTo(new Vector3Int(0,2,0)));
+        Assert.That(R3VehicleModel.ValidWheelOrientation(corrected.RotationQuarterTurns),Is.True);
+        yield return null;
+    }
     [UnityTest] public IEnumerator GhostColorTracksBlockedAndAllowedPlacementAfterReappearing()
     {
         var garage=Run.Garage;string id=PurchasePart(R3PartKind.Armor);garage.ChooseInventory(id);

@@ -632,7 +632,9 @@ namespace RoboRougelike.R3
                 var part=hit?run.VehicleModel.At(Cell):null;
                 // A wheel may only face sideways. Skip the forbidden 90°
                 // intermediate yaw so one shortcut reaches the next legal pose.
-                bool wheelYaw=part!=null&&part.Kind==R3PartKind.Wheel&&turns.x==0&&turns.z==0&&Mathf.Abs(turns.y)==1;
+                bool wheelYaw=part!=null&&part.Kind==R3PartKind.Wheel&&
+                    R3VehicleModel.ValidWheelOrientation(part.RotationQuarterTurns)&&
+                    turns.x==0&&turns.z==0&&Mathf.Abs(turns.y)==1;
                 if(wheelYaw)turns.y*=2;
                 bool done=hit&&run.GarageRotate(Cell,turns);
                 Message=done?(wheelYaw?"Obrócono koło o 180°.":"Obrócono wskazaną część."):
