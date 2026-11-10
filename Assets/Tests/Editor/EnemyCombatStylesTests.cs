@@ -102,6 +102,37 @@ public sealed class EnemyCombatStylesTests
         Assert.That(direction,Is.EqualTo(Vector3.forward),"Vertical chassis orientation needs a finite fallback.");
     }
 
+    [Test]
+    public void EnemyAvoidanceUsesNearestObstructionRegardlessOfPhysicsHitOrder()
+    {
+        var root=new GameObject("Enemy obstacle probe");
+        var far=GameObject.CreatePrimitive(PrimitiveType.Cube);
+        var near=GameObject.CreatePrimitive(PrimitiveType.Cube);
+        try
+        {
+            var body=root.AddComponent<Rigidbody>();body.isKinematic=true;
+            var enemy=root.AddComponent<P12PipelineSafeEnemyTurret>();
+            var flags=BindingFlags.Instance|BindingFlags.NonPublic;
+            typeof(P12PipelineSafeEnemyTurret).GetField("movementBody",flags).SetValue(enemy,body);
+            typeof(P12PipelineSafeEnemyTurret).GetField("movementHalfExtents",flags).SetValue(enemy,Vector3.one*.1f);
+            near.transform.position=new Vector3(0,.75f,2);near.transform.localScale=new Vector3(4,2,.2f);
+            far.transform.position=new Vector3(0,.75f,4);far.transform.localScale=new Vector3(4,2,.2f);
+            far.transform.rotation=Quaternion.Euler(0,35,0);Physics.SyncTransforms();
+            var hits=Physics.BoxCastAll(Vector3.up*.75f,Vector3.one*.1f,Vector3.forward,Quaternion.identity,6,~0,QueryTriggerInteraction.Ignore);
+            TestContext.WriteLine("Hit order: "+string.Join(", ",System.Array.ConvertAll(hits,h=>h.distance.ToString("F2"))));
+            var unsorted=new RaycastHit[10];var count=Physics.BoxCastNonAlloc(Vector3.up*.75f,Vector3.one*.1f,Vector3.forward,unsorted,Quaternion.identity,6,~0,QueryTriggerInteraction.Ignore);
+            for(int i=0;i<count;i++)TestContext.WriteLine("NonAlloc hit "+i+": "+unsorted[i].distance.ToString("F2"));
+            System.Array.Sort(hits,(a,b)=>a.distance.CompareTo(b.distance));
+            Assert.That(hits.Length,Is.EqualTo(2));
+            var expected=Vector3.ProjectOnPlane(hits[0].normal,Vector3.up).normalized;
+            var canMove=typeof(P12PipelineSafeEnemyTurret).GetMethod("CanMove",flags);
+            Assert.That((bool)canMove.Invoke(enemy,new object[]{Vector3.forward,6f,false}),Is.False);
+            var actual=(Vector3)typeof(P12PipelineSafeEnemyTurret).GetField("lastMoveNormal",flags).GetValue(enemy);
+            Assert.That(Vector3.Dot(actual,expected),Is.GreaterThan(.999f),"Avoidance must use the nearest surface, independent of physics result order.");
+        }
+        finally { Object.DestroyImmediate(root);Object.DestroyImmediate(near);Object.DestroyImmediate(far); }
+    }
+
     [TestCase(R3EnemyArchetype.Gunner, P12FunctionalModuleType.Weapon)]
     [TestCase(R3EnemyArchetype.Flanker, P12FunctionalModuleType.Wheel)]
     public void EnemiesPreferDifferentWorkingModules(R3EnemyArchetype archetype,P12FunctionalModuleType preferred)

@@ -951,6 +951,9 @@ namespace RogueMachine.P12PipelineSafe
                 }
                 System.Array.Resize(ref movementHits,Mathf.Min(movementHits.Length*2,MaxMovementHitBuffer));
             }
+            // BoxCastNonAlloc/BoxCastAll do not order hits by distance. A
+            // farther wall must not choose the escape tangent for a nearer one.
+            int closest=-1;float closestDistance=float.PositiveInfinity;
             for (int i = 0; i < count; i++)
             {
                 var hit = queriedHits[i].collider;
@@ -959,11 +962,13 @@ namespace RogueMachine.P12PipelineSafe
                 if(allowPlayerContact&&playerRoot!=null&&hit.transform.IsChildOf(playerRoot))continue;
                 // Ignore the flat ground, but avoid walls, live vehicles, and loose debris.
                 if (hit.bounds.max.y < 0.12f) continue;
-                lastMoveNormal=Vector3.ProjectOnPlane(queriedHits[i].normal,Vector3.up).normalized;
-                if(lastMoveNormal.sqrMagnitude<.01f)lastMoveNormal=-direction;
-                return false;
+                if(queriedHits[i].distance<closestDistance)
+                {closest=i;closestDistance=queriedHits[i].distance;}
             }
-            return true;
+            if(closest<0)return true;
+            lastMoveNormal=Vector3.ProjectOnPlane(queriedHits[closest].normal,Vector3.up).normalized;
+            if(lastMoveNormal.sqrMagnitude<.01f)lastMoveNormal=-direction;
+            return false;
         }
 
         private void RotateToward(
