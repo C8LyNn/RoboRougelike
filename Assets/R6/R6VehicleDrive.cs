@@ -77,12 +77,12 @@ namespace RoboRougelike.R6
         }
         bool BelongsToBody(P12PipelineSafeDamageable part)
         {
-            if(part==null||part.IsDead||!part.transform.IsChildOf(transform)||part.GetComponentInParent<Rigidbody>()!=body)return false;
+            if(part==null||!part.gameObject.activeInHierarchy||part.IsDead||!part.transform.IsChildOf(transform)||part.GetComponentInParent<Rigidbody>()!=body)return false;
             var mounted=part.GetComponent<R3MountedPart>();return mounted==null||mounted.Operational;
         }
         public void RefreshMass()
         {
-            if(parts==null)return;
+            if(parts==null||!gameObject.activeInHierarchy)return;
             float mass=0,yaw=0;Vector3 center=Vector3.zero;
             traction=left=right=track=powerUnits=0;Wheels=0;
             foreach(var part in parts)

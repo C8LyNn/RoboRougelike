@@ -29,7 +29,7 @@ namespace RoboRougelike.R6
             var structure=body.GetComponent<P12PipelineSafeVehicleStructure>();
             foreach(var part in parts)
             {
-                if(part==null||part.IsDead||!R6VehicleDrive.IsWheel(part)||!part.transform.IsChildOf(body.transform)||
+                if(part==null||!part.gameObject.activeInHierarchy||part.IsDead||!R6VehicleDrive.IsWheel(part)||!part.transform.IsChildOf(body.transform)||
                     part.GetComponentInParent<Rigidbody>()!=body||RRLEmpPartState.IsBlocked(part.gameObject))continue;
                 var mounted=part.GetComponent<R3MountedPart>();if(mounted!=null&&!mounted.Operational)continue;
                 var block=part.GetComponent<P12_PipelineSafePlayerBlock>();if(block!=null&&block.DetachedFromVehicle)continue;

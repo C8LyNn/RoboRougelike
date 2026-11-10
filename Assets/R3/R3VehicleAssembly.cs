@@ -37,7 +37,8 @@ namespace RoboRougelike.R3
         }
         public void TuneChassis()
         {
-            var active=Parts.Where(p=>p!=null&&p.Operational&&p.transform.IsChildOf(transform)).ToArray();
+            if(!gameObject.activeInHierarchy)return;
+            var active=Parts.Where(p=>p!=null&&p.gameObject.activeInHierarchy&&p.Operational&&p.transform.IsChildOf(transform)).ToArray();
             float mass=active.Sum(p=>RoboRougelike.R6.R6VehicleDrive.PartMass(p.Damageable));
             int wheels=active.Count(p=>p.Kind==R3PartKind.Wheel);
             float power=ModelWheelPower(active);
