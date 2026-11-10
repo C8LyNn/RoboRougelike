@@ -13,7 +13,7 @@ namespace RoboRougelike.R1
         string garageOptionsFeedback;
         int quickPartCategory;
         bool quickOwnedOnly;
-        GUIStyle quickCategoryButton;
+        GUIStyle quickCategoryButton,garageShortcutLabel;
         Vector2 quickPartsScroll;
         R3VehicleModel repairQuoteModel;
         float nextRepairQuoteTime;
@@ -442,9 +442,10 @@ namespace RoboRougelike.R1
                 DrawBuyFive(run,kind,catalogWeapon,new Rect(137,560,120,42));
                 GUI.enabled=!garageOptionsOpen;
             }
-            if(GUI.Button(new Rect(12,610,245,42),$"Magazyn {model.Inventory.Count}/{R3VehicleModel.InventoryCapacity} • naprawy",compactButton))
+            if(GUI.Button(new Rect(12,605,245,42),$"Magazyn {model.Inventory.Count}/{R3VehicleModel.InventoryCapacity} • naprawy",compactButton))
             {inventoryOpen=true;catalogOpen=true;stackScroll=Vector2.zero;}
-            GUI.Label(new Rect(12,655,245,62),"PPM: zdejmij • przeciągnij: widok\nCtrl + LPM: napraw • U: spód\nQ/E R/F Z/X: obrót • Shift: część",small);
+            if(garageShortcutLabel==null)garageShortcutLabel=new GUIStyle(small){fontSize=14,wordWrap=false};
+            GUI.Label(new Rect(12,649,245,70),"PPM: zdejmij • przeciągnij: widok\nCtrl+LPM: napraw • U: spód\nQ/E R/F Z/X: obrót widma\nShift + klawisz: obrót części",garageShortcutLabel);
             string garageFeedback=SimpleGarageFeedback(run);
             GUI.Label(new Rect(286,655,570,58),garageFeedback,small);
             GUI.enabled=!garageOptionsOpen&&(run.MapEditorSession||model.CanDeploy);
