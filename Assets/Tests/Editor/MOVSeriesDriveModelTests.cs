@@ -11,10 +11,10 @@ public class MOVSeriesDriveModelTests
     public void SelectedAlternativeAllowsWheelRemovalDeployCopyAndEmergencyRepair(R3DriveKind drive,R3PartKind kind,int required)
     {
         var m=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));m.Award(500);
-        // The current light starter uses these four cells for its wheels. The
-        // garage explicitly allows removing them before installing a new drive.
-        foreach(var wheel in m.Parts.Where(p=>p.Kind==R3PartKind.Wheel).ToArray())Assert.That(m.Remove(wheel.Cell),Is.True);
-        foreach(int x in new[]{-2,2})foreach(int z in new[]{-2,2})Assert.That(m.Buy(new Vector3Int(x,0,z),kind),Is.True);
+        // Reuse the actual starter wheel cells rather than assuming a hull width.
+        var wheels=m.Parts.Where(p=>p.Kind==R3PartKind.Wheel).ToArray();
+        foreach(var wheel in wheels)Assert.That(m.Remove(wheel.Cell),Is.True);
+        foreach(var wheel in wheels)Assert.That(m.Buy(wheel.Cell,kind),Is.True);
         m.SelectedDrive=drive;
         Assert.That(m.CanDeploy,Is.True);Assert.That(m.DeepCopy().SelectedDrive,Is.EqualTo(drive));
         Assert.That(m.Inventory.Count,Is.EqualTo(4));int scrap=m.Scrap;

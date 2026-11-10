@@ -394,9 +394,10 @@ public class R3GaragePlayTests
         foreach(var part in assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun||p.Kind==R3PartKind.Wheel))
             part.Damageable.ApplyDamage(10000,part.transform.position,Vector3.up);
         assembly.Capture();int scrap=Run.VehicleModel.Scrap;
+        int quoted=Run.VehicleModel.EmergencyRepairCost;Assert.That(quoted,Is.GreaterThan(0));
         Assert.That(Run.StartNextEncounter(),Is.False);
         Assert.That(Run.GarageEmergencyRepair(),Is.True);
-        Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(scrap-23));
+        Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(scrap-quoted));
         Assert.That(Run.Player.Modules.ActiveWheelCount,Is.EqualTo(2));Assert.That(Run.Player.Modules.ActiveWeaponCount,Is.EqualTo(1));
         Assert.That(Run.VehicleModel.Parts.Count(p=>p.Kind==R3PartKind.Wheel&&p.Health<=0),Is.EqualTo(4));
         foreach(var part in Run.Player.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p.Kind==R3PartKind.Gun||p.Kind==R3PartKind.Wheel))

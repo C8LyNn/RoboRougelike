@@ -678,7 +678,7 @@ namespace RoboRougelike.R3
             if (InvalidWeaponTypes || CanDeploy || !Parts.Any(p => p.Kind == R3PartKind.Core && p.Health > 0)) return null;
             var byCell=Parts.SelectMany(p=>OccupiedCells(p).Select(cell=>new{cell,part=p})).ToDictionary(x=>x.cell,x=>x.part); var core = Parts.Single(p => p.Kind == R3PartKind.Core);
             var previous = new Dictionary<Vector3Int, Vector3Int> { [core.Cell] = core.Cell };
-            var costs = new Dictionary<Vector3Int,int> { [core.Cell]=0 };
+            var costs = new Dictionary<Vector3Int,long> { [core.Cell]=0 };
             var pending = new List<Vector3Int>{core.Cell};
             while (pending.Count > 0)
             {
@@ -688,8 +688,14 @@ namespace RoboRougelike.R3
                     var next=current+n;
                     if(!byCell.ContainsKey(next)||
                         !R3MountingGrid.Compatible(byCell[current],current,byCell[next],next))continue;
-                    int cost=costs[current]+(byCell[next].Health<=0?1:0);
-                    if(costs.TryGetValue(next,out int old)&&old<=cost)continue;
+                    var nextPart=byCell[next];
+                    bool enteringWreck=nextPart.Health<=0&&!ReferenceEquals(nextPart,byCell[current]);
+                    int repairCost=enteringWreck?RepairCost(nextPart):0;
+                    // A zero quote on a wreck means it cannot be repaired;
+                    // do not prefer an unusable route over a payable one.
+                    if(enteringWreck&&repairCost<=0)continue;
+                    long cost=costs[current]+repairCost;
+                    if(costs.TryGetValue(next,out long old)&&old<=cost)continue;
                     costs[next]=cost;previous[next]=current;
                     if(!pending.Contains(next))pending.Add(next);
                 }

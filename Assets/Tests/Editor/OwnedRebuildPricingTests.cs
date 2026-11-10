@@ -35,7 +35,7 @@ public sealed class OwnedRebuildPricingTests
     [Test] public void EmergencyRepairCannotBypassOneScrapQuoteGuard()
     {
         var m=Model(new R3GarageEconomy{WheelCost=1});m.Award(100);
-        foreach(var wheel in m.Parts.Where(p=>p.Kind==R3PartKind.Wheel&&p.Cell.x<0))wheel.Health=0;
+        foreach(var wheel in m.Parts.Where(p=>p.Kind==R3PartKind.Wheel&&p.Cell.x<0)){wheel.Tier=1;wheel.Health=0;}
         var before=m.Scrap;Assert.That(m.CanDeploy,Is.False);Assert.That(m.EmergencyRepair(),Is.False);
         Assert.That(m.Scrap,Is.EqualTo(before));Assert.That(m.Parts.Where(p=>p.Kind==R3PartKind.Wheel&&p.Cell.x<0).All(p=>p.Health==0),Is.True);
     }
