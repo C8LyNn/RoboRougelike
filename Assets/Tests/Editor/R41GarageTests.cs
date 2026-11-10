@@ -115,6 +115,28 @@ public class R41GarageTests
         Assert.That(Run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==id).Block.DetachedFromVehicle,Is.False);
         yield return null;
     }
+    [UnityTest] public IEnumerator RealGarageRotatesSideWheelsWithoutLosingTheirMount()
+    {
+        foreach(int side in new[]{-1,1})
+        {
+            var model=Run.VehicleModel;
+            var wheel=model.Parts.First(p=>p.Kind==R3PartKind.Wheel&&Math.Sign(p.Cell.x)==side);
+            var cell=wheel.Cell;string id=wheel.Id;int scrap=model.Scrap;float health=wheel.Health;
+            int oldMask=R3MountingGrid.WorldPortMask(wheel.RotationQuarterTurns,wheel.ContactMask);
+            Assert.That(Run.GarageRotate(cell,new Vector3Int(0,2,0)),Is.True,"Real physical installation must approve this axle rotation.");
+            var rotated=Run.VehicleModel.At(cell);
+            Assert.That(rotated.Id,Is.EqualTo(id));Assert.That(rotated.Health,Is.EqualTo(health));
+            Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(scrap));
+            Assert.That(R3MountingGrid.WorldPortMask(rotated.RotationQuarterTurns,rotated.ContactMask),Is.EqualTo(oldMask));
+            var actual=Run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==id);
+            Assert.That(actual.Operational,Is.True);Assert.That(actual.Block.DetachedFromVehicle,Is.False);
+            var socket=actual.GetComponentsInChildren<Transform>(true).Single(t=>t.name=="Socket_Mount");
+            var towardSupport=Run.Player.transform.TransformDirection(side<0?Vector3.right:Vector3.left);
+            Assert.That(Vector3.Distance(socket.position,actual.transform.position+towardSupport*.26f),Is.LessThan(.015f),
+                "The rendered axle socket must still meet the real supporting face.");
+            yield return null;
+        }
+    }
     [UnityTest] public IEnumerator GhostColorTracksBlockedAndAllowedPlacementAfterReappearing()
     {
         var garage=Run.Garage;string id=PurchasePart(R3PartKind.Armor);garage.ChooseInventory(id);

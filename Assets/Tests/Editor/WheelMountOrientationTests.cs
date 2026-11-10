@@ -10,6 +10,21 @@ using UnityEngine;
 
 public sealed class WheelMountOrientationTests
 {
+    [TestCase(-1)]
+    [TestCase(1)]
+    public void RotatingMountedSideWheelKeepsItsActualAxleConnected(int side)
+    {
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        var wheel=model.Parts.First(p=>p.Kind==R3PartKind.Wheel&&System.Math.Sign(p.Cell.x)==side);
+        var cell=wheel.Cell;var oldMask=R3MountingGrid.WorldPortMask(wheel.RotationQuarterTurns,wheel.ContactMask);
+        var id=wheel.Id;var health=wheel.Health;
+        Assert.That(R3VehicleModel.Connected(model.Parts),Is.True);
+        Assert.That(model.RotateMounted(cell,new Vector3Int(0,2,0)),Is.True,
+            "Turning the wheel around its vertical axis must retain the same physical axle support.");
+        Assert.That(wheel.Id,Is.EqualTo(id));Assert.That(wheel.Health,Is.EqualTo(health));
+        Assert.That(R3MountingGrid.WorldPortMask(wheel.RotationQuarterTurns,wheel.ContactMask),Is.EqualTo(oldMask));
+        Assert.That(R3VehicleModel.Connected(model.Parts),Is.True);
+    }
     [UnityTest] public IEnumerator RealVisualPortPointsToRotatedSupport()
     {
         yield return new EnterPlayMode();

@@ -87,6 +87,9 @@ public sealed class R3MultiCellWheelTests
 
     [Test] public void NewLargeOffroadWheelUsesItsOwnNineCellFootprintAndLegacyStillFits()
     {
+        R3VehicleModel.SetEquipmentScaleForEditorTests(true);
+        try
+        {
         var design=new R3VehicleDesign{Name="Large wheel QA"};
         design.Parts.Add(new R3PartState(new Vector3Int(0,1,0),R3PartKind.Core));
         var model=new R3VehicleModel(design);model.Award(100);
@@ -103,10 +106,15 @@ public sealed class R3MultiCellWheelTests
         var legacy=part.Copy();legacy.FootprintRevision=0;
         Assert.That(R3VehicleModel.OccupiedCells(legacy).Count(),Is.EqualTo(1));
         Assert.That(R3VehicleModel.SameFusionType(part,legacy),Is.False);
+        }
+        finally {R3VehicleModel.SetEquipmentScaleForEditorTests(false);}
     }
 
     [Test] public void NewAndLegacyFootprintsRoundTripWithoutReinterpretingOldItems()
     {
+        R3VehicleModel.SetEquipmentScaleForEditorTests(true);
+        try
+        {
         var design=new R3VehicleDesign{Name="test",CoreHp=100,Speed=7.5f,TurnSpeed=82};
         design.Parts.Add(new R3PartState(new Vector3Int(0,1,0),R3PartKind.Core));
         design.Parts.Add(Monster(new Vector3Int(1,1,0)));
@@ -118,5 +126,7 @@ public sealed class R3MultiCellWheelTests
         Assert.That(R3VehicleModel.SameFusionType(wheel,source.Parts.Single(p=>p.Kind==R3PartKind.Wheel)),Is.False);
         saved.mounted.Single(p=>p.Kind==R3PartKind.Wheel).FootprintRevision=99;
         Assert.That(R3VehicleModel.TryRestoreCheckpoint(saved,R3VehicleKind.Light,null,0,out _,out _),Is.False,"Unknown footprint revisions fail closed.");
+        }
+        finally {R3VehicleModel.SetEquipmentScaleForEditorTests(false);}
     }
 }
