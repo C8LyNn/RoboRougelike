@@ -707,7 +707,15 @@ namespace RoboRougelike.R3
                 current.Use();
             }
         }
-        public void CancelPointerGesture(){rightGesture.Cancel();orbitDragging=false;}
+        public void CancelPointerGesture()
+        {
+            rightGesture.Cancel();orbitDragging=false;
+            // Pausing, opening a modal or losing focus suspends build input.
+            // Preserve the inventory selection but do not leave an actionable
+            // looking ghost at the last position while input is blocked.
+            if(Tool==R41GarageTool.Mount&&HasTarget)
+            {HasTarget=false;pointerSurfaceRejected=false;RefreshMarker();}
+        }
         private void OnApplicationFocus(bool focused){if(!focused)CancelPointerGesture();}
         private void LateUpdate()
         {

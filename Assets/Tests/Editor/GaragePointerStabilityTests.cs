@@ -10,6 +10,34 @@ using UnityEngine.TestTools;
 
 public sealed class GaragePointerStabilityTests
 {
+    [UnityTest] public IEnumerator CancellingBuildInputHidesGhostWithoutLosingSelectedPart()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        yield return VerifyCancelBuildInput();
+        yield return new ExitPlayMode();
+    }
+    static IEnumerator VerifyCancelBuildInput()
+    {
+        float end=Time.realtimeSinceStartup+15;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<end)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light,0),Is.True);
+        Assert.That(run.OpenSandboxGarage(),Is.True);run.VehicleModel.Award(1000);yield return null;
+        var garage=run.Garage;garage.UseInventory=false;garage.SelectedPart=R3PartKind.Armor;
+        garage.SetTool(R41GarageTool.Mount);
+        var socket=garage.AvailableMountPoints.First(p=>garage.Point(new Ray(
+            p.Position+(p.Rotation*Vector3.forward)*2,-(p.Rotation*Vector3.forward)))&&garage.PreviewValid);
+        Assert.That(garage.Preview.gameObject.activeSelf,Is.True);
+        // HUD uses this when a modal or pause prevents build input, and the
+        // garage uses it on focus loss. No purchase or selection is changed.
+        garage.CancelPointerGesture();
+        Assert.That(garage.HasTarget,Is.False,"Blocked input must not leave an old mounting target.");
+        Assert.That(garage.Preview.gameObject.activeSelf,Is.False);
+        Assert.That(garage.MountKind,Is.EqualTo(R3PartKind.Armor));
+        var normal=socket.Rotation*Vector3.forward;
+        Assert.That(garage.Point(new Ray(socket.Position+normal*2,-normal)),Is.True);
+        Assert.That(garage.Preview.gameObject.activeSelf,Is.True);
+    }
+
     [UnityTest] public IEnumerator LeavingBuildAreaHidesGhostWithoutLosingSelectedPart()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
