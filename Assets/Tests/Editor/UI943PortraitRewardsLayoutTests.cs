@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
 using RoboRougelike.R1;
+using RoboRougelike.R3;
+using RoboRougelike.R4;
 using UnityEngine;
 
 public sealed class UI943PortraitRewardsLayoutTests
@@ -21,6 +23,29 @@ public sealed class UI943PortraitRewardsLayoutTests
     }
     static void In(Rect outer,Rect inner,string name)
     {Assert.That(outer.Contains(inner.min)&&outer.Contains(inner.max-Vector2.one),Is.True,name);}
+    [Test] public void BasketSummaryGroupsIdenticalPartsButKeepsDifferentTiersVisible()
+    {
+        var t1=new R3PartState(Vector3Int.zero,R3PartKind.Wheel,1);
+        var t2=new R3PartState(Vector3Int.zero,R3PartKind.Wheel,1){Tier=2};
+        var items=new[]{new R4SalvageItem(t1,1),new R4SalvageItem(t1.Copy(),.5f),new R4SalvageItem(t2,1)};
+        var text=(string)Method("RewardBasketContents").Invoke(null,new object[]{items});
+        Assert.That(text,Does.Contain("Koło terenowe ×2"));
+        Assert.That(text,Does.Contain("Koło terenowe T2"));
+    }
+    [Test] public void ActualPortraitBasketCardsFitWithoutCoveringTheirControls()
+    {
+        var canvas=new Rect(0,0,768,1024);
+        for(int i=0;i<3;i++)
+        {
+            var card=RectOf("PortraitRewardBasketCard",i);
+            var info=RectOf("PortraitRewardBasketInfo",i);
+            var button=RectOf("PortraitRewardBasketButton",i);
+            In(canvas,card,"Zestaw "+i);In(card,info,"Opis zestawu "+i);In(card,button,"Przycisk zestawu "+i);
+            Assert.That(info.Overlaps(button),Is.False);
+            Assert.That(card.Overlaps(RectOf("PortraitRewardPager")),Is.False);
+            if(i>0)Assert.That(card.Overlaps(RectOf("PortraitRewardBasketCard",i-1)),Is.False);
+        }
+    }
     [TestCase(768,1024,true)] [TestCase(1024,768,false)] [TestCase(1920,1080,false)]
     public void PortraitIsOnlyUsedForUnobscuredSalvage(int width,int height,bool expected)
     {

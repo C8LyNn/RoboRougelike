@@ -73,6 +73,9 @@ namespace RoboRougelike.R1
         }
         private static Color BasketColor(R4SalvageBasket basket)=>basket.Percent>=66?new Color(.48f,.9f,.55f):
             basket.Percent>=33?new Color(.45f,.82f,.95f):Color.white;
+        private static string RewardBasketContents(IEnumerable<R4SalvageItem> items)=>string.Join(", ",
+            items.GroupBy(item=>R4WeaponDefinition.PartName(item.ToPart()))
+                .Select(group=>group.Count()>1?$"{group.Key} ×{group.Count()}":group.Key));
         private static int RewardShortcutIndex(bool first,bool second,bool third)=>first?0:second?1:third?2:-1;
         private static string RewardConfirmCaption(int basketCount)=>basketCount==0?
             "Odbierz bonus [Enter]":"Zatwierdź oba wybory [Enter]";
@@ -134,7 +137,7 @@ namespace RoboRougelike.R1
                 GUI.contentColor=BasketColor(basket);
                 GUI.Label(new Rect(x+10,y+6,520,28),$"{R3EnemyProfiles.Name(basket.Archetype)} • {basket.Items.Count}/{basket.AvailableParts} części",body);
                 GUI.contentColor=Color.white;
-                GUI.Label(new Rect(x+10,y+39,535,54),string.Join(", ",basket.Items.Select(p=>R4WeaponDefinition.PartName(p.ToPart())))+"\nWszystkie części sprawne (100% HP)",small);
+                GUI.Label(new Rect(x+10,y+39,535,54),RewardBasketContents(basket.Items)+"\nWszystkie części sprawne (100% HP)",small);
                 bool chosen=selectedBasket==i;
                 GUI.backgroundColor=chosen?new Color(.35f,.85f,.65f):Color.white;
                 string key=i<3?"QWE"[i].ToString():null;
