@@ -242,7 +242,33 @@ namespace RoboRougelike.R1
         }
         static string AbilityStatus(MOVSeriesVehicleAdapter a,R3PartKind kind)
         {
-            float wait=a.ReadyIn(kind);return float.IsPositiveInfinity(wait)?"brak":wait>.05f?$"{wait:0.0} s":"gotowy";
+            float wait=a.ReadyIn(kind);return float.IsPositiveInfinity(wait)?"niedostępny":wait>.05f?$"{wait:0.0} s":"gotowy";
+        }
+        readonly List<string> compactMovementRows=new List<string>(5);
+        static string CompactMovementPair(string first,string second)=>string.IsNullOrEmpty(first)?second:
+            string.IsNullOrEmpty(second)?first:first+" • "+second;
+        static Rect CompactMovementPanelRect(int rows)
+        {
+            float top=615-Mathf.Clamp(rows,1,5)*24-10;
+            return new Rect(18,top,610,615-top);
+        }
+        void RebuildMovementRows(R1RunController run,MOVSeriesVehicleAdapter a,string steeringStatus)
+        {
+            var m=run.VehicleModel;compactMovementRows.Clear();
+            compactMovementRows.Add($"NAPĘD: {driveNames[(int)m.SelectedDrive]} • {(a.HasActiveDrive?"sprawny":"niedostępny")}");
+            bool Installed(R3PartKind kind)=>m.Parts.Any(p=>p.Kind==kind);
+            void AddPair(string first,string second)
+            {string line=CompactMovementPair(first,second);if(!string.IsNullOrEmpty(line))compactMovementRows.Add(line);}
+            AddPair(Installed(R3PartKind.Booster)?$"Shift Booster: {(a.Boosting?"aktywny":AbilityStatus(a,R3PartKind.Booster))}":null,
+                Installed(R3PartKind.JumpDrive)?$"Spacja skok: {AbilityStatus(a,R3PartKind.JumpDrive)}":null);
+            string grapple=Installed(R3PartKind.MagneticGrapple)?a.OperationalCount(R3PartKind.MagneticGrapple)==0?"niedostępny":
+                a.GrappleAttached?"E zwalnia":m.GrappleReadyAt>Time.time?$"{m.GrappleReadyAt-Time.time:0.0} s":"gotowy":null;
+            AddPair(Installed(R3PartKind.Blink)?$"Q Blink: {AbilityStatus(a,R3PartKind.Blink)}":null,
+                grapple!=null?$"E zaczep: {grapple}":null);
+            AddPair(Installed(R3PartKind.Gyroscope)?$"G żyroskop: {(a.OperationalCount(R3PartKind.Gyroscope)==0?"niedostępny":m.GyroEnabled?"ON":"OFF")}":null,
+                m.SelectedDrive==R3DriveKind.Hover?$"Hover: {m.HoverHeightMeters:0.0} m":null);
+            string detail=steeringStatus??a.Feedback;
+            if(!string.IsNullOrEmpty(detail))compactMovementRows.Add(detail);
         }
         void DrawMovementTelemetry(R1RunController run)
         {
@@ -255,13 +281,9 @@ namespace RoboRougelike.R1
                 {Panel(new Rect(18,565,610,50));GUI.Label(new Rect(33,577,580,28),steering.Status,small);}
                 return;
             }
-            Panel(new Rect(18,490,610,125));var m=run.VehicleModel;
-            GUI.Label(new Rect(33,495,580,23),$"NAPĘD: {driveNames[(int)m.SelectedDrive]}",small);
-            GUI.Label(new Rect(33,519,580,23),$"Shift Booster: {(a.Boosting?"aktywny":AbilityStatus(a,R3PartKind.Booster))} • Spacja skok: {AbilityStatus(a,R3PartKind.JumpDrive)}",small);
-            string grapple=a.OperationalCount(R3PartKind.MagneticGrapple)==0?"brak":a.GrappleAttached?"E zwalnia":m.GrappleReadyAt>Time.time?$"{m.GrappleReadyAt-Time.time:0.0} s":"gotowy";
-            GUI.Label(new Rect(33,543,580,23),$"Q Blink: {AbilityStatus(a,R3PartKind.Blink)} • E zaczep: {grapple}",small);
-            GUI.Label(new Rect(33,567,580,23),$"G żyroskop: {(a.OperationalCount(R3PartKind.Gyroscope)==0?"brak":m.GyroEnabled?"ON":"OFF")} • Hover: {m.HoverHeightMeters:0.0} m • {(a.HasActiveDrive?"napęd sprawny":"utrata napędu")}",small);
-            GUI.Label(new Rect(33,590,580,23),steering!=null?steering.Status:a.Feedback??"Regulacja w garażu • Esc — pauza / zmiana napędu",small);
+            RebuildMovementRows(run,a,steering!=null?steering.Status:null);
+            var panel=CompactMovementPanelRect(compactMovementRows.Count);Panel(panel);
+            for(int i=0;i<compactMovementRows.Count;i++)GUI.Label(new Rect(33,panel.y+5+i*24,580,23),compactMovementRows[i],small);
         }
     }
 }

@@ -5,6 +5,19 @@ using UnityEngine;
 
 public sealed class UI943CombatHudLayoutTests
 {
+    [TestCase(1)][TestCase(2)][TestCase(3)][TestCase(4)][TestCase(5)]
+    public void CompactMovementPanelFitsBetweenDefenseAndRangeInstructions(int rows)
+    {
+        var flags=BindingFlags.NonPublic|BindingFlags.Static;
+        var movement=typeof(R1RunHUD).GetMethod("CompactMovementPanelRect",flags);
+        var defense=typeof(R1RunHUD).GetMethod("DefensePanelRect",flags);
+        Assert.That(movement,Is.Not.Null);Assert.That(defense,Is.Not.Null);
+        var panel=(Rect)movement.Invoke(null,new object[]{rows});
+        var defensePanel=(Rect)defense.Invoke(null,new object[]{9});
+        Assert.That(panel.Overlaps(defensePanel),Is.False);
+        Assert.That(panel.yMax,Is.LessThanOrEqualTo(625));
+        Assert.That(panel.height,Is.GreaterThanOrEqualTo(rows*24));
+    }
     [TestCase(1)] [TestCase(4)] [TestCase(9)]
     public void DefenseHeadingAndRowsFitInsideTheirPanel(int count)
     {
