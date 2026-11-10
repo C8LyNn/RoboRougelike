@@ -123,7 +123,7 @@ namespace RogueMachine.P12PipelineSafe
                 if(depth>=DamageTransferMaxHops)continue;
                 foreach(var cell in OccupiedGridCells(block))foreach(var offset in Neighbours)
                 {
-                    if(!grid.TryGetValue(cell+offset,out var other)||other==null||other==block||
+                    if(!grid.TryGetValue(cell+offset,out var other)||other==null||other==block||!other.gameObject.activeInHierarchy||
                         other.DetachedFromVehicle||!other.transform.IsChildOf(transform)||
                         !RoboRougelike.R3.R3MountingGrid.Compatible(block,cell,other,cell+offset))continue;
                     if(!health.TryGetValue(other,out var hp))
