@@ -483,8 +483,7 @@ namespace RoboRougelike.R3
             if(recovered==null)return false;
             var batch=recovered.ToArray();
             if(inventory.Count+batch.Length>InventoryCapacity)return false;
-            if(batch.Any(p=>p==null||float.IsNaN(p.Health)||float.IsInfinity(p.Health)||p.Health<0||p.Health>1||
-                !ValidEconomicKind(p.Kind,p.Weapon)||!ValidWheelStyle(p)||!ValidArmorShape(p)||!ValidFootprint(p)||p.Kind==R3PartKind.Armor||p.Kind==R3PartKind.Core||
+            if(batch.Any(p=>!ValidEconomicPart(p)||p.Kind==R3PartKind.Armor||p.Kind==R3PartKind.Core||
                 (p.Kind==R3PartKind.BonusModule&&(string.IsNullOrWhiteSpace(p.UpgradeId)||
                     !Enum.IsDefined(typeof(R1UpgradeEffect),p.UpgradeEffect)||float.IsNaN(p.UpgradeAmount)||
                     float.IsInfinity(p.UpgradeAmount)||p.UpgradeAmount<0||p.UpgradeAmount>1))||
