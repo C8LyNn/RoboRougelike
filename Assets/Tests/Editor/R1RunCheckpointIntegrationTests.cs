@@ -70,6 +70,35 @@ public sealed class R1RunCheckpointIntegrationTests
         finally{run.Definition.RouteStages=stages;if(File.Exists(technologyPath))File.Delete(technologyPath);}
         yield return null;
     }
+    [UnityTest] public IEnumerator SuccessfulLoadClearsResolvedTechnologyWriteError()
+    {
+        var progress=new R1RunProgress(6,true);Assert.That(progress.Start()&&progress.PrepareGarage(),Is.True);
+        var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
+        var gun=new R3PartState(default,R3PartKind.Gun){Weapon=RoboRougelike.R4.R4WeaponKind.Railgun};
+        Assert.That(model.ReceiveSalvage(new[]{gun}),Is.True);
+        R1RunCheckpointStorage.Write(path,new R1RunCheckpoint{vehicle=(int)R3VehicleKind.Light,
+            runId=Guid.NewGuid().ToString("N"),progress=progress.MakeGarageCheckpoint(),model=model.MakeCheckpoint(Time.time)});
+        string parent=path+"-tech-blocked",target=Path.Combine(parent,"technology.json");
+        try
+        {
+            File.WriteAllText(parent,"temporary blocker");var technology=new R1TechnologyProgress(target);
+            technology.Discover(new[]{gun});Assert.That(technology.Error,Is.Not.Null);
+            typeof(R1RunController).GetProperty("Technology").GetSetMethod(true).Invoke(run,new object[]{technology});
+            typeof(R1RunController).GetProperty("TechnologyMessage").GetSetMethod(true).Invoke(run,new object[]{technology.Error});
+            File.Delete(parent);Directory.CreateDirectory(parent);
+            Assert.That(run.LoadRunCheckpoint(),Is.True,run.RunSaveMessage);
+            Assert.That(technology.Error,Is.Null);Assert.That(File.Exists(target),Is.True);
+            Assert.That(run.TechnologyMessage,Does.Not.Contain("Nie zapisano"));
+            Assert.That(new R1TechnologyProgress(target).IsUnlocked(R3PartKind.Gun,RoboRougelike.R4.R4WeaponKind.Railgun),Is.True);
+        }
+        finally
+        {
+            if(File.Exists(target))File.Delete(target);
+            if(Directory.Exists(parent))Directory.Delete(parent);
+            if(File.Exists(parent))File.Delete(parent);
+        }
+        yield return null;
+    }
     [UnityTest] public IEnumerator SelectedStarterVariantAndBudgetSurviveSaveAndLoad()
     {
         Assert.That(run.SelectVehicle(R3VehicleKind.Light,3),Is.True);

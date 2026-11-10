@@ -103,6 +103,37 @@ public sealed class BacklogTechnologyIntegrationTests
         Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));
         Assert.That(run.GaragePurchase(R3PartKind.Gun,R4WeaponKind.Railgun),Is.True,"Defeated enemy unlocks future purchases.");
     }
+    [UnityTest] public IEnumerator RecoveredTechnologySaveDoesNotKeepTheOldErrorMessage()
+    {
+        string parent=path+"-blocked";
+        string target=Path.Combine(parent,"technology.json");
+        try
+        {
+            // A regular file in place of the parent directory forces a real,
+            // recoverable write error without touching the player's profile.
+            File.WriteAllText(parent,"temporary blocker");
+            var technology=new R1TechnologyProgress(target);
+            typeof(R1RunController).GetProperty("Technology").GetSetMethod(true).Invoke(run,new object[]{technology});
+            var part=new R3PartState(default,R3PartKind.Gun){Weapon=R4WeaponKind.Railgun};
+            var item=new R4SalvageItem(part,1);
+            run.DiscoverEnemyTechnology(new[]{item});
+            Assert.That(technology.Error,Is.Not.Null,"The first real write must fail.");
+            Assert.That(run.TechnologyMessage,Is.EqualTo(technology.Error));
+            File.Delete(parent);Directory.CreateDirectory(parent);
+            run.DiscoverEnemyTechnology(new[]{item});
+            Assert.That(technology.Error,Is.Null,"A later discovery retries the dirty profile.");
+            Assert.That(File.Exists(target),Is.True);
+            Assert.That(new R1TechnologyProgress(target).IsUnlocked(R3PartKind.Gun,R4WeaponKind.Railgun),Is.True);
+            Assert.That(run.TechnologyMessage,Does.Not.Contain("Nie zapisano"),"The reward screen must not retain a resolved error.");
+        }
+        finally
+        {
+            if(File.Exists(target))File.Delete(target);
+            if(Directory.Exists(parent))Directory.Delete(parent);
+            if(File.Exists(parent))File.Delete(parent);
+        }
+        yield return null;
+    }
     [UnityTearDown] public IEnumerator Cleanup()
     {if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}if(!string.IsNullOrEmpty(path)&&File.Exists(path))File.Delete(path);}
 }

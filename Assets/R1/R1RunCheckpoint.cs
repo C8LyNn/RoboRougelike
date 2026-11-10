@@ -121,8 +121,9 @@ namespace RoboRougelike.R1
                 Player=player;followCamera.Configure(Player.transform,Player.CameraPivot);SetSimulation(false);Garage.Open();
                 // Only a successfully restored garage may unlock technology;
                 // a rejected route or failed construction must not persist it.
-                Technology?.Discover(restoredModel.Parts.Concat(restoredModel.Inventory));
-                if(Technology?.Error!=null)TechnologyMessage=Technology.Error;
+                string previousTechnologyError=Technology?.Error;
+                int discoveries=Technology?.Discover(restoredModel.Parts.Concat(restoredModel.Inventory))??0;
+                UpdateTechnologyMessage(discoveries,previousTechnologyError);
                 RunSaveMessage=restoredModel.LegacyGunScalePending>0?
                     "Wczytano starszy zapis bez zmian broni: zwolnij miejsce w magazynie, aby bezpiecznie dostosować jej rozmiar.":
                     restoredModel.LegacyPartsMovedToInventory>0||restoredModel.LegacyPortPartsMovedToInventory>0?
