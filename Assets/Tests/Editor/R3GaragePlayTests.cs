@@ -337,38 +337,62 @@ public class R3GaragePlayTests
     [UnityTest] public IEnumerator PaidRepairsNewModulesIndependentEnemiesAndCleanRestart()
     {
         Run.Encounter.SetCombatActive(false);
+        int startingScrap=Run.VehicleModel.Scrap,startingParts=Run.VehicleModel.Parts.Count;
         var assembly=Run.Player.GetComponent<R3VehicleAssembly>();
         var profiles=new System.Collections.Generic.HashSet<R3EnemyArchetype>{Run.Encounter.Enemies[0].Archetype};
         var wheel=assembly.Parts.First(p=>p.Kind==R3PartKind.Wheel);var wheelCell=wheel.Cell;
-        wheel.Damageable.ApplyDamage(1000,wheel.transform.position,Vector3.right);
+        wheel.Damageable.ApplyDamage(wheel.Damageable.MaxHp*2,wheel.transform.position,Vector3.right);
         Run.Player.Core.ApplyDamage(10,Run.Player.Core.transform.position,Vector3.forward);
-        var armor=assembly.Parts.First(p=>p.Kind==R3PartKind.Armor);var armorCell=armor.Cell;
+        var armor=assembly.Parts.Where(p=>p.Kind==R3PartKind.Armor&&!p.Damageable.IsDead)
+            .OrderByDescending(p=>(p.transform.position-wheel.transform.position).sqrMagnitude).First();var armorCell=armor.Cell;
         armor.Damageable.ApplyDamage(25,armor.transform.position,Vector3.forward);
+        float armorHealth=armor.Damageable.CurrentHp/armor.Damageable.MaxHp;
+        Assert.That(armorHealth,Is.InRange(.001f,.999f),"The fixture needs a damaged, surviving armor part.");
         KillEnemies();yield return Until(()=>Run.Progress.State==R1RunState.Garage,"Pierwsze zwycięstwo.");
 
-        int reward=80+Run.Salvage.DismantledScrap;
+        int reward=startingScrap+Run.LastScrapReward+Run.Salvage.DismantledScrap;
         Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Garage));Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(reward));
         Assert.That(Run.VehicleModel.At(wheelCell).Health,Is.Zero);
-        Assert.That(Run.VehicleModel.At(armorCell).Health,Is.EqualTo(0.75f).Within(0.01));
-        Assert.That(Run.GarageRepair(Vector3Int.zero),Is.True);
-        Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(reward-1));
-        Assert.That(Run.GarageRepair(wheelCell),Is.True);Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(reward-7));
-        Assert.That(Run.Player.Modules.ActiveWheelCount,Is.EqualTo(6));
-        Assert.That(Run.GarageRepair(armorCell),Is.True);Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(reward-8));
+        Assert.That(Run.VehicleModel.At(armorCell).Health,Is.EqualTo(armorHealth).Within(0.01));
+        int coreQuote=Run.VehicleModel.RepairCost(Run.VehicleModel.At(Vector3Int.zero));
+        Assert.That(coreQuote,Is.GreaterThan(0));Assert.That(Run.GarageRepair(Vector3Int.zero),Is.True);
+        Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(reward-coreQuote));
+        int wheelQuote=Run.VehicleModel.RepairCost(Run.VehicleModel.At(wheelCell));
+        Assert.That(wheelQuote,Is.GreaterThan(0));Assert.That(Run.GarageRepair(wheelCell),Is.True);
+        Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(reward-coreQuote-wheelQuote));
+        int wheelsBefore=Run.Player.Modules.ActiveWheelCount;
+        Assert.That(wheelsBefore,Is.GreaterThan(1));
+        int armorQuote=Run.VehicleModel.RepairCost(Run.VehicleModel.At(armorCell));
+        Assert.That(armorQuote,Is.GreaterThan(0));Assert.That(Run.GarageRepair(armorCell),Is.True);
+        Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(reward-coreQuote-wheelQuote-armorQuote));
         Assert.That(Run.GarageBuy(new Vector3Int(0,2,-2),R3PartKind.Armor),Is.True,Run.VehicleModel.PlacementError(new Vector3Int(0,2,-2),R3PartKind.Armor));
-        var extraGunCell=new Vector3Int(2,2,-2);var extraWheelCell=new Vector3Int(0,0,3);
+        var directions=new[]{Vector3Int.up,Vector3Int.down,Vector3Int.left,Vector3Int.right,Vector3Int.forward,Vector3Int.back};
+        Vector3Int[] CandidateCells()=>Run.VehicleModel.Parts.SelectMany(part=>directions.Select(direction=>part.Cell+direction)).Distinct().ToArray();
+        var gunPosition=CandidateCells().Where(cell=>Run.VehicleModel.PlacementError(cell,R3PartKind.Gun)==null)
+            .Select(cell=>(Vector3Int?)cell).FirstOrDefault();
+        Assert.That(gunPosition.HasValue,Is.True,"A valid gun socket with physical clearance must exist.");
+        var extraGunCell=gunPosition.Value;
         Assert.That(Run.GarageBuy(extraGunCell,R3PartKind.Gun),Is.True,Run.VehicleModel.PlacementError(extraGunCell,R3PartKind.Gun));
-        Assert.That(Run.GarageBuy(extraWheelCell,R3PartKind.Wheel,new Vector3Int(0,1,0)),Is.True,Run.VehicleModel.PlacementError(extraWheelCell,R3PartKind.Wheel,false,default,new Vector3Int(0,1,0)));
-        Assert.That(Run.Player.Modules.ActiveWheelCount,Is.EqualTo(7));Assert.That(Run.Player.Modules.ActiveWeaponCount,Is.EqualTo(3));
+        var wheelPosition=CandidateCells().SelectMany(cell=>new[]{0,1,2,3}.Select(y=>new{cell,rotation=new Vector3Int(0,y,0)}))
+            .FirstOrDefault(candidate=>Run.VehicleModel.PlacementError(candidate.cell,R3PartKind.Wheel,false,default,candidate.rotation)==null);
+        Assert.That(wheelPosition,Is.Not.Null,"A side-facing wheel with a valid physical socket must exist.");
+        Assert.That(Run.GarageBuy(wheelPosition.cell,R3PartKind.Wheel,wheelPosition.rotation),Is.True);
+        Assert.That(Run.Player.Modules.ActiveWheelCount,Is.EqualTo(wheelsBefore+1));Assert.That(Run.Player.Modules.ActiveWeaponCount,Is.EqualTo(3));
         Assert.That(Run.GarageBuy(new Vector3Int(0,3,-2),R3PartKind.Armor),Is.True);
         Assert.That(Run.GarageRemove(new Vector3Int(0,2,-2)),Is.False,"Usunięcie mostu jest blokowane.");
         Assert.That(Run.GarageRemove(new Vector3Int(0,3,-2)),Is.True);
         Assert.That(Run.GarageRemove(Vector3Int.zero),Is.False);
+        var blinkPosition=CandidateCells().Where(cell=>Run.VehicleModel.PlacementError(cell,R3PartKind.Blink)==null)
+            .Select(cell=>(Vector3Int?)cell).FirstOrDefault();
+        Assert.That(blinkPosition.HasValue,Is.True,"The insufficient-funds check needs a valid empty socket first.");
         int beforePurchase=Run.VehicleModel.Scrap;
         Assert.That(Run.GaragePurchase(R3PartKind.Battery),Is.True);
-        int funds=Run.VehicleModel.Scrap;Assert.That(funds,Is.EqualTo(beforePurchase-Run.VehicleModel.Price(R3PartKind.Battery)));
+        Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(beforePurchase-Run.VehicleModel.Price(R3PartKind.Battery)));
+        while(Run.VehicleModel.Scrap>=Run.VehicleModel.Price(R3PartKind.Blink))
+            Assert.That(Run.GaragePurchase(R3PartKind.Battery),Is.True,"Buy real inventory parts until the blink is unaffordable.");
+        int funds=Run.VehicleModel.Scrap;
         Assert.That(Run.GarageBuy(extraGunCell,R3PartKind.Gun),Is.False);
-        var blinkCell=new Vector3Int(0,2,-1);
+        var blinkCell=blinkPosition.Value;
         Assert.That(funds,Is.LessThan(Run.VehicleModel.Price(R3PartKind.Blink)));
         Assert.That(Run.VehicleModel.PlacementError(blinkCell,R3PartKind.Blink),Does.Contain("Za mało Złomu"));
         Assert.That(Run.GarageBuy(blinkCell,R3PartKind.Blink),Is.False,"Brak środków.");
@@ -382,10 +406,10 @@ public class R3GaragePlayTests
         assembly.FireGuns();Assert.That(UnityEngine.Object.FindObjectsByType<P17PhysicalShell>(FindObjectsSortMode.None).Length,Is.EqualTo(3));
         Assert.That(Run.Player.GetComponent<VehicleEnergyBank>().Current,Is.EqualTo(energyBefore).Within(.01f),"Podstawowe działa nie zużywają energii.");
         var extraGun=assembly.Parts.Single(p=>p.Cell==extraGunCell);
-        extraGun.Damageable.ApplyDamage(1000,extraGun.transform.position,Vector3.forward);assembly.Capture();
+        extraGun.Damageable.ApplyDamage(extraGun.Damageable.MaxHp*2,extraGun.transform.position,Vector3.forward);assembly.Capture();
         Assert.That(Run.Player.Modules.ActiveWeaponCount,Is.EqualTo(2));
         Assert.That(Run.StartNextEncounter(),Is.True);yield return Until(()=>!Run.Transitioning,"Druga walka.");
-        Assert.That(Run.Player.Modules.ActiveWeaponCount,Is.EqualTo(2));Assert.That(Run.VehicleModel.Parts.Count,Is.EqualTo(62));
+        Assert.That(Run.Player.Modules.ActiveWeaponCount,Is.EqualTo(2));Assert.That(Run.VehicleModel.Parts.Count,Is.EqualTo(startingParts+3));
         Assert.That(Run.Encounter.AliveCount,Is.EqualTo(3));
         var positions=Run.Encounter.Enemies.Select(e=>e.transform.position).ToArray();
         float moveUntil=Time.time+0.9f;yield return Until(()=>Time.time>=moveUntil,"Ruch dwóch AI.");
@@ -395,7 +419,17 @@ public class R3GaragePlayTests
         float end=Time.time+0.2f;yield return Until(()=>Time.time>=end,"Niezależna śmierć jednego AI.");
         Assert.That(Run.Encounter.AliveCount,Is.EqualTo(2));Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Combat));
         KillEnemies();yield return Until(()=>Run.Progress.State==R1RunState.Garage,"Drugie zwycięstwo.");
-        Assert.That(Run.GarageRepair(extraGunCell),Is.True);
+        var wreck=Run.VehicleModel.At(extraGunCell);
+        var neighbour=typeof(R3VehicleModel).GetMethod("HasAliveExternalNeighbour",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+        Assert.That((bool)neighbour.Invoke(Run.VehicleModel,new object[]{wreck.Cell,wreck.Kind,wreck.RotationQuarterTurns,wreck.ContactMask,wreck}),Is.False,
+            "This hit also destroyed the support, so rebuilding the gun alone must fail.");
+        int fundsBeforeRepairs=Run.VehicleModel.Scrap;
+        Assert.That(Run.GarageRepair(extraGunCell),Is.False,"A gun cannot be restored without an intact connection.");
+        Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(fundsBeforeRepairs));
+        int rebuildQuote=Run.VehicleModel.AffordableRepairCost;
+        Assert.That(rebuildQuote,Is.GreaterThan(0));Assert.That(Run.GarageRepairAffordable(),Is.True);
+        Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(fundsBeforeRepairs-rebuildQuote));
+        Assert.That(Run.VehicleModel.At(extraGunCell).Health,Is.EqualTo(1),"Repair must reconnect the support and the gun.");
         Assert.That(Run.Player.Modules.ActiveWeaponCount,Is.EqualTo(3));
         Assert.That(Run.StartNextEncounter(),Is.True);yield return Until(()=>!Run.Transitioning,"Trzecia walka.");
         Assert.That(Run.Encounter.AliveCount,Is.EqualTo(4));
@@ -403,7 +437,7 @@ public class R3GaragePlayTests
         moveUntil=Time.time+0.9f;yield return Until(()=>Time.time>=moveUntil,"Ruch trzech AI.");
         for(int i=0;i<4;i++){Assert.That(Vector3.Distance(positions[i],Run.Encounter.Enemies[i].transform.position),Is.GreaterThan(0.1f));profiles.Add(Run.Encounter.Enemies[i].Archetype);}
         Assert.That(profiles.Count,Is.EqualTo(4));
-        Assert.That(Run.Player.Modules.ActiveWheelCount,Is.EqualTo(7));Assert.That(Run.Progress.Acquired.Count,Is.EqualTo(2));
+        Assert.That(Run.Player.Modules.ActiveWheelCount,Is.EqualTo(wheelsBefore+1));Assert.That(Run.Progress.Acquired.Count,Is.EqualTo(2));
         KillEnemies();yield return Until(()=>Run.Progress.State==R1RunState.Garage,"Trzecie starcie.");
         while(Run.Progress.State==R1RunState.Garage)
         {
@@ -413,7 +447,9 @@ public class R3GaragePlayTests
         Assert.That(Run.Progress.State,Is.EqualTo(R1RunState.Won));
         var previous=Run;Run.RestartRun();yield return Until(()=>Run!=null&&Run!=previous&&Run.Progress!=null,"Nowa próba.");
         Run.StartRun();yield return Until(()=>!Run.Transitioning,"Nienaruszony wzorzec.");
-        Assert.That(Run.VehicleModel.Scrap,Is.Zero);Assert.That(Run.VehicleModel.Parts.Count,Is.EqualTo(59));Assert.That(Run.Progress.Acquired,Is.Empty);
+        Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(R3VehicleCatalog.StartingScrap(Run.SelectedVehicle)));
+        Assert.That(Run.VehicleModel.Parts.Count,Is.EqualTo(R3VehicleCatalog.Create(Run.SelectedVehicle,Run.SelectedVehicleVariant).Parts.Count));
+        Assert.That(Run.Progress.Acquired,Is.Empty);
     }
 
     [UnityTest] public IEnumerator TurretSupportLossDropsEntireRemainingWeapon()
