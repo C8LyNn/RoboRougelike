@@ -42,8 +42,11 @@ public sealed class FullMergeAdditionalRegression
     }
     [UnityTest]public IEnumerator LostPartRestorationCannotSpendOrRecreateThroughForeignCollider()
     {
-        var assembly=run.Player.GetComponent<R3VehicleAssembly>();var part=assembly.Parts.Single(p=>p.Cell==new Vector3Int(1,0,2));var cell=part.Cell;
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();var part=assembly.Parts.Single(p=>p.Cell==new Vector3Int(1,0,2));var cell=part.Cell;var id=part.Id;
         part.Damageable.ApplyDamage(100000,part.transform.position,Vector3.zero);assembly.Capture();yield return null;yield return null;
+        // This fixture isolates foreign geometry, not secondary damage from the
+        // newer connected-part damage distribution.
+        foreach(var state in run.VehicleModel.Parts.Where(p=>p.Id!=id))state.Health=1f;
         Assert.That(run.VehicleModel.At(cell).Health,Is.Zero);
         var obstacle=GameObject.CreatePrimitive(PrimitiveType.Cube);obstacle.transform.position=run.Player.transform.TransformPoint((Vector3)cell*.55f);obstacle.transform.localScale=Vector3.one*.3f;Physics.SyncTransforms();
         int scrap=run.VehicleModel.Scrap;Assert.That(run.GarageRepair(cell),Is.False);Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));Assert.That(run.VehicleModel.At(cell).Health,Is.Zero);

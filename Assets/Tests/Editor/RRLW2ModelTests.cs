@@ -104,7 +104,10 @@ public class RRLW2ModelTests
         Assert.That(m.RepairInventory("wreck"),Is.False);Assert.That(m.Scrap,Is.EqualTo(10));
         m.Award(1);Assert.That(m.RepairInventory("wreck"),Is.True);Assert.That(m.Scrap,Is.Zero);
         Assert.That(m.RepairInventory("wreck"),Is.False);Assert.That(m.Inventory.Single().Health,Is.EqualTo(1));
-        Assert.That(m.Mount("wreck",Vector3Int.forward),Is.True);
+        // Current guns mount by their base, with a free cell between turrets.
+        m.Parts.Add(new R3PartState(Vector3Int.forward,R3PartKind.Armor));
+        m.Parts.Add(new R3PartState(Vector3Int.forward*2,R3PartKind.Armor));
+        Assert.That(m.Mount("wreck",Vector3Int.forward*2+Vector3Int.up),Is.True);
     }
     [Test] public void EmergencyRebuildCannotBeFreeOrPartiallySpendWhenUnaffordable()
     {
@@ -138,7 +141,9 @@ public class RRLW2ModelTests
     [Test] public void ThreatIncludesTheActuallySpawnedNormalEscort()
     {
         var a=new R1EncounterDefinition{Roster=new[]{R3EnemyArchetype.Scout},Variants=new[]{R5EnemyVariant.Normal},EnemyCount=1,MoveSpeed=0,HealthMultiplier=1,DamageMultiplier=1,FireIntervalMultiplier=1,Arena=R5ArenaKind.SalvageYard};
-        Assert.That(R5RunPlan.Threat(a),Is.EqualTo(5.6f).Within(.001f),"Two normal scouts: (0.8+1+1)*2.");
+        Assert.That(a.SpawnArchetype(0),Is.EqualTo(R3EnemyArchetype.Scout));
+        Assert.That(a.SpawnArchetype(1),Is.EqualTo(R3EnemyArchetype.Gunner),"The escort diversifies an all-scout roster.");
+        Assert.That(R5RunPlan.Threat(a),Is.EqualTo(7.616f).Within(.001f),"Scout plus gunner, including the mixed-roster factor.");
     }
     [Test] public void CoreNeverEntersLootAndArmorCanOnlyBeDismantled()
     {
