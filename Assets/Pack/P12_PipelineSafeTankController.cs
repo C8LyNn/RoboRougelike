@@ -1307,6 +1307,12 @@ public float CurrentForwardSpeed =>
     {
         private static readonly System.Collections.Generic.HashSet<P17PhysicalShell> activeShells =
             new System.Collections.Generic.HashSet<P17PhysicalShell>();
+        // Unity physics and component traversal run on the main thread. Keep
+        // one reusable scratch list, but isolate a nested setup if a physics
+        // callback ever causes another projectile to be configured here.
+        private static readonly System.Collections.Generic.List<Collider> ownerColliderBuffer =
+            new System.Collections.Generic.List<Collider>();
+        private static bool ownerColliderBufferInUse;
         public static int AvailableSlots => Mathf.Max(0,96-activeShells.Count);
         private void OnEnable()
         {
@@ -1410,27 +1416,19 @@ public float CurrentForwardSpeed =>
                 ownerRoot == null)
                 return;
 
-            Collider[] ownerColliders =
-                ownerRoot
-                .GetComponentsInChildren<
-                    Collider
-                >(true);
-
-            foreach (
-                Collider ownerCollider
-                in ownerColliders)
+            bool shared=!ownerColliderBufferInUse;
+            var ownerColliders=shared?ownerColliderBuffer:new System.Collections.Generic.List<Collider>();
+            if(shared)ownerColliderBufferInUse=true;
+            try
             {
-                if (ownerCollider == null ||
-                    ownerCollider ==
-                    ownCollider)
-                    continue;
-
-                Physics.IgnoreCollision(
-                    ownCollider,
-                    ownerCollider,
-                    true
-                );
+                ownerRoot.GetComponentsInChildren(true,ownerColliders);
+                foreach (Collider ownerCollider in ownerColliders)
+                {
+                    if (ownerCollider == null || ownerCollider == ownCollider)continue;
+                    Physics.IgnoreCollision(ownCollider,ownerCollider,true);
+                }
             }
+            finally { ownerColliders.Clear(); if(shared)ownerColliderBufferInUse=false; }
         }
 
         private void Update()
