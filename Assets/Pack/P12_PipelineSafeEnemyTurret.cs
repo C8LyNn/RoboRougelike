@@ -359,10 +359,12 @@ namespace RogueMachine.P12PipelineSafe
 
         public P12PipelineSafeDamageable Core => core;
         public bool IsDefeated => defeated || core == null || core.IsDead;
-        bool PrimaryWeaponOnline => variantGuns.Count>0?variantGuns.Any(g=>g.Online(transform)):weaponBlock != null && !weaponBlock.IsDead && weaponBlock.transform.IsChildOf(transform) &&
-            turretSupport != null && !turretSupport.IsDead && turretSupport.transform.IsChildOf(transform) &&
-            yawPivot != null && yawPivot.IsChildOf(transform) && muzzle != null && muzzle.IsChildOf(transform) &&
-            (turretAnchor==null||!turretAnchor.IsDead&&turretAnchor.transform.IsChildOf(transform));
+        static bool ActiveUnder(Transform part,Transform owner)=>
+            part!=null&&owner!=null&&part.gameObject.activeInHierarchy&&part.IsChildOf(owner);
+        bool PrimaryWeaponOnline => variantGuns.Count>0?variantGuns.Any(g=>g.Online(transform)):weaponBlock != null && !weaponBlock.IsDead && ActiveUnder(weaponBlock.transform,transform) &&
+            turretSupport != null && !turretSupport.IsDead && ActiveUnder(turretSupport.transform,transform) &&
+            ActiveUnder(yawPivot,transform) && ActiveUnder(muzzle,transform) &&
+            (turretAnchor==null||!turretAnchor.IsDead&&ActiveUnder(turretAnchor.transform,transform));
         public bool WeaponOnline => PrimaryWeaponOnline||additionalGuns.Any(g=>g.Online(transform));
         public bool RecoveringFromPlayerContact => contactRecovery.Recovering;
 
@@ -1318,8 +1320,9 @@ namespace RogueMachine.P12PipelineSafe
             public Transform Pivot,Muzzle;
             public R4WeaponKind Kind;
             public float NextShot;
-            public bool Online(Transform owner)=>Block!=null&&!Block.IsDead&&Block.transform.IsChildOf(owner)&&
-                Support!=null&&!Support.IsDead&&Support.transform.IsChildOf(owner)&&Pivot!=null&&Muzzle!=null;
+            public bool Online(Transform owner)=>Block!=null&&!Block.IsDead&&ActiveUnder(Block.transform,owner)&&
+                Support!=null&&!Support.IsDead&&ActiveUnder(Support.transform,owner)&&
+                ActiveUnder(Pivot,owner)&&ActiveUnder(Muzzle,owner);
         }
         private readonly List<VariantGun> variantGuns=new List<VariantGun>();
         private readonly List<VariantGun> additionalGuns=new List<VariantGun>();

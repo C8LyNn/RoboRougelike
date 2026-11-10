@@ -31,6 +31,37 @@ public sealed class EnemyPinnedSelfDestructTests
         Assert.That(enemy.WeaponOnline,Is.False,"Detached guns cannot arm or fire for the enemy.");
         yield return null;
     }
+    [UnityTest] public IEnumerator InactiveOrDetachedWeaponComponentsDoNotKeepEnemyArmed()
+    {
+        var enemy=R1RunController.Instance.Encounter.Enemies.First();
+        var extras=enemy.AdditionalWeapons.ToArray();Assert.That(extras.Length,Is.GreaterThan(0));
+        var primary=enemy.WeaponBlock;Assert.That(primary,Is.Not.Null);
+        foreach(var gun in extras)gun.Block.gameObject.SetActive(false);
+        Assert.That(enemy.WeaponOnline,Is.True,"The primary is still operational.");
+        primary.gameObject.SetActive(false);
+        Assert.That(enemy.WeaponOnline,Is.False,"Inactive guns cannot keep the enemy armed.");
+        primary.gameObject.SetActive(true);
+        Assert.That(enemy.WeaponOnline,Is.True,"Reactivating the primary restores its state.");
+        primary.gameObject.SetActive(false);
+        var extra=extras[0];extra.Block.gameObject.SetActive(true);
+        Assert.That(enemy.WeaponOnline,Is.True);
+        var pivotParent=extra.Pivot.parent;
+        try
+        {
+            extra.Pivot.SetParent(null,true);
+            Assert.That(enemy.WeaponOnline,Is.False,"A detached aiming assembly cannot operate as an attached gun.");
+        }
+        finally{if(extra.Pivot!=null)extra.Pivot.SetParent(pivotParent,true);}
+        Assert.That(enemy.WeaponOnline,Is.True);
+        var muzzleParent=extra.Muzzle.parent;
+        try
+        {
+            extra.Muzzle.SetParent(null,true);
+            Assert.That(enemy.WeaponOnline,Is.False,"A detached muzzle cannot fire for the vehicle.");
+        }
+        finally{if(extra.Muzzle!=null)extra.Muzzle.SetParent(muzzleParent,true);}
+        yield return null;
+    }
     [UnityTest] public IEnumerator MobileButUnarmedEnemyExplodesNearPlayerAfterWarning()
     {
         var run=R1RunController.Instance;var enemy=run.Encounter.Enemies.First();
