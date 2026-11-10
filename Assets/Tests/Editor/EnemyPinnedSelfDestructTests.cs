@@ -62,6 +62,33 @@ public sealed class EnemyPinnedSelfDestructTests
         finally{if(extra.Muzzle!=null)extra.Muzzle.SetParent(muzzleParent,true);}
         yield return null;
     }
+    [UnityTest] public IEnumerator TemporarilyInactivePrimaryGunRemainsAttachedDuringCombat()
+    {
+        var enemy=R1RunController.Instance.Encounter.Enemies.First();
+        foreach(var gun in enemy.AdditionalWeapons)gun.Block.gameObject.SetActive(false);
+        var primary=enemy.WeaponBlock;var yaw=enemy.transform.Find("Enemy_Yaw");
+        Assert.That(primary,Is.Not.Null);Assert.That(yaw,Is.Not.Null);
+        enemy.SetCombatActive(true);primary.gameObject.SetActive(false);
+        yield return null;
+        Assert.That(enemy.WeaponOnline,Is.False);
+        Assert.That(enemy.HasAttachedWeapon,Is.True,"Temporarily unavailable guns remain physically attached.");
+        Assert.That(yaw.IsChildOf(enemy.transform),Is.True,"Inactive intact weapons must not be dropped as wrecks.");
+        primary.gameObject.SetActive(true);
+        Assert.That(enemy.WeaponOnline,Is.True,"An intact weapon must be usable again after reactivation.");
+    }
+    [UnityTest] public IEnumerator TemporarilyInactiveWeaponsDoNotStartSelfDestruct()
+    {
+        var run=R1RunController.Instance;var enemy=run.Encounter.Enemies.First();
+        run.Player.GetComponent<Rigidbody>().isKinematic=true;enemy.GetComponent<Rigidbody>().isKinematic=true;
+        enemy.transform.position=run.Player.transform.position+Vector3.forward*2;Physics.SyncTransforms();
+        foreach(var gun in enemy.AdditionalWeapons)gun.Block.gameObject.SetActive(false);
+        enemy.WeaponBlock.gameObject.SetActive(false);enemy.SetCombatActive(true);
+        float started=Time.time,deadline=Time.realtimeSinceStartup+15;
+        while(Time.time-started<5.5f&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(Time.time-started,Is.GreaterThanOrEqualTo(5f),"The warning duration must actually elapse.");
+        Assert.That(enemy.HasAttachedWeapon,Is.True);
+        Assert.That(enemy.IsDefeated,Is.False,"An inactive but intact weapon must not trigger self-destruction.");
+    }
     [UnityTest] public IEnumerator MobileButUnarmedEnemyExplodesNearPlayerAfterWarning()
     {
         var run=R1RunController.Instance;var enemy=run.Encounter.Enemies.First();

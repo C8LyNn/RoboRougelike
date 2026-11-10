@@ -361,11 +361,18 @@ namespace RogueMachine.P12PipelineSafe
         public bool IsDefeated => defeated || core == null || core.IsDead;
         static bool ActiveUnder(Transform part,Transform owner)=>
             part!=null&&owner!=null&&part.gameObject.activeInHierarchy&&part.IsChildOf(owner);
-        bool PrimaryWeaponOnline => variantGuns.Count>0?variantGuns.Any(g=>g.Online(transform)):weaponBlock != null && !weaponBlock.IsDead && ActiveUnder(weaponBlock.transform,transform) &&
-            turretSupport != null && !turretSupport.IsDead && ActiveUnder(turretSupport.transform,transform) &&
+        static bool AttachedUnder(Transform part,Transform owner)=>part!=null&&owner!=null&&part.IsChildOf(owner);
+        bool PrimaryWeaponAttached => weaponBlock!=null&&!weaponBlock.IsDead&&AttachedUnder(weaponBlock.transform,transform)&&
+            turretSupport!=null&&!turretSupport.IsDead&&AttachedUnder(turretSupport.transform,transform)&&
+            AttachedUnder(yawPivot,transform)&&AttachedUnder(muzzle,transform)&&
+            (turretAnchor==null||!turretAnchor.IsDead&&AttachedUnder(turretAnchor.transform,transform));
+        bool PrimaryWeaponOnline => variantGuns.Count>0?variantGuns.Any(g=>g.Online(transform)):PrimaryWeaponAttached&&
+            ActiveUnder(weaponBlock.transform,transform)&&ActiveUnder(turretSupport.transform,transform)&&
             ActiveUnder(yawPivot,transform) && ActiveUnder(muzzle,transform) &&
-            (turretAnchor==null||!turretAnchor.IsDead&&ActiveUnder(turretAnchor.transform,transform));
+            (turretAnchor==null||ActiveUnder(turretAnchor.transform,transform));
         public bool WeaponOnline => PrimaryWeaponOnline||additionalGuns.Any(g=>g.Online(transform));
+        public bool HasAttachedWeapon => (variantGuns.Count>0?variantGuns.Any(g=>g.Attached(transform)):PrimaryWeaponAttached)||
+            additionalGuns.Any(g=>g.Attached(transform));
         public bool RecoveringFromPlayerContact => contactRecovery.Recovering;
 
         public void ConfigureMovement(float speed, float distance, float strafe)
@@ -619,7 +626,7 @@ namespace RogueMachine.P12PipelineSafe
             if(additionalGuns.Count>0)UpdateVariantWeapons(additionalGuns,"extra-gun/");
             if (!PrimaryWeaponOnline)
             {
-                DropTurret();
+                if(!PrimaryWeaponAttached)DropTurret();
                 return;
             }
             if(weaponBlock!=null&&RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(weaponBlock.gameObject))return;
@@ -1330,9 +1337,11 @@ namespace RogueMachine.P12PipelineSafe
             public Transform Pivot,Muzzle;
             public R4WeaponKind Kind;
             public float NextShot;
-            public bool Online(Transform owner)=>Block!=null&&!Block.IsDead&&ActiveUnder(Block.transform,owner)&&
-                Support!=null&&!Support.IsDead&&ActiveUnder(Support.transform,owner)&&
-                ActiveUnder(Pivot,owner)&&ActiveUnder(Muzzle,owner);
+            public bool Attached(Transform owner)=>Block!=null&&!Block.IsDead&&AttachedUnder(Block.transform,owner)&&
+                Support!=null&&!Support.IsDead&&AttachedUnder(Support.transform,owner)&&
+                AttachedUnder(Pivot,owner)&&AttachedUnder(Muzzle,owner);
+            public bool Online(Transform owner)=>Attached(owner)&&ActiveUnder(Block.transform,owner)&&
+                ActiveUnder(Support.transform,owner)&&ActiveUnder(Pivot,owner)&&ActiveUnder(Muzzle,owner);
         }
         private readonly List<VariantGun> variantGuns=new List<VariantGun>();
         private readonly List<VariantGun> additionalGuns=new List<VariantGun>();

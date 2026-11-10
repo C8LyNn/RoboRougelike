@@ -30,7 +30,8 @@ namespace RoboRougelike.R1
             // An unarmed robot can otherwise push a player indefinitely while
             // neither side has a clear shot. Its remaining drive still rams;
             // the existing warning gives five seconds before a nearby blast.
-            bool disabled=!enemy.WeaponOnline;
+            // Temporary deactivation disables firing, but is not the loss of a weapon.
+            bool disabled=!enemy.HasAttachedWeapon;
             if(disabled&&warning==null)CreateWarning();
             if(warning!=null){warning.SetActive(disabled);if(disabled)warning.transform.localScale=Vector3.one*(.25f+.08f*Mathf.Sin(Time.time*8));}
             timer.Advance(disabled,false,Time.deltaTime);
