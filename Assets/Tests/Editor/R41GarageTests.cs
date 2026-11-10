@@ -205,6 +205,28 @@ public class R41GarageTests
         Assert.That(R3VehicleModel.ValidWheelOrientation(corrected.RotationQuarterTurns),Is.True);
         yield return null;
     }
+    [UnityTest] public IEnumerator ShiftEEventRotatesTheWheelUnderTheActualGaragePointer()
+    {
+        var garage=Run.Garage;var camera=Camera.main;Assert.That(camera,Is.Not.Null);
+        garage.SetTool(R41GarageTool.Inspect);
+        R3MountedPart pointed=null;Vector3 screen=default;
+        foreach(var part in Run.Player.GetComponent<R3VehicleAssembly>().Parts.Where(p=>p!=null&&p.Kind==R3PartKind.Wheel))
+        {
+            var at=camera.WorldToScreenPoint(part.transform.position);
+            if(at.z<=0||!R3GarageView.InBuildArea(at,Screen.width,Screen.height))continue;
+            if(!garage.Point(camera.ScreenPointToRay(at))||garage.Cell!=part.Cell)continue;
+            pointed=part;screen=at;break;
+        }
+        Assert.That(pointed,Is.Not.Null,"The actual garage viewport must expose a selectable wheel.");
+        string id=pointed.Id;var cell=pointed.Cell;int before=Run.VehicleModel.Scrap;
+        var key=new Event{type=EventType.KeyDown,keyCode=KeyCode.E,modifiers=EventModifiers.Shift};
+        garage.HandleGuiPointer(key,new Vector2(screen.x,Screen.height-screen.y));
+        Assert.That(key.type,Is.EqualTo(EventType.Used));
+        var rotated=Run.VehicleModel.At(cell);
+        Assert.That(rotated.Id,Is.EqualTo(id));Assert.That(rotated.RotationQuarterTurns.y,Is.EqualTo(2));
+        Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(before));Assert.That(garage.Tool,Is.EqualTo(R41GarageTool.Inspect));
+        yield return null;
+    }
     [UnityTest] public IEnumerator GhostColorTracksBlockedAndAllowedPlacementAfterReappearing()
     {
         var garage=Run.Garage;string id=PurchasePart(R3PartKind.Armor);garage.ChooseInventory(id);
