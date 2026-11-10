@@ -11,6 +11,20 @@ namespace RoboRougelike.R1
         float nextAttempt;
         public void Bind(R1RunController owner)=>run=owner;
 
+        public static bool TrySelectFieldSurface(RaycastHit[] hits,float vehicleY,out RaycastHit selected)
+        {
+            selected=default;bool found=false;float closest=float.PositiveInfinity;
+            if(hits==null||float.IsNaN(vehicleY)||float.IsInfinity(vehicleY))return false;
+            foreach(var hit in hits)
+            {
+                if(hit.collider==null||hit.collider.attachedRigidbody!=null||hit.normal.y<.7f)continue;
+                float separation=Mathf.Abs(hit.point.y-vehicleY);
+                if(separation>=closest)continue;
+                selected=hit;closest=separation;found=true;
+            }
+            return found;
+        }
+
         void FixedUpdate()
         {
             bool live=run!=null&&!run.Transitioning&&run.Player!=null&&run.Progress!=null&&
@@ -26,9 +40,9 @@ namespace RoboRougelike.R1
             foreach(var offset in new[]{new Vector3(5,0,4),new Vector3(-5,0,4),new Vector3(0,0,5)})
             {
                 var origin=player.position+offset+Vector3.up*12f;
-                foreach(var hit in Physics.RaycastAll(origin,Vector3.down,30f,~0,QueryTriggerInteraction.Ignore))
+                var hits=Physics.RaycastAll(origin,Vector3.down,30f,~0,QueryTriggerInteraction.Ignore);
+                if(TrySelectFieldSurface(hits,player.position.y,out var hit))
                 {
-                    if(hit.collider==null||hit.collider.attachedRigidbody!=null||hit.normal.y<.7f)continue;
                     var host=new GameObject("Pole ładowania energii");host.transform.SetParent(transform,false);
                     host.transform.position=hit.point;field=host.AddComponent<EnergyChargingField>();return;
                 }

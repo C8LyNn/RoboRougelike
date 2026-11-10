@@ -11,6 +11,28 @@ using RoboRougelike.R1;
 
 public sealed class EnergyCombatRefinementTests
 {
+    [Test] public void ChargingFieldChoosesSurfaceNearVehicleHeightRegardlessOfRaycastOrder()
+    {
+        var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);var upper=GameObject.CreatePrimitive(PrimitiveType.Cube);
+        try
+        {
+            var origin=new Vector3(12000,0,12000);
+            floor.transform.position=origin+Vector3.down*.5f;floor.transform.localScale=new Vector3(8,1,8);
+            upper.transform.position=origin+Vector3.up*4;upper.transform.localScale=new Vector3(2,1,2);
+            Physics.SyncTransforms();
+            var hits=Physics.RaycastAll(origin+Vector3.up*12,Vector3.down,20,~0,QueryTriggerInteraction.Ignore)
+                .Where(h=>h.collider==floor.GetComponent<Collider>()||h.collider==upper.GetComponent<Collider>())
+                .OrderByDescending(h=>h.point.y).ToArray();
+            Assert.That(hits.Length,Is.EqualTo(2));Assert.That(hits[0].collider,Is.EqualTo(upper.GetComponent<Collider>()));
+            var method=typeof(R1EnergyFieldDirector).GetMethod("TrySelectFieldSurface",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.Public);
+            Assert.That(method,Is.Not.Null,"Surface selection must not depend on Physics.RaycastAll ordering.");
+            var args=new object[]{hits,origin.y+.7f,default(RaycastHit)};
+            Assert.That((bool)method.Invoke(null,args),Is.True);Assert.That(((RaycastHit)args[2]).collider,Is.EqualTo(floor.GetComponent<Collider>()));
+            Array.Reverse(hits);args[0]=hits;Assert.That((bool)method.Invoke(null,args),Is.True);
+            Assert.That(((RaycastHit)args[2]).collider,Is.EqualTo(floor.GetComponent<Collider>()));
+        }
+        finally{UnityEngine.Object.DestroyImmediate(floor);UnityEngine.Object.DestroyImmediate(upper);}
+    }
     static System.Collections.Generic.List<string> InvokeEnemyGunAndCollectLogs(object enemy,System.Reflection.MethodInfo update,object list)
     {
         var messages=new System.Collections.Generic.List<string>();
