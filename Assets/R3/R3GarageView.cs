@@ -579,7 +579,7 @@ namespace RoboRougelike.R3
                         (p.Kind!=R3PartKind.Gun||(p.Weapon==mounted.Weapon&&p.FootprintRevision==mounted.FootprintRevision))&&
                         (p.Kind!=R3PartKind.Wheel||(p.WheelStyle==mounted.WheelStyle&&p.FootprintRevision==mounted.FootprintRevision))&&
                         (p.Kind!=R3PartKind.Armor||p.ArmorShape==mounted.ArmorShape)&&
-                        (p.Kind!=R3PartKind.BonusModule||p.UpgradeId==mounted.UpgradeId)).ToArray();
+                        (p.Kind!=R3PartKind.BonusModule||R3VehicleModel.SameBonusType(p,mounted))).ToArray();
                     var next=remaining.Where(p=>p.Health>0).OrderByDescending(p=>p.Health).FirstOrDefault();
                     SelectedInventoryId=next?.Id;
                     Message=MountedStackFeedback(remaining.Length,next!=null);

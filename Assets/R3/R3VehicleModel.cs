@@ -531,14 +531,17 @@ namespace RoboRougelike.R3
         }
         int OwnedPartValue(R3PartState part)=>Price(part.Kind,part.Weapon)*(NormalizedTier(part.Tier)==3?9:NormalizedTier(part.Tier)==2?3:1);
         public int DismantleValue(R3PartState part) => !ValidEconomicPart(part)?0:Mathf.FloorToInt(OwnedPartValue(part)*0.25f*Mathf.Clamp01(part.Health));
+        public static bool SameBonusType(R3PartState a,R3PartState b)=>a!=null&&b!=null&&
+            a.Kind==R3PartKind.BonusModule&&b.Kind==R3PartKind.BonusModule&&
+            !string.IsNullOrWhiteSpace(a.UpgradeId)&&a.UpgradeId==b.UpgradeId&&
+            Enum.IsDefined(typeof(R1UpgradeEffect),a.UpgradeEffect)&&a.UpgradeEffect==b.UpgradeEffect&&
+            !float.IsNaN(a.UpgradeAmount)&&!float.IsInfinity(a.UpgradeAmount)&&a.UpgradeAmount>=0&&a.UpgradeAmount<=1&&a.UpgradeAmount==b.UpgradeAmount;
         public static bool SameFusionType(R3PartState a,R3PartState b) => a!=null&&b!=null&&a.Kind==b.Kind&&
             NormalizedTier(a.Tier)==NormalizedTier(b.Tier)&&
             (a.Kind!=R3PartKind.Gun||(a.Weapon==b.Weapon&&a.FootprintRevision==b.FootprintRevision))&&
             (a.Kind!=R3PartKind.Wheel||(a.WheelStyle==b.WheelStyle&&a.FootprintRevision==b.FootprintRevision))&&
             (a.Kind!=R3PartKind.Armor||a.ArmorShape==b.ArmorShape)&&
-            (a.Kind!=R3PartKind.BonusModule||(!string.IsNullOrWhiteSpace(a.UpgradeId)&&a.UpgradeId==b.UpgradeId&&
-                Enum.IsDefined(typeof(R1UpgradeEffect),a.UpgradeEffect)&&a.UpgradeEffect==b.UpgradeEffect&&
-                !float.IsNaN(a.UpgradeAmount)&&!float.IsInfinity(a.UpgradeAmount)&&a.UpgradeAmount>=0&&a.UpgradeAmount<=1&&a.UpgradeAmount==b.UpgradeAmount));
+            (a.Kind!=R3PartKind.BonusModule||SameBonusType(a,b));
         public bool FuseInventory(IEnumerable<string> ids)
         {
             if(ids==null)return false;

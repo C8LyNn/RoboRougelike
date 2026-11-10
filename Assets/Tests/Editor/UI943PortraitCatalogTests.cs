@@ -78,4 +78,23 @@ public sealed class UI943PortraitCatalogTests
         Assert.That(entries.Count(e=>(R3PartKind)Field(e,"Kind")==R3PartKind.Gun),Is.EqualTo(R4WeaponDefinition.Count));
         Assert.That(entries.Select(e=>(Field(e,"Kind"),Field(e,"Weapon"),Field(e,"Group"))).Distinct().Count(),Is.EqualTo(entries.Length));
     }
+    [Test] public void DifferentBonusEffectsWithTheSameIdDoNotShareAStack()
+    {
+        var model=new R3VehicleModel(new R3VehicleDesign());
+        var damage=ScriptableObject.CreateInstance<R1UpgradeDefinition>();damage.Id="shared";damage.Title="Moduł";damage.Effect=R1UpgradeEffect.Damage;damage.Amount=.2f;
+        var strong=ScriptableObject.CreateInstance<R1UpgradeDefinition>();strong.Id="shared";strong.Title="Moduł";strong.Effect=R1UpgradeEffect.Damage;strong.Amount=.4f;
+        var speed=ScriptableObject.CreateInstance<R1UpgradeDefinition>();speed.Id="shared";speed.Title="Moduł";speed.Effect=R1UpgradeEffect.Mobility;speed.Amount=.2f;
+        try
+        {
+            Assert.That(model.ReceiveBonuses(new[]{damage,speed,strong,damage}),Is.True);
+            model.Inventory.Last().Tier=2;
+            var method=typeof(R1RunHUD).GetMethod("BuildCatalogEntries",BindingFlags.Static|BindingFlags.NonPublic);
+            var entries=((IEnumerable)method.Invoke(null,new object[]{model})).Cast<object>()
+                .Where(entry=>(R3PartKind)entry.GetType().GetField("Kind").GetValue(entry)==R3PartKind.BonusModule).ToArray();
+            Assert.That(entries.Length,Is.EqualTo(3),"Different effects and strengths must not be silently merged; tiers of the same bonus stay together.");
+            var names=entries.Select(entry=>(string)entry.GetType().GetField("Name").GetValue(entry)).ToArray();
+            Assert.That(names.Distinct().Count(),Is.EqualTo(3),"The player must be able to distinguish the stacks.");
+        }
+        finally{Object.DestroyImmediate(damage);Object.DestroyImmediate(strong);Object.DestroyImmediate(speed);}
+    }
 }

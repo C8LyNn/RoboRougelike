@@ -68,6 +68,14 @@ namespace RoboRougelike.R1
         }
         static bool CatalogNameMatches(string name,string query)=>
             NormalizeCatalogSearch(name).Contains(NormalizeCatalogSearch(query));
+        // This UI-only key keeps distinct effects and strengths separate while
+        // leaving tiers and HP in the same stack of physical instances.
+        static string CatalogBonusKey(R3PartState part)
+        {
+            string id=part.UpgradeId??string.Empty;
+            float amount=part.UpgradeAmount==0?0:part.UpgradeAmount;
+            return id.Length+":"+id+":"+(int)part.UpgradeEffect+":"+amount.ToString("R",CultureInfo.InvariantCulture);
+        }
         static List<CatalogEntry> BuildCatalogEntries(R3VehicleModel model)
         {
             var result=new List<CatalogEntry>();
@@ -94,8 +102,8 @@ namespace RoboRougelike.R1
             }
             for(int i=0;i<R4WeaponDefinition.Count;i++)
             {var weapon=(R4WeaponKind)i;result.Add(new CatalogEntry(R3PartKind.Gun,weapon,null,R4WeaponDefinition.Get(weapon).Name));}
-            foreach(var item in model.Inventory.Where(p=>p.Kind==R3PartKind.BonusModule).GroupBy(p=>p.UpgradeId).Select(g=>g.First()))
-                result.Add(new CatalogEntry(R3PartKind.BonusModule,R4WeaponKind.Basic,item.UpgradeId,CatalogBonusGroupName(item)));
+            foreach(var item in model.Inventory.Where(p=>p.Kind==R3PartKind.BonusModule).GroupBy(CatalogBonusKey).Select(g=>g.First()))
+                result.Add(new CatalogEntry(R3PartKind.BonusModule,R4WeaponKind.Basic,CatalogBonusKey(item),CatalogBonusGroupName(item)+" • "+BonusText(item)));
             return result;
         }
         void DrawCatalogSearch(R1RunController run,Rect label,Rect field,Rect clear)
@@ -135,7 +143,7 @@ namespace RoboRougelike.R1
             if(!string.IsNullOrEmpty(catalogFeedback))GUI.Label(new Rect(25,675,900,30),catalogFeedback,small);
         }
         bool InCatalogGroup(R3PartState item,R3PartKind kind,R4WeaponKind weapon,string bonus) =>
-            item.Kind==kind&&(kind!=R3PartKind.Gun||item.Weapon==weapon)&&(kind!=R3PartKind.BonusModule||item.UpgradeId==bonus)&&
+            item.Kind==kind&&(kind!=R3PartKind.Gun||item.Weapon==weapon)&&(kind!=R3PartKind.BonusModule||CatalogBonusKey(item)==bonus)&&
             (kind!=R3PartKind.Wheel||item.WheelStyle==CatalogWheelStyle(bonus))&&
             (kind!=R3PartKind.Armor||item.ArmorShape==CatalogArmorShape(bonus));
         static string CatalogBonusGroupName(R3PartState part) =>

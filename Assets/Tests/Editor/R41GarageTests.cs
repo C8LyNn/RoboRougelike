@@ -573,6 +573,24 @@ public class R41GarageTests
         Assert.That(garage.SelectedInventoryId,Is.Null);
         yield return null;
     }
+    [UnityTest] public IEnumerator RepeatedBonusMountNeverSwitchesToDifferentEffectWithSameId()
+    {
+        var damage=ScriptableObject.CreateInstance<R1UpgradeDefinition>();damage.Id="shared";damage.Title="Moduł";damage.Effect=R1UpgradeEffect.Damage;damage.Amount=.2f;
+        var speed=ScriptableObject.CreateInstance<R1UpgradeDefinition>();speed.Id="shared";speed.Title="Moduł";speed.Effect=R1UpgradeEffect.Mobility;speed.Amount=.2f;
+        int before=Run.VehicleModel.Inventory.Count;
+        Assert.That(Run.VehicleModel.ReceiveBonuses(new[]{damage,speed,damage}),Is.True);
+        var items=Run.VehicleModel.Inventory.Skip(before).ToArray();var garage=Run.Garage;
+        garage.ChooseInventory(items[0].Id);int wallet=Run.VehicleModel.Scrap;
+        Assert.That(garage.Point(TopRay(new Vector3Int(2,1,2))),Is.True);
+        Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);
+        Assert.That(garage.SelectedInventoryId,Is.EqualTo(items[2].Id),"Next mounted part must retain the chosen bonus effect.");
+        Assert.That(garage.Point(TopRay(new Vector3Int(-2,1,2))),Is.True);
+        Assert.That(garage.ClickTarget(),Is.True,garage.PlacementIssue);
+        Assert.That(garage.SelectedInventoryId,Is.Null,"A different effect must never be silently selected.");
+        Assert.That(Run.VehicleModel.Inventory.Any(part=>part.Id==items[1].Id),Is.True);
+        Assert.That(Run.VehicleModel.Scrap,Is.EqualTo(wallet));
+        UnityEngine.Object.Destroy(damage);UnityEngine.Object.Destroy(speed);yield return null;
+    }
     [UnityTest] public IEnumerator MountingLastHealthyItemExplainsRemainingWreckWithoutBuying()
     {
         Run.VehicleModel.Award(100);
