@@ -111,5 +111,35 @@ public sealed class EnemyPinnedSelfDestructTests
         Assert.That(direct,Is.EqualTo(impact*(1-R3DamagePropagation.TransferFraction(R3DamagePropagation.DamageKind.Blast))).Within(.1f),
             "A self-destruction is blast damage, so the same physical connection rules as other explosions apply.");
     }
+    [UnityTest] public IEnumerator UnarmedEnemyDoesNotExplodeWhenOnlyOriginsAreWithinRadius()
+    {
+        var run=R1RunController.Instance;var enemy=run.Encounter.Enemies.First();
+        run.Player.GetComponent<Rigidbody>().isKinematic=true;enemy.GetComponent<Rigidbody>().isKinematic=true;
+        // Observe the proximity component in isolation: the live run would
+        // otherwise immediately end when this one-part fixture has no gun.
+        run.enabled=false;
+        var assembly=run.Player.GetComponent<R3VehicleAssembly>();
+        foreach(var part in assembly.Parts)
+            if(part!=null&&part.Damageable!=run.Player.Core)
+            {part.Block.MarkDetached();part.gameObject.SetActive(false);}
+        enemy.transform.rotation=Quaternion.identity;
+        enemy.transform.position=run.Player.transform.position+Vector3.forward*5.99f;
+        Physics.SyncTransforms();
+        Assert.That(Vector3.Distance(enemy.transform.position,run.Player.transform.position),Is.LessThan(6f));
+        Assert.That(Vector3.Distance(enemy.Core.transform.position,run.Player.Core.transform.position),Is.GreaterThan(6f),
+            "The origins are close but the only surviving player part is outside the actual blast radius.");
+        foreach(var gun in enemy.AdditionalWeapons.Where(g=>g.Block!=null).ToArray())gun.Block.ApplyDamage(100000,gun.Block.transform.position,Vector3.up);
+        if(enemy.WeaponBlock!=null)enemy.WeaponBlock.ApplyDamage(100000,enemy.WeaponBlock.transform.position,Vector3.up);
+        Assert.That(enemy.WeaponOnline,Is.False);enemy.SetCombatActive(true);
+        float started=Time.time,deadline=Time.realtimeSinceStartup+30;
+        while(Time.time-started<5.3f&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(Time.time-started,Is.GreaterThanOrEqualTo(5.3f),"The five-second warning must actually elapse.");
+        Assert.That(enemy.IsDefeated,Is.False,"An empty root position alone must not trigger the blast.");
+        enemy.transform.position-=Vector3.forward*.2f;Physics.SyncTransforms();
+        Assert.That(Vector3.Distance(enemy.Core.transform.position,run.Player.Core.transform.position),Is.LessThan(6f));
+        deadline=Time.realtimeSinceStartup+10;
+        while(!enemy.IsDefeated&&Time.realtimeSinceStartup<deadline)yield return null;
+        Assert.That(enemy.IsDefeated,Is.True,"Once the actual player core enters range, the warned enemy must explode.");
+    }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }
