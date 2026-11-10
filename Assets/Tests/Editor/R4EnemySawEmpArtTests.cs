@@ -95,7 +95,7 @@ public sealed class R4EnemySawEmpArtTests
     {
         yield return StartCombat();var run=R1RunController.Instance;var enemy=run.Encounter.Enemies.First();
         var legacy=enemy.transform.Find("Enemy_Yaw/Enemy_Muzzle");Assert.That(enemy.EquipEmp(),Is.True);
-        var binding=enemy.WeaponBlock.GetComponent<RRLEmpBinding>();var art=enemy.WeaponBlock.GetComponentInChildren<R4WeaponArt>(true);
+        var binding=enemy.WeaponBlock.GetComponent<RRLEmpBinding>();var art=enemy.WeaponBlock.GetComponentsInChildren<R4WeaponArt>(true).SingleOrDefault(v=>v.gameObject.activeInHierarchy);
         Assert.That(art,Is.Not.Null,"Enemy EMP must show its supplied model.");
         Assert.That(art.GetComponentsInChildren<Transform>(true).Any(t=>t.name=="R4W_EmpEmitter_ROOT"),Is.True);
         Assert.That(typeof(P12PipelineSafeEnemyTurret).GetField("muzzle",BindingFlags.Instance|BindingFlags.NonPublic).GetValue(enemy),Is.SameAs(legacy));
