@@ -17,6 +17,7 @@ public sealed class CameraRamp18DiagnosticTests
     R1RunController run;
 
     [UnityTest] public IEnumerator RealLightVehicleOnRangeRampRecordsCameraAndAimCollision()=>DriveRamp(R3VehicleKind.Light);
+    [UnityTest] public IEnumerator RealStandardVehicleOnRangeRampRecordsCameraAndAimCollision()=>DriveRamp(R3VehicleKind.Standard);
     [UnityTest] public IEnumerator RealHeavyVehicleOnRangeRampRecordsCameraAndAimCollision()=>DriveRamp(R3VehicleKind.Heavy);
     [UnityTest] public IEnumerator HeavyApproachesRangeRampFromFlatGround()=>ApproachRamp(false,false);
     [UnityTest] public IEnumerator HeavyWithPowerModuleApproachesRangeRampFromFlatGround()=>ApproachRamp(true,false);

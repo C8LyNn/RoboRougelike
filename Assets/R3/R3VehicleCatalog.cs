@@ -40,6 +40,16 @@ namespace RoboRougelike.R3
                 bool battery=z==0&&(heavy?Mathf.Abs(x)<=1:light?x==0:x==0||x==1);
                 design.Parts.Add(new R3PartState(new Vector3Int(x,1,z),battery?R3PartKind.Battery:R3PartKind.Armor));
             }
+            // Capacity comes from real, replaceable modules. Four-wheel light
+            // builds need more help on slopes than six-wheel variants.
+            int motors=light?(variant%2==0?5:3):heavy?(variant==3?3:4):5;
+            foreach(int z in new[]{1,-1})foreach(int x in new[]{0,-1,1,-2,2})
+            {
+                if(motors<=0)break;
+                var part=design.Parts.Find(p=>p.Cell==new Vector3Int(x,1,z)&&p.Kind==R3PartKind.Armor);
+                if(part==null)continue;
+                part.Kind=R3PartKind.DrivePower;motors--;
+            }
             // Different front and rear profiles give each version a distinct
             // silhouette while every armor block still has support beneath it.
             for(int x=-2;x<=2;x++)
@@ -65,7 +75,7 @@ namespace RoboRougelike.R3
                 heavy?(variant==3?new[]{-3,-2,0,2,3}:new[]{-3,-1,1,3}):
                 variant==2?new[]{-3,-1,1,3}:new[]{-2,0,2};
             for(int side=-1;side<=1;side+=2)foreach(int z in positions)
-                design.Parts.Add(new R3PartState(new Vector3Int(side*(width+1),0,z),R3PartKind.Wheel));
+                design.Parts.Add(new R3PartState(new Vector3Int(side*(width+1),0,z),R3PartKind.Wheel){Tier=light?2:1});
             var gunColumns=light?new[]{0}:heavy?new[]{-3,0,3}:new[]{-2,2};
             int gunHeight=R3VehicleModel.UseEnlargedEquipment?2:3;
             if(!R3VehicleModel.UseEnlargedEquipment)

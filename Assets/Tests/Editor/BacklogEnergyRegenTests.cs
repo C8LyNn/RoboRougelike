@@ -92,6 +92,7 @@ public sealed class BacklogEnergyRegenIntegrationTests
     [UnityTest] public IEnumerator DestroyingRealRegeneratorRemovesItsRateAndReservation()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(500);
+        float startingCapacity=model.Energy.Maximum;
         var cell=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
             .First(c=>model.PlacementError(c,R3PartKind.EnergyRegenerator,false)==null);
         Assert.That(model.Buy(cell,R3PartKind.EnergyRegenerator),Is.True);
@@ -101,18 +102,18 @@ public sealed class BacklogEnergyRegenIntegrationTests
         for(int i=0;i<palette.Weapons.Length;i++)palette.Weapons[i]=material;
         var vehicle=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(0,20,0),Quaternion.identity);
         var bank=vehicle.GetComponent<VehicleEnergyBank>();var assembly=vehicle.GetComponent<R3VehicleAssembly>();
-        bank.Refresh();Assert.That(bank.Maximum,Is.EqualTo(475));
+        bank.Refresh();Assert.That(bank.Maximum,Is.EqualTo(startingCapacity-25));
         Assert.That(bank.TrySpend(bank.Current),Is.True);model.Energy.Advance(1);
         Assert.That(bank.Current,Is.EqualTo(15).Within(.001f));
         var device=assembly.Parts.Single(p=>p.Kind==R3PartKind.EnergyRegenerator);
         var receiver=device.GetComponent<RoboRougelike.Mechanics.EMP.EmpReceiver>();Assert.That(receiver,Is.Not.Null);
-        receiver.ApplyEmp(2);bank.Refresh();Assert.That(bank.Maximum,Is.EqualTo(475),"EMP must not remove passive reservation.");
+        receiver.ApplyEmp(2);bank.Refresh();Assert.That(bank.Maximum,Is.EqualTo(startingCapacity-25),"EMP must not remove passive reservation.");
         Assert.That(bank.TrySpend(bank.Current),Is.True);model.Energy.Advance(1);
         Assert.That(bank.Current,Is.EqualTo(10).Within(.001f),"EMP must pause the regenerator bonus.");
         Assert.That(bank.TrySpend(bank.Current),Is.True);receiver.Advance(2);bank.Refresh();model.Energy.Advance(1);
         Assert.That(bank.Current,Is.EqualTo(15).Within(.001f),"Regeneration bonus resumes after EMP.");
         device.Damageable.ApplyDamage(100000,device.transform.position,Vector3.up);bank.Refresh();
-        Assert.That(bank.Maximum,Is.EqualTo(500));model.Energy.Advance(1);
+        Assert.That(bank.Maximum,Is.EqualTo(startingCapacity));model.Energy.Advance(1);
         Assert.That(bank.Current,Is.EqualTo(25).Within(.001f));
         UnityEngine.Object.Destroy(vehicle.gameObject);UnityEngine.Object.Destroy(paletteObject);UnityEngine.Object.Destroy(material);
         yield return null;

@@ -11,6 +11,38 @@ using RoboRougelike.R1;
 
 public sealed class EnergyCombatRefinementTests
 {
+    [Test] public void AllStarterVariantsHaveConnectedReplaceablePowerAndExpectedEnergyBudget()
+    {
+        foreach(R3VehicleKind kind in Enum.GetValues(typeof(R3VehicleKind)))
+        for(int variant=0;variant<4;variant++)
+        {
+            var design=R3VehicleCatalog.Create(kind,variant);
+            var model=new R3VehicleModel(design);
+            int motors=design.Parts.Count(p=>p.Kind==R3PartKind.DrivePower);
+            int expected=kind==R3VehicleKind.Light?(variant%2==0?5:3):kind==R3VehicleKind.Heavy?(variant==3?3:4):5;
+            Assert.That(motors,Is.EqualTo(expected),$"{kind}/{variant}: actual modules supply the motor power.");
+            Assert.That(R3VehicleModel.Connected(design.Parts),Is.True,$"{kind}/{variant}: every module must remain attached.");
+            Assert.That(model.DeployError,Is.Null,$"{kind}/{variant}: the starter must be deployable.");
+            int batteries=design.Parts.Count(p=>p.Kind==R3PartKind.Battery);
+            Assert.That(model.Energy.Maximum,Is.EqualTo(500+100*batteries-25*motors),$"{kind}/{variant}: passive motors reserve energy.");
+        }
+    }
+
+    [Test] public void DefaultClassesDeriveAccelerationOrderingFromInstalledParts()
+    {
+        float DriveToMass(R3VehicleKind kind)
+        {
+            var parts=R3VehicleCatalog.Create(kind).Parts;
+            float mass=parts.Sum(R4WeaponDefinition.PartMass);
+            float grip=parts.Where(p=>p.Kind==R3PartKind.Wheel).Sum(p=>
+                R3VehicleModel.TierWheelTraction(p.Tier)*R3VehicleModel.WheelTraction(p.WheelStyle));
+            float motors=parts.Where(p=>p.Kind==R3PartKind.DrivePower).Sum(p=>R3VehicleModel.TierEffectUnits(p.Tier));
+            return grip*RoboRougelike.R6.R6VehicleDrive.MotorMultiplier(motors)/mass;
+        }
+        Assert.That(DriveToMass(R3VehicleKind.Light),Is.GreaterThan(DriveToMass(R3VehicleKind.Standard)));
+        Assert.That(DriveToMass(R3VehicleKind.Standard),Is.GreaterThan(DriveToMass(R3VehicleKind.Heavy)));
+    }
+
     [Test] public void ChargingFieldChoosesSurfaceNearVehicleHeightRegardlessOfRaycastOrder()
     {
         var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);var upper=GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -60,12 +92,13 @@ public sealed class EnergyCombatRefinementTests
     [Test] public void InitialDeploymentFillsNewBatteryButLaterDeploymentsDoNotRefill()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));model.Award(100);
+        float capacityBeforeBattery=model.Energy.Maximum;
         var cell=Enumerable.Range(-6,13).SelectMany(x=>Enumerable.Range(-7,15).Select(z=>new Vector3Int(x,1,z)))
             .First(c=>model.PlacementError(c,R3PartKind.Battery)==null);
         Assert.That(model.Buy(cell,R3PartKind.Battery),Is.True);
         var method=typeof(R3VehicleModel).GetMethod("PrepareInitialEnergy");Assert.That(method,Is.Not.Null);
-        method.Invoke(model,null);Assert.That(model.Energy.Maximum,Is.EqualTo(600));Assert.That(model.Energy.Current,Is.EqualTo(600));
-        model.Energy.TrySpend(50);method.Invoke(model,null);Assert.That(model.Energy.Current,Is.EqualTo(550));
+        method.Invoke(model,null);Assert.That(model.Energy.Maximum,Is.EqualTo(capacityBeforeBattery+100));Assert.That(model.Energy.Current,Is.EqualTo(model.Energy.Maximum));
+        model.Energy.TrySpend(50);method.Invoke(model,null);Assert.That(model.Energy.Current,Is.EqualTo(model.Energy.Maximum-50));
     }    [Test] public void MovingAndStationaryRegenerationUsesTenAndFortyPerSecond()
     {
         var energy=new VehicleEnergyState();energy.TrySpend(500);
