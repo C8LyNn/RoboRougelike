@@ -95,11 +95,19 @@ public sealed class GarageEditFreedomTests
         Assert.That(run.VehicleModel.Parts.Count,Is.EqualTo(beforeParts));
         Assert.That(QaSinglePart(run.VehicleModel.Inventory,id).Id,Is.EqualTo(id));
         // Exterior attachment remains available, never disable the saw globally.
-        var exterior=new Vector3Int(0,1,4);
+        // The current Standard hull ends at z=3 and its upper front edge
+        // intersects the saw sweep. Add supports to obtain a truly clear,
+        // connected socket without weakening the collision assertions.
+        Assert.That(run.GarageBuy(new Vector3Int(0,3,3),R3PartKind.Armor),Is.True);
+        Assert.That(run.GarageBuy(new Vector3Int(0,4,3),R3PartKind.Armor),Is.True);
+        beforeWallet=run.VehicleModel.Scrap;
+        var exterior=new Vector3Int(0,5,3);
+        Assert.That(run.VehicleModel.OwnedPlacementError(id,exterior,default),Is.Null,
+            "The stress fixture must begin with a valid external saw mount.");
         // Real physical 260-collider stress for the 256-hit fail-closed query.
         var realPlayer=run.Player.transform;
         var blade=realPlayer.TransformPoint((Vector3)exterior*.55f+
-            Vector3.up*(.6f*.52f)+Vector3.forward*(1.65f*.52f));
+            Vector3.up*(.6f*.52f)+Vector3.forward*(RoboRougelike.R4_1.R41PartGeometry.SawCenterOffset*.52f));
         var saturation=new GameObject[260];
         for(int i=0;i<saturation.Length;i++)
         {
@@ -124,6 +132,18 @@ public sealed class GarageEditFreedomTests
         Assert.That(run.GarageMount(id,exterior,default),Is.True);
         Assert.That(run.VehicleModel.Scrap,Is.EqualTo(beforeWallet));
         Assert.That(QaSinglePart(run.VehicleModel.Parts,id).Cell,Is.EqualTo(exterior));
+        Assert.That(run.EnterTestRange(),Is.True);
+        while(run.Transitioning)yield return null;
+        var mounted=QaSingleMounted(run.Player.GetComponent<R3VehicleAssembly>().Parts,id);
+        var saw=mounted.GetComponent<RoboRougelike.WeaponIntegration.RRLSawBinding>();
+        Assert.That(saw,Is.Not.Null);
+        var target=GameObject.CreatePrimitive(PrimitiveType.Cube);target.transform.localScale=Vector3.one*.2f;
+        target.transform.position=mounted.Muzzle.position+mounted.Muzzle.up*.5f;
+        var hp=target.AddComponent<RogueMachine.P12PipelineSafe.P12PipelineSafeDamageable>();hp.Configure(500,false);
+        Physics.SyncTransforms();saw.Module.SetMotorRequested(true);
+        for(int i=0;i<15&&hp.CurrentHp>=500;i++)saw.Module.Advance(.1f);
+        Assert.That(hp.CurrentHp,Is.LessThan(500),"The legally mounted real saw must cut a physical target.");
+        UnityEngine.Object.Destroy(target);
         yield return new ExitPlayMode();
     }
     [UnityTest] public IEnumerator NewArmorCannotBlockExistingSawAfterGaragePurchase()
