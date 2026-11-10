@@ -109,14 +109,16 @@ public sealed class EnergyCombatRefinementTests
         Assert.That(items.All(p=>p.Health==1),Is.True);Assert.That(model.Scrap,Is.EqualTo(before-2*price));
         Assert.That(model.Parts.Count(p=>p.Kind==R3PartKind.Wheel),Is.EqualTo(4));
     }
-    [Test] public void ArmedEnemiesPeriodicallyTryToRamWithoutDiscardingTheirWeapon()
+    [Test] public void EnemyChargeDependsOnCombatStyleAndEquipment()
     {
-        var method=typeof(RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret).GetMethod("ShouldRam");
-        Assert.That(method,Is.Not.Null,"Mobile armed enemies need a periodic charge.");
-        bool Decide(bool armed,R3EnemyArchetype kind,float distance,float time)=>(bool)method.Invoke(null,new object[]{armed,kind,distance,time});
+        var method=typeof(RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret).GetMethod("ShouldRam",
+            new[]{typeof(bool),typeof(R3EnemyArchetype),typeof(float),typeof(float),typeof(bool)});
+        Assert.That(method,Is.Not.Null,"A charge decision must account for the mounted weapon.");
+        bool Decide(bool armed,R3EnemyArchetype kind,float distance,float time,bool melee=false)=>(bool)method.Invoke(null,new object[]{armed,kind,distance,time,melee});
         Assert.That(Decide(true,R3EnemyArchetype.Scout,15,1),Is.True);
         Assert.That(Decide(true,R3EnemyArchetype.Scout,15,6),Is.False);
-        Assert.That(Decide(true,R3EnemyArchetype.Gunner,6,6),Is.True);
+        Assert.That(Decide(true,R3EnemyArchetype.Gunner,6,6),Is.False,"Ranged gunners keep their distance rather than always pinning the player.");
+        Assert.That(Decide(true,R3EnemyArchetype.Gunner,6,6,true),Is.True,"Melee equipment must still close for contact.");
         Assert.That(Decide(false,R3EnemyArchetype.Gunner,15,6),Is.True);
     }
     [Test] public void SelfDestructionRequiresFiveSecondsDisabledAndNearbyPlayer()
