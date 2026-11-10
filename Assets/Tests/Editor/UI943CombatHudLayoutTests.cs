@@ -5,6 +5,16 @@ using UnityEngine;
 
 public sealed class UI943CombatHudLayoutTests
 {
+    [TestCase(false,false,75)][TestCase(false,true,115)][TestCase(true,false,160)][TestCase(true,true,160)]
+    public void SuspensionPanelOnlyUsesSpaceNeededForDetailsAndWarnings(bool details,bool warning,int height)
+    {
+        var method=typeof(R1RunHUD).GetMethod("SuspensionTelemetryPanelRect",BindingFlags.NonPublic|BindingFlags.Static);
+        Assert.That(method,Is.Not.Null);
+        var panel=(Rect)method.Invoke(null,new object[]{details,warning});
+        Assert.That(panel.height,Is.EqualTo(height));
+        Assert.That(panel.yMin,Is.GreaterThanOrEqualTo(348),"Weapon status must remain unobstructed.");
+        Assert.That(panel.yMax,Is.LessThanOrEqualTo(516),"Damage notices must remain unobstructed.");
+    }
     [TestCase(1)][TestCase(2)][TestCase(3)][TestCase(4)][TestCase(5)]
     public void CompactMovementPanelFitsBetweenDefenseAndRangeInstructions(int rows)
     {

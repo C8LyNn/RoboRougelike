@@ -27,7 +27,12 @@ public sealed class SuspensionUxTests
         float deadline=Time.realtimeSinceStartup+15;
         while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<deadline)yield return null;
         var run=R1RunController.Instance;Assert.That(run.SelectVehicle(R3VehicleKind.Light),Is.True);Assert.That(run.OpenSandboxGarage(),Is.True);
-        foreach(var cell in MOV009ModelTests.Cells(R3VehicleKind.Light))Assert.That(run.GarageBuy(cell,R3PartKind.Suspension),Is.True);
+        // The current light hull extends to z=±3; place the supports outside it.
+        foreach(int x in new[]{-1,1})foreach(int z in new[]{-4,4})
+        {
+            var cell=new Vector3Int(x,0,z);
+            Assert.That(run.GarageBuy(cell,R3PartKind.Suspension),Is.True,$"{cell}: {run.VehicleModel.PlacementError(cell,R3PartKind.Suspension)}");
+        }
         Assert.That(run.ConfigureSuspension(true,ActiveSuspensionSupportMode.FullSupport,.1f),Is.True);
         Assert.That(run.EnterTestRange(),Is.True);while(run.Transitioning)yield return null;
         deadline=Time.realtimeSinceStartup+8;

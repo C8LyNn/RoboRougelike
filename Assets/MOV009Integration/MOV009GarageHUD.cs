@@ -47,17 +47,23 @@ namespace RoboRougelike.R1
             SuspensionModes(run,230,530,300);SuspensionHeight(run,565,530,320);
             GUI.enabled=true;
         }
+        static Rect SuspensionTelemetryPanelRect(bool details,bool alert)=>
+            new Rect(925,355,335,details?160:alert?115:75);
         void DrawSuspensionTelemetry(R1RunController run)
         {
             var adapter=run.Player?.GetComponent<MOV009VehicleAdapter>();if(adapter==null)return;
-            var state=MOV009Presentation.Capture(run);Panel(new Rect(925,355,335,160));
-            GUI.Label(new Rect(940,360,305,28),"ZAWIESZENIE",body);
-            GUI.Label(new Rect(940,392,305,50),$"{state.Mode} • {state.Status}\nSprawne moduły: {state.OperationalCount}/{state.MountedCount}",small);
-            GUI.Label(new Rect(940,444,305,35),$"Wysokość: {state.Offset:+0.00;-0.00;0.00} m • siła: {state.ForceNewtons:0} N",small);
-            if(adapter.GroundingNotice!=null)GUI.Label(new Rect(940,479,305,34),adapter.GroundingNotice,SuspensionHelp);
-            else if(!string.IsNullOrEmpty(state.Protection)&&run.VehicleModel.SelectedDrive!=R3DriveKind.Hover)
-                GUI.Label(new Rect(940,479,305,34),"Full ograniczony przez sprężyny kół.",SuspensionHelp);
-            else GUI.Label(new Rect(940,479,305,30),"Esc na poligonie — ustawienia.",SuspensionHelp);
+            var state=MOV009Presentation.Capture(run);
+            string warning=adapter.GroundingNotice??(!string.IsNullOrEmpty(state.Protection)&&run.VehicleModel.SelectedDrive!=R3DriveKind.Hover?
+                "Full ograniczony przez sprężyny kół.":null);
+            bool details=combatDetailsOpen||run.Progress.State==R1RunState.TestDrive;
+            Panel(SuspensionTelemetryPanelRect(details,!string.IsNullOrEmpty(warning)));
+            GUI.Label(new Rect(940,360,305,26),$"ZAWIESZENIE • {state.Mode}",body);
+            GUI.Label(new Rect(940,389,305,38),state.Status,small);
+            if(!string.IsNullOrEmpty(warning))GUI.Label(new Rect(940,430,305,35),warning,SuspensionHelp);
+            if(details)
+            {
+                GUI.Label(new Rect(940,468,305,44),$"Moduły: {state.OperationalCount}/{state.MountedCount} • wysokość {state.Offset:+0.00;-0.00;0.00} m\nSiła: {state.ForceNewtons:0} N",small);
+            }
         }
     }
 }
