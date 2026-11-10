@@ -162,6 +162,30 @@ public class R41GarageTests
             yield return null;
         }
     }
+    [UnityTest] public IEnumerator WheelGhostRotationStaysUprightAndCanStillBeMounted()
+    {
+        var garage=Run.Garage;var model=Run.VehicleModel;string id=PurchasePart(R3PartKind.Wheel);
+        garage.ChooseInventory(id);
+        var cells=model.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct();
+        var cell=cells.First(c=>model.OwnedPlacementError(id,c,Vector3Int.zero)==null);
+        garage.Select(cell);Assert.That(garage.PreviewValid,Is.True,garage.PlacementIssue);
+        garage.RotateSelected(1,1);
+        Assert.That(garage.SelectedRotation,Is.EqualTo(new Vector3Int(0,2,0)));
+        Assert.That(garage.PreviewValid,Is.True,garage.PlacementIssue);
+        garage.RotateSelected(0,1);
+        Assert.That(garage.SelectedRotation,Is.EqualTo(new Vector3Int(0,2,0)),"A wheel cannot be flipped on its side.");
+        Assert.That(garage.PreviewValid,Is.True,garage.PlacementIssue);
+        Assert.That(garage.ClickTarget(),Is.True,garage.Message);
+        Assert.That(Run.VehicleModel.At(cell).Id,Is.EqualTo(id));
+        string legacyId=PurchasePart(R3PartKind.Wheel);
+        var legacy=Run.VehicleModel.Inventory.Single(p=>p.Id==legacyId);
+        legacy.RotationQuarterTurns=new Vector3Int(1,0,0);
+        garage.ChooseInventory(legacyId);
+        Assert.That(R3VehicleModel.ValidWheelOrientation(garage.SelectedRotation),Is.False);
+        garage.RotateSelected(0,-1);
+        Assert.That(garage.SelectedRotation,Is.EqualTo(Vector3Int.zero),"An invalid legacy wheel pose must remain correctable.");
+        yield return null;
+    }
     [UnityTest] public IEnumerator GhostColorTracksBlockedAndAllowedPlacementAfterReappearing()
     {
         var garage=Run.Garage;string id=PurchasePart(R3PartKind.Armor);garage.ChooseInventory(id);
