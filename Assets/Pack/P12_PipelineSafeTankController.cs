@@ -1310,9 +1310,9 @@ public float CurrentForwardSpeed =>
         // Unity physics and component traversal run on the main thread. Keep
         // one reusable scratch list, but isolate a nested setup if a physics
         // callback ever causes another projectile to be configured here.
-        private static readonly System.Collections.Generic.List<Collider> ownerColliderBuffer =
+        private static readonly System.Collections.Generic.List<Collider> projectileColliderBuffer =
             new System.Collections.Generic.List<Collider>();
-        private static bool ownerColliderBufferInUse;
+        private static bool projectileColliderBufferInUse;
         public static int AvailableSlots => Mathf.Max(0,96-activeShells.Count);
         private void OnEnable()
         {
@@ -1416,9 +1416,9 @@ public float CurrentForwardSpeed =>
                 ownerRoot == null)
                 return;
 
-            bool shared=!ownerColliderBufferInUse;
-            var ownerColliders=shared?ownerColliderBuffer:new System.Collections.Generic.List<Collider>();
-            if(shared)ownerColliderBufferInUse=true;
+            bool shared=!projectileColliderBufferInUse;
+            var ownerColliders=shared?projectileColliderBuffer:new System.Collections.Generic.List<Collider>();
+            if(shared)projectileColliderBufferInUse=true;
             try
             {
                 ownerRoot.GetComponentsInChildren(true,ownerColliders);
@@ -1428,7 +1428,7 @@ public float CurrentForwardSpeed =>
                     Physics.IgnoreCollision(ownCollider,ownerCollider,true);
                 }
             }
-            finally { ownerColliders.Clear(); if(shared)ownerColliderBufferInUse=false; }
+            finally { ownerColliders.Clear(); if(shared)projectileColliderBufferInUse=false; }
         }
 
         private void Update()
@@ -1446,42 +1446,24 @@ public float CurrentForwardSpeed =>
                 targetRoot == null)
                 return;
 
-            Collider[] targetColliders =
-                targetRoot
-                .GetComponentsInChildren<
-                    Collider
-                >(true);
-
-            foreach (
-                Collider targetCollider
-                in targetColliders)
+            bool shared=!projectileColliderBufferInUse;
+            var targetColliders=shared?projectileColliderBuffer:new System.Collections.Generic.List<Collider>();
+            if(shared)projectileColliderBufferInUse=true;
+            try
             {
-                if (targetCollider == null)
-                    continue;
-
-                P12PipelineSafeDamageable damageable =
-                    targetCollider.GetComponent<
-                        P12PipelineSafeDamageable
-                    >();
-
-                if (damageable == null)
+                targetRoot.GetComponentsInChildren(true,targetColliders);
+                foreach (Collider targetCollider in targetColliders)
                 {
-                    damageable =
-                        targetCollider
-                        .GetComponentInParent<
-                            P12PipelineSafeDamageable
-                        >();
-                }
-
-                if (damageable == null)
-                {
-                    Physics.IgnoreCollision(
-                        ownCollider,
-                        targetCollider,
-                        true
-                    );
+                    if(targetCollider==null)continue;
+                    // Match GetComponentInParent's active-ancestor behavior,
+                    // while avoiding Editor allocations for absent components.
+                    bool damageable=targetCollider.TryGetComponent<P12PipelineSafeDamageable>(out _);
+                    for(var parent=targetCollider.transform.parent;!damageable&&parent!=null;parent=parent.parent)
+                        if(parent.gameObject.activeInHierarchy&&parent.TryGetComponent<P12PipelineSafeDamageable>(out _))damageable=true;
+                    if(!damageable)Physics.IgnoreCollision(ownCollider,targetCollider,true);
                 }
             }
+            finally { targetColliders.Clear(); if(shared)projectileColliderBufferInUse=false; }
         }
 
         private void OnCollisionEnter(
