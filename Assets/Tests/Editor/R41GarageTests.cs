@@ -115,6 +115,22 @@ public class R41GarageTests
         Assert.That(Run.Player.GetComponent<R3VehicleAssembly>().Parts.Single(p=>p.Id==id).Block.DetachedFromVehicle,Is.False);
         yield return null;
     }
+    [UnityTest] public IEnumerator GhostColorTracksBlockedAndAllowedPlacementAfterReappearing()
+    {
+        var garage=Run.Garage;string id=PurchasePart(R3PartKind.Armor);garage.ChooseInventory(id);
+        var ray=TopRay(new Vector3Int(2,1,2));Assert.That(garage.Point(ray),Is.True);
+        var valid=garage.Preview.GetComponent<Renderer>().sharedMaterial.GetColor("_BaseColor");
+        Assert.That(valid.g,Is.GreaterThan(valid.r));
+        garage.Select(new Vector3Int(2,1,2));
+        var invalid=garage.Preview.GetComponent<Renderer>().sharedMaterial.GetColor("_BaseColor");
+        Assert.That(invalid.r,Is.GreaterThan(invalid.g));
+        garage.RefreshMarker();Assert.That(garage.Preview.GetComponent<Renderer>().sharedMaterial.GetColor("_BaseColor"),Is.EqualTo(invalid));
+        garage.SetTool(R41GarageTool.Remove);Assert.That(garage.Preview.gameObject.activeSelf,Is.False);
+        garage.ChooseInventory(id);Assert.That(garage.Point(ray),Is.True);
+        Assert.That(garage.Preview.GetComponent<Renderer>().sharedMaterial.GetColor("_BaseColor"),Is.EqualTo(valid),
+            "A newly shown ghost must restore the allowed color even after an invalid placement.");
+        yield return null;
+    }
     [UnityTest] public IEnumerator CrowdedRaycastStillSelectsTheSameRealMountPoint()
     {
         var garage=Run.Garage;string id=PurchasePart(R3PartKind.Armor);garage.ChooseInventory(id);
@@ -287,7 +303,10 @@ public class R41GarageTests
     [UnityTest] public IEnumerator WeaponGhostGeometryAndOrientationMatchMountedHeavyCannon()
     {
         Run.VehicleModel.Award(100);var garage=Run.Garage;string id=PurchasePart(R3PartKind.Gun,R4WeaponKind.Heavy);garage.ChooseInventory(id);
-        Assert.That(garage.Point(TopRay(new Vector3Int(2,1,2))),Is.True);Assert.That(garage.Cell,Is.EqualTo(new Vector3Int(2,2,2)));
+        // The current starter has raised front armor at z=3; the former
+        // (2,2,2) placement legitimately intersects it. Mount on top of that
+        // armor instead, and still verify the real physical gate below.
+        Assert.That(garage.Point(TopRay(new Vector3Int(1,2,3))),Is.True);Assert.That(garage.Cell,Is.EqualTo(new Vector3Int(1,3,3)));
         Assert.That(garage.PreviewValid,Is.True,garage.PlacementIssue);
         var ghostBarrel=garage.Preview.Find("Obrót broni/Lufa");var size=ghostBarrel.localScale;var local=ghostBarrel.localPosition;
         var ghostArt=garage.Preview.GetComponentsInChildren<Transform>(true).Single(t=>t.name=="R4W_Heavy_ROOT");
