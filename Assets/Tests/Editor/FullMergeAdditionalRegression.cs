@@ -40,6 +40,28 @@ public sealed class FullMergeAdditionalRegression
         finally{Object.Destroy(fixture);}
         yield return null;
     }
+    [UnityTest]public IEnumerator HeavyVehicleHudHealthQueriesReuseStorageAndTrackLiveParts()
+    {
+        yield return FreshVehicle(R3VehicleKind.Heavy);
+        var player=run.Player;var core=player.Core;Assert.That(core,Is.Not.Null);
+        var armor=player.GetComponent<R3VehicleAssembly>().Parts.First(p=>p.Kind==R3PartKind.Armor&&p.Operational);
+        armor.Damageable.RestoreHealthRatio(.5f);Assert.That(player.HealthFraction,Is.LessThan(1f));
+        armor.gameObject.SetActive(false);Assert.That(player.HealthFraction,Is.EqualTo(1f).Within(.0001f));armor.gameObject.SetActive(true);
+        armor.Damageable.RestoreHealthRatio(1f);
+        core.gameObject.SetActive(false);Assert.That(player.Core,Is.Null);core.gameObject.SetActive(true);Assert.That(player.Core,Is.SameAs(core));
+        for(int i=0;i<3;i++){var warm=player.Core;var health=player.HealthFraction;}
+        using(var recorder=Unity.Profiling.ProfilerRecorder.StartNew(Unity.Profiling.ProfilerCategory.Memory,"GC Allocated In Frame",16))
+        {
+            Assert.That(recorder.Valid,Is.True);yield return null;yield return null;long idle=recorder.LastValue;
+            float health=0;P12PipelineSafeDamageable found=null;for(int i=0;i<50;i++){found=player.Core;health=player.HealthFraction;}
+            yield return null;long sample=recorder.LastValue;
+            var control=new byte[1024*1024];control[0]=1;yield return null;long controlBytes=recorder.LastValue;System.GC.KeepAlive(control);
+            Debug.Log($"[HUD_HEALTH_ALLOC] queries=50 vehicle=Heavy idle={idle} sample={sample} control={controlBytes}");
+            Assert.That(found,Is.SameAs(core));Assert.That(health,Is.EqualTo(1f).Within(.0001f));
+            Assert.That(controlBytes,Is.GreaterThanOrEqualTo(1024*1024));
+            Assert.That(sample-idle,Is.LessThan(32000),"Repeated HUD queries must not allocate hierarchy arrays.");
+        }
+    }
     [UnityTest]public IEnumerator CameraOwnHullRayReusesColliderStorage()
     {
         var rig=Camera.main.GetComponent<P12PipelineSafeCamera>().ReceiverRig;
