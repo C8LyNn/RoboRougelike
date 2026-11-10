@@ -449,6 +449,8 @@ namespace RoboRougelike.R3
             {
                 part.RotationQuarterTurns=next;
                 if(part.Kind==R3PartKind.Gun)part.ContactMask=PlacementContacts(part.Kind,part);
+                else if(part.Kind==R3PartKind.Wheel&&HasSideMount(part.WheelStyle))
+                    part.ContactMask=SideWheelContactAt(part);
                 var cells=OccupiedCells(part).ToArray();
                 if(cells.Any(c=>Math.Abs(c.x)>6||Math.Abs(c.z)>7||c.y<0||c.y>5))return false;
                 var otherCells=new HashSet<Vector3Int>(Parts.Where(p=>p!=part).SelectMany(OccupiedCells));
