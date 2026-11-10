@@ -25,7 +25,9 @@ namespace RoboRougelike.R3
         public const float GarageSocketSize=.18f;
         R3VehicleAssembly assembly;
         R3VehicleModel model;
-        readonly Dictionary<string,BuildDefinition> definitions=new Dictionary<string,BuildDefinition>();
+        readonly Dictionary<(R3PartKind,int,R3ArmorShape,R3WheelStyle,R4WeaponKind,int),BuildDefinition> definitions=
+            new Dictionary<(R3PartKind,int,R3ArmorShape,R3WheelStyle,R4WeaponKind,int),BuildDefinition>();
+        readonly List<Collider> installedColliders=new List<Collider>();
         readonly BuildSocketRegistry registry=new BuildSocketRegistry();
         readonly List<GameObject> socketFaces=new List<GameObject>();
         List<BuildInstalledPart> reachabilityInput;
@@ -45,15 +47,16 @@ namespace RoboRougelike.R3
         }
         BuildDefinition Definition(R3PartState part)
         {
-            string key=part.Kind+"/"+part.ContactMask+"/"+part.ArmorShape+"/"+part.WheelStyle+"/"+part.Weapon+"/"+part.FootprintRevision;
+            var key=(part.Kind,part.ContactMask,part.ArmorShape,part.WheelStyle,part.Weapon,part.FootprintRevision);
             if(definitions.TryGetValue(key,out var known))return known;
+            string keyName=part.Kind+"/"+part.ContactMask+"/"+part.ArmorShape+"/"+part.WheelStyle+"/"+part.Weapon+"/"+part.FootprintRevision;
             if(part.Kind==R3PartKind.Armor&&part.ArmorShape!=R3ArmorShape.Cube)
             {
                 // Source full patches are the current conservative policy for
                 // both construction and module support. Never silently replace
                 // an unknown shape with a full-faced cube.
                 if(!R4MountDefinitionAdapter.TryCreate(R41PartGeometry.ArmorCatalogId(part.ArmorShape),true,out known))
-                    known=new BuildDefinition("invalid/"+key,BuildRole.Armor,System.Array.Empty<Vector3Int>(),
+                    known=new BuildDefinition("invalid/"+keyName,BuildRole.Armor,System.Array.Empty<Vector3Int>(),
                         System.Array.Empty<BuildSocket>(),false);
                 definitions.Add(key,known);return known;
             }
@@ -77,7 +80,7 @@ namespace RoboRougelike.R3
             var bonds=new List<BuildCellBond>();
             foreach(var a in cells)foreach(var b in cells)
                 if((a-b).sqrMagnitude==1&&System.Array.IndexOf(cells,a)<System.Array.IndexOf(cells,b))bonds.Add(new BuildCellBond(a,b));
-            known=new BuildDefinition("R3/"+key,role,cells,patches.ToArray(),role!=BuildRole.Wheel&&role!=BuildRole.Gun,bonds.ToArray());
+            known=new BuildDefinition("R3/"+keyName,role,cells,patches.ToArray(),role!=BuildRole.Wheel&&role!=BuildRole.Gun,bonds.ToArray());
             definitions.Add(key,known);return known;
         }
         List<BuildInstalledPart> Installed()
@@ -92,8 +95,16 @@ namespace RoboRougelike.R3
             {
                 R3MountedPart actual=null;
                 if(!string.IsNullOrEmpty(p.Id))actualById.TryGetValue(p.Id,out actual);
-                bool alive=p.Health>0&&actual!=null&&actual.Operational&&actual.transform.IsChildOf(transform)&&
-                    actual.GetComponentsInChildren<Collider>().Any(c=>c.enabled&&c.gameObject.activeInHierarchy&&!c.isTrigger&&c.attachedRigidbody==body);
+                bool alive=p.Health>0&&actual!=null&&actual.Operational&&actual.transform.IsChildOf(transform);
+                if(alive)
+                {
+                    installedColliders.Clear();actual.GetComponentsInChildren(false,installedColliders);
+                    alive=false;
+                    foreach(var collider in installedColliders)
+                        if(collider.enabled&&collider.gameObject.activeInHierarchy&&!collider.isTrigger&&collider.attachedRigidbody==body)
+                        {alive=true;break;}
+                    installedColliders.Clear();
+                }
                 result.Add(new BuildInstalledPart(p.Id,Definition(p),new BuildPose(p.Cell,p.RotationQuarterTurns),alive));
             }
             return result;

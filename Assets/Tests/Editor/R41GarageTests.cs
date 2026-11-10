@@ -160,12 +160,47 @@ public class R41GarageTests
                 Assert.That(recorder.Valid,Is.True);yield return null;yield return null;long idle=recorder.LastValue;
                 bool ok=true;for(int i=0;i<20;i++)ok&=garage.Point(ray);
                 yield return null;long sample=recorder.LastValue;
+                var gate=Run.Player.GetComponent<R3BuildValidation>();
+                var installedMethod=typeof(R3BuildValidation).GetMethod("Installed",BindingFlags.NonPublic|BindingFlags.Instance);
+                var collect=(Func<System.Collections.Generic.List<B01.BUILD001.BuildInstalledPart>>)Delegate.CreateDelegate(typeof(Func<System.Collections.Generic.List<B01.BUILD001.BuildInstalledPart>>),gate,installedMethod);
+                var snapshot=collect();var selected=Run.VehicleModel.Inventory.Single(p=>p.Id==id).Copy();
+                selected.Cell=garage.Cell;selected.RotationQuarterTurns=garage.SelectedRotation;
+                var definition=(B01.BUILD001.BuildDefinition)typeof(R3BuildValidation).GetMethod("Definition",BindingFlags.NonPublic|BindingFlags.Instance).Invoke(gate,new object[]{selected});
+                var candidate=new B01.BUILD001.BuildInstalledPart(id,definition,new B01.BUILD001.BuildPose(selected.Cell,selected.RotationQuarterTurns),true);
+                Assert.That(B01.BUILD001.BuildPlacementRules.Check(snapshot,candidate,out _),Is.EqualTo(B01.BUILD001.BuildPlacementResult.Valid));
+                yield return null;
+                for(int i=0;i<20;i++)snapshot=collect();
+                yield return null;long installedBytes=recorder.LastValue;
+                for(int i=0;i<20;i++)B01.BUILD001.BuildPlacementRules.Check(snapshot,candidate,out _);
+                yield return null;long graphBytes=recorder.LastValue;
                 var control=new byte[1024*1024];control[0]=1;yield return null;long controlBytes=recorder.LastValue;GC.KeepAlive(control);
-                Debug.Log($"[GARAGE_QUERY_ALLOC] queries=20 colliders=520 idle={idle} sample={sample} control={controlBytes}");
+                Debug.Log($"[GARAGE_QUERY_ALLOC] queries=20 colliders=520 idle={idle} sample={sample} installed={installedBytes} graph={graphBytes} control={controlBytes}");
                 Assert.That(controlBytes,Is.GreaterThanOrEqualTo(1024*1024));Assert.That(ok,Is.True);
             }
         }
         finally{UnityEngine.Object.Destroy(obstacles);}
+    }
+
+    [UnityTest] public IEnumerator InstallationSnapshotTracksColliderEnablement()
+    {
+        var gate=Run.Player.GetComponent<R3BuildValidation>();
+        var assembly=Run.Player.GetComponent<R3VehicleAssembly>();
+        var armor=assembly.Parts.First(p=>p!=null&&p.Kind==R3PartKind.Armor&&p.Operational);
+        var colliders=armor.GetComponentsInChildren<Collider>().Where(c=>c.enabled&&!c.isTrigger&&c.attachedRigidbody==Run.Player.GetComponent<Rigidbody>()).ToArray();
+        Assert.That(colliders,Is.Not.Empty);
+        var collect=(Func<System.Collections.Generic.List<B01.BUILD001.BuildInstalledPart>>)Delegate.CreateDelegate(
+            typeof(Func<System.Collections.Generic.List<B01.BUILD001.BuildInstalledPart>>),gate,
+            typeof(R3BuildValidation).GetMethod("Installed",BindingFlags.NonPublic|BindingFlags.Instance));
+        try
+        {
+            Assert.That(collect().Single(p=>p.PartId==armor.Id).Alive,Is.True);
+            foreach(var collider in colliders)collider.enabled=false;
+            Assert.That(collect().Single(p=>p.PartId==armor.Id).Alive,Is.False,"A colliderless block cannot become support.");
+            foreach(var collider in colliders)collider.enabled=true;
+            Assert.That(collect().Single(p=>p.PartId==armor.Id).Alive,Is.True,"Re-enabled real support must become available again.");
+        }
+        finally{foreach(var collider in colliders)if(collider!=null)collider.enabled=true;}
+        yield return null;
     }
 
     [UnityTest] public IEnumerator FullRaycastBufferCannotAuthorizeAHiddenMountTarget()
