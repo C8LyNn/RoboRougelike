@@ -59,21 +59,29 @@ public sealed class WeaponGroupTests
     {
         EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);yield return new EnterPlayMode();
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Heavy));
-        // Build exactly twelve guns in a supported row with clear firing lanes.
-        // The heavy starter itself now contains three guns, rather than one.
+        // Build twelve supported guns with the current one-cell separation.
         model.Parts.RemoveAll(p=>p.Kind==R3PartKind.Gun);
-        for(int x=-6;x<=5;x++)
+        model.Award(1000);
+        foreach(int z in new[]{-2,2})for(int x=-5;x<=5;x++)
         {
-            if(x < -3 || x > 3)model.Parts.Add(new R3PartState(new Vector3Int(x,0,-2),R3PartKind.Armor));
-            if(x < -2 || x > 2)model.Parts.Add(new R3PartState(new Vector3Int(x,1,-2),R3PartKind.Armor));
-            int index=x+6;
-            model.Parts.Add(new R3PartState(new Vector3Int(x,2,-2),R3PartKind.Gun){Weapon=index%2==0?R4WeaponKind.Automatic:R4WeaponKind.Basic});
+            foreach(int y in new[]{0,1})
+            {var support=new Vector3Int(x,y,z);if(model.At(support)==null)model.Parts.Add(new R3PartState(support,R3PartKind.Armor));}
         }
+        int index=0;
+        foreach(int z in new[]{-2,2})foreach(int x in new[]{-5,-3,-1,1,3,5})
+        {
+            var cell=new Vector3Int(x,2,z);var weapon=index++%2==0?R4WeaponKind.Automatic:R4WeaponKind.Basic;
+            Assert.That(model.PlacementError(cell,R3PartKind.Gun,false,weapon),Is.Null,"Test gun must obey current grid and spacing rules.");
+            model.Parts.Add(new R3PartState(cell,R3PartKind.Gun){Weapon=weapon,ContactMask=R3VehicleModel.PlacementContacts(R3PartKind.Gun)});
+        }
+        Assert.That(R3VehicleModel.Connected(model.Parts),Is.True,"The fixture must be connected to the core.");
         var paletteObject=new GameObject("palette");var palette=paletteObject.AddComponent<R3VisualPalette>();var material=new Material(Shader.Find("Universal Render Pipeline/Lit"));
         for(int i=0;i<palette.Parts.Length;i++)palette.Parts[i]=material;
         for(int i=0;i<palette.Weapons.Length;i++)palette.Weapons[i]=material;
         var rig=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(0,20,0),Quaternion.identity);yield return null;
         var assembly=rig.GetComponent<R3VehicleAssembly>();R1EncounterManager.ClearTransientObjects();
+        foreach(var gun in assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun))gun.GunPivot.rotation=Quaternion.LookRotation(Vector3.up,Vector3.forward);
+        Physics.SyncTransforms();
         if(model.WeaponGroupA!=R4WeaponKind.Basic)model.SwapWeaponGroups();
         Assert.That(model.WeaponGroupA,Is.EqualTo(R4WeaponKind.Basic));Assert.That(model.WeaponGroupB,Is.EqualTo(R4WeaponKind.Automatic));
         assembly.FireGroup(false);
@@ -100,6 +108,8 @@ public sealed class WeaponGroupTests
         var assembly=rig.GetComponent<R3VehicleAssembly>();
         var first=assembly.Parts.First(p=>p.Kind==R3PartKind.Gun&&p.Weapon==R4WeaponKind.Basic);
         var second=assembly.Parts.First(p=>p.Kind==R3PartKind.Gun&&p.Weapon==R4WeaponKind.Automatic);
+        foreach(var gun in assembly.Parts.Where(p=>p.Kind==R3PartKind.Gun))gun.GunPivot.rotation=Quaternion.LookRotation(Vector3.up,Vector3.forward);
+        Physics.SyncTransforms();
         assembly.FireGuns();
         Assert.That(first.NextFireTime,Is.GreaterThan(0),"primary gun fires");
         Assert.That(second.NextFireTime,Is.Zero,"secondary gun must wait for its own trigger");
