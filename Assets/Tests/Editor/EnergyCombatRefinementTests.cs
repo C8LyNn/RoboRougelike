@@ -324,6 +324,28 @@ public sealed class EnergyCombatRefinementTests
         Assert.That(gun.NextShot,Is.Zero,"An undefined direction must not spend a shot or start cooldown.");
         Assert.That(energy.Current,Is.EqualTo(before));
     }
+    [UnityTest] public IEnumerator PrimaryEnemyGunDoesNotSpendAZeroDirectionShot()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);yield return new EnterPlayMode();
+        float deadline=Time.realtimeSinceStartup+20;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<deadline)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.StartRun()&&run.ChooseRoute(0),Is.True);
+        while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+        run.Encounter.SetCombatActive(false);var enemy=run.Encounter.Enemies.First();
+        foreach(var extra in enemy.AdditionalWeapons)extra.Block.transform.SetParent(null,true);
+        Assert.That(enemy.WeaponOnline,Is.True,"The primary gun remains mounted and operational.");
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        var type=typeof(RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret);
+        var muzzle=(Transform)type.GetField("muzzle",flags).GetValue(enemy);Assert.That(muzzle,Is.Not.Null);
+        var target=run.Player.Core.GetComponent<Collider>();var body=run.Player.GetComponent<Rigidbody>();body.isKinematic=true;
+        body.position+=muzzle.position-target.bounds.center;Physics.SyncTransforms();
+        Assert.That(Vector3.Distance(muzzle.position,target.bounds.center),Is.LessThan(.0001f));
+        type.GetField("currentTarget",flags).SetValue(enemy,target);type.GetField("nextTargetTime",flags).SetValue(enemy,Time.time+10f);
+        type.GetField("nextFireTime",flags).SetValue(enemy,0f);type.GetField("turnSpeed",flags).SetValue(enemy,0f);
+        enemy.SetCombatActive(true);type.GetMethod("Update",flags).Invoke(enemy,null);
+        Assert.That((float)type.GetField("nextFireTime",flags).GetValue(enemy),Is.Zero,
+            "An undefined muzzle-to-target direction must not consume a shot or cooldown.");
+    }
     [UnityTest] public IEnumerator DefeatedEnemyDropsCollectibleThatGivesTimedPlayerEnergy()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);

@@ -667,6 +667,10 @@ namespace RogueMachine.P12PipelineSafe
                 maxRange)
                 return;
 
+            // Projectile launch needs a direction. Contact weapons and EMP
+            // use their own close-range rules and remain eligible at zero range.
+            if(distance<.0001f&&packageEmp==null&&packageSaw==null&&packageBeam==null)return;
+
             Vector3 flatForward =
                 Vector3.ProjectOnPlane(
                     yawPivot.forward,
