@@ -1377,6 +1377,9 @@ namespace RogueMachine.P12PipelineSafe
             {
                 if(!gun.Online(transform)||RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(gun.Block.gameObject))continue;
                 var delta=point-gun.Pivot.position;
+                // A target can overlap the pivot during a ram. There is then
+                // no meaningful aim direction and no valid shot this frame.
+                if(delta.sqrMagnitude<.00000001f)continue;
                 gun.Pivot.rotation=Quaternion.RotateTowards(gun.Pivot.rotation,Quaternion.LookRotation(delta),85*Time.deltaTime);
                 gun.Block.GetComponent<R4WeaponArt>()?.Sync();
                 if(delta.magnitude>maxRange||Vector3.Angle(gun.Pivot.forward,delta)>9||Time.time<gun.NextShot)continue;

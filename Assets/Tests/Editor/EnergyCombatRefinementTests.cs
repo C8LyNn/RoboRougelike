@@ -11,6 +11,15 @@ using RoboRougelike.R1;
 
 public sealed class EnergyCombatRefinementTests
 {
+    static System.Collections.Generic.List<string> InvokeEnemyGunAndCollectLogs(object enemy,System.Reflection.MethodInfo update,object list)
+    {
+        var messages=new System.Collections.Generic.List<string>();
+        Application.LogCallback capture=(condition,stack,logType)=>messages.Add(condition);
+        Application.logMessageReceived+=capture;
+        try{update.Invoke(enemy,new[]{list,"extra-gun/"});}
+        finally{Application.logMessageReceived-=capture;}
+        return messages;
+    }
     static void Invoke(VehicleEnergyState state,string name,params object[] args)
     {
         var method=typeof(VehicleEnergyState).GetMethod(name);
@@ -265,6 +274,33 @@ public sealed class EnergyCombatRefinementTests
         while(gun.NextShot<=first&&Time.realtimeSinceStartup<deadline)yield return null;
         Assert.That(gun.NextShot,Is.GreaterThan(first),"The added weapon must actually fire, not just exist visually.");
         yield return new ExitPlayMode();
+    }
+    [UnityTest] public IEnumerator AdditionalEnemyGunDoesNotFireAtAnUndefinedZeroDistanceDirection()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity",OpenSceneMode.Single);yield return new EnterPlayMode();
+        float deadline=Time.realtimeSinceStartup+20;
+        while(R1RunController.Instance?.Progress==null&&Time.realtimeSinceStartup<deadline)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.StartRun()&&run.ChooseRoute(0),Is.True);
+        while(run.Transitioning&&Time.realtimeSinceStartup<deadline)yield return null;
+        run.Encounter.SetCombatActive(false);var enemy=run.Encounter.Enemies.First();
+        Assert.That(enemy.AdditionalWeapons.Count,Is.GreaterThan(0));var gun=enemy.AdditionalWeapons[0];
+        Assert.That(gun.Online(enemy.transform),Is.True);
+        var target=run.Player.Core.GetComponent<Collider>();Assert.That(target,Is.Not.Null);
+        var body=run.Player.GetComponent<Rigidbody>();body.isKinematic=true;
+        body.position+=gun.Pivot.position-target.bounds.center;Physics.SyncTransforms();
+        Assert.That(Vector3.Distance(gun.Pivot.position,target.bounds.center),Is.LessThan(.0001f));
+        var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        var type=typeof(RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret);
+        var targetField=type.GetField("currentTarget",flags);Assert.That(targetField,Is.Not.Null);targetField.SetValue(enemy,target);
+        var clockField=type.GetField("nextTargetTime",flags);Assert.That(clockField,Is.Not.Null);clockField.SetValue(enemy,Time.time+10f);
+        var listField=type.GetField("additionalGuns",flags);Assert.That(listField,Is.Not.Null);var list=listField.GetValue(enemy);
+        var update=type.GetMethod("UpdateVariantWeapons",flags);Assert.That(update,Is.Not.Null);
+        gun.NextShot=0;var energy=enemy.GetComponent<VehicleEnergyBank>();Assert.That(energy,Is.Not.Null);float before=energy.Current;
+        var messages=InvokeEnemyGunAndCollectLogs(enemy,update,list);
+        Assert.That(messages.Any(m=>m!=null&&m.Contains("Look rotation viewing vector is zero")),Is.False,
+            "Overlapping vehicles must not emit a zero-direction warning each frame.");
+        Assert.That(gun.NextShot,Is.Zero,"An undefined direction must not spend a shot or start cooldown.");
+        Assert.That(energy.Current,Is.EqualTo(before));
     }
     [UnityTest] public IEnumerator DefeatedEnemyDropsCollectibleThatGivesTimedPlayerEnergy()
     {
