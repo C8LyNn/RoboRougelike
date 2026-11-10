@@ -37,11 +37,12 @@ namespace RoboRougelike.R1
             if(!disabled||timer.Remaining>0)return;
             var center=enemy.Core.transform.position;
             player.GetComponentsInChildren(false,nearbyParts);
-            bool nearby=Vector3.Distance(enemy.transform.position,player.position)<=6f;
-            if(!nearby)
-                foreach(var part in nearbyParts)
-                    if(part!=null&&!part.IsDead&&(part.transform.position-center).sqrMagnitude<=36f)
-                    {nearby=true;break;}
+            // The roots are not the blast center or necessarily a surviving
+            // physical part; use the same distance test as the damage below.
+            bool nearby=false;
+            foreach(var part in nearbyParts)
+                if(part!=null&&!part.IsDead&&(part.transform.position-center).sqrMagnitude<=36f)
+                {nearby=true;break;}
             if(!nearby)return;
             var hit=new HashSet<P12PipelineSafeDamageable>();
             foreach(var part in nearbyParts)
