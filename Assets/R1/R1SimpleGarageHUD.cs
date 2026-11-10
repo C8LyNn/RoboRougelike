@@ -249,6 +249,14 @@ namespace RoboRougelike.R1
             var model=run.VehicleModel;
             if(run.MapExitPending)return run.EditorMessage;
             string message=run.Garage.Message??string.Empty;
+            // The visible ghost can move onto a blocked cell after a previous
+            // successful purchase. Explain that current placement before the
+            // player clicks, rather than leaving the old purchase message.
+            if(run.Garage.Tool==R41GarageTool.Mount&&run.Garage.HasTarget&&run.Garage.HasMountSelection)
+            {
+                string placement=run.Garage.PlacementIssue;
+                if(placement!=null)message=placement;
+            }
             string reason=model.DeployError;
             if(reason!=null)
             {
@@ -436,7 +444,7 @@ namespace RoboRougelike.R1
             }
             if(GUI.Button(new Rect(12,610,245,42),$"Magazyn {model.Inventory.Count}/{R3VehicleModel.InventoryCapacity} • naprawy",compactButton))
             {inventoryOpen=true;catalogOpen=true;stackScroll=Vector2.zero;}
-            GUI.Label(new Rect(12,655,245,62),"PPM: zdejmij • przeciągnij: widok\nCtrl + LPM: napraw • U: spód\nQ/E R/F Z/X: obrót • Shift: zamontowane",small);
+            GUI.Label(new Rect(12,655,245,62),"PPM: zdejmij • przeciągnij: widok\nCtrl + LPM: napraw • U: spód\nQ/E R/F Z/X: obrót • Shift: część",small);
             string garageFeedback=SimpleGarageFeedback(run);
             GUI.Label(new Rect(286,655,570,58),garageFeedback,small);
             GUI.enabled=!garageOptionsOpen&&(run.MapEditorSession||model.CanDeploy);

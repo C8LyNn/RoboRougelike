@@ -306,7 +306,7 @@ namespace RoboRougelike.R3
         }
 
         static string Explain(BuildPlacementResult result)=>result==BuildPlacementResult.ColliderPenetration?
-            "Fizyczny obrys części przenika istniejący collider.":result==BuildPlacementResult.NoCompatibleSocket?
+            "Część nachodzi na inną część lub przeszkodę.":result==BuildPlacementResult.NoCompatibleSocket?
             "Brak zgodnego, połączonego z rdzeniem mocowania. Koło i broń nie są podporą konstrukcji.":
             "Montaż odrzucony: "+result;
 
