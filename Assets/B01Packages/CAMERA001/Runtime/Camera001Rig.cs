@@ -25,8 +25,9 @@ namespace B01.CAMERA001
         [SerializeField, Min(.1f)] private float maxContinuousSpeed = 15f;
         [SerializeField] private LayerMask worldCollisionMask = ~0;
 
-        private readonly RaycastHit[] worldHits = new RaycastHit[128];
-        private readonly Collider[] overlaps = new Collider[64];
+        private const int MaxCollisionBuffer = 4096;
+        private RaycastHit[] worldHits = new RaycastHit[128];
+        private Collider[] overlaps = new Collider[64];
         private Camera attachedCamera;
         private Vector3 velocity,previousAim;
         private bool initialized;
@@ -313,30 +314,53 @@ namespace B01.CAMERA001
 
         private bool IsWorldOverlapping(Vector3 center, float radius)
         {
-            int count = Physics.OverlapSphereNonAlloc(center,
-                radius + Mathf.Max(0f, worldPadding), overlaps,
-                worldCollisionMask, QueryTriggerInteraction.Ignore);
-            if (count >= overlaps.Length) return true; // overflow fails closed
-            for (int i = 0; i < count; i++)
-                if (IsWorld(overlaps[i])) return true;
-            return false;
+            float queryRadius=radius+Mathf.Max(0f,worldPadding);
+            while(true)
+            {
+                int count=Physics.OverlapSphereNonAlloc(center,queryRadius,overlaps,
+                    worldCollisionMask,QueryTriggerInteraction.Ignore);
+                bool blocked=false;
+                for(int i=0;i<count;i++)if(IsWorld(overlaps[i])){blocked=true;break;}
+                Array.Clear(overlaps,0,count);
+                if(blocked)return true;
+                if(count<overlaps.Length)return false;
+                if(overlaps.Length>=MaxCollisionBuffer)
+                {
+                    var all=Physics.OverlapSphere(center,queryRadius,worldCollisionMask,QueryTriggerInteraction.Ignore);
+                    foreach(var collider in all)if(IsWorld(collider))return true;
+                    return false;
+                }
+                Array.Resize(ref overlaps,Mathf.Min(overlaps.Length*2,MaxCollisionBuffer));
+            }
         }
 
         private float CastWorldClearance(Vector3 start, Vector3 direction,
             float distance, float radius)
         {
             if (distance <= .00001f) return 0f;
-            int count = Physics.SphereCastNonAlloc(start, radius,
-                direction, worldHits, distance, worldCollisionMask,
-                QueryTriggerInteraction.Ignore);
-            if (count >= worldHits.Length) return 0f; // fail closed
+            int count;RaycastHit[] hits;
+            while(true)
+            {
+                count=Physics.SphereCastNonAlloc(start,radius,direction,worldHits,distance,
+                    worldCollisionMask,QueryTriggerInteraction.Ignore);
+                if(count<worldHits.Length){hits=worldHits;break;}
+                if(worldHits.Length>=MaxCollisionBuffer)
+                {
+                    Array.Clear(worldHits,0,count);
+                    hits=Physics.SphereCastAll(start,radius,direction,distance,worldCollisionMask,QueryTriggerInteraction.Ignore);
+                    count=hits.Length;break;
+                }
+                Array.Clear(worldHits,0,count);
+                Array.Resize(ref worldHits,Mathf.Min(worldHits.Length*2,MaxCollisionBuffer));
+            }
             float allowed = distance;
             for (int i = 0; i < count; i++)
             {
-                if (!IsWorld(worldHits[i].collider)) continue;
+                if (!IsWorld(hits[i].collider)) continue;
                 allowed = Mathf.Min(allowed,
-                    Mathf.Max(0f, worldHits[i].distance - Mathf.Max(0f, worldPadding)));
+                    Mathf.Max(0f, hits[i].distance - Mathf.Max(0f, worldPadding)));
             }
+            if(ReferenceEquals(hits,worldHits))Array.Clear(worldHits,0,count);
             return allowed;
         }
 

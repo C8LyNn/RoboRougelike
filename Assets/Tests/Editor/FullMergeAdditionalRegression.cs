@@ -40,6 +40,64 @@ public sealed class FullMergeAdditionalRegression
         finally{Object.Destroy(fixture);}
         yield return null;
     }
+    [UnityTest]public IEnumerator CameraOverlapIgnoresCrowdedOwnCollidersButDetectsWorld()
+    {
+        var rig=Camera.main.GetComponent<P12PipelineSafeCamera>().ReceiverRig;
+        var overlap=typeof(Camera001Rig).GetMethod("IsWorldOverlapping",BindingFlags.Instance|BindingFlags.NonPublic);
+        var fixture=new GameObject("crowded camera owner fixture");fixture.transform.SetParent(run.Player.transform,false);
+        fixture.transform.position=new Vector3(12000,500,12000);GameObject wall=null;
+        try
+        {
+            for(int i=0;i<180;i++)fixture.AddComponent<BoxCollider>().size=Vector3.one*.01f;
+            Physics.SyncTransforms();var point=fixture.transform.position;
+            Assert.That(Physics.OverlapSphere(point,.4f).Length,Is.GreaterThan(64));
+            Assert.That((bool)overlap.Invoke(rig,new object[]{point,.3f}),Is.False,"Own colliders are not world obstacles, even beyond the buffer.");
+            wall=GameObject.CreatePrimitive(PrimitiveType.Cube);wall.transform.position=point;wall.transform.localScale=Vector3.one*.1f;Physics.SyncTransforms();
+            Assert.That((bool)overlap.Invoke(rig,new object[]{point,.3f}),Is.True,"A real wall must still block the camera.");
+        }
+        finally{Object.Destroy(fixture);if(wall!=null)Object.Destroy(wall);}
+        yield return null;
+    }
+    [UnityTest]public IEnumerator CameraSweepIgnoresCrowdedOwnCollidersButStopsAtWorld()
+    {
+        var rig=Camera.main.GetComponent<P12PipelineSafeCamera>().ReceiverRig;
+        var cast=typeof(Camera001Rig).GetMethod("CastWorldClearance",BindingFlags.Instance|BindingFlags.NonPublic);
+        var fixture=new GameObject("crowded camera sweep fixture");fixture.transform.SetParent(run.Player.transform,false);
+        fixture.transform.position=new Vector3(12000,500,12000);GameObject wall=null;
+        try
+        {
+            for(int i=0;i<180;i++)fixture.AddComponent<BoxCollider>().size=Vector3.one*.01f;
+            Physics.SyncTransforms();var origin=fixture.transform.position-Vector3.forward*2;
+            Assert.That(Physics.SphereCastAll(origin,.1f,Vector3.forward,4f).Length,Is.GreaterThan(128));
+            Assert.That((float)cast.Invoke(rig,new object[]{origin,Vector3.forward,4f,.1f}),Is.EqualTo(4f).Within(.001f),"Own colliders must not collapse camera distance.");
+            wall=GameObject.CreatePrimitive(PrimitiveType.Cube);wall.transform.position=fixture.transform.position;wall.transform.localScale=Vector3.one*.1f;Physics.SyncTransforms();
+            Assert.That((float)cast.Invoke(rig,new object[]{origin,Vector3.forward,4f,.1f}),Is.LessThan(4f),"A real wall must still stop the sweep.");
+        }
+        finally{Object.Destroy(fixture);if(wall!=null)Object.Destroy(wall);}
+        yield return null;
+    }
+    [UnityTest]public IEnumerator ExtremeCameraQueryOverflowStillSeesARealWall()
+    {
+        var rig=Camera.main.GetComponent<P12PipelineSafeCamera>().ReceiverRig;
+        var overlap=typeof(Camera001Rig).GetMethod("IsWorldOverlapping",BindingFlags.Instance|BindingFlags.NonPublic);
+        var cast=typeof(Camera001Rig).GetMethod("CastWorldClearance",BindingFlags.Instance|BindingFlags.NonPublic);
+        var fixture=new GameObject("extreme camera query fixture");fixture.transform.SetParent(run.Player.transform,false);
+        fixture.transform.position=new Vector3(12000,500,12000);GameObject wall=null;
+        try
+        {
+            for(int i=0;i<4100;i++)fixture.AddComponent<BoxCollider>().size=Vector3.one*.01f;
+            Physics.SyncTransforms();var point=fixture.transform.position;var origin=point-Vector3.forward*2;
+            Assert.That(Physics.OverlapSphere(point,.4f).Length,Is.GreaterThan(4096));
+            Assert.That(Physics.SphereCastAll(origin,.1f,Vector3.forward,4f).Length,Is.GreaterThan(4096));
+            Assert.That((bool)overlap.Invoke(rig,new object[]{point,.3f}),Is.False);
+            Assert.That((float)cast.Invoke(rig,new object[]{origin,Vector3.forward,4f,.1f}),Is.EqualTo(4f).Within(.001f));
+            wall=GameObject.CreatePrimitive(PrimitiveType.Cube);wall.transform.position=point;wall.transform.localScale=Vector3.one*.1f;Physics.SyncTransforms();
+            Assert.That((bool)overlap.Invoke(rig,new object[]{point,.3f}),Is.True);
+            Assert.That((float)cast.Invoke(rig,new object[]{origin,Vector3.forward,4f,.1f}),Is.LessThan(4f));
+        }
+        finally{Object.Destroy(fixture);if(wall!=null)Object.Destroy(wall);}
+        yield return null;
+    }
     [UnityTest]public IEnumerator MinimumPitchFramesActualRobotInsideViewport()
     {
         run.Garage.Close();yield return null;
