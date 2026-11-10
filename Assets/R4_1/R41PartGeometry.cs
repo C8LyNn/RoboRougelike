@@ -8,6 +8,8 @@ namespace RoboRougelike.R4_1
     public static class R41PartGeometry
     {
         public const float Grid=0.55f, BlockSize=0.52f;
+        // Leave room for the 0.9 m cutting disc to clear its supporting cube.
+        public const float SawCenterOffset=1.95f;
         // Conservative first integration: only the two full source sockets are
         // active. Partial triangular faces never support guns or wheels.
         public const int WedgeFullContacts=(1<<3)|(1<<5);
@@ -209,7 +211,7 @@ namespace RoboRougelike.R4_1
             if(kind!=R3PartKind.Gun)return null;
             var pivot=new GameObject("Obrót broni").transform;pivot.SetParent(block,false);pivot.localPosition=Vector3.up*0.6f;
             if(weapon==R4WeaponKind.RotarySaw)
-            {muzzle=new GameObject("Środek piły").transform;muzzle.SetParent(pivot,false);muzzle.localPosition=Vector3.forward*1.65f;SawRotor(muzzle,material);return pivot;}
+            {muzzle=new GameObject("Środek piły").transform;muzzle.SetParent(pivot,false);muzzle.localPosition=Vector3.forward*SawCenterOffset;SawRotor(muzzle,material);return pivot;}
             bool heavy=weapon==R4WeaponKind.Heavy,automatic=weapon==R4WeaponKind.Automatic,shotgun=weapon==R4WeaponKind.Shotgun;
             var barrel=Primitive(PrimitiveType.Cube,pivot,material,solid,"Lufa").transform;
             barrel.localPosition=Vector3.forward*(heavy?1.1f:0.85f);
