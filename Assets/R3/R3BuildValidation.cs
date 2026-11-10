@@ -129,8 +129,6 @@ namespace RoboRougelike.R3
             // A rotation replaces the same physical part; its old pose must
             // not collide with the proposed pose or count as its own support.
             var installed=Installed().Where(p=>p.PartId!=candidate.Id).ToList();
-            var logical=BuildPlacementRules.Check(installed,item,out _);
-            if(logical!=BuildPlacementResult.Valid)return Explain(logical);
             GameObject probe=null;
             try
             {
@@ -144,6 +142,8 @@ namespace RoboRougelike.R3
                 foreach(var other in Physics.OverlapBox(collider.bounds.center,collider.bounds.extents+Vector3.one*.001f,Quaternion.identity,~0,QueryTriggerInteraction.Ignore))
                     if(!other.transform.IsChildOf(probe.transform)&&(factoryGroup==null||!factoryGroup.Contains(other))&&
                         other.GetComponentInParent<R3MountedPart>()?.Id!=candidate.Id)neighbors.Add(other);
+                // The authoritative installation check already includes the
+                // full logical graph walk as well as the physical evidence.
                 var result=BuildPlacementRules.CheckForInstallation(installed,item,
                     new BuildPhysicsEvidence(candidateColliders,neighbors.ToArray(),true),out _);
                 if(result!=BuildPlacementResult.Valid)return Explain(result);
