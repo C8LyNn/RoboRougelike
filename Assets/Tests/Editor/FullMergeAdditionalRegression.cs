@@ -40,6 +40,34 @@ public sealed class FullMergeAdditionalRegression
         finally{Object.Destroy(fixture);}
         yield return null;
     }
+    [UnityTest]public IEnumerator CameraOwnHullRayReusesColliderStorage()
+    {
+        var rig=Camera.main.GetComponent<P12PipelineSafeCamera>().ReceiverRig;
+        var method=typeof(Camera001Rig).GetMethod("HitsOwnHullFromActualPose",BindingFlags.Instance|BindingFlags.NonPublic);
+        var query=(System.Func<Vector3,Vector3,Bounds,bool>)System.Delegate.CreateDelegate(typeof(System.Func<Vector3,Vector3,Bounds,bool>),rig,method);
+        var fixture=new GameObject("camera own ray dense fixture");fixture.transform.SetParent(run.Player.transform,false);
+        try
+        {
+            for(int i=0;i<300;i++)fixture.AddComponent<BoxCollider>().size=Vector3.one*.01f;
+            Physics.SyncTransforms();var bounds=new Bounds(run.Player.transform.position,Vector3.one*10);
+            var origin=run.Player.transform.position+Vector3.right*100;var direction=Vector3.up;
+            var unrelatedBounds=new Bounds(run.Player.transform.position+Vector3.up*100,Vector3.one);
+            Assert.That(query(fixture.transform.position,Vector3.forward,unrelatedBounds),Is.True,
+                "Starting inside an actual own collider must still be detected.");
+            for(int i=0;i<3;i++)Assert.That(query(origin,direction,bounds),Is.False);
+            using(var recorder=Unity.Profiling.ProfilerRecorder.StartNew(Unity.Profiling.ProfilerCategory.Memory,"GC Allocated In Frame",16))
+            {
+                Assert.That(recorder.Valid,Is.True);yield return null;yield return null;long idle=recorder.LastValue;
+                for(int i=0;i<50;i++)query(origin,direction,bounds);
+                yield return null;long sample=recorder.LastValue;
+                var control=new byte[1024*1024];control[0]=1;yield return null;long controlBytes=recorder.LastValue;System.GC.KeepAlive(control);
+                Debug.Log($"[CAMERA_OWN_RAY_ALLOC] queries=50 extra_colliders=300 idle={idle} sample={sample} control={controlBytes}");
+                Assert.That(controlBytes,Is.GreaterThanOrEqualTo(1024*1024));
+                Assert.That(sample-idle,Is.LessThan(32000),"The own-hull ray should not allocate a collider array on every query.");
+            }
+        }
+        finally{Object.Destroy(fixture);}
+    }
     [UnityTest]public IEnumerator CameraOverlapIgnoresCrowdedOwnCollidersButDetectsWorld()
     {
         var rig=Camera.main.GetComponent<P12PipelineSafeCamera>().ReceiverRig;

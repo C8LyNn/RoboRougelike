@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace B01.CAMERA001
@@ -28,6 +29,7 @@ namespace B01.CAMERA001
         private const int MaxCollisionBuffer = 4096;
         private RaycastHit[] worldHits = new RaycastHit[128];
         private Collider[] overlaps = new Collider[64];
+        private readonly List<Collider> ownHullColliders = new List<Collider>();
         private Camera attachedCamera;
         private Vector3 velocity,previousAim;
         private bool initialized;
@@ -373,16 +375,21 @@ namespace B01.CAMERA001
             if (bounds.Contains(origin)) return true;
             if (bounds.IntersectRay(ray, out entry) && entry >= 0f)
                 return true; // conservative protection for unloaded colliders
-            foreach (var c in vehicleRoot.GetComponentsInChildren<Collider>())
+            ownHullColliders.Clear();vehicleRoot.GetComponentsInChildren(false,ownHullColliders);
+            try
             {
-                if (c == null || !c.enabled || c.isTrigger || !c.gameObject.activeInHierarchy)
-                    continue;
-                RaycastHit hit;
-                if (c.Raycast(ray, out hit, Mathf.Infinity)) return true;
-                // Collider.Raycast alone cannot report a ray starting inside.
-                if ((c.ClosestPoint(origin) - origin).sqrMagnitude < .000001f)
-                    return true;
+                foreach (var c in ownHullColliders)
+                {
+                    if (c == null || !c.enabled || c.isTrigger || !c.gameObject.activeInHierarchy)
+                        continue;
+                    RaycastHit hit;
+                    if (c.Raycast(ray, out hit, Mathf.Infinity)) return true;
+                    // Collider.Raycast alone cannot report a ray starting inside.
+                    if ((c.ClosestPoint(origin) - origin).sqrMagnitude < .000001f)
+                        return true;
+                }
             }
+            finally{ownHullColliders.Clear();}
             return false;
         }
 
