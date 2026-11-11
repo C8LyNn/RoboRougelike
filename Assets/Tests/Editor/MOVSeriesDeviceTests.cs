@@ -33,7 +33,15 @@ public class MOVSeriesDeviceTests
         int y=kind==R3VehicleKind.Light?1:2;
         for(int i=0;i<devices.Length;i++)
         {
-            var cell=kind==R3VehicleKind.Standard?new Vector3Int(i%2==0?-2:2,y,i<2?-1:1):new Vector3Int(i%2==0?-1:1,y,i/2);
+            var preferred=kind==R3VehicleKind.Standard?new Vector3Int(i%2==0?-2:2,y,i<2?-1:1):new Vector3Int(i%2==0?-1:1,y,i/2);
+            // Starter layouts evolved: choose a genuinely free, supported
+            // top cell close to the original pose instead of replacing a part.
+            var available=model.Parts.Where(p=>p.Kind==R3PartKind.Armor||p.Kind==R3PartKind.Core)
+                .Select(p=>p.Cell+Vector3Int.up).Distinct()
+                .Where(c=>model.At(c)==null&&model.PlacementError(c,devices[i],true)==null)
+                .OrderBy(c=>(c-preferred).sqrMagnitude).ThenBy(c=>c.x).ThenBy(c=>c.z).ToArray();
+            Assert.That(available,Is.Not.Empty,"Device fixture needs a legal supported cell for "+devices[i]);
+            var cell=available[0];
             Assert.That(model.At(cell),Is.Null,"Device fixture cell must be free: "+cell);
             Assert.That(model.At(cell+Vector3Int.down),Is.Not.Null,"Device fixture needs hull support: "+cell);
             model.Parts.Add(new R3PartState(cell,devices[i]));
@@ -136,15 +144,27 @@ public class MOVSeriesDeviceTests
     [UnityTest] public IEnumerator DestroyedStructuralBridgeStopsMountedDeviceBeforeNextForce()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
-        model.Parts.Add(new R3PartState(new Vector3Int(0,2,0),R3PartKind.Armor));
-        model.Parts.Add(new R3PartState(new Vector3Int(0,3,0),R3PartKind.Booster));
+        // Keep the device connected only through the bridge on the current
+        // starter, including when the old fixed cells are already occupied.
+        var occupied=model.Parts.Select(p=>p.Cell).ToHashSet();
+        var cells=model.Parts.Where(p=>p.Kind==R3PartKind.Armor||p.Kind==R3PartKind.Core)
+            .Select(p=>p.Cell+Vector3Int.up).Distinct()
+            .Where(c=>!occupied.Contains(c)&&!occupied.Contains(c+Vector3Int.up)&&
+                R3VehicleModel.Neighbours.All(d=>d==Vector3Int.down||!occupied.Contains(c+Vector3Int.up+d))&&
+                model.PlacementError(c,R3PartKind.Armor,true)==null)
+            .OrderBy(c=>(c-new Vector3Int(0,2,0)).sqrMagnitude).ToArray();
+        Assert.That(cells,Is.Not.Empty,"Fixture needs a free, isolated structural bridge.");
+        var bridgeCell=cells[0];var boosterCell=bridgeCell+Vector3Int.up;
+        model.Parts.Add(new R3PartState(bridgeCell,R3PartKind.Armor));
+        Assert.That(model.PlacementError(boosterCell,R3PartKind.Booster,true),Is.Null);
+        model.Parts.Add(new R3PartState(boosterCell,R3PartKind.Booster));
         var v=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(0,.7f,1000),Quaternion.identity);
         v.transform.SetParent(fixtures.transform,true);v.Controller.SetGameplayInputEnabled(true);yield return Seconds(.35f);
         Assert.That(Action(v,"TryBoost"),Is.True);var assembly=v.GetComponent<R3VehicleAssembly>();
         // Prevent the graph's periodic Update from accidentally masking a missing pre-force refresh.
         var nextCheck=v.Structure.GetType().GetField("nextCheckTime",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
         Assert.That(nextCheck,Is.Not.Null);nextCheck.SetValue(v.Structure,Time.time+10);
-        var bridge=assembly.Parts.Single(p=>p.Cell==new Vector3Int(0,2,0));var boost=assembly.Parts.Single(p=>p.Kind==R3PartKind.Booster).GetComponent<VehicleBooster>();
+        var bridge=assembly.Parts.Single(p=>p.Cell==bridgeCell);var boost=assembly.Parts.Single(p=>p.Kind==R3PartKind.Booster).GetComponent<VehicleBooster>();
         bridge.Damageable.ApplyDamage(10000,bridge.transform.position,Vector3.zero);
         yield return FixedStep();
         Assert.That(boost.IsOperational,Is.False);Assert.That(boost.IsBoosting,Is.False);
