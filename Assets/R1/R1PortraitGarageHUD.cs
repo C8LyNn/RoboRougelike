@@ -46,7 +46,7 @@ namespace RoboRougelike.R1
             for(int i=0;i<tools.Length;i++)
             {
                 GUI.backgroundColor=garage.Tool==(R41GarageTool)i?new Color(.3f,.9f,.9f):Color.white;
-                if(GUI.Button(new Rect(24+i*183,505,171,44),tools[i],compactButton))garage.SetTool((R41GarageTool)i);
+                if(GUI.Button(new Rect(24+i*183,505,171,44),tools[i],compactButton))garage.SelectTool((R41GarageTool)i);
             }
             GUI.backgroundColor=Color.white;
             string[] tabs={"CZĘŚCI I WARSZTAT","NAPĘD I MODUŁY","AKTYWNOŚCI"};

@@ -276,6 +276,14 @@ namespace RoboRougelike.R3
             RefreshMarker();
         }
         public void SetTool(R41GarageTool tool){Tool=tool;HasTarget=false;pointerSurfaceRejected=false;RefreshMarker();}
+        public void SelectTool(R41GarageTool tool)
+        {
+            SetTool(tool);
+            Message=tool==R41GarageTool.Mount?(HasMountSelection?"Wskaż miejsce i kliknij LPM, aby zamontować część.":"Wybierz część z listy."):
+                tool==R41GarageTool.Inspect?"Kliknij część pojazdu, aby ją zaznaczyć.":
+                tool==R41GarageTool.Repair?"Kliknij uszkodzoną część, aby ją naprawić.":
+                "Zdejmij część: kliknij ją na pojeździe.";
+        }
         public void ChooseInventory(string id)
         {
             UseInventory=true;SelectedInventoryId=id;var part=Owned;
@@ -659,7 +667,7 @@ namespace RoboRougelike.R3
             if(current.type==EventType.KeyDown)
             {
                 var tool=ToolShortcut(current.keyCode,current.shift||current.control||current.alt||current.command);
-                if(tool.HasValue){if(Tool!=tool.Value)SetTool(tool.Value);current.Use();return;}
+                if(tool.HasValue){SelectTool(tool.Value);current.Use();return;}
             }
             if(current.type==EventType.KeyDown&&current.keyCode==KeyCode.U)
             {ToggleUndersideView();current.Use();return;}
