@@ -35,23 +35,30 @@ public class MOVSeriesDriveTests
         if(suspension)
             foreach(int side in new[]{-1,1})
             {
-                var wheelCell=new Vector3Int(side*(kind==R3VehicleKind.Light?2:kind==R3VehicleKind.Standard?3:4),0,0);
+                var preferred=new Vector3Int(side*(kind==R3VehicleKind.Light?2:kind==R3VehicleKind.Standard?3:4),0,0);
+                var choices=m.Parts.SelectMany(p=>R3VehicleModel.Neighbours.Select(d=>p.Cell+d)).Distinct()
+                    .Where(c=>c.x*side>0&&m.PlacementError(c,R3PartKind.Wheel)==null)
+                    .OrderBy(c=>(c-preferred).sqrMagnitude).ThenBy(c=>c.z).ToArray();
+                Assert.That(choices,Is.Not.Empty,"Fixture needs a valid wheel on side "+side);
+                var wheelCell=choices[0];
                 Assert.That(m.Buy(wheelCell,R3PartKind.Wheel),Is.True,"Wheel at "+wheelCell+" / "+m.PlacementError(wheelCell,R3PartKind.Wheel));
             }
-        var gyroCell=kind==R3VehicleKind.Standard?new Vector3Int(0,2,-2):new Vector3Int(-1,kind==R3VehicleKind.Light?1:2,0);
-        var boosterCell=kind==R3VehicleKind.Standard?new Vector3Int(0,2,2):new Vector3Int(1,kind==R3VehicleKind.Light?1:2,0);
-        foreach(var cell in new[]{gyroCell,boosterCell})
-        {
-            Assert.That(m.At(cell),Is.Null,"Device fixture cell must be free: "+cell);
-            Assert.That(m.At(cell+Vector3Int.down),Is.Not.Null,"Device fixture needs hull support: "+cell);
-        }
+        var gyroPreferred=kind==R3VehicleKind.Standard?new Vector3Int(0,2,-2):new Vector3Int(-1,kind==R3VehicleKind.Light?1:2,0);
+        var boosterPreferred=kind==R3VehicleKind.Standard?new Vector3Int(0,2,2):new Vector3Int(1,kind==R3VehicleKind.Light?1:2,0);
+        var gyroCell=MOVSeriesDeviceTests.FindFixtureCell(m,R3PartKind.Gyroscope,gyroPreferred);
+        Assert.That(m.At(gyroCell),Is.Null,"Device fixture cell must be free: "+gyroCell);
+        Assert.That(m.At(gyroCell+Vector3Int.down),Is.Not.Null,"Device fixture needs hull support: "+gyroCell);
         m.Parts.Add(new R3PartState(gyroCell,R3PartKind.Gyroscope));
+        var boosterCell=MOVSeriesDeviceTests.FindFixtureCell(m,R3PartKind.Booster,boosterPreferred);
+        Assert.That(m.At(boosterCell),Is.Null,"Device fixture cell must be free: "+boosterCell);
+        Assert.That(m.At(boosterCell+Vector3Int.down),Is.Not.Null,"Device fixture needs hull support: "+boosterCell);
         m.Parts.Add(new R3PartState(boosterCell,R3PartKind.Booster));
         if(suspension)
         {
             foreach(int side in new[]{-1,1})foreach(int z in new[]{-1,1})
             {
-                var cell=new Vector3Int(side*(kind==R3VehicleKind.Light?1:2),kind==R3VehicleKind.Light?1:2,z);
+                var preferred=new Vector3Int(side*(kind==R3VehicleKind.Light?1:2),kind==R3VehicleKind.Light?1:2,z);
+                var cell=MOVSeriesDeviceTests.FindFixtureCell(m,R3PartKind.Suspension,preferred);
                 Assert.That(m.Buy(cell,R3PartKind.Suspension),Is.True,"Suspension at "+cell+" / "+m.PlacementError(cell,R3PartKind.Suspension));
             }
             m.SuspensionHeightOffset=.3f;

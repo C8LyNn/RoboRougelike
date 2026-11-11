@@ -34,8 +34,12 @@ public class MOVSeriesSpecialTests
         // 23cm. Preserve the same devices/cost/abilities on a free rear cell.
         for(int i=0;i<devices.Length;i++)
         {
-            var cell=kind==R3VehicleKind.Standard?new Vector3Int(i%2==0?-2:2,y,i<2?-1:1):
+            var preferred=kind==R3VehicleKind.Standard?new Vector3Int(i%2==0?-2:2,y,i<2?-1:1):
                 new Vector3Int(i%2==0?-1:1,y,i==2&&devices[i]==R3PartKind.Blink?-1:i/2);
+            bool isolateEmitters=devices.Count(d=>d==R3PartKind.MagneticGrapple)>1;
+            var cell=MOVSeriesDeviceTests.FindFixtureCell(m,devices[i],preferred,c=>!isolateEmitters||
+                m.Parts.Where(p=>p.Kind==R3PartKind.MagneticGrapple||p.Kind==R3PartKind.Blink)
+                    .All(p=>Mathf.Abs(p.Cell.x-c.x)+Mathf.Abs(p.Cell.y-c.y)+Mathf.Abs(p.Cell.z-c.z)>2));
             Assert.That(m.At(cell),Is.Null,"Device fixture cell must be free: "+cell);
             Assert.That(m.At(cell+Vector3Int.down),Is.Not.Null,"Device fixture needs hull support: "+cell);
             m.Parts.Add(new R3PartState(cell,devices[i]));
@@ -151,12 +155,24 @@ public class MOVSeriesSpecialTests
         var source=Build(R3VehicleKind.Light,0,R3PartKind.MagneticGrapple,R3PartKind.MagneticGrapple,R3PartKind.Blink);
         Box("Repair target",new Vector3(0,2,1015),new Vector3(6,4,1));yield return MOVSeriesDeviceTests.Seconds(.5f);
         Assert.That(Act(source,"TryGrapple",Vector3.forward),Is.True);var rope=source.GetComponent<MagneticGrappleController>();var emitter=rope.ActiveEmitter.GetComponent<R3MountedPart>();string id=emitter.Id;
+        var other=source.GetComponentsInChildren<MagneticGrappleEmitter>().Single(e=>e!=rope.ActiveEmitter);
         emitter.Damageable.ApplyDamage(10000,emitter.transform.position,Vector3.zero);Assert.That(rope.IsAttached,Is.False);
+        Assert.That(other.IsOperational,Is.True,"Drugi zaczep musi pozostać sprawny, aby zweryfikować wspólny cooldown.");
         Assert.That(Act(source,"TryGrapple",Vector3.forward),Is.False,"A second emitter shares release cooldown.");
         var assembly=source.GetComponent<R3VehicleAssembly>();var blink=assembly.Parts.Single(p=>p.Kind==R3PartKind.Blink);
+        Assert.That(blink.GetComponent<BlinkDrive>().Operational,Is.True,"Blink musi być sprawny przed sprawdzeniem odłączenia.");
         blink.Block.MarkDetached();Assert.That(blink.GetComponent<BlinkDrive>().Operational,Is.False);Assert.That(Act(source,"TryBlink",Vector3.back),Is.False);
         assembly.Capture();var model=assembly.Model;model.Award(500);
-        Assert.That(model.Repair(emitter.Cell),Is.True);Assert.That(model.Repair(blink.Cell),Is.True);source.gameObject.SetActive(false);
+        // Large overkill now propagates to neighbouring supports. Repair them
+        // through the real model before testing repair of the two devices.
+        bool repairedSupport;
+        do
+        {
+            repairedSupport=false;
+            foreach(var support in model.Parts.Where(p=>p.Cell!=emitter.Cell&&p.Cell!=blink.Cell&&p.Health<1).ToArray())
+                if(model.Repair(support.Cell))repairedSupport=true;
+        } while(repairedSupport);
+        Assert.That(model.Repair(emitter.Cell),Is.True,"Naprawa emitera");Assert.That(model.Repair(blink.Cell),Is.True,"Naprawa blinka");source.gameObject.SetActive(false);
         var rebuilt=R3VehicleAssembly.Build(model,new R1RunStats(),palette,new Vector3(0,.7f,1000),Quaternion.identity);
         rebuilt.transform.SetParent(fixtures.transform,true);rebuilt.Controller.SetGameplayInputEnabled(true);
         Assert.That(rebuilt.GetComponentsInChildren<MagneticGrappleEmitter>().Single(e=>e.GetComponent<R3MountedPart>().Id==id).IsOperational,Is.True);

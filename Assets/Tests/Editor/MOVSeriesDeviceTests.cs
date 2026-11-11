@@ -26,6 +26,15 @@ public class MOVSeriesDeviceTests
     public static IEnumerator Seconds(float seconds){float end=Time.time+seconds;while(Time.time<end)yield return null;}
     // EditMode runner hosts EnterPlayMode fixtures but does not honor runtime yield objects.
     public static IEnumerator FixedStep(){float before=Time.fixedTime;while(Time.fixedTime<=before)yield return null;}
+    public static Vector3Int FindFixtureCell(R3VehicleModel model,R3PartKind kind,Vector3Int preferred,Func<Vector3Int,bool> additional=null)
+    {
+        var available=model.Parts.Where(p=>p.Kind==R3PartKind.Armor||p.Kind==R3PartKind.Core)
+            .Select(p=>p.Cell+Vector3Int.up).Distinct()
+            .Where(c=>model.At(c)==null&&model.PlacementError(c,kind,true)==null&&(additional==null||additional(c)))
+            .OrderBy(c=>(c-preferred).sqrMagnitude).ThenBy(c=>c.x).ThenBy(c=>c.z).ToArray();
+        Assert.That(available,Is.Not.Empty,"Device fixture needs a legal supported cell for "+kind);
+        return available[0];
+    }
     R1VehicleState Build(R3VehicleKind kind,float x,params R3PartKind[] devices)
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(kind));
@@ -36,12 +45,7 @@ public class MOVSeriesDeviceTests
             var preferred=kind==R3VehicleKind.Standard?new Vector3Int(i%2==0?-2:2,y,i<2?-1:1):new Vector3Int(i%2==0?-1:1,y,i/2);
             // Starter layouts evolved: choose a genuinely free, supported
             // top cell close to the original pose instead of replacing a part.
-            var available=model.Parts.Where(p=>p.Kind==R3PartKind.Armor||p.Kind==R3PartKind.Core)
-                .Select(p=>p.Cell+Vector3Int.up).Distinct()
-                .Where(c=>model.At(c)==null&&model.PlacementError(c,devices[i],true)==null)
-                .OrderBy(c=>(c-preferred).sqrMagnitude).ThenBy(c=>c.x).ThenBy(c=>c.z).ToArray();
-            Assert.That(available,Is.Not.Empty,"Device fixture needs a legal supported cell for "+devices[i]);
-            var cell=available[0];
+            var cell=FindFixtureCell(model,devices[i],preferred);
             Assert.That(model.At(cell),Is.Null,"Device fixture cell must be free: "+cell);
             Assert.That(model.At(cell+Vector3Int.down),Is.Not.Null,"Device fixture needs hull support: "+cell);
             model.Parts.Add(new R3PartState(cell,devices[i]));
