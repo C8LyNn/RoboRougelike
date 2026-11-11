@@ -1,0 +1,165 @@
+{
+ "id": "R4D_SlowTrap",
+ "module": "SlowTrap",
+ "catalog_number": 105,
+ "catalog_group": "T",
+ "wave": 3,
+ "name_pl": "Pulapka spowalniajaca",
+ "function_pl": "Spowalnia wrogow w polu dzialania.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [],
+ "mount_proposal": "down",
+ "contact_count": 0,
+ "contact_mask_local_proposal": 0,
+ "port_contact_test": [],
+ "lod1_port_contact_test": [],
+ "meshes": [
+  {
+   "object": "R4D_SlowTrap_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 788,
+   "vertices": 412,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4D_SlowTrap_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 580,
+  "vertices": 308,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 788,
+ "triangles_lod1": 580,
+ "shells": 10,
+ "bounds_m": [
+  [
+   -0.24,
+   -0.2441,
+   0.0
+  ],
+  [
+   0.24,
+   0.2078,
+   0.15
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   0.0
+  ],
+  [
+   0.26,
+   0.26,
+   0.3
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {},
+ "animation": null,
+ "animation_sweep": {
+  "frames": 0,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  0.2,
+  0.8,
+  1.0
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 788,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 788,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4D_SlowTrap_front.jpg",
+  "R4D_SlowTrap_side.jpg",
+  "R4D_SlowTrap_34front.jpg",
+  "R4D_SlowTrap_34rear.jpg"
+ ],
+ "world_object": true,
+ "notes": [
+  "world object deployed by R4X_SlowTrapDeployer; origin on the ground, footprint inside one 0.55 m cell"
+ ],
+ "files": {
+  "R4D_SlowTrap.blend": {
+   "sha256": "35a186c16ec602014dfc874027ee9f236accff404cb1d1357b29533153d8bf4d",
+   "bytes": 115804
+  },
+  "R4D_SlowTrap.fbx": {
+   "sha256": "a6311d81bdc5cecc5f1fc78074a893fa5d21adbf021f8a3ae472eb01b84e8833",
+   "bytes": 40396
+  },
+  "R4D_SlowTrap.glb": {
+   "sha256": "18757d53e603e56f5a22551bf522ddffc134d44703a98cdab3a8479d1261f0a8",
+   "bytes": 42392
+  },
+  "R4D_SlowTrap_LOD1.fbx": {
+   "sha256": "52f6314b5ca7e36d5006154d612430c0ed5da340bd0d982c09bf14f5799699f8",
+   "bytes": 35692
+  },
+  "R4D_SlowTrap_LOD1.glb": {
+   "sha256": "a86f1b020346a9642076aaeab542e5408dfccd3dd0aa96d4c417003ef38560f1",
+   "bytes": 34512
+  }
+ },
+ "seconds": 0.7,
+ "blender": "5.3.0"
+}

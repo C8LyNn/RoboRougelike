@@ -1,0 +1,201 @@
+{
+ "id": "R4X_AreaEMP",
+ "module": "AreaEMP",
+ "catalog_number": 27,
+ "catalog_group": "D",
+ "wave": 2,
+ "name_pl": "EMP obszarowy",
+ "function_pl": "Impuls EMP razacy wszystko dookola.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_AreaEMP_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 3616,
+   "vertices": 1818,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_AreaEMP_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 990,
+  "vertices": 505,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 3616,
+ "triangles_lod1": 990,
+ "shells": 16,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {},
+ "animation": null,
+ "animation_sweep": {
+  "frames": 0,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  0.25,
+  0.45,
+  1.0
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 3616,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 3616,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_AreaEMP_front.jpg",
+  "R4X_AreaEMP_side.jpg",
+  "R4X_AreaEMP_34front.jpg",
+  "R4X_AreaEMP_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_AreaEMP.blend": {
+   "sha256": "f035b30c679eac333e46632f115bd0b4e8397250779abd2b9c213aefc6f0b94f",
+   "bytes": 184126
+  },
+  "R4X_AreaEMP.fbx": {
+   "sha256": "d693f5814c89d897c9f50bb28f77da2bfb704e4b2cc38d2c8b1d422adbc810f6",
+   "bytes": 98204
+  },
+  "R4X_AreaEMP.glb": {
+   "sha256": "20bd9f10125041e5b9dab20aee9d6f8e4cdd3d614f53f7c8aa00da76f92b2638",
+   "bytes": 143912
+  },
+  "R4X_AreaEMP_LOD1.fbx": {
+   "sha256": "2664fd58c61499785ccb1b63be1f02f3a212118e18b330108a45ab27a84c3de4",
+   "bytes": 43948
+  },
+  "R4X_AreaEMP_LOD1.glb": {
+   "sha256": "368fde080f5d264d1482cbee9dd3197daccca865fde13b1fc1d0b07e658bff46",
+   "bytes": 50100
+  }
+ },
+ "seconds": 0.8,
+ "blender": "5.3.0"
+}

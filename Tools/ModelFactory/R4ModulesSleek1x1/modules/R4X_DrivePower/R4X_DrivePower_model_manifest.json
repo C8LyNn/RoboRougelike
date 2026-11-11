@@ -1,0 +1,117 @@
+{
+ "id": "R4X_DrivePower",
+ "catalog_number": 3,
+ "catalog_group": "A. Podstawowe",
+ "name": "DrivePower",
+ "name_pl": "Moc napędu",
+ "function_pl": "Zwiększa moc układu napędowego.",
+ "silhouette_concept_pl": "leżący bęben silnika na kołysce z wałem odbioru mocy z przodu",
+ "kind": "robot-mounted module 1x1x1",
+ "units": "meter 1:1",
+ "axes": "Blender: X right, -Y forward, Z up; file / Unity: +Z forward, +Y up",
+ "cell": "logical 1x1x1 on the 0.55 m grid; geometry inside the 0.52 m block envelope",
+ "hierarchy": {
+  "R4X_DrivePower_ROOT": null,
+  "R4X_DrivePower_Body": "R4X_DrivePower_ROOT",
+  "Port_down_000": "R4X_DrivePower_ROOT",
+  "Port_left_000_part": "R4X_DrivePower_ROOT",
+  "Port_right_000_part": "R4X_DrivePower_ROOT",
+  "Socket_Mount": "R4X_DrivePower_ROOT"
+ },
+ "node_roles": {
+  "R4X_DrivePower_ROOT": "root (origin = cell centre)",
+  "R4X_DrivePower_Body": "static body",
+  "Socket_Mount": "PROPOSAL: primary mount face = down, +Z of the empty points out of the module"
+ },
+ "mount_proposal": "down",
+ "contacts_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "dir": "left",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.27,
+    0.27
+   ],
+   "offset": [
+    0.0,
+    0.08182
+   ]
+  },
+  {
+   "dir": "right",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.27,
+    0.27
+   ],
+   "offset": [
+    0.0,
+    0.08182
+   ]
+  }
+ ],
+ "contact_count": 3,
+ "contact_mask_local_proposal": 11,
+ "paint_zones": {
+  "R4P_Base": "duze panele - glowny kolor malowania (jak w klockach A_Sleek)",
+  "R4P_Glow": "PROPOSAL: akcent emisyjny, kolor per modul (czytelnosc funkcji)",
+  "R4P_Metal": "PROPOSAL: gole elementy mechaniczne (tloczyska, lufy, osie) - domyslnie Steel_Light",
+  "R4P_Secondary": "rama / fazy / obudowy - drugi kolor malowania (jak w klockach A_Sleek)",
+  "R4P_Trim": "ciemne elementy techniczne i scianki paneli (jak w klockach A_Sleek)"
+ },
+ "glow_rgb": [
+  1.0,
+  0.62,
+  0.1
+ ],
+ "triangles": {
+  "lod0": 2840,
+  "lod1": 584
+ },
+ "files": [
+  "R4X_DrivePower.blend",
+  "R4X_DrivePower.fbx",
+  "R4X_DrivePower.glb",
+  "R4X_DrivePower_LOD1.fbx",
+  "R4X_DrivePower_LOD1.glb"
+ ],
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "proposals": [
+  "contact faces / port set",
+  "Socket_Mount face",
+  "paint zones R4P_Metal and R4P_Glow",
+  "movable nodes and the preview animation clip",
+  "function empties (FX_*, Deploy_Out)",
+  "naming prefix R4X_"
+ ],
+ "gameplay": "Art asset only. No gameplay value, timing, range or cost is defined or changed by this file.",
+ "notes": []
+}

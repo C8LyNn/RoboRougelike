@@ -1,0 +1,29 @@
+{
+ "id": "R4X_Gyroscope",
+ "fps": 24,
+ "frame_range": [
+  1,
+  49
+ ],
+ "status": "PROPOSAL - preview clip, visual only",
+ "note": "One baked take in FBX / GLB. Frame 1 = rest pose (the QA pose). The clip loops seamlessly.",
+ "clips": [
+  {
+   "name": "Active",
+   "start": 1,
+   "end": 49,
+   "loop": true,
+   "desc": "RingOuter: swing about / along [1, 0, 0] by 25; RingInner: swing about / along [0, 0, 1] by 35; Rotor: spin about / along [0, 0, 1] (full turns)"
+  }
+ ],
+ "animated_nodes": [
+  "R4X_Gyroscope_RingOuter",
+  "R4X_Gyroscope_RingInner",
+  "R4X_Gyroscope_Rotor"
+ ],
+ "sweep": {
+  "frames": 25,
+  "max_outside_mm": 0.0
+ },
+ "gameplay": "Animation is visual only: it adds no gameplay capability or timing authority."
+}

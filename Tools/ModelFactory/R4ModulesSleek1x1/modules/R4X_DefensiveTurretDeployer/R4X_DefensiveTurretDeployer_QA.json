@@ -1,0 +1,244 @@
+{
+ "id": "R4X_DefensiveTurretDeployer",
+ "module": "DefensiveTurretDeployer",
+ "catalog_number": 54,
+ "catalog_group": "F",
+ "wave": 3,
+ "name_pl": "Wyrzutnik wiezyczki obronnej / tarczowej",
+ "function_pl": "Rozstawia wiezyczke oslaniajaca tarcza.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_DefensiveTurretDeployer_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1028,
+   "vertices": 520,
+   "uv": true,
+   "ok": true
+  },
+  {
+   "object": "R4X_DefensiveTurretDeployer_Pod",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 2344,
+   "vertices": 1182,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_DefensiveTurretDeployer_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 620,
+  "vertices": 326,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 3372,
+ "triangles_lod1": 620,
+ "shells": 9,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.23
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {
+  "Pod": {
+   "pivot": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "anim": {
+    "type": "slide",
+    "axis": [
+     0,
+     0,
+     1
+    ],
+    "amount": -0.03,
+    "frames": 24
+   }
+  }
+ },
+ "animation": {
+  "clip": "Active",
+  "fps": 24,
+  "frames": [
+   1,
+   49
+  ],
+  "loop": true,
+  "nodes": [
+   "Pod"
+  ],
+  "glb_mode": "SCENE"
+ },
+ "animation_sweep": {
+  "frames": 25,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [
+  "Deploy_Out"
+ ],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  0.2,
+  0.8,
+  1.0
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 3372,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 6,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 3372,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_DefensiveTurretDeployer_front.jpg",
+  "R4X_DefensiveTurretDeployer_side.jpg",
+  "R4X_DefensiveTurretDeployer_34front.jpg",
+  "R4X_DefensiveTurretDeployer_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_DefensiveTurretDeployer.blend": {
+   "sha256": "c900ed562fc1201459868c621a76327f4bf1fa81e1b874cfdcadf9cfb636beaf",
+   "bytes": 174437
+  },
+  "R4X_DefensiveTurretDeployer.fbx": {
+   "sha256": "85fafea4a87d72ab1d65d0ed9de74a3c87f93a068ae4355636f9acd8d423bf89",
+   "bytes": 143804
+  },
+  "R4X_DefensiveTurretDeployer.glb": {
+   "sha256": "ddfbdddf256adaa3b7143af5941d7935db114dafbf1865cddea03a7a369d4e0d",
+   "bytes": 134996
+  },
+  "R4X_DefensiveTurretDeployer_LOD1.fbx": {
+   "sha256": "571964aaa0cd561b5b5f5be0912b31c2acad4982a2cec7d6503bcada506abfc6",
+   "bytes": 33212
+  },
+  "R4X_DefensiveTurretDeployer_LOD1.glb": {
+   "sha256": "961e8f6d14279fd82d7d450bfb827c27c752a3a7de3721c243fe0f716aae5c1d",
+   "bytes": 44968
+  }
+ },
+ "seconds": 0.8,
+ "blender": "5.3.0"
+}

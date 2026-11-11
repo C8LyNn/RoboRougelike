@@ -1,0 +1,203 @@
+{
+ "id": "R4X_JumpDrive",
+ "module": "JumpDrive",
+ "catalog_number": 10,
+ "catalog_group": "B",
+ "wave": 1,
+ "name_pl": "Naped skoku",
+ "function_pl": "Wyrzuca robota w gore.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "up",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.25,
+    0.25
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "up",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 4,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "up",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "up",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_JumpDrive_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1616,
+   "vertices": 820,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_JumpDrive_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 528,
+  "vertices": 276,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 1616,
+ "triangles_lod1": 528,
+ "shells": 8,
+ "bounds_m": [
+  [
+   -0.235,
+   -0.235,
+   -0.25
+  ],
+  [
+   0.235,
+   0.235,
+   0.26
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {},
+ "animation": null,
+ "animation_sweep": {
+  "frames": 0,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [
+  "FX_Thrust"
+ ],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  0.2,
+  0.8,
+  1.0
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 1616,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 1616,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_JumpDrive_front.jpg",
+  "R4X_JumpDrive_side.jpg",
+  "R4X_JumpDrive_34front.jpg",
+  "R4X_JumpDrive_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_JumpDrive.blend": {
+   "sha256": "8fb9206c6407c0ae07a5f83abbd7ab854b6a460f290556913633ddfd327b86ba",
+   "bytes": 128488
+  },
+  "R4X_JumpDrive.fbx": {
+   "sha256": "8e69528013991808a727039ff66aa957777473d58cf3961cb57690520cbd964a",
+   "bytes": 57148
+  },
+  "R4X_JumpDrive.glb": {
+   "sha256": "b598bbe7f7af37d54c02f57a9f74cef80c9fb3e9348b820bdd94dabf24779e2c",
+   "bytes": 73084
+  },
+  "R4X_JumpDrive_LOD1.fbx": {
+   "sha256": "dd44a1f7fb2b494772b0f18dee194092c786fdb388e47accec7985353696fb21",
+   "bytes": 32524
+  },
+  "R4X_JumpDrive_LOD1.glb": {
+   "sha256": "b4dd22027dc1ee269f5214a3d46064c802bf9f6ca046c8c6ac8c9207fc6b83bf",
+   "bytes": 30444
+  }
+ },
+ "seconds": 0.7,
+ "blender": "5.3.0"
+}

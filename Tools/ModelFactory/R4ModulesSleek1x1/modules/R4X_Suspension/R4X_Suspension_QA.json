@@ -1,0 +1,277 @@
+{
+ "id": "R4X_Suspension",
+ "module": "Suspension",
+ "catalog_number": 14,
+ "catalog_group": "B",
+ "wave": 1,
+ "name_pl": "Zawieszenie",
+ "function_pl": "Amortyzuje ruch czesci napedowych.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "dir": "up",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 2,
+ "contact_mask_local_proposal": 12,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "up",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "up",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_Suspension_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 3652,
+   "vertices": 1834,
+   "uv": true,
+   "ok": true
+  },
+  {
+   "object": "R4X_Suspension_Piston",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 112,
+   "vertices": 58,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_Suspension_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 1116,
+  "vertices": 568,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 3764,
+ "triangles_lod1": 1116,
+ "shells": 14,
+ "bounds_m": [
+  [
+   -0.257,
+   -0.257,
+   -0.26
+  ],
+  [
+   0.257,
+   0.257,
+   0.26
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {
+  "Piston": {
+   "pivot": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "anim": {
+    "type": "slide",
+    "axis": [
+     0,
+     0,
+     1
+    ],
+    "amount": -0.03,
+    "frames": 24
+   }
+  }
+ },
+ "animation": {
+  "clip": "Active",
+  "fps": 24,
+  "frames": [
+   1,
+   49
+  ],
+  "loop": true,
+  "nodes": [
+   "Piston"
+  ],
+  "glb_mode": "SCENE"
+ },
+ "animation_sweep": {
+  "frames": 25,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  1.0,
+  0.62,
+  0.1
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 3764,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 6,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 3764,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_Suspension_front.jpg",
+  "R4X_Suspension_side.jpg",
+  "R4X_Suspension_34front.jpg",
+  "R4X_Suspension_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_Suspension.blend": {
+   "sha256": "450b9d7bb21b5aa0710a74dab92242094694e749f678661de009eaf2e709888e",
+   "bytes": 165660
+  },
+  "R4X_Suspension.fbx": {
+   "sha256": "d6ade8291dae01cb3600a8c52b6197768324e820aa7f983995ec79d659d10807",
+   "bytes": 139452
+  },
+  "R4X_Suspension.glb": {
+   "sha256": "065f33e96b7f7c116f2027ba87b26814ae14cd15da85ddb934f54ec00fe11911",
+   "bytes": 149152
+  },
+  "R4X_Suspension_LOD1.fbx": {
+   "sha256": "a62e7877dee07cf6ebe37df05a50cfa0b7010b308dce83568ae6fbe8f7408748",
+   "bytes": 41436
+  },
+  "R4X_Suspension_LOD1.glb": {
+   "sha256": "780fa7f74e2cf2f7e4a60a2d9c9c4d633683521af133b6416895a171029e0028",
+   "bytes": 57264
+  }
+ },
+ "seconds": 0.8,
+ "blender": "5.3.0"
+}

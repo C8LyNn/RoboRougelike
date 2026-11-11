@@ -1,0 +1,27 @@
+{
+ "id": "R4X_HoverEngine",
+ "fps": 24,
+ "frame_range": [
+  1,
+  49
+ ],
+ "status": "PROPOSAL - preview clip, visual only",
+ "note": "One baked take in FBX / GLB. Frame 1 = rest pose (the QA pose). The clip loops seamlessly.",
+ "clips": [
+  {
+   "name": "Active",
+   "start": 1,
+   "end": 49,
+   "loop": true,
+   "desc": "Fan: spin about / along [0, 0, 1] (full turns)"
+  }
+ ],
+ "animated_nodes": [
+  "R4X_HoverEngine_Fan"
+ ],
+ "sweep": {
+  "frames": 25,
+  "max_outside_mm": 0.0
+ },
+ "gameplay": "Animation is visual only: it adds no gameplay capability or timing authority."
+}

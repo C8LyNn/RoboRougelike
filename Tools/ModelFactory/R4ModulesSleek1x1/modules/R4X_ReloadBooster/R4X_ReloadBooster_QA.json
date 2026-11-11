@@ -1,0 +1,241 @@
+{
+ "id": "R4X_ReloadBooster",
+ "module": "ReloadBooster",
+ "catalog_number": 19,
+ "catalog_group": "C",
+ "wave": 2,
+ "name_pl": "Wzmacniacz przeladowania",
+ "function_pl": "Pasywnie skraca czas przeladowania.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_ReloadBooster_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1652,
+   "vertices": 834,
+   "uv": true,
+   "ok": true
+  },
+  {
+   "object": "R4X_ReloadBooster_Drum",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 2112,
+   "vertices": 1094,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_ReloadBooster_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 1236,
+  "vertices": 664,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 3764,
+ "triangles_lod1": 1236,
+ "shells": 24,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.242
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {
+  "Drum": {
+   "pivot": [
+    0.0,
+    0.0,
+    0.03
+   ],
+   "anim": {
+    "type": "spin",
+    "axis": [
+     0,
+     1,
+     0
+    ],
+    "frames": 48
+   }
+  }
+ },
+ "animation": {
+  "clip": "Active",
+  "fps": 24,
+  "frames": [
+   1,
+   49
+  ],
+  "loop": true,
+  "nodes": [
+   "Drum"
+  ],
+  "glb_mode": "SCENE"
+ },
+ "animation_sweep": {
+  "frames": 25,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  1.0,
+  0.62,
+  0.1
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 3764,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 5,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 3764,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_ReloadBooster_front.jpg",
+  "R4X_ReloadBooster_side.jpg",
+  "R4X_ReloadBooster_34front.jpg",
+  "R4X_ReloadBooster_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_ReloadBooster.blend": {
+   "sha256": "2124bf9171916a39b0fa315cf63e8cbc9f49193a8cb2f2ca3a40d9dc3c8b921f",
+   "bytes": 173541
+  },
+  "R4X_ReloadBooster.fbx": {
+   "sha256": "5a4ac3de92e06744d69a96d904b1c4064893e392c18fbc2d74670ecfd2cf0e36",
+   "bytes": 135420
+  },
+  "R4X_ReloadBooster.glb": {
+   "sha256": "faa2e58cb33960f59e68f44430f391d4de4da74b519ef81a25fbbeea52426dd5",
+   "bytes": 167648
+  },
+  "R4X_ReloadBooster_LOD1.fbx": {
+   "sha256": "e43e12914cc5919bf882c487507ed1ee7a8c4eac4d3e27409eb05550c59750c9",
+   "bytes": 43036
+  },
+  "R4X_ReloadBooster_LOD1.glb": {
+   "sha256": "d60e290b2f722cdd3ce97715f443dd523eb950af01dab9847a8af9afbed5c2f5",
+   "bytes": 71492
+  }
+ },
+ "seconds": 0.9,
+ "blender": "5.3.0"
+}

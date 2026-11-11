@@ -1,0 +1,244 @@
+{
+ "id": "R4X_SupportTurretDeployer",
+ "module": "SupportTurretDeployer",
+ "catalog_number": 56,
+ "catalog_group": "F",
+ "wave": 3,
+ "name_pl": "Wyrzutnik wiezyczki wspierajacej",
+ "function_pl": "Rozstawia wiezyczke wzmacniajaca sojusznikow.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_SupportTurretDeployer_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 396,
+   "vertices": 200,
+   "uv": true,
+   "ok": true
+  },
+  {
+   "object": "R4X_SupportTurretDeployer_Pod",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 2732,
+   "vertices": 1382,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_SupportTurretDeployer_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 920,
+  "vertices": 478,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 3128,
+ "triangles_lod1": 920,
+ "shells": 13,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.24
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {
+  "Pod": {
+   "pivot": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "anim": {
+    "type": "slide",
+    "axis": [
+     0,
+     0,
+     1
+    ],
+    "amount": -0.03,
+    "frames": 24
+   }
+  }
+ },
+ "animation": {
+  "clip": "Active",
+  "fps": 24,
+  "frames": [
+   1,
+   49
+  ],
+  "loop": true,
+  "nodes": [
+   "Pod"
+  ],
+  "glb_mode": "SCENE"
+ },
+ "animation_sweep": {
+  "frames": 25,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [
+  "Deploy_Out"
+ ],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  1.0,
+  0.62,
+  0.1
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 3128,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 6,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 3128,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_SupportTurretDeployer_front.jpg",
+  "R4X_SupportTurretDeployer_side.jpg",
+  "R4X_SupportTurretDeployer_34front.jpg",
+  "R4X_SupportTurretDeployer_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_SupportTurretDeployer.blend": {
+   "sha256": "ee1b9c9aaa2dda243a2994b609c87bf5ec6168fd884086da94829281b0772e62",
+   "bytes": 171493
+  },
+  "R4X_SupportTurretDeployer.fbx": {
+   "sha256": "136a50b7f3467fd3c7b703ab6115a2c83061a3b94ff0aeb46f448b2964c6fb54",
+   "bytes": 142028
+  },
+  "R4X_SupportTurretDeployer.glb": {
+   "sha256": "8c6eb77edeeff66788b00234b234e82be81185dd8a3b6355e3d78b93481cf8da",
+   "bytes": 125524
+  },
+  "R4X_SupportTurretDeployer_LOD1.fbx": {
+   "sha256": "5db82ac0b30bc5f5ea9aae900a4c38c4e97815c1747cc8eb7e12cf3eb6bd8c6d",
+   "bytes": 42732
+  },
+  "R4X_SupportTurretDeployer_LOD1.glb": {
+   "sha256": "e017d22d550713273a1b18858da1f019a7bff7f9feca1091421bf5da387ae386",
+   "bytes": 50348
+  }
+ },
+ "seconds": 0.8,
+ "blender": "5.3.0"
+}

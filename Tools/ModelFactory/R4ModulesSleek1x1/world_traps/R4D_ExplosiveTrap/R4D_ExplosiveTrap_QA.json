@@ -1,0 +1,206 @@
+{
+ "id": "R4D_ExplosiveTrap",
+ "module": "ExplosiveTrap",
+ "catalog_number": 101,
+ "catalog_group": "T",
+ "wave": 3,
+ "name_pl": "Pulapka wybuchowa",
+ "function_pl": "Wybucha, gdy wrog wejdzie w zasieg.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [],
+ "mount_proposal": "down",
+ "contact_count": 0,
+ "contact_mask_local_proposal": 0,
+ "port_contact_test": [],
+ "lod1_port_contact_test": [],
+ "meshes": [
+  {
+   "object": "R4D_ExplosiveTrap_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1248,
+   "vertices": 650,
+   "uv": true,
+   "ok": true
+  },
+  {
+   "object": "R4D_ExplosiveTrap_Lamp",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 168,
+   "vertices": 86,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4D_ExplosiveTrap_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 852,
+  "vertices": 454,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 1416,
+ "triangles_lod1": 852,
+ "shells": 15,
+ "bounds_m": [
+  [
+   -0.248,
+   -0.2183,
+   0.0
+  ],
+  [
+   0.248,
+   0.2183,
+   0.16
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   0.0
+  ],
+  [
+   0.26,
+   0.26,
+   0.3
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {
+  "Lamp": {
+   "pivot": [
+    0.0,
+    0.0,
+    0.1
+   ],
+   "anim": {
+    "type": "slide",
+    "axis": [
+     0,
+     0,
+     1
+    ],
+    "amount": 0.015,
+    "frames": 24
+   }
+  }
+ },
+ "animation": {
+  "clip": "Active",
+  "fps": 24,
+  "frames": [
+   1,
+   49
+  ],
+  "loop": true,
+  "nodes": [
+   "Lamp"
+  ],
+  "glb_mode": "SCENE"
+ },
+ "animation_sweep": {
+  "frames": 25,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  1.0,
+  0.18,
+  0.12
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 1416,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 3,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 1416,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4D_ExplosiveTrap_front.jpg",
+  "R4D_ExplosiveTrap_side.jpg",
+  "R4D_ExplosiveTrap_34front.jpg",
+  "R4D_ExplosiveTrap_34rear.jpg"
+ ],
+ "world_object": true,
+ "notes": [
+  "world object deployed by R4X_ExplosiveTrapDeployer; origin on the ground, footprint inside one 0.55 m cell"
+ ],
+ "files": {
+  "R4D_ExplosiveTrap.blend": {
+   "sha256": "59eaf88145415c91050a2fd9d46dcb89a655d6feca243bd3a652e4fc4424e1a9",
+   "bytes": 128061
+  },
+  "R4D_ExplosiveTrap.fbx": {
+   "sha256": "52b7f6cc39ed5523682e95afc6ea5617a44e161700975cac5e2ba3d6f7744dd4",
+   "bytes": 79580
+  },
+  "R4D_ExplosiveTrap.glb": {
+   "sha256": "114a6b0adfc784aaa42f6ab8e4e3e7ea9e0da16373bc5834bc68d0733e36834d",
+   "bytes": 71076
+  },
+  "R4D_ExplosiveTrap_LOD1.fbx": {
+   "sha256": "d089071cb059420a5537f03c29af16b58d72ec098c89e57f9f8627b4abf7cfcd",
+   "bytes": 39996
+  },
+  "R4D_ExplosiveTrap_LOD1.glb": {
+   "sha256": "3473bff4380d8e041020c40d8ca25b4546a79e7150ec284e529db834b7459c3b",
+   "bytes": 46028
+  }
+ },
+ "seconds": 0.7,
+ "blender": "5.3.0"
+}

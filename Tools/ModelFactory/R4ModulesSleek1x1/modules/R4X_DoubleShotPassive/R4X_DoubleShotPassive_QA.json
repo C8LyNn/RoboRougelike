@@ -1,0 +1,233 @@
+{
+ "id": "R4X_DoubleShotPassive",
+ "module": "DoubleShotPassive",
+ "catalog_number": 30,
+ "catalog_group": "D",
+ "wave": 2,
+ "name_pl": "Podwojny strzal (pasywny)",
+ "function_pl": "Pasywna szansa na podwojny strzal.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "dir": "back",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.3,
+    0.3
+   ],
+   "offset": [
+    0.0,
+    -0.05455
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 2,
+ "contact_mask_local_proposal": 40,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 77.8,
+   "recessed_pct": 22.2,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_DoubleShotPassive_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 2384,
+   "vertices": 1208,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_DoubleShotPassive_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 720,
+  "vertices": 376,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 2384,
+ "triangles_lod1": 720,
+ "shells": 10,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.155
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {},
+ "animation": null,
+ "animation_sweep": {
+  "frames": 0,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  1.0,
+  0.62,
+  0.1
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2384,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2384,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_DoubleShotPassive_front.jpg",
+  "R4X_DoubleShotPassive_side.jpg",
+  "R4X_DoubleShotPassive_34front.jpg",
+  "R4X_DoubleShotPassive_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_DoubleShotPassive.blend": {
+   "sha256": "0e6795083f2636effc2453c58c8739750de3f2c5da32ba8c91af8d2fe5600865",
+   "bytes": 151376
+  },
+  "R4X_DoubleShotPassive.fbx": {
+   "sha256": "a2c3d5330ab78c5291e0270473373528a3cd6935f3f3582720348a6da5aa30eb",
+   "bytes": 70796
+  },
+  "R4X_DoubleShotPassive.glb": {
+   "sha256": "920a76ea9d18f4cad3f58f4c58c066460305e3f5f0009b0beab6c755ce7f3597",
+   "bytes": 101324
+  },
+  "R4X_DoubleShotPassive_LOD1.fbx": {
+   "sha256": "6e1debfc089988559bdd88b511f182b5534fca35e9be081cc81b38338c77ad37",
+   "bytes": 34956
+  },
+  "R4X_DoubleShotPassive_LOD1.glb": {
+   "sha256": "637661e8433b869166cb0d6d87454d0927792a5b65b4bb5de808e4a209fc7a29",
+   "bytes": 43240
+  }
+ },
+ "seconds": 0.7,
+ "blender": "5.3.0"
+}

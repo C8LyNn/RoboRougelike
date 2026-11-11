@@ -1,0 +1,201 @@
+{
+ "id": "R4X_ModuleDurabilityBooster",
+ "module": "ModuleDurabilityBooster",
+ "catalog_number": 40,
+ "catalog_group": "E",
+ "wave": 3,
+ "name_pl": "Wytrzymalosc modulow",
+ "function_pl": "Pasywnie zwieksza wytrzymalosc modulow.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_ModuleDurabilityBooster_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 4076,
+   "vertices": 2064,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_ModuleDurabilityBooster_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 844,
+  "vertices": 448,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 4076,
+ "triangles_lod1": 844,
+ "shells": 13,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.2
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {},
+ "animation": null,
+ "animation_sweep": {
+  "frames": 0,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  0.25,
+  0.45,
+  1.0
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 4076,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 4076,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_ModuleDurabilityBooster_front.jpg",
+  "R4X_ModuleDurabilityBooster_side.jpg",
+  "R4X_ModuleDurabilityBooster_34front.jpg",
+  "R4X_ModuleDurabilityBooster_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_ModuleDurabilityBooster.blend": {
+   "sha256": "66042e45b6da5ebf8fa072e4d7c6d4728c47a8eff06c832cb197c32030006827",
+   "bytes": 189791
+  },
+  "R4X_ModuleDurabilityBooster.fbx": {
+   "sha256": "7305ca7b853eb92835a97de620621d6557e0cd97d951f632d51537d5c5552b8d",
+   "bytes": 107244
+  },
+  "R4X_ModuleDurabilityBooster.glb": {
+   "sha256": "9b8f7c7208230f4ad5a41435821eaf44d2eed0961e8816b060b443691ba30023",
+   "bytes": 165452
+  },
+  "R4X_ModuleDurabilityBooster_LOD1.fbx": {
+   "sha256": "a076686dd4b16baee12e4819fdc1a78f98db494dd7507ab4b1690246d1f4f80b",
+   "bytes": 36860
+  },
+  "R4X_ModuleDurabilityBooster_LOD1.glb": {
+   "sha256": "e8432e777a52abf8b2f73eee0a7bbe81e9b5d1e00ad7a1d063a016a1d8579247",
+   "bytes": 60880
+  }
+ },
+ "seconds": 0.8,
+ "blender": "5.3.0"
+}

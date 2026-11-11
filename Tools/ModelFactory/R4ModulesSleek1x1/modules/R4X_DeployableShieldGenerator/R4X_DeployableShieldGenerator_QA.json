@@ -1,0 +1,311 @@
+{
+ "id": "R4X_DeployableShieldGenerator",
+ "module": "DeployableShieldGenerator",
+ "catalog_number": 29,
+ "catalog_group": "D",
+ "wave": 2,
+ "name_pl": "Rozstawiany generator tarczy",
+ "function_pl": "Wyrzutnik generatora tarczy stawianego na ziemi (wersja montowana na robocie).",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "dir": "left",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.2,
+    0.2
+   ],
+   "offset": [
+    0.0,
+    -0.07273
+   ]
+  },
+  {
+   "dir": "right",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.2,
+    0.2
+   ],
+   "offset": [
+    0.0,
+    -0.07273
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 3,
+ "contact_mask_local_proposal": 11,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "left",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "right",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "left",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "right",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_DeployableShieldGenerator_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 2748,
+   "vertices": 1384,
+   "uv": true,
+   "ok": true
+  },
+  {
+   "object": "R4X_DeployableShieldGenerator_Payload",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 896,
+   "vertices": 454,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_DeployableShieldGenerator_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 644,
+  "vertices": 338,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 3644,
+ "triangles_lod1": 644,
+ "shells": 9,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.235
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {
+  "Payload": {
+   "pivot": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "anim": {
+    "type": "slide",
+    "axis": [
+     0,
+     0,
+     1
+    ],
+    "amount": -0.04,
+    "frames": 24
+   }
+  }
+ },
+ "animation": {
+  "clip": "Active",
+  "fps": 24,
+  "frames": [
+   1,
+   49
+  ],
+  "loop": true,
+  "nodes": [
+   "Payload"
+  ],
+  "glb_mode": "SCENE"
+ },
+ "animation_sweep": {
+  "frames": 25,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [
+  "Deploy_Out"
+ ],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  0.2,
+  0.8,
+  1.0
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 3644,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 8,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 3644,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_DeployableShieldGenerator_front.jpg",
+  "R4X_DeployableShieldGenerator_side.jpg",
+  "R4X_DeployableShieldGenerator_34front.jpg",
+  "R4X_DeployableShieldGenerator_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_DeployableShieldGenerator.blend": {
+   "sha256": "5844d89781f583f3f06496b26f62c36f4be6a13f5ef8a44320a652b850b9e6b2",
+   "bytes": 169833
+  },
+  "R4X_DeployableShieldGenerator.fbx": {
+   "sha256": "29f82886a4c80221f229e187d56b7f58baa1cd52cfced2f5dd4ca69dad34c1d0",
+   "bytes": 160428
+  },
+  "R4X_DeployableShieldGenerator.glb": {
+   "sha256": "b02492c58cecdf3f7b8f220dd923a39c7c390f7acfc766df755c3b090b5dc50a",
+   "bytes": 143200
+  },
+  "R4X_DeployableShieldGenerator_LOD1.fbx": {
+   "sha256": "8e34ca8ea59df40a46131d9b7ab0972eda909d198a14698a23366410b2c45eb3",
+   "bytes": 33212
+  },
+  "R4X_DeployableShieldGenerator_LOD1.glb": {
+   "sha256": "2ecc958e1bc513706291d409f63a16b9c4dbe596878d44f454f535bbd69e057a",
+   "bytes": 40656
+  }
+ },
+ "seconds": 0.8,
+ "blender": "5.3.0"
+}

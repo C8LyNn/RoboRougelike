@@ -1,0 +1,242 @@
+{
+ "id": "R4X_PointDefense",
+ "module": "PointDefense",
+ "catalog_number": 6,
+ "catalog_group": "A",
+ "wave": 1,
+ "name_pl": "Obrona punktowa",
+ "function_pl": "Automatycznie zestrzeliwuje nadlatujace pociski.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_PointDefense_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1036,
+   "vertices": 522,
+   "uv": true,
+   "ok": true
+  },
+  {
+   "object": "R4X_PointDefense_Turret",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1016,
+   "vertices": 520,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_PointDefense_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 524,
+  "vertices": 278,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 2052,
+ "triangles_lod1": 524,
+ "shells": 9,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.188
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {
+  "Turret": {
+   "pivot": [
+    0.0,
+    0.0,
+    0.04
+   ],
+   "anim": {
+    "type": "swing",
+    "axis": [
+     0,
+     0,
+     1
+    ],
+    "amount": 35,
+    "frames": 48
+   }
+  }
+ },
+ "animation": {
+  "clip": "Active",
+  "fps": 24,
+  "frames": [
+   1,
+   49
+  ],
+  "loop": true,
+  "nodes": [
+   "Turret"
+  ],
+  "glb_mode": "SCENE"
+ },
+ "animation_sweep": {
+  "frames": 25,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  1.0,
+  0.18,
+  0.12
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 2052,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 5,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 2052,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_PointDefense_front.jpg",
+  "R4X_PointDefense_side.jpg",
+  "R4X_PointDefense_34front.jpg",
+  "R4X_PointDefense_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_PointDefense.blend": {
+   "sha256": "2e53443f785757f1a56bfbbada2f0dd906f9424acccc390f04d427f128e7debf",
+   "bytes": 140956
+  },
+  "R4X_PointDefense.fbx": {
+   "sha256": "17f1fcb2c8126feb2c732ab011c990041eedbcef8f50d1e8b0ee83b503b8349e",
+   "bytes": 109436
+  },
+  "R4X_PointDefense.glb": {
+   "sha256": "4b5238f2e1c370579e9f2beeb00d0cc82c0929dd89b831f9b04095cbf2c032c9",
+   "bytes": 93396
+  },
+  "R4X_PointDefense_LOD1.fbx": {
+   "sha256": "6820ed93ebeb0e2db70b192c9f7ab3fb8045e54cb4c1fb243c4577f4557e0a27",
+   "bytes": 32460
+  },
+  "R4X_PointDefense_LOD1.glb": {
+   "sha256": "22998107fd661733f87796b43db228e3c839408610209ea80a6d6779bb5f937d",
+   "bytes": 31716
+  }
+ },
+ "seconds": 0.8,
+ "blender": "5.3.0"
+}

@@ -1,0 +1,134 @@
+{
+ "id": "R4X_HullBooster",
+ "catalog_number": 17,
+ "catalog_group": "C. Bonusy",
+ "name": "HullBooster",
+ "name_pl": "Wzmacniacz kadłuba",
+ "function_pl": "Pasywnie zwiększa wytrzymałość kadłuba.",
+ "silhouette_concept_pl": "zwarty sześcian z grubymi płytami pancerza po bokach i szewronem z przodu i z tyłu",
+ "kind": "robot-mounted module 1x1x1",
+ "units": "meter 1:1",
+ "axes": "Blender: X right, -Y forward, Z up; file / Unity: +Z forward, +Y up",
+ "cell": "logical 1x1x1 on the 0.55 m grid; geometry inside the 0.52 m block envelope",
+ "hierarchy": {
+  "R4X_HullBooster_ROOT": null,
+  "R4X_HullBooster_Body": "R4X_HullBooster_ROOT",
+  "Port_down_000_part": "R4X_HullBooster_ROOT",
+  "Port_up_000_part": "R4X_HullBooster_ROOT",
+  "Port_left_000_part": "R4X_HullBooster_ROOT",
+  "Port_right_000_part": "R4X_HullBooster_ROOT",
+  "Socket_Mount": "R4X_HullBooster_ROOT"
+ },
+ "node_roles": {
+  "R4X_HullBooster_ROOT": "root (origin = cell centre)",
+  "R4X_HullBooster_Body": "static body",
+  "Socket_Mount": "PROPOSAL: primary mount face = down, +Z of the empty points out of the module"
+ },
+ "mount_proposal": "down",
+ "contacts_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.24,
+    0.24
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "dir": "up",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.24,
+    0.24
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "dir": "left",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.3,
+    0.3
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "dir": "right",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.3,
+    0.3
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "contact_count": 4,
+ "contact_mask_local_proposal": 15,
+ "paint_zones": {
+  "R4P_Base": "duze panele - glowny kolor malowania (jak w klockach A_Sleek)",
+  "R4P_Glow": "PROPOSAL: akcent emisyjny, kolor per modul (czytelnosc funkcji)",
+  "R4P_Secondary": "rama / fazy / obudowy - drugi kolor malowania (jak w klockach A_Sleek)",
+  "R4P_Trim": "ciemne elementy techniczne i scianki paneli (jak w klockach A_Sleek)"
+ },
+ "glow_rgb": [
+  0.25,
+  0.45,
+  1.0
+ ],
+ "triangles": {
+  "lod0": 3464,
+  "lod1": 344
+ },
+ "files": [
+  "R4X_HullBooster.blend",
+  "R4X_HullBooster.fbx",
+  "R4X_HullBooster.glb",
+  "R4X_HullBooster_LOD1.fbx",
+  "R4X_HullBooster_LOD1.glb"
+ ],
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "proposals": [
+  "contact faces / port set",
+  "Socket_Mount face",
+  "paint zones R4P_Metal and R4P_Glow",
+  "movable nodes and the preview animation clip",
+  "function empties (FX_*, Deploy_Out)",
+  "naming prefix R4X_"
+ ],
+ "gameplay": "Art asset only. No gameplay value, timing, range or cost is defined or changed by this file.",
+ "notes": []
+}

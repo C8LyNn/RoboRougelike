@@ -1,0 +1,201 @@
+{
+ "id": "R4X_RepairBooster",
+ "module": "RepairBooster",
+ "catalog_number": 21,
+ "catalog_group": "C",
+ "wave": 2,
+ "name_pl": "Wzmacniacz naprawy",
+ "function_pl": "Pasywnie wzmacnia efekty naprawy.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_RepairBooster_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1960,
+   "vertices": 1014,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_RepairBooster_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 840,
+  "vertices": 454,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 1960,
+ "triangles_lod1": 840,
+ "shells": 17,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.2516
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {},
+ "animation": null,
+ "animation_sweep": {
+  "frames": 0,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  0.25,
+  1.0,
+  0.45
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 1960,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 1960,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_RepairBooster_front.jpg",
+  "R4X_RepairBooster_side.jpg",
+  "R4X_RepairBooster_34front.jpg",
+  "R4X_RepairBooster_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_RepairBooster.blend": {
+   "sha256": "9d5ef0e192effb397764cc92bc7bdb8599adab0be3cdbc3097f1c739a8d745c4",
+   "bytes": 145327
+  },
+  "R4X_RepairBooster.fbx": {
+   "sha256": "89d97b3e92c2bc8d0ee711de1d0d7c0bcde46d7256572c7ceca2b276b020f819",
+   "bytes": 61276
+  },
+  "R4X_RepairBooster.glb": {
+   "sha256": "9799b7b2ca60bf009f6c4b1d3cac540e7c28b50eddd866feebef2cb7e76022ed",
+   "bytes": 102516
+  },
+  "R4X_RepairBooster_LOD1.fbx": {
+   "sha256": "9b00c229dfd89fc81caa59a6d4327f481583f6e566dc2284fe8912979b9f3960",
+   "bytes": 36780
+  },
+  "R4X_RepairBooster_LOD1.glb": {
+   "sha256": "c47fd78c3898cb037f40b1ec2b0294fd0cce1a390077f44042f2551b4129ec8f",
+   "bytes": 63876
+  }
+ },
+ "seconds": 0.8,
+ "blender": "5.3.0"
+}

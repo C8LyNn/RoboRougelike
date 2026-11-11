@@ -1,0 +1,64 @@
+{
+ "id": "R4D_BurnTrap",
+ "catalog_number": null,
+ "catalog_group": "Pułapki rozstawiane w świecie gry",
+ "name": "BurnTrap",
+ "name_pl": "Pułapka podpalająca",
+ "function_pl": "Podpala wrogów w zasięgu.",
+ "silhouette_concept_pl": "trzy butle paliwa wokół komina z płomieniem",
+ "kind": "world object (deployed trap)",
+ "units": "meter 1:1",
+ "axes": "Blender: X right, -Y forward, Z up; file / Unity: +Z forward, +Y up",
+ "cell": "footprint inside one 0.55 m cell, origin on the ground, height <= 0.30 m",
+ "hierarchy": {
+  "R4D_BurnTrap_ROOT": null,
+  "R4D_BurnTrap_Body": "R4D_BurnTrap_ROOT",
+  "R4D_BurnTrap_Flame": "R4D_BurnTrap_ROOT"
+ },
+ "node_roles": {
+  "R4D_BurnTrap_ROOT": "root (origin = ground contact centre)",
+  "R4D_BurnTrap_Body": "static body",
+  "R4D_BurnTrap_Flame": "movable part (PROPOSAL), pivot [0.0, 0.0, 0.24] m (Blender axes), preview motion {'type': 'slide', 'axis': [0, 0, 1], 'amount': 0.012, 'frames': 12}"
+ },
+ "mount_proposal": null,
+ "contacts_proposal": [],
+ "contact_count": 0,
+ "contact_mask_local_proposal": 0,
+ "paint_zones": {
+  "R4P_Base": "duze panele - glowny kolor malowania (jak w klockach A_Sleek)",
+  "R4P_Glow": "PROPOSAL: akcent emisyjny, kolor per modul (czytelnosc funkcji)",
+  "R4P_Metal": "PROPOSAL: gole elementy mechaniczne (tloczyska, lufy, osie) - domyslnie Steel_Light",
+  "R4P_Secondary": "rama / fazy / obudowy - drugi kolor malowania (jak w klockach A_Sleek)",
+  "R4P_Trim": "ciemne elementy techniczne i scianki paneli (jak w klockach A_Sleek)"
+ },
+ "glow_rgb": [
+  1.0,
+  0.45,
+  0.08
+ ],
+ "triangles": {
+  "lod0": 1032,
+  "lod1": 684
+ },
+ "files": [
+  "R4D_BurnTrap.blend",
+  "R4D_BurnTrap.fbx",
+  "R4D_BurnTrap.glb",
+  "R4D_BurnTrap_LOD1.fbx",
+  "R4D_BurnTrap_LOD1.glb"
+ ],
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "proposals": [
+  "contact faces / port set",
+  "Socket_Mount face",
+  "paint zones R4P_Metal and R4P_Glow",
+  "movable nodes and the preview animation clip",
+  "function empties (FX_*, Deploy_Out)",
+  "naming prefix R4D_"
+ ],
+ "gameplay": "Art asset only. No gameplay value, timing, range or cost is defined or changed by this file.",
+ "notes": [
+  "world object deployed by R4X_BurnTrapDeployer; origin on the ground, footprint inside one 0.55 m cell"
+ ]
+}

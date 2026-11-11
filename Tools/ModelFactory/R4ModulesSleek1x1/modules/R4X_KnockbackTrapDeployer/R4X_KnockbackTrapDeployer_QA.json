@@ -1,0 +1,238 @@
+{
+ "id": "R4X_KnockbackTrapDeployer",
+ "module": "KnockbackTrapDeployer",
+ "catalog_number": 49,
+ "catalog_group": "F",
+ "wave": 3,
+ "name_pl": "Wyrzutnik: pulapka odrzucajaca",
+ "function_pl": "Rozstawia pulapke: Odrzuca wrogow, ktorzy na nia wjada.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "dir": "back",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.12,
+    0.12
+   ],
+   "offset": [
+    0.0,
+    -0.18182
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 2,
+ "contact_mask_local_proposal": 40,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_KnockbackTrapDeployer_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 2804,
+   "vertices": 1438,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_KnockbackTrapDeployer_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 880,
+  "vertices": 476,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 2804,
+ "triangles_lod1": 880,
+ "shells": 18,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.2571
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {},
+ "animation": null,
+ "animation_sweep": {
+  "frames": 0,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [
+  "Deploy_Out"
+ ],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  1.0,
+  0.62,
+  0.1
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2804,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2804,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_KnockbackTrapDeployer_front.jpg",
+  "R4X_KnockbackTrapDeployer_side.jpg",
+  "R4X_KnockbackTrapDeployer_34front.jpg",
+  "R4X_KnockbackTrapDeployer_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_KnockbackTrapDeployer.blend": {
+   "sha256": "d15cf11283ddc5ceb277ec5e695c0f52c797a0a1e00f8ac7a752ac49ed3fe3d0",
+   "bytes": 164131
+  },
+  "R4X_KnockbackTrapDeployer.fbx": {
+   "sha256": "23741803a1681713986ea91cac1e95f86215a49afd5677b7388de4f7da4a04a5",
+   "bytes": 85836
+  },
+  "R4X_KnockbackTrapDeployer.glb": {
+   "sha256": "a4ebf8de0254dcf10ea53344480978c0b96f2507578dad76d3638f1b06f0943f",
+   "bytes": 121744
+  },
+  "R4X_KnockbackTrapDeployer_LOD1.fbx": {
+   "sha256": "387cee8d6894a8e5fdd27a2ae432e5d10a49024ea5f1ef352a3c53b221504fea",
+   "bytes": 42620
+  },
+  "R4X_KnockbackTrapDeployer_LOD1.glb": {
+   "sha256": "1c7d3b9d98ce0df8304dd2c793b43626c44c45d10a4091b0b51541e15b90fb65",
+   "bytes": 59904
+  }
+ },
+ "seconds": 0.8,
+ "blender": "5.3.0"
+}

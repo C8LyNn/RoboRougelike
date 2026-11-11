@@ -1,0 +1,268 @@
+{
+ "id": "R4X_StructuralScanner",
+ "module": "StructuralScanner",
+ "catalog_number": 7,
+ "catalog_group": "A",
+ "wave": 1,
+ "name_pl": "Skaner strukturalny",
+ "function_pl": "Pokazuje strukture i stan czesci robota.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "dir": "left",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.12,
+    0.12
+   ],
+   "offset": [
+    0.0,
+    0.03636
+   ]
+  },
+  {
+   "dir": "right",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.12,
+    0.12
+   ],
+   "offset": [
+    0.0,
+    0.03636
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 3,
+ "contact_mask_local_proposal": 11,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "left",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "right",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "left",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "right",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_StructuralScanner_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 2388,
+   "vertices": 1208,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_StructuralScanner_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 308,
+  "vertices": 168,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 2388,
+ "triangles_lod1": 308,
+ "shells": 7,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.25
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {},
+ "animation": null,
+ "animation_sweep": {
+  "frames": 0,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  0.2,
+  0.8,
+  1.0
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2388,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2388,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_StructuralScanner_front.jpg",
+  "R4X_StructuralScanner_side.jpg",
+  "R4X_StructuralScanner_34front.jpg",
+  "R4X_StructuralScanner_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_StructuralScanner.blend": {
+   "sha256": "614fd4b2ba0ff9bac847f2e7d42a2de9c6a5b81ded9e85795aa58a92b721b03b",
+   "bytes": 147763
+  },
+  "R4X_StructuralScanner.fbx": {
+   "sha256": "ad81b9e8aacf8a07ee316042456c82a1565c25c3b06e3d1b668c277cb4101c86",
+   "bytes": 69420
+  },
+  "R4X_StructuralScanner.glb": {
+   "sha256": "e7df5ce4a1b226b423f0408a56835499df5e8df9df200660222e3f14720ed419",
+   "bytes": 91556
+  },
+  "R4X_StructuralScanner_LOD1.fbx": {
+   "sha256": "4b24323670891f11a4ef7b8dd52b03354d0e9106b0e4fe0b124d7452d2b1f1fe",
+   "bytes": 25356
+  },
+  "R4X_StructuralScanner_LOD1.glb": {
+   "sha256": "4fc09708ac147d64faafcb737b9d366154b418eaeb53a7ee4f93c7351a270763",
+   "bytes": 28432
+  }
+ },
+ "seconds": 0.7,
+ "blender": "5.3.0"
+}

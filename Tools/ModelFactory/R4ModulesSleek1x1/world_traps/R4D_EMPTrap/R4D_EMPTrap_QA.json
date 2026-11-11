@@ -1,0 +1,205 @@
+{
+ "id": "R4D_EMPTrap",
+ "module": "EMPTrap",
+ "catalog_number": 102,
+ "catalog_group": "T",
+ "wave": 3,
+ "name_pl": "Pulapka EMP",
+ "function_pl": "Wylacza systemy wrogow w zasiegu.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [],
+ "mount_proposal": "down",
+ "contact_count": 0,
+ "contact_mask_local_proposal": 0,
+ "port_contact_test": [],
+ "lod1_port_contact_test": [],
+ "meshes": [
+  {
+   "object": "R4D_EMPTrap_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1316,
+   "vertices": 680,
+   "uv": true,
+   "ok": true
+  },
+  {
+   "object": "R4D_EMPTrap_Core",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 280,
+   "vertices": 142,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4D_EMPTrap_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 836,
+  "vertices": 442,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 1596,
+ "triangles_lod1": 836,
+ "shells": 18,
+ "bounds_m": [
+  [
+   -0.22,
+   -0.22,
+   0.0
+  ],
+  [
+   0.22,
+   0.22,
+   0.25
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   0.0
+  ],
+  [
+   0.26,
+   0.26,
+   0.3
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {
+  "Core": {
+   "pivot": [
+    0.0,
+    0.0,
+    0.205
+   ],
+   "anim": {
+    "type": "spin",
+    "axis": [
+     0,
+     0,
+     1
+    ],
+    "frames": 24
+   }
+  }
+ },
+ "animation": {
+  "clip": "Active",
+  "fps": 24,
+  "frames": [
+   1,
+   49
+  ],
+  "loop": true,
+  "nodes": [
+   "Core"
+  ],
+  "glb_mode": "SCENE"
+ },
+ "animation_sweep": {
+  "frames": 25,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  0.25,
+  0.45,
+  1.0
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 1596,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 3,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 1596,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4D_EMPTrap_front.jpg",
+  "R4D_EMPTrap_side.jpg",
+  "R4D_EMPTrap_34front.jpg",
+  "R4D_EMPTrap_34rear.jpg"
+ ],
+ "world_object": true,
+ "notes": [
+  "world object deployed by R4X_EMPTrapDeployer; origin on the ground, footprint inside one 0.55 m cell"
+ ],
+ "files": {
+  "R4D_EMPTrap.blend": {
+   "sha256": "e44ce3e495c4a8899ec0f6b7063e82688f8785ff12667ef40ff1bd3262306904",
+   "bytes": 134576
+  },
+  "R4D_EMPTrap.fbx": {
+   "sha256": "0faaaffc1d5102c7a3494ab7bad0ebfb94854bf38942acc2fabf2d8a30534a80",
+   "bytes": 84956
+  },
+  "R4D_EMPTrap.glb": {
+   "sha256": "c393e4456634ac3f2f48c8a9ed000e0e516de8b04bcbc09e80028dcd378ebea2",
+   "bytes": 75496
+  },
+  "R4D_EMPTrap_LOD1.fbx": {
+   "sha256": "b35d8fa5d2bd63239d5a182500894850654fa250b8c2bc24fab0dec6de20f539",
+   "bytes": 41452
+  },
+  "R4D_EMPTrap_LOD1.glb": {
+   "sha256": "5df37985671301335613052572fb09737878d14f0737eaf41ac7fb54e1cb32e5",
+   "bytes": 45792
+  }
+ },
+ "seconds": 0.7,
+ "blender": "5.3.0"
+}

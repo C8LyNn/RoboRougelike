@@ -1,0 +1,233 @@
+{
+ "id": "R4X_EnergyRegenerator",
+ "module": "EnergyRegenerator",
+ "catalog_number": 2,
+ "catalog_group": "A",
+ "wave": 1,
+ "name_pl": "Regenerator energii",
+ "function_pl": "Stale odnawia energie.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "dir": "up",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.2,
+    0.2
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 2,
+ "contact_mask_local_proposal": 12,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 95.1,
+   "recessed_pct": 4.9,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "up",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 95.1,
+   "recessed_pct": 4.9,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "up",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_EnergyRegenerator_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 3260,
+   "vertices": 1644,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_EnergyRegenerator_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 684,
+  "vertices": 356,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 3260,
+ "triangles_lod1": 684,
+ "shells": 11,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {},
+ "animation": null,
+ "animation_sweep": {
+  "frames": 0,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  0.25,
+  1.0,
+  0.45
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 3260,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 3260,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_EnergyRegenerator_front.jpg",
+  "R4X_EnergyRegenerator_side.jpg",
+  "R4X_EnergyRegenerator_34front.jpg",
+  "R4X_EnergyRegenerator_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_EnergyRegenerator.blend": {
+   "sha256": "f09f9d435facec19e16c0c1be27f8dd054dd56941cf9f6079fb6cccee20ceb29",
+   "bytes": 159756
+  },
+  "R4X_EnergyRegenerator.fbx": {
+   "sha256": "5d32b0f9b743928ab5c2f129c2a460cf1c873bb4c6ef007813cf5d52cf0a0b92",
+   "bytes": 83884
+  },
+  "R4X_EnergyRegenerator.glb": {
+   "sha256": "48312298701c671c8885ddbe0128c1f7d0d59ec630dd7255d70405e6e78ca0cf",
+   "bytes": 126348
+  },
+  "R4X_EnergyRegenerator_LOD1.fbx": {
+   "sha256": "983586ba8116c5505073c9da6f513320adf5a117979bced166a380471a6c1860",
+   "bytes": 31676
+  },
+  "R4X_EnergyRegenerator_LOD1.glb": {
+   "sha256": "cdfd532992a56e34bbf42c557485c0132a3b468ffe1b2392c580170f93ac3a35",
+   "bytes": 40308
+  }
+ },
+ "seconds": 0.7,
+ "blender": "5.3.0"
+}

@@ -1,0 +1,311 @@
+{
+ "id": "R4X_WallDeployer",
+ "module": "WallDeployer",
+ "catalog_number": 60,
+ "catalog_group": "F",
+ "wave": 3,
+ "name_pl": "Wyrzutnik sciany",
+ "function_pl": "Rozstawia sciane oslonowa (wersja montowana na robocie).",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "dir": "left",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.12,
+    0.12
+   ],
+   "offset": [
+    0.0,
+    0.03636
+   ]
+  },
+  {
+   "dir": "right",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.12,
+    0.12
+   ],
+   "offset": [
+    0.0,
+    0.03636
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 3,
+ "contact_mask_local_proposal": 11,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "left",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "right",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "left",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "right",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_WallDeployer_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1188,
+   "vertices": 600,
+   "uv": true,
+   "ok": true
+  },
+  {
+   "object": "R4X_WallDeployer_Panels",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1320,
+   "vertices": 672,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_WallDeployer_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 396,
+  "vertices": 216,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 2508,
+ "triangles_lod1": 396,
+ "shells": 9,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.25
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {
+  "Panels": {
+   "pivot": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "anim": {
+    "type": "slide",
+    "axis": [
+     0,
+     0,
+     1
+    ],
+    "amount": 0.02,
+    "frames": 24
+   }
+  }
+ },
+ "animation": {
+  "clip": "Active",
+  "fps": 24,
+  "frames": [
+   1,
+   49
+  ],
+  "loop": true,
+  "nodes": [
+   "Panels"
+  ],
+  "glb_mode": "SCENE"
+ },
+ "animation_sweep": {
+  "frames": 25,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [
+  "Deploy_Out"
+ ],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  0.25,
+  0.45,
+  1.0
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 2508,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 8,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 2508,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_WallDeployer_front.jpg",
+  "R4X_WallDeployer_side.jpg",
+  "R4X_WallDeployer_34front.jpg",
+  "R4X_WallDeployer_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_WallDeployer.blend": {
+   "sha256": "72b1d2e25616089aec82ad2c38990f534d80a99d6b6b2e219afb8c776d94609c",
+   "bytes": 143168
+  },
+  "R4X_WallDeployer.fbx": {
+   "sha256": "48c6e26b2021d32366271cf11bb4cc5b670d29e54d6227ab373cfce1cdcaf238",
+   "bytes": 137052
+  },
+  "R4X_WallDeployer.glb": {
+   "sha256": "df8c90855ed77f22010898593f3ac491224538c07368a086535c3b78ce266da7",
+   "bytes": 104160
+  },
+  "R4X_WallDeployer_LOD1.fbx": {
+   "sha256": "e587226d6786360b432bde0deb9c4cac78c728244b5351814e50ab56a0bb4bc9",
+   "bytes": 26332
+  },
+  "R4X_WallDeployer_LOD1.glb": {
+   "sha256": "b486d9c1d4e37e952485fe5f463f09c6785f0190a1e73bcd8001a3a1fae36699",
+   "bytes": 34080
+  }
+ },
+ "seconds": 0.8,
+ "blender": "5.3.0"
+}

@@ -1,0 +1,201 @@
+{
+ "id": "R4X_Blink",
+ "module": "Blink",
+ "catalog_number": 11,
+ "catalog_group": "B",
+ "wave": 1,
+ "name_pl": "Blink",
+ "function_pl": "Krotka teleportacja robota.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_Blink_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 2864,
+   "vertices": 1446,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_Blink_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 456,
+  "vertices": 242,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 2864,
+ "triangles_lod1": 456,
+ "shells": 8,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.25
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {},
+ "animation": null,
+ "animation_sweep": {
+  "frames": 0,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  0.7,
+  0.35,
+  1.0
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2864,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2864,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_Blink_front.jpg",
+  "R4X_Blink_side.jpg",
+  "R4X_Blink_34front.jpg",
+  "R4X_Blink_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_Blink.blend": {
+   "sha256": "75598692ab9cfa5e241af3311ef335d24a097157eb7bbe48490ce15de879e89a",
+   "bytes": 168474
+  },
+  "R4X_Blink.fbx": {
+   "sha256": "684d74c8387c4846d0a886922f109d9599cc9e5257c19eb57580fa7c93e9f799",
+   "bytes": 86076
+  },
+  "R4X_Blink.glb": {
+   "sha256": "4f97be41e3c9d519e81b90781061be05a6e16087071279a93c92c6f32739533c",
+   "bytes": 113232
+  },
+  "R4X_Blink_LOD1.fbx": {
+   "sha256": "4f8b5ae2738addcbd124f8c53ce02598ff167302b19f633e467ca3f63cebd263",
+   "bytes": 30284
+  },
+  "R4X_Blink_LOD1.glb": {
+   "sha256": "1ddf16c2d923b338f8bffd3893ae87d6f0600d1f369fcf318011d89fd8f11a93",
+   "bytes": 34080
+  }
+ },
+ "seconds": 0.7,
+ "blender": "5.3.0"
+}

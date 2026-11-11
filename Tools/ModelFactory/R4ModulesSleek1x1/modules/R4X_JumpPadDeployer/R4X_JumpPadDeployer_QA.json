@@ -1,0 +1,244 @@
+{
+ "id": "R4X_JumpPadDeployer",
+ "module": "JumpPadDeployer",
+ "catalog_number": 61,
+ "catalog_group": "F",
+ "wave": 3,
+ "name_pl": "Wyrzutnik jump pada",
+ "function_pl": "Rozstawia plyte wybijajaca (wersja montowana na robocie).",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_JumpPadDeployer_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1420,
+   "vertices": 722,
+   "uv": true,
+   "ok": true
+  },
+  {
+   "object": "R4X_JumpPadDeployer_Pad",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 304,
+   "vertices": 156,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_JumpPadDeployer_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 696,
+  "vertices": 364,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 1724,
+ "triangles_lod1": 696,
+ "shells": 11,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.07
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {
+  "Pad": {
+   "pivot": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "anim": {
+    "type": "slide",
+    "axis": [
+     0,
+     0,
+     1
+    ],
+    "amount": 0.06,
+    "frames": 12
+   }
+  }
+ },
+ "animation": {
+  "clip": "Active",
+  "fps": 24,
+  "frames": [
+   1,
+   49
+  ],
+  "loop": true,
+  "nodes": [
+   "Pad"
+  ],
+  "glb_mode": "SCENE"
+ },
+ "animation_sweep": {
+  "frames": 25,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [
+  "Deploy_Out"
+ ],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  0.25,
+  1.0,
+  0.45
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 1724,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 6,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 1724,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_JumpPadDeployer_front.jpg",
+  "R4X_JumpPadDeployer_side.jpg",
+  "R4X_JumpPadDeployer_34front.jpg",
+  "R4X_JumpPadDeployer_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_JumpPadDeployer.blend": {
+   "sha256": "c15353244fa99893ea4a1a434a445d24d49ca276aa7705e542df50192cc39f50",
+   "bytes": 132448
+  },
+  "R4X_JumpPadDeployer.fbx": {
+   "sha256": "8d77b80a42612d6fbf7ec76e0d780cc0ac52eadfcd958e3579ee48378348b5cc",
+   "bytes": 106732
+  },
+  "R4X_JumpPadDeployer.glb": {
+   "sha256": "3a0f42ddd3eeee57d573b3a3199d23bf5cfd47b84245b432f17081c603ed4b2c",
+   "bytes": 80152
+  },
+  "R4X_JumpPadDeployer_LOD1.fbx": {
+   "sha256": "b998cfc9f13087e63a6f1632638a83f128c5fd711ec357c9238b2157211d5e53",
+   "bytes": 34460
+  },
+  "R4X_JumpPadDeployer_LOD1.glb": {
+   "sha256": "fed084860cc583f2e2c0700aaec9ea8e5c6d53c84dc70d850f184d297340e3b6",
+   "bytes": 40068
+  }
+ },
+ "seconds": 0.7,
+ "blender": "5.3.0"
+}

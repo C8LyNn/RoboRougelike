@@ -1,0 +1,87 @@
+{
+ "id": "R4X_Gyroscope",
+ "catalog_number": 12,
+ "catalog_group": "B. Ruch i sterowanie",
+ "name": "Gyroscope",
+ "name_pl": "Żyroskop",
+ "function_pl": "Stabilizuje i prostuje robota.",
+ "silhouette_concept_pl": "kardan: dwa pierścienie i wirnik w widełkach z dwóch słupków",
+ "kind": "robot-mounted module 1x1x1",
+ "units": "meter 1:1",
+ "axes": "Blender: X right, -Y forward, Z up; file / Unity: +Z forward, +Y up",
+ "cell": "logical 1x1x1 on the 0.55 m grid; geometry inside the 0.52 m block envelope",
+ "hierarchy": {
+  "R4X_Gyroscope_ROOT": null,
+  "R4X_Gyroscope_Body": "R4X_Gyroscope_ROOT",
+  "R4X_Gyroscope_RingOuter": "R4X_Gyroscope_ROOT",
+  "R4X_Gyroscope_RingInner": "R4X_Gyroscope_ROOT",
+  "R4X_Gyroscope_Rotor": "R4X_Gyroscope_ROOT",
+  "Port_down_000": "R4X_Gyroscope_ROOT",
+  "Socket_Mount": "R4X_Gyroscope_ROOT"
+ },
+ "node_roles": {
+  "R4X_Gyroscope_ROOT": "root (origin = cell centre)",
+  "R4X_Gyroscope_Body": "static body",
+  "R4X_Gyroscope_RingOuter": "movable part (PROPOSAL), pivot [0.0, 0.0, 0.03] m (Blender axes), preview motion {'type': 'swing', 'axis': [1, 0, 0], 'amount': 25, 'frames': 48}",
+  "R4X_Gyroscope_RingInner": "movable part (PROPOSAL), pivot [0.0, 0.0, 0.03] m (Blender axes), preview motion {'type': 'swing', 'axis': [0, 0, 1], 'amount': 35, 'frames': 48}",
+  "R4X_Gyroscope_Rotor": "movable part (PROPOSAL), pivot [0.0, 0.0, 0.03] m (Blender axes), preview motion {'type': 'spin', 'axis': [0, 0, 1], 'frames': 24}",
+  "Socket_Mount": "PROPOSAL: primary mount face = down, +Z of the empty points out of the module"
+ },
+ "mount_proposal": "down",
+ "contacts_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "paint_zones": {
+  "R4P_Base": "duze panele - glowny kolor malowania (jak w klockach A_Sleek)",
+  "R4P_Glow": "PROPOSAL: akcent emisyjny, kolor per modul (czytelnosc funkcji)",
+  "R4P_Metal": "PROPOSAL: gole elementy mechaniczne (tloczyska, lufy, osie) - domyslnie Steel_Light",
+  "R4P_Secondary": "rama / fazy / obudowy - drugi kolor malowania (jak w klockach A_Sleek)",
+  "R4P_Trim": "ciemne elementy techniczne i scianki paneli (jak w klockach A_Sleek)"
+ },
+ "glow_rgb": [
+  0.2,
+  0.8,
+  1.0
+ ],
+ "triangles": {
+  "lod0": 2788,
+  "lod1": 580
+ },
+ "files": [
+  "R4X_Gyroscope.blend",
+  "R4X_Gyroscope.fbx",
+  "R4X_Gyroscope.glb",
+  "R4X_Gyroscope_LOD1.fbx",
+  "R4X_Gyroscope_LOD1.glb"
+ ],
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "proposals": [
+  "contact faces / port set",
+  "Socket_Mount face",
+  "paint zones R4P_Metal and R4P_Glow",
+  "movable nodes and the preview animation clip",
+  "function empties (FX_*, Deploy_Out)",
+  "naming prefix R4X_"
+ ],
+ "gameplay": "Art asset only. No gameplay value, timing, range or cost is defined or changed by this file.",
+ "notes": []
+}

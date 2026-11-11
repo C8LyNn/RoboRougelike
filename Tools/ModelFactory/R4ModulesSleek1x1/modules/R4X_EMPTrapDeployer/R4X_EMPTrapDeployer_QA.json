@@ -1,0 +1,203 @@
+{
+ "id": "R4X_EMPTrapDeployer",
+ "module": "EMPTrapDeployer",
+ "catalog_number": 48,
+ "catalog_group": "F",
+ "wave": 3,
+ "name_pl": "Wyrzutnik: pulapka emp",
+ "function_pl": "Rozstawia pulapke: Wylacza systemy wrogow w zasiegu.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_EMPTrapDeployer_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 3072,
+   "vertices": 1566,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_EMPTrapDeployer_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 1560,
+  "vertices": 810,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 3072,
+ "triangles_lod1": 1560,
+ "shells": 24,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.177
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {},
+ "animation": null,
+ "animation_sweep": {
+  "frames": 0,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [
+  "Deploy_Out"
+ ],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  0.25,
+  0.45,
+  1.0
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 3072,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 3072,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_EMPTrapDeployer_front.jpg",
+  "R4X_EMPTrapDeployer_side.jpg",
+  "R4X_EMPTrapDeployer_34front.jpg",
+  "R4X_EMPTrapDeployer_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_EMPTrapDeployer.blend": {
+   "sha256": "5ca91328f8f7e7e511b5bf477f2004366a20ff455f74380878bf8fd4662d42ae",
+   "bytes": 169144
+  },
+  "R4X_EMPTrapDeployer.fbx": {
+   "sha256": "5913ffe30c8c3307d6f4d312c31a4dd5e66e59e5224780f26f540b904636eb73",
+   "bytes": 88316
+  },
+  "R4X_EMPTrapDeployer.glb": {
+   "sha256": "eec1b5b513d02935d321b0cce6f26e3ce6215a13607a601ea923d616bf290226",
+   "bytes": 134708
+  },
+  "R4X_EMPTrapDeployer_LOD1.fbx": {
+   "sha256": "21b98d1a18d5a5e0105056eb251bb48dd0b2a7f6ff25dc1b5efafb3ade3afed8",
+   "bytes": 55916
+  },
+  "R4X_EMPTrapDeployer_LOD1.glb": {
+   "sha256": "6b38b03c647454c3303cf6b61c6f684d926ea3686969ec266bd4a45514301bbb",
+   "bytes": 77820
+  }
+ },
+ "seconds": 0.8,
+ "blender": "5.3.0"
+}

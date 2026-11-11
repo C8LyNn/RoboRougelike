@@ -1,0 +1,206 @@
+{
+ "id": "R4D_BurnTrap",
+ "module": "BurnTrap",
+ "catalog_number": 106,
+ "catalog_group": "T",
+ "wave": 3,
+ "name_pl": "Pulapka podpalajaca",
+ "function_pl": "Podpala wrogow w zasiegu.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [],
+ "mount_proposal": "down",
+ "contact_count": 0,
+ "contact_mask_local_proposal": 0,
+ "port_contact_test": [],
+ "lod1_port_contact_test": [],
+ "meshes": [
+  {
+   "object": "R4D_BurnTrap_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 984,
+   "vertices": 510,
+   "uv": true,
+   "ok": true
+  },
+  {
+   "object": "R4D_BurnTrap_Flame",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 48,
+   "vertices": 26,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4D_BurnTrap_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 684,
+  "vertices": 362,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 1032,
+ "triangles_lod1": 684,
+ "shells": 13,
+ "bounds_m": [
+  [
+   -0.185,
+   -0.185,
+   0.0
+  ],
+  [
+   0.185,
+   0.185,
+   0.288
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   0.0
+  ],
+  [
+   0.26,
+   0.26,
+   0.3
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {
+  "Flame": {
+   "pivot": [
+    0.0,
+    0.0,
+    0.24
+   ],
+   "anim": {
+    "type": "slide",
+    "axis": [
+     0,
+     0,
+     1
+    ],
+    "amount": 0.012,
+    "frames": 12
+   }
+  }
+ },
+ "animation": {
+  "clip": "Active",
+  "fps": 24,
+  "frames": [
+   1,
+   49
+  ],
+  "loop": true,
+  "nodes": [
+   "Flame"
+  ],
+  "glb_mode": "SCENE"
+ },
+ "animation_sweep": {
+  "frames": 25,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  1.0,
+  0.45,
+  0.08
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 1032,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 3,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 1032,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4D_BurnTrap_front.jpg",
+  "R4D_BurnTrap_side.jpg",
+  "R4D_BurnTrap_34front.jpg",
+  "R4D_BurnTrap_34rear.jpg"
+ ],
+ "world_object": true,
+ "notes": [
+  "world object deployed by R4X_BurnTrapDeployer; origin on the ground, footprint inside one 0.55 m cell"
+ ],
+ "files": {
+  "R4D_BurnTrap.blend": {
+   "sha256": "7de3f576194386504f58ec1ba557c5eb2788b90ba9a2ec26a58670ec072ebc10",
+   "bytes": 121035
+  },
+  "R4D_BurnTrap.fbx": {
+   "sha256": "38861b10304f470e0f18296e6805e63b13dfdafefc31c33a6625dce4c86e9c57",
+   "bytes": 71116
+  },
+  "R4D_BurnTrap.glb": {
+   "sha256": "9fe4cf94ea4f84b10feaebe1b7ebd1b7458f22d9d0478cab4b0c166555b3f84d",
+   "bytes": 57368
+  },
+  "R4D_BurnTrap_LOD1.fbx": {
+   "sha256": "94c599b188a3e02a53be8802db6013a363c778f448b09b4469afeff14abbca7f",
+   "bytes": 34780
+  },
+  "R4D_BurnTrap_LOD1.glb": {
+   "sha256": "e0684ebed988754539d4c29362bf4b7f9a536deba9f11e8c908fa42a8e0c392e",
+   "bytes": 39716
+  }
+ },
+ "seconds": 1.3,
+ "blender": "5.3.0"
+}

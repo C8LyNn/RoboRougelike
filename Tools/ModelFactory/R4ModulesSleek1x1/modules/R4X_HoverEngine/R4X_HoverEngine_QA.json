@@ -1,0 +1,243 @@
+{
+ "id": "R4X_HoverEngine",
+ "module": "HoverEngine",
+ "catalog_number": 16,
+ "catalog_group": "B",
+ "wave": 1,
+ "name_pl": "Silnik poduszkowy",
+ "function_pl": "Unosi robota nad ziemia.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "up",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.18,
+    0.18
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "up",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 4,
+ "port_contact_test": [
+  {
+   "flush_pct": 95.1,
+   "recessed_pct": 4.9,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "up",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 95.1,
+   "recessed_pct": 4.9,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "up",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_HoverEngine_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1472,
+   "vertices": 748,
+   "uv": true,
+   "ok": true
+  },
+  {
+   "object": "R4X_HoverEngine_Fan",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 348,
+   "vertices": 186,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_HoverEngine_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 908,
+  "vertices": 478,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 1820,
+ "triangles_lod1": 908,
+ "shells": 13,
+ "bounds_m": [
+  [
+   -0.258,
+   -0.258,
+   -0.26
+  ],
+  [
+   0.258,
+   0.258,
+   0.26
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {
+  "Fan": {
+   "pivot": [
+    0.0,
+    0.0,
+    -0.14
+   ],
+   "anim": {
+    "type": "spin",
+    "axis": [
+     0,
+     0,
+     1
+    ],
+    "frames": 16
+   }
+  }
+ },
+ "animation": {
+  "clip": "Active",
+  "fps": 24,
+  "frames": [
+   1,
+   49
+  ],
+  "loop": true,
+  "nodes": [
+   "Fan"
+  ],
+  "glb_mode": "SCENE"
+ },
+ "animation_sweep": {
+  "frames": 25,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [
+  "FX_Thrust"
+ ],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  0.2,
+  0.8,
+  1.0
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 1820,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 6,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 1820,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_HoverEngine_front.jpg",
+  "R4X_HoverEngine_side.jpg",
+  "R4X_HoverEngine_34front.jpg",
+  "R4X_HoverEngine_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_HoverEngine.blend": {
+   "sha256": "d44f84dab25223e29b2eb038a38a89ea6913acbe5699031e07d10f15b36c826f",
+   "bytes": 138240
+  },
+  "R4X_HoverEngine.fbx": {
+   "sha256": "dd6a9f2bd1e7623c9c45e78e17193a6abab09d176ea91980a5a81112f2cf0727",
+   "bytes": 114572
+  },
+  "R4X_HoverEngine.glb": {
+   "sha256": "e5ff1846e903995f6ca04932341e8e6787ee4ef29bd471178b65578394cbebaf",
+   "bytes": 94052
+  },
+  "R4X_HoverEngine_LOD1.fbx": {
+   "sha256": "19f6c0c4bafe7bdc2356b0a832e88cd5d466e5b785646ef21c3d003008bbd310",
+   "bytes": 41836
+  },
+  "R4X_HoverEngine_LOD1.glb": {
+   "sha256": "ab046e394098017dfcd008d81f5933ae442eb9fc1c96ec059ce14bc92ab1858d",
+   "bytes": 54108
+  }
+ },
+ "seconds": 0.8,
+ "blender": "5.3.0"
+}

@@ -1,0 +1,201 @@
+{
+ "id": "R4X_ChargeCapacity",
+ "module": "ChargeCapacity",
+ "catalog_number": 34,
+ "catalog_group": "D",
+ "wave": 2,
+ "name_pl": "Pojemnosc ladunkow",
+ "function_pl": "Pasywnie zwieksza maksymalna liczbe ladunkow.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_ChargeCapacity_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1736,
+   "vertices": 898,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_ChargeCapacity_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 712,
+  "vertices": 386,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 1736,
+ "triangles_lod1": 712,
+ "shells": 15,
+ "bounds_m": [
+  [
+   -0.257,
+   -0.257,
+   -0.26
+  ],
+  [
+   0.257,
+   0.257,
+   0.255
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {},
+ "animation": null,
+ "animation_sweep": {
+  "frames": 0,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  0.25,
+  0.45,
+  1.0
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 1736,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 1736,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_ChargeCapacity_front.jpg",
+  "R4X_ChargeCapacity_side.jpg",
+  "R4X_ChargeCapacity_34front.jpg",
+  "R4X_ChargeCapacity_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_ChargeCapacity.blend": {
+   "sha256": "45a59b09450194f60568edc08366dde9b65ebddc98a945e8be033bc258106804",
+   "bytes": 135823
+  },
+  "R4X_ChargeCapacity.fbx": {
+   "sha256": "47b4d2b47aff225ae720c7150cdad6a3b4eb831d80d0fe78d29eff5e75d86b33",
+   "bytes": 56588
+  },
+  "R4X_ChargeCapacity.glb": {
+   "sha256": "b9c8f28c15d17ec69a06bb20f334b4cca06bdc08bd5059a090a80557380d5d1d",
+   "bytes": 88048
+  },
+  "R4X_ChargeCapacity_LOD1.fbx": {
+   "sha256": "680b8f131f70e74b9ca1355ed7c152a9fc3b6aa3e4642831be8b355ed6c2d3ce",
+   "bytes": 33388
+  },
+  "R4X_ChargeCapacity_LOD1.glb": {
+   "sha256": "c092625b003a7985ca45e88639a16ccdd92a7066fa498b78b5606521827ee85b",
+   "bytes": 57872
+  }
+ },
+ "seconds": 0.8,
+ "blender": "5.3.0"
+}

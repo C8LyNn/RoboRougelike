@@ -1,0 +1,241 @@
+{
+ "id": "R4X_MovementDurabilityBooster",
+ "module": "MovementDurabilityBooster",
+ "catalog_number": 39,
+ "catalog_group": "E",
+ "wave": 3,
+ "name_pl": "Wytrzymalosc napedu",
+ "function_pl": "Pasywnie zwieksza wytrzymalosc czesci napedowych.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_MovementDurabilityBooster_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 3044,
+   "vertices": 1530,
+   "uv": true,
+   "ok": true
+  },
+  {
+   "object": "R4X_MovementDurabilityBooster_Wheel",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 896,
+   "vertices": 462,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_MovementDurabilityBooster_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 860,
+  "vertices": 452,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 3940,
+ "triangles_lod1": 860,
+ "shells": 12,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.24
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {
+  "Wheel": {
+   "pivot": [
+    0.0,
+    0.0,
+    -0.03
+   ],
+   "anim": {
+    "type": "spin",
+    "axis": [
+     0,
+     1,
+     0
+    ],
+    "frames": 48
+   }
+  }
+ },
+ "animation": {
+  "clip": "Active",
+  "fps": 24,
+  "frames": [
+   1,
+   49
+  ],
+  "loop": true,
+  "nodes": [
+   "Wheel"
+  ],
+  "glb_mode": "SCENE"
+ },
+ "animation_sweep": {
+  "frames": 25,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  0.25,
+  1.0,
+  0.45
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 3940,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 5,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 3940,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_MovementDurabilityBooster_front.jpg",
+  "R4X_MovementDurabilityBooster_side.jpg",
+  "R4X_MovementDurabilityBooster_34front.jpg",
+  "R4X_MovementDurabilityBooster_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_MovementDurabilityBooster.blend": {
+   "sha256": "05697ff5ed50962dfb572faf8a995e3ad0f68913ab23aad56736c7fe7e0e5b72",
+   "bytes": 187472
+  },
+  "R4X_MovementDurabilityBooster.fbx": {
+   "sha256": "62b8797040d5a33338a3803de0eca450538add9b9cac11de9cd83761fab416e1",
+   "bytes": 147548
+  },
+  "R4X_MovementDurabilityBooster.glb": {
+   "sha256": "ee5c15ff7993a7461e54da770e4011167442daef4730d9a6772c5c031cb7c6d2",
+   "bytes": 159588
+  },
+  "R4X_MovementDurabilityBooster_LOD1.fbx": {
+   "sha256": "e3829c16976f8c70b6f3c2b194378ed36c640da561665865f8cf27d3ce7dcedd",
+   "bytes": 37868
+  },
+  "R4X_MovementDurabilityBooster_LOD1.glb": {
+   "sha256": "800ba281cc5aec18f4fb728dab40f5e9baed4dcd8f8502869fe1d291ebb1aa74",
+   "bytes": 54012
+  }
+ },
+ "seconds": 0.9,
+ "blender": "5.3.0"
+}

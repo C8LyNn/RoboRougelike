@@ -1,0 +1,201 @@
+{
+ "id": "R4X_DamageBooster",
+ "module": "DamageBooster",
+ "catalog_number": 18,
+ "catalog_group": "C",
+ "wave": 2,
+ "name_pl": "Wzmacniacz obrazen",
+ "function_pl": "Pasywnie zwieksza obrazenia broni.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_DamageBooster_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 2372,
+   "vertices": 1200,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_DamageBooster_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 644,
+  "vertices": 336,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 2372,
+ "triangles_lod1": 644,
+ "shells": 9,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.252
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {},
+ "animation": null,
+ "animation_sweep": {
+  "frames": 0,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  1.0,
+  0.18,
+  0.12
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2372,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2372,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_DamageBooster_front.jpg",
+  "R4X_DamageBooster_side.jpg",
+  "R4X_DamageBooster_34front.jpg",
+  "R4X_DamageBooster_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_DamageBooster.blend": {
+   "sha256": "471d7782b7d020b26310809536c35766a44d3018effc65808ec8762834c93a76",
+   "bytes": 153964
+  },
+  "R4X_DamageBooster.fbx": {
+   "sha256": "48f8bc082c868946f4a5b1176ed7f92fd05284477f9c7882b92d0c8ad9fb6ace",
+   "bytes": 72988
+  },
+  "R4X_DamageBooster.glb": {
+   "sha256": "7eedf0db024af2652b7572f6d4460a90ac3806beddf2647a7b36363f129560d7",
+   "bytes": 96020
+  },
+  "R4X_DamageBooster_LOD1.fbx": {
+   "sha256": "267b68a3fa1c6151a0e5724dbfa7801ceb518ce61fb29144bcb454cf2defec32",
+   "bytes": 33628
+  },
+  "R4X_DamageBooster_LOD1.glb": {
+   "sha256": "b038938111d40396481b9e04ba5de4a194a9d2dfe84d4a6a95377017de845e60",
+   "bytes": 39408
+  }
+ },
+ "seconds": 0.8,
+ "blender": "5.3.0"
+}

@@ -1,0 +1,64 @@
+{
+ "id": "R4D_EMPTrap",
+ "catalog_number": null,
+ "catalog_group": "Pułapki rozstawiane w świecie gry",
+ "name": "EMPTrap",
+ "name_pl": "Pułapka EMP",
+ "function_pl": "Wyłącza systemy wrogów w zasięgu.",
+ "silhouette_concept_pl": "krążek z cewką i trzema łukami trzymającymi kulę ładunku",
+ "kind": "world object (deployed trap)",
+ "units": "meter 1:1",
+ "axes": "Blender: X right, -Y forward, Z up; file / Unity: +Z forward, +Y up",
+ "cell": "footprint inside one 0.55 m cell, origin on the ground, height <= 0.30 m",
+ "hierarchy": {
+  "R4D_EMPTrap_ROOT": null,
+  "R4D_EMPTrap_Body": "R4D_EMPTrap_ROOT",
+  "R4D_EMPTrap_Core": "R4D_EMPTrap_ROOT"
+ },
+ "node_roles": {
+  "R4D_EMPTrap_ROOT": "root (origin = ground contact centre)",
+  "R4D_EMPTrap_Body": "static body",
+  "R4D_EMPTrap_Core": "movable part (PROPOSAL), pivot [0.0, 0.0, 0.205] m (Blender axes), preview motion {'type': 'spin', 'axis': [0, 0, 1], 'frames': 24}"
+ },
+ "mount_proposal": null,
+ "contacts_proposal": [],
+ "contact_count": 0,
+ "contact_mask_local_proposal": 0,
+ "paint_zones": {
+  "R4P_Base": "duze panele - glowny kolor malowania (jak w klockach A_Sleek)",
+  "R4P_Glow": "PROPOSAL: akcent emisyjny, kolor per modul (czytelnosc funkcji)",
+  "R4P_Metal": "PROPOSAL: gole elementy mechaniczne (tloczyska, lufy, osie) - domyslnie Steel_Light",
+  "R4P_Secondary": "rama / fazy / obudowy - drugi kolor malowania (jak w klockach A_Sleek)",
+  "R4P_Trim": "ciemne elementy techniczne i scianki paneli (jak w klockach A_Sleek)"
+ },
+ "glow_rgb": [
+  0.25,
+  0.45,
+  1.0
+ ],
+ "triangles": {
+  "lod0": 1596,
+  "lod1": 836
+ },
+ "files": [
+  "R4D_EMPTrap.blend",
+  "R4D_EMPTrap.fbx",
+  "R4D_EMPTrap.glb",
+  "R4D_EMPTrap_LOD1.fbx",
+  "R4D_EMPTrap_LOD1.glb"
+ ],
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "proposals": [
+  "contact faces / port set",
+  "Socket_Mount face",
+  "paint zones R4P_Metal and R4P_Glow",
+  "movable nodes and the preview animation clip",
+  "function empties (FX_*, Deploy_Out)",
+  "naming prefix R4D_"
+ ],
+ "gameplay": "Art asset only. No gameplay value, timing, range or cost is defined or changed by this file.",
+ "notes": [
+  "world object deployed by R4X_EMPTrapDeployer; origin on the ground, footprint inside one 0.55 m cell"
+ ]
+}

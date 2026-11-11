@@ -1,0 +1,62 @@
+{
+ "id": "R4D_SlowTrap",
+ "catalog_number": null,
+ "catalog_group": "Pułapki rozstawiane w świecie gry",
+ "name": "SlowTrap",
+ "name_pl": "Pułapka spowalniająca",
+ "function_pl": "Spowalnia wrogów w polu działania.",
+ "silhouette_concept_pl": "sześciokątna podstawa z niską kopułą żelu i trzema dyszami w bok",
+ "kind": "world object (deployed trap)",
+ "units": "meter 1:1",
+ "axes": "Blender: X right, -Y forward, Z up; file / Unity: +Z forward, +Y up",
+ "cell": "footprint inside one 0.55 m cell, origin on the ground, height <= 0.30 m",
+ "hierarchy": {
+  "R4D_SlowTrap_ROOT": null,
+  "R4D_SlowTrap_Body": "R4D_SlowTrap_ROOT"
+ },
+ "node_roles": {
+  "R4D_SlowTrap_ROOT": "root (origin = ground contact centre)",
+  "R4D_SlowTrap_Body": "static body"
+ },
+ "mount_proposal": null,
+ "contacts_proposal": [],
+ "contact_count": 0,
+ "contact_mask_local_proposal": 0,
+ "paint_zones": {
+  "R4P_Base": "duze panele - glowny kolor malowania (jak w klockach A_Sleek)",
+  "R4P_Glow": "PROPOSAL: akcent emisyjny, kolor per modul (czytelnosc funkcji)",
+  "R4P_Metal": "PROPOSAL: gole elementy mechaniczne (tloczyska, lufy, osie) - domyslnie Steel_Light",
+  "R4P_Secondary": "rama / fazy / obudowy - drugi kolor malowania (jak w klockach A_Sleek)",
+  "R4P_Trim": "ciemne elementy techniczne i scianki paneli (jak w klockach A_Sleek)"
+ },
+ "glow_rgb": [
+  0.2,
+  0.8,
+  1.0
+ ],
+ "triangles": {
+  "lod0": 788,
+  "lod1": 580
+ },
+ "files": [
+  "R4D_SlowTrap.blend",
+  "R4D_SlowTrap.fbx",
+  "R4D_SlowTrap.glb",
+  "R4D_SlowTrap_LOD1.fbx",
+  "R4D_SlowTrap_LOD1.glb"
+ ],
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "proposals": [
+  "contact faces / port set",
+  "Socket_Mount face",
+  "paint zones R4P_Metal and R4P_Glow",
+  "movable nodes and the preview animation clip",
+  "function empties (FX_*, Deploy_Out)",
+  "naming prefix R4D_"
+ ],
+ "gameplay": "Art asset only. No gameplay value, timing, range or cost is defined or changed by this file.",
+ "notes": [
+  "world object deployed by R4X_SlowTrapDeployer; origin on the ground, footprint inside one 0.55 m cell"
+ ]
+}

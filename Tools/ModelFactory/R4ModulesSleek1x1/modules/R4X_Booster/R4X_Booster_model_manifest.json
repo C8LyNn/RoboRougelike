@@ -1,0 +1,154 @@
+{
+ "id": "R4X_Booster",
+ "catalog_number": 9,
+ "catalog_group": "B. Ruch i sterowanie",
+ "name": "Booster",
+ "name_pl": "Dopalacz",
+ "function_pl": "Krótki, silny ciąg do przodu.",
+ "silhouette_concept_pl": "klocek mocujący z dzwonem dyszy skierowanym do tyłu",
+ "kind": "robot-mounted module 1x1x1",
+ "units": "meter 1:1",
+ "axes": "Blender: X right, -Y forward, Z up; file / Unity: +Z forward, +Y up",
+ "cell": "logical 1x1x1 on the 0.55 m grid; geometry inside the 0.52 m block envelope",
+ "hierarchy": {
+  "R4X_Booster_ROOT": null,
+  "R4X_Booster_Body": "R4X_Booster_ROOT",
+  "Port_forward_000": "R4X_Booster_ROOT",
+  "Port_down_000_part": "R4X_Booster_ROOT",
+  "Port_up_000_part": "R4X_Booster_ROOT",
+  "Port_left_000_part": "R4X_Booster_ROOT",
+  "Port_right_000_part": "R4X_Booster_ROOT",
+  "Socket_Mount": "R4X_Booster_ROOT",
+  "FX_Thrust": "R4X_Booster_ROOT"
+ },
+ "node_roles": {
+  "R4X_Booster_ROOT": "root (origin = cell centre)",
+  "R4X_Booster_Body": "static body",
+  "Socket_Mount": "PROPOSAL: primary mount face = forward, +Z of the empty points out of the module",
+  "FX_Thrust": "PROPOSAL: effect / deploy origin, +Z = direction"
+ },
+ "mount_proposal": "forward",
+ "contacts_proposal": [
+  {
+   "dir": "forward",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.2,
+    0.2
+   ],
+   "offset": [
+    -0.21818,
+    0.0
+   ]
+  },
+  {
+   "dir": "up",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.2,
+    0.2
+   ],
+   "offset": [
+    0.21818,
+    0.0
+   ]
+  },
+  {
+   "dir": "left",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.2,
+    0.2
+   ],
+   "offset": [
+    0.21818,
+    0.0
+   ]
+  },
+  {
+   "dir": "right",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.2,
+    0.2
+   ],
+   "offset": [
+    -0.21818,
+    0.0
+   ]
+  }
+ ],
+ "contact_count": 5,
+ "contact_mask_local_proposal": 31,
+ "paint_zones": {
+  "R4P_Base": "duze panele - glowny kolor malowania (jak w klockach A_Sleek)",
+  "R4P_Glow": "PROPOSAL: akcent emisyjny, kolor per modul (czytelnosc funkcji)",
+  "R4P_Secondary": "rama / fazy / obudowy - drugi kolor malowania (jak w klockach A_Sleek)",
+  "R4P_Trim": "ciemne elementy techniczne i scianki paneli (jak w klockach A_Sleek)"
+ },
+ "glow_rgb": [
+  1.0,
+  0.62,
+  0.1
+ ],
+ "triangles": {
+  "lod0": 1628,
+  "lod1": 356
+ },
+ "files": [
+  "R4X_Booster.blend",
+  "R4X_Booster.fbx",
+  "R4X_Booster.glb",
+  "R4X_Booster_LOD1.fbx",
+  "R4X_Booster_LOD1.glb"
+ ],
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "proposals": [
+  "contact faces / port set",
+  "Socket_Mount face",
+  "paint zones R4P_Metal and R4P_Glow",
+  "movable nodes and the preview animation clip",
+  "function empties (FX_*, Deploy_Out)",
+  "naming prefix R4X_"
+ ],
+ "gameplay": "Art asset only. No gameplay value, timing, range or cost is defined or changed by this file.",
+ "notes": []
+}

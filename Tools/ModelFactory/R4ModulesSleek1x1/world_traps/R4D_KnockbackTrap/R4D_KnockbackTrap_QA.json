@@ -1,0 +1,206 @@
+{
+ "id": "R4D_KnockbackTrap",
+ "module": "KnockbackTrap",
+ "catalog_number": 103,
+ "catalog_group": "T",
+ "wave": 3,
+ "name_pl": "Pulapka odrzucajaca",
+ "function_pl": "Odrzuca wrogow, ktorzy na nia wjada.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [],
+ "mount_proposal": "down",
+ "contact_count": 0,
+ "contact_mask_local_proposal": 0,
+ "port_contact_test": [],
+ "lod1_port_contact_test": [],
+ "meshes": [
+  {
+   "object": "R4D_KnockbackTrap_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 396,
+   "vertices": 210,
+   "uv": true,
+   "ok": true
+  },
+  {
+   "object": "R4D_KnockbackTrap_Plate",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 264,
+   "vertices": 140,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4D_KnockbackTrap_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 452,
+  "vertices": 246,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 660,
+ "triangles_lod1": 452,
+ "shells": 10,
+ "bounds_m": [
+  [
+   -0.237,
+   -0.237,
+   0.0
+  ],
+  [
+   0.237,
+   0.237,
+   0.156
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   0.0
+  ],
+  [
+   0.26,
+   0.26,
+   0.3
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {
+  "Plate": {
+   "pivot": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "anim": {
+    "type": "slide",
+    "axis": [
+     0,
+     0,
+     1
+    ],
+    "amount": 0.06,
+    "frames": 12
+   }
+  }
+ },
+ "animation": {
+  "clip": "Active",
+  "fps": 24,
+  "frames": [
+   1,
+   49
+  ],
+  "loop": true,
+  "nodes": [
+   "Plate"
+  ],
+  "glb_mode": "SCENE"
+ },
+ "animation_sweep": {
+  "frames": 25,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  1.0,
+  0.62,
+  0.1
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 660,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 3,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 660,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4D_KnockbackTrap_front.jpg",
+  "R4D_KnockbackTrap_side.jpg",
+  "R4D_KnockbackTrap_34front.jpg",
+  "R4D_KnockbackTrap_34rear.jpg"
+ ],
+ "world_object": true,
+ "notes": [
+  "world object deployed by R4X_KnockbackTrapDeployer; origin on the ground, footprint inside one 0.55 m cell"
+ ],
+ "files": {
+  "R4D_KnockbackTrap.blend": {
+   "sha256": "4ad15013002aaaaf0fbbfce43ec92243d645ed8ad7b03c09c82d4884e0896af3",
+   "bytes": 110974
+  },
+  "R4D_KnockbackTrap.fbx": {
+   "sha256": "d007823b0cd8cda373b97916d718a7008673d0f836a307edeab99e508dedad63",
+   "bytes": 61228
+  },
+  "R4D_KnockbackTrap.glb": {
+   "sha256": "aba5ce31e23ae8a68260fc51763b5d1996c0d03e1e038aaa0711de71158ab210",
+   "bytes": 40636
+  },
+  "R4D_KnockbackTrap_LOD1.fbx": {
+   "sha256": "c16ce119c58ad989c9efd9656a1ffb73c55b80d37c12296705b53910a9963d93",
+   "bytes": 28972
+  },
+  "R4D_KnockbackTrap_LOD1.glb": {
+   "sha256": "7c1b508578d5dca30e7dc8d3cd2cb0067c31a55f8509523878f4ffd95820d65b",
+   "bytes": 31812
+  }
+ },
+ "seconds": 0.7,
+ "blender": "5.3.0"
+}

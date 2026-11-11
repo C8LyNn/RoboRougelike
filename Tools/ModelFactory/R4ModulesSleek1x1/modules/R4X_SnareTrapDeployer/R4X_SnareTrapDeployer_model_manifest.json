@@ -1,0 +1,83 @@
+{
+ "id": "R4X_SnareTrapDeployer",
+ "catalog_number": 50,
+ "catalog_group": "F. Wyrzutniki (wersje montowane na robocie)",
+ "name": "SnareTrapDeployer",
+ "name_pl": "Wyrzutnik pułapki unieruchamiającej",
+ "function_pl": "Rozstawia pułapkę unieruchamiającą.",
+ "silhouette_concept_pl": "stojak z trzema pułapkami-szczękami ustawionymi pionowo jak talerze",
+ "kind": "robot-mounted module 1x1x1",
+ "units": "meter 1:1",
+ "axes": "Blender: X right, -Y forward, Z up; file / Unity: +Z forward, +Y up",
+ "cell": "logical 1x1x1 on the 0.55 m grid; geometry inside the 0.52 m block envelope",
+ "hierarchy": {
+  "R4X_SnareTrapDeployer_ROOT": null,
+  "R4X_SnareTrapDeployer_Body": "R4X_SnareTrapDeployer_ROOT",
+  "Port_down_000": "R4X_SnareTrapDeployer_ROOT",
+  "Socket_Mount": "R4X_SnareTrapDeployer_ROOT",
+  "Deploy_Out": "R4X_SnareTrapDeployer_ROOT"
+ },
+ "node_roles": {
+  "R4X_SnareTrapDeployer_ROOT": "root (origin = cell centre)",
+  "R4X_SnareTrapDeployer_Body": "static body",
+  "Socket_Mount": "PROPOSAL: primary mount face = down, +Z of the empty points out of the module",
+  "Deploy_Out": "PROPOSAL: effect / deploy origin, +Z = direction"
+ },
+ "mount_proposal": "down",
+ "contacts_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "paint_zones": {
+  "R4P_Base": "duze panele - glowny kolor malowania (jak w klockach A_Sleek)",
+  "R4P_Glow": "PROPOSAL: akcent emisyjny, kolor per modul (czytelnosc funkcji)",
+  "R4P_Metal": "PROPOSAL: gole elementy mechaniczne (tloczyska, lufy, osie) - domyslnie Steel_Light",
+  "R4P_Secondary": "rama / fazy / obudowy - drugi kolor malowania (jak w klockach A_Sleek)",
+  "R4P_Trim": "ciemne elementy techniczne i scianki paneli (jak w klockach A_Sleek)"
+ },
+ "glow_rgb": [
+  0.7,
+  0.35,
+  1.0
+ ],
+ "triangles": {
+  "lod0": 4952,
+  "lod1": 3512
+ },
+ "files": [
+  "R4X_SnareTrapDeployer.blend",
+  "R4X_SnareTrapDeployer.fbx",
+  "R4X_SnareTrapDeployer.glb",
+  "R4X_SnareTrapDeployer_LOD1.fbx",
+  "R4X_SnareTrapDeployer_LOD1.glb"
+ ],
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "proposals": [
+  "contact faces / port set",
+  "Socket_Mount face",
+  "paint zones R4P_Metal and R4P_Glow",
+  "movable nodes and the preview animation clip",
+  "function empties (FX_*, Deploy_Out)",
+  "naming prefix R4X_"
+ ],
+ "gameplay": "Art asset only. No gameplay value, timing, range or cost is defined or changed by this file.",
+ "notes": []
+}

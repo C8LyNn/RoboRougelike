@@ -1,0 +1,238 @@
+{
+ "id": "R4X_GroundDroneDeployer",
+ "module": "GroundDroneDeployer",
+ "catalog_number": 58,
+ "catalog_group": "F",
+ "wave": 3,
+ "name_pl": "Wyrzutnik dronow naziemnych",
+ "function_pl": "Wypuszcza drony naziemne (dron skladany z istniejacych czesci).",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "dir": "back",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.14,
+    0.14
+   ],
+   "offset": [
+    0.0,
+    -0.19091
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 2,
+ "contact_mask_local_proposal": 40,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_GroundDroneDeployer_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 2120,
+   "vertices": 1082,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_GroundDroneDeployer_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 552,
+  "vertices": 298,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 2120,
+ "triangles_lod1": 552,
+ "shells": 11,
+ "bounds_m": [
+  [
+   -0.257,
+   -0.257,
+   -0.26
+  ],
+  [
+   0.257,
+   0.26,
+   0.25
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {},
+ "animation": null,
+ "animation_sweep": {
+  "frames": 0,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [
+  "Deploy_Out"
+ ],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  1.0,
+  0.62,
+  0.1
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2120,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2120,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_GroundDroneDeployer_front.jpg",
+  "R4X_GroundDroneDeployer_side.jpg",
+  "R4X_GroundDroneDeployer_34front.jpg",
+  "R4X_GroundDroneDeployer_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_GroundDroneDeployer.blend": {
+   "sha256": "a42002b5f152d304231a0618577510a30cd4eee9a3450a0eeefa6a662c7c7f76",
+   "bytes": 153122
+  },
+  "R4X_GroundDroneDeployer.fbx": {
+   "sha256": "bfe4dc87e598f0f16716f24ac2afcca6a92a6d3ffb2ca14a57455ff2653767d1",
+   "bytes": 70316
+  },
+  "R4X_GroundDroneDeployer.glb": {
+   "sha256": "4e0fb7def9b3f2a23817a516f01b875639047a73813c2ce3a65ce216718ca1f4",
+   "bytes": 93224
+  },
+  "R4X_GroundDroneDeployer_LOD1.fbx": {
+   "sha256": "b713e80448c2ccc6d9054f3baa6dbddc114507755ccab5c000ab55bb38d8971a",
+   "bytes": 32716
+  },
+  "R4X_GroundDroneDeployer_LOD1.glb": {
+   "sha256": "d8c8361b2efa4f4c025897dcc3507f106961d99126b94c4be71fb875c26f8c9a",
+   "bytes": 44008
+  }
+ },
+ "seconds": 0.8,
+ "blender": "5.3.0"
+}

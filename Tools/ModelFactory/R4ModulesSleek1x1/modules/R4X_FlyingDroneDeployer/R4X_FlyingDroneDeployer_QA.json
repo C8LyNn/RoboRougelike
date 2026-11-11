@@ -1,0 +1,243 @@
+{
+ "id": "R4X_FlyingDroneDeployer",
+ "module": "FlyingDroneDeployer",
+ "catalog_number": 57,
+ "catalog_group": "F",
+ "wave": 3,
+ "name_pl": "Wyrzutnik dronow latajacych",
+ "function_pl": "Wypuszcza drony latajace (dron skladany z istniejacych czesci).",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_FlyingDroneDeployer_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1760,
+   "vertices": 918,
+   "uv": true,
+   "ok": true
+  },
+  {
+   "object": "R4X_FlyingDroneDeployer_Iris",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 312,
+   "vertices": 162,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_FlyingDroneDeployer_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 1196,
+  "vertices": 642,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 2072,
+ "triangles_lod1": 1196,
+ "shells": 24,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.253
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {
+  "Iris": {
+   "pivot": [
+    0.0,
+    0.0,
+    0.1
+   ],
+   "anim": {
+    "type": "spin",
+    "axis": [
+     0,
+     0,
+     1
+    ],
+    "frames": 48
+   }
+  }
+ },
+ "animation": {
+  "clip": "Active",
+  "fps": 24,
+  "frames": [
+   1,
+   49
+  ],
+  "loop": true,
+  "nodes": [
+   "Iris"
+  ],
+  "glb_mode": "SCENE"
+ },
+ "animation_sweep": {
+  "frames": 25,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [
+  "Deploy_Out"
+ ],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  0.2,
+  0.8,
+  1.0
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 2072,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 6,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 2072,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_FlyingDroneDeployer_front.jpg",
+  "R4X_FlyingDroneDeployer_side.jpg",
+  "R4X_FlyingDroneDeployer_34front.jpg",
+  "R4X_FlyingDroneDeployer_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_FlyingDroneDeployer.blend": {
+   "sha256": "7ed18b8bbd9a4fb0bd39cea6402067f3b7dab0cbed6063dbe91102167676c6cc",
+   "bytes": 150876
+  },
+  "R4X_FlyingDroneDeployer.fbx": {
+   "sha256": "6ce6f6ed64a2ed1b715a2d0ad5d09ec912038c96a9789e3a1541feddf9c2e8e5",
+   "bytes": 117964
+  },
+  "R4X_FlyingDroneDeployer.glb": {
+   "sha256": "226167db1daca8b4ece96e9733b7d8ff262a241f54d78cefe88a912ca8a7e991",
+   "bytes": 105528
+  },
+  "R4X_FlyingDroneDeployer_LOD1.fbx": {
+   "sha256": "846a4a9909f1da5e8850fd6f23f78d36c007f6457d277337b4b33cf8b5346256",
+   "bytes": 47084
+  },
+  "R4X_FlyingDroneDeployer_LOD1.glb": {
+   "sha256": "7b15587f7a989c58d6273fce891ad7e70949de0c8905a25830eb3c0a36518f28",
+   "bytes": 70944
+  }
+ },
+ "seconds": 0.8,
+ "blender": "5.3.0"
+}
