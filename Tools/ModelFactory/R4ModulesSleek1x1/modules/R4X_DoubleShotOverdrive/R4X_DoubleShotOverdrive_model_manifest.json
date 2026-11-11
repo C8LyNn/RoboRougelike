@@ -1,0 +1,117 @@
+{
+ "id": "R4X_DoubleShotOverdrive",
+ "catalog_number": 31,
+ "catalog_group": "D. Walka / energia / obrona",
+ "name": "DoubleShotOverdrive",
+ "name_pl": "Podwójny strzał (overdrive, aktywny)",
+ "function_pl": "Aktywny tryb: każdy strzał jest podwójny.",
+ "silhouette_concept_pl": "dwie tuleje jedna nad drugą, żebra chłodzenia i dwa kondensatory po bokach",
+ "kind": "robot-mounted module 1x1x1",
+ "units": "meter 1:1",
+ "axes": "Blender: X right, -Y forward, Z up; file / Unity: +Z forward, +Y up",
+ "cell": "logical 1x1x1 on the 0.55 m grid; geometry inside the 0.52 m block envelope",
+ "hierarchy": {
+  "R4X_DoubleShotOverdrive_ROOT": null,
+  "R4X_DoubleShotOverdrive_Body": "R4X_DoubleShotOverdrive_ROOT",
+  "Port_down_000": "R4X_DoubleShotOverdrive_ROOT",
+  "Port_back_000_part": "R4X_DoubleShotOverdrive_ROOT",
+  "Port_up_000_part": "R4X_DoubleShotOverdrive_ROOT",
+  "Socket_Mount": "R4X_DoubleShotOverdrive_ROOT"
+ },
+ "node_roles": {
+  "R4X_DoubleShotOverdrive_ROOT": "root (origin = cell centre)",
+  "R4X_DoubleShotOverdrive_Body": "static body",
+  "Socket_Mount": "PROPOSAL: primary mount face = down, +Z of the empty points out of the module"
+ },
+ "mount_proposal": "down",
+ "contacts_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "dir": "back",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.2,
+    0.2
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "dir": "up",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.18,
+    0.18
+   ],
+   "offset": [
+    -0.23636,
+    0.0
+   ]
+  }
+ ],
+ "contact_count": 3,
+ "contact_mask_local_proposal": 44,
+ "paint_zones": {
+  "R4P_Base": "duze panele - glowny kolor malowania (jak w klockach A_Sleek)",
+  "R4P_Glow": "PROPOSAL: akcent emisyjny, kolor per modul (czytelnosc funkcji)",
+  "R4P_Metal": "PROPOSAL: gole elementy mechaniczne (tloczyska, lufy, osie) - domyslnie Steel_Light",
+  "R4P_Secondary": "rama / fazy / obudowy - drugi kolor malowania (jak w klockach A_Sleek)",
+  "R4P_Trim": "ciemne elementy techniczne i scianki paneli (jak w klockach A_Sleek)"
+ },
+ "glow_rgb": [
+  1.0,
+  0.18,
+  0.12
+ ],
+ "triangles": {
+  "lod0": 3880,
+  "lod1": 1432
+ },
+ "files": [
+  "R4X_DoubleShotOverdrive.blend",
+  "R4X_DoubleShotOverdrive.fbx",
+  "R4X_DoubleShotOverdrive.glb",
+  "R4X_DoubleShotOverdrive_LOD1.fbx",
+  "R4X_DoubleShotOverdrive_LOD1.glb"
+ ],
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "proposals": [
+  "contact faces / port set",
+  "Socket_Mount face",
+  "paint zones R4P_Metal and R4P_Glow",
+  "movable nodes and the preview animation clip",
+  "function empties (FX_*, Deploy_Out)",
+  "naming prefix R4X_"
+ ],
+ "gameplay": "Art asset only. No gameplay value, timing, range or cost is defined or changed by this file.",
+ "notes": []
+}

@@ -1,0 +1,198 @@
+{
+ "id": "R4X_Stealth",
+ "module": "Stealth",
+ "catalog_number": 25,
+ "catalog_group": "D",
+ "wave": 2,
+ "name_pl": "Kamuflaz",
+ "function_pl": "Aktywnie ukrywa robota przed wykryciem.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_Stealth_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 556,
+   "vertices": 292,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_Stealth_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 348,
+  "vertices": 188,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 556,
+ "triangles_lod1": 348,
+ "shells": 7,
+ "bounds_m": [
+  [
+   -0.258,
+   -0.258,
+   -0.26
+  ],
+  [
+   0.258,
+   0.258,
+   0.206
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {},
+ "animation": null,
+ "animation_sweep": {
+  "frames": 0,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  0.7,
+  0.35,
+  1.0
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 556,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 556,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_Stealth_front.jpg",
+  "R4X_Stealth_side.jpg",
+  "R4X_Stealth_34front.jpg",
+  "R4X_Stealth_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_Stealth.blend": {
+   "sha256": "60397dd48ea98573aa1c94b8d66ee62280121dda54a6d45f0341b2d29637743c",
+   "bytes": 111448
+  },
+  "R4X_Stealth.fbx": {
+   "sha256": "6a2c2d2c87d774e39a87b9a372e1e0c8e0c20898cec86443823a97ffb28000f2",
+   "bytes": 32236
+  },
+  "R4X_Stealth.glb": {
+   "sha256": "7bc26876f4e7b2184dba3ee71276de7205423ef7154a2b789ee312b6f6237477",
+   "bytes": 32520
+  },
+  "R4X_Stealth_LOD1.fbx": {
+   "sha256": "35064f2d20a89abcf5eb69f92f9c27f650f8f7256aa81a2c5325f5d33abaac78",
+   "bytes": 24876
+  },
+  "R4X_Stealth_LOD1.glb": {
+   "sha256": "d18067c0aea30a310db8aa41d1a87b623fdae2f8aad70f38790cbf46cb35f4f4",
+   "bytes": 30244
+  }
+ },
+ "seconds": 0.7,
+ "blender": "5.3.0"
+}

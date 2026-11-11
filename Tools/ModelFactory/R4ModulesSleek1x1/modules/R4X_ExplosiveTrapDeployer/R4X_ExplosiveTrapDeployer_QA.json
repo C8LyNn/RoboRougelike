@@ -1,0 +1,238 @@
+{
+ "id": "R4X_ExplosiveTrapDeployer",
+ "module": "ExplosiveTrapDeployer",
+ "catalog_number": 47,
+ "catalog_group": "F",
+ "wave": 3,
+ "name_pl": "Wyrzutnik: pulapka wybuchowa",
+ "function_pl": "Rozstawia pulapke: Wybucha, gdy wrog wejdzie w zasieg.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "dir": "back",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.2,
+    0.2
+   ],
+   "offset": [
+    0.0,
+    0.01818
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 2,
+ "contact_mask_local_proposal": 40,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 77.8,
+   "recessed_pct": 22.2,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_ExplosiveTrapDeployer_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 2956,
+   "vertices": 1518,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_ExplosiveTrapDeployer_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 1124,
+  "vertices": 602,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 2956,
+ "triangles_lod1": 1124,
+ "shells": 21,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.22
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {},
+ "animation": null,
+ "animation_sweep": {
+  "frames": 0,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [
+  "Deploy_Out"
+ ],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  1.0,
+  0.18,
+  0.12
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2956,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2956,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_ExplosiveTrapDeployer_front.jpg",
+  "R4X_ExplosiveTrapDeployer_side.jpg",
+  "R4X_ExplosiveTrapDeployer_34front.jpg",
+  "R4X_ExplosiveTrapDeployer_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_ExplosiveTrapDeployer.blend": {
+   "sha256": "24c81435287f607127fc6c50acbbf99ad26b6c2eff453ae6f9d914db6030f54c",
+   "bytes": 170240
+  },
+  "R4X_ExplosiveTrapDeployer.fbx": {
+   "sha256": "a2398780404cb05adc36fbc0cdebb293c0ac8c636e0fff8756fadad5fd5bd7ba",
+   "bytes": 91004
+  },
+  "R4X_ExplosiveTrapDeployer.glb": {
+   "sha256": "b7c49cf8a390340d1eed3e7abe78527ce0376724c95ee501ffb1a751e9ec3f19",
+   "bytes": 123928
+  },
+  "R4X_ExplosiveTrapDeployer_LOD1.fbx": {
+   "sha256": "224ac66628058d0094f783bfa01ce78689a0dae401c753efa705a744994bd371",
+   "bytes": 50348
+  },
+  "R4X_ExplosiveTrapDeployer_LOD1.glb": {
+   "sha256": "750e656e50ac8a6e9cb7987c2c97a0e39688d7f7fd832c9eca06bb7dec25a2ec",
+   "bytes": 66480
+  }
+ },
+ "seconds": 0.7,
+ "blender": "5.3.0"
+}

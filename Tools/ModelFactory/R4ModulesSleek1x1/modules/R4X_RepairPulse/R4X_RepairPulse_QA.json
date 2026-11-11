@@ -1,0 +1,198 @@
+{
+ "id": "R4X_RepairPulse",
+ "module": "RepairPulse",
+ "catalog_number": 4,
+ "catalog_group": "A",
+ "wave": 1,
+ "name_pl": "Impuls naprawczy",
+ "function_pl": "Aktywny impuls naprawiajacy pobliskie czesci.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_RepairPulse_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 2944,
+   "vertices": 1478,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_RepairPulse_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 472,
+  "vertices": 242,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 2944,
+ "triangles_lod1": 472,
+ "shells": 5,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.1912
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {},
+ "animation": null,
+ "animation_sweep": {
+  "frames": 0,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  0.25,
+  1.0,
+  0.45
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2944,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2944,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_RepairPulse_front.jpg",
+  "R4X_RepairPulse_side.jpg",
+  "R4X_RepairPulse_34front.jpg",
+  "R4X_RepairPulse_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_RepairPulse.blend": {
+   "sha256": "a38cf237c8fd0807ce3ec889708853254a40de54f1c770fda1730c157addc0aa",
+   "bytes": 164546
+  },
+  "R4X_RepairPulse.fbx": {
+   "sha256": "0c1452256bfcd0ea2bd231f5f6d231dcf35498fc2825a200b93c29f206bf24a9",
+   "bytes": 84556
+  },
+  "R4X_RepairPulse.glb": {
+   "sha256": "4d1a1cfacd50f94ff75f5fb606799f7b756987f53460d90f635388459e3359c1",
+   "bytes": 112980
+  },
+  "R4X_RepairPulse_LOD1.fbx": {
+   "sha256": "31e2a2a58b8abe59829fed993802014fe6688527660256b2a44763c7192bbaa0",
+   "bytes": 29548
+  },
+  "R4X_RepairPulse_LOD1.glb": {
+   "sha256": "11555e97327354409b33ecdb229a3b6140756d6d51fdb21176632327cecb8775",
+   "bytes": 29744
+  }
+ },
+ "seconds": 0.8,
+ "blender": "5.3.0"
+}

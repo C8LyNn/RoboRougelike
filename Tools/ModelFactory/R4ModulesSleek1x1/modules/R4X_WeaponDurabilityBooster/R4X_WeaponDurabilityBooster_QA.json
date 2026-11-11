@@ -1,0 +1,201 @@
+{
+ "id": "R4X_WeaponDurabilityBooster",
+ "module": "WeaponDurabilityBooster",
+ "catalog_number": 38,
+ "catalog_group": "E",
+ "wave": 3,
+ "name_pl": "Wytrzymalosc broni",
+ "function_pl": "Pasywnie zwieksza wytrzymalosc broni.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_WeaponDurabilityBooster_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 3744,
+   "vertices": 1886,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_WeaponDurabilityBooster_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 648,
+  "vertices": 338,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 3744,
+ "triangles_lod1": 648,
+ "shells": 9,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.17
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {},
+ "animation": null,
+ "animation_sweep": {
+  "frames": 0,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  1.0,
+  0.18,
+  0.12
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 3744,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 3744,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_WeaponDurabilityBooster_front.jpg",
+  "R4X_WeaponDurabilityBooster_side.jpg",
+  "R4X_WeaponDurabilityBooster_34front.jpg",
+  "R4X_WeaponDurabilityBooster_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_WeaponDurabilityBooster.blend": {
+   "sha256": "38fbb2a3f60844af95a6bde4a2781e564c7db5fb3bfb4111be32ad902cee9d6f",
+   "bytes": 184921
+  },
+  "R4X_WeaponDurabilityBooster.fbx": {
+   "sha256": "baffe202d3592adce08b63313c33b2d4a2a841fc29f4c3baa3562568648d76c0",
+   "bytes": 102572
+  },
+  "R4X_WeaponDurabilityBooster.glb": {
+   "sha256": "f6bf556c2e692ba4211683e3bf4118cd736859003dd0ac201594e36ff632c346",
+   "bytes": 147952
+  },
+  "R4X_WeaponDurabilityBooster_LOD1.fbx": {
+   "sha256": "3eb009d2dcae37cd6a598a0941b7fa9d81f328d197095428b83e2373e0b1d059",
+   "bytes": 34924
+  },
+  "R4X_WeaponDurabilityBooster_LOD1.glb": {
+   "sha256": "5110b2f8ea3fc4148e3293beb6a08d5e24a9435b0047432b94978da7aa2ba3d2",
+   "bytes": 44640
+  }
+ },
+ "seconds": 0.7,
+ "blender": "5.3.0"
+}

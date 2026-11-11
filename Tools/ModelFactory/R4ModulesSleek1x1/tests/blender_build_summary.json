@@ -1,0 +1,340 @@
+{
+ "summary": {
+  "R4D_BurnTrap": [
+   "BLENDER_PASS",
+   [],
+   1032
+  ],
+  "R4D_EMPTrap": [
+   "BLENDER_PASS",
+   [],
+   1596
+  ],
+  "R4D_ExplosiveTrap": [
+   "BLENDER_PASS",
+   [],
+   1416
+  ],
+  "R4D_KnockbackTrap": [
+   "BLENDER_PASS",
+   [],
+   660
+  ],
+  "R4D_SlowTrap": [
+   "BLENDER_PASS",
+   [],
+   788
+  ],
+  "R4D_SnareTrap": [
+   "BLENDER_PASS",
+   [],
+   1280
+  ],
+  "R4X_AreaEMP": [
+   "BLENDER_PASS",
+   [],
+   3616
+  ],
+  "R4X_Battery": [
+   "BLENDER_PASS",
+   [],
+   3396
+  ],
+  "R4X_Blink": [
+   "BLENDER_PASS",
+   [],
+   2864
+  ],
+  "R4X_Booster": [
+   "BLENDER_PASS",
+   [],
+   1628
+  ],
+  "R4X_BurnTrapDeployer": [
+   "BLENDER_PASS",
+   [],
+   2912
+  ],
+  "R4X_CargoUplink": [
+   "BLENDER_PASS",
+   [],
+   1632
+  ],
+  "R4X_ChargeCapacity": [
+   "BLENDER_PASS",
+   [],
+   1736
+  ],
+  "R4X_ChargeRegenerator": [
+   "BLENDER_PASS",
+   [],
+   2596
+  ],
+  "R4X_CoreBooster": [
+   "BLENDER_PASS",
+   [],
+   2968
+  ],
+  "R4X_DamageBooster": [
+   "BLENDER_PASS",
+   [],
+   2372
+  ],
+  "R4X_DefensiveTurretDeployer": [
+   "BLENDER_PASS",
+   [],
+   3372
+  ],
+  "R4X_DeployableAmplifier": [
+   "BLENDER_PASS",
+   [],
+   2532
+  ],
+  "R4X_DeployableShieldGenerator": [
+   "BLENDER_PASS",
+   [],
+   3644
+  ],
+  "R4X_DirectionalEMP": [
+   "BLENDER_PASS",
+   [],
+   2780
+  ],
+  "R4X_DirectionalShield": [
+   "BLENDER_PASS",
+   [],
+   1988
+  ],
+  "R4X_DoubleShotOverdrive": [
+   "BLENDER_PASS",
+   [],
+   3880
+  ],
+  "R4X_DoubleShotPassive": [
+   "BLENDER_PASS",
+   [],
+   2384
+  ],
+  "R4X_DrivePower": [
+   "BLENDER_PASS",
+   [],
+   2840
+  ],
+  "R4X_EMPTrapDeployer": [
+   "BLENDER_PASS",
+   [],
+   3072
+  ],
+  "R4X_EnergyRegenerator": [
+   "BLENDER_PASS",
+   [],
+   3260
+  ],
+  "R4X_ExplosiveTrapDeployer": [
+   "BLENDER_PASS",
+   [],
+   2956
+  ],
+  "R4X_FlyingDroneDeployer": [
+   "BLENDER_PASS",
+   [],
+   2072
+  ],
+  "R4X_GroundDroneDeployer": [
+   "BLENDER_PASS",
+   [],
+   2120
+  ],
+  "R4X_Gyroscope": [
+   "BLENDER_PASS",
+   [],
+   2788
+  ],
+  "R4X_HoverEngine": [
+   "BLENDER_PASS",
+   [],
+   1820
+  ],
+  "R4X_HullBooster": [
+   "BLENDER_PASS",
+   [],
+   3464
+  ],
+  "R4X_IndependentSteering": [
+   "BLENDER_PASS",
+   [],
+   3840
+  ],
+  "R4X_JumpDrive": [
+   "BLENDER_PASS",
+   [],
+   1616
+  ],
+  "R4X_JumpPadDeployer": [
+   "BLENDER_PASS",
+   [],
+   1724
+  ],
+  "R4X_KnockbackTrapDeployer": [
+   "BLENDER_PASS",
+   [],
+   2804
+  ],
+  "R4X_MagneticGrapple": [
+   "BLENDER_PASS",
+   [],
+   2756
+  ],
+  "R4X_Minimap": [
+   "BLENDER_PASS",
+   [],
+   1916
+  ],
+  "R4X_MobilityBooster": [
+   "BLENDER_PASS",
+   [],
+   2420
+  ],
+  "R4X_ModuleAmplifier": [
+   "BLENDER_PASS",
+   [],
+   3140
+  ],
+  "R4X_ModuleDurabilityBooster": [
+   "BLENDER_PASS",
+   [],
+   4076
+  ],
+  "R4X_MovementDurabilityBooster": [
+   "BLENDER_PASS",
+   [],
+   3940
+  ],
+  "R4X_OffensiveTurretDeployer": [
+   "BLENDER_PASS",
+   [],
+   3560
+  ],
+  "R4X_OrbAmplifier": [
+   "BLENDER_PASS",
+   [],
+   1748
+  ],
+  "R4X_Overdrive": [
+   "BLENDER_PASS",
+   [],
+   2144
+  ],
+  "R4X_PersonalShield": [
+   "BLENDER_PASS",
+   [],
+   2328
+  ],
+  "R4X_PointDefense": [
+   "BLENDER_PASS",
+   [],
+   2052
+  ],
+  "R4X_Radar": [
+   "BLENDER_PASS",
+   [],
+   1528
+  ],
+  "R4X_RampDeployer": [
+   "BLENDER_PASS",
+   [],
+   2788
+  ],
+  "R4X_RapidFire": [
+   "BLENDER_PASS",
+   [],
+   2036
+  ],
+  "R4X_RechargePulse": [
+   "BLENDER_PASS",
+   [],
+   1552
+  ],
+  "R4X_ReloadBooster": [
+   "BLENDER_PASS",
+   [],
+   3764
+  ],
+  "R4X_RepairBooster": [
+   "BLENDER_PASS",
+   [],
+   1960
+  ],
+  "R4X_RepairPulse": [
+   "BLENDER_PASS",
+   [],
+   2944
+  ],
+  "R4X_RepairTurretDeployer": [
+   "BLENDER_PASS",
+   [],
+   4020
+  ],
+  "R4X_RewardReroll": [
+   "BLENDER_PASS",
+   [],
+   2504
+  ],
+  "R4X_SalvageOptimizer": [
+   "BLENDER_PASS",
+   [],
+   744
+  ],
+  "R4X_ScannerPulse": [
+   "BLENDER_PASS",
+   [],
+   2024
+  ],
+  "R4X_SlowTrapDeployer": [
+   "BLENDER_PASS",
+   [],
+   3052
+  ],
+  "R4X_SnareTrapDeployer": [
+   "BLENDER_PASS",
+   [],
+   4952
+  ],
+  "R4X_Stealth": [
+   "BLENDER_PASS",
+   [],
+   556
+  ],
+  "R4X_StructuralScanner": [
+   "BLENDER_PASS",
+   [],
+   2388
+  ],
+  "R4X_SupportTurretDeployer": [
+   "BLENDER_PASS",
+   [],
+   3128
+  ],
+  "R4X_Suspension": [
+   "BLENDER_PASS",
+   [],
+   3764
+  ],
+  "R4X_WallDeployer": [
+   "BLENDER_PASS",
+   [],
+   2508
+  ],
+  "R4X_WeakPointScanner": [
+   "BLENDER_PASS",
+   [],
+   2328
+  ],
+  "R4X_WeaponDurabilityBooster": [
+   "BLENDER_PASS",
+   [],
+   3744
+  ]
+ },
+ "blender": "5.3.0"
+}

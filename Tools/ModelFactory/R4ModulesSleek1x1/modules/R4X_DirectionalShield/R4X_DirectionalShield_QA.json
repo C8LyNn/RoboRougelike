@@ -1,0 +1,233 @@
+{
+ "id": "R4X_DirectionalShield",
+ "module": "DirectionalShield",
+ "catalog_number": 5,
+ "catalog_group": "A",
+ "wave": 1,
+ "name_pl": "Tarcza kierunkowa",
+ "function_pl": "Tarcza energetyczna oslaniajaca jeden kierunek.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "dir": "back",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.2,
+    0.2
+   ],
+   "offset": [
+    0.0,
+    -0.08182
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 2,
+ "contact_mask_local_proposal": 40,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 77.8,
+   "recessed_pct": 22.2,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 77.8,
+   "recessed_pct": 22.2,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_DirectionalShield_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1988,
+   "vertices": 1008,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_DirectionalShield_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 364,
+  "vertices": 196,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 1988,
+ "triangles_lod1": 364,
+ "shells": 7,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.247
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {},
+ "animation": null,
+ "animation_sweep": {
+  "frames": 0,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  0.2,
+  0.8,
+  1.0
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 1988,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 1988,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_DirectionalShield_front.jpg",
+  "R4X_DirectionalShield_side.jpg",
+  "R4X_DirectionalShield_34front.jpg",
+  "R4X_DirectionalShield_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_DirectionalShield.blend": {
+   "sha256": "0127d8fda08226fd44a9a152a5e07edf0cb29b6b052e941fb1df5c5e6e0563bd",
+   "bytes": 144859
+  },
+  "R4X_DirectionalShield.fbx": {
+   "sha256": "5b0a02b1e46825555ff4735762a11df89ac083a31dce144fb1eb47d77960d1a5",
+   "bytes": 63852
+  },
+  "R4X_DirectionalShield.glb": {
+   "sha256": "ceffff34bf7050d30589586ae7d8c5b273a08f2229da5db0402aa5507c93e776",
+   "bytes": 81660
+  },
+  "R4X_DirectionalShield_LOD1.fbx": {
+   "sha256": "239e665c8625edb26c97f925fad1ca143ce6bb55d653646364766c81fc6e50ce",
+   "bytes": 27116
+  },
+  "R4X_DirectionalShield_LOD1.glb": {
+   "sha256": "95e6d445e5f778669c3173c4283c4d4e91dc82849a00be5169c0091d60a676b8",
+   "bytes": 31728
+  }
+ },
+ "seconds": 0.8,
+ "blender": "5.3.0"
+}

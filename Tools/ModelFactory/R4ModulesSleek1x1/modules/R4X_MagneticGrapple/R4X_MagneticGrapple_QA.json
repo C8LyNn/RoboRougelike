@@ -1,0 +1,238 @@
+{
+ "id": "R4X_MagneticGrapple",
+ "module": "MagneticGrapple",
+ "catalog_number": 13,
+ "catalog_group": "B",
+ "wave": 1,
+ "name_pl": "Chwytak magnetyczny",
+ "function_pl": "Przyciaga robota do celu / cel do robota.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "dir": "back",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.25,
+    0.25
+   ],
+   "offset": [
+    0.0,
+    -0.07273
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 2,
+ "contact_mask_local_proposal": 40,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 95.1,
+   "recessed_pct": 4.9,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_MagneticGrapple_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 2756,
+   "vertices": 1396,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_MagneticGrapple_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 548,
+  "vertices": 292,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 2756,
+ "triangles_lod1": 548,
+ "shells": 9,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.154
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {},
+ "animation": null,
+ "animation_sweep": {
+  "frames": 0,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [
+  "FX_Grapple"
+ ],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  1.0,
+  0.18,
+  0.12
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2756,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2756,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_MagneticGrapple_front.jpg",
+  "R4X_MagneticGrapple_side.jpg",
+  "R4X_MagneticGrapple_34front.jpg",
+  "R4X_MagneticGrapple_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_MagneticGrapple.blend": {
+   "sha256": "305d9fdb526f965708ca3156a1cf676cb98b46703a09b2c73a14889a74b3307f",
+   "bytes": 163273
+  },
+  "R4X_MagneticGrapple.fbx": {
+   "sha256": "d79e0b9fd9796e3001fa60f1f105452f2c8b320e323799f8d05872b10688d3ef",
+   "bytes": 81612
+  },
+  "R4X_MagneticGrapple.glb": {
+   "sha256": "caccd9a47ae1de3422b14492dc0cf105d464739bced17fa2e7968f81158dfd47",
+   "bytes": 114684
+  },
+  "R4X_MagneticGrapple_LOD1.fbx": {
+   "sha256": "51c5399d06a4ede27306080b27d7a9a713cdc9a6dcd89a88fccf4cc8e9dd7ffa",
+   "bytes": 31692
+  },
+  "R4X_MagneticGrapple_LOD1.glb": {
+   "sha256": "c83b431c640484f402ef361f371f4e0818c164d42ef408f1a75fbe4bc58e77da",
+   "bytes": 39736
+  }
+ },
+ "seconds": 0.8,
+ "blender": "5.3.0"
+}

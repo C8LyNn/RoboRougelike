@@ -1,0 +1,87 @@
+<!doctype html><html lang="pl"><head><meta charset="utf-8"><title>R4 Sleek — biblioteka modułów 1×1×1</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+:root{color-scheme:dark}
+html,body{margin:0;height:100%;background:#15181c;color:#e8eaed;font:14px/1.4 system-ui,Segoe UI,Roboto,sans-serif;overflow:hidden}
+#side{position:fixed;left:0;top:0;bottom:0;width:270px;overflow-y:auto;background:rgba(16,18,22,.94);border-right:1px solid #2c3138;z-index:2;padding:10px 8px 20px;box-sizing:border-box}
+#side h1{font-size:15px;margin:2px 6px 8px}
+#side h2{font-size:12px;color:#9aa3ad;margin:12px 6px 4px;text-transform:uppercase;letter-spacing:.04em}
+#side button{display:block;width:100%;text-align:left;background:none;color:#e8eaed;border:1px solid transparent;border-radius:6px;padding:5px 8px;font:inherit;cursor:pointer}
+#side button:hover{background:#232830}
+#side button.on{background:#e8eaed;color:#15181c;font-weight:600}
+#side button small{color:#8a939d;margin-right:6px}
+#side button.on small{color:#4a525c}
+#bar{position:fixed;left:270px;right:0;top:0;display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;padding:9px 14px;background:rgba(16,18,22,.88);border-bottom:1px solid #2c3138;z-index:2}
+select{background:#232830;color:#e8eaed;border:1px solid #39404a;border-radius:6px;padding:5px 9px;font:inherit}
+label{display:flex;gap:6px;align-items:center;cursor:pointer}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid #7fb4ff;outline-offset:1px}
+#info{position:fixed;left:284px;bottom:12px;background:rgba(16,18,22,.86);border:1px solid #2c3138;border-radius:8px;padding:10px 13px;max-width:min(640px,60vw);z-index:2}
+#info b{font-size:15px}#info small{color:#9aa3ad}
+canvas{display:block}
+</style></head><body>
+<nav id="side"><h1>R4 Sleek · moduły 1×1×1</h1><div id="list"></div></nav>
+<div id="bar">
+ <label>Malowanie <select id="livery"></select></label>
+ <label><input type="checkbox" id="anim" checked> animacja (proposal)</label>
+ <label><input type="checkbox" id="cube" checked> klocek montażowy</label>
+ <label><input type="checkbox" id="ports" checked> kontakty / gniazda</label>
+ <label><input type="checkbox" id="lod"> LOD1</label>
+ <label><input type="checkbox" id="wire"> siatka</label>
+</div>
+<div id="info"></div>
+<script src="lib/three.min.js"></script><script src="lib/GLTFLoader.js"></script><script src="lib/OrbitControls.js"></script><script src="models.js"></script>
+<script>
+const D = window.R4_DATA, MODELS = window.R4_MODELS, LOOK = D.look;
+const state = {id:D.order[0], livery:"ember", anim:true, cube:true, ports:true, lod:false, wire:false};
+const renderer = new THREE.WebGLRenderer({antialias:true, preserveDrawingBuffer:true}); document.body.appendChild(renderer.domElement);
+renderer.outputEncoding = THREE.sRGBEncoding; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = LOOK.exposure; renderer.physicallyCorrectLights = true;
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap; renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
+const C = a => new THREE.Color(a[0],a[1],a[2]);
+function makeEnv(cfg){
+  const s = new THREE.Scene(), geo = new THREE.SphereGeometry(50,48,48), top=C(cfg.sky), hor=C(cfg.horizon), bot=C(cfg.ground);
+  const pos = geo.attributes.position, col = new Float32Array(pos.count*3), t = new THREE.Color();
+  for(let i=0;i<pos.count;i++){ const h=pos.getY(i)/50; if(h>=0) t.copy(hor).lerp(top,Math.pow(h,0.55)); else t.copy(hor).lerp(bot,Math.pow(-h,0.35)); col[i*3]=t.r; col[i*3+1]=t.g; col[i*3+2]=t.b; }
+  geo.setAttribute('color', new THREE.BufferAttribute(col,3)); s.add(new THREE.Mesh(geo, new THREE.MeshBasicMaterial({side:THREE.BackSide, vertexColors:true})));
+  cfg.panels.forEach(p=>{ const m=new THREE.Mesh(new THREE.PlaneGeometry(p[1][0],p[1][1]), new THREE.MeshBasicMaterial({color:C(p[2]), side:THREE.DoubleSide})); m.position.set(p[0][0],p[0][1],p[0][2]); m.lookAt(0,0,0); s.add(m); });
+  const pm = new THREE.PMREMGenerator(renderer), rt = pm.fromScene(s, 0.03); pm.dispose(); return rt.texture;
+}
+const scene = new THREE.Scene(); scene.environment = makeEnv(LOOK.env); scene.background = C(LOOK.background);
+const cam = new THREE.PerspectiveCamera(28, 1, 0.02, 100), ctl = new THREE.OrbitControls(cam, renderer.domElement); ctl.enableDamping = true;
+const key = new THREE.DirectionalLight(0xffffff, LOOK.keyIntensity); key.position.set(2.2,3.6,2.6); key.castShadow = true; key.shadow.mapSize.set(2048,2048); key.shadow.bias=-0.0004; key.shadow.normalBias=0.004; key.shadow.radius=3;
+key.shadow.camera.left=-1.6; key.shadow.camera.right=1.6; key.shadow.camera.top=1.6; key.shadow.camera.bottom=-1.6; scene.add(key); scene.add(key.target);
+const fill = new THREE.DirectionalLight(0xbfd4ff, LOOK.fillIntensity); fill.position.set(-4,2.5,-2); scene.add(fill);
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(60,60), new THREE.MeshStandardMaterial({color:C(LOOK.groundColor), roughness:0.92, metalness:0, envMapIntensity:0.5})); ground.rotation.x=-Math.PI/2; ground.receiveShadow=true; scene.add(ground);
+let root = new THREE.Group(); scene.add(root); let mixer = null; const clock = new THREE.Clock();
+const loader = new THREE.GLTFLoader(), cache = {};
+function load(key){ if(!cache[key]) cache[key] = new Promise((res,rej)=>{ const bin = atob(MODELS[key]), buf = new Uint8Array(bin.length); for(let i=0;i<bin.length;i++) buf[i]=bin.charCodeAt(i); loader.parse(buf.buffer, "", g=>res(g), rej); }); return cache[key]; }
+function paint(o, liv, glow){ o.traverse(n=>{ if(!n.isMesh) return; n.castShadow = n.receiveShadow = true;
+  const p = liv && liv[n.material.name]; let m = n.material.clone();
+  if(p){ m.color = C(p); if(p.length>3){ m.metalness=p[3]; m.roughness=p[4]; } }
+  if(state.wire) m = new THREE.MeshBasicMaterial({color:0xcfd6de, wireframe:true});
+  n.material = m; }); }
+const DIRV = {right:[1,0,0], left:[-1,0,0], up:[0,1,0], down:[0,-1,0], forward:[0,0,1], back:[0,0,-1]};   // file axes (Blender -Y forward -> +Z)
+async function rebuild(){
+  scene.remove(root); root = new THREE.Group(); scene.add(root); mixer = null;
+  const m = D.modules[state.id], g = await load((state.lod?"L/":"")+state.id), o = THREE.SkeletonUtils ? g.scene : g.scene.clone(true);
+  const inst = g.scene.clone(true); paint(inst, D.livery[state.livery].accent, m.glow); root.add(inst);
+  if(state.anim && !state.lod && g.animations && g.animations.length){ mixer = new THREE.AnimationMixer(inst); g.animations.forEach(c=>mixer.clipAction(c).play()); }
+  const gy = m.world ? 0 : -0.26; let groundY = gy - 0.002;
+  if(state.cube && !m.world){ const c = (await load("cube")).scene.clone(true); paint(c, D.livery[state.livery].hull); const v = DIRV[m.mount]; c.position.set(v[0]*0.55, v[1]*0.55, v[2]*0.55); root.add(c); groundY = Math.min(groundY, v[1]*0.55 - 0.262); if(m.mount!=="down") groundY = Math.min(groundY,-0.262); }
+  if(state.ports && !state.lod){ inst.traverse(n=>{ if(/^Port_|^Socket_Mount|^FX_|^Deploy_/.test(n.name)){
+      const col = n.name.startsWith("Socket")?0xffd24a : n.name.startsWith("Port")?(n.name.endsWith("_part")?0x62c7ff:0x6dff9a) : 0xff6ad5;
+      const a = new THREE.ArrowHelper(new THREE.Vector3(0,1,0), new THREE.Vector3(0,0,0), n.name.startsWith("Socket")?0.16:0.10, col, 0.04, 0.025); a.rotation.x = Math.PI/2; n.add(a); } }); }
+  ground.position.y = groundY;
+  const b = D.modules[state.id];
+  document.getElementById("info").innerHTML = `<b>${b.num} · ${b.name}</b> — ${b.pl}<br>${b.func}<br><small>${b.tris} tris (LOD1 ${b.lod}) · kontakty (proposal): ${b.ports.join(", ")||"brak — obiekt świata"}${m.world?"":" · montaż: "+b.mount}${b.nodes.length?" · części ruchome: "+b.nodes.join(", "):""}<br>Podgląd realnych plików GLB (three.js r128). To nie jest import Unity.</small>`;
+  document.querySelectorAll("#list button").forEach(x=>x.classList.toggle("on", x.dataset.id===state.id));
+}
+function frame(){ const m = D.modules[state.id]; const cy = m.world?0.10:-0.12; ctl.target.set(0,cy,0); cam.position.set(1.9,cy+1.35,2.2); ctl.update(); }
+const list = document.getElementById("list");
+D.groups.forEach(gr=>{ const h = document.createElement("h2"); h.textContent = gr.title; list.appendChild(h);
+  gr.ids.forEach(id=>{ const b = document.createElement("button"); b.dataset.id = id; b.innerHTML = `<small>${D.modules[id].num}</small>${D.modules[id].name}`; b.onclick = ()=>{ state.id = id; frame(); rebuild(); }; list.appendChild(b); }); });
+const ls = document.getElementById("livery"); Object.keys(D.livery).forEach(k=>{ const o = document.createElement("option"); o.value=k; o.textContent=D.liveryName[k]; ls.appendChild(o); }); ls.value = state.livery; ls.onchange = ()=>{ state.livery = ls.value; rebuild(); };
+["anim","cube","ports","lod","wire"].forEach(k=>{ const e = document.getElementById(k); e.checked = state[k]; e.onchange = ()=>{ state[k] = e.checked; rebuild(); }; });
+function resize(){ const w = innerWidth, h = innerHeight; renderer.setSize(w,h); cam.aspect = w/h; cam.setViewOffset(w, h, -135, 0, w, h); cam.updateProjectionMatrix(); }
+addEventListener("resize", resize); resize(); frame(); rebuild().then(()=>{ window.viewerReady = true; });
+(function loop(){ requestAnimationFrame(loop); const dt = clock.getDelta(); if(mixer) mixer.update(dt); ctl.update(); renderer.render(scene, cam); })();
+</script></body></html>

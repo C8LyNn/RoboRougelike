@@ -1,0 +1,244 @@
+{
+ "id": "R4X_DeployableAmplifier",
+ "module": "DeployableAmplifier",
+ "catalog_number": 43,
+ "catalog_group": "E",
+ "wave": 3,
+ "name_pl": "Rozstawiany wzmacniacz",
+ "function_pl": "Wyrzutnik wzmacniacza stawianego na ziemi (wersja montowana na robocie).",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_DeployableAmplifier_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1636,
+   "vertices": 826,
+   "uv": true,
+   "ok": true
+  },
+  {
+   "object": "R4X_DeployableAmplifier_Horn",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 896,
+   "vertices": 452,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_DeployableAmplifier_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 548,
+  "vertices": 286,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 2532,
+ "triangles_lod1": 548,
+ "shells": 8,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.228
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {
+  "Horn": {
+   "pivot": [
+    0.0,
+    0.0,
+    -0.02
+   ],
+   "anim": {
+    "type": "swing",
+    "axis": [
+     1,
+     0,
+     0
+    ],
+    "amount": 10,
+    "frames": 48
+   }
+  }
+ },
+ "animation": {
+  "clip": "Active",
+  "fps": 24,
+  "frames": [
+   1,
+   49
+  ],
+  "loop": true,
+  "nodes": [
+   "Horn"
+  ],
+  "glb_mode": "SCENE"
+ },
+ "animation_sweep": {
+  "frames": 25,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [
+  "Deploy_Out"
+ ],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  1.0,
+  0.62,
+  0.1
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 2532,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 6,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 2532,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_DeployableAmplifier_front.jpg",
+  "R4X_DeployableAmplifier_side.jpg",
+  "R4X_DeployableAmplifier_34front.jpg",
+  "R4X_DeployableAmplifier_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_DeployableAmplifier.blend": {
+   "sha256": "2fe23b986df16eb9524e5a9550694b0e2323c4f9f66936bab09936d674dcd0ac",
+   "bytes": 149934
+  },
+  "R4X_DeployableAmplifier.fbx": {
+   "sha256": "77e83f7f31b3ea684bca036b8db63d6719b86cfcd6c83fd176884bd777c53ec4",
+   "bytes": 128572
+  },
+  "R4X_DeployableAmplifier.glb": {
+   "sha256": "c2aa2d5a92770cc965c4cb67d9d49b9f3ffcebd833770005613e6a91f5ddcab3",
+   "bytes": 104836
+  },
+  "R4X_DeployableAmplifier_LOD1.fbx": {
+   "sha256": "f3f7475c640adb13a05e4ce4e71db70daa1eda7de9b04eddc86cc03ced96f749",
+   "bytes": 35004
+  },
+  "R4X_DeployableAmplifier_LOD1.glb": {
+   "sha256": "87242c790f3fcfe684b0a24f4f221e1fcadb2fbe3eb81f381687a3d3584c4d72",
+   "bytes": 35056
+  }
+ },
+ "seconds": 0.8,
+ "blender": "5.3.0"
+}

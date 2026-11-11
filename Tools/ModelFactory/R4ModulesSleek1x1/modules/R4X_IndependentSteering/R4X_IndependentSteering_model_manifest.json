@@ -1,0 +1,119 @@
+{
+ "id": "R4X_IndependentSteering",
+ "catalog_number": 15,
+ "catalog_group": "B. Ruch i sterowanie",
+ "name": "IndependentSteering",
+ "name_pl": "Niezależne sterowanie",
+ "function_pl": "Pozwala skręcać kołami niezależnie.",
+ "silhouette_concept_pl": "płyta górna, kolumna, wieniec zębaty i obrotnica z ramieniem zwrotnicy oraz serwem z boku",
+ "kind": "robot-mounted module 1x1x1",
+ "units": "meter 1:1",
+ "axes": "Blender: X right, -Y forward, Z up; file / Unity: +Z forward, +Y up",
+ "cell": "logical 1x1x1 on the 0.55 m grid; geometry inside the 0.52 m block envelope",
+ "hierarchy": {
+  "R4X_IndependentSteering_ROOT": null,
+  "R4X_IndependentSteering_Body": "R4X_IndependentSteering_ROOT",
+  "R4X_IndependentSteering_Turntable": "R4X_IndependentSteering_ROOT",
+  "Port_up_000": "R4X_IndependentSteering_ROOT",
+  "Port_down_000_part": "R4X_IndependentSteering_ROOT",
+  "Port_right_000_part": "R4X_IndependentSteering_ROOT",
+  "Socket_Mount": "R4X_IndependentSteering_ROOT"
+ },
+ "node_roles": {
+  "R4X_IndependentSteering_ROOT": "root (origin = cell centre)",
+  "R4X_IndependentSteering_Body": "static body",
+  "R4X_IndependentSteering_Turntable": "movable part (PROPOSAL), pivot [0.0, 0.0, 0.0] m (Blender axes), preview motion {'type': 'swing', 'axis': [0, 0, 1], 'amount': 35, 'frames': 48}",
+  "Socket_Mount": "PROPOSAL: primary mount face = up, +Z of the empty points out of the module"
+ },
+ "mount_proposal": "up",
+ "contacts_proposal": [
+  {
+   "dir": "up",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.24,
+    0.24
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "dir": "right",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.1,
+    0.1
+   ],
+   "offset": [
+    0.0,
+    0.22727
+   ]
+  }
+ ],
+ "contact_count": 3,
+ "contact_mask_local_proposal": 13,
+ "paint_zones": {
+  "R4P_Base": "duze panele - glowny kolor malowania (jak w klockach A_Sleek)",
+  "R4P_Glow": "PROPOSAL: akcent emisyjny, kolor per modul (czytelnosc funkcji)",
+  "R4P_Metal": "PROPOSAL: gole elementy mechaniczne (tloczyska, lufy, osie) - domyslnie Steel_Light",
+  "R4P_Secondary": "rama / fazy / obudowy - drugi kolor malowania (jak w klockach A_Sleek)",
+  "R4P_Trim": "ciemne elementy techniczne i scianki paneli (jak w klockach A_Sleek)"
+ },
+ "glow_rgb": [
+  0.25,
+  1.0,
+  0.45
+ ],
+ "triangles": {
+  "lod0": 3840,
+  "lod1": 1136
+ },
+ "files": [
+  "R4X_IndependentSteering.blend",
+  "R4X_IndependentSteering.fbx",
+  "R4X_IndependentSteering.glb",
+  "R4X_IndependentSteering_LOD1.fbx",
+  "R4X_IndependentSteering_LOD1.glb"
+ ],
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "proposals": [
+  "contact faces / port set",
+  "Socket_Mount face",
+  "paint zones R4P_Metal and R4P_Glow",
+  "movable nodes and the preview animation clip",
+  "function empties (FX_*, Deploy_Out)",
+  "naming prefix R4X_"
+ ],
+ "gameplay": "Art asset only. No gameplay value, timing, range or cost is defined or changed by this file.",
+ "notes": []
+}

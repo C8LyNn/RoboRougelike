@@ -1,0 +1,244 @@
+{
+ "id": "R4X_OffensiveTurretDeployer",
+ "module": "OffensiveTurretDeployer",
+ "catalog_number": 53,
+ "catalog_group": "F",
+ "wave": 3,
+ "name_pl": "Wyrzutnik wiezyczki ofensywnej",
+ "function_pl": "Rozstawia wiezyczke atakujaca wrogow.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_OffensiveTurretDeployer_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1748,
+   "vertices": 888,
+   "uv": true,
+   "ok": true
+  },
+  {
+   "object": "R4X_OffensiveTurretDeployer_Pod",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1812,
+   "vertices": 920,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_OffensiveTurretDeployer_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 840,
+  "vertices": 448,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 3560,
+ "triangles_lod1": 840,
+ "shells": 15,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.07
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {
+  "Pod": {
+   "pivot": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "anim": {
+    "type": "slide",
+    "axis": [
+     0,
+     0,
+     1
+    ],
+    "amount": -0.03,
+    "frames": 24
+   }
+  }
+ },
+ "animation": {
+  "clip": "Active",
+  "fps": 24,
+  "frames": [
+   1,
+   49
+  ],
+  "loop": true,
+  "nodes": [
+   "Pod"
+  ],
+  "glb_mode": "SCENE"
+ },
+ "animation_sweep": {
+  "frames": 25,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [
+  "Deploy_Out"
+ ],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  1.0,
+  0.18,
+  0.12
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 3560,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 6,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 3560,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_OffensiveTurretDeployer_front.jpg",
+  "R4X_OffensiveTurretDeployer_side.jpg",
+  "R4X_OffensiveTurretDeployer_34front.jpg",
+  "R4X_OffensiveTurretDeployer_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_OffensiveTurretDeployer.blend": {
+   "sha256": "551f8b6627ac52cdc2a07e173229363afa02ba1952e79f48b4af097ceed72805",
+   "bytes": 172469
+  },
+  "R4X_OffensiveTurretDeployer.fbx": {
+   "sha256": "f21036586e948e5ae2f2068da7a3573592e1c238e0f0d617493e84518498073e",
+   "bytes": 146828
+  },
+  "R4X_OffensiveTurretDeployer.glb": {
+   "sha256": "a252ef35dc1fbd66bcda47dcfc8e8f2278905662b281d936b5c0a4d0b8ca4a3a",
+   "bytes": 149964
+  },
+  "R4X_OffensiveTurretDeployer_LOD1.fbx": {
+   "sha256": "b6a50cc6ee112f05b78594622f9bd226e21bbc209e157fde2716a169f97e4669",
+   "bytes": 37612
+  },
+  "R4X_OffensiveTurretDeployer_LOD1.glb": {
+   "sha256": "430847d01367cc05033ff06a11a773248dbf1e8c296474a3511e45764b05dcd8",
+   "bytes": 59296
+  }
+ },
+ "seconds": 0.8,
+ "blender": "5.3.0"
+}

@@ -1,0 +1,241 @@
+{
+ "id": "R4X_Radar",
+ "module": "Radar",
+ "catalog_number": 44,
+ "catalog_group": "E",
+ "wave": 3,
+ "name_pl": "Radar",
+ "function_pl": "Wykrywa wrogow w duzym zasiegu.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_Radar_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 924,
+   "vertices": 468,
+   "uv": true,
+   "ok": true
+  },
+  {
+   "object": "R4X_Radar_Dish",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 604,
+   "vertices": 316,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_Radar_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 528,
+  "vertices": 284,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 1528,
+ "triangles_lod1": 528,
+ "shells": 10,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.2378
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {
+  "Dish": {
+   "pivot": [
+    0.0,
+    0.0,
+    0.02
+   ],
+   "anim": {
+    "type": "spin",
+    "axis": [
+     0,
+     0,
+     1
+    ],
+    "frames": 48
+   }
+  }
+ },
+ "animation": {
+  "clip": "Active",
+  "fps": 24,
+  "frames": [
+   1,
+   49
+  ],
+  "loop": true,
+  "nodes": [
+   "Dish"
+  ],
+  "glb_mode": "SCENE"
+ },
+ "animation_sweep": {
+  "frames": 25,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  0.25,
+  1.0,
+  0.45
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 1528,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 5,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 1528,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_Radar_front.jpg",
+  "R4X_Radar_side.jpg",
+  "R4X_Radar_34front.jpg",
+  "R4X_Radar_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_Radar.blend": {
+   "sha256": "cc1416b380a10b5dbe59dea334cc7463cda7e84b3fceb7dd7c05b45e16819f37",
+   "bytes": 135689
+  },
+  "R4X_Radar.fbx": {
+   "sha256": "fcdfc368fee4179d43b831daa7b60af97176d6bb1ab6a71db4bbde93f6a790d9",
+   "bytes": 102348
+  },
+  "R4X_Radar.glb": {
+   "sha256": "d8bd1d290d53727e795e4cf24a123317c965c34021dec9b3bb81fbd22b855626",
+   "bytes": 76144
+  },
+  "R4X_Radar_LOD1.fbx": {
+   "sha256": "572e9a9fbe35bcac2053827a69ffa30e774bc61f3dcd341e49371b9d799699be",
+   "bytes": 35116
+  },
+  "R4X_Radar_LOD1.glb": {
+   "sha256": "71024edcdf1e15945516c081cb2cc5cf6a2e444d563be604c494f73c9e1b8927",
+   "bytes": 33152
+  }
+ },
+ "seconds": 0.8,
+ "blender": "5.3.0"
+}

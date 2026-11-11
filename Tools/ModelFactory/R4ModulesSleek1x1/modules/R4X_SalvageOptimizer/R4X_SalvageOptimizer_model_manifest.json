@@ -1,0 +1,81 @@
+{
+ "id": "R4X_SalvageOptimizer",
+ "catalog_number": 35,
+ "catalog_group": "E. Informacja / ekonomia / pasywne",
+ "name": "SalvageOptimizer",
+ "name_pl": "Optymalizator złomu",
+ "function_pl": "Pasywnie zwiększa zysk ze zbieranego złomu.",
+ "silhouette_concept_pl": "kwadratowy lej zasypowy z kostkami złomu w środku",
+ "kind": "robot-mounted module 1x1x1",
+ "units": "meter 1:1",
+ "axes": "Blender: X right, -Y forward, Z up; file / Unity: +Z forward, +Y up",
+ "cell": "logical 1x1x1 on the 0.55 m grid; geometry inside the 0.52 m block envelope",
+ "hierarchy": {
+  "R4X_SalvageOptimizer_ROOT": null,
+  "R4X_SalvageOptimizer_Body": "R4X_SalvageOptimizer_ROOT",
+  "Port_down_000": "R4X_SalvageOptimizer_ROOT",
+  "Socket_Mount": "R4X_SalvageOptimizer_ROOT"
+ },
+ "node_roles": {
+  "R4X_SalvageOptimizer_ROOT": "root (origin = cell centre)",
+  "R4X_SalvageOptimizer_Body": "static body",
+  "Socket_Mount": "PROPOSAL: primary mount face = down, +Z of the empty points out of the module"
+ },
+ "mount_proposal": "down",
+ "contacts_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "paint_zones": {
+  "R4P_Base": "duze panele - glowny kolor malowania (jak w klockach A_Sleek)",
+  "R4P_Glow": "PROPOSAL: akcent emisyjny, kolor per modul (czytelnosc funkcji)",
+  "R4P_Metal": "PROPOSAL: gole elementy mechaniczne (tloczyska, lufy, osie) - domyslnie Steel_Light",
+  "R4P_Secondary": "rama / fazy / obudowy - drugi kolor malowania (jak w klockach A_Sleek)",
+  "R4P_Trim": "ciemne elementy techniczne i scianki paneli (jak w klockach A_Sleek)"
+ },
+ "glow_rgb": [
+  1.0,
+  0.62,
+  0.1
+ ],
+ "triangles": {
+  "lod0": 744,
+  "lod1": 392
+ },
+ "files": [
+  "R4X_SalvageOptimizer.blend",
+  "R4X_SalvageOptimizer.fbx",
+  "R4X_SalvageOptimizer.glb",
+  "R4X_SalvageOptimizer_LOD1.fbx",
+  "R4X_SalvageOptimizer_LOD1.glb"
+ ],
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "proposals": [
+  "contact faces / port set",
+  "Socket_Mount face",
+  "paint zones R4P_Metal and R4P_Glow",
+  "movable nodes and the preview animation clip",
+  "function empties (FX_*, Deploy_Out)",
+  "naming prefix R4X_"
+ ],
+ "gameplay": "Art asset only. No gameplay value, timing, range or cost is defined or changed by this file.",
+ "notes": []
+}

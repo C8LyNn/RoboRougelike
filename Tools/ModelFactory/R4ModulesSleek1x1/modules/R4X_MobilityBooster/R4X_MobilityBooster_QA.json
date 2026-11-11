@@ -1,0 +1,198 @@
+{
+ "id": "R4X_MobilityBooster",
+ "module": "MobilityBooster",
+ "catalog_number": 20,
+ "catalog_group": "C",
+ "wave": 2,
+ "name_pl": "Wzmacniacz mobilnosci",
+ "function_pl": "Pasywnie zwieksza predkosc i zwrotnosc.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_MobilityBooster_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 2420,
+   "vertices": 1230,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_MobilityBooster_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 468,
+  "vertices": 254,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 2420,
+ "triangles_lod1": 468,
+ "shells": 10,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.24
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {},
+ "animation": null,
+ "animation_sweep": {
+  "frames": 0,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  0.25,
+  1.0,
+  0.45
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2420,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2420,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_MobilityBooster_front.jpg",
+  "R4X_MobilityBooster_side.jpg",
+  "R4X_MobilityBooster_34front.jpg",
+  "R4X_MobilityBooster_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_MobilityBooster.blend": {
+   "sha256": "31f62068e66078c4bdc6c5d7ab3a32fda6fc321c8a5f6d999391ff3ca3430d91",
+   "bytes": 153904
+  },
+  "R4X_MobilityBooster.fbx": {
+   "sha256": "dc92882b137f98339790c20d129fcfb80f2116b7daee77f29bc746fefb35ef36",
+   "bytes": 70940
+  },
+  "R4X_MobilityBooster.glb": {
+   "sha256": "7a6b58046d4df816914a8cb59cd520f9abfdf7ca177fba3cdb68921ebfed88f1",
+   "bytes": 101908
+  },
+  "R4X_MobilityBooster_LOD1.fbx": {
+   "sha256": "67dc1e9b76e2dcd84722fc5fff249aa5203740528a618b8fcec72028388ab3d1",
+   "bytes": 28604
+  },
+  "R4X_MobilityBooster_LOD1.glb": {
+   "sha256": "58aae517cde2b2c510715c81b7a4e670b0a1f38957365657277f7e08ec05e498",
+   "bytes": 39900
+  }
+ },
+ "seconds": 0.8,
+ "blender": "5.3.0"
+}

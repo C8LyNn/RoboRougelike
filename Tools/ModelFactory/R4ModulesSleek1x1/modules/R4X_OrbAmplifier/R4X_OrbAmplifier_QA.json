@@ -1,0 +1,241 @@
+{
+ "id": "R4X_OrbAmplifier",
+ "module": "OrbAmplifier",
+ "catalog_number": 41,
+ "catalog_group": "E",
+ "wave": 3,
+ "name_pl": "Wzmacniacz orbow",
+ "function_pl": "Pasywnie wzmacnia efekty zbieranych orbow.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_OrbAmplifier_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1060,
+   "vertices": 542,
+   "uv": true,
+   "ok": true
+  },
+  {
+   "object": "R4X_OrbAmplifier_Ring",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 688,
+   "vertices": 350,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_OrbAmplifier_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 716,
+  "vertices": 376,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 1748,
+ "triangles_lod1": 716,
+ "shells": 10,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.195
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {
+  "Ring": {
+   "pivot": [
+    0.0,
+    0.0,
+    0.06
+   ],
+   "anim": {
+    "type": "spin",
+    "axis": [
+     0.0,
+     -0.4067366430758002,
+     0.9135454576426009
+    ],
+    "frames": 48
+   }
+  }
+ },
+ "animation": {
+  "clip": "Active",
+  "fps": 24,
+  "frames": [
+   1,
+   49
+  ],
+  "loop": true,
+  "nodes": [
+   "Ring"
+  ],
+  "glb_mode": "SCENE"
+ },
+ "animation_sweep": {
+  "frames": 25,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  0.7,
+  0.35,
+  1.0
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 1748,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 5,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 1748,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_OrbAmplifier_front.jpg",
+  "R4X_OrbAmplifier_side.jpg",
+  "R4X_OrbAmplifier_34front.jpg",
+  "R4X_OrbAmplifier_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_OrbAmplifier.blend": {
+   "sha256": "2bec328bd229037a190143dbd419f9ffbb9a61a6d6b9b3875e64516134d9777b",
+   "bytes": 137647
+  },
+  "R4X_OrbAmplifier.fbx": {
+   "sha256": "134f8ef303555a517dba3b1a990bf9b29c2c54f330d927898cd0bc117a16040a",
+   "bytes": 107692
+  },
+  "R4X_OrbAmplifier.glb": {
+   "sha256": "cead6c41898ebed6be4c6c65055cb5af67b9fa9db4ca8b2adbf56b1e86726164",
+   "bytes": 81436
+  },
+  "R4X_OrbAmplifier_LOD1.fbx": {
+   "sha256": "e7861bf501aba283550ef9240f3e9c7cc206ad676b96cfb8952b8b0c86538436",
+   "bytes": 39548
+  },
+  "R4X_OrbAmplifier_LOD1.glb": {
+   "sha256": "9091b5b4828e257236914c17b1c62fbe8e7668b59f7f1c4b6d8bf25b883366b3",
+   "bytes": 39460
+  }
+ },
+ "seconds": 0.7,
+ "blender": "5.3.0"
+}

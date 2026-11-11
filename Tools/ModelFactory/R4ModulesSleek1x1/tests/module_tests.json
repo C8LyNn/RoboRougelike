@@ -1,0 +1,5398 @@
+{
+ "result": "PASS",
+ "count": 67,
+ "modules": {
+  "R4X_Battery": {
+   "M1": {
+    "tris": 3396,
+    "tris_lod1": 724,
+    "qa_tris": 3396,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.235
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     },
+     {
+      "port": "Port_back_000_part",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_RepairPulse",
+    "min_view_iou": 0.615,
+    "iou_front_side_top": [
+     0.669,
+     0.686,
+     0.615
+    ],
+    "fill_front": 0.674,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_EnergyRegenerator": {
+   "M1": {
+    "tris": 3260,
+    "tris_lod1": 684,
+    "qa_tris": 3260,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.26
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     },
+     {
+      "port": "Port_up_000_part",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 95.1,
+      "lod1_flush_pct": 95.1,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_ChargeCapacity",
+    "min_view_iou": 0.691,
+    "iou_front_side_top": [
+     0.86,
+     0.817,
+     0.691
+    ],
+    "fill_front": 0.554,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_DrivePower": {
+   "M1": {
+    "tris": 2840,
+    "tris_lod1": 584,
+    "qa_tris": 2840,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.244
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     },
+     {
+      "port": "Port_left_000_part",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 85.2,
+      "lod1_flush_pct": 95.1,
+      "PASS": true
+     },
+     {
+      "port": "Port_right_000_part",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 85.2,
+      "lod1_flush_pct": 95.1,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_HullBooster",
+    "min_view_iou": 0.692,
+    "iou_front_side_top": [
+     0.858,
+     0.692,
+     0.831
+    ],
+    "fill_front": 0.746,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_RepairPulse": {
+   "M1": {
+    "tris": 2944,
+    "tris_lod1": 472,
+    "qa_tris": 2944,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.1912
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_DamageBooster",
+    "min_view_iou": 0.693,
+    "iou_front_side_top": [
+     0.706,
+     0.693,
+     0.715
+    ],
+    "fill_front": 0.477,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_DirectionalShield": {
+   "M1": {
+    "tris": 1988,
+    "tris_lod1": 364,
+    "qa_tris": 1988,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.247
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     },
+     {
+      "port": "Port_back_000_part",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 77.8,
+      "lod1_flush_pct": 77.8,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_DoubleShotOverdrive",
+    "min_view_iou": 0.519,
+    "iou_front_side_top": [
+     0.874,
+     0.555,
+     0.519
+    ],
+    "fill_front": 0.775,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_PointDefense": {
+   "M1": {
+    "tris": 2052,
+    "tris_lod1": 524,
+    "qa_tris": 2052,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.188
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [
+     "Turret"
+    ],
+    "glb_animations": 1,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_DamageBooster",
+    "min_view_iou": 0.6,
+    "iou_front_side_top": [
+     0.625,
+     0.63,
+     0.6
+    ],
+    "fill_front": 0.314,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_StructuralScanner": {
+   "M1": {
+    "tris": 2388,
+    "tris_lod1": 308,
+    "qa_tris": 2388,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.25
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     },
+     {
+      "port": "Port_left_000_part",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     },
+     {
+      "port": "Port_right_000_part",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_Blink",
+    "min_view_iou": 0.561,
+    "iou_front_side_top": [
+     0.561,
+     0.756,
+     0.727
+    ],
+    "fill_front": 0.837,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_ScannerPulse": {
+   "M1": {
+    "tris": 2024,
+    "tris_lod1": 722,
+    "qa_tris": 2024,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.25
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_DamageBooster",
+    "min_view_iou": 0.617,
+    "iou_front_side_top": [
+     0.64,
+     0.628,
+     0.617
+    ],
+    "fill_front": 0.333,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_Booster": {
+   "M1": {
+    "tris": 1628,
+    "tris_lod1": 356,
+    "qa_tris": 1628,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.26
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_forward_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 95.1,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     },
+     {
+      "port": "Port_down_000_part",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     },
+     {
+      "port": "Port_up_000_part",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     },
+     {
+      "port": "Port_left_000_part",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     },
+     {
+      "port": "Port_right_000_part",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.26,
+     0.0
+    ],
+    "axis": [
+     0.0,
+     -1.0,
+     -0.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at forward",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_HullBooster",
+    "min_view_iou": 0.792,
+    "iou_front_side_top": [
+     0.95,
+     0.827,
+     0.792
+    ],
+    "fill_front": 0.896,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_JumpDrive": {
+   "M1": {
+    "tris": 1616,
+    "tris_lod1": 528,
+    "qa_tris": 1616,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.235,
+      -0.235,
+      -0.25
+     ],
+     [
+      0.235,
+      0.235,
+      0.26
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_up_000_part",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     0.26
+    ],
+    "axis": [
+     0.0,
+     -0.0,
+     1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at up",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_IndependentSteering",
+    "min_view_iou": 0.65,
+    "iou_front_side_top": [
+     0.721,
+     0.759,
+     0.65
+    ],
+    "fill_front": 0.64,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_Blink": {
+   "M1": {
+    "tris": 2864,
+    "tris_lod1": 456,
+    "qa_tris": 2864,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.25
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_StructuralScanner",
+    "min_view_iou": 0.561,
+    "iou_front_side_top": [
+     0.561,
+     0.756,
+     0.727
+    ],
+    "fill_front": 0.472,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_Gyroscope": {
+   "M1": {
+    "tris": 2788,
+    "tris_lod1": 580,
+    "qa_tris": 2788,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.213
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [
+     "RingInner",
+     "RingOuter",
+     "Rotor"
+    ],
+    "glb_animations": 3,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_OffensiveTurretDeployer",
+    "min_view_iou": 0.491,
+    "iou_front_side_top": [
+     0.491,
+     0.521,
+     0.536
+    ],
+    "fill_front": 0.389,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_MagneticGrapple": {
+   "M1": {
+    "tris": 2756,
+    "tris_lod1": 548,
+    "qa_tris": 2756,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.154
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     },
+     {
+      "port": "Port_back_000_part",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 95.1,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_RapidFire",
+    "min_view_iou": 0.7,
+    "iou_front_side_top": [
+     0.865,
+     0.7,
+     0.733
+    ],
+    "fill_front": 0.395,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_Suspension": {
+   "M1": {
+    "tris": 3764,
+    "tris_lod1": 1116,
+    "qa_tris": 3764,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.257,
+      -0.257,
+      -0.26
+     ],
+     [
+      0.257,
+      0.257,
+      0.26
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     },
+     {
+      "port": "Port_up_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [
+     "Piston"
+    ],
+    "glb_animations": 1,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_IndependentSteering",
+    "min_view_iou": 0.645,
+    "iou_front_side_top": [
+     0.645,
+     0.708,
+     1.0
+    ],
+    "fill_front": 0.511,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_IndependentSteering": {
+   "M1": {
+    "tris": 3840,
+    "tris_lod1": 1136,
+    "qa_tris": 3840,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.257,
+      -0.257,
+      -0.26
+     ],
+     [
+      0.26,
+      0.257,
+      0.26
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_up_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     },
+     {
+      "port": "Port_down_000_part",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     },
+     {
+      "port": "Port_right_000_part",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 85.2,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     0.26
+    ],
+    "axis": [
+     0.0,
+     -0.0,
+     1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at up",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [
+     "Turntable"
+    ],
+    "glb_animations": 1,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_HullBooster",
+    "min_view_iou": 0.669,
+    "iou_front_side_top": [
+     0.765,
+     0.669,
+     0.923
+    ],
+    "fill_front": 0.753,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_HoverEngine": {
+   "M1": {
+    "tris": 1820,
+    "tris_lod1": 908,
+    "qa_tris": 1820,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.258,
+      -0.258,
+      -0.26
+     ],
+     [
+      0.258,
+      0.258,
+      0.26
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_up_000_part",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 95.1,
+      "lod1_flush_pct": 95.1,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     0.26
+    ],
+    "axis": [
+     0.0,
+     -0.0,
+     1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at up",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [
+     "Fan"
+    ],
+    "glb_animations": 1,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_PersonalShield",
+    "min_view_iou": 0.686,
+    "iou_front_side_top": [
+     0.687,
+     0.686,
+     0.71
+    ],
+    "fill_front": 0.561,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_HullBooster": {
+   "M1": {
+    "tris": 3464,
+    "tris_lod1": 344,
+    "qa_tris": 3464,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.252,
+      -0.26
+     ],
+     [
+      0.26,
+      0.2508,
+      0.26
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000_part",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     },
+     {
+      "port": "Port_up_000_part",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     },
+     {
+      "port": "Port_left_000_part",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     },
+     {
+      "port": "Port_right_000_part",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_Booster",
+    "min_view_iou": 0.792,
+    "iou_front_side_top": [
+     0.95,
+     0.827,
+     0.792
+    ],
+    "fill_front": 0.861,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_DamageBooster": {
+   "M1": {
+    "tris": 2372,
+    "tris_lod1": 644,
+    "qa_tris": 2372,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.252
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_RepairPulse",
+    "min_view_iou": 0.693,
+    "iou_front_side_top": [
+     0.706,
+     0.693,
+     0.715
+    ],
+    "fill_front": 0.357,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_ReloadBooster": {
+   "M1": {
+    "tris": 3764,
+    "tris_lod1": 1236,
+    "qa_tris": 3764,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.242
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [
+     "Drum"
+    ],
+    "glb_animations": 1,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_RepairPulse",
+    "min_view_iou": 0.672,
+    "iou_front_side_top": [
+     0.672,
+     0.718,
+     0.752
+    ],
+    "fill_front": 0.515,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_MobilityBooster": {
+   "M1": {
+    "tris": 2420,
+    "tris_lod1": 468,
+    "qa_tris": 2420,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.24
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_ModuleAmplifier",
+    "min_view_iou": 0.529,
+    "iou_front_side_top": [
+     0.592,
+     0.529,
+     0.553
+    ],
+    "fill_front": 0.414,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_RepairBooster": {
+   "M1": {
+    "tris": 1960,
+    "tris_lod1": 840,
+    "qa_tris": 1960,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.2516
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_ChargeCapacity",
+    "min_view_iou": 0.449,
+    "iou_front_side_top": [
+     0.756,
+     0.492,
+     0.449
+    ],
+    "fill_front": 0.481,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_CoreBooster": {
+   "M1": {
+    "tris": 2968,
+    "tris_lod1": 472,
+    "qa_tris": 2968,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.26
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     },
+     {
+      "port": "Port_up_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_HullBooster",
+    "min_view_iou": 0.575,
+    "iou_front_side_top": [
+     0.575,
+     0.587,
+     0.923
+    ],
+    "fill_front": 0.535,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_Overdrive": {
+   "M1": {
+    "tris": 2144,
+    "tris_lod1": 848,
+    "qa_tris": 2144,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.2147
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_DamageBooster",
+    "min_view_iou": 0.628,
+    "iou_front_side_top": [
+     0.632,
+     0.628,
+     0.639
+    ],
+    "fill_front": 0.394,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_RapidFire": {
+   "M1": {
+    "tris": 2036,
+    "tris_lod1": 724,
+    "qa_tris": 2036,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.185
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     },
+     {
+      "port": "Port_back_000_part",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 95.1,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [
+     "Barrels"
+    ],
+    "glb_animations": 1,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_DirectionalEMP",
+    "min_view_iou": 0.756,
+    "iou_front_side_top": [
+     0.803,
+     0.756,
+     0.789
+    ],
+    "fill_front": 0.397,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_Stealth": {
+   "M1": {
+    "tris": 556,
+    "tris_lod1": 348,
+    "qa_tris": 556,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.258,
+      -0.258,
+      -0.26
+     ],
+     [
+      0.258,
+      0.258,
+      0.206
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_DeployableShieldGenerator",
+    "min_view_iou": 0.771,
+    "iou_front_side_top": [
+     0.772,
+     0.771,
+     0.9
+    ],
+    "fill_front": 0.556,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_DirectionalEMP": {
+   "M1": {
+    "tris": 2780,
+    "tris_lod1": 994,
+    "qa_tris": 2780,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.16
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     },
+     {
+      "port": "Port_back_000_part",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 77.8,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_RapidFire",
+    "min_view_iou": 0.756,
+    "iou_front_side_top": [
+     0.803,
+     0.756,
+     0.789
+    ],
+    "fill_front": 0.323,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_AreaEMP": {
+   "M1": {
+    "tris": 3616,
+    "tris_lod1": 990,
+    "qa_tris": 3616,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.26
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_Suspension",
+    "min_view_iou": 0.53,
+    "iou_front_side_top": [
+     0.533,
+     0.53,
+     0.57
+    ],
+    "fill_front": 0.361,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_PersonalShield": {
+   "M1": {
+    "tris": 2328,
+    "tris_lod1": 842,
+    "qa_tris": 2328,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.215
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_EMPTrapDeployer",
+    "min_view_iou": 0.738,
+    "iou_front_side_top": [
+     0.747,
+     0.738,
+     0.973
+    ],
+    "fill_front": 0.515,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_DeployableShieldGenerator": {
+   "M1": {
+    "tris": 3644,
+    "tris_lod1": 644,
+    "qa_tris": 3644,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.235
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     },
+     {
+      "port": "Port_left_000_part",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     },
+     {
+      "port": "Port_right_000_part",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [
+     "Payload"
+    ],
+    "glb_animations": 1,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_Stealth",
+    "min_view_iou": 0.771,
+    "iou_front_side_top": [
+     0.772,
+     0.771,
+     0.9
+    ],
+    "fill_front": 0.617,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_DoubleShotPassive": {
+   "M1": {
+    "tris": 2384,
+    "tris_lod1": 720,
+    "qa_tris": 2384,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.155
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     },
+     {
+      "port": "Port_back_000_part",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 77.8,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_DeployableShieldGenerator",
+    "min_view_iou": 0.677,
+    "iou_front_side_top": [
+     0.766,
+     0.738,
+     0.677
+    ],
+    "fill_front": 0.531,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_DoubleShotOverdrive": {
+   "M1": {
+    "tris": 3880,
+    "tris_lod1": 1432,
+    "qa_tris": 3880,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.26
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     },
+     {
+      "port": "Port_back_000_part",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 77.8,
+      "lod1_flush_pct": 77.8,
+      "PASS": true
+     },
+     {
+      "port": "Port_up_000_part",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 77.8,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_PersonalShield",
+    "min_view_iou": 0.581,
+    "iou_front_side_top": [
+     0.704,
+     0.602,
+     0.581
+    ],
+    "fill_front": 0.703,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_RechargePulse": {
+   "M1": {
+    "tris": 1552,
+    "tris_lod1": 428,
+    "qa_tris": 1552,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.249
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_StructuralScanner",
+    "min_view_iou": 0.433,
+    "iou_front_side_top": [
+     0.433,
+     0.479,
+     0.563
+    ],
+    "fill_front": 0.363,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_ChargeRegenerator": {
+   "M1": {
+    "tris": 2596,
+    "tris_lod1": 1104,
+    "qa_tris": 2596,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.255
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_ChargeCapacity",
+    "min_view_iou": 0.685,
+    "iou_front_side_top": [
+     0.87,
+     0.765,
+     0.685
+    ],
+    "fill_front": 0.539,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_ChargeCapacity": {
+   "M1": {
+    "tris": 1736,
+    "tris_lod1": 712,
+    "qa_tris": 1736,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.257,
+      -0.257,
+      -0.26
+     ],
+     [
+      0.257,
+      0.257,
+      0.255
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_EnergyRegenerator",
+    "min_view_iou": 0.691,
+    "iou_front_side_top": [
+     0.86,
+     0.817,
+     0.691
+    ],
+    "fill_front": 0.531,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_SalvageOptimizer": {
+   "M1": {
+    "tris": 744,
+    "tris_lod1": 392,
+    "qa_tris": 744,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.19
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_DrivePower",
+    "min_view_iou": 0.659,
+    "iou_front_side_top": [
+     0.659,
+     0.696,
+     0.784
+    ],
+    "fill_front": 0.507,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_CargoUplink": {
+   "M1": {
+    "tris": 1632,
+    "tris_lod1": 400,
+    "qa_tris": 1632,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.255
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_RepairPulse",
+    "min_view_iou": 0.61,
+    "iou_front_side_top": [
+     0.748,
+     0.61,
+     0.631
+    ],
+    "fill_front": 0.419,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_RewardReroll": {
+   "M1": {
+    "tris": 2504,
+    "tris_lod1": 1000,
+    "qa_tris": 2504,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.1987
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [
+     "Die"
+    ],
+    "glb_animations": 1,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_OrbAmplifier",
+    "min_view_iou": 0.559,
+    "iou_front_side_top": [
+     0.562,
+     0.667,
+     0.559
+    ],
+    "fill_front": 0.314,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_WeaponDurabilityBooster": {
+   "M1": {
+    "tris": 3744,
+    "tris_lod1": 648,
+    "qa_tris": 3744,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.17
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_ModuleDurabilityBooster",
+    "min_view_iou": 0.647,
+    "iou_front_side_top": [
+     0.647,
+     0.77,
+     0.836
+    ],
+    "fill_front": 0.334,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_MovementDurabilityBooster": {
+   "M1": {
+    "tris": 3940,
+    "tris_lod1": 860,
+    "qa_tris": 3940,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.24
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [
+     "Wheel"
+    ],
+    "glb_animations": 1,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_ModuleDurabilityBooster",
+    "min_view_iou": 0.566,
+    "iou_front_side_top": [
+     0.566,
+     0.703,
+     0.814
+    ],
+    "fill_front": 0.535,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_ModuleDurabilityBooster": {
+   "M1": {
+    "tris": 4076,
+    "tris_lod1": 844,
+    "qa_tris": 4076,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.2
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_WeaponDurabilityBooster",
+    "min_view_iou": 0.647,
+    "iou_front_side_top": [
+     0.647,
+     0.77,
+     0.836
+    ],
+    "fill_front": 0.408,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_OrbAmplifier": {
+   "M1": {
+    "tris": 1748,
+    "tris_lod1": 716,
+    "qa_tris": 1748,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.195
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [
+     "Ring"
+    ],
+    "glb_animations": 1,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_ChargeCapacity",
+    "min_view_iou": 0.638,
+    "iou_front_side_top": [
+     0.698,
+     0.702,
+     0.638
+    ],
+    "fill_front": 0.425,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_ModuleAmplifier": {
+   "M1": {
+    "tris": 3140,
+    "tris_lod1": 484,
+    "qa_tris": 3140,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.252
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     },
+     {
+      "port": "Port_forward_000_part",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 85.2,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     },
+     {
+      "port": "Port_back_000_part",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 85.2,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_GroundDroneDeployer",
+    "min_view_iou": 0.572,
+    "iou_front_side_top": [
+     0.593,
+     0.572,
+     0.657
+    ],
+    "fill_front": 0.414,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_DeployableAmplifier": {
+   "M1": {
+    "tris": 2532,
+    "tris_lod1": 548,
+    "qa_tris": 2532,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.228
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [
+     "Horn"
+    ],
+    "glb_animations": 1,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_StructuralScanner",
+    "min_view_iou": 0.458,
+    "iou_front_side_top": [
+     0.498,
+     0.552,
+     0.458
+    ],
+    "fill_front": 0.42,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_Radar": {
+   "M1": {
+    "tris": 1528,
+    "tris_lod1": 528,
+    "qa_tris": 1528,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.2378
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [
+     "Dish"
+    ],
+    "glb_animations": 1,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_PointDefense",
+    "min_view_iou": 0.474,
+    "iou_front_side_top": [
+     0.61,
+     0.474,
+     0.637
+    ],
+    "fill_front": 0.357,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_Minimap": {
+   "M1": {
+    "tris": 1916,
+    "tris_lod1": 572,
+    "qa_tris": 1916,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.1441
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_OffensiveTurretDeployer",
+    "min_view_iou": 0.489,
+    "iou_front_side_top": [
+     0.702,
+     0.489,
+     0.55
+    ],
+    "fill_front": 0.389,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_WeakPointScanner": {
+   "M1": {
+    "tris": 2328,
+    "tris_lod1": 848,
+    "qa_tris": 2328,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.21
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_PointDefense",
+    "min_view_iou": 0.511,
+    "iou_front_side_top": [
+     0.552,
+     0.523,
+     0.511
+    ],
+    "fill_front": 0.298,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_ExplosiveTrapDeployer": {
+   "M1": {
+    "tris": 2956,
+    "tris_lod1": 1124,
+    "qa_tris": 2956,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.22
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     },
+     {
+      "port": "Port_back_000_part",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 77.8,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_DeployableShieldGenerator",
+    "min_view_iou": 0.718,
+    "iou_front_side_top": [
+     0.844,
+     0.718,
+     0.854
+    ],
+    "fill_front": 0.598,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_EMPTrapDeployer": {
+   "M1": {
+    "tris": 3072,
+    "tris_lod1": 1560,
+    "qa_tris": 3072,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.177
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_PersonalShield",
+    "min_view_iou": 0.738,
+    "iou_front_side_top": [
+     0.747,
+     0.738,
+     0.973
+    ],
+    "fill_front": 0.422,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_KnockbackTrapDeployer": {
+   "M1": {
+    "tris": 2804,
+    "tris_lod1": 880,
+    "qa_tris": 2804,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.2571
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     },
+     {
+      "port": "Port_back_000_part",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_Battery",
+    "min_view_iou": 0.49,
+    "iou_front_side_top": [
+     0.711,
+     0.49,
+     0.509
+    ],
+    "fill_front": 0.551,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_SnareTrapDeployer": {
+   "M1": {
+    "tris": 4952,
+    "tris_lod1": 3512,
+    "qa_tris": 4952,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.0913
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_EMPTrapDeployer",
+    "min_view_iou": 0.504,
+    "iou_front_side_top": [
+     0.543,
+     0.504,
+     0.515
+    ],
+    "fill_front": 0.246,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_SlowTrapDeployer": {
+   "M1": {
+    "tris": 3052,
+    "tris_lod1": 1324,
+    "qa_tris": 3052,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.25
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_ReloadBooster",
+    "min_view_iou": 0.582,
+    "iou_front_side_top": [
+     0.638,
+     0.582,
+     0.67
+    ],
+    "fill_front": 0.432,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_BurnTrapDeployer": {
+   "M1": {
+    "tris": 2912,
+    "tris_lod1": 1372,
+    "qa_tris": 2912,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.216
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_Stealth",
+    "min_view_iou": 0.664,
+    "iou_front_side_top": [
+     0.706,
+     0.664,
+     0.724
+    ],
+    "fill_front": 0.406,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4D_ExplosiveTrap": {
+   "M1": {
+    "tris": 1416,
+    "tris_lod1": 852,
+    "qa_tris": 1416,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.248,
+      -0.2183,
+      0.0
+     ],
+     [
+      0.248,
+      0.2183,
+      0.16
+     ]
+    ],
+    "outside_mm": 0.0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [],
+    "PASS": true
+   },
+   "M4": {
+    "PASS": true,
+    "note": "world object: no mount socket"
+   },
+   "M5": {
+    "PASS": true,
+    "note": "world object: stands on the ground (z = 0)",
+    "ground_z_mm": 0.0
+   },
+   "M7": {
+    "movable_nodes": [
+     "Lamp"
+    ],
+    "glb_animations": 1,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4D_SlowTrap",
+    "min_view_iou": 0.728,
+    "iou_front_side_top": [
+     0.749,
+     0.728,
+     0.919
+    ],
+    "fill_front": 0.349,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4D_EMPTrap": {
+   "M1": {
+    "tris": 1596,
+    "tris_lod1": 836,
+    "qa_tris": 1596,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.22,
+      -0.22,
+      0.0
+     ],
+     [
+      0.22,
+      0.22,
+      0.25
+     ]
+    ],
+    "outside_mm": 0.0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [],
+    "PASS": true
+   },
+   "M4": {
+    "PASS": true,
+    "note": "world object: no mount socket"
+   },
+   "M5": {
+    "PASS": true,
+    "note": "world object: stands on the ground (z = 0)",
+    "ground_z_mm": 0.0
+   },
+   "M7": {
+    "movable_nodes": [
+     "Core"
+    ],
+    "glb_animations": 1,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4D_ExplosiveTrap",
+    "min_view_iou": 0.514,
+    "iou_front_side_top": [
+     0.514,
+     0.544,
+     0.909
+    ],
+    "fill_front": 0.338,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4D_KnockbackTrap": {
+   "M1": {
+    "tris": 660,
+    "tris_lod1": 452,
+    "qa_tris": 660,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.237,
+      -0.237,
+      0.0
+     ],
+     [
+      0.237,
+      0.237,
+      0.156
+     ]
+    ],
+    "outside_mm": 0.0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [],
+    "PASS": true
+   },
+   "M4": {
+    "PASS": true,
+    "note": "world object: no mount socket"
+   },
+   "M5": {
+    "PASS": true,
+    "note": "world object: stands on the ground (z = 0)",
+    "ground_z_mm": 0.0
+   },
+   "M7": {
+    "movable_nodes": [
+     "Plate"
+    ],
+    "glb_animations": 1,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4D_ExplosiveTrap",
+    "min_view_iou": 0.668,
+    "iou_front_side_top": [
+     0.715,
+     0.668,
+     0.679
+    ],
+    "fill_front": 0.399,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4D_SnareTrap": {
+   "M1": {
+    "tris": 1280,
+    "tris_lod1": 1024,
+    "qa_tris": 1280,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.235,
+      -0.235,
+      0.0
+     ],
+     [
+      0.235,
+      0.235,
+      0.1997
+     ]
+    ],
+    "outside_mm": 0.0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [],
+    "PASS": true
+   },
+   "M4": {
+    "PASS": true,
+    "note": "world object: no mount socket"
+   },
+   "M5": {
+    "PASS": true,
+    "note": "world object: stands on the ground (z = 0)",
+    "ground_z_mm": 0.0
+   },
+   "M7": {
+    "movable_nodes": [
+     "JawL",
+     "JawR"
+    ],
+    "glb_animations": 2,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4D_KnockbackTrap",
+    "min_view_iou": 0.497,
+    "iou_front_side_top": [
+     0.497,
+     0.579,
+     0.673
+    ],
+    "fill_front": 0.267,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4D_SlowTrap": {
+   "M1": {
+    "tris": 788,
+    "tris_lod1": 580,
+    "qa_tris": 788,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.24,
+      -0.2441,
+      0.0
+     ],
+     [
+      0.24,
+      0.2078,
+      0.15
+     ]
+    ],
+    "outside_mm": 0.0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [],
+    "PASS": true
+   },
+   "M4": {
+    "PASS": true,
+    "note": "world object: no mount socket"
+   },
+   "M5": {
+    "PASS": true,
+    "note": "world object: stands on the ground (z = 0)",
+    "ground_z_mm": 0.0
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4D_ExplosiveTrap",
+    "min_view_iou": 0.728,
+    "iou_front_side_top": [
+     0.749,
+     0.728,
+     0.919
+    ],
+    "fill_front": 0.339,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4D_BurnTrap": {
+   "M1": {
+    "tris": 1032,
+    "tris_lod1": 684,
+    "qa_tris": 1032,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.185,
+      -0.185,
+      0.0
+     ],
+     [
+      0.185,
+      0.185,
+      0.288
+     ]
+    ],
+    "outside_mm": 0.0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [],
+    "PASS": true
+   },
+   "M4": {
+    "PASS": true,
+    "note": "world object: no mount socket"
+   },
+   "M5": {
+    "PASS": true,
+    "note": "world object: stands on the ground (z = 0)",
+    "ground_z_mm": 0.0
+   },
+   "M7": {
+    "movable_nodes": [
+     "Flame"
+    ],
+    "glb_animations": 1,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_DamageBooster",
+    "min_view_iou": 0.548,
+    "iou_front_side_top": [
+     0.548,
+     0.585,
+     0.89
+    ],
+    "fill_front": 0.394,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_OffensiveTurretDeployer": {
+   "M1": {
+    "tris": 3560,
+    "tris_lod1": 840,
+    "qa_tris": 3560,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.07
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [
+     "Pod"
+    ],
+    "glb_animations": 1,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_ScannerPulse",
+    "min_view_iou": 0.539,
+    "iou_front_side_top": [
+     0.539,
+     0.54,
+     0.539
+    ],
+    "fill_front": 0.416,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_DefensiveTurretDeployer": {
+   "M1": {
+    "tris": 3372,
+    "tris_lod1": 620,
+    "qa_tris": 3372,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.23
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [
+     "Pod"
+    ],
+    "glb_animations": 1,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_DirectionalShield",
+    "min_view_iou": 0.463,
+    "iou_front_side_top": [
+     0.82,
+     0.463,
+     0.485
+    ],
+    "fill_front": 0.635,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_RepairTurretDeployer": {
+   "M1": {
+    "tris": 4020,
+    "tris_lod1": 796,
+    "qa_tris": 4020,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.255
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [
+     "Pod"
+    ],
+    "glb_animations": 1,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_ReloadBooster",
+    "min_view_iou": 0.484,
+    "iou_front_side_top": [
+     0.511,
+     0.494,
+     0.484
+    ],
+    "fill_front": 0.421,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_SupportTurretDeployer": {
+   "M1": {
+    "tris": 3128,
+    "tris_lod1": 920,
+    "qa_tris": 3128,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.24
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [
+     "Pod"
+    ],
+    "glb_animations": 1,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_SalvageOptimizer",
+    "min_view_iou": 0.571,
+    "iou_front_side_top": [
+     0.584,
+     0.587,
+     0.571
+    ],
+    "fill_front": 0.347,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_FlyingDroneDeployer": {
+   "M1": {
+    "tris": 2072,
+    "tris_lod1": 1196,
+    "qa_tris": 2072,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.253
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [
+     "Iris"
+    ],
+    "glb_animations": 1,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_PersonalShield",
+    "min_view_iou": 0.369,
+    "iou_front_side_top": [
+     0.369,
+     0.369,
+     0.965
+    ],
+    "fill_front": 0.315,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_GroundDroneDeployer": {
+   "M1": {
+    "tris": 2120,
+    "tris_lod1": 552,
+    "qa_tris": 2120,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.257,
+      -0.257,
+      -0.26
+     ],
+     [
+      0.257,
+      0.26,
+      0.25
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     },
+     {
+      "port": "Port_back_000_part",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_PersonalShield",
+    "min_view_iou": 0.682,
+    "iou_front_side_top": [
+     0.745,
+     0.682,
+     0.812
+    ],
+    "fill_front": 0.501,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_RampDeployer": {
+   "M1": {
+    "tris": 2788,
+    "tris_lod1": 484,
+    "qa_tris": 2788,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.2073
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [],
+    "glb_animations": 0,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_Minimap",
+    "min_view_iou": 0.452,
+    "iou_front_side_top": [
+     0.461,
+     0.452,
+     0.697
+    ],
+    "fill_front": 0.479,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_WallDeployer": {
+   "M1": {
+    "tris": 2508,
+    "tris_lod1": 396,
+    "qa_tris": 2508,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.25
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     },
+     {
+      "port": "Port_left_000_part",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     },
+     {
+      "port": "Port_right_000_part",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [
+     "Panels"
+    ],
+    "glb_animations": 1,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_DrivePower",
+    "min_view_iou": 0.583,
+    "iou_front_side_top": [
+     0.93,
+     0.788,
+     0.583
+    ],
+    "fill_front": 0.791,
+    "PASS": true
+   },
+   "PASS": true
+  },
+  "R4X_JumpPadDeployer": {
+   "M1": {
+    "tris": 1724,
+    "tris_lod1": 696,
+    "qa_tris": 1724,
+    "materials": [
+     "R4P_Base",
+     "R4P_Glow",
+     "R4P_Metal",
+     "R4P_Secondary",
+     "R4P_Trim"
+    ],
+    "PASS": true
+   },
+   "M2": {
+    "bounds": [
+     [
+      -0.26,
+      -0.26,
+      -0.26
+     ],
+     [
+      0.26,
+      0.26,
+      0.07
+     ]
+    ],
+    "outside_mm": 0,
+    "PASS": true
+   },
+   "M3": {
+    "ports": [
+     {
+      "port": "Port_down_000",
+      "empty_dev_mm": 0.0,
+      "flush_pct": 100.0,
+      "lod1_flush_pct": 100.0,
+      "PASS": true
+     }
+    ],
+    "PASS": true
+   },
+   "M4": {
+    "pos": [
+     0.0,
+     -0.0,
+     -0.26
+    ],
+    "axis": [
+     -0.0,
+     -0.0,
+     -1.0
+    ],
+    "PASS": true
+   },
+   "M5": {
+    "neighbour": "A_Sleek Cube at down",
+    "gap_mm": 30.0,
+    "PASS": true
+   },
+   "M7": {
+    "movable_nodes": [
+     "Pad"
+    ],
+    "glb_animations": 1,
+    "PASS": true
+   },
+   "M6": {
+    "closest": "R4X_EMPTrapDeployer",
+    "min_view_iou": 0.579,
+    "iou_front_side_top": [
+     0.598,
+     0.579,
+     0.984
+    ],
+    "fill_front": 0.299,
+    "PASS": true
+   },
+   "PASS": true
+  }
+ }
+}

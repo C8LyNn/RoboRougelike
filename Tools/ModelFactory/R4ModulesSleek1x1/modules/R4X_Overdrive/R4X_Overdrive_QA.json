@@ -1,0 +1,201 @@
+{
+ "id": "R4X_Overdrive",
+ "module": "Overdrive",
+ "catalog_number": 23,
+ "catalog_group": "D",
+ "wave": 2,
+ "name_pl": "Overdrive",
+ "function_pl": "Aktywne, chwilowe przeciazenie systemow robota.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_Overdrive_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 2144,
+   "vertices": 1108,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_Overdrive_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 848,
+  "vertices": 460,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 2144,
+ "triangles_lod1": 848,
+ "shells": 18,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.2147
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {},
+ "animation": null,
+ "animation_sweep": {
+  "frames": 0,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  1.0,
+  0.18,
+  0.12
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2144,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2144,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_Overdrive_front.jpg",
+  "R4X_Overdrive_side.jpg",
+  "R4X_Overdrive_34front.jpg",
+  "R4X_Overdrive_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_Overdrive.blend": {
+   "sha256": "03b27eab02779dab55c039f44be854074174f4fe71bd210a66be953cdd4964ee",
+   "bytes": 148718
+  },
+  "R4X_Overdrive.fbx": {
+   "sha256": "256f625fe3539e3c9598ed41ac87b8606345430a5b14c0f5368ca97bf81756f0",
+   "bytes": 68604
+  },
+  "R4X_Overdrive.glb": {
+   "sha256": "d58dccfbcf68879c396fe9eb9f930ab02dec064b1765aa35d7423f71ca35f203",
+   "bytes": 102184
+  },
+  "R4X_Overdrive_LOD1.fbx": {
+   "sha256": "587ae2b4f36dc55992f6d6be5f6f3b62f66ae1341f25583a8bf3ee4646a987ae",
+   "bytes": 38204
+  },
+  "R4X_Overdrive_LOD1.glb": {
+   "sha256": "f78f3679ffcb5684dfecb907927e64a10f00610fb3b778bbf2c5c9f942edcb0b",
+   "bytes": 55972
+  }
+ },
+ "seconds": 0.8,
+ "blender": "5.3.0"
+}

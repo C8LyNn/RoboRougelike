@@ -1,0 +1,198 @@
+{
+ "id": "R4X_RechargePulse",
+ "module": "RechargePulse",
+ "catalog_number": 32,
+ "catalog_group": "D",
+ "wave": 2,
+ "name_pl": "Impuls doladowania",
+ "function_pl": "Aktywny impuls doladowujacy pobliskie moduly.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_RechargePulse_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1552,
+   "vertices": 790,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_RechargePulse_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 428,
+  "vertices": 228,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 1552,
+ "triangles_lod1": 428,
+ "shells": 8,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.249
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {},
+ "animation": null,
+ "animation_sweep": {
+  "frames": 0,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  1.0,
+  0.9,
+  0.2
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 1552,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 1552,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_RechargePulse_front.jpg",
+  "R4X_RechargePulse_side.jpg",
+  "R4X_RechargePulse_34front.jpg",
+  "R4X_RechargePulse_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_RechargePulse.blend": {
+   "sha256": "297c97b19f6af727347c7c5a896432446898944d6b842ad17f26fd8022cc33ce",
+   "bytes": 129826
+  },
+  "R4X_RechargePulse.fbx": {
+   "sha256": "f09cbb5ffb591941d9dc3a69b422e0168f10344dae3ad2dbd750eea1b526403c",
+   "bytes": 52380
+  },
+  "R4X_RechargePulse.glb": {
+   "sha256": "4ed31e80200da4792463736bd26e6ad4e0e814435cdc68e84cf22163dbe798c7",
+   "bytes": 69580
+  },
+  "R4X_RechargePulse_LOD1.fbx": {
+   "sha256": "3c94b71e4fd71c3c976eaf5d6263ddf591991826aa29011962d9d6682a57c854",
+   "bytes": 27068
+  },
+  "R4X_RechargePulse_LOD1.glb": {
+   "sha256": "4cf81f13e5644b8294e5fc0258fe5e634a5b91d1d543187480130f4b757be7e9",
+   "bytes": 31100
+  }
+ },
+ "seconds": 0.7,
+ "blender": "5.3.0"
+}

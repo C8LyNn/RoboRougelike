@@ -1,0 +1,203 @@
+{
+ "id": "R4X_RampDeployer",
+ "module": "RampDeployer",
+ "catalog_number": 59,
+ "catalog_group": "F",
+ "wave": 3,
+ "name_pl": "Wyrzutnik rampy",
+ "function_pl": "Rozstawia rampe (wersja montowana na robocie).",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_RampDeployer_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 2788,
+   "vertices": 1414,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_RampDeployer_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 484,
+  "vertices": 262,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 2788,
+ "triangles_lod1": 484,
+ "shells": 10,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.2073
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {},
+ "animation": null,
+ "animation_sweep": {
+  "frames": 0,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [
+  "Deploy_Out"
+ ],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  1.0,
+  0.62,
+  0.1
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2788,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2788,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_RampDeployer_front.jpg",
+  "R4X_RampDeployer_side.jpg",
+  "R4X_RampDeployer_34front.jpg",
+  "R4X_RampDeployer_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_RampDeployer.blend": {
+   "sha256": "be1dcb5cfba57a33bf45dd637b142ae343a11741ca23f1913ff097e17ab46170",
+   "bytes": 163920
+  },
+  "R4X_RampDeployer.fbx": {
+   "sha256": "b03ab97bb969a249cff82cab45b5f29c1993083baec17656cdcf77543d9cb55e",
+   "bytes": 83580
+  },
+  "R4X_RampDeployer.glb": {
+   "sha256": "fab0e223850aa1646ff37b28ab55e81268468791221ff83554864e0404391cc8",
+   "bytes": 110668
+  },
+  "R4X_RampDeployer_LOD1.fbx": {
+   "sha256": "c341b0cd9d81f8f0d6b9d0530c922737e7234932b357156874a78eba1b5ea3c3",
+   "bytes": 30508
+  },
+  "R4X_RampDeployer_LOD1.glb": {
+   "sha256": "0f86cdf77dda61ab30ed36bacc198ba5556f094015adbe2bd7ae67c7fdf142c3",
+   "bytes": 39196
+  }
+ },
+ "seconds": 0.8,
+ "blender": "5.3.0"
+}

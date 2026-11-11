@@ -1,0 +1,203 @@
+{
+ "id": "R4X_BurnTrapDeployer",
+ "module": "BurnTrapDeployer",
+ "catalog_number": 52,
+ "catalog_group": "F",
+ "wave": 3,
+ "name_pl": "Wyrzutnik: pulapka podpalajaca",
+ "function_pl": "Rozstawia pulapke: Podpala wrogow w zasiegu.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_BurnTrapDeployer_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 2912,
+   "vertices": 1490,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_BurnTrapDeployer_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 1372,
+  "vertices": 720,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 2912,
+ "triangles_lod1": 1372,
+ "shells": 24,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.216
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {},
+ "animation": null,
+ "animation_sweep": {
+  "frames": 0,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [
+  "Deploy_Out"
+ ],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  1.0,
+  0.45,
+  0.08
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2912,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2912,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_BurnTrapDeployer_front.jpg",
+  "R4X_BurnTrapDeployer_side.jpg",
+  "R4X_BurnTrapDeployer_34front.jpg",
+  "R4X_BurnTrapDeployer_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_BurnTrapDeployer.blend": {
+   "sha256": "23ca470d2e3c3aa84225b833ad2205fde55e46bb96a0197646a27e8ef5c7c35e",
+   "bytes": 163914
+  },
+  "R4X_BurnTrapDeployer.fbx": {
+   "sha256": "e9dcea15b56a39454a3bd2df69cb958d9193cb66a6fd779ca684dcf917c31e0d",
+   "bytes": 82524
+  },
+  "R4X_BurnTrapDeployer.glb": {
+   "sha256": "9717383e6fd0f95a5d7f532d4cdc144fece3140a5b17c949929f8a496995403c",
+   "bytes": 129684
+  },
+  "R4X_BurnTrapDeployer_LOD1.fbx": {
+   "sha256": "aaf9b486ae3ece4b5f13c4d3edbd3d4c2574513450075f45107871ee937d9836",
+   "bytes": 49836
+  },
+  "R4X_BurnTrapDeployer_LOD1.glb": {
+   "sha256": "486825f0239367ed876c51f68102df4ba65ea0bc4a7d6b46c312a4b65ef2df53",
+   "bytes": 72560
+  }
+ },
+ "seconds": 0.7,
+ "blender": "5.3.0"
+}

@@ -1,0 +1,198 @@
+{
+ "id": "R4X_PersonalShield",
+ "module": "PersonalShield",
+ "catalog_number": 28,
+ "catalog_group": "D",
+ "wave": 2,
+ "name_pl": "Tarcza osobista",
+ "function_pl": "Tarcza energetyczna wokol calego robota.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_PersonalShield_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 2328,
+   "vertices": 1172,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_PersonalShield_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 842,
+  "vertices": 429,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 2328,
+ "triangles_lod1": 842,
+ "shells": 7,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.215
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {},
+ "animation": null,
+ "animation_sweep": {
+  "frames": 0,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  0.2,
+  0.8,
+  1.0
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2328,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2328,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_PersonalShield_front.jpg",
+  "R4X_PersonalShield_side.jpg",
+  "R4X_PersonalShield_34front.jpg",
+  "R4X_PersonalShield_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_PersonalShield.blend": {
+   "sha256": "62831d4b88a8e0f6b05ac76237914b96ea5ab6994fd9dc53e08a0a710017b420",
+   "bytes": 155223
+  },
+  "R4X_PersonalShield.fbx": {
+   "sha256": "95dbf5f1f1ad923ae2e17153aaad6fd2d24e61506e0feb0d7501677411758403",
+   "bytes": 70012
+  },
+  "R4X_PersonalShield.glb": {
+   "sha256": "ecd19389e1e31b29ee959b0a529a1fa36f9e6a357ea83920f0aba5954635d4b9",
+   "bytes": 96284
+  },
+  "R4X_PersonalShield_LOD1.fbx": {
+   "sha256": "a6e42fc7bd43a02bcb660dab411cc1209d09b496f068ab4b14c6b2c7d536bf18",
+   "bytes": 38300
+  },
+  "R4X_PersonalShield_LOD1.glb": {
+   "sha256": "b8f64fc17d0a2872a296526804c6e70dc915354ca481df3614240c5e2074d1d0",
+   "bytes": 42060
+  }
+ },
+ "seconds": 0.8,
+ "blender": "5.3.0"
+}

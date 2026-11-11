@@ -1,0 +1,203 @@
+{
+ "id": "R4X_SnareTrapDeployer",
+ "module": "SnareTrapDeployer",
+ "catalog_number": 50,
+ "catalog_group": "F",
+ "wave": 3,
+ "name_pl": "Wyrzutnik: pulapka unieruchamiajaca",
+ "function_pl": "Rozstawia pulapke: Unieruchamia wroga na krotki czas.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_SnareTrapDeployer_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 4952,
+   "vertices": 2610,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_SnareTrapDeployer_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 3512,
+  "vertices": 1890,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 4952,
+ "triangles_lod1": 3512,
+ "shells": 70,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.0913
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {},
+ "animation": null,
+ "animation_sweep": {
+  "frames": 0,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [
+  "Deploy_Out"
+ ],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  0.7,
+  0.35,
+  1.0
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 4952,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 4952,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_SnareTrapDeployer_front.jpg",
+  "R4X_SnareTrapDeployer_side.jpg",
+  "R4X_SnareTrapDeployer_34front.jpg",
+  "R4X_SnareTrapDeployer_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_SnareTrapDeployer.blend": {
+   "sha256": "f146ad0d3ab0b06d69c240210e59e52ff033b58cb44c5313894e2e994f7d8fed",
+   "bytes": 224625
+  },
+  "R4X_SnareTrapDeployer.fbx": {
+   "sha256": "52d2963ba14c2601acfbbe09cd901a1a170e2122dba4fca14f5f1f45fcce255d",
+   "bytes": 129164
+  },
+  "R4X_SnareTrapDeployer.glb": {
+   "sha256": "9fc7c15ecf3f33d16466ed44b2a12f1a65bea81c6fd44913693bf47b8c5aae14",
+   "bytes": 242024
+  },
+  "R4X_SnareTrapDeployer_LOD1.fbx": {
+   "sha256": "5e809374a8eecbcca7c2adfb4fb81aa02c602805c881c941aa298834f7a5fd87",
+   "bytes": 97084
+  },
+  "R4X_SnareTrapDeployer_LOD1.glb": {
+   "sha256": "3af5b6e9386022544e21c8ac14a4b1bdf4c84425efdcbf8728524251f77ef605",
+   "bytes": 196600
+  }
+ },
+ "seconds": 0.9,
+ "blender": "5.3.0"
+}

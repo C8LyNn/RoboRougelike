@@ -1,0 +1,201 @@
+{
+ "id": "R4X_ChargeRegenerator",
+ "module": "ChargeRegenerator",
+ "catalog_number": 33,
+ "catalog_group": "D",
+ "wave": 2,
+ "name_pl": "Regenerator ladunkow",
+ "function_pl": "Pasywnie odnawia ladunki zdolnosci.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_ChargeRegenerator_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 2596,
+   "vertices": 1322,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_ChargeRegenerator_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 1104,
+  "vertices": 576,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 2596,
+ "triangles_lod1": 1104,
+ "shells": 16,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.255
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {},
+ "animation": null,
+ "animation_sweep": {
+  "frames": 0,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  0.25,
+  0.45,
+  1.0
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2596,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2596,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_ChargeRegenerator_front.jpg",
+  "R4X_ChargeRegenerator_side.jpg",
+  "R4X_ChargeRegenerator_34front.jpg",
+  "R4X_ChargeRegenerator_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_ChargeRegenerator.blend": {
+   "sha256": "61c1886062b3178f9274a05b7c3a3e2ca33101f6dbffa4cb2d5612eb084e20d2",
+   "bytes": 156151
+  },
+  "R4X_ChargeRegenerator.fbx": {
+   "sha256": "e4a472053b6a581111e8fb89eb110fe8ceb443d04a4dc4ce2b25d0e00fecaa22",
+   "bytes": 77148
+  },
+  "R4X_ChargeRegenerator.glb": {
+   "sha256": "c2cf88f180f7c0826dc3bb64cb1a06a42e11a62d4a52459cd23f0eba8f7b6621",
+   "bytes": 115308
+  },
+  "R4X_ChargeRegenerator_LOD1.fbx": {
+   "sha256": "fed681e723848675e5535f425480dec12a27a4e331ec5ea8994231709ba1e65f",
+   "bytes": 44316
+  },
+  "R4X_ChargeRegenerator_LOD1.glb": {
+   "sha256": "cd8be5450328b13aeb81a116c1c0b15296eabb964cf7dfb6024f9ddfbe8282c4",
+   "bytes": 58612
+  }
+ },
+ "seconds": 0.8,
+ "blender": "5.3.0"
+}

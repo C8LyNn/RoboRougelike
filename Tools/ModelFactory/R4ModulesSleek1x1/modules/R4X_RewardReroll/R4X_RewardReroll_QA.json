@@ -1,0 +1,238 @@
+{
+ "id": "R4X_RewardReroll",
+ "module": "RewardReroll",
+ "catalog_number": 37,
+ "catalog_group": "E",
+ "wave": 3,
+ "name_pl": "Przerzut nagrod",
+ "function_pl": "Pozwala ponownie wylosowac nagrody.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_RewardReroll_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1276,
+   "vertices": 646,
+   "uv": true,
+   "ok": true
+  },
+  {
+   "object": "R4X_RewardReroll_Die",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1228,
+   "vertices": 636,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_RewardReroll_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 1000,
+  "vertices": 530,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 2504,
+ "triangles_lod1": 1000,
+ "shells": 16,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.1987
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {
+  "Die": {
+   "pivot": [
+    0.0,
+    0.0,
+    0.045
+   ],
+   "anim": {
+    "type": "spin",
+    "axis": [
+     0,
+     0,
+     1
+    ],
+    "frames": 48
+   }
+  }
+ },
+ "animation": {
+  "clip": "Active",
+  "fps": 24,
+  "frames": [
+   1,
+   49
+  ],
+  "loop": true,
+  "nodes": [
+   "Die"
+  ],
+  "glb_mode": "SCENE"
+ },
+ "animation_sweep": {
+  "frames": 25,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  0.7,
+  0.35,
+  1.0
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 2504,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 5,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 2504,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_RewardReroll_front.jpg",
+  "R4X_RewardReroll_side.jpg",
+  "R4X_RewardReroll_34front.jpg",
+  "R4X_RewardReroll_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_RewardReroll.blend": {
+   "sha256": "06f79be254655a0a01860baa2c46aadb9d68f25fa2139d040bea0b6daa2c4f78",
+   "bytes": 154088
+  },
+  "R4X_RewardReroll.fbx": {
+   "sha256": "22397d187b93ab490f3edc44330db9b25f2f3df61b899be46592797a5c988a85",
+   "bytes": 123948
+  },
+  "R4X_RewardReroll.glb": {
+   "sha256": "475d1bb77f1ccfef509d5928d67d5e8237450f57a15089afcb02cd75c9efb5f4",
+   "bytes": 112068
+  },
+  "R4X_RewardReroll_LOD1.fbx": {
+   "sha256": "e9aa1966c1ed42060220b309d754c913b8a010a0fcea86c8a2ec5f4985e2ca1d",
+   "bytes": 45436
+  },
+  "R4X_RewardReroll_LOD1.glb": {
+   "sha256": "f3db671666c6c0c0dcf53a0f35e467e491f51a0e3bca676bb8b9b41f6999cc18",
+   "bytes": 55092
+  }
+ },
+ "seconds": 0.8,
+ "blender": "5.3.0"
+}

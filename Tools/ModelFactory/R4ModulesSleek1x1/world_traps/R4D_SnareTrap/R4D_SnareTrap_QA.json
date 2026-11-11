@@ -1,0 +1,235 @@
+{
+ "id": "R4D_SnareTrap",
+ "module": "SnareTrap",
+ "catalog_number": 104,
+ "catalog_group": "T",
+ "wave": 3,
+ "name_pl": "Pulapka unieruchamiajaca",
+ "function_pl": "Unieruchamia wroga na krotki czas.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [],
+ "mount_proposal": "down",
+ "contact_count": 0,
+ "contact_mask_local_proposal": 0,
+ "port_contact_test": [],
+ "lod1_port_contact_test": [],
+ "meshes": [
+  {
+   "object": "R4D_SnareTrap_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 640,
+   "vertices": 326,
+   "uv": true,
+   "ok": true
+  },
+  {
+   "object": "R4D_SnareTrap_JawL",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 320,
+   "vertices": 176,
+   "uv": true,
+   "ok": true
+  },
+  {
+   "object": "R4D_SnareTrap_JawR",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 320,
+   "vertices": 176,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4D_SnareTrap_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 1024,
+  "vertices": 550,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 1280,
+ "triangles_lod1": 1024,
+ "shells": 20,
+ "bounds_m": [
+  [
+   -0.235,
+   -0.235,
+   0.0
+  ],
+  [
+   0.235,
+   0.235,
+   0.1997
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   0.0
+  ],
+  [
+   0.26,
+   0.26,
+   0.3
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {
+  "JawL": {
+   "pivot": [
+    -0.0,
+    0.0,
+    0.03
+   ],
+   "anim": {
+    "type": "swing",
+    "axis": [
+     0,
+     -1,
+     0
+    ],
+    "amount": 12,
+    "frames": 24
+   }
+  },
+  "JawR": {
+   "pivot": [
+    0.0,
+    0.0,
+    0.03
+   ],
+   "anim": {
+    "type": "swing",
+    "axis": [
+     0,
+     1,
+     0
+    ],
+    "amount": 12,
+    "frames": 24
+   }
+  }
+ },
+ "animation": {
+  "clip": "Active",
+  "fps": 24,
+  "frames": [
+   1,
+   49
+  ],
+  "loop": true,
+  "nodes": [
+   "JawL",
+   "JawR"
+  ],
+  "glb_mode": "SCENE"
+ },
+ "animation_sweep": {
+  "frames": 25,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  0.7,
+  0.35,
+  1.0
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 3,
+   "triangles": 1280,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 4,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 3,
+   "triangles": 1280,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 2,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4D_SnareTrap_front.jpg",
+  "R4D_SnareTrap_side.jpg",
+  "R4D_SnareTrap_34front.jpg",
+  "R4D_SnareTrap_34rear.jpg"
+ ],
+ "world_object": true,
+ "notes": [
+  "world object deployed by R4X_SnareTrapDeployer; origin on the ground, footprint inside one 0.55 m cell"
+ ],
+ "files": {
+  "R4D_SnareTrap.blend": {
+   "sha256": "e4735a4ed34d5c741786c5f7fd725df2de57bbde354275e0ab927adc177bccd0",
+   "bytes": 127943
+  },
+  "R4D_SnareTrap.fbx": {
+   "sha256": "71bf7d0e09cc3ef197cf5fa54aa35a1d0325bbd8d0a93a59d6b98178f6a7d4f9",
+   "bytes": 89116
+  },
+  "R4D_SnareTrap.glb": {
+   "sha256": "11de4e7aa3d2fbcf0c87183119e38b1e1f5a477a36b37ef18ec6be3bbadb46b0",
+   "bytes": 73140
+  },
+  "R4D_SnareTrap_LOD1.fbx": {
+   "sha256": "55b10eecd8ef302bb838242c7a8cab4a0721de88939f0c37edc702372e73fba1",
+   "bytes": 43964
+  },
+  "R4D_SnareTrap_LOD1.glb": {
+   "sha256": "4a810405f4f4af0675d69a7588e04a8efe14e195c8f51fafb7afa9d7ffbdc09c",
+   "bytes": 58400
+  }
+ },
+ "seconds": 0.7,
+ "blender": "5.3.0"
+}

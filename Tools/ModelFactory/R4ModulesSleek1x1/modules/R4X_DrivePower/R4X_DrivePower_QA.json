@@ -1,0 +1,271 @@
+{
+ "id": "R4X_DrivePower",
+ "module": "DrivePower",
+ "catalog_number": 3,
+ "catalog_group": "A",
+ "wave": 1,
+ "name_pl": "Moc napedu",
+ "function_pl": "Zwieksza moc ukladu napedowego.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "dir": "left",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.27,
+    0.27
+   ],
+   "offset": [
+    0.0,
+    0.08182
+   ]
+  },
+  {
+   "dir": "right",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.27,
+    0.27
+   ],
+   "offset": [
+    0.0,
+    0.08182
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 3,
+ "contact_mask_local_proposal": 11,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 85.2,
+   "recessed_pct": 14.8,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "left",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 85.2,
+   "recessed_pct": 14.8,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "right",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 95.1,
+   "recessed_pct": 4.9,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "left",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 95.1,
+   "recessed_pct": 4.9,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "right",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_DrivePower_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 2840,
+   "vertices": 1430,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_DrivePower_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 584,
+  "vertices": 302,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 2840,
+ "triangles_lod1": 584,
+ "shells": 8,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.244
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {},
+ "animation": null,
+ "animation_sweep": {
+  "frames": 0,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  1.0,
+  0.62,
+  0.1
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2840,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2840,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_DrivePower_front.jpg",
+  "R4X_DrivePower_side.jpg",
+  "R4X_DrivePower_34front.jpg",
+  "R4X_DrivePower_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_DrivePower.blend": {
+   "sha256": "433fce2540a90c4b8f23f300396b79ad6b153f101890f638de0d7dea9ad0eef7",
+   "bytes": 157874
+  },
+  "R4X_DrivePower.fbx": {
+   "sha256": "f49e4265c9724ae69cb9969cc579d46cefb2db5a4c6c182c1f0142b211bd7ec7",
+   "bytes": 81116
+  },
+  "R4X_DrivePower.glb": {
+   "sha256": "1931693b51a7325f2c3c7ee1f094532dd4d6d2daea5f23f8192f59a36623b683",
+   "bytes": 111816
+  },
+  "R4X_DrivePower_LOD1.fbx": {
+   "sha256": "8a8bc52b19a1ef8c82cfcb49b6acddc0f0c1f438ef4e1ab4e0c08a5148d06daf",
+   "bytes": 32972
+  },
+  "R4X_DrivePower_LOD1.glb": {
+   "sha256": "71377f3cd487e9ca7a80cb075481442aeb9043d0477376aa546c26953dd71e77",
+   "bytes": 33888
+  }
+ },
+ "seconds": 0.8,
+ "blender": "5.3.0"
+}

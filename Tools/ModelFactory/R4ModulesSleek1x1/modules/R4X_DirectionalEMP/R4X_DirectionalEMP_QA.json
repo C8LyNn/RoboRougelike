@@ -1,0 +1,238 @@
+{
+ "id": "R4X_DirectionalEMP",
+ "module": "DirectionalEMP",
+ "catalog_number": 26,
+ "catalog_group": "D",
+ "wave": 2,
+ "name_pl": "EMP kierunkowy",
+ "function_pl": "Impuls EMP wystrzeliwany w jednym kierunku.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "dir": "back",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.22,
+    0.22
+   ],
+   "offset": [
+    0.0,
+    -0.06364
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 2,
+ "contact_mask_local_proposal": 40,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 77.8,
+   "recessed_pct": 22.2,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_DirectionalEMP_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 2780,
+   "vertices": 1422,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_DirectionalEMP_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 994,
+  "vertices": 529,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 2780,
+ "triangles_lod1": 994,
+ "shells": 18,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.16
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {},
+ "animation": null,
+ "animation_sweep": {
+  "frames": 0,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [
+  "FX_Emit"
+ ],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  0.25,
+  0.45,
+  1.0
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2780,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2780,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_DirectionalEMP_front.jpg",
+  "R4X_DirectionalEMP_side.jpg",
+  "R4X_DirectionalEMP_34front.jpg",
+  "R4X_DirectionalEMP_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_DirectionalEMP.blend": {
+   "sha256": "970a1b3ffc3fe8e0bfa0e66536b65a458f521ef08e410eadc30236333d11ce2f",
+   "bytes": 164598
+  },
+  "R4X_DirectionalEMP.fbx": {
+   "sha256": "254729e74816fd031cf0870ba26e2a55aa2c3c8a99b086b0135eb7f5dfc6bcd0",
+   "bytes": 86812
+  },
+  "R4X_DirectionalEMP.glb": {
+   "sha256": "9105998c63e866b594bd93ab32d5773dac1910ef89c28a241f89e793b188ed0d",
+   "bytes": 116516
+  },
+  "R4X_DirectionalEMP_LOD1.fbx": {
+   "sha256": "ac36338a51f1fa5e01b292e1b6a2d2ba6c0eac67a06684eaac6d90b7a380e389",
+   "bytes": 46156
+  },
+  "R4X_DirectionalEMP_LOD1.glb": {
+   "sha256": "c628499ac2c6e25527cc0bddbf589fe772de83da8ea852e77211645c4df77b09",
+   "bytes": 55548
+  }
+ },
+ "seconds": 0.8,
+ "blender": "5.3.0"
+}

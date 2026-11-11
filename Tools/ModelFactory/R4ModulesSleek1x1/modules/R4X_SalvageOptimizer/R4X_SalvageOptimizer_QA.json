@@ -1,0 +1,201 @@
+{
+ "id": "R4X_SalvageOptimizer",
+ "module": "SalvageOptimizer",
+ "catalog_number": 35,
+ "catalog_group": "E",
+ "wave": 3,
+ "name_pl": "Optymalizator zlomu",
+ "function_pl": "Pasywnie zwieksza zysk ze zbieranego zlomu.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_SalvageOptimizer_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 744,
+   "vertices": 390,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_SalvageOptimizer_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 392,
+  "vertices": 214,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 744,
+ "triangles_lod1": 392,
+ "shells": 9,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.19
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {},
+ "animation": null,
+ "animation_sweep": {
+  "frames": 0,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  1.0,
+  0.62,
+  0.1
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 744,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 744,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_SalvageOptimizer_front.jpg",
+  "R4X_SalvageOptimizer_side.jpg",
+  "R4X_SalvageOptimizer_34front.jpg",
+  "R4X_SalvageOptimizer_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_SalvageOptimizer.blend": {
+   "sha256": "2618ce5481944c53afa9d284887a87727b07c6f7371381b89f45919f5e26bf51",
+   "bytes": 114384
+  },
+  "R4X_SalvageOptimizer.fbx": {
+   "sha256": "c1c92867594f08545d17f0ec481b00fc4dd8c78bd43f1ae4ffe91087bcf64ae3",
+   "bytes": 37244
+  },
+  "R4X_SalvageOptimizer.glb": {
+   "sha256": "0692e90888d3d901500c36e800a8c0df52a9317c5b6bd977d92de621f17b81d2",
+   "bytes": 46184
+  },
+  "R4X_SalvageOptimizer_LOD1.fbx": {
+   "sha256": "7847d2254f309eebabd2d05fca32ae14c1c4b38cfff56fa86401ee4603999cbd",
+   "bytes": 28812
+  },
+  "R4X_SalvageOptimizer_LOD1.glb": {
+   "sha256": "bb2faca28808ddbb164bec5b54a1cfe40e77024d34ce5999054fd4d2e28dea52",
+   "bytes": 34884
+  }
+ },
+ "seconds": 0.7,
+ "blender": "5.3.0"
+}

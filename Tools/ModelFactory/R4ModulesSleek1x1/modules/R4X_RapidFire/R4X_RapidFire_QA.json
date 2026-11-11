@@ -1,0 +1,276 @@
+{
+ "id": "R4X_RapidFire",
+ "module": "RapidFire",
+ "catalog_number": 24,
+ "catalog_group": "D",
+ "wave": 2,
+ "name_pl": "Szybki ostrzal",
+ "function_pl": "Aktywnie zwieksza szybkostrzelnosc broni.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "dir": "back",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.25,
+    0.25
+   ],
+   "offset": [
+    0.0,
+    -0.02727
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 2,
+ "contact_mask_local_proposal": 40,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 95.1,
+   "recessed_pct": 4.9,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_RapidFire_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1252,
+   "vertices": 632,
+   "uv": true,
+   "ok": true
+  },
+  {
+   "object": "R4X_RapidFire_Barrels",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 784,
+   "vertices": 410,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_RapidFire_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 724,
+  "vertices": 386,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 2036,
+ "triangles_lod1": 724,
+ "shells": 12,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.185
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {
+  "Barrels": {
+   "pivot": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "anim": {
+    "type": "spin",
+    "axis": [
+     0,
+     1,
+     0
+    ],
+    "frames": 12
+   }
+  }
+ },
+ "animation": {
+  "clip": "Active",
+  "fps": 24,
+  "frames": [
+   1,
+   49
+  ],
+  "loop": true,
+  "nodes": [
+   "Barrels"
+  ],
+  "glb_mode": "SCENE"
+ },
+ "animation_sweep": {
+  "frames": 25,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  1.0,
+  0.62,
+  0.1
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 2036,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 6,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 2,
+   "triangles": 2036,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 1,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_RapidFire_front.jpg",
+  "R4X_RapidFire_side.jpg",
+  "R4X_RapidFire_34front.jpg",
+  "R4X_RapidFire_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_RapidFire.blend": {
+   "sha256": "aaff4dc52314c86c3a2fb418a6f5f304b10b8b1c154f6e2a1881fc76b8457af8",
+   "bytes": 139698
+  },
+  "R4X_RapidFire.fbx": {
+   "sha256": "30d8108e52a0f114ca2b8fd40334a6c281d2f2233becec1b88d5c3fd6e921ca9",
+   "bytes": 113532
+  },
+  "R4X_RapidFire.glb": {
+   "sha256": "44cf8ebff311d7b8c8cb15786d3e0c686a2c80af230c4d2fe1df2aba2dc5589d",
+   "bytes": 92952
+  },
+  "R4X_RapidFire_LOD1.fbx": {
+   "sha256": "3f2e4756826fcee259a5a49aff0fa5eeeff6054671850a5a7cbca3b93cccf132",
+   "bytes": 34140
+  },
+  "R4X_RapidFire_LOD1.glb": {
+   "sha256": "5fd3fc40fc52801057b83738e7cb07f35c18441010662906fa5d0874b19333d1",
+   "bytes": 45612
+  }
+ },
+ "seconds": 0.9,
+ "blender": "5.3.0"
+}

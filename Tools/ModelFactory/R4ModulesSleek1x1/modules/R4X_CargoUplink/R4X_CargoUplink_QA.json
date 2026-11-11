@@ -1,0 +1,201 @@
+{
+ "id": "R4X_CargoUplink",
+ "module": "CargoUplink",
+ "catalog_number": 36,
+ "catalog_group": "E",
+ "wave": 3,
+ "name_pl": "Lacze ladunkowe",
+ "function_pl": "Przesyla zebrany ladunek do bazy.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_CargoUplink_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1632,
+   "vertices": 834,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_CargoUplink_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 400,
+  "vertices": 218,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 1632,
+ "triangles_lod1": 400,
+ "shells": 9,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.255
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {},
+ "animation": null,
+ "animation_sweep": {
+  "frames": 0,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  0.25,
+  1.0,
+  0.45
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 1632,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 1632,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_CargoUplink_front.jpg",
+  "R4X_CargoUplink_side.jpg",
+  "R4X_CargoUplink_34front.jpg",
+  "R4X_CargoUplink_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_CargoUplink.blend": {
+   "sha256": "7203c735297cbc189d629dcb22c5c7ddcf5826ad23ef3d5b033cc779c4ea6277",
+   "bytes": 132933
+  },
+  "R4X_CargoUplink.fbx": {
+   "sha256": "adb164d9d3afc0ca7c6950dbab042de5bcf2c707d8de848667698112c1d5a1ae",
+   "bytes": 55980
+  },
+  "R4X_CargoUplink.glb": {
+   "sha256": "4330aa1c296e642425d3dccb500e920f1ddf4c0310d52358f54ed14bc49f496f",
+   "bytes": 71508
+  },
+  "R4X_CargoUplink_LOD1.fbx": {
+   "sha256": "044896bc32d2522a5703df3c61252040f5ae42fbe3f3896d8bb8d39c97ef042c",
+   "bytes": 29340
+  },
+  "R4X_CargoUplink_LOD1.glb": {
+   "sha256": "e11f8e4a021c6b5c9538d569590c25830dfa49433374a3d510206c93908612f9",
+   "bytes": 31252
+  }
+ },
+ "seconds": 0.7,
+ "blender": "5.3.0"
+}

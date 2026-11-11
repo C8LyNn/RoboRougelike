@@ -1,0 +1,201 @@
+{
+ "id": "R4X_ScannerPulse",
+ "module": "ScannerPulse",
+ "catalog_number": 8,
+ "catalog_group": "A",
+ "wave": 1,
+ "name_pl": "Impuls skanujacy",
+ "function_pl": "Aktywny impuls wykrywajacy obiekty w poblizu.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_ScannerPulse_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 2024,
+   "vertices": 1026,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_ScannerPulse_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 722,
+  "vertices": 375,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 2024,
+ "triangles_lod1": 722,
+ "shells": 10,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.25
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {},
+ "animation": null,
+ "animation_sweep": {
+  "frames": 0,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  0.25,
+  0.45,
+  1.0
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2024,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2024,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_ScannerPulse_front.jpg",
+  "R4X_ScannerPulse_side.jpg",
+  "R4X_ScannerPulse_34front.jpg",
+  "R4X_ScannerPulse_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_ScannerPulse.blend": {
+   "sha256": "dc1982244d640b8393c51db0bdfabaf4dd8db82ac1554f3d10924bc4495db045",
+   "bytes": 147223
+  },
+  "R4X_ScannerPulse.fbx": {
+   "sha256": "d95e3124d475c7dd89534bbe43b7d12cb8504750c9f86aaff7a9ef79092ef0d2",
+   "bytes": 64972
+  },
+  "R4X_ScannerPulse.glb": {
+   "sha256": "ac9d14e3a6b33c59a24f1f494e13df2b261bebbcc3785d56faf48396f1779caa",
+   "bytes": 86536
+  },
+  "R4X_ScannerPulse_LOD1.fbx": {
+   "sha256": "0d7f5b35b4d6fce33ec901b3c0e88aaf85c722f03f623e883bf19ccc43788f67",
+   "bytes": 37052
+  },
+  "R4X_ScannerPulse_LOD1.glb": {
+   "sha256": "32e6810073ef7d1d136479a5cc465eceb18cf18ecf079a3edf1e37ce1042b955",
+   "bytes": 40032
+  }
+ },
+ "seconds": 0.7,
+ "blender": "5.3.0"
+}

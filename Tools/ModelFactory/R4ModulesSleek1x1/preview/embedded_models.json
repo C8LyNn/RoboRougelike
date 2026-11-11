@@ -1,0 +1,677 @@
+{
+ "cube": {
+  "file": "R4BlocksRedesign1232/A_Sleek/R4B_Cube/R4B_Cube.glb",
+  "sha256": "dff7b1a49f11addf3c7bb66cc6711d24895230110515d146556bb75c6dc30ca7",
+  "bytes": 29792
+ },
+ "R4X_Battery": {
+  "file": "R4ModulesSleek1x1/modules/R4X_Battery/R4X_Battery.glb",
+  "sha256": "c254bb337f38a589d9e2388103c07bc757995138112a3a0eb9a4903a833729c5",
+  "bytes": 137788
+ },
+ "L/R4X_Battery": {
+  "file": "R4ModulesSleek1x1/modules/R4X_Battery/R4X_Battery_LOD1.glb",
+  "sha256": "5f4f2684ba7d8a5b4877aed940d6089eaedd82e7f7893571a7b234e7db608c17",
+  "bytes": 41244
+ },
+ "R4X_EnergyRegenerator": {
+  "file": "R4ModulesSleek1x1/modules/R4X_EnergyRegenerator/R4X_EnergyRegenerator.glb",
+  "sha256": "48312298701c671c8885ddbe0128c1f7d0d59ec630dd7255d70405e6e78ca0cf",
+  "bytes": 126348
+ },
+ "L/R4X_EnergyRegenerator": {
+  "file": "R4ModulesSleek1x1/modules/R4X_EnergyRegenerator/R4X_EnergyRegenerator_LOD1.glb",
+  "sha256": "cdfd532992a56e34bbf42c557485c0132a3b468ffe1b2392c580170f93ac3a35",
+  "bytes": 40308
+ },
+ "R4X_DrivePower": {
+  "file": "R4ModulesSleek1x1/modules/R4X_DrivePower/R4X_DrivePower.glb",
+  "sha256": "1931693b51a7325f2c3c7ee1f094532dd4d6d2daea5f23f8192f59a36623b683",
+  "bytes": 111816
+ },
+ "L/R4X_DrivePower": {
+  "file": "R4ModulesSleek1x1/modules/R4X_DrivePower/R4X_DrivePower_LOD1.glb",
+  "sha256": "71377f3cd487e9ca7a80cb075481442aeb9043d0477376aa546c26953dd71e77",
+  "bytes": 33888
+ },
+ "R4X_RepairPulse": {
+  "file": "R4ModulesSleek1x1/modules/R4X_RepairPulse/R4X_RepairPulse.glb",
+  "sha256": "4d1a1cfacd50f94ff75f5fb606799f7b756987f53460d90f635388459e3359c1",
+  "bytes": 112980
+ },
+ "L/R4X_RepairPulse": {
+  "file": "R4ModulesSleek1x1/modules/R4X_RepairPulse/R4X_RepairPulse_LOD1.glb",
+  "sha256": "11555e97327354409b33ecdb229a3b6140756d6d51fdb21176632327cecb8775",
+  "bytes": 29744
+ },
+ "R4X_DirectionalShield": {
+  "file": "R4ModulesSleek1x1/modules/R4X_DirectionalShield/R4X_DirectionalShield.glb",
+  "sha256": "ceffff34bf7050d30589586ae7d8c5b273a08f2229da5db0402aa5507c93e776",
+  "bytes": 81660
+ },
+ "L/R4X_DirectionalShield": {
+  "file": "R4ModulesSleek1x1/modules/R4X_DirectionalShield/R4X_DirectionalShield_LOD1.glb",
+  "sha256": "95e6d445e5f778669c3173c4283c4d4e91dc82849a00be5169c0091d60a676b8",
+  "bytes": 31728
+ },
+ "R4X_PointDefense": {
+  "file": "R4ModulesSleek1x1/modules/R4X_PointDefense/R4X_PointDefense.glb",
+  "sha256": "4b5238f2e1c370579e9f2beeb00d0cc82c0929dd89b831f9b04095cbf2c032c9",
+  "bytes": 93396
+ },
+ "L/R4X_PointDefense": {
+  "file": "R4ModulesSleek1x1/modules/R4X_PointDefense/R4X_PointDefense_LOD1.glb",
+  "sha256": "22998107fd661733f87796b43db228e3c839408610209ea80a6d6779bb5f937d",
+  "bytes": 31716
+ },
+ "R4X_StructuralScanner": {
+  "file": "R4ModulesSleek1x1/modules/R4X_StructuralScanner/R4X_StructuralScanner.glb",
+  "sha256": "e7df5ce4a1b226b423f0408a56835499df5e8df9df200660222e3f14720ed419",
+  "bytes": 91556
+ },
+ "L/R4X_StructuralScanner": {
+  "file": "R4ModulesSleek1x1/modules/R4X_StructuralScanner/R4X_StructuralScanner_LOD1.glb",
+  "sha256": "4fc09708ac147d64faafcb737b9d366154b418eaeb53a7ee4f93c7351a270763",
+  "bytes": 28432
+ },
+ "R4X_ScannerPulse": {
+  "file": "R4ModulesSleek1x1/modules/R4X_ScannerPulse/R4X_ScannerPulse.glb",
+  "sha256": "ac9d14e3a6b33c59a24f1f494e13df2b261bebbcc3785d56faf48396f1779caa",
+  "bytes": 86536
+ },
+ "L/R4X_ScannerPulse": {
+  "file": "R4ModulesSleek1x1/modules/R4X_ScannerPulse/R4X_ScannerPulse_LOD1.glb",
+  "sha256": "32e6810073ef7d1d136479a5cc465eceb18cf18ecf079a3edf1e37ce1042b955",
+  "bytes": 40032
+ },
+ "R4X_Booster": {
+  "file": "R4ModulesSleek1x1/modules/R4X_Booster/R4X_Booster.glb",
+  "sha256": "6db07148b5cd0edf23dd11fd61321aef900c598eb25ae286f3fab585a362e6b8",
+  "bytes": 65356
+ },
+ "L/R4X_Booster": {
+  "file": "R4ModulesSleek1x1/modules/R4X_Booster/R4X_Booster_LOD1.glb",
+  "sha256": "649ba4103dda3e1e2011b6be2eaf8163cd25345f342e1761bfb61b5210ae1a37",
+  "bytes": 21840
+ },
+ "R4X_JumpDrive": {
+  "file": "R4ModulesSleek1x1/modules/R4X_JumpDrive/R4X_JumpDrive.glb",
+  "sha256": "b598bbe7f7af37d54c02f57a9f74cef80c9fb3e9348b820bdd94dabf24779e2c",
+  "bytes": 73084
+ },
+ "L/R4X_JumpDrive": {
+  "file": "R4ModulesSleek1x1/modules/R4X_JumpDrive/R4X_JumpDrive_LOD1.glb",
+  "sha256": "b4dd22027dc1ee269f5214a3d46064c802bf9f6ca046c8c6ac8c9207fc6b83bf",
+  "bytes": 30444
+ },
+ "R4X_Blink": {
+  "file": "R4ModulesSleek1x1/modules/R4X_Blink/R4X_Blink.glb",
+  "sha256": "4f97be41e3c9d519e81b90781061be05a6e16087071279a93c92c6f32739533c",
+  "bytes": 113232
+ },
+ "L/R4X_Blink": {
+  "file": "R4ModulesSleek1x1/modules/R4X_Blink/R4X_Blink_LOD1.glb",
+  "sha256": "1ddf16c2d923b338f8bffd3893ae87d6f0600d1f369fcf318011d89fd8f11a93",
+  "bytes": 34080
+ },
+ "R4X_Gyroscope": {
+  "file": "R4ModulesSleek1x1/modules/R4X_Gyroscope/R4X_Gyroscope.glb",
+  "sha256": "e6100549e5612bfd32f9d3e58eb9e7a2543453e084da8dd2f432d1c7cb8f432a",
+  "bytes": 117956
+ },
+ "L/R4X_Gyroscope": {
+  "file": "R4ModulesSleek1x1/modules/R4X_Gyroscope/R4X_Gyroscope_LOD1.glb",
+  "sha256": "b0547d095428fe544f250a10b98e25bf9ea94595cac5c4e17bd5f000eb005b37",
+  "bytes": 36540
+ },
+ "R4X_MagneticGrapple": {
+  "file": "R4ModulesSleek1x1/modules/R4X_MagneticGrapple/R4X_MagneticGrapple.glb",
+  "sha256": "caccd9a47ae1de3422b14492dc0cf105d464739bced17fa2e7968f81158dfd47",
+  "bytes": 114684
+ },
+ "L/R4X_MagneticGrapple": {
+  "file": "R4ModulesSleek1x1/modules/R4X_MagneticGrapple/R4X_MagneticGrapple_LOD1.glb",
+  "sha256": "c83b431c640484f402ef361f371f4e0818c164d42ef408f1a75fbe4bc58e77da",
+  "bytes": 39736
+ },
+ "R4X_Suspension": {
+  "file": "R4ModulesSleek1x1/modules/R4X_Suspension/R4X_Suspension.glb",
+  "sha256": "065f33e96b7f7c116f2027ba87b26814ae14cd15da85ddb934f54ec00fe11911",
+  "bytes": 149152
+ },
+ "L/R4X_Suspension": {
+  "file": "R4ModulesSleek1x1/modules/R4X_Suspension/R4X_Suspension_LOD1.glb",
+  "sha256": "780fa7f74e2cf2f7e4a60a2d9c9c4d633683521af133b6416895a171029e0028",
+  "bytes": 57264
+ },
+ "R4X_IndependentSteering": {
+  "file": "R4ModulesSleek1x1/modules/R4X_IndependentSteering/R4X_IndependentSteering.glb",
+  "sha256": "6f9362deae6564070e8210db40ef0623148abb4b63b38f9a96ed419fe5eae495",
+  "bytes": 175944
+ },
+ "L/R4X_IndependentSteering": {
+  "file": "R4ModulesSleek1x1/modules/R4X_IndependentSteering/R4X_IndependentSteering_LOD1.glb",
+  "sha256": "3a2b4885cbddd27aefb2a0ab72093a41bda1cba7aec2d512a2073aeb7e9dd87e",
+  "bytes": 77460
+ },
+ "R4X_HoverEngine": {
+  "file": "R4ModulesSleek1x1/modules/R4X_HoverEngine/R4X_HoverEngine.glb",
+  "sha256": "e5ff1846e903995f6ca04932341e8e6787ee4ef29bd471178b65578394cbebaf",
+  "bytes": 94052
+ },
+ "L/R4X_HoverEngine": {
+  "file": "R4ModulesSleek1x1/modules/R4X_HoverEngine/R4X_HoverEngine_LOD1.glb",
+  "sha256": "ab046e394098017dfcd008d81f5933ae442eb9fc1c96ec059ce14bc92ab1858d",
+  "bytes": 54108
+ },
+ "R4X_HullBooster": {
+  "file": "R4ModulesSleek1x1/modules/R4X_HullBooster/R4X_HullBooster.glb",
+  "sha256": "c3c26bf3343eb8e036e8704fb9f413e8f2e4d9c8d1816fe86f26ce3f83305d09",
+  "bytes": 128144
+ },
+ "L/R4X_HullBooster": {
+  "file": "R4ModulesSleek1x1/modules/R4X_HullBooster/R4X_HullBooster_LOD1.glb",
+  "sha256": "bb11ed212ce7c2aec607d17eead09231f1945a0252dc9f6d4ff56899b48158fd",
+  "bytes": 28272
+ },
+ "R4X_DamageBooster": {
+  "file": "R4ModulesSleek1x1/modules/R4X_DamageBooster/R4X_DamageBooster.glb",
+  "sha256": "7eedf0db024af2652b7572f6d4460a90ac3806beddf2647a7b36363f129560d7",
+  "bytes": 96020
+ },
+ "L/R4X_DamageBooster": {
+  "file": "R4ModulesSleek1x1/modules/R4X_DamageBooster/R4X_DamageBooster_LOD1.glb",
+  "sha256": "b038938111d40396481b9e04ba5de4a194a9d2dfe84d4a6a95377017de845e60",
+  "bytes": 39408
+ },
+ "R4X_ReloadBooster": {
+  "file": "R4ModulesSleek1x1/modules/R4X_ReloadBooster/R4X_ReloadBooster.glb",
+  "sha256": "faa2e58cb33960f59e68f44430f391d4de4da74b519ef81a25fbbeea52426dd5",
+  "bytes": 167648
+ },
+ "L/R4X_ReloadBooster": {
+  "file": "R4ModulesSleek1x1/modules/R4X_ReloadBooster/R4X_ReloadBooster_LOD1.glb",
+  "sha256": "d60e290b2f722cdd3ce97715f443dd523eb950af01dab9847a8af9afbed5c2f5",
+  "bytes": 71492
+ },
+ "R4X_MobilityBooster": {
+  "file": "R4ModulesSleek1x1/modules/R4X_MobilityBooster/R4X_MobilityBooster.glb",
+  "sha256": "7a6b58046d4df816914a8cb59cd520f9abfdf7ca177fba3cdb68921ebfed88f1",
+  "bytes": 101908
+ },
+ "L/R4X_MobilityBooster": {
+  "file": "R4ModulesSleek1x1/modules/R4X_MobilityBooster/R4X_MobilityBooster_LOD1.glb",
+  "sha256": "58aae517cde2b2c510715c81b7a4e670b0a1f38957365657277f7e08ec05e498",
+  "bytes": 39900
+ },
+ "R4X_RepairBooster": {
+  "file": "R4ModulesSleek1x1/modules/R4X_RepairBooster/R4X_RepairBooster.glb",
+  "sha256": "9799b7b2ca60bf009f6c4b1d3cac540e7c28b50eddd866feebef2cb7e76022ed",
+  "bytes": 102516
+ },
+ "L/R4X_RepairBooster": {
+  "file": "R4ModulesSleek1x1/modules/R4X_RepairBooster/R4X_RepairBooster_LOD1.glb",
+  "sha256": "c47fd78c3898cb037f40b1ec2b0294fd0cce1a390077f44042f2551b4129ec8f",
+  "bytes": 63876
+ },
+ "R4X_CoreBooster": {
+  "file": "R4ModulesSleek1x1/modules/R4X_CoreBooster/R4X_CoreBooster.glb",
+  "sha256": "5c1bac981b00d65efb599434fb21cd57c16e3c1f11d9c6a434850454b39e30af",
+  "bytes": 116904
+ },
+ "L/R4X_CoreBooster": {
+  "file": "R4ModulesSleek1x1/modules/R4X_CoreBooster/R4X_CoreBooster_LOD1.glb",
+  "sha256": "680843809a4a0e6384a415ca355dba091f55c0cf31ccf53d80ea6e38e4cad6a9",
+  "bytes": 36056
+ },
+ "R4X_Overdrive": {
+  "file": "R4ModulesSleek1x1/modules/R4X_Overdrive/R4X_Overdrive.glb",
+  "sha256": "d58dccfbcf68879c396fe9eb9f930ab02dec064b1765aa35d7423f71ca35f203",
+  "bytes": 102184
+ },
+ "L/R4X_Overdrive": {
+  "file": "R4ModulesSleek1x1/modules/R4X_Overdrive/R4X_Overdrive_LOD1.glb",
+  "sha256": "f78f3679ffcb5684dfecb907927e64a10f00610fb3b778bbf2c5c9f942edcb0b",
+  "bytes": 55972
+ },
+ "R4X_RapidFire": {
+  "file": "R4ModulesSleek1x1/modules/R4X_RapidFire/R4X_RapidFire.glb",
+  "sha256": "44cf8ebff311d7b8c8cb15786d3e0c686a2c80af230c4d2fe1df2aba2dc5589d",
+  "bytes": 92952
+ },
+ "L/R4X_RapidFire": {
+  "file": "R4ModulesSleek1x1/modules/R4X_RapidFire/R4X_RapidFire_LOD1.glb",
+  "sha256": "5fd3fc40fc52801057b83738e7cb07f35c18441010662906fa5d0874b19333d1",
+  "bytes": 45612
+ },
+ "R4X_Stealth": {
+  "file": "R4ModulesSleek1x1/modules/R4X_Stealth/R4X_Stealth.glb",
+  "sha256": "7bc26876f4e7b2184dba3ee71276de7205423ef7154a2b789ee312b6f6237477",
+  "bytes": 32520
+ },
+ "L/R4X_Stealth": {
+  "file": "R4ModulesSleek1x1/modules/R4X_Stealth/R4X_Stealth_LOD1.glb",
+  "sha256": "d18067c0aea30a310db8aa41d1a87b623fdae2f8aad70f38790cbf46cb35f4f4",
+  "bytes": 30244
+ },
+ "R4X_DirectionalEMP": {
+  "file": "R4ModulesSleek1x1/modules/R4X_DirectionalEMP/R4X_DirectionalEMP.glb",
+  "sha256": "9105998c63e866b594bd93ab32d5773dac1910ef89c28a241f89e793b188ed0d",
+  "bytes": 116516
+ },
+ "L/R4X_DirectionalEMP": {
+  "file": "R4ModulesSleek1x1/modules/R4X_DirectionalEMP/R4X_DirectionalEMP_LOD1.glb",
+  "sha256": "c628499ac2c6e25527cc0bddbf589fe772de83da8ea852e77211645c4df77b09",
+  "bytes": 55548
+ },
+ "R4X_AreaEMP": {
+  "file": "R4ModulesSleek1x1/modules/R4X_AreaEMP/R4X_AreaEMP.glb",
+  "sha256": "20bd9f10125041e5b9dab20aee9d6f8e4cdd3d614f53f7c8aa00da76f92b2638",
+  "bytes": 143912
+ },
+ "L/R4X_AreaEMP": {
+  "file": "R4ModulesSleek1x1/modules/R4X_AreaEMP/R4X_AreaEMP_LOD1.glb",
+  "sha256": "368fde080f5d264d1482cbee9dd3197daccca865fde13b1fc1d0b07e658bff46",
+  "bytes": 50100
+ },
+ "R4X_PersonalShield": {
+  "file": "R4ModulesSleek1x1/modules/R4X_PersonalShield/R4X_PersonalShield.glb",
+  "sha256": "ecd19389e1e31b29ee959b0a529a1fa36f9e6a357ea83920f0aba5954635d4b9",
+  "bytes": 96284
+ },
+ "L/R4X_PersonalShield": {
+  "file": "R4ModulesSleek1x1/modules/R4X_PersonalShield/R4X_PersonalShield_LOD1.glb",
+  "sha256": "b8f64fc17d0a2872a296526804c6e70dc915354ca481df3614240c5e2074d1d0",
+  "bytes": 42060
+ },
+ "R4X_DeployableShieldGenerator": {
+  "file": "R4ModulesSleek1x1/modules/R4X_DeployableShieldGenerator/R4X_DeployableShieldGenerator.glb",
+  "sha256": "b02492c58cecdf3f7b8f220dd923a39c7c390f7acfc766df755c3b090b5dc50a",
+  "bytes": 143200
+ },
+ "L/R4X_DeployableShieldGenerator": {
+  "file": "R4ModulesSleek1x1/modules/R4X_DeployableShieldGenerator/R4X_DeployableShieldGenerator_LOD1.glb",
+  "sha256": "2ecc958e1bc513706291d409f63a16b9c4dbe596878d44f454f535bbd69e057a",
+  "bytes": 40656
+ },
+ "R4X_DoubleShotPassive": {
+  "file": "R4ModulesSleek1x1/modules/R4X_DoubleShotPassive/R4X_DoubleShotPassive.glb",
+  "sha256": "920a76ea9d18f4cad3f58f4c58c066460305e3f5f0009b0beab6c755ce7f3597",
+  "bytes": 101324
+ },
+ "L/R4X_DoubleShotPassive": {
+  "file": "R4ModulesSleek1x1/modules/R4X_DoubleShotPassive/R4X_DoubleShotPassive_LOD1.glb",
+  "sha256": "637661e8433b869166cb0d6d87454d0927792a5b65b4bb5de808e4a209fc7a29",
+  "bytes": 43240
+ },
+ "R4X_DoubleShotOverdrive": {
+  "file": "R4ModulesSleek1x1/modules/R4X_DoubleShotOverdrive/R4X_DoubleShotOverdrive.glb",
+  "sha256": "0cde2b045c5e357d1f25d0fa6043cfc6666f27bbc2d849a545766cf2555fa43f",
+  "bytes": 170360
+ },
+ "L/R4X_DoubleShotOverdrive": {
+  "file": "R4ModulesSleek1x1/modules/R4X_DoubleShotOverdrive/R4X_DoubleShotOverdrive_LOD1.glb",
+  "sha256": "9efc53e003af171cba9d6d0be330eda769e2093c7c547777cc53f97b06b2361d",
+  "bytes": 84244
+ },
+ "R4X_RechargePulse": {
+  "file": "R4ModulesSleek1x1/modules/R4X_RechargePulse/R4X_RechargePulse.glb",
+  "sha256": "4ed31e80200da4792463736bd26e6ad4e0e814435cdc68e84cf22163dbe798c7",
+  "bytes": 69580
+ },
+ "L/R4X_RechargePulse": {
+  "file": "R4ModulesSleek1x1/modules/R4X_RechargePulse/R4X_RechargePulse_LOD1.glb",
+  "sha256": "4cf81f13e5644b8294e5fc0258fe5e634a5b91d1d543187480130f4b757be7e9",
+  "bytes": 31100
+ },
+ "R4X_ChargeRegenerator": {
+  "file": "R4ModulesSleek1x1/modules/R4X_ChargeRegenerator/R4X_ChargeRegenerator.glb",
+  "sha256": "c2cf88f180f7c0826dc3bb64cb1a06a42e11a62d4a52459cd23f0eba8f7b6621",
+  "bytes": 115308
+ },
+ "L/R4X_ChargeRegenerator": {
+  "file": "R4ModulesSleek1x1/modules/R4X_ChargeRegenerator/R4X_ChargeRegenerator_LOD1.glb",
+  "sha256": "cd8be5450328b13aeb81a116c1c0b15296eabb964cf7dfb6024f9ddfbe8282c4",
+  "bytes": 58612
+ },
+ "R4X_ChargeCapacity": {
+  "file": "R4ModulesSleek1x1/modules/R4X_ChargeCapacity/R4X_ChargeCapacity.glb",
+  "sha256": "b9c8f28c15d17ec69a06bb20f334b4cca06bdc08bd5059a090a80557380d5d1d",
+  "bytes": 88048
+ },
+ "L/R4X_ChargeCapacity": {
+  "file": "R4ModulesSleek1x1/modules/R4X_ChargeCapacity/R4X_ChargeCapacity_LOD1.glb",
+  "sha256": "c092625b003a7985ca45e88639a16ccdd92a7066fa498b78b5606521827ee85b",
+  "bytes": 57872
+ },
+ "R4X_SalvageOptimizer": {
+  "file": "R4ModulesSleek1x1/modules/R4X_SalvageOptimizer/R4X_SalvageOptimizer.glb",
+  "sha256": "0692e90888d3d901500c36e800a8c0df52a9317c5b6bd977d92de621f17b81d2",
+  "bytes": 46184
+ },
+ "L/R4X_SalvageOptimizer": {
+  "file": "R4ModulesSleek1x1/modules/R4X_SalvageOptimizer/R4X_SalvageOptimizer_LOD1.glb",
+  "sha256": "bb2faca28808ddbb164bec5b54a1cfe40e77024d34ce5999054fd4d2e28dea52",
+  "bytes": 34884
+ },
+ "R4X_CargoUplink": {
+  "file": "R4ModulesSleek1x1/modules/R4X_CargoUplink/R4X_CargoUplink.glb",
+  "sha256": "4330aa1c296e642425d3dccb500e920f1ddf4c0310d52358f54ed14bc49f496f",
+  "bytes": 71508
+ },
+ "L/R4X_CargoUplink": {
+  "file": "R4ModulesSleek1x1/modules/R4X_CargoUplink/R4X_CargoUplink_LOD1.glb",
+  "sha256": "e11f8e4a021c6b5c9538d569590c25830dfa49433374a3d510206c93908612f9",
+  "bytes": 31252
+ },
+ "R4X_RewardReroll": {
+  "file": "R4ModulesSleek1x1/modules/R4X_RewardReroll/R4X_RewardReroll.glb",
+  "sha256": "475d1bb77f1ccfef509d5928d67d5e8237450f57a15089afcb02cd75c9efb5f4",
+  "bytes": 112068
+ },
+ "L/R4X_RewardReroll": {
+  "file": "R4ModulesSleek1x1/modules/R4X_RewardReroll/R4X_RewardReroll_LOD1.glb",
+  "sha256": "f3db671666c6c0c0dcf53a0f35e467e491f51a0e3bca676bb8b9b41f6999cc18",
+  "bytes": 55092
+ },
+ "R4X_WeaponDurabilityBooster": {
+  "file": "R4ModulesSleek1x1/modules/R4X_WeaponDurabilityBooster/R4X_WeaponDurabilityBooster.glb",
+  "sha256": "f6bf556c2e692ba4211683e3bf4118cd736859003dd0ac201594e36ff632c346",
+  "bytes": 147952
+ },
+ "L/R4X_WeaponDurabilityBooster": {
+  "file": "R4ModulesSleek1x1/modules/R4X_WeaponDurabilityBooster/R4X_WeaponDurabilityBooster_LOD1.glb",
+  "sha256": "5110b2f8ea3fc4148e3293beb6a08d5e24a9435b0047432b94978da7aa2ba3d2",
+  "bytes": 44640
+ },
+ "R4X_MovementDurabilityBooster": {
+  "file": "R4ModulesSleek1x1/modules/R4X_MovementDurabilityBooster/R4X_MovementDurabilityBooster.glb",
+  "sha256": "ee5c15ff7993a7461e54da770e4011167442daef4730d9a6772c5c031cb7c6d2",
+  "bytes": 159588
+ },
+ "L/R4X_MovementDurabilityBooster": {
+  "file": "R4ModulesSleek1x1/modules/R4X_MovementDurabilityBooster/R4X_MovementDurabilityBooster_LOD1.glb",
+  "sha256": "800ba281cc5aec18f4fb728dab40f5e9baed4dcd8f8502869fe1d291ebb1aa74",
+  "bytes": 54012
+ },
+ "R4X_ModuleDurabilityBooster": {
+  "file": "R4ModulesSleek1x1/modules/R4X_ModuleDurabilityBooster/R4X_ModuleDurabilityBooster.glb",
+  "sha256": "9b8f7c7208230f4ad5a41435821eaf44d2eed0961e8816b060b443691ba30023",
+  "bytes": 165452
+ },
+ "L/R4X_ModuleDurabilityBooster": {
+  "file": "R4ModulesSleek1x1/modules/R4X_ModuleDurabilityBooster/R4X_ModuleDurabilityBooster_LOD1.glb",
+  "sha256": "e8432e777a52abf8b2f73eee0a7bbe81e9b5d1e00ad7a1d063a016a1d8579247",
+  "bytes": 60880
+ },
+ "R4X_OrbAmplifier": {
+  "file": "R4ModulesSleek1x1/modules/R4X_OrbAmplifier/R4X_OrbAmplifier.glb",
+  "sha256": "cead6c41898ebed6be4c6c65055cb5af67b9fa9db4ca8b2adbf56b1e86726164",
+  "bytes": 81436
+ },
+ "L/R4X_OrbAmplifier": {
+  "file": "R4ModulesSleek1x1/modules/R4X_OrbAmplifier/R4X_OrbAmplifier_LOD1.glb",
+  "sha256": "9091b5b4828e257236914c17b1c62fbe8e7668b59f7f1c4b6d8bf25b883366b3",
+  "bytes": 39460
+ },
+ "R4X_ModuleAmplifier": {
+  "file": "R4ModulesSleek1x1/modules/R4X_ModuleAmplifier/R4X_ModuleAmplifier.glb",
+  "sha256": "8d8a7a6d8914ae08acf7b9ff1178cc5419cd495e82b9a562b06b5378aa43abab",
+  "bytes": 120696
+ },
+ "L/R4X_ModuleAmplifier": {
+  "file": "R4ModulesSleek1x1/modules/R4X_ModuleAmplifier/R4X_ModuleAmplifier_LOD1.glb",
+  "sha256": "8a5c0cd43a326cd0bbac5fde8a2ebf36a369f9d69aadefb753a6e27b0c6d4938",
+  "bytes": 40788
+ },
+ "R4X_DeployableAmplifier": {
+  "file": "R4ModulesSleek1x1/modules/R4X_DeployableAmplifier/R4X_DeployableAmplifier.glb",
+  "sha256": "c2aa2d5a92770cc965c4cb67d9d49b9f3ffcebd833770005613e6a91f5ddcab3",
+  "bytes": 104836
+ },
+ "L/R4X_DeployableAmplifier": {
+  "file": "R4ModulesSleek1x1/modules/R4X_DeployableAmplifier/R4X_DeployableAmplifier_LOD1.glb",
+  "sha256": "87242c790f3fcfe684b0a24f4f221e1fcadb2fbe3eb81f381687a3d3584c4d72",
+  "bytes": 35056
+ },
+ "R4X_Radar": {
+  "file": "R4ModulesSleek1x1/modules/R4X_Radar/R4X_Radar.glb",
+  "sha256": "d8bd1d290d53727e795e4cf24a123317c965c34021dec9b3bb81fbd22b855626",
+  "bytes": 76144
+ },
+ "L/R4X_Radar": {
+  "file": "R4ModulesSleek1x1/modules/R4X_Radar/R4X_Radar_LOD1.glb",
+  "sha256": "71024edcdf1e15945516c081cb2cc5cf6a2e444d563be604c494f73c9e1b8927",
+  "bytes": 33152
+ },
+ "R4X_Minimap": {
+  "file": "R4ModulesSleek1x1/modules/R4X_Minimap/R4X_Minimap.glb",
+  "sha256": "f53709f8a16d4086e7d6eb6480fa4cbcba12e51e9cf25de31377a16d1e8f8255",
+  "bytes": 86976
+ },
+ "L/R4X_Minimap": {
+  "file": "R4ModulesSleek1x1/modules/R4X_Minimap/R4X_Minimap_LOD1.glb",
+  "sha256": "354562ddd4a809209f0e5167e46c09623608799a31c748ef30a75fd9b9611c15",
+  "bytes": 45600
+ },
+ "R4X_WeakPointScanner": {
+  "file": "R4ModulesSleek1x1/modules/R4X_WeakPointScanner/R4X_WeakPointScanner.glb",
+  "sha256": "ed7b7e993a038ee2efb0cc0310a333ac3158bda3b2374970b0713d8b197bcdf1",
+  "bytes": 104088
+ },
+ "L/R4X_WeakPointScanner": {
+  "file": "R4ModulesSleek1x1/modules/R4X_WeakPointScanner/R4X_WeakPointScanner_LOD1.glb",
+  "sha256": "006a065785c7ba363c6cbfb920def85aea457ac489ece13e7878330849675e0b",
+  "bytes": 52968
+ },
+ "R4X_ExplosiveTrapDeployer": {
+  "file": "R4ModulesSleek1x1/modules/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+  "sha256": "b7c49cf8a390340d1eed3e7abe78527ce0376724c95ee501ffb1a751e9ec3f19",
+  "bytes": 123928
+ },
+ "L/R4X_ExplosiveTrapDeployer": {
+  "file": "R4ModulesSleek1x1/modules/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer_LOD1.glb",
+  "sha256": "750e656e50ac8a6e9cb7987c2c97a0e39688d7f7fd832c9eca06bb7dec25a2ec",
+  "bytes": 66480
+ },
+ "R4X_EMPTrapDeployer": {
+  "file": "R4ModulesSleek1x1/modules/R4X_EMPTrapDeployer/R4X_EMPTrapDeployer.glb",
+  "sha256": "eec1b5b513d02935d321b0cce6f26e3ce6215a13607a601ea923d616bf290226",
+  "bytes": 134708
+ },
+ "L/R4X_EMPTrapDeployer": {
+  "file": "R4ModulesSleek1x1/modules/R4X_EMPTrapDeployer/R4X_EMPTrapDeployer_LOD1.glb",
+  "sha256": "6b38b03c647454c3303cf6b61c6f684d926ea3686969ec266bd4a45514301bbb",
+  "bytes": 77820
+ },
+ "R4X_KnockbackTrapDeployer": {
+  "file": "R4ModulesSleek1x1/modules/R4X_KnockbackTrapDeployer/R4X_KnockbackTrapDeployer.glb",
+  "sha256": "a4ebf8de0254dcf10ea53344480978c0b96f2507578dad76d3638f1b06f0943f",
+  "bytes": 121744
+ },
+ "L/R4X_KnockbackTrapDeployer": {
+  "file": "R4ModulesSleek1x1/modules/R4X_KnockbackTrapDeployer/R4X_KnockbackTrapDeployer_LOD1.glb",
+  "sha256": "1c7d3b9d98ce0df8304dd2c793b43626c44c45d10a4091b0b51541e15b90fb65",
+  "bytes": 59904
+ },
+ "R4X_SnareTrapDeployer": {
+  "file": "R4ModulesSleek1x1/modules/R4X_SnareTrapDeployer/R4X_SnareTrapDeployer.glb",
+  "sha256": "9fc7c15ecf3f33d16466ed44b2a12f1a65bea81c6fd44913693bf47b8c5aae14",
+  "bytes": 242024
+ },
+ "L/R4X_SnareTrapDeployer": {
+  "file": "R4ModulesSleek1x1/modules/R4X_SnareTrapDeployer/R4X_SnareTrapDeployer_LOD1.glb",
+  "sha256": "3af5b6e9386022544e21c8ac14a4b1bdf4c84425efdcbf8728524251f77ef605",
+  "bytes": 196600
+ },
+ "R4X_SlowTrapDeployer": {
+  "file": "R4ModulesSleek1x1/modules/R4X_SlowTrapDeployer/R4X_SlowTrapDeployer.glb",
+  "sha256": "953182a29b06f20eed2bf82c64ea07ea03e5d1e5e54f3d2a2e680ee4a21302bc",
+  "bytes": 130272
+ },
+ "L/R4X_SlowTrapDeployer": {
+  "file": "R4ModulesSleek1x1/modules/R4X_SlowTrapDeployer/R4X_SlowTrapDeployer_LOD1.glb",
+  "sha256": "615d9f3f18c4b29683221b935a3475d7773ed0c2b3acdc7fb3855e49b2a7c695",
+  "bytes": 69192
+ },
+ "R4X_BurnTrapDeployer": {
+  "file": "R4ModulesSleek1x1/modules/R4X_BurnTrapDeployer/R4X_BurnTrapDeployer.glb",
+  "sha256": "9717383e6fd0f95a5d7f532d4cdc144fece3140a5b17c949929f8a496995403c",
+  "bytes": 129684
+ },
+ "L/R4X_BurnTrapDeployer": {
+  "file": "R4ModulesSleek1x1/modules/R4X_BurnTrapDeployer/R4X_BurnTrapDeployer_LOD1.glb",
+  "sha256": "486825f0239367ed876c51f68102df4ba65ea0bc4a7d6b46c312a4b65ef2df53",
+  "bytes": 72560
+ },
+ "R4D_ExplosiveTrap": {
+  "file": "R4ModulesSleek1x1/world_traps/R4D_ExplosiveTrap/R4D_ExplosiveTrap.glb",
+  "sha256": "114a6b0adfc784aaa42f6ab8e4e3e7ea9e0da16373bc5834bc68d0733e36834d",
+  "bytes": 71076
+ },
+ "L/R4D_ExplosiveTrap": {
+  "file": "R4ModulesSleek1x1/world_traps/R4D_ExplosiveTrap/R4D_ExplosiveTrap_LOD1.glb",
+  "sha256": "3473bff4380d8e041020c40d8ca25b4546a79e7150ec284e529db834b7459c3b",
+  "bytes": 46028
+ },
+ "R4D_EMPTrap": {
+  "file": "R4ModulesSleek1x1/world_traps/R4D_EMPTrap/R4D_EMPTrap.glb",
+  "sha256": "c393e4456634ac3f2f48c8a9ed000e0e516de8b04bcbc09e80028dcd378ebea2",
+  "bytes": 75496
+ },
+ "L/R4D_EMPTrap": {
+  "file": "R4ModulesSleek1x1/world_traps/R4D_EMPTrap/R4D_EMPTrap_LOD1.glb",
+  "sha256": "5df37985671301335613052572fb09737878d14f0737eaf41ac7fb54e1cb32e5",
+  "bytes": 45792
+ },
+ "R4D_KnockbackTrap": {
+  "file": "R4ModulesSleek1x1/world_traps/R4D_KnockbackTrap/R4D_KnockbackTrap.glb",
+  "sha256": "aba5ce31e23ae8a68260fc51763b5d1996c0d03e1e038aaa0711de71158ab210",
+  "bytes": 40636
+ },
+ "L/R4D_KnockbackTrap": {
+  "file": "R4ModulesSleek1x1/world_traps/R4D_KnockbackTrap/R4D_KnockbackTrap_LOD1.glb",
+  "sha256": "7c1b508578d5dca30e7dc8d3cd2cb0067c31a55f8509523878f4ffd95820d65b",
+  "bytes": 31812
+ },
+ "R4D_SnareTrap": {
+  "file": "R4ModulesSleek1x1/world_traps/R4D_SnareTrap/R4D_SnareTrap.glb",
+  "sha256": "11de4e7aa3d2fbcf0c87183119e38b1e1f5a477a36b37ef18ec6be3bbadb46b0",
+  "bytes": 73140
+ },
+ "L/R4D_SnareTrap": {
+  "file": "R4ModulesSleek1x1/world_traps/R4D_SnareTrap/R4D_SnareTrap_LOD1.glb",
+  "sha256": "4a810405f4f4af0675d69a7588e04a8efe14e195c8f51fafb7afa9d7ffbdc09c",
+  "bytes": 58400
+ },
+ "R4D_SlowTrap": {
+  "file": "R4ModulesSleek1x1/world_traps/R4D_SlowTrap/R4D_SlowTrap.glb",
+  "sha256": "18757d53e603e56f5a22551bf522ddffc134d44703a98cdab3a8479d1261f0a8",
+  "bytes": 42392
+ },
+ "L/R4D_SlowTrap": {
+  "file": "R4ModulesSleek1x1/world_traps/R4D_SlowTrap/R4D_SlowTrap_LOD1.glb",
+  "sha256": "a86f1b020346a9642076aaeab542e5408dfccd3dd0aa96d4c417003ef38560f1",
+  "bytes": 34512
+ },
+ "R4D_BurnTrap": {
+  "file": "R4ModulesSleek1x1/world_traps/R4D_BurnTrap/R4D_BurnTrap.glb",
+  "sha256": "9fe4cf94ea4f84b10feaebe1b7ebd1b7458f22d9d0478cab4b0c166555b3f84d",
+  "bytes": 57368
+ },
+ "L/R4D_BurnTrap": {
+  "file": "R4ModulesSleek1x1/world_traps/R4D_BurnTrap/R4D_BurnTrap_LOD1.glb",
+  "sha256": "e0684ebed988754539d4c29362bf4b7f9a536deba9f11e8c908fa42a8e0c392e",
+  "bytes": 39716
+ },
+ "R4X_OffensiveTurretDeployer": {
+  "file": "R4ModulesSleek1x1/modules/R4X_OffensiveTurretDeployer/R4X_OffensiveTurretDeployer.glb",
+  "sha256": "a252ef35dc1fbd66bcda47dcfc8e8f2278905662b281d936b5c0a4d0b8ca4a3a",
+  "bytes": 149964
+ },
+ "L/R4X_OffensiveTurretDeployer": {
+  "file": "R4ModulesSleek1x1/modules/R4X_OffensiveTurretDeployer/R4X_OffensiveTurretDeployer_LOD1.glb",
+  "sha256": "430847d01367cc05033ff06a11a773248dbf1e8c296474a3511e45764b05dcd8",
+  "bytes": 59296
+ },
+ "R4X_DefensiveTurretDeployer": {
+  "file": "R4ModulesSleek1x1/modules/R4X_DefensiveTurretDeployer/R4X_DefensiveTurretDeployer.glb",
+  "sha256": "ddfbdddf256adaa3b7143af5941d7935db114dafbf1865cddea03a7a369d4e0d",
+  "bytes": 134996
+ },
+ "L/R4X_DefensiveTurretDeployer": {
+  "file": "R4ModulesSleek1x1/modules/R4X_DefensiveTurretDeployer/R4X_DefensiveTurretDeployer_LOD1.glb",
+  "sha256": "961e8f6d14279fd82d7d450bfb827c27c752a3a7de3721c243fe0f716aae5c1d",
+  "bytes": 44968
+ },
+ "R4X_RepairTurretDeployer": {
+  "file": "R4ModulesSleek1x1/modules/R4X_RepairTurretDeployer/R4X_RepairTurretDeployer.glb",
+  "sha256": "30f4bcdbe96764bc2ef52b1b0e937a1374cb3aceb9723ab5546cccce5ba7a2df",
+  "bytes": 161640
+ },
+ "L/R4X_RepairTurretDeployer": {
+  "file": "R4ModulesSleek1x1/modules/R4X_RepairTurretDeployer/R4X_RepairTurretDeployer_LOD1.glb",
+  "sha256": "8e4e3e1af33315011727aff498724f98e8d01dc5a01400312c95127d730c1237",
+  "bytes": 55808
+ },
+ "R4X_SupportTurretDeployer": {
+  "file": "R4ModulesSleek1x1/modules/R4X_SupportTurretDeployer/R4X_SupportTurretDeployer.glb",
+  "sha256": "8c6eb77edeeff66788b00234b234e82be81185dd8a3b6355e3d78b93481cf8da",
+  "bytes": 125524
+ },
+ "L/R4X_SupportTurretDeployer": {
+  "file": "R4ModulesSleek1x1/modules/R4X_SupportTurretDeployer/R4X_SupportTurretDeployer_LOD1.glb",
+  "sha256": "e017d22d550713273a1b18858da1f019a7bff7f9feca1091421bf5da387ae386",
+  "bytes": 50348
+ },
+ "R4X_FlyingDroneDeployer": {
+  "file": "R4ModulesSleek1x1/modules/R4X_FlyingDroneDeployer/R4X_FlyingDroneDeployer.glb",
+  "sha256": "226167db1daca8b4ece96e9733b7d8ff262a241f54d78cefe88a912ca8a7e991",
+  "bytes": 105528
+ },
+ "L/R4X_FlyingDroneDeployer": {
+  "file": "R4ModulesSleek1x1/modules/R4X_FlyingDroneDeployer/R4X_FlyingDroneDeployer_LOD1.glb",
+  "sha256": "7b15587f7a989c58d6273fce891ad7e70949de0c8905a25830eb3c0a36518f28",
+  "bytes": 70944
+ },
+ "R4X_GroundDroneDeployer": {
+  "file": "R4ModulesSleek1x1/modules/R4X_GroundDroneDeployer/R4X_GroundDroneDeployer.glb",
+  "sha256": "4e0fb7def9b3f2a23817a516f01b875639047a73813c2ce3a65ce216718ca1f4",
+  "bytes": 93224
+ },
+ "L/R4X_GroundDroneDeployer": {
+  "file": "R4ModulesSleek1x1/modules/R4X_GroundDroneDeployer/R4X_GroundDroneDeployer_LOD1.glb",
+  "sha256": "d8c8361b2efa4f4c025897dcc3507f106961d99126b94c4be71fb875c26f8c9a",
+  "bytes": 44008
+ },
+ "R4X_RampDeployer": {
+  "file": "R4ModulesSleek1x1/modules/R4X_RampDeployer/R4X_RampDeployer.glb",
+  "sha256": "fab0e223850aa1646ff37b28ab55e81268468791221ff83554864e0404391cc8",
+  "bytes": 110668
+ },
+ "L/R4X_RampDeployer": {
+  "file": "R4ModulesSleek1x1/modules/R4X_RampDeployer/R4X_RampDeployer_LOD1.glb",
+  "sha256": "0f86cdf77dda61ab30ed36bacc198ba5556f094015adbe2bd7ae67c7fdf142c3",
+  "bytes": 39196
+ },
+ "R4X_WallDeployer": {
+  "file": "R4ModulesSleek1x1/modules/R4X_WallDeployer/R4X_WallDeployer.glb",
+  "sha256": "df8c90855ed77f22010898593f3ac491224538c07368a086535c3b78ce266da7",
+  "bytes": 104160
+ },
+ "L/R4X_WallDeployer": {
+  "file": "R4ModulesSleek1x1/modules/R4X_WallDeployer/R4X_WallDeployer_LOD1.glb",
+  "sha256": "b486d9c1d4e37e952485fe5f463f09c6785f0190a1e73bcd8001a3a1fae36699",
+  "bytes": 34080
+ },
+ "R4X_JumpPadDeployer": {
+  "file": "R4ModulesSleek1x1/modules/R4X_JumpPadDeployer/R4X_JumpPadDeployer.glb",
+  "sha256": "3a0f42ddd3eeee57d573b3a3199d23bf5cfd47b84245b432f17081c603ed4b2c",
+  "bytes": 80152
+ },
+ "L/R4X_JumpPadDeployer": {
+  "file": "R4ModulesSleek1x1/modules/R4X_JumpPadDeployer/R4X_JumpPadDeployer_LOD1.glb",
+  "sha256": "fed084860cc583f2e2c0700aaec9ea8e5c6d53c84dc70d850f184d297340e3b6",
+  "bytes": 40068
+ }
+}

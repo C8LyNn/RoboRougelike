@@ -1,0 +1,268 @@
+{
+ "id": "R4X_ModuleAmplifier",
+ "module": "ModuleAmplifier",
+ "catalog_number": 42,
+ "catalog_group": "E",
+ "wave": 3,
+ "name_pl": "Wzmacniacz modulow",
+ "function_pl": "Pasywnie wzmacnia dzialanie sasiednich modulow.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "dir": "forward",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.118,
+    0.118
+   ],
+   "offset": [
+    0.0,
+    -0.2
+   ]
+  },
+  {
+   "dir": "back",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.118,
+    0.118
+   ],
+   "offset": [
+    0.0,
+    -0.2
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 3,
+ "contact_mask_local_proposal": 56,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 85.2,
+   "recessed_pct": 14.8,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "forward",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 85.2,
+   "recessed_pct": 14.8,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "forward",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_ModuleAmplifier_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 3140,
+   "vertices": 1592,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_ModuleAmplifier_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 484,
+  "vertices": 264,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 3140,
+ "triangles_lod1": 484,
+ "shells": 11,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.252
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {},
+ "animation": null,
+ "animation_sweep": {
+  "frames": 0,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  0.2,
+  0.8,
+  1.0
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 3140,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 3140,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_ModuleAmplifier_front.jpg",
+  "R4X_ModuleAmplifier_side.jpg",
+  "R4X_ModuleAmplifier_34front.jpg",
+  "R4X_ModuleAmplifier_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_ModuleAmplifier.blend": {
+   "sha256": "8c955de9a54732cf2ba6950affefe737eabb0d058b8cce34287056322de10fc3",
+   "bytes": 162179
+  },
+  "R4X_ModuleAmplifier.fbx": {
+   "sha256": "c16147c04a72465d9101f2c32547d4e18caf16cc923f4d29395af433dda2c2eb",
+   "bytes": 81756
+  },
+  "R4X_ModuleAmplifier.glb": {
+   "sha256": "8d8a7a6d8914ae08acf7b9ff1178cc5419cd495e82b9a562b06b5378aa43abab",
+   "bytes": 120696
+  },
+  "R4X_ModuleAmplifier_LOD1.fbx": {
+   "sha256": "2721c518472a36fe2266ff25c59715922e8ea2faca47adbb55daa6a62d648a5c",
+   "bytes": 27964
+  },
+  "R4X_ModuleAmplifier_LOD1.glb": {
+   "sha256": "8a5c0cd43a326cd0bbac5fde8a2ebf36a369f9d69aadefb753a6e27b0c6d4938",
+   "bytes": 40788
+  }
+ },
+ "seconds": 0.7,
+ "blender": "5.3.0"
+}

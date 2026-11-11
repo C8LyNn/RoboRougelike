@@ -1,0 +1,64 @@
+{
+ "id": "R4D_KnockbackTrap",
+ "catalog_number": null,
+ "catalog_group": "Pułapki rozstawiane w świecie gry",
+ "name": "KnockbackTrap",
+ "name_pl": "Pułapka odrzucająca",
+ "function_pl": "Odrzuca wrogów, którzy na nią wjadą.",
+ "silhouette_concept_pl": "kwadratowa płyta z szewronami na czterech tłokach",
+ "kind": "world object (deployed trap)",
+ "units": "meter 1:1",
+ "axes": "Blender: X right, -Y forward, Z up; file / Unity: +Z forward, +Y up",
+ "cell": "footprint inside one 0.55 m cell, origin on the ground, height <= 0.30 m",
+ "hierarchy": {
+  "R4D_KnockbackTrap_ROOT": null,
+  "R4D_KnockbackTrap_Body": "R4D_KnockbackTrap_ROOT",
+  "R4D_KnockbackTrap_Plate": "R4D_KnockbackTrap_ROOT"
+ },
+ "node_roles": {
+  "R4D_KnockbackTrap_ROOT": "root (origin = ground contact centre)",
+  "R4D_KnockbackTrap_Body": "static body",
+  "R4D_KnockbackTrap_Plate": "movable part (PROPOSAL), pivot [0.0, 0.0, 0.0] m (Blender axes), preview motion {'type': 'slide', 'axis': [0, 0, 1], 'amount': 0.06, 'frames': 12}"
+ },
+ "mount_proposal": null,
+ "contacts_proposal": [],
+ "contact_count": 0,
+ "contact_mask_local_proposal": 0,
+ "paint_zones": {
+  "R4P_Base": "duze panele - glowny kolor malowania (jak w klockach A_Sleek)",
+  "R4P_Glow": "PROPOSAL: akcent emisyjny, kolor per modul (czytelnosc funkcji)",
+  "R4P_Metal": "PROPOSAL: gole elementy mechaniczne (tloczyska, lufy, osie) - domyslnie Steel_Light",
+  "R4P_Secondary": "rama / fazy / obudowy - drugi kolor malowania (jak w klockach A_Sleek)",
+  "R4P_Trim": "ciemne elementy techniczne i scianki paneli (jak w klockach A_Sleek)"
+ },
+ "glow_rgb": [
+  1.0,
+  0.62,
+  0.1
+ ],
+ "triangles": {
+  "lod0": 660,
+  "lod1": 452
+ },
+ "files": [
+  "R4D_KnockbackTrap.blend",
+  "R4D_KnockbackTrap.fbx",
+  "R4D_KnockbackTrap.glb",
+  "R4D_KnockbackTrap_LOD1.fbx",
+  "R4D_KnockbackTrap_LOD1.glb"
+ ],
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "proposals": [
+  "contact faces / port set",
+  "Socket_Mount face",
+  "paint zones R4P_Metal and R4P_Glow",
+  "movable nodes and the preview animation clip",
+  "function empties (FX_*, Deploy_Out)",
+  "naming prefix R4D_"
+ ],
+ "gameplay": "Art asset only. No gameplay value, timing, range or cost is defined or changed by this file.",
+ "notes": [
+  "world object deployed by R4X_KnockbackTrapDeployer; origin on the ground, footprint inside one 0.55 m cell"
+ ]
+}

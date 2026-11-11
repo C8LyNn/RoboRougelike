@@ -1,0 +1,299 @@
+{
+ "id": "R4X_Gyroscope",
+ "module": "Gyroscope",
+ "catalog_number": 12,
+ "catalog_group": "B",
+ "wave": 1,
+ "name_pl": "Zyroskop",
+ "function_pl": "Stabilizuje i prostuje robota.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_Gyroscope_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1732,
+   "vertices": 876,
+   "uv": true,
+   "ok": true
+  },
+  {
+   "object": "R4X_Gyroscope_RingOuter",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 448,
+   "vertices": 224,
+   "uv": true,
+   "ok": true
+  },
+  {
+   "object": "R4X_Gyroscope_RingInner",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 384,
+   "vertices": 192,
+   "uv": true,
+   "ok": true
+  },
+  {
+   "object": "R4X_Gyroscope_Rotor",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 224,
+   "vertices": 116,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_Gyroscope_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 580,
+  "vertices": 304,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 2788,
+ "triangles_lod1": 580,
+ "shells": 9,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.213
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {
+  "RingOuter": {
+   "pivot": [
+    0.0,
+    0.0,
+    0.03
+   ],
+   "anim": {
+    "type": "swing",
+    "axis": [
+     1,
+     0,
+     0
+    ],
+    "amount": 25,
+    "frames": 48
+   }
+  },
+  "RingInner": {
+   "pivot": [
+    0.0,
+    0.0,
+    0.03
+   ],
+   "anim": {
+    "type": "swing",
+    "axis": [
+     0,
+     0,
+     1
+    ],
+    "amount": 35,
+    "frames": 48
+   }
+  },
+  "Rotor": {
+   "pivot": [
+    0.0,
+    0.0,
+    0.03
+   ],
+   "anim": {
+    "type": "spin",
+    "axis": [
+     0,
+     0,
+     1
+    ],
+    "frames": 24
+   }
+  }
+ },
+ "animation": {
+  "clip": "Active",
+  "fps": 24,
+  "frames": [
+   1,
+   49
+  ],
+  "loop": true,
+  "nodes": [
+   "RingOuter",
+   "RingInner",
+   "Rotor"
+  ],
+  "glb_mode": "SCENE"
+ },
+ "animation_sweep": {
+  "frames": 25,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  0.2,
+  0.8,
+  1.0
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 4,
+   "triangles": 2788,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 7,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 4,
+   "triangles": 2788,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 3,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_Gyroscope_front.jpg",
+  "R4X_Gyroscope_side.jpg",
+  "R4X_Gyroscope_34front.jpg",
+  "R4X_Gyroscope_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_Gyroscope.blend": {
+   "sha256": "96199bbff978a75cff66fe7779885c781be058bdcf2668d4f3c0729fa85727dc",
+   "bytes": 152472
+  },
+  "R4X_Gyroscope.fbx": {
+   "sha256": "95ec44fd3cf75ceb0ab92660ee3c7669bab65812164b62f655ad62cbb235aa9f",
+   "bytes": 141228
+  },
+  "R4X_Gyroscope.glb": {
+   "sha256": "e6100549e5612bfd32f9d3e58eb9e7a2543453e084da8dd2f432d1c7cb8f432a",
+   "bytes": 117956
+  },
+  "R4X_Gyroscope_LOD1.fbx": {
+   "sha256": "938f3fa134740f08bd4b441a88fd0a8bd0e1bf07f9504a09b2765f9749071ebe",
+   "bytes": 32876
+  },
+  "R4X_Gyroscope_LOD1.glb": {
+   "sha256": "b0547d095428fe544f250a10b98e25bf9ea94595cac5c4e17bd5f000eb005b37",
+   "bytes": 36540
+  }
+ },
+ "seconds": 0.8,
+ "blender": "5.3.0"
+}

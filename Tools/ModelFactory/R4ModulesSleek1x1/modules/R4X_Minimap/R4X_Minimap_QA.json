@@ -1,0 +1,198 @@
+{
+ "id": "R4X_Minimap",
+ "module": "Minimap",
+ "catalog_number": 45,
+ "catalog_group": "E",
+ "wave": 3,
+ "name_pl": "Minimapa / modul kartograficzny",
+ "function_pl": "Odkrywa mape i pokazuje otoczenie.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_Minimap_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1916,
+   "vertices": 988,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_Minimap_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 572,
+  "vertices": 316,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 1916,
+ "triangles_lod1": 572,
+ "shells": 15,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.1441
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {},
+ "animation": null,
+ "animation_sweep": {
+  "frames": 0,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  0.2,
+  0.8,
+  1.0
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 1916,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 1916,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_Minimap_front.jpg",
+  "R4X_Minimap_side.jpg",
+  "R4X_Minimap_34front.jpg",
+  "R4X_Minimap_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_Minimap.blend": {
+   "sha256": "67201e72e79fa7f7a61c982255285b1f68d93b940bf1af35dbffcd85be209695",
+   "bytes": 145428
+  },
+  "R4X_Minimap.fbx": {
+   "sha256": "b1abbfdb357f29f2f88b225bf4621f7d4ab6d832ebbdbabf93792baf509502da",
+   "bytes": 64492
+  },
+  "R4X_Minimap.glb": {
+   "sha256": "f53709f8a16d4086e7d6eb6480fa4cbcba12e51e9cf25de31377a16d1e8f8255",
+   "bytes": 86976
+  },
+  "R4X_Minimap_LOD1.fbx": {
+   "sha256": "9534f577d8b7513bc6d6ebbac277948734f86916b277e84f695be2276a57e329",
+   "bytes": 34860
+  },
+  "R4X_Minimap_LOD1.glb": {
+   "sha256": "354562ddd4a809209f0e5167e46c09623608799a31c748ef30a75fd9b9611c15",
+   "bytes": 45600
+  }
+ },
+ "seconds": 0.7,
+ "blender": "5.3.0"
+}

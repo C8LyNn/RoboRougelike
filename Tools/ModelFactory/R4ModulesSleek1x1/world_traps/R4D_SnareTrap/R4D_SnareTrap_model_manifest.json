@@ -1,0 +1,66 @@
+{
+ "id": "R4D_SnareTrap",
+ "catalog_number": null,
+ "catalog_group": "Pułapki rozstawiane w świecie gry",
+ "name": "SnareTrap",
+ "name_pl": "Pułapka unieruchamiająca",
+ "function_pl": "Unieruchamia wroga na krótki czas.",
+ "silhouette_concept_pl": "pierścień z dwiema zębatymi szczękami i płytą naciskową",
+ "kind": "world object (deployed trap)",
+ "units": "meter 1:1",
+ "axes": "Blender: X right, -Y forward, Z up; file / Unity: +Z forward, +Y up",
+ "cell": "footprint inside one 0.55 m cell, origin on the ground, height <= 0.30 m",
+ "hierarchy": {
+  "R4D_SnareTrap_ROOT": null,
+  "R4D_SnareTrap_Body": "R4D_SnareTrap_ROOT",
+  "R4D_SnareTrap_JawL": "R4D_SnareTrap_ROOT",
+  "R4D_SnareTrap_JawR": "R4D_SnareTrap_ROOT"
+ },
+ "node_roles": {
+  "R4D_SnareTrap_ROOT": "root (origin = ground contact centre)",
+  "R4D_SnareTrap_Body": "static body",
+  "R4D_SnareTrap_JawL": "movable part (PROPOSAL), pivot [-0.0, 0.0, 0.03] m (Blender axes), preview motion {'type': 'swing', 'axis': [0, -1, 0], 'amount': 12, 'frames': 24}",
+  "R4D_SnareTrap_JawR": "movable part (PROPOSAL), pivot [0.0, 0.0, 0.03] m (Blender axes), preview motion {'type': 'swing', 'axis': [0, 1, 0], 'amount': 12, 'frames': 24}"
+ },
+ "mount_proposal": null,
+ "contacts_proposal": [],
+ "contact_count": 0,
+ "contact_mask_local_proposal": 0,
+ "paint_zones": {
+  "R4P_Base": "duze panele - glowny kolor malowania (jak w klockach A_Sleek)",
+  "R4P_Glow": "PROPOSAL: akcent emisyjny, kolor per modul (czytelnosc funkcji)",
+  "R4P_Metal": "PROPOSAL: gole elementy mechaniczne (tloczyska, lufy, osie) - domyslnie Steel_Light",
+  "R4P_Secondary": "rama / fazy / obudowy - drugi kolor malowania (jak w klockach A_Sleek)",
+  "R4P_Trim": "ciemne elementy techniczne i scianki paneli (jak w klockach A_Sleek)"
+ },
+ "glow_rgb": [
+  0.7,
+  0.35,
+  1.0
+ ],
+ "triangles": {
+  "lod0": 1280,
+  "lod1": 1024
+ },
+ "files": [
+  "R4D_SnareTrap.blend",
+  "R4D_SnareTrap.fbx",
+  "R4D_SnareTrap.glb",
+  "R4D_SnareTrap_LOD1.fbx",
+  "R4D_SnareTrap_LOD1.glb"
+ ],
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "proposals": [
+  "contact faces / port set",
+  "Socket_Mount face",
+  "paint zones R4P_Metal and R4P_Glow",
+  "movable nodes and the preview animation clip",
+  "function empties (FX_*, Deploy_Out)",
+  "naming prefix R4D_"
+ ],
+ "gameplay": "Art asset only. No gameplay value, timing, range or cost is defined or changed by this file.",
+ "notes": [
+  "world object deployed by R4X_SnareTrapDeployer; origin on the ground, footprint inside one 0.55 m cell"
+ ]
+}

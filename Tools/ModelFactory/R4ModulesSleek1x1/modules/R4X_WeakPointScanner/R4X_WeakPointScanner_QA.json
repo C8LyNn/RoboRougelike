@@ -1,0 +1,201 @@
+{
+ "id": "R4X_WeakPointScanner",
+ "module": "WeakPointScanner",
+ "catalog_number": 46,
+ "catalog_group": "E",
+ "wave": 3,
+ "name_pl": "Skaner slabych punktow",
+ "function_pl": "Podswietla slabe punkty wrogow.",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "ports_proposal": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "mount_proposal": "down",
+ "contact_count": 1,
+ "contact_mask_local_proposal": 8,
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "meshes": [
+  {
+   "object": "R4X_WeakPointScanner_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 2328,
+   "vertices": 1188,
+   "uv": true,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_WeakPointScanner_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 848,
+  "vertices": 448,
+  "uv": true,
+  "ok": true
+ },
+ "triangles": 2328,
+ "triangles_lod1": 848,
+ "shells": 14,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.21
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "movable_nodes": {},
+ "animation": null,
+ "animation_sweep": {
+  "frames": 0,
+  "max_outside_mm": 0.0
+ },
+ "function_empties": [],
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "glow_rgb": [
+  1.0,
+  0.18,
+  0.12
+ ],
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2328,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "body_bounds_dev_mm": 0.0,
+   "meshes": 1,
+   "triangles": 2328,
+   "world_scale_dev": 0.0,
+   "empties_missing": [],
+   "actions": 0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Glow",
+    "R4P_Metal",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4X_WeakPointScanner_front.jpg",
+  "R4X_WeakPointScanner_side.jpg",
+  "R4X_WeakPointScanner_34front.jpg",
+  "R4X_WeakPointScanner_34rear.jpg"
+ ],
+ "world_object": false,
+ "notes": [],
+ "files": {
+  "R4X_WeakPointScanner.blend": {
+   "sha256": "352ad219f6585a845716f7d0f184edf4ab542bc67d25f6987d3d790a32f0298c",
+   "bytes": 155806
+  },
+  "R4X_WeakPointScanner.fbx": {
+   "sha256": "3e67ca5b4d5b71b46cad12b447e8ae312017bee9d22b7c418d9ed82f43218470",
+   "bytes": 71964
+  },
+  "R4X_WeakPointScanner.glb": {
+   "sha256": "ed7b7e993a038ee2efb0cc0310a333ac3158bda3b2374970b0713d8b197bcdf1",
+   "bytes": 104088
+  },
+  "R4X_WeakPointScanner_LOD1.fbx": {
+   "sha256": "974861e311b2fc42f1f2a89f541f40e7480513b748efa9fb3b3d29e0075f21f3",
+   "bytes": 39644
+  },
+  "R4X_WeakPointScanner_LOD1.glb": {
+   "sha256": "006a065785c7ba363c6cbfb920def85aea457ac489ece13e7878330849675e0b",
+   "bytes": 52968
+  }
+ },
+ "seconds": 0.7,
+ "blender": "5.3.0"
+}
