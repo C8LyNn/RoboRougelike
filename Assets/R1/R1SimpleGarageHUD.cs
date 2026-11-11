@@ -263,7 +263,7 @@ namespace RoboRougelike.R1
             if(run.Garage.Tool==R41GarageTool.Mount&&run.Garage.HasTarget&&run.Garage.HasMountSelection)
             {
                 string placement=run.Garage.PlacementIssue;
-                if(placement!=null)message=placement;
+                message=placement??"Można zamontować • LPM — zamontuj część.";
             }
             string reason=model.DeployError;
             if(reason!=null)
@@ -430,7 +430,7 @@ namespace RoboRougelike.R1
             for(int i=0;i<labels.Length;i++)
             {
                 compactButton.normal.background=garage.Tool==(R41GarageTool)i?buttonPressed:buttonNormal;GUI.backgroundColor=Color.white;
-                if(GUI.Button(new Rect(284+i*116,15,108,42),labels[i],compactButton))garage.SetTool((R41GarageTool)i);
+                if(GUI.Button(new Rect(284+i*116,15,108,42),labels[i],compactButton))garage.SelectTool((R41GarageTool)i);
                 compactButton.normal.background=buttonNormal;
             }
             GUI.backgroundColor=Color.white;
@@ -498,7 +498,7 @@ namespace RoboRougelike.R1
             for(int i=0;i<labels.Length;i++)
             {
                 compactButton.normal.background=garage.Tool==(R41GarageTool)i?buttonPressed:buttonNormal;GUI.backgroundColor=Color.white;
-                if(GUI.Button(new Rect(24+i*183,584,171,42),labels[i],compactButton))garage.SetTool((R41GarageTool)i);
+                if(GUI.Button(new Rect(24+i*183,584,171,42),labels[i],compactButton))garage.SelectTool((R41GarageTool)i);
                 compactButton.normal.background=buttonNormal;
             }
             GUI.backgroundColor=Color.white;

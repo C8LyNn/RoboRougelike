@@ -314,6 +314,49 @@ public sealed class UI943PortraitCatalogActionsTests
         yield return new ExitPlayMode();
     }
 
+    [UnityTest] public IEnumerator ChoosingGarageToolExplainsItsCurrentAction()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance?.Progress==null)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);yield return null;
+        var garage=run.Garage;
+        var method=typeof(R3GarageView).GetMethod("SelectTool",BindingFlags.Instance|BindingFlags.Public);
+        Assert.That(method,Is.Not.Null,"Manual tool choice must update the visible instructions.");
+        foreach(var item in new[]{(R41GarageTool.Inspect,"zaznacz"),(R41GarageTool.Repair,"napraw"),(R41GarageTool.Remove,"zdejmij")})
+        {
+            garage.Message="Stary komunikat o montażu.";
+            method.Invoke(garage,new object[]{item.Item1});
+            Assert.That(garage.Tool,Is.EqualTo(item.Item1));
+            Assert.That(garage.Message.ToLowerInvariant(),Does.Contain(item.Item2));
+            Assert.That(garage.Message,Does.Not.Contain("Stary komunikat"));
+        }
+        method.Invoke(garage,new object[]{R41GarageTool.Mount});
+        Assert.That(garage.Message.ToLowerInvariant(),Does.Contain("część"));
+        yield return new ExitPlayMode();
+    }
+
+    [UnityTest] public IEnumerator ValidGhostReplacesStalePlacementErrorWithMountHint()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance?.Progress==null)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);yield return null;
+        Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
+        var garage=run.Garage;garage.ChooseInventory(run.VehicleModel.Inventory.Last().Id);
+        yield return null;
+        bool found=false;
+        foreach(var socket in garage.AvailableMountPoints.ToArray())
+        {
+            var normal=socket.Rotation*Vector3.forward;
+            if(garage.Point(new Ray(socket.Position+normal*2,-normal))&&garage.PreviewValid){found=true;break;}
+        }
+        Assert.That(found,Is.True,"The real garage must provide a valid position for the selected block.");
+        garage.Message="Wybrane pole jest zajęte.";
+        var feedback=(string)Invoke(run.GetComponent<R1RunHUD>(),"SimpleGarageFeedback",run);
+        Assert.That(feedback,Does.Contain("LPM").And.Contain("zamontuj"));
+        Assert.That(feedback,Does.Not.Contain("Wybrane pole jest zajęte"));
+        yield return new ExitPlayMode();
+    }
+
     [UnityTest] public IEnumerator IncompleteGarageKeepsActionFeedbackAlongsideDeploymentWarning()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();

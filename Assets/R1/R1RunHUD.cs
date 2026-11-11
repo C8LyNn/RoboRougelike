@@ -370,7 +370,7 @@ namespace RoboRougelike.R1
             for(int i=0;i<4;i++)
             {
                 GUI.backgroundColor=garage.Tool==(R41GarageTool)i?new Color(0.3f,0.9f,0.9f):Color.white;
-                if(GUI.Button(new Rect(25+(i%2)*150,215+(i/2)*48,145,43),tools[i],compactButton))garage.SetTool((R41GarageTool)i);
+                if(GUI.Button(new Rect(25+(i%2)*150,215+(i/2)*48,145,43),tools[i],compactButton))garage.SelectTool((R41GarageTool)i);
             }
             GUI.backgroundColor=Color.white;
             DrawMovementGarage(run);
