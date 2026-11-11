@@ -1,0 +1,324 @@
+{
+ "id": "R4B_Tetra",
+ "block_kind": "Tetra",
+ "issue": 1232,
+ "art_direction": "B",
+ "art_direction_label": "B_Industrial",
+ "description": "1x1x1 tetra corner: three right-triangle faces + slanted face",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "bonds": [],
+ "note": null,
+ "contact_mask_local_anchor": 42,
+ "contact_mask_bits": "R3MountingGrid.FaceDirections order: right, left, up, down, forward, back (Unity)",
+ "ports": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "partial",
+   "center": [
+    -0.13,
+    0.13,
+    -0.26
+   ],
+   "half": [
+    0.2,
+    0.2
+   ],
+   "offset": [
+    0.2364,
+    -0.2364
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "partial",
+   "center": [
+    -0.13,
+    0.26,
+    -0.13
+   ],
+   "half": [
+    0.2,
+    0.2
+   ],
+   "offset": [
+    0.2364,
+    -0.2364
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "partial",
+   "center": [
+    -0.26,
+    0.13,
+    -0.13
+   ],
+   "half": [
+    0.2,
+    0.2
+   ],
+   "offset": [
+    -0.2364,
+    -0.2364
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 96.3,
+   "recessed_pct": 3.7,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "partial",
+   "approved_flush_pct": 93.8,
+   "PASS": true
+  },
+  {
+   "flush_pct": 96.3,
+   "recessed_pct": 3.7,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "partial",
+   "approved_flush_pct": 93.8,
+   "PASS": true
+  },
+  {
+   "flush_pct": 96.3,
+   "recessed_pct": 3.7,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "partial",
+   "approved_flush_pct": 93.8,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "left",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "interface_vs_approved": {
+  "approved_glb": "ModelFactory/R4Blocks/R4B_Tetra/R4B_Tetra.glb",
+  "approved_sha256": "36235a8f0e80800114f2156b78af6e820862e2403deb0a03bf922da93138bbec",
+  "empties_missing": [],
+  "empties_extra": [],
+  "pos_dev_mm": 0.0,
+  "axis_dev_deg": 0.0,
+  "ports_identical": true,
+  "cells_identical": true,
+  "contact_mask_approved": 42,
+  "contact_mask": 42,
+  "PASS": true
+ },
+ "mesh": {
+  "object": "R4B_Tetra",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 116,
+  "vertices": 60,
+  "uv": true,
+  "ok": true
+ },
+ "mesh_lod1": {
+  "object": "R4B_Tetra_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 20,
+  "vertices": 12,
+  "uv": true,
+  "ok": true
+ },
+ "approved_triangles": 2306,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.225,
+   -0.26
+  ],
+  [
+   0.225,
+   0.26,
+   0.225
+  ]
+ ],
+ "approved_bounds_m": [
+  [
+   -0.26,
+   -0.2437,
+   -0.26
+  ],
+  [
+   0.2437,
+   0.26,
+   0.2437
+  ]
+ ],
+ "inside_cells": true,
+ "max_outside_approved_solid_mm": 0.0,
+ "lod1_max_outside_approved_solid_mm": 0.0,
+ "materials": [
+  "R4P_Base",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "paint_zones": {
+  "R4P_Base": "Armor_Gunmetal",
+  "R4P_Secondary": "Armor_Dark",
+  "R4P_Trim": "Armor_Dark"
+ },
+ "style_parameters": {
+  "g": 0.005,
+  "w": 0.01,
+  "seg": 1,
+  "margin": 0.014,
+  "chamfer": 0.003,
+  "rho": 0.045,
+  "cseg": 1
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 60,
+   "triangles": 116,
+   "world_scale_dev": 0.0,
+   "empties": [
+    "Port_back_000_part",
+    "Port_down_000_part",
+    "Port_left_000_part",
+    "R4B_Tetra_ROOT",
+    "Socket_Mount"
+   ],
+   "empties_missing": [],
+   "empty_pos_dev_mm": 0.0001,
+   "empty_axis_dev_deg": 0.0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 192,
+   "triangles": 116,
+   "world_scale_dev": 0.0,
+   "empties": [
+    "Port_back_000_part",
+    "Port_down_000_part",
+    "Port_left_000_part",
+    "R4B_Tetra_ROOT",
+    "Socket_Mount"
+   ],
+   "empties_missing": [],
+   "empty_pos_dev_mm": 0.0,
+   "empty_axis_dev_deg": 0.0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4B_Tetra_34front.jpg",
+  "R4B_Tetra_34rear.jpg",
+  "R4B_Tetra_under.jpg"
+ ],
+ "collider": "unchanged - approved R4Blocks/R4B_Tetra/R4B_Tetra_colliders.glb (not re-authored in this pilot)",
+ "files": {
+  "R4B_Tetra.blend": {
+   "sha256": "72018f09a415b75297c01ba5399aa99832a5abffb1f348bf7041b70c3597c56d",
+   "bytes": 632652
+  },
+  "R4B_Tetra.fbx": {
+   "sha256": "b5a9861ab9b2f0137a68313ba8b62915ef2fac205386e640260a9660dc3534d3",
+   "bytes": 23868
+  },
+  "R4B_Tetra.glb": {
+   "sha256": "8e32edf2b40d0979c978251e073d6d964f271b49ea271703c9048b4debec0ad0",
+   "bytes": 11616
+  },
+  "R4B_Tetra_LOD1.fbx": {
+   "sha256": "e878b864b4e1dd16b9cbd66c3d47620dc2c509157197ea15761589c880d3456d",
+   "bytes": 17884
+  },
+  "R4B_Tetra_LOD1.glb": {
+   "sha256": "84623efd27042419559c1ff98f6591176029509909f66f6c37a502a7cab2c25b",
+   "bytes": 4552
+  }
+ },
+ "seconds": 0.6,
+ "blender": "5.3.0"
+}

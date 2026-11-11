@@ -1,0 +1,195 @@
+{
+ "id": "R4B_Tetra",
+ "issue": 1232,
+ "art_direction": "B_Industrial",
+ "replaces_visual_of": "PR #963 R4Blocks/R4B_Tetra (approved files untouched)",
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "axes": "file: +Y up, Port_forward = +Z, Port_right = +X (same as the approved GLB)",
+ "pivot": "cell centre (0,0,0), identical to PR #963",
+ "bounds_file_axes_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.225,
+   0.225,
+   0.225
+  ]
+ ],
+ "triangles": {
+  "LOD0": 116,
+  "LOD1": 20,
+  "approved_963": 2306
+ },
+ "paint_zones": {
+  "R4P_Base": {
+   "triangles": 16,
+   "default_r41_colour": "Armor_Gunmetal",
+   "rgb_linear": [
+    0.16,
+    0.17,
+    0.18
+   ]
+  },
+  "R4P_Secondary": {
+   "triangles": 52,
+   "default_r41_colour": "Armor_Dark",
+   "rgb_linear": [
+    0.035,
+    0.038,
+    0.045
+   ]
+  },
+  "R4P_Trim": {
+   "triangles": 48,
+   "default_r41_colour": "Armor_Dark",
+   "rgb_linear": [
+    0.035,
+    0.038,
+    0.045
+   ]
+  }
+ },
+ "interface_unchanged": {
+  "cells": [
+   [
+    0,
+    0,
+    0
+   ]
+  ],
+  "contact_mask_local_anchor": 42,
+  "ports": [
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "down",
+    "kind": "partial",
+    "center": [
+     -0.13,
+     0.13,
+     -0.26
+    ],
+    "half": [
+     0.2,
+     0.2
+    ],
+    "offset": [
+     0.2364,
+     -0.2364
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "back",
+    "kind": "partial",
+    "center": [
+     -0.13,
+     0.26,
+     -0.13
+    ],
+    "half": [
+     0.2,
+     0.2
+    ],
+    "offset": [
+     0.2364,
+     -0.2364
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "left",
+    "kind": "partial",
+    "center": [
+     -0.26,
+     0.13,
+     -0.13
+    ],
+    "half": [
+     0.2,
+     0.2
+    ],
+    "offset": [
+     -0.2364,
+     -0.2364
+    ]
+   }
+  ],
+  "empties": [
+   "Port_back_000_part",
+   "Port_down_000_part",
+   "Port_left_000_part",
+   "R4B_Tetra_ROOT",
+   "Socket_Mount"
+  ],
+  "colliders": "use approved R4Blocks/R4B_Tetra/R4B_Tetra_colliders.glb (no new collider authored)"
+ },
+ "style_parameters_m": {
+  "g": 0.005,
+  "w": 0.01,
+  "seg": 1,
+  "margin": 0.014,
+  "chamfer": 0.003,
+  "rho": 0.045,
+  "cseg": 1
+ },
+ "source": {
+  "generator": "scripts/r4panel.py + scripts/styles.py",
+  "mesh_source": "mesh_source/R4B_Tetra_B.json",
+  "blender_build": "scripts/build_blender.py",
+  "blender": "5.3.0"
+ },
+ "files": {
+  "R4B_Tetra.blend": {
+   "sha256": "72018f09a415b75297c01ba5399aa99832a5abffb1f348bf7041b70c3597c56d",
+   "bytes": 632652
+  },
+  "R4B_Tetra.fbx": {
+   "sha256": "b5a9861ab9b2f0137a68313ba8b62915ef2fac205386e640260a9660dc3534d3",
+   "bytes": 23868
+  },
+  "R4B_Tetra.glb": {
+   "sha256": "8e32edf2b40d0979c978251e073d6d964f271b49ea271703c9048b4debec0ad0",
+   "bytes": 11616
+  },
+  "R4B_Tetra_LOD1.fbx": {
+   "sha256": "e878b864b4e1dd16b9cbd66c3d47620dc2c509157197ea15761589c880d3456d",
+   "bytes": 17884
+  },
+  "R4B_Tetra_LOD1.glb": {
+   "sha256": "84623efd27042419559c1ff98f6591176029509909f66f6c37a502a7cab2c25b",
+   "bytes": 4552
+  },
+  "R4B_Tetra_QA.json": {
+   "sha256": "7104484d776a914dd5b345c21b39b8c65976e5669b2ffd31c048df1795093213",
+   "bytes": 5887
+  },
+  "renders/R4B_Tetra_34front.jpg": {
+   "sha256": "342d75c0bf339b692c11e8e836b4bf11c6ea666d3c8b5f5823adc2534097a2a5",
+   "bytes": 21824
+  },
+  "renders/R4B_Tetra_34rear.jpg": {
+   "sha256": "f609e7881fed9e9c4c542976ff5882ab70caa53497f715176bca330912256a3b",
+   "bytes": 21804
+  },
+  "renders/R4B_Tetra_under.jpg": {
+   "sha256": "6dd96577eab918d2a2b31cf2cac03418b191354c37dd5df28ded8d9a7623ff2a",
+   "bytes": 21646
+  }
+ }
+}

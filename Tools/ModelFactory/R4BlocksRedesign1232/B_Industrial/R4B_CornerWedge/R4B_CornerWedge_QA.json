@@ -1,0 +1,319 @@
+{
+ "id": "R4B_CornerWedge",
+ "block_kind": "CornerWedge",
+ "issue": 1232,
+ "art_direction": "B",
+ "art_direction_label": "B_Industrial",
+ "description": "1x1x1 corner wedge (pyramid corner): square base, apex at back-left-top",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "bonds": [],
+ "note": null,
+ "contact_mask_local_anchor": 42,
+ "contact_mask_bits": "R3MountingGrid.FaceDirections order: right, left, up, down, forward, back (Unity)",
+ "ports": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "partial",
+   "center": [
+    -0.13,
+    0.26,
+    -0.13
+   ],
+   "half": [
+    0.2,
+    0.2
+   ],
+   "offset": [
+    0.2364,
+    -0.2364
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "partial",
+   "center": [
+    -0.26,
+    0.13,
+    -0.13
+   ],
+   "half": [
+    0.2,
+    0.2
+   ],
+   "offset": [
+    -0.2364,
+    -0.2364
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 95.1,
+   "recessed_pct": 4.9,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "approved_flush_pct": 93.8,
+   "PASS": true
+  },
+  {
+   "flush_pct": 96.3,
+   "recessed_pct": 3.7,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "partial",
+   "approved_flush_pct": 93.8,
+   "PASS": true
+  },
+  {
+   "flush_pct": 96.3,
+   "recessed_pct": 3.7,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "partial",
+   "approved_flush_pct": 93.8,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "left",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "interface_vs_approved": {
+  "approved_glb": "ModelFactory/R4Blocks/R4B_CornerWedge/R4B_CornerWedge.glb",
+  "approved_sha256": "2ad69dff36e666d305afa143e66978b4a5f6b882bff513446fb8d3134c14b4bf",
+  "empties_missing": [],
+  "empties_extra": [],
+  "pos_dev_mm": 0.0,
+  "axis_dev_deg": 0.0,
+  "ports_identical": true,
+  "cells_identical": true,
+  "contact_mask_approved": 42,
+  "contact_mask": 42,
+  "PASS": true
+ },
+ "mesh": {
+  "object": "R4B_CornerWedge",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 158,
+  "vertices": 81,
+  "uv": true,
+  "ok": true
+ },
+ "mesh_lod1": {
+  "object": "R4B_CornerWedge_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 30,
+  "vertices": 17,
+  "uv": true,
+  "ok": true
+ },
+ "approved_triangles": 2416,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.2409,
+   -0.26
+  ],
+  [
+   0.2409,
+   0.26,
+   0.2257
+  ]
+ ],
+ "approved_bounds_m": [
+  [
+   -0.26,
+   -0.2529,
+   -0.26
+  ],
+  [
+   0.2529,
+   0.26,
+   0.2378
+  ]
+ ],
+ "inside_cells": true,
+ "max_outside_approved_solid_mm": 0.0,
+ "lod1_max_outside_approved_solid_mm": 0.0,
+ "materials": [
+  "R4P_Base",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "paint_zones": {
+  "R4P_Base": "Armor_Gunmetal",
+  "R4P_Secondary": "Armor_Dark",
+  "R4P_Trim": "Armor_Dark"
+ },
+ "style_parameters": {
+  "g": 0.005,
+  "w": 0.01,
+  "seg": 1,
+  "margin": 0.014,
+  "chamfer": 0.003,
+  "rho": 0.045,
+  "cseg": 1
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 81,
+   "triangles": 158,
+   "world_scale_dev": 0.0,
+   "empties": [
+    "Port_back_000_part",
+    "Port_down_000",
+    "Port_left_000_part",
+    "R4B_CornerWedge_ROOT",
+    "Socket_Mount"
+   ],
+   "empties_missing": [],
+   "empty_pos_dev_mm": 0.0001,
+   "empty_axis_dev_deg": 0.0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 257,
+   "triangles": 158,
+   "world_scale_dev": 0.0,
+   "empties": [
+    "Port_back_000_part",
+    "Port_down_000",
+    "Port_left_000_part",
+    "R4B_CornerWedge_ROOT",
+    "Socket_Mount"
+   ],
+   "empties_missing": [],
+   "empty_pos_dev_mm": 0.0,
+   "empty_axis_dev_deg": 0.0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4B_CornerWedge_34front.jpg",
+  "R4B_CornerWedge_34rear.jpg",
+  "R4B_CornerWedge_under.jpg"
+ ],
+ "collider": "unchanged - approved R4Blocks/R4B_CornerWedge/R4B_CornerWedge_colliders.glb (not re-authored in this pilot)",
+ "files": {
+  "R4B_CornerWedge.blend": {
+   "sha256": "a002b48db6d4aba3b5123cd655199c12fafe94a1aca0fc70360f607d69b95bee",
+   "bytes": 636275
+  },
+  "R4B_CornerWedge.fbx": {
+   "sha256": "4facdbaa3c8790696be8d8d7665341e3a30e64ea595c5c73a93571fd069d8e7b",
+   "bytes": 25132
+  },
+  "R4B_CornerWedge.glb": {
+   "sha256": "6392a6f4970da145325fb940d92c3cb83c9f7d4ab7a23eb2ed19c25f6967dc3e",
+   "bytes": 13944
+  },
+  "R4B_CornerWedge_LOD1.fbx": {
+   "sha256": "499cc5267057909a9200d53c172385ac7ef935600fc40bb3ebb97d47be135b11",
+   "bytes": 18300
+  },
+  "R4B_CornerWedge_LOD1.glb": {
+   "sha256": "c5ff0d3237d5c4db9950e3387a47ff3bb429bb84196a63547612f726f965c7dd",
+   "bytes": 5200
+  }
+ },
+ "seconds": 0.5,
+ "blender": "5.3.0"
+}

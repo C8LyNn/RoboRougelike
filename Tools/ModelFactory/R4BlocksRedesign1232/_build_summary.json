@@ -1,0 +1,574 @@
+{
+ "summary": {
+  "A_Sleek/R4B_Cube": [
+   "BLENDER_PASS",
+   [],
+   684
+  ],
+  "B_Industrial/R4B_Cube": [
+   "BLENDER_PASS",
+   [],
+   236
+  ],
+  "A_Sleek/R4B_Wedge": [
+   "BLENDER_PASS",
+   [],
+   512
+  ],
+  "B_Industrial/R4B_Wedge": [
+   "BLENDER_PASS",
+   [],
+   176
+  ],
+  "A_Sleek/R4B_Tetra": [
+   "BLENDER_PASS",
+   [],
+   340
+  ],
+  "B_Industrial/R4B_Tetra": [
+   "BLENDER_PASS",
+   [],
+   116
+  ],
+  "A_Sleek/R4B_CornerWedge": [
+   "BLENDER_PASS",
+   [],
+   454
+  ],
+  "B_Industrial/R4B_CornerWedge": [
+   "BLENDER_PASS",
+   [],
+   158
+  ],
+  "A_Sleek/R4B_HalfBlock": [
+   "BLENDER_PASS",
+   [],
+   684
+  ],
+  "B_Industrial/R4B_HalfBlock": [
+   "BLENDER_PASS",
+   [],
+   236
+  ]
+ },
+ "reference": {
+  "Cube": {
+   "glb": "ModelFactory/R4Blocks/R4B_Cube/R4B_Cube.glb",
+   "sha256": "f5084d93cb3c4097c8f9f911ed63f5a960efb4a24a094cd30f5083bf73a33a9c",
+   "empties": {
+    "Port_back_000": {
+     "loc": [
+      0.0,
+      0.26,
+      0.0
+     ],
+     "z_axis": [
+      -0.0,
+      1.0,
+      -0.0
+     ]
+    },
+    "Port_down_000": {
+     "loc": [
+      0.0,
+      0.0,
+      -0.26
+     ],
+     "z_axis": [
+      -0.0,
+      0.0,
+      -1.0
+     ]
+    },
+    "Port_forward_000": {
+     "loc": [
+      0.0,
+      -0.26,
+      0.0
+     ],
+     "z_axis": [
+      0.0,
+      -1.0,
+      -0.0
+     ]
+    },
+    "Port_left_000": {
+     "loc": [
+      -0.26,
+      0.0,
+      0.0
+     ],
+     "z_axis": [
+      -1.0,
+      0.0,
+      -0.0
+     ]
+    },
+    "Port_right_000": {
+     "loc": [
+      0.26,
+      0.0,
+      0.0
+     ],
+     "z_axis": [
+      1.0,
+      0.0,
+      -0.0
+     ]
+    },
+    "Port_up_000": {
+     "loc": [
+      0.0,
+      0.0,
+      0.26
+     ],
+     "z_axis": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    "R4B_Cube_ROOT": {
+     "loc": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "z_axis": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    "Socket_Mount": {
+     "loc": [
+      0.0,
+      0.0,
+      -0.26
+     ],
+     "z_axis": [
+      0.0,
+      0.0,
+      -1.0
+     ]
+    }
+   },
+   "bounds_m": [
+    [
+     -0.26,
+     -0.26,
+     -0.26
+    ],
+    [
+     0.26,
+     0.26,
+     0.26
+    ]
+   ],
+   "triangles": 5036,
+   "materials": [
+    "Armor_Dark",
+    "Armor_Gunmetal",
+    "Steel_Light"
+   ],
+   "renders": [
+    "R4B_Cube_before_34front.jpg",
+    "R4B_Cube_before_34rear.jpg",
+    "R4B_Cube_before_under.jpg"
+   ]
+  },
+  "Wedge": {
+   "glb": "ModelFactory/R4Blocks/R4B_Wedge/R4B_Wedge.glb",
+   "sha256": "eae3de19ebbc1be9527c2f1b59f46a2b9893da33e59e2d329c0127bb2fa6daa6",
+   "empties": {
+    "Port_back_000": {
+     "loc": [
+      0.0,
+      0.26,
+      0.0
+     ],
+     "z_axis": [
+      -0.0,
+      1.0,
+      -0.0
+     ]
+    },
+    "Port_down_000": {
+     "loc": [
+      0.0,
+      0.0,
+      -0.26
+     ],
+     "z_axis": [
+      -0.0,
+      0.0,
+      -1.0
+     ]
+    },
+    "Port_left_000_part": {
+     "loc": [
+      -0.26,
+      0.13002,
+      -0.13002
+     ],
+     "z_axis": [
+      -1.0,
+      0.0,
+      -0.0
+     ]
+    },
+    "Port_right_000_part": {
+     "loc": [
+      0.26,
+      0.13002,
+      -0.13002
+     ],
+     "z_axis": [
+      1.0,
+      0.0,
+      -0.0
+     ]
+    },
+    "R4B_Wedge_ROOT": {
+     "loc": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "z_axis": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    "Socket_Mount": {
+     "loc": [
+      0.0,
+      0.0,
+      -0.26
+     ],
+     "z_axis": [
+      0.0,
+      0.0,
+      -1.0
+     ]
+    }
+   },
+   "bounds_m": [
+    [
+     -0.26,
+     -0.2529,
+     -0.26
+    ],
+    [
+     0.26,
+     0.26,
+     0.2529
+    ]
+   ],
+   "triangles": 3252,
+   "materials": [
+    "Armor_Dark",
+    "Armor_Gunmetal",
+    "Steel_Light"
+   ],
+   "renders": [
+    "R4B_Wedge_before_34front.jpg",
+    "R4B_Wedge_before_34rear.jpg",
+    "R4B_Wedge_before_under.jpg"
+   ]
+  },
+  "Tetra": {
+   "glb": "ModelFactory/R4Blocks/R4B_Tetra/R4B_Tetra.glb",
+   "sha256": "36235a8f0e80800114f2156b78af6e820862e2403deb0a03bf922da93138bbec",
+   "empties": {
+    "Port_back_000_part": {
+     "loc": [
+      -0.13002,
+      0.26,
+      -0.13002
+     ],
+     "z_axis": [
+      -0.0,
+      1.0,
+      -0.0
+     ]
+    },
+    "Port_down_000_part": {
+     "loc": [
+      -0.13002,
+      0.13002,
+      -0.26
+     ],
+     "z_axis": [
+      -0.0,
+      0.0,
+      -1.0
+     ]
+    },
+    "Port_left_000_part": {
+     "loc": [
+      -0.26,
+      0.13002,
+      -0.13002
+     ],
+     "z_axis": [
+      -1.0,
+      0.0,
+      -0.0
+     ]
+    },
+    "R4B_Tetra_ROOT": {
+     "loc": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "z_axis": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    "Socket_Mount": {
+     "loc": [
+      0.0,
+      0.0,
+      -0.26
+     ],
+     "z_axis": [
+      0.0,
+      0.0,
+      -1.0
+     ]
+    }
+   },
+   "bounds_m": [
+    [
+     -0.26,
+     -0.2437,
+     -0.26
+    ],
+    [
+     0.2437,
+     0.26,
+     0.2437
+    ]
+   ],
+   "triangles": 2306,
+   "materials": [
+    "Armor_Dark",
+    "Armor_Gunmetal",
+    "Steel_Light"
+   ],
+   "renders": [
+    "R4B_Tetra_before_34front.jpg",
+    "R4B_Tetra_before_34rear.jpg",
+    "R4B_Tetra_before_under.jpg"
+   ]
+  },
+  "CornerWedge": {
+   "glb": "ModelFactory/R4Blocks/R4B_CornerWedge/R4B_CornerWedge.glb",
+   "sha256": "2ad69dff36e666d305afa143e66978b4a5f6b882bff513446fb8d3134c14b4bf",
+   "empties": {
+    "Port_back_000_part": {
+     "loc": [
+      -0.13002,
+      0.26,
+      -0.13002
+     ],
+     "z_axis": [
+      -0.0,
+      1.0,
+      -0.0
+     ]
+    },
+    "Port_down_000": {
+     "loc": [
+      0.0,
+      0.0,
+      -0.26
+     ],
+     "z_axis": [
+      -0.0,
+      0.0,
+      -1.0
+     ]
+    },
+    "Port_left_000_part": {
+     "loc": [
+      -0.26,
+      0.13002,
+      -0.13002
+     ],
+     "z_axis": [
+      -1.0,
+      0.0,
+      -0.0
+     ]
+    },
+    "R4B_CornerWedge_ROOT": {
+     "loc": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "z_axis": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    "Socket_Mount": {
+     "loc": [
+      0.0,
+      0.0,
+      -0.26
+     ],
+     "z_axis": [
+      0.0,
+      0.0,
+      -1.0
+     ]
+    }
+   },
+   "bounds_m": [
+    [
+     -0.26,
+     -0.2529,
+     -0.26
+    ],
+    [
+     0.2529,
+     0.26,
+     0.2378
+    ]
+   ],
+   "triangles": 2416,
+   "materials": [
+    "Armor_Dark",
+    "Armor_Gunmetal",
+    "Steel_Light"
+   ],
+   "renders": [
+    "R4B_CornerWedge_before_34front.jpg",
+    "R4B_CornerWedge_before_34rear.jpg",
+    "R4B_CornerWedge_before_under.jpg"
+   ]
+  },
+  "HalfBlock": {
+   "glb": "ModelFactory/R4Blocks/R4B_HalfBlock/R4B_HalfBlock.glb",
+   "sha256": "14be73c212cad669a5879ad8492bda2a6b2af18f1745ba8c3f227201dd659020",
+   "empties": {
+    "Port_back_000_part": {
+     "loc": [
+      0.0,
+      0.26,
+      -0.1375
+     ],
+     "z_axis": [
+      -0.0,
+      1.0,
+      -0.0
+     ]
+    },
+    "Port_down_000": {
+     "loc": [
+      0.0,
+      0.0,
+      -0.26
+     ],
+     "z_axis": [
+      -0.0,
+      0.0,
+      -1.0
+     ]
+    },
+    "Port_forward_000_part": {
+     "loc": [
+      0.0,
+      -0.26,
+      -0.1375
+     ],
+     "z_axis": [
+      0.0,
+      -1.0,
+      -0.0
+     ]
+    },
+    "Port_left_000_part": {
+     "loc": [
+      -0.26,
+      0.0,
+      -0.1375
+     ],
+     "z_axis": [
+      -1.0,
+      0.0,
+      -0.0
+     ]
+    },
+    "Port_right_000_part": {
+     "loc": [
+      0.26,
+      0.0,
+      -0.1375
+     ],
+     "z_axis": [
+      1.0,
+      0.0,
+      -0.0
+     ]
+    },
+    "R4B_HalfBlock_ROOT": {
+     "loc": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "z_axis": [
+      0.0,
+      0.0,
+      1.0
+     ]
+    },
+    "Socket_Mount": {
+     "loc": [
+      0.0,
+      0.0,
+      -0.26
+     ],
+     "z_axis": [
+      0.0,
+      0.0,
+      -1.0
+     ]
+    }
+   },
+   "bounds_m": [
+    [
+     -0.26,
+     -0.26,
+     -0.26
+    ],
+    [
+     0.26,
+     0.26,
+     -0.015
+    ]
+   ],
+   "triangles": 4716,
+   "materials": [
+    "Armor_Dark",
+    "Armor_Gunmetal",
+    "Steel_Light"
+   ],
+   "renders": [
+    "R4B_HalfBlock_before_34front.jpg",
+    "R4B_HalfBlock_before_34rear.jpg",
+    "R4B_HalfBlock_before_under.jpg"
+   ]
+  }
+ },
+ "blender": "5.3.0"
+}

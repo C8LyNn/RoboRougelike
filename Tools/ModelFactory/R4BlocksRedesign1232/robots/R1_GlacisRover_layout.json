@@ -1,0 +1,3948 @@
+{
+"name": "R1_GlacisRover",
+"axes": "file axes of the approved models: x = Port_right(+), y = up, z = Port_forward(+); cell = 0.55 m",
+"parts": [
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+-2,
+0,
+-3
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+-2,
+0,
+-2
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+-2,
+0,
+-1
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+-2,
+0,
+0
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+-2,
+0,
+1
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+-2,
+0,
+2
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+-2,
+0,
+3
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+-1,
+0,
+-3
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+-1,
+0,
+-2
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+-1,
+0,
+-1
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+-1,
+0,
+0
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+-1,
+0,
+1
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+-1,
+0,
+2
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+-1,
+0,
+3
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+0,
+0,
+-3
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+0,
+0,
+-2
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+0,
+0,
+-1
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+0,
+0,
+0
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+0,
+0,
+1
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+0,
+0,
+2
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+0,
+0,
+3
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+1,
+0,
+-3
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+1,
+0,
+-2
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+1,
+0,
+-1
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+1,
+0,
+0
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+1,
+0,
+1
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+1,
+0,
+2
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+1,
+0,
+3
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+2,
+0,
+-3
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+2,
+0,
+-2
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+2,
+0,
+-1
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+2,
+0,
+0
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+2,
+0,
+1
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+2,
+0,
+2
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+2,
+0,
+3
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Wedge",
+"cell": [
+-1,
+0,
+4
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+0,
+-1
+],
+[
+0,
+1,
+0
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Wedge",
+"cell": [
+-1,
+0,
+-4
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+-1,
+0
+],
+[
+0,
+0,
+-1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Wedge",
+"cell": [
+0,
+0,
+4
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+0,
+-1
+],
+[
+0,
+1,
+0
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Wedge",
+"cell": [
+0,
+0,
+-4
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+-1,
+0
+],
+[
+0,
+0,
+-1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Wedge",
+"cell": [
+1,
+0,
+4
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+0,
+-1
+],
+[
+0,
+1,
+0
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Wedge",
+"cell": [
+1,
+0,
+-4
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+-1,
+0
+],
+[
+0,
+0,
+-1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_CornerWedge",
+"cell": [
+-2,
+0,
+4
+],
+"rot3x3": [
+[
+-1,
+0,
+0
+],
+[
+0,
+-1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_CornerWedge",
+"cell": [
+-2,
+0,
+-4
+],
+"rot3x3": [
+[
+0,
+0,
+-1
+],
+[
+0,
+-1,
+0
+],
+[
+-1,
+0,
+0
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_CornerWedge",
+"cell": [
+2,
+0,
+4
+],
+"rot3x3": [
+[
+0,
+0,
+1
+],
+[
+0,
+-1,
+0
+],
+[
+1,
+0,
+0
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_CornerWedge",
+"cell": [
+2,
+0,
+-4
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+-1,
+0
+],
+[
+0,
+0,
+-1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+-2,
+1,
+-3
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+-2,
+1,
+-2
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+-2,
+1,
+-1
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+-2,
+1,
+0
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+-2,
+1,
+1
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+-2,
+1,
+2
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+-2,
+1,
+3
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+-1,
+1,
+-3
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+-1,
+1,
+-2
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+-1,
+1,
+-1
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+-1,
+1,
+0
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+-1,
+1,
+1
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+-1,
+1,
+2
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+-1,
+1,
+3
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+0,
+1,
+-3
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "accent"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+0,
+1,
+-2
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "accent"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+0,
+1,
+-1
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "accent"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+0,
+1,
+0
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "accent"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+0,
+1,
+1
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "accent"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+0,
+1,
+2
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "accent"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+0,
+1,
+3
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "accent"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+1,
+1,
+-3
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+1,
+1,
+-2
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+1,
+1,
+-1
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+1,
+1,
+0
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+1,
+1,
+1
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+1,
+1,
+2
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+1,
+1,
+3
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+2,
+1,
+-3
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+2,
+1,
+-2
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+2,
+1,
+-1
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+2,
+1,
+0
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+2,
+1,
+1
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+2,
+1,
+2
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+2,
+1,
+3
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Wedge",
+"cell": [
+-1,
+1,
+4
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Wedge",
+"cell": [
+-1,
+1,
+-4
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+0,
+1
+],
+[
+0,
+-1,
+0
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Wedge",
+"cell": [
+0,
+1,
+4
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "accent"
+},
+{
+"type": "block",
+"model": "R4B_Wedge",
+"cell": [
+0,
+1,
+-4
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+0,
+1
+],
+[
+0,
+-1,
+0
+]
+],
+"paint": "accent"
+},
+{
+"type": "block",
+"model": "R4B_Wedge",
+"cell": [
+1,
+1,
+4
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Wedge",
+"cell": [
+1,
+1,
+-4
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+0,
+1
+],
+[
+0,
+-1,
+0
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_CornerWedge",
+"cell": [
+-2,
+1,
+4
+],
+"rot3x3": [
+[
+0,
+0,
+-1
+],
+[
+0,
+1,
+0
+],
+[
+1,
+0,
+0
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_CornerWedge",
+"cell": [
+-2,
+1,
+-4
+],
+"rot3x3": [
+[
+-1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+-1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_CornerWedge",
+"cell": [
+2,
+1,
+4
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_CornerWedge",
+"cell": [
+2,
+1,
+-4
+],
+"rot3x3": [
+[
+0,
+0,
+1
+],
+[
+0,
+1,
+0
+],
+[
+-1,
+0,
+0
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+-1,
+2,
+-2
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+-1,
+2,
+-1
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+-1,
+2,
+0
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Wedge",
+"cell": [
+-1,
+2,
+1
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Wedge",
+"cell": [
+-1,
+2,
+-3
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+0,
+1
+],
+[
+0,
+-1,
+0
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+0,
+2,
+-2
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "accent"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+0,
+2,
+-1
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "accent"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+0,
+2,
+0
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "accent"
+},
+{
+"type": "block",
+"model": "R4B_Wedge",
+"cell": [
+0,
+2,
+1
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "accent"
+},
+{
+"type": "block",
+"model": "R4B_Wedge",
+"cell": [
+0,
+2,
+-3
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+0,
+1
+],
+[
+0,
+-1,
+0
+]
+],
+"paint": "accent"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+1,
+2,
+-2
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+1,
+2,
+-1
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Cube",
+"cell": [
+1,
+2,
+0
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Wedge",
+"cell": [
+1,
+2,
+1
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Wedge",
+"cell": [
+1,
+2,
+-3
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+0,
+1
+],
+[
+0,
+-1,
+0
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Wedge",
+"cell": [
+-2,
+2,
+-2
+],
+"rot3x3": [
+[
+0,
+0,
+-1
+],
+[
+0,
+1,
+0
+],
+[
+1,
+0,
+0
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Wedge",
+"cell": [
+-2,
+2,
+-1
+],
+"rot3x3": [
+[
+0,
+0,
+-1
+],
+[
+0,
+1,
+0
+],
+[
+1,
+0,
+0
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Wedge",
+"cell": [
+-2,
+2,
+0
+],
+"rot3x3": [
+[
+0,
+0,
+-1
+],
+[
+0,
+1,
+0
+],
+[
+1,
+0,
+0
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Tetra",
+"cell": [
+-2,
+2,
+1
+],
+"rot3x3": [
+[
+0,
+-1,
+0
+],
+[
+1,
+0,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Tetra",
+"cell": [
+-2,
+2,
+-3
+],
+"rot3x3": [
+[
+0,
+-1,
+0
+],
+[
+0,
+0,
+1
+],
+[
+-1,
+0,
+0
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Wedge",
+"cell": [
+2,
+2,
+-2
+],
+"rot3x3": [
+[
+0,
+0,
+1
+],
+[
+0,
+1,
+0
+],
+[
+-1,
+0,
+0
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Wedge",
+"cell": [
+2,
+2,
+-1
+],
+"rot3x3": [
+[
+0,
+0,
+1
+],
+[
+0,
+1,
+0
+],
+[
+-1,
+0,
+0
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Wedge",
+"cell": [
+2,
+2,
+0
+],
+"rot3x3": [
+[
+0,
+0,
+1
+],
+[
+0,
+1,
+0
+],
+[
+-1,
+0,
+0
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Tetra",
+"cell": [
+2,
+2,
+1
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_Tetra",
+"cell": [
+2,
+2,
+-3
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+0,
+1
+],
+[
+0,
+-1,
+0
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_HalfBlock",
+"cell": [
+-1,
+3,
+-2
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_HalfBlock",
+"cell": [
+-1,
+3,
+-1
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_HalfBlock",
+"cell": [
+-1,
+3,
+0
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_HalfBlock",
+"cell": [
+1,
+3,
+-2
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_HalfBlock",
+"cell": [
+1,
+3,
+-1
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_HalfBlock",
+"cell": [
+1,
+3,
+0
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "hull"
+},
+{
+"type": "block",
+"model": "R4B_HalfBlock",
+"cell": [
+0,
+3,
+-1
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": "accent"
+},
+{
+"type": "block",
+"model": "R4B_HalfBlock",
+"cell": [
+-3,
+1,
+-3
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+-1,
+0
+],
+[
+0,
+0,
+-1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_HalfBlock",
+"cell": [
+-3,
+1,
+-2
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+-1,
+0
+],
+[
+0,
+0,
+-1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_HalfBlock",
+"cell": [
+-3,
+1,
+-1
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+-1,
+0
+],
+[
+0,
+0,
+-1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_HalfBlock",
+"cell": [
+-3,
+1,
+0
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+-1,
+0
+],
+[
+0,
+0,
+-1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_HalfBlock",
+"cell": [
+-3,
+1,
+1
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+-1,
+0
+],
+[
+0,
+0,
+-1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_HalfBlock",
+"cell": [
+-3,
+1,
+2
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+-1,
+0
+],
+[
+0,
+0,
+-1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_HalfBlock",
+"cell": [
+-3,
+1,
+3
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+-1,
+0
+],
+[
+0,
+0,
+-1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_HalfBlock",
+"cell": [
+3,
+1,
+-3
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+-1,
+0
+],
+[
+0,
+0,
+-1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_HalfBlock",
+"cell": [
+3,
+1,
+-2
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+-1,
+0
+],
+[
+0,
+0,
+-1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_HalfBlock",
+"cell": [
+3,
+1,
+-1
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+-1,
+0
+],
+[
+0,
+0,
+-1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_HalfBlock",
+"cell": [
+3,
+1,
+0
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+-1,
+0
+],
+[
+0,
+0,
+-1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_HalfBlock",
+"cell": [
+3,
+1,
+1
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+-1,
+0
+],
+[
+0,
+0,
+-1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_HalfBlock",
+"cell": [
+3,
+1,
+2
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+-1,
+0
+],
+[
+0,
+0,
+-1
+]
+],
+"paint": "belly"
+},
+{
+"type": "block",
+"model": "R4B_HalfBlock",
+"cell": [
+3,
+1,
+3
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+-1,
+0
+],
+[
+0,
+0,
+-1
+]
+],
+"paint": "belly"
+},
+{
+"type": "wheel",
+"model": "wheels:R4M_WheelL_Side_Offroad",
+"cell": [
+3,
+0,
+-3
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": null
+},
+{
+"type": "wheel",
+"model": "wheels:R4M_WheelL_Side_Offroad",
+"cell": [
+-3,
+0,
+-3
+],
+"rot3x3": [
+[
+-1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+-1
+]
+],
+"paint": null
+},
+{
+"type": "wheel",
+"model": "wheels:R4M_WheelL_Side_Offroad",
+"cell": [
+3,
+0,
+0
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": null
+},
+{
+"type": "wheel",
+"model": "wheels:R4M_WheelL_Side_Offroad",
+"cell": [
+-3,
+0,
+0
+],
+"rot3x3": [
+[
+-1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+-1
+]
+],
+"paint": null
+},
+{
+"type": "wheel",
+"model": "wheels:R4M_WheelL_Side_Offroad",
+"cell": [
+3,
+0,
+3
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": null
+},
+{
+"type": "wheel",
+"model": "wheels:R4M_WheelL_Side_Offroad",
+"cell": [
+-3,
+0,
+3
+],
+"rot3x3": [
+[
+-1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+-1
+]
+],
+"paint": null
+},
+{
+"type": "weapon",
+"model": "weapons:R4W_Railgun",
+"cell": [
+0,
+3,
+0
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": null
+},
+{
+"type": "weapon",
+"model": "weapons:R4W_RocketLauncher",
+"cell": [
+0,
+3,
+-2
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": null
+},
+{
+"type": "weapon",
+"model": "weapons:R4W_Basic",
+"cell": [
+-1,
+2,
+2
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": null
+},
+{
+"type": "weapon",
+"model": "weapons:R4W_Basic",
+"cell": [
+1,
+2,
+2
+],
+"rot3x3": [
+[
+1,
+0,
+0
+],
+[
+0,
+1,
+0
+],
+[
+0,
+0,
+1
+]
+],
+"paint": null
+}
+]
+}

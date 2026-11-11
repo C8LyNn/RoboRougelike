@@ -1,0 +1,236 @@
+{
+ "id": "R4B_HalfBlock",
+ "issue": 1232,
+ "art_direction": "A_Sleek",
+ "replaces_visual_of": "PR #963 R4Blocks/R4B_HalfBlock (approved files untouched)",
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "axes": "file: +Y up, Port_forward = +Z, Port_right = +X (same as the approved GLB)",
+ "pivot": "cell centre (0,0,0), identical to PR #963",
+ "bounds_file_axes_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   -0.015,
+   0.26
+  ]
+ ],
+ "triangles": {
+  "LOD0": 684,
+  "LOD1": 44,
+  "approved_963": 4716
+ },
+ "paint_zones": {
+  "R4P_Base": {
+   "triangles": 108,
+   "default_r41_colour": "Armor_Plate_Light",
+   "rgb_linear": [
+    0.27,
+    0.28,
+    0.285
+   ]
+  },
+  "R4P_Secondary": {
+   "triangles": 336,
+   "default_r41_colour": "Armor_Gunmetal",
+   "rgb_linear": [
+    0.16,
+    0.17,
+    0.18
+   ]
+  },
+  "R4P_Trim": {
+   "triangles": 240,
+   "default_r41_colour": "Armor_Dark",
+   "rgb_linear": [
+    0.035,
+    0.038,
+    0.045
+   ]
+  }
+ },
+ "interface_unchanged": {
+  "cells": [
+   [
+    0,
+    0,
+    0
+   ]
+  ],
+  "contact_mask_local_anchor": 59,
+  "ports": [
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "down",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "right",
+    "kind": "partial",
+    "center": [
+     0.26,
+     0.0,
+     -0.1375
+    ],
+    "half": [
+     0.45,
+     0.22
+    ],
+    "offset": [
+     0.0,
+     -0.25
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "left",
+    "kind": "partial",
+    "center": [
+     -0.26,
+     0.0,
+     -0.1375
+    ],
+    "half": [
+     0.45,
+     0.22
+    ],
+    "offset": [
+     0.0,
+     -0.25
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "forward",
+    "kind": "partial",
+    "center": [
+     0.0,
+     -0.26,
+     -0.1375
+    ],
+    "half": [
+     0.45,
+     0.22
+    ],
+    "offset": [
+     0.0,
+     -0.25
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "back",
+    "kind": "partial",
+    "center": [
+     0.0,
+     0.26,
+     -0.1375
+    ],
+    "half": [
+     0.45,
+     0.22
+    ],
+    "offset": [
+     0.0,
+     -0.25
+    ]
+   }
+  ],
+  "empties": [
+   "Port_back_000_part",
+   "Port_down_000",
+   "Port_forward_000_part",
+   "Port_left_000_part",
+   "Port_right_000_part",
+   "R4B_HalfBlock_ROOT",
+   "Socket_Mount"
+  ],
+  "colliders": "use approved R4Blocks/R4B_HalfBlock/R4B_HalfBlock_colliders.glb (no new collider authored)"
+ },
+ "style_parameters_m": {
+  "g": 0.004,
+  "w": 0.02,
+  "seg": 4,
+  "margin": 0.006,
+  "chamfer": 0.004,
+  "rho": 0.04,
+  "cseg": 4
+ },
+ "source": {
+  "generator": "scripts/r4panel.py + scripts/styles.py",
+  "mesh_source": "mesh_source/R4B_HalfBlock_A.json",
+  "blender_build": "scripts/build_blender.py",
+  "blender": "5.3.0"
+ },
+ "files": {
+  "R4B_HalfBlock.blend": {
+   "sha256": "200fbd6d83c27f14ba98b7bf92ad9e0c4c7d2d376f7280b66c1e9491a5f39b19",
+   "bytes": 676378
+  },
+  "R4B_HalfBlock.fbx": {
+   "sha256": "f5aa405483505ad54f532071caf33a6ce5b227975596f1d0f41bea8152e83b92",
+   "bytes": 35708
+  },
+  "R4B_HalfBlock.glb": {
+   "sha256": "f667eec264924ce43b3c0da72952a801131b7151885a911a1398898f18b6d53c",
+   "bytes": 29748
+  },
+  "R4B_HalfBlock_LOD1.fbx": {
+   "sha256": "aea842f13bc9d1c04a715f9fa829b322867d08266d049d280a7e7334b053b848",
+   "bytes": 18140
+  },
+  "R4B_HalfBlock_LOD1.glb": {
+   "sha256": "e7f430859c80f43c4faf95ae5921806e2cae0c498e50d96628de651d2e76f738",
+   "bytes": 6232
+  },
+  "R4B_HalfBlock_QA.json": {
+   "sha256": "826dacd052da0f72c4b76882a0be698fc0dbf13b4da0887e58761a3a55a98ba0",
+   "bytes": 7330
+  },
+  "renders/R4B_HalfBlock_34front.jpg": {
+   "sha256": "bc03f947d40aa70ea399c36c36999244400a2ae49978cf8a8e0d44abd6826b60",
+   "bytes": 24691
+  },
+  "renders/R4B_HalfBlock_34rear.jpg": {
+   "sha256": "bde7ae842ae5c64fcad4adeb3218950715f12cae2178ca95e76f29804f2d0ef7",
+   "bytes": 26266
+  },
+  "renders/R4B_HalfBlock_under.jpg": {
+   "sha256": "4b958c2198c9adbe28b8a008592bcd2f06400eefbf5856df1b86d3b5a5c733e6",
+   "bytes": 26691
+  }
+ }
+}

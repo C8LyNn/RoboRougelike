@@ -1,0 +1,208 @@
+{
+ "id": "R4B_Wedge",
+ "issue": 1232,
+ "art_direction": "A_Sleek",
+ "replaces_visual_of": "PR #963 R4Blocks/R4B_Wedge (approved files untouched)",
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "axes": "file: +Y up, Port_forward = +Z, Port_right = +X (same as the approved GLB)",
+ "pivot": "cell centre (0,0,0), identical to PR #963",
+ "bounds_file_axes_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.2385,
+   0.2385
+  ]
+ ],
+ "triangles": {
+  "LOD0": 512,
+  "LOD1": 32,
+  "approved_963": 3252
+ },
+ "paint_zones": {
+  "R4P_Base": {
+   "triangles": 80,
+   "default_r41_colour": "Armor_Plate_Light",
+   "rgb_linear": [
+    0.27,
+    0.28,
+    0.285
+   ]
+  },
+  "R4P_Secondary": {
+   "triangles": 252,
+   "default_r41_colour": "Armor_Gunmetal",
+   "rgb_linear": [
+    0.16,
+    0.17,
+    0.18
+   ]
+  },
+  "R4P_Trim": {
+   "triangles": 180,
+   "default_r41_colour": "Armor_Dark",
+   "rgb_linear": [
+    0.035,
+    0.038,
+    0.045
+   ]
+  }
+ },
+ "interface_unchanged": {
+  "cells": [
+   [
+    0,
+    0,
+    0
+   ]
+  ],
+  "contact_mask_local_anchor": 43,
+  "ports": [
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "down",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "back",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "left",
+    "kind": "partial",
+    "center": [
+     -0.26,
+     0.13,
+     -0.13
+    ],
+    "half": [
+     0.2,
+     0.2
+    ],
+    "offset": [
+     -0.2364,
+     -0.2364
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "right",
+    "kind": "partial",
+    "center": [
+     0.26,
+     0.13,
+     -0.13
+    ],
+    "half": [
+     0.2,
+     0.2
+    ],
+    "offset": [
+     0.2364,
+     -0.2364
+    ]
+   }
+  ],
+  "empties": [
+   "Port_back_000",
+   "Port_down_000",
+   "Port_left_000_part",
+   "Port_right_000_part",
+   "R4B_Wedge_ROOT",
+   "Socket_Mount"
+  ],
+  "colliders": "use approved R4Blocks/R4B_Wedge/R4B_Wedge_colliders.glb (no new collider authored)"
+ },
+ "style_parameters_m": {
+  "g": 0.004,
+  "w": 0.02,
+  "seg": 4,
+  "margin": 0.006,
+  "chamfer": 0.004,
+  "rho": 0.04,
+  "cseg": 4
+ },
+ "source": {
+  "generator": "scripts/r4panel.py + scripts/styles.py",
+  "mesh_source": "mesh_source/R4B_Wedge_A.json",
+  "blender_build": "scripts/build_blender.py",
+  "blender": "5.3.0"
+ },
+ "files": {
+  "R4B_Wedge.blend": {
+   "sha256": "a30f3a57177d2ba4bee645e7f6d2be1feabf1dce122573b701d012e4c37bcedf",
+   "bytes": 661939
+  },
+  "R4B_Wedge.fbx": {
+   "sha256": "2e3b08b8c12d332bfca05f8f5515a66e7f232047be2ed31ceef0984b2f147699",
+   "bytes": 33580
+  },
+  "R4B_Wedge.glb": {
+   "sha256": "d44a61d3e4f56ae35350b37b85b83e8213be5b75bed9cdd6bf363575b0f8b3a3",
+   "bytes": 23944
+  },
+  "R4B_Wedge_LOD1.fbx": {
+   "sha256": "17f395c737f984608f3d88c975b280b182480c6317f484f721548f025f1bc01f",
+   "bytes": 18140
+  },
+  "R4B_Wedge_LOD1.glb": {
+   "sha256": "d04c15043eb5720ad79abb1629d87544e00bc73970a3689d251d5eda8d305e95",
+   "bytes": 5400
+  },
+  "R4B_Wedge_QA.json": {
+   "sha256": "94fd78d2d119c223d5bb5eb753babf803a1e33c0343ad7e7631289b6560e459d",
+   "bytes": 6428
+  },
+  "renders/R4B_Wedge_34front.jpg": {
+   "sha256": "eee52a6dffde2e052b5ad053c20bb68e0f46dd094c0bcf96406cbcb0976b0c0a",
+   "bytes": 27711
+  },
+  "renders/R4B_Wedge_34rear.jpg": {
+   "sha256": "7316af1282b212bf1c3e4f65f7881268a1c06e9286115ec349ca51001305c33b",
+   "bytes": 23163
+  },
+  "renders/R4B_Wedge_under.jpg": {
+   "sha256": "8b8ee717537fe6a735cbbb8ac21d5ccdb659ede6d3311755397032e03c5269d6",
+   "bytes": 24013
+  }
+ }
+}
