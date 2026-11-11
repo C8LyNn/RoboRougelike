@@ -28,6 +28,24 @@ public class LightStylePrototypeTests
     }
 
     [UnityTest]
+    public IEnumerator StartsOffAtZeroAndCanStillBeEnabledExplicitly()
+    {
+        var filter=LightStylePrototype.Instance;
+        Assert.That(filter.Enabled,Is.False);
+        Assert.That(filter.Strength,Is.Zero,"Początkowa siła filtra musi wynosić 0%.");
+        var data=Camera.main.GetUniversalAdditionalCameraData();
+        bool original=data.renderPostProcessing;int originalMask=data.volumeLayerMask.value;
+        filter.SetEnabled(true);
+        Assert.That(data.renderPostProcessing,Is.EqualTo(original));
+        Assert.That(data.volumeLayerMask.value,Is.EqualTo(originalMask));
+        filter.SetStrength(.6f);
+        Assert.That(data.renderPostProcessing,Is.True,"Ręczne włączenie filtra nadal musi działać.");
+        filter.SetEnabled(false);
+        Assert.That(data.renderPostProcessing,Is.EqualTo(original));
+        yield return null;
+    }
+
+    [UnityTest]
     public IEnumerator ProfileContainsOnlyColorAndWhiteBalance()
     {
         var profile = Resources.Load<VolumeProfile>("VisualPrototype/LekkaStylizacja");

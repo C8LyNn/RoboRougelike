@@ -274,7 +274,7 @@ namespace RoboRougelike.R1
             {
                 dismantleConfirmation=null;
                 if(AddSelectedCatalogPart(run,kind,weapon))
-                {var purchased=model.Inventory.Last();garage.ChooseInventory(purchased.Id);DismissCatalog();garage.Message="Kupiono część. Kliknij pojazd, aby ją zamontować.";}
+                {var purchased=model.Inventory.Last();garage.ChooseInventory(purchased.Id);DismissCatalog();garage.Message=run.CreativeWorkshop?"Dodano część za darmo. Kliknij pojazd, aby ją zamontować.":"Kupiono część. Kliknij pojazd, aby ją zamontować.";}
                 else catalogFeedback=garage.Message=PurchaseFailure(run,kind,weapon);
             }
             DrawBuyFive(run,kind,weapon,new Rect(1112,340,138,40));

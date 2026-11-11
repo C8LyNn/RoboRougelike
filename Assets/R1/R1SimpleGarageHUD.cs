@@ -185,7 +185,9 @@ namespace RoboRougelike.R1
                 bought++;
             }
             if(bought>0)run.Garage.ChooseInventory(model.Inventory.Last().Id);
-            string message=bought==5?$"Kupiono 5 części • koszt {before-model.Scrap} Z. Wybierz miejsce montażu.":
+            string message=model.CreativeMode&&bought==5?"Dodano 5 części za darmo. Wybierz miejsce montażu.":
+                model.CreativeMode?$"Dodano {bought}/5 części za darmo. "+PurchaseFailure(run,kind,weapon):
+                bought==5?$"Kupiono 5 części • koszt {before-model.Scrap} Z. Wybierz miejsce montażu.":
                 $"Kupiono {bought}/5 • {before-model.Scrap} Z. "+PurchaseFailure(run,kind,weapon);
             if(catalogWasOpen&&bought==5)DismissCatalog();
             run.Garage.Message=message;
@@ -210,6 +212,12 @@ namespace RoboRougelike.R1
         static string GarageEmergencyRepairCaption(int cost,int scrap,bool canDeploy)=>
             cost<=0?(canDeploy?"Odbudowa niepotrzebna":"Odbudowa niedostępna"):
             scrap<cost?$"Brakuje {cost-scrap} Z na odbudowę":$"Odbudowa awaryjna — {cost} Z";
+
+        static string GarageWeaponGroups(R3VehicleModel model)
+        {
+            bool extra=model.CreativeMode&&model.Parts.Where(p=>p.Kind==R3PartKind.Gun).Select(p=>p.Weapon).Distinct().Count()>2;
+            return "A / LPM: "+WeaponGroupName(model.WeaponGroupA)+"\nB / PPM: "+WeaponGroupName(model.WeaponGroupB)+(extra?" + pozostałe":"");
+        }
 
         static string GarageInspectionSummary(R3VehicleModel model,R3PartState part)
         {
@@ -301,7 +309,7 @@ namespace RoboRougelike.R1
                 GarageWheelPowerAdvice(drive.ActivePowerUnits);
         }
 
-        // One click chooses an owned instance; buying remains a separate, explicit action.
+        // Expedition purchases stay explicit; creative selection can supply a free item.
         void SelectQuickPart(R1RunController run,R3PartKind kind,R4WeaponKind weapon,string bonus)
         {
             catalogGroup=kind;catalogWeapon=weapon;catalogBonusId=bonus;
@@ -309,6 +317,8 @@ namespace RoboRougelike.R1
             garage.SelectedPart=kind;garage.SelectedWeapon=weapon;garage.UseInventory=true;
             var part=run.VehicleModel.Inventory.Where(p=>InCatalogGroup(p,kind,weapon,bonus)&&p.Health>0)
                 .OrderByDescending(p=>p.Health).FirstOrDefault();
+            if(part==null&&run.CreativeWorkshop&&AddSelectedCatalogPart(run,kind,weapon))
+                part=run.VehicleModel.Inventory.LastOrDefault();
             if(part!=null){garage.ChooseInventory(part.Id);garage.Message=kind==R3PartKind.BonusModule?
                 $"Moduł T{R3VehicleModel.NormalizedTier(part.Tier)}: {BonusInstanceText(part)}. Kliknij, aby zamontować.":kind==R3PartKind.Battery?
                 $"Bateria T{R3VehicleModel.NormalizedTier(part.Tier)}: +{VehicleEnergyState.BatteryCapacity*R3VehicleModel.TierEffectUnits(part.Tier):0} maks. energii. Kliknij, aby zamontować.":
@@ -321,7 +331,8 @@ namespace RoboRougelike.R1
                 kind==R3PartKind.Armor&&part.ArmorShape==R3ArmorShape.Wedge?"Klin: montaż od spodu lub od tylnej płaskiej ściany. Obracaj Q/E, R/F, Z/X.":
                 kind==R3PartKind.Wheel?GarageWheelSelection(part):"Kliknij pojazd, aby zamontować część.";}
             else {garage.SelectedInventoryId=null;garage.SetTool(R41GarageTool.Mount);
-                garage.Message=kind==R3PartKind.BonusModule?"Brak sprawnego bonusu. Otwórz egzemplarze i napraw część.":
+                garage.Message=run.CreativeWorkshop?"Ta część jest obecnie niedostępna w poligonie.":
+                    kind==R3PartKind.BonusModule?"Brak sprawnego bonusu. Otwórz egzemplarze i napraw część.":
                     run.VehicleModel.Inventory.Any(p=>InCatalogGroup(p,kind,weapon,bonus))?"Brak sprawnej części. Otwórz egzemplarze i napraw ją.":
                     !run.CanBuyTechnology(kind,weapon)?"Zablokowane: pokonaj przeciwnika z tą bronią, aby odkryć technologię.":kind==R3PartKind.Battery?
                     $"Bateria T1: +{VehicleEnergyState.BatteryCapacity:0} maks. energii. Kup część lub otwórz szczegóły.":kind==R3PartKind.RepairPulse?
@@ -341,6 +352,7 @@ namespace RoboRougelike.R1
                     kind==R3PartKind.Wheel&&CatalogWheelStyle(bonus)==R3WheelStyle.SmallFork?"Małe koło: 6 kg, −35% siły przyczepności. Mocowanie od góry.":
                     kind==R3PartKind.Wheel&&CatalogWheelStyle(bonus)==R3WheelStyle.Monster?$"Koło monster: 24 kg, +50% przyczepności; obrys {(R3VehicleModel.UseEnlargedEquipment?"3×3":"1 pole")}. Kup część.":
                     kind==R3PartKind.Wheel&&CatalogWheelStyle(bonus)==R3WheelStyle.LargeOffroad?$"Koło terenowe: 18 kg, +25% przyczepności; obrys {(R3VehicleModel.UseEnlargedEquipment?"3×3":"1 pole")}. Kup część.":"Brak sprawnej części w magazynie. Kup nową lub otwórz szczegóły.";}
+            if(part!=null&&run.CreativeWorkshop)garage.Message+=" • za darmo.";
         }
 
         void DrawQuickPartRow(R1RunController run,R3PartKind kind,R4WeaponKind weapon,string bonus,string name,int row,float width)
@@ -432,7 +444,7 @@ namespace RoboRougelike.R1
             var owned=model.Inventory.FirstOrDefault(p=>p.Id==garage.SelectedInventoryId);
             var inspected=garage.Tool!=R41GarageTool.Mount&&garage.HasTarget?model.At(garage.Cell):null;
             GUI.Label(new Rect(12,511,245,43),inspected!=null?GarageInspectionSummary(model,inspected):owned!=null?$"Wybrano: {R4WeaponDefinition.PartName(owned)} • HP {owned.Health*100:0}%":
-                catalogGroup.HasValue?"Wybierz egzemplarz lub kup część.":"Wybierz część z listy.",small);
+                catalogGroup.HasValue?(model.CreativeMode?"Wybierz egzemplarz lub dodaj część za darmo.":"Wybierz egzemplarz lub kup część."):"Wybierz część z listy.",small);
             var inspectedWheel=garage.Tool==R41GarageTool.Inspect?inspected:null;
             if(inspectedWheel!=null&&inspectedWheel.Kind==R3PartKind.Wheel&&!R3VehicleModel.CanSwapWheelAppearance(inspectedWheel.WheelStyle))
                 GUI.Label(new Rect(12,560,245,42),GarageWheelStats(inspectedWheel),small);
@@ -481,7 +493,7 @@ namespace RoboRougelike.R1
             GUI.DrawTexture(new Rect(0,opening.yMax,768,1024-opening.yMax),Texture2D.whiteTexture);GUI.color=color;
             var garage=run.Garage;var model=run.VehicleModel;GUI.enabled=!garageOptionsOpen;
             GUI.Label(new Rect(24,12,185,40),"GARAŻ",heading);
-            GUI.Label(new Rect(210,18,530,35),$"{model.Design.Name} • Złom: {model.Scrap} • Energia maks.: {model.Energy.Maximum:0}",body);
+            GUI.Label(new Rect(210,18,530,35),model.CreativeMode?$"{model.Design.Name} • Darmowe części • Energia: {model.Energy.Maximum:0}":$"{model.Design.Name} • Złom: {model.Scrap} • Energia maks.: {model.Energy.Maximum:0}",body);
             string[] labels={"1 Montuj","2 Zaznacz","3 Napraw","4 Zdejmij"};
             for(int i=0;i<labels.Length;i++)
             {
@@ -551,7 +563,7 @@ namespace RoboRougelike.R1
                 try{GUI.matrix=matrix*Matrix4x4.Translate(new Vector3(-6,-140,0));DrawMovementGarage(run);}
                 finally{GUI.matrix=matrix;}
                 var model=run.VehicleModel;
-                GUI.Label(new Rect(350,180,380,70),"A / LPM: "+WeaponGroupName(model.WeaponGroupA)+"\nB / PPM: "+WeaponGroupName(model.WeaponGroupB),small);
+                GUI.Label(new Rect(350,180,380,70),GarageWeaponGroups(model),small);
                 if(GUI.Button(new Rect(350,255,380,44),"Zamień grupy broni",compactButton))model.SwapWeaponGroups();
                 int repair=SimpleGarageRepairQuote(model);GUI.enabled=repair>0||(model.CreativeMode&&model.Parts.Any(p=>p.Health<1));
                 if(GUI.Button(new Rect(350,309,380,44),GarageBulkRepairCaption(model,repair),compactButton))
@@ -582,7 +594,7 @@ namespace RoboRougelike.R1
                 try{GUI.matrix=matrix*Matrix4x4.Translate(new Vector3(310,-140,0));DrawMovementGarage(run);}
                 finally{GUI.matrix=matrix;}
                 var model=run.VehicleModel;
-                GUI.Label(new Rect(680,190,350,70),"A / LPM: "+WeaponGroupName(model.WeaponGroupA)+"\nB / PPM: "+WeaponGroupName(model.WeaponGroupB),small);
+                GUI.Label(new Rect(680,190,350,70),GarageWeaponGroups(model),small);
                 if(GUI.Button(new Rect(680,270,300,40),"Zamień grupy broni",compactButton))model.SwapWeaponGroups();
                 int repair=SimpleGarageRepairQuote(model);GUI.enabled=repair>0||(model.CreativeMode&&model.Parts.Any(p=>p.Health<1));
                 if(GUI.Button(new Rect(680,325,300,40),GarageBulkRepairCaption(model,repair),compactButton))

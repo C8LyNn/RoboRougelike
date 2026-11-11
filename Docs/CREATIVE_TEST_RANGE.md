@@ -1,6 +1,6 @@
 # Poligon kreatywny
 
-Wejście: menu główne → **Poligon kreatywny — buduj od rdzenia**. Na początku pojazd ma jedynie rdzeń. Wybierz część z katalogu i dodaj ją za darmo; po montażu kolejny egzemplarz tego samego typu jest automatycznie przygotowywany. Bez kosztów dostępne są też moduły bonusowe.
+Wejście: menu główne → **Poligon kreatywny — buduj od rdzenia**. Na początku pojazd ma jedynie rdzeń. Jedno kliknięcie części na szybkiej liście wybiera ją i w razie potrzeby przygotowuje za darmo; następne kliknięcie montuje ją na pojeździe. Po montażu kolejny egzemplarz tego samego typu jest automatycznie przygotowywany. Bez kosztów dostępne są też moduły bonusowe.
 
 Przycisk **Testuj pojazd** uruchamia kopię na terenie 300 × 300 m, również bez broni i napędu. Jazda nadal wymaga prawdziwego, zamontowanego napędu. Wcześniejsze limity wielkości, liczby kół, modułów, typów broni i magazynu nie obowiązują w trybie kreatywnym; zgodność punktów styku, kolizje i odstępy dział pozostają aktywne. Pierwszy typ broni korzysta z LPM, drugi i kolejne — z PPM. Po powrocie do garażu zachowana zostaje konstrukcja sprzed jazdy, bez jej próbnych uszkodzeń.
 

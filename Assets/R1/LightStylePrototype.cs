@@ -12,8 +12,8 @@ namespace RoboRougelike.R1
     public sealed class LightStylePrototype : MonoBehaviour
     {
         public static LightStylePrototype Instance { get; private set; }
-        public bool Enabled { get; private set; }
-        public float Strength { get; private set; } = .6f;
+        public bool Enabled { get; private set; } = false;
+        public float Strength { get; private set; } = 0f;
         public bool ShowPanel { get; private set; }
         public string Status { get; private set; }
 
@@ -131,7 +131,7 @@ namespace RoboRougelike.R1
             GUI.Label(new Rect(22, 197, 180, 24), $"Siła: {Mathf.RoundToInt(Strength * 100)}%");
             float strength = GUI.HorizontalSlider(new Rect(22, 231, 180, 24), Strength, 0, 1);
             if (!Mathf.Approximately(strength, Strength)) SetStrength(strength);
-            GUI.Label(new Rect(22, 255, 185, 28), Status ?? "F8: szybki OFF / ON");
+            GUI.Label(new Rect(22, 255, 185, 28), Status ?? "F8: OFF / ON • 0% bez efektu");
         }
 
         private void OnDestroy()

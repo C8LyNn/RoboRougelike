@@ -46,6 +46,32 @@ public class CreativeRangeTests
         yield return null;
     }
 
+    [UnityTest] public IEnumerator CreativeCatalogExplainsHowToAddUnownedParts()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
+        var hud=run.GetComponent<R1RunHUD>();
+        var select=typeof(R1RunHUD).GetMethod("SelectQuickPart",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+        Assert.That(select,Is.Not.Null);
+        select.Invoke(hud,new object[]{run,R3PartKind.Armor,R4WeaponKind.Basic,null});
+        Assert.That(run.Garage.Message,Does.Contain("za darmo"));
+        Assert.That(run.Garage.Message,Does.Not.Contain("Kup"));
+        Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(1),"Jedno kliknięcie przygotowuje część kreatywną.");
+        Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(run.VehicleModel.Inventory[0].Id));
+        select.Invoke(hud,new object[]{run,R3PartKind.Armor,R4WeaponKind.Basic,null});
+        Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(1),"Ponowny wybór nie tworzy duplikatu.");
+        var bonus=run.Definition.Upgrades.Select(R3VehicleModel.CreateBonusReward).First(item=>item!=null);
+        var key=typeof(R1RunHUD).GetMethod("CatalogBonusKey",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+        select.Invoke(hud,new object[]{run,R3PartKind.BonusModule,R4WeaponKind.Basic,key.Invoke(null,new object[]{bonus})});
+        Assert.That(run.Garage.Message,Does.Contain("za darmo"));
+        Assert.That(run.Garage.Message,Does.Not.Contain("napraw"));
+        Assert.That(run.VehicleModel.Inventory.Any(p=>p.Id==run.Garage.SelectedInventoryId&&p.UpgradeId==bonus.UpgradeId),Is.True);
+        int count=run.VehicleModel.Inventory.Count;
+        select.Invoke(hud,new object[]{run,R3PartKind.BonusModule,R4WeaponKind.Basic,"nieistniejący bonus"});
+        Assert.That(run.Garage.Message,Does.Contain("niedostępna"));
+        Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(count));
+        yield return null;
+    }
+
     [UnityTest] public IEnumerator CreativeModeRemovesPartAndStockLimitsAndKeepsWeaponControls()
     {
         var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
@@ -59,6 +85,8 @@ public class CreativeRangeTests
         Assert.That(model.Buy(new Vector3Int(0,1,6),R3PartKind.Gun,R4WeaponKind.Automatic),Is.True);
         Assert.That(model.Buy(new Vector3Int(0,1,9),R3PartKind.Gun,R4WeaponKind.Heavy),Is.True);
         Assert.That(model.WeaponInGroup(R4WeaponKind.Heavy,true),Is.True,"Dodatkowe typy obsługuje PPM.");
+        var groups=typeof(R1RunHUD).GetMethod("GarageWeaponGroups",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+        Assert.That((string)groups.Invoke(null,new object[]{model}),Does.Contain("PPM").And.Contain("pozostałe"));
         Assert.That(model.Scrap,Is.Zero);
         yield return null;
     }
