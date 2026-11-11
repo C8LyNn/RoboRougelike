@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Passed" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-11 11:17:46Z" end-time="2026-11-11 11:17:47Z" duration="1,1135741">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="2168" result="Passed" start-time="2026-11-11 11:17:46Z" end-time="2026-11-11 11:17:47Z" duration="1.113574" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="2661" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-LekkaStylizacja/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="1375" result="Passed" start-time="2026-11-11 11:17:46Z" end-time="2026-11-11 11:17:47Z" duration="1.058004" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="56476" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="1448" name="LightStylePerformanceEvidenceTests" fullname="LightStylePerformanceEvidenceTests" classname="LightStylePerformanceEvidenceTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-11-11 11:17:46Z" end-time="2026-11-11 11:17:47Z" duration="1.047083" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1449" name="OffscreenRenderAndReadbackAt1080And4K" fullname="LightStylePerformanceEvidenceTests.OffscreenRenderAndReadbackAt1080And4K" methodname="OffscreenRenderAndReadbackAt1080And4K" classname="LightStylePerformanceEvidenceTests" runstate="Runnable" seed="282447665" result="Passed" start-time="2026-11-11 11:17:43Z" end-time="2026-11-11 11:17:47Z" duration="3.951606" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 104 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 104 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 104 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 104 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[EXIT273] Shutdown prepared: NativeClose
+Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>
