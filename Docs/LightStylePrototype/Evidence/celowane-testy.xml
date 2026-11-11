@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="4" result="Passed" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-11-11 11:16:20Z" end-time="2026-11-11 11:16:22Z" duration="1,922615">
+  <test-suite type="TestSuite" id="1000" name="RoboRougelike" fullname="RoboRougelike" runstate="Runnable" testcasecount="2167" result="Passed" start-time="2026-11-11 11:16:20Z" end-time="2026-11-11 11:16:22Z" duration="1.922615" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="2659" name="Assembly-CSharp-Editor.dll" fullname="C:/Users/kubap/Desktop/Prototypy/RoboRougelike-LekkaStylizacja/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll" runstate="Runnable" testcasecount="1374" result="Passed" start-time="2026-11-11 11:16:20Z" end-time="2026-11-11 11:16:22Z" duration="1.875838" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="51784" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestFixture" id="1448" name="LightStylePrototypeTests" fullname="LightStylePrototypeTests" classname="LightStylePrototypeTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-11-11 11:16:17Z" end-time="2026-11-11 11:16:17Z" duration="0.299500" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1450" name="DisabledAndZeroRestorePreviouslyDisabledPostProcessing" fullname="LightStylePrototypeTests.DisabledAndZeroRestorePreviouslyDisabledPostProcessing" methodname="DisabledAndZeroRestorePreviouslyDisabledPostProcessing" classname="LightStylePrototypeTests" runstate="Runnable" seed="2060231981" result="Passed" start-time="2026-11-11 11:16:07Z" end-time="2026-11-11 11:16:11Z" duration="3.273963" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1451" name="ExistingEffectsAndVolumeMaskRemainWhenAlreadyEnabled" fullname="LightStylePrototypeTests.ExistingEffectsAndVolumeMaskRemainWhenAlreadyEnabled" methodname="ExistingEffectsAndVolumeMaskRemainWhenAlreadyEnabled" classname="LightStylePrototypeTests" runstate="Runnable" seed="500636426" result="Passed" start-time="2026-11-11 11:16:11Z" end-time="2026-11-11 11:16:14Z" duration="3.302343" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+        <test-case id="1449" name="ProfileContainsOnlyColorAndWhiteBalance" fullname="LightStylePrototypeTests.ProfileContainsOnlyColorAndWhiteBalance" methodname="ProfileContainsOnlyColorAndWhiteBalance" classname="LightStylePrototypeTests" runstate="Runnable" seed="60770583" result="Passed" start-time="2026-11-11 11:16:14Z" end-time="2026-11-11 11:16:17Z" duration="3.346370" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+          </properties>
+          <output><![CDATA[[EXIT273] Shutdown prepared: NativeClose
+]]></output>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestFixture" id="1452" name="LightStyleVisualEvidenceTests" fullname="LightStyleVisualEvidenceTests" classname="LightStyleVisualEvidenceTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-11-11 11:16:20Z" end-time="2026-11-11 11:16:22Z" duration="1.860919" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1453" name="GarageAndArenaSameCameraPairs" fullname="LightStyleVisualEvidenceTests.GarageAndArenaSameCameraPairs" methodname="GarageAndArenaSameCameraPairs" classname="LightStyleVisualEvidenceTests" runstate="Runnable" seed="1235999668" result="Passed" start-time="2026-11-11 11:16:17Z" end-time="2026-11-11 11:16:22Z" duration="4.713785" asserts="0">
+          <properties>
+            <property name="_JOINTYPE" value="UnityCombinatorial" />
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <output><![CDATA[[Pack 18] Structural Core initialized at grid (0, 0, 0) with 104 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 104 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 104 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 104 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 70 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 70 structural block(s).
+[Pack 12] Hull local origin OK.
+[Pack 12] Wheels local origin OK.
+[Pack 16] Integrated weapon bound successfully.
+[Pack 19] Functional Modules ready. Wheels=12 | Weapon=True
+[R5] Gotowość: sześć etapów, trasy, garaż i odzysk.
+[R5] Seed=2026; pojazd=Standard
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 104 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 104 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 104 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 104 structural block(s).
+[Pack 16] Integrated weapon bound successfully.
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 23 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 37 structural block(s).
+[Pack 18] Structural Core initialized at grid (0, 0, 0) with 37 structural block(s).
+[R1] Starcie 1: przeciwników=2
+[EXIT273] Shutdown prepared: NativeClose
+Saving results to: C:/Users/kubap/AppData/LocalLow/DefaultCompany/RoboRougelike\TestResults.xml
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

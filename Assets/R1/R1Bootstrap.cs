@@ -17,7 +17,8 @@ namespace RoboRougelike.R1
             if (R1RunController.Instance != null ||
                 Object.FindFirstObjectByType<P12PipelineSafeTankController>() == null ||
                 Object.FindFirstObjectByType<P12PipelineSafeEnemyTurret>() == null) return;
-            new GameObject("Wyprawa R1").AddComponent<R1RunController>();
+            var run = new GameObject("Wyprawa R1").AddComponent<R1RunController>();
+            run.gameObject.AddComponent<LightStylePrototype>();
         }
     }
 }

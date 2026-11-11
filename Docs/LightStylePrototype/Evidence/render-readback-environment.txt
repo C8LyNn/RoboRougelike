@@ -1,0 +1,4 @@
+Unity 6000.3.14f1
+GPU: NVIDIA GeForce RTX 5080
+API: Direct3D11
+Mode: Editor batch, camera.Render plus synchronous GPU readback; not gameplay FPS or isolated GPU time.
