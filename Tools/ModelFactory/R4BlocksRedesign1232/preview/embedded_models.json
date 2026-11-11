@@ -1,0 +1,172 @@
+{
+ "before/Cube": {
+  "file": "PR #963 @03af520 R4Blocks/R4B_Cube/R4B_Cube.glb",
+  "sha256": "f5084d93cb3c4097c8f9f911ed63f5a960efb4a24a094cd30f5083bf73a33a9c",
+  "bytes": 217288
+ },
+ "A/Cube": {
+  "file": "A_Sleek/R4B_Cube/R4B_Cube.glb",
+  "sha256": "dff7b1a49f11addf3c7bb66cc6711d24895230110515d146556bb75c6dc30ca7",
+  "bytes": 29792
+ },
+ "A_LOD1/Cube": {
+  "file": "A_Sleek/R4B_Cube/R4B_Cube_LOD1.glb",
+  "sha256": "7a35e1463e80436415d991e0fab9eba55aca4f58bf2a80413821fa23de02246e",
+  "bytes": 6220
+ },
+ "B/Cube": {
+  "file": "B_Industrial/R4B_Cube/R4B_Cube.glb",
+  "sha256": "4326ed76820fe8852c6877d48e26132f2a4587815917fc708857267fb9a286b8",
+  "bytes": 18884
+ },
+ "B_LOD1/Cube": {
+  "file": "B_Industrial/R4B_Cube/R4B_Cube_LOD1.glb",
+  "sha256": "6d66f661e0e02c7855cf96acddebcf4598187e463a027312efe5ad25c4b013af",
+  "bytes": 6212
+ },
+ "before/Wedge": {
+  "file": "PR #963 @03af520 R4Blocks/R4B_Wedge/R4B_Wedge.glb",
+  "sha256": "eae3de19ebbc1be9527c2f1b59f46a2b9893da33e59e2d329c0127bb2fa6daa6",
+  "bytes": 143068
+ },
+ "A/Wedge": {
+  "file": "A_Sleek/R4B_Wedge/R4B_Wedge.glb",
+  "sha256": "d44a61d3e4f56ae35350b37b85b83e8213be5b75bed9cdd6bf363575b0f8b3a3",
+  "bytes": 23944
+ },
+ "A_LOD1/Wedge": {
+  "file": "A_Sleek/R4B_Wedge/R4B_Wedge_LOD1.glb",
+  "sha256": "d04c15043eb5720ad79abb1629d87544e00bc73970a3689d251d5eda8d305e95",
+  "bytes": 5400
+ },
+ "B/Wedge": {
+  "file": "B_Industrial/R4B_Wedge/R4B_Wedge.glb",
+  "sha256": "305e6b982195f65f7ecd69882307ecac5ebc43712b2693beb3c617e9f8232705",
+  "bytes": 15188
+ },
+ "B_LOD1/Wedge": {
+  "file": "B_Industrial/R4B_Wedge/R4B_Wedge_LOD1.glb",
+  "sha256": "7e5aff9f570e9834119114c4056dabc0d060628d24adb3bddd13c7114b1b549d",
+  "bytes": 5396
+ },
+ "before/Tetra": {
+  "file": "PR #963 @03af520 R4Blocks/R4B_Tetra/R4B_Tetra.glb",
+  "sha256": "36235a8f0e80800114f2156b78af6e820862e2403deb0a03bf922da93138bbec",
+  "bytes": 102328
+ },
+ "A/Tetra": {
+  "file": "A_Sleek/R4B_Tetra/R4B_Tetra.glb",
+  "sha256": "1774e076dda28bb3feae640c22a9e2e096e5d92b664f122b9d39c9f970d9dd66",
+  "bytes": 16960
+ },
+ "A_LOD1/Tetra": {
+  "file": "A_Sleek/R4B_Tetra/R4B_Tetra_LOD1.glb",
+  "sha256": "d16128b172ba47a7e2e13cf9395c8316242bc30957971ee16107ccfb9634a54b",
+  "bytes": 4568
+ },
+ "B/Tetra": {
+  "file": "B_Industrial/R4B_Tetra/R4B_Tetra.glb",
+  "sha256": "8e32edf2b40d0979c978251e073d6d964f271b49ea271703c9048b4debec0ad0",
+  "bytes": 11616
+ },
+ "B_LOD1/Tetra": {
+  "file": "B_Industrial/R4B_Tetra/R4B_Tetra_LOD1.glb",
+  "sha256": "84623efd27042419559c1ff98f6591176029509909f66f6c37a502a7cab2c25b",
+  "bytes": 4552
+ },
+ "before/CornerWedge": {
+  "file": "PR #963 @03af520 R4Blocks/R4B_CornerWedge/R4B_CornerWedge.glb",
+  "sha256": "2ad69dff36e666d305afa143e66978b4a5f6b882bff513446fb8d3134c14b4bf",
+  "bytes": 106476
+ },
+ "A/CornerWedge": {
+  "file": "A_Sleek/R4B_CornerWedge/R4B_CornerWedge.glb",
+  "sha256": "5c0f9f8391806984045b592b05d4852eaac8a2b264e8b28cf987b4d92f22c11a",
+  "bytes": 22236
+ },
+ "A_LOD1/CornerWedge": {
+  "file": "A_Sleek/R4B_CornerWedge/R4B_CornerWedge_LOD1.glb",
+  "sha256": "32bc36cffc798cb359e4031ea033cb7f275025c07c624b7f0ececdb91b584b8d",
+  "bytes": 5204
+ },
+ "B/CornerWedge": {
+  "file": "B_Industrial/R4B_CornerWedge/R4B_CornerWedge.glb",
+  "sha256": "6392a6f4970da145325fb940d92c3cb83c9f7d4ab7a23eb2ed19c25f6967dc3e",
+  "bytes": 13944
+ },
+ "B_LOD1/CornerWedge": {
+  "file": "B_Industrial/R4B_CornerWedge/R4B_CornerWedge_LOD1.glb",
+  "sha256": "c5ff0d3237d5c4db9950e3387a47ff3bb429bb84196a63547612f726f965c7dd",
+  "bytes": 5200
+ },
+ "before/HalfBlock": {
+  "file": "PR #963 @03af520 R4Blocks/R4B_HalfBlock/R4B_HalfBlock.glb",
+  "sha256": "14be73c212cad669a5879ad8492bda2a6b2af18f1745ba8c3f227201dd659020",
+  "bytes": 201808
+ },
+ "A/HalfBlock": {
+  "file": "A_Sleek/R4B_HalfBlock/R4B_HalfBlock.glb",
+  "sha256": "f667eec264924ce43b3c0da72952a801131b7151885a911a1398898f18b6d53c",
+  "bytes": 29748
+ },
+ "A_LOD1/HalfBlock": {
+  "file": "A_Sleek/R4B_HalfBlock/R4B_HalfBlock_LOD1.glb",
+  "sha256": "e7f430859c80f43c4faf95ae5921806e2cae0c498e50d96628de651d2e76f738",
+  "bytes": 6232
+ },
+ "B/HalfBlock": {
+  "file": "B_Industrial/R4B_HalfBlock/R4B_HalfBlock.glb",
+  "sha256": "a95358b1ac55f8904337f6735558840555c6baf43f8d57edcdaba79dd00c5207",
+  "bytes": 18840
+ },
+ "B_LOD1/HalfBlock": {
+  "file": "B_Industrial/R4B_HalfBlock/R4B_HalfBlock_LOD1.glb",
+  "sha256": "df73a3272f8aeae0a3e2c4a2e8219d439b7e521ea95e5bf8cc1f53c7245dce06",
+  "bytes": 6224
+ },
+ "wheels:R4M_WheelL_Side_Offroad": {
+  "file": "wheels @fb6910c R4M_WheelL_Side_Offroad.glb",
+  "sha256": "f9d3108bcd3912e55fe850a804c94b06345a8ab7edfc96ed01c6e74724ef8220",
+  "bytes": 476984
+ },
+ "weapons:R4W_Railgun": {
+  "file": "weapons @23718ab R4W_Railgun.glb",
+  "sha256": "290caa5d164d2138bc4885e5f569a74355a53751d8e20af63da5a324d8dd0b65",
+  "bytes": 945372
+ },
+ "weapons:R4W_RocketLauncher": {
+  "file": "weapons @23718ab R4W_RocketLauncher.glb",
+  "sha256": "91062bbdc89972fe293199777a5f62c03d8ce3ea6ef4ec2e6912a66a7e346d34",
+  "bytes": 834796
+ },
+ "weapons:R4W_Basic": {
+  "file": "weapons @23718ab R4W_Basic.glb",
+  "sha256": "9535f7deb4e52b998e5d2f663d77807bddf295cdba014fafb6c38851d1262631",
+  "bytes": 620012
+ },
+ "connectors:R4C_STRUT_STANDARD": {
+  "file": "connectors @22974e7 R4C_STRUT_STANDARD.glb",
+  "sha256": "b2bd14759d0f90ec6dd16ead8fd7035ec9bb209a9b474f8d46abdc994eecb887",
+  "bytes": 463188
+ },
+ "wheels:R4M_WheelM_Side_Offroad": {
+  "file": "wheels @fb6910c R4M_WheelM_Side_Offroad.glb",
+  "sha256": "6f5fb68eab1dc4e61917c0f6de9db1cb65ea7e3e6ce8eedffefd1ed09a079ca6",
+  "bytes": 412996
+ },
+ "connectors:R4C_ROD_SHORT": {
+  "file": "connectors @22974e7 R4C_ROD_SHORT.glb",
+  "sha256": "c9531157f0eb184c105205f075b5ce2d3b2907bb1928d809aedde1c9aeeea832",
+  "bytes": 116484
+ },
+ "weapons:R4W_Heavy": {
+  "file": "weapons @23718ab R4W_Heavy.glb",
+  "sha256": "0a55a5df6f1b6bcbfc8a21b860bf4f58f4c01dbf9f909db55dfa9f0d275792d1",
+  "bytes": 712424
+ },
+ "weapons:R4W_Shotgun": {
+  "file": "weapons @23718ab R4W_Shotgun.glb",
+  "sha256": "73870ed6989c38e48627c6f548ad23c297e78279b20917022974a22c377be8e9",
+  "bytes": 679916
+ }
+}

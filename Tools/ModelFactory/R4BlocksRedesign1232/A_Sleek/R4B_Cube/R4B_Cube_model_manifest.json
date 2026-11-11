@@ -1,0 +1,234 @@
+{
+ "id": "R4B_Cube",
+ "issue": 1232,
+ "art_direction": "A_Sleek",
+ "replaces_visual_of": "PR #963 R4Blocks/R4B_Cube (approved files untouched)",
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "axes": "file: +Y up, Port_forward = +Z, Port_right = +X (same as the approved GLB)",
+ "pivot": "cell centre (0,0,0), identical to PR #963",
+ "bounds_file_axes_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "triangles": {
+  "LOD0": 684,
+  "LOD1": 44,
+  "approved_963": 5036
+ },
+ "paint_zones": {
+  "R4P_Base": {
+   "triangles": 108,
+   "default_r41_colour": "Armor_Plate_Light",
+   "rgb_linear": [
+    0.27,
+    0.28,
+    0.285
+   ]
+  },
+  "R4P_Secondary": {
+   "triangles": 336,
+   "default_r41_colour": "Armor_Gunmetal",
+   "rgb_linear": [
+    0.16,
+    0.17,
+    0.18
+   ]
+  },
+  "R4P_Trim": {
+   "triangles": 240,
+   "default_r41_colour": "Armor_Dark",
+   "rgb_linear": [
+    0.035,
+    0.038,
+    0.045
+   ]
+  }
+ },
+ "interface_unchanged": {
+  "cells": [
+   [
+    0,
+    0,
+    0
+   ]
+  ],
+  "contact_mask_local_anchor": 63,
+  "ports": [
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "right",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "left",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "up",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "down",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "forward",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "back",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   }
+  ],
+  "empties": [
+   "Port_back_000",
+   "Port_down_000",
+   "Port_forward_000",
+   "Port_left_000",
+   "Port_right_000",
+   "Port_up_000",
+   "R4B_Cube_ROOT",
+   "Socket_Mount"
+  ],
+  "colliders": "use approved R4Blocks/R4B_Cube/R4B_Cube_colliders.glb (no new collider authored)"
+ },
+ "style_parameters_m": {
+  "g": 0.004,
+  "w": 0.02,
+  "seg": 4,
+  "margin": 0.006,
+  "chamfer": 0.004,
+  "rho": 0.04,
+  "cseg": 4
+ },
+ "source": {
+  "generator": "scripts/r4panel.py + scripts/styles.py",
+  "mesh_source": "mesh_source/R4B_Cube_A.json",
+  "blender_build": "scripts/build_blender.py",
+  "blender": "5.3.0"
+ },
+ "files": {
+  "R4B_Cube.blend": {
+   "sha256": "b7032bff1dff3692dde956b66152d6969d91f4fff258b30cbb9cd987e4645cf4",
+   "bytes": 678649
+  },
+  "R4B_Cube.fbx": {
+   "sha256": "834b8a91ae433ff26a2a07776e7c7d1033361df14d6fa635346546b584c60875",
+   "bytes": 35404
+  },
+  "R4B_Cube.glb": {
+   "sha256": "dff7b1a49f11addf3c7bb66cc6711d24895230110515d146556bb75c6dc30ca7",
+   "bytes": 29792
+  },
+  "R4B_Cube_LOD1.fbx": {
+   "sha256": "91ce04fc5cf6ae36813e458af70d250b4dc84fa5c6e0b7e97a0d55b36fb3e522",
+   "bytes": 18028
+  },
+  "R4B_Cube_LOD1.glb": {
+   "sha256": "7a35e1463e80436415d991e0fab9eba55aca4f58bf2a80413821fa23de02246e",
+   "bytes": 6220
+  },
+  "R4B_Cube_QA.json": {
+   "sha256": "9f84cea3bce0cecd6351529b421385fefbff5cc6b5e5dc58c0b3484af3bb37e7",
+   "bytes": 7419
+  },
+  "renders/R4B_Cube_34front.jpg": {
+   "sha256": "9882d45c7337182253d42ff4f7e95b8e9f759ecb57d8d1577af73f42dd1f70e2",
+   "bytes": 26424
+  },
+  "renders/R4B_Cube_34rear.jpg": {
+   "sha256": "429254f648eee160637b31f5d16c0c83a4683fd4d1080d663e0a7484634bba49",
+   "bytes": 28475
+  },
+  "renders/R4B_Cube_under.jpg": {
+   "sha256": "f7cbb4f7f04596067d3a27c4d7867f884b7d14c2f372eeb6c3b9664fd24fd261",
+   "bytes": 29029
+  }
+ }
+}

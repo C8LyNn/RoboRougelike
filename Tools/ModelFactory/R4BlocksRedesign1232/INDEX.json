@@ -1,0 +1,266 @@
+{
+ "issue": 1232,
+ "library": "R4BlocksRedesign1232",
+ "status": "PILOT_5_OF_30 / OWNER_VISUAL_APPROVAL_REQUIRED",
+ "unity": "UNITY_NOT_RUN",
+ "interface_source": {
+  "pr": 963,
+  "branch": "art/r4-building-blocks",
+  "commit": "03af5207143da76faeeb8004543a51f26c7f9c0d"
+ },
+ "grid_m": 0.55,
+ "block_m": 0.52,
+ "face_m": 0.26,
+ "models": [
+  {
+   "id": "R4B_Cube",
+   "art_direction": "A_Sleek",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "triangles": {
+    "LOD0": 684,
+    "LOD1": 44,
+    "approved_963": 5036
+   },
+   "bounds_file_axes_m": [
+    [
+     -0.26,
+     -0.26,
+     -0.26
+    ],
+    [
+     0.26,
+     0.26,
+     0.26
+    ]
+   ],
+   "dir": "A_Sleek/R4B_Cube",
+   "contact_mask": 63
+  },
+  {
+   "id": "R4B_Wedge",
+   "art_direction": "A_Sleek",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "triangles": {
+    "LOD0": 512,
+    "LOD1": 32,
+    "approved_963": 3252
+   },
+   "bounds_file_axes_m": [
+    [
+     -0.26,
+     -0.26,
+     -0.26
+    ],
+    [
+     0.26,
+     0.2385,
+     0.2385
+    ]
+   ],
+   "dir": "A_Sleek/R4B_Wedge",
+   "contact_mask": 43
+  },
+  {
+   "id": "R4B_Tetra",
+   "art_direction": "A_Sleek",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "triangles": {
+    "LOD0": 340,
+    "LOD1": 20,
+    "approved_963": 2306
+   },
+   "bounds_file_axes_m": [
+    [
+     -0.26,
+     -0.26,
+     -0.26
+    ],
+    [
+     0.2149,
+     0.2149,
+     0.2149
+    ]
+   ],
+   "dir": "A_Sleek/R4B_Tetra",
+   "contact_mask": 42
+  },
+  {
+   "id": "R4B_CornerWedge",
+   "art_direction": "A_Sleek",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "triangles": {
+    "LOD0": 454,
+    "LOD1": 30,
+    "approved_963": 2416
+   },
+   "bounds_file_axes_m": [
+    [
+     -0.26,
+     -0.26,
+     -0.26
+    ],
+    [
+     0.2385,
+     0.2178,
+     0.2385
+    ]
+   ],
+   "dir": "A_Sleek/R4B_CornerWedge",
+   "contact_mask": 42
+  },
+  {
+   "id": "R4B_HalfBlock",
+   "art_direction": "A_Sleek",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "triangles": {
+    "LOD0": 684,
+    "LOD1": 44,
+    "approved_963": 4716
+   },
+   "bounds_file_axes_m": [
+    [
+     -0.26,
+     -0.26,
+     -0.26
+    ],
+    [
+     0.26,
+     -0.015,
+     0.26
+    ]
+   ],
+   "dir": "A_Sleek/R4B_HalfBlock",
+   "contact_mask": 59
+  },
+  {
+   "id": "R4B_Cube",
+   "art_direction": "B_Industrial",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "triangles": {
+    "LOD0": 236,
+    "LOD1": 44,
+    "approved_963": 5036
+   },
+   "bounds_file_axes_m": [
+    [
+     -0.26,
+     -0.26,
+     -0.26
+    ],
+    [
+     0.26,
+     0.26,
+     0.26
+    ]
+   ],
+   "dir": "B_Industrial/R4B_Cube",
+   "contact_mask": 63
+  },
+  {
+   "id": "R4B_Wedge",
+   "art_direction": "B_Industrial",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "triangles": {
+    "LOD0": 176,
+    "LOD1": 32,
+    "approved_963": 3252
+   },
+   "bounds_file_axes_m": [
+    [
+     -0.26,
+     -0.26,
+     -0.26
+    ],
+    [
+     0.26,
+     0.2409,
+     0.2409
+    ]
+   ],
+   "dir": "B_Industrial/R4B_Wedge",
+   "contact_mask": 43
+  },
+  {
+   "id": "R4B_Tetra",
+   "art_direction": "B_Industrial",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "triangles": {
+    "LOD0": 116,
+    "LOD1": 20,
+    "approved_963": 2306
+   },
+   "bounds_file_axes_m": [
+    [
+     -0.26,
+     -0.26,
+     -0.26
+    ],
+    [
+     0.225,
+     0.225,
+     0.225
+    ]
+   ],
+   "dir": "B_Industrial/R4B_Tetra",
+   "contact_mask": 42
+  },
+  {
+   "id": "R4B_CornerWedge",
+   "art_direction": "B_Industrial",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "triangles": {
+    "LOD0": 158,
+    "LOD1": 30,
+    "approved_963": 2416
+   },
+   "bounds_file_axes_m": [
+    [
+     -0.26,
+     -0.26,
+     -0.26
+    ],
+    [
+     0.2409,
+     0.2257,
+     0.2409
+    ]
+   ],
+   "dir": "B_Industrial/R4B_CornerWedge",
+   "contact_mask": 42
+  },
+  {
+   "id": "R4B_HalfBlock",
+   "art_direction": "B_Industrial",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "triangles": {
+    "LOD0": 236,
+    "LOD1": 44,
+    "approved_963": 4716
+   },
+   "bounds_file_axes_m": [
+    [
+     -0.26,
+     -0.26,
+     -0.26
+    ],
+    [
+     0.26,
+     -0.015,
+     0.26
+    ]
+   ],
+   "dir": "B_Industrial/R4B_HalfBlock",
+   "contact_mask": 59
+  }
+ ]
+}

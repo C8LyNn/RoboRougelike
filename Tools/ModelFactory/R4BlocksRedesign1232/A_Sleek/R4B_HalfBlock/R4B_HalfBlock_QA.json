@@ -1,0 +1,416 @@
+{
+ "id": "R4B_HalfBlock",
+ "block_kind": "HalfBlock",
+ "issue": 1232,
+ "art_direction": "A",
+ "art_direction_label": "A_Sleek",
+ "description": "1x1x1/2 half-height block",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "bonds": [],
+ "note": "top face at -0.015 m (half cell); stack-on-top is a half-cell offset, not a grid port",
+ "contact_mask_local_anchor": 59,
+ "contact_mask_bits": "R3MountingGrid.FaceDirections order: right, left, up, down, forward, back (Unity)",
+ "ports": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "right",
+   "kind": "partial",
+   "center": [
+    0.26,
+    0.0,
+    -0.1375
+   ],
+   "half": [
+    0.45,
+    0.22
+   ],
+   "offset": [
+    0.0,
+    -0.25
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "partial",
+   "center": [
+    -0.26,
+    0.0,
+    -0.1375
+   ],
+   "half": [
+    0.45,
+    0.22
+   ],
+   "offset": [
+    0.0,
+    -0.25
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "forward",
+   "kind": "partial",
+   "center": [
+    0.0,
+    -0.26,
+    -0.1375
+   ],
+   "half": [
+    0.45,
+    0.22
+   ],
+   "offset": [
+    0.0,
+    -0.25
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "partial",
+   "center": [
+    0.0,
+    0.26,
+    -0.1375
+   ],
+   "half": [
+    0.45,
+    0.22
+   ],
+   "offset": [
+    0.0,
+    -0.25
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 95.1,
+   "recessed_pct": 4.9,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "approved_flush_pct": 93.8,
+   "PASS": true
+  },
+  {
+   "flush_pct": 77.8,
+   "recessed_pct": 22.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "right",
+   "kind": "partial",
+   "approved_flush_pct": 98.8,
+   "PASS": true
+  },
+  {
+   "flush_pct": 77.8,
+   "recessed_pct": 22.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "partial",
+   "approved_flush_pct": 98.8,
+   "PASS": true
+  },
+  {
+   "flush_pct": 77.8,
+   "recessed_pct": 22.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "forward",
+   "kind": "partial",
+   "approved_flush_pct": 98.8,
+   "PASS": true
+  },
+  {
+   "flush_pct": 77.8,
+   "recessed_pct": 22.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "partial",
+   "approved_flush_pct": 98.8,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 77.8,
+   "recessed_pct": 22.2,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "right",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 77.8,
+   "recessed_pct": 22.2,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "left",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 77.8,
+   "recessed_pct": 22.2,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "forward",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 77.8,
+   "recessed_pct": 22.2,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "interface_vs_approved": {
+  "approved_glb": "ModelFactory/R4Blocks/R4B_HalfBlock/R4B_HalfBlock.glb",
+  "approved_sha256": "14be73c212cad669a5879ad8492bda2a6b2af18f1745ba8c3f227201dd659020",
+  "empties_missing": [],
+  "empties_extra": [],
+  "pos_dev_mm": 0.0,
+  "axis_dev_deg": 0.0,
+  "ports_identical": true,
+  "cells_identical": true,
+  "contact_mask_approved": 59,
+  "contact_mask": 59,
+  "PASS": true
+ },
+ "mesh": {
+  "object": "R4B_HalfBlock",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 684,
+  "vertices": 344,
+  "uv": true,
+  "ok": true
+ },
+ "mesh_lod1": {
+  "object": "R4B_HalfBlock_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 44,
+  "vertices": 24,
+  "uv": true,
+  "ok": true
+ },
+ "approved_triangles": 4716,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   -0.015
+  ]
+ ],
+ "approved_bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   -0.015
+  ]
+ ],
+ "inside_cells": true,
+ "max_outside_approved_solid_mm": 0.0,
+ "lod1_max_outside_approved_solid_mm": 0.0,
+ "materials": [
+  "R4P_Base",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "paint_zones": {
+  "R4P_Base": "Armor_Plate_Light",
+  "R4P_Secondary": "Armor_Gunmetal",
+  "R4P_Trim": "Armor_Dark"
+ },
+ "style_parameters": {
+  "g": 0.004,
+  "w": 0.02,
+  "seg": 4,
+  "margin": 0.006,
+  "chamfer": 0.004,
+  "rho": 0.04,
+  "cseg": 4,
+  "wall_smooth": true
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 344,
+   "triangles": 684,
+   "world_scale_dev": 0.0,
+   "empties": [
+    "Port_back_000_part",
+    "Port_down_000",
+    "Port_forward_000_part",
+    "Port_left_000_part",
+    "Port_right_000_part",
+    "R4B_HalfBlock_ROOT",
+    "Socket_Mount"
+   ],
+   "empties_missing": [],
+   "empty_pos_dev_mm": 0.0001,
+   "empty_axis_dev_deg": 0.0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 640,
+   "triangles": 684,
+   "world_scale_dev": 0.0,
+   "empties": [
+    "Port_back_000_part",
+    "Port_down_000",
+    "Port_forward_000_part",
+    "Port_left_000_part",
+    "Port_right_000_part",
+    "R4B_HalfBlock_ROOT",
+    "Socket_Mount"
+   ],
+   "empties_missing": [],
+   "empty_pos_dev_mm": 0.0,
+   "empty_axis_dev_deg": 0.0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4B_HalfBlock_34front.jpg",
+  "R4B_HalfBlock_34rear.jpg",
+  "R4B_HalfBlock_under.jpg"
+ ],
+ "collider": "unchanged - approved R4Blocks/R4B_HalfBlock/R4B_HalfBlock_colliders.glb (not re-authored in this pilot)",
+ "files": {
+  "R4B_HalfBlock.blend": {
+   "sha256": "200fbd6d83c27f14ba98b7bf92ad9e0c4c7d2d376f7280b66c1e9491a5f39b19",
+   "bytes": 676378
+  },
+  "R4B_HalfBlock.fbx": {
+   "sha256": "f5aa405483505ad54f532071caf33a6ce5b227975596f1d0f41bea8152e83b92",
+   "bytes": 35708
+  },
+  "R4B_HalfBlock.glb": {
+   "sha256": "f667eec264924ce43b3c0da72952a801131b7151885a911a1398898f18b6d53c",
+   "bytes": 29748
+  },
+  "R4B_HalfBlock_LOD1.fbx": {
+   "sha256": "aea842f13bc9d1c04a715f9fa829b322867d08266d049d280a7e7334b053b848",
+   "bytes": 18140
+  },
+  "R4B_HalfBlock_LOD1.glb": {
+   "sha256": "e7f430859c80f43c4faf95ae5921806e2cae0c498e50d96628de651d2e76f738",
+   "bytes": 6232
+  }
+ },
+ "seconds": 0.5,
+ "blender": "5.3.0"
+}
