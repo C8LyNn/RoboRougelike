@@ -1,0 +1,473 @@
+{
+ "id": "R4B_WideWedge",
+ "block_kind": "WideWedge",
+ "issue": 1235,
+ "wave": 1,
+ "art_direction": "A",
+ "art_direction_label": "A_Sleek",
+ "description": "2x1x1 wide wedge",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ],
+  [
+   1,
+   0,
+   0
+  ]
+ ],
+ "bonds": [
+  [
+   [
+    0,
+    0,
+    0
+   ],
+   [
+    1,
+    0,
+    0
+   ]
+  ]
+ ],
+ "note": "2-wide wedge (one rigid piece over two bonded cells)",
+ "contact_mask_local_anchor": 42,
+ "contact_mask_bits": "R3MountingGrid.FaceDirections order: right, left, up, down, forward, back (Unity)",
+ "ports": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "partial",
+   "center": [
+    -0.26,
+    0.13,
+    -0.13
+   ],
+   "half": [
+    0.2,
+    0.2
+   ],
+   "offset": [
+    -0.2364,
+    -0.2364
+   ]
+  },
+  {
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "right",
+   "kind": "partial",
+   "center": [
+    0.81,
+    0.13,
+    -0.13
+   ],
+   "half": [
+    0.2,
+    0.2
+   ],
+   "offset": [
+    0.2364,
+    -0.2364
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 97.5,
+   "recessed_pct": 2.5,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "approved_flush_pct": 93.8,
+   "PASS": true
+  },
+  {
+   "flush_pct": 97.5,
+   "recessed_pct": 2.5,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "full",
+   "approved_flush_pct": 93.8,
+   "PASS": true
+  },
+  {
+   "flush_pct": 97.5,
+   "recessed_pct": 2.5,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "approved_flush_pct": 93.8,
+   "PASS": true
+  },
+  {
+   "flush_pct": 97.5,
+   "recessed_pct": 2.5,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "full",
+   "approved_flush_pct": 93.8,
+   "PASS": true
+  },
+  {
+   "flush_pct": 98.8,
+   "recessed_pct": 1.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "partial",
+   "approved_flush_pct": 100.0,
+   "PASS": true
+  },
+  {
+   "flush_pct": 98.8,
+   "recessed_pct": 1.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "right",
+   "kind": "partial",
+   "approved_flush_pct": 100.0,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "left",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "right",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "interface_vs_approved": {
+  "approved_glb": "ModelFactory/R4Blocks/R4B_WideWedge/R4B_WideWedge.glb",
+  "approved_sha256": "b4d911cca86b096a7278ec85b223daa1d59d11f772a149357abd6dbb1283e182",
+  "empties_missing": [],
+  "empties_extra": [],
+  "pos_dev_mm": 0.0,
+  "axis_dev_deg": 0.0,
+  "ports_identical": true,
+  "cells_identical": true,
+  "contact_mask_approved": 42,
+  "contact_mask": 42,
+  "PASS": true
+ },
+ "mesh": {
+  "object": "R4B_WideWedge",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 846,
+  "vertices": 425,
+  "uv": true,
+  "ok": true
+ },
+ "mesh_lod1": {
+  "object": "R4B_WideWedge_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 32,
+  "vertices": 18,
+  "uv": true,
+  "ok": true
+ },
+ "approved_triangles": 4812,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.2385,
+   -0.26
+  ],
+  [
+   0.81,
+   0.26,
+   0.2385
+  ]
+ ],
+ "approved_bounds_m": [
+  [
+   -0.26,
+   -0.2529,
+   -0.26
+  ],
+  [
+   0.81,
+   0.26,
+   0.2529
+  ]
+ ],
+ "inside_cells": true,
+ "max_outside_approved_solid_mm": 0.0001,
+ "lod1_max_outside_approved_solid_mm": 0.0,
+ "materials": [
+  "R4P_Base",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "paint_zones": {
+  "R4P_Base": "Armor_Plate_Light",
+  "R4P_Secondary": "Armor_Gunmetal",
+  "R4P_Trim": "Armor_Dark"
+ },
+ "style_parameters": {
+  "g": 0.004,
+  "w": 0.02,
+  "seg": 4,
+  "margin": 0.006,
+  "chamfer": 0.004,
+  "rho": 0.04,
+  "cseg": 4,
+  "wall_smooth": true,
+  "seam_h": 0.006,
+  "min_plate": 0.05
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 425,
+   "triangles": 846,
+   "world_scale_dev": 0.0,
+   "empties": [
+    "Port_back_000",
+    "Port_back_100",
+    "Port_down_000",
+    "Port_down_100",
+    "Port_left_000_part",
+    "Port_right_100_part",
+    "R4B_WideWedge_ROOT",
+    "Socket_Mount"
+   ],
+   "empties_missing": [],
+   "empty_pos_dev_mm": 0.0,
+   "empty_axis_dev_deg": 0.0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 766,
+   "triangles": 846,
+   "world_scale_dev": 0.0,
+   "empties": [
+    "Port_back_000",
+    "Port_back_100",
+    "Port_down_000",
+    "Port_down_100",
+    "Port_left_000_part",
+    "Port_right_100_part",
+    "R4B_WideWedge_ROOT",
+    "Socket_Mount"
+   ],
+   "empties_missing": [],
+   "empty_pos_dev_mm": 0.0,
+   "empty_axis_dev_deg": 0.0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4B_WideWedge_front.jpg",
+  "R4B_WideWedge_side.jpg",
+  "R4B_WideWedge_34front.jpg",
+  "R4B_WideWedge_34rear.jpg",
+  "R4B_WideWedge_under.jpg"
+ ],
+ "collider": "unchanged - approved R4Blocks/R4B_WideWedge/R4B_WideWedge_colliders.glb (not re-authored)",
+ "files": {
+  "R4B_WideWedge.blend": {
+   "sha256": "55672c709c854b62147f304c2b0ea8c0029a441ea402d754fd74c79e91f7b746",
+   "bytes": 686032
+  },
+  "R4B_WideWedge.fbx": {
+   "sha256": "512e58d1d8d86f9f309db7c4bd44f207894e7c2ddaf699a6988bb6c66a216d0e",
+   "bytes": 41868
+  },
+  "R4B_WideWedge.glb": {
+   "sha256": "b305cb0e8a5ebf27eec654c6aaf647cafb5c46e58239ea7c20d048bff3ca8d82",
+   "bytes": 34964
+  },
+  "R4B_WideWedge_LOD1.fbx": {
+   "sha256": "e3a18881ff91ed2343e1f6c5d4ca70d34984596c49462b05ddb1291ff11f7def",
+   "bytes": 18236
+  },
+  "R4B_WideWedge_LOD1.glb": {
+   "sha256": "e8d05ba06769f0f1c578828b2ab69fcfd4f7ab72758907ca39cb2bbc43436077",
+   "bytes": 5380
+  }
+ },
+ "seconds": 0.8,
+ "blender": "5.3.0"
+}

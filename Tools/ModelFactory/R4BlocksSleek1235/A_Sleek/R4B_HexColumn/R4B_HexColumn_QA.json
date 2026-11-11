@@ -1,0 +1,283 @@
+{
+ "id": "R4B_HexColumn",
+ "block_kind": "HexColumn",
+ "issue": 1235,
+ "wave": 1,
+ "art_direction": "A",
+ "art_direction_label": "A_Sleek",
+ "description": "1x1x1 hexagonal column (axis up)",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "bonds": [],
+ "note": "hexagonal column (vertex on +-X, flats 0.225 m from the axis); ports on the end faces only",
+ "contact_mask_local_anchor": 12,
+ "contact_mask_bits": "R3MountingGrid.FaceDirections order: right, left, up, down, forward, back (Unity)",
+ "ports": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "up",
+   "kind": "partial",
+   "center": [
+    0.0,
+    0.0,
+    0.26
+   ],
+   "half": [
+    0.3,
+    0.3
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "partial",
+   "center": [
+    0.0,
+    0.0,
+    -0.26
+   ],
+   "half": [
+    0.3,
+    0.3
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "up",
+   "kind": "partial",
+   "approved_flush_pct": 93.8,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "partial",
+   "approved_flush_pct": 93.8,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "up",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "interface_vs_approved": {
+  "approved_glb": "ModelFactory/R4Blocks/R4B_HexColumn/R4B_HexColumn.glb",
+  "approved_sha256": "491b11076d188326cc24693c106e516f62e4b0b84a94fbdb31538ce69deee37e",
+  "empties_missing": [],
+  "empties_extra": [],
+  "pos_dev_mm": 0.0,
+  "axis_dev_deg": 0.0,
+  "ports_identical": true,
+  "cells_identical": true,
+  "contact_mask_approved": 12,
+  "contact_mask": 12,
+  "PASS": true
+ },
+ "mesh": {
+  "object": "R4B_HexColumn",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 1028,
+  "vertices": 516,
+  "uv": true,
+  "ok": true
+ },
+ "mesh_lod1": {
+  "object": "R4B_HexColumn_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 68,
+  "vertices": 36,
+  "uv": true,
+  "ok": true
+ },
+ "approved_triangles": 1764,
+ "bounds_m": [
+  [
+   -0.25,
+   -0.2252,
+   -0.26
+  ],
+  [
+   0.25,
+   0.2252,
+   0.26
+  ]
+ ],
+ "approved_bounds_m": [
+  [
+   -0.255,
+   -0.2252,
+   -0.26
+  ],
+  [
+   0.255,
+   0.2252,
+   0.26
+  ]
+ ],
+ "inside_cells": true,
+ "max_outside_approved_solid_mm": 0.0,
+ "lod1_max_outside_approved_solid_mm": 0.0,
+ "materials": [
+  "R4P_Base",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "paint_zones": {
+  "R4P_Base": "Armor_Plate_Light",
+  "R4P_Secondary": "Armor_Gunmetal",
+  "R4P_Trim": "Armor_Dark"
+ },
+ "style_parameters": {
+  "g": 0.004,
+  "w": 0.02,
+  "seg": 4,
+  "margin": 0.006,
+  "chamfer": 0.004,
+  "rho": 0.04,
+  "cseg": 4,
+  "wall_smooth": true,
+  "seam_h": 0.006,
+  "min_plate": 0.05
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 516,
+   "triangles": 1028,
+   "world_scale_dev": 0.0,
+   "empties": [
+    "Port_down_000_part",
+    "Port_up_000_part",
+    "R4B_HexColumn_ROOT",
+    "Socket_Mount"
+   ],
+   "empties_missing": [],
+   "empty_pos_dev_mm": 0.0,
+   "empty_axis_dev_deg": 0.0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 980,
+   "triangles": 1028,
+   "world_scale_dev": 0.0,
+   "empties": [
+    "Port_down_000_part",
+    "Port_up_000_part",
+    "R4B_HexColumn_ROOT",
+    "Socket_Mount"
+   ],
+   "empties_missing": [],
+   "empty_pos_dev_mm": 0.0,
+   "empty_axis_dev_deg": 0.0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4B_HexColumn_front.jpg",
+  "R4B_HexColumn_side.jpg",
+  "R4B_HexColumn_34front.jpg",
+  "R4B_HexColumn_34rear.jpg",
+  "R4B_HexColumn_under.jpg"
+ ],
+ "collider": "unchanged - approved R4Blocks/R4B_HexColumn/R4B_HexColumn_colliders.glb (not re-authored)",
+ "files": {
+  "R4B_HexColumn.blend": {
+   "sha256": "302ee000ff3fc4c33a215a2faf0d480df0e38e1a6b05bc0a2ae4ef6344b136c1",
+   "bytes": 693707
+  },
+  "R4B_HexColumn.fbx": {
+   "sha256": "2e699a67e97333d7af5922867395779684f372ac5d9dbc267fb51bf2fd9d7bf0",
+   "bytes": 40796
+  },
+  "R4B_HexColumn.glb": {
+   "sha256": "86cc527c261d8bef176e57ce0eb98ff9259ef2cc752a0557a0da485e28a0ed0c",
+   "bytes": 41980
+  },
+  "R4B_HexColumn_LOD1.fbx": {
+   "sha256": "72a4ae1ff1f4f81ba7e922b872cbd565ca13381d446a8f0f0d1e61633ce0a4c5",
+   "bytes": 18732
+  },
+  "R4B_HexColumn_LOD1.glb": {
+   "sha256": "f5e8867efdbc4205cb0f6a2000513e1e457dfabb89ff65a2fdf9711dba7d5162",
+   "bytes": 7928
+  }
+ },
+ "seconds": 0.8,
+ "blender": "5.3.0"
+}

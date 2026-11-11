@@ -1,0 +1,788 @@
+{
+ "issue": 1235,
+ "library": "R4BlocksSleek1235",
+ "art_direction": "A_Sleek",
+ "status": "ART_SOURCE_ONLY / NOT_INSTALLED_IN_GAME / OWNER_REVIEW_REQUIRED",
+ "blender": "BLENDER_PASS 25/25 (new) + 5/5 (pilot, #1234)",
+ "source_tests": "PASS",
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_source": {
+  "pr": 963,
+  "branch": "art/r4-building-blocks",
+  "commit": "03af5207143da76faeeb8004543a51f26c7f9c0d"
+ },
+ "pilot_source": {
+  "pr": 1234,
+  "commit": "5f4470d5cb148bcae358f6d09ec0f20e02590946",
+  "dir": "Tools/ModelFactory/R4BlocksRedesign1232/A_Sleek"
+ },
+ "reference_commits": {
+  "blocks": "03af5207143da76faeeb8004543a51f26c7f9c0d",
+  "weapons": "23718ab9f3ecb579d224b928a25f713ddfdd8319",
+  "movement": "c6b655d67c90ef91d7799460a0c0101756c4b975",
+  "wheels": "fb6910c29acd07989f1ad2a36b8ec5709ebfc9ce",
+  "connectors": "22974e7d92aef00ff7b9fb470ab73e261ff0b507"
+ },
+ "grid_m": 0.55,
+ "block_m": 0.52,
+ "face_m": 0.26,
+ "gap_m": 0.03,
+ "paint_zones": [
+  "R4P_Base",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "models": [
+  {
+   "id": "R4B_Cube",
+   "kind": "Cube",
+   "wave": 0,
+   "origin": "pilot #1234 (unchanged, referenced)",
+   "dir": "R4BlocksRedesign1232/A_Sleek/R4B_Cube",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "cells": 1,
+   "contact_mask": 63,
+   "triangles": {
+    "LOD0": 684,
+    "LOD1": 44,
+    "approved_963": 5036
+   },
+   "renderers": 1,
+   "material_slots": 3,
+   "glb_sha256": "dff7b1a49f11addf3c7bb66cc6711d24895230110515d146556bb75c6dc30ca7",
+   "source_tests": {
+    "S1_interface": true,
+    "S2_containment": true,
+    "S3_contact_patch": true,
+    "S4_rotations": true
+   }
+  },
+  {
+   "id": "R4B_Wedge",
+   "kind": "Wedge",
+   "wave": 0,
+   "origin": "pilot #1234 (unchanged, referenced)",
+   "dir": "R4BlocksRedesign1232/A_Sleek/R4B_Wedge",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "cells": 1,
+   "contact_mask": 43,
+   "triangles": {
+    "LOD0": 512,
+    "LOD1": 32,
+    "approved_963": 3252
+   },
+   "renderers": 1,
+   "material_slots": 3,
+   "glb_sha256": "d44a61d3e4f56ae35350b37b85b83e8213be5b75bed9cdd6bf363575b0f8b3a3",
+   "source_tests": {
+    "S1_interface": true,
+    "S2_containment": true,
+    "S3_contact_patch": true,
+    "S4_rotations": true
+   }
+  },
+  {
+   "id": "R4B_Tetra",
+   "kind": "Tetra",
+   "wave": 0,
+   "origin": "pilot #1234 (unchanged, referenced)",
+   "dir": "R4BlocksRedesign1232/A_Sleek/R4B_Tetra",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "cells": 1,
+   "contact_mask": 42,
+   "triangles": {
+    "LOD0": 340,
+    "LOD1": 20,
+    "approved_963": 2306
+   },
+   "renderers": 1,
+   "material_slots": 3,
+   "glb_sha256": "1774e076dda28bb3feae640c22a9e2e096e5d92b664f122b9d39c9f970d9dd66",
+   "source_tests": {
+    "S1_interface": true,
+    "S2_containment": true,
+    "S3_contact_patch": true,
+    "S4_rotations": true
+   }
+  },
+  {
+   "id": "R4B_CornerWedge",
+   "kind": "CornerWedge",
+   "wave": 0,
+   "origin": "pilot #1234 (unchanged, referenced)",
+   "dir": "R4BlocksRedesign1232/A_Sleek/R4B_CornerWedge",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "cells": 1,
+   "contact_mask": 42,
+   "triangles": {
+    "LOD0": 454,
+    "LOD1": 30,
+    "approved_963": 2416
+   },
+   "renderers": 1,
+   "material_slots": 3,
+   "glb_sha256": "5c0f9f8391806984045b592b05d4852eaac8a2b264e8b28cf987b4d92f22c11a",
+   "source_tests": {
+    "S1_interface": true,
+    "S2_containment": true,
+    "S3_contact_patch": true,
+    "S4_rotations": true
+   }
+  },
+  {
+   "id": "R4B_HalfBlock",
+   "kind": "HalfBlock",
+   "wave": 0,
+   "origin": "pilot #1234 (unchanged, referenced)",
+   "dir": "R4BlocksRedesign1232/A_Sleek/R4B_HalfBlock",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "cells": 1,
+   "contact_mask": 59,
+   "triangles": {
+    "LOD0": 684,
+    "LOD1": 44,
+    "approved_963": 4716
+   },
+   "renderers": 1,
+   "material_slots": 3,
+   "glb_sha256": "f667eec264924ce43b3c0da72952a801131b7151885a911a1398898f18b6d53c",
+   "source_tests": {
+    "S1_interface": true,
+    "S2_containment": true,
+    "S3_contact_patch": true,
+    "S4_rotations": true
+   }
+  },
+  {
+   "id": "R4B_InnerCorner",
+   "kind": "InnerCorner",
+   "wave": 1,
+   "origin": "#1235",
+   "dir": "R4BlocksSleek1235/A_Sleek/R4B_InnerCorner",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "cells": 1,
+   "contact_mask": 63,
+   "triangles": {
+    "LOD0": 682,
+    "LOD1": 50,
+    "approved_963": 4826
+   },
+   "renderers": 1,
+   "material_slots": 3,
+   "glb_sha256": "42d3dfc46c6e8609f0242a576b18905a1ecf65ea8125b4b6542c9373003eaace",
+   "source_tests": {
+    "S1_interface": true,
+    "S2_containment": true,
+    "S3_contact_patch": true,
+    "S4_rotations": true
+   }
+  },
+  {
+   "id": "R4B_HalfWedge",
+   "kind": "HalfWedge",
+   "wave": 1,
+   "origin": "#1235",
+   "dir": "R4BlocksSleek1235/A_Sleek/R4B_HalfWedge",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "cells": 1,
+   "contact_mask": 40,
+   "triangles": {
+    "LOD0": 512,
+    "LOD1": 32,
+    "approved_963": 1652
+   },
+   "renderers": 1,
+   "material_slots": 3,
+   "glb_sha256": "b7613c0ebc74ee7b8ff527cfea1be4d78a93a28da34f50958000361d60ed9b57",
+   "source_tests": {
+    "S1_interface": true,
+    "S2_containment": true,
+    "S3_contact_patch": true,
+    "S4_rotations": true
+   }
+  },
+  {
+   "id": "R4B_LongWedge",
+   "kind": "LongWedge",
+   "wave": 1,
+   "origin": "#1235",
+   "dir": "R4BlocksSleek1235/A_Sleek/R4B_LongWedge",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "cells": 2,
+   "contact_mask": 43,
+   "triangles": {
+    "LOD0": 936,
+    "LOD1": 32,
+    "approved_963": 4030
+   },
+   "renderers": 1,
+   "material_slots": 3,
+   "glb_sha256": "93e22a3b8bc8f0c5f452140017f1fd09dda2e6891e0c5152af1cec010d538817",
+   "source_tests": {
+    "S1_interface": true,
+    "S2_containment": true,
+    "S3_contact_patch": true,
+    "S4_rotations": true
+   }
+  },
+  {
+   "id": "R4B_WideWedge",
+   "kind": "WideWedge",
+   "wave": 1,
+   "origin": "#1235",
+   "dir": "R4BlocksSleek1235/A_Sleek/R4B_WideWedge",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "cells": 2,
+   "contact_mask": 42,
+   "triangles": {
+    "LOD0": 846,
+    "LOD1": 32,
+    "approved_963": 4812
+   },
+   "renderers": 1,
+   "material_slots": 3,
+   "glb_sha256": "b305cb0e8a5ebf27eec654c6aaf647cafb5c46e58239ea7c20d048bff3ca8d82",
+   "source_tests": {
+    "S1_interface": true,
+    "S2_containment": true,
+    "S3_contact_patch": true,
+    "S4_rotations": true
+   }
+  },
+  {
+   "id": "R4B_Pyramid",
+   "kind": "Pyramid",
+   "wave": 1,
+   "origin": "#1235",
+   "dir": "R4BlocksSleek1235/A_Sleek/R4B_Pyramid",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "cells": 1,
+   "contact_mask": 8,
+   "triangles": {
+    "LOD0": 454,
+    "LOD1": 30,
+    "approved_963": 972
+   },
+   "renderers": 1,
+   "material_slots": 3,
+   "glb_sha256": "49e31fba512e0b5a7948c2bb9e79218903fe5d50dd29f2aabfbfeb6916aedf0e",
+   "source_tests": {
+    "S1_interface": true,
+    "S2_containment": true,
+    "S3_contact_patch": true,
+    "S4_rotations": true
+   }
+  },
+  {
+   "id": "R4B_HexColumn",
+   "kind": "HexColumn",
+   "wave": 1,
+   "origin": "#1235",
+   "dir": "R4BlocksSleek1235/A_Sleek/R4B_HexColumn",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "cells": 1,
+   "contact_mask": 12,
+   "triangles": {
+    "LOD0": 1028,
+    "LOD1": 68,
+    "approved_963": 1764
+   },
+   "renderers": 1,
+   "material_slots": 3,
+   "glb_sha256": "86cc527c261d8bef176e57ce0eb98ff9259ef2cc752a0557a0da485e28a0ed0c",
+   "source_tests": {
+    "S1_interface": true,
+    "S2_containment": true,
+    "S3_contact_patch": true,
+    "S4_rotations": true
+   }
+  },
+  {
+   "id": "R4B_OctColumn",
+   "kind": "OctColumn",
+   "wave": 1,
+   "origin": "#1235",
+   "dir": "R4BlocksSleek1235/A_Sleek/R4B_OctColumn",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "cells": 1,
+   "contact_mask": 63,
+   "triangles": {
+    "LOD0": 1052,
+    "LOD1": 92,
+    "approved_963": 4844
+   },
+   "renderers": 1,
+   "material_slots": 3,
+   "glb_sha256": "e358ecad3fa2957e31397e2ac3dd146f40457fbaeb198899fffca3e8d663cc73",
+   "source_tests": {
+    "S1_interface": true,
+    "S2_containment": true,
+    "S3_contact_patch": true,
+    "S4_rotations": true
+   }
+  },
+  {
+   "id": "R4B_Plate1x2",
+   "kind": "Plate1x2",
+   "wave": 1,
+   "origin": "#1235",
+   "dir": "R4BlocksSleek1235/A_Sleek/R4B_Plate1x2",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "cells": 2,
+   "contact_mask": 10,
+   "triangles": {
+    "LOD0": 1172,
+    "LOD1": 44,
+    "approved_963": 4752
+   },
+   "renderers": 1,
+   "material_slots": 3,
+   "glb_sha256": "aee1f8de6c8209684d6946ca70ad330a4e825e614a5eabf5467b3bce9b8c3e6d",
+   "source_tests": {
+    "S1_interface": true,
+    "S2_containment": true,
+    "S3_contact_patch": true,
+    "S4_rotations": true
+   }
+  },
+  {
+   "id": "R4B_Plate2x2",
+   "kind": "Plate2x2",
+   "wave": 1,
+   "origin": "#1235",
+   "dir": "R4BlocksSleek1235/A_Sleek/R4B_Plate2x2",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "cells": 4,
+   "contact_mask": 8,
+   "triangles": {
+    "LOD0": 1696,
+    "LOD1": 44,
+    "approved_963": 6284
+   },
+   "renderers": 1,
+   "material_slots": 3,
+   "glb_sha256": "6dcafefcb2399d787b0995c8c9ee4d680de55339036144dd055e742da1c388ea",
+   "source_tests": {
+    "S1_interface": true,
+    "S2_containment": true,
+    "S3_contact_patch": true,
+    "S4_rotations": true
+   }
+  },
+  {
+   "id": "R4B_Beam2",
+   "kind": "Beam2",
+   "wave": 1,
+   "origin": "#1235",
+   "dir": "R4BlocksSleek1235/A_Sleek/R4B_Beam2",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "cells": 2,
+   "contact_mask": 62,
+   "triangles": {
+    "LOD0": 1172,
+    "LOD1": 44,
+    "approved_963": 8184
+   },
+   "renderers": 1,
+   "material_slots": 3,
+   "glb_sha256": "53c3d3f53585ebdcfd51bf13a9d885c8c8a856521b38e489e8712da2360a0fbb",
+   "source_tests": {
+    "S1_interface": true,
+    "S2_containment": true,
+    "S3_contact_patch": true,
+    "S4_rotations": true
+   }
+  },
+  {
+   "id": "R4B_Beam3",
+   "kind": "Beam3",
+   "wave": 1,
+   "origin": "#1235",
+   "dir": "R4BlocksSleek1235/A_Sleek/R4B_Beam3",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "cells": 3,
+   "contact_mask": 62,
+   "triangles": {
+    "LOD0": 1532,
+    "LOD1": 44,
+    "approved_963": 11296
+   },
+   "renderers": 1,
+   "material_slots": 3,
+   "glb_sha256": "65c45132c299a55781ceb57fc89a7c0ae7bbb6bd4b75ce2a74a6513d678e026e",
+   "source_tests": {
+    "S1_interface": true,
+    "S2_containment": true,
+    "S3_contact_patch": true,
+    "S4_rotations": true
+   }
+  },
+  {
+   "id": "R4B_Slab2x2",
+   "kind": "Slab2x2",
+   "wave": 1,
+   "origin": "#1235",
+   "dir": "R4BlocksSleek1235/A_Sleek/R4B_Slab2x2",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "cells": 4,
+   "contact_mask": 46,
+   "triangles": {
+    "LOD0": 1696,
+    "LOD1": 44,
+    "approved_963": 13356
+   },
+   "renderers": 1,
+   "material_slots": 3,
+   "glb_sha256": "6fb96a532abee7189b06e20519e66728d40dbab0cbf372c3e5e0f91bf79df447",
+   "source_tests": {
+    "S1_interface": true,
+    "S2_containment": true,
+    "S3_contact_patch": true,
+    "S4_rotations": true
+   }
+  },
+  {
+   "id": "R4B_BigCube2",
+   "kind": "BigCube2",
+   "wave": 1,
+   "origin": "#1235",
+   "dir": "R4BlocksSleek1235/A_Sleek/R4B_BigCube2",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "cells": 8,
+   "contact_mask": 42,
+   "triangles": {
+    "LOD0": 2384,
+    "LOD1": 44,
+    "approved_963": 20012
+   },
+   "renderers": 1,
+   "material_slots": 3,
+   "glb_sha256": "16bee023b06fa3999dcce013c62242a51da0f413b16313593a4bdae962abcdcd",
+   "source_tests": {
+    "S1_interface": true,
+    "S2_containment": true,
+    "S3_contact_patch": true,
+    "S4_rotations": true
+   }
+  },
+  {
+   "id": "R4B_RoundEdge",
+   "kind": "RoundEdge",
+   "wave": 2,
+   "origin": "#1235",
+   "dir": "R4BlocksSleek1235/A_Sleek/R4B_RoundEdge",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "cells": 1,
+   "contact_mask": 43,
+   "triangles": {
+    "LOD0": 1136,
+    "LOD1": 56,
+    "approved_963": 3428
+   },
+   "renderers": 1,
+   "material_slots": 3,
+   "glb_sha256": "48f823ec0f3597ec135ec3d1ebbe1a31f27d8bba31050779d5b21a932e2741b7",
+   "source_tests": {
+    "S1_interface": true,
+    "S2_containment": true,
+    "S3_contact_patch": true,
+    "S4_rotations": true
+   }
+  },
+  {
+   "id": "R4B_RoundCorner",
+   "kind": "RoundCorner",
+   "wave": 2,
+   "origin": "#1235",
+   "dir": "R4BlocksSleek1235/A_Sleek/R4B_RoundCorner",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "cells": 1,
+   "contact_mask": 42,
+   "triangles": {
+    "LOD0": 1560,
+    "LOD1": 82,
+    "approved_963": 2782
+   },
+   "renderers": 1,
+   "material_slots": 3,
+   "glb_sha256": "75783953b0e11cc04ebd88e63464c93063fa0c9aeb55dd5f786207e61f65614a",
+   "source_tests": {
+    "S1_interface": true,
+    "S2_containment": true,
+    "S3_contact_patch": true,
+    "S4_rotations": true
+   }
+  },
+  {
+   "id": "R4B_Cylinder",
+   "kind": "Cylinder",
+   "wave": 2,
+   "origin": "#1235",
+   "dir": "R4BlocksSleek1235/A_Sleek/R4B_Cylinder",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "cells": 1,
+   "contact_mask": 12,
+   "triangles": {
+    "LOD0": 864,
+    "LOD1": 96,
+    "approved_963": 3202
+   },
+   "renderers": 1,
+   "material_slots": 3,
+   "glb_sha256": "b413b81934671edcbf100bf85825d0f6690cb8e70453c490a6d6be5a4297ccdc",
+   "source_tests": {
+    "S1_interface": true,
+    "S2_containment": true,
+    "S3_contact_patch": true,
+    "S4_rotations": true
+   }
+  },
+  {
+   "id": "R4B_Cone",
+   "kind": "Cone",
+   "wave": 2,
+   "origin": "#1235",
+   "dir": "R4BlocksSleek1235/A_Sleek/R4B_Cone",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "cells": 1,
+   "contact_mask": 8,
+   "triangles": {
+    "LOD0": 912,
+    "LOD1": 120,
+    "approved_963": 1700
+   },
+   "renderers": 1,
+   "material_slots": 3,
+   "glb_sha256": "a8b0b55fc105769312422fc3bc894322d855b362cdb156a94593b56c9af2a89f",
+   "source_tests": {
+    "S1_interface": true,
+    "S2_containment": true,
+    "S3_contact_patch": true,
+    "S4_rotations": true
+   }
+  },
+  {
+   "id": "R4B_Dome",
+   "kind": "Dome",
+   "wave": 2,
+   "origin": "#1235",
+   "dir": "R4BlocksSleek1235/A_Sleek/R4B_Dome",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "cells": 1,
+   "contact_mask": 8,
+   "triangles": {
+    "LOD0": 942,
+    "LOD1": 142,
+    "approved_963": 3270
+   },
+   "renderers": 1,
+   "material_slots": 3,
+   "glb_sha256": "08a1c05746e4419aa3b854cf0ad125f2ef3aaf00d4fa7329c6c01d9986314f33",
+   "source_tests": {
+    "S1_interface": true,
+    "S2_containment": true,
+    "S3_contact_patch": true,
+    "S4_rotations": true
+   }
+  },
+  {
+   "id": "R4B_RoundTop",
+   "kind": "RoundTop",
+   "wave": 2,
+   "origin": "#1235",
+   "dir": "R4BlocksSleek1235/A_Sleek/R4B_RoundTop",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "cells": 1,
+   "contact_mask": 59,
+   "triangles": {
+    "LOD0": 1392,
+    "LOD1": 68,
+    "approved_963": 4190
+   },
+   "renderers": 1,
+   "material_slots": 3,
+   "glb_sha256": "ab0cb30a913cf7bdde024d116b92e6863d633759351d2a73c4a24a1abde26488",
+   "source_tests": {
+    "S1_interface": true,
+    "S2_containment": true,
+    "S3_contact_patch": true,
+    "S4_rotations": true
+   }
+  },
+  {
+   "id": "R4B_Step",
+   "kind": "Step",
+   "wave": 3,
+   "origin": "#1235",
+   "dir": "R4BlocksSleek1235/A_Sleek/R4B_Step",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "cells": 1,
+   "contact_mask": 63,
+   "triangles": {
+    "LOD0": 1292,
+    "LOD1": 64,
+    "approved_963": 4966
+   },
+   "renderers": 1,
+   "material_slots": 3,
+   "glb_sha256": "c52ce220709ffece209c87542ae42eb9d441900d91194f929eb648d2fba5337f",
+   "source_tests": {
+    "S1_interface": true,
+    "S2_containment": true,
+    "S3_contact_patch": true,
+    "S4_rotations": true
+   }
+  },
+  {
+   "id": "R4B_CornerL3",
+   "kind": "CornerL3",
+   "wave": 3,
+   "origin": "#1235",
+   "dir": "R4BlocksSleek1235/A_Sleek/R4B_CornerL3",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "cells": 3,
+   "contact_mask": 46,
+   "triangles": {
+    "LOD0": 1852,
+    "LOD1": 64,
+    "approved_963": 11764
+   },
+   "renderers": 1,
+   "material_slots": 3,
+   "glb_sha256": "744af20f1f6e2b3056fb7e26fb8805a87c3f1ae07f0fb22ba0b66b76e334da32",
+   "source_tests": {
+    "S1_interface": true,
+    "S2_containment": true,
+    "S3_contact_patch": true,
+    "S4_rotations": true
+   }
+  },
+  {
+   "id": "R4B_Tee4",
+   "kind": "Tee4",
+   "wave": 3,
+   "origin": "#1235",
+   "dir": "R4BlocksSleek1235/A_Sleek/R4B_Tee4",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "cells": 4,
+   "contact_mask": 44,
+   "triangles": {
+    "LOD0": 2396,
+    "LOD1": 84,
+    "approved_963": 15142
+   },
+   "renderers": 1,
+   "material_slots": 3,
+   "glb_sha256": "c0746aa4d2130a84ae4bfb0955aba6e90e74dbc2433457629bb8356b8298de0d",
+   "source_tests": {
+    "S1_interface": true,
+    "S2_containment": true,
+    "S3_contact_patch": true,
+    "S4_rotations": true
+   }
+  },
+  {
+   "id": "R4B_Arch",
+   "kind": "Arch",
+   "wave": 4,
+   "origin": "#1235",
+   "dir": "R4BlocksSleek1235/A_Sleek/R4B_Arch",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "cells": 1,
+   "contact_mask": 55,
+   "triangles": {
+    "LOD0": 1714,
+    "LOD1": 116,
+    "approved_963": 4564
+   },
+   "renderers": 1,
+   "material_slots": 3,
+   "glb_sha256": "2b21675c13f8ff835ab13756d948dd7879d4b8ba03c6ceec3b9586930f593af6",
+   "source_tests": {
+    "S1_interface": true,
+    "S2_containment": true,
+    "S3_contact_patch": true,
+    "S4_rotations": true
+   }
+  },
+  {
+   "id": "R4B_CoveEdge",
+   "kind": "CoveEdge",
+   "wave": 4,
+   "origin": "#1235",
+   "dir": "R4BlocksSleek1235/A_Sleek/R4B_CoveEdge",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "cells": 1,
+   "contact_mask": 43,
+   "triangles": {
+    "LOD0": 1472,
+    "LOD1": 96,
+    "approved_963": 3344
+   },
+   "renderers": 1,
+   "material_slots": 3,
+   "glb_sha256": "ba4f617224295ff01bf713cbec45cf59628e8215c1a66939f8bf16fbaa348621",
+   "source_tests": {
+    "S1_interface": true,
+    "S2_containment": true,
+    "S3_contact_patch": true,
+    "S4_rotations": true
+   }
+  },
+  {
+   "id": "R4B_TrussCube",
+   "kind": "TrussCube",
+   "wave": 4,
+   "origin": "#1235",
+   "dir": "R4BlocksSleek1235/A_Sleek/R4B_TrussCube",
+   "status": "BLENDER_PASS",
+   "unity": "UNITY_NOT_RUN",
+   "cells": 1,
+   "contact_mask": 63,
+   "triangles": {
+    "LOD0": 2664,
+    "LOD1": 536,
+    "approved_963": 7140
+   },
+   "renderers": 1,
+   "material_slots": 3,
+   "glb_sha256": "222a65c8135a48d169784cd634afca43f347fc9f4eac7cec68015614442081e6",
+   "source_tests": {
+    "S1_interface": true,
+    "S2_containment": true,
+    "S3_contact_patch": true,
+    "S4_rotations": true
+   }
+  }
+ ]
+}

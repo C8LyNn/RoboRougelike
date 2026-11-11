@@ -1,0 +1,230 @@
+{
+ "id": "R4B_Pyramid",
+ "block_kind": "Pyramid",
+ "issue": 1235,
+ "wave": 1,
+ "art_direction": "A",
+ "art_direction_label": "A_Sleek",
+ "description": "1x1x1 square pyramid",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "bonds": [],
+ "note": "square pyramid, apex at the top-face centre",
+ "contact_mask_local_anchor": 8,
+ "contact_mask_bits": "R3MountingGrid.FaceDirections order: right, left, up, down, forward, back (Unity)",
+ "ports": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 95.1,
+   "recessed_pct": 4.9,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "approved_flush_pct": 93.8,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "interface_vs_approved": {
+  "approved_glb": "ModelFactory/R4Blocks/R4B_Pyramid/R4B_Pyramid.glb",
+  "approved_sha256": "1db7edc7eba6130567145966ab0f92e1f765bb55e4e15772300db3eb0790354e",
+  "empties_missing": [],
+  "empties_extra": [],
+  "pos_dev_mm": 0.0,
+  "axis_dev_deg": 0.0,
+  "ports_identical": true,
+  "cells_identical": true,
+  "contact_mask_approved": 8,
+  "contact_mask": 8,
+  "PASS": true
+ },
+ "mesh": {
+  "object": "R4B_Pyramid",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 454,
+  "vertices": 229,
+  "uv": true,
+  "ok": true
+ },
+ "mesh_lod1": {
+  "object": "R4B_Pyramid_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 30,
+  "vertices": 17,
+  "uv": true,
+  "ok": true
+ },
+ "approved_triangles": 972,
+ "bounds_m": [
+  [
+   -0.2459,
+   -0.2459,
+   -0.26
+  ],
+  [
+   0.2459,
+   0.2459,
+   0.2207
+  ]
+ ],
+ "approved_bounds_m": [
+  [
+   -0.2555,
+   -0.2555,
+   -0.26
+  ],
+  [
+   0.2555,
+   0.2555,
+   0.2381
+  ]
+ ],
+ "inside_cells": true,
+ "max_outside_approved_solid_mm": 0.0,
+ "lod1_max_outside_approved_solid_mm": 0.0,
+ "materials": [
+  "R4P_Base",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "paint_zones": {
+  "R4P_Base": "Armor_Plate_Light",
+  "R4P_Secondary": "Armor_Gunmetal",
+  "R4P_Trim": "Armor_Dark"
+ },
+ "style_parameters": {
+  "g": 0.004,
+  "w": 0.02,
+  "seg": 4,
+  "margin": 0.006,
+  "chamfer": 0.004,
+  "rho": 0.04,
+  "cseg": 4,
+  "wall_smooth": true,
+  "seam_h": 0.006,
+  "min_plate": 0.05
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 229,
+   "triangles": 454,
+   "world_scale_dev": 0.0,
+   "empties": [
+    "Port_down_000",
+    "R4B_Pyramid_ROOT",
+    "Socket_Mount"
+   ],
+   "empties_missing": [],
+   "empty_pos_dev_mm": 0.0,
+   "empty_axis_dev_deg": 0.0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 460,
+   "triangles": 454,
+   "world_scale_dev": 0.0,
+   "empties": [
+    "Port_down_000",
+    "R4B_Pyramid_ROOT",
+    "Socket_Mount"
+   ],
+   "empties_missing": [],
+   "empty_pos_dev_mm": 0.0,
+   "empty_axis_dev_deg": 0.0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4B_Pyramid_front.jpg",
+  "R4B_Pyramid_side.jpg",
+  "R4B_Pyramid_34front.jpg",
+  "R4B_Pyramid_34rear.jpg",
+  "R4B_Pyramid_under.jpg"
+ ],
+ "collider": "unchanged - approved R4Blocks/R4B_Pyramid/R4B_Pyramid_colliders.glb (not re-authored)",
+ "files": {
+  "R4B_Pyramid.blend": {
+   "sha256": "25e25cd6289b7c28547a1a338a982d928cf691474c396792c24e9c0ce9f7e171",
+   "bytes": 651150
+  },
+  "R4B_Pyramid.fbx": {
+   "sha256": "ab35ed51514b26a7bcfedf2c778a2bca8c5e154135dee8d584822a2a0b273cdb",
+   "bytes": 29884
+  },
+  "R4B_Pyramid.glb": {
+   "sha256": "49e31fba512e0b5a7948c2bb9e79218903fe5d50dd29f2aabfbfeb6916aedf0e",
+   "bytes": 21652
+  },
+  "R4B_Pyramid_LOD1.fbx": {
+   "sha256": "f7f14c4ae4c00768676907c40dc7dda63acda229ed8a993ce89d59678ee10856",
+   "bytes": 18140
+  },
+  "R4B_Pyramid_LOD1.glb": {
+   "sha256": "56218bc603dc559f45a483d6fe4e6fe37691c49e5edbbdcc9c5cd01ff40bbf62",
+   "bytes": 5140
+  }
+ },
+ "seconds": 0.8,
+ "blender": "5.3.0"
+}

@@ -1,0 +1,507 @@
+{
+ "before/Cube": {
+  "file": "PR #963 @03af520 R4Blocks/R4B_Cube/R4B_Cube.glb",
+  "sha256": "f5084d93cb3c4097c8f9f911ed63f5a960efb4a24a094cd30f5083bf73a33a9c",
+  "bytes": 217288
+ },
+ "A/Cube": {
+  "file": "R4BlocksRedesign1232/A_Sleek/R4B_Cube/R4B_Cube.glb",
+  "sha256": "dff7b1a49f11addf3c7bb66cc6711d24895230110515d146556bb75c6dc30ca7",
+  "bytes": 29792
+ },
+ "A_LOD1/Cube": {
+  "file": "R4BlocksRedesign1232/A_Sleek/R4B_Cube/R4B_Cube_LOD1.glb",
+  "sha256": "7a35e1463e80436415d991e0fab9eba55aca4f58bf2a80413821fa23de02246e",
+  "bytes": 6220
+ },
+ "before/Wedge": {
+  "file": "PR #963 @03af520 R4Blocks/R4B_Wedge/R4B_Wedge.glb",
+  "sha256": "eae3de19ebbc1be9527c2f1b59f46a2b9893da33e59e2d329c0127bb2fa6daa6",
+  "bytes": 143068
+ },
+ "A/Wedge": {
+  "file": "R4BlocksRedesign1232/A_Sleek/R4B_Wedge/R4B_Wedge.glb",
+  "sha256": "d44a61d3e4f56ae35350b37b85b83e8213be5b75bed9cdd6bf363575b0f8b3a3",
+  "bytes": 23944
+ },
+ "A_LOD1/Wedge": {
+  "file": "R4BlocksRedesign1232/A_Sleek/R4B_Wedge/R4B_Wedge_LOD1.glb",
+  "sha256": "d04c15043eb5720ad79abb1629d87544e00bc73970a3689d251d5eda8d305e95",
+  "bytes": 5400
+ },
+ "before/Tetra": {
+  "file": "PR #963 @03af520 R4Blocks/R4B_Tetra/R4B_Tetra.glb",
+  "sha256": "36235a8f0e80800114f2156b78af6e820862e2403deb0a03bf922da93138bbec",
+  "bytes": 102328
+ },
+ "A/Tetra": {
+  "file": "R4BlocksRedesign1232/A_Sleek/R4B_Tetra/R4B_Tetra.glb",
+  "sha256": "1774e076dda28bb3feae640c22a9e2e096e5d92b664f122b9d39c9f970d9dd66",
+  "bytes": 16960
+ },
+ "A_LOD1/Tetra": {
+  "file": "R4BlocksRedesign1232/A_Sleek/R4B_Tetra/R4B_Tetra_LOD1.glb",
+  "sha256": "d16128b172ba47a7e2e13cf9395c8316242bc30957971ee16107ccfb9634a54b",
+  "bytes": 4568
+ },
+ "before/CornerWedge": {
+  "file": "PR #963 @03af520 R4Blocks/R4B_CornerWedge/R4B_CornerWedge.glb",
+  "sha256": "2ad69dff36e666d305afa143e66978b4a5f6b882bff513446fb8d3134c14b4bf",
+  "bytes": 106476
+ },
+ "A/CornerWedge": {
+  "file": "R4BlocksRedesign1232/A_Sleek/R4B_CornerWedge/R4B_CornerWedge.glb",
+  "sha256": "5c0f9f8391806984045b592b05d4852eaac8a2b264e8b28cf987b4d92f22c11a",
+  "bytes": 22236
+ },
+ "A_LOD1/CornerWedge": {
+  "file": "R4BlocksRedesign1232/A_Sleek/R4B_CornerWedge/R4B_CornerWedge_LOD1.glb",
+  "sha256": "32bc36cffc798cb359e4031ea033cb7f275025c07c624b7f0ececdb91b584b8d",
+  "bytes": 5204
+ },
+ "before/HalfBlock": {
+  "file": "PR #963 @03af520 R4Blocks/R4B_HalfBlock/R4B_HalfBlock.glb",
+  "sha256": "14be73c212cad669a5879ad8492bda2a6b2af18f1745ba8c3f227201dd659020",
+  "bytes": 201808
+ },
+ "A/HalfBlock": {
+  "file": "R4BlocksRedesign1232/A_Sleek/R4B_HalfBlock/R4B_HalfBlock.glb",
+  "sha256": "f667eec264924ce43b3c0da72952a801131b7151885a911a1398898f18b6d53c",
+  "bytes": 29748
+ },
+ "A_LOD1/HalfBlock": {
+  "file": "R4BlocksRedesign1232/A_Sleek/R4B_HalfBlock/R4B_HalfBlock_LOD1.glb",
+  "sha256": "e7f430859c80f43c4faf95ae5921806e2cae0c498e50d96628de651d2e76f738",
+  "bytes": 6232
+ },
+ "before/InnerCorner": {
+  "file": "PR #963 @03af520 R4Blocks/R4B_InnerCorner/R4B_InnerCorner.glb",
+  "sha256": "4195d54bc0c28ff8d6ead0551c5092b2210cd4b9eb6ebcc9ef85331a7eb0c6c9",
+  "bytes": 210836
+ },
+ "A/InnerCorner": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_InnerCorner/R4B_InnerCorner.glb",
+  "sha256": "42d3dfc46c6e8609f0242a576b18905a1ecf65ea8125b4b6542c9373003eaace",
+  "bytes": 31136
+ },
+ "A_LOD1/InnerCorner": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_InnerCorner/R4B_InnerCorner_LOD1.glb",
+  "sha256": "9d35860044a10826706bef46f340dad285f82ac078e5a662e6994a035eff46b6",
+  "bytes": 7068
+ },
+ "before/HalfWedge": {
+  "file": "PR #963 @03af520 R4Blocks/R4B_HalfWedge/R4B_HalfWedge.glb",
+  "sha256": "4c1c09a214bfe22325c3f745284e6d80b435703080efd9d9988de47c6da492a1",
+  "bytes": 74148
+ },
+ "A/HalfWedge": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_HalfWedge/R4B_HalfWedge.glb",
+  "sha256": "b7613c0ebc74ee7b8ff527cfea1be4d78a93a28da34f50958000361d60ed9b57",
+  "bytes": 23488
+ },
+ "A_LOD1/HalfWedge": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_HalfWedge/R4B_HalfWedge_LOD1.glb",
+  "sha256": "021b238713e5a1d60c5f04abed20bed99350391f376dd47ae981860039ff39e6",
+  "bytes": 5384
+ },
+ "before/LongWedge": {
+  "file": "PR #963 @03af520 R4Blocks/R4B_LongWedge/R4B_LongWedge.glb",
+  "sha256": "23f8811c2cd92f29f6f141cf1afe7944ce2fa3ee7d8936fd6275d902c7bb69db",
+  "bytes": 175464
+ },
+ "A/LongWedge": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_LongWedge/R4B_LongWedge.glb",
+  "sha256": "93e22a3b8bc8f0c5f452140017f1fd09dda2e6891e0c5152af1cec010d538817",
+  "bytes": 38048
+ },
+ "A_LOD1/LongWedge": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_LongWedge/R4B_LongWedge_LOD1.glb",
+  "sha256": "d3f4708b010186864588e7db12d2507a10fb40c48e2af1fb351b4279e4989411",
+  "bytes": 5412
+ },
+ "before/WideWedge": {
+  "file": "PR #963 @03af520 R4Blocks/R4B_WideWedge/R4B_WideWedge.glb",
+  "sha256": "b4d911cca86b096a7278ec85b223daa1d59d11f772a149357abd6dbb1283e182",
+  "bytes": 208160
+ },
+ "A/WideWedge": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_WideWedge/R4B_WideWedge.glb",
+  "sha256": "b305cb0e8a5ebf27eec654c6aaf647cafb5c46e58239ea7c20d048bff3ca8d82",
+  "bytes": 34964
+ },
+ "A_LOD1/WideWedge": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_WideWedge/R4B_WideWedge_LOD1.glb",
+  "sha256": "e8d05ba06769f0f1c578828b2ab69fcfd4f7ab72758907ca39cb2bbc43436077",
+  "bytes": 5380
+ },
+ "before/Pyramid": {
+  "file": "PR #963 @03af520 R4Blocks/R4B_Pyramid/R4B_Pyramid.glb",
+  "sha256": "1db7edc7eba6130567145966ab0f92e1f765bb55e4e15772300db3eb0790354e",
+  "bytes": 46640
+ },
+ "A/Pyramid": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_Pyramid/R4B_Pyramid.glb",
+  "sha256": "49e31fba512e0b5a7948c2bb9e79218903fe5d50dd29f2aabfbfeb6916aedf0e",
+  "bytes": 21652
+ },
+ "A_LOD1/Pyramid": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_Pyramid/R4B_Pyramid_LOD1.glb",
+  "sha256": "56218bc603dc559f45a483d6fe4e6fe37691c49e5edbbdcc9c5cd01ff40bbf62",
+  "bytes": 5140
+ },
+ "before/HexColumn": {
+  "file": "PR #963 @03af520 R4Blocks/R4B_HexColumn/R4B_HexColumn.glb",
+  "sha256": "491b11076d188326cc24693c106e516f62e4b0b84a94fbdb31538ce69deee37e",
+  "bytes": 79820
+ },
+ "A/HexColumn": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_HexColumn/R4B_HexColumn.glb",
+  "sha256": "86cc527c261d8bef176e57ce0eb98ff9259ef2cc752a0557a0da485e28a0ed0c",
+  "bytes": 41980
+ },
+ "A_LOD1/HexColumn": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_HexColumn/R4B_HexColumn_LOD1.glb",
+  "sha256": "f5e8867efdbc4205cb0f6a2000513e1e457dfabb89ff65a2fdf9711dba7d5162",
+  "bytes": 7928
+ },
+ "before/OctColumn": {
+  "file": "PR #963 @03af520 R4Blocks/R4B_OctColumn/R4B_OctColumn.glb",
+  "sha256": "556ca3682feab7a189b1ad1cfb5212a6620f4c6c3183032fdd18651debc7f768",
+  "bytes": 206504
+ },
+ "A/OctColumn": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_OctColumn/R4B_OctColumn.glb",
+  "sha256": "e358ecad3fa2957e31397e2ac3dd146f40457fbaeb198899fffca3e8d663cc73",
+  "bytes": 43600
+ },
+ "A_LOD1/OctColumn": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_OctColumn/R4B_OctColumn_LOD1.glb",
+  "sha256": "7b4a60fd1b7bae89afeba03551f9fe3dd69ae9e09afa219c24328e8244dd91ff",
+  "bytes": 9624
+ },
+ "before/Plate1x2": {
+  "file": "PR #963 @03af520 R4Blocks/R4B_Plate1x2/R4B_Plate1x2.glb",
+  "sha256": "502338fc33d5297933dd6eb2c8922db81fafc6efdb10aa09dac3bccce18f79d7",
+  "bytes": 204000
+ },
+ "A/Plate1x2": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_Plate1x2/R4B_Plate1x2.glb",
+  "sha256": "aee1f8de6c8209684d6946ca70ad330a4e825e614a5eabf5467b3bce9b8c3e6d",
+  "bytes": 45180
+ },
+ "A_LOD1/Plate1x2": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_Plate1x2/R4B_Plate1x2_LOD1.glb",
+  "sha256": "1e09f5391b67445af75b22b41827ddf93383edd9d39e7b2bb7bdb4b636627ba2",
+  "bytes": 6224
+ },
+ "before/Plate2x2": {
+  "file": "PR #963 @03af520 R4Blocks/R4B_Plate2x2/R4B_Plate2x2.glb",
+  "sha256": "9e8edaac131ba1bc07967d8f7e6372fad97448de2a975ce5492c34cd5d38f983",
+  "bytes": 268516
+ },
+ "A/Plate2x2": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_Plate2x2/R4B_Plate2x2.glb",
+  "sha256": "6dcafefcb2399d787b0995c8c9ee4d680de55339036144dd055e742da1c388ea",
+  "bytes": 64544
+ },
+ "A_LOD1/Plate2x2": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_Plate2x2/R4B_Plate2x2_LOD1.glb",
+  "sha256": "0d1f970d1a4a69cbd2e06390757449d69ac4a99fa93b4a607a969696d0938796",
+  "bytes": 6244
+ },
+ "before/Beam2": {
+  "file": "PR #963 @03af520 R4Blocks/R4B_Beam2/R4B_Beam2.glb",
+  "sha256": "be95c8fe08077af33a3fbec94a60d6441b17bacc27fdecb210f7368f11289ee4",
+  "bytes": 348732
+ },
+ "A/Beam2": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_Beam2/R4B_Beam2.glb",
+  "sha256": "53c3d3f53585ebdcfd51bf13a9d885c8c8a856521b38e489e8712da2360a0fbb",
+  "bytes": 46428
+ },
+ "A_LOD1/Beam2": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_Beam2/R4B_Beam2_LOD1.glb",
+  "sha256": "789c72d4e93d72efd8ee8e3349fde3187e4c91db2173678fefce11bd694b90d0",
+  "bytes": 6244
+ },
+ "before/Beam3": {
+  "file": "PR #963 @03af520 R4Blocks/R4B_Beam3/R4B_Beam3.glb",
+  "sha256": "744247829480de9acee1ca46da82a0f9cf7c0edd22acb272fd1c14ee34b7b01c",
+  "bytes": 479312
+ },
+ "A/Beam3": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_Beam3/R4B_Beam3.glb",
+  "sha256": "65c45132c299a55781ceb57fc89a7c0ae7bbb6bd4b75ce2a74a6513d678e026e",
+  "bytes": 60496
+ },
+ "A_LOD1/Beam3": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_Beam3/R4B_Beam3_LOD1.glb",
+  "sha256": "9693e451b3c208ecef81b1228e2a42913f4c91013461e78a3a860592867cde9b",
+  "bytes": 6256
+ },
+ "before/Slab2x2": {
+  "file": "PR #963 @03af520 R4Blocks/R4B_Slab2x2/R4B_Slab2x2.glb",
+  "sha256": "af1ff4a362e690eb650f3096810c04d7042512f4f1ed83c1e72df767acb82dcb",
+  "bytes": 567928
+ },
+ "A/Slab2x2": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_Slab2x2/R4B_Slab2x2.glb",
+  "sha256": "6fb96a532abee7189b06e20519e66728d40dbab0cbf372c3e5e0f91bf79df447",
+  "bytes": 67020
+ },
+ "A_LOD1/Slab2x2": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_Slab2x2/R4B_Slab2x2_LOD1.glb",
+  "sha256": "d45a476ec5ba80e8fbcadcc5dff1380e9e5199e3d58a35e30707558fae176cce",
+  "bytes": 6236
+ },
+ "before/BigCube2": {
+  "file": "PR #963 @03af520 R4Blocks/R4B_BigCube2/R4B_BigCube2.glb",
+  "sha256": "18f86c88425ca45ea574f7448cc96a80357b34429705560864e89deb521e56be",
+  "bytes": 848608
+ },
+ "A/BigCube2": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_BigCube2/R4B_BigCube2.glb",
+  "sha256": "16bee023b06fa3999dcce013c62242a51da0f413b16313593a4bdae962abcdcd",
+  "bytes": 94272
+ },
+ "A_LOD1/BigCube2": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_BigCube2/R4B_BigCube2_LOD1.glb",
+  "sha256": "bdb83500e5f8f9e5bfcf49b49d38904501ca01ddbfc0e021f132dd49d2b27f3f",
+  "bytes": 6288
+ },
+ "before/RoundEdge": {
+  "file": "PR #963 @03af520 R4Blocks/R4B_RoundEdge/R4B_RoundEdge.glb",
+  "sha256": "a022f0c19bac41435652415fb574698dbdfaedd7f302cf56998d960e0e82801b",
+  "bytes": 149132
+ },
+ "A/RoundEdge": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_RoundEdge/R4B_RoundEdge.glb",
+  "sha256": "48f823ec0f3597ec135ec3d1ebbe1a31f27d8bba31050779d5b21a932e2741b7",
+  "bytes": 42800
+ },
+ "A_LOD1/RoundEdge": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_RoundEdge/R4B_RoundEdge_LOD1.glb",
+  "sha256": "54a581a07ed76afe270c10236320c3bb7284d66a8a9c193e880c939289754227",
+  "bytes": 6700
+ },
+ "before/RoundCorner": {
+  "file": "PR #963 @03af520 R4Blocks/R4B_RoundCorner/R4B_RoundCorner.glb",
+  "sha256": "7a35097889ffe6f005957dfebc59a0878ba6518861fa37802167a233d68fc726",
+  "bytes": 113824
+ },
+ "A/RoundCorner": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_RoundCorner/R4B_RoundCorner.glb",
+  "sha256": "75783953b0e11cc04ebd88e63464c93063fa0c9aeb55dd5f786207e61f65614a",
+  "bytes": 54940
+ },
+ "A_LOD1/RoundCorner": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_RoundCorner/R4B_RoundCorner_LOD1.glb",
+  "sha256": "791222f38c5c573202caf97daf8a97afa15cf8f6f9b757c205a1e152a32c2c9d",
+  "bytes": 7092
+ },
+ "before/Cylinder": {
+  "file": "PR #963 @03af520 R4Blocks/R4B_Cylinder/R4B_Cylinder.glb",
+  "sha256": "6f60150690800b3edfc68cb098581311dda6d191dc52b23f4644fefe5923f4f4",
+  "bytes": 134864
+ },
+ "A/Cylinder": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_Cylinder/R4B_Cylinder.glb",
+  "sha256": "b413b81934671edcbf100bf85825d0f6690cb8e70453c490a6d6be5a4297ccdc",
+  "bytes": 38104
+ },
+ "A_LOD1/Cylinder": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_Cylinder/R4B_Cylinder_LOD1.glb",
+  "sha256": "d98393d144a71bd5bbfd9bd06c751d257be07ab5e7ebfa1f64f2ee554fc4933b",
+  "bytes": 5668
+ },
+ "before/Cone": {
+  "file": "PR #963 @03af520 R4Blocks/R4B_Cone/R4B_Cone.glb",
+  "sha256": "f4beaf22dbbb8dc0e0aa729cc388890bccf3d5c7a34e63ed80547cf75cbd5c12",
+  "bytes": 73292
+ },
+ "A/Cone": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_Cone/R4B_Cone.glb",
+  "sha256": "a8b0b55fc105769312422fc3bc894322d855b362cdb156a94593b56c9af2a89f",
+  "bytes": 39676
+ },
+ "A_LOD1/Cone": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_Cone/R4B_Cone_LOD1.glb",
+  "sha256": "c55ef1a9047729f177f66e6876d1fd06b2b8b6c993ddffb18e9d8254ddac0816",
+  "bytes": 6596
+ },
+ "before/Dome": {
+  "file": "PR #963 @03af520 R4Blocks/R4B_Dome/R4B_Dome.glb",
+  "sha256": "e68f5d89fe6fd3cd1f088e0eb58f65d6654483bb68e698c31191b292b5a20b4e",
+  "bytes": 115780
+ },
+ "A/Dome": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_Dome/R4B_Dome.glb",
+  "sha256": "08a1c05746e4419aa3b854cf0ad125f2ef3aaf00d4fa7329c6c01d9986314f33",
+  "bytes": 37416
+ },
+ "A_LOD1/Dome": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_Dome/R4B_Dome_LOD1.glb",
+  "sha256": "073d9d4924a75f61e0938a70f0624ba9ac58c599a929f27d25e3b33cb88d5bd2",
+  "bytes": 10400
+ },
+ "before/RoundTop": {
+  "file": "PR #963 @03af520 R4Blocks/R4B_RoundTop/R4B_RoundTop.glb",
+  "sha256": "587bef24d515a0b5ff5db330f3f95488b6d8b856f060af28d545a9d2beaeee7e",
+  "bytes": 181180
+ },
+ "A/RoundTop": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_RoundTop/R4B_RoundTop.glb",
+  "sha256": "ab0cb30a913cf7bdde024d116b92e6863d633759351d2a73c4a24a1abde26488",
+  "bytes": 52060
+ },
+ "A_LOD1/RoundTop": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_RoundTop/R4B_RoundTop_LOD1.glb",
+  "sha256": "a535abea1942c0a90ccba34a5d6e393df75a085263390da5040455e682df6496",
+  "bytes": 7160
+ },
+ "before/Step": {
+  "file": "PR #963 @03af520 R4Blocks/R4B_Step/R4B_Step.glb",
+  "sha256": "f70ab8f6d92524a601fbc68f9fb846098283dfb206211dba837ab963a43d5cb5",
+  "bytes": 215816
+ },
+ "A/Step": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_Step/R4B_Step.glb",
+  "sha256": "c52ce220709ffece209c87542ae42eb9d441900d91194f929eb648d2fba5337f",
+  "bytes": 49684
+ },
+ "A_LOD1/Step": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_Step/R4B_Step_LOD1.glb",
+  "sha256": "ffbe03046f8ca4c2cd18fe7162b24cec95265550297ed5ffb7ad8fc4f5396ad2",
+  "bytes": 6536
+ },
+ "before/CornerL3": {
+  "file": "PR #963 @03af520 R4Blocks/R4B_CornerL3/R4B_CornerL3.glb",
+  "sha256": "dcef097c73524e5088fa88fb704610cab1171b42187ab99c9abe9a98cef5393a",
+  "bytes": 500812
+ },
+ "A/CornerL3": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_CornerL3/R4B_CornerL3.glb",
+  "sha256": "744af20f1f6e2b3056fb7e26fb8805a87c3f1ae07f0fb22ba0b66b76e334da32",
+  "bytes": 71544
+ },
+ "A_LOD1/CornerL3": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_CornerL3/R4B_CornerL3_LOD1.glb",
+  "sha256": "a62071d37b364c1fc0b62b2cd717362181d10d5cb4918358d03e2843fefac7a7",
+  "bytes": 6580
+ },
+ "before/Tee4": {
+  "file": "PR #963 @03af520 R4Blocks/R4B_Tee4/R4B_Tee4.glb",
+  "sha256": "b67efb37600bb0e97edab6eff31f1cfe3567968b6aaf5040e138d09e390b3289",
+  "bytes": 643840
+ },
+ "A/Tee4": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_Tee4/R4B_Tee4.glb",
+  "sha256": "c0746aa4d2130a84ae4bfb0955aba6e90e74dbc2433457629bb8356b8298de0d",
+  "bytes": 91568
+ },
+ "A_LOD1/Tee4": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_Tee4/R4B_Tee4_LOD1.glb",
+  "sha256": "aba0d267c76a3a876fd1fb10021a45ac46bb8d0f3a21881f078b05bab2d98d25",
+  "bytes": 7908
+ },
+ "before/Arch": {
+  "file": "PR #963 @03af520 R4Blocks/R4B_Arch/R4B_Arch.glb",
+  "sha256": "29d347996d114e2223e1d4a4ac1b140ac5c3abd70b8b54bca21b07978a81ee04",
+  "bytes": 195532
+ },
+ "A/Arch": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_Arch/R4B_Arch.glb",
+  "sha256": "2b21675c13f8ff835ab13756d948dd7879d4b8ba03c6ceec3b9586930f593af6",
+  "bytes": 59068
+ },
+ "A_LOD1/Arch": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_Arch/R4B_Arch_LOD1.glb",
+  "sha256": "edefee315252195b8428a321f3b22884b613fdd00a6c2d36f76262886963d1a8",
+  "bytes": 9364
+ },
+ "before/CoveEdge": {
+  "file": "PR #963 @03af520 R4Blocks/R4B_CoveEdge/R4B_CoveEdge.glb",
+  "sha256": "6933cfa381246bcdab2362fb34fecdd3dbd50e2af5385ae68db4fa82eb59756d",
+  "bytes": 145168
+ },
+ "A/CoveEdge": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_CoveEdge/R4B_CoveEdge.glb",
+  "sha256": "ba4f617224295ff01bf713cbec45cf59628e8215c1a66939f8bf16fbaa348621",
+  "bytes": 52820
+ },
+ "A_LOD1/CoveEdge": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_CoveEdge/R4B_CoveEdge_LOD1.glb",
+  "sha256": "fda9904e6d5ad4683018598b580a29f2d61231dc9d3c64e0eedf426e2a2dc333",
+  "bytes": 8116
+ },
+ "before/TrussCube": {
+  "file": "PR #963 @03af520 R4Blocks/R4B_TrussCube/R4B_TrussCube.glb",
+  "sha256": "0de33a9acba825e4c0042af5365428915ef808f9c9add20221b34845f6fd336c",
+  "bytes": 304728
+ },
+ "A/TrussCube": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_TrussCube/R4B_TrussCube.glb",
+  "sha256": "222a65c8135a48d169784cd634afca43f347fc9f4eac7cec68015614442081e6",
+  "bytes": 93844
+ },
+ "A_LOD1/TrussCube": {
+  "file": "R4BlocksSleek1235/A_Sleek/R4B_TrussCube/R4B_TrussCube_LOD1.glb",
+  "sha256": "ff7cb1913eeff319740bbd9fe761d8b35726b506dbec8b4ac9ae9dd65a08214c",
+  "bytes": 40436
+ },
+ "wheels:R4M_WheelL_Side_Offroad": {
+  "file": "wheels @fb6910c R4M_WheelL_Side_Offroad.glb",
+  "sha256": "f9d3108bcd3912e55fe850a804c94b06345a8ab7edfc96ed01c6e74724ef8220",
+  "bytes": 476984
+ },
+ "weapons:R4W_Railgun": {
+  "file": "weapons @23718ab R4W_Railgun.glb",
+  "sha256": "290caa5d164d2138bc4885e5f569a74355a53751d8e20af63da5a324d8dd0b65",
+  "bytes": 945372
+ },
+ "weapons:R4W_RocketLauncher": {
+  "file": "weapons @23718ab R4W_RocketLauncher.glb",
+  "sha256": "91062bbdc89972fe293199777a5f62c03d8ce3ea6ef4ec2e6912a66a7e346d34",
+  "bytes": 834796
+ },
+ "weapons:R4W_Basic": {
+  "file": "weapons @23718ab R4W_Basic.glb",
+  "sha256": "9535f7deb4e52b998e5d2f663d77807bddf295cdba014fafb6c38851d1262631",
+  "bytes": 620012
+ },
+ "connectors:R4C_STRUT_STANDARD": {
+  "file": "connectors @22974e7 R4C_STRUT_STANDARD.glb",
+  "sha256": "b2bd14759d0f90ec6dd16ead8fd7035ec9bb209a9b474f8d46abdc994eecb887",
+  "bytes": 463188
+ },
+ "wheels:R4M_WheelM_Side_Offroad": {
+  "file": "wheels @fb6910c R4M_WheelM_Side_Offroad.glb",
+  "sha256": "6f5fb68eab1dc4e61917c0f6de9db1cb65ea7e3e6ce8eedffefd1ed09a079ca6",
+  "bytes": 412996
+ },
+ "connectors:R4C_ROD_SHORT": {
+  "file": "connectors @22974e7 R4C_ROD_SHORT.glb",
+  "sha256": "c9531157f0eb184c105205f075b5ce2d3b2907bb1928d809aedde1c9aeeea832",
+  "bytes": 116484
+ },
+ "weapons:R4W_Heavy": {
+  "file": "weapons @23718ab R4W_Heavy.glb",
+  "sha256": "0a55a5df6f1b6bcbfc8a21b860bf4f58f4c01dbf9f909db55dfa9f0d275792d1",
+  "bytes": 712424
+ },
+ "weapons:R4W_Shotgun": {
+  "file": "weapons @23718ab R4W_Shotgun.glb",
+  "sha256": "73870ed6989c38e48627c6f548ad23c297e78279b20917022974a22c377be8e9",
+  "bytes": 679916
+ },
+ "movement:R4M_HoverEngine": {
+  "file": "movement @c6b655d R4M_HoverEngine.glb",
+  "sha256": "106f47c230c67e7c47eafbd324335e0f4a66bd37f6171b72f2ce92985903e2f3",
+  "bytes": 385624
+ },
+ "movement:R4M_Booster": {
+  "file": "movement @c6b655d R4M_Booster.glb",
+  "sha256": "b40c63a7a126778db0fdb3afd518beddc97102333944f73a52a87de7dee54952",
+  "bytes": 361804
+ }
+}

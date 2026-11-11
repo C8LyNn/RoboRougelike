@@ -1,0 +1,292 @@
+{
+ "id": "R4B_LongWedge",
+ "part_kind": "LongWedge",
+ "issue": 1235,
+ "wave": 1,
+ "art_direction": "A_Sleek",
+ "replaces_visual_of": "PR #963 R4Blocks/R4B_LongWedge (approved files untouched; same part id / kind)",
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "installed_in_game": false,
+ "axes": "file: +Y up, Port_forward = +Z, Port_right = +X (same as the approved GLB)",
+ "pivot": "anchor cell centre (0,0,0), identical to PR #963",
+ "bounds_file_axes_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.2461,
+   0.7771
+  ]
+ ],
+ "triangles": {
+  "LOD0": 936,
+  "LOD1": 32,
+  "approved_963": 4030
+ },
+ "renderers": 1,
+ "material_slots": 3,
+ "paint_zones": {
+  "R4P_Base": {
+   "triangles": 152,
+   "default_r41_colour": "Armor_Plate_Light",
+   "rgb_linear": [
+    0.27,
+    0.28,
+    0.285
+   ]
+  },
+  "R4P_Secondary": {
+   "triangles": 444,
+   "default_r41_colour": "Armor_Gunmetal",
+   "rgb_linear": [
+    0.16,
+    0.17,
+    0.18
+   ]
+  },
+  "R4P_Trim": {
+   "triangles": 340,
+   "default_r41_colour": "Armor_Dark",
+   "rgb_linear": [
+    0.035,
+    0.038,
+    0.045
+   ]
+  }
+ },
+ "interface_unchanged": {
+  "cells": [
+   [
+    0,
+    0,
+    0
+   ],
+   [
+    0,
+    -1,
+    0
+   ]
+  ],
+  "bonds": [
+   [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     -1,
+     0
+    ]
+   ]
+  ],
+  "contact_mask_local_anchor": 43,
+  "ports": [
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "down",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     -1,
+     0
+    ],
+    "dir": "down",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "back",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "left",
+    "kind": "partial",
+    "center": [
+     -0.26,
+     0.08,
+     -0.1
+    ],
+    "half": [
+     0.2,
+     0.2
+    ],
+    "offset": [
+     -0.1455,
+     -0.1818
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "right",
+    "kind": "partial",
+    "center": [
+     0.26,
+     0.08,
+     -0.1
+    ],
+    "half": [
+     0.2,
+     0.2
+    ],
+    "offset": [
+     0.1455,
+     -0.1818
+    ]
+   }
+  ],
+  "empties": [
+   "Port_back_000",
+   "Port_down_0-10",
+   "Port_down_000",
+   "Port_left_000_part",
+   "Port_right_000_part",
+   "R4B_LongWedge_ROOT",
+   "Socket_Mount"
+  ],
+  "colliders": "use approved R4Blocks/R4B_LongWedge/R4B_LongWedge_colliders.glb (no new collider authored)"
+ },
+ "style_parameters_m": {
+  "g": 0.004,
+  "w": 0.02,
+  "seg": 4,
+  "margin": 0.006,
+  "chamfer": 0.004,
+  "rho": 0.04,
+  "cseg": 4,
+  "seam_h": 0.006,
+  "min_plate": 0.05
+ },
+ "source": {
+  "generator": "scripts/shapes25.py (r4sleek.py / r4convex.py / roundcorner.py / geo2d.py) + pilot scripts/r4panel.py, styles.py",
+  "mesh_source": "mesh_source/R4B_LongWedge_A.json, mesh_source/R4B_LongWedge_A_LOD1.json",
+  "blender_build": "scripts/build_blender25.py",
+  "blender": "5.3.0"
+ },
+ "blender_qa": {
+  "mesh": {
+   "object": "R4B_LongWedge",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 936,
+   "vertices": 470,
+   "uv": true,
+   "ok": true
+  },
+  "mesh_lod1": {
+   "object": "R4B_LongWedge_LOD1",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 32,
+   "vertices": 18,
+   "uv": true,
+   "ok": true
+  },
+  "inside_cells": true,
+  "max_outside_approved_solid_mm": 0.0,
+  "lod1_max_outside_approved_solid_mm": 0.0001,
+  "reimport_pass": {
+   ".fbx": true,
+   ".glb": true
+  }
+ },
+ "files": {
+  "R4B_LongWedge.blend": {
+   "sha256": "5ddf6a6e257b300f1a349b381b988414fe2798951fa19c09d3b888ebca0b3edb",
+   "bytes": 689435
+  },
+  "R4B_LongWedge.fbx": {
+   "sha256": "d6201b70f7dca5cac872873cef6442af207f100475a3dee234aee5884cb12dc0",
+   "bytes": 43484
+  },
+  "R4B_LongWedge.glb": {
+   "sha256": "93e22a3b8bc8f0c5f452140017f1fd09dda2e6891e0c5152af1cec010d538817",
+   "bytes": 38048
+  },
+  "R4B_LongWedge_LOD1.fbx": {
+   "sha256": "8be58be9306a2a89dede94cfbec99b6fda183e59d2a332bac3e42473dca370d1",
+   "bytes": 18236
+  },
+  "R4B_LongWedge_LOD1.glb": {
+   "sha256": "d3f4708b010186864588e7db12d2507a10fb40c48e2af1fb351b4279e4989411",
+   "bytes": 5412
+  },
+  "R4B_LongWedge_QA.json": {
+   "sha256": "388bf20ac4e2c3a2e29a19ef878b742b0d493ae4ea8cdd7cad63639d5ad83e82",
+   "bytes": 7368
+  },
+  "renders/R4B_LongWedge_34front.jpg": {
+   "sha256": "e4a9b17ad0d7eb894a78b9ec82ff6744d9a2fcaf05125d384af9dec556e319dd",
+   "bytes": 23488
+  },
+  "renders/R4B_LongWedge_34rear.jpg": {
+   "sha256": "f68fdadf8815e5be30d6dc869afd9e651834620abb1331c5e75a7374c2a7bf9e",
+   "bytes": 21709
+  },
+  "renders/R4B_LongWedge_front.jpg": {
+   "sha256": "e6ed7c7d31e97b05cc6d7f201a5fbed748a7991cbafa6e664b93b407c87bcec8",
+   "bytes": 18302
+  },
+  "renders/R4B_LongWedge_side.jpg": {
+   "sha256": "75d7b15ba745e39c746e653f8bc3a4084d53ed70f56140da381c07c9b5bc6570",
+   "bytes": 23452
+  },
+  "renders/R4B_LongWedge_under.jpg": {
+   "sha256": "505cb69c568ae8dcf9f776f33214ac20a64a1c33268d9a6bdbcc721cb5b9e1de",
+   "bytes": 21257
+  }
+ }
+}

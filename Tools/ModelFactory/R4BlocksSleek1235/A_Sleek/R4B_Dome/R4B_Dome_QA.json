@@ -1,0 +1,230 @@
+{
+ "id": "R4B_Dome",
+ "block_kind": "Dome",
+ "issue": 1235,
+ "wave": 2,
+ "art_direction": "A",
+ "art_direction_label": "A_Sleek",
+ "description": "1x1x1 dome on a base plate",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "bonds": [],
+ "note": "low base plate + elliptic dome (sensor / cockpit cap)",
+ "contact_mask_local_anchor": 8,
+ "contact_mask_bits": "R3MountingGrid.FaceDirections order: right, left, up, down, forward, back (Unity)",
+ "ports": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 95.1,
+   "recessed_pct": 4.9,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "approved_flush_pct": 93.8,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "interface_vs_approved": {
+  "approved_glb": "ModelFactory/R4Blocks/R4B_Dome/R4B_Dome.glb",
+  "approved_sha256": "e68f5d89fe6fd3cd1f088e0eb58f65d6654483bb68e698c31191b292b5a20b4e",
+  "empties_missing": [],
+  "empties_extra": [],
+  "pos_dev_mm": 0.0,
+  "axis_dev_deg": 0.0,
+  "ports_identical": true,
+  "cells_identical": true,
+  "contact_mask_approved": 8,
+  "contact_mask": 8,
+  "PASS": true
+ },
+ "mesh": {
+  "object": "R4B_Dome",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 942,
+  "vertices": 473,
+  "uv": true,
+  "ok": true
+ },
+ "mesh_lod1": {
+  "object": "R4B_Dome_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 142,
+  "vertices": 73,
+  "uv": true,
+  "ok": true
+ },
+ "approved_triangles": 3270,
+ "bounds_m": [
+  [
+   -0.256,
+   -0.256,
+   -0.26
+  ],
+  [
+   0.256,
+   0.256,
+   0.246
+  ]
+ ],
+ "approved_bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.254
+  ]
+ ],
+ "inside_cells": true,
+ "max_outside_approved_solid_mm": 0.0,
+ "lod1_max_outside_approved_solid_mm": 0.0,
+ "materials": [
+  "R4P_Base",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "paint_zones": {
+  "R4P_Base": "Armor_Plate_Light",
+  "R4P_Secondary": "Armor_Gunmetal",
+  "R4P_Trim": "Armor_Dark"
+ },
+ "style_parameters": {
+  "g": 0.004,
+  "w": 0.02,
+  "seg": 4,
+  "margin": 0.006,
+  "chamfer": 0.004,
+  "rho": 0.04,
+  "cseg": 4,
+  "wall_smooth": true,
+  "seam_h": 0.006,
+  "min_plate": 0.05
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 473,
+   "triangles": 942,
+   "world_scale_dev": 0.0,
+   "empties": [
+    "Port_down_000",
+    "R4B_Dome_ROOT",
+    "Socket_Mount"
+   ],
+   "empties_missing": [],
+   "empty_pos_dev_mm": 0.0,
+   "empty_axis_dev_deg": 0.0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 861,
+   "triangles": 942,
+   "world_scale_dev": 0.0,
+   "empties": [
+    "Port_down_000",
+    "R4B_Dome_ROOT",
+    "Socket_Mount"
+   ],
+   "empties_missing": [],
+   "empty_pos_dev_mm": 0.0,
+   "empty_axis_dev_deg": 0.0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4B_Dome_front.jpg",
+  "R4B_Dome_side.jpg",
+  "R4B_Dome_34front.jpg",
+  "R4B_Dome_34rear.jpg",
+  "R4B_Dome_under.jpg"
+ ],
+ "collider": "unchanged - approved R4Blocks/R4B_Dome/R4B_Dome_colliders.glb (not re-authored)",
+ "files": {
+  "R4B_Dome.blend": {
+   "sha256": "45359d0b3b16da16d01e7d3bb93a0c03a817439fc4af46352b6eba382ac01f3a",
+   "bytes": 687925
+  },
+  "R4B_Dome.fbx": {
+   "sha256": "45b54ac0e9e3bf9ff06c1e5a591ccfb425a89ea952fb5f217760c2dc9241ec85",
+   "bytes": 39788
+  },
+  "R4B_Dome.glb": {
+   "sha256": "08a1c05746e4419aa3b854cf0ad125f2ef3aaf00d4fa7329c6c01d9986314f33",
+   "bytes": 37416
+  },
+  "R4B_Dome_LOD1.fbx": {
+   "sha256": "47347944017d4ae12a4581abc92d32e1768b592093d66c9a22a3b9166c64007d",
+   "bytes": 20636
+  },
+  "R4B_Dome_LOD1.glb": {
+   "sha256": "073d9d4924a75f61e0938a70f0624ba9ac58c599a929f27d25e3b33cb88d5bd2",
+   "bytes": 10400
+  }
+ },
+ "seconds": 1.2,
+ "blender": "5.3.0"
+}

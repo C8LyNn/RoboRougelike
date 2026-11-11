@@ -1,0 +1,461 @@
+{
+ "id": "R4B_CornerL3",
+ "part_kind": "CornerL3",
+ "issue": 1235,
+ "wave": 3,
+ "art_direction": "A_Sleek",
+ "replaces_visual_of": "PR #963 R4Blocks/R4B_CornerL3 (approved files untouched; same part id / kind)",
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "installed_in_game": false,
+ "axes": "file: +Y up, Port_forward = +Z, Port_right = +X (same as the approved GLB)",
+ "pivot": "anchor cell centre (0,0,0), identical to PR #963",
+ "bounds_file_axes_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.81,
+   0.26,
+   0.81
+  ]
+ ],
+ "triangles": {
+  "LOD0": 1852,
+  "LOD1": 64,
+  "approved_963": 11764
+ },
+ "renderers": 1,
+ "material_slots": 3,
+ "paint_zones": {
+  "R4P_Base": {
+   "triangles": 306,
+   "default_r41_colour": "Armor_Plate_Light",
+   "rgb_linear": [
+    0.27,
+    0.28,
+    0.285
+   ]
+  },
+  "R4P_Secondary": {
+   "triangles": 878,
+   "default_r41_colour": "Armor_Gunmetal",
+   "rgb_linear": [
+    0.16,
+    0.17,
+    0.18
+   ]
+  },
+  "R4P_Trim": {
+   "triangles": 668,
+   "default_r41_colour": "Armor_Dark",
+   "rgb_linear": [
+    0.035,
+    0.038,
+    0.045
+   ]
+  }
+ },
+ "interface_unchanged": {
+  "cells": [
+   [
+    0,
+    0,
+    0
+   ],
+   [
+    1,
+    0,
+    0
+   ],
+   [
+    0,
+    -1,
+    0
+   ]
+  ],
+  "bonds": [
+   [
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     1,
+     0,
+     0
+    ]
+   ]
+  ],
+  "contact_mask_local_anchor": 46,
+  "ports": [
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "left",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "up",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "down",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "back",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     1,
+     0,
+     0
+    ],
+    "dir": "right",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     1,
+     0,
+     0
+    ],
+    "dir": "up",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     1,
+     0,
+     0
+    ],
+    "dir": "down",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     1,
+     0,
+     0
+    ],
+    "dir": "forward",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     1,
+     0,
+     0
+    ],
+    "dir": "back",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     -1,
+     0
+    ],
+    "dir": "right",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     -1,
+     0
+    ],
+    "dir": "left",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     -1,
+     0
+    ],
+    "dir": "up",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     -1,
+     0
+    ],
+    "dir": "down",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     -1,
+     0
+    ],
+    "dir": "forward",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   }
+  ],
+  "empties": [
+   "Port_back_000",
+   "Port_back_100",
+   "Port_down_0-10",
+   "Port_down_000",
+   "Port_down_100",
+   "Port_forward_0-10",
+   "Port_forward_100",
+   "Port_left_0-10",
+   "Port_left_000",
+   "Port_right_0-10",
+   "Port_right_100",
+   "Port_up_0-10",
+   "Port_up_000",
+   "Port_up_100",
+   "R4B_CornerL3_ROOT",
+   "Socket_Mount"
+  ],
+  "colliders": "use approved R4Blocks/R4B_CornerL3/R4B_CornerL3_colliders.glb (no new collider authored)"
+ },
+ "style_parameters_m": {
+  "g": 0.004,
+  "w": 0.02,
+  "seg": 4,
+  "margin": 0.006,
+  "chamfer": 0.004,
+  "rho": 0.04,
+  "cseg": 4,
+  "seam_h": 0.006,
+  "min_plate": 0.05
+ },
+ "source": {
+  "generator": "scripts/shapes25.py (r4sleek.py / r4convex.py / roundcorner.py / geo2d.py) + pilot scripts/r4panel.py, styles.py",
+  "mesh_source": "mesh_source/R4B_CornerL3_A.json, mesh_source/R4B_CornerL3_A_LOD1.json",
+  "blender_build": "scripts/build_blender25.py",
+  "blender": "5.3.0"
+ },
+ "blender_qa": {
+  "mesh": {
+   "object": "R4B_CornerL3",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1852,
+   "vertices": 928,
+   "uv": true,
+   "ok": true
+  },
+  "mesh_lod1": {
+   "object": "R4B_CornerL3_LOD1",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 64,
+   "vertices": 34,
+   "uv": true,
+   "ok": true
+  },
+  "inside_cells": true,
+  "max_outside_approved_solid_mm": 0.0,
+  "lod1_max_outside_approved_solid_mm": 0.0,
+  "reimport_pass": {
+   ".fbx": true,
+   ".glb": true
+  }
+ },
+ "files": {
+  "R4B_CornerL3.blend": {
+   "sha256": "ebf67173ba6ef666f43bae3c0b3fa75d0f17122d582dbe6a273b8f612e3a3969",
+   "bytes": 774834
+  },
+  "R4B_CornerL3.fbx": {
+   "sha256": "ff5fe569c8a6082c55ff6becc1454fb50a0702575e5a4b18e57713e4633f4e64",
+   "bytes": 68732
+  },
+  "R4B_CornerL3.glb": {
+   "sha256": "744af20f1f6e2b3056fb7e26fb8805a87c3f1ae07f0fb22ba0b66b76e334da32",
+   "bytes": 71544
+  },
+  "R4B_CornerL3_LOD1.fbx": {
+   "sha256": "0626b6e96b9dd306977cd2b4c8bab7e09fd7e83ee328e4f54d6f0381ecbd249e",
+   "bytes": 17580
+  },
+  "R4B_CornerL3_LOD1.glb": {
+   "sha256": "a62071d37b364c1fc0b62b2cd717362181d10d5cb4918358d03e2843fefac7a7",
+   "bytes": 6580
+  },
+  "R4B_CornerL3_QA.json": {
+   "sha256": "3560974f4f3907c6250a3fa4ece60c1c811a3b9b3a56c838ef77822a0c7283d3",
+   "bytes": 12735
+  },
+  "renders/R4B_CornerL3_34front.jpg": {
+   "sha256": "a8c4060aebbe41a7b1942db58376f0579bfd0f2cc1fd18cf2fef76b3b9615473",
+   "bytes": 28282
+  },
+  "renders/R4B_CornerL3_34rear.jpg": {
+   "sha256": "6d47aed55b22659a0208cedb53f58779d2d4280e3e6feafaec376e693f6e52f0",
+   "bytes": 29853
+  },
+  "renders/R4B_CornerL3_front.jpg": {
+   "sha256": "5e90e5a61cf07ce3efcce87711a7483e49d47d60ab1d543cfe1bca5d8ce14f02",
+   "bytes": 23369
+  },
+  "renders/R4B_CornerL3_side.jpg": {
+   "sha256": "259f595fee4dcbc5c727e25dac99641c61941fe8b268877b1fb012fe51c1581b",
+   "bytes": 22921
+  },
+  "renders/R4B_CornerL3_under.jpg": {
+   "sha256": "f5e7692069d3d9642a765f01ef1e4fd19ad2228bf0954b2dc7c00706e9acabdc",
+   "bytes": 30219
+  }
+ }
+}

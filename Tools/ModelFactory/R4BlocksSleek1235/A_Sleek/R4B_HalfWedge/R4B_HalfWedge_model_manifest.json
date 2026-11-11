@@ -1,0 +1,215 @@
+{
+ "id": "R4B_HalfWedge",
+ "part_kind": "HalfWedge",
+ "issue": 1235,
+ "wave": 1,
+ "art_direction": "A_Sleek",
+ "replaces_visual_of": "PR #963 R4Blocks/R4B_HalfWedge (approved files untouched; same part id / kind)",
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "installed_in_game": false,
+ "axes": "file: +Y up, Port_forward = +Z, Port_right = +X (same as the approved GLB)",
+ "pivot": "anchor cell centre (0,0,0), identical to PR #963",
+ "bounds_file_axes_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   -0.0286,
+   0.2265
+  ]
+ ],
+ "triangles": {
+  "LOD0": 512,
+  "LOD1": 32,
+  "approved_963": 1652
+ },
+ "renderers": 1,
+ "material_slots": 3,
+ "paint_zones": {
+  "R4P_Base": {
+   "triangles": 80,
+   "default_r41_colour": "Armor_Plate_Light",
+   "rgb_linear": [
+    0.27,
+    0.28,
+    0.285
+   ]
+  },
+  "R4P_Secondary": {
+   "triangles": 252,
+   "default_r41_colour": "Armor_Gunmetal",
+   "rgb_linear": [
+    0.16,
+    0.17,
+    0.18
+   ]
+  },
+  "R4P_Trim": {
+   "triangles": 180,
+   "default_r41_colour": "Armor_Dark",
+   "rgb_linear": [
+    0.035,
+    0.038,
+    0.045
+   ]
+  }
+ },
+ "interface_unchanged": {
+  "cells": [
+   [
+    0,
+    0,
+    0
+   ]
+  ],
+  "bonds": [],
+  "contact_mask_local_anchor": 40,
+  "ports": [
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "down",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "back",
+    "kind": "partial",
+    "center": [
+     0.0,
+     0.26,
+     -0.1375
+    ],
+    "half": [
+     0.45,
+     0.22
+    ],
+    "offset": [
+     0.0,
+     -0.25
+    ]
+   }
+  ],
+  "empties": [
+   "Port_back_000_part",
+   "Port_down_000",
+   "R4B_HalfWedge_ROOT",
+   "Socket_Mount"
+  ],
+  "colliders": "use approved R4Blocks/R4B_HalfWedge/R4B_HalfWedge_colliders.glb (no new collider authored)"
+ },
+ "style_parameters_m": {
+  "g": 0.004,
+  "w": 0.02,
+  "seg": 4,
+  "margin": 0.006,
+  "chamfer": 0.004,
+  "rho": 0.04,
+  "cseg": 4,
+  "seam_h": 0.006,
+  "min_plate": 0.05
+ },
+ "source": {
+  "generator": "scripts/shapes25.py (r4sleek.py / r4convex.py / roundcorner.py / geo2d.py) + pilot scripts/r4panel.py, styles.py",
+  "mesh_source": "mesh_source/R4B_HalfWedge_A.json, mesh_source/R4B_HalfWedge_A_LOD1.json",
+  "blender_build": "scripts/build_blender25.py",
+  "blender": "5.3.0"
+ },
+ "blender_qa": {
+  "mesh": {
+   "object": "R4B_HalfWedge",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 512,
+   "vertices": 258,
+   "uv": true,
+   "ok": true
+  },
+  "mesh_lod1": {
+   "object": "R4B_HalfWedge_LOD1",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 32,
+   "vertices": 18,
+   "uv": true,
+   "ok": true
+  },
+  "inside_cells": true,
+  "max_outside_approved_solid_mm": 0.0,
+  "lod1_max_outside_approved_solid_mm": 0.0,
+  "reimport_pass": {
+   ".fbx": true,
+   ".glb": true
+  }
+ },
+ "files": {
+  "R4B_HalfWedge.blend": {
+   "sha256": "becff5f9e13038caca322153234d616276d529e78a69c3aba996b6ed9d2ff0db",
+   "bytes": 657276
+  },
+  "R4B_HalfWedge.fbx": {
+   "sha256": "f5aad6125c2c6888fcdca988a5aeaadeef85f287deb67ff9032940affbfc0886",
+   "bytes": 32428
+  },
+  "R4B_HalfWedge.glb": {
+   "sha256": "b7613c0ebc74ee7b8ff527cfea1be4d78a93a28da34f50958000361d60ed9b57",
+   "bytes": 23488
+  },
+  "R4B_HalfWedge_LOD1.fbx": {
+   "sha256": "174069853767d8f25aff738424fae6a35e7a768464b9ba85c5416e8424143856",
+   "bytes": 18220
+  },
+  "R4B_HalfWedge_LOD1.glb": {
+   "sha256": "021b238713e5a1d60c5f04abed20bed99350391f376dd47ae981860039ff39e6",
+   "bytes": 5384
+  },
+  "R4B_HalfWedge_QA.json": {
+   "sha256": "83a84b53909dec71173d4cb3b84b728a482adacaf49cb7cfc9fda0540b281f99",
+   "bytes": 5314
+  },
+  "renders/R4B_HalfWedge_34front.jpg": {
+   "sha256": "e0e316f16763efd3f960bec3fe49500d512bee7db826541e4538ff96cde4c459",
+   "bytes": 23514
+  },
+  "renders/R4B_HalfWedge_34rear.jpg": {
+   "sha256": "cba3389b7bb36a4da44ab5ad52f09fec67242231db2ad32d4f271de863b843e4",
+   "bytes": 22845
+  },
+  "renders/R4B_HalfWedge_front.jpg": {
+   "sha256": "cb73855f8663b6209c33c8300ad6c9eb91b5c0b58abe57b67728274bcc68bb3e",
+   "bytes": 19110
+  },
+  "renders/R4B_HalfWedge_side.jpg": {
+   "sha256": "a9aba783f43ac330e8ffc1a307e872858ca6ac4bb24577453e8f092f100e3b3a",
+   "bytes": 22630
+  },
+  "renders/R4B_HalfWedge_under.jpg": {
+   "sha256": "7b0fbed08afd045cc9b59538c6253016b337a7cb5c6b63afe4f39201a7d40f54",
+   "bytes": 21519
+  }
+ }
+}

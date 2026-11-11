@@ -1,0 +1,8 @@
+[1235] BLOCK A_Sleek R4B_RoundEdge BLENDER_PASS [] 1136 tris LOD1 56
+[1235] BLOCK A_Sleek R4B_RoundCorner BLENDER_PASS [] 1560 tris LOD1 82
+[1235] BLOCK A_Sleek R4B_Cylinder BLENDER_PASS [] 864 tris LOD1 96
+[1235] BLOCK A_Sleek R4B_Cone BLENDER_PASS [] 912 tris LOD1 120
+[1235] BLOCK A_Sleek R4B_Dome BLENDER_PASS [] 942 tris LOD1 142
+[1235] BLOCK A_Sleek R4B_RoundTop BLENDER_PASS [] 1392 tris LOD1 68
+[1235] BUILD_DONE {"A_Sleek/R4B_RoundEdge": "BLENDER_PASS", "A_Sleek/R4B_RoundCorner": "BLENDER_PASS", "A_Sleek/R4B_Cylinder": "BLENDER_PASS", "A_Sleek/R4B_Cone": "BLENDER_PASS", "A_Sleek/R4B_Dome": "BLENDER_PASS", "A_Sleek/R4B_RoundTop": "BLENDER_PASS"}
+Blender 5.3.0 (hash 02f0899d78e3 built 2026-11-10 01:33:43)

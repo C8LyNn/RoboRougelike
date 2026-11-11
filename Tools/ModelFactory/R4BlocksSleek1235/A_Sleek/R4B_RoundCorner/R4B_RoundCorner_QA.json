@@ -1,0 +1,331 @@
+{
+ "id": "R4B_RoundCorner",
+ "block_kind": "RoundCorner",
+ "issue": 1235,
+ "wave": 2,
+ "art_direction": "A",
+ "art_direction_label": "A_Sleek",
+ "description": "1x1x1 rounded corner (sphere octant)",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "bonds": [],
+ "note": null,
+ "contact_mask_local_anchor": 42,
+ "contact_mask_bits": "R3MountingGrid.FaceDirections order: right, left, up, down, forward, back (Unity)",
+ "ports": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "partial",
+   "center": [
+    -0.143,
+    0.143,
+    -0.26
+   ],
+   "half": [
+    0.2,
+    0.2
+   ],
+   "offset": [
+    0.26,
+    -0.26
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "partial",
+   "center": [
+    -0.143,
+    0.26,
+    -0.143
+   ],
+   "half": [
+    0.2,
+    0.2
+   ],
+   "offset": [
+    0.26,
+    -0.26
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "partial",
+   "center": [
+    -0.26,
+    0.143,
+    -0.143
+   ],
+   "half": [
+    0.2,
+    0.2
+   ],
+   "offset": [
+    -0.26,
+    -0.26
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 79.0,
+   "recessed_pct": 21.0,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "partial",
+   "approved_flush_pct": 93.8,
+   "PASS": true
+  },
+  {
+   "flush_pct": 79.0,
+   "recessed_pct": 21.0,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "partial",
+   "approved_flush_pct": 93.8,
+   "PASS": true
+  },
+  {
+   "flush_pct": 79.0,
+   "recessed_pct": 21.0,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "partial",
+   "approved_flush_pct": 93.8,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "partial",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "left",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "interface_vs_approved": {
+  "approved_glb": "ModelFactory/R4Blocks/R4B_RoundCorner/R4B_RoundCorner.glb",
+  "approved_sha256": "7a35097889ffe6f005957dfebc59a0878ba6518861fa37802167a233d68fc726",
+  "empties_missing": [],
+  "empties_extra": [],
+  "pos_dev_mm": 0.0,
+  "axis_dev_deg": 0.0,
+  "ports_identical": true,
+  "cells_identical": true,
+  "contact_mask_approved": 42,
+  "contact_mask": 42,
+  "PASS": true
+ },
+ "mesh": {
+  "object": "R4B_RoundCorner",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 1560,
+  "vertices": 782,
+  "uv": true,
+  "ok": true
+ },
+ "mesh_lod1": {
+  "object": "R4B_RoundCorner_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 82,
+  "vertices": 43,
+  "uv": true,
+  "ok": true
+ },
+ "approved_triangles": 2782,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.2511,
+   -0.26
+  ],
+  [
+   0.2511,
+   0.26,
+   0.2511
+  ]
+ ],
+ "approved_bounds_m": [
+  [
+   -0.26,
+   -0.2582,
+   -0.26
+  ],
+  [
+   0.2582,
+   0.26,
+   0.2509
+  ]
+ ],
+ "inside_cells": true,
+ "max_outside_approved_solid_mm": 0.0,
+ "lod1_max_outside_approved_solid_mm": 0.0,
+ "materials": [
+  "R4P_Base",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "paint_zones": {
+  "R4P_Base": "Armor_Plate_Light",
+  "R4P_Secondary": "Armor_Gunmetal",
+  "R4P_Trim": "Armor_Dark"
+ },
+ "style_parameters": {
+  "g": 0.004,
+  "w": 0.02,
+  "seg": 4,
+  "margin": 0.006,
+  "chamfer": 0.004,
+  "rho": 0.04,
+  "cseg": 4,
+  "wall_smooth": true,
+  "seam_h": 0.006,
+  "min_plate": 0.05
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 782,
+   "triangles": 1560,
+   "world_scale_dev": 0.0,
+   "empties": [
+    "Port_back_000_part",
+    "Port_down_000_part",
+    "Port_left_000_part",
+    "R4B_RoundCorner_ROOT",
+    "Socket_Mount"
+   ],
+   "empties_missing": [],
+   "empty_pos_dev_mm": 0.0001,
+   "empty_axis_dev_deg": 0.0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 1274,
+   "triangles": 1560,
+   "world_scale_dev": 0.0,
+   "empties": [
+    "Port_back_000_part",
+    "Port_down_000_part",
+    "Port_left_000_part",
+    "R4B_RoundCorner_ROOT",
+    "Socket_Mount"
+   ],
+   "empties_missing": [],
+   "empty_pos_dev_mm": 0.0,
+   "empty_axis_dev_deg": 0.0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4B_RoundCorner_front.jpg",
+  "R4B_RoundCorner_side.jpg",
+  "R4B_RoundCorner_34front.jpg",
+  "R4B_RoundCorner_34rear.jpg",
+  "R4B_RoundCorner_under.jpg"
+ ],
+ "collider": "unchanged - approved R4Blocks/R4B_RoundCorner/R4B_RoundCorner_colliders.glb (not re-authored)",
+ "files": {
+  "R4B_RoundCorner.blend": {
+   "sha256": "6031a2df723e2e6cab018f9d257f61472e98b1254e11e1a8df72e110d1e05d78",
+   "bytes": 726942
+  },
+  "R4B_RoundCorner.fbx": {
+   "sha256": "84255ac2ce570e6d0f5cd030aa2ec8ab9f54b42abf29d18a5981d634ef519bbf",
+   "bytes": 57388
+  },
+  "R4B_RoundCorner.glb": {
+   "sha256": "75783953b0e11cc04ebd88e63464c93063fa0c9aeb55dd5f786207e61f65614a",
+   "bytes": 54940
+  },
+  "R4B_RoundCorner_LOD1.fbx": {
+   "sha256": "7c51c0fafcd726b49a24cf60831e1be5a430ad7efe6ee19357ffdbef32c59a65",
+   "bytes": 19356
+  },
+  "R4B_RoundCorner_LOD1.glb": {
+   "sha256": "791222f38c5c573202caf97daf8a97afa15cf8f6f9b757c205a1e152a32c2c9d",
+   "bytes": 7092
+  }
+ },
+ "seconds": 1.0,
+ "blender": "5.3.0"
+}

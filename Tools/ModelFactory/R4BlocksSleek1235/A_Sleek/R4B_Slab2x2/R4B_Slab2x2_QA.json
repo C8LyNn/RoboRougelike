@@ -1,0 +1,939 @@
+{
+ "id": "R4B_Slab2x2",
+ "block_kind": "Slab2x2",
+ "issue": 1235,
+ "wave": 1,
+ "art_direction": "A",
+ "art_direction_label": "A_Sleek",
+ "description": "2x2x1 slab",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ],
+  [
+   1,
+   0,
+   0
+  ],
+  [
+   0,
+   -1,
+   0
+  ],
+  [
+   1,
+   -1,
+   0
+  ]
+ ],
+ "bonds": [
+  [
+   [
+    0,
+    -1,
+    0
+   ],
+   [
+    0,
+    0,
+    0
+   ]
+  ],
+  [
+   [
+    0,
+    -1,
+    0
+   ],
+   [
+    1,
+    -1,
+    0
+   ]
+  ],
+  [
+   [
+    0,
+    0,
+    0
+   ],
+   [
+    1,
+    0,
+    0
+   ]
+  ],
+  [
+   [
+    1,
+    -1,
+    0
+   ],
+   [
+    1,
+    0,
+    0
+   ]
+  ]
+ ],
+ "note": "2x2x1 full-height slab, one rigid piece",
+ "contact_mask_local_anchor": 46,
+ "contact_mask_bits": "R3MountingGrid.FaceDirections order: right, left, up, down, forward, back (Unity)",
+ "ports": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "up",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "right",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "up",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    -1,
+    0
+   ],
+   "dir": "left",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    -1,
+    0
+   ],
+   "dir": "up",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    -1,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    0,
+    -1,
+    0
+   ],
+   "dir": "forward",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    1,
+    -1,
+    0
+   ],
+   "dir": "right",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    1,
+    -1,
+    0
+   ],
+   "dir": "up",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    1,
+    -1,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  },
+  {
+   "cell": [
+    1,
+    -1,
+    0
+   ],
+   "dir": "forward",
+   "kind": "full",
+   "offset": [
+    0,
+    0
+   ],
+   "half": [
+    0.47,
+    0.47
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 97.5,
+   "recessed_pct": 2.5,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "left",
+   "kind": "full",
+   "approved_flush_pct": 93.8,
+   "PASS": true
+  },
+  {
+   "flush_pct": 98.8,
+   "recessed_pct": 1.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "up",
+   "kind": "full",
+   "approved_flush_pct": 93.8,
+   "PASS": true
+  },
+  {
+   "flush_pct": 98.8,
+   "recessed_pct": 1.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "approved_flush_pct": 93.8,
+   "PASS": true
+  },
+  {
+   "flush_pct": 97.5,
+   "recessed_pct": 2.5,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "full",
+   "approved_flush_pct": 93.8,
+   "PASS": true
+  },
+  {
+   "flush_pct": 97.5,
+   "recessed_pct": 2.5,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "right",
+   "kind": "full",
+   "approved_flush_pct": 93.8,
+   "PASS": true
+  },
+  {
+   "flush_pct": 98.8,
+   "recessed_pct": 1.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "up",
+   "kind": "full",
+   "approved_flush_pct": 93.8,
+   "PASS": true
+  },
+  {
+   "flush_pct": 98.8,
+   "recessed_pct": 1.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "approved_flush_pct": 93.8,
+   "PASS": true
+  },
+  {
+   "flush_pct": 97.5,
+   "recessed_pct": 2.5,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    1,
+    0,
+    0
+   ],
+   "dir": "back",
+   "kind": "full",
+   "approved_flush_pct": 93.8,
+   "PASS": true
+  },
+  {
+   "flush_pct": 97.5,
+   "recessed_pct": 2.5,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    -1,
+    0
+   ],
+   "dir": "left",
+   "kind": "full",
+   "approved_flush_pct": 93.8,
+   "PASS": true
+  },
+  {
+   "flush_pct": 98.8,
+   "recessed_pct": 1.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    -1,
+    0
+   ],
+   "dir": "up",
+   "kind": "full",
+   "approved_flush_pct": 93.8,
+   "PASS": true
+  },
+  {
+   "flush_pct": 98.8,
+   "recessed_pct": 1.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    -1,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "approved_flush_pct": 93.8,
+   "PASS": true
+  },
+  {
+   "flush_pct": 97.5,
+   "recessed_pct": 2.5,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    -1,
+    0
+   ],
+   "dir": "forward",
+   "kind": "full",
+   "approved_flush_pct": 93.8,
+   "PASS": true
+  },
+  {
+   "flush_pct": 97.5,
+   "recessed_pct": 2.5,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    1,
+    -1,
+    0
+   ],
+   "dir": "right",
+   "kind": "full",
+   "approved_flush_pct": 93.8,
+   "PASS": true
+  },
+  {
+   "flush_pct": 98.8,
+   "recessed_pct": 1.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    1,
+    -1,
+    0
+   ],
+   "dir": "up",
+   "kind": "full",
+   "approved_flush_pct": 93.8,
+   "PASS": true
+  },
+  {
+   "flush_pct": 98.8,
+   "recessed_pct": 1.2,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    1,
+    -1,
+    0
+   ],
+   "dir": "down",
+   "kind": "full",
+   "approved_flush_pct": 93.8,
+   "PASS": true
+  },
+  {
+   "flush_pct": 97.5,
+   "recessed_pct": 2.5,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    1,
+    -1,
+    0
+   ],
+   "dir": "forward",
+   "kind": "full",
+   "approved_flush_pct": 93.8,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "left",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "up",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "right",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "up",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "left",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "up",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "forward",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "right",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "up",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "forward",
+   "kind": "full",
+   "PASS": true
+  }
+ ],
+ "interface_vs_approved": {
+  "approved_glb": "ModelFactory/R4Blocks/R4B_Slab2x2/R4B_Slab2x2.glb",
+  "approved_sha256": "af1ff4a362e690eb650f3096810c04d7042512f4f1ed83c1e72df767acb82dcb",
+  "empties_missing": [],
+  "empties_extra": [],
+  "pos_dev_mm": 0.0,
+  "axis_dev_deg": 0.0,
+  "ports_identical": true,
+  "cells_identical": true,
+  "contact_mask_approved": 46,
+  "contact_mask": 46,
+  "PASS": true
+ },
+ "mesh": {
+  "object": "R4B_Slab2x2",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 1696,
+  "vertices": 850,
+  "uv": true,
+  "ok": true
+ },
+ "mesh_lod1": {
+  "object": "R4B_Slab2x2_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 44,
+  "vertices": 24,
+  "uv": true,
+  "ok": true
+ },
+ "approved_triangles": 13356,
+ "bounds_m": [
+  [
+   -0.26,
+   -0.81,
+   -0.26
+  ],
+  [
+   0.81,
+   0.26,
+   0.26
+  ]
+ ],
+ "approved_bounds_m": [
+  [
+   -0.26,
+   -0.81,
+   -0.26
+  ],
+  [
+   0.81,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_cells": true,
+ "max_outside_approved_solid_mm": 0.0,
+ "lod1_max_outside_approved_solid_mm": 0.0,
+ "materials": [
+  "R4P_Base",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "paint_zones": {
+  "R4P_Base": "Armor_Plate_Light",
+  "R4P_Secondary": "Armor_Gunmetal",
+  "R4P_Trim": "Armor_Dark"
+ },
+ "style_parameters": {
+  "g": 0.004,
+  "w": 0.02,
+  "seg": 4,
+  "margin": 0.006,
+  "chamfer": 0.004,
+  "rho": 0.04,
+  "cseg": 4,
+  "wall_smooth": true,
+  "seam_h": 0.006,
+  "min_plate": 0.05
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0001,
+   "verts": 850,
+   "triangles": 1696,
+   "world_scale_dev": 0.0,
+   "empties": [
+    "Port_back_000",
+    "Port_back_100",
+    "Port_down_0-10",
+    "Port_down_000",
+    "Port_down_1-10",
+    "Port_down_100",
+    "Port_forward_0-10",
+    "Port_forward_1-10",
+    "Port_left_0-10",
+    "Port_left_000",
+    "Port_right_1-10",
+    "Port_right_100",
+    "Port_up_0-10",
+    "Port_up_000",
+    "Port_up_1-10",
+    "Port_up_100",
+    "R4B_Slab2x2_ROOT",
+    "Socket_Mount"
+   ],
+   "empties_missing": [],
+   "empty_pos_dev_mm": 0.0001,
+   "empty_axis_dev_deg": 0.0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 1546,
+   "triangles": 1696,
+   "world_scale_dev": 0.0,
+   "empties": [
+    "Port_back_000",
+    "Port_back_100",
+    "Port_down_0-10",
+    "Port_down_000",
+    "Port_down_1-10",
+    "Port_down_100",
+    "Port_forward_0-10",
+    "Port_forward_1-10",
+    "Port_left_0-10",
+    "Port_left_000",
+    "Port_right_1-10",
+    "Port_right_100",
+    "Port_up_0-10",
+    "Port_up_000",
+    "Port_up_1-10",
+    "Port_up_100",
+    "R4B_Slab2x2_ROOT",
+    "Socket_Mount"
+   ],
+   "empties_missing": [],
+   "empty_pos_dev_mm": 0.0,
+   "empty_axis_dev_deg": 0.0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4B_Slab2x2_front.jpg",
+  "R4B_Slab2x2_side.jpg",
+  "R4B_Slab2x2_34front.jpg",
+  "R4B_Slab2x2_34rear.jpg",
+  "R4B_Slab2x2_under.jpg"
+ ],
+ "collider": "unchanged - approved R4Blocks/R4B_Slab2x2/R4B_Slab2x2_colliders.glb (not re-authored)",
+ "files": {
+  "R4B_Slab2x2.blend": {
+   "sha256": "8234e6513a022dbbb56d951932867a4f27805bd3ce80b961e4e0eec010bbed38",
+   "bytes": 763450
+  },
+  "R4B_Slab2x2.fbx": {
+   "sha256": "b335fed7776cb6049cd005349ae6291dca405c2bb8788f9ba9867b2080f19819",
+   "bytes": 64364
+  },
+  "R4B_Slab2x2.glb": {
+   "sha256": "6fb96a532abee7189b06e20519e66728d40dbab0cbf372c3e5e0f91bf79df447",
+   "bytes": 67020
+  },
+  "R4B_Slab2x2_LOD1.fbx": {
+   "sha256": "0399aeb9505eaf5f5e0d6a5e10ce7154961c7672f80c6c341ed05751e32472cc",
+   "bytes": 18444
+  },
+  "R4B_Slab2x2_LOD1.glb": {
+   "sha256": "d45a476ec5ba80e8fbcadcc5dff1380e9e5199e3d58a35e30707558fae176cce",
+   "bytes": 6236
+  }
+ },
+ "seconds": 0.9,
+ "blender": "5.3.0"
+}

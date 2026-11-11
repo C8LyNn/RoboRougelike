@@ -1,0 +1,256 @@
+{
+ "id": "R4B_RoundEdge",
+ "part_kind": "RoundEdge",
+ "issue": 1235,
+ "wave": 2,
+ "art_direction": "A_Sleek",
+ "replaces_visual_of": "PR #963 R4Blocks/R4B_RoundEdge (approved files untouched; same part id / kind)",
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "installed_in_game": false,
+ "axes": "file: +Y up, Port_forward = +Z, Port_right = +X (same as the approved GLB)",
+ "pivot": "anchor cell centre (0,0,0), identical to PR #963",
+ "bounds_file_axes_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.2569,
+   0.2569
+  ]
+ ],
+ "triangles": {
+  "LOD0": 1136,
+  "LOD1": 56,
+  "approved_963": 3428
+ },
+ "renderers": 1,
+ "material_slots": 3,
+ "paint_zones": {
+  "R4P_Base": {
+   "triangles": 164,
+   "default_r41_colour": "Armor_Plate_Light",
+   "rgb_linear": [
+    0.27,
+    0.28,
+    0.285
+   ]
+  },
+  "R4P_Secondary": {
+   "triangles": 624,
+   "default_r41_colour": "Armor_Gunmetal",
+   "rgb_linear": [
+    0.16,
+    0.17,
+    0.18
+   ]
+  },
+  "R4P_Trim": {
+   "triangles": 348,
+   "default_r41_colour": "Armor_Dark",
+   "rgb_linear": [
+    0.035,
+    0.038,
+    0.045
+   ]
+  }
+ },
+ "interface_unchanged": {
+  "cells": [
+   [
+    0,
+    0,
+    0
+   ]
+  ],
+  "bonds": [],
+  "contact_mask_local_anchor": 43,
+  "ports": [
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "down",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "back",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "left",
+    "kind": "partial",
+    "center": [
+     -0.26,
+     0.117,
+     -0.117
+    ],
+    "half": [
+     0.2,
+     0.2
+    ],
+    "offset": [
+     -0.2127,
+     -0.2127
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "right",
+    "kind": "partial",
+    "center": [
+     0.26,
+     0.117,
+     -0.117
+    ],
+    "half": [
+     0.2,
+     0.2
+    ],
+    "offset": [
+     0.2127,
+     -0.2127
+    ]
+   }
+  ],
+  "empties": [
+   "Port_back_000",
+   "Port_down_000",
+   "Port_left_000_part",
+   "Port_right_000_part",
+   "R4B_RoundEdge_ROOT",
+   "Socket_Mount"
+  ],
+  "colliders": "use approved R4Blocks/R4B_RoundEdge/R4B_RoundEdge_colliders.glb (no new collider authored)"
+ },
+ "style_parameters_m": {
+  "g": 0.004,
+  "w": 0.02,
+  "seg": 4,
+  "margin": 0.006,
+  "chamfer": 0.004,
+  "rho": 0.04,
+  "cseg": 4,
+  "seam_h": 0.006,
+  "min_plate": 0.05
+ },
+ "source": {
+  "generator": "scripts/shapes25.py (r4sleek.py / r4convex.py / roundcorner.py / geo2d.py) + pilot scripts/r4panel.py, styles.py",
+  "mesh_source": "mesh_source/R4B_RoundEdge_A.json, mesh_source/R4B_RoundEdge_A_LOD1.json",
+  "blender_build": "scripts/build_blender25.py",
+  "blender": "5.3.0"
+ },
+ "blender_qa": {
+  "mesh": {
+   "object": "R4B_RoundEdge",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1136,
+   "vertices": 570,
+   "uv": true,
+   "ok": true
+  },
+  "mesh_lod1": {
+   "object": "R4B_RoundEdge_LOD1",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 56,
+   "vertices": 30,
+   "uv": true,
+   "ok": true
+  },
+  "inside_cells": true,
+  "max_outside_approved_solid_mm": 0.0001,
+  "lod1_max_outside_approved_solid_mm": 0.0001,
+  "reimport_pass": {
+   ".fbx": true,
+   ".glb": true
+  }
+ },
+ "files": {
+  "R4B_RoundEdge.blend": {
+   "sha256": "0b1efed22dcf52427fbba403f48ea7a035b145f41b4eb1f230e82bfaa9530ae9",
+   "bytes": 701719
+  },
+  "R4B_RoundEdge.fbx": {
+   "sha256": "7aa914d8af43f9a8e74b6ac5b1a7f1da99605c85e26a37dfbf26e406519ebc5f",
+   "bytes": 47052
+  },
+  "R4B_RoundEdge.glb": {
+   "sha256": "48f823ec0f3597ec135ec3d1ebbe1a31f27d8bba31050779d5b21a932e2741b7",
+   "bytes": 42800
+  },
+  "R4B_RoundEdge_LOD1.fbx": {
+   "sha256": "9671e121d1810652b32f3b08aeaac1890a7beb761d7c621c058c709d3c032a01",
+   "bytes": 19068
+  },
+  "R4B_RoundEdge_LOD1.glb": {
+   "sha256": "54a581a07ed76afe270c10236320c3bb7284d66a8a9c193e880c939289754227",
+   "bytes": 6700
+  },
+  "R4B_RoundEdge_QA.json": {
+   "sha256": "7487e9563e5a5720d2a6e886f32eefe93eb6b16e4553a5080f66aee9a56a9839",
+   "bytes": 6640
+  },
+  "renders/R4B_RoundEdge_34front.jpg": {
+   "sha256": "d718c331d54207496c68b6e1a53422319d442ad181e1eef012fb2c093ece11df",
+   "bytes": 27484
+  },
+  "renders/R4B_RoundEdge_34rear.jpg": {
+   "sha256": "74902a4b9d0b34b2f421ed5fac19d5dade49d0b6abaff1248729b1a29345f991",
+   "bytes": 26443
+  },
+  "renders/R4B_RoundEdge_front.jpg": {
+   "sha256": "586cc538499d2b27251ca80f6cdaf791de641bf20ba6f6376305ffc418f28748",
+   "bytes": 23501
+  },
+  "renders/R4B_RoundEdge_side.jpg": {
+   "sha256": "df9477309e89e113b9655b1992a47f1e17d3fad879a801e8346f11ec0661ce61",
+   "bytes": 24691
+  },
+  "renders/R4B_RoundEdge_under.jpg": {
+   "sha256": "7767e2cbf7b7efd29cb51cda001df2f7c3f75be80bc9a386ce10cf195cc0f41a",
+   "bytes": 27692
+  }
+ }
+}

@@ -1,0 +1,786 @@
+{
+ "id": "R4B_BigCube2",
+ "part_kind": "BigCube2",
+ "issue": 1235,
+ "wave": 1,
+ "art_direction": "A_Sleek",
+ "replaces_visual_of": "PR #963 R4Blocks/R4B_BigCube2 (approved files untouched; same part id / kind)",
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "installed_in_game": false,
+ "axes": "file: +Y up, Port_forward = +Z, Port_right = +X (same as the approved GLB)",
+ "pivot": "anchor cell centre (0,0,0), identical to PR #963",
+ "bounds_file_axes_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.81,
+   0.81,
+   0.81
+  ]
+ ],
+ "triangles": {
+  "LOD0": 2384,
+  "LOD1": 44,
+  "approved_963": 20012
+ },
+ "renderers": 1,
+ "material_slots": 3,
+ "paint_zones": {
+  "R4P_Base": {
+   "triangles": 432,
+   "default_r41_colour": "Armor_Plate_Light",
+   "rgb_linear": [
+    0.27,
+    0.28,
+    0.285
+   ]
+  },
+  "R4P_Secondary": {
+   "triangles": 992,
+   "default_r41_colour": "Armor_Gunmetal",
+   "rgb_linear": [
+    0.16,
+    0.17,
+    0.18
+   ]
+  },
+  "R4P_Trim": {
+   "triangles": 960,
+   "default_r41_colour": "Armor_Dark",
+   "rgb_linear": [
+    0.035,
+    0.038,
+    0.045
+   ]
+  }
+ },
+ "interface_unchanged": {
+  "cells": [
+   [
+    0,
+    0,
+    0
+   ],
+   [
+    0,
+    0,
+    1
+   ],
+   [
+    0,
+    -1,
+    0
+   ],
+   [
+    0,
+    -1,
+    1
+   ],
+   [
+    1,
+    0,
+    0
+   ],
+   [
+    1,
+    0,
+    1
+   ],
+   [
+    1,
+    -1,
+    0
+   ],
+   [
+    1,
+    -1,
+    1
+   ]
+  ],
+  "bonds": [
+   [
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     0,
+     -1,
+     1
+    ]
+   ],
+   [
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   [
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     1,
+     -1,
+     0
+    ]
+   ],
+   [
+    [
+     0,
+     -1,
+     1
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   [
+    [
+     0,
+     -1,
+     1
+    ],
+    [
+     1,
+     -1,
+     1
+    ]
+   ],
+   [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     1
+    ]
+   ],
+   [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     1,
+     0,
+     0
+    ]
+   ],
+   [
+    [
+     0,
+     0,
+     1
+    ],
+    [
+     1,
+     0,
+     1
+    ]
+   ],
+   [
+    [
+     1,
+     -1,
+     0
+    ],
+    [
+     1,
+     -1,
+     1
+    ]
+   ],
+   [
+    [
+     1,
+     -1,
+     0
+    ],
+    [
+     1,
+     0,
+     0
+    ]
+   ],
+   [
+    [
+     1,
+     -1,
+     1
+    ],
+    [
+     1,
+     0,
+     1
+    ]
+   ],
+   [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     1,
+     0,
+     1
+    ]
+   ]
+  ],
+  "contact_mask_local_anchor": 42,
+  "ports": [
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "left",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "down",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "back",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     1
+    ],
+    "dir": "left",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     1
+    ],
+    "dir": "up",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     1
+    ],
+    "dir": "back",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     -1,
+     0
+    ],
+    "dir": "left",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     -1,
+     0
+    ],
+    "dir": "down",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     -1,
+     0
+    ],
+    "dir": "forward",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     -1,
+     1
+    ],
+    "dir": "left",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     -1,
+     1
+    ],
+    "dir": "up",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     -1,
+     1
+    ],
+    "dir": "forward",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     1,
+     0,
+     0
+    ],
+    "dir": "right",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     1,
+     0,
+     0
+    ],
+    "dir": "down",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     1,
+     0,
+     0
+    ],
+    "dir": "back",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     1,
+     0,
+     1
+    ],
+    "dir": "right",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     1,
+     0,
+     1
+    ],
+    "dir": "up",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     1,
+     0,
+     1
+    ],
+    "dir": "back",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     1,
+     -1,
+     0
+    ],
+    "dir": "right",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     1,
+     -1,
+     0
+    ],
+    "dir": "down",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     1,
+     -1,
+     0
+    ],
+    "dir": "forward",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     1,
+     -1,
+     1
+    ],
+    "dir": "right",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     1,
+     -1,
+     1
+    ],
+    "dir": "up",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     1,
+     -1,
+     1
+    ],
+    "dir": "forward",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   }
+  ],
+  "empties": [
+   "Port_back_000",
+   "Port_back_001",
+   "Port_back_100",
+   "Port_back_101",
+   "Port_down_0-10",
+   "Port_down_000",
+   "Port_down_1-10",
+   "Port_down_100",
+   "Port_forward_0-10",
+   "Port_forward_0-11",
+   "Port_forward_1-10",
+   "Port_forward_1-11",
+   "Port_left_0-10",
+   "Port_left_0-11",
+   "Port_left_000",
+   "Port_left_001",
+   "Port_right_1-10",
+   "Port_right_1-11",
+   "Port_right_100",
+   "Port_right_101",
+   "Port_up_0-11",
+   "Port_up_001",
+   "Port_up_1-11",
+   "Port_up_101",
+   "R4B_BigCube2_ROOT",
+   "Socket_Mount"
+  ],
+  "colliders": "use approved R4Blocks/R4B_BigCube2/R4B_BigCube2_colliders.glb (no new collider authored)"
+ },
+ "style_parameters_m": {
+  "g": 0.004,
+  "w": 0.02,
+  "seg": 4,
+  "margin": 0.006,
+  "chamfer": 0.004,
+  "rho": 0.04,
+  "cseg": 4,
+  "seam_h": 0.006,
+  "min_plate": 0.05
+ },
+ "source": {
+  "generator": "scripts/shapes25.py (r4sleek.py / r4convex.py / roundcorner.py / geo2d.py) + pilot scripts/r4panel.py, styles.py",
+  "mesh_source": "mesh_source/R4B_BigCube2_A.json, mesh_source/R4B_BigCube2_A_LOD1.json",
+  "blender_build": "scripts/build_blender25.py",
+  "blender": "5.3.0"
+ },
+ "blender_qa": {
+  "mesh": {
+   "object": "R4B_BigCube2",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 2384,
+   "vertices": 1194,
+   "uv": true,
+   "ok": true
+  },
+  "mesh_lod1": {
+   "object": "R4B_BigCube2_LOD1",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 44,
+   "vertices": 24,
+   "uv": true,
+   "ok": true
+  },
+  "inside_cells": true,
+  "max_outside_approved_solid_mm": 0.0,
+  "lod1_max_outside_approved_solid_mm": 0.0,
+  "reimport_pass": {
+   ".fbx": true,
+   ".glb": true
+  }
+ },
+ "files": {
+  "R4B_BigCube2.blend": {
+   "sha256": "fb09147f45fb146e6360c7adecbc577e79f4f72cd41e35abd7dd929e96d2b81e",
+   "bytes": 825487
+  },
+  "R4B_BigCube2.fbx": {
+   "sha256": "6605feae375c27459788e3a9daee35443bdc7c5fa1d5c5b989edea425c23ea7a",
+   "bytes": 83628
+  },
+  "R4B_BigCube2.glb": {
+   "sha256": "16bee023b06fa3999dcce013c62242a51da0f413b16313593a4bdae962abcdcd",
+   "bytes": 94272
+  },
+  "R4B_BigCube2_LOD1.fbx": {
+   "sha256": "26d16e80edefc098eb8fb33738199700f8f9b2886e1d9f1429a1ed0ee76dd4f8",
+   "bytes": 18428
+  },
+  "R4B_BigCube2_LOD1.glb": {
+   "sha256": "bdb83500e5f8f9e5bfcf49b49d38904501ca01ddbfc0e021f132dd49d2b27f3f",
+   "bytes": 6288
+  },
+  "R4B_BigCube2_QA.json": {
+   "sha256": "57d0513157c74ce6396be3b01e0b76a034eb9de6e28182426b5587e68376ee79",
+   "bytes": 19816
+  },
+  "renders/R4B_BigCube2_34front.jpg": {
+   "sha256": "d09325fa36872f5abcfe430d86ba8d0dac31317c0abea022ee43fd4c7b07c6dc",
+   "bytes": 35355
+  },
+  "renders/R4B_BigCube2_34rear.jpg": {
+   "sha256": "cb5c8c58db21e19dd9badf484c0953fd45237e27ba08298545f1a8825c95034f",
+   "bytes": 37737
+  },
+  "renders/R4B_BigCube2_front.jpg": {
+   "sha256": "dbfee8fb9477ee0d00b38e155fd8de09117e82c8a99f6dab3daf299601eab428",
+   "bytes": 28112
+  },
+  "renders/R4B_BigCube2_side.jpg": {
+   "sha256": "f547848be37164284e28533a49e005baaf576b080d006876637029e263c1e7de",
+   "bytes": 27430
+  },
+  "renders/R4B_BigCube2_under.jpg": {
+   "sha256": "a28b9dd908aa20e511075b02e4169fede65f5d59f5e43b038dee7e92b8ea0ec8",
+   "bytes": 37780
+  }
+ }
+}

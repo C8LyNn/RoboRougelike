@@ -1,0 +1,302 @@
+{
+ "id": "R4B_Step",
+ "part_kind": "Step",
+ "issue": 1235,
+ "wave": 3,
+ "art_direction": "A_Sleek",
+ "replaces_visual_of": "PR #963 R4Blocks/R4B_Step (approved files untouched; same part id / kind)",
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "installed_in_game": false,
+ "axes": "file: +Y up, Port_forward = +Z, Port_right = +X (same as the approved GLB)",
+ "pivot": "anchor cell centre (0,0,0), identical to PR #963",
+ "bounds_file_axes_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "triangles": {
+  "LOD0": 1292,
+  "LOD1": 64,
+  "approved_963": 4966
+ },
+ "renderers": 1,
+ "material_slots": 3,
+ "paint_zones": {
+  "R4P_Base": {
+   "triangles": 198,
+   "default_r41_colour": "Armor_Plate_Light",
+   "rgb_linear": [
+    0.27,
+    0.28,
+    0.285
+   ]
+  },
+  "R4P_Secondary": {
+   "triangles": 666,
+   "default_r41_colour": "Armor_Gunmetal",
+   "rgb_linear": [
+    0.16,
+    0.17,
+    0.18
+   ]
+  },
+  "R4P_Trim": {
+   "triangles": 428,
+   "default_r41_colour": "Armor_Dark",
+   "rgb_linear": [
+    0.035,
+    0.038,
+    0.045
+   ]
+  }
+ },
+ "interface_unchanged": {
+  "cells": [
+   [
+    0,
+    0,
+    0
+   ]
+  ],
+  "bonds": [],
+  "contact_mask_local_anchor": 63,
+  "ports": [
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "down",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "back",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "right",
+    "kind": "partial",
+    "center": [
+     0.26,
+     0.0,
+     -0.1375
+    ],
+    "half": [
+     0.45,
+     0.22
+    ],
+    "offset": [
+     0.0,
+     -0.25
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "left",
+    "kind": "partial",
+    "center": [
+     -0.26,
+     0.0,
+     -0.1375
+    ],
+    "half": [
+     0.45,
+     0.22
+    ],
+    "offset": [
+     0.0,
+     -0.25
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "forward",
+    "kind": "partial",
+    "center": [
+     0.0,
+     -0.26,
+     -0.1375
+    ],
+    "half": [
+     0.45,
+     0.22
+    ],
+    "offset": [
+     0.0,
+     -0.25
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "up",
+    "kind": "partial",
+    "center": [
+     0.0,
+     0.13,
+     0.26
+    ],
+    "half": [
+     0.2,
+     0.45
+    ],
+    "offset": [
+     -0.2364,
+     0.0
+    ]
+   }
+  ],
+  "empties": [
+   "Port_back_000",
+   "Port_down_000",
+   "Port_forward_000_part",
+   "Port_left_000_part",
+   "Port_right_000_part",
+   "Port_up_000_part",
+   "R4B_Step_ROOT",
+   "Socket_Mount"
+  ],
+  "colliders": "use approved R4Blocks/R4B_Step/R4B_Step_colliders.glb (no new collider authored)"
+ },
+ "style_parameters_m": {
+  "g": 0.004,
+  "w": 0.02,
+  "seg": 4,
+  "margin": 0.006,
+  "chamfer": 0.004,
+  "rho": 0.04,
+  "cseg": 4,
+  "seam_h": 0.006,
+  "min_plate": 0.05
+ },
+ "source": {
+  "generator": "scripts/shapes25.py (r4sleek.py / r4convex.py / roundcorner.py / geo2d.py) + pilot scripts/r4panel.py, styles.py",
+  "mesh_source": "mesh_source/R4B_Step_A.json, mesh_source/R4B_Step_A_LOD1.json",
+  "blender_build": "scripts/build_blender25.py",
+  "blender": "5.3.0"
+ },
+ "blender_qa": {
+  "mesh": {
+   "object": "R4B_Step",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1292,
+   "vertices": 648,
+   "uv": true,
+   "ok": true
+  },
+  "mesh_lod1": {
+   "object": "R4B_Step_LOD1",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 64,
+   "vertices": 34,
+   "uv": true,
+   "ok": true
+  },
+  "inside_cells": true,
+  "max_outside_approved_solid_mm": 0.0,
+  "lod1_max_outside_approved_solid_mm": 0.0,
+  "reimport_pass": {
+   ".fbx": true,
+   ".glb": true
+  }
+ },
+ "files": {
+  "R4B_Step.blend": {
+   "sha256": "97170a3396e93cce3285f7d71f99f3278dfad9a7a7586fcb891c8c3db830167a",
+   "bytes": 721076
+  },
+  "R4B_Step.fbx": {
+   "sha256": "eb967160e67dab4f2f6c4963d464d85de616684f7a0c543d8bc5532613f68c32",
+   "bytes": 51756
+  },
+  "R4B_Step.glb": {
+   "sha256": "c52ce220709ffece209c87542ae42eb9d441900d91194f929eb648d2fba5337f",
+   "bytes": 49684
+  },
+  "R4B_Step_LOD1.fbx": {
+   "sha256": "5d8fdc51feb2354ddd791a7cb45b33e799163780ecbb2de550e5fc377355fd87",
+   "bytes": 17516
+  },
+  "R4B_Step_LOD1.glb": {
+   "sha256": "ffbe03046f8ca4c2cd18fe7162b24cec95265550297ed5ffb7ad8fc4f5396ad2",
+   "bytes": 6536
+  },
+  "R4B_Step_QA.json": {
+   "sha256": "2b4b5df2865084bce31992d4e9fc78dfcfb85a7e790651944acdeb9a217780f5",
+   "bytes": 7971
+  },
+  "renders/R4B_Step_34front.jpg": {
+   "sha256": "a56ee7366fba4d234339445f794de4be1dc2f8f2a68357cf91f327e7a9b39eb2",
+   "bytes": 29924
+  },
+  "renders/R4B_Step_34rear.jpg": {
+   "sha256": "50515216ef56865d323b01ba2ace86b2390a60d68c61c88910b0d404498ead11",
+   "bytes": 28094
+  },
+  "renders/R4B_Step_front.jpg": {
+   "sha256": "adff2165793364749931ed8ad3e8c42c840b14d60442ba985221bcb5424ba3a3",
+   "bytes": 27057
+  },
+  "renders/R4B_Step_side.jpg": {
+   "sha256": "a754ecc2ac59695b79fea0187769bdfd78fbc989b40aa011abb7d9cebe900dbe",
+   "bytes": 24143
+  },
+  "renders/R4B_Step_under.jpg": {
+   "sha256": "4ab31c3a7a7b7fb1565e3e1771e0f6078d4489f5bbcd20067105466e94165b23",
+   "bytes": 28804
+  }
+ }
+}
