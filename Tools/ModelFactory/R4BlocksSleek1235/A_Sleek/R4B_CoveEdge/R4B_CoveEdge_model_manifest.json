@@ -1,0 +1,256 @@
+{
+ "id": "R4B_CoveEdge",
+ "part_kind": "CoveEdge",
+ "issue": 1235,
+ "wave": 4,
+ "art_direction": "A_Sleek",
+ "replaces_visual_of": "PR #963 R4Blocks/R4B_CoveEdge (approved files untouched; same part id / kind)",
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "installed_in_game": false,
+ "axes": "file: +Y up, Port_forward = +Z, Port_right = +X (same as the approved GLB)",
+ "pivot": "anchor cell centre (0,0,0), identical to PR #963",
+ "bounds_file_axes_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "triangles": {
+  "LOD0": 1472,
+  "LOD1": 96,
+  "approved_963": 3344
+ },
+ "renderers": 1,
+ "material_slots": 3,
+ "paint_zones": {
+  "R4P_Base": {
+   "triangles": 190,
+   "default_r41_colour": "Armor_Plate_Light",
+   "rgb_linear": [
+    0.27,
+    0.28,
+    0.285
+   ]
+  },
+  "R4P_Secondary": {
+   "triangles": 874,
+   "default_r41_colour": "Armor_Gunmetal",
+   "rgb_linear": [
+    0.16,
+    0.17,
+    0.18
+   ]
+  },
+  "R4P_Trim": {
+   "triangles": 408,
+   "default_r41_colour": "Armor_Dark",
+   "rgb_linear": [
+    0.035,
+    0.038,
+    0.045
+   ]
+  }
+ },
+ "interface_unchanged": {
+  "cells": [
+   [
+    0,
+    0,
+    0
+   ]
+  ],
+  "bonds": [],
+  "contact_mask_local_anchor": 43,
+  "ports": [
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "down",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "back",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "left",
+    "kind": "partial",
+    "center": [
+     -0.26,
+     0.15,
+     -0.15
+    ],
+    "half": [
+     0.2,
+     0.2
+    ],
+    "offset": [
+     -0.2727,
+     -0.2727
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "right",
+    "kind": "partial",
+    "center": [
+     0.26,
+     0.15,
+     -0.15
+    ],
+    "half": [
+     0.2,
+     0.2
+    ],
+    "offset": [
+     0.2727,
+     -0.2727
+    ]
+   }
+  ],
+  "empties": [
+   "Port_back_000",
+   "Port_down_000",
+   "Port_left_000_part",
+   "Port_right_000_part",
+   "R4B_CoveEdge_ROOT",
+   "Socket_Mount"
+  ],
+  "colliders": "use approved R4Blocks/R4B_CoveEdge/R4B_CoveEdge_colliders.glb (no new collider authored)"
+ },
+ "style_parameters_m": {
+  "g": 0.004,
+  "w": 0.02,
+  "seg": 4,
+  "margin": 0.006,
+  "chamfer": 0.004,
+  "rho": 0.04,
+  "cseg": 4,
+  "seam_h": 0.006,
+  "min_plate": 0.05
+ },
+ "source": {
+  "generator": "scripts/shapes25.py (r4sleek.py / r4convex.py / roundcorner.py / geo2d.py) + pilot scripts/r4panel.py, styles.py",
+  "mesh_source": "mesh_source/R4B_CoveEdge_A.json, mesh_source/R4B_CoveEdge_A_LOD1.json",
+  "blender_build": "scripts/build_blender25.py",
+  "blender": "5.3.0"
+ },
+ "blender_qa": {
+  "mesh": {
+   "object": "R4B_CoveEdge",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1472,
+   "vertices": 738,
+   "uv": true,
+   "ok": true
+  },
+  "mesh_lod1": {
+   "object": "R4B_CoveEdge_LOD1",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 96,
+   "vertices": 50,
+   "uv": true,
+   "ok": true
+  },
+  "inside_cells": true,
+  "max_outside_approved_solid_mm": 0.0,
+  "lod1_max_outside_approved_solid_mm": 0.0,
+  "reimport_pass": {
+   ".fbx": true,
+   ".glb": true
+  }
+ },
+ "files": {
+  "R4B_CoveEdge.blend": {
+   "sha256": "066043aff424fe4dbbc8b08454034526a565414d63c820747af3f52b73059863",
+   "bytes": 731534
+  },
+  "R4B_CoveEdge.fbx": {
+   "sha256": "311dbc0a58f3fc7f83b33fa2b028d28229cd66141b4d4b64ec54c93e8cd497cf",
+   "bytes": 55612
+  },
+  "R4B_CoveEdge.glb": {
+   "sha256": "ba4f617224295ff01bf713cbec45cf59628e8215c1a66939f8bf16fbaa348621",
+   "bytes": 52820
+  },
+  "R4B_CoveEdge_LOD1.fbx": {
+   "sha256": "960c89e19f47841c52522281b5273d63cb0143c7e001a4a2792e22980f2f9d52",
+   "bytes": 18796
+  },
+  "R4B_CoveEdge_LOD1.glb": {
+   "sha256": "fda9904e6d5ad4683018598b580a29f2d61231dc9d3c64e0eedf426e2a2dc333",
+   "bytes": 8116
+  },
+  "R4B_CoveEdge_QA.json": {
+   "sha256": "06240b05d2bc52c29568af679ef7150f9622f45cd010529f64a137c2b53104b7",
+   "bytes": 6698
+  },
+  "renders/R4B_CoveEdge_34front.jpg": {
+   "sha256": "0b7448909faf796376f34bbbd3b3292579f6ae1f9aa3dd0a6daf3f27d8b872b2",
+   "bytes": 30658
+  },
+  "renders/R4B_CoveEdge_34rear.jpg": {
+   "sha256": "2dd15ffb0a9bfd8482845cd1db9566f8b3dc2602db37c21d960bafbfd17fbdcd",
+   "bytes": 26545
+  },
+  "renders/R4B_CoveEdge_front.jpg": {
+   "sha256": "1f1af170ccc49b6747973e1052bfcf036e42058d3edd76ec35e991961df77748",
+   "bytes": 26460
+  },
+  "renders/R4B_CoveEdge_side.jpg": {
+   "sha256": "2710a9f22dd1fd775577678f896ac4d3ed2efe8253695382e56e0180d812b0a3",
+   "bytes": 25374
+  },
+  "renders/R4B_CoveEdge_under.jpg": {
+   "sha256": "55224508b2eec70e871528ebb3ac7045dcfccbe85ca6f335b1bb135360c64cdc",
+   "bytes": 27789
+  }
+ }
+}

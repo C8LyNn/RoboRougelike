@@ -1,0 +1,192 @@
+{
+ "id": "R4B_Dome",
+ "part_kind": "Dome",
+ "issue": 1235,
+ "wave": 2,
+ "art_direction": "A_Sleek",
+ "replaces_visual_of": "PR #963 R4Blocks/R4B_Dome (approved files untouched; same part id / kind)",
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "installed_in_game": false,
+ "axes": "file: +Y up, Port_forward = +Z, Port_right = +X (same as the approved GLB)",
+ "pivot": "anchor cell centre (0,0,0), identical to PR #963",
+ "bounds_file_axes_m": [
+  [
+   -0.256,
+   -0.26,
+   -0.256
+  ],
+  [
+   0.256,
+   0.246,
+   0.256
+  ]
+ ],
+ "triangles": {
+  "LOD0": 942,
+  "LOD1": 142,
+  "approved_963": 3270
+ },
+ "renderers": 1,
+ "material_slots": 3,
+ "paint_zones": {
+  "R4P_Base": {
+   "triangles": 378,
+   "default_r41_colour": "Armor_Plate_Light",
+   "rgb_linear": [
+    0.27,
+    0.28,
+    0.285
+   ]
+  },
+  "R4P_Secondary": {
+   "triangles": 476,
+   "default_r41_colour": "Armor_Gunmetal",
+   "rgb_linear": [
+    0.16,
+    0.17,
+    0.18
+   ]
+  },
+  "R4P_Trim": {
+   "triangles": 88,
+   "default_r41_colour": "Armor_Dark",
+   "rgb_linear": [
+    0.035,
+    0.038,
+    0.045
+   ]
+  }
+ },
+ "interface_unchanged": {
+  "cells": [
+   [
+    0,
+    0,
+    0
+   ]
+  ],
+  "bonds": [],
+  "contact_mask_local_anchor": 8,
+  "ports": [
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "down",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   }
+  ],
+  "empties": [
+   "Port_down_000",
+   "R4B_Dome_ROOT",
+   "Socket_Mount"
+  ],
+  "colliders": "use approved R4Blocks/R4B_Dome/R4B_Dome_colliders.glb (no new collider authored)"
+ },
+ "style_parameters_m": {
+  "g": 0.004,
+  "w": 0.02,
+  "seg": 4,
+  "margin": 0.006,
+  "chamfer": 0.004,
+  "rho": 0.04,
+  "cseg": 4,
+  "seam_h": 0.006,
+  "min_plate": 0.05
+ },
+ "source": {
+  "generator": "scripts/shapes25.py (r4sleek.py / r4convex.py / roundcorner.py / geo2d.py) + pilot scripts/r4panel.py, styles.py",
+  "mesh_source": "mesh_source/R4B_Dome_A.json, mesh_source/R4B_Dome_A_LOD1.json",
+  "blender_build": "scripts/build_blender25.py",
+  "blender": "5.3.0"
+ },
+ "blender_qa": {
+  "mesh": {
+   "object": "R4B_Dome",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 942,
+   "vertices": 473,
+   "uv": true,
+   "ok": true
+  },
+  "mesh_lod1": {
+   "object": "R4B_Dome_LOD1",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 142,
+   "vertices": 73,
+   "uv": true,
+   "ok": true
+  },
+  "inside_cells": true,
+  "max_outside_approved_solid_mm": 0.0,
+  "lod1_max_outside_approved_solid_mm": 0.0,
+  "reimport_pass": {
+   ".fbx": true,
+   ".glb": true
+  }
+ },
+ "files": {
+  "R4B_Dome.blend": {
+   "sha256": "45359d0b3b16da16d01e7d3bb93a0c03a817439fc4af46352b6eba382ac01f3a",
+   "bytes": 687925
+  },
+  "R4B_Dome.fbx": {
+   "sha256": "45b54ac0e9e3bf9ff06c1e5a591ccfb425a89ea952fb5f217760c2dc9241ec85",
+   "bytes": 39788
+  },
+  "R4B_Dome.glb": {
+   "sha256": "08a1c05746e4419aa3b854cf0ad125f2ef3aaf00d4fa7329c6c01d9986314f33",
+   "bytes": 37416
+  },
+  "R4B_Dome_LOD1.fbx": {
+   "sha256": "47347944017d4ae12a4581abc92d32e1768b592093d66c9a22a3b9166c64007d",
+   "bytes": 20636
+  },
+  "R4B_Dome_LOD1.glb": {
+   "sha256": "073d9d4924a75f61e0938a70f0624ba9ac58c599a929f27d25e3b33cb88d5bd2",
+   "bytes": 10400
+  },
+  "R4B_Dome_QA.json": {
+   "sha256": "4a46197bc225e27c796d606a05bb944dcaada66e1041079777caacc668352355",
+   "bytes": 4581
+  },
+  "renders/R4B_Dome_34front.jpg": {
+   "sha256": "b798aecd2be76f9c98ed9c5cb024d552327eb1aec49dfd80e84c92c45417b8c2",
+   "bytes": 22664
+  },
+  "renders/R4B_Dome_34rear.jpg": {
+   "sha256": "54cce2896e00c979db048407623f6953c0b0b05538d5ca31bb4d33e17f18e776",
+   "bytes": 23478
+  },
+  "renders/R4B_Dome_front.jpg": {
+   "sha256": "53d16fb5fa6d3fba5613948eb27137fc9202688166ab97ea7338aa6dbba539e9",
+   "bytes": 21304
+  },
+  "renders/R4B_Dome_side.jpg": {
+   "sha256": "7e6609987cd31fb3324dfa35b0c3dbd5d564553d92b25b4351a8f0c44ef208ad",
+   "bytes": 23191
+  },
+  "renders/R4B_Dome_under.jpg": {
+   "sha256": "bcbdd6d775c95b9c68cdf5d5b1e4376fac3b68f5b30329460c997c8f218f5962",
+   "bytes": 24337
+  }
+ }
+}

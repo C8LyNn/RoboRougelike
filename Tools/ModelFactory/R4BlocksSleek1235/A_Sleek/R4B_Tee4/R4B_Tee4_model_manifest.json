@@ -1,0 +1,550 @@
+{
+ "id": "R4B_Tee4",
+ "part_kind": "Tee4",
+ "issue": 1235,
+ "wave": 3,
+ "art_direction": "A_Sleek",
+ "replaces_visual_of": "PR #963 R4Blocks/R4B_Tee4 (approved files untouched; same part id / kind)",
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "installed_in_game": false,
+ "axes": "file: +Y up, Port_forward = +Z, Port_right = +X (same as the approved GLB)",
+ "pivot": "anchor cell centre (0,0,0), identical to PR #963",
+ "bounds_file_axes_m": [
+  [
+   -0.81,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.81,
+   0.26,
+   0.81
+  ]
+ ],
+ "triangles": {
+  "LOD0": 2396,
+  "LOD1": 84,
+  "approved_963": 15142
+ },
+ "renderers": 1,
+ "material_slots": 3,
+ "paint_zones": {
+  "R4P_Base": {
+   "triangles": 398,
+   "default_r41_colour": "Armor_Plate_Light",
+   "rgb_linear": [
+    0.27,
+    0.28,
+    0.285
+   ]
+  },
+  "R4P_Secondary": {
+   "triangles": 1130,
+   "default_r41_colour": "Armor_Gunmetal",
+   "rgb_linear": [
+    0.16,
+    0.17,
+    0.18
+   ]
+  },
+  "R4P_Trim": {
+   "triangles": 868,
+   "default_r41_colour": "Armor_Dark",
+   "rgb_linear": [
+    0.035,
+    0.038,
+    0.045
+   ]
+  }
+ },
+ "interface_unchanged": {
+  "cells": [
+   [
+    -1,
+    0,
+    0
+   ],
+   [
+    0,
+    0,
+    0
+   ],
+   [
+    1,
+    0,
+    0
+   ],
+   [
+    0,
+    -1,
+    0
+   ]
+  ],
+  "bonds": [
+   [
+    [
+     -1,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   [
+    [
+     0,
+     -1,
+     0
+    ],
+    [
+     0,
+     0,
+     0
+    ]
+   ],
+   [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     1,
+     0,
+     0
+    ]
+   ]
+  ],
+  "contact_mask_local_anchor": 44,
+  "ports": [
+   {
+    "cell": [
+     -1,
+     0,
+     0
+    ],
+    "dir": "left",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     -1,
+     0,
+     0
+    ],
+    "dir": "up",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     -1,
+     0,
+     0
+    ],
+    "dir": "down",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     -1,
+     0,
+     0
+    ],
+    "dir": "forward",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     -1,
+     0,
+     0
+    ],
+    "dir": "back",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "up",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "down",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "back",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     1,
+     0,
+     0
+    ],
+    "dir": "right",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     1,
+     0,
+     0
+    ],
+    "dir": "up",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     1,
+     0,
+     0
+    ],
+    "dir": "down",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     1,
+     0,
+     0
+    ],
+    "dir": "forward",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     1,
+     0,
+     0
+    ],
+    "dir": "back",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     -1,
+     0
+    ],
+    "dir": "right",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     -1,
+     0
+    ],
+    "dir": "left",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     -1,
+     0
+    ],
+    "dir": "up",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     -1,
+     0
+    ],
+    "dir": "down",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     -1,
+     0
+    ],
+    "dir": "forward",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   }
+  ],
+  "empties": [
+   "Port_back_-100",
+   "Port_back_000",
+   "Port_back_100",
+   "Port_down_-100",
+   "Port_down_0-10",
+   "Port_down_000",
+   "Port_down_100",
+   "Port_forward_-100",
+   "Port_forward_0-10",
+   "Port_forward_100",
+   "Port_left_-100",
+   "Port_left_0-10",
+   "Port_right_0-10",
+   "Port_right_100",
+   "Port_up_-100",
+   "Port_up_0-10",
+   "Port_up_000",
+   "Port_up_100",
+   "R4B_Tee4_ROOT",
+   "Socket_Mount"
+  ],
+  "colliders": "use approved R4Blocks/R4B_Tee4/R4B_Tee4_colliders.glb (no new collider authored)"
+ },
+ "style_parameters_m": {
+  "g": 0.004,
+  "w": 0.02,
+  "seg": 4,
+  "margin": 0.006,
+  "chamfer": 0.004,
+  "rho": 0.04,
+  "cseg": 4,
+  "seam_h": 0.006,
+  "min_plate": 0.05
+ },
+ "source": {
+  "generator": "scripts/shapes25.py (r4sleek.py / r4convex.py / roundcorner.py / geo2d.py) + pilot scripts/r4panel.py, styles.py",
+  "mesh_source": "mesh_source/R4B_Tee4_A.json, mesh_source/R4B_Tee4_A_LOD1.json",
+  "blender_build": "scripts/build_blender25.py",
+  "blender": "5.3.0"
+ },
+ "blender_qa": {
+  "mesh": {
+   "object": "R4B_Tee4",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 2396,
+   "vertices": 1200,
+   "uv": true,
+   "ok": true
+  },
+  "mesh_lod1": {
+   "object": "R4B_Tee4_LOD1",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 84,
+   "vertices": 44,
+   "uv": true,
+   "ok": true
+  },
+  "inside_cells": true,
+  "max_outside_approved_solid_mm": 0.0,
+  "lod1_max_outside_approved_solid_mm": 0.0,
+  "reimport_pass": {
+   ".fbx": true,
+   ".glb": true
+  }
+ },
+ "files": {
+  "R4B_Tee4.blend": {
+   "sha256": "f765a62f750627612a8ddd16ccdff43c894920146e4582c526061f8c1da97337",
+   "bytes": 820850
+  },
+  "R4B_Tee4.fbx": {
+   "sha256": "7e0035b75086910faf9b74a41dfff288a76d3332eda98fcaa3cbcb98cd5db5df",
+   "bytes": 82332
+  },
+  "R4B_Tee4.glb": {
+   "sha256": "c0746aa4d2130a84ae4bfb0955aba6e90e74dbc2433457629bb8356b8298de0d",
+   "bytes": 91568
+  },
+  "R4B_Tee4_LOD1.fbx": {
+   "sha256": "0fa6ba3410a96ebe16aea43f23717ac282e37a618b2525a81956efa7d22d0b86",
+   "bytes": 17788
+  },
+  "R4B_Tee4_LOD1.glb": {
+   "sha256": "aba0d267c76a3a876fd1fb10021a45ac46bb8d0f3a21881f078b05bab2d98d25",
+   "bytes": 7908
+  },
+  "R4B_Tee4_QA.json": {
+   "sha256": "94df8aec398a4065045eb8d7145753005700bed1531e48e5dbe58604ef278208",
+   "bytes": 15198
+  },
+  "renders/R4B_Tee4_34front.jpg": {
+   "sha256": "d7d114c3d19e37601009d9379caede3ccb39bac3b293dac0eb60a2bec2c797e4",
+   "bytes": 24743
+  },
+  "renders/R4B_Tee4_34rear.jpg": {
+   "sha256": "86b1ed218e1a9cec330289760bbdcfff51d738a7e863dd0c047c16bde954ee9d",
+   "bytes": 25922
+  },
+  "renders/R4B_Tee4_front.jpg": {
+   "sha256": "c54ab673875b63d30d01f662bff7f57bb4a6d06593f0fc8b85ec18f12ae1289d",
+   "bytes": 21903
+  },
+  "renders/R4B_Tee4_side.jpg": {
+   "sha256": "418f22c1e408f1676421bf170319eb20b31c7c4272005c514c4a06ad2064867b",
+   "bytes": 19980
+  },
+  "renders/R4B_Tee4_under.jpg": {
+   "sha256": "ed4e9ff68d13b422d3bc41839dc8da0c3c15295ff6c3905d0a90b79e38470e8f",
+   "bytes": 26430
+  }
+ }
+}

@@ -1,0 +1,5 @@
+[1235] BLOCK A_Sleek R4B_Arch BLENDER_PASS [] 1714 tris LOD1 116
+[1235] BLOCK A_Sleek R4B_CoveEdge BLENDER_PASS [] 1472 tris LOD1 96
+[1235] BLOCK A_Sleek R4B_TrussCube BLENDER_PASS [] 2664 tris LOD1 536
+[1235] BUILD_DONE {"A_Sleek/R4B_Arch": "BLENDER_PASS", "A_Sleek/R4B_CoveEdge": "BLENDER_PASS", "A_Sleek/R4B_TrussCube": "BLENDER_PASS"}
+Blender 5.3.0 (hash 02f0899d78e3 built 2026-11-10 01:33:43)

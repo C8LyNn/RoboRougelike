@@ -1,0 +1,284 @@
+{
+ "id": "R4B_RoundTop",
+ "part_kind": "RoundTop",
+ "issue": 1235,
+ "wave": 2,
+ "art_direction": "A_Sleek",
+ "replaces_visual_of": "PR #963 R4Blocks/R4B_RoundTop (approved files untouched; same part id / kind)",
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "installed_in_game": false,
+ "axes": "file: +Y up, Port_forward = +Z, Port_right = +X (same as the approved GLB)",
+ "pivot": "anchor cell centre (0,0,0), identical to PR #963",
+ "bounds_file_axes_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "triangles": {
+  "LOD0": 1392,
+  "LOD1": 68,
+  "approved_963": 4190
+ },
+ "renderers": 1,
+ "material_slots": 3,
+ "paint_zones": {
+  "R4P_Base": {
+   "triangles": 216,
+   "default_r41_colour": "Armor_Plate_Light",
+   "rgb_linear": [
+    0.27,
+    0.28,
+    0.285
+   ]
+  },
+  "R4P_Secondary": {
+   "triangles": 720,
+   "default_r41_colour": "Armor_Gunmetal",
+   "rgb_linear": [
+    0.16,
+    0.17,
+    0.18
+   ]
+  },
+  "R4P_Trim": {
+   "triangles": 456,
+   "default_r41_colour": "Armor_Dark",
+   "rgb_linear": [
+    0.035,
+    0.038,
+    0.045
+   ]
+  }
+ },
+ "interface_unchanged": {
+  "cells": [
+   [
+    0,
+    0,
+    0
+   ]
+  ],
+  "bonds": [],
+  "contact_mask_local_anchor": 59,
+  "ports": [
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "down",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "left",
+    "kind": "partial",
+    "center": [
+     -0.26,
+     0.0,
+     -0.05
+    ],
+    "half": [
+     0.3,
+     0.3
+    ],
+    "offset": [
+     0.0,
+     -0.0909
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "right",
+    "kind": "partial",
+    "center": [
+     0.26,
+     0.0,
+     -0.05
+    ],
+    "half": [
+     0.3,
+     0.3
+    ],
+    "offset": [
+     0.0,
+     -0.0909
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "forward",
+    "kind": "partial",
+    "center": [
+     0.0,
+     -0.26,
+     -0.13
+    ],
+    "half": [
+     0.45,
+     0.22
+    ],
+    "offset": [
+     0.0,
+     -0.2364
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "back",
+    "kind": "partial",
+    "center": [
+     0.0,
+     0.26,
+     -0.13
+    ],
+    "half": [
+     0.45,
+     0.22
+    ],
+    "offset": [
+     0.0,
+     -0.2364
+    ]
+   }
+  ],
+  "empties": [
+   "Port_back_000_part",
+   "Port_down_000",
+   "Port_forward_000_part",
+   "Port_left_000_part",
+   "Port_right_000_part",
+   "R4B_RoundTop_ROOT",
+   "Socket_Mount"
+  ],
+  "colliders": "use approved R4Blocks/R4B_RoundTop/R4B_RoundTop_colliders.glb (no new collider authored)"
+ },
+ "style_parameters_m": {
+  "g": 0.004,
+  "w": 0.02,
+  "seg": 4,
+  "margin": 0.006,
+  "chamfer": 0.004,
+  "rho": 0.04,
+  "cseg": 4,
+  "seam_h": 0.006,
+  "min_plate": 0.05
+ },
+ "source": {
+  "generator": "scripts/shapes25.py (r4sleek.py / r4convex.py / roundcorner.py / geo2d.py) + pilot scripts/r4panel.py, styles.py",
+  "mesh_source": "mesh_source/R4B_RoundTop_A.json, mesh_source/R4B_RoundTop_A_LOD1.json",
+  "blender_build": "scripts/build_blender25.py",
+  "blender": "5.3.0"
+ },
+ "blender_qa": {
+  "mesh": {
+   "object": "R4B_RoundTop",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1392,
+   "vertices": 698,
+   "uv": true,
+   "ok": true
+  },
+  "mesh_lod1": {
+   "object": "R4B_RoundTop_LOD1",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 68,
+   "vertices": 36,
+   "uv": true,
+   "ok": true
+  },
+  "inside_cells": true,
+  "max_outside_approved_solid_mm": 0.0,
+  "lod1_max_outside_approved_solid_mm": 0.0,
+  "reimport_pass": {
+   ".fbx": true,
+   ".glb": true
+  }
+ },
+ "files": {
+  "R4B_RoundTop.blend": {
+   "sha256": "24a2d3a483dad7820273b05cd9388037ff3680f6a06e84697cca344261042aed",
+   "bytes": 720739
+  },
+  "R4B_RoundTop.fbx": {
+   "sha256": "590d6f3d61056efd0c55b56abd575e8e0a0a11c7db7cd8b59395ca3e25872140",
+   "bytes": 51644
+  },
+  "R4B_RoundTop.glb": {
+   "sha256": "ab0cb30a913cf7bdde024d116b92e6863d633759351d2a73c4a24a1abde26488",
+   "bytes": 52060
+  },
+  "R4B_RoundTop_LOD1.fbx": {
+   "sha256": "d5d9c673cb45812b5d59a6e4f0ebde67480fa3dd12443525e889c3c1f98f310a",
+   "bytes": 19052
+  },
+  "R4B_RoundTop_LOD1.glb": {
+   "sha256": "a535abea1942c0a90ccba34a5d6e393df75a085263390da5040455e682df6496",
+   "bytes": 7160
+  },
+  "R4B_RoundTop_QA.json": {
+   "sha256": "675af1311198b0a8ff8b8357f2e4d8866f5a370f9c0781daacc47cfa7206f461",
+   "bytes": 7424
+  },
+  "renders/R4B_RoundTop_34front.jpg": {
+   "sha256": "b6eab7cb6fa8091dc2e00beaec4ec9cf3d7ae5529dcad09cfdda9157513b63d8",
+   "bytes": 26895
+  },
+  "renders/R4B_RoundTop_34rear.jpg": {
+   "sha256": "42be8921eeaa875e2d959478624534c4b77012853f28b2679f0e4ad3b24bd281",
+   "bytes": 27250
+  },
+  "renders/R4B_RoundTop_front.jpg": {
+   "sha256": "b09fc703ed122e6b5b1e01cdd1f7fca7615b02c5273666de406bb798a73c5aaa",
+   "bytes": 25040
+  },
+  "renders/R4B_RoundTop_side.jpg": {
+   "sha256": "438fa152ba421a4e2c562eaae58150f178ac16950b22550d4563111d7b179e77",
+   "bytes": 24103
+  },
+  "renders/R4B_RoundTop_under.jpg": {
+   "sha256": "42579ddb6a1465dcc1ec9fa3344b671016759f6ba3879d60c81df3f867351514",
+   "bytes": 30380
+  }
+ }
+}

@@ -1,0 +1,220 @@
+{
+ "id": "R4B_Cylinder",
+ "part_kind": "Cylinder",
+ "issue": 1235,
+ "wave": 2,
+ "art_direction": "A_Sleek",
+ "replaces_visual_of": "PR #963 R4Blocks/R4B_Cylinder (approved files untouched; same part id / kind)",
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "installed_in_game": false,
+ "axes": "file: +Y up, Port_forward = +Z, Port_right = +X (same as the approved GLB)",
+ "pivot": "anchor cell centre (0,0,0), identical to PR #963",
+ "bounds_file_axes_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "triangles": {
+  "LOD0": 864,
+  "LOD1": 96,
+  "approved_963": 3202
+ },
+ "renderers": 1,
+ "material_slots": 3,
+ "paint_zones": {
+  "R4P_Base": {
+   "triangles": 96,
+   "default_r41_colour": "Armor_Plate_Light",
+   "rgb_linear": [
+    0.27,
+    0.28,
+    0.285
+   ]
+  },
+  "R4P_Secondary": {
+   "triangles": 576,
+   "default_r41_colour": "Armor_Gunmetal",
+   "rgb_linear": [
+    0.16,
+    0.17,
+    0.18
+   ]
+  },
+  "R4P_Trim": {
+   "triangles": 192,
+   "default_r41_colour": "Armor_Dark",
+   "rgb_linear": [
+    0.035,
+    0.038,
+    0.045
+   ]
+  }
+ },
+ "interface_unchanged": {
+  "cells": [
+   [
+    0,
+    0,
+    0
+   ]
+  ],
+  "bonds": [],
+  "contact_mask_local_anchor": 12,
+  "ports": [
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "up",
+    "kind": "partial",
+    "center": [
+     0.0,
+     0.0,
+     0.26
+    ],
+    "half": [
+     0.3,
+     0.3
+    ],
+    "offset": [
+     0.0,
+     0.0
+    ]
+   },
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "down",
+    "kind": "partial",
+    "center": [
+     0.0,
+     0.0,
+     -0.26
+    ],
+    "half": [
+     0.3,
+     0.3
+    ],
+    "offset": [
+     0.0,
+     0.0
+    ]
+   }
+  ],
+  "empties": [
+   "Port_down_000_part",
+   "Port_up_000_part",
+   "R4B_Cylinder_ROOT",
+   "Socket_Mount"
+  ],
+  "colliders": "use approved R4Blocks/R4B_Cylinder/R4B_Cylinder_colliders.glb (no new collider authored)"
+ },
+ "style_parameters_m": {
+  "g": 0.004,
+  "w": 0.02,
+  "seg": 4,
+  "margin": 0.006,
+  "chamfer": 0.004,
+  "rho": 0.04,
+  "cseg": 4,
+  "seam_h": 0.006,
+  "min_plate": 0.05
+ },
+ "source": {
+  "generator": "scripts/shapes25.py (r4sleek.py / r4convex.py / roundcorner.py / geo2d.py) + pilot scripts/r4panel.py, styles.py",
+  "mesh_source": "mesh_source/R4B_Cylinder_A.json, mesh_source/R4B_Cylinder_A_LOD1.json",
+  "blender_build": "scripts/build_blender25.py",
+  "blender": "5.3.0"
+ },
+ "blender_qa": {
+  "mesh": {
+   "object": "R4B_Cylinder",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 864,
+   "vertices": 434,
+   "uv": true,
+   "ok": true
+  },
+  "mesh_lod1": {
+   "object": "R4B_Cylinder_LOD1",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 96,
+   "vertices": 50,
+   "uv": true,
+   "ok": true
+  },
+  "inside_cells": true,
+  "max_outside_approved_solid_mm": 0.0,
+  "lod1_max_outside_approved_solid_mm": 0.0,
+  "reimport_pass": {
+   ".fbx": true,
+   ".glb": true
+  }
+ },
+ "files": {
+  "R4B_Cylinder.blend": {
+   "sha256": "eee2c5dc27f139e905f9f6e16d779d8dda5e46bc2dc0b8c46ef705e328238312",
+   "bytes": 681091
+  },
+  "R4B_Cylinder.fbx": {
+   "sha256": "89c7f9938cbdd174ac73e0c4d9613c122598263c0d5fa37f8c4fe296dd75fa3b",
+   "bytes": 37548
+  },
+  "R4B_Cylinder.glb": {
+   "sha256": "b413b81934671edcbf100bf85825d0f6690cb8e70453c490a6d6be5a4297ccdc",
+   "bytes": 38104
+  },
+  "R4B_Cylinder_LOD1.fbx": {
+   "sha256": "7f1dd656a71a0dea1361e4779492fc7f86dbc7a58d8482722cc8c7793cdd7c3c",
+   "bytes": 18092
+  },
+  "R4B_Cylinder_LOD1.glb": {
+   "sha256": "d98393d144a71bd5bbfd9bd06c751d257be07ab5e7ebfa1f64f2ee554fc4933b",
+   "bytes": 5668
+  },
+  "R4B_Cylinder_QA.json": {
+   "sha256": "c802bfc907b873c64857573a7f85dea5a5c615c45a0f183647b43143f7c60f22",
+   "bytes": 5427
+  },
+  "renders/R4B_Cylinder_34front.jpg": {
+   "sha256": "8c6f954296b1ca36fd8f667435b3ee2eeb4b1d9136ea19135279d55094298b7a",
+   "bytes": 23048
+  },
+  "renders/R4B_Cylinder_34rear.jpg": {
+   "sha256": "8fef85c7268155fdc63057ad5f86f7db84d5d16259687813bc690b91b0e2007c",
+   "bytes": 24803
+  },
+  "renders/R4B_Cylinder_front.jpg": {
+   "sha256": "d3cf5d0be874db5801305539bcb06e010da0219ddf9e408f0904651cc00b8ea7",
+   "bytes": 21686
+  },
+  "renders/R4B_Cylinder_side.jpg": {
+   "sha256": "a55f8f9100a5962d0ba0df33ba2fe8813e7b823c67ce3920bcd916c5933d4071",
+   "bytes": 21841
+  },
+  "renders/R4B_Cylinder_under.jpg": {
+   "sha256": "5f08197bec121813521cd1bfa2b60932c1d257e60baae90e60bd6de145362699",
+   "bytes": 25040
+  }
+ }
+}

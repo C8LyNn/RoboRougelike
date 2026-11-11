@@ -1,0 +1,298 @@
+{
+ "id": "R4B_Plate2x2",
+ "part_kind": "Plate2x2",
+ "issue": 1235,
+ "wave": 1,
+ "art_direction": "A_Sleek",
+ "replaces_visual_of": "PR #963 R4Blocks/R4B_Plate2x2 (approved files untouched; same part id / kind)",
+ "status": "BLENDER_PASS",
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "installed_in_game": false,
+ "axes": "file: +Y up, Port_forward = +Z, Port_right = +X (same as the approved GLB)",
+ "pivot": "anchor cell centre (0,0,0), identical to PR #963",
+ "bounds_file_axes_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.81,
+   -0.015,
+   0.81
+  ]
+ ],
+ "triangles": {
+  "LOD0": 1696,
+  "LOD1": 44,
+  "approved_963": 6284
+ },
+ "renderers": 1,
+ "material_slots": 3,
+ "paint_zones": {
+  "R4P_Base": {
+   "triangles": 288,
+   "default_r41_colour": "Armor_Plate_Light",
+   "rgb_linear": [
+    0.27,
+    0.28,
+    0.285
+   ]
+  },
+  "R4P_Secondary": {
+   "triangles": 768,
+   "default_r41_colour": "Armor_Gunmetal",
+   "rgb_linear": [
+    0.16,
+    0.17,
+    0.18
+   ]
+  },
+  "R4P_Trim": {
+   "triangles": 640,
+   "default_r41_colour": "Armor_Dark",
+   "rgb_linear": [
+    0.035,
+    0.038,
+    0.045
+   ]
+  }
+ },
+ "interface_unchanged": {
+  "cells": [
+   [
+    0,
+    0,
+    0
+   ],
+   [
+    1,
+    0,
+    0
+   ],
+   [
+    0,
+    -1,
+    0
+   ],
+   [
+    1,
+    -1,
+    0
+   ]
+  ],
+  "bonds": [
+   [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     1,
+     0,
+     0
+    ]
+   ],
+   [
+    [
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     -1,
+     0
+    ]
+   ],
+   [
+    [
+     1,
+     0,
+     0
+    ],
+    [
+     1,
+     -1,
+     0
+    ]
+   ]
+  ],
+  "contact_mask_local_anchor": 8,
+  "ports": [
+   {
+    "cell": [
+     0,
+     0,
+     0
+    ],
+    "dir": "down",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     1,
+     0,
+     0
+    ],
+    "dir": "down",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     0,
+     -1,
+     0
+    ],
+    "dir": "down",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   },
+   {
+    "cell": [
+     1,
+     -1,
+     0
+    ],
+    "dir": "down",
+    "kind": "full",
+    "offset": [
+     0,
+     0
+    ],
+    "half": [
+     0.47,
+     0.47
+    ]
+   }
+  ],
+  "empties": [
+   "Port_down_0-10",
+   "Port_down_000",
+   "Port_down_1-10",
+   "Port_down_100",
+   "R4B_Plate2x2_ROOT",
+   "Socket_Mount"
+  ],
+  "colliders": "use approved R4Blocks/R4B_Plate2x2/R4B_Plate2x2_colliders.glb (no new collider authored)"
+ },
+ "style_parameters_m": {
+  "g": 0.004,
+  "w": 0.02,
+  "seg": 4,
+  "margin": 0.006,
+  "chamfer": 0.004,
+  "rho": 0.04,
+  "cseg": 4,
+  "seam_h": 0.006,
+  "min_plate": 0.05
+ },
+ "source": {
+  "generator": "scripts/shapes25.py (r4sleek.py / r4convex.py / roundcorner.py / geo2d.py) + pilot scripts/r4panel.py, styles.py",
+  "mesh_source": "mesh_source/R4B_Plate2x2_A.json, mesh_source/R4B_Plate2x2_A_LOD1.json",
+  "blender_build": "scripts/build_blender25.py",
+  "blender": "5.3.0"
+ },
+ "blender_qa": {
+  "mesh": {
+   "object": "R4B_Plate2x2",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1696,
+   "vertices": 850,
+   "uv": true,
+   "ok": true
+  },
+  "mesh_lod1": {
+   "object": "R4B_Plate2x2_LOD1",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 44,
+   "vertices": 24,
+   "uv": true,
+   "ok": true
+  },
+  "inside_cells": true,
+  "max_outside_approved_solid_mm": 0.0,
+  "lod1_max_outside_approved_solid_mm": 0.0,
+  "reimport_pass": {
+   ".fbx": true,
+   ".glb": true
+  }
+ },
+ "files": {
+  "R4B_Plate2x2.blend": {
+   "sha256": "25b366b08990ce17669e06872ef4ac588ef1a01ba817c747add1719450a5b703",
+   "bytes": 735746
+  },
+  "R4B_Plate2x2.fbx": {
+   "sha256": "5c15672b0c65b31942db9c1e9bec8e96839addadf29e97bbf0711e05b12ea571",
+   "bytes": 55356
+  },
+  "R4B_Plate2x2.glb": {
+   "sha256": "6dcafefcb2399d787b0995c8c9ee4d680de55339036144dd055e742da1c388ea",
+   "bytes": 64544
+  },
+  "R4B_Plate2x2_LOD1.fbx": {
+   "sha256": "fee5ffabe4f83dfe2c57b9e27643e04804e0219ca89246d5cfd1413baab49ffd",
+   "bytes": 18460
+  },
+  "R4B_Plate2x2_LOD1.glb": {
+   "sha256": "0d1f970d1a4a69cbd2e06390757449d69ac4a99fa93b4a607a969696d0938796",
+   "bytes": 6244
+  },
+  "R4B_Plate2x2_QA.json": {
+   "sha256": "681bdf995b15c1ee6d0c0003f1700de5c31ec7125433f651e47af095fce48e15",
+   "bytes": 6803
+  },
+  "renders/R4B_Plate2x2_34front.jpg": {
+   "sha256": "0dd14304f063a9e97c7ec314d7e810a0b9352be989212587711aa7fc4fc17adb",
+   "bytes": 27413
+  },
+  "renders/R4B_Plate2x2_34rear.jpg": {
+   "sha256": "87eb098d9ffb9213f5414d1e3b60c17e14bcfd14a0460c24d993cd426c48245f",
+   "bytes": 29392
+  },
+  "renders/R4B_Plate2x2_front.jpg": {
+   "sha256": "acc78817fb873bb7a0ebb34396ffdb8ff9ad35b9271b5e1c9259ad800c384304",
+   "bytes": 21919
+  },
+  "renders/R4B_Plate2x2_side.jpg": {
+   "sha256": "68930f6a208c2956bf0ebf224c6c5fb48bff4a1c14e404bdfca64c39636ab6af",
+   "bytes": 22300
+  },
+  "renders/R4B_Plate2x2_under.jpg": {
+   "sha256": "f6861dfde8b30d381f8d103ff79727d963bc481fc8e0032871519e67b13b4280",
+   "bytes": 29152
+  }
+ }
+}

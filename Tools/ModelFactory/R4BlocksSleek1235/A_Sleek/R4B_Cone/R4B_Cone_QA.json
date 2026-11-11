@@ -1,0 +1,235 @@
+{
+ "id": "R4B_Cone",
+ "block_kind": "Cone",
+ "issue": 1235,
+ "wave": 2,
+ "art_direction": "A",
+ "art_direction_label": "A_Sleek",
+ "description": "1x1x1 nose cone (round base)",
+ "status": "BLENDER_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "cells": [
+  [
+   0,
+   0,
+   0
+  ]
+ ],
+ "bonds": [],
+ "note": "nose cone; round base: contact patch limited to the inscribed square (half 0.30 cell)",
+ "contact_mask_local_anchor": 8,
+ "contact_mask_bits": "R3MountingGrid.FaceDirections order: right, left, up, down, forward, back (Unity)",
+ "ports": [
+  {
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "partial",
+   "center": [
+    0.0,
+    0.0,
+    -0.26
+   ],
+   "half": [
+    0.3,
+    0.3
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "dir": "down",
+   "kind": "partial",
+   "approved_flush_pct": 88.9,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "partial",
+   "PASS": true
+  }
+ ],
+ "interface_vs_approved": {
+  "approved_glb": "ModelFactory/R4Blocks/R4B_Cone/R4B_Cone.glb",
+  "approved_sha256": "f4beaf22dbbb8dc0e0aa729cc388890bccf3d5c7a34e63ed80547cf75cbd5c12",
+  "empties_missing": [],
+  "empties_extra": [],
+  "pos_dev_mm": 0.0,
+  "axis_dev_deg": 0.0,
+  "ports_identical": true,
+  "cells_identical": true,
+  "contact_mask_approved": 8,
+  "contact_mask": 8,
+  "PASS": true
+ },
+ "mesh": {
+  "object": "R4B_Cone",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 912,
+  "vertices": 458,
+  "uv": true,
+  "ok": true
+ },
+ "mesh_lod1": {
+  "object": "R4B_Cone_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 120,
+  "vertices": 62,
+  "uv": true,
+  "ok": true
+ },
+ "approved_triangles": 1700,
+ "bounds_m": [
+  [
+   -0.256,
+   -0.256,
+   -0.26
+  ],
+  [
+   0.256,
+   0.256,
+   0.2347
+  ]
+ ],
+ "approved_bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_cells": true,
+ "max_outside_approved_solid_mm": 0.0,
+ "lod1_max_outside_approved_solid_mm": 0.0001,
+ "materials": [
+  "R4P_Base",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "paint_zones": {
+  "R4P_Base": "Armor_Plate_Light",
+  "R4P_Secondary": "Armor_Gunmetal",
+  "R4P_Trim": "Armor_Dark"
+ },
+ "style_parameters": {
+  "g": 0.004,
+  "w": 0.02,
+  "seg": 4,
+  "margin": 0.006,
+  "chamfer": 0.004,
+  "rho": 0.04,
+  "cseg": 4,
+  "wall_smooth": true,
+  "seam_h": 0.006,
+  "min_plate": 0.05
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 458,
+   "triangles": 912,
+   "world_scale_dev": 0.0,
+   "empties": [
+    "Port_down_000_part",
+    "R4B_Cone_ROOT",
+    "Socket_Mount"
+   ],
+   "empties_missing": [],
+   "empty_pos_dev_mm": 0.0,
+   "empty_axis_dev_deg": 0.0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  },
+  ".glb": {
+   "PASS": true,
+   "bounds_dev_mm": 0.0,
+   "verts": 937,
+   "triangles": 912,
+   "world_scale_dev": 0.0,
+   "empties": [
+    "Port_down_000_part",
+    "R4B_Cone_ROOT",
+    "Socket_Mount"
+   ],
+   "empties_missing": [],
+   "empty_pos_dev_mm": 0.0,
+   "empty_axis_dev_deg": 0.0,
+   "materials": [
+    "R4P_Base",
+    "R4P_Secondary",
+    "R4P_Trim"
+   ]
+  }
+ },
+ "renders": [
+  "R4B_Cone_front.jpg",
+  "R4B_Cone_side.jpg",
+  "R4B_Cone_34front.jpg",
+  "R4B_Cone_34rear.jpg",
+  "R4B_Cone_under.jpg"
+ ],
+ "collider": "unchanged - approved R4Blocks/R4B_Cone/R4B_Cone_colliders.glb (not re-authored)",
+ "files": {
+  "R4B_Cone.blend": {
+   "sha256": "f6238ceacecc031941363a3370d893d2f747d9477c3d48b5d59fd071be61abf7",
+   "bytes": 683123
+  },
+  "R4B_Cone.fbx": {
+   "sha256": "a9f2cb862cf0d331e9367210187f70afcd6972d7c0c932636c2e19612b2396bb",
+   "bytes": 39548
+  },
+  "R4B_Cone.glb": {
+   "sha256": "a8b0b55fc105769312422fc3bc894322d855b362cdb156a94593b56c9af2a89f",
+   "bytes": 39676
+  },
+  "R4B_Cone_LOD1.fbx": {
+   "sha256": "247d9adea1fa33f4517879c1abebd363c7c9c4ff1ffaae23e44b891721015231",
+   "bytes": 18764
+  },
+  "R4B_Cone_LOD1.glb": {
+   "sha256": "c55ef1a9047729f177f66e6876d1fd06b2b8b6c993ddffb18e9d8254ddac0816",
+   "bytes": 6596
+  }
+ },
+ "seconds": 0.9,
+ "blender": "5.3.0"
+}
