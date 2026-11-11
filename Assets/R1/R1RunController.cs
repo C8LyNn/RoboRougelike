@@ -416,6 +416,7 @@ namespace RoboRougelike.R1
             if (Player != null) Player.Controller.SetGameplayInputEnabled(active);
             if (followCamera != null) followCamera.SetGameplayInputEnabled(active);
             if (Encounter != null) Encounter.SetCombatActive(active);
+            if (CreativeWorkshop && testRange != null) testRange.SetCreativeEnemiesActive(active);
         }
 
         public void RestartRun()

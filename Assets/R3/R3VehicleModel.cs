@@ -149,6 +149,9 @@ namespace RoboRougelike.R3
             kind==R3PartKind.Battery||kind==R3PartKind.RepairPulse||kind==R3PartKind.DrivePower||kind==R3PartKind.EnergyRegenerator||kind==R3PartKind.BonusModule||
             (kind==R3PartKind.Gun&&weapon>=R4WeaponKind.Basic&&weapon<=R4WeaponKind.EmpEmitter);
         public R3VehicleDesign Design { get; }
+        // A disposable workshop model; never serialized into an expedition.
+        public bool CreativeMode { get; internal set; }
+        public int AvailableInventoryCapacity => CreativeMode ? int.MaxValue : InventoryCapacity;
         public List<R3PartState> Parts { get; }
         private readonly List<R3PartState> inventory=new List<R3PartState>();
         public IReadOnlyList<R3PartState> Inventory => inventory;
@@ -219,7 +222,7 @@ namespace RoboRougelike.R3
             var design=new R3VehicleDesign{Name=Design.Name,Description=Design.Description,Speed=Design.Speed,TurnSpeed=Design.TurnSpeed,CoreHp=Design.CoreHp};
             design.Parts.AddRange(Design.Parts.Select(p=>p.Copy()));
             var copy=new R3VehicleModel(design,new R3GarageEconomy{ArmorCost=Economy.ArmorCost,WheelCost=Economy.WheelCost,GunCost=Economy.GunCost,MaxRepairCost=Economy.MaxRepairCost});
-            copy.Parts.Clear();copy.Parts.AddRange(Parts.Select(p=>p.Copy()));copy.inventory.AddRange(inventory.Select(p=>p.Copy()));copy.Scrap=Scrap;
+            copy.CreativeMode=CreativeMode;copy.Parts.Clear();copy.Parts.AddRange(Parts.Select(p=>p.Copy()));copy.inventory.AddRange(inventory.Select(p=>p.Copy()));copy.Scrap=Scrap;
             copy.factoryWheels.Clear();foreach(var item in factoryWheels)copy.factoryWheels.Add(item.Key,item.Value);
             copy.SuspensionEnabled=SuspensionEnabled;copy.SuspensionMode=SuspensionMode;copy.SuspensionHeightOffset=SuspensionHeightOffset;
             copy.RefreshEnergyLayout();copy.Energy.Restore(Energy.Current);copy.InitialEnergyPrepared=InitialEnergyPrepared;
@@ -301,7 +304,7 @@ namespace RoboRougelike.R3
         public static bool ValidEconomicPart(R3PartState part) => part!=null && ValidEconomicKind(part.Kind,part.Weapon) && ValidWheelStyle(part) && ValidArmorShape(part) && ValidFootprint(part) && part.Tier>=0&&part.Tier<=3&&
             (part.Tier<=1||SupportsFusion(part.Kind,part.Weapon))&&
             !float.IsNaN(part.Health)&&!float.IsInfinity(part.Health)&&part.Health>=0&&part.Health<=1;
-        public int Price(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic) => !ValidEconomicKind(kind,weapon)?0:Math.Max(1,
+        public int Price(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic) => !ValidEconomicKind(kind,weapon)||CreativeMode?0:Math.Max(1,
             kind==R3PartKind.Gun&&weapon!=R4WeaponKind.Basic?R4WeaponDefinition.Get(weapon).Price:Economy.Price(kind));
         public bool Owns(string id) => Parts.Concat(inventory).Any(p=>p.Id==id);
         // Mounted wreck plans reserve their type too: rebuilding them must not
@@ -311,7 +314,14 @@ namespace RoboRougelike.R3
         const string WeaponTypeLimitError="Maksymalnie 2 różne typy broni na pojeździe.";
         HashSet<R4WeaponKind> MountedWeaponTypes() => new HashSet<R4WeaponKind>(
             Parts.Where(p=>p.Kind==R3PartKind.Gun).Select(p=>p.Weapon));
-        bool InvalidWeaponTypes => MountedWeaponTypes().Count>MaxWeaponTypes;
+        bool InvalidWeaponTypes => !CreativeMode&&MountedWeaponTypes().Count>MaxWeaponTypes;
+        public bool WeaponInGroup(R4WeaponKind weapon,bool secondary)
+        {
+            var a=WeaponGroupA;var b=WeaponGroupB;
+            return MatchesWeaponGroup(weapon,secondary,a,b,CreativeMode);
+        }
+        public static bool MatchesWeaponGroup(R4WeaponKind weapon,bool secondary,R4WeaponKind? a,R4WeaponKind? b,bool creative) =>
+            secondary ? (b==weapon || (creative&&weapon!=a&&weapon!=b)) : a==weapon;
         public string PlacementError(Vector3Int cell, R3PartKind kind, bool owned=false,
             R4WeaponKind weapon=R4WeaponKind.Basic,Vector3Int rotation=default,
             int contactMask=R3MountingGrid.AllFaces)
@@ -337,14 +347,14 @@ namespace RoboRougelike.R3
             if(kind==R3PartKind.Wheel&&HasSideMount(candidate.WheelStyle))
                 contactMask=candidate.ContactMask=SideWheelContactAt(candidate);
             var footprint=OccupiedCells(candidate).ToArray();
-            if(footprint.Any(c=>Math.Abs(c.x)>6||Math.Abs(c.z)>7||c.y<0||c.y>5))return "Moduł wykracza poza siatkę montażową.";
+            if(!CreativeMode&&footprint.Any(c=>Math.Abs(c.x)>6||Math.Abs(c.z)>7||c.y<0||c.y>5))return "Moduł wykracza poza siatkę montażową.";
             if(footprint.Any(c=>At(c)!=null))return "Zajęte pole części. Utraconą część odtwórz lub usuń jej plan.";
-            if(Parts.Sum(p=>OccupiedCells(p).Count())+footprint.Length>180)return "Limit 180 pól części.";
+            if(!CreativeMode&&Parts.Sum(p=>OccupiedCells(p).Count())+footprint.Length>180)return "Limit 180 pól części.";
             if(kind==R3PartKind.BonusModule&&!owned)return "Moduły bonusów zdobywa się wyłącznie jako nagrody.";
             if(kind==R3PartKind.Gun)
             {
                 var types=MountedWeaponTypes();
-                if(types.Count>MaxWeaponTypes||(types.Count==MaxWeaponTypes&&!types.Contains(weapon)))return WeaponTypeLimitError;
+                if(!CreativeMode&&(types.Count>MaxWeaponTypes||(types.Count==MaxWeaponTypes&&!types.Contains(weapon))))return WeaponTypeLimitError;
                 // A gun has a one-cell clearance around its own 1x1x1 mounting
                 // cell. Existing constructions remain loadable and repairable;
                 // the rule applies to each new placement, including inventory.
@@ -352,11 +362,11 @@ namespace RoboRougelike.R3
                     Math.Abs((long)p.Cell.x-cell.x)<=1&&Math.Abs((long)p.Cell.y-cell.y)<=1&&Math.Abs((long)p.Cell.z-cell.z)<=1))
                     return "Zachowaj co najmniej jedno wolne pole odstępu między broniami.";
             }
-            if (kind == R3PartKind.Wheel && Parts.Count(p => p.Kind == kind) >= 16) return "Limit 16 kół.";
-            if (kind == R3PartKind.Suspension && Parts.Count(p => p.Kind == kind) >= 8) return "Limit 8 modułów zawieszenia.";
+            if (!CreativeMode&&kind == R3PartKind.Wheel && Parts.Count(p => p.Kind == kind) >= 16) return "Limit 16 kół.";
+            if (!CreativeMode&&kind == R3PartKind.Suspension && Parts.Count(p => p.Kind == kind) >= 8) return "Limit 8 modułów zawieszenia.";
             int limit=kind switch {R3PartKind.Booster=>4,R3PartKind.JumpDrive=>2,R3PartKind.Blink=>1,
                 R3PartKind.Gyroscope=>2,R3PartKind.MagneticGrapple=>2,R3PartKind.DirectionalShield=>2,R3PartKind.PointDefense=>2,R3PartKind.StructuralScanner=>1,R3PartKind.ScannerPulse=>1,R3PartKind.IndependentSteering=>1,_=>8};
-            if(kind>=R3PartKind.Booster&&kind!=R3PartKind.Battery&&kind!=R3PartKind.RepairPulse&&kind!=R3PartKind.DrivePower&&kind!=R3PartKind.EnergyRegenerator&&Parts.Count(p=>p.Kind==kind)>=limit)return "Limit modułów: "+limit+".";
+            if(!CreativeMode&&kind>=R3PartKind.Booster&&kind!=R3PartKind.Battery&&kind!=R3PartKind.RepairPulse&&kind!=R3PartKind.DrivePower&&kind!=R3PartKind.EnergyRegenerator&&Parts.Count(p=>p.Kind==kind)>=limit)return "Limit modułów: "+limit+".";
             if(kind==R3PartKind.CrawlerTrack&&cell.x==0)return "Gąsienicę zamontuj po lewej lub prawej stronie.";
             if (!HasAliveExternalNeighbour(cell,kind,rotation,contactMask,candidate))
                 return "Brak zgodnych punktów mocowania ze sprawną konstrukcją.";
@@ -378,13 +388,13 @@ namespace RoboRougelike.R3
         }
         public bool PurchaseToInventory(R3PartKind kind,R4WeaponKind weapon=R4WeaponKind.Basic,R3WheelStyle wheelStyle=R3WheelStyle.Offroad,R3ArmorShape armorShape=R3ArmorShape.Cube)
         {
-            if(kind==R3PartKind.Core||kind==R3PartKind.BonusModule||!ValidEconomicKind(kind,weapon)||inventory.Count>=InventoryCapacity||
+            if(kind==R3PartKind.Core||kind==R3PartKind.BonusModule||!ValidEconomicKind(kind,weapon)||inventory.Count>=AvailableInventoryCapacity||
                 !Enum.IsDefined(typeof(R3WheelStyle),wheelStyle)||(kind!=R3PartKind.Wheel&&wheelStyle!=R3WheelStyle.Offroad)||
                 (HasSizedSideWheel(wheelStyle)&&!R4_1.R4WheelArt.SizedWheelAvailable(wheelStyle))||
                 (HasForkMount(wheelStyle)&&!R4_1.R4WheelArt.ForkWheelAvailable(wheelStyle))||
                 !Enum.IsDefined(typeof(R3ArmorShape),armorShape)||(kind!=R3PartKind.Armor&&armorShape!=R3ArmorShape.Cube)||
                 (armorShape!=R3ArmorShape.Cube&&!R4_1.R41PartGeometry.ArmorShapeAvailable(armorShape)))return false;
-            int price=Price(kind,weapon);if(price<=0||Scrap<price)return false;
+            int price=Price(kind,weapon);if((price<=0&&!CreativeMode)||Scrap<price)return false;
             Scrap-=price;inventory.Add(new R3PartState(default,kind){Weapon=weapon,WheelStyle=wheelStyle,ArmorShape=armorShape,
                 FootprintRevision=NewPurchaseFootprint(kind,weapon,wheelStyle),
                 ContactMask=kind==R3PartKind.Wheel?(HasForkMount(wheelStyle)?R3MountingGrid.FaceBit(Vector3Int.up):
@@ -392,7 +402,7 @@ namespace RoboRougelike.R3
                     armorShape==R3ArmorShape.Cube?R3MountingGrid.AllFaces:R4_1.R41PartGeometry.FullArmorContacts(armorShape)});return true;
         }        public int RepairCost(R3PartState part)
         {
-            if (!ValidEconomicPart(part) || part.Health >= 1f) return 0;
+            if (!ValidEconomicPart(part) || part.Health >= 1f || CreativeMode) return 0;
             // Apply the existing proportional repair rate continuously to owned wrecks.
             // A one-scrap purchase has no positive, strictly lower integer price;
             // fail closed instead of giving away an owned part or charging full price.
@@ -404,7 +414,7 @@ namespace RoboRougelike.R3
         public bool Repair(Vector3Int cell)
         {
             var part = At(cell); int price = RepairCost(part);
-            if (part == null || price <= 0 || Scrap < price) return false;
+            if (part == null || !ValidEconomicPart(part) || part.Health>=1 || (price <= 0&&!CreativeMode) || Scrap < price) return false;
             if(part.Kind==R3PartKind.Gun&&InvalidWeaponTypes)return false;
             if (part.Health<=0&&!HasAliveExternalNeighbour(part.Cell,part.Kind,
                 part.RotationQuarterTurns,part.ContactMask,part))return false;
@@ -450,7 +460,7 @@ namespace RoboRougelike.R3
             if (part == null || part.Kind == R3PartKind.Core) return false;
             var rest = Parts.Where(p => p != part).ToList();
             // Edits may temporarily be undeployable; keep the core, structure and inventory safe.
-            if (inventory.Count>=InventoryCapacity ||
+            if (inventory.Count>=AvailableInventoryCapacity ||
                 !Connected(rest) || !Connected(rest.Where(p => p.Health > 0))) return false;
             Parts.Remove(part);part.ContactMask=StoredWheelContacts(part);NormalizeStoredEquipmentFootprint(part);inventory.Add(part); return true;
         }
@@ -470,7 +480,7 @@ namespace RoboRougelike.R3
                 else if(part.Kind==R3PartKind.Wheel&&HasSideMount(part.WheelStyle))
                     part.ContactMask=SideWheelContactAt(part);
                 var cells=OccupiedCells(part).ToArray();
-                if(cells.Any(c=>Math.Abs(c.x)>6||Math.Abs(c.z)>7||c.y<0||c.y>5))return false;
+                if(!CreativeMode&&cells.Any(c=>Math.Abs(c.x)>6||Math.Abs(c.z)>7||c.y<0||c.y>5))return false;
                 var otherCells=new HashSet<Vector3Int>(Parts.Where(p=>p!=part).SelectMany(OccupiedCells));
                 if(cells.Any(otherCells.Contains)||!Connected(Parts)||!Connected(Parts.Where(p=>p.Health>0)))return false;
                 if(installationGate!=null&&installationGate(part)!=null)return false;
@@ -482,7 +492,7 @@ namespace RoboRougelike.R3
         {
             if(recovered==null)return false;
             var batch=recovered.ToArray();
-            if(inventory.Count+batch.Length>InventoryCapacity)return false;
+            if((long)inventory.Count+batch.Length>AvailableInventoryCapacity)return false;
             if(batch.Any(p=>!ValidEconomicPart(p)||p.Kind==R3PartKind.Armor||p.Kind==R3PartKind.Core||
                 (p.Kind==R3PartKind.BonusModule&&(string.IsNullOrWhiteSpace(p.UpgradeId)||
                     !Enum.IsDefined(typeof(R1UpgradeEffect),p.UpgradeEffect)||float.IsNaN(p.UpgradeAmount)||
@@ -526,7 +536,7 @@ namespace RoboRougelike.R3
         public bool RepairInventory(string id)
         {
             var part=inventory.FirstOrDefault(p=>p.Id==id);int cost=RepairCost(part);
-            if(part==null||cost<=0||Scrap<cost)return false;
+            if(part==null||!ValidEconomicPart(part)||part.Health>=1||(cost<=0&&!CreativeMode)||Scrap<cost)return false;
             Scrap-=cost;part.Health=1;return true;
         }
         int OwnedPartValue(R3PartState part)=>Price(part.Kind,part.Weapon)*(NormalizedTier(part.Tier)==3?9:NormalizedTier(part.Tier)==2?3:1);
@@ -614,6 +624,7 @@ namespace RoboRougelike.R3
                 var alive = Parts.Where(p => p.Health > 0).ToList();
                 if (!alive.Any(p => p.Kind == R3PartKind.Core)) return "Rdzeń zniszczony.";
                 if (!Connected(alive)) return "Konstrukcja zawiera odłączone części.";
+                if (CreativeMode) return null;
                 if (!alive.Any(p => p.Kind == R3PartKind.Gun)) return "Brak sprawnej broni.";
                 if(!HasMobility(alive,SelectedDrive))return "Brak sprawnego napędu. "+MissingDriveRequirement(SelectedDrive);
                 return null;

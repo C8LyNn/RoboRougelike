@@ -581,6 +581,14 @@ namespace RoboRougelike.R3
                         (p.Kind!=R3PartKind.Armor||p.ArmorShape==mounted.ArmorShape)&&
                         (p.Kind!=R3PartKind.BonusModule||R3VehicleModel.SameBonusType(p,mounted))).ToArray();
                     var next=remaining.Where(p=>p.Health>0).OrderByDescending(p=>p.Health).FirstOrDefault();
+                    // Creative mode supplies another identical piece so one selection
+                    // supports continuous building without repeated purchases.
+                    if(next==null&&run.VehicleModel.CreativeMode)
+                    {
+                        bool added=mounted.Kind==R3PartKind.BonusModule?run.AddCreativeBonus(mounted.UpgradeId):
+                            run.GaragePurchase(mounted.Kind,mounted.Weapon,mounted.WheelStyle,mounted.ArmorShape);
+                        if(added)next=run.VehicleModel.Inventory.LastOrDefault();
+                    }
                     SelectedInventoryId=next?.Id;
                     Message=MountedStackFeedback(remaining.Length,next!=null);
                 }

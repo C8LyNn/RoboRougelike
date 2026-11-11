@@ -88,7 +88,8 @@ namespace RoboRougelike.R3
                 if(part==null||part.Kind!=R3PartKind.Gun)continue;
                 bool held=part.Operational&&part.gameObject.activeInHierarchy&&part.transform.IsChildOf(transform)&&
                     !RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject)&&
-                    ((groupA&&a==part.Weapon)||(groupB&&b==part.Weapon));
+                    ((groupA&&R3VehicleModel.MatchesWeaponGroup(part.Weapon,false,a,b,Model.CreativeMode))||
+                     (groupB&&R3VehicleModel.MatchesWeaponGroup(part.Weapon,true,a,b,Model.CreativeMode)));
                 part.GetComponent<RoboRougelike.WeaponIntegration.RRLBeamBinding>()?.SetTriggerHeld(held);
                 part.GetComponent<RoboRougelike.WeaponIntegration.RRLSawBinding>()?.SetMotorRequested(held);
             }
@@ -192,10 +193,11 @@ namespace RoboRougelike.R3
         }
         public void FireGroup(bool secondary)
         {
-            var kind=secondary?Model.WeaponGroupB:Model.WeaponGroupA;
+            var a=Model.WeaponGroupA;var b=Model.WeaponGroupB;
+            var kind=secondary?b:a;
             if(!kind.HasValue)return;
             foreach(var part in Parts)
-                if(part!=null && part.Kind==R3PartKind.Gun && part.Weapon==kind.Value && part.Operational && part.gameObject.activeInHierarchy && part.transform.IsChildOf(transform)&&Time.time>=part.NextFireTime)
+                if(part!=null && part.Kind==R3PartKind.Gun && R3VehicleModel.MatchesWeaponGroup(part.Weapon,secondary,a,b,Model.CreativeMode) && part.Operational && part.gameObject.activeInHierarchy && part.transform.IsChildOf(transform)&&Time.time>=part.NextFireTime)
                 {
                     part.GetComponent<RoboRougelike.R4_1.R4WeaponArt>()?.Sync();
                     if(RoboRougelike.WeaponIntegration.RRLEmpPartState.IsBlocked(part.gameObject))continue;

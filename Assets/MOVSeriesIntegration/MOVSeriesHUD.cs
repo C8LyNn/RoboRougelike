@@ -76,6 +76,8 @@ namespace RoboRougelike.R1
             float amount=part.UpgradeAmount==0?0:part.UpgradeAmount;
             return id.Length+":"+id+":"+(int)part.UpgradeEffect+":"+amount.ToString("R",CultureInfo.InvariantCulture);
         }
+        static R1RunDefinition creativeCatalogSource;
+        static readonly List<CatalogEntry> creativeBonusCatalog=new List<CatalogEntry>();
         static List<CatalogEntry> BuildCatalogEntries(R3VehicleModel model)
         {
             var result=new List<CatalogEntry>();
@@ -104,6 +106,21 @@ namespace RoboRougelike.R1
             {var weapon=(R4WeaponKind)i;result.Add(new CatalogEntry(R3PartKind.Gun,weapon,null,R4WeaponDefinition.Get(weapon).Name));}
             foreach(var item in model.Inventory.Where(p=>p.Kind==R3PartKind.BonusModule).GroupBy(CatalogBonusKey).Select(g=>g.First()))
                 result.Add(new CatalogEntry(R3PartKind.BonusModule,R4WeaponKind.Basic,CatalogBonusKey(item),CatalogBonusGroupName(item)+" • T1: "+BonusText(item)));
+            var definition=R1RunController.Instance?.Definition;
+            if(model.CreativeMode&&definition?.Upgrades!=null)
+            {
+                if(creativeCatalogSource!=definition)
+                {
+                    creativeBonusCatalog.Clear();creativeCatalogSource=definition;
+                    foreach(var bonus in definition.Upgrades)
+                    {
+                        var item=R3VehicleModel.CreateBonusReward(bonus);if(item==null)continue;
+                        creativeBonusCatalog.Add(new CatalogEntry(R3PartKind.BonusModule,R4WeaponKind.Basic,CatalogBonusKey(item),CatalogBonusGroupName(item)+" • T1: "+BonusText(item)));
+                    }
+                }
+                foreach(var entry in creativeBonusCatalog)
+                    if(!result.Any(existing=>existing.Kind==R3PartKind.BonusModule&&existing.Group==entry.Group))result.Add(entry);
+            }
             return result;
         }
         void DrawCatalogSearch(R1RunController run,Rect label,Rect field,Rect clear)
