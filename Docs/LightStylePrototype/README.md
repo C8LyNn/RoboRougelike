@@ -10,7 +10,7 @@ Osobny profil `Resources/VisualPrototype/LekkaStylizacja` zawiera tylko ColorAdj
 
 ## Sterowanie i usunięcie
 
-- **F8** — przełącza filtr w dowolnej chwili; domyślna siła przy pierwszym włączeniu to 60%.
+- **F8** — przełącza filtr w dowolnej chwili. Po uruchomieniu jest wyłączony, a jego siła wynosi 0%; aby zobaczyć efekt, trzeba włączyć filtr i zwiększyć siłę w panelu.
 - **Esc → F10** — w pauzie pokazuje panel z przełącznikiem i suwakiem 0–100%; zamknij F10 lub wznów Esc. Regulacja w pauzie nie wywołuje strzału ani montażu.
 - Aby wyłączyć bez zmian w projekcie: F8 albo suwak 0%. Stan prototypu nie jest zapisywany i po restarcie gry wraca do OFF.
 - Aby całkowicie usunąć eksperyment: usuń `Assets/R1/LightStylePrototype.cs` z jego `.meta`, katalog `Assets/Resources/VisualPrototype` i jego `.meta`, trzy pliki testowe `LightStyle*Tests.cs` z `.meta`; usuń dodanie komponentu w `R1Bootstrap.cs` oraz wywołanie `DrawPausePanel` w `R1RunHUD.cs`. Można też odwrócić commit tego PR. Istniejące profile nie wymagają przywracania.

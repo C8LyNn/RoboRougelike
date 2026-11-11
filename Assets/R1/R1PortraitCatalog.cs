@@ -98,7 +98,7 @@ namespace RoboRougelike.R1
             if(AddSelectedCatalogPart(run,kind,weapon))
             {
                 var purchased=run.VehicleModel.Inventory.Last();run.Garage.ChooseInventory(purchased.Id);DismissCatalog();
-                run.Garage.Message="Kupiono część. Kliknij pojazd, aby ją zamontować.";
+                run.Garage.Message=run.CreativeWorkshop?"Dodano część za darmo. Kliknij pojazd, aby ją zamontować.":"Kupiono część. Kliknij pojazd, aby ją zamontować.";
             }
             else catalogFeedback=run.Garage.Message=PurchaseFailure(run,kind,weapon);
         }

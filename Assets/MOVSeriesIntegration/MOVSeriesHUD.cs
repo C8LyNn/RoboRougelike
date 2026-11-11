@@ -146,7 +146,7 @@ namespace RoboRougelike.R1
         {
             Panel(new Rect(0,0,1280,720));
             GUI.Label(new Rect(25,20,870,48),"KATALOG CZĘŚCI • MAGAZYN",heading);
-            GUI.Label(new Rect(25,60,490,25),$"Złom: {run.VehicleModel.Scrap} • wybierz grupę i egzemplarz",small);
+            GUI.Label(new Rect(25,60,490,25),run.CreativeWorkshop?"Darmowe części • wybierz grupę i egzemplarz":$"Złom: {run.VehicleModel.Scrap} • wybierz grupę i egzemplarz",small);
             DrawCatalogSearch(run,new Rect(530,61,70,25),new Rect(600,60,255,28),new Rect(860,60,65,28));
             if(GUI.Button(new Rect(1080,20,175,40),"Wróć do garażu",compactButton)){DismissCatalog();return;}
             var model=run.VehicleModel;
