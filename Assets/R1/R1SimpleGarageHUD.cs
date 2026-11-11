@@ -112,7 +112,7 @@ namespace RoboRougelike.R1
         static string GaragePurchaseCaption(R3PartKind kind,bool unlocked,int price,int scrap,bool full,bool toInventory=false)=>
             kind==R3PartKind.BonusModule?"Tylko z nagród":
             !unlocked?"Pokonaj wroga z tą bronią":full?"Magazyn pełny":
-            scrap<price?$"Brakuje {price-scrap} Z":toInventory?$"Kup do magazynu — {price} Z":$"Kup — {price} Z";
+            price==0?"Dodaj za darmo":scrap<price?$"Brakuje {price-scrap} Z":toInventory?$"Kup do magazynu — {price} Z":$"Kup — {price} Z";
 
         static bool CanBuyFive(R3PartKind kind,bool unlocked,int price,int scrap,int inventoryCount)=>
             kind!=R3PartKind.BonusModule&&unlocked&&price>0&&scrap>=0&&inventoryCount>=0&&
@@ -142,7 +142,7 @@ namespace RoboRougelike.R1
         string PurchaseFailure(R1RunController run,R3PartKind kind,R4WeaponKind weapon)
         {
             var model=run.VehicleModel;
-            string basic=BasicPurchaseFailure(!run.Transitioning&&run.Progress?.State==R1RunState.Garage,
+            string basic=model.CreativeMode?null:BasicPurchaseFailure(!run.Transitioning&&run.Progress?.State==R1RunState.Garage,
                 kind,run.CanBuyTechnology(kind,weapon),model.Price(kind,weapon),model.Scrap,model.Inventory.Count);
             if(basic!=null)return basic;
             if(kind==R3PartKind.Wheel)
@@ -165,8 +165,8 @@ namespace RoboRougelike.R1
         {
             var model=run.VehicleModel;int price=model.Price(kind,weapon);bool unlocked=run.CanBuyTechnology(kind,weapon);
             bool previouslyEnabled=GUI.enabled;
-            GUI.enabled=previouslyEnabled&&CanBuyFive(kind,unlocked,price,model.Scrap,model.Inventory.Count);
-            if(GUI.Button(rect,BuyFiveCaption(kind,unlocked,price,model.Scrap,model.Inventory.Count),compactButton))
+            GUI.enabled=previouslyEnabled&&((model.CreativeMode&&unlocked)||CanBuyFive(kind,unlocked,price,model.Scrap,model.Inventory.Count));
+            if(GUI.Button(rect,model.CreativeMode?"Dodaj 5 za darmo":BuyFiveCaption(kind,unlocked,price,model.Scrap,model.Inventory.Count),compactButton))
                 BuyFiveParts(run,kind,weapon);
             GUI.enabled=previouslyEnabled;
         }
@@ -176,13 +176,12 @@ namespace RoboRougelike.R1
             var model=run.VehicleModel;int price=model.Price(kind,weapon);
             bool catalogWasOpen=catalogOpen;
             dismantleConfirmation=null;
-            if(!CanBuyFive(kind,run.CanBuyTechnology(kind,weapon),price,model.Scrap,model.Inventory.Count))
+            if(!(model.CreativeMode&&run.CanBuyTechnology(kind,weapon))&&!CanBuyFive(kind,run.CanBuyTechnology(kind,weapon),price,model.Scrap,model.Inventory.Count))
             {catalogFeedback=run.Garage.Message="Nie kupiono pięciu: "+BuyFiveCaption(kind,run.CanBuyTechnology(kind,weapon),price,model.Scrap,model.Inventory.Count)+".";return;}
             int before=model.Scrap,bought=0;
             for(int i=0;i<5;i++)
             {
-                if(!run.GaragePurchase(kind,weapon,kind==R3PartKind.Wheel?CatalogWheelStyle(catalogBonusId):R3WheelStyle.Offroad,
-                    kind==R3PartKind.Armor?CatalogArmorShape(catalogBonusId):R3ArmorShape.Cube))break;
+                if(!AddSelectedCatalogPart(run,kind,weapon))break;
                 bought++;
             }
             if(bought>0)run.Garage.ChooseInventory(model.Inventory.Last().Id);
@@ -199,6 +198,7 @@ namespace RoboRougelike.R1
 
         static string GarageBulkRepairCaption(R3VehicleModel model,int affordable)
         {
+            if(model.CreativeMode&&model.Parts.Any(p=>p.Health<1))return "Napraw części — za darmo";
             if(affordable>0)return $"Napraw możliwe — {affordable} Z";
             if(!model.Parts.Any(p=>p.Health<1))return "Części pojazdu sprawne";
             int cheapest=model.Parts.Where(p=>p.Health<1).Select(model.RepairCost)
@@ -214,7 +214,7 @@ namespace RoboRougelike.R1
         static string GarageInspectionSummary(R3VehicleModel model,R3PartState part)
         {
             int quote=model.RepairCost(part);
-            string repair=part.Health>=1?"sprawna":quote>0?$"naprawa: {quote} Z":"naprawa niedostępna";
+            string repair=part.Health>=1?"sprawna":model.CreativeMode?"naprawa za darmo":quote>0?$"naprawa: {quote} Z":"naprawa niedostępna";
             return $"{R4WeaponDefinition.PartName(part)} • HP {part.Health*100:0}%\n{repair}";
         }
 
@@ -380,10 +380,24 @@ namespace RoboRougelike.R1
         void BuyQuickPart(R1RunController run)
         {
             if(!catalogGroup.HasValue)return;
-            if(run.GaragePurchase(catalogGroup.Value,catalogWeapon,catalogGroup.Value==R3PartKind.Wheel?CatalogWheelStyle(catalogBonusId):R3WheelStyle.Offroad,
-                catalogGroup.Value==R3PartKind.Armor?CatalogArmorShape(catalogBonusId):R3ArmorShape.Cube))
-            {var item=run.VehicleModel.Inventory.Last();run.Garage.ChooseInventory(item.Id);run.Garage.Message="Kupiono część. Kliknij pojazd, aby ją zamontować.";}
+            if(AddSelectedCatalogPart(run,catalogGroup.Value,catalogWeapon))
+            {var item=run.VehicleModel.Inventory.Last();run.Garage.ChooseInventory(item.Id);run.Garage.Message=run.CreativeWorkshop?"Wybrano darmową część. Kliknij pojazd, aby ją zamontować.":"Kupiono część. Kliknij pojazd, aby ją zamontować.";}
             else run.Garage.Message=PurchaseFailure(run,catalogGroup.Value,catalogWeapon);
+        }
+
+        bool AddSelectedCatalogPart(R1RunController run,R3PartKind kind,R4WeaponKind weapon)
+        {
+            if(kind==R3PartKind.BonusModule&&run.CreativeWorkshop)
+            {
+                foreach(var bonus in run.Definition.Upgrades)
+                {
+                    var sample=R3VehicleModel.CreateBonusReward(bonus);
+                    if(sample!=null&&CatalogBonusKey(sample)==catalogBonusId)return run.AddCreativeBonus(bonus.Id);
+                }
+                return false;
+            }
+            return run.GaragePurchase(kind,weapon,kind==R3PartKind.Wheel?CatalogWheelStyle(catalogBonusId):R3WheelStyle.Offroad,
+                kind==R3PartKind.Armor?CatalogArmorShape(catalogBonusId):R3ArmorShape.Cube);
         }
 
         void DrawSimpleGarage(R1RunController run)
@@ -399,7 +413,7 @@ namespace RoboRougelike.R1
             GUI.enabled=!garageOptionsOpen;
             Panel(new Rect(0,0,1280,76));Panel(new Rect(0,76,270,644));
             GUI.Label(new Rect(14,10,150,34),"GARAŻ",heading);
-            GUI.Label(new Rect(14,43,245,25),$"Złom: {model.Scrap} • Energia maks.: {model.Energy.Maximum:0}",small);
+            GUI.Label(new Rect(14,43,245,25),model.CreativeMode?$"Darmowe części • Energia: {model.Energy.Maximum:0}":$"Złom: {model.Scrap} • Energia maks.: {model.Energy.Maximum:0}",small);
             string[] labels={"1 Montuj","2 Zaznacz","3 Napraw","4 Zdejmij"};
             for(int i=0;i<labels.Length;i++)
             {
@@ -437,12 +451,12 @@ namespace RoboRougelike.R1
             {
                 var kind=catalogGroup.Value;int price=model.Price(kind,catalogWeapon);
                 bool unlocked=run.CanBuyTechnology(kind,catalogWeapon);
-                GUI.enabled=!garageOptionsOpen&&unlocked&&kind!=R3PartKind.BonusModule&&model.Scrap>=price&&model.Inventory.Count<R3VehicleModel.InventoryCapacity;
-                if(GUI.Button(new Rect(12,560,120,42),GaragePurchaseCaption(kind,unlocked,price,model.Scrap,model.Inventory.Count>=R3VehicleModel.InventoryCapacity),compactButton))BuyQuickPart(run);
+                GUI.enabled=!garageOptionsOpen&&unlocked&&(model.CreativeMode||kind!=R3PartKind.BonusModule)&&model.Scrap>=price&&model.Inventory.Count<model.AvailableInventoryCapacity;
+                if(GUI.Button(new Rect(12,560,120,42),model.CreativeMode?"Dodaj za darmo":GaragePurchaseCaption(kind,unlocked,price,model.Scrap,model.Inventory.Count>=model.AvailableInventoryCapacity),compactButton))BuyQuickPart(run);
                 DrawBuyFive(run,kind,catalogWeapon,new Rect(137,560,120,42));
                 GUI.enabled=!garageOptionsOpen;
             }
-            if(GUI.Button(new Rect(12,605,245,42),$"Magazyn {model.Inventory.Count}/{R3VehicleModel.InventoryCapacity} • naprawy",compactButton))
+            if(GUI.Button(new Rect(12,605,245,42),model.CreativeMode?$"Magazyn {model.Inventory.Count} • naprawy":$"Magazyn {model.Inventory.Count}/{R3VehicleModel.InventoryCapacity} • naprawy",compactButton))
             {inventoryOpen=true;catalogOpen=true;stackScroll=Vector2.zero;}
             if(garageShortcutLabel==null)garageShortcutLabel=new GUIStyle(small){fontSize=14,wordWrap=false};
             GUI.Label(new Rect(12,649,245,70),"PPM: zdejmij • przeciągnij: widok\nCtrl+LPM: napraw • U: spód\nQ/E R/F Z/X: obrót widma\nShift + klawisz: obrót części",garageShortcutLabel);
@@ -502,12 +516,12 @@ namespace RoboRougelike.R1
             {
                 var kind=catalogGroup.Value;int price=model.Price(kind,catalogWeapon);
                 bool unlocked=run.CanBuyTechnology(kind,catalogWeapon);
-                GUI.enabled=!garageOptionsOpen&&unlocked&&kind!=R3PartKind.BonusModule&&model.Scrap>=price&&model.Inventory.Count<R3VehicleModel.InventoryCapacity;
-                if(GUI.Button(new Rect(458,690,140,40),GaragePurchaseCaption(kind,unlocked,price,model.Scrap,model.Inventory.Count>=R3VehicleModel.InventoryCapacity),compactButton))BuyQuickPart(run);
+                GUI.enabled=!garageOptionsOpen&&unlocked&&(model.CreativeMode||kind!=R3PartKind.BonusModule)&&model.Scrap>=price&&model.Inventory.Count<model.AvailableInventoryCapacity;
+                if(GUI.Button(new Rect(458,690,140,40),model.CreativeMode?"Dodaj za darmo":GaragePurchaseCaption(kind,unlocked,price,model.Scrap,model.Inventory.Count>=model.AvailableInventoryCapacity),compactButton))BuyQuickPart(run);
                 DrawBuyFive(run,kind,catalogWeapon,new Rect(604,690,140,40));
                 GUI.enabled=!garageOptionsOpen;
             }
-            if(GUI.Button(new Rect(458,737,286,40),$"Magazyn {model.Inventory.Count}/{R3VehicleModel.InventoryCapacity} • naprawy",compactButton))
+            if(GUI.Button(new Rect(458,737,286,40),model.CreativeMode?$"Magazyn {model.Inventory.Count} • naprawy":$"Magazyn {model.Inventory.Count}/{R3VehicleModel.InventoryCapacity} • naprawy",compactButton))
             {inventoryOpen=true;catalogOpen=true;stackScroll=Vector2.zero;}
             if(GUI.Button(new Rect(458,784,138,40),"Ustawienia",compactButton))OpenSimpleGarageOptions(0);
             if(GUI.Button(new Rect(606,784,138,40),"Aktywności",compactButton))OpenSimpleGarageOptions(1);
@@ -539,7 +553,7 @@ namespace RoboRougelike.R1
                 var model=run.VehicleModel;
                 GUI.Label(new Rect(350,180,380,70),"A / LPM: "+WeaponGroupName(model.WeaponGroupA)+"\nB / PPM: "+WeaponGroupName(model.WeaponGroupB),small);
                 if(GUI.Button(new Rect(350,255,380,44),"Zamień grupy broni",compactButton))model.SwapWeaponGroups();
-                int repair=SimpleGarageRepairQuote(model);GUI.enabled=repair>0;
+                int repair=SimpleGarageRepairQuote(model);GUI.enabled=repair>0||(model.CreativeMode&&model.Parts.Any(p=>p.Health<1));
                 if(GUI.Button(new Rect(350,309,380,44),GarageBulkRepairCaption(model,repair),compactButton))
                     RepairFromGarageOptions(run,false);
                 int emergency=model.EmergencyRepairCost;GUI.enabled=emergency>0&&model.Scrap>=emergency;
@@ -570,7 +584,7 @@ namespace RoboRougelike.R1
                 var model=run.VehicleModel;
                 GUI.Label(new Rect(680,190,350,70),"A / LPM: "+WeaponGroupName(model.WeaponGroupA)+"\nB / PPM: "+WeaponGroupName(model.WeaponGroupB),small);
                 if(GUI.Button(new Rect(680,270,300,40),"Zamień grupy broni",compactButton))model.SwapWeaponGroups();
-                int repair=SimpleGarageRepairQuote(model);GUI.enabled=repair>0;
+                int repair=SimpleGarageRepairQuote(model);GUI.enabled=repair>0||(model.CreativeMode&&model.Parts.Any(p=>p.Health<1));
                 if(GUI.Button(new Rect(680,325,300,40),GarageBulkRepairCaption(model,repair),compactButton))
                     RepairFromGarageOptions(run,false);
                 int emergency=model.EmergencyRepairCost;GUI.enabled=emergency>0&&model.Scrap>=emergency;

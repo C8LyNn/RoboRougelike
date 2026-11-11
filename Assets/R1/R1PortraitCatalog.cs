@@ -22,7 +22,7 @@ namespace RoboRougelike.R1
             var before=GUI.color;GUI.color=new Color(.04f,.06f,.08f,1);
             GUI.DrawTexture(new Rect(0,0,768,1024),Texture2D.whiteTexture);GUI.color=before;
             GUI.Label(new Rect(24,20,520,40),"KATALOG CZĘŚCI • MAGAZYN",heading);
-            GUI.Label(new Rect(24,80,720,26),$"Złom: {run.VehicleModel.Scrap} • Magazyn: {run.VehicleModel.Inventory.Count}/{R3VehicleModel.InventoryCapacity}",body);
+            GUI.Label(new Rect(24,80,720,26),run.VehicleModel.CreativeMode?$"Darmowe części • Magazyn: {run.VehicleModel.Inventory.Count}":$"Złom: {run.VehicleModel.Scrap} • Magazyn: {run.VehicleModel.Inventory.Count}/{R3VehicleModel.InventoryCapacity}",body);
             if(GUI.Button(PortraitCatalogBackRect(),"Wróć do garażu",compactButton)){DismissCatalog();return;}
             DrawCatalogSearch(run,new Rect(24,110,70,25),new Rect(94,108,222,28),new Rect(322,108,48,28));
             GUI.Label(new Rect(390,110,354,55),"Egzemplarze w magazynie",body);
@@ -57,8 +57,8 @@ namespace RoboRougelike.R1
                 GUI.backgroundColor=run.Garage.SelectedInventoryId==item.Id?new Color(.3f,.9f,.9f):Color.white;
                 if(GUI.Button(new Rect(rect.x,rect.y+31,102,60),item.Health<=0?"Szczegóły\nwraku":"Wybierz\ndo montażu",compactButton))PortraitCatalogSelectItem(run,item.Id);
                 GUI.backgroundColor=Color.white;
-                int repair=model.RepairCost(item);GUI.enabled=repair>0&&model.Scrap>=repair;
-                if(GUI.Button(new Rect(rect.x+108,rect.y+31,102,60),GarageRepairCaption(item,repair,model.Scrap),compactButton))PortraitCatalogRepair(run,item.Id);
+                int repair=model.RepairCost(item);GUI.enabled=(repair>0||(model.CreativeMode&&item.Health<1))&&model.Scrap>=repair;
+                if(GUI.Button(new Rect(rect.x+108,rect.y+31,102,60),model.CreativeMode&&item.Health<1?"Napraw 0 Z":GarageRepairCaption(item,repair,model.Scrap),compactButton))PortraitCatalogRepair(run,item.Id);
                 GUI.enabled=true;
                 if(GUI.Button(new Rect(rect.x+216,rect.y+31,114,60),dismantleConfirmation==item.Id?"Potwierdź\nrozmontowanie":$"Rozmontuj\n→ {model.PreviewAward(model.DismantleValue(item))} Z",compactButton))PortraitCatalogDismantle(run,item.Id);
             }
@@ -66,9 +66,9 @@ namespace RoboRougelike.R1
             DrawCatalogBulkRepair(run,items,PortraitCatalogBulkRepairRect());
             int price=model.Price(selectedKind,selectedWeapon);
             bool unlocked=run.CanBuyTechnology(selectedKind,selectedWeapon);
-            GUI.enabled=unlocked&&selectedKind!=R3PartKind.BonusModule&&model.Scrap>=price&&model.Inventory.Count<R3VehicleModel.InventoryCapacity;
+            GUI.enabled=unlocked&&(model.CreativeMode||selectedKind!=R3PartKind.BonusModule)&&model.Scrap>=price&&model.Inventory.Count<model.AvailableInventoryCapacity;
             var buyRect=PortraitCatalogBuyRect();
-            if(GUI.Button(new Rect(buyRect.x,buyRect.y,172,buyRect.height),GaragePurchaseCaption(selectedKind,unlocked,price,model.Scrap,model.Inventory.Count>=R3VehicleModel.InventoryCapacity),compactButton))PortraitCatalogPurchase(run,selectedKind,selectedWeapon);
+            if(GUI.Button(new Rect(buyRect.x,buyRect.y,172,buyRect.height),model.CreativeMode?"Dodaj za darmo":GaragePurchaseCaption(selectedKind,unlocked,price,model.Scrap,model.Inventory.Count>=model.AvailableInventoryCapacity),compactButton))PortraitCatalogPurchase(run,selectedKind,selectedWeapon);
             DrawBuyFive(run,selectedKind,selectedWeapon,new Rect(buyRect.x+180,buyRect.y,174,buyRect.height));
             GUI.enabled=true;
             var selected=items.FirstOrDefault(p=>p.Id==run.Garage.SelectedInventoryId);
@@ -95,8 +95,7 @@ namespace RoboRougelike.R1
         private void PortraitCatalogPurchase(R1RunController run,R3PartKind kind,R4WeaponKind weapon)
         {
             dismantleConfirmation=null;
-            if(run.GaragePurchase(kind,weapon,kind==R3PartKind.Wheel?CatalogWheelStyle(catalogBonusId):R3WheelStyle.Offroad,
-                kind==R3PartKind.Armor?CatalogArmorShape(catalogBonusId):R3ArmorShape.Cube))
+            if(AddSelectedCatalogPart(run,kind,weapon))
             {
                 var purchased=run.VehicleModel.Inventory.Last();run.Garage.ChooseInventory(purchased.Id);DismissCatalog();
                 run.Garage.Message="Kupiono część. Kliknij pojazd, aby ją zamontować.";

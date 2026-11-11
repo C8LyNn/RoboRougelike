@@ -8,12 +8,32 @@ namespace RoboRougelike.R1
     public sealed partial class R1RunController
     {
         public bool SandboxWorkshop {get;private set;}
+        public bool CreativeWorkshop {get;private set;}
         public bool RangeDisabled {get;private set;}
         R3VehicleModel workshopModel;
         R1RunStats testStats;
         Vector3 workshopPosition;
         Quaternion workshopRotation;
         R6TestRange testRange;
+        GameObject creativeLegacyFloor;
+        bool creativeLegacyFloorWasActive;
+
+        public bool OpenCreativeGarage()
+        {
+            if(Error!=null||Transitioning||Progress==null||!Progress.OpenWorkshop())return false;
+            SandboxWorkshop=true;CreativeWorkshop=true;
+            var design=new R3VehicleDesign{Name="Kreatywny",Description="Własna konstrukcja",Speed=7.5f,TurnSpeed=82,CoreHp=100};
+            design.Parts.Add(new R3PartState(Vector3Int.zero,R3PartKind.Core));
+            VehicleModel=new R3VehicleModel(design,Definition.GaragePrices){CreativeMode=true};
+            Player=R3VehicleAssembly.Build(VehicleModel,Progress.Stats,palette,new Vector3(0,.7f,-25),Quaternion.identity);
+            followCamera.Configure(Player.transform,Player.CameraPivot);SetSimulation(false);Garage.Open();return true;
+        }
+        public bool AddCreativeBonus(string id)
+        {
+            if(!CreativeWorkshop||Transitioning||Progress?.State!=R1RunState.Garage||VehicleModel==null||string.IsNullOrEmpty(id))return false;
+            var bonus=System.Array.Find(Definition.Upgrades,item=>item!=null&&item.Id==id);
+            return bonus!=null&&VehicleModel.ReceiveBonuses(new[]{bonus});
+        }
 
         public bool OpenSandboxGarage()
         {
@@ -49,9 +69,14 @@ namespace RoboRougelike.R1
             // player finishes building and enters the first encounter.
             VehicleModel.PrepareInitialEnergy();
             if(testRange==null)testRange=gameObject.AddComponent<R6TestRange>();
-            testRange.Build(palette);
+            if(CreativeWorkshop&&creativeLegacyFloor==null)
+            {
+                creativeLegacyFloor=GameObject.Find("P12_Ground");
+                if(creativeLegacyFloor!=null){creativeLegacyFloorWasActive=creativeLegacyFloor.activeSelf;creativeLegacyFloor.SetActive(false);}
+            }
+            testRange.Build(palette,CreativeWorkshop);
             Player=R3VehicleAssembly.Build(VehicleModel,testStats,palette,new Vector3(0,.7f,-26),Quaternion.identity);
-            if(enemyTemplate!=null)
+            if(!CreativeWorkshop&&enemyTemplate!=null)
             {
                 var target=Instantiate(enemyTemplate,new Vector3(-5,0,-20),Quaternion.identity,testRange.Layout);
                 target.name="Cel elektroniczny • trening rakietowy";
@@ -67,6 +92,14 @@ namespace RoboRougelike.R1
             yield return null;yield return null;
             Transitioning=false;SetSimulation(true);
         }
+        public bool SpawnCreativeEnemy(R3EnemyArchetype archetype)
+        {
+            if(!CreativeWorkshop||Transitioning||Progress?.State!=R1RunState.TestDrive||testRange==null||Player==null||enemyTemplate==null||
+                !System.Enum.IsDefined(typeof(R3EnemyArchetype),archetype))return false;
+            return testRange.SpawnEnemy(enemyTemplate,Player.transform,archetype,!Paused);
+        }
+        public void ClearCreativeEnemies()
+        {if(CreativeWorkshop&&testRange!=null)testRange.ClearEnemies();}
         public bool ReturnFromTestRange()
         {
             if(Transitioning||Progress?.State!=R1RunState.TestDrive||workshopModel==null)return false;
@@ -77,6 +110,7 @@ namespace RoboRougelike.R1
             Transitioning=true;Paused=false;RangeDisabled=false;SetSimulation(false);
             if(Player!=null){Player.gameObject.SetActive(false);Destroy(Player.gameObject);}
             testRange.Clear();R1EncounterManager.ClearTransientObjects();
+            if(creativeLegacyFloor!=null){creativeLegacyFloor.SetActive(creativeLegacyFloorWasActive);creativeLegacyFloor=null;}
             VehicleModel=workshopModel;workshopModel=null;
             if(Arena.Layout!=null)Arena.Layout.gameObject.SetActive(true);
             Player=R3VehicleAssembly.Build(VehicleModel,Progress.Stats,palette,workshopPosition,workshopRotation);
@@ -87,7 +121,8 @@ namespace RoboRougelike.R1
         void UpdateRange()
         {
             if(Paused)return;
-            if(Player==null||Player.DefeatReason!=null){RangeDisabled=true;Paused=true;SetSimulation(false);}
+            bool defeated=Player==null||(CreativeWorkshop?Player.Structure==null||!Player.Structure.CoreAlive:Player.DefeatReason!=null);
+            if(defeated){RangeDisabled=true;Paused=true;SetSimulation(false);}
         }
     }
 }

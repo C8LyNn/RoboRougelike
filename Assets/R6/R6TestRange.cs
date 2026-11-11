@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 using RoboRougelike.R1;
 using RoboRougelike.R3;
 using RogueMachine.P12PipelineSafe;
@@ -11,6 +12,42 @@ namespace RoboRougelike.R6
         public Transform Layout {get;private set;}
         public P12PipelineSafeEnemyTurret TrainingTarget {get;private set;}
         public bool TrainingFireRequested {get;private set;}
+        readonly List<P12PipelineSafeEnemyTurret> creativeEnemies=new List<P12PipelineSafeEnemyTurret>();
+        public int CreativeEnemyCount => creativeEnemies.FindAll(e=>e!=null&&!e.IsDefeated).Count;
+        public bool SpawnEnemy(P12PipelineSafeEnemyTurret template,Transform player,R3EnemyArchetype archetype,bool active)
+        {
+            if(Layout==null||template==null||player==null)return false;
+            Vector3 spawn=Vector3.zero;bool found=false;
+            for(int i=0;i<12;i++)
+            {
+                var direction=Quaternion.Euler(0,i*30,0)*player.forward;direction.y=0;
+                if(direction.sqrMagnitude<.1f)direction=Vector3.forward;
+                var p=player.position+direction.normalized*15;
+                p.x=Mathf.Clamp(p.x,-140,140);p.z=Mathf.Clamp(p.z,-140,140);p.y=0;
+                if(!Physics.CheckBox(p+Vector3.up*2,new Vector3(3,1.8f,3),Quaternion.identity,~0,QueryTriggerInteraction.Ignore))
+                {spawn=p;found=true;break;}
+            }
+            if(!found)return false;
+            var enemy=Instantiate(template,spawn,Quaternion.identity,Layout);
+            enemy.name="Przeciwnik kreatywny • "+R3EnemyProfiles.Name(archetype);
+            enemy.ConfigureArchetype(archetype);enemy.ConfigureVariant(RoboRougelike.R5.R5EnemyVariant.Normal);
+            enemy.ConfigureSalvage(null,"creative-target");enemy.gameObject.SetActive(true);
+            enemy.ConfigureEncounter(player,1,1,1,1);enemy.ConfigureMovement(4,12,.5f);
+            var energy=enemy.GetComponent<VehicleEnergyBank>()??enemy.gameObject.AddComponent<VehicleEnergyBank>();
+            energy.ConfigureEnemy(enemy.Core);enemy.EquipAdditionalGun();enemy.AttachPrimaryGunArt();
+            enemy.GetComponent<R6VehicleDrive>()?.RefreshParts();
+            enemy.gameObject.AddComponent<EnemySelfDestruct>().Configure(enemy,player);
+            RoboRougelike.WeaponIntegration.RRLEmpVehicleAdapter.Configure(enemy.transform);
+            energy.Refresh();energy.Recharge(energy.Maximum);enemy.SetCombatActive(active);
+            creativeEnemies.Add(enemy);return true;
+        }
+        public void SetCreativeEnemiesActive(bool active)
+        {foreach(var enemy in creativeEnemies)if(enemy!=null&&!enemy.IsDefeated)enemy.SetCombatActive(active);}
+        public void ClearEnemies()
+        {
+            foreach(var enemy in creativeEnemies)if(enemy!=null){enemy.gameObject.SetActive(false);Destroy(enemy.gameObject);}
+            creativeEnemies.Clear();
+        }
         public void SetTrainingTarget(P12PipelineSafeEnemyTurret target)
         {TrainingTarget=target;SetTrainingFire(false);}
         public void SetTrainingFire(bool active)
@@ -23,14 +60,16 @@ namespace RoboRougelike.R6
         }
         void Update()=>RefreshTrainingFire();
         Material material;
-        public void Build(R3VisualPalette palette)
+        public void Build(R3VisualPalette palette,bool creative=false)
         {
             Clear();Layout=new GameObject("Poligon R6").transform;
             Layout.SetParent(transform,false);material=palette.Parts[0];
-            Box("Bariera północna",new Vector3(0,2,40),new Vector3(82,4,2));
-            Box("Bariera południowa",new Vector3(0,2,-40),new Vector3(82,4,2));
-            Box("Bariera zachodnia",new Vector3(-40,2,0),new Vector3(2,4,80));
-            Box("Bariera wschodnia",new Vector3(40,2,0),new Vector3(2,4,80));
+            float edge=creative?150:40;
+            if(creative)Box("Podłoże kreatywnego poligonu",new Vector3(0,-.5f,0),new Vector3(300,1,300));
+            Box("Bariera północna",new Vector3(0,2,edge),new Vector3(edge*2+2,4,2));
+            Box("Bariera południowa",new Vector3(0,2,-edge),new Vector3(edge*2+2,4,2));
+            Box("Bariera zachodnia",new Vector3(-edge,2,0),new Vector3(2,4,edge*2));
+            Box("Bariera wschodnia",new Vector3(edge,2,0),new Vector3(2,4,edge*2));
             Box("Ściana zderzeniowa",new Vector3(23,2,-4),new Vector3(3,4,18));
             for(int i=0;i<4;i++)Box("Slalom "+(i+1),new Vector3(i%2==0?-6:6,1,-10+i*7),new Vector3(2,2,2));
             for(int i=0;i<3;i++)Target(new Vector3((i-1)*13,.65f,22));
@@ -71,7 +110,7 @@ namespace RoboRougelike.R6
         }
         static void Tint(Renderer renderer,Color color)
         {var props=new MaterialPropertyBlock();props.SetColor("_BaseColor",color);renderer.SetPropertyBlock(props);renderer.GetComponent<P12PipelineSafeDamageable>()?.SetBaseTint(color);}
-        public void Clear(){SetTrainingFire(false);TrainingTarget=null;if(Layout!=null){Layout.gameObject.SetActive(false);Destroy(Layout.gameObject);Layout=null;}}
+        public void Clear(){ClearEnemies();SetTrainingFire(false);TrainingTarget=null;if(Layout!=null){Layout.gameObject.SetActive(false);Destroy(Layout.gameObject);Layout=null;}}
         void OnDestroy(){Clear();}
     }
 }

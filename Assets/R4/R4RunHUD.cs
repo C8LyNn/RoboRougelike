@@ -260,8 +260,8 @@ namespace RoboRougelike.R1
                     SelectCatalogItem(run,item.Id);
                 GUI.backgroundColor=Color.white;
                 if(GUI.Button(new Rect(104,i*40,55,36),"Akcje",compactButton))SelectCatalogDetails(run,item.Id);
-                int itemRepair=model.RepairCost(item);GUI.enabled=itemRepair>0&&model.Scrap>=itemRepair;
-                if(GUI.Button(new Rect(163,i*40,87,36),GarageRepairCaption(item,itemRepair,model.Scrap),compactButton))
+                int itemRepair=model.RepairCost(item);GUI.enabled=(itemRepair>0||(model.CreativeMode&&item.Health<1))&&model.Scrap>=itemRepair;
+                if(GUI.Button(new Rect(163,i*40,87,36),model.CreativeMode&&item.Health<1?"Napraw 0 Z":GarageRepairCaption(item,itemRepair,model.Scrap),compactButton))
                     RepairCatalogItem(run,item.Id);
                 GUI.enabled=true;
             }
@@ -269,12 +269,11 @@ namespace RoboRougelike.R1
             DrawCatalogBulkRepair(run,items,new Rect(970,295,280,36));
             int price=model.Price(kind,weapon);
             bool unlocked=run.CanBuyTechnology(kind,weapon);
-            GUI.enabled=unlocked&&kind!=R3PartKind.BonusModule&&model.Scrap>=price&&model.Inventory.Count<R3VehicleModel.InventoryCapacity;
-            if(GUI.Button(new Rect(970,340,136,40),GaragePurchaseCaption(kind,unlocked,price,model.Scrap,model.Inventory.Count>=R3VehicleModel.InventoryCapacity),compactButton))
+            GUI.enabled=unlocked&&(model.CreativeMode||kind!=R3PartKind.BonusModule)&&model.Scrap>=price&&model.Inventory.Count<model.AvailableInventoryCapacity;
+            if(GUI.Button(new Rect(970,340,136,40),model.CreativeMode?"Dodaj za darmo":GaragePurchaseCaption(kind,unlocked,price,model.Scrap,model.Inventory.Count>=model.AvailableInventoryCapacity),compactButton))
             {
                 dismantleConfirmation=null;
-                if(run.GaragePurchase(kind,weapon,kind==R3PartKind.Wheel?CatalogWheelStyle(catalogBonusId):R3WheelStyle.Offroad,
-                    kind==R3PartKind.Armor?CatalogArmorShape(catalogBonusId):R3ArmorShape.Cube))
+                if(AddSelectedCatalogPart(run,kind,weapon))
                 {var purchased=model.Inventory.Last();garage.ChooseInventory(purchased.Id);DismissCatalog();garage.Message="Kupiono część. Kliknij pojazd, aby ją zamontować.";}
                 else catalogFeedback=garage.Message=PurchaseFailure(run,kind,weapon);
             }
@@ -330,7 +329,7 @@ namespace RoboRougelike.R1
         private static R3PartState[] CatalogRepairPlan(R3VehicleModel model,R3PartState[] items,out int eligible,out int total)
         {
             var candidates=items.Where(item=>item!=null).Select(item=>new{item,cost=model.RepairCost(item)})
-                .Where(entry=>entry.cost>0).OrderBy(entry=>entry.cost).ThenBy(entry=>entry.item.Id,System.StringComparer.Ordinal).ToArray();
+                .Where(entry=>entry.cost>0||(model.CreativeMode&&entry.item.Health<1&&R3VehicleModel.ValidEconomicPart(entry.item))).OrderBy(entry=>entry.cost).ThenBy(entry=>entry.item.Id,System.StringComparer.Ordinal).ToArray();
             eligible=candidates.Length;total=0;
             var selected=new System.Collections.Generic.List<R3PartState>();
             foreach(var entry in candidates)

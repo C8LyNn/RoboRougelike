@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Linq;
 using RoboRougelike.R6;
 using RoboRougelike.R3;
 namespace RoboRougelike.R1
@@ -7,6 +8,24 @@ namespace RoboRougelike.R1
     {
         GUIStyle aimCrossStyle,aimCaptionStyle,weaponMarkerStyle;
         int weaponStatusPage;
+        bool creativeEnemyMenu;
+        string creativeEnemyMessage;
+        void DrawCreativeEnemyMenu(R1RunController run)
+        {
+            Panel(new Rect(190,115,900,550));
+            GUI.Label(new Rect(230,145,820,60),"POLIGON • PRZECIWNICY",title);
+            GUI.Label(new Rect(230,220,820,45),"Wybierz przeciwnika. Pojawi się w pobliżu; zacznie działać po wznowieniu.",small);
+            var types=new[]{R3EnemyArchetype.Scout,R3EnemyArchetype.Bruiser,R3EnemyArchetype.Gunner,R3EnemyArchetype.Flanker};
+            string[] names={"Zwiadowca","Taranujący","Strzelec","Osaczający"};
+            for(int i=0;i<types.Length;i++)
+                if(GUI.Button(new Rect(230+(i%2)*420,280+(i/2)*65,395,52),names[i],button))
+                    creativeEnemyMessage=run.SpawnCreativeEnemy(types[i])?"Przeciwnik dodany.":"Nie znaleziono wolnego miejsca w pobliżu.";
+            var range=run.GetComponent<R6TestRange>();
+            if(GUI.Button(new Rect(230,430,395,52),"Usuń przeciwników",button))
+            {run.ClearCreativeEnemies();creativeEnemyMessage="Usunięto przeciwników.";}
+            if(GUI.Button(new Rect(650,430,400,52),"Wróć",button))creativeEnemyMenu=false;
+            GUI.Label(new Rect(230,505,820,55),$"Aktywni: {range?.CreativeEnemyCount??0} • {creativeEnemyMessage}",small);
+        }
         private static string ManualReloadAction(int ammo,int capacity,float reloadReadyAt,float now,bool available)
             =>!available?"niedostępne":reloadReadyAt>now?"ładowanie":ammo>=capacity?"pełny":"T przeładuj";
         private static string ManualReloadWeaponStatus(int ammo,int capacity,float reloadReadyAt,float now,bool available)
@@ -26,10 +45,13 @@ namespace RoboRougelike.R1
             if(run.Transitioning){Panel(new Rect(0,0,1280,720));GUI.Label(new Rect(300,300,700,80),"Przygotowanie poligonu…",title);return;}
             if(run.Paused)
             {
+                if(run.CreativeWorkshop&&creativeEnemyMenu&&!run.RangeDisabled){DrawCreativeEnemyMenu(run);return;}
                 Panel(new Rect(190,115,900,550));
                 GUI.Label(new Rect(230,145,820,65),run.RangeDisabled?"Pojazd testowy unieruchomiony":"POLIGON • PAUZA",title);
                 GUI.Label(new Rect(230,225,820,50),"Testujesz kopię. Uszkodzenia, Złom i części z tej próby nie zmieniają konstrukcji w garażu.",body);
                 var pausedRange=run.GetComponent<R6TestRange>();
+                if(run.CreativeWorkshop&&!run.RangeDisabled&&GUI.Button(new Rect(230,280,820,36),"Przeciwnicy — dodaj lub usuń",compactButton))
+                {creativeEnemyMenu=true;creativeEnemyMessage=null;}
                 if(pausedRange?.TrainingTarget!=null)
                 {
                     GUI.enabled=!run.RangeDisabled&&!pausedRange.TrainingTarget.IsDefeated;
@@ -46,8 +68,9 @@ namespace RoboRougelike.R1
                 if(GUI.Button(new Rect(650,660,400,42),PauseCaption(run,2,"Wyjdź z gry"),compactButton))run.RequestQuit();
                 return;
             }
+            creativeEnemyMenu=false;
             Panel(new Rect(18,18,610,175));
-            GUI.Label(new Rect(34,26,580,34),"POLIGON • kopia konstrukcji",heading);
+            GUI.Label(new Rect(34,26,580,34),run.CreativeWorkshop?"POLIGON KREATYWNY • kopia konstrukcji":"POLIGON • kopia konstrukcji",heading);
             var drive=run.Player.GetComponent<R6VehicleDrive>();var bodyRb=run.Player.GetComponent<Rigidbody>();
             GUI.Label(new Rect(34,65,580,90),$"Prędkość: {bodyRb.linearVelocity.magnitude:0.0} m/s • Masa: {bodyRb.mass:0} kg\nKoła: {drive?.Wheels??0}/{run.Player.Modules.InitialWheelCount} • Broń: {run.Player.Modules.ActiveWeaponCount}\nRdzeń: {run.Player.Core?.CurrentHp??0:0} HP • HP ocalałych części: {run.Player.HealthFraction*100:0}%",small);
             var energy=run.Player.GetComponent<VehicleEnergyBank>();
@@ -150,7 +173,8 @@ namespace RoboRougelike.R1
                 int countA=0,countB=0,totalGuns=0;
                 foreach(var part in assembly.Parts)
                     if(part!=null&&part.Kind==RoboRougelike.R3.R3PartKind.Gun&&part.Operational&&part.transform.IsChildOf(assembly.transform))
-                    {totalGuns++;if(a==part.Weapon)countA++;if(b==part.Weapon)countB++;}
+                    {totalGuns++;if(R3VehicleModel.MatchesWeaponGroup(part.Weapon,false,a,b,run.CreativeWorkshop))countA++;
+                        if(R3VehicleModel.MatchesWeaponGroup(part.Weapon,true,a,b,run.CreativeWorkshop))countB++;}
                 int pages=WeaponStatusPageCount(totalGuns);
                 weaponStatusPage=Mathf.Clamp(weaponStatusPage,0,pages-1);
                 if(pages>1)
@@ -160,7 +184,8 @@ namespace RoboRougelike.R1
                     GUI.Label(new Rect(1112,199,130,25),$"Tab: {weaponStatusPage+1}/{pages}",small);
                 }
                 GUI.Label(new Rect(940,228,305,24),$"A / LPM: {WeaponGroupName(a)} ({countA})",small);
-                GUI.Label(new Rect(940,252,305,24),$"B / PPM: {WeaponGroupName(b)} ({countB})",small);
+                string extra=run.CreativeWorkshop&&run.VehicleModel.Parts.Where(p=>p.Kind==R3PartKind.Gun).Select(p=>p.Weapon).Distinct().Count()>2?" + inne":"";
+                GUI.Label(new Rect(940,252,305,24),$"B / PPM: {WeaponGroupName(b)}{extra} ({countB})",small);
                 int row=0,index=0,start=WeaponStatusPageStart(totalGuns,weaponStatusPage);
                 foreach(var gun in assembly.Parts)
                 {

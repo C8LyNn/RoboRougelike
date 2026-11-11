@@ -355,8 +355,8 @@ namespace RoboRougelike.R3
                     var anchor=cell+direction-offset;
                     var atAnchor=candidate.Copy();atAnchor.Cell=anchor;
                     var candidateCells=R3VehicleModel.OccupiedCells(atAnchor);
-                    if(candidateCells.Any(c=>occupied.Contains(c)||System.Math.Abs(c.x)>6||
-                        System.Math.Abs(c.z)>7||c.y<0||c.y>5))continue;
+                    if(candidateCells.Any(c=>occupied.Contains(c)||(!gate.model.CreativeMode&&(System.Math.Abs(c.x)>6||
+                        System.Math.Abs(c.z)>7||c.y<0||c.y>5))))continue;
                     if(!BuildSocketGeometry.Touches(support,new BuildPose(state.Cell,state.RotationQuarterTurns),
                         definition,new BuildPose(anchor,candidate.RotationQuarterTurns),out _))continue;
                     result.Add(new R3VisibleMountPoint(face.transform.position,face.transform.rotation,collider));
