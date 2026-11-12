@@ -81,6 +81,19 @@ public sealed class UI943PortraitRewardsActionsTests
         yield return null;run.HandleEscape();
         Assert.That(run.Paused,Is.True,"The next Escape still opens the session pause menu.");
     }
+    [UnityTest] public IEnumerator SwitchingRewardInventoryFilterCancelsPendingDismantle()
+    {
+        Assert.That(run.VehicleModel.ReceiveSalvage(new[]{new R3PartState(Vector3Int.zero,R3PartKind.Wheel,.5f)}),Is.True);
+        var item=run.VehicleModel.Inventory.Last();int funds=run.VehicleModel.Scrap;
+        Field("rewardInventoryPage",4);Field("rewardDismantleConfirmation",item.Id);
+        Call("ToggleRewardInventoryFilter");
+        Assert.That((bool)Field("rewardInventoryDamagedOnly"),Is.True);
+        Assert.That((int)Field("rewardInventoryPage"),Is.Zero);
+        Assert.That(Field("rewardDismantleConfirmation"),Is.Null);
+        Assert.That(ContainsId(run.VehicleModel,item.Id),Is.True);
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(funds));
+        yield return null;
+    }
 #if ENABLE_INPUT_SYSTEM
     [UnityTest] public IEnumerator CollectedFinalPickupDoesNotConsumeRewardConfirmationKey()
     {

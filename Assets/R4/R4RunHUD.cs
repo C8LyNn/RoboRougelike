@@ -23,6 +23,7 @@ namespace RoboRougelike.R1
         private string dismantleConfirmation;
         private string catalogFeedback;
         private bool rewardInventoryOpen;
+        private bool rewardInventoryDamagedOnly;
         private int rewardInventoryPage;
         private string rewardDismantleConfirmation;
         private string rewardInventoryFeedback;
@@ -51,12 +52,24 @@ namespace RoboRougelike.R1
             rewardBaskets=ledger?.CreateBasketOffers((run?.Seed??0)^((run?.Progress?.EncounterIndex??0)*397),run?.Progress?.EncounterIndex??0)
                 ??System.Array.Empty<R4SalvageBasket>();
             selectedBasket=-1;
-            rewardInventoryOpen=false;rewardInventoryPage=0;rewardDismantleConfirmation=null;rewardInventoryFeedback=null;rewardClaimFeedback=null;
+            rewardInventoryOpen=false;rewardInventoryDamagedOnly=false;rewardInventoryPage=0;rewardDismantleConfirmation=null;rewardInventoryFeedback=null;rewardClaimFeedback=null;
         }
         internal bool CloseRewardInventory()
         {
             if(!rewardInventoryOpen)return false;
             rewardInventoryOpen=false;rewardDismantleConfirmation=null;rewardInventoryFeedback=null;return true;
+        }
+        private static R3PartState[] RewardInventoryItems(R3VehicleModel model,bool damagedOnly)=>
+            damagedOnly?model.Inventory.Where(item=>item.Health<1).OrderBy(item=>item.Health).ToArray():model.Inventory.ToArray();
+        private static int RewardInventoryMissingSlots(int stored,int loot)=>
+            (int)System.Math.Min(int.MaxValue,System.Math.Max(0L,(long)stored+loot+1-R3VehicleModel.InventoryCapacity));
+        private void ToggleRewardInventoryFilter()
+        {rewardInventoryDamagedOnly=!rewardInventoryDamagedOnly;rewardInventoryPage=0;rewardDismantleConfirmation=null;rewardInventoryFeedback=null;}
+        private void DrawRewardInventoryFilter(R3VehicleModel model,Rect rect)
+        {
+            int count=rewardInventoryDamagedOnly?model.Inventory.Count:model.Inventory.Count(item=>item.Health<1);
+            if(GUI.Button(rect,rewardInventoryDamagedOnly?$"Pokaż wszystkie ({count})":$"Pokaż uszkodzone ({count})",compactButton))
+                ToggleRewardInventoryFilter();
         }
         private void ChooseRewardBasket(int index)
         {
@@ -153,7 +166,8 @@ namespace RoboRougelike.R1
 
             if(GUI.Button(new Rect(850,556,375,35),$"Magazyn {run.VehicleModel.Inventory.Count}/{R3VehicleModel.InventoryCapacity} • zwolnij miejsce",compactButton))
                 rewardInventoryOpen=true;
-            bool room=run.VehicleModel.Inventory.Count+lootSelection.Count+1<=R3VehicleModel.InventoryCapacity;
+            int missing=RewardInventoryMissingSlots(run.VehicleModel.Inventory.Count,lootSelection.Count);
+            bool room=missing==0;
             GUI.Label(new Rect(45,603,685,87),
                 $"Moduł: {(selectedBonus>=0?"wybrany":"wymagany")}  •  Zestaw: {(selectedBasket>=0?lootSelection.Count+" części":rewardBaskets.Count==0?"brak łupów":"wymagany")}\n" +
                 $"Niewybrane części → +{run.VehicleModel.PreviewAward(ledger.PreviewScrap(run.VehicleModel,lootSelection))} Z.\n" +
@@ -162,7 +176,7 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(805,610,420,68),RewardConfirmCaption(rewardBaskets.Count),button))
                 ConfirmSelectedRewards(run);
             GUI.enabled=true;
-            if(!room||!string.IsNullOrEmpty(rewardClaimFeedback))GUI.Label(new Rect(45,685,1180,30),!room?"Brak miejsca na wybrane nagrody. Otwórz magazyn i rozmontuj posiadane części, aby zwolnić miejsce.":rewardClaimFeedback,small);
+            if(!room||!string.IsNullOrEmpty(rewardClaimFeedback))GUI.Label(new Rect(45,685,1180,30),!room?$"Brakuje {missing} {(missing==1?"miejsca":"miejsc")}. Otwórz magazyn, aby je zwolnić.":rewardClaimFeedback,small);
         }
         private static Rect RewardInventoryDetailsRect(int index)=>new Rect(60,187+index*76,475,57);
         private static Rect RewardInventoryStatusRect(int index)=>new Rect(550,187+index*76,280,57);
@@ -183,11 +197,15 @@ namespace RoboRougelike.R1
         {
             var model=run.VehicleModel;
             GUI.Label(new Rect(45,30,1190,60),"MAGAZYN • MIEJSCE NA NAGRODY",title);
-            GUI.Label(new Rect(45,99,1180,62),$"Zajęte: {model.Inventory.Count}/{R3VehicleModel.InventoryCapacity}. Nagrody wymagają {lootSelection.Count+1} wolnych miejsc.\nRozmontowanie usuwa wybraną posiadaną część i wypłaca złom. Wymaga drugiego kliknięcia.",body);
-            var items=model.Inventory.ToArray();
+            int missing=RewardInventoryMissingSlots(model.Inventory.Count,lootSelection.Count);
+            GUI.Label(new Rect(45,99,790,62),$"Zajęte: {model.Inventory.Count}/{R3VehicleModel.InventoryCapacity} • Nagrody: {lootSelection.Count+1} miejsc.\n"+
+                (missing>0?$"Brakuje {missing} {(missing==1?"miejsca":"miejsc")}. ":"Obecny wybór się mieści. ")+"Rozmontowanie wymaga potwierdzenia.",body);
+            DrawRewardInventoryFilter(model,new Rect(860,110,350,48));
+            var items=RewardInventoryItems(model,rewardInventoryDamagedOnly);
             int pages=Mathf.Max(1,Mathf.CeilToInt(items.Length/5f));
             rewardInventoryPage=Mathf.Clamp(rewardInventoryPage,0,pages-1);
             var visible=items.Skip(rewardInventoryPage*5).Take(5).ToArray();
+            if(items.Length==0)GUI.Label(new Rect(60,190,850,48),rewardInventoryDamagedOnly?"Brak uszkodzonych części.":"Magazyn jest pusty.",body);
             for(int i=0;i<visible.Length;i++)
             {
                 var item=visible[i];float y=180+i*76;
