@@ -159,6 +159,39 @@ public class CreativeRangeTests
         Assert.That(GameObject.Find("P12_Ground"),Is.Not.Null);
     }
 
+    [UnityTest] public IEnumerator CreativeRepeatedPlacementPreservesSelectedTier()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
+        Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
+        var first=run.VehicleModel.Inventory.Last();first.Tier=2;string id=first.Id;
+        var garage=run.Garage;garage.ChooseInventory(id);garage.Select(Vector3Int.up);
+        Assert.That(garage.PreviewValid,Is.True,garage.PlacementIssue);
+        Assert.That(garage.ClickTarget(),Is.True,garage.Message);
+        var next=run.VehicleModel.Inventory.Single(p=>p.Id==garage.SelectedInventoryId);
+        Assert.That(next.Id,Is.Not.EqualTo(id));Assert.That(next.Tier,Is.EqualTo(2));
+        Assert.That(run.VehicleModel.Scrap,Is.Zero);
+        yield return null;
+    }
+
+    [UnityTest] public IEnumerator CreativeRepeatedBonusKeepsItsEffectAndTier()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
+        var definition=run.Definition.Upgrades.First(item=>R3VehicleModel.CreateBonusReward(item)!=null);
+        Assert.That(run.AddCreativeBonus(definition.Id),Is.True);
+        var first=run.VehicleModel.Inventory.Last();first.Tier=3;
+        first.ContactMask=R3MountingGrid.FaceBit(Vector3Int.down);string id=first.Id;
+        var garage=run.Garage;garage.ChooseInventory(id);garage.Select(Vector3Int.up);
+        Assert.That(garage.PreviewValid,Is.True,garage.PlacementIssue);
+        Assert.That(garage.ClickTarget(),Is.True,garage.Message);
+        R3PartState next=null;
+        foreach(var item in run.VehicleModel.Inventory)if(item.Id==garage.SelectedInventoryId){next=item;break;}
+        Assert.That(next,Is.Not.Null);Assert.That(next.Id,Is.Not.EqualTo(id));Assert.That(next.Tier,Is.EqualTo(3));
+        Assert.That(R3VehicleModel.SameBonusType(first,next),Is.True);
+        Assert.That(next.ContactMask,Is.EqualTo(R3MountingGrid.FaceBit(Vector3Int.down)));
+        Assert.That(run.VehicleModel.Scrap,Is.Zero);
+        yield return null;
+    }
+
     [UnityTest] public IEnumerator CreativeGarageKeepsSelectedPartForRepeatedPlacement()
     {
         var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
