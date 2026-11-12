@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 namespace RoboRougelike.MapEditor
@@ -7,14 +8,19 @@ namespace RoboRougelike.MapEditor
     public static class MapStorage
     {
         public static string DirectoryPath=>Path.Combine(Application.persistentDataPath,"Maps");
-        public static bool TryPath(string directory,string name,out string path)
+        static bool ValidMapName(string name)
         {
-            path=null;if(string.IsNullOrWhiteSpace(name)||name.Length>64||name=="."||name=="..")return false;
+            if(string.IsNullOrWhiteSpace(name)||name.Length>64||name=="."||name=="..")return false;
             if(name!=name.Trim())return false;
             foreach(char c in name)if(!(char.IsLetterOrDigit(c)||c=='_'||c=='-'||c==' '))return false;
             string upper=name.ToUpperInvariant();
             if(upper=="CON"||upper=="PRN"||upper=="AUX"||upper=="NUL"||
                 upper=="CONIN$"||upper=="CONOUT$"||IsDeviceNumber(upper,"COM")||IsDeviceNumber(upper,"LPT"))return false;
+            return true;
+        }
+        public static bool TryPath(string directory,string name,out string path)
+        {
+            path=null;if(!ValidMapName(name))return false;
             if(string.IsNullOrWhiteSpace(directory))return false;
             if(Directory.Exists(directory))
                 foreach(var file in Directory.EnumerateFiles(directory))
@@ -24,6 +30,16 @@ namespace RoboRougelike.MapEditor
                         !string.Equals(existing,candidate,StringComparison.Ordinal))return false;
                 }
             path=Path.Combine(directory,name+".json");return true;
+        }
+        public static string[] ListSavedNames(string directory)
+        {
+            if(string.IsNullOrWhiteSpace(directory)||!Directory.Exists(directory))return Array.Empty<string>();
+            var filenames=Directory.EnumerateFiles(directory).Select(Path.GetFileName).ToArray();
+            var counts=filenames.GroupBy(name=>name,StringComparer.OrdinalIgnoreCase)
+                .ToDictionary(group=>group.Key,group=>group.Count(),StringComparer.OrdinalIgnoreCase);
+            return filenames.Where(file=>file.EndsWith(".json",StringComparison.Ordinal)&&counts[file]==1)
+                .Select(Path.GetFileNameWithoutExtension).Where(ValidMapName)
+                .OrderBy(name=>name,StringComparer.OrdinalIgnoreCase).ThenBy(name=>name,StringComparer.Ordinal).ToArray();
         }
         static bool IsDeviceNumber(string name,string prefix) => name.Length==4&&name.StartsWith(prefix,StringComparison.Ordinal)&&
             ((name[3]>='1'&&name[3]<='9')||name[3]=='¹'||name[3]=='²'||name[3]=='³');
