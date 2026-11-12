@@ -1,0 +1,694 @@
+{
+ "result": "PASS",
+ "previous_passes_untouched": true,
+ "detail": {
+  "A": {
+   "selection": {
+    "chassis": "new",
+    "Gun": "old",
+    "Wheel": "new",
+    "Battery": "old"
+   },
+   "parts": {
+    "Gun": {
+     "X1": true,
+     "X2": true,
+     "node_dev_mm": 0.0,
+     "X4": true,
+     "anim_key_dev": 0.0,
+     "anim_channels_compared": 5,
+     "clips": [
+      "Idle",
+      "AimYaw",
+      "AimPitch",
+      "Fire",
+      "Recoil",
+      "Return"
+     ],
+     "mechanism_nodes_old": [
+      "R4W_Basic_Ring",
+      "R4W_Basic_VentL",
+      "R4W_Basic_VentR"
+     ],
+     "mechanism_nodes_new": [
+      "R4W_Basic_Ring",
+      "R4W_Basic_VentL",
+      "R4W_Basic_VentR"
+     ],
+     "X3": true,
+     "outside_mm": 0,
+     "X5": true,
+     "selected": {
+      "source": "hero1",
+      "pr": "#1270",
+      "file": "Tools/ModelFactory/R4StyleAtlas5/hero1/variants/A_Sleek/R4W_Basic/R4W_Basic.glb",
+      "sha256": "9abac1c9e9a0292b28f52d94e2f6ef9f408a05f3c609459cf341aea5992d686b",
+      "git_blob": "eb17dd99c374e379a876c11759d9062a3b762474",
+      "triangles": 17364
+     },
+     "PASS": true
+    },
+    "Wheel": {
+     "X1": true,
+     "X2": true,
+     "node_dev_mm": 0.0,
+     "X4": true,
+     "anim_key_dev": 0.0,
+     "anim_channels_compared": 1,
+     "clips": [
+      "Idle",
+      "Roll",
+      "Reverse",
+      "Brake"
+     ],
+     "mechanism_nodes_old": [
+      "R4M_WheelM_Side_Offroad_Halo",
+      "R4M_WheelM_Side_Offroad_VaneL",
+      "R4M_WheelM_Side_Offroad_VaneU"
+     ],
+     "mechanism_nodes_new": [
+      "R4M_WheelM_Side_Offroad_Halo",
+      "R4M_WheelM_Side_Offroad_VaneL",
+      "R4M_WheelM_Side_Offroad_VaneU"
+     ],
+     "X3": true,
+     "outside_mm": 0,
+     "X5": true,
+     "selected": {
+      "source": "hero2",
+      "pr": "#1274",
+      "file": "Tools/ModelFactory/R4StyleAtlas5/hero2/variants/A_Sleek/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+      "sha256": "b6cf4dc8a31a8e926065ccd0c84cec64c2dbfbf47ab4931e6c5ffbc7ee1a75ee",
+      "git_blob": "5bc97e588d873885feee36ac62ef2f2777798c38",
+      "triangles": 8170
+     },
+     "PASS": true
+    },
+    "Battery": {
+     "X1": true,
+     "X2": true,
+     "node_dev_mm": 0.0,
+     "X4": true,
+     "anim_key_dev": 0.0,
+     "anim_channels_compared": 2,
+     "clips": [
+      "Idle",
+      "Activate",
+      "Hit"
+     ],
+     "mechanism_nodes_old": [
+      "R4X_Battery_Core",
+      "R4X_Battery_Sleeve"
+     ],
+     "mechanism_nodes_new": [
+      "R4X_Battery_Core",
+      "R4X_Battery_Sleeve"
+     ],
+     "X3": true,
+     "outside_mm": 0,
+     "X5": true,
+     "selected": {
+      "source": "hero1",
+      "pr": "#1270",
+      "file": "Tools/ModelFactory/R4StyleAtlas5/hero1/variants/A_Sleek/R4X_Battery/R4X_Battery.glb",
+      "sha256": "b444d43598d0e8d7387413717e4d78bcc4dfcb255174c0d3cca82273e4359486",
+      "git_blob": "73d0aa4566a720f9a399732b41a5eaad6037b5b9",
+      "triangles": 11224
+     },
+     "PASS": true
+    },
+    "Cube": {
+     "selected": {
+      "source": "hero1",
+      "pr": "#1270",
+      "file": "Tools/ModelFactory/R4StyleAtlas5/hero1/variants/A_Sleek/R4B_Cube/R4B_Cube.glb",
+      "sha256": "ce7889c82db4c6dca8c531076dc4c49a5abca613a1ddd69dba82f23db1bd518b",
+      "git_blob": "4303c4ff4e049ae3437d09543e07b8b85aa35d3b",
+      "palette": "hero2"
+     },
+     "X5": true,
+     "PASS": true
+    },
+    "Deployer": {
+     "selected": {
+      "source": "hero1",
+      "pr": "#1270",
+      "file": "Tools/ModelFactory/R4StyleAtlas5/hero1/variants/A_Sleek/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+      "sha256": "cb17ccec223ebcc0cc8ee9bb77c498c7997f36c7522139685951fe9411805a9e",
+      "git_blob": "501f292d144e717eba606ee99b2ce2a84d951527",
+      "palette": "hero2"
+     },
+     "X5": true,
+     "PASS": true
+    }
+   },
+   "PASS": true
+  },
+  "B": {
+   "selection": {
+    "chassis": "old",
+    "Gun": "new",
+    "Wheel": "new",
+    "Battery": "old"
+   },
+   "parts": {
+    "Gun": {
+     "X1": true,
+     "X2": true,
+     "node_dev_mm": 0.0,
+     "X4": true,
+     "anim_key_dev": 0.0,
+     "anim_channels_compared": 5,
+     "clips": [
+      "Idle",
+      "AimYaw",
+      "AimPitch",
+      "Fire",
+      "Recoil",
+      "Return"
+     ],
+     "mechanism_nodes_old": [
+      "R4W_Basic_Bolt",
+      "R4W_Basic_Buffer",
+      "R4W_Basic_Gear"
+     ],
+     "mechanism_nodes_new": [
+      "R4W_Basic_Bolt",
+      "R4W_Basic_Buffer",
+      "R4W_Basic_Gear"
+     ],
+     "X3": true,
+     "outside_mm": 0,
+     "X5": true,
+     "selected": {
+      "source": "hero2",
+      "pr": "#1274",
+      "file": "Tools/ModelFactory/R4StyleAtlas5/hero2/variants/B_Brutal/R4W_Basic/R4W_Basic.glb",
+      "sha256": "f3a33c5c70dd4327bb4c93311ae9b89b74be98d72e29288328663b12548966fd",
+      "git_blob": "720aada35e69d697ff281132c2d68ad49be366fa",
+      "triangles": 2416
+     },
+     "PASS": true
+    },
+    "Wheel": {
+     "X1": true,
+     "X2": true,
+     "node_dev_mm": 0.0,
+     "X4": true,
+     "anim_key_dev": 0.0,
+     "anim_channels_compared": 1,
+     "clips": [
+      "Idle",
+      "Roll",
+      "Reverse",
+      "Brake"
+     ],
+     "mechanism_nodes_old": [
+      "R4M_WheelM_Side_Offroad_Caliper",
+      "R4M_WheelM_Side_Offroad_Shock"
+     ],
+     "mechanism_nodes_new": [
+      "R4M_WheelM_Side_Offroad_Caliper",
+      "R4M_WheelM_Side_Offroad_Shock"
+     ],
+     "X3": true,
+     "outside_mm": 0,
+     "X5": true,
+     "selected": {
+      "source": "hero2",
+      "pr": "#1274",
+      "file": "Tools/ModelFactory/R4StyleAtlas5/hero2/variants/B_Brutal/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+      "sha256": "eabdd08a5b6293d0ec93eb5544d0f6e390841f8eccc5044fc76ecfb4690be2eb",
+      "git_blob": "3c2be94317fb74bb7fe08a67583c1447d5d4377a",
+      "triangles": 6168
+     },
+     "PASS": true
+    },
+    "Battery": {
+     "X1": true,
+     "X2": true,
+     "node_dev_mm": 0.0,
+     "X4": true,
+     "anim_key_dev": 0.0,
+     "anim_channels_compared": 2,
+     "clips": [
+      "Idle",
+      "Activate",
+      "Hit"
+     ],
+     "mechanism_nodes_old": [
+      "R4X_Battery_Fan",
+      "R4X_Battery_Relay"
+     ],
+     "mechanism_nodes_new": [
+      "R4X_Battery_Fan",
+      "R4X_Battery_Relay"
+     ],
+     "X3": true,
+     "outside_mm": 0,
+     "X5": true,
+     "selected": {
+      "source": "hero1",
+      "pr": "#1270",
+      "file": "Tools/ModelFactory/R4StyleAtlas5/hero1/variants/B_Brutal/R4X_Battery/R4X_Battery.glb",
+      "sha256": "d5329179bdcf59c0ae4e6992f3615a1a9c762876d7b6f2b1af91152190258ae4",
+      "git_blob": "cda242a5dc96e93da705bd7d3974417b4484d606",
+      "triangles": 3480
+     },
+     "PASS": true
+    },
+    "Cube": {
+     "selected": {
+      "source": "hero1",
+      "pr": "#1270",
+      "file": "Tools/ModelFactory/R4StyleAtlas5/hero1/variants/B_Brutal/R4B_Cube/R4B_Cube.glb",
+      "sha256": "7ac55e2dc642f47a4d1849498b675c46934c98a43523de10eef8419aaaa8acb7",
+      "git_blob": "1ed5b4823f0b592c410584806ed461ce962e5567",
+      "palette": "hero1"
+     },
+     "X5": true,
+     "PASS": true
+    },
+    "Deployer": {
+     "selected": {
+      "source": "hero1",
+      "pr": "#1270",
+      "file": "Tools/ModelFactory/R4StyleAtlas5/hero1/variants/B_Brutal/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+      "sha256": "57d6dcf8b342ff5c028863332a364317655686fe2ed029e486d335ffed88bf79",
+      "git_blob": "0c95e94ecb7ecac646d1572c990ee0edc3df6610",
+      "palette": "hero1"
+     },
+     "X5": true,
+     "PASS": true
+    }
+   },
+   "PASS": true
+  },
+  "C": {
+   "selection": {
+    "chassis": "new",
+    "Gun": "new",
+    "Wheel": "new",
+    "Battery": "new"
+   },
+   "parts": {
+    "Gun": {
+     "X1": true,
+     "X2": true,
+     "node_dev_mm": 0.0,
+     "X4": true,
+     "anim_key_dev": 0.0,
+     "anim_channels_compared": 5,
+     "clips": [
+      "Idle",
+      "AimYaw",
+      "AimPitch",
+      "Fire",
+      "Recoil",
+      "Return"
+     ],
+     "mechanism_nodes_old": [
+      "R4W_Basic_Slide"
+     ],
+     "mechanism_nodes_new": [
+      "R4W_Basic_Slide"
+     ],
+     "X3": true,
+     "outside_mm": 0,
+     "X5": true,
+     "selected": {
+      "source": "hero2",
+      "pr": "#1274",
+      "file": "Tools/ModelFactory/R4StyleAtlas5/hero2/variants/C_Arcade/R4W_Basic/R4W_Basic.glb",
+      "sha256": "6350e29cac6e2afa0e6782b2963185b36acefc41a8a75ed91b0754f24aa4d32d",
+      "git_blob": "d2e61cc2043516a8c67a26d74a40bfd95583f739",
+      "triangles": 2228
+     },
+     "PASS": true
+    },
+    "Wheel": {
+     "X1": true,
+     "X2": true,
+     "node_dev_mm": 0.0,
+     "X4": true,
+     "anim_key_dev": 0.0,
+     "anim_channels_compared": 1,
+     "clips": [
+      "Idle",
+      "Roll",
+      "Reverse",
+      "Brake"
+     ],
+     "mechanism_nodes_old": [
+      "R4M_WheelM_Side_Offroad_Arm"
+     ],
+     "mechanism_nodes_new": [
+      "R4M_WheelM_Side_Offroad_Arm"
+     ],
+     "X3": true,
+     "outside_mm": 0,
+     "X5": true,
+     "selected": {
+      "source": "hero2",
+      "pr": "#1274",
+      "file": "Tools/ModelFactory/R4StyleAtlas5/hero2/variants/C_Arcade/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+      "sha256": "e33610b583b29bf5a80f2c121e86bbc1c84ef1ec71bb49bf07af9788d1e77899",
+      "git_blob": "528afa2227c7611eeffb1e6c4272779d14f5d52b",
+      "triangles": 4512
+     },
+     "PASS": true
+    },
+    "Battery": {
+     "X1": true,
+     "X2": true,
+     "node_dev_mm": 0.0,
+     "X4": true,
+     "anim_key_dev": 0.0,
+     "anim_channels_compared": 2,
+     "clips": [
+      "Idle",
+      "Activate",
+      "Hit"
+     ],
+     "mechanism_nodes_old": [
+      "R4X_Battery_Cap"
+     ],
+     "mechanism_nodes_new": [
+      "R4X_Battery_Cap"
+     ],
+     "X3": true,
+     "outside_mm": 0,
+     "X5": true,
+     "selected": {
+      "source": "hero2",
+      "pr": "#1274",
+      "file": "Tools/ModelFactory/R4StyleAtlas5/hero2/variants/C_Arcade/R4X_Battery/R4X_Battery.glb",
+      "sha256": "cb459fac8ccd600c9c612b963ccb72bb05e19168847cfc2198c8da0e48319375",
+      "git_blob": "fe8e9d4c466678216ad7c67b67336f268a115ab8",
+      "triangles": 980
+     },
+     "PASS": true
+    },
+    "Cube": {
+     "selected": {
+      "source": "hero1",
+      "pr": "#1270",
+      "file": "Tools/ModelFactory/R4StyleAtlas5/hero1/variants/C_Arcade/R4B_Cube/R4B_Cube.glb",
+      "sha256": "0d8f376a71418385ac3c664f58b918eef3c2ebabaa9c5bbd4cca52a287274dac",
+      "git_blob": "9826cca762027a62ea0839062464744f4bc41e9b",
+      "palette": "hero2"
+     },
+     "X5": true,
+     "PASS": true
+    },
+    "Deployer": {
+     "selected": {
+      "source": "hero1",
+      "pr": "#1270",
+      "file": "Tools/ModelFactory/R4StyleAtlas5/hero1/variants/C_Arcade/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+      "sha256": "71844f2af11522ed59157dc565d5822265a6836e9e9e279e54b27bb4432ee602",
+      "git_blob": "310f764b588081dc07141d45ec8825415c6f8fcb",
+      "palette": "hero2"
+     },
+     "X5": true,
+     "PASS": true
+    }
+   },
+   "PASS": true
+  },
+  "D": {
+   "selection": {
+    "chassis": "old",
+    "Gun": "old",
+    "Wheel": "new",
+    "Battery": "old"
+   },
+   "parts": {
+    "Gun": {
+     "X1": true,
+     "X2": true,
+     "node_dev_mm": 0.0,
+     "X4": true,
+     "anim_key_dev": 0.0,
+     "anim_channels_compared": 5,
+     "clips": [
+      "Idle",
+      "AimYaw",
+      "AimPitch",
+      "Fire",
+      "Recoil",
+      "Return"
+     ],
+     "mechanism_nodes_old": [
+      "R4W_Basic_Crank",
+      "R4W_Basic_Rattle"
+     ],
+     "mechanism_nodes_new": [
+      "R4W_Basic_Crank",
+      "R4W_Basic_Rattle"
+     ],
+     "X3": true,
+     "outside_mm": 0,
+     "X5": true,
+     "selected": {
+      "source": "hero1",
+      "pr": "#1270",
+      "file": "Tools/ModelFactory/R4StyleAtlas5/hero1/variants/D_Scrap/R4W_Basic/R4W_Basic.glb",
+      "sha256": "2b49c48ba3ab2195cb6cd352570ec681bf8deef2d2069922ead823734d2e1d7b",
+      "git_blob": "0e7ac972846632565df3d49f190c4a0606d32b95",
+      "triangles": 4134
+     },
+     "PASS": true
+    },
+    "Wheel": {
+     "X1": true,
+     "X2": true,
+     "node_dev_mm": 0.0,
+     "X4": true,
+     "anim_key_dev": 0.0,
+     "anim_channels_compared": 1,
+     "clips": [
+      "Idle",
+      "Roll",
+      "Reverse",
+      "Brake"
+     ],
+     "mechanism_nodes_old": [
+      "R4M_WheelM_Side_Offroad_Flap",
+      "R4M_WheelM_Side_Offroad_Spring"
+     ],
+     "mechanism_nodes_new": [
+      "R4M_WheelM_Side_Offroad_Flap",
+      "R4M_WheelM_Side_Offroad_Spring"
+     ],
+     "X3": true,
+     "outside_mm": 0,
+     "X5": true,
+     "selected": {
+      "source": "hero2",
+      "pr": "#1274",
+      "file": "Tools/ModelFactory/R4StyleAtlas5/hero2/variants/D_Scrap/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+      "sha256": "64f3437aaa028b70e113bd304cac1e4ce3d36cb609f740c0304dbda7d7805145",
+      "git_blob": "6337fbcf81aac469fd8f6bd035589ebdb7507451",
+      "triangles": 4960
+     },
+     "PASS": true
+    },
+    "Battery": {
+     "X1": true,
+     "X2": true,
+     "node_dev_mm": 0.0,
+     "X4": true,
+     "anim_key_dev": 0.0,
+     "anim_channels_compared": 2,
+     "clips": [
+      "Idle",
+      "Activate",
+      "Hit"
+     ],
+     "mechanism_nodes_old": [
+      "R4X_Battery_Clamp",
+      "R4X_Battery_Needle"
+     ],
+     "mechanism_nodes_new": [
+      "R4X_Battery_Clamp",
+      "R4X_Battery_Needle"
+     ],
+     "X3": true,
+     "outside_mm": 0,
+     "X5": true,
+     "selected": {
+      "source": "hero1",
+      "pr": "#1270",
+      "file": "Tools/ModelFactory/R4StyleAtlas5/hero1/variants/D_Scrap/R4X_Battery/R4X_Battery.glb",
+      "sha256": "300fbcff83c144c6db7cab9022b9fbe4f45ef2a1da116adb6cd091490d98a622",
+      "git_blob": "cd26e4b504e3e4a19abf09444ec8db805b9dcff1",
+      "triangles": 3532
+     },
+     "PASS": true
+    },
+    "Cube": {
+     "selected": {
+      "source": "hero1",
+      "pr": "#1270",
+      "file": "Tools/ModelFactory/R4StyleAtlas5/hero1/variants/D_Scrap/R4B_Cube/R4B_Cube.glb",
+      "sha256": "16c8281085cb4e7a13377ee09551a2981fba03af36deb20a06be1baff9c26bfd",
+      "git_blob": "a0dc5512de77e6b020752ff02813dcbb6dab6c46",
+      "palette": "hero1"
+     },
+     "X5": true,
+     "PASS": true
+    },
+    "Deployer": {
+     "selected": {
+      "source": "hero1",
+      "pr": "#1270",
+      "file": "Tools/ModelFactory/R4StyleAtlas5/hero1/variants/D_Scrap/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+      "sha256": "534dc45ea82c9edc265d9018ada7387c874a16aa97f645e6b28e0e0a03cc3af5",
+      "git_blob": "29c223bf692937e5c3bef15ed8b7a73422656a77",
+      "palette": "hero1"
+     },
+     "X5": true,
+     "PASS": true
+    }
+   },
+   "PASS": true
+  },
+  "E": {
+   "selection": {
+    "chassis": "new",
+    "Gun": "new",
+    "Wheel": "new",
+    "Battery": "new"
+   },
+   "parts": {
+    "Gun": {
+     "X1": true,
+     "X2": true,
+     "node_dev_mm": 0.0,
+     "X4": true,
+     "anim_key_dev": 0.0,
+     "anim_channels_compared": 5,
+     "clips": [
+      "Idle",
+      "AimYaw",
+      "AimPitch",
+      "Fire",
+      "Recoil",
+      "Return"
+     ],
+     "mechanism_nodes_old": [
+      "R4W_Basic_Antenna",
+      "R4W_Basic_Bell"
+     ],
+     "mechanism_nodes_new": [
+      "R4W_Basic_Antenna",
+      "R4W_Basic_Bell"
+     ],
+     "X3": true,
+     "outside_mm": 0,
+     "X5": true,
+     "selected": {
+      "source": "hero2",
+      "pr": "#1274",
+      "file": "Tools/ModelFactory/R4StyleAtlas5/hero2/variants/E_Toon/R4W_Basic/R4W_Basic.glb",
+      "sha256": "9ee0a5df7ff74dc898ff5745835641f51b5ba681286557f5836dc1523ea85d53",
+      "git_blob": "9243d07bb0c4cef4f185d917a77c8e95b71cfb0f",
+      "triangles": 3028
+     },
+     "PASS": true
+    },
+    "Wheel": {
+     "X1": true,
+     "X2": true,
+     "node_dev_mm": 0.0,
+     "X4": true,
+     "anim_key_dev": 0.0,
+     "anim_channels_compared": 1,
+     "clips": [
+      "Idle",
+      "Roll",
+      "Reverse",
+      "Brake"
+     ],
+     "mechanism_nodes_old": [
+      "R4M_WheelM_Side_Offroad_Coil"
+     ],
+     "mechanism_nodes_new": [
+      "R4M_WheelM_Side_Offroad_Coil"
+     ],
+     "X3": true,
+     "outside_mm": 0,
+     "X5": true,
+     "selected": {
+      "source": "hero2",
+      "pr": "#1274",
+      "file": "Tools/ModelFactory/R4StyleAtlas5/hero2/variants/E_Toon/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+      "sha256": "0a0f4f713750decf0707e5effd002d59c99f361e3d91ea9e7bc04bedfd736584",
+      "git_blob": "094af72d8d0ebff27e3030954ce29de43a05fb81",
+      "triangles": 5294
+     },
+     "PASS": true
+    },
+    "Battery": {
+     "X1": true,
+     "X2": true,
+     "node_dev_mm": 0.0,
+     "X4": true,
+     "anim_key_dev": 0.0,
+     "anim_channels_compared": 2,
+     "clips": [
+      "Idle",
+      "Activate",
+      "Hit"
+     ],
+     "mechanism_nodes_old": [
+      "R4X_Battery_Emblem",
+      "R4X_Battery_Jug"
+     ],
+     "mechanism_nodes_new": [
+      "R4X_Battery_Emblem",
+      "R4X_Battery_Jug"
+     ],
+     "X3": true,
+     "outside_mm": 0,
+     "X5": true,
+     "selected": {
+      "source": "hero2",
+      "pr": "#1274",
+      "file": "Tools/ModelFactory/R4StyleAtlas5/hero2/variants/E_Toon/R4X_Battery/R4X_Battery.glb",
+      "sha256": "4b804e17adb4496c3982591c1d7914d76d1dbe26253e798a030f5d32917d7262",
+      "git_blob": "8f88fbf14aca7a6c24b72649cabedc091ac46b65",
+      "triangles": 1564
+     },
+     "PASS": true
+    },
+    "Cube": {
+     "selected": {
+      "source": "hero1",
+      "pr": "#1270",
+      "file": "Tools/ModelFactory/R4StyleAtlas5/hero1/variants/E_Toon/R4B_Cube/R4B_Cube.glb",
+      "sha256": "7a2c7ead013caaddae938f5d49af6a0485a9f9b4371edf971210d08f4ef120fb",
+      "git_blob": "20d4988880a5f84c45b1fa7b3f447c87f8faa4aa",
+      "palette": "hero2"
+     },
+     "X5": true,
+     "PASS": true
+    },
+    "Deployer": {
+     "selected": {
+      "source": "hero1",
+      "pr": "#1270",
+      "file": "Tools/ModelFactory/R4StyleAtlas5/hero1/variants/E_Toon/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+      "sha256": "4b20cd2c1310a6ecc2115827626f0d0fe4da2e6c0f444d217644f634c7d3fe56",
+      "git_blob": "7bd0da69b1efee137e06ca8685022ccd2565fe89",
+      "palette": "hero2"
+     },
+     "X5": true,
+     "PASS": true
+    }
+   },
+   "PASS": true
+  }
+ }
+}
