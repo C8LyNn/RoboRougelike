@@ -129,6 +129,18 @@ namespace RoboRougelike.R1
             StartCoroutine(BeginEncounter());return true;
         }
 
+        public bool ReturnToGarageFromRoute()
+        {
+            if(Error!=null||Transitioning||Paused||QuitRequested||Progress?.State!=R1RunState.Route||
+                VehicleModel==null||Garage==null||followCamera==null)return false;
+            if(Player==null)
+                Player=R3VehicleAssembly.Build(VehicleModel,Progress.Stats,palette,new Vector3(0,.7f,-22),Quaternion.identity);
+            if(Player==null||!Progress.ReturnToGarage())return false;
+            followCamera.Configure(Player.transform,Player.CameraPivot);SetSimulation(false);Garage.Open();
+            Garage.Message="Możesz zmienić pojazd. Dostępne trasy pozostaną takie same.";
+            return true;
+        }
+
         public bool ChooseUpgrade(int index)
         {
             if (Transitioning || Progress == null) return false;

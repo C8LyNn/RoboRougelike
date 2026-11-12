@@ -88,5 +88,43 @@ public class R5RunTests
         Assert.That(run.StartNextEncounter(),Is.False);
         yield return new ExitPlayMode();
     }
+    [UnityTest] public IEnumerator RouteCanReturnToGarageWithoutRerollingLaterStage()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance==null||R1RunController.Instance.Progress==null)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.SelectVehicle(RoboRougelike.R3.R3VehicleKind.Light),Is.True);
+        Assert.That(run.PrepareUnifiedRun(),Is.True);
+        Assert.That(run.GaragePurchase(RoboRougelike.R3.R3PartKind.Wheel),Is.True);
+        var saved=run.Progress.MakeGarageCheckpoint();saved.encounterIndex=1;saved.completed=1;saved.acquired=new[]{"Testowy bonus"};
+        Assert.That(R1RunProgress.TryRestoreGarage(saved,6,out var restored),Is.True);
+        typeof(R1RunController).GetProperty("Progress").SetValue(run,restored);
+        var model=run.VehicleModel;var player=run.Player;
+        var snapshot=model.Parts.Concat(model.Inventory).Select(JsonUtility.ToJson).ToArray();
+        int scrap=model.Scrap,kills=run.DefeatedEnemies,earned=run.EarnedScrap,stage=run.Progress.EncounterIndex;
+        Assert.That(run.StartNextEncounter(),Is.True);
+        var offers=run.RouteOffers.Select(JsonUtility.ToJson).ToArray();
+        var back=typeof(R1RunController).GetMethod("ReturnToGarageFromRoute");Assert.That(back,Is.Not.Null);
+        Assert.That((bool)back.Invoke(run,null),Is.True);
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage));Assert.That(run.Player,Is.SameAs(player));
+        Assert.That(run.VehicleModel,Is.SameAs(model));Assert.That(model.Scrap,Is.EqualTo(scrap));
+        Assert.That(model.Parts.Concat(model.Inventory).Select(JsonUtility.ToJson),Is.EqualTo(snapshot));
+        Assert.That(run.DefeatedEnemies,Is.EqualTo(kills));Assert.That(run.EarnedScrap,Is.EqualTo(earned));
+        Assert.That(run.Progress.EncounterIndex,Is.EqualTo(stage));Assert.That(run.StartNextEncounter(),Is.True);
+        Assert.That(run.RouteOffers.Select(JsonUtility.ToJson),Is.EqualTo(offers),"Opening the garage must not reroll the stage.");
+        Assert.That(run.ChooseRoute(0),Is.True);while(run.Transitioning)yield return null;
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Combat));
+    }
+    [UnityTest] public IEnumerator FirstRouteCanOpenGarageBeforeVehicleExists()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance==null||R1RunController.Instance.Progress==null)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.StartRun(),Is.True);Assert.That(run.Player,Is.Null);
+        var back=typeof(R1RunController).GetMethod("ReturnToGarageFromRoute");Assert.That(back,Is.Not.Null);
+        Assert.That((bool)back.Invoke(run,null),Is.True);
+        Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Garage));Assert.That(run.Player,Is.Not.Null);
+        Assert.That((bool)back.Invoke(run,null),Is.False,"The action cannot run twice outside the route screen.");
+        Assert.That(run.StartNextEncounter(),Is.True);Assert.That(run.ChooseRoute(0),Is.True);
+        while(run.Transitioning)yield return null;Assert.That(run.Progress.State,Is.EqualTo(R1RunState.Combat));
+    }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}}
 }

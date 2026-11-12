@@ -8,6 +8,7 @@ namespace RoboRougelike.R1
         static bool UsePortraitRoute(int width,int height,bool route,bool overlay)=>width>0&&height>width&&route&&!overlay;
         static Rect PortraitRouteCard(int index)=>new Rect(24,215+index*300,720,280);
         static Rect PortraitRouteButton(int index)=>new Rect(44,429+index*300,680,48);
+        static Rect PortraitRouteGarageButton()=>new Rect(24,938,720,54);
         void DrawPortraitRoute(R1RunController run)
         {
             GUI.Label(new Rect(24,20,720,50),"WYBIERZ TRASĘ",title);
@@ -28,6 +29,7 @@ namespace RoboRougelike.R1
                 if(GUI.Button(PortraitRouteButton(i),"Wyrusz — "+item.Title,button)){run.ChooseRoute(i);break;}
             }
             GUI.Label(new Rect(24,840,720,90),"Odebrane części są sprawne; złom za niewybrane zależy od stanu wraków. Wybór jest ostateczny dla tego etapu.",small);
+            if(GUI.Button(PortraitRouteGarageButton(),"Wróć do garażu",button))run.ReturnToGarageFromRoute();
         }
     }
 }

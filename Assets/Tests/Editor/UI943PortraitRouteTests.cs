@@ -32,4 +32,12 @@ public sealed class UI943PortraitRouteTests
             Assert.That(button.height,Is.GreaterThanOrEqualTo(44));
         }
     }
+    [Test] public void GarageReturnButtonFitsWithoutCoveringRouteChoices()
+    {
+        var method=Method("PortraitRouteGarageButton");Assert.That(method,Is.Not.Null);
+        var button=(Rect)method.Invoke(null,null);var canvas=new Rect(0,0,768,1024);
+        Assert.That(canvas.Contains(button.min)&&canvas.Contains(button.max-Vector2.one),Is.True);
+        Assert.That(button.height,Is.GreaterThanOrEqualTo(44));
+        for(int i=0;i<2;i++)Assert.That(button.Overlaps((Rect)Method("PortraitRouteCard").Invoke(null,new object[]{i})),Is.False);
+    }
 }
