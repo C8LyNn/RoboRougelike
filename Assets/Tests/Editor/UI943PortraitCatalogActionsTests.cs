@@ -341,6 +341,28 @@ public sealed class UI943PortraitCatalogActionsTests
         Assert.That((string)Field(hud,"catalogFeedback"),Does.Contain("Rozmontowano").And.Contain(value+" Z"));
     }
 
+    [UnityTest] public IEnumerator DismantleCanBeCancelledWithoutLosingPartOrClosingCatalog()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance?.Progress==null)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);
+        run.VehicleModel.Award(100);Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
+        var item=run.VehicleModel.Inventory.Last();var hud=run.GetComponent<R1RunHUD>();
+        Field(hud,"catalogOpen",true);int scrap=run.VehicleModel.Scrap;
+        Invoke(hud,"PortraitCatalogDismantle",run,item.Id);
+        Assert.That(ContainsId(run.VehicleModel,item.Id),Is.True);
+        Invoke(hud,"CancelCatalogDismantle");
+        Assert.That((bool)Field(hud,"catalogOpen"),Is.True);
+        Assert.That(Field(hud,"dismantleConfirmation"),Is.Null);
+        Assert.That(ContainsId(run.VehicleModel,item.Id),Is.True);
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));
+        Invoke(hud,"PortraitCatalogDismantle",run,item.Id);
+        Assert.That(ContainsId(run.VehicleModel,item.Id),Is.True,"A cancelled operation must require a fresh confirmation.");
+        Assert.That((bool)Invoke(hud,"ClosePartCatalog"),Is.True);
+        Assert.That((bool)Field(hud,"catalogOpen"),Is.True,"Escape cancels the pending decision before leaving the catalog.");
+        Assert.That(ContainsId(run.VehicleModel,item.Id),Is.True);
+    }
+
     [UnityTest] public IEnumerator DestroyedItemKeepsCatalogOpenUntilRepaired()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
