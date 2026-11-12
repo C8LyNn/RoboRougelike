@@ -290,8 +290,14 @@ namespace RoboRougelike.R1
             GUI.Label(new Rect(970,395,280,70),$"{R4WeaponDefinition.PartName(selected)} • HP {selected.Health*100:0}%\n"+
                 (selected.Kind==R3PartKind.BonusModule?BonusInstanceText(selected)+"\n":"")+
                 (selected.Health<=0?"Napraw w wierszu przed montażem.":"Kliknij HP w wierszu, aby montować."),small);
-            if(GUI.Button(new Rect(970,480,280,42),dismantleConfirmation==selected.Id?"Potwierdź rozmontowanie":$"Rozmontuj → {model.PreviewAward(model.DismantleValue(selected))} Z",compactButton))
-            {if(DismantleCatalogItem(run,selected.Id))return;}
+            if(dismantleConfirmation==selected.Id)
+            {
+                if(GUI.Button(new Rect(970,480,136,42),"Potwierdź",compactButton))
+                {if(DismantleCatalogItem(run,selected.Id))return;}
+                if(GUI.Button(new Rect(1112,480,138,42),"Anuluj",compactButton))CancelCatalogDismantle();
+            }
+            else if(GUI.Button(new Rect(970,480,280,42),$"Rozmontuj → {model.PreviewAward(model.DismantleValue(selected))} Z",compactButton))
+                DismantleCatalogItem(run,selected.Id);
             DrawFusionButton(run,selected,new Rect(970,535,280,42));
             GUI.Label(new Rect(970,590,280,52),"Po wyborze do montażu katalog się zamknie i pojawi się widmo.",small);
         }
@@ -400,9 +406,18 @@ namespace RoboRougelike.R1
                 run.Garage.Message=catalogFeedback;
             }
         }
+        private void CancelCatalogDismantle()
+        {dismantleConfirmation=null;catalogFeedback="Anulowano rozmontowanie.";}
         private bool DismantleCatalogItem(R1RunController run,string id)
         {
-            if(dismantleConfirmation!=id){dismantleConfirmation=id;catalogFeedback="Kliknij ponownie, aby rozmontować wybraną część.";return false;}
+            if(dismantleConfirmation!=id)
+            {
+                var item=run.VehicleModel.Inventory.FirstOrDefault(part=>part.Id==id);
+                if(item==null){catalogFeedback="Nie znaleziono części w magazynie.";return false;}
+                dismantleConfirmation=id;
+                catalogFeedback=$"{R4WeaponDefinition.PartName(item)} → {run.VehicleModel.PreviewAward(run.VehicleModel.DismantleValue(item))} Z. Kliknij ponownie, aby rozmontować.";
+                return false;
+            }
             dismantleConfirmation=null;
             int before=run.VehicleModel.Scrap;
             bool done=run.GarageDismantle(id);

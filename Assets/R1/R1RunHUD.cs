@@ -58,6 +58,7 @@ namespace RoboRougelike.R1
         private void DismissCatalog(){catalogOpen=false;catalogSearch=string.Empty;dismantleConfirmation=null;catalogFeedback=null;SyncQuickCategoryToCatalog();}
         internal bool ClosePartCatalog()
         {
+            if(catalogOpen&&dismantleConfirmation!=null){CancelCatalogDismantle();return true;}
             if(catalogOpen){DismissCatalog();return true;}
             if(garageOptionsOpen){garageOptionsOpen=false;return true;}
             return false;

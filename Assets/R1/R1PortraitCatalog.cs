@@ -64,7 +64,12 @@ namespace RoboRougelike.R1
                 GUI.enabled=(repair>0||(model.CreativeMode&&item.Health<1))&&model.Scrap>=repair;
                 if(GUI.Button(new Rect(rect.x+108,rect.y+31,102,60),model.CreativeMode&&item.Health<1?"Napraw 0 Z":GarageRepairCaption(item,repair,model.Scrap),compactButton))PortraitCatalogRepair(run,item.Id);
                 GUI.enabled=true;
-                if(GUI.Button(new Rect(rect.x+216,rect.y+31,114,60),dismantleConfirmation==item.Id?"Potwierdź\nrozmontowanie":$"Rozmontuj\n→ {model.PreviewAward(model.DismantleValue(item))} Z",compactButton))PortraitCatalogDismantle(run,item.Id);
+                if(dismantleConfirmation==item.Id)
+                {
+                    if(GUI.Button(new Rect(rect.x+216,rect.y+31,54,60),"Tak",compactButton))PortraitCatalogDismantle(run,item.Id);
+                    if(GUI.Button(new Rect(rect.x+274,rect.y+31,56,60),"Anuluj",compactButton))CancelCatalogDismantle();
+                }
+                else if(GUI.Button(new Rect(rect.x+216,rect.y+31,114,60),$"Rozmontuj\n→ {model.PreviewAward(model.DismantleValue(item))} Z",compactButton))PortraitCatalogDismantle(run,item.Id);
             }
             if(items.Length==0)GUI.Label(new Rect(0,5,330,100),CatalogEmptyStackHint(model.CreativeMode,selectedKind,run.CanBuyTechnology(selectedKind,selectedWeapon)),small);
             GUI.EndScrollView();
