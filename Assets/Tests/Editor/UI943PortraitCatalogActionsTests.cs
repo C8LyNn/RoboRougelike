@@ -451,6 +451,33 @@ public sealed class UI943PortraitCatalogActionsTests
         yield return new ExitPlayMode();
     }
 
+    [UnityTest] public IEnumerator GarageActionsExplainRepairAndRemovalFailures()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance?.Progress==null)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);
+        var model=run.VehicleModel;var garage=run.Garage;
+        var core=model.Parts.First(p=>p.Kind==R3PartKind.Core);
+        garage.SetTool(R41GarageTool.Remove);garage.Select(core.Cell);
+        Assert.That(garage.ClickTarget(),Is.False);Assert.That(garage.Message,Does.Contain("rdzeni"));
+        garage.SetTool(R41GarageTool.Repair);garage.Select(core.Cell);
+        Assert.That(garage.ClickTarget(),Is.False);Assert.That(garage.Message,Does.Contain("sprawna"));
+        R3PartState armor=null;foreach(var part in model.Parts)if(part.Kind==R3PartKind.Armor){armor=part;break;}
+        Assert.That(armor,Is.Not.Null);armor.Health=.5f;
+        typeof(R3VehicleModel).GetProperty("Scrap").SetValue(model,0);
+        int price=model.RepairCost(armor);Assert.That(price,Is.GreaterThan(0));
+        garage.Select(armor.Cell);Assert.That(garage.ClickTarget(),Is.False);
+        Assert.That(garage.Message,Does.Contain($"Brakuje {price} Z"));Assert.That(armor.Health,Is.EqualTo(.5f));
+        model.Award(price);garage.Select(armor.Cell);Assert.That(garage.ClickTarget(),Is.True);
+        Assert.That(garage.Message,Does.Contain($"{price} Z"));Assert.That(armor.Health,Is.EqualTo(1));
+        model.Award(10000);
+        while(model.Inventory.Count<model.AvailableInventoryCapacity)Assert.That(model.PurchaseToInventory(R3PartKind.Armor),Is.True);
+        garage.SetTool(R41GarageTool.Remove);garage.Select(armor.Cell);
+        Assert.That(garage.ClickTarget(),Is.False);Assert.That(garage.Message,Does.Contain("magazyn"));
+        Assert.That(model.Parts.Contains(armor),Is.True);
+        yield return new ExitPlayMode();
+    }
+
     [UnityTest] public IEnumerator CopyMountedPartSelectsOwnedInstanceWithoutSpending()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();

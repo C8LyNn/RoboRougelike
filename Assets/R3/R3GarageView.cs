@@ -601,13 +601,41 @@ namespace RoboRougelike.R3
                     Message=MountedStackFeedback(remaining.Length,next!=null);
                 }
             }
-            else if(Tool==R41GarageTool.Repair)
-            {result=run.GarageRepair(Cell);Message=result?"Naprawiono wskazaną część.":"Brak uszkodzeń, Złomu lub sprawnego połączenia.";}
-            else if(Tool==R41GarageTool.Remove)
-            {result=run.GarageRemove(Cell);Message=result?"Część wróciła do magazynu w obecnym stanie.":"Chroniony rdzeń, most lub pełny magazyn.";}
+            else if(Tool==R41GarageTool.Repair)result=RepairPartAt(Cell);
+            else if(Tool==R41GarageTool.Remove)result=RemovePartAt(Cell);
             else {result=run.VehicleModel.At(Cell)!=null;Message=result?"Stan części i koszt naprawy są widoczne w panelu garażu.":"Nie znaleziono części.";}
             if(result&&Tool==R41GarageTool.Remove)HasTarget=false;
             RefreshMarker();return result;
+        }
+        public bool RepairPartAt(Vector3Int cell)
+        {
+            if(run.Transitioning||run.Progress?.State!=R1RunState.Garage||run.VehicleModel==null)
+            {Message="Garaż jest chwilowo niedostępny.";return false;}
+            var model=run.VehicleModel;var part=model.At(cell);
+            if(part==null){Message="Wskaż część do naprawy.";return false;}
+            if(part.Health>=1){Message="Ta część jest już sprawna.";return false;}
+            int price=model.RepairCost(part);
+            if(!R3VehicleModel.ValidEconomicPart(part)||(!model.CreativeMode&&price<=0))
+            {Message="Tej części nie można naprawić.";return false;}
+            if(price>model.Scrap){Message=$"Brakuje {price-model.Scrap} Z na naprawę.";return false;}
+            if(!run.GarageRepair(cell))
+            {Message="Nie można naprawić. Sprawdź połączenie, wolne miejsce i typy broni.";return false;}
+            Message=model.CreativeMode?"Naprawiono część za darmo.":$"Naprawiono część • {price} Z.";
+            return true;
+        }
+        public bool RemovePartAt(Vector3Int cell)
+        {
+            if(run.Transitioning||run.Progress?.State!=R1RunState.Garage||run.VehicleModel==null)
+            {Message="Garaż jest chwilowo niedostępny.";return false;}
+            var model=run.VehicleModel;var part=model.At(cell);
+            if(part==null){Message="Wskaż część do zdjęcia.";return false;}
+            if(part.Kind==R3PartKind.Core){Message="Nie można zdjąć rdzenia.";return false;}
+            if(model.Inventory.Count>=model.AvailableInventoryCapacity)
+            {Message="Nie można zdjąć: magazyn jest pełny.";return false;}
+            if(!run.GarageRemove(cell))
+            {Message="Nie można zdjąć: część podtrzymuje konstrukcję lub jest ona rozłączona.";return false;}
+            Message=$"Część wróciła do magazynu • HP {part.Health*100:0}%.";
+            return true;
         }
         public static bool InBuildArea(Vector2 screen,int width,int height)
         {
