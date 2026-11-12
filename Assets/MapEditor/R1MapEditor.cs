@@ -34,6 +34,11 @@ namespace RoboRougelike.R1
         void CancelMapLoad(){pendingMapLoadPath=null;pendingMapLoadSnapshot=null;pendingMapExitSnapshot=null;}
         public bool MapOverwritePending => pendingMapOverwrite!=null;
         public void CancelMapOverwrite(){pendingMapOverwrite=null;pendingMapOverwriteSnapshot=null;CancelMapLoad();}
+        public bool CancelMapPendingAction()
+        {
+            if(!MapOverwritePending&&!MapLoadPending&&!MapExitPending)return false;
+            CancelMapOverwrite();EditorMessage="Anulowano. Mapa pozostała bez zmian.";return true;
+        }
         public bool EditorTextFocused;
         GameObject editorGrid,editorGround;
         Vector3 editorCenter;
