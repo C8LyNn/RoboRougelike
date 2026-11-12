@@ -1103,6 +1103,21 @@ public sealed class UI943PortraitCatalogActionsTests
         Assert.That(run.Garage.Message,Does.Contain("2").And.Contain(quote+" Z"),"A quick garage repair must show its result without opening the catalog.");
         yield return null;
     }
+    [Test] public void NextMountSelectionPrefersUsablePartButKeepsWreckAvailableForRepair()
+    {
+        var select=typeof(R3GarageView).GetMethod("NextOwnedMountPart",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(select,Is.Not.Null);
+        var wreck=new R3PartState(default,R3PartKind.Armor){Health=0};
+        var damaged=new R3PartState(default,R3PartKind.Armor){Health=.4f};
+        var healthy=new R3PartState(default,R3PartKind.Armor){Health=1};
+        object Pick(R3PartState[] parts,bool includeWreck)=>select.Invoke(null,new object[]{parts,includeWreck});
+        Assert.That(Pick(new[]{wreck,damaged,healthy},true),Is.SameAs(healthy));
+        Assert.That(Pick(new[]{wreck,damaged},true),Is.SameAs(damaged));
+        Assert.That(Pick(new[]{wreck},false),Is.Null,"Creative mode can first offer another free piece.");
+        Assert.That(Pick(new[]{wreck},true),Is.SameAs(wreck));
+        Assert.That(Pick(Array.Empty<R3PartState>(),true),Is.Null);
+    }
+
     [UnityTest] public IEnumerator QuickSingleRepairChangesOnlySelectedInstanceAndPreservesSelection()
     {
         EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();

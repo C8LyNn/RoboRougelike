@@ -579,6 +579,8 @@ namespace RoboRougelike.R3
             kind==R3PartKind.BonusModule?"Zamontowano. Brak kolejnych bonusów — zdobądź je z nagród.":
             !unlocked?"Zamontowano. Odzyskaj kolejną część lub odblokuj technologię.":
             "Zamontowano. Kup lub odzyskaj kolejną część.";
+        private static R3PartState NextOwnedMountPart(R3PartState[] matching,bool includeWreck)=>
+            matching.Where(p=>includeWreck||p.Health>0).OrderByDescending(p=>p.Health).FirstOrDefault();
         public bool ClickTarget()
         {
             if(!HasTarget||run.Progress?.State!=R1RunState.Garage||run.Transitioning)return false;
@@ -600,17 +602,19 @@ namespace RoboRougelike.R3
                         (p.Kind!=R3PartKind.Wheel||(p.WheelStyle==mounted.WheelStyle&&p.FootprintRevision==mounted.FootprintRevision))&&
                         (p.Kind!=R3PartKind.Armor||p.ArmorShape==mounted.ArmorShape)&&
                         (p.Kind!=R3PartKind.BonusModule||R3VehicleModel.SameBonusType(p,mounted))).ToArray();
-                    int tier=R3VehicleModel.NormalizedTier(mounted.Tier);
                     var sameTier=remaining.Where(p=>R3VehicleModel.SameMountVariant(p,mounted)).ToArray();
-                    var next=sameTier.Where(p=>p.Health>0).OrderByDescending(p=>p.Health).FirstOrDefault();
+                    var next=NextOwnedMountPart(sameTier,false);
                     // Creative mode supplies another identical piece so one selection
                     // supports continuous building without repeated purchases.
                     if(next==null&&run.CreativeWorkshop)run.AddCreativeEquivalent(mounted,out next);
+                    // Keep a matching wreck selected for the explicit quick-repair
+                    // action; it remains invalid for placement until repaired.
+                    if(next==null)next=NextOwnedMountPart(sameTier,true);
                     SelectedInventoryId=next?.Id;
                     Message=next==null&&remaining.Length>sameTier.Length?
                         "Zamontowano. Pozostałe części mają inny poziom, punkty mocowania lub wymagają naprawy — wybierz egzemplarz w magazynie.":
                         next==null&&sameTier.Length==0?ExhaustedStackFeedback(run.CreativeWorkshop,mounted.Kind,run.CanBuyTechnology(mounted.Kind,mounted.Weapon)):
-                        MountedStackFeedback(sameTier.Length,next!=null);
+                        MountedStackFeedback(sameTier.Length,next!=null&&next.Health>0);
                 }
             }
             else if(Tool==R41GarageTool.Repair)result=RepairPartAt(Cell);
