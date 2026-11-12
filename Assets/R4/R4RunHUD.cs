@@ -340,12 +340,22 @@ namespace RoboRougelike.R1
             }
             return selected.ToArray();
         }
+        private static string CatalogRepairLabel(R3VehicleModel model,R3PartState[] items,int planned,int eligible,int total)
+        {
+            if(eligible==0)return "Brak części do naprawy";
+            if(planned==0)
+            {
+                int cheapest=items.Where(item=>item!=null).Select(model.RepairCost).Where(cost=>cost>0).DefaultIfEmpty(0).Min();
+                return cheapest>model.Scrap?$"Brakuje {cheapest-model.Scrap} Z":"Naprawa niedostępna";
+            }
+            if(model.CreativeMode)return $"Napraw {planned} • za darmo";
+            return $"Napraw {planned}/{eligible} • {total} Z"+(planned<eligible?" • najtaniej":"");
+        }
         private void DrawCatalogBulkRepair(R1RunController run,R3PartState[] items,Rect rect,bool garageQuick=false)
         {
             var plan=CatalogRepairPlan(run.VehicleModel,items,out int eligible,out int total);
             bool previouslyEnabled=GUI.enabled;GUI.enabled=previouslyEnabled&&plan.Length>0;
-            string label=eligible==0?"Brak części do naprawy":plan.Length==0?"Za mało złomu na naprawę":
-                $"Napraw {plan.Length}/{eligible} • {total} Z"+(plan.Length<eligible?" • najtaniej":"");
+            string label=CatalogRepairLabel(run.VehicleModel,items,plan.Length,eligible,total);
             if(garageQuick)label="Magazyn: "+label;
             if(GUI.Button(rect,label,compactButton))RepairCatalogStack(run,items);
             GUI.enabled=previouslyEnabled;

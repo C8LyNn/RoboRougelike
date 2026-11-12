@@ -174,10 +174,11 @@ namespace RoboRougelike.R1
             "Brak egzemplarzy. Kup część przyciskiem poniżej.";
         string CatalogGroupCaption(R1RunController run,R3PartKind kind,R4WeaponKind weapon,string bonus,string name)
         {
-            int count=0;bool usable=false;
+            int count=0;bool usable=false,healthy=false;
             foreach(var item in run.VehicleModel.Inventory)
-                if(InCatalogGroup(item,kind,weapon,bonus)){count++;if(item.Health>0)usable=true;}
-            return CatalogStackCaption(name,count,usable,run.CanBuyTechnology(kind,weapon));
+                if(InCatalogGroup(item,kind,weapon,bonus)){count++;if(item.Health>0)usable=true;if(item.Health>=1)healthy=true;}
+            string caption=CatalogStackCaption(name,count,usable,run.CanBuyTechnology(kind,weapon));
+            return usable&&!healthy?caption+" • uszkodzone":caption;
         }
         void DrawCatalogRow(R1RunController run,R3PartKind kind,R4WeaponKind weapon,string bonus,string name,int row)
         {
