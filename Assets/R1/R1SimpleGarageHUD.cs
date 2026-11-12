@@ -485,6 +485,16 @@ namespace RoboRougelike.R1
             var part=CatalogItemsForGroup(run.VehicleModel,kind,weapon,bonus).FirstOrDefault(p=>p.Health>0);
             if(part==null&&run.CreativeWorkshop&&AddSelectedCatalogPart(run,kind,weapon))
                 part=run.VehicleModel.Inventory.LastOrDefault();
+            if(part==null)
+            {
+                var wreck=CatalogItemsForGroup(run.VehicleModel,kind,weapon,bonus).FirstOrDefault(p=>p.Health<=0);
+                if(wreck!=null)
+                {
+                    garage.ChooseInventory(wreck.Id);
+                    garage.Message="Część jest zniszczona. Użyj naprawy poniżej, aby ją zamontować.";
+                    return;
+                }
+            }
             if(part!=null){garage.ChooseInventory(part.Id);garage.Message=kind==R3PartKind.BonusModule?
                 $"Moduł T{R3VehicleModel.NormalizedTier(part.Tier)}: {BonusInstanceText(part)}. Kliknij, aby zamontować.":kind==R3PartKind.Battery?
                 $"Bateria T{R3VehicleModel.NormalizedTier(part.Tier)}: +{VehicleEnergyState.BatteryCapacity*R3VehicleModel.TierEffectUnits(part.Tier):0} maks. energii. Kliknij, aby zamontować.":
