@@ -52,6 +52,17 @@ public sealed class CompactCombatHUDTests
         Assert.That(Warning(float.NaN,100,float.NaN,500),Is.Null);
         Assert.That(Warning(1,0,1,0),Is.Null,"Missing resource data must not produce a false alert.");
     }
+    [Test] public void EquipmentWarningsDistinguishLastWheelAndInactiveWeapons()
+    {
+        var method=typeof(R1RunHUD).GetMethod("CombatEquipmentWarning",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        string Warning(R3DriveKind drive,int initial,int surviving,bool inactive)=>(string)method.Invoke(null,new object[]{drive,initial,surviving,inactive});
+        Assert.That(Warning(R3DriveKind.Wheels,6,6,false),Is.Null);
+        Assert.That(Warning(R3DriveKind.Wheels,6,1,false),Does.Contain("koło").And.Contain("porażk"));
+        Assert.That(Warning(R3DriveKind.Hover,6,1,false),Is.Null,"Wheels are not the selected drive.");
+        Assert.That(Warning(R3DriveKind.Wheels,6,4,true),Does.Contain("Uzbrojenie").And.Contain("nieaktywne"));
+        Assert.That(Warning(R3DriveKind.Wheels,6,1,true),Does.Contain("koło"),"The imminent loss condition takes priority.");
+    }
     [Test] public void DetailsShortcutTogglesWithoutConsumingMovementOrMouse()
     {
         var go=new GameObject("HUD shortcut test");

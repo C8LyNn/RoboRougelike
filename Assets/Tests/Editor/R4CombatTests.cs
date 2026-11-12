@@ -39,6 +39,37 @@ public class R4CombatTests
         if(original!=null)InputSystem.settings=original;if(testSettings!=null)UnityEngine.Object.Destroy(testSettings);
         if(Application.isPlaying){Time.timeScale=1;yield return new ExitPlayMode();}
     }
+    [UnityTest] public IEnumerator LastWheelWarningUsesSurvivingPhysicalModules()
+    {
+        var player=Run.Player;var assembly=player.GetComponent<R3VehicleAssembly>();
+        var wheels=assembly.Parts.Where(part=>part.Kind==R3PartKind.Wheel).ToArray();
+        Assert.That(wheels.Length,Is.GreaterThan(1));
+        foreach(var wheel in wheels.Skip(1))wheel.Damageable.ApplyDamage(10000,wheel.transform.position,Vector3.zero);
+        player.Structure.EvaluateStructure();player.Modules.RefreshModules();
+        Assert.That(player.Modules.SurvivingWheelCount,Is.EqualTo(1));
+        var warning=typeof(R1RunHUD).GetMethod("CombatEquipmentWarning",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+        Assert.That(warning,Is.Not.Null);
+        var text=(string)warning.Invoke(null,new object[]{R3DriveKind.Wheels,player.Modules.InitialWheelCount,player.Modules.SurvivingWheelCount,false});
+        Assert.That(text,Does.Contain("koło").And.Contain("porażk"));
+        Assert.That(player.DefeatReason,Is.Null,"One structurally surviving wheel must not itself cause defeat.");
+        yield return null;
+    }
+    [UnityTest] public IEnumerator DisabledWeaponsWarnWithoutTreatingEmpAsDestruction()
+    {
+        var player=Run.Player;
+        var receivers=player.GetComponentsInChildren<RoboRougelike.Mechanics.EMP.EmpReceiver>();
+        Assert.That(receivers,Is.Not.Empty);
+        foreach(var receiver in receivers)receiver.ApplyEmp(3);
+        player.Modules.RefreshModules();
+        Assert.That(player.Modules.HasSurvivingWeapon,Is.True);
+        Assert.That(player.Modules.ActiveWeaponCount,Is.Zero);
+        var warning=typeof(R1RunHUD).GetMethod("CombatEquipmentWarning",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic);
+        Assert.That(warning,Is.Not.Null);
+        var text=(string)warning.Invoke(null,new object[]{R3DriveKind.Wheels,player.Modules.InitialWheelCount,player.Modules.SurvivingWheelCount,true});
+        Assert.That(text,Does.Contain("Uzbrojenie").And.Contain("nieaktywne"));
+        Assert.That(player.DefeatReason,Is.Null,"Temporary EMP must not be described as destroyed equipment.");
+        yield return null;
+    }
     [UnityTest] public IEnumerator CoreDeathSnapshotsActualSurvivingWeaponBeforeWreckCleanup()
     {
         var enemy=Run.Encounter.Enemies.First();
