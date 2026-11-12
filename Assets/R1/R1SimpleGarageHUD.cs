@@ -61,6 +61,13 @@ namespace RoboRougelike.R1
             {garage.SetTool(R41GarageTool.Mount);garage.Message="Wybierz część z listy.";}
         }
 
+        void BrowseQuickCategory(R1RunController run,int category)
+        {
+            if(category<0||category>3)return;
+            ApplyQuickSearch(run,string.Empty);
+            SelectQuickCategory(run,category);
+        }
+
         void SyncQuickCategoryToCatalog()
         {
             if(!catalogGroup.HasValue)return;
@@ -506,23 +513,34 @@ namespace RoboRougelike.R1
             string[] categories={"5 Bloki","6 Koła","7 Broń","8 Moduły"};
             if(quickCategoryButton==null)quickCategoryButton=new GUIStyle(compactButton){fontSize=13,wordWrap=false,padding=new RectOffset(1,1,2,2)};
             float categoryWidth=(area.width-12)/4;
-            if(string.IsNullOrWhiteSpace(quickPartSearch))
+            bool searching=!string.IsNullOrWhiteSpace(quickPartSearch);
+            for(int i=0;i<categories.Length;i++)
             {
-                for(int i=0;i<categories.Length;i++)
+                quickCategoryButton.normal.background=!searching&&quickPartCategory==i?buttonPressed:buttonNormal;
+                if(GUI.Button(new Rect(area.x+i*(categoryWidth+4),area.y,categoryWidth,34),categories[i],quickCategoryButton))
                 {
-                    quickCategoryButton.normal.background=quickPartCategory==i?buttonPressed:buttonNormal;
-                    if(GUI.Button(new Rect(area.x+i*(categoryWidth+4),area.y,categoryWidth,34),categories[i],quickCategoryButton))
-                        SelectQuickCategory(run,i);
+                    BrowseQuickCategory(run,i);
+                    GUI.FocusControl(null);GUIUtility.keyboardControl=0;
                 }
             }
-            else GUI.Label(new Rect(area.x,area.y,area.width,34),"Wyniki • wszystkie kategorie",small);
             GUI.backgroundColor=Color.white;
             var listArea=new Rect(area.x,area.y+40,area.width,area.height-40);
             var entries=BuildFilteredQuickCatalogEntries(model,quickPartCategory,quickOwnedOnly,quickPartSearch);
-            quickPartsScroll=GUI.BeginScrollView(listArea,quickPartsScroll,new Rect(0,0,rowWidth,Mathf.Max(listArea.height,entries.Count*38)));
+            float contentHeight=entries.Count==0?145:entries.Count*38;
+            quickPartsScroll=GUI.BeginScrollView(listArea,quickPartsScroll,new Rect(0,0,rowWidth,Mathf.Max(listArea.height,contentHeight)));
             for(int row=0;row<entries.Count;row++)
             {var entry=entries[row];DrawQuickPartRow(run,entry.Kind,entry.Weapon,entry.Group,entry.Name,row,rowWidth);}
-            if(entries.Count==0)GUI.Label(new Rect(0,5,rowWidth,70),string.IsNullOrWhiteSpace(quickPartSearch)?"Brak posiadanych części w tej kategorii. Wyłącz filtr, aby zobaczyć wszystkie.":"Brak wyników. Zmień wyszukiwanie lub filtr.",small);
+            if(entries.Count==0)
+            {
+                GUI.Label(new Rect(0,5,rowWidth,50),searching?"Brak wyników wyszukiwania.":
+                    quickOwnedOnly?"Brak posiadanych części w tej kategorii.":"Brak części w tej kategorii.",small);
+                float y=55;
+                if(searching&&GUI.Button(new Rect(0,y,rowWidth,34),"Wyczyść wyszukiwanie",compactButton))
+                {ApplyQuickSearch(run,string.Empty);GUI.FocusControl(null);GUIUtility.keyboardControl=0;}
+                if(searching)y+=38;
+                if(quickOwnedOnly&&GUI.Button(new Rect(0,y,rowWidth,34),"Pokaż wszystkie części",compactButton))
+                    ToggleQuickOwnedOnly(run);
+            }
             GUI.EndScrollView();GUI.backgroundColor=Color.white;
         }
 

@@ -737,6 +737,28 @@ public sealed class UI943PortraitCatalogActionsTests
         yield return new ExitPlayMode();
     }
 
+    [UnityTest] public IEnumerator BrowsingCategoryAfterSearchKeepsOnlyVisibleSelectionAndNeverBuys()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance?.Progress==null)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
+        Assert.That(run.GaragePurchase(R3PartKind.Wheel),Is.True);
+        var hud=run.GetComponent<R1RunHUD>();
+        Invoke(hud,"ApplyQuickSearch",run,"kolo");
+        Invoke(hud,"SelectQuickPart",run,R3PartKind.Wheel,R4WeaponKind.Basic,null);
+        string selected=run.Garage.SelectedInventoryId;int count=run.VehicleModel.Inventory.Count,scrap=run.VehicleModel.Scrap;
+        Invoke(hud,"BrowseQuickCategory",run,1);
+        Assert.That((string)Field(hud,"quickPartSearch"),Is.Empty);
+        Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(selected),"The selected wheel remains visible in its own category.");
+        Invoke(hud,"ApplyQuickSearch",run,"kolo");
+        Invoke(hud,"BrowseQuickCategory",run,2);
+        Assert.That((int)Field(hud,"quickPartCategory"),Is.EqualTo(2));
+        Assert.That((string)Field(hud,"quickPartSearch"),Is.Empty);
+        Assert.That(run.Garage.SelectedInventoryId,Is.Null,"Switching away must not leave an invisible item ready to mount.");
+        Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(count));
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));
+    }
+
     [TestCase(EventType.KeyDown,KeyCode.Escape,"GarageQuickSearch",true,true)]
     [TestCase(EventType.KeyDown,KeyCode.Return,"GarageQuickSearch",true,true)]
     [TestCase(EventType.KeyDown,KeyCode.KeypadEnter,"GarageQuickSearch",true,true)]
