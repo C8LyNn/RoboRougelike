@@ -1087,5 +1087,20 @@ public sealed class UI943PortraitCatalogActionsTests
         Assert.That((bool)Field(hud,"quickOwnedOnly"),Is.False,"A group deliberately selected in the full catalog must remain visible on return.");
         yield return null;
     }
+    [UnityTest] public IEnumerator EscapeLeavesGarageSearchBeforeOpeningPause()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance?.Progress==null)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
+        var hud=run.GetComponent<R1RunHUD>();
+        var editing=typeof(R1RunHUD).GetField("quickSearchEditing",BindingFlags.Instance|BindingFlags.NonPublic);
+        Assert.That(editing,Is.Not.Null,"The HUD must remember that the player is editing search between GUI and input updates.");
+        editing.SetValue(hud,true);
+        run.HandleEscape();
+        Assert.That(run.Paused,Is.False,"The first Escape should leave search, not pause.");
+        Assert.That((bool)editing.GetValue(hud),Is.False);
+        yield return null;
+        run.HandleEscape();Assert.That(run.Paused,Is.True,"A second Escape opens pause.");
+    }
     [UnityTearDown] public IEnumerator Cleanup(){if(Application.isPlaying)yield return new ExitPlayMode();}
 }

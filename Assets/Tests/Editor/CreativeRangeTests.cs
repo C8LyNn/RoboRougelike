@@ -40,6 +40,28 @@ public class CreativeRangeTests
         yield return null;
     }
 
+    [UnityTest] public IEnumerator EscapeClosesEnemyMenuBeforeResumingSimulation()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
+        Assert.That(run.EnterTestRange(),Is.True);
+        while(run.Transitioning)yield return null;
+        run.TogglePause();
+        Assert.That(run.SpawnCreativeEnemy(R3EnemyArchetype.Gunner),Is.True);
+        var hud=run.GetComponent<R1RunHUD>();
+        var menu=typeof(R1RunHUD).GetField("creativeEnemyMenu",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+        menu.SetValue(hud,true);
+        var enemy=run.GetComponent<R6TestRange>().Layout.GetComponentsInChildren<RogueMachine.P12PipelineSafe.P12PipelineSafeEnemyTurret>().First();
+        var active=enemy.GetType().GetField("combatActive",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+        run.HandleEscape();
+        Assert.That(run.Paused,Is.True,"Closing a submenu must not resume combat.");
+        Assert.That((bool)menu.GetValue(hud),Is.False);
+        Assert.That((bool)active.GetValue(enemy),Is.False);
+        yield return null;
+        run.HandleEscape();
+        Assert.That(run.Paused,Is.False);
+        Assert.That((bool)active.GetValue(enemy),Is.True);
+    }
+
     [UnityTest] public IEnumerator CreativeGarageStartsWithCoreAndOffersFreeParts()
     {
         var run=R1RunController.Instance;

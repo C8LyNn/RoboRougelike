@@ -405,6 +405,8 @@ namespace RoboRougelike.R1
             if(lastEscapeFrame==Time.frameCount)return;
             lastEscapeFrame=Time.frameCount;
             var hud=GetComponent<R1RunHUD>();
+            if(hud?.CloseQuickGarageSearch(this)==true)return;
+            if(Paused&&CreativeWorkshop&&Progress?.State==R1RunState.TestDrive&&hud?.CloseCreativeEnemyMenu()==true)return;
             if(!Paused&&Progress?.State==R1RunState.Salvage&&hud?.CloseRewardInventory()==true)return;
             if(hud?.ClosePartCatalog()==true)return;
             TogglePause();

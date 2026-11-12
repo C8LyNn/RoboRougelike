@@ -14,6 +14,7 @@ namespace RoboRougelike.R1
         int quickPartCategory;
         bool quickOwnedOnly;
         const string QuickSearchControlName="GarageQuickSearch";
+        bool quickSearchEditing,quickSearchReleasePending;
         string quickPartSearch=string.Empty;
         GUIStyle quickCategoryButton,garageShortcutLabel;
         Vector2 quickPartsScroll;
@@ -100,6 +101,12 @@ namespace RoboRougelike.R1
 
         static bool GarageSearchConsumesKey(EventType type,string focused)=>
             (type==EventType.KeyDown||type==EventType.KeyUp)&&focused==QuickSearchControlName;
+        internal bool CloseQuickGarageSearch(R1RunController run)
+        {
+            if(!quickSearchEditing||run==null||run.Paused||run.QuitRequested||run.MapEditing||run.Transitioning||
+                run.Progress?.State!=R1RunState.Garage||catalogOpen||garageOptionsOpen||run.Error!=null)return false;
+            quickSearchEditing=false;quickSearchReleasePending=true;return true;
+        }
         static bool GarageSearchExitKey(EventType type,KeyCode key,string focused,bool active)=>
             active&&focused==QuickSearchControlName&&type==EventType.KeyDown&&
             (key==KeyCode.Escape||key==KeyCode.Return||key==KeyCode.KeypadEnter);
