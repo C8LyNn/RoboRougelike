@@ -24,8 +24,8 @@ def five_way(cid, qs, W=420, Hh=320):
     rows = [("shaded", None), ("grayscale", None), ("bez koloru i tekstur", None), ("wireframe", None), ("sylwetka", None)]; B = Image.new("RGB", (150 + 5*(W + 4), 46 + 5*(Hh + 4)), (12, 14, 18)); d = ImageDraw.Draw(B)
     d.text((10, 10), f"{cid} — pięć stylów, ta sama kamera i światło", font=font(22), fill=(240, 242, 245)); masks = {}
     for c, s in enumerate(ST.STYLES):
-        sh = Image.open(R(cid, s, "34.jpg")).convert("RGB"); clay = Image.open(R(cid, s, "clay.png")).convert("RGBA"); wire = Image.open(R(cid, s, "wire.jpg")).convert("RGB")
-        a = np.array(clay)[:, :, 3] > 40; masks[s] = a; bgc = Image.new("RGB", clay.size, (52, 54, 59)); bgc.paste(clay, mask=clay.split()[3])
+        sh = Image.open(R(cid, s, "34.jpg")).convert("RGB"); bgc = Image.open(R(cid, s, "clay.jpg")).convert("RGB"); wire = Image.open(R(cid, s, "wire.jpg")).convert("RGB")
+        a = np.array(Image.open(R(cid, s, "silhouette.png")).convert("L")) < 128; masks[s] = a
         sil = Image.fromarray(np.where(a[..., None], np.uint8(18), np.uint8(232)).repeat(3, axis=2))
         for r, im in enumerate((sh, ImageOps.grayscale(sh).convert("RGB"), bgc, wire, sil)):
             x = 150 + c*(W + 4); y = 46 + r*(Hh + 4); B.paste(im.resize((W, Hh), Image.LANCZOS), (x, y))

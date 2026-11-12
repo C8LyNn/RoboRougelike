@@ -22,6 +22,20 @@ Razem 120 z 149 pozycji, czyli 600 z 745 wariantów. Brakujące 29 pozycji to cz
 własnej definicji geometrii na nazwach i pivotach węzłów źródłowych. Potok dla nich działa (trzy wykonane przykłady),
 brakuje samych definicji.
 
+## Wyniki tej paczki
+
+| | |
+|---|---|
+| Blender 5.3.0: budowa, eksport, reimport, QA | **600 / 600 BLENDER_PASS** |
+| Testy numpy na GLB (T1–T6) | **120 / 120 assetów z kompletem 5/5** |
+| Reimport animacji FBX i GLB (macierze węzłów w klatkach kluczowych) | zgodny w 600 / 600 |
+| Średnie pokrycie sylwetek między stylami tego samego assetu (IoU, widok 3/4) | **0,96** |
+
+Ostatni wiersz jest złą wiadomością i jest podany celowo: 0,96 oznacza, że **obrysy pięciu stylów są prawie
+identyczne**. Najbardziej różnią się długie łączniki (0,87–0,90), najmniej części z rigiem (0,98–0,99) i klocki (0,97).
+Style różnią się wyraźnie w trybie shaded i grayscale (materiał, tekstura, detal), słabo w trybie bez koloru i w
+sylwetce. Kryterium „rozpoznawalny po samej sylwetce” **nie jest spełnione**.
+
 ## Najważniejsze zastrzeżenie
 
 Po korekcie kierunku wymaganie brzmi: pięć stylów ma wyglądać jak pięć różnych gier, czytelnie bez koloru. **Ta paczka
