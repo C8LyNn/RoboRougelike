@@ -19,5 +19,5 @@ VCOL = {
  "D": dict(flat=0.74, cavity=(0.26, 0.17, 0.11), gamma=1.5, edge=(1.0, 0.94, 0.84), edge_amount=0.85, dist=0.16),
  "E": dict(flat=0.90, cavity=(0.50, 0.36, 0.56), gamma=0.9, edge=(1.0, 1.0, 1.0), edge_amount=0.45, dist=0.16),
 }
-CORE = {"A": "sec", "B": "dark", "C": "dark", "D": "sec", "E": "dark"}            # the structural colour under the armour (cube core, mount plates)
+CORE = {"A": "sec", "B": "dark", "C": "dark", "D": "sec", "E": "sec"}            # the structural colour under the armour (cube core, mount plates)
 CORE_BEVEL = {"A": 0.007, "B": 0.004, "C": 0.010, "D": 0.005, "E": 0.016}

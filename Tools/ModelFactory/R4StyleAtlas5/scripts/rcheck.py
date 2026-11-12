@@ -32,3 +32,23 @@ if __name__ == "__main__":
                 if not good: print(f"{typ} {s} {'LOD1' if lod else 'LOD0'} topo={st['ok']} bad_shells={st['bad_shells'][:5]} inside={ins} {V.min(0).round(3)} {V.max(0).round(3)} ports={bad} nodes={nbad}")
         same = len(set(srcsets)) == 1; allok &= same; print(f"{typ:9s} (tris, mechanisms) A-E {row} same_source_nodes={same}")
     print("ALL OK" if allok else "FAILURES")
+def sweep(typ, s, clips):
+    """generator-side copy of the builder's sweep test for procedural types: mechanism nodes moved by their own tracks (nested mechanisms follow
+    their parent), worst distance outside the envelope in metres"""
+    from scipy.spatial.transform import Rotation as Rot
+    t = PD.TYPES[typ]; env = np.array(t["env"]); m, mech = build(typ, s); worst = (0.0, None, None)
+    def xf(name, c, u, V):
+        l, ax, deg, sc = mech[name](c, u); piv = np.array(m["nodes"][name]["pivot"], float); Rm = Rot.from_rotvec(np.radians(deg)*np.array(ax, float)/np.linalg.norm(ax)).as_matrix(); V = (V - piv)*sc @ Rm.T + piv + np.array(l)
+        par = m["nodes"][name].get("parent"); return xf(par, c, u, V) if par in mech else V
+    for name in mech:
+        V0 = m["by_node"][name]["V"]
+        for c in clips:
+            for u in np.linspace(0, 1, 41):
+                V = xf(name, c, float(u), V0); d = max(float((env[0] - V).max()), float((V - env[1]).max()))
+                if d > worst[0]: worst = (d, name, (c, round(float(u), 2)))
+    return worst
+if __name__ == "__main__" and len(sys.argv) > 2 and sys.argv[2] == "sweep":
+    import aanim as AN
+    for typ in sys.argv[1].split(","):
+        cl = [c[0] for c in AN.CLIPS[AN.clip_set(PD.TYPES[typ]["family"], True)]]
+        for s in ST.STYLES: w = sweep(typ, s, cl); print(typ, s, "max outside envelope %.1f mm" % (w[0]*1000), w[1], w[2], "" if w[0] <= 0.010 else "<-- FAIL")

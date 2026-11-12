@@ -5,9 +5,9 @@ Game contract unchanged (envelope, contact faces, source node names / pivots / b
  * MECHANISM nodes: extra cosmetic mesh nodes parented to the approved nodes, each with its own motion written per style on the
    existing clip timeline (mech(name, pivot, parent, fn); fn(clip, u) -> T(...)). They never move sockets and add no events."""
 import math, numpy as np
-import akit as K, pdefs as PD, qstyle as QS, qdefs as QD
+import akit as K, pdefs as PD, rstyle as RS
 from akit import sbox, lathe, cyl, tube, rod, slab, torus, ball, cone, node, rot, R_to, X, Y, Z, port, empty, ngon
-from qdefs import core_box
+def core_box(x0, x1, y0, y1, z0, z1, *a, **kw): return sbox(x0, x1, y0, y1, z0, z1, RS.CORE[K.STYLE], RS.CORE_BEVEL[K.STYLE])
 H = K.H; P = {}; MECH = {}
 def D(typ, style):
     def deco(fn): P.setdefault(typ, {})[style] = fn; return fn
@@ -21,7 +21,9 @@ def body():
 def sm(u, a=0.0, b=1.0): t = min(1.0, max(0.0, (u - a)/(b - a))); return t*t*(3 - 2*t)
 def bump(u, a, m, b): return sm(u, a, m)*(1 - sm(u, m, b))
 def spring(u, n=3.0, d=4.0): return math.exp(-d*u)*math.sin(2*math.pi*n*u)
-def jit(u, k=1.0, s=0.0): return (math.sin(47.3*u*k + s) + 0.6*math.sin(113.1*u*k + 2.1*s) + 0.4*math.sin(201.7*u*k + 0.7 + s))/2.0
+def jit(u, k=1.0, s=0.0):
+    """band-limited rattle, periodic over a clip (integer frequencies), so loops stay seamless"""
+    w = 2*math.pi*u; return (math.sin(max(1, round(7*k))*w + s) + 0.6*math.sin(max(2, round(13*k))*w + 2.1*s) + 0.4*math.sin(max(3, round(23*k))*w + 0.7 + s))/2.0
 def deform(n, S, c=(0, 0, 0)):
     """non-uniform scale of the last n parts about c (normals corrected)"""
     S = np.asarray(S, float); c = np.asarray(c, float)
@@ -54,7 +56,7 @@ def gun_a():
     mech("Ring", (0, -0.30, 0.16), "Pitch", lambda c, u: T((0, -0.07*(sm(u) if c == "Fire" else 1.0 if c == "Recoil" else 1 - sm(u) if c == "Return" else 0), 0), Y, {"Fire": 240*u, "AimYaw": 360*sm(u), "AimPitch": -360*sm(u), "Idle": 0}.get(c, 240)))
     tube(0.062, 0.071, -0.012, 0.012, "sec", 0.003, 28, R=R_to(Y), at=(0, -0.30, 0.16)); deform(1, (1.5, 1, 1), (0, -0.30, 0.16)); tube(0.071, 0.0735, -0.005, 0.005, "glow", 0.001, 28, R=R_to(Y), at=(0, -0.30, 0.16)); deform(1, (1.5, 1, 1), (0, -0.30, 0.16))
     for sx in (-1, 1):
-        mech("Vent" + ("L" if sx < 0 else "R"), (sx*0.118, 0.03, 0.16), "Pitch", lambda c, u, sx=sx: T(ax=Z, deg=-sx*20*(sm(u, 0, 0.5) if c == "Recoil" else 1 - sm(u) if c == "Return" else 0)))
+        mech("Vent" + ("L" if sx < 0 else "R"), (sx*0.118, 0.03, 0.16), "Pitch", lambda c, u, sx=sx: T(ax=Z, deg=sx*20*(sm(u, 0, 0.5) if c == "Recoil" else 1 - sm(u) if c == "Return" else 0)))
         sbox(sx*0.126 - 0.006, sx*0.126 + 0.006, -0.17, 0.03, 0.128, 0.192, "base", 0.003); sbox(sx*0.133 - 0.002, sx*0.133 + 0.002, -0.15, 0.01, 0.156, 0.164, "glow", 0.001)
     node("Barrel", PV, parent="Pitch")
     for sx in (-1, 1): sbox(sx*0.029 - 0.009, sx*0.029 + 0.009, -0.615, -0.105, 0.104, 0.166, "sec", 0.004)
@@ -123,7 +125,7 @@ def gun_d():
     for (y, z) in ((-0.09, 0.05), (0.10, 0.045), (0.02, 0.20)): rod((-0.15, y, z), (0.145, y, z + 0.004), 0.013, "metal", 0.002, 6)
     sbox(0.01, 0.13, 0.13, 0.25, 0.03, 0.17, "rust", 0.006, rot(Z, 4)); sbox(0.05, 0.09, 0.02, 0.14, 0.15, 0.162, "dark", 0.003); cyl(0.016, 0.17, 0.195, "metal", 0.002, 6, at=(0.07, 0.19, 0))
     sbox(-0.13, -0.03, 0.14, 0.24, 0.03, 0.10, "patch", 0.004, rot(Z, -7))
-    mech("Crank", (-0.16, 0.03, 0.12), "Yaw", lambda c, u: T(ax=X, deg={"AimYaw": 360*(u + 0.07*math.sin(6.28*3*u)), "AimPitch": -270*(u + 0.09*math.sin(6.28*2*u))}.get(c, 4*jit(u, 0.2) if c == "Idle" else 0)))
+    mech("Crank", (-0.16, 0.03, 0.12), "Yaw", lambda c, u: T(ax=X, deg={"AimYaw": 360*(u + 0.07*math.sin(6.28*3*u)), "AimPitch": -270*(u + 0.09*math.sin(6.28*2*u))}.get(c, 3*math.sin(6.283*u) if c == "Idle" else 0)))
     torus(0.055, 0.008, "metal", 10, 5, R=R_to(X), at=(-0.175, 0.03, 0.12)); rod((-0.175, 0.03, 0.065), (-0.175, 0.03, 0.175), 0.006, "rust", 0.001, 5); rod((-0.175, 0.03, 0.172), (-0.189, 0.03, 0.172), 0.009, "dark", 0.002, 6)
     node("Pitch", PV, parent="Yaw")
     sbox(-0.07, 0.07, -0.17, 0.072, 0.10, 0.19, "metal", 0.005); sbox(-0.085, -0.07, -0.14, 0.04, 0.115, 0.175, "rust", 0.003)
@@ -299,9 +301,9 @@ def hover_b():
     mech("Gear", (0.256, 0, 0.05), None, lambda c, u: T(ax=X, deg=spin(c, u, 1.5)))
     cyl(0.055, 0.0, 0.006, "metal", 0.002, 12, R=R_to(X), at=(0.25, 0, 0.05))
     for a in range(8): sbox(0.25, 0.256, -0.01, 0.01, 0.05, 0.068, "metal", 0.002, rot(X, 45*a), (0, 0, 0.05))
-    mech("Rods", (0, 0, -0.21), None, lambda c, u: T((0, 0, -0.03*lift(c, u) - (0.012*math.sin(6.283*2*u) if c == "Lift" else 0) - (0.02*bump(u, 0, 0.3, 1.0) if c == "Pulse" else 0))))
+    mech("Rods", (0, 0, -0.21), None, lambda c, u: T((0, 0, -0.03*lift(c, u) - (0.010*math.sin(6.283*2*u) if c == "Lift" else 0) - (0.012*bump(u, 0, 0.3, 1.0) if c == "Pulse" else 0))))
     for sx in (-1, 1):
-        for sy in (-1, 1): cyl(0.02, -0.285, -0.20, "metal", 0.003, 8, at=(sx*0.214, sy*0.214, 0)); cyl(0.04, -0.287, -0.272, "dark", 0.004, 8, at=(sx*0.214, sy*0.214, 0))
+        for sy in (-1, 1): cyl(0.02, -0.26, -0.175, "metal", 0.003, 8, at=(sx*0.214, sy*0.214, 0)); cyl(0.04, -0.264, -0.249, "dark", 0.004, 8, at=(sx*0.214, sy*0.214, 0))
     node("Rotor", RP_, parent=None); cyl(0.06, -0.246, -0.197, "dark", 0.004, 8)
     for i in range(4): sbox(0.05, 0.16, -0.05, 0.05, -0.006, 0.006, "metal", 0.002, rot(Z, 90*i) @ rot(X, 16), (0, 0, -0.221))
     PD.hover_fx()
@@ -342,7 +344,7 @@ def hover_e():
     for a in (90, 210, 330): rod(rot(Z, a) @ np.array([0.19, 0, -0.10]), rot(Z, a) @ np.array([0.09, 0, 0.08]), 0.032, "sec", 0.012, 10)
     mech("Cap", (0, 0, 0.14), None, lambda c, u: T((0, 0, 0.012*lift(c, u)*(1 + math.sin(6.283*(2*u if c == "Lift" else u))) + (0.03*bump(u, 0, 0.25, 0.7) if c == "Pulse" else 0))))
     lathe([(0, 0.13), (0.10, 0.13), (0.11, 0.16), (0.07, 0.20), (0, 0.208)], ["dark", "dark", "dark", "dark"], 22, crease=75)
-    mech("Lip", (0, 0, -0.29), None, lambda c, u: T(s=1 + 0.03*lift(c, u)*math.sin(6.283*(2*u if c == "Lift" else u)) + {"Pulse": 0.10*bump(u, 0, 0.25, 0.6) - 0.05*bump(u, 0.5, 0.75, 1.0), "SpinUp": 0.05*spring(u, 2, 2.5)}.get(c, 0)))
+    mech("Lip", (0, 0, -0.29), None, lambda c, u: T(s=1 + 0.03*lift(c, u)*math.sin(6.283*(2*u if c == "Lift" else u)) + {"Pulse": 0.06*bump(u, 0, 0.25, 0.6) - 0.04*bump(u, 0.5, 0.75, 1.0), "SpinUp": 0.04*spring(u, 2, 2.5)}.get(c, 0)))
     lathe([(0.15, -0.275), (0.165, -0.305), (0.215, -0.317), (0.245, -0.30), (0.24, -0.275)], ["sec", "sec", "glow", "sec", "dark"], 32, closed=True, crease=75)
     node("Rotor", RP_, parent=None); ball(0.06, "sec", 14, 8, at=(0, 0, -0.222), squash=0.4)
     for i in range(4): sbox(0.04, 0.17, -0.05, 0.05, -0.008, 0.008, "base", 0.006, rot(Z, 90*i) @ rot(X, 16), (0, 0, -0.222))
@@ -379,7 +381,7 @@ def bat_b():
         bolt((sx*0.09, -0.06, 0.235), Z, 0.02)
     rod((-0.09, -0.06, 0.225), (0.09, -0.06, 0.225), 0.014, "sec", 0.003, 8)
     sbox(-0.11, 0.11, -0.225, -0.19, -0.16, 0.05, "sec", 0.006); tube(0.07, 0.09, 0.0, 0.02, "dark", 0.003, 16, R=R_to(-Y), at=(0, -0.225, -0.055))
-    mech("Fan", (0, -0.232, -0.055), None, lambda c, u: T(ax=Y, deg=720*u if c == "Activate" else 90*u if c == "Idle" else 0))
+    mech("Fan", (0, -0.232, -0.055), None, lambda c, u: T(ax=Y, deg=720*u if c == "Activate" else 0))
     cyl(0.022, 0.0, 0.018, "metal", 0.003, 8, R=R_to(-Y), at=(0, -0.225, -0.055))
     for a in range(6): sbox(0.018, 0.066, -0.004, 0.004, -0.014, 0.014, "metal", 0.002, rot(Y, 60*a) @ rot(X, 25), (0, -0.236, -0.055))
     mech("Relay", (0, 0.03, 0.095), None, lambda c, u: T((0, 0, 0.02*max(0.0, act(c, u, 4)))))
@@ -420,9 +422,9 @@ def bat_e():
     Mechanisms: the whole jug bounces and swells to the beat while active, the emblem pulses."""
     biface(0.07, (0.10, 0.14, -0.19, 0.03)); J = (0, -0.05, -0.19)
     for sx in (-1, 1): ball(0.05, "sec", 12, 8, at=(sx*0.15, -0.19, -0.165), squash=0.7)
-    mech("Jug", J, None, lambda c, u: T((0, 0, 0.014*abs(act(c, u, 2))), s={"Activate": 1 + 0.035*act(c, u, 4), "Hit": 1 - 0.08*bump(u, 0, 0.25, 1.0) + 0.04*spring(u, 3, 4)}.get(c, 1.0)))
-    lathe([(0, 0), (0.12, 0), (0.165, 0.05), (0.176, 0.19), (0.15, 0.29), (0.10, 0.35), (0.075, 0.36), (0, 0.36)], ["dark", "base", "base", "base", "sec", "sec", "dark"], 30, crease=75, at=J)
-    torus(0.174, 0.022, "dark", 30, 10, at=(J[0], J[1], -0.02)); lathe([(0, 0.36), (0.08, 0.36), (0.085, 0.40), (0.05, 0.43), (0, 0.435)], ["dark", "dark", "dark", "metal"], 20, crease=75, at=J)
+    mech("Jug", J, None, lambda c, u: T((0, 0, 0.008*abs(act(c, u, 2))), s={"Activate": 1 + 0.025*act(c, u, 4), "Hit": 1 - 0.08*bump(u, 0, 0.25, 1.0) + 0.04*spring(u, 3, 4)}.get(c, 1.0)))
+    lathe([(0, 0), (0.12, 0), (0.165, 0.05), (0.176, 0.18), (0.15, 0.27), (0.10, 0.33), (0.075, 0.34), (0, 0.34)], ["dark", "base", "base", "base", "sec", "sec", "dark"], 30, crease=75, at=J)
+    torus(0.174, 0.022, "dark", 30, 10, at=(J[0], J[1], -0.02)); lathe([(0, 0.34), (0.08, 0.34), (0.085, 0.375), (0.05, 0.405), (0, 0.41)], ["dark", "dark", "dark", "metal"], 20, crease=75, at=J)
     mech("Emblem", (0, -0.232, 0.045), "Jug", lambda c, u: T(s=1 + (0.22*(0.5 - 0.5*math.cos(6.283*4*u)) if c == "Activate" else 0.05*math.sin(6.283*u) if c == "Idle" else 0)))
     slab([(0.03, 0.10), (-0.06, -0.012), (-0.008, -0.012), (-0.036, -0.10), (0.06, 0.018), (0.008, 0.018), (0.05, 0.10)], 0.218, 0.238, (X, Z, -Y), "glow", org=(0, 0, 0.045))
     body()
@@ -498,9 +500,9 @@ def dep_a():
     """Sleek mag-cradle: two swept rails with light strips, lift pad with a light ring, rear pad with a fin. Mechanisms: two clamp arms swing open
     before release and close on reset, the lift pad kicks at the release."""
     dface(0.045, (0.11, 0.17, -0.20, 0.14)); slab([(0.17, 0.14), (0.26, 0.14), (0.26, 0.175), (0.215, 0.215)], -0.03, 0.03, (Y, Z, X), "sec"); sbox(-0.07, 0.07, 0.163, 0.171, -0.03, 0.10, "glow", 0.002)
+    for sx in (-1, 1): slab([(-0.25, -0.215), (0.14, -0.215), (0.14, -0.07), (0.03, -0.02), (-0.21, -0.11)], sx*0.20 - 0.018, sx*0.20 + 0.018, (Y, Z, X), "base"); sbox(sx*0.20 - 0.021, sx*0.20 + 0.021, -0.18, 0.05, -0.006, 0.002, "glow", 0.001, rot(X, 20), (0, 0, -0.078))
     for sx in (-1, 1):
-        slab([(-0.25, -0.215), (0.14, -0.215), (0.14, -0.07), (0.03, -0.02), (-0.21, -0.11)], sx*0.20 - 0.018, sx*0.20 + 0.018, (Y, Z, X), "base"); sbox(sx*0.20 - 0.021, sx*0.20 + 0.021, -0.18, 0.05, -0.006, 0.002, "glow", 0.001, rot(X, 20), (0, 0, -0.078))
-        mech("Clamp" + ("L" if sx < 0 else "R"), (sx*0.185, -0.07, -0.05), None, lambda c, u, sx=sx: T(ax=Y, deg=-sx*55*dk(c, u)))
+        mech("Clamp" + ("L" if sx < 0 else "R"), (sx*0.185, -0.07, -0.05), None, lambda c, u, sx=sx: T(ax=Y, deg=sx*55*dk(c, u)))
         pr = [(0.185, -0.05), (0.20, -0.02), (0.13, 0.035), (0.055, 0.04), (0.05, 0.02), (0.12, 0.012)]; slab(pr if sx > 0 else [(-x, z) for (x, z) in reversed(pr)], 0.03, 0.11, (X, Z, -Y), "sec")
     body(); sbox(-0.18, 0.18, -0.24, 0.13, -0.215, -0.17, "dark", 0.006)
     mech("Lift", (0, -0.07, -0.17), None, lambda c, u: T((0, 0, 0.010*dk(c, u) + 0.035*kick(c, u))))
@@ -518,7 +520,7 @@ def dep_b():
     mech("Ram", (0, -0.13, -0.04), None, lambda c, u: T((0, 0.09*kick(c, u), 0)))
     cyl(0.02, 0.0, 0.07, "metal", 0.003, 8, R=R_to(Y), at=(0, -0.14, -0.04)); sbox(-0.09, 0.09, -0.075, -0.055, -0.105, 0.02, "sec", 0.005)
     for sx in (-1, 1):
-        mech("Hook" + ("L" if sx < 0 else "R"), (sx*0.185, 0.04, -0.085), None, lambda c, u, sx=sx: T(ax=Y, deg=-sx*42*dk(c, u)))
+        mech("Hook" + ("L" if sx < 0 else "R"), (sx*0.185, 0.04, -0.085), None, lambda c, u, sx=sx: T(ax=Y, deg=sx*42*dk(c, u)))
         pr = [(0.185, -0.085), (0.20, -0.04), (0.13, 0.03), (0.10, 0.02), (0.14, -0.05)]; slab(pr if sx > 0 else [(-x, z) for (x, z) in reversed(pr)], -0.06, -0.02, (X, Z, -Y), "metal")
     mech("Sprocket", (0.249, -0.12, -0.03), None, lambda c, u: T(ax=X, deg=(90*sm(u, 0, 0.3) + 90*sm(u, 0.8, 1.0)) if c == "Deploy" else 0))
     cyl(0.05, 0.0, 0.008, "metal", 0.002, 10, R=R_to(X), at=(0.247, -0.12, -0.03))
@@ -528,7 +530,7 @@ def dep_b():
 def dep_c():
     """Arcade ramp: one wedge, one dark rear block, one accent gate. Mechanisms: the gate drops flat before release, the kicker pad pops."""
     dface(0.06, (0.12, 0.14, -0.20, 0.13)); slab([(-0.25, -0.20), (0.14, -0.20), (0.14, -0.10), (-0.25, -0.16)], -0.21, 0.21, (Y, Z, X), "base")
-    mech("Gate", (0, -0.24, -0.165), None, lambda c, u: T(ax=X, deg=85*dk(c, u))); sbox(-0.21, 0.21, -0.256, -0.226, -0.165, -0.075, "sec", 0.01)
+    mech("Gate", (0, -0.24, -0.165), None, lambda c, u: T(ax=X, deg=-85*dk(c, u))); sbox(-0.21, 0.21, -0.256, -0.226, -0.165, -0.075, "sec", 0.01)
     mech("Kicker", (0, -0.05, -0.13), None, lambda c, u: T((0, 0, 0.035*kick(c, u)))); cyl(0.11, -0.145, -0.115, "sec", 0.01, 18, R=rot(X, 8.7), at=(0, -0.05, 0))
     body(); payload("C", 0.6, (0, -0.05, -0.113), rot(X, 8.7))
 @D("Deployer", "D")
@@ -540,10 +542,10 @@ def dep_d():
     for y in (-0.20, 0.0): rod((-0.21, y, -0.195), (0.21, y + 0.01, -0.195), 0.012, "rust", 0.002, 5)
     cyl(0.085, -0.21, 0.07, "rust", 0.006, 9, at=(-0.16, 0.09, 0)); tube(0.083, 0.092, -0.07, -0.05, "metal", 0.002, 9, at=(-0.16, 0.09, 0)); sbox(0.09, 0.24, 0.02, 0.15, -0.21, -0.12, "patch", 0.004, rot(Z, 8))
     for k in range(3): sbox(-0.04, 0.04, -0.18 + k*0.02, 0.10 - k*0.04, -0.19 + k*0.014, -0.18 + k*0.014, "metal", 0.002)
-    mech("Arm", (0.02, 0.12, -0.14), None, lambda c, u: T(ax=X, deg=(48*bump(u, 0.46, 0.53, 0.7) + 9*spring(max(0.0, u - 0.53)*2.2, 3, 3)*(u > 0.53) + 3*jit(u, 0.3)*dk(c, u)) if c == "Deploy" else 0))
+    mech("Arm", (0.02, 0.12, -0.14), None, lambda c, u: T(ax=X, deg=-(48*bump(u, 0.46, 0.53, 0.7) + 9*spring(max(0.0, u - 0.53)*2.2, 3, 3)*(u > 0.53) + 3*jit(u, 0.3)*dk(c, u)) if c == "Deploy" else 0))
     rod((0.02, 0.12, -0.14), (0.02, -0.07, -0.12), 0.014, "metal", 0.003, 6); slab([(-0.10, -0.17), (0.13, -0.18), (0.14, -0.02), (0.02, 0.03), (-0.09, -0.01)], -0.125, -0.115, "z", "patch")
     mech("Latch", (0.20, -0.12, -0.12), None, lambda c, u: T(ax=Y, deg=(40*dk(c, u) + 5*jit(u, 0.6)*dk(c, u)) if c == "Deploy" else 0))
-    slab([(0.20, -0.12), (0.215, -0.07), (0.15, -0.045), (0.14, -0.065), (0.185, -0.085)], -0.14, -0.10, (X, Z, -Y), "rust")
+    slab([(0.20, -0.12), (0.215, -0.07), (0.15, -0.045), (0.14, -0.065), (0.185, -0.085)], 0.10, 0.14, (X, Z, -Y), "rust")
     body(); payload("D", 0.42, (0.02, -0.08, -0.114))
 @D("Deployer", "E")
 def dep_e():
@@ -553,7 +555,19 @@ def dep_e():
     lathe([(0, -0.19), (0.07, -0.19), (0.06, -0.13), (0.155, -0.10), (0.182, -0.055), (0.168, -0.045), (0.135, -0.085), (0, -0.095)], ["dark", "dark", "base", "base", "sec", "dark", "dark"], 28, crease=75, at=(0, -0.07, 0))
     mech("Coil", (0, 0.105, -0.19), None, lambda c, u: T(s=(1 - 0.22*sm(u, 0.05, 0.4)*(1 - sm(u, 0.46, 0.5)) + 0.2*bump(u, 0.46, 0.52, 0.62) + 0.08*spring(max(0.0, u - 0.52)*2.0, 3, 3)*(u > 0.52)) if c == "Deploy" else 1.0))
     for i in range(4): torus(0.045, 0.015, "metal", 16, 8, at=(0, 0.105, -0.175 + i*0.026))
-    mech("Paddle", (0, 0.105, -0.075), None, lambda c, u: T(ax=X, deg=(22*sm(u, 0.05, 0.4)*(1 - sm(u, 0.46, 0.5)) - 62*bump(u, 0.46, 0.52, 0.72) - 10*spring(max(0.0, u - 0.52)*2.0, 3, 3)*(u > 0.52)) if c == "Deploy" else 0))
+    mech("Paddle", (0, 0.105, -0.075), None, lambda c, u: T(ax=X, deg=(-22*sm(u, 0.05, 0.4)*(1 - sm(u, 0.46, 0.5)) + 58*bump(u, 0.46, 0.52, 0.72) + 9*spring(max(0.0, u - 0.52)*2.0, 3, 3)*(u > 0.52)) if c == "Deploy" else 0))
     lathe([(0, 0), (0.03, 0), (0.03, 0.03), (0, 0.03)], "dark", 12, crease=75, R=R_to(X), at=(-0.015, 0.105, -0.075))
     slab([(0.105, -0.085), (0.125, -0.06), (0.11, 0.07), (0.07, 0.115), (0.035, 0.115), (0.06, 0.06), (0.075, -0.07)], -0.07, 0.07, (Y, Z, X), "sec")
     body(); payload("E", 0.5, (0, -0.07, -0.088))
+
+# =================================================================================================== CUBE and STRUT: the pass-1 structural cores in the pass-2 substructure colour
+def _nodes2(seams=None):
+    for y in (0.0, PD.YB): core_box(-H, H, y - H, y + H, -H, H)
+def _with_core(fn):
+    def run():
+        old = PD.box, PD.nodes2; PD.box = core_box; PD.nodes2 = _nodes2
+        try: fn()
+        finally: PD.box, PD.nodes2 = old
+    run.__doc__ = "pilot-2 member between two structural core node blocks"; return run
+for _s in "ABCDE": P.setdefault("Cube", {})[_s] = (lambda: core_box(-H, H, -H, H, -H, H)); P.setdefault("Strut", {})[_s] = _with_core(PD.P["Strut"][_s])
+ORDER = ["Cube", "Strut", "Gun", "Wheel", "Hover", "Battery", "Deployer", "Trap"]

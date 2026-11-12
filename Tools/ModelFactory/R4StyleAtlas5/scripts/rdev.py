@@ -1,6 +1,6 @@
 """pass 2 dev look (pure-python GLB + three.js, pass-1 palette): python3 rdev.py out.jpg Type [34|front|side|back|top]"""
 import os, sys, numpy as np
-import akit as K, astyle as ST, pdefs as PD, qstyle as QS, rdefs as R, glbio, render_shot
+import akit as K, astyle as ST, pdefs as PD, rstyle as QS, rdefs as R, glbio, render_shot
 def b2g(P): P = np.asarray(P); return np.stack([P[:, 0], P[:, 2], -P[:, 1]], axis=1)
 def write_glb(V, faces, path, style, glow):
     by = {}

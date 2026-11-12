@@ -9,7 +9,7 @@ Destruction (event, local): drop every fragment owned by / requiring a removed p
 pointed at the removed cell (their edge closes). Faces uncovered by the hole get NO new armour until repair - the dark core shows the damage.
 Blueprints: four gameplay-valid test robots built only from the eight pilot types."""
 import math, zlib, numpy as np
-import akit as K, qstyle as QS, qdefs as QD
+import akit as K, rstyle as RS, qdefs as QD
 from akit import sbox, lathe, slab, rod, rot, R_to, X, Y, Z
 H = K.H; G = K.G; HP = G/2
 PL = {"A": dict(big=(3, 2), m=0.022, t=0.011, c=0.035), "B": dict(big=(2, 2), m=0.030, t=0.018, c=0.014), "C": dict(big=(3, 3), m=0.036, t=0.013, c=0.065),

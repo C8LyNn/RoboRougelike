@@ -1,0 +1,410 @@
+{
+ "test": "hull layer destruction (generator side)",
+ "pass_conditions": [
+  "no fragment is owned by or requires a removed part",
+  "every plate edge that faced a removed cell is closed (mask bit cleared) - no hanging plate, no open edge",
+  "every remaining fragment has a live owner part (hit identification)"
+ ],
+ "result": "PASS",
+ "scenarios": {
+  "S0_intact": {
+   "A": {
+    "removed_parts": 0,
+    "fragments_before": 82,
+    "fragments_after": 82,
+    "fragments_removed": 0,
+    "tiles_reshaped": 0,
+    "fragments_of_removed_parts": 0,
+    "open_edges": 0,
+    "every_fragment_has_live_owner": true,
+    "PASS": true
+   },
+   "B": {
+    "removed_parts": 0,
+    "fragments_before": 82,
+    "fragments_after": 82,
+    "fragments_removed": 0,
+    "tiles_reshaped": 0,
+    "fragments_of_removed_parts": 0,
+    "open_edges": 0,
+    "every_fragment_has_live_owner": true,
+    "PASS": true
+   },
+   "C": {
+    "removed_parts": 0,
+    "fragments_before": 82,
+    "fragments_after": 82,
+    "fragments_removed": 0,
+    "tiles_reshaped": 0,
+    "fragments_of_removed_parts": 0,
+    "open_edges": 0,
+    "every_fragment_has_live_owner": true,
+    "PASS": true
+   },
+   "D": {
+    "removed_parts": 0,
+    "fragments_before": 78,
+    "fragments_after": 78,
+    "fragments_removed": 0,
+    "tiles_reshaped": 0,
+    "fragments_of_removed_parts": 0,
+    "open_edges": 0,
+    "every_fragment_has_live_owner": true,
+    "PASS": true
+   },
+   "E": {
+    "removed_parts": 0,
+    "fragments_before": 82,
+    "fragments_after": 82,
+    "fragments_removed": 0,
+    "tiles_reshaped": 0,
+    "fragments_of_removed_parts": 0,
+    "open_edges": 0,
+    "every_fragment_has_live_owner": true,
+    "PASS": true
+   }
+  },
+  "S1_plate_centre": {
+   "A": {
+    "removed_parts": 1,
+    "fragments_before": 82,
+    "fragments_after": 77,
+    "fragments_removed": 5,
+    "tiles_reshaped": 3,
+    "fragments_of_removed_parts": 0,
+    "open_edges": 0,
+    "every_fragment_has_live_owner": true,
+    "PASS": true
+   },
+   "B": {
+    "removed_parts": 1,
+    "fragments_before": 82,
+    "fragments_after": 77,
+    "fragments_removed": 5,
+    "tiles_reshaped": 2,
+    "fragments_of_removed_parts": 0,
+    "open_edges": 0,
+    "every_fragment_has_live_owner": true,
+    "PASS": true
+   },
+   "C": {
+    "removed_parts": 1,
+    "fragments_before": 82,
+    "fragments_after": 77,
+    "fragments_removed": 5,
+    "tiles_reshaped": 1,
+    "fragments_of_removed_parts": 0,
+    "open_edges": 0,
+    "every_fragment_has_live_owner": true,
+    "PASS": true
+   },
+   "D": {
+    "removed_parts": 1,
+    "fragments_before": 78,
+    "fragments_after": 73,
+    "fragments_removed": 5,
+    "tiles_reshaped": 1,
+    "fragments_of_removed_parts": 0,
+    "open_edges": 0,
+    "every_fragment_has_live_owner": true,
+    "PASS": true
+   },
+   "E": {
+    "removed_parts": 1,
+    "fragments_before": 82,
+    "fragments_after": 77,
+    "fragments_removed": 5,
+    "tiles_reshaped": 2,
+    "fragments_of_removed_parts": 0,
+    "open_edges": 0,
+    "every_fragment_has_live_owner": true,
+    "PASS": true
+   }
+  },
+  "S2_two_neighbours": {
+   "A": {
+    "removed_parts": 2,
+    "fragments_before": 82,
+    "fragments_after": 73,
+    "fragments_removed": 9,
+    "tiles_reshaped": 3,
+    "fragments_of_removed_parts": 0,
+    "open_edges": 0,
+    "every_fragment_has_live_owner": true,
+    "PASS": true
+   },
+   "B": {
+    "removed_parts": 2,
+    "fragments_before": 82,
+    "fragments_after": 73,
+    "fragments_removed": 9,
+    "tiles_reshaped": 4,
+    "fragments_of_removed_parts": 0,
+    "open_edges": 0,
+    "every_fragment_has_live_owner": true,
+    "PASS": true
+   },
+   "C": {
+    "removed_parts": 2,
+    "fragments_before": 82,
+    "fragments_after": 73,
+    "fragments_removed": 9,
+    "tiles_reshaped": 1,
+    "fragments_of_removed_parts": 0,
+    "open_edges": 0,
+    "every_fragment_has_live_owner": true,
+    "PASS": true
+   },
+   "D": {
+    "removed_parts": 2,
+    "fragments_before": 78,
+    "fragments_after": 70,
+    "fragments_removed": 8,
+    "tiles_reshaped": 1,
+    "fragments_of_removed_parts": 0,
+    "open_edges": 0,
+    "every_fragment_has_live_owner": true,
+    "PASS": true
+   },
+   "E": {
+    "removed_parts": 2,
+    "fragments_before": 82,
+    "fragments_after": 73,
+    "fragments_removed": 9,
+    "tiles_reshaped": 4,
+    "fragments_of_removed_parts": 0,
+    "open_edges": 0,
+    "every_fragment_has_live_owner": true,
+    "PASS": true
+   }
+  },
+  "S3_section": {
+   "A": {
+    "removed_parts": 5,
+    "fragments_before": 82,
+    "fragments_after": 65,
+    "fragments_removed": 17,
+    "tiles_reshaped": 0,
+    "fragments_of_removed_parts": 0,
+    "open_edges": 0,
+    "every_fragment_has_live_owner": true,
+    "PASS": true
+   },
+   "B": {
+    "removed_parts": 5,
+    "fragments_before": 82,
+    "fragments_after": 65,
+    "fragments_removed": 17,
+    "tiles_reshaped": 0,
+    "fragments_of_removed_parts": 0,
+    "open_edges": 0,
+    "every_fragment_has_live_owner": true,
+    "PASS": true
+   },
+   "C": {
+    "removed_parts": 5,
+    "fragments_before": 82,
+    "fragments_after": 65,
+    "fragments_removed": 17,
+    "tiles_reshaped": 0,
+    "fragments_of_removed_parts": 0,
+    "open_edges": 0,
+    "every_fragment_has_live_owner": true,
+    "PASS": true
+   },
+   "D": {
+    "removed_parts": 5,
+    "fragments_before": 78,
+    "fragments_after": 63,
+    "fragments_removed": 15,
+    "tiles_reshaped": 0,
+    "fragments_of_removed_parts": 0,
+    "open_edges": 0,
+    "every_fragment_has_live_owner": true,
+    "PASS": true
+   },
+   "E": {
+    "removed_parts": 5,
+    "fragments_before": 82,
+    "fragments_after": 65,
+    "fragments_removed": 17,
+    "tiles_reshaped": 0,
+    "fragments_of_removed_parts": 0,
+    "open_edges": 0,
+    "every_fragment_has_live_owner": true,
+    "PASS": true
+   }
+  },
+  "S4_wheel": {
+   "A": {
+    "removed_parts": 1,
+    "fragments_before": 82,
+    "fragments_after": 80,
+    "fragments_removed": 2,
+    "tiles_reshaped": 0,
+    "fragments_of_removed_parts": 0,
+    "open_edges": 0,
+    "every_fragment_has_live_owner": true,
+    "PASS": true
+   },
+   "B": {
+    "removed_parts": 1,
+    "fragments_before": 82,
+    "fragments_after": 80,
+    "fragments_removed": 2,
+    "tiles_reshaped": 0,
+    "fragments_of_removed_parts": 0,
+    "open_edges": 0,
+    "every_fragment_has_live_owner": true,
+    "PASS": true
+   },
+   "C": {
+    "removed_parts": 1,
+    "fragments_before": 82,
+    "fragments_after": 80,
+    "fragments_removed": 2,
+    "tiles_reshaped": 0,
+    "fragments_of_removed_parts": 0,
+    "open_edges": 0,
+    "every_fragment_has_live_owner": true,
+    "PASS": true
+   },
+   "D": {
+    "removed_parts": 1,
+    "fragments_before": 78,
+    "fragments_after": 76,
+    "fragments_removed": 2,
+    "tiles_reshaped": 0,
+    "fragments_of_removed_parts": 0,
+    "open_edges": 0,
+    "every_fragment_has_live_owner": true,
+    "PASS": true
+   },
+   "E": {
+    "removed_parts": 1,
+    "fragments_before": 82,
+    "fragments_after": 80,
+    "fragments_removed": 2,
+    "tiles_reshaped": 0,
+    "fragments_of_removed_parts": 0,
+    "open_edges": 0,
+    "every_fragment_has_live_owner": true,
+    "PASS": true
+   }
+  },
+  "S5_weapon_mount": {
+   "A": {
+    "removed_parts": 2,
+    "fragments_before": 82,
+    "fragments_after": 77,
+    "fragments_removed": 5,
+    "tiles_reshaped": 1,
+    "fragments_of_removed_parts": 0,
+    "open_edges": 0,
+    "every_fragment_has_live_owner": true,
+    "PASS": true
+   },
+   "B": {
+    "removed_parts": 2,
+    "fragments_before": 82,
+    "fragments_after": 77,
+    "fragments_removed": 5,
+    "tiles_reshaped": 1,
+    "fragments_of_removed_parts": 0,
+    "open_edges": 0,
+    "every_fragment_has_live_owner": true,
+    "PASS": true
+   },
+   "C": {
+    "removed_parts": 2,
+    "fragments_before": 82,
+    "fragments_after": 77,
+    "fragments_removed": 5,
+    "tiles_reshaped": 1,
+    "fragments_of_removed_parts": 0,
+    "open_edges": 0,
+    "every_fragment_has_live_owner": true,
+    "PASS": true
+   },
+   "D": {
+    "removed_parts": 2,
+    "fragments_before": 78,
+    "fragments_after": 73,
+    "fragments_removed": 5,
+    "tiles_reshaped": 1,
+    "fragments_of_removed_parts": 0,
+    "open_edges": 0,
+    "every_fragment_has_live_owner": true,
+    "PASS": true
+   },
+   "E": {
+    "removed_parts": 2,
+    "fragments_before": 82,
+    "fragments_after": 77,
+    "fragments_removed": 5,
+    "tiles_reshaped": 1,
+    "fragments_of_removed_parts": 0,
+    "open_edges": 0,
+    "every_fragment_has_live_owner": true,
+    "PASS": true
+   }
+  },
+  "S6_plate_edge": {
+   "A": {
+    "removed_parts": 1,
+    "fragments_before": 82,
+    "fragments_after": 77,
+    "fragments_removed": 5,
+    "tiles_reshaped": 2,
+    "fragments_of_removed_parts": 0,
+    "open_edges": 0,
+    "every_fragment_has_live_owner": true,
+    "PASS": true
+   },
+   "B": {
+    "removed_parts": 1,
+    "fragments_before": 82,
+    "fragments_after": 77,
+    "fragments_removed": 5,
+    "tiles_reshaped": 2,
+    "fragments_of_removed_parts": 0,
+    "open_edges": 0,
+    "every_fragment_has_live_owner": true,
+    "PASS": true
+   },
+   "C": {
+    "removed_parts": 1,
+    "fragments_before": 82,
+    "fragments_after": 77,
+    "fragments_removed": 5,
+    "tiles_reshaped": 2,
+    "fragments_of_removed_parts": 0,
+    "open_edges": 0,
+    "every_fragment_has_live_owner": true,
+    "PASS": true
+   },
+   "D": {
+    "removed_parts": 1,
+    "fragments_before": 78,
+    "fragments_after": 73,
+    "fragments_removed": 5,
+    "tiles_reshaped": 2,
+    "fragments_of_removed_parts": 0,
+    "open_edges": 0,
+    "every_fragment_has_live_owner": true,
+    "PASS": true
+   },
+   "E": {
+    "removed_parts": 1,
+    "fragments_before": 82,
+    "fragments_after": 77,
+    "fragments_removed": 5,
+    "tiles_reshaped": 2,
+    "fragments_of_removed_parts": 0,
+    "open_edges": 0,
+    "every_fragment_has_live_owner": true,
+    "PASS": true
+   }
+  }
+ }
+}
