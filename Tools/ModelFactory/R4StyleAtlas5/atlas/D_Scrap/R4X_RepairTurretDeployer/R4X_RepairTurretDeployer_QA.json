@@ -1,0 +1,293 @@
+{
+ "id": "R4X_RepairTurretDeployer",
+ "style": "D",
+ "style_label": "D_Scrap",
+ "family": "deployer",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "PROPOSAL",
+ "source": "#1238",
+ "meshes": [
+  {
+   "object": "R4X_RepairTurretDeployer_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1964,
+   "vertices": 1058,
+   "uv": true,
+   "material_slots": 4,
+   "ok": true
+  },
+  {
+   "object": "R4X_RepairTurretDeployer_Pod",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1176,
+   "vertices": 610,
+   "uv": true,
+   "material_slots": 5,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_RepairTurretDeployer_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 812,
+  "vertices": 432,
+  "uv": true,
+  "material_slots": 5,
+  "ok": true
+ },
+ "triangles": 3140,
+ "triangles_lod1": 812,
+ "mesh_objects": 2,
+ "material_slots_total": 9,
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.255
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": null,
+ "ports": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "interface_vs_source": null,
+ "hierarchy": {
+  "R4X_RepairTurretDeployer_ROOT": null,
+  "R4X_RepairTurretDeployer_Body": "R4X_RepairTurretDeployer_ROOT",
+  "R4X_RepairTurretDeployer_Pod": "R4X_RepairTurretDeployer_ROOT",
+  "Port_down_000": "R4X_RepairTurretDeployer_ROOT",
+  "Socket_Mount": "R4X_RepairTurretDeployer_ROOT",
+  "Deploy_Out": "R4X_RepairTurretDeployer_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "procedural",
+  "fps": 24,
+  "frames": 113,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Deploy",
+    "start": 27,
+    "end": 99,
+    "loop": false
+   },
+   {
+    "name": "Hit",
+    "start": 101,
+    "end": 113,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Deploy_Open": 27,
+   "Deploy_Out": 63,
+   "Deploy_Reset": 85,
+   "Hit": 101
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4X_RepairTurretDeployer_Body",
+   "R4X_RepairTurretDeployer_Pod"
+  ],
+  "objects_with_real_motion": 2,
+  "sweep_outside_envelope_mm": 4.317,
+  "sweep_allowance_mm": 10,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "raw and uneven: stutter, rattle, slight drift (seeded)"
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 3140,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 6,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    63,
+    85,
+    99,
+    101,
+    107,
+    113
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": [
+    85,
+    "R4X_RepairTurretDeployer_Pod",
+    0.0,
+    0.0
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 3140,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    63,
+    85,
+    99,
+    101,
+    107,
+    113
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4X_RepairTurretDeployer_front.jpg",
+  "R4X_RepairTurretDeployer_side.jpg",
+  "R4X_RepairTurretDeployer_top.jpg",
+  "R4X_RepairTurretDeployer_34.jpg",
+  "R4X_RepairTurretDeployer_wire.jpg",
+  "R4X_RepairTurretDeployer_clay.jpg",
+  "R4X_RepairTurretDeployer_silhouette.png"
+ ],
+ "files": {
+  "R4X_RepairTurretDeployer.blend": {
+   "sha256": "aadbd223b663ef908f2b149caecf4f46893dc05ca92a35b6c98f9d57f40aaed4",
+   "bytes": 186261
+  },
+  "R4X_RepairTurretDeployer.fbx": {
+   "sha256": "58962626a20731131e31422dc8e7322648df1083cf37147b993cdadb32a881b6",
+   "bytes": 178780
+  },
+  "R4X_RepairTurretDeployer.glb": {
+   "sha256": "ea1d0df292fcc3d97fb8cec87add4e527c7cad18ad5ecd09eab63cff6f00cac0",
+   "bytes": 212072
+  },
+  "R4X_RepairTurretDeployer_LOD1.fbx": {
+   "sha256": "3def7106e54d2db1de19256b47bc1a4d6bcf2509763cc47672f2d558d455a2bb",
+   "bytes": 42236
+  },
+  "R4X_RepairTurretDeployer_LOD1.glb": {
+   "sha256": "6796a41df18aa02ccaae5c294b395ea4e27278003029d4dc2504d41a4533482b",
+   "bytes": 75740
+  }
+ },
+ "seconds": 1.9,
+ "blender": "5.3.0"
+}

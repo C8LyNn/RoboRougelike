@@ -1,0 +1,386 @@
+{
+ "id": "R4X_WallDeployer",
+ "style": "C",
+ "style_label": "C_Arcade",
+ "family": "deployer",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "PROPOSAL",
+ "source": "#1238",
+ "meshes": [
+  {
+   "object": "R4X_WallDeployer_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 324,
+   "vertices": 168,
+   "uv": true,
+   "material_slots": 1,
+   "ok": true
+  },
+  {
+   "object": "R4X_WallDeployer_Panels",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 456,
+   "vertices": 240,
+   "uv": true,
+   "material_slots": 2,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_WallDeployer_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 396,
+  "vertices": 216,
+  "uv": true,
+  "material_slots": 2,
+  "ok": true
+ },
+ "triangles": 780,
+ "triangles_lod1": 396,
+ "mesh_objects": 2,
+ "material_slots_total": 3,
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow"
+ ],
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.25
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": null,
+ "ports": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "dir": "left",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.12,
+    0.12
+   ],
+   "offset": [
+    0.0,
+    0.03636
+   ]
+  },
+  {
+   "dir": "right",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.12,
+    0.12
+   ],
+   "offset": [
+    0.0,
+    0.03636
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "left",
+   "kind": "partial",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "right",
+   "kind": "partial",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "left",
+   "kind": "partial",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "right",
+   "kind": "partial",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  }
+ ],
+ "interface_vs_source": null,
+ "hierarchy": {
+  "R4X_WallDeployer_ROOT": null,
+  "R4X_WallDeployer_Body": "R4X_WallDeployer_ROOT",
+  "R4X_WallDeployer_Panels": "R4X_WallDeployer_ROOT",
+  "Port_down_000": "R4X_WallDeployer_ROOT",
+  "Port_left_000_part": "R4X_WallDeployer_ROOT",
+  "Port_right_000_part": "R4X_WallDeployer_ROOT",
+  "Socket_Mount": "R4X_WallDeployer_ROOT",
+  "Deploy_Out": "R4X_WallDeployer_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "procedural",
+  "fps": 24,
+  "frames": 113,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Deploy",
+    "start": 27,
+    "end": 99,
+    "loop": false
+   },
+   {
+    "name": "Hit",
+    "start": 101,
+    "end": 113,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Deploy_Open": 27,
+   "Deploy_Out": 63,
+   "Deploy_Reset": 85,
+   "Hit": 101
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4X_WallDeployer_Body",
+   "R4X_WallDeployer_Panels"
+  ],
+  "objects_with_real_motion": 2,
+  "sweep_outside_envelope_mm": 4.073,
+  "sweep_allowance_mm": 10,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "simple, fast, readable: quick ease, short hold, no secondary motion"
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 780,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 8,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    63,
+    85,
+    99,
+    101,
+    107,
+    113
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": [
+    63,
+    "R4X_WallDeployer_Panels",
+    0.0,
+    0.0
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 780,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    63,
+    85,
+    99,
+    101,
+    107,
+    113
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4X_WallDeployer_front.jpg",
+  "R4X_WallDeployer_side.jpg",
+  "R4X_WallDeployer_top.jpg",
+  "R4X_WallDeployer_34.jpg",
+  "R4X_WallDeployer_wire.jpg",
+  "R4X_WallDeployer_clay.jpg",
+  "R4X_WallDeployer_silhouette.png"
+ ],
+ "files": {
+  "R4X_WallDeployer.blend": {
+   "sha256": "b14b7fabc867181bd4376ac62e9e83b5596e53154f1a5070e99aea6cf3af9cf1",
+   "bytes": 116559
+  },
+  "R4X_WallDeployer.fbx": {
+   "sha256": "0f62f47a0f9d356a200cf7100ed6b0750191c918c73d347db7ecc52e049a44f9",
+   "bytes": 127548
+  },
+  "R4X_WallDeployer.glb": {
+   "sha256": "1a39c03c17b7aff346ff6de9ab3c07bb799026edc339baa3254e52ce9d9fd14e",
+   "bytes": 42088
+  },
+  "R4X_WallDeployer_LOD1.fbx": {
+   "sha256": "28165d46a5e0828b8c51bf5e7ac2e9060ff284d6af3c0889fccbdc3822baf769",
+   "bytes": 25308
+  },
+  "R4X_WallDeployer_LOD1.glb": {
+   "sha256": "5a1f413b1bddeebae087cfa17e93c5a45c9e6564d220e49ed8c21baef37e8fd7",
+   "bytes": 32692
+  }
+ },
+ "seconds": 1.6,
+ "blender": "5.3.0"
+}

@@ -1,0 +1,293 @@
+{
+ "id": "R4X_FlyingDroneDeployer",
+ "style": "B",
+ "style_label": "B_Brutal",
+ "family": "deployer",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "PROPOSAL",
+ "source": "#1238",
+ "meshes": [
+  {
+   "object": "R4X_FlyingDroneDeployer_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 2338,
+   "vertices": 1243,
+   "uv": true,
+   "material_slots": 5,
+   "ok": true
+  },
+  {
+   "object": "R4X_FlyingDroneDeployer_Iris",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 168,
+   "vertices": 90,
+   "uv": true,
+   "material_slots": 2,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_FlyingDroneDeployer_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 1084,
+  "vertices": 586,
+  "uv": true,
+  "material_slots": 5,
+  "ok": true
+ },
+ "triangles": 2506,
+ "triangles_lod1": 1084,
+ "mesh_objects": 2,
+ "material_slots_total": 7,
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.253
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": null,
+ "ports": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "interface_vs_source": null,
+ "hierarchy": {
+  "R4X_FlyingDroneDeployer_ROOT": null,
+  "R4X_FlyingDroneDeployer_Body": "R4X_FlyingDroneDeployer_ROOT",
+  "R4X_FlyingDroneDeployer_Iris": "R4X_FlyingDroneDeployer_ROOT",
+  "Port_down_000": "R4X_FlyingDroneDeployer_ROOT",
+  "Socket_Mount": "R4X_FlyingDroneDeployer_ROOT",
+  "Deploy_Out": "R4X_FlyingDroneDeployer_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "procedural",
+  "fps": 24,
+  "frames": 113,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Deploy",
+    "start": 27,
+    "end": 99,
+    "loop": false
+   },
+   {
+    "name": "Hit",
+    "start": 101,
+    "end": 113,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Deploy_Open": 27,
+   "Deploy_Out": 63,
+   "Deploy_Reset": 85,
+   "Hit": 101
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4X_FlyingDroneDeployer_Body",
+   "R4X_FlyingDroneDeployer_Iris"
+  ],
+  "objects_with_real_motion": 2,
+  "sweep_outside_envelope_mm": 3.203,
+  "sweep_allowance_mm": 10,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "heavy and mechanical: slow start, hard stop, damped settle"
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 2506,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 6,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    63,
+    85,
+    99,
+    101,
+    107,
+    113
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": [
+    1,
+    "R4X_FlyingDroneDeployer_Iris",
+    0.0,
+    0.0
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 2506,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    63,
+    85,
+    99,
+    101,
+    107,
+    113
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4X_FlyingDroneDeployer_front.jpg",
+  "R4X_FlyingDroneDeployer_side.jpg",
+  "R4X_FlyingDroneDeployer_top.jpg",
+  "R4X_FlyingDroneDeployer_34.jpg",
+  "R4X_FlyingDroneDeployer_wire.jpg",
+  "R4X_FlyingDroneDeployer_clay.jpg",
+  "R4X_FlyingDroneDeployer_silhouette.png"
+ ],
+ "files": {
+  "R4X_FlyingDroneDeployer.blend": {
+   "sha256": "e8f469aaeb1f20d612578e0f0c1f8bf942871c249c1e80f32540ca3221deacb6",
+   "bytes": 170314
+  },
+  "R4X_FlyingDroneDeployer.fbx": {
+   "sha256": "254ab2cf0639539d7345b8bf989026289f5d28bd3a5e0e9e6ed5b2ea770fd4af",
+   "bytes": 147116
+  },
+  "R4X_FlyingDroneDeployer.glb": {
+   "sha256": "a0c19f68e32cd5a6d0f34da167ad28463dd6ca75ebb0a50810d5fe896a60212b",
+   "bytes": 182140
+  },
+  "R4X_FlyingDroneDeployer_LOD1.fbx": {
+   "sha256": "cde74979bf04f9a2faa3453f64fc39b3a1a5efe9110e7d2f091490cfca4201c6",
+   "bytes": 46172
+  },
+  "R4X_FlyingDroneDeployer_LOD1.glb": {
+   "sha256": "e4e4ee3fc25d7f49ce928f82e586230c3f5fac9fdcbc5824c26a2b58e828714e",
+   "bytes": 100340
+  }
+ },
+ "seconds": 2.1,
+ "blender": "5.3.0"
+}

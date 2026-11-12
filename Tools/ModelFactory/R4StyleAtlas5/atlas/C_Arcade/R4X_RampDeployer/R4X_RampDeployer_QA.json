@@ -1,0 +1,277 @@
+{
+ "id": "R4X_RampDeployer",
+ "style": "C",
+ "style_label": "C_Arcade",
+ "family": "deployer",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "PROPOSAL",
+ "source": "#1238",
+ "meshes": [
+  {
+   "object": "R4X_RampDeployer_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 892,
+   "vertices": 466,
+   "uv": true,
+   "material_slots": 3,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_RampDeployer_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 484,
+  "vertices": 262,
+  "uv": true,
+  "material_slots": 3,
+  "ok": true
+ },
+ "triangles": 892,
+ "triangles_lod1": 484,
+ "mesh_objects": 1,
+ "material_slots_total": 3,
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal"
+ ],
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.2065
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": null,
+ "ports": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "interface_vs_source": null,
+ "hierarchy": {
+  "R4X_RampDeployer_ROOT": null,
+  "R4X_RampDeployer_Body": "R4X_RampDeployer_ROOT",
+  "Port_down_000": "R4X_RampDeployer_ROOT",
+  "Socket_Mount": "R4X_RampDeployer_ROOT",
+  "Deploy_Out": "R4X_RampDeployer_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "procedural",
+  "fps": 24,
+  "frames": 113,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Deploy",
+    "start": 27,
+    "end": 99,
+    "loop": false
+   },
+   {
+    "name": "Hit",
+    "start": 101,
+    "end": 113,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Deploy_Open": 27,
+   "Deploy_Out": 63,
+   "Deploy_Reset": 85,
+   "Hit": 101
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4X_RampDeployer_Body"
+  ],
+  "objects_with_real_motion": 1,
+  "sweep_outside_envelope_mm": 4.073,
+  "sweep_allowance_mm": 10,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "simple, fast, readable: quick ease, short hold, no secondary motion"
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 1,
+   "triangles": 892,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 5,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    63,
+    85,
+    99,
+    101,
+    107,
+    113
+   ],
+   "nodes_compared": 1,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": [
+    107,
+    "R4X_RampDeployer_Body",
+    0.0,
+    0.0
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 1,
+   "triangles": 892,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    63,
+    85,
+    99,
+    101,
+    107,
+    113
+   ],
+   "nodes_compared": 1,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4X_RampDeployer_front.jpg",
+  "R4X_RampDeployer_side.jpg",
+  "R4X_RampDeployer_top.jpg",
+  "R4X_RampDeployer_34.jpg",
+  "R4X_RampDeployer_wire.jpg",
+  "R4X_RampDeployer_clay.jpg",
+  "R4X_RampDeployer_silhouette.png"
+ ],
+ "files": {
+  "R4X_RampDeployer.blend": {
+   "sha256": "f3b579981bb6e820f031ffb3bad984fdc92c039925452c3c939d4bcd7b5a69e1",
+   "bytes": 123007
+  },
+  "R4X_RampDeployer.fbx": {
+   "sha256": "5e8b04329727d53a21b8229b36cffdeba802e73721327794852747375df0d0c1",
+   "bytes": 96636
+  },
+  "R4X_RampDeployer.glb": {
+   "sha256": "d7c949df88ca4ec776ef2f9b237f8c2a0a5d90f50d721c79436280095129b1f7",
+   "bytes": 44124
+  },
+  "R4X_RampDeployer_LOD1.fbx": {
+   "sha256": "3654e3831e3e5f9ce55bb12cbd25da69c8935e2f37d3340720630712feb03256",
+   "bytes": 29980
+  },
+  "R4X_RampDeployer_LOD1.glb": {
+   "sha256": "91abc14ef766d78d79ff2d72dcc6d864506c210b12c96c76f7409eb8848554b3",
+   "bytes": 37332
+  }
+ },
+ "seconds": 1.7,
+ "blender": "5.3.0"
+}

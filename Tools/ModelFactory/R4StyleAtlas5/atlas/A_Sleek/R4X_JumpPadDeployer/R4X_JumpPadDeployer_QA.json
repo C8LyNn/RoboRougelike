@@ -1,0 +1,293 @@
+{
+ "id": "R4X_JumpPadDeployer",
+ "style": "A",
+ "style_label": "A_Sleek",
+ "family": "deployer",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "PROPOSAL",
+ "source": "#1238",
+ "meshes": [
+  {
+   "object": "R4X_JumpPadDeployer_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1800,
+   "vertices": 914,
+   "uv": true,
+   "material_slots": 5,
+   "ok": true
+  },
+  {
+   "object": "R4X_JumpPadDeployer_Pad",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 364,
+   "vertices": 186,
+   "uv": true,
+   "material_slots": 4,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_JumpPadDeployer_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 782,
+  "vertices": 407,
+  "uv": true,
+  "material_slots": 5,
+  "ok": true
+ },
+ "triangles": 2164,
+ "triangles_lod1": 782,
+ "mesh_objects": 2,
+ "material_slots_total": 9,
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.07
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": null,
+ "ports": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "interface_vs_source": null,
+ "hierarchy": {
+  "R4X_JumpPadDeployer_ROOT": null,
+  "R4X_JumpPadDeployer_Body": "R4X_JumpPadDeployer_ROOT",
+  "R4X_JumpPadDeployer_Pad": "R4X_JumpPadDeployer_ROOT",
+  "Port_down_000": "R4X_JumpPadDeployer_ROOT",
+  "Socket_Mount": "R4X_JumpPadDeployer_ROOT",
+  "Deploy_Out": "R4X_JumpPadDeployer_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "procedural",
+  "fps": 24,
+  "frames": 113,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Deploy",
+    "start": 27,
+    "end": 99,
+    "loop": false
+   },
+   {
+    "name": "Hit",
+    "start": 101,
+    "end": 113,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Deploy_Open": 27,
+   "Deploy_Out": 63,
+   "Deploy_Reset": 85,
+   "Hit": 101
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4X_JumpPadDeployer_Body",
+   "R4X_JumpPadDeployer_Pad"
+  ],
+  "objects_with_real_motion": 2,
+  "sweep_outside_envelope_mm": 1.795,
+  "sweep_allowance_mm": 10,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "fluid and precise: long ease in / out, no overshoot"
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 2164,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 6,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    63,
+    85,
+    99,
+    101,
+    107,
+    113
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": [
+    63,
+    "R4X_JumpPadDeployer_Pad",
+    0.0,
+    0.0
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 2164,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    63,
+    85,
+    99,
+    101,
+    107,
+    113
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4X_JumpPadDeployer_front.jpg",
+  "R4X_JumpPadDeployer_side.jpg",
+  "R4X_JumpPadDeployer_top.jpg",
+  "R4X_JumpPadDeployer_34.jpg",
+  "R4X_JumpPadDeployer_wire.jpg",
+  "R4X_JumpPadDeployer_clay.jpg",
+  "R4X_JumpPadDeployer_silhouette.png"
+ ],
+ "files": {
+  "R4X_JumpPadDeployer.blend": {
+   "sha256": "91919beda52c606fdfd5edfcd2da0b4c60d5383e1d5f780d99254e447a03441f",
+   "bytes": 145771
+  },
+  "R4X_JumpPadDeployer.fbx": {
+   "sha256": "b55ee70591b891fa46374bf28eb33b28cf92d92c88c4257b5c7f3c9ff7bf57f1",
+   "bytes": 133596
+  },
+  "R4X_JumpPadDeployer.glb": {
+   "sha256": "1f6801a9177039a104bfd89793260abedcad021ac496ca1d9a806de5439205d7",
+   "bytes": 100904
+  },
+  "R4X_JumpPadDeployer_LOD1.fbx": {
+   "sha256": "76d6f37d1b9a60203651a1db7f427fb21c54505babb324b60eca3a17cc63a320",
+   "bytes": 34764
+  },
+  "R4X_JumpPadDeployer_LOD1.glb": {
+   "sha256": "785e711b94aede711e64364ac3187abb419646069047b7155a56be3c29cd4d28",
+   "bytes": 42788
+  }
+ },
+ "seconds": 1.7,
+ "blender": "5.3.0"
+}

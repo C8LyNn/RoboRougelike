@@ -1,0 +1,285 @@
+{
+ "id": "R4X_ModuleDurabilityBooster",
+ "style": "E",
+ "style_label": "E_Toon",
+ "family": "module",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "PROPOSAL",
+ "source": "#1238",
+ "meshes": [
+  {
+   "object": "R4X_ModuleDurabilityBooster_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 5068,
+   "vertices": 2552,
+   "uv": true,
+   "material_slots": 4,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_ModuleDurabilityBooster_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 588,
+  "vertices": 312,
+  "uv": true,
+  "material_slots": 4,
+  "ok": true
+ },
+ "triangles": 5068,
+ "triangles_lod1": 588,
+ "mesh_objects": 1,
+ "material_slots_total": 4,
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "bounds_m": [
+  [
+   -0.257,
+   -0.257,
+   -0.26
+  ],
+  [
+   0.257,
+   0.257,
+   0.2
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": null,
+ "ports": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "interface_vs_source": null,
+ "hierarchy": {
+  "R4X_ModuleDurabilityBooster_ROOT": null,
+  "R4X_ModuleDurabilityBooster_Body": "R4X_ModuleDurabilityBooster_ROOT",
+  "Port_down_000": "R4X_ModuleDurabilityBooster_ROOT",
+  "Socket_Mount": "R4X_ModuleDurabilityBooster_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "procedural",
+  "fps": 24,
+  "frames": 91,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Hit",
+    "start": 27,
+    "end": 39,
+    "loop": false
+   },
+   {
+    "name": "Damaged",
+    "start": 41,
+    "end": 65,
+    "loop": true
+   },
+   {
+    "name": "Recover",
+    "start": 67,
+    "end": 91,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Hit": 27
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4X_ModuleDurabilityBooster_Body"
+  ],
+  "objects_with_real_motion": 1,
+  "sweep_outside_envelope_mm": 4.589,
+  "sweep_allowance_mm": 10,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   },
+   {
+    "clip": "Damaged",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "expressive: anticipation, overshoot, springy settle"
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 1,
+   "triangles": 5068,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 4,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    33,
+    39,
+    41,
+    53,
+    65,
+    67,
+    79,
+    91
+   ],
+   "nodes_compared": 1,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 1,
+   "triangles": 5068,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    33,
+    39,
+    41,
+    53,
+    65,
+    67,
+    79,
+    91
+   ],
+   "nodes_compared": 1,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4X_ModuleDurabilityBooster_front.jpg",
+  "R4X_ModuleDurabilityBooster_side.jpg",
+  "R4X_ModuleDurabilityBooster_top.jpg",
+  "R4X_ModuleDurabilityBooster_34.jpg",
+  "R4X_ModuleDurabilityBooster_wire.jpg",
+  "R4X_ModuleDurabilityBooster_clay.jpg",
+  "R4X_ModuleDurabilityBooster_silhouette.png"
+ ],
+ "files": {
+  "R4X_ModuleDurabilityBooster.blend": {
+   "sha256": "15a6710e13d740c1f3c9446c5646343a4e91cbcc560ba21aa9e911f87387e63a",
+   "bytes": 216581
+  },
+  "R4X_ModuleDurabilityBooster.fbx": {
+   "sha256": "22a84e5755167ae5bdc10d65456dca979af8b804fda96d63f8fe8e90d7344389",
+   "bytes": 172604
+  },
+  "R4X_ModuleDurabilityBooster.glb": {
+   "sha256": "cc0b22e28fef32c53f9f514cd25ae3ae96d3709970e531a5ca946219c584cdbe",
+   "bytes": 188032
+  },
+  "R4X_ModuleDurabilityBooster_LOD1.fbx": {
+   "sha256": "9a68070cdc9a6bd1637a8fcaa0aa83d2df43d1a41512c13cb29a40b5f4dfcaf5",
+   "bytes": 30700
+  },
+  "R4X_ModuleDurabilityBooster_LOD1.glb": {
+   "sha256": "4300063d52bae7fdc0dfce7b661a686bfdcc107e66a12e2e867dc57d30bbe057",
+   "bytes": 48804
+  }
+ },
+ "seconds": 1.8,
+ "blender": "5.3.0"
+}

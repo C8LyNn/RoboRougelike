@@ -1,0 +1,293 @@
+{
+ "id": "R4X_OffensiveTurretDeployer",
+ "style": "A",
+ "style_label": "A_Sleek",
+ "family": "deployer",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "PROPOSAL",
+ "source": "#1238",
+ "meshes": [
+  {
+   "object": "R4X_OffensiveTurretDeployer_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1824,
+   "vertices": 928,
+   "uv": true,
+   "material_slots": 5,
+   "ok": true
+  },
+  {
+   "object": "R4X_OffensiveTurretDeployer_Pod",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1964,
+   "vertices": 1000,
+   "uv": true,
+   "material_slots": 5,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_OffensiveTurretDeployer_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 840,
+  "vertices": 448,
+  "uv": true,
+  "material_slots": 5,
+  "ok": true
+ },
+ "triangles": 3788,
+ "triangles_lod1": 840,
+ "mesh_objects": 2,
+ "material_slots_total": 10,
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.07
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": null,
+ "ports": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "interface_vs_source": null,
+ "hierarchy": {
+  "R4X_OffensiveTurretDeployer_ROOT": null,
+  "R4X_OffensiveTurretDeployer_Body": "R4X_OffensiveTurretDeployer_ROOT",
+  "R4X_OffensiveTurretDeployer_Pod": "R4X_OffensiveTurretDeployer_ROOT",
+  "Port_down_000": "R4X_OffensiveTurretDeployer_ROOT",
+  "Socket_Mount": "R4X_OffensiveTurretDeployer_ROOT",
+  "Deploy_Out": "R4X_OffensiveTurretDeployer_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "procedural",
+  "fps": 24,
+  "frames": 113,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Deploy",
+    "start": 27,
+    "end": 99,
+    "loop": false
+   },
+   {
+    "name": "Hit",
+    "start": 101,
+    "end": 113,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Deploy_Open": 27,
+   "Deploy_Out": 63,
+   "Deploy_Reset": 85,
+   "Hit": 101
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4X_OffensiveTurretDeployer_Body",
+   "R4X_OffensiveTurretDeployer_Pod"
+  ],
+  "objects_with_real_motion": 2,
+  "sweep_outside_envelope_mm": 1.795,
+  "sweep_allowance_mm": 10,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "fluid and precise: long ease in / out, no overshoot"
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 3788,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 6,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    63,
+    85,
+    99,
+    101,
+    107,
+    113
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": [
+    63,
+    "R4X_OffensiveTurretDeployer_Pod",
+    0.0,
+    0.0
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 3788,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    63,
+    85,
+    99,
+    101,
+    107,
+    113
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4X_OffensiveTurretDeployer_front.jpg",
+  "R4X_OffensiveTurretDeployer_side.jpg",
+  "R4X_OffensiveTurretDeployer_top.jpg",
+  "R4X_OffensiveTurretDeployer_34.jpg",
+  "R4X_OffensiveTurretDeployer_wire.jpg",
+  "R4X_OffensiveTurretDeployer_clay.jpg",
+  "R4X_OffensiveTurretDeployer_silhouette.png"
+ ],
+ "files": {
+  "R4X_OffensiveTurretDeployer.blend": {
+   "sha256": "8456c41c52e9a41842d1764bc769eaca8ba9692c2ab6013792357117e5345f36",
+   "bytes": 186688
+  },
+  "R4X_OffensiveTurretDeployer.fbx": {
+   "sha256": "946e0b266a5efd09ba74dbf61ee2598d99144080a19ab3ad7b2eb4dfe8d3a564",
+   "bytes": 172540
+  },
+  "R4X_OffensiveTurretDeployer.glb": {
+   "sha256": "e2d5a73c5eca7e170a0a65fe4f9faa52ed2867bd365c72d20435f13250fbe8c1",
+   "bytes": 182504
+  },
+  "R4X_OffensiveTurretDeployer_LOD1.fbx": {
+   "sha256": "7204a3f3a7ac7861a3d0315af709db2ea902d8268ff2d7d8b878125c8d56e7db",
+   "bytes": 37868
+  },
+  "R4X_OffensiveTurretDeployer_LOD1.glb": {
+   "sha256": "2287ff8e165206130a478d98cc53a4040ebad37ba6a3493d7972e6fa7b9db01c",
+   "bytes": 60436
+  }
+ },
+ "seconds": 2.0,
+ "blender": "5.3.0"
+}

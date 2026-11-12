@@ -1,0 +1,293 @@
+{
+ "id": "R4X_BurnTrapDeployer",
+ "style": "E",
+ "style_label": "E_Toon",
+ "family": "deployer",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "PROPOSAL",
+ "source": "#1238",
+ "meshes": [
+  {
+   "object": "R4X_BurnTrapDeployer_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 3000,
+   "vertices": 1514,
+   "uv": true,
+   "material_slots": 4,
+   "ok": true
+  },
+  {
+   "object": "R4X_BurnTrapDeployer_Payload",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 712,
+   "vertices": 376,
+   "uv": true,
+   "material_slots": 5,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_BurnTrapDeployer_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 1476,
+  "vertices": 772,
+  "uv": true,
+  "material_slots": 5,
+  "ok": true
+ },
+ "triangles": 3712,
+ "triangles_lod1": 1476,
+ "mesh_objects": 2,
+ "material_slots_total": 9,
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "bounds_m": [
+  [
+   -0.258,
+   -0.257,
+   -0.26
+  ],
+  [
+   0.257,
+   0.257,
+   0.216
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": null,
+ "ports": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "interface_vs_source": null,
+ "hierarchy": {
+  "R4X_BurnTrapDeployer_ROOT": null,
+  "R4X_BurnTrapDeployer_Body": "R4X_BurnTrapDeployer_ROOT",
+  "R4X_BurnTrapDeployer_Payload": "R4X_BurnTrapDeployer_ROOT",
+  "Port_down_000": "R4X_BurnTrapDeployer_ROOT",
+  "Socket_Mount": "R4X_BurnTrapDeployer_ROOT",
+  "Deploy_Out": "R4X_BurnTrapDeployer_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "procedural",
+  "fps": 24,
+  "frames": 113,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Deploy",
+    "start": 27,
+    "end": 99,
+    "loop": false
+   },
+   {
+    "name": "Hit",
+    "start": 101,
+    "end": 113,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Deploy_Open": 27,
+   "Deploy_Out": 63,
+   "Deploy_Reset": 85,
+   "Hit": 101
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4X_BurnTrapDeployer_Body",
+   "R4X_BurnTrapDeployer_Payload"
+  ],
+  "objects_with_real_motion": 2,
+  "sweep_outside_envelope_mm": 4.589,
+  "sweep_allowance_mm": 10,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "expressive: anticipation, overshoot, springy settle"
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 3712,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 6,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    63,
+    85,
+    99,
+    101,
+    107,
+    113
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": [
+    85,
+    "R4X_BurnTrapDeployer_Payload",
+    0.0,
+    0.0
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 3712,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    63,
+    85,
+    99,
+    101,
+    107,
+    113
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4X_BurnTrapDeployer_front.jpg",
+  "R4X_BurnTrapDeployer_side.jpg",
+  "R4X_BurnTrapDeployer_top.jpg",
+  "R4X_BurnTrapDeployer_34.jpg",
+  "R4X_BurnTrapDeployer_wire.jpg",
+  "R4X_BurnTrapDeployer_clay.jpg",
+  "R4X_BurnTrapDeployer_silhouette.png"
+ ],
+ "files": {
+  "R4X_BurnTrapDeployer.blend": {
+   "sha256": "953744dc6eb7129da411a7990e55bb143ce2a14980a06d6d264db3c7b5f93c4f",
+   "bytes": 191801
+  },
+  "R4X_BurnTrapDeployer.fbx": {
+   "sha256": "0ba1801ff0213af6efc12ca5de52a9fe528fd4483c97249beedb409cf003097d",
+   "bytes": 166716
+  },
+  "R4X_BurnTrapDeployer.glb": {
+   "sha256": "c623cda70326dcd5fbaf26b7450fa786a64a5b8cbfb1eab196d6675c2a15ee8c",
+   "bytes": 125992
+  },
+  "R4X_BurnTrapDeployer_LOD1.fbx": {
+   "sha256": "6d9c520681eae310608d78a7cae927621d0bece5d503c806a2594bdcd7445d32",
+   "bytes": 48908
+  },
+  "R4X_BurnTrapDeployer_LOD1.glb": {
+   "sha256": "4130960043f912893c367a4ee7e721fba39de45d7027feb2a5746a200c21810a",
+   "bytes": 64668
+  }
+ },
+ "seconds": 2.1,
+ "blender": "5.3.0"
+}

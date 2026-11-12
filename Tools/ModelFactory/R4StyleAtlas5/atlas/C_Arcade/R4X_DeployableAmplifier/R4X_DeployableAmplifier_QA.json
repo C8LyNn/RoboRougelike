@@ -1,0 +1,293 @@
+{
+ "id": "R4X_DeployableAmplifier",
+ "style": "C",
+ "style_label": "C_Arcade",
+ "family": "deployer",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "PROPOSAL",
+ "source": "#1238",
+ "meshes": [
+  {
+   "object": "R4X_DeployableAmplifier_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 388,
+   "vertices": 202,
+   "uv": true,
+   "material_slots": 2,
+   "ok": true
+  },
+  {
+   "object": "R4X_DeployableAmplifier_Horn",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 632,
+   "vertices": 320,
+   "uv": true,
+   "material_slots": 4,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_DeployableAmplifier_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 436,
+  "vertices": 230,
+  "uv": true,
+  "material_slots": 5,
+  "ok": true
+ },
+ "triangles": 1020,
+ "triangles_lod1": 436,
+ "mesh_objects": 2,
+ "material_slots_total": 6,
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.2276
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": null,
+ "ports": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "interface_vs_source": null,
+ "hierarchy": {
+  "R4X_DeployableAmplifier_ROOT": null,
+  "R4X_DeployableAmplifier_Body": "R4X_DeployableAmplifier_ROOT",
+  "R4X_DeployableAmplifier_Horn": "R4X_DeployableAmplifier_ROOT",
+  "Port_down_000": "R4X_DeployableAmplifier_ROOT",
+  "Socket_Mount": "R4X_DeployableAmplifier_ROOT",
+  "Deploy_Out": "R4X_DeployableAmplifier_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "procedural",
+  "fps": 24,
+  "frames": 113,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Deploy",
+    "start": 27,
+    "end": 99,
+    "loop": false
+   },
+   {
+    "name": "Hit",
+    "start": 101,
+    "end": 113,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Deploy_Open": 27,
+   "Deploy_Out": 63,
+   "Deploy_Reset": 85,
+   "Hit": 101
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4X_DeployableAmplifier_Body",
+   "R4X_DeployableAmplifier_Horn"
+  ],
+  "objects_with_real_motion": 2,
+  "sweep_outside_envelope_mm": 4.073,
+  "sweep_allowance_mm": 10,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "simple, fast, readable: quick ease, short hold, no secondary motion"
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 1020,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 6,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    63,
+    85,
+    99,
+    101,
+    107,
+    113
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": [
+    1,
+    "R4X_DeployableAmplifier_Horn",
+    0.0,
+    0.0
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 1020,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    63,
+    85,
+    99,
+    101,
+    107,
+    113
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4X_DeployableAmplifier_front.jpg",
+  "R4X_DeployableAmplifier_side.jpg",
+  "R4X_DeployableAmplifier_top.jpg",
+  "R4X_DeployableAmplifier_34.jpg",
+  "R4X_DeployableAmplifier_wire.jpg",
+  "R4X_DeployableAmplifier_clay.jpg",
+  "R4X_DeployableAmplifier_silhouette.png"
+ ],
+ "files": {
+  "R4X_DeployableAmplifier.blend": {
+   "sha256": "f258f0907075b4afeb1496b4a7f45e07d1d01453359907fc9861f3271fda4e13",
+   "bytes": 131908
+  },
+  "R4X_DeployableAmplifier.fbx": {
+   "sha256": "b6c5747bbb39801b6d7fdc226bfe0a807bb6cf25306d87fba005b3fdcc97a73e",
+   "bytes": 120124
+  },
+  "R4X_DeployableAmplifier.glb": {
+   "sha256": "da2a47fd35bc91f34887a004c85cbd208fd74ab105dc519fb63e40e5b1575f29",
+   "bytes": 51740
+  },
+  "R4X_DeployableAmplifier_LOD1.fbx": {
+   "sha256": "784526dc974df6db1757661c5475bf761c017e3afccf039c92088e1202e444b4",
+   "bytes": 32076
+  },
+  "R4X_DeployableAmplifier_LOD1.glb": {
+   "sha256": "7029039c2ab287914e54b689c93c885850514369f86ce85eec81f680379923f8",
+   "bytes": 29832
+  }
+ },
+ "seconds": 1.7,
+ "blender": "5.3.0"
+}

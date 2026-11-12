@@ -1,0 +1,294 @@
+{
+ "id": "R4X_ReloadBooster",
+ "style": "D",
+ "style_label": "D_Scrap",
+ "family": "module",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "PROPOSAL",
+ "source": "#1238",
+ "meshes": [
+  {
+   "object": "R4X_ReloadBooster_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1344,
+   "vertices": 718,
+   "uv": true,
+   "material_slots": 4,
+   "ok": true
+  },
+  {
+   "object": "R4X_ReloadBooster_Drum",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1484,
+   "vertices": 780,
+   "uv": true,
+   "material_slots": 5,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_ReloadBooster_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 1308,
+  "vertices": 700,
+  "uv": true,
+  "material_slots": 5,
+  "ok": true
+ },
+ "triangles": 2828,
+ "triangles_lod1": 1308,
+ "mesh_objects": 2,
+ "material_slots_total": 9,
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.2407
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": null,
+ "ports": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "interface_vs_source": null,
+ "hierarchy": {
+  "R4X_ReloadBooster_ROOT": null,
+  "R4X_ReloadBooster_Body": "R4X_ReloadBooster_ROOT",
+  "R4X_ReloadBooster_Drum": "R4X_ReloadBooster_ROOT",
+  "Port_down_000": "R4X_ReloadBooster_ROOT",
+  "Socket_Mount": "R4X_ReloadBooster_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "procedural",
+  "fps": 24,
+  "frames": 89,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Activate",
+    "start": 27,
+    "end": 75,
+    "loop": true
+   },
+   {
+    "name": "Hit",
+    "start": 77,
+    "end": 89,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Activate_Start": 27,
+   "Hit": 77
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4X_ReloadBooster_Body",
+   "R4X_ReloadBooster_Drum"
+  ],
+  "objects_with_real_motion": 2,
+  "sweep_outside_envelope_mm": 4.482,
+  "sweep_allowance_mm": 10,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   },
+   {
+    "clip": "Activate",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "raw and uneven: stutter, rattle, slight drift (seeded)"
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 2828,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 5,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    51,
+    75,
+    77,
+    83,
+    89
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": [
+    1,
+    "R4X_ReloadBooster_Drum",
+    0.0,
+    0.0
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 2828,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    51,
+    75,
+    77,
+    83,
+    89
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4X_ReloadBooster_front.jpg",
+  "R4X_ReloadBooster_side.jpg",
+  "R4X_ReloadBooster_top.jpg",
+  "R4X_ReloadBooster_34.jpg",
+  "R4X_ReloadBooster_wire.jpg",
+  "R4X_ReloadBooster_clay.jpg",
+  "R4X_ReloadBooster_silhouette.png"
+ ],
+ "files": {
+  "R4X_ReloadBooster.blend": {
+   "sha256": "edc172cecc72cb9339af1bce2e8d43fa8da92af2ef84b1a97110e0d9aea00193",
+   "bytes": 190493
+  },
+  "R4X_ReloadBooster.fbx": {
+   "sha256": "8a00bbb8b499d36e702674dcac52880151ecd9de37f09be3a40219b64cb65f89",
+   "bytes": 161020
+  },
+  "R4X_ReloadBooster.glb": {
+   "sha256": "b67858569fbf0185068f242b7372309841953dd2e6b7676e272ac83c64873ddc",
+   "bytes": 175628
+  },
+  "R4X_ReloadBooster_LOD1.fbx": {
+   "sha256": "3ce7bceaf1645773f55236c5f65813ec26aa6dc2ff18507fde8ad69928524d34",
+   "bytes": 67436
+  },
+  "R4X_ReloadBooster_LOD1.glb": {
+   "sha256": "50628a652e3636b637eb1cb73835e50bb279b85ba6e4770cc4987037423f9011",
+   "bytes": 87776
+  }
+ },
+ "seconds": 1.9,
+ "blender": "5.3.0"
+}

@@ -1,0 +1,293 @@
+{
+ "id": "R4X_PointDefense",
+ "style": "B",
+ "style_label": "B_Brutal",
+ "family": "module",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "PROPOSAL",
+ "source": "#1238",
+ "meshes": [
+  {
+   "object": "R4X_PointDefense_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1756,
+   "vertices": 942,
+   "uv": true,
+   "material_slots": 3,
+   "ok": true
+  },
+  {
+   "object": "R4X_PointDefense_Turret",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 658,
+   "vertices": 341,
+   "uv": true,
+   "material_slots": 4,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_PointDefense_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 502,
+  "vertices": 267,
+  "uv": true,
+  "material_slots": 4,
+  "ok": true
+ },
+ "triangles": 2414,
+ "triangles_lod1": 502,
+ "mesh_objects": 2,
+ "material_slots_total": 7,
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Trim"
+ ],
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.1832
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": null,
+ "ports": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "interface_vs_source": null,
+ "hierarchy": {
+  "R4X_PointDefense_ROOT": null,
+  "R4X_PointDefense_Body": "R4X_PointDefense_ROOT",
+  "R4X_PointDefense_Turret": "R4X_PointDefense_ROOT",
+  "Port_down_000": "R4X_PointDefense_ROOT",
+  "Socket_Mount": "R4X_PointDefense_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "procedural",
+  "fps": 24,
+  "frames": 89,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Activate",
+    "start": 27,
+    "end": 75,
+    "loop": true
+   },
+   {
+    "name": "Hit",
+    "start": 77,
+    "end": 89,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Activate_Start": 27,
+   "Hit": 77
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4X_PointDefense_Body",
+   "R4X_PointDefense_Turret"
+  ],
+  "objects_with_real_motion": 2,
+  "sweep_outside_envelope_mm": 3.184,
+  "sweep_allowance_mm": 10,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   },
+   {
+    "clip": "Activate",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "heavy and mechanical: slow start, hard stop, damped settle"
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 2414,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 5,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    51,
+    75,
+    77,
+    83,
+    89
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": [
+    1,
+    "R4X_PointDefense_Turret",
+    0.0,
+    0.0
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 2,
+   "triangles": 2414,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    51,
+    75,
+    77,
+    83,
+    89
+   ],
+   "nodes_compared": 2,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4X_PointDefense_front.jpg",
+  "R4X_PointDefense_side.jpg",
+  "R4X_PointDefense_top.jpg",
+  "R4X_PointDefense_34.jpg",
+  "R4X_PointDefense_wire.jpg",
+  "R4X_PointDefense_clay.jpg",
+  "R4X_PointDefense_silhouette.png"
+ ],
+ "files": {
+  "R4X_PointDefense.blend": {
+   "sha256": "35bfebef1f0ec1ca3980dc5f7110fbbcfbca66fb5bbb5faeb6b594978b161d9a",
+   "bytes": 154501
+  },
+  "R4X_PointDefense.fbx": {
+   "sha256": "9c8cd4377fd118da1348943c1e09d89d763a6b0f204715e5bbb933bb7623990f",
+   "bytes": 122412
+  },
+  "R4X_PointDefense.glb": {
+   "sha256": "e926eab4c4f74dce2258064b8642202b2a5f961771d6ba71440ec356d12c0035",
+   "bytes": 169272
+  },
+  "R4X_PointDefense_LOD1.fbx": {
+   "sha256": "161c6a80f1349a9f4f15fd4df514cfd4f438f8765be8b422b176a3932315ab7a",
+   "bytes": 30284
+  },
+  "R4X_PointDefense_LOD1.glb": {
+   "sha256": "1ca2cc7660bdca3007a12a7efa494706397dcbdb79b1bbe0f145db5e9ca9a3e6",
+   "bytes": 63652
+  }
+ },
+ "seconds": 1.7,
+ "blender": "5.3.0"
+}
