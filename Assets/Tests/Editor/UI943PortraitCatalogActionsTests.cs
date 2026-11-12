@@ -212,6 +212,24 @@ public sealed class UI943PortraitCatalogActionsTests
         Assert.That((string)method.Invoke(null,new object[]{creative,kind,unlocked}),Does.Contain(expected));
     }
 
+    [UnityTest] public IEnumerator CatalogMarksStacksWithOnlyDamagedButUsableParts()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance?.Progress==null)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
+        Assert.That(run.GaragePurchase(R3PartKind.Wheel),Is.True);
+        Assert.That(run.GaragePurchase(R3PartKind.Wheel),Is.True);
+        var wheels=run.VehicleModel.Inventory.Where(p=>p.Kind==R3PartKind.Wheel).ToArray();
+        wheels[0].Health=.25f;wheels[1].Health=.8f;
+        string Caption()=>(string)Invoke(run.GetComponent<R1RunHUD>(),"CatalogGroupCaption",run,R3PartKind.Wheel,R4WeaponKind.Basic,null,"Koło");
+        Assert.That(Caption(),Does.Contain("× 2").And.Contain("uszkodzone"));
+        wheels[0].Health=1f;
+        Assert.That(Caption(),Does.Not.Contain("uszkodzone"),"A healthy item is available to select.");
+        wheels[0].Health=0f;wheels[1].Health=0f;
+        Assert.That(Caption(),Does.Contain("napraw").And.Not.Contain("uszkodzone"));
+        yield return new ExitPlayMode();
+    }
+
     [Test] public void InspectionSummaryUsesMountedPartHealthAndRepairQuote()
     {
         var model=new R3VehicleModel(R3VehicleCatalog.Create(R3VehicleKind.Light));
@@ -609,6 +627,22 @@ public sealed class UI943PortraitCatalogActionsTests
         Assert.That(ContainsId(run.VehicleModel,item.Id),Is.True);
         yield return null;
     }
+    [Test] public void BatchRepairLabelExplainsShortfallAndFreeCreativeRepair()
+    {
+        var model=new R3VehicleModel(new R3VehicleDesign());model.Award(5);
+        Assert.That(model.PurchaseToInventory(R3PartKind.Armor),Is.True);
+        var item=model.Inventory.Single();item.Health=0;
+        int cost=model.RepairCost(item);Assert.That(cost,Is.GreaterThan(0));Assert.That(model.Scrap,Is.Zero);
+        var method=typeof(R1RunHUD).GetMethod("CatalogRepairLabel",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        string Label(int planned,int eligible,int total)=>(string)method.Invoke(null,new object[]{model,new[]{item},planned,eligible,total});
+        Assert.That(Label(0,1,0),Does.Contain($"Brakuje {cost} Z"));
+        Assert.That(Label(1,1,cost),Does.Contain($"{cost} Z"));
+        typeof(R3VehicleModel).GetProperty("CreativeMode").SetValue(model,true);
+        Assert.That(Label(1,1,0),Does.Contain("za darmo"));
+        Assert.That(Label(0,0,0),Does.Contain("Brak części do naprawy"));
+    }
+
     [Test] public void BatchRepairPreviewPicksAffordablePartsAndMatchesRealCharges()
     {
         var model=new R3VehicleModel(new R3VehicleDesign());model.Award(17);
