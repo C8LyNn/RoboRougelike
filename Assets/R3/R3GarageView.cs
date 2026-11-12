@@ -572,8 +572,13 @@ namespace RoboRougelike.R3
         }
         private static string MountedStackFeedback(int remaining,bool usable)=>usable?
             "Zamontowano. Wybierz miejsce dla kolejnej części.":remaining>0?
-            "Zamontowano. Pozostałe części są zniszczone — napraw je w magazynie.":
+            "Zamontowano. Pozostałe części są zniszczone — użyj naprawy poniżej.":
             "Zamontowano. Brak kolejnych części tej grupy — kup lub odzyskaj nowe.";
+        private static string ExhaustedStackFeedback(bool creative,R3PartKind kind,bool unlocked)=>
+            creative?"Zamontowano. Nie udało się dodać kolejnej darmowej części.":
+            kind==R3PartKind.BonusModule?"Zamontowano. Brak kolejnych bonusów — zdobądź je z nagród.":
+            !unlocked?"Zamontowano. Odzyskaj kolejną część lub odblokuj technologię.":
+            "Zamontowano. Kup lub odzyskaj kolejną część.";
         public bool ClickTarget()
         {
             if(!HasTarget||run.Progress?.State!=R1RunState.Garage||run.Transitioning)return false;
@@ -604,6 +609,7 @@ namespace RoboRougelike.R3
                     SelectedInventoryId=next?.Id;
                     Message=next==null&&remaining.Length>sameTier.Length?
                         "Zamontowano. Pozostałe części mają inny poziom, punkty mocowania lub wymagają naprawy — wybierz egzemplarz w magazynie.":
+                        next==null&&sameTier.Length==0?ExhaustedStackFeedback(run.CreativeWorkshop,mounted.Kind,run.CanBuyTechnology(mounted.Kind,mounted.Weapon)):
                         MountedStackFeedback(sameTier.Length,next!=null);
                 }
             }

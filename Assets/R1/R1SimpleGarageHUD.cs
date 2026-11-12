@@ -298,6 +298,30 @@ namespace RoboRougelike.R1
             return $"{R4WeaponDefinition.PartName(part)} • HP {part.Health*100:0}%\n{repair}";
         }
 
+        string GarageSelectionSummary(R1RunController run,R3PartState inspected,R3PartState owned)
+        {
+            var model=run.VehicleModel;
+            if(inspected!=null)return GarageInspectionSummary(model,inspected);
+            if(owned!=null)return $"{R4WeaponDefinition.PartName(owned)} • HP {owned.Health*100:0}%"+
+                (owned.Health<=0?"\nNajpierw napraw część.":"");
+            if(!catalogGroup.HasValue)return "Wybierz część z listy.";
+            var entry=BuildCatalogEntries(model).FirstOrDefault(QuickEntrySelected);
+            string name=entry.Name;
+            if(name==null&&catalogGroup.Value==R3PartKind.BonusModule)
+            {
+                var mounted=model.Parts.FirstOrDefault(part=>part.Kind==R3PartKind.BonusModule&&CatalogBonusKey(part)==catalogBonusId);
+                if(mounted!=null)name=CatalogBonusGroupName(mounted);
+            }
+            name=name??"Wybrana część";
+            var items=CatalogItemsForGroup(model,catalogGroup.Value,catalogWeapon,catalogBonusId);
+            if(items.Length>0)return items.Any(item=>item.Health>0)?$"{name}\nWybierz egzemplarz w magazynie.":
+                $"{name}\nWszystkie zniszczone — napraw poniżej.";
+            if(catalogGroup.Value==R3PartKind.BonusModule)return $"{name}\nZdobądź kolejny bonus w nagrodach.";
+            if(model.CreativeMode)return $"{name}\nCzęść jest obecnie niedostępna.";
+            if(!run.CanBuyTechnology(catalogGroup.Value,catalogWeapon))return $"{name}\nNajpierw odblokuj technologię.";
+            return $"{name}\nKup część, aby ją zamontować.";
+        }
+
         static string CatalogItemCaption(R3PartState part,bool compact)
         {
             string caption=$"T{R3VehicleModel.NormalizedTier(part.Tier)} • {(compact?"":"HP ")}{part.Health*100:0}%";
@@ -549,8 +573,7 @@ namespace RoboRougelike.R1
             DrawQuickStackRepair(run,QuickRepairArea(false));
             var owned=model.Inventory.FirstOrDefault(p=>p.Id==garage.SelectedInventoryId);
             var inspected=garage.Tool!=R41GarageTool.Mount&&garage.HasTarget?model.At(garage.Cell):null;
-            GUI.Label(new Rect(12,511,245,43),inspected!=null?GarageInspectionSummary(model,inspected):owned!=null?$"Wybrano: {R4WeaponDefinition.PartName(owned)} • HP {owned.Health*100:0}%":
-                catalogGroup.HasValue?(model.CreativeMode?"Wybierz egzemplarz lub dodaj część za darmo.":"Wybierz egzemplarz lub kup część."):"Wybierz część z listy.",small);
+            GUI.Label(new Rect(12,511,245,43),GarageSelectionSummary(run,inspected,owned),small);
             var inspectedWheel=garage.Tool==R41GarageTool.Inspect?inspected:null;
             if(inspectedWheel!=null&&inspectedWheel.Kind==R3PartKind.Wheel&&!R3VehicleModel.CanSwapWheelAppearance(inspectedWheel.WheelStyle))
                 GUI.Label(new Rect(12,560,245,42),GarageWheelStats(inspectedWheel),small);
@@ -614,8 +637,7 @@ namespace RoboRougelike.R1
             DrawQuickStackRepair(run,QuickRepairArea(true));
             var owned=model.Inventory.FirstOrDefault(p=>p.Id==garage.SelectedInventoryId);
             var inspected=garage.Tool!=R41GarageTool.Mount&&garage.HasTarget?model.At(garage.Cell):null;
-            GUI.Label(new Rect(458,637,286,50),inspected!=null?GarageInspectionSummary(model,inspected):owned!=null?$"{R4WeaponDefinition.PartName(owned)} • HP {owned.Health*100:0}%":
-                "Wybierz część z listy.",small);
+            GUI.Label(new Rect(458,637,286,50),GarageSelectionSummary(run,inspected,owned),small);
             var inspectedWheel=garage.Tool==R41GarageTool.Inspect?inspected:null;
             if(inspectedWheel!=null&&inspectedWheel.Kind==R3PartKind.Wheel&&!R3VehicleModel.CanSwapWheelAppearance(inspectedWheel.WheelStyle))
                 GUI.Label(new Rect(458,690,286,40),GarageWheelStats(inspectedWheel),small);
