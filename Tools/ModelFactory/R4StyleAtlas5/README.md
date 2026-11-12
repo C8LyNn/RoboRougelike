@@ -3,7 +3,12 @@
 Eksperymentalna biblioteka pięciu stylów A/B/C/D/E dla istniejących assetów RoboRougelike. Tylko art: nic w `Assets/`,
 bez kodu, bez integracji z Unity, bez scalania. Unity: **UNITY_NOT_RUN**. Windows player: **WINDOWS_PLAYER_NOT_RUN**.
 
-## Visual Polish Pass 1 (najnowsze)
+## Visual Polish Pass 2 (najnowsze)
+
+Sześć typów × 5 stylów z animacjami mechanizmów, warstwa kadłuba z właścicielem każdego fragmentu, manifest dla prototypu
+runtime, testy BEFORE / AFTER w skali gry i test niszczenia — [`polish2/README.md`](polish2/README.md).
+
+## Visual Polish Pass 1
 
 Po warunkowej akceptacji kierunków pilota 2: poprawa spójności kadłuba, materiałów i światła oraz test w skali gry
 (28 / 96 / 196 części, kamera rozgrywki, 1080p i 720p) z porównaniem BEFORE / AFTER — [`polish1/README.md`](polish1/README.md).

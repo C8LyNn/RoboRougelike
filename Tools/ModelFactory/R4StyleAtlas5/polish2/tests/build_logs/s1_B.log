@@ -1,0 +1,216 @@
+00:00.016  color_management | Using config from OCIO: "C:\Program Files (x86)\Steam\steamapps\common\Blender\5.3\datafiles\colormanagement\config.ocio"
+<WORKDIR>\R4_Atlas5_polish2\scripts1\rscene.py:19: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m = bpy.data.materials.new(pre + zone); m.use_nodes = True; nt = m.node_tree; b = nt.nodes.get("Principled BSDF"); tx = src["textures"]
+INFO Draco is available, use library at C:\Program Files (x86)\Steam\steamapps\common\Blender\blender.shared\bf_intern_draco_bridge.dll
+INFO MeshOptimizer is available, use library at C:\Program Files (x86)\Steam\steamapps\common\Blender\blender.shared\bf_intern_meshopt_bridge.dll
+11:16:03 | INFO: Starting glTF 2.0 export
+11:16:03 | INFO: Extracting primitive: gasket
+11:16:04 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:16:04 | INFO: Primitives created: 1
+11:16:04 | INFO: Extracting primitive: lip
+11:16:04 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:16:04 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:16:04 | INFO: Primitives created: 2
+11:16:04 | INFO: Extracting primitive: plate_00
+11:16:04 | INFO: Primitives created: 3
+11:16:04 | INFO: Extracting primitive: plate_01
+11:16:04 | INFO: Primitives created: 3
+11:16:04 | INFO: Extracting primitive: plate_02
+11:16:04 | INFO: Primitives created: 3
+11:16:04 | INFO: Extracting primitive: plate_03
+11:16:04 | INFO: Primitives created: 2
+11:16:04 | INFO: Extracting primitive: plate_04
+11:16:04 | INFO: Primitives created: 3
+11:16:04 | INFO: Extracting primitive: plate_05
+11:16:04 | INFO: Primitives created: 3
+11:16:04 | INFO: Extracting primitive: plate_06
+11:16:04 | INFO: Primitives created: 3
+11:16:04 | INFO: Extracting primitive: plate_07
+11:16:04 | INFO: Primitives created: 2
+11:16:04 | INFO: Extracting primitive: plate_08
+11:16:04 | INFO: Primitives created: 3
+11:16:04 | INFO: Extracting primitive: plate_09
+11:16:04 | INFO: Primitives created: 3
+11:16:04 | INFO: Extracting primitive: plate_10
+11:16:04 | INFO: Primitives created: 3
+11:16:04 | INFO: Extracting primitive: plate_11
+11:16:04 | INFO: Primitives created: 2
+11:16:04 | INFO: Extracting primitive: plate_12
+11:16:04 | INFO: Primitives created: 2
+11:16:04 | INFO: Extracting primitive: plate_13
+11:16:04 | INFO: Primitives created: 2
+11:16:04 | INFO: Extracting primitive: plate_14
+11:16:04 | INFO: Primitives created: 2
+11:16:04 | INFO: Extracting primitive: plate_15
+11:16:04 | INFO: Primitives created: 1
+11:16:04 | INFO: Finished glTF 2.0 export in 0.07552313804626465 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_polish2\\kit1\\B_Brutal\\R4H_HullKit.fbx'
+export finished in 0.0208 sec.
+11:16:04 | INFO: Data are loaded, start creating Blender stuff
+11:16:04 | INFO: Blender create Mesh node R4B_Cube
+11:16:04 | INFO: glTF import finished in 0.01s
+11:16:04 | INFO: Data are loaded, start creating Blender stuff
+11:16:04 | INFO: Blender create Mesh node R4W_Basic_Yaw
+11:16:04 | INFO: Blender create Mesh node R4W_Basic_Pitch
+11:16:04 | INFO: Blender create Mesh node MuzzleFlash
+11:16:04 | INFO: Blender create Mesh node R4W_Basic_Barrel
+11:16:04 | INFO: Blender create Mesh node R4W_Basic_Base
+11:16:04 | INFO: glTF import finished in 0.03s
+11:16:04 | INFO: Data are loaded, start creating Blender stuff
+11:16:04 | INFO: Blender create Mesh node R4M_WheelM_Side_Offroad_Mount
+11:16:04 | INFO: Blender create Mesh node R4M_WheelM_Side_Offroad_Rotor
+11:16:04 | INFO: glTF import finished in 0.02s
+11:16:04 | INFO: Data are loaded, start creating Blender stuff
+11:16:04 | INFO: Blender create Mesh node Hover_PulseRing
+11:16:04 | INFO: Blender create Mesh node Hover_ThrustGlow
+11:16:04 | INFO: Blender create Mesh node R4M_HoverEngine_Housing
+11:16:04 | INFO: Blender create Mesh node R4M_HoverEngine_Rotor
+11:16:04 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_1
+11:16:04 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_2
+11:16:04 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_3
+11:16:04 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_4
+11:16:04 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_5
+11:16:04 | INFO: glTF import finished in 0.03s
+<WORKDIR>\R4_Atlas5_polish2\scripts1\rscene.py:52: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m = bpy.data.materials.new(name); m.use_nodes = True; b = m.node_tree.nodes.get("Principled BSDF"); b.inputs["Base Color"].default_value = (*rgb, 1); b.inputs["Roughness"].default_value = rough; b.inputs["Metallic"].default_value = metal; return m
+11:16:04 | INFO: Data are loaded, start creating Blender stuff
+11:16:04 | INFO: Blender create Mesh node R4X_Battery_Body
+11:16:04 | INFO: glTF import finished in 0.02s
+11:16:04 | INFO: Data are loaded, start creating Blender stuff
+11:16:04 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_Body
+11:16:04 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_Payload
+11:16:04 | INFO: glTF import finished in 0.03s
+11:16:04 | INFO: Data are loaded, start creating Blender stuff
+11:16:04 | INFO: Blender create Mesh node R4D_ExplosiveTrap_Body
+11:16:04 | INFO: Blender create Mesh node R4D_ExplosiveTrap_Lamp
+11:16:04 | INFO: glTF import finished in 0.02s
+11:16:04 | INFO: Data are loaded, start creating Blender stuff
+11:16:04 | INFO: Blender create Mesh node R4C_STRUT_STANDARD
+11:16:04 | INFO: glTF import finished in 0.02s
+11:16:05 | INFO: Data are loaded, start creating Blender stuff
+11:16:05 | INFO: Blender create Mesh node R4B_Cube
+11:16:06 | INFO: glTF import finished in 0.44s
+11:16:06 | INFO: Data are loaded, start creating Blender stuff
+11:16:06 | INFO: Blender create Mesh node R4W_Basic_Yaw
+11:16:06 | INFO: Blender create Mesh node R4W_Basic_Gear
+11:16:06 | INFO: Blender create Mesh node R4W_Basic_Pitch
+11:16:06 | INFO: Blender create Mesh node MuzzleFlash
+11:16:06 | INFO: Blender create Mesh node R4W_Basic_Barrel
+11:16:06 | INFO: Blender create Mesh node R4W_Basic_Bolt
+11:16:06 | INFO: Blender create Mesh node R4W_Basic_Buffer
+11:16:06 | INFO: Blender create Mesh node R4W_Basic_Base
+11:16:07 | INFO: glTF import finished in 0.59s
+11:16:07 | INFO: Data are loaded, start creating Blender stuff
+11:16:07 | INFO: Blender create Mesh node R4M_WheelM_Side_Offroad_Caliper
+11:16:07 | INFO: Blender create Mesh node R4M_WheelM_Side_Offroad_Mount
+11:16:07 | INFO: Blender create Mesh node R4M_WheelM_Side_Offroad_Rotor
+11:16:07 | INFO: Blender create Mesh node R4M_WheelM_Side_Offroad_Shock
+11:16:08 | INFO: glTF import finished in 0.52s
+11:16:08 | INFO: Data are loaded, start creating Blender stuff
+11:16:08 | INFO: Blender create Mesh node Hover_PulseRing
+11:16:08 | INFO: Blender create Mesh node Hover_ThrustGlow
+11:16:08 | INFO: Blender create Mesh node R4M_HoverEngine_Gear
+11:16:08 | INFO: Blender create Mesh node R4M_HoverEngine_Housing
+11:16:08 | INFO: Blender create Mesh node R4M_HoverEngine_Rods
+11:16:08 | INFO: Blender create Mesh node R4M_HoverEngine_Rotor
+11:16:08 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_1
+11:16:08 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_2
+11:16:08 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_3
+11:16:08 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_4
+11:16:08 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_5
+11:16:09 | INFO: glTF import finished in 0.60s
+11:16:11 | INFO: Data are loaded, start creating Blender stuff
+11:16:11 | INFO: Blender create Mesh node R4X_Battery_Body
+11:16:11 | INFO: Blender create Mesh node R4X_Battery_Fan
+11:16:11 | INFO: Blender create Mesh node R4X_Battery_Relay
+11:16:11 | INFO: glTF import finished in 0.52s
+11:16:12 | INFO: Data are loaded, start creating Blender stuff
+11:16:12 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_Body
+11:16:12 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_HookL
+11:16:12 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_HookR
+11:16:12 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_Payload
+11:16:12 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_Ram
+11:16:12 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_Sprocket
+11:16:12 | INFO: glTF import finished in 0.56s
+11:16:13 | INFO: Data are loaded, start creating Blender stuff
+11:16:13 | INFO: Blender create Mesh node R4D_ExplosiveTrap_Body
+11:16:13 | INFO: Blender create Mesh node R4D_ExplosiveTrap_Collar
+11:16:13 | INFO: Blender create Mesh node R4D_ExplosiveTrap_Horns
+11:16:13 | INFO: Blender create Mesh node R4D_ExplosiveTrap_Lamp
+11:16:13 | INFO: glTF import finished in 0.50s
+11:16:14 | INFO: Data are loaded, start creating Blender stuff
+11:16:14 | INFO: Blender create Mesh node R4C_STRUT_STANDARD
+11:16:14 | INFO: glTF import finished in 0.47s
+<WORKDIR>\R4_Atlas5_polish2\scripts1\rscene.py:54: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m = bpy.data.materials.new("Ground"); m.use_nodes = True; nt = m.node_tree; b = nt.nodes.get("Principled BSDF"); tc = nt.nodes.new("ShaderNodeTexCoord")
+<WORKDIR>\R4_Atlas5_polish2\scripts1\rscene.py:135: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  w = bpy.data.worlds.new("W"); scn.world = w; w.use_nodes = True; bg = w.node_tree.nodes.get("Background"); bg.inputs[0].default_value = (*shots["sky"]["color"], 1); bg.inputs[1].default_value = shots["sky"]["strength"]
+01:12.453  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\1a_models_before_1080.jpg'
+01:12.906  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\1a_models_before_720.jpg'
+[POLISH] SHOT B 1a_models_before {'pieces': 6, 'triangles': 8228, 'hull_layer_triangles': 0, 'hull_fragments': 0, 'objects': 55, 'render_s_1080': 3.1, 'render_s_720': 0.5}
+01:14.906  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\1b_models_before_1080.jpg'
+01:15.422  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\1b_models_before_720.jpg'
+[POLISH] SHOT B 1b_models_before {'pieces': 5, 'triangles': 9004, 'hull_layer_triangles': 0, 'hull_fragments': 0, 'objects': 33, 'render_s_1080': 2.0, 'render_s_720': 0.5}
+01:17.125  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\2_buggy_before_1080.jpg'
+01:17.797  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\2_buggy_before_720.jpg'
+[POLISH] SHOT B 2_buggy_before {'pieces': 29, 'triangles': 40856, 'hull_layer_triangles': 10908, 'hull_fragments': 0, 'objects': 254, 'render_s_1080': 1.7, 'render_s_720': 0.6}
+01:19.313  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\3_skimmer_before_1080.jpg'
+01:20.016  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\3_skimmer_before_720.jpg'
+[POLISH] SHOT B 3_skimmer_before {'pieces': 36, 'triangles': 57516, 'hull_layer_triangles': 6888, 'hull_fragments': 0, 'objects': 331, 'render_s_1080': 1.5, 'render_s_720': 0.7}
+01:21.656  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\4_crawler_before_1080.jpg'
+01:22.344  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\4_crawler_before_720.jpg'
+[POLISH] SHOT B 4_crawler_before {'pieces': 103, 'triangles': 141092, 'hull_layer_triangles': 22668, 'hull_fragments': 0, 'objects': 860, 'render_s_1080': 1.7, 'render_s_720': 0.7}
+01:24.297  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\5_dreadnought_before_1080.jpg'
+01:24.906  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\5_dreadnought_before_720.jpg'
+[POLISH] SHOT B 5_dreadnought_before {'pieces': 208, 'triangles': 223588, 'hull_layer_triangles': 46172, 'hull_fragments': 0, 'objects': 1777, 'render_s_1080': 2.0, 'render_s_720': 0.6}
+01:26.656  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\6_gameplay_before_1080.jpg'
+01:27.266  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\6_gameplay_before_720.jpg'
+[POLISH] SHOT B 6_gameplay_before {'pieces': 226, 'triangles': 321176, 'hull_layer_triangles': 62280, 'hull_fragments': 0, 'objects': 1953, 'render_s_1080': 1.8, 'render_s_720': 0.6}
+01:29.141  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\7_distant_before_1080.jpg'
+01:30.281  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\7_distant_before_720.jpg'
+[POLISH] SHOT B 7_distant_before {'pieces': 262, 'triangles': 378692, 'hull_layer_triangles': 69168, 'hull_fragments': 0, 'objects': 2284, 'render_s_1080': 0.8, 'render_s_720': 1.1}
+01:31.969  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\1a_models_after_1080.jpg'
+01:32.422  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\1a_models_after_720.jpg'
+[POLISH] SHOT B 1a_models_after {'pieces': 6, 'triangles': 12456, 'hull_layer_triangles': 0, 'hull_fragments': 0, 'objects': 62, 'render_s_1080': 1.7, 'render_s_720': 0.5}
+01:34.000  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\1b_models_after_1080.jpg'
+01:34.406  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\1b_models_after_720.jpg'
+[POLISH] SHOT B 1b_models_after {'pieces': 5, 'triangles': 6724, 'hull_layer_triangles': 0, 'hull_fragments': 0, 'objects': 41, 'render_s_1080': 1.6, 'render_s_720': 0.4}
+01:35.859  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\2_buggy_after_1080.jpg'
+01:36.344  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\2_buggy_after_720.jpg'
+[POLISH] SHOT B 2_buggy_after {'pieces': 29, 'triangles': 45800, 'hull_layer_triangles': 14564, 'hull_fragments': 83, 'objects': 358, 'render_s_1080': 1.5, 'render_s_720': 0.5}
+01:38.031  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\3_skimmer_after_1080.jpg'
+01:38.500  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\3_skimmer_after_720.jpg'
+[POLISH] SHOT B 3_skimmer_after {'pieces': 36, 'triangles': 70404, 'hull_layer_triangles': 9528, 'hull_fragments': 72, 'objects': 441, 'render_s_1080': 1.7, 'render_s_720': 0.5}
+01:40.188  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\4_crawler_after_1080.jpg'
+01:40.766  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\4_crawler_after_720.jpg'
+[POLISH] SHOT B 4_crawler_after {'pieces': 103, 'triangles': 135936, 'hull_layer_triangles': 25392, 'hull_fragments': 224, 'objects': 1169, 'render_s_1080': 1.7, 'render_s_720': 0.6}
+01:42.641  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\5_dreadnought_after_1080.jpg'
+01:43.375  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\5_dreadnought_after_720.jpg'
+[POLISH] SHOT B 5_dreadnought_after {'pieces': 208, 'triangles': 235824, 'hull_layer_triangles': 51944, 'hull_fragments': 494, 'objects': 2408, 'render_s_1080': 1.9, 'render_s_720': 0.7}
+01:45.219  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\6_gameplay_after_1080.jpg'
+01:45.891  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\6_gameplay_after_720.jpg'
+[POLISH] SHOT B 6_gameplay_after {'pieces': 226, 'triangles': 343740, 'hull_layer_triangles': 78612, 'hull_fragments': 545, 'objects': 2684, 'render_s_1080': 1.9, 'render_s_720': 0.7}
+01:47.906  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\7_distant_after_1080.jpg'
+01:48.516  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\7_distant_after_720.jpg'
+[POLISH] SHOT B 7_distant_after {'pieces': 262, 'triangles': 414144, 'hull_layer_triangles': 88140, 'hull_fragments': 617, 'objects': 3125, 'render_s_1080': 0.9, 'render_s_720': 0.6}
+01:49.938  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\8_destroy_S0_intact_1080.jpg'
+[POLISH] SHOT B 8_destroy_S0_intact {'pieces': 29, 'triangles': 34684, 'hull_layer_triangles': 11448, 'hull_fragments': 82, 'objects': 342, 'render_s_1080': 1.4}
+01:51.438  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\8_destroy_S1_plate_centre_1080.jpg'
+[POLISH] SHOT B 8_destroy_S1_plate_centre {'pieces': 28, 'triangles': 34492, 'hull_layer_triangles': 11300, 'hull_fragments': 77, 'objects': 328, 'render_s_1080': 1.5}
+01:52.734  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\8_destroy_S2_two_neighbours_1080.jpg'
+[POLISH] SHOT B 8_destroy_S2_two_neighbours {'pieces': 27, 'triangles': 34344, 'hull_layer_triangles': 11196, 'hull_fragments': 73, 'objects': 315, 'render_s_1080': 1.3}
+01:53.953  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\8_destroy_S3_section_1080.jpg'
+[POLISH] SHOT B 8_destroy_S3_section {'pieces': 24, 'triangles': 27240, 'hull_layer_triangles': 8708, 'hull_fragments': 65, 'objects': 277, 'render_s_1080': 1.2}
+01:55.188  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\8_destroy_S4_wheel_1080.jpg'
+[POLISH] SHOT B 8_destroy_S4_wheel {'pieces': 28, 'triangles': 31180, 'hull_layer_triangles': 11176, 'hull_fragments': 80, 'objects': 332, 'render_s_1080': 1.3}
+01:56.531  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\8_destroy_S5_weapon_mount_1080.jpg'
+[POLISH] SHOT B 8_destroy_S5_weapon_mount {'pieces': 27, 'triangles': 29836, 'hull_layer_triangles': 11172, 'hull_fragments': 77, 'objects': 316, 'render_s_1080': 1.3}
+01:57.563  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\r1\B_Brutal\8_destroy_S6_plate_edge_1080.jpg'
+[POLISH] SHOT B 8_destroy_S6_plate_edge {'pieces': 28, 'triangles': 34004, 'hull_layer_triangles': 10812, 'hull_fragments': 77, 'objects': 328, 'render_s_1080': 1.0}
+[POLISH] STYLE_DONE B 117.3 s ['taa_render_samples', 'use_raytracing', '!use_gtao', '!gtao_distance', 'use_shadows', 'shadow_ray_count', 'shadow_step_count', 'fast_gi_distance', 'use_fast_gi', 'view_transform', 'look', 'exposure']
+[POLISH] ALL_DONE
+Blender 5.3.0 (hash 02f0899d78e3 built 2026-11-10 01:33:43)
+
+Blender quit

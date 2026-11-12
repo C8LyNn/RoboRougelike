@@ -1,0 +1,398 @@
+{
+ "style": "B",
+ "applied": [
+  "taa_render_samples",
+  "use_raytracing",
+  "!use_gtao",
+  "!gtao_distance",
+  "use_shadows",
+  "shadow_ray_count",
+  "shadow_step_count",
+  "fast_gi_distance",
+  "use_fast_gi",
+  "view_transform",
+  "look",
+  "exposure"
+ ],
+ "shots": {
+  "1a_models_before": {
+   "pieces": 6,
+   "triangles": 8228,
+   "hull_layer_triangles": 0,
+   "hull_fragments": 0,
+   "objects": 55,
+   "render_s_1080": 3.1,
+   "render_s_720": 0.5
+  },
+  "1b_models_before": {
+   "pieces": 5,
+   "triangles": 9004,
+   "hull_layer_triangles": 0,
+   "hull_fragments": 0,
+   "objects": 33,
+   "render_s_1080": 2.0,
+   "render_s_720": 0.5
+  },
+  "2_buggy_before": {
+   "pieces": 29,
+   "triangles": 40856,
+   "hull_layer_triangles": 10908,
+   "hull_fragments": 0,
+   "objects": 254,
+   "render_s_1080": 1.7,
+   "render_s_720": 0.6
+  },
+  "3_skimmer_before": {
+   "pieces": 36,
+   "triangles": 57516,
+   "hull_layer_triangles": 6888,
+   "hull_fragments": 0,
+   "objects": 331,
+   "render_s_1080": 1.5,
+   "render_s_720": 0.7
+  },
+  "4_crawler_before": {
+   "pieces": 103,
+   "triangles": 141092,
+   "hull_layer_triangles": 22668,
+   "hull_fragments": 0,
+   "objects": 860,
+   "render_s_1080": 1.7,
+   "render_s_720": 0.7
+  },
+  "5_dreadnought_before": {
+   "pieces": 208,
+   "triangles": 223588,
+   "hull_layer_triangles": 46172,
+   "hull_fragments": 0,
+   "objects": 1777,
+   "render_s_1080": 2.0,
+   "render_s_720": 0.6
+  },
+  "6_gameplay_before": {
+   "pieces": 226,
+   "triangles": 321176,
+   "hull_layer_triangles": 62280,
+   "hull_fragments": 0,
+   "objects": 1953,
+   "render_s_1080": 1.8,
+   "render_s_720": 0.6
+  },
+  "7_distant_before": {
+   "pieces": 262,
+   "triangles": 378692,
+   "hull_layer_triangles": 69168,
+   "hull_fragments": 0,
+   "objects": 2284,
+   "render_s_1080": 0.8,
+   "render_s_720": 1.1
+  },
+  "1a_models_after": {
+   "pieces": 6,
+   "triangles": 12456,
+   "hull_layer_triangles": 0,
+   "hull_fragments": 0,
+   "objects": 62,
+   "render_s_1080": 1.7,
+   "render_s_720": 0.5
+  },
+  "1b_models_after": {
+   "pieces": 5,
+   "triangles": 6724,
+   "hull_layer_triangles": 0,
+   "hull_fragments": 0,
+   "objects": 41,
+   "render_s_1080": 1.6,
+   "render_s_720": 0.4
+  },
+  "2_buggy_after": {
+   "pieces": 29,
+   "triangles": 45800,
+   "hull_layer_triangles": 14564,
+   "hull_fragments": 83,
+   "objects": 358,
+   "render_s_1080": 1.5,
+   "render_s_720": 0.5
+  },
+  "3_skimmer_after": {
+   "pieces": 36,
+   "triangles": 70404,
+   "hull_layer_triangles": 9528,
+   "hull_fragments": 72,
+   "objects": 441,
+   "render_s_1080": 1.7,
+   "render_s_720": 0.5
+  },
+  "4_crawler_after": {
+   "pieces": 103,
+   "triangles": 135936,
+   "hull_layer_triangles": 25392,
+   "hull_fragments": 224,
+   "objects": 1169,
+   "render_s_1080": 1.7,
+   "render_s_720": 0.6
+  },
+  "5_dreadnought_after": {
+   "pieces": 208,
+   "triangles": 235824,
+   "hull_layer_triangles": 51944,
+   "hull_fragments": 494,
+   "objects": 2408,
+   "render_s_1080": 1.9,
+   "render_s_720": 0.7
+  },
+  "6_gameplay_after": {
+   "pieces": 226,
+   "triangles": 343740,
+   "hull_layer_triangles": 78612,
+   "hull_fragments": 545,
+   "objects": 2684,
+   "render_s_1080": 1.9,
+   "render_s_720": 0.7
+  },
+  "7_distant_after": {
+   "pieces": 262,
+   "triangles": 414144,
+   "hull_layer_triangles": 88140,
+   "hull_fragments": 617,
+   "objects": 3125,
+   "render_s_1080": 0.9,
+   "render_s_720": 0.6
+  },
+  "8_destroy_S0_intact": {
+   "pieces": 29,
+   "triangles": 34684,
+   "hull_layer_triangles": 11448,
+   "hull_fragments": 82,
+   "objects": 342,
+   "render_s_1080": 1.4
+  },
+  "8_destroy_S1_plate_centre": {
+   "pieces": 28,
+   "triangles": 34492,
+   "hull_layer_triangles": 11300,
+   "hull_fragments": 77,
+   "objects": 328,
+   "render_s_1080": 1.5
+  },
+  "8_destroy_S2_two_neighbours": {
+   "pieces": 27,
+   "triangles": 34344,
+   "hull_layer_triangles": 11196,
+   "hull_fragments": 73,
+   "objects": 315,
+   "render_s_1080": 1.3
+  },
+  "8_destroy_S3_section": {
+   "pieces": 24,
+   "triangles": 27240,
+   "hull_layer_triangles": 8708,
+   "hull_fragments": 65,
+   "objects": 277,
+   "render_s_1080": 1.2
+  },
+  "8_destroy_S4_wheel": {
+   "pieces": 28,
+   "triangles": 31180,
+   "hull_layer_triangles": 11176,
+   "hull_fragments": 80,
+   "objects": 332,
+   "render_s_1080": 1.3
+  },
+  "8_destroy_S5_weapon_mount": {
+   "pieces": 27,
+   "triangles": 29836,
+   "hull_layer_triangles": 11172,
+   "hull_fragments": 77,
+   "objects": 316,
+   "render_s_1080": 1.3
+  },
+  "8_destroy_S6_plate_edge": {
+   "pieces": 28,
+   "triangles": 34004,
+   "hull_layer_triangles": 10812,
+   "hull_fragments": 77,
+   "objects": 328,
+   "render_s_1080": 1.0
+  }
+ },
+ "crops": {
+  "7_distant_before": [
+   {
+    "tag": "buggy_33m",
+    "robot": "buggy",
+    "px_1080": [
+     1283.9,
+     626.9,
+     1505.9,
+     793.4
+    ],
+    "distance_m": 35.9,
+    "fully_inside_frame": true
+   },
+   {
+    "tag": "skimmer_42m",
+    "robot": "skimmer",
+    "px_1080": [
+     655.2,
+     538.2,
+     782.6,
+     665.9
+    ],
+    "distance_m": 42.8,
+    "fully_inside_frame": true
+   },
+   {
+    "tag": "buggy_56m",
+    "robot": "buggy",
+    "px_1080": [
+     988.4,
+     493.6,
+     1131.8,
+     578.3
+    ],
+    "distance_m": 56.3,
+    "fully_inside_frame": true
+   },
+   {
+    "tag": "crawler_71m",
+    "robot": "crawler",
+    "px_1080": [
+     595.9,
+     422.9,
+     723.2,
+     516.7
+    ],
+    "distance_m": 71.1,
+    "fully_inside_frame": true
+   },
+   {
+    "tag": "skimmer_83m",
+    "robot": "skimmer",
+    "px_1080": [
+     1254.3,
+     410.1,
+     1333.5,
+     470.1
+    ],
+    "distance_m": 83.5,
+    "fully_inside_frame": true
+   },
+   {
+    "tag": "buggy_94m",
+    "robot": "buggy",
+    "px_1080": [
+     874.9,
+     405.8,
+     933.6,
+     449.2
+    ],
+    "distance_m": 94.0,
+    "fully_inside_frame": true
+   }
+  ],
+  "7_distant_after": [
+   {
+    "tag": "buggy_33m",
+    "robot": "buggy",
+    "px_1080": [
+     1283.9,
+     626.9,
+     1505.9,
+     793.4
+    ],
+    "distance_m": 35.9,
+    "fully_inside_frame": true
+   },
+   {
+    "tag": "skimmer_42m",
+    "robot": "skimmer",
+    "px_1080": [
+     655.2,
+     538.2,
+     782.6,
+     665.9
+    ],
+    "distance_m": 42.8,
+    "fully_inside_frame": true
+   },
+   {
+    "tag": "buggy_56m",
+    "robot": "buggy",
+    "px_1080": [
+     988.4,
+     493.6,
+     1131.8,
+     578.3
+    ],
+    "distance_m": 56.3,
+    "fully_inside_frame": true
+   },
+   {
+    "tag": "crawler_71m",
+    "robot": "crawler",
+    "px_1080": [
+     595.9,
+     422.9,
+     723.2,
+     516.7
+    ],
+    "distance_m": 71.1,
+    "fully_inside_frame": true
+   },
+   {
+    "tag": "skimmer_83m",
+    "robot": "skimmer",
+    "px_1080": [
+     1254.3,
+     410.1,
+     1333.5,
+     470.1
+    ],
+    "distance_m": 83.5,
+    "fully_inside_frame": true
+   },
+   {
+    "tag": "buggy_94m",
+    "robot": "buggy",
+    "px_1080": [
+     874.9,
+     405.8,
+     933.6,
+     449.2
+    ],
+    "distance_m": 94.0,
+    "fully_inside_frame": true
+   }
+  ]
+ },
+ "hull_kit": {
+  "meshes": 18,
+  "triangles": 2512,
+  "files": [
+   "R4H_HullKit.glb",
+   "R4H_HullKit.fbx"
+  ]
+ },
+ "sources": [
+  "R4_Atlas5_pilot2/v2/B_Brutal/R4D_ExplosiveTrap/R4D_ExplosiveTrap.glb",
+  "R4_Atlas5_pilot2/v2/B_Brutal/R4X_Battery/R4X_Battery.glb",
+  "R4_Atlas5_pilot2/v2/B_Brutal/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+  "R4_Atlas5_polish1/v3/B_Brutal/R4B_Cube/R4B_Cube.glb",
+  "R4_Atlas5_polish1/v3/B_Brutal/R4C_STRUT_STANDARD/R4C_STRUT_STANDARD.glb",
+  "R4_Atlas5_polish1/v3/B_Brutal/R4M_HoverEngine/R4M_HoverEngine.glb",
+  "R4_Atlas5_polish1/v3/B_Brutal/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+  "R4_Atlas5_polish1/v3/B_Brutal/R4W_Basic/R4W_Basic.glb",
+  "R4_Atlas5_polish2/v2/B_Brutal/R4B_Cube/R4B_Cube.glb",
+  "R4_Atlas5_polish2/v2/B_Brutal/R4C_STRUT_STANDARD/R4C_STRUT_STANDARD.glb",
+  "R4_Atlas5_polish2/v2/B_Brutal/R4D_ExplosiveTrap/R4D_ExplosiveTrap.glb",
+  "R4_Atlas5_polish2/v2/B_Brutal/R4M_HoverEngine/R4M_HoverEngine.glb",
+  "R4_Atlas5_polish2/v2/B_Brutal/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+  "R4_Atlas5_polish2/v2/B_Brutal/R4W_Basic/R4W_Basic.glb",
+  "R4_Atlas5_polish2/v2/B_Brutal/R4X_Battery/R4X_Battery.glb",
+  "R4_Atlas5_polish2/v2/B_Brutal/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb"
+ ],
+ "seconds": 117.3,
+ "blender": "5.3.0",
+ "engine": "BLENDER_EEVEE"
+}

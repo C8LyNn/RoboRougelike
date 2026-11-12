@@ -1,7 +1,8 @@
 """#1239 pilot 2: independent numpy tests on the EXPORTED GLB files of the 40 pilot variants (no Blender). usage: python3 ptests.py
  T1 files      GLB + LOD1 GLB load; triangle counts equal the Blender QA record; LOD1 <= LOD0; materials are paint zones
  T2 envelope   rest-pose geometry (FX nodes excluded) inside the declared envelope (collision outline of the type)
- T3 swap       the five styles of one type expose IDENTICAL node names, hierarchy and socket / port empties (position dev < 0.05 mm)
+ T3 swap       the five styles of one type expose IDENTICAL contract node names, hierarchy and socket / port empties (position dev < 0.05 mm);
+               pass 2: cosmetic mechanism nodes (listed per variant in *_QA.json) are style-specific extras and are not part of the contract
  T4 animation  every variant carries animation channels in the GLB for each animated object of its QA record
  T5 textures   A, B, D: every painted material has baseColorTexture + metallicRoughnessTexture + normalTexture and keeps the zone paint
                colour / metallic / roughness as FACTORS; E: painted base-colour ramp only; C: no images (both by design)
@@ -10,10 +11,10 @@ Technical tests only - the artistic acceptance of the pilot is a separate decisi
 import os, sys, json, hashlib
 import numpy as np
 import astyle as ST, pstyle as PS
-PKG = os.path.dirname(os.path.dirname(os.path.abspath(__file__))); ATL = os.path.join(PKG, "pilot2", "variants"); TST = os.path.join(PKG, "pilot2", "tests"); POLISH = len(sys.argv) > 1 and sys.argv[1] == "polish1"
-if POLISH:                                                      # Visual Polish Pass 1: same tests on polish1/variants with its palette, plus T7 (baked vertex shading present)
-    import qstyle as PS
-    ATL = os.path.join(PKG, "polish1", "variants"); TST = os.path.join(PKG, "polish1", "tests")
+PKG = os.path.dirname(os.path.dirname(os.path.abspath(__file__))); ATL = os.path.join(PKG, "pilot2", "variants"); TST = os.path.join(PKG, "pilot2", "tests"); MODE = sys.argv[1] if len(sys.argv) > 1 and sys.argv[1] in ("polish1", "polish2") else None; POLISH = MODE is not None
+if POLISH:                                                      # Visual Polish Pass 1 / 2: same tests on <pass>/variants with its palette, plus T7 (baked vertex shading present)
+    PS = __import__("qstyle" if MODE == "polish1" else "rstyle")
+    ATL = os.path.join(PKG, MODE, "variants"); TST = os.path.join(PKG, MODE, "tests")
 MF = os.path.dirname(PKG)
 sys.path.insert(0, os.path.join(MF, "R4BlocksRedesign1232", "scripts")); import glbio
 def g2b(P): P = np.asarray(P); return np.stack([P[..., 0], -P[..., 2], P[..., 1]], axis=-1)
@@ -29,7 +30,7 @@ def main():
             env = np.array(qa["envelope_m"]); P = [g2b(p["pos"]) for p in m.prims if abs(np.linalg.det(m.nodes[p["node"]][:3, :3])) > 1e-6 and (np.ptp(p["pos"], axis=0).max() > 1e-4)]
             P = [x for x, p in zip(P, [p for p in m.prims if abs(np.linalg.det(m.nodes[p["node"]][:3, :3])) > 1e-6 and (np.ptp(p["pos"], axis=0).max() > 1e-4)]) if p["node"] not in qa.get("fx_objects", [])]
             V = np.concatenate(P); out = max(float((env[0] - V).max()), float((V - env[1]).max())); t2 = out <= 0.001
-            names = sorted(n.get("name", "") for n in m.json["nodes"]); emp = {k: g2b(v[0][:3, 3]) for k, v in m.empties.items()}
+            mech = {f"{cid}_{k}" for k in (qa.get("mechanisms") or {})}; names = sorted(n.get("name", "") for n in m.json["nodes"] if n.get("name", "") not in mech); emp = {k: g2b(v[0][:3, 3]) for k, v in m.empties.items()}
             chan = sum(len(a["channels"]) for a in m.json.get("animations", [])); an_objs = qa["animation"]["animated_objects"]; t4 = (chan >= len(an_objs)) if an_objs else True
             imgs = len(m.json.get("images", [])); tx = PS.TEXTURES[s]; painted = [x for x in m.json.get("materials", []) if x["name"] != "R4P_Glow"]; tex_mats = 0; fact = True
             for x in painted:
@@ -48,8 +49,8 @@ def main():
         r["T3"] = t3; r["empty_dev_mm"] = round(dev, 4); r["T6"] = bool(t6)
         r["PASS"] = bool(ok5 and t3 and t6 and all(r[s]["T1"] and r[s]["T2"] and r[s]["T4"] and r[s]["T5"] and r[s]["blender"] == "BLENDER_PASS" for s in ST.STYLES)); rep[cid] = r
     n = sum(1 for v in rep.values() if v["PASS"]); os.makedirs(TST, exist_ok=True)
-    json.dump(dict(result="PASS" if n == len(rep) else "FAIL", assets=len(rep), assets_pass=n, variants=5*len(rep), detail=rep), open(os.path.join(TST, "polish1_glb_tests.json" if POLISH else "pilot2_glb_tests.json"), "w"), indent=1)
-    with open(os.path.join(TST, "POLISH1_TEST_SUMMARY.md" if POLISH else "PILOT2_TEST_SUMMARY.md"), "w", encoding="utf-8") as f:
+    json.dump(dict(result="PASS" if n == len(rep) else "FAIL", assets=len(rep), assets_pass=n, variants=5*len(rep), detail=rep), open(os.path.join(TST, (MODE + "_glb_tests.json") if POLISH else "pilot2_glb_tests.json"), "w"), indent=1)
+    with open(os.path.join(TST, (MODE.upper() + "_TEST_SUMMARY.md") if POLISH else "PILOT2_TEST_SUMMARY.md"), "w", encoding="utf-8") as f:
         f.write(f"# {'Visual Polish Pass 1' if POLISH else 'Pilot 2'}: testy na wyeksportowanych GLB (numpy){' — T5 obejmuje też T7: każdy prymityw ma COLOR_0 (wypalone cieniowanie wierzchołków)' if POLISH else ''}\n\nWynik techniczny: **{n}/{len(rep)} typów z kompletem 5/5 stylów PASS** ({5*len(rep)} wariantów). Unity: UNITY_NOT_RUN. Odbiór artystyczny: **OCZEKUJE NA WŁAŚCICIELA** (testy techniczne go nie zastępują).\n\n" + __doc__.split("\n", 1)[1] + "\n\n| asset | T1 A-E | T2 | T3 | T4 | T5 | T6 | wynik |\n|---|---|---|---|---|---|---|---|\n")
         for cid, v in rep.items():
             def col(k): return "".join(("P" if v[s].get(k) else "F") if isinstance(v.get(s), dict) and k in v[s] else "-" for s in ST.STYLES)

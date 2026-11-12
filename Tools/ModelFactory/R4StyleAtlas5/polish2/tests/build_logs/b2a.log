@@ -1,0 +1,724 @@
+00:00.031  color_management | Using config from OCIO: "C:\Program Files (x86)\Steam\steamapps\common\Blender\5.3\datafiles\colormanagement\config.ocio"
+11:15:15 | INFO: Data are loaded, start creating Blender stuff
+11:15:15 | INFO: Blender create Mesh node R4B_Cube
+11:15:15 | INFO: glTF import finished in 0.02s
+<WORKDIR>\R4_Atlas5_polish2\scripts1\pbuild.py:42: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m = bpy.data.materials.new(zone); m.use_nodes = True; nt = m.node_tree; b = nt.nodes.get("Principled BSDF"); tx = src["textures"]; m["paint_zone"] = zone
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_polish2\\v2\\A_Sleek\\R4B_Cube\\R4B_Cube.fbx'
+export finished in 0.0273 sec.
+INFO Draco is available, use library at C:\Program Files (x86)\Steam\steamapps\common\Blender\blender.shared\bf_intern_draco_bridge.dll
+INFO MeshOptimizer is available, use library at C:\Program Files (x86)\Steam\steamapps\common\Blender\blender.shared\bf_intern_meshopt_bridge.dll
+11:15:15 | INFO: Starting glTF 2.0 export
+11:15:15 | INFO: Extracting primitive: R4B_Cube
+11:15:15 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:15 | INFO: Primitives created: 1
+11:15:15 | INFO: Finished glTF 2.0 export in 0.023612260818481445 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_polish2\\v2\\A_Sleek\\R4B_Cube\\R4B_Cube_LOD1.fbx'
+export finished in 0.0046 sec.
+11:15:15 | INFO: Starting glTF 2.0 export
+11:15:15 | INFO: Extracting primitive: R4B_Cube_LOD1
+11:15:15 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:15 | INFO: Primitives created: 1
+11:15:15 | INFO: Finished glTF 2.0 export in 0.008441448211669922 s
+<WORKDIR>\R4_Atlas5_polish2\scripts1\pbuild.py:150: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  w = bpy.data.worlds.new("W"); scn.world = w; w.use_nodes = True; bg = w.node_tree.nodes.get("Background"); bg.inputs[0].default_value = (0.20, 0.21, 0.23, 1); bg.inputs[1].default_value = 0.9
+00:01.422  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\A_Sleek\R4B_Cube\renders\R4B_Cube_front.jpg'
+00:01.531  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\A_Sleek\R4B_Cube\renders\R4B_Cube_side.jpg'
+00:01.625  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\A_Sleek\R4B_Cube\renders\R4B_Cube_top.jpg'
+00:01.750  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\A_Sleek\R4B_Cube\renders\R4B_Cube_34.jpg'
+00:01.860  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\A_Sleek\R4B_Cube\renders\R4B_Cube_anim1.jpg'
+00:01.969  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\A_Sleek\R4B_Cube\renders\R4B_Cube_anim2.jpg'
+00:02.078  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\A_Sleek\R4B_Cube\renders\R4B_Cube_anim3.jpg'
+00:02.203  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\A_Sleek\R4B_Cube\renders\R4B_Cube_anim4.jpg'
+<WORKDIR>\R4_Atlas5_polish2\scripts1\pbuild.py:441: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  lod.hide_render = True; clay = bpy.data.materials.new("Clay"); clay.use_nodes = True; cb = clay.node_tree.nodes.get("Principled BSDF"); cb.inputs["Base Color"].default_value = (0.5, 0.5, 0.5, 1); cb.inputs["Roughness"].default_value = 0.7
+00:02.485  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\A_Sleek\R4B_Cube\renders\R4B_Cube_clay_front.png'
+00:02.610  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\A_Sleek\R4B_Cube\renders\R4B_Cube_clay_side.png'
+00:02.750  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\A_Sleek\R4B_Cube\renders\R4B_Cube_clay_34.png'
+<WORKDIR>\R4_Atlas5_polish2\scripts1\pbuild.py:446: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  lod.hide_render = True; wm = bpy.data.materials.new("Wire"); wm.use_nodes = True; wb = wm.node_tree.nodes.get("Principled BSDF"); wb.inputs["Base Color"].default_value = (0.01, 0.01, 0.012, 1); wb.inputs["Roughness"].default_value = 1.0
+00:02.844  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\A_Sleek\R4B_Cube\renders\R4B_Cube_wire.jpg'
+
+Info: Saved as "R4B_Cube.blend"
+FBX version: 7400
+11:15:17 | INFO: Data are loaded, start creating Blender stuff
+11:15:17 | INFO: Blender create Mesh node R4B_Cube
+11:15:17 | INFO: glTF import finished in 0.00s
+[PILOT2] VARIANT A_Sleek R4B_Cube BLENDER_PASS [] 44 tris LOD1 44
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_polish2\\v2\\B_Brutal\\R4B_Cube\\R4B_Cube.fbx'
+export finished in 0.0352 sec.
+11:15:18 | INFO: Starting glTF 2.0 export
+11:15:18 | INFO: Extracting primitive: R4B_Cube
+11:15:18 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:18 | INFO: Primitives created: 1
+11:15:18 | INFO: Finished glTF 2.0 export in 0.030401945114135742 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_polish2\\v2\\B_Brutal\\R4B_Cube\\R4B_Cube_LOD1.fbx'
+export finished in 0.0060 sec.
+11:15:18 | INFO: Starting glTF 2.0 export
+11:15:18 | INFO: Extracting primitive: R4B_Cube_LOD1
+11:15:18 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:18 | INFO: Primitives created: 1
+11:15:18 | INFO: Finished glTF 2.0 export in 0.008548259735107422 s
+00:03.313  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\B_Brutal\R4B_Cube\renders\R4B_Cube_front.jpg'
+00:03.438  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\B_Brutal\R4B_Cube\renders\R4B_Cube_side.jpg'
+00:03.578  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\B_Brutal\R4B_Cube\renders\R4B_Cube_top.jpg'
+00:03.735  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\B_Brutal\R4B_Cube\renders\R4B_Cube_34.jpg'
+00:03.953  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\B_Brutal\R4B_Cube\renders\R4B_Cube_anim1.jpg'
+00:04.063  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\B_Brutal\R4B_Cube\renders\R4B_Cube_anim2.jpg'
+00:04.250  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\B_Brutal\R4B_Cube\renders\R4B_Cube_anim3.jpg'
+00:04.438  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\B_Brutal\R4B_Cube\renders\R4B_Cube_anim4.jpg'
+00:04.641  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\B_Brutal\R4B_Cube\renders\R4B_Cube_clay_front.png'
+00:04.797  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\B_Brutal\R4B_Cube\renders\R4B_Cube_clay_side.png'
+00:04.922  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\B_Brutal\R4B_Cube\renders\R4B_Cube_clay_34.png'
+00:05.078  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\B_Brutal\R4B_Cube\renders\R4B_Cube_wire.jpg'
+
+Info: Saved as "R4B_Cube.blend"
+FBX version: 7400
+11:15:20 | INFO: Data are loaded, start creating Blender stuff
+11:15:20 | INFO: Blender create Mesh node R4B_Cube
+11:15:20 | INFO: glTF import finished in 0.00s
+[PILOT2] VARIANT B_Brutal R4B_Cube BLENDER_PASS [] 44 tris LOD1 44
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_polish2\\v2\\C_Arcade\\R4B_Cube\\R4B_Cube.fbx'
+export finished in 0.0313 sec.
+11:15:20 | INFO: Starting glTF 2.0 export
+11:15:20 | INFO: Extracting primitive: R4B_Cube
+11:15:20 | INFO: Primitives created: 1
+11:15:20 | INFO: Finished glTF 2.0 export in 0.014800548553466797 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_polish2\\v2\\C_Arcade\\R4B_Cube\\R4B_Cube_LOD1.fbx'
+export finished in 0.0057 sec.
+11:15:20 | INFO: Starting glTF 2.0 export
+11:15:20 | INFO: Extracting primitive: R4B_Cube_LOD1
+11:15:20 | INFO: Primitives created: 1
+11:15:20 | INFO: Finished glTF 2.0 export in 0.00839686393737793 s
+00:05.594  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\C_Arcade\R4B_Cube\renders\R4B_Cube_front.jpg'
+00:05.719  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\C_Arcade\R4B_Cube\renders\R4B_Cube_side.jpg'
+00:05.828  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\C_Arcade\R4B_Cube\renders\R4B_Cube_top.jpg'
+00:05.969  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\C_Arcade\R4B_Cube\renders\R4B_Cube_34.jpg'
+00:06.078  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\C_Arcade\R4B_Cube\renders\R4B_Cube_anim1.jpg'
+00:06.172  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\C_Arcade\R4B_Cube\renders\R4B_Cube_anim2.jpg'
+00:06.297  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\C_Arcade\R4B_Cube\renders\R4B_Cube_anim3.jpg'
+00:06.406  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\C_Arcade\R4B_Cube\renders\R4B_Cube_anim4.jpg'
+00:06.578  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\C_Arcade\R4B_Cube\renders\R4B_Cube_clay_front.png'
+00:06.703  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\C_Arcade\R4B_Cube\renders\R4B_Cube_clay_side.png'
+00:06.844  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\C_Arcade\R4B_Cube\renders\R4B_Cube_clay_34.png'
+00:06.938  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\C_Arcade\R4B_Cube\renders\R4B_Cube_wire.jpg'
+
+Info: Saved as "R4B_Cube.blend"
+FBX version: 7400
+11:15:22 | INFO: Data are loaded, start creating Blender stuff
+11:15:22 | INFO: Blender create Mesh node R4B_Cube
+11:15:22 | INFO: glTF import finished in 0.00s
+[PILOT2] VARIANT C_Arcade R4B_Cube BLENDER_PASS [] 44 tris LOD1 44
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_polish2\\v2\\D_Scrap\\R4B_Cube\\R4B_Cube.fbx'
+export finished in 0.0276 sec.
+11:15:22 | INFO: Starting glTF 2.0 export
+11:15:22 | INFO: Extracting primitive: R4B_Cube
+11:15:22 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:22 | INFO: Primitives created: 1
+11:15:22 | INFO: Finished glTF 2.0 export in 0.028208017349243164 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_polish2\\v2\\D_Scrap\\R4B_Cube\\R4B_Cube_LOD1.fbx'
+export finished in 0.0058 sec.
+11:15:22 | INFO: Starting glTF 2.0 export
+11:15:22 | INFO: Extracting primitive: R4B_Cube_LOD1
+11:15:22 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:22 | INFO: Primitives created: 1
+11:15:22 | INFO: Finished glTF 2.0 export in 0.01079559326171875 s
+00:07.422  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\D_Scrap\R4B_Cube\renders\R4B_Cube_front.jpg'
+00:07.531  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\D_Scrap\R4B_Cube\renders\R4B_Cube_side.jpg'
+00:07.641  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\D_Scrap\R4B_Cube\renders\R4B_Cube_top.jpg'
+00:07.750  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\D_Scrap\R4B_Cube\renders\R4B_Cube_34.jpg'
+00:07.860  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\D_Scrap\R4B_Cube\renders\R4B_Cube_anim1.jpg'
+00:07.985  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\D_Scrap\R4B_Cube\renders\R4B_Cube_anim2.jpg'
+00:08.094  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\D_Scrap\R4B_Cube\renders\R4B_Cube_anim3.jpg'
+00:08.219  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\D_Scrap\R4B_Cube\renders\R4B_Cube_anim4.jpg'
+00:08.422  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\D_Scrap\R4B_Cube\renders\R4B_Cube_clay_front.png'
+00:08.578  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\D_Scrap\R4B_Cube\renders\R4B_Cube_clay_side.png'
+00:08.735  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\D_Scrap\R4B_Cube\renders\R4B_Cube_clay_34.png'
+00:08.860  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\D_Scrap\R4B_Cube\renders\R4B_Cube_wire.jpg'
+
+Info: Saved as "R4B_Cube.blend"
+FBX version: 7400
+11:15:23 | INFO: Data are loaded, start creating Blender stuff
+11:15:23 | INFO: Blender create Mesh node R4B_Cube
+11:15:24 | INFO: glTF import finished in 0.01s
+[PILOT2] VARIANT D_Scrap R4B_Cube BLENDER_PASS [] 44 tris LOD1 44
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_polish2\\v2\\E_Toon\\R4B_Cube\\R4B_Cube.fbx'
+export finished in 0.0297 sec.
+11:15:24 | INFO: Starting glTF 2.0 export
+11:15:24 | INFO: Extracting primitive: R4B_Cube
+11:15:24 | INFO: Primitives created: 1
+11:15:24 | INFO: Finished glTF 2.0 export in 0.01859307289123535 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_polish2\\v2\\E_Toon\\R4B_Cube\\R4B_Cube_LOD1.fbx'
+export finished in 0.0063 sec.
+11:15:24 | INFO: Starting glTF 2.0 export
+11:15:24 | INFO: Extracting primitive: R4B_Cube_LOD1
+11:15:24 | INFO: Primitives created: 1
+11:15:24 | INFO: Finished glTF 2.0 export in 0.009486913681030273 s
+00:09.469  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\E_Toon\R4B_Cube\renders\R4B_Cube_front.jpg'
+00:09.594  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\E_Toon\R4B_Cube\renders\R4B_Cube_side.jpg'
+00:09.781  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\E_Toon\R4B_Cube\renders\R4B_Cube_top.jpg'
+00:09.922  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\E_Toon\R4B_Cube\renders\R4B_Cube_34.jpg'
+00:10.063  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\E_Toon\R4B_Cube\renders\R4B_Cube_anim1.jpg'
+00:10.188  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\E_Toon\R4B_Cube\renders\R4B_Cube_anim2.jpg'
+00:10.297  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\E_Toon\R4B_Cube\renders\R4B_Cube_anim3.jpg'
+00:10.438  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\E_Toon\R4B_Cube\renders\R4B_Cube_anim4.jpg'
+00:10.672  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\E_Toon\R4B_Cube\renders\R4B_Cube_clay_front.png'
+00:10.891  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\E_Toon\R4B_Cube\renders\R4B_Cube_clay_side.png'
+00:11.110  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\E_Toon\R4B_Cube\renders\R4B_Cube_clay_34.png'
+00:11.250  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\E_Toon\R4B_Cube\renders\R4B_Cube_wire.jpg'
+
+Info: Saved as "R4B_Cube.blend"
+FBX version: 7400
+11:15:26 | INFO: Data are loaded, start creating Blender stuff
+11:15:26 | INFO: Blender create Mesh node R4B_Cube
+11:15:26 | INFO: glTF import finished in 0.00s
+[PILOT2] VARIANT E_Toon R4B_Cube BLENDER_PASS [] 44 tris LOD1 44
+11:15:26 | INFO: Data are loaded, start creating Blender stuff
+11:15:26 | INFO: Blender create Mesh node R4W_Basic_Yaw
+11:15:26 | INFO: Blender create Mesh node R4W_Basic_Pitch
+11:15:26 | INFO: Blender create Mesh node MuzzleFlash
+11:15:26 | INFO: Blender create Mesh node R4W_Basic_Barrel
+11:15:26 | INFO: Blender create Mesh node R4W_Basic_Base
+11:15:26 | INFO: glTF import finished in 0.05s
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_polish2\\v2\\A_Sleek\\R4W_Basic\\R4W_Basic.fbx'
+export finished in 0.0581 sec.
+11:15:28 | INFO: Starting glTF 2.0 export
+11:15:28 | INFO: Extracting primitive: R4W_Basic_Yaw
+11:15:28 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:28 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:28 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:28 | INFO: Primitives created: 4
+11:15:28 | INFO: Extracting primitive: R4W_Basic_Pitch
+11:15:28 | INFO: Primitives created: 4
+11:15:28 | INFO: Extracting primitive: MuzzleFlash
+11:15:28 | INFO: Primitives created: 1
+11:15:28 | INFO: Extracting primitive: R4W_Basic_Barrel
+11:15:28 | INFO: Primitives created: 3
+11:15:28 | INFO: Extracting primitive: R4W_Basic_Ring
+11:15:28 | INFO: Primitives created: 2
+11:15:28 | INFO: Extracting primitive: R4W_Basic_VentL
+11:15:28 | INFO: Primitives created: 2
+11:15:28 | INFO: Extracting primitive: R4W_Basic_VentR
+11:15:28 | INFO: Primitives created: 2
+11:15:28 | INFO: Extracting primitive: R4W_Basic_Base
+11:15:28 | INFO: Primitives created: 4
+11:15:28 | INFO: Finished glTF 2.0 export in 0.13483476638793945 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_polish2\\v2\\A_Sleek\\R4W_Basic\\R4W_Basic_LOD1.fbx'
+export finished in 0.0118 sec.
+11:15:28 | INFO: Starting glTF 2.0 export
+11:15:28 | INFO: Extracting primitive: R4W_Basic_LOD1
+11:15:28 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:28 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:28 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:28 | INFO: Primitives created: 4
+11:15:28 | INFO: Finished glTF 2.0 export in 0.02242422103881836 s
+00:14.000  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\A_Sleek\R4W_Basic\renders\R4W_Basic_front.jpg'
+00:14.110  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\A_Sleek\R4W_Basic\renders\R4W_Basic_side.jpg'
+00:14.219  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\A_Sleek\R4W_Basic\renders\R4W_Basic_top.jpg'
+00:14.344  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\A_Sleek\R4W_Basic\renders\R4W_Basic_34.jpg'
+00:14.485  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\A_Sleek\R4W_Basic\renders\R4W_Basic_anim1.jpg'
+00:14.610  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\A_Sleek\R4W_Basic\renders\R4W_Basic_anim2.jpg'
+00:14.719  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\A_Sleek\R4W_Basic\renders\R4W_Basic_anim3.jpg'
+00:14.844  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\A_Sleek\R4W_Basic\renders\R4W_Basic_anim4.jpg'
+00:15.078  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\A_Sleek\R4W_Basic\renders\R4W_Basic_clay_front.png'
+00:15.250  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\A_Sleek\R4W_Basic\renders\R4W_Basic_clay_side.png'
+00:15.485  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\A_Sleek\R4W_Basic\renders\R4W_Basic_clay_34.png'
+00:15.688  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\A_Sleek\R4W_Basic\renders\R4W_Basic_wire.jpg'
+
+Info: Saved as "R4W_Basic.blend"
+FBX version: 7400
+11:15:30 | INFO: Data are loaded, start creating Blender stuff
+11:15:30 | INFO: Blender create Mesh node R4W_Basic_Yaw
+11:15:30 | INFO: Blender create Mesh node R4W_Basic_Pitch
+11:15:30 | INFO: Blender create Mesh node MuzzleFlash
+11:15:30 | INFO: Blender create Mesh node R4W_Basic_Barrel
+11:15:30 | INFO: Blender create Mesh node R4W_Basic_Ring
+11:15:30 | INFO: Blender create Mesh node R4W_Basic_VentL
+11:15:30 | INFO: Blender create Mesh node R4W_Basic_VentR
+11:15:30 | INFO: Blender create Mesh node R4W_Basic_Base
+11:15:30 | INFO: glTF import finished in 0.04s
+[PILOT2] VARIANT A_Sleek R4W_Basic BLENDER_PASS [] 6292 tris LOD1 3458
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_polish2\\v2\\B_Brutal\\R4W_Basic\\R4W_Basic.fbx'
+export finished in 0.0604 sec.
+11:15:33 | INFO: Starting glTF 2.0 export
+11:15:33 | INFO: Extracting primitive: R4W_Basic_Yaw
+11:15:33 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:33 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:33 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:33 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:33 | INFO: Primitives created: 4
+11:15:33 | INFO: Extracting primitive: R4W_Basic_Gear
+11:15:33 | INFO: Primitives created: 1
+11:15:33 | INFO: Extracting primitive: R4W_Basic_Pitch
+11:15:33 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:33 | INFO: Primitives created: 4
+11:15:33 | INFO: Extracting primitive: MuzzleFlash
+11:15:33 | INFO: Primitives created: 1
+11:15:33 | INFO: Extracting primitive: R4W_Basic_Barrel
+11:15:33 | INFO: Primitives created: 3
+11:15:33 | INFO: Extracting primitive: R4W_Basic_Bolt
+11:15:33 | INFO: Primitives created: 1
+11:15:33 | INFO: Extracting primitive: R4W_Basic_Buffer
+11:15:33 | INFO: Primitives created: 1
+11:15:33 | INFO: Extracting primitive: R4W_Basic_Base
+11:15:33 | INFO: Primitives created: 4
+11:15:33 | INFO: Finished glTF 2.0 export in 0.14722371101379395 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_polish2\\v2\\B_Brutal\\R4W_Basic\\R4W_Basic_LOD1.fbx'
+export finished in 0.0148 sec.
+11:15:33 | INFO: Starting glTF 2.0 export
+11:15:33 | INFO: Extracting primitive: R4W_Basic_LOD1
+11:15:33 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:33 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:33 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:33 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:33 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:33 | INFO: Primitives created: 6
+11:15:33 | INFO: Finished glTF 2.0 export in 0.034813642501831055 s
+00:19.063  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\B_Brutal\R4W_Basic\renders\R4W_Basic_front.jpg'
+00:19.188  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\B_Brutal\R4W_Basic\renders\R4W_Basic_side.jpg'
+00:19.391  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\B_Brutal\R4W_Basic\renders\R4W_Basic_top.jpg'
+00:19.610  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\B_Brutal\R4W_Basic\renders\R4W_Basic_34.jpg'
+00:19.797  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\B_Brutal\R4W_Basic\renders\R4W_Basic_anim1.jpg'
+00:19.953  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\B_Brutal\R4W_Basic\renders\R4W_Basic_anim2.jpg'
+00:20.094  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\B_Brutal\R4W_Basic\renders\R4W_Basic_anim3.jpg'
+00:20.235  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\B_Brutal\R4W_Basic\renders\R4W_Basic_anim4.jpg'
+00:20.422  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\B_Brutal\R4W_Basic\renders\R4W_Basic_clay_front.png'
+00:20.563  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\B_Brutal\R4W_Basic\renders\R4W_Basic_clay_side.png'
+00:20.688  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\B_Brutal\R4W_Basic\renders\R4W_Basic_clay_34.png'
+00:20.844  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\B_Brutal\R4W_Basic\renders\R4W_Basic_wire.jpg'
+
+Info: Saved as "R4W_Basic.blend"
+FBX version: 7400
+11:15:36 | INFO: Data are loaded, start creating Blender stuff
+11:15:36 | INFO: Blender create Mesh node R4W_Basic_Yaw
+11:15:36 | INFO: Blender create Mesh node R4W_Basic_Gear
+11:15:36 | INFO: Blender create Mesh node R4W_Basic_Pitch
+11:15:36 | INFO: Blender create Mesh node MuzzleFlash
+11:15:36 | INFO: Blender create Mesh node R4W_Basic_Barrel
+11:15:36 | INFO: Blender create Mesh node R4W_Basic_Bolt
+11:15:36 | INFO: Blender create Mesh node R4W_Basic_Buffer
+11:15:36 | INFO: Blender create Mesh node R4W_Basic_Base
+11:15:36 | INFO: glTF import finished in 0.04s
+[PILOT2] VARIANT B_Brutal R4W_Basic BLENDER_PASS [] 4528 tris LOD1 3808
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_polish2\\v2\\C_Arcade\\R4W_Basic\\R4W_Basic.fbx'
+export finished in 0.0508 sec.
+11:15:36 | INFO: Starting glTF 2.0 export
+11:15:36 | INFO: Extracting primitive: R4W_Basic_Yaw
+11:15:36 | INFO: Primitives created: 2
+11:15:36 | INFO: Extracting primitive: R4W_Basic_Pitch
+11:15:36 | INFO: Primitives created: 2
+11:15:36 | INFO: Extracting primitive: MuzzleFlash
+11:15:36 | INFO: Primitives created: 1
+11:15:36 | INFO: Extracting primitive: R4W_Basic_Barrel
+11:15:36 | INFO: Primitives created: 2
+11:15:36 | INFO: Extracting primitive: R4W_Basic_Slide
+11:15:36 | INFO: Primitives created: 1
+11:15:36 | INFO: Extracting primitive: R4W_Basic_Base
+11:15:36 | INFO: Primitives created: 2
+11:15:36 | INFO: Finished glTF 2.0 export in 0.09290599822998047 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_polish2\\v2\\C_Arcade\\R4W_Basic\\R4W_Basic_LOD1.fbx'
+export finished in 0.0084 sec.
+11:15:36 | INFO: Starting glTF 2.0 export
+11:15:36 | INFO: Extracting primitive: R4W_Basic_LOD1
+11:15:36 | INFO: Primitives created: 4
+11:15:36 | INFO: Finished glTF 2.0 export in 0.009783506393432617 s
+00:21.781  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\C_Arcade\R4W_Basic\renders\R4W_Basic_front.jpg'
+00:21.906  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\C_Arcade\R4W_Basic\renders\R4W_Basic_side.jpg'
+00:22.031  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\C_Arcade\R4W_Basic\renders\R4W_Basic_top.jpg'
+00:22.156  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\C_Arcade\R4W_Basic\renders\R4W_Basic_34.jpg'
+00:22.328  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\C_Arcade\R4W_Basic\renders\R4W_Basic_anim1.jpg'
+00:22.485  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\C_Arcade\R4W_Basic\renders\R4W_Basic_anim2.jpg'
+00:22.672  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\C_Arcade\R4W_Basic\renders\R4W_Basic_anim3.jpg'
+00:22.860  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\C_Arcade\R4W_Basic\renders\R4W_Basic_anim4.jpg'
+00:23.172  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\C_Arcade\R4W_Basic\renders\R4W_Basic_clay_front.png'
+00:23.344  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\C_Arcade\R4W_Basic\renders\R4W_Basic_clay_side.png'
+00:23.531  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\C_Arcade\R4W_Basic\renders\R4W_Basic_clay_34.png'
+00:23.688  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\C_Arcade\R4W_Basic\renders\R4W_Basic_wire.jpg'
+
+Info: Saved as "R4W_Basic.blend"
+FBX version: 7400
+11:15:38 | INFO: Data are loaded, start creating Blender stuff
+11:15:38 | INFO: Blender create Mesh node R4W_Basic_Yaw
+11:15:38 | INFO: Blender create Mesh node R4W_Basic_Pitch
+11:15:38 | INFO: Blender create Mesh node MuzzleFlash
+11:15:38 | INFO: Blender create Mesh node R4W_Basic_Barrel
+11:15:38 | INFO: Blender create Mesh node R4W_Basic_Slide
+11:15:38 | INFO: Blender create Mesh node R4W_Basic_Base
+11:15:38 | INFO: glTF import finished in 0.01s
+[PILOT2] VARIANT C_Arcade R4W_Basic BLENDER_PASS [] 568 tris LOD1 416
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_polish2\\v2\\D_Scrap\\R4W_Basic\\R4W_Basic.fbx'
+export finished in 0.0539 sec.
+11:15:40 | INFO: Starting glTF 2.0 export
+11:15:40 | INFO: Extracting primitive: R4W_Basic_Yaw
+11:15:40 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:40 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:40 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:40 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:40 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:40 | INFO: Primitives created: 5
+11:15:40 | INFO: Extracting primitive: R4W_Basic_Crank
+11:15:40 | INFO: Primitives created: 3
+11:15:40 | INFO: Extracting primitive: R4W_Basic_Pitch
+11:15:40 | INFO: Primitives created: 5
+11:15:40 | INFO: Extracting primitive: MuzzleFlash
+11:15:40 | INFO: Primitives created: 1
+11:15:40 | INFO: Extracting primitive: R4W_Basic_Barrel
+11:15:40 | INFO: Primitives created: 2
+11:15:40 | INFO: Extracting primitive: R4W_Basic_Rattle
+11:15:40 | INFO: Primitives created: 2
+11:15:40 | INFO: Extracting primitive: R4W_Basic_Base
+11:15:40 | INFO: Primitives created: 3
+11:15:40 | INFO: Finished glTF 2.0 export in 0.13613462448120117 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_polish2\\v2\\D_Scrap\\R4W_Basic\\R4W_Basic_LOD1.fbx'
+export finished in 0.0122 sec.
+11:15:40 | INFO: Starting glTF 2.0 export
+11:15:40 | INFO: Extracting primitive: R4W_Basic_LOD1
+11:15:40 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:40 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:40 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:40 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:40 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:40 | INFO: Primitives created: 5
+11:15:40 | INFO: Finished glTF 2.0 export in 0.028635740280151367 s
+00:25.391  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\D_Scrap\R4W_Basic\renders\R4W_Basic_front.jpg'
+00:25.594  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\D_Scrap\R4W_Basic\renders\R4W_Basic_side.jpg'
+00:25.750  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\D_Scrap\R4W_Basic\renders\R4W_Basic_top.jpg'
+00:25.891  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\D_Scrap\R4W_Basic\renders\R4W_Basic_34.jpg'
+00:26.000  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\D_Scrap\R4W_Basic\renders\R4W_Basic_anim1.jpg'
+00:26.110  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\D_Scrap\R4W_Basic\renders\R4W_Basic_anim2.jpg'
+00:26.219  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\D_Scrap\R4W_Basic\renders\R4W_Basic_anim3.jpg'
+00:26.328  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\D_Scrap\R4W_Basic\renders\R4W_Basic_anim4.jpg'
+00:26.563  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\D_Scrap\R4W_Basic\renders\R4W_Basic_clay_front.png'
+00:26.750  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\D_Scrap\R4W_Basic\renders\R4W_Basic_clay_side.png'
+00:26.906  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\D_Scrap\R4W_Basic\renders\R4W_Basic_clay_34.png'
+00:27.094  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\D_Scrap\R4W_Basic\renders\R4W_Basic_wire.jpg'
+
+Info: Saved as "R4W_Basic.blend"
+FBX version: 7400
+11:15:42 | INFO: Data are loaded, start creating Blender stuff
+11:15:42 | INFO: Blender create Mesh node R4W_Basic_Yaw
+11:15:42 | INFO: Blender create Mesh node R4W_Basic_Crank
+11:15:42 | INFO: Blender create Mesh node R4W_Basic_Pitch
+11:15:42 | INFO: Blender create Mesh node MuzzleFlash
+11:15:42 | INFO: Blender create Mesh node R4W_Basic_Barrel
+11:15:42 | INFO: Blender create Mesh node R4W_Basic_Rattle
+11:15:42 | INFO: Blender create Mesh node R4W_Basic_Base
+11:15:42 | INFO: glTF import finished in 0.03s
+[PILOT2] VARIANT D_Scrap R4W_Basic BLENDER_PASS [] 2098 tris LOD1 2052
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_polish2\\v2\\E_Toon\\R4W_Basic\\R4W_Basic.fbx'
+export finished in 0.0575 sec.
+11:15:44 | INFO: Starting glTF 2.0 export
+11:15:44 | INFO: Extracting primitive: R4W_Basic_Yaw
+11:15:44 | INFO: Primitives created: 4
+11:15:44 | INFO: Extracting primitive: R4W_Basic_Antenna
+11:15:44 | INFO: Primitives created: 2
+11:15:44 | INFO: Extracting primitive: R4W_Basic_Pitch
+11:15:44 | INFO: Primitives created: 3
+11:15:44 | INFO: Extracting primitive: MuzzleFlash
+11:15:44 | INFO: Primitives created: 1
+11:15:44 | INFO: Extracting primitive: R4W_Basic_Barrel
+11:15:44 | INFO: Primitives created: 4
+11:15:44 | INFO: Extracting primitive: R4W_Basic_Bell
+11:15:44 | INFO: Primitives created: 2
+11:15:44 | INFO: Extracting primitive: R4W_Basic_Base
+11:15:44 | INFO: Primitives created: 3
+11:15:44 | INFO: Finished glTF 2.0 export in 0.11075139045715332 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_polish2\\v2\\E_Toon\\R4W_Basic\\R4W_Basic_LOD1.fbx'
+export finished in 0.0099 sec.
+11:15:44 | INFO: Starting glTF 2.0 export
+11:15:44 | INFO: Extracting primitive: R4W_Basic_LOD1
+11:15:44 | INFO: Primitives created: 5
+11:15:44 | INFO: Finished glTF 2.0 export in 0.018074512481689453 s
+00:29.406  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\E_Toon\R4W_Basic\renders\R4W_Basic_front.jpg'
+00:29.578  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\E_Toon\R4W_Basic\renders\R4W_Basic_side.jpg'
+00:29.797  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\E_Toon\R4W_Basic\renders\R4W_Basic_top.jpg'
+00:29.985  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\E_Toon\R4W_Basic\renders\R4W_Basic_34.jpg'
+00:30.141  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\E_Toon\R4W_Basic\renders\R4W_Basic_anim1.jpg'
+00:30.344  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\E_Toon\R4W_Basic\renders\R4W_Basic_anim2.jpg'
+00:30.578  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\E_Toon\R4W_Basic\renders\R4W_Basic_anim3.jpg'
+00:30.719  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\E_Toon\R4W_Basic\renders\R4W_Basic_anim4.jpg'
+00:30.922  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\E_Toon\R4W_Basic\renders\R4W_Basic_clay_front.png'
+00:31.047  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\E_Toon\R4W_Basic\renders\R4W_Basic_clay_side.png'
+00:31.172  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\E_Toon\R4W_Basic\renders\R4W_Basic_clay_34.png'
+00:31.281  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\E_Toon\R4W_Basic\renders\R4W_Basic_wire.jpg'
+
+Info: Saved as "R4W_Basic.blend"
+FBX version: 7400
+11:15:46 | INFO: Data are loaded, start creating Blender stuff
+11:15:46 | INFO: Blender create Mesh node R4W_Basic_Yaw
+11:15:46 | INFO: Blender create Mesh node R4W_Basic_Antenna
+11:15:46 | INFO: Blender create Mesh node R4W_Basic_Pitch
+11:15:46 | INFO: Blender create Mesh node MuzzleFlash
+11:15:46 | INFO: Blender create Mesh node R4W_Basic_Barrel
+11:15:46 | INFO: Blender create Mesh node R4W_Basic_Bell
+11:15:46 | INFO: Blender create Mesh node R4W_Basic_Base
+11:15:46 | INFO: glTF import finished in 0.03s
+[PILOT2] VARIANT E_Toon R4W_Basic BLENDER_PASS [] 5158 tris LOD1 2132
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_polish2\\v2\\A_Sleek\\R4D_ExplosiveTrap\\R4D_ExplosiveTrap.fbx'
+export finished in 0.0345 sec.
+11:15:46 | INFO: Starting glTF 2.0 export
+11:15:46 | INFO: Extracting primitive: R4D_ExplosiveTrap_Body
+11:15:46 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:46 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:46 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:46 | INFO: Primitives created: 4
+11:15:46 | INFO: Extracting primitive: R4D_ExplosiveTrap_Lamp
+11:15:46 | INFO: Primitives created: 1
+11:15:46 | INFO: Extracting primitive: R4D_ExplosiveTrap_Petal1
+11:15:46 | INFO: Primitives created: 2
+11:15:46 | INFO: Extracting primitive: R4D_ExplosiveTrap_Petal2
+11:15:46 | INFO: Primitives created: 2
+11:15:46 | INFO: Extracting primitive: R4D_ExplosiveTrap_Petal3
+11:15:46 | INFO: Primitives created: 2
+11:15:47 | INFO: Finished glTF 2.0 export in 0.15414810180664062 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_polish2\\v2\\A_Sleek\\R4D_ExplosiveTrap\\R4D_ExplosiveTrap_LOD1.fbx'
+export finished in 0.0080 sec.
+11:15:47 | INFO: Starting glTF 2.0 export
+11:15:47 | INFO: Extracting primitive: R4D_ExplosiveTrap_LOD1
+11:15:47 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:47 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:47 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:47 | INFO: Primitives created: 4
+11:15:47 | INFO: Finished glTF 2.0 export in 0.016922712326049805 s
+00:32.297  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\A_Sleek\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_front.jpg'
+00:32.422  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\A_Sleek\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_side.jpg'
+00:32.547  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\A_Sleek\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_top.jpg'
+00:32.656  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\A_Sleek\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_34.jpg'
+00:32.797  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\A_Sleek\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim1.jpg'
+00:32.969  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\A_Sleek\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim2.jpg'
+00:33.125  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\A_Sleek\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim3.jpg'
+00:33.328  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\A_Sleek\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim4.jpg'
+00:33.531  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\A_Sleek\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_clay_front.png'
+00:33.672  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\A_Sleek\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_clay_side.png'
+00:33.813  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\A_Sleek\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_clay_34.png'
+00:33.938  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\A_Sleek\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_wire.jpg'
+
+Info: Saved as "R4D_ExplosiveTrap.blend"
+FBX version: 7400
+11:15:49 | INFO: Data are loaded, start creating Blender stuff
+11:15:49 | INFO: Blender create Mesh node R4D_ExplosiveTrap_Body
+11:15:49 | INFO: Blender create Mesh node R4D_ExplosiveTrap_Lamp
+11:15:49 | INFO: Blender create Mesh node R4D_ExplosiveTrap_Petal1
+11:15:49 | INFO: Blender create Mesh node R4D_ExplosiveTrap_Petal2
+11:15:49 | INFO: Blender create Mesh node R4D_ExplosiveTrap_Petal3
+11:15:49 | INFO: glTF import finished in 0.02s
+[PILOT2] VARIANT A_Sleek R4D_ExplosiveTrap BLENDER_PASS [] 1368 tris LOD1 762
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_polish2\\v2\\B_Brutal\\R4D_ExplosiveTrap\\R4D_ExplosiveTrap.fbx'
+export finished in 0.0296 sec.
+11:15:50 | INFO: Starting glTF 2.0 export
+11:15:50 | INFO: Extracting primitive: R4D_ExplosiveTrap_Body
+11:15:50 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:50 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:50 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:50 | INFO: Primitives created: 3
+11:15:50 | INFO: Extracting primitive: R4D_ExplosiveTrap_Collar
+11:15:50 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:50 | INFO: Primitives created: 1
+11:15:50 | INFO: Extracting primitive: R4D_ExplosiveTrap_Horns
+11:15:50 | INFO: Primitives created: 2
+11:15:50 | INFO: Extracting primitive: R4D_ExplosiveTrap_Lamp
+11:15:50 | INFO: Primitives created: 1
+11:15:50 | INFO: Finished glTF 2.0 export in 0.0662851333618164 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_polish2\\v2\\B_Brutal\\R4D_ExplosiveTrap\\R4D_ExplosiveTrap_LOD1.fbx'
+export finished in 0.0122 sec.
+11:15:50 | INFO: Starting glTF 2.0 export
+11:15:50 | INFO: Extracting primitive: R4D_ExplosiveTrap_LOD1
+11:15:50 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:50 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:50 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:50 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:50 | INFO: Primitives created: 5
+11:15:50 | INFO: Finished glTF 2.0 export in 0.02715134620666504 s
+00:35.578  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\B_Brutal\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_front.jpg'
+00:35.703  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\B_Brutal\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_side.jpg'
+00:35.828  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\B_Brutal\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_top.jpg'
+00:35.953  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\B_Brutal\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_34.jpg'
+00:36.063  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\B_Brutal\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim1.jpg'
+00:36.172  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\B_Brutal\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim2.jpg'
+00:36.313  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\B_Brutal\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim3.jpg'
+00:36.500  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\B_Brutal\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim4.jpg'
+00:36.797  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\B_Brutal\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_clay_front.png'
+00:36.985  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\B_Brutal\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_clay_side.png'
+00:37.110  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\B_Brutal\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_clay_34.png'
+00:37.235  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\B_Brutal\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_wire.jpg'
+
+Info: Saved as "R4D_ExplosiveTrap.blend"
+FBX version: 7400
+11:15:52 | INFO: Data are loaded, start creating Blender stuff
+11:15:52 | INFO: Blender create Mesh node R4D_ExplosiveTrap_Body
+11:15:52 | INFO: Blender create Mesh node R4D_ExplosiveTrap_Collar
+11:15:52 | INFO: Blender create Mesh node R4D_ExplosiveTrap_Horns
+11:15:52 | INFO: Blender create Mesh node R4D_ExplosiveTrap_Lamp
+11:15:52 | INFO: glTF import finished in 0.02s
+[PILOT2] VARIANT B_Brutal R4D_ExplosiveTrap BLENDER_PASS [] 1824 tris LOD1 1548
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_polish2\\v2\\C_Arcade\\R4D_ExplosiveTrap\\R4D_ExplosiveTrap.fbx'
+export finished in 0.0217 sec.
+11:15:52 | INFO: Starting glTF 2.0 export
+11:15:52 | INFO: Extracting primitive: R4D_ExplosiveTrap_Body
+11:15:52 | INFO: Primitives created: 2
+11:15:52 | INFO: Extracting primitive: R4D_ExplosiveTrap_Lamp
+11:15:52 | INFO: Primitives created: 1
+11:15:52 | INFO: Extracting primitive: R4D_ExplosiveTrap_Ring
+11:15:52 | INFO: Primitives created: 1
+11:15:52 | INFO: Finished glTF 2.0 export in 0.028317689895629883 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_polish2\\v2\\C_Arcade\\R4D_ExplosiveTrap\\R4D_ExplosiveTrap_LOD1.fbx'
+export finished in 0.0063 sec.
+11:15:52 | INFO: Starting glTF 2.0 export
+11:15:52 | INFO: Extracting primitive: R4D_ExplosiveTrap_LOD1
+11:15:52 | INFO: Primitives created: 4
+11:15:52 | INFO: Finished glTF 2.0 export in 0.009885549545288086 s
+00:37.891  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\C_Arcade\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_front.jpg'
+00:38.000  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\C_Arcade\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_side.jpg'
+00:38.110  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\C_Arcade\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_top.jpg'
+00:38.203  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\C_Arcade\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_34.jpg'
+00:38.313  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\C_Arcade\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim1.jpg'
+00:38.422  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\C_Arcade\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim2.jpg'
+00:38.578  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\C_Arcade\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim3.jpg'
+00:38.719  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\C_Arcade\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim4.jpg'
+00:38.906  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\C_Arcade\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_clay_front.png'
+00:39.047  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\C_Arcade\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_clay_side.png'
+00:39.188  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\C_Arcade\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_clay_34.png'
+00:39.328  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\C_Arcade\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_wire.jpg'
+
+Info: Saved as "R4D_ExplosiveTrap.blend"
+FBX version: 7400
+11:15:54 | INFO: Data are loaded, start creating Blender stuff
+11:15:54 | INFO: Blender create Mesh node R4D_ExplosiveTrap_Body
+11:15:54 | INFO: Blender create Mesh node R4D_ExplosiveTrap_Lamp
+11:15:54 | INFO: Blender create Mesh node R4D_ExplosiveTrap_Ring
+11:15:54 | INFO: glTF import finished in 0.01s
+[PILOT2] VARIANT C_Arcade R4D_ExplosiveTrap BLENDER_PASS [] 598 tris LOD1 284
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_polish2\\v2\\D_Scrap\\R4D_ExplosiveTrap\\R4D_ExplosiveTrap.fbx'
+export finished in 0.0270 sec.
+11:15:54 | INFO: Starting glTF 2.0 export
+11:15:54 | INFO: Extracting primitive: R4D_ExplosiveTrap_Body
+11:15:54 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:54 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:54 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:54 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:54 | INFO: Primitives created: 4
+11:15:54 | INFO: Extracting primitive: R4D_ExplosiveTrap_Lamp
+11:15:54 | INFO: Primitives created: 1
+11:15:54 | INFO: Extracting primitive: R4D_ExplosiveTrap_Plate
+11:15:54 | INFO: Primitives created: 2
+11:15:54 | INFO: Extracting primitive: R4D_ExplosiveTrap_Wire
+11:15:54 | INFO: Primitives created: 1
+11:15:55 | INFO: Finished glTF 2.0 export in 0.06781888008117676 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_polish2\\v2\\D_Scrap\\R4D_ExplosiveTrap\\R4D_ExplosiveTrap_LOD1.fbx'
+export finished in 0.0085 sec.
+11:15:55 | INFO: Starting glTF 2.0 export
+11:15:55 | INFO: Extracting primitive: R4D_ExplosiveTrap_LOD1
+11:15:55 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:55 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:55 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:55 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+11:15:55 | INFO: Primitives created: 5
+11:15:55 | INFO: Finished glTF 2.0 export in 0.022348403930664062 s
+00:40.219  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\D_Scrap\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_front.jpg'
+00:40.313  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\D_Scrap\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_side.jpg'
+00:40.422  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\D_Scrap\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_top.jpg'
+00:40.516  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\D_Scrap\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_34.jpg'
+00:40.656  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\D_Scrap\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim1.jpg'
+00:40.766  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\D_Scrap\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim2.jpg'
+00:40.906  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\D_Scrap\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim3.jpg'
+00:41.031  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\D_Scrap\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim4.jpg'
+00:41.235  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\D_Scrap\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_clay_front.png'
+00:41.391  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\D_Scrap\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_clay_side.png'
+00:41.531  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\D_Scrap\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_clay_34.png'
+00:41.641  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\D_Scrap\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_wire.jpg'
+
+Info: Saved as "R4D_ExplosiveTrap.blend"
+FBX version: 7400
+11:15:56 | INFO: Data are loaded, start creating Blender stuff
+11:15:56 | INFO: Blender create Mesh node R4D_ExplosiveTrap_Body
+11:15:56 | INFO: Blender create Mesh node R4D_ExplosiveTrap_Lamp
+11:15:56 | INFO: Blender create Mesh node R4D_ExplosiveTrap_Plate
+11:15:56 | INFO: Blender create Mesh node R4D_ExplosiveTrap_Wire
+11:15:56 | INFO: glTF import finished in 0.01s
+[PILOT2] VARIANT D_Scrap R4D_ExplosiveTrap BLENDER_PASS [] 826 tris LOD1 826
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_polish2\\v2\\E_Toon\\R4D_ExplosiveTrap\\R4D_ExplosiveTrap.fbx'
+export finished in 0.0245 sec.
+11:15:57 | INFO: Starting glTF 2.0 export
+11:15:57 | INFO: Extracting primitive: R4D_ExplosiveTrap_Body
+11:15:57 | INFO: Primitives created: 2
+11:15:57 | INFO: Extracting primitive: R4D_ExplosiveTrap_Crown
+11:15:57 | INFO: Primitives created: 1
+11:15:57 | INFO: Extracting primitive: R4D_ExplosiveTrap_Lamp
+11:15:57 | INFO: Primitives created: 1
+11:15:57 | INFO: Finished glTF 2.0 export in 0.03280282020568848 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_polish2\\v2\\E_Toon\\R4D_ExplosiveTrap\\R4D_ExplosiveTrap_LOD1.fbx'
+export finished in 0.0068 sec.
+11:15:57 | INFO: Starting glTF 2.0 export
+11:15:57 | INFO: Extracting primitive: R4D_ExplosiveTrap_LOD1
+11:15:57 | INFO: Primitives created: 4
+11:15:57 | INFO: Finished glTF 2.0 export in 0.01298213005065918 s
+00:42.625  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\E_Toon\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_front.jpg'
+00:42.719  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\E_Toon\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_side.jpg'
+00:42.828  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\E_Toon\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_top.jpg'
+00:42.938  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\E_Toon\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_34.jpg'
+00:43.031  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\E_Toon\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim1.jpg'
+00:43.141  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\E_Toon\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim2.jpg'
+00:43.235  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\E_Toon\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim3.jpg'
+00:43.344  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\E_Toon\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_anim4.jpg'
+00:43.516  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\E_Toon\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_clay_front.png'
+00:43.656  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\E_Toon\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_clay_side.png'
+00:43.797  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\E_Toon\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_clay_34.png'
+00:43.938  render           | Saved: '<WORKDIR>\R4_Atlas5_polish2\v2\E_Toon\R4D_ExplosiveTrap\renders\R4D_ExplosiveTrap_wire.jpg'
+
+Info: Saved as "R4D_ExplosiveTrap.blend"
+FBX version: 7400
+11:15:59 | INFO: Data are loaded, start creating Blender stuff
+11:15:59 | INFO: Blender create Mesh node R4D_ExplosiveTrap_Body
+11:15:59 | INFO: Blender create Mesh node R4D_ExplosiveTrap_Crown
+11:15:59 | INFO: Blender create Mesh node R4D_ExplosiveTrap_Lamp
+11:15:59 | INFO: glTF import finished in 0.01s
+[PILOT2] VARIANT E_Toon R4D_ExplosiveTrap BLENDER_PASS [] 1604 tris LOD1 486
+[PILOT2] BUILD_DONE 15 / 15
+Blender 5.3.0 (hash 02f0899d78e3 built 2026-11-10 01:33:43)
+
+Blender quit
