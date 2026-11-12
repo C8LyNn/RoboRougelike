@@ -1,0 +1,114 @@
+00:00.031  color_management | Using config from OCIO: "C:\Program Files (x86)\Steam\steamapps\common\Blender\5.3\datafiles\colormanagement\config.ocio"
+<WORKDIR>\R4_Atlas5_polish1\scripts3\qscene.py:15: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m = bpy.data.materials.new("HL_" + zone); m.use_nodes = True; nt = m.node_tree; b = nt.nodes.get("Principled BSDF"); tx = src["textures"]
+10:24:34 | INFO: Data are loaded, start creating Blender stuff
+10:24:34 | INFO: Blender create Mesh node R4B_Cube
+10:24:34 | INFO: glTF import finished in 0.01s
+10:24:34 | INFO: Data are loaded, start creating Blender stuff
+10:24:34 | INFO: Blender create Mesh node R4W_Basic_Yaw
+10:24:34 | INFO: Blender create Mesh node R4W_Basic_Pitch
+10:24:34 | INFO: Blender create Mesh node MuzzleFlash
+10:24:34 | INFO: Blender create Mesh node R4W_Basic_Barrel
+10:24:34 | INFO: Blender create Mesh node R4W_Basic_Base
+10:24:34 | INFO: glTF import finished in 0.02s
+10:24:34 | INFO: Data are loaded, start creating Blender stuff
+10:24:34 | INFO: Blender create Mesh node R4M_WheelM_Side_Offroad_Mount
+10:24:34 | INFO: Blender create Mesh node R4M_WheelM_Side_Offroad_Rotor
+10:24:34 | INFO: glTF import finished in 0.01s
+10:24:34 | INFO: Data are loaded, start creating Blender stuff
+10:24:34 | INFO: Blender create Mesh node Hover_PulseRing
+10:24:34 | INFO: Blender create Mesh node Hover_ThrustGlow
+10:24:34 | INFO: Blender create Mesh node R4M_HoverEngine_Housing
+10:24:34 | INFO: Blender create Mesh node R4M_HoverEngine_Rotor
+10:24:34 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_1
+10:24:34 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_2
+10:24:34 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_3
+10:24:34 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_4
+10:24:34 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_5
+10:24:34 | INFO: glTF import finished in 0.03s
+<WORKDIR>\R4_Atlas5_polish1\scripts3\qscene.py:40: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m = bpy.data.materials.new(name); m.use_nodes = True; b = m.node_tree.nodes.get("Principled BSDF"); b.inputs["Base Color"].default_value = (*rgb, 1); b.inputs["Roughness"].default_value = rough; b.inputs["Metallic"].default_value = metal; return m
+10:24:34 | INFO: Data are loaded, start creating Blender stuff
+10:24:34 | INFO: Blender create Mesh node R4X_Battery_Body
+10:24:34 | INFO: glTF import finished in 0.02s
+10:24:34 | INFO: Data are loaded, start creating Blender stuff
+10:24:34 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_Body
+10:24:34 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_Payload
+10:24:34 | INFO: glTF import finished in 0.03s
+10:24:34 | INFO: Data are loaded, start creating Blender stuff
+10:24:34 | INFO: Blender create Mesh node R4C_STRUT_STANDARD
+10:24:34 | INFO: glTF import finished in 0.03s
+10:24:34 | INFO: Data are loaded, start creating Blender stuff
+10:24:34 | INFO: Blender create Mesh node R4B_Cube
+10:24:35 | INFO: glTF import finished in 0.13s
+10:24:35 | INFO: Data are loaded, start creating Blender stuff
+10:24:35 | INFO: Blender create Mesh node R4W_Basic_Yaw
+10:24:35 | INFO: Blender create Mesh node R4W_Basic_Pitch
+10:24:35 | INFO: Blender create Mesh node MuzzleFlash
+10:24:35 | INFO: Blender create Mesh node R4W_Basic_Barrel
+10:24:35 | INFO: Blender create Mesh node R4W_Basic_Base
+10:24:35 | INFO: glTF import finished in 0.15s
+10:24:35 | INFO: Data are loaded, start creating Blender stuff
+10:24:35 | INFO: Blender create Mesh node R4M_WheelM_Side_Offroad_Mount
+10:24:35 | INFO: Blender create Mesh node R4M_WheelM_Side_Offroad_Rotor
+10:24:35 | INFO: glTF import finished in 0.14s
+10:24:35 | INFO: Data are loaded, start creating Blender stuff
+10:24:35 | INFO: Blender create Mesh node Hover_PulseRing
+10:24:35 | INFO: Blender create Mesh node Hover_ThrustGlow
+10:24:35 | INFO: Blender create Mesh node R4M_HoverEngine_Housing
+10:24:35 | INFO: Blender create Mesh node R4M_HoverEngine_Rotor
+10:24:35 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_1
+10:24:35 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_2
+10:24:35 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_3
+10:24:35 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_4
+10:24:35 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_5
+10:24:35 | INFO: glTF import finished in 0.17s
+10:24:36 | INFO: Data are loaded, start creating Blender stuff
+10:24:36 | INFO: Blender create Mesh node R4X_Battery_Body
+10:24:36 | INFO: glTF import finished in 0.15s
+10:24:37 | INFO: Data are loaded, start creating Blender stuff
+10:24:37 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_Body
+10:24:37 | INFO: Blender create Mesh node R4X_ExplosiveTrapDeployer_Payload
+10:24:37 | INFO: glTF import finished in 0.17s
+10:24:37 | INFO: Data are loaded, start creating Blender stuff
+10:24:37 | INFO: Blender create Mesh node R4C_STRUT_STANDARD
+10:24:37 | INFO: glTF import finished in 0.16s
+<WORKDIR>\R4_Atlas5_polish1\scripts3\qscene.py:42: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m = bpy.data.materials.new("Ground"); m.use_nodes = True; nt = m.node_tree; b = nt.nodes.get("Principled BSDF"); tc = nt.nodes.new("ShaderNodeTexCoord")
+<WORKDIR>\R4_Atlas5_polish1\scripts3\qscene.py:97: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  w = bpy.data.worlds.new("W"); scn.world = w; w.use_nodes = True; bg = w.node_tree.nodes.get("Background"); bg.inputs[0].default_value = (*shots["sky"]["color"], 1); bg.inputs[1].default_value = shots["sky"]["strength"]
+00:22.734  render           | Saved: '<WORKDIR>\R4_Atlas5_polish1\r3\E_Toon\1_parts_before_1080.jpg'
+00:23.172  render           | Saved: '<WORKDIR>\R4_Atlas5_polish1\r3\E_Toon\1_parts_before_720.jpg'
+[POLISH] SHOT E 1_parts_before {'pieces': 7, 'triangles': 17402, 'hull_layer_triangles': 0, 'objects': 64, 'render_s_1080': 1.8, 'render_s_720': 0.4}
+00:24.219  render           | Saved: '<WORKDIR>\R4_Atlas5_polish1\r3\E_Toon\2_wheeled_before_1080.jpg'
+00:24.687  render           | Saved: '<WORKDIR>\R4_Atlas5_polish1\r3\E_Toon\2_wheeled_before_720.jpg'
+[POLISH] SHOT E 2_wheeled_before {'pieces': 28, 'triangles': 68438, 'hull_layer_triangles': 0, 'objects': 234, 'render_s_1080': 1.1, 'render_s_720': 0.5}
+00:25.703  render           | Saved: '<WORKDIR>\R4_Atlas5_polish1\r3\E_Toon\3_hover_before_1080.jpg'
+00:26.000  render           | Saved: '<WORKDIR>\R4_Atlas5_polish1\r3\E_Toon\3_hover_before_720.jpg'
+[POLISH] SHOT E 3_hover_before {'pieces': 27, 'triangles': 74344, 'hull_layer_triangles': 0, 'objects': 253, 'render_s_1080': 1.0, 'render_s_720': 0.3}
+00:26.687  render           | Saved: '<WORKDIR>\R4_Atlas5_polish1\r3\E_Toon\6_gameplay_before_1080.jpg'
+00:27.219  render           | Saved: '<WORKDIR>\R4_Atlas5_polish1\r3\E_Toon\6_gameplay_before_720.jpg'
+[POLISH] SHOT E 6_gameplay_before {'pieces': 207, 'triangles': 485950, 'hull_layer_triangles': 0, 'objects': 1767, 'render_s_1080': 0.7, 'render_s_720': 0.5}
+00:28.187  render           | Saved: '<WORKDIR>\R4_Atlas5_polish1\r3\E_Toon\1_parts_after_1080.jpg'
+00:28.406  render           | Saved: '<WORKDIR>\R4_Atlas5_polish1\r3\E_Toon\1_parts_after_720.jpg'
+[POLISH] SHOT E 1_parts_after {'pieces': 7, 'triangles': 11214, 'hull_layer_triangles': 1364, 'objects': 65, 'render_s_1080': 1.0, 'render_s_720': 0.2}
+00:29.453  render           | Saved: '<WORKDIR>\R4_Atlas5_polish1\r3\E_Toon\2_wheeled_after_1080.jpg'
+00:29.844  render           | Saved: '<WORKDIR>\R4_Atlas5_polish1\r3\E_Toon\2_wheeled_after_720.jpg'
+[POLISH] SHOT E 2_wheeled_after {'pieces': 28, 'triangles': 42222, 'hull_layer_triangles': 4312, 'objects': 235, 'render_s_1080': 1.0, 'render_s_720': 0.4}
+00:30.937  render           | Saved: '<WORKDIR>\R4_Atlas5_polish1\r3\E_Toon\3_hover_after_1080.jpg'
+00:31.234  render           | Saved: '<WORKDIR>\R4_Atlas5_polish1\r3\E_Toon\3_hover_after_720.jpg'
+[POLISH] SHOT E 3_hover_after {'pieces': 27, 'triangles': 50732, 'hull_layer_triangles': 2244, 'objects': 254, 'render_s_1080': 1.1, 'render_s_720': 0.3}
+00:32.453  render           | Saved: '<WORKDIR>\R4_Atlas5_polish1\r3\E_Toon\6_gameplay_after_1080.jpg'
+00:32.890  render           | Saved: '<WORKDIR>\R4_Atlas5_polish1\r3\E_Toon\6_gameplay_after_720.jpg'
+[POLISH] SHOT E 6_gameplay_after {'pieces': 207, 'triangles': 282358, 'hull_layer_triangles': 27192, 'objects': 1772, 'render_s_1080': 1.2, 'render_s_720': 0.4}
+00:33.859  render           | Saved: '<WORKDIR>\R4_Atlas5_polish1\r3\E_Toon\4_robot100_after_1080.jpg'
+00:34.203  render           | Saved: '<WORKDIR>\R4_Atlas5_polish1\r3\E_Toon\4_robot100_after_720.jpg'
+[POLISH] SHOT E 4_robot100_after {'pieces': 96, 'triangles': 104960, 'hull_layer_triangles': 12012, 'objects': 813, 'render_s_1080': 1.0, 'render_s_720': 0.3}
+00:35.062  render           | Saved: '<WORKDIR>\R4_Atlas5_polish1\r3\E_Toon\5_robot200_after_1080.jpg'
+00:35.390  render           | Saved: '<WORKDIR>\R4_Atlas5_polish1\r3\E_Toon\5_robot200_after_720.jpg'
+[POLISH] SHOT E 5_robot200_after {'pieces': 196, 'triangles': 194376, 'hull_layer_triangles': 23144, 'objects': 1665, 'render_s_1080': 0.9, 'render_s_720': 0.3}
+[POLISH] STYLE_DONE E 35.1 s ['taa_render_samples', 'use_raytracing', '!use_gtao', '!gtao_distance', 'use_shadows', 'shadow_ray_count', 'shadow_step_count', 'fast_gi_distance', 'use_fast_gi', 'view_transform', 'look', 'exposure']
+[POLISH] ALL_DONE
+Blender 5.3.0 (hash 02f0899d78e3 built 2026-11-10 01:33:43)
+
+Blender quit

@@ -1,0 +1,541 @@
+{
+ "id": "R4M_HoverEngine",
+ "pilot_type": "Hover",
+ "construction": "p\u0142yta mocowania jako rdze\u0144 w kolorze podbudowy (bez ramy); kana\u0142-p\u0105czek z obr\u0119cz\u0105, piasta-grzyb, 4 p\u0142atki",
+ "style_character": "soft exaggerated proportions, big friendly forms, saturated hero colours, painted light ramp, few details",
+ "artistic_acceptance": "PENDING_OWNER_REVIEW",
+ "textures": {
+  "base": "E_base.png",
+  "orm": null,
+  "normal": null,
+  "normal_strength": 0.0,
+  "uv": "height"
+ },
+ "material_textures": {
+  "R4P_Base": {
+   "base_texture": "E_base.png"
+  },
+  "R4P_Glow": {},
+  "R4P_Secondary": {
+   "base_texture": "E_base.png"
+  },
+  "R4P_Trim": {
+   "base_texture": "E_base.png"
+  }
+ },
+ "board_frames": [
+  {
+   "clip": "SpinUp",
+   "frame": 39
+  },
+  {
+   "clip": "Lift",
+   "frame": 59
+  },
+  {
+   "clip": "Pulse",
+   "frame": 73
+  },
+  {
+   "clip": "Cooldown",
+   "frame": 97
+  }
+ ],
+ "style": "E",
+ "style_label": "E_Toon",
+ "family": "movement",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "APPROVED rig / sockets (from source GLB)",
+ "source": "#941",
+ "meshes": [
+  {
+   "object": "R4M_HoverEngine_Housing",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 3054,
+   "vertices": 1537,
+   "uv": true,
+   "material_slots": 4,
+   "ok": true
+  },
+  {
+   "object": "R4M_HoverEngine_Rotor",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 714,
+   "vertices": 367,
+   "uv": true,
+   "material_slots": 2,
+   "ok": true
+  },
+  {
+   "object": "R4M_HoverEngine_Vane_1",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 44,
+   "vertices": 24,
+   "uv": true,
+   "material_slots": 1,
+   "ok": true
+  },
+  {
+   "object": "R4M_HoverEngine_Vane_2",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 44,
+   "vertices": 24,
+   "uv": true,
+   "material_slots": 1,
+   "ok": true
+  },
+  {
+   "object": "R4M_HoverEngine_Vane_3",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 44,
+   "vertices": 24,
+   "uv": true,
+   "material_slots": 1,
+   "ok": true
+  },
+  {
+   "object": "R4M_HoverEngine_Vane_4",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 44,
+   "vertices": 24,
+   "uv": true,
+   "material_slots": 1,
+   "ok": true
+  },
+  {
+   "object": "R4M_HoverEngine_Vane_5",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 44,
+   "vertices": 24,
+   "uv": true,
+   "material_slots": 1,
+   "ok": true
+  },
+  {
+   "object": "Hover_PulseRing",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 464,
+   "vertices": 232,
+   "uv": true,
+   "material_slots": 1,
+   "ok": true
+  },
+  {
+   "object": "Hover_ThrustGlow",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 192,
+   "vertices": 98,
+   "uv": true,
+   "material_slots": 1,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4M_HoverEngine_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 1830,
+  "vertices": 945,
+  "uv": true,
+  "material_slots": 4,
+  "ok": true
+ },
+ "triangles": 4644,
+ "triangles_lod1": 1830,
+ "mesh_objects": 9,
+ "material_slots_total": 13,
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.317
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.264,
+   -0.264,
+   -0.339
+  ],
+  [
+   0.264,
+   0.264,
+   0.262
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": {
+  "max_outside_source_node_bounds_mm": 1.34,
+  "per_node_mm": {
+   "R4M_HoverEngine_Housing": 0.0,
+   "R4M_HoverEngine_Rotor": 1.34,
+   "R4M_HoverEngine_Vane_1": 0,
+   "R4M_HoverEngine_Vane_2": 0,
+   "R4M_HoverEngine_Vane_3": 0,
+   "R4M_HoverEngine_Vane_4": 0,
+   "R4M_HoverEngine_Vane_5": 0
+  },
+  "PASS": true
+ },
+ "ports": [
+  {
+   "dir": "up",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "up",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "up",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "interface_vs_source": {
+  "source_glb": "ModelFactory/R4Movement940/R4M_HoverEngine/R4M_HoverEngine.glb",
+  "source_sha256": "106f47c230c67e7c47eafbd324335e0f4a66bd37f6171b72f2ce92985903e2f3",
+  "empties": [
+   "GroundProbe",
+   "Socket_Mount",
+   "Thruster_Nozzle"
+  ],
+  "missing": [],
+  "pos_dev_mm": 0.0,
+  "rot_dev_deg": 0.0,
+  "mesh_nodes_source": [
+   "Hover_PulseRing",
+   "Hover_ThrustGlow",
+   "R4M_HoverEngine_Housing",
+   "R4M_HoverEngine_Rotor",
+   "R4M_HoverEngine_Vane_1",
+   "R4M_HoverEngine_Vane_2",
+   "R4M_HoverEngine_Vane_3",
+   "R4M_HoverEngine_Vane_4",
+   "R4M_HoverEngine_Vane_5"
+  ],
+  "mesh_nodes_missing": [],
+  "PASS": true
+ },
+ "hierarchy": {
+  "R4M_HoverEngine_ROOT": null,
+  "R4M_HoverEngine_Housing": "R4M_HoverEngine_ROOT",
+  "R4M_HoverEngine_Rotor": "R4M_HoverEngine_ROOT",
+  "R4M_HoverEngine_Vane_1": "R4M_HoverEngine_ROOT",
+  "R4M_HoverEngine_Vane_2": "R4M_HoverEngine_ROOT",
+  "R4M_HoverEngine_Vane_3": "R4M_HoverEngine_ROOT",
+  "R4M_HoverEngine_Vane_4": "R4M_HoverEngine_ROOT",
+  "R4M_HoverEngine_Vane_5": "R4M_HoverEngine_ROOT",
+  "Hover_PulseRing": "R4M_HoverEngine_ROOT",
+  "Hover_ThrustGlow": "R4M_HoverEngine_ROOT",
+  "GroundProbe": "R4M_HoverEngine_ROOT",
+  "Socket_Mount": "R4M_HoverEngine_ROOT",
+  "Thruster_Nozzle": "R4M_HoverEngine_ROOT"
+ },
+ "fx_objects": [
+  "Hover_PulseRing",
+  "Hover_ThrustGlow"
+ ],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "transfer",
+  "fps": 24,
+  "frames": 113,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "SpinUp",
+    "start": 27,
+    "end": 51,
+    "loop": false
+   },
+   {
+    "name": "Lift",
+    "start": 53,
+    "end": 65,
+    "loop": true
+   },
+   {
+    "name": "Pulse",
+    "start": 67,
+    "end": 79,
+    "loop": false
+   },
+   {
+    "name": "Cooldown",
+    "start": 81,
+    "end": 113,
+    "loop": false
+   }
+  ],
+  "events": {
+   "SpinUp_Start": 27,
+   "Lift_Start": 53,
+   "Pulse_Start": 67,
+   "Cooldown_Start": 81
+  },
+  "warped_clips": [
+   "SpinUp",
+   "Cooldown"
+  ],
+  "animated_objects": [
+   "R4M_HoverEngine_Rotor",
+   "R4M_HoverEngine_Vane_1",
+   "R4M_HoverEngine_Vane_2",
+   "R4M_HoverEngine_Vane_3",
+   "R4M_HoverEngine_Vane_4",
+   "R4M_HoverEngine_Vane_5",
+   "Hover_PulseRing",
+   "Hover_ThrustGlow"
+  ],
+  "objects_with_real_motion": 8,
+  "sweep_outside_envelope_mm": 0.0,
+  "sweep_allowance_mm": 10,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   },
+   {
+    "clip": "Lift",
+    "start_vs_end_dev": 154.2857,
+    "PASS": true,
+    "note": "source-defined loop: seamless by the symmetry of the approved rotor, not by equal matrices"
+   }
+  ],
+  "motion_character": "expressive: anticipation, overshoot, springy settle"
+ },
+ "parts": 20,
+ "vertex_shading": {
+  "corners": 8324,
+  "worn_edge_samples": 395,
+  "recipe": {
+   "flat": 0.9,
+   "cavity": [
+    0.5,
+    0.36,
+    0.56
+   ],
+   "gamma": 0.9,
+   "edge": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "edge_amount": 0.45,
+   "dist": 0.16
+  },
+  "lod1": 3852,
+  "gltf_export_options": {
+   "export_vertex_color": "ACTIVE",
+   "export_active_vertex_color_when_no_material": true
+  }
+ },
+ "polish_pass": 1,
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 9,
+   "triangles": 4644,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 13,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    39,
+    51,
+    53,
+    59,
+    65,
+    67,
+    73,
+    79,
+    81,
+    97,
+    113
+   ],
+   "nodes_compared": 9,
+   "max_pos_dev_mm": 0.0001,
+   "max_rot_dev_deg": 0.0,
+   "worst": [
+    73,
+    "Hover_PulseRing",
+    0.0,
+    0.0
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 9,
+   "triangles": 4644,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    39,
+    51,
+    53,
+    59,
+    65,
+    67,
+    73,
+    79,
+    81,
+    97,
+    113
+   ],
+   "nodes_compared": 9,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": [
+    73,
+    "R4M_HoverEngine_Vane_1",
+    0.0,
+    0.0
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4M_HoverEngine_34.jpg",
+  "R4M_HoverEngine_anim1.jpg",
+  "R4M_HoverEngine_anim2.jpg",
+  "R4M_HoverEngine_anim3.jpg",
+  "R4M_HoverEngine_anim4.jpg",
+  "R4M_HoverEngine_clay_34.jpg",
+  "R4M_HoverEngine_clay_front.jpg",
+  "R4M_HoverEngine_clay_side.jpg",
+  "R4M_HoverEngine_front.jpg",
+  "R4M_HoverEngine_side.jpg",
+  "R4M_HoverEngine_sil_34.png",
+  "R4M_HoverEngine_sil_front.png",
+  "R4M_HoverEngine_sil_side.png",
+  "R4M_HoverEngine_top.jpg",
+  "R4M_HoverEngine_wire.jpg"
+ ],
+ "files": {
+  "R4M_HoverEngine.blend": {
+   "sha256": "57d1d5f2bc8c72936f9cbc10529133f09e5a92176ffa12ee43a33d6d290fb588",
+   "bytes": 262796
+  },
+  "R4M_HoverEngine.fbx": {
+   "sha256": "7243362beb1c3026f4b69ebc517d71168a6f4b490e79d8cd68078f8746546349",
+   "bytes": 308892
+  },
+  "R4M_HoverEngine.glb": {
+   "sha256": "c536f3769583232b5b9891440b0f5383ed7f4990d6134c177919018b3b9a7f91",
+   "bytes": 197348
+  },
+  "R4M_HoverEngine_LOD1.fbx": {
+   "sha256": "ba86ffc9e3301243d314160be998ae1a62849ef09e6b43f9eeffa3de492d0ed4",
+   "bytes": 70588
+  },
+  "R4M_HoverEngine_LOD1.glb": {
+   "sha256": "12a45eaa358203433d9a3b9f7b8465f556b6b6c802d7599811d61dd359725d9a",
+   "bytes": 88964
+  }
+ },
+ "seconds": 3.8,
+ "blender": "5.3.0",
+ "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
+}
