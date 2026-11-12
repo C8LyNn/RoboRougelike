@@ -129,6 +129,13 @@ namespace RoboRougelike.R1
             if(CombatResourceLow(energy,maxEnergy,.2f))return "Niska energia — postój przyspiesza jej regenerację.";
             return null;
         }
+        private static string CombatEquipmentWarning(R3DriveKind drive,int initialWheels,int survivingWheels,bool weaponsInactive)
+        {
+            if(drive==R3DriveKind.Wheels&&initialWheels>1&&survivingWheels==1)
+                return "Ostatnie koło — jego utrata oznacza porażkę.";
+            if(weaponsInactive)return "Uzbrojenie nieaktywne — sprawdź stan broni.";
+            return null;
+        }
         private static string SeedInputWarning(string text,int lastValid)=>
             int.TryParse(text,out _)?null:$"Błędny seed\nUżyty: {lastValid}";
         private void DrawSeedWarning(Rect area,int lastValid)
@@ -233,6 +240,15 @@ namespace RoboRougelike.R1
                 float currentEnergy=energy!=null?energy.Current:0,maxEnergy=energy!=null?energy.Maximum:0;
                 bool lowCore=CombatResourceLow(hp,maxHp,.25f),lowEnergy=CombatResourceLow(currentEnergy,maxEnergy,.2f);
                 string resourceWarning=CombatResourceWarning(hp,maxHp,currentEnergy,maxEnergy);
+                var modules=player!=null?player.Modules:null;
+                if(!lowCore&&modules!=null&&run.VehicleModel!=null)
+                {
+                    var drive=run.VehicleModel.SelectedDrive;
+                    int surviving=drive==R3DriveKind.Wheels&&modules.InitialWheelCount>1&&modules.ActiveWheelCount<=1?
+                        modules.SurvivingWheelCount:-1;
+                    bool weaponsInactive=modules.ActiveWeaponCount==0&&modules.HasSurvivingWeapon;
+                    resourceWarning=CombatEquipmentWarning(drive,modules.InitialWheelCount,surviving,weaponsInactive)??resourceWarning;
+                }
                 Panel(new Rect(20,18,660,(combatDetailsOpen?180:125)+(resourceWarning!=null?25:0)+(run.PickupGraceRemaining>0?25:0)));
                 GUI.Label(new Rect(36, 27, 630, 30), $"STARCIE {progress.EncounterIndex + 1}/{progress.TotalEncounters}   •   Wrogowie: {run.Encounter.AliveCount}   •   Złom: {run.VehicleModel.Scrap}", body);
                 if (player != null)
