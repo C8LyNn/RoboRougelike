@@ -337,6 +337,14 @@ def build(cid, style):
                 else: o.matrix_world = (M @ inv[n]) @ rest[n]
                 bpy.context.view_layer.update()
                 o.keyframe_insert("location", frame=f); o.keyframe_insert("rotation_quaternion", frame=f); o.keyframe_insert("scale", frame=f)
+    for n, tr in (an.get("extra_tracks") or {}).items():           # pass 2: mechanism nodes of rig assets (procedural, in the rest axes of their parent)
+        o = meshes.get(n)
+        if o is None: continue
+        base = o.location.copy(); anim_objs.append(o)
+        for f in range(1, F + 1):
+            o.location = base + Vector(tr["loc"][f - 1]); o.rotation_quaternion = Quaternion(tr["quat"][f - 1]); s_ = tr["scl"][f - 1]; o.scale = (s_, s_, s_)
+            o.keyframe_insert("location", frame=f); o.keyframe_insert("rotation_quaternion", frame=f); o.keyframe_insert("scale", frame=f)
+        o.location = base; o.rotation_quaternion = Quaternion((1, 0, 0, 0)); o.scale = (1, 1, 1)
     has_anim = bool(anim_objs)
     for c in an["clips"]: scn.timeline_markers.new(c["name"], frame=c["start"])
     for k, f in an["events"].items(): scn.timeline_markers.new("EV_" + k, frame=f)
@@ -454,7 +462,7 @@ def build(cid, style):
           "bounds_m": [[round(x, 4) for x in lo], [round(x, 4) for x in hi]], "envelope_m": env, "inside_envelope": inside, "lod1_inside_envelope": lod_inside, "node_bounds_vs_source": node_vs_src,
           "ports": src["ports"], "port_contact_test": ptest, "lod1_port_contact_test": lptest, "interface_vs_source": iface, "hierarchy": hier, "fx_objects": sorted(fxn),
           "animation": {"glb_animation_mode": glb_mode, "mode": an["mode"], "fps": FPS, "frames": F, "clips": an["clips"], "events": an["events"], "warped_clips": an["warped_clips"], "animated_objects": anim_names, "objects_with_real_motion": moving,
-                        "sweep_outside_envelope_mm": round(max(sweep, 0)*1000, 3), "sweep_allowance_mm": round(allow*1000), "loop_seams": seams, "motion_character": ST.MOTION[style]}, "parts": src["stats"]["parts"], "vertex_shading": vshade, "polish_pass": src.get("polish_pass"),
+                        "sweep_outside_envelope_mm": round(max(sweep, 0)*1000, 3), "sweep_allowance_mm": round(allow*1000), "loop_seams": seams, "motion_character": ST.MOTION[style]}, "parts": src["stats"]["parts"], "vertex_shading": vshade, "polish_pass": src.get("polish_pass"), "mechanisms": src.get("mechanisms"),
           "reimport": re_, "renders": renders, "files": files, "seconds": round(time.time() - t0, 1), "blender": bpy.app.version_string}
     json.dump(qa, open(base + "_QA.json", "w", encoding="utf-8"), indent=1)
     log("VARIANT", ST.LABEL[style], cid, stat, failures, tris, "tris", "LOD1", lr["triangles"])

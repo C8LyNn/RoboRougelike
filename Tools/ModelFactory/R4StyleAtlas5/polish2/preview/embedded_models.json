@@ -1,0 +1,1305 @@
+{
+ "models": {
+  "A/R4B_Cube": {
+   "file": "polish2/variants/A_Sleek/R4B_Cube/R4B_Cube.glb",
+   "sha256": "331b6b969cf4deb1b3d21cf1ddee68eebe17d8689404cca8a3dda3b0026acc06",
+   "bytes": 30508,
+   "embedded_bytes_without_images": 10804,
+   "images": {
+    "A_normal.png": {
+     "sha256": "fec03477f679aeaa8033175c667a2e9451d4f5c218b3c66df27176714abea376",
+     "same_bytes_as_package_texture": true
+    },
+    "A_base.png": {
+     "sha256": "761f4ab191f31427d53dbbce405633d26695436c6538dbac230db24555fd9786",
+     "same_bytes_as_package_texture": true
+    },
+    "A_orm.png": {
+     "sha256": "62399bd0380b081b5babbcc45210e30cabdbdc45e0268acade63bafca7006128",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "L/A/R4B_Cube": {
+   "file": "polish2/variants/A_Sleek/R4B_Cube/R4B_Cube_LOD1.glb",
+   "sha256": "9e61afec8c422c900c95c1f3fcc088919a34420ed64d0c4fa0b911240a437d23",
+   "bytes": 26160,
+   "embedded_bytes_without_images": 6456,
+   "images": {
+    "A_normal.png": {
+     "sha256": "fec03477f679aeaa8033175c667a2e9451d4f5c218b3c66df27176714abea376",
+     "same_bytes_as_package_texture": true
+    },
+    "A_base.png": {
+     "sha256": "761f4ab191f31427d53dbbce405633d26695436c6538dbac230db24555fd9786",
+     "same_bytes_as_package_texture": true
+    },
+    "A_orm.png": {
+     "sha256": "62399bd0380b081b5babbcc45210e30cabdbdc45e0268acade63bafca7006128",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "B/R4B_Cube": {
+   "file": "polish2/variants/B_Brutal/R4B_Cube/R4B_Cube.glb",
+   "sha256": "0d58d92e8eb33fb05ccfc3ee45aa2d7768d1d93ed2415556954aeb976520152f",
+   "bytes": 558600,
+   "embedded_bytes_without_images": 10780,
+   "images": {
+    "B_normal.png": {
+     "sha256": "0abdef75e6d8b171f051ebaa2ccd1774f9165f62dad226281e8ebce0409810dd",
+     "same_bytes_as_package_texture": true
+    },
+    "B_base.png": {
+     "sha256": "c996e5ec2be56943ecba199bc0c1d572740469f29e76c5445b6753446aacf615",
+     "same_bytes_as_package_texture": true
+    },
+    "B_orm.png": {
+     "sha256": "062017bbef881e6b18d5001fcb740c248eb571c37f38970ba07adfb7f2f883fa",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "L/B/R4B_Cube": {
+   "file": "polish2/variants/B_Brutal/R4B_Cube/R4B_Cube_LOD1.glb",
+   "sha256": "bd7c762075567e0452276f255b9701b7600a66a60af201a1294b5d12f046d735",
+   "bytes": 554248,
+   "embedded_bytes_without_images": 6436,
+   "images": {
+    "B_normal.png": {
+     "sha256": "0abdef75e6d8b171f051ebaa2ccd1774f9165f62dad226281e8ebce0409810dd",
+     "same_bytes_as_package_texture": true
+    },
+    "B_base.png": {
+     "sha256": "c996e5ec2be56943ecba199bc0c1d572740469f29e76c5445b6753446aacf615",
+     "same_bytes_as_package_texture": true
+    },
+    "B_orm.png": {
+     "sha256": "062017bbef881e6b18d5001fcb740c248eb571c37f38970ba07adfb7f2f883fa",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "C/R4B_Cube": {
+   "file": "polish2/variants/C_Arcade/R4B_Cube/R4B_Cube.glb",
+   "sha256": "81de6485669626f0bee337a502abbde7b5a06b73e431d95bb1f77e05c700d514",
+   "bytes": 10320,
+   "embedded_bytes_without_images": 10320
+  },
+  "L/C/R4B_Cube": {
+   "file": "polish2/variants/C_Arcade/R4B_Cube/R4B_Cube_LOD1.glb",
+   "sha256": "89c685ca53fd6236dd8cf98aef793b7b92d4a66c1ef0b136e9727b104fda7162",
+   "bytes": 5976,
+   "embedded_bytes_without_images": 5976
+  },
+  "D/R4B_Cube": {
+   "file": "polish2/variants/D_Scrap/R4B_Cube/R4B_Cube.glb",
+   "sha256": "828982a0030b3147c77036813f8ae08304b6817f9f0b1483a1895e5463d5eb05",
+   "bytes": 489180,
+   "embedded_bytes_without_images": 10816,
+   "images": {
+    "D_normal.png": {
+     "sha256": "a8a2994c912626583773e4930c43b5108e2c43c93cd6b8235b2b4593a629b42c",
+     "same_bytes_as_package_texture": true
+    },
+    "D_base.png": {
+     "sha256": "0f18ea3fbd6e6fcc3741b9cc882c2eaff34230f625dd59d6264491d4bac972ef",
+     "same_bytes_as_package_texture": true
+    },
+    "D_orm.png": {
+     "sha256": "9c2cfc7b52066f48375b15cfecb5050deb993a8ab779732e3fa79de9b6314358",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "L/D/R4B_Cube": {
+   "file": "polish2/variants/D_Scrap/R4B_Cube/R4B_Cube_LOD1.glb",
+   "sha256": "5f2c1fcaff5ec2086eaa2d84749d919c8f2a537a6a7363421a447ae7927599a7",
+   "bytes": 484828,
+   "embedded_bytes_without_images": 6468,
+   "images": {
+    "D_normal.png": {
+     "sha256": "a8a2994c912626583773e4930c43b5108e2c43c93cd6b8235b2b4593a629b42c",
+     "same_bytes_as_package_texture": true
+    },
+    "D_base.png": {
+     "sha256": "0f18ea3fbd6e6fcc3741b9cc882c2eaff34230f625dd59d6264491d4bac972ef",
+     "same_bytes_as_package_texture": true
+    },
+    "D_orm.png": {
+     "sha256": "9c2cfc7b52066f48375b15cfecb5050deb993a8ab779732e3fa79de9b6314358",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "E/R4B_Cube": {
+   "file": "polish2/variants/E_Toon/R4B_Cube/R4B_Cube.glb",
+   "sha256": "38e4f628b4e6bfc51e73557a5598256502bcb93b7408f5f711bea4b44d5446a7",
+   "bytes": 14996,
+   "embedded_bytes_without_images": 10508,
+   "images": {
+    "E_base.png": {
+     "sha256": "6cd585afbe9c1390574ca55748b2a602a24b8746ee8f96a7acf502a49ff4e1c6",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "L/E/R4B_Cube": {
+   "file": "polish2/variants/E_Toon/R4B_Cube/R4B_Cube_LOD1.glb",
+   "sha256": "f06e6ca1a6672bcfd32762a509bc6558a203501cf617f16eb9147fb96e7236bc",
+   "bytes": 10648,
+   "embedded_bytes_without_images": 6160,
+   "images": {
+    "E_base.png": {
+     "sha256": "6cd585afbe9c1390574ca55748b2a602a24b8746ee8f96a7acf502a49ff4e1c6",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "A/R4C_STRUT_STANDARD": {
+   "file": "polish2/variants/A_Sleek/R4C_STRUT_STANDARD/R4C_STRUT_STANDARD.glb",
+   "sha256": "3927f06c4977a197d6b90072cff7d71ad403f7d925a0a477e6fe48ecd238ecde",
+   "bytes": 163924,
+   "embedded_bytes_without_images": 144212,
+   "images": {
+    "A_normal.png": {
+     "sha256": "fec03477f679aeaa8033175c667a2e9451d4f5c218b3c66df27176714abea376",
+     "same_bytes_as_package_texture": true
+    },
+    "A_base.png": {
+     "sha256": "761f4ab191f31427d53dbbce405633d26695436c6538dbac230db24555fd9786",
+     "same_bytes_as_package_texture": true
+    },
+    "A_orm.png": {
+     "sha256": "62399bd0380b081b5babbcc45210e30cabdbdc45e0268acade63bafca7006128",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "L/A/R4C_STRUT_STANDARD": {
+   "file": "polish2/variants/A_Sleek/R4C_STRUT_STANDARD/R4C_STRUT_STANDARD_LOD1.glb",
+   "sha256": "2d310a751707d0fcb00390f9ee098a2f55549982699d1a49646c25f50cc8f9c3",
+   "bytes": 81408,
+   "embedded_bytes_without_images": 61704,
+   "images": {
+    "A_normal.png": {
+     "sha256": "fec03477f679aeaa8033175c667a2e9451d4f5c218b3c66df27176714abea376",
+     "same_bytes_as_package_texture": true
+    },
+    "A_base.png": {
+     "sha256": "761f4ab191f31427d53dbbce405633d26695436c6538dbac230db24555fd9786",
+     "same_bytes_as_package_texture": true
+    },
+    "A_orm.png": {
+     "sha256": "62399bd0380b081b5babbcc45210e30cabdbdc45e0268acade63bafca7006128",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "B/R4C_STRUT_STANDARD": {
+   "file": "polish2/variants/B_Brutal/R4C_STRUT_STANDARD/R4C_STRUT_STANDARD.glb",
+   "sha256": "1ebb5a2f4a6a52fdb63d0200e7d688cf76e5f4656a1f92753a65f69d681095b9",
+   "bytes": 631336,
+   "embedded_bytes_without_images": 83508,
+   "images": {
+    "B_normal.png": {
+     "sha256": "0abdef75e6d8b171f051ebaa2ccd1774f9165f62dad226281e8ebce0409810dd",
+     "same_bytes_as_package_texture": true
+    },
+    "B_base.png": {
+     "sha256": "c996e5ec2be56943ecba199bc0c1d572740469f29e76c5445b6753446aacf615",
+     "same_bytes_as_package_texture": true
+    },
+    "B_orm.png": {
+     "sha256": "062017bbef881e6b18d5001fcb740c248eb571c37f38970ba07adfb7f2f883fa",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "L/B/R4C_STRUT_STANDARD": {
+   "file": "polish2/variants/B_Brutal/R4C_STRUT_STANDARD/R4C_STRUT_STANDARD_LOD1.glb",
+   "sha256": "1bc0c0df9e0cb2de658a9a41bee5b69b3407dfc014ad7e3b7116654620f6e0bb",
+   "bytes": 626248,
+   "embedded_bytes_without_images": 78420,
+   "images": {
+    "B_normal.png": {
+     "sha256": "0abdef75e6d8b171f051ebaa2ccd1774f9165f62dad226281e8ebce0409810dd",
+     "same_bytes_as_package_texture": true
+    },
+    "B_base.png": {
+     "sha256": "c996e5ec2be56943ecba199bc0c1d572740469f29e76c5445b6753446aacf615",
+     "same_bytes_as_package_texture": true
+    },
+    "B_orm.png": {
+     "sha256": "062017bbef881e6b18d5001fcb740c248eb571c37f38970ba07adfb7f2f883fa",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "C/R4C_STRUT_STANDARD": {
+   "file": "polish2/variants/C_Arcade/R4C_STRUT_STANDARD/R4C_STRUT_STANDARD.glb",
+   "sha256": "55156ec23d17cbbca6a34070ad01f8d86c9d6bd1d279b8377f4e09d1e0e7bcc4",
+   "bytes": 21904,
+   "embedded_bytes_without_images": 21904
+  },
+  "L/C/R4C_STRUT_STANDARD": {
+   "file": "polish2/variants/C_Arcade/R4C_STRUT_STANDARD/R4C_STRUT_STANDARD_LOD1.glb",
+   "sha256": "ce98c1d8524bc7a340e1c8e297e6c8b5365d647a6e2c3e213cfe0f2be0681bd7",
+   "bytes": 14232,
+   "embedded_bytes_without_images": 14232
+  },
+  "D/R4C_STRUT_STANDARD": {
+   "file": "polish2/variants/D_Scrap/R4C_STRUT_STANDARD/R4C_STRUT_STANDARD.glb",
+   "sha256": "c907168e652a00792b84ed11eba113827b6e2f235a2092a84c57639b0971b180",
+   "bytes": 538816,
+   "embedded_bytes_without_images": 60440,
+   "images": {
+    "D_normal.png": {
+     "sha256": "a8a2994c912626583773e4930c43b5108e2c43c93cd6b8235b2b4593a629b42c",
+     "same_bytes_as_package_texture": true
+    },
+    "D_base.png": {
+     "sha256": "0f18ea3fbd6e6fcc3741b9cc882c2eaff34230f625dd59d6264491d4bac972ef",
+     "same_bytes_as_package_texture": true
+    },
+    "D_orm.png": {
+     "sha256": "9c2cfc7b52066f48375b15cfecb5050deb993a8ab779732e3fa79de9b6314358",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "L/D/R4C_STRUT_STANDARD": {
+   "file": "polish2/variants/D_Scrap/R4C_STRUT_STANDARD/R4C_STRUT_STANDARD_LOD1.glb",
+   "sha256": "461b3e8b590086a07f767040ff17509998bdc0b9a619ee655824590d97f892db",
+   "bytes": 530268,
+   "embedded_bytes_without_images": 51900,
+   "images": {
+    "D_normal.png": {
+     "sha256": "a8a2994c912626583773e4930c43b5108e2c43c93cd6b8235b2b4593a629b42c",
+     "same_bytes_as_package_texture": true
+    },
+    "D_base.png": {
+     "sha256": "0f18ea3fbd6e6fcc3741b9cc882c2eaff34230f625dd59d6264491d4bac972ef",
+     "same_bytes_as_package_texture": true
+    },
+    "D_orm.png": {
+     "sha256": "9c2cfc7b52066f48375b15cfecb5050deb993a8ab779732e3fa79de9b6314358",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "E/R4C_STRUT_STANDARD": {
+   "file": "polish2/variants/E_Toon/R4C_STRUT_STANDARD/R4C_STRUT_STANDARD.glb",
+   "sha256": "f1e68356686118f93cf5d06a2fabcd7e63812e05187bb88793a28ad7c71c0551",
+   "bytes": 53364,
+   "embedded_bytes_without_images": 48872,
+   "images": {
+    "E_base.png": {
+     "sha256": "6cd585afbe9c1390574ca55748b2a602a24b8746ee8f96a7acf502a49ff4e1c6",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "L/E/R4C_STRUT_STANDARD": {
+   "file": "polish2/variants/E_Toon/R4C_STRUT_STANDARD/R4C_STRUT_STANDARD_LOD1.glb",
+   "sha256": "05388b43fae10ee83383467b388b3544481c10b282e1f09c1ebcc507ac8afd7c",
+   "bytes": 27872,
+   "embedded_bytes_without_images": 23380,
+   "images": {
+    "E_base.png": {
+     "sha256": "6cd585afbe9c1390574ca55748b2a602a24b8746ee8f96a7acf502a49ff4e1c6",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "A/R4W_Basic": {
+   "file": "polish2/variants/A_Sleek/R4W_Basic/R4W_Basic.glb",
+   "sha256": "fc048ba94ed8e15dca4645ba0c1a60d782f59ed021fa9984e487c84de87b96b9",
+   "bytes": 380936,
+   "embedded_bytes_without_images": 361208,
+   "images": {
+    "A_normal.png": {
+     "sha256": "fec03477f679aeaa8033175c667a2e9451d4f5c218b3c66df27176714abea376",
+     "same_bytes_as_package_texture": true
+    },
+    "A_base.png": {
+     "sha256": "761f4ab191f31427d53dbbce405633d26695436c6538dbac230db24555fd9786",
+     "same_bytes_as_package_texture": true
+    },
+    "A_orm.png": {
+     "sha256": "62399bd0380b081b5babbcc45210e30cabdbdc45e0268acade63bafca7006128",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "L/A/R4W_Basic": {
+   "file": "polish2/variants/A_Sleek/R4W_Basic/R4W_Basic_LOD1.glb",
+   "sha256": "76a2520231be69acc0c9f1c3bd4b6e254fe1bafec73a4bb99337a90036c364cf",
+   "bytes": 221072,
+   "embedded_bytes_without_images": 201364,
+   "images": {
+    "A_normal.png": {
+     "sha256": "fec03477f679aeaa8033175c667a2e9451d4f5c218b3c66df27176714abea376",
+     "same_bytes_as_package_texture": true
+    },
+    "A_base.png": {
+     "sha256": "761f4ab191f31427d53dbbce405633d26695436c6538dbac230db24555fd9786",
+     "same_bytes_as_package_texture": true
+    },
+    "A_orm.png": {
+     "sha256": "62399bd0380b081b5babbcc45210e30cabdbdc45e0268acade63bafca7006128",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "B/R4W_Basic": {
+   "file": "polish2/variants/B_Brutal/R4W_Basic/R4W_Basic.glb",
+   "sha256": "b1834b576a6b5acb501250f972b34d9e52976bf5579c3a31608a426ccbcae7e0",
+   "bytes": 897888,
+   "embedded_bytes_without_images": 350024,
+   "images": {
+    "B_normal.png": {
+     "sha256": "0abdef75e6d8b171f051ebaa2ccd1774f9165f62dad226281e8ebce0409810dd",
+     "same_bytes_as_package_texture": true
+    },
+    "B_base.png": {
+     "sha256": "c996e5ec2be56943ecba199bc0c1d572740469f29e76c5445b6753446aacf615",
+     "same_bytes_as_package_texture": true
+    },
+    "B_orm.png": {
+     "sha256": "062017bbef881e6b18d5001fcb740c248eb571c37f38970ba07adfb7f2f883fa",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "L/B/R4W_Basic": {
+   "file": "polish2/variants/B_Brutal/R4W_Basic/R4W_Basic_LOD1.glb",
+   "sha256": "1b235c12d8899377b2631077777f880e335ce8d4680b75ebf525c6af4fb6e9b8",
+   "bytes": 834084,
+   "embedded_bytes_without_images": 286256,
+   "images": {
+    "B_normal.png": {
+     "sha256": "0abdef75e6d8b171f051ebaa2ccd1774f9165f62dad226281e8ebce0409810dd",
+     "same_bytes_as_package_texture": true
+    },
+    "B_base.png": {
+     "sha256": "c996e5ec2be56943ecba199bc0c1d572740469f29e76c5445b6753446aacf615",
+     "same_bytes_as_package_texture": true
+    },
+    "B_orm.png": {
+     "sha256": "062017bbef881e6b18d5001fcb740c248eb571c37f38970ba07adfb7f2f883fa",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "C/R4W_Basic": {
+   "file": "polish2/variants/C_Arcade/R4W_Basic/R4W_Basic.glb",
+   "sha256": "96073d2c332ccf01117d10abd26507dac0b7b886f82ad2632d11e23ce4bb5d98",
+   "bytes": 64188,
+   "embedded_bytes_without_images": 64188
+  },
+  "L/C/R4W_Basic": {
+   "file": "polish2/variants/C_Arcade/R4W_Basic/R4W_Basic_LOD1.glb",
+   "sha256": "0e268b9bbf0725b14fb9f38cde75a25c60f69c40b89b30de151e1bd181a2e81c",
+   "bytes": 36232,
+   "embedded_bytes_without_images": 36232
+  },
+  "D/R4W_Basic": {
+   "file": "polish2/variants/D_Scrap/R4W_Basic/R4W_Basic.glb",
+   "sha256": "309dbc5335f9be11a8eef80157ffe2acc9eab4a291d9fc4066306143b10a669c",
+   "bytes": 648408,
+   "embedded_bytes_without_images": 169956,
+   "images": {
+    "D_normal.png": {
+     "sha256": "a8a2994c912626583773e4930c43b5108e2c43c93cd6b8235b2b4593a629b42c",
+     "same_bytes_as_package_texture": true
+    },
+    "D_base.png": {
+     "sha256": "0f18ea3fbd6e6fcc3741b9cc882c2eaff34230f625dd59d6264491d4bac972ef",
+     "same_bytes_as_package_texture": true
+    },
+    "D_orm.png": {
+     "sha256": "9c2cfc7b52066f48375b15cfecb5050deb993a8ab779732e3fa79de9b6314358",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "L/D/R4W_Basic": {
+   "file": "polish2/variants/D_Scrap/R4W_Basic/R4W_Basic_LOD1.glb",
+   "sha256": "24b1ff16cb01f2bacd60d248d90e9de270f8ebb13b1ffa0064103be33dcf8201",
+   "bytes": 611504,
+   "embedded_bytes_without_images": 133124,
+   "images": {
+    "D_normal.png": {
+     "sha256": "a8a2994c912626583773e4930c43b5108e2c43c93cd6b8235b2b4593a629b42c",
+     "same_bytes_as_package_texture": true
+    },
+    "D_base.png": {
+     "sha256": "0f18ea3fbd6e6fcc3741b9cc882c2eaff34230f625dd59d6264491d4bac972ef",
+     "same_bytes_as_package_texture": true
+    },
+    "D_orm.png": {
+     "sha256": "9c2cfc7b52066f48375b15cfecb5050deb993a8ab779732e3fa79de9b6314358",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "E/R4W_Basic": {
+   "file": "polish2/variants/E_Toon/R4W_Basic/R4W_Basic.glb",
+   "sha256": "942f72ed2d000154d59f1f485d0f7bb2d305e9167b1cc533fe4c92efafa11110",
+   "bytes": 231660,
+   "embedded_bytes_without_images": 227160,
+   "images": {
+    "E_base.png": {
+     "sha256": "6cd585afbe9c1390574ca55748b2a602a24b8746ee8f96a7acf502a49ff4e1c6",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "L/E/R4W_Basic": {
+   "file": "polish2/variants/E_Toon/R4W_Basic/R4W_Basic_LOD1.glb",
+   "sha256": "23fbfeed16c5326ab798cb0316aa84d7909e2d010cab279cf38a3fc280407924",
+   "bytes": 97464,
+   "embedded_bytes_without_images": 92976,
+   "images": {
+    "E_base.png": {
+     "sha256": "6cd585afbe9c1390574ca55748b2a602a24b8746ee8f96a7acf502a49ff4e1c6",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "A/R4M_WheelM_Side_Offroad": {
+   "file": "polish2/variants/A_Sleek/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+   "sha256": "6bd4070583acaf5dbf3b546a6f3ad18fe0b4c8ad0f0b7c7a8475b5356b63e05d",
+   "bytes": 303488,
+   "embedded_bytes_without_images": 283784,
+   "images": {
+    "A_normal.png": {
+     "sha256": "fec03477f679aeaa8033175c667a2e9451d4f5c218b3c66df27176714abea376",
+     "same_bytes_as_package_texture": true
+    },
+    "A_base.png": {
+     "sha256": "761f4ab191f31427d53dbbce405633d26695436c6538dbac230db24555fd9786",
+     "same_bytes_as_package_texture": true
+    },
+    "A_orm.png": {
+     "sha256": "62399bd0380b081b5babbcc45210e30cabdbdc45e0268acade63bafca7006128",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "L/A/R4M_WheelM_Side_Offroad": {
+   "file": "polish2/variants/A_Sleek/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad_LOD1.glb",
+   "sha256": "bcba68ea36ea8ad8316e888ff5abf9635c816cfbacbccb40b75ce82056439cd0",
+   "bytes": 188944,
+   "embedded_bytes_without_images": 169232,
+   "images": {
+    "A_normal.png": {
+     "sha256": "fec03477f679aeaa8033175c667a2e9451d4f5c218b3c66df27176714abea376",
+     "same_bytes_as_package_texture": true
+    },
+    "A_base.png": {
+     "sha256": "761f4ab191f31427d53dbbce405633d26695436c6538dbac230db24555fd9786",
+     "same_bytes_as_package_texture": true
+    },
+    "A_orm.png": {
+     "sha256": "62399bd0380b081b5babbcc45210e30cabdbdc45e0268acade63bafca7006128",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "B/R4M_WheelM_Side_Offroad": {
+   "file": "polish2/variants/B_Brutal/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+   "sha256": "64a5a685c68e3bee56775d845332d25562ca84e9e4aaee5f93230ed557d55bc9",
+   "bytes": 793944,
+   "embedded_bytes_without_images": 246100,
+   "images": {
+    "B_normal.png": {
+     "sha256": "0abdef75e6d8b171f051ebaa2ccd1774f9165f62dad226281e8ebce0409810dd",
+     "same_bytes_as_package_texture": true
+    },
+    "B_base.png": {
+     "sha256": "c996e5ec2be56943ecba199bc0c1d572740469f29e76c5445b6753446aacf615",
+     "same_bytes_as_package_texture": true
+    },
+    "B_orm.png": {
+     "sha256": "062017bbef881e6b18d5001fcb740c248eb571c37f38970ba07adfb7f2f883fa",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "L/B/R4M_WheelM_Side_Offroad": {
+   "file": "polish2/variants/B_Brutal/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad_LOD1.glb",
+   "sha256": "0993343dc01a3c16da1da497c9ac418d37857325d813b4e6c4eda9681ed0e303",
+   "bytes": 761640,
+   "embedded_bytes_without_images": 213820,
+   "images": {
+    "B_normal.png": {
+     "sha256": "0abdef75e6d8b171f051ebaa2ccd1774f9165f62dad226281e8ebce0409810dd",
+     "same_bytes_as_package_texture": true
+    },
+    "B_base.png": {
+     "sha256": "c996e5ec2be56943ecba199bc0c1d572740469f29e76c5445b6753446aacf615",
+     "same_bytes_as_package_texture": true
+    },
+    "B_orm.png": {
+     "sha256": "062017bbef881e6b18d5001fcb740c248eb571c37f38970ba07adfb7f2f883fa",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "C/R4M_WheelM_Side_Offroad": {
+   "file": "polish2/variants/C_Arcade/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+   "sha256": "730e0d3bd29ff85798fe694801f8b7256e517e139ba1ba5206a483ae1d59b33c",
+   "bytes": 51344,
+   "embedded_bytes_without_images": 51344
+  },
+  "L/C/R4M_WheelM_Side_Offroad": {
+   "file": "polish2/variants/C_Arcade/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad_LOD1.glb",
+   "sha256": "89114f769f9f8196fab697c787e06482659ddb5705f132ab174d08eba207969e",
+   "bytes": 36932,
+   "embedded_bytes_without_images": 36932
+  },
+  "D/R4M_WheelM_Side_Offroad": {
+   "file": "polish2/variants/D_Scrap/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+   "sha256": "e2cd7c63f691b1cecd53eecebd4417de21fec276899e4f15412d98dae4185598",
+   "bytes": 709360,
+   "embedded_bytes_without_images": 230956,
+   "images": {
+    "D_normal.png": {
+     "sha256": "a8a2994c912626583773e4930c43b5108e2c43c93cd6b8235b2b4593a629b42c",
+     "same_bytes_as_package_texture": true
+    },
+    "D_base.png": {
+     "sha256": "0f18ea3fbd6e6fcc3741b9cc882c2eaff34230f625dd59d6264491d4bac972ef",
+     "same_bytes_as_package_texture": true
+    },
+    "D_orm.png": {
+     "sha256": "9c2cfc7b52066f48375b15cfecb5050deb993a8ab779732e3fa79de9b6314358",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "L/D/R4M_WheelM_Side_Offroad": {
+   "file": "polish2/variants/D_Scrap/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad_LOD1.glb",
+   "sha256": "1d3087547158bf478d742f9a4765c59e09e542bc68201ef3f603bc7e6eeee212",
+   "bytes": 684440,
+   "embedded_bytes_without_images": 206072,
+   "images": {
+    "D_normal.png": {
+     "sha256": "a8a2994c912626583773e4930c43b5108e2c43c93cd6b8235b2b4593a629b42c",
+     "same_bytes_as_package_texture": true
+    },
+    "D_base.png": {
+     "sha256": "0f18ea3fbd6e6fcc3741b9cc882c2eaff34230f625dd59d6264491d4bac972ef",
+     "same_bytes_as_package_texture": true
+    },
+    "D_orm.png": {
+     "sha256": "9c2cfc7b52066f48375b15cfecb5050deb993a8ab779732e3fa79de9b6314358",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "E/R4M_WheelM_Side_Offroad": {
+   "file": "polish2/variants/E_Toon/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+   "sha256": "81639699cc90cbb9a7ac1034d43e514c3d066e56a8b184b755fc31ff6721fd63",
+   "bytes": 170004,
+   "embedded_bytes_without_images": 165516,
+   "images": {
+    "E_base.png": {
+     "sha256": "6cd585afbe9c1390574ca55748b2a602a24b8746ee8f96a7acf502a49ff4e1c6",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "L/E/R4M_WheelM_Side_Offroad": {
+   "file": "polish2/variants/E_Toon/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad_LOD1.glb",
+   "sha256": "c4bfd8e64d9d3eb278c919d8f1a3689dc1bddc365121a2469e89237144c17686",
+   "bytes": 70124,
+   "embedded_bytes_without_images": 65628,
+   "images": {
+    "E_base.png": {
+     "sha256": "6cd585afbe9c1390574ca55748b2a602a24b8746ee8f96a7acf502a49ff4e1c6",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "A/R4M_HoverEngine": {
+   "file": "polish2/variants/A_Sleek/R4M_HoverEngine/R4M_HoverEngine.glb",
+   "sha256": "92eaa8ea9474bc59a141626e81dff31f7e4c8b6c2d351ea9513d5a83f8e6ffc0",
+   "bytes": 332420,
+   "embedded_bytes_without_images": 312708,
+   "images": {
+    "A_normal.png": {
+     "sha256": "fec03477f679aeaa8033175c667a2e9451d4f5c218b3c66df27176714abea376",
+     "same_bytes_as_package_texture": true
+    },
+    "A_base.png": {
+     "sha256": "761f4ab191f31427d53dbbce405633d26695436c6538dbac230db24555fd9786",
+     "same_bytes_as_package_texture": true
+    },
+    "A_orm.png": {
+     "sha256": "62399bd0380b081b5babbcc45210e30cabdbdc45e0268acade63bafca7006128",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "L/A/R4M_HoverEngine": {
+   "file": "polish2/variants/A_Sleek/R4M_HoverEngine/R4M_HoverEngine_LOD1.glb",
+   "sha256": "a4140826e424acf5f8001e5b56c4b46f14fe17cf591b53a7be59d1f43774c6aa",
+   "bytes": 219404,
+   "embedded_bytes_without_images": 199696,
+   "images": {
+    "A_normal.png": {
+     "sha256": "fec03477f679aeaa8033175c667a2e9451d4f5c218b3c66df27176714abea376",
+     "same_bytes_as_package_texture": true
+    },
+    "A_base.png": {
+     "sha256": "761f4ab191f31427d53dbbce405633d26695436c6538dbac230db24555fd9786",
+     "same_bytes_as_package_texture": true
+    },
+    "A_orm.png": {
+     "sha256": "62399bd0380b081b5babbcc45210e30cabdbdc45e0268acade63bafca7006128",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "B/R4M_HoverEngine": {
+   "file": "polish2/variants/B_Brutal/R4M_HoverEngine/R4M_HoverEngine.glb",
+   "sha256": "f2701fc52cbbfca52243dfaa814cb29b8fe8b400e5d41f0c4b3acce1d63a3f6b",
+   "bytes": 863008,
+   "embedded_bytes_without_images": 315180,
+   "images": {
+    "B_normal.png": {
+     "sha256": "0abdef75e6d8b171f051ebaa2ccd1774f9165f62dad226281e8ebce0409810dd",
+     "same_bytes_as_package_texture": true
+    },
+    "B_base.png": {
+     "sha256": "c996e5ec2be56943ecba199bc0c1d572740469f29e76c5445b6753446aacf615",
+     "same_bytes_as_package_texture": true
+    },
+    "B_orm.png": {
+     "sha256": "062017bbef881e6b18d5001fcb740c248eb571c37f38970ba07adfb7f2f883fa",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "L/B/R4M_HoverEngine": {
+   "file": "polish2/variants/B_Brutal/R4M_HoverEngine/R4M_HoverEngine_LOD1.glb",
+   "sha256": "c6ccfc70f5e04cf4733e7a943aeaf4d9be6d156e56043a37a9015c45f0fff412",
+   "bytes": 795552,
+   "embedded_bytes_without_images": 247728,
+   "images": {
+    "B_normal.png": {
+     "sha256": "0abdef75e6d8b171f051ebaa2ccd1774f9165f62dad226281e8ebce0409810dd",
+     "same_bytes_as_package_texture": true
+    },
+    "B_base.png": {
+     "sha256": "c996e5ec2be56943ecba199bc0c1d572740469f29e76c5445b6753446aacf615",
+     "same_bytes_as_package_texture": true
+    },
+    "B_orm.png": {
+     "sha256": "062017bbef881e6b18d5001fcb740c248eb571c37f38970ba07adfb7f2f883fa",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "C/R4M_HoverEngine": {
+   "file": "polish2/variants/C_Arcade/R4M_HoverEngine/R4M_HoverEngine.glb",
+   "sha256": "ea6fa49f345f2d5849d21cf518f9da3221f083265ab9a39e5900edb484234e2f",
+   "bytes": 121156,
+   "embedded_bytes_without_images": 121156
+  },
+  "L/C/R4M_HoverEngine": {
+   "file": "polish2/variants/C_Arcade/R4M_HoverEngine/R4M_HoverEngine_LOD1.glb",
+   "sha256": "9288f1cbea89c7802f25a95696c79ae727cc13cb54386cf8d08841797a302179",
+   "bytes": 71796,
+   "embedded_bytes_without_images": 71796
+  },
+  "D/R4M_HoverEngine": {
+   "file": "polish2/variants/D_Scrap/R4M_HoverEngine/R4M_HoverEngine.glb",
+   "sha256": "28bb0ab267c9a455801ce33a5135515314b9eda1ec9a568818e477c29c1e8b00",
+   "bytes": 625812,
+   "embedded_bytes_without_images": 147396,
+   "images": {
+    "D_normal.png": {
+     "sha256": "a8a2994c912626583773e4930c43b5108e2c43c93cd6b8235b2b4593a629b42c",
+     "same_bytes_as_package_texture": true
+    },
+    "D_base.png": {
+     "sha256": "0f18ea3fbd6e6fcc3741b9cc882c2eaff34230f625dd59d6264491d4bac972ef",
+     "same_bytes_as_package_texture": true
+    },
+    "D_orm.png": {
+     "sha256": "9c2cfc7b52066f48375b15cfecb5050deb993a8ab779732e3fa79de9b6314358",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "L/D/R4M_HoverEngine": {
+   "file": "polish2/variants/D_Scrap/R4M_HoverEngine/R4M_HoverEngine_LOD1.glb",
+   "sha256": "6514324940bd9a6efc7aa27b1dc58e941f1c4c8bb2b2b80575f820ffde9fc63b",
+   "bytes": 585896,
+   "embedded_bytes_without_images": 107516,
+   "images": {
+    "D_normal.png": {
+     "sha256": "a8a2994c912626583773e4930c43b5108e2c43c93cd6b8235b2b4593a629b42c",
+     "same_bytes_as_package_texture": true
+    },
+    "D_base.png": {
+     "sha256": "0f18ea3fbd6e6fcc3741b9cc882c2eaff34230f625dd59d6264491d4bac972ef",
+     "same_bytes_as_package_texture": true
+    },
+    "D_orm.png": {
+     "sha256": "9c2cfc7b52066f48375b15cfecb5050deb993a8ab779732e3fa79de9b6314358",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "E/R4M_HoverEngine": {
+   "file": "polish2/variants/E_Toon/R4M_HoverEngine/R4M_HoverEngine.glb",
+   "sha256": "06a6f1fd29e7630472cf50dff8389f17c914ed7fe690b2f6f6343a36d55a191f",
+   "bytes": 197052,
+   "embedded_bytes_without_images": 192564,
+   "images": {
+    "E_base.png": {
+     "sha256": "6cd585afbe9c1390574ca55748b2a602a24b8746ee8f96a7acf502a49ff4e1c6",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "L/E/R4M_HoverEngine": {
+   "file": "polish2/variants/E_Toon/R4M_HoverEngine/R4M_HoverEngine_LOD1.glb",
+   "sha256": "9b1613083de4ae39eeb4ac36601e4bcd92bc68d03b0b231070e21a3e492f2f06",
+   "bytes": 94264,
+   "embedded_bytes_without_images": 89772,
+   "images": {
+    "E_base.png": {
+     "sha256": "6cd585afbe9c1390574ca55748b2a602a24b8746ee8f96a7acf502a49ff4e1c6",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "A/R4X_Battery": {
+   "file": "polish2/variants/A_Sleek/R4X_Battery/R4X_Battery.glb",
+   "sha256": "ce338e3c70a5c3cbf728e4f512ed8313740c906636c3d8956ca46b752472e429",
+   "bytes": 244388,
+   "embedded_bytes_without_images": 224676,
+   "images": {
+    "A_normal.png": {
+     "sha256": "fec03477f679aeaa8033175c667a2e9451d4f5c218b3c66df27176714abea376",
+     "same_bytes_as_package_texture": true
+    },
+    "A_base.png": {
+     "sha256": "761f4ab191f31427d53dbbce405633d26695436c6538dbac230db24555fd9786",
+     "same_bytes_as_package_texture": true
+    },
+    "A_orm.png": {
+     "sha256": "62399bd0380b081b5babbcc45210e30cabdbdc45e0268acade63bafca7006128",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "L/A/R4X_Battery": {
+   "file": "polish2/variants/A_Sleek/R4X_Battery/R4X_Battery_LOD1.glb",
+   "sha256": "13effd6690a9618a77bd3a6014b9cba0110faea6b5d9d851e3339eef7eb7df6f",
+   "bytes": 150096,
+   "embedded_bytes_without_images": 130384,
+   "images": {
+    "A_normal.png": {
+     "sha256": "fec03477f679aeaa8033175c667a2e9451d4f5c218b3c66df27176714abea376",
+     "same_bytes_as_package_texture": true
+    },
+    "A_base.png": {
+     "sha256": "761f4ab191f31427d53dbbce405633d26695436c6538dbac230db24555fd9786",
+     "same_bytes_as_package_texture": true
+    },
+    "A_orm.png": {
+     "sha256": "62399bd0380b081b5babbcc45210e30cabdbdc45e0268acade63bafca7006128",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "B/R4X_Battery": {
+   "file": "polish2/variants/B_Brutal/R4X_Battery/R4X_Battery.glb",
+   "sha256": "556d3853dd77a72a314a1621d555840337c0454cd14e54e5e50b02099b84dc9c",
+   "bytes": 689764,
+   "embedded_bytes_without_images": 141928,
+   "images": {
+    "B_normal.png": {
+     "sha256": "0abdef75e6d8b171f051ebaa2ccd1774f9165f62dad226281e8ebce0409810dd",
+     "same_bytes_as_package_texture": true
+    },
+    "B_base.png": {
+     "sha256": "c996e5ec2be56943ecba199bc0c1d572740469f29e76c5445b6753446aacf615",
+     "same_bytes_as_package_texture": true
+    },
+    "B_orm.png": {
+     "sha256": "062017bbef881e6b18d5001fcb740c248eb571c37f38970ba07adfb7f2f883fa",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "L/B/R4X_Battery": {
+   "file": "polish2/variants/B_Brutal/R4X_Battery/R4X_Battery_LOD1.glb",
+   "sha256": "f272a03b6ce2749ebfd7e4421ed4f2687864ee85411c354c49fa0243424d9853",
+   "bytes": 669004,
+   "embedded_bytes_without_images": 121172,
+   "images": {
+    "B_normal.png": {
+     "sha256": "0abdef75e6d8b171f051ebaa2ccd1774f9165f62dad226281e8ebce0409810dd",
+     "same_bytes_as_package_texture": true
+    },
+    "B_base.png": {
+     "sha256": "c996e5ec2be56943ecba199bc0c1d572740469f29e76c5445b6753446aacf615",
+     "same_bytes_as_package_texture": true
+    },
+    "B_orm.png": {
+     "sha256": "062017bbef881e6b18d5001fcb740c248eb571c37f38970ba07adfb7f2f883fa",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "C/R4X_Battery": {
+   "file": "polish2/variants/C_Arcade/R4X_Battery/R4X_Battery.glb",
+   "sha256": "0ef950f28f236175c6994f48f3e1438e1fb3f61ea9fae0cf7613d626e07f0e62",
+   "bytes": 59872,
+   "embedded_bytes_without_images": 59872
+  },
+  "L/C/R4X_Battery": {
+   "file": "polish2/variants/C_Arcade/R4X_Battery/R4X_Battery_LOD1.glb",
+   "sha256": "82e9e49c5a91f812c091a849f7cfff5be3c12493fda5dd95045fcffff6185da4",
+   "bytes": 47512,
+   "embedded_bytes_without_images": 47512
+  },
+  "D/R4X_Battery": {
+   "file": "polish2/variants/D_Scrap/R4X_Battery/R4X_Battery.glb",
+   "sha256": "8d46aa162f7b9a1c3118375f1db0f3d6633395203d165fe4659322f62f14c6f9",
+   "bytes": 581696,
+   "embedded_bytes_without_images": 103308,
+   "images": {
+    "D_normal.png": {
+     "sha256": "a8a2994c912626583773e4930c43b5108e2c43c93cd6b8235b2b4593a629b42c",
+     "same_bytes_as_package_texture": true
+    },
+    "D_base.png": {
+     "sha256": "0f18ea3fbd6e6fcc3741b9cc882c2eaff34230f625dd59d6264491d4bac972ef",
+     "same_bytes_as_package_texture": true
+    },
+    "D_orm.png": {
+     "sha256": "9c2cfc7b52066f48375b15cfecb5050deb993a8ab779732e3fa79de9b6314358",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "L/D/R4X_Battery": {
+   "file": "polish2/variants/D_Scrap/R4X_Battery/R4X_Battery_LOD1.glb",
+   "sha256": "a481363b39c7eb31b0c0b671846b44287573fa64853cea2bbffccea6ea0cb634",
+   "bytes": 573260,
+   "embedded_bytes_without_images": 94880,
+   "images": {
+    "D_normal.png": {
+     "sha256": "a8a2994c912626583773e4930c43b5108e2c43c93cd6b8235b2b4593a629b42c",
+     "same_bytes_as_package_texture": true
+    },
+    "D_base.png": {
+     "sha256": "0f18ea3fbd6e6fcc3741b9cc882c2eaff34230f625dd59d6264491d4bac972ef",
+     "same_bytes_as_package_texture": true
+    },
+    "D_orm.png": {
+     "sha256": "9c2cfc7b52066f48375b15cfecb5050deb993a8ab779732e3fa79de9b6314358",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "E/R4X_Battery": {
+   "file": "polish2/variants/E_Toon/R4X_Battery/R4X_Battery.glb",
+   "sha256": "f03b410b07ff4ca624bf14bb9047a52edd4b68e3d4a770981dd32a0ddc37bb66",
+   "bytes": 91644,
+   "embedded_bytes_without_images": 87156,
+   "images": {
+    "E_base.png": {
+     "sha256": "6cd585afbe9c1390574ca55748b2a602a24b8746ee8f96a7acf502a49ff4e1c6",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "L/E/R4X_Battery": {
+   "file": "polish2/variants/E_Toon/R4X_Battery/R4X_Battery_LOD1.glb",
+   "sha256": "c79f0bd8ce410ae10b8626e61e54a46b9aa4e683640fdf2a1cd8711056528700",
+   "bytes": 42492,
+   "embedded_bytes_without_images": 38000,
+   "images": {
+    "E_base.png": {
+     "sha256": "6cd585afbe9c1390574ca55748b2a602a24b8746ee8f96a7acf502a49ff4e1c6",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "A/R4X_ExplosiveTrapDeployer": {
+   "file": "polish2/variants/A_Sleek/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+   "sha256": "847e5d3f3c31cc4d6ac0fee4ea873f13cecb2890dbe29e2fd0a3c3162e139d35",
+   "bytes": 161672,
+   "embedded_bytes_without_images": 141956,
+   "images": {
+    "A_normal.png": {
+     "sha256": "fec03477f679aeaa8033175c667a2e9451d4f5c218b3c66df27176714abea376",
+     "same_bytes_as_package_texture": true
+    },
+    "A_base.png": {
+     "sha256": "761f4ab191f31427d53dbbce405633d26695436c6538dbac230db24555fd9786",
+     "same_bytes_as_package_texture": true
+    },
+    "A_orm.png": {
+     "sha256": "62399bd0380b081b5babbcc45210e30cabdbdc45e0268acade63bafca7006128",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "L/A/R4X_ExplosiveTrapDeployer": {
+   "file": "polish2/variants/A_Sleek/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer_LOD1.glb",
+   "sha256": "7e3ace05332f6556ca5b19b2f014274c8801f434c7518a043ed3a614cd4a6c94",
+   "bytes": 121472,
+   "embedded_bytes_without_images": 101764,
+   "images": {
+    "A_normal.png": {
+     "sha256": "fec03477f679aeaa8033175c667a2e9451d4f5c218b3c66df27176714abea376",
+     "same_bytes_as_package_texture": true
+    },
+    "A_base.png": {
+     "sha256": "761f4ab191f31427d53dbbce405633d26695436c6538dbac230db24555fd9786",
+     "same_bytes_as_package_texture": true
+    },
+    "A_orm.png": {
+     "sha256": "62399bd0380b081b5babbcc45210e30cabdbdc45e0268acade63bafca7006128",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "B/R4X_ExplosiveTrapDeployer": {
+   "file": "polish2/variants/B_Brutal/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+   "sha256": "402472be378cb4024bf5b551932c072ac93870005a51de778f49b7180a40a779",
+   "bytes": 791120,
+   "embedded_bytes_without_images": 243268,
+   "images": {
+    "B_normal.png": {
+     "sha256": "0abdef75e6d8b171f051ebaa2ccd1774f9165f62dad226281e8ebce0409810dd",
+     "same_bytes_as_package_texture": true
+    },
+    "B_base.png": {
+     "sha256": "c996e5ec2be56943ecba199bc0c1d572740469f29e76c5445b6753446aacf615",
+     "same_bytes_as_package_texture": true
+    },
+    "B_orm.png": {
+     "sha256": "062017bbef881e6b18d5001fcb740c248eb571c37f38970ba07adfb7f2f883fa",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "L/B/R4X_ExplosiveTrapDeployer": {
+   "file": "polish2/variants/B_Brutal/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer_LOD1.glb",
+   "sha256": "d8b777d694f15a8c275df4ac45d3f3c608e86b8e952f59f5fa4d6fb42a769115",
+   "bytes": 764024,
+   "embedded_bytes_without_images": 216196,
+   "images": {
+    "B_normal.png": {
+     "sha256": "0abdef75e6d8b171f051ebaa2ccd1774f9165f62dad226281e8ebce0409810dd",
+     "same_bytes_as_package_texture": true
+    },
+    "B_base.png": {
+     "sha256": "c996e5ec2be56943ecba199bc0c1d572740469f29e76c5445b6753446aacf615",
+     "same_bytes_as_package_texture": true
+    },
+    "B_orm.png": {
+     "sha256": "062017bbef881e6b18d5001fcb740c248eb571c37f38970ba07adfb7f2f883fa",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "C/R4X_ExplosiveTrapDeployer": {
+   "file": "polish2/variants/C_Arcade/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+   "sha256": "b2b4b87444d5d871c1c7c957f81126108d6dd2c002efd39f8ad6891182936514",
+   "bytes": 56084,
+   "embedded_bytes_without_images": 56084
+  },
+  "L/C/R4X_ExplosiveTrapDeployer": {
+   "file": "polish2/variants/C_Arcade/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer_LOD1.glb",
+   "sha256": "e2095f88e38ccc7a16199b72c361e53c27937d201795189650b1ef20a5b30ff7",
+   "bytes": 37824,
+   "embedded_bytes_without_images": 37824
+  },
+  "D/R4X_ExplosiveTrapDeployer": {
+   "file": "polish2/variants/D_Scrap/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+   "sha256": "73cdf0ae58a10780945b01ab95c3721577e1d2173ba0f8fe1af0fc33435d3690",
+   "bytes": 607508,
+   "embedded_bytes_without_images": 129096,
+   "images": {
+    "D_normal.png": {
+     "sha256": "a8a2994c912626583773e4930c43b5108e2c43c93cd6b8235b2b4593a629b42c",
+     "same_bytes_as_package_texture": true
+    },
+    "D_base.png": {
+     "sha256": "0f18ea3fbd6e6fcc3741b9cc882c2eaff34230f625dd59d6264491d4bac972ef",
+     "same_bytes_as_package_texture": true
+    },
+    "D_orm.png": {
+     "sha256": "9c2cfc7b52066f48375b15cfecb5050deb993a8ab779732e3fa79de9b6314358",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "L/D/R4X_ExplosiveTrapDeployer": {
+   "file": "polish2/variants/D_Scrap/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer_LOD1.glb",
+   "sha256": "1cd1834e0108ff1bb925a792236b261de64deff59cb70e168b5b3156a335dfb6",
+   "bytes": 589476,
+   "embedded_bytes_without_images": 111096,
+   "images": {
+    "D_normal.png": {
+     "sha256": "a8a2994c912626583773e4930c43b5108e2c43c93cd6b8235b2b4593a629b42c",
+     "same_bytes_as_package_texture": true
+    },
+    "D_base.png": {
+     "sha256": "0f18ea3fbd6e6fcc3741b9cc882c2eaff34230f625dd59d6264491d4bac972ef",
+     "same_bytes_as_package_texture": true
+    },
+    "D_orm.png": {
+     "sha256": "9c2cfc7b52066f48375b15cfecb5050deb993a8ab779732e3fa79de9b6314358",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "E/R4X_ExplosiveTrapDeployer": {
+   "file": "polish2/variants/E_Toon/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+   "sha256": "703f89ccbdcd17a6d5daf36d5c8126d5e8100bb560be92222dc5ccd06201cc83",
+   "bytes": 123500,
+   "embedded_bytes_without_images": 119000,
+   "images": {
+    "E_base.png": {
+     "sha256": "6cd585afbe9c1390574ca55748b2a602a24b8746ee8f96a7acf502a49ff4e1c6",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "L/E/R4X_ExplosiveTrapDeployer": {
+   "file": "polish2/variants/E_Toon/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer_LOD1.glb",
+   "sha256": "48d6b3b249ede94abf2c7740f83af5bdc315a0e922083e0f685b9313c54803e9",
+   "bytes": 64592,
+   "embedded_bytes_without_images": 60100,
+   "images": {
+    "E_base.png": {
+     "sha256": "6cd585afbe9c1390574ca55748b2a602a24b8746ee8f96a7acf502a49ff4e1c6",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "A/R4D_ExplosiveTrap": {
+   "file": "polish2/variants/A_Sleek/R4D_ExplosiveTrap/R4D_ExplosiveTrap.glb",
+   "sha256": "71fc26d35bb3fc1f88491df251bfcee79320bb463462168bdc9b602b6d508a4f",
+   "bytes": 111996,
+   "embedded_bytes_without_images": 92288,
+   "images": {
+    "A_normal.png": {
+     "sha256": "fec03477f679aeaa8033175c667a2e9451d4f5c218b3c66df27176714abea376",
+     "same_bytes_as_package_texture": true
+    },
+    "A_base.png": {
+     "sha256": "761f4ab191f31427d53dbbce405633d26695436c6538dbac230db24555fd9786",
+     "same_bytes_as_package_texture": true
+    },
+    "A_orm.png": {
+     "sha256": "62399bd0380b081b5babbcc45210e30cabdbdc45e0268acade63bafca7006128",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "L/A/R4D_ExplosiveTrap": {
+   "file": "polish2/variants/A_Sleek/R4D_ExplosiveTrap/R4D_ExplosiveTrap_LOD1.glb",
+   "sha256": "eb1c58e557daee9c6faa594fbab7ee9c22227e21feb2606c8e991692150dee7d",
+   "bytes": 70196,
+   "embedded_bytes_without_images": 50488,
+   "images": {
+    "A_normal.png": {
+     "sha256": "fec03477f679aeaa8033175c667a2e9451d4f5c218b3c66df27176714abea376",
+     "same_bytes_as_package_texture": true
+    },
+    "A_base.png": {
+     "sha256": "761f4ab191f31427d53dbbce405633d26695436c6538dbac230db24555fd9786",
+     "same_bytes_as_package_texture": true
+    },
+    "A_orm.png": {
+     "sha256": "62399bd0380b081b5babbcc45210e30cabdbdc45e0268acade63bafca7006128",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "B/R4D_ExplosiveTrap": {
+   "file": "polish2/variants/B_Brutal/R4D_ExplosiveTrap/R4D_ExplosiveTrap.glb",
+   "sha256": "1172ec3fc31c66a16770f70e450d329312598b45d00c2c5cf6725d0cc7819252",
+   "bytes": 673756,
+   "embedded_bytes_without_images": 125916,
+   "images": {
+    "B_normal.png": {
+     "sha256": "0abdef75e6d8b171f051ebaa2ccd1774f9165f62dad226281e8ebce0409810dd",
+     "same_bytes_as_package_texture": true
+    },
+    "B_base.png": {
+     "sha256": "c996e5ec2be56943ecba199bc0c1d572740469f29e76c5445b6753446aacf615",
+     "same_bytes_as_package_texture": true
+    },
+    "B_orm.png": {
+     "sha256": "062017bbef881e6b18d5001fcb740c248eb571c37f38970ba07adfb7f2f883fa",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "L/B/R4D_ExplosiveTrap": {
+   "file": "polish2/variants/B_Brutal/R4D_ExplosiveTrap/R4D_ExplosiveTrap_LOD1.glb",
+   "sha256": "ea1cfcaa670e0b7308ec86a7745fa7278e76aa257d81136bd640fcf41061ac1a",
+   "bytes": 654680,
+   "embedded_bytes_without_images": 106844,
+   "images": {
+    "B_normal.png": {
+     "sha256": "0abdef75e6d8b171f051ebaa2ccd1774f9165f62dad226281e8ebce0409810dd",
+     "same_bytes_as_package_texture": true
+    },
+    "B_base.png": {
+     "sha256": "c996e5ec2be56943ecba199bc0c1d572740469f29e76c5445b6753446aacf615",
+     "same_bytes_as_package_texture": true
+    },
+    "B_orm.png": {
+     "sha256": "062017bbef881e6b18d5001fcb740c248eb571c37f38970ba07adfb7f2f883fa",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "C/R4D_ExplosiveTrap": {
+   "file": "polish2/variants/C_Arcade/R4D_ExplosiveTrap/R4D_ExplosiveTrap.glb",
+   "sha256": "44984580acd6b3f742d62d8bc958ed7a65c0dba6886e9657e1d4f7bbeeb35ead",
+   "bytes": 38476,
+   "embedded_bytes_without_images": 38476
+  },
+  "L/C/R4D_ExplosiveTrap": {
+   "file": "polish2/variants/C_Arcade/R4D_ExplosiveTrap/R4D_ExplosiveTrap_LOD1.glb",
+   "sha256": "371fb77c9ca2322c58e9e81c10c7f2840c5b9a19a03c0be02fbd93ff46af116c",
+   "bytes": 19708,
+   "embedded_bytes_without_images": 19708
+  },
+  "D/R4D_ExplosiveTrap": {
+   "file": "polish2/variants/D_Scrap/R4D_ExplosiveTrap/R4D_ExplosiveTrap.glb",
+   "sha256": "b3704934d7213cc97851102e13f6304d4829d52cd0ca60225b51a0128b1b08d7",
+   "bytes": 549380,
+   "embedded_bytes_without_images": 70976,
+   "images": {
+    "D_normal.png": {
+     "sha256": "a8a2994c912626583773e4930c43b5108e2c43c93cd6b8235b2b4593a629b42c",
+     "same_bytes_as_package_texture": true
+    },
+    "D_base.png": {
+     "sha256": "0f18ea3fbd6e6fcc3741b9cc882c2eaff34230f625dd59d6264491d4bac972ef",
+     "same_bytes_as_package_texture": true
+    },
+    "D_orm.png": {
+     "sha256": "9c2cfc7b52066f48375b15cfecb5050deb993a8ab779732e3fa79de9b6314358",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "L/D/R4D_ExplosiveTrap": {
+   "file": "polish2/variants/D_Scrap/R4D_ExplosiveTrap/R4D_ExplosiveTrap_LOD1.glb",
+   "sha256": "1fc9e457b7b830ab59ac0cc84d2067322160d26f9d92c68f9443e40ee2a54fbe",
+   "bytes": 540792,
+   "embedded_bytes_without_images": 62408,
+   "images": {
+    "D_normal.png": {
+     "sha256": "a8a2994c912626583773e4930c43b5108e2c43c93cd6b8235b2b4593a629b42c",
+     "same_bytes_as_package_texture": true
+    },
+    "D_base.png": {
+     "sha256": "0f18ea3fbd6e6fcc3741b9cc882c2eaff34230f625dd59d6264491d4bac972ef",
+     "same_bytes_as_package_texture": true
+    },
+    "D_orm.png": {
+     "sha256": "9c2cfc7b52066f48375b15cfecb5050deb993a8ab779732e3fa79de9b6314358",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "E/R4D_ExplosiveTrap": {
+   "file": "polish2/variants/E_Toon/R4D_ExplosiveTrap/R4D_ExplosiveTrap.glb",
+   "sha256": "2d4c38a62c1cf98e0ce2fa95ecec7352668889d7ca1b26ba60621e1a76bc9bce",
+   "bytes": 70100,
+   "embedded_bytes_without_images": 65612,
+   "images": {
+    "E_base.png": {
+     "sha256": "6cd585afbe9c1390574ca55748b2a602a24b8746ee8f96a7acf502a49ff4e1c6",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  },
+  "L/E/R4D_ExplosiveTrap": {
+   "file": "polish2/variants/E_Toon/R4D_ExplosiveTrap/R4D_ExplosiveTrap_LOD1.glb",
+   "sha256": "a5e78cf7f3d75740ab996e1a492ec837ad20a472cfd366d538e35d7af17ae933",
+   "bytes": 30892,
+   "embedded_bytes_without_images": 26400,
+   "images": {
+    "E_base.png": {
+     "sha256": "6cd585afbe9c1390574ca55748b2a602a24b8746ee8f96a7acf502a49ff4e1c6",
+     "same_bytes_as_package_texture": true
+    }
+   }
+  }
+ },
+ "shared_textures": [
+  "A_base.png",
+  "A_normal.png",
+  "A_orm.png",
+  "B_base.png",
+  "B_normal.png",
+  "B_orm.png",
+  "D_base.png",
+  "D_normal.png",
+  "D_orm.png",
+  "E_base.png"
+ ],
+ "robots": {
+  "robot_wheeled": {
+   "name": "Robot kołowy (6 klocków, 4 koła, działko, bateria, wyrzutnik, STRUT, pułapka)",
+   "pieces": 15,
+   "parts": [
+    "Cube",
+    "Cube",
+    "Cube",
+    "Cube",
+    "Cube",
+    "Cube",
+    "Wheel",
+    "Wheel",
+    "Wheel",
+    "Wheel",
+    "Gun",
+    "Battery",
+    "Deployer",
+    "Strut",
+    "Trap"
+   ]
+  },
+  "robot_hover": {
+   "name": "Robot poduszkowy (5 klocków, 4 silniki, działko, bateria, wyrzutnik)",
+   "pieces": 12,
+   "parts": [
+    "Cube",
+    "Cube",
+    "Cube",
+    "Cube",
+    "Hover",
+    "Hover",
+    "Hover",
+    "Hover",
+    "Gun",
+    "Battery",
+    "Deployer",
+    "Cube"
+   ]
+  }
+ }
+}

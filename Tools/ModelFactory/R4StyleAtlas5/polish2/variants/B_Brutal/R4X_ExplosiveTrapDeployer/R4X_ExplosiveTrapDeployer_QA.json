@@ -1,0 +1,525 @@
+{
+ "id": "R4X_ExplosiveTrapDeployer",
+ "pilot_type": "Deployer",
+ "construction": "Brutal ram chute: two frame beams, five rollers, hydraulic ram on a bracket, two latch hooks, sprocket drive. Mechanisms: the hooks open, the ram shoves the mine off the rollers at the release and retracts, the sprocket indexes the next one.",
+ "style_character": "heavy machinery: bare gun-metal, exposed mechanisms, bolts, ribs, gussets, cast surface",
+ "artistic_acceptance": "PENDING_OWNER_REVIEW",
+ "textures": {
+  "base": "B_base.png",
+  "orm": "B_orm.png",
+  "normal": "B_normal.png",
+  "normal_strength": 1.0,
+  "uv": "triplanar"
+ },
+ "material_textures": {
+  "R4P_Base": {
+   "base_texture": "B_base.png",
+   "orm_texture": "B_orm.png",
+   "normal_texture": "B_normal.png"
+  },
+  "R4P_Glow": {},
+  "R4P_Metal": {
+   "base_texture": "B_base.png",
+   "orm_texture": "B_orm.png",
+   "normal_texture": "B_normal.png"
+  },
+  "R4P_Secondary": {
+   "base_texture": "B_base.png",
+   "orm_texture": "B_orm.png",
+   "normal_texture": "B_normal.png"
+  },
+  "R4P_Trim": {
+   "base_texture": "B_base.png",
+   "orm_texture": "B_orm.png",
+   "normal_texture": "B_normal.png"
+  },
+  "R4P_Wear": {
+   "base_texture": "B_base.png",
+   "orm_texture": "B_orm.png",
+   "normal_texture": "B_normal.png"
+  }
+ },
+ "board_frames": [
+  {
+   "clip": "Deploy",
+   "frame": 45
+  },
+  {
+   "clip": "Deploy",
+   "frame": 63
+  },
+  {
+   "clip": "Deploy",
+   "frame": 85
+  },
+  {
+   "clip": "Hit",
+   "frame": 107
+  }
+ ],
+ "style": "B",
+ "style_label": "B_Brutal",
+ "family": "deployer",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "PROPOSAL",
+ "source": "#1238",
+ "meshes": [
+  {
+   "object": "R4X_ExplosiveTrapDeployer_Body",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 988,
+   "vertices": 528,
+   "uv": true,
+   "material_slots": 4,
+   "ok": true
+  },
+  {
+   "object": "R4X_ExplosiveTrapDeployer_Ram",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 108,
+   "vertices": 58,
+   "uv": true,
+   "material_slots": 2,
+   "ok": true
+  },
+  {
+   "object": "R4X_ExplosiveTrapDeployer_HookL",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 16,
+   "vertices": 10,
+   "uv": true,
+   "material_slots": 1,
+   "ok": true
+  },
+  {
+   "object": "R4X_ExplosiveTrapDeployer_HookR",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 16,
+   "vertices": 10,
+   "uv": true,
+   "material_slots": 1,
+   "ok": true
+  },
+  {
+   "object": "R4X_ExplosiveTrapDeployer_Sprocket",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 416,
+   "vertices": 226,
+   "uv": true,
+   "material_slots": 1,
+   "ok": true
+  },
+  {
+   "object": "R4X_ExplosiveTrapDeployer_Payload",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1548,
+   "vertices": 830,
+   "uv": true,
+   "material_slots": 5,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4X_ExplosiveTrapDeployer_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 3020,
+  "vertices": 1626,
+  "uv": true,
+  "material_slots": 6,
+  "ok": true
+ },
+ "triangles": 3092,
+ "triangles_lod1": 3020,
+ "mesh_objects": 6,
+ "material_slots_total": 14,
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim",
+  "R4P_Wear"
+ ],
+ "bounds_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.14
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.26,
+   -0.26,
+   -0.26
+  ],
+  [
+   0.26,
+   0.26,
+   0.26
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": null,
+ "ports": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "dir": "back",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "partial",
+   "half": [
+    0.2,
+    0.2
+   ],
+   "offset": [
+    0.0,
+    0.01818
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "partial",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  },
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "back",
+   "kind": "partial",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 65,
+   "PASS": true
+  }
+ ],
+ "interface_vs_source": null,
+ "hierarchy": {
+  "R4X_ExplosiveTrapDeployer_ROOT": null,
+  "R4X_ExplosiveTrapDeployer_Body": "R4X_ExplosiveTrapDeployer_ROOT",
+  "R4X_ExplosiveTrapDeployer_Ram": "R4X_ExplosiveTrapDeployer_ROOT",
+  "R4X_ExplosiveTrapDeployer_HookL": "R4X_ExplosiveTrapDeployer_ROOT",
+  "R4X_ExplosiveTrapDeployer_HookR": "R4X_ExplosiveTrapDeployer_ROOT",
+  "R4X_ExplosiveTrapDeployer_Sprocket": "R4X_ExplosiveTrapDeployer_ROOT",
+  "R4X_ExplosiveTrapDeployer_Payload": "R4X_ExplosiveTrapDeployer_ROOT",
+  "Port_down_000": "R4X_ExplosiveTrapDeployer_ROOT",
+  "Port_back_000_part": "R4X_ExplosiveTrapDeployer_ROOT",
+  "Socket_Mount": "R4X_ExplosiveTrapDeployer_ROOT",
+  "Deploy_Out": "R4X_ExplosiveTrapDeployer_ROOT"
+ },
+ "fx_objects": [],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "procedural",
+  "fps": 24,
+  "frames": 113,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "Deploy",
+    "start": 27,
+    "end": 99,
+    "loop": false
+   },
+   {
+    "name": "Hit",
+    "start": 101,
+    "end": 113,
+    "loop": false
+   }
+  ],
+  "events": {
+   "Deploy_Open": 27,
+   "Deploy_Out": 63,
+   "Deploy_Reset": 85,
+   "Hit": 101
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4X_ExplosiveTrapDeployer_Body",
+   "R4X_ExplosiveTrapDeployer_Payload",
+   "R4X_ExplosiveTrapDeployer_Ram",
+   "R4X_ExplosiveTrapDeployer_HookL",
+   "R4X_ExplosiveTrapDeployer_HookR",
+   "R4X_ExplosiveTrapDeployer_Sprocket"
+  ],
+  "objects_with_real_motion": 6,
+  "sweep_outside_envelope_mm": 2.742,
+  "sweep_allowance_mm": 10,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "heavy and mechanical: slow start, hard stop, damped settle"
+ },
+ "parts": 61,
+ "vertex_shading": {
+  "corners": 6864,
+  "worn_edge_samples": 1185,
+  "recipe": {
+   "flat": 0.72,
+   "cavity": [
+    0.22,
+    0.21,
+    0.2
+   ],
+   "gamma": 1.3,
+   "edge": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "edge_amount": 0.95,
+   "dist": 0.14
+  },
+  "lod1": 6714,
+  "gltf_export_options": {
+   "export_vertex_color": "ACTIVE",
+   "export_active_vertex_color_when_no_material": true
+  }
+ },
+ "polish_pass": 2,
+ "mechanisms": {
+  "Ram": {
+   "parent": "root",
+   "pivot": [
+    0.0,
+    -0.13,
+    -0.04
+   ]
+  },
+  "HookL": {
+   "parent": "root",
+   "pivot": [
+    -0.185,
+    0.04,
+    -0.085
+   ]
+  },
+  "HookR": {
+   "parent": "root",
+   "pivot": [
+    0.185,
+    0.04,
+    -0.085
+   ]
+  },
+  "Sprocket": {
+   "parent": "root",
+   "pivot": [
+    0.249,
+    -0.12,
+    -0.03
+   ]
+  }
+ },
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 6,
+   "triangles": 3092,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 11,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    63,
+    85,
+    99,
+    101,
+    107,
+    113
+   ],
+   "nodes_compared": 6,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": [
+    1,
+    "R4X_ExplosiveTrapDeployer_Ram",
+    0.0,
+    0.0
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 6,
+   "triangles": 3092,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    63,
+    85,
+    99,
+    101,
+    107,
+    113
+   ],
+   "nodes_compared": 6,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4X_ExplosiveTrapDeployer_34.jpg",
+  "R4X_ExplosiveTrapDeployer_anim1.jpg",
+  "R4X_ExplosiveTrapDeployer_anim2.jpg",
+  "R4X_ExplosiveTrapDeployer_anim3.jpg",
+  "R4X_ExplosiveTrapDeployer_anim4.jpg",
+  "R4X_ExplosiveTrapDeployer_clay_34.jpg",
+  "R4X_ExplosiveTrapDeployer_clay_front.jpg",
+  "R4X_ExplosiveTrapDeployer_clay_side.jpg",
+  "R4X_ExplosiveTrapDeployer_front.jpg",
+  "R4X_ExplosiveTrapDeployer_side.jpg",
+  "R4X_ExplosiveTrapDeployer_sil_34.png",
+  "R4X_ExplosiveTrapDeployer_sil_front.png",
+  "R4X_ExplosiveTrapDeployer_sil_side.png",
+  "R4X_ExplosiveTrapDeployer_top.jpg",
+  "R4X_ExplosiveTrapDeployer_wire.jpg"
+ ],
+ "files": {
+  "R4X_ExplosiveTrapDeployer.blend": {
+   "sha256": "736b912ea598cee005f49f4213c4b5df7dd4e5575be916f611486cf2e28e343e",
+   "bytes": 257943
+  },
+  "R4X_ExplosiveTrapDeployer.fbx": {
+   "sha256": "74b478d1525ec2be1e51bd91523c9a286c6a13efdc38a3f43da58134a2c8642e",
+   "bytes": 265788
+  },
+  "R4X_ExplosiveTrapDeployer.glb": {
+   "sha256": "402472be378cb4024bf5b551932c072ac93870005a51de778f49b7180a40a779",
+   "bytes": 791120
+  },
+  "R4X_ExplosiveTrapDeployer_LOD1.fbx": {
+   "sha256": "90f2f4f657b2b8ea22d87a61f5bb346b044fdd6a87fc8a7a377af2da4d3b3fa6",
+   "bytes": 126204
+  },
+  "R4X_ExplosiveTrapDeployer_LOD1.glb": {
+   "sha256": "d8b777d694f15a8c275df4ac45d3f3c608e86b8e952f59f5fa4d6fb42a769115",
+   "bytes": 764024
+  }
+ },
+ "seconds": 4.7,
+ "blender": "5.3.0",
+ "post_export_note": "after the Blender step: local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; the hashes describe the delivered files"
+}
