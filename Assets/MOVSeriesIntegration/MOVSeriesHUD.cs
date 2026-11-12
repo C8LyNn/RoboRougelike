@@ -166,7 +166,12 @@ namespace RoboRougelike.R1
         static string CatalogBonusGroupName(R3PartState part) =>
             string.IsNullOrWhiteSpace(part.UpgradeTitle)?"Moduł bonusu":part.UpgradeTitle;
         static string CatalogStackCaption(string name,int count,bool usable,bool unlocked) =>
-            $"{name} × {count}"+(count>0&&!usable?" • napraw":!unlocked?" • blokada":"");
+            $"{name} × {count}"+(count>0&&!usable?" • napraw":count==0&&!unlocked?" • blokada":"");
+        static string CatalogEmptyStackHint(bool creative,R3PartKind kind,bool unlocked)=>
+            creative?"Brak egzemplarzy. Dodaj część za darmo poniżej.":
+            kind==R3PartKind.BonusModule?"Brak egzemplarzy. Moduły bonusowe zdobywasz z nagród.":
+            !unlocked?"Brak egzemplarzy: odblokuj technologię, aby kupić część.":
+            "Brak egzemplarzy. Kup część przyciskiem poniżej.";
         string CatalogGroupCaption(R1RunController run,R3PartKind kind,R4WeaponKind weapon,string bonus,string name)
         {
             int count=0;bool usable=false;

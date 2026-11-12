@@ -62,6 +62,7 @@ namespace RoboRougelike.R1
                 GUI.enabled=true;
                 if(GUI.Button(new Rect(rect.x+216,rect.y+31,114,60),dismantleConfirmation==item.Id?"Potwierdź\nrozmontowanie":$"Rozmontuj\n→ {model.PreviewAward(model.DismantleValue(item))} Z",compactButton))PortraitCatalogDismantle(run,item.Id);
             }
+            if(items.Length==0)GUI.Label(new Rect(0,5,330,100),CatalogEmptyStackHint(model.CreativeMode,selectedKind,run.CanBuyTechnology(selectedKind,selectedWeapon)),small);
             GUI.EndScrollView();
             DrawCatalogBulkRepair(run,items,PortraitCatalogBulkRepairRect());
             int price=model.Price(selectedKind,selectedWeapon);
@@ -73,7 +74,7 @@ namespace RoboRougelike.R1
             GUI.enabled=true;
             var selected=items.FirstOrDefault(p=>p.Id==run.Garage.SelectedInventoryId);
             if(selected!=null&&R3VehicleModel.SupportsFusion(selected.Kind,selected.Weapon))DrawFusionButton(run,selected,new Rect(390,875,354,52));
-            else GUI.Label(new Rect(390,875,354,82),"Wybierz egzemplarz, aby wrócić do garażu i zamontować go na pojeździe.",small);
+            else if(items.Length>0)GUI.Label(new Rect(390,875,354,82),"Wybierz egzemplarz, aby wrócić do garażu i zamontować go na pojeździe.",small);
             if(!string.IsNullOrEmpty(catalogFeedback))GUI.Label(new Rect(24,940,720,52),catalogFeedback,small);
         }
 

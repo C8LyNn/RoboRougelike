@@ -265,6 +265,7 @@ namespace RoboRougelike.R1
                     RepairCatalogItem(run,item.Id);
                 GUI.enabled=true;
             }
+            if(items.Length==0)GUI.Label(new Rect(0,5,255,100),CatalogEmptyStackHint(model.CreativeMode,kind,run.CanBuyTechnology(kind,weapon)),small);
             GUI.EndScrollView();GUI.backgroundColor=Color.white;
             DrawCatalogBulkRepair(run,items,new Rect(970,295,280,36));
             int price=model.Price(kind,weapon);
@@ -281,7 +282,7 @@ namespace RoboRougelike.R1
             GUI.enabled=true;
             var selected=items.FirstOrDefault(p=>p.Id==garage.SelectedInventoryId);
             if(selected==null)
-            {GUI.Label(new Rect(970,400,280,100),"Wybierz egzemplarz z listy. Zielony podgląd oznacza poprawne miejsce montażu.",small);return;}
+            {if(items.Length>0)GUI.Label(new Rect(970,400,280,100),"Wybierz egzemplarz z listy. Zielony podgląd oznacza poprawne miejsce montażu.",small);return;}
             GUI.Label(new Rect(970,395,280,70),$"{R4WeaponDefinition.PartName(selected)} • HP {selected.Health*100:0}%\n"+
                 (selected.Kind==R3PartKind.BonusModule?BonusInstanceText(selected)+"\n":"")+
                 (selected.Health<=0?"Napraw w wierszu przed montażem.":"Kliknij HP w wierszu, aby montować."),small);
