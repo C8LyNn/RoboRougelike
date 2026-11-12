@@ -13,7 +13,7 @@ def check(cid, verbose=True):
     a = AD.ASSETS[cid]; env = np.array(a["env"]); ok_all = True; row = []
     for s in ST.STYLES:
         for lod in (False, True):
-            try: m = K.build(a["fn"], s, lod, a["env"], cid, bool(a.get("source_clips")))
+            try: m = K.build(a["fn"], s, lod, a["env"], cid, bool(a.get("source_clips")), a.get("planes"))
             except Exception as ex: print(cid, s, lod, "BUILD ERROR", repr(ex)[:150]); ok_all = False; continue
             st = K.stats(m); fx = set(a.get("fx", [])); V = np.concatenate([mm["V"] for n, mm in m["by_node"].items() if mm is not None and n not in fx])
             ins = bool((V.min(0) >= env[0] - 5e-4).all() and (V.max(0) <= env[1] + 5e-4).all()); T = tris_of(m); bad = []

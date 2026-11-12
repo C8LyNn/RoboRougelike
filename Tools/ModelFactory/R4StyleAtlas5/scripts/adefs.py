@@ -21,10 +21,21 @@ from akit import box, sbox, prism, srev, hull, lathe, cyl, rod, tube, torus, bal
 def _block_fn(kind):
     def fn():
         def make():
-            st = K.style(1.0); SH25.A.clear(); SH25.A.update(st); SH25.A.update(seam_h=0.006, min_plate=0.05)
+            if K.BASE.LOD: K._SAFE = 2                                 # LOD1 of every style keeps the approved-ruler chamfer on the contact faces
+            st = K.style(1.0); K._SAFE = False if K.BASE.LOD else K._SAFE; SH25.A.clear(); SH25.A.update(st); SH25.A.update(seam_h=0.006, min_plate=0.05)
             if kind in PSH.SOLIDS: return K.BASE.add(K.RP.lod_build(PSH.SOLIDS[kind], st) if K.BASE.LOD else K.RP.build(PSH.SOLIDS[kind], st))
             return K.BASE.add(SH25.build(kind, K.BASE.LOD or K.STYLE == "C"))          # C: seamed multi-cell solids use the plain rolled-edge build
-        m = K._solid(make)
+        n0 = len(K.BASE.CUR.parts); m = K._solid(make)
+        if not K.BASE.LOD and K.STYLE != "A":                       # the style bevel must not cost the approved contact: otherwise approved-ruler widths
+            import raycast
+            T = np.array([[m["V"][f["v"][0]], m["V"][f["v"][i]], m["V"][f["v"][i + 1]]] for f in m["faces"] for i in range(1, len(f["v"]) - 1)]); bad = False
+            for p in INV["R4B_" + kind]["ports"]:
+                r = raycast.patch_test(T, p["cell"], p["dir"], p["offset"], p["half"])
+                if not (r["protruding"] == 0 and r["missing"] == 0 and r["flush_pct"] >= (80 if p["kind"] == "full" else 65)): bad = True; break
+            if bad:
+                del K.BASE.CUR.parts[n0:]; K._SAFE = 2
+                try: m = make(); K._post_solid(m); K.FALLBACK.append((kind, K.STYLE, "safe-contact"))
+                finally: K._SAFE = False
         for f in m["faces"]:
             if not np.any(f["uv"]): P = m["V"][f["v"]]; f["uv"] = [np.array((p[0] + 0.5*p[2], p[1] + 0.5*p[2])) for p in P]
     return fn
@@ -36,7 +47,7 @@ def _cells_env(cells):
 
 for _cid, _it in INV.items():
     if _it["family"] == "block":
-        _k = _cid[4:]; reg(_cid, _block_fn(_k), "block", env=_cells_env(_it["occupied_cells"]), ports=_it["ports"], body=_cid, source="#963", interface="APPROVED", kind=_k, ref=("blocks", _cid))
+        _k = _cid[4:]; reg(_cid, _block_fn(_k), "block", env=_cells_env(_it["occupied_cells"]), ports=_it["ports"], planes=[(K.DIRS[p["dir"]].tolist(), float(np.dot(np.array(p["cell"])*K.G, K.DIRS[p["dir"]]) + H)) for p in _it["ports"]], body=_cid, source="#963", interface="APPROVED", kind=_k, ref=("blocks", _cid))
 
 # =================================================================================================== assets with an approved rig: geometry is re-authored per style on the SOURCE node names / pivots;
 # sockets and the functional animation are taken from the approved GLB in Blender (see abuild.py)
@@ -109,7 +120,7 @@ def r4m_hover_engine():
 
 
 def _iface(cid, fn, lib, family, names, body, fx=()):
-    it = INV[cid]; reg(cid, fn, family, env=_env_of(cid), body=body, names=names, fx=list(fx), ref=(lib, cid), source="#%d" % it["source"]["pr"], interface="APPROVED rig / sockets (from source GLB)",
+    it = INV[cid]; reg(cid, fn, family, env=_env_of(cid), planes=[(_b(p["normal"]), float(np.dot(_b(p["position_m"]), _b(p["normal"])))) for p in it["ports"]] if family == "connector" else None, body=body, names=names, fx=list(fx), ref=(lib, cid), source="#%d" % it["source"]["pr"], interface="APPROVED rig / sockets (from source GLB)",
                        source_clips=it["source_clips"], hierarchy=it.get("hierarchy"), glow=(1.0, 0.45, 0.10))
 _iface("R4W_Basic", r4w_basic, "weapons", "weapon", {"Yaw": "R4W_Basic_Yaw", "Pitch": "R4W_Basic_Pitch", "Barrel": "R4W_Basic_Barrel", "MuzzleFlash": "MuzzleFlash"}, "R4W_Basic_Base", fx=("MuzzleFlash",))
 _iface("R4M_WheelM_Side_Offroad", r4m_wheel_m_side_offroad, "wheels", "wheel", {"Rotor": "R4M_WheelM_Side_Offroad_Rotor"}, "R4M_WheelM_Side_Offroad_Mount")
@@ -147,6 +158,6 @@ def _conn_fn(cid):
 import math
 for _cid, _it in INV.items():
     if _it["family"] == "connector" and _cid != "R4C_ROD_STANDARD":
-        reg(_cid, _conn_fn(_cid), "connector", env=_env_of(_cid, 0.004), body=_cid, names={}, ref=("connectors", _cid), source="#1186", interface="source PR #1186 (connector contract = proposal there)", glow=(1.0, 0.45, 0.10))
+        reg(_cid, _conn_fn(_cid), "connector", env=_env_of(_cid, 0.004), planes=[(_b(p["normal"]), float(np.dot(_b(p["position_m"]), _b(p["normal"])))) for p in _it["ports"]], body=_cid, names={}, ref=("connectors", _cid), source="#1186", interface="source PR #1186 (connector contract = proposal there)", glow=(1.0, 0.45, 0.10))
 PHASE = {"pilot": PILOT, "blocks": [c for c, a in ASSETS.items() if a["family"] == "block"], "connectors": [c for c, a in ASSETS.items() if a["family"] == "connector"],
          "modules": [c for c, a in ASSETS.items() if a["family"] in ("module", "deployer")], "traps": [c for c, a in ASSETS.items() if a["family"] == "world_trap"]}

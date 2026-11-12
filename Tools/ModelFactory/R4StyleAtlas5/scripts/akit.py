@@ -7,7 +7,7 @@ HERE = os.path.dirname(os.path.abspath(__file__)); PKG = os.path.dirname(HERE); 
 _spec = importlib.util.spec_from_file_location("mkit_base", os.path.join(MF, "R4ModulesSleek1x1", "scripts", "mkit.py")); BASE = importlib.util.module_from_spec(_spec); sys.modules["mkit_base"] = BASE; _spec.loader.exec_module(BASE)
 import astyle as ST
 H, G, X, Y, Z = BASE.H, BASE.G, BASE.X, BASE.Y, BASE.Z
-STYLE = "A"; ASSET = ""; NOHW = False; RIG = False; _GRP = 0; _SAFE = False; FALLBACK = []; ENV = (np.array([-H]*3), np.array([H]*3)); _wfac = 1.0
+STYLE = "A"; ASSET = ""; NOHW = False; RIG = False; PLANES = None; _GRP = 0; _SAFE = False; FALLBACK = []; ENV = (np.array([-H]*3), np.array([H]*3)); _wfac = 1.0
 rot, R_to, arc2, ngon, frame, port, empty, DIRS, auto_s, RP, S, RC, paths25, rect, prof = BASE.rot, BASE.R_to, BASE.arc2, BASE.ngon, BASE.frame, BASE.port, BASE.empty, BASE.DIRS, BASE.auto_s, BASE.RP, BASE.S, BASE.RC, BASE.paths25, BASE.rect, BASE.prof
 def __getattr__(name): return getattr(BASE, name)
 
@@ -35,12 +35,15 @@ def _inside(m, pad=0.0):
     lo, hi = m["V"].min(0), m["V"].max(0); return bool((lo >= ENV[0] - 1e-7 + pad).all() and (hi <= ENV[1] + 1e-7 - pad).all())
 
 
-def _touches(m): 
-    lo, hi = m["V"].min(0), m["V"].max(0); return bool((lo <= ENV[0] + 0.004).any() or (hi >= ENV[1] - 0.004).any())
+def _touches(m):
+    lo, hi = m["V"].min(0), m["V"].max(0)
+    if PLANES is not None and any(float((m["V"] @ pn).max()) > pd - 0.006 for pn, pd in PLANES): return True
+    return bool((lo <= ENV[0] + 0.0065).any() or (hi >= ENV[1] - 0.0065).any())
 
 
 def _is_contact(n, top):
-    ax = int(np.argmax(np.abs(n))); lim = ENV[1][ax] if n[ax] > 0 else -ENV[0][ax]; return bool(abs(n[ax]) > 0.99 and abs(top - lim) < 0.0045)
+    if PLANES is not None: return any(float(np.dot(n, pn)) > 0.99 and abs(top - pd) < 0.004 for pn, pd in PLANES)     # explicit contact planes (multi-cell blocks, connectors)
+    ax = int(np.argmax(np.abs(n))); lim = ENV[1][ax] if n[ax] > 0 else -ENV[0][ax]; return bool(abs(n[ax]) > 0.99 and abs(top - lim) < 0.0065)
 
 
 def _islands(m, groups=("plate",)):
@@ -125,7 +128,8 @@ def _finish(m, grp=None):
     if SKIP_BELOW[STYLE] and ext < SKIP_BELOW[STYLE] and not payload and not (BASE.CUR.node != "Body" and _node_count() <= 1) and not _touches(m):
         if BASE.CUR.parts and BASE.CUR.parts[-1] is m: BASE.CUR.parts.pop(); return None
     if _GRP or RIG: return m                                    # rigged source nodes keep their approved bounds; parts of a transformed group are finished in local space: left as authored
-    if GROW[STYLE] != 1.0 and not _touches(m) and not payload:
+    slide = BASE.CUR.node != "Body" and (BASE.CUR.nodes[BASE.CUR.node].get("anim") or {}).get("type") == "slide"      # sliding parts keep their authored travel room
+    if GROW[STYLE] != 1.0 and not _touches(m) and not payload and not slide:
         c = (m["V"].max(0) + m["V"].min(0))/2; old = m["V"].copy(); piv = np.array(BASE.CUR.nodes[BASE.CUR.node]["pivot"]) if BASE.CUR.node != "Body" else c
         m["V"] = (m["V"] - piv)*GROW[STYLE] + piv if BASE.CUR.node != "Body" else (m["V"] - c)*GROW[STYLE] + c
         if not _inside(m, 0.001): m["V"] = old
@@ -328,9 +332,9 @@ class group(BASE.group):
         if self.payload: BASE.node()
 
 
-def build(fn, style_key, lod=False, env=None, asset="", rig=False):
-    global STYLE, ENV, ASSET, RIG
-    RIG = rig
+def build(fn, style_key, lod=False, env=None, asset="", rig=False, planes=None):
+    global STYLE, ENV, ASSET, RIG, PLANES
+    RIG = rig; PLANES = [(np.asarray(n, float), float(d)) for n, d in planes] if planes else None
     STYLE = style_key; ASSET = asset; ENV = (np.array(env[0], float), np.array(env[1], float)) if env is not None else (np.array([-H]*3), np.array([H]*3))
     BASE.style = style; del FALLBACK[:]
     m = BASE.build(fn, lod); m["style"] = style_key; m["fallbacks"] = sorted({f[2] for f in FALLBACK})

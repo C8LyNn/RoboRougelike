@@ -18,12 +18,12 @@ def _merge(ms):
     return dict(V=np.concatenate(V), faces=F)
 def _bl(v): return [float(v[0]), float(-v[2]), float(v[1])]
 def gen(cid, style):
-    a = AD.ASSETS[cid]; m = K.build(a["fn"], style, False, a["env"], cid, bool(a.get("source_clips"))); l = K.build(a["fn"], style, True, a["env"], cid, bool(a.get("source_clips"))); st = K.stats(m); ls = K.stats(l)
+    a = AD.ASSETS[cid]; m = K.build(a["fn"], style, False, a["env"], cid, bool(a.get("source_clips")), a.get("planes")); l = K.build(a["fn"], style, True, a["env"], cid, bool(a.get("source_clips")), a.get("planes")); st = K.stats(m); ls = K.stats(l)
     assert st["ok"] and ls["ok"], (cid, style)
     fam = a["family"]; nodes = {n: dict(pivot=d["pivot"], parent=d.get("parent"), anim=d.get("anim")) for n, d in m["nodes"].items()}; names = a.get("names", {})
     ports = a.get("ports") or m["ports"]; inv = AD.INV.get(cid, {})
     if fam == "connector":
-        ports = [dict(id=p["id"], dir=p["dir"], kind=p["kind"], cell=p["cell"], center=_bl(p["position_m"]), normal=_bl(p["normal"]), half_m=float(p["half"][0])*K.G*0.85) for p in inv["ports"]]
+        ports = [dict(id=p["id"], dir=p["dir"], kind=p["kind"], cell=p["cell"], center_bl=_bl(p["position_m"]), normal_bl=_bl(p["normal"]), half_m=float(p["half"][0])*K.G*0.85) for p in inv["ports"]]
     src = dict(id=cid, style=style, style_label=ST.LABEL[style], family=fam, envelope=a["env"], body=a.get("body") or cid + "_Body", node_names={n: names.get(n, f"{cid}_{n}") for n in nodes}, nodes=nodes, fx=a.get("fx", []),
                ports=ports, mount=(ports[0]["dir"] if ports and fam not in ("world_trap",) else None), empties=m["empties"], ref=list(a["ref"]) if a.get("ref") else None, world_object=fam == "world_trap",
                materials={z: dict(rgb=list(ST.MAT[style][z][0]), metallic=ST.MAT[style][z][1], roughness=ST.MAT[style][z][2]) for z in ST.MAT[style]}, glow=a["glow"], glow_strength=ST.GLOW_STRENGTH[style], presets=ST.PRESETS[style],
@@ -34,7 +34,7 @@ def gen(cid, style):
                                                         warped_clips=[c["name"] for c in cl if c["name"] in AN.WARPABLE and not c.get("loop")] if style != "A" else [])
     else:
         cs = AN.clip_set(fam, bool(nodes)); dd = next((e["dir"] for e in m["empties"] if e["name"] == "Deploy_Out"), (0, 0, 1)); seed = (sum(map(ord, cid)) % 97)/7.0
-        reach = float(np.abs(np.array(a["env"])).max()); F, tr = AN.tracks(style, cs, {n: d["anim"] for n, d in nodes.items()}, dd, seed, min(1.0, 0.3/reach))
+        reach = float(np.abs(np.array(a["env"])).max()); F, tr = AN.tracks(style, cs, {n: d["anim"] for n, d in nodes.items()}, dd, seed, min(1.0, 0.2/reach))
         tr = {n: dict(loc=np.round(t["loc"], 6).tolist(), quat=np.round(t["quat"], 6).tolist(), scl=np.round(t["scl"], 5).tolist()) for n, t in tr.items()}
         src["animation"] = dict(mode="procedural", set=cs, clips=[dict(name=c[0], start=c[1], end=c[2], loop=c[3]) for c in AN.CLIPS[cs]], frames=F, events=AN.EVENTS[cs], tracks=tr, warped_clips=[])
     d = os.path.join(OUT, ST.LABEL[style]); os.makedirs(d, exist_ok=True); json.dump(src, open(os.path.join(d, cid + ".json"), "w"), separators=(",", ":"))

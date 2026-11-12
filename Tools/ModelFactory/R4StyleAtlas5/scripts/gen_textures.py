@@ -1,15 +1,15 @@
-"""#1239 surface-finish detail maps (512 px, tiling, generated). They are MULTIPLIED over the paint colour of a zone, so every zone stays
+"""#1239 surface-finish detail maps (256 px, 32 levels, tiling, generated). They are MULTIPLIED over the paint colour of a zone, so every zone stays
 recolourable. A: hairline tech grid, B: brushed / cast steel, D: grime, rust blooms and scratches, E: painted three-band light ramp (mapped by
 height). C has no texture by design. usage: python3 gen_textures.py"""
 import os, numpy as np
 from PIL import Image
-OUT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "textures"); N = 512
+OUT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "textures"); N = 256
 def vnoise(n, cells, seed):
     r = np.random.RandomState(seed); g = r.rand(cells, cells); x = np.linspace(0, cells, n, endpoint=False); i = x.astype(int); f = x - i; f = f*f*(3 - 2*f)
     a = g[np.ix_(i % cells, i % cells)]; b = g[np.ix_(i % cells, (i + 1) % cells)]; c = g[np.ix_((i + 1) % cells, i % cells)]; d = g[np.ix_((i + 1) % cells, (i + 1) % cells)]
     return (a*(1 - f[None, :]) + b*f[None, :])*(1 - f[:, None]) + (c*(1 - f[None, :]) + d*f[None, :])*f[:, None]
 def fbm(seed, octs=(4, 8, 16, 32, 64)): return sum(vnoise(N, c, seed + k)/2**k for k, c in enumerate(octs))/sum(1/2**k for k in range(len(octs)))
-def save(name, rgb): os.makedirs(OUT, exist_ok=True); Image.fromarray((np.clip(rgb, 0, 1)*255).astype(np.uint8)).save(os.path.join(OUT, name)); print(name, rgb.shape, round(float(rgb.mean()), 3))
+def save(name, rgb): os.makedirs(OUT, exist_ok=True); Image.fromarray((np.round(np.clip(rgb, 0, 1)*31)/31*255).astype(np.uint8)).save(os.path.join(OUT, name), optimize=True); print(name, rgb.shape, round(float(rgb.mean()), 3))
 def main():
     y, x = np.mgrid[0:N, 0:N]/N
     # A: clean lacquer, hairline grid every 1/8 tile + faint micro hex-like dots
@@ -20,8 +20,8 @@ def main():
     save("B_detail.png", np.stack([b, b, b*1.02], -1))
     # D: grime + rust blooms (warm tint) + scratches
     g = 0.42 + 0.55*fbm(21); rust = np.clip((fbm(33, (3, 6, 12, 24, 48)) - 0.52)*5, 0, 1); r = np.random.RandomState(5); scr = np.ones((N, N))
-    for _ in range(140):
-        x0, y0 = r.randint(0, N, 2); L = r.randint(20, 120); ang = r.uniform(-0.5, 0.5) + (np.pi/2 if r.rand() < 0.3 else 0); t = np.arange(L)
+    for _ in range(60):
+        x0, y0 = r.randint(0, N, 2); L = r.randint(10, 60); ang = r.uniform(-0.5, 0.5) + (np.pi/2 if r.rand() < 0.3 else 0); t = np.arange(L)
         scr[(y0 + (t*np.sin(ang)).astype(int)) % N, (x0 + (t*np.cos(ang)).astype(int)) % N] = r.uniform(1.15, 1.45)
     g = g*scr; d = np.stack([g*(1 - 0.25*rust) + 0.38*rust, g*(1 - 0.55*rust) + 0.14*rust, g*(1 - 0.75*rust) + 0.04*rust], -1)
     save("D_detail.png", d)

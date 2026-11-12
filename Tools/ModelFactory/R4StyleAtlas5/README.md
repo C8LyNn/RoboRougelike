@@ -1,69 +1,99 @@
 # R4 Style Atlas 5 (#1239)
 
 Eksperymentalna biblioteka pięciu stylów A/B/C/D/E dla istniejących assetów RoboRougelike. Tylko art: nic w `Assets/`,
-bez kodu, bez integracji z Unity, bez scalania.
+bez kodu, bez integracji z Unity, bez scalania. Unity: **UNITY_NOT_RUN**. Windows player: **WINDOWS_PLAYER_NOT_RUN**.
 
-## Stan
+## Stan na tę paczkę
 
-| Faza | Zakres | Stan |
-|---|---|---|
-| 0 — audyt | rejestr kanoniczny, biblie stylów, harmonogram | **wykonana** (ten katalog) |
-| 1 — pilot | 12 assetów × 5 stylów | nie rozpoczęta |
-| 2 — klocki i łączniki | 30 + 20, × 5 | nie rozpoczęta |
-| 3 — broń, koła, napędy | 9 + 12 + 11, × 5 | nie rozpoczęta |
-| 4 — moduły i wyrzutniki | 61, × 5 | nie rozpoczęta |
-| 5 — pułapki i pozostałe | 6, × 5 | nie rozpoczęta |
-| 6 — QA końcowe i pokaz | viewer, roboty 100/200/400 | nie rozpoczęta |
+Liczby poniżej pochodzą z `style_registry.json` i `tests/ATLAS_TEST_SUMMARY.md` — to one są źródłem prawdy, nie ten tekst.
 
-Unity: UNITY_NOT_RUN. Windows player: WINDOWS_PLAYER_NOT_RUN.
-
-## Faza 0 — co ustalono
-
-`inventory/canonical_inventory.json` (+ `.csv`) jest generowany skryptem `scripts/build_inventory.py` z realnych plików
-źródłowych, przypiętych do commitów PR-ów źródłowych.
-
-**149 identyfikatorów kanonicznych**, cel 745 wariantów:
-
-| rodzina | liczba | źródło | uwagi |
+| rodzina | pozycji w katalogu | wykonane ×5 | uwagi |
 |---|---|---|---|
-| klocki | 30 | #963 (interfejs), #1234 + #1237 (Sleek A) | 5 z pilota + 25 z rolloutu to jedna rodzina 30 |
-| łączniki ROD / STRUT | 20 | #1186 | porty `rod_mini` / węzły pełne — bez zmian |
-| broń | 8 + 1 | #939; R41 Automatic z #1029 | R41 Automatic istnieje tylko jako FBX od artysty |
-| napędy | 11 | #941 | animowane, klipy w manifestach |
-| koła | 12 | #1018 | 12 osobnych tożsamości |
-| moduły | 44 | #1238 | interfejs = proposal |
-| wyrzutniki | 17 | #1238 | 15 z grupy F + generator tarczy + wzmacniacz |
-| pułapki świata | 6 | #1238 | |
+| klocki | 30 | 30 | interfejs z #963, porty i gniazda skopiowane z zatwierdzonych GLB |
+| łączniki ROD / STRUT | 20 | 20 | budowane z manifestów węzłów i członów #1186 |
+| moduły | 44 | 44 | interfejs = proposal z #1238 |
+| wyrzutniki | 17 | 17 | klip `Deploy` z ładunkiem jako osobnym węzłem |
+| pułapki świata | 6 | 6 | klipy `Arm` / `Triggered` / `Recovery` |
+| broń | 9 | 1 (`R4W_Basic`) | pozostałe 8 nie rozpoczęte |
+| napędy | 11 | 1 (`R4M_HoverEngine`) | pozostałe 10 nie rozpoczęte |
+| koła | 12 | 1 (`R4M_WheelM_Side_Offroad`) | pozostałe 11 nie rozpoczęte |
 
-**Nakładanie się.** Osiem rodzajów ruchu istnieje dwukrotnie: `R4M_*` (#941, animowane modele w standardzie R41) i
-`R4X_*` (#1238, moduły 1×1×1, proposal). Rejestr zachowuje obie tożsamości i oznacza wybór jako decyzję właściciela.
-`R4M_Wheel` z #941 i 12 kół z #1018 to 13 osobnych pozycji.
+Razem 120 z 149 pozycji, czyli 600 z 745 wariantów. Brakujące 29 pozycji to części z zatwierdzonym rigiem: każda wymaga
+własnej definicji geometrii na nazwach i pivotach węzłów źródłowych. Potok dla nich działa (trzy wykonane przykłady),
+brakuje samych definicji.
 
-**Stan w grze.** `main` (@5f06af8) nie zawiera ani jednego pliku modelu (0 plików fbx / glb / blend / obj) — gra rysuje
-części proceduralnie. Kopie FBX klocków, napędów i broni są na gałęzi integracyjnej PR #1029, niescalonej.
+## Najważniejsze zastrzeżenie
 
-**R41 Automatic.** Źródło jest dostępne (FBX na gałęzi #1029), ale bez `.blend`, GLB i manifestów. Jego gniazda, lufa i
-klipy trzeba odczytać z FBX w Blenderze przed produkcją — w rejestrze są oznaczone jako nieznane, nie zgadywane.
+Po korekcie kierunku wymaganie brzmi: pięć stylów ma wyglądać jak pięć różnych gier, czytelnie bez koloru. **Ta paczka
+spełnia to tylko częściowo.** Każdy asset ma jedną definicję układu części, a styl ją interpretuje: inne archetypy
+brył, inny rodzaj i ilość detalu, pomijanie i powiększanie części, inne tekstury i ruch. Ogólny układ modelu jest
+jednak wspólny dla pięciu stylów. Osobno zaprojektowanej konstrukcji per styl tu nie ma. Szczegóły i lista słabych
+miejsc: `STYLE_BIBLES.md`.
 
-**Poza zamrożonym katalogiem.** Skan 145 gałęzi o nazwach związanych z artem znalazł 49 starszych gałęzi
-(`feature/rrl-model-m01…m04`, `feature/rrl-env…`) z pojedynczymi eksperymentami OBJ/GLB. Nie są częściami w
-standardzie R4, nie mają manifestów portów. Są wypisane w rejestrze (`legacy_branch_sources`) ze statusem decyzji
-właściciela i nie wchodzą do produkcji ×5. Repozytorium ma 1171 gałęzi; gałęzi o nazwach niezwiązanych z artem nie
-otwierałem.
+Ocena wzrokowa należy do właściciela: `compare/5way/<Id>.jpg` pokazuje każdy asset w pięciu stylach i pięciu trybach
+(shaded, grayscale, bez koloru i tekstur, wireframe, sylwetka).
 
-Nóg mecha / pająka, terenu ani rekwizytów areny w standardzie R4 nie znalazłem w żadnym ze sprawdzonych źródeł.
+## Jak dodać nowy model do wszystkich pięciu stylów
 
-`BLOCKED_SOURCE`: brak. `NEW_ASSET_DELTA`: pusta (zamrożenie 2026-11-12).
+1. Dopisać jedną funkcję w `scripts/adefs.py` (albo w osobnym pliku importowanym przez `adefs`), złożoną z prymitywów
+   `akit` — tak jak definicje modułów w `R4ModulesSleek1x1/scripts/modules.py`.
+2. Zarejestrować ją: `reg(Id, fn, family, env=..., ...)`. Dla części z zatwierdzonym rigiem: `_iface(...)` z mapą nazw
+   węzłów źródłowych.
+3. `python3 agen.py <Id>` → `abuild.py` w Blenderze → `atests.py` → `aboards.py` → `aregistry.py`.
 
-## Decyzje potrzebne od właściciela
+Istniejące modele nie są przy tym przebudowywane.
 
-1. `R4M_*` czy `R4X_*` dla ośmiu rodzajów ruchu — która wersja jest docelowa w grze.
-2. Czy starsze gałęzie `rrl-model` / `rrl-env` mają wejść do katalogu.
-3. Kontakty, mocowania i dodatkowe strefy z #1238 nadal są proposal — atlas je przenosi bez zatwierdzania.
+## Co robi potok
 
-## Pliki
+- `akit.py` — zestaw prymitywów interpretowany przez aktywny styl; `astyle.py` — parametry, materiały, presety, krzywe
+  ruchu; `aanim.py` — zestawy klipów i ślady; `adefs.py` — rejestr assetów.
+- `agen.py` — geometria LOD0 per węzeł + LOD1, UV, ślady animacji → `mesh_source/` (nie jest w repozytorium: 220 MB
+  JSON, odtwarzalne skryptem).
+- `abuild.py` (Blender 5.3.0) — budowa, eksport `.blend` / `.fbx` / `.glb` + LOD1, rendery, QA.
+  Dla części z rigiem importuje zatwierdzony GLB, kopiuje z niego gniazda i **przenosi animację funkcjonalną klatka w
+  klatkę**; styl zmienia tempo tylko wewnątrz klipów przejściowych (`aanim.WARPABLE`), klipy ze zdarzeniem gry
+  (`Fire`, pętle, przemiatanie celowania) są identyczne we wszystkich stylach.
+- `atests.py` — niezależne testy numpy na wyeksportowanych GLB.
+- `aboards.py` — plansze porównawcze i metryki; `aregistry.py` — macierz assetów.
 
-- `inventory/canonical_inventory.json`, `.csv` — rejestr.
-- `inventory/legacy_branch_scan.tsv` — surowy wynik skanu gałęzi.
-- `STYLE_BIBLES.md` — pięć biblii stylów i wspólny kontrakt.
-- `scripts/build_inventory.py` — generator rejestru.
+## QA — co jest sprawdzane
+
+W Blenderze, per wariant (`<Id>_QA.json`): topologia każdego obiektu i LOD1, obrys, granice węzłów względem źródła
+(części z rigiem), kontakty LOD0 i LOD1 miarą zatwierdzonych klocków, zgodność gniazd ze źródłem, przemiatanie
+animacji, szwy pętli, czy każdy animowany obiekt faktycznie się rusza, reimport FBX i GLB z porównaniem macierzy
+węzłów w klatkach kluczowych.
+
+Na GLB (`tests/ATLAS_TEST_SUMMARY.md`): T1 pliki i budżet, T2 obrys, T3 wymienność (te same węzły i gniazda w pięciu
+stylach), T4 kanały animacji, T5 tekstury, T6 pięć faktycznie różnych siatek.
+
+## Animacje
+
+- Części statyczne (klocki, łączniki, moduły bez ruchomych części): `Idle`, `Hit`, `Damaged`, `Recover` — ruch tylko
+  wizualnego korpusu, ograniczony do 5 mm w najdalszym narożniku; korzeń i gniazda stoją.
+- Moduły aktywne: `Idle`, `Activate`, `Hit`. Wyrzutniki: `Idle`, `Deploy` (zdarzenia `Deploy_Open` 27, `Deploy_Out` 63,
+  `Deploy_Reset` 85), `Hit`. Pułapki: `Idle`, `Arm`, `Triggered`, `Recovery`.
+- Części z rigiem: klipy i zakresy klatek ze źródłowego manifestu.
+- Pięć stylów ma te same klatki zdarzeń i różne krzywe (płynne / ciężkie z dobiciem / szybkie z pauzą / nierówne z
+  drganiem / z antycypacją i przeregulowaniem).
+
+To są klipy odtwarzane w pliku. Nie jest to potwierdzenie działania w grze.
+
+## Materiały i tekstury
+
+Pięć stref: `R4P_Base`, `R4P_Secondary`, `R4P_Trim` oraz `R4P_Metal` i `R4P_Glow` (te dwie nadal **proposal**).
+Mapa detalu stylu (`textures/`, 256 px) jest mnożona przez kolor strefy, więc malowanie działa bez zmiany tekstury.
+Trzy presety malowania per styl są w `astyle.PRESETS`. Nie ma map chropowatości, metaliczności ani normalnych.
+W GLB tekstura jest osadzona; `.fbx` i `.blend` odwołują się do `textures/` po nazwie pliku.
+
+## Czego nie ma w tej paczce
+
+- 29 części z rigiem (8 broni w tym R41 Automatic, 10 napędów, 11 kół).
+- Robotów 100 / 200 / 400 części w pięciu stylach, widoków areny, wspólnego viewera 5 stylów, raportu wydajności.
+- Importu do Unity i jakichkolwiek twierdzeń o FPS czy draw callach.
+
+## Decyzje właściciela
+
+1. Czy obecna siła rozróżnienia stylów wystarcza, czy potrzebne są osobne konstrukcje per styl (wtedy: które assety
+   najpierw).
+2. `R4M_*` czy `R4X_*` dla ośmiu rodzajów ruchu.
+3. Kontakty, mocowania i strefy `R4P_Metal` / `R4P_Glow` z #1238 nadal są proposal.

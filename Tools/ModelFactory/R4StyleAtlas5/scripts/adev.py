@@ -24,7 +24,7 @@ if __name__ == "__main__":
     for r, cid in enumerate(ids):
         a = AD.ASSETS[cid]
         for c, s in enumerate(ST.STYLES):
-            m = K.build(a["fn"], s, False, a["env"], cid, bool(a.get("source_clips"))); st = K.stats(m); l = K.stats(K.build(a["fn"], s, True, a["env"], cid, bool(a.get("source_clips"))))
+            m = K.build(a["fn"], s, False, a["env"], cid, bool(a.get("source_clips")), a.get("planes")); st = K.stats(m); l = K.stats(K.build(a["fn"], s, True, a["env"], cid, bool(a.get("source_clips")), a.get("planes")))
             lo, hi = m["V"].min(0), m["V"].max(0); ins = bool((lo >= np.array(a["env"][0]) - 1e-6).all() and (hi <= np.array(a["env"][1]) + 1e-6).all())
             print(f"{cid:28s} {s} tris {st['triangles']:5d} lod {l['triangles']:5d} ok={st['ok']} lodok={l['ok']} inside={ins} shells {st['shells']} nodes {list(m['nodes'])}")
             p = f"{root}/glb/{cid}_{s}.glb"; write_glb(m, p, s, a["glow"]); parts.append(dict(url=f"/glb/{cid}_{s}.glb", matrix=T(c*1.05 - (lo[0] + hi[0])/2, -a["env"][0][2], -r*1.2 + (lo[1] + hi[1])/2)))
