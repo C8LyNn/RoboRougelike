@@ -72,6 +72,19 @@ public class CreativeRangeTests
         yield return null;
     }
 
+    [UnityTest] public IEnumerator CopyFromVehicleRaySuppliesFreePartForCreativeBuilding()
+    {
+        var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
+        Assert.That(run.GarageBuy(Vector3Int.up,R3PartKind.Armor),Is.True);
+        yield return null;Physics.SyncTransforms();
+        var origin=run.Player.transform.TransformPoint(new Vector3(0,4,0));
+        var ray=new Ray(origin,run.Player.transform.TransformDirection(Vector3.down));
+        int scrap=run.VehicleModel.Scrap;
+        Assert.That(run.Garage.SelectPartFromRay(ray),Is.True,"The mounted armor should be selectable via a real ray.");
+        var selected=run.VehicleModel.Inventory.Single(p=>p.Id==run.Garage.SelectedInventoryId);
+        Assert.That(selected.Kind,Is.EqualTo(R3PartKind.Armor));Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));
+    }
+
     [UnityTest] public IEnumerator CreativeModeRemovesPartAndStockLimitsAndKeepsWeaponControls()
     {
         var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);

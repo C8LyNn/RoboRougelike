@@ -451,6 +451,69 @@ public sealed class UI943PortraitCatalogActionsTests
         yield return new ExitPlayMode();
     }
 
+    [UnityTest] public IEnumerator CopyMountedPartSelectsOwnedInstanceWithoutSpending()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance?.Progress==null)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);run.VehicleModel.Award(100);
+        Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
+        Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
+        Assert.That(run,Is.Not.Null,"Run controller remains live after purchases.");
+        Assert.That(run.VehicleModel,Is.Not.Null,"Vehicle model remains live after purchases.");
+        Assert.That(run.VehicleModel.Inventory,Is.Not.Null);
+        int inventorySize=run.VehicleModel.Inventory.Count;Assert.That(inventorySize,Is.GreaterThanOrEqualTo(2));
+        var first=run.VehicleModel.Inventory[inventorySize-2];var second=run.VehicleModel.Inventory[inventorySize-1];
+        Assert.That(first,Is.Not.Null);Assert.That(second,Is.Not.Null);first.Health=.3f;second.Health=.8f;
+        R3PartState mounted=null;
+        foreach(var part in run.VehicleModel.Parts)
+            if(part!=null&&part.Kind==R3PartKind.Armor&&part.ArmorShape==second.ArmorShape){mounted=part;break;}
+        Assert.That(mounted,Is.Not.Null);
+        int scrap=run.VehicleModel.Scrap,count=run.VehicleModel.Inventory.Count;
+        var hud=run.GetComponent<R1RunHUD>();
+        var method=typeof(R1RunHUD).GetMethod("SelectMountedPartForBuilding",BindingFlags.Instance|BindingFlags.Public);
+        Assert.That(method,Is.Not.Null);
+        Assert.That((bool)method.Invoke(hud,new object[]{run,mounted}),Is.True);
+        Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(second.Id),"The healthiest owned instance is selected.");
+        Assert.That(run.Garage.Tool,Is.EqualTo(R41GarageTool.Mount));
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));Assert.That(run.VehicleModel.Inventory.Count,Is.EqualTo(count));
+        first.Health=0;second.Health=0;
+        Assert.That((bool)method.Invoke(hud,new object[]{run,mounted}),Is.False);
+        Assert.That(run.Garage.SelectedInventoryId,Is.Null);Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));
+        Assert.That(run.Garage.Message,Does.Contain("napraw"));
+        yield return new ExitPlayMode();
+    }
+
+    [UnityTest] public IEnumerator RepairAndMountUsesExplicitActionAndKeepsPartIdentity()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance?.Progress==null)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);run.VehicleModel.Award(100);
+        Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
+        var item=run.VehicleModel.Inventory.Last();item.Health=0;
+        int before=run.VehicleModel.Scrap,price=run.VehicleModel.RepairCost(item);
+        var hud=run.GetComponent<R1RunHUD>();Field(hud,"catalogOpen",true);
+        Invoke(hud,"RepairAndSelectCatalogItem",run,item.Id);
+        Assert.That(item.Health,Is.EqualTo(1));Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before-price));
+        Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(item.Id));Assert.That((bool)Field(hud,"catalogOpen"),Is.False);
+        Assert.That(run.Garage.Message,Does.Contain("montaż"));
+        Field(hud,"catalogOpen",true);item.Health=0;
+        typeof(R3VehicleModel).GetProperty("Scrap").SetValue(run.VehicleModel,0);
+        Invoke(hud,"RepairAndSelectCatalogItem",run,item.Id);
+        Assert.That(item.Health,Is.Zero);Assert.That((bool)Field(hud,"catalogOpen"),Is.True);
+        Assert.That((string)Field(hud,"catalogFeedback"),Does.Contain("Brakuje"));
+        yield return new ExitPlayMode();
+    }
+
+    [TestCase(false,1280,720)] [TestCase(true,768,1024)]
+    public void QuickSearchClearButtonFitsNextToInput(bool portrait,int width,int height)
+    {
+        var method=typeof(R1RunHUD).GetMethod("QuickSearchRects",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);var args=new object[]{portrait,default(Rect),default(Rect)};method.Invoke(null,args);
+        var input=(Rect)args[1];var clear=(Rect)args[2];var canvas=new Rect(0,0,width,height);
+        Assert.That(input.Overlaps(clear),Is.False);Assert.That(input.width,Is.GreaterThan(65));
+        Assert.That(canvas.Contains(input.min)&&canvas.Contains(clear.max-Vector2.one),Is.True);
+    }
+
     [TestCase(EventType.KeyDown,"GarageQuickSearch",true)]
     [TestCase(EventType.KeyUp,"GarageQuickSearch",true)]
     [TestCase(EventType.MouseDown,"GarageQuickSearch",false)]

@@ -100,12 +100,21 @@ namespace RoboRougelike.R1
         static bool GarageSearchConsumesKey(EventType type,string focused)=>
             (type==EventType.KeyDown||type==EventType.KeyUp)&&focused==QuickSearchControlName;
 
-        void DrawQuickSearch(R1RunController run,Rect rect)
+        static void QuickSearchRects(bool portrait,out Rect input,out Rect clear)
         {
+            var area=portrait?new Rect(24,628,190,27):new Rect(12,78,112,25);
+            input=new Rect(area.x,area.y,area.width-29,area.height);
+            clear=new Rect(area.xMax-25,area.y,25,area.height);
+        }
+
+        void DrawQuickSearch(R1RunController run,bool portrait)
+        {
+            QuickSearchRects(portrait,out var rect,out var clear);
             GUI.SetNextControlName(QuickSearchControlName);
             string next=GUI.TextField(rect,quickPartSearch,64);
             if(string.IsNullOrEmpty(next)&&GUI.GetNameOfFocusedControl()!=QuickSearchControlName)
-            {var previous=GUI.color;GUI.color=new Color(.62f,.7f,.75f,1);GUI.Label(new Rect(rect.x+5,rect.y,rect.width-10,rect.height),"Szukaj części",small);GUI.color=previous;}
+            {var previous=GUI.color;GUI.color=new Color(.62f,.7f,.75f,1);GUI.Label(new Rect(rect.x+5,rect.y,rect.width-10,rect.height),"Szukaj",small);GUI.color=previous;}
+            if(GUI.Button(clear,"×",compactButton))next=string.Empty;
             ApplyQuickSearch(run,next);
         }
 
@@ -343,6 +352,21 @@ namespace RoboRougelike.R1
         }
 
         // Expedition purchases stay explicit; creative selection can supply a free item.
+        public bool SelectMountedPartForBuilding(R1RunController run,R3PartState mounted)
+        {
+            if(run?.Garage==null||run.VehicleModel==null||mounted==null||mounted.Health<=0)return false;
+            var entry=BuildCatalogEntries(run.VehicleModel).FirstOrDefault(candidate=>
+                InCatalogGroup(mounted,candidate.Kind,candidate.Weapon,candidate.Group));
+            if(entry.Name==null){run.Garage.Message="Tego elementu nie można wybrać z katalogu.";return false;}
+            quickPartCategory=QuickCategoryFor(entry.Kind);quickPartsScroll=Vector2.zero;
+            if(!CatalogNameMatches(entry.Name,quickPartSearch))quickPartSearch=string.Empty;
+            if(quickOwnedOnly&&!CatalogEntryOwned(run.VehicleModel,entry))quickOwnedOnly=false;
+            SelectQuickPart(run,entry.Kind,entry.Weapon,entry.Group);
+            if(string.IsNullOrEmpty(run.Garage.SelectedInventoryId))return false;
+            run.Garage.Message="Wybrano ten typ części. Kliknij miejsce montażu.";
+            return true;
+        }
+
         void SelectQuickPart(R1RunController run,R3PartKind kind,R4WeaponKind weapon,string bonus)
         {
             catalogGroup=kind;catalogWeapon=weapon;catalogBonusId=bonus;
@@ -470,7 +494,7 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(760,15,145,42),"Ustawienia",compactButton))OpenSimpleGarageOptions(0);
             if(GUI.Button(new Rect(913,15,145,42),"Aktywności",compactButton))OpenSimpleGarageOptions(1);
             if(GUI.Button(new Rect(1066,15,195,42),"Dopasuj widok",compactButton))garage.FrameVehicle();
-            DrawQuickSearch(run,new Rect(12,78,112,25));
+            DrawQuickSearch(run,false);
             DrawQuickOwnedFilter(run,new Rect(130,78,127,25));
             DrawQuickParts(run,QuickPartsArea(false),225);
             DrawQuickStackRepair(run,QuickRepairArea(false));
@@ -504,7 +528,7 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(12,605,245,42),model.CreativeMode?$"Magazyn {model.Inventory.Count} • naprawy":$"Magazyn {model.Inventory.Count}/{R3VehicleModel.InventoryCapacity} • naprawy",compactButton))
             {inventoryOpen=true;catalogOpen=true;stackScroll=Vector2.zero;}
             if(garageShortcutLabel==null)garageShortcutLabel=new GUIStyle(small){fontSize=14,wordWrap=false};
-            GUI.Label(new Rect(12,649,245,70),"PPM: zdejmij • przeciągnij: widok\nCtrl+LPM: napraw • U: spód\nQ/E R/F Z/X: obrót widma\nShift + klawisz: obrót części",garageShortcutLabel);
+            GUI.Label(new Rect(12,649,245,70),"PPM: zdejmij • ŚPM: wybierz typ\nPPM przeciągnij: widok • U: spód\nQ/E R/F Z/X: obrót • Shift: część\nCtrl+LPM: napraw",garageShortcutLabel);
             string garageFeedback=SimpleGarageFeedback(run);
             GUI.Label(new Rect(286,655,570,58),garageFeedback,small);
             GUI.enabled=!garageOptionsOpen&&(run.MapEditorSession||model.CanDeploy);
@@ -535,7 +559,7 @@ namespace RoboRougelike.R1
                 compactButton.normal.background=buttonNormal;
             }
             GUI.backgroundColor=Color.white;
-            DrawQuickSearch(run,new Rect(24,628,190,27));
+            DrawQuickSearch(run,true);
             DrawQuickOwnedFilter(run,new Rect(240,628,190,27));
             DrawQuickParts(run,QuickPartsArea(true),392);
             DrawQuickStackRepair(run,QuickRepairArea(true));
@@ -573,7 +597,7 @@ namespace RoboRougelike.R1
             if(GUI.Button(new Rect(458,831,286,40),"Dopasuj widok",compactButton))garage.FrameVehicle();
             string garageFeedback=SimpleGarageFeedback(run);
             GUI.Label(new Rect(24,878,720,74),garageFeedback+
-                "\nPPM: zdejmij • przeciągnij: obrót widoku"+
+                "\nPPM: zdejmij • ŚPM: wybierz typ • przeciągnij PPM: obrót widoku"+
                 "\nQ/E R/F Z/X: obrót • Shift + klawisz: zamontowana część • Ctrl + LPM: napraw",small);
             GUI.enabled=!garageOptionsOpen&&(run.MapEditorSession||model.CanDeploy);
             if(run.MapEditorSession){if(GUI.Button(new Rect(24,960,350,44),"Wróć do edytora",compactButton))run.ReturnToMapEditorFromGarage();}
