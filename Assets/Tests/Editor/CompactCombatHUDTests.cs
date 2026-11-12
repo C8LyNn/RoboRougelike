@@ -40,6 +40,18 @@ public sealed class CompactCombatHUDTests
         Assert.That(method,Is.Not.Null);Assert.That((float)method.Invoke(null,new object[]{value,maximum}),Is.EqualTo(expected).Within(.0001f));
         Assert.That((float)method.Invoke(null,new object[]{float.NaN,maximum}),Is.Zero);
     }
+    [Test] public void CombatWarningsExplainLowEnergyAndPrioritizeCriticalCore()
+    {
+        var method=typeof(R1RunHUD).GetMethod("CombatResourceWarning",BindingFlags.Static|BindingFlags.NonPublic);
+        Assert.That(method,Is.Not.Null);
+        string Warning(float hp,float maxHp,float energy,float maxEnergy)=>(string)method.Invoke(null,new object[]{hp,maxHp,energy,maxEnergy});
+        Assert.That(Warning(100,100,500,500),Is.Null);
+        Assert.That(Warning(100,100,100,500),Does.Contain("energia").IgnoreCase.And.Contain("postój"));
+        Assert.That(Warning(25,100,100,500),Does.Contain("rdzenia").IgnoreCase);
+        Assert.That(Warning(26,100,101,500),Is.Null);
+        Assert.That(Warning(float.NaN,100,float.NaN,500),Is.Null);
+        Assert.That(Warning(1,0,1,0),Is.Null,"Missing resource data must not produce a false alert.");
+    }
     [Test] public void DetailsShortcutTogglesWithoutConsumingMovementOrMouse()
     {
         var go=new GameObject("HUD shortcut test");

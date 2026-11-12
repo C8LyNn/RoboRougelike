@@ -120,6 +120,15 @@ namespace RoboRougelike.R1
             if(float.IsNaN(current)||float.IsInfinity(current)||float.IsNaN(maximum)||float.IsInfinity(maximum)||maximum<=0)return 0;
             return Mathf.Clamp01(current/maximum);
         }
+        private static bool CombatResourceLow(float current,float maximum,float threshold)=>
+            !float.IsNaN(current)&&!float.IsInfinity(current)&&!float.IsNaN(maximum)&&!float.IsInfinity(maximum)&&
+            maximum>0&&current<=maximum*threshold;
+        private static string CombatResourceWarning(float hp,float maxHp,float energy,float maxEnergy)
+        {
+            if(CombatResourceLow(hp,maxHp,.25f))return "Niski stan rdzenia — unikaj trafień.";
+            if(CombatResourceLow(energy,maxEnergy,.2f))return "Niska energia — postój przyspiesza jej regenerację.";
+            return null;
+        }
         private static string SeedInputWarning(string text,int lastValid)=>
             int.TryParse(text,out _)?null:$"Błędny seed\nUżyty: {lastValid}";
         private void DrawSeedWarning(Rect area,int lastValid)
@@ -217,22 +226,30 @@ namespace RoboRougelike.R1
             if (progress.State == R1RunState.Combat && !run.Transitioning)
             {
                 UpdateCombatDetails(Event.current);
-                Panel(new Rect(20,18,660,(combatDetailsOpen?180:125)+(run.PickupGraceRemaining>0?25:0)));
-                GUI.Label(new Rect(36, 27, 630, 30), $"STARCIE {progress.EncounterIndex + 1}/{progress.TotalEncounters}   •   Wrogowie: {run.Encounter.AliveCount}   •   Złom: {run.VehicleModel.Scrap}", body);
                 var player = run.Player;
+                var core=player!=null?player.Core:null;
+                float hp=core!=null?core.CurrentHp:0,maxHp=core!=null?core.MaxHp:0;
+                var energy=player!=null?player.GetComponent<VehicleEnergyBank>():null;
+                float currentEnergy=energy!=null?energy.Current:0,maxEnergy=energy!=null?energy.Maximum:0;
+                bool lowCore=CombatResourceLow(hp,maxHp,.25f),lowEnergy=CombatResourceLow(currentEnergy,maxEnergy,.2f);
+                string resourceWarning=CombatResourceWarning(hp,maxHp,currentEnergy,maxEnergy);
+                Panel(new Rect(20,18,660,(combatDetailsOpen?180:125)+(resourceWarning!=null?25:0)+(run.PickupGraceRemaining>0?25:0)));
+                GUI.Label(new Rect(36, 27, 630, 30), $"STARCIE {progress.EncounterIndex + 1}/{progress.TotalEncounters}   •   Wrogowie: {run.Encounter.AliveCount}   •   Złom: {run.VehicleModel.Scrap}", body);
                 if (player != null)
                 {
-                    var core = player.Core;
-                    float hp=core!=null?core.CurrentHp:0,maxHp=core!=null?core.MaxHp:0;
-                    GUI.Label(new Rect(36,58,175,28),$"RDZEŃ: {hp:0}/{maxHp:0}",body);
-                    DrawResourceBar(new Rect(215,65,110,12),hp,maxHp,new Color(.35f,.85f,.67f));
+                    var beforeText=GUI.contentColor;
+                    if(lowCore)GUI.contentColor=new Color(1f,.52f,.42f);
+                    GUI.Label(new Rect(36,58,175,28),$"RDZEŃ{(lowCore?"!":":")} {hp:0}/{maxHp:0}",body);
+                    GUI.contentColor=beforeText;
+                    DrawResourceBar(new Rect(215,65,110,12),hp,maxHp,lowCore?new Color(1f,.35f,.25f):new Color(.35f,.85f,.67f));
                     GUI.Label(new Rect(340,58,325,28),ActivityGoal(run),small);
-                    var energy=player.GetComponent<VehicleEnergyBank>();
                     var repairPulse=player.GetComponent<R3RepairPulse>();
                     if(energy!=null)
                     {
-                        GUI.Label(new Rect(36,90,175,25),$"Energia: {energy.Current:0}/{energy.Maximum:0}",small);
-                        DrawResourceBar(new Rect(215,95,110,12),energy.Current,energy.Maximum,new Color(.25f,.65f,.95f));
+                        if(lowEnergy)GUI.contentColor=new Color(1f,.78f,.38f);
+                        GUI.Label(new Rect(36,90,175,25),$"Energia{(lowEnergy?"!":":")} {currentEnergy:0}/{maxEnergy:0}",small);
+                        GUI.contentColor=beforeText;
+                        DrawResourceBar(new Rect(215,95,110,12),currentEnergy,maxEnergy,lowEnergy?new Color(1f,.68f,.24f):new Color(.25f,.65f,.95f));
                         if(repairPulse!=null)GUI.Label(new Rect(340,90,190,25),$"V — naprawa: {repairPulse.Status}",small);
                     }
                     if(GUI.Button(new Rect(535,88,130,30),combatDetailsOpen?"Mniej [I]":"Szczegóły [I]",compactButton))combatDetailsOpen=!combatDetailsOpen;
@@ -243,9 +260,12 @@ namespace RoboRougelike.R1
                         var physicsBody=player.GetComponent<Rigidbody>();
                         GUI.Label(new Rect(36,148,630,25),$"Masa: {physicsBody.mass:0} kg • Prędkość: {physicsBody.linearVelocity.magnitude:0.0} m/s • Esc — pauza",small);
                     }
+                    float noticeY=combatDetailsOpen?174:121;
+                    if(resourceWarning!=null)
+                    {GUI.Label(new Rect(36,noticeY,630,22),resourceWarning,small);noticeY+=25;}
                     if(run.PickupGraceRemaining>0)
                     {
-                        GUI.Label(new Rect(36,combatDetailsOpen?174:121,630,22),$"Zbierz energię: {run.PickupGraceRemaining:0.0} s • Enter — nagrody",small);
+                        GUI.Label(new Rect(36,noticeY,630,22),$"Zbierz energię: {run.PickupGraceRemaining:0.0} s • Enter — nagrody",small);
                         GUI.Label(new Rect(640,210,285,55),"ZWYCIĘSTWO",title);
                     }
                 }
