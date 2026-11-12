@@ -1103,6 +1103,40 @@ public sealed class UI943PortraitCatalogActionsTests
         Assert.That(run.Garage.Message,Does.Contain("2").And.Contain(quote+" Z"),"A quick garage repair must show its result without opening the catalog.");
         yield return null;
     }
+    [UnityTest] public IEnumerator QuickSingleRepairChangesOnlySelectedInstanceAndPreservesSelection()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance?.Progress==null)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenSandboxGarage(),Is.True);run.VehicleModel.Award(100);
+        Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
+        var items=run.VehicleModel.Inventory.Where(part=>part.Kind==R3PartKind.Armor).ToArray();
+        items[0].Health=.5f;items[1].Health=.2f;
+        var hud=run.GetComponent<R1RunHUD>();Invoke(hud,"SelectQuickPart",run,R3PartKind.Armor,R4WeaponKind.Basic,null);
+        Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(items[0].Id));
+        int before=run.VehicleModel.Scrap,price=run.VehicleModel.RepairCost(items[0]);var vehicle=run.Player;
+        Assert.That((bool)Invoke(hud,"RepairQuickSelected",run),Is.True);
+        Assert.That(items[0].Health,Is.EqualTo(1));Assert.That(items[1].Health,Is.EqualTo(.2f));
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before-price));
+        Assert.That(run.Garage.SelectedInventoryId,Is.EqualTo(items[0].Id));Assert.That(run.Player,Is.SameAs(vehicle));
+        Assert.That(run.Garage.Message,Does.Contain(price+" Z"));
+        Assert.That((bool)Invoke(hud,"RepairQuickSelected",run),Is.False,"A healthy part cannot be charged twice.");
+        Assert.That(run.VehicleModel.Scrap,Is.EqualTo(before-price));
+        yield return null;
+    }
+    [UnityTest] public IEnumerator QuickSingleRepairIsFreeInCreativeWorkshop()
+    {
+        EditorSceneManager.OpenScene("Assets/scene 1.unity");yield return new EnterPlayMode();
+        while(R1RunController.Instance?.Progress==null)yield return null;
+        var run=R1RunController.Instance;Assert.That(run.OpenCreativeGarage(),Is.True);
+        Assert.That(run.GaragePurchase(R3PartKind.Armor),Is.True);
+        var item=run.VehicleModel.Inventory.Last();item.Health=.3f;
+        var hud=run.GetComponent<R1RunHUD>();Invoke(hud,"SelectQuickPart",run,R3PartKind.Armor,R4WeaponKind.Basic,null);
+        int scrap=run.VehicleModel.Scrap;
+        Assert.That((bool)Invoke(hud,"RepairQuickSelected",run),Is.True);
+        Assert.That(item.Health,Is.EqualTo(1));Assert.That(run.VehicleModel.Scrap,Is.EqualTo(scrap));
+        Assert.That(run.Garage.Message,Does.Contain("0 Z"));
+        yield return null;
+    }
 
     [UnityTest] public IEnumerator QuickRepairSelectsRecoveredWreckOnlyWhenMounting()
     {

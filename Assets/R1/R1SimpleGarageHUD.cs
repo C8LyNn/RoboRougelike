@@ -192,7 +192,33 @@ namespace RoboRougelike.R1
             }
             var items=run.VehicleModel.Inventory.Where(part=>
                 InCatalogGroup(part,catalogGroup.Value,catalogWeapon,catalogBonusId)).ToArray();
-            DrawCatalogBulkRepair(run,items,rect,true);
+            var selected=run.Garage.Tool==R41GarageTool.Mount?
+                items.FirstOrDefault(part=>part.Id==run.Garage.SelectedInventoryId&&part.Health<1):null;
+            if(selected==null){DrawCatalogBulkRepair(run,items,rect,true);return;}
+            var model=run.VehicleModel;int price=model.RepairCost(selected);
+            CatalogRepairPlan(model,items,out int eligible,out _);
+            bool split=eligible>1;float gap=5,width=split?(rect.width-gap)/2:rect.width;
+            bool previous=GUI.enabled;
+            GUI.enabled=previous&&R3VehicleModel.ValidEconomicPart(selected)&&
+                (model.CreativeMode||price>0&&model.Scrap>=price);
+            string label=!R3VehicleModel.ValidEconomicPart(selected)?"Naprawa niedostępna":
+                model.CreativeMode?"Napraw 1 • 0 Z":price<=0?"Naprawa niedostępna":
+                model.Scrap<price?$"Brakuje {price-model.Scrap} Z":$"Napraw 1 • {price} Z";
+            if(GUI.Button(new Rect(rect.x,rect.y,width,rect.height),label,compactButton))RepairQuickSelected(run);
+            GUI.enabled=previous;
+            if(split)DrawCatalogBulkRepair(run,items,new Rect(rect.x+width+gap,rect.y,width,rect.height),true,true);
+        }
+
+        bool RepairQuickSelected(R1RunController run)
+        {
+            if(run?.Garage==null||run.VehicleModel==null||!catalogGroup.HasValue||run.Garage.Tool!=R41GarageTool.Mount)return false;
+            var item=run.VehicleModel.Inventory.FirstOrDefault(part=>part.Id==run.Garage.SelectedInventoryId&&
+                InCatalogGroup(part,catalogGroup.Value,catalogWeapon,catalogBonusId));
+            if(item==null||item.Health>=1)return false;
+            int before=run.VehicleModel.Scrap;
+            bool repaired=run.GarageRepairInventory(item.Id);
+            run.Garage.Message=repaired?$"Naprawiono wybraną część • koszt {before-run.VehicleModel.Scrap} Z.":"Nie udało się naprawić wybranej części.";
+            return repaired;
         }
 
         static string GaragePurchaseCaption(R3PartKind kind,bool unlocked,int price,int scrap,bool full,bool toInventory=false)=>
