@@ -1,0 +1,107 @@
+{
+ "robot_wheeled": {
+  "mat": {
+   "tris": 202946,
+   "calls": 400
+  },
+  "clay": {
+   "tris": 202946,
+   "calls": 400
+  },
+  "wire": {
+   "tris": 0,
+   "calls": 399
+  },
+  "sil": {
+   "tris": 202944,
+   "calls": 399
+  }
+ },
+ "robot_hover": {
+  "mat": {
+   "tris": 163116,
+   "calls": 456
+  },
+  "clay": {
+   "tris": 163116,
+   "calls": 456
+  },
+  "wire": {
+   "tris": 0,
+   "calls": 455
+  },
+  "sil": {
+   "tris": 163114,
+   "calls": 455
+  }
+ },
+ "types": {
+  "Cube/mat": {
+   "tris": 12030,
+   "calls": 17
+  },
+  "Cube/sil": {
+   "tris": 12028,
+   "calls": 16
+  },
+  "Strut/mat": {
+   "tris": 29432,
+   "calls": 18
+  },
+  "Strut/sil": {
+   "tris": 29430,
+   "calls": 17
+  },
+  "Gun/mat": {
+   "tris": 12480,
+   "calls": 67
+  },
+  "Gun/sil": {
+   "tris": 12478,
+   "calls": 66
+  },
+  "Wheel/mat": {
+   "tris": 13434,
+   "calls": 37
+  },
+  "Wheel/sil": {
+   "tris": 13432,
+   "calls": 36
+  },
+  "Hover/mat": {
+   "tris": 15104,
+   "calls": 64
+  },
+  "Hover/sil": {
+   "tris": 15102,
+   "calls": 63
+  },
+  "Battery/mat": {
+   "tris": 16760,
+   "calls": 22
+  },
+  "Battery/sil": {
+   "tris": 16758,
+   "calls": 21
+  },
+  "Deployer/mat": {
+   "tris": 13332,
+   "calls": 37
+  },
+  "Deployer/sil": {
+   "tris": 13330,
+   "calls": 36
+  },
+  "Trap/mat": {
+   "tris": 5054,
+   "calls": 20
+  },
+  "Trap/sil": {
+   "tris": 5052,
+   "calls": 19
+  }
+ },
+ "console_errors": [
+  "Failed to load resource: the server responded with a status of 404 (File not found)"
+ ]
+}

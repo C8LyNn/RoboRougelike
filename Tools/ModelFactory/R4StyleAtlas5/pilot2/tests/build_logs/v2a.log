@@ -1,0 +1,398 @@
+00:00.031  color_management | Using config from OCIO: "C:\Program Files (x86)\Steam\steamapps\common\Blender\5.3\datafiles\colormanagement\config.ocio"
+09:26:09 | INFO: Data are loaded, start creating Blender stuff
+09:26:09 | INFO: Blender create Mesh node R4B_Cube
+09:26:09 | INFO: glTF import finished in 0.02s
+<WORKDIR>\R4_Atlas5_pilot2\scripts3\pbuild.py:42: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m = bpy.data.materials.new(zone); m.use_nodes = True; nt = m.node_tree; b = nt.nodes.get("Principled BSDF"); tx = src["textures"]; m["paint_zone"] = zone
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\A_Sleek\\R4B_Cube\\R4B_Cube.fbx'
+export finished in 0.0336 sec.
+INFO Draco is available, use library at C:\Program Files (x86)\Steam\steamapps\common\Blender\blender.shared\bf_intern_draco_bridge.dll
+INFO MeshOptimizer is available, use library at C:\Program Files (x86)\Steam\steamapps\common\Blender\blender.shared\bf_intern_meshopt_bridge.dll
+09:26:10 | INFO: Starting glTF 2.0 export
+09:26:10 | INFO: Extracting primitive: R4B_Cube
+09:26:10 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:10 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:10 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:10 | INFO: Primitives created: 4
+09:26:10 | INFO: Finished glTF 2.0 export in 0.038263797760009766 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\A_Sleek\\R4B_Cube\\R4B_Cube_LOD1.fbx'
+export finished in 0.0050 sec.
+09:26:10 | INFO: Starting glTF 2.0 export
+09:26:10 | INFO: Extracting primitive: R4B_Cube_LOD1
+09:26:10 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:10 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:10 | INFO: Primitives created: 3
+09:26:10 | INFO: Finished glTF 2.0 export in 0.013773202896118164 s
+<WORKDIR>\R4_Atlas5_pilot2\scripts3\pbuild.py:116: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  w = bpy.data.worlds.new("W"); scn.world = w; w.use_nodes = True; bg = w.node_tree.nodes.get("Background"); bg.inputs[0].default_value = (0.20, 0.21, 0.23, 1); bg.inputs[1].default_value = 0.9
+00:02.047  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4B_Cube\renders\R4B_Cube_front.jpg'
+00:02.375  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4B_Cube\renders\R4B_Cube_side.jpg'
+00:02.625  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4B_Cube\renders\R4B_Cube_top.jpg'
+00:02.906  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4B_Cube\renders\R4B_Cube_34.jpg'
+00:03.110  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4B_Cube\renders\R4B_Cube_anim1.jpg'
+00:03.328  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4B_Cube\renders\R4B_Cube_anim2.jpg'
+00:03.578  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4B_Cube\renders\R4B_Cube_anim3.jpg'
+00:03.813  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4B_Cube\renders\R4B_Cube_anim4.jpg'
+<WORKDIR>\R4_Atlas5_pilot2\scripts3\pbuild.py:389: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  lod.hide_render = True; clay = bpy.data.materials.new("Clay"); clay.use_nodes = True; cb = clay.node_tree.nodes.get("Principled BSDF"); cb.inputs["Base Color"].default_value = (0.5, 0.5, 0.5, 1); cb.inputs["Roughness"].default_value = 0.7
+00:04.110  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4B_Cube\renders\R4B_Cube_clay_front.png'
+00:04.328  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4B_Cube\renders\R4B_Cube_clay_side.png'
+00:04.641  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4B_Cube\renders\R4B_Cube_clay_34.png'
+<WORKDIR>\R4_Atlas5_pilot2\scripts3\pbuild.py:394: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  lod.hide_render = True; wm = bpy.data.materials.new("Wire"); wm.use_nodes = True; wb = wm.node_tree.nodes.get("Principled BSDF"); wb.inputs["Base Color"].default_value = (0.01, 0.01, 0.012, 1); wb.inputs["Roughness"].default_value = 1.0
+00:04.828  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4B_Cube\renders\R4B_Cube_wire.jpg'
+
+Info: Saved as "R4B_Cube.blend"
+FBX version: 7400
+09:26:14 | INFO: Data are loaded, start creating Blender stuff
+09:26:14 | INFO: Blender create Mesh node R4B_Cube
+09:26:14 | INFO: glTF import finished in 0.02s
+[PILOT2] VARIANT A_Sleek R4B_Cube BLENDER_PASS [] 2912 tris LOD1 572
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\B_Brutal\\R4B_Cube\\R4B_Cube.fbx'
+export finished in 0.0345 sec.
+09:26:15 | INFO: Starting glTF 2.0 export
+09:26:15 | INFO: Extracting primitive: R4B_Cube
+09:26:15 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:15 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:15 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:15 | INFO: Primitives created: 3
+09:26:15 | INFO: Finished glTF 2.0 export in 0.039275407791137695 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\B_Brutal\\R4B_Cube\\R4B_Cube_LOD1.fbx'
+export finished in 0.0060 sec.
+09:26:15 | INFO: Starting glTF 2.0 export
+09:26:15 | INFO: Extracting primitive: R4B_Cube_LOD1
+09:26:15 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:15 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:15 | INFO: Primitives created: 2
+09:26:15 | INFO: Finished glTF 2.0 export in 0.013077974319458008 s
+00:06.047  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4B_Cube\renders\R4B_Cube_front.jpg'
+00:06.281  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4B_Cube\renders\R4B_Cube_side.jpg'
+00:06.516  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4B_Cube\renders\R4B_Cube_top.jpg'
+00:06.813  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4B_Cube\renders\R4B_Cube_34.jpg'
+00:07.063  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4B_Cube\renders\R4B_Cube_anim1.jpg'
+00:07.313  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4B_Cube\renders\R4B_Cube_anim2.jpg'
+00:07.516  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4B_Cube\renders\R4B_Cube_anim3.jpg'
+00:07.719  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4B_Cube\renders\R4B_Cube_anim4.jpg'
+00:08.000  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4B_Cube\renders\R4B_Cube_clay_front.png'
+00:08.235  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4B_Cube\renders\R4B_Cube_clay_side.png'
+00:08.500  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4B_Cube\renders\R4B_Cube_clay_34.png'
+00:08.641  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4B_Cube\renders\R4B_Cube_wire.jpg'
+
+Info: Saved as "R4B_Cube.blend"
+FBX version: 7400
+09:26:18 | INFO: Data are loaded, start creating Blender stuff
+09:26:18 | INFO: Blender create Mesh node R4B_Cube
+09:26:18 | INFO: glTF import finished in 0.02s
+[PILOT2] VARIANT B_Brutal R4B_Cube BLENDER_PASS [] 5372 tris LOD1 44
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\C_Arcade\\R4B_Cube\\R4B_Cube.fbx'
+export finished in 0.0309 sec.
+09:26:18 | INFO: Starting glTF 2.0 export
+09:26:18 | INFO: Extracting primitive: R4B_Cube
+09:26:18 | INFO: Primitives created: 1
+09:26:18 | INFO: Finished glTF 2.0 export in 0.014605045318603516 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\C_Arcade\\R4B_Cube\\R4B_Cube_LOD1.fbx'
+export finished in 0.0063 sec.
+09:26:18 | INFO: Starting glTF 2.0 export
+09:26:18 | INFO: Extracting primitive: R4B_Cube_LOD1
+09:26:18 | INFO: Primitives created: 1
+09:26:18 | INFO: Finished glTF 2.0 export in 0.006609678268432617 s
+00:09.172  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4B_Cube\renders\R4B_Cube_front.jpg'
+00:09.375  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4B_Cube\renders\R4B_Cube_side.jpg'
+00:09.594  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4B_Cube\renders\R4B_Cube_top.jpg'
+00:09.844  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4B_Cube\renders\R4B_Cube_34.jpg'
+00:10.047  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4B_Cube\renders\R4B_Cube_anim1.jpg'
+00:10.313  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4B_Cube\renders\R4B_Cube_anim2.jpg'
+00:10.547  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4B_Cube\renders\R4B_Cube_anim3.jpg'
+00:10.719  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4B_Cube\renders\R4B_Cube_anim4.jpg'
+00:10.985  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4B_Cube\renders\R4B_Cube_clay_front.png'
+00:11.172  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4B_Cube\renders\R4B_Cube_clay_side.png'
+00:11.391  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4B_Cube\renders\R4B_Cube_clay_34.png'
+00:11.625  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4B_Cube\renders\R4B_Cube_wire.jpg'
+
+Info: Saved as "R4B_Cube.blend"
+FBX version: 7400
+09:26:21 | INFO: Data are loaded, start creating Blender stuff
+09:26:21 | INFO: Blender create Mesh node R4B_Cube
+09:26:21 | INFO: glTF import finished in 0.00s
+[PILOT2] VARIANT C_Arcade R4B_Cube BLENDER_PASS [] 204 tris LOD1 44
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\D_Scrap\\R4B_Cube\\R4B_Cube.fbx'
+export finished in 0.0297 sec.
+09:26:21 | INFO: Starting glTF 2.0 export
+09:26:21 | INFO: Extracting primitive: R4B_Cube
+09:26:21 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:21 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:21 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:21 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:21 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:21 | INFO: Primitives created: 5
+09:26:21 | INFO: Finished glTF 2.0 export in 0.04318356513977051 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\D_Scrap\\R4B_Cube\\R4B_Cube_LOD1.fbx'
+export finished in 0.0061 sec.
+09:26:21 | INFO: Starting glTF 2.0 export
+09:26:21 | INFO: Extracting primitive: R4B_Cube_LOD1
+09:26:21 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:21 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:21 | INFO: Primitives created: 2
+09:26:21 | INFO: Finished glTF 2.0 export in 0.013914346694946289 s
+00:12.344  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4B_Cube\renders\R4B_Cube_front.jpg'
+00:12.469  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4B_Cube\renders\R4B_Cube_side.jpg'
+00:12.672  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4B_Cube\renders\R4B_Cube_top.jpg'
+00:12.891  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4B_Cube\renders\R4B_Cube_34.jpg'
+00:13.156  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4B_Cube\renders\R4B_Cube_anim1.jpg'
+00:13.406  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4B_Cube\renders\R4B_Cube_anim2.jpg'
+00:13.594  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4B_Cube\renders\R4B_Cube_anim3.jpg'
+00:13.813  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4B_Cube\renders\R4B_Cube_anim4.jpg'
+00:14.094  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4B_Cube\renders\R4B_Cube_clay_front.png'
+00:14.375  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4B_Cube\renders\R4B_Cube_clay_side.png'
+00:14.531  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4B_Cube\renders\R4B_Cube_clay_34.png'
+00:14.719  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4B_Cube\renders\R4B_Cube_wire.jpg'
+
+Info: Saved as "R4B_Cube.blend"
+FBX version: 7400
+09:26:24 | INFO: Data are loaded, start creating Blender stuff
+09:26:24 | INFO: Blender create Mesh node R4B_Cube
+09:26:24 | INFO: glTF import finished in 0.01s
+[PILOT2] VARIANT D_Scrap R4B_Cube BLENDER_PASS [] 1992 tris LOD1 44
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\E_Toon\\R4B_Cube\\R4B_Cube.fbx'
+export finished in 0.0299 sec.
+09:26:24 | INFO: Starting glTF 2.0 export
+09:26:24 | INFO: Extracting primitive: R4B_Cube
+09:26:24 | INFO: Primitives created: 3
+09:26:24 | INFO: Finished glTF 2.0 export in 0.01979970932006836 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\E_Toon\\R4B_Cube\\R4B_Cube_LOD1.fbx'
+export finished in 0.0053 sec.
+09:26:24 | INFO: Starting glTF 2.0 export
+09:26:24 | INFO: Extracting primitive: R4B_Cube_LOD1
+09:26:24 | INFO: Primitives created: 2
+09:26:24 | INFO: Finished glTF 2.0 export in 0.011695146560668945 s
+00:15.375  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4B_Cube\renders\R4B_Cube_front.jpg'
+00:15.578  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4B_Cube\renders\R4B_Cube_side.jpg'
+00:15.688  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4B_Cube\renders\R4B_Cube_top.jpg'
+00:15.828  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4B_Cube\renders\R4B_Cube_34.jpg'
+00:15.985  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4B_Cube\renders\R4B_Cube_anim1.jpg'
+00:16.125  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4B_Cube\renders\R4B_Cube_anim2.jpg'
+00:16.250  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4B_Cube\renders\R4B_Cube_anim3.jpg'
+00:16.453  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4B_Cube\renders\R4B_Cube_anim4.jpg'
+00:16.735  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4B_Cube\renders\R4B_Cube_clay_front.png'
+00:16.953  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4B_Cube\renders\R4B_Cube_clay_side.png'
+00:17.188  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4B_Cube\renders\R4B_Cube_clay_34.png'
+00:17.422  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4B_Cube\renders\R4B_Cube_wire.jpg'
+
+Info: Saved as "R4B_Cube.blend"
+FBX version: 7400
+09:26:26 | INFO: Data are loaded, start creating Blender stuff
+09:26:26 | INFO: Blender create Mesh node R4B_Cube
+09:26:26 | INFO: glTF import finished in 0.01s
+[PILOT2] VARIANT E_Toon R4B_Cube BLENDER_PASS [] 1548 tris LOD1 44
+09:26:26 | INFO: Data are loaded, start creating Blender stuff
+09:26:26 | INFO: Blender create Mesh node R4C_STRUT_STANDARD
+09:26:26 | INFO: glTF import finished in 0.03s
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\A_Sleek\\R4C_STRUT_STANDARD\\R4C_STRUT_STANDARD.fbx'
+export finished in 0.0527 sec.
+09:26:27 | INFO: Starting glTF 2.0 export
+09:26:27 | INFO: Extracting primitive: R4C_STRUT_STANDARD
+09:26:27 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:27 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:27 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:27 | INFO: Primitives created: 4
+09:26:27 | INFO: Finished glTF 2.0 export in 0.03512859344482422 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\A_Sleek\\R4C_STRUT_STANDARD\\R4C_STRUT_STANDARD_LOD1.fbx'
+export finished in 0.0074 sec.
+09:26:27 | INFO: Starting glTF 2.0 export
+09:26:27 | INFO: Extracting primitive: R4C_STRUT_STANDARD_LOD1
+09:26:27 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:27 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:27 | INFO: Primitives created: 3
+09:26:27 | INFO: Finished glTF 2.0 export in 0.01420450210571289 s
+00:18.797  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_front.jpg'
+00:18.938  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_side.jpg'
+00:19.063  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_top.jpg'
+00:19.188  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_34.jpg'
+00:19.375  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_anim1.jpg'
+00:19.516  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_anim2.jpg'
+00:19.672  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_anim3.jpg'
+00:19.969  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_anim4.jpg'
+00:20.281  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_clay_front.png'
+00:20.531  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_clay_side.png'
+00:20.766  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_clay_34.png'
+00:21.000  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_wire.jpg'
+
+Info: Saved as "R4C_STRUT_STANDARD.blend"
+FBX version: 7400
+09:26:30 | INFO: Data are loaded, start creating Blender stuff
+09:26:30 | INFO: Blender create Mesh node R4C_STRUT_STANDARD
+09:26:30 | INFO: glTF import finished in 0.03s
+[PILOT2] VARIANT A_Sleek R4C_STRUT_STANDARD BLENDER_PASS [] 7380 tris LOD1 940
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\B_Brutal\\R4C_STRUT_STANDARD\\R4C_STRUT_STANDARD.fbx'
+export finished in 0.0520 sec.
+09:26:31 | INFO: Starting glTF 2.0 export
+09:26:31 | INFO: Extracting primitive: R4C_STRUT_STANDARD
+09:26:31 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:31 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:31 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:31 | INFO: Primitives created: 3
+09:26:31 | INFO: Finished glTF 2.0 export in 0.05447268486022949 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\B_Brutal\\R4C_STRUT_STANDARD\\R4C_STRUT_STANDARD_LOD1.fbx'
+export finished in 0.0074 sec.
+09:26:31 | INFO: Starting glTF 2.0 export
+09:26:31 | INFO: Extracting primitive: R4C_STRUT_STANDARD_LOD1
+09:26:31 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:31 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:31 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:31 | INFO: Primitives created: 3
+09:26:31 | INFO: Finished glTF 2.0 export in 0.015227794647216797 s
+00:22.906  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_front.jpg'
+00:23.141  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_side.jpg'
+00:23.391  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_top.jpg'
+00:23.625  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_34.jpg'
+00:23.750  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_anim1.jpg'
+00:24.016  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_anim2.jpg'
+00:24.250  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_anim3.jpg'
+00:24.485  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_anim4.jpg'
+00:24.766  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_clay_front.png'
+00:24.985  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_clay_side.png'
+00:25.281  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_clay_34.png'
+00:25.563  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_wire.jpg'
+
+Info: Saved as "R4C_STRUT_STANDARD.blend"
+FBX version: 7400
+09:26:34 | INFO: Data are loaded, start creating Blender stuff
+09:26:34 | INFO: Blender create Mesh node R4C_STRUT_STANDARD
+09:26:35 | INFO: glTF import finished in 0.05s
+[PILOT2] VARIANT B_Brutal R4C_STRUT_STANDARD BLENDER_PASS [] 12324 tris LOD1 964
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\C_Arcade\\R4C_STRUT_STANDARD\\R4C_STRUT_STANDARD.fbx'
+export finished in 0.0413 sec.
+09:26:35 | INFO: Starting glTF 2.0 export
+09:26:35 | INFO: Extracting primitive: R4C_STRUT_STANDARD
+09:26:35 | INFO: Primitives created: 2
+09:26:35 | INFO: Finished glTF 2.0 export in 0.014936447143554688 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\C_Arcade\\R4C_STRUT_STANDARD\\R4C_STRUT_STANDARD_LOD1.fbx'
+export finished in 0.0061 sec.
+09:26:35 | INFO: Starting glTF 2.0 export
+09:26:35 | INFO: Extracting primitive: R4C_STRUT_STANDARD_LOD1
+09:26:35 | INFO: Primitives created: 2
+09:26:35 | INFO: Finished glTF 2.0 export in 0.006311655044555664 s
+00:26.203  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_front.jpg'
+00:26.453  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_side.jpg'
+00:26.688  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_top.jpg'
+00:26.875  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_34.jpg'
+00:27.094  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_anim1.jpg'
+00:27.328  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_anim2.jpg'
+00:27.563  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_anim3.jpg'
+00:27.719  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_anim4.jpg'
+00:27.906  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_clay_front.png'
+00:28.141  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_clay_side.png'
+00:28.360  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_clay_34.png'
+00:28.547  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_wire.jpg'
+
+Info: Saved as "R4C_STRUT_STANDARD.blend"
+FBX version: 7400
+09:26:37 | INFO: Data are loaded, start creating Blender stuff
+09:26:37 | INFO: Blender create Mesh node R4C_STRUT_STANDARD
+09:26:37 | INFO: glTF import finished in 0.01s
+[PILOT2] VARIANT C_Arcade R4C_STRUT_STANDARD BLENDER_PASS [] 520 tris LOD1 144
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\D_Scrap\\R4C_STRUT_STANDARD\\R4C_STRUT_STANDARD.fbx'
+export finished in 0.0482 sec.
+09:26:38 | INFO: Starting glTF 2.0 export
+09:26:38 | INFO: Extracting primitive: R4C_STRUT_STANDARD
+09:26:38 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:38 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:38 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:38 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:38 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:38 | INFO: Primitives created: 5
+09:26:38 | INFO: Finished glTF 2.0 export in 0.05276751518249512 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\D_Scrap\\R4C_STRUT_STANDARD\\R4C_STRUT_STANDARD_LOD1.fbx'
+export finished in 0.0076 sec.
+09:26:38 | INFO: Starting glTF 2.0 export
+09:26:38 | INFO: Extracting primitive: R4C_STRUT_STANDARD_LOD1
+09:26:38 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:38 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:38 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:38 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:38 | INFO: Primitives created: 4
+09:26:38 | INFO: Finished glTF 2.0 export in 0.026032447814941406 s
+00:29.735  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_front.jpg'
+00:29.922  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_side.jpg'
+00:30.156  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_top.jpg'
+00:30.391  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_34.jpg'
+00:30.547  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_anim1.jpg'
+00:30.703  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_anim2.jpg'
+00:30.985  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_anim3.jpg'
+00:31.188  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_anim4.jpg'
+00:31.422  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_clay_front.png'
+00:31.656  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_clay_side.png'
+00:31.906  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_clay_34.png'
+00:32.141  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_wire.jpg'
+
+Info: Saved as "R4C_STRUT_STANDARD.blend"
+FBX version: 7400
+09:26:41 | INFO: Data are loaded, start creating Blender stuff
+09:26:41 | INFO: Blender create Mesh node R4C_STRUT_STANDARD
+09:26:41 | INFO: glTF import finished in 0.02s
+[PILOT2] VARIANT D_Scrap R4C_STRUT_STANDARD BLENDER_PASS [] 5008 tris LOD1 712
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\E_Toon\\R4C_STRUT_STANDARD\\R4C_STRUT_STANDARD.fbx'
+export finished in 0.0485 sec.
+09:26:42 | INFO: Starting glTF 2.0 export
+09:26:42 | INFO: Extracting primitive: R4C_STRUT_STANDARD
+09:26:42 | INFO: Primitives created: 3
+09:26:42 | INFO: Finished glTF 2.0 export in 0.02762317657470703 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\E_Toon\\R4C_STRUT_STANDARD\\R4C_STRUT_STANDARD_LOD1.fbx'
+export finished in 0.0065 sec.
+09:26:42 | INFO: Starting glTF 2.0 export
+09:26:42 | INFO: Extracting primitive: R4C_STRUT_STANDARD_LOD1
+09:26:42 | INFO: Primitives created: 2
+09:26:42 | INFO: Finished glTF 2.0 export in 0.008369922637939453 s
+00:33.110  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_front.jpg'
+00:33.235  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_side.jpg'
+00:33.360  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_top.jpg'
+00:33.500  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_34.jpg'
+00:33.641  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_anim1.jpg'
+00:33.781  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_anim2.jpg'
+00:33.938  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_anim3.jpg'
+00:34.063  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_anim4.jpg'
+00:34.266  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_clay_front.png'
+00:34.422  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_clay_side.png'
+00:34.547  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_clay_34.png'
+00:34.656  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4C_STRUT_STANDARD\renders\R4C_STRUT_STANDARD_wire.jpg'
+
+Info: Saved as "R4C_STRUT_STANDARD.blend"
+FBX version: 7400
+09:26:44 | INFO: Data are loaded, start creating Blender stuff
+09:26:44 | INFO: Blender create Mesh node R4C_STRUT_STANDARD
+09:26:44 | INFO: glTF import finished in 0.01s
+[PILOT2] VARIANT E_Toon R4C_STRUT_STANDARD BLENDER_PASS [] 4198 tris LOD1 452
+[PILOT2] BUILD_DONE 10 / 10
+Blender 5.3.0 (hash 02f0899d78e3 built 2026-11-10 01:33:43)
+
+Blender quit

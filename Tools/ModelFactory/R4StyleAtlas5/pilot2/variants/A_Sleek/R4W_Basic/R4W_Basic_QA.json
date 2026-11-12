@@ -1,0 +1,462 @@
+{
+ "id": "R4W_Basic",
+ "pilot_type": "Gun",
+ "construction": "niska kopu\u0142a, wie\u017ca-dysk z dwoma p\u0142etwami, sze\u015bciok\u0105tny smuk\u0142y korpus, cienka lufa emitera z pier\u015bcieniami \u015bwiat\u0142a",
+ "style_character": "advanced technology: smooth compound housings, lacquer / ceramic, graphite frames, light strips and rings",
+ "artistic_acceptance": "PENDING_OWNER_REVIEW",
+ "textures": {
+  "base": "A_base.png",
+  "orm": "A_orm.png",
+  "normal": "A_normal.png",
+  "normal_strength": 0.35,
+  "uv": "triplanar"
+ },
+ "material_textures": {
+  "R4P_Base": {
+   "base_texture": "A_base.png",
+   "orm_texture": "A_orm.png",
+   "normal_texture": "A_normal.png"
+  },
+  "R4P_Glow": {},
+  "R4P_Metal": {
+   "base_texture": "A_base.png",
+   "orm_texture": "A_orm.png",
+   "normal_texture": "A_normal.png"
+  },
+  "R4P_Secondary": {
+   "base_texture": "A_base.png",
+   "orm_texture": "A_orm.png",
+   "normal_texture": "A_normal.png"
+  },
+  "R4P_Trim": {
+   "base_texture": "A_base.png",
+   "orm_texture": "A_orm.png",
+   "normal_texture": "A_normal.png"
+  }
+ },
+ "board_frames": [
+  {
+   "clip": "AimYaw",
+   "frame": 51
+  },
+  {
+   "clip": "AimPitch",
+   "frame": 95
+  },
+  {
+   "clip": "Fire",
+   "frame": 120
+  },
+  {
+   "clip": "Recoil",
+   "frame": 128
+  }
+ ],
+ "style": "A",
+ "style_label": "A_Sleek",
+ "family": "weapon",
+ "status": "BLENDER_PASS",
+ "export_reimport": "EXPORT_REIMPORT_PASS",
+ "failures": [],
+ "unity": "UNITY_NOT_RUN",
+ "windows_player": "WINDOWS_PLAYER_NOT_RUN",
+ "interface_status": "APPROVED rig / sockets (from source GLB)",
+ "source": "#939",
+ "meshes": [
+  {
+   "object": "R4W_Basic_Base",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1160,
+   "vertices": 586,
+   "uv": true,
+   "material_slots": 4,
+   "ok": true
+  },
+  {
+   "object": "R4W_Basic_Yaw",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 936,
+   "vertices": 474,
+   "uv": true,
+   "material_slots": 4,
+   "ok": true
+  },
+  {
+   "object": "R4W_Basic_Pitch",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 260,
+   "vertices": 140,
+   "uv": true,
+   "material_slots": 4,
+   "ok": true
+  },
+  {
+   "object": "R4W_Basic_Barrel",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 1284,
+   "vertices": 646,
+   "uv": true,
+   "material_slots": 2,
+   "ok": true
+  },
+  {
+   "object": "MuzzleFlash",
+   "non_manifold_edges": 0,
+   "boundary_edges": 0,
+   "zero_area_faces": 0,
+   "inconsistent_normals": 0,
+   "triangles": 32,
+   "vertices": 18,
+   "uv": true,
+   "material_slots": 1,
+   "ok": true
+  }
+ ],
+ "mesh_lod1": {
+  "object": "R4W_Basic_LOD1",
+  "non_manifold_edges": 0,
+  "boundary_edges": 0,
+  "zero_area_faces": 0,
+  "inconsistent_normals": 0,
+  "triangles": 1794,
+  "vertices": 921,
+  "uv": true,
+  "material_slots": 5,
+  "ok": true
+ },
+ "triangles": 3672,
+ "triangles_lod1": 1794,
+ "mesh_objects": 5,
+ "material_slots_total": 15,
+ "materials": [
+  "R4P_Base",
+  "R4P_Glow",
+  "R4P_Metal",
+  "R4P_Secondary",
+  "R4P_Trim"
+ ],
+ "bounds_m": [
+  [
+   -0.252,
+   -0.618,
+   -0.26
+  ],
+  [
+   0.252,
+   0.252,
+   0.235
+  ]
+ ],
+ "envelope_m": [
+  [
+   -0.2585,
+   -0.6262,
+   -0.262
+  ],
+  [
+   0.2585,
+   0.259,
+   0.238
+  ]
+ ],
+ "inside_envelope": true,
+ "lod1_inside_envelope": true,
+ "node_bounds_vs_source": {
+  "max_outside_source_node_bounds_mm": 0.0,
+  "per_node_mm": {
+   "R4W_Basic_Base": 0,
+   "R4W_Basic_Yaw": 0,
+   "R4W_Basic_Pitch": 0.0,
+   "R4W_Basic_Barrel": 0
+  },
+  "PASS": true
+ },
+ "ports": [
+  {
+   "dir": "down",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "kind": "full",
+   "half": [
+    0.47,
+    0.47
+   ],
+   "offset": [
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "lod1_port_contact_test": [
+  {
+   "flush_pct": 100.0,
+   "recessed_pct": 0.0,
+   "protruding": 0,
+   "missing": 0,
+   "dir": "down",
+   "kind": "full",
+   "cell": [
+    0,
+    0,
+    0
+   ],
+   "need_pct": 80,
+   "PASS": true
+  }
+ ],
+ "interface_vs_source": {
+  "source_glb": "ModelFactory/R4Weapons938/R4W_Basic/R4W_Basic.glb",
+  "source_sha256": "9535f7deb4e52b998e5d2f663d77807bddf295cdba014fafb6c38851d1262631",
+  "empties": [
+   "GunPivot",
+   "Muzzle",
+   "Socket_Mount_Bottom"
+  ],
+  "missing": [],
+  "pos_dev_mm": 0.0,
+  "rot_dev_deg": 0.0,
+  "mesh_nodes_source": [
+   "MuzzleFlash",
+   "R4W_Basic_Barrel",
+   "R4W_Basic_Base",
+   "R4W_Basic_Pitch",
+   "R4W_Basic_Yaw"
+  ],
+  "mesh_nodes_missing": [],
+  "PASS": true
+ },
+ "hierarchy": {
+  "R4W_Basic_ROOT": null,
+  "R4W_Basic_Base": "R4W_Basic_ROOT",
+  "R4W_Basic_Yaw": "GunPivot",
+  "R4W_Basic_Pitch": "R4W_Basic_Yaw",
+  "R4W_Basic_Barrel": "R4W_Basic_Pitch",
+  "MuzzleFlash": "R4W_Basic_Pitch",
+  "GunPivot": "R4W_Basic_ROOT",
+  "Muzzle": "R4W_Basic_Pitch",
+  "Socket_Mount_Bottom": "R4W_Basic_ROOT"
+ },
+ "fx_objects": [
+  "MuzzleFlash"
+ ],
+ "animation": {
+  "glb_animation_mode": "NLA_TRACKS",
+  "mode": "transfer",
+  "fps": 24,
+  "frames": 139,
+  "clips": [
+   {
+    "name": "Idle",
+    "start": 1,
+    "end": 25,
+    "loop": true
+   },
+   {
+    "name": "AimYaw",
+    "start": 27,
+    "end": 75,
+    "loop": false
+   },
+   {
+    "name": "AimPitch",
+    "start": 77,
+    "end": 113,
+    "loop": false
+   },
+   {
+    "name": "Fire",
+    "start": 115,
+    "end": 124,
+    "loop": false
+   },
+   {
+    "name": "Recoil",
+    "start": 126,
+    "end": 129,
+    "loop": false
+   },
+   {
+    "name": "Return",
+    "start": 131,
+    "end": 139,
+    "loop": false
+   }
+  ],
+  "events": {
+   "AimYaw_Start": 27,
+   "AimPitch_Start": 77,
+   "Fire_Start": 115,
+   "Recoil_Start": 126,
+   "Return_Start": 131
+  },
+  "warped_clips": [],
+  "animated_objects": [
+   "R4W_Basic_Yaw",
+   "R4W_Basic_Pitch",
+   "R4W_Basic_Barrel",
+   "MuzzleFlash"
+  ],
+  "objects_with_real_motion": 4,
+  "sweep_outside_envelope_mm": 0.0,
+  "sweep_allowance_mm": 10,
+  "loop_seams": [
+   {
+    "clip": "Idle",
+    "start_vs_end_dev": 0.0,
+    "PASS": true,
+    "note": null
+   }
+  ],
+  "motion_character": "fluid and precise: long ease in / out, no overshoot"
+ },
+ "parts": 20,
+ "reimport": {
+  ".fbx": {
+   "PASS": true,
+   "meshes": 5,
+   "triangles": 3672,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 9,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    51,
+    75,
+    77,
+    95,
+    113,
+    115,
+    119,
+    124,
+    126,
+    127,
+    129,
+    131,
+    135,
+    139
+   ],
+   "nodes_compared": 5,
+   "max_pos_dev_mm": 0.0001,
+   "max_rot_dev_deg": 0.0,
+   "worst": [
+    115,
+    "MuzzleFlash",
+    0.0,
+    0.0
+   ],
+   "frame_shift_on_import": 0,
+   "gltf_animations": null
+  },
+  ".glb": {
+   "PASS": true,
+   "meshes": 5,
+   "triangles": 3672,
+   "world_scale_dev": 0.0,
+   "missing": [],
+   "actions": 1,
+   "key_frames_compared": [
+    1,
+    13,
+    25,
+    27,
+    51,
+    75,
+    77,
+    95,
+    113,
+    115,
+    119,
+    124,
+    126,
+    127,
+    129,
+    131,
+    135,
+    139
+   ],
+   "nodes_compared": 5,
+   "max_pos_dev_mm": 0.0,
+   "max_rot_dev_deg": 0.0,
+   "worst": null,
+   "frame_shift_on_import": 0,
+   "gltf_animations": 1
+  }
+ },
+ "renders": [
+  "R4W_Basic_34.jpg",
+  "R4W_Basic_anim1.jpg",
+  "R4W_Basic_anim2.jpg",
+  "R4W_Basic_anim3.jpg",
+  "R4W_Basic_anim4.jpg",
+  "R4W_Basic_clay_34.jpg",
+  "R4W_Basic_clay_front.jpg",
+  "R4W_Basic_clay_side.jpg",
+  "R4W_Basic_front.jpg",
+  "R4W_Basic_side.jpg",
+  "R4W_Basic_sil_34.png",
+  "R4W_Basic_sil_front.png",
+  "R4W_Basic_sil_side.png",
+  "R4W_Basic_top.jpg",
+  "R4W_Basic_wire.jpg"
+ ],
+ "files": {
+  "R4W_Basic.blend": {
+   "sha256": "afc76f9ca2c6092e7df59dfb8d071254fd5914eeb3e053287c1c1ac1f68f9843",
+   "bytes": 195881
+  },
+  "R4W_Basic.fbx": {
+   "sha256": "87e519d3d7de26f8171d49e53478015634ac71e865135181a781b3b60e24325e",
+   "bytes": 224972
+  },
+  "R4W_Basic.glb": {
+   "sha256": "b5be1518919c83c8ae964a5af24f6cca7432dbc047226a2684c656aab4ae2603",
+   "bytes": 196344
+  },
+  "R4W_Basic_LOD1.fbx": {
+   "sha256": "3ea79a313d5e169f8fd06cfdecdc85da8689c1a5b4e3adf2f2589b612c286ecb",
+   "bytes": 63564
+  },
+  "R4W_Basic_LOD1.glb": {
+   "sha256": "a8b4fa2b35a7acc98129539b405006b498bfb2ba8e09d71e0b998db768989266",
+   "bytes": 105704
+  }
+ },
+ "seconds": 4.7,
+ "blender": "5.3.0",
+ "post_export_note": "after the Blender step: clay PNG renders converted to JPG + 1-bit silhouettes; local absolute paths removed from FBX texture references (same-length byte substitution) and from JPG metadata; file hashes below describe the delivered files"
+}

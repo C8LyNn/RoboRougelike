@@ -7,7 +7,7 @@ HERE = os.path.dirname(os.path.abspath(__file__)); PKG = os.path.dirname(HERE); 
 _spec = importlib.util.spec_from_file_location("mkit_base", os.path.join(MF, "R4ModulesSleek1x1", "scripts", "mkit.py")); BASE = importlib.util.module_from_spec(_spec); sys.modules["mkit_base"] = BASE; _spec.loader.exec_module(BASE)
 import astyle as ST
 H, G, X, Y, Z = BASE.H, BASE.G, BASE.X, BASE.Y, BASE.Z
-STYLE = "A"; ASSET = ""; NOHW = False; RIG = False; PLANES = None; _GRP = 0; _SAFE = False; FALLBACK = []; ENV = (np.array([-H]*3), np.array([H]*3)); _wfac = 1.0
+STYLE = "A"; ASSET = ""; NOHW = False; RIG = False; PLANES = None; AUTHORED = False; NORIB = False; _GRP = 0; _SAFE = False; FALLBACK = []; ENV = (np.array([-H]*3), np.array([H]*3)); _wfac = 1.0
 rot, R_to, arc2, ngon, frame, port, empty, DIRS, auto_s, RP, S, RC, paths25, rect, prof = BASE.rot, BASE.R_to, BASE.arc2, BASE.ngon, BASE.frame, BASE.port, BASE.empty, BASE.DIRS, BASE.auto_s, BASE.RP, BASE.S, BASE.RC, BASE.paths25, BASE.rect, BASE.prof
 def __getattr__(name): return getattr(BASE, name)
 
@@ -93,7 +93,7 @@ def _post_solid(m, s_hint=1.0):
                 for sb in (-1, 1):
                     if STYLE == "D" and r.random() < 0.45: continue
                     bolts.append((c + u*sa*(ea - 0.004) + v*sb*(eb - 0.004) - n*gdep, n, rad, gdep))
-        if on_contact or RIG or min(ea, eb) < 0.05: continue
+        if on_contact or RIG or min(ea, eb) < 0.05 or NORIB: continue
         lu, lv, el, es = (u, v, ea, eb) if ea >= eb else (v, u, eb, ea)
         if STYLE == "B":
             for k in (-0.42, 0.42): over.append((c + lv*es*k, lu, lv, n, el - 0.012, 0.008, 0.007, "dark", 0.0))
@@ -123,7 +123,7 @@ def _node_count(): return sum(1 for p in BASE.CUR.parts if p["node"] == BASE.CUR
 
 def _finish(m, grp=None):
     """per-style treatment of a free-standing simple part: drop (C / E, small), enlarge (C / E), scrap asymmetry (D)"""
-    if m is None: return None
+    if m is None or AUTHORED: return m                          # hand-designed constructions (pilot 2): nothing is dropped, enlarged or shaken automatically
     ext = float((m["V"].max(0) - m["V"].min(0)).max()); payload = BASE.CUR.node == "Payload"
     if SKIP_BELOW[STYLE] and ext < SKIP_BELOW[STYLE] and not payload and not (BASE.CUR.node != "Body" and _node_count() <= 1) and not _touches(m):
         if BASE.CUR.parts and BASE.CUR.parts[-1] is m: BASE.CUR.parts.pop(); return None
@@ -138,7 +138,7 @@ def _finish(m, grp=None):
 
 def _addons_base(m):
     """mount base (a plated box lying on a contact plane): style hardware on its free face"""
-    if BASE.LOD or m is None or NOHW or RIG or BASE.CUR.node != "Body" or STYLE not in ("A", "B", "D"): return
+    if BASE.LOD or m is None or NOHW or RIG or AUTHORED or BASE.CUR.node != "Body" or STYLE not in ("A", "B", "D"): return
     lo, hi = m["V"].min(0), m["V"].max(0); sz = hi - lo
     if not (abs(lo[2] - ENV[0][2]) < 0.002 and sz[0] > 0.45 and sz[1] > 0.45 and sz[2] < 0.12): return
     z = hi[2]; r = _rng("base"); n0 = len(BASE.CUR.parts)
@@ -163,7 +163,7 @@ def _addons_base(m):
 
 def _jitter(m):
     """D: controlled asymmetry of parts that do not touch a contact plane / the envelope"""
-    if STYLE != "D" or m is None or _GRP or RIG or _touches(m) or BASE.CUR.node == "Payload": return
+    if STYLE != "D" or m is None or _GRP or RIG or AUTHORED or _touches(m) or BASE.CUR.node == "Payload": return
     r = _rng("jit"); c = m["V"].mean(0); Rz = rot(Z, r.uniform(-3.0, 3.0)); t = np.array([r.uniform(-0.004, 0.004), r.uniform(-0.004, 0.004), 0.0]); old = (m["V"].copy(), [list(f["n"]) for f in m["faces"]])
     m["V"] = (m["V"] - c) @ Rz.T + c + t
     for f in m["faces"]: f["n"] = [np.asarray(x) @ Rz.T for x in f["n"]]
@@ -235,7 +235,7 @@ def lathe(pts, grp="sec", N=20, closed=False, crease=32.0, R=None, at=None, phas
 
 
 def cyl(r, z0, z1, grp="sec", b=0.004, N=20, R=None, at=None):
-    L = z1 - z0; big = r >= 0.035 and L >= 0.07 and BASE.CUR.node != "Payload" and not BASE.LOD and not RIG
+    L = z1 - z0; big = r >= 0.035 and L >= 0.07 and BASE.CUR.node != "Payload" and not BASE.LOD and not RIG and not AUTHORED
     if STYLE in ("C", "E"): b = min(r*0.45, L*0.4, 0.03 if STYLE == "E" else 0.02)      # soft ends
     b = min(b, r*0.5, L*0.4)
     if STYLE == "E" and big:                                    # barrel: bulging belly
@@ -258,10 +258,11 @@ def cyl(r, z0, z1, grp="sec", b=0.004, N=20, R=None, at=None):
 
 
 def rod(p0, p1, r, grp="metal", b=0.003, N=10):
-    p0 = np.asarray(p0, float); p1 = np.asarray(p1, float); d = p1 - p0; ln = float(np.linalg.norm(d)); rr = r*(1.0 if RIG else ST.FAT[STYLE])
+    p0 = np.asarray(p0, float); p1 = np.asarray(p1, float); d = p1 - p0; ln = float(np.linalg.norm(d)); rr = r*(1.0 if (RIG or AUTHORED) else ST.FAT[STYLE])
     lo = np.minimum(p0, p1) - rr; hi = np.maximum(p0, p1) + rr
     if not ((lo >= ENV[0]).all() and (hi <= ENV[1]).all()): rr = r
     Rm = R_to(d)
+    if AUTHORED: return lathe([(0, 0), (max(rr - b, rr*0.5), 0), (rr, min(b, ln*0.3)), (rr, ln - min(b, ln*0.3)), (max(rr - b, rr*0.5), ln), (0, ln)], grp, N, R=Rm, at=p0)
     if STYLE == "B" and ln > 0.08 and not BASE.LOD:              # hydraulic: cylinder body + polished rod + gland
         m = lathe([(0, 0), (rr*1.25, 0), (rr*1.25, ln*0.55), (rr*1.5, ln*0.55), (rr*1.5, ln*0.62), (rr*0.7, ln*0.62), (rr*0.7, ln), (0, ln)], [grp, "dark", "dark", "dark", "dark", "metal", "metal"], N, R=Rm, at=p0, crease=20)
         if m is not None and _inside(m): return m
@@ -284,7 +285,7 @@ def tube(r0, r1, z0, z1, grp="sec", b=0.004, N=20, R=None, at=None):
 
 
 def torus(Rm, r, grp="sec", N=24, n=8, R=None, at=None):
-    rr = r*(1.0 if RIG else ST.FAT[STYLE]); Rm2 = Rm - (rr - r)               # the outer radius is kept, the tube grows inwards
+    rr = r*(1.0 if (RIG or AUTHORED) else ST.FAT[STYLE]); Rm2 = Rm - (rr - r)               # the outer radius is kept, the tube grows inwards
     if Rm2 < rr*1.15: rr, Rm2 = r, Rm
     n2 = {"A": n, "B": 4, "C": max(6, n - 2), "D": max(5, n - 2), "E": n + 2}[STYLE]; n2 = max(4, n2//2) if BASE.LOD else n2     # B: square-section rings
     return lathe([(Rm2 + rr*math.cos(2*math.pi*i/n2 + (math.pi/4 if n2 == 4 else 0)), rr*math.sin(2*math.pi*i/n2 + (math.pi/4 if n2 == 4 else 0))) for i in range(n2)], grp, N, closed=True, crease=80.0 if STYLE != "B" else 30.0, R=R, at=at)
@@ -332,8 +333,25 @@ class group(BASE.group):
         if self.payload: BASE.node()
 
 
-def build(fn, style_key, lod=False, env=None, asset="", rig=False, planes=None):
-    global STYLE, ENV, ASSET, RIG, PLANES
+def sbx(x0, x1, y0, y1, z0, z1, sa=(), sb=(), st=(), s=1.0, grp=None):
+    """plated box whose faces are split into several panels: seam positions along x (sa), y (sb), z (st)"""
+    def mk():
+        sty = style(s); sty.update(seam_h=0.006, min_plate=0.03)
+        return BASE.add(S.prism(rect(x0, x1, y0, y1), z0, z1, (X, Y, Z, np.zeros(3)), sty, seams_ab=[(0, v) for v in sa] + [(1, v) for v in sb], seams_t=list(st), lod=BASE.LOD or STYLE == "C"), grp)
+    m = None
+    try: m = mk()
+    except Exception: m = None
+    if m is None or not BASE.RP.mesh_stats(m)["ok"]:
+        if m is not None: BASE.CUR.parts.pop()
+        return box(x0, x1, y0, y1, z0, z1, s=s, grp=grp)
+    for f in m["faces"]:
+        if f.get("uv") is None: f["uv"] = [np.zeros(2)]*len(f["v"])
+    _post_solid(m); return m
+
+
+def build(fn, style_key, lod=False, env=None, asset="", rig=False, planes=None, authored=False):
+    global STYLE, ENV, ASSET, RIG, PLANES, AUTHORED
+    AUTHORED = authored
     RIG = rig; PLANES = [(np.asarray(n, float), float(d)) for n, d in planes] if planes else None
     STYLE = style_key; ASSET = asset; ENV = (np.array(env[0], float), np.array(env[1], float)) if env is not None else (np.array([-H]*3), np.array([H]*3))
     BASE.style = style; del FALLBACK[:]

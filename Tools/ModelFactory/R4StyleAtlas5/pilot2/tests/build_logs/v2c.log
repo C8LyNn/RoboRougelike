@@ -1,0 +1,534 @@
+00:00.015  color_management | Using config from OCIO: "C:\Program Files (x86)\Steam\steamapps\common\Blender\5.3\datafiles\colormanagement\config.ocio"
+09:26:09 | INFO: Data are loaded, start creating Blender stuff
+09:26:09 | INFO: Blender create Mesh node Hover_PulseRing
+09:26:09 | INFO: Blender create Mesh node Hover_ThrustGlow
+09:26:09 | INFO: Blender create Mesh node R4M_HoverEngine_Housing
+09:26:09 | INFO: Blender create Mesh node R4M_HoverEngine_Rotor
+09:26:09 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_1
+09:26:09 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_2
+09:26:09 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_3
+09:26:09 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_4
+09:26:09 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_5
+09:26:09 | INFO: glTF import finished in 0.05s
+<WORKDIR>\R4_Atlas5_pilot2\scripts3\pbuild.py:42: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m = bpy.data.materials.new(zone); m.use_nodes = True; nt = m.node_tree; b = nt.nodes.get("Principled BSDF"); tx = src["textures"]; m["paint_zone"] = zone
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\A_Sleek\\R4M_HoverEngine\\R4M_HoverEngine.fbx'
+export finished in 0.0494 sec.
+INFO Draco is available, use library at C:\Program Files (x86)\Steam\steamapps\common\Blender\blender.shared\bf_intern_draco_bridge.dll
+INFO MeshOptimizer is available, use library at C:\Program Files (x86)\Steam\steamapps\common\Blender\blender.shared\bf_intern_meshopt_bridge.dll
+09:26:10 | INFO: Starting glTF 2.0 export
+09:26:10 | INFO: Extracting primitive: Hover_PulseRing
+09:26:10 | INFO: Primitives created: 1
+09:26:10 | INFO: Extracting primitive: Hover_ThrustGlow
+09:26:10 | INFO: Primitives created: 1
+09:26:10 | INFO: Extracting primitive: R4M_HoverEngine_Housing
+09:26:10 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:10 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:10 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:10 | INFO: Primitives created: 4
+09:26:10 | INFO: Extracting primitive: R4M_HoverEngine_Rotor
+09:26:10 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:10 | INFO: Primitives created: 2
+09:26:10 | INFO: Extracting primitive: R4M_HoverEngine_Vane_1
+09:26:10 | INFO: Primitives created: 1
+09:26:10 | INFO: Extracting primitive: R4M_HoverEngine_Vane_2
+09:26:10 | INFO: Primitives created: 1
+09:26:10 | INFO: Extracting primitive: R4M_HoverEngine_Vane_3
+09:26:10 | INFO: Primitives created: 1
+09:26:10 | INFO: Extracting primitive: R4M_HoverEngine_Vane_4
+09:26:10 | INFO: Primitives created: 1
+09:26:10 | INFO: Extracting primitive: R4M_HoverEngine_Vane_5
+09:26:10 | INFO: Primitives created: 1
+09:26:10 | INFO: Finished glTF 2.0 export in 0.12315201759338379 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\A_Sleek\\R4M_HoverEngine\\R4M_HoverEngine_LOD1.fbx'
+export finished in 0.0065 sec.
+09:26:10 | INFO: Starting glTF 2.0 export
+09:26:10 | INFO: Extracting primitive: R4M_HoverEngine_LOD1
+09:26:10 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:10 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:10 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:10 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:10 | INFO: Primitives created: 5
+09:26:10 | INFO: Finished glTF 2.0 export in 0.01823711395263672 s
+<WORKDIR>\R4_Atlas5_pilot2\scripts3\pbuild.py:116: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  w = bpy.data.worlds.new("W"); scn.world = w; w.use_nodes = True; bg = w.node_tree.nodes.get("Background"); bg.inputs[0].default_value = (0.20, 0.21, 0.23, 1); bg.inputs[1].default_value = 0.9
+00:02.015  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4M_HoverEngine\renders\R4M_HoverEngine_front.jpg'
+00:02.187  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4M_HoverEngine\renders\R4M_HoverEngine_side.jpg'
+00:02.500  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4M_HoverEngine\renders\R4M_HoverEngine_top.jpg'
+00:02.750  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4M_HoverEngine\renders\R4M_HoverEngine_34.jpg'
+00:03.015  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4M_HoverEngine\renders\R4M_HoverEngine_anim1.jpg'
+00:03.297  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4M_HoverEngine\renders\R4M_HoverEngine_anim2.jpg'
+00:03.547  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4M_HoverEngine\renders\R4M_HoverEngine_anim3.jpg'
+00:03.797  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4M_HoverEngine\renders\R4M_HoverEngine_anim4.jpg'
+<WORKDIR>\R4_Atlas5_pilot2\scripts3\pbuild.py:389: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  lod.hide_render = True; clay = bpy.data.materials.new("Clay"); clay.use_nodes = True; cb = clay.node_tree.nodes.get("Principled BSDF"); cb.inputs["Base Color"].default_value = (0.5, 0.5, 0.5, 1); cb.inputs["Roughness"].default_value = 0.7
+00:04.297  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4M_HoverEngine\renders\R4M_HoverEngine_clay_front.png'
+00:04.625  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4M_HoverEngine\renders\R4M_HoverEngine_clay_side.png'
+00:04.859  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4M_HoverEngine\renders\R4M_HoverEngine_clay_34.png'
+<WORKDIR>\R4_Atlas5_pilot2\scripts3\pbuild.py:394: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  lod.hide_render = True; wm = bpy.data.materials.new("Wire"); wm.use_nodes = True; wb = wm.node_tree.nodes.get("Principled BSDF"); wb.inputs["Base Color"].default_value = (0.01, 0.01, 0.012, 1); wb.inputs["Roughness"].default_value = 1.0
+00:04.969  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4M_HoverEngine\renders\R4M_HoverEngine_wire.jpg'
+
+Info: Saved as "R4M_HoverEngine.blend"
+FBX version: 7400
+09:26:14 | INFO: Data are loaded, start creating Blender stuff
+09:26:14 | INFO: Blender create Mesh node Hover_PulseRing
+09:26:14 | INFO: Blender create Mesh node Hover_ThrustGlow
+09:26:14 | INFO: Blender create Mesh node R4M_HoverEngine_Housing
+09:26:14 | INFO: Blender create Mesh node R4M_HoverEngine_Rotor
+09:26:14 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_1
+09:26:14 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_2
+09:26:14 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_3
+09:26:14 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_4
+09:26:14 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_5
+09:26:14 | INFO: glTF import finished in 0.03s
+[PILOT2] VARIANT A_Sleek R4M_HoverEngine BLENDER_PASS [] 3486 tris LOD1 1692
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\B_Brutal\\R4M_HoverEngine\\R4M_HoverEngine.fbx'
+export finished in 0.0543 sec.
+09:26:14 | INFO: Starting glTF 2.0 export
+09:26:14 | INFO: Extracting primitive: Hover_PulseRing
+09:26:14 | INFO: Primitives created: 1
+09:26:14 | INFO: Extracting primitive: Hover_ThrustGlow
+09:26:14 | INFO: Primitives created: 1
+09:26:14 | INFO: Extracting primitive: R4M_HoverEngine_Housing
+09:26:14 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:14 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:14 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:14 | INFO: Primitives created: 3
+09:26:14 | INFO: Extracting primitive: R4M_HoverEngine_Rotor
+09:26:14 | INFO: Primitives created: 2
+09:26:14 | INFO: Extracting primitive: R4M_HoverEngine_Vane_1
+09:26:14 | INFO: Primitives created: 1
+09:26:14 | INFO: Extracting primitive: R4M_HoverEngine_Vane_2
+09:26:14 | INFO: Primitives created: 1
+09:26:14 | INFO: Extracting primitive: R4M_HoverEngine_Vane_3
+09:26:14 | INFO: Primitives created: 1
+09:26:14 | INFO: Extracting primitive: R4M_HoverEngine_Vane_4
+09:26:14 | INFO: Primitives created: 1
+09:26:14 | INFO: Extracting primitive: R4M_HoverEngine_Vane_5
+09:26:14 | INFO: Primitives created: 1
+09:26:14 | INFO: Finished glTF 2.0 export in 0.12655401229858398 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\B_Brutal\\R4M_HoverEngine\\R4M_HoverEngine_LOD1.fbx'
+export finished in 0.0095 sec.
+09:26:14 | INFO: Starting glTF 2.0 export
+09:26:14 | INFO: Extracting primitive: R4M_HoverEngine_LOD1
+09:26:14 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:14 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:14 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:14 | INFO: Primitives created: 3
+09:26:14 | INFO: Finished glTF 2.0 export in 0.019206523895263672 s
+00:05.937  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4M_HoverEngine\renders\R4M_HoverEngine_front.jpg'
+00:06.203  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4M_HoverEngine\renders\R4M_HoverEngine_side.jpg'
+00:06.453  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4M_HoverEngine\renders\R4M_HoverEngine_top.jpg'
+00:06.687  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4M_HoverEngine\renders\R4M_HoverEngine_34.jpg'
+00:06.937  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4M_HoverEngine\renders\R4M_HoverEngine_anim1.jpg'
+00:07.125  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4M_HoverEngine\renders\R4M_HoverEngine_anim2.jpg'
+00:07.359  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4M_HoverEngine\renders\R4M_HoverEngine_anim3.jpg'
+00:07.640  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4M_HoverEngine\renders\R4M_HoverEngine_anim4.jpg'
+00:07.906  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4M_HoverEngine\renders\R4M_HoverEngine_clay_front.png'
+00:08.187  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4M_HoverEngine\renders\R4M_HoverEngine_clay_side.png'
+00:08.359  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4M_HoverEngine\renders\R4M_HoverEngine_clay_34.png'
+00:08.547  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4M_HoverEngine\renders\R4M_HoverEngine_wire.jpg'
+
+Info: Saved as "R4M_HoverEngine.blend"
+FBX version: 7400
+09:26:18 | INFO: Data are loaded, start creating Blender stuff
+09:26:18 | INFO: Blender create Mesh node Hover_PulseRing
+09:26:18 | INFO: Blender create Mesh node Hover_ThrustGlow
+09:26:18 | INFO: Blender create Mesh node R4M_HoverEngine_Housing
+09:26:18 | INFO: Blender create Mesh node R4M_HoverEngine_Rotor
+09:26:18 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_1
+09:26:18 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_2
+09:26:18 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_3
+09:26:18 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_4
+09:26:18 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_5
+09:26:18 | INFO: glTF import finished in 0.03s
+[PILOT2] VARIANT B_Brutal R4M_HoverEngine BLENDER_PASS [] 3384 tris LOD1 2232
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\C_Arcade\\R4M_HoverEngine\\R4M_HoverEngine.fbx'
+export finished in 0.0644 sec.
+09:26:18 | INFO: Starting glTF 2.0 export
+09:26:18 | INFO: Extracting primitive: Hover_PulseRing
+09:26:18 | INFO: Primitives created: 1
+09:26:18 | INFO: Extracting primitive: Hover_ThrustGlow
+09:26:18 | INFO: Primitives created: 1
+09:26:18 | INFO: Extracting primitive: R4M_HoverEngine_Housing
+09:26:18 | INFO: Primitives created: 2
+09:26:18 | INFO: Extracting primitive: R4M_HoverEngine_Rotor
+09:26:18 | INFO: Primitives created: 2
+09:26:18 | INFO: Extracting primitive: R4M_HoverEngine_Vane_1
+09:26:18 | INFO: Primitives created: 1
+09:26:18 | INFO: Extracting primitive: R4M_HoverEngine_Vane_2
+09:26:18 | INFO: Primitives created: 1
+09:26:18 | INFO: Extracting primitive: R4M_HoverEngine_Vane_3
+09:26:18 | INFO: Primitives created: 1
+09:26:18 | INFO: Extracting primitive: R4M_HoverEngine_Vane_4
+09:26:18 | INFO: Primitives created: 1
+09:26:18 | INFO: Extracting primitive: R4M_HoverEngine_Vane_5
+09:26:18 | INFO: Primitives created: 1
+09:26:18 | INFO: Finished glTF 2.0 export in 0.10010027885437012 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\C_Arcade\\R4M_HoverEngine\\R4M_HoverEngine_LOD1.fbx'
+export finished in 0.0053 sec.
+09:26:18 | INFO: Starting glTF 2.0 export
+09:26:18 | INFO: Extracting primitive: R4M_HoverEngine_LOD1
+09:26:18 | INFO: Primitives created: 2
+09:26:18 | INFO: Finished glTF 2.0 export in 0.006431102752685547 s
+00:09.500  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4M_HoverEngine\renders\R4M_HoverEngine_front.jpg'
+00:09.719  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4M_HoverEngine\renders\R4M_HoverEngine_side.jpg'
+00:09.953  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4M_HoverEngine\renders\R4M_HoverEngine_top.jpg'
+00:10.219  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4M_HoverEngine\renders\R4M_HoverEngine_34.jpg'
+00:10.531  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4M_HoverEngine\renders\R4M_HoverEngine_anim1.jpg'
+00:10.781  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4M_HoverEngine\renders\R4M_HoverEngine_anim2.jpg'
+00:11.062  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4M_HoverEngine\renders\R4M_HoverEngine_anim3.jpg'
+00:11.297  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4M_HoverEngine\renders\R4M_HoverEngine_anim4.jpg'
+00:11.578  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4M_HoverEngine\renders\R4M_HoverEngine_clay_front.png'
+00:11.703  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4M_HoverEngine\renders\R4M_HoverEngine_clay_side.png'
+00:11.844  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4M_HoverEngine\renders\R4M_HoverEngine_clay_34.png'
+00:11.969  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4M_HoverEngine\renders\R4M_HoverEngine_wire.jpg'
+
+Info: Saved as "R4M_HoverEngine.blend"
+FBX version: 7400
+09:26:21 | INFO: Data are loaded, start creating Blender stuff
+09:26:21 | INFO: Blender create Mesh node Hover_PulseRing
+09:26:21 | INFO: Blender create Mesh node Hover_ThrustGlow
+09:26:21 | INFO: Blender create Mesh node R4M_HoverEngine_Housing
+09:26:21 | INFO: Blender create Mesh node R4M_HoverEngine_Rotor
+09:26:21 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_1
+09:26:21 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_2
+09:26:21 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_3
+09:26:21 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_4
+09:26:21 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_5
+09:26:21 | INFO: glTF import finished in 0.02s
+[PILOT2] VARIANT C_Arcade R4M_HoverEngine BLENDER_PASS [] 1364 tris LOD1 752
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\D_Scrap\\R4M_HoverEngine\\R4M_HoverEngine.fbx'
+export finished in 0.0500 sec.
+09:26:21 | INFO: Starting glTF 2.0 export
+09:26:21 | INFO: Extracting primitive: Hover_PulseRing
+09:26:21 | INFO: Primitives created: 1
+09:26:21 | INFO: Extracting primitive: Hover_ThrustGlow
+09:26:21 | INFO: Primitives created: 1
+09:26:21 | INFO: Extracting primitive: R4M_HoverEngine_Housing
+09:26:21 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:21 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:21 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:21 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:21 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:21 | INFO: Primitives created: 5
+09:26:21 | INFO: Extracting primitive: R4M_HoverEngine_Rotor
+09:26:21 | INFO: Primitives created: 2
+09:26:21 | INFO: Extracting primitive: R4M_HoverEngine_Vane_1
+09:26:21 | INFO: Primitives created: 1
+09:26:21 | INFO: Extracting primitive: R4M_HoverEngine_Vane_2
+09:26:21 | INFO: Primitives created: 1
+09:26:21 | INFO: Extracting primitive: R4M_HoverEngine_Vane_3
+09:26:21 | INFO: Primitives created: 1
+09:26:21 | INFO: Extracting primitive: R4M_HoverEngine_Vane_4
+09:26:21 | INFO: Primitives created: 1
+09:26:21 | INFO: Extracting primitive: R4M_HoverEngine_Vane_5
+09:26:21 | INFO: Primitives created: 1
+09:26:21 | INFO: Finished glTF 2.0 export in 0.13594722747802734 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\D_Scrap\\R4M_HoverEngine\\R4M_HoverEngine_LOD1.fbx'
+export finished in 0.0091 sec.
+09:26:21 | INFO: Starting glTF 2.0 export
+09:26:21 | INFO: Extracting primitive: R4M_HoverEngine_LOD1
+09:26:21 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:21 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:21 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:21 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:21 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:21 | INFO: Primitives created: 5
+09:26:21 | INFO: Finished glTF 2.0 export in 0.02383875846862793 s
+00:12.875  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4M_HoverEngine\renders\R4M_HoverEngine_front.jpg'
+00:13.140  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4M_HoverEngine\renders\R4M_HoverEngine_side.jpg'
+00:13.422  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4M_HoverEngine\renders\R4M_HoverEngine_top.jpg'
+00:13.672  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4M_HoverEngine\renders\R4M_HoverEngine_34.jpg'
+00:13.890  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4M_HoverEngine\renders\R4M_HoverEngine_anim1.jpg'
+00:14.094  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4M_HoverEngine\renders\R4M_HoverEngine_anim2.jpg'
+00:14.390  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4M_HoverEngine\renders\R4M_HoverEngine_anim3.jpg'
+00:14.687  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4M_HoverEngine\renders\R4M_HoverEngine_anim4.jpg'
+00:14.906  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4M_HoverEngine\renders\R4M_HoverEngine_clay_front.png'
+00:15.109  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4M_HoverEngine\renders\R4M_HoverEngine_clay_side.png'
+00:15.344  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4M_HoverEngine\renders\R4M_HoverEngine_clay_34.png'
+00:15.578  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4M_HoverEngine\renders\R4M_HoverEngine_wire.jpg'
+
+Info: Saved as "R4M_HoverEngine.blend"
+FBX version: 7400
+09:26:25 | INFO: Data are loaded, start creating Blender stuff
+09:26:25 | INFO: Blender create Mesh node Hover_PulseRing
+09:26:25 | INFO: Blender create Mesh node Hover_ThrustGlow
+09:26:25 | INFO: Blender create Mesh node R4M_HoverEngine_Housing
+09:26:25 | INFO: Blender create Mesh node R4M_HoverEngine_Rotor
+09:26:25 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_1
+09:26:25 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_2
+09:26:25 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_3
+09:26:25 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_4
+09:26:25 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_5
+09:26:25 | INFO: glTF import finished in 0.03s
+[PILOT2] VARIANT D_Scrap R4M_HoverEngine BLENDER_PASS [] 1904 tris LOD1 1356
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\E_Toon\\R4M_HoverEngine\\R4M_HoverEngine.fbx'
+export finished in 0.0514 sec.
+09:26:25 | INFO: Starting glTF 2.0 export
+09:26:25 | INFO: Extracting primitive: Hover_PulseRing
+09:26:25 | INFO: Primitives created: 1
+09:26:25 | INFO: Extracting primitive: Hover_ThrustGlow
+09:26:25 | INFO: Primitives created: 1
+09:26:25 | INFO: Extracting primitive: R4M_HoverEngine_Housing
+09:26:25 | INFO: Primitives created: 4
+09:26:25 | INFO: Extracting primitive: R4M_HoverEngine_Rotor
+09:26:25 | INFO: Primitives created: 2
+09:26:25 | INFO: Extracting primitive: R4M_HoverEngine_Vane_1
+09:26:25 | INFO: Primitives created: 1
+09:26:25 | INFO: Extracting primitive: R4M_HoverEngine_Vane_2
+09:26:25 | INFO: Primitives created: 1
+09:26:25 | INFO: Extracting primitive: R4M_HoverEngine_Vane_3
+09:26:25 | INFO: Primitives created: 1
+09:26:25 | INFO: Extracting primitive: R4M_HoverEngine_Vane_4
+09:26:25 | INFO: Primitives created: 1
+09:26:25 | INFO: Extracting primitive: R4M_HoverEngine_Vane_5
+09:26:25 | INFO: Primitives created: 1
+09:26:25 | INFO: Finished glTF 2.0 export in 0.1154778003692627 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\E_Toon\\R4M_HoverEngine\\R4M_HoverEngine_LOD1.fbx'
+export finished in 0.0077 sec.
+09:26:25 | INFO: Starting glTF 2.0 export
+09:26:25 | INFO: Extracting primitive: R4M_HoverEngine_LOD1
+09:26:25 | INFO: Primitives created: 4
+09:26:25 | INFO: Finished glTF 2.0 export in 0.013873815536499023 s
+00:16.531  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4M_HoverEngine\renders\R4M_HoverEngine_front.jpg'
+00:16.765  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4M_HoverEngine\renders\R4M_HoverEngine_side.jpg'
+00:17.000  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4M_HoverEngine\renders\R4M_HoverEngine_top.jpg'
+00:17.234  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4M_HoverEngine\renders\R4M_HoverEngine_34.jpg'
+00:17.453  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4M_HoverEngine\renders\R4M_HoverEngine_anim1.jpg'
+00:17.609  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4M_HoverEngine\renders\R4M_HoverEngine_anim2.jpg'
+00:17.812  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4M_HoverEngine\renders\R4M_HoverEngine_anim3.jpg'
+00:17.984  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4M_HoverEngine\renders\R4M_HoverEngine_anim4.jpg'
+00:18.187  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4M_HoverEngine\renders\R4M_HoverEngine_clay_front.png'
+00:18.328  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4M_HoverEngine\renders\R4M_HoverEngine_clay_side.png'
+00:18.484  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4M_HoverEngine\renders\R4M_HoverEngine_clay_34.png'
+00:18.640  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4M_HoverEngine\renders\R4M_HoverEngine_wire.jpg'
+
+Info: Saved as "R4M_HoverEngine.blend"
+FBX version: 7400
+09:26:28 | INFO: Data are loaded, start creating Blender stuff
+09:26:28 | INFO: Blender create Mesh node Hover_PulseRing
+09:26:28 | INFO: Blender create Mesh node Hover_ThrustGlow
+09:26:28 | INFO: Blender create Mesh node R4M_HoverEngine_Housing
+09:26:28 | INFO: Blender create Mesh node R4M_HoverEngine_Rotor
+09:26:28 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_1
+09:26:28 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_2
+09:26:28 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_3
+09:26:28 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_4
+09:26:28 | INFO: Blender create Mesh node R4M_HoverEngine_Vane_5
+09:26:28 | INFO: glTF import finished in 0.02s
+[PILOT2] VARIANT E_Toon R4M_HoverEngine BLENDER_PASS [] 4964 tris LOD1 1830
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\A_Sleek\\R4X_Battery\\R4X_Battery.fbx'
+export finished in 0.0282 sec.
+09:26:28 | INFO: Starting glTF 2.0 export
+09:26:28 | INFO: Extracting primitive: R4X_Battery_Body
+09:26:28 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:28 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:28 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:28 | INFO: Primitives created: 4
+09:26:28 | INFO: Finished glTF 2.0 export in 0.029703617095947266 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\A_Sleek\\R4X_Battery\\R4X_Battery_LOD1.fbx'
+export finished in 0.0150 sec.
+09:26:28 | INFO: Starting glTF 2.0 export
+09:26:28 | INFO: Extracting primitive: R4X_Battery_LOD1
+09:26:28 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:28 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:28 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:28 | INFO: Primitives created: 4
+09:26:28 | INFO: Finished glTF 2.0 export in 0.01654648780822754 s
+00:19.922  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4X_Battery\renders\R4X_Battery_front.jpg'
+00:20.031  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4X_Battery\renders\R4X_Battery_side.jpg'
+00:20.281  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4X_Battery\renders\R4X_Battery_top.jpg'
+00:20.547  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4X_Battery\renders\R4X_Battery_34.jpg'
+00:20.781  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4X_Battery\renders\R4X_Battery_anim1.jpg'
+00:21.031  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4X_Battery\renders\R4X_Battery_anim2.jpg'
+00:21.187  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4X_Battery\renders\R4X_Battery_anim3.jpg'
+00:21.328  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4X_Battery\renders\R4X_Battery_anim4.jpg'
+00:21.531  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4X_Battery\renders\R4X_Battery_clay_front.png'
+00:21.687  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4X_Battery\renders\R4X_Battery_clay_side.png'
+00:21.812  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4X_Battery\renders\R4X_Battery_clay_34.png'
+00:21.969  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\A_Sleek\R4X_Battery\renders\R4X_Battery_wire.jpg'
+
+Info: Saved as "R4X_Battery.blend"
+FBX version: 7400
+09:26:31 | INFO: Data are loaded, start creating Blender stuff
+09:26:31 | INFO: Blender create Mesh node R4X_Battery_Body
+09:26:31 | INFO: glTF import finished in 0.02s
+[PILOT2] VARIANT A_Sleek R4X_Battery BLENDER_PASS [] 5864 tris LOD1 1976
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\B_Brutal\\R4X_Battery\\R4X_Battery.fbx'
+export finished in 0.0252 sec.
+09:26:31 | INFO: Starting glTF 2.0 export
+09:26:31 | INFO: Extracting primitive: R4X_Battery_Body
+09:26:32 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:32 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:32 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:32 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:32 | INFO: Primitives created: 5
+09:26:32 | INFO: Finished glTF 2.0 export in 0.04384136199951172 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\B_Brutal\\R4X_Battery\\R4X_Battery_LOD1.fbx'
+export finished in 0.0080 sec.
+09:26:32 | INFO: Starting glTF 2.0 export
+09:26:32 | INFO: Extracting primitive: R4X_Battery_LOD1
+09:26:32 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:32 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:32 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:32 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:32 | INFO: Primitives created: 5
+09:26:32 | INFO: Finished glTF 2.0 export in 0.017854928970336914 s
+00:23.047  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4X_Battery\renders\R4X_Battery_front.jpg'
+00:23.281  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4X_Battery\renders\R4X_Battery_side.jpg'
+00:23.531  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4X_Battery\renders\R4X_Battery_top.jpg'
+00:23.703  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4X_Battery\renders\R4X_Battery_34.jpg'
+00:23.953  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4X_Battery\renders\R4X_Battery_anim1.jpg'
+00:24.219  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4X_Battery\renders\R4X_Battery_anim2.jpg'
+00:24.469  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4X_Battery\renders\R4X_Battery_anim3.jpg'
+00:24.687  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4X_Battery\renders\R4X_Battery_anim4.jpg'
+00:24.969  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4X_Battery\renders\R4X_Battery_clay_front.png'
+00:25.265  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4X_Battery\renders\R4X_Battery_clay_side.png'
+00:25.547  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4X_Battery\renders\R4X_Battery_clay_34.png'
+00:25.719  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\B_Brutal\R4X_Battery\renders\R4X_Battery_wire.jpg'
+
+Info: Saved as "R4X_Battery.blend"
+FBX version: 7400
+09:26:35 | INFO: Data are loaded, start creating Blender stuff
+09:26:35 | INFO: Blender create Mesh node R4X_Battery_Body
+09:26:35 | INFO: glTF import finished in 0.02s
+[PILOT2] VARIANT B_Brutal R4X_Battery BLENDER_PASS [] 4000 tris LOD1 1552
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\C_Arcade\\R4X_Battery\\R4X_Battery.fbx'
+export finished in 0.0229 sec.
+09:26:35 | INFO: Starting glTF 2.0 export
+09:26:35 | INFO: Extracting primitive: R4X_Battery_Body
+09:26:35 | INFO: Primitives created: 2
+09:26:35 | INFO: Finished glTF 2.0 export in 0.016528844833374023 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\C_Arcade\\R4X_Battery\\R4X_Battery_LOD1.fbx'
+export finished in 0.0061 sec.
+09:26:35 | INFO: Starting glTF 2.0 export
+09:26:35 | INFO: Extracting primitive: R4X_Battery_LOD1
+09:26:35 | INFO: Primitives created: 2
+09:26:35 | INFO: Finished glTF 2.0 export in 0.0058896541595458984 s
+00:26.375  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4X_Battery\renders\R4X_Battery_front.jpg'
+00:26.578  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4X_Battery\renders\R4X_Battery_side.jpg'
+00:26.703  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4X_Battery\renders\R4X_Battery_top.jpg'
+00:26.890  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4X_Battery\renders\R4X_Battery_34.jpg'
+00:27.109  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4X_Battery\renders\R4X_Battery_anim1.jpg'
+00:27.344  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4X_Battery\renders\R4X_Battery_anim2.jpg'
+00:27.562  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4X_Battery\renders\R4X_Battery_anim3.jpg'
+00:27.765  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4X_Battery\renders\R4X_Battery_anim4.jpg'
+00:28.015  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4X_Battery\renders\R4X_Battery_clay_front.png'
+00:28.265  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4X_Battery\renders\R4X_Battery_clay_side.png'
+00:28.500  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4X_Battery\renders\R4X_Battery_clay_34.png'
+00:28.703  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\C_Arcade\R4X_Battery\renders\R4X_Battery_wire.jpg'
+
+Info: Saved as "R4X_Battery.blend"
+FBX version: 7400
+09:26:38 | INFO: Data are loaded, start creating Blender stuff
+09:26:38 | INFO: Blender create Mesh node R4X_Battery_Body
+09:26:38 | INFO: glTF import finished in 0.01s
+[PILOT2] VARIANT C_Arcade R4X_Battery BLENDER_PASS [] 752 tris LOD1 304
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\D_Scrap\\R4X_Battery\\R4X_Battery.fbx'
+export finished in 0.0240 sec.
+09:26:38 | INFO: Starting glTF 2.0 export
+09:26:38 | INFO: Extracting primitive: R4X_Battery_Body
+09:26:38 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:38 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:38 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:38 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:38 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:38 | INFO: Primitives created: 5
+09:26:38 | INFO: Finished glTF 2.0 export in 0.053709983825683594 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\D_Scrap\\R4X_Battery\\R4X_Battery_LOD1.fbx'
+export finished in 0.0094 sec.
+09:26:38 | INFO: Starting glTF 2.0 export
+09:26:38 | INFO: Extracting primitive: R4X_Battery_LOD1
+09:26:38 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:38 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:38 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:38 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:38 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+09:26:38 | INFO: Primitives created: 5
+09:26:38 | INFO: Finished glTF 2.0 export in 0.02997303009033203 s
+00:29.515  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4X_Battery\renders\R4X_Battery_front.jpg'
+00:29.703  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4X_Battery\renders\R4X_Battery_side.jpg'
+00:29.906  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4X_Battery\renders\R4X_Battery_top.jpg'
+00:30.156  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4X_Battery\renders\R4X_Battery_34.jpg'
+00:30.390  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4X_Battery\renders\R4X_Battery_anim1.jpg'
+00:30.578  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4X_Battery\renders\R4X_Battery_anim2.jpg'
+00:30.797  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4X_Battery\renders\R4X_Battery_anim3.jpg'
+00:31.047  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4X_Battery\renders\R4X_Battery_anim4.jpg'
+00:31.328  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4X_Battery\renders\R4X_Battery_clay_front.png'
+00:31.578  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4X_Battery\renders\R4X_Battery_clay_side.png'
+00:31.812  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4X_Battery\renders\R4X_Battery_clay_34.png'
+00:32.015  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\D_Scrap\R4X_Battery\renders\R4X_Battery_wire.jpg'
+
+Info: Saved as "R4X_Battery.blend"
+FBX version: 7400
+09:26:41 | INFO: Data are loaded, start creating Blender stuff
+09:26:41 | INFO: Blender create Mesh node R4X_Battery_Body
+09:26:41 | INFO: glTF import finished in 0.02s
+[PILOT2] VARIANT D_Scrap R4X_Battery BLENDER_PASS [] 3016 tris LOD1 640
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\E_Toon\\R4X_Battery\\R4X_Battery.fbx'
+export finished in 0.0237 sec.
+09:26:41 | INFO: Starting glTF 2.0 export
+09:26:41 | INFO: Extracting primitive: R4X_Battery_Body
+09:26:41 | INFO: Primitives created: 5
+09:26:41 | INFO: Finished glTF 2.0 export in 0.02581000328063965 s
+
+
+FBX export starting... '<WORKDIR>\\R4_Atlas5_pilot2\\v2\\E_Toon\\R4X_Battery\\R4X_Battery_LOD1.fbx'
+export finished in 0.0084 sec.
+09:26:41 | INFO: Starting glTF 2.0 export
+09:26:41 | INFO: Extracting primitive: R4X_Battery_LOD1
+09:26:41 | INFO: Primitives created: 4
+09:26:41 | INFO: Finished glTF 2.0 export in 0.010832071304321289 s
+00:32.844  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4X_Battery\renders\R4X_Battery_front.jpg'
+00:33.047  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4X_Battery\renders\R4X_Battery_side.jpg'
+00:33.172  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4X_Battery\renders\R4X_Battery_top.jpg'
+00:33.312  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4X_Battery\renders\R4X_Battery_34.jpg'
+00:33.453  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4X_Battery\renders\R4X_Battery_anim1.jpg'
+00:33.609  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4X_Battery\renders\R4X_Battery_anim2.jpg'
+00:33.750  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4X_Battery\renders\R4X_Battery_anim3.jpg'
+00:33.906  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4X_Battery\renders\R4X_Battery_anim4.jpg'
+00:34.094  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4X_Battery\renders\R4X_Battery_clay_front.png'
+00:34.265  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4X_Battery\renders\R4X_Battery_clay_side.png'
+00:34.437  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4X_Battery\renders\R4X_Battery_clay_34.png'
+00:34.562  render           | Saved: '<WORKDIR>\R4_Atlas5_pilot2\v2\E_Toon\R4X_Battery\renders\R4X_Battery_wire.jpg'
+
+Info: Saved as "R4X_Battery.blend"
+FBX version: 7400
+09:26:43 | INFO: Data are loaded, start creating Blender stuff
+09:26:43 | INFO: Blender create Mesh node R4X_Battery_Body
+09:26:43 | INFO: glTF import finished in 0.01s
+[PILOT2] VARIANT E_Toon R4X_Battery BLENDER_PASS [] 3126 tris LOD1 642
+[PILOT2] BUILD_DONE 10 / 10
+Blender 5.3.0 (hash 02f0899d78e3 built 2026-11-10 01:33:43)
+
+Blender quit
