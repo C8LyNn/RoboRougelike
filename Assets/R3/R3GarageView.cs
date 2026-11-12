@@ -728,6 +728,9 @@ namespace RoboRougelike.R3
             }
             if(current.type==EventType.KeyDown&&current.keyCode==KeyCode.U)
             {ToggleUndersideView();current.Use();return;}
+            if(current.type==EventType.KeyDown&&current.keyCode==KeyCode.Home&&
+               !current.shift&&!current.control&&!current.alt&&!current.command)
+            {FrameVehicle();Message="Dopasowano widok pojazdu.";current.Use();return;}
             if(current.type==EventType.KeyDown&&(Tool==R41GarageTool.Mount||current.shift))
             {
                 if(R3GarageRotationInput.TryStep(current.keyCode,out var turns))
