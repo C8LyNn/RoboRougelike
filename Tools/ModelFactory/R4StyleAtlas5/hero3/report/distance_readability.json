@@ -1,0 +1,169 @@
+{
+ "note": "luminance spread inside the robot silhouette at the 36 m robot of the gameplay camera (1080p)",
+ "brutal_variants": {
+  "b_ro_wo": {
+   "distance_m": 35.4,
+   "luminance_std": 0.159,
+   "p10": 0.099,
+   "p90": 0.484,
+   "floor": 0.569,
+   "pixels": 13456
+  },
+  "b_ro_wn": {
+   "distance_m": 35.4,
+   "luminance_std": 0.146,
+   "p10": 0.136,
+   "p90": 0.484,
+   "floor": 0.569,
+   "pixels": 13461
+  },
+  "b_rn_wo": {
+   "distance_m": 35.4,
+   "luminance_std": 0.141,
+   "p10": 0.09,
+   "p90": 0.445,
+   "floor": 0.569,
+   "pixels": 14489
+  },
+  "b_rn_wn": {
+   "distance_m": 35.4,
+   "luminance_std": 0.133,
+   "p10": 0.118,
+   "p90": 0.445,
+   "floor": 0.569,
+   "pixels": 14496
+  }
+ },
+ "old_new_hybrid": {
+  "A": {
+   "old": {
+    "distance_m": 35.4,
+    "luminance_std": 0.249,
+    "p10": 0.194,
+    "p90": 0.817,
+    "floor": 0.569,
+    "pixels": 13529
+   },
+   "new": {
+    "distance_m": 35.4,
+    "luminance_std": 0.274,
+    "p10": 0.188,
+    "p90": 0.868,
+    "floor": 0.569,
+    "pixels": 14500
+   },
+   "hybrid": {
+    "distance_m": 35.4,
+    "luminance_std": 0.275,
+    "p10": 0.183,
+    "p90": 0.869,
+    "floor": 0.569,
+    "pixels": 14252
+   }
+  },
+  "B": {
+   "old": {
+    "distance_m": 35.4,
+    "luminance_std": 0.156,
+    "p10": 0.092,
+    "p90": 0.476,
+    "floor": 0.569,
+    "pixels": 13479
+   },
+   "new": {
+    "distance_m": 35.4,
+    "luminance_std": 0.138,
+    "p10": 0.127,
+    "p90": 0.458,
+    "floor": 0.569,
+    "pixels": 14584
+   },
+   "hybrid": {
+    "distance_m": 35.4,
+    "luminance_std": 0.146,
+    "p10": 0.136,
+    "p90": 0.484,
+    "floor": 0.569,
+    "pixels": 13461
+   }
+  },
+  "C": {
+   "old": {
+    "distance_m": 35.4,
+    "luminance_std": 0.252,
+    "p10": 0.255,
+    "p90": 0.881,
+    "floor": 0.569,
+    "pixels": 14132
+   },
+   "new": {
+    "distance_m": 35.4,
+    "luminance_std": 0.258,
+    "p10": 0.232,
+    "p90": 0.879,
+    "floor": 0.569,
+    "pixels": 14063
+   },
+   "hybrid": {
+    "distance_m": 35.4,
+    "luminance_std": 0.258,
+    "p10": 0.232,
+    "p90": 0.879,
+    "floor": 0.569,
+    "pixels": 14063
+   }
+  },
+  "D": {
+   "old": {
+    "distance_m": 35.4,
+    "luminance_std": 0.107,
+    "p10": 0.129,
+    "p90": 0.405,
+    "floor": 0.569,
+    "pixels": 14571
+   },
+   "new": {
+    "distance_m": 35.4,
+    "luminance_std": 0.108,
+    "p10": 0.156,
+    "p90": 0.425,
+    "floor": 0.569,
+    "pixels": 14694
+   },
+   "hybrid": {
+    "distance_m": 35.4,
+    "luminance_std": 0.102,
+    "p10": 0.149,
+    "p90": 0.412,
+    "floor": 0.569,
+    "pixels": 14717
+   }
+  },
+  "E": {
+   "old": {
+    "distance_m": 35.4,
+    "luminance_std": 0.214,
+    "p10": 0.213,
+    "p90": 0.775,
+    "floor": 0.569,
+    "pixels": 12868
+   },
+   "new": {
+    "distance_m": 35.4,
+    "luminance_std": 0.177,
+    "p10": 0.186,
+    "p90": 0.671,
+    "floor": 0.569,
+    "pixels": 12029
+   },
+   "hybrid": {
+    "distance_m": 35.4,
+    "luminance_std": 0.177,
+    "p10": 0.186,
+    "p90": 0.671,
+    "floor": 0.569,
+    "pixels": 12029
+   }
+  }
+ }
+}

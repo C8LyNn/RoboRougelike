@@ -1,0 +1,2170 @@
+{
+ "A": {
+  "old": {
+   "Gun": {
+    "zones": {
+     "light": {
+      "srgb": [
+       0.701,
+       0.916,
+       1.0
+      ],
+      "linear": [
+       0.45,
+       0.82,
+       1.0
+      ],
+      "area_share": 0.087
+     },
+     "base": {
+      "srgb": [
+       0.735,
+       0.742,
+       0.748
+      ],
+      "linear": [
+       0.5,
+       0.51,
+       0.52
+      ],
+      "area_share": 0.369
+     },
+     "accent": {
+      "srgb": [
+       0.19,
+       0.2,
+       0.221
+      ],
+      "linear": [
+       0.03,
+       0.033,
+       0.04
+      ],
+      "area_share": 0.424
+     },
+     "dark": {
+      "srgb": [
+       0.086,
+       0.093,
+       0.112
+      ],
+      "linear": [
+       0.008,
+       0.009,
+       0.012
+      ],
+      "area_share": 0.12
+     }
+    },
+    "triangles": 17364,
+    "pipeline": "Pass 1: zone paint x tiling texture, real bevels, vertex shading",
+    "images": 3,
+    "file_mb": 0.64
+   },
+   "Wheel": {
+    "zones": {
+     "accent": {
+      "srgb": [
+       0.19,
+       0.2,
+       0.221
+      ],
+      "linear": [
+       0.03,
+       0.033,
+       0.04
+      ],
+      "area_share": 0.281
+     },
+     "light": {
+      "srgb": [
+       0.701,
+       0.916,
+       1.0
+      ],
+      "linear": [
+       0.45,
+       0.82,
+       1.0
+      ],
+      "area_share": 0.048
+     },
+     "base": {
+      "srgb": [
+       0.735,
+       0.742,
+       0.748
+      ],
+      "linear": [
+       0.5,
+       0.51,
+       0.52
+      ],
+      "area_share": 0.274
+     },
+     "dark": {
+      "srgb": [
+       0.086,
+       0.093,
+       0.112
+      ],
+      "linear": [
+       0.008,
+       0.009,
+       0.012
+      ],
+      "area_share": 0.396
+     }
+    },
+    "triangles": 8864,
+    "pipeline": "Pass 1: zone paint x tiling texture, real bevels, vertex shading",
+    "images": 3,
+    "file_mb": 0.38
+   },
+   "Battery": {
+    "zones": {
+     "base": {
+      "srgb": [
+       0.735,
+       0.742,
+       0.748
+      ],
+      "linear": [
+       0.5,
+       0.51,
+       0.52
+      ],
+      "area_share": 0.406
+     },
+     "accent": {
+      "srgb": [
+       0.19,
+       0.2,
+       0.221
+      ],
+      "linear": [
+       0.03,
+       0.033,
+       0.04
+      ],
+      "area_share": 0.476
+     },
+     "dark": {
+      "srgb": [
+       0.086,
+       0.093,
+       0.112
+      ],
+      "linear": [
+       0.008,
+       0.009,
+       0.012
+      ],
+      "area_share": 0.036
+     },
+     "light": {
+      "srgb": [
+       0.701,
+       0.916,
+       1.0
+      ],
+      "linear": [
+       0.45,
+       0.82,
+       1.0
+      ],
+      "area_share": 0.083
+     }
+    },
+    "triangles": 11224,
+    "pipeline": "Pass 1: zone paint x tiling texture, real bevels, vertex shading",
+    "images": 3,
+    "file_mb": 0.41
+   }
+  },
+  "new": {
+   "Gun": {
+    "zones": {
+     "light": {
+      "srgb": [
+       0.189,
+       0.856,
+       0.982
+      ],
+      "linear": [
+       0.0297,
+       0.7023,
+       0.9602
+      ],
+      "area_share": 0.025
+     },
+     "accent": {
+      "srgb": [
+       0.769,
+       0.484,
+       0.394
+      ],
+      "linear": [
+       0.5519,
+       0.1993,
+       0.1284
+      ],
+      "area_share": 0.03
+     },
+     "dark": {
+      "srgb": [
+       0.408,
+       0.415,
+       0.431
+      ],
+      "linear": [
+       0.1383,
+       0.1434,
+       0.1557
+      ],
+      "area_share": 0.522
+     },
+     "metal": {
+      "srgb": [
+       0.525,
+       0.509,
+       0.526
+      ],
+      "linear": [
+       0.238,
+       0.2227,
+       0.2392
+      ],
+      "area_share": 0.037
+     },
+     "base": {
+      "srgb": [
+       0.819,
+       0.826,
+       0.839
+      ],
+      "linear": [
+       0.6366,
+       0.649,
+       0.6726
+      ],
+      "area_share": 0.385
+     }
+    },
+    "triangles": 4064,
+    "pipeline": "Pass 2: unique UV, baked normal / AO, authored base + ORM + emission",
+    "images": 4,
+    "file_mb": 4.02
+   },
+   "Wheel": {
+    "zones": {
+     "light": {
+      "srgb": [
+       0.221,
+       0.845,
+       0.965
+      ],
+      "linear": [
+       0.04,
+       0.6828,
+       0.9225
+      ],
+      "area_share": 0.012
+     },
+     "dark": {
+      "srgb": [
+       0.147,
+       0.152,
+       0.168
+      ],
+      "linear": [
+       0.0189,
+       0.02,
+       0.024
+      ],
+      "area_share": 0.842
+     },
+     "base": {
+      "srgb": [
+       0.822,
+       0.827,
+       0.839
+      ],
+      "linear": [
+       0.6415,
+       0.6509,
+       0.6728
+      ],
+      "area_share": 0.087
+     },
+     "accent": {
+      "srgb": [
+       0.789,
+       0.468,
+       0.35
+      ],
+      "linear": [
+       0.5855,
+       0.1857,
+       0.1003
+      ],
+      "area_share": 0.007
+     },
+     "metal": {
+      "srgb": [
+       0.726,
+       0.733,
+       0.754
+      ],
+      "linear": [
+       0.486,
+       0.4966,
+       0.5285
+      ],
+      "area_share": 0.053
+     }
+    },
+    "triangles": 8170,
+    "pipeline": "Pass 2: unique UV, baked normal / AO, authored base + ORM + emission",
+    "images": 4,
+    "file_mb": 5.24
+   },
+   "Battery": {
+    "zones": {
+     "base": {
+      "srgb": [
+       0.769,
+       0.776,
+       0.788
+      ],
+      "linear": [
+       0.5531,
+       0.5637,
+       0.5829
+      ],
+      "area_share": 0.18
+     },
+     "accent": {
+      "srgb": [
+       0.792,
+       0.372,
+       0.133
+      ],
+      "linear": [
+       0.5911,
+       0.1143,
+       0.016
+      ],
+      "area_share": 0.033
+     },
+     "light": {
+      "srgb": [
+       0.165,
+       0.861,
+       0.989
+      ],
+      "linear": [
+       0.0231,
+       0.7127,
+       0.9751
+      ],
+      "area_share": 0.022
+     },
+     "dark": {
+      "srgb": [
+       0.156,
+       0.2,
+       0.231
+      ],
+      "linear": [
+       0.0211,
+       0.033,
+       0.0435
+      ],
+      "area_share": 0.623
+     },
+     "metal": {
+      "srgb": [
+       0.452,
+       0.447,
+       0.468
+      ],
+      "linear": [
+       0.1722,
+       0.1681,
+       0.1853
+      ],
+      "area_share": 0.142
+     }
+    },
+    "triangles": 2168,
+    "pipeline": "Pass 2: unique UV, baked normal / AO, authored base + ORM + emission",
+    "images": 4,
+    "file_mb": 1.36
+   }
+  }
+ },
+ "B": {
+  "old": {
+   "Gun": {
+    "zones": {
+     "metal": {
+      "srgb": [
+       0.906,
+       0.906,
+       0.911
+      ],
+      "linear": [
+       0.8,
+       0.8,
+       0.81
+      ],
+      "area_share": 0.093
+     },
+     "light": {
+      "srgb": [
+       1.0,
+       0.701,
+       0.349
+      ],
+      "linear": [
+       1.0,
+       0.45,
+       0.1
+      ],
+      "area_share": 0.012
+     },
+     "dark": {
+      "srgb": [
+       0.235,
+       0.24,
+       0.248
+      ],
+      "linear": [
+       0.045,
+       0.047,
+       0.05
+      ],
+      "area_share": 0.431
+     },
+     "base": {
+      "srgb": [
+       0.485,
+       0.501,
+       0.467
+      ],
+      "linear": [
+       0.2,
+       0.215,
+       0.185
+      ],
+      "area_share": 0.353
+     },
+     "wear": {
+      "srgb": [
+       0.373,
+       0.341,
+       0.304
+      ],
+      "linear": [
+       0.115,
+       0.095,
+       0.075
+      ],
+      "area_share": 0.067
+     },
+     "accent": {
+      "srgb": [
+       0.906,
+       0.701,
+       0.152
+      ],
+      "linear": [
+       0.8,
+       0.45,
+       0.02
+      ],
+      "area_share": 0.043
+     }
+    },
+    "triangles": 9570,
+    "pipeline": "Pass 1: zone paint x tiling texture, real bevels, vertex shading",
+    "images": 3,
+    "file_mb": 1.0
+   },
+   "Wheel": {
+    "zones": {
+     "accent": {
+      "srgb": [
+       0.906,
+       0.701,
+       0.152
+      ],
+      "linear": [
+       0.8,
+       0.45,
+       0.02
+      ],
+      "area_share": 0.009
+     },
+     "metal": {
+      "srgb": [
+       0.906,
+       0.906,
+       0.911
+      ],
+      "linear": [
+       0.8,
+       0.8,
+       0.81
+      ],
+      "area_share": 0.059
+     },
+     "base": {
+      "srgb": [
+       0.485,
+       0.501,
+       0.467
+      ],
+      "linear": [
+       0.2,
+       0.215,
+       0.185
+      ],
+      "area_share": 0.258
+     },
+     "dark": {
+      "srgb": [
+       0.235,
+       0.24,
+       0.248
+      ],
+      "linear": [
+       0.045,
+       0.047,
+       0.05
+      ],
+      "area_share": 0.633
+     },
+     "wear": {
+      "srgb": [
+       0.373,
+       0.341,
+       0.304
+      ],
+      "linear": [
+       0.115,
+       0.095,
+       0.075
+      ],
+      "area_share": 0.041
+     }
+    },
+    "triangles": 7148,
+    "pipeline": "Pass 1: zone paint x tiling texture, real bevels, vertex shading",
+    "images": 3,
+    "file_mb": 0.87
+   },
+   "Battery": {
+    "zones": {
+     "base": {
+      "srgb": [
+       0.485,
+       0.501,
+       0.467
+      ],
+      "linear": [
+       0.2,
+       0.215,
+       0.185
+      ],
+      "area_share": 0.211
+     },
+     "accent": {
+      "srgb": [
+       0.906,
+       0.701,
+       0.152
+      ],
+      "linear": [
+       0.8,
+       0.45,
+       0.02
+      ],
+      "area_share": 0.059
+     },
+     "dark": {
+      "srgb": [
+       0.235,
+       0.24,
+       0.248
+      ],
+      "linear": [
+       0.045,
+       0.047,
+       0.05
+      ],
+      "area_share": 0.658
+     },
+     "metal": {
+      "srgb": [
+       0.906,
+       0.906,
+       0.911
+      ],
+      "linear": [
+       0.8,
+       0.8,
+       0.81
+      ],
+      "area_share": 0.062
+     },
+     "wear": {
+      "srgb": [
+       0.373,
+       0.341,
+       0.304
+      ],
+      "linear": [
+       0.115,
+       0.095,
+       0.075
+      ],
+      "area_share": 0.01
+     }
+    },
+    "triangles": 3480,
+    "pipeline": "Pass 1: zone paint x tiling texture, real bevels, vertex shading",
+    "images": 3,
+    "file_mb": 0.72
+   }
+  },
+  "new": {
+   "Gun": {
+    "zones": {
+     "dark": {
+      "srgb": [
+       0.218,
+       0.203,
+       0.191
+      ],
+      "linear": [
+       0.0391,
+       0.034,
+       0.0302
+      ],
+      "area_share": 0.167
+     },
+     "metal": {
+      "srgb": [
+       0.609,
+       0.6,
+       0.598
+      ],
+      "linear": [
+       0.3292,
+       0.3189,
+       0.3162
+      ],
+      "area_share": 0.096
+     },
+     "light": {
+      "srgb": [
+       1.0,
+       0.584,
+       0.152
+      ],
+      "linear": [
+       1.0,
+       0.3,
+       0.02
+      ],
+      "area_share": 0.007
+     },
+     "base": {
+      "srgb": [
+       0.294,
+       0.279,
+       0.274
+      ],
+      "linear": [
+       0.0701,
+       0.0633,
+       0.061
+      ],
+      "area_share": 0.672
+     },
+     "accent": {
+      "srgb": [
+       0.68,
+       0.534,
+       0.194
+      ],
+      "linear": [
+       0.4199,
+       0.247,
+       0.0312
+      ],
+      "area_share": 0.059
+     }
+    },
+    "triangles": 2416,
+    "pipeline": "Pass 2: unique UV, baked normal / AO, authored base + ORM + emission",
+    "images": 4,
+    "file_mb": 3.65
+   },
+   "Wheel": {
+    "zones": {
+     "accent": {
+      "srgb": [
+       0.701,
+       0.541,
+       0.138
+      ],
+      "linear": [
+       0.4496,
+       0.254,
+       0.0169
+      ],
+      "area_share": 0.021
+     },
+     "base": {
+      "srgb": [
+       0.342,
+       0.272,
+       0.212
+      ],
+      "linear": [
+       0.0959,
+       0.0602,
+       0.0371
+      ],
+      "area_share": 0.331
+     },
+     "dark": {
+      "srgb": [
+       0.14,
+       0.126,
+       0.116
+      ],
+      "linear": [
+       0.0173,
+       0.0145,
+       0.0127
+      ],
+      "area_share": 0.596
+     },
+     "metal": {
+      "srgb": [
+       0.614,
+       0.591,
+       0.58
+      ],
+      "linear": [
+       0.3355,
+       0.3078,
+       0.2957
+      ],
+      "area_share": 0.051
+     }
+    },
+    "triangles": 6168,
+    "pipeline": "Pass 2: unique UV, baked normal / AO, authored base + ORM + emission",
+    "images": 4,
+    "file_mb": 5.03
+   },
+   "Battery": {
+    "zones": {
+     "base": {
+      "srgb": [
+       0.292,
+       0.26,
+       0.243
+      ],
+      "linear": [
+       0.0695,
+       0.0548,
+       0.0483
+      ],
+      "area_share": 0.37
+     },
+     "accent": {
+      "srgb": [
+       0.67,
+       0.523,
+       0.163
+      ],
+      "linear": [
+       0.4058,
+       0.2361,
+       0.0228
+      ],
+      "area_share": 0.151
+     },
+     "light": {
+      "srgb": [
+       1.0,
+       0.584,
+       0.153
+      ],
+      "linear": [
+       0.9995,
+       0.3,
+       0.0203
+      ],
+      "area_share": 0.001
+     },
+     "dark": {
+      "srgb": [
+       0.313,
+       0.208,
+       0.132
+      ],
+      "linear": [
+       0.0796,
+       0.0356,
+       0.0156
+      ],
+      "area_share": 0.448
+     },
+     "metal": {
+      "srgb": [
+       0.592,
+       0.575,
+       0.567
+      ],
+      "linear": [
+       0.3092,
+       0.2896,
+       0.2819
+      ],
+      "area_share": 0.031
+     }
+    },
+    "triangles": 1884,
+    "pipeline": "Pass 2: unique UV, baked normal / AO, authored base + ORM + emission",
+    "images": 4,
+    "file_mb": 1.7
+   }
+  }
+ },
+ "C": {
+  "old": {
+   "Gun": {
+    "zones": {
+     "light": {
+      "srgb": [
+       1.0,
+       0.701,
+       0.349
+      ],
+      "linear": [
+       1.0,
+       0.45,
+       0.1
+      ],
+      "area_share": 0.007
+     },
+     "accent": {
+      "srgb": [
+       0.955,
+       0.584,
+       0.19
+      ],
+      "linear": [
+       0.9,
+       0.3,
+       0.03
+      ],
+      "area_share": 0.172
+     },
+     "metal": {
+      "srgb": [
+       0.221,
+       0.68,
+       0.708
+      ],
+      "linear": [
+       0.04,
+       0.42,
+       0.46
+      ],
+      "area_share": 0.05
+     },
+     "dark": {
+      "srgb": [
+       0.221,
+       0.243,
+       0.276
+      ],
+      "linear": [
+       0.04,
+       0.048,
+       0.062
+      ],
+      "area_share": 0.455
+     },
+     "base": {
+      "srgb": [
+       0.876,
+       0.876,
+       0.854
+      ],
+      "linear": [
+       0.74,
+       0.74,
+       0.7
+      ],
+      "area_share": 0.316
+     }
+    },
+    "triangles": 3094,
+    "pipeline": "Pass 1: zone paint x tiling texture, real bevels, vertex shading",
+    "images": 0,
+    "file_mb": 0.14
+   },
+   "Wheel": {
+    "zones": {
+     "base": {
+      "srgb": [
+       0.876,
+       0.876,
+       0.854
+      ],
+      "linear": [
+       0.74,
+       0.74,
+       0.7
+      ],
+      "area_share": 0.068
+     },
+     "dark": {
+      "srgb": [
+       0.221,
+       0.243,
+       0.276
+      ],
+      "linear": [
+       0.04,
+       0.048,
+       0.062
+      ],
+      "area_share": 0.702
+     },
+     "accent": {
+      "srgb": [
+       0.955,
+       0.584,
+       0.19
+      ],
+      "linear": [
+       0.9,
+       0.3,
+       0.03
+      ],
+      "area_share": 0.219
+     },
+     "metal": {
+      "srgb": [
+       0.221,
+       0.68,
+       0.708
+      ],
+      "linear": [
+       0.04,
+       0.42,
+       0.46
+      ],
+      "area_share": 0.011
+     }
+    },
+    "triangles": 3684,
+    "pipeline": "Pass 1: zone paint x tiling texture, real bevels, vertex shading",
+    "images": 0,
+    "file_mb": 0.13
+   },
+   "Battery": {
+    "zones": {
+     "base": {
+      "srgb": [
+       0.876,
+       0.876,
+       0.854
+      ],
+      "linear": [
+       0.74,
+       0.74,
+       0.7
+      ],
+      "area_share": 0.059
+     },
+     "accent": {
+      "srgb": [
+       0.955,
+       0.584,
+       0.19
+      ],
+      "linear": [
+       0.9,
+       0.3,
+       0.03
+      ],
+      "area_share": 0.201
+     },
+     "dark": {
+      "srgb": [
+       0.221,
+       0.243,
+       0.276
+      ],
+      "linear": [
+       0.04,
+       0.048,
+       0.062
+      ],
+      "area_share": 0.712
+     },
+     "light": {
+      "srgb": [
+       1.0,
+       0.809,
+       0.349
+      ],
+      "linear": [
+       1.0,
+       0.62,
+       0.1
+      ],
+      "area_share": 0.011
+     },
+     "metal": {
+      "srgb": [
+       0.221,
+       0.68,
+       0.708
+      ],
+      "linear": [
+       0.04,
+       0.42,
+       0.46
+      ],
+      "area_share": 0.016
+     }
+    },
+    "triangles": 2652,
+    "pipeline": "Pass 1: zone paint x tiling texture, real bevels, vertex shading",
+    "images": 0,
+    "file_mb": 0.11
+   }
+  },
+  "new": {
+   "Gun": {
+    "zones": {
+     "light": {
+      "srgb": [
+       0.154,
+       0.856,
+       1.0
+      ],
+      "linear": [
+       0.0205,
+       0.7032,
+       0.9991
+      ],
+      "area_share": 0.024
+     },
+     "base": {
+      "srgb": [
+       0.873,
+       0.86,
+       0.833
+      ],
+      "linear": [
+       0.7342,
+       0.7105,
+       0.6609
+      ],
+      "area_share": 0.155
+     },
+     "accent": {
+      "srgb": [
+       0.804,
+       0.368,
+       0.219
+      ],
+      "linear": [
+       0.6102,
+       0.1117,
+       0.0394
+      ],
+      "area_share": 0.142
+     },
+     "metal": {
+      "srgb": [
+       0.161,
+       0.231,
+       0.404
+      ],
+      "linear": [
+       0.0223,
+       0.0438,
+       0.1358
+      ],
+      "area_share": 0.392
+     },
+     "dark": {
+      "srgb": [
+       0.107,
+       0.154,
+       0.286
+      ],
+      "linear": [
+       0.0112,
+       0.0205,
+       0.0663
+      ],
+      "area_share": 0.287
+     }
+    },
+    "triangles": 2228,
+    "pipeline": "Pass 2: unique UV, baked normal / AO, authored base + ORM + emission",
+    "images": 4,
+    "file_mb": 2.85
+   },
+   "Wheel": {
+    "zones": {
+     "accent": {
+      "srgb": [
+       0.85,
+       0.382,
+       0.117
+      ],
+      "linear": [
+       0.6914,
+       0.1205,
+       0.0129
+      ],
+      "area_share": 0.035
+     },
+     "dark": {
+      "srgb": [
+       0.175,
+       0.187,
+       0.279
+      ],
+      "linear": [
+       0.0257,
+       0.0293,
+       0.0633
+      ],
+      "area_share": 0.709
+     },
+     "light": {
+      "srgb": [
+       0.17,
+       0.853,
+       0.99
+      ],
+      "linear": [
+       0.0245,
+       0.6983,
+       0.9778
+      ],
+      "area_share": 0.012
+     },
+     "base": {
+      "srgb": [
+       0.841,
+       0.828,
+       0.803
+      ],
+      "linear": [
+       0.6748,
+       0.6524,
+       0.6081
+      ],
+      "area_share": 0.062
+     },
+     "metal": {
+      "srgb": [
+       0.238,
+       0.248,
+       0.404
+      ],
+      "linear": [
+       0.046,
+       0.0501,
+       0.1355
+      ],
+      "area_share": 0.182
+     }
+    },
+    "triangles": 4512,
+    "pipeline": "Pass 2: unique UV, baked normal / AO, authored base + ORM + emission",
+    "images": 4,
+    "file_mb": 4.32
+   },
+   "Battery": {
+    "zones": {
+     "base": {
+      "srgb": [
+       0.867,
+       0.857,
+       0.827
+      ],
+      "linear": [
+       0.724,
+       0.7048,
+       0.6512
+      ],
+      "area_share": 0.133
+     },
+     "accent": {
+      "srgb": [
+       0.838,
+       0.379,
+       0.131
+      ],
+      "linear": [
+       0.6712,
+       0.1188,
+       0.0155
+      ],
+      "area_share": 0.132
+     },
+     "light": {
+      "srgb": [
+       0.166,
+       0.856,
+       0.995
+      ],
+      "linear": [
+       0.0236,
+       0.7031,
+       0.9894
+      ],
+      "area_share": 0.045
+     },
+     "dark": {
+      "srgb": [
+       0.199,
+       0.229,
+       0.332
+      ],
+      "linear": [
+       0.0329,
+       0.0428,
+       0.0899
+      ],
+      "area_share": 0.655
+     },
+     "metal": {
+      "srgb": [
+       0.134,
+       0.228,
+       0.413
+      ],
+      "linear": [
+       0.0162,
+       0.0423,
+       0.142
+      ],
+      "area_share": 0.035
+     }
+    },
+    "triangles": 980,
+    "pipeline": "Pass 2: unique UV, baked normal / AO, authored base + ORM + emission",
+    "images": 4,
+    "file_mb": 1.1
+   }
+  }
+ },
+ "D": {
+  "old": {
+   "Gun": {
+    "zones": {
+     "dark": {
+      "srgb": [
+       0.152,
+       0.147,
+       0.143
+      ],
+      "linear": [
+       0.02,
+       0.019,
+       0.018
+      ],
+      "area_share": 0.016
+     },
+     "metal": {
+      "srgb": [
+       0.496,
+       0.485,
+       0.467
+      ],
+      "linear": [
+       0.21,
+       0.2,
+       0.185
+      ],
+      "area_share": 0.234
+     },
+     "wear": {
+      "srgb": [
+       0.473,
+       0.323,
+       0.206
+      ],
+      "linear": [
+       0.19,
+       0.085,
+       0.035
+      ],
+      "area_share": 0.28
+     },
+     "light": {
+      "srgb": [
+       1.0,
+       0.701,
+       0.349
+      ],
+      "linear": [
+       1.0,
+       0.45,
+       0.1
+      ],
+      "area_share": 0.009
+     },
+     "base": {
+      "srgb": [
+       0.43,
+       0.403,
+       0.304
+      ],
+      "linear": [
+       0.155,
+       0.135,
+       0.075
+      ],
+      "area_share": 0.072
+     },
+     "accent": {
+      "srgb": [
+       0.506,
+       0.26,
+       0.206
+      ],
+      "linear": [
+       0.22,
+       0.055,
+       0.035
+      ],
+      "area_share": 0.389
+     }
+    },
+    "triangles": 4134,
+    "pipeline": "Pass 1: zone paint x tiling texture, real bevels, vertex shading",
+    "images": 3,
+    "file_mb": 0.72
+   },
+   "Wheel": {
+    "zones": {
+     "accent": {
+      "srgb": [
+       0.506,
+       0.26,
+       0.206
+      ],
+      "linear": [
+       0.22,
+       0.055,
+       0.035
+      ],
+      "area_share": 0.172
+     },
+     "metal": {
+      "srgb": [
+       0.496,
+       0.485,
+       0.467
+      ],
+      "linear": [
+       0.21,
+       0.2,
+       0.185
+      ],
+      "area_share": 0.166
+     },
+     "wear": {
+      "srgb": [
+       0.473,
+       0.323,
+       0.206
+      ],
+      "linear": [
+       0.19,
+       0.085,
+       0.035
+      ],
+      "area_share": 0.213
+     },
+     "dark": {
+      "srgb": [
+       0.152,
+       0.147,
+       0.143
+      ],
+      "linear": [
+       0.02,
+       0.019,
+       0.018
+      ],
+      "area_share": 0.449
+     }
+    },
+    "triangles": 6836,
+    "pipeline": "Pass 1: zone paint x tiling texture, real bevels, vertex shading",
+    "images": 3,
+    "file_mb": 0.79
+   },
+   "Battery": {
+    "zones": {
+     "accent": {
+      "srgb": [
+       0.506,
+       0.26,
+       0.206
+      ],
+      "linear": [
+       0.22,
+       0.055,
+       0.035
+      ],
+      "area_share": 0.564
+     },
+     "dark": {
+      "srgb": [
+       0.152,
+       0.147,
+       0.143
+      ],
+      "linear": [
+       0.02,
+       0.019,
+       0.018
+      ],
+      "area_share": 0.081
+     },
+     "metal": {
+      "srgb": [
+       0.496,
+       0.485,
+       0.467
+      ],
+      "linear": [
+       0.21,
+       0.2,
+       0.185
+      ],
+      "area_share": 0.053
+     },
+     "wear": {
+      "srgb": [
+       0.473,
+       0.323,
+       0.206
+      ],
+      "linear": [
+       0.19,
+       0.085,
+       0.035
+      ],
+      "area_share": 0.302
+     },
+     "light": {
+      "srgb": [
+       1.0,
+       0.809,
+       0.349
+      ],
+      "linear": [
+       1.0,
+       0.62,
+       0.1
+      ],
+      "area_share": 0.0
+     }
+    },
+    "triangles": 3532,
+    "pipeline": "Pass 1: zone paint x tiling texture, real bevels, vertex shading",
+    "images": 3,
+    "file_mb": 0.63
+   }
+  },
+  "new": {
+   "Gun": {
+    "zones": {
+     "metal": {
+      "srgb": [
+       0.35,
+       0.28,
+       0.226
+      ],
+      "linear": [
+       0.1006,
+       0.0639,
+       0.0417
+      ],
+      "area_share": 0.291
+     },
+     "wear": {
+      "srgb": [
+       0.332,
+       0.253,
+       0.194
+      ],
+      "linear": [
+       0.0902,
+       0.0522,
+       0.0314
+      ],
+      "area_share": 0.303
+     },
+     "light": {
+      "srgb": [
+       1.0,
+       0.634,
+       0.19
+      ],
+      "linear": [
+       1.0,
+       0.36,
+       0.03
+      ],
+      "area_share": 0.007
+     },
+     "accent": {
+      "srgb": [
+       0.485,
+       0.424,
+       0.335
+      ],
+      "linear": [
+       0.2003,
+       0.1503,
+       0.0918
+      ],
+      "area_share": 0.147
+     },
+     "base": {
+      "srgb": [
+       0.438,
+       0.357,
+       0.24
+      ],
+      "linear": [
+       0.1614,
+       0.1046,
+       0.0469
+      ],
+      "area_share": 0.252
+     }
+    },
+    "triangles": 1660,
+    "pipeline": "Pass 2: unique UV, baked normal / AO, authored base + ORM + emission",
+    "images": 4,
+    "file_mb": 2.9
+   },
+   "Wheel": {
+    "zones": {
+     "dark": {
+      "srgb": [
+       0.175,
+       0.149,
+       0.124
+      ],
+      "linear": [
+       0.0257,
+       0.0194,
+       0.0141
+      ],
+      "area_share": 0.577
+     },
+     "base": {
+      "srgb": [
+       0.404,
+       0.355,
+       0.257
+      ],
+      "linear": [
+       0.1355,
+       0.1034,
+       0.0537
+      ],
+      "area_share": 0.105
+     },
+     "accent": {
+      "srgb": [
+       0.352,
+       0.248,
+       0.183
+      ],
+      "linear": [
+       0.1018,
+       0.0501,
+       0.0281
+      ],
+      "area_share": 0.036
+     },
+     "metal": {
+      "srgb": [
+       0.332,
+       0.248,
+       0.194
+      ],
+      "linear": [
+       0.0903,
+       0.0501,
+       0.0312
+      ],
+      "area_share": 0.217
+     },
+     "wear": {
+      "srgb": [
+       0.299,
+       0.208,
+       0.146
+      ],
+      "linear": [
+       0.0726,
+       0.0356,
+       0.0187
+      ],
+      "area_share": 0.065
+     }
+    },
+    "triangles": 4960,
+    "pipeline": "Pass 2: unique UV, baked normal / AO, authored base + ORM + emission",
+    "images": 4,
+    "file_mb": 4.7
+   },
+   "Battery": {
+    "zones": {
+     "base": {
+      "srgb": [
+       0.382,
+       0.285,
+       0.188
+      ],
+      "linear": [
+       0.1205,
+       0.0658,
+       0.0295
+      ],
+      "area_share": 0.233
+     },
+     "accent": {
+      "srgb": [
+       0.369,
+       0.284,
+       0.197
+      ],
+      "linear": [
+       0.1121,
+       0.0654,
+       0.0322
+      ],
+      "area_share": 0.175
+     },
+     "dark": {
+      "srgb": [
+       0.307,
+       0.186,
+       0.07
+      ],
+      "linear": [
+       0.0767,
+       0.029,
+       0.0059
+      ],
+      "area_share": 0.049
+     },
+     "metal": {
+      "srgb": [
+       0.435,
+       0.331,
+       0.277
+      ],
+      "linear": [
+       0.1591,
+       0.0897,
+       0.0623
+      ],
+      "area_share": 0.215
+     },
+     "wear": {
+      "srgb": [
+       0.311,
+       0.21,
+       0.137
+      ],
+      "linear": [
+       0.079,
+       0.0362,
+       0.0167
+      ],
+      "area_share": 0.328
+     }
+    },
+    "triangles": 1532,
+    "pipeline": "Pass 2: unique UV, baked normal / AO, authored base + ORM + emission",
+    "images": 4,
+    "file_mb": 1.24
+   }
+  }
+ },
+ "E": {
+  "old": {
+   "Gun": {
+    "zones": {
+     "dark": {
+      "srgb": [
+       0.16,
+       0.19,
+       0.26
+      ],
+      "linear": [
+       0.022,
+       0.03,
+       0.055
+      ],
+      "area_share": 0.553
+     },
+     "light": {
+      "srgb": [
+       0.424,
+       0.931,
+       1.0
+      ],
+      "linear": [
+       0.15,
+       0.85,
+       1.0
+      ],
+      "area_share": 0.013
+     },
+     "accent": {
+      "srgb": [
+       0.916,
+       0.906,
+       0.865
+      ],
+      "linear": [
+       0.82,
+       0.8,
+       0.72
+      ],
+      "area_share": 0.16
+     },
+     "metal": {
+      "srgb": [
+       0.68,
+       0.735,
+       0.798
+      ],
+      "linear": [
+       0.42,
+       0.5,
+       0.6
+      ],
+      "area_share": 0.042
+     },
+     "base": {
+      "srgb": [
+       0.964,
+       0.634,
+       0.152
+      ],
+      "linear": [
+       0.92,
+       0.36,
+       0.02
+      ],
+      "area_share": 0.232
+     }
+    },
+    "triangles": 13182,
+    "pipeline": "Pass 1: zone paint x tiling texture, real bevels, vertex shading",
+    "images": 1,
+    "file_mb": 0.42
+   },
+   "Wheel": {
+    "zones": {
+     "dark": {
+      "srgb": [
+       0.16,
+       0.19,
+       0.26
+      ],
+      "linear": [
+       0.022,
+       0.03,
+       0.055
+      ],
+      "area_share": 0.752
+     },
+     "metal": {
+      "srgb": [
+       0.68,
+       0.735,
+       0.798
+      ],
+      "linear": [
+       0.42,
+       0.5,
+       0.6
+      ],
+      "area_share": 0.035
+     },
+     "base": {
+      "srgb": [
+       0.964,
+       0.634,
+       0.152
+      ],
+      "linear": [
+       0.92,
+       0.36,
+       0.02
+      ],
+      "area_share": 0.069
+     },
+     "accent": {
+      "srgb": [
+       0.916,
+       0.906,
+       0.865
+      ],
+      "linear": [
+       0.82,
+       0.8,
+       0.72
+      ],
+      "area_share": 0.139
+     },
+     "light": {
+      "srgb": [
+       0.424,
+       0.931,
+       1.0
+      ],
+      "linear": [
+       0.15,
+       0.85,
+       1.0
+      ],
+      "area_share": 0.005
+     }
+    },
+    "triangles": 7522,
+    "pipeline": "Pass 1: zone paint x tiling texture, real bevels, vertex shading",
+    "images": 1,
+    "file_mb": 0.22
+   },
+   "Battery": {
+    "zones": {
+     "accent": {
+      "srgb": [
+       0.916,
+       0.906,
+       0.865
+      ],
+      "linear": [
+       0.82,
+       0.8,
+       0.72
+      ],
+      "area_share": 0.084
+     },
+     "dark": {
+      "srgb": [
+       0.16,
+       0.19,
+       0.26
+      ],
+      "linear": [
+       0.022,
+       0.03,
+       0.055
+      ],
+      "area_share": 0.699
+     },
+     "light": {
+      "srgb": [
+       0.424,
+       0.931,
+       1.0
+      ],
+      "linear": [
+       0.15,
+       0.85,
+       1.0
+      ],
+      "area_share": 0.015
+     },
+     "base": {
+      "srgb": [
+       0.964,
+       0.634,
+       0.152
+      ],
+      "linear": [
+       0.92,
+       0.36,
+       0.02
+      ],
+      "area_share": 0.197
+     },
+     "metal": {
+      "srgb": [
+       0.68,
+       0.735,
+       0.798
+      ],
+      "linear": [
+       0.42,
+       0.5,
+       0.6
+      ],
+      "area_share": 0.005
+     }
+    },
+    "triangles": 3188,
+    "pipeline": "Pass 1: zone paint x tiling texture, real bevels, vertex shading",
+    "images": 1,
+    "file_mb": 0.11
+   }
+  },
+  "new": {
+   "Gun": {
+    "zones": {
+     "base": {
+      "srgb": [
+       0.875,
+       0.489,
+       0.281
+      ],
+      "linear": [
+       0.7393,
+       0.2038,
+       0.0642
+      ],
+      "area_share": 0.242
+     },
+     "metal": {
+      "srgb": [
+       0.323,
+       0.326,
+       0.48
+      ],
+      "linear": [
+       0.0849,
+       0.0868,
+       0.196
+      ],
+      "area_share": 0.215
+     },
+     "light": {
+      "srgb": [
+       0.177,
+       0.763,
+       0.987
+      ],
+      "linear": [
+       0.0264,
+       0.5432,
+       0.9702
+      ],
+      "area_share": 0.022
+     },
+     "dark": {
+      "srgb": [
+       0.218,
+       0.193,
+       0.308
+      ],
+      "linear": [
+       0.0389,
+       0.031,
+       0.0772
+      ],
+      "area_share": 0.329
+     },
+     "accent": {
+      "srgb": [
+       0.917,
+       0.869,
+       0.811
+      ],
+      "linear": [
+       0.822,
+       0.7272,
+       0.6225
+      ],
+      "area_share": 0.193
+     }
+    },
+    "triangles": 3028,
+    "pipeline": "Pass 2: unique UV, baked normal / AO, authored base + ORM + emission",
+    "images": 4,
+    "file_mb": 3.42
+   },
+   "Wheel": {
+    "zones": {
+     "base": {
+      "srgb": [
+       0.88,
+       0.451,
+       0.154
+      ],
+      "linear": [
+       0.7478,
+       0.1718,
+       0.0205
+      ],
+      "area_share": 0.04
+     },
+     "light": {
+      "srgb": [
+       0.166,
+       0.766,
+       0.992
+      ],
+      "linear": [
+       0.0235,
+       0.5472,
+       0.9817
+      ],
+      "area_share": 0.011
+     },
+     "accent": {
+      "srgb": [
+       0.874,
+       0.829,
+       0.789
+      ],
+      "linear": [
+       0.7378,
+       0.6548,
+       0.5847
+      ],
+      "area_share": 0.084
+     },
+     "dark": {
+      "srgb": [
+       0.206,
+       0.188,
+       0.285
+      ],
+      "linear": [
+       0.035,
+       0.0296,
+       0.066
+      ],
+      "area_share": 0.848
+     },
+     "metal": {
+      "srgb": [
+       0.318,
+       0.337,
+       0.468
+      ],
+      "linear": [
+       0.0824,
+       0.0931,
+       0.1859
+      ],
+      "area_share": 0.017
+     }
+    },
+    "triangles": 5294,
+    "pipeline": "Pass 2: unique UV, baked normal / AO, authored base + ORM + emission",
+    "images": 4,
+    "file_mb": 4.54
+   },
+   "Battery": {
+    "zones": {
+     "base": {
+      "srgb": [
+       0.858,
+       0.437,
+       0.138
+      ],
+      "linear": [
+       0.7075,
+       0.1603,
+       0.017
+      ],
+      "area_share": 0.152
+     },
+     "light": {
+      "srgb": [
+       0.16,
+       0.711,
+       0.92
+      ],
+      "linear": [
+       0.0221,
+       0.4641,
+       0.8272
+      ],
+      "area_share": 0.031
+     },
+     "dark": {
+      "srgb": [
+       0.164,
+       0.202,
+       0.304
+      ],
+      "linear": [
+       0.023,
+       0.0336,
+       0.0752
+      ],
+      "area_share": 0.688
+     },
+     "metal": {
+      "srgb": [
+       0.726,
+       0.62,
+       0.691
+      ],
+      "linear": [
+       0.4859,
+       0.3427,
+       0.4349
+      ],
+      "area_share": 0.004
+     },
+     "accent": {
+      "srgb": [
+       0.869,
+       0.832,
+       0.779
+      ],
+      "linear": [
+       0.7276,
+       0.6602,
+       0.5689
+      ],
+      "area_share": 0.125
+     }
+    },
+    "triangles": 1564,
+    "pipeline": "Pass 2: unique UV, baked normal / AO, authored base + ORM + emission",
+    "images": 4,
+    "file_mb": 1.29
+   }
+  }
+ }
+}

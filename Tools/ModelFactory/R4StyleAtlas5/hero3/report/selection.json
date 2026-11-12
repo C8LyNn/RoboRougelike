@@ -1,0 +1,680 @@
+{
+ "A": {
+  "style": "A_Sleek",
+  "chassis": {
+   "choice": "new",
+   "owner_score": 1,
+   "decided_here": false,
+   "meaning": "cube + deployer + hull kit (hero1/hull_kit geometry) painted in the palette of hero2"
+  },
+  "parts": {
+   "Gun": {
+    "choice": "old",
+    "source": "hero1",
+    "pr": "#1270",
+    "owner_score": -1,
+    "decided_here": false,
+    "file": "hero1/variants/A_Sleek/R4W_Basic/R4W_Basic.glb",
+    "sha256": "9abac1c9e9a0292b28f52d94e2f6ef9f408a05f3c609459cf341aea5992d686b",
+    "triangles": 17364,
+    "triangles_other": 4064
+   },
+   "Wheel": {
+    "choice": "new",
+    "source": "hero2",
+    "pr": "#1274",
+    "owner_score": 2,
+    "decided_here": false,
+    "file": "hero2/variants/A_Sleek/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+    "sha256": "b6cf4dc8a31a8e926065ccd0c84cec64c2dbfbf47ab4931e6c5ffbc7ee1a75ee",
+    "triangles": 8170,
+    "triangles_other": 8864
+   },
+   "Battery": {
+    "choice": "old",
+    "source": "hero1",
+    "pr": "#1270",
+    "owner_score": -2,
+    "decided_here": false,
+    "file": "hero1/variants/A_Sleek/R4X_Battery/R4X_Battery.glb",
+    "sha256": "b444d43598d0e8d7387413717e4d78bcc4dfcb255174c0d3cca82273e4359486",
+    "triangles": 11224,
+    "triangles_other": 2168
+   },
+   "Cube": {
+    "choice": "geometry of Pass 1 (the only one), palette of hero2",
+    "source": "hero1",
+    "pr": "#1270",
+    "file": "hero1/variants/A_Sleek/R4B_Cube/R4B_Cube.glb",
+    "sha256": "ce7889c82db4c6dca8c531076dc4c49a5abca613a1ddd69dba82f23db1bd518b",
+    "triangles": 140
+   },
+   "Deployer": {
+    "choice": "geometry of Pass 1 (the only one), palette of hero2",
+    "source": "hero1",
+    "pr": "#1270",
+    "file": "hero1/variants/A_Sleek/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+    "sha256": "cb17ccec223ebcc0cc8ee9bb77c498c7997f36c7522139685951fe9411805a9e",
+    "triangles": 5854
+   }
+  },
+  "identical_to": null,
+  "robot_triangles": {
+   "hybrid": 107954,
+   "hull_layer": 9024
+  },
+  "proposal_plus": {
+   "Gun": {
+    "glow": "chassis",
+    "glow_strength": 4.0
+   },
+   "Battery": {
+    "glow": "chassis",
+    "glow_strength": 4.0
+   }
+  },
+  "material_coherence": {
+   "chassis_palette_srgb": {
+    "base": [
+     0.865,
+     0.87,
+     0.876
+    ],
+    "accent": [
+     0.865,
+     0.396,
+     0.086
+    ],
+    "dark": [
+     0.176,
+     0.19,
+     0.215
+    ],
+    "metal": [
+     0.449,
+     0.461,
+     0.485
+    ],
+    "light": [
+     0.152,
+     0.865,
+     1.0
+    ]
+   },
+   "parts": {
+    "Gun": {
+     "source": "hero1",
+     "same_pass_as_chassis": false,
+     "base_delta_srgb": 0.223,
+     "accent_delta_srgb": 0.716,
+     "dark_delta_srgb": 0.168,
+     "light_delta_srgb": 0.551,
+     "light_srgb": [
+      0.701,
+      0.916,
+      1.0
+     ]
+    },
+    "Wheel": {
+     "source": "hero2",
+     "same_pass_as_chassis": true,
+     "base_delta_srgb": 0.071,
+     "accent_delta_srgb": 0.284,
+     "dark_delta_srgb": 0.067,
+     "light_delta_srgb": 0.08,
+     "light_srgb": [
+      0.221,
+      0.845,
+      0.965
+     ]
+    },
+    "Battery": {
+     "source": "hero1",
+     "same_pass_as_chassis": false,
+     "base_delta_srgb": 0.223,
+     "accent_delta_srgb": 0.716,
+     "dark_delta_srgb": 0.168,
+     "light_delta_srgb": 0.551,
+     "light_srgb": [
+      0.701,
+      0.916,
+      1.0
+     ]
+    }
+   },
+   "passes_mixed": [
+    "hero1",
+    "hero2"
+   ]
+  }
+ },
+ "B": {
+  "style": "B_Brutal",
+  "chassis": {
+   "choice": "old",
+   "owner_score": 0,
+   "decided_here": true,
+   "meaning": "cube + deployer + hull kit (hero1/hull_kit geometry) painted in the palette of hero1"
+  },
+  "parts": {
+   "Gun": {
+    "choice": "new",
+    "source": "hero2",
+    "pr": "#1274",
+    "owner_score": 1,
+    "decided_here": false,
+    "file": "hero2/variants/B_Brutal/R4W_Basic/R4W_Basic.glb",
+    "sha256": "f3a33c5c70dd4327bb4c93311ae9b89b74be98d72e29288328663b12548966fd",
+    "triangles": 2416,
+    "triangles_other": 9570
+   },
+   "Wheel": {
+    "choice": "new",
+    "source": "hero2",
+    "pr": "#1274",
+    "owner_score": 0,
+    "decided_here": true,
+    "file": "hero2/variants/B_Brutal/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+    "sha256": "eabdd08a5b6293d0ec93eb5544d0f6e390841f8eccc5044fc76ecfb4690be2eb",
+    "triangles": 6168,
+    "triangles_other": 7148
+   },
+   "Battery": {
+    "choice": "old",
+    "source": "hero1",
+    "pr": "#1270",
+    "owner_score": -1,
+    "decided_here": false,
+    "file": "hero1/variants/B_Brutal/R4X_Battery/R4X_Battery.glb",
+    "sha256": "d5329179bdcf59c0ae4e6992f3615a1a9c762876d7b6f2b1af91152190258ae4",
+    "triangles": 3480,
+    "triangles_other": 1884
+   },
+   "Cube": {
+    "choice": "geometry of Pass 1 (the only one), palette of hero1",
+    "source": "hero1",
+    "pr": "#1270",
+    "file": "hero1/variants/B_Brutal/R4B_Cube/R4B_Cube.glb",
+    "sha256": "7ac55e2dc642f47a4d1849498b675c46934c98a43523de10eef8419aaaa8acb7",
+    "triangles": 60
+   },
+   "Deployer": {
+    "choice": "geometry of Pass 1 (the only one), palette of hero1",
+    "source": "hero1",
+    "pr": "#1270",
+    "file": "hero1/variants/B_Brutal/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+    "sha256": "57d6dcf8b342ff5c028863332a364317655686fe2ed029e486d335ffed88bf79",
+    "triangles": 7612
+   }
+  },
+  "identical_to": null,
+  "robot_triangles": {
+   "hybrid": 61556,
+   "hull_layer": 16100
+  },
+  "proposal_plus": null,
+  "material_coherence": {
+   "chassis_palette_srgb": {
+    "base": [
+     0.485,
+     0.501,
+     0.467
+    ],
+    "accent": [
+     0.906,
+     0.701,
+     0.152
+    ],
+    "dark": [
+     0.235,
+     0.24,
+     0.248
+    ],
+    "metal": [
+     0.906,
+     0.906,
+     0.911
+    ]
+   },
+   "parts": {
+    "Gun": {
+     "source": "hero2",
+     "same_pass_as_chassis": false,
+     "base_delta_srgb": 0.351,
+     "accent_delta_srgb": 0.284,
+     "dark_delta_srgb": 0.07,
+     "light_srgb": [
+      1.0,
+      0.584,
+      0.152
+     ]
+    },
+    "Wheel": {
+     "source": "hero2",
+     "same_pass_as_chassis": false,
+     "base_delta_srgb": 0.371,
+     "accent_delta_srgb": 0.26,
+     "dark_delta_srgb": 0.199,
+     "light_srgb": null
+    },
+    "Battery": {
+     "source": "hero1",
+     "same_pass_as_chassis": true,
+     "base_delta_srgb": 0.0,
+     "accent_delta_srgb": 0.0,
+     "dark_delta_srgb": 0.0,
+     "light_srgb": null
+    }
+   },
+   "passes_mixed": [
+    "hero1",
+    "hero2"
+   ]
+  }
+ },
+ "C": {
+  "style": "C_Arcade",
+  "chassis": {
+   "choice": "new",
+   "owner_score": 1,
+   "decided_here": false,
+   "meaning": "cube + deployer + hull kit (hero1/hull_kit geometry) painted in the palette of hero2"
+  },
+  "parts": {
+   "Gun": {
+    "choice": "new",
+    "source": "hero2",
+    "pr": "#1274",
+    "owner_score": 1,
+    "decided_here": false,
+    "file": "hero2/variants/C_Arcade/R4W_Basic/R4W_Basic.glb",
+    "sha256": "6350e29cac6e2afa0e6782b2963185b36acefc41a8a75ed91b0754f24aa4d32d",
+    "triangles": 2228,
+    "triangles_other": 3094
+   },
+   "Wheel": {
+    "choice": "new",
+    "source": "hero2",
+    "pr": "#1274",
+    "owner_score": 2,
+    "decided_here": false,
+    "file": "hero2/variants/C_Arcade/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+    "sha256": "e33610b583b29bf5a80f2c121e86bbc1c84ef1ec71bb49bf07af9788d1e77899",
+    "triangles": 4512,
+    "triangles_other": 3684
+   },
+   "Battery": {
+    "choice": "new",
+    "source": "hero2",
+    "pr": "#1274",
+    "owner_score": 0,
+    "decided_here": true,
+    "file": "hero2/variants/C_Arcade/R4X_Battery/R4X_Battery.glb",
+    "sha256": "cb459fac8ccd600c9c612b963ccb72bb05e19168847cfc2198c8da0e48319375",
+    "triangles": 980,
+    "triangles_other": 2652
+   },
+   "Cube": {
+    "choice": "geometry of Pass 1 (the only one), palette of hero2",
+    "source": "hero1",
+    "pr": "#1270",
+    "file": "hero1/variants/C_Arcade/R4B_Cube/R4B_Cube.glb",
+    "sha256": "0d8f376a71418385ac3c664f58b918eef3c2ebabaa9c5bbd4cca52a287274dac",
+    "triangles": 156
+   },
+   "Deployer": {
+    "choice": "geometry of Pass 1 (the only one), palette of hero2",
+    "source": "hero1",
+    "pr": "#1270",
+    "file": "hero1/variants/C_Arcade/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+    "sha256": "71844f2af11522ed59157dc565d5822265a6836e9e9e279e54b27bb4432ee602",
+    "triangles": 3418
+   }
+  },
+  "identical_to": "NEW (Hero Pass 2)",
+  "robot_triangles": {
+   "hybrid": 37182,
+   "hull_layer": 5712
+  },
+  "proposal_plus": null,
+  "material_coherence": {
+   "chassis_palette_srgb": {
+    "base": [
+     0.876,
+     0.865,
+     0.832
+    ],
+    "accent": [
+     0.896,
+     0.396,
+     0.086
+    ],
+    "dark": [
+     0.1,
+     0.152,
+     0.293
+    ],
+    "metal": [
+     0.143,
+     0.243,
+     0.424
+    ],
+    "light": [
+     0.152,
+     0.854,
+     1.0
+    ]
+   },
+   "parts": {
+    "Gun": {
+     "source": "hero2",
+     "same_pass_as_chassis": true,
+     "base_delta_srgb": 0.006,
+     "accent_delta_srgb": 0.164,
+     "dark_delta_srgb": 0.01,
+     "light_delta_srgb": 0.003,
+     "light_srgb": [
+      0.154,
+      0.856,
+      1.0
+     ]
+    },
+    "Wheel": {
+     "source": "hero2",
+     "same_pass_as_chassis": true,
+     "base_delta_srgb": 0.059,
+     "accent_delta_srgb": 0.057,
+     "dark_delta_srgb": 0.084,
+     "light_delta_srgb": 0.021,
+     "light_srgb": [
+      0.17,
+      0.853,
+      0.99
+     ]
+    },
+    "Battery": {
+     "source": "hero2",
+     "same_pass_as_chassis": true,
+     "base_delta_srgb": 0.013,
+     "accent_delta_srgb": 0.075,
+     "dark_delta_srgb": 0.131,
+     "light_delta_srgb": 0.015,
+     "light_srgb": [
+      0.166,
+      0.856,
+      0.995
+     ]
+    }
+   },
+   "passes_mixed": [
+    "hero2"
+   ]
+  }
+ },
+ "D": {
+  "style": "D_Scrap",
+  "chassis": {
+   "choice": "old",
+   "owner_score": -1,
+   "decided_here": false,
+   "meaning": "cube + deployer + hull kit (hero1/hull_kit geometry) painted in the palette of hero1"
+  },
+  "parts": {
+   "Gun": {
+    "choice": "old",
+    "source": "hero1",
+    "pr": "#1270",
+    "owner_score": -1,
+    "decided_here": false,
+    "file": "hero1/variants/D_Scrap/R4W_Basic/R4W_Basic.glb",
+    "sha256": "2b49c48ba3ab2195cb6cd352570ec681bf8deef2d2069922ead823734d2e1d7b",
+    "triangles": 4134,
+    "triangles_other": 1660
+   },
+   "Wheel": {
+    "choice": "new",
+    "source": "hero2",
+    "pr": "#1274",
+    "owner_score": 1,
+    "decided_here": false,
+    "file": "hero2/variants/D_Scrap/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+    "sha256": "64f3437aaa028b70e113bd304cac1e4ce3d36cb609f740c0304dbda7d7805145",
+    "triangles": 4960,
+    "triangles_other": 6836
+   },
+   "Battery": {
+    "choice": "old",
+    "source": "hero1",
+    "pr": "#1270",
+    "owner_score": -1,
+    "decided_here": false,
+    "file": "hero1/variants/D_Scrap/R4X_Battery/R4X_Battery.glb",
+    "sha256": "300fbcff83c144c6db7cab9022b9fbe4f45ef2a1da116adb6cd091490d98a622",
+    "triangles": 3532,
+    "triangles_other": 1532
+   },
+   "Cube": {
+    "choice": "geometry of Pass 1 (the only one), palette of hero1",
+    "source": "hero1",
+    "pr": "#1270",
+    "file": "hero1/variants/D_Scrap/R4B_Cube/R4B_Cube.glb",
+    "sha256": "16c8281085cb4e7a13377ee09551a2981fba03af36deb20a06be1baff9c26bfd",
+    "triangles": 92
+   },
+   "Deployer": {
+    "choice": "geometry of Pass 1 (the only one), palette of hero1",
+    "source": "hero1",
+    "pr": "#1270",
+    "file": "hero1/variants/D_Scrap/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+    "sha256": "534dc45ea82c9edc265d9018ada7387c874a16aa97f645e6b28e0e0a03cc3af5",
+    "triangles": 3896
+   }
+  },
+  "identical_to": null,
+  "robot_triangles": {
+   "hybrid": 46668,
+   "hull_layer": 5484
+  },
+  "proposal_plus": null,
+  "material_coherence": {
+   "chassis_palette_srgb": {
+    "base": [
+     0.43,
+     0.403,
+     0.304
+    ],
+    "accent": [
+     0.506,
+     0.26,
+     0.206
+    ],
+    "dark": [
+     0.152,
+     0.147,
+     0.143
+    ],
+    "metal": [
+     0.496,
+     0.485,
+     0.467
+    ]
+   },
+   "parts": {
+    "Gun": {
+     "source": "hero1",
+     "same_pass_as_chassis": true,
+     "base_delta_srgb": 0.0,
+     "accent_delta_srgb": 0.0,
+     "dark_delta_srgb": 0.0,
+     "light_srgb": [
+      1.0,
+      0.701,
+      0.349
+     ]
+    },
+    "Wheel": {
+     "source": "hero2",
+     "same_pass_as_chassis": false,
+     "base_delta_srgb": 0.072,
+     "accent_delta_srgb": 0.156,
+     "dark_delta_srgb": 0.03,
+     "light_srgb": null
+    },
+    "Battery": {
+     "source": "hero1",
+     "same_pass_as_chassis": true,
+     "accent_delta_srgb": 0.0,
+     "dark_delta_srgb": 0.0,
+     "light_srgb": [
+      1.0,
+      0.809,
+      0.349
+     ]
+    }
+   },
+   "passes_mixed": [
+    "hero1",
+    "hero2"
+   ]
+  }
+ },
+ "E": {
+  "style": "E_Toon",
+  "chassis": {
+   "choice": "new",
+   "owner_score": 2,
+   "decided_here": false,
+   "meaning": "cube + deployer + hull kit (hero1/hull_kit geometry) painted in the palette of hero2"
+  },
+  "parts": {
+   "Gun": {
+    "choice": "new",
+    "source": "hero2",
+    "pr": "#1274",
+    "owner_score": 2,
+    "decided_here": false,
+    "file": "hero2/variants/E_Toon/R4W_Basic/R4W_Basic.glb",
+    "sha256": "9ee0a5df7ff74dc898ff5745835641f51b5ba681286557f5836dc1523ea85d53",
+    "triangles": 3028,
+    "triangles_other": 13182
+   },
+   "Wheel": {
+    "choice": "new",
+    "source": "hero2",
+    "pr": "#1274",
+    "owner_score": 2,
+    "decided_here": false,
+    "file": "hero2/variants/E_Toon/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+    "sha256": "0a0f4f713750decf0707e5effd002d59c99f361e3d91ea9e7bc04bedfd736584",
+    "triangles": 5294,
+    "triangles_other": 7522
+   },
+   "Battery": {
+    "choice": "new",
+    "source": "hero2",
+    "pr": "#1274",
+    "owner_score": 2,
+    "decided_here": false,
+    "file": "hero2/variants/E_Toon/R4X_Battery/R4X_Battery.glb",
+    "sha256": "4b804e17adb4496c3982591c1d7914d76d1dbe26253e798a030f5d32917d7262",
+    "triangles": 1564,
+    "triangles_other": 3188
+   },
+   "Cube": {
+    "choice": "geometry of Pass 1 (the only one), palette of hero2",
+    "source": "hero1",
+    "pr": "#1270",
+    "file": "hero1/variants/E_Toon/R4B_Cube/R4B_Cube.glb",
+    "sha256": "7a2c7ead013caaddae938f5d49af6a0485a9f9b4371edf971210d08f4ef120fb",
+    "triangles": 188
+   },
+   "Deployer": {
+    "choice": "geometry of Pass 1 (the only one), palette of hero2",
+    "source": "hero1",
+    "pr": "#1270",
+    "file": "hero1/variants/E_Toon/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb",
+    "sha256": "4b20cd2c1310a6ecc2115827626f0d0fe4da2e6c0f444d217644f634c7d3fe56",
+    "triangles": 8814
+   }
+  },
+  "identical_to": "NEW (Hero Pass 2)",
+  "robot_triangles": {
+   "hybrid": 49592,
+   "hull_layer": 6094
+  },
+  "proposal_plus": null,
+  "material_coherence": {
+   "chassis_palette_srgb": {
+    "base": [
+     0.945,
+     0.485,
+     0.112
+    ],
+    "accent": [
+     0.916,
+     0.886,
+     0.809
+    ],
+    "dark": [
+     0.183,
+     0.19,
+     0.323
+    ],
+    "metal": [
+     0.323,
+     0.366,
+     0.527
+    ],
+    "light": [
+     0.152,
+     0.767,
+     1.0
+    ]
+   },
+   "parts": {
+    "Gun": {
+     "source": "hero2",
+     "same_pass_as_chassis": true,
+     "base_delta_srgb": 0.183,
+     "accent_delta_srgb": 0.017,
+     "dark_delta_srgb": 0.038,
+     "light_delta_srgb": 0.028,
+     "light_srgb": [
+      0.177,
+      0.763,
+      0.987
+     ]
+    },
+    "Wheel": {
+     "source": "hero2",
+     "same_pass_as_chassis": true,
+     "base_delta_srgb": 0.085,
+     "accent_delta_srgb": 0.074,
+     "dark_delta_srgb": 0.044,
+     "light_delta_srgb": 0.016,
+     "light_srgb": [
+      0.166,
+      0.766,
+      0.992
+     ]
+    },
+    "Battery": {
+     "source": "hero2",
+     "same_pass_as_chassis": true,
+     "base_delta_srgb": 0.103,
+     "accent_delta_srgb": 0.078,
+     "dark_delta_srgb": 0.029,
+     "light_delta_srgb": 0.098,
+     "light_srgb": [
+      0.16,
+      0.711,
+      0.92
+     ]
+    }
+   },
+   "passes_mixed": [
+    "hero2"
+   ]
+  }
+ }
+}

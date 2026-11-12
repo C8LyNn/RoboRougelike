@@ -1,0 +1,67 @@
+{
+ "old": {
+  "pass_": "hero1",
+  "triangles": {
+   "turret": 8040,
+   "cradle": 5108,
+   "barrel": 668,
+   "base": 3404
+  },
+  "side_area_cm2": {
+   "base": 1117.5,
+   "weapon": 1204.7,
+   "barrel_free": 144.3,
+   "total": 2322.2
+  },
+  "front_area_cm2": {
+   "base": 1117.5,
+   "weapon": 682.5
+  },
+  "base_share_of_side_silhouette": 0.481,
+  "base_fill_of_its_box": 0.806,
+  "base_min_width_m": 0.239,
+  "base_max_width_m": 0.511,
+  "barrel_free_length_m": 0.285,
+  "barrel_free_mean_height_m": 0.051,
+  "weapon_forward_mean_height_m": 0.105,
+  "weapon_forward_max_height_m": 0.151
+ },
+ "new": {
+  "pass_": "hero2",
+  "triangles": {
+   "turret": 1012,
+   "cradle": 1200,
+   "barrel": 672,
+   "base": 1148
+  },
+  "side_area_cm2": {
+   "base": 1127.3,
+   "weapon": 1187.7,
+   "barrel_free": 142.8,
+   "total": 2315.0
+  },
+  "front_area_cm2": {
+   "base": 1127.8,
+   "weapon": 677.8
+  },
+  "base_share_of_side_silhouette": 0.487,
+  "base_fill_of_its_box": 0.823,
+  "base_min_width_m": 0.301,
+  "base_max_width_m": 0.501,
+  "barrel_free_length_m": 0.217,
+  "barrel_free_mean_height_m": 0.066,
+  "weapon_forward_mean_height_m": 0.102,
+  "weapon_forward_max_height_m": 0.149
+ },
+ "delta": {
+  "base_share_of_side_silhouette": 0.006,
+  "base_fill_of_its_box": 0.017,
+  "base_min_width_m": 0.062,
+  "base_max_width_m": -0.01,
+  "barrel_free_length_m": -0.068,
+  "barrel_free_mean_height_m": 0.015,
+  "weapon_forward_mean_height_m": -0.003,
+  "weapon_forward_max_height_m": -0.002
+ },
+ "units": "side view = plane of the barrel axis; areas in cm2 at 1:1; base = fixed pedestal (Body), weapon = turret + cradle + barrel"
+}
