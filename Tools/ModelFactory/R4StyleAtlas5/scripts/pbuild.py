@@ -110,6 +110,40 @@ def port_test(tree, p):
     r.update(dir=p["dir"], kind=p["kind"], cell=p.get("cell"), need_pct=need); r["PASS"] = r["protruding"] == 0 and r["missing"] == 0 and r["flush_pct"] >= need; return r
 
 
+_HEMI = [(math.sin(t)*math.cos(p), math.sin(t)*math.sin(p), math.cos(t)) for (t, p) in [(0.0, 0.0)] + [(0.62, k*math.tau/5 + 0.3) for k in range(5)] + [(1.15, k*math.tau/7) for k in range(7)]]
+def bake_vertex_shading(objs, occluders, recipe, skip_names):
+    """polish pass: per-corner colour attribute 'Col' = baked ambient occlusion (rays against the whole part, rest pose) with a cavity tint, convex
+    hard edges pulled towards the worn-edge colour. Exported as glTF COLOR_0 / FBX vertex colours (multiplies the base colour)."""
+    tree = bvh_of(occluders); dist = recipe["dist"]; flat = recipe["flat"]; cav = recipe["cavity"]; edge = recipe["edge"]; ea = recipe["edge_amount"]; g = recipe["gamma"]; n_edge = 0; n_corner = 0
+    for o in objs:
+        me = o.data; ca = me.color_attributes.get("Col") or me.color_attributes.new("Col", 'FLOAT_COLOR', 'CORNER'); mw = o.matrix_world; R3 = mw.to_3x3().normalized(); glow = {i for i, m in enumerate(me.materials) if m and m.name.startswith("R4P_Glow")}
+        if o.name in skip_names or abs(mw.to_3x3().determinant()) < 1e-9:
+            for d in ca.data: d.color = (1, 1, 1, 1)
+            continue
+        fn = {}                                                    # vertex -> normals of its faces (hard-edge test)
+        for p in me.polygons:
+            for v in p.vertices: fn.setdefault(v, []).append(p.normal)
+        sharp = {v for v, ns in fn.items() if min(a.dot(b) for a in ns for b in ns) < 0.82}
+        cn = me.corner_normals; cache = {}
+        for p in me.polygons:
+            for li in p.loop_indices:
+                n_corner += 1
+                if p.material_index in glow: ca.data[li].color = (1, 1, 1, 1); continue
+                v = me.loops[li].vertex_index; nl = cn[li].vector; key = (v, round(nl.x, 1), round(nl.y, 1), round(nl.z, 1)); c = cache.get(key)
+                if c is None:
+                    n = (R3 @ nl).normalized(); org = mw @ me.vertices[v].co + n*0.004; u = n.orthogonal().normalized(); w = n.cross(u); occ = 0.0
+                    for (x, y, z) in _HEMI:
+                        h = tree.ray_cast(org, u*x + w*y + n*z, dist)
+                        if h[0] is not None: occ += (1.0 - h[3]/dist)*z
+                    ao = max(0.0, 1.0 - occ/sum(z for (_, _, z) in _HEMI)*1.6)**g; c = [flat*(cav[i] + (1.0 - cav[i])*ao) for i in range(3)]
+                    if v in sharp and ao > 0.78: c = [c[i] + (edge[i] - c[i])*ea for i in range(3)]; n_edge += 1
+                    cache[key] = c
+                ca.data[li].color = (c[0], c[1], c[2], 1.0)
+        try: me.color_attributes.active_color = ca; me.color_attributes.render_color_index = list(me.color_attributes).index(ca)
+        except Exception: pass
+    return {"corners": n_corner, "worn_edge_samples": n_edge, "recipe": recipe}
+
+
 def setup_render(scn):
     scn.render.engine = 'BLENDER_EEVEE' if 'BLENDER_EEVEE' in [e.identifier for e in bpy.types.RenderSettings.bl_rna.properties['engine'].enum_items] else 'BLENDER_EEVEE_NEXT'
     scn.render.resolution_x, scn.render.resolution_y = 720, 548; scn.render.image_settings.file_format = 'JPEG'; scn.render.image_settings.quality = 88
@@ -128,12 +162,14 @@ def shoot(scn, cam, target, dist, d, path):
     scn.render.filepath = path; bpy.ops.render.render(write_still=True)
 
 
+VCOL_EXPORT = {}
 def export_fbx(path, anim):
     bpy.ops.export_scene.fbx(filepath=path, use_selection=True, apply_scale_options='FBX_SCALE_UNITS', axis_forward='-Z', axis_up='Y', bake_space_transform=False, object_types={'MESH', 'EMPTY'},
                              mesh_smooth_type='FACE', add_leaf_bones=False, use_mesh_modifiers=True, bake_anim=anim, bake_anim_use_all_actions=False, bake_anim_use_nla_strips=False, bake_anim_simplify_factor=0.0, path_mode='STRIP')
 def export_glb(path, anim, anim_objs=()):
     """animated: every object action is pushed to an NLA track with ONE shared name, so the file holds a single animation 'Timeline' (all nodes)"""
     kw = dict(filepath=path, export_format='GLB', use_selection=True, export_yup=True, export_apply=not anim, export_extras=True, export_animations=anim)
+    if VCOL_EXPORT: kw.update(VCOL_EXPORT)
     if not anim: bpy.ops.export_scene.gltf(**kw); return "static"
     for o in anim_objs:
         ad = o.animation_data
@@ -352,7 +388,15 @@ def build(cid, style):
             R0 = Matrix(e["M"]); dev = max(dev, (objs[n].matrix_world.translation - R0.translation).length*1000); adev = max(adev, qdev(objs[n].matrix_world.to_3x3().normalized().to_4x4(), R0.to_3x3().normalized().to_4x4()))
         iface = {"source_glb": ref["path"], "source_sha256": ref["sha256"], "empties": sorted(n for n in ref["empties"] if not n.endswith("_ROOT")), "missing": miss, "pos_dev_mm": round(dev, 4), "rot_dev_deg": round(adev, 4),
                  "mesh_nodes_source": sorted(ref["meshes"]), "mesh_nodes_missing": [n for n in ref["meshes"] if n not in objs], "PASS": not miss and dev < 0.01 and adev < 0.1 and not [n for n in ref["meshes"] if n not in objs]}
-    mat_names = sorted({s_.material.name for o in mobjs for s_ in o.material_slots if s_.material})
+    mat_names = sorted({s_.material.name for o in mobjs for s_ in o.material_slots if s_.material}); vshade = None
+    global VCOL_EXPORT
+    VCOL_EXPORT = {}
+    if src.get("vcol"):
+        vshade = bake_vertex_shading(mobjs, solid, src["vcol"], fxn); vshade["lod1"] = bake_vertex_shading([lod], [lod], src["vcol"], set())["corners"]
+        props = {p.identifier for p in bpy.ops.export_scene.gltf.get_rna_type().properties}
+        if "export_vertex_color" in props: VCOL_EXPORT = {"export_vertex_color": 'ACTIVE'}
+        if "export_active_vertex_color_when_no_material" in props: VCOL_EXPORT["export_active_vertex_color_when_no_material"] = True
+        vshade["gltf_export_options"] = dict(VCOL_EXPORT)
     base = os.path.join(od, cid)
     select([root] + mobjs + empties, root); export_fbx(base + ".fbx", has_anim); glb_mode = export_glb(base + ".glb", has_anim, anim_objs)
     select([root, lod], root); export_fbx(base + "_LOD1.fbx", False); export_glb(base + "_LOD1.glb", False)
@@ -410,7 +454,7 @@ def build(cid, style):
           "bounds_m": [[round(x, 4) for x in lo], [round(x, 4) for x in hi]], "envelope_m": env, "inside_envelope": inside, "lod1_inside_envelope": lod_inside, "node_bounds_vs_source": node_vs_src,
           "ports": src["ports"], "port_contact_test": ptest, "lod1_port_contact_test": lptest, "interface_vs_source": iface, "hierarchy": hier, "fx_objects": sorted(fxn),
           "animation": {"glb_animation_mode": glb_mode, "mode": an["mode"], "fps": FPS, "frames": F, "clips": an["clips"], "events": an["events"], "warped_clips": an["warped_clips"], "animated_objects": anim_names, "objects_with_real_motion": moving,
-                        "sweep_outside_envelope_mm": round(max(sweep, 0)*1000, 3), "sweep_allowance_mm": round(allow*1000), "loop_seams": seams, "motion_character": ST.MOTION[style]}, "parts": src["stats"]["parts"],
+                        "sweep_outside_envelope_mm": round(max(sweep, 0)*1000, 3), "sweep_allowance_mm": round(allow*1000), "loop_seams": seams, "motion_character": ST.MOTION[style]}, "parts": src["stats"]["parts"], "vertex_shading": vshade, "polish_pass": src.get("polish_pass"),
           "reimport": re_, "renders": renders, "files": files, "seconds": round(time.time() - t0, 1), "blender": bpy.app.version_string}
     json.dump(qa, open(base + "_QA.json", "w", encoding="utf-8"), indent=1)
     log("VARIANT", ST.LABEL[style], cid, stat, failures, tris, "tris", "LOD1", lr["triangles"])

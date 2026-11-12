@@ -1,0 +1,116 @@
+{
+ "style": "B",
+ "applied": [
+  "taa_render_samples",
+  "use_raytracing",
+  "!use_gtao",
+  "!gtao_distance",
+  "use_shadows",
+  "shadow_ray_count",
+  "shadow_step_count",
+  "fast_gi_distance",
+  "use_fast_gi",
+  "view_transform",
+  "look",
+  "exposure"
+ ],
+ "shots": {
+  "1_parts_before": {
+   "pieces": 7,
+   "triangles": 30928,
+   "hull_layer_triangles": 0,
+   "objects": 64,
+   "render_s_1080": 1.3,
+   "render_s_720": 0.2
+  },
+  "2_wheeled_before": {
+   "pieces": 28,
+   "triangles": 139628,
+   "hull_layer_triangles": 0,
+   "objects": 234,
+   "render_s_1080": 0.8,
+   "render_s_720": 0.3
+  },
+  "3_hover_before": {
+   "pieces": 27,
+   "triangles": 120172,
+   "hull_layer_triangles": 0,
+   "objects": 253,
+   "render_s_1080": 0.8,
+   "render_s_720": 0.3
+  },
+  "6_gameplay_before": {
+   "pieces": 207,
+   "triangles": 1002520,
+   "hull_layer_triangles": 0,
+   "objects": 1767,
+   "render_s_1080": 1.2,
+   "render_s_720": 0.4
+  },
+  "1_parts_after": {
+   "pieces": 7,
+   "triangles": 12580,
+   "hull_layer_triangles": 4308,
+   "objects": 65,
+   "render_s_1080": 1.0,
+   "render_s_720": 0.5
+  },
+  "2_wheeled_after": {
+   "pieces": 28,
+   "triangles": 45904,
+   "hull_layer_triangles": 6852,
+   "objects": 235,
+   "render_s_1080": 1.2,
+   "render_s_720": 0.5
+  },
+  "3_hover_after": {
+   "pieces": 27,
+   "triangles": 46624,
+   "hull_layer_triangles": 5364,
+   "objects": 254,
+   "render_s_1080": 0.7,
+   "render_s_720": 0.5
+  },
+  "6_gameplay_after": {
+   "pieces": 207,
+   "triangles": 302884,
+   "hull_layer_triangles": 43660,
+   "objects": 1772,
+   "render_s_1080": 0.8,
+   "render_s_720": 0.7
+  },
+  "4_robot100_after": {
+   "pieces": 96,
+   "triangles": 118548,
+   "hull_layer_triangles": 17740,
+   "objects": 813,
+   "render_s_1080": 0.9,
+   "render_s_720": 0.7
+  },
+  "5_robot200_after": {
+   "pieces": 196,
+   "triangles": 223656,
+   "hull_layer_triangles": 34264,
+   "objects": 1665,
+   "render_s_1080": 1.0,
+   "render_s_720": 0.5
+  }
+ },
+ "sources": [
+  "../R4_Atlas5_polish1/v3/B_Brutal/R4B_Cube/R4B_Cube.glb",
+  "../R4_Atlas5_polish1/v3/B_Brutal/R4C_STRUT_STANDARD/R4C_STRUT_STANDARD.glb",
+  "../R4_Atlas5_polish1/v3/B_Brutal/R4M_HoverEngine/R4M_HoverEngine.glb",
+  "../R4_Atlas5_polish1/v3/B_Brutal/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+  "../R4_Atlas5_polish1/v3/B_Brutal/R4W_Basic/R4W_Basic.glb",
+  "v2/B_Brutal/R4B_Cube/R4B_Cube.glb",
+  "v2/B_Brutal/R4C_STRUT_STANDARD/R4C_STRUT_STANDARD.glb",
+  "v2/B_Brutal/R4M_HoverEngine/R4M_HoverEngine.glb",
+  "v2/B_Brutal/R4M_WheelM_Side_Offroad/R4M_WheelM_Side_Offroad.glb",
+  "v2/B_Brutal/R4W_Basic/R4W_Basic.glb",
+  "v2/B_Brutal/R4X_Battery/R4X_Battery.glb",
+  "v2/B_Brutal/R4X_ExplosiveTrapDeployer/R4X_ExplosiveTrapDeployer.glb"
+ ],
+ "seconds": 33.6,
+ "blender": "5.3.0",
+ "engine": "BLENDER_EEVEE"
+}
